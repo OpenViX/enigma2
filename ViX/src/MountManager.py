@@ -461,7 +461,7 @@ class VIXDevicePanelConf(Screen, ConfigListScreen):
 		file('/etc/fstab.tmp', 'w').writelines([l for l in file('/etc/fstab').readlines() if self.device_uuid not in l])
 		rename('/etc/fstab.tmp','/etc/fstab')
 		out = open('/etc/fstab', 'a')
-		line = self.device_uuid + '\t' + self.mountp + '\tauto\tdata=ordered\t0 0\n'
+		line = self.device_uuid + '\t' + self.mountp + '\tauto\tdefaults\t0 0\n'
 		out.write(line)
 		out.close()
 
