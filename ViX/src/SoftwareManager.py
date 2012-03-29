@@ -1006,15 +1006,15 @@ class UpdatePlugin(Screen):
 
 	def checkNetworkState(self):
 		self.NetworkState = 0
-		cmd1 = "ping -c 5 www.world-of-satellite.com"
-		self.PingConsole = Console()
-		self.PingConsole.ePopen(cmd1, self.checkNetworkStateFinished)
+		cmd1 = "wget http://www.world-of-satellite.com/enigma2/feeds/2.3/"+about.getImageTypeString().lower()+"/image-version"
+		self.CheckConsole = Console()
+		self.CheckConsole.ePopen(cmd1, self.checkNetworkStateFinished)
 
 	def checkNetworkStateFinished(self, result, retval,extra_args=None):
-		if result.find('bad address') == -1:
+		if result.find('404 Not Found') == -1:
 			self.startCheck()
 		else:
-			self.session.openWithCallback(self.close, MessageBox, _("Your STB_BOX isn't connected to the internet properly. Please check it and try again."), type=MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
+			self.session.openWithCallback(self.close, MessageBox, _("Sorry feeds are down for maintenance, please try again later."), type=MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 
 	def startCheck(self):
 		self.activity = 0
