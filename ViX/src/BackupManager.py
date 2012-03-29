@@ -475,13 +475,17 @@ class VIXBackupManager(Screen):
 			self.Stage6()
 
 	def Stage4Complete(self, result, retval, extra_args):
-		if result:
+		if result.find('404 Not Found') == -1:
+			self.feedsOK = True
+			self.Stage4Completed = True
+		else:
+			self.feedsOK = False
 			self.Stage4Completed = True
 
 	def Stage5(self):
 		if not self.Console:
 			self.Console = Console()
-		if self.doPluginsRestore:
+		if self.doPluginsRestore and self.feedsOK:
 			if path.exists('/tmp/trimedExtraInstalledPlugins'):
 				plugintmp = file('/tmp/trimedExtraInstalledPlugins').read()
 				pluginslist = plugintmp.replace('\n',' ')
@@ -489,7 +493,12 @@ class VIXBackupManager(Screen):
 			else:
 				self.Stage6()
 		else:
-			self.Stage6()
+			AddPopupWithCallback(self.Stage6,
+				_("Sorry feeds are down for maintenance, Please try again later."),
+				MessageBox.TYPE_INFO,
+				15,
+				NOPLUGINS
+			)
 
 	def Stage5Complete(self, result, retval, extra_args):
 		if result:

@@ -128,25 +128,38 @@ class RestoreWizard(WizardLanguage, Rc):
 			if not self.Console:
 				self.Console = Console()
 			self.Console.ePopen("init 4 && reboot")
- 		elif self.NextStep is 'settingsquestion' or self.NextStep is 'settingsrestore' or self.NextStep is 'pluginsquestion' or self.NextStep is 'pluginsrestoredevice' or self.NextStep is 'end' or self.NextStep is 'noplugins':
+		elif self.NextStep is 'settingsquestion' or self.NextStep is 'settingsrestore' or self.NextStep is 'pluginsquestion' or self.NextStep is 'pluginsrestoredevice' or self.NextStep is 'end' or self.NextStep is 'noplugins':
 			self.buildListfinishedCB(False)
- 		elif self.NextStep is 'settingrestorestarted':
-  			if not self.Console:
- 				self.Console = Console()
- 			self.Console.ePopen("tar -xzvf " + self.fullbackupfilename + " -C /", self.settingRestore_Finished)
- 			self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Please wait while restore completes..."), type = MessageBox.TYPE_INFO, enable_input = False)
+		elif self.NextStep is 'settingrestorestarted':
+			if not self.Console:
+				self.Console = Console()
+			self.Console.ePopen("tar -xzvf " + self.fullbackupfilename + " -C /", self.settingRestore_Finished)
+			self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Please wait while settings restore completes..."), type = MessageBox.TYPE_INFO, enable_input = False)
+			self.buildListRef.setTitle(_("Restore Wizard"))
 		elif self.NextStep is 'plugindetection':
 			if not self.Console:
- 				self.Console = Console()
- 			self.Console.ePopen("tar -xzvf " + self.fullbackupfilename + " tmp/ExtraInstalledPlugins tmp/backupkernelversion -C /", self.pluginsRestore_Started)
- 			self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Please wait while gathers infomation..."), type = MessageBox.TYPE_INFO, enable_input = False)
+				self.Console = Console()
+			self.Console.ePopen("tar -xzvf " + self.fullbackupfilename + " tmp/ExtraInstalledPlugins tmp/backupkernelversion -C /", self.pluginsRestore_Started)
+			self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Please wait while gathers infomation..."), type = MessageBox.TYPE_INFO, enable_input = False)
+			self.buildListRef.setTitle(_("Restore Wizard"))
 		elif self.NextStep is 'pluginrestore':
-  			if not self.Console:
- 				self.Console = Console()
+			if not self.Console:
+				self.Console = Console()
 			plugintmp = file('/tmp/trimedExtraInstalledPlugins').read()
 			pluginslist = plugintmp.replace('\n',' ')
-			self.Console.ePopen("opkg update && opkg install " + pluginslist, self.pluginsRestore_Finished)
- 			self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Please wait while restore completes..."), type = MessageBox.TYPE_INFO, enable_input = False)
+			if self.feedsOK:
+				self.Console.ePopen("opkg update && opkg install " + pluginslist, self.pluginsRestore_Finished)
+				self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Please wait while plugins restore completes..."), type = MessageBox.TYPE_INFO, enable_input = False)
+				self.buildListRef.setTitle(_("Restore Wizard"))
+			else:
+				config.misc.restorewizardrun.setValue(True)
+				config.misc.restorewizardrun.save()
+				configfile.save()
+				self.didPluginRestore = True
+				self.NextStep = 'reboot'
+				self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Sorry feeds are down for maintenance, Please try using Backup Manager to restore plugins later."), type = MessageBox.TYPE_INFO, timeout = 30)
+				self.buildListRef.setTitle(_("Restore Wizard"))
+
 
 	def settingRestore_Finished(self, result, retval, extra_args = None):
 		self.didSettingsRestore = True
@@ -204,7 +217,7 @@ class RestoreWizard(WizardLanguage, Rc):
 					if parts[0] not in plugins:
 						output.write(parts[0] + ' ')
 			output.close()
-			self.doRestorePluginsQuestion()
+			self.doRestorePluginsTest()
 		else:
 			if self.didSettingsRestore:
 				self.NextStep = 'reboot'
@@ -212,7 +225,14 @@ class RestoreWizard(WizardLanguage, Rc):
 				self.NextStep = 'noplugins'
 			self.buildListRef.close(True)
 
-	def doRestorePluginsQuestion(self, extra_args = None):
+	def doRestorePluginsTest(self, extra_args = None):
+		self.Console.ePopen('opkg update', self.doRestorePluginsQuestion)
+
+	def doRestorePluginsQuestion(self, result = None, retval = None, extra_args = None):
+		if result.find('404 Not Found') == -1:
+			self.feedsOK = True
+		else:
+			self.feedsOK = False
 		fstabfile = file('/etc/fstab').readlines()
 		for mountfolder in fstabfile:
 			parts = mountfolder.strip().split()
