@@ -1006,7 +1006,7 @@ class UpdatePlugin(Screen):
 
 	def checkNetworkState(self):
 		self.NetworkState = 0
-		cmd1 = "wget http://www.world-of-satellite.com/enigma2/feeds/2.3/"+about.getImageTypeString().lower()+"/image-version"
+		cmd1 = "wget http://www.world-of-satellite.com/enigma2/feeds/2.3/"+about.getImageTypeString().lower()+"/Packages"
 		self.CheckConsole = Console()
 		self.CheckConsole.ePopen(cmd1, self.checkNetworkStateFinished)
 
