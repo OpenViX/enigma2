@@ -1005,16 +1005,21 @@ class UpdatePlugin(Screen):
 		self.checkNetworkState()
 
 	def checkNetworkState(self):
-		self.NetworkState = 0
-		cmd1 = "wget http://www.world-of-satellite.com/enigma2/feeds/2.3/"+about.getImageTypeString().lower()+"/Packages"
+		if about.getImageTypeString() == _('Experimental'):
+			feedtype = 'experimental'
+		else:
+			feedtype = 'release'
+		cmd1 = "wget http://www.world-of-satellite.com/enigma2/feeds/2.3/"+feedtype+"/image-version -T 1 -s"
 		self.CheckConsole = Console()
 		self.CheckConsole.ePopen(cmd1, self.checkNetworkStateFinished)
 
 	def checkNetworkStateFinished(self, result, retval,extra_args=None):
-		if result.find('404 Not Found') == -1:
-			self.startCheck()
-		else:
+		if result.find('404 Not Found') != -1:
 			self.session.openWithCallback(self.close, MessageBox, _("Sorry feeds are down for maintenance, please try again later."), type=MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
+		elif result.find('bad address') != -1:
+			self.session.openWithCallback(self.close, MessageBox, _("Your box is not connected to the internet, please check your network settings and try again."), type=MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
+		else:
+			self.startCheck()
 
 	def startCheck(self):
 		self.activity = 0
