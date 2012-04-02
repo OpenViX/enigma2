@@ -89,6 +89,8 @@ class VIXCronManager(Screen):
 	def InstallPackage(self, val):
 		if val:
 			self.doInstall(self.installComplete, self.service_name)
+		else:
+			self.close()
 
 	def doInstall(self, callback, pkgname):
 		self["actions"].setEnabled(False)
