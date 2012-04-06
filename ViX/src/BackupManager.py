@@ -943,6 +943,8 @@ class BackupFiles(Screen):
 			self.selectedFiles.append('/usr/crossepg/crossepg.config')
 		if path.exists('/usr/crossepg/providers') and not '/usr/crossepg/providers' in self.selectedFiles:
 			self.selectedFiles.append('/usr/crossepg/providers')
+		if path.exists('/usr/lib/sabnzbd') and not '/usr/lib/sabnzbd' in self.selectedFiles:
+			self.selectedFiles.append('/usr/lib/sabnzbd')
 		config.backupmanager.backupdirs.setValue(self.selectedFiles)
 		config.backupmanager.backupdirs.save()
 		configfile.save()
