@@ -107,7 +107,7 @@ class VIXCronManager(Screen):
 		if self.my_crond_run == False:
 			self.Console.ePopen('/usr/bin/opkg list_installed ' + self.service_name, self.RemovedataAvail)
 		else:
-			self.close
+			self.close()
 
 	def RemovedataAvail(self, str, retval, extra_args):
 		if str:
