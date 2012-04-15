@@ -2,7 +2,7 @@
 from . import _
 
 from Screens.Screen import Screen
-from Components.ActionMap import ActionMap
+from Components.ActionMap import NumberActionMap
 from Components.Sources.StaticText import StaticText
 from Components.Sources.List import List
 from Components.MultiContent import MultiContentEntryText
@@ -57,12 +57,21 @@ class VIXMenu(Screen):
 		self["menu"] = List(self.list)
 		self["key_red"] = StaticText(_("Close"))
 
-		self["shortcuts"] = ActionMap(["ShortcutActions", "WizardActions", "InfobarEPGActions", "MenuActions"],
+		self["shortcuts"] = NumberActionMap(["ShortcutActions", "WizardActions", "InfobarEPGActions", "MenuActions", "NumberActions"],
 		{
 			"ok": self.go,
 			"back": self.close,
 			"red": self.close,
 			"menu": self.closeRecursive,
+			"1": self.go,
+			"2": self.go,
+			"3": self.go,
+			"4": self.go,
+			"5": self.go,
+			"6": self.go,
+			"7": self.go,
+			"8": self.go,
+			"9": self.go,
 		}, -1)
 		self.onLayoutFinish.append(self.layoutFinished)
 		self.onChangedEntry = []
@@ -90,7 +99,12 @@ class VIXMenu(Screen):
 	def setWindowTitle(self):
 		self.setTitle(_("ViX"))
 
-	def go(self):
+	def go(self, num = None):
+		if num is not None:
+			num -= 1
+			if not num < self["menu"].count():
+				return
+			self["menu"].setIndex(num)
 		current = self["menu"].getCurrent()
 		if current:
 			currentEntry = current[0]
