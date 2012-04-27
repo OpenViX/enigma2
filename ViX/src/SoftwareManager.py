@@ -1092,22 +1092,39 @@ class UpdatePlugin(Screen):
 			elif self.ipkg.currentCommand == IpkgComponent.CMD_UPGRADE_LIST:
 				self.total_packages = len(self.ipkg.getFetchedList())
 				if self.total_packages:
-					message = _("Do you want to update your STB_BOX?") + "\n(%s " % self.total_packages + _("Packages") + ")"
-					choices = [(_("View the changes"), "changes"),
-						(_("Unattended upgrade without GUI and reboot system"), "cold"),
-						(_("Cancel"), "")]
-					self.session.openWithCallback(self.startActualUpgrade, ChoiceBox, title=message, list=choices)
+					from urllib import urlopen
+					import socket
+					import os
+					currentTimeoutDefault = socket.getdefaulttimeout()
+					socket.setdefaulttimeout(3)
+					config.usage.infobar_onlineupdatefound.setValue(True)
+					try:
+						config.usage.infobar_onlineupdateisunstable.setValue(urlopen("http://enigma2.world-of-satellite.com/feeds/status").read())
+					except:
+						config.usage.infobar_onlineupdateisunstable.setValue(0)
+					socket.setdefaulttimeout(currentTimeoutDefault)
+					if config.usage.infobar_onlineupdateisunstable.value == '1' and config.usage.infobar_onlineupdatebeta.value:
+						message = _("The current update maybe unstable") + "\n" + _("Are you sure you want to update your STB_BOX?") + "\n(%s " % self.total_packages + _("Packages") + ")"
+						choices = [(_("View the changes"), "changes"),
+							(_("Unattended upgrade without GUI and reboot system"), "cold"),
+							(_("Cancel"), "")]
+						self.session.openWithCallback(self.startActualUpgrade, ChoiceBox, title=message, list=choices)
+					elif config.usage.infobar_onlineupdateisunstable.value == '0':
+						message = _("Do you want to update your STB_BOX?") + "\n(%s " % self.total_packages + _("Packages") + ")"
+						choices = [(_("View the changes"), "changes"),
+							(_("Unattended upgrade without GUI and reboot system"), "cold"),
+							(_("Cancel"), "")]
+						self.session.openWithCallback(self.startActualUpgrade, ChoiceBox, title=message, list=choices)
+					else:
+						self.session.openWithCallback(self.close, MessageBox, _("Nothing to upgrade"), type=MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 				else:
 					self.session.openWithCallback(self.close, MessageBox, _("Nothing to upgrade"), type=MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 			elif self.error == 0:
 				self.slider.setValue(4)
-
 				self.activityTimer.stop()
 				self.activityslider.setValue(0)
-
 				self.package.setText(_("Done - Installed or upgraded %d packages") % self.packages)
 				self.status.setText(self.oktext)
-
 			else:
 				self.activityTimer.stop()
 				self.activityslider.setValue(0)
