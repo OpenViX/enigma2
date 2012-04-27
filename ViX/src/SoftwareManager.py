@@ -934,13 +934,7 @@ class SoftwareUpdateChanges(Screen):
 
 	def getlog(self):
 		import urllib
-		fd = open('/etc/opkg/all-feed.conf', 'r')
-		fileurl = fd.read()
-		fd.close()
-		if fileurl.find('experimental') != -1:
-			sourcefile='http://enigma2.world-of-satellite.com/feeds/2.3/experimental/releasenotes'
-		else:
-			sourcefile='http://enigma2.world-of-satellite.com/feeds/2.3/release/releasenotes'
+		sourcefile='http://enigma2.world-of-satellite.com/feeds/2.4/releasenotes'
 		sourcefile,headers = urllib.urlretrieve(sourcefile)
 		rename(sourcefile,'/tmp/online-releasenotes')
 		fd = open('/tmp/online-releasenotes', 'r')
