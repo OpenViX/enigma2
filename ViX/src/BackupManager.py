@@ -945,6 +945,11 @@ class BackupFiles(Screen):
 			self.selectedFiles.append('/usr/crossepg/providers')
 		if path.exists('/usr/lib/sabnzbd') and not '/usr/lib/sabnzbd' in self.selectedFiles:
 			self.selectedFiles.append('/usr/lib/sabnzbd')
+		if path.exists('/etc/Multiquickbutton') and not '/etc/Multiquickbutton' in self.selectedFiles:
+			self.selectedFiles.append('/etc/Multiquickbutton')
+		if path.exists('/etc/samba') and not '/etc/samba' in self.selectedFiles:
+			self.selectedFiles.append('/etc/samba')
+
 		config.backupmanager.backupdirs.setValue(self.selectedFiles)
 		config.backupmanager.backupdirs.save()
 		configfile.save()
