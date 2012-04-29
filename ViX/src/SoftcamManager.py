@@ -114,6 +114,7 @@ class VIXSoftcamManager(Screen):
 				SystemInfo["CCcamInstalled"] = True
 			elif softcam.lower().startswith('oscam'):
 				SystemInfo["OScamInstalled"] = True
+		selcam = ''
 		if cams:
 			current = self["list"].getCurrent()[0]
 			selcam = current[0]
