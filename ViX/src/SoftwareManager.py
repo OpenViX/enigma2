@@ -999,11 +999,7 @@ class UpdatePlugin(Screen):
 		self.checkNetworkState()
 
 	def checkNetworkState(self):
-		if about.getImageTypeString() == _('Experimental'):
-			feedtype = 'experimental'
-		else:
-			feedtype = 'release'
-		cmd1 = "wget http://www.world-of-satellite.com/enigma2/feeds/2.3/"+feedtype+"/image-version -T 1 -s"
+		cmd1 = "wget http://www.world-of-satellite.com/enigma2/feeds/2.4/image-version -T 1 -s"
 		self.CheckConsole = Console()
 		self.CheckConsole.ePopen(cmd1, self.checkNetworkStateFinished)
 
@@ -1088,14 +1084,13 @@ class UpdatePlugin(Screen):
 				if self.total_packages:
 					from urllib import urlopen
 					import socket
-					import os
 					currentTimeoutDefault = socket.getdefaulttimeout()
 					socket.setdefaulttimeout(3)
 					config.usage.infobar_onlineupdatefound.setValue(True)
 					try:
 						config.usage.infobar_onlineupdateisunstable.setValue(urlopen("http://enigma2.world-of-satellite.com/feeds/status").read())
 					except:
-						config.usage.infobar_onlineupdateisunstable.setValue(0)
+						config.usage.infobar_onlineupdateisunstable.setValue(1)
 					socket.setdefaulttimeout(currentTimeoutDefault)
 					if config.usage.infobar_onlineupdateisunstable.value == '1' and config.usage.infobar_onlineupdatebeta.value:
 						message = _("The current update maybe unstable") + "\n" + _("Are you sure you want to update your STB_BOX?") + "\n(%s " % self.total_packages + _("Packages") + ")"
