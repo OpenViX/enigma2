@@ -286,7 +286,7 @@ class VIXImageManager(Screen):
 			self.keyBackup()
 
 	def keyBackup(self):
-		if config.misc.boxtype.value == "vuuno" or config.misc.boxtype.value == "vuultimo" or config.misc.boxtype.value == "vusolo" or config.misc.boxtype.value == "vuduo" or config.misc.boxtype.value == "et5x00" or config.misc.boxtype.value == "et6x00" or config.misc.boxtype.value == "et9x00":
+		if config.misc.boxtype.value.startswith('vu') or config.misc.boxtype.value.startswith('et') or config.misc.boxtype.value.startswith('tm'):
 			message = _("Are you ready to create a backup image ?")
 			ybox = self.session.openWithCallback(self.doBackup, MessageBox, message, MessageBox.TYPE_YESNO)
 			ybox.setTitle(_("Backup Confirmation"))
@@ -913,48 +913,58 @@ class ImageBackup(Screen):
 		else:
 			self.ROOTFSTYPE= 'jffs2'
 		self.BackupConsole = Console()
-		print '[ImageManager] Stage1: Creating tmp folders.'
+		print '[ImageManager] Stage1: Creating tmp folders.',self.BackupDirectory
 		self.BackupDate = strftime('%Y%m%d_%H%M%S', localtime())
 		self.WORKDIR=self.BackupDirectory + config.imagemanager.folderprefix.value + '-bi'
 		self.TMPDIR='/var/volatile/tmp/' + config.imagemanager.folderprefix.value + '-bi'
-		self.MAINDEST=self.BackupDirectory + config.imagemanager.folderprefix.value + '-' + self.BackupDate
+		self.MAINDESTROOT=self.BackupDirectory + config.imagemanager.folderprefix.value + '-' + self.BackupDate
 		if path.exists(self.WORKDIR):
 			rmtree(self.WORKDIR)
-		mkdir(self.WORKDIR, 0777)
-		mkdir(self.WORKDIR + '/root', 0777)
+		mkdir(self.WORKDIR, 0644)
+		mkdir(self.WORKDIR + '/root', 0644)
 		if path.exists(self.TMPDIR + '/root'):
 			system('umount ' + self.TMPDIR + '/root')
 		if path.exists(self.TMPDIR):
 			rmtree(self.TMPDIR)
-		mkdir(self.TMPDIR, 0777)
-		mkdir(self.TMPDIR + '/root', 0777)
+		mkdir(self.TMPDIR, 0644)
+		mkdir(self.TMPDIR + '/root', 0644)
 		MKFS='mkfs.' + self.ROOTFSTYPE
 		JFFS2OPTIONS="--eraseblock=0x20000 -n -l"
 		UBINIZE='ubinize'
 		UBINIZE_ARGS="-m 2048 -p 128KiB"
 		print '[ImageManager] Stage1: Creating backup Folders.'
-		mkdir(self.MAINDEST, 0777)
+		mkdir(self.MAINDESTROOT, 0644)
 		self.commands = []
 		print '[ImageManager] Stage1: Making Root Image.'
 		if self.ROOTFSTYPE == 'jffs2':
 			if config.misc.boxtype.value.startswith('vu'):
-				mkdir(self.MAINDEST + '/vuplus', 0777)
-				mkdir(self.MAINDEST + '/vuplus/' + config.misc.boxtype.value.replace('vu',''), 0777)
+				mkdir(self.MAINDESTROOT + '/vuplus', 0644)
+				mkdir(self.MAINDESTROOT + '/vuplus/' + config.misc.boxtype.value.replace('vu',''), 0644)
+				self.MAINDEST = self.MAINDESTROOT + '/vuplus/' + config.misc.boxtype.value.replace('vu','')
 				self.commands.append('mount -t jffs2 /dev/mtdblock0 ' + self.TMPDIR + '/root')
 			elif config.misc.boxtype.value.startswith('et'):
-				mkdir(self.MAINDEST + '/' + config.misc.boxtype.value, 0777)
+				mkdir(self.MAINDESTROOT + '/' + config.misc.boxtype.value, 0644)
+				self.MAINDEST = self.MAINDESTROOT + '/' + config.misc.boxtype.value
 				self.commands.append('mount -t jffs2 /dev/mtdblock2 ' + self.TMPDIR + '/root')
+			elif config.misc.boxtype.value.startswith('tm'):
+				mkdir(self.MAINDESTROOT + '/update', 0644)
+				mkdir(self.MAINDESTROOT + '/update/' + config.misc.boxtype.value, 0644)
+				mkdir(self.MAINDESTROOT + '/update/' + config.misc.boxtype.value + '/cfe', 0644)
+				self.MAINDEST = self.MAINDESTROOT + '/update/' + config.misc.boxtype.value + '/cfe'
+				self.commands.append('mount -t jffs2 /dev/mtdblock0 ' + self.TMPDIR + '/root')
 			self.commands.append(MKFS + ' --root=' + self.TMPDIR + '/root --faketime --output=' + self.WORKDIR + '/root.jffs2 ' + JFFS2OPTIONS)
 		elif self.ROOTFSTYPE == 'ubifs':
 			print '[ImageManager] Stage1: UBIFS Detected.'
 			if config.misc.boxtype.value.startswith('vu'):
 				print '[ImageManager] Stage1: Vu plus STB_BOX detected.'
 				MKUBIFS_ARGS="-m 2048 -e 126976 -c 4096 -F"
-				mkdir(self.MAINDEST + '/vuplus', 0777)
-				mkdir(self.MAINDEST + '/vuplus/' + config.misc.boxtype.value.replace('vu',''), 0777)
+				mkdir(self.MAINDESTROOT + '/vuplus', 0644)
+				mkdir(self.MAINDESTROOT + '/vuplus/' + config.misc.boxtype.value.replace('vu',''), 0644)
+				self.MAINDEST = self.MAINDESTROOT + '/vuplus/' + config.misc.boxtype.value.replace('vu','')
 			elif config.misc.boxtype.value.startswith('et'):
 				MKUBIFS_ARGS="-m 2048 -e 126976 -c 4096"
-				mkdir(self.MAINDEST + '/' + config.misc.boxtype.value, 0777)
+				mkdir(self.MAINDESTROOT + '/' + config.misc.boxtype.value, 0644)
+				self.MAINDEST = self.MAINDESTROOT + '/' + config.misc.boxtype.value
 			output = open(self.WORKDIR + '/ubinize.cfg','w')
 			output.write('[ubifs]\n')
 			output.write('mode=ubi\n')
@@ -993,48 +1003,59 @@ class ImageBackup(Screen):
 			rmtree(self.TMPDIR)
 		print '[ImageManager] Stage3: Moving from tmp to backup folders'
 		if config.misc.boxtype.value.startswith('vu'):
-			move(self.WORKDIR + '/root.' + self.ROOTFSTYPE, self.MAINDEST + '/vuplus/' + config.misc.boxtype.value.replace('vu','') + '/root_cfe_auto.jffs2')
-			move(self.WORKDIR + '/vmlinux.gz', self.MAINDEST + '/vuplus/' + config.misc.boxtype.value.replace('vu','') + '/kernel_cfe_auto.bin')
+			move(self.WORKDIR + '/root.' + self.ROOTFSTYPE, self.MAINDEST + '/root_cfe_auto.jffs2')
+			move(self.WORKDIR + '/vmlinux.gz', self.MAINDEST + '/kernel_cfe_auto.bin')
 			if config.misc.boxtype.value == "vuuno" or config.misc.boxtype.value == "vuultimo":
-				copy('/usr/lib/enigma2/python/Plugins/SystemPlugins/ViX/splash_cfe_auto.bin', self.MAINDEST + '/vuplus/' + config.misc.boxtype.value.replace('vu','') + '/splash_cfe_auto.bin')
+				copy('/usr/lib/enigma2/python/Plugins/SystemPlugins/ViX/splash_cfe_auto.bin', self.MAINDEST + '/splash_cfe_auto.bin')
 		elif config.misc.boxtype.value.startswith('et'):
-			move(self.WORKDIR + '/root.' + self.ROOTFSTYPE, self.MAINDEST + '/' + config.misc.boxtype.value + '/rootfs.bin')
-			move(self.WORKDIR + '/vmlinux.gz', self.MAINDEST + '/' + config.misc.boxtype.value + '/kernel.bin')
-			copy('/usr/lib/enigma2/python/Plugins/SystemPlugins/ViX/splash.bin', self.MAINDEST + '/' + config.misc.boxtype.value + '/splash.bin')
-			fileout = open(self.MAINDEST + '/' + config.misc.boxtype.value + '/noforce', 'w')
+			move(self.WORKDIR + '/root.' + self.ROOTFSTYPE, self.MAINDEST + '/rootfs.bin')
+			move(self.WORKDIR + '/vmlinux.gz', self.MAINDEST + '/kernel.bin')
+			copy('/usr/lib/enigma2/python/Plugins/SystemPlugins/ViX/splash.bin', self.MAINDEST + '/splash.bin')
+			fileout = open(self.MAINDEST + '/noforce', 'w')
 			line = "rename this file to 'force' to force an update without confirmation"
 			fileout.write(line)
 			fileout.close()
-			fileout = open(self.MAINDEST + '/' + config.misc.boxtype.value + '/imageversion', 'w')
+			fileout = open(self.MAINDEST + '/imageversion', 'w')
 			line = "ViX-" + self.BackupDate
 			fileout.write(line)
 			fileout.close()
+		elif config.misc.boxtype.value.startswith('tm'):
+			move(self.WORKDIR + '/root.' + self.ROOTFSTYPE, self.MAINDEST + '/oe_rootfs.bin')
+			move(self.WORKDIR + '/vmlinux.gz', self.MAINDEST + '/oe_kernel.bin')
+			copy('/usr/lib/enigma2/python/Plugins/SystemPlugins/ViX/splash.bmp', self.MAINDEST + '/splash.bmp')
 		print '[ImageManager] Stage3: Removing Swap.'
 		if path.exists(self.swapdevice + config.imagemanager.folderprefix.value + "-swapfile_backup"):
 			system('swapoff ' + self.swapdevice + config.imagemanager.folderprefix.value + "-swapfile_backup")
 			remove(self.swapdevice + config.imagemanager.folderprefix.value + "-swapfile_backup")
 		if path.exists(self.WORKDIR):
 			rmtree(self.WORKDIR)
-		if (path.exists(self.MAINDEST + '/vuplus/' + config.misc.boxtype.value.replace('vu','') + '/root_cfe_auto.jffs2') and path.exists(self.MAINDEST + '/vuplus/' + config.misc.boxtype.value.replace('vu','') + '/kernel_cfe_auto.bin')) or (path.exists(self.MAINDEST + '/' + config.misc.boxtype.value + '/rootfs.bin') and path.exists(self.MAINDEST + '/' + config.misc.boxtype.value + '/kernel.bin')):
+		if (path.exists(self.MAINDEST + '/root_cfe_auto.jffs2') and path.exists(self.MAINDEST + '/kernel_cfe_auto.bin')) or (path.exists(self.MAINDEST + '/rootfs.bin') and path.exists(self.MAINDEST + '/kernel.bin')) or (path.exists(self.MAINDEST + '/oe_rootfs.bin') and path.exists(self.MAINDEST + '/oe_kernel.bin')):
 			chmod(self.MAINDEST, 0644)
-			if path.exists(self.MAINDEST + '/vuplus/' + config.misc.boxtype.value.replace('vu','')):
-				chmod(self.MAINDEST + '/vuplus/', 0644)
-				chmod(self.MAINDEST + '/vuplus/' + config.misc.boxtype.value.replace('vu',''), 0644)
-				chmod(self.MAINDEST + '/vuplus/' + config.misc.boxtype.value.replace('vu','') + '/root_cfe_auto.jffs2', 0644)
-				chmod(self.MAINDEST + '/vuplus/' + config.misc.boxtype.value.replace('vu','') + '/kernel_cfe_auto.bin', 0644)
+			if config.misc.boxtype.value.startswith('vu'):
+				chmod(self.MAINDESTROOT + '/vuplus/', 0644)
+				chmod(self.MAINDESTTOOT + '/vuplus/' + config.misc.boxtype.value.replace('vu',''), 0644)
+				chmod(self.MAINDEST + '/root_cfe_auto.jffs2', 0644)
+				chmod(self.MAINDEST + '/kernel_cfe_auto.bin', 0644)
 				if config.misc.boxtype.value == "vuuno" or config.misc.boxtype.value == "vuultimo":
-					chmod(self.MAINDEST + '/vuplus/' + config.misc.boxtype.value.replace('vu','') + '/splash_cfe_auto.bin', 0644)
-			elif self.MAINDEST + '/' + config.misc.boxtype.value:
-				chmod(self.MAINDEST + '/' + config.misc.boxtype.value, 0644)
-				chmod(self.MAINDEST + '/' + config.misc.boxtype.value + '/rootfs.bin', 0644)
-				chmod(self.MAINDEST + '/' + config.misc.boxtype.value + '/kernel.bin', 0644)
-				chmod(self.MAINDEST + '/' + config.misc.boxtype.value + '/splash.bin', 0644)
-				chmod(self.MAINDEST + '/' + config.misc.boxtype.value + '/noforce', 0644)
-				chmod(self.MAINDEST + '/' + config.misc.boxtype.value + '/imageversion', 0644)
-			print '{ImageManager] Stage3: Image created in ' + self.MAINDEST
+					chmod(self.MAINDEST + '/splash_cfe_auto.bin', 0644)
+			elif config.misc.boxtype.value.startswith('et'):
+				chmod(self.MAINDESTROOT + '/' + config.misc.boxtype.value, 0644)
+				chmod(self.MAINDEST + '/rootfs.bin', 0644)
+				chmod(self.MAINDEST + '/kernel.bin', 0644)
+				chmod(self.MAINDEST + '/splash.bin', 0644)
+				chmod(self.MAINDEST + '/noforce', 0644)
+				chmod(self.MAINDEST + '/imageversion', 0644)
+			elif config.misc.boxtype.value.startswith('tm'):
+				chmod(self.MAINDESTROOT + '/update/', 0644)
+				chmod(self.MAINDESTTOOT + '/update/' + config.misc.boxtype.value, 0644)
+				chmod(self.MAINDESTTOOT + '/update/' + config.misc.boxtype.value + '/cfe', 0644)
+				chmod(self.MAINDEST + '/oe_rootfs.bin', 0644)
+				chmod(self.MAINDEST + '/oe_kernel.bin', 0644)
+				chmod(self.MAINDEST + '/splash.bmp', 0644)
+			print '[ImageManager] Stage3: Image created in ' + self.MAINDESTROOT
 			self.Stage3Complete()
 		else:
-			print "{ImageManager] Stage3: Image creation failed - e. g. wrong backup destination or no space left on backup device"
+			print "[ImageManager] Stage3: Image creation failed - e. g. wrong backup destination or no space left on backup device"
 			self.Stage3Complete()
 
 	def Stage3Complete(self):
