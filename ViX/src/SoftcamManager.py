@@ -592,7 +592,7 @@ class SoftcamAutoPoller:
 
 	def softcam_check(self):
 		now = int(time())
-		print "[SoftcamManager] Poll occured at", strftime("%c", localtime(now))
+# 		print "[SoftcamManager] Poll occured at", strftime("%c", localtime(now))
 		if path.exists('/tmp/SoftcamRuningCheck.tmp'):
 			remove('/tmp/SoftcamRuningCheck.tmp')
 
@@ -600,7 +600,7 @@ class SoftcamAutoPoller:
 			Components.Task.job_manager.AddJob(self.createCheckJob())
 
 		if config.softcammanager.softcamtimerenabled.value:
-			print "[SoftcamManager] Timer Check Enabled"
+# 			print "[SoftcamManager] Timer Check Enabled"
 			output = open('/tmp/cam.check.log','a')
 			now = datetime.now()
 			output.write(now.strftime("%Y-%m-%d %H:%M") + ": Timer Check Enabled\n")
@@ -611,7 +611,7 @@ class SoftcamAutoPoller:
 			now = datetime.now()
 			output.write(now.strftime("%Y-%m-%d %H:%M") + ": Timer Check Disabled\n")
 			output.close()
-			print "[SoftcamManager] Timer Check Disabled"
+# 			print "[SoftcamManager] Timer Check Disabled"
 			softcamautopoller.stop()
 
 	def createCheckJob(self):
