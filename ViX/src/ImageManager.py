@@ -1033,7 +1033,7 @@ class ImageBackup(Screen):
 			chmod(self.MAINDEST, 0644)
 			if config.misc.boxtype.value.startswith('vu'):
 				chmod(self.MAINDESTROOT + '/vuplus/', 0644)
-				chmod(self.MAINDESTTOOT + '/vuplus/' + config.misc.boxtype.value.replace('vu',''), 0644)
+				chmod(self.MAINDESTROOT + '/vuplus/' + config.misc.boxtype.value.replace('vu',''), 0644)
 				chmod(self.MAINDEST + '/root_cfe_auto.jffs2', 0644)
 				chmod(self.MAINDEST + '/kernel_cfe_auto.bin', 0644)
 				if config.misc.boxtype.value == "vuuno" or config.misc.boxtype.value == "vuultimo":
@@ -1047,8 +1047,8 @@ class ImageBackup(Screen):
 				chmod(self.MAINDEST + '/imageversion', 0644)
 			elif config.misc.boxtype.value.startswith('tm'):
 				chmod(self.MAINDESTROOT + '/update/', 0644)
-				chmod(self.MAINDESTTOOT + '/update/' + config.misc.boxtype.value, 0644)
-				chmod(self.MAINDESTTOOT + '/update/' + config.misc.boxtype.value + '/cfe', 0644)
+				chmod(self.MAINDESTROOT + '/update/' + config.misc.boxtype.value, 0644)
+				chmod(self.MAINDESTROOT + '/update/' + config.misc.boxtype.value + '/cfe', 0644)
 				chmod(self.MAINDEST + '/oe_rootfs.bin', 0644)
 				chmod(self.MAINDEST + '/oe_kernel.bin', 0644)
 				chmod(self.MAINDEST + '/splash.bmp', 0644)
