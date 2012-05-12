@@ -1126,13 +1126,24 @@ class ImageManagerDownload(Screen):
 			wos_pwd = base64.b64decode('NDJJWnojMEpldUxX')
 			ftp = FTP('world-of-satellite.com')
 			ftp.login(wos_user,wos_pwd)
-			fd = open('/etc/opkg/all-feed.conf', 'r')
-			fileurl = fd.read()
-			fd.close()
-			if fileurl.find('release') != -1:
-				ftp.cwd('/release')
-			else:
-				ftp.cwd('/experimental')
+			if config.misc.boxtype.value == 'vuuno':
+				ftp.cwd('/openvix/openvix-builds/Vu+Uno')
+			elif config.misc.boxtype.value == 'vuultimo':
+				ftp.cwd('/openvix/openvix-builds/Vu+Ultimo')
+			elif config.misc.boxtype.value == 'vusolo':
+				ftp.cwd('/openvix/openvix-builds/Vu+Solo')
+			elif config.misc.boxtype.value == 'vuduo':
+				ftp.cwd('/openvix/openvix-builds/Vu+Duo')
+			elif config.misc.boxtype.value == 'et5x00':
+				ftp.cwd('/openvix/openvix-builds/ET-5x00')
+			elif config.misc.boxtype.value == 'et6x00':
+				ftp.cwd('/openvix/openvix-builds/ET-6x00')
+			elif config.misc.boxtype.value == 'et9x00':
+				ftp.cwd('/openvix/openvix-builds/ET-9x00')
+			elif config.misc.boxtype.value == 'tmtwin':
+				ftp.cwd('/openvix/openvix-builds/TM-Twin')
+			elif config.misc.boxtype.value == 'odin':
+				ftp.cwd('/openvix/openvix-builds/Odin')
 			del self.emlist[:]
 			for fil in ftp.nlst():
 				if not fil.endswith('.') and fil.find(config.misc.boxtype.value) != -1:
@@ -1165,26 +1176,30 @@ class ImageManagerDownload(Screen):
 			if not path.exists(dir):
 				mkdir(dir, 0777)
 			from Screens.Console import Console as RestareConsole
-			mycmd1 = "echo '****************************************************************'"
-			if config.misc.boxtype.value.startswith('vu'):
-				mycmd2 = "echo 'Vu+ " + config.misc.boxtype.value + " " + _("detected") + "'"
-			elif config.misc.boxtype.value.startswith('et'):
-				mycmd2 = "echo 'Xtrend " + config.misc.boxtype.value + " " + _("detected") + "'"
-			mycmd3 = "echo '****************************************************************'"
-			mycmd4 = "echo ' '"
-			mycmd5 = _("echo 'Downloading Image.'")
-			fd = open('/etc/opkg/all-feed.conf', 'r')
-			fileurl = fd.read()
-			fd.close()
-			if fileurl.find('release') != -1:
-				mycmd6 = "wget http://enigma2.world-of-satellite.com/images/release/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
-			else:
-				mycmd6 = "wget http://enigma2.world-of-satellite.com/images/experimental/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
-			mycmd7 = "mv " + self.BackupDirectory + "image.zip " + file
-			mycmd5 = _("echo 'Expanding Image.'")
-			mycmd8 = 'unzip -o ' + file + ' -d ' + dir
-			mycmd9 = 'rm ' + file
-			self.session.open(RestareConsole, title=_('Downloading Image...'), cmdlist=[mycmd1, mycmd2, mycmd3, mycmd4, mycmd5, mycmd6, mycmd7, mycmd8, mycmd9],closeOnSuccess = True)
+			mycmd1 = _("echo 'Downloading Image.'")
+			if config.misc.boxtype.value == 'vuuno':
+				mycmd2 = "wget http://enigma2.world-of-satellite.com//openvix/openvix-builds/Vu+Uno/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
+			elif config.misc.boxtype.value == 'vuultimo':
+				mycmd2 = "/openvix/openvix-builds/Vu+Ultimo/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
+			elif config.misc.boxtype.value == 'vusolo':
+				mycmd2 = "/openvix/openvix-builds/Vu+Solo/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
+			elif config.misc.boxtype.value == 'vuduo':
+				mycmd2 = "/openvix/openvix-builds/Vu+Duo/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
+			elif config.misc.boxtype.value == 'et5x00':
+				mycmd2 = "/openvix/openvix-builds/ET-5x00/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
+			elif config.misc.boxtype.value == 'et6x00':
+				mycmd2 = "/openvix/openvix-builds/ET-6x00/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
+			elif config.misc.boxtype.value == 'et9x00':
+				mycmd2 = "/openvix/openvix-builds/ET-9x00/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
+			elif config.misc.boxtype.value == 'tmtwin':
+				mycmd2 = "/openvix/openvix-builds/TM-Twin/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
+			elif config.misc.boxtype.value == 'odin':
+				mycmd2 = "/openvix/openvix-builds/Odin/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
+			mycmd3 = "mv " + self.BackupDirectory + "image.zip " + file
+			mycmd4 = _("echo 'Expanding Image.'")
+			mycmd5 = 'unzip -o ' + file + ' -d ' + dir
+			mycmd6 = 'rm ' + file
+			self.session.open(RestareConsole, title=_('Downloading Image...'), cmdlist=[mycmd1, mycmd2, mycmd3, mycmd4, mycmd5, mycmd6],closeOnSuccess = True)
 
 	def myclose(self, result, retval, extra_args):
  		remove(self.BackupDirectory + self.selectedimage)
