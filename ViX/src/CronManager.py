@@ -75,16 +75,37 @@ class VIXCronManager(Screen):
 		if not self.selectionChanged in self["list"].onSelectionChanged:
 			self["list"].onSelectionChanged.append(self.selectionChanged)
 		self.service_name = 'busybox-cron'
-		self.onLayoutFinish.append(self.InstallCheck)
+		self.onShow.append(self.InstallCheck)
 
 	def InstallCheck(self):
-		self.Console.ePopen('/usr/bin/opkg list_installed ' + self.service_name, self.InstalldataAvail)
+		self.onShow.remove(self.InstallCheck)
+		self.Console.ePopen('/usr/bin/opkg list_installed ' + self.service_name, self.checkNetworkState)
 
-	def InstalldataAvail(self, str, retval, extra_args):
+	def checkNetworkState(self, str, retval, extra_args):
 		if not str:
-			self.session.openWithCallback(self.InstallPackage, MessageBox, _('Ready to install "%s" ?') % self.service_name)
+			self.feedscheck = self.session.open(MessageBox,_('Please wait whilst feeds state is checked.'), MessageBox.TYPE_INFO, enable_input = False)
+			self.feedscheck.setTitle(_('Checking Feeds'))
+			cmd1 = "wget http://www.world-of-satellite.com/enigma2/feeds/2.4/image-version -T 1 -s"
+			self.CheckConsole = Console()
+			self.CheckConsole.ePopen(cmd1, self.checkNetworkStateFinished)
 		else:
+			self.feedscheck.close()
 			self.updateList()
+
+	def checkNetworkStateFinished(self, result, retval,extra_args=None):
+		if result.find('404 Not Found') != -1:
+			self.session.openWithCallback(self.close, MessageBox, _("Sorry feeds are down for maintenance, please try again later."), type=MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
+			self.feedscheck.close()
+		elif result.find('bad address') != -1:
+			self.session.openWithCallback(self.close, MessageBox, _("Your box is not connected to the internet, please check your network settings and try again."), type=MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
+			self.feedscheck.close()
+		else:
+			self.feedscheck.close()
+			self.InstalldataAvail()
+
+	def InstalldataAvail(self):
+		restartbox = self.session.openWithCallback(self.InstallPackage, MessageBox, _('Ready to install ?'))
+		restartbox.setTitle(self.service_name)
 
 	def InstallPackage(self, val):
 		if val:
@@ -93,13 +114,11 @@ class VIXCronManager(Screen):
 			self.close()
 
 	def doInstall(self, callback, pkgname):
-		self["actions"].setEnabled(False)
-		self.message = self.session.open(MessageBox,_("please wait..."), MessageBox.TYPE_INFO)
-		self.message.setTitle(_("Now installing service"))
-		self.Console.ePopen('/usr/bin/opkg install ' + pkgname + ' sync', callback)
+		self.message = self.session.open(MessageBox,_("please wait..."), MessageBox.TYPE_INFO, enable_input = False)
+		self.message.setTitle(_('Installing Service'))
+		self.Console.ePopen('/usr/bin/opkg install ' + pkgname, callback)
 
 	def installComplete(self,result = None, retval = None, extra_args = None):
-		self["actions"].setEnabled(True)
 		self.message.close()
 		self.updateList()
 
@@ -111,8 +130,7 @@ class VIXCronManager(Screen):
 
 	def RemovedataAvail(self, str, retval, extra_args):
 		if str:
-			self.message1 = self.session.openWithCallback(self.RemovePackage, MessageBox, _('Service is not currently in use do you want to remove the service ?'))
-			self.message1.setTitle(_('Ready to remove "%s" ?') % self.service_name)
+			self.session.openWithCallback(self.RemovePackage, MessageBox, _('Ready to remove "%s" ?') % self.service_name)
 		else:
 			self.close()
 
@@ -121,13 +139,11 @@ class VIXCronManager(Screen):
 			self.doRemove(self.removeComplete, self.service_name)
 
 	def doRemove(self, callback, pkgname):
-		self["actions"].setEnabled(False)
-		self.message = self.session.open(MessageBox,_("please wait..."), MessageBox.TYPE_INFO)
-		self.message.setTitle(_("Now removing service"))
-		self.Console.ePopen('/usr/bin/opkg remove ' + pkgname + ' --force-remove --force-depends --autoremove sync', callback)
+		self.message = self.session.open(MessageBox,_("please wait..."), MessageBox.TYPE_INFO, enable_input = False)
+		self.message.setTitle(_('Removing Service'))
+		self.Console.ePopen('/usr/bin/opkg remove ' + pkgname + ' --force-remove --autoremove', callback)
 
 	def removeComplete(self,result = None, retval = None, extra_args = None):
-		self["actions"].setEnabled(True)
 		self.message.close()
 		self.close()
 
