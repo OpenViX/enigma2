@@ -75,10 +75,9 @@ class VIXCronManager(Screen):
 		if not self.selectionChanged in self["list"].onSelectionChanged:
 			self["list"].onSelectionChanged.append(self.selectionChanged)
 		self.service_name = 'busybox-cron'
-		self.onShow.append(self.InstallCheck)
+		self.InstallCheck()
 
 	def InstallCheck(self):
-		self.onShow.remove(self.InstallCheck)
 		self.Console.ePopen('/usr/bin/opkg list_installed ' + self.service_name, self.checkNetworkState)
 
 	def checkNetworkState(self, str, retval, extra_args):
@@ -89,28 +88,21 @@ class VIXCronManager(Screen):
 			self.CheckConsole = Console()
 			self.CheckConsole.ePopen(cmd1, self.checkNetworkStateFinished)
 		else:
-			self.feedscheck.close()
 			self.updateList()
 
 	def checkNetworkStateFinished(self, result, retval,extra_args=None):
 		if result.find('404 Not Found') != -1:
 			self.session.openWithCallback(self.close, MessageBox, _("Sorry feeds are down for maintenance, please try again later."), type=MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
-			self.feedscheck.close()
 		elif result.find('bad address') != -1:
 			self.session.openWithCallback(self.close, MessageBox, _("Your box is not connected to the internet, please check your network settings and try again."), type=MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
-			self.feedscheck.close()
 		else:
-			self.feedscheck.close()
-			self.InstalldataAvail()
-
-	def InstalldataAvail(self):
-		restartbox = self.session.openWithCallback(self.InstallPackage, MessageBox, _('Ready to install ?'))
-		restartbox.setTitle(self.service_name)
+			self.session.openWithCallback(self.InstallPackage, MessageBox, _('Ready to install "%s" ?') % self.service_name, MessageBox.TYPE_YESNO)
 
 	def InstallPackage(self, val):
 		if val:
 			self.doInstall(self.installComplete, self.service_name)
 		else:
+			self.feedscheck.close()
 			self.close()
 
 	def doInstall(self, callback, pkgname):
@@ -120,6 +112,7 @@ class VIXCronManager(Screen):
 
 	def installComplete(self,result = None, retval = None, extra_args = None):
 		self.message.close()
+		self.feedscheck.close()
 		self.updateList()
 
 	def UninstallCheck(self):
