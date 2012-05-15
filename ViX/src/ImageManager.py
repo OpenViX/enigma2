@@ -286,7 +286,7 @@ class VIXImageManager(Screen):
 			self.keyBackup()
 
 	def keyBackup(self):
-		if config.misc.boxtype.value.startswith('vu') or config.misc.boxtype.value.startswith('et') or config.misc.boxtype.value.startswith('tm'):
+		if config.misc.boxtype.value.startswith('vu') or config.misc.boxtype.value.startswith('et') or config.misc.boxtype.value.startswith('tm') or config.misc.boxtype.value.startswith('odin'):
 			message = _("Are you ready to create a backup image ?")
 			ybox = self.session.openWithCallback(self.doBackup, MessageBox, message, MessageBox.TYPE_YESNO)
 			ybox.setTitle(_("Backup Confirmation"))
@@ -942,7 +942,7 @@ class ImageBackup(Screen):
 				mkdir(self.MAINDESTROOT + '/vuplus/' + config.misc.boxtype.value.replace('vu',''), 0644)
 				self.MAINDEST = self.MAINDESTROOT + '/vuplus/' + config.misc.boxtype.value.replace('vu','')
 				self.commands.append('mount -t jffs2 /dev/mtdblock0 ' + self.TMPDIR + '/root')
-			elif config.misc.boxtype.value.startswith('et'):
+			elif config.misc.boxtype.value.startswith('et') or config.misc.boxtype.value.startswith('odin'):
 				mkdir(self.MAINDESTROOT + '/' + config.misc.boxtype.value, 0644)
 				self.MAINDEST = self.MAINDESTROOT + '/' + config.misc.boxtype.value
 				self.commands.append('mount -t jffs2 /dev/mtdblock2 ' + self.TMPDIR + '/root')
@@ -961,7 +961,7 @@ class ImageBackup(Screen):
 				mkdir(self.MAINDESTROOT + '/vuplus', 0644)
 				mkdir(self.MAINDESTROOT + '/vuplus/' + config.misc.boxtype.value.replace('vu',''), 0644)
 				self.MAINDEST = self.MAINDESTROOT + '/vuplus/' + config.misc.boxtype.value.replace('vu','')
-			elif config.misc.boxtype.value.startswith('et'):
+			elif config.misc.boxtype.value.startswith('et') or config.misc.boxtype.value.startswith('odin'):
 				MKUBIFS_ARGS="-m 2048 -e 126976 -c 4096"
 				mkdir(self.MAINDESTROOT + '/' + config.misc.boxtype.value, 0644)
 				self.MAINDEST = self.MAINDESTROOT + '/' + config.misc.boxtype.value
@@ -1007,7 +1007,7 @@ class ImageBackup(Screen):
 			move(self.WORKDIR + '/vmlinux.gz', self.MAINDEST + '/kernel_cfe_auto.bin')
 			if config.misc.boxtype.value == "vuuno" or config.misc.boxtype.value == "vuultimo":
 				copy('/usr/lib/enigma2/python/Plugins/SystemPlugins/ViX/splash_cfe_auto.bin', self.MAINDEST + '/splash_cfe_auto.bin')
-		elif config.misc.boxtype.value.startswith('et'):
+		elif config.misc.boxtype.value.startswith('et') or config.misc.boxtype.value.startswith('odin'):
 			move(self.WORKDIR + '/root.' + self.ROOTFSTYPE, self.MAINDEST + '/rootfs.bin')
 			move(self.WORKDIR + '/vmlinux.gz', self.MAINDEST + '/kernel.bin')
 			copy('/usr/lib/enigma2/python/Plugins/SystemPlugins/ViX/splash.bin', self.MAINDEST + '/splash.bin')
@@ -1038,7 +1038,7 @@ class ImageBackup(Screen):
 				chmod(self.MAINDEST + '/kernel_cfe_auto.bin', 0644)
 				if config.misc.boxtype.value == "vuuno" or config.misc.boxtype.value == "vuultimo":
 					chmod(self.MAINDEST + '/splash_cfe_auto.bin', 0644)
-			elif config.misc.boxtype.value.startswith('et'):
+			elif config.misc.boxtype.value.startswith('et') or config.misc.boxtype.value.startswith('odin'):
 				chmod(self.MAINDESTROOT + '/' + config.misc.boxtype.value, 0644)
 				chmod(self.MAINDEST + '/rootfs.bin', 0644)
 				chmod(self.MAINDEST + '/kernel.bin', 0644)
