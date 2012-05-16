@@ -1,3 +1,5 @@
+SUBDIRS = data
+
 installdir = $(libdir)/enigma2/python/Plugins/SystemPlugins/ViX
 install_PYTHON = *.py
 

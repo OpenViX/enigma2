@@ -103,7 +103,8 @@ class VIXSoftcamManager(Screen):
 		return PluginBrowserSummary
 
 	def createSetup(self):
-		self.session.open(VIXSoftcamMenu)
+		from Screens.Setup import Setup
+		self.session.open(Setup, 'softcammanager', 'SystemPlugins/ViX')
 
 	def selectionChanged(self):
 		cams = listdir('/usr/softcams')
@@ -482,80 +483,6 @@ class VIXSoftcamLog(Screen):
 		}, -2)
 
 	def cancel(self):
-		self.close()
-
-class VIXSoftcamMenu(ConfigListScreen, Screen):
-	skin = """
-		<screen name="VIXSoftcamMenu" position="center,center" size="500,285" title="Softcam Menu">
-			<ePixmap pixmap="skin_default/buttons/red.png" position="0,0" size="140,40" alphatest="on" />
-			<ePixmap pixmap="skin_default/buttons/green.png" position="140,0" size="140,40" alphatest="on" />
-			<widget name="key_red" position="0,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" />
-			<widget name="key_green" position="140,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1" />
-			<widget name="config" position="10,45" size="480,250" scrollbarMode="showOnDemand" />
-		</screen>"""
-
-	def __init__(self, session):
-		Screen.__init__(self, session)
-		self.session = session
-		self.skin = VIXSoftcamMenu.skin
-		Screen.setTitle(self, _("Softcam Setup"))
-		self.onChangedEntry = [ ]
-
-		self.list = []
-		ConfigListScreen.__init__(self, self.list, session = self.session, on_change = self.changedEntry)
-		self.createSetup()
-
-		self["actions"] = ActionMap(["SetupActions", "MenuActions"],
-		{
-		  "cancel": self.keyCancel,
-		  "save": self.keySaveNew,
-		  "menu": self.closeRecursive,
-		}, -2)
-		self["key_red"] = Button(_("Cancel"))
-		self["key_green"] = Button(_("OK"))
-
-	def createSetup(self):
-		self.editListEntry = None
-		self.list = []
-		self.list.append(getConfigListEntry(_("Enable Auto Timer Check ?"), config.softcammanager.softcamtimerenabled))
-		if config.softcammanager.softcamtimerenabled.value:
-			self.list.append(getConfigListEntry(_("Check every (mins)"), config.softcammanager.softcamtimer))
-		self["config"].list = self.list
-		self["config"].setList(self.list)
-
-	def keyLeft(self):
-		ConfigListScreen.keyLeft(self)
-		self.createSetup()
-
-	def keyRight(self):
-		ConfigListScreen.keyRight(self)
-		self.createSetup()
-
-	# for summary:
-	def changedEntry(self):
-		for x in self.onChangedEntry:
-			x()
-
-	def getCurrentEntry(self):
-		return self["config"].getCurrent()[0]
-
-	def getCurrentValue(self):
-		return str(self["config"].getCurrent()[1].getText())
-
-	def keySaveNew(self):
-		for x in self["config"].list:
-			x[1].save()
-		if config.softcammanager.softcamtimerenabled.value:
-			print "[SoftcamManager] Timer Check Enabled"
-			softcamautopoller.start()
-		else:
-			print "[SoftcamManager] Timer Check Disabled"
-			softcamautopoller.stop()
-		self.close()
-
-	def keyCancel(self):
-		for x in self["config"].list:
-			x[1].cancel()
 		self.close()
 
 class SoftcamAutoPoller:

@@ -1,0 +1,6 @@
+<setupxml>
+	<setup key="softcammanager" title="Softcam Setup">
+		<item level="2" text="Enable frozen check ?" summary="Allow the sofcamto be checked if it stopped working, and restarted automatically if needed.">config.softcammanager.softcamtimerenabled</item>
+		<item level="2" text="Frozen check interval" requires="config.softcammanager.softcamtimerenabled" summary="Set the invterval to be checked in mins.">config.softcammanager.softcamtimer</item>
+	</setup>
+</setupxml>
