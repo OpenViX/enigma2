@@ -104,7 +104,7 @@ class VIXSoftcamManager(Screen):
 
 	def createSetup(self):
 		from Screens.Setup import Setup
-		self.session.open(Setup, 'softcammanager', 'SystemPlugins/ViX')
+		self.session.open(Setup, 'vixsoftcammanager', 'SystemPlugins/ViX')
 
 	def selectionChanged(self):
 		cams = listdir('/usr/softcams')
