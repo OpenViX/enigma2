@@ -929,7 +929,10 @@ class ImageBackup(Screen):
 		mkdir(self.TMPDIR, 0644)
 		mkdir(self.TMPDIR + '/root', 0644)
 		MKFS='mkfs.' + self.ROOTFSTYPE
-		JFFS2OPTIONS="--eraseblock=0x20000 -n -l"
+		if config.misc.boxtype.value.startswith('tm'):
+			JFFS2OPTIONS=" --disable-compressor=lzo --eraseblock=0x20000 -p -n -l --pagesize=0x800"
+		else:
+			JFFS2OPTIONS=" --disable-compressor=lzo --eraseblock=0x20000 -n -l"
 		UBINIZE='ubinize'
 		UBINIZE_ARGS="-m 2048 -p 128KiB"
 		print '[ImageManager] Stage1: Creating backup Folders.'
@@ -951,12 +954,11 @@ class ImageBackup(Screen):
 				mkdir(self.MAINDESTROOT + '/update/' + config.misc.boxtype.value, 0644)
 				mkdir(self.MAINDESTROOT + '/update/' + config.misc.boxtype.value + '/cfe', 0644)
 				self.MAINDEST = self.MAINDESTROOT + '/update/' + config.misc.boxtype.value + '/cfe'
-				self.commands.append('mount -t jffs2 /dev/mtdblock0 ' + self.TMPDIR + '/root')
-			self.commands.append(MKFS + ' --root=' + self.TMPDIR + '/root --faketime --output=' + self.WORKDIR + '/root.jffs2 ' + JFFS2OPTIONS)
+				self.commands.append('mount -t jffs2 /dev/mtdblock1 ' + self.TMPDIR + '/root')
+			self.commands.append(MKFS + ' --root=' + self.TMPDIR + '/root --faketime --output=' + self.WORKDIR + '/root.jffs2' + JFFS2OPTIONS)
 		elif self.ROOTFSTYPE == 'ubifs':
 			print '[ImageManager] Stage1: UBIFS Detected.'
 			if config.misc.boxtype.value.startswith('vu'):
-				print '[ImageManager] Stage1: Vu plus STB_BOX detected.'
 				MKUBIFS_ARGS="-m 2048 -e 126976 -c 4096 -F"
 				mkdir(self.MAINDESTROOT + '/vuplus', 0644)
 				mkdir(self.MAINDESTROOT + '/vuplus/' + config.misc.boxtype.value.replace('vu',''), 0644)
@@ -987,7 +989,10 @@ class ImageBackup(Screen):
 
 	def doBackup2(self):
 		print '[ImageManager] Stage2: Making Kernel Image.'
-		self.command = 'nanddump /dev/mtd1 -o -b > ' + self.WORKDIR + '/vmlinux.gz'
+		if config.misc.boxtype.value.startswith('tm'):
+			self.command = 'nanddump /dev/mtd2 -o -b -f ' + self.WORKDIR + '/vmlinux.gz'
+		else:
+			self.command = 'nanddump /dev/mtd1 -o -b -f ' + self.WORKDIR + '/vmlinux.gz'
 		self.BackupConsole.ePopen(self.command, self.Stage2Complete)
 
 	def Stage2Complete(self, result, retval, extra_args = None):
