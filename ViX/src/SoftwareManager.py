@@ -1007,7 +1007,7 @@ class UpdatePlugin(Screen):
 		if result.find('404 Not Found') != -1:
 			self.session.openWithCallback(self.close, MessageBox, _("Sorry feeds are down for maintenance, please try again later."), type=MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 		elif result.find('bad address') != -1:
-			self.session.openWithCallback(self.close, MessageBox, _("Your box is not connected to the internet, please check your network settings and try again."), type=MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
+			self.session.openWithCallback(self.close, MessageBox, _("Your STB_BOX is not connected to the internet, please check your network settings and try again."), type=MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 		else:
 			self.startCheck()
 
@@ -1117,7 +1117,7 @@ class UpdatePlugin(Screen):
 			else:
 				self.activityTimer.stop()
 				self.activityslider.setValue(0)
-				error = _("your STB_BOX might be unusable now. Please consult the manual for further assistance before rebooting your STB_BOX.")
+				error = _("Your STB_BOX might be unusable now. Please consult the manual for further assistance before rebooting your STB_BOX.")
 				if self.packages == 0:
 					error = _("No packages were upgraded yet. So you can check your network and try again.")
 				if self.updating:
