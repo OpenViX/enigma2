@@ -443,7 +443,7 @@ class VIXDevicePanelConf(Screen, ConfigListScreen):
 			self.type = x[3]
 			self.Console.ePopen('umount ' + self.device)
 			self.Console.ePopen("/sbin/blkid | grep " + self.device, self.add_fstab, [self.device, self.mountp] )
-		message = _("Devices changes need a system restart to take effects.\nRestart your STB_BOX now?")
+		message = _("Changes need a system restart to take effect.\nRestart your STB_BOX now?")
 		ybox = self.session.openWithCallback(self.restartBox, MessageBox, message, MessageBox.TYPE_YESNO)
 		ybox.setTitle(_("Restart STB_BOX."))
 
