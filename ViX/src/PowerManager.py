@@ -32,21 +32,6 @@ config.vixsettings.powermanager_rebootretrycount = NoSave(ConfigNumber(default =
 
 autoPowerManagerTimer = None
 
-MONTHS = (_("Jan"),
-          _("Feb"),
-          _("Mar"),
-          _("Apr"),
-          _("May"),
-          _("Jun"),
-          _("Jul"),
-          _("Aug"),
-          _("Sep"),
-          _("Oct"),
-          _("Nov"),
-          _("Dec"))
-
-dayOfWeek = (_("Monday"), _("Tuesday"), _("Wednesday"), _("Thursday"), _("Friday"), _("Saturday"), _("Sunday"))
-
 def PowerManagerautostart(reason, session=None, **kwargs):
 	"called with reason=1 to during shutdown, with reason=0 at startup?"
 	global autoPowerManagerTimer
@@ -149,28 +134,28 @@ class VIXPowerManager(ConfigListScreen, Screen):
 		self["config"].setList(self.list)
 		if StandbyTime > 0:
 			t = localtime(StandbyTime)
-			standbytext = _("Next Standby: \n") + dayOfWeek[t[6]] + " "  + str(t[2]) +  ", " + MONTHS[t[1]-1] + "  %02d:%02d" % (t.tm_hour, t.tm_min)
+			standbytext = _("Next Standby: \n") + strftime(_("%a %e %b  %-H:%M"), t)
 		else:
 			standbytext = _("Next Standby: \n")
 		self["standbystatus"].setText(str(standbytext))
 
 		if DeepStandbyTime > 0:
 			t = localtime(DeepStandbyTime)
-			deepstandbytext = _("Next Deep Standby: \n") + dayOfWeek[t[6]] + " "  + str(t[2]) +  ", " + MONTHS[t[1]-1] + "  %02d:%02d" % (t.tm_hour, t.tm_min)
+			deepstandbytext = _("Next Deep Standby: \n") + strftime(_("%a %e %b  %-H:%M"), t)
 		else:
 			deepstandbytext = _("Next Deep Standby: \n")
 		self["deepstandbystatus"].setText(str(deepstandbytext))
 
 		if GuiRestartTime > 0:
 			t = localtime(GuiRestartTime)
-			guirestarttext = _("Next GUI Restart: \n") + dayOfWeek[t[6]] + " "  + str(t[2]) +  ", " + MONTHS[t[1]-1] + "  %02d:%02d" % (t.tm_hour, t.tm_min)
+			guirestarttext = _("Next GUI Restart: \n") + strftime(_("%a %e %b  %-H:%M"), t)
 		else:
 			guirestarttext = _("Next GUI Restart: \n")
 		self["guirestartstatus"].setText(str(guirestarttext))
 
 		if RebootTime > 0:
 			t = localtime(RebootTime)
-			reboottext = _("Next Reboot: \n") + dayOfWeek[t[6]] + " "  + str(t[2]) +  ", " + MONTHS[t[1]-1] + "  %02d:%02d" % (t.tm_hour, t.tm_min)
+			reboottext = _("Next Reboot: \n") + strftime(_("%a %e %b  %-H:%M"), t)
 		else:
 			reboottext = _("Next Reboot: \n")
 		self["rebootstatus"].setText(str(reboottext))
