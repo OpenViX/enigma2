@@ -954,7 +954,7 @@ class ImageBackup(Screen):
 				mkdir(self.MAINDESTROOT + '/update/' + config.misc.boxtype.value, 0644)
 				mkdir(self.MAINDESTROOT + '/update/' + config.misc.boxtype.value + '/cfe', 0644)
 				self.MAINDEST = self.MAINDESTROOT + '/update/' + config.misc.boxtype.value + '/cfe'
-				self.commands.append('mount -t jffs2 /dev/mtdblock1 ' + self.TMPDIR + '/root')
+				self.commands.append('mount -t jffs2 /dev/mtdblock4 ' + self.TMPDIR + '/root')
 			self.commands.append(MKFS + ' --root=' + self.TMPDIR + '/root --faketime --output=' + self.WORKDIR + '/root.jffs2' + JFFS2OPTIONS)
 		elif self.ROOTFSTYPE == 'ubifs':
 			print '[ImageManager] Stage1: UBIFS Detected.'
@@ -990,7 +990,7 @@ class ImageBackup(Screen):
 	def doBackup2(self):
 		print '[ImageManager] Stage2: Making Kernel Image.'
 		if config.misc.boxtype.value.startswith('tm'):
-			self.command = 'nanddump /dev/mtd2 -o -b -f ' + self.WORKDIR + '/vmlinux.gz'
+			self.command = 'nanddump /dev/mtd0 -o -b -f ' + self.WORKDIR + '/vmlinux.gz'
 		else:
 			self.command = 'nanddump /dev/mtd1 -o -b -f ' + self.WORKDIR + '/vmlinux.gz'
 		self.BackupConsole.ePopen(self.command, self.Stage2Complete)
