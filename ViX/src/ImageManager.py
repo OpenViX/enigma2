@@ -1132,23 +1132,23 @@ class ImageManagerDownload(Screen):
 			ftp = FTP('world-of-satellite.com')
 			ftp.login(wos_user,wos_pwd)
 			if config.misc.boxtype.value == 'vuuno':
-				ftp.cwd('Vu+Uno')
+				ftp.cwd('openvix-builds/Vu+Uno')
 			elif config.misc.boxtype.value == 'vuultimo':
-				ftp.cwd('Vu+Ultimo')
+				ftp.cwd('openvix-builds/Vu+Ultimo')
 			elif config.misc.boxtype.value == 'vusolo':
-				ftp.cwd('Vu+Solo')
+				ftp.cwd('openvix-builds/Vu+Solo')
 			elif config.misc.boxtype.value == 'vuduo':
-				ftp.cwd('Vu+Duo')
+				ftp.cwd('openvix-builds/Vu+Duo')
 			elif config.misc.boxtype.value == 'et5x00':
-				ftp.cwd('ET-5x00')
+				ftp.cwd('openvix-builds/ET-5x00')
 			elif config.misc.boxtype.value == 'et6x00':
-				ftp.cwd('ET-6x00')
+				ftp.cwd('openvix-builds/ET-6x00')
 			elif config.misc.boxtype.value == 'et9x00':
-				ftp.cwd('ET-9x00')
+				ftp.cwd('openvix-builds/ET-9x00')
 			elif config.misc.boxtype.value == 'tmtwin':
-				ftp.cwd('TM-Twin')
+				ftp.cwd('openvix-builds/TM-Twin')
 			elif config.misc.boxtype.value == 'odin':
-				ftp.cwd('Odin')
+				ftp.cwd('openvix-builds/Odin')
 			del self.emlist[:]
 			for fil in ftp.nlst():
 				if not fil.endswith('.') and fil.find(config.misc.boxtype.value) != -1:
