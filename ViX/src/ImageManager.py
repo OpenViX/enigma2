@@ -915,19 +915,9 @@ class ImageBackup(Screen):
 		self.BackupConsole = Console()
 		print '[ImageManager] Stage1: Creating tmp folders.',self.BackupDirectory
 		self.BackupDate = strftime('%Y%m%d_%H%M%S', localtime())
-		self.WORKDIR=self.BackupDirectory + config.imagemanager.folderprefix.value + '-bi'
-		self.TMPDIR='/var/volatile/tmp/' + config.imagemanager.folderprefix.value + '-bi'
+		self.WORKDIR=self.BackupDirectory + config.imagemanager.folderprefix.value
+		self.TMPDIR=self.BackupDirectory + config.imagemanager.folderprefix.value + '-mount'
 		self.MAINDESTROOT=self.BackupDirectory + config.imagemanager.folderprefix.value + '-' + self.BackupDate
-		if path.exists(self.WORKDIR):
-			rmtree(self.WORKDIR)
-		mkdir(self.WORKDIR, 0644)
-		mkdir(self.WORKDIR + '/root', 0644)
-		if path.exists(self.TMPDIR + '/root'):
-			system('umount ' + self.TMPDIR + '/root')
-		if path.exists(self.TMPDIR):
-			rmtree(self.TMPDIR)
-		mkdir(self.TMPDIR, 0644)
-		mkdir(self.TMPDIR + '/root', 0644)
 		MKFS='mkfs.' + self.ROOTFSTYPE
 		if config.misc.boxtype.value.startswith('tm'):
 			JFFS2OPTIONS=" --disable-compressor=lzo --eraseblock=0x20000 -p -n -l --pagesize=0x800"
@@ -936,10 +926,20 @@ class ImageBackup(Screen):
 		UBINIZE='ubinize'
 		UBINIZE_ARGS="-m 2048 -p 128KiB"
 		print '[ImageManager] Stage1: Creating backup Folders.'
+		if path.exists(self.WORKDIR):
+			rmtree(self.WORKDIR)
+		mkdir(self.WORKDIR, 0644)
+		if path.exists(self.TMPDIR + '/root'):
+			system('umount ' + self.TMPDIR + '/root')
+		if path.exists(self.TMPDIR):
+			rmtree(self.TMPDIR)
+		mkdir(self.TMPDIR, 0644)
+		mkdir(self.TMPDIR + '/root', 0644)
 		mkdir(self.MAINDESTROOT, 0644)
 		self.commands = []
 		print '[ImageManager] Stage1: Making Root Image.'
 		if self.ROOTFSTYPE == 'jffs2':
+			print '[ImageManager] Stage1: JFFS2 Detected.'
 			if config.misc.boxtype.value.startswith('vu'):
 				mkdir(self.MAINDESTROOT + '/vuplus', 0644)
 				mkdir(self.MAINDESTROOT + '/vuplus/' + config.misc.boxtype.value.replace('vu',''), 0644)
@@ -991,8 +991,10 @@ class ImageBackup(Screen):
 		print '[ImageManager] Stage2: Making Kernel Image.'
 		if config.misc.boxtype.value.startswith('tm'):
 			self.command = 'nanddump /dev/mtd0 -o -b -f ' + self.WORKDIR + '/vmlinux.gz'
-		else:
+		elif config.misc.boxtype.value.startswith('et') or config.misc.boxtype.value.startswith('vu'):
 			self.command = 'nanddump /dev/mtd1 -o -b -f ' + self.WORKDIR + '/vmlinux.gz'
+		elif config.misc.boxtype.value.startswith('odin'):
+			self.command = 'nanddump /dev/mtd2 -o -b -f ' + self.WORKDIR + '/vmlinux.gz'
 		self.BackupConsole.ePopen(self.command, self.Stage2Complete)
 
 	def Stage2Complete(self, result, retval, extra_args = None):
