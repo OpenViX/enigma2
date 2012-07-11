@@ -915,7 +915,7 @@ class ImageBackup(Screen):
 		self.BackupConsole = Console()
 		print '[ImageManager] Stage1: Creating tmp folders.',self.BackupDirectory
 		self.BackupDate = strftime('%Y%m%d_%H%M%S', localtime())
-		self.WORKDIR=self.BackupDirectory + config.imagemanager.folderprefix.value
+		self.WORKDIR=self.BackupDirectory + config.imagemanager.folderprefix.value + '-temp'
 		self.TMPDIR=self.BackupDirectory + config.imagemanager.folderprefix.value + '-mount'
 		self.MAINDESTROOT=self.BackupDirectory + config.imagemanager.folderprefix.value + '-' + self.BackupDate
 		MKFS='mkfs.' + self.ROOTFSTYPE
@@ -990,11 +990,11 @@ class ImageBackup(Screen):
 	def doBackup2(self):
 		print '[ImageManager] Stage2: Making Kernel Image.'
 		if config.misc.boxtype.value.startswith('tm'):
-			self.command = 'nanddump /dev/mtd0 -o -b -f ' + self.WORKDIR + '/vmlinux.gz'
+			self.command = 'nanddump /dev/mtd0 -o -f ' + self.WORKDIR + '/vmlinux.gz'
 		elif config.misc.boxtype.value.startswith('et') or config.misc.boxtype.value.startswith('vu'):
-			self.command = 'nanddump /dev/mtd1 -o -b -f ' + self.WORKDIR + '/vmlinux.gz'
+			self.command = 'nanddump /dev/mtd1 -o -f ' + self.WORKDIR + '/vmlinux.gz'
 		elif config.misc.boxtype.value.startswith('odin'):
-			self.command = 'nanddump /dev/mtd2 -o -b -f ' + self.WORKDIR + '/vmlinux.gz'
+			self.command = 'nanddump /dev/mtd2 -o -f ' + self.WORKDIR + '/vmlinux.gz'
 		self.BackupConsole.ePopen(self.command, self.Stage2Complete)
 
 	def Stage2Complete(self, result, retval, extra_args = None):
