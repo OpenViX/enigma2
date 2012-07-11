@@ -934,7 +934,7 @@ class SoftwareUpdateChanges(Screen):
 
 	def getlog(self):
 		import urllib
-		sourcefile='http://enigma2.world-of-satellite.com/feeds/2.4/releasenotes'
+		sourcefile='http://enigma2.world-of-satellite.com/feeds/' + about.getImageVersionString() + '/releasenotes'
 		sourcefile,headers = urllib.urlretrieve(sourcefile)
 		rename(sourcefile,'/tmp/online-releasenotes')
 		fd = open('/tmp/online-releasenotes', 'r')
