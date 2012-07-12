@@ -286,7 +286,7 @@ class VIXImageManager(Screen):
 			self.keyBackup()
 
 	def keyBackup(self):
-		if config.misc.boxtype.value.startswith('vu') or config.misc.boxtype.value.startswith('et') or config.misc.boxtype.value.startswith('tm') or config.misc.boxtype.value.startswith('odin'):
+		if config.misc.boxtype.value.startswith('vu') or config.misc.boxtype.value.startswith('et') or config.misc.boxtype.value.startswith('tm') or config.misc.boxtype.value.startswith('odinm9'):
 			message = _("Are you ready to create a backup image ?")
 			ybox = self.session.openWithCallback(self.doBackup, MessageBox, message, MessageBox.TYPE_YESNO)
 			ybox.setTitle(_("Backup Confirmation"))
@@ -945,7 +945,7 @@ class ImageBackup(Screen):
 				mkdir(self.MAINDESTROOT + '/vuplus/' + config.misc.boxtype.value.replace('vu',''), 0644)
 				self.MAINDEST = self.MAINDESTROOT + '/vuplus/' + config.misc.boxtype.value.replace('vu','')
 				self.commands.append('mount -t jffs2 /dev/mtdblock0 ' + self.TMPDIR + '/root')
-			elif config.misc.boxtype.value.startswith('et') or config.misc.boxtype.value.startswith('odin'):
+			elif config.misc.boxtype.value.startswith('et') or config.misc.boxtype.value.startswith('odinm9'):
 				mkdir(self.MAINDESTROOT + '/' + config.misc.boxtype.value, 0644)
 				self.MAINDEST = self.MAINDESTROOT + '/' + config.misc.boxtype.value
 				self.commands.append('mount -t jffs2 /dev/mtdblock2 ' + self.TMPDIR + '/root')
@@ -963,7 +963,7 @@ class ImageBackup(Screen):
 				mkdir(self.MAINDESTROOT + '/vuplus', 0644)
 				mkdir(self.MAINDESTROOT + '/vuplus/' + config.misc.boxtype.value.replace('vu',''), 0644)
 				self.MAINDEST = self.MAINDESTROOT + '/vuplus/' + config.misc.boxtype.value.replace('vu','')
-			elif config.misc.boxtype.value.startswith('et') or config.misc.boxtype.value.startswith('odin'):
+			elif config.misc.boxtype.value.startswith('et') or config.misc.boxtype.value.startswith('odinm9'):
 				MKUBIFS_ARGS="-m 2048 -e 126976 -c 4096"
 				mkdir(self.MAINDESTROOT + '/' + config.misc.boxtype.value, 0644)
 				self.MAINDEST = self.MAINDESTROOT + '/' + config.misc.boxtype.value
@@ -990,10 +990,10 @@ class ImageBackup(Screen):
 	def doBackup2(self):
 		print '[ImageManager] Stage2: Making Kernel Image.'
 		if config.misc.boxtype.value.startswith('tm'):
-			self.command = 'nanddump /dev/mtd0 -o -f ' + self.WORKDIR + '/vmlinux.gz'
+			self.command = 'cat /dev/mtd0 > ' + self.WORKDIR + '/vmlinux.gz'
 		elif config.misc.boxtype.value.startswith('et') or config.misc.boxtype.value.startswith('vu'):
 			self.command = 'nanddump /dev/mtd1 -o -f ' + self.WORKDIR + '/vmlinux.gz'
-		elif config.misc.boxtype.value.startswith('odin'):
+		elif config.misc.boxtype.value.startswith('odinm9'):
 			self.command = 'nanddump /dev/mtd2 -o -f ' + self.WORKDIR + '/vmlinux.gz'
 		self.BackupConsole.ePopen(self.command, self.Stage2Complete)
 
@@ -1014,7 +1014,7 @@ class ImageBackup(Screen):
 			move(self.WORKDIR + '/vmlinux.gz', self.MAINDEST + '/kernel_cfe_auto.bin')
 			if config.misc.boxtype.value == "vuuno" or config.misc.boxtype.value == "vuultimo":
 				copy('/usr/lib/enigma2/python/Plugins/SystemPlugins/ViX/splash_cfe_auto.bin', self.MAINDEST + '/splash_cfe_auto.bin')
-		elif config.misc.boxtype.value.startswith('et') or config.misc.boxtype.value.startswith('odin'):
+		elif config.misc.boxtype.value.startswith('et') or config.misc.boxtype.value.startswith('odinm9'):
 			move(self.WORKDIR + '/root.' + self.ROOTFSTYPE, self.MAINDEST + '/rootfs.bin')
 			move(self.WORKDIR + '/vmlinux.gz', self.MAINDEST + '/kernel.bin')
 			copy('/usr/lib/enigma2/python/Plugins/SystemPlugins/ViX/splash.bin', self.MAINDEST + '/splash.bin')
@@ -1045,7 +1045,7 @@ class ImageBackup(Screen):
 				chmod(self.MAINDEST + '/kernel_cfe_auto.bin', 0644)
 				if config.misc.boxtype.value == "vuuno" or config.misc.boxtype.value == "vuultimo":
 					chmod(self.MAINDEST + '/splash_cfe_auto.bin', 0644)
-			elif config.misc.boxtype.value.startswith('et') or config.misc.boxtype.value.startswith('odin'):
+			elif config.misc.boxtype.value.startswith('et') or config.misc.boxtype.value.startswith('odinm9'):
 				chmod(self.MAINDESTROOT + '/' + config.misc.boxtype.value, 0644)
 				chmod(self.MAINDEST + '/rootfs.bin', 0644)
 				chmod(self.MAINDEST + '/kernel.bin', 0644)
@@ -1149,8 +1149,8 @@ class ImageManagerDownload(Screen):
 				ftp.cwd('openvix-builds/ET-9x00')
 			elif config.misc.boxtype.value == 'tmtwin':
 				ftp.cwd('openvix-builds/TM-Twin')
-			elif config.misc.boxtype.value == 'odin':
-				ftp.cwd('openvix-builds/Odin')
+			elif config.misc.boxtype.value == 'odinm9':
+				ftp.cwd('openvix-builds/odinm9')
 			del self.emlist[:]
 			for fil in ftp.nlst():
 				if not fil.endswith('.') and fil.find(config.misc.boxtype.value) != -1:
@@ -1200,8 +1200,8 @@ class ImageManagerDownload(Screen):
 				mycmd2 = "/openvix/openvix-builds/ET-9x00/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
 			elif config.misc.boxtype.value == 'tmtwin':
 				mycmd2 = "/openvix/openvix-builds/TM-Twin/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
-			elif config.misc.boxtype.value == 'odin':
-				mycmd2 = "/openvix/openvix-builds/Odin/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
+			elif config.misc.boxtype.value == 'odinm9':
+				mycmd2 = "/openvix/openvix-builds/odinm9/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
 			mycmd3 = "mv " + self.BackupDirectory + "image.zip " + file
 			mycmd4 = _("echo 'Expanding Image.'")
 			mycmd5 = 'unzip -o ' + file + ' -d ' + dir
