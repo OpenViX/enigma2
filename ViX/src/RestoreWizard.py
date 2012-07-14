@@ -229,7 +229,7 @@ class RestoreWizard(WizardLanguage, Rc):
 		self.Console.ePopen('opkg update', self.doRestorePluginsQuestion)
 
 	def doRestorePluginsQuestion(self, result = None, retval = None, extra_args = None):
-		if result.find('404 Not Found') == -1:
+		if (float(about.getImageVersionString()) < 3.0 and result.find('mipsel/Packages.gz, wget returned 1') == -1) or (float(about.getImageVersionString()) >= 3.0 and result.find('mips32el/Packages.gz, wget returned 1') == -1):
 			self.feedsOK = True
 		else:
 			self.feedsOK = False
