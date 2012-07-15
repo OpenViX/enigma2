@@ -47,12 +47,9 @@ class VIXMenu(Screen):
 			self.list.append(("cron-manager", _("Cron Manager"), _("Manage your cron jobs." ), None))
 			self.list.append(("image-manager", _("Image Manager"), _("Create and Restore complete images of the system." ), None))
 			self.list.append(("ipkg-install", _("Install local extension"),  _("Install IPK's from your tmp folder." ), None))
-			self.list.append(("install-extensions", _("Manage Extensions"), _("Manage extensions or plugins for your STB_BOX" ), None))
 			self.list.append(("mount-manager",_("Mount Manager"), _("Manage you devices mountpoints." ), None))
-			self.list.append(("ipkg-manager", _("Packet Manager"),  _("View, install and remove available or installed packages." ), None))
 			self.list.append(("power-manager",_("Power Manager"), _("Create schedules for Standby, Restart GUI, DeepStandby and Reboot."), None))
 			self.list.append(("script-runner",_("Script Runner"), _("Run your shell scripts." ), None))
-			self.list.append(("software-update", _("Software Update"), _("Online update of your STB_BOX software." ), None))
 			self.list.append(("swap-manager",_("Swap Manager"), _("Create and Manage your swapfiles." ), None))
 		self["menu"] = List(self.list)
 		self["key_red"] = StaticText(_("Close"))
@@ -118,15 +115,9 @@ class VIXMenu(Screen):
 				elif (currentEntry == "image-manager"):
 					from ImageManager import VIXImageManager
 					self.session.open(VIXImageManager)
-				elif (currentEntry == "install-extensions"):
-					from SoftwareManager import PluginManager
-					self.session.open(PluginManager)
 				elif (currentEntry == "ipkg-install"):
 					from IPKInstaller import VIXIPKInstaller
 					self.session.open(VIXIPKInstaller)
-				elif (currentEntry == "ipkg-manager"):
-					from SoftwareManager import PacketManager
-					self.session.open(PacketManager)
 				elif (currentEntry == "mount-manager"):
 					from MountManager import VIXDevicesPanel
 					self.session.open(VIXDevicesPanel)
@@ -136,9 +127,6 @@ class VIXMenu(Screen):
 				elif (currentEntry == "script-runner"):
 					from ScriptRunner import VIXScriptRunner
 					self.session.open(VIXScriptRunner)
-				elif (currentEntry == "software-update"):
-					from SoftwareManager import UpdatePlugin
-					self.session.open(UpdatePlugin)
 				elif (currentEntry == "swap-manager"):
 					from SwapManager import VIXSwap
 					self.session.open(VIXSwap)
