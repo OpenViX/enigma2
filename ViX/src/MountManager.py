@@ -155,6 +155,8 @@ class VIXDevicesPanel(Screen):
 		f = open('/tmp/devices.tmp', 'r')
 		swapdevices = f.read()
 		f.close()
+		if path.exists('/tmp/devices.tmp'):
+			remove('/tmp/devices.tmp')
 		swapdevices = swapdevices.replace('\n','')
 		swapdevices = swapdevices.split('/')
 		f = open('/proc/mounts', 'r')
@@ -184,7 +186,9 @@ class VIXDevicesPanel(Screen):
 			if line.find(device) != -1:
 				parts = line.strip().split()
 				size = int(parts[2])
-				if ((size / 1024) / 1024) > 1:
+				if (((float(size) / 1024) / 1024) / 1024) > 1:
+					des = _("Size: ") + str(round((((float(size) / 1024) / 1024) / 1024),2)) + _("TB")
+				elif ((size / 1024) / 1024) > 1:
 					des = _("Size: ") + str((size / 1024) / 1024) + _("GB")
 				else:
 					des = _("Size: ") + str(size / 1024) + _("MB")
@@ -195,7 +199,9 @@ class VIXDevicesPanel(Screen):
 					size = int(size)
 				except:
 					size = 0
-				if (((size / 2) / 1024) / 1024) > 1:
+				if ((((float(size) / 2) / 1024) / 1024) / 1024) > 1:
+					des = _("Size: ") + str(round(((((float(size) / 2) / 1024) / 1024) / 1024),2)) + _("TB")
+				elif (((size / 2) / 1024) / 1024) > 1:
 					des = _("Size: ") + str(((size / 2) / 1024) / 1024) + _("GB")
 				else:
 					des = _("Size: ") + str((size / 2) / 1024) + _("MB")
@@ -325,6 +331,8 @@ class VIXDevicePanelConf(Screen, ConfigListScreen):
 		f = open('/tmp/devices.tmp', 'r')
 		swapdevices = f.read()
 		f.close()
+		if path.exists('/tmp/devices.tmp'):
+			remove('/tmp/devices.tmp')
 		swapdevices = swapdevices.replace('\n','')
 		swapdevices = swapdevices.split('/')
 		f = open('/proc/partitions', 'r')
@@ -378,12 +386,9 @@ class VIXDevicePanelConf(Screen, ConfigListScreen):
 			name = _("HARD DISK: ")
 			mypixmap = '/usr/share/enigma2/ViX_HD_Common/icons/dev_hdd.png'
 		name = name + model
-		if path.exists('/tmp/devices.tmp'):
-			remove('/tmp/devices.tmp')
 		f = open('/proc/mounts', 'r')
 		for line in f.readlines():
 			if line.find(device) != -1:
-				print 'device',device
 				parts = line.strip().split()
 				d1 = parts[1]
 				dtype = parts[2]
@@ -398,7 +403,9 @@ class VIXDevicePanelConf(Screen, ConfigListScreen):
 			if line.find(device) != -1:
 				parts = line.strip().split()
 				size = int(parts[2])
-				if ((size / 1024) / 1024) > 1:
+				if (((float(size) / 1024) / 1024) / 1024) > 1:
+					des = _("Size: ") + str(round((((float(size) / 1024) / 1024) / 1024),2)) + _("TB")
+				elif ((size / 1024) / 1024) > 1:
 					des = _("Size: ") + str((size / 1024) / 1024) + _("GB")
 				else:
 					des = _("Size: ") + str(size / 1024) + _("MB")
@@ -409,7 +416,9 @@ class VIXDevicePanelConf(Screen, ConfigListScreen):
 					size = int(size)
 				except:
 					size = 0
-				if (((size / 2) / 1024) / 1024) > 1:
+				if ((((float(size) / 2) / 1024) / 1024) / 1024) > 1:
+					des = _("Size: ") + str(round(((((float(size) / 2) / 1024) / 1024) / 1024),2)) + _("TB")
+				elif (((size / 2) / 1024) / 1024) > 1:
 					des = _("Size: ") + str(((size / 2) / 1024) / 1024) + _("GB")
 				else:
 					des = _("Size: ") + str((size / 2) / 1024) + _("MB")
@@ -450,10 +459,34 @@ class VIXDevicePanelConf(Screen, ConfigListScreen):
 	def add_fstab(self, result = None, retval = None, extra_args = None):
 		self.device = extra_args[0]
 		self.mountp = extra_args[1]
-		self.device_uuid_tmp = result.split('UUID=')
-		self.device_uuid_tmp = self.device_uuid_tmp[1].replace('"',"")
-		self.device_uuid_tmp = self.device_uuid_tmp.replace('\n',"")
-		self.device_uuid = 'UUID=' + self.device_uuid_tmp
+		self.device_tmp = result.split(' ')
+		if self.device_tmp[0].startswith('UUID='):
+			self.device_uuid = self.device_tmp[0].replace('"',"")
+			self.device_uuid = self.device_uuid.replace('\n',"")
+		elif self.device_tmp[1].startswith('UUID='):
+			self.device_uuid = self.device_tmp[1].replace('"',"")
+			self.device_uuid = self.device_uuid.replace('\n',"")
+		elif self.device_tmp[2].startswith('UUID='):
+			self.device_uuid = self.device_tmp[2].replace('"',"")
+			self.device_uuid = self.device_uuid.replace('\n',"")
+
+		if self.device_tmp[0].startswith('TYPE='):
+			self.device_type = self.device_tmp[0].replace('TYPE=',"")
+			self.device_type = self.device_type.replace('"',"")
+			self.device_type = self.device_type.replace('\n',"")
+		elif self.device_tmp[1].startswith('TYPE='):
+			self.device_type = self.device_tmp[1].replace('TYPE=',"")
+			self.device_type = self.device_type.replace('"',"")
+			self.device_type = self.device_type.replace('\n',"")
+		elif self.device_tmp[2].startswith('TYPE='):
+			self.device_type = self.device_tmp[2].replace('TYPE=',"")
+			self.device_type = self.device_type.replace('"',"")
+			self.device_type = self.device_type.replace('\n',"")
+		elif self.device_tmp[3].startswith('TYPE='):
+			self.device_type = self.device_tmp[3].replace('TYPE=',"")
+			self.device_type = self.device_type.replace('"',"")
+			self.device_type = self.device_type.replace('\n',"")
+
 		if not path.exists(self.mountp):
 			mkdir(self.mountp, 0755)
 		file('/etc/fstab.tmp', 'w').writelines([l for l in file('/etc/fstab').readlines() if self.device not in l])
@@ -461,7 +494,7 @@ class VIXDevicePanelConf(Screen, ConfigListScreen):
 		file('/etc/fstab.tmp', 'w').writelines([l for l in file('/etc/fstab').readlines() if self.device_uuid not in l])
 		rename('/etc/fstab.tmp','/etc/fstab')
 		out = open('/etc/fstab', 'a')
-		line = self.device_uuid + '\t' + self.mountp + '\tauto\tdefaults\t0 0\n'
+		line = self.device_uuid + '\t' + self.mountp + '\t' + self.device_type + '\tdefaults\t0 0\n'
 		out.write(line)
 		out.close()
 
