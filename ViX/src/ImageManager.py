@@ -990,7 +990,7 @@ class ImageBackup(Screen):
 	def doBackup2(self):
 		print '[ImageManager] Stage2: Making Kernel Image.'
 		if config.misc.boxtype.value.startswith('tm'):
-			self.command = 'cat /dev/mtd0 > ' + self.WORKDIR + '/vmlinux.gz'
+			self.command = 'cat /dev/mtd6 > ' + self.WORKDIR + '/vmlinux.gz'
 		elif config.misc.boxtype.value.startswith('et') or config.misc.boxtype.value.startswith('vu'):
 			self.command = 'nanddump /dev/mtd1 -o -f ' + self.WORKDIR + '/vmlinux.gz'
 		elif config.misc.boxtype.value.startswith('odinm9'):
@@ -1012,12 +1012,9 @@ class ImageBackup(Screen):
 		if config.misc.boxtype.value.startswith('vu'):
 			move(self.WORKDIR + '/root.' + self.ROOTFSTYPE, self.MAINDEST + '/root_cfe_auto.jffs2')
 			move(self.WORKDIR + '/vmlinux.gz', self.MAINDEST + '/kernel_cfe_auto.bin')
-			if config.misc.boxtype.value == "vuuno" or config.misc.boxtype.value == "vuultimo":
-				copy('/usr/lib/enigma2/python/Plugins/SystemPlugins/ViX/splash_cfe_auto.bin', self.MAINDEST + '/splash_cfe_auto.bin')
 		elif config.misc.boxtype.value.startswith('et') or config.misc.boxtype.value.startswith('odinm9'):
 			move(self.WORKDIR + '/root.' + self.ROOTFSTYPE, self.MAINDEST + '/rootfs.bin')
 			move(self.WORKDIR + '/vmlinux.gz', self.MAINDEST + '/kernel.bin')
-			copy('/usr/lib/enigma2/python/Plugins/SystemPlugins/ViX/splash.bin', self.MAINDEST + '/splash.bin')
 			fileout = open(self.MAINDEST + '/noforce', 'w')
 			line = "rename this file to 'force' to force an update without confirmation"
 			fileout.write(line)
@@ -1029,7 +1026,6 @@ class ImageBackup(Screen):
 		elif config.misc.boxtype.value.startswith('tm'):
 			move(self.WORKDIR + '/root.' + self.ROOTFSTYPE, self.MAINDEST + '/oe_rootfs.bin')
 			move(self.WORKDIR + '/vmlinux.gz', self.MAINDEST + '/oe_kernel.bin')
-			copy('/usr/lib/enigma2/python/Plugins/SystemPlugins/ViX/splash.bmp', self.MAINDEST + '/splash.bmp')
 		print '[ImageManager] Stage3: Removing Swap.'
 		if path.exists(self.swapdevice + config.imagemanager.folderprefix.value + "-swapfile_backup"):
 			system('swapoff ' + self.swapdevice + config.imagemanager.folderprefix.value + "-swapfile_backup")
@@ -1043,13 +1039,10 @@ class ImageBackup(Screen):
 				chmod(self.MAINDESTROOT + '/vuplus/' + config.misc.boxtype.value.replace('vu',''), 0644)
 				chmod(self.MAINDEST + '/root_cfe_auto.jffs2', 0644)
 				chmod(self.MAINDEST + '/kernel_cfe_auto.bin', 0644)
-				if config.misc.boxtype.value == "vuuno" or config.misc.boxtype.value == "vuultimo":
-					chmod(self.MAINDEST + '/splash_cfe_auto.bin', 0644)
 			elif config.misc.boxtype.value.startswith('et') or config.misc.boxtype.value.startswith('odinm9'):
 				chmod(self.MAINDESTROOT + '/' + config.misc.boxtype.value, 0644)
 				chmod(self.MAINDEST + '/rootfs.bin', 0644)
 				chmod(self.MAINDEST + '/kernel.bin', 0644)
-				chmod(self.MAINDEST + '/splash.bin', 0644)
 				chmod(self.MAINDEST + '/noforce', 0644)
 				chmod(self.MAINDEST + '/imageversion', 0644)
 			elif config.misc.boxtype.value.startswith('tm'):
@@ -1058,7 +1051,6 @@ class ImageBackup(Screen):
 				chmod(self.MAINDESTROOT + '/update/' + config.misc.boxtype.value + '/cfe', 0644)
 				chmod(self.MAINDEST + '/oe_rootfs.bin', 0644)
 				chmod(self.MAINDEST + '/oe_kernel.bin', 0644)
-				chmod(self.MAINDEST + '/splash.bmp', 0644)
 			print '[ImageManager] Stage3: Image created in ' + self.MAINDESTROOT
 			self.Stage3Complete()
 		else:
