@@ -17,7 +17,7 @@ from Screens.Console import Console as RestareConsole
 from Screens.MessageBox import MessageBox
 from Screens.VirtualKeyBoard import VirtualKeyBoard
 from enigma import eTimer, getDesktop
-from os import path, system, mkdir, listdir, remove, statvfs, chmod
+from os import path, system, mkdir, makedirs, listdir, remove, statvfs, chmod, walk
 from shutil import rmtree, move, copy
 from time import localtime, time, strftime, mktime
 
@@ -286,7 +286,7 @@ class VIXImageManager(Screen):
 			self.keyBackup()
 
 	def keyBackup(self):
-		if config.misc.boxtype.value.startswith('vu') or config.misc.boxtype.value.startswith('et') or config.misc.boxtype.value.startswith('tm') or config.misc.boxtype.value.startswith('odinm9'):
+		if config.misc.boxtype.value.startswith('vu') or config.misc.boxtype.value.startswith('et') or config.misc.boxtype.value.startswith('tm') or config.misc.boxtype.value.startswith('odin') or config.misc.boxtype.value.startswith('venton') or config.misc.boxtype.value.startswith('gb'):
 			message = _("Are you ready to create a backup image ?")
 			ybox = self.session.openWithCallback(self.doBackup, MessageBox, message, MessageBox.TYPE_YESNO)
 			ybox.setTitle(_("Backup Confirmation"))
@@ -921,6 +921,8 @@ class ImageBackup(Screen):
 		MKFS='mkfs.' + self.ROOTFSTYPE
 		if config.misc.boxtype.value.startswith('tm'):
 			JFFS2OPTIONS=" --disable-compressor=lzo --eraseblock=0x20000 -p -n -l --pagesize=0x800"
+		elif config.misc.boxtype.value =='gb800solo':
+			JFFS2OPTIONS=" --disable-compressor=lzo -e131072 -l -p125829120"
 		else:
 			JFFS2OPTIONS=" --disable-compressor=lzo --eraseblock=0x20000 -n -l"
 		UBINIZE='ubinize'
@@ -933,40 +935,46 @@ class ImageBackup(Screen):
 			system('umount ' + self.TMPDIR + '/root')
 		if path.exists(self.TMPDIR):
 			rmtree(self.TMPDIR)
-		mkdir(self.TMPDIR, 0644)
-		mkdir(self.TMPDIR + '/root', 0644)
-		mkdir(self.MAINDESTROOT, 0644)
+		makedirs(self.TMPDIR + '/root', 0644)
+		makedirs(self.MAINDESTROOT, 0644)
 		self.commands = []
 		print '[ImageManager] Stage1: Making Root Image.'
 		if self.ROOTFSTYPE == 'jffs2':
 			print '[ImageManager] Stage1: JFFS2 Detected.'
-			if config.misc.boxtype.value.startswith('vu'):
-				mkdir(self.MAINDESTROOT + '/vuplus', 0644)
-				mkdir(self.MAINDESTROOT + '/vuplus/' + config.misc.boxtype.value.replace('vu',''), 0644)
-				self.MAINDEST = self.MAINDESTROOT + '/vuplus/' + config.misc.boxtype.value.replace('vu','')
-				self.commands.append('mount -t jffs2 /dev/mtdblock0 ' + self.TMPDIR + '/root')
-			elif config.misc.boxtype.value.startswith('et') or config.misc.boxtype.value.startswith('odinm9'):
-				mkdir(self.MAINDESTROOT + '/' + config.misc.boxtype.value, 0644)
-				self.MAINDEST = self.MAINDESTROOT + '/' + config.misc.boxtype.value
-				self.commands.append('mount -t jffs2 /dev/mtdblock2 ' + self.TMPDIR + '/root')
-			elif config.misc.boxtype.value.startswith('tm'):
-				mkdir(self.MAINDESTROOT + '/update', 0644)
-				mkdir(self.MAINDESTROOT + '/update/' + config.misc.boxtype.value, 0644)
-				mkdir(self.MAINDESTROOT + '/update/' + config.misc.boxtype.value + '/cfe', 0644)
+			if config.misc.boxtype.value.startswith('tm'):
+				makedirs(self.MAINDESTROOT + '/update/' + config.misc.boxtype.value + '/cfe', 0644)
 				self.MAINDEST = self.MAINDESTROOT + '/update/' + config.misc.boxtype.value + '/cfe'
-				self.commands.append('mount -t jffs2 /dev/mtdblock4 ' + self.TMPDIR + '/root')
+			elif config.misc.boxtype.value == 'gb800solo':
+				makedirs(self.MAINDESTROOT + '/gigablue/solo', 0644)
+				self.MAINDEST = self.MAINDESTROOT + '/gigablue/solo'
+			self.commands.append('mount --bind / ' + self.TMPDIR + '/root')
 			self.commands.append(MKFS + ' --root=' + self.TMPDIR + '/root --faketime --output=' + self.WORKDIR + '/root.jffs2' + JFFS2OPTIONS)
 		elif self.ROOTFSTYPE == 'ubifs':
 			print '[ImageManager] Stage1: UBIFS Detected.'
 			if config.misc.boxtype.value.startswith('vu'):
 				MKUBIFS_ARGS="-m 2048 -e 126976 -c 4096 -F"
-				mkdir(self.MAINDESTROOT + '/vuplus', 0644)
-				mkdir(self.MAINDESTROOT + '/vuplus/' + config.misc.boxtype.value.replace('vu',''), 0644)
+				makedirs(self.MAINDESTROOT + '/vuplus/' + config.misc.boxtype.value.replace('vu',''), 0644)
 				self.MAINDEST = self.MAINDESTROOT + '/vuplus/' + config.misc.boxtype.value.replace('vu','')
-			elif config.misc.boxtype.value.startswith('et') or config.misc.boxtype.value.startswith('odinm9'):
+			if config.misc.boxtype.value.startswith('tm'):
+				MKUBIFS_ARGS="-m 2048 -e 126976 -c 4096 -F"
+				makedirs(self.MAINDESTROOT + '/update/' + config.misc.boxtype.value + '/cfe', 0644)
+				self.MAINDEST = self.MAINDESTROOT + '/update/' + config.misc.boxtype.value + '/cfe'
+			elif config.misc.boxtype.value.startswith('gb'):
 				MKUBIFS_ARGS="-m 2048 -e 126976 -c 4096"
-				mkdir(self.MAINDESTROOT + '/' + config.misc.boxtype.value, 0644)
+				if config.misc.boxtype.value.startswith('gb800'):
+					makedirs(self.MAINDESTROOT + '/gigablue/' + config.misc.boxtype.value.replace('gb800',''), 0644)
+					self.MAINDEST = self.MAINDESTROOT + '/gigablue/' + config.misc.boxtype.value.replace('gb800','')
+				else:
+					makedirs(self.MAINDESTROOT + '/gigablue/' + config.misc.boxtype.value.replace('gb',''), 0644)
+					self.MAINDEST = self.MAINDESTROOT + '/gigablue/' + config.misc.boxtype.value.replace('gb','')
+			elif config.misc.boxtype.value.startswith('et') or config.misc.boxtype.value.startswith('odin'):
+				MKUBIFS_ARGS="-m 2048 -e 126976 -c 4096"
+				makedirs(self.MAINDESTROOT + '/' + config.misc.boxtype.value, 0644)
 				self.MAINDEST = self.MAINDESTROOT + '/' + config.misc.boxtype.value
+			elif config.misc.boxtype.value.startswith('venton'):
+				MKUBIFS_ARGS="-m 2048 -e 126976 -c 4096"
+				makedirs(self.MAINDESTROOT + '/' + config.misc.boxtype.value.replace('-',''), 0644)
+				self.MAINDEST = self.MAINDESTROOT + '/' + config.misc.boxtype.value.replace('-','')
 			output = open(self.WORKDIR + '/ubinize.cfg','w')
 			output.write('[ubifs]\n')
 			output.write('mode=ubi\n')
@@ -991,9 +999,9 @@ class ImageBackup(Screen):
 		print '[ImageManager] Stage2: Making Kernel Image.'
 		if config.misc.boxtype.value.startswith('tm'):
 			self.command = 'cat /dev/mtd6 > ' + self.WORKDIR + '/vmlinux.gz'
-		elif config.misc.boxtype.value.startswith('et') or config.misc.boxtype.value.startswith('vu'):
+		elif config.misc.boxtype.value.startswith('et') or config.misc.boxtype.value.startswith('vu') or config.misc.boxtype.value.startswith('venton'):
 			self.command = 'nanddump /dev/mtd1 -o -f ' + self.WORKDIR + '/vmlinux.gz'
-		elif config.misc.boxtype.value.startswith('odinm9'):
+		elif config.misc.boxtype.value.startswith('odin') or config.misc.boxtype.value.startswith('gb'):
 			self.command = 'nanddump /dev/mtd2 -o -f ' + self.WORKDIR + '/vmlinux.gz'
 		self.BackupConsole.ePopen(self.command, self.Stage2Complete)
 
@@ -1012,17 +1020,20 @@ class ImageBackup(Screen):
 		if config.misc.boxtype.value.startswith('vu'):
 			move(self.WORKDIR + '/root.' + self.ROOTFSTYPE, self.MAINDEST + '/root_cfe_auto.jffs2')
 			move(self.WORKDIR + '/vmlinux.gz', self.MAINDEST + '/kernel_cfe_auto.bin')
-		elif config.misc.boxtype.value.startswith('et') or config.misc.boxtype.value.startswith('odinm9'):
+		elif config.misc.boxtype.value.startswith('et') or config.misc.boxtype.value.startswith('odin') or config.misc.boxtype.value.startswith('venton') or config.misc.boxtype.value.startswith('gb'):
 			move(self.WORKDIR + '/root.' + self.ROOTFSTYPE, self.MAINDEST + '/rootfs.bin')
 			move(self.WORKDIR + '/vmlinux.gz', self.MAINDEST + '/kernel.bin')
-			fileout = open(self.MAINDEST + '/noforce', 'w')
-			line = "rename this file to 'force' to force an update without confirmation"
-			fileout.write(line)
-			fileout.close()
-			fileout = open(self.MAINDEST + '/imageversion', 'w')
-			line = "ViX-" + self.BackupDate
-			fileout.write(line)
-			fileout.close()
+			if config.misc.boxtype.value.startswith('et') or config.misc.boxtype.value.startswith('odin'):
+				fileout = open(self.MAINDEST + '/noforce', 'w')
+				line = "rename this file to 'force' to force an update without confirmation"
+				fileout.write(line)
+				fileout.close()
+				fileout = open(self.MAINDEST + '/imageversion', 'w')
+				line = "openvix-" + self.BackupDate
+				fileout.write(line)
+				fileout.close()
+			if config.misc.boxtype.value == 'gb800solo' or config.misc.boxtype.value == 'gb800se':
+				copy('/usr/lib/enigma2/python/Plugins/SystemPlugins/ViX/burn.bat', self.MAINDEST + '/burn.bat')
 		elif config.misc.boxtype.value.startswith('tm'):
 			move(self.WORKDIR + '/root.' + self.ROOTFSTYPE, self.MAINDEST + '/oe_rootfs.bin')
 			move(self.WORKDIR + '/vmlinux.gz', self.MAINDEST + '/oe_kernel.bin')
@@ -1033,24 +1044,11 @@ class ImageBackup(Screen):
 		if path.exists(self.WORKDIR):
 			rmtree(self.WORKDIR)
 		if (path.exists(self.MAINDEST + '/root_cfe_auto.jffs2') and path.exists(self.MAINDEST + '/kernel_cfe_auto.bin')) or (path.exists(self.MAINDEST + '/rootfs.bin') and path.exists(self.MAINDEST + '/kernel.bin')) or (path.exists(self.MAINDEST + '/oe_rootfs.bin') and path.exists(self.MAINDEST + '/oe_kernel.bin')):
-			chmod(self.MAINDEST, 0644)
-			if config.misc.boxtype.value.startswith('vu'):
-				chmod(self.MAINDESTROOT + '/vuplus/', 0644)
-				chmod(self.MAINDESTROOT + '/vuplus/' + config.misc.boxtype.value.replace('vu',''), 0644)
-				chmod(self.MAINDEST + '/root_cfe_auto.jffs2', 0644)
-				chmod(self.MAINDEST + '/kernel_cfe_auto.bin', 0644)
-			elif config.misc.boxtype.value.startswith('et') or config.misc.boxtype.value.startswith('odinm9'):
-				chmod(self.MAINDESTROOT + '/' + config.misc.boxtype.value, 0644)
-				chmod(self.MAINDEST + '/rootfs.bin', 0644)
-				chmod(self.MAINDEST + '/kernel.bin', 0644)
-				chmod(self.MAINDEST + '/noforce', 0644)
-				chmod(self.MAINDEST + '/imageversion', 0644)
-			elif config.misc.boxtype.value.startswith('tm'):
-				chmod(self.MAINDESTROOT + '/update/', 0644)
-				chmod(self.MAINDESTROOT + '/update/' + config.misc.boxtype.value, 0644)
-				chmod(self.MAINDESTROOT + '/update/' + config.misc.boxtype.value + '/cfe', 0644)
-				chmod(self.MAINDEST + '/oe_rootfs.bin', 0644)
-				chmod(self.MAINDEST + '/oe_kernel.bin', 0644)
+		for root, dirs, files in walk(self.MAINDEST):
+			for momo in dirs:
+				chmod(path.join(root, momo), 0644)
+			for momo in files:
+				chmod(path.join(root, momo), 0644)
 			print '[ImageManager] Stage3: Image created in ' + self.MAINDESTROOT
 			self.Stage3Complete()
 		else:
