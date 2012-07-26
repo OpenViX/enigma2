@@ -1044,11 +1044,11 @@ class ImageBackup(Screen):
 		if path.exists(self.WORKDIR):
 			rmtree(self.WORKDIR)
 		if (path.exists(self.MAINDEST + '/root_cfe_auto.jffs2') and path.exists(self.MAINDEST + '/kernel_cfe_auto.bin')) or (path.exists(self.MAINDEST + '/rootfs.bin') and path.exists(self.MAINDEST + '/kernel.bin')) or (path.exists(self.MAINDEST + '/oe_rootfs.bin') and path.exists(self.MAINDEST + '/oe_kernel.bin')):
-		for root, dirs, files in walk(self.MAINDEST):
-			for momo in dirs:
-				chmod(path.join(root, momo), 0644)
-			for momo in files:
-				chmod(path.join(root, momo), 0644)
+			for root, dirs, files in walk(self.MAINDEST):
+				for momo in dirs:
+					chmod(path.join(root, momo), 0644)
+				for momo in files:
+					chmod(path.join(root, momo), 0644)
 			print '[ImageManager] Stage3: Image created in ' + self.MAINDESTROOT
 			self.Stage3Complete()
 		else:
