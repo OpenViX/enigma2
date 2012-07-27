@@ -1033,7 +1033,7 @@ class ImageBackup(Screen):
 				fileout.write(line)
 				fileout.close()
 			if config.misc.boxtype.value == 'gb800solo' or config.misc.boxtype.value == 'gb800se':
-				copy('/usr/lib/enigma2/python/Plugins/SystemPlugins/ViX/burn.bat', self.MAINDEST + '/burn.bat')
+				copy('/usr/lib/enigma2/python/Plugins/SystemPlugins/ViX/burn.bat', self.MAINDESTROOT + '/burn.bat')
 		elif config.misc.boxtype.value.startswith('tm'):
 			move(self.WORKDIR + '/root.' + self.ROOTFSTYPE, self.MAINDEST + '/oe_rootfs.bin')
 			move(self.WORKDIR + '/vmlinux.gz', self.MAINDEST + '/oe_kernel.bin')
