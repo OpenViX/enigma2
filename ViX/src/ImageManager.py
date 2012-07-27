@@ -955,7 +955,7 @@ class ImageBackup(Screen):
 				MKUBIFS_ARGS="-m 2048 -e 126976 -c 4096 -F"
 				makedirs(self.MAINDESTROOT + '/vuplus/' + config.misc.boxtype.value.replace('vu',''), 0644)
 				self.MAINDEST = self.MAINDESTROOT + '/vuplus/' + config.misc.boxtype.value.replace('vu','')
-			if config.misc.boxtype.value.startswith('tm'):
+			elif config.misc.boxtype.value.startswith('tm'):
 				MKUBIFS_ARGS="-m 2048 -e 126976 -c 4096 -F"
 				makedirs(self.MAINDESTROOT + '/update/' + config.misc.boxtype.value + '/cfe', 0644)
 				self.MAINDEST = self.MAINDESTROOT + '/update/' + config.misc.boxtype.value + '/cfe'
