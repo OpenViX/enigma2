@@ -915,7 +915,7 @@ class ImageBackup(Screen):
 			self.ROOTFSTYPE= 'jffs2'
 		self.BackupConsole = Console()
 		print '[ImageManager] Stage1: Creating tmp folders.',self.BackupDirectory
-		self.BackupDate = about.getImageVersionString() + '.' + about.getBuildVersionString() '-' + strftime('%Y%m%d_%H%M%S', localtime())
+		self.BackupDate = about.getImageVersionString() + '.' + about.getBuildVersionString() + '-' + strftime('%Y%m%d_%H%M%S', localtime())
 		self.WORKDIR=self.BackupDirectory + config.imagemanager.folderprefix.value + '-temp'
 		self.TMPDIR=self.BackupDirectory + config.imagemanager.folderprefix.value + '-mount'
 		self.MAINDESTROOT=self.BackupDirectory + config.imagemanager.folderprefix.value + '-' + self.BackupDate
