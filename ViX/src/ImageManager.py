@@ -1000,9 +1000,9 @@ class ImageBackup(Screen):
 		if config.misc.boxtype.value.startswith('tm'):
 			self.command = 'cat /dev/mtd6 > ' + self.WORKDIR + '/vmlinux.gz'
 		elif config.misc.boxtype.value.startswith('et') or config.misc.boxtype.value.startswith('vu') or config.misc.boxtype.value.startswith('venton'):
-			self.command = 'nanddump /dev/mtd1 -o -f ' + self.WORKDIR + '/vmlinux.gz'
+			self.command = 'cat /dev/mtd1 > ' + self.WORKDIR + '/vmlinux.gz'
 		elif config.misc.boxtype.value.startswith('odin') or config.misc.boxtype.value.startswith('gb'):
-			self.command = 'nanddump /dev/mtd2 -o -f ' + self.WORKDIR + '/vmlinux.gz'
+			self.command = 'cat /dev/mtd2 > ' + self.WORKDIR + '/vmlinux.gz'
 		self.BackupConsole.ePopen(self.command, self.Stage2Complete)
 
 	def Stage2Complete(self, result, retval, extra_args = None):
