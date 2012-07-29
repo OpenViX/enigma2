@@ -130,6 +130,8 @@ class VIXCronManager(Screen):
 	def RemovePackage(self, val):
 		if val:
 			self.doRemove(self.removeComplete, self.service_name)
+		else:
+			self.close()
 
 	def doRemove(self, callback, pkgname):
 		self.message = self.session.open(MessageBox,_("please wait..."), MessageBox.TYPE_INFO, enable_input = False)
