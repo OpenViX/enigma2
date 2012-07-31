@@ -487,6 +487,9 @@ class VIXDevicePanelConf(Screen, ConfigListScreen):
 			self.device_type = self.device_type.replace('"',"")
 			self.device_type = self.device_type.replace('\n',"")
 
+		if self.device_type.startswith('ext'):
+			self.device_type = 'auto'
+
 		if not path.exists(self.mountp):
 			mkdir(self.mountp, 0755)
 		file('/etc/fstab.tmp', 'w').writelines([l for l in file('/etc/fstab').readlines() if self.device not in l])
