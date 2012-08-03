@@ -430,8 +430,6 @@ class VIXDevicePanelConf(Screen, ConfigListScreen):
 		('/media/usb', '/media/usb'),
 		('/media/usb2', '/media/usb2'),
 		('/media/usb3', '/media/usb3')]))
-		if (d1 == '/media/meoboot'):
-			item = NoSave(ConfigSelection(default='/media/meoboot', choices=[('/media/meoboot', '/media/meoboot')]))
 		if dtype == 'Linux':
 			dtype = 'ext3'
 		else:
@@ -452,6 +450,11 @@ class VIXDevicePanelConf(Screen, ConfigListScreen):
 			self.type = x[3]
 			self.Console.ePopen('umount ' + self.device)
 			self.Console.ePopen("/sbin/blkid | grep " + self.device, self.add_fstab, [self.device, self.mountp] )
+		message = _("Updating mount locations.")
+		ybox = self.session.openWithCallback(self.delay, MessageBox, message, type=MessageBox.TYPE_INFO, timeout=5, enable_input = False)
+		ybox.setTitle(_("Please wait."))
+
+	def delay(self, val):
 		message = _("Changes need a system restart to take effect.\nRestart your STB_BOX now?")
 		ybox = self.session.openWithCallback(self.restartBox, MessageBox, message, MessageBox.TYPE_YESNO)
 		ybox.setTitle(_("Restart STB_BOX."))
