@@ -337,7 +337,7 @@ class VIXBackupManager(Screen):
 		task.work = self.Stage2
 		task.weighting = 1
 
-		task = Components.Task.ConditionTask(job, _("Creating list of installed plugins..."), timeoutCount=30)
+		task = Components.Task.ConditionTask(job, _("Creating list of installed plugins..."), timeoutCount=300)
 		task.check = lambda: self.Stage2Completed
 		task.weighting = 1
 
@@ -345,7 +345,7 @@ class VIXBackupManager(Screen):
 		task.work = self.Stage3
 		task.weighting = 1
 
-		task = Components.Task.ConditionTask(job, _("Comparing against backup..."), timeoutCount=60)
+		task = Components.Task.ConditionTask(job, _("Comparing against backup..."), timeoutCount=300)
 		task.check = lambda: self.Stage3Completed
 		task.weighting = 1
 
@@ -353,15 +353,15 @@ class VIXBackupManager(Screen):
 		task.work = self.Stage4
 		task.weighting = 1
 
-		task = Components.Task.ConditionTask(job, _("Restoring plugins..."), timeoutCount=30)
+		task = Components.Task.ConditionTask(job, _("Restoring plugins..."), timeoutCount=300)
 		task.check = lambda: self.Stage4Completed
 		task.weighting = 1
 
-		task = Components.Task.PythonTask(job, _("Restoring plugins..."))
+		task = Components.Task.PythonTask(job, _("Restoring plugins, this can take a long time..."))
 		task.work = self.Stage5
 		task.weighting = 1
 
-		task = Components.Task.ConditionTask(job, _("Restoring plugins..."), timeoutCount=300)
+		task = Components.Task.ConditionTask(job, _("Restoring plugins, this can take a long time..."), timeoutCount=1200)
 		task.check = lambda: self.Stage5Completed
 		task.weighting = 1
 
@@ -396,19 +396,59 @@ class VIXBackupManager(Screen):
 		if retval == 0:
 			self.Stage1Completed = True
 
-	def Stage2(self):
+	def Stage2(self, result=False):
 		if not self.Console:
 			self.Console = Console()
-		if path.exists('/tmp/backupkernelversion'):
-			kernelversion = file('/tmp/backupkernelversion').read()
-			if kernelversion == about.getKernelVersionString():
-				self.Console.ePopen('opkg list-installed', self.Stage2Complete)
+		self.Console.ePopen('opkg update', self.Stage2Complete)
+
+	def Stage2Complete(self, result, retval, extra_args):
+		if (float(about.getImageVersionString()) < 3.0 and result.find('mipsel/Packages.gz, wget returned 1') != -1) or (float(about.getImageVersionString()) >= 3.0 and result.find('mips32el/Packages.gz, wget returned 1') != -1):
+			self.feeds = 'DOWN'
+			self.Stage2Completed = True
+		elif result.find('bad address') != -1:
+			self.feeds = 'BAD'
+			self.Stage2Completed = True
+		elif result.find('Collected errors') != -1:
+			AddPopupWithCallback(self.Stage2,
+				_("A background update check is is progress, please wait for retry."),
+				MessageBox.TYPE_INFO,
+				10,
+				NOPLUGINS
+			)
+		else:
+			self.feeds = 'OK'
+			self.Stage2Completed = True
+
+	def Stage3(self):
+		if not self.Console:
+			self.Console = Console()
+		if self.feeds == 'OK':
+			if path.exists('/tmp/backupkernelversion'):
+				kernelversion = file('/tmp/backupkernelversion').read()
+				if kernelversion == about.getKernelVersionString():
+					self.Console.ePopen('opkg list-installed', self.Stage3Complete)
+				else:
+					self.Stage6()
 			else:
 				self.Stage6()
+		elif self.feeds == 'DOWN':
+			AddPopupWithCallback(self.Stage6,
+				_("Sorry feeds are down for maintenance, Please try again later."),
+				MessageBox.TYPE_INFO,
+				15,
+				NOPLUGINS
+			)
+		elif self.feeds == 'BAD':
+			AddPopupWithCallback(self.Stage6,
+				_("Your STB_BOX is not connected to the internet, please check your network settings and try again."),
+				MessageBox.TYPE_INFO,
+				15,
+				NOPLUGINS
+			)
 		else:
 			self.Stage6()
 
-	def Stage2Complete(self, result, retval, extra_args):
+	def Stage3Complete(self, result, retval, extra_args):
 		if path.exists('/tmp/ExtraInstalledPlugins'):
 			plugins = []
 			for line in result.split('\n'):
@@ -423,11 +463,11 @@ class VIXBackupManager(Screen):
 					if parts[0] not in plugins:
 						output.write(parts[0] + ' ')
 			output.close()
-			self.Stage2Completed = True
+			self.Stage3Completed = True
 		else:
 			self.Stage6()
 
-	def Stage3(self):
+	def Stage4(self):
 		if not self.Console:
 			self.Console = Console()
 		fstabfile = file('/etc/fstab').readlines()
@@ -441,7 +481,7 @@ class VIXBackupManager(Screen):
 			pluginslist = file('/tmp/trimedExtraInstalledPlugins').read()
 			print 'pluginslist\n',pluginslist
 			if pluginslist:
-				AddPopupWithCallback(self.Stage3Complete,
+				AddPopupWithCallback(self.Stage4Complete,
 					_("Do you want to restore your Enigma2 plugins ?"),
 					MessageBox.TYPE_YESNO,
 					15,
@@ -452,12 +492,12 @@ class VIXBackupManager(Screen):
 		else:
 			self.Stage6()
 
-	def Stage3Complete(self, answer=None):
+	def Stage4Complete(self, answer=None):
 		if not self.Console:
 			self.Console = Console()
 		if answer is True:
 			self.doPluginsRestore = True
-			self.Stage3Completed = True
+			self.Stage4Completed = True
 		elif answer is False:
 			AddPopupWithCallback(self.Stage6,
 				_("Now skipping restore process"),
@@ -466,26 +506,10 @@ class VIXBackupManager(Screen):
 				NOPLUGINS
 			)
 
-	def Stage4(self):
-		if not self.Console:
-			self.Console = Console()
-		if self.doPluginsRestore:
-			self.Console.ePopen('opkg update', self.Stage4Complete)
-		else:
-			self.Stage6()
-
-	def Stage4Complete(self, result, retval, extra_args):
-		if (float(about.getImageVersionString()) < 3.0 and result.find('mipsel/Packages.gz, wget returned 1') == -1) or (float(about.getImageVersionString()) >= 3.0 and result.find('mips32el/Packages.gz, wget returned 1') == -1):
-			self.feedsOK = True
-			self.Stage4Completed = True
-		else:
-			self.feedsOK = False
-			self.Stage4Completed = True
-
 	def Stage5(self):
 		if not self.Console:
 			self.Console = Console()
-		if self.doPluginsRestore and self.feedsOK:
+		if self.doPluginsRestore:
 			if path.exists('/tmp/trimedExtraInstalledPlugins'):
 				plugintmp = file('/tmp/trimedExtraInstalledPlugins').read()
 				pluginslist = plugintmp.replace('\n',' ')
@@ -493,12 +517,7 @@ class VIXBackupManager(Screen):
 			else:
 				self.Stage6()
 		else:
-			AddPopupWithCallback(self.Stage6,
-				_("Sorry feeds are down for maintenance, Please try again later."),
-				MessageBox.TYPE_INFO,
-				15,
-				NOPLUGINS
-			)
+			self.Stage6()
 
 	def Stage5Complete(self, result, retval, extra_args):
 		if result:

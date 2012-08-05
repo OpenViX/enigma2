@@ -49,7 +49,7 @@ class RestoreWizard(WizardLanguage, Rc):
 						images = listdir(x[1] + 'backup')
 				if len(images):
 					for fil in images:
-						if fil.endswith('.tar.gz') and fil.startswith(config.misc.boxtype.value):
+						if fil.endswith('.tar.gz'):
 							if not x[1].endswith('/'):
 								list.append((x[1] + '/backup/' + fil,x[1] + '/backup/' + fil))
 							else:
@@ -147,17 +147,33 @@ class RestoreWizard(WizardLanguage, Rc):
 				self.Console = Console()
 			plugintmp = file('/tmp/trimedExtraInstalledPlugins').read()
 			pluginslist = plugintmp.replace('\n',' ')
-			if self.feedsOK:
+			if self.feeds == 'OK':
 				self.Console.ePopen("opkg update && opkg install " + pluginslist, self.pluginsRestore_Finished)
 				self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Please wait while plugins restore completes..."), type = MessageBox.TYPE_INFO, enable_input = False)
 				self.buildListRef.setTitle(_("Restore Wizard"))
-			else:
+			elif self.feeds == 'DOWN':
 				config.misc.restorewizardrun.setValue(True)
 				config.misc.restorewizardrun.save()
 				configfile.save()
 				self.didPluginRestore = True
 				self.NextStep = 'reboot'
 				self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Sorry feeds are down for maintenance, Please try using Backup Manager to restore plugins later."), type = MessageBox.TYPE_INFO, timeout = 30)
+				self.buildListRef.setTitle(_("Restore Wizard"))
+			elif self.feeds == 'BAD':
+				config.misc.restorewizardrun.setValue(True)
+				config.misc.restorewizardrun.save()
+				configfile.save()
+				self.didPluginRestore = True
+				self.NextStep = 'reboot'
+				self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Your STB_BOX is not connected to the internet, Please try using Backup Manager to restore plugins later."), type = MessageBox.TYPE_INFO, timeout = 30)
+				self.buildListRef.setTitle(_("Restore Wizard"))
+			elif self.feeds == 'ERROR':
+				config.misc.restorewizardrun.setValue(True)
+				config.misc.restorewizardrun.save()
+				configfile.save()
+				self.didPluginRestore = True
+				self.NextStep = 'reboot'
+				self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("A background update check is is progress, Please try using Backup Manager to restore plugins later."), type = MessageBox.TYPE_INFO, timeout = 30)
 				self.buildListRef.setTitle(_("Restore Wizard"))
 
 
@@ -229,10 +245,14 @@ class RestoreWizard(WizardLanguage, Rc):
 		self.Console.ePopen('opkg update', self.doRestorePluginsQuestion)
 
 	def doRestorePluginsQuestion(self, result = None, retval = None, extra_args = None):
-		if (float(about.getImageVersionString()) < 3.0 and result.find('mipsel/Packages.gz, wget returned 1') == -1) or (float(about.getImageVersionString()) >= 3.0 and result.find('mips32el/Packages.gz, wget returned 1') == -1):
-			self.feedsOK = True
+		if (float(about.getImageVersionString()) < 3.0 and result.find('mipsel/Packages.gz, wget returned 1') != -1) or (float(about.getImageVersionString()) >= 3.0 and result.find('mips32el/Packages.gz, wget returned 1') != -1):
+			self.feeds = 'DOWN'
+		elif result.find('bad address') != -1:
+			self.feeds = 'BAD'
+		elif result.find('Collected errors') != -1:
+			self.feeds = 'ERROR'
 		else:
-			self.feedsOK = False
+			self.feeds = 'OK'
 		fstabfile = file('/etc/fstab').readlines()
 		for mountfolder in fstabfile:
 			parts = mountfolder.strip().split()
