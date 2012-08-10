@@ -12,34 +12,24 @@ from PowerManager import PowerManagerautostart, PowerManagerNextWakeup
 from os import path, listdir
 
 def checkConfigBackup():
-	try:
-		devices = [ (r.description, r.mountpoint) for r in harddiskmanager.getMountedPartitions(onlyhotplug = False)]
-		list = []
-		images = ""
+	devices = [ (r.description, r.mountpoint) for r in harddiskmanager.getMountedPartitions(onlyhotplug = False)]
+	list = []
+	images = ""
+	for x in devices:
+		if x[1] == '/':
+			devices.remove(x)
+	if len(devices):
 		for x in devices:
-			if x[1] == '/':
-				devices.remove(x)
-		if len(devices):
-			for x in devices:
-				print '[RestoreWizard] Seraching devices:',x[1]
-				if not x[1].endswith('/'):
-					if path.exists(x[1] + '/backup'):
-						images = listdir(x[1] + '/backup')
-				else:
-					if path.exists(x[1] + 'backup'):
-						images = listdir(x[1] + 'backup')
-				if len(images):
-					for fil in images:
-						if fil.endswith('.tar.gz') and fil.startswith(config.misc.boxtype.value):
-							if not x[1].endswith('/'):
-								list.append((x[1] + '/backup/' + fil,x[1] + '/backup/' + fil))
-							else:
-								list.append((x[1] + 'backup/' + fil,x[1] + 'backup/' + fil))
-		if len(list):
-			return True
-		else:
-			return None
-	except:
+			if path.exists(path.join(x[1],'backup')):
+				images = listdir(path.join(x[1],'backup'))
+			if len(images):
+				for fil in images:
+					if fil.endswith('.tar.gz'):
+						dir = path.join(x[1],'backup')
+						list.append((path.join(dir,fil),path.join(x[1],fil)))
+	if len(list):
+		return True
+	else:
 		return None
 
 if checkConfigBackup() is None:

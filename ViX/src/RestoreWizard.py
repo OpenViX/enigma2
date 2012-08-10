@@ -10,7 +10,7 @@ from Screens.WizardLanguage import WizardLanguage
 from Screens.Rc import Rc
 from Screens.MessageBox import MessageBox
 from Tools.Directories import fileExists, pathExists, resolveFilename, SCOPE_PLUGINS
-from os import mkdir, listdir
+from os import mkdir, listdir, path
 
 class RestoreWizard(WizardLanguage, Rc):
 	def __init__(self, session):
@@ -34,26 +34,19 @@ class RestoreWizard(WizardLanguage, Rc):
 	def listDevices(self):
 		devices = [ (r.description, r.mountpoint) for r in harddiskmanager.getMountedPartitions(onlyhotplug = False)]
 		list = []
+		images = ""
 		for x in devices:
 			if x[1] == '/':
 				devices.remove(x)
 		if len(devices):
 			for x in devices:
-				images = ""
-				print '[RestoreWizard] Seraching devices:',x
-				if not x[1].endswith('/'):
-					if pathExists(x[1] + '/backup'):
-						images = listdir(x[1] + '/backup')
-				else:
-					if pathExists(x[1] + 'backup'):
-						images = listdir(x[1] + 'backup')
+				if path.exists(path.join(x[1],'backup')):
+					images = listdir(path.join(x[1],'backup'))
 				if len(images):
 					for fil in images:
 						if fil.endswith('.tar.gz'):
-							if not x[1].endswith('/'):
-								list.append((x[1] + '/backup/' + fil,x[1] + '/backup/' + fil))
-							else:
-								list.append((x[1] + 'backup/' + fil,x[1] + 'backup/' + fil))
+							dir = path.join(x[1],'backup')
+							list.append((path.join(dir,fil),path.join(x[1],fil)))
 		if len(list):
 			list.sort()
 			list.reverse()
