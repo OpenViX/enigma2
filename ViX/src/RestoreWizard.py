@@ -46,7 +46,7 @@ class RestoreWizard(WizardLanguage, Rc):
 					for fil in images:
 						if fil.endswith('.tar.gz'):
 							dir = path.join(x[1],'backup')
-							list.append((path.join(dir,fil),path.join(x[1],fil)))
+							list.append((path.join(dir,fil),path.join(dir,fil)))
 		if len(list):
 			list.sort()
 			list.reverse()
@@ -141,7 +141,7 @@ class RestoreWizard(WizardLanguage, Rc):
 			plugintmp = file('/tmp/trimedExtraInstalledPlugins').read()
 			pluginslist = plugintmp.replace('\n',' ')
 			if self.feeds == 'OK':
-				self.Console.ePopen("opkg update && opkg install " + pluginslist, self.pluginsRestore_Finished)
+				self.Console.ePopen("opkg install " + pluginslist, self.pluginsRestore_Finished)
 				self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Please wait while plugins restore completes..."), type = MessageBox.TYPE_INFO, enable_input = False)
 				self.buildListRef.setTitle(_("Restore Wizard"))
 			elif self.feeds == 'DOWN':
