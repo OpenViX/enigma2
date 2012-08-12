@@ -2,6 +2,7 @@
 from . import _
 
 from Components.ActionMap import ActionMap
+from Components.About import about
 from Components.config import getConfigListEntry, config, ConfigText, ConfigSelection, ConfigInteger, ConfigClock, NoSave, configfile
 from Components.ConfigList import ConfigListScreen
 from Components.Console import Console
