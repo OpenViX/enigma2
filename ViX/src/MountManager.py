@@ -472,6 +472,9 @@ class VIXDevicePanelConf(Screen, ConfigListScreen):
 		elif self.device_tmp[2].startswith('UUID='):
 			self.device_uuid = self.device_tmp[2].replace('"',"")
 			self.device_uuid = self.device_uuid.replace('\n',"")
+		elif self.device_tmp[3].startswith('UUID='):
+			self.device_uuid = self.device_tmp[3].replace('"',"")
+			self.device_uuid = self.device_uuid.replace('\n',"")
 
 		if self.device_tmp[0].startswith('TYPE='):
 			self.device_type = self.device_tmp[0].replace('TYPE=',"")
@@ -487,6 +490,10 @@ class VIXDevicePanelConf(Screen, ConfigListScreen):
 			self.device_type = self.device_type.replace('\n',"")
 		elif self.device_tmp[3].startswith('TYPE='):
 			self.device_type = self.device_tmp[3].replace('TYPE=',"")
+			self.device_type = self.device_type.replace('"',"")
+			self.device_type = self.device_type.replace('\n',"")
+		elif self.device_tmp[4].startswith('TYPE='):
+			self.device_type = self.device_tmp[4].replace('TYPE=',"")
 			self.device_type = self.device_type.replace('"',"")
 			self.device_type = self.device_type.replace('\n',"")
 
