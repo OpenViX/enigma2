@@ -380,6 +380,7 @@ class VIXBackupManager(Screen):
 		)
 
 	def Stage1(self, answer=None):
+		print '[BackupManager] Restoring Stage 1:'
 		if not self.Console:
 			self.Console = Console()
 		if answer is True:
@@ -388,20 +389,24 @@ class VIXBackupManager(Screen):
 			self.Console.ePopen("tar -xzvf " + self.BackupDirectory + self.sel + " tmp/ExtraInstalledPlugins tmp/backupkernelversion -C /", self.Stage1PluginsComplete)
 
 	def Stage1SettingsComplete(self, result, retval, extra_args):
+		print '[BackupManager] Restoring Stage 1 Complete:'
 		if retval == 0:
 			self.didSettingsRestore = True
 			self.Stage1Completed = True
 
 	def Stage1PluginsComplete(self, result, retval, extra_args):
+		print '[BackupManager] Restoring Stage 1 Complete:'
 		if retval == 0:
 			self.Stage1Completed = True
 
 	def Stage2(self, result=False):
+		print '[BackupManager] Restoring Stage 2: Checking feeds'
 		if not self.Console:
 			self.Console = Console()
 		self.Console.ePopen('opkg update', self.Stage2Complete)
 
 	def Stage2Complete(self, result, retval, extra_args):
+		print '[BackupManager] Restoring Stage 2: Result ',result
 		if (float(about.getImageVersionString()) < 3.0 and result.find('mipsel/Packages.gz, wget returned 1') != -1) or (float(about.getImageVersionString()) >= 3.0 and result.find('mips32el/Packages.gz, wget returned 1') != -1):
 			self.feeds = 'DOWN'
 			self.Stage2Completed = True
@@ -416,22 +421,29 @@ class VIXBackupManager(Screen):
 				NOPLUGINS
 			)
 		else:
+			print '[BackupManager] Restoring Stage 2: Complete'
 			self.feeds = 'OK'
 			self.Stage2Completed = True
 
 	def Stage3(self):
+		print '[BackupManager] Restoring Stage 3: Kernel Version/Feeds Checks'
 		if not self.Console:
 			self.Console = Console()
 		if self.feeds == 'OK':
+			print '[BackupManager] Restoring Stage 3: Feeds are OK'
 			if path.exists('/tmp/backupkernelversion'):
 				kernelversion = file('/tmp/backupkernelversion').read()
 				if kernelversion == about.getKernelVersionString():
+					print '[BackupManager] Restoring Stage 3: Kernel Version is same as backup'
 					self.Console.ePopen('opkg list-installed', self.Stage3Complete)
 				else:
+					print '[BackupManager] Restoring Stage 3: Kernel Version does not match, exiting'
 					self.Stage6()
 			else:
+				print '[BackupManager] Restoring Stage 3: Kernel Version check failed'
 				self.Stage6()
 		elif self.feeds == 'DOWN':
+			print '[BackupManager] Restoring Stage 3: Feeds are down, plugin restore not possible'
 			AddPopupWithCallback(self.Stage6,
 				_("Sorry feeds are down for maintenance, Please try again later."),
 				MessageBox.TYPE_INFO,
@@ -439,6 +451,7 @@ class VIXBackupManager(Screen):
 				NOPLUGINS
 			)
 		elif self.feeds == 'BAD':
+			print '[BackupManager] Restoring Stage 3: no network connection, plugin restore not possible'
 			AddPopupWithCallback(self.Stage6,
 				_("Your STB_BOX is not connected to the internet, please check your network settings and try again."),
 				MessageBox.TYPE_INFO,
@@ -446,6 +459,7 @@ class VIXBackupManager(Screen):
 				NOPLUGINS
 			)
 		else:
+			print '[BackupManager] Restoring Stage 3: Feeds state is unknown aborting'
 			self.Stage6()
 
 	def Stage3Complete(self, result, retval, extra_args):
@@ -463,8 +477,10 @@ class VIXBackupManager(Screen):
 					if parts[0] not in plugins:
 						output.write(parts[0] + ' ')
 			output.close()
+			print '[BackupManager] Restoring Stage 3: Complete'
 			self.Stage3Completed = True
 		else:
+			print '[BackupManager] Restoring Stage 3: not needed'
 			self.Stage6()
 
 	def Stage4(self):
@@ -477,9 +493,8 @@ class VIXBackupManager(Screen):
 				if not path.exists(parts[1]):
 					mkdir(parts[1], 0755)
 		if path.exists('/tmp/trimedExtraInstalledPlugins'):
-			print 'trimedExtraInstalledPlugins= TRUE'
 			pluginslist = file('/tmp/trimedExtraInstalledPlugins').read()
-			print 'pluginslist\n',pluginslist
+			print '[BackupManager] Restoring Stage 4: Plugins to restore',pluginslist
 			if pluginslist:
 				AddPopupWithCallback(self.Stage4Complete,
 					_("Do you want to restore your Enigma2 plugins ?"),
@@ -488,17 +503,21 @@ class VIXBackupManager(Screen):
 					PLUGINRESTOREQUESTIONID
 				)
 			else:
+				print '[BackupManager] Restoring Stage 4: plugin restore not required'
 				self.Stage6()
 		else:
+			print '[BackupManager] Restoring Stage 4: plugin restore check failed'
 			self.Stage6()
 
 	def Stage4Complete(self, answer=None):
 		if not self.Console:
 			self.Console = Console()
 		if answer is True:
+			print '[BackupManager] Restoring Stage 4: plugin restore chosen'
 			self.doPluginsRestore = True
 			self.Stage4Completed = True
 		elif answer is False:
+			print '[BackupManager] Restoring Stage 4: plugin restore skipped by user'
 			AddPopupWithCallback(self.Stage6,
 				_("Now skipping restore process"),
 				MessageBox.TYPE_INFO,
@@ -510,30 +529,37 @@ class VIXBackupManager(Screen):
 		if not self.Console:
 			self.Console = Console()
 		if self.doPluginsRestore:
+			print '[BackupManager] Restoring Stage 5: starting plugin restore'
 			if path.exists('/tmp/trimedExtraInstalledPlugins'):
 				plugintmp = file('/tmp/trimedExtraInstalledPlugins').read()
 				pluginslist = plugintmp.replace('\n',' ')
 				self.Console.ePopen('opkg install ' + pluginslist, self.Stage5Complete)
 			else:
+				print '[BackupManager] Restoring Stage 5: plugin restore failed'
 				self.Stage6()
 		else:
+			print '[BackupManager] Restoring Stage 5: plugin restore not requested'
 			self.Stage6()
 
 	def Stage5Complete(self, result, retval, extra_args):
 		if result:
 			self.didPluginsRestore = True
 			self.Stage5Completed = True
+			print '[BackupManager] Restoring Stage 5: Completed'
 
 	def Stage6(self, result=None, retval=None, extra_args=None):
+		self.Stage1Completed = True
+		self.Stage2Completed = True
+		self.Stage3Completed = True
+		self.Stage4Completed = True
+		self.Stage5Completed = True
 		if not self.Console:
 			self.Console = Console()
 		if self.didPluginsRestore or self.didSettingsRestore:
+			print '[BackupManager] Restoring Completed rebooting'
 			self.Console.ePopen('init 4 && reboot')
 		else:
-			self.Stage2Completed = True
-			self.Stage3Completed = True
-			self.Stage4Completed = True
-			self.Stage5Completed = True
+			print '[BackupManager] Restoring failed or canceled '
 			self.close()
 
 class BackupSelection(Screen):
@@ -895,7 +921,6 @@ class BackupFiles(Screen):
 		self.Stage2Completed = False
 		self.Stage3Completed = False
 		self.Stage4Completed = False
-		self.Stage5Completed = False
 
 	def createBackupJob(self):
 		job = Components.Task.Job(_("BackupManager"))
@@ -908,19 +933,19 @@ class BackupFiles(Screen):
 		task.check = lambda: self.Stage1Completed
 		task.weighting = 1
 
-		task = Components.Task.PythonTask(job, _("Renaming old backup..."))
+		task = Components.Task.PythonTask(job, _("Creating list of installed plugins..."))
 		task.work = self.Stage2
 		task.weighting = 1
 
-		task = Components.Task.ConditionTask(job, _("Renaming old backup..."), timeoutCount=30)
+		task = Components.Task.ConditionTask(job, _("Creating list of installed plugins..."), timeoutCount=30)
 		task.check = lambda: self.Stage2Completed
 		task.weighting = 1
 
-		task = Components.Task.PythonTask(job, _("Creating list of installed plugins..."))
+		task = Components.Task.PythonTask(job, _("Backing up files..."))
 		task.work = self.Stage3
 		task.weighting = 1
 
-		task = Components.Task.ConditionTask(job, _("Creating list of installed plugins..."), timeoutCount=30)
+		task = Components.Task.ConditionTask(job, _("Backing up files..."), timeoutCount=600)
 		task.check = lambda: self.Stage3Completed
 		task.weighting = 1
 
@@ -930,14 +955,6 @@ class BackupFiles(Screen):
 
 		task = Components.Task.ConditionTask(job, _("Backing up files..."), timeoutCount=600)
 		task.check = lambda: self.Stage4Completed
-		task.weighting = 1
-
-		task = Components.Task.PythonTask(job, _("Backing up files..."))
-		task.work = self.Stage5
-		task.weighting = 1
-
-		task = Components.Task.ConditionTask(job, _("Backing up files..."), timeoutCount=600)
-		task.check = lambda: self.Stage5Completed
 		task.weighting = 1
 
 		task = Components.Task.PythonTask(job, _("Backup Complete..."))
@@ -1026,26 +1043,12 @@ class BackupFiles(Screen):
 		now = datetime.now()
 		output.write(now.strftime("%Y-%m-%d %H:%M") + ": Backup Started\n")
 		output.close()
-		self.BackupConsole = Console()
 		self.backupdirs = ' '.join(config.backupmanager.backupdirs.value)
-		print '[BackupManager] Renaming old backup'
-		if path.exists(self.BackupDirectory + config.backupmanager.folderprefix.value + '-' + 'enigma2settingsbackup.tar.gz'):
-			dt = str(date.fromtimestamp(stat(self.BackupDirectory + config.backupmanager.folderprefix.value + '-' + 'enigma2settingsbackup.tar.gz').st_ctime))
-			self.newfilename = self.BackupDirectory + config.backupmanager.folderprefix.value + '-' + dt + '-' + 'enigma2settingsbackup.tar.gz'
-			if path.exists(self.newfilename):
-				remove(self.newfilename)
-			rename(self.BackupDirectory + config.backupmanager.folderprefix.value + '-' + 'enigma2settingsbackup.tar.gz',self.newfilename)
-		self.Stage2Complete()
-
-	def Stage2Complete(self):
-		self.Stage2Completed = True
-
-	def Stage3(self):
 		self.BackupConsole = Console()
 		print '[BackupManager] Listing installed plugins'
-		self.BackupConsole.ePopen('opkg list-installed', self.Stage3Complete)
+		self.BackupConsole.ePopen('opkg list-installed', self.Stage2Complete)
 
-	def Stage3Complete(self, result, retval, extra_args):
+	def Stage2Complete(self, result, retval, extra_args):
 		if result:
 			output = open('/tmp/ExtraInstalledPlugins','w')
 			output.write(result)
@@ -1053,20 +1056,20 @@ class BackupFiles(Screen):
 
 		if path.exists('/tmp/ExtraInstalledPlugins'):
 			print '[BackupManager] Listing completed.'
-			self.Stage3Completed = True
+			self.Stage2Completed = True
 		else:
-			self.session.open(MessageBox, _("Plugin Listing failed - e. g. wrong backup destination or no space left on backup device"), MessageBox.TYPE_INFO, timeout = 10)
+			self.session.openWithCallback(self.BackupComplete, MessageBox, _("Plugin Listing failed - e. g. wrong backup destination or no space left on backup device"), MessageBox.TYPE_INFO, timeout = 10)
 			print '[BackupManager] Result.',result
 			print "{BackupManager] Plugin Listing failed - e. g. wrong backup destination or no space left on backup device"
 
-	def Stage4(self):
+	def Stage3(self):
 		print '[BackupManager] Finding kernel version:' + about.getKernelVersionString()
 		output = open('/tmp/backupkernelversion','w')
 		output.write(about.getKernelVersionString())
 		output.close()
-		self.Stage4Completed = True
+		self.Stage3Completed = True
 
-	def Stage5(self):
+	def Stage4(self):
 		self.BackupConsole = Console()
 		tmplist = config.backupmanager.backupdirs.value
 		tmplist.append('/tmp/ExtraInstalledPlugins')
@@ -1074,21 +1077,25 @@ class BackupFiles(Screen):
 		self.backupdirs = ' '.join(tmplist)
 		print '[BackupManager] Backup running'
 		backupdate = datetime.now()
-		self.Backupfile = self.BackupDirectory + config.backupmanager.folderprefix.value + '-' + backupdate.strftime("%Y-%m-%d_%H-%M") + '-' + 'enigma2settingsbackup.tar.gz'
-		self.BackupConsole.ePopen('tar -czvf ' + self.Backupfile + ' ' + self.backupdirs, self.Stage5Complete)
+		self.Backupfile = self.BackupDirectory + config.backupmanager.folderprefix.value + '-' + about.getImageVersionString() + '.' + about.getBuildVersionString() + '-' + backupdate.strftime("%Y-%m-%d_%H-%M") + '.tar.gz'
+		self.BackupConsole.ePopen('tar -czvf ' + self.Backupfile + ' ' + self.backupdirs, self.Stage4Complete)
 
-	def Stage5Complete(self, result, retval, extra_args):
+	def Stage4Complete(self, result, retval, extra_args):
 		if path.exists(self.Backupfile):
 			chmod(self.Backupfile ,0644)
 			print '[BackupManager] Complete.'
 			remove('/tmp/ExtraInstalledPlugins')
-			self.Stage5Completed = True
+			self.Stage4Completed = True
 		else:
-			self.session.open(MessageBox, _("Backup failed - e. g. wrong backup destination or no space left on backup device"), MessageBox.TYPE_INFO, timeout = 10)
+			self.session.openWithCallback(self.BackupComplete, MessageBox, _("Backup failed - e. g. wrong backup destination or no space left on backup device"), MessageBox.TYPE_INFO, timeout = 10)
 			print '[BackupManager] Result.',result
 			print "{BackupManager] Backup failed - e. g. wrong backup destination or no space left on backup device"
 
 	def BackupComplete(self):
+		self.Stage1Completed = True
+		self.Stage2Completed = True
+		self.Stage3Completed = True
+		self.Stage4Completed = True
 		if config.backupmanager.schedule.value:
 			atLeast = 60
 			autoBackupManagerTimer.backupupdate(atLeast)
