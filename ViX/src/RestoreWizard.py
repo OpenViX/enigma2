@@ -225,7 +225,7 @@ class RestoreWizard(WizardLanguage, Rc):
 			self.buildListRef.close(True)
 
 	def doRestorePluginsTest(self):
-		if self.delaymess not None:
+		if self.delaymess:
 			self.delaymess.close()
 		if not self.Console:
 			self.Console = Console()
