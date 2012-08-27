@@ -176,13 +176,6 @@ class RestoreWizard(WizardLanguage, Rc):
 
 
 	def settingRestore_Finished(self, result, retval, extra_args = None):
-		fstabfile = file('/etc/fstab').readlines()
-		for mountfolder in fstabfile:
-			parts = mountfolder.strip().split()
-			if parts and str(parts[0]).startswith('UUID'):
-				if not fileExists(parts[1]):
-					mkdir(parts[1], 0755)
-
 		self.didSettingsRestore = True
 		configfile.load()
 		self.doRestorePlugins1()
@@ -224,7 +217,7 @@ class RestoreWizard(WizardLanguage, Rc):
 				self.NextStep = 'noplugins'
 			self.buildListRef.close(True)
 
-	def doRestorePluginsTest(self):
+	def doRestorePluginsTest(self, result = None, retval = None, extra_args = None):
 		if self.delaymess:
 			self.delaymess.close()
 		if not self.Console:
