@@ -9,7 +9,7 @@ from Components.Button import Button
 from Components.MenuList import MenuList
 from Components.Sources.List import List
 from Components.Pixmap import Pixmap
-from Components.config import configfile, config, getConfigListEntry
+from Components.config import configfile, config, getConfigListEntry, ConfigSubsection, ConfigYesNo, ConfigSelection, ConfigText, ConfigNumber, NoSave, ConfigClock
 from Components.ConfigList import ConfigListScreen
 from Components.Harddisk import harddiskmanager, getProcMounts
 from Screens.Screen import Screen
@@ -21,6 +21,24 @@ from enigma import eTimer, getDesktop
 from os import path, system, mkdir, makedirs, listdir, remove, statvfs, chmod, walk
 from shutil import rmtree, move, copy
 from time import localtime, time, strftime, mktime
+
+hddchoises = []
+for p in harddiskmanager.getMountedPartitions():
+	d = path.normpath(p.mountpoint)
+	if path.exists(p.mountpoint):
+		if p.mountpoint != '/':
+			hddchoises.append((d + '/', p.mountpoint))
+config.imagemanager = ConfigSubsection()
+config.imagemanager.folderprefix = ConfigText(default=config.misc.boxtype.getValue(), fixed_size=False)
+config.imagemanager.backuplocation = ConfigSelection(choices = hddchoises)
+config.imagemanager.schedule = ConfigYesNo(default = False)
+config.imagemanager.scheduletime = ConfigClock(default = 0) # 1:00
+config.imagemanager.repeattype = ConfigSelection(default = "daily", choices = [("daily", _("Daily")), ("weekly", _("Weekly")), ("monthly", _("30 Days"))])
+config.imagemanager.backupretry = ConfigNumber(default = 30)
+config.imagemanager.backupretrycount = NoSave(ConfigNumber(default = 0))
+config.imagemanager.nextscheduletime = NoSave(ConfigNumber(default = 0))
+# config.imagemanager.restoreimage = NoSave(ConfigText(default=config.misc.boxtype.getValue(), fixed_size=False))
+
 
 autoImageManagerTimer = None
 
@@ -105,8 +123,7 @@ class VIXImageManager(Screen):
 	def backupRunning(self):
 		self.BackupRunning = False
 		for job in Components.Task.job_manager.getPendingJobs():
-			jobname = str(job.name)
-			if jobname.startswith(_("ImageManager")):
+			if job.name.startswith(_("ImageManager")):
 				self.BackupRunning = True
 		if self.BackupRunning:
 			self["key_green"].setText(_("View Progress"))
@@ -278,11 +295,11 @@ class VIXImageManager(Screen):
 	def GreenPressed(self):
 		self.BackupRunning = False
 		for job in Components.Task.job_manager.getPendingJobs():
-			jobname = str(job.name)
-			if jobname.startswith(_("ImageManager")):
+			if job.name.startswith(_("ImageManager")):
+				backup = job
 				self.BackupRunning = True
 		if self.BackupRunning:
-			self.showJobView(job)
+			self.showJobView(backup)
 		else:
 			self.keyBackup()
 
@@ -302,8 +319,9 @@ class VIXImageManager(Screen):
 			self["key_green"].setText(_("View Progress"))
 			self["key_green"].show()
 			for job in Components.Task.job_manager.getPendingJobs():
-				jobname = str(job.name)
-			self.showJobView(job)
+				if job.name.startswith(_("ImageManager")):
+					backup = job
+			self.showJobView(backup)
 
 # 	def keyResstore(self):
 # 		self.sel = self['list'].getCurrent()

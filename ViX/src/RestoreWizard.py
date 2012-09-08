@@ -144,11 +144,9 @@ class RestoreWizard(WizardLanguage, Rc):
 			print '[RestoreWizard] Stage 2: Restoring plugins'
 			if not self.Console:
 				self.Console = Console()
-			plugintmp = file('/tmp/trimedExtraInstalledPlugins').read()
-			pluginslist = plugintmp.replace('\n',' ')
 			if self.feeds == 'OK':
 				print '[RestoreWizard] Stage 6: Feeds OK, Restoring Plugins'
-				self.Console.ePopen("opkg install " + pluginslist, self.pluginsRestore_Finished)
+				self.Console.ePopen("opkg install " + self.pluginslist + ' ' + self.pluginslist2, self.pluginsRestore_Finished)
 				self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Please wait while plugins restore completes..."), type = MessageBox.TYPE_INFO, enable_input = False)
 				self.buildListRef.setTitle(_("Restore Wizard"))
 			elif self.feeds == 'DOWN':
@@ -250,20 +248,36 @@ class RestoreWizard(WizardLanguage, Rc):
 
 	def doRestorePlugins2(self, result, retval, extra_args):
 		print '[RestoreWizard] Stage 3: Restore Plugins'
-		if fileExists('/tmp/ExtraInstalledPlugins'):
+		self.pluginslist = ""
+		self.pluginslist2 = ""
+		if path.exists('/tmp/ExtraInstalledPlugins'):
+			self.pluginslist = []
 			plugins = []
 			for line in result.split('\n'):
 				if line:
 					parts = line.strip().split()
 					plugins.append(parts[0])
-			output = open('/tmp/trimedExtraInstalledPlugins','w')
-			pluginlist = file('/tmp/ExtraInstalledPlugins').readlines()
-			for line in pluginlist:
+			tmppluginslist = open('/tmp/ExtraInstalledPlugins', 'r').readlines()
+			for line in tmppluginslist:
 				if line:
 					parts = line.strip().split()
 					if parts[0] not in plugins:
-						output.write(parts[0] + ' ')
-			output.close()
+						self.pluginslist.append(parts[0])
+
+		if path.exists('/tmp/3rdPartyPlugins') and path.exists('/tmp/3rdPartyPluginsLocation'):
+			self.pluginslist2 = []
+			self.thirdpartyPluginsLocation = open('/tmp/3rdPartyPluginsLocation', 'r').readlines()
+			self.thirdpartyPluginsLocation = "".join(self.thirdpartyPluginsLocation)
+			self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace('\n','')
+			tmppluginslist2 = open('/tmp/3rdPartyPlugins', 'r').readlines()
+			for line in tmppluginslist2:
+				line = self.thirdpartyPluginsLocation+line.replace('\n','.ipk')
+				if line and path.exists(line):
+					parts = line.strip().split('_')
+					if parts[0] not in plugins:
+						self.pluginslist2.append(line)
+
+		if len(self.pluginslist) or len(self.pluginslist2):
 			self.doRestorePluginsQuestion()
 		else:
 			if self.didSettingsRestore:
@@ -273,9 +287,15 @@ class RestoreWizard(WizardLanguage, Rc):
 			self.buildListRef.close(True)
 
 	def doRestorePluginsQuestion(self):
- 		pluginslist = file('/tmp/trimedExtraInstalledPlugins').read()
-		if pluginslist:
-			print '[RestoreWizard] Stage 5: Plugins to restore',pluginslist
+		if not self.Console:
+			self.Console = Console()
+		if len(self.pluginslist) or len(self.pluginslist2):
+			if len(self.pluginslist):
+				self.pluginslist = " ".join(self.pluginslist)
+			if len(self.pluginslist2):
+				self.pluginslist2 = " ".join(self.pluginslist2)
+			print '[RestoreWizard] Stage 5: Plugins to restore in feeds',self.pluginslist
+			print '[RestoreWizard] Stage 5: Plugins to restore in extra location',self.pluginslist2
 			if self.didSettingsRestore:
 				print '[RestoreWizard] Stage 5: proceed to question'
 				self.NextStep = 'pluginsquestion'
