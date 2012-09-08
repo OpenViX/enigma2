@@ -482,9 +482,10 @@ class VIXBackupManager(Screen):
 			self.Stage6()
 
 	def Stage3Complete(self, result, retval, extra_args):
-		self.pluginslist = []
-		self.pluginslist2 = []
+		self.pluginslist = ""
+		self.pluginslist2 = ""
 		if path.exists('/tmp/ExtraInstalledPlugins'):
+			self.pluginslist = []
 			plugins = []
 			for line in result.split('\n'):
 				if line:
@@ -497,16 +498,17 @@ class VIXBackupManager(Screen):
 					if parts[0] not in plugins:
 						self.pluginslist.append(parts[0])
 
-			if path.exists('/tmp/3rdPartyPlugins'):
-				tmppluginslist2 = open('/tmp/3rdPartyPlugins', 'r').readlines()
-				for line in tmppluginslist2:
-					line = config.backupmanager.xtraplugindir.getValue()+line.replace('\n','.ipk')
-					print 'LINE:',line
-					if line and path.exists(line):
-						parts = line.strip().split('_')
-						if parts[0] not in plugins:
-							self.pluginslist2.append(line)
-				print '3rdPartyPlugins:',self.pluginslist2
+		if path.exists('/tmp/3rdPartyPlugins'):
+			self.pluginslist2 = []
+			tmppluginslist2 = open('/tmp/3rdPartyPlugins', 'r').readlines()
+			for line in tmppluginslist2:
+				line = config.backupmanager.xtraplugindir.getValue()+line.replace('\n','.ipk')
+				print 'LINE:',line
+				if line and path.exists(line):
+					parts = line.strip().split('_')
+					if parts[0] not in plugins:
+						self.pluginslist2.append(line)
+			print '3rdPartyPlugins:',self.pluginslist2
 
 			print '[BackupManager] Restoring Stage 3: Complete'
 			self.Stage3Completed = True
