@@ -11,7 +11,7 @@ from Components.MenuList import MenuList
 from Components.Sources.List import List
 from Components.Pixmap import MultiPixmap
 from Components.ConfigList import ConfigListScreen
-from Components.config import config, getConfigListEntry
+from Components.config import configfile, config, getConfigListEntry, ConfigSubsection, ConfigYesNo, ConfigNumber, ConfigLocations
 from Components.Console import Console
 from Components.FileList import MultiFileSelectList
 from Screens.Screen import Screen
@@ -22,6 +22,11 @@ from shutil import rmtree
 from datetime import datetime
 from time import localtime, time, strftime, mktime, strftime, sleep
 from enigma import eTimer
+
+config.softcammanager = ConfigSubsection()
+config.softcammanager.softcams_autostart = ConfigLocations(default='')
+config.softcammanager.softcamtimerenabled = ConfigYesNo(default = True)
+config.softcammanager.softcamtimer = ConfigNumber(default = 6)
 
 softcamautopoller = None
 
