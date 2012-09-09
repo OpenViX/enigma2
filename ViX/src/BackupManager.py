@@ -744,7 +744,7 @@ class XtraPluginsSelection(Screen):
 			config.save()
 			self.close(None)
 		else:
-			self.session.open(MessageBox, _("Please choose a folder that contains some packages."), MessageBox.TYPE_INFO, timeout = 10)
+			self.session.open(MessageBox, _("Please enter a folder that contains some packages."), MessageBox.TYPE_INFO, timeout = 10)
 
 	def exit(self):
 		self.close(None)
@@ -799,6 +799,7 @@ class VIXBackupManagerMenu(ConfigListScreen, Screen):
 		self["key_red"] = Button(_("Cancel"))
 		self["key_green"] = Button(_("OK"))
 		self["key_yellow"] = Button(_("Choose Files"))
+		self["key_blue"] = Button(_("Choose local ipk's folder"))
 
 	def createSetup(self):
 		imparts = []
