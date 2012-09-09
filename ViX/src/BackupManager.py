@@ -48,7 +48,7 @@ config.backupmanager.backupretry = ConfigNumber(default = 30)
 config.backupmanager.backupretrycount = NoSave(ConfigNumber(default = 0))
 config.backupmanager.nextscheduletime = NoSave(ConfigNumber(default = 0))
 config.backupmanager.backupdirs = ConfigLocations(default=[eEnv.resolve('${sysconfdir}/enigma2/'), eEnv.resolve('${sysconfdir}/fstab'), eEnv.resolve('${sysconfdir}/hostname'), eEnv.resolve('${sysconfdir}/network/interfaces'), eEnv.resolve('${sysconfdir}/passwd'), eEnv.resolve('${sysconfdir}/etc/shadow'), eEnv.resolve('${sysconfdir}/resolv.conf'), eEnv.resolve('${sysconfdir}/ushare.conf'), eEnv.resolve('${sysconfdir}/inadyn.conf'), eEnv.resolve('${sysconfdir}/tuxbox/config/'), eEnv.resolve('${sysconfdir}/wpa_supplicant.conf'), '/usr/softcams/'])
-config.backupmanager.xtraplugindir = ConfigDirectory()
+config.backupmanager.xtraplugindir = ConfigDirectory(default='')
 config.backupmanager.lastlog = ConfigText(default=' ', fixed_size=False)
 
 def BackupManagerautostart(reason, session=None, **kwargs):
@@ -1193,7 +1193,7 @@ class BackupFiles(Screen):
 		self.Stage3Completed = True
 
 	def Stage4(self):
-		if path.exists(config.backupmanager.xtraplugindir.getValue()):
+		if config.backupmanager.xtraplugindir.getValue() and path.exists(config.backupmanager.xtraplugindir.getValue()):
 			output = open('/tmp/3rdPartyPlugins','w')
 			for file in listdir(config.backupmanager.xtraplugindir.getValue()):
 				print 'file:',file
