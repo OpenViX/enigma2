@@ -12,24 +12,28 @@ from PowerManager import PowerManagerautostart, PowerManagerNextWakeup
 from os import path, listdir
 
 def checkConfigBackup():
-	devices = [ (r.description, r.mountpoint) for r in harddiskmanager.getMountedPartitions(onlyhotplug = False)]
-	list = []
-	images = ""
-	for x in devices:
-		if x[1] == '/':
-			devices.remove(x)
-	if len(devices):
+	try:
+		devices = [ (r.description, r.mountpoint) for r in harddiskmanager.getMountedPartitions(onlyhotplug = False)]
+		list = []
+		images = ""
 		for x in devices:
-			if path.exists(path.join(x[1],'backup')):
-				images = listdir(path.join(x[1],'backup'))
-			if len(images):
-				for fil in images:
-					if fil.endswith('.tar.gz'):
-						dir = path.join(x[1],'backup')
-						list.append((path.join(dir,fil),path.join(x[1],fil)))
-	if len(list):
-		return True
-	else:
+			if x[1] == '/':
+				devices.remove(x)
+		if len(devices):
+			for x in devices:
+				if path.exists(path.join(x[1],'backup')):
+					images = listdir(path.join(x[1],'backup'))
+				if len(images):
+					for fil in images:
+						if fil.endswith('.tar.gz'):
+							dir = path.join(x[1],'backup')
+							list.append((path.join(dir,fil),path.join(x[1],fil)))
+		if len(list):
+			return True
+		else:
+			return None
+	except IOError, e:
+		print "unable to use device (%s)..." % str(e)
 		return None
 
 if checkConfigBackup() is None:
