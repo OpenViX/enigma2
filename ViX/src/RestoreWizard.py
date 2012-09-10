@@ -264,18 +264,34 @@ class RestoreWizard(WizardLanguage, Rc):
 					if parts[0] not in plugins:
 						self.pluginslist.append(parts[0])
 
-		if path.exists('/tmp/3rdPartyPlugins') and path.exists('/tmp/3rdPartyPluginsLocation'):
+		if path.exists('/tmp/3rdPartyPlugins'):
 			self.pluginslist2 = []
-			self.thirdpartyPluginsLocation = open('/tmp/3rdPartyPluginsLocation', 'r').readlines()
-			self.thirdpartyPluginsLocation = "".join(self.thirdpartyPluginsLocation)
-			self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace('\n','')
+			if path.exists('/tmp/3rdPartyPluginsLocation'):
+				self.thirdpartyPluginsLocation = open('/tmp/3rdPartyPluginsLocation', 'r').readlines()
+				self.thirdpartyPluginsLocation = "".join(self.thirdpartyPluginsLocation)
+				self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace('\n','')
+			else:
+				self.thirdpartyPluginsLocation = " "
 			tmppluginslist2 = open('/tmp/3rdPartyPlugins', 'r').readlines()
 			for line in tmppluginslist2:
-				line = self.thirdpartyPluginsLocation+line.replace('\n','.ipk')
-				if line and path.exists(line):
+				if line:
 					parts = line.strip().split('_')
+					print 'PARTS:', parts
 					if parts[0] not in plugins:
-						self.pluginslist2.append(line)
+						ipk = parts[0]
+						available = listdir(self.thirdpartyPluginsLocation)
+						for file in available:
+							if file:
+								fileparts = file.strip().split('_')
+								print 'FILE:',fileparts
+								print 'IPK:',ipk
+								if fileparts[0] == ipk:
+									self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace(' ', '%20')
+									ipk = path.join(self.thirdpartyPluginsLocation, file)
+									if path.exists(ipk):
+										print 'IPK', ipk
+										self.pluginslist2.append(ipk)
+			print '3rdPartyPlugins:',self.pluginslist2
 
 		if len(self.pluginslist) or len(self.pluginslist2):
 			self.doRestorePluginsQuestion()

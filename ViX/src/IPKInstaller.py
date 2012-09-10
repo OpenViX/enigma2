@@ -4,6 +4,7 @@ from Plugins.Plugin import PluginDescriptor
 from Screens.Screen import Screen
 from Screens.Console import Console
 from Screens.ChoiceBox import ChoiceBox
+from Components.config import config
 from Screens.MessageBox import MessageBox
 from Components.ActionMap import ActionMap, HelpableActionMap
 from Components.Label import Label
@@ -13,7 +14,7 @@ from Components.MenuList import MenuList
 from Components.Sources.List import List
 from Screens.Standby import TryQuitMainloop
 from Tools.Directories import resolveFilename, SCOPE_PLUGINS, SCOPE_CURRENT_SKIN
-from os import listdir, remove
+from os import listdir, remove, path
 import datetime, time
 
 class VIXIPKInstaller(Screen):
@@ -34,21 +35,27 @@ class VIXIPKInstaller(Screen):
 		Screen.__init__(self, session)
 		Screen.setTitle(self, _("IPK Installer"))
 		self['lab1'] = Label()
+		self.defaultDir = '/tmp'
 		self.onChangedEntry = [ ]
 		self.list = []
-		self.populate_List()
-		self['list'] = MenuList(self.list)
 		self['myactions'] = ActionMap(['ColorActions', 'OkCancelActions', 'DirectionActions', "MenuActions"],
 			{
 				'cancel': self.close,
 				'red': self.close,
 				'green': self.keyInstall,
+				'yellow': self.changelocation,
 				'ok': self.keyInstall,
 				"menu": self.close,
 			}, -1)
 
 		self["key_red"] = Button(_("Close"))
 		self["key_green"] = Button(_("Install"))
+		self["key_yellow"] = Button()
+
+		self.list = []
+		self['list'] = MenuList(self.list)
+		self.populate_List()
+
 		if not self.selectionChanged in self["list"].onSelectionChanged:
 			self["list"].onSelectionChanged.append(self.selectionChanged)
 
@@ -67,16 +74,35 @@ class VIXIPKInstaller(Screen):
 		for cb in self.onChangedEntry:
 			cb(name, desc)
 
+	def changelocation(self):
+		if self.defaultDir == '/tmp':
+			self["key_yellow"].setText(_("Extra IPK's"))
+			self.defaultDir = config.backupmanager.xtraplugindir.getValue()
+			if not path.exists(self.defaultDir):
+				message = _("Sorry but location does exist or not setup, please setup in Backup Manager ?")
+				ybox = self.session.openWithCallback(self.Install, MessageBox, message, MessageBox.TYPE_INFO)
+				ybox.setTitle(_("Change Location"))
+			else:
+				self.populate_List()
+		else:
+			self["key_yellow"].setText(_("Temp Folder"))
+			self.defaultDir = '/tmp'
+			self.populate_List()
+
 	def populate_List(self):
+		if self.defaultDir == '/tmp':
+			self["key_yellow"].setText(_("Extra IPK's"))
+		else:
+			self["key_yellow"].setText(_("Temp Folder"))
+
 		self['lab1'].setText(_("Select a package to install:"))
 		del self.list[:]
-		f = listdir('/tmp')
+		f = listdir(self.defaultDir)
 		for line in f:
-			parts = line.split()
-			pkg = parts[0]
-			if pkg.find('.ipk') >= 0:
-				self.list.append(pkg)
+			if line.find('.ipk') != -1:
+				self.list.append(line)
 		self.list.sort()
+		self['list'].l.setList(self.list)
 
 	def keyInstall(self):
 		message = _("Are you ready to install ?")
@@ -87,7 +113,8 @@ class VIXIPKInstaller(Screen):
 		if answer is True:
 			sel = self['list'].getCurrent()
 			if sel:
-				cmd1 = "/usr/bin/opkg install /tmp/" + sel
+				self.defaultDir = self.defaultDir.replace(' ', '%20')
+				cmd1 = "/usr/bin/opkg install " + path.join(self.defaultDir, sel)
 				self.session.openWithCallback(self.installFinished(sel), Console, title=_("Installing..."), cmdlist = [cmd1], closeOnSuccess = True)
 
 	def installFinished(self,sel):

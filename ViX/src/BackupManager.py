@@ -502,16 +502,31 @@ class VIXBackupManager(Screen):
 			self.pluginslist2 = []
 			if config.backupmanager.xtraplugindir.getValue():
 				self.thirdpartyPluginsLocation = config.backupmanager.xtraplugindir.getValue()
-			else:
+			elif path.exists('/tmp/3rdPartyPluginsLocation'):
 				self.thirdpartyPluginsLocation = open('/tmp/3rdPartyPluginsLocation', 'r').readlines()
 				self.thirdpartyPluginsLocation = "".join(self.thirdpartyPluginsLocation)
 				self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace('\n','')
+			else:
+				self.thirdpartyPluginsLocation = " "
 			tmppluginslist2 = open('/tmp/3rdPartyPlugins', 'r').readlines()
 			for line in tmppluginslist2:
-				if line and path.exists(line):
+				if line:
 					parts = line.strip().split('_')
+					print 'PARTS:', parts
 					if parts[0] not in plugins:
-						self.pluginslist2.append(line)
+						ipk = parts[0]
+						available = listdir(self.thirdpartyPluginsLocation)
+						for file in available:
+							if file:
+								fileparts = file.strip().split('_')
+								print 'FILE:',fileparts
+								print 'IPK:',ipk
+								if fileparts[0] == ipk:
+									self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace(' ', '%20')
+									ipk = path.join(self.thirdpartyPluginsLocation, file)
+									if path.exists(ipk):
+										print 'IPK', ipk
+										self.pluginslist2.append(ipk)
 			print '3rdPartyPlugins:',self.pluginslist2
 
 			print '[BackupManager] Restoring Stage 3: Complete'
@@ -561,7 +576,7 @@ class VIXBackupManager(Screen):
 			self.Console = Console()
 		if self.doPluginsRestore:
 			print '[BackupManager] Restoring Stage 5: starting plugin restore'
-			self.Console.ePopen('opkg install ' + self.pluginslist, self.Stage5Complete)
+			self.Console.ePopen('opkg install ' + self.pluginslist + ' ' + self.pluginslist2, self.Stage5Complete)
 		else:
 			print '[BackupManager] Restoring Stage 5: plugin restore not requested'
 			self.Stage6()
@@ -818,6 +833,7 @@ class VIXBackupManagerMenu(ConfigListScreen, Screen):
 		self.editListEntry = None
 		self.list = []
 		self.list.append(getConfigListEntry(_("Backup Location"), config.backupmanager.backuplocation))
+		self.list.append(getConfigListEntry(_("Extra Package's Location"), config.backupmanager.xtraplugindir))
 		self.list.append(getConfigListEntry(_("Folder prefix"), config.backupmanager.folderprefix))
 		self.list.append(getConfigListEntry(_("Schedule Backups"), config.backupmanager.schedule))
 		if config.backupmanager.schedule.value:
@@ -1198,10 +1214,9 @@ class BackupFiles(Screen):
 			for file in listdir(config.backupmanager.xtraplugindir.getValue()):
 				print 'file:',file
 				if file.endswith('.ipk'):
-					print 'IPK FOUND'
-					output.write(file.replace(".ipk","") + '\n')
-# 					copy(path.join(config.backupmanager.xtraplugindir.getValue(),file), '/tmp')
-# 					self.selectedFiles.append(path.join('/tmp/',file))
+					print 'IPK FOUND',file
+					parts = file.strip().split('_')
+					output.write(parts[0] + '\n')
 			output.close()
 			output = open('/tmp/3rdPartyPluginsLocation','w')
 			output.write(config.backupmanager.xtraplugindir.getValue())
@@ -1215,6 +1230,8 @@ class BackupFiles(Screen):
 		tmplist.append('/tmp/backupkernelversion')
 		if path.exists('/tmp/3rdPartyPlugins'):
 			tmplist.append('/tmp/3rdPartyPlugins')
+		if path.exists('/tmp/3rdPartyPluginsLocation'):
+			tmplist.append('/tmp/3rdPartyPluginsLocation')
 		self.backupdirs = ' '.join(tmplist)
 		print '[BackupManager] Backup running'
 		backupdate = datetime.now()
