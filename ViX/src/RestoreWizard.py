@@ -10,7 +10,7 @@ from Screens.WizardLanguage import WizardLanguage
 from Screens.Rc import Rc
 from Screens.MessageBox import MessageBox
 from Tools.Directories import fileExists, pathExists, resolveFilename, SCOPE_PLUGINS
-from os import mkdir, listdir, path
+from os import mkdir, listdir, path, walk
 
 class RestoreWizard(WizardLanguage, Rc):
 	def __init__(self, session):
@@ -273,24 +273,36 @@ class RestoreWizard(WizardLanguage, Rc):
 			else:
 				self.thirdpartyPluginsLocation = " "
 			tmppluginslist2 = open('/tmp/3rdPartyPlugins', 'r').readlines()
+			available = None
 			for line in tmppluginslist2:
 				if line:
 					parts = line.strip().split('_')
 					print 'PARTS:', parts
 					if parts[0] not in plugins:
 						ipk = parts[0]
-						available = listdir(self.thirdpartyPluginsLocation)
-						for file in available:
-							if file:
-								fileparts = file.strip().split('_')
-								print 'FILE:',fileparts
-								print 'IPK:',ipk
-								if fileparts[0] == ipk:
-									self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace(' ', '%20')
-									ipk = path.join(self.thirdpartyPluginsLocation, file)
-									if path.exists(ipk):
-										print 'IPK', ipk
-										self.pluginslist2.append(ipk)
+						if path.exists(self.thirdpartyPluginsLocation):
+							available = listdir(self.thirdpartyPluginsLocation)
+						else:
+							for root, subFolders, files in walk('/media'):
+								for folder in subFolders:
+									print "%s has subdirectory %s" % (root, folder)
+									if folder and folder == path.split(self.thirdpartyPluginsLocation[:-1])[-1]:
+										self.thirdpartyPluginsLocation = path.join(root,folder)
+										available = listdir(self.thirdpartyPluginsLocation)
+										print 'TRUE',self.thirdpartyPluginsLocation
+										break
+						if available:
+							for file in available:
+								if file:
+									fileparts = file.strip().split('_')
+									print 'FILE:',fileparts
+									print 'IPK:',ipk
+									if fileparts[0] == ipk:
+										self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace(' ', '%20')
+										ipk = path.join(self.thirdpartyPluginsLocation, file)
+										if path.exists(ipk):
+											print 'IPK', ipk
+											self.pluginslist2.append(ipk)
 			print '3rdPartyPlugins:',self.pluginslist2
 
 		if len(self.pluginslist) or len(self.pluginslist2):
