@@ -163,7 +163,7 @@ class VIXImageManager(Screen):
 	def showJobView(self, job):
 		from Screens.TaskView import JobView
 		Components.Task.job_manager.in_background = False
-		self.session.openWithCallback(self.JobViewCB, JobView, job, cancelable = False, afterEventChangeable = False)
+		self.session.openWithCallback(self.JobViewCB, JobView, job, cancelable = False, backgroundable = False, afterEventChangeable = False, afterEvent="close")
 
 	def JobViewCB(self, in_background):
 		Components.Task.job_manager.in_background = in_background
