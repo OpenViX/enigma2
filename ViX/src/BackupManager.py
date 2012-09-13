@@ -93,10 +93,10 @@ class VIXBackupManager(Screen):
 
 		self['lab1'] = Label()
 		self["backupstatus"] = Label()
-		self["key_red"] = Button(_("Refresh List"))
+		self["key_blue"] = Button(_("Refresh List"))
 		self["key_green"] = Button()
 		self["key_yellow"] = Button(_("Restore"))
-		self["key_blue"] = Button(_("Delete"))
+		self["key_red"] = Button(_("Delete"))
 
 		self.BackupRunning = False
 		self.onChangedEntry = [ ]
@@ -177,10 +177,11 @@ class VIXBackupManager(Screen):
 				self['myactions'] = ActionMap(['ColorActions', 'OkCancelActions', 'DirectionActions', "MenuActions", "TimerEditActions"],
 					{
 						'cancel': self.close,
-						'red': self.populate_List,
+						'ok': self.keyResstore,
+						'red': self.keyDelete,
 						'green': self.GreenPressed,
 						'yellow': self.keyResstore,
-						'blue': self.keyDelete,
+						'blue': self.populate_List,
 						"menu": self.createSetup,
 						'log': self.showLog,
 					}, -1)
@@ -202,10 +203,11 @@ class VIXBackupManager(Screen):
 			self['myactions'] = ActionMap(['ColorActions', 'OkCancelActions', 'DirectionActions', "MenuActions", "TimerEditActions"],
 				{
 					'cancel': self.close,
-					'red': self.populate_List,
+					'ok': self.keyResstore,
+					'red': self.keyDelete,
 					'green': self.GreenPressed,
 					'yellow': self.keyResstore,
-					'blue': self.keyDelete,
+					'blue': self.populate_List,
 					"menu": self.createSetup,
 					'log': self.showLog,
 				}, -1)

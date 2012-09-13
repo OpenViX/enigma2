@@ -83,10 +83,10 @@ class VIXImageManager(Screen):
 
 		self['lab1'] = Label()
 		self["backupstatus"] = Label()
-		self["key_red"] = Button(_("Refresh List"))
+		self["key_blue"] = Button(_("Refresh List"))
 		self["key_green"] = Button()
 		self["key_yellow"] = Button(_("Downloads"))
-		self["key_blue"] = Button(_("Delete"))
+		self["key_red"] = Button(_("Delete"))
 
 		self.BackupRunning = False
 		self.onChangedEntry = [ ]
@@ -191,10 +191,10 @@ class VIXImageManager(Screen):
 				self['myactions'] = ActionMap(['ColorActions', 'OkCancelActions', 'DirectionActions', "MenuActions", "HelpActions"],
 					{
 						'cancel': self.close,
-						'red': self.populate_List,
+						'red': self.keyDelete,
 						'green': self.GreenPressed,
 						'yellow': self.doDownload,
-						'blue': self.keyDelete,
+						'blue': self.populate_List,
 						"menu": self.createSetup,
 						"up": self.refreshUp,
 						"down": self.refreshDown,
@@ -217,10 +217,10 @@ class VIXImageManager(Screen):
 			self['myactions'] = ActionMap(['ColorActions', 'OkCancelActions', 'DirectionActions', "MenuActions", "HelpActions"],
 				{
 					'cancel': self.close,
-					'red': self.populate_List,
+					'red': self.keyDelete,
 					'green': self.GreenPressed,
 					'yellow': self.doDownload,
-					'blue': self.keyDelete,
+					'blue': self.populate_List,
 					"menu": self.createSetup,
 					"up": self.refreshUp,
 					"down": self.refreshDown,

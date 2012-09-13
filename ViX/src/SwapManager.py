@@ -69,12 +69,12 @@ class StartSwap:
 class VIXSwap(Screen):
 	skin = """
 	<screen name="VIXSwap" position="center,center" size="420,250" title="Swap File Manager" flags="wfBorder" >
-		<ePixmap pixmap="skin_default/buttons/red.png" position="0,0" size="140,40" alphatest="on" />
 		<ePixmap pixmap="skin_default/buttons/green.png" position="140,0" size="140,40" alphatest="on" />
 		<ePixmap pixmap="skin_default/buttons/yellow.png" position="280,0" size="140,40" alphatest="on" />
-		<widget name="key_red" position="0,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" />
+		<ePixmap pixmap="skin_default/buttons/blue.png" position="420,0" size="140,40" alphatest="on" />
 		<widget name="key_green" position="140,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1" />
 		<widget name="key_yellow" position="280,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" transparent="1" />
+		<widget name="key_blue" position="420,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" />
 		<widget name="autostart_off" position="10,50" zPosition="1" pixmap="skin_default/icons/lock_off.png" size="32,32" alphatest="on" />
 		<widget name="autostart_on" position="10,50" zPosition="2" pixmap="skin_default/icons/lock_on.png" size="32,32" alphatest="on" />
 		<widget name="lab1" position="50,50" size="360,30" font="Regular;20" valign="center" transparent="1"/>
@@ -99,8 +99,8 @@ class VIXSwap(Screen):
 		self['lab4'] = Label(_("Status:"))
 		self['inactive'] = Label(_("Inactive"))
 		self['active'] = Label(_("Active"))
-		self['key_red'] = Label(_("Activate"))
-		self['key_green'] = Label(_("Create"))
+		self['key_green'] = Label(_("Activate"))
+		self['key_blue'] = Label(_("Create"))
 		self['key_yellow'] = Label(_("Autostart"))
 		self['swapname_summary'] = StaticText()
 		self['swapactive_summary'] = StaticText()
@@ -108,7 +108,7 @@ class VIXSwap(Screen):
 		self.swap_place = ''
 		self.new_place = ''
 		self.creatingswap = False
-		self['actions'] = ActionMap(['WizardActions', 'ColorActions', "MenuActions"], {'back': self.close, 'red': self.actDeact, 'green': self.createDel, 'yellow': self.autoSsWap, "menu": self.close})
+		self['actions'] = ActionMap(['WizardActions', 'ColorActions', "MenuActions"], {'back': self.close, 'green': self.actDeact, 'yellow': self.autoSsWap, 'blue': self.createDel, "menu": self.close})
 		self.activityTimer = eTimer()
 		self.activityTimer.timeout.get().append(self.getSwapDevice)
 		self.updateSwap()
@@ -143,7 +143,7 @@ class VIXSwap(Screen):
 		self.swap_active = False
 		self.device = False
 		if result.find('sd') > 0:
-			self['key_green'].setText("")
+			self['key_blue'].setText("")
 			for line in result.split('\n'):
 				if line.find('sd') > 0:
 					parts = line.strip().split()
@@ -160,7 +160,7 @@ class VIXSwap(Screen):
 						continue
 				f.close()
 		else:
-			self['key_green'].setText(_("Create"))
+			self['key_blue'].setText(_("Create"))
 			devicelist = []
 			for p in harddiskmanager.getMountedPartitions():
 				d = path.normpath(p.mountpoint)
@@ -170,7 +170,7 @@ class VIXSwap(Screen):
 				for device in devicelist:
 					for filename in glob(device[1] + '/swap*'):
 						self.swap_place = filename
-						self['key_green'].setText(_("Delete"))
+						self['key_blue'].setText(_("Delete"))
 						info = mystat(self.swap_place)
 						self.swapsize = info[stat.ST_SIZE]
 						continue
@@ -215,12 +215,12 @@ class VIXSwap(Screen):
 		if self.swap_active == True:
 			self['inactive'].hide()
 			self['active'].show()
-			self['key_red'].setText(_("Deactivate"))
+			self['key_green'].setText(_("Deactivate"))
 			self['swapactive_summary'].setText(_("Current Status:") + ' ' + _("Active"))
 		else:
 			self['inactive'].show()
 			self['active'].hide()
-			self['key_red'].setText(_("Activate"))
+			self['key_green'].setText(_("Activate"))
 			self['swapactive_summary'].setText(_("Current Status:") + ' ' + _("Inactive"))
 
 		scanning = _("Enable Swap at startup")

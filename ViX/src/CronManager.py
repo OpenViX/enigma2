@@ -66,13 +66,13 @@ class VIXCronManager(Screen):
 		self.my_crond_active = False
 		self.my_crond_run = False
 
-		self['key_red'] = Label(_("Add"))
-		self['key_green'] = Label(_("Delete"))
+		self['key_red'] = Label(_("Delete"))
+		self['key_green'] = Label(_("Add"))
 		self['key_yellow'] = Label(_("Start"))
 		self['key_blue'] = Label(_("Autostart"))
 		self.list = []
 		self['list'] = List(self.list)
-		self['actions'] = ActionMap(['WizardActions', 'ColorActions', "MenuActions"], {'ok': self.info, 'back': self.UninstallCheck, 'red': self.addtocron, 'green': self.delcron, 'yellow': self.CrondStart, 'blue': self.autostart, "menu": self.closeRecursive})
+		self['actions'] = ActionMap(['WizardActions', 'ColorActions', "MenuActions"], {'ok': self.info, 'back': self.UninstallCheck, 'red': self.delcron, 'green': self.addtocron, 'yellow': self.CrondStart, 'blue': self.autostart, "menu": self.closeRecursive})
 		if not self.selectionChanged in self["list"].onSelectionChanged:
 			self["list"].onSelectionChanged.append(self.selectionChanged)
 		self.service_name = 'busybox-cron'
