@@ -257,7 +257,7 @@ class VIXDevicesPanel(Screen):
 			for line in mountcheck:
 				parts = line.strip().split(" ")
 				if path.realpath(parts[0]).startswith(device):
-					self.session.open(MessageBox, _("Can't unmount partiton, make sure it is not being used for swap or record/timeshift paths"), MessageBox.TYPE_INFO)
+					self.session.open(MessageBox, _("Can't unmount partition, make sure it is not being used for swap or record/timeshift paths"), MessageBox.TYPE_INFO)
 			self.updateList()
 
 	def saveMypoints(self):

@@ -138,7 +138,7 @@ class RestoreWizard(WizardLanguage, Rc):
 				self.Console = Console()
 			print '[RestoreWizard] Stage 1: Restoring settings'
 			self.Console.ePopen("tar -xzvf " + self.fullbackupfilename + " tmp/ExtraInstalledPlugins tmp/backupkernelversion -C /", self.pluginsRestore_Started)
-			self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Please wait while gathers infomation..."), type = MessageBox.TYPE_INFO, enable_input = False)
+			self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Please wait while gathers information..."), type = MessageBox.TYPE_INFO, enable_input = False)
 			self.buildListRef.setTitle(_("Restore Wizard"))
 		elif self.NextStep is 'pluginrestore':
 			print '[RestoreWizard] Stage 2: Restoring plugins'

@@ -263,7 +263,7 @@ class VIXSoftcamManager(Screen):
 				else:
 					self.session.open(MessageBox, _("MGcamd can't run whilst CCcam is running"), MessageBox.TYPE_INFO, timeout = 10, close_on_any_key = True)
 			elif not selectedcam.lower().startswith('cccam') or selectedcam.lower().startswith('oscam') or selectedcam.lower().startswith('mgcamd'):
-				self.session.open(MessageBox, _("Found none stanadard softcam, trying to start, this may fail"), MessageBox.TYPE_INFO, timeout = 10, close_on_any_key = True)
+				self.session.open(MessageBox, _("Found none standard softcam, trying to start, this may fail"), MessageBox.TYPE_INFO, timeout = 10, close_on_any_key = True)
 				self.session.openWithCallback(self.showActivecam, VIXStartCam, self.sel[0])
 
 	def showLog(self):
