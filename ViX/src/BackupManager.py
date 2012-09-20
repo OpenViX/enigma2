@@ -504,10 +504,12 @@ class VIXBackupManager(Screen):
 			self.pluginslist2 = []
 			if config.backupmanager.xtraplugindir.getValue():
 				self.thirdpartyPluginsLocation = config.backupmanager.xtraplugindir.getValue()
+				self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace(' ', '%20')
 			elif path.exists('/tmp/3rdPartyPluginsLocation'):
 				self.thirdpartyPluginsLocation = open('/tmp/3rdPartyPluginsLocation', 'r').readlines()
 				self.thirdpartyPluginsLocation = "".join(self.thirdpartyPluginsLocation)
 				self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace('\n','')
+				self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace(' ', '%20')
 			else:
 				self.thirdpartyPluginsLocation = " "
 			tmppluginslist2 = open('/tmp/3rdPartyPlugins', 'r').readlines()
@@ -536,7 +538,6 @@ class VIXBackupManager(Screen):
 									print 'FILE:',fileparts
 									print 'IPK:',ipk
 									if fileparts[0] == ipk:
-										self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace(' ', '%20')
 										ipk = path.join(self.thirdpartyPluginsLocation, file)
 										if path.exists(ipk):
 											print 'IPK', ipk
@@ -555,8 +556,12 @@ class VIXBackupManager(Screen):
 		if len(self.pluginslist) or len(self.pluginslist2):
 			if len(self.pluginslist):
 				self.pluginslist = " ".join(self.pluginslist)
+			else:
+				self.pluginslist = ""
 			if len(self.pluginslist2):
 				self.pluginslist2 = " ".join(self.pluginslist2)
+			else:
+				self.pluginslist2 = ""
 			print '[BackupManager] Restoring Stage 4: Plugins to restore',self.pluginslist
 			print '[BackupManager] Restoring Stage 4: Plugins to restore',self.pluginslist2
 			AddPopupWithCallback(self.Stage4Complete,

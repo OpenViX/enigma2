@@ -270,8 +270,10 @@ class RestoreWizard(WizardLanguage, Rc):
 				self.thirdpartyPluginsLocation = open('/tmp/3rdPartyPluginsLocation', 'r').readlines()
 				self.thirdpartyPluginsLocation = "".join(self.thirdpartyPluginsLocation)
 				self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace('\n','')
+				self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace(' ', '%20')
 			else:
 				self.thirdpartyPluginsLocation = " "
+
 			tmppluginslist2 = open('/tmp/3rdPartyPlugins', 'r').readlines()
 			available = None
 			for line in tmppluginslist2:
