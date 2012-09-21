@@ -207,8 +207,15 @@ class RestoreWizard(WizardLanguage, Rc):
 			if kernelversion == about.getKernelVersionString():
 				print '[RestoreWizard] Stage 2: Kernel OK'
 				self.doRestorePluginsTest()
+			else:
+				print '[RestoreWizard] Stage 2: Kernel Differant'
+				if self.didSettingsRestore:
+					self.NextStep = 'reboot'
+				else:
+					self.NextStep = 'noplugins'
+				self.buildListRef.close(True)
 		else:
-			print '[RestoreWizard] Stage 2: Kernel Differant'
+			print '[RestoreWizard] Stage 2: No Kernel to check'
 			if self.didSettingsRestore:
 				self.NextStep = 'reboot'
 			else:
