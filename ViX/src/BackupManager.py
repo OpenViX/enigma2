@@ -517,7 +517,6 @@ class VIXBackupManager(Screen):
 			for line in tmppluginslist2:
 				if line:
 					parts = line.strip().split('_')
-					print 'PARTS:', parts
 					if parts[0] not in plugins:
 						ipk = parts[0]
 						if path.exists(self.thirdpartyPluginsLocation):
@@ -525,9 +524,10 @@ class VIXBackupManager(Screen):
 						else:
 							for root, subFolders, files in walk('/media'):
 								for folder in subFolders:
-									print "%s has subdirectory %s" % (root, folder)
+# 									print "%s has subdirectory %s" % (root, folder)
 									if folder and folder == path.split(self.thirdpartyPluginsLocation[:-1])[-1]:
 										self.thirdpartyPluginsLocation = path.join(root,folder)
+										self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace(' ', '%20')
 										available = listdir(self.thirdpartyPluginsLocation)
 										print 'TRUE',self.thirdpartyPluginsLocation
 										break
@@ -538,6 +538,7 @@ class VIXBackupManager(Screen):
 									print 'FILE:',fileparts
 									print 'IPK:',ipk
 									if fileparts[0] == ipk:
+										self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace(' ', '%20')
 										ipk = path.join(self.thirdpartyPluginsLocation, file)
 										if path.exists(ipk):
 											print 'IPK', ipk

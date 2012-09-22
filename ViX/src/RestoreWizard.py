@@ -286,7 +286,6 @@ class RestoreWizard(WizardLanguage, Rc):
 			for line in tmppluginslist2:
 				if line:
 					parts = line.strip().split('_')
-					print 'PARTS:', parts
 					if parts[0] not in plugins:
 						ipk = parts[0]
 						if path.exists(self.thirdpartyPluginsLocation):
@@ -294,9 +293,10 @@ class RestoreWizard(WizardLanguage, Rc):
 						else:
 							for root, subFolders, files in walk('/media'):
 								for folder in subFolders:
-									print "%s has subdirectory %s" % (root, folder)
+# 									print "%s has subdirectory %s" % (root, folder)
 									if folder and folder == path.split(self.thirdpartyPluginsLocation[:-1])[-1]:
 										self.thirdpartyPluginsLocation = path.join(root,folder)
+										self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace(' ', '%20')
 										available = listdir(self.thirdpartyPluginsLocation)
 										print 'TRUE',self.thirdpartyPluginsLocation
 										break
@@ -329,8 +329,12 @@ class RestoreWizard(WizardLanguage, Rc):
 		if len(self.pluginslist) or len(self.pluginslist2):
 			if len(self.pluginslist):
 				self.pluginslist = " ".join(self.pluginslist)
+			else:
+				self.pluginslist = ""
 			if len(self.pluginslist2):
 				self.pluginslist2 = " ".join(self.pluginslist2)
+			else:
+				self.pluginslist2 = ""
 			print '[RestoreWizard] Stage 5: Plugins to restore in feeds',self.pluginslist
 			print '[RestoreWizard] Stage 5: Plugins to restore in extra location',self.pluginslist2
 			if self.didSettingsRestore:
