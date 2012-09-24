@@ -727,6 +727,7 @@ class XtraPluginsSelection(Screen):
 
 	def __init__(self, session):
 		Screen.__init__(self, session)
+		Screen.setTitle(self, _("Select extra packages folder"))
 		self["key_red"] = StaticText(_("Cancel"))
 		self["key_green"] = StaticText(_("Save"))
 

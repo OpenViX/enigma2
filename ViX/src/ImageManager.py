@@ -204,7 +204,7 @@ class VIXImageManager(Screen):
 				self.BackupDirectory = '/media/hdd/imagebackups/'
 				config.imagemanager.backuplocation.value = '/media/hdd/'
 				config.imagemanager.backuplocation.save
-				self['lab1'].setText(_("The chosen location does not exist, using /media/hdd") + "\n" + _("Select an image to Restore / Delete:"))
+				self['lab1'].setText(_("The chosen location does not exist, using /media/hdd") + "\n" + _("Select an image to delete:"))
 			else:
 				self['myactions'] = ActionMap(['ColorActions', 'OkCancelActions', 'DirectionActions', "MenuActions"],
 					{
@@ -212,7 +212,7 @@ class VIXImageManager(Screen):
 						"menu": self.createSetup,
 					}, -1)
 
-				self['lab1'].setText(_("Device: None available") + "\n" + _("Select an image to Restore / Delete:"))
+				self['lab1'].setText(_("Device: None available") + "\n" + _("Select an image to delete:"))
 		else:
 			self['myactions'] = ActionMap(['ColorActions', 'OkCancelActions', 'DirectionActions', "MenuActions", "HelpActions"],
 				{
@@ -228,7 +228,7 @@ class VIXImageManager(Screen):
 				}, -1)
 
 			self.BackupDirectory = config.imagemanager.backuplocation.value + 'imagebackups/'
-			self['lab1'].setText(_("Device: ") + config.imagemanager.backuplocation.value + "\n" + _("Select an image to Restore / Delete:"))
+			self['lab1'].setText(_("Device: ") + config.imagemanager.backuplocation.value + "\n" + _("Select an image to delete:"))
 
 		try:
 			if not path.exists(self.BackupDirectory):
