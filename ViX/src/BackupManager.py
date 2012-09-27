@@ -1142,6 +1142,8 @@ class BackupFiles(Screen):
 			self.selectedFiles.append('/usr/lib/sabnzbd')
 		if path.exists('/etc/samba') and not '/etc/samba' in self.selectedFiles:
 			self.selectedFiles.append('/etc/samba')
+		if path.exists('/var/keys') and not '/etc/CCcam.cfg' in self.selectedFiles:
+			self.selectedFiles.append('/var/keys')
 
 		config.backupmanager.backupdirs.setValue(self.selectedFiles)
 		config.backupmanager.backupdirs.save()
