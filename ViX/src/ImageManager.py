@@ -17,7 +17,7 @@ from Components.Console import Console
 from Screens.Console import Console as RestareConsole
 from Screens.MessageBox import MessageBox
 from Screens.VirtualKeyBoard import VirtualKeyBoard
-from enigma import eTimer, getDesktop
+from enigma import eTimer, getDesktop, getBoxType
 from os import path, system, mkdir, makedirs, listdir, remove, statvfs, chmod, walk
 from shutil import rmtree, move, copy
 from time import localtime, time, strftime, mktime
@@ -304,7 +304,7 @@ class VIXImageManager(Screen):
 			self.keyBackup()
 
 	def keyBackup(self):
-		if config.misc.boxtype.value.startswith('vu') or config.misc.boxtype.value.startswith('et') or config.misc.boxtype.value.startswith('tm') or config.misc.boxtype.value.startswith('odin') or config.misc.boxtype.value.startswith('venton') or config.misc.boxtype.value.startswith('gb'):
+		if getBoxType().startswith('vu') or getBoxType().startswith('et') or getBoxType().startswith('tm') or getBoxType().startswith('odin') or getBoxType().startswith('venton') or getBoxType().startswith('gb'):
 			message = _("Are you ready to create a backup image ?")
 			ybox = self.session.openWithCallback(self.doBackup, MessageBox, message, MessageBox.TYPE_YESNO)
 			ybox.setTitle(_("Backup Confirmation"))
@@ -326,8 +326,8 @@ class VIXImageManager(Screen):
 # 	def keyResstore(self):
 # 		self.sel = self['list'].getCurrent()
 # 		if not self.BackupRunning:
-# 			if config.misc.boxtype.value == "vuuno" or config.misc.boxtype.value == "vuultimo" or config.misc.boxtype.value == "vusolo" or config.misc.boxtype.value == "vuduo":
-# 				if (config.misc.boxtype.value == "vuuno" and path.exists(self.BackupDirectory + self.sel + '/vuplus/uno')) or (config.misc.boxtype.value == "vuultimo" and path.exists(self.BackupDirectory + self.sel + '/vuplus/ultimo')) or (config.misc.boxtype.value == "vusolo" and path.exists(self.BackupDirectory + self.sel + '/vuplus/solo')) or (config.misc.boxtype.value == "vuduo" and path.exists(self.BackupDirectory + self.sel + '/vuplus/duo')) or (config.misc.boxtype.value == "et5x00" and path.exists(self.BackupDirectory + self.sel + '/et5x00')) or (config.misc.boxtype.value == "et6x00" and path.exists(self.BackupDirectory + self.sel + '/et6x00')) or (config.misc.boxtype.value == "et9x00" and path.exists(self.BackupDirectory + self.sel + '/et9x00')):
+# 			if getBoxType() == "vuuno" or getBoxType() == "vuultimo" or getBoxType() == "vusolo" or getBoxType() == "vuduo":
+# 				if (getBoxType() == "vuuno" and path.exists(self.BackupDirectory + self.sel + '/vuplus/uno')) or (getBoxType() == "vuultimo" and path.exists(self.BackupDirectory + self.sel + '/vuplus/ultimo')) or (getBoxType() == "vusolo" and path.exists(self.BackupDirectory + self.sel + '/vuplus/solo')) or (getBoxType() == "vuduo" and path.exists(self.BackupDirectory + self.sel + '/vuplus/duo')) or (getBoxType() == "et5x00" and path.exists(self.BackupDirectory + self.sel + '/et5x00')) or (getBoxType() == "et6x00" and path.exists(self.BackupDirectory + self.sel + '/et6x00')) or (getBoxType() == "et9x00" and path.exists(self.BackupDirectory + self.sel + '/et9x00')):
 # 					if self.sel:
 # 						message = _("Are you sure you want to restore this image:\n ") + self.sel
 # 						ybox = self.session.openWithCallback(self.RestoreMemCheck, MessageBox, message, MessageBox.TYPE_YESNO)
@@ -337,7 +337,7 @@ class VIXImageManager(Screen):
 # 				else:
 # 					self.session.open(MessageBox, _("Sorry the image " + self.sel + " is not compatible with this STB_BOX."), MessageBox.TYPE_INFO, timeout = 10)
 # 			else:
-# 				self.session.open(MessageBox, _("Sorry Image Restore is not supported on the" + ' ' + config.misc.boxtype.value + ', ' + _("Please copy the folder") + ' ' + self.BackupDirectory + self.sel +  ' \n' + _("to a USB stick, place in front USB port of reciver and power on")), MessageBox.TYPE_INFO, timeout = 30)
+# 				self.session.open(MessageBox, _("Sorry Image Restore is not supported on the" + ' ' + getBoxType() + ', ' + _("Please copy the folder") + ' ' + self.BackupDirectory + self.sel +  ' \n' + _("to a USB stick, place in front USB port of reciver and power on")), MessageBox.TYPE_INFO, timeout = 30)
 # 		else:
 # 			self.session.open(MessageBox, _("Backup in progress,\nPlease for it to finish, before trying again"), MessageBox.TYPE_INFO, timeout = 10)
 #
@@ -466,9 +466,9 @@ class VIXImageManager(Screen):
 # 			copy('/usr/bin/nandwrite',self.BackupDirectory)
 # 		if not path.exists(self.BackupDirectory + 'flash_eraseall'):
 # 			copy('/usr/bin/flash_eraseall',self.BackupDirectory)
-#  		if config.misc.boxtype.value.startswith('vu'):
+#  		if getBoxType().startswith('vu'):
 # 			self.BackupConsole.ePopen(self.BackupDirectory + 'flash_eraseall /dev/mtd0', self.Stage1Complete)
-# 		elif config.misc.boxtype.value.startswith('et'):
+# 		elif getBoxType().startswith('et'):
 # 			self.BackupConsole.ePopen(self.BackupDirectory + 'flash_eraseall /dev/mtd2', self.Stage1Complete)
 #
 # 	def Stage1Complete(self,result, retval, extra_args = None):
@@ -477,10 +477,10 @@ class VIXImageManager(Screen):
 # 			print '[ImageManager] Stage1: Complete.'
 #
 # 	def doRestore2(self):
-#  		if config.misc.boxtype.value.startswith('vu'):
-# 			self.BackupConsole.ePopen(self.BackupDirectory + 'nandwrite -p /dev/mtd0 ' + self.BackupDirectory + self.sel + '/vuplus/' + config.misc.boxtype.value.replace('vu','') + '/root_cfe_auto.jffs2', self.Stage2Complete)
-# 		elif config.misc.boxtype.value.startswith('et'):
-# 			self.BackupConsole.ePopen(self.BackupDirectory + 'nandwrite -p /dev/mtd2 ' + self.BackupDirectory + self.sel + '/' + config.misc.boxtype.value + '/rootfs.bin', self.Stage2Complete)
+#  		if getBoxType().startswith('vu'):
+# 			self.BackupConsole.ePopen(self.BackupDirectory + 'nandwrite -p /dev/mtd0 ' + self.BackupDirectory + self.sel + '/vuplus/' + getBoxType().replace('vu','') + '/root_cfe_auto.jffs2', self.Stage2Complete)
+# 		elif getBoxType().startswith('et'):
+# 			self.BackupConsole.ePopen(self.BackupDirectory + 'nandwrite -p /dev/mtd2 ' + self.BackupDirectory + self.sel + '/' + getBoxType() + '/rootfs.bin', self.Stage2Complete)
 #
 # 	def Stage2Complete(self,result, retval, extra_args = None):
 # 		if retval == 0:
@@ -488,9 +488,9 @@ class VIXImageManager(Screen):
 # 			print '[ImageManager] Stage2: Complete.'
 #
 # 	def doRestore3(self):
-# 		if config.misc.boxtype.value.startswith('vu'):
+# 		if getBoxType().startswith('vu'):
 # 			self.BackupConsole.ePopen(self.BackupDirectory + 'flash_eraseall -j /dev/mtd1', self.Stage3Complete)
-# 		elif config.misc.boxtype.value.startswith('et'):
+# 		elif getBoxType().startswith('et'):
 # 			self.BackupConsole.ePopen(self.BackupDirectory + 'flash_eraseall /dev/mtd1', self.Stage3Complete)
 #
 # 	def Stage3Complete(self,result, retval, extra_args = None):
@@ -499,10 +499,10 @@ class VIXImageManager(Screen):
 # 			print '[ImageManager] Stage3: Complete.'
 #
 # 	def doRestore4(self):
-# 		if config.misc.boxtype.value.startswith('vu'):
-# 			self.BackupConsole.ePopen(self.BackupDirectory + 'nandwrite -p /dev/mtd1 ' + self.BackupDirectory + self.sel + '/vuplus/' + config.misc.boxtype.value.replace('vu','') + '/kernel_cfe_auto.bin', self.Stage4Complete)
-# 		elif config.misc.boxtype.value.startswith('et'):
-# 			self.BackupConsole.ePopen(self.BackupDirectory + 'nandwrite -p /dev/mtd1 ' + self.BackupDirectory + self.sel + '/' + config.misc.boxtype.value + '/kernel.bin', self.Stage4Complete)
+# 		if getBoxType().startswith('vu'):
+# 			self.BackupConsole.ePopen(self.BackupDirectory + 'nandwrite -p /dev/mtd1 ' + self.BackupDirectory + self.sel + '/vuplus/' + getBoxType().replace('vu','') + '/kernel_cfe_auto.bin', self.Stage4Complete)
+# 		elif getBoxType().startswith('et'):
+# 			self.BackupConsole.ePopen(self.BackupDirectory + 'nandwrite -p /dev/mtd1 ' + self.BackupDirectory + self.sel + '/' + getBoxType() + '/kernel.bin', self.Stage4Complete)
 #
 # 	def Stage4Complete(self,result, retval, extra_args = None):
 # 		if retval == 0:
@@ -938,9 +938,9 @@ class ImageBackup(Screen):
 		self.TMPDIR=self.BackupDirectory + config.imagemanager.folderprefix.value + '-mount'
 		self.MAINDESTROOT=self.BackupDirectory + config.imagemanager.folderprefix.value + '-' + self.BackupDate
 		MKFS='mkfs.' + self.ROOTFSTYPE
-		if config.misc.boxtype.value.startswith('tm'):
+		if getBoxType().startswith('tm'):
 			JFFS2OPTIONS=" --disable-compressor=lzo --eraseblock=0x20000 -p -n -l --pagesize=0x800"
-		elif config.misc.boxtype.value =='gb800solo':
+		elif getBoxType() =='gb800solo':
 			JFFS2OPTIONS=" --disable-compressor=lzo -e131072 -l -p125829120"
 		else:
 			JFFS2OPTIONS=" --disable-compressor=lzo --eraseblock=0x20000 -n -l"
@@ -960,40 +960,40 @@ class ImageBackup(Screen):
 		print '[ImageManager] Stage1: Making Root Image.'
 		if self.ROOTFSTYPE == 'jffs2':
 			print '[ImageManager] Stage1: JFFS2 Detected.'
-			if config.misc.boxtype.value.startswith('tm'):
-				makedirs(self.MAINDESTROOT + '/update/' + config.misc.boxtype.value + '/cfe', 0644)
-				self.MAINDEST = self.MAINDESTROOT + '/update/' + config.misc.boxtype.value + '/cfe'
-			elif config.misc.boxtype.value == 'gb800solo':
+			if getBoxType().startswith('tm'):
+				makedirs(self.MAINDESTROOT + '/update/' + getBoxType() + '/cfe', 0644)
+				self.MAINDEST = self.MAINDESTROOT + '/update/' + getBoxType() + '/cfe'
+			elif getBoxType() == 'gb800solo':
 				makedirs(self.MAINDESTROOT + '/gigablue/solo', 0644)
 				self.MAINDEST = self.MAINDESTROOT + '/gigablue/solo'
 			self.commands.append('mount --bind / ' + self.TMPDIR + '/root')
 			self.commands.append(MKFS + ' --root=' + self.TMPDIR + '/root --faketime --output=' + self.WORKDIR + '/root.jffs2' + JFFS2OPTIONS)
 		elif self.ROOTFSTYPE == 'ubifs':
 			print '[ImageManager] Stage1: UBIFS Detected.'
-			if config.misc.boxtype.value.startswith('vu'):
+			if getBoxType().startswith('vu'):
 				MKUBIFS_ARGS="-m 2048 -e 126976 -c 4096 -F"
-				makedirs(self.MAINDESTROOT + '/vuplus/' + config.misc.boxtype.value.replace('vu',''), 0644)
-				self.MAINDEST = self.MAINDESTROOT + '/vuplus/' + config.misc.boxtype.value.replace('vu','')
-			elif config.misc.boxtype.value.startswith('tm'):
+				makedirs(self.MAINDESTROOT + '/vuplus/' + getBoxType().replace('vu',''), 0644)
+				self.MAINDEST = self.MAINDESTROOT + '/vuplus/' + getBoxType().replace('vu','')
+			elif getBoxType().startswith('tm'):
 				MKUBIFS_ARGS="-m 2048 -e 126976 -c 4096 -F"
-				makedirs(self.MAINDESTROOT + '/update/' + config.misc.boxtype.value + '/cfe', 0644)
-				self.MAINDEST = self.MAINDESTROOT + '/update/' + config.misc.boxtype.value + '/cfe'
-			elif config.misc.boxtype.value.startswith('gb'):
+				makedirs(self.MAINDESTROOT + '/update/' + getBoxType() + '/cfe', 0644)
+				self.MAINDEST = self.MAINDESTROOT + '/update/' + getBoxType() + '/cfe'
+			elif getBoxType().startswith('gb'):
 				MKUBIFS_ARGS="-m 2048 -e 126976 -c 4096"
-				if config.misc.boxtype.value.startswith('gb800'):
-					makedirs(self.MAINDESTROOT + '/gigablue/' + config.misc.boxtype.value.replace('gb800',''), 0644)
-					self.MAINDEST = self.MAINDESTROOT + '/gigablue/' + config.misc.boxtype.value.replace('gb800','')
+				if getBoxType().startswith('gb800'):
+					makedirs(self.MAINDESTROOT + '/gigablue/' + getBoxType().replace('gb800',''), 0644)
+					self.MAINDEST = self.MAINDESTROOT + '/gigablue/' + getBoxType().replace('gb800','')
 				else:
-					makedirs(self.MAINDESTROOT + '/gigablue/' + config.misc.boxtype.value.replace('gb',''), 0644)
-					self.MAINDEST = self.MAINDESTROOT + '/gigablue/' + config.misc.boxtype.value.replace('gb','')
-			elif config.misc.boxtype.value.startswith('et') or config.misc.boxtype.value.startswith('odin'):
+					makedirs(self.MAINDESTROOT + '/gigablue/' + getBoxType().replace('gb',''), 0644)
+					self.MAINDEST = self.MAINDESTROOT + '/gigablue/' + getBoxType().replace('gb','')
+			elif getBoxType().startswith('et') or getBoxType().startswith('odin'):
 				MKUBIFS_ARGS="-m 2048 -e 126976 -c 4096"
-				makedirs(self.MAINDESTROOT + '/' + config.misc.boxtype.value, 0644)
-				self.MAINDEST = self.MAINDESTROOT + '/' + config.misc.boxtype.value
-			elif config.misc.boxtype.value.startswith('venton'):
+				makedirs(self.MAINDESTROOT + '/' + getBoxType(), 0644)
+				self.MAINDEST = self.MAINDESTROOT + '/' + getBoxType()
+			elif getBoxType().startswith('venton'):
 				MKUBIFS_ARGS="-m 2048 -e 126976 -c 4096"
-				makedirs(self.MAINDESTROOT + '/' + config.misc.boxtype.value.replace('-',''), 0644)
-				self.MAINDEST = self.MAINDESTROOT + '/' + config.misc.boxtype.value.replace('-','')
+				makedirs(self.MAINDESTROOT + '/' + getBoxType().replace('-',''), 0644)
+				self.MAINDEST = self.MAINDESTROOT + '/' + getBoxType().replace('-','')
 			output = open(self.WORKDIR + '/ubinize.cfg','w')
 			output.write('[ubifs]\n')
 			output.write('mode=ubi\n')
@@ -1016,11 +1016,11 @@ class ImageBackup(Screen):
 
 	def doBackup2(self):
 		print '[ImageManager] Stage2: Making Kernel Image.'
-		if config.misc.boxtype.value.startswith('tm'):
+		if getBoxType().startswith('tm'):
 			self.command = 'cat /dev/mtd6 > ' + self.WORKDIR + '/vmlinux.gz'
-		elif config.misc.boxtype.value.startswith('et') or config.misc.boxtype.value.startswith('vu') or config.misc.boxtype.value.startswith('venton'):
+		elif getBoxType().startswith('et') or getBoxType().startswith('vu') or getBoxType().startswith('venton'):
 			self.command = 'cat /dev/mtd1 > ' + self.WORKDIR + '/vmlinux.gz'
-		elif config.misc.boxtype.value.startswith('odin') or config.misc.boxtype.value.startswith('gb'):
+		elif getBoxType().startswith('odin') or getBoxType().startswith('gb'):
 			self.command = 'cat /dev/mtd2 > ' + self.WORKDIR + '/vmlinux.gz'
 		self.BackupConsole.ePopen(self.command, self.Stage2Complete)
 
@@ -1036,13 +1036,13 @@ class ImageBackup(Screen):
 		if path.exists(self.TMPDIR):
 			rmtree(self.TMPDIR)
 		print '[ImageManager] Stage3: Moving from tmp to backup folders'
-		if config.misc.boxtype.value.startswith('vu'):
+		if getBoxType().startswith('vu'):
 			move(self.WORKDIR + '/root.' + self.ROOTFSTYPE, self.MAINDEST + '/root_cfe_auto.jffs2')
 			move(self.WORKDIR + '/vmlinux.gz', self.MAINDEST + '/kernel_cfe_auto.bin')
-		elif config.misc.boxtype.value.startswith('et') or config.misc.boxtype.value.startswith('odin') or config.misc.boxtype.value.startswith('venton') or config.misc.boxtype.value.startswith('gb'):
+		elif getBoxType().startswith('et') or getBoxType().startswith('odin') or getBoxType().startswith('venton') or getBoxType().startswith('gb'):
 			move(self.WORKDIR + '/root.' + self.ROOTFSTYPE, self.MAINDEST + '/rootfs.bin')
 			move(self.WORKDIR + '/vmlinux.gz', self.MAINDEST + '/kernel.bin')
-			if config.misc.boxtype.value.startswith('et') or config.misc.boxtype.value.startswith('odin'):
+			if getBoxType().startswith('et') or getBoxType().startswith('odin'):
 				fileout = open(self.MAINDEST + '/noforce', 'w')
 				line = "rename this file to 'force' to force an update without confirmation"
 				fileout.write(line)
@@ -1051,9 +1051,9 @@ class ImageBackup(Screen):
 				line = "openvix-" + self.BackupDate
 				fileout.write(line)
 				fileout.close()
-			if config.misc.boxtype.value == 'gb800solo' or config.misc.boxtype.value == 'gb800se':
+			if getBoxType() == 'gb800solo' or getBoxType() == 'gb800se':
 				copy('/usr/lib/enigma2/python/Plugins/SystemPlugins/ViX/burn.bat', self.MAINDESTROOT + '/burn.bat')
-		elif config.misc.boxtype.value.startswith('tm'):
+		elif getBoxType().startswith('tm'):
 			move(self.WORKDIR + '/root.' + self.ROOTFSTYPE, self.MAINDEST + '/oe_rootfs.bin')
 			move(self.WORKDIR + '/vmlinux.gz', self.MAINDEST + '/oe_kernel.bin')
 		print '[ImageManager] Stage3: Removing Swap.'
@@ -1142,27 +1142,27 @@ class ImageManagerDownload(Screen):
 			wos_pwd = base64.b64decode('NDJJWnojMEpldUxX')
 			ftp = FTP('world-of-satellite.com')
 			ftp.login(wos_user,wos_pwd)
-			if config.misc.boxtype.value == 'vuuno':
+			if getBoxType() == 'vuuno':
 				ftp.cwd('openvix-builds/Vu+Uno')
-			elif config.misc.boxtype.value == 'vuultimo':
+			elif getBoxType() == 'vuultimo':
 				ftp.cwd('openvix-builds/Vu+Ultimo')
-			elif config.misc.boxtype.value == 'vusolo':
+			elif getBoxType() == 'vusolo':
 				ftp.cwd('openvix-builds/Vu+Solo')
-			elif config.misc.boxtype.value == 'vuduo':
+			elif getBoxType() == 'vuduo':
 				ftp.cwd('openvix-builds/Vu+Duo')
-			elif config.misc.boxtype.value == 'et5x00':
+			elif getBoxType() == 'et5x00':
 				ftp.cwd('openvix-builds/ET-5x00')
-			elif config.misc.boxtype.value == 'et6x00':
+			elif getBoxType() == 'et6x00':
 				ftp.cwd('openvix-builds/ET-6x00')
-			elif config.misc.boxtype.value == 'et9x00':
+			elif getBoxType() == 'et9x00':
 				ftp.cwd('openvix-builds/ET-9x00')
-			elif config.misc.boxtype.value == 'tmtwin':
+			elif getBoxType() == 'tmtwin':
 				ftp.cwd('openvix-builds/TM-Twin')
-			elif config.misc.boxtype.value == 'odinm9':
+			elif getBoxType() == 'odinm9':
 				ftp.cwd('openvix-builds/odinm9')
 			del self.emlist[:]
 			for fil in ftp.nlst():
-				if not fil.endswith('.') and fil.find(config.misc.boxtype.value) != -1:
+				if not fil.endswith('.') and fil.find(getBoxType()) != -1:
 					self.emlist.append(fil)
 			self.emlist.sort()
 		except:
@@ -1193,23 +1193,23 @@ class ImageManagerDownload(Screen):
 				mkdir(dir, 0777)
 			from Screens.Console import Console as RestareConsole
 			mycmd1 = _("echo 'Downloading Image.'")
-			if config.misc.boxtype.value == 'vuuno':
+			if getBoxType() == 'vuuno':
 				mycmd2 = "wget http://enigma2.world-of-satellite.com//openvix/openvix-builds/Vu+Uno/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
-			elif config.misc.boxtype.value == 'vuultimo':
+			elif getBoxType() == 'vuultimo':
 				mycmd2 = "/openvix/openvix-builds/Vu+Ultimo/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
-			elif config.misc.boxtype.value == 'vusolo':
+			elif getBoxType() == 'vusolo':
 				mycmd2 = "/openvix/openvix-builds/Vu+Solo/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
-			elif config.misc.boxtype.value == 'vuduo':
+			elif getBoxType() == 'vuduo':
 				mycmd2 = "/openvix/openvix-builds/Vu+Duo/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
-			elif config.misc.boxtype.value == 'et5x00':
+			elif getBoxType() == 'et5x00':
 				mycmd2 = "/openvix/openvix-builds/ET-5x00/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
-			elif config.misc.boxtype.value == 'et6x00':
+			elif getBoxType() == 'et6x00':
 				mycmd2 = "/openvix/openvix-builds/ET-6x00/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
-			elif config.misc.boxtype.value == 'et9x00':
+			elif getBoxType() == 'et9x00':
 				mycmd2 = "/openvix/openvix-builds/ET-9x00/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
-			elif config.misc.boxtype.value == 'tmtwin':
+			elif getBoxType() == 'tmtwin':
 				mycmd2 = "/openvix/openvix-builds/TM-Twin/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
-			elif config.misc.boxtype.value == 'odinm9':
+			elif getBoxType() == 'odinm9':
 				mycmd2 = "/openvix/openvix-builds/odinm9/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
 			mycmd3 = "mv " + self.BackupDirectory + "image.zip " + file
 			mycmd4 = _("echo 'Expanding Image.'")
