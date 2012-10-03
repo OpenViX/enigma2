@@ -422,7 +422,7 @@ class VIXDevicePanelConf(Screen, ConfigListScreen):
 			self.mountp = x[1].value
 			self.type = x[3]
 			self.Console.ePopen('umount ' + self.device)
-			self.Console.ePopen("/sbin/blkid | grep " + self.device, self.add_fstab, [self.device, self.mountp] )
+			self.Console.ePopen("/sbin/blkid | grep " + self.device + " && opkg list-installed ntfs-3g", self.add_fstab, [self.device, self.mountp] )
 		message = _("Updating mount locations.")
 		ybox = self.session.openWithCallback(self.delay, MessageBox, message, type=MessageBox.TYPE_INFO, timeout=5, enable_input = False)
 		ybox.setTitle(_("Please wait."))
@@ -472,6 +472,10 @@ class VIXDevicePanelConf(Screen, ConfigListScreen):
 
 		if self.device_type.startswith('ext'):
 			self.device_type = 'auto'
+		elif self.device_type.startswith('ntfs') and result.find('ntfs-3g') != -1:
+			self.device_type = 'ntfs-3g'
+		elif self.device_type.startswith('ntfs') and result.find('ntfs-3g') == -1:
+			self.device_type = 'ntfs'
 
 		if not path.exists(self.mountp):
 			mkdir(self.mountp, 0755)
