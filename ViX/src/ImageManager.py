@@ -778,43 +778,51 @@ class ImageBackup(Screen):
 
 		task = Components.Task.PythonTask(job, _("Setting Up..."))
 		task.work = self.JobStart
-		task.weighting = 1
+		task.weighting = 5
 
 		task = Components.Task.ConditionTask(job, _("Checking Free RAM.."), timeoutCount=10)
 		task.check = lambda: self.RamChecked
-		task.weighting = 1
+		task.weighting = 5
 
 		task = Components.Task.ConditionTask(job, _("Creating Swap.."), timeoutCount=120)
 		task.check = lambda: self.SwapCreated
-		task.weighting = 1
+		task.weighting = 5
 
 		task = Components.Task.PythonTask(job, _("Creating Backup Files..."))
 		task.work = self.doBackup1
-		task.weighting = 1
+		task.weighting = 5
 
 		task = Components.Task.ConditionTask(job, _("Creating Backup Files..."), timeoutCount=900)
 		task.check = lambda: self.Stage1Completed
-		task.weighting = 1
+		task.weighting = 35
 
 		task = Components.Task.PythonTask(job, _("Creating Backup Files..."))
 		task.work = self.doBackup2
-		task.weighting = 1
+		task.weighting = 5
 
 		task = Components.Task.ConditionTask(job, _("Creating Backup Files..."), timeoutCount=900)
 		task.check = lambda: self.Stage2Completed
-		task.weighting = 1
+		task.weighting = 15
+
+		task = Components.Task.PythonTask(job, _("Removing temp mounts..."))
+		task.work = self.doBackup3
+		task.weighting = 5
+
+		task = Components.Task.ConditionTask(job, _("Removing temp mounts..."), timeoutCount=900)
+		task.check = lambda: self.Stage3Completed
+		task.weighting = 5
 
 		task = Components.Task.PythonTask(job, _("Moving to Backup Location..."))
-		task.work = self.doBackup3
-		task.weighting = 1
+		task.work = self.doBackup4
+		task.weighting = 5
 
 		task = Components.Task.ConditionTask(job, _("Moving to Backup Location..."), timeoutCount=900)
-		task.check = lambda: self.Stage3Completed
-		task.weighting = 1
+		task.check = lambda: self.Stage4Completed
+		task.weighting = 5
 
 		task = Components.Task.PythonTask(job, _("Backup Complete..."))
 		task.work = self.BackupComplete
-		task.weighting = 1
+		task.weighting = 5
 
 		return job
 
@@ -1030,12 +1038,18 @@ class ImageBackup(Screen):
 			print '[ImageManager] Stage2: Complete.'
 
 	def doBackup3(self):
-		print '[ImageManager] Stage3: Unmounting tmp system'
+		print '[ImageManager] Stage3: Unmounting and removing tmp system'
 		if path.exists(self.TMPDIR + '/root'):
-			system('umount ' + self.TMPDIR + '/root')
-		if path.exists(self.TMPDIR):
-			rmtree(self.TMPDIR)
-		print '[ImageManager] Stage3: Moving from tmp to backup folders'
+			self.command = 'umount ' + self.TMPDIR + '/root && rm -rf ' + self.TMPDIR
+			self.BackupConsole.ePopen(self.command, self.Stage3Complete)
+
+	def Stage3Complete(self, result, retval, extra_args = None):
+		if retval == 0:
+			self.Stage3Completed = True
+			print '[ImageManager] Stage3: Complete.'
+
+	def doBackup4(self):
+		print '[ImageManager] Stage4: Moving from work to backup folders'
 		if getBoxType().startswith('vu'):
 			move(self.WORKDIR + '/root.' + self.ROOTFSTYPE, self.MAINDEST + '/root_cfe_auto.jffs2')
 			move(self.WORKDIR + '/vmlinux.gz', self.MAINDEST + '/kernel_cfe_auto.bin')
@@ -1056,7 +1070,7 @@ class ImageBackup(Screen):
 		elif getBoxType().startswith('tm'):
 			move(self.WORKDIR + '/root.' + self.ROOTFSTYPE, self.MAINDEST + '/oe_rootfs.bin')
 			move(self.WORKDIR + '/vmlinux.gz', self.MAINDEST + '/oe_kernel.bin')
-		print '[ImageManager] Stage3: Removing Swap.'
+		print '[ImageManager] Stage4: Removing Swap.'
 		if path.exists(self.swapdevice + config.imagemanager.folderprefix.value + "-swapfile_backup"):
 			system('swapoff ' + self.swapdevice + config.imagemanager.folderprefix.value + "-swapfile_backup")
 			remove(self.swapdevice + config.imagemanager.folderprefix.value + "-swapfile_backup")
@@ -1068,15 +1082,15 @@ class ImageBackup(Screen):
 					chmod(path.join(root, momo), 0644)
 				for momo in files:
 					chmod(path.join(root, momo), 0644)
-			print '[ImageManager] Stage3: Image created in ' + self.MAINDESTROOT
-			self.Stage3Complete()
+			print '[ImageManager] Stage4: Image created in ' + self.MAINDESTROOT
+			self.Stage4Complete()
 		else:
-			print "[ImageManager] Stage3: Image creation failed - e. g. wrong backup destination or no space left on backup device"
+			print "[ImageManager] Stage4: Image creation failed - e. g. wrong backup destination or no space left on backup device"
 			self.Stage3Complete()
 
-	def Stage3Complete(self):
-		self.Stage3Completed = True
-		print '[ImageManager] Stage3: Complete.'
+	def Stage4Complete(self):
+		self.Stage4Completed = True
+		print '[ImageManager] Stage4: Complete.'
 
 	def BackupComplete(self):
 		if config.imagemanager.schedule.value:
