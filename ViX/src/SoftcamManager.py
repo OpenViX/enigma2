@@ -515,7 +515,7 @@ class SoftcamAutoPoller:
 	def start(self):
 		if self.softcam_check not in self.timer.callback:
 			self.timer.callback.append(self.softcam_check)
-		self.timer.startLongTimer(0)
+		self.timer.startLongTimer(10)
 
 	def stop(self):
 		if self.softcam_check in self.timer.callback:
@@ -626,6 +626,8 @@ class SoftcamAutoPoller:
 					p = process.ProcessList()
 					softcamcheck_process = str(p.named(softcamcheck)).strip('[]')
 					if softcamcheck_process != "":
+						if path.exists('/tmp/frozen'):
+							remove('/tmp/frozen')
 						print '[SoftcamManager] ' + softcamcheck + ' already running'
 						output = open('/tmp/cam.check.log','a')
 						now = datetime.now()
@@ -711,7 +713,6 @@ class SoftcamAutoPoller:
 								output.close()
 								self.Console.ePopen('ulimit -s 512;/usr/softcams/' + softcamcheck + ' -b')
 								sleep(10)
-							remove('/tmp/frozen')
 
 						elif softcamcheck.lower().startswith('cccam'):
 							if path.exists('/tmp/index.html'):
@@ -790,6 +791,7 @@ class SoftcamAutoPoller:
 								output.close()
 
 					elif softcamcheck_process == "":
+						print "[SoftcamManager] Couldn't find " + softcamcheck + " running, Starting " + softcamcheck
 						output = open('/tmp/cam.check.log','a')
 						now = datetime.now()
 						output.write(now.strftime("%Y-%m-%d %H:%M") + ": Couldn't find " + softcamcheck + " running, Starting " + softcamcheck + "\n")
