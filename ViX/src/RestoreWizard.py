@@ -312,7 +312,6 @@ class RestoreWizard(WizardLanguage, Rc):
 										if path.exists(ipk):
 											print 'IPK', ipk
 											self.pluginslist2.append(ipk)
-			print '3rdPartyPlugins:',self.pluginslist2
 
 		if len(self.pluginslist) or len(self.pluginslist2):
 			self.doRestorePluginsQuestion()

@@ -410,15 +410,33 @@ class VIXBackupManager(Screen):
 			self.Console.ePopen("tar -xzvf " + self.BackupDirectory + self.sel + " tmp/ExtraInstalledPlugins tmp/backupkernelversion  tmp/3rdPartyPlugins -C /", self.Stage1PluginsComplete)
 
 	def Stage1SettingsComplete(self, result, retval, extra_args):
-		print '[BackupManager] Restoring Stage 1 Complete:'
+		print '[BackupManager] Restoring Stage 1 RESULT:',result
+		print '[BackupManager] Restoring Stage 1 retval:',retval
 		if retval == 0:
+			print '[BackupManager] Restoring Stage 1 Complete:'
 			self.didSettingsRestore = True
 			self.Stage1Completed = True
+		else:
+			print '[BackupManager] Restoring Stage 1 Failed:'
+			AddPopupWithCallback(self.Stage2,
+				_("Sorry, but the restore failed."),
+				MessageBox.TYPE_INFO,
+				10,
+				'StageOneFailedNotification'
+			)
 
 	def Stage1PluginsComplete(self, result, retval, extra_args):
-		print '[BackupManager] Restoring Stage 1 Complete:'
 		if retval == 0:
+			print '[BackupManager] Restoring Stage 1 Complete:'
 			self.Stage1Completed = True
+		else:
+			print '[BackupManager] Restoring Stage 1 Failed:'
+			AddPopupWithCallback(self.Stage2,
+				_("Sorry, but the restore failed."),
+				MessageBox.TYPE_INFO,
+				10,
+				'StageOneFailedNotification'
+			)
 
 	def Stage2(self, result=False):
 		print '[BackupManager] Restoring Stage 2: Checking feeds'
@@ -529,27 +547,23 @@ class VIXBackupManager(Screen):
 										self.thirdpartyPluginsLocation = path.join(root,folder)
 										self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace(' ', '%20')
 										available = listdir(self.thirdpartyPluginsLocation)
-										print 'TRUE',self.thirdpartyPluginsLocation
+# 										print 'TRUE',self.thirdpartyPluginsLocation
 										break
 						if available:
 							for file in available:
 								if file:
 									fileparts = file.strip().split('_')
-									print 'FILE:',fileparts
-									print 'IPK:',ipk
+# 									print 'FILE:',fileparts
+# 									print 'IPK:',ipk
 									if fileparts[0] == ipk:
 										self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace(' ', '%20')
 										ipk = path.join(self.thirdpartyPluginsLocation, file)
 										if path.exists(ipk):
-											print 'IPK', ipk
+# 											print 'IPK', ipk
 											self.pluginslist2.append(ipk)
-			print '3rdPartyPlugins:',self.pluginslist2
 
-			print '[BackupManager] Restoring Stage 3: Complete'
-			self.Stage3Completed = True
-		else:
-			print '[BackupManager] Restoring Stage 3: not needed'
-			self.Stage6()
+		print '[BackupManager] Restoring Stage 3: Complete'
+		self.Stage3Completed = True
 
 	def Stage4(self):
 		if not self.Console:
