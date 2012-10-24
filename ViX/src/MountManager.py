@@ -17,7 +17,7 @@ from Components.Harddisk import Harddisk
 from Tools.LoadPixmap import LoadPixmap
 from os import system, rename, path, mkdir, remove
 from time import sleep
-from re import search
+import re
 
 class VIXDevicesPanel(Screen):
 	skin = """
@@ -107,7 +107,7 @@ class VIXDevicesPanel(Screen):
 			if not parts:
 				continue
 			device = parts[3]
- 			if not search('sd[a-z][1-9]',device):
+			if not re.search('sd[a-z][1-9]',device):
 				continue
 			if device in list2:
 				continue
@@ -119,26 +119,7 @@ class VIXDevicesPanel(Screen):
 		self['lab1'].hide()
 
 	def buildMy_rec(self, device):
-		try:
-			if device.find('1') > 0:
-				device2 = device.replace('1', '')
-		except:
-			device2 = ''
-		try:
-			if device.find('2') > 0:
-				device2 = device.replace('2', '')
-		except:
-			device2 = ''
-		try:
-			if device.find('3') > 0:
-				device2 = device.replace('3', '')
-		except:
-			device2 = ''
-		try:
-			if device.find('4') > 0:
-				device2 = device.replace('4', '')
-		except:
-			device2 = ''
+		device2 = re.sub('[0-9]', '', device)
 		devicetype = path.realpath('/sys/block/' + device2 + '/device')
 		d2 = device
 		name = 'USB: '
@@ -253,9 +234,9 @@ class VIXDevicesPanel(Screen):
 			parts = sel[1].split()
 			self.device = parts[5]
 			self.mountp = parts[3]
-			self.Console.ePopen('umount /media/hdd')
 			self.Console.ePopen('umount ' + self.device)
 			if self.mountp.find('/media/hdd') < 0:
+				self.Console.ePopen('umount /media/hdd')
 				self.Console.ePopen("/sbin/blkid | grep " + self.device, self.add_fstab, [self.device, self.mountp])
 			else:
 				self.session.open(MessageBox, _("This Device is already mounted as HDD."), MessageBox.TYPE_INFO, timeout = 10, close_on_any_key = True)
@@ -263,10 +244,7 @@ class VIXDevicesPanel(Screen):
 	def add_fstab(self, result = None, retval = None, extra_args = None):
 		self.device = extra_args[0]
 		self.mountp = extra_args[1]
-		self.device_uuid_tmp = result.split('UUID=')
-		self.device_uuid_tmp = self.device_uuid_tmp[1].replace('"',"")
-		self.device_uuid_tmp = self.device_uuid_tmp.replace('\n',"")
-		self.device_uuid = 'UUID=' + self.device_uuid_tmp
+		self.device_uuid = 'UUID=' + result.split('UUID=')[1].split(' ')[0].replace('"','')
 		if not path.exists(self.mountp):
 			mkdir(self.mountp, 0755)
 		file('/etc/fstab.tmp', 'w').writelines([l for l in file('/etc/fstab').readlines() if '/media/hdd' not in l])
@@ -279,7 +257,7 @@ class VIXDevicesPanel(Screen):
 		line = self.device_uuid + '\t/media/hdd\tauto\tdefaults\t0 0\n'
 		out.write(line)
 		out.close()
-		self.Console.ePopen('mount /media/hdd', self.updateList)
+		self.Console.ePopen('mount -a', self.updateList)
 
 	def restBo(self, answer):
 		if answer is True:
@@ -328,7 +306,7 @@ class VIXDevicePanelConf(Screen, ConfigListScreen):
 			if not parts:
 				continue
 			device = parts[3]
- 			if not search('sd[a-z][1-9]',device):
+ 			if not re.search('sd[a-z][1-9]',device):
 				continue
 			if device in list2:
 				continue
@@ -342,26 +320,7 @@ class VIXDevicePanelConf(Screen, ConfigListScreen):
 		self['Linconn'].hide()
 
 	def buildMy_rec(self, device):
-		try:
-			if device.find('1') > 0:
-				device2 = device.replace('1', '')
-		except:
-			device2 = ''
-		try:
-			if device.find('2') > 0:
-				device2 = device.replace('2', '')
-		except:
-			device2 = ''
-		try:
-			if device.find('3') > 0:
-				device2 = device.replace('3', '')
-		except:
-			device2 = ''
-		try:
-			if device.find('4') > 0:
-				device2 = device.replace('4', '')
-		except:
-			device2 = ''
+		device2 = re.sub('[0-9]', '', device)
 		devicetype = path.realpath('/sys/block/' + device2 + '/device')
 		d2 = device
 		name = 'USB: '
@@ -435,40 +394,8 @@ class VIXDevicePanelConf(Screen, ConfigListScreen):
 	def add_fstab(self, result = None, retval = None, extra_args = None):
 		self.device = extra_args[0]
 		self.mountp = extra_args[1]
-		self.device_tmp = result.split(' ')
-		if self.device_tmp[0].startswith('UUID='):
-			self.device_uuid = self.device_tmp[0].replace('"',"")
-			self.device_uuid = self.device_uuid.replace('\n',"")
-		elif self.device_tmp[1].startswith('UUID='):
-			self.device_uuid = self.device_tmp[1].replace('"',"")
-			self.device_uuid = self.device_uuid.replace('\n',"")
-		elif self.device_tmp[2].startswith('UUID='):
-			self.device_uuid = self.device_tmp[2].replace('"',"")
-			self.device_uuid = self.device_uuid.replace('\n',"")
-		elif self.device_tmp[3].startswith('UUID='):
-			self.device_uuid = self.device_tmp[3].replace('"',"")
-			self.device_uuid = self.device_uuid.replace('\n',"")
-
-		if self.device_tmp[0].startswith('TYPE='):
-			self.device_type = self.device_tmp[0].replace('TYPE=',"")
-			self.device_type = self.device_type.replace('"',"")
-			self.device_type = self.device_type.replace('\n',"")
-		elif self.device_tmp[1].startswith('TYPE='):
-			self.device_type = self.device_tmp[1].replace('TYPE=',"")
-			self.device_type = self.device_type.replace('"',"")
-			self.device_type = self.device_type.replace('\n',"")
-		elif self.device_tmp[2].startswith('TYPE='):
-			self.device_type = self.device_tmp[2].replace('TYPE=',"")
-			self.device_type = self.device_type.replace('"',"")
-			self.device_type = self.device_type.replace('\n',"")
-		elif self.device_tmp[3].startswith('TYPE='):
-			self.device_type = self.device_tmp[3].replace('TYPE=',"")
-			self.device_type = self.device_type.replace('"',"")
-			self.device_type = self.device_type.replace('\n',"")
-		elif self.device_tmp[4].startswith('TYPE='):
-			self.device_type = self.device_tmp[4].replace('TYPE=',"")
-			self.device_type = self.device_type.replace('"',"")
-			self.device_type = self.device_type.replace('\n',"")
+		self.device_uuid = 'UUID=' + result.split('UUID=')[1].split(' ')[0].replace('"','')
+		self.device_type = result.split('TYPE=')[1].split(' ')[0].replace('"','')
 
 		if self.device_type.startswith('ext'):
 			self.device_type = 'auto'
