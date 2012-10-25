@@ -1,7 +1,7 @@
 <wizard>
 	<step id="welcome">
 		<text value="Welcome to the restore wizard.\n\nA backup has been detected.\nYou can use this wizard to restore your setting and any extra plugins that where installed when the backup was created.\n" />
-		<displaytext value="Restore Wizard" />
+		<displaytext value="A backup has been detected." />
 		<list type="dynamic" source="listAction" evaluation="ActionSelectionMade" onselect="ActionSelectionMoved" />
 		<code>
 self.clearSelectedKeys()
@@ -14,7 +14,7 @@ self.buildList(self.selectedAction)
 
 	<step id="settingsquestion">
 		<text value="Do you want to restore your Enigma2 settings ?" />
-		<displaytext value="Restore Settings" />
+		<displaytext value="Do you want to restore your Enigma2 settings ?" />
 		<list type="dynamic" source="listAction2" evaluation="ActionSelectionMade" onselect="ActionSelectionMoved" />
 		<code>
 self.clearSelectedKeys()
@@ -27,7 +27,7 @@ self.buildList(self.selectedAction)
 
 	<step id="settingsrestore">
 		<text value="Please select the file to restore ?" />
-		<displaytext value="Restore Settings" />
+		<displaytext value="Please select the file to restore ?" />
 		<list type="dynamic" source="listDevices" evaluation="settingsdeviceSelectionMade" onselect="settingsdeviceSelectionMoved" />
 		<code>
 self.clearSelectedKeys()
@@ -40,7 +40,7 @@ self.buildList(self.selectedAction)
 
 	<step id="pluginsquestion">
 		<text value="Do you want to restore your Enigma2 plugins ?" />
-		<displaytext value="Restore Plugins" />
+		<displaytext value="Do you want to restore your Enigma2 plugins ?" />
 		<list type="dynamic" source="listAction3" evaluation="ActionSelectionMade" onselect="ActionSelectionMoved" />
 		<code>
 self.clearSelectedKeys()
@@ -53,7 +53,7 @@ self.buildList(self.selectedAction)
 
 	<step id="pluginsrestoredevice">
 		<text value="Please select the file to restore ?" />
-		<displaytext value="Restore Plugins" />
+		<displaytext value="Please select the file to restore ?" />
 		<list type="dynamic" source="listDevices" evaluation="pluginsdeviceSelectionMade" onselect="pluginsdeviceSelectionMoved" />
 		<code>
 self.clearSelectedKeys()
@@ -66,6 +66,7 @@ self.buildList(self.selectedAction)
 
 	<step id="pluginrestore">
 		<text value="The wizard is finished now, and will reboot" />
+		<displaytext value="The wizard is finished now, and will reboot" />
 		<code>
 self.buildList(None)
 		</code>
@@ -73,14 +74,17 @@ self.buildList(None)
 
 	<step id="reboot">
 		<text value="The wizard is finished now, and will reboot" />
+		<displaytext value="The wizard is finished now, and will reboot" />
 		<code>
 self.buildList(None)
 		</code>
 	</step>
 	<step id="noplugins">
 		<text value="No plugins where needed to be installed" />
+		<displaytext value="No plugins where needed to be installed" />
 	</step>
 	<step id="end">
 		<text value="The wizard is finished now." />
+		<displaytext value="The wizard is finished now." />
 	</step>
 </wizard>
