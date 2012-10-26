@@ -392,6 +392,7 @@ class VIXDevicePanelConf(Screen, ConfigListScreen):
 		ybox.setTitle(_("Restart STB_BOX."))
 
 	def add_fstab(self, result = None, retval = None, extra_args = None):
+		print '[MountManager] RESULT:',result
 		self.device = extra_args[0]
 		self.mountp = extra_args[1]
 		self.device_uuid = 'UUID=' + result.split('UUID=')[1].split(' ')[0].replace('"','')
