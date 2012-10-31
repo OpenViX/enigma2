@@ -153,8 +153,7 @@ class VIXSoftcamManager(Screen):
 		self.selectedFiles = self["list"].getSelectedList()
 		config.softcammanager.softcams_autostart.value = self.selectedFiles
 		config.softcammanager.softcams_autostart.save()
-		config.softcammanager.save()
-		config.save()
+		configfile.save()
 
 	def showActivecam(self):
 		scanning = _("Wait please while scanning\nfor softcam's...")
