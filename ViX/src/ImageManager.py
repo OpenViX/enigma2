@@ -1172,6 +1172,10 @@ class ImageManagerDownload(Screen):
 				ftp.cwd('openvix-builds/ET-9x00')
 			elif getBoxType() == 'tmtwin':
 				ftp.cwd('openvix-builds/TM-Twin')
+			elif getBoxType() == 'tm2t':
+				ftp.cwd('openvix-builds/TM-2T')
+			elif getBoxType() == 'tmsingle':
+				ftp.cwd('openvix-builds/TM-Single')
 			elif getBoxType() == 'odinm9':
 				ftp.cwd('openvix-builds/odinm9')
 			del self.emlist[:]
