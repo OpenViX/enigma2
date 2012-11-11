@@ -8,7 +8,7 @@ from BackupManager import BackupManagerautostart
 from ImageManager import ImageManagerautostart
 from SwapManager import SwapAutostart
 from SoftcamManager import SoftcamAutostart
-from PowerManager import PowerManagerautostart, PowerManagerNextWakeup
+# from PowerManager import PowerManagerautostart, PowerManagerNextWakeup
 from os import path, listdir
 
 def checkConfigBackup():
@@ -77,7 +77,7 @@ def Plugins(path, **kwargs):
 	plist.append(PluginDescriptor(name=_("Softcam Manager"), where=PluginDescriptor.WHERE_EXTENSIONSMENU, fnc=SoftcamMenu))
 	plist.append(PluginDescriptor(where = PluginDescriptor.WHERE_AUTOSTART, fnc = SoftcamAutostart))
 	plist.append(PluginDescriptor(where = PluginDescriptor.WHERE_AUTOSTART, fnc = SwapAutostart))
-	plist.append(PluginDescriptor(where = PluginDescriptor.WHERE_SESSIONSTART, fnc = PowerManagerautostart, wakeupfnc = PowerManagerNextWakeup))
+# 	plist.append(PluginDescriptor(where = PluginDescriptor.WHERE_SESSIONSTART, fnc = PowerManagerautostart, wakeupfnc = PowerManagerNextWakeup))
 	plist.append(PluginDescriptor(where = PluginDescriptor.WHERE_SESSIONSTART, fnc = ImageManagerautostart))
 	plist.append(PluginDescriptor(where = PluginDescriptor.WHERE_SESSIONSTART, fnc = BackupManagerautostart))
 	if config.misc.firstrun.value and not config.misc.restorewizardrun.value and backupAvailable == 1:
