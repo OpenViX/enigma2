@@ -304,7 +304,7 @@ class VIXImageManager(Screen):
 			self.keyBackup()
 
 	def keyBackup(self):
-		if getBoxType().startswith('vu') or getBoxType().startswith('et') or getBoxType().startswith('tm') or getBoxType().startswith('mara') or getBoxType().startswith('venton') or getBoxType().startswith('gb'):
+		if getBoxType().startswith('vu') or getBoxType().startswith('et') or getBoxType().startswith('tm') or getBoxType().startswith('mara') or getBoxType().startswith('venton') or getBoxType().startswith('gb') or getBoxType().startswith('xp'):
 			message = _("Are you ready to create a backup image ?")
 			ybox = self.session.openWithCallback(self.doBackup, MessageBox, message, MessageBox.TYPE_YESNO)
 			ybox.setTitle(_("Backup Confirmation"))
@@ -994,7 +994,7 @@ class ImageBackup(Screen):
 				else:
 					makedirs(self.MAINDESTROOT + '/gigablue/' + getBoxType().replace('gb',''), 0644)
 					self.MAINDEST = self.MAINDESTROOT + '/gigablue/' + getBoxType().replace('gb','')
-			elif getBoxType().startswith('et') or getBoxType().startswith('mara'):
+			elif getBoxType().startswith('et') or getBoxType().startswith('mara') or getBoxType().startswith('xp'):
 				MKUBIFS_ARGS="-m 2048 -e 126976 -c 4096"
 				makedirs(self.MAINDESTROOT + '/' + getBoxType(), 0644)
 				self.MAINDEST = self.MAINDESTROOT + '/' + getBoxType()
@@ -1026,7 +1026,7 @@ class ImageBackup(Screen):
 		print '[ImageManager] Stage2: Making Kernel Image.'
 		if getBoxType().startswith('tm'):
 			self.command = 'cat /dev/mtd6 > ' + self.WORKDIR + '/vmlinux.gz'
-		elif getBoxType().startswith('et') or getBoxType().startswith('vu') or getBoxType().startswith('venton'):
+		elif getBoxType().startswith('et') or getBoxType().startswith('vu') or getBoxType().startswith('venton') or getBoxType().startswith('xp'):
 			self.command = 'cat /dev/mtd1 > ' + self.WORKDIR + '/vmlinux.gz'
 		elif getBoxType().startswith('mara') or getBoxType().startswith('gb'):
 			self.command = 'cat /dev/mtd2 > ' + self.WORKDIR + '/vmlinux.gz'
@@ -1053,7 +1053,7 @@ class ImageBackup(Screen):
 		if getBoxType().startswith('vu'):
 			move(self.WORKDIR + '/root.' + self.ROOTFSTYPE, self.MAINDEST + '/root_cfe_auto.jffs2')
 			move(self.WORKDIR + '/vmlinux.gz', self.MAINDEST + '/kernel_cfe_auto.bin')
-		elif getBoxType().startswith('et') or getBoxType().startswith('mara') or getBoxType().startswith('venton') or getBoxType().startswith('gb'):
+		elif getBoxType().startswith('et') or getBoxType().startswith('mara') or getBoxType().startswith('venton') or getBoxType().startswith('gb') or getBoxType().startswith('xp'):
 			move(self.WORKDIR + '/root.' + self.ROOTFSTYPE, self.MAINDEST + '/rootfs.bin')
 			move(self.WORKDIR + '/vmlinux.gz', self.MAINDEST + '/kernel.bin')
 			if getBoxType().startswith('et') or getBoxType().startswith('mara'):
