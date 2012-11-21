@@ -304,7 +304,7 @@ class VIXImageManager(Screen):
 			self.keyBackup()
 
 	def keyBackup(self):
-		if getBoxType().startswith('vu') or getBoxType().startswith('et') or getBoxType().startswith('tm') or getBoxType().startswith('mara') or getBoxType().startswith('venton') or getBoxType().startswith('gb') or getBoxType().startswith('xp'):
+		if getBoxType().startswith('vu') or getBoxType().startswith('et') or getBoxType().startswith('tm') or getBoxType().startswith('odin') or getBoxType().startswith('venton') or getBoxType().startswith('gb') or getBoxType().startswith('xp'):
 			message = _("Are you ready to create a backup image ?")
 			ybox = self.session.openWithCallback(self.doBackup, MessageBox, message, MessageBox.TYPE_YESNO)
 			ybox.setTitle(_("Backup Confirmation"))
@@ -994,7 +994,7 @@ class ImageBackup(Screen):
 				else:
 					makedirs(self.MAINDESTROOT + '/gigablue/' + getBoxType().replace('gb',''), 0644)
 					self.MAINDEST = self.MAINDESTROOT + '/gigablue/' + getBoxType().replace('gb','')
-			elif getBoxType().startswith('et') or getBoxType().startswith('mara') or getBoxType().startswith('xp'):
+			elif getBoxType().startswith('et') or getBoxType().startswith('odin') or getBoxType().startswith('xp'):
 				MKUBIFS_ARGS="-m 2048 -e 126976 -c 4096"
 				makedirs(self.MAINDESTROOT + '/' + getBoxType(), 0644)
 				self.MAINDEST = self.MAINDESTROOT + '/' + getBoxType()
@@ -1028,7 +1028,7 @@ class ImageBackup(Screen):
 			self.command = 'cat /dev/mtd6 > ' + self.WORKDIR + '/vmlinux.gz'
 		elif getBoxType().startswith('et') or getBoxType().startswith('vu') or getBoxType().startswith('venton') or getBoxType().startswith('xp'):
 			self.command = 'cat /dev/mtd1 > ' + self.WORKDIR + '/vmlinux.gz'
-		elif getBoxType().startswith('mara') or getBoxType().startswith('gb'):
+		elif getBoxType().startswith('odin') or getBoxType().startswith('gb'):
 			self.command = 'cat /dev/mtd2 > ' + self.WORKDIR + '/vmlinux.gz'
 		self.BackupConsole.ePopen(self.command, self.Stage2Complete)
 
@@ -1053,10 +1053,10 @@ class ImageBackup(Screen):
 		if getBoxType().startswith('vu'):
 			move(self.WORKDIR + '/root.' + self.ROOTFSTYPE, self.MAINDEST + '/root_cfe_auto.jffs2')
 			move(self.WORKDIR + '/vmlinux.gz', self.MAINDEST + '/kernel_cfe_auto.bin')
-		elif getBoxType().startswith('et') or getBoxType().startswith('mara') or getBoxType().startswith('venton') or getBoxType().startswith('gb') or getBoxType().startswith('xp'):
+		elif getBoxType().startswith('et') or getBoxType().startswith('odin') or getBoxType().startswith('venton') or getBoxType().startswith('gb') or getBoxType().startswith('xp'):
 			move(self.WORKDIR + '/root.' + self.ROOTFSTYPE, self.MAINDEST + '/rootfs.bin')
 			move(self.WORKDIR + '/vmlinux.gz', self.MAINDEST + '/kernel.bin')
-			if getBoxType().startswith('et') or getBoxType().startswith('mara'):
+			if getBoxType().startswith('et') or getBoxType().startswith('odin'):
 				fileout = open(self.MAINDEST + '/noforce', 'w')
 				line = "rename this file to 'force' to force an update without confirmation"
 				fileout.write(line)
@@ -1176,8 +1176,8 @@ class ImageManagerDownload(Screen):
 				ftp.cwd('openvix-builds/TM-2T')
 			elif getBoxType() == 'tmsingle':
 				ftp.cwd('openvix-builds/TM-Single')
-			elif getBoxType() == 'maram9':
-				ftp.cwd('openvix-builds/maram9')
+			elif getBoxType() == 'odinm9':
+				ftp.cwd('openvix-builds/odinm9')
 			del self.emlist[:]
 			for fil in ftp.nlst():
 				if not fil.endswith('.') and fil.find(getBoxType()) != -1:
@@ -1227,8 +1227,8 @@ class ImageManagerDownload(Screen):
 				mycmd2 = "/openvix/openvix-builds/ET-9x00/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
 			elif getBoxType() == 'tmtwin':
 				mycmd2 = "/openvix/openvix-builds/TM-Twin/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
-			elif getBoxType() == 'maram9':
-				mycmd2 = "/openvix/openvix-builds/Mara-M9/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
+			elif getBoxType() == 'odinm9':
+				mycmd2 = "/openvix/openvix-builds/Odin-M9/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
 			mycmd3 = "mv " + self.BackupDirectory + "image.zip " + file
 			mycmd4 = _("echo 'Expanding Image.'")
 			mycmd5 = 'unzip -o ' + file + ' -d ' + dir
