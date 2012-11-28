@@ -44,11 +44,9 @@ class VIXMenu(Screen):
 		self.list = []
 		if self.menu == 0:
 			self.list.append(("backup-manager", _("Backup Manager"), _("Manage your backups of your settings." ), None))
-			self.list.append(("cron-manager", _("Cron Manager"), _("Manage your cron jobs." ), None))
 			self.list.append(("image-manager", _("Image Manager"), _("Create and Restore complete images of the system." ), None))
 			self.list.append(("ipkg-install", _("Install local extension"),  _("Install IPK's from your tmp folder." ), None))
 			self.list.append(("mount-manager",_("Mount Manager"), _("Manage you devices mountpoints." ), None))
-# 			self.list.append(("power-manager",_("Power Manager"), _("Create schedules for Standby, Restart GUI, DeepStandby and Reboot."), None))
 			self.list.append(("script-runner",_("Script Runner"), _("Run your shell scripts." ), None))
 			self.list.append(("swap-manager",_("Swap Manager"), _("Create and Manage your swapfiles." ), None))
 		self["menu"] = List(self.list)
@@ -109,9 +107,6 @@ class VIXMenu(Screen):
 				if (currentEntry == "backup-manager"):
 					from BackupManager import VIXBackupManager
 					self.session.open(VIXBackupManager)
-				elif (currentEntry == "cron-manager"):
-					from CronManager import VIXCronManager
-					self.session.open(VIXCronManager)
 				elif (currentEntry == "image-manager"):
 					from ImageManager import VIXImageManager
 					self.session.open(VIXImageManager)
@@ -121,9 +116,6 @@ class VIXMenu(Screen):
 				elif (currentEntry == "mount-manager"):
 					from MountManager import VIXDevicesPanel
 					self.session.open(VIXDevicesPanel)
-# 				elif (currentEntry == "power-manager"):
-# 					from PowerManager import VIXPowerManager
-# 					self.session.open(VIXPowerManager)
 				elif (currentEntry == "script-runner"):
 					from ScriptRunner import VIXScriptRunner
 					self.session.open(VIXScriptRunner)
