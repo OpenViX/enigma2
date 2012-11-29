@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from Components.Language import language
 from Tools.Directories import resolveFilename, SCOPE_PLUGINS, SCOPE_LANGUAGE
-import os,gettext
+import os, gettext
 
 PluginLanguageDomain = "ViX"
 PluginLanguagePath = "SystemPlugins/ViX/locale"
