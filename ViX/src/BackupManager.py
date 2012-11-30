@@ -443,7 +443,7 @@ class VIXBackupManager(Screen):
 
 	def Stage2Complete(self, result, retval, extra_args):
 		print '[BackupManager] Restoring Stage 2: Result ',result
-		if result.find('wget returned 1') != -1 or result.find('404 Not Found') != -1:
+		if result.find('wget returned 1') != -1 or result.find('wget returned 255') != -1 or result.find('404 Not Found') != -1:
 			self.feeds = 'DOWN'
 			self.Stage2Completed = True
 		elif result.find('bad address') != -1:

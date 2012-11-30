@@ -232,7 +232,7 @@ class RestoreWizard(WizardLanguage, Rc):
 
 	def doRestorePluginsTestComplete(self, result = None, retval = None, extra_args = None):
 		print '[RestoreWizard] Stage 4: Feeds Test Result',result
-		if (float(about.getImageVersionString()) < 3.0 and result.find('mipsel/Packages.gz, wget returned 1') != -1) or (float(about.getImageVersionString()) >= 3.0 and result.find('mips32el/Packages.gz, wget returned 1') != -1):
+		if result.find('wget returned 1') != -1 or result.find('wget returned 255') != -1 or result.find('404 Not Found') != -1:
 			self.NextStep = 'reboot'
 			self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Sorry feeds are down for maintenance, Please try using Backup Manager to restore plugins later."), type = MessageBox.TYPE_INFO, timeout = 30)
 			self.buildListRef.setTitle(_("Restore Wizard"))
