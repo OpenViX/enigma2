@@ -332,6 +332,7 @@ class VIXBackupManager(Screen):
 		self.close()
 
 	def createRestoreJob(self):
+		self.Console = Console()
 		self.didSettingsRestore = False
 		self.doPluginsRestore = False
 		self.didPluginsRestore = False
@@ -402,8 +403,6 @@ class VIXBackupManager(Screen):
 
 	def Stage1(self, answer=None):
 		print '[BackupManager] Restoring Stage 1:'
-		if not self.Console:
-			self.Console = Console()
 		if answer is True:
 			self.Console.ePopen("tar -xzvf " + self.BackupDirectory + self.sel + " -C /", self.Stage1SettingsComplete)
 		elif answer is False:
@@ -440,13 +439,11 @@ class VIXBackupManager(Screen):
 
 	def Stage2(self, result=False):
 		print '[BackupManager] Restoring Stage 2: Checking feeds'
-		if not self.Console:
-			self.Console = Console()
 		self.Console.ePopen('opkg update', self.Stage2Complete)
 
 	def Stage2Complete(self, result, retval, extra_args):
 		print '[BackupManager] Restoring Stage 2: Result ',result
-		if (float(about.getImageVersionString()) < 3.0 and result.find('mipsel/Packages.gz, wget returned 1') != -1) or (float(about.getImageVersionString()) >= 3.0 and result.find('mips32el/Packages.gz, wget returned 1') != -1):
+		if result.find('wget returned 1') != -1 or result.find('404 Not Found') != -1:
 			self.feeds = 'DOWN'
 			self.Stage2Completed = True
 		elif result.find('bad address') != -1:
@@ -466,8 +463,6 @@ class VIXBackupManager(Screen):
 
 	def Stage3(self):
 		print '[BackupManager] Restoring Stage 3: Kernel Version/Feeds Checks'
-		if not self.Console:
-			self.Console = Console()
 		if self.feeds == 'OK':
 			print '[BackupManager] Restoring Stage 3: Feeds are OK'
 			if path.exists('/tmp/backupkernelversion'):
@@ -566,8 +561,6 @@ class VIXBackupManager(Screen):
 		self.Stage3Completed = True
 
 	def Stage4(self):
-		if not self.Console:
-			self.Console = Console()
 		if len(self.pluginslist) or len(self.pluginslist2):
 			if len(self.pluginslist):
 				self.pluginslist = " ".join(self.pluginslist)
@@ -590,8 +583,6 @@ class VIXBackupManager(Screen):
 			self.Stage6()
 
 	def Stage4Complete(self, answer=None):
-		if not self.Console:
-			self.Console = Console()
 		if answer is True:
 			print '[BackupManager] Restoring Stage 4: plugin restore chosen'
 			self.doPluginsRestore = True
@@ -606,8 +597,6 @@ class VIXBackupManager(Screen):
 			)
 
 	def Stage5(self):
-		if not self.Console:
-			self.Console = Console()
 		if self.doPluginsRestore:
 			print '[BackupManager] Restoring Stage 5: starting plugin restore'
 			self.Console.ePopen('opkg install ' + self.pluginslist + ' ' + self.pluginslist2, self.Stage5Complete)
@@ -627,8 +616,6 @@ class VIXBackupManager(Screen):
 		self.Stage3Completed = True
 		self.Stage4Completed = True
 		self.Stage5Completed = True
-		if not self.Console:
-			self.Console = Console()
 		if self.didPluginsRestore or self.didSettingsRestore:
 			print '[BackupManager] Restoring Completed rebooting'
 			self.Console.ePopen('init 4 && reboot')
@@ -1081,6 +1068,7 @@ class AutoBackupManagerTimer:
 class BackupFiles(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
+		self.Console = Console()
 		self.Stage1Completed = False
 		self.Stage2Completed = False
 		self.Stage3Completed = False
@@ -1220,9 +1208,8 @@ class BackupFiles(Screen):
 		output.write(now.strftime("%Y-%m-%d %H:%M") + ": Backup Started\n")
 		output.close()
 		self.backupdirs = ' '.join(config.backupmanager.backupdirs.value)
-		self.BackupConsole = Console()
 		print '[BackupManager] Listing installed plugins'
-		self.BackupConsole.ePopen('opkg list-installed', self.Stage2Complete)
+		self.Console.ePopen('opkg list-installed', self.Stage2Complete)
 
 	def Stage2Complete(self, result, retval, extra_args):
 		if result:
@@ -1261,7 +1248,6 @@ class BackupFiles(Screen):
 		self.Stage4Completed = True
 
  	def Stage5(self):
-		self.BackupConsole = Console()
 		tmplist = config.backupmanager.backupdirs.getValue()
 		tmplist.append('/tmp/ExtraInstalledPlugins')
 		tmplist.append('/tmp/backupkernelversion')
@@ -1273,7 +1259,7 @@ class BackupFiles(Screen):
 		print '[BackupManager] Backup running'
 		backupdate = datetime.now()
 		self.Backupfile = self.BackupDirectory + config.backupmanager.folderprefix.value + '-' + about.getImageVersionString() + '.' + about.getBuildVersionString() + '-' + backupdate.strftime("%Y-%m-%d_%H-%M") + '.tar.gz'
-		self.BackupConsole.ePopen('tar -czvf ' + self.Backupfile + ' ' + self.backupdirs, self.Stage4Complete)
+		self.Console.ePopen('tar -czvf ' + self.Backupfile + ' ' + self.backupdirs, self.Stage4Complete)
 
 	def Stage4Complete(self, result, retval, extra_args):
 		if path.exists(self.Backupfile):
