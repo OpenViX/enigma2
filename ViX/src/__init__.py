@@ -10,11 +10,10 @@ def localeInit():
 	gettext.bindtextdomain(PluginLanguageDomain, resolveFilename(SCOPE_PLUGINS, PluginLanguagePath))
 
 def _(txt):
-	t = gettext.dgettext(PluginLanguageDomain, txt)
-	if t == txt:
+	if gettext.dgettext(PluginLanguageDomain, txt):
+		return gettext.dgettext(PluginLanguageDomain, txt)
+	else:
 		print "[" + PluginLanguageDomain + "] fallback to default translation for " + txt
-		t = gettext.gettext(txt)
-	return t
+		return gettext.gettext(txt)
 
-localeInit()
-language.addCallback(localeInit)
+language.addCallback(localeInit())
