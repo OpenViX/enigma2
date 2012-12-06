@@ -1026,9 +1026,9 @@ class ImageBackup(Screen):
 		print '[ImageManager] Stage2: Making Kernel Image.'
 		if getBoxType().startswith('tm'):
 			self.command = 'cat /dev/mtd6 > ' + self.WORKDIR + '/vmlinux.gz'
-		elif getBoxType().startswith('et') or getBoxType().startswith('vu') or getBoxType().startswith('venton') or getBoxType().startswith('xp'):
+		elif getBoxType().startswith('et') or getBoxType().startswith('venton') or getBoxType().startswith('xp') or getBoxType() == 'vusolo' or getBoxType() == 'vuduo' or getBoxType() == 'vuuno' or getBoxType() == 'vuultimo':
 			self.command = 'cat /dev/mtd1 > ' + self.WORKDIR + '/vmlinux.gz'
-		elif getBoxType().startswith('odin') or getBoxType().startswith('gb'):
+		elif getBoxType().startswith('odin') or getBoxType().startswith('gb') or getBoxType() == 'vusolo2' or getBoxType() == 'vuduo2':
 			self.command = 'cat /dev/mtd2 > ' + self.WORKDIR + '/vmlinux.gz'
 		self.BackupConsole.ePopen(self.command, self.Stage2Complete)
 
@@ -1049,10 +1049,32 @@ class ImageBackup(Screen):
 			print '[ImageManager] Stage3: Complete.'
 
 	def doBackup4(self):
+		imagecreated = False
 		print '[ImageManager] Stage4: Moving from work to backup folders'
-		if getBoxType().startswith('vu'):
+		if getBoxType() == 'vusolo' or getBoxType() == 'vuduo' or getBoxType() == 'vuuno' or getBoxType() == 'vuultimo':
 			move(self.WORKDIR + '/root.' + self.ROOTFSTYPE, self.MAINDEST + '/root_cfe_auto.jffs2')
 			move(self.WORKDIR + '/vmlinux.gz', self.MAINDEST + '/kernel_cfe_auto.bin')
+			fileout = open(self.MAINDEST + '/reboot.update', 'w')
+			line = "This file forces a reboot after the update."
+			fileout.write(line)
+			fileout.close()
+			fileout = open(self.MAINDEST + '/imageversion', 'w')
+			line = "openvix-" + self.BackupDate
+			fileout.write(line)
+			fileout.close()
+			imagecreated = True
+		elif getBoxType() == 'vusolo2' or getBoxType() == 'vuduo2':
+			move(self.WORKDIR + '/root.' + self.ROOTFSTYPE, self.MAINDEST + '/root_cfe_auto.bin')
+			move(self.WORKDIR + '/vmlinux.gz', self.MAINDEST + '/kernel_cfe_auto.bin')
+			fileout = open(self.MAINDEST + '/reboot.update', 'w')
+			line = "This file forces a reboot after the update."
+			fileout.write(line)
+			fileout.close()
+			fileout = open(self.MAINDEST + '/imageversion', 'w')
+			line = "openvix-" + self.BackupDate
+			fileout.write(line)
+			fileout.close()
+			imagecreated = True
 		elif getBoxType().startswith('et') or getBoxType().startswith('odin') or getBoxType().startswith('venton') or getBoxType().startswith('gb') or getBoxType().startswith('xp'):
 			move(self.WORKDIR + '/root.' + self.ROOTFSTYPE, self.MAINDEST + '/rootfs.bin')
 			move(self.WORKDIR + '/vmlinux.gz', self.MAINDEST + '/kernel.bin')
@@ -1067,16 +1089,18 @@ class ImageBackup(Screen):
 				fileout.close()
 			if getBoxType() == 'gb800solo' or getBoxType() == 'gb800se':
 				copy('/usr/lib/enigma2/python/Plugins/SystemPlugins/ViX/burn.bat', self.MAINDESTROOT + '/burn.bat')
+			imagecreated = True
 		elif getBoxType().startswith('tm'):
 			move(self.WORKDIR + '/root.' + self.ROOTFSTYPE, self.MAINDEST + '/oe_rootfs.bin')
 			move(self.WORKDIR + '/vmlinux.gz', self.MAINDEST + '/oe_kernel.bin')
+			imagecreated = True
 		print '[ImageManager] Stage4: Removing Swap.'
 		if path.exists(self.swapdevice + config.imagemanager.folderprefix.value + "-swapfile_backup"):
 			system('swapoff ' + self.swapdevice + config.imagemanager.folderprefix.value + "-swapfile_backup")
 			remove(self.swapdevice + config.imagemanager.folderprefix.value + "-swapfile_backup")
 		if path.exists(self.WORKDIR):
 			rmtree(self.WORKDIR)
-		if (path.exists(self.MAINDEST + '/root_cfe_auto.jffs2') and path.exists(self.MAINDEST + '/kernel_cfe_auto.bin')) or (path.exists(self.MAINDEST + '/rootfs.bin') and path.exists(self.MAINDEST + '/kernel.bin')) or (path.exists(self.MAINDEST + '/oe_rootfs.bin') and path.exists(self.MAINDEST + '/oe_kernel.bin')):
+		if imagecreated:
 			for root, dirs, files in walk(self.MAINDEST):
 				for momo in dirs:
 					chmod(path.join(root, momo), 0644)
