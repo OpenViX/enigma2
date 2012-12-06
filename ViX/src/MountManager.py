@@ -122,14 +122,14 @@ class VIXDevicesPanel(Screen):
 		device2 = re.sub('[0-9]', '', device)
 		devicetype = path.realpath('/sys/block/' + device2 + '/device')
 		d2 = device
-		name = 'USB: '
-		mypixmap = '/usr/share/enigma2/ViX_HD_Common/icons/dev_usb.png'
+		name = _("HARD DISK: ")
+		mypixmap = '/usr/share/enigma2/ViX_HD_Common/icons/dev_hdd.png'
 		model = file('/sys/block/' + device2 + '/device/model').read()
 		model = str(model).replace('\n', '')
 		des = ''
-		if devicetype.find('/devices/pci') != -1:
-			name = _("HARD DISK: ")
-			mypixmap = '/usr/share/enigma2/ViX_HD_Common/icons/dev_hdd.png'
+		if devicetype.find('usb') != -1:
+			name = _('USB: ')
+			mypixmap = '/usr/share/enigma2/ViX_HD_Common/icons/dev_usb.png'
 		name = name + model
 		self.Console = Console()
 		self.Console.ePopen("sfdisk -l /dev/sd? | grep swap | awk '{print $(NF-9)}' >/tmp/devices.tmp")
@@ -323,14 +323,14 @@ class VIXDevicePanelConf(Screen, ConfigListScreen):
 		device2 = re.sub('[0-9]', '', device)
 		devicetype = path.realpath('/sys/block/' + device2 + '/device')
 		d2 = device
-		name = 'USB: '
-		mypixmap = '/usr/share/enigma2/ViX_HD_Common/icons/dev_usb.png'
+		name = _("HARD DISK: ")
+		mypixmap = '/usr/share/enigma2/ViX_HD_Common/icons/dev_hdd.png'
 		model = file('/sys/block/' + device2 + '/device/model').read()
 		model = str(model).replace('\n', '')
 		des = ''
-		if devicetype.find('/devices/pci') != -1:
-			name = _("HARD DISK: ")
-			mypixmap = '/usr/share/enigma2/ViX_HD_Common/icons/dev_hdd.png'
+		if devicetype.find('usb') != -1:
+			name = _('USB: ')
+			mypixmap = '/usr/share/enigma2/ViX_HD_Common/icons/dev_usb.png'
 		name = name + model
 		f = open('/proc/mounts', 'r')
 		for line in f.readlines():
