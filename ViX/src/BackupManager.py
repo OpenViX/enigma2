@@ -135,7 +135,7 @@ class VIXBackupManager(Screen):
 		self.populate_List()
 		self.BackupRunning = False
 		for job in Components.Task.job_manager.getPendingJobs():
-			if job.name.startswith(_("BackupManager")):
+			if job.name.startswith(_("Backup Manager")):
 				self.BackupRunning = True
 		if self.BackupRunning:
 			self["key_green"].setText(_("View Progress"))
@@ -281,7 +281,7 @@ class VIXBackupManager(Screen):
 	def GreenPressed(self):
 		self.BackupRunning = False
 		for job in Components.Task.job_manager.getPendingJobs():
-			if job.name.startswith(_("BackupManager")):
+			if job.name.startswith(_("Backup Manager")):
 				backup = job
 				self.BackupRunning = True
 		if self.BackupRunning:
@@ -302,7 +302,7 @@ class VIXBackupManager(Screen):
 			self["key_green"].setText(_("View Progress"))
 			self["key_green"].show()
 			for job in Components.Task.job_manager.getPendingJobs():
-				if job.name.startswith(_("BackupManager")):
+				if job.name.startswith(_("Backup Manager")):
 					backup = job
 			self.showJobView(backup)
 
@@ -341,7 +341,7 @@ class VIXBackupManager(Screen):
 		self.Stage3Completed = False
 		self.Stage4Completed = False
 		self.Stage5Completed = False
-		job = Components.Task.Job(_("BackupManager"))
+		job = Components.Task.Job(_("Backup Manager"))
 
 		task = Components.Task.PythonTask(job, _("Restoring backup..."))
 		task.work = self.JobStart
@@ -1076,7 +1076,7 @@ class BackupFiles(Screen):
 		self.Stage5Completed = False
 
 	def createBackupJob(self):
-		job = Components.Task.Job(_("BackupManager"))
+		job = Components.Task.Job(_("Backup Manager"))
 
 		task = Components.Task.PythonTask(job, _("Starting..."))
 		task.work = self.JobStart

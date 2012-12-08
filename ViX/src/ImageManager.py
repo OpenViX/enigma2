@@ -123,7 +123,7 @@ class VIXImageManager(Screen):
 	def backupRunning(self):
 		self.BackupRunning = False
 		for job in Components.Task.job_manager.getPendingJobs():
-			if job.name.startswith(_("ImageManager")):
+			if job.name.startswith(_("Image Manager")):
 				self.BackupRunning = True
 		if self.BackupRunning:
 			self["key_green"].setText(_("View Progress"))
@@ -295,7 +295,7 @@ class VIXImageManager(Screen):
 	def GreenPressed(self):
 		self.BackupRunning = False
 		for job in Components.Task.job_manager.getPendingJobs():
-			if job.name.startswith(_("ImageManager")):
+			if job.name.startswith(_("Image Manager")):
 				backup = job
 				self.BackupRunning = True
 		if self.BackupRunning:
@@ -319,7 +319,7 @@ class VIXImageManager(Screen):
 			self["key_green"].setText(_("View Progress"))
 			self["key_green"].show()
 			for job in Components.Task.job_manager.getPendingJobs():
-				if job.name.startswith(_("ImageManager")):
+				if job.name.startswith(_("Image Manager")):
 					backup = job
 			self.showJobView(backup)
 
@@ -365,7 +365,7 @@ class VIXImageManager(Screen):
 # 		self.BackupDirectory = config.imagemanager.backuplocation.value + 'imagebackups/'
 #
 # 	def createRestoreJob(self):
-# 		job = Components.Task.Job(_("ImageManager"))
+# 		job = Components.Task.Job(_("Image Manager"))
 #
 # 		task = Components.Task.PythonTask(job, _("Setting Up..."))
 # 		task.work = self.JobStart
@@ -774,7 +774,7 @@ class ImageBackup(Screen):
 		self.Stage3Completed = False
 
 	def createBackupJob(self):
-		job = Components.Task.Job(_("ImageManager"))
+		job = Components.Task.Job(_("Image Manager"))
 
 		task = Components.Task.PythonTask(job, _("Setting Up..."))
 		task.work = self.JobStart
