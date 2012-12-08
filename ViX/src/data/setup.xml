@@ -17,20 +17,4 @@
 		<item level="2" text="Time of Backup to start" requires="config.imagemanager.schedule" summary="Set the time of backup to start.">config.imagemanager.scheduletime</item>
 		<item level="2" text="Repeat how often" requires="config.imagemanager.schedule" summary="Set the repeat interval of backup schedule.">config.imagemanager.repeattype</item>
 	</setup>
-	<setup key="vixpowermanager" title="Power Manager Setup">
-		<item level="2" text="Enable Power Manager" summary="Allows you to control the power state of your STB_BOX.">config.vixsettings.powermanager</item>
-		<item level="2" text="Enable Standby" requires="config.vixsettings.powermanager" summary="Allows you to put your STB_BOX in standby at a set time.">config.vixsettings.powermanager_standby</item>
-		<item level="2" text="Standby Time" requires="config.vixsettings.powermanager_standby" summary="Set the time to enter standby mode.">config.vixsettings.powermanager_standbytime</item>
-		<item level="2" text="Retry after cancel (mins)" requires="config.vixsettings.powermanager_standby" summary="Set the delay time to wait before asking again.">config.vixsettings.powermanager_standbyretry</item>
-		<item level="2" text="Enable DeepStandby" requires="config.vixsettings.powermanager" summary="Allows you to put your STB_BOX into deepstandby at a set time.">config.vixsettings.powermanager_deepstandby</item>
-		<item level="2" text="DeepStandby Time" requires="config.vixsettings.powermanager_deepstandby" summary="Set the time to enter deepstandby mode.">config.vixsettings.powermanager_deepstandbytime</item>
-		<item level="2" text="Retry after cancel (mins)" requires="config.vixsettings.powermanager_deepstandby" summary="Set the delay time to wait before asking again.">config.vixsettings.powermanager_deepstandbyretry</item>
-		<item level="2" text="Enable GUI restart" requires="config.vixsettings.powermanager" summary="Allows you to restart your STB_BOX interface at a set time.">config.vixsettings.powermanager_guirestart</item>
-		<item level="2" text="GUI Restart Time" requires="config.vixsettings.powermanager_guirestart" summary="Set the time to restart the interface.">config.vixsettings.powermanager_guirestarttime</item>
-		<item level="2" text="Retry after cancel (mins)" requires="config.vixsettings.powermanager_guirestart" summary="Set the delay time to wait before asking again.">config.vixsettings.powermanager_guirestartretry</item>
-		<item level="2" text="Enable Reboot" requires="config.vixsettings.powermanager" summary="Allows you to reboot your STB_BOX at a set time.">config.vixsettings.powermanager_reboot</item>
-		<item level="2" text="Reboot Time" requires="config.vixsettings.powermanager_reboot" summary="Set the time to reboot.">config.vixsettings.powermanager_reboottime</item>
-		<item level="2" text="Retry after cancel (mins)" requires="config.vixsettings.powermanager_reboot" summary="Set the delay time to wait before asking again.">config.vixsettings.powermanager_rebootretry</item>
-	</setup>
-
 </setupxml>
