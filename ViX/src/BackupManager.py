@@ -425,17 +425,8 @@ class VIXBackupManager(Screen):
 			)
 
 	def Stage1PluginsComplete(self, result, retval, extra_args):
-		if retval == 0:
-			print '[BackupManager] Restoring Stage 1 Complete:'
-			self.Stage1Completed = True
-		else:
-			print '[BackupManager] Restoring Stage 1 Failed:'
-			AddPopupWithCallback(self.Stage2,
-				_("Sorry, but the restore failed."),
-				MessageBox.TYPE_INFO,
-				10,
-				'StageOneFailedNotification'
-			)
+		print '[BackupManager] Restoring Stage 1 Complete:'
+		self.Stage1Completed = True
 
 	def Stage2(self, result=False):
 		print '[BackupManager] Restoring Stage 2: Checking feeds'
@@ -1233,18 +1224,20 @@ class BackupFiles(Screen):
 		self.Stage3Completed = True
 
 	def Stage4(self):
+		output = open('/tmp/3rdPartyPlugins','w')
 		if config.backupmanager.xtraplugindir.getValue() and path.exists(config.backupmanager.xtraplugindir.getValue()):
-			output = open('/tmp/3rdPartyPlugins','w')
 			for file in listdir(config.backupmanager.xtraplugindir.getValue()):
 				print 'file:',file
 				if file.endswith('.ipk'):
 					print 'IPK FOUND',file
 					parts = file.strip().split('_')
 					output.write(parts[0] + '\n')
-			output.close()
-			output = open('/tmp/3rdPartyPluginsLocation','w')
-			output.write(config.backupmanager.xtraplugindir.getValue())
-			output.close()
+		else:
+			output.write(' ')
+		output.close()
+		output = open('/tmp/3rdPartyPluginsLocation','w')
+		output.write(config.backupmanager.xtraplugindir.getValue())
+		output.close()
 		self.Stage4Completed = True
 
  	def Stage5(self):
