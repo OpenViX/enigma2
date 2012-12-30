@@ -650,7 +650,9 @@ class SoftcamAutoPoller:
 								port="16000"
 							self.Console.ePopen("wget -T 1 http://127.0.0.1:" + port + "/status.html -O /tmp/status.html &> /tmp/frozen")
 							sleep(2)
-							frozen = file('/tmp/frozen').read()
+							f = open('/tmp/frozen')
+							frozen = f.read()
+							f.close()
 							if frozen.find('Unauthorized') != -1 or frozen.find('Authorization Required') != -1 or frozen.find('Forbidden') != -1 or frozen.find('Connection refused') != -1 or frozen.find('100%') != -1 or path.exists('/tmp/status.html'):
 								print '[SoftcamManager] ' + softcamcheck + ' is responding like it should'
 								output = open('/tmp/cam.check.log','a')
@@ -716,7 +718,9 @@ class SoftcamAutoPoller:
 									port="16001"
 								self.Console.ePopen("wget -T 1 http://127.0.0.1:" + port + " -O /tmp/index.html &> /tmp/frozen")
 								sleep(2)
-								frozen = file('/tmp/frozen').read()
+								f = open('/tmp/frozen')
+								frozen = f.read()
+								f.close()
 								if frozen.find('Unauthorized') != -1 or frozen.find('Authorization Required') != -1 or frozen.find('Forbidden') != -1 or frozen.find('Connection refused') != -1 or frozen.find('100%') != -1 or path.exists('/tmp/index.html'):
 									print '[SoftcamManager] ' + softcamcheck + ' is responding like it should'
 									output = open('/tmp/cam.check.log','a')
