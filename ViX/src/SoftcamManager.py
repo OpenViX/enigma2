@@ -761,8 +761,10 @@ class SoftcamAutoPoller:
 						if softcamcheck.lower().startswith('oscam'):
 							self.Console.ePopen("ps | grep softcams | grep -v grep | awk 'NR==1' | awk '{print $5}'| awk  -F'[/]' '{print $4}' > /tmp/softcamRuningCheck.tmp")
 							sleep(2)
-							cccamcheck_process = file('/tmp/softcamRuningCheck.tmp').read()
+							file = open('/tmp/softcamRuningCheck.tmp')
+							cccamcheck_process = file.read()
 							cccamcheck_process = cccamcheck_process.replace("\n","")
+							file.close()
 							if cccamcheck_process.find('cccam') >= 0 or cccamcheck_process.find('CCcam') >= 0:
 								try:
 									print '[SoftcamManager] Stopping ', cccamcheck_process
