@@ -589,6 +589,7 @@ class SoftcamAutoPoller:
 					fh.write(data)
 					fh.truncate()
 					fh.close()
+			f.close()
 
 		for softcamcheck in self.autostartcams:
 			softcamcheck = softcamcheck.replace("/usr/softcams/","")
