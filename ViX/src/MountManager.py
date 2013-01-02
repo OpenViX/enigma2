@@ -203,6 +203,7 @@ class VIXDevicesPanel(Screen):
 			for line in f.readlines():
 				if line.find(device) != -1:
 					mountok = True
+			f.close()
 			if not mountok:
 				self.session.open(MessageBox, _("Mount failed"), MessageBox.TYPE_INFO, timeout=5)
 			self.updateList()
@@ -218,14 +219,14 @@ class VIXDevicesPanel(Screen):
 			system ('umount ' + mountp)
 			try:
 				mounts = open("/proc/mounts")
+				mountcheck = mounts.readlines()
+				mounts.close()
+				for line in mountcheck:
+					parts = line.strip().split(" ")
+					if path.realpath(parts[0]).startswith(device):
+						self.session.open(MessageBox, _("Can't unmount partition, make sure it is not being used for swap or record/timeshift paths"), MessageBox.TYPE_INFO)
 			except IOError:
 				return -1
-			mountcheck = mounts.readlines()
-			mounts.close()
-			for line in mountcheck:
-				parts = line.strip().split(" ")
-				if path.realpath(parts[0]).startswith(device):
-					self.session.open(MessageBox, _("Can't unmount partition, make sure it is not being used for swap or record/timeshift paths"), MessageBox.TYPE_INFO)
 			self.updateList()
 
 	def saveMypoints(self):
