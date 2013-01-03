@@ -934,7 +934,9 @@ class ImageBackup(Screen):
 		self.SwapCreated = True
 
 	def doBackup1(self):
-		filesystem = file('/proc/mounts').read()
+		f = open('/proc/mounts')
+		filesystem = f.read()
+		f.close()
 		if filesystem.find('ubifs') != -1:
 			self.ROOTFSTYPE = 'ubifs'
 		else:
