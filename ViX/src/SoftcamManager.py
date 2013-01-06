@@ -381,7 +381,7 @@ class VIXStopCam(Screen):
 		Screen.__init__(self, session)
 		global stopselectedcam
 		stopselectedcam = selectedcam
-		Screen.setTitle(self, _("Softcam Sopping..."))
+		Screen.setTitle(self, _("Softcam Stopping..."))
 		self['connect'] = MultiPixmap()
 		self['lab1'] = Label(_("Please wait while stopping\n") + selectedcam + '...')
 		self.Console = Console()
