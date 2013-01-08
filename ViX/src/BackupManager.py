@@ -1057,9 +1057,10 @@ class AutoBackupManagerTimer:
 			Components.Task.job_manager.AddJob(self.BackupFiles.createBackupJob())
 
 class BackupFiles(Screen):
-	def __init__(self, session):
+	def __init__(self, session, updatebackup=False):
 		Screen.__init__(self, session)
 		self.Console = Console()
+		self.updatebackup = updatebackup
 		self.Stage1Completed = False
 		self.Stage2Completed = False
 		self.Stage3Completed = False
@@ -1248,7 +1249,10 @@ class BackupFiles(Screen):
 		self.backupdirs = ' '.join(tmplist)
 		print '[BackupManager] Backup running'
 		backupdate = datetime.now()
-		self.Backupfile = self.BackupDirectory + config.backupmanager.folderprefix.value + '-' + about.getImageVersionString() + '.' + about.getBuildVersionString() + '-' + backupdate.strftime("%Y-%m-%d_%H-%M") + '.tar.gz'
+		if self.updatebackup:
+			self.Backupfile = self.BackupDirectory + config.backupmanager.folderprefix.value + '-SoftwareUpdate-' + about.getImageVersionString() + '.' + about.getBuildVersionString() + '-' + backupdate.strftime("%Y-%m-%d_%H-%M") + '.tar.gz'
+		else:
+			self.Backupfile = self.BackupDirectory + config.backupmanager.folderprefix.value + '-' + about.getImageVersionString() + '.' + about.getBuildVersionString() + '-' + backupdate.strftime("%Y-%m-%d_%H-%M") + '.tar.gz'
 		self.Console.ePopen('tar -czvf ' + self.Backupfile + ' ' + self.backupdirs, self.Stage4Complete)
 
 	def Stage4Complete(self, result, retval, extra_args):

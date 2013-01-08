@@ -764,8 +764,9 @@ class AutoImageManagerTimer:
 			#self.close()
 
 class ImageBackup(Screen):
-	def __init__(self, session):
+	def __init__(self, session, updatebackup=False):
 		Screen.__init__(self, session)
+		self.updatebackup = updatebackup
 		self.swapdevice = ""
 		self.RamChecked = False
 		self.SwapCreated = False
@@ -946,7 +947,10 @@ class ImageBackup(Screen):
 		self.BackupDate = about.getImageVersionString() + '.' + about.getBuildVersionString() + '-' + strftime('%Y%m%d_%H%M%S', localtime())
 		self.WORKDIR=self.BackupDirectory + config.imagemanager.folderprefix.value + '-temp'
 		self.TMPDIR=self.BackupDirectory + config.imagemanager.folderprefix.value + '-mount'
-		self.MAINDESTROOT=self.BackupDirectory + config.imagemanager.folderprefix.value + '-' + self.BackupDate
+		if self.updatebackup:
+			self.MAINDESTROOT=self.BackupDirectory + config.imagemanager.folderprefix.value + '-SoftwareUpdate-' + self.BackupDate
+		else:
+			self.MAINDESTROOT=self.BackupDirectory + config.imagemanager.folderprefix.value + '-' + self.BackupDate
 		MKFS='mkfs.' + self.ROOTFSTYPE
 		if getBoxType().startswith('tm'):
 			JFFS2OPTIONS=" --disable-compressor=lzo --eraseblock=0x20000 -p -n -l --pagesize=0x800"
