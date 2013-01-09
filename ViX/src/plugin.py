@@ -8,6 +8,7 @@ from BackupManager import BackupManagerautostart
 from ImageManager import ImageManagerautostart
 from SwapManager import SwapAutostart
 from SoftcamManager import SoftcamAutostart
+from IPKInstaller import IpkgInstaller
 from os import path, listdir
 
 def checkConfigBackup():
@@ -69,6 +70,24 @@ def SoftcamSetup(menuid):
 		return [(_("Softcam Manager"), SoftcamMenu, "softcamsetup", 1005)]
 	return []
 
+def filescan_open(list, session, **kwargs):
+	filelist = [x.path for x in list]
+	session.open(IpkgInstaller, filelist) # list
+
+def filescan(**kwargs):
+	print 'PPPPPPPPPPPP'
+	from Components.Scanner import Scanner, ScanPath
+	return \
+		Scanner(mimetypes = ["application/x-debian-package"],
+			paths_to_scan =
+				[
+					ScanPath(path = "ipk", with_subdirs = True),
+					ScanPath(path = "", with_subdirs = False),
+				],
+			name = "Ipkg",
+			description = _("Install extensions."),
+			openfnc = filescan_open, )
+
 def Plugins(path, **kwargs):
 	plist = [PluginDescriptor(where=PluginDescriptor.WHERE_MENU, needsRestart = False, fnc=startSetup)]
 	plist.append(PluginDescriptor(name=_("ViX"), where=PluginDescriptor.WHERE_EXTENSIONSMENU, fnc=UpgradeMain))
@@ -80,5 +99,6 @@ def Plugins(path, **kwargs):
 	plist.append(PluginDescriptor(where = PluginDescriptor.WHERE_SESSIONSTART, fnc = BackupManagerautostart))
 	if config.misc.firstrun.value and not config.misc.restorewizardrun.value and backupAvailable == 1:
 		plist.append(PluginDescriptor(name=_("Restore Wizard"), where = PluginDescriptor.WHERE_WIZARD, needsRestart = False, fnc=(2, RestoreWizard)))
+	plist.append(PluginDescriptor(name=_("Ipkg"), where = PluginDescriptor.WHERE_FILESCAN, needsRestart = False, fnc = filescan))
 	return plist
 
