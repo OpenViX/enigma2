@@ -19,8 +19,9 @@ from Screens.Screen import Screen
 from Components.Console import Console
 from Screens.MessageBox import MessageBox
 from Screens.VirtualKeyBoard import VirtualKeyBoard
+from Screens.Setup import Setup
 from Tools.Notifications import AddPopupWithCallback, AddPopup
-from enigma import eTimer, eEnv
+from enigma import eTimer, eEnv, getBoxType
 from os import path, stat, mkdir, listdir, rename, remove, statvfs, chmod, walk
 from shutil import rmtree, move, copy
 from time import localtime, time, strftime, mktime
@@ -39,7 +40,7 @@ for p in harddiskmanager.getMountedPartitions():
 		if p.mountpoint != '/':
 			hddchoises.append((d + '/', p.mountpoint))
 config.backupmanager = ConfigSubsection()
-config.backupmanager.folderprefix = ConfigText(default=config.misc.boxtype.getValue(), fixed_size=False)
+config.backupmanager.folderprefix = ConfigText(default=getBoxType(), fixed_size=False)
 config.backupmanager.backuplocation = ConfigSelection(choices = hddchoises)
 config.backupmanager.schedule = ConfigYesNo(default = False)
 config.backupmanager.scheduletime = ConfigClock(default = 0) # 1:00
@@ -231,7 +232,7 @@ class VIXBackupManager(Screen):
 			self['lab1'].setText(_("Device: ") + config.backupmanager.backuplocation.value + "\n" + _("there was a problem with this device, please reformat and try again."))
 
 	def createSetup(self):
-		self.session.openWithCallback(self.setupDone, VIXBackupManagerMenu)
+		self.session.openWithCallback(self.setupDone, VIXBackupManagerMenu, 'vixbackupmanager', 'SystemPlugins/ViX')
 
 	def showLog(self):
 		self.sel = self['list'].getCurrent()
@@ -239,7 +240,7 @@ class VIXBackupManager(Screen):
 			filename = self.BackupDirectory + self.sel
 			self.session.open(VIXBackupManagerLogView, filename)
 
-	def setupDone(self):
+	def setupDone(self, test=None):
 		self.populate_List()
 		self.doneConfiguring()
 
@@ -788,121 +789,21 @@ class XtraPluginsSelection(Screen):
 	def closeRecursive(self):
 		self.close(True)
 
-class VIXBackupManagerMenu(ConfigListScreen, Screen):
-	skin = """
-		<screen name="VIXBackupManagerMenu" position="center,center" size="500,285" title="Backup Manager Setup">
-			<ePixmap pixmap="skin_default/buttons/red.png" position="0,0" size="140,40" alphatest="on" />
-			<ePixmap pixmap="skin_default/buttons/green.png" position="140,0" size="140,40" alphatest="on" />
-			<ePixmap pixmap="skin_default/buttons/yellow.png" position="280,0" size="140,40" alphatest="on" />
-			<widget name="key_red" position="0,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" />
-			<widget name="key_green" position="140,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1" />
-			<widget name="key_yellow" position="280,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" transparent="1" />
-			<widget name="config" position="10,45" size="480,150" scrollbarMode="showOnDemand" />
-			<widget name="HelpWindow" pixmap="skin_default/vkey_icon.png" position="445,385" zPosition="1" size="500,285" transparent="1" alphatest="on" />
-			<ePixmap pixmap="skin_default/buttons/key_text.png" position="430,5" zPosition="4" size="35,25" alphatest="on" transparent="1" />
-		</screen>"""
-
-	def __init__(self, session):
-		Screen.__init__(self, session)
-		self.session = session
-		self.skin = VIXBackupManagerMenu.skin
+class VIXBackupManagerMenu(Setup):
+	def __init__(self, session, setup, plugin=None):
+		Setup.__init__(self, session, setup, plugin)
 		self.skinName = "VIXBackupManagerMenu"
-		Screen.setTitle(self, _("Backup Manager Setup"))
-		self["HelpWindow"] = Pixmap()
-		self["HelpWindow"].hide()
 
-		self.onChangedEntry = [ ]
-		self.list = []
-		ConfigListScreen.__init__(self, self.list, session = self.session, on_change = self.changedEntry)
-		self.createSetup()
-
-		self["actions"] = ActionMap(["SetupActions", 'ColorActions', 'VirtualKeyboardActions', "MenuActions"],
+		self["actions2"] = ActionMap(["SetupActions", 'ColorActions', 'VirtualKeyboardActions', "MenuActions"],
 		{
-			"ok": self.keySave,
-			"cancel": self.keyCancel,
-			"red": self.keyCancel,
-			"green": self.keySave,
 			"yellow": self.chooseFiles,
 			"blue": self.chooseXtraPluginDir,
-			'showVirtualKeyboard': self.KeyText,
-			"menu": self.keyCancel,
 		}, -2)
 
 		self["key_red"] = Button(_("Cancel"))
 		self["key_green"] = Button(_("OK"))
 		self["key_yellow"] = Button(_("Choose Files"))
 		self["key_blue"] = Button(_("Choose local ipk's folder"))
-
-	def createSetup(self):
-		imparts = []
-		for p in harddiskmanager.getMountedPartitions():
-			if path.exists(p.mountpoint):
-				d = path.normpath(p.mountpoint)
-				m = d + '/', p.mountpoint
-				if p.mountpoint != '/':
-					imparts.append((d + '/', p.mountpoint))
-
-		config.backupmanager.backuplocation.setChoices(imparts)
-		self.editListEntry = None
-		self.list = []
-		self.list.append(getConfigListEntry(_("Backup Location"), config.backupmanager.backuplocation))
-		self.list.append(getConfigListEntry(_("Extra Package's Location"), config.backupmanager.xtraplugindir))
-		self.list.append(getConfigListEntry(_("Folder prefix"), config.backupmanager.folderprefix))
-		self.list.append(getConfigListEntry(_("Schedule Backups"), config.backupmanager.schedule))
-		if config.backupmanager.schedule.value:
-			self.list.append(getConfigListEntry(_("Time of Backup to start"), config.backupmanager.scheduletime))
-			self.list.append(getConfigListEntry(_("Repeat how often"), config.backupmanager.repeattype))
-		self["config"].list = self.list
-		self["config"].setList(self.list)
-
-	# for summary:
-	def changedEntry(self):
-		if self["config"].getCurrent()[0] == _("Schedule Backups"):
-			self.createSetup()
-		for x in self.onChangedEntry:
-			x()
-
-	def getCurrentEntry(self):
-		return self["config"].getCurrent()[0]
-
-	def getCurrentValue(self):
-		return str(self["config"].getCurrent()[1].getText())
-
-	def KeyText(self):
-		if self['config'].getCurrent():
-			if self['config'].getCurrent()[0] == _("Folder prefix"):
-				from Screens.VirtualKeyBoard import VirtualKeyBoard
-				self.session.openWithCallback(self.VirtualKeyBoardCallback, VirtualKeyBoard, title = self["config"].getCurrent()[0], text = self["config"].getCurrent()[1].getValue())
-
-	def VirtualKeyBoardCallback(self, callback = None):
-		if callback is not None and len(callback):
-			self["config"].getCurrent()[1].setValue(callback)
-			self["config"].invalidate(self["config"].getCurrent())
-
-	def saveAll(self):
-		for x in self["config"].list:
-			x[1].save()
-		configfile.save()
-
-	# keySave and keyCancel are just provided in case you need them.
-	# you have to call them by yourself.
-	def keySave(self):
-		self.saveAll()
-		self.close()
-
-	def cancelConfirm(self, result):
-		if not result:
-			return
-
-		for x in self["config"].list:
-			x[1].cancel()
-		self.close()
-
-	def keyCancel(self):
-		if self["config"].isChanged():
-			self.session.openWithCallback(self.cancelConfirm, MessageBox, _("Really close without saving settings?"))
-		else:
-			self.close()
 
 	def chooseFiles(self):
 		self.session.openWithCallback(self.backupfiles_choosen,BackupSelection)

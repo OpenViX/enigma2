@@ -13,6 +13,7 @@ from Components.config import configfile, config, getConfigListEntry, ConfigSubs
 from Components.ConfigList import ConfigListScreen
 from Components.Harddisk import harddiskmanager, getProcMounts
 from Screens.Screen import Screen
+from Screens.Setup import Setup
 from Components.Console import Console
 from Screens.Console import Console as RestareConsole
 from Screens.MessageBox import MessageBox
@@ -29,7 +30,7 @@ for p in harddiskmanager.getMountedPartitions():
 		if p.mountpoint != '/':
 			hddchoises.append((d + '/', p.mountpoint))
 config.imagemanager = ConfigSubsection()
-config.imagemanager.folderprefix = ConfigText(default=config.misc.boxtype.getValue(), fixed_size=False)
+config.imagemanager.folderprefix = ConfigText(default=getBoxType(), fixed_size=False)
 config.imagemanager.backuplocation = ConfigSelection(choices = hddchoises)
 config.imagemanager.schedule = ConfigYesNo(default = False)
 config.imagemanager.scheduletime = ConfigClock(default = 0) # 1:00
@@ -248,12 +249,12 @@ class VIXImageManager(Screen):
  			self['lab1'].setText(_("Device: ") + config.imagemanager.backuplocation.value + "\n" + _("there was a problem with this device, please reformat and try again."))
 
 	def createSetup(self):
-		self.session.openWithCallback(self.setupDone, ImageManagerMenu)
+		self.session.openWithCallback(self.setupDone, Setup, 'viximagemanager', 'SystemPlugins/ViX')
 
 	def doDownload(self):
 		self.session.openWithCallback(self.populate_List, ImageManagerDownload, self.BackupDirectory)
 
-	def setupDone(self):
+	def setupDone(self, test=None):
 		self.populate_List()
 		self.doneConfiguring()
 
@@ -523,128 +524,6 @@ class VIXImageManager(Screen):
 #
 # 	def myclose(self):
 # 		self.close()
-
-class ImageManagerMenu(ConfigListScreen, Screen):
-	sz_w = getDesktop(0).size().width()
-	if sz_w == 1280:
-		skin = """
-			<screen name="ImageManagerMenu" position="center,center" size="500,285" title="Image Manager Setup">
-				<ePixmap pixmap="skin_default/buttons/red.png" position="0,0" size="140,40" alphatest="on" />
-				<ePixmap pixmap="skin_default/buttons/green.png" position="140,0" size="140,40" alphatest="on" />
-				<widget name="key_red" position="0,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" />
-				<widget name="key_green" position="140,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1" />
-				<widget name="config" position="10,45" size="480,150" scrollbarMode="showOnDemand" />
-				<widget name="HelpWindow" pixmap="skin_default/vkey_icon.png" position="445,400" zPosition="1" size="500,285" transparent="1" alphatest="on" />
-				<ePixmap pixmap="skin_default/buttons/key_text.png" position="290,5" zPosition="4" size="35,25" alphatest="on" transparent="1" />
-			</screen>"""
-	else:
-		skin = """
-			<screen name="ImageManagerMenu" position="center,center" size="500,285" title="Image Manager Setup">
-				<ePixmap pixmap="skin_default/buttons/red.png" position="0,0" size="140,40" alphatest="on" />
-				<ePixmap pixmap="skin_default/buttons/green.png" position="140,0" size="140,40" alphatest="on" />
-				<widget name="key_red" position="0,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" />
-				<widget name="key_green" position="140,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1" />
-				<widget name="config" position="10,45" size="480,150" scrollbarMode="showOnDemand" />
-				<widget name="HelpWindow" pixmap="skin_default/vkey_icon.png" position="165,300" zPosition="1" size="500,285" transparent="1" alphatest="on" />
-				<ePixmap pixmap="skin_default/buttons/key_text.png" position="290,5" zPosition="4" size="35,25" alphatest="on" transparent="1" />
-			</screen>"""
-
-	def __init__(self, session):
-		Screen.__init__(self, session)
-		self.session = session
-		self.skin = ImageManagerMenu.skin
-		self.skinName = "ImageManagerMenu"
-		Screen.setTitle(self, _("Image Manager Setup"))
-		self["HelpWindow"] = Pixmap()
-		self["HelpWindow"].hide()
-
-		self.onChangedEntry = [ ]
-		self.list = []
-		ConfigListScreen.__init__(self, self.list, session = self.session, on_change = self.changedEntry)
-		self.createSetup()
-
-		self["actions"] = ActionMap(['SetupActions', 'ColorActions', 'VirtualKeyboardActions', "MenuActions"],
-		{
-			"ok": self.keySave,
-			"cancel": self.keyCancel,
-			"red": self.keyCancel,
-			"green": self.keySave,
-			'showVirtualKeyboard': self.KeyText,
-			"menu": self.keyCancel,
-		}, -2)
-
-		self["key_red"] = Button(_("Cancel"))
-		self["key_green"] = Button(_("OK"))
-
-	def createSetup(self):
-		imparts = []
-		for p in harddiskmanager.getMountedPartitions():
-			if path.exists(p.mountpoint):
-				d = path.normpath(p.mountpoint)
-				m = d + '/', p.mountpoint
-				if p.mountpoint != '/':
-					imparts.append((d + '/', p.mountpoint))
-
-		config.imagemanager.backuplocation.setChoices(imparts)
-		self.editListEntry = None
-		self.list = []
-		self.list.append(getConfigListEntry(_("Backup Location"), config.imagemanager.backuplocation))
-		self.list.append(getConfigListEntry(_("Folder prefix"), config.imagemanager.folderprefix))
-		self.list.append(getConfigListEntry(_("Schedule Backups"), config.imagemanager.schedule))
-		if config.imagemanager.schedule.value:
-			self.list.append(getConfigListEntry(_("Time of Backup to start"), config.imagemanager.scheduletime))
-			self.list.append(getConfigListEntry(_("Repeat how often"), config.imagemanager.repeattype))
-		self["config"].list = self.list
-		self["config"].setList(self.list)
-
-	# for summary:
-	def changedEntry(self):
-		if self["config"].getCurrent()[0] == _("Schedule Backups"):
-			self.createSetup()
-		for x in self.onChangedEntry:
-			x()
-
-	def getCurrentEntry(self):
-		return self["config"].getCurrent()[0]
-
-	def getCurrentValue(self):
-		return str(self["config"].getCurrent()[1].getText())
-
-	def KeyText(self):
-		if self['config'].getCurrent():
-			if self['config'].getCurrent()[0] == _("Folder prefix"):
-				from Screens.VirtualKeyBoard import VirtualKeyBoard
-				self.session.openWithCallback(self.VirtualKeyBoardCallback, VirtualKeyBoard, title = self["config"].getCurrent()[0], text = self["config"].getCurrent()[1].getValue())
-
-	def VirtualKeyBoardCallback(self, callback = None):
-		if callback is not None and len(callback):
-			self["config"].getCurrent()[1].setValue(callback)
-			self["config"].invalidate(self["config"].getCurrent())
-
-	def saveAll(self):
-		for x in self["config"].list:
-			x[1].save()
-		configfile.save()
-
-	# keySave and keyCancel are just provided in case you need them.
-	# you have to call them by yourself.
-	def keySave(self):
-		self.saveAll()
-		self.close()
-
-	def cancelConfirm(self, result):
-		if not result:
-			return
-
-		for x in self["config"].list:
-			x[1].cancel()
-		self.close()
-
-	def keyCancel(self):
-		if self["config"].isChanged():
-			self.session.openWithCallback(self.cancelConfirm, MessageBox, _("Really close without saving settings?"))
-		else:
-			self.close()
 
 class AutoImageManagerTimer:
 	def __init__(self, session):
