@@ -6,6 +6,7 @@ from Screens.Console import Console
 from Screens.ChoiceBox import ChoiceBox
 from Screens.MessageBox import MessageBox
 from Screens.Standby import TryQuitMainloop
+from Screens.Ipkg import Ipkg
 from Components.config import config
 from Components.ActionMap import ActionMap, HelpableActionMap
 from Components.Label import Label
