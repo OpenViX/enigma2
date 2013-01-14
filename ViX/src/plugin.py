@@ -75,7 +75,6 @@ def filescan_open(list, session, **kwargs):
 	session.open(IpkgInstaller, filelist) # list
 
 def filescan(**kwargs):
-	print 'PPPPPPPPPPPP'
 	from Components.Scanner import Scanner, ScanPath
 	return \
 		Scanner(mimetypes = ["application/x-debian-package"],
