@@ -1,22 +1,18 @@
 # for localized messages
 from . import _
-from Plugins.Plugin import PluginDescriptor
-from Screens.Screen import Screen
-from Screens.Console import Console
-from Screens.ChoiceBox import ChoiceBox
-from Screens.MessageBox import MessageBox
-from Screens.Standby import TryQuitMainloop
-from Screens.Ipkg import Ipkg
 from Components.config import config
-from Components.ActionMap import ActionMap, HelpableActionMap
+from Components.ActionMap import ActionMap
 from Components.Label import Label
-from Components.Language import language
 from Components.Button import Button
 from Components.MenuList import MenuList
-from Components.Sources.List import List
 from Components.SelectionList import SelectionList
 from Components.Sources.StaticText import StaticText
-from Tools.Directories import resolveFilename, SCOPE_PLUGINS, SCOPE_CURRENT_SKIN
+from Components.Ipkg import IpkgComponent
+from Screens.Screen import Screen
+from Screens.Console import Console
+from Screens.Ipkg import Ipkg
+from Screens.MessageBox import MessageBox
+from Screens.Standby import TryQuitMainloop
 from os import listdir, remove, path
 import datetime, time
 
