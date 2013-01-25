@@ -852,42 +852,43 @@ class ImageBackup(Screen):
 		makedirs(self.MAINDESTROOT, 0644)
 		self.commands = []
 		print '[ImageManager] Stage1: Making Root Image.'
+		if getBoxType().startswith('vu'):
+			self.MAINDEST = self.MAINDESTROOT + '/vuplus/' + getBoxType().replace('vu','')
+		elif getBoxType() == 'tmtwin':
+			self.MAINDEST = self.MAINDESTROOT + '/update/tmtwinoe/cfe'
+		elif getBoxType() == 'tm2t':
+			self.MAINDEST = self.MAINDESTROOT + '/update/tm2toe/cfe'
+		elif getBoxType() == 'tmsingle':
+			self.MAINDEST = self.MAINDESTROOT + '/update/tmsingle/cfe'
+		elif getBoxType() == 'gb800solo':
+			self.MAINDEST = self.MAINDESTROOT + '/gigablue/solo'
+		elif getBoxType() == 'gb800se':
+			self.MAINDEST = self.MAINDESTROOT + '/gigablue/se'
+		elif getBoxType() == 'gb800ue':
+			self.MAINDEST = self.MAINDESTROOT + '/gigablue/ue'
+		elif getBoxType() == 'gbquad':
+			self.MAINDEST = self.MAINDESTROOT + '/gigablue/quad'
+		elif getBoxType().startswith('venton'):
+			self.MAINDEST = self.MAINDESTROOT + '/' + getBoxType().replace('-','')
+		else:
+			self.MAINDEST = self.MAINDESTROOT + '/' + getBoxType()
+		makedirs(self.MAINDEST, 0644)
 		if self.ROOTFSTYPE == 'jffs2':
 			print '[ImageManager] Stage1: JFFS2 Detected.'
-			if getBoxType().startswith('tm'):
-				makedirs(self.MAINDESTROOT + '/update/' + getBoxType() + '/cfe', 0644)
-				self.MAINDEST = self.MAINDESTROOT + '/update/' + getBoxType() + '/cfe'
-			elif getBoxType() == 'gb800solo':
-				makedirs(self.MAINDESTROOT + '/gigablue/solo', 0644)
-				self.MAINDEST = self.MAINDESTROOT + '/gigablue/solo'
 			self.commands.append('mount --bind / ' + self.TMPDIR + '/root')
 			self.commands.append(MKFS + ' --root=' + self.TMPDIR + '/root --faketime --output=' + self.WORKDIR + '/root.jffs2' + JFFS2OPTIONS)
 		elif self.ROOTFSTYPE == 'ubifs':
 			print '[ImageManager] Stage1: UBIFS Detected.'
 			if getBoxType().startswith('vu'):
 				MKUBIFS_ARGS="-m 2048 -e 126976 -c 4096 -F"
-				makedirs(self.MAINDESTROOT + '/vuplus/' + getBoxType().replace('vu',''), 0644)
-				self.MAINDEST = self.MAINDESTROOT + '/vuplus/' + getBoxType().replace('vu','')
 			elif getBoxType().startswith('tm'):
 				MKUBIFS_ARGS="-m 2048 -e 126976 -c 4096 -F"
-				makedirs(self.MAINDESTROOT + '/update/' + getBoxType() + '/cfe', 0644)
-				self.MAINDEST = self.MAINDESTROOT + '/update/' + getBoxType() + '/cfe'
 			elif getBoxType().startswith('gb'):
 				MKUBIFS_ARGS="-m 2048 -e 126976 -c 4096"
-				if getBoxType().startswith('gb800'):
-					makedirs(self.MAINDESTROOT + '/gigablue/' + getBoxType().replace('gb800',''), 0644)
-					self.MAINDEST = self.MAINDESTROOT + '/gigablue/' + getBoxType().replace('gb800','')
-				else:
-					makedirs(self.MAINDESTROOT + '/gigablue/' + getBoxType().replace('gb',''), 0644)
-					self.MAINDEST = self.MAINDESTROOT + '/gigablue/' + getBoxType().replace('gb','')
 			elif getBoxType().startswith('et') or getBoxType().startswith('odin') or getBoxType().startswith('xp'):
 				MKUBIFS_ARGS="-m 2048 -e 126976 -c 4096"
-				makedirs(self.MAINDESTROOT + '/' + getBoxType(), 0644)
-				self.MAINDEST = self.MAINDESTROOT + '/' + getBoxType()
 			elif getBoxType().startswith('venton'):
 				MKUBIFS_ARGS="-m 2048 -e 126976 -c 4096"
-				makedirs(self.MAINDESTROOT + '/' + getBoxType().replace('-',''), 0644)
-				self.MAINDEST = self.MAINDESTROOT + '/' + getBoxType().replace('-','')
 			output = open(self.WORKDIR + '/ubinize.cfg','w')
 			output.write('[ubifs]\n')
 			output.write('mode=ubi\n')
