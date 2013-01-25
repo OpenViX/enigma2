@@ -122,6 +122,7 @@ class VIXImageManager(Screen):
 			cb(name, desc)
 
 	def backupRunning(self):
+		self.populate_List()
 		self.BackupRunning = False
 		for job in Components.Task.job_manager.getPendingJobs():
 			if job.name.startswith(_("Image Manager")):
