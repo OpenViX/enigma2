@@ -289,7 +289,7 @@ class VIXSwap(Screen):
 			self['lab1'].setText(scanning)
 			self['lab1'].show()
 			swapsize = swapsize[1]
-			myfile = self.new_place + '/swapfile'
+			myfile = self.new_place + 'swapfile'
 			self.commands = []
 			self.commands.append('dd if=/dev/zero of=' + myfile + ' bs=1024 count=' + swapsize + ' 2>/dev/null')
 			self.commands.append('mkswap ' + myfile)
