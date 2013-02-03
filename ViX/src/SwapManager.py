@@ -67,25 +67,6 @@ class StartSwap:
 
 #######################################################################
 class VIXSwap(Screen):
-	skin = """
-	<screen name="VIXSwap" position="center,center" size="420,250" title="Swap File Manager" flags="wfBorder" >
-		<ePixmap pixmap="skin_default/buttons/green.png" position="140,0" size="140,40" alphatest="on" />
-		<ePixmap pixmap="skin_default/buttons/yellow.png" position="280,0" size="140,40" alphatest="on" />
-		<ePixmap pixmap="skin_default/buttons/blue.png" position="420,0" size="140,40" alphatest="on" />
-		<widget name="key_green" position="140,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1" />
-		<widget name="key_yellow" position="280,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" transparent="1" />
-		<widget name="key_blue" position="420,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" />
-		<widget name="autostart_off" position="10,50" zPosition="1" pixmap="skin_default/icons/lock_off.png" size="32,32" alphatest="on" />
-		<widget name="autostart_on" position="10,50" zPosition="2" pixmap="skin_default/icons/lock_on.png" size="32,32" alphatest="on" />
-		<widget name="lab1" position="50,50" size="360,30" font="Regular;20" valign="center" transparent="1"/>
-		<widget name="lab2" position="10,100" size="150,30" font="Regular;20" valign="center" transparent="1"/>
-		<widget name="lab3" position="10,150" size="150,30" font="Regular;20" valign="center" transparent="1"/>
-		<widget name="lab4" position="10,200" size="150,30" font="Regular;20" valign="center" transparent="1" />
-		<widget name="labplace" position="160,100" size="220,30" font="Regular;20" valign="center" backgroundColor="#4D5375"/>
-		<widget name="labsize" position="160,150" size="220,30" font="Regular;20" valign="center" backgroundColor="#4D5375"/>
-		<widget name="inactive" position="160,200" size="100,30" font="Regular;20" valign="center" halign="center" backgroundColor="red"/>
-		<widget name="active" position="160,200" size="100,30" font="Regular;20" valign="center" halign="center" backgroundColor="green"/>
-	</screen>"""
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		Screen.setTitle(self, _("Swap Manager"))

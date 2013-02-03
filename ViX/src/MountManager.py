@@ -20,30 +20,6 @@ from time import sleep
 import re
 
 class VIXDevicesPanel(Screen):
-	skin = """
-	<screen position="center,center" size="640,460" title="Mount Manager">
-		<ePixmap pixmap="skin_default/buttons/red.png" position="25,0" size="140,40" alphatest="on" />
-		<ePixmap pixmap="skin_default/buttons/green.png" position="175,0" size="140,40" alphatest="on" />
-		<ePixmap pixmap="skin_default/buttons/yellow.png" position="325,0" size="140,40" alphatest="on" />
-		<ePixmap pixmap="skin_default/buttons/blue.png" position="475,0" size="140,40" alphatest="on" />
-		<widget name="key_red" position="25,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" />
-		<widget name="key_green" position="175,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1" />
-		<widget name="key_yellow" position="325,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" transparent="1" />
-		<widget name="key_blue" position="475,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#18188b" transparent="1" />
-		<widget source="list" render="Listbox" position="10,50" size="620,450" scrollbarMode="showOnDemand" >
-			<convert type="TemplatedMultiContent">
-				{"template": [
-				 MultiContentEntryText(pos = (90, 0), size = (600, 30), font=0, text = 0),
-				 MultiContentEntryText(pos = (110, 30), size = (600, 50), font=1, flags = RT_VALIGN_TOP, text = 1),
-				 MultiContentEntryPixmapAlphaBlend(pos = (0, 0), size = (80, 80), png = 2),
-				],
-				"fonts": [gFont("Regular", 24),gFont("Regular", 20)],
-				"itemHeight": 85
-				}
-			</convert>
-		</widget>
-		<widget name="lab1" zPosition="2" position="50,90" size="600,40" font="Regular;22" halign="center" transparent="1"/>
-	</screen>"""
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		Screen.setTitle(self, _("Mount Manager"))
@@ -123,13 +99,13 @@ class VIXDevicesPanel(Screen):
 		devicetype = path.realpath('/sys/block/' + device2 + '/device')
 		d2 = device
 		name = _("HARD DISK: ")
-		mypixmap = '/usr/share/enigma2/ViX_HD_Common/icons/dev_hdd.png'
+		mypixmap = '/usr/lib/enigma2/python/Plugins/SystemPlugins/ViX/images/dev_hdd.png'
 		model = file('/sys/block/' + device2 + '/device/model').read()
 		model = str(model).replace('\n', '')
 		des = ''
 		if devicetype.find('usb') != -1:
 			name = _('USB: ')
-			mypixmap = '/usr/share/enigma2/ViX_HD_Common/icons/dev_usb.png'
+			mypixmap = '/usr/lib/enigma2/python/Plugins/SystemPlugins/ViX/images/dev_usb.png'
 		name = name + model
 		self.Console = Console()
 		self.Console.ePopen("sfdisk -l /dev/sd? | grep swap | awk '{print $(NF-9)}' >/tmp/devices.tmp")
@@ -268,15 +244,6 @@ class VIXDevicesPanel(Screen):
 			self.selectionChanged()
 
 class VIXDevicePanelConf(Screen, ConfigListScreen):
-	skin = """
-	<screen position="center,center" size="640,460" title="Choose where to mount your devices to:">
-		<ePixmap pixmap="skin_default/buttons/red.png" position="25,0" size="140,40" alphatest="on" />
-		<ePixmap pixmap="skin_default/buttons/green.png" position="175,0" size="140,40" alphatest="on" />
-		<widget name="key_red" position="25,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" />
-		<widget name="key_green" position="175,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1" />
-		<widget name="config" position="30,60" size="580,275" scrollbarMode="showOnDemand"/>
-		<widget name="Linconn" position="30,375" size="580,20" font="Regular;18" halign="center" valign="center" backgroundColor="#9f1313"/>
-	</screen>"""
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.list = []
@@ -325,13 +292,13 @@ class VIXDevicePanelConf(Screen, ConfigListScreen):
 		devicetype = path.realpath('/sys/block/' + device2 + '/device')
 		d2 = device
 		name = _("HARD DISK: ")
-		mypixmap = '/usr/share/enigma2/ViX_HD_Common/icons/dev_hdd.png'
+		mypixmap = '/usr/lib/enigma2/python/Plugins/SystemPlugins/ViX/images/dev_hdd.png'
 		model = file('/sys/block/' + device2 + '/device/model').read()
 		model = str(model).replace('\n', '')
 		des = ''
 		if devicetype.find('usb') != -1:
 			name = _('USB: ')
-			mypixmap = '/usr/share/enigma2/ViX_HD_Common/icons/dev_usb.png'
+			mypixmap = '/usr/lib/enigma2/python/Plugins/SystemPlugins/ViX/images/dev_usb.png'
 		name = name + model
 		f = open('/proc/mounts', 'r')
 		for line in f.readlines():
