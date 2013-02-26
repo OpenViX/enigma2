@@ -232,13 +232,13 @@ class RestoreWizard(WizardLanguage, Rc):
 
 	def doRestorePluginsTestComplete(self, result = None, retval = None, extra_args = None):
 		print '[RestoreWizard] Stage 4: Feeds Test Result',result
-		if result.find('wget returned 1') != -1 or result.find('wget returned 255') != -1 or result.find('404 Not Found') != -1:
-			self.NextStep = 'reboot'
-			self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Sorry feeds are down for maintenance, Please try using Backup Manager to restore plugins later."), type = MessageBox.TYPE_INFO, timeout = 30, wizard = True)
-			self.buildListRef.setTitle(_("Restore Wizard"))
-		elif result.find('bad address') != -1:
+		if result.find('bad address') != -1:
 			self.NextStep = 'reboot'
 			self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Your STB_BOX is not connected to the internet, Please try using Backup Manager to restore plugins later."), type = MessageBox.TYPE_INFO, timeout = 30, wizard = True)
+			self.buildListRef.setTitle(_("Restore Wizard"))
+		elif result.find('wget returned 1') != -1 or result.find('wget returned 255') != -1 or result.find('404 Not Found') != -1:
+			self.NextStep = 'reboot'
+			self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Sorry feeds are down for maintenance, Please try using Backup Manager to restore plugins later."), type = MessageBox.TYPE_INFO, timeout = 30, wizard = True)
 			self.buildListRef.setTitle(_("Restore Wizard"))
 		elif result.find('Collected errors') != -1:
 			print '[RestoreWizard] Stage 4: Update is in progress, delaying'
