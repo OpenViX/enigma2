@@ -11,6 +11,7 @@ class VIXScriptRunner(IpkgInstaller):
 		IpkgInstaller.__init__(self, session, list)
 		Screen.setTitle(self, _("Script Runner"))
 		self.skinName = "IpkgInstaller"
+		self["key_green"] = StaticText(_("Run"))
 
 	def install(self):
 		list = self.list.getSelectionsList()
