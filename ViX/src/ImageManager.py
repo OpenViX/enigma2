@@ -287,7 +287,7 @@ class VIXImageManager(Screen):
 			self.keyBackup()
 
 	def keyBackup(self):
-		if getBoxType().startswith('vu') or getBoxType().startswith('et') or getBoxType().startswith('tm') or getBoxType().startswith('odin') or getBoxType().startswith('venton') or getBoxType().startswith('gb') or getBoxType().startswith('xp'):
+		if getBoxType().startswith('vu') or getBoxType().startswith('et') or getBoxType().startswith('tm') or getBoxType().startswith('odin') or getBoxType().startswith('venton') or getBoxType().startswith('gb') or getBoxType().startswith('xp') or getBoxType().startswith('iqon'):
 			message = _("Are you ready to create a backup image ?")
 			ybox = self.session.openWithCallback(self.doBackup, MessageBox, message, MessageBox.TYPE_YESNO)
 			ybox.setTitle(_("Backup Confirmation"))
@@ -813,9 +813,7 @@ class ImageBackup(Screen):
 		else:
 			self.MAINDESTROOT=self.BackupDirectory + config.imagemanager.folderprefix.value + '-' + self.BackupDate
 		MKFS='mkfs.' + self.ROOTFSTYPE
-		if getBoxType().startswith('tm'):
-			JFFS2OPTIONS=" --disable-compressor=lzo --eraseblock=0x20000 -p -n -l --pagesize=0x800"
-		elif getBoxType() =='gb800solo':
+		if getBoxType() =='gb800solo':
 			JFFS2OPTIONS=" --disable-compressor=lzo -e131072 -l -p125829120"
 		else:
 			JFFS2OPTIONS=" --disable-compressor=lzo --eraseblock=0x20000 -n -l"
@@ -841,6 +839,12 @@ class ImageBackup(Screen):
 			self.MAINDEST = self.MAINDESTROOT + '/update/tm2toe/cfe'
 		elif getBoxType() == 'tmsingle':
 			self.MAINDEST = self.MAINDESTROOT + '/update/tmsingle/cfe'
+		elif getBoxType() == 'iqonios100hd':
+			self.MAINDEST = self.MAINDESTROOT + '/update/ios100/cfe'
+		elif getBoxType() == 'iqoniso200hd':
+			self.MAINDEST = self.MAINDESTROOT + '/update/ios200/cfe'
+		elif getBoxType() == 'iqoniso300hd':
+			self.MAINDEST = self.MAINDESTROOT + '/update/ios300/cfe'
 		elif getBoxType() == 'gb800solo':
 			self.MAINDEST = self.MAINDESTROOT + '/gigablue/solo'
 		elif getBoxType() == 'gb800se':
@@ -862,7 +866,7 @@ class ImageBackup(Screen):
 			print '[ImageManager] Stage1: UBIFS Detected.'
 			if getBoxType().startswith('vu'):
 				MKUBIFS_ARGS="-m 2048 -e 126976 -c 4096 -F"
-			elif getBoxType().startswith('tm'):
+			elif getBoxType().startswith('tm') or getBoxType().startswith('iqon'):
 				MKUBIFS_ARGS="-m 2048 -e 126976 -c 4096 -F"
 			elif getBoxType().startswith('gb'):
 				MKUBIFS_ARGS="-m 2048 -e 126976 -c 4096"
@@ -892,7 +896,7 @@ class ImageBackup(Screen):
 
 	def doBackup2(self):
 		print '[ImageManager] Stage2: Making Kernel Image.'
-		if getBoxType().startswith('tm'):
+		if getBoxType().startswith('tm') or getBoxType().startswith('iqon'):
 			self.command = 'cat /dev/mtd6 > ' + self.WORKDIR + '/vmlinux.gz'
 		elif getBoxType().startswith('et') or getBoxType().startswith('venton') or getBoxType().startswith('xp') or getBoxType() == 'vusolo' or getBoxType() == 'vuduo' or getBoxType() == 'vuuno' or getBoxType() == 'vuultimo':
 			self.command = 'cat /dev/mtd1 > ' + self.WORKDIR + '/vmlinux.gz'
@@ -958,7 +962,7 @@ class ImageBackup(Screen):
 			if getBoxType() == 'gb800solo' or getBoxType() == 'gb800se':
 				copy('/usr/lib/enigma2/python/Plugins/SystemPlugins/ViX/burn.bat', self.MAINDESTROOT + '/burn.bat')
 			imagecreated = True
-		elif getBoxType().startswith('tm'):
+		elif getBoxType().startswith('tm') or getBoxType().startswith('iqon'):
 			move(self.WORKDIR + '/root.' + self.ROOTFSTYPE, self.MAINDEST + '/oe_rootfs.bin')
 			move(self.WORKDIR + '/vmlinux.gz', self.MAINDEST + '/oe_kernel.bin')
 			imagecreated = True
@@ -1053,6 +1057,12 @@ class ImageManagerDownload(Screen):
 				ftp.cwd('openvix-builds/TM-2T-OE')
 			elif getBoxType() == 'tmsingle':
 				ftp.cwd('openvix-builds/TM-Single')
+			elif getBoxType() == 'iqonios100hd':
+				ftp.cwd('openvix-builds/iqon-IOS-100HD')
+			elif getBoxType() == 'iqonios200hd':
+				ftp.cwd('openvix-builds/iqon-IOS-200HD')
+			elif getBoxType() == 'iqonios300hd':
+				ftp.cwd('openvix-builds/iqon-IOS-300HD')
 			elif getBoxType() == 'odinm9':
 				ftp.cwd('openvix-builds/Odin-M9')
 			elif getBoxType() == 'xp1000':
@@ -1125,6 +1135,12 @@ class ImageManagerDownload(Screen):
 				mycmd2 = "wget http://enigma2.world-of-satellite.com//openvix/openvix-builds/TM-2T-OE/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
 			elif getBoxType() == 'tmsingle':
 				mycmd2 = "wget http://enigma2.world-of-satellite.com//openvix/openvix-builds/TM-Single/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
+			elif getBoxType() == 'iqonios100hd':
+				mycmd2 = "wget http://enigma2.world-of-satellite.com//openvix/openvix-builds/iqon-IOS-100HD/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
+			elif getBoxType() == 'iqonios200hd':
+				mycmd2 = "wget http://enigma2.world-of-satellite.com//openvix/openvix-builds/iqon-IOS-200HD/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
+			elif getBoxType() == 'iqonios300hd':
+				mycmd2 = "wget http://enigma2.world-of-satellite.com//openvix/openvix-builds/iqon-IOS-300HD/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
 			elif getBoxType() == 'odinm9':
 				mycmd2 = "wget http://enigma2.world-of-satellite.com//openvix/openvix-builds/Odin-M9/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
 			elif getBoxType() == 'qb800solo':
