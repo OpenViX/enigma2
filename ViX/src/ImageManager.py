@@ -18,7 +18,8 @@ from Components.Console import Console
 from Screens.Console import Console as RestareConsole
 from Screens.MessageBox import MessageBox
 from Screens.VirtualKeyBoard import VirtualKeyBoard
-from enigma import eTimer, getDesktop, getBoxType
+from enigma import eTimer, getDesktop, getBoxType, getImageVersionString, getBuildVersionString
+
 from os import path, system, mkdir, makedirs, listdir, remove, statvfs, chmod, walk
 from shutil import rmtree, move, copy
 from time import localtime, time, strftime, mktime
@@ -805,7 +806,7 @@ class ImageBackup(Screen):
 			self.ROOTFSTYPE= 'jffs2'
 		self.BackupConsole = Console()
 		print '[ImageManager] Stage1: Creating tmp folders.',self.BackupDirectory
-		self.BackupDate = about.getImageVersionString() + '.' + about.getBuildVersionString() + '-' + strftime('%Y%m%d_%H%M%S', localtime())
+		self.BackupDate = getImageVersionString() + '.' + getBuildVersionString() + '-' + strftime('%Y%m%d_%H%M%S', localtime())
 		self.WORKDIR=self.BackupDirectory + config.imagemanager.folderprefix.value + '-temp'
 		self.TMPDIR=self.BackupDirectory + config.imagemanager.folderprefix.value + '-mount'
 		if self.updatebackup:

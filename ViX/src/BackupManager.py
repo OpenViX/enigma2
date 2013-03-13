@@ -21,7 +21,8 @@ from Screens.MessageBox import MessageBox
 from Screens.VirtualKeyBoard import VirtualKeyBoard
 from Screens.Setup import Setup
 from Tools.Notifications import AddPopupWithCallback, AddPopup
-from enigma import eTimer, eEnv, getBoxType
+from enigma import eTimer, eEnv, getBoxType, getImageVersionString, getBuildVersionString
+
 from os import path, stat, mkdir, listdir, rename, remove, statvfs, chmod, walk
 from shutil import rmtree, move, copy
 from time import localtime, time, strftime, mktime
@@ -1105,9 +1106,9 @@ class BackupFiles(Screen):
 		print '[BackupManager] Backup running'
 		backupdate = datetime.now()
 		if self.updatebackup:
-			self.Backupfile = self.BackupDirectory + config.backupmanager.folderprefix.value + '-SoftwareUpdate-' + about.getImageVersionString() + '.' + about.getBuildVersionString() + '-' + backupdate.strftime("%Y-%m-%d_%H-%M") + '.tar.gz'
+			self.Backupfile = self.BackupDirectory + config.backupmanager.folderprefix.value + '-SoftwareUpdate-' + getImageVersionString() + '.' + getBuildVersionString() + '-' + backupdate.strftime("%Y-%m-%d_%H-%M") + '.tar.gz'
 		else:
-			self.Backupfile = self.BackupDirectory + config.backupmanager.folderprefix.value + '-' + about.getImageVersionString() + '.' + about.getBuildVersionString() + '-' + backupdate.strftime("%Y-%m-%d_%H-%M") + '.tar.gz'
+			self.Backupfile = self.BackupDirectory + config.backupmanager.folderprefix.value + '-' + getImageVersionString() + '.' + getBuildVersionString() + '-' + backupdate.strftime("%Y-%m-%d_%H-%M") + '.tar.gz'
 		self.Console.ePopen('tar -czvf ' + self.Backupfile + ' ' + self.backupdirs, self.Stage4Complete)
 
 	def Stage4Complete(self, result, retval, extra_args):
