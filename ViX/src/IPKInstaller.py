@@ -23,7 +23,6 @@ class VIXIPKInstaller(Screen):
 		self['lab1'] = Label()
 		self.defaultDir = '/tmp'
 		self.onChangedEntry = [ ]
-		self.list = []
 		self['myactions'] = ActionMap(['ColorActions', 'OkCancelActions', 'DirectionActions', "MenuActions"],
 			{
 				'cancel': self.close,
@@ -86,11 +85,19 @@ class VIXIPKInstaller(Screen):
 			self["key_yellow"].setText(_("Temp Folder"))
 
 		self['lab1'].setText(_("Select a package to install:"))
+
 		del self.list[:]
 		f = listdir(self.defaultDir)
 		for line in f:
 			if line.find('.ipk') != -1:
 				self.list.append(line)
+		
+		if path.ismount('/media/usb'):
+			f = listdir('/media/usb')
+			for line in f:
+				if line.find('.ipk') != -1:
+					self.list.append(line)
+
 		self.list.sort()
 		self['list'].l.setList(self.list)
 
