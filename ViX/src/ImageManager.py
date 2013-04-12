@@ -18,11 +18,14 @@ from Components.Console import Console
 from Screens.Console import Console as RestareConsole
 from Screens.MessageBox import MessageBox
 from Screens.VirtualKeyBoard import VirtualKeyBoard
+from Tools.Notifications import AddPopupWithCallback
 from enigma import eTimer, getDesktop, getBoxType, getImageVersionString, getBuildVersionString
 
 from os import path, system, mkdir, makedirs, listdir, remove, statvfs, chmod, walk
 from shutil import rmtree, move, copy
 from time import localtime, time, strftime, mktime
+
+RAMCHEKFAILEDID = 'RamCheckFailedNotification'
 
 hddchoises = []
 for p in harddiskmanager.getMountedPartitions():
@@ -212,7 +215,9 @@ class VIXImageManager(Screen):
 				}, -1)
 
 			self.BackupDirectory = config.imagemanager.backuplocation.value + 'imagebackups/'
-			self['lab1'].setText(_("Device: ") + config.imagemanager.backuplocation.value + "\n" + _("Select an image to delete:"))
+			s = statvfs(config.imagemanager.backuplocation.value)
+			free = (s.f_bsize * s.f_bavail)/(1024*1024)
+			self['lab1'].setText(_("Device: ") + config.imagemanager.backuplocation.value + ' ' + _('Free space:') + ' ' + str(free) + _('MB') + "\n" + _("Select an image to delete:"))
 
 		try:
 			if not path.exists(self.BackupDirectory):
@@ -737,7 +742,12 @@ class ImageBackup(Screen):
 		s = statvfs(self.BackupDevice)
 		free = (s.f_bsize * s.f_bavail)/(1024*1024)
 		if int(free) < 200:
-			self.session.open(MessageBox, _("The backup location does not have enough freespace." + "\n" + self.BackupDevice + "only has " + str(free) + "MB free."), MessageBox.TYPE_INFO, timeout = 10)
+			AddPopupWithCallback(self.BackupComplete,
+				_("The backup location does not have enough freespace." + "\n" + self.BackupDevice + "only has " + str(free) + "MB free."),
+				MessageBox.TYPE_INFO,
+				10,
+				'RamCheckFailedNotification'
+			)
 		else:
 			self.MemCheck()
 
@@ -769,12 +779,12 @@ class ImageBackup(Screen):
 				self.MemCheck2()
 			else:
 				print '[ImageManager] Sorry, not enough free ram found, and no physical devices that supports SWAP attached'
-				self.session.open(MessageBox, _("Sorry, not enough free ram found, and no physical devices that supports SWAP attached. Can't create Swapfile on network or fat32 filesystems, unable to make backup"), MessageBox.TYPE_INFO, timeout = 10)
-				if config.imagemanager.schedule.value:
-					atLeast = 60
-					autoImageManagerTimer.backupupdate(atLeast)
-				else:
-					autoImageManagerTimer.backupstop()
+				AddPopupWithCallback(self.BackupComplete,
+					_("Sorry, not enough free ram found, and no physical devices that supports SWAP attached. Can't create Swapfile on network or fat32 filesystems, unable to make backup"),
+					MessageBox.TYPE_INFO,
+					10,
+					'RamCheckFailedNotification'
+				)
 		else:
 			print '[ImageManager] Stage1: Found Enough Ram'
 			self.RamChecked = True
@@ -989,7 +999,7 @@ class ImageBackup(Screen):
 		self.Stage4Completed = True
 		print '[ImageManager] Stage4: Complete.'
 
-	def BackupComplete(self):
+	def BackupComplete(self, anwser=None):
 		if config.imagemanager.schedule.value:
 			atLeast = 60
 			autoImageManagerTimer.backupupdate(atLeast)
