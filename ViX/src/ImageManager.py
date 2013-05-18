@@ -18,6 +18,7 @@ from Components.Console import Console
 from Screens.Console import Console as RestareConsole
 from Screens.MessageBox import MessageBox
 from Screens.VirtualKeyBoard import VirtualKeyBoard
+from Screens.Standby import TryQuitMainloop
 from Tools.Notifications import AddPopupWithCallback
 from enigma import eTimer, getDesktop, getBoxType, getImageVersionString, getBuildVersionString
 
@@ -69,7 +70,7 @@ class VIXImageManager(Screen):
 
 		self['lab1'] = Label()
 		self["backupstatus"] = Label()
-		self["key_blue"] = Button(_("Refresh List"))
+		self["key_blue"] = Button(_("Restore"))
 		self["key_green"] = Button()
 		self["key_yellow"] = Button(_("Downloads"))
 		self["key_red"] = Button(_("Delete"))
@@ -182,7 +183,7 @@ class VIXImageManager(Screen):
 						'red': self.keyDelete,
 						'green': self.GreenPressed,
 						'yellow': self.doDownload,
-						'blue': self.populate_List,
+						'blue': self.keyResstore,
 						"menu": self.createSetup,
 						"up": self.refreshUp,
 						"down": self.refreshDown,
@@ -208,7 +209,7 @@ class VIXImageManager(Screen):
 					'red': self.keyDelete,
 					'green': self.GreenPressed,
 					'yellow': self.doDownload,
-					'blue': self.populate_List,
+					'blue': self.keyResstore,
 					"menu": self.createSetup,
 					"up": self.refreshUp,
 					"down": self.refreshDown,
@@ -318,37 +319,37 @@ class VIXImageManager(Screen):
 		self.sel = self['list'].getCurrent()
 		self.MAINDESTROOT = self.BackupDirectory + self.sel
 		if getBoxType().startswith('vu'):
-			self.MAINDEST = self.MAINDESTROOT + '/vuplus/' + getBoxType().replace('vu','')
+			self.MAINDEST = self.MAINDESTROOT + '/vuplus/' + getBoxType().replace('vu','') + '/'
 		elif getBoxType() == 'tmtwin':
-			self.MAINDEST = self.MAINDESTROOT + '/update/tmtwinoe/cfe'
+			self.MAINDEST = self.MAINDESTROOT + '/update/tmtwinoe/cfe/'
 		elif getBoxType() == 'tm2t':
-			self.MAINDEST = self.MAINDESTROOT + '/update/tm2toe/cfe'
+			self.MAINDEST = self.MAINDESTROOT + '/update/tm2toe/cfe/'
 		elif getBoxType() == 'tmsingle':
-			self.MAINDEST = self.MAINDESTROOT + '/update/tmsingle/cfe'
+			self.MAINDEST = self.MAINDESTROOT + '/update/tmsingle/cfe/'
 		elif getBoxType() == 'iqonios100hd':
-			self.MAINDEST = self.MAINDESTROOT + '/update/ios100/cfe'
+			self.MAINDEST = self.MAINDESTROOT + '/update/ios100/cfe/'
 		elif getBoxType() == 'iqoniso200hd':
-			self.MAINDEST = self.MAINDESTROOT + '/update/ios200/cfe'
+			self.MAINDEST = self.MAINDESTROOT + '/update/ios200/cfe/'
 		elif getBoxType() == 'iqoniso300hd':
-			self.MAINDEST = self.MAINDESTROOT + '/update/ios300/cfe'
+			self.MAINDEST = self.MAINDESTROOT + '/update/ios300/cfe/'
 		elif getBoxType() == 'gb800solo':
-			self.MAINDEST = self.MAINDESTROOT + '/gigablue/solo'
+			self.MAINDEST = self.MAINDESTROOT + '/gigablue/solo/'
 		elif getBoxType() == 'gb800se':
-			self.MAINDEST = self.MAINDESTROOT + '/gigablue/se'
+			self.MAINDEST = self.MAINDESTROOT + '/gigablue/se/'
 		elif getBoxType() == 'gb800ue':
-			self.MAINDEST = self.MAINDESTROOT + '/gigablue/ue'
+			self.MAINDEST = self.MAINDESTROOT + '/gigablue/ue/'
 		elif getBoxType() == 'gbquad':
-			self.MAINDEST = self.MAINDESTROOT + '/gigablue/quad'
+			self.MAINDEST = self.MAINDESTROOT + '/gigablue/quad/'
 		elif getBoxType().startswith('venton'):
-			self.MAINDEST = self.MAINDESTROOT + '/' + getBoxType().replace('-','')
+			self.MAINDEST = self.MAINDESTROOT + '/' + getBoxType().replace('-','') + '/'
 		else:
-			self.MAINDEST = self.MAINDESTROOT + '/' + getBoxType()
+			self.MAINDEST = self.MAINDESTROOT + '/' + getBoxType() + '/'
 		if not self.BackupRunning:
 			if getBoxType().startswith('vu') or getBoxType().startswith('et') or getBoxType().startswith('tm') or getBoxType().startswith('odin') or getBoxType().startswith('venton') or getBoxType().startswith('gb') or getBoxType().startswith('iqon'):
 				if path.exists(self.MAINDEST):
 					if self.sel:
 						message = _("Are you sure you want to restore this image:\n ") + self.sel
-						ybox = self.session.openWithCallback(self.RestoreMemCheck, MessageBox, message, MessageBox.TYPE_YESNO)
+						ybox = self.session.openWithCallback(self.doRestore, MessageBox, message, MessageBox.TYPE_YESNO)
 						ybox.setTitle(_("Restore Confirmation"))
 					else:
 						self.session.open(MessageBox, _("You have no image to restore."), MessageBox.TYPE_INFO, timeout = 10)
@@ -359,234 +360,57 @@ class VIXImageManager(Screen):
 		else:
 			self.session.open(MessageBox, _("Backup in progress,\nPlease for it to finish, before trying again"), MessageBox.TYPE_INFO, timeout = 10)
 
-	def RestoreMemCheck(self,answer):
+
+	def doRestore(self,answer):
 		if answer:
 			config.imagemanager.restoreimage.value = self.sel
-			self.ImageRestore = ImageRestore(self.session)
-			Components.Task.job_manager.AddJob(self.ImageRestore.createRestoreJob())
-			for job in Components.Task.job_manager.getPendingJobs():
-				jobname = str(job.name)
-			self.showJobView(job)
+			if not path.exists('/tmp/sync'):
+				copy('/bin/sync','/tmp')
+			if not path.exists('/tmp/nandwrite'):
+				copy('/usr/sbin/nandwrite','/tmp')
+			if not path.exists('/tmp/flash_erase'):
+				copy('/usr/sbin/flash_erase','/tmp')
+			if not path.exists('/tmp/reboot'):
+				copy('/sbin/reboot','/tmp')
+			if not path.exists('/tmp/tee'):
+				copy('/usr/bin/tee','/tmp')
 
-class ImageRestore(Screen):
-	def __init__(self, session):
-		Screen.__init__(self, session)
-		self.MessageRead = False
-		self.RamChecked = False
-		self.SwapCreated = False
-		self.Stage1Completed = False
-		self.Stage2Completed = False
-		self.Stage3Completed = False
-		self.Stage4Completed = False
-		self.swapdevice = ""
-		self.sel = config.imagemanager.restoreimage.value
-		self.BackupDirectory = config.imagemanager.backuplocation.value + 'imagebackups/'
-		self.MAINDESTROOT = self.BackupDirectory + self.sel
-		if getBoxType().startswith('vu'):
-			self.MAINDEST = self.MAINDESTROOT + '/vuplus/' + getBoxType().replace('vu','')
-		elif getBoxType() == 'tmtwin':
-			self.MAINDEST = self.MAINDESTROOT + '/update/tmtwinoe/cfe'
-		elif getBoxType() == 'tm2t':
-			self.MAINDEST = self.MAINDESTROOT + '/update/tm2toe/cfe'
-		elif getBoxType() == 'tmsingle':
-			self.MAINDEST = self.MAINDESTROOT + '/update/tmsingle/cfe'
-		elif getBoxType() == 'iqonios100hd':
-			self.MAINDEST = self.MAINDESTROOT + '/update/ios100/cfe'
-		elif getBoxType() == 'iqoniso200hd':
-			self.MAINDEST = self.MAINDESTROOT + '/update/ios200/cfe'
-		elif getBoxType() == 'iqoniso300hd':
-			self.MAINDEST = self.MAINDESTROOT + '/update/ios300/cfe'
-		elif getBoxType() == 'gb800solo':
-			self.MAINDEST = self.MAINDESTROOT + '/gigablue/solo'
-		elif getBoxType() == 'gb800se':
-			self.MAINDEST = self.MAINDESTROOT + '/gigablue/se'
-		elif getBoxType() == 'gb800ue':
-			self.MAINDEST = self.MAINDESTROOT + '/gigablue/ue'
-		elif getBoxType() == 'gbquad':
-			self.MAINDEST = self.MAINDESTROOT + '/gigablue/quad'
-		elif getBoxType().startswith('venton'):
-			self.MAINDEST = self.MAINDESTROOT + '/' + getBoxType().replace('-','')
-		else:
-			self.MAINDEST = self.MAINDESTROOT + '/' + getBoxType()
-
-	def createRestoreJob(self):
-		job = Components.Task.Job(_("Image Manager"))
-
-		task = Components.Task.PythonTask(job, _("Setting Up..."))
-		task.work = self.JobStart
-		task.weighting = 1
-
-		task = Components.Task.ConditionTask(job, _("Checking Free RAM.."), timeoutCount=20)
-		task.check = lambda: self.RamChecked
-		task.weighting = 1
-
-		task = Components.Task.ConditionTask(job, _("Creating Swap.."), timeoutCount=20)
-		task.check = lambda: self.SwapCreated
-		task.weighting = 1
-
-		task = Components.Task.PythonTask(job, _("Erasing Kernel..."))
-		task.work = self.doRestore1
-		task.weighting = 1
-
-		task = Components.Task.ConditionTask(job, _("Erasing Kernel..."), timeoutCount=120)
-		task.check = lambda: self.Stage1Completed
-		task.weighting = 1
-
-		task = Components.Task.PythonTask(job, _("Restoring Kernel..."))
-		task.work = self.doRestore2
-		task.weighting = 1
-
-		task = Components.Task.ConditionTask(job, _("Restoring Kernel..."), timeoutCount=520)
-		task.check = lambda: self.Stage2Completed
-		task.weighting = 1
-
-		task = Components.Task.PythonTask(job, _("Erasing Root..."))
-		task.work = self.doRestore3
-		task.weighting = 1
-
-		task = Components.Task.ConditionTask(job, _("Erasing Root..."), timeoutCount=120)
-		task.check = lambda: self.Stage3Completed
-		task.weighting = 1
-
-		task = Components.Task.PythonTask(job, _("Restoring Root..."))
-		task.work = self.doRestore4
-		task.weighting = 1
-
-		task = Components.Task.ConditionTask(job, _("Restoring Root..."), timeoutCount=520)
-		task.check = lambda: self.Stage4Completed
-		task.weighting = 1
-
-		return job
-
-	def JobStart(self):
-		f = open('/proc/meminfo', 'r')
-		for line in f.readlines():
-			if line.find('MemFree') != -1:
-				parts = line.strip().split()
-				memfree = int(parts[1])
-			elif line.find('SwapFree') != -1:
-				parts = line.strip().split()
-				swapfree = int(parts[1])
-		f.close()
-		TotalFree = memfree + swapfree
-		print '[ImageManager] Stage1: Free Mem',TotalFree
-		if int(TotalFree) < 3000:
-			print '[ImageManager] Stage1: Creating Swapfile.'
-			self.RamChecked = True
-			self.MemCheck2()
-		else:
-			print '[ImageManager] Stage1: Found Enough Ram'
-			self.RamChecked = True
-			self.SwapCreated = True
-
-	def MemCheck2(self):
-		self.MemCheckConsole = Console()
-		self.swapdevice = False
-		supported_filesystems = frozenset(('ext4', 'ext3', 'ext2'))
-		candidates = []
-		mounts = getProcMounts()
-		for partition in harddiskmanager.getMountedPartitions(False, mounts):
-			if partition.filesystem(mounts) in supported_filesystems:
-				candidates.append((partition.description, partition.mountpoint))
-		for swapdevice in candidates:
-			self.swapdevice = swapdevice[1]
-		self.MemCheckConsole.ePopen("dd if=/dev/zero of=" + self.swapdevice + config.imagemanager.folderprefix.value + "-swapfile_backup bs=1024 count=61440", self.MemCheck3)
-
-	def MemCheck3(self, result, retval, extra_args = None):
-		if retval == 0:
-			self.MemCheckConsole = Console()
-			self.MemCheckConsole.ePopen("mkswap " + self.swapdevice + config.imagemanager.folderprefix.value + "-swapfile_backup", self.MemCheck4)
-
-	def MemCheck4(self, result, retval, extra_args = None):
-		if retval == 0:
-			self.MemCheckConsole = Console()
-			self.MemCheckConsole.ePopen("swapon " + self.swapdevice + config.imagemanager.folderprefix.value + "-swapfile_backup", self.MemCheck5)
-
-	def MemCheck5(self, result, retval, extra_args = None):
-		self.SwapCreated = True
-
-	def doRestore1(self):
-		self.BackupConsole = Console()
-		if not path.exists('/tmp/nandwrite'):
-			copy('/usr/sbin/nandwrite','/tmp')
-		if not path.exists('/tmp/flash_erase'):
-			copy('/usr/sbin/flash_erase','/tmp')
-
-		if getBoxType().startswith('tm') or getBoxType().startswith('iqon'):
-			self.BackupConsole.ePopen('sync && mount -no remount,ro / && /tmp/flash_erase /dev/mtd6 0 0', self.Stage1Complete)
-		elif getBoxType().startswith('et') or getBoxType().startswith('venton') or getBoxType().startswith('xp') or getBoxType() == 'vusolo' or getBoxType() == 'vuduo' or getBoxType() == 'vuuno' or getBoxType() == 'vuultimo':
-			self.BackupConsole.ePopen('sync && mount -no remount,ro / && /tmp/flash_erase /dev/mtd1 0 0', self.Stage1Complete)
-		elif getBoxType().startswith('odin') or getBoxType().startswith('gb') or getBoxType() == 'vusolo2' or getBoxType() == 'vuduo2':
-			self.BackupConsole.ePopen('sync && mount -no remount,ro / && /tmp/flash_erase /dev/mtd2 0 0', self.Stage1Complete)
-
-	def Stage1Complete(self,result, retval, extra_args = None):
-		if retval == 0:
-			self.Stage1Completed = True
-			print '[ImageManager] Stage1: Complete.'
-
-	def doRestore2(self):
-		if getBoxType().startswith('tm') or getBoxType().startswith('iqon'):
-			self.BackupConsole.ePopen('/tmp/nandwrite -p /dev/mtd6 ' + self.MAINDEST + '/oe_kernel.bin', self.Stage2Complete)
-		elif getBoxType() == 'vusolo' or getBoxType() == 'vuduo' or getBoxType() == 'vuuno' or getBoxType() == 'vuultimo':
-			self.BackupConsole.ePopen('/tmp/nandwrite -p /dev/mtd1 ' + self.MAINDEST + '/kernel_cfe_auto.bin', self.Stage2Complete)
-		elif getBoxType() == 'vusolo2' or getBoxType() == 'vuduo2':
-			self.BackupConsole.ePopen('/tmp/nandwrite -p /dev/mtd2 ' + self.MAINDEST + '/kernel_cfe_auto.bin', self.Stage2Complete)
+		if getBoxType().startswith('gb'):
+			kernelMTD = "mtd2"
+			kernelFILE = "kernel.bin"
+			rootMTD = "mtd4"
+			rootFILE = "rootfs.bin"
 		elif getBoxType().startswith('et') or getBoxType().startswith('venton') or getBoxType().startswith('xp'):
-			self.BackupConsole.ePopen('/tmp/nandwrite -p /dev/mtd1 ' + self.MAINDEST + '/kernel.bin', self.Stage2Complete)
-		elif getBoxType().startswith('odin') or getBoxType().startswith('gb'):
-			self.BackupConsole.ePopen('/tmp/nandwrite -p /dev/mtd2 ' + self.MAINDEST + '/kernel.bin', self.Stage2Complete)
-
-	def Stage2Complete(self,result, retval, extra_args = None):
-		if retval == 0:
-			self.Stage2Completed = True
-			print '[ImageManager] Stage2: Complete.'
-
-	def doRestore3(self):
-		if getBoxType() == 'vusolo' or getBoxType() == 'vuduo' or getBoxType() == 'vuuno' or getBoxType() == 'vuultimo' or getBoxType() == 'vusolo2' or getBoxType() == 'vuduo2':
-			self.BackupConsole.ePopen('/tmp/flash_erase /dev/mtd0 0 0', self.Stage3Complete)
-		elif getBoxType().startswith('et') or getBoxType().startswith('venton') or getBoxType().startswith('xp'):
-			self.BackupConsole.ePopen('/tmp/flash_erase /dev/mtd2 0 0', self.Stage3Complete)
+			kernelMTD = "mtd1"
+			kernelFILE = "kernel.bin"
+			rootMTD = "mtd2"
+			rootFILE = "rootfs.bin"
 		elif getBoxType().startswith('odin'):
-			self.BackupConsole.ePopen('/tmp/flash_erase /dev/mtd3 0 0', self.Stage3Complete)
-		elif getBoxType().startswith('tm') or getBoxType().startswith('iqon') or getBoxType().startswith('gb'):
-			self.BackupConsole.ePopen('/tmp/flash_erase /dev/mtd4 0 0', self.Stage3Complete)
-
-	def Stage3Complete(self,result, retval, extra_args = None):
-		if retval == 0:
-			self.Stage3Completed = True
-			print '[ImageManager] Stage3: Complete.'
-
-	def doRestore4(self):
-		if getBoxType() == 'vusolo' or getBoxType() == 'vuduo' or getBoxType() == 'vuuno' or getBoxType() == 'vuultimo':
-			self.BackupConsole.ePopen('/tmp/nandwrite -p /dev/mtd0 ' + self.MAINDEST + '/root_cfe_auto.jffs2', self.Stage4Complete)
-		elif getBoxType() == 'vusolo2' or getBoxType() == 'vuduo2':
-			self.BackupConsole.ePopen('/tmp/nandwrite -p /dev/mtd0 ' + self.MAINDEST + '/root_cfe_auto.bin', self.Stage4Complete)
-		elif getBoxType().startswith('et') or getBoxType().startswith('venton') or getBoxType().startswith('xp'):
-			self.BackupConsole.ePopen('/tmp/nandwrite -p /dev/mtd2 ' + self.MAINDEST + '/rootfs.bin', self.Stage4Complete)
-		elif getBoxType().startswith('odin'):
-			self.BackupConsole.ePopen('/tmp/nandwrite -p /dev/mtd3 ' + self.MAINDEST + '/rootfs.bin', self.Stage4Complete)
+			kernelMTD = "mtd2"
+			kernelFILE = "kernel.bin"
+			rootMTD = "mtd3"
+			rootFILE = "rootfs.bin"
 		elif getBoxType().startswith('tm') or getBoxType().startswith('iqon'):
-			self.BackupConsole.ePopen('/tmp/nandwrite -p /dev/mtd4 ' + self.MAINDEST + '/oe_rootfs.bin', self.Stage4Complete)
-		elif getBoxType().startswith('gb'):
-			self.BackupConsole.ePopen('/tmp/nandwrite -p /dev/mtd4 ' + self.MAINDEST + '/rootfs.bin', self.Stage4Complete)
+			kernelMTD = "mtd6"
+			kernelFILE = "oe_kernel.bin"
+			rootMTD = "mtd4"
+			rootFILE = "oe_rootfs.bin"
+		elif getBoxType() == 'vusolo' or getBoxType() == 'vuduo' or getBoxType() == 'vuuno' or getBoxType() == 'vuultimo':
+			kernelMTD = "mtd1"
+			kernelFILE = "kernel_cfe_auto.bin"
+			rootMTD = "mtd0"
+			rootFILE = "root_cfe_auto.jffs2"
+		elif getBoxType() == 'vusolo2' or getBoxType() == 'vuduo2':
+			kernelMTD = "mtd2"
+			kernelFILE = "kernel_cfe_auto.bin"
+			rootMTD = "mtd0"
+			rootFILE = "root_cfe_auto.bin"
 
-	def Stage4Complete(self,result, retval, extra_args = None):
-		if retval == 0:
-			print '[ImageManager] Stage4: Complete.'
-			if path.exists(self.swapdevice + config.imagemanager.folderprefix.value + "-swapfile_backup"):
-				self.BackupConsole.ePopen("swapoff " + self.swapdevice + config.imagemanager.folderprefix.value + "-swapfile_backup", self.MemRemove1)
-			else:
-				self.Stage4Completed = True
-				self.session.open(MessageBox, _("Flashing Complete\nPlease power off your STB_BOX, wait 15 seconds then power backon."), MessageBox.TYPE_INFO)
-
-	def MemRemove1(self, result, retval, extra_args = None):
-		if retval == 0:
-			if path.exists(self.swapdevice + config.imagemanager.folderprefix.value + "-swapfile_backup"):
-				remove(self.swapdevice + config.imagemanager.folderprefix.value + "-swapfile_backup")
-		self.Stage4Completed = True
-		self.session.open(MessageBox, _("Flashing Complete\nPlease power off your STB_BOX, wait 15 seconds then power backon."), MessageBox.TYPE_INFO)
-
-	def myclose(self):
+		output = open('/tmp/image_restore.sh','w')
+		output.write('#!/bin/sh\n\n/tmp/sync > /media/hdd/restore.log 2>&1 && mount -no remount,ro / >> /media/hdd/restore.log 2>&1 && /tmp/flash_erase /dev/' + kernelMTD + ' 0 0 >> /media/hdd/restore.log 2>&1 && /tmp/nandwrite -p /dev/' + kernelMTD + ' ' + self.MAINDEST + kernelFILE + ' >> /media/hdd/restore.log 2>&1 && /tmp/flash_erase /dev/' + rootMTD + ' 0 0 >> /media/hdd/restore.log 2>&1 && /tmp/nandwrite -p /dev/' + rootMTD + ' ' + self.MAINDEST + rootFILE + ' >> /media/hdd/restore.log 2>&1 && /tmp/reboot -fn')
+		output.close()
+		chmod('/tmp/image_restore.sh', 0755)
+		self.session.open(TryQuitMainloop,retvalue=43)
 		self.close()
 
 class AutoImageManagerTimer:
