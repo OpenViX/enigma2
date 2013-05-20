@@ -171,7 +171,7 @@ class VIXBackupManager(Screen):
 				self.BackupDirectory = '/media/hdd/backup/'
 				config.backupmanager.backuplocation.value = '/media/hdd/'
 				config.backupmanager.backuplocation.save
-				self['lab1'].setText(_("The chosen location does not exist, using /media/hdd") + "\n" + _("Select a backup to Restore / Delete:"))
+				self['lab1'].setText(_("The chosen location does not exist, using /media/hdd") + "\n" + _("Select a backup to Restore:"))
 			else:
 				self['myactions'] = ActionMap(['ColorActions', 'OkCancelActions', 'DirectionActions', "MenuActions", "TimerEditActions"],
 					{
