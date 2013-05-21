@@ -201,7 +201,7 @@ class VIXImageManager(Screen):
 						"menu": self.createSetup,
 					}, -1)
 
-				self['lab1'].setText(_("Device: None available") + "\n" + _("Select an image to delete:"))
+				self['lab1'].setText(_("Device: None available") + "\n" + _("Select an image to restore:"))
 		else:
 			self['myactions'] = ActionMap(['ColorActions', 'OkCancelActions', 'DirectionActions', "MenuActions", "HelpActions"],
 				{
@@ -220,7 +220,7 @@ class VIXImageManager(Screen):
 			self.BackupDirectory = config.imagemanager.backuplocation.value + 'imagebackups/'
 			s = statvfs(config.imagemanager.backuplocation.value)
 			free = (s.f_bsize * s.f_bavail)/(1024*1024)
-			self['lab1'].setText(_("Device: ") + config.imagemanager.backuplocation.value + ' ' + _('Free space:') + ' ' + str(free) + _('MB') + "\n" + _("Select an image to delete:"))
+			self['lab1'].setText(_("Device: ") + config.imagemanager.backuplocation.value + ' ' + _('Free space:') + ' ' + str(free) + _('MB') + "\n" + _("Select an image to restore:"))
 
 		try:
 			if not path.exists(self.BackupDirectory):

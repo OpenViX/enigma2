@@ -180,7 +180,7 @@ class VIXBackupManager(Screen):
 						'log': self.showLog,
 					}, -1)
 
-				self['lab1'].setText(_("Device: None available") + "\n" + _("Select a backup to Restore / Delete:"))
+				self['lab1'].setText(_("Device: None available") + "\n" + _("Select a backup to Restore:"))
 		else:
 			self['myactions'] = ActionMap(['ColorActions', 'OkCancelActions', 'DirectionActions', "MenuActions", "TimerEditActions"],
 				{
@@ -195,7 +195,7 @@ class VIXBackupManager(Screen):
 				}, -1)
 
 			self.BackupDirectory = config.backupmanager.backuplocation.value + 'backup/'
-			self['lab1'].setText(_("Device: ") + config.backupmanager.backuplocation.value + "\n" + _("Select a backup to Restore / Delete:"))
+			self['lab1'].setText(_("Device: ") + config.backupmanager.backuplocation.value + "\n" + _("Select a backup to Restore:"))
 
 		try:
 			if not path.exists(self.BackupDirectory):
