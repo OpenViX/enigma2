@@ -947,51 +947,52 @@ class ImageManagerDownload(Screen):
 			ftp = FTP('world-of-satellite.com')
 			ftp.login(wos_user,wos_pwd)
 			if getBoxType() == 'vuuno':
-				ftp.cwd('openvix-builds/Vu+Uno')
+				self.boxtype = 'Vu+Uno'
 			elif getBoxType() == 'vuultimo':
-				ftp.cwd('openvix-builds/Vu+Ultimo')
+				self.boxtype = 'Vu+Ultimo'
 			elif getBoxType() == 'vusolo':
-				ftp.cwd('openvix-builds/Vu+Solo')
+				self.boxtype = 'Vu+Solo'
 			elif getBoxType() == 'vusolo2':
-				ftp.cwd('openvix-builds/Vu+Solo2')
+				self.boxtype = 'Vu+Solo2'
 			elif getBoxType() == 'vuduo':
-				ftp.cwd('openvix-builds/Vu+Duo')
+				self.boxtype = 'Vu+Duo'
 			elif getBoxType() == 'et4x00':
-				ftp.cwd('openvix-builds/ET-4x00')
+				self.boxtype = 'ET-4x00'
 			elif getBoxType() == 'et5x00':
-				ftp.cwd('openvix-builds/ET-5x00')
+				self.boxtype = 'ET-5x00'
 			elif getBoxType() == 'et6x00':
-				ftp.cwd('openvix-builds/ET-6x00')
+				self.boxtype = 'ET-6x00'
 			elif getBoxType() == 'et9x00':
-				ftp.cwd('openvix-builds/ET-9x00')
+				self.boxtype = 'ET-9x00'
 			elif getBoxType() == 'tmtwin':
-				ftp.cwd('openvix-builds/TM-Twin-OE')
+				self.boxtype = 'TM-Twin-OE'
 			elif getBoxType() == 'tm2t':
-				ftp.cwd('openvix-builds/TM-2T-OE')
+				self.boxtype = 'TM-2T-OE'
 			elif getBoxType() == 'tmsingle':
-				ftp.cwd('openvix-builds/TM-Single')
+				self.boxtype = 'TM-Single'
 			elif getBoxType() == 'iqonios100hd':
-				ftp.cwd('openvix-builds/iqon-IOS-100HD')
+				self.boxtype = 'iqon-IOS-100HD'
 			elif getBoxType() == 'iqonios200hd':
-				ftp.cwd('openvix-builds/iqon-IOS-200HD')
+				self.boxtype = 'iqon-IOS-200HD'
 			elif getBoxType() == 'iqonios300hd':
-				ftp.cwd('openvix-builds/iqon-IOS-300HD')
+				self.boxtype = 'iqon-IOS-300HD'
 			elif getBoxType() == 'odinm9':
-				ftp.cwd('openvix-builds/Odin-M9')
+				self.boxtype = 'Odin-M9'
 			elif getBoxType() == 'xp1000':
-				ftp.cwd('openvix-builds/XP1000')
+				self.boxtype = 'XP1000'
 			elif getBoxType() == 'qb800solo':
-				ftp.cwd('openvix-builds/GiGaBlue-HD800Solo')
+				self.boxtype = 'GiGaBlue-HD800Solo'
 			elif getBoxType() == 'gb800se':
-				ftp.cwd('openvix-builds/GiGaBlue-HD800SE')
+				self.boxtype = 'GiGaBlue-HD800SE'
 			elif getBoxType() == 'gb800ue':
-				ftp.cwd('openvix-builds/GiGaBlue-HD800UE')
+				self.boxtype = 'GiGaBlue-HD800UE'
 			elif getBoxType() == 'gbqad':
-				ftp.cwd('openvix-builds/GiGaBlue-HD-QUAD')
+				self.boxtype = 'GiGaBlue-HD-QUAD'
 			elif getBoxType() == 'ventonhdx':
-				ftp.cwd('openvix-builds/Venton-Unibox-HDx')
+				self.boxtype = 'Venton-Unibox-HDx'
 			elif getBoxType() == 'ventonhde':
-				ftp.cwd('openvix-builds/Venton-Unibox-HDe')
+				self.boxtype = 'Venton-Unibox-HDe'
+			ftp.cwd('openvix-builds/'+self.boxtype)
 
 			del self.emlist[:]
 			for fil in ftp.nlst():
@@ -1026,52 +1027,7 @@ class ImageManagerDownload(Screen):
 				mkdir(dir, 0777)
 			from Screens.Console import Console as RestareConsole
 			mycmd1 = _("echo 'Downloading Image.'")
-			if getBoxType() == 'vuuno':
-				mycmd2 = "wget http://enigma2.world-of-satellite.com//openvix/openvix-builds/Vu+Uno/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
-			elif getBoxType() == 'vuultimo':
-				mycmd2 = "wget http://enigma2.world-of-satellite.com//openvix/openvix-builds/Vu+Ultimo/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
-			elif getBoxType() == 'vusolo':
-				mycmd2 = "wget http://enigma2.world-of-satellite.com//openvix/openvix-builds/Vu+Solo/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
-			elif getBoxType() == 'vusolo2':
-				mycmd2 = "wget http://enigma2.world-of-satellite.com//openvix/openvix-builds/Vu+Solo2/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
-			elif getBoxType() == 'vuduo':
-				mycmd2 = "wget http://enigma2.world-of-satellite.com//openvix/openvix-builds/Vu+Duo/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
-			elif getBoxType() == 'et4x00':
-				mycmd2 = "wget http://enigma2.world-of-satellite.com//openvix/openvix-builds/ET-4x00/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
-			elif getBoxType() == 'et5x00':
-				mycmd2 = "wget http://enigma2.world-of-satellite.com//openvix/openvix-builds/ET-5x00/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
-			elif getBoxType() == 'et6x00':
-				mycmd2 = "wget http://enigma2.world-of-satellite.com//openvix/openvix-builds/ET-6x00/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
-			elif getBoxType() == 'et9x00':
-				mycmd2 = "wget http://enigma2.world-of-satellite.com//openvix/openvix-builds/ET-9x00/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
-			elif getBoxType() == 'tmtwin':
-				mycmd2 = "wget http://enigma2.world-of-satellite.com//openvix/openvix-builds/TM-Twin/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
-			elif getBoxType() == 'tm2t':
-				mycmd2 = "wget http://enigma2.world-of-satellite.com//openvix/openvix-builds/TM-2T-OE/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
-			elif getBoxType() == 'tmsingle':
-				mycmd2 = "wget http://enigma2.world-of-satellite.com//openvix/openvix-builds/TM-Single/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
-			elif getBoxType() == 'iqonios100hd':
-				mycmd2 = "wget http://enigma2.world-of-satellite.com//openvix/openvix-builds/iqon-IOS-100HD/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
-			elif getBoxType() == 'iqonios200hd':
-				mycmd2 = "wget http://enigma2.world-of-satellite.com//openvix/openvix-builds/iqon-IOS-200HD/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
-			elif getBoxType() == 'iqonios300hd':
-				mycmd2 = "wget http://enigma2.world-of-satellite.com//openvix/openvix-builds/iqon-IOS-300HD/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
-			elif getBoxType() == 'odinm9':
-				mycmd2 = "wget http://enigma2.world-of-satellite.com//openvix/openvix-builds/Odin-M9/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
-			elif getBoxType() == 'qb800solo':
-				mycmd2 = "wget http://enigma2.world-of-satellite.com//openvix/openvix-builds/GiGaBlue-HD800Solo/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
-			elif getBoxType() == 'gb800se':
-				mycmd2 = "wget http://enigma2.world-of-satellite.com//openvix/openvix-builds/GiGaBlue-HD800SE/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
-			elif getBoxType() == 'gb800ue':
-				mycmd2 = "wget http://enigma2.world-of-satellite.com//openvix/openvix-builds/GiGaBlue-HD800UE/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
-			elif getBoxType() == 'gbquad':
-				mycmd2 = "wget http://enigma2.world-of-satellite.com//openvix/openvix-builds/GiGaBlue-HD-QUAD/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
-			elif getBoxType() == 'xp1000':
-				mycmd2 = "wget http://enigma2.world-of-satellite.com//openvix/openvix-builds/XP1000/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
-			elif getBoxType() == 'ventonhdx':
-				mycmd2 = "wget http://enigma2.world-of-satellite.com//openvix/openvix-builds/Venton-Unibox-HDx/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
-			elif getBoxType() == 'ventonhde':
-				mycmd2 = "wget http://enigma2.world-of-satellite.com//openvix/openvix-builds/Venton-Unibox-HDe/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
+			mycmd2 = "wget http://enigma2.world-of-satellite.com//openvix/openvix-builds/" + self.boxtype + "/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
 			mycmd3 = "mv " + self.BackupDirectory + "image.zip " + file
 			mycmd4 = _("echo 'Expanding Image.'")
 			mycmd5 = 'unzip -o ' + file + ' -d ' + dir
