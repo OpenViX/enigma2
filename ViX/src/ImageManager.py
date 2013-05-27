@@ -1032,6 +1032,8 @@ class ImageManagerDownload(Screen):
 				mycmd2 = "wget http://enigma2.world-of-satellite.com//openvix/openvix-builds/Vu+Ultimo/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
 			elif getBoxType() == 'vusolo':
 				mycmd2 = "wget http://enigma2.world-of-satellite.com//openvix/openvix-builds/Vu+Solo/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
+			elif getBoxType() == 'vusolo2':
+				mycmd2 = "wget http://enigma2.world-of-satellite.com//openvix/openvix-builds/Vu+Solo2/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
 			elif getBoxType() == 'vuduo':
 				mycmd2 = "wget http://enigma2.world-of-satellite.com//openvix/openvix-builds/Vu+Duo/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
 			elif getBoxType() == 'et4x00':
