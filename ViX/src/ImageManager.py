@@ -375,43 +375,43 @@ class VIXImageManager(Screen):
 			if not path.exists('/tmp/tee'):
 				copy('/usr/bin/tee','/tmp')
 
-		if getBoxType().startswith('gb'):
-			kernelMTD = "mtd2"
-			kernelFILE = "kernel.bin"
-			rootMTD = "mtd4"
-			rootFILE = "rootfs.bin"
-		elif getBoxType().startswith('et') or getBoxType().startswith('venton') or getBoxType().startswith('xp'):
-			kernelMTD = "mtd1"
-			kernelFILE = "kernel.bin"
-			rootMTD = "mtd2"
-			rootFILE = "rootfs.bin"
-		elif getBoxType().startswith('odin'):
-			kernelMTD = "mtd2"
-			kernelFILE = "kernel.bin"
-			rootMTD = "mtd3"
-			rootFILE = "rootfs.bin"
-		elif getBoxType().startswith('tm') or getBoxType().startswith('iqon'):
-			kernelMTD = "mtd6"
-			kernelFILE = "oe_kernel.bin"
-			rootMTD = "mtd4"
-			rootFILE = "oe_rootfs.bin"
-		elif getBoxType() == 'vusolo' or getBoxType() == 'vuduo' or getBoxType() == 'vuuno' or getBoxType() == 'vuultimo':
-			kernelMTD = "mtd1"
-			kernelFILE = "kernel_cfe_auto.bin"
-			rootMTD = "mtd0"
-			rootFILE = "root_cfe_auto.jffs2"
-		elif getBoxType() == 'vusolo2' or getBoxType() == 'vuduo2':
-			kernelMTD = "mtd2"
-			kernelFILE = "kernel_cfe_auto.bin"
-			rootMTD = "mtd0"
-			rootFILE = "root_cfe_auto.bin"
+			if getBoxType().startswith('gb'):
+				kernelMTD = "mtd2"
+				kernelFILE = "kernel.bin"
+				rootMTD = "mtd4"
+				rootFILE = "rootfs.bin"
+			elif getBoxType().startswith('et') or getBoxType().startswith('venton') or getBoxType().startswith('xp'):
+				kernelMTD = "mtd1"
+				kernelFILE = "kernel.bin"
+				rootMTD = "mtd2"
+				rootFILE = "rootfs.bin"
+			elif getBoxType().startswith('odin'):
+				kernelMTD = "mtd2"
+				kernelFILE = "kernel.bin"
+				rootMTD = "mtd3"
+				rootFILE = "rootfs.bin"
+			elif getBoxType().startswith('tm') or getBoxType().startswith('iqon'):
+				kernelMTD = "mtd6"
+				kernelFILE = "oe_kernel.bin"
+				rootMTD = "mtd4"
+				rootFILE = "oe_rootfs.bin"
+			elif getBoxType() == 'vusolo' or getBoxType() == 'vuduo' or getBoxType() == 'vuuno' or getBoxType() == 'vuultimo':
+				kernelMTD = "mtd1"
+				kernelFILE = "kernel_cfe_auto.bin"
+				rootMTD = "mtd0"
+				rootFILE = "root_cfe_auto.jffs2"
+			elif getBoxType() == 'vusolo2' or getBoxType() == 'vuduo2':
+				kernelMTD = "mtd2"
+				kernelFILE = "kernel_cfe_auto.bin"
+				rootMTD = "mtd0"
+				rootFILE = "root_cfe_auto.bin"
 
-		output = open('/tmp/image_restore.sh','w')
-		output.write('#!/bin/sh\n\n/tmp/sync > /media/hdd/restore.log 2>&1 && mount -no remount,ro / >> /media/hdd/restore.log 2>&1 && /tmp/flash_erase /dev/' + kernelMTD + ' 0 0 >> /media/hdd/restore.log 2>&1 && /tmp/nandwrite -p /dev/' + kernelMTD + ' ' + self.MAINDEST + kernelFILE + ' >> /media/hdd/restore.log 2>&1 && /tmp/flash_erase /dev/' + rootMTD + ' 0 0 >> /media/hdd/restore.log 2>&1 && /tmp/nandwrite -p /dev/' + rootMTD + ' ' + self.MAINDEST + rootFILE + ' >> /media/hdd/restore.log 2>&1 && /tmp/reboot -fn')
-		output.close()
-		chmod('/tmp/image_restore.sh', 0755)
-		self.session.open(TryQuitMainloop,retvalue=43)
-		self.close()
+			output = open('/tmp/image_restore.sh','w')
+			output.write('#!/bin/sh\n\n/tmp/sync > /media/hdd/restore.log 2>&1 && mount -no remount,ro / >> /media/hdd/restore.log 2>&1 && /tmp/flash_erase /dev/' + kernelMTD + ' 0 0 >> /media/hdd/restore.log 2>&1 && /tmp/nandwrite -p /dev/' + kernelMTD + ' ' + self.MAINDEST + kernelFILE + ' >> /media/hdd/restore.log 2>&1 && /tmp/flash_erase /dev/' + rootMTD + ' 0 0 >> /media/hdd/restore.log 2>&1 && /tmp/nandwrite -p /dev/' + rootMTD + ' ' + self.MAINDEST + rootFILE + ' >> /media/hdd/restore.log 2>&1 && /tmp/reboot -fn')
+			output.close()
+			chmod('/tmp/image_restore.sh', 0755)
+			self.session.open(TryQuitMainloop,retvalue=43)
+			self.close()
 
 class AutoImageManagerTimer:
 	def __init__(self, session):
