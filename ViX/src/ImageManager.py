@@ -952,6 +952,8 @@ class ImageManagerDownload(Screen):
 				ftp.cwd('openvix-builds/Vu+Ultimo')
 			elif getBoxType() == 'vusolo':
 				ftp.cwd('openvix-builds/Vu+Solo')
+			elif getBoxType() == 'vusolo2':
+				ftp.cwd('openvix-builds/Vu+Solo2')
 			elif getBoxType() == 'vuduo':
 				ftp.cwd('openvix-builds/Vu+Duo')
 			elif getBoxType() == 'et4x00':
