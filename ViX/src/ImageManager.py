@@ -317,48 +317,45 @@ class VIXImageManager(Screen):
 
 	def keyResstore(self):
 		self.sel = self['list'].getCurrent()
-		self.MAINDESTROOT = self.BackupDirectory + self.sel
-		if getBoxType().startswith('vu'):
-			self.MAINDEST = self.MAINDESTROOT + '/vuplus/' + getBoxType().replace('vu','') + '/'
-		elif getBoxType() == 'tmtwin':
-			self.MAINDEST = self.MAINDESTROOT + '/update/tmtwinoe/cfe/'
-		elif getBoxType() == 'tm2t':
-			self.MAINDEST = self.MAINDESTROOT + '/update/tm2toe/cfe/'
-		elif getBoxType() == 'tmsingle':
-			self.MAINDEST = self.MAINDESTROOT + '/update/tmsingle/cfe/'
-		elif getBoxType() == 'iqonios100hd':
-			self.MAINDEST = self.MAINDESTROOT + '/update/ios100/cfe/'
-		elif getBoxType() == 'iqoniso200hd':
-			self.MAINDEST = self.MAINDESTROOT + '/update/ios200/cfe/'
-		elif getBoxType() == 'iqoniso300hd':
-			self.MAINDEST = self.MAINDESTROOT + '/update/ios300/cfe/'
-		elif getBoxType() == 'gb800solo':
-			self.MAINDEST = self.MAINDESTROOT + '/gigablue/solo/'
-		elif getBoxType() == 'gb800se':
-			self.MAINDEST = self.MAINDESTROOT + '/gigablue/se/'
-		elif getBoxType() == 'gb800ue':
-			self.MAINDEST = self.MAINDESTROOT + '/gigablue/ue/'
-		elif getBoxType() == 'gbquad':
-			self.MAINDEST = self.MAINDESTROOT + '/gigablue/quad/'
-		elif getBoxType().startswith('venton'):
-			self.MAINDEST = self.MAINDESTROOT + '/' + getBoxType().replace('-','') + '/'
-		else:
-			self.MAINDEST = self.MAINDESTROOT + '/' + getBoxType() + '/'
-		if not self.BackupRunning:
+		if self.sel:
 			if getBoxType().startswith('vu') or getBoxType().startswith('et') or getBoxType().startswith('tm') or getBoxType().startswith('odin') or getBoxType().startswith('venton') or getBoxType().startswith('gb') or getBoxType().startswith('iqon'):
+				self.MAINDESTROOT = self.BackupDirectory + self.sel
+				if getBoxType().startswith('vu'):
+					self.MAINDEST = self.MAINDESTROOT + '/vuplus/' + getBoxType().replace('vu','') + '/'
+				elif getBoxType() == 'tmtwin':
+					self.MAINDEST = self.MAINDESTROOT + '/update/tmtwinoe/cfe/'
+				elif getBoxType() == 'tm2t':
+					self.MAINDEST = self.MAINDESTROOT + '/update/tm2toe/cfe/'
+				elif getBoxType() == 'tmsingle':
+					self.MAINDEST = self.MAINDESTROOT + '/update/tmsingle/cfe/'
+				elif getBoxType() == 'iqonios100hd':
+					self.MAINDEST = self.MAINDESTROOT + '/update/ios100/cfe/'
+				elif getBoxType() == 'iqoniso200hd':
+					self.MAINDEST = self.MAINDESTROOT + '/update/ios200/cfe/'
+				elif getBoxType() == 'iqoniso300hd':
+					self.MAINDEST = self.MAINDESTROOT + '/update/ios300/cfe/'
+				elif getBoxType() == 'gb800solo':
+					self.MAINDEST = self.MAINDESTROOT + '/gigablue/solo/'
+				elif getBoxType() == 'gb800se':
+					self.MAINDEST = self.MAINDESTROOT + '/gigablue/se/'
+				elif getBoxType() == 'gb800ue':
+					self.MAINDEST = self.MAINDESTROOT + '/gigablue/ue/'
+				elif getBoxType() == 'gbquad':
+					self.MAINDEST = self.MAINDESTROOT + '/gigablue/quad/'
+				elif getBoxType().startswith('venton'):
+					self.MAINDEST = self.MAINDESTROOT + '/' + getBoxType().replace('-','') + '/'
+				else:
+					self.MAINDEST = self.MAINDESTROOT + '/' + getBoxType() + '/'
 				if path.exists(self.MAINDEST):
-					if self.sel:
-						message = _("Are you sure you want to restore this image:\n ") + self.sel
-						ybox = self.session.openWithCallback(self.doRestore, MessageBox, message, MessageBox.TYPE_YESNO)
-						ybox.setTitle(_("Restore Confirmation"))
-					else:
-						self.session.open(MessageBox, _("You have no image to restore."), MessageBox.TYPE_INFO, timeout = 10)
+					message = _("Are you sure you want to restore this image:\n ") + self.sel
+					ybox = self.session.openWithCallback(self.doRestore, MessageBox, message, MessageBox.TYPE_YESNO)
+					ybox.setTitle(_("Restore Confirmation"))
 				else:
 					self.session.open(MessageBox, _("Sorry the image " + self.sel + " is not compatible with this STB_BOX."), MessageBox.TYPE_INFO, timeout = 10)
 			else:
 				self.session.open(MessageBox, _("Sorry Image Restore is not supported on the" + ' ' + getBoxType() + ', ' + _("Please copy the folder") + ' ' + self.BackupDirectory + self.sel +  ' \n' + _("to a USB stick, place in front USB port of reciver and power on")), MessageBox.TYPE_INFO, timeout = 30)
 		else:
-			self.session.open(MessageBox, _("Backup in progress,\nPlease for it to finish, before trying again"), MessageBox.TYPE_INFO, timeout = 10)
+			self.session.open(MessageBox, _("You have no image to restore."), MessageBox.TYPE_INFO, timeout = 10)
 
 
 	def doRestore(self,answer):
