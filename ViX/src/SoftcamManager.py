@@ -7,26 +7,28 @@ from Components.ActionMap import ActionMap
 from Components.Label import Label
 from Components.Button import Button
 from Components.ScrollLabel import ScrollLabel
-from Components.MenuList import MenuList
-from Components.Sources.List import List
 from Components.Pixmap import MultiPixmap
-from Components.ConfigList import ConfigListScreen
-from Components.config import configfile, config, getConfigListEntry, ConfigSubsection, ConfigYesNo, ConfigNumber, ConfigLocations
+from Components.config import configfile, config, ConfigSubsection, ConfigYesNo, ConfigNumber, ConfigLocations
 from Components.Console import Console
 from Components.FileList import MultiFileSelectList
+from Components.PluginComponent import plugins
+from Tools.Directories import resolveFilename, SCOPE_PLUGINS
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
 from Components.SystemInfo import SystemInfo
 from os import path, makedirs, remove, rename, symlink, mkdir, listdir
-from shutil import rmtree
 from datetime import datetime
-from time import localtime, time, strftime, mktime, strftime, sleep
+from time import time, strftime, sleep
 from enigma import eTimer
 
 config.softcammanager = ConfigSubsection()
 config.softcammanager.softcams_autostart = ConfigLocations(default='')
 config.softcammanager.softcamtimerenabled = ConfigYesNo(default = True)
 config.softcammanager.softcamtimer = ConfigNumber(default = 6)
+config.softcammanager.showinextensions = ConfigYesNo(default = True)
+def updateExtensions(configElement):
+	plugins.readPluginList(resolveFilename(SCOPE_PLUGINS))
+config.softcammanager.showinextensions.addNotifier(updateExtensions)
 
 softcamautopoller = None
 
@@ -513,7 +515,6 @@ class SoftcamAutoPoller:
 
 	def softcam_check(self):
 		now = int(time())
-# 		print "[SoftcamManager] Poll occured at", strftime("%c", localtime(now))
 		if path.exists('/tmp/SoftcamRuningCheck.tmp'):
 			remove('/tmp/SoftcamRuningCheck.tmp')
 

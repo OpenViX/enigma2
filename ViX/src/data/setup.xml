@@ -1,6 +1,7 @@
 <setupxml>
 	<setup key="vixsoftcammanager" title="Softcam Setup">
-		<item level="2" text="Enable frozen check ?" summary="Allows the softcam to be checked if it stopped working, and restarted automatically if needed.">config.softcammanager.softcamtimerenabled</item>
+		<item level="2" text="Show in extemsions" summary="Allows the softcam manager to be launched from extensions.">config.softcammanager.showinextensions</item>
+		<item level="2" text="Enable frozen check" summary="Allows the softcam to be checked if it stopped working, and restarted automatically if needed.">config.softcammanager.softcamtimerenabled</item>
 		<item level="2" text="Frozen check interval" requires="config.softcammanager.softcamtimerenabled" summary="Set the interval to be checked in mins.">config.softcammanager.softcamtimer</item>
 	</setup>
 	<setup key="vixbackupmanager" title="Backup Manager Setup">
