@@ -27,8 +27,9 @@ config.softcammanager.softcamtimerenabled = ConfigYesNo(default = True)
 config.softcammanager.softcamtimer = ConfigNumber(default = 6)
 config.softcammanager.showinextensions = ConfigYesNo(default = True)
 def updateExtensions(configElement):
+	plugins.clearPluginList()
 	plugins.readPluginList(resolveFilename(SCOPE_PLUGINS))
-config.softcammanager.showinextensions.addNotifier(updateExtensions)
+config.softcammanager.showinextensions.addNotifier(updateExtensions, initial_call = False)
 
 softcamautopoller = None
 
