@@ -11,6 +11,7 @@ from Screens.Rc import Rc
 from Screens.MessageBox import MessageBox
 from Tools.Directories import fileExists, pathExists, resolveFilename, SCOPE_PLUGINS
 from os import mkdir, listdir, path, walk
+from enigma import getMachineBrand, getMachineName
 
 class RestoreWizard(WizardLanguage, Rc):
 	def __init__(self, session):
@@ -165,7 +166,7 @@ class RestoreWizard(WizardLanguage, Rc):
 				configfile.save()
 				self.didPluginRestore = True
 				self.NextStep = 'reboot'
-				self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Your STB_BOX is not connected to the internet, Please try using Backup Manager to restore plugins later."), type = MessageBox.TYPE_INFO, timeout = 30, wizard = True)
+				self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Your %s %s is not connected to the internet, Please try using Backup Manager to restore plugins later.") % (getMachineBrand(), getMachineName()), type = MessageBox.TYPE_INFO, timeout = 30, wizard = True)
 				self.buildListRef.setTitle(_("Restore Wizard"))
 			elif self.feeds == 'ERROR':
 				self.NextStep = 'pluginrestore'
@@ -234,7 +235,7 @@ class RestoreWizard(WizardLanguage, Rc):
 		print '[RestoreWizard] Stage 4: Feeds Test Result',result
 		if result.find('bad address') != -1:
 			self.NextStep = 'reboot'
-			self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Your STB_BOX is not connected to the internet, Please try using Backup Manager to restore plugins later."), type = MessageBox.TYPE_INFO, timeout = 30, wizard = True)
+			self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Your %s %s is not connected to the internet, Please try using Backup Manager to restore plugins later.") % (getMachineBrand(), getMachineName()), type = MessageBox.TYPE_INFO, timeout = 30, wizard = True)
 			self.buildListRef.setTitle(_("Restore Wizard"))
 		elif result.find('wget returned 1') != -1 or result.find('wget returned 255') != -1 or result.find('404 Not Found') != -1:
 			self.NextStep = 'reboot'

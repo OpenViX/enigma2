@@ -20,7 +20,7 @@ from Screens.MessageBox import MessageBox
 from Screens.VirtualKeyBoard import VirtualKeyBoard
 from Screens.Standby import TryQuitMainloop
 from Tools.Notifications import AddPopupWithCallback
-from enigma import eTimer, getDesktop, getBoxType, getImageVersionString, getBuildVersionString
+from enigma import eTimer, getDesktop, getBoxType, getImageVersionString, getBuildVersionString, getMachineBrand, getMachineName
 
 from os import path, system, mkdir, makedirs, listdir, remove, statvfs, chmod, walk
 from shutil import rmtree, move, copy
@@ -301,7 +301,7 @@ class VIXImageManager(Screen):
 			ybox = self.session.openWithCallback(self.doBackup, MessageBox, message, MessageBox.TYPE_YESNO)
 			ybox.setTitle(_("Backup Confirmation"))
 		else:
-			self.session.open(MessageBox, _("Sorry you STB_BOX is not yet compatible."), MessageBox.TYPE_INFO, timeout = 10)
+			self.session.open(MessageBox, _("Sorry you %s %s is not yet compatible."), MessageBox.TYPE_INFO, timeout = 10) % (getMachineBrand(), getMachineName())
 
 	def doBackup(self,answer):
 		if answer is True:
@@ -351,7 +351,7 @@ class VIXImageManager(Screen):
 					ybox = self.session.openWithCallback(self.doRestore, MessageBox, message, MessageBox.TYPE_YESNO)
 					ybox.setTitle(_("Restore Confirmation"))
 				else:
-					self.session.open(MessageBox, _("Sorry the image " + self.sel + " is not compatible with this STB_BOX."), MessageBox.TYPE_INFO, timeout = 10)
+					self.session.open(MessageBox, _("Sorry the image " + self.sel + " is not compatible with this %s %s.") % (getMachineBrand(), getMachineName()), MessageBox.TYPE_INFO, timeout = 10)
 			else:
 				self.session.open(MessageBox, _("Sorry Image Restore is not supported on the" + ' ' + getBoxType() + ', ' + _("Please copy the folder") + ' ' + self.BackupDirectory + self.sel +  ' \n' + _("to a USB stick, place in front USB port of reciver and power on")), MessageBox.TYPE_INFO, timeout = 30)
 		else:
@@ -493,7 +493,7 @@ class AutoImageManagerTimer:
 			print "[ImageManager] Backup onTimer occured at", strftime("%c", localtime(now))
 			from Screens.Standby import inStandby
 			if not inStandby:
-				message = _("Your STB_BOX is about to run a full image backup, this can take about 6 minutes to complete,\ndo you want to allow this?")
+				message = _("Your %s %s is about to run a full image backup, this can take about 6 minutes to complete,\ndo you want to allow this?") % (getMachineBrand(), getMachineName())
 				ybox = self.session.openWithCallback(self.doBackup, MessageBox, message, MessageBox.TYPE_YESNO, timeout = 30)
 				ybox.setTitle('Scheduled Backup.')
 			else:

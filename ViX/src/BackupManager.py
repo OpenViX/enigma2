@@ -21,7 +21,7 @@ from Screens.MessageBox import MessageBox
 from Screens.VirtualKeyBoard import VirtualKeyBoard
 from Screens.Setup import Setup
 from Tools.Notifications import AddPopupWithCallback, AddPopup
-from enigma import eTimer, eEnv, getBoxType, getImageVersionString, getBuildVersionString
+from enigma import eTimer, eEnv, getBoxType, getImageVersionString, getBuildVersionString, getMachineBrand, getMachineName
 
 from os import path, stat, mkdir, listdir, rename, remove, statvfs, chmod, walk
 from shutil import rmtree, move, copy
@@ -460,7 +460,7 @@ class VIXBackupManager(Screen):
 		elif self.feeds == 'BAD':
 			print '[BackupManager] Restoring Stage 3: no network connection, plugin restore not possible'
 			AddPopupWithCallback(self.Stage6,
-				_("Your STB_BOX is not connected to the internet, please check your network settings and try again."),
+				_("Your %s %s is not connected to the internet, please check your network settings and try again.") % (getMachineBrand(), getMachineName()),
 				MessageBox.TYPE_INFO,
 				15,
 				NOPLUGINS
@@ -879,7 +879,7 @@ class AutoBackupManagerTimer:
 			print "[BackupManager] Backup onTimer occured at", strftime("%c", localtime(now))
 			from Screens.Standby import inStandby
 			if not inStandby:
-				message = _("Your STB_BOX is about to run a backup of your settings and detect your plugins,\nDo you want to allow this?")
+				message = _("Your %s %s is about to run a backup of your settings and detect your plugins,\nDo you want to allow this?") % (getMachineBrand(), getMachineName())
 				ybox = self.session.openWithCallback(self.doBackup, MessageBox, message, MessageBox.TYPE_YESNO, timeout = 30)
 				ybox.setTitle('Scheduled Backup.')
 			else:
