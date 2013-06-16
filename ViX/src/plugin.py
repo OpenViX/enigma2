@@ -130,7 +130,7 @@ def Plugins(path, **kwargs):
 	plist.append(PluginDescriptor(where = PluginDescriptor.WHERE_SESSIONSTART, fnc = ImageManagerautostart))
 	plist.append(PluginDescriptor(where = PluginDescriptor.WHERE_SESSIONSTART, fnc = BackupManagerautostart))
 	if config.misc.firstrun.value and not config.misc.restorewizardrun.value and backupAvailable == 1:
-		plist.append(PluginDescriptor(name=_("Restore Wizard"), where = PluginDescriptor.WHERE_WIZARD, needsRestart = False, fnc=(2, RestoreWizard)))
+		plist.append(PluginDescriptor(name=_("Restore Wizard"), where = PluginDescriptor.WHERE_WIZARD, needsRestart = False, fnc=(3, RestoreWizard)))
 	plist.append(PluginDescriptor(name=_("Ipkg"), where = PluginDescriptor.WHERE_FILESCAN, needsRestart = False, fnc = filescan))
 	
 	plist.append(PluginDescriptor(name=_("ViX Backup Manager"),where=PluginDescriptor.WHERE_VIXMENU, fnc=BackupManagerMenu))
