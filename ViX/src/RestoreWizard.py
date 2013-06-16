@@ -33,6 +33,9 @@ class RestoreWizard(WizardLanguage, Rc):
 		self.delaymess = None
 		self.Console = Console()
 
+	def getTranslation(self, text):
+		return _(text).replace("%s %s","%s %s" % (getMachineBrand(), getMachineName()))
+
 	def listDevices(self):
 		devices = [ (r.description, r.mountpoint) for r in harddiskmanager.getMountedPartitions(onlyhotplug = False)]
 		list = []
