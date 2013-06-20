@@ -9,7 +9,7 @@ from ImageManager import ImageManagerautostart
 from SwapManager import SwapAutostart
 from SoftcamManager import SoftcamAutostart
 from IPKInstaller import IpkgInstaller
-from os import path, listdir
+from os import path, listdir, access, R_OK
 
 def checkConfigBackup():
 	try:
@@ -21,7 +21,7 @@ def checkConfigBackup():
 				devices.remove(x)
 		if len(devices):
 			for x in devices:
-				if path.exists(path.join(x[1],'backup')):
+				if access(path.join(x[1],'backup'), R_OK):
 					images = listdir(path.join(x[1],'backup'))
 				if len(images):
 					for fil in images:
