@@ -272,21 +272,15 @@ class VIXBackupManager(Screen):
 			self.keyBackup()
 
 	def keyBackup(self):
-		message = _("Are you ready to create a backup ?")
-		ybox = self.session.openWithCallback(self.doBackup, MessageBox, message, MessageBox.TYPE_YESNO)
-		ybox.setTitle(_("Backup Confirmation"))
-
-	def doBackup(self,answer):
-		if answer is True:
-			self.BackupFiles = BackupFiles(self.session)
-			Components.Task.job_manager.AddJob(self.BackupFiles.createBackupJob())
-			self.BackupRunning = True
-			self["key_green"].setText(_("View Progress"))
-			self["key_green"].show()
-			for job in Components.Task.job_manager.getPendingJobs():
-				if job.name.startswith(_("Backup Manager")):
-					backup = job
-			self.showJobView(backup)
+		self.BackupFiles = BackupFiles(self.session)
+		Components.Task.job_manager.AddJob(self.BackupFiles.createBackupJob())
+		self.BackupRunning = True
+		self["key_green"].setText(_("View Progress"))
+		self["key_green"].show()
+		for job in Components.Task.job_manager.getPendingJobs():
+			if job.name.startswith(_("Backup Manager")):
+				backup = job
+		self.showJobView(backup)
 
 	def keyResstore(self):
 		self.sel = self['list'].getCurrent()
