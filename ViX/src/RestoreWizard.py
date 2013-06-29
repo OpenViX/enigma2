@@ -37,23 +37,23 @@ class RestoreWizard(WizardLanguage, Rc):
 		return _(text).replace("%s %s","%s %s" % (getMachineBrand(), getMachineName()))
 
 	def listDevices(self):
-		devices = [ (r.description, r.mountpoint) for r in harddiskmanager.getMountedPartitions(onlyhotplug = False)]
+		devices = [(r.description, r.mountpoint) for r in harddiskmanager.getMountedPartitions(onlyhotplug = False)]
 		list = []
+		files = None
 		for x in devices:
 			if x[1] == '/':
 				devices.remove(x)
 		if len(devices):
 			for x in devices:
-				images = ""
-				if path.exists(path.join(x[1],'backup')):
-					images = listdir(path.join(x[1],'backup'))
-				print '[Restorewizard] FILES:', images
-				if len(images):
-					for fil in images:
-						if fil.endswith('.tar.gz'):
-							dir = path.join(x[1],'backup')
-							list.append((path.join(dir,fil),path.join(dir,fil)))
-				print '[Restorewizard] LIST:', list
+				devpath = path.join(x[1],'backup')
+				if path.exists(devpath) and access(devpath, R_OK):
+					files = listdir(devpath)
+				# print '[Restorewizard] FILES:', images
+				if len(files):
+					for file in files:
+						if file.endswith('.tar.gz'):
+							list.append((path.join(devpath,file),devpath,file))
+		# print '[Restorewizard] LIST:', list
 		if len(list):
 			list.sort()
 			list.reverse()

@@ -13,21 +13,21 @@ from os import path, listdir, access, R_OK
 
 def checkConfigBackup():
 	try:
-		devices = [ (r.description, r.mountpoint) for r in harddiskmanager.getMountedPartitions(onlyhotplug = False)]
+		devices = [(r.description, r.mountpoint) for r in harddiskmanager.getMountedPartitions(onlyhotplug = False)]
 		list = []
-		images = ""
+		files = None
 		for x in devices:
 			if x[1] == '/':
 				devices.remove(x)
 		if len(devices):
 			for x in devices:
-				if access(path.join(x[1],'backup'), R_OK):
-					images = listdir(path.join(x[1],'backup'))
-				if len(images):
-					for fil in images:
-						if fil.endswith('.tar.gz'):
-							dir = path.join(x[1],'backup')
-							list.append((path.join(dir,fil),path.join(x[1],fil)))
+				devpath = path.join(x[1],'backup')
+				if path.exists(devpath) and access(devpath, R_OK):
+					files = listdir(devpath)
+				if len(files):
+					for file in files:
+						if file.endswith('.tar.gz'):
+							list.append((path.join(devpath,file),devpath,file))
 		if len(list):
 			return True
 		else:
