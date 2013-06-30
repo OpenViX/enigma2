@@ -309,6 +309,8 @@ class VIXBackupManager(Screen):
 
 	def createRestoreJob(self):
 		self.Console = Console()
+		self.pluginslist = ""
+		self.pluginslist2 = ""
 		self.didSettingsRestore = False
 		self.doPluginsRestore = False
 		self.didPluginsRestore = False
@@ -436,15 +438,19 @@ class VIXBackupManager(Screen):
 				kernelversion = file('/tmp/backupkernelversion').read()
 				if kernelversion == about.getKernelVersionString():
 					print '[BackupManager] Restoring Stage 3: Kernel Version is same as backup'
+					self.kernelcheck = True
 					self.Console.ePopen('opkg list-installed', self.Stage3Complete)
 				else:
 					print '[BackupManager] Restoring Stage 3: Kernel Version does not match, exiting'
+					self.kernelcheck = False
 					self.Stage6()
 			else:
 				print '[BackupManager] Restoring Stage 3: Kernel Version check failed'
+				self.kernelcheck = False
 				self.Stage6()
 		elif self.feeds == 'DOWN':
 			print '[BackupManager] Restoring Stage 3: Feeds are down, plugin restore not possible'
+			self.kernelcheck = False
 			AddPopupWithCallback(self.Stage6,
 				_("Sorry feeds are down for maintenance, Please try again later."),
 				MessageBox.TYPE_INFO,
@@ -453,6 +459,7 @@ class VIXBackupManager(Screen):
 			)
 		elif self.feeds == 'BAD':
 			print '[BackupManager] Restoring Stage 3: no network connection, plugin restore not possible'
+			self.kernelcheck = False
 			AddPopupWithCallback(self.Stage6,
 				_("Your %s %s is not connected to the internet, please check your network settings and try again.") % (getMachineBrand(), getMachineName()),
 				MessageBox.TYPE_INFO,
@@ -464,9 +471,7 @@ class VIXBackupManager(Screen):
 			self.Stage6()
 
 	def Stage3Complete(self, result, retval, extra_args):
-		self.pluginslist = ""
-		self.pluginslist2 = ""
-		if path.exists('/tmp/ExtraInstalledPlugins'):
+		if path.exists('/tmp/ExtraInstalledPlugins') and self.kernelcheck:
 			self.pluginslist = []
 			plugins = []
 			for line in result.split('\n'):
@@ -480,7 +485,7 @@ class VIXBackupManager(Screen):
 					if parts[0] not in plugins:
 						self.pluginslist.append(parts[0])
 
-		if path.exists('/tmp/3rdPartyPlugins'):
+		if path.exists('/tmp/3rdPartyPlugins') and self.kernelcheck:
 			self.pluginslist2 = []
 			if config.backupmanager.xtraplugindir.getValue():
 				self.thirdpartyPluginsLocation = config.backupmanager.xtraplugindir.getValue()
@@ -587,7 +592,7 @@ class VIXBackupManager(Screen):
 			print '[BackupManager] Restoring Completed rebooting'
 			self.Console.ePopen('init 4 && reboot')
 		else:
-			print '[BackupManager] Restoring failed or canceled '
+			print '[BackupManager] Restoring failed or canceled'
 			self.close()
 
 class BackupSelection(Screen):
