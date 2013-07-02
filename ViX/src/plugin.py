@@ -15,7 +15,7 @@ def checkConfigBackup():
 	try:
 		devices = [(r.description, r.mountpoint) for r in harddiskmanager.getMountedPartitions(onlyhotplug = False)]
 		list = []
-		files = None
+		files = []
 		for x in devices:
 			if x[1] == '/':
 				devices.remove(x)
