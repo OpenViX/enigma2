@@ -10,7 +10,7 @@ from Screens.WizardLanguage import WizardLanguage
 from Screens.Rc import Rc
 from Screens.MessageBox import MessageBox
 from Tools.Directories import fileExists, pathExists, resolveFilename, SCOPE_PLUGINS
-from os import mkdir, listdir, path, walk
+from os import mkdir, listdir, path, walk, access, R_OK
 from enigma import getMachineBrand, getMachineName
 
 class RestoreWizard(WizardLanguage, Rc):
@@ -39,7 +39,7 @@ class RestoreWizard(WizardLanguage, Rc):
 	def listDevices(self):
 		devices = [(r.description, r.mountpoint) for r in harddiskmanager.getMountedPartitions(onlyhotplug = False)]
 		list = []
-		files = None
+		files = []
 		for x in devices:
 			if x[1] == '/':
 				devices.remove(x)
@@ -48,11 +48,13 @@ class RestoreWizard(WizardLanguage, Rc):
 				devpath = path.join(x[1],'backup')
 				if path.exists(devpath) and access(devpath, R_OK):
 					files = listdir(devpath)
-				# print '[Restorewizard] FILES:', images
+				else:
+					files = []
+				# print '[Restorewizard] FILES:', files
 				if len(files):
 					for file in files:
 						if file.endswith('.tar.gz'):
-							list.append((path.join(devpath,file),devpath,file))
+							list.append((path.join(devpath,file),path.join(devpath,file)))
 		# print '[Restorewizard] LIST:', list
 		if len(list):
 			list.sort()
@@ -124,7 +126,7 @@ class RestoreWizard(WizardLanguage, Rc):
 		self.ActionSelect(self.selection)
 
 	def buildList(self,action):
-		print 'self.NextStep ',self.NextStep
+		# print 'self.NextStep ',self.NextStep
 		if self.NextStep is 'reboot':
 			if not self.Console:
 				self.Console = Console()
@@ -308,8 +310,8 @@ class RestoreWizard(WizardLanguage, Rc):
 							for file in available:
 								if file:
 									fileparts = file.strip().split('_')
-									print 'FILE:',fileparts
-									print 'IPK:',ipk
+									# print 'FILE:',fileparts
+									# print 'IPK:',ipk
 									if fileparts[0] == ipk:
 										self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace(' ', '%20')
 										ipk = path.join(self.thirdpartyPluginsLocation, file)
