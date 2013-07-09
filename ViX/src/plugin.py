@@ -9,7 +9,7 @@ from ImageManager import ImageManagerautostart
 from SwapManager import SwapAutostart
 from SoftcamManager import SoftcamAutostart
 from IPKInstaller import IpkgInstaller
-from os import path, listdir, access, R_OK
+from os import path, listdir
 
 def checkConfigBackup():
 	try:
@@ -22,8 +22,13 @@ def checkConfigBackup():
 		if len(devices):
 			for x in devices:
 				devpath = path.join(x[1],'backup')
-				if path.exists(devpath) and access(devpath, R_OK):
-					files = listdir(devpath)
+				if path.exists(devpath):
+					try:
+						files = listdir(devpath)
+					except:
+						files = []
+				else:
+					files = []
 				if len(files):
 					for file in files:
 						if file.endswith('.tar.gz'):

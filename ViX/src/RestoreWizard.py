@@ -10,7 +10,7 @@ from Screens.WizardLanguage import WizardLanguage
 from Screens.Rc import Rc
 from Screens.MessageBox import MessageBox
 from Tools.Directories import fileExists, pathExists, resolveFilename, SCOPE_PLUGINS
-from os import mkdir, listdir, path, walk, access, R_OK
+from os import mkdir, listdir, path, walk
 from enigma import getMachineBrand, getMachineName
 
 class RestoreWizard(WizardLanguage, Rc):
@@ -46,8 +46,11 @@ class RestoreWizard(WizardLanguage, Rc):
 		if len(devices):
 			for x in devices:
 				devpath = path.join(x[1],'backup')
-				if path.exists(devpath) and access(devpath, R_OK):
-					files = listdir(devpath)
+				if path.exists(devpath):
+					try:
+						files = listdir(devpath)
+					except:
+						files = []
 				else:
 					files = []
 				# print '[Restorewizard] FILES:', files
