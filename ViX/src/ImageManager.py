@@ -296,7 +296,7 @@ class VIXImageManager(Screen):
 			self.keyBackup()
 
 	def keyBackup(self):
-		if getBoxType().startswith('vu') or getBoxType().startswith('et') or getBoxType().startswith('tm') or getBoxType().startswith('odin') or getBoxType().startswith('venton') or getBoxType().startswith('gb') or getBoxType().startswith('xp') or getBoxType().startswith('iqon'):
+		if getBoxType().startswith('vu') or getBoxType().startswith('et') or getBoxType().startswith('tm') or getBoxType().startswith('odin') or getBoxType().startswith('venton') or getBoxType().startswith('ini') or getBoxType().startswith('gb') or getBoxType().startswith('xp') or getBoxType().startswith('iqon'):
 			message = _("Are you ready to create a backup image ?")
 			ybox = self.session.openWithCallback(self.doBackup, MessageBox, message, MessageBox.TYPE_YESNO)
 			ybox.setTitle(_("Backup Confirmation"))
@@ -318,7 +318,7 @@ class VIXImageManager(Screen):
 	def keyResstore(self):
 		self.sel = self['list'].getCurrent()
 		if self.sel:
-			if getBoxType().startswith('vu') or getBoxType().startswith('et') or getBoxType().startswith('tm') or getBoxType().startswith('odin') or getBoxType().startswith('venton') or getBoxType().startswith('gb') or getBoxType().startswith('iqon'):
+			if getBoxType().startswith('vu') or getBoxType().startswith('et') or getBoxType().startswith('tm') or getBoxType().startswith('odin') or getBoxType().startswith('venton') or getBoxType().startswith('ini') or getBoxType().startswith('gb') or getBoxType().startswith('iqon'):
 				self.MAINDESTROOT = self.BackupDirectory + self.sel
 				if getBoxType().startswith('vu'):
 					self.MAINDEST = self.MAINDESTROOT + '/vuplus/' + getBoxType().replace('vu','') + '/'
@@ -342,7 +342,7 @@ class VIXImageManager(Screen):
 					self.MAINDEST = self.MAINDESTROOT + '/gigablue/ue/'
 				elif getBoxType() == 'gbquad':
 					self.MAINDEST = self.MAINDESTROOT + '/gigablue/quad/'
-				elif getBoxType().startswith('venton'):
+				elif getBoxType().startswith('venton') or getBoxType().startswith('ini'):
 					self.MAINDEST = self.MAINDESTROOT + '/' + getBoxType().replace('-','') + '/'
 				else:
 					self.MAINDEST = self.MAINDESTROOT + '/' + getBoxType() + '/'
@@ -377,7 +377,7 @@ class VIXImageManager(Screen):
 				kernelFILE = "kernel.bin"
 				rootMTD = "mtd4"
 				rootFILE = "rootfs.bin"
-			elif getBoxType().startswith('et') or getBoxType().startswith('venton') or getBoxType().startswith('xp'):
+			elif getBoxType().startswith('et') or getBoxType().startswith('venton') or getBoxType().startswith('ini') or getBoxType().startswith('xp'):
 				kernelMTD = "mtd1"
 				kernelFILE = "kernel.bin"
 				rootMTD = "mtd2"
@@ -761,7 +761,7 @@ class ImageBackup(Screen):
 			self.MAINDEST = self.MAINDESTROOT + '/gigablue/ue'
 		elif getBoxType() == 'gbquad':
 			self.MAINDEST = self.MAINDESTROOT + '/gigablue/quad'
-		elif getBoxType().startswith('venton'):
+		elif getBoxType().startswith('venton') or getBoxType().startswith('ini'):
 			self.MAINDEST = self.MAINDESTROOT + '/' + getBoxType().replace('-','')
 		else:
 			self.MAINDEST = self.MAINDESTROOT + '/' + getBoxType()
@@ -780,7 +780,7 @@ class ImageBackup(Screen):
 				MKUBIFS_ARGS="-m 2048 -e 126976 -c 4096"
 			elif getBoxType().startswith('et') or getBoxType().startswith('odin') or getBoxType().startswith('xp'):
 				MKUBIFS_ARGS="-m 2048 -e 126976 -c 4096"
-			elif getBoxType().startswith('venton'):
+			elif getBoxType().startswith('venton') or getBoxType().startswith('ini'):
 				MKUBIFS_ARGS="-m 2048 -e 126976 -c 4096"
 			output = open(self.WORKDIR + '/ubinize.cfg','w')
 			output.write('[ubifs]\n')
@@ -806,7 +806,7 @@ class ImageBackup(Screen):
 		print '[ImageManager] Stage2: Making Kernel Image.'
 		if getBoxType().startswith('tm') or getBoxType().startswith('iqon'):
 			self.command = 'cat /dev/mtd6 > ' + self.WORKDIR + '/vmlinux.gz'
-		elif getBoxType().startswith('et') or getBoxType().startswith('venton') or getBoxType().startswith('xp') or getBoxType() == 'vusolo' or getBoxType() == 'vuduo' or getBoxType() == 'vuuno' or getBoxType() == 'vuultimo':
+		elif getBoxType().startswith('et') or getBoxType().startswith('venton') or getBoxType().startswith('ini') or getBoxType().startswith('xp') or getBoxType() == 'vusolo' or getBoxType() == 'vuduo' or getBoxType() == 'vuuno' or getBoxType() == 'vuultimo':
 			self.command = 'cat /dev/mtd1 > ' + self.WORKDIR + '/vmlinux.gz'
 		elif getBoxType().startswith('odin') or getBoxType().startswith('gb') or getBoxType() == 'vusolo2' or getBoxType() == 'vuduo2':
 			self.command = 'cat /dev/mtd2 > ' + self.WORKDIR + '/vmlinux.gz'
@@ -855,7 +855,7 @@ class ImageBackup(Screen):
 			fileout.write(line)
 			fileout.close()
 			imagecreated = True
-		elif getBoxType().startswith('et') or getBoxType().startswith('odin') or getBoxType().startswith('venton') or getBoxType().startswith('gb') or getBoxType().startswith('xp'):
+		elif getBoxType().startswith('et') or getBoxType().startswith('odin') or getBoxType().startswith('venton') or getBoxType().startswith('ini') or getBoxType().startswith('gb') or getBoxType().startswith('xp'):
 			move(self.WORKDIR + '/root.' + self.ROOTFSTYPE, self.MAINDEST + '/rootfs.bin')
 			move(self.WORKDIR + '/vmlinux.gz', self.MAINDEST + '/kernel.bin')
 			if getBoxType().startswith('et') or getBoxType().startswith('odin'):
@@ -987,8 +987,8 @@ class ImageManagerDownload(Screen):
 				self.boxtype = 'GiGaBlue-HD-QUAD'
 			elif getBoxType() == 'ventonhdx':
 				self.boxtype = 'Venton-Unibox-HDx'
-			elif getBoxType() == 'ventonhde':
-				self.boxtype = 'Venton-Unibox-HDe'
+			elif getBoxType() == 'inihde':
+				self.boxtype = 'INI-HDe'
 			ftp.cwd('openvix-builds/'+self.boxtype)
 
 			del self.emlist[:]
