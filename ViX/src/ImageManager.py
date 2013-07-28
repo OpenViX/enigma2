@@ -953,6 +953,8 @@ class ImageManagerDownload(Screen):
 				self.boxtype = 'Vu+Solo2'
 			elif getBoxType() == 'vuduo':
 				self.boxtype = 'Vu+Duo'
+			elif getBoxType() == 'vuduo2':
+				self.boxtype = 'Vu+Duo2'
 			elif getBoxType() == 'et4x00':
 				self.boxtype = 'ET-4x00'
 			elif getBoxType() == 'et5x00':
