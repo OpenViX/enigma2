@@ -126,6 +126,7 @@ class VIXImageManager(Screen):
 		for fil in images:
 			if not fil.endswith('swapfile_backup') and not fil.endswith('bi'):
 				self.emlist.append(fil)
+		self.emlist.sort()
 		self.emlist.reverse()
 		self["list"].setList(self.emlist)
 		self["list"].show()
@@ -139,6 +140,7 @@ class VIXImageManager(Screen):
 		for fil in images:
 			if not fil.endswith('swapfile_backup') and not fil.endswith('bi'):
 				self.emlist.append(fil)
+		self.emlist.sort()
 		self.emlist.reverse()
 		self["list"].setList(self.emlist)
 		self["list"].show()
@@ -233,11 +235,12 @@ class VIXImageManager(Screen):
 			for fil in images:
 				if not fil.endswith('swapfile_backup') and not fil.endswith('bi'):
 					self.emlist.append(fil)
+			self.emlist.sort()
 			self.emlist.reverse()
 			self["list"].setList(self.emlist)
 			self["list"].show()
 		except:
- 			self['lab1'].setText(_("Device: ") + config.imagemanager.backuplocation.value + "\n" + _("there was a problem with this device, please reformat and try again."))
+			self['lab1'].setText(_("Device: ") + config.imagemanager.backuplocation.value + "\n" + _("there was a problem with this device, please reformat and try again."))
 
 	def createSetup(self):
 		self.session.openWithCallback(self.setupDone, Setup, 'viximagemanager', 'SystemPlugins/ViX')
@@ -997,6 +1000,7 @@ class ImageManagerDownload(Screen):
 			for fil in ftp.nlst():
 				if not fil.endswith('.') and fil.find(getBoxType()) != -1:
 					self.emlist.append(fil)
+			self.emlist.sort()
 			self.emlist.reverse()
 		except:
 			self['myactions'] = ActionMap(['ColorActions', 'OkCancelActions', 'DirectionActions'],
