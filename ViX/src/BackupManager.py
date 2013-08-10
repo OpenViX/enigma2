@@ -75,7 +75,6 @@ class VIXBackupManager(Screen):
 
 		self['lab1'] = Label()
 		self["backupstatus"] = Label()
-		self["key_blue"] = Button(_("Refresh List"))
 		self["key_green"] = Button()
 		self["key_yellow"] = Button(_("Restore"))
 		self["key_red"] = Button(_("Delete"))
@@ -163,7 +162,6 @@ class VIXBackupManager(Screen):
 						'red': self.keyDelete,
 						'green': self.GreenPressed,
 						'yellow': self.keyResstore,
-						'blue': self.populate_List,
 						"menu": self.createSetup,
 						'log': self.showLog,
 					}, -1)
@@ -189,7 +187,6 @@ class VIXBackupManager(Screen):
 					'red': self.keyDelete,
 					'green': self.GreenPressed,
 					'yellow': self.keyResstore,
-					'blue': self.populate_List,
 					"menu": self.createSetup,
 					'log': self.showLog,
 				}, -1)
