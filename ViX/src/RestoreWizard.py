@@ -15,7 +15,7 @@ from enigma import getMachineBrand, getMachineName
 
 class RestoreWizard(WizardLanguage, Rc):
 	def __init__(self, session):
-		self.xmlfile = resolveFilename(SCOPE_PLUGINS, "SystemPlugins/ViX/data/restorewizard.xml")
+		self.xmlfile = resolveFilename(SCOPE_PLUGINS, "SystemPlugins/ViX/restorewizard.xml")
 		WizardLanguage.__init__(self, session, showSteps = False, showStepSlider = False)
 		Rc.__init__(self)
 		self.session = session
