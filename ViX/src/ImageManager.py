@@ -943,7 +943,7 @@ class ImageManagerDownload(Screen):
 			from ftplib import FTP
 			import urllib, zipfile, base64
 			wos_user = 'vixlogs@world-of-satellite.com'
-			wos_pwd = base64.b64decode('NDJJWnojMEpldUxX')
+			wos_pwd = base64.b64decode('TF95X0dCRlRFNHRDenVKN1dNdlEkZj14Cg==')
 			ftp = FTP('world-of-satellite.com')
 			ftp.login(wos_user,wos_pwd)
 			if getBoxType() == 'vuuno':
