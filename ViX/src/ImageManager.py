@@ -943,7 +943,7 @@ class ImageManagerDownload(Screen):
 			from ftplib import FTP
 			import urllib, zipfile, base64
 			wos_user = 'vixlogs@world-of-satellite.com'
-			wos_pwd = base64.b64decode('TF95X0dCRlRFNHRDenVKN1dNdlEkZj14Cg==')
+			wos_pwd = base64.b64decode('cDRsWF4sTHRGNkI4Cg==').replace('\n','')
 			ftp = FTP('world-of-satellite.com')
 			ftp.login(wos_user,wos_pwd)
 			if getBoxType() == 'vuuno':
@@ -994,7 +994,7 @@ class ImageManagerDownload(Screen):
 				self.boxtype = 'Venton-Unibox-HDx'
 			elif getBoxType() == 'inihde':
 				self.boxtype = 'INI-HDe'
-			ftp.cwd('openvix-builds/'+self.boxtype)
+			ftp.cwd(self.boxtype)
 
 			del self.emlist[:]
 			for fil in ftp.nlst():
@@ -1002,6 +1002,8 @@ class ImageManagerDownload(Screen):
 					self.emlist.append(fil)
 			self.emlist.sort()
 			self.emlist.reverse()
+			ftp.quit()
+			ftp.close()
 		except:
 			self['myactions'] = ActionMap(['ColorActions', 'OkCancelActions', 'DirectionActions'],
 				{
