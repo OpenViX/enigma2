@@ -914,8 +914,6 @@ class ImageManagerDownload(Screen):
 		self['lab1'] = Label(_("Select an image to Download:"))
 		self["key_red"] = Button(_("Close"))
 		self["key_green"] = Button(_("Download"))
-		self["key_yellow"] = Button()
-		self["key_blue"] = Button()
 
 		self.onChangedEntry = [ ]
 		self.emlist = []
