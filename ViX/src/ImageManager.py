@@ -345,8 +345,10 @@ class VIXImageManager(Screen):
 					self.MAINDEST = self.MAINDESTROOT + '/gigablue/ue/'
 				elif getBoxType() == 'gbquad':
 					self.MAINDEST = self.MAINDESTROOT + '/gigablue/quad/'
-				elif getBoxType().startswith('venton') or getBoxType().startswith('ini'):
-					self.MAINDEST = self.MAINDESTROOT + '/' + getBoxType().replace('-','') + '/'
+				elif getBoxType().startswith('ventonhdx'):
+					self.MAINDEST = self.MAINDESTROOT + '/venton-hdx/'
+				elif getBoxType().startswith('ini'):
+					self.MAINDEST = self.MAINDESTROOT + '/' + getBoxType().replace('ini','') + '/'
 				else:
 					self.MAINDEST = self.MAINDESTROOT + '/' + getBoxType() + '/'
 				if path.exists(self.MAINDEST):
@@ -764,8 +766,10 @@ class ImageBackup(Screen):
 			self.MAINDEST = self.MAINDESTROOT + '/gigablue/ue'
 		elif getBoxType() == 'gbquad':
 			self.MAINDEST = self.MAINDESTROOT + '/gigablue/quad'
-		elif getBoxType().startswith('venton') or getBoxType().startswith('ini'):
-			self.MAINDEST = self.MAINDESTROOT + '/' + getBoxType().replace('-','')
+		elif getBoxType().startswith('ventonhdx'):
+			self.MAINDEST = self.MAINDESTROOT + '/venton-hdx/'
+		elif getBoxType().startswith('ini'):
+			self.MAINDEST = self.MAINDESTROOT + '/' + getBoxType().replace('ini','') + '/'
 		else:
 			self.MAINDEST = self.MAINDESTROOT + '/' + getBoxType()
 		makedirs(self.MAINDEST, 0644)
