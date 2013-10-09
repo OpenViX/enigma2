@@ -9,7 +9,7 @@ from Components.Button import Button
 from Components.MenuList import MenuList
 from Components.Sources.List import List
 from Components.Pixmap import Pixmap
-from Components.config import configfile, config, getConfigListEntry, ConfigSubsection, ConfigYesNo, ConfigSelection, ConfigText, ConfigNumber, NoSave, ConfigClock
+from Components.config import config, getConfigListEntry, ConfigSubsection, ConfigYesNo, ConfigSelection, ConfigText, ConfigNumber, NoSave, ConfigClock
 from Components.ConfigList import ConfigListScreen
 from Components.Harddisk import harddiskmanager, getProcMounts
 from Screens.Screen import Screen
@@ -22,9 +22,10 @@ from Screens.Standby import TryQuitMainloop
 from Tools.Notifications import AddPopupWithCallback
 from enigma import eTimer, getDesktop, getBoxType, getImageVersionString, getBuildVersionString, getMachineBrand, getMachineName
 
-from os import path, system, mkdir, makedirs, listdir, remove, statvfs, chmod, walk
+from os import path, system, mkdir, makedirs, listdir, remove, statvfs, chmod, walk, symlink, unlink
 from shutil import rmtree, move, copy
 from time import localtime, time, strftime, mktime
+import process
 
 RAMCHEKFAILEDID = 'RamCheckFailedNotification'
 
@@ -45,8 +46,10 @@ config.imagemanager.backupretrycount = NoSave(ConfigNumber(default = 0))
 config.imagemanager.nextscheduletime = NoSave(ConfigNumber(default = 0))
 config.imagemanager.restoreimage = NoSave(ConfigText(default=getBoxType(), fixed_size=False))
 
-
 autoImageManagerTimer = None
+
+if path.exists(config.imagemanager.backuplocation.value + 'imagebackups/imagerestore'):
+	rmtree(config.imagemanager.backuplocation.value + 'imagebackups/imagerestore')
 
 def ImageManagerautostart(reason, session=None, **kwargs):
 	"called with reason=1 to during /sbin/shutdown.sysvinit, with reason=0 at startup?"
@@ -120,32 +123,26 @@ class VIXImageManager(Screen):
 		self.activityTimer.startLongTimer(5)
 
 	def refreshUp(self):
-		images = listdir(self.BackupDirectory)
-		self.oldlist = images
-		del self.emlist[:]
-		for fil in images:
-			if not fil.endswith('swapfile_backup') and not fil.endswith('bi'):
-				self.emlist.append(fil)
-		self.emlist.sort()
-		self.emlist.reverse()
-		self["list"].setList(self.emlist)
-		self["list"].show()
+		self.refreshList()
 		if self['list'].getCurrent():
 			self["list"].instance.moveSelection(self["list"].instance.moveUp)
 
 	def refreshDown(self):
+		self.refreshList()
+		if self['list'].getCurrent():
+			self["list"].instance.moveSelection(self["list"].instance.moveDown)
+
+	def refreshList(self):
 		images = listdir(self.BackupDirectory)
 		self.oldlist = images
 		del self.emlist[:]
 		for fil in images:
-			if not fil.endswith('swapfile_backup') and not fil.endswith('bi'):
+			if fil.endswith('.zip') or path.isdir(path.join(self.BackupDirectory, fil)):
 				self.emlist.append(fil)
 		self.emlist.sort()
 		self.emlist.reverse()
 		self["list"].setList(self.emlist)
 		self["list"].show()
-		if self['list'].getCurrent():
-			self["list"].instance.moveSelection(self["list"].instance.moveDown)
 
 	def getJobName(self, job):
 		return "%s: %s (%d%%)" % (job.getStatustext(), job.name, int(100*job.progress/float(job.end)))
@@ -223,22 +220,14 @@ class VIXImageManager(Screen):
 			s = statvfs(config.imagemanager.backuplocation.value)
 			free = (s.f_bsize * s.f_bavail)/(1024*1024)
 			self['lab1'].setText(_("Device: ") + config.imagemanager.backuplocation.value + ' ' + _('Free space:') + ' ' + str(free) + _('MB') + "\n" + _("Select an image to restore:"))
-
+		
 		try:
 			if not path.exists(self.BackupDirectory):
 				mkdir(self.BackupDirectory, 0755)
 			if path.exists(self.BackupDirectory + config.imagemanager.folderprefix.value + '-swapfile_backup'):
 				system('swapoff ' + self.BackupDirectory + config.imagemanager.folderprefix.value + '-swapfile_backup')
 				remove(self.BackupDirectory + config.imagemanager.folderprefix.value + '-swapfile_backup')
-			images = listdir(self.BackupDirectory)
-			del self.emlist[:]
-			for fil in images:
-				if not fil.endswith('swapfile_backup') and not fil.endswith('bi'):
-					self.emlist.append(fil)
-			self.emlist.sort()
-			self.emlist.reverse()
-			self["list"].setList(self.emlist)
-			self["list"].show()
+			self.refreshList()
 		except:
 			self['lab1'].setText(_("Device: ") + config.imagemanager.backuplocation.value + "\n" + _("there was a problem with this device, please reformat and try again."))
 
@@ -284,7 +273,10 @@ class VIXImageManager(Screen):
 		if answer is True:
 			self.sel = self['list'].getCurrent()
 			self["list"].instance.moveSelectionTo(0)
-			rmtree(self.BackupDirectory + self.sel)
+			if self.sel.endswith('.zip'):
+				remove(self.BackupDirectory + self.sel)
+			else:
+				rmtree(self.BackupDirectory + self.sel)
 		self.populate_List()
 
 	def GreenPressed(self):
@@ -321,99 +313,150 @@ class VIXImageManager(Screen):
 	def keyResstore(self):
 		self.sel = self['list'].getCurrent()
 		if self.sel:
-			if getBoxType().startswith('vu') or getBoxType().startswith('et') or getBoxType().startswith('tm') or getBoxType().startswith('odin') or getBoxType().startswith('venton') or getBoxType().startswith('ini') or getBoxType().startswith('gb') or getBoxType().startswith('iqon'):
-				self.MAINDESTROOT = self.BackupDirectory + self.sel
-				if getBoxType().startswith('vu'):
-					self.MAINDEST = self.MAINDESTROOT + '/vuplus/' + getBoxType().replace('vu','') + '/'
-				elif getBoxType() == 'tmtwin':
-					self.MAINDEST = self.MAINDESTROOT + '/update/tmtwinoe/cfe/'
-				elif getBoxType() == 'tm2t':
-					self.MAINDEST = self.MAINDESTROOT + '/update/tm2toe/cfe/'
-				elif getBoxType() == 'tmsingle':
-					self.MAINDEST = self.MAINDESTROOT + '/update/tmsingle/cfe/'
-				elif getBoxType() == 'iqonios100hd':
-					self.MAINDEST = self.MAINDESTROOT + '/update/ios100/cfe/'
-				elif getBoxType() == 'iqoniso200hd':
-					self.MAINDEST = self.MAINDESTROOT + '/update/ios200/cfe/'
-				elif getBoxType() == 'iqoniso300hd':
-					self.MAINDEST = self.MAINDESTROOT + '/update/ios300/cfe/'
-				elif getBoxType() == 'gb800solo':
-					self.MAINDEST = self.MAINDESTROOT + '/gigablue/solo/'
-				elif getBoxType() == 'gb800se':
-					self.MAINDEST = self.MAINDESTROOT + '/gigablue/se/'
-				elif getBoxType() == 'gb800ue':
-					self.MAINDEST = self.MAINDESTROOT + '/gigablue/ue/'
-				elif getBoxType() == 'gbquad':
-					self.MAINDEST = self.MAINDESTROOT + '/gigablue/quad/'
-				elif getBoxType().startswith('ventonhdx'):
-					self.MAINDEST = self.MAINDESTROOT + '/venton-hdx/'
-				elif getBoxType().startswith('ini'):
-					self.MAINDEST = self.MAINDESTROOT + '/' + getBoxType().replace('ini','') + '/'
-				else:
-					self.MAINDEST = self.MAINDESTROOT + '/' + getBoxType() + '/'
-				if path.exists(self.MAINDEST):
-					message = _("Are you sure you want to restore this image:\n ") + self.sel
-					ybox = self.session.openWithCallback(self.doRestore, MessageBox, message, MessageBox.TYPE_YESNO)
-					ybox.setTitle(_("Restore Confirmation"))
-				else:
-					self.session.open(MessageBox, _("Sorry the image " + self.sel + " is not compatible with this %s %s.") % (getMachineBrand(), getMachineName()), MessageBox.TYPE_INFO, timeout = 10)
-			else:
-				self.session.open(MessageBox, _("Sorry Image Restore is not supported on the" + ' ' + getBoxType() + ', ' + _("Please copy the folder") + ' ' + self.BackupDirectory + self.sel +  ' \n' + _("to a USB stick, place in front USB port of reciver and power on")), MessageBox.TYPE_INFO, timeout = 30)
+			message = _("Are you sure you want to restore this image:\n ") + self.sel
+			ybox = self.session.openWithCallback(self.keyResstore2, MessageBox, message, MessageBox.TYPE_YESNO)
+			ybox.setTitle(_("Restore Confirmation"))
 		else:
 			self.session.open(MessageBox, _("You have no image to restore."), MessageBox.TYPE_INFO, timeout = 10)
 
-
-	def doRestore(self,answer):
+	def keyResstore2(self, answer):
 		if answer:
-			config.imagemanager.restoreimage.value = self.sel
-			if not path.exists('/tmp/sync'):
-				copy('/bin/sync','/tmp')
-			if not path.exists('/tmp/nandwrite'):
-				copy('/usr/sbin/nandwrite','/tmp')
-			if not path.exists('/tmp/flash_erase'):
-				copy('/usr/sbin/flash_erase','/tmp')
-			if not path.exists('/tmp/reboot'):
-				copy('/sbin/reboot','/tmp')
-			if not path.exists('/tmp/tee'):
-				copy('/usr/bin/tee','/tmp')
+			self.session.open(MessageBox, _("Please wait while restore prepares"), MessageBox.TYPE_INFO, timeout = 60, enable_input=False)
+			self.MAINDESTROOT = '/tmp/imagerestore'
+			self.TEMPDESTROOT = self.BackupDirectory + 'imagerestore'
+			if self.sel.endswith('.zip'):
+				if not path.exists(self.TEMPDESTROOT):
+					mkdir(self.TEMPDESTROOT, 0755)
+				self.UnZipConsole = Console()
+				self.UnZipConsole.ePopen('unzip -o ' + self.BackupDirectory + self.sel + ' -d ' + self.TEMPDESTROOT, self.keyResstore3)
+				symlink(self.TEMPDESTROOT, '/tmp/imagerestore')
+			else:
+				symlink(self.BackupDirectory + self.sel, '/tmp/imagerestore')
+				self.keyResstore3(0,0)
+
+	def keyResstore3(self, result, retval, extra_args = None):
+		print 'result:',result
+		if retval == 0:
+			self.MAINDEST = None
+			self.kernelMTD = None
+			self.kernelFILE = None
+			self.rootMTD = None
+			self.rootFILE = None
+			if getBoxType().startswith('vu'):
+				self.MAINDEST = self.MAINDESTROOT + '/vuplus/' + getBoxType().replace('vu','') + '/'
+			elif getBoxType() == 'tmtwin':
+				self.MAINDEST = self.MAINDESTROOT + '/update/tmtwinoe/cfe/'
+			elif getBoxType() == 'tm2t':
+				self.MAINDEST = self.MAINDESTROOT + '/update/tm2toe/cfe/'
+			elif getBoxType() == 'tmsingle':
+				self.MAINDEST = self.MAINDESTROOT + '/update/tmsingle/cfe/'
+			elif getBoxType() == 'iqonios100hd':
+				self.MAINDEST = self.MAINDESTROOT + '/update/ios100/cfe/'
+			elif getBoxType() == 'iqoniso200hd':
+				self.MAINDEST = self.MAINDESTROOT + '/update/ios200/cfe/'
+			elif getBoxType() == 'iqoniso300hd':
+				self.MAINDEST = self.MAINDESTROOT + '/update/ios300/cfe/'
+			elif getBoxType() == 'gb800solo':
+				self.MAINDEST = self.MAINDESTROOT + '/gigablue/solo/'
+			elif getBoxType() == 'gb800se':
+				self.MAINDEST = self.MAINDESTROOT + '/gigablue/se/'
+			elif getBoxType() == 'gb800ue':
+				self.MAINDEST = self.MAINDESTROOT + '/gigablue/ue/'
+			elif getBoxType() == 'gbquad':
+				self.MAINDEST = self.MAINDESTROOT + '/gigablue/quad/'
+			elif getBoxType().startswith('ventonhdx'):
+				self.MAINDEST = self.MAINDESTROOT + '/venton-hdx/'
+			elif getBoxType().startswith('ini'):
+				self.MAINDEST = self.MAINDESTROOT + '/' + getBoxType().replace('ini','') + '/'
+			else:
+				self.MAINDEST = self.MAINDESTROOT + '/' + getBoxType() + '/'
 
 			if getBoxType().startswith('gb'):
-				kernelMTD = "mtd2"
-				kernelFILE = "kernel.bin"
-				rootMTD = "mtd4"
-				rootFILE = "rootfs.bin"
+				self.kernelMTD = "mtd2"
+				self.kernelFILE = "kernel.bin"
+				self.rootMTD = "mtd4"
+				self.rootFILE = "rootfs.bin"
 			elif getBoxType().startswith('et') or getBoxType().startswith('venton') or getBoxType().startswith('ini') or getBoxType().startswith('xp'):
-				kernelMTD = "mtd1"
-				kernelFILE = "kernel.bin"
-				rootMTD = "mtd2"
-				rootFILE = "rootfs.bin"
+				self.kernelMTD = "mtd1"
+				self.kernelFILE = "kernel.bin"
+				self.rootMTD = "mtd2"
+				self.rootFILE = "rootfs.bin"
 			elif getBoxType().startswith('odin'):
-				kernelMTD = "mtd2"
-				kernelFILE = "kernel.bin"
-				rootMTD = "mtd3"
-				rootFILE = "rootfs.bin"
+				self.kernelMTD = "mtd2"
+				self.kernelFILE = "kernel.bin"
+				self.rootMTD = "mtd3"
+				self.rootFILE = "rootfs.bin"
 			elif getBoxType().startswith('tm') or getBoxType().startswith('iqon'):
-				kernelMTD = "mtd6"
-				kernelFILE = "oe_kernel.bin"
-				rootMTD = "mtd4"
-				rootFILE = "oe_rootfs.bin"
+				self.kernelMTD = "mtd6"
+				self.kernelFILE = "oe_kernel.bin"
+				self.rootMTD = "mtd4"
+				self.rootFILE = "oe_rootfs.bin"
 			elif getBoxType() == 'vusolo' or getBoxType() == 'vuduo' or getBoxType() == 'vuuno' or getBoxType() == 'vuultimo':
-				kernelMTD = "mtd1"
-				kernelFILE = "kernel_cfe_auto.bin"
-				rootMTD = "mtd0"
-				rootFILE = "root_cfe_auto.jffs2"
+				self.kernelMTD = "mtd1"
+				self.kernelFILE = "kernel_cfe_auto.bin"
+				self.rootMTD = "mtd0"
+				self.rootFILE = "root_cfe_auto.jffs2"
 			elif getBoxType() == 'vusolo2' or getBoxType() == 'vuduo2':
-				kernelMTD = "mtd2"
-				kernelFILE = "kernel_cfe_auto.bin"
-				rootMTD = "mtd0"
-				rootFILE = "root_cfe_auto.bin"
+				self.kernelMTD = "mtd2"
+				self.kernelFILE = "kernel_cfe_auto.bin"
+				self.rootMTD = "mtd0"
+				self.rootFILE = "root_cfe_auto.bin"
 
-			output = open('/tmp/image_restore.sh','w')
-			output.write('#!/bin/sh\n\n/tmp/sync > /media/hdd/restore.log 2>&1 && mount -no remount,ro / >> /media/hdd/restore.log 2>&1 && /tmp/flash_erase /dev/' + kernelMTD + ' 0 0 >> /media/hdd/restore.log 2>&1 && /tmp/nandwrite -p /dev/' + kernelMTD + ' ' + self.MAINDEST + kernelFILE + ' >> /media/hdd/restore.log 2>&1 && /tmp/flash_erase /dev/' + rootMTD + ' 0 0 >> /media/hdd/restore.log 2>&1 && /tmp/nandwrite -p /dev/' + rootMTD + ' ' + self.MAINDEST + rootFILE + ' >> /media/hdd/restore.log 2>&1 && /tmp/reboot -fn')
-			output.close()
-			chmod('/tmp/image_restore.sh', 0755)
-			self.session.open(TryQuitMainloop,retvalue=43)
-			self.close()
+			if self.kernelMTD:
+				self.doRestore()
+			else:
+				rmtree(self.TEMPDESTROOT)
+				self.session.open(MessageBox, _("Sorry Image Restore is not supported on the" + ' ' + getBoxType() + ', ' + _("Please copy the folder") + ' ' + self.BackupDirectory + self.sel +  ' \n' + _("to a USB stick, place in front USB port of reciver and power on")), MessageBox.TYPE_INFO, timeout = 30)
+
+	def doRestore(self):
+		print 'doRestore'
+		config.imagemanager.restoreimage.value = self.sel
+		f = open('/proc/mounts')
+		filesystem = f.read()
+		f.close()
+
+		mkdir('/tmp/apps', 0755)
+		apps = '/tmp/apps/'
+		copy('/usr/sbin/nandwrite',apps)
+		copy('/usr/sbin/flash_erase',apps)
+		copy('/usr/sbin/ubiformat',apps)
+		copy('/sbin/reboot',apps)
+		copy('/bin/sleep',apps)
+		copy('/bin/rm',apps)
+
+		output = open('/tmp/image_restore.sh','w')
+		command = []
+		header = '#!/bin/sh\n'
+		log = ' > ' + self.BackupDirectory + 'restore.log 2>&1 && '
+		logappend = ' >> ' + self.BackupDirectory + 'restore.log 2>&1 && '
+		sleep = apps + 'sleep 3 && '
+
+		command.append(header)
+		command.append('sync' + log)
+		command.append(sleep)
+
+		command.append('if [ "$(pidof smbd)" ]; then killall smbd ; fi && ')
+		command.append('if [ "$(pidof nmbd)" ]; then killall nmbd ; fi && ')
+		command.append('if [ "$(pidof rpc.mountd)" ]; then killall rpc.mountd ; fi && ')
+		command.append('if [ "$(pidof rpc.statd)" ]; then killall rpc.statd ; fi && ')
+
+		command.append('mount -no remount,ro /' + logappend)
+		command.append(apps + 'flash_erase /dev/' + self.kernelMTD + ' 0 0' + logappend)
+		command.append(apps + 'nandwrite -pm /dev/' + self.kernelMTD + ' ' + self.MAINDEST + self.kernelFILE + logappend)
+		if filesystem.find('ubifs') != -1:
+			command.append(apps + 'ubiformat /dev/' + self.rootMTD + ' -f ' + self.MAINDEST + self.rootFILE + ' -D' + logappend)
+		else:
+			command.append(apps + 'nandwrite -pm /dev/' + self.rootMTD + ' -f ' + self.MAINDEST + self.rootFILE + ' -D' + logappend)
+		command.append(sleep)
+		command.append(apps + 'reboot -fn')
+
+		commandline = ''.join(command)
+
+		output.write(commandline)
+		output.close()
+		chmod('/tmp/image_restore.sh', 0755)
+		self.session.open(TryQuitMainloop,retvalue=43)
+		self.close()
 
 class AutoImageManagerTimer:
 	def __init__(self, session):
@@ -452,24 +495,12 @@ class AutoImageManagerTimer:
 		global BackupTime
 		BackupTime = self.getBackupTime()
 		now = int(time())
-		#print '[ImageManager] BACKUP TIME',BackupTime
-		#print '[ImageManager] NOW TIME',now
-		#print '[ImageManager] ATLEAST',atLeast
-		#print '[ImageManager] NOW + ATLEAST', (now + atLeast)
-		#print '[ImageManager] BACKUP TIME - NOW', (BackupTime - now)
 		if BackupTime > 0:
 			if BackupTime < now + atLeast:
 				if config.imagemanager.repeattype.value == "daily":
 					BackupTime += 24*3600
 					while (int(BackupTime)-30) < now:
 						BackupTime += 24*3600
-					#BackupTime += 8*60
-					#print '[ImageManager] BACKUP TIME 2:',BackupTime
-					#print '[ImageManager] NOW 2:',now
-					#while (int(BackupTime)-30) < now:
-						#print '[ImageManager] YES BT is Less Now'
-						#BackupTime += 8*60
-						#print '[ImageManager] BACKUP TIME 2:',BackupTime
 				elif config.imagemanager.repeattype.value == "weekly":
 					BackupTime += 7*24*3600
 					while (int(BackupTime)-30) < now:
@@ -481,7 +512,7 @@ class AutoImageManagerTimer:
 			next = BackupTime - now
 			self.backuptimer.startLongTimer(next)
 		else:
-		    	BackupTime = -1
+			BackupTime = -1
 		print "[ImageManager] Backup Time set to", strftime("%c", localtime(BackupTime)), strftime("(now=%c)", localtime(now))
 		return BackupTime
 
@@ -542,6 +573,8 @@ class ImageBackup(Screen):
 		self.Stage1Completed = False
 		self.Stage2Completed = False
 		self.Stage3Completed = False
+		self.Stage4Completed = False
+		self.Stage5Completed = False
 
 	def createBackupJob(self):
 		job = Components.Task.Job(_("Image Manager"))
@@ -588,6 +621,14 @@ class ImageBackup(Screen):
 
 		task = Components.Task.ConditionTask(job, _("Moving to Backup Location..."), timeoutCount=900)
 		task.check = lambda: self.Stage4Completed
+		task.weighting = 5
+
+		task = Components.Task.PythonTask(job, _("Creating zip..."))
+		task.work = self.doBackup5
+		task.weighting = 5
+
+		task = Components.Task.ConditionTask(job, _("Creating zip..."), timeoutCount=900)
+		task.check = lambda: self.Stage5Completed
 		task.weighting = 5
 
 		task = Components.Task.PythonTask(job, _("Backup Complete..."))
@@ -802,7 +843,7 @@ class ImageBackup(Screen):
 			self.commands.append('touch ' + self.WORKDIR + '/root.ubi')
 			self.commands.append(MKFS + ' -r ' + self.TMPDIR + '/root -o ' + self.WORKDIR + '/root.ubi ' + MKUBIFS_ARGS)
 			self.commands.append('ubinize -o ' + self.WORKDIR + '/root.ubifs ' + UBINIZE_ARGS + ' ' + self.WORKDIR + '/ubinize.cfg')
-		self.BackupConsole.eBatch(self.commands, self.Stage1Complete, debug=True)
+		self.BackupConsole.eBatch(self.commands, self.Stage1Complete, debug=False)
 
 	def Stage1Complete(self, extra_args = None):
 		if len(self.BackupConsole.appContainers) == 0:
@@ -812,11 +853,11 @@ class ImageBackup(Screen):
 	def doBackup2(self):
 		print '[ImageManager] Stage2: Making Kernel Image.'
 		if getBoxType().startswith('tm') or getBoxType().startswith('iqon'):
-			self.command = 'cat /dev/mtd6 > ' + self.WORKDIR + '/vmlinux.gz'
+			self.command = 'nanddump /dev/mtd6 -f ' + self.WORKDIR + '/vmlinux.gz'
 		elif getBoxType().startswith('et') or getBoxType().startswith('venton') or getBoxType().startswith('ini') or getBoxType().startswith('xp') or getBoxType() == 'vusolo' or getBoxType() == 'vuduo' or getBoxType() == 'vuuno' or getBoxType() == 'vuultimo':
-			self.command = 'cat /dev/mtd1 > ' + self.WORKDIR + '/vmlinux.gz'
+			self.command = 'nanddump /dev/mtd1 -f ' + self.WORKDIR + '/vmlinux.gz'
 		elif getBoxType().startswith('odin') or getBoxType().startswith('gb') or getBoxType() == 'vusolo2' or getBoxType() == 'vuduo2':
-			self.command = 'cat /dev/mtd2 > ' + self.WORKDIR + '/vmlinux.gz'
+			self.command = 'nanddump /dev/mtd2 -f ' + self.WORKDIR + '/vmlinux.gz'
 		self.BackupConsole.ePopen(self.command, self.Stage2Complete)
 
 	def Stage2Complete(self, result, retval, extra_args = None):
@@ -897,11 +938,22 @@ class ImageBackup(Screen):
 			self.Stage4Complete()
 		else:
 			print "[ImageManager] Stage4: Image creation failed - e. g. wrong backup destination or no space left on backup device"
-			self.Stage3Complete()
+			self.BackupComplete()
 
 	def Stage4Complete(self):
 		self.Stage4Completed = True
 		print '[ImageManager] Stage4: Complete.'
+
+	def doBackup5(self):
+		zipfolder = path.split(self.MAINDESTROOT)
+		self.commands = []
+		self.commands.append('cd ' + self.MAINDESTROOT +' && zip -r ' + self.MAINDESTROOT + '.zip *')
+		self.commands.append('rm -rf ' + self.MAINDESTROOT)
+		self.BackupConsole.eBatch(self.commands, self.Stage5Complete, debug=True)
+
+	def Stage5Complete(self, anwser=None):
+		self.Stage5Completed = True
+		print '[ImageManager] Stage5: Complete.'
 
 	def BackupComplete(self, anwser=None):
 		if config.imagemanager.schedule.value:
@@ -983,7 +1035,7 @@ class ImageManagerDownload(Screen):
 			elif getBoxType() == 'odinm9':
 				self.boxtype = 'Odin-M9'
 			elif getBoxType() == 'xp1000':
-				self.boxtype = 'XP1000'
+				self.boxtype = 'OCTAGON-SF8-HD-XP1000'
 			elif getBoxType() == 'qb800solo':
 				self.boxtype = 'GiGaBlue-HD800Solo'
 			elif getBoxType() == 'gb800se':
@@ -1029,17 +1081,11 @@ class ImageManagerDownload(Screen):
 		if answer is True:
 			self.selectedimage = self['list'].getCurrent()
 			file = self.BackupDirectory + self.selectedimage
-			dir =  self.BackupDirectory + self.selectedimage.replace('.zip','')
-			if not path.exists(dir):
-				mkdir(dir, 0777)
 			from Screens.Console import Console as RestareConsole
 			mycmd1 = _("echo 'Downloading Image.'")
-			mycmd2 = "wget http://enigma2.world-of-satellite.com//openvix/openvix-builds/" + self.boxtype + "/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
+			mycmd2 = "wget -q http://enigma2.world-of-satellite.com//openvix/openvix-builds/" + self.boxtype + "/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
 			mycmd3 = "mv " + self.BackupDirectory + "image.zip " + file
-			mycmd4 = _("echo 'Expanding Image.'")
-			mycmd5 = 'unzip -o ' + file + ' -d ' + dir
-			mycmd6 = 'rm ' + file
-			self.session.open(RestareConsole, title=_('Downloading Image...'), cmdlist=[mycmd1, mycmd2, mycmd3, mycmd4, mycmd5, mycmd6],closeOnSuccess = True)
+			self.session.open(RestareConsole, title=_('Downloading Image...'), cmdlist=[mycmd1, mycmd2, mycmd3],closeOnSuccess = True)
 
 	def myclose(self, result, retval, extra_args):
  		remove(self.BackupDirectory + self.selectedimage)
