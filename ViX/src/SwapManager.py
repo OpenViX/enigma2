@@ -42,8 +42,12 @@ class StartSwap:
 				if line.find('sd') != -1:
 					parts = line.strip().split()
 					swap_place = parts[0]
-					file('/etc/fstab.tmp', 'w').writelines([l for l in file('/etc/fstab').readlines() if swap_place not in l])
+					tmpfile = file('/etc/fstab.tmp', 'w')
+					fstabfile = file('/etc/fstab')
+					tmpfile.writelines([l for l in fstabfile.readlines() if swap_place not in l])
 					rename('/etc/fstab.tmp','/etc/fstab')
+					tmpfile.close()
+					fstabfile.close()
 					print "[SwapManager] Found a swap partition:", swap_place
 		else:
 			devicelist = []
@@ -64,6 +68,7 @@ class StartSwap:
 			system('swapon ' + swap_place)
 		else:
 			print "[SwapManager] Swapfile is already active on ", swap_place
+		f.close()
 
 #######################################################################
 class VIXSwap(Screen):
@@ -116,7 +121,7 @@ class VIXSwap(Screen):
 			config.vixsettings.swapautostart.save()
 		if path.exists('/tmp/swapdevices.tmp'):
 			remove('/tmp/swapdevices.tmp')
-		self.Console.ePopen("sfdisk -l /dev/sd? | grep swap", self.updateSwap2)
+		self.Console.ePopen("parted -l /dev/sd? | grep swap", self.updateSwap2)
 
 	def updateSwap2(self, result = None, retval = None, extra_args = None):
 		self.swapsize = 0
