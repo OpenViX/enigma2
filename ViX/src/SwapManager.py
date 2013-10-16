@@ -33,7 +33,7 @@ class StartSwap:
 		self.Console = Console()
 
 	def start(self):
-	 	self.Console.ePopen("sfdisk -l /dev/sd? | grep swap", self.startSwap2)
+	 	self.Console.ePopen("parted -l /dev/sd? | grep swap", self.startSwap2)
 
 	def startSwap2(self, result = None, retval = None, extra_args = None):
 		swap_place = ""
@@ -62,8 +62,9 @@ class StartSwap:
 							swap_place = filename
 							print "[SwapManager] Found a swapfile on ", swap_place
 
-		f = file('/proc/swaps').read()
-		if f.find(swap_place) == -1:
+		f = file('/proc/swaps')
+		swapfile = f.read()
+		if swapfile.find(swap_place) == -1:
 			print "[SwapManager] Starting swapfile on ", swap_place
 			system('swapon ' + swap_place)
 		else:
@@ -85,6 +86,7 @@ class VIXSwap(Screen):
 		self['lab4'] = Label(_("Status:"))
 		self['inactive'] = Label(_("Inactive"))
 		self['active'] = Label(_("Active"))
+		self['key_red'] = Label(_("Close"))
 		self['key_green'] = Label(_("Activate"))
 		self['key_blue'] = Label(_("Create"))
 		self['key_yellow'] = Label(_("Autostart"))
@@ -94,7 +96,7 @@ class VIXSwap(Screen):
 		self.swap_place = ''
 		self.new_place = ''
 		self.creatingswap = False
-		self['actions'] = ActionMap(['WizardActions', 'ColorActions', "MenuActions"], {'back': self.close, 'green': self.actDeact, 'yellow': self.autoSsWap, 'blue': self.createDel, "menu": self.close})
+		self['actions'] = ActionMap(['WizardActions', 'ColorActions', "MenuActions"], {'back': self.close, 'red': self.close, 'green': self.actDeact, 'yellow': self.autoSsWap, 'blue': self.createDel, "menu": self.close})
 		self.activityTimer = eTimer()
 		self.activityTimer.timeout.get().append(self.getSwapDevice)
 		self.updateSwap()
