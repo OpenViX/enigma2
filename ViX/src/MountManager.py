@@ -361,28 +361,29 @@ class VIXDevicePanelConf(Screen, ConfigListScreen):
 
 	def add_fstab(self, result = None, retval = None, extra_args = None):
 		print '[MountManager] RESULT:',result
-		self.device = extra_args[0]
-		self.mountp = extra_args[1]
-		self.device_uuid = 'UUID=' + result.split('UUID=')[1].split(' ')[0].replace('"','')
-		self.device_type = result.split('TYPE=')[1].split(' ')[0].replace('"','')
+		if result:
+			self.device = extra_args[0]
+			self.mountp = extra_args[1]
+			self.device_uuid = 'UUID=' + result.split('UUID=')[1].split(' ')[0].replace('"','')
+			self.device_type = result.split('TYPE=')[1].split(' ')[0].replace('"','')
 
-		if self.device_type.startswith('ext'):
-			self.device_type = 'auto'
-		elif self.device_type.startswith('ntfs') and result.find('ntfs-3g') != -1:
-			self.device_type = 'ntfs-3g'
-		elif self.device_type.startswith('ntfs') and result.find('ntfs-3g') == -1:
-			self.device_type = 'ntfs'
+			if self.device_type.startswith('ext'):
+				self.device_type = 'auto'
+			elif self.device_type.startswith('ntfs') and result.find('ntfs-3g') != -1:
+				self.device_type = 'ntfs-3g'
+			elif self.device_type.startswith('ntfs') and result.find('ntfs-3g') == -1:
+				self.device_type = 'ntfs'
 
-		if not path.exists(self.mountp):
-			mkdir(self.mountp, 0755)
-		file('/etc/fstab.tmp', 'w').writelines([l for l in file('/etc/fstab').readlines() if self.device not in l])
-		rename('/etc/fstab.tmp','/etc/fstab')
-		file('/etc/fstab.tmp', 'w').writelines([l for l in file('/etc/fstab').readlines() if self.device_uuid not in l])
-		rename('/etc/fstab.tmp','/etc/fstab')
-		out = open('/etc/fstab', 'a')
-		line = self.device_uuid + '\t' + self.mountp + '\t' + self.device_type + '\tdefaults\t0 0\n'
-		out.write(line)
-		out.close()
+			if not path.exists(self.mountp):
+				mkdir(self.mountp, 0755)
+			file('/etc/fstab.tmp', 'w').writelines([l for l in file('/etc/fstab').readlines() if self.device not in l])
+			rename('/etc/fstab.tmp','/etc/fstab')
+			file('/etc/fstab.tmp', 'w').writelines([l for l in file('/etc/fstab').readlines() if self.device_uuid not in l])
+			rename('/etc/fstab.tmp','/etc/fstab')
+			out = open('/etc/fstab', 'a')
+			line = self.device_uuid + '\t' + self.mountp + '\t' + self.device_type + '\tdefaults\t0 0\n'
+			out.write(line)
+			out.close()
 
 	def restartBox(self, answer):
 		if answer is True:
