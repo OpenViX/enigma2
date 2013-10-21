@@ -990,6 +990,7 @@ class ImageManagerDownload(Screen):
 					'cancel': self.close,
 					'red': self.close,
 					'green': self.keyDownload,
+					'ok': self.keyDownload,
 				}, -1)
 
 			if not path.exists(self.BackupDirectory):
