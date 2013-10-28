@@ -147,10 +147,14 @@ class VIXSoftcamManager(Screen):
 
 	def getActivecam(self):
 		self.activityTimer.stop()
-		self.Console.ePopen("ps | grep softcams | grep -v 'grep' | sed 's/</ /g' | awk '{print $5}' | awk '{a[$1] = $0} END { for (x in a) { print a[x] } }' | awk -F'[/]' '{print $4}'", self.showActivecam2)
+		active = []
+		for x in self["list"].list:
+			active.append(x[0][0])
+		activelist = ",".join(active)
+		self.Console.ePopen("ps -C " + activelist + " | grep -v 'CMD' | sed 's/</ /g' | awk '{print $4}' | awk '{a[$1] = $0} END { for (x in a) { print a[x] } }'", self.showActivecam2)
+		# self.Console.ePopen("ps | grep softcams | grep -v 'grep' | sed 's/</ /g' | awk '{print $5}' | awk '{a[$1] = $0} END { for (x in a) { print a[x] } }' | awk -F'[/]' '{print $4}'", self.showActivecam2)
 
 	def showActivecam2(self, result, retval, extra_args):
-# 		global self.currentactivecam
 		if retval == 0:
 			self.currentactivecamtemp = result
 			self.currentactivecam = "".join([s for s in self.currentactivecamtemp.splitlines(True) if s.strip("\r\n")])
