@@ -350,6 +350,8 @@ class VIXImageManager(Screen):
 				self.MAINDEST = self.MAINDESTROOT + '/update/tm2toe/cfe/'
 			elif getBoxType() == 'tmsingle':
 				self.MAINDEST = self.MAINDESTROOT + '/update/tmsingle/cfe/'
+			elif getBoxType() == 'tmnano':
+				self.MAINDEST = self.MAINDESTROOT + '/update/tmnano/cfe'
 			elif getBoxType() == 'iqonios100hd':
 				self.MAINDEST = self.MAINDESTROOT + '/update/ios100/cfe/'
 			elif getBoxType() == 'iqoniso200hd':
@@ -386,6 +388,11 @@ class VIXImageManager(Screen):
 				self.kernelFILE = "kernel.bin"
 				self.rootMTD = "mtd3"
 				self.rootFILE = "rootfs.bin"
+			elif getBoxType() == 'tmnano':
+				self.kernelMTD = "mtd1"
+				self.kernelFILE = "oe_kernel.bin"
+				self.rootMTD = "mtd0"
+				self.rootFILE = "oe_rootfs.bin"
 			elif getBoxType().startswith('tm') or getBoxType().startswith('iqon'):
 				self.kernelMTD = "mtd6"
 				self.kernelFILE = "oe_kernel.bin"
@@ -793,6 +800,8 @@ class ImageBackup(Screen):
 			self.MAINDEST = self.MAINDESTROOT + '/update/tm2toe/cfe'
 		elif getBoxType() == 'tmsingle':
 			self.MAINDEST = self.MAINDESTROOT + '/update/tmsingle/cfe'
+		elif getBoxType() == 'tmnano':
+			self.MAINDEST = self.MAINDESTROOT + '/update/tmnano/cfe'
 		elif getBoxType() == 'iqonios100hd':
 			self.MAINDEST = self.MAINDESTROOT + '/update/ios100/cfe'
 		elif getBoxType() == 'iqoniso200hd':
@@ -852,12 +861,12 @@ class ImageBackup(Screen):
 
 	def doBackup2(self):
 		print '[ImageManager] Stage2: Making Kernel Image.'
-		if getBoxType().startswith('tm') or getBoxType().startswith('iqon'):
-			self.command = 'nanddump /dev/mtd6 -f ' + self.WORKDIR + '/vmlinux.gz'
-		elif getBoxType().startswith('et') or getBoxType().startswith('venton') or getBoxType().startswith('ini') or getBoxType().startswith('xp') or getBoxType() == 'vusolo' or getBoxType() == 'vuduo' or getBoxType() == 'vuuno' or getBoxType() == 'vuultimo':
+		if getBoxType().startswith('et') or getBoxType().startswith('venton') or getBoxType().startswith('ini') or getBoxType().startswith('xp') or getBoxType() == 'vusolo' or getBoxType() == 'vuduo' or getBoxType() == 'vuuno' or getBoxType() == 'vuultimo' or getBoxType() == 'tmnano':
 			self.command = 'nanddump /dev/mtd1 -f ' + self.WORKDIR + '/vmlinux.gz'
 		elif getBoxType().startswith('odin') or getBoxType().startswith('gb') or getBoxType() == 'vusolo2' or getBoxType() == 'vuduo2':
 			self.command = 'nanddump /dev/mtd2 -f ' + self.WORKDIR + '/vmlinux.gz'
+		if getBoxType().startswith('tm') or getBoxType().startswith('iqon'):
+			self.command = 'nanddump /dev/mtd6 -f ' + self.WORKDIR + '/vmlinux.gz'
 		self.BackupConsole.ePopen(self.command, self.Stage2Complete)
 
 	def Stage2Complete(self, result, retval, extra_args = None):
@@ -1027,6 +1036,8 @@ class ImageManagerDownload(Screen):
 				self.boxtype = 'TM-2T-OE'
 			elif getBoxType() == 'tmsingle':
 				self.boxtype = 'TM-Single'
+			elif getBoxType() == 'tmnano':
+				self.boxtype = 'TM-Nano'
 			elif getBoxType() == 'iqonios100hd':
 				self.boxtype = 'iqon-IOS-100HD'
 			elif getBoxType() == 'iqonios200hd':
