@@ -1033,11 +1033,11 @@ class ImageManagerDownload(Screen):
 			elif getBoxType() == 'tmtwin':
 				self.boxtype = 'TM-Twin-OE'
 			elif getBoxType() == 'tm2t':
-				self.boxtype = 'TM-2T-OE'
+				self.boxtype = 'TM-2T'
 			elif getBoxType() == 'tmsingle':
 				self.boxtype = 'TM-Single'
 			elif getBoxType() == 'tmnano':
-				self.boxtype = 'TM-Nano'
+				self.boxtype = 'TM-Nano-OE'
 			elif getBoxType() == 'iqonios100hd':
 				self.boxtype = 'iqon-IOS-100HD'
 			elif getBoxType() == 'iqonios200hd':
@@ -1054,7 +1054,7 @@ class ImageManagerDownload(Screen):
 				self.boxtype = 'GiGaBlue-HD800SE'
 			elif getBoxType() == 'gb800ue':
 				self.boxtype = 'GiGaBlue-HD800UE'
-			elif getBoxType() == 'gbqad':
+			elif getBoxType() == 'gbquad':
 				self.boxtype = 'GiGaBlue-HD-QUAD'
 			elif getBoxType() == 'ventonhdx':
 				self.boxtype = 'Venton-Unibox-HDx'
