@@ -865,7 +865,7 @@ class ImageBackup(Screen):
 			self.command = 'nanddump /dev/mtd1 -f ' + self.WORKDIR + '/vmlinux.gz'
 		elif getBoxType().startswith('odin') or getBoxType().startswith('gb') or getBoxType() == 'vusolo2' or getBoxType() == 'vuduo2':
 			self.command = 'nanddump /dev/mtd2 -f ' + self.WORKDIR + '/vmlinux.gz'
-		if getBoxType().startswith('tm') or getBoxType().startswith('iqon'):
+		elif getBoxType().startswith('tm') or getBoxType().startswith('iqon'):
 			self.command = 'nanddump /dev/mtd6 -f ' + self.WORKDIR + '/vmlinux.gz'
 		self.BackupConsole.ePopen(self.command, self.Stage2Complete)
 
