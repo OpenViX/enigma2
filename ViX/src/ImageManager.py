@@ -784,8 +784,10 @@ class ImageBackup(Screen):
 		if path.exists(self.WORKDIR):
 			rmtree(self.WORKDIR)
 		mkdir(self.WORKDIR, 0644)
-		if path.exists(self.TMPDIR + '/root'):
+		if path.exists(self.TMPDIR + '/root') and path.ismount(self.TMPDIR + '/root'):
 			system('umount ' + self.TMPDIR + '/root')
+		elif path.exists(self.TMPDIR + '/root'):
+			rmtree(self.TMPDIR + '/root')
 		if path.exists(self.TMPDIR):
 			rmtree(self.TMPDIR)
 		makedirs(self.TMPDIR + '/root', 0644)
