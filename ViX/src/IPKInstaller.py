@@ -115,7 +115,7 @@ class VIXIPKInstaller(Screen):
 				self.session.openWithCallback(self.installFinished(sel), Console, title=_("Installing..."), cmdlist = [cmd1], closeOnSuccess = True)
 
 	def installFinished(self,sel):
-		message = ("Do you want to restart GUI now ?")
+		message = _("Do you want to restart GUI now ?")
 		ybox = self.session.openWithCallback(self.restBox, MessageBox, message, MessageBox.TYPE_YESNO)
 		ybox.setTitle(_("Restart Enigma2."))
 
