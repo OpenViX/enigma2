@@ -1040,6 +1040,8 @@ class ImageManagerDownload(Screen):
 				self.boxtype = 'TM-Single'
 			elif getBoxType() == 'tmnano':
 				self.boxtype = 'TM-Nano-OE'
+			elif getBoxType() == 'tmnano2t':
+				self.boxtype = 'TM-Nano-2T'
 			elif getBoxType() == 'iqonios100hd':
 				self.boxtype = 'iqon-IOS-100HD'
 			elif getBoxType() == 'iqonios200hd':
