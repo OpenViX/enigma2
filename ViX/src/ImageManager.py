@@ -352,6 +352,8 @@ class VIXImageManager(Screen):
 				self.MAINDEST = self.MAINDESTROOT + '/update/tmsingle/cfe/'
 			elif getBoxType() == 'tmnano':
 				self.MAINDEST = self.MAINDESTROOT + '/update/tmnano/cfe'
+			elif getBoxType() == 'tmnano2t':
+				self.MAINDEST = self.MAINDESTROOT + '/update/tmnano2t/cfe'
 			elif getBoxType() == 'iqonios100hd':
 				self.MAINDEST = self.MAINDESTROOT + '/update/ios100/cfe/'
 			elif getBoxType() == 'iqoniso200hd':
@@ -388,7 +390,7 @@ class VIXImageManager(Screen):
 				self.kernelFILE = "kernel.bin"
 				self.rootMTD = "mtd3"
 				self.rootFILE = "rootfs.bin"
-			elif getBoxType() == 'tmnano':
+			elif getBoxType() == 'tmnano' or getBoxType() == 'tmnano2t':
 				self.kernelMTD = "mtd1"
 				self.kernelFILE = "oe_kernel.bin"
 				self.rootMTD = "mtd0"
@@ -804,6 +806,8 @@ class ImageBackup(Screen):
 			self.MAINDEST = self.MAINDESTROOT + '/update/tmsingle/cfe'
 		elif getBoxType() == 'tmnano':
 			self.MAINDEST = self.MAINDESTROOT + '/update/tmnano/cfe'
+		elif getBoxType() == 'tmnano2t':
+			self.MAINDEST = self.MAINDESTROOT + '/update/tmnano2t/cfe'
 		elif getBoxType() == 'iqonios100hd':
 			self.MAINDEST = self.MAINDESTROOT + '/update/ios100/cfe'
 		elif getBoxType() == 'iqoniso200hd':
@@ -863,7 +867,7 @@ class ImageBackup(Screen):
 
 	def doBackup2(self):
 		print '[ImageManager] Stage2: Making Kernel Image.'
-		if getBoxType().startswith('et') or getBoxType().startswith('venton') or getBoxType().startswith('ini') or getBoxType().startswith('xp') or getBoxType() == 'vusolo' or getBoxType() == 'vuduo' or getBoxType() == 'vuuno' or getBoxType() == 'vuultimo' or getBoxType() == 'tmnano':
+		if getBoxType().startswith('et') or getBoxType().startswith('venton') or getBoxType().startswith('ini') or getBoxType().startswith('xp') or getBoxType() == 'vusolo' or getBoxType() == 'vuduo' or getBoxType() == 'vuuno' or getBoxType() == 'vuultimo' or getBoxType() == 'tmnano' or getBoxType() == 'tmnano2t':
 			self.command = 'nanddump /dev/mtd1 -f ' + self.WORKDIR + '/vmlinux.gz'
 		elif getBoxType().startswith('odin') or getBoxType().startswith('gb') or getBoxType() == 'vusolo2' or getBoxType() == 'vuduo2':
 			self.command = 'nanddump /dev/mtd2 -f ' + self.WORKDIR + '/vmlinux.gz'
