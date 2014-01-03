@@ -209,15 +209,18 @@ class RestoreWizard(WizardLanguage, Rc):
 
 	def doRestorePlugins1(self):
 		print '[RestoreWizard] Stage 2: Check Kernel'
-		if fileExists('/tmp/backupkernelversion'):
+		if fileExists('/tmp/backupkernelversion') and fileExists('/tmp/backupimageversion'):
 			kernelversion = file('/tmp/backupkernelversion').read()
-			print kernelversion
-			print about.getKernelVersionString()
-			if kernelversion == about.getKernelVersionString():
-				print '[RestoreWizard] Stage 2: Kernel OK'
+			imageversion = file('/tmp/backupimageversion').read()
+			print 'Backup Kernel:',kernelversion
+			print 'Current Kernel:',about.getKernelVersionString()
+			print 'Backup Image:',imageversion
+			print 'Current Image:',about.getVersionString()
+			if kernelversion == about.getKernelVersionString() and imageversion == about.getVersionString():
+				print '[RestoreWizard] Stage 2: Kernel and image ver OK'
 				self.doRestorePluginsTest()
 			else:
-				print '[RestoreWizard] Stage 2: Kernel Differant'
+				print '[RestoreWizard] Stage 2: Kernel or image ver Differant'
 				if self.didSettingsRestore:
 					self.NextStep = 'reboot'
 				else:

@@ -146,12 +146,10 @@ class VIXBackupManager(Screen):
 
 		config.backupmanager.backuplocation.setChoices(imparts)
 
-		if config.backupmanager.backuplocation.value.startswith('/media/net/'):
-			mount1 = config.backupmanager.backuplocation.value.replace('/','')
-			mount1 = mount1.replace('medianet','/media/net/')
-			mount = config.backupmanager.backuplocation.value, mount1
+		if config.backupmanager.backuplocation.value.endswith('/'):
+			mount = config.backupmanager.backuplocation.value, config.backupmanager.backuplocation.value[:-1]
 		else:
-			mount = config.backupmanager.backuplocation.value, config.backupmanager.backuplocation.value
+			mount = config.backupmanager.backuplocation.value+'/', config.backupmanager.backuplocation.value
 		hdd = '/media/hdd/','/media/hdd/'
 		if mount not in config.backupmanager.backuplocation.choices.choices:
 			if hdd in config.backupmanager.backuplocation.choices.choices:
@@ -381,7 +379,7 @@ class VIXBackupManager(Screen):
 		if answer is True:
 			self.Console.ePopen("tar -xzvf " + self.BackupDirectory + self.sel + " -C /", self.Stage1SettingsComplete)
 		elif answer is False:
-			self.Console.ePopen("tar -xzvf " + self.BackupDirectory + self.sel + " tmp/ExtraInstalledPlugins tmp/backupkernelversion  tmp/3rdPartyPlugins -C /", self.Stage1PluginsComplete)
+			self.Console.ePopen("tar -xzvf " + self.BackupDirectory + self.sel + " tmp/ExtraInstalledPlugins tmp/backupkernelversion tmp/backupimageversion  tmp/3rdPartyPlugins -C /", self.Stage1PluginsComplete)
 
 	def Stage1SettingsComplete(self, result, retval, extra_args):
 		print '[BackupManager] Restoring Stage 1 RESULT:',result
@@ -431,18 +429,19 @@ class VIXBackupManager(Screen):
 		print '[BackupManager] Restoring Stage 3: Kernel Version/Feeds Checks'
 		if self.feeds == 'OK':
 			print '[BackupManager] Restoring Stage 3: Feeds are OK'
-			if path.exists('/tmp/backupkernelversion'):
+			if path.exists('/tmp/backupkernelversion') and path.exists('/tmp/backupimageversion'):
 				kernelversion = file('/tmp/backupkernelversion').read()
-				if kernelversion == about.getKernelVersionString():
-					print '[BackupManager] Restoring Stage 3: Kernel Version is same as backup'
+				imageversion = file('/tmp/backupimageversion').read()
+				if kernelversion == about.getKernelVersionString() and imageversion == about.getVersionString():
+					# print '[BackupManager] Restoring Stage 3: Kernel Version is same as backup'
 					self.kernelcheck = True
 					self.Console.ePopen('opkg list-installed', self.Stage3Complete)
 				else:
-					print '[BackupManager] Restoring Stage 3: Kernel Version does not match, exiting'
+					print '[BackupManager] Restoring Stage 3: Kernel or Image Version does not match, exiting'
 					self.kernelcheck = False
 					self.Stage6()
 			else:
-				print '[BackupManager] Restoring Stage 3: Kernel Version check failed'
+				print '[BackupManager] Restoring Stage 3: Kernel or Image Version check failed'
 				self.kernelcheck = False
 				self.Stage6()
 		elif self.feeds == 'DOWN':
@@ -1005,12 +1004,10 @@ class BackupFiles(Screen):
 
 		config.backupmanager.backuplocation.setChoices(imparts)
 
-		if config.backupmanager.backuplocation.value.startswith('/media/net/'):
-			mount1 = config.backupmanager.backuplocation.value.replace('/','')
-			mount1 = mount1.replace('medianet','/media/net/')
-			mount = config.backupmanager.backuplocation.value, mount1
+		if config.backupmanager.backuplocation.value.endswith('/'):
+			mount = config.backupmanager.backuplocation.value, config.backupmanager.backuplocation.value[:-1]
 		else:
-			mount = config.backupmanager.backuplocation.value, config.backupmanager.backuplocation.value
+			mount = config.backupmanager.backuplocation.value+'/', config.backupmanager.backuplocation.value
 		hdd = '/media/hdd/','/media/hdd/'
 		if mount not in config.backupmanager.backuplocation.choices.choices:
 			if hdd in config.backupmanager.backuplocation.choices.choices:
@@ -1074,6 +1071,10 @@ class BackupFiles(Screen):
 		output = open('/tmp/backupkernelversion','w')
 		output.write(about.getKernelVersionString())
 		output.close()
+		print '[BackupManager] Finding image version:' + about.about.getVersionString()
+		output = open('/tmp/backupimageversion','w')
+		output.write(about.about.getVersionString())
+		output.close()
 		self.Stage3Completed = True
 
 	def Stage4(self):
@@ -1094,6 +1095,7 @@ class BackupFiles(Screen):
 		tmplist = config.backupmanager.backupdirs.getValue()
 		tmplist.append('/tmp/ExtraInstalledPlugins')
 		tmplist.append('/tmp/backupkernelversion')
+		tmplist.append('/tmp/backupimageversion')
 		if path.exists('/tmp/3rdPartyPlugins'):
 			tmplist.append('/tmp/3rdPartyPlugins')
 		if path.exists('/tmp/3rdPartyPluginsLocation'):
