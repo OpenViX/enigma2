@@ -279,13 +279,29 @@ class VIXBackupManager(Screen):
 		self.sel = self['list'].getCurrent()
 		if not self.BackupRunning:
 			if self.sel:
-				message = _("Are you sure you want to restore this backup:\n ") + self.sel
-				ybox = self.session.openWithCallback(self.doRestore, MessageBox, message, MessageBox.TYPE_YESNO)
-				ybox.setTitle(_("Restore Confirmation"))
+				self.Console.ePopen("tar -xzvf " + self.BackupDirectory + self.sel + " tmp/ExtraInstalledPlugins tmp/backupkernelversion -C /", self.settingsRestoreCheck)
 			else:
 				self.session.open(MessageBox, _("You have no backups to restore."), MessageBox.TYPE_INFO, timeout = 10)
 		else:
 			self.session.open(MessageBox, _("Backup in progress,\nPlease for it to finish, before trying again"), MessageBox.TYPE_INFO, timeout = 10)
+
+	def settingsRestoreCheck(self, result, retval, extra_args = None):
+		if path.exists('/tmp/backupimageversion'):
+			imageversion = file('/tmp/backupimageversion').read()
+			print 'Backup Image:',imageversion
+			print 'Current Image:',about.getVersionString()
+			if imageversion == about.getVersionString():
+				print '[RestoreWizard] Stage 1: Image ver OK'
+				self.keyResstore1()
+			else:
+				self.session.open(MessageBox, _("Sorry, but the file is not compatible with this image version."), MessageBox.TYPE_INFO, timeout = 10)
+		else:
+				self.session.open(MessageBox, _("Sorry, but the file is not compatible with this image version."), MessageBox.TYPE_INFO, timeout = 10)
+
+	def keyResstore1(self):
+				message = _("Are you sure you want to restore this backup:\n ") + self.sel
+				ybox = self.session.openWithCallback(self.doRestore, MessageBox, message, MessageBox.TYPE_YESNO)
+				ybox.setTitle(_("Restore Confirmation"))
 
 	def doRestore(self,answer):
 		if answer is True:
