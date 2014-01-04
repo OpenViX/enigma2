@@ -997,6 +997,8 @@ class BackupFiles(Screen):
 			self.selectedFiles.append('/etc/wpa_supplicant.ath0.conf')
 		if path.exists('/etc/wpa_supplicant.wlan0.conf') and not '/etc/wpa_supplicant.wlan0.conf' in self.selectedFiles:
 			self.selectedFiles.append('/etc/wpa_supplicant.wlan0.conf')
+		if path.exists('/etc/auto.network') and not '/etc/auto.network' in self.selectedFiles:
+			self.selectedFiles.append('/etc/auto.network')
 		if path.exists('/usr/crossepg/crossepg.config') and not '/usr/crossepg/crossepg.config' in self.selectedFiles:
 			self.selectedFiles.append('/usr/crossepg/crossepg.config')
 		if path.exists('/usr/crossepg/providers') and not '/usr/crossepg/providers' in self.selectedFiles:
