@@ -36,10 +36,10 @@ NOPLUGINS = 'NoPluginsNotification'
 
 hddchoises = []
 for p in harddiskmanager.getMountedPartitions():
-	d = path.normpath(p.mountpoint)
 	if path.exists(p.mountpoint):
+		d = path.normpath(p.mountpoint)
 		if p.mountpoint != '/':
-			hddchoises.append((d + '/', p.mountpoint))
+			hddchoises.append((p.mountpoint, d))
 config.backupmanager = ConfigSubsection()
 config.backupmanager.folderprefix = ConfigText(default=getBoxType(), fixed_size=False)
 config.backupmanager.backuplocation = ConfigSelection(choices = hddchoises)
@@ -140,10 +140,8 @@ class VIXBackupManager(Screen):
 		for p in harddiskmanager.getMountedPartitions():
 			if path.exists(p.mountpoint):
 				d = path.normpath(p.mountpoint)
-				m = d + '/', p.mountpoint
 				if p.mountpoint != '/':
 					imparts.append((p.mountpoint, d))
-
 		config.backupmanager.backuplocation.setChoices(imparts)
 
 		if config.backupmanager.backuplocation.value.endswith('/'):
@@ -998,10 +996,8 @@ class BackupFiles(Screen):
 		for p in harddiskmanager.getMountedPartitions():
 			if path.exists(p.mountpoint):
 				d = path.normpath(p.mountpoint)
-				m = d + '/', p.mountpoint
 				if p.mountpoint != '/':
-					imparts.append((d + '/', p.mountpoint))
-
+					imparts.append((p.mountpoint, d))
 		config.backupmanager.backuplocation.setChoices(imparts)
 
 		if config.backupmanager.backuplocation.value.endswith('/'):

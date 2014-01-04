@@ -31,10 +31,10 @@ RAMCHEKFAILEDID = 'RamCheckFailedNotification'
 
 hddchoises = []
 for p in harddiskmanager.getMountedPartitions():
-	d = path.normpath(p.mountpoint)
 	if path.exists(p.mountpoint):
+		d = path.normpath(p.mountpoint)
 		if p.mountpoint != '/':
-			hddchoises.append((d + '/', p.mountpoint))
+			hddchoises.append((p.mountpoint, d))
 config.imagemanager = ConfigSubsection()
 config.imagemanager.folderprefix = ConfigText(default=getBoxType(), fixed_size=False)
 config.imagemanager.backuplocation = ConfigSelection(choices = hddchoises)
@@ -160,9 +160,8 @@ class VIXImageManager(Screen):
 		for p in harddiskmanager.getMountedPartitions():
 			if path.exists(p.mountpoint):
 				d = path.normpath(p.mountpoint)
-				m = d + '/', p.mountpoint
 				if p.mountpoint != '/':
-					imparts.append((d + '/', p.mountpoint))
+					imparts.append((p.mountpoint, d))
 
 		config.imagemanager.backuplocation.setChoices(imparts)
 
@@ -655,9 +654,8 @@ class ImageBackup(Screen):
 		for p in harddiskmanager.getMountedPartitions():
 			if path.exists(p.mountpoint):
 				d = path.normpath(p.mountpoint)
-				m = d + '/', p.mountpoint
 				if p.mountpoint != '/':
-					imparts.append((d + '/', p.mountpoint))
+					imparts.append((p.mountpoint, d))
 
 		config.imagemanager.backuplocation.setChoices(imparts)
 
