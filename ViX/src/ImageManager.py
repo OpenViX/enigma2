@@ -366,6 +366,10 @@ class VIXImageManager(Screen):
 				self.MAINDEST = self.MAINDESTROOT + '/gigablue/se/'
 			elif getBoxType() == 'gb800ue':
 				self.MAINDEST = self.MAINDESTROOT + '/gigablue/ue/'
+			elif getBoxType() == 'gb800seplus':
+				self.MAINDEST = self.MAINDESTROOT + '/gigablue/seplus/'
+			elif getBoxType() == 'gb800ueplus':
+				self.MAINDEST = self.MAINDESTROOT + '/gigablue/ueplus/'
 			elif getBoxType() == 'gbquad':
 				self.MAINDEST = self.MAINDESTROOT + '/gigablue/quad/'
 			elif getBoxType().startswith('ventonhdx'):
@@ -378,7 +382,7 @@ class VIXImageManager(Screen):
 			if getBoxType().startswith('gb'):
 				self.kernelMTD = "mtd2"
 				self.kernelFILE = "kernel.bin"
-				self.rootMTD = "mtd4"
+				self.rootMTD = "mtd0"
 				self.rootFILE = "rootfs.bin"
 			elif getBoxType().startswith('et') or getBoxType().startswith('venton') or getBoxType().startswith('ini') or getBoxType().startswith('xp'):
 				self.kernelMTD = "mtd1"
@@ -820,6 +824,10 @@ class ImageBackup(Screen):
 			self.MAINDEST = self.MAINDESTROOT + '/gigablue/se'
 		elif getBoxType() == 'gb800ue':
 			self.MAINDEST = self.MAINDESTROOT + '/gigablue/ue'
+		elif getBoxType() == 'gb800seplus':
+			self.MAINDEST = self.MAINDESTROOT + '/gigablue/seplus'
+		elif getBoxType() == 'gb800ueplus':
+			self.MAINDEST = self.MAINDESTROOT + '/gigablue/ueplus'
 		elif getBoxType() == 'gbquad':
 			self.MAINDEST = self.MAINDESTROOT + '/gigablue/quad'
 		elif getBoxType().startswith('ventonhdx'):
