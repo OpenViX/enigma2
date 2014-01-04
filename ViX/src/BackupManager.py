@@ -279,7 +279,11 @@ class VIXBackupManager(Screen):
 		self.sel = self['list'].getCurrent()
 		if not self.BackupRunning:
 			if self.sel:
-				self.Console.ePopen("tar -xzvf " + self.BackupDirectory + self.sel + " tmp/ExtraInstalledPlugins tmp/backupkernelversion -C /", self.settingsRestoreCheck)
+				if path.exists('/tmp/ExtraInstalledPlugins'):
+					remove('/tmp/ExtraInstalledPlugins')
+				if path.exists('/tmp/backupkernelversion'):
+					remove('/tmp/backupkernelversion')
+				self.Console.ePopen("tar -xzvf " + self.BackupDirectory + self.sel + " tmp/ExtraInstalledPlugins tmp/backupkernelversion tmp/backupimageversion -C /", self.settingsRestoreCheck)
 			else:
 				self.session.open(MessageBox, _("You have no backups to restore."), MessageBox.TYPE_INFO, timeout = 10)
 		else:
