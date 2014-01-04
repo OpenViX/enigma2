@@ -142,7 +142,7 @@ class VIXBackupManager(Screen):
 				d = path.normpath(p.mountpoint)
 				m = d + '/', p.mountpoint
 				if p.mountpoint != '/':
-					imparts.append((d + '/', p.mountpoint))
+					imparts.append((p.mountpoint, d))
 
 		config.backupmanager.backuplocation.setChoices(imparts)
 
@@ -150,7 +150,7 @@ class VIXBackupManager(Screen):
 			mount = config.backupmanager.backuplocation.value, config.backupmanager.backuplocation.value[:-1]
 		else:
 			mount = config.backupmanager.backuplocation.value+'/', config.backupmanager.backuplocation.value
-		hdd = '/media/hdd/','/media/hdd/'
+		hdd = '/media/hdd/','/media/hdd'
 		if mount not in config.backupmanager.backuplocation.choices.choices:
 			if hdd in config.backupmanager.backuplocation.choices.choices:
 				self['myactions'] = ActionMap(['ColorActions', 'OkCancelActions', 'DirectionActions', "MenuActions", "TimerEditActions"],
