@@ -656,13 +656,11 @@ class ImageBackup(Screen):
 
 		config.imagemanager.backuplocation.setChoices(imparts)
 
-		if config.imagemanager.backuplocation.value.startswith('/media/net/'):
-			mount1 = config.imagemanager.backuplocation.value.replace('/','')
-			mount1 = mount1.replace('medianet','/media/net/')
-			mount = config.imagemanager.backuplocation.value, mount1
+		if config.imagemanager.backuplocation.value.endswith('/'):
+			mount = config.imagemanager.backuplocation.value, config.imagemanager.backuplocation.value[:-1]
 		else:
-			mount = config.imagemanager.backuplocation.value, config.imagemanager.backuplocation.value
-		hdd = '/media/hdd/','/media/hdd/'
+			mount = config.imagemanager.backuplocation.value+'/', config.imagemanager.backuplocation.value
+		hdd = '/media/hdd/','/media/hdd'
 		if mount not in config.imagemanager.backuplocation.choices.choices:
 			if hdd in config.imagemanager.backuplocation.choices.choices:
 				config.imagemanager.backuplocation.value = '/media/hdd/'
