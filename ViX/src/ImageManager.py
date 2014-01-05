@@ -436,12 +436,10 @@ class VIXImageManager(Screen):
 		output = open('/tmp/image_restore.sh','w')
 		command = []
 		header = '#!/bin/sh\n'
-		log = ' > ' + self.BackupDirectory + 'restore.log 2>&1 && '
-		logappend = ' >> ' + self.BackupDirectory + 'restore.log 2>&1 && '
 		sleep = apps + 'sleep 3 && '
 
 		command.append(header)
-		command.append('sync' + log)
+		command.append('sync && ')
 		command.append(sleep)
 
 		command.append('if [ "$(pidof smbd)" ]; then killall smbd ; fi && ')
@@ -449,13 +447,13 @@ class VIXImageManager(Screen):
 		command.append('if [ "$(pidof rpc.mountd)" ]; then killall rpc.mountd ; fi && ')
 		command.append('if [ "$(pidof rpc.statd)" ]; then killall rpc.statd ; fi && ')
 
-		command.append('mount -no remount,ro /' + logappend)
-		command.append(apps + 'flash_erase /dev/' + self.kernelMTD + ' 0 0' + logappend)
-		command.append(apps + 'nandwrite -pm /dev/' + self.kernelMTD + ' ' + self.MAINDEST + self.kernelFILE + logappend)
+		command.append('mount -no remount,ro / && ')
+		command.append(apps + 'flash_erase /dev/' + self.kernelMTD + ' 0 0 && )
+		command.append(apps + 'nandwrite -pm /dev/' + self.kernelMTD + ' ' + self.MAINDEST + self.kernelFILE + ' && ')
 		if filesystem.find('ubifs') != -1:
-			command.append(apps + 'ubiformat /dev/' + self.rootMTD + ' -f ' + self.MAINDEST + self.rootFILE + ' -D' + logappend)
+			command.append(apps + 'ubiformat /dev/' + self.rootMTD + ' -f ' + self.MAINDEST + self.rootFILE + ' -D && ')
 		else:
-			command.append(apps + 'nandwrite -pm /dev/' + self.rootMTD + ' -f ' + self.MAINDEST + self.rootFILE + ' -D' + logappend)
+			command.append(apps + 'nandwrite -pm /dev/' + self.rootMTD + ' -f ' + self.MAINDEST + self.rootFILE + ' -D && ')
 		command.append(sleep)
 		command.append(apps + 'reboot -fn')
 
