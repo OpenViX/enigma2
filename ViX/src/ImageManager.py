@@ -1063,6 +1063,10 @@ class ImageManagerDownload(Screen):
 				self.boxtype = 'GiGaBlue-HD800SE'
 			elif getBoxType() == 'gb800ue':
 				self.boxtype = 'GiGaBlue-HD800UE'
+			elif getBoxType() == 'gb800seplus':
+				self.boxtype = 'GiGaBlue-HD800SE-PLUS'
+			elif getBoxType() == 'gb800ueplus':
+				self.boxtype = 'GiGaBlue-HD800UE-PLUS'
 			elif getBoxType() == 'gbquad':
 				self.boxtype = 'GiGaBlue-HD-QUAD'
 			elif getBoxType() == 'ventonhdx':
