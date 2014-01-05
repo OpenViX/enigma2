@@ -448,7 +448,7 @@ class VIXImageManager(Screen):
 		command.append('if [ "$(pidof rpc.statd)" ]; then killall rpc.statd ; fi && ')
 
 		command.append('mount -no remount,ro / && ')
-		command.append(apps + 'flash_erase /dev/' + self.kernelMTD + ' 0 0 && )
+		command.append(apps + 'flash_erase /dev/' + self.kernelMTD + ' 0 0 && ')
 		command.append(apps + 'nandwrite -pm /dev/' + self.kernelMTD + ' ' + self.MAINDEST + self.kernelFILE + ' && ')
 		if filesystem.find('ubifs') != -1:
 			command.append(apps + 'ubiformat /dev/' + self.rootMTD + ' -f ' + self.MAINDEST + self.rootFILE + ' -D && ')
