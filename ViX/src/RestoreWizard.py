@@ -53,12 +53,10 @@ class RestoreWizard(WizardLanguage, Rc):
 						files = []
 				else:
 					files = []
-				# print '[Restorewizard] FILES:', files
 				if len(files):
 					for file in files:
 						if file.endswith('.tar.gz'):
 							list.append((path.join(devpath,file),path.join(devpath,file)))
-		# print '[Restorewizard] LIST:', list
 		if len(list):
 			list.sort()
 			list.reverse()
@@ -129,19 +127,18 @@ class RestoreWizard(WizardLanguage, Rc):
 		self.ActionSelect(self.selection)
 
 	def buildList(self,action):
-		# print 'self.NextStep ',self.NextStep
 		if self.NextStep is 'reboot':
 			self.Console.ePopen("init 4 && reboot")
 		elif self.NextStep is 'settingsquestion' or self.NextStep is 'settingsrestore' or self.NextStep is 'pluginsquestion' or self.NextStep is 'pluginsrestoredevice' or self.NextStep is 'end' or self.NextStep is 'noplugins':
 			self.buildListfinishedCB(False)
 		elif self.NextStep is 'settingrestorestarted':
 			self.Console.ePopen("tar -xzvf " + self.fullbackupfilename + " tmp/ExtraInstalledPlugins tmp/backupkernelversion tmp/backupimageversion -C /", self.settingsRestore_Started)
-			self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Please wait while gathers information... A"), type = MessageBox.TYPE_INFO, enable_input = False, wizard = True)
+			self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Please wait while gathers information..."), type = MessageBox.TYPE_INFO, enable_input = False, wizard = True)
 			self.buildListRef.setTitle(_("Restore Wizard"))
 		elif self.NextStep is 'plugindetection':
 			print '[RestoreWizard] Stage 2: Restoring plugins'
 			self.Console.ePopen("tar -xzvf " + self.fullbackupfilename + " tmp/ExtraInstalledPlugins tmp/backupkernelversion tmp/backupimageversion -C /", self.pluginsRestore_Started)
-			self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Please wait while gathers information... B"), type = MessageBox.TYPE_INFO, enable_input = False, wizard = True)
+			self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Please wait while gathers information..."), type = MessageBox.TYPE_INFO, enable_input = False, wizard = True)
 			self.buildListRef.setTitle(_("Restore Wizard"))
 		elif self.NextStep is 'pluginrestore':
 			if self.feeds == 'OK':
@@ -173,8 +170,6 @@ class RestoreWizard(WizardLanguage, Rc):
 				self.buildListRef.setTitle(_("Restore Wizard"))
 
 	def buildListfinishedCB(self,data):
-		print 'buildListfinishedCB'
-		print 'self.NextStep:',self.NextStep
 		# self.buildListRef = None
 		if data is True:
 			self.currStep = self.getStepWithID(self.NextStep)
@@ -184,11 +179,9 @@ class RestoreWizard(WizardLanguage, Rc):
 			self.afterAsyncCode()
 
 	def settingsRestore_Started(self, result, retval, extra_args = None):
-		print 'settingsRestore_Started'
 		self.doRestoreSettings1()
 
 	def doRestoreSettings1(self):
-		print 'doRestoreSettings1'
 		print '[RestoreWizard] Stage 1: Check Version'
 		if fileExists('/tmp/backupimageversion'):
 			imageversion = file('/tmp/backupimageversion').read()
@@ -207,18 +200,15 @@ class RestoreWizard(WizardLanguage, Rc):
 			self.noVersion.setTitle(_("Restore Wizard"))
 
 	def doNoVersion(self, result = None, retval = None, extra_args = None):
-		print 'doNoVersion'
 		self.buildListRef.close(True)
 
 	def doRestoreSettings2(self):
-		print 'doRestoreSettings2'
 		print '[RestoreWizard] Stage 2: Restoring settings'
 		self.Console.ePopen("tar -xzvf " + self.fullbackupfilename + " -C /", self.settingRestore_Finished)
 		self.pleaseWait = self.session.open(MessageBox, _("Please wait while settings restore completes..."), type = MessageBox.TYPE_INFO, enable_input = False, wizard = True)
 		self.pleaseWait.setTitle(_("Restore Wizard"))
 
 	def settingRestore_Finished(self, result, retval, extra_args = None):
-		print 'settingRestore_Finished'
 		self.didSettingsRestore = True
 		configfile.load()
 		# self.NextStep = 'plugindetection'
@@ -226,11 +216,9 @@ class RestoreWizard(WizardLanguage, Rc):
 		self.doRestorePlugins1()
 
 	def pluginsRestore_Started(self, result, retval, extra_args = None):
-		print 'pluginsRestore_Started'
 		self.doRestorePlugins1()
 
 	def pluginsRestore_Finished(self, result, retval, extra_args = None):
-		print 'pluginsRestore_Finished'
 		config.misc.restorewizardrun.setValue(True)
 		config.misc.restorewizardrun.save()
 		configfile.save()
@@ -239,7 +227,6 @@ class RestoreWizard(WizardLanguage, Rc):
 		self.buildListRef.close(True)
 
 	def doRestorePlugins1(self):
-		print 'doRestorePlugins1'
 		print '[RestoreWizard] Stage 3: Check Kernel'
 		if fileExists('/tmp/backupkernelversion') and fileExists('/tmp/backupimageversion'):
 			imageversion = file('/tmp/backupimageversion').read()
@@ -335,24 +322,19 @@ class RestoreWizard(WizardLanguage, Rc):
 						else:
 							for root, subFolders, files in walk('/media'):
 								for folder in subFolders:
-# 									print "%s has subdirectory %s" % (root, folder)
 									if folder and folder == path.split(self.thirdpartyPluginsLocation[:-1])[-1]:
 										self.thirdpartyPluginsLocation = path.join(root,folder)
 										self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace(' ', '%20')
 										available = listdir(self.thirdpartyPluginsLocation)
-										print 'TRUE',self.thirdpartyPluginsLocation
 										break
 						if available:
 							for file in available:
 								if file:
 									fileparts = file.strip().split('_')
-									# print 'FILE:',fileparts
-									# print 'IPK:',ipk
 									if fileparts[0] == ipk:
 										self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace(' ', '%20')
 										ipk = path.join(self.thirdpartyPluginsLocation, file)
 										if path.exists(ipk):
-											print 'IPK', ipk
 											self.pluginslist2.append(ipk)
 
 		if len(self.pluginslist) or len(self.pluginslist2):
