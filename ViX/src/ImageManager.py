@@ -20,7 +20,8 @@ from Screens.MessageBox import MessageBox
 from Screens.VirtualKeyBoard import VirtualKeyBoard
 from Screens.Standby import TryQuitMainloop
 from Tools.Notifications import AddPopupWithCallback
-from enigma import eTimer, getDesktop, getBoxType, getImageVersionString, getBuildVersionString, getMachineBrand, getMachineName
+from enigma import eTimer, getDesktop, 
+from boxbranding import getBoxType, getImageVersion, getImageBuild, getMachineBrand, getMachineName
 
 from os import path, system, mkdir, makedirs, listdir, remove, statvfs, chmod, walk, symlink, unlink
 from shutil import rmtree, move, copy
@@ -763,7 +764,7 @@ class ImageBackup(Screen):
 			self.ROOTFSTYPE= 'jffs2'
 		self.BackupConsole = Console()
 		print '[ImageManager] Stage1: Creating tmp folders.',self.BackupDirectory
-		self.BackupDate = getImageVersionString() + '.' + getBuildVersionString() + '-' + strftime('%Y%m%d_%H%M%S', localtime())
+		self.BackupDate = getImageVersion() + '.' + getImageBuild() + '-' + strftime('%Y%m%d_%H%M%S', localtime())
 		self.WORKDIR=self.BackupDirectory + config.imagemanager.folderprefix.value + '-temp'
 		self.TMPDIR=self.BackupDirectory + config.imagemanager.folderprefix.value + '-mount'
 		if self.updatebackup:
