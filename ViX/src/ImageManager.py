@@ -20,7 +20,7 @@ from Screens.MessageBox import MessageBox
 from Screens.VirtualKeyBoard import VirtualKeyBoard
 from Screens.Standby import TryQuitMainloop
 from Tools.Notifications import AddPopupWithCallback
-from enigma import eTimer, getDesktop, 
+from enigma import eTimer, getDesktop
 from boxbranding import getBoxType, getImageVersion, getImageBuild, getMachineBrand, getMachineName
 
 from os import path, system, mkdir, makedirs, listdir, remove, statvfs, chmod, walk, symlink, unlink
