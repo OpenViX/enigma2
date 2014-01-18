@@ -11,7 +11,7 @@ from Screens.Rc import Rc
 from Screens.MessageBox import MessageBox
 from Tools.Directories import fileExists, pathExists, resolveFilename, SCOPE_PLUGINS
 from os import mkdir, listdir, path, walk
-from enigma import getMachineBrand, getMachineName
+from boxbranding import getMachineBrand, getMachineName
 
 class RestoreWizard(WizardLanguage, Rc):
 	def __init__(self, session):
