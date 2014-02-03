@@ -1,17 +1,18 @@
 # for localized messages
+from os import listdir, path, walk
+from boxbranding import getMachineBrand, getMachineName
+
 from . import _
 from Components.About import about
 from Components.Console import Console
 from Components.config import config, configfile
-from Components.Pixmap import Pixmap, MovingPixmap, MultiPixmap
+from Components.Pixmap import Pixmap
 from Components.Harddisk import harddiskmanager
-from Screens.Wizard import wizardManager, WizardSummary
 from Screens.WizardLanguage import WizardLanguage
 from Screens.Rc import Rc
 from Screens.MessageBox import MessageBox
-from Tools.Directories import fileExists, pathExists, resolveFilename, SCOPE_PLUGINS
-from os import mkdir, listdir, path, walk
-from boxbranding import getMachineBrand, getMachineName
+from Tools.Directories import fileExists, resolveFilename, SCOPE_PLUGINS
+
 
 class RestoreWizard(WizardLanguage, Rc):
 	def __init__(self, session):
@@ -69,7 +70,7 @@ class RestoreWizard(WizardLanguage, Rc):
 	def settingsdeviceSelect(self, index):
 		self.selectedDevice = index
 		self.fullbackupfilename = index
- 		self.NextStep = 'settingrestorestarted'
+		self.NextStep = 'settingrestorestarted'
 
 	def settingsdeviceSelectionMoved(self):
 		self.settingsdeviceSelect(self.selection)
@@ -81,7 +82,7 @@ class RestoreWizard(WizardLanguage, Rc):
 	def pluginsdeviceSelect(self, index):
 		self.selectedDevice = index
 		self.fullbackupfilename = index
- 		self.NextStep = 'plugindetection'
+		self.NextStep = 'plugindetection'
 
 	def pluginsdeviceSelectionMoved(self):
 		self.pluginsdeviceSelect(self.selection)
@@ -286,9 +287,9 @@ class RestoreWizard(WizardLanguage, Rc):
 		print '[RestoreWizard] Stage 5: Build list of plugins to restore'
 		self.pluginslist = ""
 		self.pluginslist2 = ""
+		plugins = []
 		if path.exists('/tmp/ExtraInstalledPlugins'):
 			self.pluginslist = []
-			plugins = []
 			for line in result.split('\n'):
 				if line:
 					parts = line.strip().split()

@@ -1,4 +1,6 @@
 # for localized messages
+from os import listdir, path
+
 from . import _
 from Components.config import config
 from Components.ActionMap import ActionMap
@@ -13,8 +15,7 @@ from Screens.Console import Console
 from Screens.Ipkg import Ipkg
 from Screens.MessageBox import MessageBox
 from Screens.Standby import TryQuitMainloop
-from os import listdir, remove, path
-import datetime, time
+
 
 class VIXIPKInstaller(Screen):
 	def __init__(self, session):

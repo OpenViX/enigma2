@@ -1,3 +1,4 @@
+<!--suppress XmlUnboundNsPrefix -->
 <wizard>
 	<step id="welcome">
 		<text value="Welcome to the restore wizard.\n\nA backup has been detected.\nYou can use this wizard to restore your setting and any extra plugins that where installed when the backup was created.\n" />

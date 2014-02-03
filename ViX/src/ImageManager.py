@@ -1,31 +1,25 @@
 # for localized messages
-from . import _
+from boxbranding import getBoxType, getImageVersion, getImageBuild, getMachineBrand, getMachineName
+from os import path, system, mkdir, makedirs, listdir, remove, statvfs, chmod, walk, symlink
+from shutil import rmtree, move, copy
+from time import localtime, time, strftime, mktime
 
+from enigma import eTimer
+
+from . import _
 import Components.Task
-from Components.About import about
 from Components.ActionMap import ActionMap
 from Components.Label import Label
 from Components.Button import Button
 from Components.MenuList import MenuList
-from Components.Sources.List import List
-from Components.Pixmap import Pixmap
-from Components.config import config, getConfigListEntry, ConfigSubsection, ConfigYesNo, ConfigSelection, ConfigText, ConfigNumber, NoSave, ConfigClock
-from Components.ConfigList import ConfigListScreen
+from Components.config import config, ConfigSubsection, ConfigYesNo, ConfigSelection, ConfigText, ConfigNumber, NoSave, ConfigClock
 from Components.Harddisk import harddiskmanager, getProcMounts
 from Screens.Screen import Screen
 from Screens.Setup import Setup
 from Components.Console import Console
-from Screens.Console import Console as RestareConsole
 from Screens.MessageBox import MessageBox
-from Screens.VirtualKeyBoard import VirtualKeyBoard
 from Screens.Standby import TryQuitMainloop
 from Tools.Notifications import AddPopupWithCallback
-from enigma import eTimer, getDesktop
-from boxbranding import getBoxType, getImageVersion, getImageBuild, getMachineBrand, getMachineName
-
-from os import path, system, mkdir, makedirs, listdir, remove, statvfs, chmod, walk, symlink, unlink
-from shutil import rmtree, move, copy
-from time import localtime, time, strftime, mktime
 import process
 
 RAMCHEKFAILEDID = 'RamCheckFailedNotification'
@@ -53,7 +47,7 @@ if path.exists(config.imagemanager.backuplocation.value + 'imagebackups/imageres
 	rmtree(config.imagemanager.backuplocation.value + 'imagebackups/imagerestore')
 
 def ImageManagerautostart(reason, session=None, **kwargs):
-	"called with reason=1 to during /sbin/shutdown.sysvinit, with reason=0 at startup?"
+	"""called with reason=1 to during /sbin/shutdown.sysvinit, with reason=0 at startup?"""
 	global autoImageManagerTimer
 	global _session
 	now = int(time())
@@ -64,8 +58,9 @@ def ImageManagerautostart(reason, session=None, **kwargs):
 			if autoImageManagerTimer is None:
 				autoImageManagerTimer = AutoImageManagerTimer(session)
 	else:
-		print "[ImageManager] Stop"
-		autoImageManagerTimer.stop()
+		if autoImageManagerTimer is not None:
+			print "[ImageManager] Stop"
+			autoImageManagerTimer.stop()
 
 class VIXImageManager(Screen):
 	def __init__(self, session):
@@ -188,7 +183,7 @@ class VIXImageManager(Screen):
 
 				self.BackupDirectory = '/media/hdd/imagebackups/'
 				config.imagemanager.backuplocation.value = '/media/hdd/'
-				config.imagemanager.backuplocation.save
+				config.imagemanager.backuplocation.save()
 				self['lab1'].setText(_("The chosen location does not exist, using /media/hdd") + "\n" + _("Select an image to restore:"))
 			else:
 				self['myactions'] = ActionMap(['ColorActions', 'OkCancelActions', 'DirectionActions', "MenuActions"],
@@ -217,7 +212,7 @@ class VIXImageManager(Screen):
 			s = statvfs(config.imagemanager.backuplocation.value)
 			free = (s.f_bsize * s.f_bavail)/(1024*1024)
 			self['lab1'].setText(_("Device: ") + config.imagemanager.backuplocation.value + ' ' + _('Free space:') + ' ' + str(free) + _('MB') + "\n" + _("Select an image to restore:"))
-		
+
 		try:
 			if not path.exists(self.BackupDirectory):
 				mkdir(self.BackupDirectory, 0755)
@@ -277,12 +272,13 @@ class VIXImageManager(Screen):
 		self.populate_List()
 
 	def GreenPressed(self):
+		backup = None
 		self.BackupRunning = False
 		for job in Components.Task.job_manager.getPendingJobs():
 			if job.name.startswith(_("Image Manager")):
 				backup = job
 				self.BackupRunning = True
-		if self.BackupRunning:
+		if self.BackupRunning and backup:
 			self.showJobView(backup)
 		else:
 			self.keyBackup()
@@ -296,6 +292,7 @@ class VIXImageManager(Screen):
 			self.session.open(MessageBox, _("Sorry you %s %s is not yet compatible."), MessageBox.TYPE_INFO, timeout = 10) % (getMachineBrand(), getMachineName())
 
 	def doBackup(self,answer):
+		backup = None
 		if answer is True:
 			self.ImageBackup = ImageBackup(self.session)
 			Components.Task.job_manager.AddJob(self.ImageBackup.createBackupJob())
@@ -305,7 +302,8 @@ class VIXImageManager(Screen):
 			for job in Components.Task.job_manager.getPendingJobs():
 				if job.name.startswith(_("Image Manager")):
 					backup = job
-			self.showJobView(backup)
+			if backup:
+				self.showJobView(backup)
 
 	def keyResstore(self):
 		self.sel = self['list'].getCurrent()
@@ -525,7 +523,7 @@ class AutoImageManagerTimer:
 		return BackupTime
 
 	def backupstop(self):
-	    self.backuptimer.stop()
+		self.backuptimer.stop()
 
 	def BackuponTimer(self):
 		self.backuptimer.stop()
@@ -663,7 +661,7 @@ class ImageBackup(Screen):
 		if mount not in config.imagemanager.backuplocation.choices.choices:
 			if hdd in config.imagemanager.backuplocation.choices.choices:
 				config.imagemanager.backuplocation.value = '/media/hdd/'
-				config.imagemanager.backuplocation.save
+				config.imagemanager.backuplocation.save()
 				self.BackupDevice = config.imagemanager.backuplocation.value
 				print "[ImageManager] Device: " + self.BackupDevice
 				self.BackupDirectory = config.imagemanager.backuplocation.value + 'imagebackups/'
@@ -700,6 +698,8 @@ class ImageBackup(Screen):
 			self.MemCheck()
 
 	def MemCheck(self):
+		memfree = 0
+		swapfree = 0
 		f = open('/proc/meminfo', 'r')
 		for line in f.readlines():
 			if line.find('MemFree') != -1:
@@ -835,6 +835,7 @@ class ImageBackup(Screen):
 			self.commands.append(MKFS + ' --root=' + self.TMPDIR + '/root --faketime --output=' + self.WORKDIR + '/root.jffs2' + JFFS2OPTIONS)
 		elif self.ROOTFSTYPE == 'ubifs':
 			print '[ImageManager] Stage1: UBIFS Detected.'
+			MKUBIFS_ARGS = ""
 			if getBoxType().startswith('vu'):
 				MKUBIFS_ARGS="-m 2048 -e 126976 -c 4096 -F"
 			elif getBoxType().startswith('tm') or getBoxType().startswith('iqon'):
@@ -1105,12 +1106,12 @@ class ImageManagerDownload(Screen):
 		if answer is True:
 			self.selectedimage = self['list'].getCurrent()
 			file = self.BackupDirectory + self.selectedimage
-			from Screens.Console import Console as RestareConsole
+			from Screens.Console import Console as RestoreConsole
 			mycmd1 = _("echo 'Downloading Image.'")
 			mycmd2 = "wget -q http://enigma2.world-of-satellite.com//openvix/openvix-builds/" + self.boxtype + "/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
 			mycmd3 = "mv " + self.BackupDirectory + "image.zip " + file
-			self.session.open(RestareConsole, title=_('Downloading Image...'), cmdlist=[mycmd1, mycmd2, mycmd3],closeOnSuccess = True)
+			self.session.open(RestoreConsole, title=_('Downloading Image...'), cmdlist=[mycmd1, mycmd2, mycmd3],closeOnSuccess = True)
 
 	def myclose(self, result, retval, extra_args):
- 		remove(self.BackupDirectory + self.selectedimage)
+		remove(self.BackupDirectory + self.selectedimage)
 		self.close()

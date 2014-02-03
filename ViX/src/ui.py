@@ -1,13 +1,11 @@
 # for localized messages
-from . import _
+from os import listdir, path, mkdir
 
+from . import _
 from Screens.Screen import Screen
 from Components.ActionMap import NumberActionMap
 from Components.Sources.StaticText import StaticText
 from Components.Sources.List import List
-from Components.MultiContent import MultiContentEntryText
-from enigma import RT_HALIGN_LEFT, RT_VALIGN_CENTER, gFont
-from os import listdir, path, mkdir
 
 class VIXMenu(Screen):
 	def __init__(self, session, args = 0):
@@ -77,19 +75,19 @@ class VIXMenu(Screen):
 		if current:
 			currentEntry = current[0]
 			if self.menu == 0:
-				if (currentEntry == "backup-manager"):
+				if currentEntry == "backup-manager":
 					from BackupManager import VIXBackupManager
 					self.session.open(VIXBackupManager)
-				elif (currentEntry == "image-manager"):
+				elif currentEntry == "image-manager":
 					from ImageManager import VIXImageManager
 					self.session.open(VIXImageManager)
-				elif (currentEntry == "ipkg-install"):
+				elif currentEntry == "ipkg-install":
 					from IPKInstaller import VIXIPKInstaller
 					self.session.open(VIXIPKInstaller)
-				elif (currentEntry == "mount-manager"):
+				elif currentEntry == "mount-manager":
 					from MountManager import VIXDevicesPanel
 					self.session.open(VIXDevicesPanel)
-				elif (currentEntry == "script-runner"):
+				elif currentEntry == "script-runner":
 					list = []
 					if not path.exists('/usr/script'):
 						mkdir('/usr/script', 0755)
@@ -102,7 +100,7 @@ class VIXMenu(Screen):
 
 					from ScriptRunner import VIXScriptRunner
 					self.session.open(VIXScriptRunner,list)
-				elif (currentEntry == "swap-manager"):
+				elif currentEntry == "swap-manager":
 					from SwapManager import VIXSwap
 					self.session.open(VIXSwap)
 

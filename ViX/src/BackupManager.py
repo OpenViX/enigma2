@@ -1,16 +1,20 @@
 # for localized messages
-from . import _
+from boxbranding import getBoxType, getImageVersion, getImageBuild, getMachineBrand, getMachineName
+from os import path, stat, mkdir, listdir, remove, statvfs, chmod, walk
+from time import localtime, time, strftime, mktime
+from datetime import date, datetime
+import tarfile
 
+from enigma import eTimer, eEnv
+
+from . import _
 import Components.Task
 from Components.About import about
 from Components.ActionMap import ActionMap
 from Components.Label import Label
 from Components.Button import Button
 from Components.MenuList import MenuList
-from Components.Sources.List import List
-from Components.Pixmap import Pixmap
-from Components.config import configfile, config, getConfigListEntry, ConfigSubsection, ConfigYesNo, ConfigSelection, ConfigText, ConfigNumber, ConfigLocations, NoSave, ConfigClock, ConfigDirectory
-from Components.ConfigList import ConfigListScreen
+from Components.config import configfile, config, ConfigSubsection, ConfigYesNo, ConfigSelection, ConfigText, ConfigNumber, ConfigLocations, NoSave, ConfigClock, ConfigDirectory
 from Components.Harddisk import harddiskmanager
 from Components.Sources.StaticText import StaticText
 from Components.FileList import MultiFileSelectList, FileList
@@ -18,17 +22,8 @@ from Components.ScrollLabel import ScrollLabel
 from Screens.Screen import Screen
 from Components.Console import Console
 from Screens.MessageBox import MessageBox
-from Screens.VirtualKeyBoard import VirtualKeyBoard
 from Screens.Setup import Setup
-from Tools.Notifications import AddPopupWithCallback, AddPopup
-from enigma import eTimer, eEnv
-from boxbranding import getBoxType, getImageVersion, getImageBuild, getMachineBrand, getMachineName
-
-from os import path, stat, mkdir, listdir, rename, remove, statvfs, chmod, walk
-from shutil import rmtree, move, copy
-from time import localtime, time, strftime, mktime
-from datetime import date, datetime
-import tarfile
+from Tools.Notifications import AddPopupWithCallback
 
 autoBackupManagerTimer = None
 SETTINGSRESTOREQUESTIONID = 'RestoreSettingsNotification'
@@ -55,7 +50,7 @@ config.backupmanager.xtraplugindir = ConfigDirectory(default='')
 config.backupmanager.lastlog = ConfigText(default=' ', fixed_size=False)
 
 def BackupManagerautostart(reason, session=None, **kwargs):
-	"called with reason=1 to during /sbin/shutdown.sysvinit, with reason=0 at startup?"
+	"""called with reason=1 to during /sbin/shutdown.sysvinit, with reason=0 at startup?"""
 	global autoBackupManagerTimer
 	global _session
 	now = int(time())
@@ -66,8 +61,9 @@ def BackupManagerautostart(reason, session=None, **kwargs):
 			if autoBackupManagerTimer is None:
 				autoBackupManagerTimer = AutoBackupManagerTimer(session)
 	else:
-		print "[BackupManager] Stop"
-		autoBackupManagerTimer.stop()
+		if autoBackupManagerTimer is not None:
+			print "[BackupManager] Stop"
+			autoBackupManagerTimer.stop()
 
 class VIXBackupManager(Screen):
 	def __init__(self, session):
@@ -165,7 +161,7 @@ class VIXBackupManager(Screen):
 
 				self.BackupDirectory = '/media/hdd/backup/'
 				config.backupmanager.backuplocation.value = '/media/hdd/'
-				config.backupmanager.backuplocation.save
+				config.backupmanager.backuplocation.save()
 				self['lab1'].setText(_("The chosen location does not exist, using /media/hdd") + "\n" + _("Select a backup to Restore:"))
 			else:
 				self['myactions'] = ActionMap(['ColorActions', 'OkCancelActions', 'DirectionActions', "MenuActions", "TimerEditActions"],
@@ -255,17 +251,19 @@ class VIXBackupManager(Screen):
 		self.populate_List()
 
 	def GreenPressed(self):
+		backup = None
 		self.BackupRunning = False
 		for job in Components.Task.job_manager.getPendingJobs():
 			if job.name.startswith(_("Backup Manager")):
 				backup = job
 				self.BackupRunning = True
-		if self.BackupRunning:
+		if self.BackupRunning and backup:
 			self.showJobView(backup)
 		else:
 			self.keyBackup()
 
 	def keyBackup(self):
+		backup = None
 		self.BackupFiles = BackupFiles(self.session)
 		Components.Task.job_manager.AddJob(self.BackupFiles.createBackupJob())
 		self.BackupRunning = True
@@ -274,7 +272,8 @@ class VIXBackupManager(Screen):
 		for job in Components.Task.job_manager.getPendingJobs():
 			if job.name.startswith(_("Backup Manager")):
 				backup = job
-		self.showJobView(backup)
+		if backup:
+			self.showJobView(backup)
 
 	def keyResstore(self):
 		self.sel = self['list'].getCurrent()
@@ -310,13 +309,15 @@ class VIXBackupManager(Screen):
 
 	def doRestore(self,answer):
 		if answer is True:
+			jobname = None
 			Components.Task.job_manager.AddJob(self.createRestoreJob())
 			self.BackupRunning = True
 			self["key_green"].setText(_("View Progress"))
 			self["key_green"].show()
 			for job in Components.Task.job_manager.getPendingJobs():
 				jobname = str(job.name)
-			self.showJobView(job)
+			if jobname:
+				self.showJobView(jobname)
 
 	def myclose(self):
 		self.close()
@@ -486,9 +487,9 @@ class VIXBackupManager(Screen):
 			self.Stage6()
 
 	def Stage3Complete(self, result, retval, extra_args):
+		plugins = []
 		if path.exists('/tmp/ExtraInstalledPlugins') and self.kernelcheck:
 			self.pluginslist = []
-			plugins = []
 			for line in result.split('\n'):
 				if line:
 					parts = line.strip().split()
@@ -876,7 +877,7 @@ class AutoBackupManagerTimer:
 			next = BackupTime - now
 			self.backuptimer.startLongTimer(next)
 		else:
-		    	BackupTime = -1
+				BackupTime = -1
 		print "[BackupManager] Backup Time set to", strftime("%c", localtime(BackupTime)), strftime("(now=%c)", localtime(now))
 		return BackupTime
 
@@ -1031,7 +1032,7 @@ class BackupFiles(Screen):
 		if mount not in config.backupmanager.backuplocation.choices.choices:
 			if hdd in config.backupmanager.backuplocation.choices.choices:
 				config.backupmanager.backuplocation.value = '/media/hdd/'
-				config.backupmanager.backuplocation.save
+				config.backupmanager.backuplocation.save()
 				self.BackupDevice = config.backupmanager.backuplocation.value
 				print "[BackupManager] Device: " + self.BackupDevice
 				self.BackupDirectory = config.backupmanager.backuplocation.value + 'backup/'
@@ -1110,7 +1111,7 @@ class BackupFiles(Screen):
 			output.close()
 		self.Stage4Completed = True
 
- 	def Stage5(self):
+	def Stage5(self):
 		tmplist = config.backupmanager.backupdirs.getValue()
 		tmplist.append('/tmp/ExtraInstalledPlugins')
 		tmplist.append('/tmp/backupkernelversion')

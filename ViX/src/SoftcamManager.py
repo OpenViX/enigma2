@@ -1,8 +1,13 @@
 # for localized messages
-from . import _
-
-import Components.Task
 import re
+from os import path, makedirs, remove, rename, symlink, mkdir, listdir
+from datetime import datetime
+from time import time, sleep
+
+from enigma import eTimer
+
+from . import _
+import Components.Task
 from Components.ActionMap import ActionMap
 from Components.Label import Label
 from Components.Button import Button
@@ -16,10 +21,6 @@ from Tools.Directories import resolveFilename, SCOPE_PLUGINS
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
 from Components.SystemInfo import SystemInfo
-from os import path, makedirs, remove, rename, symlink, mkdir, listdir
-from datetime import datetime
-from time import time, strftime, sleep
-from enigma import eTimer
 
 config.softcammanager = ConfigSubsection()
 config.softcammanager.softcams_autostart = ConfigLocations(default='')
@@ -34,7 +35,7 @@ config.softcammanager.showinextensions.addNotifier(updateExtensions, initial_cal
 softcamautopoller = None
 
 def SoftcamAutostart(reason, session=None, **kwargs):
-	"called with reason=1 to during shutdown, with reason=0 at startup?"
+	"""called with reason=1 to during shutdown, with reason=0 at startup?"""
 	global softcamautopoller
 	if reason == 0:
 		print "[SoftcamManager] AutoStart Enabled"

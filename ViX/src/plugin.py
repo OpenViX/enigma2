@@ -124,7 +124,7 @@ def filescan(**kwargs):
 			description = _("Install extensions."),
 			openfnc = filescan_open, )
 
-def Plugins(path, **kwargs):
+def Plugins(filepath, **kwargs):
 	plist = [PluginDescriptor(where=PluginDescriptor.WHERE_MENU, needsRestart = False, fnc=startSetup)]
 	plist.append(PluginDescriptor(name=_("ViX"), where=PluginDescriptor.WHERE_EXTENSIONSMENU, fnc=UpgradeMain))
 	plist.append(PluginDescriptor(where=PluginDescriptor.WHERE_MENU, fnc=SoftcamSetup))

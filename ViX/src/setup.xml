@@ -1,3 +1,4 @@
+<!--suppress XmlUnboundNsPrefix -->
 <setupxml>
 	<setup key="vixsoftcammanager" title="Softcam Manager Setup" showOpenWebIF="1">
 		<item level="2" text="Show in extensions" summary="Allows the softcam manager to be launched from extensions.">config.softcammanager.showinextensions</item>

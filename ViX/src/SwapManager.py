@@ -23,7 +23,7 @@ startswap = None
 def SwapAutostart(reason, session=None, **kwargs):
 	global startswap
 	if reason == 0:
- 		if config.vixsettings.swapautostart.value:
+		if config.vixsettings.swapautostart.value:
 			print "[SwapManager] autostart"
 			startswap = StartSwap()
 			startswap.start()
@@ -33,7 +33,7 @@ class StartSwap:
 		self.Console = Console()
 
 	def start(self):
-	 	self.Console.ePopen("parted -l /dev/sd? | grep swap", self.startSwap2)
+		self.Console.ePopen("parted -l /dev/sd? | grep swap", self.startSwap2)
 
 	def startSwap2(self, result = None, retval = None, extra_args = None):
 		swap_place = ""

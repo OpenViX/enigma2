@@ -1,24 +1,24 @@
 # for localized messages
-from . import _
-
-from Screens.Screen import Screen
-from enigma import eTimer
 from boxbranding import getMachineBrand, getMachineName
+from os import system, rename, path, mkdir, remove
+from time import sleep
+import re
+
+from enigma import eTimer
+
+from . import _
+from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
 from Screens.Standby import TryQuitMainloop
 from Components.ActionMap import ActionMap
 from Components.Label import Label
-from Components.Pixmap import Pixmap
 from Components.ConfigList import ConfigListScreen
-from Components.config import getConfigListEntry, config, ConfigSelection, NoSave, configfile
+from Components.config import getConfigListEntry, ConfigSelection, NoSave
 from Components.Console import Console
 from Components.Sources.List import List
 from Components.Sources.StaticText import StaticText
 from Components.Harddisk import Harddisk
 from Tools.LoadPixmap import LoadPixmap
-from os import system, rename, path, mkdir, remove
-from time import sleep
-import re
 
 class VIXDevicesPanel(Screen):
 	def __init__(self, session):
@@ -119,6 +119,9 @@ class VIXDevicesPanel(Screen):
 		swapdevices = swapdevices.replace('\n','')
 		swapdevices = swapdevices.split('/')
 		f = open('/proc/mounts', 'r')
+		d1 = _("None")
+		dtype = _("unavailable")
+		rw = _("None")
 		for line in f.readlines():
 			if line.find(device) != -1:
 				parts = line.strip().split()
@@ -126,7 +129,6 @@ class VIXDevicesPanel(Screen):
 				dtype = parts[2]
 				rw = parts[3]
 				break
-				continue
 			else:
 				if device in swapdevices:
 					parts = line.strip().split()
@@ -134,11 +136,6 @@ class VIXDevicesPanel(Screen):
 					dtype = 'swap'
 					rw = _("None")
 					break
-					continue
-				else:
-					d1 = _("None")
-					dtype = _("unavailable")
-					rw = _("None")
 		f.close()
 		size = Harddisk(device).diskSize()
 
@@ -275,7 +272,7 @@ class VIXDevicePanelConf(Screen, ConfigListScreen):
 			if not parts:
 				continue
 			device = parts[3]
- 			if not re.search('sd[a-z][1-9]',device):
+			if not re.search('sd[a-z][1-9]',device):
 				continue
 			if device in list2:
 				continue
@@ -301,6 +298,8 @@ class VIXDevicePanelConf(Screen, ConfigListScreen):
 			name = _('USB: ')
 			mypixmap = '/usr/lib/enigma2/python/Plugins/SystemPlugins/ViX/images/dev_usb.png'
 		name = name + model
+		d1 = _("None")
+		dtype = _("unavailable")
 		f = open('/proc/mounts', 'r')
 		for line in f.readlines():
 			if line.find(device) != -1:
@@ -308,10 +307,6 @@ class VIXDevicePanelConf(Screen, ConfigListScreen):
 				d1 = parts[1]
 				dtype = parts[2]
 				break
-				continue
-			else:
-				d1 = _("None")
-				dtype = _("unavailable")
 		f.close()
 
 		size = Harddisk(device).diskSize()
