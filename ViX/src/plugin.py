@@ -85,6 +85,7 @@ def BackupManagerMenu(session, **kwargs):
 def ImageManager(session):
 	from ImageManager import VIXImageManager
 	return VIXImageManager(session)
+
 def ImageMangerMenu(session, **kwargs):
 	session.open(ImageManager)
 
@@ -103,9 +104,9 @@ def ScriptRunnerMenu(session, **kwargs):
 def SwapManager(session):
 	from SwapManager import VIXSwap
 	return VIXSwap(session)
+
 def SwapManagerMenu(session, **kwargs):
 	session.open(SwapManager)
-
 
 def filescan_open(list, session, **kwargs):
 	filelist = [x.path for x in list]
@@ -122,9 +123,9 @@ def filescan(**kwargs):
 				],
 			name = "Ipkg",
 			description = _("Install extensions."),
-			openfnc = filescan_open, )
+			openfnc = filescan_open )
 
-def Plugins(filepath, **kwargs):
+def Plugins(**kwargs):
 	plist = [PluginDescriptor(where=PluginDescriptor.WHERE_MENU, needsRestart = False, fnc=startSetup)]
 	plist.append(PluginDescriptor(name=_("ViX"), where=PluginDescriptor.WHERE_EXTENSIONSMENU, fnc=UpgradeMain))
 	plist.append(PluginDescriptor(where=PluginDescriptor.WHERE_MENU, fnc=SoftcamSetup))
