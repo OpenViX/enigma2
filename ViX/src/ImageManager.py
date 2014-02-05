@@ -1,5 +1,5 @@
 # for localized messages
-from boxbranding import getBoxType, getImageVersion, getImageBuild, getMachineBrand, getMachineName
+from boxbranding import getBoxType, getImageVersion, getImageBuild, getMachineBrand, getMachineName, getMachineBuild
 from os import path, system, mkdir, makedirs, listdir, remove, statvfs, chmod, walk, symlink
 from shutil import rmtree, move, copy
 from time import localtime, time, strftime, mktime
@@ -1017,67 +1017,75 @@ class ImageManagerDownload(Screen):
 			wos_pwd = base64.b64decode('cDRsWF4sTHRGNkI4Cg==').replace('\n','')
 			ftp = FTP('world-of-satellite.com')
 			ftp.login(wos_user,wos_pwd)
-			if getBoxType() == 'vuuno':
+			if getMachineBuild() == 'vuuno':
 				self.boxtype = 'Vu+Uno'
-			elif getBoxType() == 'vuultimo':
+			elif getMachineBuild() == 'vuultimo':
 				self.boxtype = 'Vu+Ultimo'
-			elif getBoxType() == 'vusolo':
+			elif getMachineBuild() == 'vusolo':
 				self.boxtype = 'Vu+Solo'
-			elif getBoxType() == 'vusolo2':
+			elif getMachineBuild() == 'vusolo2':
 				self.boxtype = 'Vu+Solo2'
-			elif getBoxType() == 'vuduo':
+			elif getMachineBuild() == 'vuduo':
 				self.boxtype = 'Vu+Duo'
-			elif getBoxType() == 'vuduo2':
+			elif getMachineBuild() == 'vuduo2':
 				self.boxtype = 'Vu+Duo2'
-			elif getBoxType() == 'et4x00':
+			elif getMachineBuild() == 'et4x00':
 				self.boxtype = 'ET-4x00'
-			elif getBoxType() == 'et5x00':
+			elif getMachineBuild() == 'et5x00':
 				self.boxtype = 'ET-5x00'
-			elif getBoxType() == 'et6x00':
+			elif getMachineBuild() == 'et6x00':
 				self.boxtype = 'ET-6x00'
-			elif getBoxType() == 'et9x00':
+			elif getMachineBuild() == 'et9x00':
 				self.boxtype = 'ET-9x00'
-			elif getBoxType() == 'tmtwin':
+			elif getMachineBuild() == 'et10000':
+				self.boxtype = 'ET-10000'
+			elif getMachineBuild() == 'tmtwin':
 				self.boxtype = 'TM-Twin-OE'
-			elif getBoxType() == 'tm2t':
+			elif getMachineBuild() == 'tm2t':
 				self.boxtype = 'TM-2T'
-			elif getBoxType() == 'tmsingle':
+			elif getMachineBuild() == 'tmsingle':
 				self.boxtype = 'TM-Single'
-			elif getBoxType() == 'tmnano':
+			elif getMachineBuild() == 'tmnano':
 				self.boxtype = 'TM-Nano-OE'
-			elif getBoxType() == 'tmnano2t':
+			elif getMachineBuild() == 'tmnano2t':
 				self.boxtype = 'TM-Nano-2T'
-			elif getBoxType() == 'iqonios100hd':
+			elif getMachineBuild() == 'iqonios100hd':
 				self.boxtype = 'iqon-IOS-100HD'
-			elif getBoxType() == 'iqonios200hd':
+			elif getMachineBuild() == 'iqonios200hd':
 				self.boxtype = 'iqon-IOS-200HD'
-			elif getBoxType() == 'iqonios300hd':
+			elif getMachineBuild() == 'iqonios300hd':
 				self.boxtype = 'iqon-IOS-300HD'
-			elif getBoxType() == 'odinm9':
-				self.boxtype = 'Odin-M9'
-			elif getBoxType() == 'xp1000':
+			elif getMachineBuild() == 'maram9':
+				self.boxtype = 'Mara-M9'
+			elif getMachineBuild() == 'xp1000max':
+				self.boxtype = 'MaxDigital-XP1000'
+			elif getMachineBuild() == 'sf8':
+				self.boxtype = 'OCTAGON-SF8-HD'
+			elif getMachineBuild() == 'xp1000max':
 				self.boxtype = 'OCTAGON-SF8-HD-XP1000'
-			elif getBoxType() == 'qb800solo':
+			elif getMachineBuild() == 'qb800solo':
 				self.boxtype = 'GiGaBlue-HD800Solo'
-			elif getBoxType() == 'gb800se':
+			elif getMachineBuild() == 'gb800se':
 				self.boxtype = 'GiGaBlue-HD800SE'
-			elif getBoxType() == 'gb800ue':
+			elif getMachineBuild() == 'gb800ue':
 				self.boxtype = 'GiGaBlue-HD800UE'
-			elif getBoxType() == 'gb800seplus':
+			elif getMachineBuild() == 'gb800seplus':
 				self.boxtype = 'GiGaBlue-HD800SE-PLUS'
-			elif getBoxType() == 'gb800ueplus':
+			elif getMachineBuild() == 'gb800ueplus':
 				self.boxtype = 'GiGaBlue-HD800UE-PLUS'
-			elif getBoxType() == 'gbquad':
+			elif getMachineBuild() == 'gbquad':
 				self.boxtype = 'GiGaBlue-HD-QUAD'
-			elif getBoxType() == 'ventonhdx':
+			elif getMachineBuild() == 'gbquadplus':
+				self.boxtype = 'GiGaBlue-HD-QUAD-PLUS'
+			elif getMachineBuild() == 'ventonhdx':
 				self.boxtype = 'Venton-Unibox-HDx'
-			elif getBoxType() == 'inihde':
-				self.boxtype = 'INI-HDe'
+			elif getMachineBuild() == 'mbtwin':
+				self.boxtype = 'MediaBox-Twin'
 			ftp.cwd(self.boxtype)
 
 			del self.emlist[:]
 			for fil in ftp.nlst():
-				if not fil.endswith('.') and fil.find(getBoxType()) != -1:
+				if not fil.endswith('.') and fil.find(getMachineBuild()) != -1:
 					self.emlist.append(fil)
 			self.emlist.sort()
 			self.emlist.reverse()
