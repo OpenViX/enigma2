@@ -1,6 +1,11 @@
 # for localized messages
-from . import _
+from os import system, stat as mystat, path, remove, rename
+from glob import glob
+import stat
 
+from enigma import eTimer
+
+from . import _
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
 from Screens.ChoiceBox import ChoiceBox
@@ -11,14 +16,12 @@ from Components.Pixmap import Pixmap
 from Components.Harddisk import harddiskmanager, getProcMounts
 from Components.Console import Console
 from Components.Sources.StaticText import StaticText
-from os import system, stat as mystat, path, remove, rename
-from enigma import eTimer
-from glob import glob
-import stat
 
-config.vixsettings.swapautostart = ConfigYesNo(default = False)
+
+config.vixsettings.swapautostart = ConfigYesNo(default=False)
 
 startswap = None
+
 
 def SwapAutostart(reason, session=None, **kwargs):
 	global startswap
@@ -28,6 +31,7 @@ def SwapAutostart(reason, session=None, **kwargs):
 			startswap = StartSwap()
 			startswap.start()
 
+
 class StartSwap:
 	def __init__(self):
 		self.Console = Console()
@@ -35,7 +39,7 @@ class StartSwap:
 	def start(self):
 		self.Console.ePopen("parted -l /dev/sd? | grep swap", self.startSwap2)
 
-	def startSwap2(self, result = None, retval = None, extra_args = None):
+	def startSwap2(self, result=None, retval=None, extra_args=None):
 		swap_place = ""
 		if result and result.find('sd') != -1:
 			for line in result.split('\n'):
@@ -45,7 +49,7 @@ class StartSwap:
 					tmpfile = file('/etc/fstab.tmp', 'w')
 					fstabfile = file('/etc/fstab')
 					tmpfile.writelines([l for l in fstabfile.readlines() if swap_place not in l])
-					rename('/etc/fstab.tmp','/etc/fstab')
+					rename('/etc/fstab.tmp', '/etc/fstab')
 					tmpfile.close()
 					fstabfile.close()
 					print "[SwapManager] Found a swap partition:", swap_place
@@ -70,6 +74,7 @@ class StartSwap:
 		else:
 			print "[SwapManager] Swapfile is already active on ", swap_place
 		f.close()
+
 
 #######################################################################
 class VIXSwap(Screen):
@@ -96,14 +101,16 @@ class VIXSwap(Screen):
 		self.swap_place = ''
 		self.new_place = ''
 		self.creatingswap = False
+		self.swap_active = False
 		self['actions'] = ActionMap(['WizardActions', 'ColorActions', "MenuActions"], {'back': self.close, 'red': self.close, 'green': self.actDeact, 'yellow': self.autoSsWap, 'blue': self.createDel, "menu": self.close})
 		self.activityTimer = eTimer()
 		self.activityTimer.timeout.get().append(self.getSwapDevice)
 		self.updateSwap()
 
-	def updateSwap(self, result = None, retval = None, extra_args = None):
+	def updateSwap(self, result=None, retval=None, extra_args=None):
 		self["actions"].setEnabled(False)
 		self.swap_active = False
+		self.swap_place = None
 		self['autostart_on'].hide()
 		self['autostart_off'].show()
 		self['active'].hide()
@@ -125,7 +132,7 @@ class VIXSwap(Screen):
 			remove('/tmp/swapdevices.tmp')
 		self.Console.ePopen("parted -l /dev/sd? | grep swap", self.updateSwap2)
 
-	def updateSwap2(self, result = None, retval = None, extra_args = None):
+	def updateSwap2(self, result=None, retval=None, extra_args=None):
 		self.swapsize = 0
 		self.swap_place = ''
 		self.swap_active = False
@@ -140,9 +147,9 @@ class VIXSwap(Screen):
 						self.swap_place = ''
 					self.device = True
 				f = open('/proc/swaps', 'r')
-				for line in f.readlines():
+				for line2 in f.readlines():
 					parts = line.strip().split()
-					if line.find('partition') != -1:
+					if line2.find('partition') != -1:
 						self.swap_active = True
 						self.swapsize = parts[2]
 						continue
@@ -200,7 +207,7 @@ class VIXSwap(Screen):
 		self['labsize'].setText(self.swapsize)
 		self['labsize'].show()
 
-		if self.swap_active == True:
+		if self.swap_active:
 			self['inactive'].hide()
 			self['active'].show()
 			self['key_green'].setText(_("Deactivate"))
@@ -220,7 +227,7 @@ class VIXSwap(Screen):
 		self['swapname_summary'].setText(name)
 
 	def actDeact(self):
-		if self.swap_active == True:
+		if self.swap_active:
 			self.Console.ePopen('swapoff ' + self.swap_place, self.updateSwap)
 		else:
 			if not self.device:
@@ -235,14 +242,14 @@ class VIXSwap(Screen):
 	def createDel(self):
 		if not self.device:
 			if self.swap_place != '':
-				if self.swap_active == True:
+				if self.swap_active:
 					self.Console.ePopen('swapoff ' + self.swap_place, self.createDel2)
 				else:
 					self.createDel2(None, 0)
 			else:
 				self.doCreateSwap()
 
-	def createDel2(self, result, retval, extra_args = None):
+	def createDel2(self, result, retval, extra_args=None):
 		if retval == 0:
 			remove(self.swap_place)
 			if config.vixsettings.swapautostart.value:
@@ -260,9 +267,9 @@ class VIXSwap(Screen):
 			if partition.filesystem(mounts) in supported_filesystems:
 				candidates.append((partition.description, partition.mountpoint))
 		if len(candidates):
-			self.session.openWithCallback(self.doCSplace, ChoiceBox, title = _("Please select device to use as swapfile location"), list = candidates)
+			self.session.openWithCallback(self.doCSplace, ChoiceBox, title=_("Please select device to use as swapfile location"), list=candidates)
 		else:
-			self.session.open(MessageBox, _("Sorry, no physical devices that supports SWAP attached. Can't create Swapfile on network or fat32 filesystems"), MessageBox.TYPE_INFO, timeout = 10)
+			self.session.open(MessageBox, _("Sorry, no physical devices that supports SWAP attached. Can't create Swapfile on network or fat32 filesystems"), MessageBox.TYPE_INFO, timeout=10)
 
 	def doCSplace(self, name):
 		if name:

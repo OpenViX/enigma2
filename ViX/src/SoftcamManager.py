@@ -22,17 +22,21 @@ from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
 from Components.SystemInfo import SystemInfo
 
+
 config.softcammanager = ConfigSubsection()
 config.softcammanager.softcams_autostart = ConfigLocations(default='')
-config.softcammanager.softcamtimerenabled = ConfigYesNo(default = True)
-config.softcammanager.softcamtimer = ConfigNumber(default = 6)
-config.softcammanager.showinextensions = ConfigYesNo(default = True)
+config.softcammanager.softcamtimerenabled = ConfigYesNo(default=True)
+config.softcammanager.softcamtimer = ConfigNumber(default=6)
+config.softcammanager.showinextensions = ConfigYesNo(default=True)
+
+softcamautopoller = None
+
+
 def updateExtensions(configElement):
 	plugins.clearPluginList()
 	plugins.readPluginList(resolveFilename(SCOPE_PLUGINS))
-config.softcammanager.showinextensions.addNotifier(updateExtensions, initial_call = False)
+config.softcammanager.showinextensions.addNotifier(updateExtensions, initial_call=False)
 
-softcamautopoller = None
 
 def SoftcamAutostart(reason, session=None, **kwargs):
 	"""called with reason=1 to during shutdown, with reason=0 at startup?"""
@@ -49,6 +53,7 @@ def SoftcamAutostart(reason, session=None, **kwargs):
 			softcamautopoller.stop()
 			softcamautopoller = None
 
+
 class VIXSoftcamManager(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
@@ -56,25 +61,25 @@ class VIXSoftcamManager(Screen):
 		self['lab1'] = Label(_('Select:'))
 		self['lab2'] = Label(_('Active:'))
 		self['activecam'] = Label()
-		self.onChangedEntry = [ ]
+		self.onChangedEntry = []
 
 		self.sentsingle = ""
 		self.selectedFiles = config.softcammanager.softcams_autostart.value
 		self.defaultDir = '/usr/softcams/'
-		self.emlist = MultiFileSelectList(self.selectedFiles, self.defaultDir, showDirectories = False )
+		self.emlist = MultiFileSelectList(self.selectedFiles, self.defaultDir, showDirectories=False)
 		self["list"] = self.emlist
 
 		self['myactions'] = ActionMap(['ColorActions', 'OkCancelActions', 'DirectionActions', "TimerEditActions", "MenuActions"],
-			{
-				'ok': self.keyStart,
-				'cancel': self.close,
-				'red': self.close,
-				'green': self.keyStart,
-				'yellow': self.getRestartPID,
-				'blue': self.changeSelectionState,
-				'log': self.showLog,
-				'menu': self.createSetup,
-			}, -1)
+									  {
+									  'ok': self.keyStart,
+									  'cancel': self.close,
+									  'red': self.close,
+									  'green': self.keyStart,
+									  'yellow': self.getRestartPID,
+									  'blue': self.changeSelectionState,
+									  'log': self.showLog,
+									  'menu': self.createSetup,
+									  }, -1)
 
 		self["key_red"] = Button(_("Close"))
 		self["key_green"] = Button("")
@@ -91,10 +96,12 @@ class VIXSoftcamManager(Screen):
 
 	def createSummary(self):
 		from Screens.PluginBrowser import PluginBrowserSummary
+
 		return PluginBrowserSummary
 
 	def createSetup(self):
 		from Screens.Setup import Setup
+
 		self.session.open(Setup, 'vixsoftcammanager', 'SystemPlugins/ViX')
 
 	def selectionChanged(self):
@@ -163,14 +170,14 @@ class VIXSoftcamManager(Screen):
 		if retval == 0:
 			self.currentactivecamtemp = result
 			self.currentactivecam = "".join([s for s in self.currentactivecamtemp.splitlines(True) if s.strip("\r\n")])
-			self.currentactivecam = self.currentactivecam.replace('\n',', ')
-			print '[SoftcamManager] Active: '  + self.currentactivecam.replace("\n",", ")
+			self.currentactivecam = self.currentactivecam.replace('\n', ', ')
+			print '[SoftcamManager] Active: ' + self.currentactivecam.replace("\n", ", ")
 			if path.exists('/tmp/SoftcamsScriptsRunning'):
 				file = open('/tmp/SoftcamsScriptsRunning')
 				SoftcamsScriptsRunning = file.read()
 				file.close()
-				SoftcamsScriptsRunning = SoftcamsScriptsRunning.replace('\n',', ')
-				self.currentactivecam = self.currentactivecam + SoftcamsScriptsRunning
+				SoftcamsScriptsRunning = SoftcamsScriptsRunning.replace('\n', ', ')
+				self.currentactivecam += SoftcamsScriptsRunning
 			self['activecam'].setText(self.currentactivecam)
 			self['activecam'].show()
 		else:
@@ -181,34 +188,34 @@ class VIXSoftcamManager(Screen):
 		cams = listdir('/usr/softcams')
 		if cams:
 			self.sel = self['list'].getCurrent()[0]
-			selectedcam = self.sel[0]
-			if self.currentactivecam.find(selectedcam) < 0:
-				if selectedcam.lower().startswith('cccam') and path.exists('/etc/CCcam.cfg') == True:
+			selcam = self.sel[0]
+			if self.currentactivecam.find(selcam) < 0:
+				if selcam.lower().startswith('cccam') and path.exists('/etc/CCcam.cfg') == True:
 					if self.currentactivecam.lower().find('mgcam') < 0:
 						self.session.openWithCallback(self.showActivecam, VIXStartCam, self.sel[0])
 					else:
-						self.session.open(MessageBox, _("CCcam can't run whilst MGcamd is running"), MessageBox.TYPE_INFO, timeout = 10, close_on_any_key = True)
-				elif selectedcam.lower().startswith('cccam') and path.exists('/etc/CCcam.cfg') == False:
-					self.session.open(MessageBox, _("No config files found, please setup CCcam first\nin /etc/CCcam.cfg"), MessageBox.TYPE_INFO, timeout = 10, close_on_any_key = True)
-				elif selectedcam.lower().startswith('hypercam') and path.exists('/etc/hypercam.cfg') == True:
+						self.session.open(MessageBox, _("CCcam can't run whilst MGcamd is running"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
+				elif selcam.lower().startswith('cccam') and path.exists('/etc/CCcam.cfg') == False:
+					self.session.open(MessageBox, _("No config files found, please setup CCcam first\nin /etc/CCcam.cfg"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
+				elif selcam.lower().startswith('hypercam') and path.exists('/etc/hypercam.cfg') == True:
 					self.session.openWithCallback(self.showActivecam, VIXStartCam, self.sel[0])
-				elif selectedcam.lower().startswith('hypercam') and path.exists('/etc/hypercam.cfg') == False:
-					self.session.open(MessageBox, _("No config files found, please setup Hypercam first\nin /etc/hypercam.cfg"), MessageBox.TYPE_INFO, timeout = 10, close_on_any_key = True)
-				elif selectedcam.lower().startswith('oscam') and path.exists('/etc/tuxbox/config/oscam.conf') == True:
+				elif selcam.lower().startswith('hypercam') and path.exists('/etc/hypercam.cfg') == False:
+					self.session.open(MessageBox, _("No config files found, please setup Hypercam first\nin /etc/hypercam.cfg"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
+				elif selcam.lower().startswith('oscam') and path.exists('/etc/tuxbox/config/oscam.conf') == True:
 					self.session.openWithCallback(self.showActivecam, VIXStartCam, self.sel[0])
-				elif selectedcam.lower().startswith('oscam') and path.exists('/etc/tuxbox/config/oscam.conf') == False:
-					self.session.open(MessageBox, _("No config files found, please setup Oscam first\nin /etc/tuxbox/config"), MessageBox.TYPE_INFO, timeout = 10, close_on_any_key = True)
-				elif selectedcam.lower().startswith('mgcam') and path.exists('/var/keys/mg_cfg') == True:
+				elif selcam.lower().startswith('oscam') and path.exists('/etc/tuxbox/config/oscam.conf') == False:
+					self.session.open(MessageBox, _("No config files found, please setup Oscam first\nin /etc/tuxbox/config"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
+				elif selcam.lower().startswith('mgcam') and path.exists('/var/keys/mg_cfg') == True:
 					self.session.openWithCallback(self.showActivecam, VIXStartCam, self.sel[0])
-				elif selectedcam.lower().startswith('mgcam') and path.exists('/var/keys/mg_cfg') == False:
+				elif selcam.lower().startswith('mgcam') and path.exists('/var/keys/mg_cfg') == False:
 					if self.currentactivecam.lower().find('cccam') < 0:
-						self.session.open(MessageBox, _("No config files found, please setup MGcamd first\nin /var/keys"), MessageBox.TYPE_INFO, timeout = 10, close_on_any_key = True)
+						self.session.open(MessageBox, _("No config files found, please setup MGcamd first\nin /var/keys"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 					else:
-						self.session.open(MessageBox, _("MGcamd can't run whilst CCcam is running"), MessageBox.TYPE_INFO, timeout = 10, close_on_any_key = True)
-				elif selectedcam.lower().startswith('scam'):
+						self.session.open(MessageBox, _("MGcamd can't run whilst CCcam is running"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
+				elif selcam.lower().startswith('scam'):
 					self.session.openWithCallback(self.showActivecam, VIXStartCam, self.sel[0])
 				else:
-					self.session.open(MessageBox, _("Found none standard softcam, trying to start, this may fail"), MessageBox.TYPE_INFO, timeout = 10, close_on_any_key = True)
+					self.session.open(MessageBox, _("Found none standard softcam, trying to start, this may fail"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 					self.session.openWithCallback(self.showActivecam, VIXStartCam, self.sel[0])
 			else:
 				self.session.openWithCallback(self.showActivecam, VIXStopCam, self.sel[0])
@@ -216,24 +223,24 @@ class VIXSoftcamManager(Screen):
 	def getRestartPID(self):
 		cams = listdir('/usr/softcams')
 		if cams:
-			global selectedcam
 			self.sel = self['list'].getCurrent()[0]
 			selectedcam = self.sel[0]
-			self.Console.ePopen("pidof " + selectedcam, self.keyRestart)
+			self.Console.ePopen("pidof " + selectedcam, self.keyRestart, selectedcam)
 
 	def keyRestart(self, result, retval, extra_args):
+		selectedcam = extra_args
 		strpos = self.currentactivecam.find(selectedcam)
 		if strpos < 0:
 			return
 		else:
 			if retval == 0:
 				stopcam = str(result)
-				print '[SoftcamManager] Stopping ' + selectedcam + ' PID ' + stopcam.replace("\n","")
-				output = open('/tmp/cam.check.log','a')
+				print '[SoftcamManager] Stopping ' + selectedcam + ' PID ' + stopcam.replace("\n", "")
+				output = open('/tmp/cam.check.log', 'a')
 				now = datetime.now()
 				output.write(now.strftime("%Y-%m-%d %H:%M") + ": Stopping: " + selectedcam + "\n")
 				output.close()
-				self.Console.ePopen("kill -9 " + stopcam.replace("\n",""))
+				self.Console.ePopen("kill -9 " + stopcam.replace("\n", ""))
 				sleep(4)
 			else:
 				print 'RESULT FAILED: ' + str(result)
@@ -241,24 +248,24 @@ class VIXSoftcamManager(Screen):
 				if self.currentactivecam.lower().find('mgcam') < 0:
 					self.session.openWithCallback(self.showActivecam, VIXStartCam, self.sel[0])
 				else:
-					self.session.open(MessageBox, _("CCcam can't run whilst MGcamd is running"), MessageBox.TYPE_INFO, timeout = 10, close_on_any_key = True)
+					self.session.open(MessageBox, _("CCcam can't run whilst MGcamd is running"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 			elif selectedcam.lower().startswith('cccam') and path.exists('/etc/CCcam.cfg') == False:
-				self.session.open(MessageBox, _("No config files found, please setup CCcam first\nin /etc/CCcam.cfg"), MessageBox.TYPE_INFO, timeout = 10, close_on_any_key = True)
+				self.session.open(MessageBox, _("No config files found, please setup CCcam first\nin /etc/CCcam.cfg"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 			elif selectedcam.lower().startswith('oscam') and path.exists('/etc/tuxbox/config/oscam.conf') == True:
 				self.session.openWithCallback(self.showActivecam, VIXStartCam, self.sel[0])
 			elif selectedcam.lower().startswith('oscam') and path.exists('/etc/tuxbox/config/oscam.conf') == False:
 				if not path.exists('/etc/tuxbox/config'):
-					cmd = makedirs('/etc/tuxbox/config')
-				self.session.open(MessageBox, _("No config files found, please setup Oscam first\nin /etc/tuxbox/config"), MessageBox.TYPE_INFO, timeout = 10, close_on_any_key = True)
+					makedirs('/etc/tuxbox/config')
+				self.session.open(MessageBox, _("No config files found, please setup Oscam first\nin /etc/tuxbox/config"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 			elif selectedcam.lower().startswith('mgcam') and path.exists('/var/keys/mg_cfg') == True:
 				self.session.openWithCallback(self.showActivecam, VIXStartCam, self.sel[0])
 			elif selectedcam.lower().startswith('mgcam') and path.exists('/var/keys/mg_cfg') == False:
 				if self.currentactivecam.lower().find('cccam') < 0:
-					self.session.open(MessageBox, _("No config files found, please setup MGcamd first\nin /var/keys"), MessageBox.TYPE_INFO, timeout = 10, close_on_any_key = True)
+					self.session.open(MessageBox, _("No config files found, please setup MGcamd first\nin /var/keys"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 				else:
-					self.session.open(MessageBox, _("MGcamd can't run whilst CCcam is running"), MessageBox.TYPE_INFO, timeout = 10, close_on_any_key = True)
+					self.session.open(MessageBox, _("MGcamd can't run whilst CCcam is running"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 			elif not selectedcam.lower().startswith('cccam') or selectedcam.lower().startswith('oscam') or selectedcam.lower().startswith('mgcamd'):
-				self.session.open(MessageBox, _("Found none standard softcam, trying to start, this may fail"), MessageBox.TYPE_INFO, timeout = 10, close_on_any_key = True)
+				self.session.open(MessageBox, _("Found none standard softcam, trying to start, this may fail"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 				self.session.openWithCallback(self.showActivecam, VIXStartCam, self.sel[0])
 
 	def showLog(self):
@@ -266,6 +273,7 @@ class VIXSoftcamManager(Screen):
 
 	def myclose(self):
 		self.close()
+
 
 class VIXStartCam(Screen):
 	def __init__(self, session, selectedcam):
@@ -296,7 +304,7 @@ class VIXStartCam(Screen):
 					filewrite.writelines([l for l in fileread.readlines() if startselectedcam not in l])
 					fileread.close()
 					filewrite.close()
-					rename('/tmp/SoftcamsScriptsRunning.tmp','/tmp/SoftcamsScriptsRunning')
+					rename('/tmp/SoftcamsScriptsRunning.tmp', '/tmp/SoftcamsScriptsRunning')
 				elif data.find(startselectedcam) < 0:
 					fileout = open('/tmp/SoftcamsScriptsRunning', 'a')
 					line = startselectedcam + '\n'
@@ -308,18 +316,18 @@ class VIXStartCam(Screen):
 				fileout.write(line)
 				fileout.close()
 			print '[SoftcamManager] Starting ' + startselectedcam
-			output = open('/tmp/cam.check.log','a')
+			output = open('/tmp/cam.check.log', 'a')
 			now = datetime.now()
 			output.write(now.strftime("%Y-%m-%d %H:%M") + ": Starting " + startselectedcam + "\n")
 			output.close()
-			self.Console.ePopen('/usr/softcams/' + startselectedcam + ' start' )
+			self.Console.ePopen('/usr/softcams/' + startselectedcam + ' start')
 		else:
 			if path.exists('/tmp/SoftcamsDisableCheck'):
 				file = open('/tmp/SoftcamsDisableCheck')
 				data = file.read()
 				file.close()
 				if data.find(startselectedcam) >= 0:
-					output = open('/tmp/cam.check.log','a')
+					output = open('/tmp/cam.check.log', 'a')
 					now = datetime.now()
 					output.write(now.strftime("%Y-%m-%d %H:%M") + ": Initialised timed check for " + stopselectedcam + "\n")
 					output.close()
@@ -328,9 +336,9 @@ class VIXStartCam(Screen):
 					filewrite.writelines([l for l in fileread.readlines() if startselectedcam not in l])
 					fileread.close()
 					filewrite.close()
-					rename('/tmp/SoftcamsDisableCheck.tmp','/tmp/SoftcamsDisableCheck')
+					rename('/tmp/SoftcamsDisableCheck.tmp', '/tmp/SoftcamsDisableCheck')
 			print '[SoftcamManager] Starting ' + startselectedcam
-			output = open('/tmp/cam.check.log','a')
+			output = open('/tmp/cam.check.log', 'a')
 			now = datetime.now()
 			output.write(now.strftime("%Y-%m-%d %H:%M") + ": Starting " + startselectedcam + "\n")
 			output.close()
@@ -354,10 +362,10 @@ class VIXStartCam(Screen):
 			if self.count > 120:
 				self.curpix = 23
 			self['connect'].setPixmapNum(self.curpix)
-			if self.count == 120: # timer on screen
+			if self.count == 120:  # timer on screen
 				self.hide()
 				self.close()
-			self.activityTimer.start(120) # cycle speed
+			self.activityTimer.start(120)  # cycle speed
 			self.curpix += 1
 			self.count += 1
 		else:
@@ -366,15 +374,16 @@ class VIXStartCam(Screen):
 			if self.count > 23:
 				self.curpix = 0
 			self['connect'].setPixmapNum(self.curpix)
-			if self.count == 25: # timer on screen
+			if self.count == 25:  # timer on screen
 				self.hide()
 				self.close()
-			self.activityTimer.start(120) # cycle speed
+			self.activityTimer.start(120)  # cycle speed
 			self.curpix += 1
 			self.count += 1
 
 	def delTimer(self):
 		del self.activityTimer
+
 
 class VIXStopCam(Screen):
 	def __init__(self, session, selectedcam):
@@ -396,11 +405,11 @@ class VIXStopCam(Screen):
 			self.count = 0
 			self['connect'].setPixmapNum(0)
 			print '[SoftcamManager] Stopping ' + stopselectedcam
-			output = open('/tmp/cam.check.log','a')
+			output = open('/tmp/cam.check.log', 'a')
 			now = datetime.now()
 			output.write(now.strftime("%Y-%m-%d %H:%M") + ": Stopping " + stopselectedcam + "\n")
 			output.close()
-			self.Console.ePopen('/usr/softcams/' + stopselectedcam + ' stop' )
+			self.Console.ePopen('/usr/softcams/' + stopselectedcam + ' stop')
 			if path.exists('/tmp/SoftcamsScriptsRunning'):
 				remove('/tmp/SoftcamsScriptsRunning')
 			if path.exists('/etc/SoftcamsAutostart'):
@@ -410,7 +419,7 @@ class VIXStopCam(Screen):
 				finddata = data.find(stopselectedcam)
 				if data.find(stopselectedcam) >= 0:
 					print '[SoftcamManager] Temporarily disabled timed check for ' + stopselectedcam
-					output = open('/tmp/cam.check.log','a')
+					output = open('/tmp/cam.check.log', 'a')
 					now = datetime.now()
 					output.write(now.strftime("%Y-%m-%d %H:%M") + ": Temporarily disabled timed check for " + stopselectedcam + "\n")
 					output.close()
@@ -435,7 +444,7 @@ class VIXStopCam(Screen):
 				finddata = data.find(stopselectedcam)
 				if data.find(stopselectedcam) >= 0:
 					print '[SoftcamManager] Temporarily disabled timed check for ' + stopselectedcam
-					output = open('/tmp/cam.check.log','a')
+					output = open('/tmp/cam.check.log', 'a')
 					now = datetime.now()
 					output.write(now.strftime("%Y-%m-%d %H:%M") + ": Temporarily disabled timed check for " + stopselectedcam + "\n")
 					output.close()
@@ -443,12 +452,12 @@ class VIXStopCam(Screen):
 					line = stopselectedcam + '\n'
 					fileout.write(line)
 					fileout.close()
-			print '[SoftcamManager] Stopping ' + stopselectedcam + ' PID ' + stopcam.replace("\n","")
-			output = open('/tmp/cam.check.log','a')
+			print '[SoftcamManager] Stopping ' + stopselectedcam + ' PID ' + stopcam.replace("\n", "")
+			output = open('/tmp/cam.check.log', 'a')
 			now = datetime.now()
 			output.write(now.strftime("%Y-%m-%d %H:%M") + ": Stopping " + stopselectedcam + "\n")
 			output.close()
-			self.Console.ePopen("kill -9 " + stopcam.replace("\n",""))
+			self.Console.ePopen("kill -9 " + stopcam.replace("\n", ""))
 			self.activityTimer.start(1)
 
 	def updatepix(self):
@@ -458,15 +467,16 @@ class VIXStopCam(Screen):
 		if self.count > 23:
 			self.curpix = 0
 		self['connect'].setPixmapNum(self.curpix)
-		if self.count == 25: # timer on screen
+		if self.count == 25:  # timer on screen
 			self.hide()
 			self.close()
-		self.activityTimer.start(120) # cycle speed
+		self.activityTimer.start(120)  # cycle speed
 		self.curpix += 1
 		self.count += 1
 
 	def delTimer(self):
 		del self.activityTimer
+
 
 class VIXSoftcamLog(Screen):
 	def __init__(self, session):
@@ -481,18 +491,20 @@ class VIXSoftcamLog(Screen):
 			softcamlog = ""
 		self["list"] = ScrollLabel(str(softcamlog))
 		self["setupActions"] = ActionMap(["SetupActions", "ColorActions", "DirectionActions"],
-		{
-			"cancel": self.cancel,
-			"ok": self.cancel,
-			"up": self["list"].pageUp,
-			"down": self["list"].pageDown
-		}, -2)
+										 {
+										 "cancel": self.cancel,
+										 "ok": self.cancel,
+										 "up": self["list"].pageUp,
+										 "down": self["list"].pageDown
+										 }, -2)
 
 	def cancel(self):
 		self.close()
 
+
 class SoftcamAutoPoller:
 	"""Automatically Poll SoftCam"""
+
 	def __init__(self):
 		# Init Timer
 		if not path.exists('/etc/keys'):
@@ -532,18 +544,18 @@ class SoftcamAutoPoller:
 			Components.Task.job_manager.AddJob(self.createCheckJob())
 
 		if config.softcammanager.softcamtimerenabled.value:
-# 			print "[SoftcamManager] Timer Check Enabled"
-			output = open('/tmp/cam.check.log','a')
+			# 			print "[SoftcamManager] Timer Check Enabled"
+			output = open('/tmp/cam.check.log', 'a')
 			now = datetime.now()
 			output.write(now.strftime("%Y-%m-%d %H:%M") + ": Timer Check Enabled\n")
 			output.close()
 			self.timer.startLongTimer(config.softcammanager.softcamtimer.value * 60)
 		else:
-			output = open('/tmp/cam.check.log','a')
+			output = open('/tmp/cam.check.log', 'a')
 			now = datetime.now()
 			output.write(now.strftime("%Y-%m-%d %H:%M") + ": Timer Check Disabled\n")
 			output.close()
-# 			print "[SoftcamManager] Timer Check Disabled"
+			# 			print "[SoftcamManager] Timer Check Disabled"
 			softcamautopoller.stop()
 
 	def createCheckJob(self):
@@ -563,7 +575,7 @@ class SoftcamAutoPoller:
 				fh = open('/tmp/cam.check.log', 'rb+')
 				fh.seek(-40000, 2)
 				data = fh.read()
-				fh.seek(0) # rewind
+				fh.seek(0)  # rewind
 				fh.write(data)
 				fh.truncate()
 				fh.close()
@@ -575,8 +587,8 @@ class SoftcamAutoPoller:
 				if line.find('LOG WARNINGS') != -1:
 					parts = line.strip().split()
 					logwarn = parts[2]
-					if logwarn.find(':') >=0:
-						logwarn = logwarn.replace(':','')
+					if logwarn.find(':') >= 0:
+						logwarn = logwarn.replace(':', '')
 					if logwarn == '':
 						logwarn = parts[3]
 				else:
@@ -586,15 +598,15 @@ class SoftcamAutoPoller:
 					fh = open(logwarn, 'rb+')
 					fh.seek(-40000, 2)
 					data = fh.read()
-					fh.seek(0) # rewind
+					fh.seek(0)  # rewind
 					fh.write(data)
 					fh.truncate()
 					fh.close()
 			f.close()
 
 		for softcamcheck in self.autostartcams:
-			softcamcheck = softcamcheck.replace("/usr/softcams/","")
-			softcamcheck = softcamcheck.replace("\n","")
+			softcamcheck = softcamcheck.replace("/usr/softcams/", "")
+			softcamcheck = softcamcheck.replace("\n", "")
 			if softcamcheck.endswith('.sh'):
 				if path.exists('/tmp/SoftcamsDisableCheck'):
 					file = open('/tmp/SoftcamsDisableCheck')
@@ -613,14 +625,14 @@ class SoftcamAutoPoller:
 							fileout.write(line)
 							fileout.close()
 							print '[SoftcamManager] Starting ' + softcamcheck
-							self.Console.ePopen('/usr/softcams/' + softcamcheck + ' start' )
+							self.Console.ePopen('/usr/softcams/' + softcamcheck + ' start')
 					else:
 						fileout = open('/tmp/SoftcamsScriptsRunning', 'w')
 						line = softcamcheck + '\n'
 						fileout.write(line)
 						fileout.close()
 						print '[SoftcamManager] Starting ' + softcamcheck
-						self.Console.ePopen('/usr/softcams/' + softcamcheck + ' start' )
+						self.Console.ePopen('/usr/softcams/' + softcamcheck + ' start')
 			else:
 				if path.exists('/tmp/SoftcamsDisableCheck'):
 					file = open('/tmp/SoftcamsDisableCheck')
@@ -630,6 +642,7 @@ class SoftcamAutoPoller:
 					data = ''
 				if data.find(softcamcheck) < 0:
 					import process
+
 					p = process.ProcessList()
 					softcamcheck_process = str(p.named(softcamcheck)).strip('[]')
 					if softcamcheck_process != "":
@@ -640,7 +653,7 @@ class SoftcamAutoPoller:
 						if path.exists('/tmp/index.html'):
 							remove('/tmp/index.html')
 						print '[SoftcamManager] ' + softcamcheck + ' already running'
-						output = open('/tmp/cam.check.log','a')
+						output = open('/tmp/cam.check.log', 'a')
 						now = datetime.now()
 						output.write(now.strftime("%Y-%m-%d %H:%M") + ": " + softcamcheck + " running OK\n")
 						output.close()
@@ -655,7 +668,7 @@ class SoftcamAutoPoller:
 							f.close()
 							print '[SoftcamManager] Checking if ' + softcamcheck + ' is frozen'
 							if port == "":
-								port="16000"
+								port = "16000"
 							self.Console.ePopen("wget -T 1 http://127.0.0.1:" + port + "/status.html -O /tmp/status.html &> /tmp/frozen")
 							sleep(2)
 							f = open('/tmp/frozen')
@@ -663,18 +676,18 @@ class SoftcamAutoPoller:
 							f.close()
 							if frozen.find('Unauthorized') != -1 or frozen.find('Authorization Required') != -1 or frozen.find('Forbidden') != -1 or frozen.find('Connection refused') != -1 or frozen.find('100%') != -1 or path.exists('/tmp/status.html'):
 								print '[SoftcamManager] ' + softcamcheck + ' is responding like it should'
-								output = open('/tmp/cam.check.log','a')
+								output = open('/tmp/cam.check.log', 'a')
 								now = datetime.now()
 								output.write(now.strftime("%Y-%m-%d %H:%M") + ": " + softcamcheck + " is responding like it should\n")
 								output.close()
 							else:
 								print '[SoftcamManager] ' + softcamcheck + ' is frozen, Restarting...'
-								output = open('/tmp/cam.check.log','a')
+								output = open('/tmp/cam.check.log', 'a')
 								now = datetime.now()
 								output.write(now.strftime("%Y-%m-%d %H:%M") + ": " + softcamcheck + " is frozen, Restarting...\n")
 								output.close()
 								print '[SoftcamManager] Stopping ' + softcamcheck
-								output = open('/tmp/cam.check.log','a')
+								output = open('/tmp/cam.check.log', 'a')
 								now = datetime.now()
 								output.write(now.strftime("%Y-%m-%d %H:%M") + ": AutoStopping: " + softcamcheck + "\n")
 								output.close()
@@ -685,11 +698,11 @@ class SoftcamAutoPoller:
 								file = open('/tmp/oscamRuningCheck.tmp')
 								cccamcheck_process = file.read()
 								file.close()
-								cccamcheck_process = cccamcheck_process.replace("\n","")
+								cccamcheck_process = cccamcheck_process.replace("\n", "")
 								if cccamcheck_process.lower().find('cccam') != -1:
 									try:
 										print '[SoftcamManager] Stopping ', cccamcheck_process
-										output = open('/tmp/cam.check.log','a')
+										output = open('/tmp/cam.check.log', 'a')
 										now = datetime.now()
 										output.write(now.strftime("%Y-%m-%d %H:%M") + ": AutoStopping: " + cccamcheck_process + "\n")
 										output.close()
@@ -697,7 +710,7 @@ class SoftcamAutoPoller:
 									except:
 										pass
 								print '[SoftcamManager] Starting ' + softcamcheck
-								output = open('/tmp/cam.check.log','a')
+								output = open('/tmp/cam.check.log', 'a')
 								now = datetime.now()
 								output.write(now.strftime("%Y-%m-%d %H:%M") + ": AutoStarting: " + softcamcheck + "\n")
 								output.close()
@@ -713,9 +726,9 @@ class SoftcamAutoPoller:
 							for line in f.readlines():
 								if line.find('ALLOW WEBINFO') != -1:
 									if not line.startswith('#'):
-										parts = line.replace('ALLOW WEBINFO','')
-										parts = parts.replace(':','')
-										parts = parts.replace(' ','')
+										parts = line.replace('ALLOW WEBINFO', '')
+										parts = parts.replace(':', '')
+										parts = parts.replace(' ', '')
 										parts = parts.strip().split()
 										if parts[0].startswith('yes'):
 											allow = parts[0]
@@ -725,7 +738,7 @@ class SoftcamAutoPoller:
 							if allow.lower().find('yes') != -1:
 								print '[SoftcamManager] Checking if ' + softcamcheck + ' is frozen'
 								if port == "":
-									port="16001"
+									port = "16001"
 								self.Console.ePopen("wget -T 1 http://127.0.0.1:" + port + " -O /tmp/index.html &> /tmp/frozen")
 								sleep(2)
 								f = open('/tmp/frozen')
@@ -733,13 +746,13 @@ class SoftcamAutoPoller:
 								f.close()
 								if frozen.find('Unauthorized') != -1 or frozen.find('Authorization Required') != -1 or frozen.find('Forbidden') != -1 or frozen.find('Connection refused') != -1 or frozen.find('100%') != -1 or path.exists('/tmp/index.html'):
 									print '[SoftcamManager] ' + softcamcheck + ' is responding like it should'
-									output = open('/tmp/cam.check.log','a')
+									output = open('/tmp/cam.check.log', 'a')
 									now = datetime.now()
 									output.write(now.strftime("%Y-%m-%d %H:%M") + ": " + softcamcheck + " is responding like it should\n")
 									output.close()
 								else:
 									print '[SoftcamManager] ' + softcamcheck + ' is frozen, Restarting...'
-									output = open('/tmp/cam.check.log','a')
+									output = open('/tmp/cam.check.log', 'a')
 									now = datetime.now()
 									output.write(now.strftime("%Y-%m-%d %H:%M") + ": " + softcamcheck + " is frozen, Restarting...\n")
 									output.close()
@@ -750,20 +763,20 @@ class SoftcamAutoPoller:
 									self.Console.ePopen('ulimit -s 512;/usr/softcams/' + softcamcheck)
 							elif allow.lower().find('no') != -1:
 								print '[SoftcamManager] Telnet info not allowed, can not check if frozen'
-								output = open('/tmp/cam.check.log','a')
+								output = open('/tmp/cam.check.log', 'a')
 								now = datetime.now()
 								output.write(now.strftime("%Y-%m-%d %H:%M") + ":  Webinfo info not allowed, can not check if frozen,\n\tplease enable 'ALLOW WEBINFO: YES'\n")
 								output.close()
 							else:
 								print "[SoftcamManager] Webinfo info not setup, please enable 'ALLOW WEBINFO= YES'"
-								output = open('/tmp/cam.check.log','a')
+								output = open('/tmp/cam.check.log', 'a')
 								now = datetime.now()
 								output.write(now.strftime("%Y-%m-%d %H:%M") + ":  Telnet info not setup, can not check if frozen,\n\tplease enable 'ALLOW WEBINFO: YES'\n")
 								output.close()
 
 					elif softcamcheck_process == "":
 						print "[SoftcamManager] Couldn't find " + softcamcheck + " running, Starting " + softcamcheck
-						output = open('/tmp/cam.check.log','a')
+						output = open('/tmp/cam.check.log', 'a')
 						now = datetime.now()
 						output.write(now.strftime("%Y-%m-%d %H:%M") + ": Couldn't find " + softcamcheck + " running, Starting " + softcamcheck + "\n")
 						output.close()
@@ -772,12 +785,12 @@ class SoftcamAutoPoller:
 							sleep(2)
 							file = open('/tmp/softcamRuningCheck.tmp')
 							cccamcheck_process = file.read()
-							cccamcheck_process = cccamcheck_process.replace("\n","")
+							cccamcheck_process = cccamcheck_process.replace("\n", "")
 							file.close()
 							if cccamcheck_process.find('cccam') >= 0 or cccamcheck_process.find('CCcam') >= 0:
 								try:
 									print '[SoftcamManager] Stopping ', cccamcheck_process
-									output = open('/tmp/cam.check.log','a')
+									output = open('/tmp/cam.check.log', 'a')
 									now = datetime.now()
 									output.write(now.strftime("%Y-%m-%d %H:%M") + ": AutoStopping: " + cccamcheck_process + "\n")
 									output.close()

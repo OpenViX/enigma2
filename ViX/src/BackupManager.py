@@ -25,6 +25,7 @@ from Screens.MessageBox import MessageBox
 from Screens.Setup import Setup
 from Tools.Notifications import AddPopupWithCallback
 
+
 autoBackupManagerTimer = None
 SETTINGSRESTOREQUESTIONID = 'RestoreSettingsNotification'
 PLUGINRESTOREQUESTIONID = 'RestorePluginsNotification'
@@ -38,16 +39,19 @@ for p in harddiskmanager.getMountedPartitions():
 			hddchoises.append((p.mountpoint, d))
 config.backupmanager = ConfigSubsection()
 config.backupmanager.folderprefix = ConfigText(default=getBoxType(), fixed_size=False)
-config.backupmanager.backuplocation = ConfigSelection(choices = hddchoises)
-config.backupmanager.schedule = ConfigYesNo(default = False)
-config.backupmanager.scheduletime = ConfigClock(default = 0) # 1:00
-config.backupmanager.repeattype = ConfigSelection(default = "daily", choices = [("daily", _("Daily")), ("weekly", _("Weekly")), ("monthly", _("30 Days"))])
-config.backupmanager.backupretry = ConfigNumber(default = 30)
-config.backupmanager.backupretrycount = NoSave(ConfigNumber(default = 0))
-config.backupmanager.nextscheduletime = NoSave(ConfigNumber(default = 0))
-config.backupmanager.backupdirs = ConfigLocations(default=[eEnv.resolve('${sysconfdir}/enigma2/'), eEnv.resolve('${sysconfdir}/fstab'), eEnv.resolve('${sysconfdir}/hostname'), eEnv.resolve('${sysconfdir}/network/interfaces'), eEnv.resolve('${sysconfdir}/passwd'),eEnv.resolve('${sysconfdir}/shadow'), eEnv.resolve('${sysconfdir}/etc/shadow'), eEnv.resolve('${sysconfdir}/resolv.conf'), eEnv.resolve('${sysconfdir}/ushare.conf'), eEnv.resolve('${sysconfdir}/inadyn.conf'), eEnv.resolve('${sysconfdir}/tuxbox/config/'), eEnv.resolve('${sysconfdir}/wpa_supplicant.conf'), '/usr/softcams/'])
+config.backupmanager.backuplocation = ConfigSelection(choices=hddchoises)
+config.backupmanager.schedule = ConfigYesNo(default=False)
+config.backupmanager.scheduletime = ConfigClock(default=0)  # 1:00
+config.backupmanager.repeattype = ConfigSelection(default="daily", choices=[("daily", _("Daily")), ("weekly", _("Weekly")), ("monthly", _("30 Days"))])
+config.backupmanager.backupretry = ConfigNumber(default=30)
+config.backupmanager.backupretrycount = NoSave(ConfigNumber(default=0))
+config.backupmanager.nextscheduletime = NoSave(ConfigNumber(default=0))
+config.backupmanager.backupdirs = ConfigLocations(
+	default=[eEnv.resolve('${sysconfdir}/enigma2/'), eEnv.resolve('${sysconfdir}/fstab'), eEnv.resolve('${sysconfdir}/hostname'), eEnv.resolve('${sysconfdir}/network/interfaces'), eEnv.resolve('${sysconfdir}/passwd'), eEnv.resolve('${sysconfdir}/shadow'), eEnv.resolve('${sysconfdir}/etc/shadow'),
+			 eEnv.resolve('${sysconfdir}/resolv.conf'), eEnv.resolve('${sysconfdir}/ushare.conf'), eEnv.resolve('${sysconfdir}/inadyn.conf'), eEnv.resolve('${sysconfdir}/tuxbox/config/'), eEnv.resolve('${sysconfdir}/wpa_supplicant.conf'), '/usr/softcams/'])
 config.backupmanager.xtraplugindir = ConfigDirectory(default='')
 config.backupmanager.lastlog = ConfigText(default=' ', fixed_size=False)
+
 
 def BackupManagerautostart(reason, session=None, **kwargs):
 	"""called with reason=1 to during /sbin/shutdown.sysvinit, with reason=0 at startup?"""
@@ -65,6 +69,7 @@ def BackupManagerautostart(reason, session=None, **kwargs):
 			print "[BackupManager] Stop"
 			autoBackupManagerTimer.stop()
 
+
 class VIXBackupManager(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
@@ -77,7 +82,7 @@ class VIXBackupManager(Screen):
 		self["key_red"] = Button(_("Delete"))
 
 		self.BackupRunning = False
-		self.onChangedEntry = [ ]
+		self.onChangedEntry = []
 		self.emlist = []
 		self['list'] = MenuList(self.emlist)
 		self.populate_List()
@@ -97,6 +102,7 @@ class VIXBackupManager(Screen):
 
 	def createSummary(self):
 		from Screens.PluginBrowser import PluginBrowserSummary
+
 		return PluginBrowserSummary
 
 	def selectionChanged(self):
@@ -122,12 +128,12 @@ class VIXBackupManager(Screen):
 		self.activityTimer.startLongTimer(5)
 
 	def getJobName(self, job):
-		return "%s: %s (%d%%)" % (job.getStatustext(), job.name, int(100*job.progress/float(job.end)))
+		return "%s: %s (%d%%)" % (job.getStatustext(), job.name, int(100 * job.progress / float(job.end)))
 
 	def showJobView(self, job):
 		from Screens.TaskView import JobView
 		Components.Task.job_manager.in_background = False
-		self.session.openWithCallback(self.JobViewCB, JobView, job, cancelable = False, afterEventChangeable = False, afterEvent="close")
+		self.session.openWithCallback(self.JobViewCB, JobView, job, cancelable=False, afterEventChangeable=False, afterEvent="close")
 
 	def JobViewCB(self, in_background):
 		Components.Task.job_manager.in_background = in_background
@@ -144,20 +150,20 @@ class VIXBackupManager(Screen):
 		if config.backupmanager.backuplocation.value.endswith('/'):
 			mount = config.backupmanager.backuplocation.value, config.backupmanager.backuplocation.value[:-1]
 		else:
-			mount = config.backupmanager.backuplocation.value+'/', config.backupmanager.backuplocation.value
-		hdd = '/media/hdd/','/media/hdd'
+			mount = config.backupmanager.backuplocation.value + '/', config.backupmanager.backuplocation.value
+		hdd = '/media/hdd/', '/media/hdd'
 		if mount not in config.backupmanager.backuplocation.choices.choices:
 			if hdd in config.backupmanager.backuplocation.choices.choices:
 				self['myactions'] = ActionMap(['ColorActions', 'OkCancelActions', 'DirectionActions', "MenuActions", "TimerEditActions"],
-					{
-						'cancel': self.close,
-						'ok': self.keyResstore,
-						'red': self.keyDelete,
-						'green': self.GreenPressed,
-						'yellow': self.keyResstore,
-						"menu": self.createSetup,
-						'log': self.showLog,
-					}, -1)
+											  {
+											  'cancel': self.close,
+											  'ok': self.keyResstore,
+											  'red': self.keyDelete,
+											  'green': self.GreenPressed,
+											  'yellow': self.keyResstore,
+											  "menu": self.createSetup,
+											  'log': self.showLog,
+											  }, -1)
 
 				self.BackupDirectory = '/media/hdd/backup/'
 				config.backupmanager.backuplocation.value = '/media/hdd/'
@@ -165,24 +171,24 @@ class VIXBackupManager(Screen):
 				self['lab1'].setText(_("The chosen location does not exist, using /media/hdd") + "\n" + _("Select a backup to Restore:"))
 			else:
 				self['myactions'] = ActionMap(['ColorActions', 'OkCancelActions', 'DirectionActions', "MenuActions", "TimerEditActions"],
-					{
-						'cancel': self.close,
-						"menu": self.createSetup,
-						'log': self.showLog,
-					}, -1)
+											  {
+											  'cancel': self.close,
+											  "menu": self.createSetup,
+											  'log': self.showLog,
+											  }, -1)
 
 				self['lab1'].setText(_("Device: None available") + "\n" + _("Select a backup to Restore:"))
 		else:
 			self['myactions'] = ActionMap(['ColorActions', 'OkCancelActions', 'DirectionActions', "MenuActions", "TimerEditActions"],
-				{
-					'cancel': self.close,
-					'ok': self.keyResstore,
-					'red': self.keyDelete,
-					'green': self.GreenPressed,
-					'yellow': self.keyResstore,
-					"menu": self.createSetup,
-					'log': self.showLog,
-				}, -1)
+										  {
+										  'cancel': self.close,
+										  'ok': self.keyResstore,
+										  'red': self.keyDelete,
+										  'green': self.GreenPressed,
+										  'yellow': self.keyResstore,
+										  "menu": self.createSetup,
+										  'log': self.showLog,
+										  }, -1)
 
 			self.BackupDirectory = config.backupmanager.backuplocation.value + 'backup/'
 			self['lab1'].setText(_("Device: ") + config.backupmanager.backuplocation.value + "\n" + _("Select a backup to Restore:"))
@@ -238,10 +244,10 @@ class VIXBackupManager(Screen):
 		self.sel = self['list'].getCurrent()
 		if self.sel:
 			message = _("Are you sure you want to delete this backup:\n ") + self.sel
-			ybox = self.session.openWithCallback(self.doDelete, MessageBox, message, MessageBox.TYPE_YESNO, default = False)
+			ybox = self.session.openWithCallback(self.doDelete, MessageBox, message, MessageBox.TYPE_YESNO, default=False)
 			ybox.setTitle(_("Remove Confirmation"))
 		else:
-			self.session.open(MessageBox, _("You have no backup to delete."), MessageBox.TYPE_INFO, timeout = 10)
+			self.session.open(MessageBox, _("You have no backup to delete."), MessageBox.TYPE_INFO, timeout=10)
 
 	def doDelete(self, answer):
 		if answer is True:
@@ -251,19 +257,17 @@ class VIXBackupManager(Screen):
 		self.populate_List()
 
 	def GreenPressed(self):
-		backup = None
 		self.BackupRunning = False
 		for job in Components.Task.job_manager.getPendingJobs():
 			if job.name.startswith(_("Backup Manager")):
-				backup = job
 				self.BackupRunning = True
-		if self.BackupRunning and backup:
-			self.showJobView(backup)
+				break
+		if self.BackupRunning:
+			self.showJobView(job)
 		else:
 			self.keyBackup()
 
 	def keyBackup(self):
-		backup = None
 		self.BackupFiles = BackupFiles(self.session)
 		Components.Task.job_manager.AddJob(self.BackupFiles.createBackupJob())
 		self.BackupRunning = True
@@ -271,9 +275,8 @@ class VIXBackupManager(Screen):
 		self["key_green"].show()
 		for job in Components.Task.job_manager.getPendingJobs():
 			if job.name.startswith(_("Backup Manager")):
-				backup = job
-		if backup:
-			self.showJobView(backup)
+				self.showJobView(job)
+				break
 
 	def keyResstore(self):
 		self.sel = self['list'].getCurrent()
@@ -285,45 +288,43 @@ class VIXBackupManager(Screen):
 					remove('/tmp/backupkernelversion')
 				self.Console.ePopen("tar -xzvf " + self.BackupDirectory + self.sel + " tmp/ExtraInstalledPlugins tmp/backupkernelversion tmp/backupimageversion -C /", self.settingsRestoreCheck)
 			else:
-				self.session.open(MessageBox, _("You have no backups to restore."), MessageBox.TYPE_INFO, timeout = 10)
+				self.session.open(MessageBox, _("You have no backups to restore."), MessageBox.TYPE_INFO, timeout=10)
 		else:
-			self.session.open(MessageBox, _("Backup in progress,\nPlease for it to finish, before trying again"), MessageBox.TYPE_INFO, timeout = 10)
+			self.session.open(MessageBox, _("Backup in progress,\nPlease for it to finish, before trying again"), MessageBox.TYPE_INFO, timeout=10)
 
-	def settingsRestoreCheck(self, result, retval, extra_args = None):
+	def settingsRestoreCheck(self, result, retval, extra_args=None):
 		if path.exists('/tmp/backupimageversion'):
 			imageversion = file('/tmp/backupimageversion').read()
-			print 'Backup Image:',imageversion
-			print 'Current Image:',about.getVersionString()
+			print 'Backup Image:', imageversion
+			print 'Current Image:', about.getVersionString()
 			if imageversion == about.getVersionString():
 				print '[RestoreWizard] Stage 1: Image ver OK'
 				self.keyResstore1()
 			else:
-				self.session.open(MessageBox, _("Sorry, but the file is not compatible with this image version."), MessageBox.TYPE_INFO, timeout = 10)
+				self.session.open(MessageBox, _("Sorry, but the file is not compatible with this image version."), MessageBox.TYPE_INFO, timeout=10)
 		else:
-				self.session.open(MessageBox, _("Sorry, but the file is not compatible with this image version."), MessageBox.TYPE_INFO, timeout = 10)
+			self.session.open(MessageBox, _("Sorry, but the file is not compatible with this image version."), MessageBox.TYPE_INFO, timeout=10)
 
 	def keyResstore1(self):
-				message = _("Are you sure you want to restore this backup:\n ") + self.sel
-				ybox = self.session.openWithCallback(self.doRestore, MessageBox, message, MessageBox.TYPE_YESNO)
-				ybox.setTitle(_("Restore Confirmation"))
+		message = _("Are you sure you want to restore this backup:\n ") + self.sel
+		ybox = self.session.openWithCallback(self.doRestore, MessageBox, message, MessageBox.TYPE_YESNO)
+		ybox.setTitle(_("Restore Confirmation"))
 
-	def doRestore(self,answer):
+	def doRestore(self, answer):
 		if answer is True:
-			jobname = None
 			Components.Task.job_manager.AddJob(self.createRestoreJob())
 			self.BackupRunning = True
 			self["key_green"].setText(_("View Progress"))
 			self["key_green"].show()
 			for job in Components.Task.job_manager.getPendingJobs():
-				jobname = str(job.name)
-			if jobname:
-				self.showJobView(jobname)
+				if job.name.startswith(_("Backup Manager")):
+					self.showJobView(job)
+					break
 
 	def myclose(self):
 		self.close()
 
 	def createRestoreJob(self):
-		self.Console = Console()
 		self.pluginslist = ""
 		self.pluginslist2 = ""
 		self.didSettingsRestore = False
@@ -388,10 +389,10 @@ class VIXBackupManager(Screen):
 
 	def JobStart(self):
 		AddPopupWithCallback(self.Stage1,
-			_("Do you want to restore your Enigma2 settings ?"),
-			MessageBox.TYPE_YESNO,
-			10,
-			SETTINGSRESTOREQUESTIONID
+							 _("Do you want to restore your Enigma2 settings ?"),
+							 MessageBox.TYPE_YESNO,
+							 10,
+							 SETTINGSRESTOREQUESTIONID
 		)
 
 	def Stage1(self, answer=None):
@@ -402,8 +403,8 @@ class VIXBackupManager(Screen):
 			self.Console.ePopen("tar -xzvf " + self.BackupDirectory + self.sel + " tmp/ExtraInstalledPlugins tmp/backupkernelversion tmp/backupimageversion  tmp/3rdPartyPlugins -C /", self.Stage1PluginsComplete)
 
 	def Stage1SettingsComplete(self, result, retval, extra_args):
-		print '[BackupManager] Restoring Stage 1 RESULT:',result
-		print '[BackupManager] Restoring Stage 1 retval:',retval
+		print '[BackupManager] Restoring Stage 1 RESULT:', result
+		print '[BackupManager] Restoring Stage 1 retval:', retval
 		if retval == 0:
 			print '[BackupManager] Restoring Stage 1 Complete:'
 			self.didSettingsRestore = True
@@ -411,10 +412,10 @@ class VIXBackupManager(Screen):
 		else:
 			print '[BackupManager] Restoring Stage 1 Failed:'
 			AddPopupWithCallback(self.Stage2,
-				_("Sorry, but the restore failed."),
-				MessageBox.TYPE_INFO,
-				10,
-				'StageOneFailedNotification'
+								 _("Sorry, but the restore failed."),
+								 MessageBox.TYPE_INFO,
+								 10,
+								 'StageOneFailedNotification'
 			)
 
 	def Stage1PluginsComplete(self, result, retval, extra_args):
@@ -426,7 +427,7 @@ class VIXBackupManager(Screen):
 		self.Console.ePopen('opkg update', self.Stage2Complete)
 
 	def Stage2Complete(self, result, retval, extra_args):
-		print '[BackupManager] Restoring Stage 2: Result ',result
+		print '[BackupManager] Restoring Stage 2: Result ', result
 		if result.find('wget returned 1') != -1 or result.find('wget returned 255') != -1 or result.find('404 Not Found') != -1:
 			self.feeds = 'DOWN'
 			self.Stage2Completed = True
@@ -435,10 +436,10 @@ class VIXBackupManager(Screen):
 			self.Stage2Completed = True
 		elif result.find('Collected errors') != -1:
 			AddPopupWithCallback(self.Stage2,
-				_("A background update check is is progress, please wait for retry."),
-				MessageBox.TYPE_INFO,
-				10,
-				NOPLUGINS
+								 _("A background update check is is progress, please wait for retry."),
+								 MessageBox.TYPE_INFO,
+								 10,
+								 NOPLUGINS
 			)
 		else:
 			print '[BackupManager] Restoring Stage 2: Complete'
@@ -468,19 +469,19 @@ class VIXBackupManager(Screen):
 			print '[BackupManager] Restoring Stage 3: Feeds are down, plugin restore not possible'
 			self.kernelcheck = False
 			AddPopupWithCallback(self.Stage6,
-				_("Sorry feeds are down for maintenance, Please try again later."),
-				MessageBox.TYPE_INFO,
-				15,
-				NOPLUGINS
+								 _("Sorry feeds are down for maintenance, Please try again later."),
+								 MessageBox.TYPE_INFO,
+								 15,
+								 NOPLUGINS
 			)
 		elif self.feeds == 'BAD':
 			print '[BackupManager] Restoring Stage 3: no network connection, plugin restore not possible'
 			self.kernelcheck = False
 			AddPopupWithCallback(self.Stage6,
-				_("Your %s %s is not connected to the internet, please check your network settings and try again.") % (getMachineBrand(), getMachineName()),
-				MessageBox.TYPE_INFO,
-				15,
-				NOPLUGINS
+								 _("Your %s %s is not connected to the internet, please check your network settings and try again.") % (getMachineBrand(), getMachineName()),
+								 MessageBox.TYPE_INFO,
+								 15,
+								 NOPLUGINS
 			)
 		else:
 			print '[BackupManager] Restoring Stage 3: Feeds state is unknown aborting'
@@ -509,7 +510,7 @@ class VIXBackupManager(Screen):
 			elif path.exists('/tmp/3rdPartyPluginsLocation'):
 				self.thirdpartyPluginsLocation = open('/tmp/3rdPartyPluginsLocation', 'r').readlines()
 				self.thirdpartyPluginsLocation = "".join(self.thirdpartyPluginsLocation)
-				self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace('\n','')
+				self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace('\n', '')
 				self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace(' ', '%20')
 			else:
 				self.thirdpartyPluginsLocation = " "
@@ -525,24 +526,24 @@ class VIXBackupManager(Screen):
 						else:
 							for root, subFolders, files in walk('/media'):
 								for folder in subFolders:
-# 									print "%s has subdirectory %s" % (root, folder)
+									# 									print "%s has subdirectory %s" % (root, folder)
 									if folder and folder == path.split(self.thirdpartyPluginsLocation[:-1])[-1]:
-										self.thirdpartyPluginsLocation = path.join(root,folder)
+										self.thirdpartyPluginsLocation = path.join(root, folder)
 										self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace(' ', '%20')
 										available = listdir(self.thirdpartyPluginsLocation)
-# 										print 'TRUE',self.thirdpartyPluginsLocation
+										# 										print 'TRUE',self.thirdpartyPluginsLocation
 										break
 						if available:
 							for file in available:
 								if file:
 									fileparts = file.strip().split('_')
-# 									print 'FILE:',fileparts
-# 									print 'IPK:',ipk
+									# 									print 'FILE:',fileparts
+									# 									print 'IPK:',ipk
 									if fileparts[0] == ipk:
 										self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace(' ', '%20')
 										ipk = path.join(self.thirdpartyPluginsLocation, file)
 										if path.exists(ipk):
-# 											print 'IPK', ipk
+											# 											print 'IPK', ipk
 											self.pluginslist2.append(ipk)
 
 		print '[BackupManager] Restoring Stage 3: Complete'
@@ -558,13 +559,13 @@ class VIXBackupManager(Screen):
 				self.pluginslist2 = " ".join(self.pluginslist2)
 			else:
 				self.pluginslist2 = ""
-			print '[BackupManager] Restoring Stage 4: Plugins to restore',self.pluginslist
-			print '[BackupManager] Restoring Stage 4: Plugins to restore',self.pluginslist2
+			print '[BackupManager] Restoring Stage 4: Plugins to restore', self.pluginslist
+			print '[BackupManager] Restoring Stage 4: Plugins to restore', self.pluginslist2
 			AddPopupWithCallback(self.Stage4Complete,
-				_("Do you want to restore your Enigma2 plugins ?"),
-				MessageBox.TYPE_YESNO,
-				15,
-				PLUGINRESTOREQUESTIONID
+								 _("Do you want to restore your Enigma2 plugins ?"),
+								 MessageBox.TYPE_YESNO,
+								 15,
+								 PLUGINRESTOREQUESTIONID
 			)
 		else:
 			print '[BackupManager] Restoring Stage 4: plugin restore not required'
@@ -578,10 +579,10 @@ class VIXBackupManager(Screen):
 		elif answer is False:
 			print '[BackupManager] Restoring Stage 4: plugin restore skipped by user'
 			AddPopupWithCallback(self.Stage6,
-				_("Now skipping restore process"),
-				MessageBox.TYPE_INFO,
-				15,
-				NOPLUGINS
+								 _("Now skipping restore process"),
+								 MessageBox.TYPE_INFO,
+								 15,
+								 NOPLUGINS
 			)
 
 	def Stage5(self):
@@ -611,6 +612,7 @@ class VIXBackupManager(Screen):
 			print '[BackupManager] Restoring failed or canceled'
 			self.close()
 
+
 class BackupSelection(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
@@ -621,22 +623,22 @@ class BackupSelection(Screen):
 
 		self.selectedFiles = config.backupmanager.backupdirs.value
 		defaultDir = '/'
-		self.filelist = MultiFileSelectList(self.selectedFiles, defaultDir )
+		self.filelist = MultiFileSelectList(self.selectedFiles, defaultDir)
 		self["checkList"] = self.filelist
 
 		self["actions"] = ActionMap(["DirectionActions", "OkCancelActions", "ShortcutActions", "MenuActions"],
-		{
-			"cancel": self.exit,
-			"red": self.exit,
-			"yellow": self.changeSelectionState,
-			"green": self.saveSelection,
-			"ok": self.okClicked,
-			"left": self.left,
-			"right": self.right,
-			"down": self.down,
-			"up": self.up,
-			"menu": self.exit,
-		}, -1)
+									{
+									"cancel": self.exit,
+									"red": self.exit,
+									"yellow": self.changeSelectionState,
+									"green": self.saveSelection,
+									"ok": self.okClicked,
+									"left": self.left,
+									"right": self.right,
+									"down": self.down,
+									"up": self.up,
+									"menu": self.exit,
+									}, -1)
 		if not self.selectionChanged in self["checkList"].onSelectionChanged:
 			self["checkList"].onSelectionChanged.append(self.selectionChanged)
 		self.onLayoutFinish.append(self.layoutFinished)
@@ -691,6 +693,7 @@ class BackupSelection(Screen):
 	def closeRecursive(self):
 		self.close(True)
 
+
 class XtraPluginsSelection(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
@@ -699,21 +702,21 @@ class XtraPluginsSelection(Screen):
 		self["key_green"] = StaticText(_("Save"))
 
 		defaultDir = config.backupmanager.backuplocation.getValue()
-		self.filelist = FileList(defaultDir, showFiles = True, matchingPattern = '^.*.(ipk)')
+		self.filelist = FileList(defaultDir, showFiles=True, matchingPattern='^.*.(ipk)')
 		self["checkList"] = self.filelist
 
 		self["actions"] = ActionMap(["DirectionActions", "OkCancelActions", "ShortcutActions", "MenuActions"],
-		{
-			"cancel": self.exit,
-			"red": self.exit,
-			"green": self.saveSelection,
-			"ok": self.okClicked,
-			"left": self.left,
-			"right": self.right,
-			"down": self.down,
-			"up": self.up,
-			"menu": self.exit,
-		}, -1)
+									{
+									"cancel": self.exit,
+									"red": self.exit,
+									"green": self.saveSelection,
+									"ok": self.okClicked,
+									"left": self.left,
+									"right": self.right,
+									"down": self.down,
+									"up": self.up,
+									"menu": self.exit,
+									}, -1)
 		if not self.selectionChanged in self["checkList"].onSelectionChanged:
 			self["checkList"].onSelectionChanged.append(self.selectionChanged)
 		self.onLayoutFinish.append(self.layoutFinished)
@@ -751,7 +754,7 @@ class XtraPluginsSelection(Screen):
 			config.save()
 			self.close(None)
 		else:
-			self.session.open(MessageBox, _("Please enter a folder that contains some packages."), MessageBox.TYPE_INFO, timeout = 10)
+			self.session.open(MessageBox, _("Please enter a folder that contains some packages."), MessageBox.TYPE_INFO, timeout=10)
 
 	def exit(self):
 		self.close(None)
@@ -763,16 +766,17 @@ class XtraPluginsSelection(Screen):
 	def closeRecursive(self):
 		self.close(True)
 
+
 class VIXBackupManagerMenu(Setup):
 	def __init__(self, session, setup, plugin=None):
 		Setup.__init__(self, session, setup, plugin)
 		self.skinName = "VIXBackupManagerMenu"
 
 		self["actions2"] = ActionMap(["SetupActions", 'ColorActions', 'VirtualKeyboardActions', "MenuActions"],
-		{
-			"yellow": self.chooseFiles,
-			"blue": self.chooseXtraPluginDir,
-		}, -2)
+									 {
+									 "yellow": self.chooseFiles,
+									 "blue": self.chooseXtraPluginDir,
+									 }, -2)
 
 		self["key_red"] = Button(_("Cancel"))
 		self["key_green"] = Button(_("OK"))
@@ -780,16 +784,17 @@ class VIXBackupManagerMenu(Setup):
 		self["key_blue"] = Button(_("Choose local ipk's folder"))
 
 	def chooseFiles(self):
-		self.session.openWithCallback(self.backupfiles_choosen,BackupSelection)
+		self.session.openWithCallback(self.backupfiles_choosen, BackupSelection)
 
 	def chooseXtraPluginDir(self):
 		self.session.open(XtraPluginsSelection)
 
 	def backupfiles_choosen(self, ret):
-		self.backupdirs = ' '.join( config.backupmanager.backupdirs.value )
+		self.backupdirs = ' '.join(config.backupmanager.backupdirs.value)
 		config.backupmanager.backupdirs.save()
 		config.backupmanager.save()
 		config.save()
+
 
 class VIXBackupManagerLogView(Screen):
 	def __init__(self, session, filename):
@@ -809,19 +814,20 @@ class VIXBackupManagerLogView(Screen):
 
 		self["list"] = ScrollLabel(str(backuplog))
 		self["setupActions"] = ActionMap(["SetupActions", "ColorActions", "DirectionActions", "MenuActions"],
-		{
-			"cancel": self.cancel,
-			"ok": self.cancel,
-			"up": self["list"].pageUp,
-			"down": self["list"].pageDown,
-			"menu": self.closeRecursive,
-		}, -2)
+										 {
+										 "cancel": self.cancel,
+										 "ok": self.cancel,
+										 "up": self["list"].pageUp,
+										 "down": self["list"].pageDown,
+										 "menu": self.closeRecursive,
+										 }, -2)
 
 	def cancel(self):
 		self.close()
 
 	def closeRecursive(self):
 		self.close(True)
+
 
 class AutoBackupManagerTimer:
 	def __init__(self, session):
@@ -855,7 +861,7 @@ class AutoBackupManagerTimer:
 		now = localtime(nowt)
 		return int(mktime((now.tm_year, now.tm_mon, now.tm_mday, backupclock[0], backupclock[1], 0, now.tm_wday, now.tm_yday, now.tm_isdst)))
 
-	def backupupdate(self, atLeast = 0):
+	def backupupdate(self, atLeast=0):
 		self.backuptimer.stop()
 		global BackupTime
 		BackupTime = self.getBackupTime()
@@ -863,21 +869,21 @@ class AutoBackupManagerTimer:
 		if BackupTime > 0:
 			if BackupTime < now + atLeast:
 				if config.backupmanager.repeattype.value == "daily":
-					BackupTime += 24*3600
-					while (int(BackupTime)-30) < now:
-						BackupTime += 24*3600
+					BackupTime += 24 * 3600
+					while (int(BackupTime) - 30) < now:
+						BackupTime += 24 * 3600
 				elif config.backupmanager.repeattype.value == "weekly":
-					BackupTime += 7*24*3600
-					while (int(BackupTime)-30) < now:
-						BackupTime += 7*24*3600
+					BackupTime += 7 * 24 * 3600
+					while (int(BackupTime) - 30) < now:
+						BackupTime += 7 * 24 * 3600
 				elif config.backupmanager.repeattype.value == "monthly":
-					BackupTime += 30*24*3600
-					while (int(BackupTime)-30) < now:
-						BackupTime += 30*24*3600
+					BackupTime += 30 * 24 * 3600
+					while (int(BackupTime) - 30) < now:
+						BackupTime += 30 * 24 * 3600
 			next = BackupTime - now
 			self.backuptimer.startLongTimer(next)
 		else:
-				BackupTime = -1
+			BackupTime = -1
 		print "[BackupManager] Backup Time set to", strftime("%c", localtime(BackupTime)), strftime("(now=%c)", localtime(now))
 		return BackupTime
 
@@ -893,9 +899,10 @@ class AutoBackupManagerTimer:
 		if wake - now < 60:
 			print "[BackupManager] Backup onTimer occured at", strftime("%c", localtime(now))
 			from Screens.Standby import inStandby
+
 			if not inStandby:
 				message = _("Your %s %s is about to run a backup of your settings and detect your plugins,\nDo you want to allow this?") % (getMachineBrand(), getMachineName())
-				ybox = self.session.openWithCallback(self.doBackup, MessageBox, message, MessageBox.TYPE_YESNO, timeout = 30)
+				ybox = self.session.openWithCallback(self.doBackup, MessageBox, message, MessageBox.TYPE_YESNO, timeout=30)
 				ybox.setTitle('Scheduled Backup.')
 			else:
 				print "[BackupManager] in Standby, so just running backup", strftime("%c", localtime(now))
@@ -908,7 +915,7 @@ class AutoBackupManagerTimer:
 		now = int(time())
 		if answer is False:
 			if config.backupmanager.backupretrycount.value < 2:
-				print '[BackupManager] Number of retries',config.backupmanager.backupretrycount.value
+				print '[BackupManager] Number of retries', config.backupmanager.backupretrycount.value
 				print "[BackupManager] Backup delayed."
 				repeat = config.backupmanager.backupretrycount.value
 				repeat += 1
@@ -919,7 +926,7 @@ class AutoBackupManagerTimer:
 			else:
 				atLeast = 60
 				print "[BackupManager] Enough Retries, delaying till next schedule.", strftime("%c", localtime(now))
-				self.session.open(MessageBox, _("Enough Retries, delaying till next schedule."), MessageBox.TYPE_INFO, timeout = 10)
+				self.session.open(MessageBox, _("Enough Retries, delaying till next schedule."), MessageBox.TYPE_INFO, timeout=10)
 				config.backupmanager.backupretrycount.value = 0
 				self.backupupdate(atLeast)
 		else:
@@ -927,11 +934,16 @@ class AutoBackupManagerTimer:
 			self.BackupFiles = BackupFiles(self.session)
 			Components.Task.job_manager.AddJob(self.BackupFiles.createBackupJob())
 
+
 class BackupFiles(Screen):
 	def __init__(self, session, updatebackup=False):
 		Screen.__init__(self, session)
 		self.Console = Console()
 		self.updatebackup = updatebackup
+		self.BackupDevice = config.backupmanager.backuplocation.getValue()
+		print "[BackupManager] Device: " + self.BackupDevice
+		self.BackupDirectory = config.backupmanager.backuplocation.getValue() + 'backup/'
+		print "[BackupManager] Directory: " + self.BackupDirectory
 		self.Stage1Completed = False
 		self.Stage2Completed = False
 		self.Stage3Completed = False
@@ -1015,48 +1027,19 @@ class BackupFiles(Screen):
 		config.backupmanager.backupdirs.setValue(self.selectedFiles)
 		config.backupmanager.backupdirs.save()
 		configfile.save()
-		print 'self.selectedFiles',config.backupmanager.backupdirs.getValue()
-		imparts = []
-		for p in harddiskmanager.getMountedPartitions():
-			if path.exists(p.mountpoint):
-				d = path.normpath(p.mountpoint)
-				if p.mountpoint != '/':
-					imparts.append((p.mountpoint, d))
-		config.backupmanager.backuplocation.setChoices(imparts)
-
-		if config.backupmanager.backuplocation.value.endswith('/'):
-			mount = config.backupmanager.backuplocation.value, config.backupmanager.backuplocation.value[:-1]
-		else:
-			mount = config.backupmanager.backuplocation.value+'/', config.backupmanager.backuplocation.value
-		hdd = '/media/hdd/','/media/hdd/'
-		if mount not in config.backupmanager.backuplocation.choices.choices:
-			if hdd in config.backupmanager.backuplocation.choices.choices:
-				config.backupmanager.backuplocation.value = '/media/hdd/'
-				config.backupmanager.backuplocation.save()
-				self.BackupDevice = config.backupmanager.backuplocation.value
-				print "[BackupManager] Device: " + self.BackupDevice
-				self.BackupDirectory = config.backupmanager.backuplocation.value + 'backup/'
-				print "[BackupManager] Directory: " + self.BackupDirectory
-				print "The chosen location does not exist, using /media/hdd"
-			else:
-				print "Device: None available"
-		else:
-			self.BackupDevice = config.backupmanager.backuplocation.value
-			print "[BackupManager] Device: " + self.BackupDevice
-			self.BackupDirectory = config.backupmanager.backuplocation.value + 'backup/'
-			print "[BackupManager] Directory: " + self.BackupDirectory
+		print 'self.selectedFiles', config.backupmanager.backupdirs.getValue()
 
 		try:
 			if not path.exists(self.BackupDirectory):
 				mkdir(self.BackupDirectory, 0755)
-		except Exception,e:
+		except Exception, e:
 			print str(e)
-			print "Device: " + config.backupmanager.backuplocation.value + ", i don't seem to have write access to this device."
+			print "Device: " + config.backupmanager.backuplocation.getValue() + ", i don't seem to have write access to this device."
 
 		s = statvfs(self.BackupDevice)
-		free = (s.f_bsize * s.f_bavail)/(1024*1024)
+		free = (s.f_bsize * s.f_bavail) / (1024 * 1024)
 		if int(free) < 50:
-			self.session.open(MessageBox, _("The backup location does not have enough freespace."), MessageBox.TYPE_INFO, timeout = 10)
+			self.session.open(MessageBox, _("The backup location does not have enough freespace."), MessageBox.TYPE_INFO, timeout=10)
 		else:
 			self.Stage1Complete()
 
@@ -1064,7 +1047,7 @@ class BackupFiles(Screen):
 		self.Stage1Completed = True
 
 	def Stage2(self):
-		output = open('/var/log/backupmanager.log','w')
+		output = open('/var/log/backupmanager.log', 'w')
 		now = datetime.now()
 		output.write(now.strftime("%Y-%m-%d %H:%M") + ": Backup Started\n")
 		output.close()
@@ -1074,7 +1057,7 @@ class BackupFiles(Screen):
 
 	def Stage2Complete(self, result, retval, extra_args):
 		if result:
-			output = open('/tmp/ExtraInstalledPlugins','w')
+			output = open('/tmp/ExtraInstalledPlugins', 'w')
 			output.write(result)
 			output.close()
 
@@ -1082,31 +1065,31 @@ class BackupFiles(Screen):
 			print '[BackupManager] Listing completed.'
 			self.Stage2Completed = True
 		else:
-			self.session.openWithCallback(self.BackupComplete, MessageBox, _("Plugin Listing failed - e. g. wrong backup destination or no space left on backup device"), MessageBox.TYPE_INFO, timeout = 10)
-			print '[BackupManager] Result.',result
+			self.session.openWithCallback(self.BackupComplete, MessageBox, _("Plugin Listing failed - e. g. wrong backup destination or no space left on backup device"), MessageBox.TYPE_INFO, timeout=10)
+			print '[BackupManager] Result.', result
 			print "{BackupManager] Plugin Listing failed - e. g. wrong backup destination or no space left on backup device"
 
 	def Stage3(self):
 		print '[BackupManager] Finding kernel version:' + about.getKernelVersionString()
-		output = open('/tmp/backupkernelversion','w')
+		output = open('/tmp/backupkernelversion', 'w')
 		output.write(about.getKernelVersionString())
 		output.close()
 		print '[BackupManager] Finding image version:' + about.about.getVersionString()
-		output = open('/tmp/backupimageversion','w')
+		output = open('/tmp/backupimageversion', 'w')
 		output.write(about.about.getVersionString())
 		output.close()
 		self.Stage3Completed = True
 
 	def Stage4(self):
 		if config.backupmanager.xtraplugindir.getValue() and path.exists(config.backupmanager.xtraplugindir.getValue()):
-			output = open('/tmp/3rdPartyPlugins','w')
+			output = open('/tmp/3rdPartyPlugins', 'w')
 			for file in listdir(config.backupmanager.xtraplugindir.getValue()):
-				print 'file:',file
+				print 'file:', file
 				if file.endswith('.ipk'):
-					print 'IPK FOUND',file
+					print 'IPK FOUND', file
 					parts = file.strip().split('_')
 					output.write(parts[0] + '\n')
-			output = open('/tmp/3rdPartyPluginsLocation','w')
+			output = open('/tmp/3rdPartyPluginsLocation', 'w')
 			output.write(config.backupmanager.xtraplugindir.getValue())
 			output.close()
 		self.Stage4Completed = True
@@ -1131,13 +1114,13 @@ class BackupFiles(Screen):
 
 	def Stage4Complete(self, result, retval, extra_args):
 		if path.exists(self.Backupfile):
-			chmod(self.Backupfile ,0644)
+			chmod(self.Backupfile, 0644)
 			print '[BackupManager] Complete.'
 			remove('/tmp/ExtraInstalledPlugins')
 			self.Stage5Completed = True
 		else:
-			self.session.openWithCallback(self.BackupComplete, MessageBox, _("Backup failed - e. g. wrong backup destination or no space left on backup device"), MessageBox.TYPE_INFO, timeout = 10)
-			print '[BackupManager] Result.',result
+			self.session.openWithCallback(self.BackupComplete, MessageBox, _("Backup failed - e. g. wrong backup destination or no space left on backup device"), MessageBox.TYPE_INFO, timeout=10)
+			print '[BackupManager] Result.', result
 			print "{BackupManager] Backup failed - e. g. wrong backup destination or no space left on backup device"
 
 	def BackupComplete(self):

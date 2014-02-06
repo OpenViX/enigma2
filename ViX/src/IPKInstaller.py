@@ -23,16 +23,16 @@ class VIXIPKInstaller(Screen):
 		Screen.setTitle(self, _("IPK Installer"))
 		self['lab1'] = Label()
 		self.defaultDir = '/tmp'
-		self.onChangedEntry = [ ]
+		self.onChangedEntry = []
 		self['myactions'] = ActionMap(['ColorActions', 'OkCancelActions', 'DirectionActions', "MenuActions"],
-			{
-				'cancel': self.close,
-				'red': self.close,
-				'green': self.keyInstall,
-				'yellow': self.changelocation,
-				'ok': self.keyInstall,
-				"menu": self.close,
-			}, -1)
+									  {
+									  'cancel': self.close,
+									  'red': self.close,
+									  'green': self.keyInstall,
+									  'yellow': self.changelocation,
+									  'ok': self.keyInstall,
+									  "menu": self.close,
+									  }, -1)
 
 		self["key_red"] = Button(_("Close"))
 		self["key_green"] = Button(_("Install"))
@@ -47,6 +47,7 @@ class VIXIPKInstaller(Screen):
 
 	def createSummary(self):
 		from Screens.PluginBrowser import PluginBrowserSummary
+
 		return PluginBrowserSummary
 
 	def selectionChanged(self):
@@ -68,7 +69,7 @@ class VIXIPKInstaller(Screen):
 				message = _("It seems you have not setup a extra location, please setup in Backup Manager setup menu ")
 				ybox = self.session.open(MessageBox, message, MessageBox.TYPE_INFO)
 				ybox.setTitle(_("Change Location"))
-			elif self.defaultDir and  not path.exists(self.defaultDir):
+			elif self.defaultDir and not path.exists(self.defaultDir):
 				message = _("Sorry but location does exist or not setup, please setup in Backup Manager setup menu ")
 				ybox = self.session.open(MessageBox, message, MessageBox.TYPE_INFO)
 				ybox.setTitle(_("Change Location"))
@@ -92,7 +93,7 @@ class VIXIPKInstaller(Screen):
 		for line in f:
 			if line.find('.ipk') != -1:
 				self.list.append(line)
-		
+
 		if path.ismount('/media/usb'):
 			f = listdir('/media/usb')
 			for line in f:
@@ -107,15 +108,15 @@ class VIXIPKInstaller(Screen):
 		ybox = self.session.openWithCallback(self.Install, MessageBox, message, MessageBox.TYPE_YESNO)
 		ybox.setTitle(_("Install Confirmation"))
 
-	def Install(self,answer):
+	def Install(self, answer):
 		if answer is True:
 			sel = self['list'].getCurrent()
 			if sel:
 				self.defaultDir = self.defaultDir.replace(' ', '%20')
 				cmd1 = "/usr/bin/opkg install " + path.join(self.defaultDir, sel)
-				self.session.openWithCallback(self.installFinished(sel), Console, title=_("Installing..."), cmdlist = [cmd1], closeOnSuccess = True)
+				self.session.openWithCallback(self.installFinished(sel), Console, title=_("Installing..."), cmdlist=[cmd1], closeOnSuccess=True)
 
-	def installFinished(self,sel):
+	def installFinished(self, sel):
 		message = _("Do you want to restart GUI now ?")
 		ybox = self.session.openWithCallback(self.restBox, MessageBox, message, MessageBox.TYPE_YESNO)
 		ybox.setTitle(_("Restart Enigma2."))
@@ -129,6 +130,7 @@ class VIXIPKInstaller(Screen):
 
 	def myclose(self):
 		self.close()
+
 
 class IpkgInstaller(Screen):
 	def __init__(self, session, list):
@@ -147,18 +149,18 @@ class IpkgInstaller(Screen):
 		self["introduction"] = StaticText(_("Press OK to toggle the selection."))
 
 		self["actions"] = ActionMap(["OkCancelActions", "ColorActions"],
-		{
-			"ok": self.list.toggleSelection,
-			"cancel": self.close,
-			"red": self.close,
-			"green": self.install,
-			"blue": self.list.toggleAllSelection
-		}, -1)
+									{
+									"ok": self.list.toggleSelection,
+									"cancel": self.close,
+									"red": self.close,
+									"green": self.install,
+									"blue": self.list.toggleAllSelection
+									}, -1)
 
 	def install(self):
 		list = self.list.getSelectionsList()
 		cmdList = []
 		for item in list:
-			cmdList.append((IpkgComponent.CMD_INSTALL, { "package": item[1] }))
-		self.session.open(Ipkg, cmdList = cmdList)
+			cmdList.append((IpkgComponent.CMD_INSTALL, {"package": item[1]}))
+		self.session.open(Ipkg, cmdList=cmdList)
 

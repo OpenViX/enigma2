@@ -1,25 +1,25 @@
 <!--suppress XmlUnboundNsPrefix -->
 <setupxml>
-	<setup key="vixsoftcammanager" title="Softcam Manager Setup" showOpenWebIF="1">
-		<item level="2" text="Show in extensions" summary="Allows the softcam manager to be launched from extensions.">config.softcammanager.showinextensions</item>
-		<item level="2" text="Enable frozen check" summary="Allows the softcam to be checked if it stopped working, and restarted automatically if needed.">config.softcammanager.softcamtimerenabled</item>
-		<item level="2" text="Frozen check interval" requires="config.softcammanager.softcamtimerenabled" summary="Set the interval to be checked in mins.">config.softcammanager.softcamtimer</item>
-	</setup>
-	<setup key="vixbackupmanager" title="Backup Manager Setup">
-		<item level="2" text="Backup Location" summary="Location of where backup should be saved.">config.backupmanager.backuplocation</item>
-		<item level="2" text="Backup prefix" summary="Allows you to tag your backups to a box. (default is box name/type)">config.backupmanager.folderprefix</item>
-		<item level="2" text="Schedule Backups" summary="Allows you schedule your boackups.">config.backupmanager.schedule</item>
-		<item level="2" text="Time of Backup to start" requires="config.backupmanager.schedule" summary="Set the time of backup to start.">config.backupmanager.scheduletime</item>
-		<item level="2" text="Repeat how often" requires="config.backupmanager.schedule" summary="Set the repeat interval of backup schedule.">config.backupmanager.repeattype</item>
-	</setup>
-	<setup key="viximagemanager" title="Image Manager Setup">
-		<item level="2" text="Backup Location" summary="Location of where image backup should be saved.">config.imagemanager.backuplocation</item>
-		<item level="2" text="Backup prefix" summary="Allows you to tag your image backup to a box. (default is box name/type)">config.imagemanager.folderprefix</item>
-		<item level="2" text="Schedule Backups" summary="Allows you schedule your image backups.">config.imagemanager.schedule</item>
-		<item level="2" text="Time of Backup to start" requires="config.imagemanager.schedule" summary="Set the time of backup to start.">config.imagemanager.scheduletime</item>
-		<item level="2" text="Repeat how often" requires="config.imagemanager.schedule" summary="Set the repeat interval of backup schedule.">config.imagemanager.repeattype</item>
-	</setup>
-	<setup key="vixscriptrunner" title="Script Runner Setup">
-		<item level="2" text="Close window on success" summary="Allows you have the window close automatically.">config.scriptrunner.close</item>
-	</setup>
+    <setup key="vixsoftcammanager" title="Softcam Manager Setup" showOpenWebIF="1">
+        <item level="2" text="Show in extensions" summary="Allows the softcam manager to be launched from extensions.">config.softcammanager.showinextensions</item>
+        <item level="2" text="Enable frozen check" summary="Allows the softcam to be checked if it stopped working, and restarted automatically if needed.">config.softcammanager.softcamtimerenabled</item>
+        <item level="2" text="Frozen check interval" requires="config.softcammanager.softcamtimerenabled" summary="Set the interval to be checked in mins.">config.softcammanager.softcamtimer</item>
+    </setup>
+    <setup key="vixbackupmanager" title="Backup Manager Setup">
+        <item level="2" text="Backup Location" summary="Location of where backup should be saved.">config.backupmanager.backuplocation</item>
+        <item level="2" text="Backup prefix" summary="Allows you to tag your backups to a box. (default is box name/type)">config.backupmanager.folderprefix</item>
+        <item level="2" text="Schedule Backups" summary="Allows you schedule your boackups.">config.backupmanager.schedule</item>
+        <item level="2" text="Time of Backup to start" requires="config.backupmanager.schedule" summary="Set the time of backup to start.">config.backupmanager.scheduletime</item>
+        <item level="2" text="Repeat how often" requires="config.backupmanager.schedule" summary="Set the repeat interval of backup schedule.">config.backupmanager.repeattype</item>
+    </setup>
+    <setup key="viximagemanager" title="Image Manager Setup">
+        <item level="2" text="Backup Location" summary="Location of where image backup should be saved.">config.imagemanager.backuplocation</item>
+        <item level="2" text="Backup prefix" summary="Allows you to tag your image backup to a box. (default is box name/type)">config.imagemanager.folderprefix</item>
+        <item level="2" text="Schedule Backups" summary="Allows you schedule your image backups.">config.imagemanager.schedule</item>
+        <item level="2" text="Time of Backup to start" requires="config.imagemanager.schedule" summary="Set the time of backup to start.">config.imagemanager.scheduletime</item>
+        <item level="2" text="Repeat how often" requires="config.imagemanager.schedule" summary="Set the repeat interval of backup schedule.">config.imagemanager.repeattype</item>
+    </setup>
+    <setup key="vixscriptrunner" title="Script Runner Setup">
+        <item level="2" text="Close window on success" summary="Allows you have the window close automatically.">config.scriptrunner.close</item>
+    </setup>
 </setupxml>

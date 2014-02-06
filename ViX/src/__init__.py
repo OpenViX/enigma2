@@ -8,8 +8,10 @@ from Tools.Directories import resolveFilename, SCOPE_PLUGINS
 PluginLanguageDomain = "vix"
 PluginLanguagePath = "SystemPlugins/ViX/locale"
 
+
 def localeInit():
 	gettext.bindtextdomain(PluginLanguageDomain, resolveFilename(SCOPE_PLUGINS, PluginLanguagePath))
+
 
 def _(txt):
 	if gettext.dgettext(PluginLanguageDomain, txt):
@@ -17,5 +19,6 @@ def _(txt):
 	else:
 		print "[" + PluginLanguageDomain + "] fallback to default translation for " + txt
 		return gettext.gettext(txt)
+
 
 language.addCallback(localeInit())

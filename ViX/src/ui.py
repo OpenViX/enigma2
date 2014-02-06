@@ -7,44 +7,46 @@ from Components.ActionMap import NumberActionMap
 from Components.Sources.StaticText import StaticText
 from Components.Sources.List import List
 
+
 class VIXMenu(Screen):
-	def __init__(self, session, args = 0):
+	def __init__(self, session, args=0):
 		Screen.__init__(self, session)
 		Screen.setTitle(self, _("ViX"))
 		self.menu = args
 		self.list = []
 		if self.menu == 0:
-			self.list.append(("backup-manager", _("Backup Manager"), _("Manage your backups of your settings." ), None))
-			self.list.append(("image-manager", _("Image Manager"), _("Create and Restore complete images of the system." ), None))
-			self.list.append(("ipkg-install", _("Install local extension"),  _("Install IPK's from your tmp folder." ), None))
-			self.list.append(("mount-manager",_("Mount Manager"), _("Manage you devices mountpoints." ), None))
-			self.list.append(("script-runner",_("Script Runner"), _("Run your shell scripts." ), None))
-			self.list.append(("swap-manager",_("Swap Manager"), _("Create and Manage your swapfiles." ), None))
+			self.list.append(("backup-manager", _("Backup Manager"), _("Manage your backups of your settings."), None))
+			self.list.append(("image-manager", _("Image Manager"), _("Create and Restore complete images of the system."), None))
+			self.list.append(("ipkg-install", _("Install local extension"), _("Install IPK's from your tmp folder."), None))
+			self.list.append(("mount-manager", _("Mount Manager"), _("Manage you devices mountpoints."), None))
+			self.list.append(("script-runner", _("Script Runner"), _("Run your shell scripts."), None))
+			self.list.append(("swap-manager", _("Swap Manager"), _("Create and Manage your swapfiles."), None))
 		self["menu"] = List(self.list)
 		self["key_red"] = StaticText(_("Close"))
 
 		self["shortcuts"] = NumberActionMap(["ShortcutActions", "WizardActions", "InfobarEPGActions", "MenuActions", "NumberActions"],
-		{
-			"ok": self.go,
-			"back": self.close,
-			"red": self.close,
-			"menu": self.closeRecursive,
-			"1": self.go,
-			"2": self.go,
-			"3": self.go,
-			"4": self.go,
-			"5": self.go,
-			"6": self.go,
-			"7": self.go,
-			"8": self.go,
-			"9": self.go,
-		}, -1)
+											{
+											"ok": self.go,
+											"back": self.close,
+											"red": self.close,
+											"menu": self.closeRecursive,
+											"1": self.go,
+											"2": self.go,
+											"3": self.go,
+											"4": self.go,
+											"5": self.go,
+											"6": self.go,
+											"7": self.go,
+											"8": self.go,
+											"9": self.go,
+											}, -1)
 		self.onLayoutFinish.append(self.layoutFinished)
 		self.onChangedEntry = []
 		self["menu"].onSelectionChanged.append(self.selectionChanged)
 
 	def createSummary(self):
 		from Screens.PluginBrowser import PluginBrowserSummary
+
 		return PluginBrowserSummary
 
 	def selectionChanged(self):
@@ -65,7 +67,7 @@ class VIXMenu(Screen):
 	def setWindowTitle(self):
 		self.setTitle(_("ViX"))
 
-	def go(self, num = None):
+	def go(self, num=None):
 		if num is not None:
 			num -= 1
 			if not num < self["menu"].count():
@@ -77,15 +79,19 @@ class VIXMenu(Screen):
 			if self.menu == 0:
 				if currentEntry == "backup-manager":
 					from BackupManager import VIXBackupManager
+
 					self.session.open(VIXBackupManager)
 				elif currentEntry == "image-manager":
 					from ImageManager import VIXImageManager
+
 					self.session.open(VIXImageManager)
 				elif currentEntry == "ipkg-install":
 					from IPKInstaller import VIXIPKInstaller
+
 					self.session.open(VIXIPKInstaller)
 				elif currentEntry == "mount-manager":
 					from MountManager import VIXDevicesPanel
+
 					self.session.open(VIXDevicesPanel)
 				elif currentEntry == "script-runner":
 					list = []
@@ -99,9 +105,11 @@ class VIXMenu(Screen):
 							list.append(pkg)
 
 					from ScriptRunner import VIXScriptRunner
-					self.session.open(VIXScriptRunner,list)
+
+					self.session.open(VIXScriptRunner, list)
 				elif currentEntry == "swap-manager":
 					from SwapManager import VIXSwap
+
 					self.session.open(VIXSwap)
 
 	def closeRecursive(self):
