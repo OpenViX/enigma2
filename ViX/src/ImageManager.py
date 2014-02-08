@@ -293,13 +293,9 @@ class VIXImageManager(Screen):
 			self.keyBackup()
 
 	def keyBackup(self):
-		if getBoxType().startswith('vu') or getBoxType().startswith('et') or getBoxType().startswith('tm') or getBoxType().startswith('odin') or getBoxType().startswith('venton') or getBoxType().startswith('ini') or getBoxType().startswith('gb') or getBoxType().startswith(
-				'xp') or getBoxType().startswith('iqon'):
-			message = _("Are you ready to create a backup image ?")
-			ybox = self.session.openWithCallback(self.doBackup, MessageBox, message, MessageBox.TYPE_YESNO)
-			ybox.setTitle(_("Backup Confirmation"))
-		else:
-			self.session.open(MessageBox, _("Sorry you %s %s is not yet compatible."), MessageBox.TYPE_INFO, timeout=10) % (getMachineBrand(), getMachineName())
+		message = _("Are you ready to create a backup image ?")
+		ybox = self.session.openWithCallback(self.doBackup, MessageBox, message, MessageBox.TYPE_YESNO)
+		ybox.setTitle(_("Backup Confirmation"))
 
 	def doBackup(self, answer):
 		backup = None
