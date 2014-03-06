@@ -334,7 +334,6 @@ class VIXImageManager(Screen):
 				self.keyResstore3(0, 0)
 
 	def keyResstore3(self, result, retval, extra_args=None):
-		print 'result:', result
 		if retval == 0:
 			kernelMTD = getMachineMtdKernel()
 			kernelFILE = getMachineKernelFile()
@@ -343,50 +342,7 @@ class VIXImageManager(Screen):
 			MAINDEST = '/tmp/imagerestore/' + getImageFolder() + '/'
 
 			config.imagemanager.restoreimage.setValue(self.sel)
-			f = open('/proc/mounts')
-			filesystem = f.read()
-			f.close()
-
-			mkdir('/tmp/apps', 0755)
-			apps = '/tmp/apps/'
-			copy('/usr/sbin/nandwrite', apps)
-			copy('/usr/sbin/flash_erase', apps)
-			copy('/usr/sbin/ubiformat', apps)
-			copy('/sbin/reboot', apps)
-			copy('/bin/sleep', apps)
-			copy('/bin/rm', apps)
-
-			output = open('/tmp/image_restore.sh', 'w')
-			command = []
-			header = '#!/bin/sh\n'
-			sleep = apps + 'sleep 3 && '
-
-			command.append(header)
-			command.append('sync && ')
-			command.append(sleep)
-
-			command.append('if [ "$(pidof smbd)" ]; then killall smbd ; fi && ')
-			command.append('if [ "$(pidof nmbd)" ]; then killall nmbd ; fi && ')
-			command.append('if [ "$(pidof rpc.mountd)" ]; then killall rpc.mountd ; fi && ')
-			command.append('if [ "$(pidof rpc.statd)" ]; then killall rpc.statd ; fi && ')
-
-			command.append('mount -no remount,ro / && ')
-			command.append(apps + 'flash_erase /dev/' + kernelMTD + ' 0 0 && ')
-			command.append(apps + 'nandwrite -pm /dev/' + kernelMTD + ' ' + MAINDEST + kernelFILE + ' && ')
-			if filesystem.find('ubifs') != -1:
-				command.append(apps + 'ubiformat /dev/' + rootMTD + ' -f ' + MAINDEST + rootFILE + ' -D && ')
-			else:
-				command.append(apps + 'nandwrite -pm /dev/' + rootMTD + ' -f ' + MAINDEST + rootFILE + ' -D && ')
-			command.append(sleep)
-			command.append(apps + 'reboot -fn')
-
-			commandline = ''.join(command)
-
-			output.write(commandline)
-			output.close()
-			chmod('/tmp/image_restore.sh', 0755)
-			self.session.open(TryQuitMainloop, retvalue=43)
-			self.close()
+			self.Console.ePopen('ofgwrite -r -k -r' + rootMTD + ' -k' + kernelMTD + ' ' + MAINDEST)
 
 
 class AutoImageManagerTimer:
