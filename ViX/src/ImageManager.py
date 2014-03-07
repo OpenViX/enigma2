@@ -1,6 +1,6 @@
 # for localized messages
 from boxbranding import getBoxType, getImageVersion, getImageBuild, getImageFolder, getImageFileSystem, getBrandOEM, getMachineBrand, getMachineName, getMachineBuild, getMachineMtdRoot, getMachineRootFile, getMachineMtdKernel, getMachineKernelFile, getMachineMKUBIFS, getMachineUBINIZE
-from os import path, system, mkdir, makedirs, listdir, remove, statvfs, chmod, walk, symlink
+from os import path, system, mkdir, makedirs, listdir, remove, statvfs, chmod, walk, symlink, unlink
 from shutil import rmtree, move, copy
 from time import localtime, time, strftime, mktime
 
@@ -321,6 +321,8 @@ class VIXImageManager(Screen):
 			self.session.open(MessageBox, _("You have no image to restore."), MessageBox.TYPE_INFO, timeout=10)
 
 	def keyResstore2(self, answer):
+		if path.islink('/tmp/imagerestore'):
+			unlink('/tmp/imagerestore')
 		if answer:
 			self.session.open(MessageBox, _("Please wait while restore prepares"), MessageBox.TYPE_INFO, timeout=60, enable_input=False)
 			TEMPDESTROOT = self.BackupDirectory + 'imagerestore'
