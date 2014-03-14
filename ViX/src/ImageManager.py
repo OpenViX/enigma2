@@ -847,10 +847,10 @@ class ImageManagerDownload(Screen):
 				self.boxtype = 'Mara-M9'
 			elif getMachineBuild() == 'xp1000max':
 				self.boxtype = 'MaxDigital-XP1000'
+			elif getMachineBuild() == 'xp1000plus':
+				self.boxtype = 'OCTAGON-XP1000PLUS'
 			elif getMachineBuild() == 'sf8':
 				self.boxtype = 'OCTAGON-SF8-HD'
-			elif getMachineBuild() == 'xp1000max':
-				self.boxtype = 'OCTAGON-SF8-HD-XP1000'
 			elif getMachineBuild() == 'qb800solo':
 				self.boxtype = 'GiGaBlue-HD800Solo'
 			elif getMachineBuild() == 'gb800se':
