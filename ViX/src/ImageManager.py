@@ -823,10 +823,12 @@ class ImageManagerDownload(Screen):
 				self.boxtype = 'ET-5x00'
 			elif getMachineBuild() == 'et6x00':
 				self.boxtype = 'ET-6x00'
+			elif getMachineBuild() == 'et8000':
+				self.boxtype = 'ET-8x00'
 			elif getMachineBuild() == 'et9x00':
 				self.boxtype = 'ET-9x00'
 			elif getMachineBuild() == 'et10000':
-				self.boxtype = 'ET-10000'
+				self.boxtype = 'ET-10x00'
 			elif getMachineBuild() == 'tmtwin':
 				self.boxtype = 'TM-Twin-OE'
 			elif getMachineBuild() == 'tm2t':
