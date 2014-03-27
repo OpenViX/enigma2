@@ -45,8 +45,8 @@ config.imagemanager.restoreimage = NoSave(ConfigText(default=getBoxType(), fixed
 
 autoImageManagerTimer = None
 
-if path.exists(config.imagemanager.backuplocation.getValue() + 'imagebackups/imagerestore'):
-	rmtree(config.imagemanager.backuplocation.getValue() + 'imagebackups/imagerestore')
+if path.exists(config.imagemanager.backuplocation.value + 'imagebackups/imagerestore'):
+	rmtree(config.imagemanager.backuplocation.value + 'imagebackups/imagerestore')
 
 
 def ImageManagerautostart(reason, session=None, **kwargs):
@@ -169,10 +169,10 @@ class VIXImageManager(Screen):
 					imparts.append((p.mountpoint, d))
 		config.imagemanager.backuplocation.setChoices(imparts)
 
-		if config.imagemanager.backuplocation.getValue().endswith('/'):
-			mount = config.imagemanager.backuplocation.getValue(), config.imagemanager.backuplocation.getValue()[:-1]
+		if config.imagemanager.backuplocation.value.endswith('/'):
+			mount = config.imagemanager.backuplocation.value, config.imagemanager.backuplocation.value[:-1]
 		else:
-			mount = config.imagemanager.backuplocation.getValue() + '/', config.imagemanager.backuplocation.getValue()
+			mount = config.imagemanager.backuplocation.value + '/', config.imagemanager.backuplocation.value
 		hdd = '/media/hdd/', '/media/hdd'
 		if mount not in config.imagemanager.backuplocation.choices.choices:
 			if hdd in config.imagemanager.backuplocation.choices.choices:
@@ -217,20 +217,20 @@ class VIXImageManager(Screen):
 										  "ok": self.keyResstore,
 										  }, -1)
 
-			self.BackupDirectory = config.imagemanager.backuplocation.getValue() + 'imagebackups/'
-			s = statvfs(config.imagemanager.backuplocation.getValue())
+			self.BackupDirectory = config.imagemanager.backuplocation.value + 'imagebackups/'
+			s = statvfs(config.imagemanager.backuplocation.value)
 			free = (s.f_bsize * s.f_bavail) / (1024 * 1024)
-			self['lab1'].setText(_("Device: ") + config.imagemanager.backuplocation.getValue() + ' ' + _('Free space:') + ' ' + str(free) + _('MB') + "\n" + _("Select an image to restore:"))
+			self['lab1'].setText(_("Device: ") + config.imagemanager.backuplocation.value + ' ' + _('Free space:') + ' ' + str(free) + _('MB') + "\n" + _("Select an image to restore:"))
 
 		try:
 			if not path.exists(self.BackupDirectory):
 				mkdir(self.BackupDirectory, 0755)
-			if path.exists(self.BackupDirectory + config.imagemanager.folderprefix.getValue() + '-swapfile_backup'):
-				system('swapoff ' + self.BackupDirectory + config.imagemanager.folderprefix.getValue() + '-swapfile_backup')
-				remove(self.BackupDirectory + config.imagemanager.folderprefix.getValue() + '-swapfile_backup')
+			if path.exists(self.BackupDirectory + config.imagemanager.folderprefix.value + '-swapfile_backup'):
+				system('swapoff ' + self.BackupDirectory + config.imagemanager.folderprefix.value + '-swapfile_backup')
+				remove(self.BackupDirectory + config.imagemanager.folderprefix.value + '-swapfile_backup')
 			self.refreshList()
 		except:
-			self['lab1'].setText(_("Device: ") + config.imagemanager.backuplocation.getValue() + "\n" + _("there was a problem with this device, please reformat and try again."))
+			self['lab1'].setText(_("Device: ") + config.imagemanager.backuplocation.value + "\n" + _("there was a problem with this device, please reformat and try again."))
 
 	def createSetup(self):
 		self.session.openWithCallback(self.setupDone, Setup, 'viximagemanager', 'SystemPlugins/ViX')
@@ -244,7 +244,7 @@ class VIXImageManager(Screen):
 
 	def doneConfiguring(self):
 		now = int(time())
-		if config.imagemanager.schedule.getValue():
+		if config.imagemanager.schedule.value:
 			if autoImageManagerTimer is not None:
 				print "[ImageManager] Backup Schedule Enabled at", strftime("%c", localtime(now))
 				autoImageManagerTimer.backupupdate()
@@ -356,7 +356,7 @@ class AutoImageManagerTimer:
 		self.backupactivityTimer.timeout.get().append(self.backupupdatedelay)
 		now = int(time())
 		global BackupTime
-		if config.imagemanager.schedule.getValue():
+		if config.imagemanager.schedule.value:
 			print "[ImageManager] Backup Schedule Enabled at ", strftime("%c", localtime(now))
 			if now > 1262304000:
 				self.backupupdate()
@@ -374,7 +374,7 @@ class AutoImageManagerTimer:
 		self.backupupdate()
 
 	def getBackupTime(self):
-		backupclock = config.imagemanager.scheduletime.getValue()
+		backupclock = config.imagemanager.scheduletime.value
 		nowt = time()
 		now = localtime(nowt)
 		return int(mktime((now.tm_year, now.tm_mon, now.tm_mday, backupclock[0], backupclock[1], 0, now.tm_wday, now.tm_yday, now.tm_isdst)))
@@ -386,15 +386,15 @@ class AutoImageManagerTimer:
 		now = int(time())
 		if BackupTime > 0:
 			if BackupTime < now + atLeast:
-				if config.imagemanager.repeattype.getValue() == "daily":
+				if config.imagemanager.repeattype.value == "daily":
 					BackupTime += 24 * 3600
 					while (int(BackupTime) - 30) < now:
 						BackupTime += 24 * 3600
-				elif config.imagemanager.repeattype.getValue() == "weekly":
+				elif config.imagemanager.repeattype.value == "weekly":
 					BackupTime += 7 * 24 * 3600
 					while (int(BackupTime) - 30) < now:
 						BackupTime += 7 * 24 * 3600
-				elif config.imagemanager.repeattype.getValue() == "monthly":
+				elif config.imagemanager.repeattype.value == "monthly":
 					BackupTime += 30 * 24 * 3600
 					while (int(BackupTime) - 30) < now:
 						BackupTime += 30 * 24 * 3600
@@ -432,15 +432,15 @@ class AutoImageManagerTimer:
 	def doBackup(self, answer):
 		now = int(time())
 		if answer is False:
-			if config.imagemanager.backupretrycount.getValue() < 2:
-				print '[ImageManager] Number of retries', config.imagemanager.backupretrycount.getValue()
+			if config.imagemanager.backupretrycount.value < 2:
+				print '[ImageManager] Number of retries', config.imagemanager.backupretrycount.value
 				print "[ImageManager] Backup delayed."
-				repeat = config.imagemanager.backupretrycount.getValue()
+				repeat = config.imagemanager.backupretrycount.value
 				repeat += 1
 				config.imagemanager.backupretrycount.setValue(repeat)
-				BackupTime = now + (int(config.imagemanager.backupretry.getValue()) * 60)
+				BackupTime = now + (int(config.imagemanager.backupretry.value) * 60)
 				print "[ImageManager] Backup Time now set to", strftime("%c", localtime(BackupTime)), strftime("(now=%c)", localtime(now))
-				self.backuptimer.startLongTimer(int(config.imagemanager.backupretry.getValue()) * 60)
+				self.backuptimer.startLongTimer(int(config.imagemanager.backupretry.value) * 60)
 			else:
 				atLeast = 60
 				print "[ImageManager] Enough Retries, delaying till next schedule.", strftime("%c", localtime(now))
@@ -458,17 +458,17 @@ class ImageBackup(Screen):
 	def __init__(self, session, updatebackup=False):
 		Screen.__init__(self, session)
 		self.Console = Console()
-		self.BackupDevice = config.imagemanager.backuplocation.getValue()
+		self.BackupDevice = config.imagemanager.backuplocation.value
 		print "[ImageManager] Device: " + self.BackupDevice
-		self.BackupDirectory = config.imagemanager.backuplocation.getValue() + 'imagebackups/'
+		self.BackupDirectory = config.imagemanager.backuplocation.value + 'imagebackups/'
 		print "[ImageManager] Directory: " + self.BackupDirectory
 		self.BackupDate = getImageVersion() + '.' + getImageBuild() + '-' + strftime('%Y%m%d_%H%M%S', localtime())
-		self.WORKDIR = self.BackupDirectory + config.imagemanager.folderprefix.getValue() + '-temp'
-		self.TMPDIR = self.BackupDirectory + config.imagemanager.folderprefix.getValue() + '-mount'
+		self.WORKDIR = self.BackupDirectory + config.imagemanager.folderprefix.value + '-temp'
+		self.TMPDIR = self.BackupDirectory + config.imagemanager.folderprefix.value + '-mount'
 		if updatebackup:
-			self.MAINDESTROOT = self.BackupDirectory + config.imagemanager.folderprefix.getValue() + '-SoftwareUpdate-' + self.BackupDate
+			self.MAINDESTROOT = self.BackupDirectory + config.imagemanager.folderprefix.value + '-SoftwareUpdate-' + self.BackupDate
 		else:
-			self.MAINDESTROOT = self.BackupDirectory + config.imagemanager.folderprefix.getValue() + '-' + self.BackupDate
+			self.MAINDESTROOT = self.BackupDirectory + config.imagemanager.folderprefix.value + '-' + self.BackupDate
 		self.kernelMTD = getMachineMtdKernel()
 		self.kernelFILE = getMachineKernelFile()
 		self.rootMTD = getMachineMtdRoot()
@@ -554,12 +554,12 @@ class ImageBackup(Screen):
 		try:
 			if not path.exists(self.BackupDirectory):
 				mkdir(self.BackupDirectory, 0755)
-			if path.exists(self.BackupDirectory + config.imagemanager.folderprefix.getValue() + "-swapfile_backup"):
-				system('swapoff ' + self.BackupDirectory + config.imagemanager.folderprefix.getValue() + "-swapfile_backup")
-				remove(self.BackupDirectory + config.imagemanager.folderprefix.getValue() + "-swapfile_backup")
+			if path.exists(self.BackupDirectory + config.imagemanager.folderprefix.value + "-swapfile_backup"):
+				system('swapoff ' + self.BackupDirectory + config.imagemanager.folderprefix.value + "-swapfile_backup")
+				remove(self.BackupDirectory + config.imagemanager.folderprefix.value + "-swapfile_backup")
 		except Exception, e:
 			print str(e)
-			print "Device: " + config.imagemanager.backuplocation.getValue() + ", i don't seem to have write access to this device."
+			print "Device: " + config.imagemanager.backuplocation.value + ", i don't seem to have write access to this device."
 
 		s = statvfs(self.BackupDevice)
 		free = (s.f_bsize * s.f_bavail) / (1024 * 1024)
@@ -614,15 +614,15 @@ class ImageBackup(Screen):
 			self.SwapCreated = True
 
 	def MemCheck2(self):
-		self.Console.ePopen("dd if=/dev/zero of=" + self.swapdevice + config.imagemanager.folderprefix.getValue() + "-swapfile_backup bs=1024 count=61440", self.MemCheck3)
+		self.Console.ePopen("dd if=/dev/zero of=" + self.swapdevice + config.imagemanager.folderprefix.value + "-swapfile_backup bs=1024 count=61440", self.MemCheck3)
 
 	def MemCheck3(self, result, retval, extra_args=None):
 		if retval == 0:
-			self.Console.ePopen("mkswap " + self.swapdevice + config.imagemanager.folderprefix.getValue() + "-swapfile_backup", self.MemCheck4)
+			self.Console.ePopen("mkswap " + self.swapdevice + config.imagemanager.folderprefix.value + "-swapfile_backup", self.MemCheck4)
 
 	def MemCheck4(self, result, retval, extra_args=None):
 		if retval == 0:
-			self.Console.ePopen("swapon " + self.swapdevice + config.imagemanager.folderprefix.getValue() + "-swapfile_backup", self.MemCheck5)
+			self.Console.ePopen("swapon " + self.swapdevice + config.imagemanager.folderprefix.value + "-swapfile_backup", self.MemCheck5)
 
 	def MemCheck5(self, result, retval, extra_args=None):
 		self.SwapCreated = True
@@ -725,9 +725,9 @@ class ImageBackup(Screen):
 			if getMachineBuild() in ('gb800solo', 'gb800se'):
 				copy('/usr/lib/enigma2/python/Plugins/SystemPlugins/ViX/burn.bat', self.MAINDESTROOT + '/burn.bat')
 		print '[ImageManager] Stage4: Removing Swap.'
-		if path.exists(self.swapdevice + config.imagemanager.folderprefix.getValue() + "-swapfile_backup"):
-			system('swapoff ' + self.swapdevice + config.imagemanager.folderprefix.getValue() + "-swapfile_backup")
-			remove(self.swapdevice + config.imagemanager.folderprefix.getValue() + "-swapfile_backup")
+		if path.exists(self.swapdevice + config.imagemanager.folderprefix.value + "-swapfile_backup"):
+			system('swapoff ' + self.swapdevice + config.imagemanager.folderprefix.value + "-swapfile_backup")
+			remove(self.swapdevice + config.imagemanager.folderprefix.value + "-swapfile_backup")
 		if path.exists(self.WORKDIR):
 			rmtree(self.WORKDIR)
 		if path.exists(self.MAINDEST + '/' + self.rootFILE) and path.exists(self.MAINDEST + '/' + self.kernelFILE):
@@ -758,7 +758,7 @@ class ImageBackup(Screen):
 		print '[ImageManager] Stage5: Complete.'
 
 	def BackupComplete(self, anwser=None):
-		if config.imagemanager.schedule.getValue():
+		if config.imagemanager.schedule.value:
 			atLeast = 60
 			autoImageManagerTimer.backupupdate(atLeast)
 		else:

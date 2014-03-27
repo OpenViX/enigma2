@@ -504,8 +504,8 @@ class VIXBackupManager(Screen):
 
 		if path.exists('/tmp/3rdPartyPlugins') and self.kernelcheck:
 			self.pluginslist2 = []
-			if config.backupmanager.xtraplugindir.getValue():
-				self.thirdpartyPluginsLocation = config.backupmanager.xtraplugindir.getValue()
+			if config.backupmanager.xtraplugindir.value:
+				self.thirdpartyPluginsLocation = config.backupmanager.xtraplugindir.value
 				self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace(' ', '%20')
 			elif path.exists('/tmp/3rdPartyPluginsLocation'):
 				self.thirdpartyPluginsLocation = open('/tmp/3rdPartyPluginsLocation', 'r').readlines()
@@ -701,7 +701,7 @@ class XtraPluginsSelection(Screen):
 		self["key_red"] = StaticText(_("Cancel"))
 		self["key_green"] = StaticText(_("Save"))
 
-		defaultDir = config.backupmanager.backuplocation.getValue()
+		defaultDir = config.backupmanager.backuplocation.value
 		self.filelist = FileList(defaultDir, showFiles=True, matchingPattern='^.*.(ipk)')
 		self["checkList"] = self.filelist
 
@@ -940,9 +940,9 @@ class BackupFiles(Screen):
 		Screen.__init__(self, session)
 		self.Console = Console()
 		self.updatebackup = updatebackup
-		self.BackupDevice = config.backupmanager.backuplocation.getValue()
+		self.BackupDevice = config.backupmanager.backuplocation.value
 		print "[BackupManager] Device: " + self.BackupDevice
-		self.BackupDirectory = config.backupmanager.backuplocation.getValue() + 'backup/'
+		self.BackupDirectory = config.backupmanager.backuplocation.value + 'backup/'
 		print "[BackupManager] Directory: " + self.BackupDirectory
 		self.Stage1Completed = False
 		self.Stage2Completed = False
@@ -1027,14 +1027,14 @@ class BackupFiles(Screen):
 		config.backupmanager.backupdirs.setValue(self.selectedFiles)
 		config.backupmanager.backupdirs.save()
 		configfile.save()
-		print 'self.selectedFiles', config.backupmanager.backupdirs.getValue()
+		print 'self.selectedFiles', config.backupmanager.backupdirs.value
 
 		try:
 			if not path.exists(self.BackupDirectory):
 				mkdir(self.BackupDirectory, 0755)
 		except Exception, e:
 			print str(e)
-			print "Device: " + config.backupmanager.backuplocation.getValue() + ", i don't seem to have write access to this device."
+			print "Device: " + config.backupmanager.backuplocation.value + ", i don't seem to have write access to this device."
 
 		s = statvfs(self.BackupDevice)
 		free = (s.f_bsize * s.f_bavail) / (1024 * 1024)
@@ -1081,21 +1081,21 @@ class BackupFiles(Screen):
 		self.Stage3Completed = True
 
 	def Stage4(self):
-		if config.backupmanager.xtraplugindir.getValue() and path.exists(config.backupmanager.xtraplugindir.getValue()):
+		if config.backupmanager.xtraplugindir.value and path.exists(config.backupmanager.xtraplugindir.value):
 			output = open('/tmp/3rdPartyPlugins', 'w')
-			for file in listdir(config.backupmanager.xtraplugindir.getValue()):
+			for file in listdir(config.backupmanager.xtraplugindir.value):
 				print 'file:', file
 				if file.endswith('.ipk'):
 					print 'IPK FOUND', file
 					parts = file.strip().split('_')
 					output.write(parts[0] + '\n')
 			output = open('/tmp/3rdPartyPluginsLocation', 'w')
-			output.write(config.backupmanager.xtraplugindir.getValue())
+			output.write(config.backupmanager.xtraplugindir.value)
 			output.close()
 		self.Stage4Completed = True
 
 	def Stage5(self):
-		tmplist = config.backupmanager.backupdirs.getValue()
+		tmplist = config.backupmanager.backupdirs.value
 		tmplist.append('/tmp/ExtraInstalledPlugins')
 		tmplist.append('/tmp/backupkernelversion')
 		tmplist.append('/tmp/backupimageversion')

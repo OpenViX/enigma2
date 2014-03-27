@@ -37,4 +37,4 @@ class VIXScriptRunner(IpkgInstaller):
 		if len(cmdList) < 1 and len(self.list.list):
 			cmdList.append('chmod +x /usr/script/' + self.list.getCurrent()[0][0] + ' && . ' + '/usr/script/' + str(self.list.getCurrent()[0][0]))
 		if len(cmdList) > 0:
-			self.session.open(Console, cmdlist=cmdList, closeOnSuccess=config.scriptrunner.close.getValue())
+			self.session.open(Console, cmdlist=cmdList, closeOnSuccess=config.scriptrunner.close.value)
