@@ -1,5 +1,5 @@
 # for localized messages
-from boxbranding import getBoxType, getImageVersion, getImageBuild, getImageFolder, getImageFileSystem, getBrandOEM, getMachineBrand, getMachineName, getMachineBuild, getMachineMtdRoot, getMachineRootFile, getMachineMtdKernel, getMachineKernelFile, getMachineMKUBIFS, getMachineUBINIZE
+from boxbranding import getBoxType, getImageVersion, getImageBuild, getImageFolder, getImageFileSystem, getBrandOEM, getMachineBrand, getMachineName, getMachineBuild, getMachineMake, getMachineMtdRoot, getMachineRootFile, getMachineMtdKernel, getMachineKernelFile, getMachineMKUBIFS, getMachineUBINIZE
 from os import path, system, mkdir, makedirs, listdir, remove, statvfs, chmod, walk, symlink, unlink
 from shutil import rmtree, move, copy
 from time import localtime, time, strftime, mktime
@@ -805,72 +805,76 @@ class ImageManagerDownload(Screen):
 			wos_pwd = base64.b64decode('cDRsWF4sTHRGNkI4Cg==').replace('\n', '')
 			ftp = FTP('world-of-satellite.com')
 			ftp.login(wos_user, wos_pwd)
-			if getBoxType() == 'vuuno':
+			if getMachineMake() == 'vuuno':
 				self.boxtype = 'Vu+Uno'
-			elif getBoxType() == 'vuultimo':
+			elif getMachineMake() == 'vuultimo':
 				self.boxtype = 'Vu+Ultimo'
-			elif getBoxType() == 'vusolo':
+			elif getMachineMake() == 'vusolo':
 				self.boxtype = 'Vu+Solo'
-			elif getBoxType() == 'vusolo2':
+			elif getMachineMake() == 'vusolo2':
 				self.boxtype = 'Vu+Solo2'
-			elif getBoxType() == 'vuduo':
+			elif getMachineMake() == 'vuduo':
 				self.boxtype = 'Vu+Duo'
-			elif getBoxType() == 'vuduo2':
+			elif getMachineMake() == 'vuduo2':
 				self.boxtype = 'Vu+Duo2'
-			elif getBoxType() == 'et4x00':
+			elif getMachineMake() == 'et4x00':
 				self.boxtype = 'ET-4x00'
-			elif getBoxType() == 'et5x00':
+			elif getMachineMake() == 'et5x00':
 				self.boxtype = 'ET-5x00'
-			elif getBoxType() == 'et6x00':
+			elif getMachineMake() == 'et6x00':
 				self.boxtype = 'ET-6x00'
-			elif getBoxType() == 'et8000':
+			elif getMachineMake() == 'et8000':
 				self.boxtype = 'ET-8x00'
-			elif getBoxType() == 'et9x00':
+			elif getMachineMake() == 'et9x00':
 				self.boxtype = 'ET-9x00'
-			elif getBoxType() == 'et10000':
+			elif getMachineMake() == 'et10000':
 				self.boxtype = 'ET-10x00'
-			elif getBoxType() == 'tmtwin':
+			elif getMachineMake() == 'tmtwin':
 				self.boxtype = 'TM-Twin-OE'
-			elif getBoxType() == 'tm2t':
+			elif getMachineMake() == 'tm2t':
 				self.boxtype = 'TM-2T'
-			elif getBoxType() == 'tmsingle':
+			elif getMachineMake() == 'tmsingle':
 				self.boxtype = 'TM-Single'
-			elif getBoxType() == 'tmnano':
+			elif getMachineMake() == 'tmnano':
 				self.boxtype = 'TM-Nano-OE'
-			elif getBoxType() == 'tmnano2t':
+			elif getMachineMake() == 'tmnano2t':
 				self.boxtype = 'TM-Nano-2T'
-			elif getBoxType() == 'iqonios100hd':
+			elif getMachineMake() == 'iqonios100hd':
 				self.boxtype = 'iqon-IOS-100HD'
-			elif getBoxType() == 'iqonios200hd':
+			elif getMachineMake() == 'iqonios200hd':
 				self.boxtype = 'iqon-IOS-200HD'
-			elif getBoxType() == 'iqonios300hd':
+			elif getMachineMake() == 'iqonios300hd':
 				self.boxtype = 'iqon-IOS-300HD'
-			elif getBoxType() == 'maram9':
+			elif getMachineMake() == 'maram9':
 				self.boxtype = 'Mara-M9'
-			elif getBoxType() == 'xp1000max':
+			elif getMachineMake() == 'xp1000max':
 				self.boxtype = 'MaxDigital-XP1000'
-			elif getBoxType() == 'xp1000plus':
+			elif getMachineMake() == 'xp1000plus':
 				self.boxtype = 'OCTAGON-XP1000PLUS'
-			elif getBoxType() == 'sf8':
+			elif getMachineMake() == 'sf8':
 				self.boxtype = 'OCTAGON-SF8-HD'
-			elif getBoxType() == 'qb800solo':
+			elif getMachineMake() == 'qb800solo':
 				self.boxtype = 'GiGaBlue-HD800Solo'
-			elif getBoxType() == 'gb800se':
+			elif getMachineMake() == 'gb800se':
 				self.boxtype = 'GiGaBlue-HD800SE'
-			elif getBoxType() == 'gb800ue':
+			elif getMachineMake() == 'gb800ue':
 				self.boxtype = 'GiGaBlue-HD800UE'
-			elif getBoxType() == 'gb800seplus':
+			elif getMachineMake() == 'gb800seplus':
 				self.boxtype = 'GiGaBlue-HD800SE-PLUS'
-			elif getBoxType() == 'gb800ueplus':
+			elif getMachineMake() == 'gb800ueplus':
 				self.boxtype = 'GiGaBlue-HD800UE-PLUS'
-			elif getBoxType() == 'gbquad':
+			elif getMachineMake() == 'gbquad':
 				self.boxtype = 'GiGaBlue-HD-QUAD'
-			elif getBoxType() == 'gbquadplus':
+			elif getMachineMake() == 'gbquadplus':
 				self.boxtype = 'GiGaBlue-HD-QUAD-PLUS'
-			elif getBoxType() == 'ventonhdx':
+			elif getMachineMake() == 'ventonhdx':
 				self.boxtype = 'Venton-Unibox-HDx'
-			elif getBoxType() == 'mbtwin':
+			elif getMachineMake() == 'mbtwin':
 				self.boxtype = 'MediaBox-Twin'
+			
+			print 'getMachineMake:',getMachineMake()
+			print 'getMachineBuild:',getMachineBuild()
+			print 'getBoxType:',getBoxType()
 			ftp.cwd(self.boxtype)
 
 			del self.emlist[:]
