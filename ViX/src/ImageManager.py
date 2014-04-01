@@ -879,7 +879,7 @@ class ImageManagerDownload(Screen):
 
 			del self.emlist[:]
 			for fil in ftp.nlst():
-				if not fil.endswith('.') and fil.find(getBoxType()) != -1:
+				if not fil.endswith('.') and fil.find(getMachineMake()) != -1:
 					self.emlist.append(fil)
 			self.emlist.sort()
 			self.emlist.reverse()
