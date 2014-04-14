@@ -293,18 +293,17 @@ class VIXBackupManager(Screen):
 			self.session.open(MessageBox, _("Backup in progress,\nPlease for it to finish, before trying again"), MessageBox.TYPE_INFO, timeout=10)
 
 	def settingsRestoreCheck(self, result, retval, extra_args=None):
-		self.keyResstore1()
-		# if path.exists('/tmp/backupimageversion'):
-		# 	imageversion = file('/tmp/backupimageversion').read()
-		# 	print 'Backup Image:', imageversion
-		# 	print 'Current Image:', about.getVersionString()
-		# 	if imageversion == about.getVersionString():
-		# 		print '[RestoreWizard] Stage 1: Image ver OK'
-		# 		self.keyResstore1()
-		# 	else:
-		# 		self.session.open(MessageBox, _("Sorry, but the file is not compatible with this image version."), MessageBox.TYPE_INFO, timeout=10)
-		# else:
-		# 	self.session.open(MessageBox, _("Sorry, but the file is not compatible with this image version."), MessageBox.TYPE_INFO, timeout=10)
+		if path.exists('/tmp/backupimageversion'):
+			imageversion = file('/tmp/backupimageversion').read()
+			print 'Backup Image:', imageversion
+			print 'Current Image:', about.getVersionString()
+			if imageversion in (about.getVersionString(), 'Zeus'):
+				print '[RestoreWizard] Stage 1: Image ver OK'
+				self.keyResstore1()
+			else:
+				self.session.open(MessageBox, _("Sorry, but the file is not compatible with this image version."), MessageBox.TYPE_INFO, timeout=10)
+		else:
+			self.session.open(MessageBox, _("Sorry, but the file is not compatible with this image version."), MessageBox.TYPE_INFO, timeout=10)
 
 	def keyResstore1(self):
 		message = _("Are you sure you want to restore this backup:\n ") + self.sel
@@ -453,9 +452,8 @@ class VIXBackupManager(Screen):
 			print '[BackupManager] Restoring Stage 3: Feeds are OK'
 			if path.exists('/tmp/backupkernelversion') and path.exists('/tmp/backupimageversion'):
 				kernelversion = file('/tmp/backupkernelversion').read()
-				# imageversion = file('/tmp/backupimageversion').read()
-				# if kernelversion == about.getKernelVersionString() and imageversion == about.getVersionString():
-				if kernelversion == about.getKernelVersionString():
+				imageversion = file('/tmp/backupimageversion').read()
+				if kernelversion == about.getKernelVersionString() and imageversion in (about.getVersionString(), 'Zeus'):
 					# print '[BackupManager] Restoring Stage 3: Kernel Version is same as backup'
 					self.kernelcheck = True
 					self.Console.ePopen('opkg list-installed', self.Stage3Complete)

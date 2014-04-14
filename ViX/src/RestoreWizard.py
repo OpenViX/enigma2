@@ -177,12 +177,7 @@ class RestoreWizard(WizardLanguage, Rc):
 			self.afterAsyncCode()
 
 	def settingsRestore_Started(self, result, retval, extra_args=None):
-		# self.doRestoreSettings1()
-		print '[RestoreWizard] Stage 1: Initialise'
-		print '[RestoreWizard] Stage 2: Restoring settings'
-		self.Console.ePopen("tar -xzvf " + self.fullbackupfilename + " -C /", self.settingRestore_Finished)
-		self.pleaseWait = self.session.open(MessageBox, _("Please wait while settings restore completes..."), type=MessageBox.TYPE_INFO, enable_input=False, wizard=True)
-		self.pleaseWait.setTitle(_("Restore Wizard"))
+		self.doRestoreSettings1()
 
 	def doRestoreSettings1(self):
 		print '[RestoreWizard] Stage 1: Check Version'
@@ -231,16 +226,14 @@ class RestoreWizard(WizardLanguage, Rc):
 
 	def doRestorePlugins1(self):
 		print '[RestoreWizard] Stage 3: Check Kernel'
-		# if fileExists('/tmp/backupkernelversion') and fileExists('/tmp/backupimageversion'):
-		# 	imageversion = file('/tmp/backupimageversion').read()
-		if fileExists('/tmp/backupkernelversion'):
+		if fileExists('/tmp/backupkernelversion') and fileExists('/tmp/backupimageversion'):
+			imageversion = file('/tmp/backupimageversion').read()
 			kernelversion = file('/tmp/backupkernelversion').read()
-			# print 'Backup Image:', imageversion
-			# print 'Current Image:', about.getVersionString()
+			print 'Backup Image:', imageversion
+			print 'Current Image:', about.getVersionString()
 			print 'Backup Kernel:', kernelversion
 			print 'Current Kernel:', about.getKernelVersionString()
-			# if kernelversion == about.getKernelVersionString() and imageversion == about.getVersionString():
-			if kernelversion == about.getKernelVersionString():
+			if kernelversion == about.getKernelVersionString() and imageversion in (about.getVersionString(), 'Zeus'):
 				print '[RestoreWizard] Stage 3: Kernel and image ver OK'
 				self.doRestorePluginsTest()
 			else:
