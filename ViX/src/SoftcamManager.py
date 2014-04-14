@@ -507,22 +507,22 @@ class SoftcamAutoPoller:
 
 	def __init__(self):
 		# Init Timer
-		if not path.exists('/etc/keys'):
-			mkdir('/etc/keys', 0755)
-		if not path.exists('/etc/tuxbox/config'):
-			mkdir('/etc/tuxbox/config', 0755)
-		if not path.exists('/var/tuxbox'):
-			symlink('/etc/tuxbox', '/var/tuxbox')
-		if not path.exists('/var/keys'):
-			symlink('/etc/keys', '/var/keys')
-		if not path.exists('/usr/keys'):
-			symlink('/etc/keys', '/usr/keys')
-		if not path.exists('/etc/scce'):
-			mkdir('/etc/scce', 0755)
-		if not path.exists('/var/scce'):
-			symlink('/etc/scce', '/var/scce')
 		if not path.exists('/usr/softcams'):
 			mkdir('/usr/softcams', 0755)
+		if not path.exists('/etc/scce'):
+			mkdir('/etc/scce', 0755)
+		if not path.exists('/etc/tuxbox/config'):
+			mkdir('/etc/tuxbox/config', 0755)
+		if not path.islink('/var/tuxbox'):
+			symlink('/etc/tuxbox', '/var/tuxbox')
+		if not path.exists('/usr/keys'):
+			mkdir('/usr/keys', 0755)
+		if not path.islink('/var/keys'):
+			symlink('/usr/keys', '/var/keys')
+		if not path.islink('/etc/keys'):
+			symlink('/usr/keys', '/etc/keys')
+		if not path.islink('/var/scce'):
+			symlink('/etc/scce', '/var/scce')
 		self.timer = eTimer()
 
 	def start(self):
