@@ -871,6 +871,8 @@ class ImageManagerDownload(Screen):
 				self.boxtype = 'Venton-Unibox-HDx'
 			elif getMachineMake() == 'mbtwin':
 				self.boxtype = 'MediaBox-Twin'
+			elif getMachineMake() == 'mbmini':
+				self.boxtype = 'MediaBox-Mini'
 			
 			print 'getMachineMake:',getMachineMake()
 			print 'getMachineBuild:',getMachineBuild()
