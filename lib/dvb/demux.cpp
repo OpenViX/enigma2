@@ -17,6 +17,29 @@ static int determineBufferCount()
 	}
 	unsigned int megabytes = si.totalram >> 20;
 	int result;
+#if defined(__sh__)
+	int fd = open("/proc/stb/info/model", O_RDONLY);
+	char tmp[16];
+	int rd = fd >= 0 ? read(fd, tmp, sizeof(tmp)) : 0;
+	if (fd >= 0)
+		close(fd);
+	else if (!strncmp(tmp, "ufs912\n", rd))
+		result = 16; // 128mb
+	else if (!strncmp(tmp, "ufs913\n", rd))
+		result = 16; // 128mb
+	else if (!strncmp(tmp, "spark\n", rd))
+		result = 8; // 128mb
+	else if (!strncmp(tmp, "spark7162\n", rd))
+		result = 8; // 128mb
+	else if (!strncmp(tmp, "atevio7500\n", rd))
+		result = 16; // 128mb
+	else if (!strncmp(tmp, "hs7810a\n", rd))
+		result = 16; // 128mb
+	else if (!strncmp(tmp, "hs7110\n", rd))
+		result = 16; // 128mb
+	else
+		result = 8; // weniger als 128mb	
+#else
 	if (megabytes > 400)
 		result = 40; // 1024MB systems: Use 8MB IO buffers (vusolo2, vuduo2, ...)
 	else if (megabytes > 200)
@@ -25,6 +48,7 @@ static int determineBufferCount()
 		result = 16; // 256MB systems: Use 3MB demux buffers (dm8000, et5x00, vuduo)
 	else
 		result = 8; // Smaller boxes: Use 1.5MB buffer (dm7025)
+#endif
 	return result;
 }
 

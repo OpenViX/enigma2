@@ -10,6 +10,10 @@
 #include <netinet/in.h>
 
 
+#if defined(__sh__)
+#include <sys/vfs.h>
+#include <linux/magic.h>
+#endif
 DEFINE_REF(eDVBServiceRecord);
 
 eDVBServiceRecord::eDVBServiceRecord(const eServiceReferenceDVB &ref, bool isstreamclient): m_ref(ref)
@@ -303,9 +307,43 @@ int eDVBServiceRecord::doRecord()
 	
 	if (!m_record && m_tuned && !m_streaming && !m_simulate)
 	{
+#if defined(__sh__)
+		int flags = O_WRONLY|O_CREAT|O_LARGEFILE;
+		struct statfs sbuf;
+#endif
 		eDebug("Recording to %s...", m_filename.c_str());
 		::remove(m_filename.c_str());
+#if defined(__sh__)
+		//we must creat a file for statfs
 		int fd = ::open(m_filename.c_str(), O_WRONLY|O_CREAT|O_LARGEFILE, 0666);
+		::close(fd);
+		if (statfs(m_filename.c_str(), &sbuf) < 0)
+		{
+			eDebug("eDVBServiceRecord - can't get fs type assuming none NFS!");
+		} else
+		{
+			if (sbuf.f_type == EXT3_SUPER_MAGIC)
+				eDebug("eDVBServiceRecord - Ext2/3/4 Filesystem\n");
+			else
+			if (sbuf.f_type == NFS_SUPER_MAGIC)
+			{
+				eDebug("eDVBServiceRecord - NFS Filesystem; add O_DIRECT to flags\n");
+				flags |= O_DIRECT;
+			}
+			else
+			if (sbuf.f_type == USBDEVICE_SUPER_MAGIC)
+				eDebug("eDVBServiceRecord - USB Device\n");
+			else
+			if (sbuf.f_type == SMB_SUPER_MAGIC)
+				eDebug("eDVBServiceRecord - SMBs Device\n");
+			else 
+			if (sbuf.f_type == MSDOS_SUPER_MAGIC)
+				eDebug("eDVBServiceRecord - MSDOS Device\n");
+		}
+		fd = ::open(m_filename.c_str(), flags, 0644);
+#else
+		int fd = ::open(m_filename.c_str(), O_WRONLY|O_CREAT|O_LARGEFILE, 0644);
+#endif
 		if (fd == -1)
 		{
 			eDebug("eDVBServiceRecord - can't open recording file!");
