@@ -19,8 +19,12 @@ gdi_libenigma_gdi_a_SOURCES = \
 	gdi/lcd.cpp \
 	gdi/picexif.cpp \
 	gdi/picload.cpp \
-	gdi/region.cpp \
-	gdi/stmfb.cpp
+	gdi/region.cpp
+
+if ENABLE_SH
+gdi_libenigma_gdi_a_SOURCES += \
+        gdi/stmfb.cpp
+endif
 
 gdiincludedir = $(pkgincludedir)/lib/gdi
 gdiinclude_HEADERS = \
