@@ -16,9 +16,6 @@ inStandby = None
 class Standby2(Screen):
 	def Power(self):
 		print "leave standby"
-#+++>
-		open("/proc/stb/hdmi/output", "w").write("on")
-#+++<
 		#set input to encoder
 		self.avswitch.setInput("ENCODER")
 		#restart last played service
@@ -79,9 +76,6 @@ class Standby2(Screen):
 			self.avswitch.setInput("SCART")
 		else:
 			self.avswitch.setInput("AUX")
-#+++>
-		open("/proc/stb/hdmi/output", "w").write("off")
-#+++<
 		self.onFirstExecBegin.append(self.__onFirstExecBegin)
 		self.onClose.append(self.__onClose)
 
