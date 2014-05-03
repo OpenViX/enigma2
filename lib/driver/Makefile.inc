@@ -37,9 +37,3 @@ driver_libenigma_driver_a_SOURCES += \
 	driver/vfd.cpp \
 	driver/vfd.h
 endif
-
-if ENABLE_SH
-driver_libenigma_driver_a_SOURCES += \
-	driver/vfd.cpp \
-	driver/vfd.h
-endif
