@@ -839,6 +839,8 @@ class ImageManagerDownload(Screen):
 				self.boxtype = 'TM-Nano-OE'
 			elif getMachineMake() == 'tmnano2t':
 				self.boxtype = 'TM-Nano-2T'
+			elif getMachineMake() == 'tmnano2super':
+				self.boxtype = 'TM-Nano2-Super'
 			elif getMachineMake() == 'iqonios100hd':
 				self.boxtype = 'iqon-IOS-100HD'
 			elif getMachineMake() == 'iqonios200hd':
@@ -873,6 +875,10 @@ class ImageManagerDownload(Screen):
 				self.boxtype = 'Miraclebox-Twin'
 			elif getMachineMake() == 'mbmini':
 				self.boxtype = 'Miraclebox-Mini'
+			elif getMachineMake() == 'xpeedlx':
+				self.boxtype = 'GI-Xpeed-LX'
+			elif getMachineMake() == 'xpeedlx3':
+				self.boxtype = 'GI-Xpeed-LX3'
 			
 			print 'getMachineMake:',getMachineMake()
 			print 'getMachineBuild:',getMachineBuild()
