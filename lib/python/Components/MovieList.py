@@ -382,7 +382,7 @@ class MovieList(GUIComponent):
 		ih = self.itemHeight
 		lenSize = ih * 3 # 25 -> 75
 		dateSize = ih * 145 / 25   # 25 -> 145
-		res.append(MultiContentEntryText(pos=(iconSize, 0), size=(width-iconSize-dateSize, ih), font = 0, flags = RT_HALIGN_LEFT, text = data.txt))
+		res.append(MultiContentEntryText(pos=(iconSize, 0), size=(width-iconSize-dateSize, ih), font = 0, flags = RT_HALIGN_LEFT|RT_VALIGN_CENTER, text = data.txt))
 		res.append(MultiContentEntryText(pos=(width-dateSize, 0), size=(dateSize, ih), font=1, flags=RT_HALIGN_RIGHT|RT_VALIGN_CENTER, text=begin_string))
 		return res
 
@@ -477,7 +477,7 @@ class MovieList(GUIComponent):
 		serviceHandler = eServiceCenter.getInstance()
 		numberOfDirs = 0
 
-		reflist = serviceHandler.list(root)
+		reflist = root and serviceHandler.list(root)
 		if reflist is None:
 			print "listing of movies failed"
 			return
