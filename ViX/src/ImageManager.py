@@ -46,7 +46,10 @@ config.imagemanager.restoreimage = NoSave(ConfigText(default=getBoxType(), fixed
 autoImageManagerTimer = None
 
 if path.exists(config.imagemanager.backuplocation.value + 'imagebackups/imagerestore'):
-	rmtree(config.imagemanager.backuplocation.value + 'imagebackups/imagerestore')
+	try:
+		rmtree(config.imagemanager.backuplocation.value + 'imagebackups/imagerestore')
+	except:
+		pass
 
 
 def ImageManagerautostart(reason, session=None, **kwargs):
