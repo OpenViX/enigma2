@@ -882,10 +882,9 @@ class ImageManagerDownload(Screen):
 				self.boxtype = 'GI-Xpeed-LX'
 			elif getMachineMake() == 'xpeedlx3':
 				self.boxtype = 'GI-Xpeed-LX3'
-			
-			print 'getMachineMake:',getMachineMake()
-			print 'getMachineBuild:',getMachineBuild()
-			print 'getBoxType:',getBoxType()
+			elif getMachineMake() == 'axodinc':
+				self.boxtype = 'Opticum-AX-ODIN-DVBC-1'
+
 			ftp.cwd(self.boxtype)
 
 			del self.emlist[:]
