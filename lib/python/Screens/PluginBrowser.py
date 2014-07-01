@@ -327,10 +327,9 @@ class PluginDownloadBrowser(Screen):
 		if self.type == self.DOWNLOAD:
 			currentTimeoutDefault = socket.getdefaulttimeout()
 			socket.setdefaulttimeout(3)
-			try:
-				config.softwareupdate.updateisunstable.setValue(urlopen("http://enigma2.world-of-satellite.com/feeds/" + getImageVersion() + "/status").read())
-			except:
-				config.softwareupdate.updateisunstable.setValue(1)
+			config.softwareupdate.updateisunstable.setValue(urlopen("http://enigma2.world-of-satellite.com/feeds/status").read())
+			if ('404 Not Found') in config.softwareupdate.updateisunstable.value:
+				config.softwareupdate.updateisunstable.setValue('1')
 			socket.setdefaulttimeout(currentTimeoutDefault)
 
 			if config.softwareupdate.updateisunstable.value == '1' and config.softwareupdate.updatebeta.value:
@@ -389,12 +388,14 @@ class PluginDownloadBrowser(Screen):
 				if not plugin[0].endswith('-meta') and plugin[0] not in self.installedplugins and ((not config.pluginbrowser.po.value and not plugin[0].endswith('-po')) or config.pluginbrowser.po.value) and ((not config.pluginbrowser.src.value and not plugin[0].endswith('-src')) or config.pluginbrowser.src.value):
 					pluginlist.append(plugin + (plugin[0][15:],))
 			if pluginlist:
+				self["text"].hide()
 				pluginlist.sort()
 				self.updateList()
 				self["list"].instance.show()
 			else:
 				self["text"].setText(_("No new plugins found"))
 		else:
+			self["text"].hide()
 			if self.pluginlist:
 				self.updateList()
 				self["list"].instance.show()
