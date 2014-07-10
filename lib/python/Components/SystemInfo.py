@@ -22,10 +22,8 @@ def countFrontpanelLEDs():
 	leds = 0
 	if fileExists("/proc/stb/fp/led_set_pattern"):
 		leds += 1
-
 	while fileExists("/proc/stb/fp/led%d_pattern" % leds):
 		leds += 1
-
 	return leds
 
 SystemInfo["12V_Output"] = Misc_Options.getInstance().detected_12V_output()
@@ -38,6 +36,7 @@ SystemInfo["DeepstandbySupport"] = HardwareInfo().has_deepstandby()
 SystemInfo["Fan"] = fileCheck("/proc/stb/fp/fan")
 SystemInfo["FanPWM"] = SystemInfo["Fan"] and fileCheck("/proc/stb/fp/fan_pwm")
 SystemInfo["StandbyLED"] = fileCheck("/proc/stb/power/standbyled")
+SystemInfo["LEDButtons"] = getBoxType() == 'vuultimo'
 if getBoxType() not in ('gbquadplus'):
 	SystemInfo["WakeOnLAN"] = fileCheck("/proc/stb/power/wol") or fileCheck("/proc/stb/fp/wol")
 else:
@@ -49,3 +48,6 @@ SystemInfo["Satfinder"] = fileExists("/usr/lib/enigma2/python/Plugins/SystemPlug
 SystemInfo["HasExternalPIP"] = getMachineBuild() not in ('et9x00', 'et6x00', 'et5x00') and fileCheck("/proc/stb/vmpeg/1/external")
 SystemInfo["VideoDestinationConfigurable"] = fileExists("/proc/stb/vmpeg/0/dst_left")
 SystemInfo["hasPIPVisibleProc"] = fileCheck("/proc/stb/vmpeg/1/visible")
+SystemInfo["LCDMiniTV"] = fileExists("/proc/stb/lcd/mode")
+SystemInfo["LCDMiniTVPiP"] = SystemInfo["LCDMiniTV"] and getBoxType() != 'gb800ueplus'
+
