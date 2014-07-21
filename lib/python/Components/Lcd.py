@@ -132,9 +132,9 @@ class LCD:
 	def setLEDBlinkingTime(self, value):
 		eDBoxLCD.getInstance().setLED(value, 2)
 
-	def setLEDStandby(configElement):
+	def setLEDStandby(self, value):
 		file = open("/proc/stb/power/standbyled", "w")
-		file.write(configElement.value and "on" or "off")
+		file.write(value and "on" or "off")
 		file.close()
 
 	def setLCDMiniTVMode(self, value):
@@ -167,18 +167,32 @@ def standbyCounterChanged(configElement):
 		config.lcd.ledbrightnessdeepstandby.apply()
 
 def InitLcd():
-	if getBoxType() in ('gb800se', 'gb800solo', 'iqonios300hd', 'tmsingle', 'tmnano2super', 'vusolo', 'et4x00', 'et5x00', 'et6x00'):
+	if getBoxType() in ('gb800se', 'gb800solo', 'iqonios300hd', 'tmsingle', 'tmnano2super', 'vusolo', 'vusolose', 'et4x00', 'et5x00', 'et6x00'):
 		detected = False
 	else:
 		detected = eDBoxLCD.getInstance().detected()
+
+	ilcd = LCD()
+
 	SystemInfo["Display"] = detected
 	config.lcd = ConfigSubsection()
 
 	if SystemInfo["StandbyLED"]:
+		def setLEDstandby(configElement):
+			ilcd.setLEDStandby(configElement.value)
 		config.usage.standbyLED = ConfigYesNo(default = True)
 		config.usage.standbyLED.addNotifier(setLEDstandby)
 
 	if SystemInfo["LEDButtons"]:
+		def setLEDnormalstate(configElement):
+			ilcd.setLEDNormalState(configElement.value)
+
+		def setLEDdeepstandby(configElement):
+			ilcd.setLEDDeepStandbyState(configElement.value)
+
+		def setLEDblinkingtime(configElement):
+			ilcd.setLEDBlinkingTime(configElement.value)
+
 		config.lcd.ledblinkingtime = ConfigSlider(default = 5, increment = 1, limits = (0,15))
 		config.lcd.ledblinkingtime.addNotifier(setLEDblinkingtime)
 		config.lcd.ledbrightnessdeepstandby = ConfigSlider(default = 1, increment = 1, limits = (0,15))
@@ -236,21 +250,7 @@ def InitLcd():
 		def setLCDminitvfps(configElement):
 			ilcd.setLCDMiniTVFPS(configElement.value)
 
-		def setLEDstandby(configElement):
-			ilcd.setLEDStandby(configElement.value)
-
-		def setLEDnormalstate(configElement):
-			ilcd.setLEDNormalState(configElement.value)
-
-		def setLEDdeepstandby(configElement):
-			ilcd.setLEDDeepStandbyState(configElement.value)
-
-		def setLEDblinkingtime(configElement):
-			ilcd.setLEDBlinkingTime(configElement.value)
-
 		standby_default = 0
-
-		ilcd = LCD()
 
 		if not ilcd.isOled():
 			config.lcd.contrast = ConfigSlider(default=5, limits=(0, 20))
