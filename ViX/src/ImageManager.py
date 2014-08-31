@@ -814,6 +814,8 @@ class ImageManagerDownload(Screen):
 				self.boxtype = 'Vu+Ultimo'
 			elif getMachineMake() == 'vusolo':
 				self.boxtype = 'Vu+Solo'
+			elif getMachineMake() == 'vusolose':
+				self.boxtype = 'Vu+Solo-SE'
 			elif getMachineMake() == 'vusolo2':
 				self.boxtype = 'Vu+Solo2'
 			elif getMachineMake() == 'vuduo':
