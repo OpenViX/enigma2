@@ -76,9 +76,7 @@ class HelpMenuList(GUIComponent):
 
 				# only show entries with keys that are available on the used rc
 				if not buttonNames:
-					print '[HelpMenuList] no valid buttons 2'
 					continue
-				print '[HelpMenuList] valid buttons 2', buttonNames
 
 				if isinstance(help, list):
 					if not self.extendedHelp:
