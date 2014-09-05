@@ -60,7 +60,7 @@ class AVSwitch:
 	modes["Scart"] = ["PAL", "NTSC", "Multi"]
 	# modes["DVI-PC"] = ["PC"]
 
-	if about.getChipSetString() in ('7358', '7356', '7424', '7425', '7241', '7162'):
+	if about.getChipSetString() in ('7358', '7356', '7424', '7425', '7241', '7111', '7162'):
 		modes["HDMI"] = ["720p", "1080p", "1080i", "576p", "576i", "480p", "480i"]
 		widescreen_modes = {"720p", "1080p", "1080i"}
 	else:
@@ -163,7 +163,6 @@ class AVSwitch:
 			#call setResolution() with -1,-1 to read the new scrren dimesions without changing the framebuffer resolution
 			from enigma import gMainDC
 			gMainDC.getInstance().setResolution(-1, -1)
-			self.updateColor(port)
 
 	def saveMode(self, port, mode, rate):
 		config.av.videoport.setValue(port)
@@ -332,32 +331,6 @@ class AVSwitch:
 			val = 6
 		return val
 
-	def setHDMIColor(self, configElement):
-		if about.getCPUString().startswith('STx'):
-			map = {"hdmi_rgb": 0, "hdmi_yuv": 1, "hdmi_422": 2}
-			open("/proc/stb/avs/0/colorformat", "w").write(configElement.value)
-
-	def setYUVColor(self, configElement):
-		if about.getCPUString().startswith('STx'):
-			map = {"yuv": 0}
-			open("/proc/stb/avs/0/colorformat", "w").write(configElement.value)
-
-	def setHDMIAudioSource(self, configElement):
-		if about.getCPUString().startswith('STx'):
-			open("/proc/stb/hdmi/audio_source", "w").write(configElement.value)
-
-	def updateColor(self, port):
-		if about.getCPUString().startswith('STx'):
-			print "updateColor: ", port
-			if port == "HDMI":
-				self.setHDMIColor(config.av.colorformat)
-			elif port == "YPbPr":
-				self.setYUVColor(config.av.colorformat)
-			elif port == "Scart":
-				map = {"cvbs": 0, "rgb": 1, "svideo": 2, "yuv": 3}
-				from enigma import eAVSwitch
-				eAVSwitch.getInstance().setColorFormat(map[config.av.colorformat.value])
-
 iAVSwitch = AVSwitch()
 
 def InitAVSwitch():
@@ -469,10 +442,16 @@ def InitAVSwitch():
 				f.close()
 			except:
 				pass
-		config.av.bypass_edid_checking = ConfigSelection(choices={
-				"00000000": _("off"),
-				"00000001": _("on")},
-				default = "00000000")
+		if about.getChipSetString() in ('7111'):
+			config.av.bypass_edid_checking = ConfigSelection(choices={
+					"00000000": _("off"),
+					"00000001": _("on")},
+					default = "00000001")
+		else:
+			config.av.bypass_edid_checking = ConfigSelection(choices={
+					"00000000": _("off"),
+					"00000001": _("on")},
+					default = "00000000")
 		config.av.bypass_edid_checking.addNotifier(setEDIDBypass)
 	else:
 		config.av.bypass_edid_checking = ConfigNothing()

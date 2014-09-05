@@ -839,19 +839,10 @@ void gPixmap::line(const gRegion &clip, ePoint start, ePoint dst, gColor color)
 
 	if (surface->bpp == 16)
 	{
-
-#if defined(__sh__)
 #if BYTE_ORDER == LITTLE_ENDIAN
 		col = bswap_16(((col & 0xFF) >> 3) << 11 | ((col & 0xFF00) >> 10) << 5 | (col & 0xFF0000) >> 19);
 #else
 		col = ((col & 0xFF) >> 3) << 11 | ((col & 0xFF00) >> 10) << 5 | (col & 0xFF0000) >> 19;
-#endif
-#else
-#if BYTE_ORDER == LITTLE_ENDIAN
-		col = bswap_16(((col & 0xFF) >> 3) << 11 | ((col & 0xFF00) >> 10) << 5 | (col & 0xFF0000) >> 19);
-#else
-		col = ((col & 0xFF) >> 3) << 11 | ((col & 0xFF00) >> 10) << 5 | (col & 0xFF0000) >> 19;
-#endif
 #endif
 	}
 	line(clip, start, dst, col);
