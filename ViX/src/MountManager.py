@@ -73,7 +73,7 @@ class VIXDevicesPanel(Screen):
 			cb(name, desc)
 
 	def updateList(self, result=None, retval=None, extra_args=None):
-		scanning = _("Wait please while scanning for devices...")
+		scanning = _("Please wait while scanning for devices...")
 		self['lab1'].setText(scanning)
 		self.activityTimer.start(10)
 
@@ -206,7 +206,7 @@ class VIXDevicesPanel(Screen):
 				for line in mountcheck:
 					parts = line.strip().split(" ")
 					if path.realpath(parts[0]).startswith(device):
-						self.session.open(MessageBox, _("Can't unmount partition, make sure it is not being used for swap or record/timeshift paths"), MessageBox.TYPE_INFO)
+						self.session.open(MessageBox, _("Can't unmount the partition, make sure it is not being used for swap or record/timeshift paths"), MessageBox.TYPE_INFO)
 			except IOError:
 				return -1
 			self.updateList()
@@ -258,7 +258,7 @@ class VIXDevicePanelConf(Screen, ConfigListScreen):
 		Screen.setTitle(self, _("Choose where to mount your devices to:"))
 		self['key_green'] = Label(_("Save"))
 		self['key_red'] = Label(_("Cancel"))
-		self['Linconn'] = Label(_("Wait please while scanning your %s %s devices...") % (getMachineBrand(), getMachineName()))
+		self['Linconn'] = Label(_("Please wait while scanning your %s %s devices...") % (getMachineBrand(), getMachineName()))
 		self['actions'] = ActionMap(['WizardActions', 'ColorActions'], {'green': self.saveMypoints, 'red': self.close, 'back': self.close})
 		self.Console = Console()
 		self.updateList()
@@ -365,7 +365,7 @@ class VIXDevicePanelConf(Screen, ConfigListScreen):
 		ybox.setTitle(_("Please wait."))
 
 	def delay(self, val):
-		message = _("Changes need a system restart to take effect.\nRestart your %s %s now?") % (getMachineBrand(), getMachineName())
+		message = _("The changes need a system restart to take effect.\nRestart your %s %s now?") % (getMachineBrand(), getMachineName())
 		ybox = self.session.openWithCallback(self.restartBox, MessageBox, message, MessageBox.TYPE_YESNO)
 		ybox.setTitle(_("Restart %s %s.") % (getMachineBrand(), getMachineName()))
 
