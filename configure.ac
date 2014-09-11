@@ -138,6 +138,15 @@ AC_ARG_ENABLE([sh],
 	esac])
 AM_CONDITIONAL([ENABLE_SH], [test x$enable_sh = xtrue])
 
+AC_ARG_ENABLE([libeplayer3],
+	[AS_HELP_STRING(--enable-libeplayer3,    enable libeplayer3)],
+	[case "${enableval}" in
+		yes) enable_libeplayer3=true ;;
+		no) enable_libeplayer3=false ;;
+		*) AC_MSG_ERROR([bad value ${enableval} for --enable-libeplayer3]) ;;
+	esac])
+AM_CONDITIONAL([ENABLE_LIBEPLAYER3], [test x$enable_libeplayer3 = xtrue])
+
 AC_ARG_WITH(nolcd,
 	AC_HELP_STRING([--with-nolcd], [disable ascii based lcd, yes or no]),
 	[[withnolcd=$withval]],
