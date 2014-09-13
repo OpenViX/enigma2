@@ -844,6 +844,8 @@ class ImageManagerDownload(Screen):
 				self.boxtype = 'TM-Nano-OE'
 			elif getMachineMake() == 'tmnano2t':
 				self.boxtype = 'TM-Nano-2T'
+			elif getMachineMake() == 'tmnano3t':
+				self.boxtype = 'TM-Nano-3T'
 			elif getMachineMake() == 'tmnano2super':
 				self.boxtype = 'TM-Nano2-Super'
 			elif getMachineMake() == 'iqonios100hd':
