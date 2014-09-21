@@ -15,12 +15,12 @@ class VIXMenu(Screen):
 		self.menu = args
 		self.list = []
 		if self.menu == 0:
-			self.list.append(("backup-manager", _("Backup Manager"), _("Manage the backups of your settings."), None))
-			self.list.append(("image-manager", _("Image Manager"), _("Create and Restore complete images of your system."), None))
-			self.list.append(("ipkg-install", _("Install local extension"), _("Install IPK's from your tmp folder."), None))
-			self.list.append(("mount-manager", _("Mount Manager"), _("Manage your devices mount points."), None))
-			self.list.append(("script-runner", _("Script Runner"), _("Run your shell scripts."), None))
-			self.list.append(("swap-manager", _("Swap Manager"), _("Create and Manage your swap files."), None))
+			self.list.append(("backup-manager", _("Backup Manager"), _("Manage the backups of your settings"), None))
+			self.list.append(("image-manager", _("Image Manager"), _("Create and Restore complete images of your system"), None))
+			self.list.append(("ipkg-install", _("Install local extension"), _("Install IPK's from your tmp folder"), None))
+			self.list.append(("mount-manager", _("Mount Manager"), _("Manage your devices mount points"), None))
+			self.list.append(("script-runner", _("Script Runner"), _("Run your shell scripts"), None))
+			self.list.append(("swap-manager", _("Swap Manager"), _("Create and Manage your swap files"), None))
 		self["menu"] = List(self.list)
 		self["key_red"] = StaticText(_("Close"))
 
