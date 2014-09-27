@@ -804,9 +804,9 @@ class ImageManagerDownload(Screen):
 			from ftplib import FTP
 			import urllib, zipfile, base64
 
-			wos_user = 'vixlogs@world-of-satellite.com'
+			wos_user = 'images@openvix.co.uk'
 			wos_pwd = base64.b64decode('cDRsWF4sTHRGNkI4Cg==').replace('\n', '')
-			ftp = FTP('world-of-satellite.com')
+			ftp = FTP('37.187.113.82')
 			ftp.login(wos_user, wos_pwd)
 			if getMachineMake() == 'vuuno':
 				self.boxtype = 'Vu+Uno'
@@ -924,7 +924,7 @@ class ImageManagerDownload(Screen):
 			file = self.BackupDirectory + self.selectedimage
 
 			mycmd1 = _("echo 'Downloading Image.'")
-			mycmd2 = "wget -q http://enigma2.world-of-satellite.com//openvix/openvix-builds/" + self.boxtype + "/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
+			mycmd2 = "wget -q http://www.openvix.co.uk/openvix-builds/" + self.boxtype + "/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
 			mycmd3 = "mv " + self.BackupDirectory + "image.zip " + file
 			self.session.open(ScreenConsole, title=_('Downloading Image...'), cmdlist=[mycmd1, mycmd2, mycmd3], closeOnSuccess=True)
 
