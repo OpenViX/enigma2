@@ -888,6 +888,8 @@ class ImageManagerDownload(Screen):
 				self.boxtype = 'GI-Xpeed-LX3'
 			elif getMachineMake() == 'axodinc':
 				self.boxtype = 'Opticum-AX-ODIN-DVBC-1'
+			elif getMachineMake() == 'ixusszero':
+				self.boxtype = 'Medi@link-IXUSS-ZERO'
 
 			ftp.cwd(self.boxtype)
 
