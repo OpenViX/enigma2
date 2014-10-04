@@ -52,6 +52,7 @@ class HelpMenuList(GUIComponent):
 		indent = False
 
 		buttonsProcessed = set()
+		helpSeen = defaultdict(list)
 		sortedHelplist = sorted(helplist, key=lambda hle: hle[0].prio)
 		actionMapHelp = defaultdict(list)
 
@@ -103,7 +104,8 @@ class HelpMenuList(GUIComponent):
 
 				entry = [ (actionmap, context, action, buttonNames ), help ]
 
-				actionMapHelp[context].append(entry)
+				if self._filterHelpList(entry, helpSeen):
+					actionMapHelp[context].append(entry)
 
 		x, y, w, h = self.extendedHelp and skin.parameters.get("HelpMenuListExtHlp0",(skin.applySkinFactor(5), 0, skin.applySkinFactor(595), skin.applySkinFactor(28))) or skin.parameters.get("HelpMenuListHlp",(skin.applySkinFactor(5), 0, skin.applySkinFactor(595), skin.applySkinFactor(28)))
 
@@ -145,6 +147,20 @@ class HelpMenuList(GUIComponent):
 			font = skin.fonts.get("HelpMenuList", ("Regular", skin.applySkinFactor(24), skin.applySkinFactor(28)))
 			self.l.setFont(0, gFont(font[0], font[1]))
 			self.l.setItemHeight(font[2])
+
+	def _mergeButLists(self, bl1, bl2):
+		for b in bl2:
+			if b not in bl1:
+				bl1.append(b)
+
+	def _filterHelpList(self, ent, seen):
+		hlp = tuple(ent[1] if isinstance(ent[1], list) else [ent[1], ''])
+		if hlp in seen:
+			self._mergeButLists(seen[hlp], ent[0][3])
+			return False
+		else:
+			seen[hlp] = ent[0][3]
+			return True
 
 	def addListBoxContext(self, actionMapHelp, indent):
 		for ent in actionMapHelp:
@@ -193,7 +209,7 @@ class HelpMenuList(GUIComponent):
 	def _sortKeyAlpha(self, hlp):
 		# Convert normal help to extended help form for comparison
 		# and ignore case
-		return map(str.lower, hlp[1] if isinstance(hlp, list) else (hlp, ''))
+		return map(str.lower, hlp[1] if isinstance(hlp[1], list) else [hlp[1], ''])
 
 	def ok(self):
 		# a list entry has a "private" tuple as first entry...
