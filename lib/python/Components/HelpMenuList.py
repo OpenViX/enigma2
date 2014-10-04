@@ -32,8 +32,6 @@ class HelpMenuList(GUIComponent):
 		self.callback = callback
 		self.extendedHelp = False
 
-		indent = False
-
 		buttonsProcessed = set()
 		sortedHelplist = sorted(helplist, key=lambda hle: hle[0].prio)
 		actionMapHelp = defaultdict(list)
@@ -91,7 +89,7 @@ class HelpMenuList(GUIComponent):
 
 		l = [ ]
 		for (actionmap, context, actions) in helplist:
-			if context in actionMapHelp and actionmap.description:
+			if context in actionMapHelp and getattr(actionmap, "description", None):
 				self.addListBoxContext(actionMapHelp[context], indent)
 
 				l.append([None, MultiContentEntryText(pos=(x, y), size=(w, h), text=actionmap.description)])
