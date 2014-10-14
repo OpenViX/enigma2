@@ -856,6 +856,8 @@ class ImageManagerDownload(Screen):
 				self.boxtype = 'iqon-IOS-300HD'
 			elif getMachineMake() == 'maram9':
 				self.boxtype = 'Mara-M9'
+			elif getMachineMake() == 'mutant2400':
+				self.boxtype = 'Mutant-HD2400'
 			elif getMachineMake() == 'xp1000max':
 				self.boxtype = 'MaxDigital-XP1000'
 			elif getMachineMake() == 'xp1000plus':
