@@ -34,6 +34,8 @@ class HelpMenuList(GUIComponent):
 		self.extendedHelp = False
 		self.rcPos = rcPos
 		self.rcKeyIndex = None
+		self.buttonMap = {}
+		self.longSeen = False
 
 		headings, sortCmp, sortKey = {
 				"headings+alphabetic":	(True, None, self._sortKeyAlpha),
@@ -136,6 +138,11 @@ class HelpMenuList(GUIComponent):
 			self.addListBoxContext(otherHelp, indent)
 			l.extend(otherHelp)
 
+		for i, ent in enumerate(l):
+			if ent[0] is not None:
+				for b in ent[0][3]:
+					self.buttonMap[b] = i
+
 		self.l.setList(l)
 		if self.extendedHelp:
 			font = skin.fonts.get("HelpMenuListExt0", ("Regular", skin.applySkinFactor(24), skin.applySkinFactor(56)))
@@ -220,9 +227,34 @@ class HelpMenuList(GUIComponent):
 		# we returns this tuple to the callback.
 		self.callback(l[0], l[1], l[2])
 
+	def handleButton(self, key, flag):
+		name = getKeyDescription(key)
+		if name is not None and (len(name) < 2 or name[1] not in("fp", "kbd")) and flag not in (2, 4):
+			if flag == 0:
+				# Reset the long press flag on make
+				self.longSeen = False
+			elif flag == 3:  # for long keypresses, make the second tuple item "long".
+				name = (name[0], "long")
+
+			if name in self.buttonMap:
+				# Show help for pressed button for
+				# long press, or for break if it's not a
+				# long press
+				if flag == 3 or flag == 1 and not self.longSeen:
+					self.longSeen = flag == 3
+					self.setIndex(self.buttonMap[name])
+					# Report key handled
+					return 1
+		# Report key not handled
+		return 0
+
 	def getCurrent(self):
 		sel = self.l.getCurrentSelection()
 		return sel and sel[0]
+
+	def setIndex(self, index):
+		if self.instance is not None:
+			self.instance.moveSelectionTo(index)
 
 	GUI_WIDGET = eListbox
 
