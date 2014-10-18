@@ -1,9 +1,13 @@
 from Screens.Screen import Screen
+from Tools.KeyBindings import keyBindings
+from Tools.BoundFunction import boundFunction
 from Components.Label import Label
 from Components.ActionMap import ActionMap
 from Components.HelpMenuList import HelpMenuList
 from Components.Sources.StaticText import StaticText
 from Screens.Rc import Rc
+from enigma import eActionMap
+from sys import maxint
 
 class HelpMenu(Screen, Rc):
 	def __init__(self, session, list):
@@ -22,11 +26,44 @@ class HelpMenu(Screen, Rc):
 			"back": self.close,
 		}, -1)
 
+		# Wildcard binding with slightly higher priority than
+		# the wildcard bindings in
+		# InfoBarGenerics.InfoBarUnhandledKey, but with a gap
+		# so that other wildcards can be interposed if needed.
+
+		self.onClose.append(self.doOnClose)
+		eActionMap.getInstance().bindAction('', maxint - 100, self["list"].handleButton)
+
+		# Ignore keypress breaks for the keys in the
+		# ListboxActions context.
+
+		# Catch  ListboxActions on CH+/-, FF & REW and
+		# divert them to "jump to help for button" in the Help
+		# screen.  If CH+/-, FF & REW are to be allowed for list
+		# navigation, replace their key mappings with ones that
+		# simply have mapto="ignore" flags="b".
+
+		# If that's done, then the help text for the HelpMenu
+		# screen should be changed to indicate that those buttons
+		# are used for navigation.
+
+		intercepts = self.makeButtonIntercepts()
+
+		# Ignore other keypress breaks for keys in the
+		# ListboxActions context.
+
+		intercepts["ignore"] = lambda: 1
+
+		self["listboxFilterActions"] = ActionMap(["ListboxHelpMenuActions"], intercepts, prio=-1)
+
 		self.onLayoutFinish.append(self.doOnLayoutFinish)
 
 	def doOnLayoutFinish(self):
 		self["list"].onSelChanged.append(self.SelectionChanged)
 		self.SelectionChanged()
+
+	def doOnClose(self):
+		eActionMap.getInstance().unbindAction('', self["list"].handleButton)
 
 	def SelectionChanged(self):
 		self.clearSelectedKeys()
@@ -57,6 +94,30 @@ class HelpMenu(Screen, Rc):
 
 		self["longshift_key0"].setText(longText[0])
 		self["longshift_key1"].setText(longText[1])
+
+	def makeButtonIntercepts(self):
+		intercepts = {}
+		for k, v in ((_k, _v) for _k, _v in keyBindings.items() if _k[0] == "ListboxHelpMenuActions" and _k[1] != "ignore"):
+			for b in (_b for _b in v if not _b[0] & 0x8000):
+				for f in (_f for _f in range(4) if 1 << _f & b[2]):
+					intercepts[k[1]] = boundFunction(self.interceptButton, b[0], f)
+		return intercepts
+
+	def interceptButton(self, key, flag):
+		from Screens.InfoBar import InfoBar
+		res = self["list"].handleButton(key, flag)
+
+		# The normal UnhandledKey procedure can't be used here
+		# because we can't return 0 here, because that would fall
+		# through to the native bindings, so call
+		# InfoBar.instance.actionB() directly to indicate that the
+		# button has no action on this flag.
+
+		if not res and res is not None and InfoBar.instance:
+			InfoBar.instance.actionB(key, flag)
+
+		# Always return 1 to stop fallthrough to native bindings
+		return 1
 
 class HelpableScreen:
 	def __init__(self):
