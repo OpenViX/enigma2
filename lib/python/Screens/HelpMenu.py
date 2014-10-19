@@ -10,6 +10,18 @@ from enigma import eActionMap
 from sys import maxint
 
 class HelpMenu(Screen, Rc):
+	helpText = _("""Help Screen
+
+Brief help information for buttons in your current context.
+
+Navigate up/down with UP/DOWN buttons and page up/down with LEFT/RIGHT. EXIT to return to the help screen. OK to perform the action described in the currently highlighted help.
+
+Other buttons will jump to the help for that button, if there is help.
+
+A highlight on the remote control image shows which button the help refers to. If more than one button performs the indicated function, more than one highlight will be shown. Text below the list indicates whether the function is for a long press of the button(s).
+
+The order and grouping of the help information list can be controlled using MENU>Setup>User Interface>Settings>Sort order for help screen.""")
+
 	def __init__(self, session, list):
 		Screen.__init__(self, session)
 		self.setup_title = _("Help")
@@ -55,6 +67,11 @@ class HelpMenu(Screen, Rc):
 		intercepts["ignore"] = lambda: 1
 
 		self["listboxFilterActions"] = ActionMap(["ListboxHelpMenuActions"], intercepts, prio=-1)
+
+		self["helpActions"] = ActionMap(["HelpActions"],
+			{
+				"displayHelp": self.showHelp,
+		})
 
 		self.onLayoutFinish.append(self.doOnLayoutFinish)
 
@@ -118,6 +135,12 @@ class HelpMenu(Screen, Rc):
 
 		# Always return 1 to stop fallthrough to native bindings
 		return 1
+
+	def showHelp(self):
+		# Import deferred so that MessageBox's import of HelpMenu doesn't cause an import loop
+		from Screens.MessageBox import MessageBox
+		self.session.open(MessageBox, _(HelpMenu.helpText), type=MessageBox.TYPE_INFO)
+
 
 class HelpableScreen:
 	def __init__(self):
