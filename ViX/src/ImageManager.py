@@ -880,6 +880,8 @@ class ImageManagerDownload(Screen):
 				self.boxtype = 'GiGaBlue-HD-QUAD-PLUS'
 			elif getMachineMake() == 'ventonhdx':
 				self.boxtype = 'Venton-Unibox-HDx'
+			elif getMachineMake() == 'uniboxhde':
+				self.boxtype = 'Venton-Unibox-HDeco-PLUS'
 			elif getMachineMake() == 'mbtwin':
 				self.boxtype = 'Miraclebox-Twin'
 			elif getMachineMake() == 'mbmini':
