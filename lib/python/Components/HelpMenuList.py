@@ -68,8 +68,10 @@ class HelpMenuList(GUIComponent):
 				indent = True
 
 			for (action, help) in actions:
+				helpTags = []
 				if hasattr(help, '__call__'):
 					help = help()
+					helpTags.append(pgettext('Abbreviation of "Configurable"', 'C'))
 
 				if not help:
 					continue
@@ -99,13 +101,19 @@ class HelpMenuList(GUIComponent):
 				if not buttonNames:
 					continue
 
-				if isinstance(help, list):
+				isExtended = isinstance(help, list)
+				if isExtended:
 					if not self.extendedHelp:
 						print "[HelpMenuList] extendedHelpEntry found"
 					self.extendedHelp = True
 
-				entry = [ (actionmap, context, action, buttonNames ), help ]
+				if helpTags:
+					helpStr = help[0] if isExtended else help
+					tagsStr = pgettext("Text list separator", ', ').join(helpTags)
+					helpStr = _("%s (%s)") % (helpStr, tagsStr)
+					help = [helpStr, help[1]] if isExtended else helpStr
 
+				entry = [ (actionmap, context, action, buttonNames ), help ]
 				if self._filterHelpList(entry, helpSeen):
 					actionMapHelp[id(actionmap)].append(entry)
 
