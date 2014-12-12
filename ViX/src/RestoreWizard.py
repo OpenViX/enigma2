@@ -185,7 +185,7 @@ class RestoreWizard(WizardLanguage, Rc):
 			imageversion = file('/tmp/backupimageversion').read()
 			print 'Backup Image:', imageversion
 			print 'Current Image:', about.getVersionString()
-			if imageversion in (about.getVersionString(), 'Zeus', 'Helios', 'Helios-kernel-test'):
+			if imageversion in (about.getVersionString(), 'Zeus', 'Helios', 'Helios-kernel-test', 'Apollo'):
 				print '[RestoreWizard] Stage 1: Image ver OK'
 				self.doRestoreSettings2()
 			else:
