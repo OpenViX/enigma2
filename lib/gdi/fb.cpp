@@ -13,7 +13,7 @@
 #endif
 
 #ifndef FBIO_WAITFORVSYNC
-#define FBIO_WAITFORVSYNC _IOW('F', 0x20, __u32)
+#define FBIO_WAITFORVSYNC _IOW('F', 0x20, uint32_t)
 #endif
 
 #ifndef FBIO_BLIT
