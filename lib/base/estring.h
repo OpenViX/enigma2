@@ -11,6 +11,8 @@ std::string buildShortName( const std::string &str );
 int strnicmp(const char*, const char*, int);
 
 std::string getNum(int num, int base=10);
+std::string GB18030ToUTF8(const char *szIn, int len,int *pconvertedLen=0);
+std::string Big5ToUTF8(const char *szIn, int len,int *pconvertedLen=0);
 
 std::string convertDVBUTF8(const unsigned char *data, int len, int table=1, int tsidonid=1); // with default ISO8859-1 / Latin1
 std::string convertLatin1UTF8(const std::string &string);
