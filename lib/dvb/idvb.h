@@ -264,12 +264,17 @@ public:
 
 class eDVBChannelQuery;
 
+#endif  // SWIG
+
 class eDVBService: public iStaticServiceInformation
 {
 	DECLARE_REF(eDVBService);
+#ifndef SWIG
 	int *m_cache;
 	void initCache();
 	void copyCache(int *source);
+#endif
+	static ePyObject m_queryFunc;
 public:
 	enum cacheID
 	{
@@ -299,10 +304,11 @@ public:
 		dxHoldName=8,
 		dxNewFound=64,
 	};
-
+	static void setQueryFunc(SWIG_PYOBJECT(ePyObject) func);
+	
 	bool usePMT() const { return !(m_flags & dxNoDVB); }
 	bool isHidden() const { return m_flags & dxDontshow; }
-
+	bool isHidden(const eServiceReference &ref);
 	CAID_LIST m_ca;
 
 	virtual ~eDVBService();
@@ -320,6 +326,7 @@ public:
 	int checkFilter(const eServiceReferenceDVB &ref, const eDVBChannelQuery &query);
 };
 
+# ifndef SWIG
 //////////////////
 
 class iDVBChannel;
