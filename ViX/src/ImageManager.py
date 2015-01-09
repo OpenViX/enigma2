@@ -822,6 +822,8 @@ class ImageManagerDownload(Screen):
 				self.boxtype = 'Vu+Duo'
 			elif getMachineMake() == 'vuduo2':
 				self.boxtype = 'Vu+Duo2'
+			elif getMachineMake() == 'vuzero':
+				self.boxtype = 'Vu+Zero'
 			elif getMachineMake() == 'et4x00':
 				self.boxtype = 'ET-4x00'
 			elif getMachineMake() == 'et5x00':
