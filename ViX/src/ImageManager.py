@@ -844,6 +844,8 @@ class ImageManagerDownload(Screen):
 				self.boxtype = 'TM-Single'
 			elif getMachineMake() == 'tmnano':
 				self.boxtype = 'TM-Nano-OE'
+			elif getMachineMake() == 'tmnanose':
+				self.boxtype = 'TM-Nano-SE'
 			elif getMachineMake() == 'tmnano2t':
 				self.boxtype = 'TM-Nano-2T'
 			elif getMachineMake() == 'tmnano3t':
