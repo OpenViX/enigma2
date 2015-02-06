@@ -206,7 +206,7 @@ class VIXDevicesPanel(Screen):
 				for line in mountcheck:
 					parts = line.strip().split(" ")
 					if path.realpath(parts[0]).startswith(device):
-						self.session.open(MessageBox, _("Can't unmount the partition, make sure it is not being used for swap or record/timeshift paths"), MessageBox.TYPE_INFO)
+						self.session.open(MessageBox, _("Can't un-mount the partition, make sure it is not being used for swap or record/timeshift paths"), MessageBox.TYPE_INFO)
 			except IOError:
 				return -1
 			self.updateList()

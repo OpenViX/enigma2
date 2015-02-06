@@ -233,7 +233,7 @@ class VIXImageManager(Screen):
 				remove(self.BackupDirectory + config.imagemanager.folderprefix.value + '-swapfile_backup')
 			self.refreshList()
 		except:
-			self['lab1'].setText(_("Device: ") + config.imagemanager.backuplocation.value + "\n" + _("there was a problem with this device, please reformat and try again."))
+			self['lab1'].setText(_("Device: ") + config.imagemanager.backuplocation.value + "\n" + _("there is a problem with this device, please reformat and try again."))
 
 	def createSetup(self):
 		self.session.openWithCallback(self.setupDone, Setup, 'viximagemanager', 'SystemPlugins/ViX')
@@ -327,7 +327,7 @@ class VIXImageManager(Screen):
 		if path.islink('/tmp/imagerestore'):
 			unlink('/tmp/imagerestore')
 		if answer:
-			self.session.open(MessageBox, _("Please wait while restore prepares"), MessageBox.TYPE_INFO, timeout=60, enable_input=False)
+			self.session.open(MessageBox, _("Please wait while the restore prepares"), MessageBox.TYPE_INFO, timeout=60, enable_input=False)
 			TEMPDESTROOT = self.BackupDirectory + 'imagerestore'
 			if self.sel.endswith('.zip'):
 				if not path.exists(TEMPDESTROOT):
@@ -568,7 +568,7 @@ class ImageBackup(Screen):
 		free = (s.f_bsize * s.f_bavail) / (1024 * 1024)
 		if int(free) < 200:
 			AddPopupWithCallback(self.BackupComplete,
-								 _("The backup location does not have enough freespace." + "\n" + self.BackupDevice + "only has " + str(free) + "MB free."),
+								 _("The backup location does not have enough free space." + "\n" + self.BackupDevice + "only has " + str(free) + "MB free."),
 								 MessageBox.TYPE_INFO,
 								 10,
 								 'RamCheckFailedNotification'

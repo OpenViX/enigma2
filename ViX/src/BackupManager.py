@@ -206,7 +206,7 @@ class VIXBackupManager(Screen):
 			self["list"].setList(self.emlist)
 			self["list"].show()
 		except:
-			self['lab1'].setText(_("Device: ") + config.backupmanager.backuplocation.value + "\n" + _("there was a problem with this device, please reformat and try again."))
+			self['lab1'].setText(_("Device: ") + config.backupmanager.backuplocation.value + "\n" + _("there is a problem with this device, please reformat and try again."))
 
 	def createSetup(self):
 		self.session.openWithCallback(self.setupDone, VIXBackupManagerMenu, 'vixbackupmanager', 'SystemPlugins/ViX')
@@ -290,7 +290,7 @@ class VIXBackupManager(Screen):
 			else:
 				self.session.open(MessageBox, _("You have no backups to restore."), MessageBox.TYPE_INFO, timeout=10)
 		else:
-			self.session.open(MessageBox, _("Backup in progress,\nPlease for it to finish, before trying again"), MessageBox.TYPE_INFO, timeout=10)
+			self.session.open(MessageBox, _("Backup in progress,\nPlease wait for it to finish, before trying again"), MessageBox.TYPE_INFO, timeout=10)
 
 	def settingsRestoreCheck(self, result, retval, extra_args=None):
 		if path.exists('/tmp/backupimageversion'):
@@ -436,7 +436,7 @@ class VIXBackupManager(Screen):
 			self.Stage2Completed = True
 		elif result.find('Collected errors') != -1:
 			AddPopupWithCallback(self.Stage2,
-								 _("A background update check is is progress, please wait for retry."),
+								 _("A background update check is is progress, please try again."),
 								 MessageBox.TYPE_INFO,
 								 10,
 								 NOPLUGINS
@@ -1038,7 +1038,7 @@ class BackupFiles(Screen):
 		s = statvfs(self.BackupDevice)
 		free = (s.f_bsize * s.f_bavail) / (1024 * 1024)
 		if int(free) < 50:
-			self.session.open(MessageBox, _("The backup location does not have enough freespace."), MessageBox.TYPE_INFO, timeout=10)
+			self.session.open(MessageBox, _("The backup location does not have enough free space."), MessageBox.TYPE_INFO, timeout=10)
 		else:
 			self.Stage1Complete()
 
@@ -1064,9 +1064,9 @@ class BackupFiles(Screen):
 			print '[BackupManager] Listing completed.'
 			self.Stage2Completed = True
 		else:
-			self.session.openWithCallback(self.BackupComplete, MessageBox, _("Plugin Listing failed - e. g. wrong backup destination or no space left on backup device"), MessageBox.TYPE_INFO, timeout=10)
+			self.session.openWithCallback(self.BackupComplete, MessageBox, _("Plugin listing failed - e. g. wrong backup destination or no space left on backup device"), MessageBox.TYPE_INFO, timeout=10)
 			print '[BackupManager] Result.', result
-			print "{BackupManager] Plugin Listing failed - e. g. wrong backup destination or no space left on backup device"
+			print "{BackupManager] Plugin listing failed - e. g. wrong backup destination or no space left on backup device"
 
 	def Stage3(self):
 		print '[BackupManager] Finding kernel version:' + about.getKernelVersionString()
