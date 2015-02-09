@@ -185,7 +185,7 @@ class RestoreWizard(WizardLanguage, Rc):
 			imageversion = file('/tmp/backupimageversion').read()
 			print 'Backup Image:', imageversion
 			print 'Current Image:', about.getVersionString()
-			if imageversion in (about.getVersionString(), 'Zeus', 'Helios', 'Helios-kernel-test', 'Apollo'):
+			if imageversion in (about.getVersionString(), 'Zeus', 'Helios', 'Helios-kernel-test', 'Apollo', 'ApolloDev'):
 				print '[RestoreWizard] Stage 1: Image ver OK'
 				self.doRestoreSettings2()
 			else:
@@ -233,7 +233,7 @@ class RestoreWizard(WizardLanguage, Rc):
 			print 'Current Image:', about.getVersionString()
 			print 'Backup Kernel:', kernelversion
 			print 'Current Kernel:', about.getKernelVersionString()
-			if kernelversion == about.getKernelVersionString() and imageversion in (about.getVersionString(), 'Zeus', 'Helios', 'Helios-kernel-test'):
+			if kernelversion == about.getKernelVersionString() and imageversion in (about.getVersionString(), 'Zeus', 'Helios', 'Helios-kernel-test', 'Apollo', 'ApolloDev'):
 				print '[RestoreWizard] Stage 3: Kernel and image ver OK'
 				self.doRestorePluginsTest()
 			else:
