@@ -898,7 +898,7 @@ class ImageManagerDownload(Screen):
 			elif getMachineMake() == 'axodinc':
 				self.boxtype = 'Opticum-AX-ODIN-DVBC-1'
 			elif getMachineMake() == 'ixusszero':
-				self.boxtype = 'Medi@link-IXUSS-ZERO'
+				self.boxtype = 'Medialink-IXUSS-ZERO'
 
 			url = 'http://www.openvix.co.uk/openvix-builds/'+self.boxtype+'/?C=N;O=D'
 			conn = urllib2.urlopen(url)
