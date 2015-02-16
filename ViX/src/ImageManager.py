@@ -23,6 +23,8 @@ from Screens.MessageBox import MessageBox
 from Screens.Standby import TryQuitMainloop
 from Tools.Notifications import AddPopupWithCallback
 
+import urllib
+from os import rename, path, remove
 
 RAMCHEKFAILEDID = 'RamCheckFailedNotification'
 
@@ -801,13 +803,10 @@ class ImageManagerDownload(Screen):
 
 			if not path.exists(self.BackupDirectory):
 				mkdir(self.BackupDirectory, 0755)
-			from ftplib import FTP
-			import urllib, zipfile, base64
 
-			wos_user = 'images@openvix.co.uk'
-			wos_pwd = base64.b64decode('cDRsWF4sTHRGNkI4Cg==').replace('\n', '')
-			ftp = FTP('37.187.113.82')
-			ftp.login(wos_user, wos_pwd)
+			import urllib2
+			from bs4 import BeautifulSoup
+
 			if getMachineMake() == 'vuuno':
 				self.boxtype = 'Vu+Uno'
 			elif getMachineMake() == 'vuultimo':
@@ -901,16 +900,21 @@ class ImageManagerDownload(Screen):
 			elif getMachineMake() == 'ixusszero':
 				self.boxtype = 'Medi@link-IXUSS-ZERO'
 
-			ftp.cwd(self.boxtype)
+			url = 'http://www.openvix.co.uk/openvix-builds/'+self.boxtype+'/?C=N;O=D'
+			conn = urllib2.urlopen(url)
+			html = conn.read()
+
+			soup = BeautifulSoup(html)
+			links = soup.find_all('a')
 
 			del self.emlist[:]
-			for fil in ftp.nlst():
-				if not fil.endswith('.') and fil.find(getMachineMake()) != -1:
-					self.emlist.append(fil)
+			for tag in links:
+				link = tag.get('href',None)
+				if link != None and link.endswith('zip') and link.find(getMachineMake()) != -1:
+					self.emlist.append(str(link))
+
 			self.emlist.sort()
 			self.emlist.reverse()
-			ftp.quit()
-			ftp.close()
 		except:
 			self['myactions'] = ActionMap(['ColorActions', 'OkCancelActions', 'DirectionActions'],
 										  {
@@ -918,8 +922,8 @@ class ImageManagerDownload(Screen):
 										  'red': self.close,
 										  }, -1)
 			self.emlist.append(" ")
-		self["list"].setList(self.emlist)
-		self["list"].show()
+			self["list"].setList(self.emlist)
+			self["list"].show()
 
 	def keyDownload(self):
 		self.sel = self['list'].getCurrent()
