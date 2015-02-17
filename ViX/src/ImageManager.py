@@ -900,7 +900,7 @@ class ImageManagerDownload(Screen):
 			elif getMachineMake() == 'ixusszero':
 				self.boxtype = 'Medialink-IXUSS-ZERO'
 
-			url = 'http://www.openvix.co.uk/openvix-builds/'+self.boxtype+'/?C=N;O=D'
+			url = 'http://www.openvix.co.uk/openvix-builds/'+self.boxtype+'/'
 			conn = urllib2.urlopen(url)
 			html = conn.read()
 
