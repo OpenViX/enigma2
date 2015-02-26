@@ -7,6 +7,7 @@ from Components.ActionMap import NumberActionMap
 from Components.Sources.StaticText import StaticText
 from Components.Sources.List import List
 from Screens.ParentalControlSetup import ProtectedScreen
+from Components.config import config
 
 
 class VIXMenu(Screen, ProtectedScreen):
