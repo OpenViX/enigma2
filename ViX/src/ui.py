@@ -6,11 +6,14 @@ from Screens.Screen import Screen
 from Components.ActionMap import NumberActionMap
 from Components.Sources.StaticText import StaticText
 from Components.Sources.List import List
+from Screens.ParentalControlSetup import ProtectedScreen
 
 
-class VIXMenu(Screen):
+class VIXMenu(Screen, ProtectedScreen):
 	def __init__(self, session, args=0):
 		Screen.__init__(self, session)
+		if config.ParentalControl.configured.value:
+			ProtectedScreen.__init__(self)
 		Screen.setTitle(self, _("ViX"))
 		self.menu = args
 		self.list = []
@@ -44,6 +47,9 @@ class VIXMenu(Screen):
 		self.onChangedEntry = []
 		self["menu"].onSelectionChanged.append(self.selectionChanged)
 
+	def isProtected(self):
+		return config.ParentalControl.setuppinactive.value and config.ParentalControl.config_sections.vixmenu.value
+	
 	def createSummary(self):
 		from Screens.PluginBrowser import PluginBrowserSummary
 
