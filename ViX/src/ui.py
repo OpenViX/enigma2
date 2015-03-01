@@ -13,8 +13,7 @@ from Components.config import config
 class VIXMenu(Screen, ProtectedScreen):
 	def __init__(self, session, args=0):
 		Screen.__init__(self, session)
-		if config.ParentalControl.configured.value:
-			ProtectedScreen.__init__(self)
+		ProtectedScreen.__init__(self)
 		Screen.setTitle(self, _("ViX"))
 		self.menu = args
 		self.list = []
