@@ -11,6 +11,8 @@
         <item level="2" text="Schedule Backups" summary="Allows you schedule your boackups.">config.backupmanager.schedule</item>
         <item level="2" text="Time of Backup to start" requires="config.backupmanager.schedule" summary="Set the time of backup to start.">config.backupmanager.scheduletime</item>
         <item level="2" text="Repeat how often" requires="config.backupmanager.schedule" summary="Set the repeat interval of backup schedule.">config.backupmanager.repeattype</item>
+        <item level="2" text="Query before backup starts" requires="config.backupmanager.schedule" summary="Query before starting backup.">config.backupmanager.query</item>
+        <item level="2" text="Max backups to keep (0==all)" requires="config.backupmanager.schedule" summary="Backups to keep">config.backupmanager.number_to_keep</item>
     </setup>
     <setup key="viximagemanager" title="Image Manager Setup">
         <item level="2" text="Backup Location" summary="Location of where image backup should be saved.">config.imagemanager.backuplocation</item>

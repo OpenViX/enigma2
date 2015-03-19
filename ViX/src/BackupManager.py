@@ -24,7 +24,7 @@ from Components.Console import Console
 from Screens.MessageBox import MessageBox
 from Screens.Setup import Setup
 from Tools.Notifications import AddPopupWithCallback
-
+import fnmatch
 
 autoBackupManagerTimer = None
 SETTINGSRESTOREQUESTIONID = 'RestoreSettingsNotification'
@@ -43,6 +43,19 @@ config.backupmanager.backuplocation = ConfigSelection(choices=hddchoises)
 config.backupmanager.schedule = ConfigYesNo(default=False)
 config.backupmanager.scheduletime = ConfigClock(default=0)  # 1:00
 config.backupmanager.repeattype = ConfigSelection(default="daily", choices=[("daily", _("Daily")), ("weekly", _("Weekly")), ("monthly", _("30 Days"))])
+
+# Querying is enabled by default - asthat is what used to happen always
+#
+config.backupmanager.query = ConfigYesNo(default=True)
+
+# If we do not yet have a record of a backup, assume it has never happened.
+#
+config.backupmanager.lastbackup = ConfigNumber(default=0)
+
+# Max no. of backups to keep.  0 == keep them all
+#
+config.backupmanager.number_to_keep = ConfigNumber(default=0)
+
 config.backupmanager.backupretry = ConfigNumber(default=30)
 config.backupmanager.backupretrycount = NoSave(ConfigNumber(default=0))
 config.backupmanager.nextscheduletime = NoSave(ConfigNumber(default=0))
@@ -857,9 +870,21 @@ class AutoBackupManagerTimer:
 
 	def getBackupTime(self):
 		backupclock = config.backupmanager.scheduletime.value
-		nowt = time()
-		now = localtime(nowt)
-		return int(mktime((now.tm_year, now.tm_mon, now.tm_mday, backupclock[0], backupclock[1], 0, now.tm_wday, now.tm_yday, now.tm_isdst)))
+#
+# Work out the time of the *NEXT* backup - which is the configured clock
+# time on the nth relevant day after the last recorded backup day.
+# The last backup time will have been set as 12:00 on the day it
+# happened. All we use is the actual day from that value.
+#
+		lastbkup_t = int(config.backupmanager.lastbackup.value)
+		if config.backupmanager.repeattype.value == "daily":
+			nextbkup_t = lastbkup_t + 24*3600
+		elif config.backupmanager.repeattype.value == "weekly":
+			nextbkup_t = lastbkup_t + 7*24*3600
+		elif config.backupmanager.repeattype.value == "monthly":
+			nextbkup_t = lastbkup_t + 30*24*3600		
+		nextbkup = localtime(nextbkup_t)
+		return int(mktime((nextbkup.tm_year, nextbkup.tm_mon, nextbkup.tm_mday, backupclock[0], backupclock[1], 0, nextbkup.tm_wday, nextbkup.tm_yday, nextbkup.tm_isdst)))
 
 	def backupupdate(self, atLeast=0):
 		self.backuptimer.stop()
@@ -868,20 +893,13 @@ class AutoBackupManagerTimer:
 		now = int(time())
 		if BackupTime > 0:
 			if BackupTime < now + atLeast:
-				if config.backupmanager.repeattype.value == "daily":
-					BackupTime += 24 * 3600
-					while (int(BackupTime) - 30) < now:
-						BackupTime += 24 * 3600
-				elif config.backupmanager.repeattype.value == "weekly":
-					BackupTime += 7 * 24 * 3600
-					while (int(BackupTime) - 30) < now:
-						BackupTime += 7 * 24 * 3600
-				elif config.backupmanager.repeattype.value == "monthly":
-					BackupTime += 30 * 24 * 3600
-					while (int(BackupTime) - 30) < now:
-						BackupTime += 30 * 24 * 3600
-			next = BackupTime - now
-			self.backuptimer.startLongTimer(next)
+# Backup missed - run it 60s from now
+				self.backuptimer.startLongTimer(60)
+				print "[BackupManager] Backup Time overdue - running in 60s"
+			else:
+# Backup in future - set the timer...
+				delay = BackupTime - now
+				self.backuptimer.startLongTimer(delay)
 		else:
 			BackupTime = -1
 		print "[BackupManager] Backup Time set to", strftime("%c", localtime(BackupTime)), strftime("(now=%c)", localtime(now))
@@ -899,13 +917,13 @@ class AutoBackupManagerTimer:
 		if wake - now < 60:
 			print "[BackupManager] Backup onTimer occured at", strftime("%c", localtime(now))
 			from Screens.Standby import inStandby
-
-			if not inStandby:
+# Check for querying enabled
+			if not inStandby and config.backupmanager.query.value:
 				message = _("Your %s %s is about to run a backup of your settings and detect your plugins,\nDo you want to allow this?") % (getMachineBrand(), getMachineName())
 				ybox = self.session.openWithCallback(self.doBackup, MessageBox, message, MessageBox.TYPE_YESNO, timeout=30)
 				ybox.setTitle('Scheduled Backup.')
 			else:
-				print "[BackupManager] in Standby, so just running backup", strftime("%c", localtime(now))
+				print "[BackupManager] in Standby or no querying, so just running backup", strftime("%c", localtime(now))
 				self.doBackup(True)
 		else:
 			print '[BackupManager] Where are not close enough', strftime("%c", localtime(now))
@@ -933,7 +951,17 @@ class AutoBackupManagerTimer:
 			print "[BackupManager] Running Backup", strftime("%c", localtime(now))
 			self.BackupFiles = BackupFiles(self.session)
 			Components.Task.job_manager.AddJob(self.BackupFiles.createBackupJob())
-
+# Note that fact that the job has been *scheduled*.
+# We do *not* only note a successful completion, as that would result
+# in a loop on issues such as disk-full.
+# Also all that we actually want to know is the day, not the time, so we
+# actually remember midday, which avoids problems around DLST changes
+# for backups scheduled within an hour of midnight.
+#
+			sched = localtime(time())
+			sched_t = int(mktime((sched.tm_year, sched.tm_mon, sched.tm_mday, 12, 0, 0, sched.tm_wday, sched.tm_yday, sched.tm_isdst)))
+			config.backupmanager.lastbackup.value = sched_t
+			config.backupmanager.lastbackup.save()
 
 class BackupFiles(Screen):
 	def __init__(self, session, updatebackup=False):
@@ -1126,6 +1154,29 @@ class BackupFiles(Screen):
 		self.Stage3Completed = True
 		self.Stage4Completed = True
 		self.Stage5Completed = True
+
+# Trim the number of backups to the configured setting...
+#
+		try:
+			if config.backupmanager.number_to_keep.value > 0 \
+			 and path.exists(self.BackupDirectory): # !?!
+				images = listdir(self.BackupDirectory)
+				patt = config.backupmanager.folderprefix.value + '-*.tar.gz'
+				emlist = []
+				for fil in images:
+					if fnmatch.fnmatchcase(fil, patt):
+						emlist.append(fil)
+# sort by oldest first...
+				emlist.sort(key=lambda fil: path.getmtime(self.BackupDirectory + fil))
+# ...then, if we have too many, remove the <n> newest from the end
+# and delete what is left 
+				if len(emlist) > config.backupmanager.number_to_keep.value:
+					emlist = emlist[0:len(emlist)-config.backupmanager.number_to_keep.value]
+					for fil in emlist:
+						remove(self.BackupDirectory + fil)
+	    	except:
+	    		pass
+
 		if config.backupmanager.schedule.value:
 			atLeast = 60
 			autoBackupManagerTimer.backupupdate(atLeast)
