@@ -141,7 +141,7 @@ resumePointCacheLast = int(time())
 class InfoBarDish:
 	def __init__(self):
 		self.dishDialog = self.session.instantiateDialog(Dish)
-		self.dishDialog.setSubScreen()
+		self.dishDialog.setAnimationMode(0)
 
 class InfoBarLongKeyDetection:
 	def __init__(self):
@@ -158,7 +158,7 @@ class InfoBarLongKeyDetection:
 class InfoBarUnhandledKey:
 	def __init__(self):
 		self.unhandledKeyDialog = self.session.instantiateDialog(UnhandledKey)
-		self.unhandledKeyDialog.setSubScreen()
+		self.unhandledKeyDialog.setAnimationMode(0)
 		self.hideUnhandledKeySymbolTimer = eTimer()
 		self.hideUnhandledKeySymbolTimer.callback.append(self.unhandledKeyDialog.hide)
 		self.checkUnusedTimer = eTimer()
@@ -730,7 +730,7 @@ class BufferIndicator(Screen):
 			{
 				iPlayableService.evBuffering: self.bufferChanged,
 				iPlayableService.evStart: self.__evStart,
-				iPlayableService.evVideoSizeChanged: self.__evVideoStarted,
+				iPlayableService.evGstreamerPlayStarted: self.__evGstreamerPlayStarted,
 			})
 
 	def bufferChanged(self):
@@ -748,7 +748,7 @@ class BufferIndicator(Screen):
 		self.mayShow = True
 		self.hide()
 
-	def __evVideoStarted(self):
+	def __evGstreamerPlayStarted(self):
 		self.mayShow = False
 		self.hide()
 
@@ -1440,7 +1440,7 @@ class InfoBarEPG:
 
 	def InfoPressed(self):
 		if isStandardInfoBar(self) or isMoviePlayerInfoBar(self):
-			if getBrandOEM() in ('xtrend', 'odin', 'ini', 'dags' ,'gigablue', 'xp'):
+			if getBrandOEM() in ('skylake', 'xtrend', 'odin', 'ini', 'dags' ,'gigablue', 'xp'):
 				self.openEventView()
 			else:
 				self.showDefaultEPG()
@@ -1676,7 +1676,7 @@ class InfoBarRdsDecoder:
 	def __init__(self):
 		self.rds_display = self.session.instantiateDialog(RdsInfoDisplay)
 		self.session.instantiateSummaryDialog(self.rds_display)
-		self.rds_display.setSubScreen()
+		self.rds_display.setAnimationMode(0)
 		self.rass_interactive = None
 
 		self.__event_tracker = ServiceEventTracker(screen=self, eventmap=
@@ -2242,7 +2242,7 @@ class InfoBarPVRState:
 		self.onChangedEntry = [ ]
 		self.onPlayStateChanged.append(self.__playStateChanged)
 		self.pvrStateDialog = self.session.instantiateDialog(screen)
-		self.pvrStateDialog.setSubScreen()
+		self.pvrStateDialog.setAnimationMode(0)
 		self.onShow.append(self._mayShow)
 		self.onHide.append(self.pvrStateDialog.hide)
 		self.force_show = force_show
@@ -2745,10 +2745,11 @@ class InfoBarPiP:
 		else:
 			service = self.session.nav.getCurrentService()
 			info = service and service.info()
-			xres = str(info.getInfo(iServiceInformation.sVideoWidth))
-			if int(xres) <= 720 or getMachineBuild() != 'blackbox7405':
+			if info:
+				xres = str(info.getInfo(iServiceInformation.sVideoWidth))
+			if (info and int(xres) <= 720) or (info and getMachineBuild() != 'blackbox7405'):
 				self.session.pip = self.session.instantiateDialog(PictureInPicture)
-				self.session.pip.setSubScreen()
+				self.session.pip.setAnimationMode(0)
 				self.session.pip.show()
 				newservice = self.lastPiPService or self.session.nav.getCurrentlyPlayingServiceReference() or self.servicelist.servicelist.getCurrent()
 				if self.session.pip.playService(newservice):
@@ -2791,8 +2792,10 @@ class InfoBarPiP:
 						self.lastPiPService = None
 						self.session.pipshown = False
 						del self.session.pip
-			else:
+			elif info:
 				self.session.open(MessageBox, _("Your %s %s does not support PiP HD") % (getMachineBrand(), getMachineName()), type = MessageBox.TYPE_INFO,timeout = 5 )
+			else:
+				self.session.open(MessageBox, _("No active channel found."), type = MessageBox.TYPE_INFO,timeout = 5 )
 		if self.session.pipshown and hasattr(self, "screenSaverTimer"):
 			self.screenSaverTimer.stop()
 
@@ -2871,11 +2874,15 @@ class InfoBarInstantRecord:
 		# try to get event info
 		event = None
 		try:
-			service = self.session.nav.getCurrentService()
 			epg = eEPGCache.getInstance()
 			event = epg.lookupEventTime(info["serviceref"], -1, 0)
 			if event is None:
-				event = service.info().getEvent(0)
+				if hasattr(self, "SelectedInstantServiceRef") and self.SelectedInstantServiceRef:
+					service_info = eServiceCenter.getInstance().info(self.SelectedInstantServiceRef)
+					event = service_info and service_info.getEvent(self.SelectedInstantServiceRef)
+				else:
+					service = self.session.nav.getCurrentService()
+					event = service and service.info().getEvent(0)
 		except:
 			pass
 
@@ -3712,7 +3719,7 @@ class InfoBarTeletextPlugin:
 			print "no teletext plugin found!"
 
 	def startTeletext(self):
-		self.teletext_plugin(session=self.session, service=self.session.nav.getCurrentService())
+		self.teletext_plugin and self.teletext_plugin(session=self.session, service=self.session.nav.getCurrentService())
 
 class InfoBarSubtitleSupport(object):
 	def __init__(self):
@@ -3726,7 +3733,7 @@ class InfoBarSubtitleSupport(object):
 
 		if isStandardInfoBar(self):
 			self.subtitle_window = self.session.instantiateDialog(SubtitleDisplay)
-			self.subtitle_window.setSubScreen()
+			self.subtitle_window.setAnimationMode(0)
 		else:
 			from Screens.InfoBar import InfoBar
 			self.subtitle_window = InfoBar.instance.subtitle_window
@@ -3914,7 +3921,7 @@ class InfoBarHdmi:
 			return _("Turn on HDMI-IN Full screen mode")
 		else:
 			return _("Turn off HDMI-IN Full screen mode")
-	      
+
 	def getHDMIInPiPScreen(self):
 		if not self.hdmi_enabled_pip:
 			return _("Turn on HDMI-IN PiP mode")

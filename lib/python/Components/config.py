@@ -873,6 +873,7 @@ class ConfigMacText(ConfigElement, NumericalTextInput):
 		if session is not None:
 			from Screens.NumericalTextInputHelpDialog import NumericalTextInputHelpDialog
 			self.help_window = session.instantiateDialog(NumericalTextInputHelpDialog, self)
+			self.help_window.setAnimationMode(0)
 			self.help_window.show()
 
 	def onDeselect(self, session):
@@ -955,8 +956,6 @@ class ConfigInteger(ConfigSequence):
 class ConfigPIN(ConfigInteger):
 	def __init__(self, default, len = 4, censor = ""):
 		assert isinstance(default, int), "ConfigPIN default must be an integer"
-		if default == -1:
-			default = "aaaa"
 		ConfigSequence.__init__(self, seperator = ":", limits = [(0, (10**len)-1)], censor_char = censor, default = default)
 		self.len = len
 
@@ -1149,7 +1148,7 @@ class ConfigText(ConfigElement, NumericalTextInput):
 		if session is not None:
 			from Screens.NumericalTextInputHelpDialog import NumericalTextInputHelpDialog
 			self.help_window = session.instantiateDialog(NumericalTextInputHelpDialog, self)
-			self.help_window.setSubScreen()
+			self.help_window.setAnimationMode(0)
 			self.help_window.show()
 
 	def onDeselect(self, session):

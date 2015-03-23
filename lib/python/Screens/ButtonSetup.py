@@ -5,7 +5,6 @@ from Components.ChoiceList import ChoiceList, ChoiceEntryComponent
 from Components.SystemInfo import SystemInfo
 from Components.config import config, ConfigSubsection, ConfigText, ConfigYesNo
 from Components.PluginComponent import plugins
-from Screens.ChannelSelection import SimpleChannelSelection
 from Screens.ChoiceBox import ChoiceBox
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
@@ -68,6 +67,8 @@ ButtonSetupKeys = [	(_("Red"), "red", "Infobar/openSingleServiceEPG/1"),
 	(_("Sleep"), "sleep", ""),
 	(_("Power"), "power", ""),
 	(_("Power long"), "power_long", ""),
+	(_("HDMIin"), "HDMIin", "Infobar/HDMIIn"),
+	(_("HDMIin") + " " + _("long"), "HDMIin_long", (SystemInfo["LcdLiveTV"] and "Infobar/ToggleLCDLiveTV") or ""),
 	(_("Context"), "contextMenu", "Infobar/showExtensionSelection"),
 	(_("F1/LAN"), "f1", "Infobar/showNetworkMounts"),
 	(_("F1/LAN long"), "f1_long", ""),
@@ -122,6 +123,7 @@ def getButtonSetupFunctions():
 	ButtonSetupFunctions.append((_("Show Audioselection"), "Infobar/audioSelection", "InfoBar"))
 	ButtonSetupFunctions.append((_("Switch to radio mode"), "Infobar/showRadio", "InfoBar"))
 	ButtonSetupFunctions.append((_("Switch to TV mode"), "Infobar/showTv", "InfoBar"))
+	ButtonSetupFunctions.append((_("Show servicelist or movies"), "Infobar/showServiceListOrMovies", "InfoBar"))
 	ButtonSetupFunctions.append((_("Show movies"), "Infobar/showMovies", "InfoBar"))
 	ButtonSetupFunctions.append((_("Instant record"), "Infobar/instantRecord", "InfoBar"))
 	ButtonSetupFunctions.append((_("Start instant recording"), "Infobar/startInstantRecording", "InfoBar"))
@@ -141,6 +143,8 @@ def getButtonSetupFunctions():
 	ButtonSetupFunctions.append((_("Activate HbbTV (Redbutton)"), "Infobar/activateRedButton", "InfoBar"))		
 	ButtonSetupFunctions.append((_("Toggle HDMI-In full screen"), "Infobar/HDMIInFull", "InfoBar"))
 	ButtonSetupFunctions.append((_("Toggle HDMI-In PiP"), "Infobar/HDMIInPiP", "InfoBar"))
+	if SystemInfo["LcdLiveTV"]:
+		hotkeyFunctions.append((_("Toggle LCD LiveTV"), "Infobar/ToggleLCDLiveTV", "InfoBar"))
 	ButtonSetupFunctions.append((_("ButtonSetup Setup"), "Module/Screens.ButtonSetup/ButtonSetup", "Setup"))
 	ButtonSetupFunctions.append((_("Software update"), "Module/Screens.SoftwareUpdate/UpdatePlugin", "Setup"))
 	ButtonSetupFunctions.append((_("CI (Common Interface) Setup"), "Module/Screens.Ci/CiSelection", "Setup"))
@@ -167,6 +171,7 @@ def getButtonSetupFunctions():
 	ButtonSetupFunctions.append((_("Recording Setup"), "Setup/recording", "Setup"))
 	ButtonSetupFunctions.append((_("Harddisk Setup"), "Setup/harddisk", "Setup"))
 	ButtonSetupFunctions.append((_("Subtitles Settings"), "Setup/subtitlesetup", "Setup"))
+	ButtonSetupFunctions.append((_("Language"), "Module/Screens.LanguageSelection/LanguageSelection", "Setup"))
 	return ButtonSetupFunctions
 
 class ButtonSetup(Screen):
@@ -367,6 +372,7 @@ class ButtonSetupSelect(Screen):
 			direction()
 		else:
 			return 0
+
 	def save(self):
 		configValue = []
 		for x in self.selected:
@@ -420,7 +426,9 @@ class InfoBarButtonSetup():
 		selection = eval("config.misc.ButtonSetup." + key + ".value.split(',')")
 		selected = []
 		for x in selection:
-			if x.startswith("Zap"):
+			if x.startswith("ZapPanic"):
+				selected.append(((_("Panic to") + " " + ServiceReference(eServiceReference(x.split("/", 1)[1]).toString()).getServiceName()), x))
+			elif x.startswith("Zap"):
 				selected.append(((_("Zap to") + " " + ServiceReference(eServiceReference(x.split("/", 1)[1]).toString()).getServiceName()), x))
 			else:
 				function = list(function for function in getButtonSetupFunctions() if function[1] == x )
@@ -458,7 +466,19 @@ class InfoBarButtonSetup():
 			if selected[0] == "Plugins":
 				twinPlugins = []
 				twinPaths = {}
-				pluginlist = plugins.getPlugins([PluginDescriptor.WHERE_PLUGINMENU ,PluginDescriptor.WHERE_EXTENSIONSMENU, PluginDescriptor.WHERE_EVENTINFO])
+				pluginlist = plugins.getPlugins(PluginDescriptor.WHERE_EVENTINFO)
+				pluginlist.sort(key=lambda p: p.name)
+				for plugin in pluginlist:
+					if plugin.name not in twinPlugins and plugin.path and 'selectedevent' not in plugin.__call__.func_code.co_varnames:	
+						if twinPaths.has_key(plugin.path[24:]):
+							twinPaths[plugin.path[24:]] += 1
+						else:
+							twinPaths[plugin.path[24:]] = 1
+						if plugin.path[24:] + "/" + str(twinPaths[plugin.path[24:]]) == "/".join(selected):
+							self.runPlugin(plugin)
+							return
+						twinPlugins.append(plugin.name)
+				pluginlist = plugins.getPlugins([PluginDescriptor.WHERE_PLUGINMENU, PluginDescriptor.WHERE_EXTENSIONSMENU])
 				pluginlist.sort(key=lambda p: p.name)
 				for plugin in pluginlist:
 					if plugin.name not in twinPlugins and plugin.path:
@@ -466,18 +486,18 @@ class InfoBarButtonSetup():
 							twinPaths[plugin.path[24:]] += 1
 						else:
 							twinPaths[plugin.path[24:]] = 1
-						if plugin.path[24:] + "/" + str(twinPaths[plugin.path[24:]])== "/".join(selected):
+						if plugin.path[24:] + "/" + str(twinPaths[plugin.path[24:]]) == "/".join(selected):
 							self.runPlugin(plugin)
-							break
+							return
 						twinPlugins.append(plugin.name)
 			elif selected[0] == "MenuPlugin":
 				for plugin in plugins.getPluginsForMenu(selected[1]):
 					if plugin[2] == selected[2]:
 						self.runPlugin(plugin[1])
-						break
+						return
 			elif selected[0] == "Infobar":
 				if hasattr(self, selected[1]):
-					exec "self." + selected[1] + "()"
+					exec "self." + ".".join(selected[1:]) + "()"
 				else:
 					return 0
 			elif selected[0] == "Module":
@@ -489,7 +509,10 @@ class InfoBarButtonSetup():
 			elif selected[0] == "Setup":
 				exec "from Screens.Setup import *"
 				exec "self.session.open(Setup, \"" + selected[1] + "\")"
-			elif selected[0] == "Zap":
+			elif selected[0].startswith("Zap"):
+				if selected[0] == "ZapPanic":
+					self.servicelist.history = []
+					self.pipShown() and self.showPiP()
 				self.servicelist.servicelist.setCurrent(eServiceReference("/".join(selected[1:])))
 				self.servicelist.zap(enable_pipzap = True)
 				if hasattr(self, "lastservice"):
@@ -497,3 +520,16 @@ class InfoBarButtonSetup():
 					self.close()
 				else:
 					self.show()
+				from Screens.MovieSelection import defaultMoviePath
+				moviepath = defaultMoviePath()
+				if moviepath:
+					config.movielist.last_videodir.value = moviepath
+
+	def showServiceListOrMovies(self):
+		if hasattr(self, "openServiceList"):
+			self.openServiceList()
+		elif hasattr(self, "showMovies"):
+			self.showMovies()
+
+	def ToggleLCDLiveTV(self):
+		config.lcd.showTv.value = not config.lcd.showTv.value

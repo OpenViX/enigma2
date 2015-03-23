@@ -2,11 +2,13 @@ from boxbranding import getImageVersion
 from urllib import urlopen
 import socket
 import os
+from Screens.ParentalControlSetup import ProtectedScreen
 
 from enigma import eConsoleAppContainer, eDVBDB
 
 from Screens.Screen import Screen
 from Components.ActionMap import ActionMap
+from Components.config import config, ConfigSubsection, ConfigText
 from Components.PluginComponent import plugins
 from Components.PluginList import PluginList, PluginEntryComponent, PluginCategoryComponent, PluginDownloadComponent
 from Components.Label import Label
@@ -25,6 +27,9 @@ from Tools.LoadPixmap import LoadPixmap
 
 
 language.addCallback(plugins.reloadPlugins)
+
+config.misc.pluginbrowser = ConfigSubsection()
+config.misc.pluginbrowser.plugin_order = ConfigText(default="")
 
 class PluginBrowserSummary(Screen):
 	def __init__(self, session, parent):
@@ -46,10 +51,11 @@ class PluginBrowserSummary(Screen):
 		self["desc"].text = desc
 
 
-class PluginBrowser(Screen):
+class PluginBrowser(Screen, ProtectedScreen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		Screen.setTitle(self, _("Plugin Browser"))
+		ProtectedScreen.__init__(self)
 
 		self.firsttime = True
 
@@ -72,6 +78,11 @@ class PluginBrowser(Screen):
 			"red": self.delete,
 			"green": self.download
 		})
+		self["DirectionActions"] = ActionMap(["DirectionActions"],
+		{
+			"moveUp": self.moveUp,
+			"moveDown": self.moveDown
+		})
 
 		self.onFirstExecBegin.append(self.checkWarnings)
 		self.onShown.append(self.updateList)
@@ -82,6 +93,9 @@ class PluginBrowser(Screen):
 	def openSetup(self):
 		from Screens.Setup import Setup
 		self.session.open(Setup, "pluginbrowsersetup")
+		
+	def isProtected(self):
+		return config.ParentalControl.setuppinactive.value and not config.ParentalControl.config_sections.main_menu.value and config.ParentalControl.config_sections.plugin_browser.value
 
 	def saveListsize(self):
 		listsize = self["list"].instance.size()
@@ -118,9 +132,42 @@ class PluginBrowser(Screen):
 		plugin = self["list"].l.getCurrentSelection()[0]
 		plugin(session=self.session)
 
+	def moveUp(self):
+		self.move(-1)
+
+	def moveDown(self):
+		self.move(1)
+
+	def move(self, direction):
+		if len(self.list) > 1:
+			currentIndex = self["list"].getSelectionIndex()
+			swapIndex = (currentIndex + direction) % len(self.list)
+			if currentIndex == 0 and swapIndex != 1:
+				self.list = self.list[1:] + [self.list[0]]
+			elif swapIndex == 0 and currentIndex != 1:
+				self.list = [self.list[-1]] + self.list[:-1]
+			else:
+				self.list[currentIndex], self.list[swapIndex] = self.list[swapIndex], self.list[currentIndex]
+			self["list"].l.setList(self.list)
+			if direction == 1:
+				self["list"].down()
+			else:
+				self["list"].up()
+			plugin_order = []
+			for x in self.list:
+				plugin_order.append(x[0].path[24:])
+			config.misc.pluginbrowser.plugin_order.value = ",".join(plugin_order)
+			config.misc.pluginbrowser.plugin_order.save()
+
 	def updateList(self):
-		self.pluginlist = plugins.getPlugins(PluginDescriptor.WHERE_PLUGINMENU)
-		self.list = [PluginEntryComponent(plugin, self.listWidth) for plugin in self.pluginlist]
+		self.list = []
+		pluginlist = plugins.getPlugins(PluginDescriptor.WHERE_PLUGINMENU)[:]
+		for x in config.misc.pluginbrowser.plugin_order.value.split(","):
+			plugin = list(plugin for plugin in pluginlist if plugin.path[24:] == x)
+			if plugin:
+				self.list.append(PluginEntryComponent(plugin[0], self.listWidth))
+				pluginlist.remove(plugin[0])
+		self.list = self.list + [PluginEntryComponent(plugin, self.listWidth) for plugin in pluginlist]
 		self["list"].l.setList(self.list)
 
 	def delete(self):
@@ -392,7 +439,7 @@ class PluginDownloadBrowser(Screen):
 			pluginlist = []
 			self.pluginlist = pluginlist
 			for plugin in opkg.enumPlugins(self.PLUGIN_PREFIX):
-				if not plugin[0].endswith('-meta') and plugin[0] not in self.installedplugins and ((not config.pluginbrowser.po.value and not plugin[0].endswith('-po')) or config.pluginbrowser.po.value) and ((not config.pluginbrowser.src.value and not plugin[0].endswith('-src')) or config.pluginbrowser.src.value):
+				if not plugin[0].endswith('-common') and not plugin[0].endswith('-meta') and plugin[0] not in self.installedplugins and ((not config.pluginbrowser.po.value and not plugin[0].endswith('-po')) or config.pluginbrowser.po.value) and ((not config.pluginbrowser.src.value and not plugin[0].endswith('-src')) or config.pluginbrowser.src.value):
 					pluginlist.append(plugin + (plugin[0][15:],))
 			if pluginlist:
 				self["text"].hide()
@@ -444,7 +491,7 @@ class PluginDownloadBrowser(Screen):
 				plugin = x.split(" - ", 2)
 				# 'opkg list_installed' only returns name + version, no description field
 				if len(plugin) >= 2:
-					if not plugin[0].endswith('-dev') and not plugin[0].endswith('-staticdev') and not plugin[0].endswith('-dbg') and not plugin[0].endswith('-doc') and not plugin[0].endswith('-meta'):
+					if not plugin[0].endswith('-common') and not plugin[0].endswith('-dev') and not plugin[0].endswith('-staticdev') and not plugin[0].endswith('-dbg') and not plugin[0].endswith('-doc') and not plugin[0].endswith('-meta'):
 						if plugin[0] not in self.installedplugins:
 							if self.type == self.DOWNLOAD and ((not config.pluginbrowser.po.value and not plugin[0].endswith('-po')) or config.pluginbrowser.po.value) and ((not config.pluginbrowser.src.value and not plugin[0].endswith('-src')) or config.pluginbrowser.src.value):
 								self.installedplugins.append(plugin[0])

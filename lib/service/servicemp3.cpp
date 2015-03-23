@@ -459,7 +459,7 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 		m_sourceinfo.audiotype = atMP3;
 	else if ( strcasecmp(ext, ".wma") == 0 )
 		m_sourceinfo.audiotype = atWMA;
-	else if ( (strncmp(filename, "/autofs/", 8) || strncmp(filename+strlen(filename)-13, "/track-", 7) || strcasecmp(ext, ".wav")) == 0 )
+	else if ( (strncmp(filename, "/media/sr", 9) || strncmp(filename+strlen(filename)-13, "/track-", 7) || strcasecmp(ext, ".wav")) == 0 )
 		m_sourceinfo.containertype = ctCDA;
 	if ( strcasecmp(ext, ".dat") == 0 )
 	{
@@ -565,7 +565,11 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 		else
 		{
 			m_subs_to_pull_handler_id = g_signal_connect (subsink, "new-buffer", G_CALLBACK (gstCBsubtitleAvail), this);
+#if GST_VERSION_MAJOR < 1
 			g_object_set (G_OBJECT (subsink), "caps", gst_caps_from_string("text/plain; text/x-plain; text/x-raw; text/x-pango-markup; video/x-dvd-subpicture; subpicture/x-pgs"), NULL);
+#else
+			g_object_set (G_OBJECT (subsink), "caps", gst_caps_from_string("text/plain; text/x-plain; text/x-raw; text/x-pango-markup; subpicture/x-dvd; subpicture/x-pgs"), NULL);
+#endif
 			g_object_set (G_OBJECT (m_gst_playbin), "text-sink", subsink, NULL);
 			g_object_set (G_OBJECT (m_gst_playbin), "current-text", m_currentSubtitleStream, NULL);
 		}
@@ -1451,7 +1455,11 @@ subtype_t getSubtitleType(GstPad* pad, gchar *g_codec=NULL)
 			// eDebug("getSubtitleType::subtitle probe caps type=%s", g_type ? g_type : "(null)");
 			if (g_type)
 			{
+#if GST_VERSION_MAJOR < 1
 				if ( !strcmp(g_type, "video/x-dvd-subpicture") )
+#else
+				if ( !strcmp(g_type, "subpicture/x-dvd") )
+#endif
 					type = stVOB;
 				else if ( !strcmp(g_type, "text/x-pango-markup") )
 					type = stSRT;
@@ -1611,6 +1619,8 @@ void eServiceMP3::gstBusCall(GstMessage *msg)
 						m_seek_paused = false;
 						gst_element_set_state(m_gst_playbin, GST_STATE_PAUSED);
 					}
+					else
+						m_event((iPlayableService*)this, evGstreamerPlayStarted);
 				}	break;
 				case GST_STATE_CHANGE_PLAYING_TO_PAUSED:
 				{
@@ -1687,7 +1697,13 @@ void eServiceMP3::gstBusCall(GstMessage *msg)
 			if ( gv_image )
 			{
 				GstBuffer *buf_image;
-				buf_image = gst_value_get_buffer (gv_image);
+#if GST_VERSION_MAJOR < 1
+				buf_image = gst_value_get_buffer(gv_image);
+#else
+				GstSample *sample;
+				sample = (GstSample *)g_value_get_boxed(gv_image);
+				buf_image = gst_sample_get_buffer(sample);
+#endif
 				int fd = open("/tmp/.id3coverart", O_CREAT|O_WRONLY|O_TRUNC, 0644);
 				if (fd >= 0)
 				{
@@ -2375,7 +2391,7 @@ void eServiceMP3::pushSubtitles()
 
 		// showtime
 
-		if (m_subtitle_widget)
+		if (m_subtitle_widget && !m_paused)
 		{
 			//eDebug("*** current sub actual, show!");
 
