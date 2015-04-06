@@ -708,10 +708,16 @@ class ImageBackup(Screen):
 		move(self.WORKDIR + '/root.' + self.ROOTFSTYPE, self.MAINDEST + '/' + self.rootFILE)
 		move(self.WORKDIR + '/vmlinux.gz', self.MAINDEST + '/' + self.kernelFILE)
 		if getBrandOEM() ==  'vuplus':
-			fileout = open(self.MAINDEST + '/reboot.update', 'w')
-			line = "This file forces a reboot after the update."
-			fileout.write(line)
-			fileout.close()
+			if getMachineBuild() == 'vuzero':
+				fileout = open(self.MAINDEST + '/force.update', 'w')
+				line = "This file forces the update."
+				fileout.write(line)
+				fileout.close()
+			else:
+				fileout = open(self.MAINDEST + '/reboot.update', 'w')
+				line = "This file forces a reboot after the update."
+				fileout.write(line)
+				fileout.close()
 			fileout = open(self.MAINDEST + '/imageversion', 'w')
 			line = "openvix-" + self.BackupDate
 			fileout.write(line)
