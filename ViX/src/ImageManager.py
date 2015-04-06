@@ -899,6 +899,14 @@ class ImageManagerDownload(Screen):
 				self.boxtype = 'Opticum-AX-ODIN-DVBC-1'
 			elif getMachineMake() == 'ixusszero':
 				self.boxtype = 'Medialink-IXUSS-ZERO'
+			elif getMachineMake() == 'atemionemesis':
+				self.boxtype = 'Atemio-Nemesis'
+			elif getMachineMake() == 'atemio6000':
+				self.boxtype = 'Atemio-6000'
+			elif getMachineMake() == 'atemio6100':
+				self.boxtype = 'Atemio-6100'				
+			elif getMachineMake() == 'atemio6200':
+				self.boxtype = 'Atemio-6200'				
 
 			url = 'http://www.openvix.co.uk/openvix-builds/'+self.boxtype+'/'
 			conn = urllib2.urlopen(url)
