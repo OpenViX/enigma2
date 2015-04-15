@@ -835,8 +835,12 @@ class ImageManagerDownload(Screen):
 				self.boxtype = 'ET-5x00'
 			elif getMachineMake() == 'et6x00':
 				self.boxtype = 'ET-6x00'
+			elif getMachineMake() == 'et7x00':
+				self.boxtype = 'ET-7x00'
 			elif getMachineMake() == 'et8000':
 				self.boxtype = 'ET-8x00'
+			elif getMachineMake() == 'et8500':
+				self.boxtype = 'ET-8500'
 			elif getMachineMake() == 'et9x00':
 				self.boxtype = 'ET-9x00'
 			elif getMachineMake() == 'et10000':
