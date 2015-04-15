@@ -2,12 +2,15 @@ from boxbranding import getImageVersion, getImageBuild, getImageDistro, getMachi
 from os import rename, path, remove
 from gettext import dgettext
 import urllib
+import socket
 
 from enigma import eTimer, eDVBDB
 
 import Components.Task
+from Components.OnlineUpdateCheck import feedsstatuscheck
 from Screens.ChoiceBox import ChoiceBox
 from Screens.MessageBox import MessageBox
+from Screens.ParentalControlSetup import ProtectedScreen
 from Screens.Screen import Screen
 from Screens.Standby import TryQuitMainloop
 from Components.ActionMap import ActionMap
@@ -133,15 +136,13 @@ class SoftwareUpdateChanges(Screen):
 	def closeRecursive(self):
 		self.close(("menu", "menu"))
 
-class UpdatePlugin(Screen):
+class UpdatePlugin(Screen, ProtectedScreen):
 	def __init__(self, session, *args):
 		Screen.__init__(self, session)
+		ProtectedScreen.__init__(self)
 		Screen.setTitle(self, _("Software Update"))
 
 		self.sliderPackages = { "dreambox-dvb-modules": 1, "enigma2": 2, "tuxbox-image-info": 3 }
-
-		self.setTitle(_("Software update"))
-		
 		self.slider = Slider(0, 4)
 		self["slider"] = self.slider
 		self.activityslider = Slider(0, 100)
@@ -152,14 +153,12 @@ class UpdatePlugin(Screen):
 		self["package"] = self.package
 		self.oktext = _("Press OK on your remote control to continue.")
 
-		status_msgs = {'stable': _('Feeds status:   Stable'), 'unstable': _('Feeds status:   Unstable'), 'updating': _('Feeds status:   Updating'), 'unknown': _('No connection')}
 		self['tl_off'] = Pixmap()
 		self['tl_red'] = Pixmap()
 		self['tl_yellow'] = Pixmap()
 		self['tl_green'] = Pixmap()
-		self.feedsStatus()
-		self['feedStatusMSG'] = Label(status_msgs[self.trafficLight])
-		
+		self['feedStatusMSG'] = Label()
+
 		self.channellist_only = 0
 		self.channellist_name = ''
 		self.SettingsBackupDone = False
@@ -170,50 +169,32 @@ class UpdatePlugin(Screen):
 		self.error = 0
 		self.processed_packages = []
 		self.total_packages = None
-		self.checkNetworkState()
+		self.onFirstExecBegin.append(self.checkNetworkState)
 
-	def feedsStatus(self):
-		from urllib import urlopen
-		import socket
-		self['tl_red'].hide()
-		self['tl_yellow'].hide()
-		self['tl_green'].hide()
-		currentTimeoutDefault = socket.getdefaulttimeout()
-		socket.setdefaulttimeout(3)
-		try:
-			d = urlopen("http://openvix.co.uk/TrafficLightState.php")
-			self.trafficLight = d.read()
-			if self.trafficLight == 'unstable':
-				self['tl_off'].hide()
+	def checkNetworkState(self):
+		self.trafficLight = feedsstatuscheck.getFeedsBool()
+		if (config.softwareupdate.updateisunstable.value == '1' and config.softwareupdate.updatebeta.value) or config.softwareupdate.updateisunstable.value == '0':
+			status_msgs = {'stable': _('Feeds status:   Stable'), 'unstable': _('Feeds status:   Unstable'), 'updating': _('Feeds status:   Updating'), '-2': _('ERROR:   No network found'), '404': _('ERROR:   No internet found'), 'unknown': _('No connection')}
+			self['tl_red'].hide()
+			self['tl_yellow'].hide()
+			self['tl_green'].hide()
+			self['tl_off'].hide()
+			if self.trafficLight:
+				self['feedStatusMSG'].setText(status_msgs[str(self.trafficLight)])
+			if self.trafficLight == 'stable':
+				self['tl_green'].show()
+			elif self.trafficLight == 'unstable':
 				self['tl_red'].show()
 			elif self.trafficLight == 'updating':
-				self['tl_off'].hide()
 				self['tl_yellow'].show()
-			elif self.trafficLight == 'stable':
-				self['tl_off'].hide()
-				self['tl_green'].show()
 			else:
-				self.trafficLight = 'unknown'
 				self['tl_off'].show()
-		except:
-			self.trafficLight = 'unknown'
-			self['tl_off'].show()
-		socket.setdefaulttimeout(currentTimeoutDefault)
-		
-	def checkNetworkState(self):
-		cmd1 = "opkg update"
-		self.CheckConsole = Console()
-		self.CheckConsole.ePopen(cmd1, self.checkNetworkStateFinished)
-
-	def checkNetworkStateFinished(self, result, retval,extra_args=None):
-		if 'bad address' in result:
-			self.session.openWithCallback(self.close, MessageBox, _("Your %s %s is not connected to the internet, please check your network settings and try again.") % (getMachineBrand(), getMachineName()), type=MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
-		elif ('wget returned 1' or 'wget returned 255' or '404 Not Found') in result:
-			self.session.openWithCallback(self.close, MessageBox, _("Sorry feeds are down for maintenance, please try again later. If this issue persists please check openvix.co.uk or world-of-satellite.com."), type=MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
-		elif 'Collected errors' in result:
-			self.session.openWithCallback(self.close, MessageBox, _("A background update check is in progress, please wait a few minutes and try again."), type=MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
+			if self.trafficLight not in ('stable', 'unstable'):
+				self.session.openWithCallback(self.close, MessageBox, feedsstatuscheck.getFeedsErrorMessage(), type=MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
+			else:
+				self.startCheck()
 		else:
-			self.startCheck()
+			self.session.openWithCallback(self.close, MessageBox, _("Sorry feeds seem be in an unstable state, if you wish to use them please enable 'Allow unstable (experimental) updates' in \"Software update settings\"."), type=MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 
 	def startCheck(self):
 		self.activity = 0
@@ -234,6 +215,11 @@ class UpdatePlugin(Screen):
 		self.updating = True
 		self.activityTimer.start(100, False)
 		self.ipkg.startCmd(IpkgComponent.CMD_UPDATE)
+
+	def isProtected(self):
+		return config.ParentalControl.setuppinactive.value and\
+			(not config.ParentalControl.config_sections.main_menu.value and not config.ParentalControl.config_sections.configuration.value  or hasattr(self.session, 'infobar') and self.session.infobar is None) and\
+			config.ParentalControl.config_sections.software_update.value
 
 	def doActivityTimer(self):
 		self.activity += 1
@@ -270,7 +256,6 @@ class UpdatePlugin(Screen):
 		elif event == IpkgComponent.EVENT_CONFIGURING:
 			self.package.setText(param)
 			self.status.setText(_("Configuring"))
-
 		elif event == IpkgComponent.EVENT_MODIFIED:
 			if config.plugins.softwaremanager.overwriteConfigFiles.value in ("N", "Y"):
 				self.ipkg.write(True and config.plugins.softwaremanager.overwriteConfigFiles.value)
@@ -282,20 +267,12 @@ class UpdatePlugin(Screen):
 				)
 		elif event == IpkgComponent.EVENT_ERROR:
 			self.error += 1
+			self.updating = False
 		elif event == IpkgComponent.EVENT_DONE:
 			if self.updating:
 				self.updating = False
 				self.ipkg.startCmd(IpkgComponent.CMD_UPGRADE_LIST)
 			elif self.ipkg.currentCommand == IpkgComponent.CMD_UPGRADE_LIST:
-				from urllib import urlopen
-				import socket
-				currentTimeoutDefault = socket.getdefaulttimeout()
-				socket.setdefaulttimeout(3)
-				status = urlopen('http://www.openvix.co.uk/feeds/status').read()
-				if '404 Not Found' in status:
-					status = '1'
-				config.softwareupdate.updateisunstable.setValue(status)
-				socket.setdefaulttimeout(currentTimeoutDefault)
 				self.total_packages = None
 				if config.softwareupdate.updateisunstable.value == '1' and config.softwareupdate.updatebeta.value:
 					self.total_packages = len(self.ipkg.getFetchedList())
@@ -303,6 +280,8 @@ class UpdatePlugin(Screen):
 				elif config.softwareupdate.updateisunstable.value == '0':
 					self.total_packages = len(self.ipkg.getFetchedList())
 					message = _("Do you want to update your %s %s ?") % (getMachineBrand(), getMachineName()) + "\n(" + (ngettext("%s updated package available", "%s updated packages available", self.total_packages) % self.total_packages) + ")"
+				if self.total_packages > 150:
+					message += " " + _("Reflash recommended!")
 				if self.total_packages:
 					global ocram
 					for package_tmp in self.ipkg.getFetchedList():
@@ -347,7 +326,7 @@ class UpdatePlugin(Screen):
 				self.activityslider.setValue(0)
 				error = _("Your %s %s might be unusable now. Please consult the manual for further assistance before rebooting your %s %s.") % (getMachineBrand(), getMachineName(), getMachineBrand(), getMachineName())
 				if self.packages == 0:
-					error = _("No updates available. Please try again later.")
+					error = _("A background update check is in progress,\nplease wait a few minutes and try again.")
 				if self.updating:
 					error = _("Update failed. Your %s %s does not have a working internet connection.") % (getMachineBrand(), getMachineName())
 				self.status.setText(_("Error") +  " - " + error)

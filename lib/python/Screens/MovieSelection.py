@@ -27,6 +27,7 @@ from Screens.MessageBox import MessageBox
 from Screens.ChoiceBox import ChoiceBox
 from Screens.LocationBox import MovieLocationBox
 from Screens.HelpMenu import HelpableScreen
+from Screens.InputBox import PinInput
 import Screens.InfoBar
 from Tools import NumericalTextInput
 from Tools.Directories import resolveFilename, SCOPE_HDD
@@ -130,14 +131,14 @@ canRename = canMove
 
 def createMoveList(serviceref, dest):
 	#normpath is to remove the trailing '/' from directories
-	src = os.path.normpath(serviceref.getPath())
+	src = isinstance(serviceref, str) and serviceref + ".ts" or os.path.normpath(serviceref.getPath())
 	srcPath, srcName = os.path.split(src)
 	if os.path.normpath(srcPath) == dest:
 		# move file to itself is allowed, so we have to check it
 		raise Exception, "Refusing to move to the same directory"
 	# Make a list of items to move
 	moveList = [(src, os.path.join(dest, srcName))]
-	if not serviceref.flags & eServiceReference.mustDescent:
+	if isinstance(serviceref, str) or not serviceref.flags & eServiceReference.mustDescent:
 		# Real movie, add extra files...
 		srcBase = os.path.splitext(src)[0]
 		baseName = os.path.split(srcBase)[1]
@@ -334,7 +335,6 @@ class MovieContextMenuSummary(Screen):
 		item = self.parent["config"].getCurrent()
 		self["selected"].text = item[0]
 
-
 from Screens.ParentalControlSetup import ProtectedScreen
 
 class MovieContextMenu(Screen, ProtectedScreen):
@@ -385,10 +385,22 @@ class MovieContextMenu(Screen, ProtectedScreen):
 				menu.append((_("Reset playback position"), csel.do_reset))
 				menu.append((_("Rename"), csel.do_rename))
 				menu.append((_("Start offline decode"), csel.do_decode))
+
+			from Components.ParentalControl import parentalControl
+			if config.ParentalControl.hideBlacklist.value and not parentalControl.sessionPinCached and config.ParentalControl.storeservicepin.value != "never":
+				menu.append((_("Unhide parental control services"), csel.unhideParentalServices))
 				# Plugins expect a valid selection, so only include them if we selected a non-dir
 				menu.extend([(p.description, boundFunction(p, session, service)) for p in plugins.getPlugins(PluginDescriptor.WHERE_MOVIELIST)])
 
 		self["config"] = MenuList(menu)
+
+	def isProtected(self):
+		return self.csel.protectContextMenu and config.ParentalControl.setuppinactive.value and config.ParentalControl.config_sections.context_menus.value
+
+	def pinEntered(self, answer):
+		if answer:
+			self.csel.protectContextMenu = False
+		ProtectedScreen.pinEntered(self, answer)
 
 	def isProtected(self):
 		return self.csel.protectContextMenu and config.ParentalControl.setuppinactive.value and config.ParentalControl.config_sections.context_menus.value
@@ -508,6 +520,10 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		self["DescriptionBorder"] = Pixmap()
 		self["DescriptionBorder"].hide()
 
+		if config.ParentalControl.servicepinactive.value:
+			from Components.ParentalControl import parentalControl
+			if not parentalControl.sessionPinCached and config.movielist.last_videodir.value and [x for x in config.movielist.last_videodir.value[1:].split("/") if x.startswith(".") and not x.startswith(".Trash")]:
+				config.movielist.last_videodir.value = ""
 		if not os.path.isdir(config.movielist.last_videodir.value):
 			config.movielist.last_videodir.value = defaultMoviePath()
 			config.movielist.last_videodir.save()
@@ -644,9 +660,28 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			self.onExecBegin.append(self.asciiOff)
 		else:
 			self.onExecBegin.append(self.asciiOn)
+		config.misc.standbyCounter.addNotifier(self.standbyCountChanged, initial_call=False)
 
 	def isProtected(self):
 		return config.ParentalControl.setuppinactive.value and config.ParentalControl.config_sections.movie_list.value
+
+	def standbyCountChanged(self, value):
+		self.close(None)
+
+	def unhideParentalServices(self):
+		if self.protectContextMenu:
+			self.session.openWithCallback(self.unhideParentalServicesCallback, PinInput, pinList=[config.ParentalControl.servicepin[0].value], triesEntry=config.ParentalControl.retries.servicepin, title=_("Enter the service pin"), windowTitle=_("Enter pin code"))
+		else:
+			self.unhideParentalServicesCallback(True)
+
+	def unhideParentalServicesCallback(self, answer):
+		if answer:
+			from Components.ParentalControl import parentalControl
+			parentalControl.setSessionPinCached()
+			parentalControl.hideBlacklist()
+			self.reloadList()
+		elif answer is not None:
+			self.session.openWithCallback(self.close, MessageBox, _("The pin code you entered is wrong."), MessageBox.TYPE_ERROR)	
 
 	def asciiOn(self):
 		rcinput = eRCInput.getInstance()
@@ -886,6 +921,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 					self.gotFilename(path)
 
 	def __onClose(self):
+		config.misc.standbyCounter.removeNotifier(self.standbyCountChanged)
 		try:
 			NavigationInstance.instance.RecordTimer.on_state_change.remove(self.list.updateRecordings)
 		except Exception, e:
@@ -1458,7 +1494,15 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 				config.movielist.last_videodir.value
 			)
 
-	def gotFilename(self, res, selItem = None):
+	def gotFilename(self, res, selItem=None):
+		def servicePinEntered(res, selItem, result):
+			if result:
+				from Components.ParentalControl import parentalControl
+				parentalControl.setSessionPinCached()
+				parentalControl.hideBlacklist()
+				self.gotFilename(res, selItem)
+			elif result == False:
+				self.session.open(MessageBox, _("The pin code you entered is wrong."), MessageBox.TYPE_INFO, timeout=3)
 		if not res:
 			return
 		# serviceref must end with /
@@ -1467,6 +1511,12 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		currentDir = config.movielist.last_videodir.value
 		if res != currentDir:
 			if os.path.isdir(res):
+				baseName = os.path.basename(res[:-1])
+				if config.ParentalControl.servicepinactive.value and baseName.startswith(".") and not baseName.startswith(".Trash"):
+					from Components.ParentalControl import parentalControl
+					if not parentalControl.sessionPinCached:
+						self.session.openWithCallback(boundFunction(servicePinEntered, res, selItem), PinInput, pinList=[x.value for x in config.ParentalControl.servicepin], triesEntry=config.ParentalControl.retries.servicepin, title=_("Please enter the correct pin code"), windowTitle=_("Enter pin code"))
+						return
 				config.movielist.last_videodir.value = res
 				config.movielist.last_videodir.save()
 				self.loadLocalSettings()
@@ -1485,6 +1535,12 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 					timeout = 5
 					)
 				mbox.setTitle(self.getTitle())
+
+	def pinEntered(self, res, selItem, result):
+		if result:
+			from Components.ParentalControl import parentalControl
+			parentalControl.setSessionPinCached()
+			self.gotFilename(res, selItem, False)
 
 	def showAll(self):
 		self.selected_tags_ele = None
@@ -1859,10 +1915,14 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 				if args:
 					trash = Tools.Trashcan.createTrashFolder(cur_path)
 					if trash:
-						moveServiceFiles(current, trash, name, allowCopy=True)
-						self["list"].removeService(current)
-						self.showActionFeedback(_("Deleted") + " " + name)
-						return
+						try:
+							moveServiceFiles(current, trash, name, allowCopy=True)
+							self["list"].removeService(current)
+							self.showActionFeedback(_("Deleted") + " " + name)
+							return
+						except:
+							msg = _("Cannot move to trash can") + "\n"
+							are_you_sure = _("Do you really want to delete %s ?") % name
 					else:
 						msg = _("Cannot move to trash can") + "\n"
 						are_you_sure = _("Do you really want to delete %s ?") % name
@@ -1936,13 +1996,17 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			if '.Trash' not in cur_path and config.usage.movielist_trashcan.value:
 				trash = Tools.Trashcan.createTrashFolder(cur_path)
 				if trash:
-					moveServiceFiles(current, trash, name, allowCopy=True)
-					self["list"].removeService(current)
-					# Files were moved to .Trash, ok.
-					from Screens.InfoBarGenerics import delResumePoint
-					delResumePoint(current)
-					self.showActionFeedback(_("Deleted") + " " + name)
-					return
+					try:
+						moveServiceFiles(current, trash, name, allowCopy=True)
+						self["list"].removeService(current)
+						# Files were moved to .Trash, ok.
+						from Screens.InfoBarGenerics import delResumePoint
+						delResumePoint(current)
+						self.showActionFeedback(_("Deleted") + " " + name)
+						return
+					except:
+						msg = _("Cannot move to trash can") + "\n"
+						are_you_sure = _("Do you really want to delete %s ?") % name
 				else:
 					msg = _("Cannot move to trash can") + "\n"
 					are_you_sure = _("Do you really want to delete %s ?") % name

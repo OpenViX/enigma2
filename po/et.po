@@ -2,16 +2,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX-Enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-03 18:04+0000\n"
-"PO-Revision-Date: 2015-03-07 10:05+0200\n"
+"POT-Creation-Date: 2015-04-06 07:15+0100\n"
+"PO-Revision-Date: 2015-04-08 22:42+0200\n"
 "Last-Translator: rimas\n"
-"Language-Team: Raivo, Henkka, eesatfan, rimas\n"
+"Language-Team: Digi-tv.ee\n"
 "Language: et\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
-"X-Generator: Poedit 1.7.1\n"
+"X-Generator: Poedit 1.7.5\n"
 
 msgid ""
 "\n"
@@ -157,6 +157,10 @@ msgstr "%-H:%M"
 msgid "%02d.%02d - %02d.%02d (%s%d min)"
 msgstr "%02d.%02d - %02d.%02d (%s%d min)"
 
+#, python-format
+msgid "%02d:%02d"
+msgstr "%02d:%02d"
+
 #. TRANSLATORS: short time representation hour:minute
 #, python-format
 msgid "%2d:%02d"
@@ -280,6 +284,10 @@ msgid_plural "%d wireless networks found!"
 msgstr[0] "Leiti %d WLAN võrk!"
 msgstr[1] "Leiti %d WLAN võrku!"
 
+#, python-format
+msgid "%d.%02d. %02d:%02d"
+msgstr "%d.%02d. %02d:%02d"
+
 msgid "%d.%B %Y"
 msgstr "%d.%B %Y"
 
@@ -337,6 +345,10 @@ msgstr "%s%d min"
 #, python-format
 msgid "%s/%s: %s"
 msgstr "%s/%s: %s"
+
+#, python-format
+msgid "%s:%s"
+msgstr "%s:%s"
 
 #, python-format
 msgid "'%s' contains %d file(s) and %d sub-directories.\n"
@@ -503,6 +515,13 @@ msgstr "??"
 
 msgid "A"
 msgstr "A"
+
+msgid ""
+"A background update check is in progress,\n"
+"please wait a few minutes and try again."
+msgstr ""
+"Taustal toimub uuenduste otsing.\n"
+"Oota paar minutit ja proovi uuesti."
 
 msgid ""
 "A background update check is in progress, please wait a few minutes and try "
@@ -690,8 +709,8 @@ msgstr "Tugijaam:"
 msgid "Activate"
 msgstr "Käivita"
 
-msgid "Activate HbbTV (Redbutton)"
-msgstr "HbbTV aktiveerimine"
+msgid "Activate HbbTV (RedButton)"
+msgstr "HbbTV käivitamine (punane nupp)"
 
 msgid "Activate MAC-address configuration"
 msgstr "MAC-aadressi seadistuse jõustamine"
@@ -708,8 +727,8 @@ msgstr "Võrgusätete jõustamine"
 msgid "Activate the configured network settings."
 msgstr "Seadistatud võrgu sätete jõustamine."
 
-msgid "Activate timeshift End"
-msgstr "Ajanihke lõpetamise aktiveerimine"
+msgid "Activate timeshift end"
+msgstr "Ajanihke lõpu aktiveerimine"
 
 msgid "Activate timeshift end and pause"
 msgstr "Ajanihke lõpetamine ja paus"
@@ -787,7 +806,7 @@ msgid "Add service"
 msgstr "Kanali lisamine"
 
 msgid "Add timer"
-msgstr "Taimeri lisamine"
+msgstr "Lisa taimer"
 
 msgid "Add title"
 msgstr "Pealkirja lisamine"
@@ -883,9 +902,6 @@ msgstr "Vaegkuuljate subtiitrite lubamine"
 
 msgid "Allow unstable (experimental) updates"
 msgstr "Testimata uuenduste lubamine"
-
-msgid "Allows more detailed information to be in the crash log"
-msgstr "Võimaldab rohkemate üksikasjadega vealogide loomise"
 
 msgid "Allows the %s %s to read the stored EPG data regularly."
 msgstr "%s %s saab regulaarselt lugeda salvestatud EPG andmeid."
@@ -1172,6 +1188,9 @@ msgstr "Automaatsed keelevalikud"
 msgid "Auto scart switching"
 msgstr "Autom. SCART ümberlülitus"
 
+msgid "AutoTimer Overview"
+msgstr "Autotaimeri ülevaade"
+
 msgid "Automatic"
 msgstr "Automaatne"
 
@@ -1380,9 +1399,6 @@ msgstr "Nuppude seadistus:"
 msgid "ButtonSetup"
 msgstr "Nuppude seadistus"
 
-msgid "ButtonSetup Setup"
-msgstr "Nuppude seadistus"
-
 msgid "By Team ViX"
 msgstr "ViX tiimilt"
 
@@ -1451,6 +1467,10 @@ msgstr "CCcam info"
 
 msgid "CH"
 msgstr "CH"
+
+#, python-format
+msgid "CH%s"
+msgstr ""
 
 msgid "CHANGE BOUQUET"
 msgstr "LEMMIKNIMEKIRJA VAHETAMINE"
@@ -1553,9 +1573,6 @@ msgstr "Lemmiknimekirjade vahetus noolenuppudega"
 msgid "Change next timer"
 msgstr "Järgmise taimeri muutmine"
 
-msgid "Change pin code"
-msgstr "PIN-koodi muutmine"
-
 msgid "Change recording (duration)"
 msgstr "Salvestuse kestuse muutmine"
 
@@ -1591,6 +1608,9 @@ msgstr "Kanalinimekiri"
 
 msgid "Channel down"
 msgstr "CH-"
+
+msgid "Channel info"
+msgstr "Kanali andmed"
 
 msgid "Channel list context menu"
 msgstr "Kanalinimekirja menüü"
@@ -1651,9 +1671,6 @@ msgstr "Kontrolli internetiühendust"
 
 msgid "Check the internet connection again"
 msgstr "Kontrolli uuesti internetiühendust"
-
-msgid "Checking Feeds"
-msgstr "Serverite kontroll"
 
 msgid "Checking Logs..."
 msgstr "Logide uurimine..."
@@ -1783,6 +1800,9 @@ msgstr "Vajuta puldil nupule, mille toimet soovid muuta"
 
 msgid "Clients"
 msgstr "Kliendid"
+
+msgid "Clone TV screen to LCD"
+msgstr "Telepildi kloonimine esipaneelile"
 
 msgid "Close"
 msgstr "Sulge"
@@ -2350,9 +2370,6 @@ msgstr "Loo DVD-ISO"
 msgid "Create directory"
 msgstr "Loo kataloog"
 
-msgid "Create more detailed crash log"
-msgstr "Üksikasjalikum vealogi"
-
 msgid "Creating AP and SC Files"
 msgstr "AP ja SC failide loomine"
 
@@ -2582,6 +2599,12 @@ msgstr "Viiteaeg SWITCH ja ajami käsu vahel"
 
 msgid "Delay for external subtitles"
 msgstr "Väliste subtiitrite viiteaeg"
+
+msgid "Delay in miliseconds after finish scrolling text on display."
+msgstr "Viiteaeg millisekundites pärast teksti kerimise lõpetamist."
+
+msgid "Delay in miliseconds before start of scrolling text on display."
+msgstr "Viiteaeg millisekundites enne teksti kerimise alustamist."
 
 msgid "Delay time"
 msgstr "Viiteaeg"
@@ -3020,6 +3043,12 @@ msgstr "EPG seaded"
 msgid "ERROR - failed to scan (%s)!"
 msgstr "VIGA - (%s) otsing nurjus!"
 
+msgid "ERROR:   No internet found"
+msgstr "VIGA: Internet puudub"
+
+msgid "ERROR:   No network found"
+msgstr "VIGA: Võrku ei leitud"
+
 msgid "East"
 msgstr "Ida"
 
@@ -3236,13 +3265,6 @@ msgstr ""
 "Viga: %s\n"
 "Uuesti?"
 
-msgid ""
-"Error: No network connection found. Please ensure your receiver is connected "
-"to the internet."
-msgstr ""
-"Viga: Ühtegi võrguühendust ei leitud. Veendu, et vastuvõtja on ühendatud "
-"internetti."
-
 msgid "Estonian"
 msgstr "Eesti"
 
@@ -3359,7 +3381,7 @@ msgid "External subtitle dialog colorisation"
 msgstr "Värvide kasutamine välistel subtiitritel"
 
 msgid "External subtitle switch fonts"
-msgstr "Väliste subtiitrite šrifti vahetamine"
+msgstr "Väliste subtiitrite kirjatüübi vahetamine"
 
 msgid "Extra motor options"
 msgstr "Mootori lisavalikud"
@@ -3444,13 +3466,13 @@ msgid "Favourites"
 msgstr "Lemmikud"
 
 msgid "Feeds status:   Stable"
-msgstr "Uuenduste olek:   Stabiilne"
+msgstr "Uuendused:   Stabiilsed"
 
 msgid "Feeds status:   Unstable"
-msgstr "Uuenduste olek:   Ebastabiilne"
+msgstr "Uuendused:   Ebastabiilsed"
 
 msgid "Feeds status:   Updating"
-msgstr "Uuenduste olek:   Värskendamisel"
+msgstr "Uuendused:   Värskendamisel"
 
 msgid "File appears to be busy.\n"
 msgstr "Fail on hõivatud.\n"
@@ -3473,6 +3495,9 @@ msgstr "Lõplik asukoht"
 
 msgid "Final position at index"
 msgstr "Lõplik asukoht indeksis"
+
+msgid "Final scroll delay"
+msgstr "Viiteaeg kerimise lõpetamisel"
 
 msgid "Fine movement"
 msgstr "Täppisliigutamine"
@@ -3738,6 +3763,9 @@ msgstr "HDMI CEC"
 msgid "HDMI CEC Setup"
 msgstr "HDMI CEC seaded"
 
+msgid "HDMIin"
+msgstr "HDMIin"
+
 msgid "Handle standby from TV"
 msgstr "Ooterežiim TV kaudu"
 
@@ -3750,8 +3778,8 @@ msgstr "Kõvaketta seaded"
 msgid "Hard disk standby after"
 msgstr "Kõvaketta seiskamisaeg"
 
-msgid "Harddisk Setup"
-msgstr "Kõvaketta seaded"
+msgid "Harddisk setup"
+msgstr "Kõvaketta seadistamine"
 
 msgid "Hebrew"
 msgstr "Heebrea"
@@ -4082,6 +4110,9 @@ msgstr "Algne lukustussuhe"
 msgid "Initial rewind speed"
 msgstr "Tagasikerimise algkiirus"
 
+msgid "Initial scroll delay"
+msgstr "Viiteaeg kerimise algustamisel"
+
 msgid "Initial signal quality"
 msgstr "Algne signaali kvaliteet"
 
@@ -4187,6 +4218,9 @@ msgstr "Sisemine välkmälu"
 
 msgid "Internal hdd only"
 msgstr "Ainult sisesel kõvakettal"
+
+msgid "Internet"
+msgstr "Internet"
 
 msgid "Interval between keys when repeating:"
 msgstr "Võtme kordamise vahemik:"
@@ -4460,6 +4494,9 @@ msgstr "EPG laadimine"
 msgid "Load playlist"
 msgstr "Lae esitusloend"
 
+msgid "Load unlinked userbouquets"
+msgstr "Sidumata lemmiknimekirjade laadimine"
+
 msgid "Load/Save/Delete"
 msgstr "Lae/salvesta/kustuta"
 
@@ -4518,7 +4555,7 @@ msgid "Loop through to"
 msgstr "Läbiviik kuni"
 
 msgid "Lower Framerate save CPU Time"
-msgstr "Madalam kaadrisagedus säästa protsessoriaega"
+msgstr "Madalam kaadrisagedus säästab protsessoriaega"
 
 msgid "Luxembourgish"
 msgstr "Luksemburgi"
@@ -4583,6 +4620,9 @@ msgstr "Salvestuse lõppu lisatakse (min)"
 
 msgid "Margin before recording (minutes)"
 msgstr "Salvestuse algusesse lisatakse (min)"
+
+msgid "Mark service as dedicated 3D service"
+msgstr "Märgistamine 3D kanalina"
 
 msgid "Mark/Portal/Playlist"
 msgstr "Mark/Portal/Playlist"
@@ -4929,9 +4969,6 @@ msgstr "Võrk:"
 msgid "New"
 msgstr "Uus"
 
-msgid "New PIN"
-msgstr "Uus PIN"
-
 msgid "New profile: "
 msgstr "Uus profiil: "
 
@@ -4965,6 +5002,9 @@ msgstr "Kõvaketas puudub või on vormindamata!"
 
 msgid "No Timeshift found to save as recording!"
 msgstr "Ajanihke faile ei leitud!"
+
+msgid "No active channel found."
+msgstr "Aktiivset kanalit ei leitud."
 
 msgid "No age block"
 msgstr "Vanusepiiranguta"
@@ -5038,7 +5078,7 @@ msgid "No of items switch (increase or reduced)"
 msgstr "Pole, mida vahetada (suurendada või vähendada)"
 
 msgid "No positioner capable frontend found."
-msgstr "Ei leitud positsioneeri toetavat tuunerit."
+msgstr "Ei leitud ajamit toetavat tuunerit."
 
 msgid "No priority"
 msgstr "Eelistus puudub"
@@ -5058,7 +5098,7 @@ msgid "No standby"
 msgstr "Ooterežiimita"
 
 msgid "No suitable sat tuner found!"
-msgstr "Satituunerit leitud!"
+msgstr "Satituunerit ei leitud!"
 
 msgid "No tags are set on these movies."
 msgstr "Salvestustele pole märksõnu määratud."
@@ -5081,9 +5121,6 @@ msgid ""
 msgstr ""
 "Tuuner määramata!\n"
 "Seadista tuuner enne kanaliotsingu alustamist."
-
-msgid "No updates available. Please try again later."
-msgstr "Uuendusi ei ole. Proovi hiljem uuesti."
 
 msgid "No wireless networks found! Searching..."
 msgstr "WLAN võrke ei leitud! Otsitakse..."
@@ -5308,9 +5345,6 @@ msgstr "Ainult vabakanalid"
 msgid "Only on startup"
 msgstr "Ainult alglaadimisel"
 
-msgid "Open AutoTimer"
-msgstr "Autotaimeri avamine"
-
 msgid "Open favourites list"
 msgstr "Lemmiknimekirjade loendi avamine"
 
@@ -5379,6 +5413,9 @@ msgstr "PCM mitmekanaline"
 
 msgid "PCR PID"
 msgstr "PCR PID"
+
+msgid "PDC"
+msgstr "PDC"
 
 msgid "PIDs"
 msgstr "PIDd"
@@ -5640,6 +5677,9 @@ msgstr "Sisesta uus nimi:"
 msgid "Please enter the correct pin code"
 msgstr "Sisesta õige kood"
 
+msgid "Please enter the new PIN code"
+msgstr "Sisesta uus PIN kood"
+
 msgid "Please enter the old PIN code"
 msgstr "Sisesta vana PIN kood"
 
@@ -5658,6 +5698,9 @@ msgstr "Ava esmalt Pilt Pildis (PiP)"
 
 msgid "Please press OK to continue."
 msgstr "Jätkamiseks vajuta OK."
+
+msgid "Please re-enter the new PIN code"
+msgstr "Sisesta uus PIN kood uuesti"
 
 msgid "Please select a default EPG type..."
 msgstr "Vali saatekava laad..."
@@ -5775,9 +5818,6 @@ msgstr "Oota, kuni toimub võrgu testimine..."
 
 msgid "Please wait while your network is restarting..."
 msgstr "Oota, kuni võrk taaskäivitub..."
-
-msgid "Please wait whilst feeds state is checked."
-msgstr "Oota, kuni serverite olek on kontrollitud."
 
 msgid "Please wait..."
 msgstr "Oota..."
@@ -6014,6 +6054,9 @@ msgstr "Alammenüüde lukustamine"
 msgid "Protect configuration"
 msgstr "Seadistuse lukustamine"
 
+msgid "Protect context menus"
+msgstr "Kontekstmenüüde lukustamine"
+
 msgid "Protect main menu"
 msgstr "Peamenüü lukustamine"
 
@@ -6113,9 +6156,6 @@ msgstr "Teenusepakkuja hinnang - %d"
 msgid "Rating undefined"
 msgstr "Hinnang määramata"
 
-msgid "Re-enter new PIN"
-msgstr "Korda uut PIN-i"
-
 msgid "Read Userdata from oscam.conf"
 msgstr "Loe kasutajaandmeid oscam.conf failist"
 
@@ -6190,9 +6230,6 @@ msgstr "Salvestusaeg on piiratud teise taimeri %s tõttu"
 msgid "Recording"
 msgstr "Salvestus"
 
-msgid "Recording Setup"
-msgstr "Salvestamise seaded"
-
 msgid "Recording and playback settings"
 msgstr "Salvestus-taasesitusseaded"
 
@@ -6235,6 +6272,9 @@ msgstr ""
 "Toimub uuendamine\n"
 "Oota %s %s taaskäivitumist\n"
 "Selleks võib kuluda mõni minut"
+
+msgid "Reflash recommended!"
+msgstr "Soovitatav on ViX uuesti paigaldada!"
 
 msgid "Refresh every (in hours)"
 msgstr "Värskenda iga  (tund)"
@@ -6413,9 +6453,6 @@ msgstr "Taaskäivita kasutajaliides"
 msgid "Restart GUI now?"
 msgstr "Kas taaskäivitad kasutajaliidese?"
 
-msgid "Restart enigma"
-msgstr "Taaskäivita enigma2"
-
 msgid "Restart network"
 msgstr "Võrgu taaskäivitamine"
 
@@ -6491,6 +6528,9 @@ msgstr "Ajami sammu asukoht:"
 
 msgid "Rotor turning speed"
 msgstr "Ajami pööramise kiirus"
+
+msgid "Rotor: "
+msgstr "Ajam:"
 
 msgid "Run how often ?"
 msgstr "Kui tihti käivitada?"
@@ -6574,7 +6614,7 @@ msgid "Save EPG"
 msgstr "EPG salvestamine"
 
 msgid "Save and record"
-msgstr "Salvesta"
+msgstr "Talleta ja salvesta"
 
 msgid "Save and stop"
 msgstr "Salvesta ja peata"
@@ -6586,10 +6626,10 @@ msgid "Save playlist"
 msgstr "Salvesta esitusloend"
 
 msgid "Save timeshift as movie and continue recording"
-msgstr "Muuda ajanihe salvestuseks ja jätka salvestamist"
+msgstr "Talleta ajanihe ja jätka salvestamist"
 
 msgid "Save timeshift as movie and stop recording"
-msgstr "Muuda ajanihe salvestuseks ja lõpeta salvestamine"
+msgstr "Talleta ajanihe ja lõpeta salvestamine"
 
 msgid "Saving EPG Cache..."
 msgstr "EPG salvestamine..."
@@ -7192,9 +7232,6 @@ msgstr "480/576p 24fps kuvamine"
 msgid "Show 720p 24fps as"
 msgstr "720p 24fps kuvamine"
 
-msgid "Show Audioselection"
-msgstr "Heli valiku avamine"
-
 msgid "Show AutoTimer List"
 msgstr "Autotaimerite nimekiri"
 
@@ -7216,8 +7253,17 @@ msgstr "EIT nüüd/järgmine kuvamine inforibal"
 msgid "Show EPG for current channel..."
 msgstr "Kanali saatekava näitamine..."
 
+msgid "Show EPG for current service"
+msgstr "Kanali EPG kuvamine"
+
+msgid "Show Event Info plugins"
+msgstr "Saateinfo laienduste kuvamine"
+
 msgid "Show Games show"
 msgstr "Viktoriin"
+
+msgid "Show Graphical multi EPG"
+msgstr "Graafilise multi EPG kuvamine"
 
 msgid "Show Log"
 msgstr "Logi näitamine"
@@ -7230,6 +7276,9 @@ msgstr "Jäänud/kulunud näit meedia esitusel"
 
 msgid "Show MiniTV in the Front Display"
 msgstr "MiniTV kuvamine esipaneelil"
+
+msgid "Show Multi EPG"
+msgstr "Multi EPG kuvamine"
 
 msgid "Show OE Log"
 msgstr "OE logi näitamine"
@@ -7315,9 +7364,6 @@ msgstr "Saateinfo näitamine"
 msgid "Show event-progress in channel selection"
 msgstr "Saate edenemine kanalinimekirjas"
 
-msgid "Show eventinfo plugins"
-msgstr "Saateinfo laiendused"
-
 msgid "Show extended description"
 msgstr "Täpsema sisututvustuse näitamine"
 
@@ -7329,9 +7375,6 @@ msgstr "Laienduste näitamine..."
 
 msgid "Show favourites list"
 msgstr "Lemmiknimekirjade loendi avamine"
-
-msgid "Show graphical multi EPG"
-msgstr "Graafilise MultiEPG avamine"
 
 msgid "Show help"
 msgstr "Abiekraan"
@@ -7375,9 +7418,6 @@ msgstr "Filmi kestuse näitamine filmilistis"
 msgid "Show movies"
 msgstr "Salvestiste esitamine"
 
-msgid "Show multi channel EPG"
-msgstr "MultiEPG avamine"
-
 msgid "Show network mounts ..."
 msgstr "Võrgu haakepunktide näitamine..."
 
@@ -7402,6 +7442,9 @@ msgstr "Ekraanisäästja"
 msgid "Show second infobar"
 msgstr "Teise inforiba näitamine"
 
+msgid "Show select audio track"
+msgstr "Heliriba valik"
+
 msgid "Show service list"
 msgstr "Kanalinimekirja avamine"
 
@@ -7416,9 +7459,6 @@ msgstr "Seiskamismenüü"
 
 msgid "Show single epg for current channel"
 msgstr "Käesoleva kanali saatekava näitamine"
-
-msgid "Show single service EPG"
-msgstr "Kanali EPG avamine"
 
 msgid "Show source packages"
 msgstr "Lähtefailide näitamine (source)"
@@ -7470,6 +7510,9 @@ msgstr "Jäänud/kulunud transponderi näit"
 
 msgid "Show warning when timeshift is stopped"
 msgstr "Ajanihke lõppemisest teavitamine"
+
+msgid "Shows live tv or informations on LCD."
+msgstr "Saadete või info näitamine esipaneelil"
 
 msgid "Shows the icons when new/unseen, else will not show an icon."
 msgstr "Tähistab uued/vaatamata ikooniga, ülejäänutel ikooni ei näita."
@@ -7664,9 +7707,6 @@ msgstr "MiniDLNA on seadistamata"
 msgid "Sorry feeds are down for maintenance"
 msgstr "Käivad serverite hooldustööd"
 
-msgid "Sorry feeds are down for maintenance, please try again later."
-msgstr "Toimuvad serverite hooldetööd. Proovi hiljem uuesti"
-
 msgid ""
 "Sorry feeds are down for maintenance, please try again later. If this issue "
 "persists please check openvix.co.uk or world-of-satellite.com."
@@ -7717,6 +7757,9 @@ msgstr "Vaikejärjestus"
 msgid "Sort list by"
 msgstr "Järjestuse aluseks"
 
+msgid "Sort list to default and exit?"
+msgstr "Kas taastad vaikejärjestuse ja väljud?"
+
 msgid "Sort list:"
 msgstr "Järjesta loend:"
 
@@ -7725,6 +7768,9 @@ msgstr "Menüüd tähestiku järjekorras"
 
 msgid "Sort plug-in browser alphabetically"
 msgstr "Laiendused tähestiku järjekorras"
+
+msgid "Sort plugins list to default?"
+msgstr "Kas taastad vaikejärjestuse?"
 
 msgid "Sort setting screens alphabetically"
 msgstr "Seadistusmenüüd tähestiku järjekorras"
@@ -7825,6 +7871,21 @@ msgstr "Peata"
 msgid "Stop PiP"
 msgstr "PiP sulgemine"
 
+msgid "Stop all current recordings"
+msgstr "Kõigi käsilolevate salvestuste peatamine"
+
+msgid "Stop and delete all current recordings"
+msgstr "Kõigi käsilolevate salvestuste peatamine ja kustutamine"
+
+msgid "Stop and delete recording"
+msgstr "Salvestuse peatamine ja kustutamine"
+
+msgid "Stop and delete recording:"
+msgstr "Salvestuste peatamine ja kustutamine:"
+
+msgid "Stop and delete recordings:"
+msgstr "Salvestuse peatamine ja kustutamine:"
+
 msgid "Stop current event and disable coming events"
 msgstr "Peata salvestamine ja keela tulevad taimerid"
 
@@ -7848,6 +7909,12 @@ msgstr "Peata salvestamine ja kustuta"
 
 msgid "Stop recording now"
 msgstr "Peata salvestamine kohe"
+
+msgid "Stop recording:"
+msgstr "Salvestuse peatamine:"
+
+msgid "Stop recordings:"
+msgstr "Salvestuste peatamine:"
 
 msgid "Stop service on return to movie list"
 msgstr "Peata teenus filmilisti naasmisel"
@@ -7896,6 +7963,12 @@ msgstr "IPTV"
 
 msgid "Stream request"
 msgstr "Striimi päring"
+
+msgid "Stream-tv"
+msgstr "IPTV"
+
+msgid "Streaming"
+msgstr "Voogesitus"
 
 msgid "Strict DLNA"
 msgstr "Puhas DLNA"
@@ -7957,7 +8030,7 @@ msgstr "Subtiitrite seaded"
 msgid "Subtitles"
 msgstr "Subtiitrid"
 
-msgid "Subtitles Settings"
+msgid "Subtitles settings"
 msgstr "Subtiitrite seaded"
 
 msgid "Sun"
@@ -8708,8 +8781,9 @@ msgstr ""
 "See test kontrollib,kas LAN adapter on seadistatud automaatse IP aadressi "
 "jaoks DHCP-d kasutades.\n"
 "Kui näed teadet \"keelatud\":\n"
-"- siis LAN adapter on seadistatud IP määramisele käsitsi\n"
-"- kontrolli, et õige IP info on salvestatud AdapterSetup dialoogis.\n"
+"- siis LAN võrgukaart on seadistatud IP käsitsi määramiselei\n"
+"- kontrolli, et menüüs 'Võrgukaardi seaded'. on IP andmed sisestatud "
+"korrektselt.\n"
 "Kui näed teadet \"lubatud\":\n"
 "kontrolli, et võrgus on seadistatud ja töötav DHCP server."
 
@@ -8827,25 +8901,25 @@ msgid "Timeshift not possible!"
 msgstr "Ajanihke kasutamine pole võimalik!"
 
 msgid "Timeshift save failed!"
-msgstr "Ajanihke salvestamine nurjus!"
+msgstr "Ajanihke talletamine nurjus!"
 
 msgid "Timeshift save recording (Select event)"
-msgstr "Ajanihke muutmine salvestuseks (vali saade)"
+msgstr "Ajanihke talletamine (vali saade)"
 
 msgid "Timeshift save recording (stop after current event)"
-msgstr "Ajanihke muutmine salvestuseks (lõpeta peale praegust saadet)"
+msgstr "Ajanihke talletamine (lõpeta peale praegust saadet)"
 
 msgid "Timeshift saved to your harddisk!"
-msgstr "Ajanihe salvestati kõvakettale!"
+msgstr "Ajanihe talletati kõvakettale!"
 
 msgid "Timeshift settings"
 msgstr "Ajanihke seaded"
 
 msgid "Timeshift will get saved at end of event!"
-msgstr "Ajanihe salvestatakse saate lõppedes!"
+msgstr "Ajanihe talletatakse saate lõppedes!"
 
 msgid "Timeshift-save action on zap"
-msgstr "Ajanihke salvestamine kanalivahetusel"
+msgstr "Ajanihke talletamine kanalivahetusel"
 
 msgid "Timezone"
 msgstr "Ajavöönd"
@@ -8887,8 +8961,11 @@ msgstr "HDMI sisendi vahetamine PiP ekraanil"
 msgid "Toggle HDMI-In full screen"
 msgstr "HDMI sisendi vahetamine peaekraanil"
 
-msgid "Toggle PIPzap"
-msgstr "PiP kanalivahetuse lülitamine"
+msgid "Toggle LCD LiveTV"
+msgstr "Telepildi esipaneelile kloonimise lüliti"
+
+msgid "Toggle PIP-ZAP"
+msgstr "PIP-ZAP lülitamine"
 
 msgid "Toggle Picture In Graphics"
 msgstr "PiG lülitamine"
@@ -8994,9 +9071,6 @@ msgstr "Tuuner"
 
 msgid "Tuner :"
 msgstr "Tuuner:"
-
-msgid "Tuner Configuration"
-msgstr "Tuuneri seaded"
 
 msgid "Tuner configuration"
 msgstr "Tuuneri seaded"
@@ -9109,6 +9183,9 @@ msgstr "Universaalne LNB"
 msgid "Unknown"
 msgstr "Tundmatu"
 
+msgid "Unmark service as dedicated 3D service"
+msgstr "3D kanali märgistuse eemaldamine"
+
 msgid "Unmount"
 msgstr "Haagi lahti"
 
@@ -9174,8 +9251,8 @@ msgstr "Uphops: "
 msgid "Uptime"
 msgstr "Ülalolekuaeg"
 
-msgid "Usage Setup"
-msgstr "Kasutaja valikud"
+msgid "Usage setup"
+msgstr "Kasutaja eelistused"
 
 msgid "Use"
 msgstr "Kasuta"
@@ -9312,7 +9389,7 @@ msgstr "Kasutaja määratud transponder"
 msgid "User interface"
 msgstr "Kasutajaliides"
 
-msgid "User interface settings"
+msgid "User interface Settings"
 msgstr "Kasutajaliidese seaded"
 
 msgid "User interface visibility"
@@ -9664,6 +9741,17 @@ msgid "What do you want to scan?"
 msgstr "Mida soovid otsida?"
 
 msgid ""
+"When enabled enigma2 will load unlinked userbouquets. This means that "
+"userbouquets that are available, but not included in the bouquets.tv or "
+"bouquets.radio files, will still be loaded. This allows you for example to "
+"keep your own user bouquet while installed settings are upgraded"
+msgstr ""
+"Määrates 'jah', laeb enigma2 ka sidumata lemmiknimekirjad. See tähendab, et "
+"lemmiknimekirjad, mis on olemas, aga puuduvad bouquets.tv või bouquets.radio "
+"failides, laetakse ikkagi. Nii on võimalik isetehtud lemmiknimekirjad "
+"säilitada ka kanalinimekirjade uuendamisel."
+
+msgid ""
 "When enabled the online checker will also check for experimental versions"
 msgstr "Määrates 'jah', otsitakse ka eksperimentaalseid uuendusi"
 
@@ -9926,10 +10014,10 @@ msgid "Where should the recording be saved?"
 msgstr "Kuhu salvestatakse?"
 
 msgid "Where to save temporary timeshift recordings?"
-msgstr "Kuhu salvestada ajanihke sisu?"
+msgstr "Kuhu talletada ajanihke failid?"
 
 msgid "Which event do you want to save permanently?"
-msgstr "Millise saate soovid lõplikult salvestada?"
+msgstr "Millise saate soovid lõplikult talletada?"
 
 msgid "White"
 msgstr "Valge"
@@ -10026,13 +10114,13 @@ msgid "Yes, backup my settings!"
 msgstr "Jah, tee seadistustest varukoopia!"
 
 msgid "Yes, but don't save timeshift as movie"
-msgstr "Jah, kuid ära salvesta ajanihke faile"
+msgstr "Jah, kuid ära talleta ajanihke faile"
 
 msgid "Yes, but save timeshift as movie and continue recording"
-msgstr "Jah, kuid salvesta ajanihe filmina ja jätka salvestamist"
+msgstr "Jah, kuid talleta ajanihe ja jätka salvestamist"
 
 msgid "Yes, but save timeshift as movie and stop recording"
-msgstr "Jah, kuid salvesta ajanihe filmina ja lõpeta salvestamine"
+msgstr "Jah, kuid talleta ajanihe ja lõpeta salvestamine"
 
 msgid "Yes, delete this movie and return to movie list"
 msgstr "Jah, kustuta salvestis ja naase filmilisti"
@@ -10143,7 +10231,7 @@ msgid ""
 "yet finished\n"
 "What do you want to do ?"
 msgstr ""
-"Otsustasid selle saate ajanihke failid salvestada, aga saade ei ole veel "
+"Otsustasid selle saate ajanihke failid talletada, aga saade ei ole veel "
 "lõppenud\n"
 "Mida soovid teha?"
 
@@ -10192,6 +10280,14 @@ msgstr "Vastuvõtja ei toeta ext4"
 #, python-format
 msgid "Your %s %s does not support PiP HD"
 msgstr "PiP HD ei ole %s %s poolt toetatud"
+
+#, python-format
+msgid ""
+"Your %s %s has no network access, please check your network settings and "
+"make sure you have network cable connected and try again."
+msgstr ""
+"%s %s  ei oma ligipääsu võrgule. Kontrolli võrguseadeid, veendu, et "
+"võrgukaabel on ühendatud ja proovi uuesti."
 
 #, python-format
 msgid ""
@@ -10740,7 +10836,7 @@ msgid "equestrian"
 msgstr "ratsutamine"
 
 msgid "error starting scanning"
-msgstr "viga skaneeringu alustamisel"
+msgstr "viga skaneerimise alustamisel"
 
 msgid "error while scanning"
 msgstr "viga skaneerimisel"
@@ -11049,6 +11145,9 @@ msgstr "moodulit ei leitud"
 msgid "no channel list"
 msgstr "kanalinimekiri puudub"
 
+msgid "no delay"
+msgstr "viiteajata"
+
 msgid "no module found"
 msgstr "moodulit ei leitud"
 
@@ -11294,9 +11393,6 @@ msgstr "süvamuusika/klassikaline muusika"
 
 msgid "serious/classical/religious/historical movie/drama"
 msgstr "tõsine/klassikaline/religioosne/ajalooline film/draama"
-
-msgid "service PIN"
-msgstr "kanali PIN"
 
 msgid "set as startup service"
 msgstr "käivitu sellel kanalil"
@@ -11625,15 +11721,6 @@ msgstr "mine kanalile ja salvesta"
 msgid "zapped"
 msgstr "vahetatud"
 
-msgid ""
-"No valid service PIN found!\n"
-"Do you like to change the service PIN now?\n"
-"When you say 'No' here the service protection stay disabled!"
-msgstr ""
-"Lapseluku koodi ei leitud!\n"
-"Kas soovid määrata koodi?\n"
-"Vastates 'Ei', lapselukku ei kasutata!"
-
 #~ msgid ""
 #~ "\n"
 #~ "A recording is in progress."
@@ -11678,6 +11765,9 @@ msgstr ""
 #~ msgid "All satellites 4 (DiSEqC mode 1.2)"
 #~ msgstr "Kõik satelliidid 4 (USALS)"
 
+#~ msgid "Allows more detailed information to be in the crash log"
+#~ msgstr "Võimaldab rohkemate üksikasjadega vealogide loomise"
+
 #~ msgid ""
 #~ "Allows you to enable the debug logs. They contain very detailed "
 #~ "information about everything the system does."
@@ -11696,11 +11786,17 @@ msgstr ""
 #~ msgid "Build:\t%s"
 #~ msgstr "Järk:\t%s"
 
+#~ msgid "ButtonSetup Setup"
+#~ msgstr "Nuppude seadistus"
+
 #~ msgid "CPU Speed:\t%s"
 #~ msgstr "CPU kiirus:\t%s"
 
 #~ msgid "CPU:\t%s"
 #~ msgstr "Protsessor:\t%s"
+
+#~ msgid "Change pin code"
+#~ msgstr "PIN-koodi muutmine"
 
 #~ msgid "Change service PIN"
 #~ msgstr "Muuda kanali PIN"
@@ -11708,12 +11804,18 @@ msgstr ""
 #~ msgid "Change service PINs"
 #~ msgstr "Muuda kanalite PIN-e"
 
+#~ msgid "Change setup PIN"
+#~ msgstr "Muuda seadistuste PIN"
+
 #~ msgid "Change sort by..."
 #~ msgstr "Järjestuse muutmine..."
 
 #, fuzzy
 #~ msgid "Channel +/- button mode"
 #~ msgstr "Kanalinimekiri TV ja raadiorežiimi vahetusel"
+
+#~ msgid "Checking Feeds"
+#~ msgstr "Serverite kontroll"
 
 #~ msgid "Chipset:\tBCM%s"
 #~ msgstr "Kiibistik:\tBCM%s"
@@ -11738,6 +11840,9 @@ msgstr ""
 
 #~ msgid "Cores:\t%s"
 #~ msgstr "Tuumad:\t%s"
+
+#~ msgid "Create more detailed crash log"
+#~ msgstr "Üksikasjalikum vealogi"
 
 #~ msgid "DVB_C"
 #~ msgstr "DVB-C"
@@ -11774,15 +11879,28 @@ msgstr ""
 #~ msgid "Enable debug logs"
 #~ msgstr "Silumislogide lubamine"
 
+#~ msgid "Enable parental control"
+#~ msgstr "Lapseluku lubamine"
+
 #, fuzzy
 #~ msgid "Enimga2 Changes"
 #~ msgstr "Enigma2 muudatused"
+
+#~ msgid ""
+#~ "Error: No network connection found. Please ensure your receiver is "
+#~ "connected to the internet."
+#~ msgstr ""
+#~ "Viga: Ühtegi võrguühendust ei leitud. Veendu, et vastuvõtja on ühendatud "
+#~ "internetti."
 
 #~ msgid "External (CF)"
 #~ msgstr "Väline (CF)"
 
 #~ msgid "Fullview resolution"
 #~ msgstr "Täisekraani lahutus"
+
+#~ msgid "Harddisk Setup"
+#~ msgstr "Kõvaketta seaded"
 
 #~ msgid "HotKey Setup"
 #~ msgstr "Kiirklahvi seadistamine"
@@ -11796,9 +11914,6 @@ msgstr ""
 #~ msgid "Include ECM in http streams"
 #~ msgstr "ECM kaasamine http voogudesse"
 
-#~ msgid "Internet"
-#~ msgstr "Internet"
-
 #~ msgid "Kernel:\t%s"
 #~ msgstr "Kernel:\t%s"
 
@@ -11808,6 +11923,30 @@ msgstr ""
 #~ msgid "Move to other directory"
 #~ msgstr "Liiguta teise kataloogi"
 
+#~ msgid "New PIN"
+#~ msgstr "Uus PIN"
+
+#~ msgid "No updates available. Please try again later."
+#~ msgstr "Uuendusi ei ole. Proovi hiljem uuesti."
+
+#~ msgid ""
+#~ "No valid service PIN found!\n"
+#~ "Do you like to change the service PIN now?\n"
+#~ "When you say 'No' here the service protection stay disabled!"
+#~ msgstr ""
+#~ "Lapseluku koodi ei leitud!\n"
+#~ "Kas soovid määrata koodi?\n"
+#~ "Vastates 'Ei', lapselukku ei kasutata!"
+
+#~ msgid ""
+#~ "No valid service PIN found!\n"
+#~ "Would you like to change the service PIN now?\n"
+#~ "If you select 'No' the service protection will stay disabled!"
+#~ msgstr ""
+#~ "Kanaliluku koodi ei leitud!\n"
+#~ "Kas soovid määrata koodi?\n"
+#~ "Vastates 'Ei', kanalilukku ei kasutata!"
+
 #~ msgid ""
 #~ "No valid setup PIN found!\n"
 #~ "Do you like to change the setup PIN now?\n"
@@ -11816,6 +11955,9 @@ msgstr ""
 #~ "Lapseluku koodi ei leitud!\n"
 #~ "Kas soovid määrata koodi?\n"
 #~ "Vastates 'Ei', lapselukku ei kasutata!"
+
+#~ msgid "Open AutoTimer"
+#~ msgstr "Autotaimeri avamine"
 
 #~ msgid "Open event view"
 #~ msgstr "Saateinfo avamine"
@@ -11835,6 +11977,9 @@ msgstr ""
 #~ msgid "Phone number"
 #~ msgstr "Telefoninumber"
 
+#~ msgid "Please wait whilst feeds state is checked."
+#~ msgstr "Oota, kuni serverite olek on kontrollitud."
+
 #~ msgid ""
 #~ "Predefined transponder scans are only possible when \n"
 #~ "\"Service scan type\" is set to \"Provider\" in \"Tuner settings\"."
@@ -11842,8 +11987,20 @@ msgstr ""
 #~ "Kanaliotsingud eelmääratud transponderilt on võimalik juhul kui\n"
 #~ "'Tuuneri seadetes' on kanaliotsingu liigiks määratud 'Levitaja'"
 
+#~ msgid "Re-enter new PIN"
+#~ msgstr "Korda uut PIN-i"
+
+#~ msgid "Recording Setup"
+#~ msgstr "Salvestamise seaded"
+
+#~ msgid "Reload protected list"
+#~ msgstr "Lapselukuga kanalinimekirjade värskendamine"
+
 #~ msgid "Rename..."
 #~ msgstr "Nimeta ümber"
+
+#~ msgid "Restart enigma"
+#~ msgstr "Taaskäivita enigma2"
 
 #~ msgid "Rewrap teletext subtitles"
 #~ msgstr "Teleteksti subtiitrite algne reamurdmine"
@@ -11879,8 +12036,17 @@ msgstr ""
 #~ msgid "Select what you want the TV button to activate."
 #~ msgstr "Määra nupu toiming."
 
+#~ msgid "Show Audioselection"
+#~ msgstr "Heli valiku avamine"
+
+#~ msgid "Show multi channel EPG"
+#~ msgstr "MultiEPG avamine"
+
 #~ msgid "Show services beginning with"
 #~ msgstr "Näita kanalid mis algavad"
+
+#~ msgid "Show single service EPG"
+#~ msgstr "Kanali EPG avamine"
 
 #, fuzzy
 #~ msgid "Show tag menu"
@@ -11893,18 +12059,18 @@ msgstr ""
 #~ msgid "Single transponder"
 #~ msgstr "Käsitsi sisestatud transponder"
 
+#~ msgid "Sorry feeds are down for maintenance, please try again later."
+#~ msgstr "Toimuvad serverite hooldetööd. Proovi hiljem uuesti"
+
 #~ msgid "Sorry that tuner is not available."
 #~ msgstr "See tuuner ei ole saadaval."
-
-#~ msgid "Stream-tv"
-#~ msgstr "IPTV"
-
-#~ msgid "Streaming"
-#~ msgstr "Voogesitus"
 
 #, fuzzy
 #~ msgid "Subservice mode"
 #~ msgstr "Alamkanalid"
+
+#~ msgid "Subtitles Settings"
+#~ msgstr "Subtiitrite seaded"
 
 #~ msgid "Switch channel down"
 #~ msgstr "Järgmisele kanalile all"
@@ -11918,6 +12084,9 @@ msgstr ""
 
 #~ msgid "Toggle Extra Keys"
 #~ msgstr "Lisanupud"
+
+#~ msgid "Tuner Configuration"
+#~ msgstr "Tuuneri seaded"
 
 #, fuzzy
 #~ msgid "Uncommitted DiSEqC command"
@@ -11957,6 +12126,9 @@ msgstr ""
 #~ msgid "fine-tune your display"
 #~ msgstr "peenhäälesta ekraani"
 
+#~ msgid "service PIN"
+#~ msgstr "kanali PIN"
+
 #~ msgid "setup PIN"
 #~ msgstr "määra PIN"
 
@@ -11969,20 +12141,26 @@ msgstr ""
 #~ msgid "whitelist"
 #~ msgstr "valge nimekiri"
 
-#~ msgid ""
-#~ "No valid service PIN found!\n"
-#~ "Would you like to change the service PIN now?\n"
-#~ "If you select 'No' the service protection will stay disabled!"
-#~ msgstr ""
-#~ "Kanaliluku koodi ei leitud!\n"
-#~ "Kas soovid määrata koodi?\n"
-#~ "Vastates 'Ei', kanalilukku ei kasutata!"
+#~ msgid "Activate HbbTV (Redbutton)"
+#~ msgstr "HbbTV aktiveerimine"
 
-#~ msgid "Reload protected list"
-#~ msgstr "Lapselukuga kanalinimekirjade värskendamine"
+#~ msgid "Activate timeshift End"
+#~ msgstr "Ajanihke lõpetamise aktiveerimine"
 
-#~ msgid "Change setup PIN"
-#~ msgstr "Muuda seadistuste PIN"
+#~ msgid "Show eventinfo plugins"
+#~ msgstr "Saateinfo laiendused"
 
-#~ msgid "Enable parental control"
-#~ msgstr "Lapseluku lubamine"
+#~ msgid "Show graphical multi EPG"
+#~ msgstr "Graafilise MultiEPG avamine"
+
+#~ msgid "Toggle PIPzap"
+#~ msgstr "PiP kanalivahetuse lülitamine"
+
+#~ msgid "Usage Setup"
+#~ msgstr "Kasutaja valikud"
+
+#~ msgid "User interface settings"
+#~ msgstr "Kasutajaliidese seaded"
+
+#~ msgid "%Y-%m-%d %H:%M"
+#~ msgstr "%Y-%m-%d %H:%M"

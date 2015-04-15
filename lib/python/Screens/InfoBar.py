@@ -87,7 +87,6 @@ class InfoBar(InfoBarBase, InfoBarShowHide,
 
 		if config.misc.initialchannelselection.value:
 			self.onShown.append(self.showMenu)
-
 		self.onShow.append(self.doButtonsCheck)
 
 	def showMenu(self):
@@ -202,7 +201,14 @@ class InfoBar(InfoBarBase, InfoBarShowHide,
 			if ref and not self.session.nav.getCurrentlyPlayingServiceOrGroup():
 				self.session.nav.playService(ref)
 		else:
-			self.session.open(MoviePlayer, service, slist = self.servicelist, lastservice = ref)
+			from Components.ParentalControl import parentalControl
+			if parentalControl.isServicePlayable(service, self.openMoviePlayer):
+				self.openMoviePlayer(service, ref)
+
+	def openMoviePlayer(self, ref, LastService=None):
+		if not LastService:
+			LastService = self.session.nav.getCurrentlyPlayingServiceOrGroup()
+		self.session.open(MoviePlayer, ref, slist=self.servicelist, lastservice=LastService)
 
 class MoviePlayer(InfoBarBase, InfoBarShowHide, InfoBarLongKeyDetection, InfoBarMenu, InfoBarEPG,
 				  InfoBarSeek, InfoBarShowMovies, InfoBarInstantRecord, InfoBarAudioSelection, HelpableScreen, InfoBarNotifications,
@@ -252,6 +258,7 @@ class MoviePlayer(InfoBarBase, InfoBarShowHide, InfoBarLongKeyDetection, InfoBar
 		self.returning = False
 		self.onClose.append(self.__onClose)
 		self.onShow.append(self.doButtonsCheck)
+		config.misc.standbyCounter.addNotifier(self.standbyCountChanged, initial_call=False)
 
 		assert MoviePlayer.instance is None, "class InfoBar is a singleton class and just one instance of this class is allowed!"
 		MoviePlayer.instance = self
@@ -263,6 +270,7 @@ class MoviePlayer(InfoBarBase, InfoBarShowHide, InfoBarLongKeyDetection, InfoBar
 		self["key_blue"].setText(_("Extensions"))
 
 	def __onClose(self):
+		config.misc.standbyCounter.removeNotifier(self.standbyCountChanged)
 		MoviePlayer.instance = None
 		from Screens.MovieSelection import playlist
 		del playlist[:]
@@ -271,6 +279,12 @@ class MoviePlayer(InfoBarBase, InfoBarShowHide, InfoBarLongKeyDetection, InfoBar
 		self.session.nav.playService(self.lastservice)
 		config.usage.last_movie_played.value = self.cur_service.toString()
 		config.usage.last_movie_played.save()
+
+	def standbyCountChanged(self, value):
+		if config.ParentalControl.servicepinactive.value:
+			from Components.ParentalControl import parentalControl
+			if parentalControl.isProtected(self.cur_service):
+				self.close()
 
 	def handleLeave(self, how):
 		self.is_closing = True

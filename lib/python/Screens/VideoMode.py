@@ -1,8 +1,9 @@
 from os import path
 
-from enigma import iPlayableService, iServiceInformation, eTimer
+from enigma import iPlayableService, iServiceInformation, eTimer, eServiceCenter, eServiceReference, eDVBDB
 
 from Screens.Screen import Screen
+from Screens.ChannelSelection import FLAG_IS_DEDICATED_3D
 from Components.About import about
 from Components.SystemInfo import SystemInfo
 from Components.ConfigList import ConfigListScreen
@@ -230,11 +231,28 @@ class AutoVideoModeLabel(Screen):
 			idx += 4
 			self.hideTimer.start(idx*1000, True)
 
+previous = None
+isDedicated3D = False
+
+def applySettings(mode=config.osd.threeDmode.value, znorm=int(config.osd.threeDznorm.value)):
+	global previous, isDedicated3D
+	mode = isDedicated3D and mode == "auto" and "sidebyside" or mode
+	mode == "3dmode" in SystemInfo["3DMode"] and mode or mode == 'sidebyside' and 'sbs' or mode == 'topandbottom' and 'tab' or 'off'
+	if previous != (mode, znorm):
+		try:
+			open(SystemInfo["3DMode"], "w").write(mode)
+			open(SystemInfo["3DZNorm"], "w").write('%d' % znorm)
+			previous = (mode, znorm)
+		except:
+			return
+
 class AutoVideoMode(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
+		self.current3dmode = config.osd.threeDmode.value
 		self.__event_tracker = ServiceEventTracker(screen=self, eventmap=
 			{
+				iPlayableService.evStart: self.__evStart,
 				iPlayableService.evVideoSizeChanged: self.VideoChanged,
 				iPlayableService.evVideoProgressiveChanged: self.VideoChanged,
 				iPlayableService.evVideoFramerateChanged: self.VideoChanged,
@@ -245,6 +263,29 @@ class AutoVideoMode(Screen):
 		self.bufferfull = True
 		self.detecttimer = eTimer()
 		self.detecttimer.callback.append(self.VideoChangeDetect)
+
+	def checkIfDedicated3D(self):
+			service = self.session.nav.getCurrentlyPlayingServiceReference()
+			servicepath = service and service.getPath()
+			if servicepath.startswith("/"):
+				if service.toString().startswith("1:"):
+					info = eServiceCenter.getInstance().info(service)
+					service = info and info.getInfoString(service, iServiceInformation.sServiceref)
+					return service and eDVBDB.getInstance().getFlag(eServiceReference(service)) & FLAG_IS_DEDICATED_3D == FLAG_IS_DEDICATED_3D
+				else:
+					return ".3d." in servicepath.lower()
+			service = self.session.nav.getCurrentService()
+			info = service and service.info()
+			return info and info.getInfo(iServiceInformation.sIsDedicated3D) == 1
+
+	def __evStart(self):
+		if config.osd.threeDmode.value == "auto":
+			global isDedicated3D
+			isDedicated3D = self.checkIfDedicated3D()
+			if isDedicated3D:
+				applySettings("sidebyside")
+			else:
+				applySettings()
 
 	def BufferInfo(self):
 		bufferInfo = self.session.nav.getCurrentService().streamed().getBufferCharge()
@@ -298,28 +339,28 @@ class AutoVideoMode(Screen):
 			try:
 				video_height = int(f.read(),16)
 			except:
-    				pass
+				pass
 			f.close()
 		if path.exists("/proc/stb/vmpeg/0/xres"):
 			f = open("/proc/stb/vmpeg/0/xres", "r")
 			try:
 				video_width = int(f.read(),16)
 			except:
-    				pass
+				pass
 			f.close()
 		if path.exists("/proc/stb/vmpeg/0/progressive"):
 			f = open("/proc/stb/vmpeg/0/progressive", "r")
 			try:
 				video_pol = "p" if int(f.read(),16) else "i"
 			except:
-    				pass
+				pass
 			f.close()
 		if path.exists("/proc/stb/vmpeg/0/framerate"):
 			f = open("/proc/stb/vmpeg/0/framerate", "r")
 			try:
 				video_rate = int(f.read())
 			except:
-    				pass
+				pass
 			f.close()
 
 		if not video_height or not video_width or not video_pol or not video_rate:
@@ -419,6 +460,10 @@ class AutoVideoMode(Screen):
 						write_mode = multi_videomode
 					else:
 						write_mode = config_mode+new_rate
+				else:
+					if new_rate == '24' and config_rate == 'multi': 
+						write_mode = config_res+'p'+new_rate
+						
 			if write_mode and current_mode != write_mode:
 				resolutionlabel["restxt"].setText(_("Video mode: %s") % write_mode)
 				if config.av.autores.value != "disabled" and config.av.autores_label_timeout.value != '0':

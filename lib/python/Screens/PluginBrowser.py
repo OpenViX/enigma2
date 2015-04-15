@@ -7,7 +7,8 @@ from Screens.ParentalControlSetup import ProtectedScreen
 from enigma import eConsoleAppContainer, eDVBDB
 
 from Screens.Screen import Screen
-from Components.ActionMap import ActionMap
+from Components.OnlineUpdateCheck import feedsstatuscheck
+from Components.ActionMap import ActionMap, NumberActionMap
 from Components.config import config, ConfigSubsection, ConfigText
 from Components.PluginComponent import plugins
 from Components.PluginList import PluginList, PluginEntryComponent, PluginCategoryComponent, PluginDownloadComponent
@@ -80,8 +81,21 @@ class PluginBrowser(Screen, ProtectedScreen):
 		})
 		self["DirectionActions"] = ActionMap(["DirectionActions"],
 		{
-			"moveUp": self.moveUp,
-			"moveDown": self.moveDown
+			"shiftUp": self.moveUp,
+			"shiftDown": self.moveDown
+		})
+		self["NumberActions"] = NumberActionMap(["NumberActions"],
+		{
+			"1": self.keyNumberGlobal,
+			"2": self.keyNumberGlobal,
+			"3": self.keyNumberGlobal,
+			"4": self.keyNumberGlobal,
+			"5": self.keyNumberGlobal,
+			"6": self.keyNumberGlobal,
+			"7": self.keyNumberGlobal,
+			"8": self.keyNumberGlobal,
+			"9": self.keyNumberGlobal,
+			"0": self.keyNumberGlobal
 		})
 
 		self.onFirstExecBegin.append(self.checkWarnings)
@@ -95,7 +109,7 @@ class PluginBrowser(Screen, ProtectedScreen):
 		self.session.open(Setup, "pluginbrowsersetup")
 		
 	def isProtected(self):
-		return config.ParentalControl.setuppinactive.value and not config.ParentalControl.config_sections.main_menu.value and config.ParentalControl.config_sections.plugin_browser.value
+		return config.ParentalControl.setuppinactive.value and (not config.ParentalControl.config_sections.main_menu.value or hasattr(self.session, 'infobar') and self.session.infobar is None) and config.ParentalControl.config_sections.plugin_browser.value
 
 	def saveListsize(self):
 		listsize = self["list"].instance.size()
@@ -131,6 +145,22 @@ class PluginBrowser(Screen, ProtectedScreen):
 	def run(self):
 		plugin = self["list"].l.getCurrentSelection()[0]
 		plugin(session=self.session)
+
+	def setDefaultList(self, answer):
+		if answer:
+			config.misc.pluginbrowser.plugin_order.value = ""
+			config.misc.pluginbrowser.plugin_order.save()
+			self.updateList()
+
+	def keyNumberGlobal(self, number):
+		if number == 0:
+			if len(self.list) > 0 and config.misc.pluginbrowser.plugin_order.value != "":
+				self.session.openWithCallback(self.setDefaultList, MessageBox, _("Sort plugins list to default?"), MessageBox.TYPE_YESNO)
+		else:
+			real_number = number - 1
+			if real_number < len(self.list):
+				self["list"].moveToIndex(real_number)
+				self.run()
 
 	def moveUp(self):
 		self.move(-1)
@@ -366,26 +396,14 @@ class PluginDownloadBrowser(Screen):
 		self.container.execute(self.ipkg + Ipkg.opkgExtraDestinations() + " list '" + self.PLUGIN_PREFIX + "*'")
 
 	def startRun(self):
-		networkerror = False
 		listsize = self["list"].instance.size()
 		self["list"].instance.hide()
 		self.listWidth = listsize.width()
 		self.listHeight = listsize.height()
 
 		if self.type == self.DOWNLOAD:
-			currentTimeoutDefault = socket.getdefaulttimeout()
-			socket.setdefaulttimeout(3)
-			try:
-				config.softwareupdate.updateisunstable.setValue(urlopen('http://www.openvix.co.uk/feeds/status').read())
-			except:
-				networkerror = True
-
-			if not networkerror and ('404 Not Found') in config.softwareupdate.updateisunstable.value:
-				config.softwareupdate.updateisunstable.setValue('1')
-			socket.setdefaulttimeout(currentTimeoutDefault)
-
-			if networkerror:
-				self["text"].setText(_("Error: No network connection found. Please ensure your receiver is connected to the internet."))
+			if feedsstatuscheck.getFeedsBool() not in ('stable', 'unstable'):
+				self["text"].setText(feedsstatuscheck.getFeedsErrorMessage())
 			elif config.softwareupdate.updateisunstable.value == '1' and config.softwareupdate.updatebeta.value:
 				self["text"].setText(_("WARNING: feeds may be unstable.") + '\n' + _("Downloading plugin information. Please wait..."))
 				self.container.execute(self.ipkg + " update")

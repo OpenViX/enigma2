@@ -460,6 +460,7 @@ from Tools.StbHardware import setFPWakeuptime, setRTCtime
 
 def runScreenTest():
 	config.misc.startCounter.value += 1
+	config.misc.startCounter.save()
 
 	profile("readPluginList")
 	plugins.readPluginList(resolveFilename(SCOPE_PLUGINS))
@@ -514,8 +515,6 @@ def runScreenTest():
 	# kill showiframe if it is running (sh4 hack...)
 	os.system("killall -9 showiframe")
 	runReactor()
-
-	config.misc.startCounter.save()
 
 	profile("wakeup")
 
@@ -595,6 +594,10 @@ profile("SetupDevices")
 import Components.SetupDevices
 Components.SetupDevices.InitSetupDevices()
 
+profile("UserInterface")
+import Screens.UserInterfacePositioner
+Screens.UserInterfacePositioner.InitOsd()
+
 profile("AVSwitch")
 import Components.AVSwitch
 Components.AVSwitch.InitAVSwitch()
@@ -632,10 +635,6 @@ profile("LCD")
 import Components.Lcd
 Components.Lcd.InitLcd()
 Components.Lcd.IconCheck()
-
-profile("UserInterface")
-import Screens.UserInterfacePositioner
-Screens.UserInterfacePositioner.InitOsd()
 
 profile("EpgCacheSched")
 import Components.EpgLoadSave
