@@ -901,6 +901,8 @@ class ImageManagerDownload(Screen):
 				self.boxtype = 'Miraclebox-Mini'
 			elif getMachineMake() == 'mbminiplus':
 				self.boxtype = 'Miraclebox-MiniPlus'
+			elif getMachineMake() == 'mbhybrid':
+				self.boxtype = 'Miraclebox-Mini-Hybrid'
 			elif getMachineMake() == 'mbultra':
 				self.boxtype = 'Miraclebox-Ultra'
 			elif getMachineMake() == 'xpeedlx':
