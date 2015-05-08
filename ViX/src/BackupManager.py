@@ -5,7 +5,7 @@ from time import localtime, time, strftime, mktime
 from datetime import date, datetime
 import tarfile
 
-from enigma import eTimer, eEnv
+from enigma import eTimer, eEnv, eDVBDB
 
 from . import _
 import Components.Task
@@ -422,6 +422,10 @@ class VIXBackupManager(Screen):
 			print '[BackupManager] Restoring Stage 1 Complete:'
 			self.didSettingsRestore = True
 			self.Stage1Completed = True
+			eDVBDB.getInstance().reloadServicelist()
+			eDVBDB.getInstance().reloadBouquets()
+			self.session.nav.PowerTimer.loadTimer()
+			self.session.nav.RecordTimer.loadTimer()
 		else:
 			print '[BackupManager] Restoring Stage 1 Failed:'
 			AddPopupWithCallback(self.Stage2,
