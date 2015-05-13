@@ -83,7 +83,7 @@ class SoftwareUpdateChanges(Screen):
 		except:
 			releasenotes = '404 Not Found'
 		if '404 Not Found' not in releasenotes:
-			releasenotes = releasenotes.replace('[openvix] Zeus Release.', 'openvix: build 000')
+			releasenotes = releasenotes.replace('openvix: build 165', 'openvix: build 000')
 			releasenotes = releasenotes.replace('\nopenvix: build',"\n\nopenvix: build")
 			releasenotes = releasenotes.split('\n\n')
 			ver = -1
@@ -103,7 +103,7 @@ class SoftwareUpdateChanges(Screen):
 				else:
 					imagever = int(getImageBuild())
 			else:
-				imagever = int(getImageBuild())+905
+				imagever = int(getImageBuild())
 			while int(releasever) > int(imagever):
 				if ocram:
 					viewrelease += releasenotes[int(ver)]+'\n'+ocram+'\n'
