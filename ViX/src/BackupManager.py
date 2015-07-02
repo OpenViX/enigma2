@@ -1,5 +1,5 @@
 # for localized messages
-from boxbranding import getBoxType, getImageDistro, getImageVersion, getImageBuild, getMachineBrand, getMachineName
+from boxbranding import getBoxType, getImageType, getImageDistro, getImageVersion, getImageBuild, getMachineBrand, getMachineName
 from os import path, stat, mkdir, listdir, remove, statvfs, chmod, walk
 from time import localtime, time, strftime, mktime
 from datetime import date, datetime
@@ -38,7 +38,7 @@ for p in harddiskmanager.getMountedPartitions():
 		if p.mountpoint != '/':
 			hddchoises.append((p.mountpoint, d))
 config.backupmanager = ConfigSubsection()
-config.backupmanager.folderprefix = ConfigText(default=getImageDistro()+'-'+getBoxType(), fixed_size=False)
+config.backupmanager.folderprefix = ConfigText(default=getImageDistro()+'-'+getBoxType()+'-'+getImageType(), fixed_size=False)
 config.backupmanager.backuplocation = ConfigSelection(choices=hddchoises)
 config.backupmanager.schedule = ConfigYesNo(default=False)
 config.backupmanager.scheduletime = ConfigClock(default=0)  # 1:00

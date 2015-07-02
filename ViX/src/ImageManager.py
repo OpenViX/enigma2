@@ -1,5 +1,5 @@
 # for localized messages
-from boxbranding import getBoxType, getImageDistro, getImageVersion, getImageBuild, getImageFolder, getImageFileSystem, getBrandOEM, getMachineBrand, getMachineName, getMachineBuild, getMachineMake, getMachineMtdRoot, getMachineRootFile, getMachineMtdKernel, getMachineKernelFile, getMachineMKUBIFS, getMachineUBINIZE
+from boxbranding import getBoxType, getImageType, getImageDistro, getImageVersion, getImageBuild, getImageFolder, getImageFileSystem, getBrandOEM, getMachineBrand, getMachineName, getMachineBuild, getMachineMake, getMachineMtdRoot, getMachineRootFile, getMachineMtdKernel, getMachineKernelFile, getMachineMKUBIFS, getMachineUBINIZE
 from os import path, system, mkdir, makedirs, listdir, remove, statvfs, chmod, walk, symlink, unlink
 from shutil import rmtree, move, copy
 from time import localtime, time, strftime, mktime
@@ -35,7 +35,7 @@ for p in harddiskmanager.getMountedPartitions():
 		if p.mountpoint != '/':
 			hddchoises.append((p.mountpoint, d))
 config.imagemanager = ConfigSubsection()
-config.imagemanager.folderprefix = ConfigText(default=getImageDistro()+'-'+getBoxType(), fixed_size=False)
+config.imagemanager.folderprefix = ConfigText(default=getImageDistro()+'-'+getBoxType()+'-'+getImageType(), fixed_size=False)
 config.imagemanager.backuplocation = ConfigSelection(choices=hddchoises)
 config.imagemanager.schedule = ConfigYesNo(default=False)
 config.imagemanager.scheduletime = ConfigClock(default=0)  # 1:00
