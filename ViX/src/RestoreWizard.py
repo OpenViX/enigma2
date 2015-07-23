@@ -190,7 +190,7 @@ class RestoreWizard(WizardLanguage, Rc):
 			imageversion = file('/tmp/backupimageversion').read()
 			print 'Backup Image:', imageversion
 			print 'Current Image:', about.getVersionString()
-			if imageversion in (about.getVersionString(), 'Zeus', 'Helios', 'Apollo', 'Hades'):
+			if imageversion in (about.getVersionString(), 'Zeus', 'Helios', 'Apollo', 'Hades', '3.2'):
 				print '[RestoreWizard] Stage 1: Image ver OK'
 				self.doRestoreSettings2()
 			else:
@@ -238,7 +238,7 @@ class RestoreWizard(WizardLanguage, Rc):
 			print 'Current Image:', about.getVersionString()
 			print 'Backup Kernel:', kernelversion
 			print 'Current Kernel:', about.getKernelVersionString()
-			if kernelversion == about.getKernelVersionString() and imageversion in (about.getVersionString(), 'Zeus', 'Helios', 'Apollo', 'Hades'):
+			if kernelversion == about.getKernelVersionString() and imageversion in (about.getVersionString(), 'Zeus', 'Helios', 'Apollo', 'Hades', '3.2'):
 				print '[RestoreWizard] Stage 3: Kernel and image ver OK'
 				self.doRestorePluginsTest()
 			else:
@@ -266,11 +266,11 @@ class RestoreWizard(WizardLanguage, Rc):
 		print '[RestoreWizard] Stage 4: Feeds Test Result', result
 		if result.find('bad address') != -1:
 			self.NextStep = 'reboot'
-			self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Your %s %s is not connected to the internet, Please try using Backup Manager to restore plugins later.") % (getMachineBrand(), getMachineName()), type=MessageBox.TYPE_INFO, timeout=30, wizard=True)
+			self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Your %s %s is not connected to the internet, Please try using the Backup Manager to restore plugins later.") % (getMachineBrand(), getMachineName()), type=MessageBox.TYPE_INFO, timeout=30, wizard=True)
 			self.buildListRef.setTitle(_("Restore Wizard"))
 		elif result.find('wget returned 1') != -1 or result.find('wget returned 255') != -1 or result.find('404 Not Found') != -1:
 			self.NextStep = 'reboot'
-			self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Sorry the feeds are down for maintenance, Please try using Backup Manager to restore plugins later."), type=MessageBox.TYPE_INFO, timeout=30, wizard=True)
+			self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Sorry the feeds are down for maintenance, Please try using the Backup Manager to restore plugins later."), type=MessageBox.TYPE_INFO, timeout=30, wizard=True)
 			self.buildListRef.setTitle(_("Restore Wizard"))
 		elif result.find('Collected errors') != -1:
 			print '[RestoreWizard] Stage 4: Update is in progress, delaying'
