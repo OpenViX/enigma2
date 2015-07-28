@@ -174,7 +174,7 @@ class TimerSanityCheck:
 			if event[1] == self.bflag:
 				tunerType = [ ]
 				if timer.service_ref.ref and timer.service_ref.ref.flags & eServiceReference.isGroup:
-					fakeRecService = NavigationInstance.instance.recordService(getBestPlayableServiceReference(timer.service_ref.ref, eServiceReference()), True)
+					fakeRecService = NavigationInstance.instance.recordService(getBestPlayableServiceReference(timer.service_ref.ref, eServiceReference(), True), True)
 				else:
 					fakeRecService = NavigationInstance.instance.recordService(timer.service_ref, True)
 				if fakeRecService:
@@ -182,8 +182,9 @@ class TimerSanityCheck:
 				else:
 					fakeRecResult = -1
 				if not fakeRecResult: # tune okay
-					feinfo = fakeRecService.frontendInfo().getFrontendData()
-					tunerType.append(feinfo.get("tuner_type"))
+					feinfo = fakeRecService.frontendInfo()
+					if feinfo:
+						tunerType.append(feinfo.getFrontendData().get("tuner_type"))
 				else: # tune failed.. so we must go another way to get service type (DVB-S, DVB-T, DVB-C)
 
 					def getServiceType(ref): # helper function to get a service type of a service reference
