@@ -1,6 +1,6 @@
 # for localized messages
 from os import listdir, path, walk
-from enigma import eDVBDB
+from enigma import eDVBDB, quitMainloop
 from boxbranding import getMachineBrand, getMachineName
 
 from . import _
@@ -126,11 +126,7 @@ class RestoreWizard(WizardLanguage, Rc):
 
 	def buildList(self, action):
 		if self.NextStep is 'reboot':
-			eDVBDB.getInstance().reloadServicelist()
-			eDVBDB.getInstance().reloadBouquets()
-			self.session.nav.PowerTimer.loadTimer()
-			self.session.nav.RecordTimer.loadTimer()
-			self.Console.ePopen("init 4 && reboot")
+			quitMainloop(3)
 		elif self.NextStep is 'settingsquestion' or self.NextStep is 'settingsrestore' or self.NextStep is 'pluginsquestion' or self.NextStep is 'pluginsrestoredevice' or self.NextStep is 'end' or self.NextStep is 'noplugins':
 			self.buildListfinishedCB(False)
 		elif self.NextStep is 'settingrestorestarted':
@@ -213,6 +209,10 @@ class RestoreWizard(WizardLanguage, Rc):
 
 	def settingRestore_Finished(self, result, retval, extra_args=None):
 		self.didSettingsRestore = True
+		eDVBDB.getInstance().reloadServicelist()
+		eDVBDB.getInstance().reloadBouquets()
+		self.session.nav.PowerTimer.loadTimer()
+		self.session.nav.RecordTimer.loadTimer()
 		configfile.load()
 		# self.NextStep = 'plugindetection'
 		self.pleaseWait.close()
