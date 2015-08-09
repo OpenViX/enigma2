@@ -625,7 +625,7 @@ class VIXBackupManager(Screen):
 		self.Stage5Completed = True
 		if self.didPluginsRestore or self.didSettingsRestore:
 			print '[BackupManager] Restoring Completed rebooting'
-			quitMainloop(3)
+			quitMainloop(2)
 		else:
 			print '[BackupManager] Restoring failed or canceled'
 			self.close()
