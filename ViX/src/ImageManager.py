@@ -35,7 +35,8 @@ for p in harddiskmanager.getMountedPartitions():
 		if p.mountpoint != '/':
 			hddchoises.append((p.mountpoint, d))
 config.imagemanager = ConfigSubsection()
-config.imagemanager.folderprefix = ConfigText(default=getImageDistro()+'-'+getBoxType()+'-'+getImageType(), fixed_size=False)
+defaultprefix = getImageDistro() + '-' + getBoxType() + '-' + getImageType()
+config.imagemanager.folderprefix = ConfigText(default=defaultprefix, fixed_size=False)
 config.imagemanager.backuplocation = ConfigSelection(choices=hddchoises)
 config.imagemanager.schedule = ConfigYesNo(default=False)
 config.imagemanager.scheduletime = ConfigClock(default=0)  # 1:00
@@ -467,13 +468,13 @@ class ImageBackup(Screen):
 		print "[ImageManager] Device: " + self.BackupDevice
 		self.BackupDirectory = config.imagemanager.backuplocation.value + 'imagebackups/'
 		print "[ImageManager] Directory: " + self.BackupDirectory
-		self.BackupDate = getImageVersion() + '.' + getImageBuild() + '-' + strftime('%Y%m%d_%H%M%S', localtime())
+		self.BackupDate = strftime('%Y%m%d_%H%M%S', localtime())
 		self.WORKDIR = self.BackupDirectory + config.imagemanager.folderprefix.value + '-temp'
 		self.TMPDIR = self.BackupDirectory + config.imagemanager.folderprefix.value + '-mount'
 		if updatebackup:
-			self.MAINDESTROOT = self.BackupDirectory + config.imagemanager.folderprefix.value + '-SoftwareUpdate-' + self.BackupDate
+			self.MAINDESTROOT = self.BackupDirectory + config.imagemanager.folderprefix.value + '-SoftwareUpdate-' + getImageVersion() + '.' + getImageBuild() + '-' + self.BackupDate
 		else:
-			self.MAINDESTROOT = self.BackupDirectory + config.imagemanager.folderprefix.value + '-' + self.BackupDate
+			self.MAINDESTROOT = self.BackupDirectory + config.imagemanager.folderprefix.value + '-' + getImageVersion() + '.' + getImageBuild() + '-' + self.BackupDate
 		self.kernelMTD = getMachineMtdKernel()
 		self.kernelFILE = getMachineKernelFile()
 		self.rootMTD = getMachineMtdRoot()
@@ -707,6 +708,10 @@ class ImageBackup(Screen):
 		print '[ImageManager] Stage4: Moving from work to backup folders'
 		move(self.WORKDIR + '/root.' + self.ROOTFSTYPE, self.MAINDEST + '/' + self.rootFILE)
 		move(self.WORKDIR + '/vmlinux.gz', self.MAINDEST + '/' + self.kernelFILE)
+		fileout = open(self.MAINDEST + '/imageversion', 'w')
+		line = defaultprefix + '-' + getImageVersion() + '.' + getImageBuild() + '-' + self.BackupDate
+		fileout.write(line)
+		fileout.close()
 		if getBrandOEM() ==  'vuplus':
 			if getMachineBuild() == 'vuzero':
 				fileout = open(self.MAINDEST + '/force.update', 'w')
@@ -718,19 +723,11 @@ class ImageBackup(Screen):
 				line = "This file forces a reboot after the update."
 				fileout.write(line)
 				fileout.close()
-			fileout = open(self.MAINDEST + '/imageversion', 'w')
-			line = "openvix-" + self.BackupDate
-			fileout.write(line)
-			fileout.close()
 			imagecreated = True
 		elif getBrandOEM() in ('xtrend', 'gigablue', 'odin', 'xp', 'ini'):
 			if getBrandOEM() in ('xtrend', 'odin', 'ini'):
 				fileout = open(self.MAINDEST + '/noforce', 'w')
 				line = "rename this file to 'force' to force an update without confirmation"
-				fileout.write(line)
-				fileout.close()
-				fileout = open(self.MAINDEST + '/imageversion', 'w')
-				line = "openvix-" + self.BackupDate
 				fileout.write(line)
 				fileout.close()
 			if path.exists('/usr/lib/enigma2/python/Plugins/SystemPlugins/ViX/burn.bat'):
