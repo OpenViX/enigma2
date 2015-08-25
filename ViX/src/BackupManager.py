@@ -471,7 +471,7 @@ class VIXBackupManager(Screen):
 			if path.exists('/tmp/backupkernelversion') and path.exists('/tmp/backupimageversion'):
 				kernelversion = file('/tmp/backupkernelversion').read()
 				imageversion = file('/tmp/backupimageversion').read()
-				if kernelversion == about.getKernelVersionString() and imageversion in (about.getVersionString(), 'Zeus', 'Helios', 'Apollo', 'Hades', '3.2'):
+				if kernelversion == about.getKernelVersionString() and imageversion in (about.getVersionString()):
 					# print '[BackupManager] Restoring Stage 3: Kernel Version is same as backup'
 					self.kernelcheck = True
 					self.Console.ePopen('opkg list-installed', self.Stage3Complete)
