@@ -35,7 +35,7 @@ for p in harddiskmanager.getMountedPartitions():
 		if p.mountpoint != '/':
 			hddchoises.append((p.mountpoint, d))
 config.imagemanager = ConfigSubsection()
-defaultprefix = getImageDistro() + '-' + getBoxType() + '-' + getImageType()
+defaultprefix = getImageDistro() + '-' + getBoxType()
 config.imagemanager.folderprefix = ConfigText(default=defaultprefix, fixed_size=False)
 config.imagemanager.backuplocation = ConfigSelection(choices=hddchoises)
 config.imagemanager.schedule = ConfigYesNo(default=False)
@@ -231,9 +231,9 @@ class VIXImageManager(Screen):
 		try:
 			if not path.exists(self.BackupDirectory):
 				mkdir(self.BackupDirectory, 0755)
-			if path.exists(self.BackupDirectory + config.imagemanager.folderprefix.value + '-swapfile_backup'):
-				system('swapoff ' + self.BackupDirectory + config.imagemanager.folderprefix.value + '-swapfile_backup')
-				remove(self.BackupDirectory + config.imagemanager.folderprefix.value + '-swapfile_backup')
+			if path.exists(self.BackupDirectory + config.imagemanager.folderprefix.value + '-' + getImageType() + '-swapfile_backup'):
+				system('swapoff ' + self.BackupDirectory + config.imagemanager.folderprefix.value + '-' + getImageType() + '-swapfile_backup')
+				remove(self.BackupDirectory + config.imagemanager.folderprefix.value + '-' + getImageType() + '-swapfile_backup')
 			self.refreshList()
 		except:
 			self['lab1'].setText(_("Device: ") + config.imagemanager.backuplocation.value + "\n" + _("there is a problem with this device, please reformat and try again."))
@@ -472,12 +472,12 @@ class ImageBackup(Screen):
 		self.BackupDirectory = config.imagemanager.backuplocation.value + 'imagebackups/'
 		print "[ImageManager] Directory: " + self.BackupDirectory
 		self.BackupDate = strftime('%Y%m%d_%H%M%S', localtime())
-		self.WORKDIR = self.BackupDirectory + config.imagemanager.folderprefix.value + '-temp'
-		self.TMPDIR = self.BackupDirectory + config.imagemanager.folderprefix.value + '-mount'
+		self.WORKDIR = self.BackupDirectory + config.imagemanager.folderprefix.value + '-' + getImageType() + '-temp'
+		self.TMPDIR = self.BackupDirectory + config.imagemanager.folderprefix.value + '-' + getImageType() + '-mount'
 		if updatebackup:
-			self.MAINDESTROOT = self.BackupDirectory + config.imagemanager.folderprefix.value + '-SoftwareUpdate-' + getImageVersion() + '.' + getImageBuild() + '-' + self.BackupDate
+			self.MAINDESTROOT = self.BackupDirectory + config.imagemanager.folderprefix.value + '-' + getImageType() + '-SoftwareUpdate-' + getImageVersion() + '.' + getImageBuild() + '-' + self.BackupDate
 		else:
-			self.MAINDESTROOT = self.BackupDirectory + config.imagemanager.folderprefix.value + '-' + getImageVersion() + '.' + getImageBuild() + '-' + self.BackupDate
+			self.MAINDESTROOT = self.BackupDirectory + config.imagemanager.folderprefix.value + '-' + getImageType() + '-' + getImageVersion() + '.' + getImageBuild() + '-' + self.BackupDate
 		self.kernelMTD = getMachineMtdKernel()
 		self.kernelFILE = getMachineKernelFile()
 		self.rootMTD = getMachineMtdRoot()
@@ -563,9 +563,9 @@ class ImageBackup(Screen):
 		try:
 			if not path.exists(self.BackupDirectory):
 				mkdir(self.BackupDirectory, 0755)
-			if path.exists(self.BackupDirectory + config.imagemanager.folderprefix.value + "-swapfile_backup"):
-				system('swapoff ' + self.BackupDirectory + config.imagemanager.folderprefix.value + "-swapfile_backup")
-				remove(self.BackupDirectory + config.imagemanager.folderprefix.value + "-swapfile_backup")
+			if path.exists(self.BackupDirectory + config.imagemanager.folderprefix.value + '-' + getImageType() + "-swapfile_backup"):
+				system('swapoff ' + self.BackupDirectory + config.imagemanager.folderprefix.value + '-' + getImageType() + "-swapfile_backup")
+				remove(self.BackupDirectory + config.imagemanager.folderprefix.value + '-' + getImageType() + "-swapfile_backup")
 		except Exception, e:
 			print str(e)
 			print "Device: " + config.imagemanager.backuplocation.value + ", i don't seem to have write access to this device."
@@ -623,15 +623,15 @@ class ImageBackup(Screen):
 			self.SwapCreated = True
 
 	def MemCheck2(self):
-		self.Console.ePopen("dd if=/dev/zero of=" + self.swapdevice + config.imagemanager.folderprefix.value + "-swapfile_backup bs=1024 count=61440", self.MemCheck3)
+		self.Console.ePopen("dd if=/dev/zero of=" + self.swapdevice + config.imagemanager.folderprefix.value + '-' + getImageType() + "-swapfile_backup bs=1024 count=61440", self.MemCheck3)
 
 	def MemCheck3(self, result, retval, extra_args=None):
 		if retval == 0:
-			self.Console.ePopen("mkswap " + self.swapdevice + config.imagemanager.folderprefix.value + "-swapfile_backup", self.MemCheck4)
+			self.Console.ePopen("mkswap " + self.swapdevice + config.imagemanager.folderprefix.value + '-' + getImageType() + "-swapfile_backup", self.MemCheck4)
 
 	def MemCheck4(self, result, retval, extra_args=None):
 		if retval == 0:
-			self.Console.ePopen("swapon " + self.swapdevice + config.imagemanager.folderprefix.value + "-swapfile_backup", self.MemCheck5)
+			self.Console.ePopen("swapon " + self.swapdevice + config.imagemanager.folderprefix.value + '-' + getImageType() + "-swapfile_backup", self.MemCheck5)
 
 	def MemCheck5(self, result, retval, extra_args=None):
 		self.SwapCreated = True
@@ -712,7 +712,7 @@ class ImageBackup(Screen):
 		move(self.WORKDIR + '/root.' + self.ROOTFSTYPE, self.MAINDEST + '/' + self.rootFILE)
 		move(self.WORKDIR + '/vmlinux.gz', self.MAINDEST + '/' + self.kernelFILE)
 		fileout = open(self.MAINDEST + '/imageversion', 'w')
-		line = defaultprefix + '-backup-' + '-' + getImageVersion() + '.' + getImageBuild() + '-' + self.BackupDate
+		line = defaultprefix + '-' + getImageType() + '-backup-' + getImageVersion() + '.' + getImageBuild() + '-' + self.BackupDate
 		fileout.write(line)
 		fileout.close()
 		if getBrandOEM() ==  'vuplus':
@@ -736,9 +736,9 @@ class ImageBackup(Screen):
 			if path.exists('/usr/lib/enigma2/python/Plugins/SystemPlugins/ViX/burn.bat'):
 				copy('/usr/lib/enigma2/python/Plugins/SystemPlugins/ViX/burn.bat', self.MAINDESTROOT + '/burn.bat')
 		print '[ImageManager] Stage4: Removing Swap.'
-		if path.exists(self.swapdevice + config.imagemanager.folderprefix.value + "-swapfile_backup"):
-			system('swapoff ' + self.swapdevice + config.imagemanager.folderprefix.value + "-swapfile_backup")
-			remove(self.swapdevice + config.imagemanager.folderprefix.value + "-swapfile_backup")
+		if path.exists(self.swapdevice + config.imagemanager.folderprefix.value + '-' + getImageType() + "-swapfile_backup"):
+			system('swapoff ' + self.swapdevice + config.imagemanager.folderprefix.value + '-' + getImageType() + "-swapfile_backup")
+			remove(self.swapdevice + config.imagemanager.folderprefix.value + '-' + getImageType() + "-swapfile_backup")
 		if path.exists(self.WORKDIR):
 			rmtree(self.WORKDIR)
 		if path.exists(self.MAINDEST + '/' + self.rootFILE) and path.exists(self.MAINDEST + '/' + self.kernelFILE):
