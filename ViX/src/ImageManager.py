@@ -245,6 +245,9 @@ class VIXImageManager(Screen):
 		self.session.openWithCallback(self.populate_List, ImageManagerDownload, self.BackupDirectory)
 
 	def setupDone(self, test=None):
+		if config.imagemanager.folderprefix.value == '':
+			config.imagemanager.folderprefix.value = defaultprefix
+			config.imagemanager.folderprefix.save()
 		self.populate_List()
 		self.doneConfiguring()
 
