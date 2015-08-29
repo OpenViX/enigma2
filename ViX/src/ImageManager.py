@@ -709,7 +709,7 @@ class ImageBackup(Screen):
 		move(self.WORKDIR + '/root.' + self.ROOTFSTYPE, self.MAINDEST + '/' + self.rootFILE)
 		move(self.WORKDIR + '/vmlinux.gz', self.MAINDEST + '/' + self.kernelFILE)
 		fileout = open(self.MAINDEST + '/imageversion', 'w')
-		line = defaultprefix + '-' + getImageVersion() + '.' + getImageBuild() + '-' + self.BackupDate
+		line = defaultprefix + '-backup-' + '-' + getImageVersion() + '.' + getImageBuild() + '-' + self.BackupDate
 		fileout.write(line)
 		fileout.close()
 		if getBrandOEM() ==  'vuplus':
