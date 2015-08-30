@@ -4,16 +4,14 @@ prefix=@prefix@
 exec_prefix=@exec_prefix@
 datarootdir=@datarootdir@
 
-if [ -f /proc/stb/fp/rtc ] ; then
-	LIMIT_TIME=1388534400 #01.01.2014
-	RTC_TIME=$( cat /proc/stb/fp/rtc )
-	SYSTEM_TIME=$(date +%s)
-	if [ "$RTC_TIME" -gt "$LIMIT_TIME" ]; then
-		if [ "$SYSTEM_TIME" -lt "$LIMIT_TIME" ]; then
-			date -s @$RTC_TIME
-			echo "set rtc time ..."
-		fi
-	fi
+# perform a NTP update sync, before starting Enigma2, as it is broke in OE.
+if [ -x /usr/sbin/ntpdate ]; then
+	/usr/sbin/ntpdate -s -u pool.ntp.org && sleep 2
+fi
+
+# hook to execute user startup script before enigma2 start
+if [ -x /etc/enigma2/startup.sh ]; then
+	/etc/enigma2/startup.sh
 fi
 
 if [ -x @bindir@/showiframe ]; then
