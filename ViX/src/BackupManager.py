@@ -38,7 +38,7 @@ for p in harddiskmanager.getMountedPartitions():
 		if p.mountpoint != '/':
 			hddchoises.append((p.mountpoint, d))
 config.backupmanager = ConfigSubsection()
-defaultprefix = getImageDistro() + '-' + getBoxType() + '-' + getImageType()
+defaultprefix = getImageDistro() + '-' + getBoxType()
 config.backupmanager.folderprefix = ConfigText(default=defaultprefix, fixed_size=False)
 config.backupmanager.backuplocation = ConfigSelection(choices=hddchoises)
 config.backupmanager.schedule = ConfigYesNo(default=False)
@@ -1141,9 +1141,9 @@ class BackupFiles(Screen):
 		print '[BackupManager] Backup running'
 		backupdate = datetime.now()
 		if self.updatebackup:
-			self.Backupfile = self.BackupDirectory + config.backupmanager.folderprefix.value + '-SoftwareUpdate-' + getImageVersion() + '.' + getImageBuild() + '-' + backupdate.strftime("%Y-%m-%d_%H-%M") + '.tar.gz'
+			self.Backupfile = self.BackupDirectory + config.backupmanager.folderprefix.value + '-' + getImageType() + '-SoftwareUpdate-' + getImageVersion() + '.' + getImageBuild() + '-' + backupdate.strftime("%Y-%m-%d_%H-%M") + '.tar.gz'
 		else:
-			self.Backupfile = self.BackupDirectory + config.backupmanager.folderprefix.value + '-' + getImageVersion() + '.' + getImageBuild() + '-' + backupdate.strftime("%Y-%m-%d_%H-%M") + '.tar.gz'
+			self.Backupfile = self.BackupDirectory + config.backupmanager.folderprefix.value + '-' + getImageType() + '-' + getImageVersion() + '.' + getImageBuild() + '-' + backupdate.strftime("%Y-%m-%d_%H-%M") + '.tar.gz'
 		self.Console.ePopen('tar -czvf ' + self.Backupfile + ' ' + self.backupdirs, self.Stage4Complete)
 
 	def Stage4Complete(self, result, retval, extra_args):
