@@ -38,7 +38,8 @@ for p in harddiskmanager.getMountedPartitions():
 		if p.mountpoint != '/':
 			hddchoises.append((p.mountpoint, d))
 config.backupmanager = ConfigSubsection()
-config.backupmanager.folderprefix = ConfigText(default=getImageDistro()+'-'+getBoxType()+'-'+getImageType(), fixed_size=False)
+defaultprefix = getImageDistro() + '-' + getBoxType() + '-' + getImageType()
+config.backupmanager.folderprefix = ConfigText(default=defaultprefix, fixed_size=False)
 config.backupmanager.backuplocation = ConfigSelection(choices=hddchoises)
 config.backupmanager.schedule = ConfigYesNo(default=False)
 config.backupmanager.scheduletime = ConfigClock(default=0)  # 1:00
@@ -231,6 +232,9 @@ class VIXBackupManager(Screen):
 			self.session.open(VIXBackupManagerLogView, filename)
 
 	def setupDone(self, test=None):
+		if config.backupmanager.folderprefix.value == '':
+			config.backupmanager.folderprefix.value = defaultprefix
+			config.backupmanager.folderprefix.save()
 		self.populate_List()
 		self.doneConfiguring()
 
