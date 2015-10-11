@@ -78,6 +78,7 @@ class EPGSelection(Screen, HelpableScreen):
 		self.currch = None
 		self.session.pipshown = False
 		self.cureventindex = None
+		self.primaryBouquet = None
 		if plugin_PiPServiceRelation_installed:
 			self.pipServiceRelation = getRelationDict()
 		else:
@@ -292,23 +293,13 @@ class EPGSelection(Screen, HelpableScreen):
 			self['bouquetcursoractions'].csel = self
 			self["bouquetcursoractions"].setEnabled(False)
 
-			if self.type == EPG_TYPE_GRAPH:
-				self['epgcursoractions'] = HelpableActionMap(self, 'DirectionActions', 
-					{
-						'left': (self.leftPressed, _('Goto previous event')),
-						'right': (self.rightPressed, _('Goto next event')),
-						'up': (self.moveUp, _('Goto previous channel')),
-						'down': (self.moveDown, _('Goto next channel'))
-					}, -1)
-			elif self.type == EPG_TYPE_INFOBARGRAPH:
-				self['epgcursoractions'] = HelpableActionMap(self, 'DirectionActions', 
-					{
-						'left': (self.leftPressed, _('Goto previous event')),
-						'right': (self.rightPressed, _('Goto next event')),
-						'up': (self.moveDown, _('Goto next channel')),
-						'down': (self.moveUp, _('Goto previous channel'))
-					}, -1)
-			
+			self['epgcursoractions'] = HelpableActionMap(self, 'DirectionActions', 
+				{
+					'left': (self.leftPressed, _('Goto previous event')),
+					'right': (self.rightPressed, _('Goto next event')),
+					'up': (self.moveUp, _('Goto previous channel')),
+					'down': (self.moveDown, _('Goto next channel'))
+				}, -1)
 			self['epgcursoractions'].csel = self
 
 			self['epgactions'] = HelpableActionMap(self, 'EPGSelectActions', 
@@ -486,7 +477,7 @@ class EPGSelection(Screen, HelpableScreen):
 					continue
 				services.append(ServiceReference(service))
 		return services
-
+		
 	def LayoutFinish(self):
 		self['lab1'].show()
 		self.createTimer.start(800)
@@ -502,6 +493,14 @@ class EPGSelection(Screen, HelpableScreen):
 			if self.StartBouquet.toString().startswith('1:7:0'):
 				self.BouquetRoot = True
 			self.services = self.getBouquetServices(self.StartBouquet)
+			
+			# In future could allow a selection of primary bouquet in config, rather than assume first
+			if config.epgselection.graph_primarybouquet.value:
+				self['list'].setPrimaryServiceList( self.getBouquetServices(self.bouquets[0][1]) )
+				self.primaryBouquet = self.bouquets[0][1]
+			else:
+				self['list'].setPrimaryServiceList( None )
+				self.primaryBouquet = None
 				
 			if self.findchannel == False:
 				self['list'].fillGraphEPG(self.services, self.ask_time)
@@ -1466,7 +1465,10 @@ class EPGSelection(Screen, HelpableScreen):
 						self.session.pip.playService(service)
 						self.currch = self.session.pip.getCurrentService() and str(self.session.pip.getCurrentService().toString())
 				else:
-					self.zapFunc(ref.ref, bouquet = self.getCurrentBouquet(), preview = prev)
+					bouq = None
+					if self.primaryBouquet and lst.primaryServiceNumbers.has_key(ref.ref.toString()):
+						bouq = self.primaryBouquet
+					self.zapFunc(ref.ref, bouquet = bouq or self.getCurrentBouquet(), preview = prev)
 					self.currch = self.session.nav.getCurrentlyPlayingServiceReference() and str(self.session.nav.getCurrentlyPlayingServiceReference().toString())
 				self['list'].setCurrentlyPlaying(self.session.nav.getCurrentlyPlayingServiceOrGroup())
 

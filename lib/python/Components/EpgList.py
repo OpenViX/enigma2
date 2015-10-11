@@ -59,6 +59,8 @@ class EPGList(HTMLComponent, GUIComponent):
 		self.currentlyPlaying = None
 		self.showPicon = False
 		self.showServiceTitle = True
+		self.showChannelNumber = True
+		self.primaryServiceNumbers = None;
 		self.screenwidth = getDesktop(0).size().width()
 
 		self.overjump_empty = overjump_empty
@@ -303,6 +305,7 @@ class EPGList(HTMLComponent, GUIComponent):
 	def setShowServiceMode(self, value):
 		self.showServiceTitle = "servicename" in value
 		self.showPicon = "picon" in value
+		self.showChannelNumber = "channel" in value
 		self.recalcEntrySize()
 		self.selEntry(0) #Select entry again so that the clipping region gets updated if needed
 
@@ -574,17 +577,25 @@ class EPGList(HTMLComponent, GUIComponent):
 		elif self.type == EPG_TYPE_GRAPH or self.type == EPG_TYPE_INFOBARGRAPH:
 			servicew = 0
 			piconw = 0
+			channelw = 0
 			if self.type == EPG_TYPE_GRAPH:
 				if self.showServiceTitle:
 					servicew = config.epgselection.graph_servicewidth.value
 				if self.showPicon:
 					piconw = config.epgselection.graph_piconwidth.value
+				if self.showChannelNumber:
+					font = gFont(self.serviceFontNameGraph, self.serviceFontSizeGraph + config.epgselection.graph_servfs.value)
+					channelw = getTextBoundarySize(self.instance, font, self.instance.size(), "0000" ).width()
 			elif self.type == EPG_TYPE_INFOBARGRAPH:
 				if self.showServiceTitle:
 					servicew = config.epgselection.infobar_servicewidth.value
 				if self.showPicon:
 					piconw = config.epgselection.infobar_piconwidth.value
-			w = (piconw + servicew)
+				if self.showChannelNumber:
+					font = gFont(self.serviceFontNameGraph, self.serviceFontSizeGraph + config.epgselection.infobar_servfs.value)
+					channelw = getTextBoundarySize(self.instance, font, self.instance.size(), "0000" ).width()
+			
+			w = (channelw + piconw + servicew)
 			self.service_rect = Rect(0, 0, w, height)
 			self.event_rect = Rect(w, 0, width - w, height)
 			piconHeight = height - 2 * self.serviceBorderWidth
@@ -804,7 +815,7 @@ class EPGList(HTMLComponent, GUIComponent):
 		namefont = 0
 		namefontflag = RT_HALIGN_LEFT | RT_VALIGN_CENTER
 		channelWidth = 0
-		if channel is not None:
+		if self.showChannelNumber and channel is not None:
 			font = gFont(self.serviceFontNameGraph, self.serviceFontSizeGraph + config.epgselection.graph_servfs.value)
 			channelWidth = getTextBoundarySize(self.instance, font, self.instance.size(), (channel < 10000)  and "0000" or str(channel) ).width()
 			res.append(MultiContentEntryText(
@@ -836,8 +847,12 @@ class EPGList(HTMLComponent, GUIComponent):
 				# no picon so show servicename anyway in picon space
 				namefont = 1
 				namefontflag = RT_HALIGN_LEFT | RT_VALIGN_CENTER | RT_WRAP
-				namewidth = piconWidth
+				namewidth = piconWidth + channelWidth
 				piconWidth = 0
+			else:
+				piconWidth = 0
+		else:
+			piconWidth = 0
 
 		if self.showServiceTitle: # we have more space so reset parms
 			namewidth = r1.w - channelWidth - piconWidth
@@ -1288,6 +1303,8 @@ class EPGList(HTMLComponent, GUIComponent):
 			serviceList = services
 			piconIdx = 0
 			channelIdx = None
+			
+			channelIdx = None
 
 		test.insert(0, 'XRnITBD') #return record, service ref, service name, event id, event title, begin time, duration
 		epg_data = self.queryEPG(test)
@@ -1295,6 +1312,7 @@ class EPGList(HTMLComponent, GUIComponent):
 		tmp_list = None
 		service = ""
 		sname = ""
+		channel = None
 
 		serviceIdx = 0
 		for x in epg_data:
@@ -1318,12 +1336,14 @@ class EPGList(HTMLComponent, GUIComponent):
 		
 	def getChannelNumber(self,service):
 		if hasattr(service, "ref") and service.ref and '0:0:0:0:0:0:0:0:0' not in service.ref.toString(): 
+			if self.primaryServiceNumbers != None and self.primaryServiceNumbers.has_key(service.ref.toString()):
+				return self.primaryServiceNumbers.get(service.ref.toString())
 			numservice = service.ref
 			num = numservice and numservice.getChannelNum() or None
 			if num is not None:
 				return num
 		return None
-
+		
 	def sortSingleEPG(self, type):
 		list = self.list
 		if list:
@@ -1366,6 +1386,20 @@ class EPGList(HTMLComponent, GUIComponent):
 				self.instance.moveSelectionTo(index)
 				break
 			index += 1
+			
+	def setPrimaryServiceList(self,services):
+		if not services:
+			self.primaryServiceNumbers = None
+			return
+		
+		self.primaryServiceNumbers = {}
+		for x in services:
+			if hasattr(x, "ref") and x.ref:
+				numservice = x.ref
+				num = numservice and numservice.getChannelNum() or None
+				if num is not None:
+					self.primaryServiceNumbers[x.ref.toString()] = num
+		
 
 class TimelineText(HTMLComponent, GUIComponent):
 	def __init__(self, type = EPG_TYPE_GRAPH, graphic=False):
@@ -1817,3 +1851,5 @@ class EPGBouquetList(HTMLComponent, GUIComponent):
 		self.l.setList(self.bouquetslist)
 		self.selectionChanged()
 		self.CurrentBouquetService = self.getCurrentBouquetService()
+		
+
