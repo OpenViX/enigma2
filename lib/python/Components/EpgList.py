@@ -1304,6 +1304,7 @@ class EPGList(HTMLComponent, GUIComponent):
 			piconIdx = 0
 			channelIdx = None
 			
+		if not self.showChannelNumber:
 			channelIdx = None
 
 		test.insert(0, 'XRnITBD') #return record, service ref, service name, event id, event title, begin time, duration
