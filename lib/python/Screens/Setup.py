@@ -69,6 +69,7 @@ class SetupSummary(Screen):
 class Setup(ConfigListScreen, Screen):
 
 	ALLOW_SUSPEND = True
+	BACK_TEXT = "    << Back"
 
 	def removeNotifier(self):
 		config.usage.setup_level.notifiers.remove(self.levelChanged)
@@ -86,6 +87,7 @@ class Setup(ConfigListScreen, Screen):
 			self.addItems(list, x)
 			self.setup_title = x.get("title", "").encode("UTF-8")
 			self.seperation = int(x.get('separation', '0'))
+		self.hierarchy["_list"] = list
 
 	def __init__(self, session, setup, plugin=None):
 		Screen.__init__(self, session)
@@ -102,6 +104,9 @@ class Setup(ConfigListScreen, Screen):
 		self.setup = setup
 		self.plugin = plugin
 		list = []
+		
+		self.hierarchy = {}
+		self.hierarchyNavigator = []
 
 		self.refill(list)
 		
@@ -115,9 +120,10 @@ class Setup(ConfigListScreen, Screen):
 
 		self["actions"] = NumberActionMap(["SetupActions", "MenuActions"],
 			{
-				"cancel": self.keyCancel,
+				"cancel": self.backbuttonClick,
 				"save": self.keySave,
 				"menu": self.closeRecursive,
+				"ok": self.okbuttonClick,
 			}, -2)
 
 		self["VirtualKB"] = ActionMap(["VirtualKeyboardActions"],
@@ -135,7 +141,7 @@ class Setup(ConfigListScreen, Screen):
 	def createSetup(self):
 		list = []
 		self.refill(list)
-		self["config"].setList(list)
+		self["config"].setList(getFromDict(self.hierarchy,self.hierarchyNavigator)["_list"])
 		if config.usage.sort_settings.value:
 			self["config"].list.sort()
 		self.moveToItem(self.item)
@@ -210,7 +216,7 @@ class Setup(ConfigListScreen, Screen):
 		except:
 			pass
 
-	def addItems(self, list, parentNode):
+	def addItems(self, list, parentNode, hierarchy = None ):
 		for x in parentNode:
 			if not x.tag:
 				continue
@@ -248,6 +254,50 @@ class Setup(ConfigListScreen, Screen):
 				# the second one is converted to string.
 				if not isinstance(item, ConfigNothing):
 					list.append((item_text, item, item_description))
+			elif x.tag == "setup":
+				key = _(x.get("key", "??").encode("UTF-8"))
+				if key == "":
+					continue
+				title = _(x.get("title", "??").encode("UTF-8"))
+				desc = _(x.get("description", " ").encode("UTF-8"))
+				desc = desc.replace("%s %s","%s %s" % (getMachineBrand(), getMachineName()))
+				
+				hierarchy = hierarchy or self.hierarchy
+				hierarchy[title] = {}
+				hierarchy[title]["_list"] = []
+				hierarchy[title]["_key"] = key
+				hierarchy[title]["_desc"] = desc
+
+				self.addItems ( hierarchy[title]["_list"], x, hierarchy )
+				## Append a hardcoded back button (Exit key also works) for submenus
+				hierarchy[title]["_list"].append((self.BACK_TEXT, config.misc.dummy, ""))
+				list.append((title, config.misc.dummy, desc))
+				
+	def okbuttonClick(self):
+		item_title = self["config"].getCurrent()[0]
+		if item_title:
+			if item_title == self.BACK_TEXT:
+				self.goUpOneLevel()
+			else:
+				hierarchy = getFromDict(self.hierarchy,self.hierarchyNavigator)
+				if hierarchy and hierarchy.has_key(item_title):
+					self.hierarchyNavigator.append(item_title)
+					self["config"].setList ( hierarchy[item_title]["_list"] )
+					self["config"].setCurrentIndex(0)
+	
+	def backbuttonClick(self):
+		if len(self.hierarchyNavigator) > 0:
+			self.goUpOneLevel()
+		else:
+			self.keyCancel()
+			
+	def goUpOneLevel(self):
+		current_title = self.hierarchyNavigator[-1]
+		self.hierarchyNavigator.pop()
+		hierarchy = getFromDict(self.hierarchy,self.hierarchyNavigator)
+		self["config"].setList ( hierarchy["_list"] )
+		self.moveToItem([current_title])
+
 
 def getSetupTitle(id):
 	xmldata = setupdom().getroot()
@@ -257,3 +307,6 @@ def getSetupTitle(id):
 				return _("Settings...")
 			return x.get("title", "").encode("UTF-8")
 	raise SetupError("unknown setup id '%s'!" % repr(id))
+	
+def getFromDict(dataDict, mapList):
+    return reduce(lambda d, k: d[k], mapList, dataDict)
