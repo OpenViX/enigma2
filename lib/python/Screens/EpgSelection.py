@@ -490,18 +490,21 @@ class EPGSelection(Screen, HelpableScreen):
 		self['list'].recalcEntrySize()
 		self.BouquetRoot = False
 		if self.type == EPG_TYPE_GRAPH or self.type == EPG_TYPE_INFOBARGRAPH:
+			if self.type == EPG_TYPE_GRAPH:
+				if config.epgselection.graph_primarybouquet.value and config.epgselection.graph_primarybouquet.value != "Disabled":
+					for bouq in self.bouquets:
+						if bouq[0] == config.epgselection.graph_primarybouquet.value:
+							self['list'].setPrimaryServiceList( self.getBouquetServices(bouq[1]) )
+							self.primaryBouquet = bouq[0]
+							break
+				else:
+					self['list'].setPrimaryServiceList( None )
+					self.primaryBouquet = None
+			
 			if self.StartBouquet.toString().startswith('1:7:0'):
 				self.BouquetRoot = True
 			self.services = self.getBouquetServices(self.StartBouquet)
 			
-			# In future could allow a selection of primary bouquet in config, rather than assume first
-			if config.epgselection.graph_primarybouquet.value:
-				self['list'].setPrimaryServiceList( self.getBouquetServices(self.bouquets[0][1]) )
-				self.primaryBouquet = self.bouquets[0][1]
-			else:
-				self['list'].setPrimaryServiceList( None )
-				self.primaryBouquet = None
-				
 			if self.findchannel == False:
 				self['list'].fillGraphEPG(self.services, self.ask_time)
 				self['list'].moveToService(serviceref) #remembers current event
