@@ -495,7 +495,7 @@ class EPGSelection(Screen, HelpableScreen):
 					for bouq in self.bouquets:
 						if bouq[0] == config.epgselection.graph_primarybouquet.value:
 							self['list'].setPrimaryServiceList( self.getBouquetServices(bouq[1]) )
-							self.primaryBouquet = bouq[0]
+							self.primaryBouquet = bouq[1]
 							break
 				else:
 					self['list'].setPrimaryServiceList( None )
