@@ -7,6 +7,7 @@ from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
 from Components.Label import Label
 from Components.Pixmap import MultiPixmap
+from Components.config import ConfigSelection
 
 profile("LOAD:enigma")
 import enigma
