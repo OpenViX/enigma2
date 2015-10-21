@@ -815,16 +815,20 @@ class EPGList(HTMLComponent, GUIComponent):
 		namefont = 0
 		namefontflag = RT_HALIGN_LEFT | RT_VALIGN_CENTER
 		channelWidth = 0
-		if self.showChannelNumber and channel is not None:
-			font = gFont(self.serviceFontNameGraph, self.serviceFontSizeGraph + config.epgselection.graph_servfs.value)
-			channelWidth = getTextBoundarySize(self.instance, font, self.instance.size(), (channel < 10000)  and "0000" or str(channel) ).width()
-			res.append(MultiContentEntryText(
-				pos = (r1.x + self.serviceBorderWidth + self.serviceNamePadding, r1.y + self.serviceBorderWidth),
-				size = (channelWidth, r1.h - 2 * self.serviceBorderWidth),
-				font = namefont, flags = namefontflag,
-				text = str(channel),
-				color = serviceForeColor, color_sel = serviceForeColor,
-				backcolor = serviceBackColor, backcolor_sel = serviceBackColor))			
+		if self.showChannelNumber:
+			if not isinstance(channel, int):
+				channel = self.getChannelNumber(channel)
+			
+			if channel:
+				font = gFont(self.serviceFontNameGraph, self.serviceFontSizeGraph + config.epgselection.graph_servfs.value)
+				channelWidth = getTextBoundarySize(self.instance, font, self.instance.size(), (channel < 10000)  and "0000" or str(channel) ).width()
+				res.append(MultiContentEntryText(
+					pos = (r1.x + self.serviceBorderWidth + self.serviceNamePadding, r1.y + self.serviceBorderWidth),
+					size = (channelWidth, r1.h - 2 * self.serviceBorderWidth),
+					font = namefont, flags = namefontflag,
+					text = str(channel),
+					color = serviceForeColor, color_sel = serviceForeColor,
+					backcolor = serviceBackColor, backcolor_sel = serviceBackColor))			
 		displayPicon = None
 		piconWidth = self.picon_size.width()
 		piconHeight = self.picon_size.height()
@@ -1304,23 +1308,20 @@ class EPGList(HTMLComponent, GUIComponent):
 			piconIdx = 0
 			channelIdx = None
 			
-		if not self.showChannelNumber:
-			channelIdx = None
-
 		test.insert(0, 'XRnITBD') #return record, service ref, service name, event id, event title, begin time, duration
 		epg_data = self.queryEPG(test)
 		self.list = [ ]
 		tmp_list = None
 		service = ""
 		sname = ""
-		channel = None
 
 		serviceIdx = 0
 		for x in epg_data:
 			if service != x[0]:
 				if tmp_list is not None:
 					picon = None if piconIdx == 0 else serviceList[serviceIdx][piconIdx]
-					channel = (channelIdx == None) and self.getChannelNumber(serviceList[serviceIdx]) or serviceList[serviceIdx][channelIdx]
+					#We pass the serviceref if we don't have the channel number yet, so it can be grabbed
+					channel = serviceList[serviceIdx] if (channelIdx == None) else serviceList[serviceIdx][channelIdx] 
 					self.list.append((service, sname, tmp_list[0][0] is not None and tmp_list or None, picon, channel))
 					serviceIdx += 1
 				service = x[0]
@@ -1329,7 +1330,7 @@ class EPGList(HTMLComponent, GUIComponent):
 			tmp_list.append((x[2], x[3], x[4], x[5])) #(event_id, event_title, begin_time, duration)
 		if tmp_list and len(tmp_list):
 			picon = None if piconIdx == 0 else serviceList[serviceIdx][piconIdx]
-			channel = (channelIdx == None) and self.getChannelNumber(serviceList[serviceIdx]) or serviceList[serviceIdx][channelIdx]
+			channel = serviceList[serviceIdx] if (channelIdx == None) else serviceList[serviceIdx][channelIdx] 
 			self.list.append((service, sname, tmp_list[0][0] is not None and tmp_list or None, picon, channel))
 			serviceIdx += 1
 		self.l.setList(self.list)
