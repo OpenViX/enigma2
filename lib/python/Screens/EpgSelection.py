@@ -77,7 +77,6 @@ class EPGSelection(Screen, HelpableScreen):
 		self.currch = None
 		self.session.pipshown = False
 		self.cureventindex = None
-		self.primaryBouquet = None
 		if plugin_PiPServiceRelation_installed:
 			self.pipServiceRelation = getRelationDict()
 		else:
@@ -437,7 +436,7 @@ class EPGSelection(Screen, HelpableScreen):
 					continue
 				services.append(ServiceReference(service))
 		return services
-		
+
 	def LayoutFinish(self):
 		self['lab1'].show()
 		self.createTimer.start(800)
@@ -450,17 +449,6 @@ class EPGSelection(Screen, HelpableScreen):
 		self['list'].recalcEntrySize()
 		self.BouquetRoot = False
 		if self.type == EPG_TYPE_GRAPH or self.type == EPG_TYPE_INFOBARGRAPH:
-			if self.type == EPG_TYPE_GRAPH:
-				if config.epgselection.graph_primarybouquet.value and config.epgselection.graph_primarybouquet.value != "Disabled":
-					for bouq in self.bouquets:
-						if bouq[0] == config.epgselection.graph_primarybouquet.value:
-							self['list'].setPrimaryServiceList( self.getBouquetServices(bouq[1]) )
-							self.primaryBouquet = bouq[1]
-							break
-				else:
-					self['list'].setPrimaryServiceList( None )
-					self.primaryBouquet = None
-			
 			if self.StartBouquet.toString().startswith('1:7:0'):
 				self.BouquetRoot = True
 			self.services = self.getBouquetServices(self.StartBouquet)
@@ -1344,10 +1332,7 @@ class EPGSelection(Screen, HelpableScreen):
 						self.session.pip.playService(service)
 						self.currch = self.session.pip.getCurrentService() and str(self.session.pip.getCurrentService().toString())
 				else:
-					bouq = None
-					if self.primaryBouquet and lst.primaryServiceNumbers.has_key(ref.ref.toString()):
-						bouq = self.primaryBouquet
-					self.zapFunc(ref.ref, bouquet = bouq or self.getCurrentBouquet(), preview = prev)
+					self.zapFunc(ref.ref, bouquet = self.getCurrentBouquet(), preview = prev)
 					self.currch = self.session.nav.getCurrentlyPlayingServiceReference() and str(self.session.nav.getCurrentlyPlayingServiceReference().toString())
 				self['list'].setCurrentlyPlaying(self.session.nav.getCurrentlyPlayingServiceOrGroup())
 
