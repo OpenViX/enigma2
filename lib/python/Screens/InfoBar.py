@@ -7,6 +7,7 @@ from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
 from Components.Label import Label
 from Components.Pixmap import MultiPixmap
+from Components.config import ConfigSelection
 
 profile("LOAD:enigma")
 import enigma
@@ -84,6 +85,11 @@ class InfoBar(InfoBarBase, InfoBarShowHide,
 		self.current_begin_time=0
 		assert InfoBar.instance is None, "class InfoBar is a singleton class and just one instance of this class is allowed!"
 		InfoBar.instance = self
+		
+		cfgbouquets = [(("Disabled"), _("Disabled"))]
+		for bouq in InfoBar.instance.servicelist.getBouquetList():
+			cfgbouquets.append((bouq[0],bouq[0]))
+		config.epgselection.graph_primarybouquet = ConfigSelection(choices = cfgbouquets, default = "Disabled")
 
 		if config.misc.initialchannelselection.value:
 			self.onShown.append(self.showMenu)
