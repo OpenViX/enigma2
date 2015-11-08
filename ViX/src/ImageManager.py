@@ -819,6 +819,8 @@ class ImageManagerDownload(Screen):
 				self.boxtype = 'Vu+Ultimo'
 			elif getMachineMake() == 'vusolo':
 				self.boxtype = 'Vu+Solo'
+			elif getMachineMake() == 'vusolo4k':
+				self.boxtype = 'Vu+Solo4K'
 			elif getMachineMake() == 'vusolose':
 				self.boxtype = 'Vu+Solo-SE'
 			elif getMachineMake() == 'vusolo2':
@@ -856,7 +858,7 @@ class ImageManagerDownload(Screen):
 			elif getMachineMake() == 'tmnanose':
 				self.boxtype = 'TM-Nano-SE'
 			elif getMachineMake() == 'tmnanosem2':
-				self.boxtype = 'TM-Nano-SE-M2'				
+				self.boxtype = 'TM-Nano-SE-M2'
 			elif getMachineMake() == 'tmnanosecombo':
 				self.boxtype = 'TM-Nano-SE-Combo'
 			elif getMachineMake() == 'tmnano2t':
@@ -878,7 +880,7 @@ class ImageManagerDownload(Screen):
 			elif getMachineMake() == 'mutant500c':
 				self.boxtype = 'Mutant-HD500C'
 			elif getMachineMake() == 'mutant1200':
-				self.boxtype = 'Mutant-HD1200'					
+				self.boxtype = 'Mutant-HD1200'
 			elif getMachineMake() == 'xp1000max':
 				self.boxtype = 'MaxDigital-XP1000'
 			elif getMachineMake() == 'xp1000plus':
@@ -902,7 +904,7 @@ class ImageManagerDownload(Screen):
 			elif getMachineMake() == 'gbqultraue':
 				self.boxtype = 'GiGaBlue-HD-ULTRA-UE'
 			elif getMachineMake() == 'gbx1':
-				self.boxtype = 'GiGaBlue-HD-X1'				
+				self.boxtype = 'GiGaBlue-HD-X1'
 			elif getMachineMake() == 'ventonhdx':
 				self.boxtype = 'Venton-Unibox-HDx'
 			elif getMachineMake() == 'uniboxhde':
@@ -918,7 +920,7 @@ class ImageManagerDownload(Screen):
 			elif getMachineMake() == 'mbultra':
 				self.boxtype = 'Miraclebox-Ultra'
 			elif getMachineMake() == 'mbmicro':
-				self.boxtype = 'Miraclebox-Micro'				
+				self.boxtype = 'Miraclebox-Micro'
 			elif getMachineMake() == 'xpeedlx':
 				self.boxtype = 'GI-Xpeed-LX'
 			elif getMachineMake() == 'xpeedlx3':
@@ -928,7 +930,7 @@ class ImageManagerDownload(Screen):
 			elif getMachineMake() == 'ixusszero':
 				self.boxtype = 'Medialink-IXUSS-ZERO'
 			elif getMachineMake() == 'spycat':
-				self.boxtype = 'Spycat'				
+				self.boxtype = 'Spycat'
 
 			url = 'http://www.openvix.co.uk/openvix-builds/'+self.boxtype+'/'
 			conn = urllib2.urlopen(url)
