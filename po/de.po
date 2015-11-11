@@ -382,7 +382,7 @@ msgid "* = Restart Required"
 msgstr "* = Neustart erforderlich"
 
 msgid "* Only available if more than one interface is active."
-msgstr "* Nur verfügbar wenn mehr als ein Netzwerkadapter aktiv ist."
+msgstr "* Nur verfügbar, wenn mehr als ein Netzwerkadapter aktiv ist."
 
 msgid "* current animation"
 msgstr "* aktuelle Animation"
@@ -704,7 +704,7 @@ msgstr "AFP Einstellungen"
 
 #, python-format
 msgid "AV aspect is %s."
-msgstr "AV Aspect ist %s."
+msgstr "AV Seitenverhältnis ist %s."
 
 msgid "Abort"
 msgstr "Abbrechen"
@@ -959,22 +959,22 @@ msgid "Allows you to enable/disable displaying icons on the front panel."
 msgstr "Anzeige von PIcons auf dem Display am Gerät erlauben."
 
 msgid "Allows you to hide the extensions of known file types."
-msgstr "Erlaubt es Erweiterungen bekannter Dateitypen zu verstecken."
+msgstr "Erlaubt es, Erweiterungen bekannter Dateitypen zu verstecken."
 
 msgid "Allows you to send a copy of the log to yourself."
-msgstr "Erlaubt es dir eine Kopie an dich selbst zu schicken."
+msgstr "Erlaubt es, eine Kopie an dich zu schicken."
 
 msgid "Allows you to set the maximum size (MB) of the individual debug logs. When that size is reached, a new file will be created."
 msgstr "Maximale Größe (MB) vom Debug Log festlegen. Wenn die Größe erreicht wurde wird eine neue Datei erstellt."
 
 msgid "Allows you to setup the button to do what you choose."
-msgstr "Erlaubt dir zu bestimmen was die gewählte Taste macht."
+msgstr "Erlaubt es zu bestimmen, was die gewählte Taste macht."
 
 msgid "Allows you to show/hide CCcam Info in extensions (blue button)."
 msgstr "CCcam-Info in Erweiterungen (blaue Taste) anzeigen"
 
 msgid "Allows you to show/hide Log Manager in extensions (blue button)."
-msgstr "Erlaubt es dir die Log Verwaltung in Erweiterungen (blaue Taste) anzuzeigen/zu verstecken."
+msgstr "Erlaubt es, die Log Verwaltung in Erweiterungen (blaue Taste) anzuzeigen/zu verstecken."
 
 msgid "Allows you to show/hide OScam Info in extensions (blue button)."
 msgstr "OScam-Info in Erweiterungen (blaue Taste) anzeigen"
@@ -1035,72 +1035,72 @@ msgstr "Arabisch"
 
 #, python-format
 msgid "Are you ready to install \"%s\" ?"
-msgstr "Fertig zur Installation von \"%s\"?"
+msgstr "Bereit zur Installation von \"%s\"?"
 
 #, python-format
 msgid "Are you ready to remove \"%s\" ?"
-msgstr "Fertig zum Löschen von \"%s\"?"
+msgstr "Bereit zum Löschen von \"%s\"?"
 
 msgid "Are you sure to remove this entry?"
-msgstr "Sicher das dieser Eintrag entfernt werden soll?"
+msgstr "Sicher, dass dieser Eintrag entfernt werden soll?"
 
 msgid ""
 "Are you sure you want to activate this network configuration?\n"
 "\n"
 msgstr ""
-"Sicher dass diese Netzwerk-Konfiguration aktiviert werden soll?\n"
+"Sicher, dass diese Netzwerk-Konfiguration aktiviert werden soll?\n"
 "\n"
 
 msgid ""
 "Are you sure you want to delete\n"
 "the following backup:\n"
 msgstr ""
-"Sicher das Folgendes gelöscht werden soll?\n"
-"Backup(s):\n"
+"Sicher, dass folgende Sicherung\n"
+"gelöscht werden soll:\n"
 
 msgid "Are you sure you want to delete all the selected logs:\n"
-msgstr "Bist Du sicher das alle gewählten Log-Dateien gelöscht werden sollen:\n"
+msgstr "Bist Du sicher, dass alle gewählten Log-Dateien gelöscht werden sollen:\n"
 
 msgid "Are you sure you want to delete the EPG data from:\n"
-msgstr "Bist Du sicher das die EPG Daten von diesem Ort gelöscht werden sollen:\n"
+msgstr "Bist Du sicher, dass die EPG Daten von diesem Ort gelöscht werden sollen:\n"
 
 msgid "Are you sure you want to delete this log:\n"
-msgstr "Bist Du sicher das diese Log Datei gelöscht werden soll:\n"
+msgstr "Bist Du sicher, dass diese Log Datei gelöscht werden soll:\n"
 
 msgid ""
 "Are you sure you want to delete this:\n"
 " "
 msgstr ""
-"Bist Du sicher das dieses gelöscht werden soll:\n"
+"Bist Du sicher, dass dieses gelöscht werden soll:\n"
 " "
 
 msgid "Are you sure you want to exit this wizard?"
-msgstr "Sicher dass dieser Assistent verlassen werden soll?"
+msgstr "Sicher, dass dieser Assistent verlassen werden soll?"
 
 msgid "Are you sure you want to purge all deleted user bouquets?"
 msgstr "Alle gelöschten Favoritenlisten löschen?"
 
 msgid "Are you sure you want to reload the EPG data from:\n"
-msgstr "Bist Du sicher das die EPG Daten von diesem Ort lesen werden sollen:\n"
+msgstr "Bist Du sicher, dass die EPG Daten von diesem Ort lesen werden sollen:\n"
 
 #, python-format
 msgid "Are you sure you want to remove all %d.%d%s%s services?"
-msgstr "Sicher das alle %d.%d%s%s Sender entfernt werden sollen?"
+msgstr "Sicher, dass alle %d.%d%s%s Sender entfernt werden sollen?"
 
 msgid "Are you sure you want to remove all cable services?"
-msgstr "Sicher das alle Kabelsender entfernt werden sollen?"
+msgstr "Sicher, dass alle Kabelsender entfernt werden sollen?"
 
 msgid "Are you sure you want to remove all terrestrial services?"
-msgstr "Sicher das alle terrestrischen Sender entfernt werden sollen?"
+msgstr "Sicher, dass alle terrestrischen Sender entfernt werden sollen?"
 
 msgid "Are you sure you want to remove this entry?"
-msgstr "Sicher das dieser Eintrag entfernt werden soll?"
+msgstr "Sicher, dass dieser Eintrag entfernt werden soll?"
 
 msgid ""
 "Are you sure you want to restart your network interfaces?\n"
 "\n"
 msgstr ""
-"Sicher dass das Netzwerk neu gestartet werden soll?\n"
+"Sicher, dass das Netzwerk neu gestartet werden soll?\n"
 "\n"
 
 #, python-format
@@ -1110,27 +1110,27 @@ msgid ""
 "%s\n"
 "Your receiver will restart after the backup has been restored!"
 msgstr ""
-"Sicher das Folgendes wiederhergestellt werden soll?\n"
-"Backup:%s\n"
-"\n"
-"Der Receiver wird neu gestartet wenn das Backup wiederhergestellt wurde."
+"Sicher, dass folgende Sicherung\n"
+"wiederhergestellt werden soll:\n"
+%s\n"
+"Der Receiver wird neu gestartet, wenn das Backup wiederhergestellt wurde."
 
 msgid ""
 "Are you sure you want to restore the backup?\n"
 "Your receiver will restart after the backup has been restored!"
 msgstr ""
-"Sicher das dieses Backup wiederhergestellt werden soll?\n"
-"Die Box wird neu gestartet wenn das Backup wiederhergestellt wurde."
+"Sicher, dass diese Sicherung wiederhergestellt werden soll?\n"
+"Die Box wird neu gestartet, wenn das Backup wiederhergestellt wurde."
 
 msgid "Are you sure you want to save the EPG Cache to:\n"
-msgstr "Bist Du sicher das die EPG Daten an diesen Ort gespeichert werden sollen:\n"
+msgstr "Bist Du sicher, dass die EPG Daten an diesen Ort gespeichert werden sollen:\n"
 
 msgid "Are you sure you want to send this log:\n"
-msgstr "Bist Du sicher das diese Log Datei gesendet werden soll:\n"
+msgstr "Bist Du sicher, dass diese Log Datei gesendet werden soll:\n"
 
 #, python-format
 msgid "Are you sure you want to update your %s %s ?"
-msgstr "Sicher das die %s %s aktualisiert werden soll?"
+msgstr "Sicher, dass die %s %s aktualisiert werden soll?"
 
 msgid "Artist"
 msgstr "Künstler"
@@ -1148,7 +1148,7 @@ msgid "Ask user (with default as 'yes')"
 msgstr "Fragen (Voreinstellung 'Ja')"
 
 msgid "Aspect ratio"
-msgstr "Aspect/Ratio"
+msgstr "Seitenverhältnis"
 
 msgid "Assigned CAIds:"
 msgstr "zugewiesene CAIDs:"
@@ -1310,7 +1310,7 @@ msgid "Background delete speed"
 msgstr "Löschen im Hintergrund Geschwindigkeit"
 
 msgid "Backup Manager"
-msgstr "Backup Verwaltung"
+msgstr "Sicherung Verwaltung"
 
 msgid "Backup completed."
 msgstr "Sicherung beendet."
@@ -1768,34 +1768,34 @@ msgid "Choose the location for crash and debug logs."
 msgstr "Wähle den Speicherort für Crash- und Debug-Logs"
 
 msgid "Choose the location where the EPG data will be stored when the %s %s is shut down. The location must be available at boot time."
-msgstr "Wähle einen Ort wo die EPG Daten gespeichert werden wenn die %s %s ausgeschaltet wird. Dieser Ort muss beim Start verfügbar sein."
+msgstr "Wähle einen Ort, wo die EPG Daten gespeichert werden, wenn die %s %s ausgeschaltet wird. Dieser Ort muss beim Start verfügbar sein."
 
 msgid "Choose the name of the file that holds the EPG data when the %s %s is shut down. This can be handy to differentiate between several boxes."
-msgstr "Wähle den Dateinamen für die EPG-Daten wenn die %s %s ausgeschaltet wird. Das kann nützlich sein wenn mehrere Boxen verwendet werden."
+msgstr "Wähle den Dateinamen für die EPG-Daten, wenn die %s %s ausgeschaltet wird. Das kann nützlich sein wenn mehrere Boxen verwendet werden."
 
 msgid "Choose time interval to which the graphics will be rounded off."
-msgstr "Wähle das Zeitraster auf das die Grafiken gerundet werden."
+msgstr "Wähle das Zeitraster, auf das die Grafiken gerundet werden."
 
 msgid "Choose what you want the '0' button to do when PIP is active."
-msgstr "Wähle was bei der 0-Taste passieren soll wenn PiP aktiv ist."
+msgstr "Wähle, was bei der 0-Taste passieren soll, wenn PiP aktiv ist."
 
 msgid "Choose whether AAC sound tracks should be transcoded."
-msgstr "Wähle ob AAC Tonspuren transkodiert werden sollen."
+msgstr "Wähle, ob AAC Tonspuren transkodiert werden sollen."
 
 msgid "Choose whether multi channel sound tracks should be downmixed to stereo."
-msgstr "Wähle ob Mehrkanalton zu Stereo runter gerechnet werden soll."
+msgstr "Wähle, ob Mehrkanalton zu Stereo runter gerechnet werden soll."
 
 msgid "Choose whether multi channel sound tracks should be output as PCM."
-msgstr "Wähle ob Mehrkanalton als PCM ausgegeben werden sollen."
+msgstr "Wähle, ob Mehrkanalton als PCM ausgegeben werden sollen."
 
 msgid "Choose whether or not to show an icon when a motorised dish is moving."
-msgstr "Soll ein Icon angezeigt werden wenn sich ein Antennenrotor bewegt."
+msgstr "Soll ein Icon angezeigt werden, wenn sich ein Antennenrotor bewegt."
 
 msgid "Choose which level of menu/settings to display. 'Expert' level shows all items."
 msgstr "Wähle Level der Anzeige für Menü/Einstellungen. 'Expert'-Level zeigt alle Punkte."
 
 msgid "Choose which tuner to configure."
-msgstr "Wähle welcher Tuner konfiguriert werden soll."
+msgstr "Wähle, welcher Tuner konfiguriert werden soll."
 
 msgid "Chose between record and ZAP."
 msgstr "Wähle zwischen Aufnahme und Umschalten."
@@ -1923,40 +1923,40 @@ msgid "Configuration mode: %s"
 msgstr "Konfigurationsmodus: %s"
 
 msgid "Configure an additional delay to improve external subtitle synchronisation."
-msgstr "Konfiguriere eine zusätzliche Verzögerung um die Synchronisation mit externen Untertiteln zu verbessern."
+msgstr "Konfiguriere eine zusätzliche Verzögerung, um die Synchronisation mit externen Untertiteln zu verbessern."
 
 msgid "Configure an additional delay to improve subtitle synchronisation."
-msgstr "Konfiguriere eine zusätzliche Verzögerung um die Synchronisation mit Untertiteln zu verbessern."
+msgstr "Konfiguriere eine zusätzliche Verzögerung, um die Synchronisation mit Untertiteln zu verbessern."
 
 msgid "Configure duration of inactivity before the hard disk drive goes to standby"
-msgstr "Wähle die Leerlaufzeit nach der die Festplatte in den Ruhemodus schalten soll."
+msgstr "Wähle die Leerlaufzeit, nach der die Festplatte in den Ruhemodus schalten soll."
 
 msgid "Configure for how many minutes finished events should remain visible in the EPG. Useful when you need information about an event which has just finished, or has been delayed."
-msgstr "Stelle eine wie viele Minuten abgelaufene Daten im EPG erhalten bleiben sollen. Es kann hilfreich sein wenn Informationen gerade beendeter Sendungen benötigt oder wenn das Ende einer Sendung sich verzögert."
+msgstr "Stelle ein, wieviele Minuten abgelaufene Daten im EPG erhalten bleiben sollen. Es kann hilfreich sein, wenn Informationen gerade beendeter Sendungen benötigt oder wenn das Ende einer Sendung sich verzögert."
 
 msgid "Configure how recording filenames are constructed."
 msgstr "Konfigurieren der Zusammensetzung des Dateinamens von Aufnahmen"
 
 msgid "Configure if and how crypto icons will be shown in the channel selection list."
-msgstr "Konfigurieren ob und wie Icons für die Verschlüsselung in der Senderliste gezeigt werden."
+msgstr "Konfigurieren, ob und wie Icons für die Verschlüsselung in der Senderliste gezeigt werden."
 
 msgid "Configure if and how service type icons will be shown."
-msgstr "Konfigurieren ob und wie Sendertyp Icons gezeigt werden."
+msgstr "Konfigurieren, ob und wie Sendertyp Icons gezeigt werden."
 
 msgid "Configure if and how the record indicator will be shown in the channel selection list."
-msgstr "Konfigurieren ob und wie Icons für die Aufnahme in der Senderliste gezeigt werden."
+msgstr "Konfigurieren, ob und wie Icons für die Aufnahme in der Senderliste gezeigt werden."
 
 msgid "Configure if and how wide the service name column will be shown in the channel selection list."
-msgstr "Konfigurieren ob und wie Sendernamen in der Senderliste gezeigt werden."
+msgstr "Konfigurieren, ob und wie Sendernamen in der Senderliste gezeigt werden."
 
 msgid "Configure if behind the subtitles a background is shown."
-msgstr "Konfiguriere ob hinter Untertiteln  der Hintergrund gezeigt werden."
+msgstr "Konfigurieren, ob hinter Untertiteln  der Hintergrund gezeigt werden."
 
 msgid "Configure if picons will be shown in the service list."
-msgstr "Konfigurieren ob und wie PIcons in der Senderliste gezeigt werden."
+msgstr "Konfigurieren, ob und wie PIcons in der Senderliste gezeigt werden."
 
 msgid "Configure if the subtitle should switch between normal, italic, bold and bolditalic"
-msgstr "Konfiguriere ob Untertitel zwischen normal, italic, bold und bolditalic wechseln sollen"
+msgstr "Konfigurieren, ob Untertitel zwischen normal, italic, bold und bolditalic wechseln sollen"
 
 msgid "Configure interface"
 msgstr "Netzwerkkarte konfigurieren"
@@ -1965,7 +1965,7 @@ msgid "Configure nameservers"
 msgstr "DNS konfigurieren"
 
 msgid "Configure on which devices the background delete option should be used."
-msgstr "Einstellen auf welchen Laufwerken im Hintergrund gelöscht werden soll"
+msgstr "Einstellen, auf welchen Laufwerken im Hintergrund gelöscht werden soll"
 
 msgid "Configure remote control type"
 msgstr "Fernbedienungstyp einstellen"
@@ -2049,7 +2049,7 @@ msgid "Configure the initial fast forward speed. When you press the fast forward
 msgstr "Stelle die Anfangsgeschwindigkeit für den schnellen Vorlauf ein. Wenn die Vorlauftaste gedrückt wird startet der schnelle Vorlauf mit dieser Geschwindigkeit."
 
 msgid "Configure the initial rewind speed. When you press the rewind button, rewinding will start at this speed."
-msgstr "Stelle die Anfangsgeschwindigkeit für den schnellen Rücklauf ein. Wenn die Rücklauftaste gedrückt wird startet der schnelle Rücklauf mit dieser Geschwindigkeit."
+msgstr "Stelle die Anfangsgeschwindigkeit für den schnellen Rücklauf ein. Wenn die Rücklauftaste gedrückt wird, startet der schnelle Rücklauf mit dieser Geschwindigkeit."
 
 msgid "Configure the latitude of your location."
 msgstr "Konfiguriere den Breitengrad deiner Position."
@@ -2058,7 +2058,7 @@ msgid "Configure the longitude of your location."
 msgstr "Konfiguriere den Längengrad deiner Position."
 
 msgid "Configure the minimum amount of disk space to be available for recordings. When the amount of space drops below this value, deleted items will be removed from the trash can."
-msgstr "Konfiguriere den mindestens freien Speicherplatz der für Aufnahmen benötigt wird. Wenn der freie Speicherplatz unter diesen Wert fällt wird der Inhalt des Mülleimers gelöscht."
+msgstr "Konfiguriere den mindestens freien Speicherplatz, der für Aufnahmen benötigt wird. Wenn der freie Speicherplatz unter diesen Wert fällt, wird der Inhalt des Mülleimers gelöscht."
 
 msgid "Configure the minimum width before showing the 'i' icon, '0' is equal to not showing the icon at all."
 msgstr "Konfiguriere die Minimumbreite bevor das 'I' Icon gezeigt wird. '0' bedeutet das Icon wird gar nicht gezeigt."
@@ -2070,16 +2070,16 @@ msgid "Configure the netmask."
 msgstr "Konfiguriere die Netzwerkmaske."
 
 msgid "Configure the number of days after which items are automatically removed from the trash can."
-msgstr "Konfiguriere wie viele Tage der Inhalt vom Mülleimer erhalten bleiben soll."
+msgstr "Konfiguriere, wieviele Tage der Inhalt vom Mülleimer erhalten bleiben soll."
 
 msgid "Configure the number of days old timers are kept before they are automatically removed from the timer list."
-msgstr "Konfiguriere wie viele Tage Timer erhalten bleiben sollen bevor sie gelöscht werden."
+msgstr "Konfiguriere, wieviele Tage Timer erhalten bleiben sollen bevor sie gelöscht werden."
 
 msgid "Configure the number of rows shown."
 msgstr "Konfiguriere die Anzahl der angezeigten Zeilen."
 
 msgid "Configure the offline decoding delay (in milliseconds). The configured delay is observed at each control word parity change."
-msgstr "Stelle die Verzögerung in ms für die spätere Dekodierung ein. Diese Verzögerung wird jedes mal beachtet wenn sich die Parität des Kontrollwortes ändert."
+msgstr "Stelle die Verzögerung in ms für die spätere Dekodierung ein. Diese Verzögerung wird jedes mal beachtet, wenn sich die Parität des Kontrollwortes ändert."
 
 msgid "Configure the possible fast forward speeds."
 msgstr "Konfiguriere die möglichen Geschwindigkeiten für den schnellen Vorlauf."
@@ -2115,7 +2115,7 @@ msgid "Configure the slow motion speeds."
 msgstr "Konfiguriere die möglichen Geschwindigkeiten für die Zeitlupe."
 
 msgid "Configure the source of the frontend data as shown on the infobars. 'Settings' is as stored on the settings. 'Tuner' is as reported by the tuner."
-msgstr "Diese Option erlaubt dir zu wählen aus welcher Datenquelle die Informationen für den Infobar stammen. 'Einstellungen' was als Einstellung gespeichert ist. 'Tuner' was der Tuner an Informationen liefert."
+msgstr "Diese Option erlaubt dir zu wählen, aus welcher Datenquelle die Informationen für den Infobar stammen. 'Einstellungen' was als Einstellung gespeichert ist. 'Tuner' was der Tuner an Informationen liefert."
 
 msgid "Configure the speed of the background deletion process. Lower speed will consume less hard disk drive performance."
 msgstr "Konfiguriere die Löschgeschwindigkeit im Hintergrund. Eine niedrige Geschwindigkeit behindert andere Operationen weniger."
@@ -2151,22 +2151,22 @@ msgid "Configure to show the channel names, picons, or both in the EPG."
 msgstr "Konfiguriere ob PIcon, Sendername oder beides im EPG angezeigt werden soll."
 
 msgid "Configure whether (and for how long) a second infobar will be shown when OK is pressed twice. The second infobar contains additional information about the current channel."
-msgstr "Stelle ein ob (und wie lange) die SecondInfoBar angezeigt werden soll wenn OK zweimal gedrückt wird. Die SecondInfoBar enthält zusätzliche Informationen zum eingestellten Sender. Der Skin muss es unterstützen und bestimmt was angezeigt wird."
+msgstr "Stelle ein ob (und wie lange) die SecondInfoBar angezeigt werden soll, wenn OK zweimal gedrückt wird. Die SecondInfoBar enthält zusätzliche Informationen zum eingestellten Sender. Der Skin muss es unterstützen und bestimmt was angezeigt wird."
 
 msgid "Configure whether or not an rotor position will be displayed on infobar"
-msgstr "Einstellen ob die Rotorposition in InfoBar angezeigt werden soll"
+msgstr "Einstellen, ob die Rotorposition in InfoBar angezeigt werden soll"
 
 msgid "Configure which color format should be used on the SCART output."
-msgstr "Stell ein welches Farbformat an SCART ausgegeben werden soll (CVBS, RGB, YUV, RGB)."
+msgstr "Einstellen, welches Farbformat an SCART ausgegeben werden soll (CVBS, RGB, YUV, RGB)."
 
 msgid "Configure which tuner for recordings will be preferred, when more than one tuner is available."
-msgstr "Konfiguriere welcher Tuner für Aufnahmen bevorzugt werden soll wenn mehrere Tuner verfügbar sind."
+msgstr "Konfiguriere, welcher Tuner für Aufnahmen bevorzugt werden soll, wenn mehrere Tuner verfügbar sind."
 
 msgid "Configure which tuner type will be preferred, when the same service is available on different types of tuners."
-msgstr "Konfiguriere welche Tunerart bevorzugt werden soll wenn der selbe Sender auf verschiedenen Tuner verfügbar ist."
+msgstr "Konfiguriere, welche Tunerart bevorzugt werden soll, wenn der selbe Sender auf verschiedenen Tuner verfügbar ist."
 
 msgid "Configure which tuner will be preferred, when more than one tuner is available. If set to 'auto' the system will give priority to the tuner having the lowest number of channels/satellites."
-msgstr "Konfiguriere welcher Tuner bevorzugt benutzt werden soll wenn mehr als einer verfügbar ist. Wenn 'Auto' eingestellt ist so wird zuerst der Tuner mit den wenigsten Sendern/Satelliten genommen."
+msgstr "Konfiguriere, welcher Tuner bevorzugt benutzt werden soll, wenn mehr als einer verfügbar ist. Wenn 'Auto' eingestellt ist so wird zuerst der Tuner mit den wenigsten Sendern/Satelliten genommen."
 
 msgid "Configure your NTP server."
 msgstr "Deine NTP Server konfigurieren"
@@ -2178,13 +2178,13 @@ msgid "Configure your network again"
 msgstr "Netzwerk erneut konfigurieren"
 
 msgid "Configure your network settings, and press OK to start the scan"
-msgstr "Konfiguriere das Netzwerk und drücken OK um den Vorgang zu starten "
+msgstr "Konfiguriere das Netzwerk und drücke OK, um den Vorgang zu starten "
 
 msgid "Configure your wireless LAN again"
 msgstr "Funk-Netzwerk erneut konfigurieren"
 
 msgid "Configures which video output connector will be used."
-msgstr "Diese Option erlaubt es den Videoausgang einzustellen."
+msgstr "Diese Option erlaubt es, den Videoausgang einzustellen."
 
 msgid "Configuring"
 msgstr "Konfiguriere"
@@ -2544,10 +2544,10 @@ msgid "Delay for external subtitles"
 msgstr "Verzögerung für externe Untertitel"
 
 msgid "Delay in miliseconds after finish scrolling text on display."
-msgstr "Verzögerung in Millisekunden nachdem Text im Display aufgehört hat zu scrollen."
+msgstr "Verzögerung in Millisekunden, nachdem Text im Display aufgehört hat zu scrollen."
 
 msgid "Delay in miliseconds before start of scrolling text on display."
-msgstr "Verzögerung in Millisekunden bevor Text im Display anfängt zu scrollen."
+msgstr "Verzögerung in Millisekunden, bevor Text im Display anfängt zu scrollen."
 
 msgid "Delay time"
 msgstr "Zeitverzögerung"
