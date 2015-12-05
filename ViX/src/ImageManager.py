@@ -1,6 +1,6 @@
 # for localized messages
 from boxbranding import getBoxType, getImageType, getImageDistro, getImageVersion, getImageBuild, getImageFolder, getImageFileSystem, getBrandOEM, getMachineBrand, getMachineName, getMachineBuild, getMachineMake, getMachineMtdRoot, getMachineRootFile, getMachineMtdKernel, getMachineKernelFile, getMachineMKUBIFS, getMachineUBINIZE
-from os import path, system, mkdir, makedirs, listdir, remove, statvfs, chmod, walk, symlink, unlink
+from os import path, system, mkdir, makedirs, listdir, remove, rename, statvfs, chmod, walk, symlink, unlink
 from shutil import rmtree, move, copy
 from time import localtime, time, strftime, mktime
 
@@ -24,7 +24,6 @@ from Screens.Standby import TryQuitMainloop
 from Tools.Notifications import AddPopupWithCallback
 
 import urllib
-from os import rename, path, remove
 
 RAMCHEKFAILEDID = 'RamCheckFailedNotification'
 
@@ -322,7 +321,9 @@ class VIXImageManager(Screen):
 
 	def keyResstore(self):
 		self.sel = self['list'].getCurrent()
-		if self.sel:
+		if getMachineMake() == 'vusolo4k':
+			self.session.open(MessageBox, _("Sorry, But this machine is not supported yet."), MessageBox.TYPE_INFO, timeout=10)
+		elif self.sel:
 			message = _("Are you sure you want to restore this image:\n ") + self.sel
 			ybox = self.session.openWithCallback(self.keyResstore2, MessageBox, message, MessageBox.TYPE_YESNO)
 			ybox.setTitle(_("Restore Confirmation"))
@@ -350,10 +351,9 @@ class VIXImageManager(Screen):
 			kernelFILE = getMachineKernelFile()
 			rootMTD = getMachineMtdRoot()
 			rootFILE = getMachineRootFile()
-			MAINDEST = '/tmp/imagerestore/' + getImageFolder() + '/'
-
+			MAINDEST = '/tmp/imagerestore/%s/' % getImageFolder()
 			config.imagemanager.restoreimage.setValue(self.sel)
-			self.Console.ePopen('ofgwrite -r -k -r' + rootMTD + ' -k' + kernelMTD + ' ' + MAINDEST)
+			self.Console.ePopen('ofgwrite -r -k -r%s -k%s %s' % (rootMTD, kernelMTD, MAINDEST))
 
 
 class AutoImageManagerTimer:
@@ -485,8 +485,11 @@ class ImageBackup(Screen):
 		self.MAINDEST = self.MAINDESTROOT + '/' + getImageFolder() + '/'
 		print 'MTD: Kernel:',self.kernelMTD
 		print 'MTD: Root:',self.rootMTD
-		if getImageFileSystem() == 'ubi':
+		print 'Type:',getImageFileSystem()
+		if 'ubi' in getImageFileSystem():
 			self.ROOTFSTYPE = 'ubifs'
+		elif 'tar.bz2' in getImageFileSystem():
+			self.ROOTFSTYPE = 'tar.bz2'
 		else:
 			self.ROOTFSTYPE= 'jffs2'
 		self.swapdevice = ""
@@ -648,7 +651,8 @@ class ImageBackup(Screen):
 			rmtree(self.TMPDIR + '/root')
 		if path.exists(self.TMPDIR):
 			rmtree(self.TMPDIR)
-		makedirs(self.TMPDIR + '/root', 0644)
+		if not getImageFileSystem() == 'tar.bz2':
+			makedirs(self.TMPDIR + '/root', 0644)
 		makedirs(self.MAINDESTROOT, 0644)
 		self.commands = []
 		print '[ImageManager] Stage1: Making Root Image.'
@@ -659,26 +663,30 @@ class ImageBackup(Screen):
 				JFFS2OPTIONS = " --disable-compressor=lzo -e131072 -l -p125829120"
 			else:
 				JFFS2OPTIONS = " --disable-compressor=lzo --eraseblock=0x20000 -n -l"
-			self.commands.append('mount --bind / ' + self.TMPDIR + '/root')
-			self.commands.append('mkfs.jffs2 --root=' + self.TMPDIR + '/root --faketime --output=' + self.WORKDIR + '/root.jffs2' + JFFS2OPTIONS)
+			self.commands.append('mount --bind / %s/root' % self.TMPDIR)
+			self.commands.append('mkfs.jffs2 --root=%s/root --faketime --output=%s/rootfs.jffs2 %s' %(self.TMPDIR, self.self.WORKDIR, JFFS2OPTIONS))
+		elif self.ROOTFSTYPE == 'tar.bz2':
+			print '[ImageManager] Stage1: TAR.BZIP Detected.'
+			self.commands.append('mount --bind / %s/root' % self.TMPDIR)
+			self.commands.append("/bin/tar -cf %s/rootfs.tar -C %s/root ." % (self.WORKDIR, self.TMPDIR))
+			self.commands.append("/usr/bin/bzip2 %s/rootfs.tar" % self.WORKDIR)
 		else:
 			print '[ImageManager] Stage1: UBIFS Detected.'
-			UBINIZE = 'ubinize'
 			UBINIZE_ARGS = getMachineUBINIZE()
 			MKUBIFS_ARGS = getMachineMKUBIFS()
-			output = open(self.WORKDIR + '/ubinize.cfg', 'w')
+			output = open('%s/ubinize.cfg' % self.WORKDIR, 'w')
 			output.write('[ubifs]\n')
 			output.write('mode=ubi\n')
-			output.write('image=' + self.WORKDIR + '/root.ubi\n')
+			output.write('image=%s/root.ubi\n' % self.WORKDIR)
 			output.write('vol_id=0\n')
 			output.write('vol_type=dynamic\n')
 			output.write('vol_name=rootfs\n')
 			output.write('vol_flags=autoresize\n')
 			output.close()
-			self.commands.append('mount --bind / ' + self.TMPDIR + '/root')
-			self.commands.append('touch ' + self.WORKDIR + '/root.ubi')
-			self.commands.append('mkfs.ubifs -r ' + self.TMPDIR + '/root -o ' + self.WORKDIR + '/root.ubi ' + MKUBIFS_ARGS)
-			self.commands.append('ubinize -o ' + self.WORKDIR + '/root.ubifs ' + UBINIZE_ARGS + ' ' + self.WORKDIR + '/ubinize.cfg')
+			self.commands.append('mount --bind / %s/root' % self.TMPDIR)
+			self.commands.append('touch %s/root.ubi' % self.WORKDIR)
+			self.commands.append('mkfs.ubifs -r %s/root -o %s/root.ubi %s' % (self.TMPDIR, self.WORKDIR, MKUBIFS_ARGS))
+			self.commands.append('ubinize -o %s/rootfs.ubifs %s %s/ubinize.cfg' % (self.WORKDIR, UBINIZE_ARGS, self.WORKDIR))
 		self.Console.eBatch(self.commands, self.Stage1Complete, debug=False)
 
 	def Stage1Complete(self, extra_args=None):
@@ -688,7 +696,10 @@ class ImageBackup(Screen):
 
 	def doBackup2(self):
 		print '[ImageManager] Stage2: Making Kernel Image.'
-		self.command = 'nanddump /dev/' + self.kernelMTD + ' -f ' + self.WORKDIR + '/vmlinux.gz'
+		if self.ROOTFSTYPE == 'tar.bz2':
+			self.command = 'dd if=/dev/%s of=%s/vmlinux.tar.bz2' % (self.kernelMTD ,self.WORKDIR)
+		else:
+			self.command = 'nanddump /dev/%s -f %s/vmlinux.gz' % (self.kernelMTD ,self.WORKDIR)
 		self.Console.ePopen(self.command, self.Stage2Complete)
 
 	def Stage2Complete(self, result, retval, extra_args=None):
@@ -701,6 +712,8 @@ class ImageBackup(Screen):
 		if path.exists(self.TMPDIR + '/root'):
 			self.command = 'umount ' + self.TMPDIR + '/root && rm -rf ' + self.TMPDIR
 			self.Console.ePopen(self.command, self.Stage3Complete)
+		elif self.ROOTFSTYPE == 'tar.bz2' and path.exists('%s/rootfs.tar.bz2' % self.WORKDIR):
+			self.Stage3Complete()
 
 	def Stage3Complete(self, result, retval, extra_args=None):
 		if retval == 0:
@@ -709,8 +722,11 @@ class ImageBackup(Screen):
 
 	def doBackup4(self):
 		print '[ImageManager] Stage4: Moving from work to backup folders'
-		move(self.WORKDIR + '/root.' + self.ROOTFSTYPE, self.MAINDEST + '/' + self.rootFILE)
-		move(self.WORKDIR + '/vmlinux.gz', self.MAINDEST + '/' + self.kernelFILE)
+		move('%s/rootfs.%s' % (self.WORKDIR, self.ROOTFSTYPE), '%s/%s' % (self.MAINDEST, self.rootFILE))
+		if self.ROOTFSTYPE == 'tar.bz2' and path.exists('%s/vmlinux.tar.bz2' % self.WORKDIR):
+			move('%s/vmlinux.tar.bz2' % self.WORKDIR, '%s/%s' % (self.MAINDEST, self.kernelFILE))
+		else:
+			move('%s/vmlinux.gz' % self.WORKDIR, '%s/%s' % (self.MAINDEST, self.kernelFILE))
 		fileout = open(self.MAINDEST + '/imageversion', 'w')
 		line = defaultprefix + '-' + getImageType() + '-backup-' + getImageVersion() + '.' + getImageBuild() + '-' + self.BackupDate
 		fileout.write(line)
