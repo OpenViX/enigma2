@@ -777,6 +777,11 @@ class RecordTimerEntry(timer.TimerEntry, object):
 					ChannelSelectionInstance.saveChannel(self.service_ref.ref)
 				ChannelSelectionInstance.addToHistory(self.service_ref.ref)
 			NavigationInstance.instance.playService(self.service_ref.ref)
+			if not self.first_try_prepare and self.InfoBarInstance and hasattr(self.InfoBarInstance.session, 'pipshown') and self.InfoBarInstance.session.pipshown:
+				hasattr(self.InfoBarInstance, "showPiP") and self.InfoBarInstance.showPiP()
+				if hasattr(self.InfoBarInstance.session, 'pip'):
+					del self.InfoBarInstance.session.pip
+					self.InfoBarInstance.session.pipshown = False
 		else:
 			self.log(14, "user didn't want to zap away, record will probably fail")
 
