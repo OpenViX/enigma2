@@ -27,12 +27,12 @@ if VUULTIMO
 SUBDIRS += CableScan
 endif
 
-if HAVE_LIBVUGLES2
-SUBDIRS += AnimationSetup
+if VUSOLO4K
+SUBDIRS += CableScan
 endif
 
-if DREAMBOX
-SUBDIRS += FrontprocessorUpgrade NFIFlash CableScan
+if HAVE_LIBVUGLES2
+SUBDIRS += AnimationSetup
 endif
 
 install_PYTHON = __init__.py

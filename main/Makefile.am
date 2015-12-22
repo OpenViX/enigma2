@@ -19,13 +19,6 @@ enigma2_SOURCES = \
 	version_info.h \
 	version.h
 
-EXTRA_DIST = \
-	enigma-dvbtest.cpp \
-	enigma-gdi.cpp \
-	enigma-gui.cpp \
-	enigma-playlist.cpp \
-	enigma-scan.cpp
-
 enigma2_LDADD_WHOLE = \
 	$(top_builddir)/lib/actions/libenigma_actions.a \
 	$(top_builddir)/lib/base/libenigma_base.a \
@@ -52,10 +45,6 @@ enigma2_LDADD = \
 	@PYTHON_LDFLAGS@ \
 	@LIBDDVD_LIBS@ \
 	-ltuxtxt -ltuxtxt32bpp -lcrypt -lrt -ldl
-
-if ENABLE_SH
-enigma2_LDADD += -lmmeimage
-endif
 
 enigma2_LDFLAGS = -Wl,--export-dynamic
 

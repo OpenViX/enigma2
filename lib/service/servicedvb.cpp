@@ -187,7 +187,7 @@ RESULT eStaticServiceDVBBouquetInformation::getName(const eServiceReference &ref
 		return err;
 	}
 
-	eBouquet *bouquet=0;
+	eBouquet *bouquet = NULL;
 	if ((err = db->getBouquet(ref, bouquet)) != 0)
 	{
 		eDebug("[eStaticServiceDVBBouquetInformation] getName failed.. getBouquet failed!");
@@ -223,7 +223,7 @@ int eStaticServiceDVBBouquetInformation::isPlayable(const eServiceReference &ref
 			return 0;
 		}
 
-		eBouquet *bouquet=0;
+		eBouquet *bouquet = NULL;
 		if (db->getBouquet(ref, bouquet))
 		{
 			eDebug("[eStaticServiceDVBBouquetInformation] isPlayable failed.. getBouquet failed!");
@@ -1343,46 +1343,8 @@ RESULT eDVBServicePlay::start()
 	bool scrambled = true;
 	int packetsize = 188;
 	eDVBServicePMTHandler::serviceType type = eDVBServicePMTHandler::livetv;
-	ePtr<eDVBResourceManager> res_mgr;
-
-	bool remote_fallback_enabled = eConfigManager::getConfigBoolValue("config.usage.remote_fallback_enabled", false);
-	std::string remote_fallback_url = eConfigManager::getConfigValue("config.usage.remote_fallback");
-
-	if(!m_is_stream && !m_is_pvr &&
-			remote_fallback_enabled &&
-			(remote_fallback_url.length() > 0) &&
-			!eDVBResourceManager::getInstance(res_mgr))
-	{
-		eDVBChannelID chid, chid_ignore;
-		int system;
-
-		service.getChannelID(chid);
-		eServiceReferenceDVB().getChannelID(chid_ignore);
-
-		if(!res_mgr->canAllocateChannel(chid, chid_ignore, system))
-		{
-			size_t index;
-
-			while((index = remote_fallback_url.find(':')) != std::string::npos)
-			{
-				remote_fallback_url.erase(index, 1);
-				remote_fallback_url.insert(index, "%3a");
-			}
-
-			std::ostringstream remote_service_ref;
-			remote_service_ref << std::hex << service.type << ":" << service.flags << ":" << 
-					service.getData(0) << ":" << service.getData(1) << ":" << service.getData(2) << ":0:0:0:0:0:" <<
-					remote_fallback_url << "/" <<
-					service.type << "%3a" << service.flags;
-			for(index = 0; index < 8; index++)
-					remote_service_ref << "%3a" << service.getData(index);
-
-			service = eServiceReferenceDVB(remote_service_ref.str());
-
-			m_is_stream = true;
-			m_is_pvr = false;
-		}
-	}
+	if(tryFallbackTuner(/*REF*/service, /*REF*/m_is_stream, m_is_pvr, /*simulate*/false))
+		eDebug("ServicePlay: fallback tuner selected");
 
 		/* in pvr mode, we only want to use one demux. in tv mode, we're using
 		   two (one for decoding, one for data source), as we must be prepared
@@ -1409,7 +1371,13 @@ RESULT eDVBServicePlay::start()
 		 * streams are considered to be descrambled by default;
 		 * user can indicate a stream is scrambled, by using servicetype id + 0x100
 		 */
+		bool config_descramble_client = eConfigManager::getConfigBoolValue("config.streaming.descramble_client", false);
+
 		scrambled = (m_reference.type == eServiceFactoryDVB::id + 0x100);
+
+		if(config_descramble_client)
+			scrambled = true;
+
 		type = eDVBServicePMTHandler::streamclient;
 	}
 
@@ -1560,7 +1528,17 @@ RESULT eDVBServicePlay::setFastForward_internal(int ratio, bool final_seek)
 	{
 		eDebug("[eDVBServicePlay] setFastForward setting cue skipmode to %d", skipmode);
 		if (m_cue)
-			m_cue->setSkipmode(skipmode * 90000); /* convert to 90000 per second */
+		{
+			long long _skipmode = skipmode;
+			if (!m_timeshift_active && (m_current_video_pid_type == eDVBServicePMTHandler::videoStream::vtH265_HEVC))
+			{
+				if (ratio < 0)
+					_skipmode = skipmode * 3;
+				else
+					_skipmode = skipmode * 4;
+			}
+			m_cue->setSkipmode(_skipmode * 90000); /* convert to 90000 per second */
+		}
 	}
 
 	m_skipmode = skipmode;
@@ -2030,9 +2008,9 @@ std::string eDVBServicePlay::getInfoString(int w)
 	case sLiveStreamDemuxId:
 	{
 		eDVBServicePMTHandler &h = m_timeshift_active ? m_service_handler_timeshift : m_service_handler;
-		std::string demux;
-		demux += h.getDemuxID() + '0';
-		return demux;
+		std::stringstream demux;
+		demux << h.getDemuxID();
+		return demux.str();
 	}
 	default:
 		break;
@@ -2319,6 +2297,57 @@ ePyObject eDVBServicePlay::getRassInteractiveMask()
 	if (m_rds_decoder)
 		return m_rds_decoder->getRassPictureMask();
 	Py_RETURN_NONE;
+}
+
+bool eDVBServiceBase::tryFallbackTuner(eServiceReferenceDVB &service, bool &is_stream, bool is_pvr, bool simulate)
+{
+	ePtr<eDVBResourceManager> res_mgr;
+	std::ostringstream remote_service_ref;
+	eDVBChannelID chid, chid_ignore;
+	int system;
+	size_t index;
+
+	bool remote_fallback_enabled = eConfigManager::getConfigBoolValue("config.usage.remote_fallback_enabled", false);
+	std::string remote_fallback_url = "http://" + eConfigManager::getConfigValue("config.usage.remote_fallback");
+	int port_num = eConfigManager::getConfigIntValue("config.usage.remote_fallback_port", 8001);
+	std::ostringstream remote_fallback_port;
+	remote_fallback_port << port_num;
+	remote_fallback_url +=  ':' + remote_fallback_port.str();
+
+	if(is_stream || is_pvr || simulate ||
+			!remote_fallback_enabled || (remote_fallback_url.length() == 0) ||
+			eDVBResourceManager::getInstance(res_mgr))
+		return(false);
+
+	service.getChannelID(chid); 						// this sets chid
+	eServiceReferenceDVB().getChannelID(chid_ignore);	// this sets chid_ignore
+
+	if(res_mgr->canAllocateChannel(chid, chid_ignore, system))	// this sets system
+		return(false);
+
+	while((index = remote_fallback_url.find(':')) != std::string::npos)
+	{
+		remote_fallback_url.erase(index, 1);
+		remote_fallback_url.insert(index, "%3a");
+	}
+
+	remote_service_ref << std::hex << service.type << ":" << service.flags << ":";
+
+	for(index = 0; index < 8; index++)
+		remote_service_ref << std::hex << service.getData(index) << ":";
+
+	remote_service_ref << std::hex << remote_fallback_url << "/" << service.type << "%3a" << service.flags;
+
+	for(index = 0; index < 8; index++)
+		remote_service_ref << std::hex << "%3a" << service.getData(index);
+
+	eDebug("Fallback tuner: redirected unavailable service to: %s\n", remote_service_ref.str().c_str());
+
+	service = eServiceReferenceDVB(remote_service_ref.str());
+
+	is_stream = true;
+
+	return(true);
 }
 
 int eDVBServiceBase::getFrontendInfo(int w)
@@ -2874,6 +2903,7 @@ void eDVBServicePlay::updateDecoder(bool sendSeekableStateChanged)
 		setPCMDelay(pcm_delay == -1 ? 0 : pcm_delay);
 
 		m_decoder->setVideoPID(vpid, vpidtype);
+		m_current_video_pid_type = vpidtype;
 		m_have_video_pid = (vpid > 0 && vpid < 0x2000);
 
 		selectAudioStream();

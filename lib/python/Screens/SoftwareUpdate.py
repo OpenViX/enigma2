@@ -142,6 +142,14 @@ class UpdatePlugin(Screen, ProtectedScreen):
 		ProtectedScreen.__init__(self)
 		Screen.setTitle(self, _("Software Update"))
 
+		self["actions"] = ActionMap(["WizardActions"],
+		{
+			"ok": self.exit,
+			"back": self.exit
+		}, -1)
+		self['actions'].csel = self
+		self["actions"].setEnabled(False)
+
 		self.sliderPackages = { "dreambox-dvb-modules": 1, "enigma2": 2, "tuxbox-image-info": 3 }
 		self.slider = Slider(0, 4)
 		self["slider"] = self.slider
@@ -164,6 +172,7 @@ class UpdatePlugin(Screen, ProtectedScreen):
 		self.SettingsBackupDone = False
 		self.ImageBackupDone = False
 		self.autobackuprunning = False
+		self.updating = False
 
 		self.packages = 0
 		self.error = 0
@@ -173,7 +182,7 @@ class UpdatePlugin(Screen, ProtectedScreen):
 
 	def checkNetworkState(self):
 		self.trafficLight = feedsstatuscheck.getFeedsBool()
-		status_msgs = {'stable': _('Feeds status:   Stable'), 'unstable': _('Feeds status:   Unstable'), 'updating': _('Feeds status:   Updating'), '-2': _('ERROR:   No network found'), '404': _('ERROR:   No internet found'), 'inprogress': _('ERROR: Check is already running in background'), 'unknown': _('No connection')}
+		status_msgs = {'stable': _('Feeds status:   Stable'), 'unstable': _('Feeds status:   Unstable'), 'updating': _('Feeds status:   Updating'), '-2': _('ERROR:   No network found'), '404': _('ERROR:   No internet found'), 'inprogress': _('ERROR: Check is already running in background'), 'unknown': _('Feeds status:   Unknown')}
 		self['tl_red'].hide()
 		self['tl_yellow'].hide()
 		self['tl_green'].hide()
@@ -188,15 +197,16 @@ class UpdatePlugin(Screen, ProtectedScreen):
 			self['tl_yellow'].show()
 		else:
 			self['tl_off'].show()
-		if self.trafficLight not in ('stable', 'unstable'):
+		if (getImageType() != 'release' and self.trafficLight != 'unknown') or (getImageType() == 'release' and self.trafficLight not in ('stable', 'unstable')):
 			self.session.openWithCallback(self.close, MessageBox, feedsstatuscheck.getFeedsErrorMessage(), type=MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 		else:
-			if (config.softwareupdate.updateisunstable.value == '1' and config.softwareupdate.updatebeta.value) or config.softwareupdate.updateisunstable.value == '0':
-					self.startCheck()
+			if getImageType() != 'release' or (config.softwareupdate.updateisunstable.value == '1' and config.softwareupdate.updatebeta.value) or config.softwareupdate.updateisunstable.value == '0':
+				self.startCheck()
 			else:
 				self.session.openWithCallback(self.close, MessageBox, _("Sorry the feeds seem to be in an unstable state, if you wish to use them please enable 'Allow unstable (experimental) updates' in \"Software update settings\"."), type=MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 
 	def startCheck(self):
+		self.updating = True
 		self.activity = 0
 		self.activityTimer = eTimer()
 		self.activityTimer.callback.append(self.doActivityTimer)
@@ -204,15 +214,6 @@ class UpdatePlugin(Screen, ProtectedScreen):
 		self.ipkg = IpkgComponent()
 		self.ipkg.addCallback(self.ipkgCallback)
 
-		self.updating = False
-
-		self["actions"] = ActionMap(["WizardActions"],
-		{
-			"ok": self.exit,
-			"back": self.exit
-		}, -1)
-
-		self.updating = True
 		self.activityTimer.start(100, False)
 		self.ipkg.startCmd(IpkgComponent.CMD_UPDATE)
 
@@ -260,6 +261,7 @@ class UpdatePlugin(Screen, ProtectedScreen):
 			if config.plugins.softwaremanager.overwriteConfigFiles.value in ("N", "Y"):
 				self.ipkg.write(True and config.plugins.softwaremanager.overwriteConfigFiles.value)
 			else:
+				self["actions"].setEnabled(True)
 				self.session.openWithCallback(
 					self.modificationCallback,
 					MessageBox,
@@ -274,7 +276,7 @@ class UpdatePlugin(Screen, ProtectedScreen):
 				self.ipkg.startCmd(IpkgComponent.CMD_UPGRADE_LIST)
 			elif self.ipkg.currentCommand == IpkgComponent.CMD_UPGRADE_LIST:
 				self.total_packages = None
-				if config.softwareupdate.updateisunstable.value == '1' and config.softwareupdate.updatebeta.value:
+				if getImageType() != 'release' or (config.softwareupdate.updateisunstable.value == '1' and config.softwareupdate.updatebeta.value):
 					self.total_packages = len(self.ipkg.getFetchedList())
 					message = _("The current update may be unstable") + "\n" + _("Are you sure you want to update your %s %s ?") % (getMachineBrand(), getMachineName()) + "\n(" + (ngettext("%s updated package available", "%s updated packages available", self.total_packages) % self.total_packages) + ")"
 				elif config.softwareupdate.updateisunstable.value == '0':
@@ -299,9 +301,11 @@ class UpdatePlugin(Screen, ProtectedScreen):
 							choices.append((_("Perform a full image backup"), "imagebackup"))
 					choices.append((_("Update channel list only"), "channels"))
 					choices.append((_("Cancel"), ""))
+					self["actions"].setEnabled(True)
 					upgrademessage = self.session.openWithCallback(self.startActualUpgrade, ChoiceBox, title=message, list=choices, skin_name = "SoftwareUpdateChoices", var=self.trafficLight)
 					upgrademessage.setTitle(_('Software update'))
 				else:
+					self["actions"].setEnabled(True)
 					upgrademessage = self.session.openWithCallback(self.close, MessageBox, _("Nothing to upgrade"), type=MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 					upgrademessage.setTitle(_('Software update'))
 			elif self.channellist_only > 0:
@@ -362,6 +366,7 @@ class UpdatePlugin(Screen, ProtectedScreen):
 				choices.append((_("Perform a full image backup"), "imagebackup"))
 			choices.append((_("Update channel list only"), "channels"))
 			choices.append((_("Cancel"), ""))
+			self["actions"].setEnabled(True)
 			upgrademessage = self.session.openWithCallback(self.startActualUpgrade, ChoiceBox, title=message, list=choices, skin_name = "SoftwareUpdateChoices", var=self.trafficLight)
 			upgrademessage.setTitle(_('Software update'))
 		elif answer[1] == "changes":

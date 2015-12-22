@@ -1,7 +1,6 @@
 #include <sys/select.h>
 #include <unistd.h>
 #include <string.h>
-#include <openssl/evp.h>
 #include <sys/types.h>
 #include <pwd.h>
 #include <shadow.h>
@@ -17,8 +16,8 @@
 #include <lib/dvb/streamserver.h>
 #include <lib/dvb/encoder.h>
 
-eStreamClient::eStreamClient(eStreamServer *handler, int socket)
- : parent(handler), encoderFd(-1), streamFd(socket), streamThread(NULL)
+eStreamClient::eStreamClient(eStreamServer *handler, int socket, const std::string remotehost)
+ : parent(handler), encoderFd(-1), streamFd(socket), streamThread(NULL), m_remotehost(remotehost)
 {
 	running = false;
 }
@@ -82,24 +81,7 @@ void eStreamClient::notifier(int what)
 				std::string hash = request.substr(pos + 21);
 				pos = hash.find('\r');
 				hash = hash.substr(0, pos);
-				hash += "\n";
-				{
-					char *in, *out;
-					in = strdup(hash.c_str());
-					out = (char*)calloc(1, hash.size());
-					if (in && out)
-					{
-						BIO *b64, *bmem;
-						b64 = BIO_new(BIO_f_base64());
-						bmem = BIO_new_mem_buf(in, hash.size());
-						bmem = BIO_push(b64, bmem);
-						BIO_read(bmem, out, hash.size());
-						BIO_free_all(bmem);
-						authentication.append(out, hash.size());
-					}
-					free(in);
-					free(out);
-				}
+				authentication = base64decode(hash);
 				pos = authentication.find(':');
 				if (pos != std::string::npos)
 				{
@@ -162,7 +144,11 @@ void eStreamClient::notifier(int what)
 				if (pos == std::string::npos)
 				{
 					if (eDVBServiceStream::start(serviceref.c_str(), streamFd) >= 0)
+					{
 						running = true;
+						m_serviceref = serviceref;
+						m_useencoder = false;
+					}
 				}
 				else
 				{
@@ -206,6 +192,8 @@ void eStreamClient::notifier(int what)
 								streamThread->setTargetFD(streamFd);
 								streamThread->start(encoderFd);
 							}
+							m_serviceref = serviceref;
+							m_useencoder = true;
 						}
 					}
 				}
@@ -237,11 +225,29 @@ void eStreamClient::tuneFailed()
 	parent->connectionLost(this);
 }
 
+std::string eStreamClient::getRemoteHost()
+{
+	return m_remotehost;
+}
+
+std::string eStreamClient::getServiceref()
+{
+	return m_serviceref;
+}
+
+bool eStreamClient::isUsingEncoder()
+{
+	return m_useencoder;
+}
+
 DEFINE_REF(eStreamServer);
+
+eStreamServer *eStreamServer::m_instance = NULL;
 
 eStreamServer::eStreamServer()
  : eServerSocket(8001, eApp)
 {
+	m_instance = this;
 }
 
 eStreamServer::~eStreamServer()
@@ -252,9 +258,14 @@ eStreamServer::~eStreamServer()
 	}
 }
 
+eStreamServer *eStreamServer::getInstance()
+{
+	return m_instance;
+}
+
 void eStreamServer::newConnection(int socket)
 {
-	ePtr<eStreamClient> client = new eStreamClient(this, socket);
+	ePtr<eStreamClient> client = new eStreamClient(this, socket, RemoteHost());
 	clients.push_back(client);
 	client->start();
 }
@@ -266,6 +277,23 @@ void eStreamServer::connectionLost(eStreamClient *client)
 	{
 		clients.erase(it);
 	}
+}
+
+PyObject *eStreamServer::getConnectedClients()
+{
+	ePyObject ret;
+	int idx = 0;
+	int cnt = clients.size();
+	ret = PyList_New(cnt);
+	for (eSmartPtrList<eStreamClient>::iterator it = clients.begin(); it != clients.end(); ++it)
+	{
+		ePyObject tuple = PyTuple_New(3);
+		PyTuple_SET_ITEM(tuple, 0, PyString_FromString((char *)it->getRemoteHost().c_str()));
+		PyTuple_SET_ITEM(tuple, 1, PyString_FromString((char *)it->getServiceref().c_str()));
+		PyTuple_SET_ITEM(tuple, 2, PyInt_FromLong(it->isUsingEncoder()));
+		PyList_SET_ITEM(ret, idx++, tuple);
+	}
+	return ret;
 }
 
 eAutoInitPtr<eStreamServer> init_eStreamServer(eAutoInitNumbers::service + 1, "Stream server");

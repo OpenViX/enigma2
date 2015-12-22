@@ -113,6 +113,37 @@ void eListboxServiceContent::getCurrent(eServiceReference &ref)
 		ref = eServiceReference();
 }
 
+void eListboxServiceContent::getPrev(eServiceReference &ref)
+{
+	if (cursorValid())
+	{
+		list::iterator cursor(m_cursor);
+		if (cursor == m_list.begin())
+		{
+			cursor = m_list.end();
+		}
+		ref = *(--cursor);
+	}
+	else
+		ref = eServiceReference();
+}
+
+void eListboxServiceContent::getNext(eServiceReference &ref)
+{
+	if (cursorValid())
+	{
+		list::iterator cursor(m_cursor);
+		cursor++;
+		if (cursor == m_list.end())
+		{
+			cursor = m_list.begin();
+		}
+ 		ref = *(cursor);
+	}
+	else
+		ref = eServiceReference();
+}
+
 int eListboxServiceContent::getNextBeginningWithChar(char c)
 {
 //	printf("Char: %c\n", c);
@@ -563,11 +594,13 @@ bool eListboxServiceContent::checkServiceIsRecorded(eServiceReference ref)
 			ePtr<eDVBResourceManager> res;
 			eDVBResourceManager::getInstance(res);
 			res->getChannelList(db);
-			eBouquet *bouquet=0;
-			db->getBouquet(ref, bouquet);
-			for (std::list<eServiceReference>::iterator i(bouquet->m_services.begin()); i != bouquet->m_services.end(); ++i)
-				if (*i == it->second)
-					return true;
+			eBouquet *bouquet = NULL;
+			if (!db->getBouquet(ref, bouquet))
+			{
+				for (std::list<eServiceReference>::iterator i(bouquet->m_services.begin()); i != bouquet->m_services.end(); ++i)
+					if (*i == it->second)
+						return true;
+			}
 		}
 		else if (ref == it->second)
 			return true;

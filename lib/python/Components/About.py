@@ -1,4 +1,4 @@
-from boxbranding import getImageVersion
+from boxbranding import getImageVersion, getBoxType
 from sys import modules
 import socket, fcntl, struct, time, os
 
@@ -32,31 +32,35 @@ def getChipSetString():
 		f = open('/proc/stb/info/chipset', 'r')
 		chipset = f.read()
 		f.close()
-		return str(chipset.lower().replace('\n','').replace('bcm','').replace('sti',''))
+		return str(chipset.lower().replace('\n','').replace('bcm','').replace('brcm','').replace('sti',''))
 	except IOError:
-		return "unavailable"
+		return _("unavailable")
 
 def getCPUSpeedString():
-	try:
-		mhz = "unknown"
-		file = open('/proc/cpuinfo', 'r')
-		lines = file.readlines()
-		for x in lines:
-			splitted = x.split(': ')
-			if len(splitted) > 1:
-				splitted[1] = splitted[1].replace('\n','')
-				if splitted[0].startswith("cpu MHz"):
-					mhz = float(splitted[1].split(' ')[0])
-					if mhz and mhz >= 1000:
-						mhz = "%s GHz" % str(round(mhz/1000,1))
-					else:
-						mhz = "%s MHz" % str(round(mhz,1))
-		file.close()
-		return mhz
-	except IOError:
-		return "unavailable"
+	mhz = _("unavailable")
+	if getBoxType() == 'vusolo4k':
+		return "1.5 GHz"
+	else:
+		try:
+			file = open('/proc/cpuinfo', 'r')
+			lines = file.readlines()
+			for x in lines:
+				splitted = x.split(': ')
+				if len(splitted) > 1:
+					splitted[1] = splitted[1].replace('\n','')
+					if splitted[0].startswith("cpu MHz"):
+						mhz = float(splitted[1].split(' ')[0])
+						if mhz and mhz >= 1000:
+							mhz = "%s GHz" % str(round(mhz/1000,1))
+						else:
+							mhz = "%s MHz" % str(round(mhz,1))
+			file.close()
+			return mhz
+		except IOError:
+			return _("unavailable")
 
 def getCPUString():
+	system = _("unavailable")
 	try:
 		system="unknown"
 		file = open('/proc/cpuinfo', 'r')
@@ -67,10 +71,12 @@ def getCPUString():
 				splitted[1] = splitted[1].replace('\n','')
 				if splitted[0].startswith("system type"):
 					system = splitted[1].split(' ')[0]
+				elif splitted[0].startswith("model name"):
+					system = splitted[1].split(' ')[0]
 		file.close()
 		return system
 	except IOError:
-		return "unavailable"
+		return _("unavailable")
 
 def getCpuCoresString():
 	try:
@@ -88,7 +94,7 @@ def getCpuCoresString():
 		file.close()
 		return cores
 	except IOError:
-		return "unavailable"
+		return _("unavailable")
 
 def _ifinfo(sock, addr, ifname):
 	iface = struct.pack('256s', ifname[:15])

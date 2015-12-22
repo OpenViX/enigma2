@@ -256,11 +256,123 @@ void eDVBCISlot::process_tpdu(unsigned char tpdu_tag, __u8* data, int asn_data_l
 
 #endif
 
+eCIClient::eCIClient(eDVBCIInterfaces *handler, int socket) : eUnixDomainSocket(socket, 1, eApp), parent(handler)
+{
+	receivedData = NULL;
+	receivedCmd = 0;
+	CONNECT(connectionClosed_, eCIClient::connectionLost);
+	CONNECT(readyRead_, eCIClient::dataAvailable);
+}
+
+void eCIClient::connectionLost()
+{
+	if (parent) parent->connectionLost();
+}
+
+void eCIClient::dataAvailable()
+{
+	if (!receivedCmd)
+	{
+		if ((unsigned int)bytesAvailable() < sizeof(ciplus_header)) return;
+		if ((unsigned int)readBlock((char*)&header, sizeof(ciplus_header)) < sizeof(ciplus_header)) return;
+		header.magic = ntohl(header.magic);
+		header.cmd = ntohl(header.cmd);
+		header.size = ntohl(header.size);
+		if (header.magic != CIPLUSHELPER_MAGIC)
+		{
+			if (parent) parent->connectionLost();
+			return;
+		}
+		receivedCmd = header.cmd;
+		receivedCmdSize = header.size;
+	}
+	if (receivedCmdSize)
+	{
+		if ((unsigned int)bytesAvailable() < receivedCmdSize) return;
+		if (receivedCmdSize) delete [] receivedData;
+		receivedData = new unsigned char[receivedCmdSize];
+		if ((unsigned int)readBlock((char*)receivedData, receivedCmdSize) < receivedCmdSize) return;
+
+		ciplus_message *message = (ciplus_message *)receivedData;
+		switch (header.cmd)
+		{
+		default:
+			{
+				unsigned char *data = &receivedData[sizeof(ciplus_message)];
+				parent->getSlot(ntohl(message->slot))->send(data, ntohl(message->size));
+			}
+			break;
+		case eCIClient::CIPLUSHELPER_STATE_CHANGED:
+			{
+				eDVBCISession::setAction(ntohl(message->session), receivedData[sizeof(ciplus_message)]);
+			}
+			break;
+		}
+		receivedCmdSize = 0;
+		receivedCmd = 0;
+	}
+}
+
+void eCIClient::sendData(int cmd, int slot, int session, unsigned long idtag, unsigned char *tag, unsigned char *data, int len)
+{
+	ciplus_message message;
+	message.slot = ntohl(slot);
+	message.idtag = ntohl(idtag);
+	memcpy(&message.tag, tag, 4);
+	message.session = ntohl(session);
+	message.size = ntohl(len);
+
+	ciplus_header header;
+	header.magic = htonl(CIPLUSHELPER_MAGIC);
+	header.size = htonl(sizeof(message) + len);
+	header.cmd = htonl(cmd);
+
+	writeBlock((const char*)&header, sizeof(header));
+	writeBlock((const char*)&message, sizeof(message));
+	if (len)
+	{
+		writeBlock((const char*)data, len);
+	}
+}
+
+void eDVBCIInterfaces::newConnection(int socket)
+{
+	if (client)
+	{
+		delete client;
+	}
+	client = new eCIClient(this, socket);
+}
+
+void eDVBCIInterfaces::connectionLost()
+{
+	if (client)
+	{
+		delete client;
+		client = NULL;
+	}
+}
+
+void eDVBCIInterfaces::sendDataToHelper(int cmd, int slot, int session, unsigned long idtag, unsigned char *tag, unsigned char *data, int len)
+{
+	if (client)	client->sendData(cmd, slot, session, idtag, tag, data, len);
+}
+
+bool eDVBCIInterfaces::isClientConnected()
+{
+	if (client) return true;
+	return false;
+}
+
+#define CIPLUS_SERVER_SOCKET "/tmp/.listen.ciplus.socket"
+
 eDVBCIInterfaces::eDVBCIInterfaces()
+ : eServerSocket(CIPLUS_SERVER_SOCKET, eApp)
 {
 	int num_ci = 0;
 
 	instance = this;
+	client = NULL;
 
 	eDebug("[CI] scanning for common interfaces..");
 
@@ -724,10 +836,16 @@ void eDVBCIInterfaces::recheckPMTHandlers()
 						data_source tuner_source = TUNER_A;
 						switch (tunernum)
 						{
+#ifdef TUNER_VUSOLO4K
+							case 0 ... 10:
+								tuner_source = (data_source)tunernum;
+								break;
+#else
 							case 0: tuner_source = TUNER_A; break;
 							case 1: tuner_source = TUNER_B; break;
 							case 2: tuner_source = TUNER_C; break;
 							case 3: tuner_source = TUNER_D; break;
+#endif
 							default:
 								eDebug("[CI] try to get source for tuner %d!!\n", tunernum);
 								break;
@@ -875,6 +993,10 @@ int eDVBCIInterfaces::getMMIState(int slotid)
 	return slot->getMMIState();
 }
 
+#ifdef TUNER_VUSOLO4K
+static const char *tuner_source[] = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "CI0", "CI1", "CI2", "CI3"};
+#endif
+
 int eDVBCIInterfaces::setInputSource(int tuner_no, data_source source)
 {
 //	eDebug("[CI] !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
@@ -895,6 +1017,11 @@ int eDVBCIInterfaces::setInputSource(int tuner_no, data_source source)
 
 		switch(source)
 		{
+#ifdef TUNER_VUSOLO4K
+			case TUNER_A ... CI_D:
+				fprintf(input, tuner_source[(int)source]);
+				break;
+#else
 			case CI_A:
 				fprintf(input, "CI0");
 				break;
@@ -919,6 +1046,7 @@ int eDVBCIInterfaces::setInputSource(int tuner_no, data_source source)
 			case TUNER_D:
 				fprintf(input, "D");
 				break;
+#endif
 			default:
 				eDebug("[CI] setInputSource for input %d failed!!!\n", (int)source);
 				break;
@@ -942,6 +1070,11 @@ int eDVBCIInterfaces::setInputSource(int tuner_no, data_source source)
 
 		switch(source)
 		{
+#ifdef TUNER_VUSOLO4K
+			case TUNER_A ... CI_D:
+				fprintf(input, tuner_source[(int)source]);
+				break;
+#else
 			case CI_A:
 				fprintf(input, "CI");
 				break;
@@ -951,6 +1084,7 @@ int eDVBCIInterfaces::setInputSource(int tuner_no, data_source source)
 			case TUNER_B:
 				fprintf(input, "B");
 				break;
+#endif
 			default:
 				eDebug("[CI] setInputSource for input %d failed!!!\n", (int)source);
 				break;
@@ -1707,6 +1841,11 @@ int eDVBCISlot::setSource(data_source source)
 		FILE *ci = fopen(buf, "wb");
 		switch(source)
 		{
+#ifdef TUNER_VUSOLO4K
+			case TUNER_A ... CI_D:
+				fprintf(ci, tuner_source[(int)source]);
+				break;
+#else
 			case CI_A:
 				fprintf(ci, "CI0");
 				break;
@@ -1731,6 +1870,7 @@ int eDVBCISlot::setSource(data_source source)
 				case TUNER_D:
 				fprintf(ci, "D");
 				break;
+#endif
 			default:
 				eDebug("[CI] Slot %d: setSource %d failed!!!\n", getSlotID(), (int)source);
 				break;
