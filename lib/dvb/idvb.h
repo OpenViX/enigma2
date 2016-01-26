@@ -304,13 +304,14 @@ public:
 		dxHoldName=8,           // don't change service name if label differs in the SDT
 		dxNewFound=64,          // show in last scanned bouquet ( until next restart )
 		dxIsDedicated3D=128,    // 3D channel
+		dxIsParentalProtected=256, // service with parental protection
 		dxIsScrambledPMT=1024,  // identical to dxNoDVB when used in pmt.cpp and in servicedvbstream.cpp used to record cached pids
 		dxCenterDVBSubs=2048,   // centre DVB subtitles
 		dxNoEIT=4096,           // disable EIT event parsing when using EPG_IMPORT
 	};
 
 	bool usePMT() const { return !(m_flags & dxNoDVB); }
-	bool isHidden() const { return m_flags & dxDontshow; }
+	bool isHidden() const { return (m_flags & dxDontshow || m_flags & dxIsParentalProtected); }
 	bool isDedicated3D() const { return m_flags & dxIsDedicated3D; }
 	bool doCenterDVBSubs() const { return m_flags & dxCenterDVBSubs; }
 	bool useEIT() const { return !(m_flags & dxNoEIT); }
