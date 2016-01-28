@@ -948,7 +948,9 @@ class ImageManagerDownload(Screen):
 			elif getMachineMake() == 'spycat':
 				self.boxtype = 'Spycat'
 			elif getMachineMake() == 'osmini':
-				self.boxtype = 'OS-mini'				
+				self.boxtype = 'OS-mini'
+			elif getMachineMake() == 'mbtwinplus':
+				self.boxtype = 'Miraclebox-Twinplus'				
 
 			url = 'http://www.openvix.co.uk/openvix-builds/'+self.boxtype+'/'
 			conn = urllib2.urlopen(url)
