@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-16 11:53+0000\n"
-"PO-Revision-Date: 2015-11-18 20:21+0100\n"
+"POT-Creation-Date: 2016-01-07 22:05+0000\n"
+"PO-Revision-Date: 2016-01-23 23:05+0100\n"
 "Last-Translator: Ralf Biedermann <ralf.biedermann@rbsoft.de>\n"
 "Language-Team: AndyBlacburn, j-ot&Trial\n"
 "Language: de\n"
@@ -2716,9 +2716,6 @@ msgstr "Aus"
 msgid "Disable Animations"
 msgstr "Animationen deaktivieren"
 
-msgid "Disable FastZapping"
-msgstr "Deaktiviere schnelles Umschalten"
-
 msgid "Disable MiniTV"
 msgstr "Deaktiviere MiniTV"
 
@@ -3100,9 +3097,6 @@ msgstr "5V für aktive Antenne"
 msgid "Enable EIT EPG"
 msgstr "EIT EPG aktivieren"
 
-msgid "Enable FastZapping"
-msgstr "Aktiviere schnelles Umschalten"
-
 msgid "Enable FreeSat EPG"
 msgstr "Freesat EPG aktivieren"
 
@@ -3419,6 +3413,9 @@ msgstr "Externe Untertitel wechsel Zeichensatz"
 
 msgid "Extra motor options"
 msgstr "Extra Rotoroptionen"
+
+msgid "Extrude from left"
+msgstr "Pressen von links"
 
 msgid "F1"
 msgstr ""
@@ -4918,6 +4915,9 @@ msgstr "NFS Einstellungen"
 msgid "NIM"
 msgstr "NIM"
 
+msgid "NO"
+msgstr "Nein"
+
 msgid "NTP"
 msgstr "NTP"
 
@@ -5821,6 +5821,9 @@ msgstr "Bitte Tuner I konfigurieren"
 
 msgid "Please set up tuner J"
 msgstr "Bitte Tuner J konfigurieren"
+
+msgid "Please set up tuner K"
+msgstr "Bitte Tuner K konfigurieren"
 
 msgid ""
 "Please setup your user interface by adjusting the values till the edges of the blue box are touching the edges of your TV.\n"
@@ -7263,9 +7266,6 @@ msgstr "Setze Spannung und 22KHz"
 msgid "Sets the root folder of movie list, to remove the '..' from being shown in that folder."
 msgstr "Wähle die Basis der Aufnahmeliste um die \"..\" in der Ansicht zu unterdrücken."
 
-msgid "Setting"
-msgstr "Einstellungen"
-
 msgid "Settings"
 msgstr "Einstellungen"
 
@@ -7699,6 +7699,9 @@ msgstr "Einfaches Ausblenden"
 msgid "Simple titleset (compatibility for legacy players)"
 msgstr "Schlicht (bessere Kompatibilität mit alten DVD-Playern)"
 
+msgid "Simple zoom"
+msgstr "Einfach Vergrößern"
+
 msgid "Single"
 msgstr "Einzeln"
 
@@ -7757,17 +7760,23 @@ msgstr "Ausschalt-Verzögerung"
 msgid "Slide drop"
 msgstr "Gleiten von oben"
 
+msgid "Slide from left"
+msgstr "Gleiten von links"
+
 msgid "Slide left to right"
 msgstr "Gleiten von links nach rechts"
 
 msgid "Slide picture in loop"
 msgstr "Bilder als Diashow anzeigen"
 
+msgid "Slide right to left"
+msgstr "Gleiten von rechts nach links"
+
 msgid "Slide show interval (sec.)"
 msgstr "Diaschau-Intervall (sek.)"
 
 msgid "Slide top to bottom"
-msgstr "Von oben nach unten gleiten"
+msgstr "Gleiten von oben nach unten"
 
 #, python-format
 msgid "Slot %d"
@@ -9057,6 +9066,10 @@ msgstr "gesamt"
 msgid "Total cards:"
 msgstr "Karten:"
 
+#, python-format
+msgid "Total clients streaming: %d (%s)"
+msgstr "Anzahl streamender Klienten: %d (%s)"
+
 msgid "Total handled client ecm's"
 msgstr "Insgesamt behandelte Klienten ECMs"
 
@@ -9074,6 +9087,9 @@ msgstr "Gesamt:"
 
 msgid "Track"
 msgstr "Spur"
+
+msgid "Transcoding: "
+msgstr "Transkodierung:"
 
 msgid "Translation Information"
 msgstr "Übersetzung Information"
@@ -9631,6 +9647,9 @@ msgstr "Video CD ansehen"
 msgid "Virtuosso Image Xtreme"
 msgstr "Virtuosso Image Xtreme"
 
+msgid "Visual impaired commentary"
+msgstr "Kommentar für Sehgeschädigte"
+
 msgid "Vix forum user name"
 msgstr "Username im ViX Forum"
 
@@ -9938,7 +9957,7 @@ msgstr "Wenn ein Sender eingestellt ist durchsucht die Box den Transponder nach 
 
 #, python-format
 msgid ""
-"When you perform a factory reset, you will lose ALL your configuration data\n"
+"When you perform a factory reset, you will lose ALL of your configuration data\n"
 "(including bouquets, services, satellite data ...)\n"
 "After completion of the factory reset, your %s %s will restart automatically!\n"
 "\n"
@@ -10023,6 +10042,9 @@ msgstr "XBox 360 Unterstützung"
 
 msgid "XP1000"
 msgstr ""
+
+msgid "YES"
+msgstr "Ja"
 
 msgid "YPbPr"
 msgstr "YPbPr"
@@ -10162,18 +10184,18 @@ msgstr ""
 "Es wurde gewählt die aktuelle Sendung zu speichern aber die Sendung läuft noch.\n"
 "Was soll gemacht werden?"
 
+msgid "You have not selected any logs to delete."
+msgstr "Du hast keine Logs zum Löschen gewählt."
+
+msgid "You have not selected any logs to send"
+msgstr "Du hast keine Logs zum Verschicken gewählt."
+
 msgid ""
 "You have not setup your user info in the setup screen\n"
 "Press MENU, enter your info, and then try again"
 msgstr ""
 "Du hast deine Benutzerinformationen nicht eingegeben\n"
 "Drücke MENU und gebe die Informationen ein und dann versuche es erneut"
-
-msgid "You have selected no logs to delete."
-msgstr "Du hast keine Logs zum Löschen gewählt."
-
-msgid "You have selected no logs to send."
-msgstr "Du hast keine Logs zum Verschicken gewählt."
 
 #, python-format
 msgid "You have to wait %s!"
@@ -10408,6 +10430,12 @@ msgstr "Zoom In/Out TV..."
 
 msgid "Zoom Off..."
 msgstr "Zoom Aus..."
+
+msgid "Zoom from left"
+msgstr "Wachsen von links"
+
+msgid "Zoom from right"
+msgstr "Wachsen von rechts"
 
 msgid "[TimeShift] Restarting Timeshift!"
 msgstr "[TimeShift] TimeShift erneut starten!"
@@ -11547,6 +11575,12 @@ msgstr "umgeschaltet"
 #~ msgid "Configure which tuner will be preferred for recordings, when more than one tuner is available. 'Disabled' would select a tuner based on preferred tuner in customise screen. 'Auto' would choose based on E2's default rules, ignoring preferred tuner in customise screen."
 #~ msgstr "Konfiguriere welcher Tuner für Aufnahmen bevorzugt werden soll wenn mehr als ein Tuner verfügbar ist. 'Deaktiviert' verwendet den bevorzugten Tuner der unter Anpassen eingestellt ist. 'Auto' wählt den Tuner nach E2-Regeln und ignoriert die Einstellung in Anpassen."
 
+#~ msgid "Disable FastZapping"
+#~ msgstr "Deaktiviere schnelles Umschalten"
+
+#~ msgid "Enable FastZapping"
+#~ msgstr "Aktiviere schnelles Umschalten"
+
 #~ msgid "Enable remote enigma2 receiver to be tried to tune into services that cannot be tuned into locally (e.g. tuner is occupied or service type is unavailable on the local tuner. Specify complete URL including http:// and port number (normally ...:8001), e.g. http://second_box:8001."
 #~ msgstr "Reserve-Enigma2-Receiver aktivieren der versucht wird wenn ein Sender lokal nicht empfangen werden kann. (z.B. wenn Tuner belegt oder Sender lokal nicht verfügbar ist). Gebe komplette URL inklusive http:// und Portnummer (normal ...:8001), e.g. http://zweite_box:8001."
 
@@ -11567,6 +11601,9 @@ msgstr "umgeschaltet"
 
 #~ msgid "Samba Network File System"
 #~ msgstr "Samba Dateisystem"
+
+#~ msgid "Setting"
+#~ msgstr "Einstellungen"
 
 #~ msgid "Show status icons in movielist"
 #~ msgstr "Zeige Status-Icons in der Filmliste"

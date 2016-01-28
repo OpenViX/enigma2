@@ -7,7 +7,10 @@ def getVersionString():
 
 def getFlashDateString():
 	try:
-		return time.strftime(_("%Y-%m-%d"), time.localtime(os.stat("/boot").st_ctime))
+		f = open("/etc/install","r")
+		flashdate = f.read()
+		f.close()
+		return flashdate
 	except:
 		return _("unknown")
 
@@ -128,14 +131,6 @@ def getIfTransferredData(ifname):
 			rx_bytes, tx_bytes = (data[0], data[8])
 			f.close()
 			return rx_bytes, tx_bytes
-
-def getPythonVersionString():
-	try:
-		import commands
-		status, output = commands.getstatusoutput("python -V")
-		return output.split(' ')[1]
-	except:
-		return _("unknown")
 
 def getPythonVersionString():
 	try:
