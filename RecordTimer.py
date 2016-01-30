@@ -232,6 +232,7 @@ class RecordTimerEntry(timer.TimerEntry, object):
 		self.wasInStandby = False
 
 		self.log_entries = []
+		self.flags = set()
 		self.resetState()
 
 	def __repr__(self):
@@ -1011,6 +1012,8 @@ class RecordTimer(timer.Timer):
 			list.append(' descramble="' + str(int(timer.descramble)) + '"')
 			list.append(' record_ecm="' + str(int(timer.record_ecm)) + '"')
 			list.append(' isAutoTimer="' + str(int(timer.isAutoTimer)) + '"')
+			if timer.flags:
+				list.append(' flags="' + ' '.join([stringToXML(x) for x in timer.flags]) + '"')
 			list.append('>\n')
 
 #		Handle repeat entries, which never end and so never get pruned by cleanupDaily
