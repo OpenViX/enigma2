@@ -972,14 +972,19 @@ class RecordTimer(timer.Timer):
 		root = doc.getroot()
 
 		# put out a message when at least one timer overlaps
-		checkit = True
+		checkit = False
+		timer_text = ""
 		for timer in root.findall("timer"):
 			newTimer = createTimer(timer)
-			if (self.record(newTimer, True, dosave=False) is not None) and (checkit == True):
-				from Tools.Notifications import AddPopup
-				from Screens.MessageBox import MessageBox
-				AddPopup(_("Timer overlap in timers.xml detected!\nPlease recheck it!"), type = MessageBox.TYPE_ERROR, timeout = 0, id = "TimerLoadFailed")
-				checkit = False # at moment it is enough when the message is displayed one time
+			conflict_list = self.record(newTimer, ignoreTSC=True, dosave=False, loadtimer=True)
+			if conflict_list:
+				checkit = True
+				if newTimer in conflict_list:
+					timer_text += _("\nTimer '%s' disabled!") % newTimer.name
+		if checkit:
+			from Tools.Notifications import AddPopup
+			from Screens.MessageBox import MessageBox
+			AddPopup(_("Timer overlap in timers.xml detected!\nPlease recheck it!") + timer_text, type = MessageBox.TYPE_ERROR, timeout = 0, id = "TimerLoadFailed")
 
 	def saveTimer(self):
 		list = ['<?xml version="1.0" ?>\n', '<timers>\n']
@@ -1099,24 +1104,34 @@ class RecordTimer(timer.Timer):
 				return True
 		return False
 
-	def record(self, entry, ignoreTSC=False, dosave=True): # wird von loadTimer mit dosave=False aufgerufen
-		timersanitycheck = TimerSanityCheck(self.timer_list,entry)
+	def record(self, entry, ignoreTSC=False, dosave=True, loadtimer=False):
+		check_timer_list = self.timer_list[:]
+		timersanitycheck = TimerSanityCheck(check_timer_list,entry)
+		answer = None
 		if not timersanitycheck.check():
 			if not ignoreTSC:
 				print "[RecordTimer] timer conflict detected!"
+				print timersanitycheck.getSimulTimerList()
 				return timersanitycheck.getSimulTimerList()
 			else:
-				print "[RecordTimer] ignore timer conflict"
+				print "[RecordTimer] ignore timer conflict..."
+				if not dosave and loadtimer:
+					simulTimerList = timersanitycheck.getSimulTimerList()
+					if entry in simulTimerList:
+						entry.disabled = True
+						if entry in check_timer_list:
+							check_timer_list.remove(entry)
+					answer = simulTimerList
 		elif timersanitycheck.doubleCheck():
-			print "[RecordTimer] ignore double timer"
+			print "[RecordTimer] ignore double timer..."
 			return None
 		entry.timeChanged()
-		print "[RecordTimer] Record " + str(entry)
+		print "[Timer] Record " + str(entry)
 		entry.Timer = self
 		self.addTimerEntry(entry)
 		if dosave:
 			self.saveTimer()
-		return None
+		return answer
 
 	def isInTimer(self, eventid, begin, duration, service):
 		returnValue = None
