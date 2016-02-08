@@ -288,7 +288,7 @@ class LogManager(Screen):
 			ybox = self.session.openWithCallback(self.doDelete3, MessageBox, message, MessageBox.TYPE_YESNO)
 			ybox.setTitle(_("Delete Confirmation"))
 		else:
-			self.session.open(MessageBox, _("You have selected no logs to delete."), MessageBox.TYPE_INFO, timeout = 10)
+			self.session.open(MessageBox, _("You have not selected any logs to delete."), MessageBox.TYPE_INFO, timeout = 10)
 
 	def doDelete1(self, answer):
 		self.selectedFiles = self["list"].getSelectedList()
@@ -352,7 +352,7 @@ class LogManager(Screen):
 				ybox = self.session.openWithCallback(self.sendlog2, MessageBox, message, MessageBox.TYPE_YESNO)
 				ybox.setTitle(_("Send Confirmation"))
 		else:
-			self.session.open(MessageBox, _("You have selected no logs to send."), MessageBox.TYPE_INFO, timeout = 10)
+			self.session.open(MessageBox, _("You have not selected any logs to send"), MessageBox.TYPE_INFO, timeout = 10)
 
 	def sendlog1(self, answer):
 		if answer:
@@ -362,7 +362,7 @@ class LogManager(Screen):
 			ybox.setTitle(_("Additional Info"))
 		else:
 			self.sendallfiles = False
-			message = _("Are you sure you want to send this log:\n") + str(self.sel[0])
+			message = _("Are you sure you want to send this log:\n") + self.sel
 			ybox = self.session.openWithCallback(self.sendlog2, MessageBox, message, MessageBox.TYPE_YESNO)
 			ybox.setTitle(_("Send Confirmation"))
 
@@ -436,7 +436,7 @@ class LogManager(Screen):
 			wos_pwd = base64.b64decode('elZMRFMwaFprNUdp')
 
 			try:
-				print "connecting to server: mail.oe-alliance.com"
+				print "[LogManager] connecting to server: mail.oe-alliance.com"
 				#socket.setdefaulttimeout(30)
 				s = smtplib.SMTP("mail.oe-alliance.com", 26)
 				s.login(wos_user, wos_pwd)
