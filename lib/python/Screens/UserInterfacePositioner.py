@@ -10,6 +10,7 @@ from Components.Language import language
 from Tools.Directories import fileCheck
 from enigma import getDesktop
 from os import access, R_OK
+from boxbranding import getBoxType, getBrandOEM
 
 from boxbranding import getBoxType
 
@@ -39,6 +40,10 @@ def InitOsd():
 		SystemInfo["OsdMenu"] = True
 	else:
 		SystemInfo["OsdMenu"] = False
+
+	if getBrandOEM() in ('fulan'):
+		SystemInfo["CanChangeOsdPosition"] = False
+		SystemInfo["CanChange3DOsd"] = False
 
 	def setOSDLeft(configElement):
 		if SystemInfo["CanChangeOsdPosition"]:
