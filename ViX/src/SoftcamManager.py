@@ -264,6 +264,8 @@ class VIXSoftcamManager(Screen):
 					self.session.open(MessageBox, _("No config files found, please setup MGcamd first\nin /usr/keys"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 				else:
 					self.session.open(MessageBox, _("MGcamd can't run whilst CCcam is running"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
+			elif selectedcam.lower().startswith('scam'):
+				self.session.openWithCallback(self.showActivecam, VIXStartCam, self.sel[0])
 			elif not selectedcam.lower().startswith('cccam') or selectedcam.lower().startswith('oscam') or selectedcam.lower().startswith('mgcamd'):
 				self.session.open(MessageBox, _("Found non-standard softcam, trying to start, this may fail"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 				self.session.openWithCallback(self.showActivecam, VIXStartCam, self.sel[0])
