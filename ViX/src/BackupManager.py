@@ -891,7 +891,7 @@ class AutoBackupManagerTimer:
 		elif config.backupmanager.repeattype.value == "weekly":
 			nextbkup_t = lastbkup_t + 7*24*3600
 		elif config.backupmanager.repeattype.value == "monthly":
-			nextbkup_t = lastbkup_t + 30*24*3600		
+			nextbkup_t = lastbkup_t + 30*24*3600
 		nextbkup = localtime(nextbkup_t)
 		return int(mktime((nextbkup.tm_year, nextbkup.tm_mon, nextbkup.tm_mday, backupclock[0], backupclock[1], 0, nextbkup.tm_wday, nextbkup.tm_yday, nextbkup.tm_isdst)))
 
@@ -1039,28 +1039,36 @@ class BackupFiles(Screen):
 
 	def JobStart(self):
 		self.selectedFiles = config.backupmanager.backupdirs.value
-		if path.exists('/etc/CCcam.cfg') and not '/etc/CCcam.cfg' in self.selectedFiles:
+		if path.exists('/etc/CCcam.cfg') and '/etc/CCcam.cfg' not in self.selectedFiles:
 			self.selectedFiles.append('/etc/CCcam.cfg')
-		if path.exists('/etc/CCcam.channelinfo') and not '/etc/CCcam.channelinfo' in self.selectedFiles:
+		if path.exists('/etc/CCcam.channelinfo') and '/etc/CCcam.channelinfo' not in self.selectedFiles:
 			self.selectedFiles.append('/etc/CCcam.channelinfo')
-		if path.exists('/etc/CCcam.providers') and not '/etc/CCcam.providers' in self.selectedFiles:
+		if path.exists('/etc/CCcam.providers') and '/etc/CCcam.providers' not in self.selectedFiles:
 			self.selectedFiles.append('/etc/CCcam.providers')
 		if path.exists('/etc/wpa_supplicant.ath0.conf') and '/etc/wpa_supplicant.ath0.conf' not in self.selectedFiles:
 			self.selectedFiles.append('/etc/wpa_supplicant.ath0.conf')
-		if path.exists('/etc/wpa_supplicant.wlan0.conf') and not '/etc/wpa_supplicant.wlan0.conf' in self.selectedFiles:
+		if path.exists('/etc/wpa_supplicant.wlan0.conf') and '/etc/wpa_supplicant.wlan0.conf' not in self.selectedFiles:
 			self.selectedFiles.append('/etc/wpa_supplicant.wlan0.conf')
-		if path.exists('/etc/auto.network') and not '/etc/auto.network' in self.selectedFiles:
+		if path.exists('/etc/auto.network') and '/etc/auto.network' not in self.selectedFiles:
 			self.selectedFiles.append('/etc/auto.network')
-		if path.exists('/usr/crossepg/crossepg.config') and not '/usr/crossepg/crossepg.config' in self.selectedFiles:
+		if path.exists('/usr/crossepg/crossepg.config') and '/usr/crossepg/crossepg.config' not in self.selectedFiles:
 			self.selectedFiles.append('/usr/crossepg/crossepg.config')
-		if path.exists('/usr/crossepg/providers') and not '/usr/crossepg/providers' in self.selectedFiles:
+		if path.exists('/usr/crossepg/providers') and '/usr/crossepg/providers' not in self.selectedFiles:
 			self.selectedFiles.append('/usr/crossepg/providers')
-		if path.exists('/usr/lib/sabnzbd') and not '/usr/lib/sabnzbd' in self.selectedFiles:
+		if path.exists('/usr/lib/sabnzbd') and '/usr/lib/sabnzbd' not in self.selectedFiles:
 			self.selectedFiles.append('/usr/lib/sabnzbd')
-		if path.exists('/etc/samba') and not '/etc/samba' in self.selectedFiles:
+		if path.exists('/etc/samba') and '/etc/samba' not in self.selectedFiles:
 			self.selectedFiles.append('/etc/samba')
-		if path.exists('/usr/keys') and not '/etc/CCcam.cfg' in self.selectedFiles:
+		if path.exists('/usr/keys') and '/etc/CCcam.cfg' not in self.selectedFiles:
 			self.selectedFiles.append('/usr/keys')
+		if path.exists('/opt') and '/opt' not in self.selectedFiles:
+			self.selectedFiles.append('/opt')
+		if path.exists('/usr/script') and '/usr/script' not in self.selectedFiles:
+			self.selectedFiles.append('/usr/script')
+		if path.exists('/usr/sundtek') and '/usr/sundtek' not in self.selectedFiles:
+			self.selectedFiles.append('/usr/sundtek')
+		if path.exists('/etc/rc3.d/S99tuner.sh') and '/etc/rc3.d/S99tuner.sh' not in self.selectedFiles:
+			self.selectedFiles.append('/etc/rc3.d/S99tuner.sh')
 
 		config.backupmanager.backupdirs.setValue(self.selectedFiles)
 		config.backupmanager.backupdirs.save()
@@ -1144,7 +1152,7 @@ class BackupFiles(Screen):
 		if self.updatebackup:
 			self.Backupfile = self.BackupDirectory + config.backupmanager.folderprefix.value + '-' + getImageType() + '-SoftwareUpdate-' + getImageVersion() + '.' + getImageBuild() + '-' + backupdate.strftime("%Y-%m-%d_%H-%M") + '.tar.gz'
 		elif self.imagebackup:
-			self.Backupfile = self.BackupDirectory + config.backupmanager.folderprefix.value + '-' + getImageType() + '-AutoImageManager-' + getImageVersion() + '.' + getImageBuild() + '-' + backupdate.strftime("%Y-%m-%d_%H-%M") + '.tar.gz'
+			self.Backupfile = self.BackupDirectory + config.backupmanager.folderprefix.value + '-' + getImageType() + '-ImageManager-' + getImageVersion() + '.' + getImageBuild() + '-' + backupdate.strftime("%Y-%m-%d_%H-%M") + '.tar.gz'
 		else:
 			self.Backupfile = self.BackupDirectory + config.backupmanager.folderprefix.value + '-' + getImageType() + '-' + getImageVersion() + '.' + getImageBuild() + '-' + backupdate.strftime("%Y-%m-%d_%H-%M") + '.tar.gz'
 		self.Console.ePopen('tar -czvf ' + self.Backupfile + ' ' + self.backupdirs, self.Stage4Complete)
@@ -1181,7 +1189,7 @@ class BackupFiles(Screen):
 # sort by oldest first...
 				emlist.sort(key=lambda fil: path.getmtime(self.BackupDirectory + fil))
 # ...then, if we have too many, remove the <n> newest from the end
-# and delete what is left 
+# and delete what is left
 				if len(emlist) > config.backupmanager.number_to_keep.value:
 					emlist = emlist[0:len(emlist)-config.backupmanager.number_to_keep.value]
 					for fil in emlist:
