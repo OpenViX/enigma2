@@ -973,10 +973,11 @@ class AutoBackupManagerTimer:
 			config.backupmanager.lastbackup.save()
 
 class BackupFiles(Screen):
-	def __init__(self, session, updatebackup=False):
+	def __init__(self, session, updatebackup=False, imagebackup=False):
 		Screen.__init__(self, session)
 		self.Console = Console()
 		self.updatebackup = updatebackup
+		self.imagebackup = imagebackup
 		self.BackupDevice = config.backupmanager.backuplocation.value
 		print "[BackupManager] Device: " + self.BackupDevice
 		self.BackupDirectory = config.backupmanager.backuplocation.value + 'backup/'
@@ -1142,6 +1143,8 @@ class BackupFiles(Screen):
 		backupdate = datetime.now()
 		if self.updatebackup:
 			self.Backupfile = self.BackupDirectory + config.backupmanager.folderprefix.value + '-' + getImageType() + '-SoftwareUpdate-' + getImageVersion() + '.' + getImageBuild() + '-' + backupdate.strftime("%Y-%m-%d_%H-%M") + '.tar.gz'
+		elif self.imagebackup:
+			self.Backupfile = self.BackupDirectory + config.backupmanager.folderprefix.value + '-' + getImageType() + '-AutoImageManager-' + getImageVersion() + '.' + getImageBuild() + '-' + backupdate.strftime("%Y-%m-%d_%H-%M") + '.tar.gz'
 		else:
 			self.Backupfile = self.BackupDirectory + config.backupmanager.folderprefix.value + '-' + getImageType() + '-' + getImageVersion() + '.' + getImageBuild() + '-' + backupdate.strftime("%Y-%m-%d_%H-%M") + '.tar.gz'
 		self.Console.ePopen('tar -czvf ' + self.Backupfile + ' ' + self.backupdirs, self.Stage4Complete)

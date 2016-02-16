@@ -19,6 +19,7 @@ from Screens.Setup import Setup
 from Components.Console import Console
 from Screens.Console import Console as ScreenConsole
 
+from Screens.TaskView import JobView
 from Screens.MessageBox import MessageBox
 from Screens.Standby import TryQuitMainloop
 from Tools.Notifications import AddPopupWithCallback
@@ -44,6 +45,7 @@ config.imagemanager.backupretry = ConfigNumber(default=30)
 config.imagemanager.backupretrycount = NoSave(ConfigNumber(default=0))
 config.imagemanager.nextscheduletime = NoSave(ConfigNumber(default=0))
 config.imagemanager.restoreimage = NoSave(ConfigText(default=getBoxType(), fixed_size=False))
+config.imagemanager.autosettingsbackup = ConfigYesNo(default = True)
 
 autoImageManagerTimer = None
 
@@ -157,8 +159,6 @@ class VIXImageManager(Screen):
 		return "%s: %s (%d%%)" % (job.getStatustext(), job.name, int(100 * job.progress / float(job.end)))
 
 	def showJobView(self, job):
-		from Screens.TaskView import JobView
-
 		Components.Task.job_manager.in_background = False
 		self.session.openWithCallback(self.JobViewCB, JobView, job, cancelable=False, backgroundable=False, afterEventChangeable=False, afterEvent="close")
 
@@ -306,7 +306,6 @@ class VIXImageManager(Screen):
 		ybox.setTitle(_("Backup Confirmation"))
 
 	def doBackup(self, answer):
-		backup = None
 		if answer is True:
 			self.ImageBackup = ImageBackup(self.session)
 			Components.Task.job_manager.AddJob(self.ImageBackup.createBackupJob())
@@ -315,9 +314,18 @@ class VIXImageManager(Screen):
 			self["key_green"].show()
 			for job in Components.Task.job_manager.getPendingJobs():
 				if job.name.startswith(_("Image Manager")):
-					backup = job
-			if backup:
-				self.showJobView(backup)
+					break
+			self.showJobView(job)
+
+	def doSettingsBackup(self):
+		from Plugins.SystemPlugins.ViX.BackupManager import BackupFiles
+		self.BackupFiles = BackupFiles(self.session, False, True)
+		Components.Task.job_manager.AddJob(self.BackupFiles.createBackupJob())
+		Components.Task.job_manager.in_background = False
+		for job in Components.Task.job_manager.getPendingJobs():
+			if job.name.startswith(_('Backup Manager')):
+				break
+		self.session.openWithCallback(self.keyResstore3, JobView, job,  cancelable = False, backgroundable = False, afterEventChangeable = False, afterEvent="close")
 
 	def keyResstore(self):
 		self.sel = self['list'].getCurrent()
@@ -334,27 +342,32 @@ class VIXImageManager(Screen):
 		if path.islink('/tmp/imagerestore'):
 			unlink('/tmp/imagerestore')
 		if answer:
-			self.session.open(MessageBox, _("Please wait while the restore prepares"), MessageBox.TYPE_INFO, timeout=60, enable_input=False)
-			TEMPDESTROOT = self.BackupDirectory + 'imagerestore'
-			if self.sel.endswith('.zip'):
-				if not path.exists(TEMPDESTROOT):
-					mkdir(TEMPDESTROOT, 0755)
-				self.Console.ePopen('unzip -o ' + self.BackupDirectory + self.sel + ' -d ' + TEMPDESTROOT, self.keyResstore3)
-				symlink(TEMPDESTROOT, '/tmp/imagerestore')
+			if config.imagemanager.autosettingsbackup.value:
+				self.doSettingsBackup()
 			else:
-				symlink(self.BackupDirectory + self.sel, '/tmp/imagerestore')
-				self.keyResstore3(0, 0)
+				self.keyResstore3()
 
-	def keyResstore3(self, result, retval, extra_args=None):
+	def keyResstore3(self, val = None):
+		self.session.open(MessageBox, _("Please wait while the restore prepares"), MessageBox.TYPE_INFO, timeout=60, enable_input=False)
+		TEMPDESTROOT = self.BackupDirectory + 'imagerestore'
+		if self.sel.endswith('.zip'):
+			if not path.exists(TEMPDESTROOT):
+				mkdir(TEMPDESTROOT, 0755)
+			self.Console.ePopen('unzip -o ' + self.BackupDirectory + self.sel + ' -d ' + TEMPDESTROOT, self.keyResstore4)
+			symlink(TEMPDESTROOT, '/tmp/imagerestore')
+		else:
+			symlink(self.BackupDirectory + self.sel, '/tmp/imagerestore')
+			self.keyResstore4(0, 0)
+
+	def keyResstore4(self, result, retval, extra_args=None):
 		if retval == 0:
 			kernelMTD = getMachineMtdKernel()
-			kernelFILE = getMachineKernelFile()
 			rootMTD = getMachineMtdRoot()
-			rootFILE = getMachineRootFile()
-			MAINDEST = '/tmp/imagerestore/%s/' % getImageFolder()
+			MAINDEST = '/tmp/imagerestore/%s' % getImageFolder()
+			CMD = '/usr/bin/ofgwrite -r%s -k%s %s' % (rootMTD, kernelMTD, MAINDEST)
 			config.imagemanager.restoreimage.setValue(self.sel)
-			self.Console.ePopen('ofgwrite -r -k -r%s -k%s %s' % (rootMTD, kernelMTD, MAINDEST))
-
+			print '[ImageManager] running commnd:',CMD
+			self.Console.ePopen(CMD)
 
 class AutoImageManagerTimer:
 	def __init__(self, session):

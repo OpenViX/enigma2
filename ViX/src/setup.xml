@@ -15,6 +15,7 @@
         <item level="2" text="Max backups to keep (0==all)" requires="config.backupmanager.schedule" summary="Backups to keep">config.backupmanager.number_to_keep</item>
     </setup>
     <setup key="viximagemanager" title="Image Manager Setup">
+        <item level="1" text="Automatic settings backup" description="Perform a settings backup before updating.">config.imagemanager.autosettingsbackup</item>
         <item level="2" text="Backup Location" summary="Location of where image backup should be saved.">config.imagemanager.backuplocation</item>
         <item level="2" text="Backup prefix" summary="Allows you to tag your image backup to a box. (default is box name/type)">config.imagemanager.folderprefix</item>
         <item level="2" text="Schedule Backups" summary="Allows you schedule your image backups.">config.imagemanager.schedule</item>
