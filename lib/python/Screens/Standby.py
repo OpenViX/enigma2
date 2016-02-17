@@ -11,6 +11,7 @@ from Tools import Notifications
 from time import localtime, time
 import Screens.InfoBar
 from gettext import dgettext
+import os
 
 inStandby = None
 
@@ -120,6 +121,8 @@ class Standby2(Screen):
 				self.session.nav.playService(self.prev_running_service)
 		self.session.screen["Standby"].boolean = False
 		globalActionMap.setEnabled(True)
+		if os.path.exists("/usr/script/standby_leave.sh"):
+			os.system("/usr/script/standby_leave.sh")
 
 	def __onFirstExecBegin(self):
 		global inStandby
@@ -276,6 +279,8 @@ class TryQuitMainloop(MessageBox):
 			self.hide()
 			if self.retval == 1:
 				config.misc.DeepStandby.value = True
+				if os.path.exists("/usr/script/standby_enter.sh"):
+					os.system("/usr/script/standby_enter.sh")
 			self.session.nav.stopService()
 			self.quitScreen = self.session.instantiateDialog(QuitMainloopScreen,retvalue=self.retval)
 			self.quitScreen.show()
