@@ -2,6 +2,7 @@ from Screens.Screen import Screen
 from Components.ActionMap import ActionMap
 from Components.config import config
 from Components.AVSwitch import AVSwitch
+from Components.Console import Console
 from Components.SystemInfo import SystemInfo
 from Components.Sources.StaticText import StaticText
 from GlobalActions import globalActionMap
@@ -52,6 +53,9 @@ class Standby2(Screen):
 		self.avswitch = AVSwitch()
 
 		print "[Standby] enter standby"
+
+		 if os.path.exists("/usr/script/standby_enter.sh"):
+			Console().ePopen("/usr/script/standby_enter.sh")
 
 		self["actions"] = ActionMap( [ "StandbyActions" ],
 		{
@@ -122,7 +126,7 @@ class Standby2(Screen):
 		self.session.screen["Standby"].boolean = False
 		globalActionMap.setEnabled(True)
 		if os.path.exists("/usr/script/standby_leave.sh"):
-			os.system("/usr/script/standby_leave.sh")
+			Console().ePopen("/usr/script/standby_leave.sh")
 
 	def __onFirstExecBegin(self):
 		global inStandby
@@ -280,7 +284,7 @@ class TryQuitMainloop(MessageBox):
 			if self.retval == 1:
 				config.misc.DeepStandby.value = True
 				if os.path.exists("/usr/script/standby_enter.sh"):
-					os.system("/usr/script/standby_enter.sh")
+					Console().ePopen("/usr/script/standby_enter.sh")
 			self.session.nav.stopService()
 			self.quitScreen = self.session.instantiateDialog(QuitMainloopScreen,retvalue=self.retval)
 			self.quitScreen.show()
