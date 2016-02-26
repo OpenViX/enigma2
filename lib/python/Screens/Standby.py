@@ -27,12 +27,7 @@ def setLCDMiniTVMode(value):
 class Standby2(Screen):
 	def Power(self):
 		print "[Standby] leave standby"
-		#set input to encoder
-		self.avswitch.setInput("ENCODER")
-		#restart last played service
-		#unmute adc
 		self.leaveMute()
-		#kill me
 		self.close(True)
 
 	def setMute(self):
@@ -71,7 +66,6 @@ class Standby2(Screen):
 		self.standbyStopServiceTimer.callback.append(self.stopService)
 		self.timeHandler = None
 
-		#mute adc
 		self.setMute()
 
 		if SystemInfo["Display"] and SystemInfo["LCDMiniTV"]:
@@ -84,7 +78,7 @@ class Standby2(Screen):
 		service = self.prev_running_service and self.prev_running_service.toString()
 		if service:
 			if service.rsplit(":", 1)[1].startswith("/"):
-				self.paused_service = self.session.current_dialog
+				self.paused_service = hasattr(self.session.current_dialog, "pauseService") and hasattr(self.session.current_dialog, "unPauseService") and self.session.current_dialog or self.infoBarInstance
 				self.paused_service.pauseService()
 		if not self.paused_service:
 			self.timeHandler =  eDVBLocalTimeHandler.getInstance()
@@ -100,7 +94,6 @@ class Standby2(Screen):
 		if self.session.pipshown:
 			self.infoBarInstance and hasattr(self.infoBarInstance, "showPiP") and self.infoBarInstance.showPiP()
 
-		#set input to vcr scart
 		if SystemInfo["ScartSwitch"]:
 			self.avswitch.setInput("SCART")
 		else:
@@ -125,6 +118,7 @@ class Standby2(Screen):
 				self.session.nav.playService(self.prev_running_service)
 		self.session.screen["Standby"].boolean = False
 		globalActionMap.setEnabled(True)
+		self.avswitch.setInput("ENCODER")
 		if os.path.exists("/usr/script/standby_leave.sh"):
 			Console().ePopen("/usr/script/standby_leave.sh")
 
