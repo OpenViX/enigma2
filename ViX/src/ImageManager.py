@@ -349,21 +349,19 @@ class VIXImageManager(Screen):
 
 	def keyResstore3(self, val = None):
 		self.session.open(MessageBox, _("Please wait while the restore prepares"), MessageBox.TYPE_INFO, timeout=60, enable_input=False)
-		TEMPDESTROOT = self.BackupDirectory + 'imagerestore'
+		self.TEMPDESTROOT = self.BackupDirectory + 'imagerestore'
 		if self.sel.endswith('.zip'):
-			if not path.exists(TEMPDESTROOT):
-				mkdir(TEMPDESTROOT, 0755)
-			self.Console.ePopen('unzip -o ' + self.BackupDirectory + self.sel + ' -d ' + TEMPDESTROOT, self.keyResstore4)
-			symlink(TEMPDESTROOT, '/tmp/imagerestore')
+			if not path.exists(self.TEMPDESTROOT):
+				mkdir(self.TEMPDESTROOT, 0755)
+			self.Console.ePopen('unzip -o ' + self.BackupDirectory + self.sel + ' -d ' + self.TEMPDESTROOT, self.keyResstore4)
 		else:
-			symlink(self.BackupDirectory + self.sel, '/tmp/imagerestore')
 			self.keyResstore4(0, 0)
 
 	def keyResstore4(self, result, retval, extra_args=None):
 		if retval == 0:
 			kernelMTD = getMachineMtdKernel()
 			rootMTD = getMachineMtdRoot()
-			MAINDEST = '/tmp/imagerestore/%s' % getImageFolder()
+			MAINDEST = '%s/%s' % (self.TEMPDESTROOT,getImageFolder())
 			CMD = '/usr/bin/ofgwrite -r%s -k%s %s' % (rootMTD, kernelMTD, MAINDEST)
 			config.imagemanager.restoreimage.setValue(self.sel)
 			print '[ImageManager] running commnd:',CMD
