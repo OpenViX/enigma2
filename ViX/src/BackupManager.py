@@ -314,7 +314,7 @@ class VIXBackupManager(Screen):
 			imageversion = file('/tmp/backupimageversion').read()
 			print 'Backup Image:', imageversion
 			print 'Current Image:', about.getVersionString()
-			if imageversion in (about.getVersionString(), 'Zeus', 'Helios', 'Apollo', 'Hades', '3.2'):
+			if imageversion in (about.getVersionString(), 'Zeus', 'Helios', 'Apollo', 'Hades', '3.2', '3.3'):
 				print '[RestoreWizard] Stage 1: Image ver OK'
 				self.keyResstore1()
 			else:
