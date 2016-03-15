@@ -339,8 +339,6 @@ class VIXImageManager(Screen):
 			self.session.open(MessageBox, _("You have no image to restore."), MessageBox.TYPE_INFO, timeout=10)
 
 	def keyResstore2(self, answer):
-		if path.islink('/tmp/imagerestore'):
-			unlink('/tmp/imagerestore')
 		if answer:
 			if config.imagemanager.autosettingsbackup.value:
 				self.doSettingsBackup()
@@ -353,7 +351,7 @@ class VIXImageManager(Screen):
 		if self.sel.endswith('.zip'):
 			if not path.exists(self.TEMPDESTROOT):
 				mkdir(self.TEMPDESTROOT, 0755)
-			self.Console.ePopen('unzip -o ' + self.BackupDirectory + self.sel + ' -d ' + self.TEMPDESTROOT, self.keyResstore4)
+			self.Console.ePopen('unzip -o %s%s -d %s' % (self.BackupDirectory, self.sel, self.TEMPDESTROOT), self.keyResstore4)
 		else:
 			self.keyResstore4(0, 0)
 
