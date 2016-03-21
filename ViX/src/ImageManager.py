@@ -360,7 +360,7 @@ class VIXImageManager(Screen):
 			kernelMTD = getMachineMtdKernel()
 			rootMTD = getMachineMtdRoot()
 			MAINDEST = '%s/%s' % (self.TEMPDESTROOT,getImageFolder())
-			CMD = '/usr/bin/ofgwrite -r%s -k%s %s' % (rootMTD, kernelMTD, MAINDEST)
+			CMD = '/usr/bin/ofgwrite -r%s -k%s %s/' % (rootMTD, kernelMTD, MAINDEST)
 			config.imagemanager.restoreimage.setValue(self.sel)
 			print '[ImageManager] running commnd:',CMD
 			self.Console.ePopen(CMD)
