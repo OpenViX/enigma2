@@ -66,6 +66,17 @@ config.backupmanager.backupdirs = ConfigLocations(
 config.backupmanager.xtraplugindir = ConfigDirectory(default='')
 config.backupmanager.lastlog = ConfigText(default=' ', fixed_size=False)
 
+def isRestorableSettings(imageversion):
+	restorableSettings = ('Zeus', 'Helios', 'Apollo', 'Hades', '3.2', '3.3', '4.0', '4.1')
+	if imageversion in restorableSettings:
+		return True
+	return False
+
+def isRestorablePlugins(imageversion):
+	restorablePlugins = ('4.0', '4.1')
+	if imageversion in restorablePlugins:
+		return True
+	return False
 
 def BackupManagerautostart(reason, session=None, **kwargs):
 	"""called with reason=1 to during /sbin/shutdown.sysvinit, with reason=0 at startup?"""
@@ -314,7 +325,7 @@ class VIXBackupManager(Screen):
 			imageversion = file('/tmp/backupimageversion').read()
 			print 'Backup Image:', imageversion
 			print 'Current Image:', about.getVersionString()
-			if imageversion in (about.getVersionString(), 'Zeus', 'Helios', 'Apollo', 'Hades', '3.2', '3.3') or imageversion.split('.')[0] in ('4',):
+			if imageversion == about.getVersionString() or isRestorableSettings(imageversion):
 				print '[RestoreWizard] Stage 1: Image ver OK'
 				self.keyResstore1()
 			else:
@@ -475,7 +486,7 @@ class VIXBackupManager(Screen):
 			if path.exists('/tmp/backupkernelversion') and path.exists('/tmp/backupimageversion'):
 				kernelversion = file('/tmp/backupkernelversion').read()
 				imageversion = file('/tmp/backupimageversion').read()
-				if kernelversion == about.getKernelVersionString() and imageversion in (about.getVersionString()):
+				if kernelversion == about.getKernelVersionString() and (imageversion == about.getVersionString() or isRestorablePlugins(imageversion)):
 					# print '[BackupManager] Restoring Stage 3: Kernel Version is same as backup'
 					self.kernelcheck = True
 					self.Console.ePopen('opkg list-installed', self.Stage3Complete)

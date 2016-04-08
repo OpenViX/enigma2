@@ -14,6 +14,7 @@ from Screens.Rc import Rc
 from Screens.MessageBox import MessageBox
 from Tools.Directories import fileExists, resolveFilename, SCOPE_PLUGINS
 
+from BackupManager import isRestorableSettings, isRestorablePlugins
 
 class RestoreWizard(WizardLanguage, Rc):
 	def __init__(self, session):
@@ -186,11 +187,11 @@ class RestoreWizard(WizardLanguage, Rc):
 			imageversion = file('/tmp/backupimageversion').read()
 			print 'Backup Image:', imageversion
 			print 'Current Image:', about.getVersionString()
-			if imageversion in (about.getVersionString(), 'Zeus', 'Helios', 'Apollo', 'Hades', '3.2', '3.3') or imageversion.split('.')[0] in ('4',):
+			if imageversion == about.getVersionString() or isRestorableSettings(imageversion):
 				print '[RestoreWizard] Stage 1: Image ver OK'
 				self.doRestoreSettings2()
 			else:
-				print '[RestoreWizard] Stage 1: Image ver Differant'
+				print '[RestoreWizard] Stage 1: Image ver different'
 				self.noVersion = self.session.openWithCallback(self.doNoVersion, MessageBox, _("Sorry, but the file is not compatible with this image version."), type=MessageBox.TYPE_INFO, timeout=30, wizard=True)
 				self.noVersion.setTitle(_("Restore Wizard"))
 		else:
@@ -238,7 +239,7 @@ class RestoreWizard(WizardLanguage, Rc):
 			print 'Current Image:', about.getVersionString()
 			print 'Backup Kernel:', kernelversion
 			print 'Current Kernel:', about.getKernelVersionString()
-			if kernelversion == about.getKernelVersionString() and imageversion in (about.getVersionString()):
+			if kernelversion == about.getKernelVersionString() and (imageversion == about.getVersionString() or isRestorablePlugins(imageversion)):
 				print '[RestoreWizard] Stage 3: Kernel and image ver OK'
 				self.doRestorePluginsTest()
 			else:
