@@ -323,10 +323,10 @@ class VIXBackupManager(Screen):
 	def settingsRestoreCheck(self, result, retval, extra_args=None):
 		if path.exists('/tmp/backupimageversion'):
 			imageversion = file('/tmp/backupimageversion').read()
-			print 'Backup Image:', imageversion
-			print 'Current Image:', about.getVersionString()
+			print '[BackupManager] Backup Image:', imageversion
+			print '[BackupManager] Current Image:', about.getVersionString()
 			if imageversion == about.getVersionString() or isRestorableSettings(imageversion):
-				print '[RestoreWizard] Stage 1: Image ver OK'
+				print '[BackupManager] Stage 1: Image ver OK'
 				self.keyResstore1()
 			else:
 				self.session.open(MessageBox, _("Sorry, but the file is not compatible with this image version."), MessageBox.TYPE_INFO, timeout=10)
@@ -486,6 +486,10 @@ class VIXBackupManager(Screen):
 			if path.exists('/tmp/backupkernelversion') and path.exists('/tmp/backupimageversion'):
 				kernelversion = file('/tmp/backupkernelversion').read()
 				imageversion = file('/tmp/backupimageversion').read()
+				print '[BackupManager] Backup Image:', imageversion
+				print '[BackupManager] Current Image:', about.getVersionString()
+				print '[BackupManager] Backup Kernel:', kernelversion
+				print '[BackupManager] Current Kernel:', about.getKernelVersionString()
 				if kernelversion == about.getKernelVersionString() and (imageversion == about.getVersionString() or isRestorablePlugins(imageversion)):
 					# print '[BackupManager] Restoring Stage 3: Kernel Version is same as backup'
 					self.kernelcheck = True
@@ -592,8 +596,8 @@ class VIXBackupManager(Screen):
 				self.pluginslist2 = " ".join(self.pluginslist2)
 			else:
 				self.pluginslist2 = ""
-			print '[BackupManager] Restoring Stage 4: Plugins to restore', self.pluginslist
-			print '[BackupManager] Restoring Stage 4: Plugins to restore', self.pluginslist2
+			print '[BackupManager] Restoring Stage 4: Plugins to restore (extra plugins)', self.pluginslist
+			print '[BackupManager] Restoring Stage 4: Plugins to restore (3rd party plugins)', self.pluginslist2
 			AddPopupWithCallback(self.Stage4Complete,
 								 _("Do you want to restore your Enigma2 plugins ?"),
 								 MessageBox.TYPE_YESNO,
@@ -621,6 +625,7 @@ class VIXBackupManager(Screen):
 	def Stage5(self):
 		if self.doPluginsRestore:
 			print '[BackupManager] Restoring Stage 5: starting plugin restore'
+			print '[BackupManager] Console command: ', 'opkg install ' + self.pluginslist + ' ' + self.pluginslist2
 			self.Console.ePopen('opkg install ' + self.pluginslist + ' ' + self.pluginslist2, self.Stage5Complete)
 		else:
 			print '[BackupManager] Restoring Stage 5: plugin restore not requested'
@@ -628,6 +633,7 @@ class VIXBackupManager(Screen):
 
 	def Stage5Complete(self, result, retval, extra_args):
 		if result:
+			print "[BackupManager] opkg install result:\n", result
 			self.didPluginsRestore = True
 			self.Stage5Completed = True
 			print '[BackupManager] Restoring Stage 5: Completed'
