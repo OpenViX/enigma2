@@ -142,6 +142,7 @@ class RestoreWizard(WizardLanguage, Rc):
 		elif self.NextStep is 'pluginrestore':
 			if self.feeds == 'OK':
 				print '[RestoreWizard] Stage 6: Feeds OK, Restoring Plugins'
+				print '[RestoreWizard] Console command: ', 'opkg install ' + self.pluginslist + ' ' + self.pluginslist2
 				self.Console.ePopen("opkg install " + self.pluginslist + ' ' + self.pluginslist2, self.pluginsRestore_Finished)
 				self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Please wait while plugins restore completes..."), type=MessageBox.TYPE_INFO, enable_input=False, wizard=True)
 				self.buildListRef.setTitle(_("Restore Wizard"))
@@ -185,8 +186,8 @@ class RestoreWizard(WizardLanguage, Rc):
 		print '[RestoreWizard] Stage 1: Check Version'
 		if fileExists('/tmp/backupimageversion'):
 			imageversion = file('/tmp/backupimageversion').read()
-			print 'Backup Image:', imageversion
-			print 'Current Image:', about.getVersionString()
+			print '[RestoreWizard] Backup Image:', imageversion
+			print '[RestoreWizard] Current Image:', about.getVersionString()
 			if imageversion == about.getVersionString() or isRestorableSettings(imageversion):
 				print '[RestoreWizard] Stage 1: Image ver OK'
 				self.doRestoreSettings2()
@@ -223,6 +224,8 @@ class RestoreWizard(WizardLanguage, Rc):
 		self.doRestorePlugins1()
 
 	def pluginsRestore_Finished(self, result, retval, extra_args=None):
+		if result:
+			print "[RestoreWizard] opkg install result:\n", result
 		config.misc.restorewizardrun.setValue(True)
 		config.misc.restorewizardrun.save()
 		configfile.save()
@@ -235,10 +238,10 @@ class RestoreWizard(WizardLanguage, Rc):
 		if fileExists('/tmp/backupkernelversion') and fileExists('/tmp/backupimageversion'):
 			imageversion = file('/tmp/backupimageversion').read()
 			kernelversion = file('/tmp/backupkernelversion').read()
-			print 'Backup Image:', imageversion
-			print 'Current Image:', about.getVersionString()
-			print 'Backup Kernel:', kernelversion
-			print 'Current Kernel:', about.getKernelVersionString()
+			print '[RestoreWizard] Backup Image:', imageversion
+			print '[RestoreWizard] Current Image:', about.getVersionString()
+			print '[RestoreWizard] Backup Kernel:', kernelversion
+			print '[RestoreWizard] Current Kernel:', about.getKernelVersionString()
 			if kernelversion == about.getKernelVersionString() and (imageversion == about.getVersionString() or isRestorablePlugins(imageversion)):
 				print '[RestoreWizard] Stage 3: Kernel and image ver OK'
 				self.doRestorePluginsTest()
