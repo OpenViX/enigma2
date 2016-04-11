@@ -304,7 +304,7 @@ class RestoreWizard(WizardLanguage, Rc):
 			for line in tmppluginslist:
 				if line:
 					parts = line.strip().split()
-					if parts[0] not in plugins:
+					if parts[0].startswith('enigma2-plugin') and parts[0] not in plugins:
 						self.pluginslist.append(parts[0])
 
 		if path.exists('/tmp/3rdPartyPlugins'):
