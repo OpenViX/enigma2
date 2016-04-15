@@ -335,6 +335,7 @@ class SecConfigure:
 
 		for x in range(1, 71):
 			if len(lnbSat[x]) > 0:
+				print "[NimManager] slotid", slotid, "lnb[x]", x
 				currLnb = config.Nims[slotid].advanced.lnb[x]
 				if sec.addLNB():
 					print "No space left on m_lnbs (max No. 144 LNBs exceeded)"
@@ -385,10 +386,12 @@ class SecConfigure:
 								sec.setLNBLOFL(manufacturer.lofl[product_name][position_idx].value * 1000)
 								sec.setLNBLOFH(manufacturer.lofh[product_name][position_idx].value * 1000)
 								sec.setLNBThreshold(manufacturer.loft[product_name][position_idx].value * 1000)
-								if currLnb.unicableTuningAlgo.value == "reliable":
+								try:
+									print "[NimManager] currLnb.unicableTuningAlgo.value", currLnb.unicableTuningAlgo.value
+									sec.setLNBSatCRTuningAlgo(currLnb.unicableTuningAlgo.value == "reliable" and 1 or 0)
+								except:
+									print "[NimManager] currLnb.unicableTuningAlgo.value not set"
 									sec.setLNBSatCRTuningAlgo(1)
-								else:
-									sec.setLNBSatCRTuningAlgo(0)
 								configManufacturer.save_forced = True
 								manufacturer.product.save_forced = True
 								manufacturer.vco[product_name][manufacturer_scr[product_name].index].save_forced = True
@@ -575,11 +578,11 @@ class SecConfigure:
 			SDict = val.get('unicableMatrix', None)
 		else:
 			return
-		print "[NimManager] SDict %s" % SDict
+		print "[NimManager] [reconstructUnicableDate] SDict %s" % SDict
 		if SDict is None:
 			return
 
-		print "[NimManager] Manufacturer name = %s" % ManufacturerName
+		print "[NimManager] ManufacturerName %s" % ManufacturerName
 		PDict = SDict.get(ManufacturerName, None)			#dict contained last stored device data
 		if PDict is None:
 			return
@@ -593,7 +596,7 @@ class SecConfigure:
 			if PN in tmp.product.choices.choices:
 				return
 		else:								#if manufacture not in list, then generate new ConfigSubsection
-			print "[NimManager] Manufacturer %s is not in your unicable.xml" % ManufacturerName
+			print "[NimManager] [reconstructUnicableDate] Manufacturer %s not in unicable.xml" % ManufacturerName
 			tmp = ConfigSubsection()
 			tmp.scr = ConfigSubDict()
 			tmp.vco = ConfigSubDict()
@@ -604,7 +607,7 @@ class SecConfigure:
 			tmp.product = ConfigSelection(choices = [], default = None)
 
 		if PN not in tmp.product.choices.choices:
-			print "[NimManager] Product %s is not in your unicable.xml" % PN
+			print "[NimManager] [reconstructUnicableDate] Product %s not in unicable.xml" % PN
 			scrlist = []
 			SatCR = int(PDict.get('scr', {PN,1}).get(PN,1)) - 1
 			vco = int(PDict.get('vco', {PN,0}).get(PN,0).get(str(SatCR),1))
