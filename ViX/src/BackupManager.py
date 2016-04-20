@@ -536,7 +536,7 @@ class VIXBackupManager(Screen):
 			for line in tmppluginslist:
 				if line:
 					parts = line.strip().split()
-					if parts[0].startswith('enigma2-plugin') and parts[0] not in plugins:
+					if parts[0] not in plugins:
 						self.pluginslist.append(parts[0])
 
 		if path.exists('/tmp/3rdPartyPlugins') and self.kernelcheck:
@@ -1115,12 +1115,26 @@ class BackupFiles(Screen):
 		output.close()
 		self.backupdirs = ' '.join(config.backupmanager.backupdirs.value)
 		print '[BackupManager] Listing installed plugins'
-		self.Console.ePopen('opkg list-installed', self.Stage2Complete)
+		self.Console.ePopen('opkg status', self.Stage2Complete)
 
 	def Stage2Complete(self, result, retval, extra_args):
 		if result:
+			plugins_out = []
+			opkg_status_list = result.split('\n\n')
+			for opkg_status in opkg_status_list:
+				plugin = ''
+				opkg_status_split = opkg_status.split('\n')
+				for line in opkg_status_split:
+					if line.startswith('Package'):
+						parts = line.strip().split()
+						if len(parts) > 1:
+							plugin = parts[1]
+							continue
+					if plugin and line.startswith('Status') and 'user installed' in line:
+						plugins_out.append(plugin)
+						break
 			output = open('/tmp/ExtraInstalledPlugins', 'w')
-			output.write(result)
+			output.write('\n'.join(plugins_out))
 			output.close()
 
 		if path.exists('/tmp/ExtraInstalledPlugins'):

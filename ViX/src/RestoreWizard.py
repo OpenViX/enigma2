@@ -14,7 +14,7 @@ from Screens.Rc import Rc
 from Screens.MessageBox import MessageBox
 from Tools.Directories import fileExists, resolveFilename, SCOPE_PLUGINS
 
-from BackupManager import isRestorableSettings, isRestorablePlugins
+from BackupManager import isRestorableSettings, isRestorablePlugins, allowedPlugins
 
 class RestoreWizard(WizardLanguage, Rc):
 	def __init__(self, session):
@@ -304,7 +304,7 @@ class RestoreWizard(WizardLanguage, Rc):
 			for line in tmppluginslist:
 				if line:
 					parts = line.strip().split()
-					if parts[0].startswith('enigma2-plugin') and parts[0] not in plugins:
+					if parts[0] not in plugins:
 						self.pluginslist.append(parts[0])
 
 		if path.exists('/tmp/3rdPartyPlugins'):
