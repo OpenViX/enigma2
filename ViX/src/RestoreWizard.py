@@ -14,7 +14,7 @@ from Screens.Rc import Rc
 from Screens.MessageBox import MessageBox
 from Tools.Directories import fileExists, resolveFilename, SCOPE_PLUGINS
 
-from BackupManager import isRestorableSettings, isRestorablePlugins, allowedPlugins
+from BackupManager import isRestorableSettings, isRestorablePlugins
 
 class RestoreWizard(WizardLanguage, Rc):
 	def __init__(self, session):
