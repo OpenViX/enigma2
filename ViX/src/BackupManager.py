@@ -1127,7 +1127,7 @@ class BackupFiles(Screen):
 				for line in opkg_status_split:
 					if line.startswith('Package'):
 						parts = line.strip().split()
-						if len(parts) > 1:
+						if len(parts) > 1 and parts[1] not in ('opkg', 'openvix-base'):
 							plugin = parts[1]
 							continue
 					if plugin and line.startswith('Status') and 'user installed' in line:
