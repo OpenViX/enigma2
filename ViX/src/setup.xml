@@ -24,5 +24,6 @@
     </setup>
     <setup key="vixscriptrunner" title="Script Runner Setup">
         <item level="2" text="Close window on success" summary="Allows you have the window close automatically.">config.scriptrunner.close</item>
+        <item level="2" text="Show in extensions" summary="Allows the script runner to be launched from extensions.">config.scriptrunner.showinextensions</item>
     </setup>
 </setupxml>
