@@ -10,7 +10,7 @@ from Components.config import config, ConfigSubsection, ConfigYesNo
 from IPKInstaller import IpkgInstaller
 from Components.PluginComponent import plugins
 from Tools.Directories import resolveFilename, SCOPE_PLUGINS
-from os import path, listdir
+from os import path, mkdir, listdir
 
 config.scriptrunner = ConfigSubsection()
 config.scriptrunner.close = ConfigYesNo(default=False)
