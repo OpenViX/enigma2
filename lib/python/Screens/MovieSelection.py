@@ -76,7 +76,7 @@ l_moviesort = [
 try:
 	from Plugins.Extensions import BlurayPlayer
 except Exception as e:
-	print "[ML] BlurayPlayer not installed:", e
+	print "[MovieSelection] Bluray Player is not installed:", e
 	BlurayPlayer = None
 	
 
@@ -1110,7 +1110,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		try:
 			os.rmdir(extra_args)
 		except Exception as e:
-			print "[ML] Cannot remove", extra_args, e
+			print "[MovieSelection] Cannot remove", extra_args, e
 		self.itemSelectedCheckTimeshiftCallback('.img', extra_args, True)
 
 	def playAsBLURAY(self, path):
@@ -1119,7 +1119,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			self.session.open(BlurayUi.BlurayMain, path)
 			return True
 		except Exception as e:
-			print "[ML] Cannot open BlurayPlayer:", e
+			print "[MovieSelection] Cannot open BlurayPlayer:", e
 
 	def playAsDVD(self, path):
 		try:
@@ -1334,7 +1334,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 					try:
 						os.mkdir(mount_path)
 					except Exception as e:
-						print '[BlurayPlayer] Cannot create', mount_path, e
+						print '[MovieSelection] [BlurayPlayer] Cannot create', mount_path, e
 				Console().ePopen('mount -r %s %s' % (iso_path, mount_path), self.mountIsoCallback, (mount_path, 0))
 				return
 			elif ext == 'bluray':
@@ -1718,6 +1718,36 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		last_selected_dest.insert(0, where)
 		if len(last_selected_dest) > 5:
 			del last_selected_dest[-1]
+
+	def playBlurayFile(self):
+		if self.playfile:
+			Screens.InfoBar.InfoBar.instance.checkTimeshiftRunning(self.autoBlurayCheckTimeshiftCallback)
+
+	def autoBlurayCheckTimeshiftCallback(self, answer):
+		if answer:
+			playRef = eServiceReference(3, 0, self.playfile)
+			self.playfile = ""
+			self.close(playRef)
+
+	def isBlurayFolderAndFile(self, service):
+		self.playfile = ""
+		folder = os.path.join(service.getPath(), "STREAM/")
+		if "BDMV/STREAM/" not in folder:
+			folder = folder[:-7] + "BDMV/STREAM/"
+		if os.path.isdir(folder):
+			fileSize = 0
+			for name in os.listdir(folder):
+				try:
+					if name.endswith(".m2ts"):
+						size = os.stat(folder + name).st_size
+						if size > fileSize:
+							fileSize = size
+							self.playfile = folder + name
+				except:
+					print "[ML] Error calculate size for %s" % (folder + name)
+			if self.playfile:
+				return True
+		return False
 
 	def can_bookmarks(self, item):
 		return True
