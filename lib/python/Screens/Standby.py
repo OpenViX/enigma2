@@ -3,6 +3,7 @@ from Components.ActionMap import ActionMap
 from Components.config import config
 from Components.AVSwitch import AVSwitch
 from Components.Console import Console
+import Components.ParentalControl
 from Components.SystemInfo import SystemInfo
 from Components.Sources.StaticText import StaticText
 from GlobalActions import globalActionMap
@@ -75,6 +76,8 @@ class Standby2(Screen):
 		self.paused_service = self.paused_action = False
 
 		self.prev_running_service = self.session.nav.getCurrentlyPlayingServiceOrGroup()
+		if Components.ParentalControl.parentalControl.isProtected(self.prev_running_service):
+			self.prev_running_service = eServiceReference(config.tv.lastservice.value)
 		service = self.prev_running_service and self.prev_running_service.toString()
 		if service:
 			if service.rsplit(":", 1)[1].startswith("/"):
@@ -133,6 +136,9 @@ class Standby2(Screen):
 		return StandbySummary
 
 	def stopService(self):
+		self.prev_running_service = self.session.nav.getCurrentlyPlayingServiceOrGroup()
+		if Components.ParentalControl.parentalControl.isProtected(self.prev_running_service):
+			self.prev_running_service = eServiceReference(config.tv.lastservice.value)
 		self.session.nav.stopService()
 
 class Standby(Standby2):
