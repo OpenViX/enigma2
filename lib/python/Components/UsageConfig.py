@@ -727,6 +727,50 @@ def InitUsageConfig():
 	config.epgselection.graph_piconwidth = ConfigSelectionNumber(default = 100, stepwidth = 1, min = 70, max = 500, wraparound = True)
 	config.epgselection.graph_infowidth = ConfigSelectionNumber(default = 50, stepwidth = 25, min = 0, max = 150, wraparound = True)
 
+	config.epgselection.graph_red = ConfigSelection(default='imdb', choices=[('autotimer', _('Auto Timer')),
+	 ('timer', _('Add/Remove Timer')),
+	 ('24plus', _('24+ Hours')),
+	 ('24minus', _('24- Hours')),
+	 ('imdb', _('IMDB search')),
+	 ('bouquetlist', _('Bouquet List')),
+	 ('showmovies', _('Show Movies List')),
+	 ('record', _('Record - same as record button')),
+	 ('gotodatetime', _('Goto Date/Timer')),
+	 ('epgsearch', _('EPG search'))])
+
+	config.epgselection.graph_green = ConfigSelection(default='timer', choices=[('autotimer', _('Auto Timer')),
+	 ('timer', _('Add/Remove Timer')),
+	 ('24plus', _('24+ Hours')),
+	 ('24minus', _('24- Hours')),
+	 ('imdb', _('IMDB search')),
+	 ('bouquetlist', _('Bouquet List')),
+	 ('showmovies', _('Show Movies List')),
+	 ('record', _('Record - same as record button')),
+	 ('gotodatetime', _('Goto Date/Timer')),
+	 ('epgsearch', _('EPG search'))])
+
+	config.epgselection.graph_yellow = ConfigSelection(default='epgsearch', choices=[('autotimer', _('Auto Timer')),
+	 ('timer', _('Add/Remove Timer')),
+	 ('24plus', _('24+ Hours')),
+	 ('24minus', _('24- Hours')),
+	 ('imdb', _('IMDB search')),
+	 ('bouquetlist', _('Bouquet List')),
+	 ('showmovies', _('Show Movies List')),
+	 ('record', _('Record - same as record button')),
+	 ('gotodatetime', _('Goto Date/Timer')),
+	 ('epgsearch', _('EPG search'))])
+
+	config.epgselection.graph_blue = ConfigSelection(default='autotimer', choices=[('autotimer', _('Auto Timer')),
+	 ('timer', _('Add/Remove Timer')),
+	 ('24plus', _('24+ Hours')),
+	 ('24minus', _('24- Hours')),
+	 ('imdb', _('IMDB search')),
+	 ('bouquetlist', _('Bouquet List')),
+	 ('showmovies', _('Show Movies List')),
+	 ('record', _('Record - same as record button')),
+	 ('gotodatetime', _('Goto Date/Timer')),
+	 ('epgsearch', _('EPG search'))])
+
 	if not os.path.exists('/usr/softcams/'):
 		os.mkdir('/usr/softcams/',0755)
 	softcams = os.listdir('/usr/softcams/')
