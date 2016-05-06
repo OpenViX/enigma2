@@ -41,7 +41,7 @@ def checkConfigBackup():
 		else:
 			return None
 	except IOError, e:
-		print "unable to use device (%s)..." % str(e)
+		print "[ViX] unable to use device (%s)..." % str(e)
 		return None
 
 

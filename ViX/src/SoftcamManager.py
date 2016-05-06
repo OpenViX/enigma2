@@ -181,7 +181,7 @@ class VIXSoftcamManager(Screen):
 			self['activecam'].setText(self.currentactivecam)
 			self['activecam'].show()
 		else:
-			print 'RESULT FAILED: ' + str(result)
+			print '[SoftcamManager] RESULT FAILED: ' + str(result)
 		self.selectionChanged()
 
 	def keyStart(self):
@@ -243,7 +243,7 @@ class VIXSoftcamManager(Screen):
 				self.Console.ePopen("kill -9 " + stopcam.replace("\n", ""))
 				sleep(4)
 			else:
-				print 'RESULT FAILED: ' + str(result)
+				print '[SoftcamManager] RESULT FAILED: ' + str(result)
 			if selectedcam.lower().startswith('cccam') and path.exists('/etc/CCcam.cfg') == True:
 				if self.currentactivecam.lower().find('mgcam') < 0:
 					self.session.openWithCallback(self.showActivecam, VIXStartCam, self.sel[0])

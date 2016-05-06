@@ -1096,7 +1096,7 @@ class BackupFiles(Screen):
 				mkdir(self.BackupDirectory, 0755)
 		except Exception, e:
 			print str(e)
-			print "Device: " + config.backupmanager.backuplocation.value + ", i don't seem to have write access to this device."
+			print "[BackupManager] Device: " + config.backupmanager.backuplocation.value + ", i don't seem to have write access to this device."
 
 		s = statvfs(self.BackupDevice)
 		free = (s.f_bsize * s.f_bavail) / (1024 * 1024)

@@ -495,9 +495,9 @@ class ImageBackup(Screen):
 		self.rootMTD = getMachineMtdRoot()
 		self.rootFILE = getMachineRootFile()
 		self.MAINDEST = self.MAINDESTROOT + '/' + getImageFolder() + '/'
-		print 'MTD: Kernel:',self.kernelMTD
-		print 'MTD: Root:',self.rootMTD
-		print 'Type:',getImageFileSystem()
+		print '[ImageManager] MTD: Kernel:',self.kernelMTD
+		print '[ImageManager] MTD: Root:',self.rootMTD
+		print '[ImageManager] Type:',getImageFileSystem()
 		if 'ubi' in getImageFileSystem():
 			self.ROOTFSTYPE = 'ubifs'
 		elif 'tar.bz2' in getImageFileSystem():
@@ -583,7 +583,7 @@ class ImageBackup(Screen):
 				remove(self.BackupDirectory + config.imagemanager.folderprefix.value + '-' + getImageType() + "-swapfile_backup")
 		except Exception, e:
 			print str(e)
-			print "Device: " + config.imagemanager.backuplocation.value + ", i don't seem to have write access to this device."
+			print "[ImageManager] Device: " + config.imagemanager.backuplocation.value + ", i don't seem to have write access to this device."
 
 		s = statvfs(self.BackupDevice)
 		free = (s.f_bsize * s.f_bavail) / (1024 * 1024)
