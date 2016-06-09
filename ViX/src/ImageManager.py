@@ -935,6 +935,8 @@ class ImageManagerDownload(Screen):
 				self.boxtype = 'GiGaBlue-HD-ULTRA-UE'
 			elif getMachineMake() == 'gbx1':
 				self.boxtype = 'GiGaBlue-HD-X1'
+			elif getMachineMake() == 'gbx3':
+				self.boxtype = 'GiGaBlue-HD-X3'				
 			elif getMachineMake() == 'ventonhdx':
 				self.boxtype = 'Venton-Unibox-HDx'
 			elif getMachineMake() == 'uniboxhde':
@@ -964,7 +966,9 @@ class ImageManagerDownload(Screen):
 			elif getMachineMake() == 'osmini':
 				self.boxtype = 'OS-mini'
 			elif getMachineMake() == 'mbtwinplus':
-				self.boxtype = 'Miraclebox-Twinplus'				
+				self.boxtype = 'Miraclebox-Twinplus'
+			elif getMachineMake() == 'fusionhdse':
+				self.boxtype = 'Xsarius-Fusion-HD-SE'					
 
 			url = 'http://www.openvix.co.uk/openvix-builds/'+self.boxtype+'/'
 			conn = urllib2.urlopen(url)
