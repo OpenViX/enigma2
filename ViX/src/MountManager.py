@@ -13,7 +13,7 @@ from Screens.Standby import TryQuitMainloop
 from Components.ActionMap import ActionMap
 from Components.Label import Label
 from Components.ConfigList import ConfigListScreen
-from Components.config import getConfigListEntry, ConfigSelection, NoSave
+from Components.config import config, getConfigListEntry, ConfigSelection, NoSave
 from Components.Console import Console
 from Components.Sources.List import List
 from Components.Sources.StaticText import StaticText
@@ -26,7 +26,7 @@ class VIXDevicesPanel(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		menu_path = 'ViX / '
-		screentitle =  _("Backup Manager")
+		screentitle =  _("Mount Manager")
 		menu_path += screentitle or screentitle
 		if config.usage.show_menupath.value:
 			self.menu_path = menu_path

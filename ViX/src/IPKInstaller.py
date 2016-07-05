@@ -21,7 +21,7 @@ class VIXIPKInstaller(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		menu_path = 'ViX / '
-		screentitle =  _("Backup Manager")
+		screentitle =  _("PK Installer")
 		menu_path += screentitle or screentitle
 		if config.usage.show_menupath.value:
 			self.menu_path = menu_path

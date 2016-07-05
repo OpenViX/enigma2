@@ -39,7 +39,7 @@ class VIXScriptRunner(IpkgInstaller):
 					list.append(pkg)
 		IpkgInstaller.__init__(self, session, list)
 		menu_path = 'ViX / '
-		screentitle =  _("Backup Manager")
+		screentitle =  _("Script Runner")
 		menu_path += screentitle or screentitle
 		if config.usage.show_menupath.value:
 			self.menu_path = menu_path
