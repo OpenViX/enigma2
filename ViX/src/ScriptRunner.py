@@ -38,7 +38,16 @@ class VIXScriptRunner(IpkgInstaller):
 				if pkg.find('.sh') >= 0:
 					list.append(pkg)
 		IpkgInstaller.__init__(self, session, list)
-		Screen.setTitle(self, _("Script Runner"))
+		menu_path = 'ViX / '
+		screentitle =  _("Backup Manager")
+		menu_path += screentitle or screentitle
+		if config.usage.show_menupath.value:
+			self.menu_path = menu_path
+			title = menu_path
+		else:
+			self.menu_path = ""
+			title = screentitle
+		Screen.setTitle(self, title)
 		self.skinName = "IpkgInstaller"
 		self["key_green"] = StaticText(_("Run"))
 

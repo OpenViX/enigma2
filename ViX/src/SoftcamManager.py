@@ -57,7 +57,16 @@ def SoftcamAutostart(reason, session=None, **kwargs):
 class VIXSoftcamManager(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
-		Screen.setTitle(self, _("Softcam Setup"))
+		menu_path = 'ViX / '
+		screentitle =  _("Backup Manager")
+		menu_path += screentitle or screentitle
+		if config.usage.show_menupath.value:
+			self.menu_path = menu_path + ' / '
+			title = menu_path
+		else:
+			self.menu_path = ""
+			title = screentitle
+		Screen.setTitle(self, title)
 		self['lab1'] = Label(_('Select:'))
 		self['lab2'] = Label(_('Active:'))
 		self['activecam'] = Label()
@@ -96,13 +105,11 @@ class VIXSoftcamManager(Screen):
 
 	def createSummary(self):
 		from Screens.PluginBrowser import PluginBrowserSummary
-
 		return PluginBrowserSummary
 
 	def createSetup(self):
 		from Screens.Setup import Setup
-
-		self.session.open(Setup, 'vixsoftcammanager', 'SystemPlugins/ViX')
+		self.session.open(Setup, 'vixsoftcammanager', 'SystemPlugins/ViX', self.menu_path)
 
 	def selectionChanged(self):
 		cams = listdir('/usr/softcams')

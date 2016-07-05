@@ -80,7 +80,16 @@ class StartSwap:
 class VIXSwap(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
-		Screen.setTitle(self, _("Swap Manager"))
+		menu_path = 'ViX / '
+		screentitle =  _("Backup Manager")
+		menu_path += screentitle or screentitle
+		if config.usage.show_menupath.value:
+			self.menu_path = menu_path
+			title = menu_path
+		else:
+			self.menu_path = ""
+			title = screentitle
+		Screen.setTitle(self, title)
 		self['lab1'] = Label()
 		self['autostart_on'] = Pixmap()
 		self['autostart_off'] = Pixmap()

@@ -25,7 +25,16 @@ from Tools.Directories import SCOPE_ACTIVE_SKIN, resolveFilename
 class VIXDevicesPanel(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
-		Screen.setTitle(self, _("Mount Manager"))
+		menu_path = 'ViX / '
+		screentitle =  _("Backup Manager")
+		menu_path += screentitle or screentitle
+		if config.usage.show_menupath.value:
+			self.menu_path = menu_path
+			title = menu_path
+		else:
+			self.menu_path = ""
+			title = screentitle
+		Screen.setTitle(self, title)
 		self['key_red'] = Label(" ")
 		self['key_green'] = Label(_("Setup Mounts"))
 		self['key_yellow'] = Label(_("Unmount"))

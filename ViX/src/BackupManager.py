@@ -98,7 +98,16 @@ def BackupManagerautostart(reason, session=None, **kwargs):
 class VIXBackupManager(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
-		Screen.setTitle(self, _("Backup Manager"))
+		menu_path = 'ViX / '
+		screentitle =  _("Backup Manager")
+		menu_path += screentitle or screentitle
+		if config.usage.show_menupath.value:
+			self.menu_path = menu_path + ' / '
+			title = menu_path
+		else:
+			self.menu_path = ""
+			title = screentitle
+		Screen.setTitle(self, title)
 
 		self['lab1'] = Label()
 		self["backupstatus"] = Label()
@@ -234,7 +243,7 @@ class VIXBackupManager(Screen):
 			self['lab1'].setText(_("Device: ") + config.backupmanager.backuplocation.value + "\n" + _("there is a problem with this device, please reformat and try again."))
 
 	def createSetup(self):
-		self.session.openWithCallback(self.setupDone, VIXBackupManagerMenu, 'vixbackupmanager', 'SystemPlugins/ViX')
+		self.session.openWithCallback(self.setupDone, VIXBackupManagerMenu, 'vixbackupmanager', 'SystemPlugins/ViX', self.menu_path)
 
 	def showLog(self):
 		self.sel = self['list'].getCurrent()
@@ -807,8 +816,8 @@ class XtraPluginsSelection(Screen):
 
 
 class VIXBackupManagerMenu(Setup):
-	def __init__(self, session, setup, plugin=None):
-		Setup.__init__(self, session, setup, plugin)
+	def __init__(self, session, setup, plugin=None, menu_path=None):
+		Setup.__init__(self, session, setup, plugin, menu_path)
 		self.skinName = "VIXBackupManagerMenu"
 
 		self["actions2"] = ActionMap(["SetupActions", 'ColorActions', 'VirtualKeyboardActions', "MenuActions"],

@@ -20,7 +20,16 @@ from Screens.Standby import TryQuitMainloop
 class VIXIPKInstaller(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
-		Screen.setTitle(self, _("IPK Installer"))
+		menu_path = 'ViX / '
+		screentitle =  _("Backup Manager")
+		menu_path += screentitle or screentitle
+		if config.usage.show_menupath.value:
+			self.menu_path = menu_path
+			title = menu_path
+		else:
+			self.menu_path = ""
+			title = screentitle
+		Screen.setTitle(self, title)
 		self['lab1'] = Label()
 		self.defaultDir = '/tmp'
 		self.onChangedEntry = []
