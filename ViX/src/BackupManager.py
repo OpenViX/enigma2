@@ -98,9 +98,10 @@ def BackupManagerautostart(reason, session=None, **kwargs):
 class VIXBackupManager(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
-		menu_path = 'ViX / '
+		menu_path = 'ViX'
+		self["menu_path_compressed"] = StaticText(menu_path + " >" or "")
 		screentitle =  _("Backup Manager")
-		menu_path += screentitle or screentitle
+		menu_path += " / " + screentitle or screentitle
 		if config.usage.show_menupath.value:
 			self.menu_path = menu_path + ' / '
 			title = menu_path

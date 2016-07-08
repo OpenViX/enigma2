@@ -17,6 +17,7 @@ from Components.config import configfile, config, ConfigSubsection, ConfigYesNo,
 from Components.Console import Console
 from Components.FileList import MultiFileSelectList
 from Components.PluginComponent import plugins
+from Components.Sources.StaticText import StaticText
 from Tools.Directories import resolveFilename, SCOPE_PLUGINS
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
@@ -57,9 +58,10 @@ def SoftcamAutostart(reason, session=None, **kwargs):
 class VIXSoftcamManager(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
-		menu_path = 'ViX / '
+		menu_path = 'ViX'
+		self["menu_path_compressed"] = StaticText(menu_path + " >" or "")
 		screentitle =  _("Softcam Manager")
-		menu_path += screentitle or screentitle
+		menu_path += " / " + screentitle or screentitle
 		if config.usage.show_menupath.value:
 			self.menu_path = menu_path + ' / '
 			title = menu_path

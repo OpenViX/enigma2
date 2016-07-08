@@ -14,6 +14,7 @@ from Components.Button import Button
 from Components.MenuList import MenuList
 from Components.config import config, ConfigSubsection, ConfigYesNo, ConfigSelection, ConfigText, ConfigNumber, NoSave, ConfigClock
 from Components.Harddisk import harddiskmanager, getProcMounts
+from Components.Sources.StaticText import StaticText
 from Screens.Screen import Screen
 from Screens.Setup import Setup
 from Components.Console import Console
@@ -76,9 +77,10 @@ def ImageManagerautostart(reason, session=None, **kwargs):
 class VIXImageManager(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
-		menu_path = 'ViX / '
+		menu_path = 'ViX'
+		self["menu_path_compressed"] = StaticText(menu_path + " >" or "")
 		screentitle = _("Image Manager")
-		menu_path += screentitle or screentitle
+		menu_path += " / " + screentitle or screentitle
 		if config.usage.show_menupath.value:
 			self.menu_path = menu_path + ' / '
 			title = menu_path

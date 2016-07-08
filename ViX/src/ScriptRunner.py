@@ -38,11 +38,12 @@ class VIXScriptRunner(IpkgInstaller):
 				if pkg.find('.sh') >= 0:
 					list.append(pkg)
 		IpkgInstaller.__init__(self, session, list)
-		menu_path = 'ViX / '
+		menu_path = 'ViX'
+		self["menu_path_compressed"] = StaticText(menu_path + " >" or "")
 		screentitle =  _("Script Runner")
-		menu_path += screentitle or screentitle
+		menu_path += " / " + screentitle or screentitle
 		if config.usage.show_menupath.value:
-			self.menu_path = menu_path
+			self.menu_path = menu_path + ' / '
 			title = menu_path
 		else:
 			self.menu_path = ""
