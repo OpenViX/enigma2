@@ -77,16 +77,20 @@ def ImageManagerautostart(reason, session=None, **kwargs):
 class VIXImageManager(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
-		menu_path = 'ViX'
-		self["menu_path_compressed"] = StaticText(menu_path + " >" or "")
 		screentitle = _("Image Manager")
-		menu_path += " / " + screentitle or screentitle
-		if config.usage.show_menupath.value:
-			self.menu_path = menu_path + ' / '
-			title = menu_path
-		else:
-			self.menu_path = ""
+		self.menu_path = 'ViX'
+		if config.usage.show_menupath.value == 'large':
+			self.menu_path += " / " + screentitle
+			title = self.menu_path
+			self["menu_path_compressed"] = StaticText("")
+			self.menu_path += ' / '
+		elif config.usage.show_menupath.value == 'small':
 			title = screentitle
+			self["menu_path_compressed"] = StaticText(self.menu_path + " >" if not self.menu_path.endswith(' / ') else self.menu_path[:-3] + " >" or "")
+			self.menu_path += " / " + screentitle
+		else:
+			title = screentitle
+			self["menu_path_compressed"] = StaticText("")
 		Screen.setTitle(self, title)
 
 		self['lab1'] = Label()
@@ -252,7 +256,7 @@ class VIXImageManager(Screen):
 		self.session.openWithCallback(self.setupDone, Setup, 'viximagemanager', 'SystemPlugins/ViX', self.menu_path)
 
 	def doDownload(self):
-		self.session.openWithCallback(self.populate_List, ImageManagerDownload, self.BackupDirectory)
+		self.session.openWithCallback(self.populate_List, ImageManagerDownload, self.menu_path, self.BackupDirectory)
 
 	def setupDone(self, test=None):
 		if config.imagemanager.folderprefix.value == '':
@@ -816,9 +820,21 @@ class ImageBackup(Screen):
 
 
 class ImageManagerDownload(Screen):
-	def __init__(self, session, BackupDirectory):
+	def __init__(self, session, menu_path, BackupDirectory):
 		Screen.__init__(self, session)
-		Screen.setTitle(self, _("Image Manager"))
+		screentitle = _("Downloads")
+		if config.usage.show_menupath.value == 'large':
+			menu_path += screentitle
+			title = menu_path
+			self["menu_path_compressed"] = StaticText("")
+		elif config.usage.show_menupath.value == 'small':
+			title = screentitle
+			self["menu_path_compressed"] = StaticText(menu_path + " >" if not menu_path.endswith(' / ') else menu_path[:-3] + " >" or "")
+		else:
+			title = screentitle
+			self["menu_path_compressed"] = StaticText("")
+		Screen.setTitle(self, title)
+
 		self.BackupDirectory = BackupDirectory
 		self['lab1'] = Label(_("Select an image to Download:"))
 		self["key_red"] = Button(_("Close"))
