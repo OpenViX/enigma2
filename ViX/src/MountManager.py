@@ -25,16 +25,21 @@ from Tools.Directories import SCOPE_ACTIVE_SKIN, resolveFilename
 class VIXDevicesPanel(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
-		menu_path = 'ViX'
-		self["menu_path_compressed"] = StaticText(menu_path + " >" or "")
+		self.menu_path = 'ViX'
 		screentitle =  _("Mount Manager")
-		menu_path += " / " + screentitle or screentitle
-		if config.usage.show_menupath.value:
-			self.menu_path = menu_path + ' / '
-			title = menu_path
-		else:
-			self.menu_path = ""
+		if config.usage.show_menupath.value == 'large':
+			self.menu_path += " / " + screentitle
+			title = self.menu_path
+			self["menu_path_compressed"] = StaticText("")
+			self.menu_path += ' / '
+		elif config.usage.show_menupath.value == 'small':
 			title = screentitle
+			self["menu_path_compressed"] = StaticText(self.menu_path + " >" if not self.menu_path.endswith(' / ') else self.menu_path[:-3] + " >" or "")
+			self.menu_path += " / " + screentitle
+		else:
+			title = screentitle
+			self["menu_path_compressed"] = StaticText("")
+
 		Screen.setTitle(self, title)
 		self['key_red'] = Label(" ")
 		self['key_green'] = Label(_("Setup Mounts"))
@@ -179,7 +184,7 @@ class VIXDevicesPanel(Screen):
 			self.list.append(res)
 
 	def SetupMounts(self):
-		self.session.openWithCallback(self.updateList, VIXDevicePanelConf)
+		self.session.openWithCallback(self.updateList, VIXDevicePanelConf, self.menu_path)
 
 	def Mount(self):
 		sel = self['list'].getCurrent()
@@ -261,11 +266,23 @@ class VIXDevicesPanel(Screen):
 
 
 class VIXDevicePanelConf(Screen, ConfigListScreen):
-	def __init__(self, session):
+	def __init__(self, session, menu_path):
 		Screen.__init__(self, session)
 		self.list = []
 		ConfigListScreen.__init__(self, self.list)
-		Screen.setTitle(self, _("Choose where to mount your devices to:"))
+		screentitle =  _("Choose where to mount your devices to:")
+		if config.usage.show_menupath.value == 'large':
+			menu_path += screentitle
+			title = menu_path
+			self["menu_path_compressed"] = StaticText("")
+		elif config.usage.show_menupath.value == 'small':
+			title = screentitle
+			self["menu_path_compressed"] = StaticText(menu_path + " >" if not menu_path.endswith(' / ') else menu_path[:-3] + " >" or "")
+		else:
+			title = screentitle
+			self["menu_path_compressed"] = StaticText("")
+		Screen.setTitle(self, title)
+
 		self['key_green'] = Label(_("Save"))
 		self['key_red'] = Label(_("Cancel"))
 		self['Linconn'] = Label(_("Please wait while scanning your %s %s devices...") % (getMachineBrand(), getMachineName()))

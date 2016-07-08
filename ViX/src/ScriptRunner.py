@@ -38,17 +38,23 @@ class VIXScriptRunner(IpkgInstaller):
 				if pkg.find('.sh') >= 0:
 					list.append(pkg)
 		IpkgInstaller.__init__(self, session, list)
-		menu_path = 'ViX'
-		self["menu_path_compressed"] = StaticText(menu_path + " >" or "")
 		screentitle =  _("Script Runner")
-		menu_path += " / " + screentitle or screentitle
-		if config.usage.show_menupath.value:
-			self.menu_path = menu_path + ' / '
-			title = menu_path
-		else:
-			self.menu_path = ""
+		self.menu_path = 'ViX'
+		if config.usage.show_menupath.value == 'large':
+			self.menu_path += " / " + screentitle
+			title = self.menu_path
+			self["menu_path_compressed"] = StaticText("")
+			self.menu_path += ' / '
+		elif config.usage.show_menupath.value == 'small':
 			title = screentitle
+			self["menu_path_compressed"] = StaticText(self.menu_path + " >" if not self.menu_path.endswith(' / ') else self.menu_path[:-3] + " >" or "")
+			self.menu_path += " / " + screentitle
+		else:
+			title = screentitle
+			self["menu_path_compressed"] = StaticText("")
 		Screen.setTitle(self, title)
+
+
 		self.skinName = "IpkgInstaller"
 		self["key_green"] = StaticText(_("Run"))
 
@@ -58,7 +64,7 @@ class VIXScriptRunner(IpkgInstaller):
 									  }, -1)
 
 	def createSetup(self):
-		self.session.open(Setup, 'vixscriptrunner', 'SystemPlugins/ViX')
+		self.session.open(Setup, 'vixscriptrunner', 'SystemPlugins/ViX', self.menu_path)
 
 	def install(self):
 		list = self.list.getSelectionsList()
