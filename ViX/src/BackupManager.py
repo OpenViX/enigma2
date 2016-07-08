@@ -98,16 +98,20 @@ def BackupManagerautostart(reason, session=None, **kwargs):
 class VIXBackupManager(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
-		menu_path = 'ViX'
-		self["menu_path_compressed"] = StaticText(menu_path + " >" or "")
 		screentitle =  _("Backup Manager")
-		menu_path += " / " + screentitle or screentitle
-		if config.usage.show_menupath.value:
-			self.menu_path = menu_path + ' / '
-			title = menu_path
-		else:
-			self.menu_path = ""
+		self.menu_path = 'ViX'
+		if config.usage.show_menupath.value == 'large':
+			self.menu_path += " / " + screentitle
+			title = self.menu_path
+			self["menu_path_compressed"] = StaticText("")
+			self.menu_path += ' / '
+		elif config.usage.show_menupath.value == 'small':
 			title = screentitle
+			self["menu_path_compressed"] = StaticText(self.menu_path + " >" if not self.menu_path.endswith(' / ') else self.menu_path[:-3] + " >" or "")
+			self.menu_path += " / " + screentitle
+		else:
+			title = screentitle
+			self["menu_path_compressed"] = StaticText("")
 		Screen.setTitle(self, title)
 
 		self['lab1'] = Label()
@@ -250,7 +254,7 @@ class VIXBackupManager(Screen):
 		self.sel = self['list'].getCurrent()
 		if self.sel:
 			filename = self.BackupDirectory + self.sel
-			self.session.open(VIXBackupManagerLogView, filename)
+			self.session.open(VIXBackupManagerLogView, self.menu_path, filename)
 
 	def setupDone(self, test=None):
 		if config.backupmanager.folderprefix.value == '':
@@ -663,9 +667,23 @@ class VIXBackupManager(Screen):
 
 
 class BackupSelection(Screen):
-	def __init__(self, session):
+	def __init__(self, session, menu_path):
 		Screen.__init__(self, session)
-		Screen.setTitle(self, _("Select files/folders to backup"))
+		print 'menu_pathpp',menu_path
+		screentitle = _("Select files/folders to backup")
+		if config.usage.show_menupath.value == 'large':
+			menu_path += screentitle
+			print 'menu_pathoo',menu_path
+			title = menu_path
+			self["menu_path_compressed"] = StaticText("")
+		elif config.usage.show_menupath.value == 'small':
+			title = screentitle
+			self["menu_path_compressed"] = StaticText(menu_path + " >" if not menu_path.endswith(' / ') else menu_path[:-3] + " >" or "")
+		else:
+			title = screentitle
+			self["menu_path_compressed"] = StaticText("")
+		Screen.setTitle(self, title)
+
 		self["key_red"] = StaticText(_("Cancel"))
 		self["key_green"] = StaticText(_("Save"))
 		self["key_yellow"] = StaticText()
@@ -695,11 +713,7 @@ class BackupSelection(Screen):
 	def layoutFinished(self):
 		idx = 0
 		self["checkList"].moveToIndex(idx)
-		self.setWindowTitle()
 		self.selectionChanged()
-
-	def setWindowTitle(self):
-		self.setTitle(_("Select files/folders to backup"))
 
 	def selectionChanged(self):
 		current = self["checkList"].getCurrent()[0]
@@ -744,9 +758,21 @@ class BackupSelection(Screen):
 
 
 class XtraPluginsSelection(Screen):
-	def __init__(self, session):
+	def __init__(self, session, menu_path):
 		Screen.__init__(self, session)
-		Screen.setTitle(self, _("Select extra packages folder"))
+		screentitle = _("Select extra packages folder")
+		if config.usage.show_menupath.value == 'large':
+			menu_path += screentitle
+			title = menu_path
+			self["menu_path_compressed"] = StaticText("")
+		elif config.usage.show_menupath.value == 'small':
+			title = screentitle
+			self["menu_path_compressed"] = StaticText(menu_path + " >" if not menu_path.endswith(' / ') else menu_path[:-3] + " >" or "")
+		else:
+			title = screentitle
+			self["menu_path_compressed"] = StaticText("")
+		Screen.setTitle(self, title)
+
 		self["key_red"] = StaticText(_("Cancel"))
 		self["key_green"] = StaticText(_("Save"))
 
@@ -819,6 +845,7 @@ class XtraPluginsSelection(Screen):
 class VIXBackupManagerMenu(Setup):
 	def __init__(self, session, setup, plugin=None, menu_path=None):
 		Setup.__init__(self, session, setup, plugin, menu_path)
+		self.menu_path = menu_path
 		self.skinName = "VIXBackupManagerMenu"
 
 		self["actions2"] = ActionMap(["SetupActions", 'ColorActions', 'VirtualKeyboardActions', "MenuActions"],
@@ -833,10 +860,10 @@ class VIXBackupManagerMenu(Setup):
 		self["key_blue"] = Button(_("Choose local ipk's folder"))
 
 	def chooseFiles(self):
-		self.session.openWithCallback(self.backupfiles_choosen, BackupSelection)
+		self.session.openWithCallback(self.backupfiles_choosen, BackupSelection, self.menu_path)
 
 	def chooseXtraPluginDir(self):
-		self.session.open(XtraPluginsSelection)
+		self.session.open(XtraPluginsSelection, self.menu_path)
 
 	def backupfiles_choosen(self, ret):
 		self.backupdirs = ' '.join(config.backupmanager.backupdirs.value)
@@ -846,10 +873,22 @@ class VIXBackupManagerMenu(Setup):
 
 
 class VIXBackupManagerLogView(Screen):
-	def __init__(self, session, filename):
+	def __init__(self, session, menu_path, filename):
 		self.session = session
 		Screen.__init__(self, session)
-		Screen.setTitle(self, _("Backup Manager Log"))
+		screentitle =  _("Logs")
+		if config.usage.show_menupath.value == 'large':
+			menu_path += screentitle
+			title = menu_path
+			self["menu_path_compressed"] = StaticText("")
+		elif config.usage.show_menupath.value == 'small':
+			title = screentitle
+			self["menu_path_compressed"] = StaticText(menu_path + " >" if not menu_path.endswith(' / ') else menu_path[:-3] + " >" or "")
+		else:
+			title = screentitle
+			self["menu_path_compressed"] = StaticText("")
+		Screen.setTitle(self, title)
+
 		self.skinName = "VIXBackupManagerLogView"
 		filedate = str(date.fromtimestamp(stat(filename).st_mtime))
 		backuplog = _('Backup Created') + ': ' + filedate + '\n\n'
