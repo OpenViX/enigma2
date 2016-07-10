@@ -18,9 +18,8 @@ from Screens.Standby import TryQuitMainloop
 
 
 class VIXIPKInstaller(Screen):
-	def __init__(self, session):
+	def __init__(self, session, menu_path=""):
 		Screen.__init__(self, session)
-		menu_path = 'ViX'
 		screentitle =  _("IPK Installer")
 		if config.usage.show_menupath.value == 'large':
 			menu_path += " / " + screentitle

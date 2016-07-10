@@ -78,10 +78,9 @@ class StartSwap:
 
 #######################################################################
 class VIXSwap(Screen):
-	def __init__(self, session):
+	def __init__(self, session, menu_path=""):
 		Screen.__init__(self, session)
 		screentitle =  _("Swap Manager")
-		menu_path = 'ViX'
 		if config.usage.show_menupath.value == 'large':
 			menu_path += " / " + screentitle
 			title = menu_path

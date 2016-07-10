@@ -26,7 +26,7 @@ def ScriptRunnerAutostart(reason, session=None, **kwargs):
 	pass
 
 class VIXScriptRunner(IpkgInstaller):
-	def __init__(self, session, list=None):
+	def __init__(self, session, list=None, menu_path=""):
 		if not list:
 			list = []
 			if not path.exists('/usr/script'):
@@ -39,7 +39,7 @@ class VIXScriptRunner(IpkgInstaller):
 					list.append(pkg)
 		IpkgInstaller.__init__(self, session, list)
 		screentitle =  _("Script Runner")
-		self.menu_path = 'ViX'
+		self.menu_path = menu_path
 		if config.usage.show_menupath.value == 'large':
 			self.menu_path += " / " + screentitle
 			title = self.menu_path

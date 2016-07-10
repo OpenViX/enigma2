@@ -23,10 +23,10 @@ from Tools.Directories import SCOPE_ACTIVE_SKIN, resolveFilename
 
 
 class VIXDevicesPanel(Screen):
-	def __init__(self, session):
+	def __init__(self, session, menu_path=""):
 		Screen.__init__(self, session)
-		self.menu_path = 'ViX'
 		screentitle =  _("Mount Manager")
+		self.menu_path = menu_path
 		if config.usage.show_menupath.value == 'large':
 			self.menu_path += " / " + screentitle
 			title = self.menu_path
