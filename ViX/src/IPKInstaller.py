@@ -22,7 +22,7 @@ class VIXIPKInstaller(Screen):
 		Screen.__init__(self, session)
 		screentitle =  _("IPK Installer")
 		if config.usage.show_menupath.value == 'large':
-			menu_path += " / " + screentitle
+			menu_path += screentitle
 			title = menu_path
 			self["menu_path_compressed"] = StaticText("")
 			menu_path += ' / '
