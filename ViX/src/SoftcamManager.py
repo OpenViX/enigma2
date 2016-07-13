@@ -61,7 +61,7 @@ class VIXSoftcamManager(Screen):
 		screentitle =  _("Softcam Manager")
 		self.menu_path = _('Main menu')+' / '+_('Setup')+' / '+_('SoftCam and CI')+' / '
 		if config.usage.show_menupath.value == 'large':
-			self.menu_path += " / " + screentitle
+			self.menu_path += screentitle
 			title = self.menu_path
 			self["menu_path_compressed"] = StaticText("")
 			self.menu_path += ' / '
