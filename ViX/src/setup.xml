@@ -21,6 +21,8 @@
         <item level="2" text="Schedule Backups" summary="Allows you schedule your image backups.">config.imagemanager.schedule</item>
         <item level="2" text="Time of Backup to start" requires="config.imagemanager.schedule" summary="Set the time of backup to start.">config.imagemanager.scheduletime</item>
         <item level="2" text="Repeat how often" requires="config.imagemanager.schedule" summary="Set the repeat interval of backup schedule.">config.imagemanager.repeattype</item>
+        <item level="2" text="Query before image backup starts" requires="config.imagemanager.schedule" summary="Query before starting image backup.">config.imagemanager.query</item>
+        <item level="2" text="Max image backups to keep (0==all)" requires="config.imagemanager.schedule" summary="Backups to keep">config.imagemanager.number_to_keep</item>
     </setup>
     <setup key="vixscriptrunner" title="Setup">
         <item level="2" text="Close window on success" summary="Allows you have the window close automatically.">config.scriptrunner.close</item>
