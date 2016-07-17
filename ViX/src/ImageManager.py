@@ -984,6 +984,8 @@ class ImageManagerDownload(Screen):
 				self.boxtype = 'Mutant-HD500C'
 			elif getMachineMake() == 'mutant1200':
 				self.boxtype = 'Mutant-HD1200'
+			elif getMachineMake() == 'mutant51':
+				self.boxtype = 'Mutant-HD51'				
 			elif getMachineMake() == 'xp1000max':
 				self.boxtype = 'MaxDigital-XP1000'
 			elif getMachineMake() == 'xp1000plus':
@@ -1038,6 +1040,8 @@ class ImageManagerDownload(Screen):
 				self.boxtype = 'Spycat'
 			elif getMachineMake() == 'osmini':
 				self.boxtype = 'OS-mini'
+			elif getMachineMake() == 'osminiplus':
+				self.boxtype = 'OS-miniplus'				
 			elif getMachineMake() == 'mbtwinplus':
 				self.boxtype = 'Miraclebox-Twinplus'
 			elif getMachineMake() == 'fusionhdse':
