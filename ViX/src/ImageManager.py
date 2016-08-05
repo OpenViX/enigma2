@@ -376,6 +376,7 @@ class VIXImageManager(Screen):
 				mkdir(self.TEMPDESTROOT, 0755)
 			self.Console.ePopen('unzip -o %s%s -d %s' % (self.BackupDirectory, self.sel, self.TEMPDESTROOT), self.keyResstore4)
 		else:
+			self.TEMPDESTROOT = self.BackupDirectory + self.sel
 			self.keyResstore4(0, 0)
 
 	def keyResstore4(self, result, retval, extra_args=None):
