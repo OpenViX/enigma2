@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-07-13 10:47+0200\n"
-"PO-Revision-Date: 2016-07-14 06:34+0200\n"
+"POT-Creation-Date: 2016-07-27 17:43+0200\n"
+"PO-Revision-Date: 2016-07-27 18:26+0200\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does, Delagroov\n"
 "Language: nl\n"
@@ -709,6 +709,9 @@ msgstr "AFP-instellingen"
 msgid "AFP setup"
 msgstr "AFP instellingen"
 
+msgid "AGC:"
+msgstr "AGC:"
+
 #, python-format
 msgid "AV aspect is %s."
 msgstr "AV aspect is %s."
@@ -1301,6 +1304,9 @@ msgstr "Beschikbare shares:"
 msgid "B"
 msgstr "B"
 
+msgid "BER:"
+msgstr "BER:"
+
 msgid "Back"
 msgstr "Terug"
 
@@ -1405,6 +1411,9 @@ msgstr "Favorietenlijst"
 
 msgid "Brightness"
 msgstr "Helderheid"
+
+msgid "Brightness (Dimmed)"
+msgstr "Helderheid (gedimd)"
 
 msgid "Brightness (Normal)"
 msgstr "Helderheid (normaal)"
@@ -2003,6 +2012,9 @@ msgstr "Configureer het gedrag aan het einde van de film."
 
 msgid "Configure the border width of the subtitles. The dark border makes the subtitles easier to read on a light background."
 msgstr "Bepaal de breeedte van de rand rond ondertitels. De donkere rand maakt het lezen op een lichte achtergrond makkelijker."
+
+msgid "Configure the brightness level of the front panel display for dimmed operation."
+msgstr "Configureer de helderheid van het front panel display tijdens gedimd gebruik."
 
 msgid "Configure the brightness level of the front panel display for normal operation."
 msgstr "Configureer de helderheid van het front panel display tijdens normaal gebruik."
@@ -2684,6 +2696,12 @@ msgstr "Digitale contour verwijderen"
 
 msgid "Digital downmix"
 msgstr "Digital downmix"
+
+msgid "Dim delay"
+msgstr "Dim vertraging"
+
+msgid "Dim the LCD after specified time."
+msgstr "Dim het LCD na de ingestelde tijd."
 
 msgid "Direct playback of linked titles without menu"
 msgstr "Direct afspelen van titels zonder menu"
@@ -3435,6 +3453,9 @@ msgstr "FBC automatische loopthrough verbonden met %s"
 msgid "FEC"
 msgstr "FEC"
 
+msgid "FEC:"
+msgstr "FEC:"
+
 msgid "FLASH"
 msgstr "FLASH"
 
@@ -3605,6 +3626,9 @@ msgstr "Frequentiescan stapgrootte(khz)"
 
 msgid "Frequency steps"
 msgstr "Freqentie stappen"
+
+msgid "Frequency:"
+msgstr "Frequentie:"
 
 msgid "Fri"
 msgstr "Vr"
@@ -4503,6 +4527,9 @@ msgstr "Lokatie"
 
 msgid "Lock ratio"
 msgstr "Lock-ratio"
+
+msgid "Lock:"
+msgstr "Lock:"
 
 msgid "Log"
 msgstr "Log"
@@ -5482,9 +5509,6 @@ msgstr "Bovengelegen map"
 msgid "Parental control"
 msgstr "Kinderslot"
 
-msgid "Parental control setup"
-msgstr "Kinderslot instellingen"
-
 msgid "Password"
 msgstr "Wachtwoord"
 
@@ -5876,6 +5900,9 @@ msgstr "Applicaties"
 
 msgid "Polarisation"
 msgstr "Polarisatie"
+
+msgid "Polarisation:"
+msgstr "Polarisatie:"
 
 msgid "Polarization"
 msgstr "Polarisatie"
@@ -6667,6 +6694,9 @@ msgstr "SID"
 #
 msgid "SINGLE LAYER DVD"
 msgstr "ENKEL LAYER DVD"
+
+msgid "SNR:"
+msgstr "SNR:"
 
 msgid "SPDIF"
 msgstr "SPDIF"
@@ -8229,6 +8259,9 @@ msgstr "Verwisselbare tunertypes:"
 
 msgid "Symbol rate"
 msgstr "Symbolrate"
+
+msgid "Symbolrate:"
+msgstr "Symbolrate:"
 
 msgid "Sync NTP every (minutes)"
 msgstr "Synchroniseer NTP elke (aantal) minuten"
@@ -11837,6 +11870,9 @@ msgstr "zapte"
 
 #~ msgid "Parental control editor"
 #~ msgstr "Kinderslot aanpassen"
+
+#~ msgid "Parental control setup"
+#~ msgstr "Kinderslot instellingen"
 
 #~ msgid "Parental control type"
 #~ msgstr "Kinderslot type"

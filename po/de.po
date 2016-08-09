@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-07-15 11:08+0200\n"
-"PO-Revision-Date: 2016-07-16 11:28+0200\n"
+"POT-Creation-Date: 2016-07-27 16:09+0200\n"
+"PO-Revision-Date: 2016-07-27 20:46+0200\n"
 "Last-Translator: Ralf Biedermann <ralf.biedermann@rbsoft.de>\n"
 "Language-Team: AndyBlacburn, j-ot&Trial\n"
 "Language: de\n"
@@ -708,6 +708,9 @@ msgstr "AFP Einstellungen"
 msgid "AFP setup"
 msgstr "AFP Einstellungen"
 
+msgid "AGC:"
+msgstr ""
+
 #, python-format
 msgid "AV aspect is %s."
 msgstr "AV Aspect ist %s."
@@ -1300,6 +1303,9 @@ msgstr "Vorhandene Freigaben:"
 msgid "B"
 msgstr "B"
 
+msgid "BER:"
+msgstr ""
+
 msgid "Back"
 msgstr "Zurück"
 
@@ -1367,7 +1373,7 @@ msgid "Behavior when a movie reaches the end"
 msgstr "Verhalten beim Filmende"
 
 msgid "Big PiP"
-msgstr ""
+msgstr "Großes PiP"
 
 msgid "Bitrate:"
 msgstr "Bitrate:"
@@ -1404,6 +1410,9 @@ msgstr "Favoritenliste"
 
 msgid "Brightness"
 msgstr "Helligkeit"
+
+msgid "Brightness (Dimmed)"
+msgstr "Helligkeit (gedimmt)"
 
 msgid "Brightness (Normal)"
 msgstr "Helligkeit (Normal)"
@@ -2002,6 +2011,9 @@ msgstr "Konfiguriere das Verhalten beim Erreichen des Endes eines Films bei der 
 
 msgid "Configure the border width of the subtitles. The dark border makes the subtitles easier to read on a light background."
 msgstr "Konfiguriere die Rahmenbreite für die Untertitel. Der dunkle Rand verbessert die Lesbarkeit bei hellerem Hintergrund."
+
+msgid "Configure the brightness level of the front panel display for dimmed operation."
+msgstr "Konfiguriere die Helligkeit des Frontpanels bei gedimmten Betrieb."
 
 msgid "Configure the brightness level of the front panel display for normal operation."
 msgstr "Konfiguriere die Helligkeit des Frontpanels bei normalem Betrieb."
@@ -2683,6 +2695,12 @@ msgstr "Entfernen digitaler Konturen"
 
 msgid "Digital downmix"
 msgstr "Digital Downmix"
+
+msgid "Dim delay"
+msgstr "Dimmen Verzögerung"
+
+msgid "Dim the LCD after specified time."
+msgstr "LCD nach einer bestimmten Zeit dimmen."
 
 msgid "Direct playback of linked titles without menu"
 msgstr "Direkte Wiedergabe verknüpfter Titel ohne Menü"
@@ -3435,6 +3453,9 @@ msgstr ""
 msgid "FEC"
 msgstr "FEC"
 
+msgid "FEC:"
+msgstr ""
+
 msgid "FLASH"
 msgstr "FLASH"
 
@@ -3604,6 +3625,9 @@ msgstr "Frequenz Schrittweite (kHz)"
 
 msgid "Frequency steps"
 msgstr "Frequenz Schritte"
+
+msgid "Frequency:"
+msgstr "Frequenz:"
 
 msgid "Fri"
 msgstr "Fr"
@@ -4350,7 +4374,7 @@ msgid "Language selection"
 msgstr "Sprachauswahl"
 
 msgid "Large"
-msgstr ""
+msgstr "Lang"
 
 msgid "Last Req."
 msgstr ""
@@ -4499,6 +4523,9 @@ msgid "Location"
 msgstr "Zielverzeichnis"
 
 msgid "Lock ratio"
+msgstr ""
+
+msgid "Lock:"
 msgstr ""
 
 msgid "Log"
@@ -5476,9 +5503,6 @@ msgstr "übergeordnetes Verzeichnis"
 msgid "Parental control"
 msgstr "Jugendschutz"
 
-msgid "Parental control setup"
-msgstr "Jugendschutz Einstellungen"
-
 msgid "Password"
 msgstr "Passwort"
 
@@ -5869,6 +5893,9 @@ msgstr "Erweiterungen"
 
 msgid "Polarisation"
 msgstr "Polarisation"
+
+msgid "Polarisation:"
+msgstr "Polarisation:"
 
 msgid "Polarization"
 msgstr "Polarisation"
@@ -6659,6 +6686,9 @@ msgstr "SID"
 
 msgid "SINGLE LAYER DVD"
 msgstr "SINGLE LAYER DVD"
+
+msgid "SNR:"
+msgstr ""
 
 msgid "SPDIF"
 msgstr ""
@@ -7751,7 +7781,7 @@ msgid "Slow motion speeds"
 msgstr "Zeitlupengeschwindigkeiten"
 
 msgid "Small"
-msgstr ""
+msgstr "Kurz"
 
 msgid "Small progress"
 msgstr "Kleiner Fortschrittsbalken"
@@ -8216,6 +8246,9 @@ msgstr "Umschaltbare Tuner-Typen:"
 
 msgid "Symbol rate"
 msgstr "Symbolrate"
+
+msgid "Symbolrate:"
+msgstr "Symbolrate:"
 
 msgid "Sync NTP every (minutes)"
 msgstr "Synchronisiere Zeit alle XX Minuten"
@@ -11632,6 +11665,9 @@ msgstr "umgeschaltet"
 
 #~ msgid "OpenVpn Log"
 #~ msgstr "OpenVpn Log"
+
+#~ msgid "Parental control setup"
+#~ msgstr "Jugendschutz Einstellungen"
 
 #~ msgid "Please check your network settings!"
 #~ msgstr "Bitte überprüfe die Netzwerkeinstellungen"
