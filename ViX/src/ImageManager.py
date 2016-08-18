@@ -352,7 +352,7 @@ class VIXImageManager(Screen):
 
 	def keyResstore(self):
 		self.sel = self['list'].getCurrent()
-		if getMachineMake() == 'vusolo4k':
+		if getMachineBuild() in ('vusolo4k','hd51','hd52'):
 			self.session.open(MessageBox, _("Sorry, But this machine is not supported yet."), MessageBox.TYPE_INFO, timeout=10)
 		elif self.sel:
 			message = _("Are you sure you want to restore this image:\n ") + self.sel
