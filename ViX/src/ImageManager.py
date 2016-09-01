@@ -985,6 +985,8 @@ class ImageManagerDownload(Screen):
 				self.boxtype = 'Mutant-HD500C'
 			elif getMachineMake() == 'mutant1200':
 				self.boxtype = 'Mutant-HD1200'
+			elif getMachineMake() == 'mutant1500':
+				self.boxtype = 'Mutant-HD1500'				
 			elif getMachineMake() == 'mutant51':
 				self.boxtype = 'Mutant-HD51'				
 			elif getMachineMake() == 'xp1000max':
