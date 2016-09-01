@@ -6,7 +6,7 @@ from time import time, sleep
 
 from enigma import eTimer
 
-from . import _
+from . import _, PluginLanguageDomain
 import Components.Task
 from Components.ActionMap import ActionMap
 from Components.Label import Label
@@ -116,7 +116,7 @@ class VIXSoftcamManager(Screen):
 
 	def createSetup(self):
 		from Screens.Setup import Setup
-		self.session.open(Setup, 'vixsoftcammanager', 'SystemPlugins/ViX', self.menu_path)
+		self.session.open(Setup, 'vixsoftcammanager', 'SystemPlugins/ViX', self.menu_path, PluginLanguageDomain)
 
 	def selectionChanged(self):
 		cams = listdir('/usr/softcams')

@@ -7,7 +7,7 @@ import tarfile
 
 from enigma import eTimer, eEnv, eDVBDB, quitMainloop
 
-from . import _
+from . import _, PluginLanguageDomain
 import Components.Task
 from Components.About import about
 from Components.ActionMap import ActionMap
@@ -254,7 +254,7 @@ class VIXBackupManager(Screen):
 			self['lab1'].setText(_("Device: ") + config.backupmanager.backuplocation.value + "\n" + _("there is a problem with this device, please reformat and try again."))
 
 	def createSetup(self):
-		self.session.openWithCallback(self.setupDone, VIXBackupManagerMenu, 'vixbackupmanager', 'SystemPlugins/ViX', self.menu_path)
+		self.session.openWithCallback(self.setupDone, VIXBackupManagerMenu, 'vixbackupmanager', 'SystemPlugins/ViX', self.menu_path, PluginLanguageDomain)
 
 	def showLog(self):
 		self.sel = self['list'].getCurrent()
@@ -849,8 +849,8 @@ class XtraPluginsSelection(Screen):
 
 
 class VIXBackupManagerMenu(Setup):
-	def __init__(self, session, setup, plugin=None, menu_path=None):
-		Setup.__init__(self, session, setup, plugin, menu_path)
+	def __init__(self, session, setup, plugin=None, menu_path=None, PluginLanguageDomain=None):
+		Setup.__init__(self, session, setup, plugin, menu_path, PluginLanguageDomain)
 		self.menu_path = menu_path
 		self.skinName = "VIXBackupManagerMenu"
 

@@ -1,5 +1,5 @@
 # for localized messages
-from . import _
+from . import _, PluginLanguageDomain
 
 from Screens.Screen import Screen
 from Screens.Console import Console
@@ -68,7 +68,7 @@ class VIXScriptRunner(IpkgInstaller):
 									  }, -1)
 
 	def createSetup(self):
-		self.session.open(Setup, 'vixscriptrunner', 'SystemPlugins/ViX', self.menu_path)
+		self.session.open(Setup, 'vixscriptrunner', 'SystemPlugins/ViX', self.menu_path, PluginLanguageDomain)
 
 	def install(self):
 		list = self.list.getSelectionsList()
