@@ -121,18 +121,12 @@ eDVBResourceManager::eDVBResourceManager()
 
 		if (rd == 0)
 			eDebug("[eDVBResourceManager] /proc/stb/info empty. Use fallback via demux count!");
-		else if (!strncmp(tmp, "dm7025\n", rd))
-			m_boxtype = DM7025;
-		else if (!strncmp(tmp, "dm8000\n", rd))
-			m_boxtype = DM8000;
-		else if (!strncmp(tmp, "dm800\n", rd))
-			m_boxtype = DM800;
-		else if (!strncmp(tmp, "dm500hd\n", rd))
-			m_boxtype = DM500HD;
-		else if (!strncmp(tmp, "dm800se\n", rd))
-			m_boxtype = DM800SE;
-		else if (!strncmp(tmp, "dm7020hd\n", rd))
-			m_boxtype = DM7020HD;
+		else if (!strncmp(tmp, "dm520\n", rd))
+			m_boxtype = DM520;
+		else if (!strncmp(tmp, "dm7080\n", rd))
+			m_boxtype = DM7080;
+		else if (!strncmp(tmp, "dm820\n", rd))
+			m_boxtype = DM820;
 		else
 			eDebug("[eDVBResourceManager] boxtype detection via /proc/stb/info not possible. Use fallback via demux count!");
 	}

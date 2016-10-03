@@ -647,6 +647,22 @@ import Components.Lcd
 Components.Lcd.InitLcd()
 Components.Lcd.IconCheck()
 
+if boxtype in ('dm7080', 'dm820'):
+	f=open("/proc/stb/hdmi-rx/0/hdmi_rx_monitor","r")
+	check=f.read()
+	f.close()
+	if check.startswith("on"):
+		f=open("/proc/stb/hdmi-rx/0/hdmi_rx_monitor","w")
+		f.write("off")
+		f.close()
+	f=open("/proc/stb/audio/hdmi_rx_monitor","r")
+	check=f.read()
+	f.close()
+	if check.startswith("on"):
+		f=open("/proc/stb/audio/hdmi_rx_monitor","w")
+		f.write("off")
+		f.close()
+
 profile("EpgCacheSched")
 import Components.EpgLoadSave
 Components.EpgLoadSave.EpgCacheSaveCheck()

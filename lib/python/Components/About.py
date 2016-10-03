@@ -31,13 +31,18 @@ def getKernelVersionString():
 		return _("unknown")
 
 def getChipSetString():
-	try:
-		f = open('/proc/stb/info/chipset', 'r')
-		chipset = f.read()
-		f.close()
-		return str(chipset.lower().replace('\n','').replace('bcm','').replace('brcm',''))
-	except IOError:
-		return _("unavailable")
+	if getMachineBuild() in ('dm7080','dm820'):
+		return "7435"
+	elif getMachineBuild() in ('dm520'):
+		return "73625"
+	else:
+		try:
+			f = open('/proc/stb/info/chipset', 'r')
+			chipset = f.read()
+			f.close()
+			return str(chipset.lower().replace('\n','').replace('bcm','').replace('brcm',''))
+		except IOError:
+			return _("unavailable")
 
 def getCPUSpeedString():
 	cpu_speed = 0
