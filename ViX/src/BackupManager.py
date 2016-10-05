@@ -68,16 +68,20 @@ config.backupmanager.xtraplugindir = ConfigDirectory(default='')
 config.backupmanager.lastlog = ConfigText(default=' ', fixed_size=False)
 
 def isRestorableSettings(imageversion):
-	restorableSettings = ('4.2',)
-	if imageversion in restorableSettings:
-		return True
-	return False
+	minimum_version = 4.2
+	try:
+		imageversion = float(imageversion)
+	except:
+		return False
+	return imageversion >= minimum_version
 
 def isRestorablePlugins(imageversion):
-	restorablePlugins = ('4.2',)
-	if imageversion in restorablePlugins:
-		return True
-	return False
+	minimum_version = 4.2
+	try:
+		imageversion = float(imageversion)
+	except:
+		return False
+	return imageversion >= minimum_version
 
 def BackupManagerautostart(reason, session=None, **kwargs):
 	"""called with reason=1 to during /sbin/shutdown.sysvinit, with reason=0 at startup?"""
