@@ -54,8 +54,26 @@ def SoftcamAutostart(reason, session=None, **kwargs):
 			softcamautopoller.stop()
 			softcamautopoller = None
 
-
 class VIXSoftcamManager(Screen):
+	skin = """
+	<screen name="VIXSoftcamManager" position="center,center" size="560,400" title="Softcam Setup">
+		<ePixmap pixmap="skin_default/buttons/red.png" position="0,0" size="140,40" alphatest="on"/>
+		<ePixmap pixmap="skin_default/buttons/green.png" position="140,0" size="140,40" alphatest="on"/>
+		<ePixmap pixmap="skin_default/buttons/yellow.png" position="280,0" size="140,40" alphatest="on"/>
+		<ePixmap pixmap="skin_default/buttons/blue.png" position="420,0" size="140,40" alphatest="on"/>
+		<widget name="key_red" position="0,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
+		<widget name="key_green" position="140,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1"/>
+		<widget name="key_yellow" position="280,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" transparent="1"/>
+		<widget name="key_blue" position="420,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" transparent="1"/>
+		<widget name="lab1" position="40,60" size="170,20" font="Regular; 22" halign="right" zPosition="2" transparent="0"/>
+		<widget name="list" position="225,60" size="240,100" transparent="0" scrollbarMode="showOnDemand"/>
+		<widget name="lab2" position="40,165" size="170,30" font="Regular; 22" halign="right" zPosition="2" transparent="0"/>
+		<widget name="activecam" position="225,166" size="240,100" font="Regular; 20" halign="left" zPosition="2" transparent="0" noWrap="1"/>
+		<applet type="onLayoutFinish">
+			self["list"].instance.setItemHeight(25)
+		</applet>
+	</screen>"""
+
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		screentitle =  _("Softcam Manager")
@@ -290,8 +308,13 @@ class VIXSoftcamManager(Screen):
 	def myclose(self):
 		self.close()
 
-
 class VIXStartCam(Screen):
+	skin = """
+	<screen name="VIXStartCam" position="center,center" size="484, 150" title="Starting Softcam">
+		<widget name="connect" position="217, 0" size="64,64" zPosition="2" pixmaps="ViX_HD_Common/busy/busy1.png,ViX_HD_Common/busy/busy2.png,ViX_HD_Common/busy/busy3.png,ViX_HD_Common/busy/busy4.png,ViX_HD_Common/busy/busy5.png,ViX_HD_Common/busy/busy6.png,ViX_HD_Common/busy/busy7.png,ViX_HD_Common/busy/busy8.png,ViX_HD_Common/busy/busy9.png,ViX_HD_Common/busy/busy9.png,ViX_HD_Common/busy/busy10.png,ViX_HD_Common/busy/busy11.png,ViX_HD_Common/busy/busy12.png,ViX_HD_Common/busy/busy13.png,ViX_HD_Common/busy/busy14.png,ViX_HD_Common/busy/busy15.png,ViX_HD_Common/busy/busy17.png,ViX_HD_Common/busy/busy18.png,ViX_HD_Common/busy/busy19.png,ViX_HD_Common/busy/busy20.png,ViX_HD_Common/busy/busy21.png,ViX_HD_Common/busy/busy22.png,ViX_HD_Common/busy/busy23.png,ViX_HD_Common/busy/busy24.png"  transparent="1" alphatest="blend"/>
+		<widget name="lab1" position="10, 80" halign="center" size="460, 60" zPosition="1" font="Regular;20" valign="top" transparent="1"/>
+	</screen>"""
+
 	def __init__(self, session, selectedcam):
 		Screen.__init__(self, session)
 		Screen.setTitle(self, _("Softcam Starting..."))
@@ -400,8 +423,13 @@ class VIXStartCam(Screen):
 	def delTimer(self):
 		del self.activityTimer
 
-
 class VIXStopCam(Screen):
+	skin = """
+	<screen name="VIXStopCam" position="center,center" size="484, 150" title="Stopping Softcam">
+		<widget name="connect" position="217, 0" size="64,64" zPosition="2" pixmaps="ViX_HD_Common/busy/busy1.png,ViX_HD_Common/busy/busy2.png,ViX_HD_Common/busy/busy3.png,ViX_HD_Common/busy/busy4.png,ViX_HD_Common/busy/busy5.png,ViX_HD_Common/busy/busy6.png,ViX_HD_Common/busy/busy7.png,ViX_HD_Common/busy/busy8.png,ViX_HD_Common/busy/busy9.png,ViX_HD_Common/busy/busy9.png,ViX_HD_Common/busy/busy10.png,ViX_HD_Common/busy/busy11.png,ViX_HD_Common/busy/busy12.png,ViX_HD_Common/busy/busy13.png,ViX_HD_Common/busy/busy14.png,ViX_HD_Common/busy/busy15.png,ViX_HD_Common/busy/busy17.png,ViX_HD_Common/busy/busy18.png,ViX_HD_Common/busy/busy19.png,ViX_HD_Common/busy/busy20.png,ViX_HD_Common/busy/busy21.png,ViX_HD_Common/busy/busy22.png,ViX_HD_Common/busy/busy23.png,ViX_HD_Common/busy/busy24.png"  transparent="1" alphatest="blend"/>
+		<widget name="lab1" position="10, 80" halign="center" size="460, 60" zPosition="1" font="Regular;20" valign="top" transparent="1"/>
+	</screen>"""
+
 	def __init__(self, session, selectedcam):
 		Screen.__init__(self, session)
 		global stopselectedcam
@@ -493,8 +521,12 @@ class VIXStopCam(Screen):
 	def delTimer(self):
 		del self.activityTimer
 
-
 class VIXSoftcamLog(Screen):
+	skin = """
+<screen name="VIXSoftcamLog" position="center,center" size="560,400">
+	<widget name="list" position="0,0" size="560,400" font="Regular;14"/>
+</screen>"""
+
 	def __init__(self, session, menu_path):
 		self.session = session
 		Screen.__init__(self, session)
@@ -528,7 +560,6 @@ class VIXSoftcamLog(Screen):
 
 	def cancel(self):
 		self.close()
-
 
 class SoftcamAutoPoller:
 	"""Automatically Poll SoftCam"""
