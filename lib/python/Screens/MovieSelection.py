@@ -1133,6 +1133,9 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 	def playAsDVD(self, path):
 		try:
 			from Screens import DVD
+			if path.endswith('VIDEO_TS/'):
+				# strip away VIDEO_TS/ part
+				path = os.path.split(path.rstrip('/'))[0]
 			self.session.open(DVD.DVDPlayer, dvd_filelist=[path])
 			return True
 		except Exception, e:
