@@ -87,6 +87,7 @@ class EPGSelection(Screen, HelpableScreen):
 		self.NumberZapField = None
 		self.CurrBouquet = None
 		self.CurrService = None
+		self["guidebouquetlist"] = Label()
 		self["number"] = Label()
 		self["number"].hide()
 		self['Service'] = ServiceEvent()
@@ -111,7 +112,7 @@ class EPGSelection(Screen, HelpableScreen):
 				'OKLong': (self.OKLong, _('Zap to channel and close (setup in menu)'))
 			}, -1)
 		self['okactions'].csel = self
-		self['colouractions'] = HelpableActionMap(self, 'ColorActions', 
+		self['colouractions'] = HelpableActionMap(self, 'ColorActions',
 			{
 				'red': (self.redButtonPressed, _('IMDB search for current event')),
 				'redlong': (self.redButtonPressedLong, _('Sort EPG List')),
@@ -142,6 +143,8 @@ class EPGSelection(Screen, HelpableScreen):
 			self.currentService = ServiceReference(service)
 			self['epgactions'] = HelpableActionMap(self, 'EPGSelectActions',
 				{
+					'nextService': (self.nextService, _('Goto next channel')),
+					'prevService': (self.prevService, _('Goto previous channel')),
 					'info': (self.Info, _('Show detailed event info')),
 					'epg': (self.Info, _('Show detailed event info')),
 					'menu': (self.createSetup, _('Setup menu'))
@@ -171,7 +174,7 @@ class EPGSelection(Screen, HelpableScreen):
 						'menu': (self.createSetup, _('Setup menu'))
 					}, -1)
 				self['epgactions'].csel = self
-				self['epgcursoractions'] = HelpableActionMap(self, 'DirectionActions', 
+				self['epgcursoractions'] = HelpableActionMap(self, 'DirectionActions',
 					{
 						'left': (self.prevService, _('Go to previous channel')),
 						'right': (self.nextService, _('Go to next channel')),
@@ -192,7 +195,7 @@ class EPGSelection(Screen, HelpableScreen):
 						'menu': (self.createSetup, _('Setup menu'))
 					}, -1)
 				self['epgactions'].csel = self
-				self['epgcursoractions'] = HelpableActionMap(self, 'DirectionActions', 
+				self['epgcursoractions'] = HelpableActionMap(self, 'DirectionActions',
 					{
 						'left': (self.prevPage, _('Move up a page')),
 						'right': (self.nextPage, _('Move down a page')),
@@ -200,7 +203,7 @@ class EPGSelection(Screen, HelpableScreen):
 						'down': (self.moveDown, _('Go to next channel'))
 					}, -1)
 				self['epgcursoractions'].csel = self
-			self['input_actions'] = HelpableNumberActionMap(self, 'NumberActions', 
+			self['input_actions'] = HelpableNumberActionMap(self, 'NumberActions',
 				{
 					'0': (self.keyNumberGlobal, _('enter number to jump to channel.')),
 					'1': (self.keyNumberGlobal, _('enter number to jump to channel.')),
@@ -462,6 +465,7 @@ class EPGSelection(Screen, HelpableScreen):
 			self['bouquetlist'].setCurrentBouquet(self.StartBouquet)
 			self.setTitle(self['bouquetlist'].getCurrentBouquet())
 			if self.type == EPG_TYPE_GRAPH:
+				self.makebouqlistlabel()
 				self['list'].setShowServiceMode(config.epgselection.graph_servicetitle_mode.value)
 				self.moveTimeLines()
 				if config.epgselection.graph_channel1.value:
@@ -626,10 +630,31 @@ class EPGSelection(Screen, HelpableScreen):
 		self['bouquetlist'].moveTo(self['bouquetlist'].instance.pageDown)
 		self['bouquetlist'].fillBouquetList(self.bouquets)
 
+	def makebouqlistlabel(self):
+		boqlist = ""
+		index = 0
+		listlength = len(self.bouquets)
+		for boqs in self.bouquets:
+			if boqs[0] != self['bouquetlist'].getCurrentBouquet():
+				index = index + 1
+			else:	
+				break;
+	
+		newendbouqlist = self.bouquets[0:index-1]
+		newstartbouqlist = self.bouquets[index+1:listlength]
+		finalbouqlist = newstartbouqlist + newendbouqlist
+			
+		for boqs in finalbouqlist:
+			boqlist = boqlist + "   |   " + boqs[0]
+			
+		self['guidebouquetlist'].setText(boqlist)
+		
 	def nextBouquet(self):
 		if self.type == EPG_TYPE_MULTI or self.type == EPG_TYPE_GRAPH or self.type == EPG_TYPE_INFOBARGRAPH:
 			self.moveBouquetDown()
 			self.BouquetOK()
+			self.makebouqlistlabel()
+			
 		elif (self.type == EPG_TYPE_ENHANCED or self.type == EPG_TYPE_INFOBAR) and config.usage.multibouquet.value:
 			self.CurrBouquet = self.servicelist.getCurrentSelection()
 			self.CurrService = self.servicelist.getRoot()
@@ -640,6 +665,7 @@ class EPGSelection(Screen, HelpableScreen):
 		if self.type == EPG_TYPE_MULTI or self.type == EPG_TYPE_GRAPH or self.type == EPG_TYPE_INFOBARGRAPH:
 			self.moveBouquetUp()
 			self.BouquetOK()
+			self.makebouqlistlabel()
 		elif (self.type == EPG_TYPE_ENHANCED or self.type == EPG_TYPE_INFOBAR) and config.usage.multibouquet.value:
 			self.CurrBouquet = self.servicelist.getCurrentSelection()
 			self.CurrService = self.servicelist.getRoot()
