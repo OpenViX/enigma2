@@ -189,9 +189,9 @@ class ChannelContextMenu(Screen):
 					for p in plugins.getPlugins(PluginDescriptor.WHERE_CHANNEL_CONTEXT_MENU):
 						append_when_current_valid(current, menu, (p.name, boundFunction(self.runPlugin, p)), key="bullet")
 					if config.servicelist.startupservice.value == current.toString():
-						append_when_current_valid(current, menu, (_("stop using as startup service"), self.unsetStartupService), level=0, key="2")
+						append_when_current_valid(current, menu, (_("Stop using as startup service"), self.unsetStartupService), level=0, key="2")
 					else:
-						append_when_current_valid(current, menu, (_("set as startup service"), self.setStartupService), level=0, key="1")
+						append_when_current_valid(current, menu, (_("Set as startup service"), self.setStartupService), level=0, key="1")
 					if self.parentalControlEnabled:
 						if self.parentalControl.getProtectionLevel(csel.getCurrentSelection().toCompareString()) == -1:
 							append_when_current_valid(current, menu, (_("Add to parental protection"), boundFunction(self.addParentalProtection, current)), level=0, key="bullet")
@@ -201,14 +201,14 @@ class ChannelContextMenu(Screen):
 							append_when_current_valid(current, menu, (_("Unhide parental control services"), self.unhideParentalServices), level=0, key="1")
 					if SystemInfo["3DMode"]:
 						if eDVBDB.getInstance().getFlag(eServiceReference(current.toString())) & FLAG_IS_DEDICATED_3D:
-							append_when_current_valid(current, menu, (_("Unmark service as a dedicated 3D service"), self.removeDedicated3DFlag), level=0)
+							append_when_current_valid(current, menu, (_("Unmark service as a dedicated 3D service"), self.removeDedicated3DFlag), level=0, key="bullet")
 						else:
-							append_when_current_valid(current, menu, (_("Mark service as a dedicated 3D service"), self.addDedicated3DFlag), level=0)
+							append_when_current_valid(current, menu, (_("Mark service as a dedicated 3D service"), self.addDedicated3DFlag), level=0, key="bullet")
 					if not (current_sel_path):
 						if eDVBDB.getInstance().getFlag(eServiceReference(current.toString())) & FLAG_HIDE_VBI:
-							append_when_current_valid(current, menu, (_("Remove 'Hide dotted line on the top for this service'"), self.removeHideVBIFlag), level=0)
+							append_when_current_valid(current, menu, (_("Remove 'Hide dotted line on the top for this service'"), self.removeHideVBIFlag), level=0, key="bullet")
 						else:
-							append_when_current_valid(current, menu, (_("Hide dotted line on the top for this service"), self.addHideVBIFlag), level=0)
+							append_when_current_valid(current, menu, (_("Hide dotted line on the top for this service"), self.addHideVBIFlag), level=0, key="bullet")
 					if haveBouquets:
 						bouquets = self.csel.getBouquetList()
 						if bouquets is None:
