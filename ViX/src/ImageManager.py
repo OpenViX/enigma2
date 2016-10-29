@@ -119,7 +119,10 @@ class VIXImageManager(Screen):
 
 		self['lab1'] = Label()
 		self["backupstatus"] = Label()
-		self["key_blue"] = Button(_("Restore"))
+		if getImageFileSystem().replace(' ','') not in ('tar.bz2', 'hd-emmc'):
+			self["key_blue"] = Button(_("Restore"))
+		else:
+			self["key_blue"] = Button("")
 		self["key_green"] = Button()
 		self["key_yellow"] = Button(_("Downloads"))
 		self["key_red"] = Button(_("Delete"))
@@ -227,12 +230,16 @@ class VIXImageManager(Screen):
 											  'red': self.keyDelete,
 											  'green': self.GreenPressed,
 											  'yellow': self.doDownload,
-											  'blue': self.keyResstore,
 											  "menu": self.createSetup,
 											  "up": self.refreshUp,
 											  "down": self.refreshDown,
 											  "displayHelp": self.doDownload,
 											  }, -1)
+				if getImageFileSystem().replace(' ','') not in ('tar.bz2', 'hd-emmc'):
+					self['restoreaction'] = ActionMap(['ColorActions'],
+												  {
+												  'blue': self.keyResstore,
+												  }, -1)
 
 				self.BackupDirectory = '/media/hdd/imagebackups/'
 				config.imagemanager.backuplocation.value = '/media/hdd/'
@@ -253,13 +260,17 @@ class VIXImageManager(Screen):
 										  'red': self.keyDelete,
 										  'green': self.GreenPressed,
 										  'yellow': self.doDownload,
-										  'blue': self.keyResstore,
 										  "menu": self.createSetup,
 										  "up": self.refreshUp,
 										  "down": self.refreshDown,
 										  "displayHelp": self.doDownload,
 										  "ok": self.keyResstore,
 										  }, -1)
+			if getImageFileSystem().replace(' ','') not in ('tar.bz2', 'hd-emmc'):
+				self['restoreaction'] = ActionMap(['ColorActions'],
+											  {
+											  'blue': self.keyResstore,
+											  }, -1)
 
 			self.BackupDirectory = config.imagemanager.backuplocation.value + 'imagebackups/'
 			s = statvfs(config.imagemanager.backuplocation.value)
@@ -368,9 +379,7 @@ class VIXImageManager(Screen):
 
 	def keyResstore(self):
 		self.sel = self['list'].getCurrent()
-		if getMachineBuild() in ('vusolo4k','hd51','hd52'):
-			self.session.open(MessageBox, _("Sorry, But this machine is not supported yet."), MessageBox.TYPE_INFO, timeout=10)
-		elif self.sel:
+		if self.sel:
 			message = _("Are you sure you want to restore this image:\n ") + self.sel
 			ybox = self.session.openWithCallback(self.keyResstore2, MessageBox, message, MessageBox.TYPE_YESNO)
 			ybox.setTitle(_("Restore Confirmation"))
@@ -560,20 +569,30 @@ class ImageBackup(Screen):
 		if getImageType() != 'release':
 			imageSubBuild = ".%s" % getImageDevBuild()
 		self.MAINDESTROOT = self.BackupDirectory + config.imagemanager.folderprefix.value + '-' + getImageType() + backupType + getImageVersion() + '.' + getImageBuild() + imageSubBuild + '-' + self.BackupDate
-		self.kernelMTD = getMachineMtdKernel()
-		self.kernelFILE = getMachineKernelFile()
-		self.rootMTD = getMachineMtdRoot()
-		self.rootFILE = getMachineRootFile()
+		self.MTDKERNEL = getMachineMtdKernel()
+		self.KERNELFILE = getMachineKernelFile()
+		self.MTDROOTFS = getMachineMtdRoot()
+		self.ROOTFSFILE = getMachineRootFile()
 		self.MAINDEST = self.MAINDESTROOT + '/' + getImageFolder() + '/'
-		print '[ImageManager] MTD: Kernel:',self.kernelMTD
-		print '[ImageManager] MTD: Root:',self.rootMTD
+		print '[ImageManager] MTD Kernel:',self.MTDKERNEL
+		print '[ImageManager] MTD Root:',self.MTDROOTFS
 		print '[ImageManager] Type:',getImageFileSystem()
 		if 'ubi' in getImageFileSystem():
+			self.ROOTDEVTYPE = 'ubifs'
 			self.ROOTFSTYPE = 'ubifs'
-		elif 'tar.bz2' in getImageFileSystem():
+			self.KERNELFSTYPE = 'gz'
+		elif getImageFileSystem().replace(' ','') == 'tar.bz2':
+			self.ROOTDEVTYPE = 'tar.bz2'
 			self.ROOTFSTYPE = 'tar.bz2'
+			self.KERNELFSTYPE = 'bin'
+		elif getImageFileSystem().replace(' ','') == 'hd-emmc':
+			self.ROOTDEVTYPE = 'hd-emmc'
+			self.ROOTFSTYPE = 'tar.bz2'
+			self.KERNELFSTYPE = 'bin'
 		else:
+			self.ROOTDEVTYPE = 'jffs2'
 			self.ROOTFSTYPE= 'jffs2'
+			self.KERNELFSTYPE = 'gz'
 		self.swapdevice = ""
 		self.RamChecked = False
 		self.SwapCreated = False
@@ -598,19 +617,19 @@ class ImageBackup(Screen):
 		task.check = lambda: self.SwapCreated
 		task.weighting = 5
 
-		task = Components.Task.PythonTask(job, _("Backing up Root file system..."))
+		task = Components.Task.PythonTask(job, _("Backing up Kernel..."))
 		task.work = self.doBackup1
 		task.weighting = 5
 
-		task = Components.Task.ConditionTask(job, _("Backing up Root file system..."), timeoutCount=900)
+		task = Components.Task.ConditionTask(job, _("Backing up Kernel..."), timeoutCount=900)
 		task.check = lambda: self.Stage1Completed
 		task.weighting = 35
 
-		task = Components.Task.PythonTask(job, _("Backing up Kernel..."))
+		task = Components.Task.PythonTask(job, _("Backing up Root file system..."))
 		task.work = self.doBackup2
 		task.weighting = 5
 
-		task = Components.Task.ConditionTask(job, _("Backing up Kernel..."), timeoutCount=900)
+		task = Components.Task.ConditionTask(job, _("Backing up Root file system..."), timeoutCount=900)
 		task.check = lambda: self.Stage2Completed
 		task.weighting = 15
 
@@ -618,7 +637,7 @@ class ImageBackup(Screen):
 		task.work = self.doBackup3
 		task.weighting = 5
 
-		task = Components.Task.ConditionTask(job, _("Removing temp mounts..."), timeoutCount=900)
+		task = Components.Task.ConditionTask(job, _("Removing temp mounts..."), timeoutCount=30)
 		task.check = lambda: self.Stage3Completed
 		task.weighting = 5
 
@@ -626,7 +645,7 @@ class ImageBackup(Screen):
 		task.work = self.doBackup4
 		task.weighting = 5
 
-		task = Components.Task.ConditionTask(job, _("Moving to Backup Location..."), timeoutCount=900)
+		task = Components.Task.ConditionTask(job, _("Moving to Backup Location..."), timeoutCount=30)
 		task.check = lambda: self.Stage4Completed
 		task.weighting = 5
 
@@ -733,27 +752,99 @@ class ImageBackup(Screen):
 			rmtree(self.TMPDIR + '/root')
 		if path.exists(self.TMPDIR):
 			rmtree(self.TMPDIR)
-		if not getImageFileSystem() == 'tar.bz2':
+		makedirs(self.TMPDIR, 0644)
+		if self.ROOTDEVTYPE != 'hd-emmc':
 			makedirs(self.TMPDIR + '/root', 0644)
 		makedirs(self.MAINDESTROOT, 0644)
 		self.commands = []
-		print '[ImageManager] Stage1: Making Root Image.'
 		makedirs(self.MAINDEST, 0644)
-		if self.ROOTFSTYPE == 'jffs2':
-			print '[ImageManager] Stage1: JFFS2 Detected.'
+		if self.ROOTDEVTYPE != 'hd-emmc':
+			print '[ImageManager] Stage1: Making Kernel Image.'
+			if self.KERNELFSTYPE == 'bin':
+				self.command = 'dd if=/dev/%s of=%s/vmlinux.bin' % (self.MTDKERNEL ,self.WORKDIR)
+			else:
+				self.command = 'nanddump /dev/%s -f %s/vmlinux.gz' % (self.MTDKERNEL ,self.WORKDIR)
+			self.Console.ePopen(self.command, self.Stage1Complete)
+		else:
+			print "[ImageManager] Stage1: Skipping make Kernel Image, as we don't need it"
+			self.Stage1Complete('pass', 0)
+
+	def Stage1Complete(self, result, retval, extra_args=None):
+		if retval == 0:
+			self.Stage1Completed = True
+			print '[ImageManager] Stage1: Complete.'
+
+	def doBackup2(self):
+		print '[ImageManager] Stage2: Making Root Image.'
+		if self.ROOTDEVTYPE == 'jffs2':
+			print '[ImageManager] Stage2: JFFS2 Detected.'
 			if getMachineBuild() == 'gb800solo':
 				JFFS2OPTIONS = " --disable-compressor=lzo -e131072 -l -p125829120"
 			else:
 				JFFS2OPTIONS = " --disable-compressor=lzo --eraseblock=0x20000 -n -l"
 			self.commands.append('mount --bind / %s/root' % self.TMPDIR)
-			self.commands.append('mkfs.jffs2 --root=%s/root --faketime --output=%s/rootfs.jffs2 %s' %(self.TMPDIR, self.self.WORKDIR, JFFS2OPTIONS))
-		elif self.ROOTFSTYPE == 'tar.bz2':
+			self.commands.append('mkfs.jffs2 --root=%s/root --faketime --output=%s/rootfs.jffs2 %s' % (self.TMPDIR, self.WORKDIR, JFFS2OPTIONS))
+		elif self.ROOTDEVTYPE == 'tar.bz2':
 			print '[ImageManager] Stage1: TAR.BZIP Detected.'
 			self.commands.append('mount --bind / %s/root' % self.TMPDIR)
-			self.commands.append("/bin/tar -cf %s/rootfs.tar -C %s/root ." % (self.WORKDIR, self.TMPDIR))
+			self.commands.append("/bin/tar -cf %s/rootfs.tar -C %s/root --exclude=/var/nmbd/* ." % (self.WORKDIR, self.TMPDIR))
 			self.commands.append("/usr/bin/bzip2 %s/rootfs.tar" % self.WORKDIR)
+		elif self.ROOTDEVTYPE == 'hd-emmc':
+			print '[ImageManager] Stage2: EMMC Detected.'
+			GPT_OFFSET=0
+			GPT_SIZE=1024
+			BOOT_PARTITION_OFFSET = int(GPT_OFFSET) + int(GPT_SIZE)
+			BOOT_PARTITION_SIZE=3072
+			KERNEL_PARTITION_OFFSET = int(BOOT_PARTITION_OFFSET) + int(BOOT_PARTITION_SIZE)
+			KERNEL_PARTITION_SIZE=8192
+			ROOTFS_PARTITION_OFFSET = int(KERNEL_PARTITION_OFFSET) + int(KERNEL_PARTITION_SIZE)
+			ROOTFS_PARTITION_SIZE=1048576
+			SECOND_KERNEL_PARTITION_OFFSET = int(ROOTFS_PARTITION_OFFSET) + int(ROOTFS_PARTITION_SIZE)
+			SECOND_ROOTFS_PARTITION_OFFSET = int(SECOND_KERNEL_PARTITION_OFFSET) + int(KERNEL_PARTITION_SIZE)
+			THRID_KERNEL_PARTITION_OFFSET = int(SECOND_ROOTFS_PARTITION_OFFSET) + int(ROOTFS_PARTITION_SIZE)
+			THRID_ROOTFS_PARTITION_OFFSET = int(THRID_KERNEL_PARTITION_OFFSET) + int(KERNEL_PARTITION_SIZE)
+			FOURTH_KERNEL_PARTITION_OFFSET = int(THRID_ROOTFS_PARTITION_OFFSET) + int(ROOTFS_PARTITION_SIZE)
+			FOURTH_ROOTFS_PARTITION_OFFSET = int(FOURTH_KERNEL_PARTITION_OFFSET) + int(KERNEL_PARTITION_SIZE)
+			EMMC_IMAGE = "%s/disk.img" % self.WORKDIR
+			EMMC_IMAGE_SIZE=3817472
+			IMAGE_ROOTFS_SIZE=196608
+			self.commands.append('dd if=/dev/zero of=%s bs=1024 count=0 seek=%s' % (EMMC_IMAGE, EMMC_IMAGE_SIZE))
+			self.commands.append('parted -s %s mklabel gpt' % EMMC_IMAGE)
+			PARTED_END_BOOT = int(BOOT_PARTITION_OFFSET) + int(BOOT_PARTITION_SIZE)
+			self.commands.append('parted -s %s unit KiB mkpart boot fat16 %s %s' % (EMMC_IMAGE, BOOT_PARTITION_OFFSET, PARTED_END_BOOT))
+			PARTED_END_KERNEL1 = int(KERNEL_PARTITION_OFFSET) + int(KERNEL_PARTITION_SIZE)
+			self.commands.append('parted -s %s unit KiB mkpart kernel1 %s %s' % (EMMC_IMAGE, KERNEL_PARTITION_OFFSET, PARTED_END_KERNEL1))
+			PARTED_END_ROOTFS1 = int(ROOTFS_PARTITION_OFFSET) + int(ROOTFS_PARTITION_SIZE)
+			self.commands.append('parted -s %s unit KiB mkpart rootfs1 ext2 %s %s' % (EMMC_IMAGE, ROOTFS_PARTITION_OFFSET, PARTED_END_ROOTFS1))
+			PARTED_END_KERNEL2 = int(SECOND_KERNEL_PARTITION_OFFSET) + int(KERNEL_PARTITION_SIZE)
+			self.commands.append('parted -s %s unit KiB mkpart kernel2 %s %s' % (EMMC_IMAGE, SECOND_KERNEL_PARTITION_OFFSET, PARTED_END_KERNEL2))
+			PARTED_END_ROOTFS2 = int(SECOND_ROOTFS_PARTITION_OFFSET) + int(ROOTFS_PARTITION_SIZE)
+			self.commands.append('parted -s %s unit KiB mkpart rootfs2 ext2 %s %s' % (EMMC_IMAGE, SECOND_ROOTFS_PARTITION_OFFSET, PARTED_END_ROOTFS2))
+			PARTED_END_KERNEL3 = int(THRID_KERNEL_PARTITION_OFFSET) + int(KERNEL_PARTITION_SIZE)
+			self.commands.append('parted -s %s unit KiB mkpart kernel3 %s %s' % (EMMC_IMAGE, THRID_KERNEL_PARTITION_OFFSET, PARTED_END_KERNEL3))
+			PARTED_END_ROOTFS3 = int(THRID_ROOTFS_PARTITION_OFFSET) + int(ROOTFS_PARTITION_SIZE)
+			self.commands.append('parted -s %s unit KiB mkpart rootfs3 ext2 %s %s' % (EMMC_IMAGE, THRID_ROOTFS_PARTITION_OFFSET, PARTED_END_ROOTFS3))
+			PARTED_END_KERNEL4 = int(FOURTH_KERNEL_PARTITION_OFFSET) + int(KERNEL_PARTITION_SIZE)
+			self.commands.append('parted -s %s unit KiB mkpart kernel4 %s %s' % (EMMC_IMAGE, FOURTH_KERNEL_PARTITION_OFFSET, PARTED_END_KERNEL4))
+			PARTED_END_ROOTFS4 = int(EMMC_IMAGE_SIZE) - 1024
+			self.commands.append('parted -s %s unit KiB mkpart rootfs4 ext2 %s %s' % (EMMC_IMAGE, FOURTH_ROOTFS_PARTITION_OFFSET, PARTED_END_ROOTFS4))
+			self.commands.append('dd if=/dev/zero of=%s/boot.img bs=1024 count=%s' % (self.WORKDIR, BOOT_PARTITION_SIZE))
+			self.commands.append('mkfs.msdos -S 512 %s/boot.img' % self.WORKDIR)
+			self.commands.append("echo \"boot emmcflash0.kernel1 \'root=/dev/mmcblk0p3 rw rootwait hd51_4.boxmode=1\'\" > %s/STARTUP" %self.WORKDIR)
+			self.commands.append("echo \"boot emmcflash0.kernel1 \'root=/dev/mmcblk0p3 rw rootwait hd51_4.boxmode=1\'\" > %s/STARTUP_1" %self.WORKDIR)
+			self.commands.append("echo \"boot emmcflash0.kernel2 \'root=/dev/mmcblk0p5 rw rootwait hd51_4.boxmode=1\'\" > %s/STARTUP_2" %self.WORKDIR)
+			self.commands.append("echo \"boot emmcflash0.kernel3 \'root=/dev/mmcblk0p7 rw rootwait hd51_4.boxmode=1\'\" > %s/STARTUP_3" %self.WORKDIR)
+			self.commands.append("echo \"boot emmcflash0.kernel4 \'root=/dev/mmcblk0p9 rw rootwait hd51_4.boxmode=1\'\" > %s/STARTUP_4" %self.WORKDIR)
+			self.commands.append('mcopy -i %s/boot.img -v %s/STARTUP ::' % (self.WORKDIR, self.WORKDIR))
+			self.commands.append('mcopy -i %s/boot.img -v %s/STARTUP_1 ::' % (self.WORKDIR, self.WORKDIR))
+			self.commands.append('mcopy -i %s/boot.img -v %s/STARTUP_2 ::' % (self.WORKDIR, self.WORKDIR))
+			self.commands.append('mcopy -i %s/boot.img -v %s/STARTUP_3 ::' % (self.WORKDIR, self.WORKDIR))
+			self.commands.append('mcopy -i %s/boot.img -v %s/STARTUP_4 ::' % (self.WORKDIR, self.WORKDIR))
+			self.commands.append('dd conv=notrunc if=%s/boot.img of=%s bs=1024 seek=%s' % (self.WORKDIR, EMMC_IMAGE, BOOT_PARTITION_OFFSET))
+			self.commands.append('dd conv=notrunc if=/dev/%s of=%s bs=1024 seek=%s' % (self.MTDKERNEL, EMMC_IMAGE, KERNEL_PARTITION_OFFSET))
+			self.commands.append('dd if=/dev/%s of=%s bs=1024 seek=%s count=%s' % (self.MTDROOTFS, EMMC_IMAGE, ROOTFS_PARTITION_OFFSET, IMAGE_ROOTFS_SIZE))
 		else:
-			print '[ImageManager] Stage1: UBIFS Detected.'
+			print '[ImageManager] Stage2: UBIFS Detected.'
 			UBINIZE_ARGS = getMachineUBINIZE()
 			MKUBIFS_ARGS = getMachineMKUBIFS()
 			output = open('%s/ubinize.cfg' % self.WORKDIR, 'w')
@@ -769,33 +860,22 @@ class ImageBackup(Screen):
 			self.commands.append('touch %s/root.ubi' % self.WORKDIR)
 			self.commands.append('mkfs.ubifs -r %s/root -o %s/root.ubi %s' % (self.TMPDIR, self.WORKDIR, MKUBIFS_ARGS))
 			self.commands.append('ubinize -o %s/rootfs.ubifs %s %s/ubinize.cfg' % (self.WORKDIR, UBINIZE_ARGS, self.WORKDIR))
-		self.Console.eBatch(self.commands, self.Stage1Complete, debug=False)
+		self.Console.eBatch(self.commands, self.Stage2Complete, debug=False)
 
-	def Stage1Complete(self, extra_args=None):
+	def Stage2Complete(self, extra_args=None):
 		if len(self.Console.appContainers) == 0:
-			self.Stage1Completed = True
-			print '[ImageManager] Stage1: Complete.'
-
-	def doBackup2(self):
-		print '[ImageManager] Stage2: Making Kernel Image.'
-		if self.ROOTFSTYPE == 'tar.bz2':
-			self.command = 'dd if=/dev/%s of=%s/vmlinux.tar.bz2' % (self.kernelMTD ,self.WORKDIR)
-		else:
-			self.command = 'nanddump /dev/%s -f %s/vmlinux.gz' % (self.kernelMTD ,self.WORKDIR)
-		self.Console.ePopen(self.command, self.Stage2Complete)
-
-	def Stage2Complete(self, result, retval, extra_args=None):
-		if retval == 0:
 			self.Stage2Completed = True
 			print '[ImageManager] Stage2: Complete.'
 
 	def doBackup3(self):
 		print '[ImageManager] Stage3: Unmounting and removing tmp system'
-		if path.exists(self.TMPDIR + '/root'):
+		if path.exists(self.TMPDIR + '/root') and path.ismount(self.TMPDIR + '/root'):
 			self.command = 'umount ' + self.TMPDIR + '/root && rm -rf ' + self.TMPDIR
 			self.Console.ePopen(self.command, self.Stage3Complete)
-		elif self.ROOTFSTYPE == 'tar.bz2' and path.exists('%s/rootfs.tar.bz2' % self.WORKDIR):
-			self.Stage3Complete()
+		else:
+			if path.exists(self.TMPDIR):
+				rmtree(self.TMPDIR)
+			self.Stage3Complete('pass', 0)
 
 	def Stage3Complete(self, result, retval, extra_args=None):
 		if retval == 0:
@@ -804,11 +884,14 @@ class ImageBackup(Screen):
 
 	def doBackup4(self):
 		print '[ImageManager] Stage4: Moving from work to backup folders'
-		move('%s/rootfs.%s' % (self.WORKDIR, self.ROOTFSTYPE), '%s/%s' % (self.MAINDEST, self.rootFILE))
-		if self.ROOTFSTYPE == 'tar.bz2' and path.exists('%s/vmlinux.tar.bz2' % self.WORKDIR):
-			move('%s/vmlinux.tar.bz2' % self.WORKDIR, '%s/%s' % (self.MAINDEST, self.kernelFILE))
+		if self.ROOTDEVTYPE == 'hd-emmc' and path.exists('%s/disk.img' % self.WORKDIR):
+			move('%s/disk.img' % self.WORKDIR, '%s/disk.img' % self.MAINDEST)
 		else:
-			move('%s/vmlinux.gz' % self.WORKDIR, '%s/%s' % (self.MAINDEST, self.kernelFILE))
+			move('%s/rootfs.%s' % (self.WORKDIR, self.ROOTFSTYPE), '%s/%s' % (self.MAINDEST, self.ROOTFSFILE))
+			if self.KERNELFSTYPE == 'bin' and path.exists('%s/vmlinux.bin' % self.WORKDIR):
+				move('%s/vmlinux.bin' % self.WORKDIR, '%s/%s' % (self.MAINDEST, self.KERNELFILE))
+			else:
+				move('%s/vmlinux.gz' % self.WORKDIR, '%s/%s' % (self.MAINDEST, self.KERNELFILE))
 		fileout = open(self.MAINDEST + '/imageversion', 'w')
 		line = defaultprefix + '-' + getImageType() + '-backup-' + getImageVersion() + '.' + getImageBuild() + '-' + self.BackupDate
 		fileout.write(line)
@@ -839,7 +922,7 @@ class ImageBackup(Screen):
 			remove(self.swapdevice + config.imagemanager.folderprefix.value + '-' + getImageType() + "-swapfile_backup")
 		if path.exists(self.WORKDIR):
 			rmtree(self.WORKDIR)
-		if path.exists(self.MAINDEST + '/' + self.rootFILE) and path.exists(self.MAINDEST + '/' + self.kernelFILE):
+		if (path.exists(self.MAINDEST + '/' + self.ROOTFSFILE) and path.exists(self.MAINDEST + '/' + self.KERNELFILE)) or (self.ROOTDEVTYPE == 'hd-emmc' and path.exists('%s/disk.img' % self.MAINDEST)):
 			for root, dirs, files in walk(self.MAINDEST):
 				for momo in dirs:
 					chmod(path.join(root, momo), 0644)
