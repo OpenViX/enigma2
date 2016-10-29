@@ -1128,6 +1128,12 @@ class ImageManagerDownload(Screen):
 				self.boxtype = 'OCTAGON-XP1000PLUS'
 			elif getMachineMake() == 'sf8':
 				self.boxtype = 'OCTAGON-SF8-HD'
+			elif getMachineMake() == 'sf128':
+				self.boxtype = 'OCTAGON-SF128'
+			elif getMachineMake() == 'sf138':
+				self.boxtype = 'OCTAGON-SF138'
+			elif getMachineMake() == 'sf228':
+				self.boxtype = 'OCTAGON-SF228'					
 			elif getMachineMake() == 'qb800solo':
 				self.boxtype = 'GiGaBlue-HD800Solo'
 			elif getMachineMake() == 'gb800se':
@@ -1179,9 +1185,7 @@ class ImageManagerDownload(Screen):
 			elif getMachineMake() == 'osminiplus':
 				self.boxtype = 'OS-miniplus'				
 			elif getMachineMake() == 'mbtwinplus':
-				self.boxtype = 'Miraclebox-Twinplus'
-			elif getMachineMake() == 'fusionhdse':
-				self.boxtype = 'Xsarius-Fusion-HD-SE'					
+				self.boxtype = 'Miraclebox-Twinplus'				
 
 			url = 'http://www.openvix.co.uk/openvix-builds/'+self.boxtype+'/'
 			conn = urllib2.urlopen(url)
