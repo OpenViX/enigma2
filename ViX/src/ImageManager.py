@@ -908,8 +908,8 @@ class ImageBackup(Screen):
 				fileout.write(line)
 				fileout.close()
 			imagecreated = True
-		elif getBrandOEM() in ('xtrend', 'gigablue', 'odin', 'xp', 'ini'):
-			if getBrandOEM() in ('xtrend', 'odin', 'ini'):
+		elif getBrandOEM() in ('xtrend', 'gigablue', 'octagon', 'odin', 'xp', 'ini'):
+			if getBrandOEM() in ('xtrend', 'octagon', 'odin', 'ini'):
 				fileout = open(self.MAINDEST + '/noforce', 'w')
 				line = "rename this file to 'force' to force an update without confirmation"
 				fileout.write(line)
