@@ -454,7 +454,7 @@ class AutoImageManagerTimer:
 		elif config.imagemanager.repeattype.value == "weekly":
 			nextbkup_t = lastbkup_t + 7*24*3600
 		elif config.imagemanager.repeattype.value == "monthly":
-			nextbkup_t = lastbkup_t + 30*24*3600		
+			nextbkup_t = lastbkup_t + 30*24*3600
 		nextbkup = localtime(nextbkup_t)
 		return int(mktime((nextbkup.tm_year, nextbkup.tm_mon, nextbkup.tm_mday, backupclock[0], backupclock[1], 0, nextbkup.tm_wday, nextbkup.tm_yday, nextbkup.tm_isdst)))
 
@@ -967,7 +967,7 @@ class ImageBackup(Screen):
 				# sort by oldest first...
 				emlist.sort(key=lambda fil: path.getmtime(self.BackupDirectory + fil))
 				# ...then, if we have too many, remove the <n> newest from the end
-				# and delete what is left 
+				# and delete what is left
 				if len(emlist) > config.imagemanager.number_to_keep.value:
 					emlist = emlist[0:len(emlist)-config.imagemanager.number_to_keep.value]
 					for fil in emlist:
@@ -1046,146 +1046,80 @@ class ImageManagerDownload(Screen):
 			import urllib2
 			from bs4 import BeautifulSoup
 
-			if getMachineMake() == 'vuuno':
-				self.boxtype = 'Vu+Uno'
-			elif getMachineMake() == 'vuultimo':
-				self.boxtype = 'Vu+Ultimo'
-			elif getMachineMake() == 'vusolo':
-				self.boxtype = 'Vu+Solo'
-			elif getMachineMake() == 'vusolo4k':
-				self.boxtype = 'Vu+Solo4K'
-			elif getMachineMake() == 'vusolose':
-				self.boxtype = 'Vu+Solo-SE'
-			elif getMachineMake() == 'vusolo2':
-				self.boxtype = 'Vu+Solo2'
-			elif getMachineMake() == 'vuduo':
-				self.boxtype = 'Vu+Duo'
-			elif getMachineMake() == 'vuduo2':
-				self.boxtype = 'Vu+Duo2'
-			elif getMachineMake() == 'vuzero':
-				self.boxtype = 'Vu+Zero'
-			elif getMachineMake() == 'et4x00':
-				self.boxtype = 'ET-4x00'
-			elif getMachineMake() == 'et5x00':
-				self.boxtype = 'ET-5x00'
-			elif getMachineMake() == 'et6x00':
-				self.boxtype = 'ET-6x00'
-			elif getMachineMake() == 'et7x00':
-				self.boxtype = 'ET-7x00'
-			elif getMachineMake() == 'et8000':
-				self.boxtype = 'ET-8000'
-			elif getMachineMake() == 'et8500':
-				self.boxtype = 'ET-8500'
-			elif getMachineMake() == 'et9x00':
-				self.boxtype = 'ET-9x00'
-			elif getMachineMake() == 'et10000':
-				self.boxtype = 'ET-10x00'
-			elif getMachineMake() == 'tmtwin':
-				self.boxtype = 'TM-Twin-OE'
-			elif getMachineMake() == 'tm2t':
-				self.boxtype = 'TM-2T'
-			elif getMachineMake() == 'tmsingle':
-				self.boxtype = 'TM-Single'
-			elif getMachineMake() == 'tmnano':
-				self.boxtype = 'TM-Nano-OE'
-			elif getMachineMake() == 'tmnanose':
-				self.boxtype = 'TM-Nano-SE'
-			elif getMachineMake() == 'tmnanosem2':
-				self.boxtype = 'TM-Nano-SE-M2'
-			elif getMachineMake() == 'tmnanosem2plus':
-				self.boxtype = 'TM-Nano-SE-M2-Plus'				
-			elif getMachineMake() == 'tmnanoseplus':
-				self.boxtype = 'TM-Nano-SE-Plus'				
-			elif getMachineMake() == 'tmnanosecombo':
-				self.boxtype = 'TM-Nano-SE-Combo'
-			elif getMachineMake() == 'tmnano2t':
-				self.boxtype = 'TM-Nano-2T'
-			elif getMachineMake() == 'tmnano3t':
-				self.boxtype = 'TM-Nano-3T'
-			elif getMachineMake() == 'tmnano2super':
-				self.boxtype = 'TM-Nano2-Super'
-			elif getMachineMake() == 'iqonios100hd':
-				self.boxtype = 'iqon-IOS-100HD'
-			elif getMachineMake() == 'iqonios200hd':
-				self.boxtype = 'iqon-IOS-200HD'
-			elif getMachineMake() == 'iqonios300hd':
-				self.boxtype = 'iqon-IOS-300HD'
-			elif getMachineMake() == 'maram9':
-				self.boxtype = 'Mara-M9'
-			elif getMachineMake() == 'mutant2400':
-				self.boxtype = 'Mutant-HD2400'
-			elif getMachineMake() == 'mutant500c':
-				self.boxtype = 'Mutant-HD500C'
-			elif getMachineMake() == 'mutant1200':
-				self.boxtype = 'Mutant-HD1200'
-			elif getMachineMake() == 'mutant1500':
-				self.boxtype = 'Mutant-HD1500'				
-			elif getMachineMake() == 'mutant51':
-				self.boxtype = 'Mutant-HD51'				
-			elif getMachineMake() == 'xp1000max':
-				self.boxtype = 'MaxDigital-XP1000'
-			elif getMachineMake() == 'xp1000plus':
-				self.boxtype = 'OCTAGON-XP1000PLUS'
-			elif getMachineMake() == 'sf8':
-				self.boxtype = 'OCTAGON-SF8-HD'
-			elif getMachineMake() == 'sf128':
-				self.boxtype = 'OCTAGON-SF128'
-			elif getMachineMake() == 'sf138':
-				self.boxtype = 'OCTAGON-SF138'
-			elif getMachineMake() == 'sf228':
-				self.boxtype = 'OCTAGON-SF228'					
-			elif getMachineMake() == 'qb800solo':
-				self.boxtype = 'GiGaBlue-HD800Solo'
-			elif getMachineMake() == 'gb800se':
-				self.boxtype = 'GiGaBlue-HD800SE'
-			elif getMachineMake() == 'gb800ue':
-				self.boxtype = 'GiGaBlue-HD800UE'
-			elif getMachineMake() == 'gb800seplus':
-				self.boxtype = 'GiGaBlue-HD800SE-PLUS'
-			elif getMachineMake() == 'gb800ueplus':
-				self.boxtype = 'GiGaBlue-HD800UE-PLUS'
-			elif getMachineMake() == 'gbquad':
-				self.boxtype = 'GiGaBlue-HD-QUAD'
-			elif getMachineMake() == 'gbquadplus':
-				self.boxtype = 'GiGaBlue-HD-QUAD-PLUS'
-			elif getMachineMake() == 'gbqultraue':
-				self.boxtype = 'GiGaBlue-HD-ULTRA-UE'
-			elif getMachineMake() == 'gbx1':
-				self.boxtype = 'GiGaBlue-HD-X1'
-			elif getMachineMake() == 'gbx3':
-				self.boxtype = 'GiGaBlue-HD-X3'				
-			elif getMachineMake() == 'ventonhdx':
-				self.boxtype = 'Venton-Unibox-HDx'
-			elif getMachineMake() == 'uniboxhde':
-				self.boxtype = 'Venton-Unibox-HDeco-PLUS'
-			elif getMachineMake() == 'mbtwin':
-				self.boxtype = 'Miraclebox-Twin'
-			elif getMachineMake() == 'mbmini':
-				self.boxtype = 'Miraclebox-Mini'
-			elif getMachineMake() == 'mbminiplus':
-				self.boxtype = 'Miraclebox-MiniPlus'
-			elif getMachineMake() == 'mbhybrid':
-				self.boxtype = 'Miraclebox-Mini-Hybrid'
-			elif getMachineMake() == 'mbultra':
-				self.boxtype = 'Miraclebox-Ultra'
-			elif getMachineMake() == 'mbmicro':
-				self.boxtype = 'Miraclebox-Micro'
-			elif getMachineMake() == 'xpeedlx':
-				self.boxtype = 'GI-Xpeed-LX'
-			elif getMachineMake() == 'xpeedlx3':
-				self.boxtype = 'GI-Xpeed-LX3'
-			elif getMachineMake() == 'axodinc':
-				self.boxtype = 'Opticum-AX-ODIN-DVBC-1'
-			elif getMachineMake() == 'ixusszero':
-				self.boxtype = 'Medialink-IXUSS-ZERO'
-			elif getMachineMake() == 'spycat':
-				self.boxtype = 'Spycat'
-			elif getMachineMake() == 'osmini':
-				self.boxtype = 'OS-mini'
-			elif getMachineMake() == 'osminiplus':
-				self.boxtype = 'OS-miniplus'				
-			elif getMachineMake() == 'mbtwinplus':
-				self.boxtype = 'Miraclebox-Twinplus'				
+			supportedMachines = {
+				'axodinc'         : 'Opticum-AX-ODIN-DVBC-1',
+				'et10000'         : 'ET-10x00',
+				'et4x00'          : 'ET-4x00',
+				'et5x00'          : 'ET-5x00',
+				'et6x00'          : 'ET-6x00',
+				'et7x00'          : 'ET-7x00',
+				'et8000'          : 'ET-8000',
+				'et8500'          : 'ET-8500',
+				'et9x00'          : 'ET-9x00',
+				'fusionhdse'      : 'Xsarius-Fusion-HD-SE',
+				'gb800se'         : 'GiGaBlue-HD800SE',
+				'gb800seplus'     : 'GiGaBlue-HD800SE-PLUS',
+				'gb800ue'         : 'GiGaBlue-HD800UE',
+				'gb800ueplus'     : 'GiGaBlue-HD800UE-PLUS',
+				'gbquad'          : 'GiGaBlue-HD-QUAD',
+				'gbquadplus'      : 'GiGaBlue-HD-QUAD-PLUS',
+				'gbqultraue'      : 'GiGaBlue-HD-ULTRA-UE',
+				'gbx1'            : 'GiGaBlue-HD-X1',
+				'gbx3'            : 'GiGaBlue-HD-X3',
+				'iqonios100hd'    : 'iqon-IOS-100HD',
+				'iqonios200hd'    : 'iqon-IOS-200HD',
+				'iqonios300hd'    : 'iqon-IOS-300HD',
+				'ixusszero'       : 'Medialink-IXUSS-ZERO',
+				'maram9'          : 'Mara-M9',
+				'mbhybrid'        : 'Miraclebox-Mini-Hybrid',
+				'mbmicro'         : 'Miraclebox-Micro',
+				'mbmini'          : 'Miraclebox-Mini',
+				'mbminiplus'      : 'Miraclebox-MiniPlus',
+				'mbtwin'          : 'Miraclebox-Twin',
+				'mbtwinplus'      : 'Miraclebox-Twinplus',
+				'mbultra'         : 'Miraclebox-Ultra',
+				'mutant1200'      : 'Mutant-HD1200',
+				'mutant1500'      : 'Mutant-HD1500',
+				'mutant2400'      : 'Mutant-HD2400',
+				'mutant500c'      : 'Mutant-HD500C',
+				'mutant51'        : 'Mutant-HD51',
+				'osmini'          : 'OS-mini',
+				'osminiplus'      : 'OS-miniplus',
+				'qb800solo'       : 'GiGaBlue-HD800Solo',
+				'sf8'             : 'OCTAGON-SF8-HD',
+				'spycat'          : 'Spycat',
+				'tm2t'            : 'TM-2T',
+				'tmnano'          : 'TM-Nano-OE',
+				'tmnano2super'    : 'TM-Nano2-Super',
+				'tmnano2t'        : 'TM-Nano-2T',
+				'tmnano3t'        : 'TM-Nano-3T',
+				'tmnanose'        : 'TM-Nano-SE',
+				'tmnanosecombo'   : 'TM-Nano-SE-Combo',
+				'tmnanosem2'      : 'TM-Nano-SE-M2',
+				'tmnanosem2plus'  : 'TM-Nano-SE-M2-Plus',
+				'tmnanoseplus'    : 'TM-Nano-SE-Plus',
+				'tmsingle'        : 'TM-Single',
+				'tmtwin'          : 'TM-Twin-OE',
+				'uniboxhde'       : 'Venton-Unibox-HDeco-PLUS',
+				'ventonhdx'       : 'Venton-Unibox-HDx',
+				'vuduo'           : 'Vu+Duo',
+				'vuduo2'          : 'Vu+Duo2',
+				'vusolo'          : 'Vu+Solo',
+				'vusolo2'         : 'Vu+Solo2',
+				'vusolo4k'        : 'Vu+Solo4K',
+				'vusolose'        : 'Vu+Solo-SE',
+				'vuultimo'        : 'Vu+Ultimo',
+				'vuuno'           : 'Vu+Uno',
+				'vuzero'          : 'Vu+Zero',
+				'xp1000max'       : 'MaxDigital-XP1000',
+				'xp1000plus'      : 'OCTAGON-XP1000PLUS',
+				'xpeedlx'         : 'GI-Xpeed-LX',
+				'xpeedlx3'        : 'GI-Xpeed-LX3'
+			}
+
+			self.boxtype = 'Unknown'
+			if getMachineMake() in supportedMachines:
+				self.boxtype = supportedMachines[getMachineMake()]
 
 			url = 'http://www.openvix.co.uk/openvix-builds/'+self.boxtype+'/'
 			conn = urllib2.urlopen(url)
