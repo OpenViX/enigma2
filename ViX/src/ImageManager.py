@@ -1117,9 +1117,11 @@ class ImageManagerDownload(Screen):
 				'xpeedlx3'        : 'GI-Xpeed-LX3'
 			}
 
-			self.boxtype = 'Unknown'
-			if getMachineMake() in supportedMachines:
+			try:
 				self.boxtype = supportedMachines[getMachineMake()]
+			except:
+				print "[ImageManager][populate_List] the %s is not currently supported by OpenViX." % getMachineMake()
+				self.boxtype = 'UNKNOWN'
 
 			url = 'http://www.openvix.co.uk/openvix-builds/'+self.boxtype+'/'
 			conn = urllib2.urlopen(url)
