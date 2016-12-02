@@ -1,7 +1,7 @@
 <!--suppress XmlUnboundNsPrefix -->
 <wizard>
     <step id="welcome">
-        <text value="Welcome to the restore wizard.\n\nA backup has been detected.\nYou can use this wizard to restore your setting and any extra plugins that where installed when the backup was created.\n"/>
+        <text value="Welcome to the restore wizard.\n\nA backup has been detected.\nYou can use this wizard to restore your settings and any extra plugins that were installed when the backup was created.\n"/>
         <displaytext value="A backup has been detected."/>
         <list type="dynamic" source="listAction" evaluation="ActionSelectionMade" onselect="ActionSelectionMoved"/>
         <code>
@@ -81,8 +81,8 @@ self.buildList(None)
         </code>
     </step>
     <step id="noplugins">
-        <text value="No plugins where needed to be installed"/>
-        <displaytext value="No plugins where needed to be installed"/>
+        <text value="No plugins needed to be installed"/>
+        <displaytext value="No plugins needed to be installed"/>
     </step>
     <step id="end">
         <text value="The wizard is finished now."/>
