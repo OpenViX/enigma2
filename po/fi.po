@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-04 20:50+0000\n"
-"PO-Revision-Date: 2016-11-06 14:28+0200\n"
+"POT-Creation-Date: 2016-11-30 08:52+0000\n"
+"PO-Revision-Date: 2016-12-02 12:28+0200\n"
 "Last-Translator: Samzam <http://www.world-of-satellite.com>\n"
 "Language-Team: AndyBlac/timoj/Kojo/Samzam\n"
 "Language: fi\n"
@@ -14,6 +14,14 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.5.7\n"
+
+#, python-format
+msgid ""
+"\n"
+"%d.%d.%d, %2d:%02d  -  %s"
+msgstr ""
+"\n"
+"%d.%d.%d, %2d:%02d  -  %s"
 
 msgid ""
 "\n"
@@ -145,6 +153,10 @@ msgstr ""
 
 msgid " "
 msgstr " "
+
+#, python-format
+msgid "  (%s x %s)"
+msgstr "  (%s x %s)"
 
 #
 msgid " (0 - all networks)"
@@ -465,6 +477,9 @@ msgstr "1080p 50Hz"
 msgid "1080p 60Hz"
 msgstr "1080p 60Hz"
 
+msgid "10bit"
+msgstr "10bit"
+
 #
 msgid "128"
 msgstr "128"
@@ -476,6 +491,9 @@ msgstr "12V-ulostulo"
 #
 msgid "12V output."
 msgstr "12V-ulostulo"
+
+msgid "12bit"
+msgstr "12bit"
 
 #
 msgid "13 V"
@@ -598,6 +616,9 @@ msgstr "720p"
 
 msgid "720p 24Hz"
 msgstr "720p 24Hz"
+
+msgid "8bit"
+msgstr "8bit"
 
 #
 msgid "< Default >"
@@ -1695,10 +1716,6 @@ msgid "Buffers:"
 msgstr "Puskurit:"
 
 #, python-format
-msgid "Build:\t%s.%s%s (%s)\n"
-msgstr "Versio:\t%s.%s%s (%s)\n"
-
-#, python-format
 msgid "Build: %s"
 msgstr "Versio: %s"
 
@@ -2715,6 +2732,9 @@ msgstr "Valitut satelliitit"
 msgid "Connected to"
 msgstr "Kytketty virittimestä"
 
+msgid "Connected transcoding, limit - no PiP!"
+msgstr "Transkoodaus yhdistetty. Rajoistus - ei PiP-kuvaa!"
+
 msgid "Connected: "
 msgstr "Yhdistetty: "
 
@@ -3567,6 +3587,10 @@ msgstr "Dynaaminen kontrasti"
 msgid "E"
 msgstr "E"
 
+#, python-format
+msgid "E2 (re)starts:\t%s\n"
+msgstr "Käynnistykset:\t%s\n"
+
 msgid "ECM Statistics"
 msgstr "ECM tietoja"
 
@@ -4141,6 +4165,11 @@ msgstr "FEC:"
 msgid "FLASH"
 msgstr "FLASH"
 
+#
+#, python-format
+msgid "FP version:\t%s"
+msgstr "FP versio:\t%s"
+
 msgid "FTP Setup"
 msgstr "FTP-asetukset"
 
@@ -4350,10 +4379,6 @@ msgstr "Mistä :"
 msgid "Front Display Panel"
 msgstr "Näyttöpaneeli"
 
-#, python-format
-msgid "Frontprocessor version: %d"
-msgstr "Edustaprosessorin versio: %d"
-
 msgid "Full screen"
 msgstr "Kokoruutu"
 
@@ -4523,6 +4548,10 @@ msgstr "HDMI CEC"
 
 msgid "HDMI CEC Setup"
 msgstr "HDMI CEC-asetukset"
+
+#
+msgid "HDMI Colordepth"
+msgstr "HDMI Värisyvyys"
 
 #
 msgid "HDMI Colorimetry"
@@ -4818,6 +4847,10 @@ msgstr ""
 
 msgid "Image Manager"
 msgstr "Image-varmuuskopiot"
+
+#, python-format
+msgid "Image:\t%s.%s%s (%s)\n"
+msgstr "Ohjelmaversio:\t%s.%s%s (%s)\n"
 
 #
 msgid "Immediate shutdown"
@@ -5226,12 +5259,8 @@ msgstr "Aikaisempi nopeus"
 
 #
 #, python-format
-msgid ""
-"Last update:\t%s\n"
-"\n"
-msgstr ""
-"Päivitys:\t%s\n"
-"\n"
+msgid "Last update:\t%s\n"
+msgstr "Päivitys:\t%s\n"
 
 #
 #, python-format
@@ -7275,7 +7304,7 @@ msgid "Process"
 msgstr "Suorita"
 
 #, python-format
-msgid "Processor temperature:\t%s"
+msgid "Processor temp:\t%s"
 msgstr "Prosessorin lämpötila:\t%s"
 
 msgid "Profile"
@@ -7410,6 +7439,16 @@ msgstr "Pika kanavanvaihto"
 
 msgid "Quit Movie Player with EXIT button"
 msgstr "Salli tallenteista poistuminen exit-napilla"
+
+msgid "R/C ID:\t"
+msgstr "R/C ID:\t"
+
+msgid "R/C type:\t"
+msgstr "R/C tyyppi:\t"
+
+#, python-format
+msgid "R/C type:\t%s"
+msgstr "R/C tyyppi:\t%s"
 
 msgid "RAM"
 msgstr "RAM"
@@ -9209,12 +9248,13 @@ msgstr "Koko: "
 msgid "Skin Setting"
 msgstr "Teeman asetus"
 
-#, python-format
-msgid "Skin name:\t%s\n"
-msgstr "Teeman nimi:\t%s\n"
-
 msgid "Skin setup"
 msgstr "Teeman valinta"
+
+#
+#, python-format
+msgid "Skin:\t%s"
+msgstr "Teema:\t%s"
 
 #
 msgid "Skins"
@@ -9862,7 +9902,7 @@ msgid "System"
 msgstr "Järjestelmä"
 
 #, python-format
-msgid "System temperature:\t%s"
+msgid "System temp:\t%s"
 msgstr "Laitteen lämpötila:\t%s"
 
 #, python-format
@@ -10277,9 +10317,6 @@ msgstr ""
 msgid "This option allows to set the level of dynamic contrast of the picture."
 msgstr "Tämä asetus määrittää kuven dynaamisen kontrastin määrän."
 
-msgid "This option allows you can config the Colorimetry for HDR"
-msgstr "Tämä asetus sallii sinun muuttaa HDR:n väriavaruutta."
-
 msgid "This option allows you choose how to display elapsed time as + or -"
 msgstr "Tämä asetus määrittää kuinka kulunut aika näytetään, joko + tai -"
 
@@ -10319,6 +10356,12 @@ msgstr "Tämä asetus korostaa kuvan vihreitä sävyjä."
 
 msgid "This option allows you to bypass HDMI EDID check"
 msgstr "Tällä asetuksella voit ohittaa HDMI-liitännän EDID-tarkistuksen"
+
+msgid "This option allows you to change the Colordepth for UHD"
+msgstr "Tämä asetus sallii sinun muuttaa HDR:n värisyvyyttä."
+
+msgid "This option allows you to change the Colorimetry for HDR"
+msgstr "Tämä asetus sallii sinun muuttaa HDR:n väriavaruutta."
 
 msgid "This option allows you to change the Colorspace from Auto to RGB"
 msgstr "Tämä asetus sallii sinun muuttaa väriavaruutta automaatilta RGB:ksi."
@@ -12125,6 +12168,15 @@ msgstr "XBox 360 -tuki"
 msgid "XP1000"
 msgstr "XP1000"
 
+msgid "YCbCr420"
+msgstr "YCbCr420"
+
+msgid "YCbCr422"
+msgstr "YCbCr422"
+
+msgid "YCbCr444"
+msgstr "YCbCr444"
+
 msgid "YES"
 msgstr "KYLLÄ"
 
@@ -13927,8 +13979,14 @@ msgstr "Vaihdettu"
 #~ msgid "Find currently played service"
 #~ msgstr "Etsi nyt käytössä oleva kanava"
 
+#~ msgid "Frontprocessor version: %d"
+#~ msgstr "Edustaprosessorin versio: %d"
+
 #~ msgid "Play in main window"
 #~ msgstr "Toista pääikkunassa"
+
+#~ msgid "Skin name:\t%s\n"
+#~ msgstr "Teeman nimi:\t%s\n"
 
 #~ msgid ""
 #~ "System temperature: %s%sC\n"
