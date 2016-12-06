@@ -767,7 +767,7 @@ def InitUsageConfig():
 		("hrv", _("Croatian")),
 		("ces cze", _("Czech")),
 		("dan", _("Danish")),
-		("dut ndl Dutch", _("Dutch")),
+		("dut ndl nld Dutch", _("Dutch")),
 		("eng qaa Englisch", _("English")),
 		("est", _("Estonian")),
 		("fin", _("Finnish")),
@@ -799,12 +799,12 @@ def InitUsageConfig():
 
 	def setEpgLanguage(configElement):
 		eServiceEvent.setEPGLanguage(configElement.value)
-	config.autolanguage.audio_epglanguage = ConfigSelection(default="---", audio_language_choices[:1] + audio_language_choices[2:])
+	config.autolanguage.audio_epglanguage = ConfigSelection(default="---", choices=audio_language_choices[:1] + audio_language_choices[2:])
 	config.autolanguage.audio_epglanguage.addNotifier(setEpgLanguage)
 
 	def setEpgLanguageAlternative(configElement):
 		eServiceEvent.setEPGLanguageAlternative(configElement.value)
-	config.autolanguage.audio_epglanguage_alternative = ConfigSelection(default="---", audio_language_choices[:1] + audio_language_choices[2:])
+	config.autolanguage.audio_epglanguage_alternative = ConfigSelection(default="---", choices=audio_language_choices[:1] + audio_language_choices[2:])
 	config.autolanguage.audio_epglanguage_alternative.addNotifier(setEpgLanguageAlternative)
 
 	config.autolanguage.audio_autoselect1 = ConfigSelection(default="---", choices=audio_language_choices)
