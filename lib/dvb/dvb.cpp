@@ -109,9 +109,6 @@ eDVBResourceManager::eDVBResourceManager()
 		addAdapter(adapter, true);
 	}
 	
-	m_fbcmng = new eFBCTunerManager(instance);
-	m_sec = new eDVBSatelliteEquipmentControl(m_frontend, m_simulate_frontend);
-
 	m_boxtype = -1;
 	int fd = open("/proc/stb/info/model", O_RDONLY);
 	if (fd >= 0) {
@@ -838,18 +835,6 @@ std::string eDVBResourceManager::getFrontendCapabilities(int index)
 	return "";
 }
 
-std::string eDVBResourceManager::getFrontendDeliverySystem(int index)
-{
-	for (eSmartPtrList<eDVBRegisteredFrontend>::iterator i(m_frontend.begin()); i != m_frontend.end(); ++i)
-	{
-		if (i->m_frontend->getSlotID() == index)
-			{
-				return i->m_frontend->getDeliverySystem();
-			}
-	}
-	return "";
-}
-
 void eDVBResourceManager::setFrontendType(int index, const char *type)
 {
 	for (eSmartPtrList<eDVBRegisteredFrontend>::iterator i(m_frontend.begin()); i != m_frontend.end(); ++i)
@@ -1278,6 +1263,7 @@ RESULT eDVBResourceManager::allocatePVRChannel(const eDVBChannelID &channelid, e
 		 * (allowing e.g. epgcache to be started)
 		 */
 		ePtr<iDVBFrontendParameters> feparm;
+		if (m_list) m_list->getChannelFrontendData(channelid, feparm);
 		ch->setChannel(channelid, feparm);
 	}
 	channel = ch;
@@ -2032,6 +2018,8 @@ RESULT eDVBChannel::setChannel(const eDVBChannelID &channelid, ePtr<iDVBFrontend
 	m_channel_id = channelid;
 	m_mgr->addChannel(channelid, this);
 
+	m_current_frontend_parameters = feparm;
+
 	if (!m_frontend)
 	{
 		/* no frontend, no need to tune (must be a streamed service) */
@@ -2042,7 +2030,6 @@ RESULT eDVBChannel::setChannel(const eDVBChannelID &channelid, ePtr<iDVBFrontend
 			/* if tuning fails, shutdown the channel immediately. */
 	int res;
 	res = m_frontend->get().tune(*feparm);
-	m_current_frontend_parameters = feparm;
 
 	if (res)
 	{

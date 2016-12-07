@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX-Enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-16 13:53+0300\n"
-"PO-Revision-Date: 2016-10-18 13:11+0300\n"
+"POT-Creation-Date: 2016-12-02 10:45+0200\n"
+"PO-Revision-Date: 2016-12-02 13:56+0200\n"
 "Last-Translator: rimas\n"
 "Language-Team: Digi-tv.ee\n"
 "Language: et\n"
@@ -11,7 +11,15 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
-"X-Generator: Poedit 1.8.9\n"
+"X-Generator: Poedit 1.8.11\n"
+
+#, python-format
+msgid ""
+"\n"
+"%d.%d.%d, %2d:%02d  -  %s"
+msgstr ""
+"\n"
+"%d.%d.%d, %2d:%02d  -  %s"
 
 msgid ""
 "\n"
@@ -124,6 +132,16 @@ msgid ""
 msgstr ""
 "\n"
 "Tarkvara paigaldamine ja eemaldamine."
+
+msgid " "
+msgstr " "
+
+#, python-format
+msgid "  (%s x %s)"
+msgstr "  (%s x %s)"
+
+msgid " (0 - all networks)"
+msgstr " (0 - kõik võrgud)"
 
 #, python-format
 msgid " (Channel %s)"
@@ -420,6 +438,9 @@ msgstr "1080p 50Hz"
 msgid "1080p 60Hz"
 msgstr "1080p 60Hz"
 
+msgid "10bit"
+msgstr "10bit"
+
 msgid "128"
 msgstr "128"
 
@@ -428,6 +449,9 @@ msgstr "12V väljund"
 
 msgid "12V output."
 msgstr "12V väljund."
+
+msgid "12bit"
+msgstr "12bit"
 
 msgid "13 V"
 msgstr "13 V"
@@ -539,6 +563,9 @@ msgstr "720p"
 
 msgid "720p 24Hz"
 msgstr "720p 24Hz"
+
+msgid "8bit"
+msgstr "8bit"
 
 msgid "< Default >"
 msgstr "< Vaikimisi >"
@@ -1459,6 +1486,10 @@ msgstr "Sinise võimendus"
 msgid "Boost green"
 msgstr "Rohelise võimendus"
 
+#, python-format
+msgid "Bootloader:\t\t%s\n"
+msgstr "Alglaadur:\t\t%s\n"
+
 msgid "Bouquet List"
 msgstr "Lemmiknimekirjad"
 
@@ -1480,10 +1511,6 @@ msgstr "Puhvris %d%%"
 
 msgid "Buffers:"
 msgstr "Puhvrid:"
-
-#, python-format
-msgid "Build:\t%s.%s%s (%s)\n"
-msgstr "Järk:\t%s.%s%s (%s)\n"
 
 #, python-format
 msgid "Build: %s"
@@ -1994,6 +2021,9 @@ msgstr "Häälestamine"
 msgid "Configuration mode: %s"
 msgstr "Häälestamine: %s"
 
+msgid "Configuration..."
+msgstr "Seadistused"
+
 msgid "Configure alignment of service events."
 msgstr "Määra saate nime asukoht."
 
@@ -2298,6 +2328,9 @@ msgstr "Ühendatud satelliidid"
 msgid "Connected to"
 msgstr "Ühendatud"
 
+msgid "Connected transcoding, limit - no PiP!"
+msgstr "Toimub transkodeerimine, PiP pole võimalik!"
+
 msgid "Connected: "
 msgstr "Ühendatud: "
 
@@ -2508,6 +2541,9 @@ msgstr "DVB CI viiteaeg"
 
 msgid "DVB subtitle black transparency"
 msgstr "DVB subtiitrite tausta läbipaistvus"
+
+msgid "DVB type"
+msgstr "DVB tüüp"
 
 msgid "DVB-C"
 msgstr "DVB-C"
@@ -3029,6 +3065,10 @@ msgstr "Dünaamiline kontrast"
 msgid "E"
 msgstr "E"
 
+#, python-format
+msgid "E2 (re)starts:\t%s\n"
+msgstr "E2 käivitusi:\t%s\n"
+
 msgid "ECM Statistics"
 msgstr "ECM statistika"
 
@@ -3529,6 +3569,10 @@ msgstr "FEC:"
 msgid "FLASH"
 msgstr "SISEMÄLU"
 
+#, python-format
+msgid "FP version:\t%s"
+msgstr "FP versioon:\t%s"
+
 msgid "FTP Setup"
 msgstr "FTP seaded"
 
@@ -3617,9 +3661,6 @@ msgstr "Lõplik asukoht indeksis"
 
 msgid "Final scroll delay"
 msgstr "Viiteaeg kerimise lõpetamisel"
-
-msgid "Find currently played service"
-msgstr "Leia aktiivne kanal"
 
 msgid "Fine movement"
 msgstr "Täppisliigutamine"
@@ -3716,10 +3757,6 @@ msgstr "Asukohast :"
 
 msgid "Front Display Panel"
 msgstr "Esipaneeli ekraan"
-
-#, python-format
-msgid "Frontprocessor version: %d"
-msgstr "Esiprotsessori versioon: %d"
 
 msgid "Full screen"
 msgstr "Täisekraan"
@@ -3875,6 +3912,9 @@ msgstr "HDMI CEC"
 
 msgid "HDMI CEC Setup"
 msgstr "HDMI CEC seaded"
+
+msgid "HDMI Colordepth"
+msgstr "HDMI värvisügavus"
 
 msgid "HDMI Colorimetry"
 msgstr "HDMI kolorimeetria"
@@ -4109,6 +4149,10 @@ msgstr ""
 
 msgid "Image Manager"
 msgstr "Süsteemitõmmised"
+
+#, python-format
+msgid "Image:\t%s.%s%s (%s)\n"
+msgstr "Järk:\t%s.%s%s (%s)\n"
 
 msgid "Immediate shutdown"
 msgstr "Kohene seiskamine"
@@ -4467,12 +4511,8 @@ msgid "Last speed"
 msgstr "Eelmine kiirus"
 
 #, python-format
-msgid ""
-"Last update:\t%s\n"
-"\n"
-msgstr ""
-"Uuendatud:\t%s\n"
-"\n"
+msgid "Last update:\t%s\n"
+msgstr "Uuendatud:\t%s\n"
 
 #, python-format
 msgid "Last update: %s"
@@ -5106,7 +5146,7 @@ msgid "No"
 msgstr "Ei"
 
 msgid "No (supported) DVDROM found!"
-msgstr "Toetatud DVD-ROM puudub!"
+msgstr "DVD-ROM puudub!"
 
 msgid "No Connection"
 msgstr "Ühendus puudub"
@@ -5706,9 +5746,6 @@ msgstr "Esita alates järgmisest märgist või pleilisti kirjest"
 msgid "Play from previous mark or playlist entry"
 msgstr "Esita alates eelmisest märgist või pleilisti kirjest"
 
-msgid "Play in main window"
-msgstr "Näita peaekraaniil"
-
 msgid "Play music..."
 msgstr "Mängi muusikat"
 
@@ -6199,6 +6236,10 @@ msgstr "Prioriteet"
 msgid "Process"
 msgstr "Toiming"
 
+#, python-format
+msgid "Processor temp:\t%s"
+msgstr "CPU temp:\t%s"
+
 msgid "Profile"
 msgstr "Profiil"
 
@@ -6326,6 +6367,9 @@ msgstr "RGB"
 
 msgid "Radio"
 msgstr "Raadio"
+
+msgid "Radio Channel Selection"
+msgstr "Raadiokanalid"
 
 msgid "Random"
 msgstr "Juhuslik"
@@ -6781,6 +6825,9 @@ msgstr "SABnzbd seaded"
 
 msgid "SABnzbd setup"
 msgstr "SABnzbd seaded"
+
+msgid "SCPC optimized search range"
+msgstr "SCPC optimeeritud otsingu vahemik"
 
 msgid "SID"
 msgstr "SID"
@@ -7837,12 +7884,12 @@ msgstr "Suurus: "
 msgid "Skin Setting"
 msgstr "Kujunduse seaded"
 
-#, python-format
-msgid "Skin name:\t%s\n"
-msgstr "Kujundus:\t%s\n"
-
 msgid "Skin setup"
 msgstr "Kujunduse valik"
+
+#, python-format
+msgid "Skin:\t%s"
+msgstr "Kujundus:\t%s"
 
 msgid "Skins"
 msgstr "Kujundused"
@@ -8391,16 +8438,12 @@ msgid "System"
 msgstr "Süsteem"
 
 #, python-format
-msgid "System temperature: %s"
-msgstr "Süsteemi temperatuur: %s"
+msgid "System temp:\t%s"
+msgstr "Süst. temp:\t%s"
 
 #, python-format
-msgid ""
-"System temperature: %s%sC\n"
-"\n"
-msgstr ""
-"Süsteemi temperatuur: %s%sC\n"
-"\n"
+msgid "System temperature: %s"
+msgstr "Süsteemi temperatuur: %s"
 
 msgid "System: "
 msgstr "Süsteem: "
@@ -8559,6 +8602,20 @@ msgid ""
 msgstr ""
 "IMDb plugin ei ole paigaldatud!\n"
 "Paigalda see."
+
+msgid ""
+"The Linux kernel has changed, an update is not permitted. \n"
+"Install latest image using USB stick or Image Manager."
+msgstr ""
+"Linuxi kernel on muutunud, uuendamine on keelatud.\n"
+"Paigalda uusim tarkvara USB pulgalt või süsteemitõmmiste menüüst."
+
+msgid ""
+"The Linux kernel has changed, plugins are not compatible. \n"
+"Install latest image using USB stick or Image Manager."
+msgstr ""
+"Linuxi kernel on muutunud, pluginad ei ühildu.\n"
+"Paigalda uusim tarkvara USB pulgalt või süsteemitõmmiste menüüst."
 
 msgid "The PIN code has been changed successfully."
 msgstr "PIN kood on muudetud."
@@ -8725,13 +8782,10 @@ msgid "This can be either the IP or name of the fallback receiver, not including
 msgstr "See võib olla kas IP või kaugvastuvõtja nimi ilma pordi numbrita (nt. kas 'xxx.xxx.xxx.xxx' või 'teise_vastuvõtja_nimi)"
 
 msgid "This option allows to reduce the block-noise in the picture. Obviously this is at the cost of the picture's sharpness."
-msgstr "See valik võimaldab vähendada pildi plokkmüra (block-noise). Seda tehakse pildi teravuse arvelt."
+msgstr "Siin saab vähendada pildi plokkmüra (block-noise). Seda tehakse pildi teravuse arvelt."
 
 msgid "This option allows to set the level of dynamic contrast of the picture."
 msgstr "Siin saab muuta pildi dünaamilise kontrasti taset."
-
-msgid "This option allows you can config the Colorimetry for HDR"
-msgstr "See valik võimaldab määrata HDR kolorimeetria"
 
 msgid "This option allows you choose how to display elapsed time as + or -"
 msgstr "See valik määrab, kas kulunud aega kuvatakse '+' või '-'"
@@ -8743,7 +8797,7 @@ msgid "This option allows you choose how to display the remaining/elapsed time f
 msgstr "See valik määrab, kuidas kuvada kulunud ja allesolevat aega telesaadete esitusel."
 
 msgid "This option allows you choose the background color of transparent picons."
-msgstr "See valik määrab läbipaistvate kanalilogode taustavärvi."
+msgstr "Siin saab valida läbipaistvate kanalilogode taustavärvi."
 
 msgid "This option allows you enable smoothing filter to control the dithering process."
 msgstr "See valik võtab kasutusse pehmendusfiltri värvitoonide segamisel"
@@ -8761,10 +8815,16 @@ msgid "This option allows you to boost the green tones in the picture."
 msgstr "Siin saab võimendada pildi rohelisi toone."
 
 msgid "This option allows you to bypass HDMI EDID check"
-msgstr "Siin valikus saab keelata HDMI EDID kontrolli"
+msgstr "Siin saab keelata HDMI EDID kontrolli"
+
+msgid "This option allows you to change the Colordepth for UHD"
+msgstr "Siin saab muuta UHD värvisügavust"
+
+msgid "This option allows you to change the Colorimetry for HDR"
+msgstr "Siin saab muuta HDR kolorimeetriat"
 
 msgid "This option allows you to change the Colorspace from Auto to RGB"
-msgstr "See valik võimaldab muuta värviruumi automaatne > RGB"
+msgstr "See saab muuta värviruumi automaatne > RGB"
 
 msgid "This option allows you to change the virtual loudspeaker position."
 msgstr "Siin saab muuta virtuaalse kõlari asukohta."
@@ -8827,7 +8887,7 @@ msgid "This option allows you to enable 3D Surround Sound for an output."
 msgstr "Siin saab lubada väljundile 3D ruumheli."
 
 msgid "This option allows you to power on or off the display."
-msgstr "See valik võimaldab esipaneeli välja lülitada."
+msgstr "See saab esipaneeli välja lülitada."
 
 msgid "This option allows you to set the layout view (Text or Graphics)."
 msgstr "See valik määrab saatekava kujunduse (tekst või graafiline)."
@@ -9070,7 +9130,7 @@ msgid "Timeshift not possible!"
 msgstr "Ajanihke kasutamine pole võimalik!"
 
 msgid "Timeshift on a stream is not supported!"
-msgstr "Ajanihke kasutamine voogesitusel ei ole toetatud!"
+msgstr "Voogesitusel ei ole ajanihe võimalik!"
 
 msgid "Timeshift save failed!"
 msgstr "Ajanihke talletamine nurjus!"
@@ -9904,12 +9964,6 @@ msgstr "Mida soovid otsida?"
 msgid "When enabled enigma2 will load unlinked userbouquets. This means that userbouquets that are available, but not included in the bouquets.tv or bouquets.radio files, will still be loaded. This allows you for example to keep your own user bouquet while installed settings are upgraded"
 msgstr "Määrates 'jah', laadib enigma2 ka sidumata lemmiknimekirjad. See tähendab, et lemmiknimekirjad, mis on olemas, aga puuduvad bouquets.tv või bouquets.radio failides, laaditakse ikkagi. Nii saab oma lemmiknimekirjad säilitada ka paigaldatud kanalinimekirjade uuendamisel."
 
-msgid "When enabled the LNB power will not be switched off in standby"
-msgstr "Määrates 'jah', ei lülitata ooteseisundis LNB toidet välja"
-
-msgid "When enabled the LNB toneburst will be forced"
-msgstr "Määrates 'jah', toimub LNB toonimpulss sunnitult"
-
 msgid "When enabled the online checker will also check for experimental versions"
 msgstr "Määrates 'jah', otsitakse ka eksperimentaalseid uuendusi"
 
@@ -10052,10 +10106,10 @@ msgid "When set, each folder will show the previous state used. When off, the de
 msgstr "Määrates 'jah', peetakse iga kausta seadistused meeles, määrates 'ei', kasutatakse vaikeväärtusi."
 
 msgid "When the content has an aspect ratio of 16:9, choose whether to scale/stretch the picture."
-msgstr "Määra, kas 16:9 sisuga pilti tuleb skaleerida/venitada."
+msgstr "Määra, kas 16:9 kuvasuhtega sisu tuleb skaleerida/venitada."
 
 msgid "When the content has an aspect ratio of 4:3, choose whether to scale/stretch the picture."
-msgstr "Määra, kas 4:3 sisuga pilti tuleb skaleerida/venitada."
+msgstr "Määra, kas 4:3 kuvasuhtega sisu tuleb skaleerida/venitada."
 
 msgid "When tuned to a service the system will normally scan the transponder for any changes and save them. Only set to 'yes' if you're absolutely sure of what you're doing."
 msgstr "Olles häälestatud kanalile, uurib süsteem tavaliselt transponderi muudatusi ja salvestab need. Määra 'ei' ainult juhul, kui oled täiesti kindel, et tead, mida teed."
@@ -10120,7 +10174,7 @@ msgid "With this option set to 'yes' the channel list will always show you the l
 msgstr "Määrates 'jah', avatakse alati lemmiknimekirjade valik. Määrates 'ei' avatakse praegune kanalinimekiri."
 
 msgid "With this option you can hide Job Tasks from the extension screen (short blue button press)."
-msgstr "Siin saab valida, kas käsiloevaid tööülesandeid näidatakse laienduste menüüs (sinine nupp)."
+msgstr "Siin saab määrata, kas käsiloevaid tööülesandeid näidatakse laienduste menüüs (sinine nupp)."
 
 msgid "Without popup"
 msgstr "Hüpikaknata"
@@ -10151,6 +10205,15 @@ msgstr "XBox 360 tugi"
 
 msgid "XP1000"
 msgstr "XP1000"
+
+msgid "YCbCr420"
+msgstr "YCbCr420"
+
+msgid "YCbCr422"
+msgstr "YCbCr422"
+
+msgid "YCbCr444"
+msgstr "YCbCr444"
 
 msgid "YES"
 msgstr "JAH"
@@ -10700,7 +10763,7 @@ msgid "cartoon/puppets"
 msgstr "joonis/nukufilm"
 
 msgid "center"
-msgstr "keskel"
+msgstr "Keskel"
 
 msgid "centered"
 msgstr "Keskel"
@@ -10886,7 +10949,7 @@ msgid "failed"
 msgstr "nurjus"
 
 msgid "false"
-msgstr "väär"
+msgstr "ei"
 
 msgid "fashion"
 msgstr "mood"
@@ -11554,7 +11617,7 @@ msgid "traditional (fast)"
 msgstr "klassikaline (kiire)"
 
 msgid "true"
-msgstr "tõene"
+msgstr "jah"
 
 msgid "uShare Name"
 msgstr "uShare nimi"
@@ -11758,6 +11821,12 @@ msgstr "vahetatud"
 #~ msgid "Feeds status:   Updating"
 #~ msgstr "Hoidlate olek:   Värskendamisel"
 
+#~ msgid "Find currently played service"
+#~ msgstr "Leia aktiivne kanal"
+
+#~ msgid "Frontprocessor version: %d"
+#~ msgstr "Esiprotsessori versioon: %d"
+
 #~ msgid "Image Information"
 #~ msgstr "Andmeid süsteemist"
 
@@ -11794,6 +11863,9 @@ msgstr "vahetatud"
 #~ msgid "Parental control setup"
 #~ msgstr "Lapseluku seaded"
 
+#~ msgid "Play in main window"
+#~ msgstr "Näita peaekraaniil"
+
 #~ msgid "PowerManager log"
 #~ msgstr "Toitetaimeri logi"
 
@@ -11806,11 +11878,21 @@ msgstr "vahetatud"
 #~ msgid "Samba Log"
 #~ msgstr "Samba logi"
 
+#~ msgid "Skin name:\t%s\n"
+#~ msgstr "Kujundus:\t%s\n"
+
 #~ msgid "SoftCam / CI"
 #~ msgstr "EMU / CI"
 
 #~ msgid "Standby / Restart"
 #~ msgstr "Seiskamine"
+
+#~ msgid ""
+#~ "System temperature: %s%sC\n"
+#~ "\n"
+#~ msgstr ""
+#~ "Süsteemi temperatuur: %s%sC\n"
+#~ "\n"
 
 #~ msgid "This option allows you to change the virtuell loadspeaker position."
 #~ msgstr "Siin saab muuta virtuaalse kõlari asukohta."
@@ -11829,6 +11911,12 @@ msgstr "vahetatud"
 
 #~ msgid "What action is required on complettion of the timer? 'Auto' lets the box return to the state it had when the timer started. 'Do nothing', 'Go to standby' and 'Go to deep standby' do ecaxtly that."
 #~ msgstr "Mida teha taimeri lõppemisel? 'Automaatne' laseb vastuvõtjal minna olekusse, mis oli enne taimeri alustamist. 'Ära tee midagi', 'mine ooteseisundisse' ja 'mine puhkeseisundisse' teevad just seda, mis kirjas."
+
+#~ msgid "When enabled the LNB power will not be switched off in standby"
+#~ msgstr "Määrates 'jah', ei lülitata ooteseisundis LNB toidet välja"
+
+#~ msgid "When enabled the LNB toneburst will be forced"
+#~ msgstr "Määrates 'jah', toimub LNB toonimpulss sunnitult"
 
 #~ msgid "When enabled, Enigma2 will load unlinked bouquets. This means that bouquets that are available, but not included in the bouquets.tv or bouquets.radio files, will still be loaded. This allows you for example to keep your own user bouquet while installed settings are upgraded"
 #~ msgstr "Määrates 'jah', laadib enigma2 ka sidumata lemmiknimekirjad. See tähendab, et lemmiknimekirjad, mis on olemas, aga puuduvad bouquets.tv või bouquets.radio failides, laaditakse ikkagi. Nii on võimalik oma lemmiknimekirjad säilitada ka paigaldatud kanalinimekirjade uuendamisel."

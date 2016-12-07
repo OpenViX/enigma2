@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-23 13:06+0100\n"
-"PO-Revision-Date: 2016-10-24 14:51+0200\n"
+"POT-Creation-Date: 2016-11-30 08:52+0000\n"
+"PO-Revision-Date: 2016-12-02 12:28+0200\n"
 "Last-Translator: Samzam <http://www.world-of-satellite.com>\n"
 "Language-Team: AndyBlac/timoj/Kojo/Samzam\n"
 "Language: fi\n"
@@ -14,6 +14,14 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.5.7\n"
+
+#, python-format
+msgid ""
+"\n"
+"%d.%d.%d, %2d:%02d  -  %s"
+msgstr ""
+"\n"
+"%d.%d.%d, %2d:%02d  -  %s"
 
 msgid ""
 "\n"
@@ -142,6 +150,13 @@ msgid ""
 msgstr ""
 "\n"
 "Katsele, asenna ja poista ohjelmapaketteja."
+
+msgid " "
+msgstr " "
+
+#, python-format
+msgid "  (%s x %s)"
+msgstr "  (%s x %s)"
 
 #
 msgid " (0 - all networks)"
@@ -462,6 +477,9 @@ msgstr "1080p 50Hz"
 msgid "1080p 60Hz"
 msgstr "1080p 60Hz"
 
+msgid "10bit"
+msgstr "10bit"
+
 #
 msgid "128"
 msgstr "128"
@@ -473,6 +491,9 @@ msgstr "12V-ulostulo"
 #
 msgid "12V output."
 msgstr "12V-ulostulo"
+
+msgid "12bit"
+msgstr "12bit"
 
 #
 msgid "13 V"
@@ -595,6 +616,9 @@ msgstr "720p"
 
 msgid "720p 24Hz"
 msgstr "720p 24Hz"
+
+msgid "8bit"
+msgstr "8bit"
 
 #
 msgid "< Default >"
@@ -1664,6 +1688,10 @@ msgstr "Korosta sinistä"
 msgid "Boost green"
 msgstr "Korosta vihreää"
 
+#, python-format
+msgid "Bootloader:\t\t%s\n"
+msgstr "Bootloader:\t\t%s\n"
+
 msgid "Bouquet List"
 msgstr "Suosikkilista"
 
@@ -1686,10 +1714,6 @@ msgstr "Puskuroi %d%%"
 
 msgid "Buffers:"
 msgstr "Puskurit:"
-
-#, python-format
-msgid "Build:\t%s.%s%s (%s)\n"
-msgstr "Versio:\t%s.%s%s (%s)\n"
 
 #, python-format
 msgid "Build: %s"
@@ -2275,6 +2299,9 @@ msgstr "Asetustila"
 msgid "Configuration mode: %s"
 msgstr "Toimintatila: %s"
 
+msgid "Configuration..."
+msgstr "Asetukset..."
+
 #
 msgid "Configure alignment of service events."
 msgstr "Muuta ohjelmannimien sijainnin asetuksia."
@@ -2705,6 +2732,9 @@ msgstr "Valitut satelliitit"
 msgid "Connected to"
 msgstr "Kytketty virittimestä"
 
+msgid "Connected transcoding, limit - no PiP!"
+msgstr "Transkoodaus yhdistetty. Rajoistus - ei PiP-kuvaa!"
+
 msgid "Connected: "
 msgstr "Yhdistetty: "
 
@@ -2941,6 +2971,9 @@ msgstr "DVB CI-viive"
 
 msgid "DVB subtitle black transparency"
 msgstr "DVB-tekstin mustan reunan läpinäkyvyys"
+
+msgid "DVB type"
+msgstr "DVB tyyppi"
 
 msgid "DVB-C"
 msgstr "DVB-C"
@@ -3554,6 +3587,10 @@ msgstr "Dynaaminen kontrasti"
 msgid "E"
 msgstr "E"
 
+#, python-format
+msgid "E2 (re)starts:\t%s\n"
+msgstr "Käynnistykset:\t%s\n"
+
 msgid "ECM Statistics"
 msgstr "ECM tietoja"
 
@@ -4128,6 +4165,11 @@ msgstr "FEC:"
 msgid "FLASH"
 msgstr "FLASH"
 
+#
+#, python-format
+msgid "FP version:\t%s"
+msgstr "FP versio:\t%s"
+
 msgid "FTP Setup"
 msgstr "FTP-asetukset"
 
@@ -4222,9 +4264,6 @@ msgstr "Lopullinen sijainti muistipaikassa"
 
 msgid "Final scroll delay"
 msgstr "Rullausviive lopussa"
-
-msgid "Find currently played service"
-msgstr "Etsi nyt käytössä oleva kanava"
 
 #
 msgid "Fine movement"
@@ -4339,10 +4378,6 @@ msgstr "Mistä :"
 
 msgid "Front Display Panel"
 msgstr "Näyttöpaneeli"
-
-#, python-format
-msgid "Frontprocessor version: %d"
-msgstr "Edustaprosessorin versio: %d"
 
 msgid "Full screen"
 msgstr "Kokoruutu"
@@ -4513,6 +4548,10 @@ msgstr "HDMI CEC"
 
 msgid "HDMI CEC Setup"
 msgstr "HDMI CEC-asetukset"
+
+#
+msgid "HDMI Colordepth"
+msgstr "HDMI Värisyvyys"
 
 #
 msgid "HDMI Colorimetry"
@@ -4808,6 +4847,10 @@ msgstr ""
 
 msgid "Image Manager"
 msgstr "Image-varmuuskopiot"
+
+#, python-format
+msgid "Image:\t%s.%s%s (%s)\n"
+msgstr "Ohjelmaversio:\t%s.%s%s (%s)\n"
 
 #
 msgid "Immediate shutdown"
@@ -5216,12 +5259,8 @@ msgstr "Aikaisempi nopeus"
 
 #
 #, python-format
-msgid ""
-"Last update:\t%s\n"
-"\n"
-msgstr ""
-"Päivitys:\t%s\n"
-"\n"
+msgid "Last update:\t%s\n"
+msgstr "Päivitys:\t%s\n"
 
 #
 #, python-format
@@ -6675,9 +6714,6 @@ msgstr "Toista seuraavasta merkistä tai soittolistan valinnasta"
 msgid "Play from previous mark or playlist entry"
 msgstr "Toista edellisestä merkistä tai soittolistan valinnasta"
 
-msgid "Play in main window"
-msgstr "Toista pääikkunassa"
-
 #
 msgid "Play music..."
 msgstr "Soita musiikkia..."
@@ -7267,6 +7303,10 @@ msgstr "Prioriteetti"
 msgid "Process"
 msgstr "Suorita"
 
+#, python-format
+msgid "Processor temp:\t%s"
+msgstr "Prosessorin lämpötila:\t%s"
+
 msgid "Profile"
 msgstr "Profiili"
 
@@ -7400,6 +7440,16 @@ msgstr "Pika kanavanvaihto"
 msgid "Quit Movie Player with EXIT button"
 msgstr "Salli tallenteista poistuminen exit-napilla"
 
+msgid "R/C ID:\t"
+msgstr "R/C ID:\t"
+
+msgid "R/C type:\t"
+msgstr "R/C tyyppi:\t"
+
+#, python-format
+msgid "R/C type:\t%s"
+msgstr "R/C tyyppi:\t%s"
+
 msgid "RAM"
 msgstr "RAM"
 
@@ -7413,6 +7463,10 @@ msgstr "RGB"
 
 msgid "Radio"
 msgstr "Radio"
+
+#
+msgid "Radio Channel Selection"
+msgstr "Radiokanavan valinta"
 
 #
 msgid "Random"
@@ -7950,6 +8004,9 @@ msgstr "SABnzbd-asetukset"
 
 msgid "SABnzbd setup"
 msgstr "SABnzbd-asetukset"
+
+msgid "SCPC optimized search range"
+msgstr "SCPC optimoitu hakualue"
 
 msgid "SID"
 msgstr "SID"
@@ -9191,12 +9248,13 @@ msgstr "Koko: "
 msgid "Skin Setting"
 msgstr "Teeman asetus"
 
-#, python-format
-msgid "Skin name:\t%s\n"
-msgstr "Teeman nimi:\t%s\n"
-
 msgid "Skin setup"
 msgstr "Teeman valinta"
+
+#
+#, python-format
+msgid "Skin:\t%s"
+msgstr "Teema:\t%s"
 
 #
 msgid "Skins"
@@ -9844,16 +9902,12 @@ msgid "System"
 msgstr "Järjestelmä"
 
 #, python-format
-msgid "System temperature: %s"
-msgstr "Laitteen lämpötila: %s"
+msgid "System temp:\t%s"
+msgstr "Laitteen lämpötila:\t%s"
 
 #, python-format
-msgid ""
-"System temperature: %s%sC\n"
-"\n"
-msgstr ""
-"Sisälämpötila: %s%sC\n"
-"\n"
+msgid "System temperature: %s"
+msgstr "Laitteen lämpötila: %s"
 
 msgid "System: "
 msgstr "Järjestelmä:"
@@ -10032,6 +10086,20 @@ msgid ""
 msgstr ""
 "IMDb-lisäosaa ei ole asennettu!\n"
 "Asenna se."
+
+msgid ""
+"The Linux kernel has changed, an update is not permitted. \n"
+"Install latest image using USB stick or Image Manager."
+msgstr ""
+"Linux kernel on muuttunut. Ohjelmistopäivitys ei ole mahdollista. \n"
+"Asenna uusin image käyttäen USB-tikkua tai Image-varmuuskopiointia."
+
+msgid ""
+"The Linux kernel has changed, plugins are not compatible. \n"
+"Install latest image using USB stick or Image Manager."
+msgstr ""
+"Linux kernel on muuttunut. Pluginit eivät ole yhteensopivia. \n"
+"Asenna uusin image käyttäen USB-tikkua tai Image-varmuuskopiointia."
 
 msgid "The PIN code has been changed successfully."
 msgstr "PIN-koodin vaihto onnistui."
@@ -10249,9 +10317,6 @@ msgstr ""
 msgid "This option allows to set the level of dynamic contrast of the picture."
 msgstr "Tämä asetus määrittää kuven dynaamisen kontrastin määrän."
 
-msgid "This option allows you can config the Colorimetry for HDR"
-msgstr "Tämä asetus sallii sinun muuttaa HDR:n väriavaruutta."
-
 msgid "This option allows you choose how to display elapsed time as + or -"
 msgstr "Tämä asetus määrittää kuinka kulunut aika näytetään, joko + tai -"
 
@@ -10291,6 +10356,12 @@ msgstr "Tämä asetus korostaa kuvan vihreitä sävyjä."
 
 msgid "This option allows you to bypass HDMI EDID check"
 msgstr "Tällä asetuksella voit ohittaa HDMI-liitännän EDID-tarkistuksen"
+
+msgid "This option allows you to change the Colordepth for UHD"
+msgstr "Tämä asetus sallii sinun muuttaa HDR:n värisyvyyttä."
+
+msgid "This option allows you to change the Colorimetry for HDR"
+msgstr "Tämä asetus sallii sinun muuttaa HDR:n väriavaruutta."
 
 msgid "This option allows you to change the Colorspace from Auto to RGB"
 msgstr "Tämä asetus sallii sinun muuttaa väriavaruutta automaatilta RGB:ksi."
@@ -11708,12 +11779,6 @@ msgstr ""
 "ladataan silti. Tämä antaa sinun pitää omat suosikkilistasi samalla kun "
 "asennettuja päivitetään."
 
-msgid "When enabled the LNB power will not be switched off in standby"
-msgstr "Kun päällä, LNB:n virtaa ei katkaista valmiustilassa"
-
-msgid "When enabled the LNB toneburst will be forced"
-msgstr "Kun päällä, LNB:n ääniohjaus pakotetaan päälle"
-
 msgid ""
 "When enabled the online checker will also check for experimental versions"
 msgstr "Kun päällä, päivitys etsii myös kokeiluversioita"
@@ -12102,6 +12167,15 @@ msgstr "XBox 360 -tuki"
 
 msgid "XP1000"
 msgstr "XP1000"
+
+msgid "YCbCr420"
+msgstr "YCbCr420"
+
+msgid "YCbCr422"
+msgstr "YCbCr422"
+
+msgid "YCbCr444"
+msgstr "YCbCr444"
 
 msgid "YES"
 msgstr "KYLLÄ"
@@ -13901,3 +13975,28 @@ msgstr "Vaihdettu"
 #~ msgstr ""
 #~ "Haluatko asentaa myös Samba-asiakkaan?\n"
 #~ "Tämä mahdollistaa Windows-jakojen liittämisen tälle laitteelle."
+
+#~ msgid "Find currently played service"
+#~ msgstr "Etsi nyt käytössä oleva kanava"
+
+#~ msgid "Frontprocessor version: %d"
+#~ msgstr "Edustaprosessorin versio: %d"
+
+#~ msgid "Play in main window"
+#~ msgstr "Toista pääikkunassa"
+
+#~ msgid "Skin name:\t%s\n"
+#~ msgstr "Teeman nimi:\t%s\n"
+
+#~ msgid ""
+#~ "System temperature: %s%sC\n"
+#~ "\n"
+#~ msgstr ""
+#~ "Sisälämpötila: %s%sC\n"
+#~ "\n"
+
+#~ msgid "When enabled the LNB power will not be switched off in standby"
+#~ msgstr "Kun päällä, LNB:n virtaa ei katkaista valmiustilassa"
+
+#~ msgid "When enabled the LNB toneburst will be forced"
+#~ msgstr "Kun päällä, LNB:n ääniohjaus pakotetaan päälle"
