@@ -9,7 +9,7 @@ from Tools.Profile import profile, profile_final
 profile("PYTHON_START")
 
 import Tools.RedirectOutput
-from boxbranding import getBrandOEM, getImageVersion, getImageBuild, getImageDevBuild, getImageType
+from boxbranding import getBoxType, getBrandOEM, getImageVersion, getImageBuild, getImageDevBuild, getImageType
 print "[Image Type] %s" % getImageType()
 print "[Image Version] %s" % getImageVersion()
 print "[Image Build] %s" % getImageBuild()
@@ -647,7 +647,7 @@ import Components.Lcd
 Components.Lcd.InitLcd()
 Components.Lcd.IconCheck()
 
-if boxtype in ('dm7080', 'dm820'):
+if getBoxType() in ('dm7080', 'dm820'):
 	f=open("/proc/stb/hdmi-rx/0/hdmi_rx_monitor","r")
 	check=f.read()
 	f.close()

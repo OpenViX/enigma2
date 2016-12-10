@@ -15,6 +15,7 @@ from boxbranding import getBoxType
 
 def InitOsd():
 	SystemInfo["CanChange3DOsd"] = (access('/proc/stb/fb/3dmode', R_OK) or access('/proc/stb/fb/primary/3d', R_OK)) and True or False
+	SystemInfo["CanChange3Dznorm"] = access('/proc/stb/fb/znorm', R_OK) and True or False
 	SystemInfo["CanChangeOsdAlpha"] = access('/proc/stb/video/alpha', R_OK) and True or False
 	SystemInfo["CanChangeOsdPosition"] = access('/proc/stb/fb/dst_left', R_OK) and True or False
 	SystemInfo["OsdSetup"] = SystemInfo["CanChangeOsdPosition"]
@@ -87,7 +88,7 @@ def InitOsd():
 	config.osd.threeDmode.addNotifier(set3DMode)
 
 	def set3DZnorm(configElement):
-		if SystemInfo["CanChange3DOsd"] and getBoxType() not in ('spycat'):
+		if SystemInfo["CanChange3Dznorm"] and getBoxType() not in ('spycat'):
 			print '[UserInterfacePositioner] Setting 3D depth:',configElement.value
 			f = open("/proc/stb/fb/znorm", "w")
 			f.write('%d' % int(configElement.value))
