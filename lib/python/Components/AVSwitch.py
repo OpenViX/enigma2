@@ -64,7 +64,7 @@ class AVSwitch:
 	modes["Scart"] = ["PAL", "NTSC", "Multi"]
 	# modes["DVI-PC"] = ["PC"]
 
-	if about.getChipSetString() in ('5272s', '7251s', '7252', '7252s', '7366', '7376', '7444', '7445', '7445s'):
+	if about.getChipSetString() in ('5272s', '7251s', '7252', '7252s', '7366', '7376', '7444s'):
 		modes["HDMI"] = ["720p", "1080p", "2160p", "1080i", "576p", "576i", "480p", "480i"]
 		widescreen_modes = {"720p", "1080p", "2160p", "1080i"}
 	elif about.getChipSetString() in ('7241', '7356', '7358', '7362', '73625', '7424', '7425', '7552'):
@@ -75,7 +75,7 @@ class AVSwitch:
 		widescreen_modes = {"720p", "1080i"}
 
 	modes["YPbPr"] = modes["HDMI"]
-	if getBrandOEM() == 'vuplus' and getBoxType() != 'vusolo4k':
+	if getBrandOEM() == 'vuplus' and getBoxType() not in ('vusolo4k', 'vuultimo4k', 'vuuno4k'):
 		modes["Scart-YPbPr"] = modes["HDMI"]
 
 	# if modes.has_key("DVI-PC") and not getModeList("DVI-PC"):
