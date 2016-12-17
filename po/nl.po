@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-12-10 12:37+0100\n"
-"PO-Revision-Date: 2016-12-11 10:38+0100\n"
+"POT-Creation-Date: 2016-12-16 21:44+0100\n"
+"PO-Revision-Date: 2016-12-17 08:53+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does, Delagroov\n"
 "Language: nl\n"
@@ -5955,6 +5955,12 @@ msgstr "Configureer tuner J"
 msgid "Please set up tuner K"
 msgstr "Configureer tuner K"
 
+msgid "Please set up tuner Q"
+msgstr "Configureer tuner Q"
+
+msgid "Please set up tuner R"
+msgstr "Configureer tuner R"
+
 msgid ""
 "Please setup your user interface by adjusting the values till the edges of the blue box are touching the edges of your TV.\n"
 "When you are ready press OK to continue."
@@ -6244,6 +6250,13 @@ msgstr "Primetime minuut"
 
 msgid "Priority"
 msgstr "Prioriteit"
+
+msgid ""
+"Problem retrieving update list.\n"
+"If this issue persists please check/report on forum"
+msgstr ""
+"Probleem met verkrijgen updatelijst.\n"
+"Als dit probleem aanhoudt kunt u het forum raadplegen."
 
 msgid "Process"
 msgstr "Proces"
@@ -11981,6 +11994,9 @@ msgstr "zapte"
 #~ msgid "Enable FastZapping"
 #~ msgstr "Schakel snel zappen in"
 
+#~ msgid "Enable Focus Animation"
+#~ msgstr "Focus-animatie inschakelen"
+
 #~ msgid "Enable MiniTV"
 #~ msgstr "Schakel mini-TV in"
 
@@ -12206,6 +12222,9 @@ msgstr "zapte"
 
 #~ msgid "Samba Network File System"
 #~ msgstr "Samba netwerk file systeem"
+
+#~ msgid "Same behavior as current animation"
+#~ msgstr "Zelfde gedrag als huidige animatie"
 
 #~ msgid "Select an image to be downloaded"
 #~ msgstr "Kies bestand om te downloaden"
