@@ -1083,6 +1083,7 @@ class ImageManagerDownload(Screen):
 				'mutant2400'      : 'Mutant-HD2400',
 				'mutant500c'      : 'Mutant-HD500C',
 				'mutant51'        : 'Mutant-HD51',
+				'osmega'          : 'OS-mega',				
 				'osmini'          : 'OS-mini',
 				'osminiplus'      : 'OS-miniplus',
 				'qb800solo'       : 'GiGaBlue-HD800Solo',
