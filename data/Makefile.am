@@ -3,6 +3,7 @@ SUBDIRS = fonts keymaps
 dist_pkgdata_DATA = \
 	encoding.conf \
 	keymap.xml \
+	keytranslation.xml \
 	menu.xml \
 	black.mvi \
 	rcpositions.xml \
