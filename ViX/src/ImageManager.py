@@ -1166,9 +1166,6 @@ class ImageManagerDownload(Screen):
 			selectedimage = self['list'].getCurrent()
 			fileurl = 'http://www.openvix.co.uk/openvix-builds/%s/%s' % (self.boxtype, selectedimage)
 			fileloc = self.BackupDirectory + selectedimage
-			print 'DEBUG: SELECTEDIMAGE', selectedimage
-			print 'DEBUG: URL', fileurl
-			print 'DEBUG: FILE', fileloc
 			Tools.CopyFiles.downloadFile(fileurl, fileloc, selectedimage.replace('_usb',''))
 			for job in Components.Task.job_manager.getPendingJobs():
 				if job.name.startswith(_("Downloading")):
