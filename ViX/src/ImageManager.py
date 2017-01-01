@@ -24,6 +24,7 @@ from Screens.TaskView import JobView
 from Screens.MessageBox import MessageBox
 from Screens.Standby import TryQuitMainloop
 from Tools.Notifications import AddPopupWithCallback
+import Tools.CopyFiles
 
 import urllib
 
@@ -1162,13 +1163,24 @@ class ImageManagerDownload(Screen):
 
 	def doDownload(self, answer):
 		if answer is True:
-			self.selectedimage = self['list'].getCurrent()
-			file = self.BackupDirectory + self.selectedimage
+			selectedimage = self['list'].getCurrent()
+			fileurl = 'http://www.openvix.co.uk/openvix-builds/%s/%s' % (self.boxtype, selectedimage)
+			fileloc = self.BackupDirectory + selectedimage
+			print 'DEBUG: SELECTEDIMAGE', selectedimage
+			print 'DEBUG: URL', fileurl
+			print 'DEBUG: FILE', fileloc
+			Tools.CopyFiles.downloadFile(fileurl, fileloc, selectedimage.replace('_usb',''))
+			for job in Components.Task.job_manager.getPendingJobs():
+				if job.name.startswith(_("Downloading")):
+					break
+			self.showJobView(job)
 
-			mycmd1 = _("echo 'Downloading Image.'")
-			mycmd2 = "wget -q http://www.openvix.co.uk/openvix-builds/" + self.boxtype + "/" + self.selectedimage + " -O " + self.BackupDirectory + "image.zip"
-			mycmd3 = "mv " + self.BackupDirectory + "image.zip " + file
-			self.session.open(ScreenConsole, title=_('Downloading Image...'), cmdlist=[mycmd1, mycmd2, mycmd3], closeOnSuccess=True)
+	def showJobView(self, job):
+		Components.Task.job_manager.in_background = False
+		self.session.openWithCallback(self.JobViewCB, JobView, job, cancelable=False, backgroundable=True, afterEventChangeable=False, afterEvent="close")
+
+	def JobViewCB(self, in_background):
+		Components.Task.job_manager.in_background = in_background
 
 	def myclose(self, result, retval, extra_args):
 		remove(self.BackupDirectory + self.selectedimage)
