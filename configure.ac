@@ -70,7 +70,7 @@ AM_CONDITIONAL(ODIN, test `echo "$BOXTYPE" | cut -b 1-4` == "odin")
 AM_CONDITIONAL(EBOX, test `echo "$BOXTYPE" | cut -b 1-4` == "ebox")
 AM_CONDITIONAL(IXUSS, test `echo "$BOXTYPE" | cut -b 1-4` == "ixus")
 AM_CONDITIONAL(SPARK, test `echo "$BOXTYPE" | cut -b 1-5` == "spark")
-AM_CONDITIONAL(WETEK, test `echo "$BOXTYPE" | cut -b 1-5` == "wetek")
+AM_CONDITIONAL(WETEK, test `echo "$BOXTYPE" | cut -b 1-2` == "we")
 
 AM_CONDITIONAL(AZBOXHD, test "$BOXTYPE" == "azboxhd")
 AM_CONDITIONAL(AZBOXME, test "$BOXTYPE" == "azboxme")
@@ -157,6 +157,9 @@ AM_CONDITIONAL(SPARK, test `echo "$BOXTYPE" | cut -b 1-5` == spark)
 AM_CONDITIONAL(XC7362, test "$BOXTYPE" == xc7362)
 AM_CONDITIONAL(XC7358, test "$BOXTYPE" == xc7358)
 AM_CONDITIONAL(XC7358CI, test "$BOXTYPE" == xc7358ci)
+AM_CONDITIONAL(WETEKPLAY, test "$BOXTYPE" == wetekplay)
+AM_CONDITIONAL(WETEKPLAY2, test "$BOXTYPE" == wetekplay2)
+AM_CONDITIONAL(HAVE_WETEK_XBMC, test "$BOXTYPE" == wetekplay)
 
 
 AC_ARG_WITH(libvugles2,
@@ -317,6 +320,48 @@ if test x"$witholdpvr" != xno ; then
 fi
 AM_CONDITIONAL(HAVE_OLDPVR, test x"$witholdpvr" != xno)
 
+AC_ARG_WITH(alsa,
+	AC_HELP_STRING([--with-alsa], [Enable ALSA support]),
+	[[with_alse=$withval]],
+	[[with_alse=no]]
+)
+if test x"$with_alsa" == xyes ; then
+	AC_DEFINE(HAVE_ALSA, 1,[Enables ALSA support])
+	PKG_CHECK_MODULES(ALSA, alsa)
+fi
+
+AC_ARG_WITH(alsacard,
+	AC_HELP_STRING([--with-alsacard=card], [use 'card' for alsa card device, e.g. hw:0]),
+	[[with_alsacard=$withval]],
+	[[with_alsacard=no]]
+)
+if test x"$with_alsacard" != xno ; then
+	AC_DEFINE_UNQUOTED(ALSA_CARD, "$withval",[Defines which alsa card to use])
+fi
+
+AC_ARG_WITH(alsamixer,
+	AC_HELP_STRING([--with-alsamixer=mixername], [use alsa 'mixername' for volume control, e.g. Master]),
+	[[with_alsamixer=$withval]],
+	[[with_alsamixer=no]]
+)
+if test x"$with_alsamixer" != xno ; then
+	AC_DEFINE_UNQUOTED(ALSA_VOLUME_MIXER, "$withval",[Defines which alsa mixer to use for volume control])
+fi
+
+AC_ARG_WITH(amlogic,
+	AC_HELP_STRING([--with-amlogic], [use amlogic MPEG decoder]),
+	[[with_amlogic=$withval]],
+	[[with_amlogic=no]]
+)
+AM_CONDITIONAL(HAVE_AMLOGIC, test x"$with_amlogic" = xyes)
+if test x"$with_amlogic" = xyes ; then
+	AC_DEFINE(HAVE_AMLOGIC, 1,[Enables AMLOGIC decoder support])
+	PKG_CHECK_MODULES(AMCODEC, libamcodec)
+	PKG_CHECK_MODULES(AMADEC, libamadec)
+	PKG_CHECK_MODULES(DVBCSA, libdvbcsa)
+	ALSA_CFLAGS="-lasound"
+fi
+
 if test `echo "$BOXTYPE" | cut -b 1-2` == "et" ; then
 	AC_DEFINE(KEY_PLAY_ACTUALLY_IS_KEY_PLAYPAUSE, 1,[define when rc sends a KEY_PLAY event for its KEY_PLAYPAUSE key])
 fi
@@ -384,6 +429,16 @@ if test "$BOXTYPE" == "vusolo4k" -o "$BOXTYPE" == "vuuno4k" -o "$BOXTYPE" == "vu
 	AC_DEFINE(TUNER_VUSOLO4K, 1,[define BOXTYPE VUSOLO4K])
 fi
 
+if test "$BOXTYPE" == "wetekplay" -o "$BOXTYPE" == "wetekplay2"; then
+	AC_DEFINE(KEY_F7_TO_KEY_MENU, 1,[define when rc sends a KEY_F7 event for its KEY_MENU])
+	AC_DEFINE(KEY_F1_TO_KEY_MEDIA, 1,[define when rc sends a KEY_F1 event for its KEY_MEDIA])
+	AC_DEFINE(KEY_HOME_TO_KEY_INFO, 1,[define when rc sends a KEY_HOME event for its KEY_INFO])
+	AC_DEFINE(KEY_BACK_TO_KEY_EXIT, 1,[define when rc sends a KEY_BACK event for its KEY_EXIT])
+	AC_DEFINE(KEY_F2_TO_KEY_EPG, 1,[define when rc sends a KEY_F2 event for its KEY_EPG])
+	AC_DEFINE(KEY_ENTER_TO_KEY_OK, 1,[define when rc sends a KEY_ENTER event for its KEY_OK])
+	AC_DEFINE(WETEKRC, 1, [WetekPlay Remote-use BACKSPACE to toggle extended functions on numeric buttons])
+fi
+
 AC_ARG_WITH(libsdl,
 	AS_HELP_STRING([--with-libsdl],[use libsdl, yes or no]),
 	[with_libsdl=$withval],[with_libsdl=no])
@@ -438,7 +493,7 @@ AC_SUBST(ENIGMA2_CFLAGS)
 
 CPPFLAGS="$CPPFLAGS $PYTHON_CPPFLAGS"
 CFLAGS="$CFLAGS -Wall"
-CXXFLAGS="$CXXFLAGS -Wall $BASE_CFLAGS $ENIGMA2_CFLAGS $PTHREAD_CFLAGS $OPENMP_CFLAGS $ALSA_CFLAGS $GLES_CFLAGS"
+CXXFLAGS="$CXXFLAGS -Wall $BASE_CFLAGS $ENIGMA2_CFLAGS $PTHREAD_CFLAGS $OPENMP_CFLAGS $GLES_CFLAGS $ALSA_CFLAGS $AMCODEC_CFLAGS $AMADEC_CFLAGS $DVBCSA_CFLAGS"
 AX_SWIG_PYTHON_OPT="$AX_SWIG_PYTHON_OPT -DSWIG_PYTHON_LEGACY_BOOL"
 
 AC_CONFIG_FILES([
@@ -488,6 +543,7 @@ lib/python/Plugins/Extensions/PicturePlayer/meta/Makefile
 lib/python/Plugins/Extensions/SocketMMI/Makefile
 lib/python/Plugins/Extensions/SocketMMI/meta/Makefile
 lib/python/Plugins/Extensions/SocketMMI/src/Makefile
+lib/python/Plugins/Extensions/StartKodi/Makefile
 lib/python/Plugins/Extensions/TuxboxPlugins/Makefile
 lib/python/Plugins/Extensions/TuxboxPlugins/meta/Makefile
 lib/python/Plugins/SystemPlugins/Makefile

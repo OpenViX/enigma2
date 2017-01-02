@@ -70,6 +70,12 @@ class AVSwitch:
 	elif about.getChipSetString() in ('7241', '7356', '73565', '7358', '7362', '73625', '7424', '7425', '7552'):
 		modes["HDMI"] = ["720p", "1080p", "1080i", "576p", "576i", "480p", "480i"]
 		widescreen_modes = {"720p", "1080p", "1080i"}
+	elif about.getChipSetString() in ('meson-6'):
+		modes["HDMI"] = ["720p", "1080p", "1080i"]
+		widescreen_modes = {"720p", "1080p", "1080i"}
+	elif about.getChipSetString() in ('meson-64'):
+		modes["HDMI"] = ["720p", "1080p", "2160p", "2160p30", "1080i"]
+		widescreen_modes = {"720p", "1080p", "1080i", "2160p", "2160p30"}
 	else:
 		modes["HDMI"] = ["720p", "1080i", "576p", "576i", "480p", "480i"]
 		widescreen_modes = {"720p", "1080i"}
@@ -83,11 +89,11 @@ class AVSwitch:
 	# 	del modes["DVI-PC"]
 	
 	# Machines that do not have component video (red, green and blue RCA sockets).
-	if modes.has_key("YPbPr") and getBoxType() in ('dm500hdv2','dm500hd','dm800','e3hd','ebox7358','eboxlumi','ebox5100','enfinity','et4x00','gbx1','gbx3','iqonios300hd','ixusszero','mbmicro','mbtwinplus','mutant51','mutant500c','mutant1200','mutant1500','odimm7','optimussos1','osmega','osmini','osminiplus','sf128','sf138','tm2t','tmnano','tmnano2super','tmnano3t','tmnanose','tmnanosecombo','tmnanoseplus','tmnanosem2','tmnanosem2plus','tmsingle','optimussos1','uniboxhd1','vusolo2','vusolo4k','vuuno4k','vuultimo4k','xp1000'):
+	if modes.has_key("YPbPr") and getBoxType() in ('dm500hdv2','dm500hd','dm800','e3hd','ebox7358','eboxlumi','ebox5100','enfinity','et4x00','gbx1','gbx3','iqonios300hd','ixusszero','mbmicro','mbtwinplus','mutant51','mutant500c','mutant1200','mutant1500','odimm7','optimussos1','osmega','osmini','osminiplus','sf128','sf138','tm2t','tmnano','tmnano2super','tmnano3t','tmnanose','tmnanosecombo','tmnanoseplus','tmnanosem2','tmnanosem2plus','tmsingle','optimussos1','uniboxhd1','vusolo2','vusolo4k','vuuno4k','vuultimo4k','wetekplay','wetekplay2','xp1000'):
 		del modes["YPbPr"]
 		
 	# Machines that have composite video (yellow RCA socket) but do not have Scart.
-	if modes.has_key("Scart") and getBoxType() in ('gb800ueplus','gbultraue','mbmicro','mbtwinplus','mutant500c','osmega','osmini','osminiplus','sf138','tmnano','tmnanose','tmnanosecombo','tmnanoseplus','tmnanosem2','tmnanosem2plus','tmnano2super','tmnano3t','xpeedlx3'):
+	if modes.has_key("Scart") and getBoxType() in ('gb800ueplus','gbultraue','mbmicro','mbtwinplus','mutant500c','osmega','osmini','osminiplus','sf138','tmnano','tmnanose','tmnanosecombo','tmnanoseplus','tmnanosem2','tmnanosem2plus','tmnano2super','tmnano3t','wetekplay','wetekplay2','xpeedlx3'):
 		modes["RCA"] = modes["Scart"]
 		del modes["Scart"]
 		
@@ -267,9 +273,12 @@ class AVSwitch:
 
 	def setAspect(self, cfgelement):
 		print "[VideoHardware] setting aspect: %s" % cfgelement.value
-		f = open("/proc/stb/video/aspect", "w")
-		f.write(cfgelement.value)
-		f.close()
+		try:
+			f = open("/proc/stb/video/aspect", "w")
+			f.write(cfgelement.value)
+			f.close()
+		except IOError:
+			print "[VideoHardware] setting aspect failed."
 
 	def setWss(self, cfgelement):
 		if not cfgelement.value:
@@ -283,9 +292,19 @@ class AVSwitch:
 
 	def setPolicy43(self, cfgelement):
 		print "[VideoHardware] setting policy: %s" % cfgelement.value
-		f = open("/proc/stb/video/policy", "w")
-		f.write(cfgelement.value)
-		f.close()
+		arw = "0"
+		try:
+			if about.getChipSetString() in ('meson-6', 'meson-64'):
+				if cfgelement.value == "panscan" : arw = "11"
+				if cfgelement.value == "letterbox" : arw = "12"
+				if cfgelement.value == "bestfit" : arw = "10"
+				open("/sys/class/video/screen_mode", "w").write(arw)
+			else:
+				f = open("/proc/stb/video/policy", "w")
+				f.write(cfgelement.value)
+				f.close()
+			except IOError:
+				print "[VideoHardware] setting policy43 failed."
 
 	def setPolicy169(self, cfgelement):
 		if os.path.exists("/proc/stb/video/policy2"):
