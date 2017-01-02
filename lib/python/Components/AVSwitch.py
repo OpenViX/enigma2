@@ -113,9 +113,9 @@ class AVSwitch:
 			f.close()
 		except IOError:
 			print "[VideoHardware] couldn't read available videomodes."
-			self.modes_available = [ ]
-			return
-		self.modes_available = modes.split(' ')
+			modes = [ ]
+			return modes
+		return modes.split(' ')
 
 	def readPreferredModes(self):
 		try:
@@ -125,7 +125,7 @@ class AVSwitch:
 			self.modes_preferred = modes.split(' ')
 		except IOError:
 			print "[VideoHardware] reading preferred modes failed, using all modes"
-			self.modes_preferred = self.modes_available
+			self.modes_preferred = self.readAvailableModes()
 
 		if self.modes_preferred != self.last_modes_preferred:
 			self.last_modes_preferred = self.modes_preferred
@@ -135,7 +135,7 @@ class AVSwitch:
 	def isModeAvailable(self, port, mode, rate):
 		rate = self.rates[mode][rate]
 		for mode in rate.values():
-			if mode not in self.modes_available:
+			if mode not in self.readAvailableModes():
 				return False
 		return True
 
@@ -354,7 +354,7 @@ def InitAVSwitch():
 	if config.av.yuvenabled.value:
 		colorformat_choices["yuv"] = _("YPbPr")
 
-	config.av.autores = ConfigSelection(choices={"disabled": _("Disabled"), "all": _("All resolutions"), "hd": _("only HD"), "4k": _("only 4K")}, default="disabled")
+	config.av.autores = ConfigSelection(choices={"disabled": _("Disabled"), "all": _("All resolutions"), "hd": _("only HD")}, default="disabled")
 	choicelist = []
 	for i in range(5, 16):
 		choicelist.append(("%d" % i, ngettext("%d second", "%d seconds", i) % i))
