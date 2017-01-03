@@ -607,7 +607,7 @@ Components.SetupDevices.InitSetupDevices()
 
 profile("UserInterface")
 import Screens.UserInterfacePositioner
-Screens.UserInterfacePositioner.InitOsd()
+Screens.UserInterfacePositioner.InitOsd3D()
 
 profile("AVSwitch")
 import Components.AVSwitch
@@ -678,6 +678,10 @@ Screens.Ci.InitCiConfig()
 
 profile("RcModel")
 import Components.RcModel
+
+profile("UserInterface")
+import Screens.UserInterfacePositioner
+Screens.UserInterfacePositioner.InitOsd()
 
 #from enigma import dump_malloc_stats
 #t = eTimer()
