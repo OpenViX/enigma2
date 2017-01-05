@@ -1,3 +1,4 @@
+import locale
 import os
 import skin
 from time import time
