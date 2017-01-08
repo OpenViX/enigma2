@@ -223,7 +223,11 @@ class EventName(Converter, object):
 				# 	return _("%02d:%02d") % ((pil & 0x7C0) >> 6, (pil & 0x3F))
 				# return _("%d.%02d. %02d:%02d") % ((pil & 0xF8000) >> 15, (pil & 0x7800) >> 11, (pil & 0x7C0) >> 6, (pil & 0x3F))
 				begin = localtime(event.getBeginTime())
-				start = mktime([begin.tm_year, (pil & 0x7800) >> 11, (pil & 0xF8000) >> 15, (pil & 0x7C0) >> 6, (pil & 0x3F), 0, begin.tm_wday, begin.tm_yday, begin.tm_isdst])
+				month = int((pil & 0x7800) >> 11)
+				day = int((pil & 0xF8000) >> 15)
+				hour = int((pil & 0x7C0) >> 6)
+				minute = int(pil & 0x3F)
+				start = mktime([begin.tm_year, month, day, hour, min, 0, begin.tm_wday, begin.tm_yday, begin.tm_isdst])
 				if self.type == self.PDCTIMESHORT:
 					return strftime(config.usage.time.short.value, start)
 				return strftime(config.usage.date.short.value + " " + config.usage.time.short.value, start)
