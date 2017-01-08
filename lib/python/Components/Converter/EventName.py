@@ -3,6 +3,7 @@ from enigma import eEPGCache
 from Components.Converter.Converter import Converter
 from Components.Element import cached
 from Components.Converter.genre import getGenreStringSub
+from Components.config import config
 
 
 class ETSIClassifications(dict):
@@ -182,6 +183,8 @@ class EventName(Converter, object):
 					c = countries[country]
 				else:
 					c = countries["ETSI"]
+				if config.misc.epgratingcountry.value:
+					c = countries[config.misc.epgratingcountry.value]
 				rating = c[self.RATNORMAL].get(age, c[self.RATDEFAULT](age))
 				if rating:
 					if self.type == self.RATING:
@@ -196,6 +199,8 @@ class EventName(Converter, object):
 					country = rating.getCountryCode().upper()
 				else:
 					country = "ETSI"
+				if config.misc.epggenrecountry.value:
+					country = config.misc.epggenrecountry.value
 				return self.trimText(getGenreStringSub(genre.getLevel1(), genre.getLevel2(), country=country))
 		elif self.type == self.NAME_NOW:
 			return pgettext("now/next: 'now' event label", "Now") + ": " + self.trimText(event.getEventName())
