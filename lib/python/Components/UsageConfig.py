@@ -80,7 +80,7 @@ def InitUsageConfig():
 	config.usage.infobar_frontend_source = ConfigSelection(default = "tuner", choices = [("settings", _("Settings")), ("tuner", _("Tuner"))])
 	
 	config.usage.show_picon_bkgrn = ConfigSelection(default = "transparent", choices = [("none", _("Disabled")), ("transparent", _("Transparent")), ("blue", _("Blue")), ("red", _("Red")), ("black", _("Black")), ("white", _("White")), ("lightgrey", _("Light Grey")), ("grey", _("Grey"))])
-
+	config.usage.show_genre_info = ConfigYesNo(default=False)
 	config.usage.menu_show_numbers = ConfigYesNo(default = False)
 	config.usage.show_menupath = ConfigSelection(default = "small", choices = [("off", _("None")), ("small", _("Small")), ("large", _("Large"))])
 	config.usage.show_spinner = ConfigYesNo(default = True)
@@ -265,7 +265,7 @@ def InitUsageConfig():
 	config.usage.show_servicelist = ConfigYesNo(default = True)
 	config.usage.servicelist_mode = ConfigSelection(default = "standard", choices = [
 		("standard", _("Standard")),
-		("simple", _("Simple")) ] )
+		("simple", _("Slim")) ] )
 	config.usage.servicelistpreview_mode = ConfigYesNo(default = False)
 	config.usage.tvradiobutton_mode = ConfigSelection(default="BouquetList", choices = [
 					("ChannelList", _("Channel List")),
@@ -800,13 +800,13 @@ def InitUsageConfig():
 	if SystemInfo["HasForceLNBOn"]:
 		def forceLNBPowerChanged(configElement):
 			open(SystemInfo["HasForceLNBOn"], "w").write(configElement.value)
-		config.misc.forceLnbPower = ConfigSelection(default = "on", choices = [ ("on", _("Yes")), ("off", _("No"))] )
+		config.misc.forceLnbPower = ConfigSelection(default = "off", choices = [ ("on", _("Yes")), ("off", _("No"))] )
 		config.misc.forceLnbPower.addNotifier(forceLNBPowerChanged)
 
 	if SystemInfo["HasForceToneburst"]:
 		def forceToneBurstChanged(configElement):
 			open(SystemInfo["HasForceToneburst"], "w").write(configElement.value)
-		config.misc.forceToneBurst = ConfigSelection(default = "enable", choices = [ ("enable", _("Yes")), ("disable", _("No"))] )
+		config.misc.forceToneBurst = ConfigSelection(default = "disable", choices = [ ("enable", _("Yes")), ("disable", _("No"))] )
 		config.misc.forceToneBurst.addNotifier(forceToneBurstChanged)
 
 	config.subtitles = ConfigSubsection()
@@ -937,11 +937,7 @@ def InitUsageConfig():
 
 	config.logmanager = ConfigSubsection()
 	config.logmanager.showinextensions = ConfigYesNo(default = False)
-	config.logmanager.user = ConfigText(default='', fixed_size=False)
-	config.logmanager.useremail = ConfigText(default='', fixed_size=False)
-	config.logmanager.usersendcopy = ConfigYesNo(default = True)
 	config.logmanager.path = ConfigText(default = "/")
-	config.logmanager.additionalinfo = NoSave(ConfigText(default = ""))
 	config.logmanager.sentfiles = ConfigLocations(default='')
 
 	config.vixsettings = ConfigSubsection()
