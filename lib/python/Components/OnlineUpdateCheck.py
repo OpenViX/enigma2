@@ -301,7 +301,7 @@ def statusMessage():
 		return False
 
 	# status-message.php goes in the root folder of the feeds webserver
-	uri = content[pos:pos + 7] + content[pos + 7:].split('/', 1)[0] + ("/status-message.php?machine=%s&version=%s&build=%s" % (getBoxType(), getImageVersion(), getImageBuild())
+	uri = content[pos:pos + 7] + content[pos + 7:].split('/', 1)[0] + ("/status-message.php?machine=%s&version=%s&build=%s" % (getBoxType(), getImageVersion(), getImageBuild()))
 	try:
 		req = urllib2.Request(uri)
 		d = urllib2.urlopen(req)
