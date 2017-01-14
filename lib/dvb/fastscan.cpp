@@ -457,24 +457,6 @@ void eFastScan::fillBouquet(eBouquet *bouquet, std::map<int, eServiceReferenceDV
 	}
 }
 
-int eFastScan::getOrbpos(FastScanServiceListConstIterator it)
-{
-	std::vector<FastScanNetworkSection*> networksections = m_NetworkTable->getSections();
-	for (unsigned int i = 0; i < networksections.size(); i++)
-	{
-		const FastScanTransportStreamList *transportstreams = networksections[i]->getTransportStreams();
-		for (FastScanTransportStreamListConstIterator it2 = transportstreams->begin(); it2 != transportstreams->end(); it2++)
-		{
-			if ((*it)->getOriginalNetworkId() == (*it2)->getOriginalNetworkId() && (*it)->getOriginalNetworkId() == (*it2)->getOriginalNetworkId())
-			{
-				int orbitalposbcd = (*it2)->getOrbitalPosition();
-				return (orbitalposbcd & 0x0f) + ((orbitalposbcd >> 4) & 0x0f) * 10 + ((orbitalposbcd >> 8) & 0x0f) * 100;
-			}
-		}
-	}
-	return 0;
-}
-
 void eFastScan::parseResult()
 {
 	ePtr<iDVBChannelList> db;
@@ -486,6 +468,7 @@ void eFastScan::parseResult()
 	std::vector<FastScanNetworkSection*> networksections = m_NetworkTable->getSections();
 	std::vector<FastScanServicesSection*> servicessections = m_ServicesTable->getSections();
 
+	std::map<int, int> service_orbital_position;
 	std::map<int, eServiceReferenceDVB> numbered_channels;
 	std::map<int, eServiceReferenceDVB> radio_channels;
 
@@ -523,10 +506,8 @@ void eFastScan::parseResult()
 
 			const ServiceListItemList *services = (*it)->getServiceList();
 			if (services)
-			{
 				for (ServiceListItemConstIterator service = services->begin(); service != services->end(); service++)
 					servicetypemap[(*service)->getServiceId()] = (*service)->getServiceType();
-			}
 			const FastScanLogicalChannelList *channels = (*it)->getLogicalChannelList();
 			if (channels)
 			{
@@ -534,6 +515,7 @@ void eFastScan::parseResult()
 				{
 					int type = servicetypemap[(*channel)->getServiceId()];
 					eServiceReferenceDVB ref(orbitalpos << 16, (*it)->getTransportStreamId(), (*it)->getOriginalNetworkId(), (*channel)->getServiceId(), type);
+					service_orbital_position[((*channel)->getServiceId() << 16) + (*it)->getTransportStreamId()] = orbitalpos;
 					if (originalNumbering)
 					{
 						numbered_channels[(*channel)->getLogicalChannelNumber()] = ref;
@@ -571,7 +553,7 @@ void eFastScan::parseResult()
 		const FastScanServiceList *services = servicessections[i]->getServices();
 		for (FastScanServiceListConstIterator it = services->begin(); it != services->end(); it++)
 		{
-			eServiceReferenceDVB ref(getOrbpos(it) << 16, (*it)->getTransportStreamId(), (*it)->getOriginalNetworkId(), (*it)->getServiceId(), (*it)->getServiceType());
+			eServiceReferenceDVB ref(service_orbital_position[((*it)->getServiceId() << 16) + (*it)->getTransportStreamId()] << 16, (*it)->getTransportStreamId(), (*it)->getOriginalNetworkId(), (*it)->getServiceId(), (*it)->getServiceType());
 			eDVBService *service = new eDVBService;
 			service->m_service_name = convertDVBUTF8((*it)->getServiceName());
 			service->genSortName();
