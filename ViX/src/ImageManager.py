@@ -48,9 +48,9 @@ config.imagemanager.backupretrycount = NoSave(ConfigNumber(default=0))
 config.imagemanager.nextscheduletime = NoSave(ConfigNumber(default=0))
 config.imagemanager.restoreimage = NoSave(ConfigText(default=getBoxType(), fixed_size=False))
 config.imagemanager.autosettingsbackup = ConfigYesNo(default = True)
-config.imagemanager.query = ConfigYesNo(default=True) #GML - querying is enabled by default - that is what used to happen always
-config.imagemanager.lastbackup = ConfigNumber(default=0) #GML -  If we do not yet have a record of an image backup, assume it has never happened.
-config.imagemanager.number_to_keep = ConfigNumber(default=0) #GML - max no. of images to keep.  0 == keep them all
+config.imagemanager.query = ConfigYesNo(default=True)
+config.imagemanager.lastbackup = ConfigNumber(default=0)
+config.imagemanager.number_to_keep = ConfigNumber(default=0)
 
 autoImageManagerTimer = None
 
@@ -395,7 +395,7 @@ class VIXImageManager(Screen):
 				self.keyResstore3()
 
 	def keyResstore3(self, val = None):
-		self.session.open(MessageBox, _("Please wait while the restore prepares"), MessageBox.TYPE_INFO, timeout=60, enable_input=False)
+		self.restore_infobox = self.session.open(MessageBox, _("Please wait while the restore prepares"), MessageBox.TYPE_INFO, timeout=60, enable_input=False)
 		self.TEMPDESTROOT = self.BackupDirectory + 'imagerestore'
 		if self.sel.endswith('.zip'):
 			if not path.exists(self.TEMPDESTROOT):
@@ -413,7 +413,17 @@ class VIXImageManager(Screen):
 			CMD = '/usr/bin/ofgwrite -r%s -k%s %s/' % (rootMTD, kernelMTD, MAINDEST)
 			config.imagemanager.restoreimage.setValue(self.sel)
 			print '[ImageManager] running commnd:',CMD
-			self.Console.ePopen(CMD)
+			self.Console.ePopen(CMD, self.ofgwriteResult)
+
+# We'll only arrive at this function if the ofgwrite failed.
+# If it succeeded it will have rebooted the system.
+# This displays the errors to the user, and puts them into any debug
+# log, for reporting.
+#
+	def ofgwriteResult(self, result, retval, extra_args=None):
+		if retval != 0:
+			self.session.openWithCallback(self.restore_infobox.close, MessageBox, _("ofgwrite error (also sent to any debug log):\n%s") % result, MessageBox.TYPE_INFO, timeout=20)
+			print "[ImageManager] OFGWriteResult failed:\n", result
 
 class AutoImageManagerTimer:
 	def __init__(self, session):
@@ -443,7 +453,7 @@ class AutoImageManagerTimer:
 
 	def getBackupTime(self):
 		backupclock = config.imagemanager.scheduletime.value
-		#GML
+		#
 		# Work out the time of the *NEXT* backup - which is the configured clock
 		# time on the nth relevant day after the last recorded backup day.
 		# The last backup time will have been set as 12:00 on the day it
@@ -489,7 +499,7 @@ class AutoImageManagerTimer:
 			print "[ImageManager] Backup onTimer occured at", strftime("%c", localtime(now))
 			from Screens.Standby import inStandby
 
-			if not inStandby and config.imagemanager.query.value: # GML add check for querying
+			if not inStandby and config.imagemanager.query.value:
 				message = _("Your %s %s is about to run a full image backup, this can take about 6 minutes to complete,\ndo you want to allow this?") % (getMachineBrand(), getMachineName())
 				ybox = self.session.openWithCallback(self.doBackup, MessageBox, message, MessageBox.TYPE_YESNO, timeout=30)
 				ybox.setTitle('Scheduled Backup.')
@@ -522,7 +532,7 @@ class AutoImageManagerTimer:
 			print "[ImageManager] Running Backup", strftime("%c", localtime(now))
 			self.ImageBackup = ImageBackup(self.session)
 			Components.Task.job_manager.AddJob(self.ImageBackup.createBackupJob())
-			#GML - Note that fact that the job has been *scheduled*.
+			#      Note that fact that the job has been *scheduled*.
 			#      We do *not* just note successful completion, as that would
 			#      result in a loop on issues such as disk-full.
 			#      Also all that we actually want to know is the day, not the time, so
@@ -951,7 +961,7 @@ class ImageBackup(Screen):
 		print '[ImageManager] Stage5: Complete.'
 
 	def BackupComplete(self, anwser=None):
-		#GML - trim the number of backups kept...
+		#    trim the number of backups kept...
 		#    [Also NOTE that this and the preceding def define an unused arg
 		#     with what looks like a typo - that should surely be "answer"]
 		#
