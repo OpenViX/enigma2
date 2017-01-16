@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-01-12 12:20+0100\n"
-"PO-Revision-Date: 2017-01-13 04:45+0100\n"
+"POT-Creation-Date: 2017-01-14 22:29+0100\n"
+"PO-Revision-Date: 2017-01-15 04:08+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does, Delagroov\n"
 "Language: nl\n"
@@ -201,6 +201,10 @@ msgstr "%A %e %b"
 msgid "%-e %b %Y"
 msgstr ""
 
+#. TRANSLATORS: compact date representation (for VFD) daynum short monthname in strftime() format! See 'man strftime'
+msgid "%-e%b"
+msgstr ""
+
 msgid "%-e-%B-%Y"
 msgstr ""
 
@@ -214,11 +218,19 @@ msgstr ""
 msgid "%-e/%m"
 msgstr "%a %e/%m"
 
+#, fuzzy
+msgid "%-e/%m "
+msgstr "%a %e/%m"
+
 msgid "%-e/%m/%Y"
 msgstr ""
 
 msgid "%-m/%-e"
 msgstr ""
+
+#, fuzzy
+msgid "%-m/%-e "
+msgstr "%a %e/%m"
 
 msgid "%-m/%-e/%Y"
 msgstr ""
@@ -580,6 +592,8 @@ msgstr "%d KB"
 msgid "%d MB"
 msgstr "%d MB"
 
+#. TRANSLATORS: VFD daynum short monthname hour:minute in strftime() format! See 'man strftime'
+#. _("%e%b%R")
 #. TRANSLATORS: full date representation dayname daynum monthname year in strftime() format! See 'man strftime'
 #. _("%A %e %B %Y")
 #. TRANSLATORS: short time representation hour:minute
@@ -662,8 +676,15 @@ msgid_plural "%d wireless networks found!"
 msgstr[0] "%d draadloos netwerk gevonden!"
 msgstr[1] "%d draadloze netwerken gevonden!"
 
+msgid "%d%b"
+msgstr ""
+
 msgid "%m/%-e"
 msgstr ""
+
+#, fuzzy
+msgid "%m/%-e "
+msgstr "%a %e/%m"
 
 #, python-format
 msgid "%s"
@@ -944,11 +965,17 @@ msgstr "9-maand-9999"
 msgid "9/9"
 msgstr "9/9"
 
+msgid "9/9 "
+msgstr "9/9 "
+
 msgid "9/9/9999"
 msgstr "9/9/9999"
 
 msgid "9/99"
 msgstr "9/99"
+
+msgid "9/99 "
+msgstr "9/99 "
 
 msgid "9/99/9999"
 msgstr "9/99/9999"
@@ -964,6 +991,9 @@ msgstr "99 maand 9999"
 
 msgid "99/9"
 msgstr "99/9"
+
+msgid "99/9 "
+msgstr "99/9 "
 
 msgid "9999 Mon 9"
 msgstr "9999 ma 9"
@@ -1010,6 +1040,9 @@ msgstr "99:99AM/PM"
 msgid "99:99am/pm"
 msgstr "99:99am/pm"
 
+msgid "99Mon"
+msgstr "99Ma"
+
 msgid "9:99"
 msgstr "9:99"
 
@@ -1027,6 +1060,9 @@ msgstr "9:99AM/PM"
 
 msgid "9:99am/pm"
 msgstr "9:99am/pm"
+
+msgid "9Mon"
+msgstr "9Ma"
 
 msgid "< Default >"
 msgstr "< Standaard >"
@@ -2916,6 +2952,9 @@ msgstr "DVD-ISO maken"
 msgid "Create directory"
 msgstr "Map aanmaken"
 
+msgid "Create seperate radio userbouquet"
+msgstr "Maak een aparte favorietenlijst voor radio"
+
 msgid "Creating AP and SC Files"
 msgstr "Creëer AP en SC bestanden"
 
@@ -3874,6 +3913,10 @@ msgstr "Automatische kabelscan inschakelen"
 msgid "Enable auto fast scan"
 msgstr "Auto Fastscan inschakelen"
 
+#, python-format
+msgid "Enable auto fast scan for %s"
+msgstr "Auto Fastscan voor %s inschakelen"
+
 msgid "Enable bouquet edit"
 msgstr "Favorietenlijst bewerken activeren"
 
@@ -4197,22 +4240,33 @@ msgstr "F3 lang"
 msgid "FAILED"
 msgstr "MISLUKT"
 
-msgid "FBC Unicable"
-msgstr "FBC Unicable"
+msgid "FBC SCR (Unicable or JESS)"
+msgstr "FBC SCR (Unicable of JESS)"
 
-msgid "FBC automatic loop through"
-msgstr "FBC automatische loopthrough"
+msgid "FBC automatic"
+msgstr "FBC automatisch"
 
 msgid ""
-"FBC automatic loop through\n"
-"inactive"
-msgstr "FBC automatische loopthrough inactief"
+"FBC automatic\n"
+"connected to"
+msgstr ""
+"FBC automatisch\n"
+"verbonden met"
 
 #, python-format
 msgid ""
-"FBC automatic loop through\n"
-"linked to %s"
-msgstr "FBC automatische loopthrough verbonden met %s"
+"FBC automatic\n"
+"connected to %s"
+msgstr ""
+"FBC automatisch\n"
+"verbonden met %s"
+
+msgid ""
+"FBC automatic\n"
+"inactive"
+msgstr ""
+"FBC automatisch\n"
+"inactief"
 
 msgid "FEC"
 msgstr "FEC"
@@ -5063,9 +5117,6 @@ msgstr "Is deze videomodus goed?"
 msgid "Italian"
 msgstr "Italiaans"
 
-msgid "JESS"
-msgstr "JESS"
-
 msgid "JUMP 24 HOURS"
 msgstr "SPRING 24 UUR"
 
@@ -5367,8 +5418,8 @@ msgstr "Lange toetsdruk"
 msgid "Longitude"
 msgstr "Lengtegraad"
 
-msgid "Loop through to"
-msgstr "Doorlus naar"
+msgid "Loop through from"
+msgstr "Doorlus van"
 
 msgid "Lower Framerate save CPU Time"
 msgstr "Lagere framerate gebruikt minder processortijd."
@@ -7599,6 +7650,15 @@ msgstr "SABnzbd instellingen"
 msgid "SCPC optimized search range"
 msgstr "Geoptimaliseerd zoekbereik voor SCPC"
 
+msgid "SCR (Unicable/JESS)"
+msgstr "SCR (Unicable/JESS"
+
+msgid "SCR JESS"
+msgstr "SCR JESS"
+
+msgid "SCR Unicable"
+msgstr "SCR Unicable"
+
 msgid "SID"
 msgstr "SID"
 
@@ -8882,8 +8942,8 @@ msgstr "Spaans"
 msgid "Special"
 msgstr "Speciaal"
 
-msgid "Specify the complete URL of the fallback remote receiver including the port number (:8001 by default), e.g. 'IP_second_box:8001'."
-msgstr "Specificeer het complete URL van de fallback remote ontvanger inclusief het poortnummer (:8001 is default), b.v. 'IP_tweede_box:8001'."
+msgid "Specify the complete URL of the fallback remote receiver including the port number (:8001 by default), e.g. 'http://IP_second_box:8001'."
+msgstr "Geef de complete URL van de fallback-ontvanger inclusief het poortnummer (:8001 is default), b.v. 'http://IP_tweede_box:8001'."
 
 msgid "Split preview mode"
 msgstr "Splits voorvertoningsmodus"
@@ -10190,12 +10250,6 @@ msgstr "Niet-encrypted"
 
 msgid "Unhide parental control services"
 msgstr "Kinderslot uitschakelen"
-
-msgid "Unicable"
-msgstr "Unicable"
-
-msgid "Unicable/JESS"
-msgstr "Unicable/JESS"
 
 #
 msgid "Uninstall"
@@ -11969,6 +12023,9 @@ msgstr "film/drama (algemeen)"
 msgid "ms"
 msgstr "ms"
 
+msgid "multi"
+msgstr "multi"
+
 msgid "multinorm"
 msgstr "multinorm"
 
@@ -13257,6 +13314,9 @@ msgstr "zapte"
 
 #~ msgid "Uncommitted DiSEqC command"
 #~ msgstr "Uncommitted DiSEqC-commando"
+
+#~ msgid "Unicable"
+#~ msgstr "Unicable"
 
 #~ msgid "Unicable LNB"
 #~ msgstr "Unicable LNB"

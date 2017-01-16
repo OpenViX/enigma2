@@ -11,6 +11,8 @@ class ClockToText(Converter, object):
 		"AsLength": lambda t: "" if t < 0 else "%d:%02d" % (t / 60, t % 60),
 		"AsLengthHours": lambda t: "" if t < 0 else "%d:%02d" % (t / 3600, t / 60 % 60),
 		"AsLengthSeconds": lambda t: "" if t < 0 else "%d:%02d:%02d" % (t / 3600, t / 60 % 60, t % 60),
+		# 		TRANSLATORS: VFD daynum short monthname hour:minute in strftime() format! See 'man strftime'
+		"CompactVFD": lambda t: strftime(config.usage.date.compact.value + config.usage.time.short.value, localtime(t)),  # _("%e%b%R")
 		# 		TRANSLATORS: full date representation dayname daynum monthname year in strftime() format! See 'man strftime'
 		"Date": lambda t: strftime(config.usage.date.dayfull.value, localtime(t)),  # _("%A %e %B %Y")
 		# 		TRANSLATORS: short time representation hour:minute
@@ -51,8 +53,16 @@ class ClockToText(Converter, object):
 		if buffer[0:5] == "Parse":
 			parse = buffer[5:6]
 		else:
-			buffer.replace(';', ',')  # Some builds use ";" as a separator, most use ",".  If "Parse" is NOT used change ";" to "," and parse on ",".
-			parse = ","
+			# OpenViX used ";" as the only ClockToText token separator.  For legacy
+			# support if the first token is "Format" skip the multiple parse character
+			# processing.
+			#
+			# Otherwise, some builds use ";" as a separator, most use ",".  If "Parse"
+			# is NOT used change "," to ";" and parse on ";".
+			#
+			parse = ";"
+			if buffer[0:6] != "Format":
+				buffer.replace(',', ';')
 
 		args = [arg.lstrip() for arg in type.split(parse)]
 		for arg in args:

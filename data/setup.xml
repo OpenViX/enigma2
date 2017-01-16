@@ -13,7 +13,6 @@
 	</setup>
 	<setup key="usage" title="Customize settings">
 		<item level="0" text="Setup mode" description="Choose which level of menu/settings to display. 'Expert' level shows all items.">config.usage.setup_level</item>
-		<item level="0" text="Show menu numbers" description="This option allows you to show menu number quick links.">config.usage.menu_show_numbers</item>
 		<item level="1" text="Enable teletext caching" description="When enabled, teletext pages will be cached, allowing faster access.">config.usage.enable_tt_caching</item>
 		<item level="1" text="12V output" description="12V output." requires="12V_Output">config.usage.output_12V</item>
 		<item level="2" text="Alternative services tuner priority" description="Configure which tuner type will be preferred, when the same service is available on different types of tuners.">config.usage.alternatives_priority</item>
@@ -68,6 +67,7 @@
 		<item level="1" text="Show full menu path" description="This option allows you to show the full menu path">config.usage.show_menupath</item>
 		<item level="1" text="Sort setting screens alphabetically" description="This option allows you to disable sorting of the option in setting screens">config.usage.sort_settings</item>
 		<item level="1" text="Sort menu screens alphabetically" description="This option allows you to disable sorting of the menus">config.usage.sort_menus</item>
+		<item level="0" text="Show menu numbers" description="This option allows you to show menu number quick links.">config.usage.menu_show_numbers</item>		
 		<item level="1" text="Sort plug-in browser alphabetically" description="This option allows you to disable sorting of the plugin browser.">config.usage.sort_pluginlist</item>
 		<item level="1" text="Show PVR status in Movie Player infobar" description="This option moves the PVR status from the separate window into the Movie Player infobar.">config.usage.movieplayer_pvrstate</item>
 		<item level="2" text="Close PiP on exit" description="When enabled, the PiP can be closed by the EXIT button.">config.usage.pip_hideOnExit</item>
@@ -328,7 +328,7 @@
 		<item level="2" text="Picon width" description="Configure the width allocated to the picon.">config.epgselection.infobar_piconwidth</item>
 		<item level="2" text="Info icon width" description="Configure the minimum width before showing the 'i' icon, '0' is equal to not showing the icon at all.">config.epgselection.infobar_infowidth</item>
 		<item level="2" text="Timeline font size" description="Configure the font size relative to skin size, so 1 increases by 1 point size, and -1 decreases by 1 point size.">config.epgselection.infobar_timelinefs</item>
-		<item level="2" text="Timeline 24 Hour" description="Show time in 24 hour clock format.">config.epgselection.infobar_timeline24h</item>
+		<item level="2" text="Timeline 24 Hour" description="Show time in 24 hour clock format.\nNOTE: This setting is not used if the global time format settings are available.">config.epgselection.infobar_timeline24h</item>
 		<item level="2" text="Time scale" description="Configure the amount of time that will be presented.">config.epgselection.infobar_prevtimeperiod</item>
 	</setup>
 	<setup key="epggraphical" title="GraphicalEPG settings">
@@ -359,7 +359,7 @@
 		<item level="2" text="Info icon width" description="Configure the minimum width before showing the 'i' icon, '0' is equal to not showing the icon at all.">config.epgselection.graph_infowidth</item>
 		<item level="2" text="Position of recording icons" description="Set the position of the recording icons">config.epgselection.graph_rec_icon_height</item>
 		<item level="2" text="Timeline font size" description="Configure the font size relative to skin size, so 1 increases by 1 point size, and -1 decreases by 1 point size.">config.epgselection.graph_timelinefs</item>
-		<item level="2" text="Timeline 24 Hour" description="Show time in 24 hour clock format.">config.epgselection.graph_timeline24h</item>
+		<item level="2" text="Timeline 24 Hour" description="Show time in 24 hour clock format.\nNOTE: This setting is not used if the global time format settings are available.">config.epgselection.graph_timeline24h</item>
 		<item level="2" text="Time scale" description="Configure the amount of time that will be presented.">config.epgselection.graph_prevtimeperiod</item>
 	</setup>
 	<setup key="pluginbrowsersetup" title="Plugin browser settings">
