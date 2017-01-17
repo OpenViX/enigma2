@@ -1074,7 +1074,7 @@ class ImageManagerDownload(Screen):
 				'gb800ueplus'     : 'GiGaBlue-HD800UE-PLUS',
 				'gbquad'          : 'GiGaBlue-HD-QUAD',
 				'gbquadplus'      : 'GiGaBlue-HD-QUAD-PLUS',
-				'gbqultraue'      : 'GiGaBlue-HD-ULTRA-UE',
+				'gbultraue'       : 'GiGaBlue-HD-ULTRA-UE',
 				'gbx1'            : 'GiGaBlue-HD-X1',
 				'gbx3'            : 'GiGaBlue-HD-X3',
 				'iqonios100hd'    : 'iqon-IOS-100HD',
