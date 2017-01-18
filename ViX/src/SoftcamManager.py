@@ -222,28 +222,32 @@ class VIXSoftcamManager(Screen):
 			self.sel = self['list'].getCurrent()[0]
 			selcam = self.sel[0]
 			if self.currentactivecam.find(selcam) < 0:
-				if selcam.lower().startswith('cccam') and path.exists('/etc/CCcam.cfg') == True:
-					if self.currentactivecam.lower().find('mgcam') < 0:
+				if selcam.lower().startswith('cccam'):
+					if not path.exists('/etc/CCcam.cfg'):
+						self.session.open(MessageBox, _("No config files found, please setup CCcam first\nin /etc/CCcam.cfg"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
+					else:
+						if self.currentactivecam.lower().find('mgcam') < 0:
+							self.session.openWithCallback(self.showActivecam, VIXStartCam, self.sel[0])
+						else:
+							self.session.open(MessageBox, _("CCcam can't run whilst MGcamd is running"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
+				elif selcam.lower().startswith('hypercam'):
+					if not path.exists('/etc/hypercam.cfg'):
+						self.session.open(MessageBox, _("No config files found, please setup Hypercam first\nin /etc/hypercam.cfg"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
+					else:
 						self.session.openWithCallback(self.showActivecam, VIXStartCam, self.sel[0])
+				elif selcam.lower().startswith('oscam'): 
+					if not path.exists('/etc/tuxbox/config/oscam.conf') and not path.exists('/etc/tuxbox/config/oscam/oscam.conf'):
+						self.session.open(MessageBox, _("No config files found, please setup Oscam first\nin /etc/tuxbox/config or /etc/tuxbox/config/oscam"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 					else:
-						self.session.open(MessageBox, _("CCcam can't run whilst MGcamd is running"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
-				elif selcam.lower().startswith('cccam') and path.exists('/etc/CCcam.cfg') == False:
-					self.session.open(MessageBox, _("No config files found, please setup CCcam first\nin /etc/CCcam.cfg"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
-				elif selcam.lower().startswith('hypercam') and path.exists('/etc/hypercam.cfg') == True:
-					self.session.openWithCallback(self.showActivecam, VIXStartCam, self.sel[0])
-				elif selcam.lower().startswith('hypercam') and path.exists('/etc/hypercam.cfg') == False:
-					self.session.open(MessageBox, _("No config files found, please setup Hypercam first\nin /etc/hypercam.cfg"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
-				elif selcam.lower().startswith('oscam') and path.exists('/etc/tuxbox/config/oscam.conf') == True:
-					self.session.openWithCallback(self.showActivecam, VIXStartCam, self.sel[0])
-				elif selcam.lower().startswith('oscam') and path.exists('/etc/tuxbox/config/oscam.conf') == False:
-					self.session.open(MessageBox, _("No config files found, please setup Oscam first\nin /etc/tuxbox/config"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
-				elif selcam.lower().startswith('mgcam') and path.exists('/var/keys/mg_cfg') == True:
-					self.session.openWithCallback(self.showActivecam, VIXStartCam, self.sel[0])
-				elif selcam.lower().startswith('mgcam') and path.exists('/var/keys/mg_cfg') == False:
-					if self.currentactivecam.lower().find('cccam') < 0:
-						self.session.open(MessageBox, _("No config files found, please setup MGcamd first\nin /usr/keys"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
+						self.session.openWithCallback(self.showActivecam, VIXStartCam, self.sel[0])
+				elif selcam.lower().startswith('mgcam'):
+					if not path.exists('/var/keys/mg_cfg'):
+						if self.currentactivecam.lower().find('cccam') < 0:
+							self.session.open(MessageBox, _("No config files found, please setup MGcamd first\nin /usr/keys"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
+						else:
+							self.session.open(MessageBox, _("MGcamd can't run whilst CCcam is running"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 					else:
-						self.session.open(MessageBox, _("MGcamd can't run whilst CCcam is running"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
+						self.session.openWithCallback(self.showActivecam, VIXStartCam, self.sel[0])
 				elif selcam.lower().startswith('scam'):
 					self.session.openWithCallback(self.showActivecam, VIXStartCam, self.sel[0])
 				else:
@@ -720,7 +724,11 @@ class SoftcamAutoPoller:
 							if path.exists('/tmp/status.html'):
 								remove('/tmp/status.html')
 							port = ''
-							f = open('/etc/tuxbox/config/oscam.conf', 'r')
+							if path.exists('/etc/tuxbox/config/oscam.conf'):
+								oscamconf = '/etc/tuxbox/config/oscam.conf'
+							elif path.exists('/etc/tuxbox/config/oscam/oscam.conf'):
+								oscamconf = '/etc/tuxbox/config/oscam/oscam.conf'
+							f = open(oscamconf, 'r')
 							for line in f.readlines():
 								if line.find('httpport') != -1:
 									port = re.sub("\D", "", line)
