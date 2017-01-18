@@ -14,7 +14,7 @@ from Screens.Rc import Rc
 from Screens.MessageBox import MessageBox
 from Tools.Directories import fileExists, resolveFilename, SCOPE_PLUGINS
 
-from BackupManager import isRestorableSettings, isRestorablePlugins
+from BackupManager import isRestorableSettings, isRestorablePlugins, isRestorableKernel
 
 class RestoreWizard(WizardLanguage, Rc):
 	def __init__(self, session):
@@ -242,7 +242,7 @@ class RestoreWizard(WizardLanguage, Rc):
 			print '[RestoreWizard] Current Image:', about.getVersionString()
 			print '[RestoreWizard] Backup Kernel:', kernelversion
 			print '[RestoreWizard] Current Kernel:', about.getKernelVersionString()
-			if kernelversion == about.getKernelVersionString() and (imageversion == about.getVersionString() or isRestorablePlugins(imageversion)):
+			if isRestorableKernel(kernelversion) and (imageversion == about.getVersionString() or isRestorablePlugins(imageversion)):
 				print '[RestoreWizard] Stage 3: Kernel and image ver OK'
 				self.doRestorePluginsTest()
 			else:

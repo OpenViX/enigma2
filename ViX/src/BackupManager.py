@@ -82,6 +82,9 @@ def isRestorablePlugins(imageversion):
 	except:
 		return False
 	return imageversion >= minimum_version
+	
+def isRestorableKernel(kernelversion):
+	return kernelversion == about.getKernelVersionString()
 
 def BackupManagerautostart(reason, session=None, **kwargs):
 	"""called with reason=1 to during /sbin/shutdown.sysvinit, with reason=0 at startup?"""
@@ -531,7 +534,7 @@ class VIXBackupManager(Screen):
 				print '[BackupManager] Current Image:', about.getVersionString()
 				print '[BackupManager] Backup Kernel:', kernelversion
 				print '[BackupManager] Current Kernel:', about.getKernelVersionString()
-				if kernelversion == about.getKernelVersionString() and (imageversion == about.getVersionString() or isRestorablePlugins(imageversion)):
+				if isRestorableKernel(kernelversion) and (imageversion == about.getVersionString() or isRestorablePlugins(imageversion)):
 					# print '[BackupManager] Restoring Stage 3: Kernel Version is same as backup'
 					self.kernelcheck = True
 					self.Console.ePopen('opkg list-installed', self.Stage3Complete)
