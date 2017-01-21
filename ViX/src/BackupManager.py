@@ -84,7 +84,10 @@ def isRestorablePlugins(imageversion):
 	return imageversion >= minimum_version
 	
 def isRestorableKernel(kernelversion):
-	return kernelversion == about.getKernelVersionString()
+	# This check should no longer be necessary since auto-installed packages are no longer listed in the plugins backup.
+	# For more information please consult commit https://github.com/OpenViX/vix-core/commit/53a95067677651a3f2579a1b0d1f70172ccc493b
+	return True
+	#return kernelversion == about.getKernelVersionString()
 
 def BackupManagerautostart(reason, session=None, **kwargs):
 	"""called with reason=1 to during /sbin/shutdown.sysvinit, with reason=0 at startup?"""
