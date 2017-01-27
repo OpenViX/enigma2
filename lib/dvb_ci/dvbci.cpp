@@ -835,6 +835,7 @@ int eDVBCIInterfaces::setInputSource(int tuner_no, data_source source)
 	{
 		char buf[64];
 		snprintf(buf, 64, "/proc/stb/tsmux/input%d", tuner_no);
+		char *srcCI = NULL;
 
 		FILE *input=0;
 		if((input = fopen(buf, "wb")) == NULL) {
@@ -897,6 +898,7 @@ int eDVBCIInterfaces::setInputSource(int tuner_no, data_source source)
 			case TUNER_F:
 				fprintf(input, "F");
 				break;
+#endif
 #endif
 			default:
 				eDebug("[CI] setInputSource for input %d failed!!!\n", (int)source);
@@ -1487,6 +1489,7 @@ int eDVBCISlot::setSource(data_source source)
 		char buf[64];
 		snprintf(buf, 64, "/proc/stb/tsmux/ci%d_input", slotid);
 		FILE *ci = fopen(buf, "wb");
+		char *srcCI = NULL;
 		switch(source)
 		{
 #ifdef TUNER_VUSOLO4K
