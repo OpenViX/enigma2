@@ -607,7 +607,7 @@ Components.SetupDevices.InitSetupDevices()
 
 profile("UserInterface")
 import Screens.UserInterfacePositioner
-Screens.UserInterfacePositioner.InitOsd3D()
+Screens.UserInterfacePositioner.InitOsd()
 
 profile("AVSwitch")
 import Components.AVSwitch
@@ -663,6 +663,10 @@ if getBoxType() in ('dm7080', 'dm820'):
 		f.write("off")
 		f.close()
 
+profile("UserInterface")
+import Screens.UserInterfacePositioner
+Screens.UserInterfacePositioner.InitOsd()
+
 profile("EpgCacheSched")
 import Components.EpgLoadSave
 Components.EpgLoadSave.EpgCacheSaveCheck()
@@ -678,10 +682,6 @@ Screens.Ci.InitCiConfig()
 
 profile("RcModel")
 import Components.RcModel
-
-profile("UserInterface")
-import Screens.UserInterfacePositioner
-Screens.UserInterfacePositioner.InitOsd()
 
 #from enigma import dump_malloc_stats
 #t = eTimer()
