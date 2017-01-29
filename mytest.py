@@ -665,7 +665,7 @@ if getBoxType() in ('dm7080', 'dm820'):
 
 profile("UserInterface")
 import Screens.UserInterfacePositioner
-Screens.UserInterfacePositioner.InitOsd()
+Screens.UserInterfacePositioner.InitOsdPosition()
 
 profile("EpgCacheSched")
 import Components.EpgLoadSave
