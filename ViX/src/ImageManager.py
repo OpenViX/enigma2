@@ -1113,6 +1113,7 @@ class ImageManagerDownload(Screen):
 				'tmnanosecombo'   : 'TM-Nano-SE-Combo',
 				'tmnanosem2'      : 'TM-Nano-SE-M2',
 				'tmnanosem2plus'  : 'TM-Nano-SE-M2-Plus',
+				'tmnanom3'        : 'TM-Nano-M3',				
 				'tmnanoseplus'    : 'TM-Nano-SE-Plus',
 				'tmsingle'        : 'TM-Single',
 				'tmtwin'          : 'TM-Twin-OE',
