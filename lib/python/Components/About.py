@@ -35,6 +35,8 @@ def getChipSetString():
 		return "7435"
 	elif getMachineBuild() in ('dm520'):
 		return "73625"
+	elif getMachineBuild() in ('dm900'):
+		return "7252S"
 	else:
 		try:
 			f = open('/proc/stb/info/chipset', 'r')

@@ -87,6 +87,7 @@ AM_CONDITIONAL(DM520, test "$BOXTYPE" == "dm520")
 AM_CONDITIONAL(DM7080, test "$BOXTYPE" == "dm7080")
 AM_CONDITIONAL(DM820, test "$BOXTYPE" == "dm820")
 AM_CONDITIONAL(DM8000, test "$BOXTYPE" == "dm8000")
+AM_CONDITIONAL(DM900, test "$BOXTYPE" == dm900)
 AM_CONDITIONAL(E3HD, test "$BOXTYPE" == "e3hd")
 AM_CONDITIONAL(EBOX5000, test "$BOXTYPE" == "ebox5000")
 AM_CONDITIONAL(EBOX5100, test "$BOXTYPE" == "ebox5100")
@@ -315,10 +316,6 @@ if test x"$witholdpvr" != xno ; then
 fi
 AM_CONDITIONAL(HAVE_OLDPVR, test x"$witholdpvr" != xno)
 
-if test "$BOXTYPE" == "dm7080" -o "$BOXTYPE" == "dm820"; then
-	AC_DEFINE(TUNER_DM7080, 1,[define BOXTYPE DM7080])
-fi
-
 if test `echo "$BOXTYPE" | cut -b 1-2` == "et" ; then
 	AC_DEFINE(KEY_PLAY_ACTUALLY_IS_KEY_PLAYPAUSE, 1,[define when rc sends a KEY_PLAY event for its KEY_PLAYPAUSE key])
 fi
@@ -380,6 +377,10 @@ fi
 
 if test "$BOXTYPE" == "7210s"; then
 	AC_DEFINE(FORCE_NO_BLENDING_ACCELERATION, 1,[define when the framebuffer acceleration has alphablending support, but detection slow down all])
+fi
+
+if test "$BOXTYPE" == "dm7080" -o "$BOXTYPE" == "dm820" -o "$BOXTYPE" == "dm900"; then
+	AC_DEFINE(TUNER_DM7080, 1,[define BOXTYPE DM7080])
 fi
 
 if test "$BOXTYPE" == "vusolo4k" -o "$BOXTYPE" == "vuuno4k" -o "$BOXTYPE" == "vuultimo4k" ; then

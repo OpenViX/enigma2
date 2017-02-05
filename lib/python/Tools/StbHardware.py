@@ -6,7 +6,7 @@ from Components.config import config
 def getFPVersion():
 	ret = None
 	try:
-		if getBoxType() in ('dm7080','dm820'):
+		if getBoxType() in ('dm7080','dm820','dm520','dm525','dm900'):
 			ret = open("/proc/stb/fp/version", "r").read()
 		else:
 			ret = long(open("/proc/stb/fp/version", "r").read())
