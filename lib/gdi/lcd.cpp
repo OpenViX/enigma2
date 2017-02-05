@@ -304,6 +304,19 @@ void eDBoxLCD::update()
 		}
 		else
 		{
+			FILE *file;
+			FILE *boxtype_file;
+			char boxtype_name[20];
+			if((boxtype_file = fopen("/proc/stb/info/boxtype", "r")) != NULL)
+			{
+				fgets(boxtype_name, sizeof(boxtype_name), boxtype_file);
+				fclose(boxtype_file);
+			}
+			else if((boxtype_file = fopen("/proc/stb/info/model", "r")) != NULL)
+			{
+				fgets(boxtype_name, sizeof(boxtype_name), boxtype_file);
+				fclose(boxtype_file);
+			}
 			if (FILE * file = fopen("/proc/stb/info/gbmodel", "r"))
 			{
 				unsigned char gb_buffer[_stride * res.height()];
