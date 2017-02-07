@@ -72,11 +72,16 @@ def getCPUSpeedString():
 
 	if cpu_speed > 0:
 		if cpu_speed >= 1000:
-			cpu_speed = "%s GHz" % str(round(cpu_speed/1000,1))
+			cpu_speed = "%sGHz" % str(round(cpu_speed/1000,1))
 		else:
-			cpu_speed = "%s MHz" % str(round(cpu_speed,1))
+			cpu_speed = "%sMHz" % str(int(cpu_speed))
 		return cpu_speed
 	return _("unavailable")
+
+def getCPUArch():
+	if "ARM" in getCPUString():
+		return getCPUString()
+	return _("Mipsel")
 
 def getCPUString():
 	system = _("unavailable")
@@ -97,6 +102,12 @@ def getCPUString():
 		return _("unavailable")
 
 def getCpuCoresString():
+	MachinesCores = {
+					1 : 'Single core',
+					2 : 'Dual core',
+					4 : 'Quad core',
+					8 : 'Octo core'
+					}
 	try:
 		cores = 1
 		file = open('/proc/cpuinfo', 'r')
@@ -108,7 +119,7 @@ def getCpuCoresString():
 				splitted[1] = splitted[1].replace('\n','')
 				if splitted[0].startswith("processor"):
 					cores = int(splitted[1]) + 1
-		return cores
+		return MachinesCores[cores]
 	except IOError:
 		return _("unavailable")
 
@@ -147,12 +158,8 @@ def getIfTransferredData(ifname):
 			return rx_bytes, tx_bytes
 
 def getPythonVersionString():
-	try:
-		import commands
-		status, output = commands.getstatusoutput("python -V")
-		return output.split(' ')[1]
-	except:
-		return _("unknown")
+	import sys
+	return "%s.%s.%s" % (sys.version_info.major,sys.version_info.minor,sys.version_info.micro)
 
 # For modules that do "from About import about"
 about = modules[__name__]
