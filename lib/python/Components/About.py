@@ -1,4 +1,4 @@
-from boxbranding import getImageVersion, getMachineBuild
+from boxbranding import getImageVersion, getMachineBuild, getBoxType
 from sys import modules
 import socket, fcntl, struct
 
@@ -31,12 +31,12 @@ def getKernelVersionString():
 		return _("unknown")
 
 def getChipSetString():
-	if getMachineBuild() in ('dm7080','dm820'):
+	if getBoxType() in ('dm7080','dm820'):
 		return "7435"
-	elif getMachineBuild() in ('dm520'):
+	elif getBoxType() == 'dm525':
 		return "73625"
-	elif getMachineBuild() in ('dm900'):
-		return "7252S"
+	elif getBoxType() == 'dm900':
+		return "7252s"
 	else:
 		try:
 			f = open('/proc/stb/info/chipset', 'r')

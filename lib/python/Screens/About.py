@@ -68,10 +68,7 @@ class About(Screen):
 		self["lab3"] = StaticText(_("Support at") + " www.world-of-satellite.com")
 
 		AboutText += _("Model:\t%s %s\n") % (getMachineBrand(), getMachineName())
-
-		if path.exists('/proc/stb/info/chipset'):
-			AboutText += _("Chipset:\tBCM%s\n") % about.getChipSetString()
-
+		AboutText += _("Chipset:\tBCM%s\n") % about.getChipSetString()
 		AboutText += _("CPU:\t%s %s %s\n") % (about.getCPUArch(), about.getCPUSpeedString(), about.getCpuCoresString())
 		imageSubBuild = ""
 		if getImageType() != 'release':

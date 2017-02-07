@@ -9,12 +9,15 @@ from Components.Console import Console
 from Components.Language import language
 from Tools.Directories import fileCheck, fileExists
 from enigma import getDesktop
-from os import access, R_OK
+from os import access, R_OK, path as os_path
 
 from boxbranding import getBoxType
 
 def getFilePath(setting):
-	return "/proc/stb/fb/dst_%s" % (setting)
+	if getBrandOEM() in ('dreambox'):
+		return "/proc/stb/vmpeg/0/dst_%s" % (setting)
+	else:
+		return "/proc/stb/fb/dst_%s" % (setting)
 
 def setPositionParameter(parameter, configElement):
 	f = open(getFilePath(parameter), "w")
@@ -55,10 +58,11 @@ def InitOsd():
 
 	def set3DZnorm(configElement):
 		if SystemInfo["CanChange3DOsd"] and getBoxType() not in ('spycat'):
-			print '[UserInterfacePositioner] Setting 3D depth:',configElement.value
-			f = open("/proc/stb/fb/znorm", "w")
-			f.write('%d' % int(configElement.value))
-			f.close()
+			if os_path.exists("/proc/stb/fb/znorm"):
+				print '[UserInterfacePositioner] Setting 3D depth:',configElement.value
+				f = open("/proc/stb/fb/znorm", "w")
+				f.write('%d' % int(configElement.value))
+				f.close()
 	config.osd.threeDznorm.addNotifier(set3DZnorm)
 
 def InitOsdPosition():

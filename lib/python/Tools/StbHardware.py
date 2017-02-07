@@ -1,6 +1,6 @@
 from fcntl import ioctl
 from struct import pack, unpack
-from boxbranding import getBrandOEM
+from boxbranding import getBrandOEM, getBoxType
 from Components.config import config
 
 def getFPVersion():
