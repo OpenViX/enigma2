@@ -149,10 +149,6 @@ eHdmiCEC::eHdmiCEC()
 		messageNotifier = eSocketNotifier::create(eApp, hdmiFd, eSocketNotifier::Read | eSocketNotifier::Priority);
 		CONNECT(messageNotifier->activated, eHdmiCEC::hdmiEvent);
 	}
-	else
-	{
-		eDebug("[eHdmiCEC] cannot open %s: %m", HDMIDEV);
-	}
 
 	getAddressInfo();
 }
