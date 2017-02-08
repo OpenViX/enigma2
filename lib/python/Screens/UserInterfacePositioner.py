@@ -11,7 +11,7 @@ from Tools.Directories import fileCheck, fileExists
 from enigma import getDesktop
 from os import access, R_OK, path as os_path
 
-from boxbranding import getBoxType
+from boxbranding import getBoxType, getBrandOEM
 
 def getFilePath(setting):
 	if getBrandOEM() in ('dreambox'):
@@ -67,7 +67,7 @@ def InitOsd():
 
 def InitOsdPosition():
 	SystemInfo["CanChangeOsdAlpha"] = access('/proc/stb/video/alpha', R_OK) and True or False
-	SystemInfo["CanChangeOsdPosition"] = access('/proc/stb/fb/dst_left', R_OK) and True or False
+	SystemInfo["CanChangeOsdPosition"] = (access('/proc/stb/fb/dst_left', R_OK) or access('/proc/stb/vmpeg/0/dst_left', R_OK)) and True or False
 	SystemInfo["OsdSetup"] = SystemInfo["CanChangeOsdPosition"]
 
 	if SystemInfo["CanChangeOsdAlpha"] == True or SystemInfo["CanChangeOsdPosition"] == True:
