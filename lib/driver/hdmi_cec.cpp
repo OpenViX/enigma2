@@ -126,13 +126,12 @@ eHdmiCEC::eHdmiCEC()
 
 	if (!linuxCEC)
 	{
-#ifdef DREAMBOX
-#define HDMIDEV "/dev/misc/hdmi_cec0"
-#else
-#define HDMIDEV "/dev/hdmi_cec"
-#endif
 
-		hdmiFd = ::open(HDMIDEV, O_RDWR | O_NONBLOCK | O_CLOEXEC);
+#ifdef DREAMBOX
+	hdmiFd = ::open("/dev/misc/hdmi_cec0", O_RDWR | O_NONBLOCK | O_CLOEXEC);
+#else
+	hdmiFd = ::open("/dev/hdmi_cec", O_RDWR | O_NONBLOCK | O_CLOEXEC);
+#endif
 		if (hdmiFd >= 0)
 		{
 
@@ -171,6 +170,8 @@ eHdmiCEC *eHdmiCEC::getInstance()
 void eHdmiCEC::reportPhysicalAddress()
 {
 	struct cec_message txmessage;
+	memset(&txmessage, 0, sizeof(txmessage));
+
 	txmessage.address = 0x0f; /* broadcast */
 	txmessage.data[0] = 0x84; /* report address */
 	txmessage.data[1] = physicalAddress[0];
@@ -185,6 +186,7 @@ void eHdmiCEC::getAddressInfo()
 	if (hdmiFd >= 0)
 	{
 		bool hasdata = false;
+
 		struct addressinfo addressinfo;
 
 		if (linuxCEC)
@@ -228,6 +230,7 @@ void eHdmiCEC::getAddressInfo()
 			if (::ioctl(hdmiFd, 1, &addressinfo) >= 0)
 			{
 				hasdata = true;
+
 #if DREAMBOX
 				/* we do not get the device type, check the logical address to determine the type */
 				switch (addressinfo.logical)
@@ -376,7 +379,7 @@ void eHdmiCEC::hdmiEvent(int what)
 			{
 				eDebugNoNewLine(" %02X", rxmessage.data[i]);
 			}
-			eDebugNoNewLine("\n");
+			eDebugNoNewLineEnd(" ");
 			bool hdmicec_report_active_menu = eConfigManager::getConfigBoolValue("config.hdmicec.report_active_menu", false);
 			if (hdmicec_report_active_menu)
 			{
@@ -529,7 +532,7 @@ void eHdmiCEC::sendMessage(struct cec_message &message)
 		{
 			eDebugNoNewLine(" %02X", message.data[i]);
 		}
-		eDebugNoNewLine("\n");
+		eDebugNoNewLineEnd(" ");
 		if (linuxCEC)
 		{
 			struct cec_msg msg;
