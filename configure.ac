@@ -383,7 +383,7 @@ if test "$BOXTYPE" == "dm7080" -o "$BOXTYPE" == "dm820" -o "$BOXTYPE" == "dm900"
 fi
 
 if test "$BOXTYPE" == "vusolo4k" -o "$BOXTYPE" == "vuuno4k" -o "$BOXTYPE" == "vuultimo4k" ; then
-	AC_DEFINE(TUNER_VUSOLO4K, 1,[define BOXTYPE VUSOLO4K])
+	AC_DEFINE(TUNER_FBC, 1,[define HAVE FBC TUNER])
 fi
 
 AC_ARG_WITH(libsdl,
