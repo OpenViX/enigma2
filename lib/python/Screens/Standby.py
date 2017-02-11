@@ -28,7 +28,6 @@ def setLCDMiniTVMode(value):
 class Standby2(Screen):
 	def Power(self):
 		print "[Standby] leave standby"
-		self.leaveMute()
 		self.close(True)
 
 	def setMute(self):
@@ -123,6 +122,7 @@ class Standby2(Screen):
 		self.session.screen["Standby"].boolean = False
 		globalActionMap.setEnabled(True)
 		self.avswitch.setInput("ENCODER")
+		self.leaveMute()
 		if os.path.exists("/usr/script/standby_leave.sh"):
 			Console().ePopen("/usr/script/standby_leave.sh")
 
