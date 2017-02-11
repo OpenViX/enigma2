@@ -31,16 +31,13 @@ class Standby2(Screen):
 		self.close(True)
 
 	def setMute(self):
-		if eDVBVolumecontrol.getInstance().isMuted():
-			self.wasMuted = 1
-			print "[Standby] mute already active"
-		else:
-			self.wasMuted = 0
-			eDVBVolumecontrol.getInstance().volumeToggleMute()
+		self.wasMuted = eDVBVolumecontrol.getInstance().isMuted()
+		if not self.wasMuted:
+			eDVBVolumecontrol.getInstance().volumeMute()
 
 	def leaveMute(self):
-		if self.wasMuted == 0:
-			eDVBVolumecontrol.getInstance().volumeToggleMute()
+		if not self.wasMuted:
+			eDVBVolumecontrol.getInstance().volumeUnMute()
 
 	def __init__(self, session):
 		Screen.__init__(self, session)
