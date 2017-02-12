@@ -429,12 +429,12 @@ class ConfigSelection(ConfigElement):
 #
 boolean_descriptions = {False: _("false"), True: _("true")}
 class ConfigBoolean(ConfigElement):
-	def __init__(self, default=False, descriptions=boolean_descriptions, grafic=True):
+	def __init__(self, default=False, descriptions=boolean_descriptions, graphic=True):
 		ConfigElement.__init__(self)
 		self.descriptions = descriptions
 		self.value = self.last_value = self.default = default
-		self.grafic = False
-		if grafic:
+		self.graphic = False
+		if graphic:
 			from skin import switchPixmap
 			offPath = switchPixmap.get('menu_off')
 			onPath = switchPixmap.get('menu_on')
@@ -444,7 +444,7 @@ class ConfigBoolean(ConfigElement):
 				if falseIcon and trueIcon:
 					self.falseIcon = falseIcon
 					self.trueIcon = trueIcon
-					self.grafic = True
+					self.graphic = True
 
 	def handleKey(self, key):
 		if key in (KEY_LEFT, KEY_RIGHT):
@@ -462,7 +462,7 @@ class ConfigBoolean(ConfigElement):
 
 	def getMulti(self, selected):
 		from config import config
-		if self.grafic and config.usage.boolean_graphic.value:
+		if self.graphic and config.usage.boolean_graphic.value:
 			if self.value:
 				return ('pixmap', self.trueIcon)
 			else:
