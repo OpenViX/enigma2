@@ -154,8 +154,8 @@ AM_CONDITIONAL(SPARK, test `echo "$BOXTYPE" | cut -b 1-5` == spark)
 AM_CONDITIONAL(XC7362, test "$BOXTYPE" == xc7362)
 AM_CONDITIONAL(XC7358, test "$BOXTYPE" == xc7358)
 AM_CONDITIONAL(XC7358CI, test "$BOXTYPE" == xc7358ci)
-AM_CONDITIONAL(HAVE_COLORLCD3, test "$BOXTYPE" == dm7080)
 AM_CONDITIONAL(HAVE_COLORLCD2, test "$BOXTYPE" == dm820)
+AM_CONDITIONAL(HAVE_COLORLCD3, test "$BOXTYPE" == dm7080)
 
 
 AC_ARG_WITH(libvugles2,
@@ -237,6 +237,16 @@ if test x"$withcolorlcd400" != xno ; then
 	AC_DEFINE(HAVE_COLORLCD400, 1,[Define when using a 400x176 color display device])
 fi
 AM_CONDITIONAL(HAVE_COLORLCD400, test x"$withcolorlcd400" != xno)
+
+AC_ARG_WITH(colorlcd400dm,
+	AC_HELP_STRING([--with-colorlcd400dm], [use 400x176 16bpp color display, yes or no]),
+	[[withcolorlcd400dm=$withval]],
+	[[withcolorlcd400dm=no]]
+)
+if test x"$withcolorlcd400dm" != xno ; then
+	AC_DEFINE(HAVE_COLORLCD400DM, 1,[Define when using a 400x176 color display device])
+fi
+AM_CONDITIONAL(HAVE_COLORLCD400DM, test x"$withcolorlcd400" != xno)
 
 AC_ARG_WITH(colorlcd480,
 	AC_HELP_STRING([--with-colorlcd480], [use 480x320 16bpp color display, yes or no]),
@@ -454,6 +464,7 @@ data/display128/Makefile
 data/display128dm/Makefile
 data/display220/Makefile
 data/display400/Makefile
+data/display400dm/Makefile
 data/display480/Makefile
 data/display720/Makefile
 data/display720/Default_with_Analogue_Clock_Standby/Makefile
