@@ -736,7 +736,7 @@ def InitAVSwitch():
 			f = open("/proc/stb/audio/ac3plus", "w")
 			f.write(configElement.value)
 			f.close()
-		choice_list = [("use_hdmi_caps", _("controlled by HDMI")), ("force_ac3", _("always"))]
+		choice_list = [("use_hdmi_caps", _("Controlled by HDMI")), ("force_ac3", _("Always"))]
 		config.av.transcodeac3plus = ConfigSelection(choices = choice_list, default = "use_hdmi_caps")
 		config.av.transcodeac3plus.addNotifier(setAC3plusTranscode)
 
@@ -756,6 +756,24 @@ def InitAVSwitch():
 			f.close()
 		config.av.downmix_dts = ConfigYesNo(default = True)
 		config.av.downmix_dts.addNotifier(setDTSDownmix)
+	
+	if os.path.exists("/proc/stb/audio/dtshd_choices"):
+		f = open("/proc/stb/audio/dtshd_choices", "r")
+		can_dtshdtranscode = f.read().strip().split(" ")
+		f.close()
+	else:
+		can_dtshdtranscode = False
+
+	SystemInfo["CanDTSHDTranscode"] = can_dtshdtranscode
+
+	if can_dtshdtranscode:
+		def setDTSHDTranscode(configElement):
+			f = open("/proc/stb/audio/dtshd", "w")
+			f.write(configElement.value)
+			f.close()
+		choice_list = [("use_hdmi_caps", _("Controlled by HDMI")), ("force_dts", _("Always"))]
+		config.av.transcodedtshd = ConfigSelection(choices = choice_list, default = "use_hdmi_caps")
+		config.av.transcodedtshd.addNotifier(setDTSHDTranscode)
 
 	try:
 		f = open("/proc/stb/audio/aac_choices", "r")
