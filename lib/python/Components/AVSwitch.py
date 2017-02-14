@@ -721,6 +721,24 @@ def InitAVSwitch():
 					config.av.pcm_multichannel.setValue(False)
 		config.av.downmix_ac3 = ConfigYesNo(default = True)
 		config.av.downmix_ac3.addNotifier(setAC3Downmix)
+	
+	if os.path.exists("/proc/stb/audio/ac3plus_choices"):
+		f = open("/proc/stb/audio/ac3plus_choices", "r")
+		can_ac3plustranscode = f.read().strip().split(" ")
+		f.close()
+	else:
+		can_ac3plustranscode = False
+
+	SystemInfo["CanAC3plusTranscode"] = can_ac3plustranscode
+
+	if can_ac3plustranscode:
+		def setAC3plusTranscode(configElement):
+			f = open("/proc/stb/audio/ac3plus", "w")
+			f.write(configElement.value)
+			f.close()
+		choice_list = [("use_hdmi_caps", _("controlled by HDMI")), ("force_ac3", _("always"))]
+		config.av.transcodeac3plus = ConfigSelection(choices = choice_list, default = "use_hdmi_caps")
+		config.av.transcodeac3plus.addNotifier(setAC3plusTranscode)
 
 	try:
 		f = open("/proc/stb/audio/aac_choices", "r")

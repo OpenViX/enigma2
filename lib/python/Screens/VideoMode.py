@@ -148,6 +148,8 @@ class VideoSetup(Screen, ConfigListScreen):
 		if level >= 1:
 			if SystemInfo["CanDownmixAC3"]:
 				self.list.append(getConfigListEntry(_("Dolby Digital / DTS downmix"), config.av.downmix_ac3, _("Choose whether multi channel sound tracks should be downmixed to stereo.")))
+			if SystemInfo["CanAC3plusTranscode"]:
+				self.list.append(getConfigListEntry(_("AC3 plus transcoding"), config.av.transcodeac3plus, _("Choose whether AC3 Plus sound tracks should be transcoded to AC3.")))
 			if SystemInfo["CanDownmixAAC"]:
 				self.list.append(getConfigListEntry(_("AAC downmix"), config.av.downmix_aac, _("Choose whether multi channel sound tracks should be downmixed to stereo.")))
 			if SystemInfo["CanAACTranscode"]:
