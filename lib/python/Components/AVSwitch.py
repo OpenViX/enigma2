@@ -496,6 +496,21 @@ def InitAVSwitch():
 					"422": _("YCbCr422"),
 					"420": _("YCbCr420")},
 					default = "Edid(Auto)")
+		elif getBoxType() in ('dm900'):
+			config.av.hdmicolorspace = ConfigSelection(choices={
+					"Edid(Auto)": _("Auto"),
+					"Hdmi_Rgb": _("RGB"),
+					"Itu_R_BT_709": _("BT709"),
+					"DVI_Full_Range_RGB": _("Full Range RGB"),
+					"FCC": _("FCC 1953"),
+					"Itu_R_BT_470_2_BG": _("BT470 BG"),
+					"Smpte_170M": _("Smpte 170M"),
+					"Smpte_240M": _("Smpte 240M"),
+					"Itu_R_BT_2020_NCL": _("BT2020 NCL"),
+					"Itu_R_BT_2020_CL": _("BT2020 CL"),
+					"XvYCC_709": _("BT709 XvYCC"),
+					"XvYCC_601": _("BT601 XvYCC")},
+					default = "Edid(Auto)")
 		else:
 			config.av.hdmicolorspace = ConfigSelection(choices={
 					"auto": _("auto"),
