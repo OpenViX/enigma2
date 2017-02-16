@@ -487,13 +487,22 @@ def InitAVSwitch():
 				f.close()
 			except:
 				pass
-		config.av.hdmicolorspace = ConfigSelection(choices={
-				"Edid(auto)": _("Auto"),
-				"Hdmi_Rgb": _("RGB"),
-				"444": _("YCbCr444"),
-				"422": _("YCbCr422"),
-				"420": _("YCbCr420")},
-				default = "Edid(auto)")
+		if getBoxType() in ('vusolo4k','vuuno4k','vuultimo4k'):
+			config.av.hdmicolorspace = ConfigSelection(choices={
+					"Edid(Auto)": _("Auto"),
+					"Hdmi_Rgb": _("RGB"),
+					"444": _("YCbCr444"),
+					"422": _("YCbCr422"),
+					"420": _("YCbCr420")},
+					default = "Edid(Auto)")
+		else:
+			config.av.hdmicolorspace = ConfigSelection(choices={
+					"auto": _("auto"),
+					"rgb": _("rgb"),
+					"420": _("420"),
+					"422": _("422"),
+					"444": _("444")},
+					default = "auto")
 		config.av.hdmicolorspace.addNotifier(setHDMIColorspace)
 	else:
 		config.av.hdmicolorspace = ConfigNothing()
@@ -696,6 +705,23 @@ def InitAVSwitch():
 					config.av.pcm_multichannel.setValue(False)
 		config.av.downmix_ac3 = ConfigYesNo(default = True)
 		config.av.downmix_ac3.addNotifier(setAC3Downmix)
+
+	try:
+		f = open("/proc/stb/audio/dts_choices", "r")
+		file = f.read()[:-1]
+		f.close()
+		can_downmix_dts = "downmix" in file
+	except:
+		can_downmix_dts = False
+
+	SystemInfo["CanDownmixDTS"] = can_downmix_dts
+	if can_downmix_dts:
+		def setDTSDownmix(configElement):
+			f = open("/proc/stb/audio/dts", "w")
+			f.write(configElement.value and "downmix" or "passthrough")
+			f.close()
+		config.av.downmix_dts = ConfigYesNo(default = True)
+		config.av.downmix_dts.addNotifier(setDTSDownmix)
 
 	try:
 		f = open("/proc/stb/audio/aac_choices", "r")
