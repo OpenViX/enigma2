@@ -1417,6 +1417,16 @@ void eEPGCache::load()
 void eEPGCache::save()
 {
 	const char* EPGDAT = m_filename.c_str();
+	// only save epg.dat if it is enabled in enigma2 config
+	if (!eConfigManager::getConfigBoolValue("config.epg.cachesaveenabled", false))
+	{
+		eDebug("[eEPGCache] EPG cache saving is disabled in enigma2 config");
+		return;
+	}
+	else
+	{
+		eDebug("[eEPGCache] EPG cache saving is enabled in enigma2 config");
+	}
 	if (eventData::isCacheCorrupt)
 		return;
 	// only save epg.dat if it's worth the trouble...
