@@ -1117,6 +1117,7 @@ class ImageManagerDownload(Screen):
 				'tmnanoseplus'    : 'TM-Nano-SE-Plus',
 				'tmsingle'        : 'TM-Single',
 				'tmtwin'          : 'TM-Twin-OE',
+				'tmtwin4k'        : 'TM-Twin-4K',				
 				'uniboxhde'       : 'Venton-Unibox-HDeco-PLUS',
 				'ventonhdx'       : 'Venton-Unibox-HDx',
 				'vuduo'           : 'Vu+Duo',
