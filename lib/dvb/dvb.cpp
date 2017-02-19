@@ -449,7 +449,7 @@ eDVBUsbAdapter::eDVBUsbAdapter(int nr)
 		goto error;
 	}
 
-#ifdef TUNER_VUSOLO4K
+#ifdef TUNER_FBC
 #define VTUNER_GET_MESSAGE  11
 #define VTUNER_SET_RESPONSE 12
 #define VTUNER_SET_NAME     13
@@ -918,7 +918,10 @@ RESULT eDVBResourceManager::allocateFrontend(ePtr<eDVBAllocatedFrontend> &fe, eP
 			c = i->m_frontend->isCompatibleWith(feparm);
 
 		if (c)	/* if we have at least one frontend which is compatible with the source, flag this. */
+		{
+			eDebug("[eDVBResourceManager] allocateFrontend, score=%d", c);
 			foundone = 1;
+		}
 
 		if (!i->m_inuse)
 		{
