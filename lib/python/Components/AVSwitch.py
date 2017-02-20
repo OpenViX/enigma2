@@ -166,7 +166,7 @@ class AVSwitch:
 	
 	# Machines that have neither yellow RCA nor Scart sockets
 	no_yellow_RCA__no_scart = (
-		'odroidc2,
+		'odroidc2',
 		'et5x00',
 		'et6x00',
 		'gbquad',
