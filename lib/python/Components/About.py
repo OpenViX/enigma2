@@ -79,30 +79,9 @@ def getCPUSpeedString():
 	return _("unavailable")
 
 def getCPUArch():
-	try:
-		file = open('/proc/cpuinfo', 'r')
-		lines = file.readlines()
-		file.close()
-		for x in lines:
-			splitted = x.split(': ')
-			if splitted[1].startswith('ARM'):
-				return splitted[1].split(' ')[0]
-	except:
-		pass
+	if "ARM" in getCPUString():
+		return getCPUString()
 	return _("Mipsel")
-	
-def getBCM():
-	try:
-		file = open('/proc/cpuinfo', 'r')
-		lines = file.readlines()
-		file.close()
-		for x in lines:
-			splitted = x.split(': ')
-			if splitted[1].startswith('BCM'):
-				return 'BCM'
-	except:
-		pass
-	return ''
 
 def getCPUString():
 	system = _("unavailable")
