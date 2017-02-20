@@ -94,7 +94,6 @@ class AVSwitch:
 	
 	# Machines that do not have component video (red, green and blue RCA sockets).
 	no_YPbPr = (
-		'odroidc2' ,
 		'dm500hd',
 		'dm500hdv2',
 		'dm800',
@@ -115,6 +114,7 @@ class AVSwitch:
 		'mutant1200',
 		'mutant1500',
 		'odimm7',
+		'odroidc2',	
 		'optimussos1',
 		'osmega',
 		'osmini',
@@ -139,7 +139,9 @@ class AVSwitch:
 		'vusolo4k',
 		'vuuno4k',
 		'vuultimo4k',
-		'xp1000'
+		'xp1000',
+		'wetekplay',
+		'wetekplay2'
 	)
 	
 	# Machines that have composite video (yellow RCA socket) but do not have Scart.
@@ -161,7 +163,9 @@ class AVSwitch:
 		'tmnanosem2plus',
 		'tmnano2super',
 		'tmnano3t',
-		'xpeedlx3'
+		'xpeedlx3',
+		'wetekplay',
+		'wetekplay2'
 	)
 	
 	# Machines that have neither yellow RCA nor Scart sockets
@@ -396,8 +400,8 @@ class AVSwitch:
 				f = open("/proc/stb/video/policy", "w")
 				f.write(cfgelement.value)
 				f.close()
-			except IOError:
-				print "[VideoHardware] setting policy43 failed."
+		except IOError:
+			print "[VideoHardware] setting policy43 failed."
 
 	def setPolicy169(self, cfgelement):
 		if os.path.exists("/proc/stb/video/policy2"):
