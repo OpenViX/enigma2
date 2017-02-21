@@ -896,29 +896,10 @@ class XtraPluginsSelection(Screen):
 		self.close(True)
 
 class VIXBackupManagerMenu(Setup):
-	skin = """
-	<screen name="VIXBackupManagerMenu" position="center,center" size="560,550" title="VIX backup manager menu">
-		<ePixmap pixmap="skin_default/buttons/red.png" position="0,0" size="140,40" alphatest="on"/>
-		<ePixmap pixmap="skin_default/buttons/green.png" position="140,0" size="140,40" alphatest="on"/>
-		<ePixmap pixmap="skin_default/buttons/yellow.png" position="280,0" size="140,40" alphatest="on"/>
-		<ePixmap pixmap="skin_default/buttons/blue.png" position="420,0" size="140,40" alphatest="on"/>
-		<widget name="key_red" position="0,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
-		<widget name="key_green" position="140,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1"/>
-		<widget name="key_yellow" position="280,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" transparent="1"/>
-		<widget name="key_blue" position="420,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#18188b" transparent="1"/>
-		<widget name="HelpWindow" pixmap="buttons/vkey_icon.png" position="450,510" zPosition="1" size="1,1" transparent="1" alphatest="on"/>
-		<widget source="VKeyIcon" render="Pixmap" pixmap="buttons/key_text.png" position="0,500" zPosition="1" size="35,25" transparent="1" alphatest="on">
-			<convert type="ConditionalShowHide"/>
-		</widget>
-		<widget name="footnote" position="0,50" size="300,20" zPosition="1" font="Regular;20" halign="left" transparent="1" valign="top"/>
-		<widget name="config" position="0,90" size="560,375" transparent="0" enableWrapAround="1" scrollbarMode="showOnDemand"/>
-		<widget name="description" position="0,e-75" size="560,75" font="Regular;18" halign="center" valign="top" transparent="0" zPosition="1"/>
-	</screen>"""
-
 	def __init__(self, session, setup, plugin=None, menu_path=None, PluginLanguageDomain=None):
 		Setup.__init__(self, session, setup, plugin, menu_path, PluginLanguageDomain)
 		self.menu_path = menu_path
-		self.skinName = "VIXBackupManagerMenu"
+		self.skinName = "Setup"
 
 		self["actions2"] = ActionMap(["SetupActions", 'ColorActions', 'VirtualKeyboardActions', "MenuActions"],
 									 {
