@@ -22,7 +22,7 @@ else:
 
 E2Branches = {
 	'developer' : 'Dev',
-	'release' : 'Master'
+	'release' : 'master'
 	}
 
 project = 0
@@ -49,7 +49,7 @@ def readGithubCommitLogsSoftwareUpdate():
 		except:
 			log = loads(urllib2.urlopen(url, timeout=5).read())
 		for c in log:
-			if gitstart and not c['commit']['message'].startswith('openvix:') and getScreenTitle() in ("Enigma2", "OE-A Core"):
+			if gitstart and not c['commit']['message'].startswith('openvix:') and getScreenTitle() in ("Enigma2", "ViX Core", "OE-A Core"):
 					continue
 			if c['commit']['message'].startswith('openvix:'):
 				gitstart = False
@@ -78,20 +78,20 @@ def readGithubCommitLogsSoftwareUpdate():
 		cachedProjects[getScreenTitle()] = commitlog
 	except urllib2.HTTPError, err:
 		if err.code == 403:
-			print '[GitCommitLog] It seems you have hit your API limit - please try later again'
-			commitlog += _("It seems you have hit your API limit - please try later again")
+			print '[GitCommitLog] It seems you have hit your API limit - please try again later.'
+			commitlog += _("It seems you have hit your API limit - please try again later.")
 		else:
-			print '[GitCommitLog] Currently the commit log cannot be retrieved - please try later again\n%s' % err
-			commitlog += _("Currently the commit log cannot be retrieved - please try later again\n%s" % err)
+			print '[GitCommitLog] Currently the commit log cannot be retrieved - please try again later.\n%s' % err
+			commitlog += _("Currently the commit log cannot be retrieved - please try again later.")
 	except urllib2.URLError, err:
-		print '[GitCommitLog] Currently the commit log cannot be retrieved - please try later again\n%s' % err.reason[0]
-		commitlog += _("Currently the commit log cannot be retrieved - please try later again\n%s" % err.reason[0])
+		print '[GitCommitLog] Currently the commit log cannot be retrieved - please try again later.'
+		commitlog += _("Currently the commit log cannot be retrieved - please try again later.\n%s" % err.reason[0])
 	except urllib2, err:
-		print '[GitCommitLog] Currently the commit log cannot be retrieved - please try later again\n%s' % err
-		commitlog += _("Currently the commit log cannot be retrieved - please try later again\n%s" % err)
+		print '[GitCommitLog] Currently the commit log cannot be retrieved - please try again later.'
+		commitlog += _("Currently the commit log cannot be retrieved - please try again later.\n%s" % err)
 	except:
-		print '[GitCommitLog] Currently the commit log cannot be retrieved - please try later again'
-		commitlog += _("Currently the commit log cannot be retrieved - please try later again")
+		print '[GitCommitLog] Currently the commit log cannot be retrieved - please try again later.'
+		commitlog += _("Currently the commit log cannot be retrieved - please try again later.")
 	return commitlog
 
 def readGithubCommitLogs():
@@ -109,7 +109,7 @@ def readGithubCommitLogs():
 		except:
 			log = loads(urllib2.urlopen(url, timeout=5).read())
 		for c in log:
-			if gitstart and not c['commit']['message'].startswith('openvix:') and getScreenTitle() in ("Enigma2", "OE-A Core"):
+			if gitstart and not c['commit']['message'].startswith('openvix:') and getScreenTitle() in ("Enigma2", "ViX Core", "OE-A Core"):
 				continue
 			if c['commit']['message'].startswith('openvix:'):
 				blockstart = False
@@ -130,7 +130,7 @@ def readGithubCommitLogs():
 				if releasever > ImageVer:
 					blockstart = True
 					continue
-			elif blockstart and getScreenTitle() in ("Enigma2", "OE-A Core"):
+			elif blockstart and getScreenTitle() in ("Enigma2", "ViX Core", "OE-A Core"):
 				blockstart = True
 				continue
 
@@ -142,20 +142,20 @@ def readGithubCommitLogs():
 		cachedProjects[getScreenTitle()] = commitlog
 	except urllib2.HTTPError, err:
 		if err.code == 403:
-			print '[GitCommitLog] It seems you have hit your API limit - please try later again'
-			commitlog += _("It seems you have hit your API limit - please try later again")
+			print '[GitCommitLog] It seems you have hit your API limit - please try again later.'
+			commitlog += _("It seems you have hit your API limit - please try again later.")
 		else:
-			print '[GitCommitLog] Currently the commit log cannot be retrieved - please try later again\n%s' % err
-			commitlog += _("Currently the commit log cannot be retrieved - please try later again\n%s" % err)
+			print '[GitCommitLog] Currently the commit log cannot be retrieved - please try again later.\n%s' % err
+			commitlog += _("Currently the commit log cannot be retrieved - please try again later.")
 	except urllib2.URLError, err:
-		print '[GitCommitLog] Currently the commit log cannot be retrieved - please try later again\n%s' % err.reason[0]
-		commitlog += _("Currently the commit log cannot be retrieved - please try later again\n%s" % err.reason[0])
+		print '[GitCommitLog] Currently the commit log cannot be retrieved - please try again later.'
+		commitlog += _("Currently the commit log cannot be retrieved - please try again later.\n%s" % err.reason[0])
 	except urllib2, err:
-		print '[GitCommitLog] Currently the commit log cannot be retrieved - please try later again\n%s' % err
-		commitlog += _("Currently the commit log cannot be retrieved - please try later again\n%s" % err)
+		print '[GitCommitLog] Currently the commit log cannot be retrieved - please try again later.'
+		commitlog += _("Currently the commit log cannot be retrieved - please try again later.\n%s" % err)
 	except:
-		print '[GitCommitLog] Currently the commit log cannot be retrieved - please try later again'
-		commitlog += _("Currently the commit log cannot be retrieved - please try later again")
+		print '[GitCommitLog] Currently the commit log cannot be retrieved - please try again later.'
+		commitlog += _("Currently the commit log cannot be retrieved - please try again later.")
 	return commitlog
 
 def getScreenTitle():
