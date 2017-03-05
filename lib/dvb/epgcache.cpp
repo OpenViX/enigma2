@@ -1425,6 +1425,7 @@ void eEPGCache::load()
 
 void eEPGCache::save()
 {
+	eDebug("[eEPGCache::save] Starting");
 	const char* EPGDAT = m_filename.c_str();
 	// only write to epg.dat if this is enabled in enigma2 config
 	if (!eConfigManager::getConfigBoolValue("config.epg.cachesaveenabled", false))
@@ -1537,6 +1538,7 @@ void eEPGCache::save()
 	fseek(f, sizeof(int), SEEK_SET);
 	fwrite("ENIGMA_EPG_V7", 13, 1, f);
 	fclose(f);
+	eDebug("[eEPGCache::save] Finished");
 }
 
 eEPGCache::channel_data::channel_data(eEPGCache *ml)
