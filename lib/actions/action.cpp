@@ -43,7 +43,7 @@ RESULT eActionMap::getInstance(ePtr<eActionMap> &ptr)
 }
 
 #if defined(__aarch64__)
-void eActionMap::bindAction(const std::string &context, long long priority, int id, eWidget *widget)
+void eActionMap::bindAction(const std::string &context, long long int priority, int id, eWidget *widget)
 #else
 void eActionMap::bindAction(const std::string &context, int priority, int id, eWidget *widget)
 #endif
