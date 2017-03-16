@@ -226,7 +226,6 @@ class VIXImageManager(Screen):
 			if hdd in config.imagemanager.backuplocation.choices.choices:
 				self['myactions'] = ActionMap(['ColorActions', 'OkCancelActions', 'DirectionActions', "MenuActions", "HelpActions"],
 											  {
-											  "ok": self.keyResstore,
 											  'cancel': self.close,
 											  'red': self.keyDelete,
 											  'green': self.GreenPressed,
@@ -239,6 +238,7 @@ class VIXImageManager(Screen):
 				if getImageFileSystem().replace(' ','') not in ('tar.bz2', 'hd-emmc'):
 					self['restoreaction'] = ActionMap(['ColorActions'],
 												  {
+												  "ok": self.keyResstore,
 												  'blue': self.keyResstore,
 												  }, -1)
 
@@ -1094,7 +1094,7 @@ class ImageManagerDownload(Screen):
 				'mutant2400'      : 'Mutant-HD2400',
 				'mutant500c'      : 'Mutant-HD500C',
 				'mutant51'        : 'Mutant-HD51',
-				'osmega'          : 'OS-mega',				
+				'osmega'          : 'OS-mega',
 				'osmini'          : 'OS-mini',
 				'osminiplus'      : 'OS-miniplus',
 				'qb800solo'       : 'GiGaBlue-HD800Solo',
@@ -1102,7 +1102,7 @@ class ImageManagerDownload(Screen):
 				'sf128'           : 'OCTAGON-SF128',
 				'sf138'           : 'OCTAGON-SF138',
 				'sf228'           : 'OCTAGON-SF228',
-				'sf4008'          : 'OCTAGON-SF4008',				
+				'sf4008'          : 'OCTAGON-SF4008',
 				'spycat'          : 'Spycat',
 				'tm2t'            : 'TM-2T',
 				'tmnano'          : 'TM-Nano-OE',
@@ -1113,11 +1113,11 @@ class ImageManagerDownload(Screen):
 				'tmnanosecombo'   : 'TM-Nano-SE-Combo',
 				'tmnanosem2'      : 'TM-Nano-SE-M2',
 				'tmnanosem2plus'  : 'TM-Nano-SE-M2-Plus',
-				'tmnanom3'        : 'TM-Nano-M3',				
+				'tmnanom3'        : 'TM-Nano-M3',
 				'tmnanoseplus'    : 'TM-Nano-SE-Plus',
 				'tmsingle'        : 'TM-Single',
 				'tmtwin'          : 'TM-Twin-OE',
-				'tmtwin4k'        : 'TM-Twin-4K',				
+				'tmtwin4k'        : 'TM-Twin-4K',
 				'uniboxhde'       : 'Venton-Unibox-HDeco-PLUS',
 				'ventonhdx'       : 'Venton-Unibox-HDx',
 				'vuduo'           : 'Vu+Duo',
