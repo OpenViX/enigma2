@@ -265,11 +265,11 @@ class VIXImageManager(Screen):
 										  "up": self.refreshUp,
 										  "down": self.refreshDown,
 										  "displayHelp": self.doDownload,
-										  "ok": self.keyResstore,
 										  }, -1)
 			if getImageFileSystem().replace(' ','') not in ('tar.bz2', 'hd-emmc'):
 				self['restoreaction'] = ActionMap(['ColorActions'],
 											  {
+											  "ok": self.keyResstore,
 											  'blue': self.keyResstore,
 											  }, -1)
 
