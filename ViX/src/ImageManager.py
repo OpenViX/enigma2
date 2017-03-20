@@ -1089,6 +1089,7 @@ class ImageManagerDownload(Screen):
 				'mbtwin'          : 'Miraclebox-Twin',
 				'mbtwinplus'      : 'Miraclebox-Twinplus',
 				'mbultra'         : 'Miraclebox-Ultra',
+				'mutant11'        : 'Mutant-HD11',
 				'mutant1200'      : 'Mutant-HD1200',
 				'mutant1500'      : 'Mutant-HD1500',
 				'mutant2400'      : 'Mutant-HD2400',
