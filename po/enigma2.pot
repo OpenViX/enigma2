@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-28 16:38+0100\n"
+"POT-Creation-Date: 2017-01-08 16:38+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4043,6 +4043,9 @@ msgid "Please wait... Loading list..."
 msgstr ""
 
 msgid "Plugin Browser"
+msgstr ""
+
+msgid "Plugin browser settings"
 msgstr ""
 
 msgid "Plugin details"
@@ -8326,7 +8329,7 @@ msgstr ""
 msgid "Audio language selection 4"
 msgstr ""
 
-msgid "Auto language selection"
+msgid "Auto language settings"
 msgstr ""
 
 msgid "Automatic image backup"
@@ -8677,7 +8680,7 @@ msgstr ""
 msgid "Custom skip time for '7'/'9' buttons"
 msgstr ""
 
-msgid "Customize"
+msgid "Customize settings"
 msgstr ""
 
 msgid "DVB subtitle black transparency"
@@ -8770,13 +8773,19 @@ msgstr ""
 msgid "Finetune"
 msgstr ""
 
-msgid "Graphical Infobar EPG settings"
+msgid "Front display settings"
+msgstr ""
+
+msgid "Graphical InfobarEPG settings"
 msgstr ""
 
 msgid "GraphicalEPG settings"
 msgstr ""
 
-msgid "Hard disk setup"
+msgid "GUI settings"
+msgstr ""
+
+msgid "Hard disk settings"
 msgstr ""
 
 msgid "Hard disk standby after"
@@ -8875,7 +8884,7 @@ msgstr ""
 msgid "Keyboard map"
 msgstr ""
 
-msgid "Keyboard setup"
+msgid "Keyboard settings"
 msgstr ""
 
 msgid "LED Deep Standby"
@@ -8938,7 +8947,7 @@ msgstr ""
 msgid "NTP server"
 msgstr ""
 
-msgid "Network setup"
+msgid "Network settings"
 msgstr ""
 
 msgid "OK button (long)"
@@ -8995,7 +9004,7 @@ msgstr ""
 msgid "Quit Movie Player with EXIT button"
 msgstr ""
 
-msgid "RF output"
+msgid "RF output settings"
 msgstr ""
 
 msgid "Recordings always have priority"
@@ -9019,7 +9028,7 @@ msgstr ""
 msgid "Rewrap teletext subtitles"
 msgstr ""
 
-msgid "Satellite dish setup"
+msgid "Satellite dish settings"
 msgstr ""
 
 msgid "Save every (in hours)"
