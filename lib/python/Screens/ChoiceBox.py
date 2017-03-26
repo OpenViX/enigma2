@@ -1,6 +1,6 @@
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
-from Components.ActionMap import NumberActionMap
+from Components.ActionMap import ActionMap, NumberActionMap
 from Components.config import config, ConfigSubsection, ConfigText
 from Components.Label import Label
 from Components.ChoiceList import ChoiceEntryComponent, ChoiceList
@@ -50,7 +50,7 @@ class ChoiceBox(Screen):
 							labeltext += '\n'
 						labeltext = labeltext + temptext[count-1]
 						count += 1
-						print '[Choicebox] count',count
+						print '[Choicebox] count', count
 					self["text"].setText(labeltext)
 				else:
 					self["text"] = Label(title)
@@ -61,7 +61,7 @@ class ChoiceBox(Screen):
 		self.list = []
 		self.summarylist = []
 		if keys is None:
-			self.__keys = [ "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "red", "green", "yellow", "blue" ] + (len(list) - 14) * [""]
+			self.__keys = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "red", "green", "yellow", "blue"] + (len(list) - 14) * [""]
 		else:
 			self.__keys = keys + (len(list) - len(keys)) * [""]
 
@@ -90,12 +90,12 @@ class ChoiceBox(Screen):
 				self.__keys = new_keys
 		for x in list:
 			strpos = str(self.__keys[pos])
-			self.list.append(ChoiceEntryComponent(key = strpos, text = x))
+			self.list.append(ChoiceEntryComponent(key=strpos, text=x))
 			if self.__keys[pos] != "":
 				self.keymap[self.__keys[pos]] = list[pos]
 			self.summarylist.append((self.__keys[pos], x[0]))
 			pos += 1
-		self["list"] = ChoiceList(list = self.list, selection = selection)
+		self["list"] = ChoiceList(list=self.list, selection=selection)
 		self["summary_list"] = StaticText()
 		self["summary_selection"] = StaticText()
 		self.updateSummary(selection)
@@ -124,12 +124,12 @@ class ChoiceBox(Screen):
 			"shiftUp": self.additionalMoveUp,
 			"shiftDown": self.additionalMoveDown,
 			"menu": self.setDefaultChoiceList
-		}, -1)
+		}, prio=-2)
 
-		self["cancelaction"] = NumberActionMap(["WizardActions", "InputActions", "ColorActions"],
+		self["cancelaction"] = ActionMap(["WizardActions"],
 		{
 			"back": self.cancel,
-		}, -1)
+		}, prio=-1)
 		self.onShown.append(self.onshow)
 
 	def onshow(self):
@@ -156,25 +156,28 @@ class ChoiceBox(Screen):
 	def autoResize(self):
 		desktop_w = enigma.getDesktop(0).size().width()
 		desktop_h = enigma.getDesktop(0).size().height()
-		count = len(self.list)
 		itemheight = self["list"].getItemHeight()
+		count = len(self.list)
 		if count > 15:
 			count = 15
+		width = self["list"].instance.size().width()
+		if width < 0 or width > desktop_w:
+			width = 520
 		if not self["text"].text:
 			# move list
-			textsize = (520, 0)
-			listsize = (520, itemheight*count)
+			textsize = (width, 0)
+			listsize = (width, itemheight * count)
 			self["list"].instance.move(enigma.ePoint(0, 0))
 			self["list"].instance.resize(enigma.eSize(*listsize))
 		else:
 			textsize = self["text"].getSize()
 			if textsize[0] < textsize[1]:
-				textsize = (textsize[1],textsize[0]+10)
-			if textsize[0] > 520:
-				textsize = (textsize[0], textsize[1]+itemheight)
+				textsize = (textsize[1], textsize[0] + 10)
+			if textsize[0] > width:
+				textsize = (textsize[0], textsize[1] + itemheight)
 			else:
-				textsize = (520, textsize[1]+itemheight)
-			listsize = (textsize[0], itemheight*count)
+				textsize = (width, textsize[1] + itemheight)
+			listsize = (textsize[0], itemheight * count)
 			# resize label
 			self["text"].instance.resize(enigma.eSize(*textsize))
 			self["text"].instance.move(enigma.ePoint(10, 10))
