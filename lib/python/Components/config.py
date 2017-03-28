@@ -38,6 +38,7 @@ class ConfigElement(object):
 		self.__notifiers_final = None
 		self.enabled = True
 		self.callNotifiersOnSaveAndCancel = False
+		self.callFinalNotifiersOnSaveAndCancel = False
 
 	def getNotifiers(self):
 		if self.__notifiers is None:
@@ -91,12 +92,24 @@ class ConfigElement(object):
 		else:
 			self.saved_value = self.tostring(self.value)
 		if self.callNotifiersOnSaveAndCancel:
+			self._callback_reason = 'save'
 			self.changed()
+			del self._callback_reason
+		if self.callFinalNotifiersOnSaveAndCancel:
+			self._callback_reason = 'save'
+			self.changedFinal()
+			del self._callback_reason
 
 	def cancel(self):
 		self.load()
 		if self.callNotifiersOnSaveAndCancel:
+			self._callback_reason = 'cancel'
 			self.changed()
+			del self._callback_reason
+		if self.callFinalNotifiersOnSaveAndCancel:
+			self._callback_reason = 'cancel'
+			self.changedFinal()
+			del self._callback_reason
 
 	def isChanged(self):
 # NOTE - sv should already be stringified!
@@ -154,9 +167,13 @@ class ConfigElement(object):
 		#     the entry could just be new.)
 		if initial_call:
 			if extra_args:
+				self._callback_reason = 'initial'
 				notifier(self,extra_args)
+				del self._callback_reason
 			else:
+				self._callback_reason = 'initial'
 				notifier(self)
+				del self._callback_reason
 
 	def removeNotifier(self, notifier):
 		notifier in self.notifiers and self.notifiers.remove(notifier)
