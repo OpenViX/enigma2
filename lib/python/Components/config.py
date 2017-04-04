@@ -1921,6 +1921,98 @@ class ConfigSubsection(object):
 	def dict(self):
 		return self.content.items
 
+# This converts old timezone settings string to the new two tier format.
+# The conversion table is based on the contents of timezone.xml just before it was removed from the source code.
+# If the old string is not found, the defaults are used instead.
+def convertOldTimezone(old_name):
+	old_zones = {
+		"(GMT-12:00) International Date Line West": ("Pacific", "Kwajalein"),
+		"(GMT-11:00) Midway Island, Samoa": ("Pacific", "Midway"),
+		"(GMT-10:00) Hawaii": ("Pacific", "Honolulu"),
+		"(GMT-09:00) Alaska": ("America", "Anchorage"),
+		"(GMT-08:00) Pacific Time (US and Canada), Tijuana": ("America", "Tijuana"),
+		"(GMT-07:00) Arizona": ("Generic", "MST"),
+		"(GMT-07:00) Chihuahua, La Paz, Mazatlan": ("Generic", "MST7MDT"),
+		"(GMT-07:00) Mountain Time (US &amp; Canada) ": ("Generic", "MST7MDT"),
+		"(GMT-06:00) Central America": ("Generic", "CST6CDT"),
+		"(GMT-06:00) Central Time (US and Canada)": ("Generic", "CST6CDT"),
+		"(GMT-06:00) Guadalajara, Mexico City, Monterrey": ("Generic", "CST6CDT"),
+		"(GMT-06:00) Saskatchewan": ("Canada", "Saskatchewan"),
+		"(GMT-05:00) Bogota, Lima, Quito": ("America", "Bogota"),
+		"(GMT-05:00) Eastern Time (Us and Canada)": ("Generic", "EST5EDT"),
+		"(GMT-05:00) Indiana (East)": ("Generic", "EST"),
+		"(GMT-04:00) Atlantic Time (Canada)": ("America", "Halifax"),
+		"(GMT-04:00) Caracas, La Paz": ("America", "Caracas"),
+		"(GMT-04:00) Santiago": ("America", "Santiago"),
+		"(GMT-04:00) Brazil, West": ("Brazil", "West"),
+		"(GMT-04:00) Brazil, Acre": ("Brazil", "Acre"),
+		"(GMT-03:30) Newfoundland": ("Canada", "Newfoundland"),
+		"(GMT-03:00) Brazil, East": ("Brazil", "East"),
+		"(GMT-03:00) Buenos Aires, Georgetown": ("Brazil", "West"),
+		"(GMT-03:00) Greenland": ("America", "Danmarkshavn"),
+		"(GMT-02:00) Mid-Atlantic": ("America", "Noronha"),
+		"(GMT-02:00) Brazil, FNT": ("Brazil", "DeNoronha"),
+		"(GMT-01:00) Azores": ("Atlantic", "Azores"),
+		"(GMT-01:00) Cape Verde Is.": ("Atlantic", "Cape_Verde"),
+		"(GMT) Casablanca, Monrovia": ("Africa", "Casablanca"),
+		"(GMT) Greenwich Mean Time : Dublin, Lisbon, London": ("Europe", "Dublin"),
+		"(GMT+01:00) Amsterdam, Berlin, Bern, Rome, Vienna": ("Generic", "CET"),
+		"(GMT+01:00) Belgrade, Bratislava, Budapest, Prague": ("Generic", "CET"),
+		"(GMT+01:00) Brussels, Copenhagen, Madrid, Paris": ("Generic", "CET"),
+		"(GMT+01:00) Sarajevo, Skopje, Warsaw, Zagreb": ("Generic", "CET"),
+		"(GMT+01:00) West Central Africa": ("Africa", "Kinshasa"),
+		"(GMT+01:00) Algiers, Tunis": ("Africa", "Kinshasa"),
+		"(GMT+02:00) Athens, Istanbul, Minsk": ("Europe", "Istanbul"),
+		"(GMT+02:00) Bucharest": ("Europe", "Istanbul"),
+		"(GMT+02:00) Harare, Pretoria": ("Africa", "Harare"),
+		"(GMT+02:00) Helsinki, Kyiv, Sofia": ("Europe", "Istanbul"),
+		"(GMT+02:00) Riga, Tallinn, Vilnius": ("Europe", "Istanbul"),
+		"(GMT+02:00) Jerusalem": ("Asia", "Jerusalem"),
+		"(GMT+03:00) Baghdad": ("Asia", "Baghdad"),
+		"(GMT+03:00) Kuwait, Riyadh": ("Asia", "Riyadh"),
+		"(GMT+03:00) Minsk": ("Europe", "Moscow"),
+		"(GMT+03:00) Moscow, St. Petersburg, Volgograd": ("Europe", "Moscow"),
+		"(GMT+03:00) Nairobi": ("Africa", "Nairobi"),
+		"(GMT+03:30) Tehran": ("Asia", "Tehran"),
+		"(GMT+04:00) Abu Dhabi, Muscat": ("Asia", "Muscat"),
+		"(GMT+04:00) Tbilisi, Yerevan": ("Asia", "Muscat"),
+		"(GMT+04:00) Samara": ("Asia", "Muscat"),
+		"(GMT+04:00) Baku": ("Asia", "Baku"),
+		"(GMT+04:30) Kabul": ("Asia", "Kabul"),
+		"(GMT+05:00) Ekaterinburg": ("Asia", "Tashkent"),
+		"(GMT+05:00) Islamabad, Karachi, Tashkent": ("Asia", "Tashkent"),
+		"(GMT+05:30) Chennai, Kolkata, Mumbai, New Delhi": ("Asia", "Calcutta"),
+		"(GMT+05:45) Kathmandu": ("Asia", "Katmandu"),
+		"(GMT+06:00) Almaty, Astana": ("Asia", "Almaty"),
+		"(GMT+06:00) Novosibirsk": ("Asia", "Omsk"),
+		"(GMT+06:00) Dhaka": ("Asia", "Dhaka"),
+		"(GMT+06:00) Sri Jayawardenepura": ("Asia", "Colombo"),
+		"(GMT+06:30) Rangoon": ("Asia", "Rangoon"),
+		"(GMT+07:00) Bangkok, Hanoi, Jakarta": ("Asia", "Bangkok"),
+		"(GMT+07:00) Krasnoyarsk": ("Asia", "Krasnoyarsk"),
+		"(GMT+08:00) Beijing, Chongqing, Hong Kong, Urumqi": ("Asia", "Hong_Kong"),
+		"(GMT+08:00) Irkutsk, Ulaan Bataar": ("Asia", "Irkutsk"),
+		"(GMT+08:00) Kuala Lumpur, Singapore": ("Asia", "Kuala_Lumpur"),
+		"(GMT+08:00) Perth": ("Australia", "Perth"),
+		"(GMT+08:00) Taipei": ("Asia", "Taipei"),
+		"(GMT+09:00) Osaka, Sapporo, Tokyo": ("Asia", "Tokyo"),
+		"(GMT+09:00) Seoul": ("Asia", "Seoul"),
+		"(GMT+09:00) Yakutsk": ("Asia", "Yakutsk"),
+		"(GMT+09:30) Adelaide": ("Australia", "Adelaide"),
+		"(GMT+09:30) Darwin": ("Australia", "Darwin"),
+		"(GMT+10:00) Brisbane": ("Australia", "Brisbane"),
+		"(GMT+10:00) Canberra, Melbourne, Sydney": ("Australia", "Sydney"),
+		"(GMT+10:00) Guam, Port Moresby": ("Pacific", "Guam"),
+		"(GMT+10:00) Hobart": ("Australia", "Hobart"),
+		"(GMT+10:00) Vladivostok": ("Asia", "Vladivostok"),
+		"(GMT+11:00) Magadan, Solomon Is., New Caledonia": ("Asia", "Magadan"),
+		"(GMT+11:30) Norfolk Island": ("Pacific", "Norfolk"),
+		"(GMT+12:00) Auckland, Wellington": ("Pacific", "Auckland"),
+		"(GMT+12:00) Fiji, Kamchatka, Marshall Is.": ("Pacific", "Fiji"),
+		"(GMT+13:00) Nukualofa": ("Pacific", "Tongatapu"),
+	}
+
+	return old_zones.get(old_name, ("Europe", "London"))
 # the root config object, which also can "pickle" (=serialize)
 # down the whole config tree.
 #
@@ -1996,7 +2088,21 @@ class Config(ConfigSubsection):
 			print "[Config] Couldn't write %s" % filename
 
 	def loadFromFile(self, filename, base_file=True):
-		self.unpickle(open(filename, "r"), base_file)
+		lines = open(filename, "r")
+		lines = self.upgradeOldSettings(lines)
+
+		self.unpickle(lines, base_file)
+
+	def upgradeOldSettings(self, lines):
+		result = []
+		for line in lines:
+			if line.startswith("config.timezone.val=("):
+				area, val = convertOldTimezone(line.strip().split("=")[1])
+				result.append("config.timezone.area=%s" % area)
+				result.append("config.timezone.val=%s" % val)
+			else:
+				result.append(line)
+		return result
 
 config = Config()
 config.misc = ConfigSubsection()
