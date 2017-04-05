@@ -1922,7 +1922,8 @@ class ConfigSubsection(object):
 		return self.content.items
 
 # This converts old timezone settings string to the new two tier format.
-# The conversion table is based on the contents of timezone.xml just before it was removed from the source code.
+# The conversion table is based on the contents of several versions of timezone.xml
+# so that conversions are possible from recent as well as older settings.
 # If the old string is not found, the defaults are used instead.
 def convertOldTimezone(old_name):
 	old_zones = {
@@ -1948,6 +1949,7 @@ def convertOldTimezone(old_name):
 		"(GMT-04:00) Brazil, Acre": ("Brazil", "Acre"),
 		"(GMT-03:30) Newfoundland": ("Canada", "Newfoundland"),
 		"(GMT-03:00) Brazil, East": ("Brazil", "East"),
+		"(GMT-03:00) Brasilia": ("Brazil", "East"),
 		"(GMT-03:00) Buenos Aires, Georgetown": ("Brazil", "West"),
 		"(GMT-03:00) Greenland": ("America", "Danmarkshavn"),
 		"(GMT-02:00) Mid-Atlantic": ("America", "Noronha"),
@@ -1963,28 +1965,40 @@ def convertOldTimezone(old_name):
 		"(GMT+01:00) West Central Africa": ("Africa", "Kinshasa"),
 		"(GMT+01:00) Algiers, Tunis": ("Africa", "Kinshasa"),
 		"(GMT+02:00) Athens, Istanbul, Minsk": ("Europe", "Istanbul"),
-		"(GMT+02:00) Bucharest": ("Europe", "Istanbul"),
+		"(GMT+02:00) Athens": ("Europe", "Athens"),
+		"(GMT+02:00) Minsk": ("Europe", "Minsk"),
+		"(GMT+02:00) Bucharest": ("Europe", "Bucharest"),
 		"(GMT+02:00) Harare, Pretoria": ("Africa", "Harare"),
 		"(GMT+02:00) Helsinki, Kyiv, Sofia": ("Europe", "Istanbul"),
+		"(GMT+02:00) Helsinki": ("Europe", "Helsinki"),
+		"(GMT+02:00) Kyiv": ("Europe", "Kaliningrad"),
+		"(GMT+02:00) Sofia": ("Europe", "Sofia"),
 		"(GMT+02:00) Riga, Tallinn, Vilnius": ("Europe", "Istanbul"),
+		"(GMT+02:00) Riga": ("Europe", "Riga"),
+		"(GMT+02:00) Tallinn": ("Europe", "Tallinn"),
+		"(GMT+02:00) Vilnius": ("Europe", "Vilnius"),
 		"(GMT+02:00) Jerusalem": ("Asia", "Jerusalem"),
 		"(GMT+03:00) Baghdad": ("Asia", "Baghdad"),
+		"(GMT+03:00) Istanbul": ("Europe", "Istanbul"),
 		"(GMT+03:00) Kuwait, Riyadh": ("Asia", "Riyadh"),
 		"(GMT+03:00) Minsk": ("Europe", "Moscow"),
 		"(GMT+03:00) Moscow, St. Petersburg, Volgograd": ("Europe", "Moscow"),
 		"(GMT+03:00) Nairobi": ("Africa", "Nairobi"),
 		"(GMT+03:30) Tehran": ("Asia", "Tehran"),
 		"(GMT+04:00) Abu Dhabi, Muscat": ("Asia", "Muscat"),
+		"(GMT+04:00) Baku, Tbilisi, Yerevan": ("Asia", "Baku"),
 		"(GMT+04:00) Tbilisi, Yerevan": ("Asia", "Muscat"),
 		"(GMT+04:00) Samara": ("Asia", "Muscat"),
 		"(GMT+04:00) Baku": ("Asia", "Baku"),
 		"(GMT+04:30) Kabul": ("Asia", "Kabul"),
-		"(GMT+05:00) Ekaterinburg": ("Asia", "Tashkent"),
+		"(GMT+05:00) Ekaterinburg": ("Asia", "Omsk"),
 		"(GMT+05:00) Islamabad, Karachi, Tashkent": ("Asia", "Tashkent"),
 		"(GMT+05:30) Chennai, Kolkata, Mumbai, New Delhi": ("Asia", "Calcutta"),
 		"(GMT+05:45) Kathmandu": ("Asia", "Katmandu"),
 		"(GMT+06:00) Almaty, Astana": ("Asia", "Almaty"),
+		"(GMT+06:00) Almaty, Novosibirsk": ("Asia", "Almaty"),
 		"(GMT+06:00) Novosibirsk": ("Asia", "Omsk"),
+		"(GMT+06:00) Astana, Dhaka": ("Asia", "Dhaka"),
 		"(GMT+06:00) Dhaka": ("Asia", "Dhaka"),
 		"(GMT+06:00) Sri Jayawardenepura": ("Asia", "Colombo"),
 		"(GMT+06:30) Rangoon": ("Asia", "Rangoon"),
