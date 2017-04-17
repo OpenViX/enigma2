@@ -21,7 +21,8 @@
 #include <lib/dvb/encoder.h>
 
 eStreamClient::eStreamClient(eStreamServer *handler, int socket, const std::string remotehost)
- : parent(handler), encoderFd(-1), streamFd(socket), streamThread(NULL), m_remotehost(remotehost)
+ : parent(handler), encoderFd(-1), streamFd(socket), streamThread(NULL), m_remotehost(remotehost),
+  m_timeout(eTimer::create(eApp))
 {
 	running = false;
 }
@@ -46,6 +47,7 @@ void eStreamClient::start()
 {
 	rsn = eSocketNotifier::create(eApp, streamFd, eSocketNotifier::Read);
 	CONNECT(rsn->activated, eStreamClient::notifier);
+	CONNECT(m_timeout->timeout, eStreamClient::stopStream);
 }
 
 void eStreamClient::set_socket_option(int fd, int optid, int option)
@@ -213,6 +215,17 @@ void eStreamClient::notifier(int what)
 							}
 							m_serviceref = serviceref;
 							m_useencoder = true;
+						}
+					}
+
+					pos = request.find("?duration=");
+					if (pos != std::string::npos)
+					{
+						int timeout = 0;
+						sscanf(request.substr(pos).c_str(), "?duration=%d", &timeout);
+						if (timeout)
+						{
+							m_timeout->startLongTimer(timeout);
 						}
 					}
 				}
