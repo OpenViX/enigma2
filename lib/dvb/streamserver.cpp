@@ -64,7 +64,9 @@ void eStreamClient::set_tcp_option(int fd, int optid, int option)
 
 void eStreamClient::notifier(int what)
 {
+	eDebug("[streamserver][eStreamClient::notifier]  starting...");
 	if (!(what & eSocketNotifier::Read))
+		eDebug("[streamserver][eStreamClient::notifier]  test 1");
 		return;
 
 	ePtr<eStreamClient> ref = this;
@@ -79,13 +81,16 @@ void eStreamClient::notifier(int what)
 	}
 	request.append(buf, len);
 	if (running || (request.find('\n') == std::string::npos))
+		eDebug("[streamserver][eStreamClient::notifier]  test 2");
 		return;
 
 	if (request.substr(0, 5) == "GET /")
 	{
+		eDebug("[streamserver][eStreamClient::notifier]  test 3");
 		size_t pos;
 		if (eConfigManager::getConfigBoolValue("config.streaming.authentication"))
 		{
+			eDebug("[streamserver][eStreamClient::notifier]  test 4");
 			bool authenticated = false;
 			if ((pos = request.find("Authorization: Basic ")) != std::string::npos)
 			{
@@ -131,6 +136,7 @@ void eStreamClient::notifier(int what)
 			}
 			if (!authenticated)
 			{
+				eDebug("[streamserver][eStreamClient::notifier]  test 5");
 				const char *reply = "HTTP/1.0 401 Authorization Required\r\nWWW-Authenticate: Basic realm=\"streamserver\"\r\n\r\n";
 				writeAll(streamFd, reply, strlen(reply));
 				rsn->stop();
@@ -141,9 +147,12 @@ void eStreamClient::notifier(int what)
 		pos = request.find(' ', 5);
 		if (pos != std::string::npos)
 		{
+			eDebug("[streamserver][eStreamClient::notifier]  test 6");
 			std::string serviceref = urlDecode(request.substr(5, pos - 5));
+			
 			if (!serviceref.empty())
 			{
+				eDebug("[streamserver][eStreamClient::notifier]  test 7");
 				const char *reply = "HTTP/1.0 200 OK\r\nConnection: Close\r\nContent-Type: video/mpeg\r\nServer: streamserver\r\n\r\n";
 				writeAll(streamFd, reply, strlen(reply));
 				/* We don't expect any incoming data, so set a tiny buffer */
@@ -164,6 +173,7 @@ void eStreamClient::notifier(int what)
 				pos = serviceref.find('?');
 				if (pos == std::string::npos)
 				{
+					eDebug("[streamserver][eStreamClient::notifier]  test 8");
 					if (eDVBServiceStream::start(serviceref.c_str(), streamFd) >= 0)
 					{
 						running = true;
@@ -173,11 +183,13 @@ void eStreamClient::notifier(int what)
 				}
 				else
 				{
+					eDebug("[streamserver][eStreamClient::notifier]  test 9");
 					request = serviceref.substr(pos);
 					serviceref = serviceref.substr(0, pos);
 					pos = request.find("?bitrate=");
 					if (pos != std::string::npos)
 					{
+						eDebug("[streamserver][eStreamClient::notifier]  test 10");
 						/* we need to stream transcoded data */
 						int bitrate = 1024 * 1024;
 						int width = 720;
@@ -203,13 +215,16 @@ void eStreamClient::notifier(int what)
 							sscanf(request.substr(pos).c_str(), "?aspectratio=%d", &aspectratio);
 						encoderFd = -1;
 						if (eEncoder::getInstance())
+							eDebug("[streamserver][eStreamClient::notifier]  test 11");
 							encoderFd = eEncoder::getInstance()->allocateEncoder(serviceref, bitrate, width, height, framerate, !!interlaced, aspectratio);
 						if (encoderFd >= 0)
 						{
+							eDebug("[streamserver][eStreamClient::notifier]  test 12");
 							running = true;
 							streamThread = new eDVBRecordStreamThread(188);
 							if (streamThread)
 							{
+								eDebug("[streamserver][eStreamClient::notifier]  test 13");
 								streamThread->setTargetFD(streamFd);
 								streamThread->start(encoderFd);
 							}
@@ -221,10 +236,12 @@ void eStreamClient::notifier(int what)
 					pos = request.find("?duration=");
 					if (pos != std::string::npos)
 					{
+						eDebug("[streamserver][eStreamClient::notifier]  test 14");
 						int timeout = 0;
 						sscanf(request.substr(pos).c_str(), "?duration=%d", &timeout);
 						if (timeout)
 						{
+							eDebug("[streamserver][eStreamClient::notifier]  test 15");
 							m_timeout->startLongTimer(timeout);
 						}
 					}
@@ -234,6 +251,7 @@ void eStreamClient::notifier(int what)
 	}
 	if (!running)
 	{
+		eDebug("[streamserver][eStreamClient::notifier]  test 16");
 		const char *reply = "HTTP/1.0 400 Bad Request\r\n\r\n";
 		writeAll(streamFd, reply, strlen(reply));
 		rsn->stop();
