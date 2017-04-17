@@ -164,7 +164,7 @@ void eStreamClient::notifier(int what)
 				pos = serviceref.find('?');
 				if (pos == std::string::npos)
 				{
-					eDebug("[eDVBServiceStream] NO extra flags %s:", serviceref.c_str());
+					eDebug("[eDVBServiceStream] stream ref: %s", serviceref.c_str());
 					if (eDVBServiceStream::start(serviceref.c_str(), streamFd) >= 0)
 					{
 						running = true;
@@ -174,15 +174,13 @@ void eStreamClient::notifier(int what)
 				}
 				else
 				{
-					eDebug("[eDVBServiceStream] extra flags %s:", serviceref.c_str());
 					request = serviceref.substr(pos);
 					serviceref = serviceref.substr(0, pos);
 					pos = request.find("?bitrate=");
 					posdur = request.find("?duration=");
-					eDebug("[eDVBServiceStream] extra flags %s:", request.substr(posdur).c_str());
+					eDebug("[eDVBServiceStream] stream ref: %s", serviceref.c_str());
 					if (posdur != std::string::npos)
 					{
-						eDebug("[eDVBServiceStream] duration found:");
 						if (eDVBServiceStream::start(serviceref.c_str(), streamFd) >= 0)
 						{
 							running = true;
@@ -191,6 +189,7 @@ void eStreamClient::notifier(int what)
 						}
 						int timeout = 0;
 						sscanf(request.substr(posdur).c_str(), "?duration=%d", &timeout);
+						eDebug("[eDVBServiceStream] duration: %s seconds" timeout.c_str());
 						if (timeout)
 						{
 							m_timeout->startLongTimer(timeout);
