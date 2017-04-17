@@ -189,7 +189,7 @@ void eStreamClient::notifier(int what)
 						}
 						int timeout = 0;
 						sscanf(request.substr(posdur).c_str(), "?duration=%d", &timeout);
-						eDebug("[eDVBServiceStream] duration: %s seconds" timeout.c_str());
+						eDebug("[eDVBServiceStream] duration: %s seconds", timeout.c_str());
 						if (timeout)
 						{
 							m_timeout->startLongTimer(timeout);
