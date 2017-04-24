@@ -236,7 +236,7 @@ class VIXImageManager(Screen):
 											  "displayHelp": self.doDownload,
 											  }, -1)
 				if getImageFileSystem().replace(' ','') not in ('tar.bz2', 'hd-emmc'):
-					self['restoreaction'] = ActionMap(['ColorActions'],
+					self['restoreaction'] = ActionMap(['ColorActions', 'OkCancelActions'],
 												  {
 												  "ok": self.keyResstore,
 												  'blue': self.keyResstore,
@@ -267,7 +267,7 @@ class VIXImageManager(Screen):
 										  "displayHelp": self.doDownload,
 										  }, -1)
 			if getImageFileSystem().replace(' ','') not in ('tar.bz2', 'hd-emmc'):
-				self['restoreaction'] = ActionMap(['ColorActions'],
+				self['restoreaction'] = ActionMap(['ColorActions', 'OkCancelActions'],
 											  {
 											  "ok": self.keyResstore,
 											  'blue': self.keyResstore,
