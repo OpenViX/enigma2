@@ -1696,9 +1696,16 @@ PyObject *eDVBDB::readTerrestrials(ePyObject ter_list, ePyObject tp_dict)
 
 			Py_DECREF(tplist);
 		}
-		else if (ter_flags)
+		else if (ter_flags || ter_countrycode) 
 		{
-			Py_DECREF(ter_flags);
+			if (ter_flags)
+			{
+				Py_DECREF(ter_flags);
+			}
+			if (ter_countrycode)
+			{
+				Py_DECREF(ter_countrycode);
+			}
 		}
 
 		// next terrestrial
