@@ -1605,7 +1605,7 @@ PyObject *eDVBDB::readTerrestrials(ePyObject ter_list, ePyObject tp_dict)
 			if (!ter_flags)
 				ter_flags = PyInt_FromLong(0);
 			if (!ter_countrycode)
-				ter_countrycode = PyString_FromString("")
+				ter_countrycode = PyString_FromString("");
 			PyTuple_SET_ITEM(tuple, 0, ter_name);
 			PyTuple_SET_ITEM(tuple, 1, ter_flags);
 			PyTuple_SET_ITEM(tuple, 2, ter_countrycode);
