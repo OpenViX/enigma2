@@ -1608,7 +1608,7 @@ PyObject *eDVBDB::readTerrestrials(ePyObject ter_list, ePyObject tp_dict)
 				ter_countrycode = PyString_FromString("")
 			PyTuple_SET_ITEM(tuple, 0, ter_name);
 			PyTuple_SET_ITEM(tuple, 1, ter_flags);
-			PyTuple_SET_ITEM(tuple, 1, ter_countrycode);
+			PyTuple_SET_ITEM(tuple, 2, ter_countrycode);
 			PyList_Append(ter_list, tuple);
 			Py_DECREF(tuple);
 			PyDict_SetItem(tp_dict, ter_name, tplist);
