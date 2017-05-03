@@ -18,9 +18,10 @@
 gFBDC::gFBDC()
 {
 	fb=new fbClass;
-
+#ifndef CONFIG_ION
 	if (!fb->Available())
 		eFatal("[gFBDC] no framebuffer available");
+#endif
 
 	int xres;
 	int yres;
@@ -225,9 +226,10 @@ void gFBDC::setResolution(int xres, int yres, int bpp)
 	if (m_pixmap && (surface.x == xres) && (surface.y == yres) && (surface.bpp == bpp))
 		return;
 
+#ifndef CONFIG_ION
 	if (gAccel::getInstance())
 		gAccel::getInstance()->releaseAccelMemorySpace();
-
+#endif
 	fb->SetMode(xres, yres, bpp);
 
 	surface.x = xres;
@@ -258,10 +260,14 @@ void gFBDC::setResolution(int xres, int yres, int bpp)
 	}
 
 	eDebug("[gFBDC] resolution: %dx%dx%d stride=%d, %dkB available for acceleration surfaces.",
-		 surface.x, surface.y, surface.bpp, fb->Stride(), (fb->Available() - fb_size)/1024);
+		surface.x, surface.y, surface.bpp, fb->Stride(), (fb->Available() - fb_size)/1024);
 
+#ifndef CONFIG_ION
+	/* accel is already set in fb.cpp */
+	eDebug("[gFBDC] %dkB available for acceleration surfaces.", (fb->Available() - fb_size)/1024);
 	if (gAccel::getInstance())
 		gAccel::getInstance()->setAccelMemorySpace(fb->lfb + fb_size, surface.data_phys + fb_size, fb->Available() - fb_size);
+#endif
 
 	if (!surface.clut.data)
 	{
