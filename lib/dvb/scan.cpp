@@ -716,10 +716,6 @@ void eDVBScan::channelDone()
 			{
 				SCAN_eDebug("[eDVBScan] TSID: %04x ONID: %04x", (*tsinfo)->getTransportStreamId(),
 					(*tsinfo)->getOriginalNetworkId());
-
-				eOriginalNetworkID onid = (*tsinfo)->getOriginalNetworkId();
-				eTransportStreamID tsid = (*tsinfo)->getTransportStreamId();
-
 				bool T2 = false;
 				eDVBFrontendParametersTerrestrial t2transponder;
 
@@ -737,16 +733,8 @@ void eDVBScan::channelDone()
 						eDVBFrontendParametersCable cable;
 						cable.set(d);
 						feparm->setDVBC(cable);
-						
-						unsigned long hash=0;
-						feparm->getHash(hash);
-						eDVBNamespace ns = buildNamespace(onid, tsid, hash);
 
-						addChannelToScan(
-							eDVBChannelID(ns, tsid, onid),
-							feparm);
-
-//						addChannelToScan(feparm);
+						addChannelToScan(feparm);
 						break;
 					}
 					case TERRESTRIAL_DELIVERY_SYSTEM_DESCRIPTOR:
@@ -759,15 +747,7 @@ void eDVBScan::channelDone()
 						terr.set(d);
 						feparm->setDVBT(terr);
 
-						unsigned long hash=0;
-						feparm->getHash(hash);
-						eDVBNamespace ns = buildNamespace(onid, tsid, hash);
-
-						addChannelToScan(
-							eDVBChannelID(ns, tsid, onid),
-							feparm);
-
-//						addChannelToScan(feparm);
+						addChannelToScan(feparm);
 						break;
 					}
 					case SATELLITE_DELIVERY_SYSTEM_DESCRIPTOR:
@@ -801,13 +781,7 @@ void eDVBScan::channelDone()
 							SCAN_eDebug("[eDVBScan] dropping this transponder, it's on another satellite.");
 						else
 						{
-							unsigned long hash=0;
-							feparm->getHash(hash);
-							addChannelToScan(
-									eDVBChannelID(buildNamespace(onid, tsid, hash), tsid, onid),
-									feparm);
-							
-//							addChannelToScan(feparm);
+							addChannelToScan(feparm);
 						}
 						break;
 					}
