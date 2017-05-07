@@ -182,7 +182,16 @@ void eDVBScan::stateChange(iDVBChannel *ch)
 						/* but only if the frontend supports T2 */
 						if (fe->isCompatibleWith(feparm))
 						{
-							addChannelToScan(feparm);
+							
+							unsigned long hash=0;
+							feparm->getHash(hash);
+							eDVBNamespace ns = buildNamespace(onid, tsid, hash);
+			
+							addChannelToScan(
+								eDVBChannelID(ns, tsid, onid),
+								feparm);
+
+//							addChannelToScan(feparm);
 						}
 					}
 				}
@@ -833,7 +842,16 @@ void eDVBScan::channelDone()
 									t2transponder.frequency = (*freq) * 10;
 									ePtr<eDVBFrontendParameters> feparm = new eDVBFrontendParameters;
 									feparm->setDVBT(t2transponder);
-									addChannelToScan(feparm);
+
+									unsigned long hash=0;
+									feparm->getHash(hash);
+									eDVBNamespace ns = buildNamespace(onid, tsid, hash);
+			
+									addChannelToScan(
+										eDVBChannelID(ns, tsid, onid),
+										feparm);
+
+//									addChannelToScan(feparm);
 								}
 							}
 						}
@@ -856,7 +874,16 @@ void eDVBScan::channelDone()
 							t2transponder.frequency = (*it) * 10;
 							ePtr<eDVBFrontendParameters> feparm = new eDVBFrontendParameters;
 							feparm->setDVBT(t2transponder);
-							addChannelToScan(feparm);
+
+								unsigned long hash=0;
+								feparm->getHash(hash);
+								eDVBNamespace ns = buildNamespace(onid, tsid, hash);
+		
+								addChannelToScan(
+									eDVBChannelID(ns, tsid, onid),
+									feparm);
+
+//								addChannelToScan(feparm);
 						}
 						break;
 					}
