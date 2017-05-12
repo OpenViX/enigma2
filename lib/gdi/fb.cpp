@@ -308,6 +308,7 @@ void fbClass::blit()
 		if (ioctl(fbFd, FBIO_BLIT) < 0)
 			eDebug("[fb] FBIO_BLIT: %m");
 	}
+#endif
 }
 
 fbClass::~fbClass()
