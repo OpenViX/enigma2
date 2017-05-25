@@ -207,6 +207,16 @@ if test x"$withtextlcd" != xno ; then
 fi
 AM_CONDITIONAL(HAVE_TEXTLCD, test x"$withtextlcd" != xno)
 
+AC_ARG_WITH(7segment,
+	AC_HELP_STRING([--with-7segment], [use ascii based lcd, yes or no]),
+	[[with7segment=$withval]],
+	[[with7segment=no]]
+)
+if test x"$with7segment" != xno ; then
+	AC_DEFINE(HAVE_7SEGMENT, 1,[Define when using an ascii based lcd device])
+fi
+AM_CONDITIONAL(HAVE_7SEGMENT, test x"$with7segment" != xno)
+
 AC_ARG_WITH(colorlcd,
 	AC_HELP_STRING([--with-colorlcd], [use 96x64 16bpp color display, yes or no]),
 	[[withcolorlcd=$withval]],
@@ -541,6 +551,7 @@ data/Makefile
 data/fonts/Makefile
 data/keymaps/Makefile
 data/displaytext/Makefile
+data/7segment/Makefile
 data/display96/Makefile
 data/display128/Makefile
 data/display220/Makefile
