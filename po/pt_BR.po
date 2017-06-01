@@ -4666,9 +4666,6 @@ msgstr "Modo escala"
 msgid "Just zap"
 msgstr "Modo escala"
 
-msgid "KA-SAT"
-msgstr "KA-SAT (9°E)"
-
 #, fuzzy
 msgid "Keep service"
 msgstr "Adicionar serviço"
