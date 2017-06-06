@@ -1158,7 +1158,7 @@ def InitNimManager(nimmgr, update_slots = []):
 		"unicable": _("SCR (Unicable/JESS)"),
 		"c_band": _("C-Band"),
 		"circular_lnb": _("Circular LNB"),
-                "ka_sat": _("KA-SAT"),
+		"ka_sat": _("KA-SAT"),
 		"user_defined": _("User defined")}
 
 	lnb_choices_default = "universal_lnb"
@@ -1288,7 +1288,7 @@ def InitNimManager(nimmgr, update_slots = []):
 						section.format.addNotifier(formatChanged)
 
 				unicable_xml = xml.etree.cElementTree.parse(eEnv.resolve("${datadir}/enigma2/unicable.xml")).getroot()
-				unicableList = [("unicable_lnb", _("SCR (Unicable/JESS)") + " " + _("LNB")), ("unicable_matrix", _("SCR (Unicable/JESS)") + " " + _("Switch")), ("unicable_user", _("SCR (Unicable/JESS)") + " " + _("User defined"))]
+				unicableList = [("unicable_lnb", _("LNB")), ("unicable_matrix", _("Switch")), ("unicable_user", _("User defined"))]
 				if not config.unicable.content.items.get("unicable", False):
 					config.unicable.unicable = ConfigSelection(unicableList)
 				section.unicable = ConfigSelection(unicableList, default=config.unicable.unicable.value)
