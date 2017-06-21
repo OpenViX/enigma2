@@ -55,6 +55,37 @@ from random import randint
 
 import os
 
+posixPortableFilenameChars = set("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789._-")
+
+# Is used for filename substrings, so does not enforce that
+# the name does not start with '-'
+
+def isPosixPortableFilename(fn):
+	return all(c in posixPortableFilenameChars for c in fn)
+
+# Tests on whether a filename appears to be generated from
+# mkstemp("timeshift.XXXXXX") as in lib/service/servicedvb.cpp.
+
+# mkstemp("timeshift.XXXXXX") with any suffix
+
+def isTimeshiftFilename(fn):
+	return len(fn) >= 16 and fn.startswith("timeshift.") and isPosixPortableFilename(fn[10:16])
+
+# mkstemp("timeshift.XXXXXX") with any suffix except ones ending
+# in ".del" or ".copy"
+
+def isNormalTimeshiftFilename(fn):
+	return isTimeshiftFilename(fn) and not fn[16:].endswith((".del", ".copy"))
+
+# mkstemp("timeshift.XXXXXX") without any suffix
+
+def isTimeshiftFileBasename(fn):
+	return len(fn) == 16 and isTimeshiftFilename(fn)
+
+# The basename timeshift.XXXXXX file is the TS file for the timeshift buffer.
+def isTimeshiftFileTS(fn):
+	return isTimeshiftFileBasename(fn)
+
 class InfoBarTimeshift:
 	def __init__(self):
 		self["TimeshiftActions"] = HelpableActionMap(self, "InfobarTimeshiftActions",
@@ -472,8 +503,9 @@ class InfoBarTimeshift:
 
 	def eraseTimeshiftFile(self):
 		for filename in os.listdir(config.usage.timeshift_path.value):
-			if filename.startswith("timeshift.") and not filename.endswith(".del") and not filename.endswith(".copy"):
-				self.BgFileEraser.erase("%s%s" % (config.usage.timeshift_path.value,filename))
+			filepath = config.usage.timeshift_path.value + filename
+			if isNormalTimeshiftFilename(filename) and os.path.isfile(filepath):
+				self.BgFileEraser.erase(filepath)
 
 	def autostartPermanentTimeshift(self):
 		self["TimeshiftActions"].setEnabled(True)
@@ -609,11 +641,12 @@ class InfoBarTimeshift:
 		if savefilename is None:
 			# print 'TEST1'
 			for filename in os.listdir(config.usage.timeshift_path.value):
-				# print 'filename',filename
-				if filename.startswith("timeshift.") and not filename.endswith(".del") and not filename.endswith(".copy"):
-					statinfo = os.stat("%s%s" % (config.usage.timeshift_path.value,filename))
-					if statinfo.st_mtime > (time()-5.0):
-						savefilename=filename
+				# print 'filename', filename
+				filepath = config.usage.timeshift_path.value + filename
+				if isTimeshiftFileTS(filename) and os.path.isfile(filepath):
+					statinfo = os.stat(filepath)
+					if statinfo.st_mtime > (time() - 5.0):
+						savefilename = filename
 
 		# print 'savefilename',savefilename
 		if savefilename is None:
@@ -780,13 +813,14 @@ class InfoBarTimeshift:
 			return
 
 		for filename in os.listdir(config.usage.timeshift_path.value):
-			if (filename.startswith("timeshift.") or filename.startswith("pts_livebuffer_")) and (filename.endswith(".del") is False and filename.endswith(".copy") is False):
+			filepath = config.usage.timeshift_path.value + filename
+			if (isTimeshiftFilename(filename) or filename.startswith("pts_livebuffer_")) and not filename.endswith((".del", ".copy")) and os.path.isfile(filepath):
 				# print 'filename:',filename
-				statinfo = os.stat("%s%s" % (config.usage.timeshift_path.value,filename)) # if no write for 3 sec = stranded timeshift
+				statinfo = os.stat(filepath) # if no write for 3 sec = stranded timeshift
 				if statinfo.st_mtime < (time()-3.0):
 				# try:
 					# print "[TimeShift] Erasing stranded timeshift %s" % filename
-					self.BgFileEraser.erase("%s%s" % (config.usage.timeshift_path.value,filename))
+					self.BgFileEraser.erase(filepath)
 
 					# Delete Meta and EIT File too
 					# if filename.startswith("pts_livebuffer_") is True:
@@ -852,37 +886,41 @@ class InfoBarTimeshift:
 
 	def ptsCreateHardlink(self):
 		# print 'ptsCreateHardlink'
-		for filename in os.listdir(config.usage.timeshift_path.value):
+
+		tsDir = config.usage.timeshift_path.value
+
+		for filename in (f for f in os.listdir(tsDir) if isTimeshiftFileBasename(f)):
 			# if filename.startswith("timeshift") and not os.path.splitext(filename)[1]:
-			if filename.startswith("timeshift") and not filename.endswith(".sc") and not filename.endswith(".del") and not filename.endswith(".copy"):
-				if os.path.exists("%spts_livebuffer_%s.eit" % (config.usage.timeshift_path.value,self.pts_eventcount)):
-					self.BgFileEraser.erase("%spts_livebuffer_%s.eit" % (config.usage.timeshift_path.value,self.pts_eventcount))
-				if os.path.exists("%spts_livebuffer_%s.meta" % (config.usage.timeshift_path.value,self.pts_eventcount)):
-					self.BgFileEraser.erase("%spts_livebuffer_%s.meta" % (config.usage.timeshift_path.value,self.pts_eventcount))
-				if os.path.exists("%spts_livebuffer_%s" % (config.usage.timeshift_path.value,self.pts_eventcount)):
-					self.BgFileEraser.erase("%spts_livebuffer_%s" % (config.usage.timeshift_path.value,self.pts_eventcount))
-				if os.path.exists("%spts_livebuffer_%s.sc" % (config.usage.timeshift_path.value,self.pts_eventcount)):
-					self.BgFileEraser.erase("%spts_livebuffer_%s.sc" % (config.usage.timeshift_path.value,self.pts_eventcount))
+			filepath = tsDir + filename
+			if os.path.isfile(filepath):
+				if os.path.exists("%spts_livebuffer_%s.eit" % (tsDir,self.pts_eventcount)):
+					self.BgFileEraser.erase("%spts_livebuffer_%s.eit" % (tsDir,self.pts_eventcount))
+				if os.path.exists("%spts_livebuffer_%s.meta" % (tsDir,self.pts_eventcount)):
+					self.BgFileEraser.erase("%spts_livebuffer_%s.meta" % (tsDir,self.pts_eventcount))
+				if os.path.exists("%spts_livebuffer_%s" % (tsDir,self.pts_eventcount)):
+					self.BgFileEraser.erase("%spts_livebuffer_%s" % (tsDir,self.pts_eventcount))
+				if os.path.exists("%spts_livebuffer_%s.sc" % (tsDir,self.pts_eventcount)):
+					self.BgFileEraser.erase("%spts_livebuffer_%s.sc" % (tsDir,self.pts_eventcount))
 				try:
 					# Create link to pts_livebuffer file
-					os.link("%s%s" % (config.usage.timeshift_path.value,filename), "%spts_livebuffer_%s" % (config.usage.timeshift_path.value,self.pts_eventcount))
-					os.link("%s%s.sc" % (config.usage.timeshift_path.value,filename), "%spts_livebuffer_%s.sc" % (config.usage.timeshift_path.value,self.pts_eventcount))
+					os.link(filepath, "%spts_livebuffer_%s" % (tsDir, self.pts_eventcount))
+					os.link(filepath + ".sc", "%spts_livebuffer_%s.sc" % (tsDir, self.pts_eventcount))
 
 					# Create a Meta File
-					metafile = open("%spts_livebuffer_%s.meta" % (config.usage.timeshift_path.value,self.pts_eventcount), "w")
+					metafile = open("%spts_livebuffer_%s.meta" % (tsDir,self.pts_eventcount), "w")
 					metafile.write("%s\n%s\n%s\n%i\n" % (self.pts_curevent_servicerefname,self.pts_curevent_name.replace("\n", ""),self.pts_curevent_description.replace("\n", ""),int(self.pts_starttime)))
 					metafile.close()
 				except Exception, errormsg:
 					Notifications.AddNotification(MessageBox, _("Creating Hardlink to Timeshift file failed!")+"\n"+_("The Filesystem on your Timeshift-Device does not support hardlinks.\nMake sure it is formatted in EXT2 or EXT3!")+"\n\n%s" % errormsg, MessageBox.TYPE_ERROR)
 
 				# Create EIT File
-				self.ptsCreateEITFile("%spts_livebuffer_%s" % (config.usage.timeshift_path.value,self.pts_eventcount))
+				self.ptsCreateEITFile("%spts_livebuffer_%s" % (tsDir,self.pts_eventcount))
 
 				# Permanent Recording Hack
 				if config.timeshift.permanentrecording.value:
 					try:
 						fullname = getRecordingFilename("%s - %s - %s" % (strftime("%Y%m%d %H%M",localtime(self.pts_starttime)),self.pts_curevent_station,self.pts_curevent_name),config.usage.default_path.value)
-						os.link("%s%s" % (config.usage.timeshift_path.value,filename), "%s.ts" % fullname)
+						os.link(filepath, "%s.ts" % fullname)
 						# Create a Meta File
 						metafile = open("%s.ts.meta" % fullname, "w")
 						metafile.write("%s\n%s\n%s\n%i\nautosaved\n" % (self.pts_curevent_servicerefname,self.pts_curevent_name.replace("\n", ""),self.pts_curevent_description.replace("\n", ""),int(self.pts_starttime)))
