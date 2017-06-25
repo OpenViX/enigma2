@@ -34,7 +34,7 @@ class VIXIPKInstaller(Screen):
 
 	def __init__(self, session, menu_path=""):
 		Screen.__init__(self, session)
-		screentitle =  _("IPK Installer")
+		screentitle =  _("IPK installer")
 		if config.usage.show_menupath.value == 'large':
 			menu_path += screentitle
 			title = menu_path
@@ -96,15 +96,15 @@ class VIXIPKInstaller(Screen):
 			if not self.defaultDir:
 				message = _("It seems you have not setup an extra location, please set it up in the Backup Manager setup menu ")
 				ybox = self.session.open(MessageBox, message, MessageBox.TYPE_INFO)
-				ybox.setTitle(_("Change Location"))
+				ybox.setTitle(_("Change location"))
 			elif self.defaultDir and not path.exists(self.defaultDir):
 				message = _("Sorry but that location does not exist or is not setup, please set it up in the Backup Manager setup menu ")
 				ybox = self.session.open(MessageBox, message, MessageBox.TYPE_INFO)
-				ybox.setTitle(_("Change Location"))
+				ybox.setTitle(_("Change location"))
 			else:
 				self.populate_List()
 		else:
-			self["key_yellow"].setText(_("Temp Folder"))
+			self["key_yellow"].setText(_("Temp folder"))
 			self.defaultDir = '/tmp'
 			self.populate_List()
 
@@ -112,7 +112,7 @@ class VIXIPKInstaller(Screen):
 		if self.defaultDir == '/tmp':
 			self["key_yellow"].setText(_("Extra IPK's"))
 		else:
-			self["key_yellow"].setText(_("Temp Folder"))
+			self["key_yellow"].setText(_("Temp folder"))
 
 		self['lab1'].setText(_("Select a package to install:"))
 
@@ -134,7 +134,7 @@ class VIXIPKInstaller(Screen):
 	def keyInstall(self):
 		message = _("Are you ready to install ?")
 		ybox = self.session.openWithCallback(self.Install, MessageBox, message, MessageBox.TYPE_YESNO)
-		ybox.setTitle(_("Install Confirmation"))
+		ybox.setTitle(_("Install confirmation"))
 
 	def Install(self, answer):
 		if answer is True:
@@ -147,7 +147,7 @@ class VIXIPKInstaller(Screen):
 	def installFinished(self, sel):
 		message = _("Do you want to restart GUI now ?")
 		ybox = self.session.openWithCallback(self.restBox, MessageBox, message, MessageBox.TYPE_YESNO)
-		ybox.setTitle(_("Restart Enigma2."))
+		ybox.setTitle(_("Restart GUI."))
 
 	def restBox(self, answer):
 		if answer is True:
@@ -177,7 +177,7 @@ class IpkgInstaller(Screen):
 
 	def __init__(self, session, list):
 		Screen.__init__(self, session)
-		Screen.setTitle(self, _("IPK Installer"))
+		Screen.setTitle(self, _("IPK installer"))
 		self.list = SelectionList()
 		self["list"] = self.list
 		for listindex in range(len(list)):

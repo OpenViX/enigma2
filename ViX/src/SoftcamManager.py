@@ -77,7 +77,7 @@ class VIXSoftcamManager(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		screentitle =  _("Softcam manager")
-		self.menu_path = _('Main menu')+' / '+_('Setup')+' / '+_('SoftCam')+' / '
+		self.menu_path = _('Main menu')+' / '+_('Setup')+' / '+_('Softcam')+' / '
 		if config.usage.show_menupath.value == 'large':
 			self.menu_path += screentitle
 			title = self.menu_path

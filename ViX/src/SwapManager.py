@@ -99,7 +99,7 @@ class VIXSwap(Screen):
 
 	def __init__(self, session, menu_path=""):
 		Screen.__init__(self, session)
-		screentitle =  _("Swap Manager")
+		screentitle =  _("Swap manager")
 		self.menu_path = menu_path
 		if config.usage.show_menupath.value == 'large':
 			self.menu_path += screentitle
@@ -118,9 +118,9 @@ class VIXSwap(Screen):
 		self['lab1'] = Label()
 		self['autostart_on'] = Pixmap()
 		self['autostart_off'] = Pixmap()
-		self['lab2'] = Label(_("Swap Place:"))
+		self['lab2'] = Label(_("Swap place:"))
 		self['labplace'] = Label()
-		self['lab3'] = Label(_("Swap Size:"))
+		self['lab3'] = Label(_("Swap size:"))
 		self['labsize'] = Label()
 		self['lab4'] = Label(_("Status:"))
 		self['inactive'] = Label(_("Inactive"))
@@ -151,7 +151,7 @@ class VIXSwap(Screen):
 		self['inactive'].show()
 		self['labplace'].hide()
 		self['labsize'].hide()
-		self['swapactive_summary'].setText(_("Current Status:"))
+		self['swapactive_summary'].setText(_("Current status:"))
 		scanning = _("Wait please while scanning...")
 		self['lab1'].setText(scanning)
 		self.activityTimer.start(10)
@@ -245,14 +245,14 @@ class VIXSwap(Screen):
 			self['inactive'].hide()
 			self['active'].show()
 			self['key_green'].setText(_("Deactivate"))
-			self['swapactive_summary'].setText(_("Current Status:") + ' ' + _("Active"))
+			self['swapactive_summary'].setText(_("Current status:") + ' ' + _("Active"))
 		else:
 			self['inactive'].show()
 			self['active'].hide()
 			self['key_green'].setText(_("Activate"))
-			self['swapactive_summary'].setText(_("Current Status:") + ' ' + _("Inactive"))
+			self['swapactive_summary'].setText(_("Current status:") + ' ' + _("Inactive"))
 
-		scanning = _("Enable Swap at startup")
+		scanning = _("Enable swap at startup")
 		self['lab1'].setText(scanning)
 		self['lab1'].show()
 		self["actions"].setEnabled(True)
@@ -268,7 +268,7 @@ class VIXSwap(Screen):
 				if self.swap_place != '':
 					self.Console.ePopen('swapon ' + self.swap_place, self.updateSwap)
 				else:
-					mybox = self.session.open(MessageBox, _("Swap File not found. You have to create the file before to activate."), MessageBox.TYPE_INFO)
+					mybox = self.session.open(MessageBox, _("Swap file not found. You have to create the file before you try to activate it."), MessageBox.TYPE_INFO)
 					mybox.setTitle(_("Info"))
 			else:
 				self.Console.ePopen('swapon ' + self.swap_place, self.updateSwap)
@@ -303,7 +303,7 @@ class VIXSwap(Screen):
 		if len(candidates):
 			self.session.openWithCallback(self.doCSplace, ChoiceBox, title=_("Please select device to use as swapfile location"), list=candidates)
 		else:
-			self.session.open(MessageBox, _("Sorry, no physical devices that supports SWAP attached. Can't create Swapfile on network or fat32 filesystems"), MessageBox.TYPE_INFO, timeout=10)
+			self.session.open(MessageBox, _("Sorry, no physical devices that supports swap attached. Can't create Swap file on network or fat32 filesystems"), MessageBox.TYPE_INFO, timeout=10)
 
 	def doCSplace(self, name):
 		if name:
@@ -334,6 +334,6 @@ class VIXSwap(Screen):
 				config.vixsettings.swapautostart.save()
 			configfile.save()
 		else:
-			mybox = self.session.open(MessageBox, _("You have to create a Swap File before to activate the autostart."), MessageBox.TYPE_INFO)
+			mybox = self.session.open(MessageBox, _("You have to create a swap file before trying to activate the autostart."), MessageBox.TYPE_INFO)
 			mybox.setTitle(_("Info"))
 		self.updateSwap()

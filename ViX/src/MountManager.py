@@ -49,7 +49,7 @@ class VIXDevicesPanel(Screen):
 
 	def __init__(self, session, menu_path=""):
 		Screen.__init__(self, session)
-		screentitle =  _("Mount Manager")
+		screentitle =  _("Mount manager")
 		self.menu_path = menu_path
 		if config.usage.show_menupath.value == 'large':
 			self.menu_path += screentitle
@@ -71,8 +71,8 @@ class VIXDevicesPanel(Screen):
 		Screen.setTitle(self, title)
 
 		self['key_red'] = Label(" ")
-		self['key_green'] = Label(_("Setup Mounts"))
-		self['key_yellow'] = Label(_("Unmount"))
+		self['key_green'] = Label(_("Setup mounts"))
+		self['key_yellow'] = Label(_("Un-mount"))
 		self['key_blue'] = Label(_("Mount"))
 		self['lab1'] = Label()
 		self.onChangedEntry = []
@@ -266,7 +266,7 @@ class VIXDevicesPanel(Screen):
 				self.Console.ePopen('umount /media/hdd')
 				self.Console.ePopen("/sbin/blkid | grep " + self.device, self.add_fstab, [self.device, self.mountp])
 			else:
-				self.session.open(MessageBox, _("This Device is already mounted as HDD."), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
+				self.session.open(MessageBox, _("This device is already mounted as HDD."), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 
 	def add_fstab(self, result=None, retval=None, extra_args=None):
 		self.device = extra_args[0]

@@ -38,7 +38,7 @@ class VIXScriptRunner(IpkgInstaller):
 				if pkg.find('.sh') >= 0:
 					list.append(pkg)
 		IpkgInstaller.__init__(self, session, list)
-		screentitle =  _("Script Runner")
+		screentitle =  _("Script runner")
 		self.menu_path = menu_path
 		if config.usage.show_menupath.value == 'large':
 			self.menu_path += screentitle
