@@ -76,8 +76,8 @@ class VIXSoftcamManager(Screen):
 
 	def __init__(self, session):
 		Screen.__init__(self, session)
-		screentitle =  _("Softcam Manager")
-		self.menu_path = _('Main menu')+' / '+_('Setup')+' / '+_('SoftCam and CI')+' / '
+		screentitle =  _("Softcam manager")
+		self.menu_path = _('Main menu')+' / '+_('Setup')+' / '+_('SoftCam')+' / '
 		if config.usage.show_menupath.value == 'large':
 			self.menu_path += screentitle
 			title = self.menu_path
@@ -160,9 +160,9 @@ class VIXSoftcamManager(Screen):
 				self["key_yellow"].setText(_("Restart"))
 
 			if current[2] is True:
-				self["key_blue"].setText(_("Disable Startup"))
+				self["key_blue"].setText(_("Disable startup"))
 			else:
-				self["key_blue"].setText(_("Enable Startup"))
+				self["key_blue"].setText(_("Enable startup"))
 			self.saveSelection()
 		desc = _('Active:') + ' ' + self['activecam'].text
 		for cb in self.onChangedEntry:
@@ -321,7 +321,7 @@ class VIXStartCam(Screen):
 
 	def __init__(self, session, selectedcam):
 		Screen.__init__(self, session)
-		Screen.setTitle(self, _("Softcam Starting..."))
+		Screen.setTitle(self, _("Softcam starting..."))
 		self['connect'] = MultiPixmap()
 		self['lab1'] = Label(_("Please wait while starting\n") + selectedcam + '...')
 		global startselectedcam
@@ -438,7 +438,7 @@ class VIXStopCam(Screen):
 		Screen.__init__(self, session)
 		global stopselectedcam
 		stopselectedcam = selectedcam
-		Screen.setTitle(self, _("Softcam Stopping..."))
+		Screen.setTitle(self, _("Softcam stopping..."))
 		self['connect'] = MultiPixmap()
 		self['lab1'] = Label(_("Please wait while stopping\n") + selectedcam + '...')
 		self.Console = Console()
