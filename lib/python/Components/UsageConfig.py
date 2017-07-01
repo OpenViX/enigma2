@@ -641,6 +641,12 @@ def InitUsageConfig():
 
 	config.usage.boolean_graphic = ConfigYesNo(default=False)
 
+	if SystemInfo["hasXcoreVFD"]:
+		def set12to8characterVFD(configElement):
+			open(SystemInfo["hasXcoreVFD"], "w").write(not configElement.value and "1" or "0")
+		config.usage.toggle12to8characterVFD = ConfigYesNo(default = True)
+		config.usage.toggle12to8characterVFD.addNotifier(set12to8characterVFD)
+
 	config.epg = ConfigSubsection()
 	config.epg.eit = ConfigYesNo(default = True)
 	config.epg.mhw = ConfigYesNo(default = False)
@@ -940,8 +946,8 @@ def InitUsageConfig():
 		("ltz", _("Luxembourgish")),
 		("nor", _("Norwegian")),
 		("pol", _("Polish")),
-		("por", _("Portuguese")),
-		("fas per", _("Persian")),
+		("por dub Dub DUB ud1", _("Portuguese")),
+		("fas per fa pes", _("Persian")),
 		("ron rum", _("Romanian")),
 		("rus", _("Russian")),
 		("srp", _("Serbian")),

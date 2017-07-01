@@ -610,7 +610,7 @@ class InfoBarTimeshift:
 			# print 'TEST1'
 			for filename in os.listdir(config.usage.timeshift_path.value):
 				# print 'filename',filename
-				if filename.startswith("timeshift.") and not filename.endswith(".del") and not filename.endswith(".copy"):
+				if filename.startswith("timeshift.") and not filename.endswith((".del", ".copy", ".sc")):
 					statinfo = os.stat("%s%s" % (config.usage.timeshift_path.value,filename))
 					if statinfo.st_mtime > (time()-5.0):
 						savefilename=filename
@@ -772,6 +772,7 @@ class InfoBarTimeshift:
 				self.save_timeshift_postaction = None
 				errormessage = str(timeshift_saveerror1) + "\n" + str(timeshift_saveerror2)
 				Notifications.AddNotification(MessageBox, _("Timeshift save failed!")+"\n\n%s" % errormessage, MessageBox.TYPE_ERROR)
+		self.save_timeshift_file = False
 		# print 'SAVE COMPLETED'
 
 	def ptsCleanTimeshiftFolder(self):
