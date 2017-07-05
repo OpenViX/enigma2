@@ -772,6 +772,7 @@ class InfoBarTimeshift:
 				self.save_timeshift_postaction = None
 				errormessage = str(timeshift_saveerror1) + "\n" + str(timeshift_saveerror2)
 				Notifications.AddNotification(MessageBox, _("Timeshift save failed!")+"\n\n%s" % errormessage, MessageBox.TYPE_ERROR)
+		self.save_timeshift_file = False
 		# print 'SAVE COMPLETED'
 
 	def ptsCleanTimeshiftFolder(self):
@@ -984,7 +985,7 @@ class InfoBarTimeshift:
 	def ptsCreateEITFile(self, filename):
 		if self.pts_curevent_eventid is not None:
 			try:
-				serviceref = ServiceReference(self.session.nav.getCurrentlyPlayingServiceOrGroup()).ref.toString()
+				serviceref = ServiceReference(self.session.nav.getCurrentlyPlayingServiceOrGroup()).ref
 				eEPGCache.getInstance().saveEventToFile(filename+".eit", serviceref, self.pts_curevent_eventid, -1, -1)
 			except Exception, errormsg:
 				print "[Timeshift] %s" % errormsg
