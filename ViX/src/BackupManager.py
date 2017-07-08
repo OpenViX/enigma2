@@ -1209,8 +1209,6 @@ class BackupFiles(Screen):
 			self.selectedFiles.append('/usr/sundtek')
 		if path.exists('/etc/rc3.d/S99tuner.sh') and '/etc/rc3.d/S99tuner.sh' not in self.selectedFiles:
 			self.selectedFiles.append('/etc/rc3.d/S99tuner.sh')
-		if path.exists('/www') and '/www' not in self.selectedFiles:
-			self.selectedFiles.append('/www')
 
 		config.backupmanager.backupdirs.setValue(self.selectedFiles)
 		config.backupmanager.backupdirs.save()
