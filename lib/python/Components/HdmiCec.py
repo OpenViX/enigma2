@@ -37,6 +37,8 @@ for i in (10, 50, 100, 150, 250, 500, 750, 1000):
 	choicelist.append(("%d" % i, _("%d ms") % i))
 config.hdmicec.minimum_send_interval = ConfigSelection(default = "0", choices = [("0", _("Disabled"))] + choicelist)
 
+config.hdmicec.sourceactive_zaptimers = ConfigYesNo(default=False)
+
 class HdmiCec:
 
 	def __init__(self):

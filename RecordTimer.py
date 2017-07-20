@@ -374,6 +374,12 @@ class RecordTimerEntry(timer.TimerEntry, object):
 				self.backoff = 100
 		self.log(10, "backoff: retry in %d seconds" % self.backoff)
 
+	def sendactivesource(self):
+		if SystemInfo["HasHDMI-CEC"] and config.hdmicec.enabled.value and config.hdmicec.sourceactive_zaptimers.value:
+			import Components.HdmiCec
+			Components.HdmiCec.hdmi_cec.sendMessage(0, "sourceactive")
+			print "[TIMER] sourceactive was send"
+
 	def activate(self):
 		next_state = self.state + 1
 		self.log(5, "activating state %d" % next_state)
@@ -398,6 +404,7 @@ class RecordTimerEntry(timer.TimerEntry, object):
 					Screens.Standby.inStandby.Power()
 					self.log(5, "wakeup and zap to recording service")
 				else:
+					self.sendactivesource()
 					cur_zap_ref = NavigationInstance.instance.getCurrentlyPlayingServiceReference()
 					if cur_zap_ref and not cur_zap_ref.getPath():# we do not zap away if it is no live service
 						if self.checkingTimeshiftRunning():
@@ -485,6 +492,7 @@ class RecordTimerEntry(timer.TimerEntry, object):
 					#wakeup standby
 					Screens.Standby.inStandby.Power()
 				else:
+					self.sendactivesource()
 					if self.checkingTimeshiftRunning():
 						if self.ts_dialog is None:
 							self.openChoiceActionBeforeZap()
