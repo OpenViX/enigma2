@@ -1067,7 +1067,7 @@ class ImageManagerDownload(Screen):
 				'et8000'          : 'ET-8000',
 				'et8500'          : 'ET-8500',
 				'et9x00'          : 'ET-9x00',
-				'fusionhdse'      : 'Xsarius-Fusion-HD-SE',
+				'formuler4turbo'  : 'Formuler4turbo',
 				'gb800se'         : 'GiGaBlue-HD800SE',
 				'gb800seplus'     : 'GiGaBlue-HD800SE-PLUS',
 				'gb800ue'         : 'GiGaBlue-HD800UE',
