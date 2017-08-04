@@ -315,7 +315,7 @@ class ServiceInfo(Screen):
 					(_("Inversion"), "%s" % frontendData["inversion"], TYPE_TEXT))
 			elif frontendDataOrg["tuner_type"] == "DVB-T":
 				return (tuner,
-					(_("Frequency & Channel"), "%s - Ch. %s" % (frontendData.get("frequency", 0), getChannelNumber(frontendData["frequency"], frontendData["tuner_number"])), TYPE_TEXT),
+					(_("Frequency & Channel"), "%.3f MHz" % ((frontendData.get("frequency", 0) / 1000) / 1000.0) + " - " + frontendData["channel"], TYPE_TEXT),
 					(_("Inversion & Bandwidth"), "%s - %s" % (frontendData["inversion"], frontendData["bandwidth"]), TYPE_TEXT),
 					(_("Code R. LP-HP & Guard Int"), "%s - %s - %s" % (frontendData["code_rate_lp"], frontendData["code_rate_hp"], frontendData["guard_interval"]), TYPE_TEXT),
 					(_("Constellation & FFT mode"), "%s - %s" % (frontendData["constellation"], frontendData["transmission_mode"]), TYPE_TEXT),
@@ -352,6 +352,7 @@ class ServiceInfo(Screen):
 		from Components.Converter.PliExtraInfo import caid_data
 		self["Title"].text = _("Service info - ECM Info")
 		tlist = []
+		provid = ""
 		for caid in sorted(set(self.info.getInfoObject(iServiceInformation.sCAIDPIDs)), key=lambda x: (x[0], x[1])):
 			CaIdDescription = _("Undefined")
 			extra_info = ""
@@ -360,7 +361,6 @@ class ServiceInfo(Screen):
 					CaIdDescription = caid_entry[2]
 					break
 			if caid[2]:
-				provid = ""
 				if CaIdDescription == "Seca":
 					provid = caid[2][:4]
 				if CaIdDescription == "Nagra":
