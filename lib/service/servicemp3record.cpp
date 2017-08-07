@@ -256,9 +256,9 @@ void eServiceMP3Record::gstBusCall(GstMessage *msg)
 	switch (GST_MESSAGE_TYPE (msg))
 	{
 		case GST_MESSAGE_EOS:
-			eDebug("[eMP3ServiceRecord] gstBusCall eos event");
+			eDebug("[eMP3ServiceRecord] gstBusCall eos event - not handled - ANDY");
 			// Stream end -> stop recording
-			m_event((iRecordableService*)this, evGstRecordEnded);
+			//m_event((iRecordableService*)this, evGstRecordEnded);
 			break;
 		case GST_MESSAGE_STATE_CHANGED:
 		{
