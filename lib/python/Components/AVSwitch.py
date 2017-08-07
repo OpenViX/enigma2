@@ -93,7 +93,7 @@ class AVSwitch:
 		'ebox5100',
 		'enfinity',
 		'et4x00',
-		'formuler4turbo'
+		'formuler4turbo',
 		'gbx1',
 		'gbx3',
 		'iqonios300hd',
