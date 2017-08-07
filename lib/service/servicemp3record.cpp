@@ -269,10 +269,8 @@ void eServiceMP3Record::gstBusCall(GstMessage *msg)
 			//m_event((iRecordableService*)this, evRecordRunning);
 			//eDebug("[eMP3ServiceRecord] called");
 			
-			eDebug("[eMP3ServiceRecord] ending recording");
-			m_event((iRecordableService*)this, evGstRecordEnded);
 			eDebug("[eMP3ServiceRecord] filename=%s", m_filename.c_str());
-			m_filename = m_filename.replace(str.find(".stream"),7,"_001.stream");
+			m_filename = m_filename.replace(m_filename.find(".stream"),7,"_001.stream");
 			eDebug("[eMP3ServiceRecord] new filename=%s", m_filename.c_str());
 			eDebug("[eMP3ServiceRecord] calling start to kick off recording again");
 			start(false);
