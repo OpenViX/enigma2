@@ -29,6 +29,7 @@ eServiceMP3Record::eServiceMP3Record(const eServiceReference &ref):
 	CONNECT(m_streamingsrc_timeout->timeout, eServiceMP3Record::sourceTimeout);
 	if (eConfigManager::getConfigBoolValue("config.mediaplayer.useAlternateUserAgent"))
 		m_useragent = eConfigManager::getConfigValue("config.mediaplayer.alternateUserAgent");
+	eDebug("[eMP3ServiceRecord] m_useragent=%s", m_useragent.c_str());
 }
 
 eServiceMP3Record::~eServiceMP3Record()
@@ -265,7 +266,7 @@ void eServiceMP3Record::gstBusCall(GstMessage *msg)
 		case GST_MESSAGE_EOS:
 			eDebug("[eMP3ServiceRecord] gstBusCall eos event");
 			// Stream end -> stop recording
-			m_event((iRecordableService*)this, evGstRecordEnded);						
+			//m_event((iRecordableService*)this, evGstRecordEnded);						
 			eDebug("[eMP3ServiceRecord] filename=%s", m_filename.c_str());
 			m_filename = m_filename.replace(m_filename.find(".stream"),7,"_001.stream");
 			eDebug("[eMP3ServiceRecord] new filename=%s", m_filename.c_str());
