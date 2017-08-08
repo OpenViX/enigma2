@@ -1084,6 +1084,7 @@ class ImageManagerDownload(Screen):
 				'maram9'          : 'Mara-M9',
 				'mbhybrid'        : 'Miraclebox-Mini-Hybrid',
 				'mbmicro'         : 'Miraclebox-Micro',
+				'mbmicrov2'       : 'Miraclebox-Microv2',				
 				'mbmini'          : 'Miraclebox-Mini',
 				'mbminiplus'      : 'Miraclebox-MiniPlus',
 				'mbtwin'          : 'Miraclebox-Twin',
