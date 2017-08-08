@@ -100,6 +100,7 @@ RESULT eServiceMP3Record::prepareStreaming(bool descramble, bool includeecm)
 
 RESULT eServiceMP3Record::start(bool simulate)
 {
+	eDebug("[eMP3ServiceRecord] start");
 	m_simulate = simulate;
 	m_event((iRecordableService*)this, evStart);
 	if (simulate)
@@ -129,8 +130,11 @@ RESULT eServiceMP3Record::stop()
 
 int eServiceMP3Record::doPrepare()
 {
+	eDebug("[eMP3ServiceRecord] doPrepare");
+
 	if (m_state == stateIdle)
 	{
+		eDebug("[eMP3ServiceRecord] stateIdle");
 		gchar *uri;
 		size_t pos = m_ref.path.find('#');
 		std::string stream_uri;
@@ -196,9 +200,11 @@ int eServiceMP3Record::doPrepare()
 
 int eServiceMP3Record::doRecord()
 {
+	eDebug("[eMP3ServiceRecord] doRecord");
 	int err = doPrepare();
 	if (err)
 	{
+		eDebug("[eMP3ServiceRecord] err");
 		m_error = errMisconfiguration;
 		m_event((iRecordableService*)this, evRecordFailed);
 		return err;
@@ -212,6 +218,7 @@ int eServiceMP3Record::doRecord()
 		return -1;
 	}
 
+	eDebug("[eMP3ServiceRecord] recording");
 	m_state = stateRecording;
 	m_error = 0;
 	m_event((iRecordableService*)this, evRecordRunning);
@@ -258,21 +265,12 @@ void eServiceMP3Record::gstBusCall(GstMessage *msg)
 		case GST_MESSAGE_EOS:
 			eDebug("[eMP3ServiceRecord] gstBusCall eos event");
 			// Stream end -> stop recording
-			//m_event((iRecordableService*)this, evGstRecordEnded);		
-			
-			//eDebug("[eMP3ServiceRecord] ending recording");
-			//m_event((iRecordableService*)this, evGstRecordEnded);
-			//eDebug("[eMP3ServiceRecord] starting again");
-			//m_state = stateRecording;
-			//m_error = 0;
-			//eDebug("[eMP3ServiceRecord] calling evRecordRunning");
-			//m_event((iRecordableService*)this, evRecordRunning);
-			//eDebug("[eMP3ServiceRecord] called");
-			
+			m_event((iRecordableService*)this, evGstRecordEnded);						
 			eDebug("[eMP3ServiceRecord] filename=%s", m_filename.c_str());
 			m_filename = m_filename.replace(m_filename.find(".stream"),7,"_001.stream");
 			eDebug("[eMP3ServiceRecord] new filename=%s", m_filename.c_str());
 			eDebug("[eMP3ServiceRecord] calling start to kick off recording again");
+			m_state = stateIdle;
 			start(false);
 			eDebug("[eMP3ServiceRecord] called start so should be recording again");
 			break;
