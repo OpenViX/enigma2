@@ -265,15 +265,34 @@ void eServiceMP3Record::gstBusCall(GstMessage *msg)
 	{
 		case GST_MESSAGE_EOS:
 			eDebug("[eMP3ServiceRecord] gstBusCall eos event");
+			
 			// Stream end -> stop recording
 			//m_event((iRecordableService*)this, evGstRecordEnded);						
-			eDebug("[eMP3ServiceRecord] filename=%s", m_filename.c_str());
-			m_filename = m_filename.replace(m_filename.find(".stream"),7,"_001.stream");
-			eDebug("[eMP3ServiceRecord] new filename=%s", m_filename.c_str());
-			eDebug("[eMP3ServiceRecord] calling start to kick off recording again");
-			m_state = stateIdle;
-			start(false);
-			eDebug("[eMP3ServiceRecord] called start so should be recording again");
+			
+			//eDebug("[eMP3ServiceRecordMod] filename=%s", m_filename.c_str());
+			//m_filename = m_filename.replace(m_filename.find(".stream"),7,"_001.stream");
+			//eDebug("[eMP3ServiceRecordMod] new filename=%s", m_filename.c_str());
+			//eDebug("[eMP3ServiceRecordMod] calling start to kick off recording again");
+			//m_state = stateIdle;
+			//start(false);
+			//eDebug("[eMP3ServiceRecordMod] called start so should be recording again");
+			
+			
+			eDebug("[eMP3ServiceRecordMod] attempting to kick off recording again");
+			if (gst_element_set_state(m_recording_pipeline, GST_STATE_PLAYING) == GST_STATE_CHANGE_FAILURE)
+			{
+				eDebug("[eMP3ServiceRecordMod] doRecord error cannot set pipeline to state_playing");
+				m_error = errMisconfiguration;
+				m_event((iRecordableService*)this, evRecordFailed);
+			}
+			else
+			{
+				eDebug("[eMP3ServiceRecordMod] recording");
+				m_state = stateRecording;
+				m_error = 0;
+				m_event((iRecordableService*)this, evRecordRunning);
+			}			
+			eDebug("[eMP3ServiceRecordMod] done with re-record attempt");
 			break;
 		case GST_MESSAGE_STATE_CHANGED:
 		{
