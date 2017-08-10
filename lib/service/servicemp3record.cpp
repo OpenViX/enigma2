@@ -9,6 +9,8 @@
 #include <gst/gst.h>
 #include <gst/pbutils/missing-plugins.h>
 
+#include <fstream>
+
 #define HTTP_TIMEOUT 60
 
 DEFINE_REF(eServiceMP3Record);
