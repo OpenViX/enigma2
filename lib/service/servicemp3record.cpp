@@ -101,7 +101,6 @@ RESULT eServiceMP3Record::prepareStreaming(bool descramble, bool includeecm)
 
 RESULT eServiceMP3Record::start(bool simulate)
 {
-	eDebug("[eMP3ServiceRecord] start");
 	m_simulate = simulate;
 	m_event((iRecordableService*)this, evStart);
 	if (simulate)
@@ -201,7 +200,6 @@ int eServiceMP3Record::doPrepare()
 
 int eServiceMP3Record::doRecord()
 {
-	eDebug("[eMP3ServiceRecord] doRecord");
 	int err = doPrepare();
 	if (err)
 	{
@@ -250,6 +248,37 @@ void eServiceMP3Record::sourceTimeout()
 	m_event((iRecordableService*)this, evRecordFailed);
 }
 
+void eServiceMP3Record::restartRecordingFromEos()
+{
+	eDebug("[eMP3ServiceRecordMod] restartRecordingFromEos");
+	
+	// see if current file is appended to - if not uncomment next 3 lines
+	//eDebug("[eMP3ServiceRecordMod] filename=%s", m_filename.c_str());		
+	//m_filename = m_filename.replace(m_filename.find(".stream"),7,"_001.stream");
+	//eDebug("[eMP3ServiceRecordMod] new filename=%s", m_filename.c_str());
+
+	m_state = stateIdle;
+	start(false);
+
+	//copy eit
+	std::string cureit = m_filename.replace(m_filename.find(".stream"),7,".streameit");
+	std::string neweit = m_filename.replace(m_filename.find(".stream"),7,"_001.streameit");			
+	std::ifstream srceit(cureit.c_str(), std::ios::binary);
+	std::ofstream dsteit(neweit.c_str(), std::ios::binary);
+	dsteit << srceit.rdbuf();
+	eDebug("[eMP3ServiceRecordMod] copied eit");
+
+	//copy meta
+	std::string curmeta = m_filename.replace(m_filename.find(".stream"),7,".stream.meta");
+	std::string newmeta = m_filename.replace(m_filename.find(".stream"),7,"_001.stream.meta");			
+	std::ifstream srcmeta(curmeta.c_str(), std::ios::binary);
+	std::ofstream dstmeta(newmeta.c_str(), std::ios::binary);
+	dstmeta << srcmeta.rdbuf();
+	eDebug("[eMP3ServiceRecordMod] copied meta");
+
+	eDebug("[eMP3ServiceRecordMod] ~restartRecordingFromEos");
+}
+
 void eServiceMP3Record::gstBusCall(GstMessage *msg)
 {
 	if (!msg)
@@ -264,35 +293,10 @@ void eServiceMP3Record::gstBusCall(GstMessage *msg)
 	switch (GST_MESSAGE_TYPE (msg))
 	{
 		case GST_MESSAGE_EOS:
-			eDebug("[eMP3ServiceRecord] gstBusCall eos event");
-			
+			eDebug("[eMP3ServiceRecord] gstBusCall eos event");			
 			// Stream end -> stop recording
 			//m_event((iRecordableService*)this, evGstRecordEnded);						
-			
-			//eDebug("[eMP3ServiceRecordMod] filename=%s", m_filename.c_str());
-			//m_filename = m_filename.replace(m_filename.find(".stream"),7,"_001.stream");
-			//eDebug("[eMP3ServiceRecordMod] new filename=%s", m_filename.c_str());
-			//eDebug("[eMP3ServiceRecordMod] calling start to kick off recording again");
-			//m_state = stateIdle;
-			//start(false);
-			//eDebug("[eMP3ServiceRecordMod] called start so should be recording again");
-			
-			
-			eDebug("[eMP3ServiceRecordMod] attempting to kick off recording again");
-			if (gst_element_set_state(m_recording_pipeline, GST_STATE_PLAYING) == GST_STATE_CHANGE_FAILURE)
-			{
-				eDebug("[eMP3ServiceRecordMod] doRecord error cannot set pipeline to state_playing");
-				m_error = errMisconfiguration;
-				m_event((iRecordableService*)this, evRecordFailed);
-			}
-			else
-			{
-				eDebug("[eMP3ServiceRecordMod] recording");
-				m_state = stateRecording;
-				m_error = 0;
-				m_event((iRecordableService*)this, evRecordRunning);
-			}			
-			eDebug("[eMP3ServiceRecordMod] done with re-record attempt");
+			restartRecordingFromEos();			
 			break;
 		case GST_MESSAGE_STATE_CHANGED:
 		{
