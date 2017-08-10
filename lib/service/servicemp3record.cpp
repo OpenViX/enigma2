@@ -253,26 +253,26 @@ void eServiceMP3Record::sourceTimeout()
 void eServiceMP3Record::restartRecordingFromEos()
 {
 	eDebug("[eMP3ServiceRecordMod] restartRecordingFromEos");
-	
-	// see if current file is appended to - if not uncomment next 3 lines
-	//eDebug("[eMP3ServiceRecordMod] filename=%s", m_filename.c_str());		
-	//m_filename = m_filename.replace(m_filename.find(".stream"),7,"_001.stream");
-	//eDebug("[eMP3ServiceRecordMod] new filename=%s", m_filename.c_str());
+
+	std::string oldFilename = m_filename;
+	eDebug("[eMP3ServiceRecordMod] current filename=%s", oldFilename.c_str());
+	m_filename = m_filename.replace(m_filename.find(".stream"),7,"_001.stream");
+	eDebug("[eMP3ServiceRecordMod] new filename=%s", m_filename.c_str());
 
 	m_state = stateIdle;
 	start(false);
 
 	//copy eit
-	std::string cureit = m_filename.replace(m_filename.find(".stream"),7,".streameit");
-	std::string neweit = m_filename.replace(m_filename.find(".stream"),7,"_001.streameit");			
+	std::string cureit = oldFilename.replace(oldFilename.find(".stream"),7,".streameit");
+	std::string neweit = m_filename.replace(m_filename.find(".stream"),7,".streameit");
 	std::ifstream srceit(cureit.c_str(), std::ios::binary);
 	std::ofstream dsteit(neweit.c_str(), std::ios::binary);
 	dsteit << srceit.rdbuf();
 	eDebug("[eMP3ServiceRecordMod] copied eit");
 
 	//copy meta
-	std::string curmeta = m_filename.replace(m_filename.find(".stream"),7,".stream.meta");
-	std::string newmeta = m_filename.replace(m_filename.find(".stream"),7,"_001.stream.meta");			
+	std::string curmeta = oldFilename.replace(oldFilename.find(".stream"),7,".stream.meta");
+	std::string newmeta = m_filename.replace(m_filename.find(".stream"),7,".stream.meta");
 	std::ifstream srcmeta(curmeta.c_str(), std::ios::binary);
 	std::ofstream dstmeta(newmeta.c_str(), std::ios::binary);
 	dstmeta << srcmeta.rdbuf();
