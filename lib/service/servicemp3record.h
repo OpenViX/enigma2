@@ -46,13 +46,14 @@ private:
 	int doPrepare();
 	void gstPoll(ePtr<GstMessageContainer> const &);
 	void sourceTimeout();
+	void restartRecordingFromEos();
 	void gstBusCall(GstMessage *msg);
 	void handleMessage(GstMessage *msg);
 	static GstBusSyncReply gstBusSyncHandler(GstBus *bus, GstMessage *message, gpointer user_data);
 	static void handleUridecNotifySource(GObject *object, GParamSpec *unused, gpointer user_data);
 	static void handlePadAdded(GstElement *element, GstPad *pad, gpointer user_data);
 	static gboolean handleAutoPlugCont(GstElement *bin, GstPad *pad, GstCaps *caps, gpointer user_data);
-
+	
 			/* events */
 	sigc::signal2<void,iRecordableService*,int> m_event;
 };
