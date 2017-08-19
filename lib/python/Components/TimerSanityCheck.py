@@ -1,11 +1,8 @@
 import NavigationInstance
-from config import config
-from time import  time, localtime, mktime, gmtime
-from ServiceReference import ServiceReference
+from time import localtime, mktime, gmtime, time
 from enigma import iServiceInformation, eServiceCenter, eServiceReference, getBestPlayableServiceReference
 from timer import TimerEntry
 import RecordTimer
-from time import time, localtime
 
 class TimerSanityCheck:
 	def __init__(self, timerlist, newtimer=None):
@@ -49,7 +46,7 @@ class TimerSanityCheck:
 					getUnsignedDataRef2 = self.newtimer.service_ref.ref.getUnsignedData
 					for x in (1, 2, 3, 4):
 						if getUnsignedDataRef1(x) != getUnsignedDataRef2(x):
-							break;
+							break
 					else:
 						return True
 		return False
@@ -254,7 +251,7 @@ class TimerSanityCheck:
 					if entry[1] == timer:
 						overlaplist.remove(entry)
 			else:
-				print "[TimerSanityCheck] Bug: unknown flag!"
+				print "[TimerSanityCheck] bug: unknown flag!"
 			self.nrep_eventlist[idx] = (event[0],event[1],event[2],cnt,overlaplist[:]) # insert a duplicate into current overlaplist
 			fakeRecService = None
 			fakeRecResult = None
