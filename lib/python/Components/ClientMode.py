@@ -23,4 +23,3 @@ def InitClientMode():
 	config.clientmode.nim_cache = ConfigText(default = "", fixed_size = False)
 	config.clientmode.remote_fallback_enabled_cache = ConfigYesNo(default = False)
 	config.clientmode.remote_fallback_cache = ConfigText(default = "", fixed_size = False)
-	config.clientmode.timer_sanity_check_enabled_cache = ConfigYesNo(default = True)
