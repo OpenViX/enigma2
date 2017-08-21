@@ -8,8 +8,10 @@ from Components.SystemInfo import SystemInfo
 from Components.TimerSanityCheck import TimerSanityCheck
 
 from Screens.MessageBox import MessageBox
+from Screens.PictureInPicture import PictureInPicture
 import Screens.Standby
 import Screens.InfoBar
+import Components.ParentalControl
 from Tools import Directories, Notifications, ASCIItranslit, Trashcan
 from Tools.XMLTools import stringToXML
 
