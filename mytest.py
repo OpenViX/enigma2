@@ -2,6 +2,14 @@ import sys
 import os
 from time import time
 
+# LD_PRELOAD is set when we start-up, but we don't want to pass it on
+# to sub-processes
+#
+try:
+	del os.environ["LD_PRELOAD"]
+except:
+	pass
+
 if os.path.isfile("/usr/lib/enigma2/python/enigma.zip"):
 	sys.path.append("/usr/lib/enigma2/python/enigma.zip")
 
