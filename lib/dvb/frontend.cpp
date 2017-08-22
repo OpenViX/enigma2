@@ -2748,7 +2748,6 @@ int eDVBFrontend::isCompatibleWith(ePtr<iDVBFrontendParameters> &feparm)
 
 bool eDVBFrontend::supportsDeliverySystem(const fe_delivery_system_t &sys, bool obeywhitelist)
 {
-	return true;
 	std::map<fe_delivery_system_t, bool>::iterator it = m_delsys.find(sys);
 	if (it != m_delsys.end() && it->second)
 	{
