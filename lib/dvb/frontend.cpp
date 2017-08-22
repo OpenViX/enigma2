@@ -2625,7 +2625,7 @@ int eDVBFrontend::isCompatibleWith(ePtr<iDVBFrontendParameters> &feparm)
 		}
 		bool multistream = (parm.is_id != NO_STREAM_ID_FILTER || (parm.pls_code & 0x3FFFF) != 1 ||
 			(parm.pls_mode & 3) != eDVBFrontendParametersSatellite::PLS_Root);
-		eDebug("[eDVBFrontend][isCompatibleWith] service is multistream: %s", multistream ? "true" : "false")
+		eDebug("[eDVBFrontend][isCompatibleWith] service is multistream: %s", multistream ? "true" : "false");
 		eDebug("[eDVBFrontend][isCompatibleWith] system %d is_id %d pls_code %d pls_mode %d tuner is_multistream %d",
 			parm.system, parm.is_id, parm.pls_code, parm.pls_mode, is_multistream());
 		if (parm.system == eDVBFrontendParametersSatellite::System_DVB_S2 && multistream && !is_multistream())
