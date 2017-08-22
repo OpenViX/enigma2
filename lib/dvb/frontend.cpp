@@ -2613,7 +2613,7 @@ int eDVBFrontend::isCompatibleWith(ePtr<iDVBFrontendParameters> &feparm)
 		}
 		can_handle_dvbs = supportsDeliverySystem(SYS_DVBS, !m_multitype);
 		#can_handle_dvbs2 = supportsDeliverySystem(SYS_DVBS2, !m_multitype);
-		can_handle_dvbs2 = true;
+		can_handle_dvbs2 = true
 		
 		
 		if (parm.system == eDVBFrontendParametersSatellite::System_DVB_S2 && !can_handle_dvbs2)
