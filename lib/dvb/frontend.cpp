@@ -2871,8 +2871,11 @@ bool eDVBFrontend::setSlotInfo(int id, const char *descr, bool enabled, bool isD
 bool eDVBFrontend::is_multistream()
 {
 #if DVB_API_VERSION > 5 || DVB_API_VERSION == 5 && DVB_API_VERSION_MINOR >= 8
+	eDebug("[eDVBFrontend][is_multistream] DVB_API_VERSION %d, DVB_API_VERSION_MINOR %d, fe_info.caps %d, FE_CAN_MULTISTREAM %d",
+			DVB_API_VERSION, DVB_API_VERSION_MINOR, fe_info.caps, parm.pls_mode, FE_CAN_MULTISTREAM);
 	return fe_info.caps & FE_CAN_MULTISTREAM;
 #else //if DVB_API_VERSION < 5
+	eDebug("[eDVBFrontend][is_multistream] DVB_API_VERSION lower than 5.8");
 	return 0;
 #endif
 }
