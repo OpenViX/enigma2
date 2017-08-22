@@ -2595,11 +2595,11 @@ int eDVBFrontend::isCompatibleWith(ePtr<iDVBFrontendParameters> &feparm)
 	int type;
 	int score = 0;
 	bool preferred = (eDVBFrontend::getPreferredFrontend() >= 0 && m_slotid == eDVBFrontend::getPreferredFrontend());
-	eDebug("[eDVBFrontend][isCompatibleWith] m_slotid: %d", m_slotid)
-	eDebug("[eDVBFrontend][isCompatibleWith] preferred: %s", preferred ? "true" : "false")
+	eDebug("[eDVBFrontend][isCompatibleWith] m_slotid: %d", m_slotid);
+	eDebug("[eDVBFrontend][isCompatibleWith] preferred: %s", preferred ? "true" : "false");
 	if (feparm->getSystem(type) || !m_enabled)
 	{
-		eDebug("[eDVBFrontend][isCompatibleWith] (feparm->getSystem(type) || !m_enabled) return 0")
+		eDebug("[eDVBFrontend][isCompatibleWith] (feparm->getSystem(type) || !m_enabled) return 0");
 		return 0;
 	}
 	if (type == eDVBFrontend::feSatellite)
@@ -2608,19 +2608,19 @@ int eDVBFrontend::isCompatibleWith(ePtr<iDVBFrontendParameters> &feparm)
 		bool can_handle_dvbs, can_handle_dvbs2;
 		if (feparm->getDVBS(parm) < 0)
 		{
-			eDebug("[eDVBFrontend][isCompatibleWith] (feparm->getDVBS(parm) < 0) return 0")
+			eDebug("[eDVBFrontend][isCompatibleWith] (feparm->getDVBS(parm) < 0) return 0");
 			return 0;
 		}
 		can_handle_dvbs = supportsDeliverySystem(SYS_DVBS, !m_multitype);
 		can_handle_dvbs2 = supportsDeliverySystem(SYS_DVBS2, !m_multitype);
 		if (parm.system == eDVBFrontendParametersSatellite::System_DVB_S2 && !can_handle_dvbs2)
 		{
-			eDebug("[eDVBFrontend][isCompatibleWith] (parm.system == eDVBFrontendParametersSatellite::System_DVB_S2 && !can_handle_dvbs2) return 0")
+			eDebug("[eDVBFrontend][isCompatibleWith] (parm.system == eDVBFrontendParametersSatellite::System_DVB_S2 && !can_handle_dvbs2) return 0");
 			return 0;
 		}
 		if (parm.system == eDVBFrontendParametersSatellite::System_DVB_S && !can_handle_dvbs)
 		{
-			eDebug("[eDVBFrontend][isCompatibleWith] (parm.system == eDVBFrontendParametersSatellite::System_DVB_S && !can_handle_dvbs) return 0")
+			eDebug("[eDVBFrontend][isCompatibleWith] (parm.system == eDVBFrontendParametersSatellite::System_DVB_S && !can_handle_dvbs) return 0");
 			return 0;
 		}
 		bool multistream = (parm.is_id != NO_STREAM_ID_FILTER || (parm.pls_code & 0x3FFFF) != 1 ||
