@@ -566,7 +566,8 @@ int eDVBFrontend::openFrontend()
 	m_state=stateIdle;
 	m_tuning=0;
 
-	if (!m_simulate)
+	// if (!m_simulate)
+	if (1)
 	{
 		eDebug("[eDVBFrontend] opening frontend %d", m_dvbid);
 		if (m_fd < 0)
@@ -576,6 +577,11 @@ int eDVBFrontend::openFrontend()
 			{
 				eWarning("[eDVBFrontend] opening %s failed: %m", m_filename.c_str());
 				return -1;
+			}
+			if (!m_simulate)
+			{
+				m_sn = eSocketNotifier::create(eApp, m_fd, eSocketNotifier::Read, false);
+				CONNECT(m_sn->activated, eDVBFrontend::feEvent);
 			}
 		}
 		else
@@ -675,8 +681,8 @@ int eDVBFrontend::openFrontend()
 		{
 			m_simulate_fe->m_delsys = m_delsys;
 		}
-		m_sn = eSocketNotifier::create(eApp, m_fd, eSocketNotifier::Read, false);
-		CONNECT(m_sn->activated, eDVBFrontend::feEvent);
+		// m_sn = eSocketNotifier::create(eApp, m_fd, eSocketNotifier::Read, false);
+		// CONNECT(m_sn->activated, eDVBFrontend::feEvent);
 	}
 	else
 	{
