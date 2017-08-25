@@ -1416,7 +1416,6 @@ void eEPGCache::load()
 
 void eEPGCache::save()
 {
-	eDebug("[eEPGCache::save] Starting");
 	const char* EPGDAT = m_filename.c_str();
 	if (eventData::isCacheCorrupt)
 		return;
@@ -1523,7 +1522,6 @@ void eEPGCache::save()
 	fseek(f, sizeof(int), SEEK_SET);
 	fwrite("ENIGMA_EPG_V7", 13, 1, f);
 	fclose(f);
-	eDebug("[eEPGCache::save] Finished");
 }
 
 eEPGCache::channel_data::channel_data(eEPGCache *ml)

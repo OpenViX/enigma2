@@ -566,8 +566,7 @@ int eDVBFrontend::openFrontend()
 	m_state=stateIdle;
 	m_tuning=0;
 
-	//if (!m_simulate)
-	if (1)
+	if (!m_simulate)
 	{
 		eDebug("[eDVBFrontend] opening frontend %d", m_dvbid);
 		if (m_fd < 0)
@@ -676,11 +675,13 @@ int eDVBFrontend::openFrontend()
 		{
 			m_simulate_fe->m_delsys = m_delsys;
 		}
-		if (!m_simulate)
-		{
-			m_sn = eSocketNotifier::create(eApp, m_fd, eSocketNotifier::Read, false);
-			CONNECT(m_sn->activated, eDVBFrontend::feEvent);
-		}
+		m_sn = eSocketNotifier::create(eApp, m_fd, eSocketNotifier::Read, false);
+		CONNECT(m_sn->activated, eDVBFrontend::feEvent);
+	}
+	else
+	{
+		fe_info.frequency_min = 900000;
+		fe_info.frequency_max = 2200000;
 	}
 
 	m_multitype = m_delsys[SYS_DVBS] && (m_delsys[SYS_DVBT] || m_delsys[SYS_DVBC_ANNEX_A]);
@@ -2594,11 +2595,8 @@ int eDVBFrontend::isCompatibleWith(ePtr<iDVBFrontendParameters> &feparm)
 	int type;
 	int score = 0;
 	bool preferred = (eDVBFrontend::getPreferredFrontend() >= 0 && m_slotid == eDVBFrontend::getPreferredFrontend());
-	eDebug("[eDVBFrontend][isCompatibleWith] m_slotid: %d", m_slotid);
-	eDebug("[eDVBFrontend][isCompatibleWith] preferred: %s", preferred ? "true" : "false");
 	if (feparm->getSystem(type) || !m_enabled)
 	{
-		eDebug("[eDVBFrontend][isCompatibleWith] (feparm->getSystem(type) || !m_enabled) return 0");
 		return 0;
 	}
 	if (type == eDVBFrontend::feSatellite)
@@ -2607,31 +2605,25 @@ int eDVBFrontend::isCompatibleWith(ePtr<iDVBFrontendParameters> &feparm)
 		bool can_handle_dvbs, can_handle_dvbs2;
 		if (feparm->getDVBS(parm) < 0)
 		{
-			eDebug("[eDVBFrontend][isCompatibleWith] (feparm->getDVBS(parm) < 0) return 0");
 			return 0;
 		}
 		can_handle_dvbs = supportsDeliverySystem(SYS_DVBS, !m_multitype);
 		can_handle_dvbs2 = supportsDeliverySystem(SYS_DVBS2, !m_multitype);
 		if (parm.system == eDVBFrontendParametersSatellite::System_DVB_S2 && !can_handle_dvbs2)
 		{
-			eDebug("[eDVBFrontend][isCompatibleWith] parm.system %d, eDVBFrontendParametersSatellite::System_DVB_S2 %d, can_handle_dvbs2 %s, m_multitype %d", parm.system, eDVBFrontendParametersSatellite::System_DVB_S2, can_handle_dvbs2 ? "true" : "false", m_multitype);
-			eDebug("[eDVBFrontend][isCompatibleWith] (parm.system == eDVBFrontendParametersSatellite::System_DVB_S2 && !can_handle_dvbs2) return 0");
 			return 0;
 		}
 		if (parm.system == eDVBFrontendParametersSatellite::System_DVB_S && !can_handle_dvbs)
 		{
-			eDebug("[eDVBFrontend][isCompatibleWith] (parm.system == eDVBFrontendParametersSatellite::System_DVB_S && !can_handle_dvbs) return 0");
 			return 0;
 		}
 		bool multistream = (parm.is_id != NO_STREAM_ID_FILTER || (parm.pls_code & 0x3FFFF) != 1 ||
 			(parm.pls_mode & 3) != eDVBFrontendParametersSatellite::PLS_Root);
-		eDebug("[eDVBFrontend][isCompatibleWith] service is multistream: %s", multistream ? "true" : "false");
-		eDebug("[eDVBFrontend][isCompatibleWith] system %d is_id %d pls_code %d pls_mode %d tuner is_multistream %d",
+		eDebug("[eDVBFrontend] isCompatibleWith system %d is_id %d pls_code %d pls_mode %d is_multistream %d",
 			parm.system, parm.is_id, parm.pls_code, parm.pls_mode, is_multistream());
 		if (parm.system == eDVBFrontendParametersSatellite::System_DVB_S2 && multistream && !is_multistream())
 		{
-			eDebug("[eDVBFrontend][isCompatibleWith] NOT MULTISTREAM TUNER!!!!!");
-			eDebug("[eDVBFrontend][isCompatibleWith] (parm.system == eDVBFrontendParametersSatellite::System_DVB_S2 && multistream && !is_multistream()) return 0");
+			eDebug("[eDVBFrontend] isCompatibleWith NON MULTISTREAM TUNER!!!!!");
 			return 0;
 		}
 		score = m_sec ? m_sec->canTune(parm, this, 1 << m_slotid) : 0;
@@ -2642,7 +2634,7 @@ int eDVBFrontend::isCompatibleWith(ePtr<iDVBFrontendParameters> &feparm)
 		}
 		if (score > 1 && is_multistream() && !multistream)
 		{
-			eDebug("[eDVBFrontend][isCompatibleWith] NON MULTISTREAM CHANNEL!!!!");
+			eDebug("[eDVBFrontend] isCompatibleWith NON MULTISTREAM CHANNEL!!!!");
 			/* prefer to use a non multistream tuner, try to keep multistream tuners free for multistream transponders */
 			score--;
 		}
@@ -2871,11 +2863,8 @@ bool eDVBFrontend::setSlotInfo(int id, const char *descr, bool enabled, bool isD
 bool eDVBFrontend::is_multistream()
 {
 #if DVB_API_VERSION > 5 || DVB_API_VERSION == 5 && DVB_API_VERSION_MINOR >= 8
-	eDebug("[eDVBFrontend][is_multistream] DVB_API_VERSION %d, DVB_API_VERSION_MINOR %d, fe_info.caps %d, fe_info.name %s, FE_CAN_MULTISTREAM %d",
-			DVB_API_VERSION, DVB_API_VERSION_MINOR, fe_info.caps, fe_info.name, FE_CAN_MULTISTREAM);
 	return fe_info.caps & FE_CAN_MULTISTREAM;
 #else //if DVB_API_VERSION < 5
-	eDebug("[eDVBFrontend][is_multistream] DVB_API_VERSION lower than 5.8");
 	return 0;
 #endif
 }
