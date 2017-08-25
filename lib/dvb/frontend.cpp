@@ -566,122 +566,119 @@ int eDVBFrontend::openFrontend()
 	m_state=stateIdle;
 	m_tuning=0;
 
-	//if (!m_simulate)
-	if (1)
+	eDebug("[eDVBFrontend] opening frontend %d", m_dvbid);
+	if (m_fd < 0)
 	{
-		eDebug("[eDVBFrontend] opening frontend %d", m_dvbid);
+		m_fd = ::open(m_filename.c_str(), O_RDWR | O_NONBLOCK | O_CLOEXEC);
 		if (m_fd < 0)
 		{
-			m_fd = ::open(m_filename.c_str(), O_RDWR | O_NONBLOCK | O_CLOEXEC);
-			if (m_fd < 0)
+			eWarning("[eDVBFrontend] opening %s failed: %m", m_filename.c_str());
+			return -1;
+		}
+	}
+	else
+		eWarning("[eDVBFrontend] frontend %d already opened", m_dvbid);
+	if (m_dvbversion == 0)
+	{
+		m_dvbversion = DVB_VERSION(3, 0);
+#if defined DTV_API_VERSION
+		struct dtv_property p;
+		struct dtv_properties cmdseq;
+		cmdseq.props = &p;
+		cmdseq.num = 1;
+		p.cmd = DTV_API_VERSION;
+		if (ioctl(m_fd, FE_GET_PROPERTY, &cmdseq) >= 0)
+		{
+			m_dvbversion = p.u.data;
+			eDebug("[eDVBFrontend] frontend %d has DVB API %02x ", m_dvbid, m_dvbversion);
+		}
+#endif
+	}
+	if (m_delsys.empty())
+	{
+		if (::ioctl(m_fd, FE_GET_INFO, &fe_info) < 0)
+		{
+			eWarning("[eDVBFrontend] ioctl FE_GET_INFO failed");
+			::close(m_fd);
+			m_fd = -1;
+			return -1;
+		}
+		strncpy(m_description, fe_info.name, sizeof(m_description));
+#if defined DTV_ENUM_DELSYS
+		struct dtv_property p[1];
+		p[0].cmd = DTV_ENUM_DELSYS;
+		struct dtv_properties cmdseq;
+		cmdseq.num = 1;
+		cmdseq.props = p;
+		if (::ioctl(m_fd, FE_GET_PROPERTY, &cmdseq) >= 0)
+		{
+			m_delsys.clear();
+			for (; p[0].u.buffer.len > 0; p[0].u.buffer.len--)
 			{
-				eWarning("[eDVBFrontend] opening %s failed: %m", m_filename.c_str());
-				return -1;
+				fe_delivery_system_t delsys = (fe_delivery_system_t)p[0].u.buffer.data[p[0].u.buffer.len - 1];
+				m_delsys[delsys] = true;
 			}
 		}
 		else
-			eWarning("[eDVBFrontend] frontend %d already opened", m_dvbid);
-		if (m_dvbversion == 0)
-		{
-			m_dvbversion = DVB_VERSION(3, 0);
-#if defined DTV_API_VERSION
-			struct dtv_property p;
-			struct dtv_properties cmdseq;
-			cmdseq.props = &p;
-			cmdseq.num = 1;
-			p.cmd = DTV_API_VERSION;
-			if (ioctl(m_fd, FE_GET_PROPERTY, &cmdseq) >= 0)
-			{
-				m_dvbversion = p.u.data;
-				eDebug("[eDVBFrontend] frontend %d has DVB API %02x ", m_dvbid, m_dvbversion);
-			}
-#endif
-		}
-		if (m_delsys.empty())
-		{
-			if (::ioctl(m_fd, FE_GET_INFO, &fe_info) < 0)
-			{
-				eWarning("[eDVBFrontend] ioctl FE_GET_INFO failed");
-				::close(m_fd);
-				m_fd = -1;
-				return -1;
-			}
-			strncpy(m_description, fe_info.name, sizeof(m_description));
-#if defined DTV_ENUM_DELSYS
-			struct dtv_property p[1];
-			p[0].cmd = DTV_ENUM_DELSYS;
-			struct dtv_properties cmdseq;
-			cmdseq.num = 1;
-			cmdseq.props = p;
-			if (::ioctl(m_fd, FE_GET_PROPERTY, &cmdseq) >= 0)
-			{
-				m_delsys.clear();
-				for (; p[0].u.buffer.len > 0; p[0].u.buffer.len--)
-				{
-					fe_delivery_system_t delsys = (fe_delivery_system_t)p[0].u.buffer.data[p[0].u.buffer.len - 1];
-					m_delsys[delsys] = true;
-				}
-			}
-			else
 #else
-			/* no DTV_ENUM_DELSYS support */
-			if (1)
+		/* no DTV_ENUM_DELSYS support */
+		if (1)
 #endif
+		{
+			/* old DVB API, fill delsys map with some defaults */
+			switch (fe_info.type)
 			{
-				/* old DVB API, fill delsys map with some defaults */
-				switch (fe_info.type)
+				case FE_QPSK:
 				{
-					case FE_QPSK:
-					{
-						m_delsys[SYS_DVBS] = true;
+					m_delsys[SYS_DVBS] = true;
 #if DVB_API_VERSION >= 5
-						if (m_dvbversion >= DVB_VERSION(5, 0))
-						{
-							if (fe_info.caps & FE_CAN_2G_MODULATION) m_delsys[SYS_DVBS2] = true;
-						}
-#endif
-						break;
-					}
-					case FE_QAM:
+					if (m_dvbversion >= DVB_VERSION(5, 0))
 					{
+						if (fe_info.caps & FE_CAN_2G_MODULATION) m_delsys[SYS_DVBS2] = true;
+					}
+#endif
+					break;
+				}
+				case FE_QAM:
+				{
 #if DVB_API_VERSION > 5 || DVB_API_VERSION == 5 && DVB_API_VERSION_MINOR >= 6
-						/* no need for a m_dvbversion check, SYS_DVBC_ANNEX_A replaced SYS_DVBC_ANNEX_AC (same value) */
-						m_delsys[SYS_DVBC_ANNEX_A] = true;
+					/* no need for a m_dvbversion check, SYS_DVBC_ANNEX_A replaced SYS_DVBC_ANNEX_AC (same value) */
+					m_delsys[SYS_DVBC_ANNEX_A] = true;
 #else
-						m_delsys[SYS_DVBC_ANNEX_AC] = true;
+					m_delsys[SYS_DVBC_ANNEX_AC] = true;
 #endif
-						break;
-					}
-					case FE_OFDM:
-					{
-						m_delsys[SYS_DVBT] = true;
+					break;
+				}
+				case FE_OFDM:
+				{
+					m_delsys[SYS_DVBT] = true;
 #if DVB_API_VERSION > 5 || DVB_API_VERSION == 5 && DVB_API_VERSION_MINOR >= 3
-						if (m_dvbversion >= DVB_VERSION(5, 3))
-						{
-							if (fe_info.caps & FE_CAN_2G_MODULATION) m_delsys[SYS_DVBT2] = true;
-						}
-#endif
-						break;
-					}
-					case FE_ATSC:
+					if (m_dvbversion >= DVB_VERSION(5, 3))
 					{
-						m_delsys[SYS_ATSC] = true;
-						break;
+						if (fe_info.caps & FE_CAN_2G_MODULATION) m_delsys[SYS_DVBT2] = true;
 					}
+#endif
+					break;
+				}
+				case FE_ATSC:
+				{
+					m_delsys[SYS_ATSC] = true;
+					break;
 				}
 			}
-		}
-
-		if (m_simulate_fe)
-		{
-			m_simulate_fe->m_delsys = m_delsys;
-		}
-		if (!m_simulate)
-		{
-			m_sn = eSocketNotifier::create(eApp, m_fd, eSocketNotifier::Read, false);
-			CONNECT(m_sn->activated, eDVBFrontend::feEvent);
 		}
 	}
+
+	if (m_simulate_fe)
+	{
+		m_simulate_fe->m_delsys = m_delsys;
+	}
+	if (!m_simulate)
+	{
+		m_sn = eSocketNotifier::create(eApp, m_fd, eSocketNotifier::Read, false);
+		CONNECT(m_sn->activated, eDVBFrontend::feEvent);
+	}
+
 
 	m_multitype = m_delsys[SYS_DVBS] && (m_delsys[SYS_DVBT] || m_delsys[SYS_DVBC_ANNEX_A]);
 
