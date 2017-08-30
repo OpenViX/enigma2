@@ -92,11 +92,11 @@ def getLcdPiconName(serviceName):
 			if fields[0] != '1':
 				#fallback to 1 for other reftypes
 				fields[0] = '1'
-				pngname = findPicon('_'.join(fields))
+				pngname = findLcdPicon('_'.join(fields))
 			if not pngname and fields[2] != '1':
 				#fallback to 1 for services with different service types
 				fields[2] = '1'
-				pngname = findPicon('_'.join(fields))
+				pngname = findLcdPicon('_'.join(fields))
 	if not pngname: # picon by channel name
 		name = ServiceReference(serviceName).getServiceName()
 		name = unicodedata.normalize('NFKD', unicode(name, 'utf_8', errors='ignore')).encode('ASCII', 'ignore')
