@@ -255,7 +255,7 @@ void eServiceMP3Record::restartRecordingFromEos()
 	eDebug("[eMP3ServiceRecordMod] restartRecordingFromEos");
 
 	// remove any .metaeit if there
-	if(m_filename.find(".metaeit") > 0)
+	if(m_filename.find(".metaeit") != std::string::npos)
 	{
 		eDebug("[eMP3ServiceRecordMod] removing .metaeit from current filename=%s", m_filename.c_str());
 		m_filename = m_filename.replace(m_filename.find(".metaeit"),7,"");
