@@ -71,6 +71,7 @@ class HdmiCECSetupScreen(Screen, ConfigListScreen):
 			self.list.append(getConfigListEntry(_("Put your %s %s in standby") % (getMachineBrand(), getMachineName()), config.hdmicec.control_receiver_standby))
 			self.list.append(getConfigListEntry(_("Wakeup your %s %s from standby") % (getMachineBrand(), getMachineName()), config.hdmicec.control_receiver_wakeup))
 			self.list.append(getConfigListEntry(_("Minimum send interval"), config.hdmicec.minimum_send_interval))
+			self.list.append(getConfigListEntry(_("Send 'sourceactive' before zap timers"), config.hdmicec.sourceactive_zaptimers))
 		self["config"].list = self.list
 		self["config"].l.setList(self.list)
 

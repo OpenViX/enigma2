@@ -91,7 +91,9 @@ class TimerEntry(Screen, ConfigListScreen):
 	def createConfig(self):
 		justplay = self.timer.justplay
 		always_zap = self.timer.always_zap
+		pipzap = self.timer.pipzap
 		rename_repeat = self.timer.rename_repeat
+		conflict_detection = self.timer.conflict_detection
 
 		afterevent = {
 			AFTEREVENT.NONE: "nothing",
@@ -167,6 +169,9 @@ class TimerEntry(Screen, ConfigListScreen):
 		self.timerentry_repeated = ConfigSelection(default = repeated, choices = [("weekly", _("weekly")), ("daily", _("daily")), ("weekdays", _("Mon-Fri")), ("user", _("user defined"))])
 		self.timerentry_renamerepeat = ConfigYesNo(default = rename_repeat)
 
+		self.timerentry_pipzap = ConfigYesNo(default = pipzap)
+		self.timerentry_conflictdetection = ConfigYesNo(default = conflict_detection)
+
 		self.timerentry_date = ConfigDateTime(default = self.timer.begin, formatstring = config.usage.date.full.value, increment = 86400)
 		self.timerentry_starttime = ConfigClock(default = self.timer.begin)
 		self.timerentry_endtime = ConfigClock(default = self.timer.end)
@@ -239,11 +244,16 @@ class TimerEntry(Screen, ConfigListScreen):
 		self.list.append(self.entryStartTime)
 
 		self.entryShowEndTime = getConfigListEntry(_("Set end time"), self.timerentry_showendtime, _("Set the time the timer must stop."))
-		# if self.timerentry_justplay.value == "zap":
+		if self.timerentry_justplay.value == "zap":
+			if SystemInfo["PIPAvailable"]:
+				self.list.append(getConfigListEntry(_("Use as PiP if possible"), self.timerentry_pipzap))
 		# 	self.list.append(self.entryShowEndTime)
 		self.entryEndTime = getConfigListEntry(_("End time"), self.timerentry_endtime, _("Set the time the timer must stop."))
 		if self.timerentry_justplay.value != "zap" or self.timerentry_showendtime.value:
 			self.list.append(self.entryEndTime)
+
+		self.conflictDetectionEntry = getConfigListEntry(_("Enable timer conflict detection"), self.timerentry_conflictdetection)
+		self.list.append(self.conflictDetectionEntry)
 
 		self.channelEntry = getConfigListEntry(_("Channel"), self.timerentry_service, _("Set the channel for this timer."))
 		self.list.append(self.channelEntry)
@@ -427,7 +437,9 @@ class TimerEntry(Screen, ConfigListScreen):
 		self.timer.description = self.timerentry_description.value
 		self.timer.justplay = self.timerentry_justplay.value == "zap"
 		self.timer.always_zap = self.timerentry_justplay.value == "zap+record"
+		self.timer.pipzap = self.timerentry_pipzap.value
 		self.timer.rename_repeat = self.timerentry_renamerepeat.value
+		self.timer.conflict_detection = self.timerentry_conflictdetection.value
 		if self.timerentry_justplay.value == "zap":
 			if not self.timerentry_showendtime.value:
 				self.timerentry_endtime.value = self.timerentry_starttime.value

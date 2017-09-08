@@ -130,12 +130,10 @@ class ClientModeScreen(ConfigListScreen, Screen):
 			config.clientmode.nim_cache.value = json.dumps(nim_config_list)
 			config.clientmode.remote_fallback_enabled_cache.value = config.usage.remote_fallback_enabled.value
 			config.clientmode.remote_fallback_cache.value = config.usage.remote_fallback.value
-			config.clientmode.timer_sanity_check_enabled_cache.value = config.usage.timer_sanity_check_enabled.value
 			# normal mode config values saved
 		if config.clientmode.enabled.value:
 			config.usage.remote_fallback_enabled.value = True
 			config.usage.remote_fallback.value = "http://%s:%d" % (self.getRemoteAddress(), config.clientmode.serverStreamingPort.value)
-			config.usage.timer_sanity_check_enabled.value = False
 		elif self.initial_state != config.clientmode.enabled.value: # switching back to normal mode
 			# load nim config from config.clientmode.nimcache
 			import json
@@ -151,11 +149,9 @@ class ClientModeScreen(ConfigListScreen, Screen):
 			# reinstate normal mode values
 			config.usage.remote_fallback_enabled.value = config.clientmode.remote_fallback_enabled_cache.value
 			config.usage.remote_fallback.value = config.clientmode.remote_fallback_cache.value
-			config.usage.timer_sanity_check_enabled.value = config.clientmode.timer_sanity_check_enabled_cache.value
 			# reset some client mode settings
 			config.clientmode.remote_fallback_enabled_cache.value = False
 			config.clientmode.remote_fallback_cache.value = ""
-			config.clientmode.timer_sanity_check_enabled_cache.value = True
 		config.usage.save()
 		config.clientmode.save()
 		configfile.save()
