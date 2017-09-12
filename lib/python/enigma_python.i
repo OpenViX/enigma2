@@ -450,5 +450,7 @@ extern void setAnimation_current(int a);
 extern void setAnimation_speed(int speed);
 #endif
 
+extern PyObject *getPeerStreamingBoxes();
+
 %include <lib/python/python_console.i>
 %include <lib/python/python_base.i>
