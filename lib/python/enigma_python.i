@@ -254,6 +254,10 @@ typedef long time_t;
 %include <lib/python/pythonconfig.h>
 %include <lib/gdi/picload.h>
 %include <lib/dvb/streamserver.h>
+
+/**************  avahi getPeerStreamingBoxes  **************/
+%include <lib/service/servicepeer.h>
+
 /**************  eptr  **************/
 
 /**************  signals  **************/
