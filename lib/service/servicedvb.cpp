@@ -1130,7 +1130,8 @@ void eDVBServicePlay::updateEpgCacheNowNext()
 	ePtr<eServiceEvent> next = 0;
 	ePtr<eServiceEvent> ptr = 0;
 	eServiceReferenceDVB &ref = (eServiceReferenceDVB&) m_reference;
-	if (eEPGCache::getInstance() && eEPGCache::getInstance()->lookupEventTime(ref, -1, ptr) >= 0)
+	eEPGCache *epgCache = eEPGCache::getInstance();
+	if (epgCache && epgCache->lookupEventTime(ref, -1, ptr) >= 0)
 	{
 		ePtr<eServiceEvent> current = 0;
 		m_event_handler.getEvent(current, 0);
@@ -1159,7 +1160,26 @@ void eDVBServicePlay::updateEpgCacheNowNext()
 		if (refreshtime <= 0 || refreshtime > 60) refreshtime = 60;
 	}
 	m_nownext_timer->startLongTimer(refreshtime);
-	if (update) m_event((iPlayableService*)this, evUpdatedEventInfo);
+	if (update)
+	{
+		if(m_epgupdate_conn.connected())
+			m_epgupdate_conn.disconnect();
+
+		m_event((iPlayableService*)this, evUpdatedEventInfo);
+	}
+	else if(epgCache && !m_epgupdate_conn.connected())
+	{
+		m_epgupdate_conn =
+			CONNECT(epgCache->cacheUpdated, eDVBServicePlay::epgUpdated);
+
+	}
+}
+
+void eDVBServicePlay::epgUpdated()
+{
+	// emitting m_event() chashes if done from eEPGCache's thread
+	// so call it from the now/next timer
+	m_nownext_timer->startLongTimer(0);
 }
 
 void eDVBServicePlay::serviceEvent(int event)

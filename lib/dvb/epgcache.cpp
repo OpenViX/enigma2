@@ -1412,6 +1412,7 @@ void eEPGCache::load()
 			if (renameResult) eDebug("[eEPGCache] failed to rename epg.dat back");
 		}
 	}
+	/* emit */ cacheUpdated();
 }
 
 void eEPGCache::save()
@@ -2247,7 +2248,11 @@ void eEPGCache::channel_data::readData( const uint8_t *data, int source)
 			reader->stop();
 		isRunning &= ~source;
 		if (!isRunning)
+		{
 			finishEPG();
+			if ( map != 0 ) /* not now/next */
+				/* emit */ cache->cacheUpdated();
+		}
 	}
 	else
 	{
@@ -3293,6 +3298,8 @@ void eEPGCache::importEvents(ePyObject serviceReferences, ePyObject list)
 		submitEventData(refs, start, duration, title, short_summary, long_description, event_type);
 		Py_END_ALLOW_THREADS;
 	}
+	if (numberOfEvents > 0)
+		/* emit */ cacheUpdated();
 }
 
 
