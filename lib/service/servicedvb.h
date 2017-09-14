@@ -200,6 +200,8 @@ protected:
 	friend class eServiceFactoryDVB;
 	eServiceReference m_reference;
 
+	sigc::connection m_epgupdate_conn;
+
 	ePtr<eDVBService> m_dvb_service;
 
 	ePtr<iTSMPEGDecoder> m_decoder;
@@ -301,6 +303,7 @@ protected:
 
 	ePtr<eTimer> m_nownext_timer;
 	void updateEpgCacheNowNext();
+	void epgUpdated();
 
 		/* radiotext */
 	ePtr<eDVBRdsDecoder> m_rds_decoder;
