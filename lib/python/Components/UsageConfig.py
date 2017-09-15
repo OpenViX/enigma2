@@ -222,8 +222,6 @@ def InitUsageConfig():
 	config.usage.remote_fallback = ConfigText(default = "", fixed_size = False);
 	config.usage.remote_fallback.addNotifier(remote_fallback_changed, immediate_feedback=False);
 
-	config.usage.timer_sanity_check_enabled = ConfigYesNo(default = True);
-
 	dvbs_nims = [("-2", _("Disabled"))]
 	dvbt_nims = [("-2", _("Disabled"))]
 	dvbc_nims = [("-2", _("Disabled"))]
@@ -1134,6 +1132,10 @@ def InitUsageConfig():
 	config.pluginbrowser = ConfigSubsection()
 	config.pluginbrowser.po = ConfigYesNo(default = False)
 	config.pluginbrowser.src = ConfigYesNo(default = False)
+	
+	config.mediaplayer = ConfigSubsection()
+	config.mediaplayer.useAlternateUserAgent = ConfigYesNo(default=False)
+	config.mediaplayer.alternateUserAgent = ConfigText(default="")
 
 def updateChoices(sel, choices):
 	if choices:
