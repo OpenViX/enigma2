@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-08-09 18:09+0100\n"
-"PO-Revision-Date: 2017-09-02 11:16+0200\n"
+"POT-Creation-Date: 2017-09-09 18:07+0100\n"
+"PO-Revision-Date: 2017-09-11 12:24+0200\n"
 "Last-Translator: Ralf Biedermann <ralf.biedermann@rbsoft.de>\n"
 "Language-Team: AndyBlacburn, j-ot&Trial\n"
 "Language: de\n"
@@ -118,6 +118,14 @@ msgstr ""
 "\n"
 "Wähle das Sicherungs-Verzeichnis.\n"
 "Aktuelles Verzeichnis: "
+
+#, python-format
+msgid ""
+"\n"
+"Timer '%s' disabled!"
+msgstr ""
+"\n"
+"Timer '%s' deaktiviert!"
 
 msgid ""
 "\n"
@@ -933,6 +941,9 @@ msgstr "( Alle Kartenleser )"
 
 msgid "(Show only reader:"
 msgstr "( Zeige nur Kartenleser:"
+
+msgid "(ZAP as PiP)"
+msgstr "(Mit PiP umschalten)"
 
 msgid "(ZAP)"
 msgstr "(ZAP)"
@@ -4259,6 +4270,9 @@ msgstr "Videotext Cache aktivieren"
 
 msgid "Enable the use of the tuners of a remote enigma2 receiver when no local tuner is available (e.g. when the tuner is occupied or service type is unavailable on the local tuner)."
 msgstr "Aktiviere die Benutzung eines anderen Enigma2 Receivers im Netzwerk wenn kein lokaler Tuner mehr verfügbar ist, z.B. wenn alle Tuner durch Aufnahmen/Streams belegt sind oder es für die Empfangsart (Kabel/Sat) keinen lokalen Tuner gibt."
+
+msgid "Enable timer conflict detection"
+msgstr "Aktiviere Konfliktprüfung bei Timern"
 
 msgid "Enable to display all true/false, yes/no, on/off and enable/disable set up options as a graphical switch."
 msgstr "Alle richtig/falsch, ja/nein, an/aus, aktivieren/deaktivieren Einstellungen als Schalter darstellen."
@@ -8942,6 +8956,9 @@ msgstr "Wähle Satelliten 2 (USALS)"
 msgid "Send"
 msgstr "Senden"
 
+msgid "Send 'sourceactive' before zap timers"
+msgstr "Sende 'Quelle aktiv' vor Timer Umschaltung"
+
 msgid "Send Confirmation"
 msgstr "Sendebestätigung"
 
@@ -10918,9 +10935,6 @@ msgstr "Timer"
 msgid "Timer List"
 msgstr "Timerliste"
 
-msgid "Timer conflict detection when fallback is enabled"
-msgstr "Timerkonfliktermittelung wenn Notfallreceiver ist aktiviert"
-
 msgid "Timer entry"
 msgstr "Timer-Eintrag"
 
@@ -11412,6 +11426,9 @@ msgstr "Einen Gateway verwenden?"
 msgid "Use adaptive date display"
 msgstr "Benutze angepasste Zeitanzeige"
 
+msgid "Use as PiP if possible"
+msgstr "Mit PiP benutzen wenn möglich"
+
 msgid "Use circular LNB"
 msgstr "Benutze zirkuläres LNB"
 
@@ -11552,6 +11569,9 @@ msgstr "Benutze Tuner %s"
 
 msgid "Usually when the subtitle language is the same as the audio language, the subtitles will not be used. Enable this option to allow these subtitles to be used."
 msgstr "Wenn Untertitel und die Tonspur die selbe Sprache benutzen werden Untertitel normalerweise unterdrückt. Diese Option erlaubt es Untertitel trotzdem anzuzeigen."
+
+msgid "Utilities"
+msgstr "Dienstprogramme"
 
 msgid "Uzbekistan"
 msgstr "Uzbekistan"
@@ -12066,9 +12086,6 @@ msgstr "Wenn der Bildinhalt ein Aspect/Ratio von 4:3 hat wähle ob das Bild skal
 msgid "When tuned to a service the system will normally scan the transponder for any changes and save them. Only set to 'yes' if you're absolutely sure of what you're doing."
 msgstr "Wenn ein Sender eingestellt ist durchsucht die Box den Transponder nach Änderungen und speichert sie. Nur 'Nein' einstellen wenn Du weißt was Du tust."
 
-msgid "When using the remote fallback tuner for recordings, it is impossible to correctly detect timer conflicts. This option allows you to skip timer confict detection when remote fallback is enabled, but can lead to timer conflicts. This setting is only for advanced users; the default is 'yes'."
-msgstr "Wenn Ausweichreceiver für Aufnahmen benutzt werden arbeitet die Konflikterkennung von Timer nicht richtig. Mit dieser Option kann die Konflikterkennung abgeschaltet werden. Diese Option ist nur für erfahrene Anwender. Standard ist 'JA'"
-
 #, python-format
 msgid ""
 "When you perform a factory reset, you will lose ALL of your configuration data\n"
@@ -12557,6 +12574,14 @@ msgstr "Zap zu Sender und verlasse"
 
 msgid "Zap up"
 msgstr "Nächster Sender"
+
+#, python-format
+msgid "Zapped to timer service %s as PiP!"
+msgstr "Auf Timer-Sender umgeschaltet %s mit PiP!"
+
+#, python-format
+msgid "Zapped to timer service %s!"
+msgstr "Auf Timer-Sender umgeschaltet %s!"
 
 msgid "Zimbabwe"
 msgstr "Zimbabwe"
@@ -14142,9 +14167,6 @@ msgstr "umgeschaltet"
 #~ msgid "Enable remote enigma2 receiver to be tried to tune into services that cannot be tuned into locally (e.g. tuner is occupied or service type is unavailable on the local tuner. Specify complete URL including http:// and port number (normally ...:8001), e.g. http://second_box:8001."
 #~ msgstr "Reserve-Enigma2-Receiver aktivieren der versucht wird wenn ein Sender lokal nicht empfangen werden kann. (z.B. wenn Tuner belegt oder Sender lokal nicht verfügbar ist). Gebe komplette URL inklusive http:// und Portnummer (normal ...:8001), e.g. http://zweite_box:8001."
 
-#~ msgid "Enable timer conflict detection"
-#~ msgstr "Aktiviere Konfliktprüfung bei Timern"
-
 #~ msgid "Enable unlinked bouquets"
 #~ msgstr "Aktiviere nicht verbundene Favoritenlisten"
 
@@ -14495,6 +14517,9 @@ msgstr "umgeschaltet"
 #~ msgid "Time settings"
 #~ msgstr "Zeit Einstellungen"
 
+#~ msgid "Timer conflict detection when fallback is enabled"
+#~ msgstr "Timerkonfliktermittelung wenn Notfallreceiver ist aktiviert"
+
 #~ msgid "Timer log"
 #~ msgstr "Timer-Logbuch"
 
@@ -14559,6 +14584,9 @@ msgstr "umgeschaltet"
 
 #~ msgid "When enabled, graphical DVB subtitles will be centered horizontally."
 #~ msgstr "Wenn aktiviert werden grafische DVB Untertitel horizontal zentriert."
+
+#~ msgid "When using the remote fallback tuner for recordings, it is impossible to correctly detect timer conflicts. This option allows you to skip timer confict detection when remote fallback is enabled, but can lead to timer conflicts. This setting is only for advanced users; the default is 'yes'."
+#~ msgstr "Wenn Ausweichreceiver für Aufnahmen benutzt werden arbeitet die Konflikterkennung von Timer nicht richtig. Mit dieser Option kann die Konflikterkennung abgeschaltet werden. Diese Option ist nur für erfahrene Anwender. Standard ist 'JA'"
 
 #~ msgid "You can disable Telnet Server and use ssh to login."
 #~ msgstr "Du kannst Telnet deaktivieren und SSH benutzen."
