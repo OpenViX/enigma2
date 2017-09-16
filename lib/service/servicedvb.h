@@ -195,6 +195,7 @@ public:
 		// iStreamableService
 	RESULT stream(ePtr<iStreamableService> &ptr);
 	ePtr<iStreamData> getStreamingData();
+	void setQpipMode(bool value, bool audio);
 
 protected:
 	friend class eServiceFactoryDVB;
@@ -213,6 +214,8 @@ protected:
 	eDVBServiceEITHandler m_event_handler;
 	int m_current_audio_pid;
 	int m_current_video_pid_type;
+
+	bool m_qpip_mode;
 
 	eDVBServicePlay(const eServiceReference &ref, eDVBService *service);
 
