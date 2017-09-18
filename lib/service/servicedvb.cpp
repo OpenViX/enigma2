@@ -2188,7 +2188,7 @@ int eDVBServicePlay::selectAudioStream(int i)
 
 	m_current_audio_pid = apid;
 
-	if ((!m_qpip_mode || !m_noaudio) && m_decoder->setAudioPID(apid, apidtype))
+	if (!m_noaudio && m_decoder->setAudioPID(apid, apidtype))
 	{
 		eDebug("[eDVBServicePlay] set audio pid %04x failed", apid);
 		return -4;
@@ -2947,7 +2947,7 @@ void eDVBServicePlay::updateDecoder(bool sendSeekableStateChanged)
 		m_current_video_pid_type = vpidtype;
 		m_have_video_pid = (vpid > 0 && vpid < 0x2000);
 
-		if (!m_noaudio && !m_qpip_mode)
+		if (!m_noaudio)
 		{
 			selectAudioStream();
 			if (!(m_is_pvr || m_is_stream || m_timeshift_active))
