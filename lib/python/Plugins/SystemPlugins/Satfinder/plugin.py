@@ -15,6 +15,7 @@ from Components.config import config, ConfigSelection, getConfigListEntry
 from Components.TuneTest import Tuner
 from Components.ScrollLabel import ScrollLabel
 from Components.Sources.StaticText import StaticText
+from Components.Button import Button
 from Tools.Transponder import getChannelNumber, channel2frequency
 from Tools.BoundFunction import boundFunction
 
@@ -43,6 +44,11 @@ class Satfinder(ScanSetup, ServiceScan):
 		self.setTitle(_("Signal Finder"))
 		self["introduction"].setText(_("Press OK to scan"))
 		self["Frontend"] = FrontendStatus(frontend_source = lambda : self.frontend, update_interval = 100)
+
+		self["key_red"] = Button("Close")
+		self["key_green"] = Button(_("Scan"))
+		self["key_yellow"] = Button("Info")
+
 		self["actions"] = ActionMap(["SetupActions", "ColorActions"],
 		{
 			"save": self.keyGoScan,
