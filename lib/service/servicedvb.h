@@ -215,8 +215,6 @@ protected:
 	int m_current_audio_pid;
 	int m_current_video_pid_type;
 
-	bool m_qpip_mode;
-
 	eDVBServicePlay(const eServiceReference &ref, eDVBService *service);
 
 		/* events */
