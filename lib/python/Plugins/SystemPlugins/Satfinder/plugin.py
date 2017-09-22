@@ -2,6 +2,7 @@ from enigma import eDVBResourceManager,\
 	eDVBFrontendParametersSatellite, eDVBFrontendParametersTerrestrial, \
 	eDVBFrontendParametersATSC
 
+from Screens.Screen import Screen
 from Screens.ScanSetup import ScanSetup, buildTerTransponder
 from Screens.ServiceScan import ServiceScan
 from Screens.MessageBox import MessageBox
@@ -12,8 +13,14 @@ from Components.ActionMap import ActionMap
 from Components.NimManager import nimmanager, getConfigSatlist
 from Components.config import config, ConfigSelection, getConfigListEntry
 from Components.TuneTest import Tuner
+from Components.ScrollLabel import ScrollLabel
+from Components.Sources.StaticText import StaticText
+from Components.Button import Button
 from Tools.Transponder import getChannelNumber, channel2frequency
 from Tools.BoundFunction import boundFunction
+
+import time
+import datetime
 
 class Satfinder(ScanSetup, ServiceScan):
 	def __init__(self, session):
@@ -38,11 +45,16 @@ class Satfinder(ScanSetup, ServiceScan):
 		self["introduction"].setText(_("Press OK to scan"))
 		self["Frontend"] = FrontendStatus(frontend_source = lambda : self.frontend, update_interval = 100)
 
+		self["key_red"] = Button("Close")
+		self["key_green"] = Button(_("Scan"))
+		self["key_yellow"] = Button("Info")
+
 		self["actions"] = ActionMap(["SetupActions", "ColorActions"],
 		{
 			"save": self.keyGoScan,
 			"ok": self.keyGoScan,
 			"cancel": self.keyCancel,
+			"yellow": self.keyReadServices,
 		}, -3)
 
 		self.initcomplete = True
@@ -58,11 +70,13 @@ class Satfinder(ScanSetup, ServiceScan):
 			if self.raw_channel:
 				self.frontend = self.raw_channel.getFrontend()
 				if self.frontend:
+					self.demux = self.raw_channel.reserveDemux() # used for keyReadServices()
 					return True
 		return False
 
 	def prepareFrontend(self):
 		self.frontend = None
+		self.demux = -1 # used for keyReadServices()
 		if not self.openFrontend():
 			self.session.nav.stopService()
 			if not self.openFrontend():
@@ -487,11 +501,130 @@ class Satfinder(ScanSetup, ServiceScan):
 			del self.raw_channel
 		self.close(False)
 
+	def keyReadServices(self):
+		try:
+			from Plugins.SystemPlugins.AutoBouquetsMaker.scanner import dvbreader
+		except:
+			print "[Satfinder][keyReadServices] import dvbreader not available"
+			return
+
+		if self.demux < 0:
+			print "[Satfinder][keyReadServices] Demux not allocated"
+			return
+
+		adapter = 0
+		demuxer_device = "/dev/dvb/adapter%d/demux%d" % (adapter, self.demux)
+
+		sdt_current_pid = 0x11
+		sdt_current_table_id = 0x42
+		sdt_other_table_id = 0x00 # don't read other table
+		if sdt_other_table_id == 0x00:
+			mask = 0xff
+		else:
+			mask = sdt_current_table_id ^ sdt_other_table_id ^ 0xff
+		sdt_current_timeout = 10 # time allowed to get table data
+
+		sdt_current_version_number = -1
+		sdt_current_sections_read = []
+		sdt_current_sections_count = 0
+		sdt_current_content = []
+		sdt_current_completed = False
+
+		fd = dvbreader.open(demuxer_device, sdt_current_pid, sdt_current_table_id, mask, self.feid)
+		if fd < 0:
+			print "[Satfinder][keyReadServices] Cannot open the demuxer"
+			return
+
+		timeout = datetime.datetime.now()
+		timeout += datetime.timedelta(0, sdt_current_timeout)
+
+		while True:
+			if datetime.datetime.now() > timeout:
+				print "[Satfinder] Timed out reading SDT"
+				break
+
+			section = dvbreader.read_sdt(fd, sdt_current_table_id, sdt_other_table_id)
+			if section is None:
+				time.sleep(0.1)	# no data.. so we wait a bit
+				continue
+
+			if section["header"]["table_id"] == sdt_current_table_id and not sdt_current_completed:
+				if section["header"]["version_number"] != sdt_current_version_number:
+					sdt_current_version_number = section["header"]["version_number"]
+					sdt_current_sections_read = []
+					sdt_current_sections_count = section["header"]["last_section_number"] + 1
+					sdt_current_content = []
+					print "test1"
+
+				if section["header"]["section_number"] not in sdt_current_sections_read:
+					sdt_current_sections_read.append(section["header"]["section_number"])
+					sdt_current_content += section["content"]
+					print "test2"
+
+					if len(sdt_current_sections_read) == sdt_current_sections_count:
+						sdt_current_completed = True
+						print "test3"
+						print "sdt_current_content", sdt_current_content
+
+			if sdt_current_completed:
+				print "test4"
+				break
+
+		dvbreader.close(fd)
+
+		if not sdt_current_content:
+			print "[Satfinder][keyReadServices] no services found on transponder"
+			return
+
+		for i in range(len(sdt_current_content)):
+			if not sdt_current_content[i]["service_name"]: # if service name is empty use SID
+				sdt_current_content[i]["service_name"] = "0x%x" % sdt_current_content[i]["service_id"]
+
+		sdt_current_content = sorted(sdt_current_content, key=lambda listItem: listItem["service_name"])
+
+		out = []
+		out.append("TSID: %d, ONID %d \n\n%s:" % (sdt_current_content[0]["transport_stream_id"], sdt_current_content[0]["original_network_id"], _("Channels")))
+		for service in sdt_current_content:
+			out.append("- %s" % service["service_name"])
+
+		self.session.open(ServicesFound, "\n".join(out))
+
 	def doCloseRecursive(self):
 		if self.session.postScanService and self.frontend:
 			self.frontend = None
 			del self.raw_channel
 		self.close(True)
+
+class ServicesFound(Screen):
+	skin = """
+		<screen name="ServicesFound" position="center,center" size="600,500">
+			<widget name="servicesfound" position="0,0" size="600,440" zPosition="10" font="Regular;21" transparent="1" halign="left" valign="top"/>
+			<ePixmap pixmap="skin_default/buttons/red.png" position="10,460" size="140,40" alphatest="on" />
+			<widget render="Label" source="key_red" position="10,460" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" />
+		</screen>"""
+
+	def __init__(self, session, text):
+		Screen.__init__(self, session)
+		self.setTitle(_("Information"))
+
+		self["key_red"] = StaticText(_("Close"))
+		self["servicesfound"] = ScrollLabel(text)
+
+		self["actions"] = ActionMap(["WizardActions", "ColorActions"],
+		{
+			"back": self.close,
+			"red": self.close,
+			"up": self.pageUp,
+			"down":	self.pageDown,
+			"left":	self.pageUp,
+			"right": self.pageDown,
+		}, -2)
+
+	def pageUp(self):
+		self["servicesfound"].pageUp()
+
+	def pageDown(self):
+		self["servicesfound"].pageDown()
 
 def SatfinderCallback(close, answer):
 	if close and answer:
