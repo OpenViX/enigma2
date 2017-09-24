@@ -22,6 +22,13 @@ from Tools.BoundFunction import boundFunction
 import time
 import datetime
 
+try:
+	from Plugins.SystemPlugins.AutoBouquetsMaker.scanner import dvbreader
+	dvbreader_available = True
+except ImportError:
+	print "[Satfinder][keyReadServices] import dvbreader not available"
+	dvbreader_available = False
+
 class Satfinder(ScanSetup, ServiceScan):
 	def __init__(self, session):
 		self.initcomplete = False
@@ -70,13 +77,15 @@ class Satfinder(ScanSetup, ServiceScan):
 			if self.raw_channel:
 				self.frontend = self.raw_channel.getFrontend()
 				if self.frontend:
-					self.demux = self.raw_channel.reserveDemux() # used for keyReadServices()
+					if dvbreader_available:
+						self.demux = self.raw_channel.reserveDemux() # used for keyReadServices()
 					return True
 		return False
 
 	def prepareFrontend(self):
 		self.frontend = None
-		self.demux = -1 # used for keyReadServices()
+		if dvbreader_available:
+			self.demux = -1 # used for keyReadServices()
 		if not self.openFrontend():
 			self.session.nav.stopService()
 			if not self.openFrontend():
@@ -500,10 +509,7 @@ class Satfinder(ScanSetup, ServiceScan):
 		self.close(False)
 
 	def keyReadServices(self):
-		try:
-			from Plugins.SystemPlugins.AutoBouquetsMaker.scanner import dvbreader
-		except:
-			print "[Satfinder][keyReadServices] import dvbreader not available"
+		if not dvbreader_available:
 			return
 
 		if self.demux < 0:
@@ -552,20 +558,15 @@ class Satfinder(ScanSetup, ServiceScan):
 					sdt_current_sections_read = []
 					sdt_current_sections_count = section["header"]["last_section_number"] + 1
 					sdt_current_content = []
-					print "test1"
 
 				if section["header"]["section_number"] not in sdt_current_sections_read:
 					sdt_current_sections_read.append(section["header"]["section_number"])
 					sdt_current_content += section["content"]
-					print "test2"
 
 					if len(sdt_current_sections_read) == sdt_current_sections_count:
 						sdt_current_completed = True
-						print "test3"
-						print "sdt_current_content", sdt_current_content
 
 			if sdt_current_completed:
-				print "test4"
 				break
 
 		dvbreader.close(fd)
