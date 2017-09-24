@@ -26,7 +26,7 @@ try:
 	from Plugins.SystemPlugins.AutoBouquetsMaker.scanner import dvbreader
 	dvbreader_available = True
 except ImportError:
-	print "[Satfinder][keyReadServices] import dvbreader not available"
+	print "[Satfinder] import dvbreader not available"
 	dvbreader_available = False
 
 class Satfinder(ScanSetup, ServiceScan):
