@@ -7,6 +7,7 @@ from enigma import eDBoxLCD, eTimer, eActionMap
 from config import config, ConfigSubsection, ConfigSelection, ConfigSlider, ConfigYesNo, ConfigNothing
 from Components.SystemInfo import SystemInfo
 from Tools.Directories import fileExists
+from Screens.InfoBar import InfoBar
 from Screens.Screen import Screen
 import Screens.Standby
 import usb
@@ -469,9 +470,11 @@ def setLCDLiveTv(value):
 	else:
 		open(SystemInfo["LcdLiveTV"], "w").write(value and "0" or "1")
 	if not value:
-		from Screens.InfoBar import InfoBar
-		InfoBarInstance = InfoBar.instance
-		InfoBarInstance and InfoBarInstance.session.open(dummyScreen)
+		try:
+			InfoBarInstance = InfoBar.instance
+			InfoBarInstance and InfoBarInstance.session.open(dummyScreen)
+		except:
+			pass
 
 def leaveStandbyLCDLiveTV():
 	if config.lcd.showTv.value:
