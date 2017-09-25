@@ -527,6 +527,12 @@ class Satfinder(ScanSetup, ServiceScan):
 			del self.raw_channel
 		self.close(False)
 
+	def doCloseRecursive(self):
+		if self.session.postScanService and self.frontend:
+			self.frontend = None
+			del self.raw_channel
+		self.close(True)
+
 	def keyReadServices(self):
 		if not dvbreader_available:
 			return
@@ -606,12 +612,6 @@ class Satfinder(ScanSetup, ServiceScan):
 			out.append("- %s" % service["service_name"])
 
 		self.session.open(ServicesFound, "\n".join(out))
-
-	def doCloseRecursive(self):
-		if self.session.postScanService and self.frontend:
-			self.frontend = None
-			del self.raw_channel
-		self.close(True)
 
 class ServicesFound(Screen):
 	skin = """
