@@ -22,6 +22,13 @@ from Tools.BoundFunction import boundFunction
 import time
 import datetime
 
+try:
+	from Plugins.SystemPlugins.AutoBouquetsMaker.scanner import dvbreader
+	dvbreader_available = True
+except ImportError:
+	print "[Satfinder] import dvbreader not available"
+	dvbreader_available = False
+
 class Satfinder(ScanSetup, ServiceScan):
 	def __init__(self, session):
 		self.initcomplete = False
@@ -39,6 +46,12 @@ class Satfinder(ScanSetup, ServiceScan):
 		self.typeOfInputEntry = None
 		self.DVB_TypeEntry = None
 		self.systemEntryTerr = None
+		self.preDefTransponderEntry = None
+		self.preDefTransponderCableEntry = None
+		self.preDefTransponderTerrEntry = None
+		self.preDefTransponderAtscEntry = None
+		self.frontend = None
+		self.timer = None
 
 		ScanSetup.__init__(self, session)
 		self.setTitle(_("Signal Finder"))
@@ -70,13 +83,15 @@ class Satfinder(ScanSetup, ServiceScan):
 			if self.raw_channel:
 				self.frontend = self.raw_channel.getFrontend()
 				if self.frontend:
-					self.demux = self.raw_channel.reserveDemux() # used for keyReadServices()
+					if dvbreader_available:
+						self.demux = self.raw_channel.reserveDemux() # used for keyReadServices()
 					return True
 		return False
 
 	def prepareFrontend(self):
 		self.frontend = None
-		self.demux = -1 # used for keyReadServices()
+		if dvbreader_available:
+			self.demux = -1 # used for keyReadServices()
 		if not self.openFrontend():
 			self.session.nav.stopService()
 			if not self.openFrontend():
@@ -86,16 +101,26 @@ class Satfinder(ScanSetup, ServiceScan):
 					if not self.openFrontend():
 						self.frontend = None # in normal case this should not happen
 		self.tuner = Tuner(self.frontend)
-		self.retune(None)
+		self.retune()
 
 	def __onClose(self):
 		self.session.nav.playService(self.session.postScanService)
 
 	def newConfig(self):
 		cur = self["config"].getCurrent()
-		if cur in (self.typeOfTuningEntry, self.systemEntry, self.typeOfInputEntry, self.systemEntryATSC, self.DVB_TypeEntry, self.systemEntryTerr):
+		if cur in (
+					self.typeOfTuningEntry,
+					self.systemEntry, 
+					self.typeOfInputEntry, 
+					self.systemEntryATSC, 
+					self.DVB_TypeEntry, 
+					self.systemEntryTerr, 
+					self.satEntry
+					):  # update screen and retune
 			self.createSetup()
-		elif cur == self.satfinderTunerEntry:
+			self.retune()
+		
+		elif cur == self.satfinderTunerEntry: # switching tuners, update screen, get frontend, and retune (in prepareFrontend())
 			self.feid = int(self.satfinder_scan_nims.value)
 			self.createSetup()
 			self.prepareFrontend()
@@ -104,10 +129,9 @@ class Satfinder(ScanSetup, ServiceScan):
 				if self.session.nav.RecordTimer.isRecording():
 					msg += _("\nRecording in progress.")
 				self.session.open(MessageBox, msg, MessageBox.TYPE_ERROR)
-		elif cur == self.satEntry:
-			self.createSetup()
-		else:
-			self.retune(None)
+		
+		elif cur in (self.preDefTransponderEntry, self.preDefTransponderCableEntry, self.preDefTransponderTerrEntry, self.preDefTransponderAtscEntry): # retune only
+			self.retune()
 
 	def createSetup(self):
 		self.list = []
@@ -154,7 +178,8 @@ class Satfinder(ScanSetup, ServiceScan):
 						self.list.append(getConfigListEntry(_('PLS Code'), self.scan_sat.pls_code))
 			elif self.tuning_type.value == "predefined_transponder":
 				self.updatePreDefTransponders()
-				self.list.append(getConfigListEntry(_("Transponder"), self.preDefTransponders))
+				self.preDefTransponderEntry = getConfigListEntry(_("Transponder"), self.preDefTransponders)
+				self.list.append(self.preDefTransponderEntry)
 		elif self.DVB_type.value == "DVB-C":
 			self.typeOfTuningEntry = getConfigListEntry(_('Tune'), self.tuning_type)
 			if config.Nims[self.feid].cable.scan_type.value != "provider" or len(nimmanager.getTranspondersCable(int(self.satfinder_scan_nims.value))) < 1: # only show 'predefined transponder' if in provider mode and transponders exist
@@ -170,7 +195,8 @@ class Satfinder(ScanSetup, ServiceScan):
 			elif self.tuning_type.value == "predefined_transponder":
 				self.scan_nims.value = self.satfinder_scan_nims.value
 				self.predefinedCabTranspondersList()
-				self.list.append(getConfigListEntry(_('Transponder'), self.CableTransponders))
+				self.preDefTransponderCableEntry = getConfigListEntry(_("Transponder"), self.CableTransponders)
+				self.list.append(self.preDefTransponderCableEntry)
 		elif self.DVB_type.value == "DVB-T":
 			self.typeOfTuningEntry = getConfigListEntry(_('Tune'), self.tuning_type)
 			region = nimmanager.getTerrestrialDescription(int(self.satfinder_scan_nims.value))
@@ -213,7 +239,8 @@ class Satfinder(ScanSetup, ServiceScan):
 			elif self.tuning_type.value == "predefined_transponder":
 				self.scan_nims.value = self.satfinder_scan_nims.value
 				self.predefinedTerrTranspondersList()
-				self.list.append(getConfigListEntry(_('Transponder'), self.TerrestrialTransponders))
+				self.preDefTransponderTerrEntry = getConfigListEntry(_('Transponder'), self.TerrestrialTransponders)
+				self.list.append(self.preDefTransponderTerrEntry)
 		elif self.DVB_type.value == "ATSC":
 			self.typeOfTuningEntry = getConfigListEntry(_('Tune'), self.tuning_type)
 			if len(nimmanager.getTranspondersATSC(int(self.satfinder_scan_nims.value))) < 1: # only show 'predefined transponder' if transponders exist
@@ -230,8 +257,8 @@ class Satfinder(ScanSetup, ServiceScan):
 				#FIXME add region
 				self.scan_nims.value = self.satfinder_scan_nims.value
 				self.predefinedATSCTranspondersList()
-				self.list.append(getConfigListEntry(_('Transponder'), self.ATSCTransponders))
-		self.retune(None)
+				self.preDefTransponderAtscEntry = getConfigListEntry(_('Transponder'), self.ATSCTransponders)
+				self.list.append(self.preDefTransponderAtscEntry)
 		self["config"].list = self.list
 		self["config"].l.setList(self.list)
 
@@ -242,11 +269,13 @@ class Satfinder(ScanSetup, ServiceScan):
 			self.orbital_position = self.frontendData['orbital_position']
 		ScanSetup.createConfig(self, self.frontendData)
 
+		# The following are updated in self.newConfig(). Do not add here. 
+		# self.scan_sat.system, self.tuning_type, self.scan_input_as, self.scan_ats.system, self.DVB_type, self.scan_ter.system, self.satfinder_scan_nims, self.tuning_sat
 		for x in (self.scan_sat.frequency,
 			self.scan_sat.inversion, self.scan_sat.symbolrate,
 			self.scan_sat.polarization, self.scan_sat.fec, self.scan_sat.pilot,
 			self.scan_sat.fec_s2, self.scan_sat.fec, self.scan_sat.modulation,
-			self.scan_sat.rolloff, self.scan_sat.system,
+			self.scan_sat.rolloff, 
 			self.scan_sat.is_id, self.scan_sat.pls_mode, self.scan_sat.pls_code,
 			self.scan_ter.channel, self.scan_ter.frequency, self.scan_ter.inversion,
 			self.scan_ter.bandwidth, self.scan_ter.fechigh, self.scan_ter.feclow,
@@ -254,8 +283,7 @@ class Satfinder(ScanSetup, ServiceScan):
 			self.scan_ter.guard, self.scan_ter.hierarchy, self.scan_ter.plp_id,
 			self.scan_cab.frequency, self.scan_cab.inversion, self.scan_cab.symbolrate,
 			self.scan_cab.modulation, self.scan_cab.fec,
-			self.scan_ats.frequency, self.scan_ats.modulation, self.scan_ats.inversion,
-			self.scan_ats.system):
+			self.scan_ats.frequency, self.scan_ats.modulation, self.scan_ats.inversion):
 			x.addNotifier(self.retune, initial_call = False)
 
 		satfinder_nim_list = []
@@ -311,7 +339,7 @@ class Satfinder(ScanSetup, ServiceScan):
 	def updatePreDefTransponders(self):
 		ScanSetup.predefinedTranspondersList(self, self.tuning_sat.orbital_position)
 
-	def retuneCab(self, configElement):
+	def retuneCab(self):
 		if not self.initcomplete:
 			return
 		if self.tuning_type.value == "single_transponder":
@@ -333,7 +361,7 @@ class Satfinder(ScanSetup, ServiceScan):
 				self.tuner.tuneCab(transponder)
 				self.transponder = transponder
 
-	def retuneTerr(self, configElement):
+	def retuneTerr(self):
 		if not self.initcomplete:
 			return
 		if self.scan_input_as.value == "channel":
@@ -365,7 +393,7 @@ class Satfinder(ScanSetup, ServiceScan):
 				self.tuner.tuneTerr(transponder[1], transponder[9], transponder[2], transponder[4], transponder[5], transponder[3], transponder[7], transponder[6], transponder[8], transponder[10], transponder[11])
 				self.transponder = transponder
 
-	def retuneATSC(self, configElement):
+	def retuneATSC(self):
 		if not self.initcomplete:
 			return
 		if self.tuning_type.value == "single_transponder":
@@ -385,7 +413,7 @@ class Satfinder(ScanSetup, ServiceScan):
 				self.tuner.tuneATSC(transponder)
 				self.transponder = transponder
 
-	def retuneSat(self, configElement): #satellite
+	def retuneSat(self): #satellite
 		if not self.tuning_sat.value:
 			return
 		satpos = int(self.tuning_sat.value)
@@ -421,17 +449,15 @@ class Satfinder(ScanSetup, ServiceScan):
 					self.tuner.tune(transponder)
 				self.transponder = transponder
 
-	def retune(self, configElement):
+	def retune(self, configElement=None):
 		if self.DVB_type.value == "DVB-S":
-			return self.retuneSat(configElement)
-		if self.DVB_type.value == "DVB-T":
-			return self.retuneTerr(configElement)
+			self.retuneSat()
+		elif self.DVB_type.value == "DVB-T":
+			self.retuneTerr()
 		elif self.DVB_type.value == "DVB-C":
-			return self.retuneCab(configElement)
+			self.retuneCab()
 		elif self.DVB_type.value == "ATSC":
-			return self.retuneATSC(configElement)
-		else:
-			return
+			self.retuneATSC()
 
 	def keyGoScan(self):
 		self.frontend = None
@@ -501,11 +527,14 @@ class Satfinder(ScanSetup, ServiceScan):
 			del self.raw_channel
 		self.close(False)
 
+	def doCloseRecursive(self):
+		if self.session.postScanService and self.frontend:
+			self.frontend = None
+			del self.raw_channel
+		self.close(True)
+
 	def keyReadServices(self):
-		try:
-			from Plugins.SystemPlugins.AutoBouquetsMaker.scanner import dvbreader
-		except:
-			print "[Satfinder][keyReadServices] import dvbreader not available"
+		if not dvbreader_available:
 			return
 
 		if self.demux < 0:
@@ -554,20 +583,15 @@ class Satfinder(ScanSetup, ServiceScan):
 					sdt_current_sections_read = []
 					sdt_current_sections_count = section["header"]["last_section_number"] + 1
 					sdt_current_content = []
-					print "test1"
 
 				if section["header"]["section_number"] not in sdt_current_sections_read:
 					sdt_current_sections_read.append(section["header"]["section_number"])
 					sdt_current_content += section["content"]
-					print "test2"
 
 					if len(sdt_current_sections_read) == sdt_current_sections_count:
 						sdt_current_completed = True
-						print "test3"
-						print "sdt_current_content", sdt_current_content
 
 			if sdt_current_completed:
-				print "test4"
 				break
 
 		dvbreader.close(fd)
@@ -588,12 +612,6 @@ class Satfinder(ScanSetup, ServiceScan):
 			out.append("- %s" % service["service_name"])
 
 		self.session.open(ServicesFound, "\n".join(out))
-
-	def doCloseRecursive(self):
-		if self.session.postScanService and self.frontend:
-			self.frontend = None
-			del self.raw_channel
-		self.close(True)
 
 class ServicesFound(Screen):
 	skin = """
