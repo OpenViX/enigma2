@@ -109,7 +109,7 @@ class Satfinder(ScanSetup, ServiceScan):
 	def newConfig(self):
 		cur = self["config"].getCurrent()
 		if cur in (
-					self.typeOfTuningEntry, 
+					self.typeOfTuningEntry,
 					self.systemEntry, 
 					self.typeOfInputEntry, 
 					self.systemEntryATSC, 
