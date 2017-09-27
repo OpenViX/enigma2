@@ -28,15 +28,15 @@ SUBDIRS += CableScan
 endif
 
 if VUSOLO4K
-SUBDIRS += CableScan
+SUBDIRS += CableScan QuadPiP
 endif
 
 if VUUNO4K
-SUBDIRS += CableScan
+SUBDIRS += CableScan QuadPiP
 endif
 
 if VUULTIMO4K
-SUBDIRS += CableScan
+SUBDIRS += CableScan QuadPiP
 endif
 
 if HAVE_LIBVUGLES2
