@@ -247,6 +247,8 @@ class Timer:
 		timer_list = [ t for t in self.timer_list if not t.disabled ]
 		if timer_list:
 			w = timer_list[0].getNextActivation()
+			if w < min:
+				min = w
 
 		if int(now) < 1072224000 and min > now + 5:
 			# system time has not yet been set (before 01.01.2004), keep a short poll interval
