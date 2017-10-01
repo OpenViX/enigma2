@@ -85,7 +85,7 @@ fbClass::fbClass(const char *fb)
 		struct ion_handle_data free_data;
 		struct ion_phys_data phys_data;
 		int ret;
-		unsigned char *lfb;
+//		unsigned char *lfb;
 
 		eDebug("Using ION allocator");
 
@@ -129,7 +129,7 @@ fbClass::fbClass(const char *fb)
 
 		if (lfb)
 		{
-			eDebug("[fb-ION] %dkB available for acceleration surfaces (via ION).", ACCEL_MEM_SIZE);
+			eDebug("[fb-ION] %dkB available for acceleration surfaces (via ION).", ACCEL_MEM_SIZE / 1024);
 			gAccel::getInstance()->setAccelMemorySpace(lfb, phys_data.addr, ACCEL_MEM_SIZE);
 		}
 		else
@@ -155,13 +155,13 @@ err_ioc_free:
 	eDebug("[fb] %s: %dk video mem", fb, available/1024);
 	lfb=(unsigned char*)mmap(0, available, PROT_WRITE|PROT_READ, MAP_SHARED, fbFd, 0);
 #endif
-#ifndef CONFIG_ION
+//#ifndef CONFIG_ION
 	if (!lfb)
 	{
 		eDebug("[fb] mmap: %m");
 		goto nolfb;
 	}
-#endif
+//#endif
 
 	showConsole(0);
 
@@ -246,6 +246,7 @@ int fbClass::SetMode(int nxRes, int nyRes, int nbpp)
 		eDebug("[fb] double buffering available!");
 
 	m_number_of_pages = screeninfo.yres_virtual / nyRes;
+	eDebug("[fb] %d page(s) available!", m_number_of_pages);
 
 	ioctl(fbFd, FBIOGET_VSCREENINFO, &screeninfo);
 
