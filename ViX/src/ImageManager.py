@@ -323,7 +323,7 @@ class VIXImageManager(Screen):
 	def keyDelete(self):
 		self.sel = self['list'].getCurrent()
 		if self.sel:
-			message = _("Are you sure you want to delete this backup:\n ") + self.sel
+			message = _("Are you sure you want to delete this image backup:\n ") + self.sel
 			ybox = self.session.openWithCallback(self.doDelete, MessageBox, message, MessageBox.TYPE_YESNO, default=False)
 			ybox.setTitle(_("Remove confirmation"))
 		else:
@@ -352,7 +352,7 @@ class VIXImageManager(Screen):
 			self.keyBackup()
 
 	def keyBackup(self):
-		message = _("Are you ready to create a backup image ?")
+		message = _("Do you want to create a full image backup?\nThis can take about 6 minutes to complete.")
 		ybox = self.session.openWithCallback(self.doBackup, MessageBox, message, MessageBox.TYPE_YESNO)
 		ybox.setTitle(_("Backup confirmation"))
 
@@ -381,7 +381,7 @@ class VIXImageManager(Screen):
 	def keyResstore(self):
 		self.sel = self['list'].getCurrent()
 		if self.sel:
-			message = _("Are you sure you want to restore this image:\n ") + self.sel
+			message = _("Are you sure you want to flash this image:\n ") + self.sel
 			ybox = self.session.openWithCallback(self.keyResstore2, MessageBox, message, MessageBox.TYPE_YESNO)
 			ybox.setTitle(_("Restore confirmation"))
 		else:
@@ -500,14 +500,14 @@ class AutoImageManagerTimer:
 			from Screens.Standby import inStandby
 
 			if not inStandby and config.imagemanager.query.value:
-				message = _("Your %s %s is about to run a full image backup, this can take about 6 minutes to complete,\ndo you want to allow this?") % (getMachineBrand(), getMachineName())
+				message = _("Your %s %s is about to create a full image backup, this can take about 6 minutes to complete.\nDo you want to allow this?") % (getMachineBrand(), getMachineName())
 				ybox = self.session.openWithCallback(self.doBackup, MessageBox, message, MessageBox.TYPE_YESNO, timeout=30)
 				ybox.setTitle('Scheduled backup.')
 			else:
 				print "[ImageManager] in Standby or no querying, so just running backup", strftime("%c", localtime(now))
 				self.doBackup(True)
 		else:
-			print '[ImageManager] Where are not close enough', strftime("%c", localtime(now))
+			print '[ImageManager] We are not close enough', strftime("%c", localtime(now))
 			self.backupupdate(60)
 
 	def doBackup(self, answer):
