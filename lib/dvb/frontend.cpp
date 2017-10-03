@@ -861,7 +861,7 @@ static inline uint32_t fe_udiv(uint32_t a, uint32_t b)
 	return (a + b / 2) / b;
 }
 
-void eDVBFrontend::calculateSignalPercentage(int signalqualitydb, int &signalquality)
+int eDVBFrontend::calculateSignalPercentage(int signalqualitydb)
 {
 	int maxdb; // assume 100% as 2/3 of maximum dB
 	int type = -1;
@@ -892,8 +892,10 @@ void eDVBFrontend::calculateSignalPercentage(int signalqualitydb, int &signalqua
 			}
 			break;
 		}
+		default:
+			return 0;
 	}
-	signalquality = (signalqualitydb >= maxdb ? 65535 : signalqualitydb * 65535 / maxdb);
+	return signalqualitydb >= maxdb ? 65535 : (signalqualitydb * 65535 / maxdb);
 }
 
 void eDVBFrontend::calculateSignalQuality(int snr, int &signalquality, int &signalqualitydb)
@@ -1152,7 +1154,7 @@ void eDVBFrontend::calculateSignalQuality(int snr, int &signalquality, int &sign
 		ret = (snr * 2000) / 0xFFFF;
 		sat_max = 2000;
 	}
-	else if(!strcmp(m_description, "WinTV HVR-850") || !strcmp(m_description, "Hauppauge"))
+	else if(!strcmp(m_description, "WinTV HVR-850") || !strcmp(m_description, "Hauppauge") || !strcmp(m_description, "LG Electronics LGDT3306A VSB/QAM Frontend"))
 	{
 		eDVBFrontendParametersATSC parm;
 		oparm.getATSC(parm);
@@ -1274,7 +1276,7 @@ int eDVBFrontend::readFrontendData(int type)
 							if(!signalquality)
 							{
 								/* provide an estimated percentage when drivers lack this info */
-								calculateSignalPercentage(signalqualitydb, signalquality);
+								signalquality = calculateSignalPercentage(signalqualitydb);
 							}
 							return signalquality;
 						}
