@@ -5,7 +5,7 @@ from gettext import dgettext
 from enigma import eTimer, eDVBDB
 
 import Components.Task
-from Components.OnlineUpdateCheck import feedsstatuscheck, kernelMismatch, statusMessage, NetworkUp
+from Components.OnlineUpdateCheck import feedsstatuscheck, kernelMismatch, statusMessage
 from Screens.ChoiceBox import ChoiceBox
 from Screens.MessageBox import MessageBox
 from Screens.ParentalControlSetup import ProtectedScreen
@@ -111,9 +111,6 @@ class UpdatePlugin(Screen, ProtectedScreen):
 		self.onFirstExecBegin.append(self.checkNetworkState)
 
 	def checkNetworkState(self):
-		if not NetworkUp().test():
-			self.session.openWithCallback(self.close, MessageBox, _("There is no access to the internet.\nPlease check your network."), type=MessageBox.TYPE_WARNING, timeout=30, close_on_any_key=True)
-			return
 		self['tl_red'].hide()
 		self['tl_yellow'].hide()
 		self['tl_green'].hide()
@@ -121,9 +118,6 @@ class UpdatePlugin(Screen, ProtectedScreen):
 		self.trafficLight = feedsstatuscheck.getFeedsBool()
 		if self.trafficLight in feedsstatuscheck.feed_status_msgs:
 			status_text = feedsstatuscheck.feed_status_msgs[self.trafficLight]
-			if self.trafficLight in feedsstatuscheck.unrecoverable_errors:
-				self.session.openWithCallback(self.close, MessageBox, status_text, type=MessageBox.TYPE_WARNING, timeout=30, close_on_any_key=True)
-				return
 		else:
 			status_text = _('Feeds status: Unexpected')
 		if self.trafficLight:

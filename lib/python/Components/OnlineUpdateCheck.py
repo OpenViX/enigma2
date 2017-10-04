@@ -1,6 +1,6 @@
 from boxbranding import getImageVersion, getImageBuild, getImageDistro, getMachineBrand, getMachineName, getMachineBuild, getImageType, getBoxType, getFeedsUrl
 
-from time import time, sleep
+from time import time
 
 from enigma import eTimer
 
@@ -10,9 +10,6 @@ from Components.config import config
 from Components.About import about
 
 import urllib2, socket, sys
-
-import subprocess
-import threading
 
 error = 0
 
@@ -82,9 +79,6 @@ class FeedsStatusCheck:
 		'inprogress': _('ERROR: Check is already running in background, please wait a few minutes and try again'),
 		'unknown':    _('Feeds status: Unknown'),
 	}
-
-	unrecoverable_errors = ('-2', '403', '404')
-
 	def getFeedsBool(self):
 		global error
 		feedstatus = feedsstatuscheck.getFeedStatus()
@@ -244,7 +238,7 @@ def kernelMismatch():
 
 	kernelversion = about.getKernelVersionString().strip()
 	if kernelversion == "unknown":
-		print '[OnlineUpdateCheck][kernelMismatch] unable to retrieve kernel version from STB'
+		print '[OnlineVersionCheck][kernelMismatch] unable to retrieve kernel version from STB'
 		return False
 
 	uri = "%s/%s/Packages.gz" % (getFeedsUrl(), getMachineBuild())
@@ -253,13 +247,13 @@ def kernelMismatch():
 		d = urllib2.urlopen(req)
 		gz_data = d.read()
 	except:
-		print '[OnlineUpdateCheck][kernelMismatch] error fetching %s' % uri
+		print '[OnlineVersionCheck][kernelMismatch] error fetching %s' % uri
 		return False
 
 	try:
 		packages = zlib.decompress(gz_data, 16+zlib.MAX_WBITS)
 	except:
-		print '[OnlineUpdateCheck][kernelMismatch] failed to decompress gz_data'
+		print '[OnlineVersionCheck][kernelMismatch] failed to decompress gz_data'
 		return False
 
 	pattern = "kernel-([0-9]+[.][0-9]+[.][0-9]+)"
@@ -267,10 +261,10 @@ def kernelMismatch():
 	if matches:
 		match = sorted(matches,key=lambda s: list(map(int, s.split('.'))))[-1]
 		if match != kernelversion:
-			print '[OnlineUpdateCheck][kernelMismatch] kernel mismatch found. STB kernel=%s, feeds kernel=%s' % (kernelversion, match)
+			print '[OnlineVersionCheck][kernelMismatch] kernel mismatch found. STB kernel=%s, feeds kernel=%s' % (kernelversion, match)
 			return True
 
-	print '[OnlineUpdateCheck][kernelMismatch] no kernel mismatch found'
+	print '[OnlineVersionCheck][kernelMismatch] no kernel mismatch found'
 	return False
 
 def statusMessage():
@@ -282,60 +276,9 @@ def statusMessage():
 		d = urllib2.urlopen(req)
 		message = d.read()
 	except:
-		print '[OnlineUpdateCheck][statusMessage] %s could not be fetched' % uri
+		print '[OnlineVersionCheck][statusMessage] %s could not be fetched' % uri
 		return False
 
 	if message:
 		return message
 	return False
-
-class NetworkUp():
-	def __init__(self):
-		# multithreaded ping test (runs concurrent pings for speed).
-		# returns true immediately on confirming a network connection.
-		self.domains = [getFeedsUrl().split("/")[2], 'www.google.com', 'www.google.co.uk'] # default list of domains to try
-		self.network_confirmed = False
-		self.thread_count = 8
-		self.lock = threading.Lock()
-		self.ping_occurences = 1 # how many times to ping each domain
-		self.ping_timeout = 2 # max time to wait for ping response
-		self.sleep_interval = 0.01 # how regularly to check for test completion
-		self.threads_completed = [] # used for abort test
-
-	def test(self):
-		thread_count = min(self.thread_count, len(self.domains))
-		threads = []
-		for i in range(thread_count): # start threads
-			t = threading.Thread(target=self.loadDomains)
-			t.start()
-			threads.append(t)
-		while(not self.network_confirmed): # wait for result
-			if not len(self.threads_completed) < thread_count: # all threads completed
-				break
-			sleep(self.sleep_interval)
-		print '[OnlineUpdateCheck][NetworkUpTest] ', (self.network_confirmed and 'PASSED' or 'FAILED')
-		return self.network_confirmed
-
-	def loadDomains(self):
-		while True:
-			domain = self.getNextDomain()
-			if not domain: # no more domains left in list
-				self.threads_completed.append(1) # used for abort test
-				break
-			self.ping(domain) # ping domain
-
-	def getNextDomain(self):
-		domain = None
-		self.lock.acquire()
-		if self.domains:
-			domain = self.domains.pop(0)
-		self.lock.release()
-		return domain
-
-	def ping(self, domain):
-		if self.network_confirmed: # network already confirmed so don't continue
-			return
-		ret = subprocess.call(['ping', '-c', '%d' % self.ping_occurences, '-W', '%d' % self.ping_timeout, domain],
-			stdout=open('/dev/null', 'w'), stderr=open('/dev/null', 'w'))
-		if ret == 0: # Zero means ping command succeeded
-			self.network_confirmed = True
