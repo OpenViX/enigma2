@@ -6,7 +6,7 @@ from Screens.ParentalControlSetup import ProtectedScreen
 from enigma import eConsoleAppContainer, eDVBDB, eTimer
 
 from Screens.Screen import Screen
-from Components.OnlineUpdateCheck import feedsstatuscheck, kernelMismatch
+from Components.OnlineUpdateCheck import feedsstatuscheck, kernelMismatch, NetworkUp
 from Components.ActionMap import ActionMap, NumberActionMap
 from Components.config import config, ConfigSubsection, ConfigText
 from Components.PluginComponent import plugins
@@ -239,6 +239,9 @@ class PluginBrowser(Screen, ProtectedScreen):
 		self.session.openWithCallback(self.PluginDownloadBrowserClosed, PluginDownloadBrowser, PluginDownloadBrowser.REMOVE, True, self.menu_path,)
 
 	def download(self):
+		if not NetworkUp().test():
+			self.session.openWithCallback(self.close, MessageBox, _("There is no access to the internet.\nPlease check your network."), type=MessageBox.TYPE_WARNING, timeout=30, close_on_any_key=True)
+			return
 		if kernelMismatch():
 			self.session.openWithCallback(self.close, MessageBox, _("The Linux kernel has changed, plugins are not compatible. \nInstall latest image using USB stick or Image Manager."), type=MessageBox.TYPE_INFO, timeout=30, close_on_any_key=True)
 			return
