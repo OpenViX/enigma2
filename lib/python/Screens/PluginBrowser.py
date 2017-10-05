@@ -1,4 +1,4 @@
-from boxbranding import getImageVersion, getImageType
+from boxbranding import getImageVersion, getImageType, getMachineBrand, getMachineName
 from urllib import urlopen
 import socket
 import os
@@ -239,6 +239,9 @@ class PluginBrowser(Screen, ProtectedScreen):
 		self.session.openWithCallback(self.PluginDownloadBrowserClosed, PluginDownloadBrowser, PluginDownloadBrowser.REMOVE, True, self.menu_path,)
 
 	def download(self):
+		if not (feedsstatuscheck.adapterAvailable() and feedsstatuscheck.NetworkUp()):
+			self.session.openWithCallback(self.close, MessageBox,  _("Your %s %s has no %s access, please check your network settings and make sure you have network cable connected and try again.") % (getMachineBrand(), getMachineName(), feedsstatuscheck.adapterAvailable() and 'internet' or 'network'), type=MessageBox.TYPE_INFO, timeout=30, close_on_any_key=True)
+			return
 		if kernelMismatch():
 			self.session.openWithCallback(self.close, MessageBox, _("The Linux kernel has changed, plugins are not compatible. \nInstall latest image using USB stick or Image Manager."), type=MessageBox.TYPE_INFO, timeout=30, close_on_any_key=True)
 			return

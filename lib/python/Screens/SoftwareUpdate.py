@@ -130,13 +130,15 @@ class UpdatePlugin(Screen, ProtectedScreen):
 			self['tl_yellow'].show()
 		else:
 			self['tl_off'].show()
-		if kernelMismatch():
-			self.session.openWithCallback(self.close, MessageBox, _("The Linux kernel has changed, an update is not permitted. \nInstall latest image using USB stick or Image Manager."), type=MessageBox.TYPE_INFO, timeout=30, close_on_any_key=True)
-			return
+		
 		if (getImageType() != 'release' and self.trafficLight != 'unknown') or (getImageType() == 'release' and self.trafficLight not in ('stable', 'unstable')):
-			self.session.openWithCallback(self.close, MessageBox, feedsstatuscheck.getFeedsErrorMessage(), type=MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
+			self.session.openWithCallback(self.close, MessageBox, feedsstatuscheck.getFeedsErrorMessage(), type=MessageBox.TYPE_INFO, timeout=30, close_on_any_key=True)
+			return
 		else:
 			if getImageType() != 'release' or (config.softwareupdate.updateisunstable.value == '1' and config.softwareupdate.updatebeta.value) or config.softwareupdate.updateisunstable.value == '0':
+				if kernelMismatch():
+					self.session.openWithCallback(self.close, MessageBox, _("The Linux kernel has changed, an update is not permitted. \nInstall latest image using USB stick or Image Manager."), type=MessageBox.TYPE_INFO, timeout=30, close_on_any_key=True)
+					return
 				message = statusMessage()
 				if message:
 					message += "\nDo you want to continue?"
