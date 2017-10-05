@@ -101,6 +101,14 @@ void eRCDeviceInputDev::handleCode(long rccode)
 	}
 #endif
 
+#if KEY_VIDEO_TO_KEY_FAVORITES
+	if (ev->code == KEY_VIDEO)
+	{
+		/* formuler rcu fav key send key_media change this to  KEY_FAVORITES */
+		ev->code = KEY_FAVORITES;
+	}
+#endif
+
 	switch (ev->value)
 	{
 		case 0:
