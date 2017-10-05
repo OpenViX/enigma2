@@ -33,37 +33,68 @@ class FeedsStatusCheck:
 		except ValueError:
 			return False
 
+	def adapterAvailable(self): # Box has an adapter configured and active
+		for adapter in ('eth0', 'eth1', 'wlan0', 'wlan1', 'wlan2', 'wlan3', 'ra0'):
+			if about.getIfConfig(adapter).has_key('addr'):
+				return True
+		return False
+			
+	def NetworkUp(self, host="8.8.8.8", port=53, timeout=2): # Box can access outside the local network
+		# Avoids DNS resolution
+		# Avoids application layer (HTTP/FTP/IMAP)
+		# Avoids calls to external utilities
+		# Used "sudo nmap 8.8.8.8" to discover the following
+		# Host: 8.8.8.8 (google-public-dns-a.google.com)
+		# OpenPort: 53/tcp
+		# Service: domain (DNS/TCP)
+		original_timeout = socket.getdefaulttimeout()
+		try:
+			socket.setdefaulttimeout(timeout)
+			socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect((host, port))
+			socket.setdefaulttimeout(original_timeout) # reset to previous
+			print "[OnlineUpdateCheck][OnlineCheck] PASSED"
+			return True
+		except Exception as ex:
+			print "[OnlineUpdateCheck][OnlineCheck] FAILED", ex.message
+			socket.setdefaulttimeout(original_timeout) # reset to previous
+			return False
+	
 	def getFeedStatus(self):
 		status = '1'
 		trafficLight = 'unknown'
-		if about.getIfConfig('eth0').has_key('addr') or about.getIfConfig('eth1').has_key('addr') or about.getIfConfig('wlan0').has_key('addr') or about.getIfConfig('wlan3').has_key('addr') or about.getIfConfig('ra0').has_key('addr'):
-			try:
-				print '[OnlineVersionCheck] Checking feeds state'
-				req = urllib2.Request('http://openvix.co.uk/TrafficLightState.php')
-				d = urllib2.urlopen(req)
-				trafficLight = d.read()
-			except urllib2.HTTPError, err:
-				print '[OnlineVersionCheck] ERROR:',err
-				trafficLight = err.code
-			except urllib2.URLError, err:
-				print '[OnlineVersionCheck] ERROR:',err.reason[0]
-				trafficLight = err.reason[0]
-			except urllib2, err:
-				print '[OnlineVersionCheck] ERROR:',err
-				trafficLight = err
-			except:
-				print '[OnlineVersionCheck] ERROR:', sys.exc_info()[0]
-				trafficLight = -2
-			if not self.IsInt(trafficLight) and getImageType() != 'release':
-				trafficLight = 'unknown'
-			elif trafficLight == 'stable':
-				status = '0'
-			config.softwareupdate.updateisunstable.setValue(status)
-			print '[OnlineVersionCheck] PASSED:',trafficLight
-			return trafficLight
+		if self.adapterAvailable():
+			if self.NetworkUp():
+				if getImageType() == 'release': # we know the network is good now so only do this check on release images where the release domain applies
+					try:
+						print '[OnlineVersionCheck] Checking feeds state'
+						req = urllib2.Request('http://openvix.co.uk/TrafficLightState.php')
+						d = urllib2.urlopen(req)
+						trafficLight = d.read()
+					except urllib2.HTTPError, err:
+						print '[OnlineVersionCheck] ERROR:',err
+						trafficLight = err.code
+					except urllib2.URLError, err:
+						print '[OnlineVersionCheck] ERROR:',err.reason[0]
+						trafficLight = err.reason[0]
+					except urllib2, err:
+						print '[OnlineVersionCheck] ERROR:',err
+						trafficLight = err
+					except:
+						print '[OnlineVersionCheck] ERROR:', sys.exc_info()[0]
+						trafficLight = -2
+				else:
+					trafficLight = 'unknown'
+				if trafficLight == 'stable':
+					status = '0'
+				config.softwareupdate.updateisunstable.setValue(status)
+				print '[OnlineVersionCheck] PASSED:',trafficLight
+				return trafficLight
+			else:
+				print '[OnlineVersionCheck] ERROR: -2'
+				return -2
 		else:
-			print '[OnlineVersionCheck] ERROR: -2'
-			return -2
+			print '[OnlineVersionCheck] ERROR: -3'
+			return -3
 
 	# We need a textual mapping for all possible return states for use by
 	# SoftwareUpdate::checkNetworkState() and ChoiceBox::onshow()
@@ -73,36 +104,40 @@ class FeedsStatusCheck:
 		'stable':     _('Feeds status: Stable'),
 		'unstable':   _('Feeds status: Unstable'),
 		'updating':   _('Feeds status: Updating'),
-		'-2':	      _('ERROR: No network found'),
-		'403':	      _('ERROR: Forbidden'),
-		'404':	      _('ERROR: No internet found'),
+		'-2':	      _('ERROR: No internet found'),
+		'-3':	      _('ERROR: No network found'),
+		'403':	      _('ERROR: Response 403 Forbidden'),
+		'404':	      _('ERROR: Response 404 Not Found'),
 		'inprogress': _('ERROR: Check is already running in background, please wait a few minutes and try again'),
 		'unknown':    _('Feeds status: Unknown'),
 	}
+
 	def getFeedsBool(self):
 		global error
-		feedstatus = feedsstatuscheck.getFeedStatus()
-		if feedstatus in (-2, 403, 404):
-			print '[OnlineVersionCheck] Error %s' % feedstatus
-			return str(feedstatus)
+		self.feedstatus = feedsstatuscheck.getFeedStatus()
+		if self.feedstatus in (-2, -3, 403, 404):
+			print '[OnlineVersionCheck] Error %s' % self.feedstatus
+			return str(self.feedstatus)
 		elif error:
 			print '[OnlineVersionCheck] Check already in progress'
 			return 'inprogress'
-		elif feedstatus == 'updating':
+		elif self.feedstatus == 'updating':
 			print '[OnlineVersionCheck] Feeds Updating'
 			return 'updating'
-		elif feedstatus in ('stable', 'unstable', 'unknown'):
-			print '[OnlineVersionCheck]',feedstatus.title()
-			return str(feedstatus)
+		elif self.feedstatus in ('stable', 'unstable', 'unknown'):
+			print '[OnlineVersionCheck]',self.feedstatus.title()
+			return str(self.feedstatus)
 
 	def getFeedsErrorMessage(self):
 		global error
-		feedstatus = feedsstatuscheck.getFeedsBool()
-		if feedstatus == -2:
+		#feedstatus = feedsstatuscheck.getFeedsBool() # This is forcing an additional HTTP request so don't do it. Also the output was incorrect so the messages didn't show, just an empty MessageBox.
+		if self.feedstatus == -2:
+			return _("Your %s %s has no internet access, please check your network settings and make sure you have network cable connected and try again.") % (getMachineBrand(), getMachineName())
+		elif self.feedstatus == -3:
 			return _("Your %s %s has no network access, please check your network settings and make sure you have network cable connected and try again.") % (getMachineBrand(), getMachineName())
-		elif feedstatus == 404:
-			return _("Your %s %s is not connected to the internet, please check your network settings and try again.") % (getMachineBrand(), getMachineName())
-		elif feedstatus in ('updating', 403):
+		elif self.feedstatus == 404:
+			return _("Your %s %s is not able to connect to the feeds, please try again later. If this persists please report on the OpenViX forum at world-of-satellite.com.") % (getMachineBrand(), getMachineName())
+		elif self.feedstatus in ('updating', 403):
 			return _("Sorry feeds are down for maintenance, please try again later. If this issue persists please check openvix.co.uk or world-of-satellite.com.")
 		elif error:
 			return _("There has been an error, please try again later. If this issue persists, please check openvix.co.uk or world-of-satellite.com")
