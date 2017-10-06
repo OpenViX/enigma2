@@ -549,7 +549,7 @@ class Satfinder(ScanSetup, ServiceScan):
 		self["onid"].setText("")
 		self["pos"].setText(self.DVB_type.value)
 		self["key_yellow"].setText("")
-		self.currentProcess = currentProcess = datetime.datetime.now().microsecond
+		self.currentProcess = currentProcess = datetime.datetime.now()
 		thread.start_new_thread(self.getCurrentTsidOnid, (currentProcess,))
 
 	def getCurrentTsidOnid(self, currentProcess):
@@ -587,7 +587,8 @@ class Satfinder(ScanSetup, ServiceScan):
 				break
 
 			if self.currentProcess != currentProcess:
-				print "[satfinder] currentProcess terminated", currentProcess
+				dvbreader.close(fd)
+				print "[satfinder][getCurrentTsidOnid] killed: %s, currentProcess: %s" % (currentProcess, self.currentProcess)
 				return
 
 			section = dvbreader.read_sdt(fd, sdt_current_table_id, 0x00)
@@ -684,7 +685,8 @@ class Satfinder(ScanSetup, ServiceScan):
 				break
 
 			if self.currentProcess != currentProcess:
-				print "[satfinder] currentProcess terminated", currentProcess
+				print "[satfinder][getOrbPosFromNit] killed: %s, currentProcess: %s" % (currentProcess, self.currentProcess)
+				dvbreader.close(fd)
 				return
 
 			section = dvbreader.read_nit(fd, nit_current_table_id, nit_other_table_id)
