@@ -71,7 +71,7 @@ class Standby2(Screen):
 
 		if SystemInfo["Display"] and SystemInfo["LCDMiniTV"]:
 			# set LCDminiTV off
-			setLCDMiniTVMode("0"
+			setLCDMiniTVMode("0")
 
 		self.paused_service = None
 
