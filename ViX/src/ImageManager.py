@@ -585,6 +585,9 @@ class ImageBackup(Screen):
 		self.MTDROOTFS = getMachineMtdRoot()
 		self.ROOTFSFILE = getMachineRootFile()
 		self.MAINDEST = self.MAINDESTROOT + '/' + getImageFolder() + '/'
+		self.MODEL = getBoxType()
+		self.GB4Kbin = 'boot.bin'
+		self.GB4Krescue = 'rescue.bin'
 		print '[ImageManager] MTD Kernel:',self.MTDKERNEL
 		print '[ImageManager] MTD Root:',self.MTDROOTFS
 		print '[ImageManager] Type:',getImageFileSystem()
@@ -796,49 +799,54 @@ class ImageBackup(Screen):
 			self.commands.append('mount --bind / %s/root' % self.TMPDIR)
 			self.commands.append('mkfs.jffs2 --root=%s/root --faketime --output=%s/rootfs.jffs2 %s' % (self.TMPDIR, self.WORKDIR, JFFS2OPTIONS))
 		elif self.ROOTDEVTYPE == 'tar.bz2':
-			print '[ImageManager] Stage1: TAR.BZIP Detected.'
+			print '[ImageManager] Stage2: TAR.BZIP Detected.'
 			self.commands.append('mount --bind / %s/root' % self.TMPDIR)
 			self.commands.append("/bin/tar -cf %s/rootfs.tar -C %s/root --exclude=/var/nmbd/* ." % (self.WORKDIR, self.TMPDIR))
 			self.commands.append("/usr/bin/bzip2 %s/rootfs.tar" % self.WORKDIR)
+		elif self.MODEL in ("gbquad4k","gbue4k"):
+			self.commands.append("dd if=/dev/mmcblk0p1 of=%s/boot.bin" % self.WORKDIR)
+			self.commands.append("dd if=/dev/mmcblk0p3 of=%s/rescue.bin" % self.WORKDIR)
+			print '[ImageManager] Stage2: Create: boot dump boot.bin:',self.MODEL
+			print '[ImageManager] Stage2: Create: rescue dump rescue.bin:',self.MODEL
 		elif self.ROOTDEVTYPE == 'hd-emmc':
- 			print '[ImageManager] Stage2: EMMC Detected.'
+			print '[ImageManager] Stage2: EMMC Detected.'
 			self.MTDBOOT_HD51 = "mmcblk0p1"
 			self.EMMCIMG = "disk.img"
 			BLOCK_SIZE=512
 			BLOCK_SECTOR=2
 			IMAGE_ROOTFS_ALIGNMENT=1024
- 			BOOT_PARTITION_SIZE=3072
+			BOOT_PARTITION_SIZE=3072
 			KERNEL_PARTITION_OFFSET = int(IMAGE_ROOTFS_ALIGNMENT) + int(BOOT_PARTITION_SIZE)
- 			KERNEL_PARTITION_SIZE=8192
- 			ROOTFS_PARTITION_OFFSET = int(KERNEL_PARTITION_OFFSET) + int(KERNEL_PARTITION_SIZE)
+			KERNEL_PARTITION_SIZE=8192
+			ROOTFS_PARTITION_OFFSET = int(KERNEL_PARTITION_OFFSET) + int(KERNEL_PARTITION_SIZE)
 			ROOTFS_PARTITION_SIZE=819200
- 			SECOND_KERNEL_PARTITION_OFFSET = int(ROOTFS_PARTITION_OFFSET) + int(ROOTFS_PARTITION_SIZE)
- 			SECOND_ROOTFS_PARTITION_OFFSET = int(SECOND_KERNEL_PARTITION_OFFSET) + int(KERNEL_PARTITION_SIZE)
+			SECOND_KERNEL_PARTITION_OFFSET = int(ROOTFS_PARTITION_OFFSET) + int(ROOTFS_PARTITION_SIZE)
+			SECOND_ROOTFS_PARTITION_OFFSET = int(SECOND_KERNEL_PARTITION_OFFSET) + int(KERNEL_PARTITION_SIZE)
 			THIRD_KERNEL_PARTITION_OFFSET = int(SECOND_ROOTFS_PARTITION_OFFSET) + int(ROOTFS_PARTITION_SIZE)
 			THIRD_ROOTFS_PARTITION_OFFSET = int(THIRD_KERNEL_PARTITION_OFFSET) + int(KERNEL_PARTITION_SIZE)
 			FOURTH_KERNEL_PARTITION_OFFSET = int(THIRD_ROOTFS_PARTITION_OFFSET) + int(ROOTFS_PARTITION_SIZE)
- 			FOURTH_ROOTFS_PARTITION_OFFSET = int(FOURTH_KERNEL_PARTITION_OFFSET) + int(KERNEL_PARTITION_SIZE)
+			FOURTH_ROOTFS_PARTITION_OFFSET = int(FOURTH_KERNEL_PARTITION_OFFSET) + int(KERNEL_PARTITION_SIZE)
 			SWAP_PARTITION_OFFSET = int(FOURTH_ROOTFS_PARTITION_OFFSET) + int(ROOTFS_PARTITION_SIZE)
 			EMMC_IMAGE = "%s/%s"% (self.WORKDIR,self.EMMCIMG)
- 			EMMC_IMAGE_SIZE=3817472
+			EMMC_IMAGE_SIZE=3817472
 			EMMC_IMAGE_SEEK = int(EMMC_IMAGE_SIZE) * int(BLOCK_SECTOR)
 			self.commands.append('dd if=/dev/zero of=%s bs=%s count=0 seek=%s' % (EMMC_IMAGE, BLOCK_SIZE , EMMC_IMAGE_SEEK))
 			self.commands.append('parted -s %s mklabel gpt' %EMMC_IMAGE)
 			PARTED_END_BOOT = int(IMAGE_ROOTFS_ALIGNMENT) + int(BOOT_PARTITION_SIZE)
 			self.commands.append('parted -s %s unit KiB mkpart boot fat16 %s %s' % (EMMC_IMAGE, IMAGE_ROOTFS_ALIGNMENT, PARTED_END_BOOT ))
- 			PARTED_END_KERNEL1 = int(KERNEL_PARTITION_OFFSET) + int(KERNEL_PARTITION_SIZE)
+			PARTED_END_KERNEL1 = int(KERNEL_PARTITION_OFFSET) + int(KERNEL_PARTITION_SIZE)
 			self.commands.append('parted -s %s unit KiB mkpart kernel1 %s %s' % (EMMC_IMAGE, KERNEL_PARTITION_OFFSET, PARTED_END_KERNEL1 ))
- 			PARTED_END_ROOTFS1 = int(ROOTFS_PARTITION_OFFSET) + int(ROOTFS_PARTITION_SIZE)
+			PARTED_END_ROOTFS1 = int(ROOTFS_PARTITION_OFFSET) + int(ROOTFS_PARTITION_SIZE)
 			self.commands.append('parted -s %s unit KiB mkpart rootfs1 ext4 %s %s' % (EMMC_IMAGE, ROOTFS_PARTITION_OFFSET, PARTED_END_ROOTFS1 ))
- 			PARTED_END_KERNEL2 = int(SECOND_KERNEL_PARTITION_OFFSET) + int(KERNEL_PARTITION_SIZE)
+			PARTED_END_KERNEL2 = int(SECOND_KERNEL_PARTITION_OFFSET) + int(KERNEL_PARTITION_SIZE)
 			self.commands.append('parted -s %s unit KiB mkpart kernel2 %s %s' % (EMMC_IMAGE, SECOND_KERNEL_PARTITION_OFFSET, PARTED_END_KERNEL2 ))
- 			PARTED_END_ROOTFS2 = int(SECOND_ROOTFS_PARTITION_OFFSET) + int(ROOTFS_PARTITION_SIZE)
+			PARTED_END_ROOTFS2 = int(SECOND_ROOTFS_PARTITION_OFFSET) + int(ROOTFS_PARTITION_SIZE)
 			self.commands.append('parted -s %s unit KiB mkpart rootfs2 ext4 %s %s' % (EMMC_IMAGE, SECOND_ROOTFS_PARTITION_OFFSET, PARTED_END_ROOTFS2 ))
 			PARTED_END_KERNEL3 = int(THIRD_KERNEL_PARTITION_OFFSET) + int(KERNEL_PARTITION_SIZE)
 			self.commands.append('parted -s %s unit KiB mkpart kernel3 %s %s' % (EMMC_IMAGE, THIRD_KERNEL_PARTITION_OFFSET, PARTED_END_KERNEL3 ))
 			PARTED_END_ROOTFS3 = int(THIRD_ROOTFS_PARTITION_OFFSET) + int(ROOTFS_PARTITION_SIZE)
 			self.commands.append('parted -s %s unit KiB mkpart rootfs3 ext4 %s %s' % (EMMC_IMAGE, THIRD_ROOTFS_PARTITION_OFFSET, PARTED_END_ROOTFS3 ))
- 			PARTED_END_KERNEL4 = int(FOURTH_KERNEL_PARTITION_OFFSET) + int(KERNEL_PARTITION_SIZE)
+			PARTED_END_KERNEL4 = int(FOURTH_KERNEL_PARTITION_OFFSET) + int(KERNEL_PARTITION_SIZE)
 			self.commands.append('parted -s %s unit KiB mkpart kernel4 %s %s' % (EMMC_IMAGE, FOURTH_KERNEL_PARTITION_OFFSET, PARTED_END_KERNEL4 ))
 			PARTED_END_ROOTFS4 = int(FOURTH_ROOTFS_PARTITION_OFFSET) + int(ROOTFS_PARTITION_SIZE)
 			self.commands.append('parted -s %s unit KiB mkpart rootfs4 ext4 %s %s' % (EMMC_IMAGE, FOURTH_ROOTFS_PARTITION_OFFSET, PARTED_END_ROOTFS4 ))
@@ -849,7 +857,7 @@ class ImageBackup(Screen):
 			self.commands.append('dd if=/dev/%s of=%s seek=%s' % (self.MTDKERNEL, EMMC_IMAGE, KERNEL_IMAGE_SEEK ))
 			ROOTFS_IMAGE_SEEK = int(ROOTFS_PARTITION_OFFSET) * int(BLOCK_SECTOR)
 			self.commands.append('dd if=/dev/%s of=%s seek=%s' % (self.MTDROOTFS, EMMC_IMAGE, ROOTFS_IMAGE_SEEK ))
- 		else:
+		else:
 			print '[ImageManager] Stage2: UBIFS Detected.'
 			UBINIZE_ARGS = getMachineUBINIZE()
 			MKUBIFS_ARGS = getMachineMKUBIFS()
@@ -898,6 +906,10 @@ class ImageBackup(Screen):
 				move('%s/vmlinux.bin' % self.WORKDIR, '%s/%s' % (self.MAINDEST, self.KERNELFILE))
 			else:
 				move('%s/vmlinux.gz' % self.WORKDIR, '%s/%s' % (self.MAINDEST, self.KERNELFILE))
+		if self.MODEL in ("gbquad4k","gbue4k"):
+			move('%s/%s' % (self.WORKDIR, self.GB4Kbin), '%s/%s' % (self.MAINDEST, self.GB4Kbin))
+			move('%s/%s' % (self.WORKDIR, self.GB4Krescue), '%s/%s' % (self.MAINDEST, self.GB4Krescue))
+			system('cp -f /usr/share/gpt.bin %s/gpt.bin' %(self.MAINDEST))
 		fileout = open(self.MAINDEST + '/imageversion', 'w')
 		line = defaultprefix + '-' + getImageType() + '-backup-' + getImageVersion() + '.' + getImageBuild() + '-' + self.BackupDate
 		fileout.write(line)
@@ -1069,7 +1081,7 @@ class ImageManagerDownload(Screen):
 				'gb800ueplus'     : 'GiGaBlue-HD800UE-PLUS',
 				'gbquad'          : 'GiGaBlue-HD-QUAD',
 				'gbquadplus'      : 'GiGaBlue-HD-QUAD-PLUS',
-				'gbquad4k'        : 'GiGaBlue-HD-QUAD-4K',				
+				'gbquad4k'        : 'GiGaBlue-HD-QUAD-4K',
 				'gbultraue'       : 'GiGaBlue-HD-ULTRA-UE',
 				'gbx1'            : 'GiGaBlue-HD-X1',
 				'gbx3'            : 'GiGaBlue-HD-X3',
@@ -1080,7 +1092,7 @@ class ImageManagerDownload(Screen):
 				'maram9'          : 'Mara-M9',
 				'mbhybrid'        : 'Miraclebox-Mini-Hybrid',
 				'mbmicro'         : 'Miraclebox-Micro',
-				'mbmicrov2'       : 'Miraclebox-Microv2',				
+				'mbmicrov2'       : 'Miraclebox-Microv2',
 				'mbmini'          : 'Miraclebox-Mini',
 				'mbminiplus'      : 'Miraclebox-MiniPlus',
 				'mbtwin'          : 'Miraclebox-Twin',
