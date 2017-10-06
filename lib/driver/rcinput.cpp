@@ -109,6 +109,14 @@ void eRCDeviceInputDev::handleCode(long rccode)
 	}
 #endif
 
+#if KEY_BOOKMARKS_TO_KEY_MEDIA
+	if (ev->code == KEY_BOOKMARKS)
+	{
+		/* formuler and triplex remote send wrong keycode */
+		ev->code = KEY_MEDIA;
+	}
+#endif
+
 	switch (ev->value)
 	{
 		case 0:
