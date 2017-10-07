@@ -1075,7 +1075,7 @@ class ImageManagerDownload(Screen):
 				'et8500'          : 'ET-8500',
 				'et9x00'          : 'ET-9x00',
 				'formuler4turbo'  : 'Formuler4turbo',
-				'formuler1tc'     : 'Formuler1',					
+				'formuler1'       : 'Formuler1',					
 				'formuler1tc'     : 'Formuler1tc',				
 				'gb800se'         : 'GiGaBlue-HD800SE',
 				'gb800seplus'     : 'GiGaBlue-HD800SE-PLUS',
