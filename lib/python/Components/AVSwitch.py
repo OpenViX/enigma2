@@ -94,7 +94,7 @@ class AVSwitch:
 		'enfinity',
 		'et4x00',
 		'formuler4turbo',
-		'gbquad4k'
+		'gbquad4k',
 		'gbx1',
 		'gbx3',
 		'iqonios300hd',
@@ -137,7 +137,8 @@ class AVSwitch:
 
 	# Machines that have composite video (yellow RCA socket) but do not have Scart.
 	yellow_RCA_no_scart = (
-		'formuler1tc',
+		'formuler1',
+		'formuler1tc',		
 		'gb800ueplus',		
 		'gbultraue',
 		'mbmicro',
@@ -165,7 +166,7 @@ class AVSwitch:
 		'et5x00',
 		'et6x00',
 		'gbquad',
-		'gbquad4k'
+		'gbquad4k',
 		'gbx1',
 		'gbx3',
 		'ixussone',
