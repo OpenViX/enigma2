@@ -803,11 +803,11 @@ class ImageBackup(Screen):
 			self.commands.append('mount --bind / %s/root' % self.TMPDIR)
 			self.commands.append("/bin/tar -cf %s/rootfs.tar -C %s/root --exclude=/var/nmbd/* ." % (self.WORKDIR, self.TMPDIR))
 			self.commands.append("/usr/bin/bzip2 %s/rootfs.tar" % self.WORKDIR)
-		if self.MODEL in ("gbquad4k","gbue4k"):
-			self.commands.append("dd if=/dev/mmcblk0p1 of=%s/boot.bin" % self.WORKDIR)
-			self.commands.append("dd if=/dev/mmcblk0p3 of=%s/rescue.bin" % self.WORKDIR)
-			print '[ImageManager] Stage2: Create: boot dump boot.bin:',self.MODEL
-			print '[ImageManager] Stage2: Create: rescue dump rescue.bin:',self.MODEL
+			if self.MODEL in ("gbquad4k","gbue4k"):
+				self.commands.append("dd if=/dev/mmcblk0p1 of=%s/boot.bin" % self.WORKDIR)
+				self.commands.append("dd if=/dev/mmcblk0p3 of=%s/rescue.bin" % self.WORKDIR)
+				print '[ImageManager] Stage2: Create: boot dump boot.bin:',self.MODEL
+				print '[ImageManager] Stage2: Create: rescue dump rescue.bin:',self.MODEL
 		elif self.ROOTDEVTYPE == 'hd-emmc':
 			print '[ImageManager] Stage2: EMMC Detected.'
 			self.MTDBOOT_HD51 = "mmcblk0p1"
