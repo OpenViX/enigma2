@@ -84,19 +84,22 @@ def findLcdPicon(serviceName):
 
 def getLcdPiconName(serviceName):
 	#remove the path and name fields, and replace ':' by '_'
-	sname = '_'.join(GetWithAlternative(serviceName).split(':', 10)[:10])
-	pngname = findLcdPicon(sname)
-	if not pngname:
-		fields = sname.split('_', 3)
-		if len(fields) > 2:
-			if fields[0] != '1':
-				#fallback to 1 for other reftypes
-				fields[0] = '1'
-				pngname = findLcdPicon('_'.join(fields))
-			if not pngname and fields[2] != '1':
-				#fallback to 1 for services with different service types
-				fields[2] = '1'
-				pngname = findLcdPicon('_'.join(fields))
+	fields = GetWithAlternative(serviceName).split(':', 10)[:10]
+	if not fields or len(fields) < 10:
+		return ""
+	pngname = findLcdPicon('_'.join(fields))
+	if not pngname and not fields[6].endswith("0000"):
+		#remove "sub-network" from namespace
+		fields[6] = fields[6][:-4] + "0000"
+		pngname = findLcdPicon('_'.join(fields))
+	if not pngname and fields[0] != '1':
+		#fallback to 1 for other reftypes
+		fields[0] = '1'
+		pngname = findLcdPicon('_'.join(fields))
+	if not pngname and fields[2] != '1':
+		#fallback to 1 for services with different service types
+		fields[2] = '1'
+		pngname = findLcdPicon('_'.join(fields))
 	if not pngname: # picon by channel name
 		name = ServiceReference(serviceName).getServiceName()
 		name = unicodedata.normalize('NFKD', unicode(name, 'utf_8', errors='ignore')).encode('ASCII', 'ignore')
