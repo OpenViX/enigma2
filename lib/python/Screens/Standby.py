@@ -14,6 +14,14 @@ from gettext import dgettext
 
 inStandby = None
 
+def setLCDMiniTVMode(value):
+	try:
+		f = open("/proc/stb/lcd/mode", "w")
+		f.write(value)
+		f.close()
+	except:
+		pass
+
 class Standby2(Screen):
 	def Power(self):
 		print "[Standby] leave standby"
@@ -60,6 +68,10 @@ class Standby2(Screen):
 
 		#mute adc
 		self.setMute()
+
+		if SystemInfo["Display"] and SystemInfo["LCDMiniTV"]:
+			# set LCDminiTV off
+			setLCDMiniTVMode("0")
 
 		self.paused_service = None
 
@@ -198,7 +210,7 @@ class TryQuitMainloop(MessageBox):
 		for job in job_manager.getPendingJobs():
 			if job.name != dgettext('vix', 'SoftcamCheck'):
 				jobs.append(job)
-		
+
 		inTimeshift = Screens.InfoBar.InfoBar and Screens.InfoBar.InfoBar.instance and Screens.InfoBar.InfoBar.ptsGetTimeshiftStatus(Screens.InfoBar.InfoBar.instance)
 		self.connected = False
 		reason = ""
@@ -267,11 +279,17 @@ class TryQuitMainloop(MessageBox):
 			self.session.nav.stopService()
 			self.quitScreen = self.session.instantiateDialog(QuitMainloopScreen,retvalue=self.retval)
 			self.quitScreen.show()
-			quitMainloop(self.retval)
+			print "[Standby] quitMainloop #1"
+			quitMainloopCode = self.retval
+			if SystemInfo["Display"] and SystemInfo["LCDMiniTV"]:
+				# set LCDminiTV off / fix a deep-standby-crash on some boxes / gb4k
+				print "[Standby] LCDminiTV off"
+				setLCDMiniTVMode("0")
 			if getBoxType() == "vusolo4k":  #workaround for white display flash
 				f = open("/proc/stb/fp/oled_brightness", "w")
 				f.write("0")
 				f.close()
+			quitMainloop(self.retval)
 		else:
 			MessageBox.close(self, True)
 
