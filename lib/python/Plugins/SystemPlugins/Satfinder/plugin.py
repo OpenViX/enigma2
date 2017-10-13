@@ -634,13 +634,10 @@ class Satfinder(ScanSetup, ServiceScan):
 		if self.serviceList:
 			self["key_yellow"].setText(_("Service list"))
 
-		try:
-			self.getOrbPosFromNit(currentProcess)
-			if self.orb_pos:
-				self["pos"].setText(_("%s") % self.orb_pos)
-				#self["introduction"].setText("TSID: %d, ONID: %d, %s" % (self.tsid, self.onid, self.orb_pos))
-		except Exception, e:
-			print "[satfinder][getCurrentTsidOnid] exception", e
+		self.getOrbPosFromNit(currentProcess)
+		if self.orb_pos:
+			self["pos"].setText(_("%s") % self.orb_pos)
+			#self["introduction"].setText("TSID: %d, ONID: %d, %s" % (self.tsid, self.onid, self.orb_pos))
 
 	def getOrbPosFromNit(self, currentProcess):
 		if not dvbreader_available:
