@@ -450,6 +450,13 @@ class TimerEntry(Screen, ConfigListScreen):
 			"standby": AFTEREVENT.STANDBY,
 			"auto": AFTEREVENT.AUTO
 			}[self.timerentry_afterevent.value]
+# There is no point doing anything after a Zap-only timer!
+# For a start, you can't actually configure anything in the menu, but
+# leaving it as AUTO means that the code may try to shutdown at Zap time
+# if the Zap timer woke the box up.
+#
+		if self.timer.justplay:
+			self.timer.afterEvent = AFTEREVENT.NONE
 		self.timer.descramble = {
 			"normal": True,
 			"descrambled+ecm": True,

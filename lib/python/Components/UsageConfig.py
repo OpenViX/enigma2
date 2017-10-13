@@ -23,6 +23,7 @@ def InitUsageConfig():
 		config.misc.remotecontrol_text_support = ConfigYesNo(default = False)
 
 	config.usage = ConfigSubsection()
+	config.usage.subnetwork = ConfigYesNo(default = True)
 	config.usage.showdish = ConfigSelection(default = "flashing", choices = [("flashing", _("Flashing")), ("normal", _("Not Flashing")), ("off", _("Off"))])
 	config.misc.showrotorposition = ConfigSelection(default = "no", choices = [("no", _("no")), ("yes", _("yes")), ("withtext", _("with text")), ("tunername", _("with tuner name"))])
 	config.usage.multibouquet = ConfigYesNo(default = True)
@@ -214,13 +215,8 @@ def InitUsageConfig():
 		("5", "DVB-T/-S/-C"),
 		("127", _("No priority")) ])
 
-	def remote_fallback_changed(configElement):
-		if configElement.value:
-			configElement.value = "%s%s" % (not configElement.value.startswith("http://") and "http://" or "", configElement.value)
-			configElement.value = "%s%s" % (configElement.value, configElement.value.count(":") == 1 and ":8001" or "")
 	config.usage.remote_fallback_enabled = ConfigYesNo(default = False);
 	config.usage.remote_fallback = ConfigText(default = "", fixed_size = False);
-	config.usage.remote_fallback.addNotifier(remote_fallback_changed, immediate_feedback=False);
 
 	dvbs_nims = [("-2", _("Disabled"))]
 	dvbt_nims = [("-2", _("Disabled"))]
