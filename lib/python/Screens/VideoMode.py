@@ -483,13 +483,16 @@ class AutoVideoMode(Screen):
 				write_mode = new_mode
 			else:
 				if path.exists('/proc/stb/video/videomode_%shz' % new_rate) and config_rate == 'multi':
-					f = open("/proc/stb/video/videomode_%shz" % new_rate, "r")
-					multi_videomode = f.read().replace('\n','')
-					f.close()
-					if multi_videomode and (current_mode != multi_videomode):
-						write_mode = multi_videomode
-					else:
-						write_mode = current_mode
+					try:
+						f = open("/proc/stb/video/videomode_%shz" % new_rate, "r")
+						multi_videomode = f.read().replace('\n','')
+						f.close()
+						if multi_videomode and (current_mode != multi_videomode):
+							write_mode = multi_videomode
+						else:
+							write_mode = current_mode
+					except IOError:
+							write_mode = current_mode
 
 			if write_mode and current_mode != write_mode:
 				resolutionlabel["restxt"].setText(_("Video mode: %s") % write_mode)
