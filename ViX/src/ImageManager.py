@@ -1,6 +1,6 @@
 # for localized messages
 from boxbranding import getBoxType, getImageType, getImageDistro, getImageVersion, getImageBuild, getImageDevBuild, getImageFolder, getImageFileSystem, getBrandOEM, getMachineBrand, getMachineName, getMachineBuild, getMachineMake, getMachineMtdRoot, getMachineRootFile, getMachineMtdKernel, getMachineKernelFile, getMachineMKUBIFS, getMachineUBINIZE
-from os import path, system, mkdir, makedirs, listdir, remove, rename, statvfs, chmod, walk, symlink, unlink
+from os import path, stat, system, mkdir, makedirs, listdir, remove, rename, statvfs, chmod, walk, symlink, unlink
 from shutil import rmtree, move, copy
 from time import localtime, time, strftime, mktime
 
@@ -190,11 +190,12 @@ class VIXImageManager(Screen):
 		images = listdir(self.BackupDirectory)
 		self.oldlist = images
 		del self.emlist[:]
+		mtimes = []
 		for fil in images:
 			if fil.endswith('.zip') or path.isdir(path.join(self.BackupDirectory, fil)):
-				self.emlist.append(fil)
-		self.emlist.sort()
-		self.emlist.reverse()
+				mtimes.append((fil, stat(self.BackupDirectory + fil).st_mtime)) # (filname, mtime)
+		for fil in [x[0] for x in sorted(mtimes, key=lambda x: x[1], reverse=True)]: # sort by mtime
+			self.emlist.append(fil)
 		self["list"].setList(self.emlist)
 		self["list"].show()
 

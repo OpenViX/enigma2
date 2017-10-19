@@ -270,11 +270,12 @@ class VIXBackupManager(Screen):
 				mkdir(self.BackupDirectory, 0755)
 			images = listdir(self.BackupDirectory)
 			del self.emlist[:]
+			mtimes = []
 			for fil in images:
 				if fil.endswith('.tar.gz'):
-					self.emlist.append(fil)
-			self.emlist.sort()
-			self.emlist.reverse()
+					mtimes.append((fil, stat(self.BackupDirectory + fil).st_mtime)) # (filname, mtime)
+			for fil in [x[0] for x in sorted(mtimes, key=lambda x: x[1], reverse=True)]: # sort by mtime
+				self.emlist.append(fil)
 			self["list"].setList(self.emlist)
 			self["list"].show()
 		except:

@@ -1,5 +1,5 @@
 # for localized messages
-from os import listdir, path, walk
+from os import listdir, path, walk, stat
 from enigma import eDVBDB, quitMainloop
 from boxbranding import getMachineBrand, getMachineName
 
@@ -44,6 +44,7 @@ class RestoreWizard(WizardLanguage, Rc):
 		devices = [(r.description, r.mountpoint) for r in harddiskmanager.getMountedPartitions(onlyhotplug=False)]
 		list = []
 		files = []
+		mtimes = []
 		for x in devices:
 			if x[1] == '/':
 				devices.remove(x)
@@ -60,10 +61,9 @@ class RestoreWizard(WizardLanguage, Rc):
 				if len(files):
 					for file in files:
 						if file.endswith('.tar.gz'):
-							list.append((path.join(devpath, file), path.join(devpath, file)))
-		if len(list):
-			list.sort()
-			list.reverse()
+							mtimes.append((path.join(devpath, file), stat(path.join(devpath, file)).st_mtime)) # (filname, mtime)
+		for file in [x[0] for x in sorted(mtimes, key=lambda x: x[1], reverse=True)]: # sort by mtime
+			list.append((file, file))
 		return list
 
 	def settingsdeviceSelectionMade(self, index):
