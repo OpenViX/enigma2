@@ -710,10 +710,15 @@ class Satfinder(ScanSetup, ServiceScan):
 			return
 
 		transponders = [t for t in nit_current_content if "descriptor_tag" in t and t["descriptor_tag"] == 0x43 and t["original_network_id"] == self.onid and t["transport_stream_id"] == self.tsid]
+		transponders2 = [t for t in nit_current_content if "descriptor_tag" in t and t["descriptor_tag"] == 0x43 and t["transport_stream_id"] == self.tsid]
 		if transponders and "orbital_position" in transponders[0]:
 			orb_pos = self.getOrbitalPosition(transponders[0]["orbital_position"], transponders[0]["west_east_flag"])
 			self["pos"].setText(_("%s") % orb_pos)
 			print "[satfinder][getOrbPosFromNit] orb_pos", orb_pos
+		elif transponders2 and "orbital_position" in transponders2[0]:
+			orb_pos = self.getOrbitalPosition(transponders2[0]["orbital_position"], transponders2[0]["west_east_flag"])
+			self["pos"].setText(_("%s?") % orb_pos)
+			print "[satfinder][getOrbPosFromNit] orb_pos tentative, tsid match, onid mismatch between NIT and SDT", orb_pos
 		else:
 			print "[satfinder][getOrbPosFromNit] no orbital position found"
 
@@ -762,10 +767,8 @@ class Satfinder(ScanSetup, ServiceScan):
 			return True
 
 	def monitorTunerLock(self, currentProcess):
-		print "[monitorTunerLock]", currentProcess
 		while True:
 			if self.currentProcess != currentProcess:
-				print "[monitorTunerLock] process mismatch", self.currentProcess, currentProcess
 				return
 			frontendStatus = {}
 			self.frontend.getFrontendStatus(frontendStatus)
