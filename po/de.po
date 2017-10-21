@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-02 12:38+0100\n"
-"PO-Revision-Date: 2017-10-03 18:09+0200\n"
+"POT-Creation-Date: 2017-10-13 17:08+0100\n"
+"PO-Revision-Date: 2017-10-14 10:58+0200\n"
 "Last-Translator: Ralf Biedermann <ralf.biedermann@rbsoft.de>\n"
 "Language-Team: AndyBlacburn, j-ot&Trial\n"
 "Language: de\n"
@@ -177,6 +177,15 @@ msgid " (higher than rotor any auto)"
 msgstr ""
 
 msgid " (lower than any auto)"
+msgstr ""
+
+msgid " - video0"
+msgstr ""
+
+msgid " - video0+video1"
+msgstr ""
+
+msgid " - video1"
 msgstr ""
 
 #, python-format
@@ -4166,14 +4175,17 @@ msgstr "FEHLER - Suche fehlgeschlagen (%s)!"
 msgid "ERROR: Check is already running in background, please wait a few minutes and try again"
 msgstr "Fehler: Prüfung läuft schon im Hintergrund. Bitte ein paar Minuten warten und erneut versuchen."
 
-msgid "ERROR: Forbidden"
-msgstr "Fehler: verboten"
-
 msgid "ERROR: No internet found"
 msgstr "Fehler: Kein Internet gefunden"
 
 msgid "ERROR: No network found"
 msgstr "Fehler: Keine Netzwerk gefunden"
+
+msgid "ERROR: Response 403 Forbidden"
+msgstr "Fehler: Antwort 403 Zugriff verboten"
+
+msgid "ERROR: Response 404 Not Found"
+msgstr "Fehler: Antwort 404 nicht gefunden"
 
 msgid "East"
 msgstr "Ost"
@@ -5501,6 +5513,9 @@ msgstr ""
 "Falls Ihr Fernseher über Helligkeits-- oder Kontraststeigerung verfügt, diese bitte deaktivieren. Falls es eine \"Dynamik\"-Einstellung gibt, sollte sie auf Standard gesetzt werden. Verändere die Intensität der Hintergrundbeleuchtung nach deinem Geschmack. Verringere den Kontrast des Fernsehers soweit wie möglich.\n"
 "Verringere anschließend die Helligkeit soweit wie möglich. Stelle dabei sicher, dass die beiden untersten Grauschattierungen erkennbar bleiben. Die hellen Schattierungen werden im folgenden Schritt eingestellt.\n"
 "Drücke OK, wenn Du mit dem Ergebnis zufrieden bist."
+
+msgid "Ignore DVB namespace sub network"
+msgstr "Ingnoriere DVB Subnetzwerk"
 
 msgid "Image manager"
 msgstr "Image Verwaltung"
@@ -7146,6 +7161,9 @@ msgstr "Am Ende eines Films (als Menü)"
 
 msgid "On reaching the end of a file during playback, you can choose the box's behavior."
 msgstr "Am Ende einer Filmwiedergabe kann das Verhalten der Box bestimmt werden."
+
+msgid "On valid ONIDs, ignore frequency sub network part"
+msgstr "Bei gültigen ONIDS ignoriere Subnetzwerk Frequenzen"
 
 msgid "On your remote, click on the button you want to change"
 msgstr "Drücke den Button der Fernbedienung der neu belegt werden soll und dann drücke \"OK\""
@@ -12502,12 +12520,20 @@ msgid "Your %s %s does not support PiP HD"
 msgstr "Dein %s %s unterstützt kein HD PiP"
 
 #, python-format
+msgid "Your %s %s has no %s access, please check your network settings and make sure you have network cable connected and try again."
+msgstr "Die %s %s hat keinen Zugriff aus %s. Bitte überprüfe die Netzwerkeinstellungen/Kabel und versuche es erneut."
+
+#, python-format
+msgid "Your %s %s has no internet access, please check your network settings and make sure you have network cable connected and try again."
+msgstr "Die %s %s ist nicht mit dem Internet verbunden. Bitte überprüfe die Netzwerkeinstellungen/Kabel und versuche es erneut."
+
+#, python-format
 msgid "Your %s %s has no network access, please check your network settings and make sure you have network cable connected and try again."
 msgstr "Die %s %s ist nicht mit dem Internet verbunden. Bitte überprüfe die Netzwerkeinstellungen und versuche es erneut."
 
 #, python-format
-msgid "Your %s %s is not connected to the internet, please check your network settings and try again."
-msgstr "Die %s %s ist nicht mit dem Internet verbunden. Bitte überprüfe die Netzwerkeinstellungen und versuche es erneut."
+msgid "Your %s %s is not able to connect to the feeds, please try again later. If this persists please report on the OpenViX forum at world-of-satellite.com."
+msgstr "Deine %s %s kann keine Verbindung zu den Feeds herstellen. Bitte später erneut versuchen. Wenn das Problem bestehen bleibt bitte auf world-of-satellite.com nachsehen."
 
 #, python-format
 msgid ""
@@ -14719,6 +14745,9 @@ msgstr "umgeschaltet"
 
 #~ msgid "You have chosen to create a new .NFI flasher bootable USB stick. This will repartition the USB stick and therefore all data on it will be erased."
 #~ msgstr "Du möchtest einen bootfähigen USB-Stick zum Flashen von NFI-Images erstellen. Dabei wird der USB-Stick repartitioniert, wodurch alle darauf enthaltenen Daten verloren gehen."
+
+#~ msgid "Your %s %s is not connected to the internet, please check your network settings and try again."
+#~ msgstr "Die %s %s ist nicht mit dem Internet verbunden. Bitte überprüfe die Netzwerkeinstellungen und versuche es erneut."
 
 #~ msgid "Zap back to service before tuner setup?"
 #~ msgstr "Zurückschalten zum vorher laufenden Sender?"

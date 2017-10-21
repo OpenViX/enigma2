@@ -143,7 +143,8 @@ class AVSwitch:
 	# Machines that have composite video (yellow RCA socket) but do not have Scart.
 	yellow_RCA_no_scart = (
 		'formuler1',
-		'formuler1tc',		
+		'formuler1tc',
+		'formuler4turbo',
 		'gb800ueplus',		
 		'gbultraue',
 		'mbmicro',
