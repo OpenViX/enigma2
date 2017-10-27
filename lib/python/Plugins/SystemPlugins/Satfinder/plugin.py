@@ -761,7 +761,7 @@ class Satfinder(ScanSetup, ServiceScan):
 				return False
 
 			if frontendStatus["tuner_state"] != "LOCKED":
-				time.sleep(1.0)
+				time.sleep(0.25)
 				continue
 
 			return True
