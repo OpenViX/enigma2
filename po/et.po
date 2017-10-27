@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX-Enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-04 02:25+0100\n"
-"PO-Revision-Date: 2017-10-05 13:20+0300\n"
+"POT-Creation-Date: 2017-10-08 10:36+0100\n"
+"PO-Revision-Date: 2017-10-27 07:13+0300\n"
 "Last-Translator: rimas\n"
 "Language-Team: Digi-tv.ee\n"
 "Language: et\n"
@@ -177,6 +177,15 @@ msgstr " (suurem kui ajami mistahes autom.)"
 
 msgid " (lower than any auto)"
 msgstr " (väiksem kui mistahes autom.)"
+
+msgid " - video0"
+msgstr " - video0"
+
+msgid " - video0+video1"
+msgstr " - video0+video1"
+
+msgid " - video1"
+msgstr " - video1"
 
 #, python-format
 msgid " Stream %s"
@@ -4163,14 +4172,17 @@ msgstr "VIGA - (%s) otsing nurjus!"
 msgid "ERROR: Check is already running in background, please wait a few minutes and try again"
 msgstr "VIGA: Kontroll juba toimub taustal. Oota mõni minut ja proovi uuesti"
 
-msgid "ERROR: Forbidden"
-msgstr "Viga: Keelatud"
-
 msgid "ERROR: No internet found"
 msgstr "VIGA: Internet puudub"
 
 msgid "ERROR: No network found"
 msgstr "VIGA: Võrku ei leitud"
+
+msgid "ERROR: Response 403 Forbidden"
+msgstr "VIGA: Vastus 403 Keelatud"
+
+msgid "ERROR: Response 404 Not Found"
+msgstr "VIGA: Vastus 404 Ei leitud"
 
 msgid "East"
 msgstr "Ida"
@@ -5497,6 +5509,9 @@ msgstr ""
 "Ära hooli praegu heledatest varjunditest, need seame paika järgmisena. \n"
 "Kui oled tulemusega rahul, vajuta OK."
 
+msgid "Ignore DVB namespace sub network"
+msgstr "Eira DVB nimeruumi alamvõrku"
+
 msgid "Image manager"
 msgstr "Süsteemitõmmised"
 
@@ -5663,10 +5678,10 @@ msgid "Install"
 msgstr "Paigalda"
 
 msgid "Install a new image with a USB stick"
-msgstr "Paigalda uus tõmmis USB pulgalt"
+msgstr "Paigalda uus püsivara USB pulgalt"
 
 msgid "Install a new image with your web browser"
-msgstr "Paigalda uus tõmmis veebisirvijaga"
+msgstr "Paigalda uus püsivara veebisirvijaga"
 
 msgid "Install channel list"
 msgstr "Paigalda kanalinimekiri"
@@ -7142,6 +7157,9 @@ msgstr "Filmi lõpus (menüüna)"
 
 msgid "On reaching the end of a file during playback, you can choose the box's behavior."
 msgstr "Saad määrata vastuvõtja käitumise taasesituse lõppemisel."
+
+msgid "On valid ONIDs, ignore frequency sub network part"
+msgstr "Kui ONID on kehtiv, eiratakse sageduse alamvõrgu osa"
 
 msgid "On your remote, click on the button you want to change"
 msgstr "Vajuta puldi nupule, mille toimet soovid muuta"
@@ -11540,7 +11558,7 @@ msgid "Use Virgin EPG information when it is available."
 msgstr "Kasuta saadavusel Virgin EPG andmeid."
 
 msgid "Use a gateway"
-msgstr "Lüüs lubatud"
+msgstr "Luba lüüs"
 
 msgid "Use adaptive date display"
 msgstr "Kohanduv kuupäeva kuvamine"
@@ -11917,10 +11935,10 @@ msgid "Wake Island"
 msgstr "Wake'i saar"
 
 msgid "Wake Up"
-msgstr "Käivita"
+msgstr "Käivitus"
 
 msgid "Wake Up To Standby"
-msgstr "Käivitudes ooteseisundisse"
+msgstr "Käivitus ooteseisundisse"
 
 msgid "Wakeup"
 msgstr "Käivitus"
@@ -11985,7 +12003,7 @@ msgid ""
 msgstr ""
 "OpenViX tervitab!\n"
 "\n"
-"MÄRKUS: See võimalus on neile, kes ei saa oma teleril keelata liighälvitust (overscan).  Esmalt ürita siiski liighälvitus keelata.\n"
+"MÄRKUS: See võimalus on neile, kes ei saa oma teleril keelata liighälvitust (overscan). Esmalt ürita siiski liighälvitus keelata.\n"
 "\n"
 "KASUTAMINE: Kohanda pildi suurust ja asukohta nii, et varjutatud kiht kataks täpselt taustal oleva testpildi.\n"
 "\n"
@@ -12005,7 +12023,7 @@ msgstr ""
 "Edasi otsi lõike lõpp, vajuta OK, vali 'lõike lõpp'. Tehtud."
 
 msgid "Welcome to the image upgrade wizard. The wizard will assist you in upgrading the firmware of your %s %s by providing a backup facility for your current settings and a short explanation of how to upgrade your firmware."
-msgstr "Tere tulemast süsteemi uuendamise abilisse. Seadistusabiline aitab %s %s seadete varundamisel ja püsivara uuendamisel."
+msgstr "Tere tulemast püsivara uuendamise abilisse. Abiline aitab %s %s seadete varundamisel ja püsivara uuendamisel."
 
 msgid ""
 "Welcome.\n"
@@ -12496,12 +12514,20 @@ msgid "Your %s %s does not support PiP HD"
 msgstr "PiP HD ei ole %s %s poolt toetatud"
 
 #, python-format
+msgid "Your %s %s has no %s access, please check your network settings and make sure you have network cable connected and try again."
+msgstr ""
+
+#, python-format
+msgid "Your %s %s has no internet access, please check your network settings and make sure you have network cable connected and try again."
+msgstr "%s %s ei oma ligipääsu võrgule. Kontrolli võrguseadeid, veendu, et võrgukaabel on ühendatud ja proovi uuesti."
+
+#, python-format
 msgid "Your %s %s has no network access, please check your network settings and make sure you have network cable connected and try again."
 msgstr "%s %s ei oma ligipääsu võrgule. Kontrolli võrguseadeid, veendu, et võrgukaabel on ühendatud ja proovi uuesti."
 
 #, python-format
-msgid "Your %s %s is not connected to the internet, please check your network settings and try again."
-msgstr "%s %s ei ole ühendatud internetti. Kontrolli võrgu seadeid ja ürita uuesti."
+msgid "Your %s %s is not able to connect to the feeds, please try again later. If this persists please report on the OpenViX forum at world-of-satellite.com."
+msgstr "%s %s ei saa hoidlatega ühendust. Proovi hiljem uuesti. Kui probleem on kestev, teavita sellest OpenViX foorumis aadressil world-of-satellite.com."
 
 #, python-format
 msgid ""
@@ -12783,7 +12809,7 @@ msgid "alpharev then newest"
 msgstr "Pööratud tähestikuline, uuemad ees"
 
 msgid "alternative"
-msgstr "alternatiivne"
+msgstr "Alternatiivne"
 
 msgid "am"
 msgstr "a.m."
@@ -14110,6 +14136,9 @@ msgstr "vahetatud"
 
 #~ msgid "When using the remote fallback tuner for recordings, it is impossible to correctly detect timer conflicts. This option allows you to skip timer confict detection when remote fallback is enabled, but can lead to timer conflicts. This setting is only for advanced users; the default is 'yes'."
 #~ msgstr "Kasutades salvestamiseks kaugvastuvõtjat, ei tööta taimerikonflikti tuvastus korralikult. See valik võimaldab taimerikonflikti tuvastuse välja lülitada. See säte on ainult kogenud kasutajatele. Vaikeväärtus on 'jah'."
+
+#~ msgid "Your %s %s is not connected to the internet, please check your network settings and try again."
+#~ msgstr "%s %s ei ole ühendatud internetti. Kontrolli võrgu seadeid ja ürita uuesti."
 
 #~ msgid "uShare setup"
 #~ msgstr "uShare seaded"
