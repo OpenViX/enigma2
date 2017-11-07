@@ -37,9 +37,9 @@ import string
 import sys 
 
 # Define a function to determine whether a service is configured to
-# start at boto time.
+# start at boot time.
 # This checks for a start file in rc2.d (rc4.d might be more
-# appropriate, ut historically it's been rc2.d, so...).
+# appropriate, but historically it's been rc2.d, so...).
 # 
 import glob
 def ServiceIsEnabled(service_name):
