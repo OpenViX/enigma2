@@ -1,4 +1,3 @@
-from os import path
 from Components.HTMLComponent import HTMLComponent
 from Components.GUIComponent import GUIComponent
 from Screens.Screen import Screen
@@ -7,8 +6,8 @@ from Components.Label import Label
 from Components.config import config
 from Components.Sources.StaticText import StaticText
 from ServiceReference import ServiceReference
-from enigma import eListboxPythonMultiContent, eListbox, gFont, iServiceInformation, eServiceCenter, getDesktop, RT_HALIGN_LEFT, RT_VALIGN_CENTER
-from Tools.Transponder import ConvertToHumanReadable, getChannelNumber, supportedChannels
+from enigma import eListboxPythonMultiContent, eListbox, gFont, iServiceInformation, eServiceCenter, RT_HALIGN_LEFT
+from Tools.Transponder import ConvertToHumanReadable, getChannelNumber
 import skin
 
 RT_HALIGN_LEFT = 0
