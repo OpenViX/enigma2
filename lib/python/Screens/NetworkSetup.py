@@ -36,6 +36,16 @@ import commands
 import string
 import sys 
 
+# Define a function to determine whether a service is configured to
+# start at boot time.
+# This checks for a start file in rc2.d (rc4.d might be more
+# appropriate, but historically it's been rc2.d, so...).
+# 
+import glob
+def ServiceIsEnabled(service_name):
+	starter_list = glob.glob("/etc/rc2.d/S*" + service_name)
+	return len(starter_list) > 0
+
 # Various classes in here have common entrypoint code requirements.
 # So actually make them common...
 # ...but note that the exact details can depend on whether a final reboot
@@ -1847,7 +1857,7 @@ class NetworkAfp(NSCommon,Screen):
 			self.Console.ePopen('/etc/init.d/atalk stop', self.StartStopCallback)
 
 	def activateAfp(self):
-		if fileExists('/etc/rc2.d/S20atalk'):
+		if ServiceIsEnabled('atalk'):
 			self.Console.ePopen('update-rc.d -f atalk remove', self.StartStopCallback)
 		else:
 			self.Console.ePopen('update-rc.d -f atalk defaults', self.StartStopCallback)
@@ -1861,7 +1871,7 @@ class NetworkAfp(NSCommon,Screen):
 		self['labactive'].setText(_("Disabled"))
 		self.my_afp_active = False
 		self.my_afp_run = False
-		if fileExists('/etc/rc2.d/S20atalk'):
+		if ServiceIsEnabled('atalk'):
 			self['labactive'].setText(_("Enabled"))
 			self['labactive'].show()
 			self.my_afp_active = True
@@ -1929,7 +1939,7 @@ class NetworkFtp(NSCommon,Screen):
 
 	def activateFtp(self):
 		commands = []
-		if fileExists('/etc/rc2.d/S20vsftpd'):
+		if ServiceIsEnabled('vsftpd'):
 			commands.append('update-rc.d -f vsftpd remove')
 		else:
 			commands.append('update-rc.d -f vsftpd defaults')
@@ -1943,7 +1953,7 @@ class NetworkFtp(NSCommon,Screen):
 		self['labstop'].hide()
 		self['labactive'].setText(_("Disabled"))
 		self.my_ftp_active = False
-		if fileExists('/etc/rc2.d/S20vsftpd'):
+		if ServiceIsEnabled('vsftpd'):
 			self['labactive'].setText(_("Enabled"))
 			self['labactive'].show()
 			self.my_ftp_active = True
@@ -2010,7 +2020,7 @@ class NetworkNfs(NSCommon,Screen):
 			self.Console.ePopen('/etc/init.d/nfsserver stop', self.StartStopCallback)
 
 	def Nfsset(self):
-		if fileExists('/etc/rc2.d/S11nfsserver') or fileExists('/etc/rc2.d/S13nfsserver') or fileExists('/etc/rc2.d/S20nfsserver'):
+		if ServiceIsEnabled('nfsserver'):
 			self.Console.ePopen('update-rc.d -f nfsserver remove', self.StartStopCallback)
 		else:
 			self.Console.ePopen('update-rc.d -f nfsserver defaults 13', self.StartStopCallback)
@@ -2024,7 +2034,7 @@ class NetworkNfs(NSCommon,Screen):
 		self['labactive'].setText(_("Disabled"))
 		self.my_nfs_active = False
 		self.my_nfs_run = False
-		if fileExists('/etc/rc2.d/S13nfsserver'):
+		if ServiceIsEnabled('nfsserver'):
 			self['labactive'].setText(_("Enabled"))
 			self['labactive'].show()
 			self.my_nfs_active = True
@@ -2091,7 +2101,7 @@ class NetworkOpenvpn(NSCommon,Screen):
 			self.Console.ePopen('/etc/init.d/openvpn stop', self.StartStopCallback)
 
 	def activateVpn(self):
-		if fileExists('/etc/rc2.d/S20openvpn'):
+		if ServiceIsEnabled('openvpn'):
 			self.Console.ePopen('update-rc.d -f openvpn remove', self.StartStopCallback)
 		else:
 			self.Console.ePopen('update-rc.d -f openvpn defaults', self.StartStopCallback)
@@ -2105,7 +2115,7 @@ class NetworkOpenvpn(NSCommon,Screen):
 		self['labactive'].setText(_("Disabled"))
 		self.my_Vpn_active = False
 		self.my_vpn_run = False
-		if fileExists('/etc/rc2.d/S20openvpn'):
+		if ServiceIsEnabled('openvpn'):
 			self['labactive'].setText(_("Enabled"))
 			self['labactive'].show()
 			self.my_Vpn_active = True
@@ -2206,7 +2216,7 @@ class NetworkSamba(NSCommon,Screen):
 
 	def activateSamba(self):
 		commands = []
-		if fileExists('/etc/rc2.d/S20samba'):
+		if ServiceIsEnabled('samba'):
 			commands.append('update-rc.d -f samba remove')
 		else:
 			commands.append('update-rc.d -f samba defaults')
@@ -2220,7 +2230,7 @@ class NetworkSamba(NSCommon,Screen):
 		self['labstop'].hide()
 		self['labactive'].setText(_("Disabled"))
 		self.my_Samba_active = False
-		if fileExists('/etc/rc2.d/S20samba'):
+		if ServiceIsEnabled('samba'):
 			self['labactive'].setText(_("Enabled"))
 			self['labactive'].show()
 			self.my_Samba_active = True
@@ -2320,7 +2330,7 @@ class NetworkTelnet(NSCommon,Screen):
 	def activateTelnet(self):
 		commands = []
 		if fileExists('/etc/init.d/telnetd.busybox'):
-			if fileExists('/etc/rc2.d/S20telnetd.busybox'):
+			if ServiceIsEnabled('telnetd.busybox'):
 				commands.append('update-rc.d -f telnetd.busybox remove')
 			else:
 				commands.append('update-rc.d -f telnetd.busybox defaults')
@@ -2335,7 +2345,7 @@ class NetworkTelnet(NSCommon,Screen):
 		self['labactive'].setText(_("Disabled"))
 		self.my_telnet_active = False
 		self.my_telnet_run = False
-		if fileExists('/etc/rc2.d/S20telnetd.busybox'):
+		if ServiceIsEnabled('telnetd.busybox'):
 			self['labactive'].setText(_("Enabled"))
 			self['labactive'].show()
 			self.my_telnet_active = True
@@ -2411,7 +2421,7 @@ class NetworkInadyn(NSCommon,Screen):
 			self.Console.ePopen('/etc/init.d/inadyn-mt stop', self.StartStopCallback)
 
 	def autostart(self):
-		if fileExists('/etc/rc2.d/S20inadyn-mt'):
+		if ServiceIsEnabled('inadyn-mt'):
 			self.Console.ePopen('update-rc.d -f inadyn-mt remove', self.StartStopCallback)
 		else:
 			self.Console.ePopen('update-rc.d -f inadyn-mt defaults', self.StartStopCallback)
@@ -2427,7 +2437,7 @@ class NetworkInadyn(NSCommon,Screen):
 		self['sactive'].hide()
 		self.my_inadyn_active = False
 		self.my_inadyn_run = False
-		if fileExists('/etc/rc2.d/S20inadyn-mt'):
+		if ServiceIsEnabled('inadyn-mt'):
 			self['labdisabled'].hide()
 			self['labactive'].show()
 			self.my_inadyn_active = True
@@ -2721,7 +2731,7 @@ class NetworkuShare(NSCommon,Screen):
 			self.Console.ePopen('/etc/init.d/ushare stop >> /tmp/uShare.log', self.StartStopCallback)
 
 	def autostart(self):
-		if fileExists('/etc/rc2.d/S20ushare'):
+		if ServiceIsEnabled('ushare'):
 			self.Console.ePopen('update-rc.d -f ushare remove', self.StartStopCallback)
 		else:
 			self.Console.ePopen('update-rc.d -f ushare defaults', self.StartStopCallback)
@@ -2740,7 +2750,7 @@ class NetworkuShare(NSCommon,Screen):
 			f = open('/tmp/uShare.log', "w")
 			f.write("")
 			f.close()
-		if fileExists('/etc/rc2.d/S20ushare'):
+		if ServiceIsEnabled('ushare'):
 			self['labdisabled'].hide()
 			self['labactive'].show()
 			self.my_ushare_active = True
@@ -3181,7 +3191,7 @@ class NetworkMiniDLNA(NSCommon,Screen):
 			self.Console.ePopen('/etc/init.d/minidlna stop', self.StartStopCallback)
 
 	def autostart(self):
-		if fileExists('/etc/rc2.d/S20minidlna'):
+		if ServiceIsEnabled('minidlna'):
 			self.Console.ePopen('update-rc.d -f minidlna remove', self.StartStopCallback)
 		else:
 			self.Console.ePopen('update-rc.d -f minidlna defaults', self.StartStopCallback)
@@ -3196,7 +3206,7 @@ class NetworkMiniDLNA(NSCommon,Screen):
 		self['labdisabled'].hide()
 		self.my_minidlna_active = False
 		self.my_minidlna_run = False
-		if fileExists('/etc/rc2.d/S20minidlna'):
+		if ServiceIsEnabled('minidlna'):
 			self['labdisabled'].hide()
 			self['labactive'].show()
 			self.my_minidlna_active = True
