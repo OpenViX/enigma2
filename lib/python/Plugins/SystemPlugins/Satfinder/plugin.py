@@ -50,6 +50,7 @@ class Satfinder(ScanSetup, ServiceScan):
 		self.preDefTransponderTerrEntry = None
 		self.preDefTransponderAtscEntry = None
 		self.frontend = None
+		self.is_id_boolEntry = None
 		# for reading stream
 		self.serviceList = []
 
@@ -137,6 +138,20 @@ class Satfinder(ScanSetup, ServiceScan):
 
 		elif cur in (self.preDefTransponderEntry, self.preDefTransponderCableEntry, self.preDefTransponderTerrEntry, self.preDefTransponderAtscEntry): # retune only
 			self.retune()
+		elif cur == self.is_id_boolEntry:
+			if self.is_id_boolEntry[1].value:
+				self.scan_sat.is_id.value = 0 if self.is_id_memory < 0 else self.is_id_memory
+				self.scan_sat.pls_mode.value = self.pls_mode_memory
+				self.scan_sat.pls_code.value = self.pls_code_memory
+			else:
+				self.is_id_memory = self.scan_sat.is_id.value
+				self.pls_mode_memory = self.scan_sat.pls_mode.value
+				self.pls_code_memory = self.scan_sat.pls_code.value
+				self.scan_sat.is_id.value = self.NO_STREAM_ID_FILTER
+				self.scan_sat.pls_mode.value = eDVBFrontendParametersSatellite.PLS_Root
+				self.scan_sat.pls_code.value = 1
+			self.createSetup()
+			self.retune()
 
 	def createSetup(self):
 		self.list = []
@@ -178,9 +193,16 @@ class Satfinder(ScanSetup, ServiceScan):
 					self.list.append(getConfigListEntry(_('Roll-off'), self.scan_sat.rolloff))
 					self.list.append(getConfigListEntry(_('Pilot'), self.scan_sat.pilot))
 					if nim.isMultistream():
-						self.list.append(getConfigListEntry(_('Input Stream ID'), self.scan_sat.is_id))
-						self.list.append(getConfigListEntry(_('PLS Mode'), self.scan_sat.pls_mode))
-						self.list.append(getConfigListEntry(_('PLS Code'), self.scan_sat.pls_code))
+						self.is_id_boolEntry = getConfigListEntry(_('Transport Stream Type'), self.scan_sat.is_id_bool)
+						self.list.append(self.is_id_boolEntry)
+						if self.scan_sat.is_id_bool.value:
+							self.list.append(getConfigListEntry(_('Input Stream ID'), self.scan_sat.is_id))
+							self.list.append(getConfigListEntry(_('PLS Mode'), self.scan_sat.pls_mode))
+							self.list.append(getConfigListEntry(_('PLS Code'), self.scan_sat.pls_code))
+					else:
+						self.scan_sat.is_id.value = self.NO_STREAM_ID_FILTER
+						self.scan_sat.pls_mode.value = eDVBFrontendParametersSatellite.PLS_Root
+						self.scan_sat.pls_code.value = 1
 			elif self.tuning_type.value == "predefined_transponder":
 				self.updatePreDefTransponders()
 				self.preDefTransponderEntry = getConfigListEntry(_("Transponder"), self.preDefTransponders)
@@ -544,18 +566,26 @@ class Satfinder(ScanSetup, ServiceScan):
 
 	def dvb_read_stream(self):
 		print "[satfinder][dvb_read_stream] starting"
-		#self["introduction"].setText("")
+		thread.start_new_thread(self.getCurrentTsidOnid, (True,))
+
+	def getCurrentTsidOnid(self, from_retune = False):
+		self.currentProcess = currentProcess = datetime.datetime.now()
 		self["tsid"].setText("")
 		self["onid"].setText("")
 		self["pos"].setText(self.DVB_type.value)
 		self["key_yellow"].setText("")
-		self.currentProcess = currentProcess = datetime.datetime.now()
-		thread.start_new_thread(self.getCurrentTsidOnid, (currentProcess,))
-
-	def getCurrentTsidOnid(self, currentProcess):
 		self.serviceList = []
-		if not dvbreader_available or self.frontend is None:
+
+		if not dvbreader_available or self.frontend is None or self.demux < 0:
 			return
+
+		if from_retune: # give the tuner a chance to retune or we will be reading the old stream
+			time.sleep(1.0)
+
+		if not self.tunerLock() and not self.waitTunerLock(currentProcess): # dont even try to read the transport stream if tuner is not locked
+			return
+
+		thread.start_new_thread(self.monitorTunerLock, (currentProcess,)) # if tuner loses lock we start again from scratch
 
 		adapter = 0
 		demuxer_device = "/dev/dvb/adapter%d/demux%d" % (adapter, self.demux)
@@ -563,7 +593,7 @@ class Satfinder(ScanSetup, ServiceScan):
 		sdt_pid = 0x11
 		sdt_current_table_id = 0x42
 		mask = 0xff
-		tsidOnidTimeout = 60
+		tsidOnidTimeout = 60 # maximum time allowed to read the service descriptor table (seconds)
 		self.tsid = None
 		self.onid = None
 
@@ -586,9 +616,8 @@ class Satfinder(ScanSetup, ServiceScan):
 				print "[Satfinder][getCurrentTsidOnid] Timed out"
 				break
 
-			if self.currentProcess != currentProcess:
+			if self.currentProcess != currentProcess or not self.tunerLock():
 				dvbreader.close(fd)
-				print "[satfinder][getCurrentTsidOnid] killed: %s, currentProcess: %s" % (currentProcess, self.currentProcess)
 				return
 
 			section = dvbreader.read_sdt(fd, sdt_current_table_id, 0x00)
@@ -611,7 +640,6 @@ class Satfinder(ScanSetup, ServiceScan):
 						self.onid = section["header"]["original_network_id"]
 						self["tsid"].setText("%d" % (section["header"]["transport_stream_id"]))
 						self["onid"].setText("%d" % (section["header"]["original_network_id"]))
-						#self["introduction"].setText("TSID: %d, ONID: %d" % (section["header"]["transport_stream_id"], section["header"]["original_network_id"))
 						print "[Satfinder][getCurrentTsidOnid] tsid %d, onid %d" % (section["header"]["transport_stream_id"], section["header"]["original_network_id"])
 
 					if len(sdt_current_sections_read) == sdt_current_sections_count:
@@ -623,7 +651,7 @@ class Satfinder(ScanSetup, ServiceScan):
 		dvbreader.close(fd)
 
 		if not sdt_current_content:
-			print "[Satfinder][keyReadServices] no services found on transponder"
+			print "[Satfinder][getCurrentTsidOnid] no services found on transponder"
 			return
 
 		for i in range(len(sdt_current_content)):
@@ -635,21 +663,11 @@ class Satfinder(ScanSetup, ServiceScan):
 			self["key_yellow"].setText(_("Service list"))
 
 		self.getOrbPosFromNit(currentProcess)
-		if self.orb_pos:
-			self["pos"].setText(_("%s") % self.orb_pos)
-			#self["introduction"].setText("TSID: %d, ONID: %d, %s" % (self.tsid, self.onid, self.orb_pos))
 
 	def getOrbPosFromNit(self, currentProcess):
-		if not dvbreader_available:
+		if self.DVB_type.value != "DVB-S" or not dvbreader_available or self.frontend is None or self.demux < 0:
 			return
 
-		print "[Satfinder][getOrbPosFromNit] starting"
-
-		if self.demux < 0:
-			print "[Satfinder][getOrbPosFromNit] Demux not allocated"
-			return
-
-		self.orb_pos = ''
 		adapter = 0
 		demuxer_device = "/dev/dvb/adapter%d/demux%d" % (adapter, self.demux)
 
@@ -660,7 +678,7 @@ class Satfinder(ScanSetup, ServiceScan):
 			mask = 0xff
 		else:
 			mask = nit_current_table_id ^ nit_other_table_id ^ 0xff
-		nit_current_timeout = 60 # time allowed to get table data
+		nit_current_timeout = 60 # maximum time allowed to read the network information table (seconds)
 
 		nit_current_version_number = -1
 		nit_current_sections_read = []
@@ -681,8 +699,7 @@ class Satfinder(ScanSetup, ServiceScan):
 				print "[Satfinder][getOrbPosFromNit] Timed out reading NIT"
 				break
 
-			if self.currentProcess != currentProcess:
-				print "[satfinder][getOrbPosFromNit] killed: %s, currentProcess: %s" % (currentProcess, self.currentProcess)
+			if self.currentProcess != currentProcess or not self.tunerLock():
 				dvbreader.close(fd)
 				return
 
@@ -715,9 +732,15 @@ class Satfinder(ScanSetup, ServiceScan):
 			return
 
 		transponders = [t for t in nit_current_content if "descriptor_tag" in t and t["descriptor_tag"] == 0x43 and t["original_network_id"] == self.onid and t["transport_stream_id"] == self.tsid]
+		transponders2 = [t for t in nit_current_content if "descriptor_tag" in t and t["descriptor_tag"] == 0x43 and t["transport_stream_id"] == self.tsid]
 		if transponders and "orbital_position" in transponders[0]:
-			self.orb_pos = self.getOrbitalPosition(transponders[0]["orbital_position"], transponders[0]["west_east_flag"])
-			print "[satfinder][getOrbPosFromNit] self.orb_pos", self.orb_pos
+			orb_pos = self.getOrbitalPosition(transponders[0]["orbital_position"], transponders[0]["west_east_flag"])
+			self["pos"].setText(_("%s") % orb_pos)
+			print "[satfinder][getOrbPosFromNit] orb_pos", orb_pos
+		elif transponders2 and "orbital_position" in transponders2[0]:
+			orb_pos = self.getOrbitalPosition(transponders2[0]["orbital_position"], transponders2[0]["west_east_flag"])
+			self["pos"].setText(_("%s?") % orb_pos)
+			print "[satfinder][getOrbPosFromNit] orb_pos tentative, tsid match, onid mismatch between NIT and SDT", orb_pos
 		else:
 			print "[satfinder][getOrbPosFromNit] no orbital position found"
 
@@ -733,6 +756,49 @@ class Satfinder(ScanSetup, ServiceScan):
 		if w_e_flag == 0:
 			op *= -1
 		return "%0.1f%s" % (abs(op)/10., "W" if op < 0 else "E")
+
+	def tunerLock(self):
+		frontendStatus = {}
+		self.frontend.getFrontendStatus(frontendStatus)
+		return frontendStatus["tuner_state"] == "LOCKED"
+
+	def waitTunerLock(self, currentProcess):
+		lock_timeout = 120
+
+		timeout = datetime.datetime.now()
+		timeout += datetime.timedelta(0, lock_timeout)
+
+		while True:
+			if datetime.datetime.now() > timeout:
+				print "[Satfinder][waitTunerLock] tuner lock timeout reached, seconds:", lock_timeout
+				return False
+
+			if self.currentProcess != currentProcess:
+				return False
+
+			frontendStatus = {}
+			self.frontend.getFrontendStatus(frontendStatus)
+			if frontendStatus["tuner_state"] == "FAILED":
+				print "[Satfinder][waitTunerLock] TUNING FAILED FATAL" # enigma2 cpp code has given up trying
+				return False
+
+			if frontendStatus["tuner_state"] != "LOCKED":
+				time.sleep(0.25)
+				continue
+
+			return True
+
+	def monitorTunerLock(self, currentProcess):
+		while True:
+			if self.currentProcess != currentProcess:
+				return
+			frontendStatus = {}
+			self.frontend.getFrontendStatus(frontendStatus)
+			if frontendStatus["tuner_state"] != "LOCKED":
+				print "[monitorTunerLock] starting again from scratch"
+				self.getCurrentTsidOnid(False) # if tuner lock fails start again from beginning
+				return
+			time.sleep(1.0)
 
 	def keyReadServices(self):
 		if not self.serviceList:
