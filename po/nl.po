@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-11-07 09:54+0000\n"
-"PO-Revision-Date: 2017-11-10 16:11+0100\n"
+"PO-Revision-Date: 2017-11-11 07:32+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does, Delagroov\n"
 "Language: nl\n"
@@ -9795,7 +9795,7 @@ msgid "Skin Setting"
 msgstr "Skin instellen"
 
 msgid "Skin setup"
-msgstr "Skin kiezen"
+msgstr "Skin instellingen"
 
 #, python-format
 msgid "Skin:\t%s"
