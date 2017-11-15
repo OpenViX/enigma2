@@ -192,11 +192,11 @@ class VIXSoftcamManager(Screen):
 			active.append(x[0][0])
 		activelist = ",".join(active)
 		if activelist:
-			self.Console.ePopen("ps -C " + activelist + " | grep -v 'CMD' | sed 's/</ /g' | awk '{print $4}' | awk '{a[$1] = $0} END { for (x in a) { print a[x] } }'", self.showActivecam2)
+			self.Console.ePopen("ps.procps -C " + activelist + " | grep -v 'CMD' | sed 's/</ /g' | awk '{print $4}' | awk '{a[$1] = $0} END { for (x in a) { print a[x] } }'", self.showActivecam2)
 		else:
 			self['activecam'].setText('')
 			self['activecam'].show()
-		# self.Console.ePopen("ps | grep softcams | grep -v 'grep' | sed 's/</ /g' | awk '{print $5}' | awk '{a[$1] = $0} END { for (x in a) { print a[x] } }' | awk -F'[/]' '{print $4}'", self.showActivecam2)
+		# self.Console.ePopen("ps.procps | grep softcams | grep -v 'grep' | sed 's/</ /g' | awk '{print $5}' | awk '{a[$1] = $0} END { for (x in a) { print a[x] } }' | awk -F'[/]' '{print $4}'", self.showActivecam2)
 
 	def showActivecam2(self, result, retval, extra_args):
 		if retval == 0:
@@ -235,7 +235,7 @@ class VIXSoftcamManager(Screen):
 						self.session.open(MessageBox, _("No config files found, please setup Hypercam first\nin /etc/hypercam.cfg"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 					else:
 						self.session.openWithCallback(self.showActivecam, VIXStartCam, self.sel[0])
-				elif selcam.lower().startswith('oscam'): 
+				elif selcam.lower().startswith('oscam'):
 					if not path.exists('/etc/tuxbox/config/oscam.conf') and not path.exists('/etc/tuxbox/config/oscam/oscam.conf'):
 						self.session.open(MessageBox, _("No config files found, please setup Oscam first\nin /etc/tuxbox/config or /etc/tuxbox/config/oscam"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 					else:
@@ -760,7 +760,7 @@ class SoftcamAutoPoller:
 								output.close()
 								self.Console.ePopen("killall -9 " + softcamcheck)
 								sleep(1)
-								self.Console.ePopen("ps | grep softcams | grep -v grep | awk 'NR==1' | awk '{print $5}'| awk  -F'[/]' '{print $4}' > /tmp/oscamRuningCheck.tmp")
+								self.Console.ePopen("ps.procps | grep softcams | grep -v grep | awk 'NR==1' | awk '{print $5}'| awk  -F'[/]' '{print $4}' > /tmp/oscamRuningCheck.tmp")
 								sleep(2)
 								file = open('/tmp/oscamRuningCheck.tmp')
 								cccamcheck_process = file.read()
@@ -848,7 +848,7 @@ class SoftcamAutoPoller:
 						output.write(now.strftime("%Y-%m-%d %H:%M") + ": Couldn't find " + softcamcheck + " running, Starting " + softcamcheck + "\n")
 						output.close()
 						if softcamcheck.lower().startswith('oscam'):
-							self.Console.ePopen("ps | grep softcams | grep -v grep | awk 'NR==1' | awk '{print $5}'| awk  -F'[/]' '{print $4}' > /tmp/softcamRuningCheck.tmp")
+							self.Console.ePopen("ps.procps | grep softcams | grep -v grep | awk 'NR==1' | awk '{print $5}'| awk  -F'[/]' '{print $4}' > /tmp/softcamRuningCheck.tmp")
 							sleep(2)
 							file = open('/tmp/softcamRuningCheck.tmp')
 							cccamcheck_process = file.read()
