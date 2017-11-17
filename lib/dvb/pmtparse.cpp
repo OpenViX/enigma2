@@ -307,6 +307,7 @@ int eDVBPMTParser::getProgramInfo(program &program)
 									isaudio = 1;
 									audio.type = audioStream::atDTS;
 									break;
+								case 0x45414333: // == 'Enhanced AC-3'
 								case 0x41432d33: // == 'AC-3'
 									isaudio = 1;
 									audio.type = audioStream::atAC3;
@@ -314,10 +315,6 @@ int eDVBPMTParser::getProgramInfo(program &program)
 								case 0x42535344: // == 'BSSD' (LPCM)
 									isaudio = 1;
 									audio.type = audioStream::atLPCM;
-									break;
-								case 0x45414333: // == 'Enhanced AC-3'
-									isaudio = 1;
-									audio.type = audioStream::atDDP;
 									break;
 								case 0x56432d31: // == 'VC-1'
 								{
