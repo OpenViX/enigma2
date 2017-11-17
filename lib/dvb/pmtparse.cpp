@@ -307,7 +307,6 @@ int eDVBPMTParser::getProgramInfo(program &program)
 									isaudio = 1;
 									audio.type = audioStream::atDTS;
 									break;
-								case 0x45414333: // == 'Enhanced AC-3'
 								case 0x41432d33: // == 'AC-3'
 									isaudio = 1;
 									audio.type = audioStream::atAC3;
