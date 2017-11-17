@@ -194,8 +194,10 @@ int eDVBPMTParser::getProgramInfo(program &program)
 						audio.type = audioStream::atDTSHD;
 					}
 				case 0x06: // PES Private
+					eDebug("[eDVBPMTParser] case 0x06, fallthrough to 0xEA");
 				case 0xEA: // TS_PSI_ST_SMPTE_VC1
 				{
+					eDebug("[eDVBPMTParser] case 0xEA");
 					int num_descriptors = 0;
 					for (DescriptorConstIterator desc = (*es)->getDescriptors()->begin();
 						desc != (*es)->getDescriptors()->end(); ++desc)
@@ -205,6 +207,7 @@ int eDVBPMTParser::getProgramInfo(program &program)
 						++num_descriptors;
 						if (!forced_video && !forced_audio)
 						{
+							eDebug("[eDVBPMTParser] tag %d", tag);
 							switch (tag)
 							{
 							case AUDIO_STREAM_DESCRIPTOR:
@@ -293,14 +296,17 @@ int eDVBPMTParser::getProgramInfo(program &program)
 							case AC3_DESCRIPTOR:
 								isaudio = 1;
 								audio.type = audioStream::atAC3;
+								eDebug("[eDVBPMTParser] AC3_DESCRIPTOR %d", AC3_DESCRIPTOR);
 								break;
 							case ENHANCED_AC3_DESCRIPTOR:
 								isaudio = 1;
 								audio.type = audioStream::atDDP;
+								eDebug("[eDVBPMTParser] ENHANCED_AC3_DESCRIPTOR %d", ENHANCED_AC3_DESCRIPTOR);
 								break;
 							case REGISTRATION_DESCRIPTOR: /* some services don't have a separate AC3 descriptor */
 							{
 								RegistrationDescriptor *d = (RegistrationDescriptor*)(*desc);
+								eDebug("[eDVBPMTParser] REGISTRATION_DESCRIPTOR %d", d->getFormatIdentifier());
 								switch (d->getFormatIdentifier())
 								{
 								case 0x44545331 ... 0x44545333: // DTS1/DTS2/DTS3
@@ -333,6 +339,7 @@ int eDVBPMTParser::getProgramInfo(program &program)
 									video.type = videoStream::vtH265_HEVC;
 									break;
 								default:
+									eDebug("[eDVBPMTParser] REGISTRATION_DESCRIPTOR unknown type");
 									break;
 								}
 								break;
@@ -346,6 +353,7 @@ int eDVBPMTParser::getProgramInfo(program &program)
 								video.type = videoStream::vtMPEG4_Part2;
 								break;
 							default:
+								eDebug("[eDVBPMTParser] tag unknown type %d", tag);
 								break;
 							}
 						}
