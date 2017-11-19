@@ -915,7 +915,6 @@ def InitUsageConfig():
 	config.subtitles.pango_autoturnon = ConfigYesNo(default = True)
 
 	config.autolanguage = ConfigSubsection()
-	default_autoselect = "eng qaa Englisch" // for audio_autoselect1
 	audio_language_choices=[
 		("---", _("None")),
 		("und", _("Undetermined")),
@@ -927,7 +926,7 @@ def InitUsageConfig():
 		("ces cze", _("Czech")),
 		("dan", _("Danish")),
 		("dut ndl nld Dutch", _("Dutch")),
-		(default_autoselect, _("English")),
+		("eng qaa Englisch", _("English")),
 		("est", _("Estonian")),
 		("fin", _("Finnish")),
 		("fra fre", _("French")),
@@ -965,7 +964,7 @@ def InitUsageConfig():
 	config.autolanguage.audio_epglanguage_alternative = ConfigSelection(audio_language_choices[:1] + audio_language_choices [2:], default="---")
 	config.autolanguage.audio_epglanguage_alternative.addNotifier(setEpgLanguageAlternative)
 
-	config.autolanguage.audio_autoselect1 = ConfigSelection(choices=audio_language_choices, default=default_autoselect)
+	config.autolanguage.audio_autoselect1 = ConfigSelection(choices=audio_language_choices, default="---")
 	config.autolanguage.audio_autoselect2 = ConfigSelection(choices=audio_language_choices, default="---")
 	config.autolanguage.audio_autoselect3 = ConfigSelection(choices=audio_language_choices, default="---")
 	config.autolanguage.audio_autoselect4 = ConfigSelection(choices=audio_language_choices, default="---")
