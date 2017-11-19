@@ -207,16 +207,14 @@ int eDVBPMTParser::getProgramInfo(program &program)
 						++num_descriptors;
 						if (!forced_video && !forced_audio)
 						{
-							eDebug("[eDVBPMTParser] tag 0x%04x", tag);
+							eDebug("[eDVBPMTParser] tag %d", tag);
 							switch (tag)
 							{
 							case AUDIO_STREAM_DESCRIPTOR:
-								eDebug("[eDVBPMTParser] AUDIO_STREAM_DESCRIPTOR 0x%04x", AUDIO_STREAM_DESCRIPTOR);
 								isaudio = 1;
 								break;
 							case VIDEO_STREAM_DESCRIPTOR:
 							{
-								eDebug("[eDVBPMTParser] VIDEO_STREAM_DESCRIPTOR 0x%04x", VIDEO_STREAM_DESCRIPTOR);
 								isvideo = 1;
 								VideoStreamDescriptor *d = (VideoStreamDescriptor*)(*desc);
 								if (d->getMpeg1OnlyFlag())
@@ -225,7 +223,6 @@ int eDVBPMTParser::getProgramInfo(program &program)
 							}
 							case SUBTITLING_DESCRIPTOR:
 							{
-								eDebug("[eDVBPMTParser] SUBTITLING_DESCRIPTOR 0x%04x", SUBTITLING_DESCRIPTOR);
 								SubtitlingDescriptor *d = (SubtitlingDescriptor*)(*desc);
 								const SubtitlingList *list = d->getSubtitlings();
 								subtitleStream s;
@@ -255,7 +252,6 @@ int eDVBPMTParser::getProgramInfo(program &program)
 								break;
 							}
 							case TELETEXT_DESCRIPTOR:
-								eDebug("[eDVBPMTParser] TELETEXT_DESCRIPTOR 0x%04x", TELETEXT_DESCRIPTOR);
 								if (program.textPid == -1)
 								{
 									subtitleStream s;
@@ -285,56 +281,48 @@ int eDVBPMTParser::getProgramInfo(program &program)
 								}
 								break;
 							case DTS_DESCRIPTOR:
-								eDebug("[eDVBPMTParser] DTS_DESCRIPTOR 0x%04x", DTS_DESCRIPTOR);
 								isaudio = 1;
 								audio.type = audioStream::atDTS;
 								break;
 							case 0x2B: // TS_PSI_DT_MPEG2_AAC
-								eDebug("[eDVBPMTParser] TS_PSI_DT_MPEG2_AAC 0x2B");
 								isaudio = 1;
 								audio.type = audioStream::atAAC; // MPEG2-AAC
 								break;
 							case 0x1C: // TS_PSI_DT_MPEG4_Audio
-								eDebug("[eDVBPMTParser] TS_PSI_DT_MPEG4_Audio 0x1C, fallthrough to AAC_DESCRIPTOR");
 							case AAC_DESCRIPTOR:
-								eDebug("[eDVBPMTParser] AAC_DESCRIPTOR 0x%04x", AAC_DESCRIPTOR);
 								isaudio = 1;
 								audio.type = audioStream::atAACHE; // MPEG4-AAC
 								break;
 							case AC3_DESCRIPTOR:
-								eDebug("[eDVBPMTParser] AC3_DESCRIPTOR 0x%04x", AC3_DESCRIPTOR);
 								isaudio = 1;
 								audio.type = audioStream::atAC3;
+								eDebug("[eDVBPMTParser] AC3_DESCRIPTOR %d", AC3_DESCRIPTOR);
 								break;
 							case ENHANCED_AC3_DESCRIPTOR:
 								isaudio = 1;
 								audio.type = audioStream::atDDP;
-								eDebug("[eDVBPMTParser] ENHANCED_AC3_DESCRIPTOR 0x%04x", ENHANCED_AC3_DESCRIPTOR);
+								eDebug("[eDVBPMTParser] ENHANCED_AC3_DESCRIPTOR %d", ENHANCED_AC3_DESCRIPTOR);
 								break;
 							case REGISTRATION_DESCRIPTOR: /* some services don't have a separate AC3 descriptor */
 							{
 								RegistrationDescriptor *d = (RegistrationDescriptor*)(*desc);
-								eDebug("[eDVBPMTParser] REGISTRATION_DESCRIPTOR 0x%10x", d->getFormatIdentifier());
+								eDebug("[eDVBPMTParser] REGISTRATION_DESCRIPTOR %d", d->getFormatIdentifier());
 								switch (d->getFormatIdentifier())
 								{
 								case 0x44545331 ... 0x44545333: // DTS1/DTS2/DTS3
-									eDebug("[eDVBPMTParser] DTS1/DTS2/DTS3 0x44545331 ... 0x44545333");
 									isaudio = 1;
 									audio.type = audioStream::atDTS;
 									break;
 								case 0x41432d33: // == 'AC-3'
-									eDebug("[eDVBPMTParser] AC3 0x41432d33");
 									isaudio = 1;
 									audio.type = audioStream::atAC3;
 									break;
 								case 0x42535344: // == 'BSSD' (LPCM)
-									eDebug("[eDVBPMTParser] BSSD 0x42535344");
 									isaudio = 1;
 									audio.type = audioStream::atLPCM;
 									break;
 								case 0x56432d31: // == 'VC-1'
 								{
-									eDebug("[eDVBPMTParser] VC-1 0x56432d31");
 									const AdditionalIdentificationInfoVector *vec = d->getAdditionalIdentificationInfo();
 									if (vec->size() > 1 && (*vec)[0] == 0x01) // subdescriptor tag
 									{
@@ -347,7 +335,6 @@ int eDVBPMTParser::getProgramInfo(program &program)
 									break;
 								}
 								case 0x48455643: /*HEVC */
-									eDebug("[eDVBPMTParser] HEVC 0x48455643");
 									isvideo = 1;
 									video.type = videoStream::vtH265_HEVC;
 									break;
@@ -358,24 +345,21 @@ int eDVBPMTParser::getProgramInfo(program &program)
 								break;
 							}
 							case 0x28: // TS_PSI_DT_AVC
-								eDebug("[eDVBPMTParser] TS_PSI_DT_AVC 0x28");
 								isvideo = 1;
 								video.type = videoStream::vtMPEG4_H264;
 								break;
 							case 0x1B: // TS_PSI_DT_MPEG4_Video
-								eDebug("[eDVBPMTParser] TS_PSI_DT_MPEG4_Video 0x1B");
 								isvideo = 1;
 								video.type = videoStream::vtMPEG4_Part2;
 								break;
 							default:
-								eDebug("[eDVBPMTParser] tag unknown type 0x%04x", tag);
+								eDebug("[eDVBPMTParser] tag unknown type %d", tag);
 								break;
 							}
 						}
 						switch (tag)
 						{
 						case ISO_639_LANGUAGE_DESCRIPTOR:
-							eDebug("[eDVBPMTParser] ISO_639_LANGUAGE_DESCRIPTOR 0x%04x", ISO_639_LANGUAGE_DESCRIPTOR);
 							if (!isvideo)
 							{
 								const Iso639LanguageList *languages = ((Iso639LanguageDescriptor*)*desc)->getIso639Languages();
@@ -393,19 +377,16 @@ int eDVBPMTParser::getProgramInfo(program &program)
 							}
 							break;
 						case STREAM_IDENTIFIER_DESCRIPTOR:
-							eDebug("[eDVBPMTParser] STREAM_IDENTIFIER_DESCRIPTOR 0x%04x", STREAM_IDENTIFIER_DESCRIPTOR);
 							audio.component_tag =
 								video.component_tag =
 									((StreamIdentifierDescriptor*)*desc)->getComponentTag();
 							break;
 						case CA_DESCRIPTOR:
 						{
-							eDebug("[eDVBPMTParser] CA_DESCRIPTOR 0x%04x", CA_DESCRIPTOR);
 							processCaDescriptor(program, (CaDescriptor*)(*desc));
 							break;
 						}
 						default:
-							eDebug("[eDVBPMTParser] DESCRIPTOR UNKNOWN in lower switch");
 							break;
 						}
 					}
