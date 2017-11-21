@@ -136,19 +136,19 @@ class CronTimers(Screen):
 
 	def CrondStart(self):
 		if not self.my_crond_run:
-			self.Console.ePopen('/etc/init.d/busybox-cron start', self.StartStopCallback)
+			self.Console.ePopen('/etc/init.d/crond.busybox start', self.StartStopCallback)
 		elif self.my_crond_run:
-			self.Console.ePopen('/etc/init.d/busybox-cron stop', self.StartStopCallback)
+			self.Console.ePopen('/etc/init.d/crond.busybox stop', self.StartStopCallback)
 
 	def StartStopCallback(self, result = None, retval = None, extra_args = None):
 		sleep(3)
 		self.updateList()
 
 	def autostart(self):
-		if fileExists('/etc/rc2.d/S20busybox-cron'):
-			self.Console.ePopen('update-rc.d -f busybox-cron remove')
+		if fileExists('/etc/rc2.d/S20crond.busybox'):
+			self.Console.ePopen('update-rc.d -f crond.busybox remove')
 		else:
-			self.Console.ePopen('update-rc.d -f busybox-cron defaults')
+			self.Console.ePopen('update-rc.d -f crond.busybox defaults')
 		sleep(3)
 		self.updateList()
 
@@ -165,7 +165,7 @@ class CronTimers(Screen):
 		self['labdisabled'].hide()
 		self.my_crond_active = False
 		self.my_crond_run = False
-		if path.exists('/etc/rc3.d/S20busybox-cron'):
+		if path.exists('/etc/rc3.d/S20crond.busybox'):
 			self['labdisabled'].hide()
 			self['labactive'].show()
 			self.my_crond_active = True
