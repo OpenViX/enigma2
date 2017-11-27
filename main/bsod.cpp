@@ -284,7 +284,7 @@ void print_backtrace()
 	int cnt;
 
 	size = backtrace(array, 15);
-	eDebug("Backtrace:");
+	eLog(lvlFatal, "Backtrace:");
 	for (cnt = 1; cnt < size; ++cnt)
 	{
 		Dl_info info;
@@ -292,7 +292,7 @@ void print_backtrace()
 		if (dladdr(array[cnt], &info)
 			&& info.dli_fname != NULL && info.dli_fname[0] != '\0')
 		{
-			eDebug("%s(%s) [0x%X]", info.dli_fname, info.dli_sname != NULL ? info.dli_sname : "n/a", (unsigned long int) array[cnt]);
+			eLog(lvlFatal, "%s(%s) [0x%X]", info.dli_fname, info.dli_sname != NULL ? info.dli_sname : "n/a", (unsigned long int) array[cnt]);
 		}
 	}
 }
