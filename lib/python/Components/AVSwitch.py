@@ -64,7 +64,7 @@ class AVSwitch:
 	modes["Scart"] = ["PAL", "NTSC", "Multi"]
 	# modes["DVI-PC"] = ["PC"]
 
-	if about.getChipSetString() in ('5272s', '7251', '7251s', '7252', '7252s', '7366', '7376', '7444s'):
+	if about.getChipSetString() in ('5272s', '7251', '7251s', '7252', '7252s', '7366', '7376', '7444s', '7460'):
 		modes["HDMI"] = ["720p", "1080p", "2160p", "1080i", "576p", "576i", "480p", "480i"]
 		widescreen_modes = {"720p", "1080p", "2160p", "1080i"}
 	elif about.getChipSetString() in ('7241', '7356', '73565', '7358', '7362', '73625', '7424', '7425', '7552'):
@@ -130,8 +130,10 @@ class AVSwitch:
 		'tmtwin4k',
 		'uniboxhd1',
 		'vusolo2',
+		'vuzero4k',
 		'vusolo4k',
 		'vuuno4k',
+		'vuuno4kse',
 		'vuultimo4k',
 		'xp1000'
 	)
@@ -178,8 +180,10 @@ class AVSwitch:
 		'tmnano2t',
 		'tmnanom3',
 		'tmtwin4k',
+		'vuzero4k',
 		'vusolo4k',
 		'vuuno4k',
+		'vuuno4kse',
 		'vuultimo4k'
 	)
 
@@ -585,7 +589,7 @@ def InitAVSwitch():
 				f.close()
 			except:
 				pass
-		if getBoxType() in ('vusolo4k','vuuno4k','vuultimo4k'):
+		if getBoxType() in ('vuzero4k','vusolo4k','vuuno4k','vuuno4kse','vuultimo4k'):
 			config.av.hdmicolorspace = ConfigSelection(choices={
 					"Edid(Auto)": _("Auto"),
 					"Hdmi_Rgb": _("RGB"),
