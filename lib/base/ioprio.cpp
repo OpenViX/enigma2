@@ -2,10 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
-#include <getopt.h>
 #include <unistd.h>
-#include <sys/ptrace.h>
-#include <asm/unistd.h>
+#include <sys/syscall.h>
 
 #include <lib/base/eerror.h>
 
@@ -50,15 +48,13 @@ _syscall2(int, ioprio_get, int, which, int, who);
 
 static inline int ioprio_set(int which, int who, int ioprio)
 {
-	return syscall(__NR_ioprio_set, which, who, ioprio);
+	return syscall(SYS_ioprio_set, which, who, ioprio);
 }
 
 static inline int ioprio_get(int which, int who)
 {
-	return syscall(__NR_ioprio_get, which, who);
+	return syscall(SYS_ioprio_get, which, who);
 }
-
-#endif
 
 #define IOPRIO_CLASS_SHIFT	13
 

@@ -90,7 +90,10 @@ class Setup(ConfigListScreen, Screen):
 			if x.get("key") != self.setup:
 				continue
 			self.addItems(list, x)
-			self.setup_title = x.get("title", "").encode("UTF-8")
+			if config.usage.show_menupath.value in ('large', 'small') and x.get("titleshort", "").encode("UTF-8") != "":
+				self.setup_title = x.get("titleshort", "").encode("UTF-8")
+			else:
+				self.setup_title = x.get("title", "").encode("UTF-8")
 			self.seperation = int(x.get('separation', '0'))
 
 	def __init__(self, session, setup, plugin=None, menu_path=None, PluginLanguageDomain=None):
@@ -275,7 +278,8 @@ def getSetupTitle(id):
 	xmldata = setupdom().getroot()
 	for x in xmldata.findall("setup"):
 		if x.get("key") == id:
-			if _(x.get("title", "").encode("UTF-8")) == _("EPG settings") or _(x.get("title", "").encode("UTF-8")) == _("Logs settings") or _(x.get("title", "").encode("UTF-8")) == _("OSD settings") or _(x.get("title", "").encode("UTF-8")) == _("Softcam setings"):
-				return _("Settings...")
-			return x.get("title", "").encode("UTF-8")
+			if x.get("titleshort", "").encode("UTF-8") != "":
+				return _(x.get("titleshort", "").encode("UTF-8"))
+			else:
+				return _(x.get("title", "").encode("UTF-8"))
 	raise SetupError("unknown setup id '%s'!" % repr(id))

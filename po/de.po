@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-13 17:08+0100\n"
-"PO-Revision-Date: 2017-10-14 10:58+0200\n"
+"POT-Creation-Date: 2017-11-18 03:34+0000\n"
+"PO-Revision-Date: 2017-11-19 18:16+0100\n"
 "Last-Translator: Ralf Biedermann <ralf.biedermann@rbsoft.de>\n"
 "Language-Team: AndyBlacburn, j-ot&Trial\n"
 "Language: de\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
-"X-Generator: Poedit 2.0.1\n"
+"X-Generator: Poedit 2.0.4\n"
 "X-Poedit-SourceCharset: iso-8859-15\n"
 
 msgid ""
@@ -140,12 +140,6 @@ msgstr ""
 #, python-format
 msgid "  (%s x %s)"
 msgstr "  (%s x %s)"
-
-msgid "  Menu key : Select quad channel"
-msgstr " Menütaste: Wähle Quad Kanal"
-
-msgid "  Red key : Show/Hide channel name"
-msgstr "Rote Taste: Zeige/verstecke Kanalnamen"
 
 msgid " (0 - all networks)"
 msgstr " (0 - Alle Netzwerke)"
@@ -948,6 +942,10 @@ msgid "%s:%s"
 msgstr "%s:%s"
 
 #, python-format
+msgid "%s?"
+msgstr "%s?"
+
+#, python-format
 msgid "'%s' contains %d file(s) and %d sub-directories.\n"
 msgstr "'%s' enthält %d Datei(en) und %d Verzeichnis(se).\n"
 
@@ -1429,9 +1427,6 @@ msgstr "Autotimer hinzufügen"
 
 msgid "Add Autotimer"
 msgstr "Autotimer hinzufügen"
-
-msgid "Add New Quad Channel Entry"
-msgstr "Füge neuen Quad-Kanal Eintrag hinzu"
 
 msgid "Add Timer"
 msgstr "Timer hinzufügen"
@@ -2197,9 +2192,6 @@ msgstr "Favoritenliste"
 msgid "Bouvet Island"
 msgstr "Bouvet Island"
 
-msgid "Box or driver is not support Quad PiP."
-msgstr "Receiver oder Treiber unterstützt Quad PiP nicht."
-
 msgid "Brazil"
 msgstr "Brazil"
 
@@ -2617,10 +2609,6 @@ msgstr "Chipsatz:\tBCM%s\n"
 #, python-format
 msgid "Chipset: BCM%s"
 msgstr "Chipsatz: BCM%s"
-
-#, python-format
-msgid "Choice where to put \"%s\""
-msgstr "Wähle wo '%s' hin soll"
 
 msgid "Choose Bouquet"
 msgstr "Wähle Favoritenliste"
@@ -4131,28 +4119,6 @@ msgstr "EPG Cache Überprüfung"
 msgid "EPG filename"
 msgstr "EPG Dateiname"
 
-msgid ""
-"EPG key : Switch to channel list\n"
-"Ok key : Remove selected channel\n"
-"PVR key : Input channel name\n"
-"Exit key : Finish channel edit"
-msgstr ""
-"EPG Taste: Schalte zur Kanalliste\n"
-"OK Taste: Entferne gewählten Sender\n"
-"PVR Taste: Gebe Kanalnamen an\n"
-"Exit Taste: Beende Kanal Bearbeitung"
-
-msgid ""
-"EPG key : Switch to quad PiP entry\n"
-"Ok key : Add to new entry\n"
-"PVR key : Input channel name\n"
-"Exit key : Finish channel edit"
-msgstr ""
-"EPG Taste: Wechsel zu Quad Pip Eintrag\n"
-"OK Taste: Füge neuen Eintrag hinzu\n"
-"PVR Taste: Gebe Kanalnamen an\n"
-"Exit Taste: Beende Kanal Bearbeitung"
-
 msgid "EPG language selection 1"
 msgstr "EPG Sprachwahl 1"
 
@@ -4207,9 +4173,6 @@ msgstr "Bearbeiten"
 
 msgid "Edit DNS"
 msgstr "Bearbeite DNS"
-
-msgid "Edit Quad Channel Entry"
-msgstr "Bearbeite Quad PiP Kanaleintrag"
 
 msgid "Edit alternatives"
 msgstr "Alternativen bearbeiten"
@@ -4278,9 +4241,6 @@ msgstr "MHW EPG aktivieren"
 
 msgid "Enable Netmed EPG"
 msgstr "Netmed EPG aktivieren"
-
-msgid "Enable Quad PIP"
-msgstr "Schalte Quad PiP ein"
 
 msgid "Enable ViaSat EPG"
 msgstr "ViaSat EPG aktivieren"
@@ -4554,9 +4514,6 @@ msgstr "Verlasse EPG"
 msgid "Exit MAC address configuration"
 msgstr "MAC-Adresse Konfiguration verlassen"
 
-msgid "Exit Quad Channel Selection"
-msgstr "Verlasse Quad PiP Kanalauswahl"
-
 msgid "Exit editor"
 msgstr "Editor beenden"
 
@@ -4598,9 +4555,6 @@ msgstr "Netzwerkassistent beenden"
 
 msgid "Exit networkadapter setup menu"
 msgstr "Netzwerkadaptermenü verlassen"
-
-msgid "Exit quad PiP"
-msgstr "Verlasse Qud PiP"
 
 msgid "Exit the wizard"
 msgstr "Assistent beenden"
@@ -5670,9 +5624,6 @@ msgstr "Eingabe "
 msgid "Input Stream ID"
 msgstr ""
 
-msgid "Input channel name."
-msgstr "Kanalname eingeben."
-
 msgid "Input device setup"
 msgstr "Eingabegeräte Einstellungen"
 
@@ -6031,6 +5982,9 @@ msgstr "Links"
 
 msgid "Left from servicename"
 msgstr "Links vom Sendernamen"
+
+msgid "Left long"
+msgstr "Linkslang"
 
 msgid "Leisure hobbies"
 msgstr "Freizeit/Hobby"
@@ -6623,6 +6577,9 @@ msgstr "Multisat"
 msgid "Multisat all select"
 msgstr "Multi-Sat alle wählen"
 
+msgid "Multistream"
+msgstr "Multistream"
+
 msgid "Music"
 msgstr "Musik"
 
@@ -6802,9 +6759,6 @@ msgstr "Nächstes"
 msgctxt "now/next: 'next' event label"
 msgid "Next"
 msgstr "Demnächst"
-
-msgid "Next quad PiP channel"
-msgstr "Nächster Quad PiP Kanal"
 
 msgid "Nicaragua"
 msgstr "Nicaragua"
@@ -7239,6 +7193,9 @@ msgstr "OpenVPN Einstellungen"
 
 msgid "Orbital position"
 msgstr "Orbitale Position"
+
+msgid "Ordinary"
+msgstr ""
 
 msgid "Original"
 msgstr "Original"
@@ -8002,9 +7959,6 @@ msgstr ""
 msgid "Press yellow to set this interface as the default interface."
 msgstr "Drücke Gelb um diese Schnittstelle als Standard zu setzen."
 
-msgid "Prev quad PiP channel"
-msgstr "Vorheriger Quad PiP Kanal"
-
 msgid "Preview"
 msgstr "Vorschau"
 
@@ -8143,15 +8097,6 @@ msgstr "Python:\t%s\n"
 
 msgid "Qatar"
 msgstr "Qatar"
-
-msgid "Quad PiP Channel Selection"
-msgstr "Quad PiP Kanalauswahl"
-
-msgid "Quad PiP Screen"
-msgstr ""
-
-msgid "Quad PiP is not available."
-msgstr "Quad PiP nicht verfügbar."
 
 msgid "Question"
 msgstr "Frage"
@@ -8389,9 +8334,6 @@ msgstr "Entferne 'Verstecke blöde weiße Linie am oberen Bildrand für diesen S
 msgid "Remove Confirmation"
 msgstr "Bestätige Löschvorgang"
 
-msgid "Remove Quad Channel Entry"
-msgstr "Entferne Quad Kanal Eintrag"
-
 msgid "Remove Service"
 msgstr "Service löschen"
 
@@ -8627,6 +8569,9 @@ msgstr "Rechts"
 
 msgid "Right from servicename"
 msgstr "Rechts vom Sendernamen"
+
+msgid "Right long"
+msgstr "Rechts lang"
 
 msgid "Roll-off"
 msgstr "Roll-off"
@@ -8949,6 +8894,9 @@ msgstr "Springe Vorwärts"
 msgid "Seek forward (enter time)"
 msgstr "Springe Vorwärts (Zeitangabe)"
 
+msgid "Seekbar"
+msgstr "Zeitleiste"
+
 msgid "Seekbar activation"
 msgstr "Seekbar mit folgender Taste aktivieren"
 
@@ -8960,9 +8908,6 @@ msgstr "Auswählen"
 
 msgid "Select CAId"
 msgstr "CAID auswählen"
-
-msgid "Select Quad Channels"
-msgstr "Wähle Quad Kanäle"
 
 msgid "Select a receiver to use for fallback tuners. If the host receiver is not listed, manually enter the URL or IP address"
 msgstr "Wähle einen Receiver für Fallback Tuner aus. Wenn der Receiver nicht angezeigt wird gebe URL oder IP manuell an"
@@ -8991,9 +8936,6 @@ msgstr "Wähle das Sicherungs Verzeichnis"
 
 msgid "Select between entering an IP address or a domain."
 msgstr "Wähle zwischen IP-Adresse oder Domain."
-
-msgid "Select channel audio"
-msgstr "Wähle Audiokanal"
 
 msgid "Select channel to record from"
 msgstr "Wähle Sender von dem aufgenommen werden soll"
@@ -9530,9 +9472,6 @@ msgstr "Zeige Sendernummer in Infobar"
 msgid "Show channel numbers in channel selection"
 msgstr "Zeige Sendernummer in Senderauswahl"
 
-msgid "Show channel selection"
-msgstr "Zeige Senderliste"
-
 msgid "Show columns"
 msgstr "Zeige Spalten"
 
@@ -9739,9 +9678,6 @@ msgstr "Zeige Warnung wenn TimeShift beendet wird"
 
 msgid "Show/Games show"
 msgstr "Show/Quiz"
-
-msgid "Show/Hide focus bar"
-msgstr "Zeige/Verstecke Fokus Rahmen"
 
 msgid "Shows live tv or informations on LCD."
 msgstr "Zeigt LiveTV oder Informationen auf LCD."
@@ -11268,6 +11204,9 @@ msgstr "Transponder"
 msgid "Transponder Information"
 msgstr "Transponder Information"
 
+msgid "Transport Stream Type"
+msgstr "TransportstreamTyp"
+
 msgid "Trash can"
 msgstr "Mülleimer"
 
@@ -12712,9 +12651,6 @@ msgstr "Fokus auf Bild-in-Bild legen"
 msgid "Zap focus to main screen"
 msgstr "Fokus auf Hauptbild legen"
 
-msgid "Zap focused channel on full screen"
-msgstr "Schalte gewählten Kanal auf Vollbild"
-
 msgid "Zap mode"
 msgstr "Zap Modus"
 
@@ -13990,6 +13926,12 @@ msgstr "umgeschaltet"
 #~ "\n"
 #~ "<Dieser Tuner wird automatisch konfiguriert>"
 
+#~ msgid "  Menu key : Select quad channel"
+#~ msgstr " Menütaste: Wähle Quad Kanal"
+
+#~ msgid "  Red key : Show/Hide channel name"
+#~ msgstr "Rote Taste: Zeige/verstecke Kanalnamen"
+
 #~ msgid "%02d:%02d"
 #~ msgstr "%02d:%02d"
 
@@ -14063,11 +14005,17 @@ msgstr "umgeschaltet"
 #~ msgid "AV settings"
 #~ msgstr "A/V Einstellungen"
 
+#~ msgid "Add New Quad Channel Entry"
+#~ msgstr "Füge neuen Quad-Kanal Eintrag hinzu"
+
 #~ msgid "Animation Setup"
 #~ msgstr "Animation Einstellungen"
 
 #~ msgid "Auto language settings"
 #~ msgstr "Automatische Sprachwahl"
+
+#~ msgid "Box or driver is not support Quad PiP."
+#~ msgstr "Receiver oder Treiber unterstützt Quad PiP nicht."
 
 #~ msgid "Changelog"
 #~ msgstr "Changelog"
@@ -14077,6 +14025,9 @@ msgstr "umgeschaltet"
 
 #~ msgid "ChannelEPG settings"
 #~ msgstr "Sender-EPG Einstellungen"
+
+#~ msgid "Choice where to put \"%s\""
+#~ msgstr "Wähle wo '%s' hin soll"
 
 #~ msgid "Choose Tuner"
 #~ msgstr "Wähle Tuner"
@@ -14307,14 +14258,42 @@ msgstr "umgeschaltet"
 #~ msgid "Download .NFI-files for USB-flasher"
 #~ msgstr ".NFI-Files für USB-Flasher runterladen"
 
+#~ msgid ""
+#~ "EPG key : Switch to channel list\n"
+#~ "Ok key : Remove selected channel\n"
+#~ "PVR key : Input channel name\n"
+#~ "Exit key : Finish channel edit"
+#~ msgstr ""
+#~ "EPG Taste: Schalte zur Kanalliste\n"
+#~ "OK Taste: Entferne gewählten Sender\n"
+#~ "PVR Taste: Gebe Kanalnamen an\n"
+#~ "Exit Taste: Beende Kanal Bearbeitung"
+
+#~ msgid ""
+#~ "EPG key : Switch to quad PiP entry\n"
+#~ "Ok key : Add to new entry\n"
+#~ "PVR key : Input channel name\n"
+#~ "Exit key : Finish channel edit"
+#~ msgstr ""
+#~ "EPG Taste: Wechsel zu Quad Pip Eintrag\n"
+#~ "OK Taste: Füge neuen Eintrag hinzu\n"
+#~ "PVR Taste: Gebe Kanalnamen an\n"
+#~ "Exit Taste: Beende Kanal Bearbeitung"
+
 #~ msgid "ERROR: Check is already running in background"
 #~ msgstr "Fehler: Prüfung läuft schon im Hintergrund"
+
+#~ msgid "Edit Quad Channel Entry"
+#~ msgstr "Bearbeite Quad PiP Kanaleintrag"
 
 #~ msgid "Enable FastZapping"
 #~ msgstr "Aktiviere schnelles Umschalten"
 
 #~ msgid "Enable MiniTV"
 #~ msgstr "Aktiviere MiniTV"
+
+#~ msgid "Enable Quad PIP"
+#~ msgstr "Schalte Quad PiP ein"
 
 #~ msgid "Enable remote enigma2 receiver to be tried to tune into services that cannot be tuned into locally (e.g. tuner is occupied or service type is unavailable on the local tuner. Specify complete URL including http:// and port number (normally ...:8001), e.g. http://second_box:8001."
 #~ msgstr "Reserve-Enigma2-Receiver aktivieren der versucht wird wenn ein Sender lokal nicht empfangen werden kann. (z.B. wenn Tuner belegt oder Sender lokal nicht verfügbar ist). Gebe komplette URL inklusive http:// und Portnummer (normal ...:8001), e.g. http://zweite_box:8001."
@@ -14330,6 +14309,12 @@ msgstr "umgeschaltet"
 
 #~ msgid "Error downloading the change log."
 #~ msgstr "Fehler beim herunterladen vom change.log"
+
+#~ msgid "Exit Quad Channel Selection"
+#~ msgstr "Verlasse Quad PiP Kanalauswahl"
+
+#~ msgid "Exit quad PiP"
+#~ msgstr "Verlasse Qud PiP"
 
 #~ msgid "FTP setup"
 #~ msgstr "FTP Einstellungen"
@@ -14387,6 +14372,9 @@ msgstr "umgeschaltet"
 
 #~ msgid "Initialization"
 #~ msgstr "Initialisierung"
+
+#~ msgid "Input channel name."
+#~ msgstr "Kanalname eingeben."
 
 #~ msgid "Link Quality:"
 #~ msgstr "Qualität vom Link:"
@@ -14469,6 +14457,9 @@ msgstr "umgeschaltet"
 #~ msgid "Network setup"
 #~ msgstr "Netzwerkeinstellungen"
 
+#~ msgid "Next quad PiP channel"
+#~ msgstr "Nächster Quad PiP Kanal"
+
 #~ msgid "No cable tuner found!"
 #~ msgstr "Kein Kabelempfänger gefunden!"
 
@@ -14526,14 +14517,26 @@ msgstr "umgeschaltet"
 #~ msgid "Prepare another USB stick for image flashing"
 #~ msgstr "Weiteren USB-Stick zum Image-Flashen vorbereiten"
 
+#~ msgid "Prev quad PiP channel"
+#~ msgstr "Vorheriger Quad PiP Kanal"
+
 #~ msgid "Provider to scan"
 #~ msgstr "Zu durchsuchende Anbieter"
+
+#~ msgid "Quad PiP Channel Selection"
+#~ msgstr "Quad PiP Kanalauswahl"
+
+#~ msgid "Quad PiP is not available."
+#~ msgstr "Quad PiP nicht verfügbar."
 
 #~ msgid "RF output"
 #~ msgstr "RF-Ausgang"
 
 #~ msgid "Reception Settings"
 #~ msgstr "Empfangseinstellungen"
+
+#~ msgid "Remove Quad Channel Entry"
+#~ msgstr "Entferne Quad Kanal Eintrag"
 
 #~ msgid "Restore is running..."
 #~ msgstr "Wiederherstellung wird ausgeführt..."
@@ -14559,8 +14562,14 @@ msgstr "umgeschaltet"
 #~ msgid "Save timeshift in movie dir and zap"
 #~ msgstr "TimeShift als Film im Filmverzeichnis speichern und Aufnahme beenden"
 
+#~ msgid "Select Quad Channels"
+#~ msgstr "Wähle Quad Kanäle"
+
 #~ msgid "Select an image to be downloaded"
 #~ msgstr "Wähle Image zum Download"
+
+#~ msgid "Select channel audio"
+#~ msgstr "Wähle Audiokanal"
 
 #~ msgid "Select desired image from feed list"
 #~ msgstr "Wähle Image vom Feed-Server"
@@ -14583,8 +14592,14 @@ msgstr "umgeschaltet"
 #~ msgid "Show OE Log"
 #~ msgstr "Zeige OE Log"
 
+#~ msgid "Show channel selection"
+#~ msgstr "Zeige Senderliste"
+
 #~ msgid "Show status icons in movielist"
 #~ msgstr "Zeige Status-Icons in der Filmliste"
+
+#~ msgid "Show/Hide focus bar"
+#~ msgstr "Zeige/Verstecke Fokus Rahmen"
 
 #~ msgid "Signal Strength:"
 #~ msgstr "Signalstärke:"
@@ -14692,9 +14707,6 @@ msgstr "umgeschaltet"
 #~ "2) Box einschalten und die '-' Taste am Gerät drücken.\n"
 #~ "3) Auf Neustart warten und den Anweisungen des Assistenten folgen."
 
-#~ msgid "Transponder type"
-#~ msgstr "Transponder Typ"
-
 #~ msgid "Tuning algorithm"
 #~ msgstr "Tuningmethode"
 
@@ -14751,6 +14763,9 @@ msgstr "umgeschaltet"
 
 #~ msgid "Zap back to service before tuner setup?"
 #~ msgstr "Zurückschalten zum vorher laufenden Sender?"
+
+#~ msgid "Zap focused channel on full screen"
+#~ msgstr "Schalte gewählten Kanal auf Vollbild"
 
 #~ msgid "bc%s"
 #~ msgstr "bc%s"
