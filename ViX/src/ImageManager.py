@@ -1117,6 +1117,7 @@ class ImageManagerDownload(Screen):
 				'sf228'           : 'OCTAGON-SF228',
 				'sf4008'          : 'OCTAGON-SF4008',
 				'spycat'          : 'Spycat',
+				'tiviaraplus'     : 'TiviarAlphaPlus',				
 				'tm2t'            : 'TM-2T',
 				'tmnano'          : 'TM-Nano-OE',
 				'tmnano2super'    : 'TM-Nano2-Super',
