@@ -1085,6 +1085,7 @@ class ImageManagerDownload(Screen):
 				'gbquad'          : 'GiGaBlue-HD-QUAD',
 				'gbquadplus'      : 'GiGaBlue-HD-QUAD-PLUS',
 				'gbquad4k'        : 'GiGaBlue-UHD-QUAD-4K',
+				'gbue4k'          : 'GiGaBlue-UHD-UE-4K',				
 				'gbultraue'       : 'GiGaBlue-HD-ULTRA-UE',
 				'gbx1'            : 'GiGaBlue-HD-X1',
 				'gbx3'            : 'GiGaBlue-HD-X3',
