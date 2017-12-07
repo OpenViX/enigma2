@@ -1,3 +1,5 @@
+#include <sys/klog.h>
+#include <vector>
 #include <csignal>
 #include <fstream>
 #include <sstream>
@@ -55,6 +57,35 @@ static const std::string getConfigString(const std::string &key, const std::stri
 	}
 
 	return value;
+}
+
+/* get the kernel log aka dmesg */
+static void getKlog(FILE* f)
+{
+	fprintf(f, "\n\ndmesg\n\n");
+
+	ssize_t len = klogctl(10, NULL, 0); /* read ring buffer size */
+	if (len == -1)
+	{
+		fprintf(f, "Error reading klog %d - %m\n", errno);
+		return;
+	}
+	else if(len == 0)
+	{
+		return;
+	}
+
+	std::vector<char> buf(len, 0);
+
+	len = klogctl(4, &buf[0], len); /* read and clear ring buffer */
+	if (len == -1)
+	{
+		fprintf(f, "Error reading klog %d - %m\n", errno);
+		return;
+	}
+
+	buf.resize(len);
+	fprintf(f, "%s\n", &buf[0]);
 }
 
 static const std::string stringFromFile(const char* filename)
@@ -164,6 +195,9 @@ void bsodFatal(const char *component)
 		if (logp2)
 			fwrite(logp2, 1, logs2, f);
 
+		/* dump the kernel log */
+		getKlog(f);
+
 		fclose(f);
 	}
 
@@ -261,11 +295,11 @@ void bsodFatal(const char *component)
 #if defined(__MIPSEL__)
 void oops(const mcontext_t &context)
 {
-	eDebug("PC: %08lx", (unsigned long)context.pc);
+	eLog(lvlFatal, "PC: %08lx", (unsigned long)context.pc);
 	int i;
 	for (i=0; i<32; i += 4)
 	{
-		eDebug("    %08x %08x %08x %08x",
+		eLog(lvlFatal, "    %08x %08x %08x %08x",
 			(int)context.gregs[i+0], (int)context.gregs[i+1],
 			(int)context.gregs[i+2], (int)context.gregs[i+3]);
 	}
@@ -284,7 +318,7 @@ void print_backtrace()
 	int cnt;
 
 	size = backtrace(array, 15);
-	eDebug("Backtrace:");
+	eLog(lvlFatal, "Backtrace:");
 	for (cnt = 1; cnt < size; ++cnt)
 	{
 		Dl_info info;
@@ -292,7 +326,7 @@ void print_backtrace()
 		if (dladdr(array[cnt], &info)
 			&& info.dli_fname != NULL && info.dli_fname[0] != '\0')
 		{
-			eDebug("%s(%s) [0x%X]", info.dli_fname, info.dli_sname != NULL ? info.dli_sname : "n/a", (unsigned long int) array[cnt]);
+			eLog(lvlFatal, "%s(%s) [0x%X]", info.dli_fname, info.dli_sname != NULL ? info.dli_sname : "n/a", (unsigned long int) array[cnt]);
 		}
 	}
 }
@@ -305,7 +339,7 @@ void handleFatalSignal(int signum, siginfo_t *si, void *ctx)
 	oops(uc->uc_mcontext);
 #endif
 	print_backtrace();
-	eDebug("-------FATAL SIGNAL (%d)", signum);
+	eLog(lvlFatal, "-------FATAL SIGNAL (%d)", signum);
 	bsodFatal("enigma2, signal");
 }
 
