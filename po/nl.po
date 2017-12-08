@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-11-07 09:54+0000\n"
-"PO-Revision-Date: 2017-11-12 08:59+0100\n"
+"POT-Creation-Date: 2017-11-30 19:36+0000\n"
+"PO-Revision-Date: 2017-12-01 16:25+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -288,11 +288,15 @@ msgstr "%.0f MB"
 
 #, python-format
 msgid "%.0f kB"
-msgstr ""
+msgstr "%.0f kB"
 
 #, python-format
 msgid "%.2f GB"
 msgstr "%.2f GB"
+
+#, python-format
+msgid "%2.1f sec"
+msgstr "%2.1f sec"
 
 #. TRANSLATORS: short date representation dayname daynum short monthname in strftime() format! See 'man strftime'
 msgid "%A %-d %B"
@@ -992,6 +996,12 @@ msgstr "1.1"
 msgid "1.2"
 msgstr "1.2"
 
+msgid "10 MB/s"
+msgstr "10 MB/s"
+
+msgid "100 MB/s"
+msgstr "100 MB/s"
+
 msgid "1080i"
 msgstr "1080i"
 
@@ -1057,6 +1067,9 @@ msgstr "1X"
 
 msgid "1st Infobar timeout"
 msgstr "1e informatiebalk timeout"
+
+msgid "20 MB/s"
+msgstr "20 MB/s"
 
 msgid "2160p 24Hz"
 msgstr "2160p 24Hz"
@@ -1141,6 +1154,9 @@ msgstr "4:3 pan & scan"
 
 msgid "4X"
 msgstr "4X"
+
+msgid "50 MB/s"
+msgstr "50 MB/s"
 
 msgid "64"
 msgstr "64"
@@ -3343,6 +3359,9 @@ msgstr "Aangepaste springtijd voor de '4'/'6'-toetsen"
 msgid "Custom skip time for '7'/'9' buttons"
 msgstr "Aangepaste springtijd voor de '7'/'9'-toetsen"
 
+msgid "Customize settings"
+msgstr "Instellingen aanpassen"
+
 msgid "Cut"
 msgstr "Knip"
 
@@ -4845,6 +4864,9 @@ msgstr "Lettergrootte"
 msgid "Force LNB Power"
 msgstr "Forceer LNB Power"
 
+msgid "Force Legacy Signal Stats"
+msgstr ""
+
 msgid "Force ToneBurst"
 msgstr "Forceer Toneburst"
 
@@ -4929,6 +4951,9 @@ msgstr "Van:"
 msgid "Front panel display"
 msgstr "Paneeldisplay"
 
+msgid "Front panel settings"
+msgstr "Paneeldisplay"
+
 msgid "Full screen"
 msgstr "Volledig scherm"
 
@@ -4958,6 +4983,9 @@ msgid ""
 msgstr ""
 "De gebruikersinterface moet herstart worden om\n"
 "de nieuwe instellingen te activeren. Nu herstarten?"
+
+msgid "GUI settings"
+msgstr "GUI instellingen"
 
 msgid "Gabon"
 msgstr ""
@@ -5147,6 +5175,9 @@ msgstr "HD1100/et7x00/et8500"
 
 msgid "HD2400"
 msgstr "HD2400"
+
+msgid "HDD settings"
+msgstr "HDD instellingen"
 
 msgid "HDMI"
 msgstr "HDMI"
@@ -6723,6 +6754,9 @@ msgstr "Netwerk zoeken"
 msgid "Network servers:"
 msgstr "Netwerkservers:"
 
+msgid "Network settings"
+msgstr "Netwerk instellingen"
+
 msgid "Network test"
 msgstr "Netwerktest"
 
@@ -7095,9 +7129,6 @@ msgstr "OSD naamverzoek"
 
 msgid "OSD position"
 msgstr "OSD positie"
-
-msgid "OSD settings"
-msgstr "OSD instellingen"
 
 msgid "OScam Info"
 msgstr "OScam Info"
@@ -7741,6 +7772,9 @@ msgstr "Pluginbrowser"
 
 msgid "Plugin browser"
 msgstr "Pluginbrowser"
+
+msgid "Plugin browser settings"
+msgstr "Pluginbrowser instellingen"
 
 msgid "Plugin details"
 msgstr "Plugin details"
@@ -8712,6 +8746,9 @@ msgstr "Za"
 msgid "Satellite"
 msgstr "Satelliet"
 
+msgid "Satellite dish settings"
+msgstr "Schotelinstellingen"
+
 msgid "Satellite equipment"
 msgstr "Satelliet apparatuur"
 
@@ -9307,9 +9344,6 @@ msgstr "Stelt de root-map van de opnamelijst in, om '..' niet te tonen."
 msgid "Settings"
 msgstr "Instellingen"
 
-msgid "Settings..."
-msgstr "Instellingen..."
-
 msgid "Setup"
 msgstr "Instellingen"
 
@@ -9886,7 +9920,7 @@ msgstr "Sociaal/Politiek/Economie"
 msgid "Softcam"
 msgstr "Softcam"
 
-msgid "Softcam setings"
+msgid "Softcam settings"
 msgstr "Softcaminstellingen"
 
 msgid "SoftcamCheck"
@@ -9907,6 +9941,9 @@ msgstr "Software herstellen"
 
 msgid "Software update"
 msgstr "Software-update"
+
+msgid "Software update settings"
+msgstr "Software-update instellingen"
 
 msgid "Softwaremanager information"
 msgstr "Sofwarebeheer informatie"
@@ -14358,9 +14395,6 @@ msgstr "zapte"
 #~ msgid "Customize"
 #~ msgstr "Aanpassen"
 
-#~ msgid "Customize settings"
-#~ msgstr "Instellingen aanpassen"
-
 #~ msgid "DVB_C"
 #~ msgstr "DVB_C"
 
@@ -14648,9 +14682,6 @@ msgstr "zapte"
 #~ "De gebruikersinterface moet herstart worden om de nieuwe taal te activeren\n"
 #~ "Nu herstarten?"
 
-#~ msgid "GUI settings"
-#~ msgstr "GUI instellingen"
-
 #~ msgid "Get latest experimental image"
 #~ msgstr "Ontvang het laatste experimentele image"
 
@@ -14766,9 +14797,6 @@ msgstr "zapte"
 #~ msgid "Network Information"
 #~ msgstr "Netwerkinformatie"
 
-#~ msgid "Network settings"
-#~ msgstr "Netwerk instellingen"
-
 #~ msgid "Network setup"
 #~ msgstr "Netwerkinstellingen"
 
@@ -14853,9 +14881,6 @@ msgstr "zapte"
 #~ msgid "Please wait whilst feeds state is checked."
 #~ msgstr "Even wachten: de feeds worden gecontroleerd."
 
-#~ msgid "Plugin browser settings"
-#~ msgstr "Pluginbrowser instellingen"
-
 #~ msgid "Position Setup"
 #~ msgstr "Motorinstellingen"
 
@@ -14932,9 +14957,6 @@ msgstr "zapte"
 #~ msgid "Same behavior as current animation"
 #~ msgstr "Zelfde gedrag als huidige animatie"
 
-#~ msgid "Satellite dish settings"
-#~ msgstr "Schotelinstellingen"
-
 #~ msgid "Save timeshift in movie dir and zap"
 #~ msgstr "Bewaar timeshift als opname en zap"
 
@@ -14973,6 +14995,9 @@ msgstr "zapte"
 
 #~ msgid "Setting"
 #~ msgstr "Instelling"
+
+#~ msgid "Settings..."
+#~ msgstr "Instellingen..."
 
 #
 #~ msgid "Shall the USB stick wizard proceed and program the image file %s into flash memory?"
@@ -15027,14 +15052,11 @@ msgstr "zapte"
 #~ msgid "SoftCam and CI"
 #~ msgstr "Softcam en CI"
 
-#~ msgid "Softcam settings"
+#~ msgid "Softcam setings"
 #~ msgstr "Softcaminstellingen"
 
 #~ msgid "Software Update"
 #~ msgstr "Software-update"
-
-#~ msgid "Software update settings"
-#~ msgstr "Software-update instellingen"
 
 #~ msgid "Solo4K Misc. Control"
 #~ msgstr "Solo4K diverse instellingen"
