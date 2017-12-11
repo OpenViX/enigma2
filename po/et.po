@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX-Enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-11-10 07:28+0200\n"
-"PO-Revision-Date: 2017-11-10 10:19+0200\n"
+"POT-Creation-Date: 2017-11-28 22:50+0200\n"
+"PO-Revision-Date: 2017-12-05 16:21+0200\n"
 "Last-Translator: rimas\n"
 "Language-Team: Digi-tv.ee\n"
 "Language: et\n"
@@ -291,6 +291,10 @@ msgstr "%.0f kB"
 #, python-format
 msgid "%.2f GB"
 msgstr "%.2f GB"
+
+#, python-format
+msgid "%2.1f sec"
+msgstr "%2.1f sek"
 
 #. TRANSLATORS: short date representation dayname daynum short monthname in strftime() format! See 'man strftime'
 msgid "%A %-d %B"
@@ -990,6 +994,12 @@ msgstr "1.1"
 msgid "1.2"
 msgstr "1.2"
 
+msgid "10 MB/s"
+msgstr "10 MB/s"
+
+msgid "100 MB/s"
+msgstr "100 MB/s"
+
 msgid "1080i"
 msgstr "1080i"
 
@@ -1055,6 +1065,9 @@ msgstr "1X"
 
 msgid "1st Infobar timeout"
 msgstr "Inforiba kestus"
+
+msgid "20 MB/s"
+msgstr "20 MB/s"
 
 msgid "2160p 24Hz"
 msgstr "2160p 24Hz"
@@ -1139,6 +1152,9 @@ msgstr "4:3 panscan"
 
 msgid "4X"
 msgstr "4X"
+
+msgid "50 MB/s"
+msgstr "50 MB/s"
 
 msgid "64"
 msgstr "64"
@@ -3343,6 +3359,9 @@ msgstr "'4'/'6'-nuppude hüppe kohandatud pikkus"
 msgid "Custom skip time for '7'/'9' buttons"
 msgstr "'7'/'9'-nuppude hüppe kohandatud pikkus"
 
+msgid "Customize settings"
+msgstr "Kasutaja valikud"
+
 msgid "Cut"
 msgstr "Lõika"
 
@@ -4840,6 +4859,9 @@ msgstr "Tähesuurus"
 msgid "Force LNB Power"
 msgstr "Sunnitud LNB toide"
 
+msgid "Force Legacy Signal Stats"
+msgstr ""
+
 msgid "Force ToneBurst"
 msgstr "Sunnitud toonimpulss"
 
@@ -4924,6 +4946,9 @@ msgstr "Asukohast :"
 msgid "Front panel display"
 msgstr "Esipaneeli näidik"
 
+msgid "Front panel settings"
+msgstr "Esipaneeli näidik"
+
 msgid "Full screen"
 msgstr "Täisekraan"
 
@@ -4953,6 +4978,9 @@ msgid ""
 msgstr ""
 "Režiimi vahetamiseks tuleb kasutajaliides taaskäivitada\n"
 "Kas teha seda kohe?"
+
+msgid "GUI settings"
+msgstr "Ekraanigraafika seaded"
 
 msgid "Gabon"
 msgstr "Gabon"
@@ -5142,6 +5170,9 @@ msgstr "HD1100/et7x00/et8500"
 
 msgid "HD2400"
 msgstr "HD2400"
+
+msgid "HDD settings"
+msgstr "Kõvaketta seaded"
 
 msgid "HDMI"
 msgstr "HDMI"
@@ -6713,6 +6744,9 @@ msgstr "Võrguotsing"
 msgid "Network servers:"
 msgstr "Võrguserverid:"
 
+msgid "Network settings"
+msgstr "Võrgu seaded"
+
 msgid "Network test"
 msgstr "Võrgu testimine"
 
@@ -7726,6 +7760,9 @@ msgstr "Pluginad"
 msgid "Plugin browser"
 msgstr "Pluginad"
 
+msgid "Plugin browser settings"
+msgstr "Plugina menüü seaded"
+
 msgid "Plugin details"
 msgstr "Plugina üksikasjad"
 
@@ -8104,7 +8141,7 @@ msgid "Quick Actions"
 msgstr "Kiirtegevused"
 
 msgid "Quick zap"
-msgstr "Kiire kanalivalik"
+msgstr "Kanalivahetus numbrinuppudega"
 
 msgid "Quit Movie Player with EXIT button"
 msgstr "'EXIT' nupp lõpetab taasesituse"
@@ -8692,6 +8729,9 @@ msgstr "L"
 
 msgid "Satellite"
 msgstr "Satelliit"
+
+msgid "Satellite dish settings"
+msgstr "Antenni seaded"
 
 msgid "Satellite equipment"
 msgstr "Satelliidiseadmed"
@@ -9867,6 +9907,9 @@ msgstr "Emulaator"
 msgid "Softcam setings"
 msgstr "EMU seaded"
 
+msgid "Softcam settings"
+msgstr "EMU seaded"
+
 msgid "SoftcamCheck"
 msgstr "EMU kontroll"
 
@@ -9884,6 +9927,9 @@ msgstr "Tarkvara taastamine"
 
 msgid "Software update"
 msgstr "Tarkvara uuendamine"
+
+msgid "Software update settings"
+msgstr "Tarkvara uuendamise seaded"
 
 msgid "Softwaremanager information"
 msgstr "Tarkvarahalduri info"
@@ -11647,7 +11693,7 @@ msgid "Usually when the subtitle language is the same as the audio language, the
 msgstr "Tavaliselt subtiitreid ei näidata, kui nende keel kattub heli keelega. Siin valikus saab need subtiitrid lubada."
 
 msgid "Utilities"
-msgstr "Vahendid"
+msgstr "Võrguteenused"
 
 msgid "Uzbekistan"
 msgstr "Usbekistan"
@@ -13941,20 +13987,17 @@ msgstr "vahetatud"
 #~ msgid "Convert filesystem ext3 to ext4"
 #~ msgstr "Teisenda ext3 > ext4"
 
-#~ msgid "Customize settings"
-#~ msgstr "Kasutaja valikud"
-
 #~ msgid "Device setup"
 #~ msgstr "Võrgukaardi seaded"
+
+#~ msgid "EPG Settings"
+#~ msgstr "EPG seaded"
 
 #~ msgid "FTP setup"
 #~ msgstr "FTP seaded"
 
 #~ msgid "Front Display Panel"
 #~ msgstr "Esipaneeli näidik"
-
-#~ msgid "GUI settings"
-#~ msgstr "Ekraanigraafika seaded"
 
 #~ msgid "GraphicalEPG settings"
 #~ msgstr "Graafilise EPG seaded"
@@ -13974,6 +14017,9 @@ msgstr "vahetatud"
 #~ msgid "Link Quality:"
 #~ msgstr "Lingi kvaliteet:"
 
+#~ msgid "Logs Settings"
+#~ msgstr "Logimise seaded"
+
 #~ msgid "MiniDLNA setup"
 #~ msgstr "MiniDLNA seaded"
 
@@ -13989,17 +14035,11 @@ msgstr "vahetatud"
 #~ msgid "NFS setup"
 #~ msgstr "NFS seaded"
 
-#~ msgid "Network settings"
-#~ msgstr "Võrgu seaded"
-
 #~ msgid "No cable tuner found!"
 #~ msgstr "Kaabel-tv tuunerit ei leitud!"
 
 #~ msgid "No free tuner available!"
 #~ msgstr "Vaba tuuner puudub!"
-
-#~ msgid "Plugin browser settings"
-#~ msgstr "Plugina menüü seaded"
 
 #~ msgid "Position Setup"
 #~ msgstr "Asukoha määramine"
@@ -14019,9 +14059,6 @@ msgstr "vahetatud"
 #~ msgid "Samba setup"
 #~ msgstr "Samba seaded"
 
-#~ msgid "Satellite dish settings"
-#~ msgstr "Antenni seaded"
-
 #~ msgid "Save timeshift in movie dir and zap"
 #~ msgstr "Talleta ajanihe salvestuskataloogi ja vaheta kanalit"
 
@@ -14037,14 +14074,11 @@ msgstr "vahetatud"
 #~ msgid "SoftCam and CI"
 #~ msgstr "EMU / CI"
 
-#~ msgid "Softcam settings"
+#~ msgid "Softcam Settings"
 #~ msgstr "EMU seaded"
 
 #~ msgid "Software Update"
 #~ msgstr "Tarkvara uuendused"
-
-#~ msgid "Software update settings"
-#~ msgstr "Uuendamise seaded"
 
 #~ msgid "Specify the complete URL of the fallback remote receiver including the port number (:8001 by default), e.g. 'http://IP_second_box:8001'."
 #~ msgstr "Määra kaugvastuvõtja täielik URL koos pordi numbriga (vaikimisi :8001). Näiteks '192.168.x.x:8001'."
