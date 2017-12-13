@@ -167,11 +167,11 @@ self.session.open(SABnzbdSetupScreen)
 				<item level="0" text="Convert ext3 to ext4" entryID="harddisk_convert" requires="ext4"><screen module="HarddiskSetup" screen="HarddiskConvertExt4Selection"/></item>
 			</menu>
 			<!-- Menu / Setup / Software Update -->
-			<menu weight="10" level="0" text="Software update" entryID="software_update">
+			<!-- <menu weight="10" level="0" text="Software update" entryID="software_update">
 				<id val="softwareupdatemenu"/>
 				<item weight="1" level="0" text="Settings" entryID="onlineupdate_setup"><setup id="softwareupdate"/></item>
 				<item weight="2" level="0" text="Software update" entryID="software_update"><screen module="SoftwareUpdate" screen="UpdatePlugin"/></item>
-			</menu>
+			</menu> -->
 			<!-- Menu / Setup / Time Settings -->
 			<item level="0" entryID="time_setup"><setup id="time"/></item>
 			<!-- Menu / Setup / Recordings, Playback & Timeshift -->
@@ -209,6 +209,7 @@ def msgClosed(ret):
 self.session.openWithCallback(msgClosed, FactoryReset)
 </code>
 				</item>
+				<item weight="2" level="0" text="Software update" entryID="software_update"><screen module="SoftwareUpdate" screen="UpdatePlugin"/></item>
 			</menu>
 
 			<!-- Menu / Setup / HDMI-CEC -->
