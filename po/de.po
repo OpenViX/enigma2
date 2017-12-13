@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-11-18 03:34+0000\n"
-"PO-Revision-Date: 2017-11-19 18:16+0100\n"
+"POT-Creation-Date: 2017-12-13 12:14+0000\n"
+"PO-Revision-Date: 2017-12-13 19:17+0100\n"
 "Last-Translator: Ralf Biedermann <ralf.biedermann@rbsoft.de>\n"
 "Language-Team: AndyBlacburn, j-ot&Trial\n"
 "Language: de\n"
@@ -292,6 +292,10 @@ msgstr "%.0f kB"
 #, python-format
 msgid "%.2f GB"
 msgstr "%.2f GB"
+
+#, python-format
+msgid "%2.1f sec"
+msgstr ""
 
 #. TRANSLATORS: short date representation dayname daynum short monthname in strftime() format! See 'man strftime'
 msgid "%A %-d %B"
@@ -991,6 +995,12 @@ msgstr "1.1"
 msgid "1.2"
 msgstr "1.2"
 
+msgid "10 MB/s"
+msgstr ""
+
+msgid "100 MB/s"
+msgstr ""
+
 msgid "1080i"
 msgstr "1080i"
 
@@ -1056,6 +1066,9 @@ msgstr "1X"
 
 msgid "1st Infobar timeout"
 msgstr "1. Infobar Timeout"
+
+msgid "20 MB/s"
+msgstr ""
 
 msgid "2160p 24Hz"
 msgstr "2160p 24Hz"
@@ -1140,6 +1153,9 @@ msgstr "4:3 PanScan"
 
 msgid "4X"
 msgstr "4X"
+
+msgid "50 MB/s"
+msgstr ""
 
 msgid "64"
 msgstr "64"
@@ -3346,6 +3362,9 @@ msgstr "Gewünschte Sprungzeit für '4'/'6'-Tasten"
 msgid "Custom skip time for '7'/'9' buttons"
 msgstr "Gewünschte Sprungzeit für '7'/'9'-Tasten"
 
+msgid "Customize settings"
+msgstr "Ändere Einstellungen"
+
 msgid "Cut"
 msgstr "Schneiden"
 
@@ -4843,6 +4862,9 @@ msgstr "Schriftgröße"
 msgid "Force LNB Power"
 msgstr "Erzwinge LNB Strom"
 
+msgid "Force Legacy Signal Stats"
+msgstr ""
+
 msgid "Force ToneBurst"
 msgstr "Erzwinge Toneburst"
 
@@ -4927,6 +4949,9 @@ msgstr "Von:"
 msgid "Front panel display"
 msgstr "VFD/LCD"
 
+msgid "Front panel settings"
+msgstr "VFD/LCD Einstellungen"
+
 msgid "Full screen"
 msgstr "Vollbild"
 
@@ -4958,6 +4983,9 @@ msgstr ""
 "Die Benutzeroberfläche muss neu gestartet werden,\n"
 "um das neue Aussehen übernehmen zu können.\n"
 "Jetzt neu starten?"
+
+msgid "GUI settings"
+msgstr "Benutzeroberfläche Einstellungen"
 
 msgid "Gabon"
 msgstr "Gabon"
@@ -5147,6 +5175,9 @@ msgstr ""
 
 msgid "HD2400"
 msgstr ""
+
+msgid "HDD settings"
+msgstr "HDD Einstellungen"
 
 msgid "HDMI"
 msgstr "HDMI"
@@ -6717,6 +6748,9 @@ msgstr "Netzwerksuche"
 msgid "Network servers:"
 msgstr "Netzwerkserver:"
 
+msgid "Network settings"
+msgstr "Netzwerk Einstellungen"
+
 msgid "Network test"
 msgstr "Netzwerk Test"
 
@@ -7085,9 +7119,6 @@ msgstr "Benutzeroberflächen Anfrage"
 
 msgid "OSD position"
 msgstr "GUI Position"
-
-msgid "OSD settings"
-msgstr "OSD Einstellungen"
 
 msgid "OScam Info"
 msgstr "OScam Info"
@@ -7729,6 +7760,9 @@ msgstr "Erweiterungen"
 
 msgid "Plugin browser"
 msgstr "Erweiterungen"
+
+msgid "Plugin browser settings"
+msgstr "Erweiterungsbrowser Einstellungen"
 
 msgid "Plugin details"
 msgstr "Plugin Angaben"
@@ -8699,6 +8733,9 @@ msgstr "Sa"
 msgid "Satellite"
 msgstr "Satellit"
 
+msgid "Satellite dish settings"
+msgstr "Satellitenschüssel Einstellungen"
+
 msgid "Satellite equipment"
 msgstr "Satellitenausrüstung"
 
@@ -9292,9 +9329,6 @@ msgstr "Wähle die Basis der Aufnahmeliste um die \"..\" in der Ansicht zu unter
 msgid "Settings"
 msgstr "Einstellungen"
 
-msgid "Settings..."
-msgstr "Einstellungen..."
-
 msgid "Setup"
 msgstr "Konfiguration"
 
@@ -9870,7 +9904,7 @@ msgstr "Sozial/Politik/Wirtschaft"
 msgid "Softcam"
 msgstr "Softcam"
 
-msgid "Softcam setings"
+msgid "Softcam settings"
 msgstr "Softcam Einstellungen"
 
 msgid "SoftcamCheck"
@@ -9890,6 +9924,9 @@ msgstr "Software wiederherstellen"
 
 msgid "Software update"
 msgstr "Software aktualisieren"
+
+msgid "Software update settings"
+msgstr "Software aktualisieren Einstellungen"
 
 msgid "Softwaremanager information"
 msgstr "Information Softwareverwaltung"
@@ -13370,7 +13407,7 @@ msgid "no or unknown card inserted"
 msgstr "Keine oder unbekannte Karte"
 
 msgid "no resource manager"
-msgstr "Kein Resourcen-Manager"
+msgstr "Keine Resourcen Verwaltung"
 
 msgid "no storage devices found"
 msgstr "Kein Laufwerk gefunden"
@@ -14068,9 +14105,6 @@ msgstr "umgeschaltet"
 #~ msgid "Customize"
 #~ msgstr "Anpassen"
 
-#~ msgid "Customize settings"
-#~ msgstr "Ändere Einstellungen"
-
 #~ msgid "Day 9"
 #~ msgstr "Tag 9"
 
@@ -14343,9 +14377,6 @@ msgstr "umgeschaltet"
 #~ msgid "Ftpd service type: Vsftpd server"
 #~ msgstr "FTPD Service: VSFTP Server"
 
-#~ msgid "GUI settings"
-#~ msgstr "Benutzeroberfläche Einstellungen"
-
 #~ msgid "Get latest experimental image"
 #~ msgstr "Neuestes Experimental-Image"
 
@@ -14451,9 +14482,6 @@ msgstr "umgeschaltet"
 #~ msgid "Network Information"
 #~ msgstr "Netzwerkinformationen"
 
-#~ msgid "Network settings"
-#~ msgstr "Netzwerk Einstellungen"
-
 #~ msgid "Network setup"
 #~ msgstr "Netzwerkeinstellungen"
 
@@ -14495,9 +14523,6 @@ msgstr "umgeschaltet"
 
 #~ msgid "Please wait for activation of your network configuration..."
 #~ msgstr "Bitte warte, die Netzwerk-Konfiguration wird aktiviert."
-
-#~ msgid "Plugin browser settings"
-#~ msgstr "Erweiterungsbrowser Einstellungen"
 
 #~ msgid "Position Setup"
 #~ msgstr "Rotor Einstellungen"
@@ -14556,9 +14581,6 @@ msgstr "umgeschaltet"
 #~ msgid "Samba setup"
 #~ msgstr "Samba/CIFS Einstellungen"
 
-#~ msgid "Satellite dish settings"
-#~ msgstr "Satellitenschüssel Einstellungen"
-
 #~ msgid "Save timeshift in movie dir and zap"
 #~ msgstr "TimeShift als Film im Filmverzeichnis speichern und Aufnahme beenden"
 
@@ -14582,6 +14604,9 @@ msgstr "umgeschaltet"
 
 #~ msgid "Setting"
 #~ msgstr "Einstellungen"
+
+#~ msgid "Settings..."
+#~ msgstr "Einstellungen..."
 
 #~ msgid "Shall the USB stick wizard proceed and program the image file %s into flash memory?"
 #~ msgstr "Soll der Assistent fortfahren und die Image-Datei %s in den Flashspeicher schreiben?"
@@ -14613,14 +14638,11 @@ msgstr "umgeschaltet"
 #~ msgid "SoftCam and CI"
 #~ msgstr "CI / Softcam Einstellungen"
 
-#~ msgid "Softcam settings"
+#~ msgid "Softcam setings"
 #~ msgstr "Softcam Einstellungen"
 
 #~ msgid "Software Update"
 #~ msgstr "Software Update"
-
-#~ msgid "Software update settings"
-#~ msgstr "Software aktualisieren Einstellungen"
 
 #~ msgid "Specify the complete URL of the fallback remote receiver including the port number (:8001 by default), e.g. 'http://IP_second_box:8001'."
 #~ msgstr "Komplette URL des Notfallreceivers mit der Portnummer angeben (z.B. IP-Notfallreceiver:8001), z.B. 'http://IP-der-zweiten-Box:8001'."
