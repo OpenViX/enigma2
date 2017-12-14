@@ -1103,6 +1103,7 @@ class ImageManagerDownload(Screen):
 				'osmega'          : 'OS-mega',
 				'osmini'          : 'OS-mini',
 				'osminiplus'      : 'OS-miniplus',
+				'osnino'          : 'OS-nino',				
 				'qb800solo'       : 'GiGaBlue-HD800Solo',
 				'sf8'             : 'OCTAGON-SF8-HD',
 				'sf128'           : 'OCTAGON-SF128',
