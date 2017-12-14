@@ -165,12 +165,6 @@ self.session.open(SABnzbdSetupScreen)
 				<item level="0" text="Filesystem check" entryID="harddisk_check"><screen module="HarddiskSetup" screen="HarddiskFsckSelection"/></item>
 				<item level="0" text="Convert ext3 to ext4" entryID="harddisk_convert" requires="ext4"><screen module="HarddiskSetup" screen="HarddiskConvertExt4Selection"/></item>
 			</menu>
-			<!-- Menu / Setup / Software Update -->
-			<!-- <menu weight="10" level="0" text="Software update" entryID="software_update">
-				<id val="softwareupdatemenu"/>
-				<item weight="1" level="0" text="Settings" entryID="onlineupdate_setup"><setup id="softwareupdate"/></item>
-				<item weight="2" level="0" text="Software update" entryID="software_update"><screen module="SoftwareUpdate" screen="UpdatePlugin"/></item>
-			</menu> -->
 			<!-- Menu / Setup / Time Settings -->
 			<item level="0" entryID="time_setup"><setup id="time"/></item>
 			<!-- Menu / Setup / Recordings, Playback & Timeshift -->
@@ -210,7 +204,6 @@ self.session.openWithCallback(msgClosed, FactoryReset)
 </code>
 				</item>
 			</menu>
-
 			<!-- Menu / Setup / HDMI-CEC -->
 			<item weight="99" text="HDMI CEC" entryID="hdmicec" requires="HDMICEC">
 <code>
@@ -218,7 +211,12 @@ from Plugins.SystemPlugins.HdmiCEC.plugin import HdmiCECSetupScreen
 self.session.open(HdmiCECSetupScreen)
 </code>
 			</item>
-			<item weight="1000" level="0" text="Software update" entryID="software_update"><screen module="SoftwareUpdate" screen="UpdatePlugin"/></item>
+			<!-- Menu / Setup / Software Update -->
+			<menu weight="1000" level="0" text="Software update" entryID="software_update">
+				<id val="softwareupdatemenu"/>
+				<item weight="1" level="0" text="Settings" entryID="onlineupdate_setup"><setup id="softwareupdate"/></item>
+				<item weight="2" level="0" text="Software update" entryID="software_update"><screen module="SoftwareUpdate" screen="UpdatePlugin"/></item>
+			</menu>
 		</menu>
 <!-- Menu / Plugins -->
 		<item weight="2" text="Plugins" entryID="plugin_selection"><screen module="PluginBrowser" screen="PluginBrowser"/></item>

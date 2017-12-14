@@ -12,7 +12,7 @@ from Screens.ParentalControlSetup import ProtectedScreen
 from Screens.Screen import Screen
 from Screens.Standby import TryQuitMainloop
 from Screens.GitCommitInfo import CommitInfo, gitcommitinfo
-from Components.ActionMap import ActionMap, NumberActionMap
+from Components.ActionMap import ActionMap
 from Components.Button import Button
 from Components.config import config
 from Components.Console import Console
@@ -45,43 +45,6 @@ class SoftwareUpdateChanges(CommitInfo):
 		self.updateScreenTitle(gitcommitinfo.getScreenTitle())
 		self["AboutScrollLabel"].setText(gitcommitinfo.readGithubCommitLogsSoftwareUpdate())
 
-
-class UpdateChoices(ChoiceBox):
-	def __init__(self, session, title="", list=None, keys=None, selection=0, skin_name=None, text="", reorderConfig="", var="", menu_path=""):
-		ChoiceBox.__init__(self, session, title, list, keys, selection, skin_name, text, reorderConfig, var, menu_path)
-
-		self["actions"] = NumberActionMap(["WizardActions", "InputActions", "ColorActions", "DirectionActions", "MenuActions"],
-		{
-			"ok": self.go,
-			"1": self.keyNumberGlobal,
-			"2": self.keyNumberGlobal,
-			"3": self.keyNumberGlobal,
-			"4": self.keyNumberGlobal,
-			"5": self.keyNumberGlobal,
-			"6": self.keyNumberGlobal,
-			"7": self.keyNumberGlobal,
-			"8": self.keyNumberGlobal,
-			"9": self.keyNumberGlobal,
-			"0": self.keyNumberGlobal,
-			"red": self.keyRed,
-			"green": self.keyGreen,
-			"yellow": self.keyYellow,
-			"blue": self.keyBlue,
-			"up": self.up,
-			"down": self.down,
-			"left": self.left,
-			"right": self.right,
-			"shiftUp": self.additionalMoveUp,
-			"shiftDown": self.additionalMoveDown,
-			"menu": self.opensettings
-		}, prio=-2)
-
-	def opensettings(self):
-		from Screens.Setup import Setup
-		self.session.open(Setup, "softwareupdate")
-
-	def cancelClick(self, dummy=False):
-		self.close()
 
 class UpdatePlugin(Screen, ProtectedScreen):
 	def __init__(self, session, *args):
@@ -298,7 +261,7 @@ class UpdatePlugin(Screen, ProtectedScreen):
 					choices.append((_("Update channel list only"), "channels"))
 					choices.append((_("Cancel"), ""))
 					self["actions"].setEnabled(True)
-					upgrademessage = self.session.openWithCallback(self.startActualUpgrade, UpdateChoices, title=message, list=choices, skin_name = "SoftwareUpdateChoices", var=self.trafficLight, menu_path=self.menu_path_compressed)
+					upgrademessage = self.session.openWithCallback(self.startActualUpgrade, ChoiceBox, title=message, list=choices, skin_name = "SoftwareUpdateChoices", var=self.trafficLight, menu_path=self.menu_path_compressed)
 					upgrademessage.setTitle(self.title)
 				else:
 					self["actions"].setEnabled(True)
@@ -367,7 +330,7 @@ class UpdatePlugin(Screen, ProtectedScreen):
 			choices.append((_("Update channel list only"), "channels"))
 			choices.append((_("Cancel"), ""))
 			self["actions"].setEnabled(True)
-			upgrademessage = self.session.openWithCallback(self.startActualUpgrade, UpdateChoices, title=message, list=choices, skin_name="SoftwareUpdateChoices", var=self.trafficLight, menu_path=self.menu_path_compressed)
+			upgrademessage = self.session.openWithCallback(self.startActualUpgrade, ChoiceBox, title=message, list=choices, skin_name="SoftwareUpdateChoices", var=self.trafficLight, menu_path=self.menu_path_compressed)
 			upgrademessage.setTitle(self.title)
 		elif answer[1] == "changes":
 			self.session.openWithCallback(self.startActualUpgrade,SoftwareUpdateChanges, self.menu_path)
