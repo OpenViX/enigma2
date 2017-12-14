@@ -27,9 +27,8 @@
 			<menu weight="2" level="0" text="Tuner config" entryID="service_searching_selection">
 				<id val="scan"/>
 				<!-- Menu / Setup / Tuners / Settings -->
-				<item weight="1" entryID="usage_setup"><setup id="usage"/></item>
-				<item weight="2" text="Tuner setup" entryID="tuner_setup" requires="ClientModeDisabled"><screen module="Satconfig" screen="NimSelection"/></item>
-				<item weight="3" text="Tuner setup" entryID="client_mode" requires="ClientModeEnabled"><screen module="ClientMode" screen="ClientModeScreen"/></item>
+				<item weight="1" text="Tuner setup" entryID="tuner_setup" requires="ClientModeDisabled"><screen module="Satconfig" screen="NimSelection"/></item>
+				<item weight="2" text="Tuner setup" entryID="client_mode" requires="ClientModeEnabled"><screen module="ClientMode" screen="ClientModeScreen"/></item>
 				<item weight="20" text="Automatic scan" entryID="auto_scan" requires="ClientModeDisabled"><screen module="ScanSetup" screen="ScanSimple"/></item>
 				<item weight="30" text="Manual scan" entryID="manual_scan" requires="ClientModeDisabled"><screen module="ScanSetup"/></item>
 				<item weight="100" text="Fallback configuration" entryID="fallback_mode" requires="ClientModeDisabled"><screen  module="FallbackTunerSetup" screen="FallbackTunerSetup"/></item>
@@ -166,12 +165,6 @@ self.session.open(SABnzbdSetupScreen)
 				<item level="0" text="Filesystem check" entryID="harddisk_check"><screen module="HarddiskSetup" screen="HarddiskFsckSelection"/></item>
 				<item level="0" text="Convert ext3 to ext4" entryID="harddisk_convert" requires="ext4"><screen module="HarddiskSetup" screen="HarddiskConvertExt4Selection"/></item>
 			</menu>
-			<!-- Menu / Setup / Software Update -->
-			<menu weight="10" level="0" text="Software update" entryID="software_update">
-				<id val="softwareupdatemenu"/>
-				<item weight="1" level="0" text="Settings" entryID="onlineupdate_setup"><setup id="softwareupdate"/></item>
-				<item weight="2" level="0" text="Software update" entryID="software_update"><screen module="SoftwareUpdate" screen="UpdatePlugin"/></item>
-			</menu>
 			<!-- Menu / Setup / Time Settings -->
 			<item level="0" entryID="time_setup"><setup id="time"/></item>
 			<!-- Menu / Setup / Recordings, Playback & Timeshift -->
@@ -184,17 +177,18 @@ self.session.open(SABnzbdSetupScreen)
 			<menu weight="98" level="0" text="System" entryID="system_selection">
 				<id val="system"/>
 				<!-- Menu / Setup / System / Logs -->
-				<menu weight="1" level="2" text="Logs" entryID="logs_setup">
+				<item weight="1" entryID="usage_setup"><setup id="usage"/></item>
+				<menu weight="2" level="2" text="Logs" entryID="logs_setup">
 					<id val="logs_menu"/>
 					<item level="2" text="Settings" entryID="logs_setup"><setup id="logs"/></item>
 					<item level="2" text="Log manager" entryID="logs_man"><screen module="LogManager" screen="LogManager"/></item>
 				</menu>
 				<!-- Menu / Setup / System / Input Devices -->
-				<item weight="2" level="1" text="Input devices" entryID="input_device_setup"><screen module="InputDeviceSetup" screen="InputDeviceSelection"/></item>
+				<item weight="3" level="1" text="Input devices" entryID="input_device_setup"><screen module="InputDeviceSetup" screen="InputDeviceSelection"/></item>
 				<!-- Menu / Setup / System / Keyboard Setup -->
-				<item weight="3" entryID="keyboard_setup" text="Keyboard"><setup id="keyboard"/></item>
+				<item weight="4" entryID="keyboard_setup" text="Keyboard"><setup id="keyboard"/></item>
 				<!-- Menu / Setup / System / RF Setup -->
-				<item weight="4" level="1" entryID="rfmod_setup" requires="RfModulator"><setup id="RFmod"/></item>
+				<item weight="5" level="1" entryID="rfmod_setup" requires="RfModulator"><setup id="RFmod"/></item>
 				<!-- Menu / Setup / System / Factory Reset -->
 				<item weight="99" level="0" text="Factory reset" entryID="factory_reset">
 <code>
@@ -210,7 +204,6 @@ self.session.openWithCallback(msgClosed, FactoryReset)
 </code>
 				</item>
 			</menu>
-
 			<!-- Menu / Setup / HDMI-CEC -->
 			<item weight="99" text="HDMI CEC" entryID="hdmicec" requires="HDMICEC">
 <code>
@@ -218,6 +211,12 @@ from Plugins.SystemPlugins.HdmiCEC.plugin import HdmiCECSetupScreen
 self.session.open(HdmiCECSetupScreen)
 </code>
 			</item>
+			<!-- Menu / Setup / Software Update -->
+			<menu weight="1000" level="0" text="Software update" entryID="software_update">
+				<id val="softwareupdatemenu"/>
+				<item weight="1" level="0" text="Settings" entryID="onlineupdate_setup"><setup id="softwareupdate"/></item>
+				<item weight="2" level="0" text="Software update" entryID="software_update"><screen module="SoftwareUpdate" screen="UpdatePlugin"/></item>
+			</menu>
 		</menu>
 <!-- Menu / Plugins -->
 		<item weight="2" text="Plugins" entryID="plugin_selection"><screen module="PluginBrowser" screen="PluginBrowser"/></item>
