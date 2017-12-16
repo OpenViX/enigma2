@@ -13,7 +13,7 @@
 	<setup key="avsetup">
 		<!-- This is just a placeholder, the Videomode plugin implements this submenu -->
 	</setup>
-	<setup key="usage" title="Customize settings" titleshort="Settings">
+	<setup key="usage" title="Customize settings" titleshort="Customize">
 		<item level="0" text="Setup mode" description="Choose which level of menu/settings to display. 'Expert' level shows all items.">config.usage.setup_level</item>
 		<item level="1" text="Enable teletext caching" description="When enabled, teletext pages will be cached, allowing faster access.">config.usage.enable_tt_caching</item>
 		<item level="1" text="12V output" description="12V output." requires="12V_Output">config.usage.output_12V</item>
