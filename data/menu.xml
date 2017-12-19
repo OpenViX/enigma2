@@ -203,6 +203,7 @@ def msgClosed(ret):
 self.session.openWithCallback(msgClosed, FactoryReset)
 </code>
 				</item>
+				<item weight="2" level="0" text="Software update" entryID="software_update"><screen module="SoftwareUpdate" screen="UpdatePlugin"/></item>
 			</menu>
 			<!-- Menu / Setup / HDMI-CEC -->
 			<item weight="99" text="HDMI CEC" entryID="hdmicec" requires="HDMICEC">
@@ -211,12 +212,6 @@ from Plugins.SystemPlugins.HdmiCEC.plugin import HdmiCECSetupScreen
 self.session.open(HdmiCECSetupScreen)
 </code>
 			</item>
-			<!-- Menu / Setup / Software Update -->
-			<menu weight="1000" level="0" text="Software update" entryID="software_update">
-				<id val="softwareupdatemenu"/>
-				<item weight="1" level="0" text="Settings" entryID="onlineupdate_setup"><setup id="softwareupdate"/></item>
-				<item weight="2" level="0" text="Software update" entryID="software_update"><screen module="SoftwareUpdate" screen="UpdatePlugin"/></item>
-			</menu>
 		</menu>
 <!-- Menu / Plugins -->
 		<item weight="2" text="Plugins" entryID="plugin_selection"><screen module="PluginBrowser" screen="PluginBrowser"/></item>
