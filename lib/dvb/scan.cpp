@@ -114,21 +114,29 @@ int eDVBScan::isValidONIDTSID(int orbital_position, eOriginalNetworkID onid, eTr
 		ret = onid.get() < 0xFF00;
 		break;
 	}
+	SCAN_eDebug("[eDVBScan] isValidONIDTSID ret = %d", ret);
 	return ret;
 }
 
 eDVBNamespace eDVBScan::buildNamespace(eOriginalNetworkID onid, eTransportStreamID tsid, unsigned long hash)
 {
 	int orb_pos = (hash >> 16) & 0xFFFF;
+	SCAN_eDebug("[eDVBScan] buildNamespace (hash >> 16) & 0xFFFF = %d", orb_pos);
 	if (orb_pos == 0xFFFF) // cable
+		SCAN_eDebug("[eDVBScan] buildNamespace cable part 1");
 		if (eConfigManager::getConfigBoolValue("config.usage.subnetwork_cable", true))
+			SCAN_eDebug("[eDVBScan] buildNamespace cable part 2");
 			hash &= ~0xFFFF;
 	else if (orb_pos == 0xEEEE) // terrestrial
+		SCAN_eDebug("[eDVBScan] buildNamespace terrestrial part 1");
 		if (eConfigManager::getConfigBoolValue("config.usage.subnetwork_terrestrial", true))
+			SCAN_eDebug("[eDVBScan] buildNamespace terrestrial part 2");
 			hash &= ~0xFFFF;
 	else if (eConfigManager::getConfigBoolValue("config.usage.subnetwork", true)
 		&& isValidONIDTSID(orb_pos, onid, tsid)) // on valid ONIDs, ignore frequency ("sub network") part
 		hash &= ~0xFFFF;
+	else
+		SCAN_eDebug("[eDVBScan] buildNamespace else");
 	return eDVBNamespace(hash);
 }
 
