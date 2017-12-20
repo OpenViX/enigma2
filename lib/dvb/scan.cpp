@@ -123,15 +123,23 @@ eDVBNamespace eDVBScan::buildNamespace(eOriginalNetworkID onid, eTransportStream
 	int orb_pos = (hash >> 16) & 0xFFFF;
 	SCAN_eDebug("[eDVBScan] buildNamespace (hash >> 16) & 0xFFFF = %d", orb_pos);
 	if (orb_pos == 0xFFFF) // cable
+	{
 		SCAN_eDebug("[eDVBScan] buildNamespace cable part 1");
 		if (eConfigManager::getConfigBoolValue("config.usage.subnetwork_cable", true))
+		{
 			SCAN_eDebug("[eDVBScan] buildNamespace cable part 2");
 			hash &= ~0xFFFF;
+		}
+	}
 	else if (orb_pos == 0xEEEE) // terrestrial
+	{
 		SCAN_eDebug("[eDVBScan] buildNamespace terrestrial part 1");
 		if (eConfigManager::getConfigBoolValue("config.usage.subnetwork_terrestrial", true))
+		{
 			SCAN_eDebug("[eDVBScan] buildNamespace terrestrial part 2");
 			hash &= ~0xFFFF;
+		}
+	}
 	else if (eConfigManager::getConfigBoolValue("config.usage.subnetwork", true)
 		&& isValidONIDTSID(orb_pos, onid, tsid)) // on valid ONIDs, ignore frequency ("sub network") part
 		hash &= ~0xFFFF;
