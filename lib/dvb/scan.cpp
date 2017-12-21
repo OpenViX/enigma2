@@ -114,7 +114,6 @@ int eDVBScan::isValidONIDTSID(int orbital_position, eOriginalNetworkID onid, eTr
 		ret = onid.get() < 0xFF00;
 		break;
 	}
-	SCAN_eDebug("[eDVBScan] isValidONIDTSID ret = %d", ret);
 	return ret;
 }
 
