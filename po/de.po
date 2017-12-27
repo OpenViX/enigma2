@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-13 12:14+0000\n"
-"PO-Revision-Date: 2017-12-13 19:17+0100\n"
+"POT-Creation-Date: 2017-12-21 17:55+0000\n"
+"PO-Revision-Date: 2017-12-21 19:24+0100\n"
 "Last-Translator: Ralf Biedermann <ralf.biedermann@rbsoft.de>\n"
 "Language-Team: AndyBlacburn, j-ot&Trial\n"
 "Language: de\n"
@@ -3362,6 +3362,9 @@ msgstr "Gewünschte Sprungzeit für '4'/'6'-Tasten"
 msgid "Custom skip time for '7'/'9' buttons"
 msgstr "Gewünschte Sprungzeit für '7'/'9'-Tasten"
 
+msgid "Customize"
+msgstr "Anpassen"
+
 msgid "Customize settings"
 msgstr "Ändere Einstellungen"
 
@@ -5499,8 +5502,14 @@ msgstr ""
 "Verringere anschließend die Helligkeit soweit wie möglich. Stelle dabei sicher, dass die beiden untersten Grauschattierungen erkennbar bleiben. Die hellen Schattierungen werden im folgenden Schritt eingestellt.\n"
 "Drücke OK, wenn Du mit dem Ergebnis zufrieden bist."
 
-msgid "Ignore DVB namespace sub network"
-msgstr "Ingnoriere DVB Subnetzwerk"
+msgid "Ignore DVB-C namespace sub network"
+msgstr "Ingnoriere DVB-C Subnetzwerk"
+
+msgid "Ignore DVB-S namespace sub network"
+msgstr "Ingnoriere DVB-S Subnetzwerk"
+
+msgid "Ignore DVB-T namespace sub network"
+msgstr "Ingnoriere DVB-T Subnetzwerk"
 
 msgid "Image manager"
 msgstr "Image Verwaltung"
@@ -6939,6 +6948,9 @@ msgid ""
 msgstr ""
 "Kein Tuner angeschaltet!\n"
 "Bitte die Tuner konfigurieren bevor die Sendersuche gestartet wird."
+
+msgid "No updates found, Press OK to exit this screen."
+msgstr "Keine Updates gefunden. Weiter mit OK."
 
 msgid "No wireless networks found! Searching..."
 msgstr "Keine Funk-Netzwerke gefunden! Suche ..."
@@ -14101,9 +14113,6 @@ msgstr "umgeschaltet"
 
 #~ msgid "Currently installed image"
 #~ msgstr "Aktuell installiertes Image"
-
-#~ msgid "Customize"
-#~ msgstr "Anpassen"
 
 #~ msgid "Day 9"
 #~ msgstr "Tag 9"

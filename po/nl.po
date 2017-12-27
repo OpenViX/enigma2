@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-21 10:23+0000\n"
-"PO-Revision-Date: 2017-12-01 16:25+0100\n"
+"POT-Creation-Date: 2017-12-21 18:49+0000\n"
+"PO-Revision-Date: 2017-12-27 09:29+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SourceCharset: iso-8859-15\n"
-"X-Generator: Poedit 2.0.4\n"
+"X-Generator: Poedit 2.0.5\n"
 
 msgid ""
 "\n"
@@ -3359,6 +3359,9 @@ msgstr "Aangepaste springtijd voor de '4'/'6'-toetsen"
 msgid "Custom skip time for '7'/'9' buttons"
 msgstr "Aangepaste springtijd voor de '7'/'9'-toetsen"
 
+msgid "Customize"
+msgstr "Aanpassen"
+
 msgid "Customize settings"
 msgstr "Instellingen aanpassen"
 
@@ -5502,17 +5505,14 @@ msgstr ""
 "Let nu even niet op de heldere vlakken. Die worden pas bij de volgende stap ingesteld.\n"
 "Indien het resultaat goed is, drukt u op OK."
 
-#, fuzzy
 msgid "Ignore DVB-C namespace sub network"
-msgstr "Negeer DVB namespace sub network"
+msgstr "Negeer DVB-C namespace subnetwerk"
 
-#, fuzzy
 msgid "Ignore DVB-S namespace sub network"
-msgstr "Negeer DVB namespace sub network"
+msgstr "Negeer DVB-S namespace subnetwerk"
 
-#, fuzzy
 msgid "Ignore DVB-T namespace sub network"
-msgstr "Negeer DVB namespace sub network"
+msgstr "Negeer DVB-T namespace subnetwerk"
 
 msgid "Image manager"
 msgstr "Image manager"
@@ -6956,7 +6956,7 @@ msgstr ""
 "Controleer uw tunerinstellingen alvorens zenders te zoeken."
 
 msgid "No updates found, Press OK to exit this screen."
-msgstr ""
+msgstr "Geen updates gevonden. Druk op \"OK\" om het scherm te sluiten."
 
 msgid "No wireless networks found! Searching..."
 msgstr "Geen draadloze netwerken gevonden! Bezig met zoeken...."
@@ -8393,7 +8393,7 @@ msgid "Remove Confirmation"
 msgstr "Verwijderen bevestiging"
 
 msgid "Remove Service"
-msgstr "Verwijder kanaal"
+msgstr "Verwijder dienst"
 
 msgid "Remove a mark"
 msgstr "Verwijder een markeerpunt"
@@ -14403,9 +14403,6 @@ msgstr "zapte"
 
 #~ msgid "Currently installed image"
 #~ msgstr "Huidig geïnstalleerd image"
-
-#~ msgid "Customize"
-#~ msgstr "Aanpassen"
 
 #~ msgid "DVB_C"
 #~ msgstr "DVB_C"
