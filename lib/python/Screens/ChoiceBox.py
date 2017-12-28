@@ -25,15 +25,6 @@ class ChoiceBox(Screen):
 		self.reorderConfig = reorderConfig
 		self["text"] = Label()
 		self.var = ""
-		if skin_name and 'SoftwareUpdateChoices' in skin_name and var and var in ('unstable', 'updating', 'stable', 'unknown'):
-			self.var = var
-			self['feedStatusMSG'] = Label()
-			self['tl_off'] = Pixmap()
-			self['tl_red'] = Pixmap()
-			self['tl_yellow'] = Pixmap()
-			self['tl_green'] = Pixmap()
-		if skin_name and 'SoftwareUpdateChoices' in skin_name:
-			self["menu_path_compressed"] = StaticText(menu_path)
 
 		if title:
 			title = _(title)
@@ -53,11 +44,11 @@ class ChoiceBox(Screen):
 						print '[Choicebox] count', count
 					self["text"].setText(labeltext)
 				else:
-					self["text"] = Label(title)
+					self["text"].setText(title)
 			else:
-				self["text"] = Label(title)
+				self["text"].setText(title)
 		elif text:
-			self["text"] = Label(_(text))
+			self["text"].setText(_(text))
 		self.list = []
 		self.summarylist = []
 		if keys is None:
@@ -130,28 +121,6 @@ class ChoiceBox(Screen):
 		{
 			"back": self.cancel,
 		}, prio=-1)
-		self.onShown.append(self.onshow)
-
-	def onshow(self):
-		if self.skinName and 'SoftwareUpdateChoices' in self.skinName and self.var:
-			from Components.OnlineUpdateCheck import feedsstatuscheck
-			if self.var in feedsstatuscheck.feed_status_msgs:
-				status_text = feedsstatuscheck.feed_status_msgs[self.var]
-			else:
-				status_text = _('Feeds status: Unexpected')
-			self['feedStatusMSG'].setText(status_text)
-			self['tl_off'].hide()
-			self['tl_red'].hide()
-			self['tl_yellow'].hide()
-			self['tl_green'].hide()
-			if self.var == 'unstable':
-				self['tl_red'].show()
-			elif self.var == 'updating':
-				self['tl_yellow'].show()
-			elif self.var == 'stable':
-				self['tl_green'].show()
-			else:
-				self['tl_off'].show()
 
 	def autoResize(self):
 		desktop_w = enigma.getDesktop(0).size().width()

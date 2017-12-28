@@ -94,7 +94,7 @@ void eRCInputEventDriver::keyPressed(int)
 	struct input_event ev;
 	while (1)
 	{
-		if (read(handle, &ev, sizeof(struct input_event))!=sizeof(struct input_event))
+		if (read(handle, &ev, sizeof(input_event))!=sizeof(input_event))
 			break;
 		if (enabled && !input->islocked())
 			for (std::list<eRCDevice*>::iterator i(listeners.begin()); i!=listeners.end(); ++i)
@@ -128,7 +128,7 @@ eRCInputEventDriver::eRCInputEventDriver(const char *filename): eRCDriver(eRCInp
 			eDebugNoNewLine(" %02X", evCaps[i]);
 		eDebugNoNewLine("\n");
 #endif
-
+	m_remote_control = getDeviceName().find("remote control") != std::string::npos; /* assume remote control when name says so */
 	}
 }
 
@@ -162,21 +162,17 @@ bool eRCInputEventDriver::hasCap(unsigned char *caps, int bit)
 
 bool eRCInputEventDriver::isKeyboard()
 {
-#ifdef VUPLUS_RC_WORKAROUND
-	return(false);
-#else
+	if (m_remote_control)
+		return false;
 	/* check whether the input device has KEY_A, in which case we assume it is a keyboard */
 	return hasCap(keyCaps, KEY_A);
-#endif
 }
 
 bool eRCInputEventDriver::isPointerDevice()
 {
-#ifdef VUPLUS_RC_WORKAROUND
-	return(false);
-#else
+	if (m_remote_control)
+		return false;
 	return hasCap(evCaps, EV_REL) || hasCap(evCaps, EV_ABS);
-#endif
 }
 
 eRCInputEventDriver::~eRCInputEventDriver()

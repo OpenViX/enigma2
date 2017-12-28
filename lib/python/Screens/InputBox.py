@@ -48,10 +48,7 @@ class InputBox(Screen):
 		}, -1)
 
 		if self["input"].type == Input.TEXT:
-			if config.misc.remotecontrol_text_support.value:
-				self.onExecBegin.append(self.setKeyboardModeNone)
-			else:
-				self.onExecBegin.append(self.setKeyboardModeAscii)
+			self.onExecBegin.append(self.setKeyboardModeAscii)
 		else:
 			self.onExecBegin.append(self.setKeyboardModeNone)
 

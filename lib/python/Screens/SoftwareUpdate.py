@@ -12,7 +12,7 @@ from Screens.ParentalControlSetup import ProtectedScreen
 from Screens.Screen import Screen
 from Screens.Standby import TryQuitMainloop
 from Screens.GitCommitInfo import CommitInfo, gitcommitinfo
-from Components.ActionMap import ActionMap
+from Components.ActionMap import ActionMap, NumberActionMap
 from Components.Button import Button
 from Components.config import config
 from Components.Console import Console
@@ -45,6 +45,77 @@ class SoftwareUpdateChanges(CommitInfo):
 		self.updateScreenTitle(gitcommitinfo.getScreenTitle())
 		self["AboutScrollLabel"].setText(gitcommitinfo.readGithubCommitLogsSoftwareUpdate())
 
+
+class UpdateChoices(ChoiceBox):
+	def __init__(self, session, title="", list=None, keys=None, selection=0, skin_name=None, text="", reorderConfig="", var="", menu_path=""):
+		print 'title:',title
+		ChoiceBox.__init__(self, session, title, list, keys, selection, skin_name, text, reorderConfig, var, menu_path)
+		print 'title:',title
+
+		if var and var in ('unstable', 'updating', 'stable', 'unknown'):
+			self.var = var
+			self['feedStatusMSG'] = Label()
+			self['tl_off'] = Pixmap()
+			self['tl_red'] = Pixmap()
+			self['tl_yellow'] = Pixmap()
+			self['tl_green'] = Pixmap()
+		if skin_name and 'SoftwareUpdateChoices' in skin_name:
+			self["menu_path_compressed"] = StaticText(menu_path)
+
+		self["actions"] = NumberActionMap(["WizardActions", "InputActions", "ColorActions", "DirectionActions", "MenuActions"],
+		{
+			"ok": self.go,
+			"1": self.keyNumberGlobal,
+			"2": self.keyNumberGlobal,
+			"3": self.keyNumberGlobal,
+			"4": self.keyNumberGlobal,
+			"5": self.keyNumberGlobal,
+			"6": self.keyNumberGlobal,
+			"7": self.keyNumberGlobal,
+			"8": self.keyNumberGlobal,
+			"9": self.keyNumberGlobal,
+			"0": self.keyNumberGlobal,
+			"red": self.keyRed,
+			"green": self.keyGreen,
+			"yellow": self.keyYellow,
+			"blue": self.keyBlue,
+			"up": self.up,
+			"down": self.down,
+			"left": self.left,
+			"right": self.right,
+			"shiftUp": self.additionalMoveUp,
+			"shiftDown": self.additionalMoveDown,
+			"menu": self.opensettings
+		}, prio=-2)
+		self.onShown.append(self.onshow)
+
+	def onshow(self):
+		if self.var:
+			from Components.OnlineUpdateCheck import feedsstatuscheck
+			if self.var in feedsstatuscheck.feed_status_msgs:
+				status_text = feedsstatuscheck.feed_status_msgs[self.var]
+			else:
+				status_text = _('Feeds status: Unexpected')
+			self['feedStatusMSG'].setText(status_text)
+			self['tl_off'].hide()
+			self['tl_red'].hide()
+			self['tl_yellow'].hide()
+			self['tl_green'].hide()
+			if self.var == 'unstable':
+				self['tl_red'].show()
+			elif self.var == 'updating':
+				self['tl_yellow'].show()
+			elif self.var == 'stable':
+				self['tl_green'].show()
+			else:
+				self['tl_off'].show()
+
+	def opensettings(self):
+		from Screens.Setup import Setup
+		self.session.open(Setup, "softwareupdate")
+
+	def cancelClick(self, dummy=False):
+		self.close()
 
 class UpdatePlugin(Screen, ProtectedScreen):
 	def __init__(self, session, *args):
@@ -130,7 +201,7 @@ class UpdatePlugin(Screen, ProtectedScreen):
 			self['tl_yellow'].show()
 		else:
 			self['tl_off'].show()
-		
+
 		if (getImageType() != 'release' and self.trafficLight != 'unknown') or (getImageType() == 'release' and self.trafficLight not in ('stable', 'unstable')):
 			self.session.openWithCallback(self.close, MessageBox, feedsstatuscheck.getFeedsErrorMessage(), type=MessageBox.TYPE_INFO, timeout=30, close_on_any_key=True)
 			return
@@ -261,12 +332,14 @@ class UpdatePlugin(Screen, ProtectedScreen):
 					choices.append((_("Update channel list only"), "channels"))
 					choices.append((_("Cancel"), ""))
 					self["actions"].setEnabled(True)
-					upgrademessage = self.session.openWithCallback(self.startActualUpgrade, ChoiceBox, title=message, list=choices, skin_name = "SoftwareUpdateChoices", var=self.trafficLight, menu_path=self.menu_path_compressed)
+					upgrademessage = self.session.openWithCallback(self.startActualUpgrade, UpdateChoices, text=message, list=choices, skin_name = "SoftwareUpdateChoices", var=self.trafficLight, menu_path=self.menu_path_compressed)
 					upgrademessage.setTitle(self.title)
 				else:
+					message = _("No updates found, Press OK to exit this screen.")
+					choices = [(_("Nothing to upgrade"), "")]
 					self["actions"].setEnabled(True)
-					upgrademessage = self.session.openWithCallback(self.close, MessageBox, _("Nothing to upgrade"), type=MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
-					upgrademessage.setTitle(_('Software update'))
+					upgrademessage = self.session.openWithCallback(self.startActualUpgrade, UpdateChoices, text=message, list=choices, skin_name = "SoftwareUpdateChoices", var=self.trafficLight, menu_path=self.menu_path_compressed)
+					upgrademessage.setTitle(self.title)
 			elif self.channellist_only > 0:
 				if self.channellist_only == 1:
 					self.setEndMessage(_("Could not find installed channel list."))
@@ -330,7 +403,7 @@ class UpdatePlugin(Screen, ProtectedScreen):
 			choices.append((_("Update channel list only"), "channels"))
 			choices.append((_("Cancel"), ""))
 			self["actions"].setEnabled(True)
-			upgrademessage = self.session.openWithCallback(self.startActualUpgrade, ChoiceBox, title=message, list=choices, skin_name="SoftwareUpdateChoices", var=self.trafficLight, menu_path=self.menu_path_compressed)
+			upgrademessage = self.session.openWithCallback(self.startActualUpgrade, UpdateChoices, text=message, list=choices, skin_name="SoftwareUpdateChoices", var=self.trafficLight, menu_path=self.menu_path_compressed)
 			upgrademessage.setTitle(self.title)
 		elif answer[1] == "changes":
 			self.session.openWithCallback(self.startActualUpgrade,SoftwareUpdateChanges, self.menu_path)
