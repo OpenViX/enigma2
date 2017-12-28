@@ -203,12 +203,6 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 				if fileExists("/proc/stb/frontend/%d/use_scpc_optimized_search_range" % self.nim.slot):
 					self.scpc = getConfigListEntry(_("SCPC optimized search range"), self.nimConfig.scpcSearchRange)
 					self.list.append(self.scpc)
-				if SystemInfo["HasForceLNBOn"] and self.nim.isFBCRoot():
-					self.forcelnbpower = getConfigListEntry(_("Force LNB Power"), config.misc.forceLnbPower)
-					self.list.append(self.forcelnbpower)
-				if SystemInfo["HasForceToneburst"] and self.nim.isFBCRoot():
-					self.forcetoneburst = getConfigListEntry(_("Force ToneBurst"), config.misc.forceToneBurst)
-					self.list.append(self.forcetoneburst)
 		elif self.nim.isCompatible("DVB-C"):
 			self.configMode = getConfigListEntry(_("Configuration mode"), self.nimConfig.configMode)
 			self.list.append(self.configMode)
@@ -701,11 +695,6 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 			# sanity check for empty sat list
 			if self.nimConfig.configMode.value != "satposdepends" and len(nimmanager.getSatListForNim(self.slotid)) < 1:
 				self.nimConfig.configMode.value = "nothing"
-			if self.nim.isFBCRoot():
-				if SystemInfo["HasForceLNBOn"]:
-					config.misc.forceLnbPower.save()
-				if SystemInfo["HasForceToneburst"]:
-					config.misc.forceToneBurst.save()
 		for x in self["config"].list:
 			x[1].save()
 		configfile.save()
