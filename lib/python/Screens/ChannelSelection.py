@@ -2061,10 +2061,7 @@ class ChannelSelection(ChannelSelectionBase, ChannelSelectionEdit, ChannelSelect
 		config.usage.multibouquet.addNotifier(self.multibouquet_config_changed)
 		self.new_service_played = False
 		self.dopipzap = False
-		if config.misc.remotecontrol_text_support.value:
-			self.onExecBegin.append(self.asciiOff)
-		else:
-			self.onExecBegin.append(self.asciiOn)
+		self.onExecBegin.append(self.asciiOn)
 		self.mainScreenMode = None
 		self.mainScreenRoot = None
 

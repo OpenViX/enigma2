@@ -4,6 +4,7 @@ from fcntl import ioctl
 import os
 import struct
 from boxbranding import getBrandOEM
+import platform
 
 from Tools.Directories import pathExists
 
@@ -11,8 +12,8 @@ from Tools.Directories import pathExists
 # asm-generic/ioctl.h
 IOC_NRBITS = 8L
 IOC_TYPEBITS = 8L
-IOC_SIZEBITS = 13L
-IOC_DIRBITS = 3L
+IOC_SIZEBITS = 13L if "mips" in platform.machine() else 14L
+IOC_DIRBITS = 3L if "mips" in platform.machine() else 2L
 
 IOC_NRSHIFT = 0L
 IOC_TYPESHIFT = IOC_NRSHIFT+IOC_NRBITS
@@ -41,8 +42,6 @@ class inputDevices:
 				self.fd = os.open("/dev/input/" + evdev, os.O_RDWR | os.O_NONBLOCK)
 				self.name = ioctl(self.fd, EVIOCGNAME(256), buffer)
 				self.name = self.name[:self.name.find("\0")]
-				if str(self.name).find("Keyboard") != -1:
-					self.name = 'keyboard'
 				os.close(self.fd)
 			except (IOError,OSError), err:
 				print "[InputDevice] Error: evdev='%s' getInputDevices <ERROR: ioctl(EVIOCGNAME): '%s'>" % (evdev, str(err))
@@ -55,11 +54,11 @@ class inputDevices:
 
 
 	def getInputDeviceType(self,name):
-		if "remote control" in name:
+		if "remote control" in str(name).lower():
 			return "remote"
-		elif "keyboard" in name:
+		elif "keyboard" in str(name).lower():
 			return "keyboard"
-		elif "mouse" in name:
+		elif "mouse" in str(name).lower():
 			return "mouse"
 		else:
 			# print "[InputDevice] Unknown device type:",name
