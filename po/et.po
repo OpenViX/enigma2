@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX-Enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-11-28 22:50+0200\n"
-"PO-Revision-Date: 2017-12-05 16:21+0200\n"
+"POT-Creation-Date: 2017-12-30 07:12+0200\n"
+"PO-Revision-Date: 2017-12-30 12:26+0200\n"
 "Last-Translator: rimas\n"
 "Language-Team: Digi-tv.ee\n"
 "Language: et\n"
@@ -2473,7 +2473,7 @@ msgid "Change PIN"
 msgstr "Muuda PIN"
 
 msgid "Change bouquets in quickzap"
-msgstr "Lemmiknimekirjade vahetus noolenuppudega"
+msgstr "Lemmiknimekirjade vahetus numbritega kanalivahetusel"
 
 msgid "Change next timer"
 msgstr "Muuda järgmist taimerit"
@@ -3358,6 +3358,9 @@ msgstr "'4'/'6'-nuppude hüppe kohandatud pikkus"
 
 msgid "Custom skip time for '7'/'9' buttons"
 msgstr "'7'/'9'-nuppude hüppe kohandatud pikkus"
+
+msgid "Customize"
+msgstr "Kasutaja eelistused"
 
 msgid "Customize settings"
 msgstr "Kasutaja valikud"
@@ -4860,7 +4863,7 @@ msgid "Force LNB Power"
 msgstr "Sunnitud LNB toide"
 
 msgid "Force Legacy Signal Stats"
-msgstr ""
+msgstr "Kasuta vanaaegset signaalistatikat"
 
 msgid "Force ToneBurst"
 msgstr "Sunnitud toonimpulss"
@@ -5494,8 +5497,14 @@ msgstr ""
 "Ära hooli praegu heledatest varjunditest, need seame paika järgmisena. \n"
 "Kui oled tulemusega rahul, vajuta OK."
 
-msgid "Ignore DVB namespace sub network"
-msgstr "Eira DVB nimeruumi alamvõrku"
+msgid "Ignore DVB-C namespace sub network"
+msgstr "Eira DVB-C nimeruumi alamvõrku"
+
+msgid "Ignore DVB-S namespace sub network"
+msgstr "Eira DVB-S nimeruumi alamvõrku"
+
+msgid "Ignore DVB-T namespace sub network"
+msgstr "Eira DVB-T nimeruumi alamvõrku"
 
 msgid "Image manager"
 msgstr "Süsteemitõmmised"
@@ -6416,6 +6425,9 @@ msgstr "Minutit sekundit"
 msgid "Mipsel"
 msgstr "Mipsel"
 
+msgid "Miscellaneous"
+msgstr "Mitmesugust"
+
 msgid "Missing "
 msgstr "Puudub "
 
@@ -6936,6 +6948,9 @@ msgstr ""
 "Tuuner määramata!\n"
 "Seadista tuuner enne kanaliotsingu alustamist."
 
+msgid "No updates found, Press OK to exit this screen."
+msgstr "Uuendusi  ei leitud. Akna sulgemiseks vajuta OK."
+
 msgid "No wireless networks found! Searching..."
 msgstr "Traadita võrke ei leitud! Otsitakse..."
 
@@ -7089,6 +7104,10 @@ msgstr "Ridade arv"
 msgid "Number of rows to display"
 msgstr "Kuvatavate ridade arv"
 
+#, python-format
+msgid "OEM:\t%s\n"
+msgstr "OEM:\t%s\n"
+
 msgid "OK"
 msgstr "OK"
 
@@ -7115,9 +7134,6 @@ msgstr "OSD nime päring"
 
 msgid "OSD position"
 msgstr "OSD asukoht"
-
-msgid "OSD settings"
-msgstr "Ekraanigraafika seaded"
 
 msgid "OScam Info"
 msgstr "OScam info"
@@ -9326,9 +9342,6 @@ msgstr "Määrab filmilistile tüvikataloogi, et eemaldada '..' kataloogi nimest
 msgid "Settings"
 msgstr "Seaded"
 
-msgid "Settings..."
-msgstr "Seaded"
-
 msgid "Setup"
 msgstr "Seadistamine"
 
@@ -9903,9 +9916,6 @@ msgstr "Ühiskond/poliitika/majandus"
 
 msgid "Softcam"
 msgstr "Emulaator"
-
-msgid "Softcam setings"
-msgstr "EMU seaded"
 
 msgid "Softcam settings"
 msgstr "EMU seaded"
@@ -11297,6 +11307,9 @@ msgstr "Tuuner ei ole toetatud"
 msgid "Tuner live values"
 msgstr "Tuuneri tegevväärtused"
 
+msgid "Tuner miscellaneous"
+msgstr "Tuuneri erinevad valikud"
+
 msgid "Tuner not available."
 msgstr "Tuuner ei ole kättesaadav."
 
@@ -12060,6 +12073,12 @@ msgstr "Mida soovid otsida?"
 
 msgid "When enabled enigma2 will load unlinked userbouquets. This means that userbouquets that are available, but not included in the bouquets.tv or bouquets.radio files, will still be loaded. This allows you for example to keep your own user bouquet while installed settings are upgraded"
 msgstr "Kui lubatud, laadib enigma2 ka sidumata lemmiknimekirjad. See tähendab, et lemmiknimekirjad, mis on olemas, aga puuduvad bouquets.tv või bouquets.radio failides, laaditakse ikkagi. Nii saab oma lemmiknimekirjad säilitada ka paigaldatud kanalinimekirjade uuendamisel"
+
+msgid "When enabled the LNB power will not be switched off in standby"
+msgstr "Kui lubatud, ei lülitata ooteseisundis LNB toidet välja"
+
+msgid "When enabled the LNB toneburst will be forced"
+msgstr "Kui lubatud, on LNB toonimpulss kasutuses jõuga"
 
 msgid "When enabled the online checker will also check for experimental versions"
 msgstr "Kui lubatud, otsitakse ka eksperimentaalseid uuendusi"
@@ -14041,6 +14060,9 @@ msgstr "vahetatud"
 #~ msgid "No free tuner available!"
 #~ msgstr "Vaba tuuner puudub!"
 
+#~ msgid "OSD settings"
+#~ msgstr "Ekraanigraafika seaded"
+
 #~ msgid "Position Setup"
 #~ msgstr "Asukoha määramine"
 
@@ -14065,6 +14087,9 @@ msgstr "vahetatud"
 #~ msgid "Service searching"
 #~ msgstr "Kanaliotsing"
 
+#~ msgid "Settings..."
+#~ msgstr "Seaded"
+
 #~ msgid "Signal Strength:"
 #~ msgstr "Signaali tugevus:"
 
@@ -14075,6 +14100,9 @@ msgstr "vahetatud"
 #~ msgstr "EMU / CI"
 
 #~ msgid "Softcam Settings"
+#~ msgstr "EMU seaded"
+
+#~ msgid "Softcam setings"
 #~ msgstr "EMU seaded"
 
 #~ msgid "Software Update"

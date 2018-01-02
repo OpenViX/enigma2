@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-21 18:49+0000\n"
-"PO-Revision-Date: 2017-12-27 09:29+0100\n"
+"POT-Creation-Date: 2017-12-29 12:00+0000\n"
+"PO-Revision-Date: 2017-12-30 09:40+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -1572,22 +1572,22 @@ msgid "Advanced video enhancement setup"
 msgstr "Geavanceerde videoverbeteringsinstellingen"
 
 msgid "Afghanistan"
-msgstr ""
+msgstr "Afghanistan"
 
 msgid "After event"
 msgstr "Na opname"
 
 msgid "Aland Islands"
-msgstr ""
+msgstr "Aland Islands"
 
 msgid "Albania"
-msgstr ""
+msgstr "Albania"
 
 msgid "Album"
 msgstr "Album"
 
 msgid "Algeria"
-msgstr ""
+msgstr "Algeria"
 
 msgid "Alias"
 msgstr "Alias"
@@ -1713,7 +1713,7 @@ msgid "Always show bouquets"
 msgstr "Toon altijd favorieten"
 
 msgid "American Samoa"
-msgstr ""
+msgstr "American Samoa"
 
 msgid "An empty filename is illegal."
 msgstr "Een lege bestandsnaam is ongeldig."
@@ -1725,13 +1725,13 @@ msgid "An unknown error occurred!"
 msgstr "Er is een onbekende fout opgetreden!"
 
 msgid "Andorra"
-msgstr ""
+msgstr "Andorra"
 
 msgid "Angola"
-msgstr ""
+msgstr "Angola"
 
 msgid "Anguilla"
-msgstr ""
+msgstr "Anguilla"
 
 msgid "Animation Speed"
 msgstr "Animatiesnelheid"
@@ -1740,10 +1740,10 @@ msgid "Animations"
 msgstr "Animatie"
 
 msgid "Antarctica"
-msgstr ""
+msgstr "Antarctica"
 
 msgid "Antigua and Barbuda"
-msgstr ""
+msgstr "Antigua and Barbuda"
 
 msgid "Any activity"
 msgstr "Elke activiteit"
@@ -1854,10 +1854,10 @@ msgid "Are you sure you want to update your %s %s ?"
 msgstr "Weet u zeker dat u uw %s %s wilt updaten?"
 
 msgid "Argentina"
-msgstr ""
+msgstr "Argentina"
 
 msgid "Armenia"
-msgstr ""
+msgstr "Armenia"
 
 msgid "Artist"
 msgstr "Artiest"
@@ -1866,7 +1866,7 @@ msgid "Arts/Culture"
 msgstr "Kunst/Cultuur"
 
 msgid "Aruba"
-msgstr ""
+msgstr "Aruba"
 
 msgid "Ask user"
 msgstr "Vraag gebruiker"
@@ -1934,7 +1934,7 @@ msgid "Australia"
 msgstr "Australië"
 
 msgid "Austria"
-msgstr ""
+msgstr "Austria"
 
 msgid "Author: "
 msgstr "Auteur: "
@@ -2037,7 +2037,7 @@ msgid "Available shares:"
 msgstr "Beschikbare shares:"
 
 msgid "Azerbaijan"
-msgstr ""
+msgstr "Azerbaijan"
 
 msgid "B"
 msgstr "B"
@@ -2095,10 +2095,10 @@ msgid "Backup system settings"
 msgstr "Back-up uw instellingen"
 
 msgid "Bahamas"
-msgstr ""
+msgstr "Bahamas"
 
 msgid "Bahrain"
-msgstr ""
+msgstr "Bahrain"
 
 msgid "Band"
 msgstr "Band"
@@ -2107,10 +2107,10 @@ msgid "Bandwidth"
 msgstr "Bandbreedte"
 
 msgid "Bangladesh"
-msgstr ""
+msgstr "Bangladesh"
 
 msgid "Barbados"
-msgstr ""
+msgstr "Barbados"
 
 msgid "Base time"
 msgstr "Basis timer"
@@ -2137,22 +2137,22 @@ msgid "Behavior when a movie reaches the end"
 msgstr "Actie bij het einde van de opname"
 
 msgid "Belarus"
-msgstr ""
+msgstr "Belarus"
 
 msgid "Belgium"
 msgstr "België"
 
 msgid "Belize"
-msgstr ""
+msgstr "Belize"
 
 msgid "Benin"
-msgstr ""
+msgstr "Benin"
 
 msgid "Bermuda"
-msgstr ""
+msgstr "Bermuda"
 
 msgid "Bhutan"
-msgstr ""
+msgstr "Bhutan"
 
 msgid "Big PiP"
 msgstr "Audio-PiP"
@@ -2179,10 +2179,10 @@ msgid "Blue long"
 msgstr "Lang-blauw"
 
 msgid "Bolivia (Plurinational State of)"
-msgstr ""
+msgstr "Bolivia (Plurinational State of)"
 
 msgid "Bonaire, Sint Eustatius and Saba"
-msgstr ""
+msgstr "Bonaire, Sint Eustatius and Saba"
 
 msgid "Bookmarks"
 msgstr "Markeerpunten"
@@ -2198,19 +2198,19 @@ msgid "Bootloader:\t%s\n"
 msgstr "Bootloader:\t%s\n"
 
 msgid "Bosnia and Herzegovina"
-msgstr ""
+msgstr "Bosnia and Herzegovina"
 
 msgid "Botswana"
-msgstr ""
+msgstr "Botswana"
 
 msgid "Bouquet List"
 msgstr "Favorietenlijst"
 
 msgid "Bouvet Island"
-msgstr ""
+msgstr "Bouvet Island"
 
 msgid "Brazil"
-msgstr ""
+msgstr "Brazil"
 
 msgid "Brightness"
 msgstr "Helderheid"
@@ -2225,10 +2225,10 @@ msgid "Brightness (Standby)"
 msgstr "Helderheid (Stand-by)"
 
 msgid "British Indian Ocean Territory"
-msgstr ""
+msgstr "British Indian Ocean Territory"
 
 msgid "Brunei Darussalam"
-msgstr ""
+msgstr "Brunei Darussalam"
 
 #, python-format
 msgid "Buffering %d%%"
@@ -2242,13 +2242,13 @@ msgid "Build: %s"
 msgstr "Build: %s"
 
 msgid "Bulgaria"
-msgstr ""
+msgstr "Bulgaria"
 
 msgid "Bulgarian"
 msgstr "Bulgaars"
 
 msgid "Burkina Faso"
-msgstr ""
+msgstr "Burkina Faso"
 
 msgid "Burn DVD"
 msgstr "Beschrijf DVD"
@@ -2264,7 +2264,7 @@ msgid "Burn to DVD"
 msgstr "Schrijf op DVD"
 
 msgid "Burundi"
-msgstr ""
+msgstr "Burundi"
 
 msgid "Bus: "
 msgstr "Bus: "
@@ -2380,7 +2380,7 @@ msgid "Cable Scan"
 msgstr "Kabelscan"
 
 msgid "Cabo Verde"
-msgstr ""
+msgstr "Cabo Verde"
 
 msgid "Cache thumbnails"
 msgstr "Miniatuurafbeeldingen cachen"
@@ -2401,16 +2401,16 @@ msgid "Calibrate"
 msgstr "Kalibreer"
 
 msgid "Cambodia"
-msgstr ""
+msgstr "Cambodia"
 
 msgid "Cameroon"
-msgstr ""
+msgstr "Cameroon"
 
 msgid "Can be used for different fps between external subtitles and video."
 msgstr "Kan worden gebruikt voor verschillen in fps tussen externe ondertitels."
 
 msgid "Canada"
-msgstr ""
+msgstr "Canada"
 
 msgid "Cancel"
 msgstr "Annuleren"
@@ -2455,7 +2455,7 @@ msgid "Cascade PiP"
 msgstr "Waterval PiP"
 
 msgid "Cayman Islands"
-msgstr ""
+msgstr "Cayman Islands"
 
 msgid "Center DVB subs on this service"
 msgstr "Centreer DVB-ondertitels voor dit kanaal"
@@ -2464,10 +2464,10 @@ msgid "Center DVB subtitles"
 msgstr "Centreer DVB-ondertitels"
 
 msgid "Central African Republic"
-msgstr ""
+msgstr "Central African Republic"
 
 msgid "Chad"
-msgstr ""
+msgstr "Chad"
 
 msgid "Change PIN"
 msgstr "Wijzig pincode"
@@ -2566,7 +2566,7 @@ msgid "Chapter:"
 msgstr "Hoofdstuk:"
 
 msgid "Chatham Islands"
-msgstr ""
+msgstr "Chatham Islands"
 
 msgid "Check"
 msgstr "Controleer"
@@ -2610,10 +2610,10 @@ msgid "Childrens"
 msgstr "Jeugd"
 
 msgid "Chile"
-msgstr ""
+msgstr "Chile"
 
 msgid "China"
-msgstr ""
+msgstr "China"
 
 #, python-format
 msgid "Chipset:\t%s\n"
@@ -2700,7 +2700,7 @@ msgid "Chose between record and ZAP."
 msgstr "Kies tussen opname en zap."
 
 msgid "Christmas Island"
-msgstr ""
+msgstr "Christmas Island"
 
 msgid "Circular LNB"
 msgstr "Circulaire LNB"
@@ -2763,7 +2763,7 @@ msgid "Close title selection"
 msgstr "Sluit titelselectie"
 
 msgid "Cocos (Keeling) Islands"
-msgstr ""
+msgstr "Cocos (Keeling) Islands"
 
 msgid "Code R. LP-HP & Guard Int"
 msgstr "Code R. LP-HP & Guard Int"
@@ -2781,7 +2781,7 @@ msgid "Collection settings"
 msgstr "Instellingen verzameling"
 
 msgid "Colombia"
-msgstr ""
+msgstr "Colombia"
 
 msgid "Color format"
 msgstr "Kleurformaat"
@@ -2817,7 +2817,7 @@ msgid "Communication"
 msgstr "Communicatie"
 
 msgid "Comoros"
-msgstr ""
+msgstr "Comoros"
 
 msgid "Complete"
 msgstr "Compleet"
@@ -3135,10 +3135,10 @@ msgid "Conflicting timer"
 msgstr "Conflicterende timer"
 
 msgid "Congo"
-msgstr ""
+msgstr "Congo"
 
 msgid "Congo (Democratic Republic of the)"
-msgstr ""
+msgstr "Congo (Democratic Republic of the)"
 
 msgid "Connect"
 msgstr "Verbinden"
@@ -3164,8 +3164,9 @@ msgstr "Verbonden:"
 msgid "Connection using the supplied FTP parameters failed. Please recheck the details and try again."
 msgstr "Verbinding met de ingestelde FTP-parameters is mislukt. Controleer de instellingen en probeer opnieuw."
 
+#, fuzzy
 msgid "Constellation & FFT mode"
-msgstr ""
+msgstr "Constellatie & FFT-modus"
 
 msgid "Content"
 msgstr "Inhoud"
@@ -3204,7 +3205,7 @@ msgid "Converting ext3 to ext4..."
 msgstr "Converteert ext3 naar ext4...."
 
 msgid "Cook Islands"
-msgstr ""
+msgstr "Cook Islands"
 
 msgid "Cool TV Guide"
 msgstr "Cool TV Guide"
@@ -3219,10 +3220,10 @@ msgid "Copying files"
 msgstr "Kopieert bestanden"
 
 msgid "Costa Rica"
-msgstr ""
+msgstr "Costa Rica"
 
 msgid "Cote d'Ivoire"
-msgstr ""
+msgstr "Cote d'Ivoire"
 
 msgid "Could not find installed channel list."
 msgstr "Kon geen geïnstalleerde kanaallijst vinden."
@@ -3287,7 +3288,7 @@ msgid "Creating partition"
 msgstr "Creëert partitie"
 
 msgid "Croatia"
-msgstr ""
+msgstr "Croatia"
 
 msgid "Croatian"
 msgstr "Croatisch"
@@ -3302,10 +3303,10 @@ msgid "Cron timers"
 msgstr "Cron timers"
 
 msgid "Cuba"
-msgstr ""
+msgstr "Cuba"
 
 msgid "Curacao"
-msgstr ""
+msgstr "Curacao"
 
 msgid "Current Affairs"
 msgstr "Actualiteiten"
@@ -3375,13 +3376,13 @@ msgid "Cutlist editor..."
 msgstr "Cutlist editor..."
 
 msgid "Cyprus"
-msgstr ""
+msgstr "Cyprus"
 
 msgid "Czech"
-msgstr ""
+msgstr "Czech"
 
 msgid "Czechia"
-msgstr ""
+msgstr "Czechia"
 
 msgid "DAC"
 msgstr "DAC"
@@ -3750,7 +3751,7 @@ msgid "Deleting files"
 msgstr "Verwijdert bestanden"
 
 msgid "Denmark"
-msgstr ""
+msgstr "Denmark"
 
 msgid "Depth"
 msgstr "Diepte"
@@ -3884,7 +3885,7 @@ msgid "Display the EIT now/next eventdata in infobar."
 msgstr "Toon EIT nu/straks programmagegevens in de infobar."
 
 msgid "Djibouti"
-msgstr ""
+msgstr "Djibouti"
 
 msgid "Do not center DVB subs on this service"
 msgstr "Centreer DVB-ondertitels niet voor dit kanaal."
@@ -4045,13 +4046,13 @@ msgid "Documentary"
 msgstr "Dcumentaire"
 
 msgid "Domain"
-msgstr ""
+msgstr "Domain"
 
 msgid "Dominica"
-msgstr ""
+msgstr "Dominica"
 
 msgid "Dominican Republic"
-msgstr ""
+msgstr "Dominican Republic"
 
 msgid "Don't save"
 msgstr "Niet opslaan"
@@ -4181,13 +4182,13 @@ msgid "East limit set"
 msgstr "Oostelijke limiet instellen"
 
 msgid "Easter Island"
-msgstr ""
+msgstr "Easter Island"
 
 msgid "Ecm:"
 msgstr "Ecm:"
 
 msgid "Ecuador"
-msgstr ""
+msgstr "Ecuador"
 
 msgid "Edit"
 msgstr "Bewerk"
@@ -4231,10 +4232,10 @@ msgid "Education/Science/Factual"
 msgstr "Onderwijs/Wetenschap/Feiten"
 
 msgid "Egypt"
-msgstr ""
+msgstr "Egypt"
 
 msgid "El Salvador"
-msgstr ""
+msgstr "El Salvador"
 
 msgid "Elapsed"
 msgstr "Verstreken"
@@ -4433,10 +4434,10 @@ msgid "Equal to"
 msgstr "Gelijk aan"
 
 msgid "Equatorial Guinea"
-msgstr ""
+msgstr "Equatorial Guinea"
 
 msgid "Eritrea"
-msgstr ""
+msgstr "Eritrea"
 
 msgid "Error"
 msgstr "Fout"
@@ -4467,7 +4468,7 @@ msgstr ""
 "Opnieuw?"
 
 msgid "Estonia"
-msgstr ""
+msgstr "Estonia"
 
 msgid "Estonian"
 msgstr "Estisch"
@@ -4476,7 +4477,7 @@ msgid "Ethernet network interface"
 msgstr "Ethernet netwerkinterface"
 
 msgid "Ethiopia"
-msgstr ""
+msgstr "Ethiopia"
 
 msgid "Event Info"
 msgstr "Programma Info"
@@ -4736,7 +4737,7 @@ msgid "Failed to write /tmp/positionersetup.log: "
 msgstr "Mislukt te schrijven naar /tmp/positionersetup.log: "
 
 msgid "Falkland Islands (Malvinas)"
-msgstr ""
+msgstr "Falkland Islands (Malvinas)"
 
 msgid "Fallback address type"
 msgstr "Fallback adres-type"
@@ -4762,7 +4763,7 @@ msgid "Fan %d"
 msgstr "Ventilator %d"
 
 msgid "Faroe Islands"
-msgstr ""
+msgstr "Faroe Islands"
 
 msgid "Fast"
 msgstr "Snel"
@@ -4801,10 +4802,10 @@ msgid "Feeds status: Updating"
 msgstr "Feeds status: bezig met updaten"
 
 msgid "Fernando de Noronha"
-msgstr ""
+msgstr "Fernando de Noronha"
 
 msgid "Fiji"
-msgstr ""
+msgstr "Fiji"
 
 msgid "File appears to be busy.\n"
 msgstr "Bestand lijkt in gebruik te zijn.\n"
@@ -4847,7 +4848,7 @@ msgid "Finished configuring your network"
 msgstr "Klaar met het configureren van uw netwerk"
 
 msgid "Finland"
-msgstr ""
+msgstr "Finland"
 
 msgid "Finnish"
 msgstr "Fins"
@@ -4867,8 +4868,9 @@ msgstr "Lettergrootte"
 msgid "Force LNB Power"
 msgstr "Forceer LNB Power"
 
+#, fuzzy
 msgid "Force Legacy Signal Stats"
-msgstr ""
+msgstr "Forceer oude signaal statistieken"
 
 msgid "Force ToneBurst"
 msgstr "Forceer Toneburst"
@@ -4886,7 +4888,7 @@ msgid "Frame size in full view"
 msgstr "Framegrootte in vol beeld"
 
 msgid "France"
-msgstr ""
+msgstr "France"
 
 msgid "Free To Air"
 msgstr "FTA"
@@ -4907,16 +4909,16 @@ msgid "Free: "
 msgstr "Vrij:"
 
 msgid "French"
-msgstr ""
+msgstr "French"
 
 msgid "French Guiana"
-msgstr ""
+msgstr "French Guiana"
 
 msgid "French Polynesia"
-msgstr ""
+msgstr "French Polynesia"
 
 msgid "French Southern Territories"
-msgstr ""
+msgstr "French Southern Territories"
 
 msgid "Frequency"
 msgstr "Frequentie"
@@ -4991,16 +4993,16 @@ msgid "GUI settings"
 msgstr "GUI instellingen"
 
 msgid "Gabon"
-msgstr ""
+msgstr "Gabon"
 
 msgid "Galapagos Islands"
-msgstr ""
+msgstr "Galapagos Islands"
 
 msgid "Gambia"
-msgstr ""
+msgstr "Gambia"
 
 msgid "Gambier Islands"
-msgstr ""
+msgstr "Gambier Islands"
 
 msgid "Gateway"
 msgstr "Gateway"
@@ -5021,13 +5023,13 @@ msgid "Genre"
 msgstr "Genre"
 
 msgid "Georgia"
-msgstr ""
+msgstr "Georgia"
 
 msgid "German"
 msgstr "Duits"
 
 msgid "Germany"
-msgstr ""
+msgstr "Germany"
 
 msgid "Getting Event Info failed!"
 msgstr "Geen programma info gevonden!"
@@ -5036,10 +5038,10 @@ msgid "Getting plugin information. Please wait..."
 msgstr "Plugin-gegevens worden opgehaald. Even wachten..."
 
 msgid "Ghana"
-msgstr ""
+msgstr "Ghana"
 
 msgid "Gibraltar"
-msgstr ""
+msgstr "Gibraltar"
 
 msgid "Go down the list"
 msgstr "Ga naar beneden in de lijst"
@@ -5111,7 +5113,7 @@ msgid "Graphics"
 msgstr "Grafisch"
 
 msgid "Greece"
-msgstr ""
+msgstr "Greece"
 
 msgid "Greek"
 msgstr "Grieks"
@@ -5123,10 +5125,10 @@ msgid "Green long"
 msgstr "Lang-groen"
 
 msgid "Greenland"
-msgstr ""
+msgstr "Greenland"
 
 msgid "Grenada"
-msgstr ""
+msgstr "Grenada"
 
 msgid "Grey"
 msgstr "Grijs"
@@ -5138,28 +5140,28 @@ msgid "Grow from left"
 msgstr "Groei vanaf links"
 
 msgid "Guadeloupe"
-msgstr ""
+msgstr "Guadeloupe"
 
 msgid "Guam"
-msgstr ""
+msgstr "Guam"
 
 msgid "Guard interval"
 msgstr "Bewakingsinterval"
 
 msgid "Guatemala"
-msgstr ""
+msgstr "Guatemala"
 
 msgid "Guernsey"
-msgstr ""
+msgstr "Guernsey"
 
 msgid "Guinea"
-msgstr ""
+msgstr "Guinea"
 
 msgid "Guinea-Bissau"
-msgstr ""
+msgstr "Guinea-Bissau"
 
 msgid "Guyana"
-msgstr ""
+msgstr "Guyana"
 
 msgid "H: = Hourly / D: = Daily / W: = Weekly / M: = Monthly"
 msgstr "U: = Uurlijks / D: = Dagelijks / W: = Wekelijks / M: = Maandelijks"
@@ -5213,7 +5215,7 @@ msgid "HH:mm:ss"
 msgstr "HH:mm:ss"
 
 msgid "Haiti"
-msgstr ""
+msgstr "Haiti"
 
 msgid "Handle standby from TV"
 msgstr "Verwerk stand-by van TV"
@@ -5228,7 +5230,7 @@ msgid "Harddisk setup"
 msgstr "Harde schijf instellingen"
 
 msgid "Heard Island and McDonald Islands"
-msgstr ""
+msgstr "Heard Island and McDonald Islands"
 
 msgid "Hebrew"
 msgstr "Hebreeuws"
@@ -5297,7 +5299,7 @@ msgid "History zap..."
 msgstr "Geschiedenis-zap..."
 
 msgid "Ho Chi Minh City"
-msgstr ""
+msgstr "Ho Chi Minh City"
 
 msgid "Hold screen"
 msgstr "Hold screen"
@@ -5306,16 +5308,16 @@ msgid "Hold till locked"
 msgstr "Hold till locked"
 
 msgid "Holy See"
-msgstr ""
+msgstr "Holy See"
 
 msgid "Home"
 msgstr "Thuis"
 
 msgid "Honduras"
-msgstr ""
+msgstr "Honduras"
 
 msgid "Hong Kong"
-msgstr ""
+msgstr "Hong Kong"
 
 msgid "Hops:"
 msgstr "Hops:"
@@ -5378,7 +5380,7 @@ msgid "Hungarian"
 msgstr "Hongaars"
 
 msgid "Hungary"
-msgstr ""
+msgstr "Hungary"
 
 msgid "IMDB search for current event"
 msgstr "IMDB zoekslag naar huidig programma"
@@ -5424,7 +5426,7 @@ msgid "ISO path"
 msgstr "ISO pad"
 
 msgid "Iceland"
-msgstr ""
+msgstr "Iceland"
 
 msgid "Icons"
 msgstr "Iconen"
@@ -5566,10 +5568,10 @@ msgid "Index allocated:"
 msgstr "Index toegewezen:"
 
 msgid "India"
-msgstr ""
+msgstr "India"
 
 msgid "Indonesia"
-msgstr ""
+msgstr "Indonesia"
 
 msgid "Info"
 msgstr "Informatie"
@@ -5791,13 +5793,13 @@ msgid "Ipkg"
 msgstr "IPKG"
 
 msgid "Iran (Islamic Republic of)"
-msgstr ""
+msgstr "Iran (Islamic Republic of)"
 
 msgid "Iraq"
-msgstr ""
+msgstr "Iraq"
 
 msgid "Ireland"
-msgstr ""
+msgstr "Ireland"
 
 msgid "Is this setting ok?"
 msgstr "Is deze instelling OK?"
@@ -5806,10 +5808,10 @@ msgid "Is this video mode ok?"
 msgstr "Is deze videomodus goed?"
 
 msgid "Isle of Man"
-msgstr ""
+msgstr "Isle of Man"
 
 msgid "Israel"
-msgstr ""
+msgstr "Israel"
 
 msgid "It seems you have hit your API limit - please try again later."
 msgstr "Het lijkt er op dat u de API-limieten hebt bereikt. Probeer het later opnieuw."
@@ -5818,28 +5820,28 @@ msgid "Italian"
 msgstr "Italiaans"
 
 msgid "Italy"
-msgstr ""
+msgstr "Italy"
 
 msgid "JUMP 24 HOURS"
 msgstr "SPRING 24 UUR"
 
 msgid "Jamaica"
-msgstr ""
+msgstr "Jamaica"
 
 msgid "Japan"
-msgstr ""
+msgstr "Japan"
 
 msgid "Jersey"
-msgstr ""
+msgstr "Jersey"
 
 msgid "Job View"
 msgstr "Taken"
 
 msgid "Johnston Atoll"
-msgstr ""
+msgstr "Johnston Atoll"
 
 msgid "Jordan"
-msgstr ""
+msgstr "Jordan"
 
 msgid "Jump back 24 hours"
 msgstr "Spring 24 uur terug"
@@ -5885,7 +5887,7 @@ msgid "KA-SAT"
 msgstr "KA-SAT"
 
 msgid "Kazakhstan"
-msgstr ""
+msgstr "Kazakhstan"
 
 msgid "Keep service"
 msgstr "Behoud zender"
@@ -5894,7 +5896,7 @@ msgid "Keeps the movie list open whilst playing audio files."
 msgstr "Houdt de opnamelijst geopend tijdens het afspelen van audiobestanden."
 
 msgid "Kenya"
-msgstr ""
+msgstr "Kenya"
 
 #, python-format
 msgid "Kernel:\t%s\n"
@@ -5914,19 +5916,19 @@ msgid "Keyboard settings"
 msgstr "Toetsenbord instellingen"
 
 msgid "Kiribati"
-msgstr ""
+msgstr "Kiribati"
 
 msgid "Korea (Democratic People's Republic of)"
-msgstr ""
+msgstr "Korea (Democratic People's Republic of)"
 
 msgid "Korea (Republic of)"
-msgstr ""
+msgstr "Korea (Republic of)"
 
 msgid "Kuwait"
-msgstr ""
+msgstr "Kuwait"
 
 msgid "Kyrgyzstan"
-msgstr ""
+msgstr "Kyrgyzstan"
 
 msgid "LAN adapter"
 msgstr "LAN-adapter"
@@ -5977,7 +5979,7 @@ msgid "Language selection"
 msgstr "Taalkeuze"
 
 msgid "Lao People's Democratic Republic"
-msgstr ""
+msgstr "Lao People's Democratic Republic"
 
 msgid "Large"
 msgstr "Groot"
@@ -6010,7 +6012,7 @@ msgid "Latitude"
 msgstr "Breedtegraad"
 
 msgid "Latvia"
-msgstr ""
+msgstr "Latvia"
 
 msgid "Latvian"
 msgstr "Lets"
@@ -6019,7 +6021,7 @@ msgid "Leave DVD player?"
 msgstr "DVD-speler afsluiten?"
 
 msgid "Lebanon"
-msgstr ""
+msgstr "Lebanon"
 
 msgid "Left"
 msgstr "Links"
@@ -6034,7 +6036,7 @@ msgid "Leisure hobbies"
 msgstr "Vrije tijd/Hobby's"
 
 msgid "Lesotho"
-msgstr ""
+msgstr "Lesotho"
 
 #. TRANSLATORS: (aspect ratio policy: black bars on top/bottom) in doubt, keep english term.
 msgid "Letterbox"
@@ -6044,13 +6046,13 @@ msgid "Letterbox zoom"
 msgstr "Letterbox zoom"
 
 msgid "Liberia"
-msgstr ""
+msgstr "Liberia"
 
 msgid "Libya"
-msgstr ""
+msgstr "Libya"
 
 msgid "Liechtenstein"
-msgstr ""
+msgstr "Liechtenstein"
 
 msgid "Light Grey"
 msgstr "Lichtgrijs"
@@ -6116,7 +6118,7 @@ msgid "Lists reloaded!"
 msgstr "Links zijn herladen!"
 
 msgid "Lithuania"
-msgstr ""
+msgstr "Lithuania"
 
 msgid "Lithuanian"
 msgstr "Litouws"
@@ -6214,13 +6216,13 @@ msgid "Loop through from"
 msgstr "Doorlus van"
 
 msgid "Lord Howe Island"
-msgstr ""
+msgstr "Lord Howe Island"
 
 msgid "Lower Framerate save CPU Time"
 msgstr "Lagere framerate gebruikt minder processortijd."
 
 msgid "Luxembourg"
-msgstr ""
+msgstr "Luxembourg"
 
 msgid "Luxembourgish"
 msgstr "Luxumburgs"
@@ -6238,13 +6240,13 @@ msgid "MB"
 msgstr "MB"
 
 msgid "Macao"
-msgstr ""
+msgstr "Macao"
 
 msgid "Macedonia (the former Yugoslav Republic of)"
-msgstr ""
+msgstr "Macedonia (the former Yugoslav Republic of)"
 
 msgid "Madagascar"
-msgstr ""
+msgstr "Madagascar"
 
 msgid "Main menu"
 msgstr "Hoofdmenu"
@@ -6265,19 +6267,19 @@ msgid "Make this mark just a mark"
 msgstr "Universele markering"
 
 msgid "Malawi"
-msgstr ""
+msgstr "Malawi"
 
 msgid "Malaysia"
-msgstr ""
+msgstr "Malaysia"
 
 msgid "Maldives"
-msgstr ""
+msgstr "Maldives"
 
 msgid "Mali"
-msgstr ""
+msgstr "Mali"
 
 msgid "Malta"
-msgstr ""
+msgstr "Malta"
 
 msgid "Manage extensions"
 msgstr "Beheer van extensies"
@@ -6317,13 +6319,13 @@ msgid "Mark/Portal/Playlist"
 msgstr "Mark/Portal/Playlist"
 
 msgid "Marquesas Islands"
-msgstr ""
+msgstr "Marquesas Islands"
 
 msgid "Marshall Islands"
-msgstr ""
+msgstr "Marshall Islands"
 
 msgid "Martinique"
-msgstr ""
+msgstr "Martinique"
 
 msgid "Mature Adult Audience 15+"
 msgstr "15+"
@@ -6332,10 +6334,10 @@ msgid "Mature Audience 15+"
 msgstr "15+"
 
 msgid "Mauritania"
-msgstr ""
+msgstr "Mauritania"
 
 msgid "Mauritius"
-msgstr ""
+msgstr "Mauritius"
 
 msgid "Max memory positions"
 msgstr "Max aantal geheugenposities"
@@ -6362,7 +6364,7 @@ msgid "Maybe the reason that recording is currently running. Please stop the rec
 msgstr "U bent aan het opnemen. Stop de opname voordat u probeert de rotor instellingen te wijzigen."
 
 msgid "Mayotte"
-msgstr ""
+msgstr "Mayotte"
 
 msgid "Mb/s"
 msgstr "Mb/s"
@@ -6398,13 +6400,13 @@ msgid "Merging Timeshift files"
 msgstr "Samenvoegen timeshiftbestanden"
 
 msgid "Mexico"
-msgstr ""
+msgstr "Mexico"
 
 msgid "Micronesia (Federated States of)"
-msgstr ""
+msgstr "Micronesia (Federated States of)"
 
 msgid "Midway Islands"
-msgstr ""
+msgstr "Midway Islands"
 
 msgid "MiniDLNA"
 msgstr "MiniDLNA"
@@ -6432,7 +6434,10 @@ msgid "Mins Secs"
 msgstr "Minuten seconden"
 
 msgid "Mipsel"
-msgstr ""
+msgstr "Mipsel"
+
+msgid "Miscellaneous"
+msgstr "Diverse"
 
 msgid "Missing "
 msgstr "Ontbrekend"
@@ -6466,7 +6471,7 @@ msgid "Modulator"
 msgstr "Modulator"
 
 msgid "Moldova (Republic of)"
-msgstr ""
+msgstr "Moldova (Republic of)"
 
 msgid "Mon"
 msgstr "Ma"
@@ -6475,25 +6480,25 @@ msgid "Mon-Fri"
 msgstr "Ma t/m Vr"
 
 msgid "Monaco"
-msgstr ""
+msgstr "Monaco"
 
 msgid "Monday"
 msgstr "maandag"
 
 msgid "Mongolia"
-msgstr ""
+msgstr "Mongolia"
 
 msgid "Montenegro"
-msgstr ""
+msgstr "Montenegro"
 
 msgid "Monthly"
 msgstr "Maandelijks"
 
 msgid "Montserrat"
-msgstr ""
+msgstr "Montserrat"
 
 msgid "Morocco"
-msgstr ""
+msgstr "Morocco"
 
 msgid "Mosquito noise reduction"
 msgstr "Mosquito ruisonderdrukking"
@@ -6601,7 +6606,7 @@ msgid "Moving west ..."
 msgstr "Draait west..."
 
 msgid "Mozambique"
-msgstr ""
+msgstr "Mozambique"
 
 msgid "Multi EPG"
 msgstr "Multi-EPG"
@@ -6631,7 +6636,7 @@ msgid "Music/Ballet/Dance"
 msgstr "Muziek/Ballet/Dans"
 
 msgid "Myanmar"
-msgstr ""
+msgstr "Myanmar"
 
 msgid "N"
 msgstr "N"
@@ -6710,13 +6715,13 @@ msgid "Namespace"
 msgstr "Namespace"
 
 msgid "Namibia"
-msgstr ""
+msgstr "Namibia"
 
 msgid "Nauru"
-msgstr ""
+msgstr "Nauru"
 
 msgid "Nepal"
-msgstr ""
+msgstr "Nepal"
 
 msgid "Netherlands"
 msgstr "Nederland"
@@ -6782,10 +6787,10 @@ msgid "New"
 msgstr "Nieuw"
 
 msgid "New Caledonia"
-msgstr ""
+msgstr "New Caledonia"
 
 msgid "New Zealand"
-msgstr ""
+msgstr "New Zealand"
 
 msgid "New profile: "
 msgstr "Niew profiel: "
@@ -6810,16 +6815,16 @@ msgid "Next"
 msgstr "Straks"
 
 msgid "Nicaragua"
-msgstr ""
+msgstr "Nicaragua"
 
 msgid "Niger"
-msgstr ""
+msgstr "Niger"
 
 msgid "Nigeria"
-msgstr ""
+msgstr "Nigeria"
 
 msgid "Niue"
-msgstr ""
+msgstr "Niue"
 
 msgid "No"
 msgstr "Nee"
@@ -7007,19 +7012,19 @@ msgid "None"
 msgstr "Geen"
 
 msgid "Norfolk Island"
-msgstr ""
+msgstr "Norfolk Island"
 
 msgid "North"
 msgstr "Noord"
 
 msgid "Northern Mariana Islands"
-msgstr ""
+msgstr "Northern Mariana Islands"
 
 msgid "Northern Territory"
-msgstr ""
+msgstr "Northern Territory"
 
 msgid "Norway"
-msgstr ""
+msgstr "Norway"
 
 msgid "Norwegian"
 msgstr "Noors"
@@ -7155,7 +7160,7 @@ msgid "Offline decode delay (ms)"
 msgstr "Offline decodeer vertraging (ms)"
 
 msgid "Oman"
-msgstr ""
+msgstr "Oman"
 
 msgid "On"
 msgstr "Aan"
@@ -7348,29 +7353,29 @@ msgid "Page up"
 msgstr "Pagina omhoog"
 
 msgid "Pakistan"
-msgstr ""
+msgstr "Pakistan"
 
 msgid "Palau"
-msgstr ""
+msgstr "Palau"
 
 msgid "Palestine, State of"
-msgstr ""
+msgstr "Palestine, State of"
 
 #. TRANSLATORS: (aspect ratio policy: cropped content on left/right) in doubt, keep english term
 msgid "Pan&scan"
 msgstr "Pan & Scan"
 
 msgid "Panama"
-msgstr ""
+msgstr "Panama"
 
 msgid "Panic to"
 msgstr "Paniek naar"
 
 msgid "Papua New Guinea"
-msgstr ""
+msgstr "Papua New Guinea"
 
 msgid "Paraguay"
-msgstr ""
+msgstr "Paraguay"
 
 msgid "Parent directory"
 msgstr "Bovengelegen map"
@@ -7448,10 +7453,10 @@ msgid "Persian"
 msgstr "Perzisch"
 
 msgid "Peru"
-msgstr ""
+msgstr "Peru"
 
 msgid "Philippines"
-msgstr ""
+msgstr "Philippines"
 
 msgid "PiP"
 msgstr "PiP"
@@ -7479,10 +7484,10 @@ msgid "Pilot"
 msgstr "Navigatie"
 
 msgid "Pitcairn"
-msgstr ""
+msgstr "Pitcairn"
 
 msgid "Pitcairn Islands"
-msgstr ""
+msgstr "Pitcairn Islands"
 
 msgid "Play"
 msgstr "Afspelen"
@@ -7804,7 +7809,7 @@ msgid "Plugins"
 msgstr "Applicaties"
 
 msgid "Poland"
-msgstr ""
+msgstr "Poland"
 
 msgid "Polarisation"
 msgstr "Polarisatie"
@@ -7840,7 +7845,7 @@ msgid "Port:"
 msgstr "Poort:"
 
 msgid "Portugal"
-msgstr ""
+msgstr "Portugal"
 
 msgid "Portuguese"
 msgstr "Portugees"
@@ -8134,7 +8139,7 @@ msgid "Providers: "
 msgstr "Providers: "
 
 msgid "Puerto Rico"
-msgstr ""
+msgstr "Puerto Rico"
 
 msgid "Purge deleted user bouquets"
 msgstr "Verwijder de verwijderde favorietenlijsten definitief"
@@ -8154,7 +8159,7 @@ msgid "Python:\t%s\n"
 msgstr "Python:\t%s\n"
 
 msgid "Qatar"
-msgstr ""
+msgstr "Qatar"
 
 msgid "Question"
 msgstr "Vraag"
@@ -8605,7 +8610,7 @@ msgid "Return to previous service"
 msgstr "Terug naar laatste zender"
 
 msgid "Reunion"
-msgstr ""
+msgstr "Reunion"
 
 msgid "Reverse bouquet buttons"
 msgstr "Omgekeerde favorietenknoppen"
@@ -8635,7 +8640,7 @@ msgid "Roll-off"
 msgstr "Roll-off"
 
 msgid "Romania"
-msgstr ""
+msgstr "Romania"
 
 msgid "Romanian"
 msgstr "Roemeens"
@@ -8665,10 +8670,10 @@ msgid "Russian"
 msgstr "Russisch"
 
 msgid "Russian Federation"
-msgstr ""
+msgstr "Russian Federation"
 
 msgid "Rwanda"
-msgstr ""
+msgstr "Rwanda"
 
 msgid "S"
 msgstr "Z"
@@ -8714,25 +8719,25 @@ msgid "SSID:"
 msgstr "SSID:"
 
 msgid "Saint Barthelemy"
-msgstr ""
+msgstr "Saint Barthelemy"
 
 msgid "Saint Helena, Ascension and Tristan da Cunha"
-msgstr ""
+msgstr "Saint Helena, Ascension and Tristan da Cunha"
 
 msgid "Saint Kitts and Nevis"
-msgstr ""
+msgstr "Saint Kitts and Nevis"
 
 msgid "Saint Lucia"
-msgstr ""
+msgstr "Saint Lucia"
 
 msgid "Saint Martin (French part)"
-msgstr ""
+msgstr "Saint Martin (French part)"
 
 msgid "Saint Pierre and Miquelon"
-msgstr ""
+msgstr "Saint Pierre and Miquelon"
 
 msgid "Saint Vincent and the Grenadines"
-msgstr ""
+msgstr "Saint Vincent and the Grenadines"
 
 msgid "Samba"
 msgstr "Samba"
@@ -8744,13 +8749,13 @@ msgid "Same resolution as skin"
 msgstr "Zelfde resolutie als de skin"
 
 msgid "Samoa"
-msgstr ""
+msgstr "Samoa"
 
 msgid "San Marino"
-msgstr ""
+msgstr "San Marino"
 
 msgid "Sao Tome and Principe"
-msgstr ""
+msgstr "Sao Tome and Principe"
 
 msgid "Sat"
 msgstr "Za"
@@ -8783,7 +8788,7 @@ msgid "Saturday"
 msgstr "zaterdag"
 
 msgid "Saudi Arabia"
-msgstr ""
+msgstr "Saudi Arabia"
 
 msgid "Save"
 msgstr "Opslaan"
@@ -9115,7 +9120,7 @@ msgid "Send yourself a copy"
 msgstr "Kopie aan uzelf sturen?"
 
 msgid "Senegal"
-msgstr ""
+msgstr "Senegal"
 
 msgid "Seperate titles with a main menu"
 msgstr "Scheidt titels met een hoofdmenu"
@@ -9124,7 +9129,7 @@ msgid "Sequence repeat"
 msgstr "Herhaal-sequence"
 
 msgid "Serbia"
-msgstr ""
+msgstr "Serbia"
 
 msgid "Serbian"
 msgstr "Servisch"
@@ -9384,7 +9389,7 @@ msgid "Setup your timezone area."
 msgstr "Tijdzone instellen."
 
 msgid "Seychelles"
-msgstr ""
+msgstr "Seychelles"
 
 msgid "Share Folder's"
 msgstr "Deel mappen"
@@ -9766,7 +9771,7 @@ msgid "Side by side"
 msgstr "Naast elkaar"
 
 msgid "Sierra Leone"
-msgstr ""
+msgstr "Sierra Leone"
 
 msgid "Signal Finder"
 msgstr "Signaalzoeker"
@@ -9805,7 +9810,7 @@ msgid "Simple zoom"
 msgstr "Eenvoudige zoom"
 
 msgid "Singapore"
-msgstr ""
+msgstr "Singapore"
 
 msgid "Single"
 msgstr "Enkel"
@@ -9900,10 +9905,10 @@ msgid "Slovak"
 msgstr "Slowaaks"
 
 msgid "Slovakia"
-msgstr ""
+msgstr "Slovakia"
 
 msgid "Slovenia"
-msgstr ""
+msgstr "Slovenia"
 
 msgid "Slovenian"
 msgstr "Sloveens"
@@ -9961,10 +9966,10 @@ msgid "Softwaremanager information"
 msgstr "Sofwarebeheer informatie"
 
 msgid "Solomon Islands"
-msgstr ""
+msgstr "Solomon Islands"
 
 msgid "Somalia"
-msgstr ""
+msgstr "Somalia"
 
 msgid "Some plugins are not available:\n"
 msgstr "Applicaties die niet beschikbaar zijn:\n"
@@ -10059,22 +10064,22 @@ msgid "South"
 msgstr "Zuid"
 
 msgid "South Africa"
-msgstr ""
+msgstr "South Africa"
 
 msgid "South Australia"
-msgstr ""
+msgstr "South Australia"
 
 msgid "South Georgia and the South Sandwich Islands"
-msgstr ""
+msgstr "South Georgia and the South Sandwich Islands"
 
 msgid "South Sudan"
-msgstr ""
+msgstr "South Sudan"
 
 msgid "Space used:"
 msgstr "Gebruikte ruimte:"
 
 msgid "Spain"
-msgstr ""
+msgstr "Spain"
 
 msgid "Spanish"
 msgstr "Spaans"
@@ -10098,7 +10103,7 @@ msgid "Sports"
 msgstr "Sport"
 
 msgid "Sri Lanka"
-msgstr ""
+msgstr "Sri Lanka"
 
 msgid "Standard"
 msgstr "Standaard"
@@ -10347,7 +10352,7 @@ msgid "Sucessfully changed the password for the root user to: "
 msgstr "Wachtwoord voor de root-gebruiker succesvol veranderd in:"
 
 msgid "Sudan"
-msgstr ""
+msgstr "Sudan"
 
 msgid "Sun"
 msgstr "Zo"
@@ -10359,10 +10364,10 @@ msgid "Support at"
 msgstr "Support "
 
 msgid "Suriname"
-msgstr ""
+msgstr "Suriname"
 
 msgid "Svalbard and Jan Mayen"
-msgstr ""
+msgstr "Svalbard and Jan Mayen"
 
 msgid "Swap PIP"
 msgstr "Swap PIP"
@@ -10377,10 +10382,10 @@ msgid "Swap services"
 msgstr "Zenders omwisselen"
 
 msgid "Swaziland"
-msgstr ""
+msgstr "Swaziland"
 
 msgid "Sweden"
-msgstr ""
+msgstr "Sweden"
 
 msgid "Swedish"
 msgstr "Zweeds"
@@ -10435,7 +10440,7 @@ msgid "Switchable tuner types:"
 msgstr "Verwisselbare tunertypes:"
 
 msgid "Switzerland"
-msgstr ""
+msgstr "Switzerland"
 
 msgid "Symbol rate"
 msgstr "Symbolrate"
@@ -10459,7 +10464,7 @@ msgid "Synchronize system time using transponder or internet."
 msgstr "Synchroniseer de systeemtijd met transponder- of internettijd."
 
 msgid "Syrian Arab Republic"
-msgstr ""
+msgstr "Syrian Arab Republic"
 
 msgid "System"
 msgstr "Systeem"
@@ -10510,10 +10515,10 @@ msgid "Tags"
 msgstr "Markeringen"
 
 msgid "Tajikistan"
-msgstr ""
+msgstr "Tajikistan"
 
 msgid "Tanzania, United Republic of"
-msgstr ""
+msgstr "Tanzania, United Republic of"
 
 msgid "Teletext"
 msgstr "Teletext"
@@ -10571,7 +10576,7 @@ msgid "Thai"
 msgstr "Thais"
 
 msgid "Thailand"
-msgstr ""
+msgstr "Thailand"
 
 msgid ""
 "Thank you for using the wizard.\n"
@@ -11158,7 +11163,7 @@ msgid "Timezone area"
 msgstr "Tijdzone"
 
 msgid "Timor-Leste"
-msgstr ""
+msgstr "Timor-Leste"
 
 msgid "Title"
 msgstr "Titel"
@@ -11200,10 +11205,10 @@ msgid "Toggle picture In graphics"
 msgstr "Wissel Picture In Graphics"
 
 msgid "Togo"
-msgstr ""
+msgstr "Togo"
 
 msgid "Tokelau"
-msgstr ""
+msgstr "Tokelau"
 
 msgid "Tone amplitude"
 msgstr "Tone-amplitude"
@@ -11218,7 +11223,7 @@ msgid "Toneburst A/B"
 msgstr "Toneburst A/B"
 
 msgid "Tonga"
-msgstr ""
+msgstr "Tonga"
 
 msgid "Top and Bottom"
 msgstr "Boven en -onderkant"
@@ -11282,7 +11287,7 @@ msgid "Tries left:"
 msgstr "Aantal resterende pogingen:"
 
 msgid "Trinidad and Tobago"
-msgstr ""
+msgstr "Trinidad and Tobago"
 
 msgid "Try to find used transponders in cable network.. please wait..."
 msgstr "Probeert gebruikte transponders op het kabelnetwerk te vinden. Even wachten..."
@@ -11325,6 +11330,10 @@ msgstr "Tuner wordt niet ondersteund"
 msgid "Tuner live values"
 msgstr "Tuner terugmeldingen"
 
+#
+msgid "Tuner miscellaneous"
+msgstr "Tuner diverse"
+
 msgid "Tuner not available."
 msgstr "Tuner is niet beschikbaar."
 
@@ -11356,19 +11365,19 @@ msgid "Tuning info: settings values"
 msgstr "Tuner info: tunerinstellingen"
 
 msgid "Tunisia"
-msgstr ""
+msgstr "Tunisia"
 
 msgid "Turkey"
-msgstr ""
+msgstr "Turkey"
 
 msgid "Turkish"
 msgstr "Turks"
 
 msgid "Turkmenistan"
-msgstr ""
+msgstr "Turkmenistan"
 
 msgid "Turks and Caicos Islands"
-msgstr ""
+msgstr "Turks and Caicos Islands"
 
 msgid "Turn off HDMI-IN PiP mode"
 msgstr "Schakel HDMI-in PiP modus uit"
@@ -11389,7 +11398,7 @@ msgid "Turning step size"
 msgstr "Draai stapgrootte"
 
 msgid "Tuvalu"
-msgstr ""
+msgstr "Tuvalu"
 
 msgid "Two"
 msgstr "Twee"
@@ -11416,13 +11425,13 @@ msgid "USALS Calibration"
 msgstr "USALS kalibratie"
 
 msgid "Uganda"
-msgstr ""
+msgstr "Uganda"
 
 msgid "Ukraine"
-msgstr ""
+msgstr "Ukraine"
 
 msgid "Ukrainian"
-msgstr ""
+msgstr "Ukrainian"
 
 msgid "Unable to change the password for the root user"
 msgstr "Kan het wachtwoord voor de root-gebruiker niet veranderen"
@@ -11451,16 +11460,16 @@ msgid "Uninstall"
 msgstr "De-installeer"
 
 msgid "United Arab Emirates"
-msgstr ""
+msgstr "United Arab Emirates"
 
 msgid "United Kingdom"
-msgstr ""
+msgstr "United Kingdom"
 
 msgid "United States Minor Outlying Islands"
-msgstr ""
+msgstr "United States Minor Outlying Islands"
 
 msgid "United States of America"
-msgstr ""
+msgstr "United States of America"
 
 msgid "Universal LNB"
 msgstr "Universele LNB"
@@ -11538,7 +11547,7 @@ msgid "Uptime"
 msgstr "Uptime"
 
 msgid "Uruguay"
-msgstr ""
+msgstr "Uruguay"
 
 msgid "Usage setup"
 msgstr "Gebruikers Instellingen"
@@ -11730,7 +11739,7 @@ msgid "Utilities"
 msgstr "Extra's"
 
 msgid "Uzbekistan"
-msgstr ""
+msgstr "Uzbekistan"
 
 msgid "VCR scart"
 msgstr "VCR scart"
@@ -11748,10 +11757,10 @@ msgid "VU+"
 msgstr "VU+"
 
 msgid "Vanuatu"
-msgstr ""
+msgstr "Vanuatu"
 
 msgid "Venezuela (Bolivarian Republic of)"
-msgstr ""
+msgstr "Venezuela (Bolivarian Republic of)"
 
 msgid "Version: "
 msgstr "Versie: "
@@ -11821,7 +11830,7 @@ msgid "Videocodec, size & format"
 msgstr "Videocodec, grootte & formaat"
 
 msgid "Viet Nam"
-msgstr ""
+msgstr "Vietnam"
 
 msgid "View"
 msgstr "Bekijken"
@@ -11897,10 +11906,10 @@ msgid "View video CD..."
 msgstr "Bekijk video CD."
 
 msgid "Virgin Islands (British)"
-msgstr ""
+msgstr "Virgin Islands (British)"
 
 msgid "Virgin Islands (U.S.)"
-msgstr ""
+msgstr "Virgin Islands (U.S.)"
 
 msgid "Virtuosso Image Xtreme"
 msgstr "Virtuosso Image Xtreme"
@@ -11951,7 +11960,7 @@ msgid "Waiting for partition"
 msgstr "Wacht op partitie"
 
 msgid "Wake Island"
-msgstr ""
+msgstr "Wake Island"
 
 msgid "Wake Up"
 msgstr "Inschakelen"
@@ -11973,7 +11982,7 @@ msgid "Wakeup your %s %s from standby"
 msgstr "Uw %s %s vanuit stand-by wakker maken"
 
 msgid "Wallis and Futuna"
-msgstr ""
+msgstr "Wallis and Futuna"
 
 msgid "Warning"
 msgstr "Waarschuwing"
@@ -12075,10 +12084,10 @@ msgid "West limit set"
 msgstr "Westelijke limiet instellen"
 
 msgid "Western Australia"
-msgstr ""
+msgstr "Western Australia"
 
 msgid "Western Sahara"
-msgstr ""
+msgstr "Western Sahara"
 
 msgid "What action is required on completion of the timer? 'Auto' lets the box return to the state it had when the timer started. 'Do nothing', 'Go to standby' and 'Go to deep standby' do exactly that."
 msgstr "Welke actie is vereist als de timer gereed is? 'Auto' brengt de ontvanger terug in dezelfde status als toen de opname begon. De andere instellingen doen precies wat er staat."
@@ -12094,6 +12103,12 @@ msgstr "Wat wilt u zoeken?"
 
 msgid "When enabled enigma2 will load unlinked userbouquets. This means that userbouquets that are available, but not included in the bouquets.tv or bouquets.radio files, will still be loaded. This allows you for example to keep your own user bouquet while installed settings are upgraded"
 msgstr "Indien ingeschakeld zal enigma2 niet geregistreerde favorietenlijsten laden. Dat betekent dat de lijsten die beschikbaar zijn maar niet zijn opgenomen in de radio- en TV-lijsten, toch geladen zullen worden. Dit stelt u b.v. in staat om eigen lijsten te bewaren, terwijl settings worden geüpgradet."
+
+msgid "When enabled the LNB power will not be switched off in standby"
+msgstr "Indien ingeschakeld zal de spanning van de LNB in stand-by niet worden uitgeschakeld."
+
+msgid "When enabled the LNB toneburst will be forced"
+msgstr "Indien ingeschakeld zal de LNB-toneburst worden geforceerd."
 
 msgid "When enabled the online checker will also check for experimental versions"
 msgstr "Indien geactiveerd zal ook worden gecontroleerd op experimentele versies."
@@ -12359,7 +12374,7 @@ msgid "Yellow long"
 msgstr "Lang-geel"
 
 msgid "Yemen"
-msgstr ""
+msgstr "Yemen"
 
 msgid "Yes"
 msgstr "Ja"
@@ -12701,7 +12716,7 @@ msgstr ""
 "Kies wat u nu wilt doen."
 
 msgid "Zambia"
-msgstr ""
+msgstr "Zambia"
 
 msgid "Zap"
 msgstr "Zap"
@@ -12748,7 +12763,7 @@ msgid "Zapped to timer service %s!"
 msgstr "Gezapt naar het timerkanaal %s!"
 
 msgid "Zimbabwe"
-msgstr ""
+msgstr "Zimbabwe"
 
 msgid "Zoom In/Out TV..."
 msgstr "Zoom In/Uit TV..."
@@ -15227,12 +15242,6 @@ msgstr "zapte"
 
 #~ msgid "Videosize"
 #~ msgstr "Video-afmetingen"
-
-#~ msgid "When enabled the LNB power will not be switched off in standby"
-#~ msgstr "Indien ingeschakeld zal de spanning van de LNB in stand-by niet worden uitgeschakeld."
-
-#~ msgid "When enabled the LNB toneburst will be forced"
-#~ msgstr "Indien ingeschakeld zal de LNB-toneburst worden geforceerd."
 
 #~ msgid "When enabled, Enigma2 will load unlinked bouquets. This means that bouquets that are available, but not included in the bouquets.tv or bouquets.radio files, will still be loaded. This allows you for example to keep your own user bouquet while installed settings are upgraded"
 #~ msgstr "Indien ingeschakeld zal enigma2 niet geregistreerde favorietenlijsten laden. Dat betekent dat de lijsten die beschikbaar zijn maar niet zijn opgenomen in de radio- en TV-lijsten toch geladen zullen worden. Dit stelt u b.v. in staat om eigen lijsten te bewaren, terwijl settings worden geupgrade."
