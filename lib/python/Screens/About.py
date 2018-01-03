@@ -11,7 +11,7 @@ from Components.ScrollLabel import ScrollLabel
 from Components.Console import Console
 from Components.config import config
 from enigma import eTimer, getEnigmaVersionString, getDesktop
-from boxbranding import getMachineBrand, getMachineName, getImageVersion, getImageType, getImageBuild, getDriverDate, getImageDevBuild, getBrandOEM
+from boxbranding import getMachineBrand, getMachineName, getImageVersion, getImageType, getImageBuild, getDriverDate, getImageDevBuild
 from Components.Pixmap import MultiPixmap
 from Components.Network import iNetwork
 from Tools.StbHardware import getFPVersion
@@ -69,7 +69,6 @@ class About(Screen):
 		self["lab3"] = StaticText(_("Support at") + " www.world-of-satellite.com")
 
 		AboutText += _("Model:\t%s %s\n") % (getMachineBrand(), getMachineName())
-		AboutText += _("OEM:\t%s\n") % getBrandOEM().title()
 
 		if about.getChipSetString() != _("unavailable"):
 			if about.getIsBroadcom():
