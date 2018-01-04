@@ -4,25 +4,28 @@ from Plugins.Plugin import PluginDescriptor
 
 from Components.ConfigList import ConfigListScreen
 from Components.ActionMap import ActionMap
+from Components.Sources.StaticText import StaticText
 from Components.config import config
 from Components.NimManager import nimmanager as nimmgr
 
 class SecParameterSetup(Screen, ConfigListScreen):
-	skin = """
-		<screen position="100,100" size="560,400" title="Satellite equipment setup" >
-			<widget name="config" position="10,10" size="540,390" />
-		</screen>"""
 	def __init__(self, session):
-		self.skin = SecParameterSetup.skin
+		Screen.__init__(self, session)
 
-		self["actions"] = ActionMap(["SetupActions", "MenuActions"],
+		self.skinName = ["SecParameterSetup", "Setup"]
+
+		self["actions"] = ActionMap(["SetupActions", "MenuActions", "ColorActions"],
 		{
 			"ok": self.keySave,
+			"green": self.keySave,
 			"cancel": self.keyCancel,
+			"red": self.keyCancel,
 			"menu": self.closeRecursive,
 		}, -2)
 
-		Screen.__init__(self, session)
+		self["key_red"] = StaticText(_("Exit"))
+		self["key_green"] = StaticText(_("Save and exit"))
+
 		list = [
 			(_("Delay after diseqc reset command"), config.sec.delay_after_diseqc_reset_cmd),
 			(_("Delay after diseqc peripherial poweron command"), config.sec.delay_after_diseqc_peripherial_poweron_cmd),
