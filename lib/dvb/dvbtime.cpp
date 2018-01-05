@@ -417,25 +417,19 @@ void eDVBLocalTimeHandler::updateTime( time_t tp_time, eDVBChannel *chan, int up
 			{
 				tm now;
 				localtime_r(&rtc_time, &now);
-				eDebug("[eDVBLocalTimerHandler] RTC time is %02d:%02d:%02d",
-					now.tm_hour,
-					now.tm_min,
-					now.tm_sec);
+				eDebug("[eDVBLocalTimerHandler] RTC time is %02d:%02d:%02d", now.tm_hour, now.tm_min, now.tm_sec);
 				time_t linuxTime=time(0);
 				localtime_r(&linuxTime, &now);
-				eDebug("[eDVBLocalTimerHandler] Receiver time is %02d:%02d:%02d",
-					now.tm_hour,
-					now.tm_min,
-					now.tm_sec);
+				eDebug("[eDVBLocalTimerHandler] Receiver time is %02d:%02d:%02d", now.tm_hour, now.tm_min, now.tm_sec);
 				time_difference = rtc_time - linuxTime;
 				eDebug("[eDVBLocalTimerHandler] RTC to Receiver time difference is %ld seconds", linuxTime - rtc_time );
 				if ( time_difference )
 				{
 					eDebug("[eDVBLocalTimerHandler] set Linux Time to RTC Time");
 					timeval tnow;
-					gettimeofday(&tnow,0);
-					tnow.tv_sec=rtc_time;
-					settimeofday(&tnow,0);
+					gettimeofday(&tnow, 0);
+					tnow.tv_sec = rtc_time;
+					settimeofday(&tnow, 0);
 				}
 				else if ( !time_difference )
 					eDebug("[eDVBLocalTimerHandler] no change needed");
