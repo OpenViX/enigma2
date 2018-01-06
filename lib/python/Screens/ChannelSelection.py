@@ -2189,7 +2189,8 @@ class ChannelSelection(ChannelSelectionBase, ChannelSelectionEdit, ChannelSelect
 					if foundService.valid():
 						break
 		else:
-			bqroot = serviceRefAppendPath(service_types_ref, ' FROM BOUQUET "userbouquet.favourites.tv" ORDER BY bouquet')
+			bqroot = eServiceReference(service_types_ref.toString())
+			bqroot.setPath(bqroot.getPath() + ' FROM BOUQUET "userbouquet.favourites.tv" ORDER BY bouquet')
 			rootbouquet = bqroot
 			bouquet = eServiceReference(bqroot.toString())
 			if bouquet.valid() and bouquet.flags & eServiceReference.isDirectory:
