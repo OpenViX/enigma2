@@ -234,7 +234,6 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 					self.cableRegionsEntry = getConfigListEntry(_("Region"), self.cableRegions, _("Select your provider and region. If not present in this list you will need to select one of the other 'service scan types'."))
 					self.list.append(self.cableCountriesEntry)
 					self.list.append(self.cableRegionsEntry)
-					#self.list.append(getConfigListEntry(_("Provider to scan"), self.nimConfig.cable.scan_provider))
 				else:
 					self.cableConfigScanDetails = getConfigListEntry(_("Config Scan Details"), self.nimConfig.cable.config_scan_details, _("Select 'yes' to choose what bands or step sizes will be scanned."))
 					self.list.append(self.cableConfigScanDetails)
@@ -294,7 +293,6 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 				self.terrestrialRegionsEntry = getConfigListEntry(_("Region"), self.terrestrialRegions, _("Select your region. If not available change 'Country' to 'all' and select one of the default alternatives."))
 				self.list.append(self.terrestrialCountriesEntry)
 				self.list.append(self.terrestrialRegionsEntry)
-				#self.list.append(getConfigListEntry(_("Terrestrial provider"), self.nimConfig.terrestrial))
 				self.list.append(getConfigListEntry(_("Enable 5V for active antenna"), self.nimConfig.terrestrial_5V, _("Enable this setting if your aerial system needs power")))
 		elif self.nim.isCompatible("ATSC"):
 			self.configMode = getConfigListEntry(_("Configuration mode"), self.nimConfig.configMode, _("Select 'enabled' if this tuner has a signal cable connected, otherwise select 'nothing connected'."))
