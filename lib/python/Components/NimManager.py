@@ -1590,7 +1590,7 @@ def InitNimManager(nimmgr, update_slots = []):
 
 		if slot.isCompatible("DVB-S"):
 			createSatConfig(nim, x, empty_slots)
-			config_mode_choices = [("nothing", _("nothing connected")),
+			config_mode_choices = [("nothing", _("disabled")),
 				("simple", _("simple")), ("advanced", _("advanced"))]
 			if len(nimmgr.getNimListOfType(slot.type, exception = x)) > 0:
 				config_mode_choices.append(("equal", _("equal to")))
@@ -1606,7 +1606,7 @@ def InitNimManager(nimmgr, update_slots = []):
 			nim.configMode = ConfigSelection(
 				choices = {
 					"enabled": _("enabled"),
-					"nothing": _("nothing connected"),
+					"nothing": _("disabled"),
 					},
 				default = "enabled")
 			createCableConfig(nim, x)
@@ -1614,7 +1614,7 @@ def InitNimManager(nimmgr, update_slots = []):
 			nim.configMode = ConfigSelection(
 				choices = {
 					"enabled": _("enabled"),
-					"nothing": _("nothing connected"),
+					"nothing": _("disabled"),
 					},
 				default = "enabled")
 			createTerrestrialConfig(nim, x)
@@ -1622,7 +1622,7 @@ def InitNimManager(nimmgr, update_slots = []):
 			nim.configMode = ConfigSelection(
 				choices = {
 					"enabled": _("enabled"),
-					"nothing": _("nothing connected"),
+					"nothing": _("disabled"),
 					},
 				default = "enabled")
 			createATSCConfig(nim, x)
