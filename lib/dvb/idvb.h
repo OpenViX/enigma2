@@ -768,6 +768,7 @@ public:
 	virtual int getVideoProgressive() = 0;
 	virtual int getVideoFrameRate() = 0;
 	virtual int getVideoAspect() = 0;
+	virtual const char *getEotf() = 0;
 };
 
 #endif //SWIG

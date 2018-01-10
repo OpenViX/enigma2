@@ -286,10 +286,11 @@ class iServiceInformation_ENUMS
 public:
 	enum {
 		sIsCrypted, 		/* is encrypted (no indication if decrypt was possible) */
-		sAspect,    		/* aspect ratio: 0=4:3, 1=16:9, 2=whatever we need */
+		sAspect,			/* aspect ratio: 0=4:3, 1=16:9, 2=whatever we need */
 		sFrameRate,			/* frame rate */
 		sProgressive,		/* 0 = interlaced, 1 = progressive */
-		sIsMultichannel, 	/* multichannel *available* (probably not selected) */
+		sIsMultichannel,	/* multichannel *available* (probably not selected) */
+		sEotf,				/* Electro Optical Transfer Function */
 
 			/* "user serviceable info" - they are not reliable. Don't use them for anything except the service menu!
 			   that's also the reason why they are so globally defined.

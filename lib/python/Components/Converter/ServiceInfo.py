@@ -40,6 +40,7 @@ class ServiceInfo(Converter, object):
 	FREQ_INFO = 32
 	PROGRESSIVE = 33
 	VIDEO_INFO = 34
+	IS_HDR = 35
 
 	def __init__(self, type):
 		Converter.__init__(self, type)
@@ -78,6 +79,7 @@ class ServiceInfo(Converter, object):
 			"Is576": (self.IS_576, (iPlayableService.evVideoSizeChanged,)),
 			"Is480": (self.IS_480, (iPlayableService.evVideoSizeChanged,)),
 			"Is4K": (self.IS_4K, (iPlayableService.evVideoSizeChanged,)),
+			"IsHdr": (self.IS_HDR, (iPlayableService.evVideoSizeChanged,)),
 		}[type]
 
 	def getServiceInfoString(self, info, what, convert=lambda x: "%d" % x):
@@ -171,6 +173,8 @@ class ServiceInfo(Converter, object):
 			return False
 		elif self.type == self.IS_CRYPTED:
 			return info.getInfo(iServiceInformation.sIsCrypted) == 1
+		elif self.type == self.IS_HDR:
+			return info.getInfoString(iServiceInformation.sEotf) in ('SMPTE ST 2084 (HDR10)', 'ARIB STD-B67 (HLG)')
 		elif self.type == self.IS_WIDESCREEN:
 			return video_aspect in WIDESCREEN
 		elif self.type == self.IS_NOT_WIDESCREEN:
