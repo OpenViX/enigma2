@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-21 17:55+0000\n"
-"PO-Revision-Date: 2017-12-21 19:24+0100\n"
+"POT-Creation-Date: 2018-01-07 16:36+0000\n"
+"PO-Revision-Date: 2018-01-07 19:54+0100\n"
 "Last-Translator: Ralf Biedermann <ralf.biedermann@rbsoft.de>\n"
 "Language-Team: AndyBlacburn, j-ot&Trial\n"
 "Language: de\n"
@@ -294,7 +294,15 @@ msgid "%.2f GB"
 msgstr "%.2f GB"
 
 #, python-format
+msgid "%03d MB"
+msgstr "%03d MB"
+
+#, python-format
 msgid "%2.1f sec"
+msgstr ""
+
+#, python-format
+msgid "%3.01f dB"
 msgstr ""
 
 #. TRANSLATORS: short date representation dayname daynum short monthname in strftime() format! See 'man strftime'
@@ -835,6 +843,10 @@ msgstr "%d-%b"
 msgid "%d-%b-%Y"
 msgstr "%d-%b-%Y"
 
+#, python-format
+msgid "%d.%03d GB"
+msgstr "%d.%03d GB"
+
 msgid "%d/%-m"
 msgstr "%d/%-m"
 
@@ -974,6 +986,9 @@ msgstr "(leer)"
 msgid "(show optional DVD audio menu)"
 msgstr "(DVD-Audiomenü zeigen falls vorhanden)"
 
+msgid "(unknown)"
+msgstr "(unbekannt)"
+
 msgid "* = Restart Required"
 msgstr "* = Neustart erforderlich"
 
@@ -982,6 +997,13 @@ msgstr "* Nur verfügbar wenn mehr als ein Netzwerkadapter aktiv ist."
 
 msgid "* current animation"
 msgstr "* aktuelle Animation"
+
+msgid "-NO SERVICE\n"
+msgstr "-KEINE SENDUNG\n"
+
+#, python-format
+msgid "-SERVICE ERROR:%d\n"
+msgstr "-SERVICE FEHLER:%d\n"
 
 msgid "/s"
 msgstr "/s"
@@ -1186,6 +1208,9 @@ msgstr "<Letzter Timer Ort>"
 
 msgid "<unknown>"
 msgstr "<unbekannt>"
+
+msgid "=NO STREAM\n"
+msgstr "=KEIN STREAM\n"
 
 msgid "??"
 msgstr "??"
@@ -2416,6 +2441,9 @@ msgstr "Abbrechen"
 
 msgid "Cancel save timeshift as movie"
 msgstr "Film speichern abbrechen"
+
+msgid "Cancelled upon user request"
+msgstr "Auf Benutzerwunsch abgebrochen"
 
 msgid "Cannot delete file"
 msgstr "Kann Datei nicht löschen"
@@ -6430,6 +6458,9 @@ msgstr "Minuten Sekunden"
 msgid "Mipsel"
 msgstr ""
 
+msgid "Miscellaneous"
+msgstr ""
+
 msgid "Missing "
 msgstr "Fehlend "
 
@@ -8777,6 +8808,9 @@ msgstr "Speichern"
 
 msgid "Save EPG"
 msgstr "EPG speichern"
+
+msgid "Save and exit"
+msgstr "Speichern und beenden"
 
 msgid "Save and record"
 msgstr "Speichern und aufnehmen"
@@ -11307,6 +11341,9 @@ msgstr "Nicht unterstützter Tuner"
 msgid "Tuner live values"
 msgstr "Tuner-Status"
 
+msgid "Tuner miscellaneous"
+msgstr "Tuner Verschiedenes"
+
 msgid "Tuner not available."
 msgstr "Tuner nicht verfügbar."
 
@@ -12070,6 +12107,12 @@ msgstr "Was durchsuchen?"
 
 msgid "When enabled enigma2 will load unlinked userbouquets. This means that userbouquets that are available, but not included in the bouquets.tv or bouquets.radio files, will still be loaded. This allows you for example to keep your own user bouquet while installed settings are upgraded"
 msgstr "Wenn aktiviert lädt Enigma2 nicht verbundene Favoritenlisten. Das heißt Favoritenlisten die vorhanden sind aber nicht in bouquets.tv oder bouquets.radio aufgeführt sind werden trotzdem geladen. Dies erlaubt es z.B. automatisch generierte oder installierte Favoritenlisten mit eigenen Erweiterungen zu versehen."
+
+msgid "When enabled the LNB power will not be switched off in standby"
+msgstr "Wenn aktiviert wird die LNB-Spannung in Bereitschaft nicht ausgeschaltet."
+
+msgid "When enabled the LNB toneburst will be forced"
+msgstr "Wenn aktiviert wird immer LNB-ToneBurst erzwungen"
 
 msgid "When enabled the online checker will also check for experimental versions"
 msgstr "Wenn aktiviert werden auch experimentelle Updates gesucht."
@@ -14767,12 +14810,6 @@ msgstr "umgeschaltet"
 
 #~ msgid "Videosize"
 #~ msgstr "Bildgröße"
-
-#~ msgid "When enabled the LNB power will not be switched off in standby"
-#~ msgstr "Wenn aktiviert wird die LNB-Spannung in Bereitschaft nicht ausgeschaltet."
-
-#~ msgid "When enabled the LNB toneburst will be forced"
-#~ msgstr "Wenn aktiviert wird immer LNB-ToneBurst erzwungen"
 
 #~ msgid "When enabled, Enigma2 will load unlinked bouquets. This means that bouquets that are available, but not included in the bouquets.tv or bouquets.radio files, will still be loaded. This allows you for example to keep your own user bouquet while installed settings are upgraded"
 #~ msgstr "Wenn aktiviert lädt Enigma2 nicht verbundene Favoritenlisten. Das heißt Favoritenlisten die vorhanden sind aber nicht in bouquets.tv oder bouquets.radio aufgeführt sind werden trotzdem geladen. Dies erlaubt es z.B. automatisch generierte oder installierte Favoritenlisten mit eigenen Erweiterungen zu versehen."
