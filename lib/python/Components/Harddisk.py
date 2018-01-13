@@ -176,8 +176,11 @@ class Harddisk:
 	def free(self):
 		dev = self.findMount()
 		if dev:
-			stat = os.statvfs(dev)
-			return int((stat.f_bfree/1000) * (stat.f_bsize/1000))
+			try:
+				stat = os.statvfs(dev)
+				return (stat.f_bfree/1000) * (stat.f_bsize/1000)
+			except:
+				pass
 		return -1
 
 	def numPartitions(self):
