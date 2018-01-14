@@ -148,7 +148,7 @@ class SkinSelector(Screen, SkinSelectorBase):
 	skinlist = []
 	root = os.path.join(eEnv.resolve("${datadir}"),"enigma2")
 
-	def __init__(self, session, menu_path=""):
+	def __init__(self, session, menu_path="", skin_name=None):
 		Screen.__init__(self, session)
 		SkinSelectorBase.__init__(self, session)
 		screentitle = _("Skin")
@@ -163,7 +163,9 @@ class SkinSelector(Screen, SkinSelectorBase):
 			title = screentitle
 			self["menu_path_compressed"] = StaticText("")
 		Screen.setTitle(self, title)
-		self.skinName = "SkinSelector"
+		if isinstance(skin_name, str):
+			skin_name = [skin_name]
+		self.skinName = skin_name + ["SkinSelector"]
 		self.config = config.skin.primary_skin
 
 class LcdSkinSelector(Screen, SkinSelectorBase):
