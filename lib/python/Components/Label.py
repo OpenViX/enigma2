@@ -2,6 +2,7 @@ from GUIComponent import GUIComponent
 from VariableText import VariableText
 from skin import parseColor
 from ConditionalWidget import ConditionalWidget, BlinkingWidget, BlinkingWidgetConditional
+from Components.Sources.StaticText import StaticText
 
 from enigma import eLabel
 
@@ -9,7 +10,22 @@ class Label(VariableText, GUIComponent):
 	def __init__(self, text=""):
 		GUIComponent.__init__(self)
 		VariableText.__init__(self)
+		self.ST = StaticText(text)
 		self.setText(text)
+
+	def getText(self):
+		return StaticText.getText()
+
+	def setText(self, text):
+		self.message = text
+		if self.instance:
+			self.instance.setText(self.message or "")
+		self.ST.setText(text)
+
+	def getText(self):
+		return self.message
+
+	text = property(getText, setText)
 
 # fake Source methods:
 	def connectDownstream(self, downstream):

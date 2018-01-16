@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-11 08:55+0000\n"
-"PO-Revision-Date: 2018-01-13 16:39+0100\n"
+"POT-Creation-Date: 2018-01-16 11:39+0000\n"
+"PO-Revision-Date: 2018-01-16 17:37+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -4034,6 +4034,9 @@ msgstr ""
 
 msgid "Do you want to burn this collection to DVD medium?"
 msgstr "Wilt u deze verzameling op een DVD medium schrijven?"
+
+msgid "Do you want to change the default skin"
+msgstr "Wilt u van skin veraanderen?"
 
 msgid "Do you want to continue?"
 msgstr "Wilt u doorgaan?"
@@ -10080,6 +10083,9 @@ msgstr "Skin"
 msgid "Skin Setting"
 msgstr "Skin instellen"
 
+msgid "Skin install"
+msgstr "Skin installeren"
+
 msgid "Skin setup"
 msgstr "Skin instellingen"
 
@@ -10438,6 +10444,9 @@ msgstr "Stop de huidige timer, maar volgende timers toestaan"
 
 msgid "Stop entry"
 msgstr "Stoppen"
+
+msgid "Stop play TV"
+msgstr "Stop TV afspelen"
 
 msgid "Stop playing this movie?"
 msgstr "Stop afspelen van deze opname?"
@@ -11280,6 +11289,13 @@ msgstr "Deze instelling hangt af van uw kabelprovider en uw locatie. Als u de ju
 
 msgid "This setting is for special setups only. It gives this LNB higher priority over other LNBs with lower values. The free LNB with the highest priority will be the first LNB selected for tuning services."
 msgstr "Deze instelling is alleen bedoeld voor speciale opstellingen. Het geeft deze LNB een hogere prioriteit t.o.v. een andere LNB met een lagere waarde. De vrije LNB met de hoogste prioriteit zal worden benut."
+
+msgid ""
+"This start wizard will guide you through the basic setup of your %s %s.\n"
+"Press the OK button on your remote control to move to the next step."
+msgstr ""
+"Deze start-wizard gidst u door de basisinstellingen van uw %s %s.\n"
+"Druk op de OK-toets van uw AB om naar de volgende stap te gaan."
 
 msgid ""
 "This will (re-)calculate all positions of your rotor and may remove previously memorised positions and fine-tuning!\n"
@@ -12835,19 +12851,6 @@ msgstr ""
 "Uw internetverbinding werkt.\n"
 "\n"
 
-msgid ""
-"Your %s %s is now ready to use.\n"
-"\n"
-"Your internet connection is working now.\n"
-"\n"
-"Please press OK to continue."
-msgstr ""
-"Uw %s %s is nu gereed voor gebruik.\n"
-"\n"
-"Uw internet verbinding werkt.\n"
-"\n"
-"Druk op OK om door te gaan."
-
 #, python-format
 msgid "Your %s %s is rebooting"
 msgstr "Uw %s %s wordt opnieuw gestart"
@@ -12945,6 +12948,15 @@ msgstr ""
 #, python-format
 msgid "Your internet connection is working (ip: %s)"
 msgstr "Uw internetverbinding is in orde (ip: %s)"
+
+msgid ""
+"Your internet connection is working now.\n"
+"\n"
+"Please press OK to continue."
+msgstr ""
+"Uw internetverbinding werkt nu.\n"
+"\n"
+"Druk op 'OK' om verder te gaan."
 
 msgid "Your network configuration has been activated."
 msgstr "Configuratie van uw netwerk is geactiveerd."

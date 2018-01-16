@@ -59,7 +59,6 @@ class EPGList(GUIComponent):
 		self.showServiceTitle = True
 		self.showServiceNumber = False
 		self.screenwidth = getDesktop(0).size().width()
-
 		self.overjump_empty = overjump_empty
 		self.timer = timer
 		self.onSelChanged = [ ]
