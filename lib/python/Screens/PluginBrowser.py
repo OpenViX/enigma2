@@ -272,9 +272,9 @@ class PluginDownloadBrowser(Screen):
 		self.menu_path = menu_path
 		self.type = type
 		self.needupdate = needupdate
+		self.skinName = ["PluginDownloadBrowser"]
 		if isinstance(skin_name, str):
-			skin_name = [skin_name]
-		self.skinName = skin_name + ["PluginDownloadBrowser"]
+			self.skinName.insert(0,skin_name)
 
 		self["menu_path_compressed"] = StaticText("")
 		if self.type == self.DOWNLOAD:
