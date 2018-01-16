@@ -2,8 +2,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <getopt.h>
 #include <unistd.h>
-#include <sys/syscall.h>
+#include <sys/ptrace.h>
+#include <asm/unistd.h>
 
 #include <lib/base/eerror.h>
 
@@ -26,6 +28,9 @@ extern "C" int sys_ioprio_get(int, int);
 #elif defined(__mips__)
 #define __NR_ioprio_set		4284
 #define __NR_ioprio_get		4285
+#elif defined(__sh__) // the correct values for our kernel
+#define __NR_ioprio_set		288
+#define __NR_ioprio_get		289
 #if HAVE_AMLOGIC
 #elif defined(__arm__) // the correct values for our kernel
 #define __NR_ioprio_set		314
@@ -48,13 +53,15 @@ _syscall2(int, ioprio_get, int, which, int, who);
 
 static inline int ioprio_set(int which, int who, int ioprio)
 {
-	return syscall(SYS_ioprio_set, which, who, ioprio);
+	return syscall(__NR_ioprio_set, which, who, ioprio);
 }
 
 static inline int ioprio_get(int which, int who)
 {
-	return syscall(SYS_ioprio_get, which, who);
+	return syscall(__NR_ioprio_get, which, who);
 }
+
+#endif
 
 #define IOPRIO_CLASS_SHIFT	13
 
