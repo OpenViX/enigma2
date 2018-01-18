@@ -267,11 +267,14 @@ class PluginDownloadBrowser(Screen):
 	PLUGIN_PREFIX = 'enigma2-plugin-'
 	lastDownloadDate = None
 
-	def __init__(self, session, type = 0, needupdate = True, menu_path=""):
+	def __init__(self, session, type = 0, needupdate = True, menu_path="", skin_name=None):
 		Screen.__init__(self, session)
 		self.menu_path = menu_path
 		self.type = type
 		self.needupdate = needupdate
+		self.skinName = ["PluginDownloadBrowser"]
+		if isinstance(skin_name, str):
+			self.skinName.insert(0,skin_name)
 
 		self["menu_path_compressed"] = StaticText("")
 		if self.type == self.DOWNLOAD:
