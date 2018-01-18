@@ -36,7 +36,9 @@ class FeedsStatusCheck:
 	def adapterAvailable(self): # Box has an adapter configured and active
 		for adapter in ('eth0', 'eth1', 'wlan0', 'wlan1', 'wlan2', 'wlan3', 'ra0'):
 			if about.getIfConfig(adapter).has_key('addr'):
+				print "[OnlineUpdateCheck][adapterAvailable] PASSED"
 				return True
+		print "[OnlineUpdateCheck][adapterAvailable] FAILED"
 		return False
 			
 	def NetworkUp(self, host="8.8.8.8", port=53, timeout=2): # Box can access outside the local network
@@ -52,10 +54,10 @@ class FeedsStatusCheck:
 			socket.setdefaulttimeout(timeout)
 			socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect((host, port))
 			socket.setdefaulttimeout(original_timeout) # reset to previous
-			print "[OnlineUpdateCheck][OnlineCheck] PASSED"
+			print "[OnlineUpdateCheck][NetworkUp] PASSED"
 			return True
 		except Exception as ex:
-			print "[OnlineUpdateCheck][OnlineCheck] FAILED", ex.message
+			print "[OnlineUpdateCheck][NetworkUp] FAILED", ex.message
 			socket.setdefaulttimeout(original_timeout) # reset to previous
 			return False
 	
@@ -66,34 +68,34 @@ class FeedsStatusCheck:
 			if self.NetworkUp():
 				if getImageType() == 'release': # we know the network is good now so only do this check on release images where the release domain applies
 					try:
-						print '[OnlineVersionCheck] Checking feeds state'
+						print '[OnlineUpdateCheck][getFeedStatus] Checking feeds state'
 						req = urllib2.Request('http://openvix.co.uk/TrafficLightState.php')
 						d = urllib2.urlopen(req)
 						trafficLight = d.read()
 					except urllib2.HTTPError, err:
-						print '[OnlineVersionCheck] ERROR:',err
+						print '[OnlineUpdateCheck][getFeedStatus] ERROR:',err
 						trafficLight = err.code
 					except urllib2.URLError, err:
-						print '[OnlineVersionCheck] ERROR:',err.reason[0]
+						print '[OnlineUpdateCheck][getFeedStatus] ERROR:',err.reason[0]
 						trafficLight = err.reason[0]
 					except urllib2, err:
-						print '[OnlineVersionCheck] ERROR:',err
+						print '[OnlineUpdateCheck][getFeedStatus] ERROR:',err
 						trafficLight = err
 					except:
-						print '[OnlineVersionCheck] ERROR:', sys.exc_info()[0]
+						print '[OnlineUpdateCheck][getFeedStatus] ERROR:', sys.exc_info()[0]
 						trafficLight = -2
 				else:
 					trafficLight = 'unknown'
 				if trafficLight == 'stable':
 					status = '0'
 				config.softwareupdate.updateisunstable.setValue(status)
-				print '[OnlineVersionCheck] PASSED:',trafficLight
+				print '[OnlineUpdateCheck][getFeedStatus] PASSED:',trafficLight
 				return trafficLight
 			else:
-				print '[OnlineVersionCheck] ERROR: -2'
+				print '[OnlineUpdateCheck][getFeedStatus] ERROR: -2'
 				return -2
 		else:
-			print '[OnlineVersionCheck] ERROR: -3'
+			print '[OnlineUpdateCheck][getFeedStatus] ERROR: -3'
 			return -3
 
 	# We need a textual mapping for all possible return states for use by
@@ -116,16 +118,16 @@ class FeedsStatusCheck:
 		global error
 		self.feedstatus = feedsstatuscheck.getFeedStatus()
 		if self.feedstatus in (-2, -3, 403, 404):
-			print '[OnlineVersionCheck] Error %s' % self.feedstatus
+			print '[OnlineUpdateCheck][getFeedsBool] Error %s' % self.feedstatus
 			return str(self.feedstatus)
 		elif error:
-			print '[OnlineVersionCheck] Check already in progress'
+			print '[OnlineUpdateCheck][getFeedsBool] Check already in progress'
 			return 'inprogress'
 		elif self.feedstatus == 'updating':
-			print '[OnlineVersionCheck] Feeds Updating'
+			print '[OnlineUpdateCheck][getFeedsBool] Feeds Updating'
 			return 'updating'
 		elif self.feedstatus in ('stable', 'unstable', 'unknown'):
-			print '[OnlineVersionCheck]',self.feedstatus.title()
+			print '[OnlineUpdateCheck][getFeedsBool]', self.feedstatus
 			return str(self.feedstatus)
 
 	def getFeedsErrorMessage(self):
@@ -160,7 +162,7 @@ class FeedsStatusCheck:
 			elif self.ipkg.currentCommand == IpkgComponent.CMD_UPGRADE_LIST:
 				self.total_packages = len(self.ipkg.getFetchedList())
 				if self.total_packages and (getImageType() != 'release' or (config.softwareupdate.updateisunstable.value == '1' and config.softwareupdate.updatebeta.value) or config.softwareupdate.updateisunstable.value == '0'):
-					print ('[OnlineVersionCheck] %s Updates available' % self.total_packages)
+					print ('[OnlineUpdateCheck][ipkgCallback] %s Updates available' % self.total_packages)
 					config.softwareupdate.updatefound.setValue(True)
 		pass
 
@@ -230,10 +232,10 @@ class OnlineUpdateCheckPoller:
 	def JobStart(self):
 		config.softwareupdate.updatefound.setValue(False)
 		if (getImageType() != 'release' and feedsstatuscheck.getFeedsBool() == 'unknown') or (getImageType() == 'release' and feedsstatuscheck.getFeedsBool() in ('stable', 'unstable')):
-			print '[OnlineVersionCheck] Starting background check.'
+			print '[OnlineUpdateCheckPoller] Starting background check.'
 			feedsstatuscheck.startCheck()
 		else:
-			print '[OnlineVersionCheck] No feeds found, skipping check.'
+			print '[OnlineUpdateCheckPoller] No feeds found, skipping check.'
 
 # Create a callable instance...
 onlineupdatecheckpoller = OnlineUpdateCheckPoller()
@@ -273,7 +275,7 @@ def kernelMismatch():
 
 	kernelversion = about.getKernelVersionString().strip()
 	if kernelversion == "unknown":
-		print '[OnlineVersionCheck][kernelMismatch] unable to retrieve kernel version from STB'
+		print '[OnlineUpdateCheck][kernelMismatch] unable to retrieve kernel version from STB'
 		return False
 
 	uri = "%s/%s/Packages.gz" % (getFeedsUrl(), getMachineBuild())
@@ -282,13 +284,13 @@ def kernelMismatch():
 		d = urllib2.urlopen(req)
 		gz_data = d.read()
 	except:
-		print '[OnlineVersionCheck][kernelMismatch] error fetching %s' % uri
+		print '[OnlineUpdateCheck][kernelMismatch] error fetching %s' % uri
 		return False
 
 	try:
 		packages = zlib.decompress(gz_data, 16+zlib.MAX_WBITS)
 	except:
-		print '[OnlineVersionCheck][kernelMismatch] failed to decompress gz_data'
+		print '[OnlineUpdateCheck][kernelMismatch] failed to decompress gz_data'
 		return False
 
 	pattern = "kernel-([0-9]+[.][0-9]+[.][0-9]+)"
@@ -296,10 +298,10 @@ def kernelMismatch():
 	if matches:
 		match = sorted(matches,key=lambda s: list(map(int, s.split('.'))))[-1]
 		if match != kernelversion:
-			print '[OnlineVersionCheck][kernelMismatch] kernel mismatch found. STB kernel=%s, feeds kernel=%s' % (kernelversion, match)
+			print '[OnlineUpdateCheck][kernelMismatch] kernel mismatch found. STB kernel=%s, feeds kernel=%s' % (kernelversion, match)
 			return True
 
-	print '[OnlineVersionCheck][kernelMismatch] no kernel mismatch found'
+	print '[OnlineUpdateCheck][kernelMismatch] no kernel mismatch found'
 	return False
 
 def statusMessage():
@@ -311,7 +313,7 @@ def statusMessage():
 		d = urllib2.urlopen(req)
 		message = d.read()
 	except:
-		print '[OnlineVersionCheck][statusMessage] %s could not be fetched' % uri
+		print '[OnlineUpdateCheck][statusMessage] %s could not be fetched' % uri
 		return False
 
 	if message:
