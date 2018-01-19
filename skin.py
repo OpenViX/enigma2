@@ -303,6 +303,8 @@ class AttributeParser:
 			self.applyOne(attrib, value)
 	def conditional(self, value):
 		pass
+	def objecttypes(self, value):
+		pass
 	def position(self, value):
 		if isinstance(value, tuple):
 			self.guiObject.move(ePoint(*value))
@@ -1049,6 +1051,10 @@ def readSkin(screen, skin, names, desktop):
 		for w in widget.getchildren():
 			conditional = w.attrib.get('conditional')
 			if conditional and not [i for i in conditional.split(",") if i in screen.keys()]:
+				continue
+			key = w.attrib.get('name') or w.attrib.get('source')
+			objecttypes = w.attrib.get('objecttypes')
+			if objecttypes and key and key in screen and not [i for i in objecttypes.split(",") if i == screen[key].__class__.__name__]:
 				continue
 			p = processors.get(w.tag, process_none)
 			try:
