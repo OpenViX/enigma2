@@ -1052,7 +1052,7 @@ def readSkin(screen, skin, names, desktop):
 			conditional = w.attrib.get('conditional')
 			if conditional and not [i for i in conditional.split(",") if i in screen.keys()]:
 				continue
-			key = w.attrib.get('name') or w.attrib.get('source') or conditional
+			key = w.attrib.get('name') or w.attrib.get('source') or conditional and conditional.split(",")[0]
 			objecttypes = w.attrib.get('objecttypes')
 			if objecttypes and key and key in screen and not [i for i in objecttypes.split(",") if i == screen[key].__class__.__name__]:
 				continue
