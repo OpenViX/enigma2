@@ -21,7 +21,7 @@
 		<item level="2" text="Descramble receiving http streams" description="When enabled, always descramble receiving http streams. This takes up more resources (descrambling demuxers), only enable if necessary. Individual streams are always descrambled if 0x100 is added to the service type, regardless of this setting. Default off.">config.streaming.descramble_client</item>
 		<item level="2" text="Require authentication for http streams" description="When enabled, authentication is required to watch http streams.">config.streaming.authentication</item>
 	</setup>
-	<setup key="tunermisc" title="Tuner miscellaneous" titleshort="Miscellaneous">
+	<setup key="tunermisc" title="Tuner miscellaneous" titleshort="Miscellaneous" showOpenWebIF="1">
 		<item level="1" text="12V output" description="12V output." requires="12V_Output">config.usage.output_12V</item>
 		<item level="2" text="Force LNB Power" description="When enabled the LNB power will not be switched off in standby" requires="HasForceLNBOn">config.misc.forceLnbPower</item>
 		<item level="2" text="Force ToneBurst" description="When enabled the LNB toneburst will be forced" requires="HasForceToneburst">config.misc.forceToneBurst</item>

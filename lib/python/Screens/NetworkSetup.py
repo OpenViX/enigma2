@@ -3605,19 +3605,17 @@ class NetworkPassword(Screen):
 		Screen.setTitle(self, title)
 		self.skinName = "NetworkSetPassword"
 
-		self.user="root"
-		self.output_line = ""
+		self.user = "root"
 		self.list = []
-		
 		self["passwd"] = ConfigList(self.list)
-		self["key_red"] = StaticText(_("Cancel"))
+		self["key_red"] = StaticText(_("Delete Password"))
 		self["key_green"] = StaticText(_("Set Password"))
-		self["key_yellow"] = StaticText(_("Random Password"))
+		self["key_yellow"] = StaticText(_("New Random Password"))
 		self["key_blue"] = StaticText(_("Keyboard"))
 
 		self["actions"] = ActionMap(["OkCancelActions", "ColorActions"],
 				{
-						"red": self.close,
+						"red": self.DelPasswd,
 						"green": self.SetPasswd,
 						"yellow": self.newRandom,
 						"blue": self.bluePressed,
@@ -3641,30 +3639,30 @@ class NetworkPassword(Screen):
 		return ''.join(Random().sample(passwdChars, passwdLength)) 
 
 	def SetPasswd(self):
-		#print "[NetworkPassword] Changing the password for %s to %s" % (self.user,self.password) 
 		self.container = eConsoleAppContainer()
 		self.container.appClosed.append(self.runFinished)
 		self.container.dataAvail.append(self.dataAvail)
-		retval = self.container.execute("echo -e '%s\n%s' | (passwd %s)" %(self.password,self.password,self.user))
-		if retval==0:
-			message=_("Sucessfully changed the password for the root user to: ") + self.password
-			self.session.open(MessageBox, message , MessageBox.TYPE_INFO)
+		retval = self.container.execute("passwd %s" % self.user)
+		if retval == 0:
+			message = _("Sucessfully changed the password for the root user to ") + self.password
 		else:
-			message=_("Unable to change the password for the root user")
-			self.session.open(MessageBox, message , MessageBox.TYPE_ERROR)
+			message = _("Unable to change/reset the password for the root user")
+		self.session.open(MessageBox, message , MessageBox.TYPE_INFO)
 
-	def dataAvail(self,data):
-		self.output_line += data
-		while True:
-			i = self.output_line.find('\n')
-			if i == -1:
-				break
-			self.processOutputLine(self.output_line[:i+1])
-			self.output_line = self.output_line[i+1:]
+	def DelPasswd(self):
+		self.container = eConsoleAppContainer()
+		self.container.appClosed.append(self.runFinished)
+		self.container.dataAvail.append(self.dataAvail)
+		retval = self.container.execute("passwd --delete %s" % self.user)
+		if retval == 0:
+			message = _("Password deleted sucessfully for the root user")
+		else:
+			message = _("Unable to delete the password for the root user")
+		self.session.open(MessageBox, message , MessageBox.TYPE_INFO)
 
-	def processOutputLine(self,line):
-		if line.find('password: '):
-			self.container.write("%s\n"%self.password)
+	def dataAvail(self, data):
+		if data.find('password'):
+			self.container.write("%s\n" % self.password)
 
 	def runFinished(self,retval):
 		del self.container.dataAvail[:]

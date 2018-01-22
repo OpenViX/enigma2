@@ -1,7 +1,7 @@
 <!--suppress XmlUnboundNsPrefix -->
 <wizard>
 		<step id="start" nextstep="introduction">
-			<text value="Welcome.\n\nThis start wizard will guide you through the basic setup of your %s %s.\nPress the OK button on your remote control to move to the next step." />
+			<text value="This start wizard will guide you through the basic setup of your %s %s.\nPress the OK button on your remote control to move to the next step." />
 			<displaytext value="Welcome.\n\nThis start wizard will guide you through the basic setup of your %s %s.\nPress the OK button on your remote control to move to the next step." />
 			<code>
 self.clearSelectedKeys()
@@ -352,12 +352,23 @@ config.ParentalControl.setuppin.save()
 			<displaytext value="After the start wizard is completed, you need to protect single services. Refer to your %s %s's manual on how to do that." />
 		</step>
 -->
-		<step id="plugins">
+		<step id="plugins" nextstep="skins">
 			<condition>
 self.condition = config.misc.installwizard.hasnetwork.value and config.misc.installwizard.ipkgloaded.value
 			</condition>
 			<text value="Plugin install" />
 			<config screen="InstallWizard" module="InstallWizard" args="2" type="ConfigList" />
+			<code>
+self.clearSelectedKeys()
+self.selectKey("OK")
+			</code>
+		</step>
+		<step id="skins">
+			<condition>
+self.condition = config.misc.installwizard.hasnetwork.value and config.misc.installwizard.ipkgloaded.value
+			</condition>
+			<text value="Skin install" />
+			<config screen="InstallWizard" module="InstallWizard" args="3" type="ConfigList" />
 			<code>
 self.clearSelectedKeys()
 self.selectKey("OK")

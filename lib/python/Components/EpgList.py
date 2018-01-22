@@ -3,7 +3,6 @@ from time import localtime, time, strftime
 
 from enigma import eEPGCache, eListbox, eListboxPythonMultiContent, loadPNG, gFont, getDesktop, eRect, eSize, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_HALIGN_CENTER, RT_VALIGN_CENTER, RT_VALIGN_TOP, RT_WRAP, BT_SCALE, BT_KEEP_ASPECT_RATIO
 
-from HTMLComponent import HTMLComponent
 from GUIComponent import GUIComponent
 from Components.MultiContent import MultiContentEntryText, MultiContentEntryPixmapAlphaBlend, MultiContentEntryPixmapAlphaTest
 from Components.Renderer.Picon import getPiconName
@@ -45,7 +44,7 @@ class Rect:
 	def width(self):
 		return self.w
 
-class EPGList(HTMLComponent, GUIComponent):
+class EPGList(GUIComponent):
 	def __init__(self, type = EPG_TYPE_SINGLE, selChangedCB = None, timer = None, time_epoch = 120, overjump_empty = False, graphic=False):
 		self.cur_event = None
 		self.cur_service = None
@@ -60,7 +59,6 @@ class EPGList(HTMLComponent, GUIComponent):
 		self.showServiceTitle = True
 		self.showServiceNumber = False
 		self.screenwidth = getDesktop(0).size().width()
-
 		self.overjump_empty = overjump_empty
 		self.timer = timer
 		self.onSelChanged = [ ]
@@ -1407,7 +1405,7 @@ class EPGList(HTMLComponent, GUIComponent):
 				break
 			index += 1
 
-class TimelineText(HTMLComponent, GUIComponent):
+class TimelineText(GUIComponent):
 	def __init__(self, type = EPG_TYPE_GRAPH, graphic=False):
 		GUIComponent.__init__(self)
 		self.type = type
@@ -1592,7 +1590,7 @@ class TimelineText(HTMLComponent, GUIComponent):
 		else:
 			timeline_now.visible = False
 
-class EPGBouquetList(HTMLComponent, GUIComponent):
+class EPGBouquetList(GUIComponent):
 	def __init__(self, graphic=False):
 		GUIComponent.__init__(self)
 		self.graphic = graphic
