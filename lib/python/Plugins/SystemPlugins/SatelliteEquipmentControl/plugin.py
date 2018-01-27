@@ -11,6 +11,7 @@ from Components.NimManager import nimmanager as nimmgr
 class SecParameterSetup(Screen, ConfigListScreen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
+		self.setTitle(_("Satellite equipment control"))
 
 		self.skinName = ["SecParameterSetup", "Setup"]
 

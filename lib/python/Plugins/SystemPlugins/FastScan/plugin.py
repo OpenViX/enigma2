@@ -147,6 +147,8 @@ class FastScanScreen(ConfigListScreen, Screen):
 	def __init__(self, session, nimList):
 		Screen.__init__(self, session)
 
+		self.setTitle(_("Fast Scan"))
+
 		self["actions"] = ActionMap(["SetupActions", "MenuActions"],
 		{
 			"ok": self.keyGo,
@@ -179,6 +181,8 @@ class FastScanScreen(ConfigListScreen, Screen):
 		self.createSetup()
 		self.finished_cb = None
 		self["introduction"] = Label(_("Select your provider, and press OK to start the scan"))
+		self["key_red"] = Label(_("Cancel"))
+		self["key_green"] = Label(_("Save"))
 
 	def createSetup(self):
 		self.list = []

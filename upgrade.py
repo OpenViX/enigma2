@@ -37,4 +37,4 @@ os.system("(echo 'Updating Sysvinit' && opkg upgrade sysvinit && \
 echo 'Updating Sysvinit-pidof' && opkg upgrade sysvinit-pidof && \
 echo 'Updating Initscripts-functions' && opkg upgrade initscripts-functions && \
 echo 'Updating Busybox' && opkg upgrade busybox && \
-echo 'Updating Main system' && opkg " + opkgExtraDestinations() + " list-upgradable | cut -f 1 -d ' ' | xargs opkg " + opkgExtraDestinations() + " upgrade) 2>&1 | tee /home/root/ipkgupgrade.log" && reboot)
+echo 'Updating Main system' && opkg " + opkgExtraDestinations() + " list-upgradable | cut -f 1 -d ' ' | xargs opkg " + opkgExtraDestinations() + " upgrade) 2>&1 | tee /home/root/ipkgupgrade.log && reboot")
