@@ -59,7 +59,7 @@ class VIXScriptRunner(IpkgInstaller):
 			self["menu_path_compressed"] = StaticText("")
 		Screen.setTitle(self, title)
 
-		self.skinName = "IpkgInstaller"
+		self.skinName = ["VIXScriptRunner", "IpkgInstaller"]
 		self["key_green"] = StaticText(_("Run"))
 
 		self['myactions'] = ActionMap(["MenuActions"],
