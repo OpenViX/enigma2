@@ -55,8 +55,8 @@ class TimerEntry(Screen, ConfigListScreen):
 		self["VKeyIcon"] = Boolean(False)
 
 		self["description"] = Label("")
-		self["oktext"] = Label(_("OK"))
-		self["canceltext"] = Label(_("Cancel"))
+		self["key_green"] = self["oktext"] = Label(_("OK"))
+		self["key_red"] = self["canceltext"] = Label(_("Cancel"))
 		self["ok"] = Pixmap()
 		self["cancel"] = Pixmap()
 
