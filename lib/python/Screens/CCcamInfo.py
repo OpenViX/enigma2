@@ -872,7 +872,7 @@ class CCcamShareViewMenu(Screen, HelpableScreen):
 			}, -1)
 
 		self.onLayoutFinish.append(self.getProviders)
-		self["key_red"] = Label(_("cancel"))
+		self["key_red"] = Label(_("Cancel"))
 		self["actions"] = ActionMap(["CCcamInfoActions"], {"cancel": self.close, "red": self.close}, -1)
 
 	def exit(self):
