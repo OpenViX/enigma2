@@ -825,6 +825,12 @@ class CCcamInfoInfoScreen(Screen):
 				"right": self["text"].pageDown,
 			}, -1)
 
+		self["key_red"] = Label(_("Cancel"))
+		self["shortcuts"] = ActionMap(["ShortcutActions"],
+		{
+			"red": self.close,
+		})
+
 #############################################################
 
 class CCcamShareViewMenu(Screen, HelpableScreen):
@@ -866,6 +872,8 @@ class CCcamShareViewMenu(Screen, HelpableScreen):
 			}, -1)
 
 		self.onLayoutFinish.append(self.getProviders)
+		self["key_red"] = Label(_("Cancel"))
+		self["actions"] = ActionMap(["CCcamInfoActions"], {"cancel": self.close, "red": self.close}, -1)
 
 	def exit(self):
 		if not self.working:
@@ -1156,9 +1164,9 @@ class CCcamInfoSubMenu(Screen):
 		self.infoList = infoList
 		self["list"] = MenuList(list)
 		self["info"] = Label()
-
-		self["actions"] = ActionMap(["CCcamInfoActions"], {"ok": self.okClicked, "cancel": self.close}, -1)
-
+		self["key_green"] = Label(_("info"))
+		self["key_red"] = Label(_("Cancel"))
+		self["actions"] = ActionMap(["CCcamInfoActions"], {"ok": self.okClicked, "cancel": self.close, "red": self.close, "green": self.okClicked}, -1)
 		self["list"].onSelectionChanged.append(self.showInfo)
 		self.onLayoutFinish.append(self.showInfo)
 
@@ -1204,8 +1212,8 @@ class CCcamInfoServerMenu(Screen):
 				list.append(CCcamServerListEntry(x[0], "green"))
 		self["list"] = CCcamList(list)
 		self["info"] = Label()
-
-		self["actions"] = ActionMap(["CCcamInfoActions"], {"ok": self.okClicked, "cancel": self.close}, -1)
+		self["key_red"] = Label(_("Cancel"))
+		self["actions"] = ActionMap(["CCcamInfoActions"], {"ok": self.okClicked, "cancel": self.close, "red": self.close, "green": self.okClicked}, -1)
 
 		self["list"].onSelectionChanged.append(self.showInfo)
 		self.onLayoutFinish.append(self.showInfo)
