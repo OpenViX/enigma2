@@ -1,5 +1,4 @@
 from Components.ActionMap import ActionMap
-from Components.Button import Button
 from Components.Label import Label
 from Components.config import config
 from Components.MenuList import MenuList
@@ -60,10 +59,10 @@ class TimerEditList(Screen):
 		self.key_yellow_choice = self.EMPTY
 		self.key_blue_choice = self.EMPTY
 
-		self["key_red"] = Button(" ")
-		self["key_green"] = Button(_("Add"))
-		self["key_yellow"] = Button(" ")
-		self["key_blue"] = Button(" ")
+		self["key_red"] = StaticText("")
+		self["key_green"] = StaticText(_("Add"))
+		self["key_yellow"] = StaticText("")
+		self["key_blue"] = StaticText("")
 
 		self["description"] = Label()
 
@@ -188,7 +187,7 @@ class TimerEditList(Screen):
 		else:
 			if self.key_red_choice != self.EMPTY:
 				self.removeAction("red")
-				self["key_red"].setText(" ")
+				self["key_red"].setText("")
 				self.key_red_choice = self.EMPTY
 			if self.key_yellow_choice != self.EMPTY:
 				self.removeAction("yellow")
@@ -208,7 +207,7 @@ class TimerEditList(Screen):
 			self.key_blue_choice = self.CLEANUP
 		elif (not showCleanup) and (self.key_blue_choice != self.EMPTY):
 			self.removeAction("blue")
-			self["key_blue"].setText(" ")
+			self["key_blue"].setText("")
 			self.key_blue_choice = self.EMPTY
 		if len(self.list) == 0:
 			return
@@ -443,10 +442,10 @@ class TimerSanityConflict(Screen):
 		self["list"] = MenuList(self.list)
 		self["timer2"] = TimerList(self.list2)
 
-		self["key_red"] = Button(_("Edit new entry"))
-# 		self["key_green"] = Button(" ")
-		self["key_yellow"] = Button(" ")
-		self["key_blue"] = Button(" ")
+		self["key_red"] = StaticText(_("Edit new entry"))
+# 		self["key_green"] = StaticText("")
+		self["key_yellow"] = StaticText(" ")
+		self["key_blue"] = StaticText("")
 
 		self.key_green_choice = self.EMPTY
 		self.key_yellow_choice = self.EMPTY
@@ -524,7 +523,7 @@ class TimerSanityConflict(Screen):
 					self.key_blue_choice = self.ENABLE
 				elif self.timer[x].isRunning() and not self.timer[x].repeated and self.key_blue_choice != self.EMPTY:
 					self.removeAction("blue")
-					self["key_blue"].setText(" ")
+					self["key_blue"].setText("")
 					self.key_blue_choice = self.EMPTY
 				elif (not self.timer[x].isRunning() or self.timer[x].repeated ) and self.key_blue_choice != self.DISABLE:
 					self["actions"].actions.update({"blue":self.toggleTimer})
@@ -534,11 +533,11 @@ class TimerSanityConflict(Screen):
 #FIXME.... this doesnt hide the buttons self.... just the text
 			if self.key_yellow_choice != self.EMPTY:
 				self.removeAction("yellow")
-				self["key_yellow"].setText(" ")
+				self["key_yellow"].setText("")
 				self.key_yellow_choice = self.EMPTY
 			if self.key_blue_choice != self.EMPTY:
 				self.removeAction("blue")
-				self["key_blue"].setText(" ")
+				self["key_blue"].setText("")
 				self.key_blue_choice = self.EMPTY
 
 class TimerEditListSummary(Screen):
