@@ -11,6 +11,7 @@ from Components.MultiContent import MultiContentEntryText, MultiContentEntryPixm
 from Tools.Directories import resolveFilename, SCOPE_ACTIVE_SKIN
 from Tools.LoadPixmap import LoadPixmap
 from Tools.NumericalTextInput import NumericalTextInput
+from Components.ActionMap import ActionMap, NumberActionMap
 import skin
 
 class VirtualKeyBoardList(MenuList):
@@ -110,6 +111,10 @@ class VirtualKeyBoard(Screen):
 		self.onLayoutFinish.append(self.buildVirtualKeyBoard)
 		self.onClose.append(self.__onClose)
 
+		self["key_red"] = Label(_("Exit"))
+		self["key_green"] = Label(_("Save"))
+		self["key_yellow"] = Label(_(""))
+	
 	def __onClose(self):
 		self.sms.timer.stop()
 
