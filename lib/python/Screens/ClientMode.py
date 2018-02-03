@@ -7,6 +7,10 @@ from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
 from Screens.Standby import TryQuitMainloop
 
+# for VKeyIcon
+from Components.config import ConfigText, ConfigPassword	
+from Components.Sources.Boolean import Boolean
+
 class ClientModeScreen(ConfigListScreen, Screen):
 	def __init__(self, session, menu_path=""):
 		Screen.__init__(self, session)
@@ -44,6 +48,7 @@ class ClientModeScreen(ConfigListScreen, Screen):
 		self["key_green"] = StaticText(_("Save"))
 
 		self["description"] = Label("")
+		self["VKeyIcon"] = Boolean(False)
 
 		self.createSetup()
 
@@ -76,6 +81,13 @@ class ClientModeScreen(ConfigListScreen, Screen):
 
 	def selectionChanged(self):
 		self["description"].setText(self["config"].getCurrent()[2])
+		self.setVKeyIcon()
+
+	def setVKeyIcon(self):
+		if isinstance(self["config"].getCurrent()[1], ConfigText) or isinstance(self["config"].getCurrent()[1], ConfigPassword):
+			self["VKeyIcon"].boolean = True
+		else:
+			self["VKeyIcon"].boolean = False
 
 	# for summary:
 	def changedEntry(self):

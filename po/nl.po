@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-24 10:06+0000\n"
-"PO-Revision-Date: 2018-01-25 15:11+0100\n"
+"POT-Creation-Date: 2018-02-03 03:10+0000\n"
+"PO-Revision-Date: 2018-02-03 07:19+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SourceCharset: iso-8859-15\n"
-"X-Generator: Poedit 2.0.5\n"
+"X-Generator: Poedit 2.0.6\n"
 
 msgid ""
 "\n"
@@ -4591,9 +4591,6 @@ msgstr "Overal"
 
 msgid "Exceeds dual layer medium!"
 msgstr "Overschrijdt dubbel lagen medium!"
-
-msgid "Execute"
-msgstr "Uitvoeren"
 
 msgid "Execution finished!!"
 msgstr "Voortgang voltooid!"
@@ -13557,6 +13554,9 @@ msgstr "horizontaal"
 msgid "increase uphop by 1"
 msgstr "verhoog uphop met 1"
 
+msgid "info"
+msgstr "info"
+
 msgid "information/education/school program"
 msgstr "informatie/onderwijs/schoolprogramma"
 
@@ -14943,6 +14943,9 @@ msgstr "zapte"
 
 #~ msgid "Error: No network connection found. Please ensure your receiver is connected to the internet."
 #~ msgstr "Fout: Geen netwerkverbinding gevonden. Controleer of uw ontvanger met het internet verbonden is"
+
+#~ msgid "Execute"
+#~ msgstr "Uitvoeren"
 
 #~ msgid "External (CF)"
 #~ msgstr "Extern (CF)"
