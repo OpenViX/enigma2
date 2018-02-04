@@ -11,6 +11,10 @@ from Screens.Standby import TryQuitMainloop
 from Components.config import ConfigText, ConfigPassword	
 from Components.Sources.Boolean import Boolean
 
+# for HelpWindow
+from Components.Pixmap import Pixmap
+from enigma import ePoint
+
 class ClientModeScreen(ConfigListScreen, Screen):
 	def __init__(self, session, menu_path=""):
 		Screen.__init__(self, session)
@@ -48,6 +52,10 @@ class ClientModeScreen(ConfigListScreen, Screen):
 		self["key_green"] = StaticText(_("Save"))
 
 		self["description"] = Label("")
+
+		# VKeyIcon is the automatic "text" button on buttonbar. HelpWindow is remote control helper image.
+		self["HelpWindow"] = Pixmap()
+		self["HelpWindow"].hide()
 		self["VKeyIcon"] = Boolean(False)
 
 		self.createSetup()
@@ -86,6 +94,8 @@ class ClientModeScreen(ConfigListScreen, Screen):
 	def setVKeyIcon(self):
 		if isinstance(self["config"].getCurrent()[1], ConfigText) or isinstance(self["config"].getCurrent()[1], ConfigPassword):
 			self["VKeyIcon"].boolean = True
+			if self["config"].getCurrent()[1].help_window.instance is not None:
+				self["config"].getCurrent()[1].help_window.instance.move(ePoint(self["HelpWindow"].getPosition()[0],self["HelpWindow"].getPosition()[1]))
 		else:
 			self["VKeyIcon"].boolean = False
 
