@@ -305,8 +305,6 @@ class AttributeParser:
 		pass
 	def objectTypes(self, value):
 		pass
-	def objectTypesDepends(self, value):
-		pass
 	def position(self, value):
 		if isinstance(value, tuple):
 			self.guiObject.move(ePoint(*value))
