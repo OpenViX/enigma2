@@ -11,7 +11,6 @@ from Components.MultiContent import MultiContentEntryText, MultiContentEntryPixm
 from Tools.Directories import resolveFilename, SCOPE_ACTIVE_SKIN
 from Tools.LoadPixmap import LoadPixmap
 from Tools.NumericalTextInput import NumericalTextInput
-from Components.ActionMap import ActionMap, NumberActionMap
 import skin
 
 class VirtualKeyBoardList(MenuList):
