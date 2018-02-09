@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-08 10:39+0000\n"
-"PO-Revision-Date: 2018-02-08 14:51+0100\n"
+"POT-Creation-Date: 2018-02-09 13:54+0000\n"
+"PO-Revision-Date: 2018-02-09 16:15+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -7258,6 +7258,9 @@ msgstr "Aan het einde van de film (als menu)"
 msgid "On reaching the end of a file during playback, you can choose the box's behavior."
 msgstr "U kunt instellen wat er moet gebeuren bij het einde van het afspelen."
 
+msgid "On shutdown/restart warn about any pending jobs being carried out in the background."
+msgstr "Waarschuw bij afsluiten/herstarten als er op de achtergrond taken worden uitgevoerd."
+
 msgid "On valid ONIDs, ignore frequency sub network part"
 msgstr "Op geldige ONIDs negeer het frequentie netwerk deel"
 
@@ -10750,6 +10753,9 @@ msgstr "Tajikistan"
 
 msgid "Tanzania, United Republic of"
 msgstr "Tanzania, United Republic of"
+
+msgid "Task warning on shutdown"
+msgstr "Waarschuwing actieve taken bij afsluiten."
 
 msgid "Teletext"
 msgstr "Teletext"
