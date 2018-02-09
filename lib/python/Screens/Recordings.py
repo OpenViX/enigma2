@@ -41,7 +41,7 @@ class SetupSummary(Screen):
 			if self.parent.getCurrentEntry().endswith('*'):
 				self.parent['footnote'].text = (_("* = Restart Required"))
 			else:
-				self.parent['footnote'].text = (_(" "))
+				self.parent['footnote'].text = ("")
 
 class RecordingSettings(Screen,ConfigListScreen):
 	def removeNotifier(self):
@@ -73,7 +73,7 @@ class RecordingSettings(Screen,ConfigListScreen):
 
 		self["key_red"] = StaticText(_("Cancel"))
 		self["key_green"] = StaticText(_("Save"))
-		self["description"] = Label(_(""))
+		self["description"] = Label("")
 
 		self.onChangedEntry = [ ]
 		self.setup = "recording"

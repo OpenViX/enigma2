@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-03 03:10+0000\n"
-"PO-Revision-Date: 2018-02-03 07:19+0100\n"
+"POT-Creation-Date: 2018-02-08 10:39+0000\n"
+"PO-Revision-Date: 2018-02-08 14:51+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -134,9 +134,6 @@ msgid ""
 msgstr ""
 "\n"
 "Bekijk, installeer en verwijder beschikbare of geïnstalleerde pakketten."
-
-msgid " "
-msgstr " "
 
 #, python-format
 msgid "  (%s x %s)"
@@ -11669,6 +11666,9 @@ msgstr "Twee regels"
 msgid "Type"
 msgstr "Type"
 
+msgid "Type of LNB/device"
+msgstr "Soort LNB/apparaat"
+
 msgid "Type of scan"
 msgstr "Zoekmodus"
 
@@ -11967,13 +11967,13 @@ msgid "User defined transponder"
 msgstr "Door gebruiker bepaalde transponder"
 
 msgid "User interface"
-msgstr "Gebruikers interface"
+msgstr "Gebruikersinterface"
 
 msgid "User interface settings"
 msgstr "Gebruikersinterface-instellingen"
 
 msgid "User interface visibility"
-msgstr "Gebruikers interface zichtbaarheid"
+msgstr "Zichtbaarheid gebruikersinterface "
 
 msgid "Username"
 msgstr "Gebruikersnaam"
@@ -14297,6 +14297,9 @@ msgstr "zapte"
 #~ msgstr ""
 #~ "\n"
 #~ "Er loopt een opname."
+
+#~ msgid " "
+#~ msgstr " "
 
 #, fuzzy
 #~ msgid "%-e %B %Y"
