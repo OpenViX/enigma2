@@ -217,7 +217,7 @@ class TryQuitMainloop(MessageBox):
 		next_rec_time = -1
 		if not recordings:
 			next_rec_time = session.nav.RecordTimer.getNextRecordingTime()
-		if len(jobs):
+		if config.usage.task_warning.value and len(jobs):
 			reason = (ngettext("%d job is running in the background!", "%d jobs are running in the background!", len(jobs)) % len(jobs)) + '\n'
 			if len(jobs) == 1:
 				job = jobs[0]
