@@ -71,7 +71,9 @@ class VirtualKeyBoard(Screen):
 				"RIGHT": self.key_right
 			}
 
-		self["country"] = StaticText("")
+		self["key_red"] = StaticText(_("Exit"))
+		self["key_green"] = StaticText(_("Save"))
+		self["key_yellow"] = self["country"] = StaticText("")
 		self["header"] = Label()
 		self["text"] = Input(currPos=len(kwargs.get("text", "").decode("utf-8",'ignore')), allMarked=False, **kwargs)
 		self["list"] = VirtualKeyBoardList([])
@@ -109,7 +111,7 @@ class VirtualKeyBoard(Screen):
 		self.onExecBegin.append(self.setKeyboardModeAscii)
 		self.onLayoutFinish.append(self.buildVirtualKeyBoard)
 		self.onClose.append(self.__onClose)
-
+	
 	def __onClose(self):
 		self.sms.timer.stop()
 

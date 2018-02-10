@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-24 10:06+0000\n"
-"PO-Revision-Date: 2018-01-25 15:11+0100\n"
+"POT-Creation-Date: 2018-02-09 13:54+0000\n"
+"PO-Revision-Date: 2018-02-09 16:15+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SourceCharset: iso-8859-15\n"
-"X-Generator: Poedit 2.0.5\n"
+"X-Generator: Poedit 2.0.6\n"
 
 msgid ""
 "\n"
@@ -134,9 +134,6 @@ msgid ""
 msgstr ""
 "\n"
 "Bekijk, installeer en verwijder beschikbare of geïnstalleerde pakketten."
-
-msgid " "
-msgstr " "
 
 #, python-format
 msgid "  (%s x %s)"
@@ -4592,9 +4589,6 @@ msgstr "Overal"
 msgid "Exceeds dual layer medium!"
 msgstr "Overschrijdt dubbel lagen medium!"
 
-msgid "Execute"
-msgstr "Uitvoeren"
-
 msgid "Execution finished!!"
 msgstr "Voortgang voltooid!"
 
@@ -7263,6 +7257,9 @@ msgstr "Aan het einde van de film (als menu)"
 
 msgid "On reaching the end of a file during playback, you can choose the box's behavior."
 msgstr "U kunt instellen wat er moet gebeuren bij het einde van het afspelen."
+
+msgid "On shutdown/restart warn about any pending jobs being carried out in the background."
+msgstr "Waarschuw bij afsluiten/herstarten als er op de achtergrond taken worden uitgevoerd."
 
 msgid "On valid ONIDs, ignore frequency sub network part"
 msgstr "Op geldige ONIDs negeer het frequentie netwerk deel"
@@ -10757,6 +10754,9 @@ msgstr "Tajikistan"
 msgid "Tanzania, United Republic of"
 msgstr "Tanzania, United Republic of"
 
+msgid "Task warning on shutdown"
+msgstr "Waarschuwing actieve taken bij afsluiten."
+
 msgid "Teletext"
 msgstr "Teletext"
 
@@ -11672,6 +11672,9 @@ msgstr "Twee regels"
 msgid "Type"
 msgstr "Type"
 
+msgid "Type of LNB/device"
+msgstr "Soort LNB/apparaat"
+
 msgid "Type of scan"
 msgstr "Zoekmodus"
 
@@ -11970,13 +11973,13 @@ msgid "User defined transponder"
 msgstr "Door gebruiker bepaalde transponder"
 
 msgid "User interface"
-msgstr "Gebruikers interface"
+msgstr "Gebruikersinterface"
 
 msgid "User interface settings"
 msgstr "Gebruikersinterface-instellingen"
 
 msgid "User interface visibility"
-msgstr "Gebruikers interface zichtbaarheid"
+msgstr "Zichtbaarheid gebruikersinterface "
 
 msgid "Username"
 msgstr "Gebruikersnaam"
@@ -13557,6 +13560,9 @@ msgstr "horizontaal"
 msgid "increase uphop by 1"
 msgstr "verhoog uphop met 1"
 
+msgid "info"
+msgstr "info"
+
 msgid "information/education/school program"
 msgstr "informatie/onderwijs/schoolprogramma"
 
@@ -14298,6 +14304,9 @@ msgstr "zapte"
 #~ "\n"
 #~ "Er loopt een opname."
 
+#~ msgid " "
+#~ msgstr " "
+
 #, fuzzy
 #~ msgid "%-e %B %Y"
 #~ msgstr "%d %B %Y"
@@ -14943,6 +14952,9 @@ msgstr "zapte"
 
 #~ msgid "Error: No network connection found. Please ensure your receiver is connected to the internet."
 #~ msgstr "Fout: Geen netwerkverbinding gevonden. Controleer of uw ontvanger met het internet verbonden is"
+
+#~ msgid "Execute"
+#~ msgstr "Uitvoeren"
 
 #~ msgid "External (CF)"
 #~ msgstr "Extern (CF)"

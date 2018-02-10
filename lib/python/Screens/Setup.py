@@ -70,7 +70,7 @@ class SetupSummary(Screen):
 			if self.parent.getCurrentEntry().endswith('*'):
 				self.parent['footnote'].text = (_("* = Restart Required"))
 			else:
-				self.parent['footnote'].text = (_(" "))
+				self.parent['footnote'].text = ("")
 
 class Setup(ConfigListScreen, Screen):
 

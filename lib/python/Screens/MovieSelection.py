@@ -371,7 +371,6 @@ class MovieContextMenu(Screen, ProtectedScreen):
 		self["actions"] = ActionMap(["OkCancelActions", "ColorActions", "NumberActions", "MenuActions"],
 			{
 				"red": self.cancelClick,
-				"green": self.okbuttonClick,
 				"ok": self.okbuttonClick,
 				"cancel": self.cancelClick,
 				"green": self.do_showDeviceMounts,
@@ -390,7 +389,6 @@ class MovieContextMenu(Screen, ProtectedScreen):
 			})
 
 		self["key_red"] = StaticText(_("Cancel"))
-		self["key_green"] = StaticText(_("OK"))
 
 		def append_to_menu(menu, args, key=""):
 			menu.append(ChoiceEntryComponent(key, args))
