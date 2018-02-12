@@ -47,7 +47,7 @@ class TransponderInfo(Converter, object):
 				if "DVB-T" in transponderdata["system"]:
 					return "%s %s %s %s %s-%s" % (transponderdata["system"], transponderdata["channel"], transponderdata["frequency"], transponderdata["bandwidth"], tsid, onid)
 				elif "DVB-C" in transponderdata["system"]:
-					return "%s %s-%s %s %s %s %s %s-%s" % (transponderdata["system"], transponderdata["frequency"], transponderdata["symbol_rate"], transponderdata["fec_inner"], tsid, onid, \
+					return "%s %s %s %s %s %s-%s" % (transponderdata["system"], transponderdata["frequency"], transponderdata["symbol_rate"], transponderdata["fec_inner"], tsid, onid, \
 						transponderdata["modulation"])
 				elif "ATSC" in transponderdata["system"]:
 					return "%s %s %s %s-%s" % (transponderdata["system"], transponderdata["frequency"], transponderdata["modulation"], tsid, onid)
