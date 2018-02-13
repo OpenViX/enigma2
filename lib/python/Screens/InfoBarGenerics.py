@@ -52,7 +52,6 @@ from boxbranding import getBrandOEM, getMachineBuild
 
 from time import time, localtime, strftime
 from bisect import insort
-from sys import maxint
 
 import os, cPickle
 
@@ -60,6 +59,9 @@ import os, cPickle
 from Screens.Menu import MainMenu, Menu, mdom
 from Screens.Setup import Setup
 import Screens.Standby
+
+# sys.maxint on 64bit (2**63-1) fails with OverflowError on eActionMap.bindAction use 32bit value (2**31-1)
+maxint = 2147483647
 
 def isStandardInfoBar(self):
 	return self.__class__.__name__ == "InfoBar"
