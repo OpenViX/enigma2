@@ -1030,7 +1030,12 @@ int ePicLoad::getData(ePtr<gPixmap> &result)
 		gRGB bg(m_conf.background);
 		if (m_filepara->bits == 8) {
 			background = surface->clut.findColor(bg);
-			if (bg != surface->clut.data[background] && surface->clut.colors < 256) {
+	// Greyscale PNGs (at least) arrive with no clut.data, and
+	// clut.colors = 0. So don't do the 8-bit rework on them...
+	// The clut.colors > 0 must come first!
+			if (surface->clut.colors > 0 &&
+			    bg != surface->clut.data[background] &&
+			    surface->clut.colors < 256) {
 				gRGB* newClut = new gRGB[surface->clut.colors + 1];
 				for (int c = 0; c < surface->clut.colors; c++) {
 					newClut[c] = surface->clut.data[c];
