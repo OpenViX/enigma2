@@ -29,35 +29,35 @@ class TransponderInfo(Converter, object):
 				ref = nref
 				info = eServiceCenter.getInstance().info(ref)
 			transponderraw = info.getInfoObject(ref, iServiceInformation.sTransponderData)
+			ref = ref.toString().replace("%3a",":")
 		else:
 			transponderraw = info.getInfoObject(iServiceInformation.sTransponderData)
+			ref = info.getInfoString(iServiceInformation.sServiceref)
 		if "InRootOnly" in self.type and not self.rootBouquet():
 			return ""
 		if "NoRoot" in self.type and self.rootBouquet():
 			return ""
 		if transponderraw:
 			transponderdata = ConvertToHumanReadable(transponderraw)
+			# retreive onid and tsid from service reference
+			[onid, tsid] = [int(x, 16) for x in ref.split(':')[4:6]]
 			if not transponderdata["system"]:
 				transponderdata["system"] = transponderraw.get("tuner_type", "None")
 			try:
 				if "DVB-T" in transponderdata["system"]:
-					return "%s %s %s %s" % (transponderdata["system"], transponderdata["channel"], transponderdata["frequency"], transponderdata["bandwidth"])
+					return "%s %s %s %s %s-%s" % (transponderdata["system"], transponderdata["channel"], transponderdata["frequency"], transponderdata["bandwidth"], tsid, onid)
 				elif "DVB-C" in transponderdata["system"]:
-					return "%s %s %s %s %s" % (transponderdata["system"], transponderdata["frequency"], transponderdata["symbol_rate"], transponderdata["fec_inner"], \
+					return "%s %s %s %s %s %s-%s" % (transponderdata["system"], transponderdata["frequency"], transponderdata["symbol_rate"], transponderdata["fec_inner"], tsid, onid, \
 						transponderdata["modulation"])
 				elif "ATSC" in transponderdata["system"]:
-					return "%s %s MHz %s" % (transponderdata["system"], transponderdata["frequency"], transponderdata["modulation"])
-				return "%s %s %s %s %s %s %s" % (transponderdata["system"], transponderdata["frequency"], transponderdata["polarization_abbreviation"], transponderdata["symbol_rate"], \
-					transponderdata["fec_inner"], transponderdata["modulation"], transponderdata["detailed_satpos" in self.type and "orbital_position" or "orb_pos"])
+					return "%s %s %s %s-%s" % (transponderdata["system"], transponderdata["frequency"], transponderdata["modulation"], tsid, onid)
+				return "%s %s %s %s %s %s %s-%s %s" % (transponderdata["system"], transponderdata["frequency"], transponderdata["polarization_abbreviation"], transponderdata["symbol_rate"], \
+ 					transponderdata["fec_inner"], transponderdata["modulation"], tsid, onid, transponderdata["detailed_satpos" in self.type and "orbital_position" or "orb_pos"])
 			except:
 				return ""
-		if ref:
-			result = ref.toString().replace("%3a",":")
-		else:
-			result = info.getInfoString(iServiceInformation.sServiceref)
-		if "://" in result:
-			return _("Stream") + " " + result.rsplit("://", 1)[1].split("/")[0]
-		return ""
+		if "://" in ref:
+			return _("Stream") + " " + ref.rsplit("://", 1)[1].split("/")[0]
+ 		return ""
 
 	text = property(getText)
 
@@ -71,4 +71,3 @@ class TransponderInfo(Converter, object):
 	def changed(self, what):
 		if what[0] != self.CHANGED_SPECIFIC or what[1] in (iPlayableService.evStart,):
 			Converter.changed(self, what)
-
