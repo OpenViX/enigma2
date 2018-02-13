@@ -548,11 +548,15 @@ class Wizard(Screen):
 # 				print "showing list,", self.currStep
 				for renderer in self.renderer:
 					rootrenderer = renderer
-					while renderer.source is not None:
-						if renderer.source is self["list"]:
-							print "[Wizard] setZPosition"
-							rootrenderer.instance.setZPosition(1)
-						renderer = renderer.source
+					try:
+						while renderer.source is not None:
+							if renderer.source is self["list"]:
+								print "[Wizard] setZPosition"
+								rootrenderer.instance.setZPosition(1)
+							renderer = renderer.source
+					except Exception as e:
+						print "[Wizard] crash", e.message, e.args
+						
 
 				#self["list"].instance.setZPosition(1)
 				self.list = []
