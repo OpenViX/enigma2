@@ -94,7 +94,7 @@ class ePicLoad: public eMainloop, public eThread, public sigc::trackable, public
 	void thread();
 	int startThread(int what, const char *file, int x, int y, bool async=true);
 	void thread_finished();
-	bool getExif(const char *filename, int Thumb=0);
+	bool getExif(const char *filename, int fileType, int Thumb=0);
 	int getFileType(const char * file);
 public:
 	void waitFinished();

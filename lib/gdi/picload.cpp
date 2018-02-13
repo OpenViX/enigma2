@@ -658,7 +658,7 @@ void ePicLoad::decodePic()
 {
 	eDebug("[ePicLoad] decode picture... %s", m_filepara->file);
 
-	getExif(m_filepara->file);
+	getExif(m_filepara->file, m_filepara->id);
 	switch(m_filepara->id)
 	{
 		case F_PNG:	png_load(m_filepara, m_conf.background);
@@ -681,7 +681,7 @@ void ePicLoad::decodeThumb()
 	std::string cachefile = "";
 	std::string cachedir = "/.Thumbnails";
 
-	getExif(m_filepara->file, 1);
+	getExif(m_filepara->file, m_filepara->id, 1);
 	if (m_exif && m_exif->m_exifinfo->IsExif)
 	{
 		if (m_exif->m_exifinfo->Thumnailstate == 2)
@@ -885,7 +885,10 @@ PyObject *ePicLoad::getInfo(const char *filename)
 {
 	ePyObject list;
 
-	getExif(filename);
+// OpenPLI comment
+// FIXME : m_filepara destroyed by getData. Need refactor this but
+// plugins rely in it :(
+	getExif(filename, m_filepara ? m_filepara->id : -1);
 	if(m_exif && m_exif->m_exifinfo->IsExif)
 	{
 		char tmp[256];
@@ -933,11 +936,13 @@ PyObject *ePicLoad::getInfo(const char *filename)
 	return list ? (PyObject*)list : (PyObject*)PyList_New(0);
 }
 
-bool ePicLoad::getExif(const char *filename, int Thumb)
+bool ePicLoad::getExif(const char *filename, int fileType, int Thumb)
 {
 	if (!m_exif) {
 		m_exif = new Cexif;
-		return m_exif->DecodeExif(filename, Thumb);
+		if (fileType < 0)
+			fileType = getFileType(filename);
+		return m_exif->DecodeExif(filename, Thumb, fileType);
 	}
 	return true;
 }
