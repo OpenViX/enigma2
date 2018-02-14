@@ -2372,18 +2372,19 @@ class MovieSelectionFileManagerList(Screen):
 				"cancel": self.exit,
 				"ok": self.list.toggleSelection,
 				"red": self.exit,
+				"green": self.list.toggleSelection,
 				"yellow": self.sortList,
 				"blue": self.list.toggleAllSelection,
 				"contextMenu": self.selectAction,
 			})
 
 		self["key_red"] = StaticText(_("Cancel"))
-		self["key_green"] = StaticText()
+		self["key_green"] = StaticText(_("Select"))
 		self["key_yellow"] = StaticText(_("Sort"))
 		self["key_blue"] = StaticText(_("Inversion"))
 
 		self.sort = 0
-		self["text"].setText(_("Select files with 'OK' and then use 'Menu' for select operation"))
+		self["text"].setText(_("Select files with 'OK' or 'Green' then use 'Menu' to select operation"))
 
 	def changePng(self):
 		from Tools.Directories import SCOPE_CURRENT_SKIN
@@ -2412,8 +2413,6 @@ class MovieSelectionFileManagerList(Screen):
 		menu.append((_("Copy to..."),5))
 		menu.append((_("Move to..."),6))
 		buttons += ["5","6"]
-#		menu.append((_("Delete"),8))
-#		buttons += ["8"]
 		text = _("Select operation:")
 		self.session.openWithCallback(self.menuCallback, ChoiceBox, title=text, list=menu, keys=buttons)
 
@@ -2431,6 +2430,7 @@ class MovieSelectionFileManagerList(Screen):
 
 	def copySelected(self):
 		self.selectMovieLocation(title=_("Select destination for copy selected files..."), callback=self.gotCopyMovieDest)
+
 	def gotCopyMovieDest(self, choice):
 		if not choice:
 			return
@@ -2453,6 +2453,7 @@ class MovieSelectionFileManagerList(Screen):
 
 	def moveSelected(self):
 		self.selectMovieLocation(title=_("Select destination for move selected files..."), callback=self.gotMoveMovieDest)
+
 	def gotMoveMovieDest(self, choice):
 		if not choice:
 			return
