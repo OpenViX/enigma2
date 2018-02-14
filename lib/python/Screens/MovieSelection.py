@@ -378,7 +378,7 @@ class MovieContextMenu(Screen, ProtectedScreen):
 				"yellow": self.do_showNetworkMounts,
 				"blue": self.do_selectSortby,
 				"menu": self.do_configure,
-				"0": boundFunction(self.close, csel.showFileManager),
+				"0": self.do_showFileManager,
 				"1": self.do_addbookmark,
 				"2": self.do_createdir,
 				"3": self.do_delete,
@@ -480,7 +480,9 @@ class MovieContextMenu(Screen, ProtectedScreen):
 		self.close(self.csel.do_reset())
 	def cancelClick(self):
 		self.close(None)
-
+	def do_showFileManager(self):
+		self.close(self.csel.do_showFileManager())
+	
 class SelectionEventInfo:
 	def __init__(self):
 		self["Service"] = ServiceEvent()
