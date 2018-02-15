@@ -400,7 +400,7 @@ class MovieContextMenu(Screen, ProtectedScreen):
 		append_to_menu(menu, (_("Device mounts") + "...", csel.showDeviceMounts), key="green")
 		append_to_menu(menu, (_("Network mounts") + "...", csel.showNetworkMounts), key="yellow")
 		append_to_menu(menu, (_("Sort by") + "...", csel.selectSortby), key="blue")
-		append_to_menu(menu, (_("File manager"), csel.showFileManager), key="0")
+		append_to_menu(menu, (_("File manager") + "  ", csel.showFileManager), key="0")
 		if csel.exist_bookmark():
 			append_to_menu(menu, (_("Remove bookmark"), csel.do_addbookmark), key="1")
 		else:
@@ -481,7 +481,7 @@ class MovieContextMenu(Screen, ProtectedScreen):
 	def cancelClick(self):
 		self.close(None)
 	def do_showFileManager(self):
-		self.close(self.csel.do_showFileManager())
+		self.close(self.csel.showFileManager())
 	
 class SelectionEventInfo:
 	def __init__(self):
