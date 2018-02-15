@@ -400,7 +400,7 @@ class MovieContextMenu(Screen, ProtectedScreen):
 		append_to_menu(menu, (_("Device mounts") + "...", csel.showDeviceMounts), key="green")
 		append_to_menu(menu, (_("Network mounts") + "...", csel.showNetworkMounts), key="yellow")
 		append_to_menu(menu, (_("Sort by") + "...", csel.selectSortby), key="blue")
-		append_to_menu(menu, (_("File manager") + "  ", csel.showFileManager), key="0")
+		append_to_menu(menu, (_("File manager") + "   ", csel.showFileManager), key="0")
 		if csel.exist_bookmark():
 			append_to_menu(menu, (_("Remove bookmark"), csel.do_addbookmark), key="1")
 		else:
@@ -776,7 +776,8 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 				'sortdefault': _("Sort by default"),
 				'preview': _("Preview"),
 				'movieoff': _("On end of movie"),
-				'movieoff_menu': _("On end of movie (as menu)")
+				'movieoff_menu': _("On end of movie (as menu)"),
+				'showFileManager': _("File manager")
 			}
 			for p in plugins.getPlugins(PluginDescriptor.WHERE_MOVIELIST):
 				userDefinedActions['@' + p.name] = p.description
@@ -1486,6 +1487,9 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			self["list"].setFontsize()
 			self.reloadList()
 			self.updateDescription()
+
+	def do_showFileManager(self):
+		self.session.open(MovieSelectionFileManagerList, self["list"])
 
 	def can_sortby(self, item):
 		return True
