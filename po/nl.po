@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-09 13:54+0000\n"
-"PO-Revision-Date: 2018-02-09 16:15+0100\n"
+"POT-Creation-Date: 2018-02-13 08:11+0000\n"
+"PO-Revision-Date: 2018-02-15 07:18+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -10596,6 +10596,10 @@ msgstr "zondag"
 
 msgid "Support at"
 msgstr "Support "
+
+#, python-format
+msgid "Support at %s"
+msgstr "Support om %s"
 
 msgid "Suriname"
 msgstr "Suriname"
