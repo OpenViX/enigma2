@@ -792,7 +792,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			config.movielist.btn_yellow = ConfigSelection(default='bookmarks', choices=userDefinedActions)
 			config.movielist.btn_blue = ConfigSelection(default='sortby', choices=userDefinedActions)
 			config.movielist.btn_redlong = ConfigSelection(default='rename', choices=userDefinedActions)
-			config.movielist.btn_greenlong = ConfigSelection(default='copy', choices=userDefinedActions)
+			config.movielist.btn_greenlong = ConfigSelection(default='showFileManager', choices=userDefinedActions)
 			config.movielist.btn_yellowlong = ConfigSelection(default='tags', choices=userDefinedActions)
 			config.movielist.btn_bluelong = ConfigSelection(default='sortdefault', choices=userDefinedActions)
 			config.movielist.btn_radio = ConfigSelection(default='tags', choices=userDefinedActions)
