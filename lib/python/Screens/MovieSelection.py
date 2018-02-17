@@ -2385,7 +2385,7 @@ class MovieSelectionFileManagerList(Screen):
 			})
 
 		self["key_red"] = StaticText(_("Cancel"))
-		self["key_green"] = StaticText(_("OK"))
+		self["key_green"] = StaticText(_("Do"))
 		self["key_yellow"] = StaticText(_("Sort"))
 		self["key_blue"] = StaticText(_("Inversion"))
 
