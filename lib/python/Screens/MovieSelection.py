@@ -2370,27 +2370,27 @@ class MovieSelectionFileManagerList(Screen):
 						index += 1
 		self.list = data
 
-		self["files"] = self.list
-		self["text"] = Label()
+		self["config"] = self.list
+		self["description"] = Label()
 
 		self["actions"] = ActionMap(["OkCancelActions", "ColorActions", "MovieSelectionActions"],
 			{
 				"cancel": self.exit,
 				"ok": self.list.toggleSelection,
 				"red": self.exit,
-				"green": self.list.toggleSelection,
+				"green": self.selectAction,
 				"yellow": self.sortList,
 				"blue": self.list.toggleAllSelection,
 				"contextMenu": self.selectAction,
 			})
 
 		self["key_red"] = StaticText(_("Cancel"))
-		self["key_green"] = StaticText(_("Select"))
+		self["key_green"] = StaticText(_("OK"))
 		self["key_yellow"] = StaticText(_("Sort"))
 		self["key_blue"] = StaticText(_("Inversion"))
 
 		self.sort = 0
-		self["text"].setText(_("Select files with 'OK' or 'Green' then use 'Menu' to select operation"))
+		self["description"].setText(_("Select files with 'OK' and then use 'Green' to choose desired operation"))
 
 	def changePng(self):
 		from Tools.Directories import SCOPE_CURRENT_SKIN
@@ -2451,7 +2451,7 @@ class MovieSelectionFileManagerList(Screen):
 			except Exception, e:
 				self.session.open(MessageBox, str(e), MessageBox.TYPE_ERROR)
 		else:
-			item = self["files"].getCurrent()[0]
+			item = self["config"].getCurrent()[0]
 			try:
 				copyServiceFiles(item[1], dest, item[0])
 			except Exception, e:
@@ -2475,7 +2475,7 @@ class MovieSelectionFileManagerList(Screen):
 			except Exception, e:
 				self.session.open(MessageBox, str(e), MessageBox.TYPE_ERROR)
 		else:
-			item = self["files"].getCurrent()[0]
+			item = self["config"].getCurrent()[0]
 			try:
 				moveServiceFiles(item[1], dest, item[0])
 				self.list.removeSelection(item)
