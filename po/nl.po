@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-09 13:54+0000\n"
-"PO-Revision-Date: 2018-02-09 16:15+0100\n"
+"POT-Creation-Date: 2018-02-16 07:58+0000\n"
+"PO-Revision-Date: 2018-02-16 15:58+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -3258,6 +3258,9 @@ msgstr "Kopieer"
 msgid "Copy to bouquets"
 msgstr "Kopieer naar favorietenlijsten"
 
+msgid "Copy to..."
+msgstr "Kopieer naar"
+
 msgid "Copying files"
 msgstr "Kopieert bestanden"
 
@@ -4881,6 +4884,9 @@ msgstr "Fiji"
 msgid "File appears to be busy.\n"
 msgstr "Bestand lijkt in gebruik te zijn.\n"
 
+msgid "File manager"
+msgstr "Bestandsbeheerder"
+
 msgid ""
 "File oscam.conf not found.\n"
 "Please enter username/password manually."
@@ -6187,6 +6193,9 @@ msgstr "Maak lijst van EPG functies..."
 msgid "List available networks"
 msgstr "Lijst met beschikbare netwerken"
 
+msgid "List of files"
+msgstr "Lijst met bestanden"
+
 msgid "List of storage devices"
 msgstr "Lijst van opslagmedia"
 
@@ -6638,6 +6647,9 @@ msgstr "Ga naar begin van de lijst"
 
 msgid "Move to position X"
 msgstr "Naar positie X draaien"
+
+msgid "Move to..."
+msgstr "Draai naar..."
 
 msgid "Move up a page"
 msgstr "Ga een pagina omhoog"
@@ -9170,11 +9182,20 @@ msgstr "Selecteer een zender voor opname"
 msgid "Select copy destination for:"
 msgstr "Selecteer kopiëer bestemming voor:"
 
+msgid "Select destination for copy selected files..."
+msgstr "Selecteer bestemming voor de te kopiëren bestanden..."
+
+msgid "Select destination for move selected files..."
+msgstr "Selecteer bestemming voor de te verplaatsen bestanden..."
+
 msgid "Select destination for:"
 msgstr "Selecteer bestemming voor:"
 
 msgid "Select files for backup."
 msgstr "Selecteer bestanden voor back-up."
+
+msgid "Select files with 'OK' or 'Green' then use 'Menu' to select operation"
+msgstr "Selecteer bestanden met 'OK' of 'Groen'; gebruik daarna 'Menu' om te bepalen wat u wilt doen."
 
 msgid "Select files/folders to backup"
 msgstr "Kies bestanden/mappen voor de back-up"
@@ -9211,6 +9232,9 @@ msgstr "Selecteer menu-item"
 
 msgid "Select movie"
 msgstr "Kies een opname"
+
+msgid "Select operation:"
+msgstr "Kies bewerking"
 
 msgid "Select provider to add..."
 msgstr "Selecteer provider om toe te voegen..."
@@ -10597,6 +10621,10 @@ msgstr "zondag"
 msgid "Support at"
 msgstr "Support "
 
+#, python-format
+msgid "Support at %s"
+msgstr "Support om %s"
+
 msgid "Suriname"
 msgstr "Suriname"
 
@@ -11232,8 +11260,8 @@ msgstr "Hiermee stelt u in of de optie in de extenxielijst wordt getoond."
 msgid "This option moves the PVR status from the separate window into the Movie Player infobar."
 msgstr "Deze optie verplaatst de PVR status (gestopt etc.) van een apart venstertje naar de informatiebalk (wordt niet door alle skins ondersteund)."
 
-msgid "This option set the level of surpression of musquito noise (Musquito Noise is random aliasing as a result of strong compression). Obviously this goes at the cost of picture details."
-msgstr "Met deze optie bepaalt u de mate van onderdrukking van 'musquito ruis' ('musquito ruis' is willekeuring aliasing als resultaat van sterke compressie). Uiteraard gaat dit ten koste van beelddetails."
+msgid "This option set the level of surpression of mosquito noise (Mosquito Noise is random aliasing as a result of strong compression). Obviously this goes at the cost of picture details."
+msgstr "Met deze optie bepaalt u de mate van onderdrukking van 'mosquito ruis' ('mosquito ruis' is willekeuring aliasing als resultaat van sterke compressie). Uiteraard gaat dit ten koste van beelddetails."
 
 msgid "This option sets the picture brightness."
 msgstr "Hier stelt u de beeldhelderheid in."
