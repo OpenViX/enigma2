@@ -34,7 +34,7 @@ class ClientModeScreen(ConfigListScreen, Screen):
 			title = screentitle
 			self["menu_path_compressed"] = StaticText("")
 		Screen.setTitle(self, title)
-		self.skinName = ["ClientModeScreen", "Setup"]
+		self.skinName = "Setup"
 		self.initial_state = config.clientmode.enabled.value
 		self.onChangedEntry = []
 		self.session = session
