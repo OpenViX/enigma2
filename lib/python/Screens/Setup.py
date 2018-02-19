@@ -76,20 +76,13 @@ class Setup(ConfigListScreen, Screen):
 
 	ALLOW_SUSPEND = True
 
-	def removeNotifier(self):
-		config.usage.setup_level.notifiers.remove(self.levelChanged)
-
-	def levelChanged(self, configElement):
-		list = []
-		self.refill(list)
-		self["config"].setList(list)
-
-	def refill(self, list):
+	def refill(self):
+		self.list = []
 		xmldata = setupdom(self.plugin).getroot()
 		for x in xmldata.findall("setup"):
 			if x.get("key") != self.setup:
 				continue
-			self.addItems(list, x)
+			self.addItems(x)
 			if config.usage.show_menupath.value in ('large', 'small') and x.get("titleshort", "").encode("UTF-8") != "":
 				self.setup_title = x.get("titleshort", "").encode("UTF-8")
 			else:
@@ -108,15 +101,15 @@ class Setup(ConfigListScreen, Screen):
 		self["VKeyIcon"] = Boolean(False)
 		self.onChangedEntry = [ ]
 		self.item = None
+		self.list = []
 		self.setup = setup
 		self.plugin = plugin
 		self.PluginLanguageDomain = PluginLanguageDomain
 		self.menu_path = menu_path
 		list = []
 
-		self.refill(list)
-
-		ConfigListScreen.__init__(self, list, session = session, on_change = self.changedEntry)
+		self.refill()
+		ConfigListScreen.__init__(self, self.list, session = session, on_change = self.changedEntry)
 		self.createSetup()
 
 		#check for list.entries > 0 else self.close
@@ -178,30 +171,26 @@ class Setup(ConfigListScreen, Screen):
 		except:
 			pass
 
-	def addItems(self, list, parentNode):
+	def addItems(self, parentNode):
 		for x in parentNode:
 			if not x.tag:
 				continue
 			if x.tag == 'item':
 				item_level = int(x.get("level", 0))
 
-				if not self.levelChanged in config.usage.setup_level.notifiers:
-					config.usage.setup_level.notifiers.append(self.levelChanged)
-					self.onClose.append(self.removeNotifier)
-
 				if item_level > config.usage.setup_level.index:
 					continue
 
 				requires = x.get("requires")
-				if requires and requires.startswith('config.'):
-					item = eval(requires or "")
-					if item.value and not item.value == "0":
-						SystemInfo[requires] = True
-					else:
-						SystemInfo[requires] = False
-
-				if requires and not SystemInfo.get(requires, False):
-					continue
+				if requires:
+					if requires[0] == '!':
+						if SystemInfo.get(requires[1:], False):
+							continue
+					elif not SystemInfo.get(requires, False):
+						continue
+				configCondition = x.get("configcondition")
+				if configCondition and not eval(configCondition + ".value"):
+ 					continue
 
 				if self.PluginLanguageDomain:
 					item_text = dgettext(self.PluginLanguageDomain, x.get("text", "??").encode("UTF-8"))
@@ -220,7 +209,11 @@ class Setup(ConfigListScreen, Screen):
 				# the first b is the item itself, ignored by the configList.
 				# the second one is converted to string.
 				if not isinstance(item, ConfigNothing):
-					list.append((item_text, item, item_description))
+					self.list.append((item_text, item, item_description))
+
+	def changedEntry(self):
+		self.refill()
+		self["config"].setList(self.list)
 
 def getSetupTitle(id):
 	xmldata = setupdom().getroot()
