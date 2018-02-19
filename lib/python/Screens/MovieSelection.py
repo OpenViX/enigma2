@@ -369,26 +369,19 @@ class MovieContextMenu(Screen, ProtectedScreen):
 		self.csel = csel
 		ProtectedScreen.__init__(self)
 
-		self["actions"] = ActionMap(["OkCancelActions", "ColorActions", "NumberActions", "MenuActions"],
-			{
-				"red": self.cancelClick,
-				"ok": self.okbuttonClick,
-				"cancel": self.cancelClick,
-				"green": self.do_showDeviceMounts,
-				"yellow": self.do_showNetworkMounts,
-				"blue": self.do_selectSortby,
-				"menu": self.do_configure,
-				"0": self.do_showFileManager,
-				"1": self.do_addbookmark,
-				"2": self.do_createdir,
-				"3": self.do_delete,
-				"4": self.do_move,
-				"5": self.do_copy,
-				"6": self.do_rename,
-				"7": self.do_reset,
-				"8": self.do_decode,
-				"9": self.do_unhideParentalServices
-			})
+		m_actions = {
+ 			"red": self.cancelClick,
+			"ok": self.okbuttonClick,
+			"cancel": self.cancelClick,
+			"green": self.do_showDeviceMounts,
+			"yellow": self.do_showNetworkMounts,
+			"blue": self.do_selectSortby,
+			"menu": self.do_configure,
+			"0": self.do_showFileManager,
+			"1": self.do_addbookmark,
+			"2": self.do_createdir,
+			"3": self.do_delete,
+		}
 
 		self["key_red"] = StaticText(_("Cancel"))
 
@@ -402,9 +395,10 @@ class MovieContextMenu(Screen, ProtectedScreen):
 		append_to_menu(menu, (_("Sort by") + "...", csel.selectSortby), key="blue")
 		append_to_menu(menu, (_("File manager") + "   ", csel.showFileManager), key="0")
 		if csel.exist_bookmark():
-			append_to_menu(menu, (_("Remove bookmark"), csel.do_addbookmark), key="1")
+			btext=_("Remove bookmark")
 		else:
-			append_to_menu(menu, (_("Add bookmark"), csel.do_addbookmark), key="1")
+			btext=("Add bookmark")
+		append_to_menu(menu, (btext, csel.do_addbookmark), key="1")
 		append_to_menu(menu, (_("Create directory"), csel.do_createdir), key="2")
 
 		if service:
@@ -415,23 +409,30 @@ class MovieContextMenu(Screen, ProtectedScreen):
 				append_to_menu(menu, (_("Move"), csel.do_move), key="4")
 				append_to_menu(menu, (_("Copy"), csel.do_copy), key="5")
 				append_to_menu(menu, (_("Rename"), csel.do_rename), key="6")
+				m_actions["4"] = self.do_move
+				m_actions["5"] = self.do_copy
+				m_actions["6"] = self.do_rename
 				if not (service.flags & eServiceReference.mustDescent):
 					if self.isResetable():
 						append_to_menu(menu, (_("Reset playback position"), csel.do_reset), key="7")
+						m_actions["7"] = self.do_reset
 					if service.getPath().endswith('.ts'):
 						append_to_menu(menu, (_("Start offline decode"), csel.do_decode), key="8")
+						m_actions["8"] = self.do_decode
 				elif BlurayPlayer is None and csel.isBlurayFolderAndFile(service):
 					append_to_menu(menu, (_("Auto play blu-ray file"), csel.playBlurayFile))
 				if config.ParentalControl.hideBlacklist.value and config.ParentalControl.storeservicepin.value != "never":
 					from Components.ParentalControl import parentalControl
 					if not parentalControl.sessionPinCached:
 						append_to_menu(menu, (_("Unhide parental control services"), csel.unhideParentalServices), key="9")
+						m_actions["9"] = self.do_unhideParentalServices
 				# Plugins expect a valid selection, so only include them if we selected a non-dir
 				if not(service.flags & eServiceReference.mustDescent):
 					for p in plugins.getPlugins(PluginDescriptor.WHERE_MOVIELIST):
 						append_to_menu( menu, (p.description, boundFunction(p, session, service)), key="bullet")
 
 		self["config"] = ChoiceList(menu)
+		self["actions"] = ActionMap(["OkCancelActions", "ColorActions", "NumberActions", "MenuActions"], m_actions)
 
 
 	def isProtected(self):
