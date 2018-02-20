@@ -74,7 +74,6 @@ l_moviesort = [
 	(str(MovieList.SORT_ALPHANUMERIC_REVERSE), _("alphabetic reverse"), 'Z-A'),
 	(str(MovieList.SORT_ALPHAREV_DATE_NEWEST_FIRST), _("alpharev then newest"),  'Z1 A2 A1')]
 
-#GML:1
 # 4th item is the textual value set in UsageConfig.py
 l_trashsort = [
 	(str(MovieList.TRASHSORT_SHOWRECORD), _("delete time - show record time (Trash ONLY)"), '03/02/01', "show record time"),
@@ -181,6 +180,32 @@ def moveServiceFiles(serviceref, dest, name=None, allowCopy=True):
 		# rethrow exception
 		raise
 
+# dest is not used here, but this needs to have the same calling
+# sequence as moveServiceFiles()
+# allowCopy isn't even used in moveServiceFiles, but....
+#
+def deleteServiceFiles(serviceref, dest, name=None, allowCopy=True):
+
+# Send a dummy_pathname to createMoveList - we just want the list...
+#
+	moveList = createMoveList(serviceref, "dummy_pathname")
+
+# This list is pairs of from/to names. We only want the froms.
+# And Tools.CopyFiles.deleteFiles() is a bit of a misnomer, as it only
+# expects to be given one pathname to delete, and that has to be a
+# directory!  >>Sigh<<
+#
+	for x in moveList:
+		f2delete = x[0]
+		try:
+			# print "[MovieSelection] Deleting in background..."
+			from enigma import eBackgroundFileEraser
+			eBackgroundFileEraser.getInstance().erase(f2delete)
+		except Exception, e:
+			print "[MovieSelection] Failed delete:", e
+			# rethrow exception
+			raise
+
 def copyServiceFiles(serviceref, dest, name=None):
 	# current should be 'ref' type, dest a simple path string
 	moveList = createMoveList(serviceref, dest)
@@ -239,8 +264,6 @@ class MovieBrowserConfiguration(ConfigListScreen,Screen):
 		self.cfg = cfg
 		cfg.moviesort = ConfigSelection(default=str(config.movielist.moviesort.value), choices = l_moviesort)
 		cfg.description = ConfigYesNo(default=(config.movielist.description.value != MovieList.HIDE_DESCRIPTION))
-#GML:2 - movielist_trashcan_days
-#GML:1 - trashsort_deltime
 		configList = [getConfigListEntry(_("Use trash can in movie list"), config.usage.movielist_trashcan, _("When enabled, deleted recordings are moved to the trash can, instead of being deleted immediately.")),
 					  getConfigListEntry(_("Remove items from trash can after (days)"), config.usage.movielist_trashcan_days, _("Configure the number of days after which items are automatically removed from the trash can.\nA setting of 0 disables this.")),
 					  getConfigListEntry(_("Clean network trash cans"), config.usage.movielist_trashcan_network_clean, _("When enabled, network trash cans are probed for cleaning.")),
@@ -1362,7 +1385,6 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			action()
 
 	def saveLocalSettings(self):
-#GML:4
 		if not config.movielist.settings_per_directory.value:
 			return
 		try:
@@ -1425,7 +1447,6 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		return needUpdate
 
 	def sortBy(self, newType):
-#GML:1
 		print '[MovieSelection] SORTBY:',newType
 		if newType < MovieList.TRASHSORT_SHOWRECORD:
 			self.settings["moviesort"] = newType
@@ -1507,7 +1528,6 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 				used = index
 			menu.append((_(x[1]), x[0], "%d" % index))
 			index += 1
-#GML:1
 		if MovieList.InTrashFolder:
 			for x in l_trashsort:
 				if x[3] == config.usage.trashsort_deltime.value:
@@ -1522,7 +1542,6 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			index = MovieList.SORT_ALPHANUMERIC
 		elif index == MovieList.SORT_ALPHAREV_DATE_NEWEST_FIRST:
 			index = MovieList.SORT_ALPHANUMERIC_REVERSE
-#GML:1
 		elif (index == MovieList.TRASHSORT_SHOWRECORD) or (index == MovieList.TRASHSORT_SHOWDELETE):
 			index = MovieList.SORT_RECORDED
 		return index - 1
@@ -2344,6 +2363,14 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 
 playlist = []
 
+# There seems to be no way to pass information on to the callback 
+# function of openWithCallback. So given that we will only ever have one
+# active at once well stuff it into a static, global location...
+#
+msfml_data = None
+msfml_path = None
+msfml_really_remove = False
+
 class MovieSelectionFileManagerList(Screen):
 	def __init__(self, session, list):
 		Screen.__init__(self, session)
@@ -2388,7 +2415,7 @@ class MovieSelectionFileManagerList(Screen):
 		self["key_red"] = StaticText(_("Cancel"))
 		self["key_green"] = StaticText(_("Do"))
 		self["key_yellow"] = StaticText(_("Sort"))
-		self["key_blue"] = StaticText(_("Inversion"))
+		self["key_blue"] = StaticText(_("Invert"))
 
 		self.sort = 0
 		self["description"].setText(_("Select files with 'OK' and then use 'Green' to choose desired operation"))
@@ -2415,25 +2442,60 @@ class MovieSelectionFileManagerList(Screen):
 			self.sort = 0
 
 	def selectAction(self):
-		menu = []
-		buttons = []
-		menu.append((_("Copy to..."),5))
-		menu.append((_("Move to..."),6))
-		buttons += ["5","6"]
+		menu = [(_("Delete"), 3),
+		        (_("Copy to..."), 5),
+		        (_("Move to..."), 6),]
+		buttons = ["3", "5", "6"]
 		text = _("Select operation:")
 		self.session.openWithCallback(self.menuCallback, ChoiceBox, title=text, list=menu, keys=buttons)
 
 	def menuCallback(self, choice):
 		if choice is None:
 			return
-		if choice[1] == 5:
+		if choice[1] == 3:
+			self.deleteSelected()
+		elif choice[1] == 5:
 			self.copySelected()
 		elif choice[1] == 6:
 			self.moveSelected()
-		elif choice[1] == 8:
-			return
 		else:
 			return
+
+	def deleteSelected(self):
+		global msfml_data, msfml_path, msfml_really_remove
+		msfml_data = self.list.getSelectionsList()
+		if len(msfml_data) == 0:
+			return
+		msfml_path = os.path.realpath(msfml_data[0][1].getPath())   # All are in the same location
+		if '.Trash' in msfml_path:                                  # Already in Trash...
+			query = _("Do you really want to permanently remove from the trash can ?")
+			msfml_really_remove = True
+		elif config.usage.movielist_trashcan.value:                 # Can move to Trash...
+			query = _("Do you really want to move to the trash can ?")
+			msfml_really_remove = False
+		else:
+                        query = _("Do you really want to delete ?")
+			msfml_really_remove = True
+		mbox=self.session.openWithCallback(self.doDeleteSelected, MessageBox, query);
+
+	def doDeleteSelected(self, confirmed):
+		global msfml_data, msfml_path, msfml_really_remove
+		if not confirmed:
+			return
+		try:
+			trash = Tools.Trashcan.createTrashFolder(msfml_path)
+			if msfml_really_remove: # Really delete everything....
+				func_call = deleteServiceFiles
+				func_text = "deleteServiceFiles"
+			else:                   # Just move to .Trash
+				func_call = moveServiceFiles
+				func_text = "moveServiceFiles"
+			for item in msfml_data:       # item ... (name, item, index, False)
+				func_call(item[1], trash, item[0])
+				self.list.removeSelection(item)
+				self.mainList.removeService(item[1])
+		except Exception, e:
+			self.session.open(MessageBox, str(e), MessageBox.TYPE_ERROR)
 
 	def copySelected(self):
 		self.selectMovieLocation(title=_("Select destination for copy selected files..."), callback=self.gotCopyMovieDest)
