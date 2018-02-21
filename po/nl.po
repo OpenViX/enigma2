@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-02-20 20:02+0000\n"
-"PO-Revision-Date: 2018-02-21 07:37+0100\n"
+"PO-Revision-Date: 2018-02-21 07:50+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -2453,7 +2453,7 @@ msgid "Cancelled upon user request"
 msgstr "Geannuleerd door de gebruiker"
 
 msgid "Cannot delete file"
-msgstr "Kan bestand niet wissen"
+msgstr "Kan bestand niet verwijderen"
 
 msgid "Cannot determine"
 msgstr "Kan niet beslissen"
@@ -2752,19 +2752,19 @@ msgid "Cleaning Trashes"
 msgstr "Maakt prullenbakken leeg"
 
 msgid "Cleanup"
-msgstr "Opruimen"
+msgstr "Ruim op"
 
 msgid "Clear"
 msgstr "Wis"
 
 msgid "Clear before scan"
-msgstr "Vóór zoeken alle zenders wissen"
+msgstr "Vóór zoeken alle zenders verwijderen"
 
 msgid "Clear fixed"
 msgstr "Verwijder vaste"
 
 msgid "Clear log"
-msgstr "Log wissen"
+msgstr "Wis log"
 
 msgid "Clear playlist"
 msgstr "Afspeellijst leegmaken"
@@ -3752,7 +3752,7 @@ msgid "Delay:"
 msgstr "Vertraging:"
 
 msgid "Delete"
-msgstr "Verwijderen"
+msgstr "Verwijder"
 
 #, python-format
 msgid "Delete %s?"
@@ -3780,7 +3780,7 @@ msgid "Delete playlist entry"
 msgstr "Wis item in de afspeellijst"
 
 msgid "Delete saved playlist"
-msgstr "Opgeslagen afspeellijst wissen"
+msgstr "Opgeslagen afspeellijst verwijderen"
 
 msgid "Delete timer"
 msgstr "Verwijder timer"
@@ -3963,7 +3963,7 @@ msgstr "Wilt u echt %s verwijderen?"
 
 #, python-format
 msgid "Do you really want to delete %s?"
-msgstr "Wilt u %s echt wissen?"
+msgstr "Wilt u %s echt verwijderen?"
 
 msgid "Do you really want to delete ?"
 msgstr "Echt verwijderen?"
@@ -3998,7 +3998,7 @@ msgstr "Wilt u permanent verwijderen uit de prullenbak?"
 
 #, python-format
 msgid "Do you really want to remove directory %s from the disk?"
-msgstr "Weet u zeker dat u map %s van de harde schijf wilt wissen?"
+msgstr "Weet u zeker dat u map %s van de harde schijf wilt verwijderen?"
 
 #, python-format
 msgid "Do you really want to remove the plugin \"%s\"?"
@@ -4010,7 +4010,7 @@ msgstr "Wilt u de timer voor \"%s\" verwijderen?"
 
 #, python-format
 msgid "Do you really want to remove your bookmark of %s?"
-msgstr "Weet u zeker dat u het markeerpunt van %s wilt wissen?"
+msgstr "Weet u zeker dat u het markeerpunt van %s wilt verwijderen?"
 
 msgid "Do you want to add any additional information ?"
 msgstr "Wilt u informatie toevoegen?"
@@ -4035,8 +4035,8 @@ msgid ""
 "Do you want to delete all the selected files:\n"
 "(choose 'No' to only delete the currently selected file.)"
 msgstr ""
-"Wilt u alle geselecteerde bestanden wissen:\n"
-"(kies 'Nee' om aleen het nu geselecteerde bestand te wissen.)"
+"Wilt u alle geselecteerde bestanden verwijderen:\n"
+"(kies 'Nee' om alleen het nu geselecteerde bestand te verwijderen.)"
 
 msgid "Do you want to do a service scan?"
 msgstr "Wilt u nu zenders zoeken?"
@@ -8351,7 +8351,7 @@ msgid "Really close without saving settings?"
 msgstr "Afsluiten zonder opslaan?"
 
 msgid "Really delete completed timers?"
-msgstr "Wilt u de afgewerkte timers echt wissen?"
+msgstr "Wilt u de afgewerkte timers echt verwijderen?"
 
 msgid "Really exit the subservices quickzap?"
 msgstr "Subkanalen snelzap verlaten?"
@@ -11086,7 +11086,7 @@ msgid "This %s %s cannot decode %s streams!"
 msgstr "Deze %s %s kan %s streams niet decoderen!"
 
 msgid "This DVD RW medium is already formatted - reformatting will erase all content on the disc."
-msgstr "Dit DVD-RW medium is reeds geformatteerd; herformatteren zal alles wissen op deze disk."
+msgstr "Dit DVD-RW medium is reeds geformatteerd; herformatteren zal alles op deze disk verwijderen."
 
 msgid "This allows you change the font size relative to skin size, so 1 increases by 1 point size, and -1 decreases by 1 point size"
 msgstr "Hier stelt u de lettergrootte in t.o.v. de waarde die in de skin staat. Dus '1' vergroot die met 1 punt en '-1' verkleint die met 1 punt."
@@ -11325,7 +11325,7 @@ msgid ""
 "This will (re-)calculate all positions of your rotor and may remove previously memorised positions and fine-tuning!\n"
 "Are you sure?"
 msgstr ""
-"Dit zal alle posities herberekenen en zal alle opgeslagen posities wissen!\n"
+"Dit zal alle posities herberekenen en zal alle opgeslagen posities verwijderen!\n"
 "Weet u het zeker?"
 
 msgid "Three"
@@ -12785,7 +12785,7 @@ msgid "You can remove this plugin."
 msgstr "Deze plugin kunt u verwijderen."
 
 msgid "You cannot delete this!"
-msgstr "U kunt dit niet wissen!"
+msgstr "U kunt dit niet verwijderen!"
 
 msgid "You didn't select a channel to record from."
 msgstr "U heeft geen kanaal geselecteerd om op te nemen."
