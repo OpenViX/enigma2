@@ -2387,15 +2387,10 @@ class MovieSelectionFileManagerList(Screen):
 			if record:
 				item = record[0]
 				info = record[1]
-				path = item.getPath()
 				name = info and info.getName(item)
 				if not item.flags & eServiceReference.mustDescent:
-					ext = os.path.splitext(path)[1].lower()
-					if ext in IMAGE_EXTENSIONS:
-						continue
-					else:
-						data.addSelection(name, item, index, False)
-						index += 1
+					data.addSelection(name, item, index, False)
+					index += 1
 		self.list = data
 
 		self["config"] = self.list
@@ -2420,12 +2415,20 @@ class MovieSelectionFileManagerList(Screen):
 		self.sort = 0
 		self["description"].setText(_("Select files with 'OK' and then use 'Green' to choose desired operation"))
 
+		self["Service"] = ServiceEvent()
+		self["config"].onSelectionChanged.append(self.setService)
+		self.onShown.append(self.setService)
+
 	def changePng(self):
 		from Tools.Directories import SCOPE_CURRENT_SKIN
 		from Tools.LoadPixmap import LoadPixmap
 		if os.path.exists(resolveFilename(SCOPE_CURRENT_SKIN, "skin_default/icons/mark_select.png")):
 			self.original_selectionpng = Components.SelectionList.selectionpng
 			Components.SelectionList.selectionpng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_CURRENT_SKIN, "skin_default/icons/mark_select.png"))
+
+	def setService(self):
+		item = self["config"].getCurrent()[0]
+		self["Service"].newService(item[1])
 
 	def sortList(self):
 		if self.sort == 0:	# reversed
