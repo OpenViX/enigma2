@@ -2353,11 +2353,9 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		for index, item in enumerate(self["list"]):
 			if item:
 				item = item[0]
-
 				if not item.flags & eServiceReference.mustDescent:
 					ext = os.path.splitext(item.getPath())[1].lower()
 					if ext not in IMAGE_EXTENSIONS:
-
 						items.append(item)
 
 playlist = []
