@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-17 15:15+0000\n"
-"PO-Revision-Date: 2018-02-17 22:03+0100\n"
+"POT-Creation-Date: 2018-02-20 20:02+0000\n"
+"PO-Revision-Date: 2018-02-21 07:50+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -1791,7 +1791,7 @@ msgstr "Gereed om \"%s\" te installeren?"
 
 #, python-format
 msgid "Are you ready to remove \"%s\" ?"
-msgstr "Gereed om \"%s\" te verwijderen?"
+msgstr "Bent u gereed om \"%s\" te verwijderen?"
 
 msgid "Are you sure to remove this entry?"
 msgstr "Weet u zeker dat deze waarde verwijderd mag worden?"
@@ -2444,7 +2444,7 @@ msgid "Canada"
 msgstr "Canada"
 
 msgid "Cancel"
-msgstr "Annuleren"
+msgstr "Annuleer"
 
 msgid "Cancel save timeshift as movie"
 msgstr "Annuleer het opslaan van timeshift als opname"
@@ -2453,7 +2453,7 @@ msgid "Cancelled upon user request"
 msgstr "Geannuleerd door de gebruiker"
 
 msgid "Cannot delete file"
-msgstr "Kan bestand niet wissen"
+msgstr "Kan bestand niet verwijderen"
 
 msgid "Cannot determine"
 msgstr "Kan niet beslissen"
@@ -2752,19 +2752,19 @@ msgid "Cleaning Trashes"
 msgstr "Maakt prullenbakken leeg"
 
 msgid "Cleanup"
-msgstr "Opruimen"
+msgstr "Ruim op"
 
 msgid "Clear"
 msgstr "Wis"
 
 msgid "Clear before scan"
-msgstr "Vóór zoeken alle zenders wissen"
+msgstr "Vóór zoeken alle zenders verwijderen"
 
 msgid "Clear fixed"
 msgstr "Verwijder vaste"
 
 msgid "Clear log"
-msgstr "Log wissen"
+msgstr "Wis log"
 
 msgid "Clear playlist"
 msgstr "Afspeellijst leegmaken"
@@ -3752,7 +3752,7 @@ msgid "Delay:"
 msgstr "Vertraging:"
 
 msgid "Delete"
-msgstr "Verwijderen"
+msgstr "Verwijder"
 
 #, python-format
 msgid "Delete %s?"
@@ -3780,7 +3780,7 @@ msgid "Delete playlist entry"
 msgstr "Wis item in de afspeellijst"
 
 msgid "Delete saved playlist"
-msgstr "Opgeslagen afspeellijst wissen"
+msgstr "Opgeslagen afspeellijst verwijderen"
 
 msgid "Delete timer"
 msgstr "Verwijder timer"
@@ -3935,6 +3935,9 @@ msgstr "Toon EIT nu/straks programmagegevens in de infobar."
 msgid "Djibouti"
 msgstr "Djibouti"
 
+msgid "Do"
+msgstr "Voer uit"
+
 msgid "Do not center DVB subs on this service"
 msgstr "Centreer DVB-ondertitels niet voor dit kanaal."
 
@@ -3960,7 +3963,7 @@ msgstr "Wilt u echt %s verwijderen?"
 
 #, python-format
 msgid "Do you really want to delete %s?"
-msgstr "Wilt u %s echt wissen?"
+msgstr "Wilt u %s echt verwijderen?"
 
 msgid "Do you really want to delete ?"
 msgstr "Echt verwijderen?"
@@ -3988,14 +3991,14 @@ msgstr "Wilt u echt verplaatsen naar de prullenbak?"
 
 #, python-format
 msgid "Do you really want to permamently remove '%s' from the trash can ?"
-msgstr "Wilt u '%s' echt permanent verwijderen uit de prullenbak?"
+msgstr "Wilt u '%s' permanent verwijderen uit de prullenbak?"
 
 msgid "Do you really want to permanently remove from the trash can ?"
-msgstr "Wilt u echt permanent verwijderen uit de prullenbak?"
+msgstr "Wilt u permanent verwijderen uit de prullenbak?"
 
 #, python-format
 msgid "Do you really want to remove directory %s from the disk?"
-msgstr "Weet u zeker dat u map %s van de harde schijf wilt wissen?"
+msgstr "Weet u zeker dat u map %s van de harde schijf wilt verwijderen?"
 
 #, python-format
 msgid "Do you really want to remove the plugin \"%s\"?"
@@ -4003,11 +4006,11 @@ msgstr "Wilt u echt deze applicatie \"%s\" verwijderen?"
 
 #, python-format
 msgid "Do you really want to remove the timer for %s?"
-msgstr "Wilt u echt de timer voor \"%s\" verwijderen?"
+msgstr "Wilt u de timer voor \"%s\" verwijderen?"
 
 #, python-format
 msgid "Do you really want to remove your bookmark of %s?"
-msgstr "Weet u zeker dat u het markeerpunt van %s wilt wissen?"
+msgstr "Weet u zeker dat u het markeerpunt van %s wilt verwijderen?"
 
 msgid "Do you want to add any additional information ?"
 msgstr "Wilt u informatie toevoegen?"
@@ -4032,8 +4035,8 @@ msgid ""
 "Do you want to delete all the selected files:\n"
 "(choose 'No' to only delete the currently selected file.)"
 msgstr ""
-"Wilt u alle geselecteerde bestanden wissen:\n"
-"(kies 'Nee' om aleen het nu geselecteerde bestand te wissen.)"
+"Wilt u alle geselecteerde bestanden verwijderen:\n"
+"(kies 'Nee' om alleen het nu geselecteerde bestand te verwijderen.)"
 
 msgid "Do you want to do a service scan?"
 msgstr "Wilt u nu zenders zoeken?"
@@ -5644,7 +5647,7 @@ msgid ""
 "Skip cancelled."
 msgstr ""
 "Incorrect formaat voor overslaan waarde: '%s'\n"
-"Overslaan gecanceld."
+"Overslaan geannuleerd."
 
 msgid "Incorrect service type for PiP!"
 msgstr "Onjuist servicetype voor PiP!"
@@ -5878,7 +5881,7 @@ msgid "Inversion, Pilot & Roll-off"
 msgstr "Inversion, Pilot & Roll-off"
 
 msgid "Invert"
-msgstr "Omgekeerd"
+msgstr "Keer om"
 
 msgid "Ipkg"
 msgstr "IPKG"
@@ -8348,7 +8351,7 @@ msgid "Really close without saving settings?"
 msgstr "Afsluiten zonder opslaan?"
 
 msgid "Really delete completed timers?"
-msgstr "Wilt u de afgewerkte timers echt wissen?"
+msgstr "Wilt u de afgewerkte timers echt verwijderen?"
 
 msgid "Really exit the subservices quickzap?"
 msgstr "Subkanalen snelzap verlaten?"
@@ -8509,7 +8512,7 @@ msgid "Remote control type"
 msgstr "Type afstandsbediening"
 
 msgid "Remove"
-msgstr "Verwijderen"
+msgstr "Verwijder"
 
 msgid "Remove 'hide dotted line on the top for this service'"
 msgstr "Verwijder 'Verberg voor dit kanaal de gestippelde lijn bovenin'"
@@ -8533,7 +8536,7 @@ msgid "Remove all new found flags"
 msgstr "Verwijder alle 'nieuw gevonden'-vlaggen"
 
 msgid "Remove bookmark"
-msgstr "Verwijderen bladwijzer"
+msgstr "Verwijder bladwijzer"
 
 msgid "Remove bouquet from parental protection"
 msgstr "Verwijder kinderslot van favorietenlijst"
@@ -8563,7 +8566,7 @@ msgid "Remove new found flag"
 msgstr "Verwijder 'nieuw gevonden' vlag"
 
 msgid "Remove plugins"
-msgstr "Verwijderen"
+msgstr "Plugins verwijderen"
 
 msgid "Remove selected satellite"
 msgstr "Verwijder geselecteerde satellieten"
@@ -8578,7 +8581,7 @@ msgid "Remove title"
 msgstr "Titel verwijderen"
 
 msgid "Removing"
-msgstr "Verwijderen"
+msgstr "Verwijdert"
 
 msgid "Removing Service"
 msgstr "Verwijdert kanaal"
@@ -9195,7 +9198,7 @@ msgid "Select files for backup."
 msgstr "Selecteer bestanden voor back-up."
 
 msgid "Select files with 'OK' and then use 'Green' to choose desired operation"
-msgstr "Selecteer bestanden met 'OK'; gebruik daarna 'Groen' om te bepalen wat u wilt doen."
+msgstr "Selecteer bestanden met 'OK'; gebruik daarna 'Voer uit' om te bepalen wat u wilt doen."
 
 msgid "Select files/folders to backup"
 msgstr "Kies bestanden/mappen voor de back-up"
@@ -11083,7 +11086,7 @@ msgid "This %s %s cannot decode %s streams!"
 msgstr "Deze %s %s kan %s streams niet decoderen!"
 
 msgid "This DVD RW medium is already formatted - reformatting will erase all content on the disc."
-msgstr "Dit DVD-RW medium is reeds geformatteerd; herformatteren zal alles wissen op deze disk."
+msgstr "Dit DVD-RW medium is reeds geformatteerd; herformatteren zal alles op deze disk verwijderen."
 
 msgid "This allows you change the font size relative to skin size, so 1 increases by 1 point size, and -1 decreases by 1 point size"
 msgstr "Hier stelt u de lettergrootte in t.o.v. de waarde die in de skin staat. Dus '1' vergroot die met 1 punt en '-1' verkleint die met 1 punt."
@@ -11322,7 +11325,7 @@ msgid ""
 "This will (re-)calculate all positions of your rotor and may remove previously memorised positions and fine-tuning!\n"
 "Are you sure?"
 msgstr ""
-"Dit zal alle posities herberekenen en zal alle opgeslagen posities wissen!\n"
+"Dit zal alle posities herberekenen en zal alle opgeslagen posities verwijderen!\n"
 "Weet u het zeker?"
 
 msgid "Three"
@@ -12782,7 +12785,7 @@ msgid "You can remove this plugin."
 msgstr "Deze plugin kunt u verwijderen."
 
 msgid "You cannot delete this!"
-msgstr "U kunt dit niet wissen!"
+msgstr "U kunt dit niet verwijderen!"
 
 msgid "You didn't select a channel to record from."
 msgstr "U heeft geen kanaal geselecteerd om op te nemen."
@@ -13300,7 +13303,7 @@ msgid "decrease uphop by 1"
 msgstr "verlaag uphop met 1"
 
 msgid "delete"
-msgstr "verwijderen"
+msgstr "verwijder"
 
 msgid "delete cut"
 msgstr "wis snijpunt"
