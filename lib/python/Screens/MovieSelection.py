@@ -2353,12 +2353,11 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		for index, item in enumerate(self["list"]):
 			if item:
 				item = item[0]
-				path = item.getPath()
+
 				if not item.flags & eServiceReference.mustDescent:
-					ext = os.path.splitext(path)[1].lower()
-					if ext in IMAGE_EXTENSIONS:
-						continue
-					else:
+					ext = os.path.splitext(item.getPath())[1].lower()
+					if ext not in IMAGE_EXTENSIONS:
+
 						items.append(item)
 
 playlist = []
@@ -2381,17 +2380,16 @@ class MovieSelectionFileManagerList(Screen):
 		self.original_selectionpng = None
 		self.changePng()
 
-		data = SelectionList([])
+		self.list = SelectionList([])
 		index = 0
 		for i, record in enumerate(list):
 			if record:
 				item = record[0]
-				info = record[1]
-				name = info and info.getName(item)
 				if not item.flags & eServiceReference.mustDescent:
-					data.addSelection(name, item, index, False)
+					info = record[1]
+					name = info and info.getName(item)
+					self.list.addSelection(name, item, index, False)
 					index += 1
-		self.list = data
 
 		self["config"] = self.list
 		self["description"] = Label()
@@ -2418,6 +2416,10 @@ class MovieSelectionFileManagerList(Screen):
 		self["Service"] = ServiceEvent()
 		self["config"].onSelectionChanged.append(self.setService)
 		self.onShown.append(self.setService)
+
+	def setService(self):
+		item = self["config"].getCurrent()[0]
+		self["Service"].newService(item[1])
 
 	def changePng(self):
 		from Tools.Directories import SCOPE_CURRENT_SKIN
@@ -2531,23 +2533,16 @@ class MovieSelectionFileManagerList(Screen):
 			return
 		dest = os.path.normpath(choice)
 		data = self.list.getSelectionsList()
-		if len(data):
-			try:
-				for item in data:
-					# item ... (name, service, index, False)
-					moveServiceFiles(item[1], dest, item[0])
-					self.list.removeSelection(item)
-					self.mainList.removeService(item[1])
-			except Exception, e:
-				self.session.open(MessageBox, str(e), MessageBox.TYPE_ERROR)
-		else:
-			item = self["config"].getCurrent()[0]
-			try:
+		if len(data) == 0:
+			data = [self["config"].getCurrent()[0]]
+		try:
+			for item in data:
+				# item ... (name, service, index, False)
 				moveServiceFiles(item[1], dest, item[0])
 				self.list.removeSelection(item)
 				self.mainList.removeService(item[1])
-			except Exception, e:
-				self.session.open(MessageBox, str(e), MessageBox.TYPE_ERROR)
+		except Exception, e:
+			self.session.open(MessageBox, str(e), MessageBox.TYPE_ERROR)
 
 	def exit(self):
 		if self.original_selectionpng:
@@ -2559,7 +2554,7 @@ class MovieSelectionFileManagerList(Screen):
 		buildMovieLocationList(bookmarks)
 		self.onMovieSelected = callback
 		self.movieSelectTitle = title
-		self.session.openWithCallback(self.gotMovieLocation, ChoiceBox, title=title, list = bookmarks)
+		self.session.openWithCallback(self.gotMovieLocation, ChoiceBox, title=title, list=bookmarks)
 
 	def gotMovieLocation(self, choice):
 		if not choice:
