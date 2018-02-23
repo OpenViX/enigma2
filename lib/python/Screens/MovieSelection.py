@@ -2426,10 +2426,6 @@ class MovieSelectionFileManagerList(Screen):
 			self.original_selectionpng = Components.SelectionList.selectionpng
 			Components.SelectionList.selectionpng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_CURRENT_SKIN, "skin_default/icons/mark_select.png"))
 
-	def setService(self):
-		item = self["config"].getCurrent()[0]
-		self["Service"].newService(item[1])
-
 	def sortList(self):
 		if self.sort == 0:	# reversed
 			self.list.sort(sortType=2, flag=True)
