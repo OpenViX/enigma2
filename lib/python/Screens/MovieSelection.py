@@ -2416,8 +2416,9 @@ class MovieSelectionFileManagerList(Screen):
 		self.onShown.append(self.setService)
 
 	def setService(self):
-		item = self["config"].getCurrent()[0]
-		self["Service"].newService(item[1])
+		item = self["config"].getCurrent()
+		if item:
+			self["Service"].newService(item[0][1])
 
 	def changePng(self):
 		from Tools.Directories import SCOPE_CURRENT_SKIN
@@ -2497,7 +2498,8 @@ class MovieSelectionFileManagerList(Screen):
 			self.session.open(MessageBox, str(e), MessageBox.TYPE_ERROR)
 
 	def copySelected(self):
-		self.selectMovieLocation(title=_("Select destination for copy selected files..."), callback=self.gotCopyMovieDest)
+		if self["config"].getCurrent():
+			self.selectMovieLocation(title=_("Select destination for copy selected files..."), callback=self.gotCopyMovieDest)
 
 	def gotCopyMovieDest(self, choice):
 		if not choice:
@@ -2520,7 +2522,8 @@ class MovieSelectionFileManagerList(Screen):
 				self.session.open(MessageBox, str(e), MessageBox.TYPE_ERROR)
 
 	def moveSelected(self):
-		self.selectMovieLocation(title=_("Select destination for move selected files..."), callback=self.gotMoveMovieDest)
+		if self["config"].getCurrent():
+			self.selectMovieLocation(title=_("Select destination for move selected files..."), callback=self.gotMoveMovieDest)
 
 	def gotMoveMovieDest(self, choice):
 		if not choice:
