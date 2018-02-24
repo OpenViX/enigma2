@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-20 20:02+0000\n"
-"PO-Revision-Date: 2018-02-22 05:38+0100\n"
+"POT-Creation-Date: 2018-02-23 18:39+0000\n"
+"PO-Revision-Date: 2018-02-24 05:06+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -7183,17 +7183,13 @@ msgstr "Niets"
 
 msgid ""
 "Nothing to scan!\n"
-"Please setup your tuner settings before starting a service scan."
-msgstr ""
-"Niets te scannen!\n"
-"Vóór het zoeken dient uw tuner correct ingesteld te zijn."
-
-msgid ""
-"Nothing to scan!\n"
 "Please setup your tuner settings before you start a service scan."
 msgstr ""
 "Niets gevonden!\n"
 "Vóór het zoeken dient uw tuner correct ingesteld te zijn."
+
+msgid "Nothing to scan! Setup your tuner and try again."
+msgstr "Niets te scannen! Vóór het zoeken dient uw tuner correct ingesteld te zijn."
 
 msgid "Nothing to upgrade"
 msgstr "Geen upgrades beschikbaar"
@@ -8123,9 +8119,6 @@ msgstr "Druk op OK om de CAId aan/uit te zetten."
 
 msgid "Press OK to set the MAC address."
 msgstr "Druk op OK om MAC-adres in te stellen."
-
-msgid "Press OK to start the scan"
-msgstr "Druk OK om te scannen."
 
 msgid "Press OK to toggle the selection"
 msgstr "Druk op OK om de selectie te wisselen."
@@ -9237,7 +9230,7 @@ msgid "Select movie"
 msgstr "Kies een opname"
 
 msgid "Select operation:"
-msgstr "Kies bewerking: "
+msgstr "Kies bewerking:"
 
 msgid "Select provider to add..."
 msgstr "Selecteer provider om toe te voegen..."
@@ -12254,7 +12247,7 @@ msgid "Wait for ci..."
 msgstr "Wacht op CI..."
 
 msgid "Waiting"
-msgstr "Wacht..."
+msgstr "Aan het wachten"
 
 msgid "Waiting for mount"
 msgstr "Wacht op mount"
@@ -12701,13 +12694,13 @@ msgid "Yes, backup my settings!"
 msgstr "Ja, mijn instellingen opslaan!"
 
 msgid "Yes, but don't save timeshift as movie"
-msgstr "Ja, maar sla timeshift niet op als opname."
+msgstr "Ja, maar sla timeshift niet op als opname"
 
 msgid "Yes, but save timeshift as movie and continue recording"
 msgstr "Ja, maar bewaar timeshift als opname en ga door met opnemen"
 
 msgid "Yes, but save timeshift as movie and stop recording"
-msgstr "Ja, maar bewaar timeshift als opname en stop opname."
+msgstr "Ja, maar bewaar timeshift als opname en stop opname"
 
 msgid "Yes, delete this movie and return to the movie list"
 msgstr "Ja, verwijder deze opname en ga terug naar de opnamelijst"
@@ -12841,7 +12834,7 @@ msgid "You seem to be in timeshift!"
 msgstr "U zit in timeshift!"
 
 msgid "You seem to be in timeshift, Do you want to leave timeshift ?"
-msgstr "U bent in timeshift modus; stop timeshift eerst."
+msgstr "U bent in timeshift modus. Wilt u timeshift beëindigen?"
 
 #, python-format
 msgid "Your %s %s does not support PiP HD"
@@ -13264,7 +13257,7 @@ msgid "circular right"
 msgstr "circular rechts"
 
 msgid "clip overscan / letterbox borders"
-msgstr "Knip overscan/letterbox grenzen."
+msgstr "Knip overscan/letterbox grenzen"
 
 msgid "close share view"
 msgstr "sluit shareview"
@@ -13897,7 +13890,7 @@ msgid "remove bookmark"
 msgstr "Markeerpunt verwijderen"
 
 msgid "remove directory"
-msgstr "Map verwijderen"
+msgstr "verwijder map"
 
 msgid "remove this mark"
 msgstr "verwijder dit merkteken"
@@ -13906,13 +13899,13 @@ msgid "rename"
 msgstr "hernoem"
 
 msgid "repeat playlist"
-msgstr "Herhaal afspeellijst"
+msgstr "herhaal afspeellijst"
 
 msgid "repeated"
 msgstr "herhalen"
 
 msgid "restart GUI"
-msgstr "Gebruikersinterface opnieuw starten."
+msgstr "herstart gebruikersinterface"
 
 msgid "reverse by date"
 msgstr "omgekeerd chronologisch"
@@ -15257,6 +15250,9 @@ msgstr "zapte"
 
 #~ msgid "Prepare another USB stick for image flashing"
 #~ msgstr "Maak een andere USB-stick klaar voor het flashen"
+
+#~ msgid "Press OK to start the scan"
+#~ msgstr "Druk OK om te scannen."
 
 #~ msgid "Provider to scan"
 #~ msgstr "Zoek op provider"
