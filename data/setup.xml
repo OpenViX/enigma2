@@ -210,6 +210,9 @@
 		<item text="Nameserver" description="Configure the nameserver (DNS).">config.network.dns</item>
 		<item text="Activate network settings" description="Activate the configured network settings.">config.network.activate</item>
 	</setup>
+	<setup key="networkpassword" title="Network password" titleshort="Settings">
+		<item text="New password" description="You should set a root password to secure network services such as FTP, telnet or ssh. The password can be blank but this is NOT recommended, particularly if the device is open to the Internet.\nPress YELLOW to select a random password.">config.network.password</item>
+	</setup>
 	<setup key="RFmod" title="RF output settings" titleshort="Settings">
 		<item level="1" text="Modulator">config.rfmod.enable</item>
 		<item level="2" text="Test mode">config.rfmod.test</item>
