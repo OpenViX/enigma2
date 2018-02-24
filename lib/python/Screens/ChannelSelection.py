@@ -210,13 +210,6 @@ class ChannelContextMenu(Screen):
 						_append_when_current_valid(current, menu, actions, (_("Stop using as startup service"), self.unsetStartupService), level=0, key="2")
 					else:
 						_append_when_current_valid(current, menu, actions, (_("Set as startup service"), self.setStartupService), level=0, key="1")
-					if self.parentalControlEnabled:
-						if self.parentalControl.getProtectionLevel(csel.getCurrentSelection().toCompareString()) == -1:
-							_append_when_current_valid(current, menu, actions, (_("Add to parental protection"), boundFunction(self.addParentalProtection, current)), level=0, key="bullet")
-						else:
-							_append_when_current_valid(current, menu, actions, (_("Remove from parental protection"), boundFunction(self.removeParentalProtection, current)), level=0, key="bullet")
-						if config.ParentalControl.hideBlacklist.value and not parentalControl.sessionPinCached and config.ParentalControl.storeservicepin.value != "never":
-							_append_when_current_valid(current, menu, actions, (_("Unhide parental control services"), self.unhideParentalServices), level=0, key="bullet")
 					if SystemInfo["3DMode"]:
 						if eDVBDB.getInstance().getFlag(eServiceReference(current.toString())) & FLAG_IS_DEDICATED_3D:
 							_append_when_current_valid(current, menu, actions, (_("Unmark service as a dedicated 3D service"), self.removeDedicated3DFlag), level=0, key="4")
@@ -250,14 +243,6 @@ class ChannelContextMenu(Screen):
 						if not self.inBouquet:
 							_append_when_current_valid(current, menu, actions, (_("Add service to favourites"), self.addServiceToBouquetSelected), level=0, key="7")
 							self.addFunction = self.addServiceToBouquetSelected
-					if SystemInfo["PIPAvailable"]:
-						if not self.parentalControlEnabled or self.parentalControl.getProtectionLevel(current.toCompareString()) == -1:
-#							if self.csel.dopipzap:
-#								_append_when_current_valid(current, menu, actions, (_("Play in main window"), self.playMain), level=0, key="red")
-#								else:	
-									_append_when_current_valid(current, menu, actions, (_("Play as picture in picture"), self.showServiceInPiP), level=0, key="blue")
-#					_append_when_current_valid(current, menu, actions, (_("Find currently played service"), self.findCurrentlyPlayed), level=0, key="4")
-				else:
 					if 'FROM SATELLITES' in current_root.getPath() and current and _("Services") in eServiceCenter.getInstance().info(current).getName(current):
 						unsigned_orbpos = current.getUnsignedData(4) >> 16
 						if unsigned_orbpos == 0xFFFF:
@@ -294,16 +279,31 @@ class ChannelContextMenu(Screen):
 		if self.inBouquet: # current list is editable?
 			if csel.bouquet_mark_edit == OFF:
 				if csel.movemode:
-					_append_when_current_valid(current, menu, actions, (_("Disable move mode"), self.toggleMoveMode), level=0, key="green")
+					_append_when_current_valid(current, menu, actions, (_("Disable move mode"), self.toggleMoveMode), level=0, key="red")
 				else:
-					_append_when_current_valid(current, menu, actions, (_("Enable move mode"), self.toggleMoveMode), level=1, key="green")
+					_append_when_current_valid(current, menu, actions, (_("Enable move mode"), self.toggleMoveMode), level=1, key="red")
 				if not csel.entry_marked and not inBouquetRootList and current_root and not (current_root.flags & eServiceReference.isGroup):
-					_append_when_current_valid(current, menu, actions, (_("Add marker"), self.showMarkerInputBox), level=0, key="red")
+					_append_when_current_valid(current, menu, actions, (_("Add marker"), self.showMarkerInputBox), level=0, key="green")
 					if not csel.movemode:
 						if haveBouquets:
 							_append_when_current_valid(current, menu, actions, (_("Enable bouquet edit"), self.bouquetMarkStart), level=0, key="yellow")
 						else:
 							_append_when_current_valid(current, menu, actions, (_("Enable favourite edit"), self.bouquetMarkStart), level=0, key="yellow")
+					if SystemInfo["PIPAvailable"]:
+						if not self.parentalControlEnabled or self.parentalControl.getProtectionLevel(current.toCompareString()) == -1:
+#							if self.csel.dopipzap:
+#								_append_when_current_valid(current, menu, actions, (_("Play in main window"), self.playMain), level=0, key="red")
+#								else:	
+									_append_when_current_valid(current, menu, actions, (_("Play as picture in picture"), self.showServiceInPiP), level=0, key="blue")
+#					_append_when_current_valid(current, menu, actions, (_("Find currently played service"), self.findCurrentlyPlayed), level=0, key="4")
+#				else:
+					if self.parentalControlEnabled:
+						if self.parentalControl.getProtectionLevel(csel.getCurrentSelection().toCompareString()) == -1:
+							_append_when_current_valid(current, menu, actions, (_("Add to parental protection"), boundFunction(self.addParentalProtection, current)), level=0, key="bullet")
+						else:
+							_append_when_current_valid(current, menu, actions, (_("Remove from parental protection"), boundFunction(self.removeParentalProtection, current)), level=0, key="bullet")
+						if config.ParentalControl.hideBlacklist.value and not parentalControl.sessionPinCached and config.ParentalControl.storeservicepin.value != "never":
+							_append_when_current_valid(current, menu, actions, (_("Unhide parental control services"), self.unhideParentalServices), level=0, key="bullet")
 					if current_sel_flags & eServiceReference.isGroup:
 						_append_when_current_valid(current, menu, actions, (_("Edit alternatives"), self.editAlternativeServices), level=2, key="bullet")
 						_append_when_current_valid(current, menu, actions, (_("Show alternatives"), self.showAlternativeServices), level=2, key="bullet")
