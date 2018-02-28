@@ -2372,7 +2372,7 @@ class MovieSelectionFileManagerList(Screen):
 		Screen.__init__(self, session)
 		self.session = session
 		self.mainList = list
-		self.setTitle(_("List of files"))
+		self.setTitle(_("List of files") + ":  %s" % config.movielist.last_videodir.value)
 
 		self.original_selectionpng = None
 		self.changePng()
