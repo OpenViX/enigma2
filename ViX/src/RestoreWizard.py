@@ -214,7 +214,10 @@ class RestoreWizard(WizardLanguage, Rc):
 		eDVBDB.getInstance().reloadServicelist()
 		eDVBDB.getInstance().reloadBouquets()
 		self.session.nav.PowerTimer.loadTimer()
-		self.session.nav.RecordTimer.loadTimer()
+# Don't check RecordTimers for conflicts. On a restore we may
+# not have the correct tuner configuration (and no USB tuners)...
+#
+		self.session.nav.RecordTimer.loadTimer(justLoad=True)
 		configfile.load()
 		# self.NextStep = 'plugindetection'
 		self.pleaseWait.close()
