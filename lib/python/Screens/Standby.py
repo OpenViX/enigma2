@@ -1,6 +1,8 @@
+import os
 from Screens.Screen import Screen
 from Components.ActionMap import ActionMap
 from Components.config import config
+from Components.Console import Console
 from Components.AVSwitch import AVSwitch
 from Components.SystemInfo import SystemInfo
 from Components.Sources.StaticText import StaticText
@@ -25,6 +27,9 @@ def setLCDMiniTVMode(value):
 class Standby2(Screen):
 	def Power(self):
 		print "[Standby] leave standby"
+		#Run Custom Script on standby
+		if os.path.exists("/usr/scripts/StandbyLeave.sh"):
+			Console().ePopen("/usr/scripts/StandbyLeave.sh &")
 		#set input to encoder
 		self.avswitch.setInput("ENCODER")
 		#restart last played service
@@ -51,6 +56,10 @@ class Standby2(Screen):
 		self.avswitch = AVSwitch()
 
 		print "[Standby] enter standby"
+		
+		# Run custom script when entering standby
+        	if os.path.exists('/usr/script/StandbyEnter.sh'):
+            		Console().ePopen('/usr/script/StandbyEnter.sh &')
 
 		self["actions"] = ActionMap( [ "StandbyActions" ],
 		{
