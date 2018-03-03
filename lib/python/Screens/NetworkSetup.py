@@ -22,12 +22,11 @@ from Components.Sources.List import List
 from Components.SystemInfo import SystemInfo
 from enigma import eTimer, eConsoleAppContainer
 from Plugins.Plugin import PluginDescriptor
-from random import Random 
+from random import Random
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
 from Screens.Standby import TryQuitMainloop
 from Screens.HelpMenu import HelpableScreen
-from Screens.Setup import Setup
 from Screens.VirtualKeyBoard import VirtualKeyBoard
 from Tools.Directories import fileExists, resolveFilename, SCOPE_PLUGINS, SCOPE_ACTIVE_SKIN
 from Tools.LoadPixmap import LoadPixmap
@@ -35,13 +34,13 @@ from Tools.LoadPixmap import LoadPixmap
 from subprocess import call
 import commands
 import string
-import sys 
+import sys
 
 # Define a function to determine whether a service is configured to
 # start at boot time.
 # This checks for a start file in rc2.d (rc4.d might be more
 # appropriate, but historically it's been rc2.d, so...).
-# 
+#
 import glob
 def ServiceIsEnabled(service_name):
 	starter_list = glob.glob("/etc/rc2.d/S*" + service_name)
@@ -873,7 +872,7 @@ class AdapterSetup(Screen, ConfigListScreen, HelpableScreen):
 		if not result:
 			return
 		if SystemInfo["WakeOnLAN"]:
-			config.network.wol.setValue(self.wolstartvalue)	
+			config.network.wol.setValue(self.wolstartvalue)
 		if self.oldInterfaceState is False:
 			iNetwork.deactivateInterface(self.iface,self.keyCancelCB)
 		else:
@@ -1846,7 +1845,14 @@ class NetworkAfp(NSCommon,Screen):
 		self.Console = Console()
 		self.my_afp_active = False
 		self.my_afp_run = False
-		self['actions'] = ActionMap(['WizardActions', 'ColorActions'], {'ok': self.close, 'back': self.close, 'red': self.UninstallCheck, 'green': self.AfpStartStop, 'yellow': self.activateAfp})
+		self['actions'] = ActionMap(['WizardActions', 'ColorActions'],
+		{
+			'ok': self.close,
+			'back': self.close,
+			'red': self.UninstallCheck,
+			'green': self.AfpStartStop,
+			'yellow': self.activateAfp
+		})
 		self.service_name = 'packagegroup-base-appletalk netatalk'
 		self.onLayoutFinish.append(self.InstallCheck)
 		self.reboot_at_end = True
@@ -1925,7 +1931,13 @@ class NetworkFtp(NSCommon,Screen):
 		self.Console = Console()
 		self.my_ftp_active = False
 		self.my_ftp_run = False
-		self['actions'] = ActionMap(['WizardActions', 'ColorActions'], {'ok': self.close, 'back': self.close, 'green': self.FtpStartStop, 'yellow': self.activateFtp})
+		self['actions'] = ActionMap(['WizardActions', 'ColorActions'],
+		{
+			'ok': self.close,
+			'back': self.close,
+			'green': self.FtpStartStop,
+			'yellow': self.activateFtp
+		})
 		self.Console = Console()
 		self.onLayoutFinish.append(self.updateService)
 		self.reboot_at_end = False
@@ -1947,8 +1959,8 @@ class NetworkFtp(NSCommon,Screen):
 		self.Console.eBatch(commands, self.StartStopCallback, debug=True)
 
 	def updateService(self):
-		import process		
-		p = process.ProcessList()		
+		import process
+		p = process.ProcessList()
 		ftp_process = str(p.named('vsftpd')).strip('[]')
 		self['labrun'].hide()
 		self['labstop'].hide()
@@ -2009,7 +2021,14 @@ class NetworkNfs(NSCommon,Screen):
 		self.Console = Console()
 		self.my_nfs_active = False
 		self.my_nfs_run = False
-		self['actions'] = ActionMap(['WizardActions', 'ColorActions'], {'ok': self.close, 'back': self.close, 'red': self.UninstallCheck, 'green': self.NfsStartStop, 'yellow': self.Nfsset})
+		self['actions'] = ActionMap(['WizardActions', 'ColorActions'],
+		{
+			'ok': self.close,
+			'back': self.close,
+			'red': self.UninstallCheck,
+			'green': self.NfsStartStop,
+			'yellow': self.Nfsset
+		})
 		self.service_name = 'packagegroup-base-nfs'
 		self.onLayoutFinish.append(self.InstallCheck)
 		self.reboot_at_end = True
@@ -2087,7 +2106,15 @@ class NetworkOpenvpn(NSCommon,Screen):
 		self.Console = Console()
 		self.my_vpn_active = False
 		self.my_vpn_run = False
-		self['actions'] = ActionMap(['WizardActions', 'ColorActions'], {'ok': self.close, 'back': self.close, 'red': self.UninstallCheck, 'green': self.VpnStartStop, 'yellow': self.activateVpn, 'blue': self.Vpnshowlog})
+		self['actions'] = ActionMap(['WizardActions', 'ColorActions'],
+		{
+			'ok': self.close,
+			'back': self.close,
+			'red': self.UninstallCheck,
+			'green': self.VpnStartStop,
+			'yellow': self.activateVpn,
+			'blue': self.Vpnshowlog
+		})
 		self.service_name = 'openvpn'
 		self.onLayoutFinish.append(self.InstallCheck)
 		self.reboot_at_end = False
@@ -2156,7 +2183,13 @@ class NetworkVpnLog(Screen):
 		self.skinName = "NetworkInadynLog"
 		self['infotext'] = ScrollLabel('')
 		self.Console = Console()
-		self['actions'] = ActionMap(['WizardActions', 'ColorActions'], {'ok': self.close, 'back': self.close, 'up': self['infotext'].pageUp, 'down': self['infotext'].pageDown})
+		self['actions'] = ActionMap(['WizardActions', 'ColorActions'],
+		{
+			'ok': self.close,
+			'back': self.close,
+			'up': self['infotext'].pageUp,
+			'down': self['infotext'].pageDown
+		})
 		strview = ''
 		self.Console.ePopen('tail /etc/openvpn/openvpn.log > /etc/openvpn/tmp.log')
 		time.sleep(1)
@@ -2197,7 +2230,15 @@ class NetworkSamba(NSCommon,Screen):
 		self.Console = Console()
 		self.my_Samba_active = False
 		self.my_Samba_run = False
-		self['actions'] = ActionMap(['WizardActions', 'ColorActions'], {'ok': self.close, 'back': self.close, 'red': self.UninstallCheck, 'green': self.SambaStartStop, 'yellow': self.activateSamba, 'blue': self.Sambashowlog})
+		self['actions'] = ActionMap(['WizardActions', 'ColorActions'],
+		{
+			'ok': self.close,
+			'back': self.close,
+			'red': self.UninstallCheck,
+			'green': self.SambaStartStop,
+			'yellow': self.activateSamba,
+			'blue': self.Sambashowlog
+		})
 		self.service_name = 'packagegroup-base-smbfs-server'
 		self.onLayoutFinish.append(self.InstallCheck)
 		self.reboot_at_end = True
@@ -2224,8 +2265,8 @@ class NetworkSamba(NSCommon,Screen):
 		self.Console.eBatch(commands, self.StartStopCallback, debug=True)
 
 	def updateService(self):
-		import process		
-		p = process.ProcessList()		
+		import process
+		p = process.ProcessList()
 		samba_process = str(p.named('smbd')).strip('[]')
 		self['labrun'].hide()
 		self['labstop'].hide()
@@ -2275,7 +2316,13 @@ class NetworkSambaLog(Screen):
 		self.skinName = "NetworkInadynLog"
 		self['infotext'] = ScrollLabel('')
 		self.Console = Console()
-		self['actions'] = ActionMap(['WizardActions', 'ColorActions'], {'ok': self.close, 'back': self.close, 'up': self['infotext'].pageUp, 'down': self['infotext'].pageDown})
+		self['actions'] = ActionMap(['WizardActions', 'ColorActions'],
+		{
+			'ok': self.close,
+			'back': self.close,
+			'up': self['infotext'].pageUp,
+			'down': self['infotext'].pageDown
+		})
 		strview = ''
 		self.Console.ePopen('tail /tmp/smb.log > /tmp/tmp.log')
 		time.sleep(1)
@@ -2316,7 +2363,13 @@ class NetworkTelnet(NSCommon,Screen):
 		self.Console = Console()
 		self.my_telnet_active = False
 		self.my_telnet_run = False
-		self['actions'] = ActionMap(['WizardActions', 'ColorActions'], {'ok': self.close, 'back': self.close, 'green': self.TelnetStartStop, 'yellow': self.activateTelnet})
+		self['actions'] = ActionMap(['WizardActions', 'ColorActions'],
+		{
+			'ok': self.close,
+			'back': self.close,
+			'green': self.TelnetStartStop,
+			'yellow': self.activateTelnet
+		})
 		self.reboot_at_end = False
 
 	def TelnetStartStop(self):
@@ -2409,7 +2462,16 @@ class NetworkInadyn(NSCommon,Screen):
 		self['key_green'] = Label(_("Start"))
 		self['key_yellow'] = Label(_("Autostart"))
 		self['key_blue'] = Label(_("Show Log"))
-		self['actions'] = ActionMap(['WizardActions', 'ColorActions', 'SetupActions'], {'ok': self.setupinadyn, 'back': self.close, 'menu': self.setupinadyn, 'red': self.UninstallCheck, 'green': self.InadynStartStop, 'yellow': self.autostart, 'blue': self.inaLog})
+		self['actions'] = ActionMap(['WizardActions', 'ColorActions', 'SetupActions'],
+		{
+			'ok': self.setupinadyn,
+			'back': self.close,
+			'menu': self.setupinadyn,
+			'red': self.UninstallCheck,
+			'green': self.InadynStartStop,
+			'yellow': self.autostart,
+			'blue': self.inaLog
+		})
 		self.Console = Console()
 		self.service_name = 'inadyn-mt'
 		self.onLayoutFinish.append(self.InstallCheck)
@@ -2517,8 +2579,14 @@ class NetworkInadynSetup(Screen, ConfigListScreen):
 		self.onChangedEntry = [ ]
 		self.list = []
 		ConfigListScreen.__init__(self, self.list, session = self.session, on_change = self.selectionChanged)
-		self['key_red'] = Label(_("Save"))
-		self['actions'] = ActionMap(['WizardActions', 'ColorActions', 'VirtualKeyboardActions'], {'red': self.saveIna, 'back': self.close, 'showVirtualKeyboard': self.KeyText})
+		self['key_red'] = Label(_("Exit"))
+		self['key_green'] = Label(_("Save"))
+		self['actions'] = ActionMap(['WizardActions', 'ColorActions'],
+		{
+			'red': self.close,
+			'green': self.saveIna,
+			'back': self.close
+		})
 		self["HelpWindow"] = Pixmap()
 		self["HelpWindow"].hide()
 		self["VKeyIcon"] = Boolean(False)
@@ -2583,24 +2651,13 @@ class NetworkInadynSetup(Screen, ConfigListScreen):
 						line = line[15:]
 					ina_sysactive1 = getConfigListEntry(_("Set system") + ":", self.ina_sysactive)
 					self.list.append(ina_sysactive1)
-					self.ina_value = line
+					# self.ina_value = line # looks like dead code
 					ina_system1 = getConfigListEntry(_("System") + ":", self.ina_system)
 					self.list.append(ina_system1)
 
 			f.close()
 		self['config'].list = self.list
 		self['config'].l.setList(self.list)
-
-	def KeyText(self):
-		sel = self['config'].getCurrent()
-		if sel:
-			if isinstance(self["config"].getCurrent()[1], ConfigText) or isinstance(self["config"].getCurrent()[1], ConfigPassword):
-				if self["config"].getCurrent()[1].help_window.instance is not None:
-					self["config"].getCurrent()[1].help_window.hide()
-			self.vkvar = sel[0]
-			if self.vkvar == _("Username") + ':' or self.vkvar == _("Password") + ':' or self.vkvar == _("Alias") + ':' or self.vkvar == _("System") + ':':
-				from Screens.VirtualKeyBoard import VirtualKeyBoard
-				self.session.openWithCallback(self.VirtualKeyBoardCallback, VirtualKeyBoard, title = self["config"].getCurrent()[0], text = self["config"].getCurrent()[1].value)
 
 	def VirtualKeyBoardCallback(self, callback = None):
 		if callback is not None and len(callback):
@@ -2657,10 +2714,13 @@ class NetworkInadynLog(Screen):
 			self["menu_path_compressed"] = StaticText("")
 		Screen.setTitle(self, title)
 		self['infotext'] = ScrollLabel('')
-		self['actions'] = ActionMap(['WizardActions', 'DirectionActions', 'ColorActions'], {'ok': self.close,
-		 'back': self.close,
-		 'up': self['infotext'].pageUp,
-		 'down': self['infotext'].pageDown})
+		self['actions'] = ActionMap(['WizardActions', 'DirectionActions', 'ColorActions'],
+		{
+			'ok': self.close,
+			'back': self.close,
+			'up': self['infotext'].pageUp,
+			'down': self['infotext'].pageDown
+		})
 		strview = ''
 		if fileExists('/var/log/inadyn.log'):
 			f = open('/var/log/inadyn.log', 'r')
@@ -2720,7 +2780,16 @@ class NetworkuShare(NSCommon,Screen):
 		self['key_green'] = Label(_("Start"))
 		self['key_yellow'] = Label(_("Autostart"))
 		self['key_blue'] = Label(_("Show Log"))
-		self['actions'] = ActionMap(['WizardActions', 'ColorActions', 'SetupActions'], {'ok': self.setupushare, 'back': self.close, 'menu': self.setupushare, 'red': self.UninstallCheck, 'green': self.uShareStartStop, 'yellow': self.autostart, 'blue': self.ushareLog})
+		self['actions'] = ActionMap(['WizardActions', 'ColorActions', 'SetupActions'],
+		{
+			'ok': self.setupushare,
+			'back': self.close,
+			'menu': self.setupushare,
+			'red': self.UninstallCheck,
+			'green': self.uShareStartStop,
+			'yellow': self.autostart,
+			'blue': self.ushareLog
+		})
 		self.Console = Console()
 		self.service_name = 'ushare'
 		self.onLayoutFinish.append(self.InstallCheck)
@@ -2854,9 +2923,16 @@ class NetworkuShareSetup(Screen, ConfigListScreen):
 		self.list = []
 		ConfigListScreen.__init__(self, self.list, session = self.session, on_change = self.selectionChanged)
 		Screen.setTitle(self, _("uShare Setup"))
-		self['key_red'] = Label(_("Save"))
-		self['key_green'] = Label(_("Shares"))
-		self['actions'] = ActionMap(['WizardActions', 'ColorActions', 'VirtualKeyboardActions'], {'red': self.saveuShare, 'green': self.selectfolders, 'back': self.close, 'showVirtualKeyboard': self.KeyText})
+		self['key_red'] = Label(_("Exit"))
+		self['key_green'] = Label(_("Save"))
+		self['key_yellow'] = Label(_("Shares"))
+		self['actions'] = ActionMap(['WizardActions', 'ColorActions'],
+		{
+			'red': self.close,
+			'green': self.saveuShare,
+			'yellow': self.selectfolders,
+			'back': self.close
+		})
 		self["HelpWindow"] = Pixmap()
 		self["HelpWindow"].hide()
 		self["VKeyIcon"] = Boolean(False)
@@ -2889,7 +2965,8 @@ class NetworkuShareSetup(Screen, ConfigListScreen):
 		self.ushare_telnet = NoSave(ConfigYesNo(default='True'))
 		self.ushare_xbox= NoSave(ConfigYesNo(default='True'))
 		self.ushare_ps3= NoSave(ConfigYesNo(default='True'))
-		self.ushare_system = NoSave(ConfigSelection(default = "dyndns@dyndns.org", choices = [("dyndns@dyndns.org", "dyndns@dyndns.org"), ("statdns@dyndns.org", "statdns@dyndns.org"), ("custom@dyndns.org", "custom@dyndns.org")]))
+		# looks like dead code
+		#self.ushare_system = NoSave(ConfigSelection(default = "dyndns@dyndns.org", choices = [("dyndns@dyndns.org", "dyndns@dyndns.org"), ("statdns@dyndns.org", "statdns@dyndns.org"), ("custom@dyndns.org", "custom@dyndns.org")]))
 
 		if fileExists('/etc/ushare.conf'):
 			f = open('/etc/ushare.conf', 'r')
@@ -2947,15 +3024,6 @@ class NetworkuShareSetup(Screen, ConfigListScreen):
 		self['config'].list = self.list
 		self['config'].l.setList(self.list)
 
-	def KeyText(self):
-		sel = self['config'].getCurrent()
-		if sel:
-			if isinstance(self["config"].getCurrent()[1], ConfigText) or isinstance(self["config"].getCurrent()[1], ConfigPassword):
-				if self["config"].getCurrent()[1].help_window.instance is not None:
-					self["config"].getCurrent()[1].help_window.hide()
-					self.vkvar = sel[0]
-					self.session.openWithCallback(self.VirtualKeyBoardCallback, VirtualKeyBoard, title = self["config"].getCurrent()[0], text = self["config"].getCurrent()[1].value)
-
 	def VirtualKeyBoardCallback(self, callback = None):
 		if callback is not None and len(callback):
 			self["config"].getCurrent()[1].setValue(callback)
@@ -3006,9 +3074,6 @@ class NetworkuShareSetup(Screen, ConfigListScreen):
 			self.close()
 		if fileExists('/etc/ushare.conf.tmp'):
 			rename('/etc/ushare.conf.tmp', '/etc/ushare.conf')
-		self.myStop()
-
-	def myStop(self):
 		self.close()
 
 	def selectfolders(self):
@@ -3119,7 +3184,13 @@ class NetworkuShareLog(Screen):
 		self.skinName = "NetworkInadynLog"
 		self['infotext'] = ScrollLabel('')
 		self.Console = Console()
-		self['actions'] = ActionMap(['WizardActions', 'ColorActions'], {'ok': self.close, 'back': self.close, 'up': self['infotext'].pageUp, 'down': self['infotext'].pageDown})
+		self['actions'] = ActionMap(['WizardActions', 'ColorActions'],
+		{
+			'ok': self.close,
+			'back': self.close,
+			'up': self['infotext'].pageUp,
+			'down': self['infotext'].pageDown
+		})
 		strview = ''
 		self.Console.ePopen('tail /tmp/uShare.log > /tmp/tmp.log')
 		time.sleep(1)
@@ -3179,7 +3250,16 @@ class NetworkMiniDLNA(NSCommon,Screen):
 		self['key_green'] = Label(_("Start"))
 		self['key_yellow'] = Label(_("Autostart"))
 		self['key_blue'] = Label(_("Show Log"))
-		self['actions'] = ActionMap(['WizardActions', 'ColorActions', 'SetupActions'], {'ok': self.setupminidlna, 'back': self.close, 'menu': self.setupminidlna, 'red': self.UninstallCheck, 'green': self.MiniDLNAStartStop, 'yellow': self.autostart, 'blue': self.minidlnaLog})
+		self['actions'] = ActionMap(['WizardActions', 'ColorActions', 'SetupActions'],
+		{
+			'ok': self.setupminidlna,
+			'back': self.close,
+			'menu': self.setupminidlna,
+			'red': self.UninstallCheck,
+			'green': self.MiniDLNAStartStop,
+			'yellow': self.autostart,
+			'blue': self.minidlnaLog
+		})
 		self.Console = Console()
 		self.service_name = 'minidlna'
 		self.onLayoutFinish.append(self.InstallCheck)
@@ -3302,9 +3382,16 @@ class NetworkMiniDLNASetup(Screen, ConfigListScreen):
 		ConfigListScreen.__init__(self, self.list, session = self.session, on_change = self.selectionChanged)
 		Screen.setTitle(self, _("MiniDLNA Setup"))
 		self.skinName = "NetworkuShareSetup"
-		self['key_red'] = Label(_("Save"))
-		self['key_green'] = Label(_("Shares"))
-		self['actions'] = ActionMap(['WizardActions', 'ColorActions', 'VirtualKeyboardActions'], {'red': self.saveMinidlna, 'green': self.selectfolders, 'back': self.close, 'showVirtualKeyboard': self.KeyText})
+		self['key_red'] = Label(_("Exit"))
+		self['key_green'] = Label(_("Save"))
+		self['key_yellow'] = Label(_("Shares"))
+		self['actions'] = ActionMap(['WizardActions', 'ColorActions'],
+		{
+			'red': self.close,
+			'green': self.saveMinidlna,
+			'yellow': self.selectfolders,
+			'back': self.close
+		})
 		self["HelpWindow"] = Pixmap()
 		self["HelpWindow"].hide()
 		self["VKeyIcon"] = Boolean(False)
@@ -3387,17 +3474,6 @@ class NetworkMiniDLNASetup(Screen, ConfigListScreen):
 		self['config'].list = self.list
 		self['config'].l.setList(self.list)
 
-	def KeyText(self):
-		sel = self['config'].getCurrent()
-		if sel:
-			if isinstance(self["config"].getCurrent()[1], ConfigText) or isinstance(self["config"].getCurrent()[1], ConfigPassword):
-				if self["config"].getCurrent()[1].help_window.instance is not None:
-					self["config"].getCurrent()[1].help_window.hide()
-			self.vkvar = sel[0]
-			if self.vkvar == _("Name") + ":" or self.vkvar == _("Share Folder's") + ":":
-				from Screens.VirtualKeyBoard import VirtualKeyBoard
-				self.session.openWithCallback(self.VirtualKeyBoardCallback, VirtualKeyBoard, title = self["config"].getCurrent()[0], text = self["config"].getCurrent()[1].value)
-
 	def VirtualKeyBoardCallback(self, callback = None):
 		if callback is not None and len(callback):
 			self["config"].getCurrent()[1].setValue(callback)
@@ -3442,9 +3518,6 @@ class NetworkMiniDLNASetup(Screen, ConfigListScreen):
 			self.close()
 		if fileExists('/etc/minidlna.conf.tmp'):
 			rename('/etc/minidlna.conf.tmp', '/etc/minidlna.conf')
-		self.myStop()
-
-	def myStop(self):
 		self.close()
 
 	def selectfolders(self):
@@ -3556,7 +3629,13 @@ class NetworkMiniDLNALog(Screen):
 		self.skinName = "NetworkInadynLog"
 		self['infotext'] = ScrollLabel('')
 		self.Console = Console()
-		self['actions'] = ActionMap(['WizardActions', 'ColorActions'], {'ok': self.close, 'back': self.close, 'up': self['infotext'].pageUp, 'down': self['infotext'].pageDown})
+		self['actions'] = ActionMap(['WizardActions', 'ColorActions'],
+		{
+			'ok': self.close,
+			'back': self.close,
+			'up': self['infotext'].pageUp,
+			'down': self['infotext'].pageDown
+		})
 		strview = ''
 		self.Console.ePopen('tail /var/volatile/log/minidlna.log > /tmp/tmp.log')
 		time.sleep(1)
@@ -3590,61 +3669,91 @@ class NetworkServicesSummary(Screen):
 		self["autostartstatus_summary"].text = autostartstatus_summary
 
 
-class NetworkPassword(Setup):
-	def __init__(self, session, menu_path=None, PluginLanguageDomain=None):
-		config.network.password = NoSave(ConfigPassword(default=""))
-		Setup.__init__(self, session=session, setup="networkpassword", plugin=None, menu_path=menu_path, PluginLanguageDomain=PluginLanguageDomain)
-		self.skinName = ["NetworkPassword", "Setup"]
-		self.setup_title = _("Network password")
+class NetworkPassword(Screen):
+	def __init__(self, session, menu_path = ""):
+		Screen.__init__(self, session)
+		screentitle = _("Password setup")
+		if config.usage.show_menupath.value == 'large':
+			menu_path += screentitle
+			title = menu_path
+			self["menu_path_compressed"] = StaticText("")
+		elif config.usage.show_menupath.value == 'small':
+			title = screentitle
+			self["menu_path_compressed"] = StaticText(menu_path + " >" if not menu_path.endswith(' / ') else menu_path[:-3] + " >" or "")
+		else:
+			title = screentitle
+			self["menu_path_compressed"] = StaticText("")
+		Screen.setTitle(self, title)
+		self.skinName = "NetworkSetPassword"
 
-		self["key_yellow"] = StaticText(_("Random password"))
+		self.user = "root"
+		self.list = []
+		self["passwd"] = ConfigList(self.list)
+		self["key_red"] = StaticText(_("Delete Password"))
+		self["key_green"] = StaticText(_("Set Password"))
+		self["key_yellow"] = StaticText(_("New Random Password"))
+		self["key_blue"] = StaticText(_("Keyboard"))
 
-		self["password_actions"] = ActionMap(["ColorActions"], {
-			"yellow": self.newRandom
-		})
+		self["actions"] = ActionMap(["OkCancelActions", "ColorActions"],
+		{
+			"red": self.DelPasswd,
+			"green": self.SetPasswd,
+			"yellow": self.newRandom,
+			"blue": self.bluePressed,
+			"cancel": self.close
+		}, -1)
 
-		self.user="root"
-		self.output_line = ""
+		self.buildList(self.GeneratePassword())
 
 	def newRandom(self):
-		config.network.password.value = self.GeneratePassword()
-		self["config"].invalidateCurrent()
-	
-	def GeneratePassword(self): 
+		self.buildList(self.GeneratePassword())
+
+	def buildList(self, password):
+		self.password=password
+		self.list = []
+		self.list.append(getConfigListEntry(_('Enter a new password'), ConfigText(default = self.password, fixed_size = False)))
+		self["passwd"].setList(self.list)
+
+	def GeneratePassword(self):
 		passwdChars = string.letters + string.digits
 		passwdLength = 10
-		return ''.join(Random().sample(passwdChars, passwdLength)) 
+		return ''.join(Random().sample(passwdChars, passwdLength))
 
-	def keySave(self):
-		password = config.network.password.value
-		# print "[NetworkPassword] Changing the password for '%s' to '%s'." % (self.user, password) 
+	def SetPasswd(self):
 		self.container = eConsoleAppContainer()
 		self.container.appClosed.append(self.runFinished)
 		self.container.dataAvail.append(self.dataAvail)
-		retval = self.container.execute("echo -e '%s\n%s' | (passwd %s)"  % (password, password, self.user))
-		if retval:
-			message = _("Unable to change password!")
-			self.session.open(MessageBox, message, MessageBox.TYPE_ERROR)
+		retval = self.container.execute("passwd %s" % self.user)
+		if retval == 0:
+			message = _("Sucessfully changed the password for the root user to ") + self.password
 		else:
-			message = _("Password changed.")
-			self.session.open(MessageBox, message, MessageBox.TYPE_INFO, timeout=5)
-			Setup.keySave(self)
+			message = _("Unable to change/reset the password for the root user")
+		self.session.open(MessageBox, message , MessageBox.TYPE_INFO)
 
-	def runFinished(self, retval):
+	def DelPasswd(self):
+		self.container = eConsoleAppContainer()
+		self.container.appClosed.append(self.runFinished)
+		self.container.dataAvail.append(self.dataAvail)
+		retval = self.container.execute("passwd --delete %s" % self.user)
+		if retval == 0:
+			message = _("Password deleted sucessfully for the root user")
+		else:
+			message = _("Unable to delete the password for the root user")
+		self.session.open(MessageBox, message , MessageBox.TYPE_INFO)
+
+	def dataAvail(self, data):
+		if data.find('password'):
+			self.container.write("%s\n" % self.password)
+
+	def runFinished(self,retval):
 		del self.container.dataAvail[:]
 		del self.container.appClosed[:]
 		del self.container
 		self.close()
 
-	def dataAvail(self, data):
-		self.output_line += data
-		while True:
-			i = self.output_line.find("\n")
-			if i == -1:
-				break
-			self.processOutputLine(self.output_line[:i+1])
-			self.output_line = self.output_line[i+1:]
+	def bluePressed(self):
+		self.session.openWithCallback(self.VirtualKeyBoardTextEntry, VirtualKeyBoard, title = (_("Enter your password here:")), text = self.password)
 
-	def processOutputLine(self, line):
-		if line.find('password: '):
-			self.container.write("%s\n" % config.network.password.value)
+	def VirtualKeyBoardTextEntry(self, callback = None):
+		if callback is not None and len(callback):
+			self.buildList(callback)
