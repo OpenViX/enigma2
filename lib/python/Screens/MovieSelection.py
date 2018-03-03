@@ -2441,7 +2441,7 @@ class MovieSelectionFileManagerList(Screen):
 
 		self.playingRef = self.session.nav.getCurrentlyPlayingServiceOrGroup()
 		self.sort = 0
-		self["description"].setText(_("Select files with 'OK' and then use 'Green' to choose desired operation.\n Use 'CH+/-' select/unselect files via the keyboard."))
+		self["description"].setText(_("Select files with 'OK' and then use 'Green' to choose desired operation.\nUse 'CH+/-' select/unselect files via the keyboard.\nUse 'Menu' for settings."))
 
 		self["Service"] = ServiceEvent()
 		self["config"].onSelectionChanged.append(self.setService)
