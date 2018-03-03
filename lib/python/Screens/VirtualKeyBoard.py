@@ -74,6 +74,7 @@ class VirtualKeyBoard(Screen):
 		self["key_red"] = StaticText(_("Exit"))
 		self["key_green"] = StaticText(_("Save"))
 		self["key_yellow"] = self["country"] = StaticText("")
+		self["key_blue"] = StaticText(_("Upper case"))
 		self["header"] = Label()
 		self["text"] = Input(currPos=len(kwargs.get("text", "").decode("utf-8",'ignore')), allMarked=False, **kwargs)
 		self["list"] = VirtualKeyBoardList([])
@@ -339,6 +340,7 @@ class VirtualKeyBoard(Screen):
 		self.smsChar = None
 		self.shiftMode = not self.shiftMode
 		self.buildVirtualKeyBoard()
+		self["key_blue"].setText(self.shiftMode and _("Lower case") or _("Upper case"))
 
 	def okClicked(self):
 		self.smsChar = None
