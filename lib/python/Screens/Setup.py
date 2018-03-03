@@ -6,6 +6,7 @@ from Components.SystemInfo import SystemInfo
 from Components.ConfigList import ConfigListScreen
 from Components.Pixmap import Pixmap
 from Components.Sources.StaticText import StaticText
+from Components.config import ConfigText, ConfigPassword
 from Components.Label import Label
 from Components.Sources.Boolean import Boolean
 
@@ -212,8 +213,9 @@ class Setup(ConfigListScreen, Screen):
 					self.list.append((item_text, item, item_description))
 
 	def changedEntry(self):
-		self.refill()
-		self["config"].setList(self.list)
+		if not(isinstance(self["config"].getCurrent()[1], ConfigText) or isinstance(self["config"].getCurrent()[1], ConfigPassword)):
+			self.refill()
+			self["config"].setList(self.list)
 
 def getSetupTitle(id):
 	xmldata = setupdom().getroot()
