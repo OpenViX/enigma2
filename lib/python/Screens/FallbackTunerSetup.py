@@ -114,23 +114,13 @@ class FallbackTunerSetup(ConfigListScreen, Screen):
 		self["config"].l.setList(self.list)
 
 	def selectionChanged(self):
-		self["description"].setText(self["config"].getCurrent()[2])
+		self["description"].setText(self.getCurrentDescription())
 
 	def changedEntry(self):
 		if self["config"].getCurrent() in (self.enabledEntry, self.addressTypeEntry): # only do screen refresh if current entry requires this
 			self.createSetup()
 		for x in self.onChangedEntry:
 			x()
-
-	def getCurrentEntry(self):
-		return self["config"].getCurrent()[0]
-
-	def getCurrentValue(self):
-		return str(self["config"].getCurrent()[1].getText())
-
-	def createSummary(self):
-		from Screens.Setup import SetupSummary
-		return SetupSummary
 
 	def keyGo(self):
 		config.usage.remote_fallback_enabled.value = self.enabled.value
@@ -144,16 +134,6 @@ class FallbackTunerSetup(ConfigListScreen, Screen):
 		config.usage.remote_fallback.save()
 		configfile.save()
 		self.close(False)
-
-	def keyCancel(self):
-		if self["config"].isChanged():
-			self.session.openWithCallback(self.cancelCallback, MessageBox, _("Really close without saving settings?"))
-		else:
-			self.cancelCallback(True)
-
-	def cancelCallback(self, answer):
-		if answer:
-			self.close(False)
 
 	def check_URL_format(self, fallbackURL):
 		if fallbackURL:
