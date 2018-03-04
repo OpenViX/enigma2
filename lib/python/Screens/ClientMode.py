@@ -8,7 +8,6 @@ from Screens.Screen import Screen
 from Screens.Standby import TryQuitMainloop
 
 # for VKeyIcon
-from Components.config import ConfigText, ConfigPassword	
 from Components.Sources.Boolean import Boolean
 
 # for HelpWindow
