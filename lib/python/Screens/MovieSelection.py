@@ -1518,6 +1518,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 				used = index
 			menu.append((_(x[1]), x[0], "%d" % index))
 			index += 1
+		self.session.openWithCallback(self.sortbyMenuCallback, ChoiceBox, title=_("Sort list:"), list=menu, selection = used, skin_name="SortbyChoiceBox")
 		if MovieList.InTrashFolder:
 			for x in l_trashsort:
 				if x[3] == config.usage.trashsort_deltime.value:
@@ -1540,7 +1541,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		if choice is None:
 			return
 		self.sortBy(int(choice[1]))
-		self["movie_sort"].setPixmapNum(self.getPixmapSortIndex(choice[1]))
+		self["movie_sort"].setPixmapNum(int(choice[1])-1)
 
 	def getTagDescription(self, tag):
 		# TODO: access the tag database
@@ -2356,6 +2357,15 @@ msfml_data = None
 msfml_path = None
 msfml_really_remove = False
 
+config.movielistfilemanager = ConfigSubsection()
+config.movielistfilemanager.sensitive = ConfigYesNo(default=False)
+choicelist = []
+for i in range(1, 11, 1):
+	choicelist.append(("%d" % i))
+choicelist.append(("15","15"))
+choicelist.append(("20","20"))
+config.movielistfilemanager.length = ConfigSelection(default = "0", choices = [("0", _("no"))] + choicelist + [("255", _("All"))])
+
 class MovieSelectionFileManagerList(Screen):
 	def __init__(self, session, list):
 		Screen.__init__(self, session)
@@ -2410,7 +2420,7 @@ class MovieSelectionFileManagerList(Screen):
 				"seekBack": sback,
 				"seekBackManual": ssback,
 				"nextBouquet": self.getSelectString,
-				"prevBouquet": self.getUnselectString
+				"prevBouquet": self.getUnselectString,
 			})
 
 		self["key_red"] = StaticText(_("Cancel"))
@@ -2420,7 +2430,7 @@ class MovieSelectionFileManagerList(Screen):
 
 		self.playingRef = self.session.nav.getCurrentlyPlayingServiceOrGroup()
 		self.sort = 0
-		self["description"].setText(_("Select files with 'OK' and then use 'Green' to choose desired operation"))
+		self["description"].setText(_("Select files with 'OK' and then use 'Green' to choose desired operation.\nUse 'CH+/-' select/unselect files via the keyboard.\nUse 'Menu' for settings."))
 
 		self["Service"] = ServiceEvent()
 		self["config"].onSelectionChanged.append(self.setService)
@@ -2450,27 +2460,51 @@ class MovieSelectionFileManagerList(Screen):
 		self.session.nav.playService(self.playingRef)
 
 	def getSelectString(self):
-		self.session.openWithCallback(self.selectItems, VirtualKeyBoard, title = _("Add to selection (starts with...)"))
+		name = ""
+		item = self["config"].getCurrent()
+		length = int(config.movielistfilemanager.length.value)
+		if item and length:
+			name = item[0][0].decode('UTF-8', 'replace')[0:length]
+		self.session.openWithCallback(self.selectItems, VirtualKeyBoard, title = _("Add to selection (starts with...)"), text = name)
 
 	def selectItems(self, searchString = None):
 		if searchString:
-			search = searchString.decode('UTF-8', 'replace').lower()
-			for item in self.list.list:
-				if item[0][0].decode('UTF-8', 'replace').lower().startswith(search):
-					if not item[0][3]:
-						self.list.toggleItemSelection(item[0])
+			if config.movielistfilemanager.sensitive.value:
+					search = searchString.decode('UTF-8', 'replace')
+					for item in self.list.list:
+						if item[0][0].decode('UTF-8', 'replace').startswith(search):
+							if not item[0][3]:
+								self.list.toggleItemSelection(item[0])
+			else:
+				search = searchString.decode('UTF-8', 'replace').lower()
+				for item in self.list.list:
+					if item[0][0].decode('UTF-8', 'replace').lower().startswith(search):
+						if not item[0][3]:
+							self.list.toggleItemSelection(item[0])
 		self.displaySelectionPars()
 
 	def getUnselectString(self):
-		self.session.openWithCallback(self.unselectItems, VirtualKeyBoard, title = _("Remove from selection (starts with...)"))
+		name = ""
+		item = self["config"].getCurrent()
+		length = int(config.movielistfilemanager.length.value)
+		if item and length:
+			name = item[0][0].decode('UTF-8', 'replace')[0:length]
+		self.session.openWithCallback(self.unselectItems, VirtualKeyBoard, title = _("Remove from selection (starts with...)"), text = name)
 
 	def unselectItems(self, searchString = None):
 		if searchString:
-			search = searchString.decode('UTF-8', 'replace').lower()
-			for item in self.list.list:
-				if item[0][0].decode('UTF-8', 'replace').lower().startswith(search):
-					if item[0][3]:
-						self.list.toggleItemSelection(item[0])
+			if config.movielistfilemanager.sensitive.value:
+					search = searchString.decode('UTF-8', 'replace')
+					for item in self.list.list:
+						if item[0][0].decode('UTF-8', 'replace').startswith(search):
+							if item[0][3]:
+								self.list.toggleItemSelection(item[0])
+			else:
+				search = searchString.decode('UTF-8', 'replace').lower()
+				for item in self.list.list:
+					if item[0][0].decode('UTF-8', 'replace').lower().startswith(search):
+						if item[0][3]:
+							self.list.toggleItemSelection(item[0])
 		self.displaySelectionPars()
 
 	def toggleAllSelection(self):
@@ -2540,8 +2574,9 @@ class MovieSelectionFileManagerList(Screen):
 	def selectAction(self):
 		menu = [(_("Delete"), 3),
 		        (_("Copy to..."), 5),
-		        (_("Move to..."), 6),]
-		buttons = ["3", "5", "6"]
+		        (_("Move to..."), 6),
+ 						(_("Options..."), 20),]
+		buttons = ["3", "5", "6", "green"]
 		text = _("Select operation:")
 		self.session.openWithCallback(self.menuCallback, ChoiceBox, title=text, list=menu, keys=buttons)
 
@@ -2554,8 +2589,8 @@ class MovieSelectionFileManagerList(Screen):
 			self.copySelected()
 		elif choice[1] == 6:
 			self.moveSelected()
-		else:
-			return
+		elif choice[1] == 20:
+			self.session.open(MovieSelectionFileManagerListCfg)
 
 	def deleteSelected(self):
 		global msfml_data, msfml_path, msfml_really_remove
@@ -2720,3 +2755,47 @@ class MovieSelectionFileManagerList(Screen):
 				return _("%.0f kB") % (filesize / 1024.0)
 			return _("%d B") % filesize
 		return ""
+
+class MovieSelectionFileManagerListCfg(Screen, ConfigListScreen):
+	def __init__(self, session):
+		Screen.__init__(self, session)
+		self.skinName = ["Setup"]
+		title = _("Setup")
+		Screen.setTitle(self, title)
+		self.setup_title = title
+
+		self["key_red"] = Label(_("Cancel"))
+		self["key_green"] = Label(_("OK"))
+
+		self["actions"] = ActionMap(["SetupActions", "ColorActions"],
+		{
+			"green": self.save,
+			"ok": self.save,
+			"red": self.exit,
+			"cancel": self.exit
+		}, -2)
+
+		MovieSelectionFileManagerListCfglist = []
+		MovieSelectionFileManagerListCfglist.append(getConfigListEntry(_("Compare case sensitive"), config.movielistfilemanager.sensitive))
+		MovieSelectionFileManagerListCfglist.append(getConfigListEntry(_("Use first 'x' filename's chars for virtual keyboard"), config.movielistfilemanager.length))
+		ConfigListScreen.__init__(self, MovieSelectionFileManagerListCfglist, session, on_change = self.changedEntry)
+		self.onChangedEntry = []
+
+	# for summary:
+	def changedEntry(self):
+		for x in self.onChangedEntry:
+			x()
+	def getCurrentEntry(self):
+		return self["config"].getCurrent()[0]
+	def getCurrentValue(self):
+		return str(self["config"].getCurrent()[1].getText())
+	def createSummary(self):
+		from Screens.Setup import SetupSummary
+		return SetupSummary
+	###
+
+	def save(self):
+		self.keySave()
+
+	def exit(self):
+		self.keyCancel()

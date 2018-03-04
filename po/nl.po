@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-23 18:39+0000\n"
-"PO-Revision-Date: 2018-02-24 05:06+0100\n"
+"POT-Creation-Date: 2018-03-03 10:24+0000\n"
+"PO-Revision-Date: 2018-03-03 13:31+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -1556,6 +1556,9 @@ msgstr "Voeg aan favorieten toe"
 
 msgid "Add to parental protection"
 msgstr "Zender achter kinderslot zetten"
+
+msgid "Add to selection (starts with...)"
+msgstr "Voeg toe aan keuze (begint met...)"
 
 msgid "Add/Remove timer for current event"
 msgstr "Timer voor huidige programma toevoegen/verwijderen"
@@ -7260,6 +7263,10 @@ msgstr "Oman"
 msgid "On"
 msgstr "Aan"
 
+#, python-format
+msgid "On destination '%s' is %s free space only!"
+msgstr "Bestemming '%s' heeft slechts %s vrije ruimte!"
+
 msgid "On end of movie"
 msgstr "Bij het einde van bestand"
 
@@ -8552,6 +8559,9 @@ msgstr "Verwijderen voltooid."
 msgid "Remove from parental protection"
 msgstr "Verwijder van kinderslot"
 
+msgid "Remove from selection (starts with...)"
+msgstr "Verwijder van keuze (begint met...)"
+
 msgid "Remove items from trash can after (days)"
 msgstr "Verwijder items uit de prullenbak na x (dagen)"
 
@@ -9190,8 +9200,12 @@ msgstr "Selecteer bestemming voor:"
 msgid "Select files for backup."
 msgstr "Selecteer bestanden voor back-up."
 
-msgid "Select files with 'OK' and then use 'Green' to choose desired operation"
-msgstr "Selecteer bestanden met 'OK'; gebruik daarna 'Voer uit' om te bepalen wat u wilt doen."
+msgid ""
+"Select files with 'OK' and then use 'Green' to choose desired operation.\n"
+" Use 'CH+/-' select/unselect files via the keyboard."
+msgstr ""
+"Selecteer bestanden met 'OK'; gebruik daarna 'Voer uit' om te bepalen wat u wilt doen.\n"
+"Gebruik 'CH+/-' om bestanden te selecteren/de-selecteren."
 
 msgid "Select files/folders to backup"
 msgstr "Kies bestanden/mappen voor de back-up"
@@ -9336,6 +9350,10 @@ msgstr "Kies uw provider en druk OK om de scan te starten"
 
 msgid "Select your region. If not available change 'Country' to 'all' and select one of the default alternatives."
 msgstr "Selecteer uw regio. Indien deze niet beschikbaar is verandert u 'land' en selecteert u één van de default alternatieven."
+
+#, python-format
+msgid "Selected: %s"
+msgstr "Gekozen: %s"
 
 msgid "Selecting satellites 1 (USALS)"
 msgstr "Alle satellieten 1 (USALS)"
@@ -11533,6 +11551,10 @@ msgstr "Total afgehandelde klant emm's"
 
 msgid "Total memory:"
 msgstr "Totaal geheugen:"
+
+#, python-format
+msgid "Total size: %s"
+msgstr "Totale grootte: %s"
 
 msgid "Total swap:"
 msgstr "Totale swap:"
