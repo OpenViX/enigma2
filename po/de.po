@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-23 18:08+0000\n"
-"PO-Revision-Date: 2018-02-24 09:24+0100\n"
+"POT-Creation-Date: 2018-03-03 16:19+0000\n"
+"PO-Revision-Date: 2018-03-04 13:56+0100\n"
 "Last-Translator: Ralf Biedermann <ralf.biedermann@rbsoft.de>\n"
 "Language-Team: AndyBlacburn, j-ot&Trial\n"
 "Language: de\n"
@@ -1556,6 +1556,9 @@ msgstr "Zu Favoriten hinzufügen"
 msgid "Add to parental protection"
 msgstr "Jugendschutz aktivieren"
 
+msgid "Add to selection (starts with...)"
+msgstr "Füge zur Auswahl hinzu (starte mit...)"
+
 msgid "Add/Remove timer for current event"
 msgstr "Timer für aktuelle Sendung hinzufügen/entfernen"
 
@@ -2856,6 +2859,9 @@ msgstr "Kommunikation"
 msgid "Comoros"
 msgstr "Comoros"
 
+msgid "Compare case sensitive"
+msgstr "Vergleiche unter Beachtung der Groß-/Kleinschreibung"
+
 msgid "Complete"
 msgstr "Komplett"
 
@@ -3262,7 +3268,7 @@ msgid "Copy to bouquets"
 msgstr "In Favoritenliste kopieren"
 
 msgid "Copy to..."
-msgstr ""
+msgstr "Kopiere nach..."
 
 msgid "Copying files"
 msgstr "Dateien kopieren"
@@ -6317,6 +6323,9 @@ msgstr "Lord Howe Island"
 msgid "Lower Framerate save CPU Time"
 msgstr "Niedrigere Bildraten sparen CPU Zeit"
 
+msgid "Lower case"
+msgstr "Kleinschreibung"
+
 msgid "Luxembourg"
 msgstr "Luxemburg"
 
@@ -7251,6 +7260,10 @@ msgstr "Oman"
 msgid "On"
 msgstr "An"
 
+#, python-format
+msgid "On destination '%s' is %s free space only!"
+msgstr "Auf Ziel '%s' ist nur noch %s freier Speicher!"
+
 msgid "On end of movie"
 msgstr "Am Ende eines Films"
 
@@ -7349,6 +7362,9 @@ msgstr "OpenVpn"
 
 msgid "OpenVpn Setup"
 msgstr "OpenVPN Einstellungen"
+
+msgid "Options..."
+msgstr "Einstellungen..."
 
 msgid "Orbital position"
 msgstr "Orbitale Position"
@@ -8541,6 +8557,9 @@ msgstr "Löschen beendet."
 msgid "Remove from parental protection"
 msgstr "Aus Jugendschutz entfernen"
 
+msgid "Remove from selection (starts with...)"
+msgstr "Entferne aus der Auswahl (starte mit...)"
+
 msgid "Remove items from trash can after (days)"
 msgstr "Lösche Mülleimer nach (Tagen)"
 
@@ -9177,8 +9196,12 @@ msgstr "Wähle Ziel für:"
 msgid "Select files for backup."
 msgstr "Wähle Dateien zum sichern."
 
-msgid "Select files with 'OK' and then use 'Green' to choose desired operation"
-msgstr "Wähle Dateien mit 'OK' und dann benutze 'Grün' um die gewünschte Operation zu wählen"
+msgid ""
+"Select files with 'OK' and then use 'Green' to choose desired operation.\n"
+" Use 'CH+/-' select/unselect files via the keyboard."
+msgstr ""
+"Wähle Dateien mit 'OK' und dann benutze 'Grün' um die gewünschte Operation zu wählen.\n"
+"Benutze 'Kanal +/-' um Dateien mit einer Tastatur aus-/abzuwählen."
 
 msgid "Select files/folders to backup"
 msgstr "Wähle Dateien/Ordner für die Sicherung"
@@ -9323,6 +9346,10 @@ msgstr "Bitte wähle den Anbieter aus und bestätige mit OK, um die Suche zu sta
 
 msgid "Select your region. If not available change 'Country' to 'all' and select one of the default alternatives."
 msgstr "Wähle deine Region. Wenn nciht aufgeführt wehcsel das Land auf 'alle' und wähle eine der Standardalternativen."
+
+#, python-format
+msgid "Selected: %s"
+msgstr "Ausgewählt: %s"
 
 msgid "Selecting satellites 1 (USALS)"
 msgstr "Wähle Satelliten 1 (USALS)"
@@ -11519,6 +11546,10 @@ msgstr "Insgesamt behandelte Klienten EMMs"
 msgid "Total memory:"
 msgstr "Speicher gesamt:"
 
+#, python-format
+msgid "Total size: %s"
+msgstr "Gesamtgröße: %s"
+
 msgid "Total swap:"
 msgstr "Swap gesamt:"
 
@@ -11815,6 +11846,9 @@ msgstr "Uphops -"
 msgid "Uphops: "
 msgstr "Uphops: "
 
+msgid "Upper case"
+msgstr "Großschreibung"
+
 msgid "Uptime"
 msgstr "Laufzeit"
 
@@ -11874,6 +11908,9 @@ msgstr "Benutze Fast-Scan Sendernamen"
 
 msgid "Use fastscan channel numbering"
 msgstr "Benutze Fast-Scan Sendernummern"
+
+msgid "Use first 'x' filename's chars for virtual keyboard"
+msgstr "Benutze die ersten 'x' Buchstaben des Dateinamens für die virtuelle Tastatur"
 
 msgid "Use frequency or channel"
 msgstr "Benutze Frequenz oder Kanal"
