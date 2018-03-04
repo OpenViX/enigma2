@@ -3,7 +3,7 @@ from Screens.Setup import setupdom
 from Screens.LocationBox import MovieLocationBox
 from Screens.MessageBox import MessageBox
 from Components.Label import Label
-from Components.config import config, configfile, ConfigYesNo, ConfigNothing, ConfigSelection, getConfigListEntry
+from Components.config import config, configfile, ConfigNothing, ConfigSelection, getConfigListEntry
 from Components.ConfigList import ConfigListScreen
 from Components.ActionMap import ActionMap
 from Components.Pixmap import Pixmap
@@ -169,14 +169,10 @@ class RecordingSettings(Screen,ConfigListScreen):
 	# for summary:
 	def changedEntry(self):
 		self.item = self["config"].getCurrent()
-		if self["config"].getCurrent()[0] == _("Default movie location") or self["config"].getCurrent()[0] == _("Timer record location") or self["config"].getCurrent()[0] == _("Instant record location") or self["config"].getCurrent()[0] == _("Movie location"):
+		if self["config"].getCurrent()[1] in (self.default_dirname, self.timer_dirname, self.instantrec_dirname)):
 			self.checkReadWriteDir(self["config"].getCurrent()[1])
 		ConfigListScreen.changedEntry()
-		try:
-			if isinstance(self["config"].getCurrent()[1], ConfigYesNo) or isinstance(self["config"].getCurrent()[1], ConfigSelection):
-				self.createSetup()
-		except:
-			pass
+		self.createSetup()
 
 	def ok(self):
 		currentry = self["config"].getCurrent()
