@@ -67,6 +67,7 @@ class RecordingSettings(Screen,ConfigListScreen):
 		self.menu_path = menu_path
 		self["menu_path_compressed"] = StaticText()
 		self['footnote'] = Label()
+
 		self["HelpWindow"] = Pixmap()
 		self["HelpWindow"].hide()
 		self["VKeyIcon"] = Boolean(False)
@@ -170,22 +171,12 @@ class RecordingSettings(Screen,ConfigListScreen):
 		self.item = self["config"].getCurrent()
 		if self["config"].getCurrent()[0] == _("Default movie location") or self["config"].getCurrent()[0] == _("Timer record location") or self["config"].getCurrent()[0] == _("Instant record location") or self["config"].getCurrent()[0] == _("Movie location"):
 			self.checkReadWriteDir(self["config"].getCurrent()[1])
-		for x in self.onChangedEntry:
-			x()
+		ConfigListScreen.changedEntry()
 		try:
 			if isinstance(self["config"].getCurrent()[1], ConfigYesNo) or isinstance(self["config"].getCurrent()[1], ConfigSelection):
 				self.createSetup()
 		except:
 			pass
-
-	def getCurrentEntry(self):
-		return self["config"].getCurrent() and self["config"].getCurrent()[0] or ""
-
-	def getCurrentValue(self):
-		return self["config"].getCurrent() and str(self["config"].getCurrent()[1].getText()) or ""
-
-	def getCurrentDescription(self):
-		return self["config"].getCurrent() and len(self["config"].getCurrent()) > 2 and self["config"].getCurrent()[2] or ""
 
 	def ok(self):
 		currentry = self["config"].getCurrent()
@@ -258,25 +249,6 @@ class RecordingSettings(Screen,ConfigListScreen):
 		for x in self["config"].list:
 			x[1].save()
 		configfile.save()
-
-	# keySave and keyCancel are just provided in case you need them.
-	# you have to call them by yourself.
-	def keySave(self):
-		self.saveAll()
-		self.close()
-
-	def cancelConfirm(self, result):
-		if not result:
-			return
-		for x in self["config"].list:
-			x[1].cancel()
-		self.close()
-
-	def keyCancel(self):
-		if self["config"].isChanged():
-			self.session.openWithCallback(self.cancelConfirm, MessageBox, _("Really close without saving settings?"), default = False)
-		else:
-			self.close()
 
 	def createSummary(self):
 		return SetupSummary
