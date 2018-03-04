@@ -369,7 +369,7 @@ class CronTimersConfig(Screen, ConfigListScreen):
 
 	# for summary:
 	def changedEntry(self):
-		ConfigListScreen.changedEntry()
+		ConfigListScreen.changedEntry(self)
 		if self["config"].getCurrent()[1] in (config.crontimers.runwhen, config.crontimers.commandtype):
 			self.createSetup()
 

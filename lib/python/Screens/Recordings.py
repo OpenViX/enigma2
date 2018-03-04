@@ -169,9 +169,9 @@ class RecordingSettings(Screen,ConfigListScreen):
 
 	# for summary:
 	def changedEntry(self):
-		if self["config"].getCurrent()[1] in (self.default_dirname, self.timer_dirname, self.instantrec_dirname)):
+		if self["config"].getCurrent()[1] in (self.default_dirname, self.timer_dirname, self.instantrec_dirname):
 			self.checkReadWriteDir(self["config"].getCurrent()[1])
-		ConfigListScreen.changedEntry()
+		ConfigListScreen.changedEntry(self)
 		self.createSetup()
 
 	def ok(self):
