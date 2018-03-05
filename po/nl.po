@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-03-03 10:24+0000\n"
-"PO-Revision-Date: 2018-03-03 13:31+0100\n"
+"POT-Creation-Date: 2018-03-04 22:35+0000\n"
+"PO-Revision-Date: 2018-03-05 06:04+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -2856,6 +2856,9 @@ msgstr "Communicatie"
 msgid "Comoros"
 msgstr "Comoros"
 
+msgid "Compare case sensitive"
+msgstr "Vergelijk hoofdlettergevoelig"
+
 msgid "Complete"
 msgstr "Compleet"
 
@@ -5171,7 +5174,7 @@ msgid "Goto :"
 msgstr "Ga naar :"
 
 msgid "Goto X"
-msgstr "Goto X"
+msgstr "Ga naar X"
 
 msgid "Goto index position"
 msgstr "Naar indexpositie draaien"
@@ -6324,6 +6327,9 @@ msgstr "Lord Howe Island"
 msgid "Lower Framerate save CPU Time"
 msgstr "Lagere framerate gebruikt minder processortijd"
 
+msgid "Lower case"
+msgstr "Kleine letters"
+
 msgid "Luxembourg"
 msgstr "Luxembourg"
 
@@ -7365,6 +7371,9 @@ msgstr "Open-VPN"
 
 msgid "OpenVpn Setup"
 msgstr "Open-VPN instellingen"
+
+msgid "Options..."
+msgstr "Opties..."
 
 msgid "Orbital position"
 msgstr "Orbitale positie"
@@ -9202,10 +9211,12 @@ msgstr "Selecteer bestanden voor back-up."
 
 msgid ""
 "Select files with 'OK' and then use 'Green' to choose desired operation.\n"
-" Use 'CH+/-' select/unselect files via the keyboard."
+"Use 'CH+/-' select/unselect files via the keyboard.\n"
+"Use 'Menu' for settings."
 msgstr ""
 "Selecteer bestanden met 'OK'; gebruik daarna 'Voer uit' om te bepalen wat u wilt doen.\n"
-"Gebruik 'CH+/-' om bestanden te selecteren/de-selecteren."
+"Gebruik 'CH+/-' om bestanden te selecteren/de-selecteren.\n"
+"Gebruik 'Menu' voor instellingen"
 
 msgid "Select files/folders to backup"
 msgstr "Kies bestanden/mappen voor de back-up"
@@ -11861,6 +11872,9 @@ msgstr "Uphops -"
 msgid "Uphops: "
 msgstr "Uphops: "
 
+msgid "Upper case"
+msgstr "Hoofdletters"
+
 msgid "Uptime"
 msgstr "Uptime"
 
@@ -11920,6 +11934,9 @@ msgstr "Gebruik fastscan kanaalnamen"
 
 msgid "Use fastscan channel numbering"
 msgstr "Gebruik fastscan zendervolgorde"
+
+msgid "Use first 'x' filename's chars for virtual keyboard"
+msgstr "Gebruik de eerste x letters van de bestandsnaam voor virtueel toetsenbord."
 
 msgid "Use frequency or channel"
 msgstr "Gebruik frequentie of kanaal"
