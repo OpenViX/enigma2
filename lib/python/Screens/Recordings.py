@@ -242,9 +242,7 @@ class RecordingSettings(Screen,ConfigListScreen):
 		config.usage.default_path.save()
 		config.usage.timer_path.save()
 		config.usage.instantrec_path.save()
-		for x in self["config"].list:
-			x[1].save()
-		configfile.save()
+		ConfigListScreen.saveAll(self)
 
 	def createSummary(self):
 		return SetupSummary
