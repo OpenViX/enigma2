@@ -103,15 +103,6 @@ class TimeshiftSettings(Screen,ConfigListScreen):
 		except:
 			pass
 
-	def getCurrentEntry(self):
-		return self["config"].getCurrent() and self["config"].getCurrent()[0] or ""
-
-	def getCurrentValue(self):
-		return self["config"].getCurrent() and str(self["config"].getCurrent()[1].getText()) or ""
-
-	def getCurrentDescription(self):
-		return self["config"].getCurrent() and len(self["config"].getCurrent()) > 2 and self["config"].getCurrent()[2] or ""
-
 	def checkReadWriteDir(self, configele):
 		import os.path
 		import Components.Harddisk
@@ -237,11 +228,6 @@ class TimeshiftSettings(Screen,ConfigListScreen):
 					type = MessageBox.TYPE_ERROR
 					)
 
-	def saveAll(self):
-		for x in self["config"].list:
-			x[1].save()
-		configfile.save()
-
 	# keySave and keyCancel are just provided in case you need them.
 	# you have to call them by yourself.
 	def keySave(self):
@@ -284,19 +270,6 @@ class TimeshiftSettings(Screen,ConfigListScreen):
 				config.timeshift.startdelay.setValue(0)
 				self.saveAll()
 				self.close()
-
-	def cancelConfirm(self, result):
-		if not result:
-			return
-		for x in self["config"].list:
-			x[1].cancel()
-		self.close()
-
-	def keyCancel(self):
-		if self["config"].isChanged():
-			self.session.openWithCallback(self.cancelConfirm, MessageBox, _("Really close without saving settings?"), default = False)
-		else:
-			self.close()
 
 	def createSummary(self):
 		return SetupSummary
