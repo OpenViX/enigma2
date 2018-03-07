@@ -3684,9 +3684,8 @@ class NetworkPassword(ConfigListScreen, Screen):
 			self["menu_path_compressed"] = StaticText("")
 		Screen.setTitle(self, title)
 		self.skinName = "Setup"
-		self.onChangedEntry = []
 		self.list = []
-		ConfigListScreen.__init__(self, self.list, session=self.session, on_change=self.selectionChanged)
+		ConfigListScreen.__init__(self, self.list, session=self.session)
 
 		self["key_red"] = StaticText(_("Exit"))
 		self["key_green"] = StaticText(_("Save"))
@@ -3710,22 +3709,17 @@ class NetworkPassword(ConfigListScreen, Screen):
 		self.output_line = ""
 
 		self.updateList()
-		if self.selectionChanged not in self["config"].onSelectionChanged:
-			self["config"].onSelectionChanged.append(self.selectionChanged)
-		if self.ShowHelp not in self.onExecBegin:
-			self.onExecBegin.append(self.ShowHelp)
-		if self.HideHelp not in self.onExecEnd:
-			self.onExecEnd.append(self.HideHelp)
+		if self.selectionChanged not in self.onSelectionChanged:
+			self.onSelectionChanged.append(self.selectionChanged)
 		self.selectionChanged()
 
 	def selectionChanged(self):
-		item = self["config"].getCurrent()
-		self["description"].setText(item[2])
+		self["description"].setText(self.getCurrentDescription())
 
 	def newRandom(self):
 		self.password.value = self.GeneratePassword()
 		self["config"].invalidateCurrent()
-	
+
 	def updateList(self):
 		self.password = NoSave(ConfigPassword(default=""))
 		instructions = _("Setting a password is strongly advised if your STB is open to the internet.\nThis is the case if you have in your router a port forwarded to the STB.")
@@ -3733,17 +3727,17 @@ class NetworkPassword(ConfigListScreen, Screen):
 		self['config'].list = self.list
 		self['config'].l.setList(self.list)
 
-	def GeneratePassword(self): 
+	def GeneratePassword(self):
 		passwdChars = string.letters + string.digits
 		passwdLength = 10
-		return ''.join(Random().sample(passwdChars, passwdLength)) 
+		return ''.join(Random().sample(passwdChars, passwdLength))
 
 	def SetPasswd(self):
 		password = self.password.value
 		if not password:
 			self.session.open(MessageBox, _("The password can not be blank.") , MessageBox.TYPE_ERROR)
 			return
-		#print "[NetworkPassword] Changing the password for %s to %s" % (self.user,self.password) 
+		#print "[NetworkPassword] Changing the password for %s to %s" % (self.user,self.password)
 		self.container = eConsoleAppContainer()
 		self.container.appClosed.append(self.runFinished)
 		self.container.dataAvail.append(self.dataAvail)
