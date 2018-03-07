@@ -243,6 +243,7 @@ class ChannelContextMenu(Screen):
 						if not self.inBouquet:
 							_append_when_current_valid(current, menu, actions, (_("Add service to favourites"), self.addServiceToBouquetSelected), level=0, key="7")
 							self.addFunction = self.addServiceToBouquetSelected
+				else:
 					if 'FROM SATELLITES' in current_root.getPath() and current and _("Services") in eServiceCenter.getInstance().info(current).getName(current):
 						unsigned_orbpos = current.getUnsignedData(4) >> 16
 						if unsigned_orbpos == 0xFFFF:
