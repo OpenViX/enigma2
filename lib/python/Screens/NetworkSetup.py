@@ -3668,8 +3668,7 @@ class NetworkServicesSummary(Screen):
 		self["status_summary"].text = status_summary
 		self["autostartstatus_summary"].text = autostartstatus_summary
 
-
-class NetworkPassword(Screen):
+class NetworkPassword(ConfigListScreen, Screen):
 	def __init__(self, session, menu_path = ""):
 		Screen.__init__(self, session)
 		screentitle = _("Password setup")
@@ -3684,76 +3683,94 @@ class NetworkPassword(Screen):
 			title = screentitle
 			self["menu_path_compressed"] = StaticText("")
 		Screen.setTitle(self, title)
-		self.skinName = "NetworkSetPassword"
-
-		self.user = "root"
+		self.skinName = "Setup"
+		self.onChangedEntry = []
 		self.list = []
-		self["passwd"] = ConfigList(self.list)
-		self["key_red"] = StaticText(_("Delete Password"))
-		self["key_green"] = StaticText(_("Set Password"))
-		self["key_yellow"] = StaticText(_("New Random Password"))
-		self["key_blue"] = StaticText(_("Keyboard"))
+		ConfigListScreen.__init__(self, self.list, session=self.session, on_change=self.selectionChanged)
 
-		self["actions"] = ActionMap(["OkCancelActions", "ColorActions"],
-		{
-			"red": self.DelPasswd,
+		self["key_red"] = StaticText(_("Exit"))
+		self["key_green"] = StaticText(_("Save"))
+		self["key_yellow"] = StaticText(_("Random password"))
+
+		self["actions"] = ActionMap(["SetupActions", "ColorActions"], {
+			"red": self.close,
+			"cancel": self.close,
 			"green": self.SetPasswd,
+			"save": self.SetPasswd,
 			"yellow": self.newRandom,
-			"blue": self.bluePressed,
-			"cancel": self.close
-		}, -1)
+		})
 
-		self.buildList(self.GeneratePassword())
+		self["description"] = Label()
+		self['footnote'] = Label()
+		self["VKeyIcon"] = Boolean(False)
+		self["HelpWindow"] = Pixmap()
+		self["HelpWindow"].hide()
+
+		self.user="root"
+		self.output_line = ""
+
+		self.updateList()
+		if self.selectionChanged not in self["config"].onSelectionChanged:
+			self["config"].onSelectionChanged.append(self.selectionChanged)
+		if self.ShowHelp not in self.onExecBegin:
+			self.onExecBegin.append(self.ShowHelp)
+		if self.HideHelp not in self.onExecEnd:
+			self.onExecEnd.append(self.HideHelp)
+		self.selectionChanged()
+
+	def selectionChanged(self):
+		item = self["config"].getCurrent()
+		self["description"].setText(item[2])
 
 	def newRandom(self):
-		self.buildList(self.GeneratePassword())
+		self.password.value = self.GeneratePassword()
+		self["config"].invalidateCurrent()
+	
+	def updateList(self):
+		self.password = NoSave(ConfigPassword(default=""))
+		instructions = _("Setting a password is strongly advised if your STB is open to the internet.\nThis is the case if you have in your router a port forwarded to the STB.")
+		self.list.append(getConfigListEntry(_('New password'), self.password, instructions))
+		self['config'].list = self.list
+		self['config'].l.setList(self.list)
 
-	def buildList(self, password):
-		self.password=password
-		self.list = []
-		self.list.append(getConfigListEntry(_('Enter a new password'), ConfigText(default = self.password, fixed_size = False)))
-		self["passwd"].setList(self.list)
-
-	def GeneratePassword(self):
+	def GeneratePassword(self): 
 		passwdChars = string.letters + string.digits
 		passwdLength = 10
-		return ''.join(Random().sample(passwdChars, passwdLength))
+		return ''.join(Random().sample(passwdChars, passwdLength)) 
 
 	def SetPasswd(self):
+		password = self.password.value
+		if not password:
+			self.session.open(MessageBox, _("The password can not be blank.") , MessageBox.TYPE_ERROR)
+			return
+		#print "[NetworkPassword] Changing the password for %s to %s" % (self.user,self.password) 
 		self.container = eConsoleAppContainer()
 		self.container.appClosed.append(self.runFinished)
 		self.container.dataAvail.append(self.dataAvail)
-		retval = self.container.execute("passwd %s" % self.user)
-		if retval == 0:
-			message = _("Sucessfully changed the password for the root user to ") + self.password
+		retval = self.container.execute("echo -e '%s\n%s' | (passwd %s)"  % (password, password, self.user))
+		if retval:
+			message=_("Unable to change password")
+			self.session.open(MessageBox, message , MessageBox.TYPE_ERROR)
 		else:
-			message = _("Unable to change/reset the password for the root user")
-		self.session.open(MessageBox, message , MessageBox.TYPE_INFO)
+			message=_("Password changed")
+			self.session.open(MessageBox, message , MessageBox.TYPE_INFO, timeout=5)
+			self.close()
 
-	def DelPasswd(self):
-		self.container = eConsoleAppContainer()
-		self.container.appClosed.append(self.runFinished)
-		self.container.dataAvail.append(self.dataAvail)
-		retval = self.container.execute("passwd --delete %s" % self.user)
-		if retval == 0:
-			message = _("Password deleted sucessfully for the root user")
-		else:
-			message = _("Unable to delete the password for the root user")
-		self.session.open(MessageBox, message , MessageBox.TYPE_INFO)
+	def dataAvail(self,data):
+		self.output_line += data
+		while True:
+			i = self.output_line.find('\n')
+			if i == -1:
+				break
+			self.processOutputLine(self.output_line[:i+1])
+			self.output_line = self.output_line[i+1:]
 
-	def dataAvail(self, data):
-		if data.find('password'):
-			self.container.write("%s\n" % self.password)
+	def processOutputLine(self,line):
+		if line.find('password: '):
+			self.container.write("%s\n" % self.password.value)
 
 	def runFinished(self,retval):
 		del self.container.dataAvail[:]
 		del self.container.appClosed[:]
 		del self.container
 		self.close()
-
-	def bluePressed(self):
-		self.session.openWithCallback(self.VirtualKeyBoardTextEntry, VirtualKeyBoard, title = (_("Enter your password here:")), text = self.password)
-
-	def VirtualKeyBoardTextEntry(self, callback = None):
-		if callback is not None and len(callback):
-			self.buildList(callback)
