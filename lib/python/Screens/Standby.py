@@ -46,8 +46,8 @@ class Standby2(Screen):
 
 		print "[Standby] enter standby"
 
-		 if os.path.exists("/usr/script/standby_enter.sh"):
-			Console().ePopen("/usr/script/standby_enter.sh")
+		 if os.path.exists("/usr/scripts/standby_enter.sh"):
+			Console().ePopen("/usr/scripts/standby_enter.sh")
 
 		self["actions"] = ActionMap( [ "StandbyActions" ],
 		{
@@ -120,8 +120,8 @@ class Standby2(Screen):
 		globalActionMap.setEnabled(True)
 		self.avswitch.setInput("ENCODER")
 		self.leaveMute()
-		if os.path.exists("/usr/script/standby_leave.sh"):
-			Console().ePopen("/usr/script/standby_leave.sh")
+		if os.path.exists("/usr/scripts/standby_leave.sh"):
+			Console().ePopen("/usr/scripts/standby_leave.sh")
 
 	def __onFirstExecBegin(self):
 		global inStandby
@@ -281,8 +281,8 @@ class TryQuitMainloop(MessageBox):
 			self.hide()
 			if self.retval == 1:
 				config.misc.DeepStandby.value = True
-				if os.path.exists("/usr/script/standby_enter.sh"):
-					Console().ePopen("/usr/script/standby_enter.sh")
+				if os.path.exists("/usr/scripts/standby_enter.sh"):
+					Console().ePopen("/usr/scripts/standby_enter.sh")
 			self.session.nav.stopService()
 			self.quitScreen = self.session.instantiateDialog(QuitMainloopScreen,retvalue=self.retval)
 			self.quitScreen.show()
