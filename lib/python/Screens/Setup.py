@@ -104,14 +104,14 @@ class Setup(ConfigListScreen, Screen):
 		self.item = None
 		self.list = []
 		self.setup = setup
+		self.force_update_list = False
 		self.plugin = plugin
 		self.PluginLanguageDomain = PluginLanguageDomain
 		self.menu_path = menu_path
-		list = []
 
 		self.refill()
 		ConfigListScreen.__init__(self, self.list, session = session, on_change = self.changedEntry)
-		self.createSetup()
+		self["config"].onSelectionChanged.append(self.__onSelectionChanged)
 
 		#check for list.entries > 0 else self.close
 		self["key_red"] = StaticText(_("Cancel"))
@@ -130,27 +130,6 @@ class Setup(ConfigListScreen, Screen):
 		self.changedEntry()
 		self.onLayoutFinish.append(self.layoutFinished)
 
-	def createSetup(self):
-		list = []
-		self.refill(list)
-		self["config"].setList(list)
-		if config.usage.sort_settings.value:
-			self["config"].list.sort()
-		self.moveToItem(self.item)
-
-	def getIndexFromItem(self, item):
-		if item is not None:
-			for x in range(len(self["config"].list)):
-				if self["config"].list[x][0] == item[0]:
-					return x
-		return None
-
-	def moveToItem(self, item):
-		newIdx = self.getIndexFromItem(item)
-		if newIdx is None:
-			newIdx = 0
-		self["config"].setCurrentIndex(newIdx)
-
 	def layoutFinished(self):
 		if config.usage.show_menupath.value == 'large' and self.menu_path:
 			title = self.menu_path + _(self.setup_title)
@@ -162,15 +141,6 @@ class Setup(ConfigListScreen, Screen):
 			title = _(self.setup_title)
 			self["menu_path_compressed"].setText("")
 		self.setTitle(title)
-
-	# for summary:
-	def changedEntry(self):
-		self.item = self["config"].getCurrent()
-		try:
-			if isinstance(self["config"].getCurrent()[1], ConfigYesNo) or isinstance(self["config"].getCurrent()[1], ConfigSelection):
-				self.createSetup()
-		except:
-			pass
 
 	def addItems(self, parentNode):
 		for x in parentNode:
@@ -216,6 +186,16 @@ class Setup(ConfigListScreen, Screen):
 		if not(isinstance(self["config"].getCurrent()[1], ConfigText) or isinstance(self["config"].getCurrent()[1], ConfigPassword)):
 			self.refill()
 			self["config"].setList(self.list)
+ 
+	def __onSelectionChanged(self):
+		if self.force_update_list:
+			self["config"].onSelectionChanged.remove(self.__onSelectionChanged)
+			self.refill()
+			self["config"].setList(self.list)
+			self["config"].onSelectionChanged.append(self.__onSelectionChanged)
+			self.force_update_list = False
+		if isinstance(self["config"].getCurrent()[1], ConfigText) or isinstance(self["config"].getCurrent()[1], ConfigPassword):
+			self.force_update_list = True
 
 def getSetupTitle(id):
 	xmldata = setupdom().getroot()
