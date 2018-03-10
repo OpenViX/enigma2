@@ -160,7 +160,7 @@ class Setup(ConfigListScreen, Screen):
 					elif not SystemInfo.get(requires, False):
 						continue
 				configCondition = x.get("configcondition")
-				if configCondition and not eval(configCondition + ".value"):
+				if configCondition and not eval(configCondition):
  					continue
 
 				if self.PluginLanguageDomain:
