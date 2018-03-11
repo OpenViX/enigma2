@@ -22,9 +22,3 @@ class VariableText(object):
 
 	def postWidgetCreate(self, instance):
 		instance.setText(self.message or "")
-
-	def getBoolean(self):
-		return bool(self.message)
-
-	boolean = property(getBoolean)
-	
