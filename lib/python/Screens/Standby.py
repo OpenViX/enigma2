@@ -46,7 +46,7 @@ class Standby2(Screen):
 
 		print "[Standby] enter standby"
 
-		 if os.path.exists("/usr/scripts/standby_enter.sh"):
+		if os.path.exists("/usr/scripts/standby_enter.sh"):
 			Console().ePopen("/usr/scripts/standby_enter.sh")
 
 		self["actions"] = ActionMap( [ "StandbyActions" ],
