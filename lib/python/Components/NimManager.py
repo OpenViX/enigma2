@@ -15,8 +15,6 @@ from Tools.BoundFunction import boundFunction
 from Components.About import about
 from config import config, ConfigSubsection, ConfigSelection, ConfigFloat, ConfigSatlist, ConfigYesNo, ConfigInteger, ConfigSubList, ConfigNothing, ConfigSubDict, ConfigOnOff, ConfigDateTime, ConfigText
 
-import NavigationInstance
-
 config.unicable = ConfigSubsection()
 
 def getConfigSatlist(orbpos, satlist):
@@ -1524,9 +1522,8 @@ def InitNimManager(nimmgr, update_slots = []):
 		try:
 			raw_channel = eDVBResourceManager.getInstance().allocateRawChannel(fe_id)
 			if raw_channel is None:
-				if NavigationInstance.instance:
-					NavigationInstance.instance.stopService()
-					raw_channel = eDVBResourceManager.getInstance().allocateRawChannel(fe_id)
+				self.session.nav.stopService()
+				raw_channel = eDVBResourceManager.getInstance().allocateRawChannel(fe_id)
 				if raw_channel is None:
 					print "[InitNimManager] %d: tunerTypeChanged to '%s' failed (BUSY)" %(fe_id, configElement.getText())
 					return
