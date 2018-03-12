@@ -33,12 +33,6 @@ def getConfigMenuItem(configElement):
 			return _(item.attrib["text"]), eval(configElement)
 	return "", None
 
-class SetupError(Exception):
-	def __init__(self, message):
-		self.msg = message
-
-	def __str__(self):
-		return self.msg
 
 class SetupSummary(Screen):
 	def __init__(self, session, parent):
@@ -224,10 +218,16 @@ class Setup(ConfigListScreen, Screen):
 
 def getSetupTitle(id):
 	xmldata = setupdom().getroot()
+	id = str(id)
+	title = ""
 	for x in xmldata.findall("setup"):
 		if x.get("key") == id:
-			if x.get("titleshort", "").encode("UTF-8") != "":
-				return _(x.get("titleshort", "").encode("UTF-8"))
-			else:
-				return _(x.get("title", "").encode("UTF-8"))
-	raise SetupError("unknown setup id '%s'!" % repr(id))
+			title = x.get("titleshort", "").encode("UTF-8")
+			if title == "":
+				title = x.get("title", "").encode("UTF-8")
+				if title == "":
+					title = "** Setup error: '%s' title is missing or blank!" % id
+	if title == "":
+		print "[Setup] Error: Setup ID '%s' not found in setup file!" % id
+		title = "** Setup error: '%s' section not found! **" % id
+	return _(title)
