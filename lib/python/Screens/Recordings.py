@@ -3,13 +3,13 @@ from Screens.Setup import setupdom
 from Screens.LocationBox import MovieLocationBox
 from Screens.MessageBox import MessageBox
 from Components.Label import Label
-from Components.config import config, configfile, ConfigYesNo, ConfigNothing, ConfigSelection, getConfigListEntry
+from Components.config import config, configfile, ConfigNothing, ConfigSelection, getConfigListEntry
 from Components.ConfigList import ConfigListScreen
 from Components.ActionMap import ActionMap
 from Components.Pixmap import Pixmap
 from Tools.Directories import fileExists
 from Components.UsageConfig import preferredPath
-from Components.Sources.Boolean import Boolean
+#from Components.Sources.Boolean import Boolean
 from Components.Sources.StaticText import StaticText
 from Components.SystemInfo import SystemInfo
 
@@ -67,9 +67,11 @@ class RecordingSettings(Screen,ConfigListScreen):
 		self.menu_path = menu_path
 		self["menu_path_compressed"] = StaticText()
 		self['footnote'] = Label()
-		self["HelpWindow"] = Pixmap()
-		self["HelpWindow"].hide()
-		self["VKeyIcon"] = Boolean(False)
+
+		# No ConfigText fields in MovieBrowserConfiguration so these are not currently used.
+		#self["HelpWindow"] = Pixmap()
+		#self["HelpWindow"].hide()
+		#self["VKeyIcon"] = Boolean(False)
 
 		self["key_red"] = StaticText(_("Cancel"))
 		self["key_green"] = StaticText(_("Save"))
@@ -167,25 +169,10 @@ class RecordingSettings(Screen,ConfigListScreen):
 
 	# for summary:
 	def changedEntry(self):
-		self.item = self["config"].getCurrent()
-		if self["config"].getCurrent()[0] == _("Default movie location") or self["config"].getCurrent()[0] == _("Timer record location") or self["config"].getCurrent()[0] == _("Instant record location") or self["config"].getCurrent()[0] == _("Movie location"):
+		if self["config"].getCurrent()[1] in (self.default_dirname, self.timer_dirname, self.instantrec_dirname):
 			self.checkReadWriteDir(self["config"].getCurrent()[1])
-		for x in self.onChangedEntry:
-			x()
-		try:
-			if isinstance(self["config"].getCurrent()[1], ConfigYesNo) or isinstance(self["config"].getCurrent()[1], ConfigSelection):
-				self.createSetup()
-		except:
-			pass
-
-	def getCurrentEntry(self):
-		return self["config"].getCurrent() and self["config"].getCurrent()[0] or ""
-
-	def getCurrentValue(self):
-		return self["config"].getCurrent() and str(self["config"].getCurrent()[1].getText()) or ""
-
-	def getCurrentDescription(self):
-		return self["config"].getCurrent() and len(self["config"].getCurrent()) > 2 and self["config"].getCurrent()[2] or ""
+		ConfigListScreen.changedEntry(self)
+		self.createSetup()
 
 	def ok(self):
 		currentry = self["config"].getCurrent()
@@ -255,28 +242,7 @@ class RecordingSettings(Screen,ConfigListScreen):
 		config.usage.default_path.save()
 		config.usage.timer_path.save()
 		config.usage.instantrec_path.save()
-		for x in self["config"].list:
-			x[1].save()
-		configfile.save()
-
-	# keySave and keyCancel are just provided in case you need them.
-	# you have to call them by yourself.
-	def keySave(self):
-		self.saveAll()
-		self.close()
-
-	def cancelConfirm(self, result):
-		if not result:
-			return
-		for x in self["config"].list:
-			x[1].cancel()
-		self.close()
-
-	def keyCancel(self):
-		if self["config"].isChanged():
-			self.session.openWithCallback(self.cancelConfirm, MessageBox, _("Really close without saving settings?"), default = False)
-		else:
-			self.close()
+		ConfigListScreen.saveAll(self)
 
 	def createSummary(self):
 		return SetupSummary

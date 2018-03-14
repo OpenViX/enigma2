@@ -8,7 +8,6 @@ from Screens.Screen import Screen
 from Screens.Standby import TryQuitMainloop
 
 # for VKeyIcon
-from Components.config import ConfigText, ConfigPassword	
 from Components.Sources.Boolean import Boolean
 
 # for HelpWindow
@@ -88,31 +87,7 @@ class ClientModeScreen(ConfigListScreen, Screen):
 		self["config"].l.setList(setup_list)
 
 	def selectionChanged(self):
-		self["description"].setText(self["config"].getCurrent()[2])
-		self.setVKeyIcon()
-
-	def setVKeyIcon(self):
-		if isinstance(self["config"].getCurrent()[1], ConfigText) or isinstance(self["config"].getCurrent()[1], ConfigPassword):
-			self["VKeyIcon"].boolean = True
-			if self["config"].getCurrent()[1].help_window.instance is not None:
-				self["config"].getCurrent()[1].help_window.instance.move(ePoint(self["HelpWindow"].getPosition()[0],self["HelpWindow"].getPosition()[1]))
-		else:
-			self["VKeyIcon"].boolean = False
-
-	# for summary:
-	def changedEntry(self):
-		for x in self.onChangedEntry:
-			x()
-
-	def getCurrentEntry(self):
-		return self["config"].getCurrent()[0]
-
-	def getCurrentValue(self):
-		return str(self["config"].getCurrent()[1].getText())
-
-	def createSummary(self):
-		from Screens.Setup import SetupSummary
-		return SetupSummary
+		self["description"].setText(self.getCurrentDescription())
 
 	def run(self): # for start wizard
 		self.saveconfig()
@@ -128,18 +103,6 @@ class ClientModeScreen(ConfigListScreen, Screen):
 		else:
 			self.saveconfig()
 			self.close()
-
-	def keyCancel(self):
-		if self["config"].isChanged():
-			self.session.openWithCallback(self.cancelCallback, MessageBox, _("Really close without saving settings?"))
-		else:
-			self.cancelCallback(True)
-
-	def cancelCallback(self, answer):
-		if answer:
-			for x in self["config"].list:
-				x[1].cancel()
-			self.close(False)
 
 	def saveconfig(self):
 		nim_config_list = []

@@ -7,6 +7,7 @@ from Components.Button import Button
 from Components.Label import Label
 from Components.Pixmap import Pixmap
 from Components.SystemInfo import SystemInfo
+#from Components.Sources.Boolean import Boolean
 from Components.Sources.StaticText import StaticText
 from Components.config import config
 from PowerTimer import AFTEREVENT, TIMERTYPE
@@ -36,8 +37,10 @@ class TimerEntry(Screen, ConfigListScreen):
 		self.entryDate = None
 		self.entryService = None
 
-		self["HelpWindow"] = Pixmap()
-		self["HelpWindow"].hide()
+		# No ConfigText fields in TimerEntry so these are not currently used.
+		#self["HelpWindow"] = Pixmap()
+		#self["HelpWindow"].hide()
+		#self["VKeyIcon"] = Boolean(False)
 
 		self["key_green"] = self["oktext"] = Label(_("OK"))
 		self["key_red"] = self["canceltext"] = Label(_("Cancel"))

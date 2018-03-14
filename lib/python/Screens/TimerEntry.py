@@ -23,7 +23,6 @@ from Screens.LocationBox import MovieLocationBox
 from Screens.ChoiceBox import ChoiceBox
 from Screens.MessageBox import MessageBox
 from Screens.VirtualKeyBoard import VirtualKeyBoard
-from Screens.Setup import SetupSummary
 from RecordTimer import AFTEREVENT
 
 
@@ -72,12 +71,6 @@ class TimerEntry(Screen, ConfigListScreen):
 			"size+": self.incrementEnd,
 			"size-": self.decrementEnd,
 		}, -2)
-
-		self["VirtualKB"] = ActionMap(["VirtualKeyboardActions"],
-		{
-			"showVirtualKeyboard": self.KeyText,
-		}, -2)
-		self["VirtualKB"].setEnabled(False)
 
 		self.onChangedEntry = [ ]
 		self.list = []
@@ -272,48 +265,11 @@ class TimerEntry(Screen, ConfigListScreen):
 		self[widget].l.setList(self.list)
 
 	def selectionChanged(self):
-		if self["config"].getCurrent():
-			if len(self["config"].getCurrent()) > 2 and self["config"].getCurrent()[2]:
-				self["description"].setText(self["config"].getCurrent()[2])
-			if isinstance(self["config"].getCurrent()[1], ConfigText):
-				if self.has_key("VKeyIcon"):
-					self["VirtualKB"].setEnabled(True)
-					self["VKeyIcon"].boolean = True
-				if self.has_key("HelpWindow"):
-					if self["config"].getCurrent()[1].help_window and self["config"].getCurrent()[1].help_window.instance is not None:
-						helpwindowpos = self["HelpWindow"].getPosition()
-						from enigma import ePoint
-						self["config"].getCurrent()[1].help_window.instance.move(ePoint(helpwindowpos[0],helpwindowpos[1]))
-					else:
-						if self.has_key("VKeyIcon"):
-							self["VirtualKB"].setEnabled(False)
-							self["VKeyIcon"].boolean = False
-		else:
-			if self.has_key("VKeyIcon"):
-				self["VirtualKB"].setEnabled(False)
-				self["VKeyIcon"].boolean = False
-
-	def createSummary(self):
-		return SetupSummary
-
-	# for summary:
-	def changedEntry(self):
-		for x in self.onChangedEntry:
-			x()
-
-	def getCurrentEntry(self):
-		return self["config"].getCurrent() and self["config"].getCurrent()[0] or ""
-
-	def getCurrentValue(self):
-		return self["config"].getCurrent() and str(self["config"].getCurrent()[1].getText()) or ""
+		self["description"].setText(self.getCurrentDescription())
 
 	def newConfig(self):
 		if self["config"].getCurrent() in (self.timerTypeEntry, self.timerJustplayEntry, self.frequencyEntry, self.entryShowEndTime):
 			self.createSetup("config")
-
-	def KeyText(self):
-		if self['config'].getCurrent()[0] in (_('Name'), _("Description")):
-			self.session.openWithCallback(self.renameEntryCallback, VirtualKeyBoard, title=self["config"].getCurrent()[2], text = self["config"].getCurrent()[1].value)
 
 	def keyLeft(self):
 		cur = self["config"].getCurrent()

@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-23 18:39+0000\n"
-"PO-Revision-Date: 2018-02-24 05:06+0100\n"
+"POT-Creation-Date: 2018-03-12 02:17+0000\n"
+"PO-Revision-Date: 2018-03-12 06:31+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -1557,6 +1557,9 @@ msgstr "Voeg aan favorieten toe"
 msgid "Add to parental protection"
 msgstr "Zender achter kinderslot zetten"
 
+msgid "Add to selection (starts with...)"
+msgstr "Voeg toe aan keuze (begint met...)"
+
 msgid "Add/Remove timer for current event"
 msgstr "Timer voor huidige programma toevoegen/verwijderen"
 
@@ -2853,6 +2856,9 @@ msgstr "Communicatie"
 msgid "Comoros"
 msgstr "Comoros"
 
+msgid "Compare case sensitive"
+msgstr "Vergelijk hoofdlettergevoelig"
+
 msgid "Complete"
 msgstr "Compleet"
 
@@ -3764,9 +3770,6 @@ msgstr "Bevestig verwijderen"
 msgid "Delete EPG"
 msgstr "EPG verwijderen"
 
-msgid "Delete Password"
-msgstr "Wachtwoord verwijderen"
-
 msgid "Delete entry"
 msgstr "Verwijder invoer"
 
@@ -4420,9 +4423,6 @@ msgstr "Enigma2 skinselectie"
 msgid "Enter PIN"
 msgstr "Voer PIN in"
 
-msgid "Enter a new password"
-msgstr "Geef een nieuw wachtwoord in"
-
 msgid "Enter if you are in the east or west hemisphere."
 msgstr "Geef aan of u op het westelijke of het oostelijke halfrond bent."
 
@@ -4491,9 +4491,6 @@ msgstr "Geef de hoge band lokale oscillator frequentie in. Voor meer informatie 
 
 msgid "Enter your low band local oscillator frequency. For more information consult the spec sheet of your LNB."
 msgstr "Geef de lage band lokale oscillator frequentie in. Voor meer informatie zie de specificaties van uw LNB."
-
-msgid "Enter your password here:"
-msgstr "Geef hier het nieuwe wachtwoord in:"
 
 msgid "Entertainment"
 msgstr "Ontspanning"
@@ -5168,7 +5165,7 @@ msgid "Goto :"
 msgstr "Ga naar :"
 
 msgid "Goto X"
-msgstr "Goto X"
+msgstr "Ga naar X"
 
 msgid "Goto index position"
 msgstr "Naar indexpositie draaien"
@@ -5821,9 +5818,6 @@ msgstr "Installeert service"
 msgid "Instant record"
 msgstr "Directe opname"
 
-msgid "Instant record location"
-msgstr "Lokatie directe opname"
-
 msgid "Instant recording location"
 msgstr "Lokatie van directe opnames"
 
@@ -6320,6 +6314,9 @@ msgstr "Lord Howe Island"
 
 msgid "Lower Framerate save CPU Time"
 msgstr "Lagere framerate gebruikt minder processortijd"
+
+msgid "Lower case"
+msgstr "Kleine letters"
 
 msgid "Luxembourg"
 msgstr "Luxembourg"
@@ -6892,11 +6889,11 @@ msgstr "Nieuw"
 msgid "New Caledonia"
 msgstr "New Caledonia"
 
-msgid "New Random Password"
-msgstr "Nieuw willekeurig wachtwoord"
-
 msgid "New Zealand"
 msgstr "New Zealand"
+
+msgid "New password"
+msgstr "Wachtwoord instellen"
 
 msgid "New profile: "
 msgstr "Niew profiel: "
@@ -7260,6 +7257,10 @@ msgstr "Oman"
 msgid "On"
 msgstr "Aan"
 
+#, python-format
+msgid "On destination '%s' is %s free space only!"
+msgstr "Bestemming '%s' heeft slechts %s vrije ruimte!"
+
 msgid "On end of movie"
 msgstr "Bij het einde van bestand"
 
@@ -7358,6 +7359,9 @@ msgstr "Open-VPN"
 
 msgid "OpenVpn Setup"
 msgstr "Open-VPN instellingen"
+
+msgid "Options..."
+msgstr "Opties..."
 
 msgid "Orbital position"
 msgstr "Orbitale positie"
@@ -7502,8 +7506,8 @@ msgstr "Wachtwoord"
 msgid "Password (httpwd)"
 msgstr "Wachtwoord (httpwd)"
 
-msgid "Password deleted sucessfully for the root user"
-msgstr "Wachtwoord voor root-gebruiker succesvol verwijderd."
+msgid "Password changed"
+msgstr "Wachtwoord is veranderd"
 
 msgid "Password setup"
 msgstr "Wachtwoord instellen"
@@ -8313,6 +8317,9 @@ msgstr "Radio zenderkeuze"
 msgid "Random"
 msgstr "Willekeurig"
 
+msgid "Random password"
+msgstr "Willekeurig wachtwoord"
+
 #, python-format
 msgid "Rating defined by broadcaster - %d"
 msgstr "Waardering bepaald door omroep - %d"
@@ -8551,6 +8558,9 @@ msgstr "Verwijderen voltooid."
 
 msgid "Remove from parental protection"
 msgstr "Verwijder van kinderslot"
+
+msgid "Remove from selection (starts with...)"
+msgstr "Verwijder van keuze (begint met...)"
 
 msgid "Remove items from trash can after (days)"
 msgstr "Verwijder items uit de prullenbak na x (dagen)"
@@ -9190,8 +9200,14 @@ msgstr "Selecteer bestemming voor:"
 msgid "Select files for backup."
 msgstr "Selecteer bestanden voor back-up."
 
-msgid "Select files with 'OK' and then use 'Green' to choose desired operation"
-msgstr "Selecteer bestanden met 'OK'; gebruik daarna 'Voer uit' om te bepalen wat u wilt doen."
+msgid ""
+"Select files with 'OK' and then use 'Green' to choose desired operation.\n"
+"Use 'CH+/-' select/unselect files via the keyboard.\n"
+"Use 'Menu' for settings."
+msgstr ""
+"Selecteer bestanden met 'OK'; gebruik daarna 'Voer uit' om te bepalen wat u wilt doen.\n"
+"Gebruik 'CH+/-' om bestanden te selecteren/de-selecteren.\n"
+"Gebruik 'Menu' voor instellingen"
 
 msgid "Select files/folders to backup"
 msgstr "Kies bestanden/mappen voor de back-up"
@@ -9337,6 +9353,10 @@ msgstr "Kies uw provider en druk OK om de scan te starten"
 msgid "Select your region. If not available change 'Country' to 'all' and select one of the default alternatives."
 msgstr "Selecteer uw regio. Indien deze niet beschikbaar is verandert u 'land' en selecteert u één van de default alternatieven."
 
+#, python-format
+msgid "Selected: %s"
+msgstr "Gekozen: %s"
+
 msgid "Selecting satellites 1 (USALS)"
 msgstr "Alle satellieten 1 (USALS)"
 
@@ -9481,9 +9501,6 @@ msgstr "Kanalen kunnen in favorietenlijsten worden samengevoegd. Indien geactive
 msgid "Set Framerate for MiniTV"
 msgstr "Stel framerate in voor MiniTV"
 
-msgid "Set Password"
-msgstr "Wachtwoord instellen"
-
 msgid "Set as startup service"
 msgstr "Kies kanaal na opstarten"
 
@@ -9605,6 +9622,13 @@ msgstr "Voltage en 22KHz instellen"
 
 msgid "Sets the root directory of movie list, to remove the '..' from being shown in that folder."
 msgstr "Stelt de root-map van de opnamelijst in, om '..' niet te tonen."
+
+msgid ""
+"Setting a password is strongly advised if your STB is open to the internet.\n"
+"This is the case if you have in your router a port forwarded to the STB."
+msgstr ""
+"Het gebruik van een wachtwoord is sterk aanbevolen indien uw STB open met het internet is verbonden.\n"
+"Dat is het geval indien in uw router een 'port forwarded' is naar uw STB."
 
 msgid "Settings"
 msgstr "Instellingen"
@@ -10602,9 +10626,6 @@ msgstr "Ondertitels"
 msgid "Subtitles settings"
 msgstr "Ondertitel instellingen"
 
-msgid "Sucessfully changed the password for the root user to "
-msgstr "Wachtwoord voor de root-gebruiker succesvol veranderd in "
-
 msgid "Sudan"
 msgstr "Sudan"
 
@@ -10981,6 +11002,9 @@ msgid ""
 msgstr ""
 "De Netwerkwizard-plugin is niet geïnstalleerd!\n"
 "Installeer deze eerst."
+
+msgid "The password can not be blank."
+msgstr "Het wachtwoordveld mag niet leeg zijn"
 
 #, python-format
 msgid "The path %s already exists."
@@ -11389,9 +11413,6 @@ msgstr ""
 "Timer overlap in timers.xml gedetecteerd!\n"
 "Controleer deze!"
 
-msgid "Timer record location"
-msgstr "Timer opnamelokatie"
-
 msgid "Timer recording location"
 msgstr "Timer opnamelokatie"
 
@@ -11533,6 +11554,10 @@ msgstr "Total afgehandelde klant emm's"
 
 msgid "Total memory:"
 msgstr "Totaal geheugen:"
+
+#, python-format
+msgid "Total size: %s"
+msgstr "Totale grootte: %s"
 
 msgid "Total swap:"
 msgstr "Totale swap:"
@@ -11726,11 +11751,8 @@ msgstr "Ukraine"
 msgid "Ukrainian"
 msgstr "Ukrainian"
 
-msgid "Unable to change/reset the password for the root user"
-msgstr "Kan het wachtwoord voor de root-gebruiker niet veranderen/resetten."
-
-msgid "Unable to delete the password for the root user"
-msgstr "Kan het wachtwoord voor de root-gebruiker niet verwijderen."
+msgid "Unable to change password"
+msgstr "Kan wachtwoord niet veranderen"
 
 msgid "Undefined"
 msgstr "Niet gedefinieerd"
@@ -11839,6 +11861,9 @@ msgstr "Uphops -"
 msgid "Uphops: "
 msgstr "Uphops: "
 
+msgid "Upper case"
+msgstr "Hoofdletters"
+
 msgid "Uptime"
 msgstr "Uptime"
 
@@ -11898,6 +11923,9 @@ msgstr "Gebruik fastscan kanaalnamen"
 
 msgid "Use fastscan channel numbering"
 msgstr "Gebruik fastscan zendervolgorde"
+
+msgid "Use first 'x' filename's chars for virtual keyboard"
+msgstr "Gebruik de eerste x letters van de bestandsnaam voor virtueel toetsenbord."
 
 msgid "Use frequency or channel"
 msgstr "Gebruik frequentie of kanaal"
@@ -14870,6 +14898,9 @@ msgstr "zapte"
 #~ msgid "Dayname Month-99"
 #~ msgstr "dagnaam maand-99"
 
+#~ msgid "Delete Password"
+#~ msgstr "Wachtwoord verwijderen"
+
 #~ msgid "Delete..."
 #~ msgstr "Wissen..."
 
@@ -14971,6 +15002,9 @@ msgstr "zapte"
 #~ msgid "Enimga2 Changes"
 #~ msgstr "Enimga2 veranderingen"
 
+#~ msgid "Enter your password here:"
+#~ msgstr "Geef hier het nieuwe wachtwoord in:"
+
 #~ msgid "Error downloading the change log."
 #~ msgstr "Fout bij het downloaden van het veranderingslogboek."
 
@@ -15052,6 +15086,9 @@ msgstr "zapte"
 
 #~ msgid "Initialization"
 #~ msgstr "Initialiseren"
+
+#~ msgid "Instant record location"
+#~ msgstr "Lokatie directe opname"
 
 #~ msgid "Lamedb"
 #~ msgstr "Lamedb"
@@ -15207,6 +15244,9 @@ msgstr "zapte"
 
 #~ msgid "Parental control type"
 #~ msgstr "Kinderslot type"
+
+#~ msgid "Password deleted sucessfully for the root user"
+#~ msgstr "Wachtwoord voor root-gebruiker succesvol verwijderd."
 
 #~ msgid "Phone number"
 #~ msgstr "Telefoonnummer"
@@ -15421,6 +15461,9 @@ msgstr "zapte"
 #~ msgid "Subtitles Settings"
 #~ msgstr "Ondertitel instellingen"
 
+#~ msgid "Sucessfully changed the password for the root user to "
+#~ msgstr "Wachtwoord voor de root-gebruiker succesvol veranderd in "
+
 #~ msgid "Switch channel down"
 #~ msgstr "Ga naar vorige kanaal"
 
@@ -15496,6 +15539,9 @@ msgstr "zapte"
 #~ msgid "Timer overview"
 #~ msgstr "Timer overzicht"
 
+#~ msgid "Timer record location"
+#~ msgstr "Timer opnamelokatie"
+
 #~ msgid "Timeshift settings"
 #~ msgstr "Timeshift instellingen"
 
@@ -15527,6 +15573,12 @@ msgstr "zapte"
 
 #~ msgid "USB stick wizard"
 #~ msgstr "USB-stick wizard"
+
+#~ msgid "Unable to change/reset the password for the root user"
+#~ msgstr "Kan het wachtwoord voor de root-gebruiker niet veranderen/resetten."
+
+#~ msgid "Unable to delete the password for the root user"
+#~ msgstr "Kan het wachtwoord voor de root-gebruiker niet verwijderen."
 
 #~ msgid "Unattended upgrade without GUI and reboot system"
 #~ msgstr "Upgrade uitvoeren en vervolgens systeem herstarten"
