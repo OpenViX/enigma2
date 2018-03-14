@@ -277,6 +277,14 @@ class RecordTimerEntry(timer.TimerEntry, object):
 			return True
 
 	def calculateFilename(self, name=None):
+# An external caller (e.g. the enigma2 plugin Series Plugin) may well
+# not have called freespace(). So we need to set MountPath here.
+# There is no point in calling freespace() as the caller won't be able
+# to handle anything it does anyway.
+#
+		if not hasattr(self, "MountPath"):
+			self.MountPath = self.dirname
+
 		service_name = self.service_ref.getServiceName()
 		begin_date = strftime("%Y%m%d %H%M", localtime(self.begin))
 
