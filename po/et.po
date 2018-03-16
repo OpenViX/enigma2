@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX-Enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-22 07:56+0200\n"
-"PO-Revision-Date: 2018-02-03 08:02+0200\n"
+"POT-Creation-Date: 2018-03-15 01:34+0000\n"
+"PO-Revision-Date: 2018-03-16 14:42+0200\n"
 "Last-Translator: rimas\n"
 "Language-Team: Digi-tv.ee\n"
 "Language: et\n"
@@ -132,9 +132,6 @@ msgid ""
 msgstr ""
 "\n"
 "Tarkvara paigaldamine ja eemaldamine."
-
-msgid " "
-msgstr " "
 
 #, python-format
 msgid "  (%s x %s)"
@@ -1306,7 +1303,7 @@ msgid ""
 "What do you want to do?"
 msgstr ""
 "Toimub salvestamine.\n"
-"Mida soovid teha?"
+"Mida tuleks teha?"
 
 msgid "A recording is currently running on the selected tuner. Please select a different tuner or consider to stop the recording to try again."
 msgstr "Valitud tuuneril toimub salvestamine. Uuesti proovimiseks vali teine tuuner või peata salvestamine."
@@ -1557,6 +1554,9 @@ msgstr "Lisa lemmiknimekirja"
 
 msgid "Add to parental protection"
 msgstr "Lisa lapselukk"
+
+msgid "Add to selection (starts with...)"
+msgstr "Lisa valikusse (algab ...)"
 
 msgid "Add/Remove timer for current event"
 msgstr "Lisa/eemalda taimer sellele saatele"
@@ -2292,10 +2292,10 @@ msgid "Burn audio track (%s)"
 msgstr "Kirjuta heliriba (%s)"
 
 msgid "Burn existing image to DVD"
-msgstr "Kirjuta tõmmis DVD-le"
+msgstr "Kirjuta tõmmis DVD plaadile"
 
 msgid "Burn to DVD"
-msgstr "Kirjuta DVD-le"
+msgstr "Kirjuta DVD plaadile"
 
 msgid "Burundi"
 msgstr "Burundi"
@@ -2856,6 +2856,9 @@ msgstr "Suhtlus"
 msgid "Comoros"
 msgstr "Komoori saared"
 
+msgid "Compare case sensitive"
+msgstr "Tõusutundlik võrdlus"
+
 msgid "Complete"
 msgstr "Täielik"
 
@@ -2926,9 +2929,6 @@ msgstr "Määra, kas subtiitritele kuvatakse taust."
 
 msgid "Configure if picons will be shown in the service list."
 msgstr "Määra, kas kanalinimekirjas näidatakse pikoneid."
-
-msgid "Configure if service picons will be shown in quickzap."
-msgstr "Määra, kas kanalivahetusel kuvatakse pikonid."
 
 msgid "Configure if the subtitle should switch between normal, italic, bold and bolditalic"
 msgstr "Määra, kas subtiitrite kirjapilti vahetatakse tavalise, kaldkirja, rasvase ja rasvase kaldkirja vahel"
@@ -3223,7 +3223,7 @@ msgid "Content"
 msgstr "Sisu"
 
 msgid "Content does not fit on DVD!"
-msgstr "Sisu ei mahu DVD-le!"
+msgstr "Sisu ei mahu DVD plaadile!"
 
 msgid "Context"
 msgstr "Kontekst"
@@ -3263,6 +3263,9 @@ msgstr "Kopeeri"
 
 msgid "Copy to bouquets"
 msgstr "Kopeeri lemmiknimekirjadesse"
+
+msgid "Copy to..."
+msgstr "Kopeeri asukohta"
 
 msgid "Copying files"
 msgstr "Failide kopeerimine"
@@ -3766,9 +3769,6 @@ msgstr "Kustutamise kinnitus"
 msgid "Delete EPG"
 msgstr "Kustuta EPG"
 
-msgid "Delete Password"
-msgstr "Kustuta parool"
-
 msgid "Delete entry"
 msgstr "Kustuta valik"
 
@@ -3937,6 +3937,9 @@ msgstr "EIT nüüd/järgmine saateinfo inforibal."
 msgid "Djibouti"
 msgstr "Djibouti"
 
+msgid "Do"
+msgstr "Teosta"
+
 msgid "Do not center DVB subs on this service"
 msgstr "Tsentreerimata DVB subtiitrid sellel kanalil"
 
@@ -4021,7 +4024,7 @@ msgstr ""
 "(vali 'Ei', kui lisad sõnumi virtuaalklahvistiku abil.)"
 
 msgid "Do you want to burn this collection to DVD medium?"
-msgstr "Kas kirjutada see valik DVD-le?"
+msgstr "Kas kirjutada see valik DVD plaadile?"
 
 msgid "Do you want to change the default skin"
 msgstr "Kas vahetada kujundust"
@@ -4418,9 +4421,6 @@ msgstr "Enigma2 kujunduse valik"
 msgid "Enter PIN"
 msgstr "Sisesta PIN"
 
-msgid "Enter a new password"
-msgstr "Sisesta uus parool"
-
 msgid "Enter if you are in the east or west hemisphere."
 msgstr "Sisesta, kas asud ida- või läänepoolkeral."
 
@@ -4489,9 +4489,6 @@ msgstr "Sisesta kõrgsagedusriba ostsillaatori sagedus. Enamat infot vaata LNB s
 
 msgid "Enter your low band local oscillator frequency. For more information consult the spec sheet of your LNB."
 msgstr "Sisesta madalsagedusriba ostsillaatori sagedus. Enamat infot vaata LNB spetsifikatsioonist."
-
-msgid "Enter your password here:"
-msgstr "Sisesta uus parool:"
 
 msgid "Entertainment"
 msgstr "Meelelahutus"
@@ -4592,9 +4589,6 @@ msgstr "Kõikjal"
 
 msgid "Exceeds dual layer medium!"
 msgstr "Liiga suur kahekihilise ketta jaoks!"
-
-msgid "Execute"
-msgstr "Teosta"
 
 msgid "Execution finished!!"
 msgstr "Ülesanne täidetud!!"
@@ -4884,6 +4878,9 @@ msgstr "Fidži"
 
 msgid "File appears to be busy.\n"
 msgstr "Fail on hõivatud.\n"
+
+msgid "File manager"
+msgstr "Failihaldur"
 
 msgid ""
 "File oscam.conf not found.\n"
@@ -5813,9 +5810,6 @@ msgstr "Teenuse paigaldamine"
 msgid "Instant record"
 msgstr "Kohese salvestuse valikud"
 
-msgid "Instant record location"
-msgstr "Kohese salvestuse asukoht"
-
 msgid "Instant recording location"
 msgstr "Kohese salvestuse asukoht"
 
@@ -6187,6 +6181,9 @@ msgstr "Kuva EPG valikud"
 msgid "List available networks"
 msgstr "Loetle saadaolevad võrgud"
 
+msgid "List of files"
+msgstr "Faililoend"
+
 msgid "List of storage devices"
 msgstr "Andmekandjad"
 
@@ -6308,6 +6305,9 @@ msgstr "Lord Howe saar"
 
 msgid "Lower Framerate save CPU Time"
 msgstr "Madalam kaadrisagedus säästab protsessoriaega"
+
+msgid "Lower case"
+msgstr "Väiketähed"
 
 msgid "Luxembourg"
 msgstr "Luksemburg"
@@ -6639,6 +6639,9 @@ msgstr "Liigu nimekirja kodukataloogi"
 msgid "Move to position X"
 msgstr "Liigu positsioonile X"
 
+msgid "Move to..."
+msgstr "Liiguta asukohta"
+
 msgid "Move up a page"
 msgstr "Liigu lehe algusse"
 
@@ -6876,11 +6879,11 @@ msgstr "Uus"
 msgid "New Caledonia"
 msgstr "Uus Kaledoonia"
 
-msgid "New Random Password"
-msgstr "Uus juhuslik parool"
-
 msgid "New Zealand"
 msgstr "Uus Meremaa"
+
+msgid "New password"
+msgstr "Uus parool"
 
 msgid "New profile: "
 msgstr "Uus profiil: "
@@ -7166,17 +7169,13 @@ msgstr "Mitte midagi"
 
 msgid ""
 "Nothing to scan!\n"
-"Please setup your tuner settings before starting a service scan."
-msgstr ""
-"Pole midagi otsida!\n"
-"Seadista tuuner enne kanaliotsingu alustamist."
-
-msgid ""
-"Nothing to scan!\n"
 "Please setup your tuner settings before you start a service scan."
 msgstr ""
 "Pole midagi otsida!\n"
 "Seadista tuuner enne kanaliotsingu alustamist."
+
+msgid "Nothing to scan! Setup your tuner and try again."
+msgstr "Pole midagi otsida. Seadista tuuner ja proovi uuesti."
 
 msgid "Nothing to upgrade"
 msgstr "Uuendusi ei ole"
@@ -7245,6 +7244,10 @@ msgstr "Omaan"
 msgid "On"
 msgstr "Sees"
 
+#, python-format
+msgid "On destination '%s' is %s free space only!"
+msgstr "Sihtkohas %s on ainult %s vaba kettaruumi!"
+
 msgid "On end of movie"
 msgstr "Filmi lõpus"
 
@@ -7253,6 +7256,9 @@ msgstr "Filmi lõpus (menüüna)"
 
 msgid "On reaching the end of a file during playback, you can choose the box's behavior."
 msgstr "Saad määrata vastuvõtja käitumise taasesituse lõppemisel."
+
+msgid "On shutdown/restart warn about any pending jobs being carried out in the background."
+msgstr "Hoiatus seiskamisel/taaskäivitusel, kui käsil on mõni taustal toimuv töö."
 
 msgid "On valid ONIDs, ignore frequency sub network part"
 msgstr "Kui ONID on kehtiv, eiratakse sageduse alamvõrgu osa"
@@ -7285,10 +7291,10 @@ msgid "Only free scan"
 msgstr "Ainult vabakanalid"
 
 msgid "Only move the dish quickly after this hour."
-msgstr ""
+msgstr "Liiguta antenni kiiresti ainult pärast seda kellaaega."
 
 msgid "Only move the dish quickly before this hour."
-msgstr ""
+msgstr "Liiguta antenni kiiresti ainult enne seda kellaaega."
 
 msgid "Only on startup"
 msgstr "Ainult alglaadimisel"
@@ -7340,6 +7346,9 @@ msgstr "OpenVPN"
 
 msgid "OpenVpn Setup"
 msgstr "OpenVpn seaded"
+
+msgid "Options..."
+msgstr "Valikud..."
 
 msgid "Orbital position"
 msgstr "Orbitaalpositsioon"
@@ -7483,8 +7492,8 @@ msgstr "Parool"
 msgid "Password (httpwd)"
 msgstr "Parool (httpwd)"
 
-msgid "Password deleted sucessfully for the root user"
-msgstr "Juurkasutaja parool kustutati"
+msgid "Password changed"
+msgstr "Parool muudetud"
 
 msgid "Password setup"
 msgstr "Parooli seadistus"
@@ -8100,9 +8109,6 @@ msgstr "CAId valiku muutmiseks vajuta OK."
 msgid "Press OK to set the MAC address."
 msgstr "MAC-aadressi määramiseks vajuta OK."
 
-msgid "Press OK to start the scan"
-msgstr "Otsingu alustamiseks vajuta OK"
-
 msgid "Press OK to toggle the selection"
 msgstr "Valiku muutmiseks vajuta OK"
 
@@ -8296,6 +8302,9 @@ msgstr "Raadiokanalid"
 msgid "Random"
 msgstr "Juhuslik"
 
+msgid "Random password"
+msgstr "Juhuslik parool"
+
 #, python-format
 msgid "Rating defined by broadcaster - %d"
 msgstr "Teenusepakkuja määratud vanusepiirang - %d"
@@ -8449,7 +8458,7 @@ msgid "Regard deep standby as standby"
 msgstr "Käsitle puhkeseisundit ooteseisundina"
 
 msgid "Region"
-msgstr "Piirkond"
+msgstr "Regioon"
 
 msgid "Relative"
 msgstr "Suhteline"
@@ -8534,6 +8543,9 @@ msgstr "Eemaldatud."
 
 msgid "Remove from parental protection"
 msgstr "Eemalda lapselukk"
+
+msgid "Remove from selection (starts with...)"
+msgstr "Eemalda valikust (algab ...)"
 
 msgid "Remove items from trash can after (days)"
 msgstr "Eemalda salvestised prügikastist pärast (päeva)"
@@ -9157,11 +9169,26 @@ msgstr "Vali kanal, millelt salvestada"
 msgid "Select copy destination for:"
 msgstr "Vali kopeerimise asukoht:"
 
+msgid "Select destination for copy selected files..."
+msgstr "Vali sihtkoht valitud failide kopeerimiseks..."
+
+msgid "Select destination for move selected files..."
+msgstr "Vali sihtkoht valitud failide liigutamiseks..."
+
 msgid "Select destination for:"
 msgstr "Vali asukoht:"
 
 msgid "Select files for backup."
 msgstr "Vali varundatavad failid."
+
+msgid ""
+"Select files with 'OK' and then use 'Green' to choose desired operation.\n"
+"Use 'CH+/-' select/unselect files via the keyboard.\n"
+"Use 'Menu' for settings."
+msgstr ""
+"Vali failid 'OK' nupu abil, siis vali rohelise nupuga soovitud tegevus.\n"
+"Klaviatuuril kasuta 'CH+/-' failide valikuks või valiku tühistamiseks.\n"
+"Seadete kuvamiseks kasuta 'Menu' nuppu."
 
 msgid "Select files/folders to backup"
 msgstr "Vali varundatavad failid/kaustad"
@@ -9198,6 +9225,9 @@ msgstr "Vali menüüpunkt"
 
 msgid "Select movie"
 msgstr "Vali film"
+
+msgid "Select operation:"
+msgstr "Vali tegevus:"
 
 msgid "Select provider to add..."
 msgstr "Vali lisatav levitaja"
@@ -9296,13 +9326,17 @@ msgid "Select your country. If not available select 'all'."
 msgstr "Vali asukohamaa. Kui pole saadaval, vali 'kõik'."
 
 msgid "Select your provider and region. If not present in this list you will need to select one of the other 'service scan types'."
-msgstr "Vali operaator ja piirkond. Kui need selles loendis puuduvad, tuleb valida mõni muu 'kanaliotsingu tüüp'."
+msgstr "Vali operaator ja regioon. Kui need selles loendis puuduvad, tuleb valida mõni muu 'kanaliotsingu tüüp'."
 
 msgid "Select your provider, and press OK to start the scan"
 msgstr "Vali teenusepakkuja ja vajuta otsingu alustamiseks OK"
 
 msgid "Select your region. If not available change 'Country' to 'all' and select one of the default alternatives."
-msgstr "Määra oma piirkond. Kui pole saadaval, muuda riigi asemel 'kõik' ja vali üks alternatiividest."
+msgstr "Määra regioon. Kui see pole saadaval, muuda riigi asemel 'Kõik' ja vali üks alternatiividest."
+
+#, python-format
+msgid "Selected: %s"
+msgstr "Valitud: %s"
 
 msgid "Selecting satellites 1 (USALS)"
 msgstr "Satelliitide valimine 1 (USALS)"
@@ -9448,9 +9482,6 @@ msgstr "Kanalid võib rühmitada lemmiknimekirjadesse. Kui lubatud, saab kasutad
 msgid "Set Framerate for MiniTV"
 msgstr "Määra MiniTV kaadrisagedus"
 
-msgid "Set Password"
-msgstr "Määra parool"
-
 msgid "Set as startup service"
 msgstr "Määra käivituskanaliks"
 
@@ -9572,6 +9603,13 @@ msgstr "Määra pinge ja 22KHz"
 msgid "Sets the root directory of movie list, to remove the '..' from being shown in that folder."
 msgstr "Määrab filmilistile tüvikataloogi, et eemaldada '..' kataloogi nimest."
 
+msgid ""
+"Setting a password is strongly advised if your STB is open to the internet.\n"
+"This is the case if you have in your router a port forwarded to the STB."
+msgstr ""
+"Kui vastuvõtja on ühendatud inernetti, on parooli kasutamine tungivalt soovitatav.\n"
+"See kehtib juhul, kui ruuteris on pordisiire vastuvõtjale."
+
 msgid "Settings"
 msgstr "Seaded"
 
@@ -9600,7 +9638,7 @@ msgid "Setup your satellite equipment"
 msgstr "Satelliidiseadmed"
 
 msgid "Setup your timezone area."
-msgstr "Määra ajavööndi piirkond."
+msgstr "Määra ajavööndi regioon."
 
 msgid "Seychelles"
 msgstr "Seišellid"
@@ -9856,9 +9894,6 @@ msgstr "Kuva või varja täpsem saatetutvustus (sõltub kujundusest)."
 
 msgid "Show picon background color"
 msgstr "Pikoni tausta värv"
-
-msgid "Show picons in quickzap"
-msgstr "Pikonid kanalivahetusel"
 
 msgid "Show picons in service list"
 msgstr "Pikonid kanalinimekirjas"
@@ -10423,7 +10458,7 @@ msgid "Stop entry"
 msgstr "Peata"
 
 msgid "Stop play TV"
-msgstr ""
+msgstr "Peata telekanali esitus"
 
 msgid "Stop playing this movie?"
 msgstr "Kas lõpetada taasesitus?"
@@ -10569,9 +10604,6 @@ msgstr "Subtiitrid"
 msgid "Subtitles settings"
 msgstr "Subtiitrite seaded"
 
-msgid "Sucessfully changed the password for the root user to "
-msgstr "Uus juurkasutaja parool on "
-
 msgid "Sudan"
 msgstr "Sudaan"
 
@@ -10583,6 +10615,10 @@ msgstr "Pühapäev"
 
 msgid "Support at"
 msgstr "Tugi aadressil"
+
+#, python-format
+msgid "Support at %s"
+msgstr "Tugi aadressil %s"
 
 msgid "Suriname"
 msgstr "Suriname"
@@ -10739,6 +10775,9 @@ msgstr "Tadžikistan"
 
 msgid "Tanzania, United Republic of"
 msgstr "Tansaania"
+
+msgid "Task warning on shutdown"
+msgstr "Käsiloleva toimingu hoiatus seiskamisel"
 
 msgid "Teletext"
 msgstr "Teletekst"
@@ -10939,6 +10978,9 @@ msgid ""
 msgstr ""
 "Võrguabiline ei ole paigaldatud! \n"
 "Paigalda see."
+
+msgid "The password can not be blank."
+msgstr "Parool ei tohi olla tühi."
 
 #, python-format
 msgid "The path %s already exists."
@@ -11216,7 +11258,7 @@ msgstr "Siin saab lubada valiku näitamise laienduste menüüs"
 msgid "This option moves the PVR status from the separate window into the Movie Player infobar."
 msgstr "See valik liigutab PVR oleku eraldi aknast inforibale."
 
-msgid "This option set the level of surpression of musquito noise (Musquito Noise is random aliasing as a result of strong compression). Obviously this goes at the cost of picture details."
+msgid "This option set the level of surpression of mosquito noise (Mosquito Noise is random aliasing as a result of strong compression). Obviously this goes at the cost of picture details."
 msgstr "See valik määrab moskiitomüra summutamise taseme. Seda tehakse pildi üksikasjade arvelt."
 
 msgid "This option sets the picture brightness."
@@ -11349,9 +11391,6 @@ msgstr ""
 "Taimerite ajad kattuvad!\n"
 "Kontrolli ajad üle!"
 
-msgid "Timer record location"
-msgstr "Taimeriga salvestuse asukoht"
-
 msgid "Timer recording location"
 msgstr "Taimeriga salvestuse asukoht"
 
@@ -11407,7 +11446,7 @@ msgid "Timezone"
 msgstr "Ajavöönd"
 
 msgid "Timezone area"
-msgstr "Ajavööndi piirkond"
+msgstr "Regioon"
 
 msgid "Timor-Leste"
 msgstr "Ida-Timor"
@@ -11493,6 +11532,10 @@ msgstr "Kõik käsitletud kliendi EMMid"
 
 msgid "Total memory:"
 msgstr "Mälumaht:"
+
+#, python-format
+msgid "Total size: %s"
+msgstr "Kogusuurus: %s"
 
 msgid "Total swap:"
 msgstr "Saale:"
@@ -11650,6 +11693,9 @@ msgstr "Kaks rida"
 msgid "Type"
 msgstr "Tüüp"
 
+msgid "Type of LNB/device"
+msgstr "LNB/seadme tüüp"
+
 msgid "Type of scan"
 msgstr "Otsingu tüüp"
 
@@ -11677,11 +11723,8 @@ msgstr "Ukraina"
 msgid "Ukrainian"
 msgstr "Ukraina"
 
-msgid "Unable to change/reset the password for the root user"
-msgstr "Juurkasutaja parooli muutmine/lähtestamine nurjus"
-
-msgid "Unable to delete the password for the root user"
-msgstr "Juurkasutaja parooli kustutamine nurjus"
+msgid "Unable to change password"
+msgstr "Parooli muutmine nurjus"
 
 msgid "Undefined"
 msgstr "Määramata"
@@ -11787,6 +11830,9 @@ msgstr "Uphops -"
 msgid "Uphops: "
 msgstr "Uphops: "
 
+msgid "Upper case"
+msgstr "Suurtähed"
+
 msgid "Uptime"
 msgstr "Ülalolekuaeg"
 
@@ -11846,6 +11892,9 @@ msgstr "Kasuta kiirotsingu kanalinimesi"
 
 msgid "Use fastscan channel numbering"
 msgstr "Kasuta kiirotsingu kanalinumeratsiooni"
+
+msgid "Use first 'x' filename's chars for virtual keyboard"
+msgstr "Kasuta virtuaalklaviatuuri jaoks esimese 'x' failinime tähemärke"
 
 msgid "Use frequency or channel"
 msgstr "Kasuta sagedust või kanalit"
@@ -12944,7 +12993,7 @@ msgid "Your receiver is not connected to the internet"
 msgstr "Vastuvõtja ei ole internetiga ühendatud"
 
 msgid "Your timezone in the area."
-msgstr "Ajavöönd piirkonnas."
+msgstr "Asukoha ajavöönd"
 
 msgid ""
 "Your wireless LAN internet connection could not be started!\n"
@@ -13530,6 +13579,9 @@ msgstr "horisontaalne"
 
 msgid "increase uphop by 1"
 msgstr "suurenda uphop 1"
+
+msgid "info"
+msgstr "Info"
 
 msgid "information/education/school program"
 msgstr "teave/haridus/kooliprogramm"
@@ -14249,6 +14301,9 @@ msgstr "Kanalivahetus ja salvestamine"
 msgid "zapped"
 msgstr "vahetatud"
 
+#~ msgid " "
+#~ msgstr " "
+
 #~ msgid "3D setup"
 #~ msgstr "3D seaded"
 
@@ -14273,6 +14328,9 @@ msgstr "vahetatud"
 #~ msgid "Common Interface Assignment"
 #~ msgstr "CI määrangud"
 
+#~ msgid "Configure if service picons will be shown in quickzap."
+#~ msgstr "Määra, kas kanalivahetusel kuvatakse pikonid."
+
 #~ msgid "Convert ext3 filesystem to ext4"
 #~ msgstr "Teisenda ext3 > ext4"
 
@@ -14281,6 +14339,9 @@ msgstr "vahetatud"
 
 #~ msgid "Convert filesystem ext3 to ext4"
 #~ msgstr "Teisenda ext3 > ext4"
+
+#~ msgid "Delete Password"
+#~ msgstr "Kustuta parool"
 
 #~ msgid "Device setup"
 #~ msgstr "Võrgukaardi seaded"
@@ -14294,6 +14355,12 @@ msgstr "vahetatud"
 
 #~ msgid "EPG Settings"
 #~ msgstr "EPG seaded"
+
+#~ msgid "Enter your password here:"
+#~ msgstr "Sisesta uus parool:"
+
+#~ msgid "Execute"
+#~ msgstr "Teosta"
 
 #~ msgid "FTP setup"
 #~ msgstr "FTP seaded"
@@ -14315,6 +14382,9 @@ msgstr "vahetatud"
 
 #~ msgid "Initialization"
 #~ msgstr "Vormindamine"
+
+#~ msgid "Instant record location"
+#~ msgstr "Kohese salvestuse asukoht"
 
 #~ msgid "Link Quality:"
 #~ msgstr "Lingi kvaliteet:"
@@ -14355,6 +14425,9 @@ msgstr "vahetatud"
 #~ msgid "OSD settings"
 #~ msgstr "Ekraanigraafika seaded"
 
+#~ msgid "Password deleted sucessfully for the root user"
+#~ msgstr "Juurkasutaja parool kustutati"
+
 #~ msgid "Position Setup"
 #~ msgstr "Asukoha määramine"
 
@@ -14363,6 +14436,9 @@ msgstr "vahetatud"
 
 #~ msgid "Power down"
 #~ msgstr "Puhkeseisund"
+
+#~ msgid "Press OK to start the scan"
+#~ msgstr "Otsingu alustamiseks vajuta OK"
 
 #~ msgid "Provider to scan"
 #~ msgstr "Otsitav levitaja"
@@ -14381,6 +14457,9 @@ msgstr "vahetatud"
 
 #~ msgid "Settings..."
 #~ msgstr "Seaded"
+
+#~ msgid "Show picons in quickzap"
+#~ msgstr "Pikonid kanalivahetusel"
 
 #~ msgid "Signal Strength:"
 #~ msgstr "Signaali tugevus:"
@@ -14406,6 +14485,9 @@ msgstr "vahetatud"
 #~ msgid "Subtitle settings"
 #~ msgstr "Subtiitrite seaded"
 
+#~ msgid "Sucessfully changed the password for the root user to "
+#~ msgstr "Uus juurkasutaja parool on "
+
 #~ msgid "Terrestrial provider"
 #~ msgstr "DVB-T levitaja"
 
@@ -14415,8 +14497,17 @@ msgstr "vahetatud"
 #~ msgid "Timer conflict detection when fallback is enabled"
 #~ msgstr "Taimerikonflikti tuvastus, kui kaugvastuvõtja on lubatud"
 
+#~ msgid "Timer record location"
+#~ msgstr "Taimeriga salvestuse asukoht"
+
 #~ msgid "Timeshift settings"
 #~ msgstr "Ajanihke seaded"
+
+#~ msgid "Unable to change/reset the password for the root user"
+#~ msgstr "Juurkasutaja parooli muutmine/lähtestamine nurjus"
+
+#~ msgid "Unable to delete the password for the root user"
+#~ msgstr "Juurkasutaja parooli kustutamine nurjus"
 
 #~ msgid "Video Enhancement Settings"
 #~ msgstr "Pildi paranduste sätted"
