@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import os
+import os, unicodedata
 from Tools.Profile import profile
 
 from Screen import Screen
@@ -294,7 +294,7 @@ class ChannelContextMenu(Screen):
 						if not self.parentalControlEnabled or self.parentalControl.getProtectionLevel(current.toCompareString()) == -1:
 #							if self.csel.dopipzap:
 #								_append_when_current_valid(current, menu, actions, (_("Play in main window"), self.playMain), level=0, key="red")
-#								else:	
+#								else:
 									_append_when_current_valid(current, menu, actions, (_("Play as picture in picture"), self.showServiceInPiP), level=0, key="blue")
 #					_append_when_current_valid(current, menu, actions, (_("Find currently played service"), self.findCurrentlyPlayed), level=0, key="4")
 #				else:
@@ -534,7 +534,7 @@ class ChannelContextMenu(Screen):
 			self.csel.servicelist.setCurrent(service)
 			self.close()
 		elif answer is not None:
-			self.session.openWithCallback(self.close, MessageBox, _("The pin code you entered is wrong."), MessageBox.TYPE_ERROR)	
+			self.session.openWithCallback(self.close, MessageBox, _("The pin code you entered is wrong."), MessageBox.TYPE_ERROR)
 		else:
 			self.close()
 
@@ -1718,10 +1718,10 @@ class ChannelSelectionBase(Screen):
 							if service_type:
 								if unsigned_orbpos == 0xFFFF: #Cable
 									service_name = _("Cable")
-									addCableAndTerrestrialLater.append(("%s - %s" % (service_name, service_type), service.toString()))			
+									addCableAndTerrestrialLater.append(("%s - %s" % (service_name, service_type), service.toString()))
 								elif unsigned_orbpos == 0xEEEE: #Terrestrial
 									service_name = _("Terrestrial")
-									addCableAndTerrestrialLater.append(("%s - %s" % (service_name, service_type), service.toString()))			
+									addCableAndTerrestrialLater.append(("%s - %s" % (service_name, service_type), service.toString()))
 								else:
 									try:
 										service_name = str(nimmanager.getSatDescription(orbpos))
@@ -2953,7 +2953,7 @@ class HistoryZapSelector(Screen):
 					if eventName is None:
 						eventName = ""
 					else:
-						eventName = eventName.replace('(18+)', '').replace('18+', '').replace('(16+)', '').replace('16+', '').replace('(12+)', '').replace('12+', '').replace('(7+)', '').replace('7+', '').replace('(6+)', '').replace('6+', '').replace('(0+)', '').replace('0+', '')	
+						eventName = eventName.replace('(18+)', '').replace('18+', '').replace('(16+)', '').replace('16+', '').replace('(12+)', '').replace('12+', '').replace('(7+)', '').replace('7+', '').replace('(6+)', '').replace('6+', '').replace('(0+)', '').replace('0+', '')
 					# if config.plugins.SetupZapSelector.event.value == "2":
 					descriptionName = event.getShortDescription()
 					if descriptionName is None or descriptionName == "":
