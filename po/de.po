@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-03-03 16:19+0000\n"
-"PO-Revision-Date: 2018-03-04 13:56+0100\n"
+"POT-Creation-Date: 2018-03-17 12:03+0000\n"
+"PO-Revision-Date: 2018-03-17 19:23+0100\n"
 "Last-Translator: Ralf Biedermann <ralf.biedermann@rbsoft.de>\n"
 "Language-Team: AndyBlacburn, j-ot&Trial\n"
 "Language: de\n"
@@ -3772,9 +3772,6 @@ msgstr "Bestätige Löschvorgang"
 msgid "Delete EPG"
 msgstr "EPG löschen"
 
-msgid "Delete Password"
-msgstr "Lösche Passwort"
-
 msgid "Delete entry"
 msgstr "Eintrag löschen"
 
@@ -4427,9 +4424,6 @@ msgstr "Enigma2 Skinauswahl"
 msgid "Enter PIN"
 msgstr "PIN-Code ändern"
 
-msgid "Enter a new password"
-msgstr "Neues Passwort eingeben"
-
 msgid "Enter if you are in the east or west hemisphere."
 msgstr "Gebe ein ob Du in der östlichen oder westlichen Hemisphere bist."
 
@@ -4498,9 +4492,6 @@ msgstr "Gebe die Oszillator-Frequenz für das High-Band an. Für diese Informati
 
 msgid "Enter your low band local oscillator frequency. For more information consult the spec sheet of your LNB."
 msgstr "Gebe die Oszillator-Frequenz für das Low-Band an. Für diese Information lese die Spezifikationen deines LNBs."
-
-msgid "Enter your password here:"
-msgstr "Passwort eingeben:"
 
 msgid "Entertainment"
 msgstr "Unterhaltung"
@@ -5824,9 +5815,6 @@ msgstr "Installiere Service"
 msgid "Instant record"
 msgstr "Sofortaufnahme"
 
-msgid "Instant record location"
-msgstr "Sofortaufnahme Verzeichnis"
-
 msgid "Instant recording location"
 msgstr "Pfad für Sofortaufnahme"
 
@@ -6895,11 +6883,11 @@ msgstr "Neu"
 msgid "New Caledonia"
 msgstr "New Caledonia"
 
-msgid "New Random Password"
-msgstr "Neues zufälliges Passwort"
-
 msgid "New Zealand"
 msgstr "New Zealand"
+
+msgid "New password"
+msgstr "Neues Passwort"
 
 msgid "New profile: "
 msgstr "Neues Profil: "
@@ -7508,8 +7496,8 @@ msgstr "Passwort"
 msgid "Password (httpwd)"
 msgstr "Passwort (HTTPWD)"
 
-msgid "Password deleted sucessfully for the root user"
-msgstr "Passowrt vom root Benutzer erfolgreich gelöscht"
+msgid "Password changed"
+msgstr "Passwort geändert"
 
 msgid "Password setup"
 msgstr "Passwort Einstellungen"
@@ -8317,6 +8305,9 @@ msgstr "Senderliste Radio"
 
 msgid "Random"
 msgstr "Zufällig"
+
+msgid "Random password"
+msgstr "Neues zufälliges Passwort"
 
 #, python-format
 msgid "Rating defined by broadcaster - %d"
@@ -9198,10 +9189,12 @@ msgstr "Wähle Dateien zum sichern."
 
 msgid ""
 "Select files with 'OK' and then use 'Green' to choose desired operation.\n"
-" Use 'CH+/-' select/unselect files via the keyboard."
+"Use 'CH+/-' select/unselect files via the keyboard.\n"
+"Use 'Menu' for settings."
 msgstr ""
 "Wähle Dateien mit 'OK' und dann benutze 'Grün' um die gewünschte Operation zu wählen.\n"
-"Benutze 'Kanal +/-' um Dateien mit einer Tastatur aus-/abzuwählen."
+"Benutze 'Kanal +/-' um Dateien mit einer Tastatur aus-/abzuwählen.\n"
+"Benutze 'Menü' für Einstellungen"
 
 msgid "Select files/folders to backup"
 msgstr "Wähle Dateien/Ordner für die Sicherung"
@@ -9495,9 +9488,6 @@ msgstr "Sender können in Favoriten gruppiert werden. Wenn aktiviert kann mehr a
 msgid "Set Framerate for MiniTV"
 msgstr "Setze Bildrate für MiniTV"
 
-msgid "Set Password"
-msgstr "Setze Passwort"
-
 msgid "Set as startup service"
 msgstr "Als Startsender benutzen"
 
@@ -9618,6 +9608,13 @@ msgstr "Setze Spannung und 22KHz"
 
 msgid "Sets the root directory of movie list, to remove the '..' from being shown in that folder."
 msgstr "Wähle die Basis der Aufnahmeliste um die \"..\" in der Ansicht zu unterdrücken."
+
+msgid ""
+"Setting a password is strongly advised if your STB is open to the internet.\n"
+"This is the case if you have in your router a port forwarded to the STB."
+msgstr ""
+"Ein Passwort wird dringend empfohlen wenn die Box für das Internet geöffnet wurde.\n"
+"Das ist der Fall wenn im Router Powerforwarding zur Box eingerichtet wurde."
 
 msgid "Settings"
 msgstr "Einstellungen"
@@ -10613,9 +10610,6 @@ msgstr "Untertitel"
 msgid "Subtitles settings"
 msgstr "Untertitel Einstellungen"
 
-msgid "Sucessfully changed the password for the root user to "
-msgstr "Änderung vom Passwort für root erfolgreich zu: "
-
 msgid "Sudan"
 msgstr "Sudan"
 
@@ -10990,6 +10984,9 @@ msgid ""
 msgstr ""
 "Das NetzwerkWizard Plugin ist nicht installiert!\n"
 "Bitte installiere es."
+
+msgid "The password can not be blank."
+msgstr "Das Passwort darf nicht leer sein"
 
 #, python-format
 msgid "The path %s already exists."
@@ -11401,9 +11398,6 @@ msgstr ""
 "Timerüberlappung in der timers.xml entdeckt!\n"
 "Bitte überprüfen!"
 
-msgid "Timer record location"
-msgstr "Timeraufnahme Verzeichnis"
-
 msgid "Timer recording location"
 msgstr "Timeraufnahme Verzeichnis"
 
@@ -11736,11 +11730,8 @@ msgstr "Ukraine"
 msgid "Ukrainian"
 msgstr "Ukrainisch"
 
-msgid "Unable to change/reset the password for the root user"
-msgstr "Änderung vom Passwort von root nicht möglich"
-
-msgid "Unable to delete the password for the root user"
-msgstr "Löschung vom Passwort von root nicht möglich"
+msgid "Unable to change password"
+msgstr "Passwort konnte nicht geändert werden"
 
 msgid "Undefined"
 msgstr "Undefiniert"
@@ -14614,6 +14605,9 @@ msgstr "umgeschaltet"
 #~ msgid "Dayname Month-99"
 #~ msgstr "Tagesname Monat-99"
 
+#~ msgid "Delete Password"
+#~ msgstr "Lösche Passwort"
+
 #~ msgid "Device Information"
 #~ msgstr "Geräteinformation"
 
@@ -14713,6 +14707,9 @@ msgstr "umgeschaltet"
 #~ msgid "Enigma2 Changes"
 #~ msgstr "Enigma2 Änderungen"
 
+#~ msgid "Enter your password here:"
+#~ msgstr "Passwort eingeben:"
+
 #~ msgid "Error downloading the change log."
 #~ msgstr "Fehler beim herunterladen vom change.log"
 
@@ -14778,6 +14775,9 @@ msgstr "umgeschaltet"
 
 #~ msgid "Input channel name."
 #~ msgstr "Kanalname eingeben."
+
+#~ msgid "Instant record location"
+#~ msgstr "Sofortaufnahme Verzeichnis"
 
 #~ msgid "Link Quality:"
 #~ msgstr "Qualität vom Link:"
@@ -14889,6 +14889,9 @@ msgstr "umgeschaltet"
 
 #~ msgid "Parental control setup"
 #~ msgstr "Jugendschutz Einstellungen"
+
+#~ msgid "Password deleted sucessfully for the root user"
+#~ msgstr "Passowrt vom root Benutzer erfolgreich gelöscht"
 
 #~ msgid "Play in main window"
 #~ msgstr "Als Hauptbild wiedergeben"
@@ -15031,6 +15034,9 @@ msgstr "umgeschaltet"
 #~ msgid "Subtitle settings"
 #~ msgstr "Untertitel Einstellungen"
 
+#~ msgid "Sucessfully changed the password for the root user to "
+#~ msgstr "Änderung vom Passwort für root erfolgreich zu: "
+
 #~ msgid ""
 #~ "System temperature: %s%sC\n"
 #~ "\n"
@@ -15096,6 +15102,9 @@ msgstr "umgeschaltet"
 #~ msgid "Timer overview"
 #~ msgstr "Timer Überblick"
 
+#~ msgid "Timer record location"
+#~ msgstr "Timeraufnahme Verzeichnis"
+
 #~ msgid "Timeshift settings"
 #~ msgstr "TimeShift Einstellungen"
 
@@ -15118,6 +15127,12 @@ msgstr "umgeschaltet"
 
 #~ msgid "USB stick wizard"
 #~ msgstr "USB-Stick-Assistent"
+
+#~ msgid "Unable to change/reset the password for the root user"
+#~ msgstr "Änderung vom Passwort von root nicht möglich"
+
+#~ msgid "Unable to delete the password for the root user"
+#~ msgstr "Löschung vom Passwort von root nicht möglich"
 
 #~ msgid "Unattended upgrade without GUI and reboot system"
 #~ msgstr "Stille Aktualisierung ohne Benutzeroberfläche (automatischer Neustart)"
