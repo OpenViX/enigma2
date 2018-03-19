@@ -1,12 +1,11 @@
 from Screens.Screen import Screen
-from Components.ActionMap import NumberActionMap, ActionMap
-from Components.config import config, ConfigNothing, ConfigYesNo, ConfigSelection, ConfigText, ConfigPassword
+from Components.ActionMap import NumberActionMap
+from Components.config import config, ConfigNothing, ConfigText, ConfigPassword
 from Tools.Directories import resolveFilename, SCOPE_CURRENT_PLUGIN
 from Components.SystemInfo import SystemInfo
 from Components.ConfigList import ConfigListScreen
 from Components.Pixmap import Pixmap
 from Components.Sources.StaticText import StaticText
-from Components.config import ConfigText, ConfigPassword
 from Components.Label import Label
 from Components.Sources.Boolean import Boolean
 
