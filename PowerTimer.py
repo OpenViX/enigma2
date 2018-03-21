@@ -393,10 +393,14 @@ def createTimer(xml):
 	autosleeprepeat = str(xml.get("autosleeprepeat") or "once")
 
 	entry = PowerTimerEntry(begin, end, disabled, afterevent, timertype)
-	entry.repeated = int(repeated)
 	entry.autosleepinstandbyonly = autosleepinstandbyonly
 	entry.autosleepdelay = int(autosleepdelay)
 	entry.autosleeprepeat = autosleeprepeat
+# Ensure that the timer repeated is cleared if we have an autosleeprepeat
+	if entry.autosleeprepeat == "repeated":
+		entry.repeated = 0
+	else:
+		entry.repeated = int(repeated)
 
 	for l in xml.findall("log"):
 		time = int(l.get("time"))
