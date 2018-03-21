@@ -277,6 +277,14 @@ class RecordTimerEntry(timer.TimerEntry, object):
 			return True
 
 	def calculateFilename(self, name=None):
+# An external caller (e.g. the enigma2 plugin Series Plugin) may well
+# not have called freespace(). So we need to set MountPath here.
+# There is no point in calling freespace() as the caller won't be able
+# to handle anything it does anyway.
+#
+		if not hasattr(self, "MountPath"):
+			self.MountPath = self.dirname
+
 		service_name = self.service_ref.getServiceName()
 		begin_date = strftime("%Y%m%d %H%M", localtime(self.begin))
 
@@ -997,7 +1005,9 @@ class RecordTimer(timer.Timer):
 				return True
 		return False
 
-	def loadTimer(self):
+# justLoad is passed on to record()
+#
+	def loadTimer(self, justLoad=False):
 		try:
 			file = open(self.Filename, 'r')
 			doc = xml.etree.cElementTree.parse(file)
@@ -1025,7 +1035,7 @@ class RecordTimer(timer.Timer):
 		timer_text = ""
 		for timer in root.findall("timer"):
 			newTimer = createTimer(timer)
-			conflict_list = self.record(newTimer, ignoreTSC=True, dosave=False, loadtimer=True)
+			conflict_list = self.record(newTimer, ignoreTSC=True, dosave=False, loadtimer=True, justLoad=justLoad)
 			if conflict_list:
 				checkit = True
 				if newTimer in conflict_list:
@@ -1154,9 +1164,16 @@ class RecordTimer(timer.Timer):
 				return True
 		return False
 
-	def record(self, entry, ignoreTSC=False, dosave=True, loadtimer=False):
+# If justLoad is True then we (temporarily) turn off conflict detection
+# as we load.  On a restore we may not have the correct tuner
+# configuration (and no USB tuners)...
+#
+	def record(self, entry, ignoreTSC=False, dosave=True, loadtimer=False, justLoad=False):
+		real_cd = entry.conflict_detection
+		if justLoad:
+			entry.conflict_detection = False
 		check_timer_list = self.timer_list[:]
-		timersanitycheck = TimerSanityCheck(check_timer_list,entry)
+		timersanitycheck = TimerSanityCheck(check_timer_list, entry)
 		answer = None
 		if not timersanitycheck.check():
 			if not ignoreTSC:
@@ -1175,6 +1192,7 @@ class RecordTimer(timer.Timer):
 		elif timersanitycheck.doubleCheck():
 			print "[RecordTimer] ignore double timer..."
 			return None
+		entry.conflict_detection = real_cd
 		entry.timeChanged()
 		print "[Timer] Record " + str(entry)
 		entry.Timer = self

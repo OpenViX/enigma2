@@ -10,8 +10,8 @@ import datetime
 class TimeDateInput(Screen, ConfigListScreen):
 	def __init__(self, session, config_time=None, config_date=None):
 		Screen.__init__(self, session)
-		self["oktext"] = Label(_("OK"))
-		self["canceltext"] = Label(_("Cancel"))
+		self["key_green"] = self["oktext"] = Label(_("OK"))
+		self["key_red"] = self["canceltext"] = Label(_("Cancel"))
 		self["ok"] = Pixmap()
 		self["cancel"] = Pixmap()
 

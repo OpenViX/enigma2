@@ -6,6 +6,7 @@ from Components.Label import Label
 from Components.Sources.List import List
 from Components.Pixmap import Pixmap
 from Components.OnlineUpdateCheck import feedsstatuscheck
+from Components.Sources.Boolean import Boolean
 from Components.Sources.StaticText import StaticText
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
@@ -322,9 +323,17 @@ class CronTimersConfig(Screen, ConfigListScreen):
 		ConfigListScreen.__init__(self, self.list, session = self.session, on_change = self.changedEntry)
 		self['key_red'] = Label(_("Close"))
 		self['key_green'] = Label(_("Save"))
-		self['actions'] = ActionMap(['WizardActions', 'ColorActions', 'VirtualKeyboardActions', "MenuActions"], {'red': self.close,'green': self.checkentry, 'back': self.close, 'showVirtualKeyboard': self.KeyText, "menu": self.closeRecursive})
+		self['actions'] = ActionMap(['WizardActions', 'ColorActions', "MenuActions"], 
+		{
+			'red': self.close,
+			'green': self.checkentry,
+			'back': self.close,
+			'showVirtualKeyboard': self.KeyText,
+			"menu": self.closeRecursive
+		})
 		self["HelpWindow"] = Pixmap()
 		self["HelpWindow"].hide()
+		self["VKeyIcon"] = Boolean(False)
 		self.createSetup()
 
 	def createSetup(self):
@@ -360,26 +369,9 @@ class CronTimersConfig(Screen, ConfigListScreen):
 
 	# for summary:
 	def changedEntry(self):
-		if self["config"].getCurrent()[0] == _("Run how often ?") or self["config"].getCurrent()[0] == _("Command type"):
+		ConfigListScreen.changedEntry(self)
+		if self["config"].getCurrent()[1] in (config.crontimers.runwhen, config.crontimers.commandtype):
 			self.createSetup()
-		for x in self.onChangedEntry:
-			x()
-
-	def getCurrentEntry(self):
-		return self["config"].getCurrent()[0]
-
-	def KeyText(self):
-		sel = self['config'].getCurrent()
-		if sel:
-			self.vkvar = sel[0]
-			if self.vkvar == _("Command to run"):
-				from Screens.VirtualKeyBoard import VirtualKeyBoard
-				self.session.openWithCallback(self.VirtualKeyBoardCallback, VirtualKeyBoard, title = self["config"].getCurrent()[0], text = self["config"].getCurrent()[1].value)
-
-	def VirtualKeyBoardCallback(self, callback = None):
-		if callback is not None and len(callback):
-			self["config"].getCurrent()[1].setValue(callback)
-			self["config"].invalidate(self["config"].getCurrent())
 
 	def checkentry(self):
 		msg = ''

@@ -34,8 +34,8 @@ class HarddiskSetup(Screen):
 		self["model"] = Label(_("Model: ") + hdd.model())
 		self["capacity"] = Label(_("Capacity: ") + hdd.capacity())
 		self["bus"] = Label(_("Bus: ") + hdd.bus())
-		self["initialize"] = Pixmap()
-		self["initializetext"] = Label(text)
+		self["key_red"] = Label(_("Cancel"))
+		self["key_green"] = Label(text) # text can be either "Initialize" or "Check"
 		self["actions"] = ActionMap(["OkCancelActions"],
 		{
 			"ok": self.hddQuestion,
@@ -43,7 +43,8 @@ class HarddiskSetup(Screen):
 		})
 		self["shortcuts"] = ActionMap(["ShortcutActions"],
 		{
-			"red": self.hddQuestion
+			"red": self.close,
+			"green": self.hddQuestion
 		})
 
 	def hddQuestion(self, answer=False):

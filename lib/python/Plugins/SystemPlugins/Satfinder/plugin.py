@@ -147,9 +147,9 @@ class Satfinder(ScanSetup, ServiceScan):
 				self.is_id_memory = self.scan_sat.is_id.value
 				self.pls_mode_memory = self.scan_sat.pls_mode.value
 				self.pls_code_memory = self.scan_sat.pls_code.value
-				self.scan_sat.is_id.value = self.NO_STREAM_ID_FILTER
-				self.scan_sat.pls_mode.value = eDVBFrontendParametersSatellite.PLS_Root
-				self.scan_sat.pls_code.value = 1
+				self.scan_sat.is_id.value = eDVBFrontendParametersSatellite.No_Stream_Id_Filter
+				self.scan_sat.pls_mode.value = eDVBFrontendParametersSatellite.PLS_Gold
+				self.scan_sat.pls_code.value = 0
 			self.createSetup()
 			self.retune()
 
@@ -200,9 +200,9 @@ class Satfinder(ScanSetup, ServiceScan):
 							self.list.append(getConfigListEntry(_('PLS Mode'), self.scan_sat.pls_mode))
 							self.list.append(getConfigListEntry(_('PLS Code'), self.scan_sat.pls_code))
 					else:
-						self.scan_sat.is_id.value = self.NO_STREAM_ID_FILTER
-						self.scan_sat.pls_mode.value = eDVBFrontendParametersSatellite.PLS_Root
-						self.scan_sat.pls_code.value = 1
+						self.scan_sat.is_id.value = eDVBFrontendParametersSatellite.No_Stream_Id_Filter
+						self.scan_sat.pls_mode.value = eDVBFrontendParametersSatellite.PLS_Gold
+						self.scan_sat.pls_code.value = 0
 			elif self.tuning_type.value == "predefined_transponder":
 				self.updatePreDefTransponders()
 				self.preDefTransponderEntry = getConfigListEntry(_("Transponder"), self.preDefTransponders)

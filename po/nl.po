@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-16 11:39+0000\n"
-"PO-Revision-Date: 2018-01-16 17:37+0100\n"
+"POT-Creation-Date: 2018-03-12 02:17+0000\n"
+"PO-Revision-Date: 2018-03-12 06:31+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SourceCharset: iso-8859-15\n"
-"X-Generator: Poedit 2.0.5\n"
+"X-Generator: Poedit 2.0.6\n"
 
 msgid ""
 "\n"
@@ -34,7 +34,7 @@ msgid ""
 "After pressing OK, please wait!"
 msgstr ""
 "\n"
-"Druk op OK en een ogenblik geduld."
+"Druk op OK en een ogenblik geduld!"
 
 #, python-format
 msgid ""
@@ -49,7 +49,7 @@ msgid ""
 "Edit the upgrade source address."
 msgstr ""
 "\n"
-"Wijzig het upgrade bron adres."
+"Wijzig het bronadres voor upgrades ."
 
 #, python-format
 msgid ""
@@ -135,9 +135,6 @@ msgstr ""
 "\n"
 "Bekijk, installeer en verwijder beschikbare of geïnstalleerde pakketten."
 
-msgid " "
-msgstr " "
-
 #, python-format
 msgid "  (%s x %s)"
 msgstr "  (%s x %s)"
@@ -188,7 +185,7 @@ msgid " Stream %s"
 msgstr " Stream %s"
 
 msgid " and"
-msgstr "en"
+msgstr " en"
 
 msgid "%-H:%M"
 msgstr "%-H:%M"
@@ -765,8 +762,8 @@ msgstr[1] "%d Mins"
 #, python-format
 msgid "%d channel found"
 msgid_plural "%d channels found"
-msgstr[0] "%d kanaal gevonden."
-msgstr[1] "%d kanalen gevonden."
+msgstr[0] "%d kanaal gevonden"
+msgstr[1] "%d kanalen gevonden"
 
 #, python-format
 msgid "%d hour"
@@ -777,12 +774,12 @@ msgstr[1] "%d uren"
 #, python-format
 msgid "%d job is running in the background!"
 msgid_plural "%d jobs are running in the background!"
-msgstr[0] "%d opdracht draait op de achtergrond."
-msgstr[1] "%d opdrachten draaien op de achtergrond."
+msgstr[0] "%d opdracht draait op de achtergrond!"
+msgstr[1] "%d opdrachten draaien op de achtergrond!"
 
 #, python-format
 msgid "%d jobs are running in the background!"
-msgstr "%d opdrachten draaien op de achtergrond."
+msgstr "%d opdrachten draaien op de achtergrond!"
 
 #, python-format
 msgid "%d kB"
@@ -988,7 +985,7 @@ msgid "(show optional DVD audio menu)"
 msgstr "(optioneel DVD audiomenu weergeven)"
 
 msgid "(unknown)"
-msgstr "onbekend"
+msgstr "(onbekend)"
 
 msgid "* = Restart Required"
 msgstr "* = Herstarten noodzakelijk"
@@ -1052,7 +1049,7 @@ msgid "12V output"
 msgstr "12V uitgang"
 
 msgid "12V output."
-msgstr "12V uitgang"
+msgstr "12V uitgang."
 
 msgid "12bit"
 msgstr "12bit"
@@ -1560,6 +1557,9 @@ msgstr "Voeg aan favorieten toe"
 msgid "Add to parental protection"
 msgstr "Zender achter kinderslot zetten"
 
+msgid "Add to selection (starts with...)"
+msgstr "Voeg toe aan keuze (begint met...)"
+
 msgid "Add/Remove timer for current event"
 msgstr "Timer voor huidige programma toevoegen/verwijderen"
 
@@ -1573,7 +1573,7 @@ msgid "Additional motor options allow you to enter details from your motor's spe
 msgstr "Aanvullende motoropties geven de mogelijkheid de specifieke eigenschappen van uw motor in te stellen."
 
 msgid "Additional motor options allow you to enter details from your motor's spec sheet so enigma can work out how long it will take to move to another satellite."
-msgstr "Aanvullende motoropties geven de mogelijkheid de specifieke eigenschappen van uw motor in te stellen."
+msgstr "Aanvullende motoropties geven de mogelijkheid de specifieke eigenschappen van uw motor in te stellen. Daardoor weet Enigma2 hoe lang het duurt naar een andere satelliet te draaien."
 
 msgid "Address"
 msgstr "Adres"
@@ -1672,7 +1672,7 @@ msgid "Allow subtitle language to equal audio language"
 msgstr "Ondertiteltaal overeenkomstig aan audiotaal"
 
 msgid "Allow subtitles for hearing impaired"
-msgstr "Accepteer ondertitels voor slechthorenden."
+msgstr "Accepteer ondertitels voor slechthorenden"
 
 msgid "Allow unstable (experimental) updates"
 msgstr "Accepteer niet geteste (experimentele) updates"
@@ -1794,7 +1794,7 @@ msgstr "Gereed om \"%s\" te installeren?"
 
 #, python-format
 msgid "Are you ready to remove \"%s\" ?"
-msgstr "Gereed om \"%s\" te verwijderen?"
+msgstr "Bent u gereed om \"%s\" te verwijderen?"
 
 msgid "Are you sure to remove this entry?"
 msgstr "Weet u zeker dat deze waarde verwijderd mag worden?"
@@ -1875,7 +1875,7 @@ msgid ""
 "Your receiver will restart after the backup has been restored!"
 msgstr ""
 "Weet u zeker dat u de back-up wilt flashen?\n"
-"Uw ontvanger zal herstarten als het proces gereed is."
+"Uw ontvanger zal herstarten als het proces gereed is!"
 
 msgid "Are you sure you want to save the EPG Cache to:\n"
 msgstr "Weet u zeker dat u de EPG Cache wilt opslaan in:\n"
@@ -2162,10 +2162,10 @@ msgid "Behavior of 0 key in PiP-mode"
 msgstr "Functie van de 0-toets in PiP modus"
 
 msgid "Behavior when a movie is started"
-msgstr "Actie na \"start afspelen\""
+msgstr "Actie nadat afspelen is gestart"
 
 msgid "Behavior when a movie is stopped"
-msgstr "Actie na \"stop afspelen\""
+msgstr "Gedrag nadat afspelen is gestopt"
 
 msgid "Behavior when a movie reaches the end"
 msgstr "Actie bij het einde van de opname"
@@ -2429,7 +2429,7 @@ msgid "Calculate all positions"
 msgstr "Bereken alle posities"
 
 msgid "Calculation complete"
-msgstr "Berekening gereed."
+msgstr "Berekening gereed"
 
 msgid "Calibrate"
 msgstr "Kalibreer"
@@ -2447,16 +2447,16 @@ msgid "Canada"
 msgstr "Canada"
 
 msgid "Cancel"
-msgstr "Annuleren"
+msgstr "Annuleer"
 
 msgid "Cancel save timeshift as movie"
-msgstr "Annuleer het opslaan van timeshift als opname."
+msgstr "Annuleer het opslaan van timeshift als opname"
 
 msgid "Cancelled upon user request"
-msgstr "Geannuleerd door de gebruiker."
+msgstr "Geannuleerd door de gebruiker"
 
 msgid "Cannot delete file"
-msgstr "Kan bestand niet wissen"
+msgstr "Kan bestand niet verwijderen"
 
 msgid "Cannot determine"
 msgstr "Kan niet beslissen"
@@ -2752,22 +2752,22 @@ msgid "Clean network trash cans"
 msgstr "Maak prullenbakken in het netwerk leeg"
 
 msgid "Cleaning Trashes"
-msgstr "Maakt prullenbakken leeg."
+msgstr "Maakt prullenbakken leeg"
 
 msgid "Cleanup"
-msgstr "Opruimen"
+msgstr "Ruim op"
 
 msgid "Clear"
 msgstr "Wis"
 
 msgid "Clear before scan"
-msgstr "Vóór zoeken alle zenders wissen"
+msgstr "Vóór zoeken alle zenders verwijderen"
 
 msgid "Clear fixed"
 msgstr "Verwijder vaste"
 
 msgid "Clear log"
-msgstr "Log wissen"
+msgstr "Wis log"
 
 msgid "Clear playlist"
 msgstr "Afspeellijst leegmaken"
@@ -2791,7 +2791,7 @@ msgid "Close PiP on exit"
 msgstr "Sluit PiP met de exit-toets"
 
 msgid "Close bouquet list."
-msgstr "Sluit favorietenlijst"
+msgstr "Sluit favorietenlijst."
 
 msgid "Close dialog"
 msgstr "Sluit dialoog"
@@ -2855,6 +2855,9 @@ msgstr "Communicatie"
 
 msgid "Comoros"
 msgstr "Comoros"
+
+msgid "Compare case sensitive"
+msgstr "Vergelijk hoofdlettergevoelig"
 
 msgid "Complete"
 msgstr "Compleet"
@@ -3061,10 +3064,10 @@ msgid "Configure the offline decoding delay (in milliseconds). The configured de
 msgstr "Bepaal de offline decodeervertraging (in milisecondes). De ingestelde vertraging wordt telkenmale gebruikt voor het opvragen van het 'control word'."
 
 msgid "Configure the possible fast forward speeds."
-msgstr "Stel de mogelijke vooruitspoelsnelheden in"
+msgstr "Stel de mogelijke vooruitspoelsnelheden in."
 
 msgid "Configure the possible rewind speeds."
-msgstr "Stel de mogelijke terugspoelsnelheden in"
+msgstr "Stel de mogelijke terugspoelsnelheden in."
 
 msgid "Configure the primary EPG language."
 msgstr "Kies EPG taal 1."
@@ -3091,7 +3094,7 @@ msgid "Configure the skip time interval for the 7 and 9 buttons."
 msgstr "Bepaal de stapgrootte voor de '7'/93' toetsen."
 
 msgid "Configure the slow motion speeds."
-msgstr "Stel de slow-motion snelheden in"
+msgstr "Stel de slow-motion snelheden in."
 
 msgid "Configure the source of the frontend data as shown on the infobars. 'Settings' is as stored on the settings. 'Tuner' is as reported by the tuner."
 msgstr "Kies de bron voor de tunerdata die in de Infobar getoond wordt. \"Settings\" is opgeslagen als bestand, \"Tuner\" is actuele data zoals de tuner die rapporteert."
@@ -3202,7 +3205,7 @@ msgid "Connected transcoding, limit - no PiP!"
 msgstr "Verbonden transcoding, limiet - geen PiP!"
 
 msgid "Connected: "
-msgstr "Verbonden:"
+msgstr "Verbonden: "
 
 msgid "Connection using the supplied FTP parameters failed. Please recheck the details and try again."
 msgstr "Verbinding met de ingestelde FTP-parameters is mislukt. Controleer de instellingen en probeer opnieuw."
@@ -3246,9 +3249,6 @@ msgstr "Contrast"
 msgid "Control of the position how finished timers are shown in the Timer List."
 msgstr "Stel in waar afgewerkte timers in de lijst moeten staan."
 
-msgid "Convert ext3 to ext4"
-msgstr "Converteer ext3 naar ext4"
-
 msgid "Converting ext3 to ext4..."
 msgstr "Converteert ext3 naar ext4...."
 
@@ -3263,6 +3263,9 @@ msgstr "Kopieer"
 
 msgid "Copy to bouquets"
 msgstr "Kopieer naar favorietenlijsten"
+
+msgid "Copy to..."
+msgstr "Kopieer naar..."
 
 msgid "Copying files"
 msgstr "Kopieert bestanden"
@@ -3305,7 +3308,7 @@ msgid "Country for EPG event genre information"
 msgstr "Land voor EPG genre informatie"
 
 msgid "Country for EPG event rating information"
-msgstr "Landkeuze voor kijkwijzer informatie."
+msgstr "Landkeuze voor kijkwijzer informatie"
 
 msgid "Crash Logs"
 msgstr "Crash logs"
@@ -3376,7 +3379,7 @@ msgid "Current mode: %s \n"
 msgstr "Huidige modus: %s \n"
 
 msgid "Current rotor position: "
-msgstr "Actuele rotorpositie:"
+msgstr "Actuele rotorpositie: "
 
 msgid "Current settings:"
 msgstr "Huidige instellingen:"
@@ -3755,7 +3758,7 @@ msgid "Delay:"
 msgstr "Vertraging:"
 
 msgid "Delete"
-msgstr "Verwijderen"
+msgstr "Verwijder"
 
 #, python-format
 msgid "Delete %s?"
@@ -3766,9 +3769,6 @@ msgstr "Bevestig verwijderen"
 
 msgid "Delete EPG"
 msgstr "EPG verwijderen"
-
-msgid "Delete Password"
-msgstr "Wachtwoord verwijderen"
 
 msgid "Delete entry"
 msgstr "Verwijder invoer"
@@ -3783,7 +3783,7 @@ msgid "Delete playlist entry"
 msgstr "Wis item in de afspeellijst"
 
 msgid "Delete saved playlist"
-msgstr "Opgeslagen afspeellijst wissen"
+msgstr "Opgeslagen afspeellijst verwijderen"
 
 msgid "Delete timer"
 msgstr "Verwijder timer"
@@ -3871,9 +3871,6 @@ msgstr "DiSEqC poort %s: %s"
 msgid "DiSEqC-tester settings"
 msgstr "DiSEqC-tester instellingen"
 
-msgid "Diasbled"
-msgstr "Gedeactiveerd"
-
 msgid "Digital contour removal"
 msgstr "Digitale contour verwijderen"
 
@@ -3941,6 +3938,9 @@ msgstr "Toon EIT nu/straks programmagegevens in de infobar."
 msgid "Djibouti"
 msgstr "Djibouti"
 
+msgid "Do"
+msgstr "Voer uit"
+
 msgid "Do not center DVB subs on this service"
 msgstr "Centreer DVB-ondertitels niet voor dit kanaal."
 
@@ -3960,20 +3960,13 @@ msgstr ""
 "Wilt u het bestandssysteem echt controleren?\n"
 "Dit kan heel lang duren!"
 
-msgid ""
-"Do you really want to convert the filesystem?\n"
-"You cannot go back!"
-msgstr ""
-"Wilt u het bestandssysteem echt converteren?\n"
-"U kunt het niet meer ongedaan maken!"
-
 #, python-format
 msgid "Do you really want to delete %s ?"
 msgstr "Wilt u echt %s verwijderen?"
 
 #, python-format
 msgid "Do you really want to delete %s?"
-msgstr "Wilt u %s echt wissen?"
+msgstr "Wilt u %s echt verwijderen?"
 
 msgid "Do you really want to delete ?"
 msgstr "Echt verwijderen?"
@@ -4001,14 +3994,14 @@ msgstr "Wilt u echt verplaatsen naar de prullenbak?"
 
 #, python-format
 msgid "Do you really want to permamently remove '%s' from the trash can ?"
-msgstr "Wilt u '%s' echt permanent verwijderen uit de prullenbak?"
+msgstr "Wilt u '%s' permanent verwijderen uit de prullenbak?"
 
 msgid "Do you really want to permanently remove from the trash can ?"
-msgstr "Wilt u echt permanent verwijderen uit de prullenbak?"
+msgstr "Wilt u permanent verwijderen uit de prullenbak?"
 
 #, python-format
 msgid "Do you really want to remove directory %s from the disk?"
-msgstr "Weet u zeker dat u map %s van de harde schijf wilt wissen?"
+msgstr "Weet u zeker dat u map %s van de harde schijf wilt verwijderen?"
 
 #, python-format
 msgid "Do you really want to remove the plugin \"%s\"?"
@@ -4016,11 +4009,11 @@ msgstr "Wilt u echt deze applicatie \"%s\" verwijderen?"
 
 #, python-format
 msgid "Do you really want to remove the timer for %s?"
-msgstr "Wilt u echt de timer voor \"%s\" verwijderen?"
+msgstr "Wilt u de timer voor \"%s\" verwijderen?"
 
 #, python-format
 msgid "Do you really want to remove your bookmark of %s?"
-msgstr "Weet u zeker dat u het markeerpunt van %s wilt wissen?"
+msgstr "Weet u zeker dat u het markeerpunt van %s wilt verwijderen?"
 
 msgid "Do you want to add any additional information ?"
 msgstr "Wilt u informatie toevoegen?"
@@ -4045,8 +4038,8 @@ msgid ""
 "Do you want to delete all the selected files:\n"
 "(choose 'No' to only delete the currently selected file.)"
 msgstr ""
-"Wilt u alle geselecteerde bestanden wissen:\n"
-"(kies 'Nee' om aleen het nu geselecteerde bestand te wissen.)"
+"Wilt u alle geselecteerde bestanden verwijderen:\n"
+"(kies 'Nee' om alleen het nu geselecteerde bestand te verwijderen.)"
 
 msgid "Do you want to do a service scan?"
 msgstr "Wilt u nu zenders zoeken?"
@@ -4392,7 +4385,7 @@ msgid "Enabled"
 msgstr "Ingeschakeld"
 
 msgid "Encrypted: "
-msgstr "Gecodeerd:"
+msgstr "Gecodeerd: "
 
 msgid "Encryption"
 msgstr "Codering"
@@ -4429,9 +4422,6 @@ msgstr "Enigma2 skinselectie"
 
 msgid "Enter PIN"
 msgstr "Voer PIN in"
-
-msgid "Enter a new password"
-msgstr "Geef een nieuw wachtwoord in"
 
 msgid "Enter if you are in the east or west hemisphere."
 msgstr "Geef aan of u op het westelijke of het oostelijke halfrond bent."
@@ -4501,9 +4491,6 @@ msgstr "Geef de hoge band lokale oscillator frequentie in. Voor meer informatie 
 
 msgid "Enter your low band local oscillator frequency. For more information consult the spec sheet of your LNB."
 msgstr "Geef de lage band lokale oscillator frequentie in. Voor meer informatie zie de specificaties van uw LNB."
-
-msgid "Enter your password here:"
-msgstr "Geef hier het nieuwe wachtwoord in:"
 
 msgid "Entertainment"
 msgstr "Ontspanning"
@@ -4815,7 +4802,7 @@ msgid "Factory reset"
 msgstr "Fabrieksinstellingen"
 
 msgid "Fade the infobar when hiding"
-msgstr "Vervaag de infobar als die verborgen wordt."
+msgstr "Vervaag de infobar als die verborgen wordt"
 
 msgid "Failed"
 msgstr "Mislukt"
@@ -4896,6 +4883,9 @@ msgstr "Fiji"
 
 msgid "File appears to be busy.\n"
 msgstr "Bestand lijkt in gebruik te zijn.\n"
+
+msgid "File manager"
+msgstr "Bestandsbeheerder"
 
 msgid ""
 "File oscam.conf not found.\n"
@@ -4992,7 +4982,7 @@ msgid "Free:"
 msgstr "Vrij:"
 
 msgid "Free: "
-msgstr "Vrij:"
+msgstr "Vrij: "
 
 msgid "French"
 msgstr "French"
@@ -5133,7 +5123,7 @@ msgid "Go down the list"
 msgstr "Ga naar beneden in de lijst"
 
 msgid "Go to first movie or last item"
-msgstr "Ga naar de eerste opname of het laatste item."
+msgstr "Ga naar de eerste opname of het laatste item"
 
 msgid "Go to first movie or top of list"
 msgstr "Ga naar de eerste opname of naar het eerste item"
@@ -5175,7 +5165,7 @@ msgid "Goto :"
 msgstr "Ga naar :"
 
 msgid "Goto X"
-msgstr "Goto X"
+msgstr "Ga naar X"
 
 msgid "Goto index position"
 msgstr "Naar indexpositie draaien"
@@ -5518,7 +5508,7 @@ msgid "Icons"
 msgstr "Iconen"
 
 msgid "Idle Time: "
-msgstr "Tijd werkloos:"
+msgstr "Tijd werkloos: "
 
 msgid "If enabled the output resolution of the box will try to match the resolution of the video content"
 msgstr "Indien ingeschakeld zal getracht worden de output-resolutie van uw box overeen te laten komen met de resolutie van de video inhoud."
@@ -5654,7 +5644,7 @@ msgid ""
 "Skip cancelled."
 msgstr ""
 "Incorrect formaat voor overslaan waarde: '%s'\n"
-"Overslaan gecanceld."
+"Overslaan geannuleerd."
 
 msgid "Incorrect service type for PiP!"
 msgstr "Onjuist servicetype voor PiP!"
@@ -5699,7 +5689,7 @@ msgid "InfoBar EPG mode"
 msgstr "Informatiebalk EPG modus"
 
 msgid "Infobar EPG"
-msgstr "Informatiebalk EPG..."
+msgstr "Informatiebalk EPG"
 
 msgid "Infobar fade-out speed"
 msgstr "Infobar fade-out snelheid"
@@ -5828,9 +5818,6 @@ msgstr "Installeert service"
 msgid "Instant record"
 msgstr "Directe opname"
 
-msgid "Instant record location"
-msgstr "Lokatie directe opname"
-
 msgid "Instant recording location"
 msgstr "Lokatie van directe opnames"
 
@@ -5888,7 +5875,7 @@ msgid "Inversion, Pilot & Roll-off"
 msgstr "Inversion, Pilot & Roll-off"
 
 msgid "Invert"
-msgstr "Omgekeerd"
+msgstr "Keer om"
 
 msgid "Ipkg"
 msgstr "IPKG"
@@ -6203,6 +6190,9 @@ msgstr "Maak lijst van EPG functies..."
 msgid "List available networks"
 msgstr "Lijst met beschikbare netwerken"
 
+msgid "List of files"
+msgstr "Lijst met bestanden"
+
 msgid "List of storage devices"
 msgstr "Lijst van opslagmedia"
 
@@ -6323,7 +6313,10 @@ msgid "Lord Howe Island"
 msgstr "Lord Howe Island"
 
 msgid "Lower Framerate save CPU Time"
-msgstr "Lagere framerate gebruikt minder processortijd."
+msgstr "Lagere framerate gebruikt minder processortijd"
+
+msgid "Lower case"
+msgstr "Kleine letters"
 
 msgid "Luxembourg"
 msgstr "Luxembourg"
@@ -6544,7 +6537,7 @@ msgid "Miscellaneous"
 msgstr "Diverse"
 
 msgid "Missing "
-msgstr "Ontbrekend"
+msgstr "Ontbrekend "
 
 msgctxt "Satellite configuration mode"
 msgid "Mode"
@@ -6654,6 +6647,9 @@ msgstr "Ga naar begin van de lijst"
 
 msgid "Move to position X"
 msgstr "Naar positie X draaien"
+
+msgid "Move to..."
+msgstr "Verplaats naar..."
 
 msgid "Move up a page"
 msgstr "Ga een pagina omhoog"
@@ -6893,11 +6889,11 @@ msgstr "Nieuw"
 msgid "New Caledonia"
 msgstr "New Caledonia"
 
-msgid "New Random Password"
-msgstr "Nieuw willekeurig wachtwoord"
-
 msgid "New Zealand"
 msgstr "New Zealand"
+
+msgid "New password"
+msgstr "Wachtwoord instellen"
 
 msgid "New profile: "
 msgstr "Niew profiel: "
@@ -6995,7 +6991,7 @@ msgid "No fast winding possible yet.. but you can use the number buttons to skip
 msgstr "Snel spoelen is nog niet mogelijk... maar u kunt de cijfertoetsen gebruiken om vooruit/achteruit te springen!"
 
 msgid "No free index available"
-msgstr "Geen vrije index beschikbaar."
+msgstr "Geen vrije index beschikbaar"
 
 msgid "No free tuner!"
 msgstr "Geen vrije tuner!"
@@ -7184,17 +7180,13 @@ msgstr "Niets"
 
 msgid ""
 "Nothing to scan!\n"
-"Please setup your tuner settings before starting a service scan."
-msgstr ""
-"Niets te scannen!\n"
-"Vóór het zoeken dient uw tuner correct ingesteld te zijn."
-
-msgid ""
-"Nothing to scan!\n"
 "Please setup your tuner settings before you start a service scan."
 msgstr ""
 "Niets gevonden!\n"
 "Vóór het zoeken dient uw tuner correct ingesteld te zijn."
+
+msgid "Nothing to scan! Setup your tuner and try again."
+msgstr "Niets te scannen! Vóór het zoeken dient uw tuner correct ingesteld te zijn."
 
 msgid "Nothing to upgrade"
 msgstr "Geen upgrades beschikbaar"
@@ -7265,6 +7257,10 @@ msgstr "Oman"
 msgid "On"
 msgstr "Aan"
 
+#, python-format
+msgid "On destination '%s' is %s free space only!"
+msgstr "Bestemming '%s' heeft slechts %s vrije ruimte!"
+
 msgid "On end of movie"
 msgstr "Bij het einde van bestand"
 
@@ -7273,6 +7269,9 @@ msgstr "Aan het einde van de film (als menu)"
 
 msgid "On reaching the end of a file during playback, you can choose the box's behavior."
 msgstr "U kunt instellen wat er moet gebeuren bij het einde van het afspelen."
+
+msgid "On shutdown/restart warn about any pending jobs being carried out in the background."
+msgstr "Waarschuw bij afsluiten/herstarten als er op de achtergrond taken worden uitgevoerd."
 
 msgid "On valid ONIDs, ignore frequency sub network part"
 msgstr "Op geldige ONIDs negeer het frequentie netwerk deel"
@@ -7299,7 +7298,7 @@ msgid "Only change this setting if you are using a Unicable device that has been
 msgstr "Verander deze instelling alleen als u een Unicable apparaat gebruikt dat geprogrammeerd is met een aangepaste 'programmer'. Voor meer informatie overleg met degene die de aanpassing heeft gedaan."
 
 msgid "Only extensions."
-msgstr "Alleen extensies"
+msgstr "Alleen extensies."
 
 msgid "Only free scan"
 msgstr "Alleen ongecodeerde zenders scannen"
@@ -7360,6 +7359,9 @@ msgstr "Open-VPN"
 
 msgid "OpenVpn Setup"
 msgstr "Open-VPN instellingen"
+
+msgid "Options..."
+msgstr "Opties..."
 
 msgid "Orbital position"
 msgstr "Orbitale positie"
@@ -7504,8 +7506,8 @@ msgstr "Wachtwoord"
 msgid "Password (httpwd)"
 msgstr "Wachtwoord (httpwd)"
 
-msgid "Password deleted sucessfully for the root user"
-msgstr "Wachtwoord voor root-gebruiker succesvol verwijderd."
+msgid "Password changed"
+msgstr "Wachtwoord is veranderd"
 
 msgid "Password setup"
 msgstr "Wachtwoord instellen"
@@ -8105,7 +8107,7 @@ msgid "Press OK to get further details for %s"
 msgstr "Druk op OK voor meer details van: %s"
 
 msgid "Press OK to scan"
-msgstr "Druk OK om te zoeken."
+msgstr "Druk OK om te scannen."
 
 msgid "Press OK to select a group of satellites to configure in one block."
 msgstr "Druk op OK om een groep satellieten in één keer te kiezen."
@@ -8121,9 +8123,6 @@ msgstr "Druk op OK om de CAId aan/uit te zetten."
 
 msgid "Press OK to set the MAC address."
 msgstr "Druk op OK om MAC-adres in te stellen."
-
-msgid "Press OK to start the scan"
-msgstr "Druk OK om te zoeken."
 
 msgid "Press OK to toggle the selection"
 msgstr "Druk op OK om de selectie te wisselen."
@@ -8318,6 +8317,9 @@ msgstr "Radio zenderkeuze"
 msgid "Random"
 msgstr "Willekeurig"
 
+msgid "Random password"
+msgstr "Willekeurig wachtwoord"
+
 #, python-format
 msgid "Rating defined by broadcaster - %d"
 msgstr "Waardering bepaald door omroep - %d"
@@ -8349,7 +8351,7 @@ msgid "Really close without saving settings?"
 msgstr "Afsluiten zonder opslaan?"
 
 msgid "Really delete completed timers?"
-msgstr "Wilt u de afgewerkte timers echt wissen?"
+msgstr "Wilt u de afgewerkte timers echt verwijderen?"
 
 msgid "Really exit the subservices quickzap?"
 msgstr "Subkanalen snelzap verlaten?"
@@ -8510,7 +8512,7 @@ msgid "Remote control type"
 msgstr "Type afstandsbediening"
 
 msgid "Remove"
-msgstr "Verwijderen"
+msgstr "Verwijder"
 
 msgid "Remove 'hide dotted line on the top for this service'"
 msgstr "Verwijder 'Verberg voor dit kanaal de gestippelde lijn bovenin'"
@@ -8534,7 +8536,7 @@ msgid "Remove all new found flags"
 msgstr "Verwijder alle 'nieuw gevonden'-vlaggen"
 
 msgid "Remove bookmark"
-msgstr "Verwijderen bladwijzer"
+msgstr "Verwijder bladwijzer"
 
 msgid "Remove bouquet from parental protection"
 msgstr "Verwijder kinderslot van favorietenlijst"
@@ -8557,6 +8559,9 @@ msgstr "Verwijderen voltooid."
 msgid "Remove from parental protection"
 msgstr "Verwijder van kinderslot"
 
+msgid "Remove from selection (starts with...)"
+msgstr "Verwijder van keuze (begint met...)"
+
 msgid "Remove items from trash can after (days)"
 msgstr "Verwijder items uit de prullenbak na x (dagen)"
 
@@ -8564,7 +8569,7 @@ msgid "Remove new found flag"
 msgstr "Verwijder 'nieuw gevonden' vlag"
 
 msgid "Remove plugins"
-msgstr "Verwijderen"
+msgstr "Plugins verwijderen"
 
 msgid "Remove selected satellite"
 msgstr "Verwijder geselecteerde satellieten"
@@ -8579,7 +8584,7 @@ msgid "Remove title"
 msgstr "Titel verwijderen"
 
 msgid "Removing"
-msgstr "Verwijderen"
+msgstr "Verwijdert"
 
 msgid "Removing Service"
 msgstr "Verwijdert kanaal"
@@ -8890,6 +8895,9 @@ msgstr "Schotelinstellingen"
 msgid "Satellite equipment"
 msgstr "Satelliet apparatuur"
 
+msgid "Satellite equipment control"
+msgstr "Satelliet apparatuur controle"
+
 msgid "Satellite equipment setup"
 msgstr "Apparatuurinstellingen"
 
@@ -8963,7 +8971,7 @@ msgid "Scan"
 msgstr "Scan"
 
 msgid "Scan "
-msgstr "Zoek"
+msgstr "Scan "
 
 #. TRANSLATORS: option name, indicating which type of (DVB-C) modulation should be scanned. The modulation type is printed in '%s'. E.g.: 'Scan QAM16'
 #, python-format
@@ -9180,11 +9188,26 @@ msgstr "Selecteer een zender voor opname"
 msgid "Select copy destination for:"
 msgstr "Selecteer kopiëer bestemming voor:"
 
+msgid "Select destination for copy selected files..."
+msgstr "Selecteer bestemming voor te kopiëren bestanden..."
+
+msgid "Select destination for move selected files..."
+msgstr "Selecteer bestemming voor te verplaatsen bestanden..."
+
 msgid "Select destination for:"
 msgstr "Selecteer bestemming voor:"
 
 msgid "Select files for backup."
 msgstr "Selecteer bestanden voor back-up."
+
+msgid ""
+"Select files with 'OK' and then use 'Green' to choose desired operation.\n"
+"Use 'CH+/-' select/unselect files via the keyboard.\n"
+"Use 'Menu' for settings."
+msgstr ""
+"Selecteer bestanden met 'OK'; gebruik daarna 'Voer uit' om te bepalen wat u wilt doen.\n"
+"Gebruik 'CH+/-' om bestanden te selecteren/de-selecteren.\n"
+"Gebruik 'Menu' voor instellingen"
 
 msgid "Select files/folders to backup"
 msgstr "Kies bestanden/mappen voor de back-up"
@@ -9221,6 +9244,9 @@ msgstr "Selecteer menu-item"
 
 msgid "Select movie"
 msgstr "Kies een opname"
+
+msgid "Select operation:"
+msgstr "Kies bewerking:"
 
 msgid "Select provider to add..."
 msgstr "Selecteer provider om toe te voegen..."
@@ -9264,16 +9290,16 @@ msgstr "Kies het typenummer van uw Unicable apparaat. Als deze niet in de lijst 
 msgid "Select the movie path"
 msgstr "Bepaal het opnamepad"
 
-msgid "Select the satellite which is connected to Port-A of your switch. If you are unsure select 'automatic' and the receiver will attepmt to determine this for you. If nothing is connected to this port, select 'nothing connected'."
+msgid "Select the satellite which is connected to Port-A of your switch. If you are unsure select 'automatic' and the receiver will attempt to determine this for you. If nothing is connected to this port, select 'nothing connected'."
 msgstr "Kies de satelliet die met de A-poort van uw switch verbonden is. Als u niet zeker bent kiest u 'automatisch' waarna de ontvanger zelf zal proberen de juiste waarde te bepalen. Als er niets met deze poort is verbonden, kiest u 'niets verbonden'."
 
-msgid "Select the satellite which is connected to Port-B of your switch. If you are unsure select 'automatic' and the receiver will attepmt to determine this for you. If nothing is connected to this port, select 'nothing connected'."
+msgid "Select the satellite which is connected to Port-B of your switch. If you are unsure select 'automatic' and the receiver will attempt to determine this for you. If nothing is connected to this port, select 'nothing connected'."
 msgstr "Kies de satelliet die met de B-poort van uw switch verbonden is. Als u niet zeker bent kiest u 'automatisch' waarna de ontvanger zelf zal proberen de juiste waarde te bepalen. Als er niets met deze poort is verbonden, kiest u 'niets verbonden'."
 
-msgid "Select the satellite which is connected to Port-C of your switch. If you are unsure select 'automatic' and the receiver will attepmt to determine this for you. If nothing is connected to this port, select 'nothing connected'."
+msgid "Select the satellite which is connected to Port-C of your switch. If you are unsure select 'automatic' and the receiver will attempt to determine this for you. If nothing is connected to this port, select 'nothing connected'."
 msgstr "Kies de satelliet die met de C-poort van uw switch verbonden is. Als u niet zeker bent kiest u 'automatisch' waarna de ontvanger zelf zal proberen de juiste waarde te bepalen. Als er niets met deze poort is verbonden, kiest u 'niets verbonden'."
 
-msgid "Select the satellite which is connected to Port-D of your switch. If you are unsure select 'automatic' and the receiver will attepmt to determine this for you. If nothing is connected to this port, select 'nothing connected'."
+msgid "Select the satellite which is connected to Port-D of your switch. If you are unsure select 'automatic' and the receiver will attempt to determine this for you. If nothing is connected to this port, select 'nothing connected'."
 msgstr "Kies de satelliet die met de D-poort van uw switch verbonden is. Als u niet zeker bent kiest u 'automatisch' waarna de ontvanger zelf zal proberen de juiste waarde te bepalen. Als er niets met deze poort is verbonden, kiest u 'niets verbonden'."
 
 msgid "Select the satellite you want to configure. Once that satellite is configured you can select and configure other satellites that will be accessed using this same tuner."
@@ -9298,7 +9324,7 @@ msgid "Select the type of Unicable device you are using."
 msgstr "Kies het type Unicable dat u gebruikt."
 
 msgid "Select upgrade source"
-msgstr "Kies de upgrade-bron."
+msgstr "Kies de upgrade-bron"
 
 msgid "Select upgrade source to edit."
 msgstr "Kies de te wijzigen upgrade-bron."
@@ -9327,6 +9353,10 @@ msgstr "Kies uw provider en druk OK om de scan te starten"
 msgid "Select your region. If not available change 'Country' to 'all' and select one of the default alternatives."
 msgstr "Selecteer uw regio. Indien deze niet beschikbaar is verandert u 'land' en selecteert u één van de default alternatieven."
 
+#, python-format
+msgid "Selected: %s"
+msgstr "Gekozen: %s"
+
 msgid "Selecting satellites 1 (USALS)"
 msgstr "Alle satellieten 1 (USALS)"
 
@@ -9340,7 +9370,7 @@ msgid "Send"
 msgstr "Verstuur"
 
 msgid "Send 'sourceactive' before zap timers"
-msgstr "Stuur 'sourceactive' voor de zaptimers."
+msgstr "Stuur 'sourceactive' voor de zaptimers"
 
 msgid "Send Confirmation"
 msgstr "Stuur bevestiging"
@@ -9471,9 +9501,6 @@ msgstr "Kanalen kunnen in favorietenlijsten worden samengevoegd. Indien geactive
 msgid "Set Framerate for MiniTV"
 msgstr "Stel framerate in voor MiniTV"
 
-msgid "Set Password"
-msgstr "Wachtwoord instellen"
-
 msgid "Set as startup service"
 msgstr "Kies kanaal na opstarten"
 
@@ -9503,7 +9530,7 @@ msgid "Set sequence repeats if your aerial system requires this. Normally if the
 msgstr "Stel het aantal herhalingen in dat uw antennesysteem vereist. Als het systeem goed is geconfigureerd, zullen geen herhalingen nodig zijn. Als dat wel het geval is, moet u controleren of u de commando volgorde goed heeft ingesteld."
 
 msgid "Set startup service"
-msgstr "Kanaal kiezen bij opstarten."
+msgstr "Kanaal kiezen bij opstarten"
 
 msgid "Set system"
 msgstr "Systeminstellingen"
@@ -9595,6 +9622,13 @@ msgstr "Voltage en 22KHz instellen"
 
 msgid "Sets the root directory of movie list, to remove the '..' from being shown in that folder."
 msgstr "Stelt de root-map van de opnamelijst in, om '..' niet te tonen."
+
+msgid ""
+"Setting a password is strongly advised if your STB is open to the internet.\n"
+"This is the case if you have in your router a port forwarded to the STB."
+msgstr ""
+"Het gebruik van een wachtwoord is sterk aanbevolen indien uw STB open met het internet is verbonden.\n"
+"Dat is het geval indien in uw router een 'port forwarded' is naar uw STB."
 
 msgid "Settings"
 msgstr "Instellingen"
@@ -9690,7 +9724,7 @@ msgid "Show Display Icons"
 msgstr "Toon schermiconen"
 
 msgid "Show EIT now/next in infobar"
-msgstr "Toon EIT nu/straks in informatiebalk."
+msgstr "Toon EIT nu/straks in informatiebalk"
 
 msgid "Show EPG for current channel..."
 msgstr "Toon EPG voor huidige kanaal..."
@@ -9904,7 +9938,7 @@ msgid "Show second infobar"
 msgstr "Toon tweede informatiebalk"
 
 msgid "Show select audio track"
-msgstr "Toon \"Kies audiospoor\""
+msgstr "Toon 'Kies audiospoor'"
 
 msgid "Show service list"
 msgstr "Toon kanaallist"
@@ -10027,7 +10061,7 @@ msgid "Signal strength:"
 msgstr "Signaalsterkte:"
 
 msgid "Signal: "
-msgstr "Signaal:"
+msgstr "Signaal: "
 
 msgid "Similar"
 msgstr "Gelijksoortig"
@@ -10592,9 +10626,6 @@ msgstr "Ondertitels"
 msgid "Subtitles settings"
 msgstr "Ondertitel instellingen"
 
-msgid "Sucessfully changed the password for the root user to "
-msgstr "Wachtwoord voor de root-gebruiker succesvol veranderd in "
-
 msgid "Sudan"
 msgstr "Sudan"
 
@@ -10605,7 +10636,11 @@ msgid "Sunday"
 msgstr "zondag"
 
 msgid "Support at"
-msgstr "Support "
+msgstr "Ondersteuning op  "
+
+#, python-format
+msgid "Support at %s"
+msgstr "Support om %s"
 
 msgid "Suriname"
 msgstr "Suriname"
@@ -10620,7 +10655,7 @@ msgid "Swap PiP and main picture"
 msgstr "PiP/hoofdbeeld wisselen"
 
 msgid "Swap SNR in '%' with SNR in 'db'"
-msgstr "Wissel tussen SNR in dB en %"
+msgstr "Wissel tussen SNR in '%' en 'dB'"
 
 msgid "Swap services"
 msgstr "Zenders omwisselen"
@@ -10763,6 +10798,9 @@ msgstr "Tajikistan"
 
 msgid "Tanzania, United Republic of"
 msgstr "Tanzania, United Republic of"
+
+msgid "Task warning on shutdown"
+msgstr "Waarschuwing actieve taken bij afsluiten"
 
 msgid "Teletext"
 msgstr "Teletext"
@@ -10965,6 +11003,9 @@ msgstr ""
 "De Netwerkwizard-plugin is niet geïnstalleerd!\n"
 "Installeer deze eerst."
 
+msgid "The password can not be blank."
+msgstr "Het wachtwoordveld mag niet leeg zijn"
+
 #, python-format
 msgid "The path %s already exists."
 msgstr "Het pad %s bestaat al."
@@ -11062,7 +11103,7 @@ msgid "This %s %s cannot decode %s streams!"
 msgstr "Deze %s %s kan %s streams niet decoderen!"
 
 msgid "This DVD RW medium is already formatted - reformatting will erase all content on the disc."
-msgstr "Dit DVD-RW medium is reeds geformatteerd; herformatteren zal alles wissen op deze disk."
+msgstr "Dit DVD-RW medium is reeds geformatteerd; herformatteren zal alles op deze disk verwijderen."
 
 msgid "This allows you change the font size relative to skin size, so 1 increases by 1 point size, and -1 decreases by 1 point size"
 msgstr "Hier stelt u de lettergrootte in t.o.v. de waarde die in de skin staat. Dus '1' vergroot die met 1 punt en '-1' verkleint die met 1 punt."
@@ -11090,7 +11131,7 @@ msgid "This option allows to set the level of dynamic contrast of the picture."
 msgstr "Hiermee bepaalt u de mate van dynamich contrast in het beeld."
 
 msgid "This option allows you choose how to display elapsed time as + or -"
-msgstr "Hier kunt u aangeven of de verstreken tijd met een min- of een plusteken wordt vertoond."
+msgstr "Hier kunt u aangeven of de verstreken tijd wordt vertoond als + of -"
 
 msgid "This option allows you choose how to display remaining time, or elapsed time, or both."
 msgstr "Hier kunt u instellen of u de resterende of de vertsreken tijd wilt zien, of beide."
@@ -11117,7 +11158,7 @@ msgid "This option allows you to boost the green tones in the picture."
 msgstr "Met deze instelling kunt u de groene kleuren in het beeld versterken."
 
 msgid "This option allows you to bypass HDMI EDID check"
-msgstr "U kunt de HDMI EDID controle omzeilen."
+msgstr "U kunt de HDMI EDID controle omzeilen"
 
 msgid "This option allows you to change the Colordepth for UHD"
 msgstr "Met deze optie verandert u de kleurruimte voor UHD"
@@ -11159,7 +11200,7 @@ msgid "This option allows you to choose how to display SD progressive 24Hz on yo
 msgstr "Hier kunt u aangeven hoe 24Hz op uw TV moet worden weergegeven (omdat niet alle TV's deze resolutie ondersteunen)"
 
 msgid "This option allows you to choose how to display elapsed time. As + or -"
-msgstr "Hier kunt u aangeven of de verstreken tijd met een min- of een plusteken wordt vertoond."
+msgstr "Hier kunt u aangeven of de verstreken tijd als + of - wordt vertoond"
 
 msgid "This option allows you to choose how to display standard defintion video on your TV."
 msgstr "Hier kunt u aangeven SD op uw TV moet worden weergegeven."
@@ -11180,7 +11221,7 @@ msgid "This option allows you to choose whether or not to display genre informat
 msgstr "Hier kunt u instellen of u de genreinformatie wilt zien voor TV-programma's."
 
 msgid "This option allows you to disable sorting of the menus"
-msgstr "Hier kunt u het sorteren van menu's inschakelen."
+msgstr "Hier kunt u het sorteren van menu's inschakelen"
 
 msgid "This option allows you to disable sorting of the option in setting screens"
 msgstr "Hiermee kunt u de sortering van de instellingenschermen uitschakelen."
@@ -11239,8 +11280,8 @@ msgstr "Hiermee stelt u in of de optie in de extenxielijst wordt getoond."
 msgid "This option moves the PVR status from the separate window into the Movie Player infobar."
 msgstr "Deze optie verplaatst de PVR status (gestopt etc.) van een apart venstertje naar de informatiebalk (wordt niet door alle skins ondersteund)."
 
-msgid "This option set the level of surpression of musquito noise (Musquito Noise is random aliasing as a result of strong compression). Obviously this goes at the cost of picture details."
-msgstr "Met deze optie bepaalt u de mate van onderdrukking van 'musquito ruis' ('musquito ruis' is willekeuring aliasing als resultaat van sterke compressie). Uiteraard gaat dit ten koste van beelddetails."
+msgid "This option set the level of surpression of mosquito noise (Mosquito Noise is random aliasing as a result of strong compression). Obviously this goes at the cost of picture details."
+msgstr "Met deze optie bepaalt u de mate van onderdrukking van 'mosquito ruis' ('mosquito ruis' is willekeuring aliasing als resultaat van sterke compressie). Uiteraard gaat dit ten koste van beelddetails."
 
 msgid "This option sets the picture brightness."
 msgstr "Hier stelt u de beeldhelderheid in."
@@ -11301,7 +11342,7 @@ msgid ""
 "This will (re-)calculate all positions of your rotor and may remove previously memorised positions and fine-tuning!\n"
 "Are you sure?"
 msgstr ""
-"Dit zal alle posities herberekenen en zal alle opgeslagen posities wissen!\n"
+"Dit zal alle posities herberekenen en zal alle opgeslagen posities verwijderen!\n"
 "Weet u het zeker?"
 
 msgid "Three"
@@ -11371,9 +11412,6 @@ msgid ""
 msgstr ""
 "Timer overlap in timers.xml gedetecteerd!\n"
 "Controleer deze!"
-
-msgid "Timer record location"
-msgstr "Timer opnamelokatie"
 
 msgid "Timer recording location"
 msgstr "Timer opnamelokatie"
@@ -11516,6 +11554,10 @@ msgstr "Total afgehandelde klant emm's"
 
 msgid "Total memory:"
 msgstr "Totaal geheugen:"
+
+#, python-format
+msgid "Total size: %s"
+msgstr "Totale grootte: %s"
 
 msgid "Total swap:"
 msgstr "Totale swap:"
@@ -11679,6 +11721,9 @@ msgstr "Twee regels"
 msgid "Type"
 msgstr "Type"
 
+msgid "Type of LNB/device"
+msgstr "Soort LNB/apparaat"
+
 msgid "Type of scan"
 msgstr "Zoekmodus"
 
@@ -11695,7 +11740,7 @@ msgid "USALS Calibration"
 msgstr "USALS kalibratie"
 
 msgid "USALS automatically moves a motorised dish to the correct satellite based on the coordinates entered by the user. Without USALS each satellite will need to be setup and saved individually."
-msgstr "USALS laat een gemotoriseerde schotel exact naar de juiste satelliet draaien, gebaseerd op de coördinaten die de gebruiker ingeeft. Zonder USALS moet de positie voor elke satelliet apart worden ingesteld en opgeslagen. "
+msgstr "USALS laat een gemotoriseerde schotel exact naar de juiste satelliet draaien, gebaseerd op de coördinaten die de gebruiker ingeeft. Zonder USALS moet de positie voor elke satelliet apart worden ingesteld en opgeslagen."
 
 msgid "Uganda"
 msgstr "Uganda"
@@ -11706,11 +11751,8 @@ msgstr "Ukraine"
 msgid "Ukrainian"
 msgstr "Ukrainian"
 
-msgid "Unable to change/reset the password for the root user"
-msgstr "Kan het wachtwoord voor de root-gebruiker niet veranderen/resetten."
-
-msgid "Unable to delete the password for the root user"
-msgstr "Kan het wachtwoord voor de root-gebruiker niet verwijderen."
+msgid "Unable to change password"
+msgstr "Kan wachtwoord niet veranderen"
 
 msgid "Undefined"
 msgstr "Niet gedefinieerd"
@@ -11819,6 +11861,9 @@ msgstr "Uphops -"
 msgid "Uphops: "
 msgstr "Uphops: "
 
+msgid "Upper case"
+msgstr "Hoofdletters"
+
 msgid "Uptime"
 msgstr "Uptime"
 
@@ -11878,6 +11923,9 @@ msgstr "Gebruik fastscan kanaalnamen"
 
 msgid "Use fastscan channel numbering"
 msgstr "Gebruik fastscan zendervolgorde"
+
+msgid "Use first 'x' filename's chars for virtual keyboard"
+msgstr "Gebruik de eerste x letters van de bestandsnaam voor virtueel toetsenbord."
 
 msgid "Use frequency or channel"
 msgstr "Gebruik frequentie of kanaal"
@@ -11977,13 +12025,13 @@ msgid "User defined transponder"
 msgstr "Door gebruiker bepaalde transponder"
 
 msgid "User interface"
-msgstr "Gebruikers interface"
+msgstr "Gebruikersinterface"
 
 msgid "User interface settings"
 msgstr "Gebruikersinterface-instellingen"
 
 msgid "User interface visibility"
-msgstr "Gebruikers interface zichtbaarheid"
+msgstr "Zichtbaarheid gebruikersinterface "
 
 msgid "Username"
 msgstr "Gebruikersnaam"
@@ -12227,7 +12275,7 @@ msgid "Wait for ci..."
 msgstr "Wacht op CI..."
 
 msgid "Waiting"
-msgstr "Wacht..."
+msgstr "Aan het wachten"
 
 msgid "Waiting for mount"
 msgstr "Wacht op mount"
@@ -12674,13 +12722,13 @@ msgid "Yes, backup my settings!"
 msgstr "Ja, mijn instellingen opslaan!"
 
 msgid "Yes, but don't save timeshift as movie"
-msgstr "Ja, maar sla timeshift niet op als opname."
+msgstr "Ja, maar sla timeshift niet op als opname"
 
 msgid "Yes, but save timeshift as movie and continue recording"
 msgstr "Ja, maar bewaar timeshift als opname en ga door met opnemen"
 
 msgid "Yes, but save timeshift as movie and stop recording"
-msgstr "Ja, maar bewaar timeshift als opname en stop opname."
+msgstr "Ja, maar bewaar timeshift als opname en stop opname"
 
 msgid "Yes, delete this movie and return to the movie list"
 msgstr "Ja, verwijder deze opname en ga terug naar de opnamelijst"
@@ -12758,7 +12806,7 @@ msgid "You can remove this plugin."
 msgstr "Deze plugin kunt u verwijderen."
 
 msgid "You cannot delete this!"
-msgstr "U kunt dit niet wissen!"
+msgstr "U kunt dit niet verwijderen!"
 
 msgid "You didn't select a channel to record from."
 msgstr "U heeft geen kanaal geselecteerd om op te nemen."
@@ -12814,10 +12862,7 @@ msgid "You seem to be in timeshift!"
 msgstr "U zit in timeshift!"
 
 msgid "You seem to be in timeshift, Do you want to leave timeshift ?"
-msgstr "U bent in timeshift modus; stop timeshift eerst."
-
-msgid "You system does not support ext4"
-msgstr "Uw systeem ondersteunt geen ext4"
+msgstr "U bent in timeshift modus. Wilt u timeshift beëindigen?"
 
 #, python-format
 msgid "Your %s %s does not support PiP HD"
@@ -13240,7 +13285,7 @@ msgid "circular right"
 msgstr "circular rechts"
 
 msgid "clip overscan / letterbox borders"
-msgstr "Knip overscan/letterbox grenzen."
+msgstr "Knip overscan/letterbox grenzen"
 
 msgid "close share view"
 msgstr "sluit shareview"
@@ -13279,7 +13324,7 @@ msgid "decrease uphop by 1"
 msgstr "verlaag uphop met 1"
 
 msgid "delete"
-msgstr "verwijderen"
+msgstr "verwijder"
 
 msgid "delete cut"
 msgstr "wis snijpunt"
@@ -13566,6 +13611,9 @@ msgstr "horizontaal"
 
 msgid "increase uphop by 1"
 msgstr "verhoog uphop met 1"
+
+msgid "info"
+msgstr "info"
 
 msgid "information/education/school program"
 msgstr "informatie/onderwijs/schoolprogramma"
@@ -13870,7 +13918,7 @@ msgid "remove bookmark"
 msgstr "Markeerpunt verwijderen"
 
 msgid "remove directory"
-msgstr "Map verwijderen"
+msgstr "verwijder map"
 
 msgid "remove this mark"
 msgstr "verwijder dit merkteken"
@@ -13879,13 +13927,13 @@ msgid "rename"
 msgstr "hernoem"
 
 msgid "repeat playlist"
-msgstr "Herhaal afspeellijst"
+msgstr "herhaal afspeellijst"
 
 msgid "repeated"
 msgstr "herhalen"
 
 msgid "restart GUI"
-msgstr "Gebruikersinterface opnieuw starten."
+msgstr "herstart gebruikersinterface"
 
 msgid "reverse by date"
 msgstr "omgekeerd chronologisch"
@@ -14308,6 +14356,9 @@ msgstr "zapte"
 #~ "\n"
 #~ "Er loopt een opname."
 
+#~ msgid " "
+#~ msgstr " "
+
 #, fuzzy
 #~ msgid "%-e %B %Y"
 #~ msgstr "%d %B %Y"
@@ -14676,6 +14727,9 @@ msgstr "zapte"
 #~ msgid "Convert ext3 filesystem to ext4"
 #~ msgstr "Converteer bestandssysteem ext3 naar ext4"
 
+#~ msgid "Convert ext3 to ext4"
+#~ msgstr "Converteer ext3 naar ext4"
+
 #~ msgid "Convert filesystem ext3 to ext4"
 #~ msgstr "Converteer bestandssysteem ext3 naar ext4"
 
@@ -14844,6 +14898,9 @@ msgstr "zapte"
 #~ msgid "Dayname Month-99"
 #~ msgstr "dagnaam maand-99"
 
+#~ msgid "Delete Password"
+#~ msgstr "Wachtwoord verwijderen"
+
 #~ msgid "Delete..."
 #~ msgstr "Wissen..."
 
@@ -14858,6 +14915,9 @@ msgstr "zapte"
 
 #~ msgid "Dialing:"
 #~ msgstr "Bellen:"
+
+#~ msgid "Diasbled"
+#~ msgstr "Gedeactiveerd"
 
 #~ msgid "Diction"
 #~ msgstr "Woordkeus"
@@ -14876,6 +14936,13 @@ msgstr "zapte"
 
 #~ msgid "Display"
 #~ msgstr "Display"
+
+#~ msgid ""
+#~ "Do you really want to convert the filesystem?\n"
+#~ "You cannot go back!"
+#~ msgstr ""
+#~ "Wilt u het bestandssysteem echt converteren?\n"
+#~ "U kunt het niet meer ongedaan maken!"
 
 #~ msgid "Do you want to download the image to %s ?"
 #~ msgstr "Wilt u het image downloaden naar %s ?"
@@ -14935,11 +15002,17 @@ msgstr "zapte"
 #~ msgid "Enimga2 Changes"
 #~ msgstr "Enimga2 veranderingen"
 
+#~ msgid "Enter your password here:"
+#~ msgstr "Geef hier het nieuwe wachtwoord in:"
+
 #~ msgid "Error downloading the change log."
 #~ msgstr "Fout bij het downloaden van het veranderingslogboek."
 
 #~ msgid "Error: No network connection found. Please ensure your receiver is connected to the internet."
 #~ msgstr "Fout: Geen netwerkverbinding gevonden. Controleer of uw ontvanger met het internet verbonden is"
+
+#~ msgid "Execute"
+#~ msgstr "Uitvoeren"
 
 #~ msgid "External (CF)"
 #~ msgstr "Extern (CF)"
@@ -15013,6 +15086,9 @@ msgstr "zapte"
 
 #~ msgid "Initialization"
 #~ msgstr "Initialiseren"
+
+#~ msgid "Instant record location"
+#~ msgstr "Lokatie directe opname"
 
 #~ msgid "Lamedb"
 #~ msgstr "Lamedb"
@@ -15169,6 +15245,9 @@ msgstr "zapte"
 #~ msgid "Parental control type"
 #~ msgstr "Kinderslot type"
 
+#~ msgid "Password deleted sucessfully for the root user"
+#~ msgstr "Wachtwoord voor root-gebruiker succesvol verwijderd."
+
 #~ msgid "Phone number"
 #~ msgstr "Telefoonnummer"
 
@@ -15211,6 +15290,9 @@ msgstr "zapte"
 
 #~ msgid "Prepare another USB stick for image flashing"
 #~ msgstr "Maak een andere USB-stick klaar voor het flashen"
+
+#~ msgid "Press OK to start the scan"
+#~ msgstr "Druk OK om te scannen."
 
 #~ msgid "Provider to scan"
 #~ msgstr "Zoek op provider"
@@ -15379,6 +15461,9 @@ msgstr "zapte"
 #~ msgid "Subtitles Settings"
 #~ msgstr "Ondertitel instellingen"
 
+#~ msgid "Sucessfully changed the password for the root user to "
+#~ msgstr "Wachtwoord voor de root-gebruiker succesvol veranderd in "
+
 #~ msgid "Switch channel down"
 #~ msgstr "Ga naar vorige kanaal"
 
@@ -15454,6 +15539,9 @@ msgstr "zapte"
 #~ msgid "Timer overview"
 #~ msgstr "Timer overzicht"
 
+#~ msgid "Timer record location"
+#~ msgstr "Timer opnamelokatie"
+
 #~ msgid "Timeshift settings"
 #~ msgstr "Timeshift instellingen"
 
@@ -15485,6 +15573,12 @@ msgstr "zapte"
 
 #~ msgid "USB stick wizard"
 #~ msgstr "USB-stick wizard"
+
+#~ msgid "Unable to change/reset the password for the root user"
+#~ msgstr "Kan het wachtwoord voor de root-gebruiker niet veranderen/resetten."
+
+#~ msgid "Unable to delete the password for the root user"
+#~ msgstr "Kan het wachtwoord voor de root-gebruiker niet verwijderen."
 
 #~ msgid "Unattended upgrade without GUI and reboot system"
 #~ msgstr "Upgrade uitvoeren en vervolgens systeem herstarten"
@@ -15542,6 +15636,9 @@ msgstr "zapte"
 
 #~ msgid "You have chosen to create a new .NFI flasher bootable USB stick. This will repartition the USB stick and therefore all data on it will be erased."
 #~ msgstr "U heeft gekozen om een nieuwe .NFI flasher opstart USB stick aan te maken. Alle data op de USB stick gaat onherroepelijk verloren."
+
+#~ msgid "You system does not support ext4"
+#~ msgstr "Uw systeem ondersteunt geen ext4"
 
 #~ msgid "Your %s %s is not connected to the internet, please check your network settings and try again."
 #~ msgstr "Uw %s %s is niet met het internet verbonden. Controleer uw netwerkinstellingen en probeer het opnieuw."

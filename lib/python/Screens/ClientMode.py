@@ -7,6 +7,13 @@ from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
 from Screens.Standby import TryQuitMainloop
 
+# for VKeyIcon
+from Components.Sources.Boolean import Boolean
+
+# for HelpWindow
+from Components.Pixmap import Pixmap
+from enigma import ePoint
+
 class ClientModeScreen(ConfigListScreen, Screen):
 	def __init__(self, session, menu_path=""):
 		Screen.__init__(self, session)
@@ -26,7 +33,7 @@ class ClientModeScreen(ConfigListScreen, Screen):
 			title = screentitle
 			self["menu_path_compressed"] = StaticText("")
 		Screen.setTitle(self, title)
-		self.skinName = ["ClientModeScreen", "Setup"]
+		self.skinName = "Setup"
 		self.initial_state = config.clientmode.enabled.value
 		self.onChangedEntry = []
 		self.session = session
@@ -44,6 +51,11 @@ class ClientModeScreen(ConfigListScreen, Screen):
 		self["key_green"] = StaticText(_("Save"))
 
 		self["description"] = Label("")
+
+		# VKeyIcon is the automatic "text" button on buttonbar. HelpWindow is remote control helper image.
+		self["HelpWindow"] = Pixmap()
+		self["HelpWindow"].hide()
+		self["VKeyIcon"] = Boolean(False)
 
 		self.createSetup()
 
@@ -75,22 +87,7 @@ class ClientModeScreen(ConfigListScreen, Screen):
 		self["config"].l.setList(setup_list)
 
 	def selectionChanged(self):
-		self["description"].setText(self["config"].getCurrent()[2])
-
-	# for summary:
-	def changedEntry(self):
-		for x in self.onChangedEntry:
-			x()
-
-	def getCurrentEntry(self):
-		return self["config"].getCurrent()[0]
-
-	def getCurrentValue(self):
-		return str(self["config"].getCurrent()[1].getText())
-
-	def createSummary(self):
-		from Screens.Setup import SetupSummary
-		return SetupSummary
+		self["description"].setText(self.getCurrentDescription())
 
 	def run(self): # for start wizard
 		self.saveconfig()
@@ -106,18 +103,6 @@ class ClientModeScreen(ConfigListScreen, Screen):
 		else:
 			self.saveconfig()
 			self.close()
-
-	def keyCancel(self):
-		if self["config"].isChanged():
-			self.session.openWithCallback(self.cancelCallback, MessageBox, _("Really close without saving settings?"))
-		else:
-			self.cancelCallback(True)
-
-	def cancelCallback(self, answer):
-		if answer:
-			for x in self["config"].list:
-				x[1].cancel()
-			self.close(False)
 
 	def saveconfig(self):
 		nim_config_list = []

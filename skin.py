@@ -303,7 +303,7 @@ class AttributeParser:
 			self.applyOne(attrib, value)
 	def conditional(self, value):
 		pass
-	def objecttypes(self, value):
+	def objectTypes(self, value):
 		pass
 	def position(self, value):
 		if isinstance(value, tuple):
@@ -562,7 +562,7 @@ def loadSingleSkinData(desktop, skin, path_prefix):
 			if not fileExists(skinfile):
 				skinfile = resolveFilename(SCOPE_SKIN_IMAGE, filename, path_prefix=path_prefix)
 			if fileExists(skinfile):
-				print "[Skin] loading include:", skinfile
+				print "[Skin] Loading include:", skinfile
 				loadSkin(skinfile)
 
 	for c in skin.findall('switchpixmap'):
@@ -627,7 +627,7 @@ def loadSingleSkinData(desktop, skin, path_prefix):
 				global fonts
 				fonts[name] = (font, size, height, width)
 			except Exception, ex:
-				print "[Skin] bad font alias", ex
+				print "[Skin] Bad font alias", ex
 
 	for c in skin.findall("parameters"):
 		for parameter in c.findall("parameter"):
@@ -637,7 +637,7 @@ def loadSingleSkinData(desktop, skin, path_prefix):
 				value = get("value")
 				parameters[name] = "," in value and map(paramConvert, value.split(",")) or paramConvert(value)
 			except Exception, ex:
-				print "[Skin] bad parameter", ex
+				print "[Skin] Bad parameter", ex
 
 	for c in skin.findall("subtitles"):
 		from enigma import eSubtitleWidget
@@ -911,7 +911,7 @@ def readSkin(screen, skin, names, desktop):
 						myscreen = candidate
 						break
 			else:
-				print "[Skin] Hey, no suitable screen!"
+				print "[Skin] No suitable screen!"
 		else:
 			myscreen = xml.etree.cElementTree.fromstring(skin)
 		if myscreen:
@@ -1052,15 +1052,14 @@ def readSkin(screen, skin, names, desktop):
 			conditional = w.attrib.get('conditional')
 			if conditional and not [i for i in conditional.split(",") if i in screen.keys()]:
 				continue
-			key = w.attrib.get('name') or w.attrib.get('source') or conditional and conditional.split(",")[0]
-			objecttypes = w.attrib.get('objecttypes')
-			if objecttypes and key and key in screen and not [i for i in objecttypes.split(",") if i == screen[key].__class__.__name__]:
-				continue
+			objecttypes = w.attrib.get('objectTypes', '').split(",")
+			if len(objecttypes) > 1 and (objecttypes[0] not in screen.keys() or not [i for i in objecttypes[1:] if i == screen[objecttypes[0]].__class__.__name__]):
+					continue
 			p = processors.get(w.tag, process_none)
 			try:
 				p(w, context)
 			except SkinError, e:
-				print "[Skin] Skin error in screen '%s' widget '%s':" % (name, w.tag), e
+				print "[Skin] Error in screen '%s' widget '%s':" % (name, w.tag), e
 
 	def process_panel(widget, context):
 		n = widget.attrib.get('name')
@@ -1097,7 +1096,7 @@ def readSkin(screen, skin, names, desktop):
 		context.y = 0 # coordinates.
 		process_screen(myscreen, context)
 	except Exception, e:
-		print "[Skin] Skin error in %s:" % name, e
+		print "[Skin] Error in %s:" % name, e
 
 	from Components.GUIComponent import GUIComponent
 	nonvisited_components = [x for x in set(screen.keys()) - visited_components if isinstance(x, GUIComponent)]

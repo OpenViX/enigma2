@@ -32,13 +32,13 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 				list.append(getConfigListEntry(_("Use circular LNB"), nim.simpleDiSEqCSetCircularLNB, _("If you are using a Circular polarised LNB select 'yes', otherwise select 'no'.")))
 			list.append(getConfigListEntry(_("Send DiSEqC"), nim.simpleSingleSendDiSEqC, _("Only select 'yes' if you are using a multiswich that requires a DiSEqC Port-A command signal. For all other setups select 'no'.")))
 		else:
-			list.append(getConfigListEntry(_("Port A"), nim.diseqcA, _("Select the satellite which is connected to Port-A of your switch. If you are unsure select 'automatic' and the receiver will attepmt to determine this for you. If nothing is connected to this port, select 'nothing connected'.")))
+			list.append(getConfigListEntry(_("Port A"), nim.diseqcA, _("Select the satellite which is connected to Port-A of your switch. If you are unsure select 'automatic' and the receiver will attempt to determine this for you. If nothing is connected to this port, select 'nothing connected'.")))
 
 		if mode in ("toneburst_a_b", "diseqc_a_b", "diseqc_a_b_c_d"):
-			list.append(getConfigListEntry(_("Port B"), nim.diseqcB, _("Select the satellite which is connected to Port-B of your switch. If you are unsure select 'automatic' and the receiver will attepmt to determine this for you. If nothing is connected to this port, select 'nothing connected'.")))
+			list.append(getConfigListEntry(_("Port B"), nim.diseqcB, _("Select the satellite which is connected to Port-B of your switch. If you are unsure select 'automatic' and the receiver will attempt to determine this for you. If nothing is connected to this port, select 'nothing connected'.")))
 			if mode == "diseqc_a_b_c_d":
-				list.append(getConfigListEntry(_("Port C"), nim.diseqcC, _("Select the satellite which is connected to Port-C of your switch. If you are unsure select 'automatic' and the receiver will attepmt to determine this for you. If nothing is connected to this port, select 'nothing connected'.")))
-				list.append(getConfigListEntry(_("Port D"), nim.diseqcD, _("Select the satellite which is connected to Port-D of your switch. If you are unsure select 'automatic' and the receiver will attepmt to determine this for you. If nothing is connected to this port, select 'nothing connected'.")))
+				list.append(getConfigListEntry(_("Port C"), nim.diseqcC, _("Select the satellite which is connected to Port-C of your switch. If you are unsure select 'automatic' and the receiver will attempt to determine this for you. If nothing is connected to this port, select 'nothing connected'.")))
+				list.append(getConfigListEntry(_("Port D"), nim.diseqcD, _("Select the satellite which is connected to Port-D of your switch. If you are unsure select 'automatic' and the receiver will attempt to determine this for you. If nothing is connected to this port, select 'nothing connected'.")))
 			if mode != "toneburst_a_b":
 				list.append(getConfigListEntry(_("Set voltage and 22KHz"), nim.simpleDiSEqCSetVoltageTone, _("Leave this set to 'yes' unless you fully understand why you are adjusting it.")))
 				list.append(getConfigListEntry(_("Send DiSEqC only on satellite change"), nim.simpleDiSEqCOnlyOnSatChange, _("Select 'yes' to only send the DiSEqC command when changing from one satellite to another, or select 'no' for the DiSEqC command to be resent on every zap.")))
@@ -378,7 +378,7 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 			if self.nim.isFBCLink():
 				currLnb.lof.value = "unicable"
 			self.list.append(getConfigListEntry(_("Priority"), currLnb.prio, _("This setting is for special setups only. It gives this LNB higher priority over other LNBs with lower values. The free LNB with the highest priority will be the first LNB selected for tuning services.")))
-			self.advancedLof = getConfigListEntry("Type of LNB/device", currLnb.lof, _("Select the type of LNB/device being used (normally 'Universal'). If your LNB type is not available select 'user defined'."))
+			self.advancedLof = getConfigListEntry(_("Type of LNB/device"), currLnb.lof, _("Select the type of LNB/device being used (normally 'Universal'). If your LNB type is not available select 'user defined'."))
 			self.list.append(self.advancedLof)
 			if currLnb.lof.value == "user_defined":
 				self.list.append(getConfigListEntry("LOF/L", currLnb.lofl, _("Enter your low band local oscillator frequency. For more information consult the spec sheet of your LNB.")))

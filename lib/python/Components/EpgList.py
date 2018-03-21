@@ -333,14 +333,10 @@ class EPGList(GUIComponent):
 	def getIndexFromService(self, serviceref):
 		if serviceref is not None:
 			for x in range(len(self.list)):
-				if str(self.list[x][0]).startswith('1:'): # check for Graphical EPG
-					if CompareWithAlternatives(self.list[x][0], serviceref.toString()):
-						return x
-				elif str(self.list[x][1]).startswith('1:'): # check for Multi EPG
-					if CompareWithAlternatives(self.list[x][1], serviceref.toString()):
-						return x
-				else:
-					return None
+				if CompareWithAlternatives(self.list[x][0], serviceref.toString()):
+					return x
+				if CompareWithAlternatives(self.list[x][1], serviceref.toString()):
+					return x
 		return None
 
 	def getCurrentIndex(self):
@@ -1121,31 +1117,28 @@ class EPGList(GUIComponent):
 		return res
 
 	def getSelectionPosition(self,serviceref):
+
 		if self.type == EPG_TYPE_GRAPH:
-			indx = int(self.getIndexFromService(serviceref))
 			selx = self.select_rect.x+self.select_rect.w
-			while indx+1 > config.epgselection.graph_itemsperpage.value:
-				indx = indx - config.epgselection.graph_itemsperpage.value
+			itemsperpage = config.epgselection.graph_itemsperpage.value
 		elif self.type == EPG_TYPE_INFOBARGRAPH:
-			indx = int(self.getIndexFromService(serviceref))
 			selx = self.select_rect.x+self.select_rect.w
-			while indx+1 > config.epgselection.infobar_itemsperpage.value:
-				indx = indx - config.epgselection.infobar_itemsperpage.value
+			itemsperpage = config.epgselection.infobar_itemsperpage.value
 		elif self.type == EPG_TYPE_ENHANCED or self.type == EPG_TYPE_SINGLE or self.type == EPG_TYPE_SIMILAR:
-			indx = int(self.l.getCurrentSelectionIndex())
 			selx = self.listWidth
-			while indx+1 > config.epgselection.enhanced_itemsperpage.value:
-				indx = indx - config.epgselection.enhanced_itemsperpage.value
+			itemsperpage = config.epgselection.enhanced_itemsperpage.value
 		elif self.type == EPG_TYPE_MULTI:
-			indx = int(self.l.getCurrentSelectionIndex())
 			selx = self.listWidth
-			while indx+1 > config.epgselection.multi_itemsperpage.value:
-				indx = indx - config.epgselection.multi_itemsperpage.value
+			itemsperpage = config.epgselection.multi_itemsperpage.value
 		elif self.type == EPG_TYPE_INFOBAR:
-			indx = int(self.l.getCurrentSelectionIndex())
 			selx = self.listWidth
-			while indx+1 > config.epgselection.infobar_itemsperpage.value:
-				indx = indx - config.epgselection.infobar_itemsperpage.value
+			itemsperpage = config.epgselection.infobar_itemsperpage.value
+
+# Adjust absolute indx to indx in displayed view
+#
+		indx = int(self.l.getCurrentSelectionIndex())
+		while indx+1 > itemsperpage:
+			indx = indx - itemsperpage
 		pos = self.instance.position().y()
 		sely = int(pos)+(int(self.itemHeight)*int(indx))
 		temp = int(self.instance.position().y())+int(self.listHeight)
@@ -1243,6 +1236,12 @@ class EPGList(GUIComponent):
 		epg_time = t - config.epg.histminutes.value*60
 		test = [ 'RIBDT', (service.ref.toString(), 0, epg_time, -1) ]
 		self.list = self.queryEPG(test)
+		# Add explicit gaps if data isn't available.
+		for i in range(len(self.list) - 1, 0, -1):
+			this_beg = self.list[i][2]
+			prev_end = self.list[i-1][2] + self.list[i-1][3]
+			if prev_end + 5 * 60 < this_beg:
+				self.list.insert(i, (self.list[i][0], None, prev_end, this_beg - prev_end, None))
 		self.l.setList(self.list)
 		self.recalcEntrySize()
 		if t != epg_time:
