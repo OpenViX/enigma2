@@ -391,6 +391,14 @@ def createTimer(xml):
 	autosleepinstandbyonly = str(xml.get("autosleepinstandbyonly") or "no")
 	autosleepdelay = str(xml.get("autosleepdelay") or "0")
 	autosleeprepeat = str(xml.get("autosleeprepeat") or "once")
+#
+# If this is a repeating auto* timer then start it in 30 secs,
+# which means it will start its repeating countdown from when enigma2
+# starts each time rather then waiting until anything left over from the
+# last enigma2 running.
+#
+	if autosleeprepeat == "repeated":
+		begin = end = time() + 30
 
 	entry = PowerTimerEntry(begin, end, disabled, afterevent, timertype)
 	entry.repeated = int(repeated)
@@ -399,10 +407,10 @@ def createTimer(xml):
 	entry.autosleeprepeat = autosleeprepeat
 
 	for l in xml.findall("log"):
-		time = int(l.get("time"))
-		code = int(l.get("code"))
+		ltime = int(l.get("time"))
+		lcode = int(l.get("code"))
 		msg = l.text.strip().encode("utf-8")
-		entry.log_entries.append((time, code, msg))
+		entry.log_entries.append((ltime, lcode, msg))
 
 	return entry
 
