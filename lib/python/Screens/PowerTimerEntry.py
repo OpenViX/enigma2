@@ -273,6 +273,11 @@ class TimerEntry(Screen, ConfigListScreen):
 			self.timer.autosleepinstandbyonly = self.timerentry_autosleepinstandbyonly.value
 			self.timer.autosleepdelay = self.timerentry_autosleepdelay.value
 			self.timer.autosleeprepeat = self.timerentry_autosleeprepeat.value
+# Ensure that the timer repeated is cleared if we have an autosleeprepeat
+			if self.timerentry_type.value == "repeated":
+				self.timer.resetRepeated()
+				self.timerentry_type.value = "once" # Stop it being set again
+
 		if self.timerentry_type.value == "repeated":
 			if self.timerentry_repeated.value == "daily":
 				for x in (0, 1, 2, 3, 4, 5, 6):
