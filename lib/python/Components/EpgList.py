@@ -46,6 +46,7 @@ class Rect:
 
 class EPGList(GUIComponent):
 	def __init__(self, type = EPG_TYPE_SINGLE, selChangedCB = None, timer = None, time_epoch = 120, overjump_empty = False, graphic=False):
+		self.epgcache = eEPGCache.getInstance()
 		self.cur_event = None
 		self.cur_service = None
 		self.offs = 0
@@ -78,7 +79,6 @@ class EPGList(GUIComponent):
 		else:
 			assert(type == EPG_TYPE_SIMILAR)
 			self.l.setBuildFunc(self.buildSimilarEntry)
-		self.epgcache = eEPGCache.getInstance()
 
 		self.clocks = [ LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_add.png')),
 				LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_pre.png')),
