@@ -1889,7 +1889,7 @@ class ConfigSubsection(object):
 	def __getattr__(self, name):
 		if name in self.content.items:
 			return self.content.items[name]
-		raise AttributeError("Error: Attribute not defined!")
+		raise AttributeError(name)
 
 	def getSavedValue(self):
 		res = self.content.stored_values
