@@ -955,6 +955,7 @@ class InfoBarNumberZap:
 				if not bouquetlist is None:
 					while True:
 						bouquet = bouquetlist.getNext()
+						if not bouquet.valid(): break
 						if bouquet.flags & eServiceReference.isDirectory:
 							self.servicelist.clearPath()
 							self.servicelist.setRoot(bouquet)

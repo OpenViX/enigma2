@@ -410,7 +410,7 @@ class RecordTimerEntry(timer.TimerEntry, object):
 			if not bouquetlist is None:
 				while True:
 					bouquet = bouquetlist.getNext()
-					if bouquet.type < 0:    # Reached end of bouquets
+					if not bouquet.valid(): # Reached end of bouquets
 						print "[RecordTimer] _bouquet_search reached end of bouquets..??"
 						break
 					if bouquet.flags & eServiceReference.isDirectory:
