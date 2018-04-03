@@ -225,11 +225,11 @@ class ConfigListScreen:
 		self.session.openWithCallback(self.VirtualKeyBoardCallback, VirtualKeyBoard, title = self["config"].getCurrent()[0], text = self["config"].getCurrent()[1].value)
 
 	def HideHelp(self):
-		if "config" in self and (self["config"].getCurrent()[1].__class__.__name__ == 'ConfigText' or self["config"].getCurrent()[1].__class__.__name__ == 'ConfigPassword') and self["config"].getCurrent()[1].help_window and self["config"].getCurrent()[1].help_window.instance is not None:
+		if "config" in self and self["config"].getCurrent()[1].__class__.__name__ in ('ConfigText', 'ConfigPassword'):
 			self["config"].getCurrent()[1].help_window.hide()
 
 	def ShowHelp(self):
-		if "config" in self and (self["config"].getCurrent()[1].__class__.__name__ == 'ConfigText' or self["config"].getCurrent()[1].__class__.__name__ == 'ConfigPassword') and self["config"].getCurrent()[1].help_window and self["config"].getCurrent()[1].help_window.instance is not None:
+		if "config" in self and self["config"].getCurrent()[1].__class__.__name__ in ('ConfigText', 'ConfigPassword'):
 			self["config"].getCurrent()[1].help_window.show()
 
 	def VirtualKeyBoardCallback(self, callback = None):
