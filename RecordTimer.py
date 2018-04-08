@@ -391,6 +391,48 @@ class RecordTimerEntry(timer.TimerEntry, object):
 			Components.HdmiCec.hdmi_cec.sendMessage(0, "sourceactive")
 			print "[TIMER] sourceactive was send"
 
+# This same block of code appeared twice....
+#
+	def _bouquet_search(self):
+		from Screens.ChannelSelection import ChannelSelection
+		ChannelSelectionInstance = ChannelSelection.instance
+		self.service_types = service_types_tv
+		if ChannelSelectionInstance:
+			if config.usage.multibouquet.value:
+				bqrootstr = '1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "bouquets.tv" ORDER BY bouquet'
+			else:
+				bqrootstr = '%s FROM BOUQUET "userbouquet.favourites.tv" ORDER BY bouquet'% self.service_types
+			rootstr = ''
+			serviceHandler = eServiceCenter.getInstance()
+			rootbouquet = eServiceReference(bqrootstr)
+			bouquet = eServiceReference(bqrootstr)
+			bouquetlist = serviceHandler.list(bouquet)
+			if not bouquetlist is None:
+				while True:
+					bouquet = bouquetlist.getNext()
+					if not bouquet.valid(): # Reached end of bouquets
+						print "[RecordTimer] _bouquet_search reached end of bouquets..??"
+						break
+					if bouquet.flags & eServiceReference.isDirectory:
+						ChannelSelectionInstance.clearPath()
+						ChannelSelectionInstance.setRoot(bouquet)
+						servicelist = serviceHandler.list(bouquet)
+						if not servicelist is None:
+							serviceIterator = servicelist.getNext()
+							while serviceIterator.valid():
+								if self.service_ref.ref == serviceIterator:
+									break
+								serviceIterator = servicelist.getNext()
+							if self.service_ref.ref == serviceIterator:
+								break
+				ChannelSelectionInstance.enterPath(rootbouquet)
+				ChannelSelectionInstance.enterPath(bouquet)
+				ChannelSelectionInstance.saveRoot()
+				ChannelSelectionInstance.saveChannel(self.service_ref.ref)
+			ChannelSelectionInstance.addToHistory(self.service_ref.ref)
+		NavigationInstance.instance.playService(self.service_ref.ref)
+
+
 	def activate(self):
 		next_state = self.state + 1
 		self.log(5, "activating state %d" % next_state)
@@ -550,44 +592,7 @@ class RecordTimerEntry(timer.TimerEntry, object):
 # Since next_state is StateRunning we set self.begin
 							self.begin = time() + 1
 							return False
-
-						from Screens.ChannelSelection import ChannelSelection
-						ChannelSelectionInstance = ChannelSelection.instance
-						self.service_types = service_types_tv
-						if ChannelSelectionInstance:
-							if config.usage.multibouquet.value:
-								bqrootstr = '1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "bouquets.tv" ORDER BY bouquet'
-							else:
-								bqrootstr = '%s FROM BOUQUET "userbouquet.favourites.tv" ORDER BY bouquet'% self.service_types
-							rootstr = ''
-							serviceHandler = eServiceCenter.getInstance()
-							rootbouquet = eServiceReference(bqrootstr)
-							bouquet = eServiceReference(bqrootstr)
-							bouquetlist = serviceHandler.list(bouquet)
-							if not bouquetlist is None:
-								while True:
-									bouquet = bouquetlist.getNext()
-									if bouquet.type < 0:    # Reached end of bouquets
-										print "[RecordTimer] Reached end of bouquets..??"
-										break
-									if bouquet.flags & eServiceReference.isDirectory:
-										ChannelSelectionInstance.clearPath()
-										ChannelSelectionInstance.setRoot(bouquet)
-										servicelist = serviceHandler.list(bouquet)
-										if not servicelist is None:
-											serviceIterator = servicelist.getNext()
-											while serviceIterator.valid():
-												if self.service_ref.ref == serviceIterator:
-													break
-												serviceIterator = servicelist.getNext()
-											if self.service_ref.ref == serviceIterator:
-												break
-								ChannelSelectionInstance.enterPath(rootbouquet)
-								ChannelSelectionInstance.enterPath(bouquet)
-								ChannelSelectionInstance.saveRoot()
-								ChannelSelectionInstance.saveChannel(self.service_ref.ref)
-							ChannelSelectionInstance.addToHistory(self.service_ref.ref)
-						NavigationInstance.instance.playService(self.service_ref.ref)
+						self._bouquet_search()
 				return True
 			else:
 				self.log(11, "start recording")
@@ -788,40 +793,7 @@ class RecordTimerEntry(timer.TimerEntry, object):
 		if answer:
 			self.log(13, "ok, zapped away")
 			#NavigationInstance.instance.stopUserServices()
-			from Screens.ChannelSelection import ChannelSelection
-			ChannelSelectionInstance = ChannelSelection.instance
-			self.service_types = service_types_tv
-			if ChannelSelectionInstance:
-				if config.usage.multibouquet.value:
-					bqrootstr = '1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "bouquets.tv" ORDER BY bouquet'
-				else:
-					bqrootstr = '%s FROM BOUQUET "userbouquet.favourites.tv" ORDER BY bouquet'% self.service_types
-				rootstr = ''
-				serviceHandler = eServiceCenter.getInstance()
-				rootbouquet = eServiceReference(bqrootstr)
-				bouquet = eServiceReference(bqrootstr)
-				bouquetlist = serviceHandler.list(bouquet)
-				if not bouquetlist is None:
-					while True:
-						bouquet = bouquetlist.getNext()
-						if bouquet.flags & eServiceReference.isDirectory:
-							ChannelSelectionInstance.clearPath()
-							ChannelSelectionInstance.setRoot(bouquet)
-							servicelist = serviceHandler.list(bouquet)
-							if not servicelist is None:
-								serviceIterator = servicelist.getNext()
-								while serviceIterator.valid():
-									if self.service_ref.ref == serviceIterator:
-										break
-									serviceIterator = servicelist.getNext()
-								if self.service_ref.ref == serviceIterator:
-									break
-					ChannelSelectionInstance.enterPath(rootbouquet)
-					ChannelSelectionInstance.enterPath(bouquet)
-					ChannelSelectionInstance.saveRoot()
-					ChannelSelectionInstance.saveChannel(self.service_ref.ref)
-				ChannelSelectionInstance.addToHistory(self.service_ref.ref)
-			NavigationInstance.instance.playService(self.service_ref.ref)
+			self._bouquet_search()
 			if not self.first_try_prepare and self.InfoBarInstance and hasattr(self.InfoBarInstance.session, 'pipshown') and self.InfoBarInstance.session.pipshown:
 				hasattr(self.InfoBarInstance, "showPiP") and self.InfoBarInstance.showPiP()
 				if hasattr(self.InfoBarInstance.session, 'pip'):
