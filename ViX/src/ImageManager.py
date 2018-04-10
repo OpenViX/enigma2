@@ -1081,6 +1081,7 @@ class ImageManagerDownload(Screen):
 				'gbultraue'       : 'GiGaBlue-HD-ULTRA-UE',
 				'gbx1'            : 'GiGaBlue-HD-X1',
 				'gbx3'            : 'GiGaBlue-HD-X3',
+				'gbx3h'           : 'GiGaBlue-HD-X3H',				
 				'iqonios100hd'    : 'iqon-IOS-100HD',
 				'iqonios200hd'    : 'iqon-IOS-200HD',
 				'iqonios300hd'    : 'iqon-IOS-300HD',
