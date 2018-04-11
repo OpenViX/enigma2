@@ -53,6 +53,6 @@ class HardwareInfo:
 		return getBoxType() != 'dm800'
 
 	def is_nextgen(self):
-		if about.getCPUString() in ('BCM7346B2', 'BCM7425B2', 'BCM7429B0'):
+		if about.getCPUString() in ('BCM7346B2', 'BCM7425B2', 'BCM7429B0') or getBoxType() in ('gbquad4k', 'gbue4k', 'mutant51', 'sf4008', 'vusolo4k', 'vuultimo4k', 'osmega'):
 			return True
 		return False
