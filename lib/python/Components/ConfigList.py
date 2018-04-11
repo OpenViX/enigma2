@@ -63,18 +63,8 @@ class ConfigList(GUIComponent, object):
 	GUI_WIDGET = eListbox
 
 	def selectionChanged(self):
-# Only run onDeselect/onSelect if self.current != self.getCurrent()
-# i.e. if the selection has *actually* changed...
-# This means that Notifiers with immediate_feedback = False actually
-# do only get called once at the end of an item change, not for every
-# step along the way.
-#
-		orig_current = self.current;
+		self.onDeselect()
 		self.current = self.getCurrent()
-		if (orig_current == self.current):
-			return
-		if isinstance(orig_current,tuple) and len(orig_current) >= 2:
-			orig_current[1].onDeselect(self.session)
 		if isinstance(self.current,tuple) and len(self.current) >= 2:
 			self.current[1].onSelect(self.session)
 		else:
@@ -96,8 +86,7 @@ class ConfigList(GUIComponent, object):
 		self.instance.setWrapAround(True)
 
 	def preWidgetRemove(self, instance):
-		if isinstance(self.current,tuple) and len(self.current) >= 2:
-			self.current[1].onDeselect(self.session)
+		self.onDeselect()
 		instance.selectionChanged.get().remove(self.selectionChanged)
 		instance.setContent(None)
 
