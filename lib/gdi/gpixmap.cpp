@@ -14,11 +14,6 @@
 #define GFX_SURFACE_ACCELERATION_THRESHOLD 48000
 #endif
 
-/* fill acceleration threshold: do not attempt to accelerate fill operations smaller than the threshold (measured in bytes) */
-#ifndef GFX_SURFACE_FILL_ACCELERATION_THRESHOLD
-#define GFX_SURFACE_FILL_ACCELERATION_THRESHOLD 80000
-#endif
-
 // #define GPIXMAP_DEBUG
 
 #ifdef GPIXMAP_DEBUG
@@ -216,7 +211,7 @@ void gPixmap::fill(const gRegion &region, const gColor &color)
 #ifdef GPIXMAP_DEBUG
 			Stopwatch s;
 #endif
-			if (surface->data_phys && ((area.surface() * surface->bypp) > GFX_SURFACE_FILL_ACCELERATION_THRESHOLD))
+			if (surface->data_phys && (area.surface() > 20000))
 				if (!gAccel::getInstance()->fill(surface,  area, col)) {
 #ifdef GPIXMAP_DEBUG
 					s.stop();
@@ -260,7 +255,7 @@ void gPixmap::fill(const gRegion &region, const gRGB &color)
 #ifdef GPIXMAP_DEBUG
 			Stopwatch s;
 #endif
-			if (surface->data_phys && ((area.surface() * surface->bypp) > GFX_SURFACE_FILL_ACCELERATION_THRESHOLD))
+			if (surface->data_phys && (area.surface() > 20000))
 				if (!gAccel::getInstance()->fill(surface,  area, col)) {
 #ifdef GPIXMAP_DEBUG
 					s.stop();
