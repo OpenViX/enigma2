@@ -946,10 +946,6 @@ void gPixmap::blit(const gPixmap &src, const eRect &_pos, const gRegion &clip, i
 #endif
 #endif
 	}
-	if (accumulate)
-	{
-		gAccel::getInstance()->sync();
-	}
 }
 
 #undef FIX
