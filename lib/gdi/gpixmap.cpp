@@ -14,6 +14,8 @@
 #define GFX_SURFACE_ACCELERATION_THRESHOLD 48000
 #endif
 
+eDebug("[gpixmap.cpp] GFX_SURFACE_ACCELERATION_THRESHOLD %d", GFX_SURFACE_ACCELERATION_THRESHOLD)
+
 // #define GPIXMAP_DEBUG
 
 #ifdef GPIXMAP_DEBUG
@@ -128,6 +130,7 @@ static bool is_a_candidate_for_accel(const gUnmanagedSurface* surface)
 	{
 		case 8:
 		case 32:
+			eDebug("[gpixmap.cpp] bpp %d, y %d, stride %d, bypp %d", surface->bpp, surface->y, surface->stride, surface->bypp)
 			return (surface->y * surface->stride * surface->bypp) >= GFX_SURFACE_ACCELERATION_THRESHOLD;
 		default:
 			return false;
