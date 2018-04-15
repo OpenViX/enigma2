@@ -343,7 +343,7 @@ if test `echo "$BOXTYPE" | cut -b 1-3` == "ini"; then
 	AC_DEFINE(FORCE_NO_BLENDING_ACCELERATION, 1,[define when the framebuffer acceleration does not have alphablending support, though the autodetection might indicate that it does])
 fi
 
-if test "$BOXTYPE" == "dags7335" -o "$BOXTYPE" == "dags7356" -o "$BOXTYPE" == "dags7362" -o "$BOXTYPE" == "dags73625" -o "$BOXTYPE" == "dags7252"; then
+if test `echo "$BOXTYPE" | cut -b 1-4` == "dags"; then
 	AC_DEFINE(FORCE_NO_BLENDING_ACCELERATION, 1,[define when the framebuffer acceleration does not have alphablending support, though the autodetection might indicate that it does])
 	AC_DEFINE(FORCE_ADVANCED_REMOTE, 1,[define to fixup the input device identification when the remote control is actually an 'advanced' remote (with play/forward/rewind keys)])
 	AC_DEFINE(HAVE_CPULOADFIX, 1,[define to fixup the high load of cpu then playback ts and mediafiles])
@@ -364,7 +364,7 @@ if test "$BOXTYPE" == "g300"; then
 fi
 
 if test "$BOXTYPE" == "et8500"; then
-	AC_DEFINE(FORCE_NO_BLENDING_ACCELERATION, 1,[define when the framebuffer acceleration does not have alphablending support, though the autodetection might indicate that it does])
+	AC_DEFINE(FORCE_BLENDING_ACCELERATION, 1,[define when the framebuffer acceleration has alphablending support, but detection slow down all])
 	AC_DEFINE(FORCE_ADVANCED_REMOTE, 1,[define to fixup the input device identification when the remote control is actually an 'advanced' remote (with play/forward/rewind keys)])
 fi
 
