@@ -412,12 +412,8 @@ class AutoVideoMode(Screen):
 				new_res = "480"
 			elif (700 < video_width <= 720) and video_height <= 576 and video_rate in (25000, 50000):
 				new_res = "576"
-			elif (video_width == 1280) and video_height <= 720:
+			elif (video_width == 1280) and video_height <=720:
 				new_res = "720"
-			elif (video_width == 1920) and video_height <= 1080:
-				new_res = "1080"
-			elif (video_width == 3840) and video_height > 1080:
-				new_res = "2160"
 			else:
 				new_res = config_res
 
@@ -460,12 +456,6 @@ class AutoVideoMode(Screen):
 						new_mode = config.av.autores_1080p25.value
 					if new_mode == '1080p30':
 						new_mode = config.av.autores_1080p30.value
-					if new_mode == '2160p24':
-						new_mode = config.av.autores_2160p24.value
-					if new_mode == '2160p25' or new_mode == '2160p50':
-						new_mode = config.av.autores_2160p25.value
-					if new_mode == '2160p30' or new_mode == '2160p60':
-						new_mode = config.av.autores_2160p30.value
 				elif new_res+new_pol in iAVSwitch.readAvailableModes():
 					new_mode = new_res+new_pol
 				else:
@@ -489,12 +479,6 @@ class AutoVideoMode(Screen):
 					new_mode = config.av.autores_1080p25.value
 				if new_mode == '1080p30':
 					new_mode = config.av.autores_1080p30.value
-				if new_mode == '2160p24':
-					new_mode = config.av.autores_2160p24.value
-				if new_mode == '2160p25':
-					new_mode = config.av.autores_2160p25.value
-				if new_mode == '2160p30':
-					new_mode = config.av.autores_2160p30.value
 
 				write_mode = new_mode
 			else:
