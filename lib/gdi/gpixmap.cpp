@@ -5,7 +5,6 @@
 #include <lib/gdi/accel.h>
 #include <byteswap.h>
 
-
 #ifndef BYTE_ORDER
 #error "no BYTE_ORDER defined!"
 #endif
