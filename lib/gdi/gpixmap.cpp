@@ -194,8 +194,6 @@ static bool is_a_candidate_for_accel(const gUnmanagedSurface* surface)
 	{
 		case 8:
 		case 32:
-			eDebug("[gPixmap][is_a_candidate_for_accel] surface->y %d, surface->stride %d, surface->bypp %d", surface->y, surface->stride, surface->bypp);
-			eDebug("[gPixmap][is_a_candidate_for_accel] (surface->y * surface->stride * surface->bypp) = %d", (surface->y * surface->stride * surface->bypp));
 			return (surface->y * surface->stride) >= GFX_SURFACE_ACCELERATION_THRESHOLD;
 		default:
 			return false;
