@@ -194,7 +194,7 @@ static bool is_a_candidate_for_accel(const gUnmanagedSurface* surface)
 	{
 		case 8:
 		case 32:
-			return (surface->y * surface->stride * surface->bypp) >= GFX_SURFACE_ACCELERATION_THRESHOLD;
+			return (surface->y * surface->stride) >= GFX_SURFACE_ACCELERATION_THRESHOLD;
 		default:
 			return false;
 	}
@@ -950,6 +950,10 @@ void gPixmap::blit(const gPixmap &src, const eRect &_pos, const gRegion &clip, i
 		}
 #endif
 #endif
+	}
+	if (accumulate)
+	{
+		gAccel::getInstance()->sync();
 	}
 }
 
