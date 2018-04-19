@@ -65,18 +65,8 @@ class ConfigList(GUIComponent, object):
 	GUI_WIDGET = eListbox
 
 	def selectionChanged(self):
-# Only run onDeselect/onSelect if self.current != self.getCurrent()
-# i.e. if the selection has *actually* changed...
-# This means that Notifiers with immediate_feedback = False actually
-# do only get called once at the end of an item change, not for every
-# step along the way.
-#
-		orig_current = self.current;
+		self.onDeselect()
 		self.current = self.getCurrent()
-		if (orig_current == self.current):
-			return
-		if isinstance(orig_current,tuple) and len(orig_current) >= 2:
-			orig_current[1].onDeselect(self.session)
 		if isinstance(self.current,tuple) and len(self.current) >= 2:
 			self.current[1].onSelect(self.session)
 		else:
@@ -84,14 +74,21 @@ class ConfigList(GUIComponent, object):
 		for x in self.onSelectionChanged:
 			x()
 
+	def onDeselect(self):
+		if isinstance(self.current, tuple) and len(self.current) >= 2:
+			self.current[1].onDeselect(self.session)
+
+	def onSelect(self):
+		if isinstance(self.current, tuple) and len(self.current) >= 2:
+			self.current[1].onSelect(self.session)
+
 	def postWidgetCreate(self, instance):
 		instance.selectionChanged.get().append(self.selectionChanged)
 		instance.setContent(self.l)
 		self.instance.setWrapAround(True)
 
 	def preWidgetRemove(self, instance):
-		if isinstance(self.current,tuple) and len(self.current) >= 2:
-			self.current[1].onDeselect(self.session)
+		self.onDeselect()
 		instance.selectionChanged.get().remove(self.selectionChanged)
 		instance.setContent(None)
 
@@ -179,8 +176,6 @@ class ConfigListScreen:
 		if not self.handleInputHelpers in self["config"].onSelectionChanged:
 			self["config"].onSelectionChanged.append(self.handleInputHelpers)
 
-		self.onClose.append(self.HideHelp)
-
 	def createSummary(self):
 		self.setup_title = self.getTitle()
 		from Screens.Setup import SetupSummary
@@ -220,29 +215,15 @@ class ConfigListScreen:
 				self["VKeyIcon"].boolean = False
 
 	def KeyText(self):
-		self.HideHelp()
+		self["config"].onDeselect()
 		from Screens.VirtualKeyBoard import VirtualKeyBoard
 		self.session.openWithCallback(self.VirtualKeyBoardCallback, VirtualKeyBoard, title = self["config"].getCurrent()[0], text = self["config"].getCurrent()[1].value)
-
-	def HideHelp(self):
-		try:
-			if self["config"].getCurrent()[1].__class__.__name__ in ('ConfigText', 'ConfigPassword'):
-				self["config"].getCurrent()[1].help_window.hide()
-		except:
-			pass
-
-	def ShowHelp(self):
-		try:
-			if self["config"].getCurrent()[1].__class__.__name__ in ('ConfigText', 'ConfigPassword'):
-				self["config"].getCurrent()[1].help_window.show()
-		except:
-			pass
 
 	def VirtualKeyBoardCallback(self, callback = None):
 		if callback is not None and len(callback):
 			self["config"].getCurrent()[1].setValue(callback)
 			self["config"].invalidate(self["config"].getCurrent())
-		self.ShowHelp()
+		self["config"].onSelect()
 
 	def keyOK(self):
 		self["config"].handleKey(KEY_OK)
@@ -316,7 +297,7 @@ class ConfigListScreen:
 
 	def cancelConfirm(self, result):
 		if not result:
-			self.ShowHelp()
+			self["config"].onSelect()
 			return
 
 		for x in self["config"].list:
@@ -325,7 +306,7 @@ class ConfigListScreen:
 
 	def closeMenuList(self, recursive = False):
 		if self["config"].isChanged():
-			self.HideHelp()
+			self["config"].onDeselect()
 			self.session.openWithCallback(self.cancelConfirm, MessageBox, _("Really close without saving settings?"), default = False)
 		else:
 			self.close(recursive)
