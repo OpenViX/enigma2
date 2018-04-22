@@ -85,11 +85,11 @@ class ConfigList(GUIComponent, object):
 			x()
 
 	def hideHelp(self):
- 		if isinstance(self.current, tuple) and len(self.current) >= 2:
+		if isinstance(self.current, tuple) and len(self.current) >= 2:
 			self.current[1].hideHelp(self.session)
  
 	def showHelp(self):
- 		if isinstance(self.current, tuple) and len(self.current) >= 2:
+		if isinstance(self.current, tuple) and len(self.current) >= 2:
 			self.current[1].showHelp(self.session)
 
 	def postWidgetCreate(self, instance):
