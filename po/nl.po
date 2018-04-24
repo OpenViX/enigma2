@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-03-12 02:17+0000\n"
-"PO-Revision-Date: 2018-03-12 06:31+0100\n"
+"POT-Creation-Date: 2018-04-23 10:25+0100\n"
+"PO-Revision-Date: 2018-04-24 05:18+0200\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SourceCharset: iso-8859-15\n"
-"X-Generator: Poedit 2.0.6\n"
+"X-Generator: Poedit 2.0.7\n"
 
 msgid ""
 "\n"
@@ -1042,9 +1042,6 @@ msgstr "1080p 60Hz"
 msgid "10bit"
 msgstr "10bit"
 
-msgid "128"
-msgstr "128"
-
 msgid "12V output"
 msgstr "12V uitgang"
 
@@ -1056,9 +1053,6 @@ msgstr "12bit"
 
 msgid "13 V"
 msgstr "13 V"
-
-msgid "16"
-msgstr "16"
 
 msgid "16:10"
 msgstr "16:10"
@@ -1114,9 +1108,6 @@ msgstr "24"
 msgid "25"
 msgstr "25"
 
-msgid "256"
-msgstr "256"
-
 msgid "29.97"
 msgstr "29.97"
 
@@ -1125,9 +1116,6 @@ msgstr "2X"
 
 msgid "30"
 msgstr "30"
-
-msgid "32"
-msgstr "32"
 
 msgid "3D"
 msgstr "3D"
@@ -1176,9 +1164,6 @@ msgstr "4X"
 
 msgid "50 MB/s"
 msgstr "50 MB/s"
-
-msgid "64"
-msgstr "64"
 
 msgid "720p"
 msgstr "720p"
@@ -1991,6 +1976,9 @@ msgstr "Auto EXIF-orientatie: rotatie/spiegelen"
 
 msgid "Auto Standby"
 msgstr "Stand-by"
+
+msgid "Auto Timers"
+msgstr "Autotmers"
 
 msgid "Auto Volume Level"
 msgstr "Automatisch volumeniveau"
@@ -6975,6 +6963,9 @@ msgstr ""
 "Geen data op transponder!\n"
 "(timeout reading PAT)"
 
+msgid "No data received yet"
+msgstr "Nog geen data ontvangen"
+
 msgid "No delay"
 msgstr "Geen vertraging"
 
@@ -8480,6 +8471,9 @@ msgstr "Relatief"
 
 msgid "Release notes"
 msgstr "Release notes"
+
+msgid "Relevant PIDs routing"
+msgstr "Relevante PIDs routering"
 
 msgid "Reload"
 msgstr "Herlaad"
@@ -14480,11 +14474,26 @@ msgstr "zapte"
 #~ msgid "%k:%M %e/%m"
 #~ msgstr "%k:%M %e/%m"
 
+#~ msgid "128"
+#~ msgstr "128"
+
+#~ msgid "16"
+#~ msgstr "16"
+
+#~ msgid "256"
+#~ msgstr "256"
+
+#~ msgid "32"
+#~ msgstr "32"
+
 #~ msgid "3D setup"
 #~ msgstr "3D instellingen"
 
 #~ msgid "3d mode"
 #~ msgstr "3d mode"
+
+#~ msgid "64"
+#~ msgstr "64"
 
 #~ msgid "9 Mon"
 #~ msgstr "9 ma"
