@@ -444,7 +444,7 @@ class TimerSanityConflict(Screen):
 
 		self["key_red"] = StaticText(_("Edit new entry"))
 # 		self["key_green"] = StaticText("")
-		self["key_yellow"] = StaticText(" ")
+		self["key_yellow"] = StaticText("")
 		self["key_blue"] = StaticText("")
 
 		self.key_green_choice = self.EMPTY
@@ -530,7 +530,6 @@ class TimerSanityConflict(Screen):
 					self["key_blue"].setText(_("Disable"))
 					self.key_blue_choice = self.DISABLE
 		else:
-#FIXME.... this doesnt hide the buttons self.... just the text
 			if self.key_yellow_choice != self.EMPTY:
 				self.removeAction("yellow")
 				self["key_yellow"].setText("")
