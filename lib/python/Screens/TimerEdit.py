@@ -178,7 +178,7 @@ class TimerEditList(Screen):
 				self.key_yellow_choice = self.ENABLE
 			elif cur.isRunning() and not cur.repeated and (self.key_yellow_choice != self.EMPTY):
 				self.removeAction("yellow")
-				self["key_yellow"].setText(" ")
+				self["key_yellow"].setText("")
 				self.key_yellow_choice = self.EMPTY
 			elif ((not cur.isRunning())or cur.repeated ) and (not cur.disabled) and (self.key_yellow_choice != self.DISABLE):
 				self["actions"].actions.update({"yellow":self.toggleDisabledState})
@@ -191,7 +191,7 @@ class TimerEditList(Screen):
 				self.key_red_choice = self.EMPTY
 			if self.key_yellow_choice != self.EMPTY:
 				self.removeAction("yellow")
-				self["key_yellow"].setText(" ")
+				self["key_yellow"].setText("")
 				self.key_yellow_choice = self.EMPTY
 
 		showCleanup = True
