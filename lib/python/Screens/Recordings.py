@@ -68,11 +68,6 @@ class RecordingSettings(Screen,ConfigListScreen):
 		self["menu_path_compressed"] = StaticText()
 		self['footnote'] = Label()
 
-		# No ConfigText fields in MovieBrowserConfiguration so these are not currently used.
-		#self["HelpWindow"] = Pixmap()
-		#self["HelpWindow"].hide()
-		#self["VKeyIcon"] = Boolean(False)
-
 		self["key_red"] = StaticText(_("Cancel"))
 		self["key_green"] = StaticText(_("Save"))
 		self["description"] = Label("")
@@ -167,12 +162,9 @@ class RecordingSettings(Screen,ConfigListScreen):
 		self.setup_title = title
 		self.setTitle(title)
 
-	# for summary:
 	def changedEntry(self):
-		if self["config"].getCurrent()[1] in (self.default_dirname, self.timer_dirname, self.instantrec_dirname):
+		if self["config"].getCurrent()[0] in (_("Default movie location"), _("Timer record location"), _("Instant record location"), _("Movie location")):
 			self.checkReadWriteDir(self["config"].getCurrent()[1])
-		ConfigListScreen.changedEntry(self)
-		self.createSetup()
 
 	def ok(self):
 		currentry = self["config"].getCurrent()
@@ -283,4 +275,3 @@ class RecordingSettings(Screen,ConfigListScreen):
 				# the second one is converted to string.
 				if not isinstance(item, ConfigNothing):
 					list.append((item_text, item, item_description))
-

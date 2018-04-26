@@ -38,6 +38,7 @@ class ConfigElement(object):
 		self.__notifiers_final = None
 		self.enabled = True
 		self.callNotifiersOnSaveAndCancel = False
+		self.callNotifiersOnDeselect = False
 
 	def getNotifiers(self):
 		if self.__notifiers is None:
@@ -99,18 +100,11 @@ class ConfigElement(object):
 			self.changedFinal()  # call none immediate_feedback notifiers, immediate_feedback Notifiers are called as they are chanaged, so do not need to be called here.
 
 	def isChanged(self):
-# NOTE - sv should already be stringified!
-#        self.default may be a string or None
-#
-		sv = self.saved_value
+		# NOTE - self.saved_value should already be stringified!
+		#        self.default may be a string or None
+		sv = self.saved_value or self.tostring(self.default)
 		strv = self.tostring(self.value)
-		if sv is None:
-			retval = strv != self.tostring(self.default)
-		else:
-			retval = strv != sv
-#debug		if retval:
-#debug			print 'orig ConfigElement X (val, tostring(val)):', sv, self.tostring(sv)
-		return retval
+		return strv != sv
 
 	def changed(self):
 		if self.__notifiers:
@@ -124,6 +118,7 @@ class ConfigElement(object):
 					x(self)
 
 	def changedFinal(self):
+		print 'changedFinal'
 		if self.__notifiers_final:
 			for x in self.notifiers_final:
 				try:
@@ -135,14 +130,20 @@ class ConfigElement(object):
 					x(self)
 
 	def addNotifier(self, notifier, initial_call = True, immediate_feedback = True, extra_args=None):
+		print 'addNotifier'
+		print 'extra_args:',extra_args
+		print 'immediate_feedback:',immediate_feedback
 		if not extra_args: extra_args = []
 		assert callable(notifier), "notifiers must be callable"
 		try:
 			self.extra_args[notifier] = extra_args
 		except: pass
 		if immediate_feedback:
+			print 'immediate_feedback1:'
 			self.notifiers.append(notifier)
 		else:
+			print 'immediate_feedback2:'
+			self.callNotifiersOnDeselect = True
 			self.notifiers_final.append(notifier)
 		# CHECKME:
 		# do we want to call the notifier
@@ -184,7 +185,10 @@ class ConfigElement(object):
 		pass
 
 	def onDeselect(self, session):
+		print 'callNotifiersOnDeselect:', self.callNotifiersOnDeselect
 		if not self.last_value == self.value:
+			if self.callNotifiersOnDeselect:
+				self.changedFinal()
 			self.last_value = self.value
 
 	def hideHelp(self, session):
@@ -505,11 +509,6 @@ class ConfigBoolean(ConfigElement):
 		else:
 			self.value = False
 
-	def onDeselect(self, session):
-		if not self.last_value == self.value:
-			self.changedFinal()
-			self.last_value = self.value
-
 yes_no_descriptions = {False: _("no"), True: _("yes")}
 class ConfigYesNo(ConfigBoolean):
 	def __init__(self, default = False, graphic = True):
@@ -713,8 +712,10 @@ class ConfigSequence(ConfigElement):
 		return ret + [int(x[0]) for x in self.limits[len(ret):]]
 
 	def onDeselect(self, session):
+		print 'callNotifiersOnDeselect:', self.callNotifiersOnDeselect
 		if self.last_value != self._value:
-			self.changedFinal()
+			if self.callNotifiersOnDeselect:
+				self.changedFinal()
 			self.last_value = copy_copy(self._value)
 
 ip_limits = [(0,255),(0,255),(0,255),(0,255)]
@@ -923,13 +924,15 @@ class ConfigMacText(ConfigElement, NumericalTextInput):
 			self.help_window.show()
 
 	def onDeselect(self, session):
+		print 'callNotifiersOnDeselect:', self.callNotifiersOnDeselect
 		self.marked_pos = 0
 		self.offset = 0
 		if self.help_window:
 			session.deleteDialog(self.help_window)
 			self.help_window = None
 		if not self.last_value == self.value:
-			self.changedFinal()
+			if self.callNotifiersOnDeselect:
+				self.changedFinal()
 			self.last_value = self.value
 
 	def getHTML(self, id):
@@ -1283,13 +1286,15 @@ class ConfigText(ConfigElement, NumericalTextInput):
 			self.help_window.show()
 
 	def onDeselect(self, session):
+		print 'callNotifiersOnDeselect:', self.callNotifiersOnDeselect
 		self.marked_pos = 0
 		self.offset = 0
 		if self.help_window:
 			session.deleteDialog(self.help_window)
 			self.help_window = None
 		if not self.last_value == self.value:
-			self.changedFinal()
+			if self.callNotifiersOnDeselect:
+				self.changedFinal()
 			self.last_value = self.value
 
 	def hideHelp(self, session):
@@ -1323,6 +1328,7 @@ class ConfigPassword(ConfigText):
 		self.hidden = False
 
 	def onDeselect(self, session):
+		print 'callNotifiersOnDeselect:', self.callNotifiersOnDeselect
 		ConfigText.onDeselect(self, session)
 		self.hidden = True
 
@@ -1390,19 +1396,6 @@ class ConfigNumber(ConfigText):
 	value = property(getValue, setValue)
 	_value = property(getValue, setValue)
 
-	def isChanged(self):
-# NOTE - sv should already be stringified
-#        and self.default should *also* be a string value
-		sv = self.saved_value
-		strv = self.tostring(self.value)
-		if sv is None:
-			retval = strv != self.default
-		else:
-			retval = strv != sv
-#debug		if retval:
-#debug			print 'orig ConfigNumber X (val, tostring(val)):', sv, self.tostring(sv)
-		return retval
-
 	def conform(self):
 		pos = len(self.text) - self.marked_pos
 		self.text = self.text.lstrip("0")
@@ -1435,10 +1428,12 @@ class ConfigNumber(ConfigText):
 		self.allmarked = (self.value != "")
 
 	def onDeselect(self, session):
+		print 'callNotifiersOnDeselect:', self.callNotifiersOnDeselect
 		self.marked_pos = 0
 		self.offset = 0
 		if not self.last_value == self.value:
-			self.changedFinal()
+			if self.callNotifiersOnDeselect:
+				self.changedFinal()
 			self.last_value = self.value
 
 class ConfigSearchText(ConfigText):
@@ -1598,9 +1593,11 @@ class ConfigSet(ConfigElement):
 			return "mtext", val1+chstr+val2, range(len_val1, len_val1 + len(chstr))
 
 	def onDeselect(self, session):
+		print 'callNotifiersOnDeselect:', self.callNotifiersOnDeselect
 		self.pos = -1
 		if not self.last_value == self.value:
-			self.changedFinal()
+			if self.callNotifiersOnDeselect:
+				self.changedFinal()
 			self.last_value = self.value[:]
 
 	def tostring(self, value):
@@ -1674,8 +1671,6 @@ class ConfigLocations(ConfigElement):
 		if val is None and not locations:
 			return False
 		retval = self.tostring([x[0] for x in locations]) != sv
-#debug		if retval:
-#debug			print 'orig ConfigLocations X (val):', sv
 		return retval
 
 	def addedMount(self, mp):
@@ -1759,6 +1754,7 @@ class ConfigLocations(ConfigElement):
 				return "mtext", valstr, range(ind1,ind2)
 
 	def onDeselect(self, session):
+		print 'callNotifiersOnDeselect:', self.callNotifiersOnDeselect
 		self.pos = -1
 
 # nothing.

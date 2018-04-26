@@ -2583,9 +2583,9 @@ class NetworkInadynSetup(Screen, ConfigListScreen):
 		self['key_green'] = Label(_("Save"))
 		self['actions'] = ActionMap(['WizardActions', 'ColorActions'],
 		{
-			'red': self.close,
+			'red': self.keyCancel,
 			'green': self.saveIna,
-			'back': self.close
+			'back': self.keyCancel
 		})
 		self["HelpWindow"] = Pixmap()
 		self["HelpWindow"].hide()
@@ -2693,10 +2693,23 @@ class NetworkInadynSetup(Screen, ConfigListScreen):
 			self.close()
 		if fileExists('/etc/inadyn.conf.tmp'):
 			rename('/etc/inadyn.conf.tmp', '/etc/inadyn.conf')
-		self.myStop()
-
-	def myStop(self):
 		self.close()
+
+	def keyCancelConfirm(self, result):
+		if not result:
+			return
+		self.close()
+
+	def keyCancel(self):
+		self.hideInputHelp()
+		if self["config"].isChanged():
+			self.session.openWithCallback(self.keyCancelConfirm, MessageBox, _("Really close without saving settings?"), default = False)
+		else:
+			self.close()
+
+	def hideInputHelp(self):
+		if self["config"].getCurrent() is not None and self["config"].getCurrent()[1].__class__.__name__ in ('ConfigText', 'ConfigPassword'):
+			self["config"].getCurrent()[1].help_window.instance.hide()
 
 class NetworkInadynLog(Screen):
 	def __init__(self, session, menu_path=""):

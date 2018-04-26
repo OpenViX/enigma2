@@ -65,29 +65,25 @@ class ConfigList(GUIComponent, object):
 	GUI_WIDGET = eListbox
 
 	def selectionChanged(self):
-# Only run onDeselect/onSelect if self.current != self.getCurrent()
-# i.e. if the selection has *actually* changed...
-# This means that Notifiers with immediate_feedback = False actually
-# do only get called once at the end of an item change, not for every
-# step along the way.
-#
-		orig_current = self.current;
+		print 'selectionChanged'
+		if isinstance(self.current,tuple) and len(self.current) >= 2:
+			print 'onDesel'
+			self.current[1].onDeselect(self.session)
 		self.current = self.getCurrent()
-		if (orig_current == self.current):
-			return
-		if isinstance(orig_current, tuple) and len(orig_current) >= 2:
-			orig_current[1].onDeselect(self.session)
-		if isinstance(self.current, tuple) and len(self.current) >= 2:
+		if isinstance(self.current,tuple) and len(self.current) >= 2:
+			print 'onSel'
 			self.current[1].onSelect(self.session)
 		else:
+			print 'pass'
 			return
+
 		for x in self.onSelectionChanged:
 			x()
 
 	def hideHelp(self):
 		if isinstance(self.current, tuple) and len(self.current) >= 2:
 			self.current[1].hideHelp(self.session)
- 
+
 	def showHelp(self):
 		if isinstance(self.current, tuple) and len(self.current) >= 2:
 			self.current[1].showHelp(self.session)
@@ -121,15 +117,9 @@ class ConfigList(GUIComponent, object):
 		self.handleKey(KEY_TIMEOUT)
 
 	def isChanged(self):
-#debug		is_changed = False
+		print 'isChanged'
 		for x in self.list:
 			if x[1].isChanged():
-#
-#debug				print 'X', type(x[1]), 'changed (val, str(val), tostring(val)):', x[1], str(x[1]), x[1].tostring(x[1].value)
-#debug				is_changed = True
-#debug		print 'isChanged():', is_changed
-#debug		return is_changed
-#
 				return True
 		return False
 
