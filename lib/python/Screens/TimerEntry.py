@@ -562,7 +562,6 @@ class TimerLog(Screen):
 		self["logentry"] = Label()
 
 		self["key_red"] = Button(_("Delete entry"))
-		self["key_green"] = Button()
 		self["key_blue"] = Button(_("Clear log"))
 
 		self.onShown.append(self.updateText)

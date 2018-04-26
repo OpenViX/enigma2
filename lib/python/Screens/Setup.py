@@ -76,19 +76,6 @@ class Setup(ConfigListScreen, Screen):
 
 	ALLOW_SUSPEND = True
 
-	def refill(self):
-		self.list = []
-		xmldata = setupdom(self.plugin).getroot()
-		for x in xmldata.findall("setup"):
-			if x.get("key") != self.setup:
-				continue
-			self.addItems(x)
-			if config.usage.show_menupath.value in ('large', 'small') and x.get("titleshort", "").encode("UTF-8") != "":
-				self.setup_title = x.get("titleshort", "").encode("UTF-8")
-			else:
-				self.setup_title = x.get("title", "").encode("UTF-8")
-			self.seperation = int(x.get('separation', '0'))
-
 	def __init__(self, session, setup, plugin=None, menu_path=None, PluginLanguageDomain=None):
 		Screen.__init__(self, session)
 		# for the skin: first try a setup_<setupID>, then Setup
@@ -102,14 +89,26 @@ class Setup(ConfigListScreen, Screen):
 		self.onChangedEntry = [ ]
 		self.item = None
 		self.list = []
-		self.setup = setup
 		self.force_update_list = False
 		self.plugin = plugin
 		self.PluginLanguageDomain = PluginLanguageDomain
 		self.menu_path = menu_path
+		
+		xmldata = setupdom(self.plugin).getroot()
+		for x in xmldata.findall("setup"):
+			if x.get("key") == setup:
+				self.setup = x
+				break
 
-		self.refill()
+		if config.usage.show_menupath.value in ('large', 'small') and x.get("titleshort", "").encode("UTF-8") != "":
+			self.setup_title = x.get("titleshort", "").encode("UTF-8")
+		else:
+			self.setup_title = x.get("title", "").encode("UTF-8")
+		self.seperation = int(self.setup.get('separation', '0'))
+
+
 		ConfigListScreen.__init__(self, self.list, session = session, on_change = self.changedEntry)
+		self.createSetupList()
 		self["config"].onSelectionChanged.append(self.__onSelectionChanged)
 
 		#check for list.entries > 0 else self.close
@@ -141,8 +140,10 @@ class Setup(ConfigListScreen, Screen):
 			self["menu_path_compressed"].setText("")
 		self.setTitle(title)
 
-	def addItems(self, parentNode):
-		for x in parentNode:
+	def createSetupList(self):
+		currentItem = self["config"].getCurrent()
+		self.list = []
+		for x in self.setup:
 			if not x.tag:
 				continue
 			if x.tag == 'item':
@@ -153,7 +154,7 @@ class Setup(ConfigListScreen, Screen):
 
 				requires = x.get("requires")
 				if requires and not requires.startswith('config.'):
-					if requires[0] == '!':
+					if requires.startswith('!'):
 						if SystemInfo.get(requires[1:], False):
 							continue
 					elif not SystemInfo.get(requires, False):
@@ -186,17 +187,26 @@ class Setup(ConfigListScreen, Screen):
 				# the second one is converted to string.
 				if not isinstance(item, ConfigNothing):
 					self.list.append((item_text, item, item_description))
+		self["config"].setList(self.list)
+		if config.usage.sort_settings.value:
+			self["config"].list.sort()
+		self.moveToItem(currentItem)
+
+	def moveToItem(self, item):
+		if item != self["config"].getCurrent():
+			self["config"].setCurrentIndex(self.getIndexFromItem(item))
+
+	def getIndexFromItem(self, item):
+		return self["config"].list.index(item) if item in self["config"].list else 0
 
 	def changedEntry(self):
 		if isinstance(self["config"].getCurrent()[1], ConfigBoolean) or isinstance(self["config"].getCurrent()[1], ConfigSelection):
-			self.refill()
-			self["config"].setList(self.list)
+			self.createSetupList()
  
 	def __onSelectionChanged(self):
 		if self.force_update_list:
 			self["config"].onSelectionChanged.remove(self.__onSelectionChanged)
-			self.refill()
-			self["config"].setList(self.list)
+			self.createSetupList()
 			self["config"].onSelectionChanged.append(self.__onSelectionChanged)
 			self.force_update_list = False
 		if not (isinstance(self["config"].getCurrent()[1], ConfigBoolean) or isinstance(self["config"].getCurrent()[1], ConfigSelection)):
