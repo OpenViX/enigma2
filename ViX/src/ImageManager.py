@@ -1080,6 +1080,7 @@ class ImageManagerDownload(Screen):
 				'gbue4k'          : 'GiGaBlue-UHD-UE-4K',				
 				'gbultraue'       : 'GiGaBlue-HD-ULTRA-UE',
 				'gbx1'            : 'GiGaBlue-HD-X1',
+				'gbx2'            : 'GiGaBlue-HD-X2',				
 				'gbx3'            : 'GiGaBlue-HD-X3',
 				'gbx3h'           : 'GiGaBlue-HD-X3H',				
 				'iqonios100hd'    : 'iqon-IOS-100HD',
