@@ -148,6 +148,7 @@ class AVSwitch:
 		'vuuno4kse',
 		'vuultimo4k',
 		'xp1000',
+		'alien5',
 		'wetekplay',
 		'wetekplay2'
 	)
@@ -204,6 +205,7 @@ class AVSwitch:
 		'vusolo4k',
 		'vuuno4k',
 		'vuuno4kse',
+		'alien5',
 		'vuultimo4k'
 	)
 
