@@ -16,7 +16,6 @@ from Components.Sources.ServiceEvent import ServiceEvent
 from Components.Sources.StaticText import StaticText
 import Components.Harddisk
 from Components.UsageConfig import preferredTimerPath
-from Screens.VirtualKeyBoard import VirtualKeyBoard
 from Components.Sources.Boolean import Boolean
 from Plugins.Plugin import PluginDescriptor
 from Screens.MessageBox import MessageBox
@@ -37,7 +36,6 @@ from enigma import eServiceReference, eServiceCenter, eTimer, eSize, iPlayableSe
 import os
 import time
 import cPickle as pickle
-from Components.SelectionList import SelectionList
 
 config.movielist = ConfigSubsection()
 config.movielist.curentlyplayingservice = ConfigText()
@@ -401,7 +399,7 @@ class MovieContextMenu(Screen, ProtectedScreen):
 		append_to_menu(menu, (_("Network mounts") + "...", csel.showNetworkMounts), key="yellow")
 		append_to_menu(menu, (_("Sort by") + "...", csel.selectSortby), key="blue")
 		if csel.installedMovieManagerPlugin():
-			append_to_menu(menu, (_("Movie manager") + "...", csel.runMovieManager))
+			append_to_menu(menu, (_("Movie manager") + "...", csel.do_moviemanager))
 		if csel.exist_bookmark():
 			append_to_menu(menu, (_("Remove bookmark"), csel.do_addbookmark), key="1")
 		else:
@@ -777,6 +775,8 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 				'movieoff': _("On end of movie"),
 				'movieoff_menu': _("On end of movie (as menu)")
 			}
+			if self.installedMovieManagerPlugin():
+				userDefinedActions['moviemanager'] = _("Movie manager")
 			for p in plugins.getPlugins(PluginDescriptor.WHERE_MOVIELIST):
 				userDefinedActions['@' + p.name] = p.description
 			locations = []
@@ -2226,6 +2226,19 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 	def showDeviceMounts(self):
 		import Plugins.SystemPlugins.ViX.MountManager
 		self.session.open(Plugins.SystemPlugins.ViX.MountManager.VIXDevicesPanel)
+
+	def can_moviemanager(self, item):
+		return True
+	def do_moviemanager(self):
+		item = self.getCurrentSelection()[0]
+		from Plugins.Extensions.MovieManager.ui import MovieManager
+		self.session.open(MovieManager, self["list"], item)
+	def installedMovieManagerPlugin(self):
+		try:
+			from Plugins.Extensions.MovieManager.ui import MovieManager
+			return True
+		except Exception as e:
+			return False
 
 	def showActionFeedback(self, text):
 		if self.feedbackTimer is None:
