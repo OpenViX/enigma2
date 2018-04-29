@@ -228,10 +228,14 @@ class MovieBrowserConfiguration(ConfigListScreen,Screen):
 		self.skinName = "Setup"
 		self.setup_title = _("Movie List Setup")
 		Screen.setTitle(self, _(self.setup_title))
+
+		# No ConfigText fields in MovieBrowserConfiguration so these are not currently used.
 		self["HelpWindow"] = Pixmap()
 		self["HelpWindow"].hide()
 		self["VKeyIcon"] = Boolean(False)
+
 		self['footnote'] = Label("")
+
 		self["description"] = Label("")
 
 		self.onChangedEntry = [ ]
@@ -342,9 +346,12 @@ class MovieContextMenu(Screen, ProtectedScreen):
 		self.skinName = "Setup"
 		self.setup_title = _("Movie List Setup")
 		Screen.setTitle(self, _(self.setup_title))
+
+		# No ConfigText fields in MovieBrowserConfiguration so these are not currently used.
 		self["HelpWindow"] = Pixmap()
 		self["HelpWindow"].hide()
 		self["VKeyIcon"] = Boolean(False)
+
 		self['footnote'] = Label("")
 		self["description"] = StaticText()
 
