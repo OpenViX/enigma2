@@ -65,16 +65,12 @@ class ConfigList(GUIComponent, object):
 	GUI_WIDGET = eListbox
 
 	def selectionChanged(self):
-		print 'selectionChanged'
 		if isinstance(self.current,tuple) and len(self.current) >= 2:
-			print 'onDesel'
 			self.current[1].onDeselect(self.session)
 		self.current = self.getCurrent()
 		if isinstance(self.current,tuple) and len(self.current) >= 2:
-			print 'onSel'
 			self.current[1].onSelect(self.session)
 		else:
-			print 'pass'
 			return
 
 		for x in self.onSelectionChanged:
@@ -117,7 +113,6 @@ class ConfigList(GUIComponent, object):
 		self.handleKey(KEY_TIMEOUT)
 
 	def isChanged(self):
-		print 'isChanged'
 		for x in self.list:
 			if x[1].isChanged():
 				return True
