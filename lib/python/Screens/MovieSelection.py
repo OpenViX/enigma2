@@ -287,25 +287,7 @@ class MovieBrowserConfiguration(ConfigListScreen,Screen):
 		self.selectionChanged()
 
 	def selectionChanged(self):
-		self["description"].setText(self["config"].getCurrent()[2])
-
-	# for summary:
-	def changedEntry(self):
-		for x in self.onChangedEntry:
-			x()
-
-	def getCurrentEntry(self):
-		return self["config"].getCurrent() and self["config"].getCurrent()[0] or ""
-
-	def getCurrentValue(self):
-		return self["config"].getCurrent() and str(self["config"].getCurrent()[1].getText()) or ""
-
-	def getCurrentDescription(self):
-		return self["config"].getCurrent() and len(self["config"].getCurrent()) > 2 and self["config"].getCurrent()[2] or ""
-
-	def createSummary(self):
-		from Screens.Setup import SetupSummary
-		return SetupSummary
+		self["description"].setText(self.getCurrentDescription())
 
 	def save(self):
 		self.saveAll()
