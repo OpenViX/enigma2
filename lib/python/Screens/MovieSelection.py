@@ -17,7 +17,7 @@ from Components.Sources.StaticText import StaticText
 import Components.Harddisk
 from Components.UsageConfig import preferredTimerPath
 from Screens.VirtualKeyBoard import VirtualKeyBoard
-from Components.Sources.Boolean import Boolean
+#from Components.Sources.Boolean import Boolean
 from Plugins.Plugin import PluginDescriptor
 from Screens.MessageBox import MessageBox
 from Screens.ChoiceBox import ChoiceBox
@@ -230,9 +230,9 @@ class MovieBrowserConfiguration(ConfigListScreen,Screen):
 		Screen.setTitle(self, _(self.setup_title))
 
 		# No ConfigText fields in MovieBrowserConfiguration so these are not currently used.
-		self["HelpWindow"] = Pixmap()
-		self["HelpWindow"].hide()
-		self["VKeyIcon"] = Boolean(False)
+		#self["HelpWindow"] = Pixmap()
+		#self["HelpWindow"].hide()
+		#self["VKeyIcon"] = Boolean(False)
 
 		self['footnote'] = Label("")
 
@@ -348,9 +348,9 @@ class MovieContextMenu(Screen, ProtectedScreen):
 		Screen.setTitle(self, _(self.setup_title))
 
 		# No ConfigText fields in MovieBrowserConfiguration so these are not currently used.
-		self["HelpWindow"] = Pixmap()
-		self["HelpWindow"].hide()
-		self["VKeyIcon"] = Boolean(False)
+		#self["HelpWindow"] = Pixmap()
+		#self["HelpWindow"].hide()
+		#self["VKeyIcon"] = Boolean(False)
 
 		self['footnote'] = Label("")
 		self["description"] = StaticText()
