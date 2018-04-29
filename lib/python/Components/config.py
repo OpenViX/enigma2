@@ -37,7 +37,6 @@ class ConfigElement(object):
 		self.__notifiers = None
 		self.__notifiers_final = None
 		self.enabled = True
-		self.callNotifiersOnSaveAndCancel = False
 
 	def getNotifiers(self):
 		if self.__notifiers is None:
@@ -90,27 +89,18 @@ class ConfigElement(object):
 			self.saved_value = None
 		else:
 			self.saved_value = self.tostring(self.value)
-		if self.callNotifiersOnSaveAndCancel:
-			self.changedFinal()  # call none immediate_feedback notifiers, immediate_feedback Notifiers are called as they are chanaged, so do not need to be called here.
+		self.changedFinal()  # call none immediate_feedback notifiers, immediate_feedback Notifiers are called as they are chanaged, so do not need to be called here.
 
 	def cancel(self):
 		self.load()
-		if self.callNotifiersOnSaveAndCancel:
-			self.changedFinal()  # call none immediate_feedback notifiers, immediate_feedback Notifiers are called as they are chanaged, so do not need to be called here.
+		self.changedFinal()  # call none immediate_feedback notifiers, immediate_feedback Notifiers are called as they are chanaged, so do not need to be called here.
 
 	def isChanged(self):
-# NOTE - sv should already be stringified!
-#        self.default may be a string or None
-#
-		sv = self.saved_value
+		# NOTE - self.saved_value should already be stringified!
+		#        self.default may be a string or None
+		sv = self.saved_value or self.tostring(self.default)
 		strv = self.tostring(self.value)
-		if sv is None:
-			retval = strv != self.tostring(self.default)
-		else:
-			retval = strv != sv
-#debug		if retval:
-#debug			print 'orig ConfigElement X (val, tostring(val)):', sv, self.tostring(sv)
-		return retval
+		return strv != sv
 
 	def changed(self):
 		if self.__notifiers:
@@ -186,6 +176,12 @@ class ConfigElement(object):
 	def onDeselect(self, session):
 		if not self.last_value == self.value:
 			self.last_value = self.value
+
+	def hideHelp(self, session):
+		pass
+
+	def showHelp(self, session):
+		pass
 
 KEY_LEFT = 0
 KEY_RIGHT = 1
@@ -1286,6 +1282,14 @@ class ConfigText(ConfigElement, NumericalTextInput):
 			self.changedFinal()
 			self.last_value = self.value
 
+	def hideHelp(self, session):
+		if session is not None and self.help_window is not None:
+			self.help_window.hide()
+
+	def showHelp(self, session):
+		if session is not None and self.help_window is not None:
+			self.help_window.show()
+
 	def getHTML(self, id):
 		return '<input type="text" name="' + id + '" value="' + self.value + '" /><br>\n'
 
@@ -1375,19 +1379,6 @@ class ConfigNumber(ConfigText):
 
 	value = property(getValue, setValue)
 	_value = property(getValue, setValue)
-
-	def isChanged(self):
-# NOTE - sv should already be stringified
-#        and self.default should *also* be a string value
-		sv = self.saved_value
-		strv = self.tostring(self.value)
-		if sv is None:
-			retval = strv != self.default
-		else:
-			retval = strv != sv
-#debug		if retval:
-#debug			print 'orig ConfigNumber X (val, tostring(val)):', sv, self.tostring(sv)
-		return retval
 
 	def conform(self):
 		pos = len(self.text) - self.marked_pos
@@ -1660,8 +1651,6 @@ class ConfigLocations(ConfigElement):
 		if val is None and not locations:
 			return False
 		retval = self.tostring([x[0] for x in locations]) != sv
-#debug		if retval:
-#debug			print 'orig ConfigLocations X (val):', sv
 		return retval
 
 	def addedMount(self, mp):
