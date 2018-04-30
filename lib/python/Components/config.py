@@ -37,7 +37,7 @@ class ConfigElement(object):
 		self.__notifiers = None
 		self.__notifiers_final = None
 		self.enabled = True
-		self.callNotifiersOnSaveAndCancel = True
+		self.callNotifiersOnSaveAndCancel = True # this flag only affects notifiers set with "immediate_feedback = False". If set to false the notifier will never run on save/exit by default.
 
 	def getNotifiers(self):
 		if self.__notifiers is None:
