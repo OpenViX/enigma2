@@ -37,7 +37,7 @@ class ConfigElement(object):
 		self.__notifiers = None
 		self.__notifiers_final = None
 		self.enabled = True
-		self.callNotifiersOnSaveAndCancel = False
+		self.callNotifiersOnSaveAndCancel = True
 
 	def getNotifiers(self):
 		if self.__notifiers is None:
