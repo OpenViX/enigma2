@@ -37,6 +37,7 @@ class ConfigElement(object):
 		self.__notifiers = None
 		self.__notifiers_final = None
 		self.enabled = True
+		self.callNotifiersOnSaveAndCancel = False
 
 	def getNotifiers(self):
 		if self.__notifiers is None:
@@ -89,11 +90,13 @@ class ConfigElement(object):
 			self.saved_value = None
 		else:
 			self.saved_value = self.tostring(self.value)
-		self.changedFinal()  # call none immediate_feedback notifiers, immediate_feedback Notifiers are called as they are chanaged, so do not need to be called here.
+		if self.callNotifiersOnSaveAndCancel:
+			self.changedFinal()  # call none immediate_feedback notifiers, immediate_feedback Notifiers are called as they are chanaged, so do not need to be called here.
 
 	def cancel(self):
 		self.load()
-		self.changedFinal()  # call none immediate_feedback notifiers, immediate_feedback Notifiers are called as they are chanaged, so do not need to be called here.
+		if self.callNotifiersOnSaveAndCancel:
+			self.changedFinal()  # call none immediate_feedback notifiers, immediate_feedback Notifiers are called as they are chanaged, so do not need to be called here.
 
 	def isChanged(self):
 		# NOTE - self.saved_value should already be stringified!
