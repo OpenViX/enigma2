@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-03-17 12:03+0000\n"
-"PO-Revision-Date: 2018-03-17 19:23+0100\n"
+"POT-Creation-Date: 2018-04-28 11:15+0100\n"
+"PO-Revision-Date: 2018-05-01 19:57+0200\n"
 "Last-Translator: Ralf Biedermann <ralf.biedermann@rbsoft.de>\n"
 "Language-Team: AndyBlacburn, j-ot&Trial\n"
 "Language: de\n"
@@ -1041,9 +1041,6 @@ msgstr "1080p 60Hz"
 msgid "10bit"
 msgstr "10bit"
 
-msgid "128"
-msgstr "128"
-
 msgid "12V output"
 msgstr "12V-Ausgang"
 
@@ -1055,9 +1052,6 @@ msgstr "12bit"
 
 msgid "13 V"
 msgstr "13 V"
-
-msgid "16"
-msgstr "16"
 
 msgid "16:10"
 msgstr "16:10"
@@ -1113,9 +1107,6 @@ msgstr "24"
 msgid "25"
 msgstr "25"
 
-msgid "256"
-msgstr "256"
-
 msgid "29.97"
 msgstr "29.97"
 
@@ -1124,9 +1115,6 @@ msgstr "2X"
 
 msgid "30"
 msgstr "30"
-
-msgid "32"
-msgstr "32"
 
 msgid "3D"
 msgstr ""
@@ -1175,9 +1163,6 @@ msgstr "4X"
 
 msgid "50 MB/s"
 msgstr ""
-
-msgid "64"
-msgstr "64"
 
 msgid "720p"
 msgstr "720p"
@@ -1555,9 +1540,6 @@ msgstr "Zu Favoriten hinzufügen"
 
 msgid "Add to parental protection"
 msgstr "Jugendschutz aktivieren"
-
-msgid "Add to selection (starts with...)"
-msgstr "Füge zur Auswahl hinzu (starte mit...)"
 
 msgid "Add/Remove timer for current event"
 msgstr "Timer für aktuelle Sendung hinzufügen/entfernen"
@@ -1990,6 +1972,9 @@ msgstr "Automatisch nach EXIF drehen/spiegeln"
 
 msgid "Auto Standby"
 msgstr "Automatisch Bereitschaft"
+
+msgid "Auto Timers"
+msgstr "Autotimer "
 
 msgid "Auto Volume Level"
 msgstr "Automatische Lautstärkeregelung"
@@ -2859,9 +2844,6 @@ msgstr "Kommunikation"
 msgid "Comoros"
 msgstr "Comoros"
 
-msgid "Compare case sensitive"
-msgstr "Vergleiche unter Beachtung der Groß-/Kleinschreibung"
-
 msgid "Complete"
 msgstr "Komplett"
 
@@ -3266,9 +3248,6 @@ msgstr "Kopieren"
 
 msgid "Copy to bouquets"
 msgstr "In Favoritenliste kopieren"
-
-msgid "Copy to..."
-msgstr "Kopiere nach..."
 
 msgid "Copying files"
 msgstr "Dateien kopieren"
@@ -3939,9 +3918,6 @@ msgstr "EIT jetzt/demnächst in Infobar anzeigen."
 
 msgid "Djibouti"
 msgstr "Djibouti"
-
-msgid "Do"
-msgstr "mach hin"
 
 msgid "Do not center DVB subs on this service"
 msgstr "Auf diesem Kanal Untertitel nicht zentrieren"
@@ -4882,9 +4858,6 @@ msgstr "Fiji"
 msgid "File appears to be busy.\n"
 msgstr "Die Datei ist gerade in Verwendung.\n"
 
-msgid "File manager"
-msgstr "Datei Verwaltung"
-
 msgid ""
 "File oscam.conf not found.\n"
 "Please enter username/password manually."
@@ -5815,6 +5788,9 @@ msgstr "Installiere Service"
 msgid "Instant record"
 msgstr "Sofortaufnahme"
 
+msgid "Instant record location"
+msgstr "Sofortaufnahme Verzeichnis"
+
 msgid "Instant recording location"
 msgstr "Pfad für Sofortaufnahme"
 
@@ -6185,9 +6161,6 @@ msgstr "Liste EPG Funktionen..."
 
 msgid "List available networks"
 msgstr "Zeige verfügbare Netzwerke"
-
-msgid "List of files"
-msgstr "Dateiliste"
 
 msgid "List of storage devices"
 msgstr "Speichergeräteliste"
@@ -6644,9 +6617,6 @@ msgstr "An den Anfang"
 msgid "Move to position X"
 msgstr "Auf Position X drehen"
 
-msgid "Move to..."
-msgstr "Verschieben nach..."
-
 msgid "Move up a page"
 msgstr "Seite hoch"
 
@@ -6679,6 +6649,9 @@ msgstr "Aufnahmeliste Einstellungen"
 
 msgid "Movie location"
 msgstr "Film Verzeichnis"
+
+msgid "Movie manager"
+msgstr "Film Verwaltung"
 
 msgid "Movie selection"
 msgstr "Film Auswahl"
@@ -6969,6 +6942,9 @@ msgstr ""
 "Keine Daten auf dem Transponder!\n"
 "(Zeit lief beim Lesen der PAT ab)"
 
+msgid "No data received yet"
+msgstr "Bisher keine Daten empfangen"
+
 msgid "No delay"
 msgstr "Keine Verzögerung"
 
@@ -7248,10 +7224,6 @@ msgstr "Oman"
 msgid "On"
 msgstr "An"
 
-#, python-format
-msgid "On destination '%s' is %s free space only!"
-msgstr "Auf Ziel '%s' ist nur noch %s freier Speicher!"
-
 msgid "On end of movie"
 msgstr "Am Ende eines Films"
 
@@ -7350,9 +7322,6 @@ msgstr "OpenVpn"
 
 msgid "OpenVpn Setup"
 msgstr "OpenVPN Einstellungen"
-
-msgid "Options..."
-msgstr "Einstellungen..."
 
 msgid "Orbital position"
 msgstr "Orbitale Position"
@@ -8470,6 +8439,9 @@ msgstr "Relativ"
 msgid "Release notes"
 msgstr "Versionsinformationen"
 
+msgid "Relevant PIDs routing"
+msgstr ""
+
 msgid "Reload"
 msgstr "Aktualisieren"
 
@@ -8547,9 +8519,6 @@ msgstr "Löschen beendet."
 
 msgid "Remove from parental protection"
 msgstr "Aus Jugendschutz entfernen"
-
-msgid "Remove from selection (starts with...)"
-msgstr "Entferne aus der Auswahl (starte mit...)"
 
 msgid "Remove items from trash can after (days)"
 msgstr "Lösche Mülleimer nach (Tagen)"
@@ -9175,26 +9144,11 @@ msgstr "Wähle Sender von dem aufgenommen werden soll"
 msgid "Select copy destination for:"
 msgstr "Wähle Zielverzeichnis für:"
 
-msgid "Select destination for copy selected files..."
-msgstr "Wähle Ziel auf das markierte Dateien kopiert werden sollen..."
-
-msgid "Select destination for move selected files..."
-msgstr "Wähle Ziel auf das markierte Dateien verschoben werden sollen..."
-
 msgid "Select destination for:"
 msgstr "Wähle Ziel für:"
 
 msgid "Select files for backup."
 msgstr "Wähle Dateien zum sichern."
-
-msgid ""
-"Select files with 'OK' and then use 'Green' to choose desired operation.\n"
-"Use 'CH+/-' select/unselect files via the keyboard.\n"
-"Use 'Menu' for settings."
-msgstr ""
-"Wähle Dateien mit 'OK' und dann benutze 'Grün' um die gewünschte Operation zu wählen.\n"
-"Benutze 'Kanal +/-' um Dateien mit einer Tastatur aus-/abzuwählen.\n"
-"Benutze 'Menü' für Einstellungen"
 
 msgid "Select files/folders to backup"
 msgstr "Wähle Dateien/Ordner für die Sicherung"
@@ -9231,9 +9185,6 @@ msgstr "Wähle einen Menüpunkt"
 
 msgid "Select movie"
 msgstr "Wähle Film"
-
-msgid "Select operation:"
-msgstr "Wähle Funktion:"
 
 msgid "Select provider to add..."
 msgstr "Wähle einen Anbieter zum Hinzufügen..."
@@ -9339,10 +9290,6 @@ msgstr "Bitte wähle den Anbieter aus und bestätige mit OK, um die Suche zu sta
 
 msgid "Select your region. If not available change 'Country' to 'all' and select one of the default alternatives."
 msgstr "Wähle deine Region. Wenn nciht aufgeführt wehcsel das Land auf 'alle' und wähle eine der Standardalternativen."
-
-#, python-format
-msgid "Selected: %s"
-msgstr "Ausgewählt: %s"
 
 msgid "Selecting satellites 1 (USALS)"
 msgstr "Wähle Satelliten 1 (USALS)"
@@ -11398,6 +11345,9 @@ msgstr ""
 "Timerüberlappung in der timers.xml entdeckt!\n"
 "Bitte überprüfen!"
 
+msgid "Timer record location"
+msgstr "Timeraufnahme Verzeichnis"
+
 msgid "Timer recording location"
 msgstr "Timeraufnahme Verzeichnis"
 
@@ -11539,10 +11489,6 @@ msgstr "Insgesamt behandelte Klienten EMMs"
 
 msgid "Total memory:"
 msgstr "Speicher gesamt:"
-
-#, python-format
-msgid "Total size: %s"
-msgstr "Gesamtgröße: %s"
 
 msgid "Total swap:"
 msgstr "Swap gesamt:"
@@ -11899,9 +11845,6 @@ msgstr "Benutze Fast-Scan Sendernamen"
 
 msgid "Use fastscan channel numbering"
 msgstr "Benutze Fast-Scan Sendernummern"
-
-msgid "Use first 'x' filename's chars for virtual keyboard"
-msgstr "Benutze die ersten 'x' Buchstaben des Dateinamens für die virtuelle Tastatur"
 
 msgid "Use frequency or channel"
 msgstr "Benutze Frequenz oder Kanal"
@@ -14343,8 +14286,23 @@ msgstr "umgeschaltet"
 #~ msgid "%k:%M %e/%m"
 #~ msgstr "%k:%M %e/%m"
 
+#~ msgid "128"
+#~ msgstr "128"
+
+#~ msgid "16"
+#~ msgstr "16"
+
+#~ msgid "256"
+#~ msgstr "256"
+
+#~ msgid "32"
+#~ msgstr "32"
+
 #~ msgid "3D setup"
 #~ msgstr "3D Einstellungen"
+
+#~ msgid "64"
+#~ msgstr "64"
 
 #~ msgid "9 Month 9999"
 #~ msgstr "9 Monat 9999"
@@ -14398,6 +14356,9 @@ msgstr "umgeschaltet"
 #~ msgid "Add New Quad Channel Entry"
 #~ msgstr "Füge neuen Quad-Kanal Eintrag hinzu"
 
+#~ msgid "Add to selection (starts with...)"
+#~ msgstr "Füge zur Auswahl hinzu (starte mit...)"
+
 #~ msgid "Animation Setup"
 #~ msgstr "Animation Einstellungen"
 
@@ -14434,6 +14395,9 @@ msgstr "umgeschaltet"
 #~ msgid "Common Interface Assignment"
 #~ msgstr "Common Interface Zuweisung"
 
+#~ msgid "Compare case sensitive"
+#~ msgstr "Vergleiche unter Beachtung der Groß-/Kleinschreibung"
+
 #~ msgid "Configure the refresh rate of the screen."
 #~ msgstr "Konfiguriere die Wiederholrate für den Bildschirm."
 
@@ -14448,6 +14412,9 @@ msgstr "umgeschaltet"
 
 #~ msgid "Convert filesystem ext3 to ext4"
 #~ msgstr "Dateisystem ext3 in ext4 umwandeln"
+
+#~ msgid "Copy to..."
+#~ msgstr "Kopiere nach..."
 
 #~ msgid "Cores:\t%s\n"
 #~ msgstr "Kerne:\t%s\n"
@@ -14629,6 +14596,9 @@ msgstr "umgeschaltet"
 #~ msgid "Disable MiniTV"
 #~ msgstr "Deaktiviere MiniTV"
 
+#~ msgid "Do"
+#~ msgstr "mach hin"
+
 #~ msgid ""
 #~ "Do you really want to convert the filesystem?\n"
 #~ "You cannot go back!"
@@ -14776,11 +14746,11 @@ msgstr "umgeschaltet"
 #~ msgid "Input channel name."
 #~ msgstr "Kanalname eingeben."
 
-#~ msgid "Instant record location"
-#~ msgstr "Sofortaufnahme Verzeichnis"
-
 #~ msgid "Link Quality:"
 #~ msgstr "Qualität vom Link:"
+
+#~ msgid "List of files"
+#~ msgstr "Dateiliste"
 
 #~ msgid "Memory Information"
 #~ msgstr "Speicherinformationen"
@@ -14830,6 +14800,9 @@ msgstr "umgeschaltet"
 
 #~ msgid "Mounts setup"
 #~ msgstr "Mounts Einstellungen"
+
+#~ msgid "Move to..."
+#~ msgstr "Verschieben nach..."
 
 #~ msgid "MultiEPG settings"
 #~ msgstr "MultiEPG Einstellungen"
@@ -14883,6 +14856,12 @@ msgstr "umgeschaltet"
 
 #~ msgid "OE-A Changes"
 #~ msgstr "OE-A Änderungen"
+
+#~ msgid "On destination '%s' is %s free space only!"
+#~ msgstr "Auf Ziel '%s' ist nur noch %s freier Speicher!"
+
+#~ msgid "Options..."
+#~ msgstr "Einstellungen..."
 
 #~ msgid "PIDs"
 #~ msgstr "PIDs"
@@ -14947,6 +14926,9 @@ msgstr "umgeschaltet"
 #~ msgid "Remove Quad Channel Entry"
 #~ msgstr "Entferne Quad Kanal Eintrag"
 
+#~ msgid "Remove from selection (starts with...)"
+#~ msgstr "Entferne aus der Auswahl (starte mit...)"
+
 #~ msgid "Restore is running..."
 #~ msgstr "Wiederherstellung wird ausgeführt..."
 
@@ -14979,6 +14961,27 @@ msgstr "umgeschaltet"
 
 #~ msgid "Select desired image from feed list"
 #~ msgstr "Wähle Image vom Feed-Server"
+
+#~ msgid "Select destination for copy selected files..."
+#~ msgstr "Wähle Ziel auf das markierte Dateien kopiert werden sollen..."
+
+#~ msgid "Select destination for move selected files..."
+#~ msgstr "Wähle Ziel auf das markierte Dateien verschoben werden sollen..."
+
+#~ msgid ""
+#~ "Select files with 'OK' and then use 'Green' to choose desired operation.\n"
+#~ "Use 'CH+/-' select/unselect files via the keyboard.\n"
+#~ "Use 'Menu' for settings."
+#~ msgstr ""
+#~ "Wähle Dateien mit 'OK' und dann benutze 'Grün' um die gewünschte Operation zu wählen.\n"
+#~ "Benutze 'Kanal +/-' um Dateien mit einer Tastatur aus-/abzuwählen.\n"
+#~ "Benutze 'Menü' für Einstellungen"
+
+#~ msgid "Select operation:"
+#~ msgstr "Wähle Funktion:"
+
+#~ msgid "Selected: %s"
+#~ msgstr "Ausgewählt: %s"
 
 #~ msgid "Service Information"
 #~ msgstr "Sender Information"
@@ -15102,9 +15105,6 @@ msgstr "umgeschaltet"
 #~ msgid "Timer overview"
 #~ msgstr "Timer Überblick"
 
-#~ msgid "Timer record location"
-#~ msgstr "Timeraufnahme Verzeichnis"
-
 #~ msgid "Timeshift settings"
 #~ msgstr "TimeShift Einstellungen"
 
@@ -15118,6 +15118,9 @@ msgstr "umgeschaltet"
 #~ "1) Box hinten mit dem Schalter ausschalten und den USB-Stick vorne rein stecken.\n"
 #~ "2) Box einschalten und die '-' Taste am Gerät drücken.\n"
 #~ "3) Auf Neustart warten und den Anweisungen des Assistenten folgen."
+
+#~ msgid "Total size: %s"
+#~ msgstr "Gesamtgröße: %s"
 
 #~ msgid "Tuning algorithm"
 #~ msgstr "Tuningmethode"
@@ -15145,6 +15148,9 @@ msgstr "umgeschaltet"
 
 #~ msgid "Unicable Matrix"
 #~ msgstr "Unicable Matrix"
+
+#~ msgid "Use first 'x' filename's chars for virtual keyboard"
+#~ msgstr "Benutze die ersten 'x' Buchstaben des Dateinamens für die virtuelle Tastatur"
 
 #~ msgid "Video Enhancement Settings"
 #~ msgstr "Bildoptimierung Einstellungen"

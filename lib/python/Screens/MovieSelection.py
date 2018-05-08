@@ -16,7 +16,8 @@ from Components.Sources.ServiceEvent import ServiceEvent
 from Components.Sources.StaticText import StaticText
 import Components.Harddisk
 from Components.UsageConfig import preferredTimerPath
-from Components.Sources.Boolean import Boolean
+from Screens.VirtualKeyBoard import VirtualKeyBoard
+#from Components.Sources.Boolean import Boolean
 from Plugins.Plugin import PluginDescriptor
 from Screens.MessageBox import MessageBox
 from Screens.ChoiceBox import ChoiceBox
@@ -227,10 +228,14 @@ class MovieBrowserConfiguration(ConfigListScreen,Screen):
 		self.skinName = "Setup"
 		self.setup_title = _("Movie List Setup")
 		Screen.setTitle(self, _(self.setup_title))
-		self["HelpWindow"] = Pixmap()
-		self["HelpWindow"].hide()
-		self["VKeyIcon"] = Boolean(False)
+
+		# No ConfigText fields in MovieBrowserConfiguration so these are not currently used.
+		#self["HelpWindow"] = Pixmap()
+		#self["HelpWindow"].hide()
+		#self["VKeyIcon"] = Boolean(False)
+
 		self['footnote'] = Label("")
+
 		self["description"] = Label("")
 
 		self.onChangedEntry = [ ]
@@ -286,25 +291,7 @@ class MovieBrowserConfiguration(ConfigListScreen,Screen):
 		self.selectionChanged()
 
 	def selectionChanged(self):
-		self["description"].setText(self["config"].getCurrent()[2])
-
-	# for summary:
-	def changedEntry(self):
-		for x in self.onChangedEntry:
-			x()
-
-	def getCurrentEntry(self):
-		return self["config"].getCurrent() and self["config"].getCurrent()[0] or ""
-
-	def getCurrentValue(self):
-		return self["config"].getCurrent() and str(self["config"].getCurrent()[1].getText()) or ""
-
-	def getCurrentDescription(self):
-		return self["config"].getCurrent() and len(self["config"].getCurrent()) > 2 and self["config"].getCurrent()[2] or ""
-
-	def createSummary(self):
-		from Screens.Setup import SetupSummary
-		return SetupSummary
+		self["description"].setText(self.getCurrentDescription())
 
 	def save(self):
 		self.saveAll()
@@ -359,9 +346,12 @@ class MovieContextMenu(Screen, ProtectedScreen):
 		self.skinName = "Setup"
 		self.setup_title = _("Movie List Setup")
 		Screen.setTitle(self, _(self.setup_title))
-		self["HelpWindow"] = Pixmap()
-		self["HelpWindow"].hide()
-		self["VKeyIcon"] = Boolean(False)
+
+		# No ConfigText fields in MovieBrowserConfiguration so these are not currently used.
+		#self["HelpWindow"] = Pixmap()
+		#self["HelpWindow"].hide()
+		#self["VKeyIcon"] = Boolean(False)
+
 		self['footnote'] = Label("")
 		self["description"] = StaticText()
 
@@ -1803,7 +1793,6 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 	def can_createdir(self, item):
 		return True
 	def do_createdir(self):
-		from Screens.VirtualKeyBoard import VirtualKeyBoard
 		self.session.openWithCallback(self.createDirCallback, VirtualKeyBoard,
 			title = _("Please enter the name of the new directory"),
 			text = "")
@@ -1848,7 +1837,6 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			if full_name == name: # split extensions for files without metafile
 				name, self.extension = os.path.splitext(name)
 
-		from Screens.VirtualKeyBoard import VirtualKeyBoard
 		self.session.openWithCallback(self.renameCallback, VirtualKeyBoard,
 			title = _("Rename"),
 			text = name)
