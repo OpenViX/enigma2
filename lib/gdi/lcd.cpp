@@ -302,21 +302,7 @@ void eDBoxLCD::update()
 		}
 		else
 		{
-			if (FILE * file = fopen("/proc/stb/info/gbmodel", "r"))
-			{
-				unsigned char gb_buffer[_stride * res.height()];
-				for (int offset = 0; offset < _stride * res.height(); offset += 2)
-				{
-					gb_buffer[offset] = (_buffer[offset] & 0x1F) | ((_buffer[offset + 1] << 3) & 0xE0);
-					gb_buffer[offset + 1] = ((_buffer[offset + 1] >> 5) & 0x03) | ((_buffer[offset] >> 3) & 0x1C) | ((_buffer[offset + 1] << 5) & 0x60);
-				}
-				write(lcdfd, gb_buffer, _stride * res.height());
-				fclose(file);
-			}
-			else
-			{
-				write(lcdfd, _buffer, _stride * res.height());
-			}
+			write(lcdfd, _buffer, _stride * res.height());
 		}
 	}
 	else /* lcd_type == 1 */
