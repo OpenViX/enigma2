@@ -4,10 +4,11 @@ from enigma import eActionMap
 
 
 class ActionMap:
-	def __init__(self, contexts=[], actions={}, prio=0):
+	def __init__(self, contexts=None, actions=None, prio=0):
+		contexts = contexts or []
+		actions = actions or {}
 		self.contexts = contexts
 		self.actions = actions
-		self.contexts = contexts
 		self.prio = prio
 		self.p = eActionMap.getInstance()
 		self.bound = False
@@ -84,9 +85,10 @@ class HelpableActionMap(ActionMap):
 	# context, action) is added to the screen's "helpList", which will
 	# be picked up by the "HelpableScreen".
 	#
-	def __init__(self, parent, contexts, actions={}, prio=0, description=None):
+	def __init__(self, parent, contexts, actions=None, prio=0, description=None):
 		if not hasattr(contexts, '__iter__'):
 			contexts = [contexts]
+		actions = actions or {}
 		self.description = description
 		adict = {}
 		for context in contexts:
@@ -103,6 +105,7 @@ class HelpableActionMap(ActionMap):
 					adict[action] = funchelp
 			parent.helpList.append((self, context, alist))
 		ActionMap.__init__(self, contexts, adict, prio)
+
 
 class HelpableNumberActionMap(NumberActionMap, HelpableActionMap):
 	def __init__(self, parent, contexts, actions=None, prio=0, description=None):
