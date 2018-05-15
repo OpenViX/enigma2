@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-05-12 10:17+0100\n"
-"PO-Revision-Date: 2018-05-12 16:05+0200\n"
+"POT-Creation-Date: 2018-05-14 20:14+0100\n"
+"PO-Revision-Date: 2018-05-15 07:58+0200\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -2679,6 +2679,12 @@ msgstr "Kies hoe datums moeten worden weergegeven op het frontpanel display. 'D'
 msgid "Choose the front panel display formatting style for times. 'H' / 'HH' is the hour for a 24 hour clock, 'h' / 'hh' is the hour for a 12 hour clock, 'mm' is the minutes.  ('HH' and 'hh' have leading zeros for single digit values.) The front panel display will be based on your choice but can be influenced any applicable skin."
 msgstr "Kies hoe tijden op het frontpaneldisplay moeten worden weergegeven. 'H' / 'HH' is het uur voor de 24-uurs klok, 'h' / 'hh' is het uur voor de 12-uurs klok, 'mm' is de minuten ('HH' en 'hh' hebben een voorloop nul indien die bestaat uit een enkel getal). Het resultaat zal gebaseerd zijn op uw keuze, maar kan beïnvloed worden door de gebruikte skin."
 
+msgid "Choose the layout view mode (Text / Graphics Multi channel EPG or Single channel EPG)."
+msgstr "Kies de lay-out (Tekst / Grafische Multi-EPG of kanaal-EPG) "
+
+msgid "Choose the layout view mode (Text or Graphics)."
+msgstr "Hier kiest u de lay-out: tekst of grafisch."
+
 msgid "Choose the location for crash and debug logs folder."
 msgstr "Kies waar u crash- en debuglogs wilt opslaan."
 
@@ -5160,6 +5166,9 @@ msgstr "Grafische EPG"
 
 msgid "Graphics"
 msgstr "Grafisch"
+
+msgid "Graphics Multi EPG"
+msgstr "Grafische Multi-EPG"
 
 msgid "Greece"
 msgstr "Greece"
@@ -10801,6 +10810,9 @@ msgstr "Testschermen di ekunnen helpen bij het afregelen van uw scherm"
 msgid "Text"
 msgstr "Tekst"
 
+msgid "Text Multi EPG"
+msgstr "Tekst Multi-EPG"
+
 msgid "Text color"
 msgstr "Tekstkleur"
 
@@ -11097,9 +11109,6 @@ msgstr "Hiermee schakelt u het 'smoothing filter' in voor het 'dithering process
 
 msgid "This option allows you enable the vertical scaler dejagging."
 msgstr "Met deze optie schakelt u de 'vertical scaler dejagging' in/uit."
-
-msgid "This option allows you set the layout view (Text or Graphics)."
-msgstr "Hier kiest u de lay-out: tekst of grafisch."
 
 msgid "This option allows you to boost the blue tones in the picture."
 msgstr "Met deze instelling kunt u de blauwe kleuren in het beeld versterken."
