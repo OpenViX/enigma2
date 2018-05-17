@@ -52,7 +52,6 @@ from boxbranding import getBrandOEM, getMachineBuild
 
 from time import time, localtime, strftime
 from bisect import insort
-from sys import maxint
 
 import os, cPickle
 
@@ -60,6 +59,9 @@ import os, cPickle
 from Screens.Menu import MainMenu, Menu, mdom
 from Screens.Setup import Setup
 import Screens.Standby
+
+# sys.maxint on 64bit (2**63-1) fails with OverflowError on eActionMap.bindAction use 32bit value (2**31-1)
+maxint = 2147483647
 
 def isStandardInfoBar(self):
 	return self.__class__.__name__ == "InfoBar"
@@ -778,6 +780,8 @@ class BufferIndicator(Screen):
 		Screen.__init__(self, session)
 		self["status"] = Label()
 		self.mayShow = False
+		self.mayShowTimer = eTimer()
+		self.mayShowTimer.callback.append(self.mayShowEndTimer)
 		self.__event_tracker = ServiceEventTracker(screen=self, eventmap=
 			{
 				iPlayableService.evBuffering: self.bufferChanged,
@@ -787,22 +791,32 @@ class BufferIndicator(Screen):
 
 	def bufferChanged(self):
 		if self.mayShow:
-			service = self.session.nav.getCurrentService()
-			info = service and service.info()
-			if info:
-				value = info.getInfo(iServiceInformation.sBuffer)
-				if value and value != 100:
-					self["status"].setText(_("Buffering %d%%") % value)
-					if not self.shown:
-						self.show()
+			value = self.getBufferValue()
+			if value and value != 100:
+				self["status"].setText(_("Buffering %d%%") % value)
+				if not self.shown:
+					self.show()
 
 	def __evStart(self):
-		self.mayShow = True
 		self.hide()
+		self.mayShow = False
+		self.mayShowTimer.start(1000, True)
 
 	def __evGstreamerPlayStarted(self):
 		self.mayShow = False
+		self.mayShowTimer.stop()
 		self.hide()
+
+	def	mayShowEndTimer(self):
+		self.mayShow = True
+		if self.getBufferValue() == 0:
+			self["status"].setText(_("No data received yet"))
+			self.show()
+
+	def getBufferValue(self):
+		service = self.session.nav.getCurrentService()
+		info = service and service.info()
+		return info and info.getInfo(iServiceInformation.sBuffer)
 
 class InfoBarBuffer():
 	def __init__(self):
@@ -953,6 +967,7 @@ class InfoBarNumberZap:
 				if not bouquetlist is None:
 					while True:
 						bouquet = bouquetlist.getNext()
+						if not bouquet.valid(): break
 						if bouquet.flags & eServiceReference.isDirectory:
 							self.servicelist.clearPath()
 							self.servicelist.setRoot(bouquet)
@@ -2602,56 +2617,25 @@ class InfoBarExtensions:
 		from Screens.UserInterfacePositioner import OSD3DSetupScreen
 		self.session.open(OSD3DSetupScreen)
 
+	@staticmethod
+	def _getAutoTimerPluginFunc():
+		# Use the WHERE_MENU descriptor because it's the only
+		# AutoTimer plugin descriptor that opens the AotoTimer
+		# overview and is always present.
+
+		for l in plugins.getPlugins(PluginDescriptor.WHERE_MENU):
+			if l.name == _("Auto Timers"):  # Must use translated name
+				menuEntry = l("timermenu")
+				if menuEntry and len(menuEntry[0]) > 1 and callable(menuEntry[0][1]):
+					return menuEntry[0][1]
+		return None
+
 	def showAutoTimerList(self):
-		if os.path.exists("/usr/lib/enigma2/python/Plugins/Extensions/AutoTimer/plugin.pyo"):
-			from Plugins.Extensions.AutoTimer.plugin import main, autostart
-			from Plugins.Extensions.AutoTimer.AutoTimer import AutoTimer
-			from Plugins.Extensions.AutoTimer.AutoPoller import AutoPoller
-			self.autopoller = AutoPoller()
-			self.autotimer = AutoTimer()
-			try:
-				self.autotimer.readXml()
-			except SyntaxError as se:
-				self.session.open(
-					MessageBox,
-					_("Your config file is not well formed:\n%s") % (str(se)),
-					type = MessageBox.TYPE_ERROR,
-					timeout = 10
-				)
-				return
-
-			# Do not run in background while editing, this might screw things up
-			if self.autopoller is not None:
-				self.autopoller.stop()
-
-			from Plugins.Extensions.AutoTimer.AutoTimerOverview import AutoTimerOverview
-			self.session.openWithCallback(
-				self.editCallback,
-				AutoTimerOverview,
-				self.autotimer
-			)
+		autotimerFunc = self._getAutoTimerPluginFunc()
+		if autotimerFunc is not None:
+			autotimerFunc(self.session)
 		else:
 			self.session.open(MessageBox, _("The AutoTimer plugin is not installed!\nPlease install it."), type = MessageBox.TYPE_INFO,timeout = 10 )
-
-	def editCallback(self, session):
-		# XXX: canceling of GUI (Overview) won't affect config values which might have been changed - is this intended?
-		# Don't parse EPG if editing was canceled
-		if session is not None:
-			# Save xml
-			self.autotimer.writeXml()
-			# Poll EPGCache
-			self.autotimer.parseEPG()
-
-		# Start autopoller again if wanted
-		if config.plugins.autotimer.autopoll.value:
-			if self.autopoller is None:
-				from Plugins.Extensions.AutoTimer.AutoPoller import AutoPoller
-				self.autopoller = AutoPoller()
-			self.autopoller.start()
-		# Remove instance if not running in background
-		else:
-			self.autopoller = None
-			self.autotimer = None
 
 	def showEPGSearch(self):
 		from Plugins.Extensions.EPGSearch.EPGSearch import EPGSearch

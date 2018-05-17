@@ -2956,11 +2956,12 @@ void eDVBServicePlay::updateDecoder(bool sendSeekableStateChanged)
 		if (!m_noaudio)
 		{
 			selectAudioStream();
-			if (!(m_is_pvr || m_is_stream || m_timeshift_active))
-				m_decoder->setSyncPCR(pcrpid);
-			else
-				m_decoder->setSyncPCR(-1);
 		}
+		
+		if (!(m_is_pvr || m_is_stream || m_timeshift_active))
+			m_decoder->setSyncPCR(pcrpid);
+		else
+			m_decoder->setSyncPCR(-1);
 
 		if (m_decoder_index == 0)
 		{
@@ -3261,8 +3262,8 @@ RESULT eDVBServicePlay::getCachedSubtitle(struct SubtitleTrack &track)
 		if (!h.getProgramInfo(program))
 		{
 			bool usecache = eConfigManager::getConfigBoolValue("config.autolanguage.subtitle_usecache");
-			int stream=program.defaultSubtitleStream;
-			int tmp = m_dvb_service->getCacheEntry(eDVBService::cSUBTITLE);
+			int stream = program.defaultSubtitleStream;
+			int tmp = usecache ? m_dvb_service->getCacheEntry(eDVBService::cSUBTITLE) : -1; 
 
 			if (usecache || stream == -1)
 			{
@@ -3347,8 +3348,8 @@ RESULT eDVBServicePlay::getSubtitleList(std::vector<SubtitleTrack> &subtitlelist
 					}
 					break;
 				}
-				case 0x10 ... 0x13:
-				case 0x20 ... 0x23: // dvb subtitles
+				case 0x10 ... 0x15:
+				case 0x20 ... 0x25: // dvb subtitles
 				{
 					track.type = 0;
 					track.pid = it->pid;

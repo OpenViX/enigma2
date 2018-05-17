@@ -57,10 +57,10 @@ class PowerTimerEditList(Screen):
 		self.key_yellow_choice = self.EMPTY
 		self.key_blue_choice = self.EMPTY
 
-		self["key_red"] = Button(" ")
+		self["key_red"] = Button("")
 		self["key_green"] = Button(_("Add"))
-		self["key_yellow"] = Button(" ")
-		self["key_blue"] = Button(" ")
+		self["key_yellow"] = Button("")
+		self["key_blue"] = Button("")
 
 		self["description"] = Label()
 
@@ -150,7 +150,7 @@ class PowerTimerEditList(Screen):
 				self.key_yellow_choice = self.ENABLE
 			elif cur.isRunning() and not cur.repeated and (self.key_yellow_choice != self.EMPTY):
 				self.removeAction("yellow")
-				self["key_yellow"].setText(" ")
+				self["key_yellow"].setText("")
 				self.key_yellow_choice = self.EMPTY
 			elif ((not cur.isRunning())or cur.repeated ) and (not cur.disabled) and (self.key_yellow_choice != self.DISABLE):
 				self["actions"].actions.update({"yellow":self.toggleDisabledState})
@@ -159,11 +159,11 @@ class PowerTimerEditList(Screen):
 		else:
 			if self.key_red_choice != self.EMPTY:
 				self.removeAction("red")
-				self["key_red"].setText(" ")
+				self["key_red"].setText("")
 				self.key_red_choice = self.EMPTY
 			if self.key_yellow_choice != self.EMPTY:
 				self.removeAction("yellow")
-				self["key_yellow"].setText(" ")
+				self["key_yellow"].setText("")
 				self.key_yellow_choice = self.EMPTY
 
 		showCleanup = True
@@ -179,7 +179,7 @@ class PowerTimerEditList(Screen):
 			self.key_blue_choice = self.CLEANUP
 		elif (not showCleanup) and (self.key_blue_choice != self.EMPTY):
 			self.removeAction("blue")
-			self["key_blue"].setText(" ")
+			self["key_blue"].setText("")
 			self.key_blue_choice = self.EMPTY
 		if len(self.list) == 0:
 			return

@@ -1,21 +1,22 @@
-from HTMLComponent import HTMLComponent
 from GUIComponent import GUIComponent
-from config import KEY_LEFT, KEY_RIGHT, KEY_HOME, KEY_END, KEY_0, KEY_DELETE, KEY_BACKSPACE, KEY_OK, KEY_TOGGLEOW, KEY_ASCII, KEY_TIMEOUT, KEY_NUMBERS, config, configfile, ConfigElement, ConfigText, ConfigPassword
+from config import KEY_LEFT, KEY_RIGHT, KEY_HOME, KEY_END, KEY_0, KEY_DELETE, KEY_BACKSPACE, KEY_OK, KEY_TOGGLEOW, KEY_ASCII, KEY_TIMEOUT, KEY_NUMBERS, configfile, ConfigElement
 from Components.ActionMap import NumberActionMap, ActionMap
 from enigma import eListbox, eListboxPythonConfigContent, eRCInput, eTimer
 from Screens.MessageBox import MessageBox
 from Screens.ChoiceBox import ChoiceBox
 import skin
 
-class ConfigList(HTMLComponent, GUIComponent, object):
-	def __init__(self, list, session = None):
+class ConfigList(GUIComponent, object):
+	def __init__(self, list, session=None):
 		GUIComponent.__init__(self)
 		self.l = eListboxPythonConfigContent()
 		seperation = skin.parameters.get("ConfigListSeperator", 200)
 		self.l.setSeperation(seperation)
+		height, space = skin.parameters.get("ConfigListSlider", (17, 0))
+		self.l.setSlider(height, space)
 		self.timer = eTimer()
 		self.list = list
-		self.onSelectionChanged = [ ]
+		self.onSelectionChanged = []
 		self.current = None
 		self.session = session
 
@@ -64,24 +65,24 @@ class ConfigList(HTMLComponent, GUIComponent, object):
 	GUI_WIDGET = eListbox
 
 	def selectionChanged(self):
-# Only run onDeselect/onSelect if self.current != self.getCurrent()
-# i.e. if the selection has *actually* changed...
-# This means that Notifiers with immediate_feedback = False actually
-# do only get called once at the end of an item change, not for every
-# step along the way.
-#
-		orig_current = self.current;
+		if isinstance(self.current,tuple) and len(self.current) >= 2:
+			self.current[1].onDeselect(self.session)
 		self.current = self.getCurrent()
-		if (orig_current == self.current):
-			return
-		if isinstance(orig_current,tuple) and len(orig_current) >= 2:
-			orig_current[1].onDeselect(self.session)
 		if isinstance(self.current,tuple) and len(self.current) >= 2:
 			self.current[1].onSelect(self.session)
 		else:
 			return
+
 		for x in self.onSelectionChanged:
 			x()
+
+	def hideHelp(self):
+		if isinstance(self.current, tuple) and len(self.current) >= 2:
+			self.current[1].hideHelp(self.session)
+
+	def showHelp(self):
+		if isinstance(self.current, tuple) and len(self.current) >= 2:
+			self.current[1].showHelp(self.session)
 
 	def postWidgetCreate(self, instance):
 		instance.selectionChanged.get().append(self.selectionChanged)
@@ -89,7 +90,7 @@ class ConfigList(HTMLComponent, GUIComponent, object):
 		self.instance.setWrapAround(True)
 
 	def preWidgetRemove(self, instance):
-		if isinstance(self.current,tuple) and len(self.current) >= 2:
+		if isinstance(self.current, tuple) and len(self.current) >= 2:
 			self.current[1].onDeselect(self.session)
 		instance.selectionChanged.get().remove(self.selectionChanged)
 		instance.setContent(None)
@@ -112,15 +113,8 @@ class ConfigList(HTMLComponent, GUIComponent, object):
 		self.handleKey(KEY_TIMEOUT)
 
 	def isChanged(self):
-#debug		is_changed = False
 		for x in self.list:
 			if x[1].isChanged():
-#
-#debug				print 'X', type(x[1]), 'changed (val, str(val), tostring(val)):', x[1], str(x[1]), x[1].tostring(x[1].value)
-#debug				is_changed = True
-#debug		print 'isChanged():', is_changed
-#debug		return is_changed
-#
 				return True
 		return False
 
@@ -133,9 +127,8 @@ class ConfigList(HTMLComponent, GUIComponent, object):
 			self.instance.moveSelection(self.instance.pageDown)
 
 class ConfigListScreen:
-	def __init__(self, list, session = None, on_change = None):
-		self["config_actions"] = NumberActionMap(["SetupActions", "InputAsciiActions", "KeyboardInputActions"],
-		{
+	def __init__(self, list, session=None, on_change=None):
+		self["config_actions"] = NumberActionMap(["SetupActions", "InputAsciiActions", "KeyboardInputActions"], {
 			"gotAsciiCode": self.keyGotAscii,
 			"ok": self.keyOK,
 			"left": self.keyLeft,
@@ -157,26 +150,31 @@ class ConfigListScreen:
 			"8": self.keyNumberGlobal,
 			"9": self.keyNumberGlobal,
 			"0": self.keyNumberGlobal,
-			"file" : self.keyFile
-		}, -1) # to prevent left/right overriding the listbox
+			"file": self.keyFile
+		}, -1)  # to prevent left/right overriding the listbox
 
 		self.onChangedEntry = []
 
-		self["VirtualKB"] = ActionMap(["VirtualKeyboardActions"],
-		{
+		self["VirtualKB"] = ActionMap(["VirtualKeyboardActions"], {
 			"showVirtualKeyboard": self.KeyText,
 		}, -2)
 		self["VirtualKB"].setEnabled(False)
 
-		self["config"] = ConfigList(list, session = session)
+		self["config"] = ConfigList(list, session=session)
 
 		if on_change is not None:
 			self.__changed = on_change
 		else:
 			self.__changed = lambda: None
 
-		if not self.handleInputHelpers in self["config"].onSelectionChanged:
+		if self.handleInputHelpers not in self["config"].onSelectionChanged:
 			self["config"].onSelectionChanged.append(self.handleInputHelpers)
+
+#		self.onClose.append(self.__onClose)
+
+#	def __onClose(self):
+#		if "config" in self:
+#			self["config"].hideHelp()
 
 	def createSummary(self):
 		self.setup_title = self.getTitle()
@@ -197,38 +195,28 @@ class ConfigListScreen:
 			x()
 
 	def handleInputHelpers(self):
-		if self["config"].getCurrent() is not None:
-			try:
-				if isinstance(self["config"].getCurrent()[1], ConfigText) or isinstance(self["config"].getCurrent()[1], ConfigPassword):
-					if "VKeyIcon" in self:
-						self["VirtualKB"].setEnabled(True)
-						self["VKeyIcon"].boolean = True
-					if "HelpWindow" in self:
-						if self["config"].getCurrent()[1].help_window.instance is not None:
-							helpwindowpos = self["HelpWindow"].getPosition()
-							from enigma import ePoint
-							self["config"].getCurrent()[1].help_window.instance.move(ePoint(helpwindowpos[0],helpwindowpos[1]))
-				else:
-					if "VKeyIcon" in self:
-						self["VirtualKB"].setEnabled(False)
-						self["VKeyIcon"].boolean = False
-			except:
-				if "VKeyIcon" in self:
-					self["VirtualKB"].setEnabled(False)
-					self["VKeyIcon"].boolean = False
-		else:
+		if self["config"].getCurrent() is not None and self["config"].getCurrent()[1].__class__.__name__ in ('ConfigText', 'ConfigPassword'):
 			if "VKeyIcon" in self:
+				self["VirtualKB"].setEnabled(True)
+				self["VKeyIcon"].boolean = True
+			if "HelpWindow" in self and self["config"].getCurrent()[1].help_window and self["config"].getCurrent()[1].help_window.instance is not None:
+				helpwindowpos = self["HelpWindow"].getPosition()
+				from enigma import ePoint
+				self["config"].getCurrent()[1].help_window.instance.move(ePoint(helpwindowpos[0], helpwindowpos[1]))
+		elif "VKeyIcon" in self:
 				self["VirtualKB"].setEnabled(False)
 				self["VKeyIcon"].boolean = False
 
 	def KeyText(self):
+		self["config"].hideHelp()
 		from Screens.VirtualKeyBoard import VirtualKeyBoard
-		self.session.openWithCallback(self.VirtualKeyBoardCallback, VirtualKeyBoard, title = self["config"].getCurrent()[0], text = self["config"].getCurrent()[1].value)
+		self.session.openWithCallback(self.VirtualKeyBoardCallback, VirtualKeyBoard, title=self["config"].getCurrent()[0], text=self["config"].getCurrent()[1].value)
 
-	def VirtualKeyBoardCallback(self, callback = None):
+	def VirtualKeyBoardCallback(self, callback=None):
 		if callback is not None and len(callback):
 			self["config"].getCurrent()[1].setValue(callback)
 			self["config"].invalidate(self["config"].getCurrent())
+		self["config"].showHelp()
 
 	def keyOK(self):
 		self["config"].handleKey(KEY_OK)
@@ -278,10 +266,12 @@ class ConfigListScreen:
 	def keyFile(self):
 		selection = self["config"].getCurrent()
 		if selection and selection[1].enabled and hasattr(selection[1], "description"):
-			self.session.openWithCallback(self.handleKeyFileCallback, ChoiceBox, selection[0],
+			self.session.openWithCallback(
+				self.handleKeyFileCallback, ChoiceBox, selection[0],
 				list=zip(selection[1].description, selection[1].choices),
 				selection=selection[1].choices.index(selection[1].value),
-				keys=[])
+				keys=[]
+			)
 
 	def handleKeyFileCallback(self, answer):
 		if answer:
@@ -302,14 +292,16 @@ class ConfigListScreen:
 
 	def cancelConfirm(self, result):
 		if not result:
+			self["config"].showHelp()
 			return
 
 		for x in self["config"].list:
 			x[1].cancel()
 		self.close()
 
-	def closeMenuList(self, recursive = False):
+	def closeMenuList(self, recursive=False):
 		if self["config"].isChanged():
+			self["config"].hideHelp()
 			self.session.openWithCallback(self.cancelConfirm, MessageBox, _("Really close without saving settings?"), default = False)
 		else:
 			self.close(recursive)

@@ -16,7 +16,8 @@ from Components.Sources.ServiceEvent import ServiceEvent
 from Components.Sources.StaticText import StaticText
 import Components.Harddisk
 from Components.UsageConfig import preferredTimerPath
-from Components.Sources.Boolean import Boolean
+from Screens.VirtualKeyBoard import VirtualKeyBoard
+#from Components.Sources.Boolean import Boolean
 from Plugins.Plugin import PluginDescriptor
 from Screens.MessageBox import MessageBox
 from Screens.ChoiceBox import ChoiceBox
@@ -227,10 +228,14 @@ class MovieBrowserConfiguration(ConfigListScreen,Screen):
 		self.skinName = "Setup"
 		self.setup_title = _("Movie List Setup")
 		Screen.setTitle(self, _(self.setup_title))
-		self["HelpWindow"] = Pixmap()
-		self["HelpWindow"].hide()
-		self["VKeyIcon"] = Boolean(False)
+
+		# No ConfigText fields in MovieBrowserConfiguration so these are not currently used.
+		#self["HelpWindow"] = Pixmap()
+		#self["HelpWindow"].hide()
+		#self["VKeyIcon"] = Boolean(False)
+
 		self['footnote'] = Label("")
+
 		self["description"] = Label("")
 
 		self.onChangedEntry = [ ]
@@ -286,25 +291,7 @@ class MovieBrowserConfiguration(ConfigListScreen,Screen):
 		self.selectionChanged()
 
 	def selectionChanged(self):
-		self["description"].setText(self["config"].getCurrent()[2])
-
-	# for summary:
-	def changedEntry(self):
-		for x in self.onChangedEntry:
-			x()
-
-	def getCurrentEntry(self):
-		return self["config"].getCurrent() and self["config"].getCurrent()[0] or ""
-
-	def getCurrentValue(self):
-		return self["config"].getCurrent() and str(self["config"].getCurrent()[1].getText()) or ""
-
-	def getCurrentDescription(self):
-		return self["config"].getCurrent() and len(self["config"].getCurrent()) > 2 and self["config"].getCurrent()[2] or ""
-
-	def createSummary(self):
-		from Screens.Setup import SetupSummary
-		return SetupSummary
+		self["description"].setText(self.getCurrentDescription())
 
 	def save(self):
 		self.saveAll()
@@ -359,19 +346,22 @@ class MovieContextMenu(Screen, ProtectedScreen):
 		self.skinName = "Setup"
 		self.setup_title = _("Movie List Setup")
 		Screen.setTitle(self, _(self.setup_title))
-		self["HelpWindow"] = Pixmap()
-		self["HelpWindow"].hide()
-		self["VKeyIcon"] = Boolean(False)
+
+		# No ConfigText fields in MovieBrowserConfiguration so these are not currently used.
+		#self["HelpWindow"] = Pixmap()
+		#self["HelpWindow"].hide()
+		#self["VKeyIcon"] = Boolean(False)
+
 		self['footnote'] = Label("")
 		self["description"] = StaticText()
 
 		self.csel = csel
 		ProtectedScreen.__init__(self)
+		self.title = _("Movielist menu")
 
 		self["actions"] = ActionMap(["OkCancelActions", "ColorActions", "NumberActions", "MenuActions"],
 			{
 				"red": self.cancelClick,
-				"green": self.okbuttonClick,
 				"ok": self.okbuttonClick,
 				"cancel": self.cancelClick,
 				"green": self.do_showDeviceMounts,
@@ -390,7 +380,6 @@ class MovieContextMenu(Screen, ProtectedScreen):
 			})
 
 		self["key_red"] = StaticText(_("Cancel"))
-		self["key_green"] = StaticText(_("OK"))
 
 		def append_to_menu(menu, args, key=""):
 			menu.append(ChoiceEntryComponent(key, args))
@@ -400,6 +389,8 @@ class MovieContextMenu(Screen, ProtectedScreen):
 		append_to_menu(menu, (_("Device mounts") + "...", csel.showDeviceMounts), key="green")
 		append_to_menu(menu, (_("Network mounts") + "...", csel.showNetworkMounts), key="yellow")
 		append_to_menu(menu, (_("Sort by") + "...", csel.selectSortby), key="blue")
+		if csel.installedMovieManagerPlugin():
+			append_to_menu(menu, (_("Movie manager") + "...", csel.do_moviemanager))
 		if csel.exist_bookmark():
 			append_to_menu(menu, (_("Remove bookmark"), csel.do_addbookmark), key="1")
 		else:
@@ -775,6 +766,8 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 				'movieoff': _("On end of movie"),
 				'movieoff_menu': _("On end of movie (as menu)")
 			}
+			if self.installedMovieManagerPlugin():
+				userDefinedActions['moviemanager'] = _("Movie manager")
 			for p in plugins.getPlugins(PluginDescriptor.WHERE_MOVIELIST):
 				userDefinedActions['@' + p.name] = p.description
 			locations = []
@@ -1801,7 +1794,6 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 	def can_createdir(self, item):
 		return True
 	def do_createdir(self):
-		from Screens.VirtualKeyBoard import VirtualKeyBoard
 		self.session.openWithCallback(self.createDirCallback, VirtualKeyBoard,
 			title = _("Please enter the name of the new directory"),
 			text = "")
@@ -1846,7 +1838,6 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			if full_name == name: # split extensions for files without metafile
 				name, self.extension = os.path.splitext(name)
 
-		from Screens.VirtualKeyBoard import VirtualKeyBoard
 		self.session.openWithCallback(self.renameCallback, VirtualKeyBoard,
 			title = _("Rename"),
 			text = name)
@@ -2225,6 +2216,19 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		import Plugins.SystemPlugins.ViX.MountManager
 		self.session.open(Plugins.SystemPlugins.ViX.MountManager.VIXDevicesPanel)
 
+	def can_moviemanager(self, item):
+		return True
+	def do_moviemanager(self):
+		item = self.getCurrentSelection()[0]
+		from Plugins.Extensions.MovieManager.ui import MovieManager
+		self.session.open(MovieManager, self["list"], item)
+	def installedMovieManagerPlugin(self):
+		try:
+			from Plugins.Extensions.MovieManager.ui import MovieManager
+			return True
+		except Exception as e:
+			return False
+
 	def showActionFeedback(self, text):
 		if self.feedbackTimer is None:
 			self.feedbackTimer = eTimer()
@@ -2272,6 +2276,19 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		self.sorttimer.start(3000, True) #time for displaying sorting type just applied
 		self.sortBy(int(l_moviesort[index][0]))
 		self["movie_sort"].setPixmapNum(self.getPixmapSortIndex(l_moviesort[index][0]))
+
+	def installedMovieManagerPlugin(self):
+		try:
+			from Plugins.Extensions.MovieManager.ui import MovieManager
+			return True
+		except Exception as e:
+			print "[MovieSelection] MovieManager is not installed...", e
+			return False
+
+	def runMovieManager(self):
+		if self.installedMovieManagerPlugin():
+			from Plugins.Extensions.MovieManager.ui import MovieManager
+			self.session.open(MovieManager, self["list"])
 
 	def do_preview(self):
 		self.preview()

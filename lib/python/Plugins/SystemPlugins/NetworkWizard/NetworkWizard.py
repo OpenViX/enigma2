@@ -9,6 +9,7 @@ from Screens.MessageBox import MessageBox
 from Components.Pixmap import Pixmap
 from Components.Sources.Boolean import Boolean
 from Components.Network import iNetwork
+from Components.Label import Label
 from Tools.Directories import resolveFilename, SCOPE_PLUGINS
 
 
@@ -42,7 +43,7 @@ class NetworkWizard(WizardLanguage, Rc):
 		self["HelpWindow"] = Pixmap()
 		self["HelpWindow"].hide()
 		self["VKeyIcon"] = Boolean(False)
-
+		self["key_red"] = Label()
 		self.InstalledInterfaceCount = None
 		self.Adapterlist = None
 		self.InterfaceState = None

@@ -37,15 +37,20 @@ def sorttz(tzlist):
 class Timezones:
 	tzbase = "/usr/share/zoneinfo"
 	gen_label = "Generic"
+	AT_POLL_DELAY = 3  # Minutes
 
 	def __init__(self):
 		self.timezones = {}
 		self.readTimezonesFromSystem()
-		if path.exists("/usr/lib/enigma2/python/Plugins/Extensions/AutoTimer/plugin.pyo"):
-			from Plugins.Extensions.AutoTimer.AutoTimer import AutoTimer
-			from Plugins.Extensions.AutoTimer.AutoPoller import AutoPoller
-			self.autopoller = AutoPoller()
-			self.autotimer = AutoTimer()
+		try:
+			from Plugins.Extensions.AutoTimer.plugin import autotimer, autopoller
+			# Create attributes autotimer & autopoller for backwards compatibility.
+			# Their use is deprecated.
+			self.autopoller = autopoller
+			self.autotimer = autotimer
+		except ImportError:
+			self.autopoller = None
+			self.autotimer = None
 		self.timer = eTimer()
 		self.ATupdate = None
 
@@ -54,8 +59,8 @@ class Timezones:
 			self.timer.stop()
 		if self.query not in self.timer.callback:
 			self.timer.callback.append(self.query)
-		print "[Timezones] AutoTimer poll will be run in 3 minutes"
-		self.timer.startLongTimer(3 * 60)
+		print "[Timezones] AutoTimer poll will be run in", self.AT_POLL_DELAY, "minutes"
+		self.timer.startLongTimer(self.AT_POLL_DELAY * 60)
 
 	def stopATupdate(self):
 		self.ATupdate = None
@@ -66,8 +71,17 @@ class Timezones:
 	def query(self):
 		print "[Timezones] AutoTimer poll running"
 		self.stopATupdate()
-		self.autotimer.parseEPG(autoPoll=True)
-		self.autopoller.start()
+		try:
+			from Plugins.Extensions.AutoTimer.plugin import autotimer, autopoller
+			self.autopoller = autopoller
+			self.autotimer = autotimer
+			if autotimer is not None:
+				print "[Timezones] AutoTimer parseEPG"
+				autotimer.parseEPG(autoPoll=True)
+			if autopoller is not None:
+				autopoller.start()
+		except ImportError, KeyError:
+			pass
 
 	def readTimezonesFromSystem(self):
 		tzfiles = [];
@@ -146,10 +160,17 @@ class Timezones:
 		return
 
 	def activateTimezone(self, tz, tzarea):
-		if path.exists("/usr/lib/enigma2/python/Plugins/Extensions/AutoTimer/plugin.pyo") and config.plugins.autotimer.autopoll.value:
-			print "[Timezones] trying to stop main AutoTimer poller"
-			self.autopoller.stop()
-			self.ATupdate = True
+		try:
+			from Plugins.Extensions.AutoTimer.plugin import autotimer, autopoller
+			self.autopoller = autopoller
+			self.autotimer = autotimer
+			if config.plugins.autotimer.autopoll.value:
+				print "[Timezones] trying to stop main AutoTimer poller"
+				if autopoller is not None:
+					autopoller.stop()
+				self.ATupdate = True
+		except ImportError, KeyError:
+			pass
 
 		if tzarea == Timezones.gen_label:
 			fulltz = tz
@@ -177,7 +198,13 @@ class Timezones:
 		except:
 			from enigma import e_tzset
 			e_tzset()
-		if path.exists("/usr/lib/enigma2/python/Plugins/Extensions/AutoTimer/plugin.pyo") and config.plugins.autotimer.autopoll.value:
-			self.startATupdate()
+		try:
+			from Plugins.Extensions.AutoTimer.plugin import autotimer, autopoller
+			self.autopoller = autopoller
+			self.autotimer = autotimer
+			if config.plugins.autotimer.autopoll.value:
+				self.startATupdate()
+		except ImportError, KeyError:
+			pass
 
 timezones = Timezones()

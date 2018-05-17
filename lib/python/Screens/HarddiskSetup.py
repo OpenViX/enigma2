@@ -34,8 +34,8 @@ class HarddiskSetup(Screen):
 		self["model"] = Label(_("Model: ") + hdd.model())
 		self["capacity"] = Label(_("Capacity: ") + hdd.capacity())
 		self["bus"] = Label(_("Bus: ") + hdd.bus())
-		self["initialize"] = Pixmap()
-		self["initializetext"] = Label(text)
+		self["key_red"] = Label(_("Cancel"))
+		self["key_green"] = Label(text) # text can be either "Initialize" or "Check"
 		self["actions"] = ActionMap(["OkCancelActions"],
 		{
 			"ok": self.hddQuestion,
@@ -43,7 +43,8 @@ class HarddiskSetup(Screen):
 		})
 		self["shortcuts"] = ActionMap(["ShortcutActions"],
 		{
-			"red": self.hddQuestion
+			"red": self.close,
+			"green": self.hddQuestion
 		})
 
 	def hddQuestion(self, answer=False):
@@ -168,34 +169,3 @@ class HarddiskFsckSelection(HarddiskSelection):
 			 action=selection.createCheckJob,
 			 text=_("Check"),
 			 question=_("Do you really want to check the filesystem?\nThis could take a long time!"), menu_path=self.menu_path)
-
-class HarddiskConvertExt4Selection(HarddiskSelection):
-	def __init__(self, session, menu_path=""):
-		HarddiskSelection.__init__(self, session)
-		screentitle = _("Convert ext3 to ext4")
-		self.menu_path = menu_path
-		if config.usage.show_menupath.value == 'large':
-			self.menu_path += screentitle
-			title = self.menu_path
-			self["menu_path_compressed"] = StaticText("")
-			self.menu_path += ' / '
-		elif config.usage.show_menupath.value == 'small':
-			title = screentitle
-			condtext = ""
-			if self.menu_path and not self.menu_path.endswith(' / '):
-				condtext = self.menu_path + " >"
-			elif self.menu_path:
-				condtext = self.menu_path[:-3] + " >"
-			self["menu_path_compressed"] = StaticText(condtext)
-			self.menu_path += screentitle + ' / '
-		else:
-			title = screentitle
-			self["menu_path_compressed"] = StaticText("")
-		Screen.setTitle(self, title)
-		self.skinName = "HarddiskSelection"
-
-	def doIt(self, selection):
-		self.session.openWithCallback(self.close, HarddiskSetup, selection,
-			 action=selection.createExt4ConversionJob,
-			 text=_("Convert ext3 to ext4"),
-			 question=_("Do you really want to convert the filesystem?\nYou cannot go back!"), menu_path=self.menu_path)

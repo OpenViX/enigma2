@@ -1,6 +1,6 @@
 from Screens.Screen import Screen
-from Components.ActionMap import NumberActionMap, ActionMap
-from Components.config import config, ConfigNothing, ConfigYesNo, ConfigSelection, ConfigText, ConfigPassword
+from Components.ActionMap import NumberActionMap
+from Components.config import config, ConfigNothing, ConfigBoolean, ConfigSelection
 from Tools.Directories import resolveFilename, SCOPE_CURRENT_PLUGIN
 from Components.SystemInfo import SystemInfo
 from Components.ConfigList import ConfigListScreen
@@ -70,31 +70,11 @@ class SetupSummary(Screen):
 			if self.parent.getCurrentEntry().endswith('*'):
 				self.parent['footnote'].text = (_("* = Restart Required"))
 			else:
-				self.parent['footnote'].text = (_(" "))
+				self.parent['footnote'].text = ("")
 
 class Setup(ConfigListScreen, Screen):
 
 	ALLOW_SUSPEND = True
-
-	def removeNotifier(self):
-		config.usage.setup_level.notifiers.remove(self.levelChanged)
-
-	def levelChanged(self, configElement):
-		list = []
-		self.refill(list)
-		self["config"].setList(list)
-
-	def refill(self, list):
-		xmldata = setupdom(self.plugin).getroot()
-		for x in xmldata.findall("setup"):
-			if x.get("key") != self.setup:
-				continue
-			self.addItems(list, x)
-			if config.usage.show_menupath.value in ('large', 'small') and x.get("titleshort", "").encode("UTF-8") != "":
-				self.setup_title = x.get("titleshort", "").encode("UTF-8")
-			else:
-				self.setup_title = x.get("title", "").encode("UTF-8")
-			self.seperation = int(x.get('separation', '0'))
 
 	def __init__(self, session, setup, plugin=None, menu_path=None, PluginLanguageDomain=None):
 		Screen.__init__(self, session)
@@ -108,16 +88,28 @@ class Setup(ConfigListScreen, Screen):
 		self["VKeyIcon"] = Boolean(False)
 		self.onChangedEntry = [ ]
 		self.item = None
-		self.setup = setup
+		self.list = []
+		self.force_update_list = False
 		self.plugin = plugin
 		self.PluginLanguageDomain = PluginLanguageDomain
 		self.menu_path = menu_path
-		list = []
+		
+		xmldata = setupdom(self.plugin).getroot()
+		for x in xmldata.findall("setup"):
+			if x.get("key") == setup:
+				self.setup = x
+				break
 
-		self.refill(list)
+		if config.usage.show_menupath.value in ('large', 'small') and x.get("titleshort", "").encode("UTF-8") != "":
+			self.setup_title = x.get("titleshort", "").encode("UTF-8")
+		else:
+			self.setup_title = x.get("title", "").encode("UTF-8")
+		self.seperation = int(self.setup.get('separation', '0'))
 
-		ConfigListScreen.__init__(self, list, session = session, on_change = self.changedEntry)
-		self.createSetup()
+
+		ConfigListScreen.__init__(self, self.list, session = session, on_change = self.changedEntry)
+		self.createSetupList()
+		self["config"].onSelectionChanged.append(self.__onSelectionChanged)
 
 		#check for list.entries > 0 else self.close
 		self["key_red"] = StaticText(_("Cancel"))
@@ -131,83 +123,10 @@ class Setup(ConfigListScreen, Screen):
 				"menu": self.closeRecursive,
 			}, -2)
 
-		self["VirtualKB"] = ActionMap(["VirtualKeyboardActions"],
-		{
-			"showVirtualKeyboard": self.KeyText,
-		}, -2)
-		self["VirtualKB"].setEnabled(False)
-
 		if not self.handleInputHelpers in self["config"].onSelectionChanged:
 			self["config"].onSelectionChanged.append(self.handleInputHelpers)
 		self.changedEntry()
 		self.onLayoutFinish.append(self.layoutFinished)
-		self.onClose.append(self.HideHelp)
-
-	def createSetup(self):
-		list = []
-		self.refill(list)
-		self["config"].setList(list)
-		if config.usage.sort_settings.value:
-			self["config"].list.sort()
-		self.moveToItem(self.item)
-
-	def getIndexFromItem(self, item):
-		if item is not None:
-			for x in range(len(self["config"].list)):
-				if self["config"].list[x][0] == item[0]:
-					return x
-		return None
-
-	def moveToItem(self, item):
-		newIdx = self.getIndexFromItem(item)
-		if newIdx is None:
-			newIdx = 0
-		self["config"].setCurrentIndex(newIdx)
-
-	def handleInputHelpers(self):
-		if self["config"].getCurrent() is not None:
-			try:
-				if isinstance(self["config"].getCurrent()[1], ConfigText) or isinstance(self["config"].getCurrent()[1], ConfigPassword):
-					if self.has_key("VKeyIcon"):
-						self["VirtualKB"].setEnabled(True)
-						self["VKeyIcon"].boolean = True
-					if self.has_key("HelpWindow"):
-						if self["config"].getCurrent()[1].help_window.instance is not None:
-							helpwindowpos = self["HelpWindow"].getPosition()
-							from enigma import ePoint
-							self["config"].getCurrent()[1].help_window.instance.move(ePoint(helpwindowpos[0],helpwindowpos[1]))
-				else:
-					if self.has_key("VKeyIcon"):
-						self["VirtualKB"].setEnabled(False)
-						self["VKeyIcon"].boolean = False
-			except:
-				if self.has_key("VKeyIcon"):
-					self["VirtualKB"].setEnabled(False)
-					self["VKeyIcon"].boolean = False
-		else:
-			if self.has_key("VKeyIcon"):
-				self["VirtualKB"].setEnabled(False)
-				self["VKeyIcon"].boolean = False
-
-	def HideHelp(self):
-		try:
-			if isinstance(self["config"].getCurrent()[1], ConfigText) or isinstance(self["config"].getCurrent()[1], ConfigPassword):
-				if self["config"].getCurrent()[1].help_window.instance is not None:
-					self["config"].getCurrent()[1].help_window.hide()
-		except:
-			pass
-
-	def KeyText(self):
-		if isinstance(self["config"].getCurrent()[1], ConfigText) or isinstance(self["config"].getCurrent()[1], ConfigPassword):
-			if self["config"].getCurrent()[1].help_window.instance is not None:
-				self["config"].getCurrent()[1].help_window.hide()
-		from Screens.VirtualKeyBoard import VirtualKeyBoard
-		self.session.openWithCallback(self.VirtualKeyBoardCallback, VirtualKeyBoard, title = self["config"].getCurrent()[0], text = self["config"].getCurrent()[1].value)
-
-	def VirtualKeyBoardCallback(self, callback = None):
-		if callback is not None and len(callback):
-			self["config"].getCurrent()[1].setValue(callback)
-			self["config"].invalidate(self["config"].getCurrent())
 
 	def layoutFinished(self):
 		if config.usage.show_menupath.value == 'large' and self.menu_path:
@@ -221,39 +140,34 @@ class Setup(ConfigListScreen, Screen):
 			self["menu_path_compressed"].setText("")
 		self.setTitle(title)
 
-	# for summary:
-	def changedEntry(self):
-		self.item = self["config"].getCurrent()
-		try:
-			if isinstance(self["config"].getCurrent()[1], ConfigYesNo) or isinstance(self["config"].getCurrent()[1], ConfigSelection):
-				self.createSetup()
-		except:
-			pass
-
-	def addItems(self, list, parentNode):
-		for x in parentNode:
+	def createSetupList(self):
+		currentItem = self["config"].getCurrent()
+		self.list = []
+		for x in self.setup:
 			if not x.tag:
 				continue
 			if x.tag == 'item':
 				item_level = int(x.get("level", 0))
 
-				if not self.levelChanged in config.usage.setup_level.notifiers:
-					config.usage.setup_level.notifiers.append(self.levelChanged)
-					self.onClose.append(self.removeNotifier)
-
 				if item_level > config.usage.setup_level.index:
 					continue
 
 				requires = x.get("requires")
-				if requires and requires.startswith('config.'):
-					item = eval(requires or "")
-					if item.value and not item.value == "0":
-						SystemInfo[requires] = True
-					else:
-						SystemInfo[requires] = False
-
-				if requires and not SystemInfo.get(requires, False):
+				if requires and not requires.startswith('config.'):
+					if requires.startswith('!'):
+						if SystemInfo.get(requires[1:], False):
+							continue
+					elif not SystemInfo.get(requires, False):
+						continue
+				conditional = x.get("conditional")
+				if conditional and not eval(conditional):
 					continue
+
+				# this block is just for backwards compatibility
+				if requires and requires.startswith('config.'):
+					item = eval(requires)
+					if not (item.value and not item.value == "0"):
+						continue
 
 				if self.PluginLanguageDomain:
 					item_text = dgettext(self.PluginLanguageDomain, x.get("text", "??").encode("UTF-8"))
@@ -272,7 +186,31 @@ class Setup(ConfigListScreen, Screen):
 				# the first b is the item itself, ignored by the configList.
 				# the second one is converted to string.
 				if not isinstance(item, ConfigNothing):
-					list.append((item_text, item, item_description))
+					self.list.append((item_text, item, item_description))
+		self["config"].setList(self.list)
+		if config.usage.sort_settings.value:
+			self["config"].list.sort()
+		self.moveToItem(currentItem)
+
+	def moveToItem(self, item):
+		if item != self["config"].getCurrent():
+			self["config"].setCurrentIndex(self.getIndexFromItem(item))
+
+	def getIndexFromItem(self, item):
+		return self["config"].list.index(item) if item in self["config"].list else 0
+
+	def changedEntry(self):
+		if isinstance(self["config"].getCurrent()[1], ConfigBoolean) or isinstance(self["config"].getCurrent()[1], ConfigSelection):
+			self.createSetupList()
+ 
+	def __onSelectionChanged(self):
+		if self.force_update_list:
+			self["config"].onSelectionChanged.remove(self.__onSelectionChanged)
+			self.createSetupList()
+			self["config"].onSelectionChanged.append(self.__onSelectionChanged)
+			self.force_update_list = False
+		if not (isinstance(self["config"].getCurrent()[1], ConfigBoolean) or isinstance(self["config"].getCurrent()[1], ConfigSelection)):
+			self.force_update_list = True
 
 def getSetupTitle(id):
 	xmldata = setupdom().getroot()

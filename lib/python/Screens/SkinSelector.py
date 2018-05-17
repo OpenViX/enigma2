@@ -148,9 +148,13 @@ class SkinSelector(Screen, SkinSelectorBase):
 	skinlist = []
 	root = os.path.join(eEnv.resolve("${datadir}"),"enigma2")
 
-	def __init__(self, session, menu_path=""):
+	def __init__(self, session, menu_path="", skin_name=None):
 		Screen.__init__(self, session)
 		SkinSelectorBase.__init__(self, session)
+		self.skinName = ["SkinSelector"]
+		if isinstance(skin_name, str):
+			self.skinName.insert(0,skin_name)
+
 		screentitle = _("Skin")
 		if config.usage.show_menupath.value == 'large':
 			menu_path += screentitle
@@ -163,7 +167,6 @@ class SkinSelector(Screen, SkinSelectorBase):
 			title = screentitle
 			self["menu_path_compressed"] = StaticText("")
 		Screen.setTitle(self, title)
-		self.skinName = "SkinSelector"
 		self.config = config.skin.primary_skin
 
 class LcdSkinSelector(Screen, SkinSelectorBase):

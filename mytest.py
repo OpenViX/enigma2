@@ -100,8 +100,6 @@ def useSyncUsingChanged(configelement):
 config.misc.SyncTimeUsing.addNotifier(useSyncUsingChanged)
 
 def NTPserverChanged(configelement):
-	if configelement.value == "pool.ntp.org":
-		return
 	f = open("/etc/default/ntpdate", "w")
 	f.write('NTPSERVERS="' + configelement.value + '"\n')
 	f.close()
@@ -109,7 +107,8 @@ def NTPserverChanged(configelement):
 	from Components.Console import Console
 	Console = Console()
 	Console.ePopen('/usr/bin/ntpdate-sync')
-config.misc.NTPserver.addNotifier(NTPserverChanged, immediate_feedback = True)
+config.misc.NTPserver.addNotifier(NTPserverChanged, immediate_feedback = False)
+config.misc.NTPserver.callNotifiersOnSaveAndCancel = True
 
 profile("Twisted")
 try:
@@ -484,7 +483,9 @@ def runScreenTest():
 	config.misc.startCounter.save()
 
 	profile("readPluginList")
+	enigma.pauseInit()
 	plugins.readPluginList(resolveFilename(SCOPE_PLUGINS))
+	enigma.resumeInit()
 
 	profile("Init:Session")
 	nav = Navigation(config.misc.isNextRecordTimerAfterEventActionAuto.value, config.misc.isNextPowerTimerAfterEventActionAuto.value)

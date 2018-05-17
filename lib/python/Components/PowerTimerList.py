@@ -1,7 +1,6 @@
 from enigma import eListboxPythonMultiContent, eListbox, gFont, getDesktop, \
 	RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_VALIGN_TOP, RT_VALIGN_BOTTOM
 
-from HTMLComponent import HTMLComponent
 from GUIComponent import GUIComponent
 from skin import parseFont
 from Tools.FuzzyDate import FuzzyTime
@@ -11,7 +10,7 @@ from Tools.Directories import resolveFilename, SCOPE_ACTIVE_SKIN
 from PowerTimer import AFTEREVENT, TIMERTYPE
 
 
-class PowerTimerList(HTMLComponent, GUIComponent, object):
+class PowerTimerList(GUIComponent, object):
 #
 #  | <Service>     <Name of the Timer>  |
 #  | <start, end>              <state>  |

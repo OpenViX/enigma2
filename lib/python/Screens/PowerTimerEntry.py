@@ -7,6 +7,7 @@ from Components.Button import Button
 from Components.Label import Label
 from Components.Pixmap import Pixmap
 from Components.SystemInfo import SystemInfo
+#from Components.Sources.Boolean import Boolean
 from Components.Sources.StaticText import StaticText
 from Components.config import config
 from PowerTimer import AFTEREVENT, TIMERTYPE
@@ -36,11 +37,13 @@ class TimerEntry(Screen, ConfigListScreen):
 		self.entryDate = None
 		self.entryService = None
 
-		self["HelpWindow"] = Pixmap()
-		self["HelpWindow"].hide()
+		# No ConfigText fields in TimerEntry so these are not currently used.
+		#self["HelpWindow"] = Pixmap()
+		#self["HelpWindow"].hide()
+		#self["VKeyIcon"] = Boolean(False)
 
-		self["oktext"] = Label(_("OK"))
-		self["canceltext"] = Label(_("Cancel"))
+		self["key_green"] = self["oktext"] = Label(_("OK"))
+		self["key_red"] = self["canceltext"] = Label(_("Cancel"))
 		self["ok"] = Pixmap()
 		self["cancel"] = Pixmap()
 
@@ -128,9 +131,9 @@ class TimerEntry(Screen, ConfigListScreen):
 		self.timerentry_type = ConfigSelection(choices = [("once",_("once")), ("repeated", _("repeated"))], default = type)
 
 		self.timerentry_repeated = ConfigSelection(default = repeated, choices = [("daily", _("daily")), ("weekly", _("weekly")), ("weekdays", _("Mon-Fri")), ("user", _("user defined"))])
-		self.timerrntry_autosleepdelay = ConfigInteger(default=autosleepdelay, limits = (10, 300))
+		self.timerentry_autosleepdelay = ConfigInteger(default=autosleepdelay, limits = (10, 300))
 		self.timerentry_autosleeprepeat = ConfigSelection(choices = [("once",_("once")), ("repeated", _("repeated"))], default = autosleeprepeat)
-		self.timerrntry_autosleepinstandbyonly = ConfigSelection(choices = [("yes",_("Yes")), ("no", _("No"))],default=autosleepinstandbyonly)
+		self.timerentry_autosleepinstandbyonly = ConfigSelection(choices = [("yes",_("Yes")), ("no", _("No"))],default=autosleepinstandbyonly)
 
 		self.timerentry_date = ConfigDateTime(default = self.timer.begin, formatstring = config.usage.date.full.value, increment = 86400)
 		self.timerentry_starttime = ConfigClock(default = self.timer.begin)
@@ -153,8 +156,8 @@ class TimerEntry(Screen, ConfigListScreen):
 
 		if self.timerentry_timertype.value == "autostandby" or self.timerentry_timertype.value == "autodeepstandby":
 			if self.timerentry_timertype.value == "autodeepstandby":
-				self.list.append(getConfigListEntry(_("Only active when in standby"), self.timerrntry_autosleepinstandbyonly))
-			self.list.append(getConfigListEntry(_("Sleep delay"), self.timerrntry_autosleepdelay))
+				self.list.append(getConfigListEntry(_("Only active when in standby"), self.timerentry_autosleepinstandbyonly))
+			self.list.append(getConfigListEntry(_("Sleep delay"), self.timerentry_autosleepdelay))
 			self.list.append(getConfigListEntry(_("Repeat type"), self.timerentry_autosleeprepeat))
 			self.timerTypeEntry = getConfigListEntry(_("Repeat type"), self.timerentry_type)
 			self.entryShowEndTime = getConfigListEntry(_("Set end time"), self.timerentry_showendtime)
@@ -267,9 +270,14 @@ class TimerEntry(Screen, ConfigListScreen):
 		if self.timerentry_timertype.value == "autostandby" or self.timerentry_timertype.value == "autodeepstandby":
 			self.timer.begin = int(time()) + 10
 			self.timer.end = self.timer.begin
-			self.timer.autosleepinstandbyonly = self.timerrntry_autosleepinstandbyonly.value
-			self.timer.autosleepdelay = self.timerrntry_autosleepdelay.value
+			self.timer.autosleepinstandbyonly = self.timerentry_autosleepinstandbyonly.value
+			self.timer.autosleepdelay = self.timerentry_autosleepdelay.value
 			self.timer.autosleeprepeat = self.timerentry_autosleeprepeat.value
+# Ensure that the timer repeated is cleared if we have an autosleeprepeat
+			if self.timerentry_type.value == "repeated":
+				self.timer.resetRepeated()
+				self.timerentry_type.value = "once" # Stop it being set again
+
 		if self.timerentry_type.value == "repeated":
 			if self.timerentry_repeated.value == "daily":
 				for x in (0, 1, 2, 3, 4, 5, 6):
@@ -302,7 +310,12 @@ class TimerEntry(Screen, ConfigListScreen):
 		self.saveTimer()
 		self.close((True, self.timer))
 
+# The following four functions check for the item to be changed existing
+# as for auto[deep]standby timers it doesn't, so we'll crash otherwise.
+#
 	def incrementStart(self):
+		if not hasattr(self, "entryStartTime"):
+			return
 		self.timerentry_starttime.increment()
 		self["config"].invalidate(self.entryStartTime)
 		if self.timerentry_type.value == "once" and self.timerentry_starttime.value == [0, 0]:
@@ -310,6 +323,8 @@ class TimerEntry(Screen, ConfigListScreen):
 			self["config"].invalidate(self.entryDate)
 
 	def decrementStart(self):
+		if not hasattr(self, "entryStartTime"):
+			return
 		self.timerentry_starttime.decrement()
 		self["config"].invalidate(self.entryStartTime)
 		if self.timerentry_type.value == "once" and self.timerentry_starttime.value == [23, 59]:
@@ -317,11 +332,15 @@ class TimerEntry(Screen, ConfigListScreen):
 			self["config"].invalidate(self.entryDate)
 
 	def incrementEnd(self):
+		if not hasattr(self, "entryEndTime"):
+			return
 		if self.entryEndTime is not None:
 			self.timerentry_endtime.increment()
 			self["config"].invalidate(self.entryEndTime)
 
 	def decrementEnd(self):
+		if not hasattr(self, "entryEndTime"):
+			return
 		if self.entryEndTime is not None:
 			self.timerentry_endtime.decrement()
 			self["config"].invalidate(self.entryEndTime)

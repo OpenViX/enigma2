@@ -29,7 +29,7 @@ class StreamingClientsInfo(Screen):
 		self["ScrollLabel"] = ScrollLabel()
 
 		self["key_red"] = Button(_("Close"))
-		self["key_blue"] = Button()
+		self["key_blue"] = StaticText()
 		self["actions"] = ActionMap(["ColorActions", "SetupActions", "DirectionActions"],
 			{
 				"cancel": self.exit,

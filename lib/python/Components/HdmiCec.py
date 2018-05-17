@@ -5,6 +5,9 @@ from sys import maxint
 from enigma import eHdmiCEC, eActionMap
 from enigma import eTimer
 
+# sys.maxint on 64bit (2**63-1) fails with OverflowError on eActionMap.bindAction use 32bit value (2**31-1)
+maxint = 2147483647
+
 from config import config, ConfigSelection, ConfigYesNo, ConfigSubsection, ConfigText
 from Tools.StbHardware import getFPWasTimerWakeup
 

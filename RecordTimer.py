@@ -277,6 +277,14 @@ class RecordTimerEntry(timer.TimerEntry, object):
 			return True
 
 	def calculateFilename(self, name=None):
+# An external caller (e.g. the enigma2 plugin Series Plugin) may well
+# not have called freespace(). So we need to set MountPath here.
+# There is no point in calling freespace() as the caller won't be able
+# to handle anything it does anyway.
+#
+		if not hasattr(self, "MountPath"):
+			self.MountPath = self.dirname
+
 		service_name = self.service_ref.getServiceName()
 		begin_date = strftime("%Y%m%d %H%M", localtime(self.begin))
 
@@ -382,6 +390,48 @@ class RecordTimerEntry(timer.TimerEntry, object):
 			import Components.HdmiCec
 			Components.HdmiCec.hdmi_cec.sendMessage(0, "sourceactive")
 			print "[TIMER] sourceactive was send"
+
+# This same block of code appeared twice....
+#
+	def _bouquet_search(self):
+		from Screens.ChannelSelection import ChannelSelection
+		ChannelSelectionInstance = ChannelSelection.instance
+		self.service_types = service_types_tv
+		if ChannelSelectionInstance:
+			if config.usage.multibouquet.value:
+				bqrootstr = '1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "bouquets.tv" ORDER BY bouquet'
+			else:
+				bqrootstr = '%s FROM BOUQUET "userbouquet.favourites.tv" ORDER BY bouquet'% self.service_types
+			rootstr = ''
+			serviceHandler = eServiceCenter.getInstance()
+			rootbouquet = eServiceReference(bqrootstr)
+			bouquet = eServiceReference(bqrootstr)
+			bouquetlist = serviceHandler.list(bouquet)
+			if not bouquetlist is None:
+				while True:
+					bouquet = bouquetlist.getNext()
+					if not bouquet.valid(): # Reached end of bouquets
+						print "[RecordTimer] _bouquet_search reached end of bouquets..??"
+						break
+					if bouquet.flags & eServiceReference.isDirectory:
+						ChannelSelectionInstance.clearPath()
+						ChannelSelectionInstance.setRoot(bouquet)
+						servicelist = serviceHandler.list(bouquet)
+						if not servicelist is None:
+							serviceIterator = servicelist.getNext()
+							while serviceIterator.valid():
+								if self.service_ref.ref == serviceIterator:
+									break
+								serviceIterator = servicelist.getNext()
+							if self.service_ref.ref == serviceIterator:
+								break
+				ChannelSelectionInstance.enterPath(rootbouquet)
+				ChannelSelectionInstance.enterPath(bouquet)
+				ChannelSelectionInstance.saveRoot()
+				ChannelSelectionInstance.saveChannel(self.service_ref.ref)
+			ChannelSelectionInstance.addToHistory(self.service_ref.ref)
+		NavigationInstance.instance.playService(self.service_ref.ref)
+
 
 	def activate(self):
 		next_state = self.state + 1
@@ -542,44 +592,7 @@ class RecordTimerEntry(timer.TimerEntry, object):
 # Since next_state is StateRunning we set self.begin
 							self.begin = time() + 1
 							return False
-
-						from Screens.ChannelSelection import ChannelSelection
-						ChannelSelectionInstance = ChannelSelection.instance
-						self.service_types = service_types_tv
-						if ChannelSelectionInstance:
-							if config.usage.multibouquet.value:
-								bqrootstr = '1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "bouquets.tv" ORDER BY bouquet'
-							else:
-								bqrootstr = '%s FROM BOUQUET "userbouquet.favourites.tv" ORDER BY bouquet'% self.service_types
-							rootstr = ''
-							serviceHandler = eServiceCenter.getInstance()
-							rootbouquet = eServiceReference(bqrootstr)
-							bouquet = eServiceReference(bqrootstr)
-							bouquetlist = serviceHandler.list(bouquet)
-							if not bouquetlist is None:
-								while True:
-									bouquet = bouquetlist.getNext()
-									if bouquet.type < 0:    # Reached end of bouquets
-										print "[RecordTimer] Reached end of bouquets..??"
-										break
-									if bouquet.flags & eServiceReference.isDirectory:
-										ChannelSelectionInstance.clearPath()
-										ChannelSelectionInstance.setRoot(bouquet)
-										servicelist = serviceHandler.list(bouquet)
-										if not servicelist is None:
-											serviceIterator = servicelist.getNext()
-											while serviceIterator.valid():
-												if self.service_ref.ref == serviceIterator:
-													break
-												serviceIterator = servicelist.getNext()
-											if self.service_ref.ref == serviceIterator:
-												break
-								ChannelSelectionInstance.enterPath(rootbouquet)
-								ChannelSelectionInstance.enterPath(bouquet)
-								ChannelSelectionInstance.saveRoot()
-								ChannelSelectionInstance.saveChannel(self.service_ref.ref)
-							ChannelSelectionInstance.addToHistory(self.service_ref.ref)
-						NavigationInstance.instance.playService(self.service_ref.ref)
+						self._bouquet_search()
 				return True
 			else:
 				self.log(11, "start recording")
@@ -780,40 +793,7 @@ class RecordTimerEntry(timer.TimerEntry, object):
 		if answer:
 			self.log(13, "ok, zapped away")
 			#NavigationInstance.instance.stopUserServices()
-			from Screens.ChannelSelection import ChannelSelection
-			ChannelSelectionInstance = ChannelSelection.instance
-			self.service_types = service_types_tv
-			if ChannelSelectionInstance:
-				if config.usage.multibouquet.value:
-					bqrootstr = '1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "bouquets.tv" ORDER BY bouquet'
-				else:
-					bqrootstr = '%s FROM BOUQUET "userbouquet.favourites.tv" ORDER BY bouquet'% self.service_types
-				rootstr = ''
-				serviceHandler = eServiceCenter.getInstance()
-				rootbouquet = eServiceReference(bqrootstr)
-				bouquet = eServiceReference(bqrootstr)
-				bouquetlist = serviceHandler.list(bouquet)
-				if not bouquetlist is None:
-					while True:
-						bouquet = bouquetlist.getNext()
-						if bouquet.flags & eServiceReference.isDirectory:
-							ChannelSelectionInstance.clearPath()
-							ChannelSelectionInstance.setRoot(bouquet)
-							servicelist = serviceHandler.list(bouquet)
-							if not servicelist is None:
-								serviceIterator = servicelist.getNext()
-								while serviceIterator.valid():
-									if self.service_ref.ref == serviceIterator:
-										break
-									serviceIterator = servicelist.getNext()
-								if self.service_ref.ref == serviceIterator:
-									break
-					ChannelSelectionInstance.enterPath(rootbouquet)
-					ChannelSelectionInstance.enterPath(bouquet)
-					ChannelSelectionInstance.saveRoot()
-					ChannelSelectionInstance.saveChannel(self.service_ref.ref)
-				ChannelSelectionInstance.addToHistory(self.service_ref.ref)
-			NavigationInstance.instance.playService(self.service_ref.ref)
+			self._bouquet_search()
 			if not self.first_try_prepare and self.InfoBarInstance and hasattr(self.InfoBarInstance.session, 'pipshown') and self.InfoBarInstance.session.pipshown:
 				hasattr(self.InfoBarInstance, "showPiP") and self.InfoBarInstance.showPiP()
 				if hasattr(self.InfoBarInstance.session, 'pip'):
@@ -997,7 +977,9 @@ class RecordTimer(timer.Timer):
 				return True
 		return False
 
-	def loadTimer(self):
+# justLoad is passed on to record()
+#
+	def loadTimer(self, justLoad=False):
 		try:
 			file = open(self.Filename, 'r')
 			doc = xml.etree.cElementTree.parse(file)
@@ -1025,7 +1007,7 @@ class RecordTimer(timer.Timer):
 		timer_text = ""
 		for timer in root.findall("timer"):
 			newTimer = createTimer(timer)
-			conflict_list = self.record(newTimer, ignoreTSC=True, dosave=False, loadtimer=True)
+			conflict_list = self.record(newTimer, ignoreTSC=True, dosave=False, loadtimer=True, justLoad=justLoad)
 			if conflict_list:
 				checkit = True
 				if newTimer in conflict_list:
@@ -1154,9 +1136,16 @@ class RecordTimer(timer.Timer):
 				return True
 		return False
 
-	def record(self, entry, ignoreTSC=False, dosave=True, loadtimer=False):
+# If justLoad is True then we (temporarily) turn off conflict detection
+# as we load.  On a restore we may not have the correct tuner
+# configuration (and no USB tuners)...
+#
+	def record(self, entry, ignoreTSC=False, dosave=True, loadtimer=False, justLoad=False):
+		real_cd = entry.conflict_detection
+		if justLoad:
+			entry.conflict_detection = False
 		check_timer_list = self.timer_list[:]
-		timersanitycheck = TimerSanityCheck(check_timer_list,entry)
+		timersanitycheck = TimerSanityCheck(check_timer_list, entry)
 		answer = None
 		if not timersanitycheck.check():
 			if not ignoreTSC:
@@ -1175,6 +1164,7 @@ class RecordTimer(timer.Timer):
 		elif timersanitycheck.doubleCheck():
 			print "[RecordTimer] ignore double timer..."
 			return None
+		entry.conflict_detection = real_cd
 		entry.timeChanged()
 		print "[Timer] Record " + str(entry)
 		entry.Timer = self

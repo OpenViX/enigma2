@@ -37,7 +37,7 @@ class ConfigElement(object):
 		self.__notifiers = None
 		self.__notifiers_final = None
 		self.enabled = True
-		self.callNotifiersOnSaveAndCancel = False
+		self.callNotifiersOnSaveAndCancel = False # this flag only affects notifiers set with "immediate_feedback = False". If set to false the notifier will never run on save/exit by default.
 
 	def getNotifiers(self):
 		if self.__notifiers is None:
@@ -99,18 +99,11 @@ class ConfigElement(object):
 			self.changedFinal()  # call none immediate_feedback notifiers, immediate_feedback Notifiers are called as they are chanaged, so do not need to be called here.
 
 	def isChanged(self):
-# NOTE - sv should already be stringified!
-#        self.default may be a string or None
-#
-		sv = self.saved_value
+		# NOTE - self.saved_value should already be stringified!
+		#        self.default may be a string or None
+		sv = self.saved_value or self.tostring(self.default)
 		strv = self.tostring(self.value)
-		if sv is None:
-			retval = strv != self.tostring(self.default)
-		else:
-			retval = strv != sv
-#debug		if retval:
-#debug			print 'orig ConfigElement X (val, tostring(val)):', sv, self.tostring(sv)
-		return retval
+		return strv != sv
 
 	def changed(self):
 		if self.__notifiers:
@@ -186,6 +179,12 @@ class ConfigElement(object):
 	def onDeselect(self, session):
 		if not self.last_value == self.value:
 			self.last_value = self.value
+
+	def hideHelp(self, session):
+		pass
+
+	def showHelp(self, session):
+		pass
 
 KEY_LEFT = 0
 KEY_RIGHT = 1
@@ -433,18 +432,7 @@ class ConfigBoolean(ConfigElement):
 		ConfigElement.__init__(self)
 		self.descriptions = descriptions
 		self.value = self.last_value = self.default = default
-		self.graphic = False
-		if graphic:
-			from skin import switchPixmap
-			offPath = switchPixmap.get('menu_off')
-			onPath = switchPixmap.get('menu_on')
-			if offPath and onPath:
-				falseIcon = LoadPixmap(offPath, cached=True)
-				trueIcon = LoadPixmap(onPath, cached=True)
-				if falseIcon and trueIcon:
-					self.falseIcon = falseIcon
-					self.trueIcon = trueIcon
-					self.graphic = True
+		self.graphic = graphic
 
 	def handleKey(self, key):
 		if key in (KEY_LEFT, KEY_RIGHT):
@@ -462,11 +450,9 @@ class ConfigBoolean(ConfigElement):
 
 	def getMulti(self, selected):
 		from config import config
-		if self.graphic and config.usage.boolean_graphic.value:
-			if self.value:
-				return ('pixmap', self.trueIcon)
-			else:
-				return ('pixmap', self.falseIcon)
+		from skin import switchPixmap
+		if self.graphic and config.usage.boolean_graphic.value and switchPixmap.get("menu_on", False) and switchPixmap.get("menu_off", False):
+			return ('pixmap', self.value and switchPixmap["menu_on"] or switchPixmap["menu_off"])
 		else:
 			descr = self.descriptions[self.value]
 			if descr:
@@ -506,18 +492,18 @@ class ConfigBoolean(ConfigElement):
 
 yes_no_descriptions = {False: _("no"), True: _("yes")}
 class ConfigYesNo(ConfigBoolean):
-	def __init__(self, default = False):
-		ConfigBoolean.__init__(self, default = default, descriptions = yes_no_descriptions)
+	def __init__(self, default = False, graphic = True):
+		ConfigBoolean.__init__(self, default = default, descriptions = yes_no_descriptions, graphic = graphic)
 
 on_off_descriptions = {False: _("off"), True: _("on")}
 class ConfigOnOff(ConfigBoolean):
-	def __init__(self, default = False):
-		ConfigBoolean.__init__(self, default = default, descriptions = on_off_descriptions)
+	def __init__(self, default = False, graphic = True):
+		ConfigBoolean.__init__(self, default = default, descriptions = on_off_descriptions, graphic = graphic)
 
 enable_disable_descriptions = {False: _("disable"), True: _("enable")}
 class ConfigEnableDisable(ConfigBoolean):
-	def __init__(self, default = False):
-		ConfigBoolean.__init__(self, default = default, descriptions = enable_disable_descriptions)
+	def __init__(self, default = False, graphic = True):
+		ConfigBoolean.__init__(self, default = default, descriptions = enable_disable_descriptions, graphic = graphic)
 
 class ConfigDateTime(ConfigElement):
 	def __init__(self, default, formatstring, increment = 86400):
@@ -1286,6 +1272,14 @@ class ConfigText(ConfigElement, NumericalTextInput):
 			self.changedFinal()
 			self.last_value = self.value
 
+	def hideHelp(self, session):
+		if session is not None and self.help_window is not None:
+			self.help_window.hide()
+
+	def showHelp(self, session):
+		if session is not None and self.help_window is not None:
+			self.help_window.show()
+
 	def getHTML(self, id):
 		return '<input type="text" name="' + id + '" value="' + self.value + '" /><br>\n'
 
@@ -1375,19 +1369,6 @@ class ConfigNumber(ConfigText):
 
 	value = property(getValue, setValue)
 	_value = property(getValue, setValue)
-
-	def isChanged(self):
-# NOTE - sv should already be stringified
-#        and self.default should *also* be a string value
-		sv = self.saved_value
-		strv = self.tostring(self.value)
-		if sv is None:
-			retval = strv != self.default
-		else:
-			retval = strv != sv
-#debug		if retval:
-#debug			print 'orig ConfigNumber X (val, tostring(val)):', sv, self.tostring(sv)
-		return retval
 
 	def conform(self):
 		pos = len(self.text) - self.marked_pos
@@ -1660,8 +1641,6 @@ class ConfigLocations(ConfigElement):
 		if val is None and not locations:
 			return False
 		retval = self.tostring([x[0] for x in locations]) != sv
-#debug		if retval:
-#debug			print 'orig ConfigLocations X (val):', sv
 		return retval
 
 	def addedMount(self, mp):
@@ -1887,7 +1866,9 @@ class ConfigSubsection(object):
 			value.load()
 
 	def __getattr__(self, name):
-		return self.content.items[name]
+		if name in self.content.items:
+			return self.content.items[name]
+		raise AttributeError(name)
 
 	def getSavedValue(self):
 		res = self.content.stored_values

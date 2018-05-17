@@ -1,4 +1,3 @@
-from HTMLComponent import HTMLComponent
 from GUIComponent import GUIComponent
 from skin import parseFont
 
@@ -12,7 +11,7 @@ from timer import TimerEntry
 from Tools.Directories import resolveFilename, SCOPE_ACTIVE_SKIN
 
 
-class TimerList(HTMLComponent, GUIComponent, object):
+class TimerList(GUIComponent, object):
 #
 #  | <Name of the Timer>     <Service>  <orb.pos>|
 #  | <state>  <start, end>  |
