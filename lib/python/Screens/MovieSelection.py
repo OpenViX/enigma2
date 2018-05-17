@@ -357,6 +357,7 @@ class MovieContextMenu(Screen, ProtectedScreen):
 
 		self.csel = csel
 		ProtectedScreen.__init__(self)
+		self.title = _("Movielist menu")
 
 		self["actions"] = ActionMap(["OkCancelActions", "ColorActions", "NumberActions", "MenuActions"],
 			{
