@@ -1716,13 +1716,10 @@ void eServiceMP3::gstBusCall(GstMessage *msg)
 
 			switch(transition)
 			{
-				case GST_STATE_CHANGE_NULL_TO_READY:
-				{
-					m_event(this, evStart);
-				}	break;
 				case GST_STATE_CHANGE_READY_TO_PAUSED:
 				{
 					m_state = stRunning;
+					m_event(this, evStart);
 #if GST_VERSION_MAJOR >= 1
 					GValue result = { 0, };
 #endif
@@ -1869,9 +1866,6 @@ void eServiceMP3::gstBusCall(GstMessage *msg)
 						gst_object_unref(GST_OBJECT(videoSink));
 						videoSink = NULL;
 					}
-				}	break;
-				case GST_STATE_CHANGE_READY_TO_NULL:
-				{
 				}	break;
 			}
 			break;
