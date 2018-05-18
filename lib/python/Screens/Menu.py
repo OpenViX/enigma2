@@ -6,6 +6,7 @@ from Components.Sources.StaticText import StaticText
 from Components.config import configfile
 from Components.PluginComponent import plugins
 from Components.config import config
+from Components.NimManager import nimmanager
 from Components.SystemInfo import SystemInfo
 
 from Tools.BoundFunction import boundFunction
