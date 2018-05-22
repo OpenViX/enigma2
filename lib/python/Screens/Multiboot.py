@@ -11,12 +11,12 @@ from Tools.Multiboot import GetImagelist, GetCurrentImage, WriteStartup
 class MultiBoot(Screen):
 
 	skin = """
-	<screen name="MultiBoot" position="center,center" size="500,200"  flags="wfNoBorder" title="ReBootGB" backgroundColor="transparent">
-		<eLabel name="b" position="0,0" size="500,200" backgroundColor="#00ffffff" zPosition="-2" />
-		<eLabel name="a" position="1,1" size="498,198" backgroundColor="#00000000" zPosition="-1" />
+	<screen name="MultiBoot" position="center,center" size="700,400"  flags="wfNoBorder" title="ReBootGB" backgroundColor="transparent">
+		<eLabel name="b" position="0,0" size="700,200" backgroundColor="#00ffffff" zPosition="-2" />
+		<eLabel name="a" position="1,1" size="698,198" backgroundColor="#00000000" zPosition="-1" />
 		<widget source="Title" render="Label" position="10,10" foregroundColor="#00ffffff" size="480,50" halign="center" font="Regular; 28" backgroundColor="#00000000" />
-		<eLabel name="line" position="1,60" size="498,1" backgroundColor="#00ffffff" zPosition="1" />
-		<widget source="config" render="Label" position="2,70" size="480,60" halign="center" font="Regular; 22" backgroundColor="#00000000" foregroundColor="#00ffffff" />
+		<eLabel name="line" position="1,60" size="698,1" backgroundColor="#00ffffff" zPosition="1" />
+		<widget source="config" render="Label" position="2,70" size="680,60" halign="center" font="Regular; 22" backgroundColor="#00000000" foregroundColor="#00ffffff" />
 		<widget source="key_red" render="Label" position="35,162" size="75,30" noWrap="1" zPosition="1" valign="center" font="Regular; 20" halign="left" backgroundColor="#00000000" foregroundColor="#00ffffff" />
 		<widget source="key_green" render="Label" position="150,162" size="75,30" noWrap="1" zPosition="1" valign="center" font="Regular; 20" halign="left" backgroundColor="#00000000" foregroundColor="#00ffffff" />
 		<widget source="key_yellow" render="Label" position="250,162" size="150,30" noWrap="1" zPosition="1" valign="center" font="Regular; 20" halign="left" backgroundColor="#00000000" foregroundColor="#00ffffff" />
