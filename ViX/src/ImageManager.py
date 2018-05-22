@@ -410,7 +410,7 @@ class VIXImageManager(Screen):
 			else:
 				doBackup = retval == "with backup"
 			if self.sel:
-				if doBackup:
+				if config.imagemanager.autosettingsbackup.value or doBackup:
 					self.doSettingsBackup()
 				else:
 					self.keyRestore3()
