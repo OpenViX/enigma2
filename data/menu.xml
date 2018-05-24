@@ -236,7 +236,7 @@ self.session.open(HdmiCECSetupScreen)
 		</menu>
 
 <!-- Menu / VCR Scart -->
-		<item weight="7" text="VCR scart" entryID="scart_switch" configcondition="config.usage.show_vcr_scart" requires="ScartSwitch"><code>self.session.scart.VCRSbChanged(3)</code></item>
+		<item weight="7" text="VCR scart" entryID="scart_switch" conditional="config.usage.show_vcr_scart.value" requires="ScartSwitch"><code>self.session.scart.VCRSbChanged(3)</code></item>
 
 <!-- Menu / Standby and Restart -->
 		<menu weight="99" text="Standby and Restart" entryID="standby_restart_list">

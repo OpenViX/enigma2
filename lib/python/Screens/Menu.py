@@ -120,8 +120,8 @@ class Menu(Screen, ProtectedScreen):
 					return
 			elif not SystemInfo.get(requires, False):
 				return
-		configCondition = node.get("configcondition")
-		if configCondition and not eval(configCondition + ".value"):
+		conditional = node.get("conditional")
+		if conditional and not eval(conditional):
 			return
 		item_text = node.get("text", "").encode("UTF-8")
 		entryID = node.get("entryID", "undefined")
