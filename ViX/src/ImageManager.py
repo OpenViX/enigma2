@@ -139,7 +139,6 @@ class VIXImageManager(Screen):
 		self.activityTimer = eTimer()
 		self.activityTimer.timeout.get().append(self.backupRunning)
 		self.activityTimer.start(10)
-
 		self.Console = Console()
 
 		if BackupTime > 0:
@@ -386,6 +385,8 @@ class VIXImageManager(Screen):
 			self.message = _("Do you want to flash image\n%s") % self.sel
 		if SystemInfo["canMultiBoot"]:
 			self.getImageList = GetImagelist(self.getImagelistCallback)
+		elif config.imagemanager.autosettingsbackup.value:
+			self.doSettingsBackup()
 		else:
 			choices = [(_("Yes, with backup"), "with backup"), (_("No, do not flash image"), False), (_("Yes, without backup"), "without backup")]
 			self.session.openWithCallback(self.backupsettings, MessageBox, self.message , list=choices, default=False, simple=True)
@@ -398,8 +399,9 @@ class VIXImageManager(Screen):
 		for x in range(1,HIslot):
 			choices.append(((_("slot%s - %s (current image) with, backup") if x == currentimageslot else _("slot%s - %s, with backup")) % (x, imagedict[x]['imagename']), (x, "with backup")))
 		choices.append((_("No, do not flash image"), False))
-		for x in range(1,HIslot):
-			choices.append(((_("slot%s - %s (current image), without backup") if x == currentimageslot else _("slot%s - %s, without backup")) % (x, imagedict[x]['imagename']), (x, "without backup"))) 
+		if not config.imagemanager.autosettingsbackup.value:
+			for x in range(1,HIslot):
+				choices.append(((_("slot%s - %s (current image), without backup") if x == currentimageslot else _("slot%s - %s, without backup")) % (x, imagedict[x]['imagename']), (x, "without backup"))) 
 		self.session.openWithCallback(self.backupsettings, MessageBox, self.message, list=choices, default=currentimageslot, simple=True)
 
 	def backupsettings(self, retval):
@@ -410,7 +412,7 @@ class VIXImageManager(Screen):
 			else:
 				doBackup = retval == "with backup"
 			if self.sel:
-				if config.imagemanager.autosettingsbackup.value or doBackup:
+				if doBackup:
 					self.doSettingsBackup()
 				else:
 					self.keyRestore3()
