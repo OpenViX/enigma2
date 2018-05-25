@@ -53,7 +53,8 @@ config.imagemanager.autosettingsbackup = ConfigYesNo(default = True)
 config.imagemanager.query = ConfigYesNo(default=True)
 config.imagemanager.lastbackup = ConfigNumber(default=0)
 config.imagemanager.number_to_keep = ConfigNumber(default=0)
-
+if SystemInfo["canMultiBoot"]:
+	config.imagemanager.multiboot = ConfigYesNo(default=False)
 autoImageManagerTimer = None
 
 if path.exists(config.imagemanager.backuplocation.value + 'imagebackups/imagerestore'):
@@ -140,6 +141,7 @@ class VIXImageManager(Screen):
 		self.activityTimer.timeout.get().append(self.backupRunning)
 		self.activityTimer.start(10)
 		self.Console = Console()
+		self.multibootslot = 1
 
 		if BackupTime > 0:
 			t = localtime(BackupTime)
@@ -383,36 +385,29 @@ class VIXImageManager(Screen):
 			self.message = _("Recording(s) are in progress or coming up in few seconds!\nDo you still want to flash image\n%s?") % self.sel
 		else:
 			self.message = _("Do you want to flash image\n%s") % self.sel
-		if SystemInfo["canMultiBoot"]:
-			self.getImageList = GetImagelist(self.getImagelistCallback)
+		if SystemInfo["canMultiBoot"] and config.imagemanager.multiboot.value:
+			self.getImageList = GetImagelist(self.keyRestore1)
 		elif config.imagemanager.autosettingsbackup.value:
 			self.doSettingsBackup()
 		else:
-			choices = [(_("Yes, with backup"), "with backup"), (_("No, do not flash image"), False), (_("Yes, without backup"), "without backup")]
-			self.session.openWithCallback(self.backupsettings, MessageBox, self.message , list=choices, default=False, simple=True)
+			self.keyRestore3()
 
-	def getImagelistCallback(self, imagedict):
+
+	def keyRestore1(self, imagedict):
 		self.getImageList = None
 		choices = []
 		HIslot = len(imagedict) + 1
 		currentimageslot = GetCurrentImage()
 		for x in range(1,HIslot):
-			choices.append(((_("slot%s - %s (current image) with, backup") if x == currentimageslot else _("slot%s - %s, with backup")) % (x, imagedict[x]['imagename']), (x, "with backup")))
-		choices.append((_("No, do not flash image"), False))
-		if not config.imagemanager.autosettingsbackup.value:
-			for x in range(1,HIslot):
-				choices.append(((_("slot%s - %s (current image), without backup") if x == currentimageslot else _("slot%s - %s, without backup")) % (x, imagedict[x]['imagename']), (x, "without backup"))) 
-		self.session.openWithCallback(self.backupsettings, MessageBox, self.message, list=choices, default=currentimageslot, simple=True)
+			choices.append(((_("slot%s - %s (current image)") if x == currentimageslot else _("slot%s - %s")) % (x, imagedict[x]['imagename']), (x)))
+		self.session.openWithCallback(self.keyRestore2, MessageBox, self.message, list=choices, default=currentimageslot, simple=True)
 
-	def backupsettings(self, retval):
+	def keyRestore2(self, retval):
 		if retval:
 			if SystemInfo["canMultiBoot"]:
-				self.multibootslot = retval[0]
-				doBackup = retval[1] == "with backup"
-			else:
-				doBackup = retval == "with backup"
+				self.multibootslot = retval
 			if self.sel:
-				if doBackup:
+				if config.imagemanager.autosettingsbackup.value:
 					self.doSettingsBackup()
 				else:
 					self.keyRestore3()
