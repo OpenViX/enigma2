@@ -26,7 +26,7 @@ from Screens.MessageBox import MessageBox
 from Screens.Standby import TryQuitMainloop
 from Tools.Notifications import AddPopupWithCallback
 import Tools.CopyFiles
-from Tools.Multiboot import GetImagelist, GetCurrentImage, WriteStartup
+from Tools.Multiboot import GetImagelist, GetCurrentImage
 
 import urllib
 
@@ -53,8 +53,7 @@ config.imagemanager.autosettingsbackup = ConfigYesNo(default = True)
 config.imagemanager.query = ConfigYesNo(default=True)
 config.imagemanager.lastbackup = ConfigNumber(default=0)
 config.imagemanager.number_to_keep = ConfigNumber(default=0)
-if SystemInfo["canMultiBoot"]:
-	config.imagemanager.multiboot = ConfigYesNo(default=False)
+
 autoImageManagerTimer = None
 
 if path.exists(config.imagemanager.backuplocation.value + 'imagebackups/imagerestore'):
@@ -385,12 +384,21 @@ class VIXImageManager(Screen):
 			self.message = _("Recording(s) are in progress or coming up in few seconds!\nDo you still want to flash image\n%s?") % self.sel
 		else:
 			self.message = _("Do you want to flash image\n%s") % self.sel
-		if SystemInfo["canMultiBoot"] and config.imagemanager.multiboot.value:
-			self.getImageList = GetImagelist(self.keyRestore1)
-		elif config.imagemanager.autosettingsbackup.value:
-			self.doSettingsBackup()
+		if getImageFileSystem().replace(' ','') in ('tar.bz2', 'hd-emmc'):
+			message = _("You are about to flash an eMMC flash, we cannot take any responsibility for any errors or damage to your box during this process.\nProceed with CAUTION!:\nAre you sure you want to flash this image:\n ") + self.sel
 		else:
-			self.keyRestore3()
+			message = _("Are you sure you want to flash this image:\n ") + self.sel
+		ybox = self.session.openWithCallback(self.keyResstore0, MessageBox, message, MessageBox.TYPE_YESNO)
+		ybox.setTitle(_("Flash confirmation"))
+
+	def keyResstore0(self, answer):
+		if answer:
+			if SystemInfo["canMultiBoot"]:
+				self.getImageList = GetImagelist(self.keyRestore1)
+			elif config.imagemanager.autosettingsbackup.value:
+				self.doSettingsBackup()
+			else:
+				self.keyRestore3()
 
 
 	def keyRestore1(self, imagedict):
@@ -468,13 +476,9 @@ class VIXImageManager(Screen):
 			if not SystemInfo["canMultiBoot"]:
 				self.session.open(TryQuitMainloop, 2)
 			else:
-				slot = self.multibootslot
-				model = getMachineBuild()
-				if 'coherent_poll=2M' in open("/proc/cmdline", "r").read():
-					WriteStartup(slot, self.ReExit)
-				else:
-					startupFileContents = "boot emmcflash0.kernel%s 'brcm_cma=%s root=/dev/mmcblk0p%s rw rootwait %s_4.boxmode=1'\n" % (slot, SystemInfo["canMode12"][0], slot * 2 + self.addin, model)
-					WriteStartup(startupFileContents, self.ReExit)
+				import shutil
+				shutil.copyfile("/boot/STARTUP_%s" % self.multibootslot, "/boot/STARTUP")
+				self.session.open(TryQuitMainloop, 2)
 		else:
 			self.session.openWithCallback(self.restore_infobox.close, MessageBox, _("ofgwrite error (also sent to any debug log):\n%s") % result, MessageBox.TYPE_INFO, timeout=20)
 			print "[ImageManager] OFGWriteResult failed:\n", result
