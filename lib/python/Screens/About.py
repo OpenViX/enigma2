@@ -14,7 +14,9 @@ from enigma import eTimer, getEnigmaVersionString, getDesktop
 from boxbranding import getMachineBrand, getMachineName, getImageVersion, getImageType, getImageBuild, getDriverDate, getImageDevBuild
 from Components.Pixmap import MultiPixmap
 from Components.Network import iNetwork
+from Components.SystemInfo import SystemInfo
 from Tools.StbHardware import getFPVersion
+from Tools.Multiboot import GetCurrentImage
 from os import path
 from re import search
 import skin
@@ -81,6 +83,9 @@ class About(Screen):
 		if getImageType() != 'release':
 			imageSubBuild = ".%s" % getImageDevBuild()
 		AboutText += _("Image:\t%s.%s%s (%s)\n") % (getImageVersion(), getImageBuild(), imageSubBuild, getImageType().title())
+		if SystemInfo["canMultiBoot"]:
+			image = GetCurrentImage()
+			AboutText += _("Image Slot:\t%s") % "STARTUP_" + str(image) + "\n"
 		skinWidth = getDesktop(0).size().width()
 		skinHeight = getDesktop(0).size().height()
 

@@ -323,6 +323,7 @@ private:
 	int m_state;
 	GstElement *m_gst_playbin, *audioSink, *videoSink;
 	GstTagList *m_stream_tags;
+	bool m_coverart;
 
 	eFixedMessagePump<ePtr<GstMessageContainer> > m_pump;
 

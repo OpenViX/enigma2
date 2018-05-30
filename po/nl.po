@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-05-14 20:14+0100\n"
-"PO-Revision-Date: 2018-05-15 07:58+0200\n"
+"POT-Creation-Date: 2018-05-28 10:44+0100\n"
+"PO-Revision-Date: 2018-05-28 14:04+0200\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -3304,7 +3304,7 @@ msgstr "DVD-ISO maken"
 msgid "Create directory"
 msgstr "Map aanmaken"
 
-msgid "Create seperate radio userbouquet"
+msgid "Create separate radio userbouquet"
 msgstr "Maak een aparte favorietenlijst voor radio"
 
 msgid "Creating AP and SC Files"
@@ -4130,6 +4130,9 @@ msgstr "Drivers:\t%s\n"
 msgid "Drivers: %s"
 msgstr "Drivers: %s"
 
+msgid "Drop unconfigured satellites"
+msgstr "Verwijder niet geconfigureerde satellieten"
+
 msgid "Dutch"
 msgstr "Nederlands"
 
@@ -4277,6 +4280,9 @@ msgstr "Verstreken en resterend"
 
 msgid "Electronic Program Guide"
 msgstr "Elektronische programmagids"
+
+msgid "Empty slot"
+msgstr "Leeg slot"
 
 msgid "Enable"
 msgstr "Aan"
@@ -5589,6 +5595,10 @@ msgstr "Negeer DVB-S namespace subnetwerk"
 msgid "Ignore DVB-T namespace sub network"
 msgstr "Negeer DVB-T namespace subnetwerk"
 
+#, python-format
+msgid "Image Slot:\t%s"
+msgstr "Image Slot:\t%s"
+
 msgid "Image manager"
 msgstr "Image manager"
 
@@ -6698,6 +6708,9 @@ msgstr "Multi-EPG"
 
 msgid "MultiEPG"
 msgstr "Multi-EPG"
+
+msgid "Multiboot"
+msgstr "Multiboot"
 
 msgid "Multimedia"
 msgstr "Multimedia"
@@ -8311,6 +8324,12 @@ msgstr "Waardering niet bepaald"
 msgid "Re-enter PIN"
 msgstr "Voer PIN nogmaals in"
 
+msgid "ReBoot"
+msgstr "Reboot"
+
+msgid "ReBoot_mode12"
+msgstr "Reboot_mode12"
+
 msgid "Read user data from oscam.conf"
 msgstr "Lees gebruikersgegevens van oscam.conf"
 
@@ -8363,6 +8382,14 @@ msgstr "Uw %s %s echt upgraden en herstarten?"
 
 msgid "Reboot"
 msgstr "Herstarten"
+
+#, python-format
+msgid ""
+"Reboot Image: STARTUP_%s: %s\n"
+" Use < > keys to select Image and Reboot."
+msgstr ""
+"Reboot Image: STARTUP_%s: %s\n"
+" Gebruik < > knoppen om een image te selecteren en te rebooten."
 
 msgid "Rec"
 msgstr "Record"
@@ -9134,6 +9161,9 @@ msgstr "Selecteer CAId"
 
 msgid "Select Fast DiSEqC if your aerial system supports this. If you are unsure select 'no'."
 msgstr "Kies 'snelle DiSEqC' als uw antennesysteem dat ondersteunt. Als u er niet zeker va bent, kiest u 'nee'."
+
+msgid "Select Image: STARTUP_1"
+msgstr "Kies Image: STARTUP_1"
 
 msgid "Select a receiver to use for fallback tuners. If the host receiver is not listed, manually enter the URL or IP address"
 msgstr "Kies een ontvanger om te gebruiken als fallback tuner. Als de gast-ontvanger niet getoond wordt, kunt u de URL of IP-adres handmatig ingeven."
