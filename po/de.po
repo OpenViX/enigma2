@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-04-28 11:15+0100\n"
-"PO-Revision-Date: 2018-05-01 19:57+0200\n"
+"POT-Creation-Date: 2018-05-20 09:29+0100\n"
+"PO-Revision-Date: 2018-05-20 20:48+0200\n"
 "Last-Translator: Ralf Biedermann <ralf.biedermann@rbsoft.de>\n"
 "Language-Team: AndyBlacburn, j-ot&Trial\n"
 "Language: de\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
-"X-Generator: Poedit 2.0.4\n"
+"X-Generator: Poedit 2.0.6\n"
 "X-Poedit-SourceCharset: iso-8859-15\n"
 
 msgid ""
@@ -2682,6 +2682,12 @@ msgstr ""
 "Wähle Anzeigeart für Zeit des Frontpanel. 'H'/'HH' ist die Stunde bei 24 Stunden Anzeige.  'h'/'hh' ist die Stunde bei 12 Stunden Anzeige., 'mm' sind die Minuten und 'ss' Sind die Sekunden. \n"
 "'HH' und 'hh' bekommen führende 0 bei einstelligen Zeiten. Die Anzeige auf Frontpanel wird durch diese Einstellungen aber auch den Skin bestimmt."
 
+msgid "Choose the layout view mode (Text / Graphics Multi channel EPG or Single channel EPG)."
+msgstr "Wähle das Layout für die Ansicht (Text/Grafik Multi-Channel- oder Einzel-EPG)."
+
+msgid "Choose the layout view mode (Text or Graphics)."
+msgstr "Diese Option erlaubt es das Aussehen vom EPG einzustellen (Text oder Grafik)."
+
 msgid "Choose the location for crash and debug logs folder."
 msgstr "Wähle den Speicherort für Crash- und Debug-Logs."
 
@@ -2833,7 +2839,7 @@ msgid "Common Interface"
 msgstr "Common Interface"
 
 msgid "Common interface"
-msgstr "Kommando Interface"
+msgstr "Common Interface"
 
 msgid "Common interface assignment"
 msgstr "Common Interface Zuweisung"
@@ -4273,6 +4279,9 @@ msgstr "Verstrichen & Verbleibend"
 msgid "Electronic Program Guide"
 msgstr "Elektronischer Programmführer"
 
+msgid "Empty slot"
+msgstr ""
+
 msgid "Enable"
 msgstr "Ein"
 
@@ -5160,6 +5169,9 @@ msgstr "Grafischer EPG"
 
 msgid "Graphics"
 msgstr "Grafiken"
+
+msgid "Graphics Multi EPG"
+msgstr "Grafischer Multi EPG"
 
 msgid "Greece"
 msgstr "Griechenland"
@@ -6659,6 +6671,9 @@ msgstr "Film Auswahl"
 msgid "Movie/Drama"
 msgstr "Film/Drama"
 
+msgid "Movielist menu"
+msgstr "Aufnahmeliste Menü"
+
 msgid "Moving"
 msgstr "Drehen"
 
@@ -6682,6 +6697,9 @@ msgstr "Multi-EPG"
 
 msgid "MultiEPG"
 msgstr "Multi-EPG"
+
+msgid "Multiboot"
+msgstr "Multiboot"
 
 msgid "Multimedia"
 msgstr "Multimedia"
@@ -8288,6 +8306,12 @@ msgstr "Einstufung unbekannt"
 msgid "Re-enter PIN"
 msgstr "Pin-Code erneut eingeben"
 
+msgid "ReBoot"
+msgstr ""
+
+msgid "ReBoot_mode12"
+msgstr ""
+
 msgid "Read user data from oscam.conf"
 msgstr "Lese Benutzerdaten aus oscam.comf"
 
@@ -8340,6 +8364,14 @@ msgstr "Die %s %s wirklich aktualisieren und neu starten?"
 
 msgid "Reboot"
 msgstr "Neustart"
+
+#, fuzzy, python-format
+msgid ""
+"Reboot Image: STARTUP_%s: %s\n"
+" Use < > keys to select Image and Reboot."
+msgstr ""
+"Starte Image: STARTUP_%s:%s\n"
+"Benutze <> Tasten um Image zu wählen und neu zu starten."
 
 msgid "Rec"
 msgstr "Aufnahme"
@@ -9109,6 +9141,9 @@ msgstr "CAID auswählen"
 
 msgid "Select Fast DiSEqC if your aerial system supports this. If you are unsure select 'no'."
 msgstr "Wähle schnelles DiSEqC wen es dein System unterstützt. Wenn Du unsicher bis wähle 'nein'."
+
+msgid "Select Image: STARTUP_1"
+msgstr "Wähle Image: STARTUP_1"
 
 msgid "Select a receiver to use for fallback tuners. If the host receiver is not listed, manually enter the URL or IP address"
 msgstr "Wähle einen Receiver für Fallback Tuner aus. Wenn der Receiver nicht angezeigt wird gebe URL oder IP manuell an"
@@ -10781,6 +10816,9 @@ msgstr "Testbilder die dabei helfen können die Bildqualität zu optimieren"
 msgid "Text"
 msgstr ""
 
+msgid "Text Multi EPG"
+msgstr "Text Multi-EPG"
+
 msgid "Text color"
 msgstr "Textfarbe"
 
@@ -11079,9 +11117,6 @@ msgstr "Diese Option erlaubt dir einen Glättefilter für das Dithering einzusch
 
 msgid "This option allows you enable the vertical scaler dejagging."
 msgstr "Diese Option erlaubt es beim Scaler vertikales Antialiasing zu aktivieren."
-
-msgid "This option allows you set the layout view (Text or Graphics)."
-msgstr "Diese Option erlaubt es das Aussehen vom EPG einzustellen (Text oder Grafik)."
 
 msgid "This option allows you to boost the blue tones in the picture."
 msgstr "Diese Option erlaubt es den Blauanteil des Bildes zu verstärken."
