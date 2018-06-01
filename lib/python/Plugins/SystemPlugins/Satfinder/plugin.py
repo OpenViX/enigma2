@@ -1,8 +1,5 @@
-from enigma import eDVBResourceManager,\
-	eDVBFrontendParametersSatellite, eDVBFrontendParametersTerrestrial, \
-	eDVBFrontendParametersATSC
+from enigma import eDVBResourceManager, eDVBFrontendParametersSatellite, eDVBFrontendParametersTerrestrial
 
-from Screens.Screen import Screen
 from Screens.ScanSetup import ScanSetup, buildTerTransponder
 from Screens.ServiceScan import ServiceScan
 from Screens.MessageBox import MessageBox
@@ -13,13 +10,14 @@ from Components.ActionMap import ActionMap
 from Components.NimManager import nimmanager, getConfigSatlist
 from Components.config import config, ConfigSelection, getConfigListEntry
 from Components.TuneTest import Tuner
-from Components.ScrollLabel import ScrollLabel
-from Components.Sources.StaticText import StaticText
 from Tools.Transponder import getChannelNumber, channel2frequency
 from Tools.BoundFunction import boundFunction
 
-try: # for reading the current transport stream
+try: # for reading the current transport stream (SatfinderExtra)
 	from Plugins.SystemPlugins.AutoBouquetsMaker.scanner import dvbreader
+	from Screens.Screen import Screen
+	from Components.Sources.StaticText import StaticText
+	from Components.ScrollLabel import ScrollLabel
 	import time
 	import datetime
 	import thread
@@ -29,6 +27,8 @@ except ImportError:
 	dvbreader_available = False
 
 class Satfinder(ScanSetup, ServiceScan):
+	"""Inherits StaticText [key_red] and [key_green] properties from ScanSetup"""
+
 	def __init__(self, session):
 		self.initcomplete = False
 		service = session and session.nav.getCurrentService()
@@ -51,30 +51,17 @@ class Satfinder(ScanSetup, ServiceScan):
 		self.preDefTransponderAtscEntry = None
 		self.frontend = None
 		self.is_id_boolEntry = None
-		# for reading stream
-		self.serviceList = []
 
 		ScanSetup.__init__(self, session)
-		self.setTitle(_("Signal Finder"))
-		self["introduction"].setText(_("Press OK to scan"))
+		self.setTitle(_("Signal finder"))
 		self["Frontend"] = FrontendStatus(frontend_source = lambda : self.frontend, update_interval = 100)
-
-		self["key_red"] = StaticText("Close")
-		self["key_green"] = StaticText(_("Scan"))
-		self["key_yellow"] = StaticText("")
 
 		self["actions"] = ActionMap(["SetupActions", "ColorActions"],
 		{
 			"save": self.keyGoScan,
 			"ok": self.keyGoScan,
 			"cancel": self.keyCancel,
-			"yellow": self.keyReadServices,
 		}, -3)
-
-		# DVB stream info
-		self["tsid"] = StaticText("")
-		self["onid"] = StaticText("")
-		self["pos"] = StaticText("")
 
 		self.initcomplete = True
 		self.session.postScanService = self.session.nav.getCurrentlyPlayingServiceOrGroup()
@@ -89,15 +76,11 @@ class Satfinder(ScanSetup, ServiceScan):
 			if self.raw_channel:
 				self.frontend = self.raw_channel.getFrontend()
 				if self.frontend:
-					if dvbreader_available:
-						self.demux = self.raw_channel.reserveDemux() # used for keyReadServices()
 					return True
 		return False
 
 	def prepareFrontend(self):
 		self.frontend = None
-		if dvbreader_available:
-			self.demux = -1 # used for keyReadServices()
 		if not self.openFrontend():
 			self.session.nav.stopService()
 			if not self.openFrontend():
@@ -130,7 +113,7 @@ class Satfinder(ScanSetup, ServiceScan):
 			self.feid = int(self.satfinder_scan_nims.value)
 			self.createSetup()
 			self.prepareFrontend()
-			if self.frontend == None:
+			if self.frontend is None:
 				msg = _("Tuner not available.")
 				if self.session.nav.RecordTimer.isRecording():
 					msg += _("\nRecording in progress.")
@@ -485,8 +468,6 @@ class Satfinder(ScanSetup, ServiceScan):
 			self.retuneCab()
 		elif self.DVB_type.value == "ATSC":
 			self.retuneATSC()
-		if dvbreader_available:
-			self.dvb_read_stream()
 
 	def keyGoScan(self):
 		self.frontend = None
@@ -562,7 +543,38 @@ class Satfinder(ScanSetup, ServiceScan):
 			del self.raw_channel
 		self.close(True)
 
-# only DVB stream reading functions below this line
+class SatfinderExtra(Satfinder):
+	# This class requires AutoBouquetsMaker to be installed.
+	def __init__(self, session):
+		Satfinder.__init__(self, session)
+		self.skinName = ["Satfinder"]
+		
+		self["key_yellow"] = StaticText("")
+		
+		self["actions2"] = ActionMap(["ColorActions"],
+		{
+			"yellow": self.keyReadServices,
+		}, -3)
+		
+		# DVB stream info
+		self.serviceList = []
+		self["tsid"] = StaticText("")
+		self["onid"] = StaticText("")
+		self["pos"] = StaticText("")
+
+	def retune(self, configElement=None):
+		Satfinder.retune(self)
+		self.dvb_read_stream()
+
+	def openFrontend(self):
+		if Satfinder.openFrontend(self):
+			self.demux = self.raw_channel.reserveDemux() # used for keyReadServices()
+			return True
+		return False
+
+	def prepareFrontend(self):
+		self.demux = -1 # used for keyReadServices()
+		Satfinder.prepareFrontend(self)
 
 	def dvb_read_stream(self):
 		print "[satfinder][dvb_read_stream] starting"
@@ -852,16 +864,21 @@ def SatfinderMain(session, close=None, **kwargs):
 	for n in nims:
 		if not any([n.isCompatible(x) for x in "DVB-S", "DVB-T", "DVB-C", "ATSC"]):
 			continue
-		if n.config_mode  in ("loopthrough", "satposdepends", "nothing"):
+		if n.config_mode in ("loopthrough", "satposdepends", "nothing"):
 			continue
-		if n.isCompatible("DVB-S") and len(nimmanager.getSatListForNim(n.slot)) < 1:
+		if n.isCompatible("DVB-S") and n.config_mode in ("advanced", "simple") and len(nimmanager.getSatListForNim(n.slot)) < 1:
+			config.Nims[n.slot].configMode.value = "nothing"
+			config.Nims[n.slot].configMode.save()
 			continue
 		nimList.append(n)
 
 	if len(nimList) == 0:
 		session.open(MessageBox, _("No satellite, terrestrial or cable tuner is configured. Please check your tuner setup."), MessageBox.TYPE_ERROR)
 	else:
-		session.openWithCallback(boundFunction(SatfinderCallback, close), Satfinder)
+		if dvbreader_available:
+			session.openWithCallback(boundFunction(SatfinderCallback, close), SatfinderExtra)
+		else:
+			session.openWithCallback(boundFunction(SatfinderCallback, close), Satfinder)
 
 def SatfinderStart(menuid, **kwargs):
 	if menuid == "scan" and nimmanager.somethingConnected():
