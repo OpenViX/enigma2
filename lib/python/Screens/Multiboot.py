@@ -11,26 +11,30 @@ from Tools.Multiboot import GetImagelist, GetCurrentImage, WriteStartup
 class MultiBoot(Screen):
 
 	skin = """
-	<screen name="MultiBoot" position="center,center" size="700,400"  flags="wfNoBorder" title="ReBootGB" backgroundColor="transparent">
-		<eLabel name="b" position="0,0" size="700,200" backgroundColor="#00ffffff" zPosition="-2" />
-		<eLabel name="a" position="1,1" size="698,198" backgroundColor="#00000000" zPosition="-1" />
+	<screen name="MultiBoot" position="center,center" size="750,500" flags="wfNoBorder" backgroundColor="transparent">
+		<eLabel name="b" position="0,0" size="750,300" backgroundColor="#00ffffff" zPosition="-2" />
+		<eLabel name="a" position="1,1" size="748,298" backgroundColor="#00000000" zPosition="-1" />
 		<widget source="Title" render="Label" position="10,10" foregroundColor="#00ffffff" size="480,50" halign="center" font="Regular; 28" backgroundColor="#00000000" />
-		<eLabel name="line" position="1,60" size="698,1" backgroundColor="#00ffffff" zPosition="1" />
-		<widget source="config" render="Label" position="2,70" size="680,60" halign="center" font="Regular; 22" backgroundColor="#00000000" foregroundColor="#00ffffff" />
-		<widget source="key_red" render="Label" position="35,162" size="75,30" noWrap="1" zPosition="1" valign="center" font="Regular; 20" halign="left" backgroundColor="#00000000" foregroundColor="#00ffffff" />
-		<widget source="key_green" render="Label" position="150,162" size="75,30" noWrap="1" zPosition="1" valign="center" font="Regular; 20" halign="left" backgroundColor="#00000000" foregroundColor="#00ffffff" />
-		<widget source="key_yellow" render="Label" position="250,162" size="150,30" noWrap="1" zPosition="1" valign="center" font="Regular; 20" halign="left" backgroundColor="#00000000" foregroundColor="#00ffffff" />
-		<eLabel position="25,159" size="6,40" backgroundColor="#00e61700" />
-		<eLabel position="125,159" size="6,40" backgroundColor="#0061e500" />
-		<eLabel position="225,159" size="6,40" backgroundColor="#00e5b243" />
+		<eLabel name="line" position="1,60" size="748,1" backgroundColor="#00ffffff" zPosition="1" />
+		<widget source="config" render="Label" position="2,70" size="730,30" halign="center" font="Regular; 22" backgroundColor="#00000000" foregroundColor="#00e5b243" />
+		<widget source="labe14" render="Label" position="2,130" size="730,30" halign="center" font="Regular; 22" backgroundColor="#00000000" foregroundColor="#00ffffff" />
+		<widget source="labe15" render="Label" position="2,180" size="730,60" halign="center" font="Regular; 22" backgroundColor="#00000000" foregroundColor="#00ffffff" />
+		<widget source="key_red" render="Label" position="30,262" size="150,30" noWrap="1" zPosition="1" valign="center" font="Regular; 20" halign="left" backgroundColor="#00000000" foregroundColor="#00ffffff" />
+		<widget source="key_green" render="Label" position="200,262" size="150,30" noWrap="1" zPosition="1" valign="center" font="Regular; 20" halign="left" backgroundColor="#00000000" foregroundColor="#00ffffff" />
+		<widget source="key_yellow" render="Label" position="370,262" size="150,30" noWrap="1" zPosition="1" valign="center" font="Regular; 20" halign="left" backgroundColor="#00000000" foregroundColor="#00ffffff" />
+		<eLabel position="20,259" size="6,40" backgroundColor="#00e61700" /> <!-- Should be a pixmap -->
+		<eLabel position="190,259" size="6,40" backgroundColor="#0061e500" /> <!-- Should be a pixmap -->
+		<eLabel position="360,259" size="6,40" backgroundColor="#00e5b243" /> <!-- Should be a pixmap -->
 	</screen>
 	"""
 
 	def __init__(self, session, *args):
 		Screen.__init__(self, session)
 		self["key_red"] = StaticText(_("Cancel"))
-		self["key_green"] = StaticText(_("ReBoot"))
+		self["key_green"] = StaticText(_("Reboot mode 1"))
 		self["config"] = StaticText(_("Select Image: STARTUP_1"))
+		self["labe14"] = StaticText(_("Use the < > keys to select an installed image. You can then reboot to it."))
+		self["labe15"] = StaticText(_("Mode 1 suppports Kodi, PiP may not work.\nMode 12 supports PiP, Kodi may not work."))
 		self.STARTUPslot = 0
 		self.images = []
 		self.mode = 0
@@ -52,7 +56,7 @@ class MultiBoot(Screen):
 				"ok": self.reboot,
 			}, -2)
 		else:
-			self["key_yellow"] = StaticText(_("ReBoot_mode12"))
+			self["key_yellow"] = StaticText(_("Reboot mode 12"))
 			self["actions"] = ActionMap(["WizardActions", "SetupActions", "ColorActions"],
 			{
 				"left": self.left,
@@ -80,7 +84,7 @@ class MultiBoot(Screen):
 		self.slot = self.selection + 1
 #		print "Multiboot OldImage %s NewFlash %s FlashType %s" % (self.STARTUPslot, self.selection, x)
 		if self.images[self.slot]['imagename'] != _("Empty slot"):
-			self["config"].setText(_("Reboot Image: STARTUP_%s: %s\n Use < > keys to select Image and Reboot.") %(self.slot, self.images[self.slot]['imagename']))
+			self["config"].setText(_("Reboot Image: STARTUP_%s: %s") %(self.slot, self.images[self.slot]['imagename']))
 		else:
 			self.right()
 
