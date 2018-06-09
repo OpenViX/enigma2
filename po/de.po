@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-05-20 09:29+0100\n"
-"PO-Revision-Date: 2018-05-20 20:48+0200\n"
+"POT-Creation-Date: 2018-06-05 17:41+0100\n"
+"PO-Revision-Date: 2018-06-06 19:35+0200\n"
 "Last-Translator: Ralf Biedermann <ralf.biedermann@rbsoft.de>\n"
 "Language-Team: AndyBlacburn, j-ot&Trial\n"
 "Language: de\n"
@@ -3307,7 +3307,7 @@ msgstr "DVD-ISO erstellen"
 msgid "Create directory"
 msgstr "Verzeichnis erstellen"
 
-msgid "Create seperate radio userbouquet"
+msgid "Create separate radio userbouquet"
 msgstr "Erzeuge separates Radio userbouquet"
 
 msgid "Creating AP and SC Files"
@@ -4130,6 +4130,9 @@ msgstr "Treiber:\t%s\n"
 #, python-format
 msgid "Drivers: %s"
 msgstr "Treiber: %s"
+
+msgid "Drop unconfigured satellites"
+msgstr "Vergesse nicht konfigurierte Satelliten"
 
 msgid "Dutch"
 msgstr "Holländisch"
@@ -5588,6 +5591,10 @@ msgstr "Ingnoriere DVB-S Subnetzwerk"
 
 msgid "Ignore DVB-T namespace sub network"
 msgstr "Ingnoriere DVB-T Subnetzwerk"
+
+#, python-format
+msgid "Image Slot:\t%s"
+msgstr ""
 
 msgid "Image manager"
 msgstr "Image Verwaltung"
@@ -8365,7 +8372,7 @@ msgstr "Die %s %s wirklich aktualisieren und neu starten?"
 msgid "Reboot"
 msgstr "Neustart"
 
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Reboot Image: STARTUP_%s: %s\n"
 " Use < > keys to select Image and Reboot."
@@ -10011,9 +10018,6 @@ msgstr "Side by Side"
 
 msgid "Sierra Leone"
 msgstr "Sierra Leone"
-
-msgid "Signal Finder"
-msgstr "Signal-Sucher"
 
 msgid "Signal OK, proceeding"
 msgstr "Signal OK, setze fort"
@@ -12083,13 +12087,13 @@ msgid ""
 "\n"
 "Please press OK if you can see this page on your TV (or select a different input port).\n"
 "\n"
-"The next input port will be automatically probed in 20 seconds."
+"The next input port will be automatically probed in 10 seconds."
 msgstr ""
 "Auswahl vom Video Eingang\n"
 "\n"
 "Bitte OK drücken wenn Du diese Seite auf dem Fernseher sehen kannst (oder wähle einen anderen Eingang).\n"
 "\n"
-"Der nächste Eingang wird automatisch in 20 Sekunden probiert."
+"Der nächste Eingang wird automatisch in 10 Sekunden probiert."
 
 msgid "Video mode selection."
 msgstr "Auswahl des Videomodus."
@@ -15047,6 +15051,9 @@ msgstr "umgeschaltet"
 
 #~ msgid "Show/Hide focus bar"
 #~ msgstr "Zeige/Verstecke Fokus Rahmen"
+
+#~ msgid "Signal Finder"
+#~ msgstr "Signal-Sucher"
 
 #~ msgid "Signal Strength:"
 #~ msgstr "Signalstärke:"
