@@ -34,6 +34,7 @@ class MultiBoot(Screen):
 	def __init__(self, session, *args):
 		Screen.__init__(self, session)
 		self.skinName = "MultiBoot"
+		screentitle = _("Multiboot Image Restart")
 		self["key_red"] = StaticText(_("Cancel"))
 		self["key_green"] = StaticText(_("Reboot mode 1"))
 		self["labe14"] = StaticText(_("Use the cursor keys to select an installed image and then Reboot button."))
@@ -41,6 +42,7 @@ class MultiBoot(Screen):
 		self["config"] = ChoiceList(list=[ChoiceEntryComponent('',((_("Retrieving image slots - Please wait...")), "Queued"))])
 		imagedict = []
 		self.getImageList = None
+		self.title = screentitle
 		self.startit()
 
 		if not SystemInfo["canMode12"]:
@@ -88,7 +90,6 @@ class MultiBoot(Screen):
 		self.getImageList = GetImagelist(self.ImageList)
 
 	def ImageList(self, imagedict):
-		self.title = "Current Image: STARTUP_" + str(GetCurrentImage())
 		list = []
 		currentimageslot = GetCurrentImage()
 		for x in sorted(imagedict.keys()):
