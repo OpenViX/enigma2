@@ -121,11 +121,11 @@ class MultiBoot(Screen):
 		currentSelected = self["config"].l.getCurrentSelection()
 
 	def keyLeft(self):
-		self["config"].instance.moveSelection(self["config"].instance.pageUp)
+		self["config"].instance.moveSelection(self["config"].instance.moveUp)
 		self.selectionChanged()
 
 	def keyRight(self):
-		self["config"].instance.moveSelection(self["config"].instance.pageDown)
+		self["config"].instance.moveSelection(self["config"].instance.moveDown)
 		self.selectionChanged()
 
 	def keyUp(self):
