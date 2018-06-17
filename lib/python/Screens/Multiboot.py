@@ -8,7 +8,7 @@ from Components.ChoiceList import ChoiceList, ChoiceEntryComponent
 from Components.Label import Label
 from Components.SystemInfo import SystemInfo
 from Tools.BoundFunction import boundFunction
-from Tools.Multiboot import GetImagelist, GetCurrentImage, WriteStartup
+from Tools.Multiboot import GetImagelist, GetCurrentImage
 
 class MultiBoot(Screen):
 
@@ -110,13 +110,9 @@ class MultiBoot(Screen):
 		if self.currentSelected[0][1] != "Queued":
 			slot = self.currentSelected[0][1]
 			model = getMachineBuild()
-			mode = 1
-			boxmode = 12
-			startupFileContents = "boot emmcflash0.kernel%s 'brcm_cma=%s root=/dev/mmcblk0p%s rw rootwait %s_4.boxmode=%s'\n" % (slot, SystemInfo["canMode12"][mode], slot * 2 + SystemInfo["canMultiBoot"][0], model, boxmode)
-			WriteStartup(startupFileContents, self.ReExit)
-
-	def ReExit(self):
-		self.session.open(TryQuitMainloop, 2)
+			startupFileContents = "boot emmcflash0.kernel%s 'brcm_cma=%s root=/dev/mmcblk0p%s rw rootwait %s_4.boxmode=12'\n" % (slot, SystemInfo["canMode12"][1], slot * 2 + SystemInfo["canMultiBoot"][0], model)
+			open('/boot/STARTUP', 'w').write(startupFileContents)
+			self.session.open(TryQuitMainloop, 2)
 
 	def selectionChanged(self):
 		currentSelected = self["config"].l.getCurrentSelection()
