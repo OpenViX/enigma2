@@ -2933,7 +2933,11 @@ class InfoBarInstantRecord:
 		import Tools.Trashcan
 		trash = Tools.Trashcan.createTrashFolder(entry.Filename)
 		from MovieSelection import moveServiceFiles
-		moveServiceFiles(entry.Filename, trash, entry.name, allowCopy=False)
+# Don't crash on errors...the sub-handlers trap and re-raise errors...
+		try:
+			moveServiceFiles(entry.Filename, trash, entry.name, allowCopy=False)
+		except:
+			pass
 
 	def stopCurrentRecording(self, entry = -1):
 		def confirm(answer=False):
