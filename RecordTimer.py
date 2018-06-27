@@ -24,8 +24,6 @@ from time import localtime, strftime, ctime, time
 from bisect import insort
 from sys import maxint
 
-import string
-
 # ok, for descriptions etc we have:
 # service reference  (to get the service name)
 # name               (title)
@@ -440,14 +438,12 @@ class RecordTimerEntry(timer.TimerEntry, object):
 		if hasattr(self.record_service, 'frontendInfo'):
 			feinfo = self.record_service.frontendInfo()
 			if feinfo and hasattr(feinfo, 'getFrontendData'):
-				tn = feinfo.getFrontendData().get("tuner_number", -1)
-				if 0 <= tn <= 25:
-					tuner_info = string.ascii_uppercase[tn]
-				else:
-					tuner_info = "unknown"
+				tn = feinfo.getFrontendData().get("tuner_number", -2)
+				if tn > 25: 
+					tn = -2;    # => ?
+				tuner_info = chr(ord('A') + tn)
 			else:
 				tuner_info = "no info"
-			feinfo = None	# Free any associated C++ objects...
 		else:
 			tuner_info = "no frontend"
 		self.log(level, "%s recording on tuner: %s" % (state, tuner_info))
