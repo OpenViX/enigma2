@@ -2747,7 +2747,7 @@ class InfoBarPiP:
 				self.addExtension((self.getShowHideName, self.showPiP, lambda: True), "blue")
 				self.addExtension((self.getMoveName, self.movePiP, self.pipShown), "green")
 				self.addExtension((self.getSwapName, self.swapPiP, self.pipShown), "yellow")
-				# self.addExtension((self.getTogglePipzapName, self.togglePipzap, self.pipShown), "red")
+				self.addExtension((self.getTogglePipzapName, self.togglePipzap, self.pipShown), "red")
 			else:
 				self.addExtension((self.getShowHideName, self.showPiP, self.pipShown), "blue")
 				self.addExtension((self.getMoveName, self.movePiP, self.pipShown), "green")
@@ -2933,7 +2933,11 @@ class InfoBarInstantRecord:
 		import Tools.Trashcan
 		trash = Tools.Trashcan.createTrashFolder(entry.Filename)
 		from MovieSelection import moveServiceFiles
-		moveServiceFiles(entry.Filename, trash, entry.name, allowCopy=False)
+# Don't crash on errors...the sub-handlers trap and re-raise errors...
+		try:
+			moveServiceFiles(entry.Filename, trash, entry.name, allowCopy=False)
+		except:
+			pass
 
 	def stopCurrentRecording(self, entry = -1):
 		def confirm(answer=False):
