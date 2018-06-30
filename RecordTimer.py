@@ -478,7 +478,7 @@ class RecordTimerEntry(timer.TimerEntry, object):
 				if not self.justplay:
 					open(self.Filename + self.record_service.getFilenameExtension(), "w").close()
 					# Give the Trashcan a chance to clean up
-					# Need try/except as Trashcan.instance may not exist 
+					# Need try/except as Trashcan.instance may not exist
 					# for a missed recording started at boot-time.
 					try:
 						Trashcan.instance.cleanIfIdle()
@@ -586,7 +586,7 @@ class RecordTimerEntry(timer.TimerEntry, object):
 #
 						from Screens.InfoBar import MoviePlayer
 						if MoviePlayer.instance is not None:
-# This is one of the more wierdly named functions, it actually
+# This is one of the more weirdly named functions, it actually
 # functions as setMoviePlayerInactive
 							NavigationInstance.instance.isMovieplayerActive()
 # Since next_state is StateRunning we set self.begin
