@@ -432,6 +432,13 @@ class RecordTimerEntry(timer.TimerEntry, object):
 			ChannelSelectionInstance.addToHistory(self.service_ref.ref)
 		NavigationInstance.instance.playService(self.service_ref.ref)
 
+# Report the tuner that the current recording is using
+	def log_tuner(self, level, state):
+		feinfo = self.record_service and self.record_service.frontendInfo()
+		fedata = feinfo and feinfo.getFrontendData()
+		tn = fedata and fedata.get("tuner_number")
+		tuner_info = tn is not None and chr(ord('A') + tn) or "?"
+		self.log(level, "%s recording on tuner: %s" % (state, tuner_info))
 
 	def activate(self):
 		next_state = self.state + 1
@@ -595,25 +602,25 @@ class RecordTimerEntry(timer.TimerEntry, object):
 						self._bouquet_search()
 				return True
 			else:
-				self.log(11, "start recording")
 				record_res = self.record_service.start()
 				self.setRecordingPreferredTuner(setdefault=True)
 				if record_res:
-					self.log(13, "start record returned %d" % record_res)
+					self.log(13, "start recording error: %d" % record_res)
 					self.do_backoff()
 					# retry
 					self.begin = time() + self.backoff
 					return False
+				self.log_tuner(11, "start")
 				return True
 
 		elif next_state == self.StateEnded or next_state == self.StateFailed:
 			old_end = self.end
 			self.ts_dialog = None
 			if self.setAutoincreaseEnd():
-				self.log(12, "autoincrase recording %d minute(s)" % int((self.end - old_end)/60))
+				self.log(12, "autoincrease recording %d minute(s)" % int((self.end - old_end)/60))
 				self.state -= 1
 				return True
-			self.log(12, "stop recording")
+			self.log_tuner(12, "stop")
 			RecordingsState(-1)
 			if not self.justplay:
 				if self.record_service:
