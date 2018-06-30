@@ -114,10 +114,10 @@ def SetIconDisplay(nrec):
 	return
 
 # Define a function that is called at the start and stop of all
-# recordings. This allows us to track the number of actual recorings.
-# Other recording-related accouting codul also be added here.
+# recordings. This allows us to track the number of actual recordings.
+# Other recording-related accounting could also be added here.
 # alter is 1 at a recording start, -1 at a stop and 0 as enigma2 starts
-# 9to initialzie things).
+# (to initialize things).
 
 
 def RecordingsState(alter):
