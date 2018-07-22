@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-05 18:22+0100\n"
-"PO-Revision-Date: 2018-06-07 10:01+0200\n"
+"POT-Creation-Date: 2018-07-21 11:36+0100\n"
+"PO-Revision-Date: 2018-07-22 06:59+0200\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SourceCharset: iso-8859-15\n"
-"X-Generator: Poedit 2.0.8\n"
+"X-Generator: Poedit 2.0.9\n"
 
 msgid ""
 "\n"
@@ -134,6 +134,9 @@ msgid ""
 msgstr ""
 "\n"
 "Bekijk, installeer en verwijder beschikbare of geïnstalleerde pakketten."
+
+msgid " "
+msgstr " "
 
 #, python-format
 msgid "  (%s x %s)"
@@ -6539,6 +6542,13 @@ msgctxt "Video output mode"
 msgid "Mode"
 msgstr "Modus"
 
+msgid ""
+"Mode 1 suppports Kodi, PiP may not work.\n"
+"Mode 12 supports PiP, Kodi may not work."
+msgstr ""
+"Mode 1 ondersteunt Kodi, PiP werkt misschien niet.\n"
+"Mode 12 ondersteunt PiP, Kodi werkt misschien niet."
+
 msgid "Model"
 msgstr "Model"
 
@@ -6673,9 +6683,6 @@ msgstr "Opnamelijstinstellingen"
 msgid "Movie location"
 msgstr "Opnamelokatie"
 
-msgid "Movie manager"
-msgstr "Opnamebeheerder"
-
 msgid "Movie selection"
 msgstr "Opname selecteren"
 
@@ -6711,6 +6718,9 @@ msgstr "Multi-EPG"
 
 msgid "Multiboot"
 msgstr "Multiboot"
+
+msgid "Multiboot Image Restart"
+msgstr "Multibootimage herstarten"
 
 msgid "Multimedia"
 msgstr "Multimedia"
@@ -8324,12 +8334,6 @@ msgstr "Waardering niet bepaald"
 msgid "Re-enter PIN"
 msgstr "Voer PIN nogmaals in"
 
-msgid "ReBoot"
-msgstr "Reboot"
-
-msgid "ReBoot_mode12"
-msgstr "Reboot_mode12"
-
 msgid "Read user data from oscam.conf"
 msgstr "Lees gebruikersgegevens van oscam.conf"
 
@@ -8382,14 +8386,6 @@ msgstr "Uw %s %s echt upgraden en herstarten?"
 
 msgid "Reboot"
 msgstr "Herstarten"
-
-#, python-format
-msgid ""
-"Reboot Image: STARTUP_%s: %s\n"
-" Use < > keys to select Image and Reboot."
-msgstr ""
-"Reboot Image: STARTUP_%s: %s\n"
-" Gebruik < > knoppen om een image te selecteren en te rebooten."
 
 msgid "Rec"
 msgstr "Record"
@@ -8736,6 +8732,10 @@ msgstr "Hervat positie op %s"
 
 msgid "Resuming playback"
 msgstr "Afspelen wordt hervat"
+
+#
+msgid "Retrieving image slots - Please wait..."
+msgstr "Zoekt naar  image slots. Even wachten..."
 
 msgid "Return to movie list"
 msgstr "Terug naar de opnamelijst"
@@ -9161,9 +9161,6 @@ msgstr "Selecteer CAId"
 
 msgid "Select Fast DiSEqC if your aerial system supports this. If you are unsure select 'no'."
 msgstr "Kies 'snelle DiSEqC' als uw antennesysteem dat ondersteunt. Als u er niet zeker va bent, kiest u 'nee'."
-
-msgid "Select Image: STARTUP_1"
-msgstr "Kies Image: STARTUP_1"
 
 msgid "Select a receiver to use for fallback tuners. If the host receiver is not listed, manually enter the URL or IP address"
 msgstr "Kies een ontvanger om te gebruiken als fallback tuner. Als de gast-ontvanger niet getoond wordt, kunt u de URL of IP-adres handmatig ingeven."
@@ -11957,6 +11954,9 @@ msgstr "Gebruik de alternatieve of de conventionele radiomodus."
 msgid "Use the alternative screen"
 msgstr "Gebruik het alternatieve scherm"
 
+msgid "Use the cursor keys to select an installed image and then Reboot button."
+msgstr ""
+
 msgid ""
 "Use the deletion time to sort Trash directories.\n"
 "Most recently deleted at the top."
@@ -14053,6 +14053,30 @@ msgstr "vooruit spoelen"
 msgid "skip forward (enter time)"
 msgstr "spring vooruit (tijd invoeren)"
 
+#, python-format
+msgid "slot%s - %s "
+msgstr "slot%s - %s "
+
+#, python-format
+msgid "slot%s - %s (current image)"
+msgstr "slot%s - %s (huidige image)"
+
+#, python-format
+msgid "slot%s - %s mode 1"
+msgstr "slot%s - %s mode 1"
+
+#, python-format
+msgid "slot%s - %s mode 1 (current image)"
+msgstr "slot%s - %s mode 1 (huidige image)"
+
+#, python-format
+msgid "slot%s - %s mode 12"
+msgstr "slot%s - %s mode 12"
+
+#, python-format
+msgid "slot%s - %s mode 12 (current image)"
+msgstr "slot%s - %s mode 12 (huidige image)"
+
 msgid "slow"
 msgstr "langzaam"
 
@@ -14338,9 +14362,6 @@ msgstr "zapte"
 #~ msgstr ""
 #~ "\n"
 #~ "Er loopt een opname."
-
-#~ msgid " "
-#~ msgstr " "
 
 #, fuzzy
 #~ msgid "%-e %B %Y"
@@ -15164,6 +15185,9 @@ msgstr "zapte"
 #~ msgid "Move to..."
 #~ msgstr "Verplaats naar..."
 
+#~ msgid "Movie manager"
+#~ msgstr "Opnamebeheerder"
+
 #~ msgid "MultiEPG settings"
 #~ msgstr "Multi-EPG instellingen"
 
@@ -15328,6 +15352,19 @@ msgstr "zapte"
 #~ msgid "RF output"
 #~ msgstr "RF-modulator"
 
+#~ msgid "ReBoot"
+#~ msgstr "Reboot"
+
+#~ msgid "ReBoot_mode12"
+#~ msgstr "Reboot_mode12"
+
+#~ msgid ""
+#~ "Reboot Image: STARTUP_%s: %s\n"
+#~ " Use < > keys to select Image and Reboot."
+#~ msgstr ""
+#~ "Reboot Image: STARTUP_%s: %s\n"
+#~ " Gebruik < > knoppen om een image te selecteren en te rebooten."
+
 #~ msgid "Reception Settings"
 #~ msgstr "Ontvangstinstellingen"
 
@@ -15369,6 +15406,9 @@ msgstr "zapte"
 
 #~ msgid "Save timeshift in movie dir and zap"
 #~ msgstr "Bewaar timeshift als opname en zap"
+
+#~ msgid "Select Image: STARTUP_1"
+#~ msgstr "Kies Image: STARTUP_1"
 
 #~ msgid "Select an image to be downloaded"
 #~ msgstr "Kies bestand om te downloaden"
