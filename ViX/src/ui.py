@@ -8,6 +8,7 @@ from Components.Sources.StaticText import StaticText
 from Components.Sources.List import List
 from Screens.ParentalControlSetup import ProtectedScreen
 from Components.config import config
+from Components.SystemInfo import SystemInfo
 
 class VIXMenu(Screen, ProtectedScreen):
 	skin = """
@@ -69,6 +70,8 @@ class VIXMenu(Screen, ProtectedScreen):
 			self.list.append(("mount-manager", _("Mount manager"), _("Manage your devices mount points."), None))
 			self.list.append(("script-runner", _("Script runner"), _("Run your shell scripts."), None))
 			self.list.append(("swap-manager", _("Swap manager"), _("Create and Manage your swap files."), None))
+			if SystemInfo["canMultiBoot"]:
+				self.list.append(("multiboot manager", _("MultiBoot manager"), _("Create empty slot"), None))
 		self["menu"] = List(self.list)
 		self["key_red"] = StaticText(_("Close"))
 
@@ -131,6 +134,9 @@ class VIXMenu(Screen, ProtectedScreen):
 				elif currentEntry == "image-manager":
 					from ImageManager import VIXImageManager
 					self.session.open(VIXImageManager, self.menu_path)
+				elif currentEntry == "multiboot manager":
+					from Multibootmgr import MultiBoot
+					self.session.open(MultiBoot, self.menu_path)
 				elif currentEntry == "ipkg-install":
 					from IPKInstaller import VIXIPKInstaller
 					self.session.open(VIXIPKInstaller, self.menu_path)
