@@ -435,7 +435,7 @@ class RecordTimerEntry(timer.TimerEntry, object):
 # Report the tuner that the current recording is using
 	def log_tuner(self, level, state):
 		feinfo = self.record_service and self.record_service.frontendInfo()
-		fedata = feinfo and feinfo.getFrontendData()
+		fedata = feinfo and feinfo.getFrontendData() or None
 		tn = fedata and fedata.get("tuner_number")
 		tuner_info = tn is not None and chr(ord('A') + tn) or "?"
 		self.log(level, "%s recording on tuner: %s" % (state, tuner_info))
