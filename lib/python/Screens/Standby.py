@@ -17,6 +17,14 @@ import os
 
 inStandby = None
 
+QUIT_SHUTDOWN = 1
+QUIT_REBOOT = 2
+QUIT_RESTART = 3
+QUIT_UPGRADE_FP = 4
+QUIT_ERROR_RESTART = 5
+QUIT_UPGRADE_PROGRAM = 42
+QUIT_IMAGE_RESTORE = 43
+
 def setLCDMiniTVMode(value):
 	try:
 		f = open("/proc/stb/lcd/mode", "w")
@@ -195,13 +203,15 @@ class QuitMainloopScreen(Screen):
 			</screen>"""
 		Screen.__init__(self, session)
 		from Components.Label import Label
-		text = { 1: _("Your %s %s is shutting down") % (getMachineBrand(), getMachineName()),
-			2: _("Your %s %s is rebooting") % (getMachineBrand(), getMachineName()),
-			3: _("The user interface of your %s %s is restarting") % (getMachineBrand(), getMachineName()),
-			4: _("Your frontprocessor will be upgraded\nPlease wait until your %s %s reboots\nThis may take a few minutes") % (getMachineBrand(), getMachineName()),
-			5: _("The user interface of your %s %s is restarting\ndue to an error in mytest.py") % (getMachineBrand(), getMachineName()),
-			42: _("Upgrade in progress\nPlease wait until your %s %s reboots\nThis may take a few minutes") % (getMachineBrand(), getMachineName()),
-			43: _("Reflash in progress\nPlease wait until your %s %s reboots\nThis may take a few minutes") % (getMachineBrand(), getMachineName()) }.get(retvalue)
+		text = {
+			QUIT_SHUTDOWN: _("Your %s %s is shutting down") % (getMachineBrand(), getMachineName()),
+			QUIT_REBOOT: _("Your %s %s is rebooting") % (getMachineBrand(), getMachineName()),
+			QUIT_RESTART: _("The user interface of your %s %s is restarting") % (getMachineBrand(), getMachineName()),
+			QUIT_UPGRADE_FP: _("Your frontprocessor will be upgraded\nPlease wait until your %s %s reboots\nThis may take a few minutes") % (getMachineBrand(), getMachineName()),
+			QUIT_ERROR_RESTART: _("The user interface of your %s %s is restarting\ndue to an error in mytest.py") % (getMachineBrand(), getMachineName()),
+			QUIT_UPGRADE_PROGRAM: _("Upgrade in progress\nPlease wait until your %s %s reboots\nThis may take a few minutes") % (getMachineBrand(), getMachineName()),
+			QUIT_IMAGE_RESTORE: _("Reflash in progress\nPlease wait until your %s %s reboots\nThis may take a few minutes") % (getMachineBrand(), getMachineName())
+		}.get(retvalue)
 		self["text"] = Label(text)
 
 inTryQuitMainloop = False
@@ -239,12 +249,14 @@ class TryQuitMainloop(MessageBox):
 			session.nav.record_event.append(self.getRecordEvent)
 			self.skinName = ""
 		elif reason and not inStandby:
-			text = { 1: _("Really shutdown now?"),
-				2: _("Really reboot now?"),
-				3: _("Really restart now?"),
-				4: _("Really upgrade the frontprocessor and reboot now?"),
-				42: _("Really upgrade your %s %s and reboot now?") % (getMachineBrand(), getMachineName()),
-				43: _("Really reflash your %s %s and reboot now?") % (getMachineBrand(), getMachineName()) }.get(retvalue)
+			text = {
+				QUIT_SHUTDOWN: _("Really shutdown now?"),
+				QUIT_REBOOT: _("Really reboot now?"),
+				QUIT_RESTART: _("Really restart now?"),
+				QUIT_UPGRADE_FP: _("Really upgrade the frontprocessor and reboot now?"),
+				QUIT_UPGRADE_PROGRAM: _("Really upgrade your %s %s and reboot now?") % (getMachineBrand(), getMachineName()),
+				QUIT_IMAGE_RESTORE: _("Really reflash your %s %s and reboot now?") % (getMachineBrand(), getMachineName())
+			}.get(retvalue)
 			if text:
 				MessageBox.__init__(self, session, reason+text, type = MessageBox.TYPE_YESNO, timeout = timeout, default = default_yes)
 				self.skinName = "MessageBoxSimple"
