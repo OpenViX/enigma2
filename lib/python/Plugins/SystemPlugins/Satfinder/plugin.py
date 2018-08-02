@@ -13,9 +13,10 @@ from Components.TuneTest import Tuner
 from Tools.Transponder import getChannelNumber, channel2frequency
 from Tools.BoundFunction import boundFunction
 
+from Screens.Screen import Screen # for services found class
+
 try: # for reading the current transport stream (SatfinderExtra)
 	from Plugins.SystemPlugins.AutoBouquetsMaker.scanner import dvbreader
-	from Screens.Screen import Screen
 	from Components.Sources.StaticText import StaticText
 	from Components.ScrollLabel import ScrollLabel
 	import time
