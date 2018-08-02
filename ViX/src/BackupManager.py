@@ -1215,6 +1215,8 @@ class BackupFiles(Screen):
 			self.selectedFiles.append('/etc/rc3.d/S99tuner.sh')
 		if path.exists('/usr/lib/enigma2/python/Plugins/SystemPlugins/AutoBouquetsMaker/custom/favourites.xml') and '/usr/lib/enigma2/python/Plugins/SystemPlugins/AutoBouquetsMaker/custom/favourites.xml' not in self.selectedFiles:
 			self.selectedFiles.append('/usr/lib/enigma2/python/Plugins/SystemPlugins/AutoBouquetsMaker/custom/favourites.xml')
+		if path.exists('/usr/lib/enigma2/python/Plugins/SystemPlugins/AutoBouquetsMaker/providers/terrestrial_finder.xml') and '/usr/lib/enigma2/python/Plugins/SystemPlugins/AutoBouquetsMaker/providers/terrestrial_finder.xml' not in self.selectedFiles:
+			self.selectedFiles.append('/usr/lib/enigma2/python/Plugins/SystemPlugins/AutoBouquetsMaker/providers/terrestrial_finder.xml')
 		if path.exists('/usr/lib/enigma2/python/Plugins/SystemPlugins/AutoBouquetsMaker/custom'):
 			for custommix in glob.glob('/usr/lib/enigma2/python/Plugins/SystemPlugins/AutoBouquetsMaker/custom/*CustomMix.xml'):
 				if custommix not in self.selectedFiles:
