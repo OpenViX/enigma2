@@ -59,6 +59,7 @@ SystemInfo["LcdLiveTV"] = fileCheck("/proc/stb/fb/sd_detach") or fileCheck("/pro
 SystemInfo["LCDMiniTV"] = fileExists("/proc/stb/lcd/mode")
 SystemInfo["LCDMiniTVPiP"] = SystemInfo["LCDMiniTV"] and getBoxType() != 'gb800ueplus'
 SystemInfo["LcdPowerOn"] = fileExists("/proc/stb/power/vfd")
+SystemInfo["7segment"] = getBoxType() in ('dinobot4k', 'osmini', 'osnino', 'osninoplus', 'osninopro', 'atemio6000', 'atemio6100', 'bwidowx', 'xpeedlx1', 'hd1100', 'hd1200', 'hd1265', 'hd1500', 'hd500c', 'hd530c', 'h3', 'h4', 'h5', 'h6', 'h7', 'formuler3', 'formuler3ip', 'formuler4', 'formuler4ip', 'formuler4turbo', 'spycatmini', 'spycatminiplus', 'xp1000', '9900lx', 'ew7358', 'ew7362', '7220s', '7300s', 'sh1', 'inihde2', 'inihde', 'odinm7', 'jj7362', 'vg2000', 'vg5000', 'vs1000', 'tiviarmin', 'g100', 'g101', 'xc7362', 'et1x000', 'xc7358')
 SystemInfo["FastChannelChange"] = False
 SystemInfo["3DMode"] = fileCheck("/proc/stb/fb/3dmode") or fileCheck("/proc/stb/fb/primary/3d")
 SystemInfo["3DZNorm"] = fileCheck("/proc/stb/fb/znorm") or fileCheck("/proc/stb/fb/primary/zoffset")
