@@ -298,6 +298,11 @@ def InitUsageConfig():
 
 	config.usage.blinking_display_clock_during_recording = ConfigYesNo(default = False)
 
+	if SystemInfo["7segment"]:
+		config.usage.show_in_standby = ConfigSelection(default = "time", choices = [
+						("time", _("Time")), 
+						("nothing", _("Nothing"))])
+
 	config.usage.show_message_when_recording_starts = ConfigYesNo(default = True)
 
 	config.usage.load_length_of_movies_in_moviellist = ConfigYesNo(default = True)
