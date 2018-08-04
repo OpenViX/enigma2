@@ -299,6 +299,14 @@ def InitUsageConfig():
 	config.usage.blinking_display_clock_during_recording = ConfigYesNo(default = False)
 
 	if SystemInfo["7segment"]:
+		config.usage.blinking_rec_symbol_during_recording = ConfigSelection(default = "Rec", choices = [
+						("Rec", _("REC")), 
+						("RecBlink", _("Blinking REC")), 
+						("Nothing", _("Nothing"))])
+	else:
+		config.usage.blinking_rec_symbol_during_recording = ConfigYesNo(default = True)
+		
+	if SystemInfo["7segment"]:
 		config.usage.show_in_standby = ConfigSelection(default = "time", choices = [
 						("time", _("Time")), 
 						("nothing", _("Nothing"))])
