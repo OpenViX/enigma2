@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-05 17:41+0100\n"
-"PO-Revision-Date: 2018-06-06 19:35+0200\n"
+"POT-Creation-Date: 2018-08-03 11:34+0100\n"
+"PO-Revision-Date: 2018-08-03 21:23+0200\n"
 "Last-Translator: Ralf Biedermann <ralf.biedermann@rbsoft.de>\n"
 "Language-Team: AndyBlacburn, j-ot&Trial\n"
 "Language: de\n"
@@ -133,6 +133,9 @@ msgid ""
 msgstr ""
 "\n"
 "Anzeigen, installieren und entfernen verfügbarer oder installierter Pakete."
+
+msgid " "
+msgstr ""
 
 #, python-format
 msgid "  (%s x %s)"
@@ -1639,6 +1642,9 @@ msgstr "Alle Satelliten 3 (USALS)"
 
 msgid "All satellites 4 (USALS)"
 msgstr "Alle Satelliten 4 (USALS)"
+
+msgid "All services provider"
+msgstr "Alle Anbieter:"
 
 msgid "Allocate"
 msgstr "Reservieren"
@@ -4283,7 +4289,7 @@ msgid "Electronic Program Guide"
 msgstr "Elektronischer Programmführer"
 
 msgid "Empty slot"
-msgstr ""
+msgstr "Leerer Slot"
 
 msgid "Enable"
 msgstr "Ein"
@@ -5140,6 +5146,9 @@ msgstr "In der Liste rauf gehen"
 msgid "Gold"
 msgstr ""
 
+msgid "Gold PLS Code"
+msgstr "Goldener PLS Code"
+
 msgid "Goto"
 msgstr "Gehe zu"
 
@@ -5620,6 +5629,9 @@ msgstr "Inadyn Einstellungen"
 
 msgid "Include AIT in http streams"
 msgstr "AIT in HTTP-Streams integrieren"
+
+msgid "Include CI assignment"
+msgstr "CI-Zuweisung"
 
 msgid "Include ECM in http streams"
 msgstr "ECM in HTTP-Streams integrieren"
@@ -6535,6 +6547,13 @@ msgctxt "Video output mode"
 msgid "Mode"
 msgstr "Modus [Video Ausgang]"
 
+msgid ""
+"Mode 1 suppports Kodi, PiP may not work.\n"
+"Mode 12 supports PiP, Kodi may not work."
+msgstr ""
+"Mode 1 unterstützt Kodi, PiP könnte nicht funktionieren.\n"
+"Mode 12 unterstützt Pip, Kodi könnte nicht funktionieren."
+
 msgid "Model"
 msgstr "Modell"
 
@@ -6669,9 +6688,6 @@ msgstr "Aufnahmeliste Einstellungen"
 msgid "Movie location"
 msgstr "Film Verzeichnis"
 
-msgid "Movie manager"
-msgstr "Film Verwaltung"
-
 msgid "Movie selection"
 msgstr "Film Auswahl"
 
@@ -6707,6 +6723,9 @@ msgstr "Multi-EPG"
 
 msgid "Multiboot"
 msgstr "Multiboot"
+
+msgid "Multiboot Image Restart"
+msgstr "Multiboot Image Neustart"
 
 msgid "Multimedia"
 msgstr "Multimedia"
@@ -6926,9 +6945,6 @@ msgstr "Nein"
 
 msgid "No (supported) DVDROM found!"
 msgstr "Kein (unterstütztes) DVD-Laufwerk gefunden!"
-
-msgid "No CI slots found"
-msgstr "Kein CI Slot gefunden"
 
 msgid "No Connection"
 msgstr "Keine Verbindung"
@@ -7419,9 +7435,6 @@ msgstr ""
 
 msgid "PLS Mode"
 msgstr "PLS Modus"
-
-msgid "PLS Mode & PLS Code"
-msgstr ""
 
 msgid "PMT PID"
 msgstr "PMT PID"
@@ -8098,6 +8111,9 @@ msgstr "Drücke OK um eine Gruppe von Satelliten zum Konfigurieren auszuwählen.
 msgid "Press OK to select a provider."
 msgstr "Drücke OK um einen Anbieter auszuwählen."
 
+msgid "Press OK to select a service."
+msgstr "Drücke OK um einen Sender auszuwählen."
+
 msgid "Press OK to select satellites"
 msgstr "Drücke OK um einen Satelliten auszuwählen"
 
@@ -8313,12 +8329,6 @@ msgstr "Einstufung unbekannt"
 msgid "Re-enter PIN"
 msgstr "Pin-Code erneut eingeben"
 
-msgid "ReBoot"
-msgstr ""
-
-msgid "ReBoot_mode12"
-msgstr ""
-
 msgid "Read user data from oscam.conf"
 msgstr "Lese Benutzerdaten aus oscam.comf"
 
@@ -8371,14 +8381,6 @@ msgstr "Die %s %s wirklich aktualisieren und neu starten?"
 
 msgid "Reboot"
 msgstr "Neustart"
-
-#, python-format
-msgid ""
-"Reboot Image: STARTUP_%s: %s\n"
-" Use < > keys to select Image and Reboot."
-msgstr ""
-"Starte Image: STARTUP_%s:%s\n"
-"Benutze <> Tasten um Image zu wählen und neu zu starten."
 
 msgid "Rec"
 msgstr "Aufnahme"
@@ -8725,6 +8727,9 @@ msgstr "Wiedergabestart ab %s"
 
 msgid "Resuming playback"
 msgstr "Setze Wiedergabe fort"
+
+msgid "Retrieving image slots - Please wait..."
+msgstr "Suche Image Slots - Bitte warten..."
 
 msgid "Return to movie list"
 msgstr "Zurück zur Filmliste"
@@ -9149,9 +9154,6 @@ msgstr "CAID auswählen"
 msgid "Select Fast DiSEqC if your aerial system supports this. If you are unsure select 'no'."
 msgstr "Wähle schnelles DiSEqC wen es dein System unterstützt. Wenn Du unsicher bis wähle 'nein'."
 
-msgid "Select Image: STARTUP_1"
-msgstr "Wähle Image: STARTUP_1"
-
 msgid "Select a receiver to use for fallback tuners. If the host receiver is not listed, manually enter the URL or IP address"
 msgstr "Wähle einen Receiver für Fallback Tuner aus. Wenn der Receiver nicht angezeigt wird gebe URL oder IP manuell an"
 
@@ -9473,6 +9475,9 @@ msgstr "Sender"
 
 msgid "Services may be grouped in bouquets. When enabled, you can use more than one bouquet."
 msgstr "Sender können in Favoriten gruppiert werden. Wenn aktiviert kann mehr als eine Favoritenliste benutzt werden."
+
+msgid "Set CI assignment for detection of available services."
+msgstr "Setze CI Zuweisung für Erkennung verfügbarer Sender."
 
 msgid "Set Framerate for MiniTV"
 msgstr "Setze Bildrate für MiniTV"
@@ -11757,6 +11762,9 @@ msgstr "Universal-LNB"
 msgid "Unknown"
 msgstr "Unbekannt"
 
+msgid "Unknown error"
+msgstr "Unbekannter Fehler"
+
 msgid "Unmark service as a dedicated 3D service"
 msgstr "3D Flag für diesen Sender zurücksetzen"
 
@@ -11932,6 +11940,9 @@ msgstr "Alternativen oder konventionellen Radio-Modus benutzen."
 
 msgid "Use the alternative screen"
 msgstr "Eine kleine, einfachere Darstellung benutzen"
+
+msgid "Use the cursor keys to select an installed image and then Reboot button."
+msgstr "Benutze Cursortasten um ein installiertes Image zu wählen und dann den Neustart Button."
 
 msgid ""
 "Use the deletion time to sort Trash directories.\n"
@@ -13732,6 +13743,9 @@ msgstr "nein"
 msgid "no CAId selected"
 msgstr "Keine CAID ausgewählt"
 
+msgid "no CI slots found"
+msgstr "Kein CI Slot gefunden"
+
 msgid "no channel list"
 msgstr "Keine Senderliste"
 
@@ -14026,6 +14040,30 @@ msgstr "Vorwärts spulen"
 
 msgid "skip forward (enter time)"
 msgstr "Vorwärts springen (Zeit eingeben)"
+
+#, python-format
+msgid "slot%s - %s "
+msgstr "Slot%s - %s"
+
+#, python-format
+msgid "slot%s - %s (current image)"
+msgstr "Slot%s - %s (aktuelles Image)"
+
+#, python-format
+msgid "slot%s - %s mode 1"
+msgstr "Slot%s - %s Mode 1"
+
+#, python-format
+msgid "slot%s - %s mode 1 (current image)"
+msgstr "Slot%s - %s Mode 1 (aktuelles Image)"
+
+#, python-format
+msgid "slot%s - %s mode 12"
+msgstr "Slot%s - %s Mode 12"
+
+#, python-format
+msgid "slot%s - %s mode 12 (current image)"
+msgstr "Slot%s - %s Mode 12 (aktuelles Image)"
 
 msgid "slow"
 msgstr "langsam"
@@ -14843,6 +14881,9 @@ msgstr "umgeschaltet"
 #~ msgid "Move to..."
 #~ msgstr "Verschieben nach..."
 
+#~ msgid "Movie manager"
+#~ msgstr "Film Verwaltung"
+
 #~ msgid "MultiEPG settings"
 #~ msgstr "MultiEPG Einstellungen"
 
@@ -14959,6 +15000,13 @@ msgstr "umgeschaltet"
 #~ msgid "RF output"
 #~ msgstr "RF-Ausgang"
 
+#~ msgid ""
+#~ "Reboot Image: STARTUP_%s: %s\n"
+#~ " Use < > keys to select Image and Reboot."
+#~ msgstr ""
+#~ "Starte Image: STARTUP_%s:%s\n"
+#~ "Benutze <> Tasten um Image zu wählen und neu zu starten."
+
 #~ msgid "Reception Settings"
 #~ msgstr "Empfangseinstellungen"
 
@@ -14988,6 +15036,9 @@ msgstr "umgeschaltet"
 
 #~ msgid "Save timeshift in movie dir and zap"
 #~ msgstr "TimeShift als Film im Filmverzeichnis speichern und Aufnahme beenden"
+
+#~ msgid "Select Image: STARTUP_1"
+#~ msgstr "Wähle Image: STARTUP_1"
 
 #~ msgid "Select Quad Channels"
 #~ msgstr "Wähle Quad Kanäle"
