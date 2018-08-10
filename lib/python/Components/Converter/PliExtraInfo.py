@@ -410,8 +410,13 @@ class PliExtraInfo(Poll, Converter, object):
 		if onid < 0 : onid = 0
 		return "%d-%d:%05d:%04d:%04d:%04d" % (onid, tsid, sidpid, vpid, apid, pcrpid)
 
-	def createTransponderInfo(self, fedata, feraw):
-		if "DVB-T" in feraw.get("tuner_type"):
+	def createTransponderInfo(self, fedata, feraw, info):
+		if not feraw:
+			refstr = info.getInfoString(iServiceInformation.sServiceref)
+			if "%3a//" in refstr:
+				return refstr.split(":")[-1].replace("%3a", ":")
+			return ""
+		elif "DVB-T" in feraw.get("tuner_type"):
 			tmp = addspace(self.createChannelNumber(fedata, feraw)) + addspace(self.createFrequency(fedata)) + addspace(self.createPolarization(fedata))
 		else:
 			tmp = addspace(self.createFrequency(fedata)) + addspace(self.createPolarization(fedata))
@@ -744,11 +749,11 @@ class PliExtraInfo(Poll, Converter, object):
 		if self.type == "All":
 			self.getCryptoInfo(info)
 			if int(config.usage.show_cryptoinfo.value) > 0:
-				return addspace(self.createProviderName(info)) + self.createTransponderInfo(fedata,feraw) + addspace(self.createTransponderName(feraw)) + "\n"\
+				return addspace(self.createProviderName(info)) + self.createTransponderInfo(fedata, feraw, info) + addspace(self.createTransponderName(feraw)) + "\n"\
 				+ addspace(self.createCryptoBar(info)) + addspace(self.createCryptoSpecial(info)) + "\n"\
 				+ addspace(self.createPIDInfo(info)) + addspace(self.createVideoCodec(info)) + self.createResolution(info)
 			else:
-				return addspace(self.createProviderName(info)) + self.createTransponderInfo(fedata,feraw) + addspace(self.createTransponderName(feraw)) + "\n" \
+				return addspace(self.createProviderName(info)) + self.createTransponderInfo(fedata, feraw, info) + addspace(self.createTransponderName(feraw)) + "\n" \
 				+ addspace(self.createCryptoBar(info)) + self.current_source + "\n" \
 				+ addspace(self.createCryptoSpecial(info)) + addspace(self.createVideoCodec(info)) + self.createResolution(info)
 
@@ -772,7 +777,7 @@ class PliExtraInfo(Poll, Converter, object):
 			return ""
 
 		if self.type == "TransponderInfo":
-			return self.createTransponderInfo(fedata, feraw)
+			return self.createTransponderInfo(fedata, feraw, info)
 
 		if self.type == "TransponderFrequency":
 			return self.createFrequency(feraw)
