@@ -296,13 +296,26 @@ def InitUsageConfig():
 	config.usage.show_event_progress_in_servicelist.addNotifier(refreshServiceList)
 	config.usage.show_channel_numbers_in_servicelist.addNotifier(refreshServiceList)
 
-	config.usage.blinking_display_clock_during_recording = ConfigYesNo(default = False)
-
+	#standby
 	if SystemInfo["7segment"]:
-		config.usage.blinking_rec_symbol_during_recording = ConfigSelection(default = "Rec", choices = [
+		config.usage.blinking_display_clock_during_recording = ConfigSelection(default = "Rec", choices = [
 						("Rec", _("REC")), 
 						("RecBlink", _("Blinking REC")), 
 						("Nothing", _("Nothing"))])
+	else:
+		config.usage.blinking_display_clock_during_recording = ConfigYesNo(default = False)
+		
+	#in use
+	if SystemInfo["textlcd"]:
+		config.usage.blinking_rec_symbol_during_recording = ConfigSelection(default = "Channel", choices = [
+						("Rec", _("REC Symbol")), 
+						("RecBlink", _("Blinking REC Symbol")), 
+						("Channel", _("Channelname"))])
+	elif SystemInfo["7segment"]:
+		config.usage.blinking_rec_symbol_during_recording = ConfigSelection(default = "Rec", choices = [
+						("Rec", _("REC")), 
+						("RecBlink", _("Blinking REC")), 
+						("Time", _("Time"))])
 	else:
 		config.usage.blinking_rec_symbol_during_recording = ConfigYesNo(default = True)
 		
