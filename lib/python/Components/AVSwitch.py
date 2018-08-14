@@ -589,16 +589,7 @@ def InitAVSwitch():
 	iAVSwitch.setInput("ENCODER") # init on startup
 	SystemInfo["ScartSwitch"] = eAVSwitch.getInstance().haveScartSwitch()
 
-	if os.path.exists("/proc/stb/hdmi/bypass_edid_checking"):
-		f = open("/proc/stb/hdmi/bypass_edid_checking", "r")
-		can_edidchecking = f.read().strip().split(" ")
-		f.close()
-	else:
-		can_edidchecking = False
-
-	SystemInfo["Canedidchecking"] = can_edidchecking
-
-	if can_edidchecking:
+	if SystemInfo["Canedidchecking"]:
 		def setEDIDBypass(configElement):
 			try:
 				f = open("/proc/stb/hdmi/bypass_edid_checking", "w")
@@ -614,16 +605,7 @@ def InitAVSwitch():
 	else:
 		config.av.bypass_edid_checking = ConfigNothing()
 
-	if os.path.exists("/proc/stb/video/hdmi_colorspace"):
-		f = open("/proc/stb/video/hdmi_colorspace", "r")
-		have_colorspace = f.read().strip().split(" ")
-		f.close()
-	else:
-		have_colorspace = False
-
-	SystemInfo["havecolorspace"] = have_colorspace
-
-	if have_colorspace:
+	if SystemInfo["havecolorspace"]:
 		def setHDMIColorspace(configElement):
 			try:
 				f = open("/proc/stb/video/hdmi_colorspace", "w")
@@ -651,16 +633,7 @@ def InitAVSwitch():
 	else:
 		config.av.hdmicolorspace = ConfigNothing()
 
-	if os.path.exists("/proc/stb/video/hdmi_colorimetry"):
-		f = open("/proc/stb/video/hdmi_colorimetry", "r")
-		have_colorimetry = f.read().strip().split(" ")
-		f.close()
-	else:
-		have_colorimetry = False
-
-	SystemInfo["havecolorimetry"] = have_colorimetry
-
-	if have_colorimetry:
+	if SystemInfo["havecolorimetry"]:
 		def setHDMIColorimetry(configElement):
 			try:
 				f = open("/proc/stb/video/hdmi_colorimetry", "w")
@@ -678,16 +651,7 @@ def InitAVSwitch():
 	else:
 		config.av.hdmicolorimetry = ConfigNothing()
 
-	if os.path.exists("/proc/stb/info/boxmode"):
-		f = open("/proc/stb/info/boxmode", "r")
-		have_boxmode = f.read().strip().split(" ")
-		f.close()
-	else:
-		have_boxmode = False
-
-	SystemInfo["haveboxmode"] = have_boxmode
-
-	if have_boxmode:
+	if SystemInfo["haveboxmode"]:
 		def setBoxmode(configElement):
 			try:
 				f = open("/proc/stb/info/boxmode", "w")
@@ -703,16 +667,7 @@ def InitAVSwitch():
 	else:
 		config.av.boxmode = ConfigNothing()
 
-	if os.path.exists("/proc/stb/video/hdmi_colordepth"):
-		f = open("/proc/stb/video/hdmi_colordepth", "r")
-		have_HdmiColordepth = f.read().strip().split(" ")
-		f.close()
-	else:
-		have_HdmiColordepth = False
-
-	SystemInfo["havehdmicolordepth"] = have_HdmiColordepth
-
-	if have_HdmiColordepth:
+	if SystemInfo["havehdmicolordepth"]:
 		def setHdmiColordepth(configElement):
 			try:
 				f = open("/proc/stb/video/hdmi_colordepth", "w")
@@ -730,16 +685,7 @@ def InitAVSwitch():
 	else:
 		config.av.hdmicolordepth = ConfigNothing()
 
-	if os.path.exists("/proc/stb/hdmi/audio_source"):
-		f = open("/proc/stb/hdmi/audio_source", "r")
-		can_audiosource = f.read().strip().split(" ")
-		f.close()
-	else:
-		can_audiosource = False
-
-	SystemInfo["Canaudiosource"] = can_audiosource
-
-	if can_audiosource:
+	if SystemInfo["Canaudiosource"]:
 		def setAudioSource(configElement):
 			try:
 				f = open("/proc/stb/hdmi/audio_source", "w")
@@ -755,16 +701,7 @@ def InitAVSwitch():
 	else:
 		config.av.audio_source = ConfigNothing()
 
-	if os.path.exists("/proc/stb/audio/3d_surround_choices"):
-		f = open("/proc/stb/audio/3d_surround_choices", "r")
-		can_3dsurround = f.read().strip().split(" ")
-		f.close()
-	else:
-		can_3dsurround = False
-
-	SystemInfo["Can3DSurround"] = can_3dsurround
-
-	if can_3dsurround:
+	if SystemInfo["Can3DSurround"]:
 		def set3DSurround(configElement):
 			f = open("/proc/stb/audio/3d_surround", "w")
 			f.write(configElement.value)
@@ -775,16 +712,7 @@ def InitAVSwitch():
 	else:
 		config.av.surround_3d = ConfigNothing()
 
-	if os.path.exists("/proc/stb/audio/3d_surround_speaker_position_choices"):
-		f = open("/proc/stb/audio/3d_surround_speaker_position_choices", "r")
-		can_3dsurround_speaker = f.read().strip().split(" ")
-		f.close()
-	else:
-		can_3dsurround_speaker = False
-
-	SystemInfo["Can3DSpeaker"] = can_3dsurround_speaker
-
-	if can_3dsurround_speaker:
+	if SystemInfo["Can3DSpeaker"]:
 		def set3DSurroundSpeaker(configElement):
 			f = open("/proc/stb/audio/3d_surround_speaker_position", "w")
 			f.write(configElement.value)
@@ -795,16 +723,7 @@ def InitAVSwitch():
 	else:
 		config.av.surround_3d_speaker = ConfigNothing()
 
-	if os.path.exists("/proc/stb/audio/avl_choices"):
-		f = open("/proc/stb/audio/avl_choices", "r")
-		can_autovolume = f.read().strip().split(" ")
-		f.close()
-	else:
-		can_autovolume = False
-
-	SystemInfo["CanAutoVolume"] = can_autovolume
-
-	if can_autovolume:
+	if SystemInfo["CanAutoVolume"]:
 		def setAutoVolume(configElement):
 			f = open("/proc/stb/audio/avl", "w")
 			f.write(configElement.value)
@@ -815,91 +734,41 @@ def InitAVSwitch():
 	else:
 		config.av.autovolume = ConfigNothing()
 
-	try:
-		can_pcm_multichannel = os.access("/proc/stb/audio/multichannel_pcm", os.W_OK)
-	except:
-		can_pcm_multichannel = False
-
-	SystemInfo["supportPcmMultichannel"] = can_pcm_multichannel
-	if can_pcm_multichannel:
+	if SystemInfo["supportPcmMultichannel"]:
 		def setPCMMultichannel(configElement):
 			open("/proc/stb/audio/multichannel_pcm", "w").write(configElement.value and "enable" or "disable")
 		config.av.pcm_multichannel = ConfigYesNo(default = False)
 		config.av.pcm_multichannel.addNotifier(setPCMMultichannel)
 
-	try:
-		f = open("/proc/stb/audio/ac3_choices", "r")
-		file = f.read()[:-1]
-		f.close()
-		can_downmix_ac3 = "downmix" in file
-	except:
-		can_downmix_ac3 = False
-
-	SystemInfo["CanDownmixAC3"] = can_downmix_ac3
-	if can_downmix_ac3:
+	if SystemInfo["CanDownmixAC3"]:
 		def setAC3Downmix(configElement):
-			f = open("/proc/stb/audio/ac3", "w")
-			f.write(configElement.value and "downmix" or "passthrough")
-			f.close()
+			open("/proc/stb/audio/ac3", "w").write(configElement.value and "downmix" or "passthrough")
 			if SystemInfo.get("supportPcmMultichannel", False) and not configElement.value:
 				SystemInfo["CanPcmMultichannel"] = True
 			else:
 				SystemInfo["CanPcmMultichannel"] = False
-				if can_pcm_multichannel:
+				if SystemInfo["supportPcmMultichannel"]:
 					config.av.pcm_multichannel.setValue(False)
 		config.av.downmix_ac3 = ConfigYesNo(default = True)
 		config.av.downmix_ac3.addNotifier(setAC3Downmix)
 
-	try:
-		f = open("/proc/stb/audio/dts_choices", "r")
-		file = f.read()[:-1]
-		f.close()
-		can_downmix_dts = "downmix" in file
-	except:
-		can_downmix_dts = False
-
-	SystemInfo["CanDownmixDTS"] = can_downmix_dts
-	if can_downmix_dts:
+	if SystemInfo["CanDownmixDTS"]:
 		def setDTSDownmix(configElement):
-			f = open("/proc/stb/audio/dts", "w")
-			f.write(configElement.value and "downmix" or "passthrough")
-			f.close()
+			open("/proc/stb/audio/dts", "w").write(configElement.value and "downmix" or "passthrough")
 		config.av.downmix_dts = ConfigYesNo(default = True)
 		config.av.downmix_dts.addNotifier(setDTSDownmix)
 
-	try:
-		f = open("/proc/stb/audio/aac_choices", "r")
-		file = f.read()[:-1]
-		f.close()
-		can_downmix_aac = "downmix" in file
-	except:
-		can_downmix_aac = False
-
-	SystemInfo["CanDownmixAAC"] = can_downmix_aac
-	if can_downmix_aac:
+	if SystemInfo["CanDownmixAAC"]:
 		def setAACDownmix(configElement):
-			f = open("/proc/stb/audio/aac", "w")
-			f.write(configElement.value and "downmix" or "passthrough")
-			f.close()
+			open("/proc/stb/audio/aac", "w").write(configElement.value and "downmix" or "passthrough")
 		config.av.downmix_aac = ConfigYesNo(default = True)
 		config.av.downmix_aac.addNotifier(setAACDownmix)
 
-	if os.path.exists("/proc/stb/audio/aac_transcode_choices"):
-		f = open("/proc/stb/audio/aac_transcode_choices", "r")
-		can_aactranscode = f.read().strip().split(" ")
-		f.close()
-	else:
-		can_aactranscode = False
 
-	SystemInfo["CanAACTranscode"] = can_aactranscode
-
-	if can_aactranscode:
+	if SystemInfo["CanAACTranscode"]:
 		def setAACTranscode(configElement):
-			f = open("/proc/stb/audio/aac_transcode", "w")
-			f.write(configElement.value)
-			f.close()
-		choice_list = [("off", _("off")), ("ac3", _("AC3")), ("dts", _("DTS"))]
-		config.av.transcodeaac = ConfigSelection(choices = choice_list, default = "off")
+			open("/proc/stb/audio/aac_transcode", "w").write(configElement.value)
+		config.av.transcodeaac = ConfigSelection(default = "off", choices = [("off", _("off")), ("ac3", _("AC3")), ("dts", _("DTS"))])
 		config.av.transcodeaac.addNotifier(setAACTranscode)
 	else:
 		config.av.transcodeaac = ConfigNothing()
