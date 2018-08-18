@@ -1043,11 +1043,11 @@ class ImageBackup(Screen):
 		self.commands.append('rm -rf ' + self.MAINDESTROOT)
 		self.Console.eBatch(self.commands, self.Stage5Complete, debug=True)
 
-	def Stage5Complete(self, anwser=None):
+	def Stage5Complete(self, answer=None):
 		self.Stage5Completed = True
 		print '[ImageManager] Stage5: Complete.'
 
-	def BackupComplete(self, anwser=None):
+	def BackupComplete(self, answer=None):
 		#    trim the number of backups kept...
 		#    [Also NOTE that this and the preceding def define an unused arg
 		#     with what looks like a typo - that should surely be "answer"]
