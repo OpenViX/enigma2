@@ -1049,9 +1049,6 @@ class ImageBackup(Screen):
 
 	def BackupComplete(self, answer=None):
 		#    trim the number of backups kept...
-		#    [Also NOTE that this and the preceding def define an unused arg
-		#     with what looks like a typo - that should surely be "answer"]
-		#
 		import fnmatch
 		try:
 			if config.imagemanager.number_to_keep.value > 0 \
