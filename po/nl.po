@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-21 11:36+0100\n"
-"PO-Revision-Date: 2018-07-31 11:08+0200\n"
+"POT-Creation-Date: 2018-08-19 10:11+0100\n"
+"PO-Revision-Date: 2018-08-19 12:10+0200\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -1644,6 +1644,9 @@ msgstr "Alle satellieten 3 (USALS)"
 msgid "All satellites 4 (USALS)"
 msgstr "Alle satellieten 4 (USALS)"
 
+msgid "All services provider"
+msgstr "Alle kanalen provider"
+
 msgid "Allocate"
 msgstr "Wijs toe"
 
@@ -2683,7 +2686,7 @@ msgid "Choose the front panel display formatting style for times. 'H' / 'HH' is 
 msgstr "Kies hoe tijden op het frontpaneldisplay moeten worden weergegeven. 'H' / 'HH' is het uur voor de 24-uurs klok, 'h' / 'hh' is het uur voor de 12-uurs klok, 'mm' is de minuten ('HH' en 'hh' hebben een voorloop nul indien die bestaat uit een enkel getal). Het resultaat zal gebaseerd zijn op uw keuze, maar kan beïnvloed worden door de gebruikte skin."
 
 msgid "Choose the layout view mode (Text / Graphics Multi channel EPG or Single channel EPG)."
-msgstr "Kies de lay-out (Tekst / Grafische Multi-EPG of kanaal-EPG) "
+msgstr "Kies de lay-out (Tekst / Grafische Multi-EPG of kanaal-EPG). "
 
 msgid "Choose the layout view mode (Text or Graphics)."
 msgstr "Hier kiest u de lay-out: tekst of grafisch."
@@ -2922,7 +2925,7 @@ msgid "Configure if picons will be shown in the service list."
 msgstr "Stel in of de servicetype-iconen worden getoond."
 
 msgid "Configure if the subtitle should switch between normal, italic, bold and bolditalic"
-msgstr "Stel in of de ondertitels kunnen switchen tussen normaal, schuin en vet."
+msgstr "Stel in of de ondertitels kunnen wisselen tussen normaal, schuin en vet."
 
 msgid "Configure interface"
 msgstr "Configureer interface"
@@ -5627,6 +5630,9 @@ msgstr "Inadyn instellingen"
 msgid "Include AIT in http streams"
 msgstr "Voeg AIT toe aan http streams"
 
+msgid "Include CI assignment"
+msgstr "CI toewijzing toevoegen"
+
 msgid "Include ECM in http streams"
 msgstr "Voeg ECM toe aan http streams"
 
@@ -6943,9 +6949,6 @@ msgstr "Nee"
 msgid "No (supported) DVDROM found!"
 msgstr "Geen (ondersteunde) DVD-ROM gevonden!"
 
-msgid "No CI slots found"
-msgstr "Geen CI-slots gevonden"
-
 msgid "No Connection"
 msgstr "Geen verbinding"
 
@@ -8118,6 +8121,9 @@ msgstr "Druk op OK om een groep satellieten in één keer te kiezen."
 
 msgid "Press OK to select a provider."
 msgstr "Druk op OK om een provider te kiezen."
+
+msgid "Press OK to select a service."
+msgstr "Druk op OK om een kanaal te kiezen."
 
 msgid "Press OK to select satellites"
 msgstr "Druk op OK om satellieten te kiezen."
@@ -9483,6 +9489,9 @@ msgstr "Kanalen"
 
 msgid "Services may be grouped in bouquets. When enabled, you can use more than one bouquet."
 msgstr "Kanalen kunnen in favorietenlijsten worden samengevoegd. Indien geactiveerd kunt u meer dan één favorietenlijst gebruiken."
+
+msgid "Set CI assignment for detection of available services."
+msgstr "Stel CI toewijzing in voor de detectie van de beschikbare kanalen."
 
 msgid "Set Framerate for MiniTV"
 msgstr "Stel framerate in voor MiniTV"
@@ -11777,6 +11786,9 @@ msgstr "Universele LNB"
 msgid "Unknown"
 msgstr "Onbekend"
 
+msgid "Unknown error"
+msgstr "Onbekende fout"
+
 msgid "Unmark service as a dedicated 3D service"
 msgstr "Verwijder de markering als 3D-kanaal"
 
@@ -13756,6 +13768,9 @@ msgstr "nee"
 
 msgid "no CAId selected"
 msgstr "geen CAId geselecteerd"
+
+msgid "no CI slots found"
+msgstr "Geen CI-slots gevonden"
 
 msgid "no channel list"
 msgstr "geen kanaallijst"
