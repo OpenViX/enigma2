@@ -31,10 +31,11 @@ class VirtualKeyBoardEntryComponent:
 	def __init__(self):
 		pass
 
-# For more information see /doc/VIRTUALKEYBOARD
 
+# For more information about using VirtualKeyBoard see /doc/VIRTUALKEYBOARD
+#
 class VirtualKeyBoard(Screen, HelpableScreen):
-	def __init__(self, session, title=_("Virtual KeyBoard Text:"), **kwargs):
+	def __init__(self, session, title=_("Virtual KeyBoard Text:"), text="", maxSize=False, visible_width=False, type=Input.TEXT, currPos=0, allMarked=False):
 		Screen.__init__(self, session)
 		HelpableScreen.__init__(self)
 		prompt = title  # Title should only be used for screen titles!
@@ -234,10 +235,10 @@ class VirtualKeyBoard(Screen, HelpableScreen):
 					[u"SHIFT", u"Y", u"X", u"C", u"V", u"B", u"N", u"M", u"?", u":", u"_", u"\u0147", u"", u"SHIFT"],
 					[u"EXIT", u"LOC", u"LEFT", u"RIGHT", u"ALL", u"CLR", u"SPACE"]
 				], [
-					[u"", u"~", u"", u"", u"", u"", u"", u"`", u"", u"", u"", u"", u"", u"BACKSPACE"],
-					[u"FIRST", u"\\", u"|", u"\u20AC", u"\u0165", u"\u0164", u"", u"", u"", u"\u00F3", u"\u00D3", u"\u00F7", u"\u00D7", u""],
-					[u"LAST", u"", u"\u0111", u"\u00D0", u"[", u"]", u"\u010F", u"\u010E", u"\u0142", u"\u0141", u"$", u"\u00DF", u"\u00A4", u"ENTER"],
-					[u"SHIFT", u"", u"#", u"&", u"@", u"{", u"}", u"", u"<", u">", u"*", u"", u"", u"SHIFT"],
+					[u"", u"~", u"\u011A", u"\u0160", u"\u010C", u"\u0158", u"\u017D", u"\u00DD", u"\u00C1", u"\u00CD", u"\u00C9", u"`", u"", u"BACKSPACE"],
+					[u"FIRST", u"\\", u"|", u"\u20AC", u"\u0165", u"\u0164", u"", u"", u"", u"\u00F3", u"\u00D3", u"\u00DA", u"\u00F7", u"\u00D7"],
+					[u"LAST", u"", u"\u0111", u"\u00D0", u"[", u"]", u"\u010F", u"\u010E", u"\u0142", u"\u0141", u"\u016E", u"$", u"\u00DF", u"ENTER"],
+					[u"SHIFT", u"", u"#", u"&", u"@", u"{", u"}", u"", u"<", u">", u"*", u"", u"\u00A4", u"SHIFT"],
 					[u"EXIT", u"LOC", u"LEFT", u"RIGHT", u"ALL", u"CLR", u"SPACE"]
 				]
 			]],
@@ -350,7 +351,7 @@ class VirtualKeyBoard(Screen, HelpableScreen):
 
 		self.lang = language.getLanguage()
 		self["prompt"] = Label(prompt)
-		self["text"] = Input(maxSize=False, visible_width=False, type=0, currPos=len(kwargs.get("text", "").decode("utf-8", "ignore")), allMarked=False, **kwargs)  # type=TEXT(0)
+		self["text"] = Input(text=text, maxSize=maxSize, visible_width=visible_width, type=type, currPos=len(text), allMarked=allMarked)
 		self["list"] = VirtualKeyBoardList([])
 		self["mode"] = Label(_("INS"))
 		self["locale"] = Label(_("Locale") + ": " + self.lang)
@@ -374,7 +375,7 @@ class VirtualKeyBoard(Screen, HelpableScreen):
 		self.keyboardHeight = 0
 		self.maxKey = 0
 		self.overwrite = False
-		self.selectedKey = 0
+		self.selectedKey = None
 		self.sms = NumericalTextInput(self.smsGotChar)
 		self.smsChar = None
 		self.setLocale()
@@ -579,6 +580,8 @@ class VirtualKeyBoard(Screen, HelpableScreen):
 		for keys in self.keyList[self.shiftLevel]:
 			self.list.append(self.virtualKeyBoardEntryComponent(keys))
 		self.previousSelectedKey = None
+		if self.selectedKey is None:
+			self.selectedKey = self.keyboardWidth
 		self.markSelectedKey()
 
 	def virtualKeyBoardEntryComponent(self, keys):
