@@ -325,7 +325,7 @@ class VirtualKeyBoard(Screen, HelpableScreen):
 			"save": (self.save, _("Save any text changes and exit")),
 			"locale": (self.localeMenu, _("Select the virtual keyboard locale from a menu")),
 			"shift": (self.shiftClicked, _("Select the virtual keyboard shifted character set")),
-			"ok": (self.processClick, _("Select the character or action under the virtual keyboard cursor")),
+			"ok": (self.processSelect, _("Select the character or action under the virtual keyboard cursor")),
 			"up": (self.up, _("Move the virtual keyboard cursor up")),
 			"left": (self.left, _("Move the virtual keyboard cursor left")),
 			"right": (self.right, _("Move the virtual keyboard cursor right")),
@@ -454,14 +454,15 @@ class VirtualKeyBoard(Screen, HelpableScreen):
 		keyList = copy.deepcopy(base)
 		keyList[0][1][11] = u"\u00FC"
 		keyList[0][1][12] = u"\u00F5"
-		keyList[0][1][13] = u"\\"
+		keyList[0][1][13] = u"\u0161"
 		keyList[0][3][12] = u"\u017E"
-		keyList[0][4].extend([u"[", u"]"])
+		keyList[0][4].extend([u"[", u"]", u"\\"])
 		keyList[1][1][11] = u"\u00DC"
 		keyList[1][1][12] = u"\u00D5"
-		keyList[1][1][13] = u""
+		keyList[1][1][13] = u"\u0160"
 		keyList[1][3][12] = u"\u017D"
 		keyList[1][4].extend([u"{", u"}", u"\u00A3", u"$", u"\u20AC"])
+		del keyList[2]
 		return keyList
 
 	def finnish(self, base):
@@ -528,11 +529,11 @@ class VirtualKeyBoard(Screen, HelpableScreen):
 		keyList = copy.deepcopy(base)
 		keyList[0][3][11] = u"\u0105"
 		keyList[0][3][12] = u"\u0107"
-		keyList[0][-1].extend([u"\u0119", u"\u0141", u"\u0144", u"\u00F3", u"\u015B", u"\u017A", u"\u017C"])
+		keyList[0][-1].extend([u"\u0119", u"\u0142", u"\u0144", u"\u00F3", u"\u015B", u"\u017A", u"\u017C"])
 		keyList[1][2][12] = u"\u20AC"
 		keyList[1][3][11] = u"\u0104"
 		keyList[1][3][12] = u"\u0106"
-		keyList[1][-1].extend([u"\u0118", u"\u0142", u"\u0143", u"\u00D3", u"\u015A", u"\u0179", u"\u017B"])
+		keyList[1][-1].extend([u"\u0118", u"\u0141", u"\u0143", u"\u00D3", u"\u015A", u"\u0179", u"\u017B"])
 		return keyList
 
 	def swedish(self, base):
@@ -573,7 +574,7 @@ class VirtualKeyBoard(Screen, HelpableScreen):
 
 	def smsGotChar(self):
 		if self.smsChar and self.selectAsciiKey(self.smsChar):
-			self.processClick()
+			self.processSelect()
 
 	def setLocale(self):
 		self.language, self.location, self.keyList = self.locales.get(self.lang, [None, None, None])
@@ -630,11 +631,15 @@ class VirtualKeyBoard(Screen, HelpableScreen):
 		if self.selectedKey > self.maxKey:
 			self.selectedKey = self.maxKey
 		x = self.list[self.selectedKey / self.keyboardWidth][self.selectedKey % self.keyboardWidth + 1][1]
-		self.list[self.selectedKey / self.keyboardWidth].append(MultiContentEntryPixmapAlphaBlend(pos=(x, 0), size=(self.key_sel.size().width(), self.height), png=self.key_sel))
+		if self.key_sel is None:
+			width = self.width
+		else:
+			width = self.key_sel.size().width()
+		self.list[self.selectedKey / self.keyboardWidth].append(MultiContentEntryPixmapAlphaBlend(pos=(x, 0), size=(width, self.height), png=self.key_sel))
 		self.previousSelectedKey = self.selectedKey
 		self["list"].setList(self.list)
 
-	def processClick(self):
+	def processSelect(self):
 		self.smsChar = None
 		text = self.keyList[self.shiftLevel][self.selectedKey / self.keyboardWidth][self.selectedKey % self.keyboardWidth].encode("UTF-8")
 		if text == u"":
@@ -775,7 +780,7 @@ class VirtualKeyBoard(Screen, HelpableScreen):
 	def keyGotAscii(self):
 		self.smsChar = None
 		if self.selectAsciiKey(str(unichr(getPrevAsciiCode()).encode("utf-8"))):
-			self.processClick()
+			self.processSelect()
 
 	def selectAsciiKey(self, char):
 		if char == u" ":
