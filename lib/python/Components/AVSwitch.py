@@ -64,9 +64,12 @@ class AVSwitch:
 	modes["Scart"] = ["PAL", "NTSC", "Multi"]
 	# modes["DVI-PC"] = ["PC"]
 
-	if SystemInfo["Chipstring"] :
-		modes["HDMI"] = SystemInfo["Chipstring"][0] 
-		widescreen_modes = SystemInfo["Chipstring"][1]
+	if about.getChipSetString() in ('5272s', '7251', '7251s', '7252', '7252s', '7366', '7376', '7444s', '72604'):
+		modes["HDMI"] = ["720p", "1080p", "2160p", "1080i", "576p", "576i", "480p", "480i"]
+		widescreen_modes = {"720p", "1080p", "2160p", "1080i"}
+	elif about.getChipSetString() in ('7241', '7356', '73565', '7358', '7362', '73625', '7424', '7425', '7552'):
+		modes["HDMI"] = ["720p", "1080p", "1080i", "576p", "576i", "480p", "480i"]
+		widescreen_modes = {"720p", "1080p", "1080i"}
 	else:
 		modes["HDMI"] = ["720p", "1080i", "576p", "576i", "480p", "480i"]
 		widescreen_modes = {"720p", "1080i"}
@@ -80,14 +83,128 @@ class AVSwitch:
 	# 	print "[VideoHardware] remove DVI-PC because of not existing modes"
 	# 	del modes["DVI-PC"]
 
-	if "YPbPr" in modes and SystemInfo["no_YPbPr"]:
+	# Machines that do not have component video (red, green and blue RCA sockets).
+	no_YPbPr = (
+		'dm500hd',
+		'dm500hdv2',
+		'dm800',
+		'e3hd',
+		'ebox7358',
+		'eboxlumi',
+		'ebox5100',
+		'enfinity',
+		'et4x00',
+		'formuler4turbo',
+		'gbquad4k',
+		'gbue4k',
+		'gbx1',
+		'gbx2',		
+		'gbx3',
+		'gbx3h',
+		'iqonios300hd',
+		'ixusszero',
+		'mbmicro',
+		'mbmicrov2',
+		'mbtwinplus',
+		'mutant11',
+		'mutant51',
+		'mutant500c',
+		'mutant1200',
+		'mutant1500',
+		'odimm7',
+		'optimussos1',
+		'osmega',
+		'osmini',
+		'osminiplus',
+		'osnino',
+		'osninoplus',		
+		'sf128',
+		'sf138',
+		'sf4008',
+		'tm2t',
+		'tmnano',
+		'tmnano2super',
+		'tmnano3t',
+		'tmnanose',
+		'tmnanosecombo',
+		'tmnanoseplus',
+		'tmnanosem2',
+		'tmnanosem2plus',
+		'tmnanom3',
+		'tmsingle',
+		'tmtwin4k',
+		'uniboxhd1',
+		'vusolo2',
+		'vuzero4k',
+		'vusolo4k',
+		'vuuno4k',
+		'vuuno4kse',
+		'vuultimo4k',
+		'xp1000'
+	)
+
+	# Machines that have composite video (yellow RCA socket) but do not have Scart.
+	yellow_RCA_no_scart = (
+		'formuler1',
+		'formuler1tc',
+		'formuler4turbo',
+		'gb800ueplus',
+		'gbultraue',
+		'mbmicro',
+		'mbmicrov2',
+		'mbtwinplus',
+		'mutant11',
+		'mutant500c',
+		'osmega',
+		'osmini',
+		'osminiplus',
+		'sf138',
+		'tmnano',
+		'tmnanose',
+		'tmnanosecombo',
+		'tmnanosem2',
+		'tmnanoseplus',
+		'tmnanosem2plus',
+		'tmnano2super',
+		'tmnano3t',
+		'xpeedlx3'
+	)
+
+	# Machines that have neither yellow RCA nor Scart sockets
+	no_yellow_RCA__no_scart = (
+		'et5x00',
+		'et6x00',
+		'gbquad',
+		'gbquad4k',
+		'gbue4k',
+		'gbx1',
+		'gbx2',		
+		'gbx3',
+		'gbx3h',
+		'ixussone',
+		'mutant51',
+		'mutant1500',
+		'osnino',
+		'osninoplus',		
+		'sf4008',
+		'tmnano2t',
+		'tmnanom3',
+		'tmtwin4k',
+		'vuzero4k',
+		'vusolo4k',
+		'vuuno4k',
+		'vuuno4kse',
+		'vuultimo4k'
+	)
+
+	if "YPbPr" in modes and getBoxType() in no_YPbPr:
 		del modes["YPbPr"]
 
-	if "Scart" in modes and SystemInfo["yellow_RCA_no_scart"]:
+	if "Scart" in modes and getBoxType() in yellow_RCA_no_scart:
 		modes["RCA"] = modes["Scart"]
 		del modes["Scart"]
 
-	if "Scart" in modes and SystemInfo["no_yellow_RCA__no_scart"]:
+	if "Scart" in modes and getBoxType() in no_yellow_RCA__no_scart:
 		del modes["Scart"]
 
 	def __init__(self):
@@ -624,7 +741,7 @@ def InitAVSwitch():
 	else:
 		config.av.transcodeaac = ConfigNothing()
 
-	if SystemInfo["HasScaler_sharpness"]:
+	if os.path.exists("/proc/stb/vmpeg/0/pep_scaler_sharpness"):
 		def setScaler_sharpness(config):
 			myval = int(config.value)
 			try:

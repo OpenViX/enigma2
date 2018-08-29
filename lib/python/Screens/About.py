@@ -14,7 +14,7 @@ from enigma import eTimer, getEnigmaVersionString, getDesktop
 from boxbranding import getMachineBrand, getMachineName, getImageVersion, getImageType, getImageBuild, getDriverDate, getImageDevBuild
 from Components.Pixmap import MultiPixmap
 from Components.Network import iNetwork
-from Components.SystemInfo import SystemInfo, getChipSetString
+from Components.SystemInfo import SystemInfo
 from Tools.StbHardware import getFPVersion
 from Tools.Multiboot import GetCurrentImage, GetCurrentImageMode
 from os import path
@@ -72,11 +72,11 @@ class About(Screen):
 
 		AboutText += _("Model:\t%s %s\n") % (getMachineBrand(), getMachineName())
 
-		if getChipSetString() != _("unavailable"):
+		if about.getChipSetString() != _("unavailable"):
 			if about.getIsBroadcom():
-				AboutText += _("Chipset:\tBCM%s\n") % getChipSetString().upper()
+				AboutText += _("Chipset:\tBCM%s\n") % about.getChipSetString().upper()
 			else:
-				AboutText += _("Chipset:\t%s\n") % getChipSetString().upper()
+				AboutText += _("Chipset:\t%s\n") % about.getChipSetString().upper()
 
 		AboutText += _("CPU:\t%s %s %s\n") % (about.getCPUArch(), about.getCPUSpeedString(), about.getCpuCoresString())
 		imageSubBuild = ""

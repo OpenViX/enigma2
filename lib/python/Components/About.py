@@ -55,6 +55,15 @@ def getIsBroadcom():
 	except:
 		return False
 
+def getChipSetString():
+	try:
+		f = open('/proc/stb/info/chipset', 'r')
+		chipset = f.read()
+		f.close()
+		return str(chipset.lower().replace('\n','').replace('brcm','').replace('bcm',''))
+	except IOError:
+		return _("unavailable")
+
 def getCPUSpeedString():
 	cpu_speed = 0
 	try:
