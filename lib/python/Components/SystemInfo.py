@@ -1,6 +1,7 @@
 from enigma import eDVBResourceManager, Misc_Options, eDVBCIInterfaces
 from Tools.Directories import fileExists, fileCheck, pathExists, fileHas
 from Tools.HardwareInfo import HardwareInfo
+from Components.About import getChipSetString
 
 from boxbranding import getMachineBuild, getBoxType, getBrandOEM
 
@@ -20,15 +21,6 @@ def countFrontpanelLEDs():
 	while fileExists("/proc/stb/fp/led%d_pattern" % leds):
 		leds += 1
 	return leds
-
-def getChipSetString():
-	try:
-		f = open('/proc/stb/info/chipset', 'r')
-		chipset = f.read()
-		f.close()
-		return str(chipset.lower().replace('\n','').replace('brcm','').replace('bcm',''))
-	except IOError:
-		return _("unavailable")
 
 SystemInfo["CommonInterface"] = eDVBCIInterfaces.getInstance().getNumOfSlots()
 SystemInfo["CommonInterfaceCIDelay"] = fileCheck("/proc/stb/tsmux/rmx_delay")
