@@ -2,7 +2,7 @@ import locale
 import os
 import skin
 from time import time
-from boxbranding import getBrandOEM, getBoxType
+from boxbranding import getBrandOEM, getBoxTypee, getDisplayType
 
 from enigma import eDVBDB, eEPGCache, setTunerTypePriorityOrder, setPreferredTuner, setSpinnerOnOff, setEnableTtCachingOnOff, eEnv, Misc_Options, eBackgroundFileEraser, eServiceEvent, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_HALIGN_CENTER, RT_VALIGN_CENTER, RT_WRAP
 
@@ -14,6 +14,7 @@ from Components.NimManager import nimmanager
 from Components.ServiceList import refreshServiceList
 from SystemInfo import SystemInfo
 from Tools.HardwareInfo import HardwareInfo
+
 
 def InitUsageConfig():
 	config.misc.useNTPminutes = ConfigSelection(default = "30", choices = [("30", "30" + " " +_("minutes")), ("60", _("Hour")), ("1440", _("Once per day"))])
@@ -297,7 +298,7 @@ def InitUsageConfig():
 	config.usage.show_channel_numbers_in_servicelist.addNotifier(refreshServiceList)
 
 	#standby
-	if SystemInfo["7segment"]:
+	if getDisplayType() in ('textlcd7segment'):
 		config.usage.blinking_display_clock_during_recording = ConfigSelection(default = "Rec", choices = [
 						("Rec", _("REC")), 
 						("RecBlink", _("Blinking REC")), 
@@ -306,12 +307,12 @@ def InitUsageConfig():
 		config.usage.blinking_display_clock_during_recording = ConfigYesNo(default = False)
 		
 	#in use
-	if SystemInfo["textlcd"]:
+	if getDisplayType() in ('textlcd'):
 		config.usage.blinking_rec_symbol_during_recording = ConfigSelection(default = "Channel", choices = [
 						("Rec", _("REC Symbol")), 
 						("RecBlink", _("Blinking REC Symbol")), 
 						("Channel", _("Channelname"))])
-	elif SystemInfo["7segment"]:
+	if getDisplayType() in ('textlcd7segment'):
 		config.usage.blinking_rec_symbol_during_recording = ConfigSelection(default = "Rec", choices = [
 						("Rec", _("REC")), 
 						("RecBlink", _("Blinking REC")), 
@@ -319,7 +320,7 @@ def InitUsageConfig():
 	else:
 		config.usage.blinking_rec_symbol_during_recording = ConfigYesNo(default = True)
 		
-	if SystemInfo["7segment"]:
+	if getDisplayType() in ('textlcd7segment'):
 		config.usage.show_in_standby = ConfigSelection(default = "time", choices = [
 						("time", _("Time")), 
 						("nothing", _("Nothing"))])
