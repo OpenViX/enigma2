@@ -326,7 +326,7 @@ class VirtualKeyBoard(Screen, HelpableScreen):
 			"save": (self.save, _("Save any text changes and exit")),
 			"locale": (self.localeMenu, _("Select the virtual keyboard locale from a menu")),
 			"shift": (self.shiftClicked, _("Select the virtual keyboard shifted character set")),
-			"ok": (self.processSelect, _("Select the character or action under the virtual keyboard cursor")),
+			"select": (self.processSelect, _("Select the character or action under the virtual keyboard cursor")),
 			"up": (self.up, _("Move the virtual keyboard cursor up")),
 			"left": (self.left, _("Move the virtual keyboard cursor left")),
 			"right": (self.right, _("Move the virtual keyboard cursor right")),
@@ -641,6 +641,9 @@ class VirtualKeyBoard(Screen, HelpableScreen):
 		self.list[self.selectedKey / self.keyboardWidth].append(MultiContentEntryPixmapAlphaBlend(pos=(x, 0), size=(width, self.height), png=self.key_sel))
 		self.previousSelectedKey = self.selectedKey
 		self["list"].setList(self.list)
+
+	def okClicked(self):  # Deprecated legacy interface to new processSelect used by YouTubeVirtualKeyBoard
+		self.processSelect()
 
 	def processSelect(self):
 		self.smsChar = None
