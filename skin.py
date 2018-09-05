@@ -247,7 +247,7 @@ def parseParameter(s):
 		return float(s)
 	elif s in colorNames:
 		return colorNames[s].argb()
-	elif s.lstrip('-+').isdigit():
+	elif s.lstrip('-+ ').isdigit():
 		return int(s)
 	else:
 		return s
