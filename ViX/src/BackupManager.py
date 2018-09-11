@@ -512,15 +512,18 @@ class VIXBackupManager(Screen):
 
 	def Stage2Complete(self, result, retval, extra_args):
 		print '[BackupManager] Restoring Stage 2: Result ', result
-		if result.find('wget returned 1') != -1 or result.find('wget returned 255') != -1 or result.find('404 Not Found') != -1:
+		if result.find('wget returned 4') != -1: # probably no network adaptor connected
+			self.feeds = 'NONETWORK' 
+			self.Stage2Completed = True
+		if result.find('wget returned 8') != -1 or result.find('wget returned 1') != -1 or result.find('wget returned 255') != -1 or result.find('404 Not Found') != -1: # Server issued an error response, or there was a wget generic error code.
 			self.feeds = 'DOWN'
 			self.Stage2Completed = True
-		elif result.find('bad address') != -1:
+		elif result.find('bad address') != -1: # probably DNS lookup failed
 			self.feeds = 'BAD'
 			self.Stage2Completed = True
-		elif result.find('Collected errors') != -1:
+		elif result.find('Collected errors') != -1: # none of the above errors. What condition requires this to loop? Maybe double key press.
 			AddPopupWithCallback(self.Stage2,
-								 _("A background update check is is progress, please try again."),
+								 _("A background update check is in progress, please try again."),
 								 MessageBox.TYPE_INFO,
 								 10,
 								 NOPLUGINS
@@ -553,11 +556,20 @@ class VIXBackupManager(Screen):
 				print '[BackupManager] Restoring Stage 3: Kernel or Image Version check failed'
 				self.kernelcheck = False
 				self.Stage6()
+		elif self.feeds == 'NONETWORK':
+			print '[BackupManager] Restoring Stage 3: No network connection, plugin restore not possible'
+			self.kernelcheck = False
+			AddPopupWithCallback(self.Stage6,
+								 _("Your %s %s is not connected to a network. Please check your network settings and try again.") % (getMachineBrand(), getMachineName()),
+								 MessageBox.TYPE_INFO,
+								 15,
+								 NOPLUGINS
+			)
 		elif self.feeds == 'DOWN':
 			print '[BackupManager] Restoring Stage 3: Feeds are down, plugin restore not possible'
 			self.kernelcheck = False
 			AddPopupWithCallback(self.Stage6,
-								 _("Sorry feeds are down for maintenance, Please try again later."),
+								 _("Sorry the feeds are down for maintenance. Please try again later."),
 								 MessageBox.TYPE_INFO,
 								 15,
 								 NOPLUGINS
@@ -566,7 +578,7 @@ class VIXBackupManager(Screen):
 			print '[BackupManager] Restoring Stage 3: no network connection, plugin restore not possible'
 			self.kernelcheck = False
 			AddPopupWithCallback(self.Stage6,
-								 _("Your %s %s is not connected to the internet, please check your network settings and try again.") % (getMachineBrand(), getMachineName()),
+								 _("Your %s %s is not connected to the internet. Please check your network settings and try again.") % (getMachineBrand(), getMachineName()),
 								 MessageBox.TYPE_INFO,
 								 15,
 								 NOPLUGINS
