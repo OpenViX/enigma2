@@ -38,7 +38,7 @@ class InstallWizard(Screen, ConfigListScreen):
 					if iNetwork.getAdapterAttribute(x[1], 'up'):
 						self.ipConfigEntry = ConfigIP(default = iNetwork.getAdapterAttribute(x[1], "ip"))
 						iNetwork.checkNetworkState(self.checkNetworkCB)
-						if_found = True
+						is_found = True
 					else:
 						iNetwork.restartNetwork(self.checkNetworkLinkCB)
 					break
