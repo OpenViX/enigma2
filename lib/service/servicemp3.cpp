@@ -483,67 +483,67 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 
 	m_sourceinfo.is_video = FALSE;
 	m_sourceinfo.audiotype = atUnknown;
-	if ( (strcasecmp(ext, ".mpeg") == 0 || strcasecmp(ext, ".mpe") == 0 || strcasecmp(ext, ".mpg") == 0 || strcasecmp(ext, ".vob") == 0 || strcasecmp(ext, ".bin") == 0 )
+	if ((strcasecmp(ext, ".mpeg") == 0 || strcasecmp(ext, ".mpe") == 0 || strcasecmp(ext, ".mpg") == 0 || strcasecmp(ext, ".vob") == 0 || strcasecmp(ext, ".bin") == 0)
 	{
 		m_sourceinfo.containertype = ctMPEGPS;
 		m_sourceinfo.is_video = TRUE;
 	}
-	else if ( strcasecmp(ext, ".ts") == 0 )
+	else if (strcasecmp(ext, ".ts") == 0)
 	{
 		m_sourceinfo.containertype = ctMPEGTS;
 		m_sourceinfo.is_video = TRUE;
 	}
-	else if ( strcasecmp(ext, ".mkv") == 0 )
+	else if (strcasecmp(ext, ".mkv") == 0)
 	{
 		m_sourceinfo.containertype = ctMKV;
 		m_sourceinfo.is_video = TRUE;
 	}
-	else if ( strcasecmp(ext, ".ogm") == 0 || strcasecmp(ext, ".ogv") == 0 )
+	else if (strcasecmp(ext, ".ogm") == 0 || strcasecmp(ext, ".ogv") == 0)
 	{
 		m_sourceinfo.containertype = ctOGG;
 		m_sourceinfo.is_video = TRUE;
 	}
-	else if ( strcasecmp(ext, ".avi") == 0 || strcasecmp(ext, ".divx") == 0 )
+	else if (strcasecmp(ext, ".avi") == 0 || strcasecmp(ext, ".divx") == 0)
 	{
 		m_sourceinfo.containertype = ctAVI;
 		m_sourceinfo.is_video = TRUE;
 	}
-	else if ( strcasecmp(ext, ".mp4") == 0 || strcasecmp(ext, ".mov") == 0 || strcasecmp(ext, ".m4v") == 0 || strcasecmp(ext, ".3gp") == 0 || strcasecmp(ext, ".3g2") == 0 )
+	else if (strcasecmp(ext, ".mp4") == 0 || strcasecmp(ext, ".mov") == 0 || strcasecmp(ext, ".m4v") == 0 || strcasecmp(ext, ".3gp") == 0 || strcasecmp(ext, ".3g2") == 0)
 	{
 		m_sourceinfo.containertype = ctMP4;
 		m_sourceinfo.is_video = TRUE;
 	}
-	else if ( strcasecmp(ext, ".asf") == 0 || strcasecmp(ext, ".wmv") == 0 )
+	else if (strcasecmp(ext, ".asf") == 0 || strcasecmp(ext, ".wmv") == 0)
 	{
 		m_sourceinfo.containertype = ctASF;
 		m_sourceinfo.is_video = TRUE;
 	}
-	else if (strcasecmp(ext, ".webm") == 0 )
+	else if (strcasecmp(ext, ".webm") == 0)
 	{
 		m_sourceinfo.containertype = ctWEBM;
 		m_sourceinfo.is_video = TRUE;
 	}
-	else if ( strcasecmp(ext, ".m4a") == 0 )
+	else if (strcasecmp(ext, ".m4a") == 0)
 	{
 		m_sourceinfo.containertype = ctMP4;
 		m_sourceinfo.audiotype = atAAC;
 	}
-	else if ( strcasecmp(ext, ".m3u8") == 0 )
+	else if (strcasecmp(ext, ".m3u8") == 0)
 		m_sourceinfo.is_hls = TRUE;
-	else if ( strcasecmp(ext, ".mp3") == 0 )
+	else if (strcasecmp(ext, ".mp3") == 0)
 		m_sourceinfo.audiotype = atMP3;
-	else if ( strcasecmp(ext, ".wma") == 0 )
+	else if (strcasecmp(ext, ".wma") == 0)
 		m_sourceinfo.audiotype = atWMA;
-	else if ( strcasecmp(ext, ".wav") == 0 || strcasecmp(ext, ".wave") == 0 || strcasecmp(ext, ".wv") == 0 )
+	else if (strcasecmp(ext, ".wav") == 0 || strcasecmp(ext, ".wave") == 0 || strcasecmp(ext, ".wv") == 0)
 		m_sourceinfo.audiotype = atPCM;
-	else if ( strcasecmp(ext, ".cda") == 0 )
+	else if (strcasecmp(ext, ".cda") == 0)
 		m_sourceinfo.containertype = ctCDA;
-	if ( strcasecmp(ext, ".dat") == 0 )
+	if (strcasecmp(ext, ".dat") == 0)
 	{
 		m_sourceinfo.containertype = ctVCD;
 		m_sourceinfo.is_video = TRUE;
 	}
-	if ( strstr(filename, "://") )
+	if (strstr(filename, "://"))
 		m_sourceinfo.is_streaming = TRUE;
 
 	gchar *uri;
