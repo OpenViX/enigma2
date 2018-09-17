@@ -523,7 +523,7 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 		m_sourceinfo.containertype = ctWEBM;
 		m_sourceinfo.is_video = TRUE;
 	}
-	else if (strcasecmp(ext, ".m4a") == 0)
+	else if (strcasecmp(ext, ".m4a") == 0 || strcasecmp(ext, ".alac") == 0)
 	{
 		m_sourceinfo.containertype = ctMP4;
 		m_sourceinfo.audiotype = atAAC;
@@ -536,6 +536,12 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 		m_sourceinfo.audiotype = atWMA;
 	else if (strcasecmp(ext, ".wav") == 0 || strcasecmp(ext, ".wave") == 0 || strcasecmp(ext, ".wv") == 0)
 		m_sourceinfo.audiotype = atPCM;
+	else if (strcasecmp(ext, ".dts") == 0)
+		m_sourceinfo.audiotype = atDTS;
+	else if (strcasecmp(ext, ".flac") == 0)
+		m_sourceinfo.audiotype = atFLAC;
+	else if (strcasecmp(ext, ".ac3") == 0)
+		m_sourceinfo.audiotype = atAC3;
 	else if (strcasecmp(ext, ".cda") == 0)
 		m_sourceinfo.containertype = ctCDA;
 	if (strcasecmp(ext, ".dat") == 0)
