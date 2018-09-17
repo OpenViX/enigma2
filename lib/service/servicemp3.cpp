@@ -1328,12 +1328,7 @@ std::string eServiceMP3::getInfoString(int w)
 		case sProvider:
 			return "IPTV";
 		case sServiceref:
-		{
-			eServiceReference ref(m_ref);
-			ref.type = eServiceFactoryMP3::id;
-			ref.path.clear();
-			return ref.toString();
-		}
+			return m_ref.toString();
 		default:
 			break;
 		}
