@@ -56,7 +56,7 @@ def SoftcamAutostart(reason, session=None, **kwargs):
 
 class VIXSoftcamManager(Screen):
 	skin = """
-	<screen name="VIXSoftcamManager" position="center,center" size="560,400" title="Softcam Setup">
+	<screen name="VIXSoftcamManager" position="center,center" size="560,400">
 		<ePixmap pixmap="skin_default/buttons/red.png" position="0,0" size="140,40" alphatest="on"/>
 		<ePixmap pixmap="skin_default/buttons/green.png" position="140,0" size="140,40" alphatest="on"/>
 		<ePixmap pixmap="skin_default/buttons/yellow.png" position="280,0" size="140,40" alphatest="on"/>
@@ -224,7 +224,7 @@ class VIXSoftcamManager(Screen):
 			if self.currentactivecam.find(selcam) < 0:
 				if selcam.lower().startswith('cccam'):
 					if not path.exists('/etc/CCcam.cfg'):
-						self.session.open(MessageBox, _("No config files found, please setup CCcam first\nin /etc/CCcam.cfg"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
+						self.session.open(MessageBox, _("No config files found, please setup CCcam first\nin /etc/CCcam.cfg."), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 					else:
 						if self.currentactivecam.lower().find('mgcam') < 0:
 							self.session.openWithCallback(self.showActivecam, VIXStartCam, self.sel[0])
@@ -232,26 +232,26 @@ class VIXSoftcamManager(Screen):
 							self.session.open(MessageBox, _("CCcam can't run whilst MGcamd is running"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 				elif selcam.lower().startswith('hypercam'):
 					if not path.exists('/etc/hypercam.cfg'):
-						self.session.open(MessageBox, _("No config files found, please setup Hypercam first\nin /etc/hypercam.cfg"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
+						self.session.open(MessageBox, _("No config files found, please setup Hypercam first\nin /etc/hypercam.cfg."), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 					else:
 						self.session.openWithCallback(self.showActivecam, VIXStartCam, self.sel[0])
 				elif selcam.lower().startswith('oscam'):
 					if not path.exists('/etc/tuxbox/config/oscam.conf') and not path.exists('/etc/tuxbox/config/oscam/oscam.conf'):
-						self.session.open(MessageBox, _("No config files found, please setup Oscam first\nin /etc/tuxbox/config or /etc/tuxbox/config/oscam"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
+						self.session.open(MessageBox, _("No config files found, please setup Oscam first\nin /etc/tuxbox/config or in /etc/tuxbox/config/oscam."), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 					else:
 						self.session.openWithCallback(self.showActivecam, VIXStartCam, self.sel[0])
 				elif selcam.lower().startswith('mgcam'):
 					if not path.exists('/var/keys/mg_cfg'):
 						if self.currentactivecam.lower().find('cccam') < 0:
-							self.session.open(MessageBox, _("No config files found, please setup MGcamd first\nin /usr/keys"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
+							self.session.open(MessageBox, _("No config files found, please setup MGcamd first\nin /usr/keys."), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 						else:
-							self.session.open(MessageBox, _("MGcamd can't run whilst CCcam is running"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
+							self.session.open(MessageBox, _("MGcamd can't run whilst CCcam is running."), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 					else:
 						self.session.openWithCallback(self.showActivecam, VIXStartCam, self.sel[0])
 				elif selcam.lower().startswith('scam'):
 					self.session.openWithCallback(self.showActivecam, VIXStartCam, self.sel[0])
 				else:
-					self.session.open(MessageBox, _("Found non-standard softcam, trying to start, this may fail"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
+					self.session.open(MessageBox, _("Found non-standard softcam, trying to start, this may fail."), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 					self.session.openWithCallback(self.showActivecam, VIXStartCam, self.sel[0])
 			else:
 				self.session.openWithCallback(self.showActivecam, VIXStopCam, self.sel[0])
@@ -284,26 +284,26 @@ class VIXSoftcamManager(Screen):
 				if self.currentactivecam.lower().find('mgcam') < 0:
 					self.session.openWithCallback(self.showActivecam, VIXStartCam, self.sel[0])
 				else:
-					self.session.open(MessageBox, _("CCcam can't run whilst MGcamd is running"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
+					self.session.open(MessageBox, _("CCcam can't run whilst MGcamd is running."), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 			elif selectedcam.lower().startswith('cccam') and path.exists('/etc/CCcam.cfg') == False:
-				self.session.open(MessageBox, _("No config files found, please setup CCcam first\nin /etc/CCcam.cfg"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
+				self.session.open(MessageBox, _("No config files found, please setup CCcam first\nin /etc/CCcam.cfg."), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 			elif selectedcam.lower().startswith('oscam') and path.exists('/etc/tuxbox/config/oscam.conf') == True:
 				self.session.openWithCallback(self.showActivecam, VIXStartCam, self.sel[0])
 			elif selectedcam.lower().startswith('oscam') and path.exists('/etc/tuxbox/config/oscam.conf') == False:
 				if not path.exists('/etc/tuxbox/config'):
 					makedirs('/etc/tuxbox/config')
-				self.session.open(MessageBox, _("No config files found, please setup Oscam first\nin /etc/tuxbox/config"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
+				self.session.open(MessageBox, _("No config files found, please setup Oscam first\nin /etc/tuxbox/config."), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 			elif selectedcam.lower().startswith('mgcam') and path.exists('/var/keys/mg_cfg') == True:
 				self.session.openWithCallback(self.showActivecam, VIXStartCam, self.sel[0])
 			elif selectedcam.lower().startswith('mgcam') and path.exists('/var/keys/mg_cfg') == False:
 				if self.currentactivecam.lower().find('cccam') < 0:
-					self.session.open(MessageBox, _("No config files found, please setup MGcamd first\nin /usr/keys"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
+					self.session.open(MessageBox, _("No config files found, please setup MGcamd first\nin /usr/keys."), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 				else:
-					self.session.open(MessageBox, _("MGcamd can't run whilst CCcam is running"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
+					self.session.open(MessageBox, _("MGcamd can't run whilst CCcam is running."), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 			elif selectedcam.lower().startswith('scam'):
 				self.session.openWithCallback(self.showActivecam, VIXStartCam, self.sel[0])
 			elif not selectedcam.lower().startswith('cccam') or selectedcam.lower().startswith('oscam') or selectedcam.lower().startswith('mgcamd'):
-				self.session.open(MessageBox, _("Found non-standard softcam, trying to start, this may fail"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
+				self.session.open(MessageBox, _("Found non-standard softcam, trying to start, this may fail."), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 				self.session.openWithCallback(self.showActivecam, VIXStartCam, self.sel[0])
 
 	def showLog(self):
@@ -429,7 +429,7 @@ class VIXStartCam(Screen):
 
 class VIXStopCam(Screen):
 	skin = """
-	<screen name="VIXStopCam" position="center,center" size="484, 150" title="Stopping Softcam">
+	<screen name="VIXStopCam" position="center,center" size="484, 150">
 		<widget name="connect" position="217, 0" size="64,64" zPosition="2" pixmaps="ViX_HD_Common/busy/busy1.png,ViX_HD_Common/busy/busy2.png,ViX_HD_Common/busy/busy3.png,ViX_HD_Common/busy/busy4.png,ViX_HD_Common/busy/busy5.png,ViX_HD_Common/busy/busy6.png,ViX_HD_Common/busy/busy7.png,ViX_HD_Common/busy/busy8.png,ViX_HD_Common/busy/busy9.png,ViX_HD_Common/busy/busy9.png,ViX_HD_Common/busy/busy10.png,ViX_HD_Common/busy/busy11.png,ViX_HD_Common/busy/busy12.png,ViX_HD_Common/busy/busy13.png,ViX_HD_Common/busy/busy14.png,ViX_HD_Common/busy/busy15.png,ViX_HD_Common/busy/busy17.png,ViX_HD_Common/busy/busy18.png,ViX_HD_Common/busy/busy19.png,ViX_HD_Common/busy/busy20.png,ViX_HD_Common/busy/busy21.png,ViX_HD_Common/busy/busy22.png,ViX_HD_Common/busy/busy23.png,ViX_HD_Common/busy/busy24.png"  transparent="1" alphatest="blend"/>
 		<widget name="lab1" position="10, 80" halign="center" size="460, 60" zPosition="1" font="Regular;20" valign="top" transparent="1"/>
 	</screen>"""

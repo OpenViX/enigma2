@@ -33,7 +33,7 @@ class MultiBoot(Screen):
 	def __init__(self, session,menu_path=""):
 		Screen.__init__(self, session)
 		self.skinName = "MultiBoot"
-		screentitle = _("Multiboot Image Manager")
+		screentitle = _("Multiboot image manager")
 
 		self.menu_path = menu_path
 		if config.usage.show_menupath.value == 'large':
@@ -57,7 +57,7 @@ class MultiBoot(Screen):
 
 		self["key_red"] = StaticText(_("Cancel"))
 		self["labe14"] = StaticText(_("Use the cursor keys to select an installed image and then Erase button."))
-		self["labe15"] = StaticText(_("Note: slot list does not show current image or empty slots"))
+		self["labe15"] = StaticText(_("Note: slot list does not show current image or empty slots."))
 		self["key_green"] = StaticText(_("Erase"))
 		self["config"] = ChoiceList(list=[ChoiceEntryComponent('',((_("Retrieving image slots - Please wait...")), "Queued"))])
 		imagedict = []
@@ -101,7 +101,7 @@ class MultiBoot(Screen):
 	def erase(self):
 		self.currentSelected = self["config"].l.getCurrentSelection()
 		if self.currentSelected[0][1] != "Queued":
-			message = _("Are you sure you want to delete image slot %s" %self.currentSelected[0][1])
+			message = _("Are you sure you want to delete image slot %s ?" %self.currentSelected[0][1])
 			ybox = self.session.openWithCallback(self.doErase, MessageBox, message, MessageBox.TYPE_YESNO, default=True)
 			ybox.setTitle(_("Remove confirmation"))
 

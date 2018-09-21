@@ -157,6 +157,6 @@ def Plugins(**kwargs):
 	plist.append(PluginDescriptor(name=_("ViX Image manager"), where=PluginDescriptor.WHERE_VIXMENU, fnc=ImageMangerMenu))
 	plist.append(PluginDescriptor(name=_("ViX Mount manager"), where=PluginDescriptor.WHERE_VIXMENU, fnc=MountManagerMenu))
 	plist.append(PluginDescriptor(name=_("ViX Script runner"), where=PluginDescriptor.WHERE_VIXMENU, fnc=ScriptRunnerMenu))
-	plist.append(PluginDescriptor(name=_("ViX Swap manager"), where=PluginDescriptor.WHERE_VIXMENU, fnc=SwapManagerMenu))
+	plist.append(PluginDescriptor(name=_("ViX SWAP manager"), where=PluginDescriptor.WHERE_VIXMENU, fnc=SwapManagerMenu))
 	return plist
 

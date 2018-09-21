@@ -23,7 +23,7 @@ from Tools.Directories import SCOPE_ACTIVE_SKIN, resolveFilename
 
 class VIXDevicesPanel(Screen):
 	skin = """
-	<screen position="center,center" size="640,460" title="Mount Manager">
+	<screen position="center,center" size="640,460">
 		<ePixmap pixmap="skin_default/buttons/red.png" position="25,0" size="140,40" alphatest="on"/>
 		<ePixmap pixmap="skin_default/buttons/green.png" position="175,0" size="140,40" alphatest="on"/>
 		<ePixmap pixmap="skin_default/buttons/yellow.png" position="325,0" size="140,40" alphatest="on"/>
@@ -231,7 +231,7 @@ class VIXDevicesPanel(Screen):
 					mountok = True
 			f.close()
 			if not mountok:
-				self.session.open(MessageBox, _("Mount failed"), MessageBox.TYPE_INFO, timeout=5)
+				self.session.open(MessageBox, _("Mount failed."), MessageBox.TYPE_INFO, timeout=5)
 			self.updateList()
 
 	def Unmount(self):
@@ -250,7 +250,7 @@ class VIXDevicesPanel(Screen):
 				for line in mountcheck:
 					parts = line.strip().split(" ")
 					if path.realpath(parts[0]).startswith(device):
-						self.session.open(MessageBox, _("Can't un-mount the partition, make sure it is not being used for swap or record/timeshift paths"), MessageBox.TYPE_INFO)
+						self.session.open(MessageBox, _("Can't un-mount the partition; make sure it is not being used for SWAP or record/timeshift paths."), MessageBox.TYPE_INFO)
 			except IOError:
 				return -1
 			self.updateList()
@@ -295,7 +295,7 @@ class VIXDevicesPanel(Screen):
 
 class VIXDevicePanelConf(Screen, ConfigListScreen):
 	skin = """
-	<screen position="center,center" size="640,460" title="Choose where to mount your devices to:">
+	<screen position="center,center" size="640,460">
 		<ePixmap pixmap="skin_default/buttons/red.png" position="25,0" size="140,40" alphatest="on"/>
 		<ePixmap pixmap="skin_default/buttons/green.png" position="175,0" size="140,40" alphatest="on"/>
 		<widget name="key_red" position="25,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
@@ -425,7 +425,7 @@ class VIXDevicePanelConf(Screen, ConfigListScreen):
 			self.type = x[3]
 			self.Console.ePopen('umount ' + self.device)
 			self.Console.ePopen("/sbin/blkid | grep " + self.device + " && opkg list-installed ntfs-3g", self.add_fstab, [self.device, self.mountp])
-		message = _("Updating mount locations.")
+		message = _("Updating mount locations...")
 		ybox = self.session.openWithCallback(self.delay, MessageBox, message, type=MessageBox.TYPE_INFO, timeout=5, enable_input=False)
 		ybox.setTitle(_("Please wait."))
 

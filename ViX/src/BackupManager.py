@@ -95,14 +95,14 @@ def BackupManagerautostart(reason, session=None, **kwargs):
 	global _session
 	now = int(time())
 	if reason == 0:
-		print "[BackupManager] AutoStart Enabled"
+		print "[Backup manager] AutoStart Enabled"
 		if session is not None:
 			_session = session
 			if autoBackupManagerTimer is None:
 				autoBackupManagerTimer = AutoBackupManagerTimer(session)
 	else:
 		if autoBackupManagerTimer is not None:
-			print "[BackupManager] Stop"
+			print "[Backup manager] Stop"
 			autoBackupManagerTimer.stop()
 
 
@@ -323,7 +323,7 @@ class VIXBackupManager(Screen):
 			ybox = self.session.openWithCallback(self.doDelete, MessageBox, message, MessageBox.TYPE_YESNO, default=False)
 			ybox.setTitle(_("Remove confirmation"))
 		else:
-			self.session.open(MessageBox, _("You have no backup to delete."), MessageBox.TYPE_INFO, timeout=10)
+			self.session.open(MessageBox, _("There is no backup to delete."), MessageBox.TYPE_INFO, timeout=10)
 
 	def doDelete(self, answer):
 		if answer is True:
@@ -364,9 +364,9 @@ class VIXBackupManager(Screen):
 					remove('/tmp/backupkernelversion')
 				self.Console.ePopen("tar -xzvf " + self.BackupDirectory + self.sel + " tmp/ExtraInstalledPlugins tmp/backupkernelversion tmp/backupimageversion -C /", self.settingsRestoreCheck)
 			else:
-				self.session.open(MessageBox, _("You have no backups to restore."), MessageBox.TYPE_INFO, timeout=10)
+				self.session.open(MessageBox, _("There is no backup to restore."), MessageBox.TYPE_INFO, timeout=10)
 		else:
-			self.session.open(MessageBox, _("Backup in progress,\nPlease wait for it to finish, before trying again"), MessageBox.TYPE_INFO, timeout=10)
+			self.session.open(MessageBox, _("Backup in progress,\nPlease wait for it to finish, before trying again."), MessageBox.TYPE_INFO, timeout=10)
 
 	def settingsRestoreCheck(self, result, retval, extra_args=None):
 		if path.exists('/tmp/backupimageversion'):
@@ -578,7 +578,7 @@ class VIXBackupManager(Screen):
 			print '[BackupManager] Restoring Stage 3: no network connection, plugin restore not possible'
 			self.kernelcheck = False
 			AddPopupWithCallback(self.Stage6,
-								 _("Your %s %s is not connected to the internet. Please check your network settings and try again.") % (getMachineBrand(), getMachineName()),
+								 _("Your %s %s is not connected to the Internet. Please check your network settings and try again.") % (getMachineBrand(), getMachineName()),
 								 MessageBox.TYPE_INFO,
 								 15,
 								 NOPLUGINS
@@ -944,7 +944,7 @@ class VIXBackupManagerMenu(Setup):
 		self["key_red"] = Button(_("Cancel"))
 		self["key_green"] = Button(_("OK"))
 		self["key_yellow"] = Button(_("Choose files"))
-		self["key_blue"] = Button(_("Choose local ipk's folder"))
+		self["key_blue"] = Button(_("Choose local IPK's folder"))
 
 	def chooseFiles(self):
 		self.session.openWithCallback(self.backupfiles_choosen, BackupSelection, self.menu_path)
@@ -1084,7 +1084,7 @@ class AutoBackupManagerTimer:
 			from Screens.Standby import inStandby
 # Check for querying enabled
 			if not inStandby and config.backupmanager.query.value:
-				message = _("Your %s %s is about to run a backup of your settings and detect your plugins,\nDo you want to allow this?") % (getMachineBrand(), getMachineName())
+				message = _("Your %s %s is about to run a backup of your settings and to detect your plugins.\nDo you want to allow this?") % (getMachineBrand(), getMachineName())
 				ybox = self.session.openWithCallback(self.doBackup, MessageBox, message, MessageBox.TYPE_YESNO, timeout=30)
 				ybox.setTitle('Scheduled backup.')
 			else:
@@ -1187,7 +1187,7 @@ class BackupFiles(Screen):
 		task.check = lambda: self.Stage5Completed
 		task.weighting = 1
 
-		task = Components.Task.PythonTask(job, _("Backup Complete..."))
+		task = Components.Task.PythonTask(job, _("Backup complete..."))
 		task.work = self.BackupComplete
 		task.weighting = 1
 
@@ -1288,7 +1288,7 @@ class BackupFiles(Screen):
 			print '[BackupManager] Listing completed.'
 			self.Stage2Completed = True
 		else:
-			self.session.openWithCallback(self.BackupComplete, MessageBox, _("Plugin listing failed - e. g. wrong backup destination or no space left on backup device"), MessageBox.TYPE_INFO, timeout=10)
+			self.session.openWithCallback(self.BackupComplete, MessageBox, _("Plugin listing failed - e. g. wrong backup destination or no space left on backup device."), MessageBox.TYPE_INFO, timeout=10)
 			print '[BackupManager] Result.', result
 			print "{BackupManager] Plugin listing failed - e. g. wrong backup destination or no space left on backup device"
 
@@ -1348,7 +1348,7 @@ class BackupFiles(Screen):
 			remove('/tmp/ExtraInstalledPlugins')
 			self.Stage5Completed = True
 		else:
-			self.session.openWithCallback(self.BackupComplete, MessageBox, _("Backup failed - e. g. wrong backup destination or no space left on backup device"), MessageBox.TYPE_INFO, timeout=10)
+			self.session.openWithCallback(self.BackupComplete, MessageBox, _("Backup failed - e. g. wrong backup destination or no space left on backup device."), MessageBox.TYPE_INFO, timeout=10)
 			print '[BackupManager] Result.', result
 			print "{BackupManager] Backup failed - e. g. wrong backup destination or no space left on backup device"
 
