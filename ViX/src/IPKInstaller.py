@@ -161,7 +161,7 @@ class VIXIPKInstaller(Screen):
 
 class IpkgInstaller(Screen):
 	skin = """
-		<screen name="IpkgInstaller" position="center,center" size="550,450">
+		<screen name="IpkgInstaller" position="center,center" size="550,450" >
 			<ePixmap pixmap="skin_default/buttons/red.png" position="0,0" size="140,40" alphatest="on"/>
 			<ePixmap pixmap="skin_default/buttons/green.png" position="140,0" size="140,40" alphatest="on"/>
 			<ePixmap pixmap="skin_default/buttons/yellow.png" position="280,0" size="140,40" alphatest="on"/>

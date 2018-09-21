@@ -95,14 +95,14 @@ def BackupManagerautostart(reason, session=None, **kwargs):
 	global _session
 	now = int(time())
 	if reason == 0:
-		print "[Backup manager] AutoStart Enabled"
+		print "[BackupManager] AutoStart Enabled"
 		if session is not None:
 			_session = session
 			if autoBackupManagerTimer is None:
 				autoBackupManagerTimer = AutoBackupManagerTimer(session)
 	else:
 		if autoBackupManagerTimer is not None:
-			print "[Backup manager] Stop"
+			print "[BackupManager] Stop"
 			autoBackupManagerTimer.stop()
 
 
@@ -912,7 +912,7 @@ class XtraPluginsSelection(Screen):
 
 class VIXBackupManagerMenu(Setup):
 	skin = """
-	<screen name="VIXBackupManagerMenu" position="center,center" size="560,550" title="VIX backup manager menu">
+	<screen name="VIXBackupManagerMenu" position="center,center" size="560,550">
 		<ePixmap pixmap="skin_default/buttons/red.png" position="0,0" size="140,40" alphatest="on"/>
 		<ePixmap pixmap="skin_default/buttons/green.png" position="140,0" size="140,40" alphatest="on"/>
 		<ePixmap pixmap="skin_default/buttons/yellow.png" position="280,0" size="140,40" alphatest="on"/>
@@ -960,7 +960,7 @@ class VIXBackupManagerMenu(Setup):
 
 class VIXBackupManagerLogView(Screen):
 	skin = """
-<screen name="VIXBackupManagerLogView" position="center,center" size="560,400" title="Backup Log">
+<screen name="VIXBackupManagerLogView" position="center,center" size="560,400">
 	<widget name="list" position="0,0" size="560,400" font="Regular;16"/>
 </screen>"""
 
