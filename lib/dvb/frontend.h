@@ -6,7 +6,6 @@
 #endif
 
 #include <map>
-#include <lib/base/elock.h>
 #include <lib/dvb/idvb.h>
 #include <lib/dvb/frontendparms.h>
 
@@ -128,8 +127,6 @@ private:
 
 	static int PriorityOrder;
 	static int PreferredFrontendIndex;
-
-	eSingleLock lock;
 public:
 	eDVBFrontend(const char *devidenodename, int fe, int &ok, bool simulate=false, eDVBFrontend *simulate_fe=NULL);
 	virtual ~eDVBFrontend();
