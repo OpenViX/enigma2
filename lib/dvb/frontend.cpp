@@ -2325,6 +2325,7 @@ RESULT eDVBFrontend::prepare_sat(const eDVBFrontendParametersSatellite &feparm, 
 		eWarning("[eDVBFrontend] no SEC module active!");
 		return -ENOENT;
 	}
+	eSingleLocker s(lock);
 	res = m_sec->prepare(*this, feparm, satfrequency, 1 << m_slotid, tunetimeout);
 	if (!res)
 	{
