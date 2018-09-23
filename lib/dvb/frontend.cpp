@@ -1555,7 +1555,6 @@ bool eDVBFrontend::setSecSequencePos(int steps)
 
 void eDVBFrontend::tuneLoop()
 {
-	eSingleLocker s(lock);
 	tuneLoopInt();
 }
 
