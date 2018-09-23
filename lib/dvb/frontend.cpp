@@ -1666,6 +1666,7 @@ int eDVBFrontend::tuneLoopInt()  // called by m_tuneTimer
 			{
 				int enableEvents = (m_sec_sequence.current()++)->val;
 				eDebugNoSimulate("[eDVBFrontend] setFrontend %d", enableEvents);
+				eSingleLocker s(lock);
 				setFrontend(enableEvents);
 				break;
 			}
