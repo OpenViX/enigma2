@@ -94,11 +94,11 @@ class VIXIPKInstaller(Screen):
 			self["key_yellow"].setText(_("Extra IPK's"))
 			self.defaultDir = config.backupmanager.xtraplugindir.value
 			if not self.defaultDir:
-				message = _("It seems you have not setup an extra location; please set it up in the Backup manager setup menu.")
+				message = _("It seems you have not setup an extra location. Please set it up in the Backup manager setup menu.")
 				ybox = self.session.open(MessageBox, message, MessageBox.TYPE_INFO)
 				ybox.setTitle(_("Change location"))
 			elif self.defaultDir and not path.exists(self.defaultDir):
-				message = _("Sorry but that location does not exist or is not setup; please set it up in the Backup manager setup menu.")
+				message = _("Sorry but that location does not exist or is not setup. Please set it up in the Backup manager setup menu.")
 				ybox = self.session.open(MessageBox, message, MessageBox.TYPE_INFO)
 				ybox.setTitle(_("Change location"))
 			else:

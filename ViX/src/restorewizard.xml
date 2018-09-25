@@ -66,16 +66,16 @@ self.buildList(self.selectedAction)
     </step>
 
     <step id="pluginrestore">
-        <text value="The wizard is finished now, and will reboot"/>
-        <displaytext value="The wizard is finished now, and will reboot"/>
+        <text value="The wizard is finished now, and will reboot."/>
+        <displaytext value="The wizard is finished now, and will reboot."/>
         <code>
 self.buildList(None)
         </code>
     </step>
 
     <step id="reboot">
-        <text value="The wizard is finished now, and will reboot"/>
-        <displaytext value="The wizard is finished now, and will reboot"/>
+        <text value="The wizard is finished now, and will reboot."/>
+        <displaytext value="The wizard is finished now, and will reboot."/>
         <code>
 self.buildList(None)
         </code>
