@@ -1197,7 +1197,7 @@ class ImageManagerDownload(Screen):
 				'sf138'           : 'OCTAGON-SF138',
 				'sf228'           : 'OCTAGON-SF228',
 				'sf4008'          : 'OCTAGON-SF4008',
-				'sf8008'          : 'OCTAGON-SF8008',				
+				'sf8008'          : 'OCTAGON-SF8008',
 				'spycat'          : 'Spycat',
 				'tiviaraplus'     : 'TiviarAlphaPlus',
 				'tm2t'            : 'TM-2T',
