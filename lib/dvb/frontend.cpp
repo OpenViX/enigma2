@@ -1584,6 +1584,10 @@ int eDVBFrontend::tuneLoopInt()  // called by m_tuneTimer
 				prev->inc_use();
 			}
 		}
+		else if (sec_fe != this && sec_fe->m_state == stateTuning)
+		{
+			eDebug("[eDVBFrontend] frontend %d is in stateTuning, maybe we should delay current tune on frontend %d?", sec_fe->getDVBID(), m_dvbid);
+		}
 	}
 
 	if ( m_sec_sequence && m_sec_sequence.current() != m_sec_sequence.end() )
