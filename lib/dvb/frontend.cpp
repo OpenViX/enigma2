@@ -1588,7 +1588,7 @@ int eDVBFrontend::tuneLoopInt()  // called by m_tuneTimer
 			m_sec_sequence && m_sec_sequence.begin() == m_sec_sequence.current())
 		{
 			int guard_silence;
-			guard_silence = 100 + rand() % 900 // random value between 100 and 999 ms
+			guard_silence = 100 + rand() % 900; // random value between 100 and 999 ms
 			eDebug("[eDVBFrontend] %d linked on %d is also in stateTuning, adding %dms SLEEP to avoid collision!", m_dvbid, sec_fe->getDVBID(), guard_silence);
 			m_sec_sequence.push_front(eSecCommand(eSecCommand::SLEEP, guard_silence)); // need to use m_params from m_sec?
 			m_sec_sequence.current() = m_sec_sequence.begin();
