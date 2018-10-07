@@ -7,6 +7,7 @@ from Components.ActionMap import ActionMap
 from Components.ChoiceList import ChoiceList, ChoiceEntryComponent
 from Components.Label import Label
 from Components.SystemInfo import SystemInfo
+from Tools.Directories import pathExists
 from Tools.BoundFunction import boundFunction
 from Tools.Multiboot import GetImagelist, GetCurrentImage, GetCurrentImageMode
 
@@ -34,7 +35,10 @@ class MultiBoot(Screen):
 		self.skinName = "MultiBoot"
 		screentitle = _("Multiboot Image Restart")
 		self["key_red"] = StaticText(_("Cancel"))
-		self["labe14"] = StaticText(_("Use the cursor keys to select an installed image and then Reboot button."))
+		if pathExists('/dev/%s1' %(SystemInfo["canMultiBoot"][2])): 
+			self["labe14"] = StaticText(_("Use the cursor keys to select an installed image and then Reboot button."))
+		else:
+			self["labe14"] = StaticText(_("SDcard is not initialised for multiboot - Exit and use ViX MultiBoot Manager to initialise"))			
 		self["labe15"] = StaticText(_(" "))
 		self["key_green"] = StaticText(_("Reboot"))
 		if SystemInfo["canMode12"]:
@@ -43,7 +47,8 @@ class MultiBoot(Screen):
 		imagedict = []
 		self.getImageList = None
 		self.title = screentitle
-		self.startit()
+		if not SystemInfo["HasHiSi"] or SystemInfo["HasHiSi"] and pathExists('/dev/%s1' %(SystemInfo["canMultiBoot"][2])):
+			self.startit()
 
 		self["actions"] = ActionMap(["OkCancelActions", "ColorActions", "DirectionActions", "KeyboardInputActions", "MenuActions"],
 		{
@@ -73,15 +78,20 @@ class MultiBoot(Screen):
 		list = []
 		mode = GetCurrentImageMode() or 0
 		currentimageslot = GetCurrentImage()
+		if SystemInfo["HasHiSi"] and "sd" in SystemInfo["canMultiBoot"][2]:
+			currentimageslot += 1
 		if not SystemInfo["canMode12"]:
 			for x in sorted(imagedict.keys()):
 				if imagedict[x]["imagename"] != _("Empty slot"):
-					list.append(ChoiceEntryComponent('',((_("slot%s - %s (current image)") if x == currentimageslot else _("slot%s - %s ")) % (x, imagedict[x]['imagename']), x)))
+					list.append(ChoiceEntryComponent('',((_("slot%s -%s - %s (current image)") if x == currentimageslot else _("slot%s -%s- %s ")) % (x, imagedict[x]['part'][0:3], imagedict[x]['imagename']), x)))
 		else:
-			for x in sorted(imagedict.keys()):
+			for x in range(1, SystemInfo["canMultiBoot"][1] + 1):
 				if imagedict[x]["imagename"] != _("Empty slot"):
 					list.append(ChoiceEntryComponent('',((_("slot%s - %s mode 1 (current image)") if x == currentimageslot and mode != 12 else _("slot%s - %s mode 1")) % (x, imagedict[x]['imagename']), x)))
-					if SystemInfo["canMode12"]:
+			list.append("                                 ")
+			list.append("                                 ")
+			for x in range(1, SystemInfo["canMultiBoot"][1] + 1):
+					if SystemInfo["canMode12"] and imagedict[x]["imagename"] != _("Empty slot"):
 						list.append(ChoiceEntryComponent('',((_("slot%s - %s mode 12 (current image)") if x == currentimageslot and mode == 12 else _("slot%s - %s mode 12")) % (x, imagedict[x]['imagename']), x + 12)))
 		self["config"].setList(list)
 
@@ -89,6 +99,7 @@ class MultiBoot(Screen):
 		self.currentSelected = self["config"].l.getCurrentSelection()
 		if self.currentSelected[0][1] != "Queued":
 			slot = self.currentSelected[0][1]
+
 			if slot < 12:
 				import shutil
 				shutil.copyfile("/boot/STARTUP_%s" % slot, "/boot/STARTUP")
