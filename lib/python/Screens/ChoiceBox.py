@@ -49,6 +49,7 @@ class ChoiceBox(Screen):
 				self["text"].setText(title)
 		elif text:
 			self["text"].setText(_(text))
+		self.title = self["text"].getText()
 		self.list = []
 		self.summarylist = []
 		if keys is None:
@@ -123,44 +124,33 @@ class ChoiceBox(Screen):
 		}, prio=-1)
 
 	def autoResize(self):
-		desktop_w = enigma.getDesktop(0).size().width()
-		desktop_h = enigma.getDesktop(0).size().height()
-		itemheight = self["list"].getItemHeight()
+		def getTextSize():
+			def getTextPars(text):
+				return len(text), text
+			l, text = getTextPars(self.title)
+			( max_l, max_text ) = max([getTextPars(line[0][0]) for line in self["list"].list])
+			text, l = (max_text, max_l) if max_l > l else (text, l)
+			self["text"].setText(text)
+			size = self["text"].getSize()
+			self["text"].setText(self.title)
+			return size
+
+		orgpos = self.instance.position()
+		orgheight = self.instance.size().height()
+		textsize = getTextSize()
 		count = len(self.list)
-		if count > 15:
-			count = 15
-		width = self["list"].instance.size().width()
-		if width < 0 or width > desktop_w:
-			width = 520
-		if not self["text"].text:
-			# move list
-			textsize = (width, 0)
-			listsize = (width, itemheight * count)
-			self["list"].instance.move(enigma.ePoint(0, 0))
-			self["list"].instance.resize(enigma.eSize(*listsize))
-		else:
-			textsize = self["text"].getSize()
-			if textsize[0] < textsize[1]:
-				textsize = (textsize[1], textsize[0] + 10)
-			if textsize[0] > width:
-				textsize = (textsize[0], textsize[1] + itemheight)
-			else:
-				textsize = (width, textsize[1] + itemheight)
-			listsize = (textsize[0], itemheight * count)
-			# resize label
-			self["text"].instance.resize(enigma.eSize(*textsize))
-			self["text"].instance.move(enigma.ePoint(10, 10))
-			# move list
-			self["list"].instance.move(enigma.ePoint(0, textsize[1]))
-			self["list"].instance.resize(enigma.eSize(*listsize))
-
-		wsizex = textsize[0]
-		wsizey = textsize[1]+listsize[1]
-		wsize = (wsizex, wsizey)
-		self.instance.resize(enigma.eSize(*wsize))
-
+		if count > 10:
+			count = 10
+		offset = 25 * count
+		wsizex = textsize[0] + 60
+		wsizey = textsize[1] + offset
+		# move and resize screen
+		self["list"].instance.move(enigma.ePoint(0, textsize[1]))
+		self.instance.resize(enigma.eSize(*(wsizex, wsizey)))
+		# resize list
+		self["list"].instance.resize(enigma.eSize(*(wsizex, offset)))
 		# center window
-		self.instance.move(enigma.ePoint((desktop_w-wsizex)/2, (desktop_h-wsizey)/2))
+		self.instance.move(enigma.ePoint(orgpos.x(), orgpos.y()+(orgheight-wsizey)/2))
 
 	def left(self):
 		if len(self["list"].list) > 0:
