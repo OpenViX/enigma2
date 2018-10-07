@@ -27,8 +27,8 @@ self.buildList(self.selectedAction)
     </step>
 
     <step id="settingsrestore">
-        <text value="Please select the file to restore ?"/>
-        <displaytext value="Please select the file to restore ?"/>
+        <text value="Please select the file to restore."/>
+        <displaytext value="Please select the file to restore."/>
         <list type="dynamic" source="listDevices" evaluation="settingsdeviceSelectionMade" onselect="settingsdeviceSelectionMoved"/>
         <code>
 self.clearSelectedKeys()
@@ -53,8 +53,8 @@ self.buildList(self.selectedAction)
     </step>
 
     <step id="pluginsrestoredevice">
-        <text value="Please select the file to restore ?"/>
-        <displaytext value="Please select the file to restore ?"/>
+        <text value="Please select the file to restore."/>
+        <displaytext value="Please select the file to restore."/>
         <list type="dynamic" source="listDevices" evaluation="pluginsdeviceSelectionMade" onselect="pluginsdeviceSelectionMoved"/>
         <code>
 self.clearSelectedKeys()
@@ -66,16 +66,16 @@ self.buildList(self.selectedAction)
     </step>
 
     <step id="pluginrestore">
-        <text value="The wizard is finished now, and will reboot"/>
-        <displaytext value="The wizard is finished now, and will reboot"/>
+        <text value="The wizard is finished now, and will reboot."/>
+        <displaytext value="The wizard is finished now, and will reboot."/>
         <code>
 self.buildList(None)
         </code>
     </step>
 
     <step id="reboot">
-        <text value="The wizard is finished now, and will reboot"/>
-        <displaytext value="The wizard is finished now, and will reboot"/>
+        <text value="The wizard is finished now, and will reboot."/>
+        <displaytext value="The wizard is finished now, and will reboot."/>
         <code>
 self.buildList(None)
         </code>

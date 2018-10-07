@@ -69,9 +69,9 @@ class VIXMenu(Screen, ProtectedScreen):
 			self.list.append(("ipkg-install", _("Install local extension"), _("Install IPK's from your tmp folder."), None))
 			self.list.append(("mount-manager", _("Mount manager"), _("Manage your devices mount points."), None))
 			self.list.append(("script-runner", _("Script runner"), _("Run your shell scripts."), None))
-			self.list.append(("swap-manager", _("Swap manager"), _("Create and Manage your swap files."), None))
+			self.list.append(("swap-manager", _("SWAP manager"), _("Create and Manage your SWAP files."), None))
 			if SystemInfo["canMultiBoot"]:
-				self.list.append(("multiboot manager", _("MultiBoot manager"), _("Create empty slot"), None))
+				self.list.append(("multiboot manager", _("MultiBoot manager"), _("Create empty slot."), None))
 		self["menu"] = List(self.list)
 		self["key_red"] = StaticText(_("Close"))
 

@@ -79,7 +79,7 @@ def ImageManagerautostart(reason, session=None, **kwargs):
 			autoImageManagerTimer.stop()
 
 class VIXImageManager(Screen):
-	skin = """<screen name="VIXImageManager" position="center,center" size="560,400" title="Image Manager">
+	skin = """<screen name="VIXImageManager" position="center,center" size="560,400">
 		<ePixmap pixmap="skin_default/buttons/red.png" position="0,0" size="140,40" alphatest="on"/>
 		<ePixmap pixmap="skin_default/buttons/green.png" position="140,0" size="140,40" alphatest="on"/>
 		<ePixmap pixmap="skin_default/buttons/yellow.png" position="280,0" size="140,40" alphatest="on"/>
@@ -244,7 +244,7 @@ class VIXImageManager(Screen):
 				self.BackupDirectory = '/media/hdd/imagebackups/'
 				config.imagemanager.backuplocation.value = '/media/hdd/'
 				config.imagemanager.backuplocation.save()
-				self['lab1'].setText(_("The chosen location does not exist, using /media/hdd") + "\n" + _("Select an image to flash:"))
+				self['lab1'].setText(_("The chosen location does not exist, using /media/hdd.") + "\n" + _("Select an image to flash:"))
 			else:
 				self['myactions'] = ActionMap(['ColorActions', 'OkCancelActions', 'DirectionActions', "MenuActions"],
 											  {
@@ -281,7 +281,7 @@ class VIXImageManager(Screen):
 				remove(self.BackupDirectory + config.imagemanager.folderprefix.value + '-' + getImageType() + '-swapfile_backup')
 			self.refreshList()
 		except:
-			self['lab1'].setText(_("Device: ") + config.imagemanager.backuplocation.value + "\n" + _("there is a problem with this device, please reformat it and try again."))
+			self['lab1'].setText(_("Device: ") + config.imagemanager.backuplocation.value + "\n" + _("there is a problem with this device. Please reformat it and try again."))
 
 	def createSetup(self):
 		self.session.openWithCallback(self.setupDone, Setup, 'viximagemanager', 'SystemPlugins/ViX', self.menu_path, PluginLanguageDomain)
@@ -322,7 +322,7 @@ class VIXImageManager(Screen):
 			ybox = self.session.openWithCallback(self.doDelete, MessageBox, message, MessageBox.TYPE_YESNO, default=False)
 			ybox.setTitle(_("Remove confirmation"))
 		else:
-			self.session.open(MessageBox, _("You have no image to delete."), MessageBox.TYPE_INFO, timeout=10)
+			self.session.open(MessageBox, _("There is no image to delete."), MessageBox.TYPE_INFO, timeout=10)
 
 	def doDelete(self, answer):
 		if answer is True:
@@ -385,7 +385,7 @@ class VIXImageManager(Screen):
 		else:
 			self.message = _("Do you want to flash image\n%s") % self.sel
 		if getImageFileSystem().replace(' ','') in ('tar.bz2', 'hd-emmc'):
-			message = _("You are about to flash an eMMC flash, we cannot take any responsibility for any errors or damage to your box during this process.\nProceed with CAUTION!:\nAre you sure you want to flash this image:\n ") + self.sel
+			message = _("You are about to flash an eMMC flash; we cannot take any responsibility for any errors or damage to your box during this process.\nProceed with CAUTION!:\nAre you sure you want to flash this image:\n ") + self.sel
 		else:
 			message = _("Are you sure you want to flash this image:\n ") + self.sel
 		ybox = self.session.openWithCallback(self.keyResstore0, MessageBox, message, MessageBox.TYPE_YESNO)
@@ -420,13 +420,13 @@ class VIXImageManager(Screen):
 				else:
 					self.keyRestore3()
 			else:
-				self.session.open(MessageBox, _("You have no image to flash."), MessageBox.TYPE_INFO, timeout=10)
+				self.session.open(MessageBox, _("There is no image to flash."), MessageBox.TYPE_INFO, timeout=10)
 		else:
 			self.session.open(MessageBox, _("You have decided not to flash image."), MessageBox.TYPE_INFO, timeout=10)
 
 
 	def keyRestore3(self, val = None):
-		self.restore_infobox = self.session.open(MessageBox, _("Please wait while the flash prepares"), MessageBox.TYPE_INFO, timeout=180, enable_input=False)
+		self.restore_infobox = self.session.open(MessageBox, _("Please wait while the flash prepares."), MessageBox.TYPE_INFO, timeout=180, enable_input=False)
 		self.TEMPDESTROOT = self.BackupDirectory + 'imagerestore'
 		if self.sel.endswith('.zip'):
 			if not path.exists(self.TEMPDESTROOT):
@@ -438,7 +438,7 @@ class VIXImageManager(Screen):
 
 	def keyRestore4(self, result, retval, extra_args=None):
 		if retval == 0:
-			self.session.openWithCallback(self.restore_infobox.close, MessageBox, _("flash image unzip successful"), MessageBox.TYPE_INFO, timeout=4)
+			self.session.openWithCallback(self.restore_infobox.close, MessageBox, _("Flash image unzip successful."), MessageBox.TYPE_INFO, timeout=4)
 			if getMachineMake() == 'et8500' and self.dualboot:
 				message = _("ET8500 Multiboot: Yes to restore OS1 No to restore OS2:\n ") + self.sel
 				ybox = self.session.openWithCallback(self.keyRestore5_ET8500, MessageBox, message, MessageBox.TYPE_YESNO)
@@ -446,7 +446,7 @@ class VIXImageManager(Screen):
 			else:
 				self.keyRestore6(0)
 		else:
-			self.session.openWithCallback(self.restore_infobox.close, MessageBox, _("unzip error (also sent to any debug log):\n%s") % result, MessageBox.TYPE_INFO, timeout=20)
+			self.session.openWithCallback(self.restore_infobox.close, MessageBox, _("Unzip error (also sent to any debug log):\n%s") % result, MessageBox.TYPE_INFO, timeout=20)
 			print "[ImageManager] unzip failed:\n", result
 			self.close()
 
@@ -480,7 +480,7 @@ class VIXImageManager(Screen):
 				shutil.copyfile("/boot/STARTUP_%s" % self.multibootslot, "/boot/STARTUP")
 				self.session.open(TryQuitMainloop, 2)
 		else:
-			self.session.openWithCallback(self.restore_infobox.close, MessageBox, _("ofgwrite error (also sent to any debug log):\n%s") % result, MessageBox.TYPE_INFO, timeout=20)
+			self.session.openWithCallback(self.restore_infobox.close, MessageBox, _("OFGwrite error (also sent to any debug log):\n%s") % result, MessageBox.TYPE_INFO, timeout=20)
 			print "[ImageManager] OFGWriteResult failed:\n", result
 
 
@@ -627,7 +627,7 @@ class AutoImageManagerTimer:
 
 class ImageBackup(Screen):
 	skin = """
-	<screen name="VIXImageManager" position="center,center" size="560,400" title="Image Manager">
+	<screen name="VIXImageManager" position="center,center" size="560,400">
 		<ePixmap pixmap="skin_default/buttons/red.png" position="0,0" size="140,40" alphatest="on"/>
 		<ePixmap pixmap="skin_default/buttons/green.png" position="140,0" size="140,40" alphatest="on"/>
 		<ePixmap pixmap="skin_default/buttons/yellow.png" position="280,0" size="140,40" alphatest="on"/>
@@ -715,7 +715,7 @@ class ImageBackup(Screen):
 		task.check = lambda: self.RamChecked
 		task.weighting = 5
 
-		task = Components.Task.ConditionTask(job, _("Creating swap.."), timeoutCount=120)
+		task = Components.Task.ConditionTask(job, _("Creating SWAP.."), timeoutCount=120)
 		task.check = lambda: self.SwapCreated
 		task.weighting = 5
 
@@ -767,7 +767,7 @@ class ImageBackup(Screen):
 		task.check = lambda: self.Stage6Completed
 		task.weighting = 5
 
-		task = Components.Task.PythonTask(job, _("Backup complete..."))
+		task = Components.Task.PythonTask(job, _("Backup complete."))
 		task.work = self.BackupComplete
 		task.weighting = 5
 
@@ -820,19 +820,19 @@ class ImageBackup(Screen):
 			for swapdevice in candidates:
 				self.swapdevice = swapdevice[1]
 			if self.swapdevice:
-				print '[ImageManager] Stage1: Creating Swapfile.'
+				print '[ImageManager] Stage1: Creating SWAP file.'
 				self.RamChecked = True
 				self.MemCheck2()
 			else:
-				print '[ImageManager] Sorry, not enough free ram found, and no physical devices that supports SWAP attached'
+				print '[ImageManager] Sorry, not enough free RAM found, and no physical devices that supports SWAP attached'
 				AddPopupWithCallback(self.BackupComplete,
-									 _("Sorry, not enough free ram found, and no physical devices that supports SWAP attached. Can't create Swapfile on network or fat32 filesystems, unable to make backup"),
+									 _("Sorry, not enough free RAM found, and no physical devices that supports SWAP attached. Can't create SWAP file on network or fat32 file-systems, unable to make backup."),
 									 MessageBox.TYPE_INFO,
 									 10,
 									 'RamCheckFailedNotification'
 				)
 		else:
-			print '[ImageManager] Stage1: Found Enough Ram'
+			print '[ImageManager] Stage1: Found Enough RAM'
 			self.RamChecked = True
 			self.SwapCreated = True
 
@@ -1104,7 +1104,7 @@ class ImageBackup(Screen):
 
 class ImageManagerDownload(Screen):
 	skin = """
-	<screen name="VIXImageManager" position="center,center" size="560,400" title="Image Manager">
+	<screen name="VIXImageManager" position="center,center" size="560,400">
 		<ePixmap pixmap="skin_default/buttons/red.png" position="0,0" size="140,40" alphatest="on" />
 		<ePixmap pixmap="skin_default/buttons/green.png" position="140,0" size="140,40" alphatest="on" />
 		<ePixmap pixmap="skin_default/buttons/yellow.png" position="280,0" size="140,40" alphatest="on" />
@@ -1136,7 +1136,7 @@ class ImageManagerDownload(Screen):
 		Screen.setTitle(self, title)
 
 		self.BackupDirectory = BackupDirectory
-		self['lab1'] = Label(_("Select an image to Download:"))
+		self['lab1'] = Label(_("Select an image to download:"))
 		self["key_red"] = Button(_("Close"))
 		self["key_green"] = Button(_("Download"))
 
@@ -1224,6 +1224,7 @@ class ImageManagerDownload(Screen):
 				'sf138'           : 'OCTAGON-SF138',
 				'sf228'           : 'OCTAGON-SF228',
 				'sf4008'          : 'OCTAGON-SF4008',
+				'sf8008'          : 'OCTAGON-SF8008',
 				'spycat'          : 'Spycat',
 				'tiviaraplus'     : 'TiviarAlphaPlus',
 				'tm2t'            : 'TM-2T',
@@ -1299,7 +1300,7 @@ class ImageManagerDownload(Screen):
 			ybox = self.session.openWithCallback(self.doDownload, MessageBox, message, MessageBox.TYPE_YESNO)
 			ybox.setTitle(_("Download confirmation"))
 		else:
-			self.session.open(MessageBox, _("You have no image to download."), MessageBox.TYPE_INFO, timeout=10)
+			self.session.open(MessageBox, _("There is no image to download."), MessageBox.TYPE_INFO, timeout=10)
 
 	def doDownload(self, answer):
 		if answer is True:

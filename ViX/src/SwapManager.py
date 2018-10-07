@@ -51,7 +51,7 @@ class StartSwap:
 					rename('/etc/fstab.tmp', '/etc/fstab')
 					tmpfile.close()
 					fstabfile.close()
-					print "[SwapManager] Found a swap partition:", swap_place
+					print "[SwapManager] Found a SWAP partition:", swap_place
 		else:
 			devicelist = []
 			for p in harddiskmanager.getMountedPartitions():
@@ -63,20 +63,20 @@ class StartSwap:
 					for filename in glob(device[1] + '/swap*'):
 						if path.exists(filename):
 							swap_place = filename
-							print "[SwapManager] Found a swapfile on ", swap_place
+							print "[SwapManager] Found a SWAP file on ", swap_place
 
 		f = file('/proc/swaps')
 		swapfile = f.read()
 		if swapfile.find(swap_place) == -1:
-			print "[SwapManager] Starting swapfile on ", swap_place
+			print "[SwapManager] Starting SWAP file on ", swap_place
 			system('swapon ' + swap_place)
 		else:
-			print "[SwapManager] Swapfile is already active on ", swap_place
+			print "[SwapManager] SWAP file is already active on ", swap_place
 		f.close()
 
 class VIXSwap(Screen):
 	skin = """
-	<screen name="VIXSwap" position="center,center" size="620,250" title="Swap File Manager">
+	<screen name="VIXSwap" position="center,center" size="620,250">
 		<ePixmap pixmap="skin_default/buttons/red.png" position="10,0" size="140,40" alphatest="on"/>
 		<ePixmap pixmap="skin_default/buttons/green.png" position="160,0" size="140,40" alphatest="on"/>
 		<ePixmap pixmap="skin_default/buttons/yellow.png" position="310,0" size="140,40" alphatest="on"/>
@@ -99,7 +99,7 @@ class VIXSwap(Screen):
 
 	def __init__(self, session, menu_path=""):
 		Screen.__init__(self, session)
-		screentitle =  _("Swap manager")
+		screentitle =  _("SWAP manager")
 		self.menu_path = menu_path
 		if config.usage.show_menupath.value == 'large':
 			self.menu_path += screentitle
@@ -118,9 +118,9 @@ class VIXSwap(Screen):
 		self['lab1'] = Label()
 		self['autostart_on'] = Pixmap()
 		self['autostart_off'] = Pixmap()
-		self['lab2'] = Label(_("Swap place:"))
+		self['lab2'] = Label(_("SWAP place:"))
 		self['labplace'] = Label()
-		self['lab3'] = Label(_("Swap size:"))
+		self['lab3'] = Label(_("SWAP size:"))
 		self['labsize'] = Label()
 		self['lab4'] = Label(_("Status:"))
 		self['inactive'] = Label(_("Inactive"))
@@ -252,7 +252,7 @@ class VIXSwap(Screen):
 			self['key_green'].setText(_("Activate"))
 			self['swapactive_summary'].setText(_("Current status:") + ' ' + _("Inactive"))
 
-		scanning = _("Enable swap at startup")
+		scanning = _("Enable SWAP at startup")
 		self['lab1'].setText(scanning)
 		self['lab1'].show()
 		self["actions"].setEnabled(True)
@@ -268,7 +268,7 @@ class VIXSwap(Screen):
 				if self.swap_place != '':
 					self.Console.ePopen('swapon ' + self.swap_place, self.updateSwap)
 				else:
-					mybox = self.session.open(MessageBox, _("Swap file not found. You have to create the file before you try to activate it."), MessageBox.TYPE_INFO)
+					mybox = self.session.open(MessageBox, _("SWAP file not found. You have to create the file before you try to activate it."), MessageBox.TYPE_INFO)
 					mybox.setTitle(_("Info"))
 			else:
 				self.Console.ePopen('swapon ' + self.swap_place, self.updateSwap)
@@ -301,20 +301,20 @@ class VIXSwap(Screen):
 			if partition.filesystem(mounts) in supported_filesystems:
 				candidates.append((partition.description, partition.mountpoint))
 		if len(candidates):
-			self.session.openWithCallback(self.doCSplace, ChoiceBox, title=_("Please select device to use as swapfile location"), list=candidates)
+			self.session.openWithCallback(self.doCSplace, ChoiceBox, title=_("Please select device to use as SWAP file location."), list=candidates)
 		else:
-			self.session.open(MessageBox, _("Sorry, no physical devices that supports swap attached. Can't create Swap file on network or fat32 filesystems"), MessageBox.TYPE_INFO, timeout=10)
+			self.session.open(MessageBox, _("Sorry, no physical devices that supports SWAP attached. Can't create SWAP file on network or fat32 file-systems."), MessageBox.TYPE_INFO, timeout=10)
 
 	def doCSplace(self, name):
 		if name:
 			self.new_place = name[1]
 			myoptions = [[_("8 Mb"), '8192'], [_("16 Mb"), '16384'], [_("32 Mb"), '32768'], [_("64 Mb"), '65536'], [_("96 Mb"), '98304'], [_("128 Mb"), '131072'], [_("256 Mb"), '262144']]
-			self.session.openWithCallback(self.doCSsize, ChoiceBox, title=_("Select the Swap File Size:"), list=myoptions)
+			self.session.openWithCallback(self.doCSsize, ChoiceBox, title=_("Select the SWAP file size:"), list=myoptions)
 
 	def doCSsize(self, swapsize):
 		if swapsize:
 			self["actions"].setEnabled(False)
-			scanning = _("Wait please while creating swapfile...")
+			scanning = _("Wait please while creating SWAP file...")
 			self['lab1'].setText(scanning)
 			self['lab1'].show()
 			swapsize = swapsize[1]
@@ -334,6 +334,6 @@ class VIXSwap(Screen):
 				config.vixsettings.swapautostart.save()
 			configfile.save()
 		else:
-			mybox = self.session.open(MessageBox, _("You have to create a swap file before trying to activate the autostart."), MessageBox.TYPE_INFO)
+			mybox = self.session.open(MessageBox, _("You have to create a SWAP file before trying to activate the autostart."), MessageBox.TYPE_INFO)
 			mybox.setTitle(_("Info"))
 		self.updateSwap()
