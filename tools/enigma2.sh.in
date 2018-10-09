@@ -14,6 +14,16 @@ if [ -x /etc/enigma2/startup.sh ]; then
 	/etc/enigma2/startup.sh
 fi
 
+if [ -e /proc/stb/info/boxtype ]; then
+	stbcheck=`cat /proc/stb/info/boxtype`
+	if [ $stbcheck == "sf8008" ] || [ $stbcheck == "ustym4kpro" ] || [ $stbcheck == "cc1" ]; then
+		count=`ps -ef |grep libreader |grep -v "grep" |wc -l`
+		if [ 0 == $count ];then
+			libreader 720P_50
+		fi
+	fi
+fi
+
 if [ -x @bindir@/showiframe ]; then
 	if [ -f @sysconfdir@/enigma2/backdrop.mvi ]; then
 		@bindir@/showiframe @sysconfdir@/enigma2/backdrop.mvi
@@ -67,6 +77,16 @@ fi
 # >128 signal
 
 ret=$?
+
+if [ "$ret" -ne "1" ]; then
+	if [ -e /proc/stb/info/boxtype ]; then
+		stbcheck=`cat /proc/stb/info/boxtype`
+		if [ $stbcheck == "sf8008" ] ; then
+			killall -9 libreader; sleep 5
+		fi
+	fi
+fi
+
 case $ret in
 	1)
 		/sbin/halt

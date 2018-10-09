@@ -11,7 +11,7 @@ from Components.ScrollLabel import ScrollLabel
 from Components.Console import Console
 from Components.config import config
 from enigma import eTimer, getEnigmaVersionString, getDesktop
-from boxbranding import getMachineBrand, getMachineName, getImageVersion, getImageType, getImageBuild, getDriverDate, getImageDevBuild
+from boxbranding import getMachineBrand, getMachineBuild, getMachineName, getImageVersion, getImageType, getImageBuild, getDriverDate, getImageDevBuild
 from Components.Pixmap import MultiPixmap
 from Components.Network import iNetwork
 from Components.SystemInfo import SystemInfo
@@ -74,7 +74,7 @@ class About(Screen):
 
 		if about.getChipSetString() != _("unavailable"):
 			if about.getIsBroadcom():
-				AboutText += _("Chipset:\tBCM%s\n") % about.getChipSetString().upper()
+				AboutText += _("Chipset:\t%s\n") % (about.getIsBroadcom() + " " + about.getChipSetString().upper())
 			else:
 				AboutText += _("Chipset:\t%s\n") % about.getChipSetString().upper()
 
@@ -83,12 +83,27 @@ class About(Screen):
 		if getImageType() != 'release':
 			imageSubBuild = ".%s" % getImageDevBuild()
 		AboutText += _("Image:\t%s.%s%s (%s)\n") % (getImageVersion(), getImageBuild(), imageSubBuild, getImageType().title())
+
 		if SystemInfo["canMultiBoot"]:
 			image = GetCurrentImage()
 			bootmode = ""
+			part = ""
 			if SystemInfo["canMode12"]:
 				bootmode = "bootmode = %s" %GetCurrentImageMode()
-			AboutText += _("Image Slot:\t%s") % "STARTUP_" + str(image) + " " + bootmode + "\n"
+			if SystemInfo["HasHiSi"]:
+				if image != 0:
+					part = "%s%s" %(SystemInfo["canMultiBoot"][2], image*2)
+					image += 1
+				else:
+					part = "MMC"
+					image += 1
+			AboutText += _("Image Slot:\t%s") % "STARTUP_" + str(image) + " " + part + " " + bootmode + "\n"
+
+		if getMachineName() in ('ET8500') and path.exists('/proc/mtd'):
+			self.dualboot = self.dualBoot()
+			if self.dualboot:
+				AboutText += _("ET8500 Multiboot: Installed\n")
+			
 		skinWidth = getDesktop(0).size().width()
 		skinHeight = getDesktop(0).size().height()
 
@@ -134,6 +149,16 @@ class About(Screen):
 				tempinfo = f.read()
 				tempinfo = tempinfo[:-4]
 				f.close()
+			except:
+				tempinfo = ""
+		elif path.exists('/proc/hisi/msp/pm_cpu'):
+			try:
+				for line in open('/proc/hisi/msp/pm_cpu').readlines():
+					line = [x.strip() for x in line.strip().split(":")]
+					if line[0] in ("Tsensor"):
+						temp = line[1].split("=")
+						temp = line[1].split(" ")
+						tempinfo = temp[2]
 			except:
 				tempinfo = ""
 		if tempinfo and int(tempinfo.replace('\n', '')) > 0:
