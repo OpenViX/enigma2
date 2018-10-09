@@ -44,14 +44,12 @@ def getIsBroadcom():
 				splitted[1] = splitted[1].replace('\n','')
 				if splitted[0].startswith("Hardware"):
 					system = splitted[1].split(' ')[0]
-					if system == "bigfish":
-						system = "Hisilicon"
 				elif splitted[0].startswith("system type"):
 					if splitted[1].split(' ')[0].startswith('BCM'):
 						system = 'Broadcom'
 		file.close()
-		if 'Broadcom' in system or "Hisilicon" in system:
-			return system
+		if 'Broadcom' in system:
+			return True
 		else:
 			return False
 	except:
@@ -84,16 +82,13 @@ def getCPUSpeedString():
 
 	if cpu_speed == 0:
 		if getMachineBuild() in ('hd51','hd52','sf4008'):
-			try:
-				import binascii
-				f = open('/sys/firmware/devicetree/base/cpus/cpu@0/clock-frequency', 'rb')
-				clockfrequency = f.read()
-				f.close()
-				cpu_speed = round(int(binascii.hexlify(clockfrequency), 16)/1000000,1)
-			except IOError:
-				return "1.7 GHz"
+			import binascii
+			f = open('/sys/firmware/devicetree/base/cpus/cpu@0/clock-frequency', 'rb')
+			clockfrequency = f.read()
+			f.close()
+			cpu_speed = round(int(binascii.hexlify(clockfrequency), 16)/1000000,1)
 		else:
-			try: # Solo4K sf8008
+			try: # Solo4K
 				file = open('/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq', 'r')
 				cpu_speed = float(file.read()) / 1000
 				file.close()
@@ -102,9 +97,9 @@ def getCPUSpeedString():
 
 	if cpu_speed > 0:
 		if cpu_speed >= 1000:
-			cpu_speed = "%s GHz" % str(round(cpu_speed/1000,1))
+			cpu_speed = "%sGHz" % str(round(cpu_speed/1000,1))
 		else:
-			cpu_speed = "%s MHz" % str(int(cpu_speed))
+			cpu_speed = "%sMHz" % str(int(cpu_speed))
 		return cpu_speed
 	return _("unavailable")
 

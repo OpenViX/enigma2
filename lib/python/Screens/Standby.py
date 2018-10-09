@@ -35,8 +35,6 @@ def setLCDMiniTVMode(value):
 
 class Standby2(Screen):
 	def Power(self):
-		if getBoxType() in ('sf8008'):
-			open("/proc/stb/hdmi/output", "w").write("on")
 		print "[Standby] leave standby"
 		self.close(True)
 
@@ -108,8 +106,6 @@ class Standby2(Screen):
 			self.avswitch.setInput("SCART")
 		else:
 			self.avswitch.setInput("AUX")
-		if getBoxType() in ('sf8008'):
-			open("/proc/stb/hdmi/output", "w").write("off")
 		self.onFirstExecBegin.append(self.__onFirstExecBegin)
 		self.onClose.append(self.__onClose)
 
