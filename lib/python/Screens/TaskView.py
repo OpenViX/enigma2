@@ -1,19 +1,22 @@
-from Screens.Screen import Screen
+from Components.ActionMap import ActionMap
+from Components.config import config, ConfigSubsection, ConfigSelection, getConfigListEntry
 from Components.ConfigList import ConfigListScreen
-from Components.config import ConfigSubsection, ConfigSelection, getConfigListEntry
+from Components.Sources.Boolean import Boolean
+from Components.Sources.Progress import Progress
+from Components.Sources.StaticText import StaticText
 from Components.SystemInfo import SystemInfo
 from Components.Task import job_manager
 from InfoBarGenerics import InfoBarNotifications
+from Tools import Notifications
+from Screen import Screen
+from Screens.MessageBox import MessageBox
 import Screens.Standby
+
 from Tools import Notifications
 from boxbranding import getMachineBrand, getMachineName
 
 class JobView(InfoBarNotifications, Screen, ConfigListScreen):
 	def __init__(self, session, job, parent=None, cancelable = True, backgroundable = True, afterEventChangeable = True , afterEvent="nothing"):
-		from Components.Sources.StaticText import StaticText
-		from Components.Sources.Progress import Progress
-		from Components.Sources.Boolean import Boolean
-		from Components.ActionMap import ActionMap
 		Screen.__init__(self, session, parent)
 		Screen.setTitle(self, _("Job View"))
 		InfoBarNotifications.__init__(self)
@@ -131,7 +134,6 @@ class JobView(InfoBarNotifications, Screen, ConfigListScreen):
 			return
 		elif self.settings.afterEvent.value == "close" and self.job.status == self.job.FINISHED:
 			self.close(False)
-		from Screens.MessageBox import MessageBox
 		if self.settings.afterEvent.value == "deepstandby":
 			if not Screens.Standby.inTryQuitMainloop:
 				Notifications.AddNotificationWithCallback(self.sendTryQuitMainloopNotification, MessageBox, _("A sleep timer wants to shut down\nyour %s %s. Proceed?") % (getMachineBrand(), getMachineName()), timeout = 20)
