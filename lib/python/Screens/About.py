@@ -73,8 +73,10 @@ class About(Screen):
 		AboutText += _("Model:\t%s %s\n") % (getMachineBrand(), getMachineName())
 
 		if about.getChipSetString() != _("unavailable"):
-			if about.getIsBroadcom():
-				AboutText += _("Chipset:\t%s\n") % (about.getIsBroadcom() + " " + about.getChipSetString().upper())
+			if SystemInfo["HasHiSi"]:
+				AboutText += _("Chipset:\tHiSilicon %s\n") % about.getChipSetString().upper()
+			elif about.getIsBroadcom():
+				AboutText += _("Chipset:\tBroadcom %s\n") % about.getChipSetString().upper()
 			else:
 				AboutText += _("Chipset:\t%s\n") % about.getChipSetString().upper()
 

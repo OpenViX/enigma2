@@ -44,14 +44,12 @@ def getIsBroadcom():
 				splitted[1] = splitted[1].replace('\n','')
 				if splitted[0].startswith("Hardware"):
 					system = splitted[1].split(' ')[0]
-					if system == "bigfish":
-						system = "Hisilicon"
 				elif splitted[0].startswith("system type"):
 					if splitted[1].split(' ')[0].startswith('BCM'):
 						system = 'Broadcom'
 		file.close()
-		if 'Broadcom' in system or "Hisilicon" in system:
-			return system
+		if 'Broadcom' in system:
+			return True
 		else:
 			return False
 	except:
