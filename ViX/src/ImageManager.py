@@ -1,7 +1,7 @@
 # for localized messages
 from boxbranding import getBoxType, getImageType, getImageDistro, getImageVersion, getImageBuild, getImageDevBuild, getImageFolder, getImageFileSystem, getBrandOEM, getMachineBrand, getMachineName, getMachineBuild, getMachineMake, getMachineMtdRoot, getMachineRootFile, getMachineMtdKernel, getMachineKernelFile, getMachineMKUBIFS, getMachineUBINIZE
 from os import path, stat, system, mkdir, makedirs, listdir, remove, rename, statvfs, chmod, walk, symlink, unlink
-from shutil import rmtree, move, copy
+from shutil import rmtree, move, copy, copyfile
 from time import localtime, time, strftime, mktime
 
 from enigma import eTimer, fbClass
@@ -20,11 +20,11 @@ from Screens.Screen import Screen
 from Screens.Setup import Setup
 from Components.Console import Console
 from Screens.Console import Console as ScreenConsole
-
 from Screens.TaskView import JobView
 from Screens.MessageBox import MessageBox
 from Screens.Standby import TryQuitMainloop
 from Tools.Notifications import AddPopupWithCallback
+from Tools.Directories import pathExists
 import Tools.CopyFiles
 from Tools.Multiboot import GetImagelist, GetCurrentImage
 
@@ -128,9 +128,8 @@ class VIXImageManager(Screen):
 		self["key_red"] = Button(_("Delete"))
 
 		self.BackupRunning = False
+		self.imagelist = {}
 		self.getImageList = None
-		if SystemInfo["canMultiBoot"]:
-			self.addin = SystemInfo["canMultiBoot"][0]
 		self.onChangedEntry = []
 		self.oldlist = None
 		self.emlist = []
@@ -140,7 +139,6 @@ class VIXImageManager(Screen):
 		self.activityTimer.timeout.get().append(self.backupRunning)
 		self.activityTimer.start(10)
 		self.Console = Console()
-		self.multibootslot = 1
 
 		if BackupTime > 0:
 			t = localtime(BackupTime)
@@ -272,7 +270,6 @@ class VIXImageManager(Screen):
 			s = statvfs(config.imagemanager.backuplocation.value)
 			free = (s.f_bsize * s.f_bavail) / (1024 * 1024)
 			self['lab1'].setText(_("Device: ") + config.imagemanager.backuplocation.value + ' ' + _('Free space:') + ' ' + str(free) + _('MB') + "\n" + _("Select an image to flash:"))
-
 		try:
 			if not path.exists(self.BackupDirectory):
 				mkdir(self.BackupDirectory, 0755)
@@ -384,7 +381,7 @@ class VIXImageManager(Screen):
 			self.message = _("Recording(s) are in progress or coming up in few seconds!\nDo you still want to flash image\n%s?") % self.sel
 		else:
 			self.message = _("Do you want to flash image\n%s") % self.sel
-		if getImageFileSystem().replace(' ','') in ('tar.bz2', 'hd-emmc'):
+		if getImageFileSystem().replace(' ','') in ('tar.bz2', 'hd-emmc', 'hdemmc', 'octagonemmc'):
 			message = _("You are about to flash an eMMC flash; we cannot take any responsibility for any errors or damage to your box during this process.\nProceed with CAUTION!:\nAre you sure you want to flash this image:\n ") + self.sel
 		else:
 			message = _("Are you sure you want to flash this image:\n ") + self.sel
@@ -394,7 +391,14 @@ class VIXImageManager(Screen):
 	def keyResstore0(self, answer):
 		if answer:
 			if SystemInfo["canMultiBoot"]:
-				self.getImageList = GetImagelist(self.keyRestore1)
+				if SystemInfo["HasHiSi"]:
+	 				if pathExists('/dev/%s1' %SystemInfo["canMultiBoot"][2]):
+						self.getImageList = GetImagelist(self.keyRestore1)
+					else:
+						self.session.open(MessageBox, _("SDcard detected but not formatted for multiboot - please use ViX MultiBoot Manager to format"), MessageBox.TYPE_INFO, timeout=15)
+						self.close
+				else:
+					self.getImageList = GetImagelist(self.keyRestore1)
 			elif config.imagemanager.autosettingsbackup.value:
 				self.doSettingsBackup()
 			else:
@@ -402,10 +406,14 @@ class VIXImageManager(Screen):
 
 
 	def keyRestore1(self, imagedict):
+		self.imagelist = imagedict
 		self.getImageList = None
 		choices = []
 		HIslot = len(imagedict) + 1
 		currentimageslot = GetCurrentImage()
+		if SystemInfo["HasHiSi"]:
+			currentimageslot += 1
+		print "ImageManager", currentimageslot, self.imagelist
 		for x in range(1,HIslot):
 			choices.append(((_("slot%s - %s (current image)") if x == currentimageslot else _("slot%s - %s")) % (x, imagedict[x]['imagename']), (x)))
 		self.session.openWithCallback(self.keyRestore2, MessageBox, self.message, list=choices, default=currentimageslot, simple=True)
@@ -414,6 +422,14 @@ class VIXImageManager(Screen):
 		if retval:
 			if SystemInfo["canMultiBoot"]:
 				self.multibootslot = retval
+				print "ImageManager", retval, self.imagelist
+				if SystemInfo["HasHiSi"]:
+					if "sd" in self.imagelist[retval]['part']:
+						self.MTDKERNEL = "%s%s" %(SystemInfo["canMultiBoot"][2], int(self.imagelist[retval]['part'][3])-1)
+						self.MTDROOTFS = "%s" %(self.imagelist[retval]['part'])
+					else:
+						self.MTDKERNEL = getMachineMtdKernel()
+						self.MTDROOTFS = getMachineMtdRoot()					
 			if self.sel:
 				if config.imagemanager.autosettingsbackup.value:
 					self.doSettingsBackup()
@@ -460,7 +476,10 @@ class VIXImageManager(Screen):
 		MAINDEST = '%s/%s' % (self.TEMPDESTROOT,getImageFolder())
 		if ret == 0:
 			if SystemInfo["canMultiBoot"]:
-				CMD = "/usr/bin/ofgwrite -k -r -m%s '%s'" % (self.multibootslot, MAINDEST)
+ 				if SystemInfo["HasHiSi"]:
+					CMD = "/usr/bin/ofgwrite -r%s -k%s '%s'" % (self.MTDROOTFS, self.MTDKERNEL, MAINDEST)
+				else:
+					CMD = "/usr/bin/ofgwrite -k -r -m%s '%s'" % (self.multibootslot, MAINDEST)
 			else:
 				CMD = "/usr/bin/ofgwrite -k -r '%s'" % MAINDEST
 		else:
@@ -473,21 +492,18 @@ class VIXImageManager(Screen):
 	def ofgwriteResult(self, result, retval, extra_args=None):
 		fbClass.getInstance().unlock()
 		if retval == 0:
-			if not SystemInfo["canMultiBoot"]:
+			if SystemInfo["canMultiBoot"]:
+				print "[ImageManager] slot %s result %s\n" %(self.multibootslot, result)
+				copyfile("/boot/STARTUP_%s" % self.multibootslot, "/boot/STARTUP")
 				self.session.open(TryQuitMainloop, 2)
 			else:
-				import shutil
-				shutil.copyfile("/boot/STARTUP_%s" % self.multibootslot, "/boot/STARTUP")
 				self.session.open(TryQuitMainloop, 2)
 		else:
 			self.session.openWithCallback(self.restore_infobox.close, MessageBox, _("OFGwrite error (also sent to any debug log):\n%s") % result, MessageBox.TYPE_INFO, timeout=20)
 			print "[ImageManager] OFGWriteResult failed:\n", result
 
-
-
 	def ReExit(self):
 		self.session.open(TryQuitMainloop, 2)
-
 
 	def dualBoot(self):
 		rootfs2 = False
@@ -665,10 +681,22 @@ class ImageBackup(Screen):
 		self.MAINDEST = self.MAINDESTROOT + '/' + getImageFolder() + '/'
 		self.MODEL = getBoxType()
 		if SystemInfo["canMultiBoot"]:
-			self.addin = SystemInfo["canMultiBoot"][0]
 			kernel = GetCurrentImage()
-			self.MTDKERNEL = "mmcblk0p%s" %(kernel*2 +self.addin -1)
-			self.MTDROOTFS = "mmcblk0p%s" %(kernel*2 +self.addin)
+			if SystemInfo["HasHiSi"]:
+				f = open('/sys/firmware/devicetree/base/chosen/bootargs', 'r').read()
+				if "sda" in f :
+					kern =  kernel*2
+					self.MTDKERNEL = "sda%s" %(kern-1)
+					self.MTDROOTFS = "sda%s" %(kern)
+				else:
+					self.MTDKERNEL = getMachineMtdKernel()
+					self.MTDROOTFS = getMachineMtdRoot()
+			else:					
+				self.addin = SystemInfo["canMultiBoot"][0]
+				self.MTDBOOT = "mmcblk0p1"		#HD51#
+				self.MTDKERNEL = "mmcblk0p%s" %(kernel*2 +self.addin -1)
+				self.MTDROOTFS = "mmcblk0p%s" %(kernel*2 +self.addin)
+				print '[ImageManager] MTD Boot:',self.MTDBOOT
 		else:
 			self.MTDKERNEL = getMachineMtdKernel()
 			self.MTDROOTFS = getMachineMtdRoot()
@@ -683,6 +711,10 @@ class ImageBackup(Screen):
 			self.ROOTFSTYPE = 'ubifs'
 			self.KERNELFSTYPE = 'gz'
 		elif getImageFileSystem().replace(' ','') == 'tar.bz2':
+			self.ROOTDEVTYPE = 'tar.bz2'
+			self.ROOTFSTYPE = 'tar.bz2'
+			self.KERNELFSTYPE = 'bin'
+		elif 'octagonemmc' in getImageFileSystem():
 			self.ROOTDEVTYPE = 'tar.bz2'
 			self.ROOTFSTYPE = 'tar.bz2'
 			self.KERNELFSTYPE = 'bin'
@@ -931,7 +963,6 @@ class ImageBackup(Screen):
 			print '[ImageManager] Stage3: Making eMMC Image.'
 			self.commandMB = []
 			print '[ImageManager] Stage3: EMMC Detected.'
-			self.MTDBOOT_HD51 = "mmcblk0p1"
 			self.EMMCIMG = "disk.img"
 			BLOCK_SIZE=512
 			BLOCK_SECTOR=2
@@ -973,7 +1004,7 @@ class ImageBackup(Screen):
 			self.commandMB.append('parted -s %s unit KiB mkpart rootfs4 ext4 %s %s' % (EMMC_IMAGE, FOURTH_ROOTFS_PARTITION_OFFSET, PARTED_END_ROOTFS4 ))
 			self.commandMB.append('parted -s %s unit KiB mkpart swap linux-swap %s 100%%' % (EMMC_IMAGE, SWAP_PARTITION_OFFSET))
 			BOOT_IMAGE_SEEK = int(IMAGE_ROOTFS_ALIGNMENT) * int(BLOCK_SECTOR)
-			self.commandMB.append('dd if=/dev/%s of=%s seek=%s' % (self.MTDBOOT_HD51, EMMC_IMAGE, BOOT_IMAGE_SEEK ))
+			self.commandMB.append('dd if=/dev/%s of=%s seek=%s' % (self.MTDBOOT, EMMC_IMAGE, BOOT_IMAGE_SEEK ))
 			KERNEL_IMAGE_SEEK = int(KERNEL_PARTITION_OFFSET) * int(BLOCK_SECTOR)
 			self.commandMB.append('dd if=/dev/%s of=%s seek=%s' % (self.MTDKERNEL, EMMC_IMAGE, KERNEL_IMAGE_SEEK ))
 			ROOTFS_IMAGE_SEEK = int(ROOTFS_PARTITION_OFFSET) * int(BLOCK_SECTOR)

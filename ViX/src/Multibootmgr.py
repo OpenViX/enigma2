@@ -1,6 +1,7 @@
 from Screens.Screen import Screen
 from Screens.Standby import TryQuitMainloop
 from Screens.MessageBox import MessageBox
+from Screens.Console import Console
 from boxbranding import getMachineBuild
 from Components.ActionMap import ActionMap
 from Components.ChoiceList import ChoiceList, ChoiceEntryComponent
@@ -8,7 +9,9 @@ from Components.config import config
 from Components.Label import Label
 from Components.Sources.StaticText import StaticText
 from Components.SystemInfo import SystemInfo
+from Components.Harddisk import Harddisk
 from Tools.BoundFunction import boundFunction
+from Tools.Directories import pathExists
 from Tools.Multiboot import GetImagelist, GetCurrentImage, GetCurrentImageMode, EmptySlot
 
 class MultiBoot(Screen):
@@ -54,33 +57,55 @@ class MultiBoot(Screen):
 			title = screentitle
 			self["menu_path_compressed"] = StaticText("")
 		Screen.setTitle(self, title)
-
-		self["key_red"] = StaticText(_("Cancel"))
-		self["labe14"] = StaticText(_("Use the cursor keys to select an installed image and then Erase button."))
-		self["labe15"] = StaticText(_("Note: slot list does not show current image or empty slots."))
-		self["key_green"] = StaticText(_("Erase"))
-		self["config"] = ChoiceList(list=[ChoiceEntryComponent('',((_("Retrieving image slots - Please wait...")), "Queued"))])
-		imagedict = []
-		self.getImageList = None
 		self.title = screentitle
-		self.startit()
+		if SystemInfo["HasHiSi"] and not pathExists('/dev/sda1'):
+			self["key_red"] = StaticText(_("Cancel"))
+			self["labe14"] = StaticText(_("Press Init to format SDcard."))
+			self["labe15"] = StaticText(_(" "))
+			self["key_green"] = StaticText(_("Init SDcard"))
+			self["config"] = ChoiceList(list=[ChoiceEntryComponent('',((_(" ")), "Queued"))])
+			self["actions"] = ActionMap(["OkCancelActions", "ColorActions", "DirectionActions", "KeyboardInputActions", "MenuActions"],
+			{
+				"red": boundFunction(self.close, None),
+				"green": self.format,
+				"ok": self.erase,
+				"cancel": boundFunction(self.close, None),
+				"up": self.keyUp,
+				"down": self.keyDown,
+				"left": self.keyLeft,
+				"right": self.keyRight,
+				"upRepeated": self.keyUp,
+				"downRepeated": self.keyDown,
+				"leftRepeated": self.keyLeft,
+				"rightRepeated": self.keyRight,
+				"menu": boundFunction(self.close, True),
+			}, -1)
+		else:
+			self["key_red"] = StaticText(_("Cancel"))
+			self["labe14"] = StaticText(_("Use the cursor keys to select an installed image and then Erase button."))
+			self["labe15"] = StaticText(_("Note: slot list does not show current image or empty slots"))
+			self["key_green"] = StaticText(_("Erase"))
+			self["config"] = ChoiceList(list=[ChoiceEntryComponent('',((_("Retrieving image slots - Please wait...")), "Queued"))])
+			imagedict = []
+			self.getImageList = None
+			self.startit()
 
-		self["actions"] = ActionMap(["OkCancelActions", "ColorActions", "DirectionActions", "KeyboardInputActions", "MenuActions"],
-		{
-			"red": boundFunction(self.close, None),
-			"green": self.erase,
-			"ok": self.erase,
-			"cancel": boundFunction(self.close, None),
-			"up": self.keyUp,
-			"down": self.keyDown,
-			"left": self.keyLeft,
-			"right": self.keyRight,
-			"upRepeated": self.keyUp,
-			"downRepeated": self.keyDown,
-			"leftRepeated": self.keyLeft,
-			"rightRepeated": self.keyRight,
-			"menu": boundFunction(self.close, True),
-		}, -1)
+			self["actions"] = ActionMap(["OkCancelActions", "ColorActions", "DirectionActions", "KeyboardInputActions", "MenuActions"],
+			{
+				"red": boundFunction(self.close, None),
+				"green": self.erase,
+				"ok": self.erase,
+				"cancel": boundFunction(self.close, None),
+				"up": self.keyUp,
+				"down": self.keyDown,
+				"left": self.keyLeft,
+				"right": self.keyRight,
+				"upRepeated": self.keyUp,
+				"downRepeated": self.keyDown,
+				"leftRepeated": self.keyLeft,
+				"rightRepeated": self.keyRight,
+				"menu": boundFunction(self.close, True),
+			}, -1)
 		self.onLayoutFinish.append(self.layoutFinished)
 
 	def layoutFinished(self):
@@ -93,6 +118,8 @@ class MultiBoot(Screen):
 		list = []
 		mode = GetCurrentImageMode() or 0
 		currentimageslot = GetCurrentImage()
+		if SystemInfo["HasHiSi"]:
+			currentimageslot += 1
 		for x in sorted(imagedict.keys()):
 			if imagedict[x]["imagename"] != _("Empty slot") and x != currentimageslot:
 				list.append(ChoiceEntryComponent('',((_("slot%s - %s ")) % (x, imagedict[x]['imagename']), x)))
@@ -108,6 +135,38 @@ class MultiBoot(Screen):
 	def doErase(self, answer):
 		if answer is True:
 			sloterase = EmptySlot(self.currentSelected[0][1], self.startit)
+
+	def format(self):
+		self.TITLE = _("Init SDCARD")
+		sda ="sda"
+		size = Harddisk(sda).diskSize()
+
+		if ((float(size) / 1024) / 1024) >= 1:
+			des = _("Size: ") + str(round(((float(size) / 1024) / 1024), 2)) + _("TB")
+		elif (size / 1024) >= 1:
+			des = _("Size: ") + str(round((float(size) / 1024), 2)) + _("GB")
+		if "GB" in des:
+			print "Multibootmgr1", des, "%s" %des[6], size
+			if size/1024 < 6:
+				print "Multibootmgr2", des, "%s" %des[6], size/1024 
+				self.session.open(MessageBox, _("Multiboot manager - The SDcard must be at least 8MB"), MessageBox.TYPE_INFO, timeout=10)
+				self.close
+			else:
+				self.session.open(MessageBox, _("Multiboot manager - SDcard initialisation run, please restart OpenViX"), MessageBox.TYPE_INFO, timeout=10)
+				cmdlist = []
+				cmdlist.append("dd if=/dev/zero of=/dev/sda bs=512 count=1 conv=notrunc")
+				cmdlist.append("rm -f /tmp/init.sh")
+				cmdlist.append("echo -e 'sfdisk /dev/sda <<EOF' >> /tmp/init.sh")
+				cmdlist.append("echo -e ',8M' >> /tmp/init.sh")
+				cmdlist.append("echo -e ',2048M' >> /tmp/init.sh")
+				cmdlist.append("echo -e ',8M' >> /tmp/init.sh")
+				cmdlist.append("echo -e ',2048M' >> /tmp/init.sh")
+				cmdlist.append("echo -e ',8M' >> /tmp/init.sh")
+				cmdlist.append("echo -e ',2048M' >> /tmp/init.sh")
+				cmdlist.append("echo -e 'EOF' >> /tmp/init.sh")
+				cmdlist.append("chmod +x /tmp/init.sh")
+				cmdlist.append("/tmp/init.sh")
+				self.session.open(Console, title = self.TITLE, cmdlist = cmdlist, closeOnSuccess = True)
 
 	def selectionChanged(self):
 		pass
