@@ -100,6 +100,10 @@ def getLcdPiconName(serviceName):
 		#fallback to 1 for TV services with non-standard service types
 		fields[2] = '1'
 		pngname = findLcdPicon('_'.join(fields))
+	if not pngname and fields[9] != '0':
+		#fallback to 0 for iptv buffering
+		fields[9] = '0'
+		pngname = findLcdPicon('_'.join(fields))
 	if not pngname: # picon by channel name
 		name = ServiceReference(serviceName).getServiceName()
 		name = unicodedata.normalize('NFKD', unicode(name, 'utf_8', errors='ignore')).encode('ASCII', 'ignore')
