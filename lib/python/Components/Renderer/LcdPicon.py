@@ -25,7 +25,7 @@ def onMountpointAdded(mountpoint):
 	global searchPaths
 	try:
 		if getBoxType() in bw_lcd or config.lcd.picon_pack.value:
-			path = os.path.join(mountpoint, 'lcd_picon') + '/'
+			path = os.path.join(mountpoint, 'piconlcd') + '/'
 		else:
 			path = os.path.join(mountpoint, 'picon') + '/'
 		if os.path.isdir(path) and path not in searchPaths:
@@ -40,7 +40,7 @@ def onMountpointAdded(mountpoint):
 def onMountpointRemoved(mountpoint):
 	global searchPaths
 	if getBoxType() in bw_lcd or config.lcd.picon_pack.value:
-		path = os.path.join(mountpoint, 'lcd_picon') + '/'
+		path = os.path.join(mountpoint, 'piconlcd') + '/'
 	else:
 		path = os.path.join(mountpoint, 'picon') + '/'
 	try:
