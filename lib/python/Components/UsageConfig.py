@@ -2,7 +2,7 @@ import locale
 import os
 import skin
 from time import time
-from boxbranding import getBrandOEM, getBoxTypee, getDisplayType
+from boxbranding import getBrandOEM, getBoxType, getDisplayType
 
 from enigma import eDVBDB, eEPGCache, setTunerTypePriorityOrder, setPreferredTuner, setSpinnerOnOff, setEnableTtCachingOnOff, eEnv, Misc_Options, eBackgroundFileEraser, eServiceEvent, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_HALIGN_CENTER, RT_VALIGN_CENTER, RT_WRAP
 
