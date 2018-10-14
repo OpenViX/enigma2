@@ -316,8 +316,8 @@ public:
 		DELAY_AFTER_VOLTAGE_CHANGE_BEFORE_SWITCH_CMDS, // delay after change voltage before transmit toneburst/diseqc
 		DELAY_AFTER_DISEQC_RESET_CMD,
 		DELAY_AFTER_DISEQC_PERIPHERIAL_POWERON_CMD,
-		MAX_PARAMS,
-		UNICABLE_MAX_RAND
+		UNICABLE_MAX_RAND,
+		MAX_PARAMS
 	};
 private:
 #ifndef SWIG
