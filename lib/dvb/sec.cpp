@@ -708,10 +708,12 @@ RESULT eDVBSatelliteEquipmentControl::prepare(iDVBFrontend &frontend, const eDVB
 
 			if(is_unicable)
 			{
+				eDebug("UNICABLE_MAX_RAND: %d", UNICABLE_MAX_RAND);
+				eDebug("m_params[UNICABLE_MAX_RAND]: %d", m_params[UNICABLE_MAX_RAND]);
 				int unicable_rand;
 				unicable_rand = (rand() % m_params[UNICABLE_MAX_RAND]);
 				eDebug("unicable_rand: %d", unicable_rand);
-				sec_sequence.push_back( eSecCommand(eSecCommand::SLEEP, unicable_rand) );
+				// sec_sequence.push_back( eSecCommand(eSecCommand::SLEEP, unicable_rand) );
 				
 				// check if voltage is disabled
 				eSecCommand::pair compare;
