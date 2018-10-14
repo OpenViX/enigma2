@@ -1584,6 +1584,14 @@ int eDVBFrontend::tuneLoopInt()  // called by m_tuneTimer
 				prev->inc_use();
 			}
 		}
+		else if (!m_simulate && sec_fe != this && sec_fe->m_state == stateTuning && sec_fe->m_tuning == 1 &&
+			 m_sec_sequence && m_sec_sequence.begin() == m_sec_sequence.current())
+		{
+			delay = 100 + rand() % 900; // random value between 100 and 999 ms
+			eDebug("[eDVBFrontend %d] linked on %d is also initiating tuning, delaying %d ms", m_dvbid, sec_fe->getDVBID(), delay);
+			m_tuneTimer->start(delay, true);
+			return delay;
+		}
 	}
 
 	if ( m_sec_sequence && m_sec_sequence.current() != m_sec_sequence.end() )
