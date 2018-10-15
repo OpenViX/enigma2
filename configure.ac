@@ -160,6 +160,51 @@ AM_CONDITIONAL(XC7362, test "$BOXTYPE" == xc7362)
 AM_CONDITIONAL(XC7358, test "$BOXTYPE" == xc7358)
 AM_CONDITIONAL(XC7358CI, test "$BOXTYPE" == xc7358ci)
 
+AC_ARG_WITH(accelerationthreshold,
+	AC_HELP_STRING([--with-accelerationthreshold=n], [use acceleration threshold of n bytes]),
+	[[with_accelerationthreshold=$withval]],
+	[[with_accelerationthreshold=48000]]
+)
+
+AC_DEFINE_UNQUOTED(GFX_SURFACE_ACCELERATION_THRESHOLD, $with_accelerationthreshold,[Configure threshold for accelerated surfaces (in bytes)])
+
+AC_ARG_WITH(fillaccelerationthreshold,
+	AC_HELP_STRING([--with-fillaccelerationthreshold=n], [use fill acceleration threshold of n bytes]),
+	[[with_fillaccelerationthreshold=$withval]],
+	[[with_fillaccelerationthreshold=80000]]
+)
+
+AC_DEFINE_UNQUOTED(GFX_SURFACE_FILL_ACCELERATION_THRESHOLD, $with_fillaccelerationthreshold,[Configure threshold for accelerated fill operations (in bytes)])
+
+AC_ARG_WITH(blitaccelerationthreshold,
+	AC_HELP_STRING([--with-blitaccelerationthreshold=n], [use blit acceleration threshold of n bytes]),
+	[[with_blitaccelerationthreshold=$withval]],
+	[[with_blitaccelerationthreshold=0]]
+)
+
+AC_DEFINE_UNQUOTED(GFX_SURFACE_BLIT_ACCELERATION_THRESHOLD, $with_blitaccelerationthreshold,[Configure threshold for accelerated blit operations (in bytes)])
+
+AC_ARG_WITH(alphablendingacceleration,
+	AC_HELP_STRING([--with-alphablendingacceleration=never/always/auto], [alphablending acceleration strategy: never accelerate / always accelerate / automatically decide when to accelerate (default)]),
+	[[with_alphablendingacceleration=$withval]],
+	[[with_alphablendingacceleration=auto]]
+)
+
+if test x"$with_alphablendingacceleration" = xnever ; then
+	AC_DEFINE_UNQUOTED(FORCE_NO_BLENDING_ACCELERATION, 1, [Do not attempt to accelerate alphablending blits])
+elif test x"$with_alphablendingacceleration" = xalways ; then
+	AC_DEFINE_UNQUOTED(FORCE_ALPHABLENDING_ACCELERATION, 1, [Accelerate alphablending blits])
+fi
+
+AC_ARG_WITH(accelerationaccumulation,
+	AC_HELP_STRING([--with-accelerationaccumulation], [accumulate blit/fill acceleration operations]),
+	[[with_accelerationaccumulation=$withval]],
+	[[with_accelerationaccumulation=no]]
+)
+
+if test x"$with_accelerationaccumulation" = xyes ; then
+	AC_DEFINE(SUPPORT_ACCUMULATED_ACCELERATION_OPERATIONS, 1,[Accumulate blit/fill acceleration operations])
+fi
 
 AC_ARG_WITH(libvugles2,
 	AS_HELP_STRING([--with-libvugles2],[use libvugles2, yes or no]),
@@ -169,6 +214,18 @@ if test "$with_libvugles2" = "yes"; then
 	GLES_CFLAGS="-DUSE_LIBVUGLES2"
 fi
 AM_CONDITIONAL(HAVE_LIBVUGLES2, test "$with_libvugles2" = "yes")
+
+AC_ARG_WITH(libhiaccel,
+	AS_HELP_STRING([--with-libhiaccel],[use libhiaccel, yes or no]),
+	[with_libhiaccel=$withval],[with_libhiaccel=no])
+if test "$with_libhiaccel" = "yes"; then
+	PKG_CHECK_MODULES(LIBHIACCEL, [libhiaccel])
+	HIACCEL_CFLAGS="-DUSE_LIBHIACCEL"
+fi
+
+if test x"$with_libhiaccel" != xno ; then
+	AC_DEFINE(HAVE_HISILICON_ACCEL, 1,[define add HISILICON ACCEL])
+fi
 
 AC_ARG_WITH(osdanimation,
 	AC_HELP_STRING([--with-osdanimation], [use osd animation, yes or no]),
@@ -373,9 +430,8 @@ if test "$BOXTYPE" == "g300"; then
 	AC_DEFINE(FORCE_ADVANCED_REMOTE, 1,[define to fixup the input device identification when the remote control is actually an 'advanced' remote (with play/forward/rewind keys)])
 fi
 
-if test "$BOXTYPE" == "et8500"; then
-	AC_DEFINE(FORCE_BLENDING_ACCELERATION, 1,[define when the framebuffer acceleration has alphablending support, but detection slow down all])
-	AC_DEFINE(FORCE_ADVANCED_REMOTE, 1,[define to fixup the input device identification when the remote control is actually an 'advanced' remote (with play/forward/rewind keys)])
+if test "$BOXTYPE" == "et8500" -o "$BOXTYPE" == "et8500s"; then
+	AC_DEFINE(FORCE_ALPHABLENDING_ACCELERATION, 1,[define when the framebuffer acceleration has alphablending support, but detection slow down all])
 fi
 
 if test "$BOXTYPE" == "sf4008"; then
