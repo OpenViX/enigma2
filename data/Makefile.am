@@ -62,5 +62,9 @@ if HAVE_BWLCD128
 SUBDIRS += vfd128
 endif
 
+if HAVE_7SEGMENT
+SUBDIRS += 7segment
+endif
+
 iso-639-3.pck: $(srcdir)/iso-639-3.tab
 	python $(srcdir)/convert-iso-639-3.py $< $@
