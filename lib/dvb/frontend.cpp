@@ -1584,7 +1584,7 @@ int eDVBFrontend::tuneLoopInt()  // called by m_tuneTimer
 				prev->inc_use();
 			}
 		}
-		else if (!m_simulate && sec_fe != this && sec_fe->m_state == stateTuning && sec_fe->m_tuning == 1 &&
+/*		else if (!m_simulate && sec_fe != this && sec_fe->m_state == stateTuning && sec_fe->m_tuning == 1 &&
 			 m_sec_sequence && m_sec_sequence.begin() == m_sec_sequence.current())
 		{
 			delay = 100 + rand() % 900; // random value between 100 and 999 ms
@@ -1592,7 +1592,7 @@ int eDVBFrontend::tuneLoopInt()  // called by m_tuneTimer
 			m_tuneTimer->start(delay, true);
 			return delay;
 		}
-	}
+*/	}
 
 	if ( m_sec_sequence && m_sec_sequence.current() != m_sec_sequence.end() )
 	{
@@ -2336,7 +2336,8 @@ RESULT eDVBFrontend::prepare_sat(const eDVBFrontendParametersSatellite &feparm, 
 	res = m_sec->prepare(*this, feparm, satfrequency, 1 << m_slotid, tunetimeout);
 	if (!res)
 	{
-		eDebugNoSimulate("[eDVBFrontend] prepare_sat System %d Freq %d Pol %d SR %d INV %d FEC %d orbpos %d system %d modulation %d pilot %d, rolloff %d, is_id %d, pls_mode %d, pls_code %d",
+		eDebugNoSimulate("[eDVBFrontend %d] prepare_sat System %d Freq %d Pol %d SR %d INV %d FEC %d orbpos %d system %d modulation %d pilot %d, rolloff %d, is_id %d, pls_mode %d, pls_code %d",
+			m_dvbid,
 			feparm.system,
 			feparm.frequency,
 			feparm.polarisation,
@@ -2353,10 +2354,10 @@ RESULT eDVBFrontend::prepare_sat(const eDVBFrontendParametersSatellite &feparm, 
 			feparm.pls_code);
 		if ((unsigned int)satfrequency < fe_info.frequency_min || (unsigned int)satfrequency > fe_info.frequency_max)
 		{
-			eDebugNoSimulate("[eDVBFrontend] %d mhz out of tuner range.. dont tune", satfrequency / 1000);
+			eDebugNoSimulate("[eDVBFrontend %d] %d mhz out of tuner range.. dont tune", m_dvbid, satfrequency / 1000);
 			return -EINVAL;
 		}
-		eDebugNoSimulate("[eDVBFrontend] tuning to %d mhz", satfrequency / 1000);
+		eDebugNoSimulate("[eDVBFrontend %d] tuning to %d mhz", m_dvbid, satfrequency / 1000);
 	}
 	oparm.setDVBS(feparm, feparm.no_rotor_command_on_tune);
 	return res;
@@ -2364,7 +2365,8 @@ RESULT eDVBFrontend::prepare_sat(const eDVBFrontendParametersSatellite &feparm, 
 
 RESULT eDVBFrontend::prepare_cable(const eDVBFrontendParametersCable &feparm)
 {
-	eDebugNoSimulate("[eDVBFrontend] tuning to %d khz, sr %d, fec %d, modulation %d, inversion %d",
+	eDebugNoSimulate("[eDVBFrontend %d] tuning to %d khz, sr %d, fec %d, modulation %d, inversion %d",
+		m_dvbid,
 		feparm.frequency,
 		feparm.symbol_rate,
 		feparm.fec_inner,
@@ -2533,6 +2535,7 @@ RESULT eDVBFrontend::tune(const iDVBFrontendParameters &where, bool blindscan)
 			m_type = type;
 		}
 		m_tuning = 1;
+		eDebugNoSimulate("[eDVBFrontend %d] m_state: %d, stateFailed: %d, stateTuning: %d)", m_dvbid, m_state, stateFailed, signal, stateTuning);
 		// if we are re-tuning add a small random delay
 		m_tuneTimer->start(m_state == stateFailed ? rand() % 100 : 0, true);
 		if (m_state != stateTuning)
