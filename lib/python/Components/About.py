@@ -82,13 +82,16 @@ def getCPUSpeedString():
 
 	if cpu_speed == 0:
 		if getMachineBuild() in ('hd51','hd52','sf4008'):
-			import binascii
-			f = open('/sys/firmware/devicetree/base/cpus/cpu@0/clock-frequency', 'rb')
-			clockfrequency = f.read()
-			f.close()
-			cpu_speed = round(int(binascii.hexlify(clockfrequency), 16)/1000000,1)
+			try:
+				import binascii
+				f = open('/sys/firmware/devicetree/base/cpus/cpu@0/clock-frequency', 'rb')
+				clockfrequency = f.read()
+				f.close()
+				cpu_speed = round(int(binascii.hexlify(clockfrequency), 16)/1000000,1)
+			except IOError:
+				return "1.7 GHz"
 		else:
-			try: # Solo4K
+			try: # Solo4K sf8008
 				file = open('/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq', 'r')
 				cpu_speed = float(file.read()) / 1000
 				file.close()
@@ -97,9 +100,9 @@ def getCPUSpeedString():
 
 	if cpu_speed > 0:
 		if cpu_speed >= 1000:
-			cpu_speed = "%sGHz" % str(round(cpu_speed/1000,1))
+			cpu_speed = "%s GHz" % str(round(cpu_speed/1000,1))
 		else:
-			cpu_speed = "%sMHz" % str(int(cpu_speed))
+			cpu_speed = "%s MHz" % str(int(cpu_speed))
 		return cpu_speed
 	return _("unavailable")
 

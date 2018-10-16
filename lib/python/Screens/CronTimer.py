@@ -54,10 +54,10 @@ class CronTimers(Screen):
 		self['key_blue'] = Label(_("Autostart"))
 		self.list = []
 		self['list'] = List(self.list)
-		self['actions'] = ActionMap(['WizardActions', 'ColorActions', "MenuActions"], {'ok': self.info, 'back': self.UninstallCheck, 'red': self.delcron, 'green': self.addtocron, 'yellow': self.CrondStart, 'blue': self.autostart, "menu": self.closeRecursive})
+		self['actions'] = ActionMap(['WizardActions', 'ColorActions', "MenuActions"], {'ok': self.info, 'back': self.UninstallCheck, 'red': self.delcron, 'green': self.addtocron, 'yellow': self.CrondStart, 'blue': self.autostart})
 		if not self.selectionChanged in self["list"].onSelectionChanged:
 			self["list"].onSelectionChanged.append(self.selectionChanged)
-		self.service_name = 'busybox-cron'
+		self.service_name = 'cronie'
 		self.onLayoutFinish.append(self.InstallCheck)
 
 	def InstallCheck(self):
@@ -137,19 +137,19 @@ class CronTimers(Screen):
 
 	def CrondStart(self):
 		if not self.my_crond_run:
-			self.Console.ePopen('/etc/init.d/crond.busybox start', self.StartStopCallback)
+			self.Console.ePopen('/etc/init.d/crond start', self.StartStopCallback)
 		elif self.my_crond_run:
-			self.Console.ePopen('/etc/init.d/crond.busybox stop', self.StartStopCallback)
+			self.Console.ePopen('/etc/init.d/crond stop', self.StartStopCallback)
 
 	def StartStopCallback(self, result = None, retval = None, extra_args = None):
 		sleep(3)
 		self.updateList()
 
 	def autostart(self):
-		if fileExists('/etc/rc2.d/S20crond.busybox'):
-			self.Console.ePopen('update-rc.d -f crond.busybox remove')
+		if fileExists('/etc/rc2.d/S90crond'):
+			self.Console.ePopen('update-rc.d -f crond remove')
 		else:
-			self.Console.ePopen('update-rc.d -f crond.busybox defaults')
+			self.Console.ePopen('update-rc.d -f crond defaults 90 60')
 		sleep(3)
 		self.updateList()
 
@@ -166,7 +166,7 @@ class CronTimers(Screen):
 		self['labdisabled'].hide()
 		self.my_crond_active = False
 		self.my_crond_run = False
-		if path.exists('/etc/rc3.d/S20crond.busybox'):
+		if path.exists('/etc/rc3.d/S90crond'):
 			self['labdisabled'].hide()
 			self['labactive'].show()
 			self.my_crond_active = True
@@ -301,9 +301,6 @@ class CronTimers(Screen):
 			myline = mysel[1]
 			self.session.open(MessageBox, _(myline), MessageBox.TYPE_INFO)
 
-	def closeRecursive(self):
-		self.close(True)
-
 config.crontimers = ConfigSubsection()
 config.crontimers.commandtype = NoSave(ConfigSelection(choices = [ ('custom',_("Custom")),('predefined',_("Predefined")) ]))
 config.crontimers.cmdtime = NoSave(ConfigClock(default=0))
@@ -329,7 +326,6 @@ class CronTimersConfig(Screen, ConfigListScreen):
 			'green': self.checkentry,
 			'back': self.close,
 			'showVirtualKeyboard': self.KeyText,
-			"menu": self.closeRecursive
 		})
 		self["HelpWindow"] = Pixmap()
 		self["HelpWindow"].hide()
