@@ -236,6 +236,7 @@
 		<key id="KEY_LIST" mapto="showMovies" flags="b"/>
 		<key id="KEY_PVR" mapto="showMovies" flags="b"/>
 		<key id="KEY_TEXT" mapto="showText" flags="b"/>
+		<key id="KEY_WWW" mapto="showMovies" flags="m" />		
 	</map>
 
 	<map context="2ndInfobarActions">
@@ -600,7 +601,7 @@
 		<key id="KEY_CHANNELDOWN" mapto="prevBouquet" flags="m"/>
 		<key id="KEY_NEXT" mapto="nextMarker" flags="m"/>
 		<key id="KEY_BACK" mapto="prevMarker" flags="m"/>
-		<key id="KEY_PREVIOUS" mapto="prevMarker" flags="m"/>
+		<key id="KEY_PREVIOUS" mapto="showFavourites" flags="m"/>
 		<key id="KEY_FORWARD" mapto="nextMarker" flags="m"/>
 	</map>
 
