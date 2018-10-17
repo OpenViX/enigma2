@@ -2540,7 +2540,7 @@ RESULT eDVBFrontend::tune(const iDVBFrontendParameters &where, bool blindscan)
 		int rand_delay;
 		rand_delay = rand() % 1000;
 		if(m_state == stateFailed)
-			eDebugNoSimulate("[eDVBFrontend %d] tune failed. Adding %dms of random delay.)", m_dvbid, rand_delay)
+			eDebugNoSimulate("[eDVBFrontend %d] tune failed. Adding %dms of random delay.)", m_dvbid, rand_delay);
 		m_tuneTimer->start(m_state == stateFailed ? rand_delay : 0, true);
 		if (m_state != stateTuning)
 		{
