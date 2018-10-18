@@ -200,11 +200,16 @@ class EmptySlot():
 		self.slot = Contents
 		if not os.path.isdir('/tmp/testmount'):
 			os.mkdir('/tmp/testmount')
+		if SystemInfo["HasHiSi"]:
+			self.slot -= 1
+		self.part = "%s%s" %(self.mtdboot, str(self.slot * 2 + self.firstslot))
+		if SystemInfo["HasHiSi"] and self.slot == 0:
+			self.part = getMachineMtdRoot()
 		self.phase = self.MOUNT
 		self.run()
 
 	def run(self):
-		self.container.ePopen('mount /dev/SystemInfo["canMultiBoot"][2]%s /tmp/testmount' % str(self.slot * 2 + self.firstslot) if self.phase == self.MOUNT else 'umount /tmp/testmount', self.appClosed)
+		self.container.ePopen('mount /dev/%s /tmp/testmount' %self.part if self.phase == self.MOUNT else 'umount /tmp/testmount', self.appClosed)
 
 	
 	def appClosed(self, data, retval, extra_args):
