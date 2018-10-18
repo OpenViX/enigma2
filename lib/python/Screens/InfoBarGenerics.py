@@ -142,6 +142,12 @@ def updateresumePointCache():
 resumePointCache = loadResumePoints()
 resumePointCacheLast = int(time())
 
+whitelist_vbi = None
+def reload_whitelist_vbi():
+	global whitelist_vbi
+	whitelist_vbi = [line.strip() for line in open('/etc/enigma2/whitelist_vbi', 'r').readlines()] if os.path.isfile('/etc/enigma2/whitelist_vbi') else []
+reload_whitelist_vbi()
+
 class InfoBarDish:
 	def __init__(self):
 		self.dishDialog = self.session.instantiateDialog(Dish)
@@ -496,7 +502,6 @@ class InfoBarShowHide(InfoBarScreenSaver):
 	STATE_HIDING = 1
 	STATE_SHOWING = 2
 	STATE_SHOWN = 3
-	FLAG_HIDE_VBI = 512
 	FLAG_CENTER_DVB_SUBS = 2048
 
 	def __init__(self):
@@ -532,6 +537,10 @@ class InfoBarShowHide(InfoBarScreenSaver):
 			self.secondInfoBarScreen = self.session.instantiateDialog(SecondInfoBar)
 			self.secondInfoBarScreen.show()
 
+		from Screens.InfoBar import InfoBar
+		InfoBarInstance = InfoBar.instance
+		if InfoBarInstance:
+			InfoBarInstance.hideVBILineScreen.hide()
 		self.hideVBILineScreen = self.session.instantiateDialog(HideVBILine)
 		self.hideVBILineScreen.show()
 
@@ -753,22 +762,21 @@ class InfoBarShowHide(InfoBarScreenSaver):
 		if self.execing:
 			self.startHideTimer()
 
-	def checkHideVBI(self):
-		service = self.session.nav.getCurrentlyPlayingServiceReference()
+	def checkHideVBI(self, service = None):
+		service = service or self.session.nav.getCurrentlyPlayingServiceReference()
 		servicepath = service and service.getPath()
 		if servicepath:
 			if servicepath.startswith("/"):
 				if service.toString().startswith("1:"):
 					info = eServiceCenter.getInstance().info(service)
 					service = info and info.getInfoString(service, iServiceInformation.sServiceref)
-					return service and eDVBDB.getInstance().getFlag(eServiceReference(service)) & self.FLAG_HIDE_VBI and True
+					service = service and eServiceReference(service)
+					if service:
+						print service, service and service.toString()
+					return service and ":".join(service.toString().split(":")[:11]) in whitelist_vbi
 				else:
-					return ".hidvbi." in servicepath.lower()
-			elif "://" in servicepath:
-				return False
-		service = self.session.nav.getCurrentService()
-		info = service and service.info()
-		return info and info.getInfo(iServiceInformation.sHideVBI)
+					return ".hidevbi." in servicepath.lower()
+		return service and service.toString() in whitelist_vbi
 
 	def showHideVBI(self):
 		if self.checkHideVBI():
@@ -776,6 +784,17 @@ class InfoBarShowHide(InfoBarScreenSaver):
 		else:
 			self.hideVBILineScreen.hide()
 
+	def ToggleHideVBI(self, service = None):
+		service = service or self.session.nav.getCurrentlyPlayingServiceReference()
+		if service:
+			service = service.toString()
+			global whitelist_vbi
+			if service in whitelist_vbi:
+				whitelist_vbi.remove(service)
+			else:
+				whitelist_vbi.append(service)
+			open('/etc/enigma2/whitelist_vbi', 'w').write('\n'.join(whitelist_vbi))
+			self.showHideVBI()
 
 class BufferIndicator(Screen):
 	def __init__(self, session):
