@@ -45,8 +45,7 @@ class SecParameterSetup(Screen, ConfigListScreen):
 			(_("Delay after voltage change before motor command"), config.sec.delay_after_voltage_change_before_motor_command),
 			(_("Delay before sequence repeat"), config.sec.delay_before_sequence_repeat),
 			(_("Motor running timeout"), config.sec.motor_running_timeout),
-			(_("Motor command retries"), config.sec.motor_command_retries),
-			(_("Unicable max random delay"), config.sec.unicable_max_rand) ]
+			(_("Motor command retries"), config.sec.motor_command_retries) ]
 		ConfigListScreen.__init__(self, list)
 
 session = None
