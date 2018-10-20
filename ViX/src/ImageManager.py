@@ -278,7 +278,7 @@ class VIXImageManager(Screen):
 				remove(self.BackupDirectory + config.imagemanager.folderprefix.value + '-' + getImageType() + '-swapfile_backup')
 			self.refreshList()
 		except:
-			self['lab1'].setText(_("Device: ") + config.imagemanager.backuplocation.value + "\n" + _("there is a problem with this device. Please reformat it and try again."))
+			self['lab1'].setText(_("Device: ") + config.imagemanager.backuplocation.value + "\n" + _("There is a problem with this device. Please reformat it and try again."))
 
 	def createSetup(self):
 		self.session.openWithCallback(self.setupDone, Setup, 'viximagemanager', 'SystemPlugins/ViX', self.menu_path, PluginLanguageDomain)
@@ -397,7 +397,7 @@ class VIXImageManager(Screen):
 	 				if pathExists('/dev/%s1' %SystemInfo["canMultiBoot"][2]):
 						self.getImageList = GetImagelist(self.keyRestore1)
 					else:
-						self.session.open(MessageBox, _("SDcard detected but not formatted for multiboot - please use ViX MultiBoot Manager to format"), MessageBox.TYPE_INFO, timeout=15)
+						self.session.open(MessageBox, _("SDcard detected but not formatted for multiboot - please use ViX MultiBoot Manager to format."), MessageBox.TYPE_INFO, timeout=15)
 						self.close
 				else:
 					self.getImageList = GetImagelist(self.keyRestore1)
