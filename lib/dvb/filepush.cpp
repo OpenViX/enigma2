@@ -182,10 +182,15 @@ void eFilePushThread::thread()
 						break;
 					}
 					if (w < 0 && (errno == EINTR || errno == EAGAIN || errno == EBUSY))
+					{
+#if HAVE_HISILICON
+						usleep(100000);
+#endif
 						continue;
-					eDebug("[eFilePushThread] write: %m");
-					sendEvent(evtWriteError);
-					break;
+					}
+						eDebug("[eFilePushThread] write: %m");
+						sendEvent(evtWriteError);
+						break;
 				}
 				buf_start += w;
 			}
@@ -343,7 +348,10 @@ void eFilePushThreadRecorder::thread()
 				break;
 			}
 			if (errno == EINTR || errno == EBUSY || errno == EAGAIN)
-				continue;
+#if HAVE_HISILICON
+				usleep(100000);
+#endif
+			continue;
 			if (errno == EOVERFLOW)
 			{
 				eWarning("[eFilePushThreadRecorder] OVERFLOW while recording");
