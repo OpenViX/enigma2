@@ -708,23 +708,17 @@ RESULT eDVBSatelliteEquipmentControl::prepare(iDVBFrontend &frontend, const eDVB
 
 			if(is_unicable)
 			{
-				unsigned int unicable_rand;
-				unicable_rand = rand() % UNICABLE_MAX_RAND;
-				eDebug("unicable_rand: %d", unicable_rand);
-
-                // check if voltage is disabled
+				// check if voltage is disabled
 				eSecCommand::pair compare;
 				compare.steps = +3;
 				compare.voltage = iDVBFrontend::voltageOff;
 				sec_sequence.push_back( eSecCommand(eSecCommand::IF_NOT_VOLTAGE_GOTO, compare) );
 				sec_sequence.push_back( eSecCommand(eSecCommand::SET_VOLTAGE, VOLTAGE(13)) );
-				sec_sequence.push_back( eSecCommand(eSecCommand::SLEEP, m_params[DELAY_AFTER_ENABLE_VOLTAGE_BEFORE_SWITCH_CMDS] ) );
+				sec_sequence.push_back( eSecCommand(eSecCommand::SLEEP, m_params[DELAY_AFTER_ENABLE_VOLTAGE_BEFORE_SWITCH_CMDS + (rand() % UNICABLE_MAX_RAND)] ) );
 
 				sec_sequence.push_back( eSecCommand(eSecCommand::SET_VOLTAGE, VOLTAGE(18)) );
 				sec_sequence.push_back( eSecCommand(eSecCommand::SET_TONE, iDVBFrontend::toneOff) );
-				sec_sequence.push_back( eSecCommand(eSecCommand::SLEEP, m_params[DELAY_AFTER_VOLTAGE_CHANGE_BEFORE_SWITCH_CMDS]) );  // wait 20 ms after voltage change
-
-				sec_sequence.push_back( eSecCommand(eSecCommand::SLEEP, m_params[unicable_rand]) );
+				sec_sequence.push_back( eSecCommand(eSecCommand::SLEEP, m_params[DELAY_AFTER_VOLTAGE_CHANGE_BEFORE_SWITCH_CMDS + (rand() % UNICABLE_MAX_RAND)]) );  // wait 20 ms after voltage change
 
 				eDVBDiseqcCommand diseqc;
 				memset(diseqc.data, 0, MAX_DISEQC_LENGTH);
