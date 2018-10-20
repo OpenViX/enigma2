@@ -1535,7 +1535,7 @@ int eDVBFrontend::readInputpower()
 
 bool eDVBFrontend::setSecSequencePos(int steps)
 {
-	eDebugNoSimulate("[eDVBFrontend %d] set sequence pos %d", m_dvbid, steps);
+	eDebugNoSimulate("[eDVBFrontend] set sequence pos %d", steps);
 	if (!steps)
 		return false;
 	while( steps > 0 )
@@ -1595,7 +1595,7 @@ int eDVBFrontend::tuneLoopInt()  // called by m_tuneTimer
 		{
 			case eSecCommand::SLEEP:
 				delay = m_sec_sequence.current()++->msec;
-				eDebugNoSimulate("[eDVBFrontend %d] sleep %dms", m_dvbid, delay);
+				eDebugNoSimulate("[eDVBFrontend] sleep %dms", delay);
 				break;
 			case eSecCommand::GOTO:
 				if ( !setSecSequencePos(m_sec_sequence.current()->steps) )
@@ -1604,7 +1604,7 @@ int eDVBFrontend::tuneLoopInt()  // called by m_tuneTimer
 			case eSecCommand::SET_VOLTAGE:
 			{
 				int voltage = m_sec_sequence.current()++->voltage;
-				eDebugNoSimulate("[eDVBFrontend %d] setVoltage %d", m_dvbid, voltage);
+				eDebugNoSimulate("[eDVBFrontend] setVoltage %d", voltage);
 				sec_fe->setVoltage(voltage);
 				break;
 			}
@@ -1641,12 +1641,12 @@ int eDVBFrontend::tuneLoopInt()  // called by m_tuneTimer
 				break;
 			}
 			case eSecCommand::SET_TONE:
-				eDebugNoSimulate("[eDVBFrontend %d] setTone %d", m_dvbid, m_sec_sequence.current()->tone);
+				eDebugNoSimulate("[eDVBFrontend] setTone %d", m_sec_sequence.current()->tone);
 				sec_fe->setTone(m_sec_sequence.current()++->tone);
 				break;
 			case eSecCommand::SEND_DISEQC:
 				sec_fe->sendDiseqc(m_sec_sequence.current()->diseqc);
-				eDebugNoSimulateNoNewLineStart("[eDVBFrontend %d] sendDiseqc: ", m_dvbid);
+				eDebugNoSimulateNoNewLineStart("[eDVBFrontend] sendDiseqc: ");
 				for (int i=0; i < m_sec_sequence.current()->diseqc.len; ++i)
 				    eDebugNoNewLine("%02x", m_sec_sequence.current()->diseqc.data[i]);
 
@@ -1659,20 +1659,20 @@ int eDVBFrontend::tuneLoopInt()  // called by m_tuneTimer
 				++m_sec_sequence.current();
 				break;
 			case eSecCommand::SEND_TONEBURST:
-				eDebugNoSimulate("[eDVBFrontend %d] sendToneburst: %d", m_dvbid, m_sec_sequence.current()->toneburst);
+				eDebugNoSimulate("[eDVBFrontend] sendToneburst: %d", m_sec_sequence.current()->toneburst);
 				sec_fe->sendToneburst(m_sec_sequence.current()++->toneburst);
 				break;
 			case eSecCommand::SET_FRONTEND:
 			{
 				int enableEvents = (m_sec_sequence.current()++)->val;
-				eDebugNoSimulate("[eDVBFrontend %d] setFrontend %d", m_dvbid, enableEvents);
+				eDebugNoSimulate("[eDVBFrontend] setFrontend %d", enableEvents);
 				setFrontend(enableEvents);
 				break;
 			}
 			case eSecCommand::START_TUNE_TIMEOUT:
 			{
 				int tuneTimeout = m_sec_sequence.current()->timeout;
-				eDebugNoSimulate("[eDVBFrontend %d] startTuneTimeout %d", m_dvbid, tuneTimeout);
+				eDebugNoSimulate("[eDVBFrontend] startTuneTimeout %d", tuneTimeout);
 				if (!m_simulate)
 					m_timeout->start(tuneTimeout, 1);
 				++m_sec_sequence.current();
@@ -1680,12 +1680,12 @@ int eDVBFrontend::tuneLoopInt()  // called by m_tuneTimer
 			}
 			case eSecCommand::SET_TIMEOUT:
 				m_timeoutCount = m_sec_sequence.current()++->val;
-				eDebugNoSimulate("[eDVBFrontend %d] set timeout %d", m_dvbid, m_timeoutCount);
+				eDebugNoSimulate("[eDVBFrontend] set timeout %d", m_timeoutCount);
 				break;
 			case eSecCommand::IF_TIMEOUT_GOTO:
 				if (!m_timeoutCount)
 				{
-					eDebugNoSimulate("[eDVBFrontend %d] rotor timout", m_dvbid);
+					eDebugNoSimulate("[eDVBFrontend] rotor timout");
 					setSecSequencePos(m_sec_sequence.current()->steps);
 				}
 				else
@@ -1738,17 +1738,17 @@ int eDVBFrontend::tuneLoopInt()  // called by m_tuneTimer
 				if (isLocked && ((abs((signal = readFrontendData(iFrontendInformation_ENUMS::signalQualitydB)) - cmd.lastSignal) < 40) || !cmd.lastSignal))
 				{
 					if (cmd.lastSignal)
-						eDebugNoSimulate("[eDVBFrontend %d] locked step %d ok (%d %d)", m_dvbid, cmd.okcount, signal, cmd.lastSignal);
+						eDebugNoSimulate("[eDVBFrontend] locked step %d ok (%d %d)", cmd.okcount, signal, cmd.lastSignal);
 					else
 					{
-						eDebugNoSimulate("[eDVBFrontend %d] locked step %d ok", m_dvbid, cmd.okcount);
+						eDebugNoSimulate("[eDVBFrontend] locked step %d ok", cmd.okcount);
 						if (!cmd.okcount)
 							cmd.lastSignal = signal;
 					}
 					++cmd.okcount;
 					if (cmd.okcount > 4)
 					{
-						eDebugNoSimulate("[eDVBFrontend %d] ok > 4 .. goto %d\n", m_dvbid, cmd.steps);
+						eDebugNoSimulate("[eDVBFrontend] ok > 4 .. goto %d\n", cmd.steps);
 						setSecSequencePos(cmd.steps);
 						m_state = stateLock;
 						m_stateChanged(this);
@@ -1760,9 +1760,9 @@ int eDVBFrontend::tuneLoopInt()  // called by m_tuneTimer
 				else
 				{
 					if (isLocked)
-						eDebugNoSimulate("[eDVBFrontend %d] rotor locked step %d failed (oldSignal %d, curSignal %d)", m_dvbid, cmd.okcount, signal, cmd.lastSignal);
+						eDebugNoSimulate("[eDVBFrontend] rotor locked step %d failed (oldSignal %d, curSignal %d)", cmd.okcount, signal, cmd.lastSignal);
 					else
-						eDebugNoSimulate("[eDVBFrontend %d] rotor locked step %d failed (not locked)", m_dvbid, cmd.okcount);
+						eDebugNoSimulate("[eDVBFrontend] rotor locked step %d failed (not locked)", cmd.okcount);
 					cmd.okcount=0;
 					cmd.lastSignal=0;
 				}
@@ -1784,7 +1784,7 @@ int eDVBFrontend::tuneLoopInt()  // called by m_tuneTimer
 
 						if (event.status & FE_TIMEDOUT)
 						{
-							eDebugNoSimulate("[eDVBFrontend %d] IF_LOCK_TIMEOUT_GOTO: got FE_TIMEDOUT", m_dvbid);
+							eDebugNoSimulate("[eDVBFrontend] IF_LOCK_TIMEOUT_GOTO: got FE_TIMEDOUT");
 							setSecSequencePos(m_sec_sequence.current()->steps);
 							timeout = true;
 							break;
@@ -1854,7 +1854,7 @@ int eDVBFrontend::tuneLoopInt()  // called by m_tuneTimer
 					++m_sec_sequence.current();
 				break;
 			case eSecCommand::INVALIDATE_CURRENT_SWITCHPARMS:
-				eDebugNoSimulate("[eDVBFrontend %d] invalidate current switch params", m_dvbid);
+				eDebugNoSimulate("[eDVBFrontend] invalidate current switch params");
 				sec_fe_data[CSW] = -1;
 				sec_fe_data[UCSW] = -1;
 				sec_fe_data[TONEBURST] = -1;
@@ -1864,11 +1864,11 @@ int eDVBFrontend::tuneLoopInt()  // called by m_tuneTimer
 				sec_fe_data[CSW] = sec_fe_data[NEW_CSW];
 				sec_fe_data[UCSW] = sec_fe_data[NEW_UCSW];
 				sec_fe_data[TONEBURST] = sec_fe_data[NEW_TONEBURST];
-				eDebugNoSimulate("[eDVBFrontend %d] update current switch params", m_dvbid);
+				eDebugNoSimulate("[eDVBFrontend] update current switch params");
 				++m_sec_sequence.current();
 				break;
 			case eSecCommand::INVALIDATE_CURRENT_ROTORPARMS:
-				eDebugNoSimulate("[eDVBFrontend %d] invalidate current rotorparams", m_dvbid);
+				eDebugNoSimulate("[eDVBFrontend] invalidate current rotorparams");
 				sec_fe_data[ROTOR_CMD] = -1;
 				sec_fe_data[ROTOR_POS] = -1;
 				++m_sec_sequence.current();
@@ -1876,17 +1876,17 @@ int eDVBFrontend::tuneLoopInt()  // called by m_tuneTimer
 			case eSecCommand::UPDATE_CURRENT_ROTORPARAMS:
 				sec_fe_data[ROTOR_CMD] = sec_fe_data[NEW_ROTOR_CMD];
 				sec_fe_data[ROTOR_POS] = sec_fe_data[NEW_ROTOR_POS];
-				eDebugNoSimulate("[eDVBFrontend %d] update current rotorparams %d %04lx %ld", m_dvbid, m_timeoutCount, sec_fe_data[ROTOR_CMD], sec_fe_data[ROTOR_POS]);
+				eDebugNoSimulate("[eDVBFrontend] update current rotorparams %d %04lx %ld", m_timeoutCount, sec_fe_data[ROTOR_CMD], sec_fe_data[ROTOR_POS]);
 				++m_sec_sequence.current();
 				break;
 			case eSecCommand::SET_ROTOR_DISEQC_RETRYS:
 				m_retryCount = m_sec_sequence.current()++->val;
-				eDebugNoSimulate("[eDVBFrontend %d] set rotor retries %d", m_dvbid, m_retryCount);
+				eDebugNoSimulate("[eDVBFrontend] set rotor retries %d", m_retryCount);
 				break;
 			case eSecCommand::IF_NO_MORE_ROTOR_DISEQC_RETRYS_GOTO:
 				if (!m_retryCount)
 				{
-					eDebugNoSimulate("[eDVBFrontend %d] no more rotor retrys", m_dvbid);
+					eDebugNoSimulate("[eDVBFrontend] no more rotor retrys");
 					setSecSequencePos(m_sec_sequence.current()->steps);
 				}
 				else
@@ -1903,9 +1903,9 @@ int eDVBFrontend::tuneLoopInt()  // called by m_tuneTimer
 					{
 						bool slimiting = m_sec_sequence.current()->mode == eSecCommand::modeStatic;
 						if (fprintf(f, "%s", slimiting ? "on" : "off") <= 0)
-							eDebugNoSimulate("[eDVBFrontend %d] write %s failed: %m", m_dvbid, proc_name);
+							eDebugNoSimulate("[eDVBFrontend] write %s failed: %m", proc_name);
 						else
-							eDebugNoSimulate("[eDVBFrontend %d] set %s current limiting", m_dvbid, slimiting ? "static" : "dynamic");
+							eDebugNoSimulate("[eDVBFrontend] set %s current limiting", slimiting ? "static" : "dynamic");
 					}
 					else if (sec_fe->m_need_rotor_workaround)
 					{
@@ -1924,16 +1924,16 @@ int eDVBFrontend::tuneLoopInt()  // called by m_tuneTimer
 							unsigned char data[2];
 							::ioctl(fd, I2C_SLAVE_FORCE, 0x10 >> 1);
 							if(::read(fd, data, 1) != 1)
-								eDebugNoSimulate("[eDVBFrontend %d] error read lnbp: %m", m_dvbid);
+								eDebugNoSimulate("[eDVBFrontend] error read lnbp: %m");
 							if ( m_sec_sequence.current()->mode == eSecCommand::modeStatic )
 							{
 								data[0] |= 0x80;  // enable static current limiting
-								eDebugNoSimulate("[eDVBFrontend %d] set static current limiting", m_dvbid);
+								eDebugNoSimulate("[eDVBFrontend] set static current limiting");
 							}
 							else
 							{
 								data[0] &= ~0x80;  // enable dynamic current limiting
-								eDebugNoSimulate("[eDVBFrontend %d] set dynamic current limiting", m_dvbid);
+								eDebugNoSimulate("[eDVBFrontend] set dynamic current limiting");
 							}
 							if(::write(fd, data, 1) != 1)
 								eDebugNoSimulate("[eDVBFrontend] error write lnbp: %m");
@@ -1946,7 +1946,7 @@ int eDVBFrontend::tuneLoopInt()  // called by m_tuneTimer
 			}
 			case eSecCommand::DELAYED_CLOSE_FRONTEND:
 			{
-				eDebugNoSimulate("[eDVBFrontend %d] delayed close frontend", m_dvbid);
+				eDebugNoSimulate("[eDVBFrontend] delayed close frontend");
 				closeFrontend(false, true);
 				++m_sec_sequence.current();
 				break;
