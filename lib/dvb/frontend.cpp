@@ -2532,9 +2532,8 @@ RESULT eDVBFrontend::tune(const iDVBFrontendParameters &where, bool blindscan)
 			eDebug("[eDVBFrontend] tune setting type to %d from %d", type, m_type);
 			m_type = type;
 		}
+		m_tuneTimer->start(0,true);
 		m_tuning = 1;
-		// if we are re-tuning add a small random delay
-		m_tuneTimer->start(m_state == stateFailed ? rand() % 100 : 0, true);
 		if (m_state != stateTuning)
 		{
 			m_state = stateTuning;
