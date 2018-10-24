@@ -3,6 +3,10 @@ language: cpp
 sudo: required
 dist: trusty
 
+branches:
+  only:
+  - Dev
+
 addons:
   apt:
     packages:
