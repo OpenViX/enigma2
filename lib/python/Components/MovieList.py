@@ -140,6 +140,8 @@ class MovieList(GUIComponent):
 	SORT_GROUPWISE = 8
 	SORT_ALPHA_DATE_OLDEST_FIRST = 9
 	SORT_ALPHAREV_DATE_NEWEST_FIRST = 10
+	SORT_LONGEST = 11
+	SORT_SHORTEST = 12
 
 	HIDE_DESCRIPTION = 1
 	SHOW_DESCRIPTION = 2
@@ -150,8 +152,8 @@ class MovieList(GUIComponent):
 # The numbering starts after SORT_* values above.
 # in MovieSelection.py (that has no SORT_GROUPWISE)
 #
-	TRASHSORT_SHOWRECORD = 11
-	TRASHSORT_SHOWDELETE = 12
+	TRASHSORT_SHOWRECORD = 13
+	TRASHSORT_SHOWDELETE = 14
 	UsingTrashSort = False
 	InTrashFolder = False
 
@@ -178,6 +180,7 @@ class MovieList(GUIComponent):
 		self.iconsWidth = 22
 		self.trashShift = 1
 		self.dirShift = 1
+		self.durationWidth = 160
 		self.dateWidth = 160
 		if config.usage.time.wide.value:
 			self.dateWidth = int(self.dateWidth * 1.15)
@@ -304,6 +307,8 @@ class MovieList(GUIComponent):
 			self.dirShift = int(value)
 		def spaceRight(value):
 			self.spaceRight = int(value)
+		def durationWidth(value):
+			self.durationWidth = int(value)
 		def dateWidth(value):
 			self.dateWidth = int(value)
 			if config.usage.time.wide.value:
@@ -344,6 +349,10 @@ class MovieList(GUIComponent):
 	def buildMovieListEntry(self, serviceref, info, begin, data):
 		switch = config.usage.show_icons_in_movielist.value
 		width = self.l.getItemSize().width()
+		if config.usage.load_length_of_movies_in_moviellist.value:
+			durationWidth = self.durationWidth
+		else:
+			durationWidth = 0
 		dateWidth = self.dateWidth
 		if not config.movielist.use_fuzzy_dates.value:
 			dateWidth += 30
@@ -378,7 +387,10 @@ class MovieList(GUIComponent):
 			data = MovieListData()
 			cur_idx = self.l.getCurrentSelectionIndex()
 			x = self.list[cur_idx] # x = ref,info,begin,...
-			data.len = 0 #dont recalc movielist to speedup loading the list
+			if config.usage.load_length_of_movies_in_moviellist.value:
+				data.len = x[1].getLength(x[0]) #recalc the movie length...
+			else:
+				data.len = 0 #dont recalc movielist to speedup loading the list
 			self.list[cur_idx] = (x[0], x[1], x[2], data) #update entry in list... so next time we don't need to recalc
 			data.txt = info.getName(serviceref)
 			if config.movielist.hide_extensions.value:
@@ -416,24 +428,36 @@ class MovieList(GUIComponent):
 						if config.usage.movielist_unseen.value:
 							data.part = 100
 							data.partcol = self.pbarColour
-		len = data.len
-		if len > 0:
-			len = "%d:%02d" % (len / 60, len % 60)
-		else:
-			len = ""
 
+		colX = 0
+		if switch == 'p':
+			iconSize = self.pbarLargeWidth
+		ih = self.itemHeight
+
+		# icon/progress
 		if data:
-			pos = (0,self.partIconeShift)
 			if switch == 'i' and hasattr(data, 'icon') and data.icon is not None:
-				res.append(MultiContentEntryPixmapAlphaBlend(pos=pos, size=(iconSize,data.icon.size().height()), png=data.icon))
+				res.append(MultiContentEntryPixmapAlphaBlend(pos=(colX,self.partIconeShift), size=(iconSize,data.icon.size().height()), png=data.icon))
 			elif switch in ('p', 's'):
-				if switch == 'p':
-					iconSize = self.pbarLargeWidth
 				if hasattr(data, 'part') and data.part > 0:
-					res.append(MultiContentEntryProgress(pos=(0,self.pbarShift), size=(iconSize, self.pbarHeight), percent=data.part, borderWidth=2, foreColor=data.partcol, foreColorSelected=None, backColor=None, backColorSelected=None))
+					res.append(MultiContentEntryProgress(pos=(colX,self.pbarShift), size=(iconSize, self.pbarHeight), percent=data.part, borderWidth=2, foreColor=data.partcol, foreColorSelected=None, backColor=None, backColorSelected=None))
 				elif hasattr(data, 'icon') and data.icon is not None:
-					res.append(MultiContentEntryPixmapAlphaBlend(pos=(0,self.pbarShift), size=(iconSize, self.pbarHeight), png=data.icon))
+					res.append(MultiContentEntryPixmapAlphaBlend(pos=(colX, self.pbarShift), size=(iconSize, self.pbarHeight), png=data.icon))
+		colX += iconSize+space
 
+		# Recording name
+		res.append(MultiContentEntryText(pos=(colX, 0), size=(width-iconSize-space-durationWidth-dateWidth-r-colX, ih), font = 0, flags = RT_HALIGN_LEFT|RT_VALIGN_CENTER, text = data.txt))
+		colX = width-iconSize-space-durationWidth-dateWidth-r
+
+		# Duration - optionally active
+		if durationWidth > 0:
+			if data:
+				len = data.len
+				if len > 0:
+					len = ngettext("%d Min", "%d Mins", (len / 60)) % (len / 60)
+					res.append(MultiContentEntryText(pos=(colX, 0), size=(durationWidth, ih), font=1, flags=RT_HALIGN_RIGHT|RT_VALIGN_CENTER, text=len))
+
+		# Date
 		begin_string = ""
 		if begin > 0:
 			if config.movielist.use_fuzzy_dates.value:
@@ -441,9 +465,7 @@ class MovieList(GUIComponent):
 			else:
 				begin_string = strftime("%s, %s" % (config.usage.date.daylong.value, config.usage.time.short.value), localtime(begin))
 
-		ih = self.itemHeight
-		res.append(MultiContentEntryText(pos=(iconSize+space, 0), size=(width-iconSize-space-dateWidth-r, ih), font = 0, flags = RT_HALIGN_LEFT|RT_VALIGN_CENTER, text = data.txt))
-		res.append(MultiContentEntryText(pos=(width-dateWidth-r, 2), size=(dateWidth, ih), font=1, flags=RT_HALIGN_RIGHT|RT_VALIGN_CENTER, text=begin_string))
+		res.append(MultiContentEntryText(pos=(width-dateWidth-r, 0), size=(dateWidth, ih), font=1, flags=RT_HALIGN_RIGHT|RT_VALIGN_CENTER, text=begin_string))
 		return res
 
 	def moveToFirstMovie(self):
@@ -672,6 +694,10 @@ class MovieList(GUIComponent):
 			self.list = sorted(self.list[:numberOfDirs], key=self.buildAlphaDateSortKey) + sorted(self.list[numberOfDirs:], key=self.buildAlphaDateSortKey)
 		elif self.sort_type == MovieList.SORT_ALPHAREV_DATE_NEWEST_FIRST:
 			self.list = sorted(self.list[:numberOfDirs], key=self.buildAlphaDateSortKey, reverse = True) + sorted(self.list[numberOfDirs:], key=self.buildAlphaDateSortKey, reverse = True)
+		elif self.sort_type == MovieList.SORT_LONGEST:
+			self.list = sorted(self.list[:numberOfDirs], key=self.buildAlphaNumericSortKey) + sorted(self.list[numberOfDirs:], key=self.buildLengthSortKey, reverse = True)
+		elif self.sort_type == MovieList.SORT_SHORTEST:
+			self.list = sorted(self.list[:numberOfDirs], key=self.buildAlphaNumericSortKey) + sorted(self.list[numberOfDirs:], key=self.buildLengthSortKey)
 		
 		for x in self.list:
 			if x[1]:
@@ -740,6 +766,15 @@ class MovieList(GUIComponent):
 		# Adding the realtags to the tag list
 		for tag in realtags:
 			self.tags[tag] = set([tag])
+
+	def buildLengthSortKey(self, x):
+		# x = ref,info,begin,...
+		ref = x[0]
+		name = x[1] and x[1].getName(ref)
+		len = x[1] and x[1].getLength(ref)
+		if ref.flags & eServiceReference.mustDescent:
+			return 0, len or 0, name and name.lower() or "", -x[2]
+		return 1, len or 0, name and name.lower() or "", -x[2]
 
 	def buildAlphaNumericSortKey(self, x):
 		# x = ref,info,begin,...
