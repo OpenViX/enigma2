@@ -260,7 +260,7 @@ void eServiceMP3Record::restartRecordingFromEos()
 		eDebug("[eMP3ServiceRecordMod] removing .metaeit from current filename=%s", m_filename.c_str());
 		m_filename = m_filename.replace(m_filename.find(".metaeit"),8,"");
 	}
-	
+
 	std::string oldFilename = m_filename;
 	eDebug("[eMP3ServiceRecordMod] current filename=%s", oldFilename.c_str());
 	m_filename = m_filename.replace(m_filename.find(".stream"),7,"_001.stream");
@@ -302,10 +302,10 @@ void eServiceMP3Record::gstBusCall(GstMessage *msg)
 	switch (GST_MESSAGE_TYPE (msg))
 	{
 		case GST_MESSAGE_EOS:
-			eDebug("[eMP3ServiceRecord] gstBusCall eos event");			
+			eDebug("[eMP3ServiceRecord] gstBusCall eos event");
 			// Stream end -> stop recording
-			//m_event((iRecordableService*)this, evGstRecordEnded);						
-			restartRecordingFromEos();			
+			//m_event((iRecordableService*)this, evGstRecordEnded);
+			restartRecordingFromEos();
 			break;
 		case GST_MESSAGE_STATE_CHANGED:
 		{
