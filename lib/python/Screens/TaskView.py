@@ -1,19 +1,21 @@
-from Screens.Screen import Screen
+from Components.ActionMap import ActionMap
+from Components.config import config, ConfigSubsection, ConfigSelection, getConfigListEntry
 from Components.ConfigList import ConfigListScreen
-from Components.config import ConfigSubsection, ConfigSelection, getConfigListEntry
+from Components.Sources.Progress import Progress
+from Components.Sources.StaticText import StaticText
 from Components.SystemInfo import SystemInfo
 from Components.Task import job_manager
 from InfoBarGenerics import InfoBarNotifications
+from Tools import Notifications
+from Screen import Screen
+from Screens.MessageBox import MessageBox
 import Screens.Standby
+
 from Tools import Notifications
 from boxbranding import getMachineBrand, getMachineName
 
 class JobView(InfoBarNotifications, Screen, ConfigListScreen):
 	def __init__(self, session, job, parent=None, cancelable = True, backgroundable = True, afterEventChangeable = True , afterEvent="nothing"):
-		from Components.Sources.StaticText import StaticText
-		from Components.Sources.Progress import Progress
-		from Components.Sources.Boolean import Boolean
-		from Components.ActionMap import ActionMap
 		Screen.__init__(self, session, parent)
 		Screen.setTitle(self, _("Job View"))
 		InfoBarNotifications.__init__(self)
@@ -30,11 +32,21 @@ class JobView(InfoBarNotifications, Screen, ConfigListScreen):
 		self["summary_job_progress"] = Progress()
 		self["summary_job_task"] = StaticText()
 		self["job_status"] = StaticText()
-		self["finished"] = Boolean()
-		self["cancelable"] = Boolean(cancelable)
-		self["backgroundable"] = Boolean(backgroundable)
 
-		self["key_blue"] = StaticText(_("Background"))
+		self.cancelable = cancelable
+		self.backgroundable = backgroundable
+
+		self["key_green"] = StaticText("")
+
+		if self.cancelable:
+			self["key_red"] = StaticText(_("Cancel"))
+		else:
+			self["key_red"] = StaticText("")
+
+		if self.backgroundable:
+			self["key_blue"] = StaticText(_("Background"))
+		else:
+			self["key_blue"] = StaticText("")
 
 		self.onShow.append(self.windowShow)
 		self.onHide.append(self.windowHide)
@@ -44,7 +56,7 @@ class JobView(InfoBarNotifications, Screen, ConfigListScreen):
 			"green": self.ok,
 			"red": self.abort,
 			"blue": self.background,
-			"cancel": self.ok,
+			"cancel": self.abort,
 			"ok": self.ok,
 		}, -2)
 
@@ -99,15 +111,18 @@ class JobView(InfoBarNotifications, Screen, ConfigListScreen):
 			self["summary_job_task"].text = j.getStatustext()
 		if j.status in (j.FINISHED, j.FAILED):
 			self.performAfterEvent()
-			self["backgroundable"].boolean = False
+			self.backgroundable = False
+			self["key_blue"].setText("")
 			if j.status == j.FINISHED:
-				self["finished"].boolean = True
-				self["cancelable"].boolean = False
+				self["key_green"].setText(_("OK"))
+				self.cancelable = False
+				self["key_red"].setText("")
 			elif j.status == j.FAILED:
-				self["cancelable"].boolean = True
+				self.cancelable = True
+				self["key_red"].setText(_("Cancel"))
 
 	def background(self):
-		if self["backgroundable"].boolean:
+		if self.backgroundable:
 			self.close(True)
 
 	def ok(self):
@@ -120,7 +135,7 @@ class JobView(InfoBarNotifications, Screen, ConfigListScreen):
 		if self.job.status == self.job.NOT_STARTED:
 			job_manager.active_jobs.remove(self.job)
 			self.close(False)
-		elif self.job.status == self.job.IN_PROGRESS and self["cancelable"].boolean == True:
+		elif self.job.status == self.job.IN_PROGRESS and self.cancelable:
 			self.job.cancel()
 		else:
 			self.close(False)
@@ -131,7 +146,6 @@ class JobView(InfoBarNotifications, Screen, ConfigListScreen):
 			return
 		elif self.settings.afterEvent.value == "close" and self.job.status == self.job.FINISHED:
 			self.close(False)
-		from Screens.MessageBox import MessageBox
 		if self.settings.afterEvent.value == "deepstandby":
 			if not Screens.Standby.inTryQuitMainloop:
 				Notifications.AddNotificationWithCallback(self.sendTryQuitMainloopNotification, MessageBox, _("A sleep timer wants to shut down\nyour %s %s. Proceed?") % (getMachineBrand(), getMachineName()), timeout = 20)

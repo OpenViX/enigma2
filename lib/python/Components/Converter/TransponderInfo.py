@@ -51,7 +51,9 @@ class TransponderInfo(Converter, object):
  					transponderdata["fec_inner"], transponderdata["modulation"], tsid, onid, transponderdata["detailed_satpos" in self.type and "orbital_position" or "orb_pos"])
 			except:
 				return ""
-		if "://" in ref:
+		if "@" in ref:
+			return _("Stream") + " " + ref.rsplit("@", 1)[1].split("/")[0]
+		elif "://" in ref:
 			return _("Stream") + " " + ref.rsplit("://", 1)[1].split("/")[0]
  		return ""
 

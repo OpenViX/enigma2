@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-19 10:11+0100\n"
-"PO-Revision-Date: 2018-08-19 12:10+0200\n"
+"POT-Creation-Date: 2018-10-19 07:41+0100\n"
+"PO-Revision-Date: 2018-10-19 13:20+0200\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SourceCharset: iso-8859-15\n"
-"X-Generator: Poedit 2.1.1\n"
+"X-Generator: Poedit 2.2\n"
 
 msgid ""
 "\n"
@@ -182,10 +182,6 @@ msgstr " - video0+video1"
 
 msgid " - video1"
 msgstr " - video1"
-
-#, python-format
-msgid " Stream %s"
-msgstr " Stream %s"
 
 msgid " and"
 msgstr " en"
@@ -2194,6 +2190,12 @@ msgstr "Zwart scherm"
 msgid "Black screen till locked"
 msgstr "Zwart scherm tot gelocked"
 
+msgid "Blinking REC"
+msgstr "Knipperend OPN"
+
+msgid "Blinking REC Symbol"
+msgstr "Knipperend OPN-symbool"
+
 msgid "Block noise reduction"
 msgstr "Blokruis vermindering"
 
@@ -2581,6 +2583,9 @@ msgstr "Zender:"
 msgid "ChannelEPG"
 msgstr "Kanaal-EPG"
 
+msgid "Channelname"
+msgstr "Kanaalnaam"
+
 msgid "Channels"
 msgstr "Kanalen"
 
@@ -2648,8 +2653,12 @@ msgid "Chipset:\t%s\n"
 msgstr "Chipset:\t%s\n"
 
 #, python-format
-msgid "Chipset:\tBCM%s\n"
-msgstr "Chipset:\tBCM%s\n"
+msgid "Chipset:\tBroadcom %s\n"
+msgstr "Chipset:\tBroadcom %s\n"
+
+#, python-format
+msgid "Chipset:\tHiSilicon %s\n"
+msgstr "Chipset:\tHiSilicon %s\n"
 
 #, python-format
 msgid "Chipset: BCM%s"
@@ -2686,7 +2695,7 @@ msgid "Choose the front panel display formatting style for times. 'H' / 'HH' is 
 msgstr "Kies hoe tijden op het frontpaneldisplay moeten worden weergegeven. 'H' / 'HH' is het uur voor de 24-uurs klok, 'h' / 'hh' is het uur voor de 12-uurs klok, 'mm' is de minuten ('HH' en 'hh' hebben een voorloop nul indien die bestaat uit een enkel getal). Het resultaat zal gebaseerd zijn op uw keuze, maar kan beïnvloed worden door de gebruikte skin."
 
 msgid "Choose the layout view mode (Text / Graphics Multi channel EPG or Single channel EPG)."
-msgstr "Kies de lay-out (Tekst / Grafische Multi-EPG of kanaal-EPG). "
+msgstr "Kies de lay-out (Tekst / Grafische Multi-EPG of kanaal-EPG)."
 
 msgid "Choose the layout view mode (Text or Graphics)."
 msgstr "Hier kiest u de lay-out: tekst of grafisch."
@@ -3055,7 +3064,7 @@ msgid "Configure the number of rows shown."
 msgstr "Configureer het aantal rijen."
 
 msgid "Configure the offline decoding delay (in milliseconds). The configured delay is observed at each control word parity change."
-msgstr "Bepaal de offline decodeervertraging (in milisecondes). De ingestelde vertraging wordt telkenmale gebruikt voor het opvragen van het 'control word'."
+msgstr "Bepaal de offline decodeervertraging (in millisecondes). De ingestelde vertraging wordt telkenmale gebruikt voor het opvragen van het 'control word'."
 
 msgid "Configure the possible fast forward speeds."
 msgstr "Stel de mogelijke vooruitspoelsnelheden in."
@@ -3736,11 +3745,11 @@ msgstr "Vertraging tussen schakelaar en motor-opdracht"
 msgid "Delay for external subtitles"
 msgstr "Vertraging voor externe ondertitels"
 
-msgid "Delay in miliseconds after finish scrolling text on display."
-msgstr "Vertraging in miliseconde nadat het scrollen van tekst op het display beeindigd is."
+msgid "Delay in milliseconds after finish scrolling text on display."
+msgstr "Vertraging in milliseconde nadat het scrollen van tekst op het display beëindigd is."
 
-msgid "Delay in miliseconds before start of scrolling text on display."
-msgstr "Vertraging in miliseconde voor het scrollen van tekst op het display begint."
+msgid "Delay in milliseconds before start of scrolling text on display."
+msgstr "Vertraging in milliseconde voor het scrollen van tekst op het display begint."
 
 msgid "Delay time"
 msgstr "Vertragingstijd"
@@ -4216,6 +4225,9 @@ msgstr "FOUT: Antwoord '403 Forbidden'"
 msgid "ERROR: Response 404 Not Found"
 msgstr "FOUT: Antwoord '404 Not Found'"
 
+msgid "ET8500 Multiboot: Installed\n"
+msgstr "ET8500 Multiboot: geïnstalleerd\n"
+
 msgid "East"
 msgstr "Oost"
 
@@ -4326,6 +4338,9 @@ msgstr "Auto Fastscan inschakelen"
 #, python-format
 msgid "Enable auto fast scan for %s"
 msgstr "Auto Fastscan voor %s inschakelen"
+
+msgid "Enable blinking rec symbol on the LCD Display"
+msgstr "Schakel knipperend opnamesymbool in op het LCD-scherm"
 
 msgid "Enable bouquet edit"
 msgstr "Favorietenlijst bewerken activeren"
@@ -5620,6 +5635,9 @@ msgstr "Voor een geplande opname is nu de juiste zender ingeschakeld!\n"
 
 msgid "In progress"
 msgstr "Is bezig"
+
+msgid "In the Standby Record on the LCD Display"
+msgstr "In stand-by opname op het LCD-scherm"
 
 msgid "Inadyn"
 msgstr "Inadyn"
@@ -8312,6 +8330,18 @@ msgstr "Speler kan verlaten worden met de Exit-toets"
 msgid "RAM"
 msgstr "RAM"
 
+msgid "REC"
+msgstr "OPN"
+
+msgid "REC Symbol"
+msgstr "OPN-symbool"
+
+msgid "REC Symbol in Standby"
+msgstr "OPN-symbool in stand-by"
+
+msgid "REC Symbol in use"
+msgstr "OPN-symbool in gebruik"
+
 msgid "RF output settings"
 msgstr "RF output instellingen"
 
@@ -8838,6 +8868,9 @@ msgstr "SCR JESS"
 
 msgid "SCR Unicable"
 msgstr "SCR Unicable"
+
+msgid "SDcard is not initialised for multiboot - Exit and use ViX MultiBoot Manager to initialise"
+msgstr "SD-kaart is niet geïnitialiseerd voor multiboot - Sluit af en gebruik VIX Multibootmanager om te initialiseren"
 
 #
 msgid "SINGLE LAYER DVD"
@@ -9859,6 +9892,9 @@ msgstr "Toon help"
 
 msgid "Show icon for new/unseen items"
 msgstr "Toon icoon voor nieuwe/niet bekeken onderdelen"
+
+msgid "Show in Standby"
+msgstr "Toon in stand-by"
 
 msgid "Show in extensions list ?"
 msgstr "Toon in extensiemenu?"
@@ -11131,6 +11167,9 @@ msgstr "Hier kunt u aangeven of de verstreken tijd wordt vertoond als + of -"
 msgid "This option allows you choose how to display remaining time, or elapsed time, or both."
 msgstr "Hier kunt u instellen of u de resterende of de vertsreken tijd wilt zien, of beide."
 
+msgid "This option allows you choose how to display the Time or nothing in Standby"
+msgstr "Hier kunt u kiezen tussen tijd en niets in stand-by"
+
 msgid "This option allows you choose how to display the remaining/elapsed time for live TV."
 msgstr "Hier kunt u instellen of u de resterende en/of de vertsreken tijd wilt zien voor TV-programma's."
 
@@ -11560,7 +11599,7 @@ msgid "Track"
 msgstr "Spoor"
 
 msgid "Transcoding: "
-msgstr "Transcoding:"
+msgstr "Transcoding: "
 
 msgid "Translations"
 msgstr "Vertalingen"
@@ -12025,7 +12064,7 @@ msgid "User interface settings"
 msgstr "Gebruikersinterface-instellingen"
 
 msgid "User interface visibility"
-msgstr "Zichtbaarheid gebruikersinterface "
+msgstr "Zichtbaarheid gebruikersinterface"
 
 msgid "Username"
 msgstr "Gebruikersnaam"
@@ -14069,14 +14108,6 @@ msgid "skip forward (enter time)"
 msgstr "spring vooruit (tijd invoeren)"
 
 #, python-format
-msgid "slot%s - %s "
-msgstr "slot%s - %s "
-
-#, python-format
-msgid "slot%s - %s (current image)"
-msgstr "slot%s - %s (huidige image)"
-
-#, python-format
 msgid "slot%s - %s mode 1"
 msgstr "slot%s - %s mode 1"
 
@@ -14091,6 +14122,14 @@ msgstr "slot%s - %s mode 12"
 #, python-format
 msgid "slot%s - %s mode 12 (current image)"
 msgstr "slot%s - %s mode 12 (huidige image)"
+
+#, python-format
+msgid "slot%s -%s - %s (current image)"
+msgstr "slot%s -%s - %s (huidige image)"
+
+#, python-format
+msgid "slot%s -%s- %s "
+msgstr "slot%s -%s- %s "
 
 msgid "slow"
 msgstr "langzaam"
@@ -14377,6 +14416,9 @@ msgstr "zapte"
 #~ msgstr ""
 #~ "\n"
 #~ "Er loopt een opname."
+
+#~ msgid " Stream %s"
+#~ msgstr " Stream %s"
 
 #, fuzzy
 #~ msgid "%-e %B %Y"
@@ -14733,6 +14775,9 @@ msgstr "zapte"
 
 #~ msgid "Checking Feeds"
 #~ msgstr "Controleert feeds"
+
+#~ msgid "Chipset:\tBCM%s\n"
+#~ msgstr "Chipset:\tBCM%s\n"
 
 #~ msgid "Choose Tuner"
 #~ msgstr "Kies tuner"
