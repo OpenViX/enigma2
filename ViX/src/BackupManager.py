@@ -279,7 +279,7 @@ class VIXBackupManager(Screen):
 			self["list"].setList(self.emlist)
 			self["list"].show()
 		except:
-			self['lab1'].setText(_("Device: ") + config.backupmanager.backuplocation.value + "\n" + _("there is a problem with this device. Please reformat it and try again."))
+			self['lab1'].setText(_("Device: ") + config.backupmanager.backuplocation.value + "\n" + _("There is a problem with this device. Please reformat it and try again."))
 
 	def createSetup(self):
 		self.session.openWithCallback(self.setupDone, VIXBackupManagerMenu, 'vixbackupmanager', 'SystemPlugins/ViX', self.menu_path, PluginLanguageDomain)
