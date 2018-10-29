@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-03 11:34+0100\n"
-"PO-Revision-Date: 2018-08-03 21:23+0200\n"
+"POT-Creation-Date: 2018-10-26 17:24+0100\n"
+"PO-Revision-Date: 2018-10-27 19:06+0200\n"
 "Last-Translator: Ralf Biedermann <ralf.biedermann@rbsoft.de>\n"
 "Language-Team: AndyBlacburn, j-ot&Trial\n"
 "Language: de\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
-"X-Generator: Poedit 2.0.6\n"
+"X-Generator: Poedit 2.1.1\n"
 "X-Poedit-SourceCharset: iso-8859-15\n"
 
 msgid ""
@@ -181,10 +181,6 @@ msgstr ""
 
 msgid " - video1"
 msgstr ""
-
-#, python-format
-msgid " Stream %s"
-msgstr " Stream %s"
 
 msgid " and"
 msgstr " und"
@@ -2193,6 +2189,12 @@ msgstr "Schwarzes Bild"
 msgid "Black screen till locked"
 msgstr "Schwarzes Bild bis Abschluss"
 
+msgid "Blinking REC"
+msgstr "Blinkendes Aufnahme Symbol"
+
+msgid "Blinking REC Symbol"
+msgstr "Blinkendes Aufnahme Symbol"
+
 msgid "Block noise reduction"
 msgstr "Block Noise Reduzierung"
 
@@ -2580,6 +2582,9 @@ msgstr "Sender:"
 msgid "ChannelEPG"
 msgstr "Kanal EPG"
 
+msgid "Channelname"
+msgstr "Kanalname"
+
 msgid "Channels"
 msgstr "Kanäle"
 
@@ -2647,8 +2652,12 @@ msgid "Chipset:\t%s\n"
 msgstr "Chipsatz:\tBCM%s\n"
 
 #, python-format
-msgid "Chipset:\tBCM%s\n"
-msgstr "Chipsatz:\tBCM%s\n"
+msgid "Chipset:\tBroadcom %s\n"
+msgstr "Chipsatz:\tBroadCom%s\n"
+
+#, python-format
+msgid "Chipset:\tHiSilicon %s\n"
+msgstr "Chipsatz:\tHiSilicon%s\n"
 
 #, python-format
 msgid "Chipset: BCM%s"
@@ -3304,6 +3313,9 @@ msgstr "Land für Genreinformationen"
 msgid "Country for EPG event rating information"
 msgstr "Land für EPG Altersangaben"
 
+msgid "Cover dashed flickering line for this service"
+msgstr "Verstecke blöde weiße Linie am oberen Bildrand für diesen Sender"
+
 msgid "Crash Logs"
 msgstr "Crash Logs"
 
@@ -3738,10 +3750,10 @@ msgstr "Pause zwischen Switch- und Motor-Kommando"
 msgid "Delay for external subtitles"
 msgstr "Verzögerung für externe Untertitel"
 
-msgid "Delay in miliseconds after finish scrolling text on display."
+msgid "Delay in milliseconds after finish scrolling text on display."
 msgstr "Verzögerung in Millisekunden nachdem Text im Display aufgehört hat zu scrollen."
 
-msgid "Delay in miliseconds before start of scrolling text on display."
+msgid "Delay in milliseconds before start of scrolling text on display."
 msgstr "Verzögerung in Millisekunden bevor Text im Display anfängt zu scrollen."
 
 msgid "Delay time"
@@ -4217,6 +4229,9 @@ msgstr "Fehler: Antwort 403 Zugriff verboten"
 msgid "ERROR: Response 404 Not Found"
 msgstr "Fehler: Antwort 404 nicht gefunden"
 
+msgid "ET8500 Multiboot: Installed\n"
+msgstr "ET8500 Multiboot: installiert\n"
+
 msgid "East"
 msgstr "Ost"
 
@@ -4327,6 +4342,9 @@ msgstr "Automatische Schnellsuche aktivieren"
 #, python-format
 msgid "Enable auto fast scan for %s"
 msgstr "Automatische Schnellsuche für %s aktivieren"
+
+msgid "Enable blinking rec symbol on the LCD Display"
+msgstr "Aktiviere blinkendes Aufnahme Symbol auf LCD Anzeige"
 
 msgid "Enable bouquet edit"
 msgstr "Favoriten bearbeiten"
@@ -5146,9 +5164,6 @@ msgstr "In der Liste rauf gehen"
 msgid "Gold"
 msgstr ""
 
-msgid "Gold PLS Code"
-msgstr "Goldener PLS Code"
-
 msgid "Goto"
 msgstr "Gehe zu"
 
@@ -5331,9 +5346,6 @@ msgstr "Verberge CI Nachrichten"
 
 msgid "Hide any zap error messages."
 msgstr "Fehlermeldungen beim Umschalten unterdrücken."
-
-msgid "Hide dotted line on the top for this service"
-msgstr "Verstecke blöde weiße Linie am oberen Bildrand für diesen Sender"
 
 msgid "Hide error messages from the Common Interface module."
 msgstr "Unterdrücke Fehlermeldung von einem Common Interface Modul."
@@ -5620,6 +5632,9 @@ msgstr "Um die Timeraufnahme durchführen zu können, wurde auf den aufzunehmend
 
 msgid "In progress"
 msgstr "In Bearbeitung"
+
+msgid "In the Standby Record on the LCD Display"
+msgstr "Aufnahme Symbol auf LCD Anzeige in Bereitschaft"
 
 msgid "Inadyn"
 msgstr "Inadyn"
@@ -7436,6 +7451,9 @@ msgstr ""
 msgid "PLS Mode"
 msgstr "PLS Modus"
 
+msgid "PLS Mode & PLS Code"
+msgstr ""
+
 msgid "PMT PID"
 msgstr "PMT PID"
 
@@ -8301,6 +8319,18 @@ msgstr "Erlaube Mediaplayer mit Exit verlassen"
 msgid "RAM"
 msgstr "RAM"
 
+msgid "REC"
+msgstr ""
+
+msgid "REC Symbol"
+msgstr "Aufnahme Symbol"
+
+msgid "REC Symbol in Standby"
+msgstr "Aufnahme Symbol in Bereitschaft"
+
+msgid "REC Symbol in use"
+msgstr "Aufnahme Symbol in Benutzung"
+
 msgid "RF output settings"
 msgstr "RF-Ausgang Einstellungen"
 
@@ -8515,9 +8545,6 @@ msgstr "Fernbedienungstyp"
 
 msgid "Remove"
 msgstr "Entfernen"
-
-msgid "Remove 'hide dotted line on the top for this service'"
-msgstr "Entferne 'Verstecke blöde weiße Linie am oberen Bildrand für diesen Sender'"
 
 msgid "Remove Confirmation"
 msgstr "Bestätige Löschvorgang"
@@ -8826,6 +8853,9 @@ msgstr ""
 
 msgid "SCR Unicable"
 msgstr "SCR Unicable"
+
+msgid "SDcard is not initialised for multiboot - Exit and use ViX MultiBoot Manager to initialise"
+msgstr "SD-Karte ist nicht für Multiboot initialisiert. Benutze Multiboot Verwaltung zur Initialisierung."
 
 msgid "SINGLE LAYER DVD"
 msgstr "SINGLE LAYER DVD"
@@ -9843,6 +9873,9 @@ msgstr "Zeige Hilfe"
 
 msgid "Show icon for new/unseen items"
 msgstr "Zeige Icon für neue/ungesehene Einträge"
+
+msgid "Show in Standby"
+msgstr "Zeige in Bereitschaft"
 
 msgid "Show in extensions list ?"
 msgstr "Zeige in Erweiterungen?"
@@ -11115,6 +11148,9 @@ msgstr "Diese Option erlaubt dir zu wählen ob die verstrichene Zeit mit + oder 
 msgid "This option allows you choose how to display remaining time, or elapsed time, or both."
 msgstr "Diese Option erlaubt dir zu wählen ob verbleibende/verstrichene Zeit oder beides bei Live-TV angezeigt wird."
 
+msgid "This option allows you choose how to display the Time or nothing in Standby"
+msgstr "Diese Option erlaubt dir zu wählen ob die Zeit oder nichts in Bereitschaft angezeigt wird."
+
 msgid "This option allows you choose how to display the remaining/elapsed time for live TV."
 msgstr "Diese Option erlaubt dir zu wählen ob verbleibende/verstrichene Zeit oder beides für Transponder angezeigt wird."
 
@@ -11722,6 +11758,9 @@ msgstr "Ukrainisch"
 
 msgid "Unable to change password"
 msgstr "Passwort konnte nicht geändert werden"
+
+msgid "Uncover dashed flickering line for this service"
+msgstr "Zeige blöde weiße Linie am oberen Bildrand für diesen Sender"
 
 msgid "Undefined"
 msgstr "Undefiniert"
@@ -13638,6 +13677,9 @@ msgstr "Signal"
 msgid "long"
 msgstr "lang"
 
+msgid "longest"
+msgstr "längstes"
+
 msgid "loopthrough to"
 msgstr "Verbunden mit"
 
@@ -13966,6 +14008,9 @@ msgstr "ernst/klassisch/religiös/hitorisch Film/Drama"
 msgid "share:"
 msgstr "Freigabe:"
 
+msgid "shortest"
+msgstr "kürzestes"
+
 msgid "show DVD main menu"
 msgstr "Zeige DVD Player im Hauptmenü"
 
@@ -14042,14 +14087,6 @@ msgid "skip forward (enter time)"
 msgstr "Vorwärts springen (Zeit eingeben)"
 
 #, python-format
-msgid "slot%s - %s "
-msgstr "Slot%s - %s"
-
-#, python-format
-msgid "slot%s - %s (current image)"
-msgstr "Slot%s - %s (aktuelles Image)"
-
-#, python-format
 msgid "slot%s - %s mode 1"
 msgstr "Slot%s - %s Mode 1"
 
@@ -14064,6 +14101,14 @@ msgstr "Slot%s - %s Mode 12"
 #, python-format
 msgid "slot%s - %s mode 12 (current image)"
 msgstr "Slot%s - %s Mode 12 (aktuelles Image)"
+
+#, python-format
+msgid "slot%s -%s - %s (current image)"
+msgstr "Slot%s - %s - %s (aktuelles Image)"
+
+#, python-format
+msgid "slot%s -%s- %s "
+msgstr "Slot%s - %s - %s"
 
 msgid "slow"
 msgstr "langsam"
@@ -14342,6 +14387,9 @@ msgstr "umgeschaltet"
 #~ msgid "  Red key : Show/Hide channel name"
 #~ msgstr "Rote Taste: Zeige/verstecke Kanalnamen"
 
+#~ msgid " Stream %s"
+#~ msgstr " Stream %s"
+
 #~ msgid "%02d:%02d"
 #~ msgstr "%02d:%02d"
 
@@ -14453,6 +14501,9 @@ msgstr "umgeschaltet"
 
 #~ msgid "ChannelEPG settings"
 #~ msgstr "Sender-EPG Einstellungen"
+
+#~ msgid "Chipset:\tBCM%s\n"
+#~ msgstr "Chipsatz:\tBCM%s\n"
 
 #~ msgid "Choice where to put \"%s\""
 #~ msgstr "Wähle wo '%s' hin soll"
@@ -15009,6 +15060,9 @@ msgstr "umgeschaltet"
 
 #~ msgid "Reception Settings"
 #~ msgstr "Empfangseinstellungen"
+
+#~ msgid "Remove 'hide dotted line on the top for this service'"
+#~ msgstr "Entferne 'Verstecke blöde weiße Linie am oberen Bildrand für diesen Sender'"
 
 #~ msgid "Remove Quad Channel Entry"
 #~ msgstr "Entferne Quad Kanal Eintrag"
