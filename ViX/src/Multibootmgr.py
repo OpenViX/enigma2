@@ -61,9 +61,9 @@ class MultiBoot(Screen):
 		if SystemInfo["HasSDmmc"] and not pathExists('/dev/sda4'):
 			self["key_red"] = StaticText(_("Cancel"))
 			self["labe14"] = StaticText(_("Press Init to format SDcard."))
-			self["labe15"] = StaticText(_(" "))
+			self["labe15"] = StaticText("")
 			self["key_yellow"] = StaticText(_("Init SDcard"))
-			self["config"] = ChoiceList(list=[ChoiceEntryComponent('',((_(" ")), "Queued"))])
+			self["config"] = ChoiceList(list=[ChoiceEntryComponent('',((""), "Queued"))])
 			self["actions"] = ActionMap(["OkCancelActions", "ColorActions", "DirectionActions", "KeyboardInputActions", "MenuActions"],
 			{
 				"red": boundFunction(self.close, None),
@@ -88,7 +88,7 @@ class MultiBoot(Screen):
 			if SystemInfo["HasSDmmc"]:
 				self["key_yellow"] = StaticText(_("Init SDcard"))
 			else:
-				self["key_yellow"] = StaticText(_(" "))
+				self["key_yellow"] = StaticText("")
 			self["config"] = ChoiceList(list=[ChoiceEntryComponent('',((_("Retrieving image slots - Please wait...")), "Queued"))])
 			imagedict = []
 			self.getImageList = None
