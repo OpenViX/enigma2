@@ -393,8 +393,8 @@ class VIXImageManager(Screen):
 	def keyResstore0(self, answer):
 		if answer:
 			if SystemInfo["canMultiBoot"]:
-				if SystemInfo["HasHiSi"]:
-	 				if pathExists('/dev/%s1' %SystemInfo["canMultiBoot"][2]):
+				if SystemInfo["HasSDmmc"]:
+	 				if pathExists('/dev/%s4' %SystemInfo["canMultiBoot"][2]):
 						self.getImageList = GetImagelist(self.keyRestore1)
 					else:
 						self.session.open(MessageBox, _("SDcard detected but not formatted for multiboot - please use ViX MultiBoot Manager to format."), MessageBox.TYPE_INFO, timeout=15)
@@ -413,7 +413,7 @@ class VIXImageManager(Screen):
 		choices = []
 		HIslot = len(imagedict) + 1
 		currentimageslot = GetCurrentImage()
-		if SystemInfo["HasHiSi"]:
+		if SystemInfo["HasSDmmc"]:
 			currentimageslot += 1
 		print "ImageManager", currentimageslot, self.imagelist
 		for x in range(1,HIslot):
@@ -425,7 +425,7 @@ class VIXImageManager(Screen):
 			if SystemInfo["canMultiBoot"]:
 				self.multibootslot = retval
 				print "ImageManager", retval, self.imagelist
-				if SystemInfo["HasHiSi"]:
+				if SystemInfo["HasSDmmc"]:
 					if "sd" in self.imagelist[retval]['part']:
 						self.MTDKERNEL = "%s%s" %(SystemInfo["canMultiBoot"][2], int(self.imagelist[retval]['part'][3])-1)
 						self.MTDROOTFS = "%s" %(self.imagelist[retval]['part'])
@@ -478,11 +478,11 @@ class VIXImageManager(Screen):
 		MAINDEST = '%s/%s' % (self.TEMPDESTROOT,getImageFolder())
 		if ret == 0:
 			if SystemInfo["canMultiBoot"]:
- 				if SystemInfo["HasHiSi"]:
+ 				if SystemInfo["HasSDmmc"]:
 					CMD = "/usr/bin/ofgwrite -r%s -k%s '%s'" % (self.MTDROOTFS, self.MTDKERNEL, MAINDEST)
 				else:
 					CMD = "/usr/bin/ofgwrite -k -r -m%s '%s'" % (self.multibootslot, MAINDEST)
- 			elif SystemInfo["HasHiSi"]:
+ 			elif SystemInfo["HasSDmmc"]:
 				CMD = "/usr/bin/ofgwrite -r%s -k%s '%s'" % (self.MTDROOTFS, self.MTDKERNEL, MAINDEST)
 			else:
 				CMD = "/usr/bin/ofgwrite -k -r '%s'" % MAINDEST
@@ -686,7 +686,10 @@ class ImageBackup(Screen):
 		self.MODEL = getBoxType()
 		if SystemInfo["canMultiBoot"]:
 			kernel = GetCurrentImage()
-			if SystemInfo["HasHiSi"]:
+			if SystemInfo["HasSDmmc"]:
+				if 'octagonemmc' in getImageFileSystem():
+					self.MTDBOOT = "none"
+					self.EMMCIMG = "usb_update.bin"
 				f = open('/sys/firmware/devicetree/base/chosen/bootargs', 'r').read()
 				if "sda" in f :
 					kern =  kernel*2
@@ -771,11 +774,11 @@ class ImageBackup(Screen):
 		task.check = lambda: self.Stage2Completed
 		task.weighting = 15
 
-		task = Components.Task.PythonTask(job, _("Backing up eMMC ..."))
+		task = Components.Task.PythonTask(job, _("Backing up eMMC partitions for USB flash ..."))
 		task.work = self.doBackup3
 		task.weighting = 5
 
-		task = Components.Task.ConditionTask(job, _("Backing up eMMC..."), timeoutCount=900)
+		task = Components.Task.ConditionTask(job, _("Backing up eMMC partitions for USB flash..."), timeoutCount=900)
 		task.check = lambda: self.Stage3Completed
 		task.weighting = 15
 	
@@ -1014,6 +1017,52 @@ class ImageBackup(Screen):
 			ROOTFS_IMAGE_SEEK = int(ROOTFS_PARTITION_OFFSET) * int(BLOCK_SECTOR)
 			self.commandMB.append('dd if=/dev/%s of=%s seek=%s' % (self.MTDROOTFS, EMMC_IMAGE, ROOTFS_IMAGE_SEEK ))
 			self.Console.eBatch(self.commandMB, self.Stage3Complete, debug=False)
+
+		if 'octagonemmc' in getImageFileSystem():
+			self.commandOCT = []
+			print '[ImageManager] sf8008: Making emmc_partitions.xml'
+			f = open("%s/emmc_partitions.xml" %self.WORKDIR, "w")
+			f.write('<?xml version="1.0" encoding="GB2312" ?>\n')
+			f.write('<Partition_Info>\n')
+			f.write('<Part Sel="1" PartitionName="fastboot" FlashType="emmc" FileSystem="none" Start="0" Length="1M" SelectFile="fastboot.bin"/>\n')
+			f.write('<Part Sel="1" PartitionName="bootargs" FlashType="emmc" FileSystem="none" Start="1M" Length="1M" SelectFile="bootargs.bin"/>\n')
+			f.write('<Part Sel="1" PartitionName="bootimg" FlashType="emmc" FileSystem="none" Start="2M" Length="1M" SelectFile="boot.img"/>\n')
+			f.write('<Part Sel="1" PartitionName="baseparam" FlashType="emmc" FileSystem="none" Start="3M" Length="3M" SelectFile="baseparam.img"/>\n')
+			f.write('<Part Sel="1" PartitionName="pqparam" FlashType="emmc" FileSystem="none" Start="6M" Length="4M" SelectFile="pq_param.bin"/>\n')
+			f.write('<Part Sel="1" PartitionName="logo" FlashType="emmc" FileSystem="none" Start="10M" Length="4M" SelectFile="logo.img"/>\n')
+			f.write('<Part Sel="1" PartitionName="deviceinfo" FlashType="emmc" FileSystem="none" Start="14M" Length="4M" SelectFile="deviceinfo.bin"/>\n')
+			f.write('<Part Sel="1" PartitionName="loader" FlashType="emmc" FileSystem="none" Start="26M" Length="32M" SelectFile="apploader.bin"/>\n')
+			f.write('<Part Sel="1" PartitionName="kernel" FlashType="emmc" FileSystem="none" Start="66M" Length="32M" SelectFile="vmlinux.bin"/>\n')
+			f.write('<Part Sel="1" PartitionName="rootfs" FlashType="emmc" FileSystem="ext3/4" Start="98M" Length="7000M" SelectFile="rootfs.ext4"/>\n')
+			f.write('</Partition_Info>\n')
+			f.close()
+			print '[ImageManager] sf8008: Executing', '/usr/bin/mkupdate -s 00000003-00000001-01010101 -f %s/emmc_partitions.xml -d %s/%s' % (self.WORKDIR,self.WORKDIR,self.EMMCIMG) 
+			self.commandOCT.append('echo " "')
+			self.commandOCT.append('echo "Create: fastboot dump"')
+			self.commandOCT.append("dd if=/dev/mmcblk0p1 of=%s/fastboot.bin" % self.WORKDIR)
+			self.commandOCT.append('echo "Create: bootargs dump"')
+			self.commandOCT.append("dd if=/dev/mmcblk0p2 of=%s/bootargs.bin" % self.WORKDIR)
+			self.commandOCT.append('echo "Create: boot dump"')
+			self.commandOCT.append("dd if=/dev/mmcblk0p3 of=%s/boot.img" % self.WORKDIR)
+			self.commandOCT.append('echo "Create: baseparam.dump"')
+			self.commandOCT.append("dd if=/dev/mmcblk0p4 of=%s/baseparam.img" % self.WORKDIR)
+			self.commandOCT.append('echo "Create: pq_param dump"')
+			self.commandOCT.append("dd if=/dev/mmcblk0p5 of=%s/pq_param.bin" % self.WORKDIR)
+			self.commandOCT.append('echo "Create: logo dump"')
+			self.commandOCT.append("dd if=/dev/mmcblk0p6 of=%s/logo.img" % self.WORKDIR)
+			self.commandOCT.append('echo "Create: deviceinfo dump"')
+			self.commandOCT.append("dd if=/dev/mmcblk0p7 of=%s/deviceinfo.bin" % self.WORKDIR)
+			self.commandOCT.append('echo "Create: apploader dump"')
+			self.commandOCT.append("dd if=/dev/mmcblk0p8 of=%s/apploader.bin" % self.WORKDIR)
+			self.commandOCT.append('echo "Pickup previous created: kernel dump"')
+			self.commandOCT.append('echo "Create: rootfs dump"')
+			self.commandOCT.append("dd if=/dev/zero of=%s/rootfs.ext4 seek=524288 count=0 bs=1024" % (self.WORKDIR))
+			self.commandOCT.append("mkfs.ext4 -F -i 4096 %s/rootfs.ext4 -d %s/root" %(self.WORKDIR, self.TMPDIR))
+			self.commandOCT.append('echo " "')
+			self.commandOCT.append('echo "Create: Sf8008 Recovery Fullbackup %s"'% (self.EMMCIMG))
+			self.commandOCT.append('echo " "')
+			self.commandOCT.append('/usr/sbin/mkupdate -s 00000003-00000001-01010101 -f %s/emmc_partitions.xml -d %s/%s' % (self.WORKDIR,self.WORKDIR,self.EMMCIMG))
+			self.Console.eBatch(self.commandOCT, self.Stage3Complete, debug=False)
 		else:
 			self.Stage3Completed = True
 			print '[ImageManager] Stage3 bypassed: Complete.'
@@ -1042,6 +1091,9 @@ class ImageBackup(Screen):
 		print '[ImageManager] Stage5: Moving from work to backup folders'
 		if self.ROOTDEVTYPE == 'hd-emmc' and path.exists('%s/disk.img' % self.WORKDIR):
 			move('%s/disk.img' % self.WORKDIR, '%s/disk.img' % self.MAINDEST)
+		if 'octagonemmc' in getImageFileSystem():
+			move('%s/%s' %(self.WORKDIR, self.EMMCIMG), '%s/%s' %(self.MAINDEST, self.EMMCIMG))
+			move('%s/%s' %(self.WORKDIR, "emmc_partitions.xml"), '%s/%s' %(self.MAINDEST, "emmc_partitions.xml"))
 		move('%s/rootfs.%s' % (self.WORKDIR, self.ROOTFSTYPE), '%s/%s' % (self.MAINDEST, self.ROOTFSFILE))
 		if self.KERNELFSTYPE == 'bin' and path.exists('%s/vmlinux.bin' % self.WORKDIR):
 			move('%s/vmlinux.bin' % self.WORKDIR, '%s/%s' % (self.MAINDEST, self.KERNELFILE))

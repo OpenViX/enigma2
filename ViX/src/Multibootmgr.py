@@ -58,16 +58,16 @@ class MultiBoot(Screen):
 			self["menu_path_compressed"] = StaticText("")
 		Screen.setTitle(self, title)
 		self.title = screentitle
-		if SystemInfo["HasHiSi"] and not pathExists('/dev/sda1'):
+		if SystemInfo["HasSDmmc"] and not pathExists('/dev/sda4'):
 			self["key_red"] = StaticText(_("Cancel"))
 			self["labe14"] = StaticText(_("Press Init to format SDcard."))
 			self["labe15"] = StaticText(_(" "))
-			self["key_green"] = StaticText(_("Init SDcard"))
+			self["key_yellow"] = StaticText(_("Init SDcard"))
 			self["config"] = ChoiceList(list=[ChoiceEntryComponent('',((_(" ")), "Queued"))])
 			self["actions"] = ActionMap(["OkCancelActions", "ColorActions", "DirectionActions", "KeyboardInputActions", "MenuActions"],
 			{
 				"red": boundFunction(self.close, None),
-				"green": self.format,
+				"yellow": self.format,
 				"ok": self.erase,
 				"cancel": boundFunction(self.close, None),
 				"up": self.keyUp,
@@ -83,8 +83,12 @@ class MultiBoot(Screen):
 		else:
 			self["key_red"] = StaticText(_("Cancel"))
 			self["labe14"] = StaticText(_("Use the cursor keys to select an installed image and then Erase button."))
-			self["labe15"] = StaticText(_("Note: slot list does not show current image or empty slots."))
+			self["labe15"] = StaticText(_("Note: slot list does not show current image or empty slots"))
 			self["key_green"] = StaticText(_("Erase"))
+			if SystemInfo["HasSDmmc"]:
+				self["key_yellow"] = StaticText(_("Init SDcard"))
+			else:
+				self["key_yellow"] = StaticText(_(" "))
 			self["config"] = ChoiceList(list=[ChoiceEntryComponent('',((_("Retrieving image slots - Please wait...")), "Queued"))])
 			imagedict = []
 			self.getImageList = None
@@ -94,6 +98,7 @@ class MultiBoot(Screen):
 			{
 				"red": boundFunction(self.close, None),
 				"green": self.erase,
+				"yellow": self.format,
 				"ok": self.erase,
 				"cancel": boundFunction(self.close, None),
 				"up": self.keyUp,
@@ -118,7 +123,7 @@ class MultiBoot(Screen):
 		list = []
 		mode = GetCurrentImageMode() or 0
 		currentimageslot = GetCurrentImage()
-		if SystemInfo["HasHiSi"]:
+		if SystemInfo["HasSDmmc"]:
 			currentimageslot += 1
 		for x in sorted(imagedict.keys()):
 			if imagedict[x]["imagename"] != _("Empty slot") and x != currentimageslot:
@@ -137,36 +142,42 @@ class MultiBoot(Screen):
 			sloterase = EmptySlot(self.currentSelected[0][1], self.startit)
 
 	def format(self):
-		self.TITLE = _("Init SDCARD")
-		sda ="sda"
-		size = Harddisk(sda).diskSize()
-
-		if ((float(size) / 1024) / 1024) >= 1:
-			des = _("Size: ") + str(round(((float(size) / 1024) / 1024), 2)) + _("TB")
-		elif (size / 1024) >= 1:
-			des = _("Size: ") + str(round((float(size) / 1024), 2)) + _("GB")
-		if "GB" in des:
-			print "Multibootmgr1", des, "%s" %des[6], size
-			if size/1024 < 6:
-				print "Multibootmgr2", des, "%s" %des[6], size/1024 
-				self.session.open(MessageBox, _("Multiboot manager - The SDcard must be at least 8MB."), MessageBox.TYPE_INFO, timeout=10)
+		if SystemInfo["HasSDmmc"]:
+			self.TITLE = _("Init SDCARD")
+			f = open('/sys/firmware/devicetree/base/chosen/bootargs', 'r').read()
+			if "sda" in f:
+				self.session.open(MessageBox, _("Multiboot manager - Cannot initialise SDcard when running image on SDcard"), MessageBox.TYPE_INFO, timeout=10)
 				self.close
 			else:
-				self.session.open(MessageBox, _("Multiboot manager - SDcard initialisation run, please restart OpenViX."), MessageBox.TYPE_INFO, timeout=10)
-				cmdlist = []
-				cmdlist.append("dd if=/dev/zero of=/dev/sda bs=512 count=1 conv=notrunc")
-				cmdlist.append("rm -f /tmp/init.sh")
-				cmdlist.append("echo -e 'sfdisk /dev/sda <<EOF' >> /tmp/init.sh")
-				cmdlist.append("echo -e ',8M' >> /tmp/init.sh")
-				cmdlist.append("echo -e ',2048M' >> /tmp/init.sh")
-				cmdlist.append("echo -e ',8M' >> /tmp/init.sh")
-				cmdlist.append("echo -e ',2048M' >> /tmp/init.sh")
-				cmdlist.append("echo -e ',8M' >> /tmp/init.sh")
-				cmdlist.append("echo -e ',2048M' >> /tmp/init.sh")
-				cmdlist.append("echo -e 'EOF' >> /tmp/init.sh")
-				cmdlist.append("chmod +x /tmp/init.sh")
-				cmdlist.append("/tmp/init.sh")
-				self.session.open(Console, title = self.TITLE, cmdlist = cmdlist, closeOnSuccess = True)
+				sda ="sda"
+				size = Harddisk(sda).diskSize()
+
+				if ((float(size) / 1024) / 1024) >= 1:
+					des = _("Size: ") + str(round(((float(size) / 1024) / 1024), 2)) + _("TB")
+				elif (size / 1024) >= 1:
+					des = _("Size: ") + str(round((float(size) / 1024), 2)) + _("GB")
+				if "GB" in des:
+					print "Multibootmgr1", des, "%s" %des[6], size
+					if size/1024 < 6:
+						print "Multibootmgr2", des, "%s" %des[6], size/1024 
+						self.session.open(MessageBox, _("Multiboot manager - The SDcard must be at least 8MB"), MessageBox.TYPE_INFO, timeout=10)
+						self.close
+					else:
+						self.session.open(MessageBox, _("Multiboot manager - SDcard initialisation run, please restart OpenViX"), MessageBox.TYPE_INFO, timeout=10)
+						cmdlist = []
+						cmdlist.append("dd if=/dev/zero of=/dev/sda bs=512 count=1 conv=notrunc")
+						cmdlist.append("rm -f /tmp/init.sh")
+						cmdlist.append("echo -e 'sfdisk /dev/sda <<EOF' >> /tmp/init.sh")
+						cmdlist.append("echo -e ',8M' >> /tmp/init.sh")
+						cmdlist.append("echo -e ',2048M' >> /tmp/init.sh")
+						cmdlist.append("echo -e ',8M' >> /tmp/init.sh")
+						cmdlist.append("echo -e ',2048M' >> /tmp/init.sh")
+						cmdlist.append("echo -e 'EOF' >> /tmp/init.sh")
+						cmdlist.append("chmod +x /tmp/init.sh")
+						cmdlist.append("/tmp/init.sh")
+						self.session.open(Console, title = self.TITLE, cmdlist = cmdlist, closeOnSuccess = True)
+		else:
+			self.close()
 
 	def selectionChanged(self):
 		pass
