@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-19 07:41+0100\n"
-"PO-Revision-Date: 2018-10-19 13:20+0200\n"
+"POT-Creation-Date: 2018-10-26 17:51+0100\n"
+"PO-Revision-Date: 2018-10-29 10:37+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -3310,6 +3310,9 @@ msgstr "Land voor EPG genre informatie"
 msgid "Country for EPG event rating information"
 msgstr "Landkeuze voor kijkwijzer informatie"
 
+msgid "Cover dashed flickering line for this service"
+msgstr "Verberg voor dit kanaal de gestippelde lijn bovenin"
+
 msgid "Crash Logs"
 msgstr "Crash logs"
 
@@ -5343,9 +5346,6 @@ msgstr "Verberg CI-meldingen"
 
 msgid "Hide any zap error messages."
 msgstr "Verberg alle zapfouten."
-
-msgid "Hide dotted line on the top for this service"
-msgstr "Verberg voor dit kanaal de gestippelde lijn bovenin"
 
 msgid "Hide error messages from the Common Interface module."
 msgstr "Verberg foutmeldingen van de CAM."
@@ -8556,9 +8556,6 @@ msgstr "Type afstandsbediening"
 
 msgid "Remove"
 msgstr "Verwijder"
-
-msgid "Remove 'hide dotted line on the top for this service'"
-msgstr "Verwijder 'Verberg voor dit kanaal de gestippelde lijn bovenin'"
 
 msgid "Remove Confirmation"
 msgstr "Verwijderen bevestiging"
@@ -11784,6 +11781,9 @@ msgstr "Ukrainian"
 msgid "Unable to change password"
 msgstr "Kan wachtwoord niet veranderen"
 
+msgid "Uncover dashed flickering line for this service"
+msgstr "Toon voor dit kanaal de gestippelde lijn bovenin"
+
 msgid "Undefined"
 msgstr "Niet gedefinieerd"
 
@@ -13703,6 +13703,9 @@ msgstr "locked"
 msgid "long"
 msgstr "lang"
 
+msgid "longest"
+msgstr "langste"
+
 msgid "loopthrough to"
 msgstr "doorlus naar"
 
@@ -14031,6 +14034,9 @@ msgstr "serieuze/klassieke/religieuze/Historische film/drama"
 
 msgid "share:"
 msgstr "share:"
+
+msgid "shortest"
+msgstr "kortste"
 
 msgid "show DVD main menu"
 msgstr "DVD hoofdmenu weergeven"
@@ -15433,6 +15439,9 @@ msgstr "zapte"
 
 #~ msgid "Reload protected list"
 #~ msgstr "Beschermde lijsten opnieuw inladen"
+
+#~ msgid "Remove 'hide dotted line on the top for this service'"
+#~ msgstr "Verwijder 'Verberg voor dit kanaal de gestippelde lijn bovenin'"
 
 #~ msgid "Remove from selection (starts with...)"
 #~ msgstr "Verwijder van keuze (begint met...)"

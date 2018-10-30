@@ -10,14 +10,14 @@ import subprocess
 # STARTUP_1 			Image 1: boot emmcflash0.kernel1 'root=/dev/mmcblk0p3 rw rootwait'	boot emmcflash0.kernel1: 'root=/dev/mmcblk0p5		boot emmcflash0.kernel 'root=/dev/mmcblk0p13 
 # STARTUP_2 			Image 2: boot emmcflash0.kernel2 'root=/dev/mmcblk0p5 rw rootwait'      boot emmcflash0.kernel2: 'root=/dev/mmcblk0p7		boot usb0.sda1 'root=/dev/sda2
 # STARTUP_3		        Image 3: boot emmcflash0.kernel3 'root=/dev/mmcblk0p7 rw rootwait'	boot emmcflash0.kernel3: 'root=/dev/mmcblk0p9		boot usb0.sda3 'root=/dev/sda4
-# STARTUP_4		        Image 4: boot emmcflash0.kernel4 'root=/dev/mmcblk0p9 rw rootwait'	NOT IN USE due to Rescue mode in mmcblk0p3
+# STARTUP_4		        Image 4: boot emmcflash0.kernel4 'root=/dev/mmcblk0p9 rw rootwait'	NOT IN USE due to Rescue mode in mmcblk0p3		NOT IN USE due to only 4 partitions on SDcard
 
 def GetCurrentImage():
 	f = open('/sys/firmware/devicetree/base/chosen/bootargs', 'r').read()
 	if "%s" %(SystemInfo["canMultiBoot"][2]) in f:
 		return SystemInfo["canMultiBoot"] and (int(open('/sys/firmware/devicetree/base/chosen/bootargs', 'r').read().replace('\0', '').split('%s' %(SystemInfo["canMultiBoot"][2]))[1].split(' ')[0])-SystemInfo["canMultiBoot"][0])/2
 	else:
-		return 0
+		return 0	# if multiboot media not in SystemInfo["canMultiBoot"], then assumes using SDcard and mmc is in 1st slot so tell caller with 0 return 
 
 def GetCurrentImageMode():
 	return SystemInfo["canMultiBoot"] and SystemInfo["canMode12"] and int(open('/sys/firmware/devicetree/base/chosen/bootargs', 'r').read().replace('\0', '').split('=')[-1])
@@ -25,9 +25,9 @@ def GetCurrentImageMode():
 class GetImagelist():
 	MOUNT = 0
 	UNMOUNT = 1
-	NoRun = 0
-	FirstRun = 1
-	LastRun = 2
+	NoRun = 0		# receivers only uses 1 media for multiboot
+	FirstRun = 1		# receiver uses eMMC and SD card for multiboot - so handle SDcard slots 1st via SystemInfo(canMultiBoot)
+	LastRun = 2		# receiver uses eMMC and SD card for multiboot - and then handle eMMC (currently one time)
 
 	def __init__(self, callback):
 		if SystemInfo["canMultiBoot"]:
@@ -39,21 +39,24 @@ class GetImagelist():
 			self.container = Console()
 			self.slot = 1
 			self.slot2 = 1
-			self.HiSi = self.NoRun
+			if SystemInfo["HasSDmmc"]:
+				self.SDmmc = self.FirstRun	# process SDcard slots
+			else:
+				self.SDmmc = self.NoRun		# only mmc slots
 			self.phase = self.MOUNT
-			self.part = SystemInfo["canMultiBoot"][2]
+			self.part = SystemInfo["canMultiBoot"][2]	# pick up slot type
 			self.run()
 		else:	
 			callback({})
 	
 	def run(self):
-		if SystemInfo["HasHiSi"] and self.HiSi == self.LastRun:
-			self.part2 = getMachineMtdRoot()
+		if self.SDmmc == self.LastRun:
+			self.part2 = getMachineMtdRoot()	# process mmc slot
 			self.slot2 = 1
 		else:
 			self.part2 = "%s" %(self.part + str(self.slot * 2 + self.firstslot))
-			if SystemInfo["HasHiSi"] and self.HiSi == self.NoRun:
-				self.slot2 += 1
+			if self.SDmmc == self.FirstRun:
+				self.slot2 += 1			# allow for mmc slot"
 		if self.phase == self.MOUNT:
 			self.imagelist[self.slot2] = { 'imagename': _("Empty slot"), 'part': '%s' %self.part2 }
 		self.container.ePopen('mount /dev/%s /tmp/testmount' %self.part2 if self.phase == self.MOUNT else 'umount /tmp/testmount', self.appClosed)
@@ -93,9 +96,9 @@ class GetImagelist():
 			self.slot2 = self.slot
 			self.phase = self.MOUNT
 			self.run()
-		elif SystemInfo["HasHiSi"] and self.HiSi == self.NoRun and "sd" in SystemInfo["canMultiBoot"][2]:
+		elif self.SDmmc == self.FirstRun:
 			self.phase = self.MOUNT
-			self.HiSi = self.LastRun
+			self.SDmmc = self.LastRun	# process mmc slot
 			self.run()
 		else:
 			self.container.killAll()
@@ -200,10 +203,10 @@ class EmptySlot():
 		self.slot = Contents
 		if not os.path.isdir('/tmp/testmount'):
 			os.mkdir('/tmp/testmount')
-		if SystemInfo["HasHiSi"]:
+		if SystemInfo["HasSDmmc"]:			# allow for mmc & SDcard in passed slot number, so SDcard slot -1
 			self.slot -= 1
 		self.part = "%s%s" %(self.mtdboot, str(self.slot * 2 + self.firstslot))
-		if SystemInfo["HasHiSi"] and self.slot == 0:
+		if SystemInfo["HasSDmmc"] and self.slot == 0:	# this is the mmc slot, so pick up from MtdRoot
 			self.part = getMachineMtdRoot()
 		self.phase = self.MOUNT
 		self.run()
