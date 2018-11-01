@@ -1331,6 +1331,7 @@ class ImageManagerDownload(Screen):
 				'tmtwin4k'        : 'TM-Twin-4K',
 				'uniboxhde'       : 'Venton-Unibox-HDeco-PLUS',
 				'ventonhdx'       : 'Venton-Unibox-HDx',
+				'vipercombohdd'   : 'Amiko-Viper-Combo-HDD',				
 				'vuduo'           : 'Vu+Duo',
 				'vuduo2'          : 'Vu+Duo2',
 				'vusolo'          : 'Vu+Solo',
