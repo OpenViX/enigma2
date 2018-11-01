@@ -149,6 +149,7 @@ SystemInfo["no_YPbPr"] = getBoxType() in (
 		'tmsingle',
 		'tmtwin4k',
 		'uniboxhd1',
+		'vipercombohdd'
 		'vusolo2',
 		'vuzero4k',
 		'vusolo4k',
@@ -182,6 +183,7 @@ SystemInfo["yellow_RCA_no_scart"] = getBoxType() in (
 		'tmnanosem2plus',
 		'tmnano2super',
 		'tmnano3t',
+		'vipercombohdd'
 		'xpeedlx3'
 	)
 # Machines that have neither yellow RCA nor Scart sockets
