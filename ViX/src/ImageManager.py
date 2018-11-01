@@ -1305,6 +1305,7 @@ class ImageManagerDownload(Screen):
 				'osminiplus'      : 'OS-miniplus',
 				'osnino'          : 'OS-nino',
 				'osninoplus'      : 'OS-ninoplus',
+				'osninopro'       : 'OS-ninopro',				
 				'qb800solo'       : 'GiGaBlue-HD800Solo',
 				'sf8'             : 'OCTAGON-SF8-HD',
 				'sf128'           : 'OCTAGON-SF128',
