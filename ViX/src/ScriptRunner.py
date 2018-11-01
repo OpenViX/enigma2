@@ -76,8 +76,8 @@ class VIXScriptRunner(IpkgInstaller):
 		list = self.list.getSelectionsList()
 		cmdList = []
 		for item in list:
-			cmdList.append('chmod +x /usr/scripts/' + item[0] + ' && . ' + '/usr/scripts/' + str(item[0]))
+			cmdList.append('chmod +x /usr/script/' + item[0] + ' && . ' + '/usr/script/' + str(item[0]))
 		if len(cmdList) < 1 and len(self.list.list):
-			cmdList.append('chmod +x /usr/scripts/' + self.list.getCurrent()[0][0] + ' && . ' + '/usr/scripts/' + str(self.list.getCurrent()[0][0]))
+			cmdList.append('chmod +x /usr/script/' + self.list.getCurrent()[0][0] + ' && . ' + '/usr/script/' + str(self.list.getCurrent()[0][0]))
 		if len(cmdList) > 0:
 			self.session.open(Console, cmdlist=cmdList, closeOnSuccess=config.scriptrunner.close.value)
