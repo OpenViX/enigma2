@@ -130,7 +130,8 @@ SystemInfo["no_YPbPr"] = getBoxType() in (
 		'osmini',
 		'osminiplus',
 		'osnino',
-		'osninoplus',		
+		'osninoplus',
+		'osninopro',			
 		'sf128',
 		'sf138',
 		'sf4008',
@@ -148,6 +149,7 @@ SystemInfo["no_YPbPr"] = getBoxType() in (
 		'tmsingle',
 		'tmtwin4k',
 		'uniboxhd1',
+		'vipercombohdd'
 		'vusolo2',
 		'vuzero4k',
 		'vusolo4k',
@@ -181,6 +183,7 @@ SystemInfo["yellow_RCA_no_scart"] = getBoxType() in (
 		'tmnanosem2plus',
 		'tmnano2super',
 		'tmnano3t',
+		'vipercombohdd'
 		'xpeedlx3'
 	)
 # Machines that have neither yellow RCA nor Scart sockets
@@ -198,7 +201,8 @@ SystemInfo["no_yellow_RCA__no_scart"] = getBoxType() in (
 		'mutant51',
 		'mutant1500',
 		'osnino',
-		'osninoplus',		
+		'osninoplus',
+		'osninopro',			
 		'sf4008',
 		'tmnano2t',
 		'tmnanom3',
