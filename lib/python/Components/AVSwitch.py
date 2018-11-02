@@ -3,13 +3,40 @@ from Components.About import about
 from Tools.CList import CList
 from Tools.HardwareInfo import HardwareInfo
 from enigma import eAVSwitch, getDesktop
-from boxbranding import getBoxType, getBrandOEM
+from boxbranding import getMachineBuild, getBoxType, getBrandOEM, getDisplayType, getHaveRCA, getHaveDVI, getHaveYUV, getHaveSCART, getHaveAVJACK, getHaveSCARTYUV, getHaveHDMI, getMachineMtdRoot
 from SystemInfo import SystemInfo
 import os
 
 config.av = ConfigSubsection()
 
 class AVSwitch:
+
+	has_rca = getHaveRCA() in ('True',)
+	has_dvi = getHaveDVI() in ('True',)
+	has_jack = getHaveAVJACK() in ('True',)
+	has_scart = getHaveSCART() in ('True',)
+
+	print "SystemInfo", "MachineBuild", getMachineBuild()
+	print "SystemInfo", "BoxType", getBoxType()
+	print "SystemInfo", "BrandOEM", getBrandOEM()
+	print "SystemInfo", "DisplayType", getDisplayType()
+	print "SystemInfo", "HaveRCA", getHaveRCA()
+	print "SystemInfo", "getHaveDVI", getHaveDVI()
+	print "SystemInfo", "HaveYUV", getHaveYUV()
+	print "SystemInfo", "HaveSCART", getHaveSCART()
+	print "SystemInfo", "HaveAVJACK", getHaveAVJACK()
+	print "SystemInfo", "HaveSCARTYUV", getHaveSCARTYUV()
+	print "SystemInfo", "HaveHDMI", getHaveHDMI()
+	print "SystemInfo", "MachineMtdRoot", getMachineMtdRoot()
+	print "VideoWizard", "has_dvi", has_dvi
+	print "VideoWizard", "has_rca", has_rca
+	print "VideoWizard", "has_jack", has_jack
+	print "VideoWizard", "has_scart", has_scart
+	print "AVSwitch", "Scart-YPbPr", SystemInfo["Scart-YPbPr"]
+	print "AVSwitch", "no_YPbPr", SystemInfo["no_YPbPr"]
+	print "AVSwitch", "yellow_RCA_no_scart", SystemInfo["yellow_RCA_no_scart"]
+	print "AVSwitch", "no_yellow_RCA__no_scart", SystemInfo["no_yellow_RCA__no_scart"]
+
 	rates = { } # high-level, use selectable modes.
 	modes = { }  # a list of (high-level) modes for a certain port.
 
@@ -64,16 +91,12 @@ class AVSwitch:
 	modes["Scart"] = ["PAL", "NTSC", "Multi"]
 	# modes["DVI-PC"] = ["PC"]
 
-	if SystemInfo["Chipstring"] :
-		modes["HDMI"] = SystemInfo["Chipstring"][0] 
-		widescreen_modes = SystemInfo["Chipstring"][1]
-	else:
-		modes["HDMI"] = ["720p", "1080i", "576p", "576i", "480p", "480i"]
-		widescreen_modes = {"720p", "1080i"}
+	modes["HDMI"] = SystemInfo["VideoModes"][0] 
+	widescreen_modes = SystemInfo["VideoModes"][1]
 
 	modes["YPbPr"] = modes["HDMI"]
 
-	if getBrandOEM() == 'vuplus' and getBoxType() not in ('vusolo4k', 'vuuno4k', 'vuuno4kse',  'vuzero4k', 'vuultimo4k'):
+	if SystemInfo["Scart-YPbPr"]:
 		modes["Scart-YPbPr"] = modes["HDMI"]
 
 	# if "DVI-PC" in modes and not getModeList("DVI-PC"):
