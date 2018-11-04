@@ -10,7 +10,7 @@ from Components.config import config
 from Tools.LoadPixmap import LoadPixmap
 from Tools.Directories import SCOPE_ACTIVE_SKIN, resolveFilename
 from Screens.LocationBox import defaultInhibitDirs
-#GML:1
+#
 from Tools.Trashcan import getTrashFolder
 import NavigationInstance
 import skin
@@ -146,11 +146,12 @@ class MovieList(GUIComponent):
 	HIDE_DESCRIPTION = 1
 	SHOW_DESCRIPTION = 2
 
-#GML:1
 # So MovieSelection.selectSortby() can find out whether we are 
 # in a Trash folder and, if so, what the last sort was
 # The numbering starts after SORT_* values above.
 # in MovieSelection.py (that has no SORT_GROUPWISE)
+# NOTE! that these two *must* *follow on* from the end of the
+#       SORT_* items above!
 #
 	TRASHSORT_SHOWRECORD = 13
 	TRASHSORT_SHOWDELETE = 14
@@ -580,7 +581,6 @@ class MovieList(GUIComponent):
 				self.list.append((ref, None, 0, -1))
 				numberOfDirs += 1
 
-#GML:1
 		if config.usage.movielist_trashcan.value:
 			here = os.path.realpath(rootPath)
 			MovieList.InTrashFolder = here.startswith(getTrashFolder(here))
@@ -605,8 +605,6 @@ class MovieList(GUIComponent):
 			if info is None:
 				info = justStubInfo
 			begin = info.getInfo(serviceref, iServiceInformation.sTimeCreate)
-
-#GML:1
 			begin2 = 0
 			if MovieList.UsingTrashSort:
 				f_path = serviceref.getPath()
@@ -651,8 +649,6 @@ class MovieList(GUIComponent):
 				if not this_tags.issuperset(filter_tags) and not this_tags_fullname.issuperset(filter_tags):
 # 					print "Skipping", name, "tags=", this_tags, " filter=", filter_tags
 					continue
-
-#GML:1
 			if begin2 != 0:
 				self.list.append((serviceref, info, begin, -1, begin2))
 			else:
@@ -662,7 +658,16 @@ class MovieList(GUIComponent):
 		self.parentDirectory = 0
 
 		self.list.sort(key=self.buildGroupwiseSortkey)
-#GML:1
+
+# Have we had a temporary sort method override set in MovieSelectiom.py?
+# If so, use it and remove it (it's one-off).
+#
+		try:
+			sort_method = self.temp_sort
+			del self.temp_sort
+		except:
+			sort_method = self.sort_type
+
 		if MovieList.UsingTrashSort:      # Same as SORT_RECORDED, but must come first...
 			self.list = sorted(self.list[:numberOfDirs], key=self.buildBeginTimeSortKey) + sorted(self.list[numberOfDirs:], key=self.buildBeginTimeSortKey)
 # Having sorted on deletion times, re-instate any record times for display.
@@ -673,32 +678,32 @@ class MovieList(GUIComponent):
 					if len(self.list[i]) == 5:
 						x = self.list[i]
 						self.list[i] = (x[0], x[1], x[4], x[3])
-		elif self.sort_type == MovieList.SORT_ALPHANUMERIC:
+		elif sort_method == MovieList.SORT_ALPHANUMERIC:
 			self.list = sorted(self.list[:numberOfDirs], key=self.buildAlphaNumericSortKey) + sorted(self.list[numberOfDirs:], key=self.buildAlphaNumericSortKey)
-		elif self.sort_type == MovieList.SORT_ALPHANUMERIC_REVERSE:
+		elif sort_method == MovieList.SORT_ALPHANUMERIC_REVERSE:
 			self.list = sorted(self.list[:numberOfDirs], key=self.buildAlphaNumericSortKey, reverse = True) + sorted(self.list[numberOfDirs:], key=self.buildAlphaNumericSortKey, reverse = True)
-		elif self.sort_type == MovieList.SORT_ALPHANUMERIC_FLAT:
+		elif sort_method == MovieList.SORT_ALPHANUMERIC_FLAT:
 			self.list.sort(key=self.buildAlphaNumericFlatSortKey)
-		elif self.sort_type == MovieList.SORT_ALPHANUMERIC_FLAT_REVERSE:
+		elif sort_method == MovieList.SORT_ALPHANUMERIC_FLAT_REVERSE:
 			self.list.sort(key=self.buildAlphaNumericFlatSortKey, reverse = True)
-		elif self.sort_type == MovieList.SORT_RECORDED:
+		elif sort_method == MovieList.SORT_RECORDED:
 			self.list = sorted(self.list[:numberOfDirs], key=self.buildBeginTimeSortKey) + sorted(self.list[numberOfDirs:], key=self.buildBeginTimeSortKey)
-		elif self.sort_type == MovieList.SORT_RECORDED_REVERSE:
+		elif sort_method == MovieList.SORT_RECORDED_REVERSE:
 			self.list = sorted(self.list[:numberOfDirs], key=self.buildBeginTimeSortKey, reverse = True) + sorted(self.list[numberOfDirs:], key=self.buildBeginTimeSortKey, reverse = True)
-		elif self.sort_type == MovieList.SHUFFLE:
+		elif sort_method == MovieList.SHUFFLE:
 			dirlist = self.list[:numberOfDirs]
 			shufflelist = self.list[numberOfDirs:]
 			random.shuffle(shufflelist)
 			self.list = dirlist + shufflelist
-		elif self.sort_type == MovieList.SORT_ALPHA_DATE_OLDEST_FIRST:
+		elif sort_method == MovieList.SORT_ALPHA_DATE_OLDEST_FIRST:
 			self.list = sorted(self.list[:numberOfDirs], key=self.buildAlphaDateSortKey) + sorted(self.list[numberOfDirs:], key=self.buildAlphaDateSortKey)
-		elif self.sort_type == MovieList.SORT_ALPHAREV_DATE_NEWEST_FIRST:
+		elif sort_method == MovieList.SORT_ALPHAREV_DATE_NEWEST_FIRST:
 			self.list = sorted(self.list[:numberOfDirs], key=self.buildAlphaDateSortKey, reverse = True) + sorted(self.list[numberOfDirs:], key=self.buildAlphaDateSortKey, reverse = True)
-		elif self.sort_type == MovieList.SORT_LONGEST:
+		elif sort_method == MovieList.SORT_LONGEST:
 			self.list = sorted(self.list[:numberOfDirs], key=self.buildAlphaNumericSortKey) + sorted(self.list[numberOfDirs:], key=self.buildLengthSortKey, reverse = True)
-		elif self.sort_type == MovieList.SORT_SHORTEST:
+		elif sort_method == MovieList.SORT_SHORTEST:
 			self.list = sorted(self.list[:numberOfDirs], key=self.buildAlphaNumericSortKey) + sorted(self.list[numberOfDirs:], key=self.buildLengthSortKey)
-		
+
 		for x in self.list:
 			if x[1]:
 				tmppath = x[1].getName(x[0])[:-1] if x[1].getName(x[0]).endswith('/') else x[1].getName(x[0])
