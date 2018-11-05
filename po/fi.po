@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-05-09 16:59+0100\n"
-"PO-Revision-Date: 2018-05-28 20:12+0200\n"
+"POT-Creation-Date: 2018-07-24 08:08+0100\n"
+"PO-Revision-Date: 2018-08-25 10:57+0200\n"
 "Last-Translator: Kojo\n"
 "Language-Team: AndyBlac/timoj/Kojo/Samzam\n"
 "Language: fi\n"
@@ -148,6 +148,9 @@ msgid ""
 msgstr ""
 "\n"
 "Katsele, asenna ja poista ohjelmapaketteja."
+
+msgid " "
+msgstr " "
 
 #, python-format
 msgid "  (%s x %s)"
@@ -2890,6 +2893,13 @@ msgstr "Valitse päivämäärien näyttömuoto . Näyttömuoto perustuu omaan va
 msgid "Choose the front panel display formatting style for times. 'H' / 'HH' is the hour for a 24 hour clock, 'h' / 'hh' is the hour for a 12 hour clock, 'mm' is the minutes.  ('HH' and 'hh' have leading zeros for single digit values.) The front panel display will be based on your choice but can be influenced any applicable skin."
 msgstr "Valitse näyttöpaneelin kellonaikojen näyttömuoto. Näyttömuoto perustuu omaan valintaasi mutta voi muuttua riippuen teemasta."
 
+msgid "Choose the layout view mode (Text / Graphics Multi channel EPG or Single channel EPG)."
+msgstr ""
+
+#, fuzzy
+msgid "Choose the layout view mode (Text or Graphics)."
+msgstr "Tämä asetus määrittää näkymän asettelun (teksti tai graafinen)."
+
 msgid "Choose the location for crash and debug logs folder."
 msgstr "Valitse kaatumis- ja debug-lokien hakemiston sijainti."
 
@@ -3561,7 +3571,8 @@ msgstr "Luo DVD-ISO"
 msgid "Create directory"
 msgstr "Luo hakemisto"
 
-msgid "Create seperate radio userbouquet"
+#, fuzzy
+msgid "Create separate radio userbouquet"
 msgstr "Luo erillinen radio-suosikkilista"
 
 msgid "Creating AP and SC Files"
@@ -4497,6 +4508,10 @@ msgstr "Ajurit:\t%s\n"
 msgid "Drivers: %s"
 msgstr "Ajurit: %s"
 
+#, fuzzy
+msgid "Drop unconfigured satellites"
+msgstr "Valitut satelliitit"
+
 #
 msgid "Dutch"
 msgstr "Hollanti"
@@ -4668,6 +4683,9 @@ msgstr "Kulunut ja jäljellä oleva"
 #
 msgid "Electronic Program Guide"
 msgstr "Ohjelmaopas"
+
+msgid "Empty slot"
+msgstr ""
 
 #
 msgid "Enable"
@@ -5649,6 +5667,10 @@ msgstr "Graafinen EPG"
 msgid "Graphics"
 msgstr "Grafiikka"
 
+#, fuzzy
+msgid "Graphics Multi EPG"
+msgstr "Graafinen EPG"
+
 #
 msgid "Greece"
 msgstr "Kreikka"
@@ -6088,6 +6110,10 @@ msgid "Ignore DVB-S namespace sub network"
 msgstr ""
 
 msgid "Ignore DVB-T namespace sub network"
+msgstr ""
+
+#, python-format
+msgid "Image Slot:\t%s"
 msgstr ""
 
 msgid "Image manager"
@@ -7141,6 +7167,11 @@ msgctxt "Video output mode"
 msgid "Mode"
 msgstr "Tila"
 
+msgid ""
+"Mode 1 suppports Kodi, PiP may not work.\n"
+"Mode 12 supports PiP, Kodi may not work."
+msgstr ""
+
 msgid "Model"
 msgstr "Malli"
 
@@ -7299,14 +7330,15 @@ msgstr "Tallenneluettelon asetukset"
 msgid "Movie location"
 msgstr "Tallennushakemisto"
 
-msgid "Movie manager"
-msgstr "Movie manager"
-
 msgid "Movie selection"
 msgstr "Tallenteen valinta"
 
 msgid "Movie/Drama"
 msgstr "Elokuva/draama"
+
+#, fuzzy
+msgid "Movielist menu"
+msgstr "Tallenneluettelon asetukset"
 
 #
 msgid "Moving"
@@ -7338,6 +7370,14 @@ msgstr "Kanavaopas"
 #, fuzzy
 msgid "MultiEPG"
 msgstr "Kanavaopas"
+
+#
+#, fuzzy
+msgid "Multiboot"
+msgstr "Usea satelliitti"
+
+msgid "Multiboot Image Restart"
+msgstr ""
 
 msgid "Multimedia"
 msgstr "Multimedia"
@@ -9426,7 +9466,7 @@ msgid "Remove cable services"
 msgstr "Poista kaapelikanavia"
 
 msgid "Remove completed timers after (days)"
-msgstr "Poista tallennetut ajastukset (päivää) jälkeen"
+msgstr "Poista toteutuneet ajastukset (päivää) jälkeen"
 
 #
 msgid "Remove currently selected title"
@@ -9642,6 +9682,11 @@ msgstr "Jatka kohdasta %s"
 #
 msgid "Resuming playback"
 msgstr "Toisto jatkuu viimeksi katsotusta kohdasta"
+
+#
+#, fuzzy
+msgid "Retrieving image slots - Please wait..."
+msgstr "Haetaan saatavilla olevia päivityksiä. Odota..."
 
 #
 msgid "Return to movie list"
@@ -11070,10 +11115,6 @@ msgstr "Rinnakkain"
 msgid "Sierra Leone"
 msgstr "Sierra Leone"
 
-#
-msgid "Signal Finder"
-msgstr "Signaalimittari"
-
 msgid "Signal OK, proceeding"
 msgstr "Signaali OK, jatketaan"
 
@@ -11993,6 +12034,11 @@ msgid "Text"
 msgstr "Teksti"
 
 #
+#, fuzzy
+msgid "Text Multi EPG"
+msgstr "Kanavaopas"
+
+#
 msgid "Text color"
 msgstr "Tekstin väri"
 
@@ -12308,9 +12354,6 @@ msgstr "Tämä asetus ottaa käyttöön pehmennyssuodattimen sävyjen sekoitukse
 
 msgid "This option allows you enable the vertical scaler dejagging."
 msgstr "Tämä asetus ottaa käyttöön skaalaimen pystysuuntaisen sahalaitojen poiston."
-
-msgid "This option allows you set the layout view (Text or Graphics)."
-msgstr "Tämä asetus määrittää näkymän asettelun (teksti tai graafinen)."
 
 msgid "This option allows you to boost the blue tones in the picture."
 msgstr "Tämä asetus korostaa kuvan sinisiä sävyjä."
@@ -13207,6 +13250,9 @@ msgstr "Käytä vaihtoehtoista tai tavallista radio-tilaa."
 msgid "Use the alternative screen"
 msgstr "Käytä vaihtoehtoista näyttöä"
 
+msgid "Use the cursor keys to select an installed image and then Reboot button."
+msgstr ""
+
 msgid ""
 "Use the deletion time to sort Trash directories.\n"
 "Most recently deleted at the top."
@@ -13382,12 +13428,13 @@ msgstr "Kuvasäätöjen esikatselu"
 msgid "Video enhancement setup"
 msgstr "Kuvasäätöjen asetukset"
 
+#, fuzzy
 msgid ""
 "Video input selection\n"
 "\n"
 "Please press OK if you can see this page on your TV (or select a different input port).\n"
 "\n"
-"The next input port will be automatically probed in 20 seconds."
+"The next input port will be automatically probed in 10 seconds."
 msgstr ""
 "Video-sisäänmenon valinta\n"
 "\n"
@@ -15535,6 +15582,30 @@ msgstr "Siirry eteenpäin"
 msgid "skip forward (enter time)"
 msgstr "Siirry eteenpäin (syötä aika)"
 
+#, fuzzy, python-format
+msgid "slot%s - %s "
+msgstr "%s of %s GB"
+
+#, python-format
+msgid "slot%s - %s (current image)"
+msgstr ""
+
+#, python-format
+msgid "slot%s - %s mode 1"
+msgstr ""
+
+#, python-format
+msgid "slot%s - %s mode 1 (current image)"
+msgstr ""
+
+#, python-format
+msgid "slot%s - %s mode 12"
+msgstr ""
+
+#, python-format
+msgid "slot%s - %s mode 12 (current image)"
+msgstr ""
+
 msgid "slow"
 msgstr "Hidas"
 
@@ -15841,9 +15912,6 @@ msgstr "Vaihdettu"
 #~ "\n"
 #~ "%d.%d.%d, %2d:%02d  -  %s"
 
-#~ msgid " "
-#~ msgstr " "
-
 #
 #~ msgid "128"
 #~ msgstr "128"
@@ -15868,6 +15936,8 @@ msgstr "Vaihdettu"
 #~ msgstr "Anna uusi salasana"
 #~ msgid "Enter your password here:"
 #~ msgstr "Syötä salasana tähän:"
+#~ msgid "Movie manager"
+#~ msgstr "Movie manager"
 #
 #~ msgid "Not configured"
 #~ msgstr "Ei määritetty"
@@ -15879,6 +15949,9 @@ msgstr "Vaihdettu"
 #~ msgstr "Aloita haku painamalla OK"
 #~ msgid "Settings..."
 #~ msgstr "Asetukset..."
+#
+#~ msgid "Signal Finder"
+#~ msgstr "Signaalimittari"
 #~ msgid "Sucessfully changed the password for the root user to: "
 #~ msgstr "Root-käyttäjän salasanan vaihto onnistui:"
 #~ msgid "Timer conflict detection when fallback is enabled"
