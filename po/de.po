@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-26 17:24+0100\n"
-"PO-Revision-Date: 2018-10-27 19:06+0200\n"
+"POT-Creation-Date: 2018-11-05 06:12+0000\n"
+"PO-Revision-Date: 2018-11-05 14:48+0100\n"
 "Last-Translator: Ralf Biedermann <ralf.biedermann@rbsoft.de>\n"
 "Language-Team: AndyBlacburn, j-ot&Trial\n"
 "Language: de\n"
@@ -1950,6 +1950,9 @@ msgstr "Sprache der Audiospur (%s)"
 msgid "Australia"
 msgstr "Australien"
 
+msgid "Australian"
+msgstr "Australisch"
+
 msgid "Austria"
 msgstr "Österreich"
 
@@ -2052,6 +2055,9 @@ msgstr "AutoTimer Überblick"
 
 msgid "Available format variables"
 msgstr "Verfügbare Formatierungsvariablen"
+
+msgid "Available locales are:"
+msgstr "Vorhandene Sprachen sind:"
 
 msgid "Available shares:"
 msgstr "Vorhandene Freigaben:"
@@ -2158,6 +2164,9 @@ msgstr "Verhalten beim Filmende"
 
 msgid "Belarus"
 msgstr "Belarus"
+
+msgid "Belgian"
+msgstr "Belgisch"
 
 msgid "Belgium"
 msgstr "Belgium"
@@ -2440,6 +2449,9 @@ msgstr "Canada"
 
 msgid "Cancel"
 msgstr "Abbrechen"
+
+msgid "Cancel any text changes and exit"
+msgstr "Textänderungen verwerfen und virtuelle Tastatur verlassen"
 
 msgid "Cancel save timeshift as movie"
 msgstr "Film speichern abbrechen"
@@ -3790,6 +3802,12 @@ msgstr "Wiedergabelisteneintrag löschen"
 msgid "Delete saved playlist"
 msgstr "Gespeicherte Wiedergabeliste löschen"
 
+msgid "Delete the character to the left of text buffer cursor"
+msgstr "Lösche das Zeichen links vom Cursor"
+
+msgid "Delete the character under the text buffer cursor"
+msgstr "Lösche das Zeichen unter dem Cursor"
+
 msgid "Delete timer"
 msgstr "Timer löschen"
 
@@ -4433,6 +4451,9 @@ msgstr "Englisch"
 msgid "Enigma2 skin selector"
 msgstr "Enigma2 Skinauswahl"
 
+msgid "Enter"
+msgstr "Eingabe"
+
 msgid "Enter PIN"
 msgstr "PIN-Code ändern"
 
@@ -4450,6 +4471,9 @@ msgstr "Dauerhaften PIN-Code eingeben"
 
 msgid "Enter pin code"
 msgstr "PIN-Code eingeben"
+
+msgid "Enter text and exit"
+msgstr "Text eingeben und beenden"
 
 msgid "Enter the FTP password of the host receiver (normally just leave empty)."
 msgstr "Gebe FTP Passowrt für den Notfallreceiver an (normalerweise leer lassen)."
@@ -5048,7 +5072,7 @@ msgstr "Vollbild"
 msgid "Full transparency"
 msgstr "Volle Transparenz"
 
-msgid "Fulview resulution"
+msgid "Full view resolution"
 msgstr "Vollbild Auflösung"
 
 msgid "GB"
@@ -5206,6 +5230,9 @@ msgstr "Griechenland"
 msgid "Greek"
 msgstr "Griechisch"
 
+msgid "Greek (Modern)"
+msgstr ""
+
 msgid "Green"
 msgstr "Grün"
 
@@ -5295,6 +5322,9 @@ msgstr "HDMIin"
 
 msgid "HDR, 12bit 4:2:0/4:2:2, no PIP"
 msgstr "HDR, 12bit 4:2:0/4:2:2, kein PIP"
+
+msgid "HELP"
+msgstr ""
 
 msgid "HH:mm"
 msgstr ""
@@ -5472,6 +5502,12 @@ msgstr "IMDB Suche nach laufenden Programm"
 
 msgid "IMDb search"
 msgstr "IMDb Suche"
+
+msgid "INFO"
+msgstr ""
+
+msgid "INS"
+msgstr ""
 
 msgid "IP"
 msgstr "IP"
@@ -5901,6 +5937,9 @@ msgstr "Ipkg"
 msgid "Iran (Islamic Republic of)"
 msgstr "Iran (Islamic Republic of)"
 
+msgid "Iran, Islamic Republic"
+msgstr "Iran (Islamische Republic von"
+
 msgid "Iraq"
 msgstr "Iraq"
 
@@ -6014,6 +6053,9 @@ msgstr "Kernel: %s"
 
 msgid "Keyboard"
 msgstr "Tastatur"
+
+msgid "Keyboard data entry"
+msgstr "Tastatureingabe"
 
 msgid "Keyboard map"
 msgstr "Tastaturlayout"
@@ -6269,6 +6311,9 @@ msgstr ""
 "Wenn eine \"Nicht verbunden\"-Meldung erscheint:\n"
 "- Überprüfe ob ein Netzwerkkabel angeschlossen ist.\n"
 "- Stelle sicher, dass das Netzwerkkabel nicht defekt ist."
+
+msgid "Locale"
+msgstr "Sprache"
 
 msgid "Location"
 msgstr "Zielverzeichnis"
@@ -6663,6 +6708,30 @@ msgstr "Zum nächsten Eintrag gehen"
 
 msgid "Move east"
 msgstr "Drehen nach Osten"
+
+msgid "Move the text buffer cursor left"
+msgstr "Bewege den Cursor links"
+
+msgid "Move the text buffer cursor right"
+msgstr "Bewege den Cursor rechts"
+
+msgid "Move the text buffer cursor to the first character"
+msgstr "Bewege den Cursor zum Anfang"
+
+msgid "Move the text buffer cursor to the last character"
+msgstr "Bewege den Cursor zum Ende"
+
+msgid "Move the virtual keyboard cursor down"
+msgstr "Bewege virtuelle Tastatur cursor runter"
+
+msgid "Move the virtual keyboard cursor left"
+msgstr "Bewege virtuelle Tastatur cursor links"
+
+msgid "Move the virtual keyboard cursor right"
+msgstr "Bewege virtuelle Tastatur cursor rechts"
+
+msgid "Move the virtual keyboard cursor up"
+msgstr "Bewege virtuelle Tastatur cursor hoch"
 
 msgid "Move to home of list"
 msgstr "An den Anfang"
@@ -7235,6 +7304,9 @@ msgstr "Anzahl von Zeilen"
 msgid "Number of rows to display"
 msgstr "Anzahl von Zeilen"
 
+msgid "Number or SMS style data entry"
+msgstr "Zahlen- oder SMS-Eingabemethode"
+
 msgid "OK"
 msgstr "OK"
 
@@ -7267,6 +7339,9 @@ msgstr "OScam Info"
 
 msgid "OScam info"
 msgstr "OScam Info"
+
+msgid "OVR"
+msgstr ""
 
 msgid "Off"
 msgstr "Aus"
@@ -9251,6 +9326,9 @@ msgstr "Wähle Eingabegerät."
 msgid "Select interface"
 msgstr "Netzwerkkarte auswählen"
 
+msgid "Select locale"
+msgstr "Wähle Sprache"
+
 msgid "Select location"
 msgstr "Wähle Verzeichnis"
 
@@ -9286,6 +9364,9 @@ msgstr "Wähle Zielverzeichnisse"
 
 msgid "Select the Unicable channel to be assigned to this tuner. This is a unique value. Be certain that no other device connected to this same Unicable system is allocated to the same Unicable channel."
 msgstr "Wähle den Unicable Kanal der diesem Tuner zugeordnet werden soll. Das ist eine eindeutige Nummer. Stelle sicher das kein anderes Gerät in deinem System den selben Kanal zugerodnet wurde."
+
+msgid "Select the character or action under the virtual keyboard cursor"
+msgstr "Wähle Zeichen oder Aktion beim Cursor der virtuellen Tastatur"
 
 msgid "Select the desired function and click on \"OK\" to assign it. Use \"CH+/-\" to toggle between the lists. Select an assigned function and click on \"OK\" to de-assign it. Use \"Next/Previous\" to change the order of the assigned functions."
 msgstr "Gewünschte Funktion auswählen und \"OK\" drücken um sie zu belegen. Benutze  \"CH+/-\" um zwischen den Listen umzuschalten. Wähle zugeordnete Funktion aus und drücke  \"OK\" um die Belegung zu entfernen."
@@ -9334,6 +9415,12 @@ msgstr "Wähle den Typ von LNB/Gerät das benutzt wird (normalerweise 'Universal
 
 msgid "Select the type of Unicable device you are using."
 msgstr "Wähle den Unicable Type den Du benutzt."
+
+msgid "Select the virtual keyboard locale from a menu"
+msgstr "Wähle Sprache von der virtuellen Tastatur"
+
+msgid "Select the virtual keyboard shifted character set"
+msgstr "Wähle den Zeichensatz mit SHift bei der virtuellen Tastatur"
 
 msgid "Select upgrade source"
 msgstr "Wähle eine Update-Quelle"
@@ -10369,6 +10456,12 @@ msgstr "Spanisch"
 
 msgid "Special"
 msgstr "Spezial"
+
+msgid "Special 1"
+msgstr "Spezial 1"
+
+msgid "Special 2"
+msgstr "Spezial 2"
 
 msgid "Speed:"
 msgstr "Geschwindigkeit:"
@@ -11524,6 +11617,9 @@ msgstr "Aspect/Ratio umschalten..."
 msgid "Toggle between bouquet/epg lists"
 msgstr "Wechseln zwischen Favoriten-/EPG-Liste"
 
+msgid "Toggle new text inserts before or overwrites existing text"
+msgstr "Schalte um zwischen neuen Text vor bestehendem Text über überschreiben"
+
 msgid "Toggle picture In graphics"
 msgstr "Bild in Grafik umschalten"
 
@@ -11780,6 +11876,15 @@ msgstr "Unverschlüsselt"
 msgid "Unhide parental control services"
 msgstr "Geschützte Sender sichtbar machen"
 
+msgid "Unicable delay after change voltage before switch command"
+msgstr "Unicable Pause nach Spannungsänderung vor Switch-Kommando"
+
+msgid "Unicable delay after enable voltage before switch command"
+msgstr "Unicable Pause nachdem Spannung anliegt bevor Switch-Kommando"
+
+msgid "Unicable delay after last diseqc command"
+msgstr "Unicable Pause nach letztem Diseqc Kommando"
+
 msgid "Uninstall"
 msgstr "Deinstallieren"
 
@@ -11788,6 +11893,9 @@ msgstr "United Arab Emirates"
 
 msgid "United Kingdom"
 msgstr "United Kingdom"
+
+msgid "United States"
+msgstr "Vereinigte Staaten"
 
 msgid "United States Minor Outlying Islands"
 msgstr "United States Minor Outlying Islands"
@@ -12091,6 +12199,9 @@ msgstr ""
 msgid "Vanuatu"
 msgstr "Vanuatu"
 
+msgid "Various"
+msgstr "Verschiedenes"
+
 msgid "Venezuela (Bolivarian Republic of)"
 msgstr "Venezuela (Bolivarian Republic of)"
 
@@ -12242,6 +12353,15 @@ msgstr "Virgin Islands (British)"
 
 msgid "Virgin Islands (U.S.)"
 msgstr "Virgin Islands (U.S.)"
+
+msgid "Virtual KeyBoard Functions"
+msgstr "Virtuelle Tastatur Funktionen"
+
+msgid "Virtual KeyBoard Text:"
+msgstr "Virtuelle Tastatur Text:"
+
+msgid "Virtual keyboard"
+msgstr "Virtuelle Tastatur"
 
 msgid "Virtuosso Image Xtreme"
 msgstr "Virtuosso Image Xtreme"
