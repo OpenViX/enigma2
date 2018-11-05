@@ -13,7 +13,7 @@ from Components.Sources.StaticText import StaticText
 from Screens.ChoiceBox import ChoiceBox
 from Screens.HelpMenu import HelpableScreen
 from Screens.Screen import Screen
-from Tools.Directories import resolveFilename, SCOPE_CURRENT_SKIN
+from Tools.Directories import resolveFilename, SCOPE_ACTIVE_SKIN
 from Tools.LoadPixmap import LoadPixmap
 from Tools.NumericalTextInput import NumericalTextInput
 
@@ -40,24 +40,24 @@ class VirtualKeyBoard(Screen, HelpableScreen):
 		HelpableScreen.__init__(self)
 		self.setTitle(_("Virtual keyboard"))
 		prompt = title  # Title should only be used for screen titles!
-		self.key_bg = LoadPixmap(path=resolveFilename(SCOPE_CURRENT_SKIN, "buttons/vkey_bg.png"))
-		self.key_red_bg = LoadPixmap(path=resolveFilename(SCOPE_CURRENT_SKIN, "buttons/vkey_red.png"))
-		self.key_green_bg = LoadPixmap(path=resolveFilename(SCOPE_CURRENT_SKIN, "buttons/vkey_green.png"))
-		self.key_yellow_bg = LoadPixmap(path=resolveFilename(SCOPE_CURRENT_SKIN, "buttons/vkey_yellow.png"))
-		self.key_blue_bg = LoadPixmap(path=resolveFilename(SCOPE_CURRENT_SKIN, "buttons/vkey_blue.png"))
-		self.key_sel = LoadPixmap(path=resolveFilename(SCOPE_CURRENT_SKIN, "buttons/vkey_sel.png"))
-		self.key_backspace = LoadPixmap(path=resolveFilename(SCOPE_CURRENT_SKIN, "buttons/vkey_backspace.png"))
-		self.key_enter = LoadPixmap(path=resolveFilename(SCOPE_CURRENT_SKIN, "buttons/vkey_enter.png"))
-		self.key_first = LoadPixmap(path=resolveFilename(SCOPE_CURRENT_SKIN, "buttons/vkey_first.png"))
-		self.key_last = LoadPixmap(path=resolveFilename(SCOPE_CURRENT_SKIN, "buttons/vkey_last.png"))
-		self.key_left = LoadPixmap(path=resolveFilename(SCOPE_CURRENT_SKIN, "buttons/vkey_left.png"))
-		self.key_right = LoadPixmap(path=resolveFilename(SCOPE_CURRENT_SKIN, "buttons/vkey_right.png"))
-		self.key_shift0 = LoadPixmap(path=resolveFilename(SCOPE_CURRENT_SKIN, "buttons/vkey_shift0.png"))
-		self.key_shift1 = LoadPixmap(path=resolveFilename(SCOPE_CURRENT_SKIN, "buttons/vkey_shift1.png"))
-		self.key_shift2 = LoadPixmap(path=resolveFilename(SCOPE_CURRENT_SKIN, "buttons/vkey_shift2.png"))
-		self.key_shift3 = LoadPixmap(path=resolveFilename(SCOPE_CURRENT_SKIN, "buttons/vkey_shift3.png"))
-		self.key_space = LoadPixmap(path=resolveFilename(SCOPE_CURRENT_SKIN, "buttons/vkey_space.png"))
-		self.key_space_alt = LoadPixmap(path=resolveFilename(SCOPE_CURRENT_SKIN, "buttons/vkey_space_alt.png"))
+		self.key_bg = LoadPixmap(path=resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/vkey_bg.png"))
+		self.key_red_bg = LoadPixmap(path=resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/vkey_red.png"))
+		self.key_green_bg = LoadPixmap(path=resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/vkey_green.png"))
+		self.key_yellow_bg = LoadPixmap(path=resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/vkey_yellow.png"))
+		self.key_blue_bg = LoadPixmap(path=resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/vkey_blue.png"))
+		self.key_sel = LoadPixmap(path=resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/vkey_sel.png"))
+		self.key_backspace = LoadPixmap(path=resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/vkey_backspace.png"))
+		self.key_enter = LoadPixmap(path=resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/vkey_enter.png"))
+		self.key_first = LoadPixmap(path=resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/vkey_first.png"))
+		self.key_last = LoadPixmap(path=resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/vkey_last.png"))
+		self.key_left = LoadPixmap(path=resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/vkey_left.png"))
+		self.key_right = LoadPixmap(path=resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/vkey_right.png"))
+		self.key_shift0 = LoadPixmap(path=resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/vkey_shift0.png"))
+		self.key_shift1 = LoadPixmap(path=resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/vkey_shift1.png"))
+		self.key_shift2 = LoadPixmap(path=resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/vkey_shift2.png"))
+		self.key_shift3 = LoadPixmap(path=resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/vkey_shift3.png"))
+		self.key_space = LoadPixmap(path=resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/vkey_space.png"))
+		self.key_space_alt = LoadPixmap(path=resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/vkey_space_alt.png"))
 		self.keyBackgrounds = {
 			"EXIT": self.key_red_bg,
 			"OK": self.key_green_bg,
