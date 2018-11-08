@@ -1085,7 +1085,13 @@ def InitUsageConfig():
 	config.epgselection.graph_prevtimeperiod = ConfigSelection(default = "180", choices = [("60", _("%d minutes") % 60), ("90", _("%d minutes") % 90), ("120", _("%d minutes") % 120), ("150", _("%d minutes") % 150), ("180", _("%d minutes") % 180), ("210", _("%d minutes") % 210), ("240", _("%d minutes") % 240), ("270", _("%d minutes") % 270), ("300", _("%d minutes") % 300)])
 	config.epgselection.graph_primetimehour = ConfigSelectionNumber(default = 20, stepwidth = 1, min = 00, max = 23, wraparound = True)
 	config.epgselection.graph_primetimemins = ConfigSelectionNumber(default = 00, stepwidth = 1, min = 00, max = 59, wraparound = True)
-	config.epgselection.graph_servicetitle_mode = ConfigSelection(default = "servicename", choices = [("servicename", _("Service Name")), ("picon", _("Picon")), ("picon+servicename", _("Picon and Service Name")), ("servicenumber+servicename", _("Service Number and Service Name")), ("servicenumber+picon+servicename", _("Service Number, Picon and Service Name"))])
+	config.epgselection.graph_servicetitle_mode = ConfigSelection(default = "servicename", choices = [
+		("servicename", _("Service Name")), 
+		("picon", _("Picon")),
+		("picon+servicename", _("Picon and Service Name")), 
+		("servicenumber+picon", _("Service Number and Picon")), 
+		("servicenumber+servicename", _("Service Number, Picon and Service Name")), 
+		("servicenumber+picon+servicename", _("Service Number, Picon and Service Name"))])
 	config.epgselection.graph_channel1 = ConfigYesNo(default = False)
 	possibleAlignmentChoices = [
 			( str(RT_HALIGN_LEFT   | RT_VALIGN_CENTER          ) , _("left")),
