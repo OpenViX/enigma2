@@ -37,7 +37,7 @@ def sorttz(tzlist):
 class Timezones:
 	tzbase = "/usr/share/zoneinfo"
 	gen_label = "Generic"
-	AT_POLL_DELAY = 3  # Minutes
+	at_poll_delay = 3  # Minutes
 
 	def __init__(self):
 		self.timezones = {}
@@ -53,14 +53,17 @@ class Timezones:
 			self.autotimer = None
 		self.timer = eTimer()
 		self.ATupdate = None
+		at_poll_delay = config.plugins.autotimer.delay.value
+		if at_poll_delay is None:
+			at_poll_delay = 3
 
 	def startATupdate(self):
 		if self.ATupdate:
 			self.timer.stop()
 		if self.query not in self.timer.callback:
 			self.timer.callback.append(self.query)
-		print "[Timezones] AutoTimer poll will be run in", self.AT_POLL_DELAY, "minutes"
-		self.timer.startLongTimer(self.AT_POLL_DELAY * 60)
+		print "[Timezones] AutoTimer poll will be run in", self.at_poll_delay, "minutes"
+		self.timer.startLongTimer(self.at_poll_delay * 60)
 
 	def stopATupdate(self):
 		self.ATupdate = None
