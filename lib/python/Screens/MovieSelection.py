@@ -1517,11 +1517,11 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 # display.
 		title=_("Sort list:")
 		if config.movielist.settings_per_directory.value:
-			title = title + "\n\n" + "Set the sort method for this directory"
+			title = title + "\n\n" + _("Set the sort method for this directory")
 		else:
-			title = title + "\n\n" + "Set a temporary sort method for this directory"
+			title = title + "\n\n" + _("Set a temporary sort method for this directory")
 			if self["list"].current_sort != self["list"].sort_type:
-				title = title + "\n" + "(You are currently using a temporary sort method)"
+				title = title + "\n" + _("(You are currently using a temporary sort method)")
 		self.session.openWithCallback(self.sortbyMenuCallback, ChoiceBox, title=title, list=menu, selection = used)
 
 	def getPixmapSortIndex(self, which):
