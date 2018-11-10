@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-01 09:32+0000\n"
-"PO-Revision-Date: 2018-11-01 12:18+0100\n"
+"POT-Creation-Date: 2018-11-08 22:27+0000\n"
+"PO-Revision-Date: 2018-11-09 17:23+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -970,6 +970,9 @@ msgstr "(Alle lezers)"
 
 msgid "(Show only reader:"
 msgstr "(Toon alleen lezer):"
+
+msgid "(You are currently using a temporary sort method)"
+msgstr "(U gebruikt momenteel een tijdelijke sortering)"
 
 msgid "(ZAP as PiP)"
 msgstr "(ZAP als PiP)"
@@ -1951,6 +1954,9 @@ msgstr "Audiospoor (%s) taal"
 msgid "Australia"
 msgstr "Australië"
 
+msgid "Australian"
+msgstr "Australisch"
+
 msgid "Austria"
 msgstr "Austria"
 
@@ -2053,6 +2059,9 @@ msgstr "AutoTimer overzicht"
 
 msgid "Available format variables"
 msgstr "Beschikbare formaten"
+
+msgid "Available locales are:"
+msgstr "Australische talen zijn:"
 
 msgid "Available shares:"
 msgstr "Beschikbare shares:"
@@ -2159,6 +2168,9 @@ msgstr "Actie bij het einde van de opname"
 
 msgid "Belarus"
 msgstr "Belarus"
+
+msgid "Belgian"
+msgstr "Belgisch"
 
 msgid "Belgium"
 msgstr "België"
@@ -2441,6 +2453,9 @@ msgstr "Canada"
 
 msgid "Cancel"
 msgstr "Annuleer"
+
+msgid "Cancel any text changes and exit"
+msgstr "Annuleer tekst en sluit af"
 
 msgid "Cancel save timeshift as movie"
 msgstr "Annuleer het opslaan van timeshift als opname"
@@ -3788,6 +3803,12 @@ msgstr "Wis item in de afspeellijst"
 msgid "Delete saved playlist"
 msgstr "Opgeslagen afspeellijst verwijderen"
 
+msgid "Delete the character to the left of text buffer cursor"
+msgstr "Verwijder karakter links van de cursor"
+
+msgid "Delete the character under the text buffer cursor"
+msgstr "Verwijder karakter onder de cursor"
+
 msgid "Delete timer"
 msgstr "Verwijder timer"
 
@@ -4432,6 +4453,9 @@ msgstr "Engels"
 msgid "Enigma2 skin selector"
 msgstr "Enigma2 skinselectie"
 
+msgid "Enter"
+msgstr "Enter"
+
 msgid "Enter PIN"
 msgstr "Voer PIN in"
 
@@ -4449,6 +4473,9 @@ msgstr "Voer blijvende PIN in"
 
 msgid "Enter pin code"
 msgstr "Voer pincode in"
+
+msgid "Enter text and exit"
+msgstr "Geef tekst in en sluit af"
 
 msgid "Enter the FTP password of the host receiver (normally just leave empty)."
 msgstr "Geef het FTP-wachtwoord van de gast-ontvanger."
@@ -5050,7 +5077,7 @@ msgstr "Volledig scherm"
 msgid "Full transparency"
 msgstr "Volledig doorzichtig"
 
-msgid "Fulview resulution"
+msgid "Full view resolution"
 msgstr "Vol scherm resolutie"
 
 msgid "GB"
@@ -5206,6 +5233,9 @@ msgstr "Greece"
 msgid "Greek"
 msgstr "Grieks"
 
+msgid "Greek (Modern)"
+msgstr "Grieks (modern)"
+
 msgid "Green"
 msgstr "Groen"
 
@@ -5295,6 +5325,9 @@ msgstr "HDMI-in"
 
 msgid "HDR, 12bit 4:2:0/4:2:2, no PIP"
 msgstr "HDR, 12bit 4:2:0/4:2:2, geen PIP"
+
+msgid "HELP"
+msgstr "HELP"
 
 msgid "HH:mm"
 msgstr "HH:mm"
@@ -5472,6 +5505,12 @@ msgstr "IMDB zoekslag naar huidig programma"
 
 msgid "IMDb search"
 msgstr "IMDb zoeken"
+
+msgid "INFO"
+msgstr "INFO"
+
+msgid "INS"
+msgstr "INS"
 
 #
 msgid "IP"
@@ -5905,6 +5944,9 @@ msgstr "IPKG"
 msgid "Iran (Islamic Republic of)"
 msgstr "Iran (Islamic Republic of)"
 
+msgid "Iran, Islamic Republic"
+msgstr "Iran, Islamitische republiek"
+
 msgid "Iraq"
 msgstr "Iraq"
 
@@ -6018,6 +6060,9 @@ msgstr "Kernel: %s"
 
 msgid "Keyboard"
 msgstr "Toetsenbord"
+
+msgid "Keyboard data entry"
+msgstr "Toetsenbord gegevens ingeven"
 
 msgid "Keyboard map"
 msgstr "Toetsenbord indeling"
@@ -6273,6 +6318,9 @@ msgstr ""
 "Als u een \"disconnected\" bericht krijgt:\n"
 "- Controleer of een netwerkkabel is aangesloten.\n"
 "- Controleer of deze kabel niet beschadigd is."
+
+msgid "Locale"
+msgstr "Taal"
 
 msgid "Location"
 msgstr "Lokatie"
@@ -6667,6 +6715,30 @@ msgstr "Verplaats omlaag naar volgende ingave"
 
 msgid "Move east"
 msgstr "Draai oost"
+
+msgid "Move the text buffer cursor left"
+msgstr "Verplaats de cursor naar links"
+
+msgid "Move the text buffer cursor right"
+msgstr "Verplaats de cursor naar rechts"
+
+msgid "Move the text buffer cursor to the first character"
+msgstr "Verplaats de cursor naar het eerste karakter"
+
+msgid "Move the text buffer cursor to the last character"
+msgstr "Verplaats de cursor naar het laatste karakter"
+
+msgid "Move the virtual keyboard cursor down"
+msgstr "Verplaats de cursor naar beneden"
+
+msgid "Move the virtual keyboard cursor left"
+msgstr "Verplaats de cursor naar links"
+
+msgid "Move the virtual keyboard cursor right"
+msgstr "Verplaats de cursor naar rechts"
+
+msgid "Move the virtual keyboard cursor up"
+msgstr "Verplaats de cursor naar boven"
 
 msgid "Move to home of list"
 msgstr "Ga naar begin van de lijst"
@@ -7244,6 +7316,9 @@ msgstr "Aantal rijen"
 msgid "Number of rows to display"
 msgstr "Aantal zichtbare rijen"
 
+msgid "Number or SMS style data entry"
+msgstr "Getal of SMS-type"
+
 msgid "OK"
 msgstr "OK"
 
@@ -7276,6 +7351,9 @@ msgstr "OScam Info"
 
 msgid "OScam info"
 msgstr "OScam info"
+
+msgid "OVR"
+msgstr "OVR"
 
 msgid "Off"
 msgstr "Uit"
@@ -9265,6 +9343,9 @@ msgstr "Selecteer invoerapparaat."
 msgid "Select interface"
 msgstr "Selecteer interface"
 
+msgid "Select locale"
+msgstr "Kies taal"
+
 msgid "Select location"
 msgstr "Kies lokatie"
 
@@ -9300,6 +9381,9 @@ msgstr "Kies doelmap"
 
 msgid "Select the Unicable channel to be assigned to this tuner. This is a unique value. Be certain that no other device connected to this same Unicable system is allocated to the same Unicable channel."
 msgstr "Kies he Unicable kanaal (SCR) dat is toegewezen aan deze tuner. Stel zeker dat geen enkel ander systeem hetzelfde kanaal gebruikt."
+
+msgid "Select the character or action under the virtual keyboard cursor"
+msgstr "Selecteer karakter of actie onder de cursor"
 
 msgid "Select the desired function and click on \"OK\" to assign it. Use \"CH+/-\" to toggle between the lists. Select an assigned function and click on \"OK\" to de-assign it. Use \"Next/Previous\" to change the order of the assigned functions."
 msgstr "Kies de gewenste functie en klik dan op \"OK\" om deze toe te wijzen. Gebruik \"CH+/-\" om te wisselen tussen de kolommen in de lijst. Kies de toegewezen functie en klik op \"OK\" om de toewijzing te verwijderen. Gebruik \"Volgende/Vorige\" om de volgorde van de toegewezen functies te veranderen."
@@ -9348,6 +9432,12 @@ msgstr "Kies het type LNB/apparaat dat gebruikt wordt (meestal 'universeel'). Al
 
 msgid "Select the type of Unicable device you are using."
 msgstr "Kies het type Unicable dat u gebruikt."
+
+msgid "Select the virtual keyboard locale from a menu"
+msgstr "Selecteer taal uit menu"
+
+msgid "Select the virtual keyboard shifted character set"
+msgstr "Selecteer 'shifted' karakterset"
 
 msgid "Select upgrade source"
 msgstr "Kies de upgrade-bron"
@@ -9451,8 +9541,8 @@ msgstr "Kanaal-ID"
 msgid "Service Name"
 msgstr "Kanaalnaam"
 
-msgid "Service Number and Service Name"
-msgstr "Kanaalnummer en kanaalnaam"
+msgid "Service Number and Picon"
+msgstr "Kanaalnummer en picon"
 
 msgid "Service Number, Picon and Service Name"
 msgstr "Kanaalnummer, picon en kanaalnaam"
@@ -9525,6 +9615,9 @@ msgstr "Stel CI toewijzing in voor de detectie van de beschikbare kanalen."
 
 msgid "Set Framerate for MiniTV"
 msgstr "Stel framerate in voor MiniTV"
+
+msgid "Set a temporary sort method for this directory"
+msgstr "Kies de sortering voor deze map"
 
 msgid "Set as startup service"
 msgstr "Kies kanaal na opstarten"
@@ -9614,6 +9707,9 @@ msgstr "Stel de scroll-snelheid voor het schermpje in; sommige skins gebruiken e
 
 msgid "Set the scrolling speed of text on the front display."
 msgstr "Stel de scrollsnelheid op het schermpje van uw %s %s in."
+
+msgid "Set the sort method for this directory"
+msgstr "Kies de sortering voor deze map"
 
 msgid "Set the time before checking video source for resolution/refresh rate infomation."
 msgstr "Stel de tijd in voordat u de videobron op resolutie/verversingsfrequentie controleert"
@@ -10386,6 +10482,12 @@ msgstr "Spaans"
 
 msgid "Special"
 msgstr "Speciaal"
+
+msgid "Special 1"
+msgstr "Speciaal 1"
+
+msgid "Special 2"
+msgstr "Speciaal 2"
 
 msgid "Speed:"
 msgstr "Snelheid:"
@@ -11540,6 +11642,9 @@ msgstr "Wissel aspectverhouding..."
 msgid "Toggle between bouquet/epg lists"
 msgstr "Schakel tussen favorieten- en EPG-lijst"
 
+msgid "Toggle new text inserts before or overwrites existing text"
+msgstr "Schakel tussen nieuwe tekst ingeven voor of overschrijven bestaande tekst"
+
 msgid "Toggle picture In graphics"
 msgstr "Wissel Picture In Graphics"
 
@@ -11821,6 +11926,9 @@ msgstr "United Arab Emirates"
 
 msgid "United Kingdom"
 msgstr "United Kingdom"
+
+msgid "United States"
+msgstr "Verenigde Staten"
 
 msgid "United States Minor Outlying Islands"
 msgstr "United States Minor Outlying Islands"
@@ -12125,6 +12233,9 @@ msgstr "VU+"
 msgid "Vanuatu"
 msgstr "Vanuatu"
 
+msgid "Various"
+msgstr "Verschillende"
+
 msgid "Venezuela (Bolivarian Republic of)"
 msgstr "Venezuela (Bolivarian Republic of)"
 
@@ -12277,6 +12388,15 @@ msgstr "Virgin Islands (British)"
 
 msgid "Virgin Islands (U.S.)"
 msgstr "Virgin Islands (U.S.)"
+
+msgid "Virtual KeyBoard Functions"
+msgstr "Virtueel toetsenbord functies"
+
+msgid "Virtual KeyBoard Text:"
+msgstr "Virtueel toetsenbord tekst:"
+
+msgid "Virtual keyboard"
+msgstr "Virtueel toetsenbord"
 
 msgid "Virtuosso Image Xtreme"
 msgstr "Virtuosso Image Xtreme"

@@ -49,6 +49,7 @@ class ChoiceBox(Screen):
 				self["text"].setText(title)
 		elif text:
 			self["text"].setText(_(text))
+		self["description"] = Label()
 		self.list = []
 		self.summarylist = []
 		if keys is None:
@@ -236,6 +237,7 @@ class ChoiceBox(Screen):
 		self.goKey("blue")
 
 	def updateSummary(self, curpos=0):
+		self.displayDescription(curpos)
 		pos = 0
 		summarytext = ""
 		for entry in self.summarylist:
@@ -248,6 +250,12 @@ class ChoiceBox(Screen):
 				summarytext += ' ' + entry[1] + '\n'
 			pos += 1
 		self["summary_list"].setText(summarytext)
+
+	def displayDescription(self, curpos=0):
+		if len(self.list[curpos][0]) > 2 and isinstance(self.list[curpos][0][2], str):
+			self["description"].setText(self.list[curpos][0][2])
+		else:
+			self["description"].setText("")
 
 	def cancel(self):
 		self.close(None)
