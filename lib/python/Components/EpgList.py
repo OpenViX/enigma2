@@ -308,6 +308,8 @@ class EPGList(GUIComponent):
 		self.showServiceNumber = "servicenumber" in value
 		self.showServiceTitle = "servicename" in value
 		self.showPicon = "picon" in value
+		self.recalcEntrySize()
+		self.selEntry(0) #Select entry again so that the clipping region gets updated if needed
 
 	def setTimeFocus(self, time_focus):
 		self.time_focus = time_focus
@@ -408,7 +410,6 @@ class EPGList(GUIComponent):
 				self.cur_event = 0
 				if self.time_focus >= events[0][2]:
 					for event in events: #iterate all events
-						print event[1], event[2]
 						ev_time = event[2]
 						ev_end_time = ev_time + event[3]
 						self.cur_event += 1
@@ -420,12 +421,7 @@ class EPGList(GUIComponent):
 		cur_service = self.l.getCurrentSelection()
 		if cur_service:
 			events = cur_service[2]
-			if cur_event < 0:
-				self.cur_event = len(events) - 1
-			elif cur_event >= len(events):
-				self.cur_event = 0
-			else:
-				self.cur_event = cur_event
+			self.cur_event = max(min(len(events) - 1, cur_event), 0)
 			event = events[self.cur_event]
 
 			# clip the selected event times to the current screen
