@@ -53,9 +53,9 @@ class Timezones:
 			self.autotimer = None
 		self.timer = eTimer()
 		self.ATupdate = None
-		at_poll_delay = config.plugins.autotimer.delay.value
-		if at_poll_delay is None:
-			at_poll_delay = 3
+		self.at_poll_delay = config.plugins.autotimer.delay.value
+		if self.at_poll_delay is None:
+			self.at_poll_delay = 3
 
 	def startATupdate(self):
 		if self.ATupdate:
