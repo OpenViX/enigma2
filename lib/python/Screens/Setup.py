@@ -200,7 +200,7 @@ class Setup(ConfigListScreen, Screen):
 		return self["config"].list.index(item) if item in self["config"].list else 0
 
 	def changedEntry(self):
-		if isinstance(self["config"].getCurrent()[1], ConfigBoolean) or isinstance(self["config"].getCurrent()[1], ConfigSelection):
+		if self["config"].getCurrent() and (isinstance(self["config"].getCurrent()[1], ConfigBoolean) or isinstance(self["config"].getCurrent()[1], ConfigSelection)):
 			self.createSetupList()
  
 	def __onSelectionChanged(self):
