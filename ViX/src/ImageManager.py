@@ -687,9 +687,6 @@ class ImageBackup(Screen):
 		if SystemInfo["canMultiBoot"]:
 			kernel = GetCurrentImage()
 			if SystemInfo["HasSDmmc"]:
-				if 'octagonemmc' in getImageFileSystem():
-					self.MTDBOOT = "none"
-					self.EMMCIMG = "usb_update.bin"
 				f = open('/sys/firmware/devicetree/base/chosen/bootargs', 'r').read()
 				if "sda" in f :
 					kern =  kernel*2
@@ -1019,6 +1016,8 @@ class ImageBackup(Screen):
 			self.Console.eBatch(self.commandMB, self.Stage3Complete, debug=False)
 
 		if 'octagonemmc' in getImageFileSystem():
+			self.MTDBOOT = "none"
+			self.EMMCIMG = "usb_update.bin"
 			self.commandOCT = []
 			print '[ImageManager] sf8008: Making emmc_partitions.xml'
 			f = open("%s/emmc_partitions.xml" %self.WORKDIR, "w")
