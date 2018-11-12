@@ -46,6 +46,7 @@ private:
 	int doPrepare();
 	void gstPoll(ePtr<GstMessageContainer> const &);
 	void sourceTimeout();
+	void restartRecordingFromEos();
 	void gstBusCall(GstMessage *msg);
 	void handleMessage(GstMessage *msg);
 	static GstBusSyncReply gstBusSyncHandler(GstBus *bus, GstMessage *message, gpointer user_data);

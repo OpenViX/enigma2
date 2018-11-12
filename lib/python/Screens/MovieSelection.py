@@ -76,7 +76,6 @@ l_moviesort = [
 	(str(MovieList.SORT_ALPHANUMERIC_REVERSE), _("alphabetic reverse"), 'Z-A'),
 	(str(MovieList.SORT_ALPHAREV_DATE_NEWEST_FIRST), _("alpharev then newest"),  'Z1 A2 A1')]
 
-#GML:1
 # 4th item is the textual value set in UsageConfig.py
 l_trashsort = [
 	(str(MovieList.TRASHSORT_SHOWRECORD), _("delete time - show record time (Trash ONLY)"), '03/02/01', "show record time"),
@@ -245,8 +244,7 @@ class MovieBrowserConfiguration(ConfigListScreen,Screen):
 		self.cfg = cfg
 		cfg.moviesort = ConfigSelection(default=str(config.movielist.moviesort.value), choices = l_moviesort)
 		cfg.description = ConfigYesNo(default=(config.movielist.description.value != MovieList.HIDE_DESCRIPTION))
-#GML:2 - movielist_trashcan_days
-#GML:1 - trashsort_deltime
+#
 		configList = [getConfigListEntry(_("Use trash can in movie list"), config.usage.movielist_trashcan, _("When enabled, deleted recordings are moved to the trash can, instead of being deleted immediately.")),
 					  getConfigListEntry(_("Remove items from trash can after (days)"), config.usage.movielist_trashcan_days, _("Configure the number of days after which items are automatically removed from the trash can.\nA setting of 0 disables this.")),
 					  getConfigListEntry(_("Clean network trash cans"), config.usage.movielist_trashcan_network_clean, _("When enabled, network trash cans are probed for cleaning.")),
@@ -1359,7 +1357,6 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			action()
 
 	def saveLocalSettings(self):
-#GML:4
 		if not config.movielist.settings_per_directory.value:
 			return
 		try:
@@ -1373,8 +1370,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		config.movielist.moviesort.value = self.settings["moviesort"]
 		config.movielist.description.value = self.settings["description"]
 		config.usage.on_movie_eof.value = self.settings["movieoff"]
-		# save moviesort and movieeof values for using by hotkeys
-#		config.movielist.moviesort.save()
+		# save movieeof values for using by hotkeys
 		config.usage.on_movie_eof.save()
 
 	def loadLocalSettings(self):
@@ -1422,11 +1418,15 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		return needUpdate
 
 	def sortBy(self, newType):
-#GML:1
 		print '[MovieSelection] SORTBY:',newType
 		if newType < MovieList.TRASHSORT_SHOWRECORD:
 			self.settings["moviesort"] = newType
-			self.saveLocalSettings()
+# If we are using per-directory sort methods then set it now,
+# otherwise indicate to MovieList.py to use a temporary sort override.
+			if config.movielist.settings_per_directory.value:
+				self.saveLocalSettings()
+			else:
+				self["list"].temp_sort = newType
 			self.setSortType(newType)
 # Unset specific trash-sorting if other sort chosen while in Trash
 			if MovieList.InTrashFolder:
@@ -1496,19 +1496,33 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		menu = []
 		index = 0
 		used = 0
+# Determine the current sorting method so that it may be highlighted...
+#
 		for x in l_moviesort:
-			if int(x[0]) == int(config.movielist.moviesort.value):
+			if int(x[0]) == self["list"].current_sort:
 				used = index
 			menu.append((_(x[1]), x[0], "%d" % index))
 			index += 1
-#GML:1
 		if MovieList.InTrashFolder:
 			for x in l_trashsort:
 				if x[3] == config.usage.trashsort_deltime.value:
 					used = index
 				menu.append((_(x[1]), x[0], "%d" % index))
 				index += 1
-		self.session.openWithCallback(self.sortbyMenuCallback, ChoiceBox, title=_("Sort list:"), list=menu, selection = used)
+
+# Add a message to remind the user whether this will set a per-directory
+# method or just a temporary override.
+# Done by using the way that ChoiceBox handles a multi-line title:
+# it makes line1 the title and all succeeding lines go into the "text"
+# display.
+		title=_("Sort list:")
+		if config.movielist.settings_per_directory.value:
+			title = title + "\n\n" + _("Set the sort method for this directory")
+		else:
+			title = title + "\n\n" + _("Set a temporary sort method for this directory")
+			if self["list"].current_sort != self["list"].sort_type:
+				title = title + "\n" + _("(You are currently using a temporary sort method)")
+		self.session.openWithCallback(self.sortbyMenuCallback, ChoiceBox, title=title, list=menu, selection = used)
 
 	def getPixmapSortIndex(self, which):
 		index = int(which)
@@ -1516,7 +1530,6 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			index = MovieList.SORT_ALPHANUMERIC
 		elif index == MovieList.SORT_ALPHAREV_DATE_NEWEST_FIRST:
 			index = MovieList.SORT_ALPHANUMERIC_REVERSE
-#GML:1
 		elif (index == MovieList.TRASHSORT_SHOWRECORD) or (index == MovieList.TRASHSORT_SHOWDELETE):
 			index = MovieList.SORT_RECORDED
 		return index - 1

@@ -93,7 +93,7 @@ class Setup(ConfigListScreen, Screen):
 		self.plugin = plugin
 		self.PluginLanguageDomain = PluginLanguageDomain
 		self.menu_path = menu_path
-		
+
 		xmldata = setupdom(self.plugin).getroot()
 		for x in xmldata.findall("setup"):
 			if x.get("key") == setup:
@@ -200,9 +200,9 @@ class Setup(ConfigListScreen, Screen):
 		return self["config"].list.index(item) if item in self["config"].list else 0
 
 	def changedEntry(self):
-		if isinstance(self["config"].getCurrent()[1], ConfigBoolean) or isinstance(self["config"].getCurrent()[1], ConfigSelection):
+		if self["config"].getCurrent() and (isinstance(self["config"].getCurrent()[1], ConfigBoolean) or isinstance(self["config"].getCurrent()[1], ConfigSelection)):
 			self.createSetupList()
- 
+
 	def __onSelectionChanged(self):
 		if self.force_update_list:
 			self["config"].onSelectionChanged.remove(self.__onSelectionChanged)
