@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-05 06:35+0000\n"
-"PO-Revision-Date: 2018-11-05 14:26+0100\n"
+"POT-Creation-Date: 2018-11-08 22:27+0000\n"
+"PO-Revision-Date: 2018-11-09 17:23+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -970,6 +970,9 @@ msgstr "(Alle lezers)"
 
 msgid "(Show only reader:"
 msgstr "(Toon alleen lezer):"
+
+msgid "(You are currently using a temporary sort method)"
+msgstr "(U gebruikt momenteel een tijdelijke sortering)"
 
 msgid "(ZAP as PiP)"
 msgstr "(ZAP als PiP)"
@@ -9538,8 +9541,8 @@ msgstr "Kanaal-ID"
 msgid "Service Name"
 msgstr "Kanaalnaam"
 
-msgid "Service Number and Service Name"
-msgstr "Kanaalnummer en kanaalnaam"
+msgid "Service Number and Picon"
+msgstr "Kanaalnummer en picon"
 
 msgid "Service Number, Picon and Service Name"
 msgstr "Kanaalnummer, picon en kanaalnaam"
@@ -9612,6 +9615,9 @@ msgstr "Stel CI toewijzing in voor de detectie van de beschikbare kanalen."
 
 msgid "Set Framerate for MiniTV"
 msgstr "Stel framerate in voor MiniTV"
+
+msgid "Set a temporary sort method for this directory"
+msgstr "Kies de sortering voor deze map"
 
 msgid "Set as startup service"
 msgstr "Kies kanaal na opstarten"
@@ -9701,6 +9707,9 @@ msgstr "Stel de scroll-snelheid voor het schermpje in; sommige skins gebruiken e
 
 msgid "Set the scrolling speed of text on the front display."
 msgstr "Stel de scrollsnelheid op het schermpje van uw %s %s in."
+
+msgid "Set the sort method for this directory"
+msgstr "Kies de sortering voor deze map"
 
 msgid "Set the time before checking video source for resolution/refresh rate infomation."
 msgstr "Stel de tijd in voordat u de videobron op resolutie/verversingsfrequentie controleert"
