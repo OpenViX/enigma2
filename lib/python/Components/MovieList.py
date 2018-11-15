@@ -455,7 +455,7 @@ class MovieList(GUIComponent):
 						res.append(MultiContentEntryProgress(pos=(colX,self.pbarShift), size=(iconSize, self.pbarHeight), percent=data.part, borderWidth=2, foreColor=data.partcol, foreColorSelected=None, backColor=None, backColorSelected=None))
 					elif hasattr(data, 'icon') and data.icon is not None:
 						res.append(MultiContentEntryPixmapAlphaBlend(pos=(colX,self.pbarShift), size=(iconSize, self.pbarHeight), png=data.icon))
-			return iconSize+space
+			return iconSize
 
 		serviceref = info.getInfoString(serviceref, iServiceInformation.sServiceref)
 		displayPicon = None
@@ -469,9 +469,9 @@ class MovieList(GUIComponent):
 					pos = (colX, 0), size = (piconWidth, ih),
 					png = displayPicon,
 					backcolor = None, backcolor_sel = None, flags = BT_SCALE | BT_KEEP_ASPECT_RATIO))
-			colX += piconWidth
+			colX += piconWidth + space
 		else:
-			colX += addProgress()
+			colX += addProgress() + space
 
 		# Recording name
 		res.append(MultiContentEntryText(pos=(colX, 0), size=(width-iconSize-space-durationWidth-dateWidth-r-colX, ih), font = 0, flags = RT_HALIGN_LEFT|RT_VALIGN_CENTER, text = data.txt))
