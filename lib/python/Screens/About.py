@@ -179,6 +179,22 @@ class About(Screen):
 
 		self["AboutScrollLabel"] = ScrollLabel(AboutText)
 
+	def dualBoot(self):
+		rootfs2 = False
+		kernel2 = False
+		f = open("/proc/mtd")
+		self.dualbootL = f.readlines()
+		for x in self.dualbootL:
+			if 'rootfs2' in x:
+				rootfs2 = True
+			if 'kernel2' in x:
+				kernel2 = True
+		f.close()
+		if rootfs2 and kernel2:
+			return True
+		else:
+			return False
+
 	def showTranslationInfo(self):
 		self.session.open(TranslationInfo, self.menu_path)
 
