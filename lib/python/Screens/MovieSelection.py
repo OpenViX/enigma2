@@ -753,6 +753,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 				'copy': _("Copy"),
 				'reset': _("Reset"),
 				'tags': _("Tags"),
+				"createdir": _("Create directory"),
 				'addbookmark': _("Add bookmark"),
 				'bookmarks': _("Location"),
 				'rename': _("Rename"),
@@ -1816,9 +1817,17 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 	def can_createdir(self, item):
 		return True
 	def do_createdir(self):
+		dirname = ""
+		item = self.getCurrentSelection()
+		if item is not None and not isFolder(item):
+			info = item[1]
+			dirname = info.getName(item[0])
+			full_name = os.path.split(item[0].getPath())[1]
+			if full_name == dirname: # split extensions for files without metafile
+				dirname, self.extension = os.path.splitext(name)
 		self.session.openWithCallback(self.createDirCallback, VirtualKeyBoard,
 			title = _("Please enter the name of the new directory"),
-			text = "")
+			text = dirname)
 	def createDirCallback(self, name):
 		if not name:
 			return
