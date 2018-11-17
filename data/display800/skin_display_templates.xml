@@ -311,7 +311,7 @@
 		<widget source="parent.Service" render="Label" position="40,400" size="320,70" font="FdLcD;60" foregroundColor="white" halign="left" valign="center">
 			<convert type="MovieInfo">FileSize</convert>
 		</widget>
-		<widget source="Service" render="Label" position="40,480" size="320,70" font="FdLcD;60" foregroundColor="white" halign="left" valign="center">
+		<widget source="parent.Service" render="Label" position="40,480" size="320,70" font="FdLcD;60" foregroundColor="white" halign="left" valign="center">
 			<convert type="ServiceTime">Duration</convert>
 			<convert type="ClockToText">AsLength</convert>
 		</widget>
