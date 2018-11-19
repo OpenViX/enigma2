@@ -1,5 +1,6 @@
 from Components.Converter.Converter import Converter
 from enigma import iServiceInformation, iPlayableService
+from Screens.InfoBarGenerics import getPossibleSubservicesForCurrentChannel, getActiveSubservicesForCurrentChannel
 from Components.Element import cached
 from Tools.Transponder import ConvertToHumanReadable
 
@@ -176,8 +177,13 @@ class ServiceInfo(Converter, object):
 		elif self.type == self.IS_NOT_WIDESCREEN:
 			return video_aspect not in WIDESCREEN
 		elif self.type == self.SUBSERVICES_AVAILABLE:
-			subservices = service.subServices()
-			return bool(subservices) and subservices.getNumberOfSubservices() > 0
+			refstr = ':'.join(info.getInfoString(iServiceInformation.sServiceref).split(':')[:11])
+			possibleSubservices = getPossibleSubservicesForCurrentChannel(refstr)
+			if possibleSubservices:
+				activeSubservice = getActiveSubservicesForCurrentChannel(possibleSubservices, refstr)
+				if activeSubservice and len(activeSubservice) > 1:
+					return True
+			return False
 		elif self.type == self.HAS_HBBTV:
 			return info.getInfoString(iServiceInformation.sHBBTVUrl) != ""
 		elif self.type == self.AUDIOTRACKS_AVAILABLE:
