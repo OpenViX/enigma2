@@ -251,7 +251,11 @@ void gFBDC::setGamma(int g)
 
 void gFBDC::setResolution(int xres, int yres, int bpp)
 {
-	if (m_pixmap && (surface.x == xres) && (surface.y == yres) && (surface.bpp == bpp))
+	if (m_pixmap && (surface.x == xres) && (surface.y == yres) && (surface.bpp == bpp)
+	#if defined(CONFIG_HISILICON_FB)
+		&& islocked()==0
+	#endif
+		)
 		return;
 
 	if (gAccel::getInstance())
