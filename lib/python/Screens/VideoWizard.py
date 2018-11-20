@@ -1,4 +1,4 @@
-from boxbranding import getBoxType, getMachineName
+from boxbranding import getBoxType, getMachineName, getHaveRCA, getHaveDVI, getHaveSCART, getHaveAVJACK
 from Screens.Wizard import WizardSummary
 from Screens.WizardLanguage import WizardLanguage
 from Screens.Rc import Rc
@@ -14,12 +14,11 @@ config.misc.showtestcard = ConfigBoolean(default = False)
 
 boxtype = getBoxType()
 
-has_rca = False
-has_dvi = False
-if boxtype == 'gbquad' or boxtype == 'gbquadplus' or boxtype == 'et5x00' or boxtype == 'et6000' or boxtype == 'e3hd' or boxtype == 'odinm6' or getMachineName() == 'AX-Odin' or boxtype == 'ebox7358' or boxtype == 'eboxlumi' or boxtype == 'tmnano' or boxtype == 'ultra' or boxtype == "me" or boxtype == "minime" or boxtype == 'optimussos1' or boxtype == 'optimussos2' or boxtype == 'gb800seplus' or boxtype == 'gb800ueplus' or boxtype == 'ini-1000ru' or boxtype == 'ini-1000sv' or boxtype == 'ixussone' or boxtype == 'ixusszero' or boxtype == 'enfinity' or boxtype == 'force1':	
-	has_rca = True
-if boxtype == 'dm8000' or boxtype == 'dm800':
-	has_dvi = True
+has_rca = getHaveRCA() in ('True',)
+has_dvi = getHaveDVI() in ('True',)
+has_jack = getHaveAVJACK() in ('True',)
+has_scart = getHaveSCART() in ('True',)
+
 
 class VideoWizardSummary(WizardSummary):
 	def __init__(self, session, parent):
@@ -89,8 +88,12 @@ class VideoWizard(WizardLanguage, Rc):
 				descr = port
 				if descr == 'HDMI' and has_dvi:
 					descr = 'DVI'
-				elif descr == 'Scart' and has_rca:
-					descr = 'RCA'					
+				if descr == 'RCA' and has_rca:
+					descr = 'RCA'
+				if descr == 'RCA' and has_jack:
+					descr = 'JACK'
+				if descr == 'Scart' and has_rca:
+					descr = 'RCA'
 				if port != "DVI-PC":
 					list.append((descr,port))
 		list.sort(key = lambda x: x[0])
@@ -111,7 +114,11 @@ class VideoWizard(WizardLanguage, Rc):
 			picname = self.selection
 			if picname == 'HDMI' and has_dvi:
 				picname = "DVI"
-			elif picname == 'Scart' and has_rca:
+			if picname == 'RCA' and has_rca:
+				picname = "RCA"
+			if picname == 'RCA' and has_jack:
+				picname = "JACK"
+			if picname == 'Scart' and has_rca:
 				picname = "RCA"	
 			self["portpic"].instance.setPixmapFromFile(resolveFilename(SCOPE_ACTIVE_SKIN, "icons/" + picname + ".png"))
 

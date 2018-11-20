@@ -127,7 +127,8 @@ terrestrial_autoscan_nimtype = {
 'SSH108' : 'ssh108_t2_scan',
 'TT3L10' : 'tt3l10_t2_scan',
 'TURBO' : 'vuplus_turbo_t',
-'TT2L08' : 'tt2l08_t2_scan'
+'TT2L08' : 'tt2l08_t2_scan',
+'BCM3466' : 'bcm3466'
 }
 
 def GetDeviceId(filter, nim_idx):
@@ -257,28 +258,22 @@ class CableTransponderSearchSupport:
 
 			global cable_autoscan_nimtype
 			try:
-#				From PLI Merge
-#				nim_name = nimmanager.getNimName(nim_idx)
-#				if nim_name is not None and nim_name != "":
-#					device_id = ""
-#					nim_name = nim_name.split(' ')[-1][4:-1]
-#					if nim_name == 'TT3L10':
-#						try:
-#							device_id = GetDeviceId('TT3L10', nim_idx)
-#							device_id = "--device=%s" % (device_id)
-#						except Exception, err:
-#							print "GetCommand ->", err
-#							device_id = "--device=0"
-#					command = "%s %s" % (cable_autoscan_nimtype[nim_name], device_id)
-#					return command
-
-				sName = _nimSocket[str(nimIdx)]
-				sType = _supportNimType[sName]
-				return sType
-#			except Exception, err:
-#				print "GetCommand ->", err
-			except: pass
-			return 'tda1002x'
+				nim_name = nimmanager.getNimName(nim_idx)
+				if nim_name is not None and nim_name != "":
+					device_id = ""
+					nim_name = nim_name.split(' ')[-1][4:-1]
+					if nim_name in ("TT3L10", "BCM3466"):
+						try:
+							device_id = GetDeviceId(nim_name, nim_idx)
+							device_id = "--device=%s" % (device_id)
+						except Exception, err:
+							print "GetCommand ->", err
+							device_id = "--device=0"
+					command = "%s %s" % (cable_autoscan_nimtype[nim_name], device_id)
+					return command
+			except Exception, err:
+				print "GetCommand ->", err
+			return "tda1002x"
 
 		if not self.tryGetRawFrontend(nim_idx):
 			self.session.nav.stopService()

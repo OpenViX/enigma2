@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-03 11:34+0100\n"
-"PO-Revision-Date: 2018-08-03 21:23+0200\n"
+"POT-Creation-Date: 2018-11-05 06:12+0000\n"
+"PO-Revision-Date: 2018-11-05 14:48+0100\n"
 "Last-Translator: Ralf Biedermann <ralf.biedermann@rbsoft.de>\n"
 "Language-Team: AndyBlacburn, j-ot&Trial\n"
 "Language: de\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
-"X-Generator: Poedit 2.0.6\n"
+"X-Generator: Poedit 2.1.1\n"
 "X-Poedit-SourceCharset: iso-8859-15\n"
 
 msgid ""
@@ -181,10 +181,6 @@ msgstr ""
 
 msgid " - video1"
 msgstr ""
-
-#, python-format
-msgid " Stream %s"
-msgstr " Stream %s"
 
 msgid " and"
 msgstr " und"
@@ -1954,6 +1950,9 @@ msgstr "Sprache der Audiospur (%s)"
 msgid "Australia"
 msgstr "Australien"
 
+msgid "Australian"
+msgstr "Australisch"
+
 msgid "Austria"
 msgstr "Österreich"
 
@@ -2056,6 +2055,9 @@ msgstr "AutoTimer Überblick"
 
 msgid "Available format variables"
 msgstr "Verfügbare Formatierungsvariablen"
+
+msgid "Available locales are:"
+msgstr "Vorhandene Sprachen sind:"
 
 msgid "Available shares:"
 msgstr "Vorhandene Freigaben:"
@@ -2163,6 +2165,9 @@ msgstr "Verhalten beim Filmende"
 msgid "Belarus"
 msgstr "Belarus"
 
+msgid "Belgian"
+msgstr "Belgisch"
+
 msgid "Belgium"
 msgstr "Belgium"
 
@@ -2192,6 +2197,12 @@ msgstr "Schwarzes Bild"
 
 msgid "Black screen till locked"
 msgstr "Schwarzes Bild bis Abschluss"
+
+msgid "Blinking REC"
+msgstr "Blinkendes Aufnahme Symbol"
+
+msgid "Blinking REC Symbol"
+msgstr "Blinkendes Aufnahme Symbol"
 
 msgid "Block noise reduction"
 msgstr "Block Noise Reduzierung"
@@ -2439,6 +2450,9 @@ msgstr "Canada"
 msgid "Cancel"
 msgstr "Abbrechen"
 
+msgid "Cancel any text changes and exit"
+msgstr "Textänderungen verwerfen und virtuelle Tastatur verlassen"
+
 msgid "Cancel save timeshift as movie"
 msgstr "Film speichern abbrechen"
 
@@ -2580,6 +2594,9 @@ msgstr "Sender:"
 msgid "ChannelEPG"
 msgstr "Kanal EPG"
 
+msgid "Channelname"
+msgstr "Kanalname"
+
 msgid "Channels"
 msgstr "Kanäle"
 
@@ -2647,8 +2664,12 @@ msgid "Chipset:\t%s\n"
 msgstr "Chipsatz:\tBCM%s\n"
 
 #, python-format
-msgid "Chipset:\tBCM%s\n"
-msgstr "Chipsatz:\tBCM%s\n"
+msgid "Chipset:\tBroadcom %s\n"
+msgstr "Chipsatz:\tBroadCom%s\n"
+
+#, python-format
+msgid "Chipset:\tHiSilicon %s\n"
+msgstr "Chipsatz:\tHiSilicon%s\n"
 
 #, python-format
 msgid "Chipset: BCM%s"
@@ -3304,6 +3325,9 @@ msgstr "Land für Genreinformationen"
 msgid "Country for EPG event rating information"
 msgstr "Land für EPG Altersangaben"
 
+msgid "Cover dashed flickering line for this service"
+msgstr "Verstecke blöde weiße Linie am oberen Bildrand für diesen Sender"
+
 msgid "Crash Logs"
 msgstr "Crash Logs"
 
@@ -3738,10 +3762,10 @@ msgstr "Pause zwischen Switch- und Motor-Kommando"
 msgid "Delay for external subtitles"
 msgstr "Verzögerung für externe Untertitel"
 
-msgid "Delay in miliseconds after finish scrolling text on display."
+msgid "Delay in milliseconds after finish scrolling text on display."
 msgstr "Verzögerung in Millisekunden nachdem Text im Display aufgehört hat zu scrollen."
 
-msgid "Delay in miliseconds before start of scrolling text on display."
+msgid "Delay in milliseconds before start of scrolling text on display."
 msgstr "Verzögerung in Millisekunden bevor Text im Display anfängt zu scrollen."
 
 msgid "Delay time"
@@ -3777,6 +3801,12 @@ msgstr "Wiedergabelisteneintrag löschen"
 
 msgid "Delete saved playlist"
 msgstr "Gespeicherte Wiedergabeliste löschen"
+
+msgid "Delete the character to the left of text buffer cursor"
+msgstr "Lösche das Zeichen links vom Cursor"
+
+msgid "Delete the character under the text buffer cursor"
+msgstr "Lösche das Zeichen unter dem Cursor"
 
 msgid "Delete timer"
 msgstr "Timer löschen"
@@ -4217,6 +4247,9 @@ msgstr "Fehler: Antwort 403 Zugriff verboten"
 msgid "ERROR: Response 404 Not Found"
 msgstr "Fehler: Antwort 404 nicht gefunden"
 
+msgid "ET8500 Multiboot: Installed\n"
+msgstr "ET8500 Multiboot: installiert\n"
+
 msgid "East"
 msgstr "Ost"
 
@@ -4328,6 +4361,9 @@ msgstr "Automatische Schnellsuche aktivieren"
 msgid "Enable auto fast scan for %s"
 msgstr "Automatische Schnellsuche für %s aktivieren"
 
+msgid "Enable blinking rec symbol on the LCD Display"
+msgstr "Aktiviere blinkendes Aufnahme Symbol auf LCD Anzeige"
+
 msgid "Enable bouquet edit"
 msgstr "Favoriten bearbeiten"
 
@@ -4415,6 +4451,9 @@ msgstr "Englisch"
 msgid "Enigma2 skin selector"
 msgstr "Enigma2 Skinauswahl"
 
+msgid "Enter"
+msgstr "Eingabe"
+
 msgid "Enter PIN"
 msgstr "PIN-Code ändern"
 
@@ -4432,6 +4471,9 @@ msgstr "Dauerhaften PIN-Code eingeben"
 
 msgid "Enter pin code"
 msgstr "PIN-Code eingeben"
+
+msgid "Enter text and exit"
+msgstr "Text eingeben und beenden"
 
 msgid "Enter the FTP password of the host receiver (normally just leave empty)."
 msgstr "Gebe FTP Passowrt für den Notfallreceiver an (normalerweise leer lassen)."
@@ -5030,7 +5072,7 @@ msgstr "Vollbild"
 msgid "Full transparency"
 msgstr "Volle Transparenz"
 
-msgid "Fulview resulution"
+msgid "Full view resolution"
 msgstr "Vollbild Auflösung"
 
 msgid "GB"
@@ -5146,9 +5188,6 @@ msgstr "In der Liste rauf gehen"
 msgid "Gold"
 msgstr ""
 
-msgid "Gold PLS Code"
-msgstr "Goldener PLS Code"
-
 msgid "Goto"
 msgstr "Gehe zu"
 
@@ -5190,6 +5229,9 @@ msgstr "Griechenland"
 
 msgid "Greek"
 msgstr "Griechisch"
+
+msgid "Greek (Modern)"
+msgstr ""
 
 msgid "Green"
 msgstr "Grün"
@@ -5281,6 +5323,9 @@ msgstr "HDMIin"
 msgid "HDR, 12bit 4:2:0/4:2:2, no PIP"
 msgstr "HDR, 12bit 4:2:0/4:2:2, kein PIP"
 
+msgid "HELP"
+msgstr ""
+
 msgid "HH:mm"
 msgstr ""
 
@@ -5331,9 +5376,6 @@ msgstr "Verberge CI Nachrichten"
 
 msgid "Hide any zap error messages."
 msgstr "Fehlermeldungen beim Umschalten unterdrücken."
-
-msgid "Hide dotted line on the top for this service"
-msgstr "Verstecke blöde weiße Linie am oberen Bildrand für diesen Sender"
 
 msgid "Hide error messages from the Common Interface module."
 msgstr "Unterdrücke Fehlermeldung von einem Common Interface Modul."
@@ -5460,6 +5502,12 @@ msgstr "IMDB Suche nach laufenden Programm"
 
 msgid "IMDb search"
 msgstr "IMDb Suche"
+
+msgid "INFO"
+msgstr ""
+
+msgid "INS"
+msgstr ""
 
 msgid "IP"
 msgstr "IP"
@@ -5620,6 +5668,9 @@ msgstr "Um die Timeraufnahme durchführen zu können, wurde auf den aufzunehmend
 
 msgid "In progress"
 msgstr "In Bearbeitung"
+
+msgid "In the Standby Record on the LCD Display"
+msgstr "Aufnahme Symbol auf LCD Anzeige in Bereitschaft"
 
 msgid "Inadyn"
 msgstr "Inadyn"
@@ -5886,6 +5937,9 @@ msgstr "Ipkg"
 msgid "Iran (Islamic Republic of)"
 msgstr "Iran (Islamic Republic of)"
 
+msgid "Iran, Islamic Republic"
+msgstr "Iran (Islamische Republic von"
+
 msgid "Iraq"
 msgstr "Iraq"
 
@@ -5999,6 +6053,9 @@ msgstr "Kernel: %s"
 
 msgid "Keyboard"
 msgstr "Tastatur"
+
+msgid "Keyboard data entry"
+msgstr "Tastatureingabe"
 
 msgid "Keyboard map"
 msgstr "Tastaturlayout"
@@ -6254,6 +6311,9 @@ msgstr ""
 "Wenn eine \"Nicht verbunden\"-Meldung erscheint:\n"
 "- Überprüfe ob ein Netzwerkkabel angeschlossen ist.\n"
 "- Stelle sicher, dass das Netzwerkkabel nicht defekt ist."
+
+msgid "Locale"
+msgstr "Sprache"
 
 msgid "Location"
 msgstr "Zielverzeichnis"
@@ -6648,6 +6708,30 @@ msgstr "Zum nächsten Eintrag gehen"
 
 msgid "Move east"
 msgstr "Drehen nach Osten"
+
+msgid "Move the text buffer cursor left"
+msgstr "Bewege den Cursor links"
+
+msgid "Move the text buffer cursor right"
+msgstr "Bewege den Cursor rechts"
+
+msgid "Move the text buffer cursor to the first character"
+msgstr "Bewege den Cursor zum Anfang"
+
+msgid "Move the text buffer cursor to the last character"
+msgstr "Bewege den Cursor zum Ende"
+
+msgid "Move the virtual keyboard cursor down"
+msgstr "Bewege virtuelle Tastatur cursor runter"
+
+msgid "Move the virtual keyboard cursor left"
+msgstr "Bewege virtuelle Tastatur cursor links"
+
+msgid "Move the virtual keyboard cursor right"
+msgstr "Bewege virtuelle Tastatur cursor rechts"
+
+msgid "Move the virtual keyboard cursor up"
+msgstr "Bewege virtuelle Tastatur cursor hoch"
 
 msgid "Move to home of list"
 msgstr "An den Anfang"
@@ -7220,6 +7304,9 @@ msgstr "Anzahl von Zeilen"
 msgid "Number of rows to display"
 msgstr "Anzahl von Zeilen"
 
+msgid "Number or SMS style data entry"
+msgstr "Zahlen- oder SMS-Eingabemethode"
+
 msgid "OK"
 msgstr "OK"
 
@@ -7252,6 +7339,9 @@ msgstr "OScam Info"
 
 msgid "OScam info"
 msgstr "OScam Info"
+
+msgid "OVR"
+msgstr ""
 
 msgid "Off"
 msgstr "Aus"
@@ -7435,6 +7525,9 @@ msgstr ""
 
 msgid "PLS Mode"
 msgstr "PLS Modus"
+
+msgid "PLS Mode & PLS Code"
+msgstr ""
 
 msgid "PMT PID"
 msgstr "PMT PID"
@@ -8301,6 +8394,18 @@ msgstr "Erlaube Mediaplayer mit Exit verlassen"
 msgid "RAM"
 msgstr "RAM"
 
+msgid "REC"
+msgstr ""
+
+msgid "REC Symbol"
+msgstr "Aufnahme Symbol"
+
+msgid "REC Symbol in Standby"
+msgstr "Aufnahme Symbol in Bereitschaft"
+
+msgid "REC Symbol in use"
+msgstr "Aufnahme Symbol in Benutzung"
+
 msgid "RF output settings"
 msgstr "RF-Ausgang Einstellungen"
 
@@ -8515,9 +8620,6 @@ msgstr "Fernbedienungstyp"
 
 msgid "Remove"
 msgstr "Entfernen"
-
-msgid "Remove 'hide dotted line on the top for this service'"
-msgstr "Entferne 'Verstecke blöde weiße Linie am oberen Bildrand für diesen Sender'"
 
 msgid "Remove Confirmation"
 msgstr "Bestätige Löschvorgang"
@@ -8826,6 +8928,9 @@ msgstr ""
 
 msgid "SCR Unicable"
 msgstr "SCR Unicable"
+
+msgid "SDcard is not initialised for multiboot - Exit and use ViX MultiBoot Manager to initialise"
+msgstr "SD-Karte ist nicht für Multiboot initialisiert. Benutze Multiboot Verwaltung zur Initialisierung."
 
 msgid "SINGLE LAYER DVD"
 msgstr "SINGLE LAYER DVD"
@@ -9221,6 +9326,9 @@ msgstr "Wähle Eingabegerät."
 msgid "Select interface"
 msgstr "Netzwerkkarte auswählen"
 
+msgid "Select locale"
+msgstr "Wähle Sprache"
+
 msgid "Select location"
 msgstr "Wähle Verzeichnis"
 
@@ -9256,6 +9364,9 @@ msgstr "Wähle Zielverzeichnisse"
 
 msgid "Select the Unicable channel to be assigned to this tuner. This is a unique value. Be certain that no other device connected to this same Unicable system is allocated to the same Unicable channel."
 msgstr "Wähle den Unicable Kanal der diesem Tuner zugeordnet werden soll. Das ist eine eindeutige Nummer. Stelle sicher das kein anderes Gerät in deinem System den selben Kanal zugerodnet wurde."
+
+msgid "Select the character or action under the virtual keyboard cursor"
+msgstr "Wähle Zeichen oder Aktion beim Cursor der virtuellen Tastatur"
 
 msgid "Select the desired function and click on \"OK\" to assign it. Use \"CH+/-\" to toggle between the lists. Select an assigned function and click on \"OK\" to de-assign it. Use \"Next/Previous\" to change the order of the assigned functions."
 msgstr "Gewünschte Funktion auswählen und \"OK\" drücken um sie zu belegen. Benutze  \"CH+/-\" um zwischen den Listen umzuschalten. Wähle zugeordnete Funktion aus und drücke  \"OK\" um die Belegung zu entfernen."
@@ -9304,6 +9415,12 @@ msgstr "Wähle den Typ von LNB/Gerät das benutzt wird (normalerweise 'Universal
 
 msgid "Select the type of Unicable device you are using."
 msgstr "Wähle den Unicable Type den Du benutzt."
+
+msgid "Select the virtual keyboard locale from a menu"
+msgstr "Wähle Sprache von der virtuellen Tastatur"
+
+msgid "Select the virtual keyboard shifted character set"
+msgstr "Wähle den Zeichensatz mit SHift bei der virtuellen Tastatur"
 
 msgid "Select upgrade source"
 msgstr "Wähle eine Update-Quelle"
@@ -9844,6 +9961,9 @@ msgstr "Zeige Hilfe"
 msgid "Show icon for new/unseen items"
 msgstr "Zeige Icon für neue/ungesehene Einträge"
 
+msgid "Show in Standby"
+msgstr "Zeige in Bereitschaft"
+
 msgid "Show in extensions list ?"
 msgstr "Zeige in Erweiterungen?"
 
@@ -10336,6 +10456,12 @@ msgstr "Spanisch"
 
 msgid "Special"
 msgstr "Spezial"
+
+msgid "Special 1"
+msgstr "Spezial 1"
+
+msgid "Special 2"
+msgstr "Spezial 2"
 
 msgid "Speed:"
 msgstr "Geschwindigkeit:"
@@ -11115,6 +11241,9 @@ msgstr "Diese Option erlaubt dir zu wählen ob die verstrichene Zeit mit + oder 
 msgid "This option allows you choose how to display remaining time, or elapsed time, or both."
 msgstr "Diese Option erlaubt dir zu wählen ob verbleibende/verstrichene Zeit oder beides bei Live-TV angezeigt wird."
 
+msgid "This option allows you choose how to display the Time or nothing in Standby"
+msgstr "Diese Option erlaubt dir zu wählen ob die Zeit oder nichts in Bereitschaft angezeigt wird."
+
 msgid "This option allows you choose how to display the remaining/elapsed time for live TV."
 msgstr "Diese Option erlaubt dir zu wählen ob verbleibende/verstrichene Zeit oder beides für Transponder angezeigt wird."
 
@@ -11488,6 +11617,9 @@ msgstr "Aspect/Ratio umschalten..."
 msgid "Toggle between bouquet/epg lists"
 msgstr "Wechseln zwischen Favoriten-/EPG-Liste"
 
+msgid "Toggle new text inserts before or overwrites existing text"
+msgstr "Schalte um zwischen neuen Text vor bestehendem Text über überschreiben"
+
 msgid "Toggle picture In graphics"
 msgstr "Bild in Grafik umschalten"
 
@@ -11723,6 +11855,9 @@ msgstr "Ukrainisch"
 msgid "Unable to change password"
 msgstr "Passwort konnte nicht geändert werden"
 
+msgid "Uncover dashed flickering line for this service"
+msgstr "Zeige blöde weiße Linie am oberen Bildrand für diesen Sender"
+
 msgid "Undefined"
 msgstr "Undefiniert"
 
@@ -11741,6 +11876,15 @@ msgstr "Unverschlüsselt"
 msgid "Unhide parental control services"
 msgstr "Geschützte Sender sichtbar machen"
 
+msgid "Unicable delay after change voltage before switch command"
+msgstr "Unicable Pause nach Spannungsänderung vor Switch-Kommando"
+
+msgid "Unicable delay after enable voltage before switch command"
+msgstr "Unicable Pause nachdem Spannung anliegt bevor Switch-Kommando"
+
+msgid "Unicable delay after last diseqc command"
+msgstr "Unicable Pause nach letztem Diseqc Kommando"
+
 msgid "Uninstall"
 msgstr "Deinstallieren"
 
@@ -11749,6 +11893,9 @@ msgstr "United Arab Emirates"
 
 msgid "United Kingdom"
 msgstr "United Kingdom"
+
+msgid "United States"
+msgstr "Vereinigte Staaten"
 
 msgid "United States Minor Outlying Islands"
 msgstr "United States Minor Outlying Islands"
@@ -12052,6 +12199,9 @@ msgstr ""
 msgid "Vanuatu"
 msgstr "Vanuatu"
 
+msgid "Various"
+msgstr "Verschiedenes"
+
 msgid "Venezuela (Bolivarian Republic of)"
 msgstr "Venezuela (Bolivarian Republic of)"
 
@@ -12203,6 +12353,15 @@ msgstr "Virgin Islands (British)"
 
 msgid "Virgin Islands (U.S.)"
 msgstr "Virgin Islands (U.S.)"
+
+msgid "Virtual KeyBoard Functions"
+msgstr "Virtuelle Tastatur Funktionen"
+
+msgid "Virtual KeyBoard Text:"
+msgstr "Virtuelle Tastatur Text:"
+
+msgid "Virtual keyboard"
+msgstr "Virtuelle Tastatur"
 
 msgid "Virtuosso Image Xtreme"
 msgstr "Virtuosso Image Xtreme"
@@ -13638,6 +13797,9 @@ msgstr "Signal"
 msgid "long"
 msgstr "lang"
 
+msgid "longest"
+msgstr "längstes"
+
 msgid "loopthrough to"
 msgstr "Verbunden mit"
 
@@ -13966,6 +14128,9 @@ msgstr "ernst/klassisch/religiös/hitorisch Film/Drama"
 msgid "share:"
 msgstr "Freigabe:"
 
+msgid "shortest"
+msgstr "kürzestes"
+
 msgid "show DVD main menu"
 msgstr "Zeige DVD Player im Hauptmenü"
 
@@ -14042,14 +14207,6 @@ msgid "skip forward (enter time)"
 msgstr "Vorwärts springen (Zeit eingeben)"
 
 #, python-format
-msgid "slot%s - %s "
-msgstr "Slot%s - %s"
-
-#, python-format
-msgid "slot%s - %s (current image)"
-msgstr "Slot%s - %s (aktuelles Image)"
-
-#, python-format
 msgid "slot%s - %s mode 1"
 msgstr "Slot%s - %s Mode 1"
 
@@ -14064,6 +14221,14 @@ msgstr "Slot%s - %s Mode 12"
 #, python-format
 msgid "slot%s - %s mode 12 (current image)"
 msgstr "Slot%s - %s Mode 12 (aktuelles Image)"
+
+#, python-format
+msgid "slot%s -%s - %s (current image)"
+msgstr "Slot%s - %s - %s (aktuelles Image)"
+
+#, python-format
+msgid "slot%s -%s- %s "
+msgstr "Slot%s - %s - %s"
 
 msgid "slow"
 msgstr "langsam"
@@ -14342,6 +14507,9 @@ msgstr "umgeschaltet"
 #~ msgid "  Red key : Show/Hide channel name"
 #~ msgstr "Rote Taste: Zeige/verstecke Kanalnamen"
 
+#~ msgid " Stream %s"
+#~ msgstr " Stream %s"
+
 #~ msgid "%02d:%02d"
 #~ msgstr "%02d:%02d"
 
@@ -14453,6 +14621,9 @@ msgstr "umgeschaltet"
 
 #~ msgid "ChannelEPG settings"
 #~ msgstr "Sender-EPG Einstellungen"
+
+#~ msgid "Chipset:\tBCM%s\n"
+#~ msgstr "Chipsatz:\tBCM%s\n"
 
 #~ msgid "Choice where to put \"%s\""
 #~ msgstr "Wähle wo '%s' hin soll"
@@ -15009,6 +15180,9 @@ msgstr "umgeschaltet"
 
 #~ msgid "Reception Settings"
 #~ msgstr "Empfangseinstellungen"
+
+#~ msgid "Remove 'hide dotted line on the top for this service'"
+#~ msgstr "Entferne 'Verstecke blöde weiße Linie am oberen Bildrand für diesen Sender'"
 
 #~ msgid "Remove Quad Channel Entry"
 #~ msgstr "Entferne Quad Kanal Eintrag"

@@ -3,7 +3,7 @@ from Tools.Directories import fileExists, fileCheck, pathExists, fileHas
 from Tools.HardwareInfo import HardwareInfo
 from Components.About import getChipSetString
 
-from boxbranding import getMachineBuild, getBoxType, getBrandOEM, getDisplayType
+from boxbranding import getMachineBuild, getBoxType, getBrandOEM, getDisplayType, getHaveRCA, getHaveYUV, getHaveSCART, getHaveAVJACK, getMachineMtdRoot
 
 SystemInfo = { }
 
@@ -80,6 +80,7 @@ SystemInfo["canMultiBoot"] = getMachineBuild() in ('hd51', 'h7', 'vs1500') and (
 SystemInfo["HasHiSi"] = pathExists('/proc/hisi')
 SystemInfo["canMode12"] = getMachineBuild() in ('hd51') and ('440M@328M brcm_cma=192M@768M', '520M@248M brcm_cma=200M@768M')
 SystemInfo["HasMMC"] = fileHas("/proc/cmdline", "root=/dev/mmcblk") or SystemInfo["canMultiBoot"] and fileHas("/proc/cmdline", "root=/dev/sda")
+SystemInfo["HasSDmmc"] = SystemInfo["canMultiBoot"] and "sd" in SystemInfo["canMultiBoot"][2] and "mmcblk" in getMachineMtdRoot() 
 SystemInfo["supportPcmMultichannel"] = fileCheck("/proc/stb/audio/multichannel_pcm")
 SystemInfo["CanAACTranscode"] = fileExists("/proc/stb/audio/aac_transcode_choices") and fileCheck("/proc/stb/audio/aac_transcode")
 SystemInfo["CanDownmixAC3"] = fileHas("/proc/stb/audio/ac3_choices", "downmix")
@@ -95,120 +96,25 @@ SystemInfo["havehdmicolordepth"] = fileCheck("/proc/stb/video/hdmi_colordepth")
 SystemInfo["Canedidchecking"] = fileCheck("/proc/stb/hdmi/bypass_edid_checking")
 SystemInfo["haveboxmode"] = fileExists("/proc/stb/info/boxmode")
 SystemInfo["HasScaler_sharpness"] = pathExists("/proc/stb/vmpeg/0/pep_scaler_sharpness")
+# Machines that do have SCART component video (red, green and blue RCA sockets).
+SystemInfo["Scart-YPbPr"] = getBrandOEM() == "vuplus" and not "4k" in getBoxType()
 # Machines that do not have component video (red, green and blue RCA sockets).
-SystemInfo["no_YPbPr"] = getBoxType() in (
-		'dm500hd',
-		'dm500hdv2',
-		'dm800',
-		'e3hd',
-		'ebox7358',
-		'eboxlumi',
-		'ebox5100',
-		'enfinity',
-		'et4x00',
-		'formuler4turbo',
-		'gbquad4k',
-		'gbue4k',
-		'gbx1',
-		'gbx2',		
-		'gbx3',
-		'gbx3h',
-		'iqonios300hd',
-		'ixusszero',
-		'mbmicro',
-		'mbmicrov2',
-		'mbtwinplus',
-		'mutant11',
-		'mutant51',
-		'mutant500c',
-		'mutant1200',
-		'mutant1500',
-		'odimm7',
-		'optimussos1',
-		'osmega',
-		'osmini',
-		'osminiplus',
-		'osnino',
-		'osninoplus',		
-		'sf128',
-		'sf138',
-		'sf4008',
-		'sf8008',		
-		'tm2t',
-		'tmnano',
-		'tmnano2super',
-		'tmnano3t',
-		'tmnanose',
-		'tmnanosecombo',
-		'tmnanoseplus',
-		'tmnanosem2',
-		'tmnanosem2plus',
-		'tmnanom3',
-		'tmsingle',
-		'tmtwin4k',
-		'uniboxhd1',
-		'vusolo2',
-		'vuzero4k',
-		'vusolo4k',
-		'vuuno4k',
-		'vuuno4kse',
-		'vuultimo4k',
-		'xp1000'
-	)
+SystemInfo["no_YPbPr"] = getHaveYUV() in ('False',)
 # Machines that have composite video (yellow RCA socket) but do not have Scart.
-SystemInfo["yellow_RCA_no_scart"] = getBoxType() in (
-		'formuler1',
-		'formuler1tc',
-		'formuler4turbo',
-		'gb800ueplus',
-		'gbultraue',
-		'mbmicro',
-		'mbmicrov2',
-		'mbtwinplus',
-		'mutant11',
-		'mutant500c',
-		'osmega',
-		'osmini',
-		'osminiplus',
-		'sf138',
-		'sf8008',		
-		'tmnano',
-		'tmnanose',
-		'tmnanosecombo',
-		'tmnanosem2',
-		'tmnanoseplus',
-		'tmnanosem2plus',
-		'tmnano2super',
-		'tmnano3t',
-		'xpeedlx3'
-	)
+SystemInfo["yellow_RCA_no_scart"] = getHaveSCART() in ('False',) and (getHaveRCA() in ('True',) or getHaveAVJACK() in ('True',))
 # Machines that have neither yellow RCA nor Scart sockets
-SystemInfo["no_yellow_RCA__no_scart"] = getBoxType() in (
-		'et5x00',
-		'et6x00',
-		'gbquad',
-		'gbquad4k',
-		'gbue4k',
-		'gbx1',
-		'gbx2',		
-		'gbx3',
-		'gbx3h',
-		'ixussone',
-		'mutant51',
-		'mutant1500',
-		'osnino',
-		'osninoplus',		
-		'sf4008',
-		'tmnano2t',
-		'tmnanom3',
-		'tmtwin4k',
-		'vuzero4k',
-		'vusolo4k',
-		'vuuno4k',
-		'vuuno4kse',
-		'vuultimo4k'
+SystemInfo["no_yellow_RCA__no_scart"] = getHaveRCA() in ('False',) and (getHaveSCART() in ('False',) and getHaveAVJACK() in ('False',))
+SystemInfo["VideoModes"] = getChipSetString() in ( # 2160p and 1080p capable hardware
+		'5272s', '7251', '7251s', '7252', '7252s', '7366', '7376', '7444s', '72604', '3798mv200', '3798cv200', 'hi3798mv200', 'hi3798cv200'
+	) and (
+		["720p", "1080p", "2160p", "1080i", "576p", "576i", "480p", "480i"], # normal modes
+		{"720p", "1080p", "2160p", "1080i"} # widescreen modes
+	) or getChipSetString() in ( # 1080p capable hardware
+		'7241', '7356', '73565', '7358', '7362', '73625', '7424', '7425', '7552'
+	) and (
+		["720p", "1080p", "1080i", "576p", "576i", "480p", "480i"], # normal modes
+		{"720p", "1080p", "1080i"} # widescreen modes
+	) or ( # default modes (neither 2160p nor 1080p capable hardware)
+		["720p", "1080i", "576p", "576i", "480p", "480i"], # normal modes
+		{"720p", "1080i"} # widescreen modes
 	)
-SystemInfo["Chipstring"] = getChipSetString() in ('5272s', '7251', '7251s', '7252', '7252s', '7366', '7376', '7444s', '72604', '3798mv200', '3798cv200', 'hi3798mv200', 'hi3798cv200') and (
-	["720p", "1080p", "2160p", "1080i", "576p", "576i", "480p", "480i"], {"720p", "1080p", "2160p", "1080i"}) or getChipSetString() in (
-	'7241', '7356', '73565', '7358', '7362', '73625', '7424', '7425', '7552') and (
-	["720p", "1080p", "1080i", "576p", "576i", "480p", "480i"], {"720p", "1080p", "1080i"})

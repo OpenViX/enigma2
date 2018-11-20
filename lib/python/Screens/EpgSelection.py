@@ -405,9 +405,14 @@ class EPGSelection(Screen, HelpableScreen):
 				self.close('reopengraph')
 			elif self.type == EPG_TYPE_INFOBARGRAPH:
 				self.close('reopeninfobargraph')
-		else:
-			if self.type == EPG_TYPE_INFOBAR:
+		elif self.type == EPG_TYPE_INFOBAR:
 				self.close('reopeninfobar')
+		else:
+			if  self.type in (EPG_TYPE_SINGLE, EPG_TYPE_ENHANCED, EPG_TYPE_INFOBAR):
+				self['list'].sortSingleEPG(int(config.epgselection.sort.value))
+			self['list'].setFontsize()
+			self['list'].setItemsPerPage()
+			self['list'].recalcEntrySize()
 
 	def togglePIG(self):
 		if not config.epgselection.graph_pig.value:
@@ -453,6 +458,10 @@ class EPGSelection(Screen, HelpableScreen):
 			if self.StartBouquet.toString().startswith('1:7:0'):
 				self.BouquetRoot = True
 			self.services = self.getBouquetServices(self.StartBouquet)
+			if self.type == EPG_TYPE_GRAPH:
+				self['list'].setShowServiceMode(config.epgselection.graph_servicetitle_mode.value)
+			elif self.type == EPG_TYPE_INFOBARGRAPH:
+				self['list'].setShowServiceMode(config.epgselection.infobar_servicetitle_mode.value)
 			self['list'].fillGraphEPG(self.services, self.ask_time)
 			self['list'].moveToService(serviceref)
 			self['list'].setCurrentlyPlaying(serviceref)
@@ -462,12 +471,10 @@ class EPGSelection(Screen, HelpableScreen):
 			self['bouquetlist'].setCurrentBouquet(self.StartBouquet)
 			self.setTitle(self['bouquetlist'].getCurrentBouquet())
 			if self.type == EPG_TYPE_GRAPH:
-				self['list'].setShowServiceMode(config.epgselection.graph_servicetitle_mode.value)
 				self.moveTimeLines()
 				if config.epgselection.graph_channel1.value:
 					self['list'].instance.moveSelectionTo(0)
 			elif self.type == EPG_TYPE_INFOBARGRAPH:
-				self['list'].setShowServiceMode(config.epgselection.infobar_servicetitle_mode.value)
 				self.moveTimeLines()
 		elif self.type == EPG_TYPE_MULTI:
 			self['bouquetlist'].recalcEntrySize()

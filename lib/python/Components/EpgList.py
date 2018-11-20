@@ -307,8 +307,6 @@ class EPGList(GUIComponent):
 		self.showServiceNumber = "servicenumber" in value
 		self.showServiceTitle = "servicename" in value
 		self.showPicon = "picon" in value
-		self.recalcEntrySize()
-		self.selEntry(0) #Select entry again so that the clipping region gets updated if needed
 
 	def setOverjump_Empty(self, overjump_empty):
 		if overjump_empty:
