@@ -118,9 +118,6 @@ int eDVBAudio::startPid(int pid, int type)
 		case aDTSHD:
 			bypass = 0x10;
 			break;
-		case aDRA:
-			bypass = 0x40;
-			break;
 		case aDDP:
 			bypass = 0x22;
 			break;
