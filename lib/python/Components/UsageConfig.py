@@ -1090,7 +1090,7 @@ def InitUsageConfig():
 		("picon", _("Picon")),
 		("picon+servicename", _("Picon and Service Name")), 
 		("servicenumber+picon", _("Service Number and Picon")), 
-		("servicenumber+servicename", _("Service Number, Picon and Service Name")), 
+		("servicenumber+servicename", _("Service Number and Service Name")), 
 		("servicenumber+picon+servicename", _("Service Number, Picon and Service Name"))])
 	config.epgselection.graph_channel1 = ConfigYesNo(default = False)
 	possibleAlignmentChoices = [
