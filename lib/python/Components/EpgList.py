@@ -1162,19 +1162,21 @@ class EPGList(GUIComponent):
 			entries = cur_service[2]
 			if dir == 0: #current
 				update = False
-			elif dir == +1: #next
+			elif dir == +1: #next event
 				if valid_event and self.cur_event + 1 < len(entries):
 					self.setTimeFocusFromEvent(self.cur_event + 1)
-					return True
+					self.l.invalidateEntry(self.l.getCurrentSelectionIndex())
+					return False
 				else:
 					self.offs += 1
 					self.fillGraphEPGNoRefresh() # refill
 					self.setTimeFocusFromEvent(0)
 					return True
-			elif dir == -1: #prev
+			elif dir == -1: #prev event
 				if valid_event and self.cur_event - 1 >= 0:
 					self.setTimeFocusFromEvent(self.cur_event - 1)
-					return True
+					self.l.invalidateEntry(self.l.getCurrentSelectionIndex())
+					return False
 				elif self.offs > 0:
 					self.offs -= 1
 					self.fillGraphEPGNoRefresh() # refill
@@ -1190,7 +1192,7 @@ class EPGList(GUIComponent):
 				self.time_focus += self.time_epoch * 60
 				self.fillGraphEPG(None) # refill
 				return True
-			elif dir == -2: #prev
+			elif dir == -2: #prev page
 				if self.offs > 0:
 					self.offs -= 1
 					self.time_focus -= self.time_epoch * 60
