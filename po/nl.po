@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-08 22:27+0000\n"
-"PO-Revision-Date: 2018-11-09 17:23+0100\n"
+"POT-Creation-Date: 2018-11-22 06:31+0000\n"
+"PO-Revision-Date: 2018-11-22 09:40+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -1004,6 +1004,9 @@ msgstr "-GEEN SERVICE\n"
 #, python-format
 msgid "-SERVICE ERROR:%d\n"
 msgstr "-SERVICE FOUT:%d\n"
+
+msgid "."
+msgstr "."
 
 msgid "/s"
 msgstr "/s"
@@ -5108,7 +5111,7 @@ msgid "Gabon"
 msgstr "Gabon"
 
 msgid "Galapagos Islands"
-msgstr "Galapagos Islands"
+msgstr "Galapagos ijlanden"
 
 msgid "Gambia"
 msgstr "Gambia"
@@ -5135,16 +5138,16 @@ msgid "Genre"
 msgstr "Genre"
 
 msgid "Georgia"
-msgstr "Georgia"
+msgstr "Georgië"
 
 msgid "German"
 msgstr "Duits"
 
 msgid "Germany"
-msgstr "Germany"
+msgstr "Duitsland"
 
 msgid "Getting Event Info failed!"
-msgstr "Geen programma info gevonden!"
+msgstr "Geen programma-info gevonden!"
 
 msgid "Getting plugin information. Please wait..."
 msgstr "Plugin-gegevens worden opgehaald. Even wachten..."
@@ -5243,7 +5246,7 @@ msgid "Green long"
 msgstr "Lang-groen"
 
 msgid "Greenland"
-msgstr "Greenland"
+msgstr "Groenland"
 
 msgid "Grenada"
 msgstr "Grenada"
@@ -7684,6 +7687,9 @@ msgstr "PiP"
 msgid "Picon"
 msgstr "Picon"
 
+msgid "Picon Width"
+msgstr "Picon breedte"
+
 msgid "Picon and Service Name"
 msgstr "Picon en kanaalnaam"
 
@@ -9544,11 +9550,14 @@ msgstr "Kanaalnaam"
 msgid "Service Number and Picon"
 msgstr "Kanaalnummer en picon"
 
+msgid "Service Number and Service Name"
+msgstr "Kanaalnummer en kanaalnaam"
+
 msgid "Service Number, Picon and Service Name"
 msgstr "Kanaalnummer, picon en kanaalnaam"
 
 msgid "Service Title mode"
-msgstr "Alleen kanaalnaam"
+msgstr "Kanaal titel modus"
 
 msgid "Service font size"
 msgstr "Kanaalnaam lettergrootte"
@@ -10041,6 +10050,9 @@ msgid "Show picon background color"
 msgstr "Toon picon-achtergrondkleur"
 
 msgid "Show picons in service list"
+msgstr "Toon picons in opnamelijst"
+
+msgid "Show picons in the movie list."
 msgstr "Toon picons in opnamelijst"
 
 msgid "Show positioner movement"
