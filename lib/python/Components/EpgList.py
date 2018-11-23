@@ -48,6 +48,7 @@ class EPGList(GUIComponent):
 	def __init__(self, type = EPG_TYPE_SINGLE, selChangedCB = None, timer = None, time_epoch = 120, overjump_empty = False, graphic=False):
 		self.cur_event = None
 		self.cur_service = None
+		self.time_focus = time() # default to now
 		self.offs = 0
 		self.time_base = None
 		self.time_epoch = time_epoch
@@ -308,6 +309,9 @@ class EPGList(GUIComponent):
 		self.showServiceTitle = "servicename" in value
 		self.showPicon = "picon" in value
 
+	def setTimeFocus(self, time_focus):
+		self.time_focus = time_focus
+
 	def setOverjump_Empty(self, overjump_empty):
 		if overjump_empty:
 			self.l.setSelectableFunc(self.isSelectable)
@@ -392,39 +396,44 @@ class EPGList(GUIComponent):
 	def serviceChanged(self):
 		cur_sel = self.l.getCurrentSelection()
 		if cur_sel:
-			self.findBestEvent()
+			self.selectEventFromTime()
+			self.selEntry(0)
 
-	def findBestEvent(self):
-		old_service = self.cur_service  #(service, service_name, events, picon)
+	def selectEventFromTime(self):
 		cur_service = self.cur_service = self.l.getCurrentSelection()
-		time_base = self.getTimeBase()
-		last_time = time()
-		if old_service and self.cur_event is not None:
-			events = old_service[2]
-			cur_event = events[self.cur_event] if len(events) >= self.cur_event else 0 #(event_id, event_title, begin_time, duration)
-			last_time = cur_event[2]
 		if cur_service:
-			self.cur_event = 0
+			self.cur_event = None
 			events = cur_service[2]
-			best = None
 			if events and len(events):
-				best_diff = 0
-				idx = 0
-				for event in events: #iterate all events
-					ev_time = event[2]
-					ev_end_time = event[2] + event[3]
-					if ev_time < time_base:
-						ev_time = time_base
-					diff = abs(ev_time - last_time)
-					if best is None or (diff < best_diff):
-						best = idx
-						best_diff = diff
-					if ev_end_time < time():
-						best = idx+1
-					if best is not None and ev_time > last_time and ev_end_time > time():
-						break
-					idx += 1
-			self.cur_event = best
+				self.cur_event = 0
+				if self.time_focus >= events[0][2]:
+					for event in events: #iterate all events
+						ev_time = event[2]
+						ev_end_time = ev_time + event[3]
+						self.cur_event += 1
+						if ev_time <= self.time_focus < ev_end_time:
+							break
+					self.cur_event -= 1
+
+	def setTimeFocusFromEvent(self, cur_event):
+		cur_service = self.l.getCurrentSelection()
+		if cur_service:
+			events = cur_service[2]
+			self.cur_event = max(min(len(events) - 1, cur_event), 0)
+			event = events[self.cur_event]
+
+			# clip the selected event times to the current screen
+			time_base = self.getTimeBase()
+			ev_time = max(time_base, event[2])
+			ev_end_time = min(event[2] + event[3], time_base + self.time_epoch * 60)
+			if ev_time <= time() < ev_end_time:
+				# selected event contains the current time, user is interested in current things
+				self.time_focus = time()
+			else:
+				# user is looking at things roughly around the middle of the selected event
+				self.time_focus = ev_time + (ev_end_time - ev_time) / 2
+		else:
+			self.cur_event = None
 		self.selEntry(0)
 
 	def selectionChanged(self):
@@ -1153,35 +1162,45 @@ class EPGList(GUIComponent):
 			entries = cur_service[2]
 			if dir == 0: #current
 				update = False
-			elif dir == +1: #next
+			elif dir == +1: #next event
 				if valid_event and self.cur_event + 1 < len(entries):
-					self.cur_event += 1
+					self.setTimeFocusFromEvent(self.cur_event + 1)
+					self.l.invalidateEntry(self.l.getCurrentSelectionIndex())
+					return False
 				else:
 					self.offs += 1
-					self.fillGraphEPG(None) # refill
+					self.fillGraphEPGNoRefresh() # refill
+					self.setTimeFocusFromEvent(0)
 					return True
-			elif dir == -1: #prev
+			elif dir == -1: #prev event
 				if valid_event and self.cur_event - 1 >= 0:
-					self.cur_event -= 1
+					self.setTimeFocusFromEvent(self.cur_event - 1)
+					self.l.invalidateEntry(self.l.getCurrentSelectionIndex())
+					return False
 				elif self.offs > 0:
 					self.offs -= 1
-					self.fillGraphEPG(None) # refill
+					self.fillGraphEPGNoRefresh() # refill
+					self.setTimeFocusFromEvent(65535)
 					return True
 				elif self.time_base > time():
 					self.time_base -= self.time_epoch * 60
-					self.fillGraphEPG(None) # refill
+					self.fillGraphEPGNoRefresh() # refill
+					self.setTimeFocusFromEvent(65535)
 					return True
 			elif dir == +2: #next page
 				self.offs += 1
+				self.time_focus += self.time_epoch * 60
 				self.fillGraphEPG(None) # refill
 				return True
-			elif dir == -2: #prev
+			elif dir == -2: #prev page
 				if self.offs > 0:
 					self.offs -= 1
+					self.time_focus -= self.time_epoch * 60
 					self.fillGraphEPG(None) # refill
 					return True
 			elif dir == +24:
 				self.time_base += 86400
+				self.time_focus += 86400
 				self.fillGraphEPG(None, self.time_base) # refill
 				return True
 			elif dir == -24:
@@ -1189,11 +1208,13 @@ class EPGList(GUIComponent):
 				if self.type == EPG_TYPE_GRAPH:
 					if (self.time_base - 86400) >= now - now % (int(config.epgselection.graph_roundto.value) * 60):
 						self.time_base -= 86400
+						self.time_focus -= 86400
 						self.fillGraphEPG(None, self.time_base) # refill
 						return True
 				elif self.type == EPG_TYPE_INFOBARGRAPH:
 					if (self.time_base - 86400) >= now - now % (int(config.epgselection.infobar_roundto.value) * 60):
 						self.time_base -= 86400
+						self.time_focus -= 86400
 						self.fillGraphEPG(None, self.time_base) # refill
 						return True
 
@@ -1278,6 +1299,10 @@ class EPGList(GUIComponent):
 		return self.time_base
 
 	def fillGraphEPG(self, services, stime = None):
+		self.fillGraphEPGNoRefresh(services, stime)
+		self.selEntry(0)
+
+	def fillGraphEPGNoRefresh(self, services = None, stime = None):
 		if (self.type == EPG_TYPE_GRAPH or self.type == EPG_TYPE_INFOBARGRAPH) and not self.graphicsloaded:
 			if self.graphic:
 				self.nowEvPix = loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, 'epg/CurrentEvent.png'))
@@ -1349,7 +1374,7 @@ class EPGList(GUIComponent):
 
 		self.l.setList(self.list)
 		self.recalcEntrySize()
-		self.findBestEvent()
+		self.selectEventFromTime()
 
 	def sortSingleEPG(self, type):
 		list = self.list
