@@ -48,7 +48,7 @@ class EPGList(GUIComponent):
 	def __init__(self, type = EPG_TYPE_SINGLE, selChangedCB = None, timer = None, time_epoch = 120, overjump_empty = False, graphic=False):
 		self.cur_event = None
 		self.cur_service = None
-		self.time_focus = None
+		self.time_focus = time() # default to now
 		self.offs = 0
 		self.time_base = None
 		self.time_epoch = time_epoch
@@ -308,8 +308,6 @@ class EPGList(GUIComponent):
 		self.showServiceNumber = "servicenumber" in value
 		self.showServiceTitle = "servicename" in value
 		self.showPicon = "picon" in value
-		self.recalcEntrySize()
-		self.selEntry(0) #Select entry again so that the clipping region gets updated if needed
 
 	def setTimeFocus(self, time_focus):
 		self.time_focus = time_focus
@@ -431,13 +429,10 @@ class EPGList(GUIComponent):
 			if ev_time <= time() < ev_end_time:
 				# selected event contains the current time, user is interested in current things
 				self.time_focus = time()
-				print "[EPGList] Time focus set to current time"
 			else:
 				# user is looking at things roughly around the middle of the selected event
 				self.time_focus = ev_time + (ev_end_time - ev_time) / 2
-				print "[EPGList] Time focus", event[1], strftime("%H:%M:%S", localtime(self.time_focus)), "(" + strftime("%H:%M:%S", localtime(ev_time)) + "-" + strftime("%H:%M:%S", localtime(ev_end_time)) + ")"
 		else:
-			self.time_focus = None
 			self.cur_event = None
 		self.selEntry(0)
 
@@ -1167,19 +1162,21 @@ class EPGList(GUIComponent):
 			entries = cur_service[2]
 			if dir == 0: #current
 				update = False
-			elif dir == +1: #next
+			elif dir == +1: #next event
 				if valid_event and self.cur_event + 1 < len(entries):
 					self.setTimeFocusFromEvent(self.cur_event + 1)
-					return True
+					self.l.invalidateEntry(self.l.getCurrentSelectionIndex())
+					return False
 				else:
 					self.offs += 1
 					self.fillGraphEPGNoRefresh() # refill
 					self.setTimeFocusFromEvent(0)
 					return True
-			elif dir == -1: #prev
+			elif dir == -1: #prev event
 				if valid_event and self.cur_event - 1 >= 0:
 					self.setTimeFocusFromEvent(self.cur_event - 1)
-					return True
+					self.l.invalidateEntry(self.l.getCurrentSelectionIndex())
+					return False
 				elif self.offs > 0:
 					self.offs -= 1
 					self.fillGraphEPGNoRefresh() # refill
@@ -1195,7 +1192,7 @@ class EPGList(GUIComponent):
 				self.time_focus += self.time_epoch * 60
 				self.fillGraphEPG(None) # refill
 				return True
-			elif dir == -2: #prev
+			elif dir == -2: #prev page
 				if self.offs > 0:
 					self.offs -= 1
 					self.time_focus -= self.time_epoch * 60
