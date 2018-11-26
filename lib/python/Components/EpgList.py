@@ -364,7 +364,6 @@ class EPGList(GUIComponent):
 		if self.type == EPG_TYPE_GRAPH or self.type == EPG_TYPE_INFOBARGRAPH:
 			if self.cur_service is None:
 				return None, None
-			old_service = self.cur_service  #(service, service_name, events, picon)
 			events = self.cur_service[2]
 			refstr = self.cur_service[0]
 			if self.cur_event is None or not events or (self.cur_event and events and self.cur_event > len(events)-1):
@@ -419,19 +418,20 @@ class EPGList(GUIComponent):
 		cur_service = self.l.getCurrentSelection()
 		if cur_service:
 			events = cur_service[2]
-			self.cur_event = max(min(len(events) - 1, cur_event), 0)
-			event = events[self.cur_event]
+			if events and len(events):
+				self.cur_event = max(min(len(events) - 1, cur_event), 0)
+				event = events[self.cur_event]
 
-			# clip the selected event times to the current screen
-			time_base = self.getTimeBase()
-			ev_time = max(time_base, event[2])
-			ev_end_time = min(event[2] + event[3], time_base + self.time_epoch * 60)
-			if ev_time <= time() < ev_end_time:
-				# selected event contains the current time, user is interested in current things
-				self.time_focus = time()
-			else:
-				# user is looking at things roughly around the middle of the selected event
-				self.time_focus = ev_time + (ev_end_time - ev_time) / 2
+				# clip the selected event times to the current screen
+				time_base = self.getTimeBase()
+				ev_time = max(time_base, event[2])
+				ev_end_time = min(event[2] + event[3], time_base + self.time_epoch * 60)
+				if ev_time <= time() < ev_end_time:
+					# selected event contains the current time, user is interested in current things
+					self.time_focus = time()
+				else:
+					# user is looking at things roughly around the middle of the selected event
+					self.time_focus = ev_time + (ev_end_time - ev_time) / 2
 		else:
 			self.cur_event = None
 		self.selEntry(0)
