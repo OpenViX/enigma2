@@ -76,6 +76,13 @@ class EPGList(GUIComponent):
 			self.l.setBuildFunc(self.buildMultiEntry)
 		elif type == EPG_TYPE_GRAPH or type == EPG_TYPE_INFOBARGRAPH:
 			self.l.setBuildFunc(self.buildGraphEntry)
+			if self.type == EPG_TYPE_GRAPH:
+				value = config.epgselection.graph_servicetitle_mode.value
+			elif self.type == EPG_TYPE_INFOBARGRAPH:
+				value = config.epgselection.infobar_servicetitle_mode.value
+			self.showServiceNumber = "servicenumber" in value
+			self.showServiceTitle = "servicename" in value
+			self.showPicon = "picon" in value
 		else:
 			assert(type == EPG_TYPE_SIMILAR)
 			self.l.setBuildFunc(self.buildSimilarEntry)
@@ -201,6 +208,7 @@ class EPGList(GUIComponent):
 		self.eventBorderWidth = 1
 		self.eventNamePadding = 3
 		self.NumberOfRows = None
+		self.serviceNumberWidth = 0
 
 	def applySkin(self, desktop, screen):
 		if self.skinAttributes is not None:
@@ -294,6 +302,16 @@ class EPGList(GUIComponent):
 		self.listWidth = self.instance.size().width()
 		self.setItemsPerPage()
 		self.setFontsize()
+
+		# cache service number width
+		if self.showServiceNumber:
+			if self.type == EPG_TYPE_GRAPH:
+				font = gFont(self.serviceFontNameGraph, self.serviceFontSizeGraph + config.epgselection.graph_servfs.value)
+				self.serviceNumberWidth = getTextBoundarySize(self.instance, font, self.instance.size(), "0000" ).width()
+			elif self.type == EPG_TYPE_INFOBARGRAPH:
+				font = gFont(self.serviceFontNameGraph, self.serviceFontSizeGraph + config.epgselection.infobar_servfs.value)
+				self.serviceNumberWidth = getTextBoundarySize(self.instance, font, self.instance.size(), "0000" ).width()
+
 		return rc
 
 	def getCurrentChangeCount(self):
@@ -303,11 +321,6 @@ class EPGList(GUIComponent):
 
 	def isSelectable(self, service, service_name, events, picon, channel):
 		return (events and len(events) and True) or False
-
-	def setShowServiceMode(self, value):
-		self.showServiceNumber = "servicenumber" in value
-		self.showServiceTitle = "servicename" in value
-		self.showPicon = "picon" in value
 
 	def setTimeFocus(self, time_focus):
 		self.time_focus = time_focus
@@ -364,7 +377,6 @@ class EPGList(GUIComponent):
 		if self.type == EPG_TYPE_GRAPH or self.type == EPG_TYPE_INFOBARGRAPH:
 			if self.cur_service is None:
 				return None, None
-			old_service = self.cur_service  #(service, service_name, events, picon)
 			events = self.cur_service[2]
 			refstr = self.cur_service[0]
 			if self.cur_event is None or not events or (self.cur_event and events and self.cur_event > len(events)-1):
@@ -419,19 +431,20 @@ class EPGList(GUIComponent):
 		cur_service = self.l.getCurrentSelection()
 		if cur_service:
 			events = cur_service[2]
-			self.cur_event = max(min(len(events) - 1, cur_event), 0)
-			event = events[self.cur_event]
+			if events and len(events):
+				self.cur_event = max(min(len(events) - 1, cur_event), 0)
+				event = events[self.cur_event]
 
-			# clip the selected event times to the current screen
-			time_base = self.getTimeBase()
-			ev_time = max(time_base, event[2])
-			ev_end_time = min(event[2] + event[3], time_base + self.time_epoch * 60)
-			if ev_time <= time() < ev_end_time:
-				# selected event contains the current time, user is interested in current things
-				self.time_focus = time()
-			else:
-				# user is looking at things roughly around the middle of the selected event
-				self.time_focus = ev_time + (ev_end_time - ev_time) / 2
+				# clip the selected event times to the current screen
+				time_base = self.getTimeBase()
+				ev_time = max(time_base, event[2])
+				ev_end_time = min(event[2] + event[3], time_base + self.time_epoch * 60)
+				if ev_time <= time() < ev_end_time:
+					# selected event contains the current time, user is interested in current things
+					self.time_focus = time()
+				else:
+					# user is looking at things roughly around the middle of the selected event
+					self.time_focus = ev_time + (ev_end_time - ev_time) / 2
 		else:
 			self.cur_event = None
 		self.selEntry(0)
@@ -596,16 +609,14 @@ class EPGList(GUIComponent):
 				if self.showPicon:
 					piconw = config.epgselection.graph_piconwidth.value
 				if self.showServiceNumber:
-					font = gFont(self.serviceFontNameGraph, self.serviceFontSizeGraph + config.epgselection.graph_servfs.value)
-					channelw = getTextBoundarySize(self.instance, font, self.instance.size(), "0000" ).width()
+					channelw = self.serviceNumberWidth
 			elif self.type == EPG_TYPE_INFOBARGRAPH:
 				if self.showServiceTitle:
 					servicew = config.epgselection.infobar_servicewidth.value
 				if self.showPicon:
 					piconw = config.epgselection.infobar_piconwidth.value
 				if self.showServiceNumber:
-					font = gFont(self.serviceFontNameGraph, self.serviceFontSizeGraph + config.epgselection.infobar_servfs.value)
-					channelw = getTextBoundarySize(self.instance, font, self.instance.size(), "0000" ).width()
+					channelw = self.serviceNumberWidth
 			w = (channelw + piconw + servicew)
 			self.service_rect = Rect(0, 0, w, height)
 			self.event_rect = Rect(w, 0, width - w, height)
