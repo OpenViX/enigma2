@@ -720,7 +720,7 @@ class MediaPlayer(Screen, InfoBarBase, InfoBarScreenSaver, InfoBarSeek, InfoBarA
 		return listpath
 
 	def load_playlist(self):
-		listpath = self.get_playlists
+		listpath = self.get_playlists()
 		if listpath:
 			if config.mediaplayer.sortPlaylists.value:
 				listpath.sort()
@@ -741,7 +741,7 @@ class MediaPlayer(Screen, InfoBarBase, InfoBarScreenSaver, InfoBarSeek, InfoBarA
 			self.playlist.updateList()
 
 	def delete_saved_playlist(self):
-		listpath = self.get_playlists
+		listpath = self.get_playlists()
 		if listpath:
 			if config.mediaplayer.sortPlaylists.value:
 				listpath.sort()
