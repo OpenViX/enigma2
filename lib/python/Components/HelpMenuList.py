@@ -107,20 +107,21 @@ class HelpMenuList(GUIComponent):
 				entry = [ (actionmap, context, action, buttonNames ), help ]
 
 				if self._filterHelpList(entry, helpSeen):
-					actionMapHelp[context].append(entry)
+					actionMapHelp[id(actionmap)].append(entry)
 
 		x, y, w, h = self.extendedHelp and skin.parameters.get("HelpMenuListExtHlp0",(skin.applySkinFactor(5), 0, skin.applySkinFactor(595), skin.applySkinFactor(28))) or skin.parameters.get("HelpMenuListHlp",(skin.applySkinFactor(5), 0, skin.applySkinFactor(595), skin.applySkinFactor(28)))
 
 		l = [ ]
 		for (actionmap, context, actions) in helplist:
-			if headings and context in actionMapHelp and getattr(actionmap, "description", None):
+			amId = id(actionmap)
+			if headings and amId in actionMapHelp and getattr(actionmap, "description", None):
 				if sortCmp or sortKey:
-					actionMapHelp[context].sort(cmp=sortCmp, key=sortKey)
-				self.addListBoxContext(actionMapHelp[context], indent)
+					actionMapHelp[amId].sort(cmp=sortCmp, key=sortKey)
+				self.addListBoxContext(actionMapHelp[amId], indent)
 
 				l.append([None, MultiContentEntryText(pos=(x, y), size=(w, h), text=actionmap.description)])
-				l.extend(actionMapHelp[context])
-				del actionMapHelp[context]
+				l.extend(actionMapHelp[amId])
+				del actionMapHelp[amId]
 
 		if actionMapHelp:
 			# Add a header if other actionmaps have descriptions
@@ -129,9 +130,10 @@ class HelpMenuList(GUIComponent):
 
 			otherHelp = []
 			for (actionmap, context, actions) in helplist:
-				if context in actionMapHelp:
-					otherHelp.extend(actionMapHelp[context])
-					del actionMapHelp[context]
+				amId = id(actionmap)
+				if amId in actionMapHelp:
+					otherHelp.extend(actionMapHelp[amId])
+					del actionMapHelp[amId]
 
 			if sortCmp or sortKey:
 				otherHelp.sort(cmp=sortCmp, key=sortKey)
