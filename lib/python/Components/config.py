@@ -29,12 +29,13 @@ from time import localtime, strftime
 #
 class ConfigElement(object):
 	def __init__(self):
+		self.extra_args = {}
 		self.saved_value = None
 		self.save_forced = False
 		self.last_value = None
 		self.save_disabled = False
 		self.__notifiers = None
-		self.__notifiersFinal = None
+		self.__notifiers_final = None
 		self.enabled = True
 		self.callNotifiersOnSaveAndCancel = False  # this flag only affects notifiers set with "immediate_feedback = False". If set to false the notifier will never run on save/exit by default.
 
@@ -49,15 +50,14 @@ class ConfigElement(object):
 	notifiers = property(getNotifiers, setNotifiers)
 
 	def getNotifiersFinal(self):
-		if self.__notifiersFinal is None:
-			self.__notifiersFinal = []
-		return self.__notifiersFinal
+		if self.__notifiers_final is None:
+			self.__notifiers_final = []
+		return self.__notifiers_final
 
 	def setNotifiersFinal(self, val):
-		self.__notifiersFinal = val
+		self.__notifiers_final = val
 
-	notifiersFinal = property(getNotifiersFinal, setNotifiersFinal)
-	notifiers_final = property(getNotifiersFinal, setNotifiersFinal)  # Deprecated legacy interface!
+	notifiers_final = property(getNotifiersFinal, setNotifiersFinal)
 
 	# you need to override this to do input validation
 	def setValue(self, value):
@@ -108,80 +108,66 @@ class ConfigElement(object):
 	def changed(self):
 		if self.__notifiers:
 			for x in self.notifiers:
-				if isinstance(x, tuple):
-					notifier, args = x
-					notifier(self, args)
-				else:
+				try:
+					if self.extra_args[x]:
+						x(self, self.extra_args[x])
+					else:
+						x(self)
+				except BaseException:
 					x(self)
 
 	def changedFinal(self):
-		if self.__notifiersFinal:
-			for x in self.notifiersFinal:
-				if isinstance(x, tuple):
-					notifier, args = x
-					notifier(self, args)
-				else:
+		if self.__notifiers_final:
+			for x in self.notifiers_final:
+				try:
+					if self.extra_args[x]:
+						x(self, self.extra_args[x])
+					else:
+						x(self)
+				except BaseException:
 					x(self)
 
 	def addNotifier(self, notifier, initial_call=True, immediate_feedback=True, extra_args=None):
-		assert callable(notifier), "[Config] Error: All notifiers must be callable!"
-		if extra_args is not None:
-			print "[Config] Warning: 'addNotifier()' with extra_args is fatally flawed!  Use 'addNotifierWithArgs()' and 'removeNotifierWithArgs()' instead."
-			self.addNotifierWithArgs(notifier, extra_args, initial_call=initial_call, immediate_feedback=immediate_feedback)
+		if not extra_args:
+			extra_args = []
+		assert callable(notifier), "notifiers must be callable"
+		try:
+			self.extra_args[notifier] = extra_args
+		except BaseException:
+			pass
+		if immediate_feedback:
+			self.notifiers.append(notifier)
 		else:
-			if immediate_feedback:
-				self.notifiers.append(notifier)
+			self.notifiers_final.append(notifier)
+		# CHECKME:
+		# do we want to call the notifier
+		#  - at all when adding it? (yes, though optional)
+		#  - when the default is active? (yes)
+		#  - when no value *yet* has been set,
+		#    because no config has ever been read (currently yes)
+		#    (though that's not so easy to detect.
+		#     the entry could just be new.)
+		if initial_call:
+			if extra_args:
+				notifier(self, extra_args)
 			else:
-				self.notifiersFinal.append(notifier)
-			# CHECKLIST:
-			# Do we want to call the notifier
-			# - at all when adding it? (Yes, though optional)
-			# - when the default is active? (Yes)
-			# - when no value *yet* has been set,
-			#   because no config has ever been read (currently Yes)
-			# (That's not so easy to detect. The entry could just be new.)
-			if initial_call:
 				notifier(self)
 
 	def removeNotifier(self, notifier):
-		if notifier in self.notifiers:
-			self.notifiers.remove(notifier)
-		else:
-			for x in self.notifiers:
-				if isinstance(x, tuple):
-					notify, args = x
-					if notify is notifier:
-						self.notifiers.remove(x)
-						break
-		if notifier in self.notifiersFinal:
-			self.notifiersFinal.remove(notifier)
-		else:
-			for x in self.notifiersFinal:
-				if isinstance(x, tuple):
-					notify, args = x
-					if notify is notifier:
-						self.notifiersFinal.remove(x)
-						break
-
-	def addNotifierWithArgs(self, notifier, args, initial_call=True, immediate_feedback=True):
-		assert callable(notifier), "[Config] Error: All notifiers must be callable!"
-		if immediate_feedback:
-			self.notifiers.append((notifier, args))
-		else:
-			self.notifiersFinal.append((notifier, args))
-		if initial_call:
-			notifier(self, args)
-
-	def removeNotifierWithArgs(self, notifier, args):
-		notify = (notifier, args)
-		if notify in self.notifiers:
-			self.notifiers.remove(notify)
-		if notify in self.notifiersFinal:
-			self.notifiersFinal.remove(notify)
+		notifier in self.notifiers and self.notifiers.remove(notifier)
+		notifier in self.notifiers_final and self.notifiers_final.remove(notifier)
+		try:
+			del self.__notifiers[str(notifier)]
+		except BaseException:
+			pass
+		try:
+			del self.__notifiers_final[str(notifier)]
+		except BaseException:
+			pass
 
 	def clearNotifiers(self):
-		self.__notifiers = None
-		self.__notifiersFinal = None
+		self.__notifiers = {}
+		self.__notifiers_final = {}
 
 	def disableSave(self):
 		self.save_disabled = True
