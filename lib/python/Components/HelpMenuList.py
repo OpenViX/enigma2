@@ -82,20 +82,17 @@ class HelpMenuList(GUIComponent):
 				if not buttons:
 					continue
 
-				name = None
-				flags = 0
-
 				buttonNames = [ ]
 
 				for n in buttons:
-					(name, flags) = (getKeyDescription(n[0]), n[1])
-					if name is not None and (len(name) < 2 or name[1] not in("fp", "kbd")):
-						if flags & 8: # for long keypresses, make the second tuple item "long".
+					name = getKeyDescription(n[0])
+					if name is not None and (len(name) < 2 or name[1] not in ("fp", "kbd")):
+						# for long keypresses, make the second tuple item "long".
+						if n[1] & 8:
 							name = (name[0], "long")
-						nlong = (n[0], flags & 8)
-						if nlong not in buttonsProcessed:
+						if name not in buttonsProcessed:
 							buttonNames.append(name)
-							buttonsProcessed.add(nlong)
+							buttonsProcessed.add(name)
 
 				# only show entries with keys that are available on the used rc
 				if not buttonNames:
@@ -166,9 +163,7 @@ class HelpMenuList(GUIComponent):
 			self.l.setItemHeight(font[2])
 
 	def _mergeButLists(self, bl1, bl2):
-		for b in bl2:
-			if b not in bl1:
-				bl1.append(b)
+		bl1.extend([b for b in bl2 if b not in bl1])
 
 	def _filterHelpList(self, ent, seen):
 		hlp = tuple(ent[1] if isinstance(ent[1], list) else [ent[1], ''])
