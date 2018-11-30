@@ -482,7 +482,7 @@ class VIXImageManager(Screen):
 					CMD = "/usr/bin/ofgwrite -r%s -k%s '%s'" % (self.MTDROOTFS, self.MTDKERNEL, MAINDEST)
 				else:
 					CMD = "/usr/bin/ofgwrite -k -r -m%s '%s'" % (self.multibootslot, MAINDEST)
- 			elif SystemInfo["HasSDmmc"]:
+ 			elif SystemInfo["HasHiSi"]:
 				CMD = "/usr/bin/ofgwrite -r%s -k%s '%s'" % (self.MTDROOTFS, self.MTDKERNEL, MAINDEST)
 			else:
 				CMD = "/usr/bin/ofgwrite -k -r '%s'" % MAINDEST
@@ -1256,6 +1256,8 @@ class ImageManagerDownload(Screen):
 
 			supportedMachines = {
 				'axodinc'         : 'Opticum-AX-ODIN-DVBC-1',
+				'dinobot4kmini'   : 'dinobot4kmini',
+				'dinobot4kplus'   : 'dinobot4kplus',
 				'et10000'         : 'ET-10x00',
 				'et4x00'          : 'ET-4x00',
 				'et5x00'          : 'ET-5x00',
