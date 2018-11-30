@@ -722,6 +722,10 @@ class ImageBackup(Screen):
 			self.ROOTDEVTYPE = 'tar.bz2'
 			self.ROOTFSTYPE = 'tar.bz2'
 			self.KERNELFSTYPE = 'bin'
+		elif 'dinobotemmc' in getImageFileSystem():
+			self.ROOTDEVTYPE = 'tar.bz2'
+			self.ROOTFSTYPE = 'tar.bz2'
+			self.KERNELFSTYPE = 'bin'
 		elif getImageFileSystem().replace(' ','') in ('hdemmc', 'hd-emmc'):	# handle new & old formats
 			self.ROOTDEVTYPE = 'hd-emmc'					# HD51 type receiver with multiple eMMC partitions in class
 			self.ROOTFSTYPE = 'tar.bz2'
