@@ -461,6 +461,7 @@ fi
 
 if test "$BOXTYPE" == "u5" -o "$BOXTYPE" == "u5pvr" -o "$BOXTYPE" == "u51" -o "$BOXTYPE" == "u52" -o "$BOXTYPE" == "u53"; then
 	AC_DEFINE(HAVE_HISILICON, 1,[define add HISILICON chip])
+	AC_DEFINE(FORCE_NO_BLENDING_ACCELERATION, 1,[define when the framebuffer acceleration does not have alphablending support, though the autodetection might indicate that it does])	
 fi
 
 if test "$BOXTYPE" == "u53"; then
