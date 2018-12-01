@@ -1339,6 +1339,7 @@ class ImageManagerDownload(Screen):
 				'vipercombohdd'   : 'Amiko-Viper-Combo-HDD',				
 				'vuduo'           : 'Vu+Duo',
 				'vuduo2'          : 'Vu+Duo2',
+				'vuduo4k'         : 'Vu+Duo4k',				
 				'vusolo'          : 'Vu+Solo',
 				'vusolo2'         : 'Vu+Solo2',
 				'vusolo4k'        : 'Vu+Solo4K',
