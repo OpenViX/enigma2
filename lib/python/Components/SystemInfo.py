@@ -72,7 +72,7 @@ SystemInfo["HasTranscoding"] = pathExists("/proc/stb/encoder/0") or fileCheck("/
 SystemInfo["HasH265Encoder"] = fileHas("/proc/stb/encoder/0/vcodec_choices", "h265")
 SystemInfo["CanNotDoSimultaneousTranscodeAndPIP"] = getBoxType() in ('vusolo4k','gbquad4k')
 SystemInfo["hasXcoreVFD"] = getBoxType() in ('osmega','spycat4k','spycat4kmini','spycat4kcombo') and fileCheck("/sys/module/brcmstb_%s/parameters/pt6302_cgram" % getBoxType())
-SystemInfo["HasHDMIin"] = getMachineBuild() in ('inihdp', 'hd2400', 'et10000', 'et13000', 'dm7080', 'dm820', 'dm900', 'vuultimo4k', 'vuuno4kse') or getBoxType() in ('gbquad4k')
+SystemInfo["HasHDMIin"] = getMachineBuild() in ('inihdp', 'hd2400', 'et10000', 'et13000', 'dm7080', 'dm820', 'dm900', 'vuduo4k', 'vuultimo4k', 'vuuno4kse') or getBoxType() in ('gbquad4k')
 SystemInfo["HasHDMI-CEC"] = fileExists("/usr/lib/enigma2/python/Plugins/SystemPlugins/HdmiCEC/plugin.pyo")
 SystemInfo["HasInfoButton"] = getBrandOEM() in ('broadmedia', 'ceryon', 'dags', 'formuler', 'gfutures', 'gigablue', 'ini', 'octagon', 'odin', 'skylake', 'tiviar', 'xcore', 'xp', 'xtrend')
 SystemInfo["Has24hz"] = fileCheck("/proc/stb/video/videomode_24hz")
@@ -105,7 +105,7 @@ SystemInfo["yellow_RCA_no_scart"] = getHaveSCART() in ('False',) and (getHaveRCA
 # Machines that have neither yellow RCA nor Scart sockets
 SystemInfo["no_yellow_RCA__no_scart"] = getHaveRCA() in ('False',) and (getHaveSCART() in ('False',) and getHaveAVJACK() in ('False',))
 SystemInfo["VideoModes"] = getChipSetString() in ( # 2160p and 1080p capable hardware
-		'5272s', '7251', '7251s', '7252', '7252s', '7366', '7376', '7444s', '72604', '3798mv200', '3798cv200', 'hi3798mv200', 'hi3798cv200'
+		'5272s', '7251', '7251s', '7252', '7252s', '7278', '7366', '7376', '7444s', '72604', '3798mv200', '3798cv200', 'hi3798mv200', 'hi3798cv200'
 	) and (
 		["720p", "1080p", "2160p", "1080i", "576p", "576i", "480p", "480i"], # normal modes
 		{"720p", "1080p", "2160p", "1080i"} # widescreen modes
