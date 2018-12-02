@@ -34,28 +34,24 @@ class ConfigElement(object):
 		self.save_forced = False
 		self.last_value = None
 		self.save_disabled = False
-		self.__notifiers = None
-		self.__notifiers_final = None
+		self.__notifiers = []
+		self.__notifiers_final = []
 		self.enabled = True
 		self.callNotifiersOnSaveAndCancel = False  # this flag only affects notifiers set with "immediate_feedback = False". If set to false the notifier will never run on save/exit by default.
 
 	def getNotifiers(self):
-		if self.__notifiers is None:
-			self.__notifiers = []
 		return self.__notifiers
 
 	def setNotifiers(self, val):
-		self.__notifiers = val
+		self.__notifiers = val or []
 
 	notifiers = property(getNotifiers, setNotifiers)
 
 	def getNotifiersFinal(self):
-		if self.__notifiers_final is None:
-			self.__notifiers_final = []
 		return self.__notifiers_final
 
 	def setNotifiersFinal(self, val):
-		self.__notifiers_final = val
+		self.__notifiers_final = val or []
 
 	notifiers_final = property(getNotifiersFinal, setNotifiersFinal)
 
@@ -108,45 +104,35 @@ class ConfigElement(object):
 	def changed(self):
 		if self.__notifiers:
 			for x in self.notifiers:
-				try:
-					if self.extra_args[x]:
-						x(self, self.extra_args[x])
-					else:
-						x(self)
-				except BaseException:
+				if self.extra_args[id(x)]:
+					x(self, self.extra_args[id(x)])
+				else:
 					x(self)
 
 	def changedFinal(self):
 		if self.__notifiers_final:
 			for x in self.notifiers_final:
-				try:
-					if self.extra_args[x]:
-						x(self, self.extra_args[x])
-					else:
-						x(self)
-				except BaseException:
+				if self.extra_args[id(x)]:
+					x(self, self.extra_args[id(x)])
+				else:
 					x(self)
 
 	def addNotifier(self, notifier, initial_call=True, immediate_feedback=True, extra_args=None):
+		assert callable(notifier), "[Config] Error: All notifiers must be callable!"
 		if not extra_args:
 			extra_args = []
-		assert callable(notifier), "notifiers must be callable"
-		try:
-			self.extra_args[notifier] = extra_args
-		except BaseException:
-			pass
+		self.extra_args[id(notifier)] = extra_args  # NOTE: Only one extra_args can be stored per notifier instance.
 		if immediate_feedback:
 			self.notifiers.append(notifier)
 		else:
 			self.notifiers_final.append(notifier)
-		# CHECKME:
-		# do we want to call the notifier
-		#  - at all when adding it? (yes, though optional)
-		#  - when the default is active? (yes)
-		#  - when no value *yet* has been set,
-		#    because no config has ever been read (currently yes)
-		#    (though that's not so easy to detect.
-		#     the entry could just be new.)
+		# CHECKLIST:
+		# Do we want to call the notifier
+		# - at all when adding it? (Yes, though optional)
+		# - when the default is active? (Yes)
+		# - when no value *yet* has been set,
+		#   because no config has ever been read (currently Yes)
+		# (That's not so easy to detect. The entry could just be new.)
 		if initial_call:
 			if extra_args:
 				notifier(self, extra_args)
@@ -154,20 +140,17 @@ class ConfigElement(object):
 				notifier(self)
 
 	def removeNotifier(self, notifier):
-		notifier in self.notifiers and self.notifiers.remove(notifier)
-		notifier in self.notifiers_final and self.notifiers_final.remove(notifier)
-		try:
-			del self.__notifiers[str(notifier)]
-		except BaseException:
-			pass
-		try:
-			del self.__notifiers_final[str(notifier)]
-		except BaseException:
-			pass
+		if notifier in self.notifiers:
+			self.notifiers.remove(notifier)
+		if notifier in self.notifiers_final:
+			self.notifiers_final.remove(notifier)
+		if self.extra_args[id(notifier)]:
+			del self.extra_args[id(notifier)]
 
 	def clearNotifiers(self):
-		self.__notifiers = {}
-		self.__notifiers_final = {}
+		self.__notifiers = []
+		self.__notifiers_final = []
+		self.extra_args = {}
 
 	def disableSave(self):
 		self.save_disabled = True
