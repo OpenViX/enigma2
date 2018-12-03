@@ -383,7 +383,7 @@ class VIXImageManager(Screen):
 			self.message = _("Recording(s) are in progress or coming up in few seconds!\nDo you still want to flash image\n%s?") % self.sel
 		else:
 			self.message = _("Do you want to flash image\n%s") % self.sel
-		if getImageFileSystem().replace(' ','') in ('tar.bz2', 'hd-emmc', 'hdemmc', 'octagonemmc'):
+		if getImageFileSystem().replace(' ','') in ('tar.bz2', 'hd-emmc', 'hdemmc', 'octagonemmc', 'dinobotemmc'):
 			message = _("You are about to flash an eMMC flash; we cannot take any responsibility for any errors or damage to your box during this process.\nProceed with CAUTION!:\nAre you sure you want to flash this image:\n ") + self.sel
 		else:
 			message = _("Are you sure you want to flash this image:\n ") + self.sel
@@ -498,8 +498,17 @@ class VIXImageManager(Screen):
 		if retval == 0:
 			if SystemInfo["canMultiBoot"]:
 				print "[ImageManager] slot %s result %s\n" %(self.multibootslot, result)
-				copyfile("/boot/STARTUP_%s" % self.multibootslot, "/boot/STARTUP")
-				self.session.open(TryQuitMainloop, 2)
+				if pathExists("/boot/STARTUP_%s" % self.multibootslot):
+					copyfile("/boot/STARTUP_%s" % self.multibootslot, "/boot/STARTUP")
+					self.session.open(TryQuitMainloop, 2)
+				elif SystemInfo["canMode12"] and pathExists("/boot/STARTUP"):
+					print "[ImageManager - MultiBoot] No boot/STARTUP_%s - created STARTUP" %self.multibootslot
+					model = getMachineBuild()
+					startupFileContents = "boot emmcflash0.kernel%s 'brcm_cma=%s root=/dev/mmcblk0p%s rw rootwait %s_4.boxmode=1'\n" % (slot, SystemInfo["canMode12"][0], slot * 2 + SystemInfo["canMultiBoot"][0], model)
+				elif pathExists("/boot/STARTUP"):		
+					self.session.open(MessageBox, _("Multiboot ERROR! - no STARTUP_%s in /boot - Image may need manual restart" % self.multibootslot), MessageBox.TYPE_INFO, timeout=20)
+				else:
+					self.session.open(MessageBox, _("Multiboot ERROR! - no STARTUP in /boot -Please check /etc/fstab for correct boot partition"), MessageBox.TYPE_INFO, timeout=20)
 			else:
 				self.session.open(TryQuitMainloop, 2)
 		else:
