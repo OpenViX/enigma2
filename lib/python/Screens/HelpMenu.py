@@ -3,8 +3,8 @@ from Tools.KeyBindings import keyBindings
 from Tools.BoundFunction import boundFunction
 from Components.Label import Label
 from Components.ActionMap import ActionMap
-from Components.HelpMenuList import HelpMenuList
 from Components.Sources.StaticText import StaticText
+from Components.Sources.HelpMenuList import HelpMenuList
 from Screens.Rc import Rc
 from enigma import eActionMap
 from sys import maxint
