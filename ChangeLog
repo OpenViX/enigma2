@@ -500,3 +500,7 @@ openvix: developer 5.2.016.012
 openvix: release 5.2.016
 openvix: developer 5.2.017.001
 openvix: release 5.2.017
+openvix: developer 5.2.018.001
+openvix: developer 5.2.018.002
+openvix: developer 5.2.018.003
+openvix: developer 5.2.018.004
