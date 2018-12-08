@@ -506,9 +506,9 @@ class VIXImageManager(Screen):
 					model = getMachineBuild()
 					startupFileContents = "boot emmcflash0.kernel%s 'brcm_cma=%s root=/dev/mmcblk0p%s rw rootwait %s_4.boxmode=1'\n" % (slot, SystemInfo["canMode12"][0], slot * 2 + SystemInfo["canMultiBoot"][0], model)
 				elif pathExists("/boot/STARTUP"):		
-					self.session.open(MessageBox, _("Multiboot ERROR! - no STARTUP_%s in /boot - Image may need manual restart" % self.multibootslot), MessageBox.TYPE_INFO, timeout=20)
+					self.session.open(MessageBox, _("Multiboot ERROR! - no STARTUP_%s in /boot - Image may need manual restart." % self.multibootslot), MessageBox.TYPE_INFO, timeout=20)
 				else:
-					self.session.open(MessageBox, _("Multiboot ERROR! - no STARTUP in /boot -Please check /etc/fstab for correct boot partition"), MessageBox.TYPE_INFO, timeout=20)
+					self.session.open(MessageBox, _("Multiboot ERROR! - no STARTUP in /boot -Please check /etc/fstab for correct boot partition."), MessageBox.TYPE_INFO, timeout=20)
 			else:
 				self.session.open(TryQuitMainloop, 2)
 		else:
