@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-22 06:31+0000\n"
-"PO-Revision-Date: 2018-12-01 08:42+0100\n"
+"POT-Creation-Date: 2018-12-08 07:44+0000\n"
+"PO-Revision-Date: 2018-12-08 10:34+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -6818,6 +6818,13 @@ msgstr "Multi-EPG"
 msgid "Multiboot"
 msgstr "Multiboot"
 
+msgid "Multiboot ERROR! - no STARTUP in /boot -Please check /etc/fstab for correct boot partition"
+msgstr "Multiboot FOUT! - geen STARTUP in /boot - Check /etc/fstab op correct bootpartitie."
+
+#, python-format
+msgid "Multiboot ERROR! - no STARTUP_%s in /boot - Image may need manual restart"
+msgstr "Multiboot FOUT! - geen STARTUP_%s in /boot - Box moet mogelijk handmatig opnieuw gestart worden."
+
 msgid "Multiboot Image Restart"
 msgstr "Multibootimage herstarten"
 
@@ -11220,6 +11227,12 @@ msgstr "Er zijn minstens %s updates beschikbaar."
 
 msgid "There are currently no outstanding actions."
 msgstr "Er zijn geen uitstaande acties."
+
+msgid "There are no saved playlists to delete!"
+msgstr "Er zijn geen playlists om te verwijderen!"
+
+msgid "There are no saved playlists to load!"
+msgstr "Er zijn geen playlists om te laden!"
 
 msgid "There are no updates available."
 msgstr "Er zijn momenteel geen updates beschikbaar."
