@@ -19,7 +19,7 @@ class ScrollLabel(GUIComponent):
 		self.splitchar = "|"
 
 	def applySkin(self, desktop, parent):
-		scrollbarWidth = 20
+		scrollbarWidth = 10
 		scrollbarBorderWidth = 1
 		ret = False
 		if self.skinAttributes:
