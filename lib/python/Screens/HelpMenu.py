@@ -34,6 +34,8 @@ The order and grouping of the help information list can be controlled using MENU
 		self["longshift_key0"] = Label("")
 		self["longshift_key1"] = Label("")
 
+		self["key_help"] = StaticText(_("HELP"))
+
 		self["actions"] = ActionMap(["WizardActions"],
 		{
 			"ok": self["list"].ok,
