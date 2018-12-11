@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-05 06:12+0000\n"
-"PO-Revision-Date: 2018-11-05 14:48+0100\n"
+"POT-Creation-Date: 2018-12-09 10:18+0000\n"
+"PO-Revision-Date: 2018-12-09 19:24+0100\n"
 "Last-Translator: Ralf Biedermann <ralf.biedermann@rbsoft.de>\n"
 "Language-Team: AndyBlacburn, j-ot&Trial\n"
 "Language: de\n"
@@ -970,6 +970,9 @@ msgstr "( Alle Kartenleser )"
 msgid "(Show only reader:"
 msgstr "( Zeige nur Kartenleser:"
 
+msgid "(You are currently using a temporary sort method)"
+msgstr "(Due benutzt z.Z. eine temporäre Sortiermethode)"
+
 msgid "(ZAP as PiP)"
 msgstr "(Mit PiP umschalten)"
 
@@ -1000,6 +1003,9 @@ msgstr "-KEINE SENDUNG\n"
 #, python-format
 msgid "-SERVICE ERROR:%d\n"
 msgstr "-SERVICE FEHLER:%d\n"
+
+msgid "."
+msgstr ""
 
 msgid "/s"
 msgstr "/s"
@@ -3231,7 +3237,7 @@ msgstr "Verbindung mit den FRP-Einstellungen fehlgeschlagen. Bitte überprüfen 
 msgid "Constellation & FFT mode"
 msgstr "Konstellation & FFT Modus"
 
-msgid "Consult your Unicable device spec sheet for this information."
+msgid "Consult your SCR device spec sheet for this information."
 msgstr "Lese das Handbuch deines Unicable-Gerätes für diese Informationen."
 
 msgid "Consult your motor's spec sheet for this information, or leave the default setting."
@@ -6808,6 +6814,13 @@ msgstr "Multi-EPG"
 msgid "Multiboot"
 msgstr "Multiboot"
 
+msgid "Multiboot ERROR! - no STARTUP in /boot -Please check /etc/fstab for correct boot partition"
+msgstr "Multiboot Fehler! - kein STARTUP in /boot - Bitte /etc/fstab auf korrekte Boot Partition prüfen."
+
+#, python-format
+msgid "Multiboot ERROR! - no STARTUP_%s in /boot - Image may need manual restart"
+msgstr "Multiboot Fehler! - kein STARTUP_%s in /boot - Image könnte manuelle Neustart benötigen."
+
 msgid "Multiboot Image Restart"
 msgstr "Multiboot Image Neustart"
 
@@ -7388,7 +7401,7 @@ msgstr "Online Versionsprüfung"
 msgid "Only active when in standby"
 msgstr "Nur aktiv wenn in Bereitschaft"
 
-msgid "Only change this setting if you are using a Unicable device that has been reprogrammed with a custom programmer. For further information check with the person that reprogrammed the device."
+msgid "Only change this setting if you are using a SCR device that has been reprogrammed with a custom programmer. For further information check with the person that reprogrammed the device."
 msgstr "Ändere diesen Wert nur wenn Du ein Unicable Gerät verwendest das mit einem Programmiergerät umprogrammiert wurde. Für weitere Informationen frage die Person die es umprogrammiert hat."
 
 msgid "Only extensions."
@@ -7670,6 +7683,9 @@ msgstr "PiP"
 
 msgid "Picon"
 msgstr "PIcon"
+
+msgid "Picon Width"
+msgstr "PIcon Breite"
 
 msgid "Picon and Service Name"
 msgstr "PIcon und Sendername"
@@ -9217,8 +9233,8 @@ msgstr "Wähle '1.0' für standard sommited Switche, '1.1' für uncomitted Schwi
 msgid "Select 'A' or 'B' if your aerial system requires this, otherwise select 'none'. If you are unsure select 'none'."
 msgstr "W#hle 'A' oder 'B' wenn die Anlage es benötigt sonst wähle 'keine'. Wenn Du unsicher bis wähle 'keine'."
 
-msgid "Select 'Unicable' if this tuner will use a Unicable device. For all other setups select 'FBC automatic'."
-msgstr "Wähle 'Unicable' wenn dieser Tuner ein Unicable Gerät verwendet. Für alle anderen Systeme wähle 'FBC automatisch'."
+msgid "Select 'FBC SCR' if this tuner will connect to a SCR (Unicable/JESS) device. For all other setups select 'FBC automatic'."
+msgstr "Wähle 'FBC SCR' wenn dieser Tuner ein Unicable Gerät verwendet. Für alle anderen Systeme wähle 'FBC automatisch'."
 
 msgid "Select 'band' if using a 'universal' LNB, otherwise consult your LNB spec sheet."
 msgstr "Wähle 'Band' wenn ein Universal-LNB verwendet wird sonst schaue in den Spezifikationen des LNBs nach."
@@ -9232,7 +9248,7 @@ msgstr "Wähle 'Polarisation' wenn ein Universal-LNB verwendet wird ansonsten sc
 msgid "Select 'provider' to scan from the predefined list of cable multiplexes. Select 'bands' to only scan certain parts of the spectrum. Select 'steps' to scan in steps of a particular frequency bandwidth."
 msgstr "Wähle 'Anbieter' für die Suche aus der Liste der vordefinierten Kabelanbieter. Wähle 'Band' um nur bestimmte Bereiche zu durchsuchen. Wähle 'Schritte' um die Schrittweite der Suche einzustellen."
 
-msgid "Select 'yes' if this tuner is connected to the Unicable device through another tuner, otherwise select 'no'."
+msgid "Select 'yes' if this tuner is connected to the SCR device through another tuner, otherwise select 'no'."
 msgstr "Wähle 'Ja' wenn dieser Tuner an ein Unicable Gerät durch einen anderen Tuner angeschlossen ist ansonsten wähle 'nein'."
 
 msgid "Select 'yes' to choose what bands or step sizes will be scanned."
@@ -9362,8 +9378,14 @@ msgstr "Wähle den Sortier-Modus:"
 msgid "Select target folder"
 msgstr "Wähle Zielverzeichnisse"
 
-msgid "Select the Unicable channel to be assigned to this tuner. This is a unique value. Be certain that no other device connected to this same Unicable system is allocated to the same Unicable channel."
-msgstr "Wähle den Unicable Kanal der diesem Tuner zugeordnet werden soll. Das ist eine eindeutige Nummer. Stelle sicher das kein anderes Gerät in deinem System den selben Kanal zugerodnet wurde."
+msgid "Select the User Band channel to be assigned to this tuner. This is an index into the table of frequencies the SCR switch or SCR LNB uses to pass the requested transponder to the tuner."
+msgstr "Wähle das User Band das diesem Tuner zugeordnet ist. Dies in ein Index der Tabelle mit Frequenzen vom SCR-Schalter oder SCR-LNB welche benutzt wird um den gewählten Transponder zum Tuner zu schicken."
+
+msgid "Select the User Band frequency to be assigned to this tuner. This is the frequency the SCR switch or SCR LNB uses to pass the requested transponder to the tuner."
+msgstr "Wähle das User Band das diesem Tuner zugeordnet ist. Dies ist die Frequenz vom SCR-Schalter oder SCR-LNB welche benutzt wird um den gewählten Transponder zum Tuner zu schicken."
+
+msgid "Select the User Band to be assigned to this tuner. This is an index into the table of frequencies the SCR switch or SCR LNB uses to pass the requested transponder to the tuner."
+msgstr "Wähle das User Band das diesem Tuner zugeordnet ist. Dies in ein Index der Tabelle mit Frequenzen vom SCR-Schalter oder SCR-LNB welche benutzt wird um den gewählten Transponder zum Tuner zu schicken."
 
 msgid "Select the character or action under the virtual keyboard cursor"
 msgstr "Wähle Zeichen oder Aktion beim Cursor der virtuellen Tastatur"
@@ -9371,17 +9393,17 @@ msgstr "Wähle Zeichen oder Aktion beim Cursor der virtuellen Tastatur"
 msgid "Select the desired function and click on \"OK\" to assign it. Use \"CH+/-\" to toggle between the lists. Select an assigned function and click on \"OK\" to de-assign it. Use \"Next/Previous\" to change the order of the assigned functions."
 msgstr "Gewünschte Funktion auswählen und \"OK\" drücken um sie zu belegen. Benutze  \"CH+/-\" um zwischen den Listen umzuschalten. Wähle zugeordnete Funktion aus und drücke  \"OK\" um die Belegung zu entfernen."
 
-msgid "Select the format of your Unicable device. Choices are 'SCR Unicable' (Unicable I format), or 'SCR JESS' (Unicable II format)."
-msgstr "Wähle das Unicable Format von deinem Gerät. Zur Wahl stehen 'SCR Unicable' (Unicable I Format) oder 'SCR JESS' (Unicable II Format)."
+msgid "Select the manufacturer of your SCR device. If the manufacturer is not listed, set 'SCR' to 'user defined' and enter the device parameters manually according to its spec sheet."
+msgstr "Wähle den Hersteller von deinem Unicable Gerät. Wenn der Hersteller nicht aufgeführt ist setze 'SCR' auf 'Benutzerbefiniert' und gebe die Werte an Hand der Spezifikationen des Gerätes ein."
 
-msgid "Select the manufacturer of your Unicable device. If the manufacturer is not listed, set 'SCR' to 'user defined' and enter the device parameters manually according to its spec sheet."
-msgstr "Wähle den Hersteller von deinem Unicable Gerät. Wenn der Hersteller nicht aufgeführt ist setze 'SCR' auf 'Benutzerbediniert' und gebe die Werte an Hand der Spezifikationen des Gerätes ein."
-
-msgid "Select the model number of your Unicable device. If the model number is not listed, set 'SCR' to 'user defined' and enter the device parameters manually according to its spec sheet."
-msgstr "Wähle die Modellnummer deines Unicable Gerätes. Wenn die Nummer nicht aufgeführt ist setze 'SCR' auf 'Benutzerbediniert' und gebe die Werte an Hand der Spezifikationen des Gerätes ein."
+msgid "Select the model number of your SCR device. If the model number is not listed, set 'SCR' to 'user defined' and enter the device parameters manually according to its spec sheet."
+msgstr "Wähle die Modellnummer deines Unicable Gerätes. Wenn die Nummer nicht aufgeführt ist setze 'SCR' auf 'Benutzerbefiniert' und gebe die Werte an Hand der Spezifikationen des Gerätes ein."
 
 msgid "Select the movie path"
 msgstr "Wähle Filmpfad"
+
+msgid "Select the protocol used by your SCR device. Choices are 'SCR Unicable' (Unicable), or 'SCR JESS' (JESS, also known as Unicable II)."
+msgstr "Wähle das Unicable Format von deinem Gerät. Zur Wahl stehen 'SCR Unicable' (Unicable I Format) oder 'SCR JESS' (Unicable II Format)."
 
 msgid "Select the satellite which is connected to Port-A of your switch. If you are unsure select 'automatic' and the receiver will attempt to determine this for you. If nothing is connected to this port, select 'nothing connected'."
 msgstr "Wähle den Satelliten der mit Port-A von deinem Switch verbunden ist. Wenn Du unsicher bist wähle 'automatisch' und die Box wird versuchen es für dich herauszufinden. Wenn nichts angeschlossen ist wähle 'Nichts angeschlossen'."
@@ -9407,13 +9429,13 @@ msgstr "Wähle den Tuner der den Motor kontrolliert."
 msgid "Select the tuner that this loopthrough depends on."
 msgstr "Wähle den Tuner von dem das Signal durchgereicht werden soll."
 
-msgid "Select the tuner to which the signal cable of the Unicable device is connected."
+msgid "Select the tuner to which the signal cable of the SCR device is connected."
 msgstr "Wähle den Tuner an dem das Unicable Kabel angeschlossen ist."
 
 msgid "Select the type of LNB/device being used (normally 'Universal'). If your LNB type is not available select 'user defined'."
 msgstr "Wähle den Typ von LNB/Gerät das benutzt wird (normalerweise 'Universal'). Wenn dein LNB Typ nicht aufgeführt ist wähle 'Benutzerdefiniert'."
 
-msgid "Select the type of Unicable device you are using."
+msgid "Select the type of Single Cable Reception device you are using."
 msgstr "Wähle den Unicable Type den Du benutzt."
 
 msgid "Select the virtual keyboard locale from a menu"
@@ -9524,6 +9546,9 @@ msgstr "Sender ID"
 msgid "Service Name"
 msgstr "Sendername"
 
+msgid "Service Number and Picon"
+msgstr "Sendernummer und PIcon"
+
 msgid "Service Number and Service Name"
 msgstr "Sendernummer und Sendername"
 
@@ -9598,6 +9623,9 @@ msgstr "Setze CI Zuweisung für Erkennung verfügbarer Sender."
 
 msgid "Set Framerate for MiniTV"
 msgstr "Setze Bildrate für MiniTV"
+
+msgid "Set a temporary sort method for this directory"
+msgstr "Wähle temporäre Sortiermethode für dieses Verzeichnis"
 
 msgid "Set as startup service"
 msgstr "Als Startsender benutzen"
@@ -9686,6 +9714,9 @@ msgstr "Wähle die Durchlaufgeschwindigkeit für Text im Display. Dies wird von 
 
 msgid "Set the scrolling speed of text on the front display."
 msgstr "Wähle die Durchlaufgeschwindigkeit für Text im Display."
+
+msgid "Set the sort method for this directory"
+msgstr "Setze die Sortiermethode für dieses Verzeichnis"
 
 msgid "Set the time before checking video source for resolution/refresh rate infomation."
 msgstr "Verzögerung einstellen nach der Auflösung/Wiederholrate des Videos geprüft wird."
@@ -10017,6 +10048,9 @@ msgstr "Zeige Hintergrundfarbe von PIcon"
 
 msgid "Show picons in service list"
 msgstr "Zeige PIcon in der Senderliste"
+
+msgid "Show picons in the movie list."
+msgstr "Zeige PIcon in der Filmliste."
 
 msgid "Show positioner movement"
 msgstr "Zeige Rotorbewegung"
@@ -11182,6 +11216,12 @@ msgstr "Es sind mindestens %s Updates verfügbar."
 
 msgid "There are currently no outstanding actions."
 msgstr "Es sind keine Aktivitäten geplant."
+
+msgid "There are no saved playlists to delete!"
+msgstr "Es gibt keine gespeicherten Wiedergabeliste zum Löschen!"
+
+msgid "There are no saved playlists to load!"
+msgstr "Es gibt keine gespeicherten Wiedergabeliste zum Laden!"
 
 msgid "There are no updates available."
 msgstr "Es sind keine Updates verfügbar."
@@ -15243,6 +15283,9 @@ msgstr "umgeschaltet"
 
 #~ msgid "Select operation:"
 #~ msgstr "Wähle Funktion:"
+
+#~ msgid "Select the Unicable channel to be assigned to this tuner. This is a unique value. Be certain that no other device connected to this same Unicable system is allocated to the same Unicable channel."
+#~ msgstr "Wähle den Unicable Kanal der diesem Tuner zugeordnet werden soll. Das ist eine eindeutige Nummer. Stelle sicher das kein anderes Gerät in deinem System den selben Kanal zugerodnet wurde."
 
 #~ msgid "Selected: %s"
 #~ msgstr "Ausgewählt: %s"
