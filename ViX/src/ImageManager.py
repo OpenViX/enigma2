@@ -706,9 +706,9 @@ class ImageBackup(Screen):
 					self.MTDROOTFS = getMachineMtdRoot()
 			else:					
 				self.addin = SystemInfo["canMultiBoot"][0]
-				self.MTDBOOT = "mmcblk0p1"		#HD51#
-				self.MTDKERNEL = "mmcblk0p%s" %(kernel*2 +self.addin -1)
-				self.MTDROOTFS = "mmcblk0p%s" %(kernel*2 +self.addin)
+				self.MTDBOOT = "%s1" %SystemInfo["canMultiBoot"][2]
+				self.MTDKERNEL = "%s%s" %(SystemInfo["canMultiBoot"][2], kernel*2 +self.addin -1)
+				self.MTDROOTFS = "%s%s" %(SystemInfo["canMultiBoot"][2], kernel*2 +self.addin)
 				print '[ImageManager] MTD Boot:',self.MTDBOOT
 		else:
 			self.MTDKERNEL = getMachineMtdKernel()
@@ -731,14 +731,22 @@ class ImageBackup(Screen):
 			self.ROOTDEVTYPE = 'tar.bz2'
 			self.ROOTFSTYPE = 'tar.bz2'
 			self.KERNELFSTYPE = 'bin'
+			self.MTDBOOT = "none"
+			self.EMMCIMG = "usb_update.bin"
 		elif 'dinobotemmc' in getImageFileSystem():
 			self.ROOTDEVTYPE = 'tar.bz2'
 			self.ROOTFSTYPE = 'tar.bz2'
 			self.KERNELFSTYPE = 'bin'
 		elif getImageFileSystem().replace(' ','') in ('hdemmc', 'hd-emmc'):	# handle new & old formats
-			self.ROOTDEVTYPE = 'hd-emmc'					# HD51 type receiver with multiple eMMC partitions in class
+			self.ROOTDEVTYPE = 'hd-emmc'					# HD51 receiver with multiple eMMC partitions in class
 			self.ROOTFSTYPE = 'tar.bz2'
 			self.KERNELFSTYPE = 'bin'
+			self.EMMCIMG = "disk.img"
+		elif 'emmcimg' in getImageFileSystem():	
+			self.ROOTDEVTYPE = 'emmcimg'					# osmio4k receiver with multiple eMMC partitions in class
+			self.ROOTFSTYPE = 'tar.bz2'
+			self.KERNELFSTYPE = 'bin'
+			self.EMMCIMG = "emmc.img"
 		else:
 			self.ROOTDEVTYPE = 'jffs2'
 			self.ROOTFSTYPE= 'jffs2'
@@ -976,11 +984,10 @@ class ImageBackup(Screen):
 			print '[ImageManager] Stage2: Complete.'
 
 	def doBackup3(self):
-		if SystemInfo["canMultiBoot"] and self.ROOTDEVTYPE == 'hd-emmc':
+		if SystemInfo["canMultiBoot"] and self.ROOTDEVTYPE in ('hdemmc', 'hd-emmc', 'emmcimg'):
 			print '[ImageManager] Stage3: Making eMMC Image.'
 			self.commandMB = []
 			print '[ImageManager] Stage3: EMMC Detected.'
-			self.EMMCIMG = "disk.img"
 			BLOCK_SIZE=512
 			BLOCK_SECTOR=2
 			IMAGE_ROOTFS_ALIGNMENT=1024
@@ -1029,8 +1036,6 @@ class ImageBackup(Screen):
 			self.Console.eBatch(self.commandMB, self.Stage3Complete, debug=False)
 
 		if 'octagonemmc' in getImageFileSystem():
-			self.MTDBOOT = "none"
-			self.EMMCIMG = "usb_update.bin"
 			self.commandOCT = []
 			print '[ImageManager] sf8008: Making emmc_partitions.xml'
 			f = open("%s/emmc_partitions.xml" %self.WORKDIR, "w")
@@ -1318,6 +1323,7 @@ class ImageManagerDownload(Screen):
 				'osmini'          : 'OS-mini',
 				'osminiplus'      : 'OS-miniplus',
 				'osnino'          : 'OS-nino',
+				'osmio4k'         : 'OS-mio4k',
 				'osninoplus'      : 'OS-ninoplus',
 				'osninopro'       : 'OS-ninopro',				
 				'qb800solo'       : 'GiGaBlue-HD800Solo',
