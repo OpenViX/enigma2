@@ -339,10 +339,13 @@ class EPGList(GUIComponent):
 		else:
 			self.l.setSelectableFunc(None)
 
-	def setEpoch(self, epoch):
+	def setTimeEpoch(self, epoch):
 		self.time_epoch = epoch
 		self.time_epoch_secs = epoch * SECS_IN_MIN
 		self.fillGraphEPG(None)
+
+	def getTimeEpoch(self):
+		return self.time_epoch
 
 	def setCurrentlyPlaying(self, serviceref):
 		self.currentlyPlaying = serviceref
@@ -1438,9 +1441,6 @@ class EPGList(GUIComponent):
 	def getServiceRect(self):
 		rc = self.service_rect
 		return Rect( rc.left() + (self.instance and self.instance.position().x() or 0), rc.top(), rc.width(), rc.height() )
-
-	def getTimeEpoch(self):
-		return self.time_epoch
 
 	def getTimeBase(self):
 		return self.time_base
