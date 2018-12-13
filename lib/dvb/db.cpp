@@ -467,7 +467,7 @@ static ePtr<eDVBFrontendParameters> parseFrontendData(char* line, int version)
 				pilot=eDVBFrontendParametersSatellite::Pilot_Unknown,
 				is_id = eDVBFrontendParametersSatellite::No_Stream_Id_Filter,
 				pls_code = eDVBFrontendParametersSatellite::PLS_Default_Gold_Code,
-				pls_mode = eDVBFrontendParametersSatellite::PLS_Gold;
+				pls_mode = eDVBFrontendParametersSatellite::PLS_Gold,
 				t2mi_plp_id = eDVBFrontendParametersSatellite::No_T2MI_PLP_Id;
 			sscanf(line+2, "%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d",
 				&frequency, &symbol_rate, &polarisation, &fec, &orbital_position,
