@@ -302,7 +302,7 @@ class ServiceInfo(Screen):
 						(_("Symbol rate & FEC"), "%s - %s" % (frontendData.get("symbol_rate", 0), frontendData["fec_inner"]), TYPE_TEXT),
 						(_("Input Stream ID"), "%s" % (frontendData.get("is_id", -1)), TYPE_TEXT),
 						(_("PLS Mode & PLS Code"), "%s - %s" % (frontendData["pls_mode"], frontendData["pls_code"]), TYPE_TEXT),
-						(_("Inversion, Pilot & Roll-off"), "%s - %s - %s" % (frontendData["inversion"], frontendData.get("pilot", None), str(frontendData.get("rolloff", None))), TYPE_TEXT))
+						(_("Inversion, Pilot & Roll-off"), "%s - %s - %s" % (frontendData["inversion"], frontendData.get("pilot", None), str(frontendData.get("rolloff", None))), TYPE_TEXT),
 						(_("T2MI PLP ID"), t2mi(frontendData.get("t2mi_plp_id", -1)), TYPE_TEXT))
 				else: # not multistream
 					return (tuner,
@@ -310,7 +310,7 @@ class ServiceInfo(Screen):
 						(_("Orbital position"), "%s" % frontendData["orbital_position"], TYPE_TEXT),
 						(_("Frequency & Polarization"), "%s - %s" % (frontendData.get("frequency", 0), frontendData["polarization"]), TYPE_TEXT),
 						(_("Symbol rate & FEC"), "%s - %s" % (frontendData.get("symbol_rate", 0), frontendData["fec_inner"]), TYPE_TEXT),
-						(_("Inversion, Pilot & Roll-off"), "%s - %s - %s" % (frontendData["inversion"], frontendData.get("pilot", None), str(frontendData.get("rolloff", None))), TYPE_TEXT))
+						(_("Inversion, Pilot & Roll-off"), "%s - %s - %s" % (frontendData["inversion"], frontendData.get("pilot", None), str(frontendData.get("rolloff", None))), TYPE_TEXT),
 						(_("T2MI PLP ID"), t2mi(frontendData.get("t2mi_plp_id", -1)), TYPE_TEXT))
 			elif frontendDataOrg["tuner_type"] == "DVB-C":
 				return (tuner,
