@@ -29,7 +29,7 @@ from time import localtime, strftime
 #
 class ConfigElement(object):
 	def __init__(self):
-		self.extra_args = {}
+		self.extra_args = []
 		self.saved_value = None
 		self.save_forced = False
 		self.last_value = None
@@ -108,33 +108,25 @@ class ConfigElement(object):
 	def changed(self):
 		if self.__notifiers:
 			for x in self.notifiers:
-				try:
-					if self.extra_args[x]:
-						x(self, self.extra_args[x])
-					else:
-						x(self)
-				except BaseException:
+				extra_args = self.__getExtraArgs(x)
+				if extra_args is not None:
+					x(self, extra_args)
+				else:
 					x(self)
 
 	def changedFinal(self):
 		if self.__notifiers_final:
 			for x in self.notifiers_final:
-				try:
-					if self.extra_args[x]:
-						x(self, self.extra_args[x])
-					else:
-						x(self)
-				except BaseException:
+				extra_args = self.__getExtraArgs(x)
+				if extra_args is not None:
+					x(self, extra_args)
+				else:
 					x(self)
 
 	def addNotifier(self, notifier, initial_call=True, immediate_feedback=True, extra_args=None):
-		if not extra_args:
-			extra_args = []
 		assert callable(notifier), "notifiers must be callable"
-		try:
-			self.extra_args[notifier] = extra_args
-		except BaseException:
-			pass
+		if extra_args is not None:
+			self.__addExtraArgs(notifier, extra_args)
 		if immediate_feedback:
 			self.notifiers.append(notifier)
 		else:
@@ -156,6 +148,7 @@ class ConfigElement(object):
 	def removeNotifier(self, notifier):
 		notifier in self.notifiers and self.notifiers.remove(notifier)
 		notifier in self.notifiers_final and self.notifiers_final.remove(notifier)
+		self.__removeExtraArgs(notifier)
 		try:
 			del self.__notifiers[str(notifier)]
 		except BaseException:
@@ -187,6 +180,19 @@ class ConfigElement(object):
 
 	def showHelp(self, session):
 		pass
+
+	def __addExtraArgs(self, notifier, extra_args):
+		self.extra_args.append((notifier, extra_args))
+
+	def __removeExtraArgs(self, notifier):
+		for i in range(len(self.extra_args)):
+			if self.extra_args[i][0] == notifier:
+				del self.extra_args[i]
+
+	def __getExtraArgs(self, notifier):
+		for extra_arg in self.extra_args:
+			if extra_arg[0] == notifier:
+				return extra_arg[1]
 
 
 KEY_LEFT = 0
