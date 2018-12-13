@@ -19,6 +19,7 @@ try: # for reading the current transport stream (SatfinderExtra)
 	from Plugins.SystemPlugins.AutoBouquetsMaker.scanner import dvbreader
 	from Components.Sources.StaticText import StaticText
 	from Components.ScrollLabel import ScrollLabel
+	from Components.Label import Label
 	import time
 	import datetime
 	import thread
@@ -133,7 +134,7 @@ class Satfinder(ScanSetup, ServiceScan):
 				self.pls_code_memory = self.scan_sat.pls_code.value
 				self.scan_sat.is_id.value = eDVBFrontendParametersSatellite.No_Stream_Id_Filter
 				self.scan_sat.pls_mode.value = eDVBFrontendParametersSatellite.PLS_Gold
-				self.scan_sat.pls_code.value = 0
+				self.scan_sat.pls_code.value = eDVBFrontendParametersSatellite.PLS_Default_Gold_Code
 			self.createSetup()
 			self.retune()
 
@@ -186,7 +187,7 @@ class Satfinder(ScanSetup, ServiceScan):
 					else:
 						self.scan_sat.is_id.value = eDVBFrontendParametersSatellite.No_Stream_Id_Filter
 						self.scan_sat.pls_mode.value = eDVBFrontendParametersSatellite.PLS_Gold
-						self.scan_sat.pls_code.value = 0
+						self.scan_sat.pls_code.value = eDVBFrontendParametersSatellite.PLS_Default_Gold_Code
 			elif self.tuning_type.value == "predefined_transponder":
 				self.updatePreDefTransponders()
 				self.preDefTransponderEntry = getConfigListEntry(_("Transponder"), self.preDefTransponders)
@@ -816,27 +817,45 @@ class SatfinderExtra(Satfinder):
 	def keyReadServices(self):
 		if not self.serviceList:
 			return
-
+		tv = [1, 17, 22, 25]
+		radio = [2, 10]
+		green = "\c0088??88" # FTA tv
+		red = "\c00??8888" # encrypted tv
+		yellow = "\c00????00" # data/interactive/catch-all/etc
+		blue = "\c007799??" # radio
+		no_colour = "\c00??????"
 		out = []
-		out.append("%s:" % _("Channels"))
+		legend = "%s%s%s:  %s%s%s  %s%s%s  %s%s%s  %s%s%s\n\n%s%s%s\n" % (no_colour, _("Key"), no_colour, green, _("FTA TV"), no_colour, red, _("Encrypted TV"), no_colour, blue, _("Radio"), no_colour, yellow, _("Other"), no_colour, no_colour, _("Channels"), no_colour)
+#		out.append("%s%s%s:" % (no_colour, _("Channels"), no_colour))
 		for service in self.serviceList:
-			out.append("- %s" % service["service_name"])
+			fta = "free_ca" in service and service["free_ca"] == 0
+			if service["service_type"] in radio:
+				colour = blue
+			elif service["service_type"] not in tv: # data/interactive/etc
+				colour = yellow
+			elif fta:
+				colour = green
+			else:
+				colour = red
+			out.append("- %s%s%s" % (colour, service["service_name"], no_colour))
 
-		self.session.open(ServicesFound, "\n".join(out))
+		self.session.open(ServicesFound, "\n".join(out), legend)
 
 class ServicesFound(Screen):
 	skin = """
-		<screen name="ServicesFound" position="center,center" size="600,500">
-			<widget name="servicesfound" position="0,0" size="600,440" zPosition="10" font="Regular;21" transparent="1" halign="left" valign="top"/>
-			<ePixmap pixmap="skin_default/buttons/red.png" position="10,460" size="140,40" alphatest="on" />
-			<widget render="Label" source="key_red" position="10,460" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" />
+		<screen name="ServicesFound" position="center,center" size="600,570">
+			<widget name="legend" position="0,0" size="590,80" zPosition="10" font="Regular;21" transparent="1"/>
+			<widget name="servicesfound" position="0,85" size="590,425" zPosition="10" font="Regular;21" transparent="1"/>
+			<ePixmap pixmap="skin_default/buttons/red.png" position="10,525" size="140,40" alphatest="on" />
+			<widget render="Label" source="key_red" position="10,500" zPosition="1" size="140,25" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
 		</screen>"""
 
-	def __init__(self, session, text):
+	def __init__(self, session, text, legend):
 		Screen.__init__(self, session)
 		self.setTitle(_("Information"))
 
 		self["key_red"] = StaticText(_("Close"))
+		self["legend"] = Label(legend)
 		self["servicesfound"] = ScrollLabel(text)
 
 		self["actions"] = ActionMap(["WizardActions", "ColorActions"],

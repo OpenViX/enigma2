@@ -96,9 +96,9 @@ void eDVBFrontendParametersSatellite::set(const S2SatelliteDeliverySystemDescrip
 	}
 	else // default DVB-S2 physical layer scrambling sequence of index n = 0 is used
 	{
-		is_id = NO_STREAM_ID_FILTER;
+		is_id = eDVBFrontendParametersSatellite::No_Stream_Id_Filter;
 		pls_mode = eDVBFrontendParametersSatellite::PLS_Gold;
-		pls_code = 0;
+		pls_code = eDVBFrontendParametersSatellite::PLS_Default_Gold_Code;
 	}
 }
 
@@ -126,9 +126,9 @@ void eDVBFrontendParametersSatellite::set(const SatelliteDeliverySystemDescripto
 		modulation = Modulation_QPSK;
 	}
 	rolloff = descriptor.getRollOff();
-	is_id = NO_STREAM_ID_FILTER;
+	is_id = eDVBFrontendParametersSatellite::No_Stream_Id_Filter;
 	pls_mode = eDVBFrontendParametersSatellite::PLS_Gold;
-	pls_code = 0;
+	pls_code = eDVBFrontendParametersSatellite::PLS_Default_Gold_Code;
 	if (system == System_DVB_S2)
 	{
 		eDebug("[eDVBFrontendParametersSatellite] SAT DVB-S2 freq %d, %s, pos %d, sr %d, fec %d, modulation %d, rolloff %d, is_id %d, pls_mode %d, pls_code %d",
@@ -1076,7 +1076,7 @@ void eDVBFrontend::calculateSignalQuality(int snr, int &signalquality, int &sign
 	{
 		ret = (snr * 240) >> 8;
 	}
-	else if (strstr(m_description, "BCM4506") || strstr(m_description, "BCM4505") || strstr(m_description, "BCM45208") || strstr(m_description, "BCM45308"))
+	else if (strstr(m_description, "BCM4506") || strstr(m_description, "BCM4505") || strstr(m_description, "BCM45208") || strstr(m_description, "BCM45308") || strstr(m_description, "BCM4506 (internal)") || strstr(m_description, "BCM73625 (G3)"))
 	{
 		ret = (snr * 100) >> 8;
 	}
@@ -1110,9 +1110,13 @@ void eDVBFrontend::calculateSignalQuality(int snr, int &signalquality, int &sign
 	{
 		ret = (int)((((double(snr) / (65535.0 / 100.0)) * 0.28) - 10.0) * 100);
 	}
-	else if (!strcmp(m_description, "DVB-S2 NIM(45208 FBC)"))
+	else if (!strcmp(m_description, "DVB-S2 NIM(45208 FBC)") || !strcmp(m_description, "DVB-S2 NIM(45308 FBC)"))
 	{
 		ret = (int)((((double(snr) / (65535.0 / 100.0)) * 0.1950) - 1.0000) * 100);
+	}
+	else if (!strcmp(m_description, "DVB-C NIM(3128 FBC)"))
+	{
+		ret = (int)(snr / 17);
 	}
 	else if (!strcmp(m_description, "Genpix"))
 	{
@@ -1201,7 +1205,12 @@ void eDVBFrontend::calculateSignalQuality(int snr, int &signalquality, int &sign
 				break;
 		}
 	}
-	else if (!strncmp(m_description, "Si216", 5)) // New models with SI tuners
+	else if (!strncmp(m_description, "Si2166D", 7)) // SF8008 S2
+	{
+		ret = snr;
+		sat_max = 1620;
+	}
+	else if (!strncmp(m_description, "Si216", 5)) //  New models with SI tuners
 	{
 		ret = snr;
 	}
@@ -2712,7 +2721,7 @@ int eDVBFrontend::isCompatibleWith(ePtr<iDVBFrontendParameters> &feparm)
 		{
 			return 0;
 		}
-		bool multistream = (static_cast<unsigned int>(parm.is_id) != NO_STREAM_ID_FILTER || (parm.pls_code & 0x3FFFF) != 0 ||
+		bool multistream = (static_cast<unsigned int>(parm.is_id) != NO_STREAM_ID_FILTER || (parm.pls_code & 0x3FFFF) != eDVBFrontendParametersSatellite::PLS_Default_Gold_Code ||
 			(parm.pls_mode & 3) != eDVBFrontendParametersSatellite::PLS_Gold);
 		// eDebug("[eDVBFrontend] isCompatibleWith system %d is_id %d pls_code %d pls_mode %d is_multistream %d",
 			// parm.system, parm.is_id, parm.pls_code, parm.pls_mode, is_multistream());
