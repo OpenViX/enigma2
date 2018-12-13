@@ -721,18 +721,18 @@ class EPGSelection(Screen, HelpableScreen):
 				mepg_config_initialized = True
 			use_time = config.misc.prev_mepg_time
 		elif self.type == EPG_TYPE_GRAPH:
-			use_time = epgselection.graph_prevtime
+			use_time = config.epgselection.graph_prevtime
 		elif self.type == EPG_TYPE_INFOBARGRAPH:
-			use_time = epgselection.infobar_prevtime
+			use_time = config.epgselection.infobar_prevtime
 		if use_time:
 			self.session.openWithCallback(self.onDateTimeInputClosed, TimeDateInput, use_time)
 
 	def onDateTimeInputClosed(self, ret):
 		if len(ret) > 1:
 			if ret[0]:
+				self.ask_time = ret[1]
 				if self.type == EPG_TYPE_MULTI:
-					self.ask_time = ret[1]
-					self['list'].fillMultiEPG(self.services, ret[1])
+					self['list'].fillMultiEPG(self.services, self.ask_time)
 				elif self.type == EPG_TYPE_GRAPH or self.type == EPG_TYPE_INFOBARGRAPH:
 					now = time() - int(config.epg.histminutes.value) * SECS_IN_MIN
 					if self.type == EPG_TYPE_GRAPH:
@@ -740,7 +740,9 @@ class EPGSelection(Screen, HelpableScreen):
 					elif self.type == EPG_TYPE_INFOBARGRAPH:
 						self.ask_time -= self.ask_time % (int(config.epgselection.infobar_roundto.value) * SECS_IN_MIN)
 					l = self['list']
-					l.fillGraphEPG(None, self.ask_time)
+					# place the entered time halfway across the grid
+					l.setTimeFocus(self.ask_time)
+					l.fillGraphEPG(None, self.ask_time - l.getTimeEpoch() * SECS_IN_MIN / 2)
 					self.moveTimeLines(True)
 		if self.eventviewDialog and (self.type == EPG_TYPE_INFOBAR or self.type == EPG_TYPE_INFOBARGRAPH):
 			self.infoKeyPressed(True)
@@ -1381,7 +1383,7 @@ class EPGSelection(Screen, HelpableScreen):
 				timeperiod = int(tp_var.value)
 				if timeperiod > 60:
 					timeperiod -= 30
-					self['list'].setEpoch(timeperiod)
+					self['list'].setTimeEpoch(timeperiod)
 					tp_var.setValue(str(timeperiod))
 					self.moveTimeLines()
 			elif number == 2:
@@ -1390,7 +1392,7 @@ class EPGSelection(Screen, HelpableScreen):
 				timeperiod = int(tp_var.value)
 				if timeperiod < 300:
 					timeperiod += 30
-					self['list'].setEpoch(timeperiod)
+					self['list'].setTimeEpoch(timeperiod)
 					tp_var.setValue(str(timeperiod))
 					self.moveTimeLines()
 			elif number == 4:
