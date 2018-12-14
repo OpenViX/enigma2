@@ -174,6 +174,7 @@ class Satfinder(ScanSetup, ServiceScan):
 								self.list.append(getConfigListEntry("   " + _('Input Stream ID'), self.scan_sat.is_id))
 								self.list.append(getConfigListEntry("   " + _('PLS Mode'), self.scan_sat.pls_mode))
 								self.list.append(getConfigListEntry("   " + _('PLS Code'), self.scan_sat.pls_code))
+							self.list.append(getConfigListEntry("   " + _('T2MI PLP ID'), self.scan_sat.t2mi_plp_id))
 						else:
 							self.scan_sat.is_id.value = eDVBFrontendParametersSatellite.No_Stream_Id_Filter
 							self.scan_sat.pls_mode.value = eDVBFrontendParametersSatellite.PLS_Gold
@@ -276,6 +277,7 @@ class Satfinder(ScanSetup, ServiceScan):
 			self.scan_sat.fec_s2, self.scan_sat.fec, self.scan_sat.modulation,
 			self.scan_sat.rolloff, self.scan_sat.system,
 			self.scan_sat.is_id, self.scan_sat.pls_mode, self.scan_sat.pls_code,
+			self.scan_sat.t2mi_plp_id,
 			self.scan_ter.channel, self.scan_ter.frequency, self.scan_ter.inversion,
 			self.scan_ter.bandwidth, self.scan_ter.fechigh, self.scan_ter.feclow,
 			self.scan_ter.modulation, self.scan_ter.transmission,
@@ -432,7 +434,8 @@ class Satfinder(ScanSetup, ServiceScan):
 					self.scan_sat.pilot.value,
 					self.scan_sat.is_id.value,
 					self.scan_sat.pls_mode.value,
-					self.scan_sat.pls_code.value)
+					self.scan_sat.pls_code.value,
+					self.scan_sat.t2mi_plp_id.value)
 				self.tuner.tune(transponder)
 				self.transponder = transponder
 			elif self.tuning_type.value == "predefined_transponder":
@@ -475,7 +478,8 @@ class Satfinder(ScanSetup, ServiceScan):
 				self.transponder[9], # pilot
 				self.transponder[10],# input stream id
 				self.transponder[11],# pls mode
-				self.transponder[12] # pls code
+				self.transponder[12],# pls code
+				self.transponder[13] # t2mi_plp_id
 			)
 		elif nimmanager.nim_slots[int(self.satfinder_scan_nims.value)].isCompatible("DVB-T"):
 			parm = buildTerTransponder(
