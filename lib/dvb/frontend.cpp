@@ -131,7 +131,7 @@ void eDVBFrontendParametersSatellite::set(const SatelliteDeliverySystemDescripto
 	is_id = eDVBFrontendParametersSatellite::No_Stream_Id_Filter;
 	pls_mode = eDVBFrontendParametersSatellite::PLS_Gold;
 	pls_code = eDVBFrontendParametersSatellite::PLS_Default_Gold_Code;
-	t2mi_plp_id = eDVBFrontendParametersSatellite::No_T2MI_PLP_Id
+	t2mi_plp_id = eDVBFrontendParametersSatellite::No_T2MI_PLP_Id;
 	if (system == System_DVB_S2)
 	{
 		eDebug("[eDVBFrontendParametersSatellite] SAT DVB-S2 freq %d, %s, pos %d, sr %d, fec %d, modulation %d, rolloff %d, is_id %d, pls_mode %d, pls_code %d t2mi_plp_id %d",
