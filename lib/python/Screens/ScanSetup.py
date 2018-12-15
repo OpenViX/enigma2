@@ -695,6 +695,7 @@ class ScanSetup(ConfigListScreen, Screen, CableTransponderSearchSupport, Terrest
 		self.TerrestrialCompleteEntry = None
 		self.is_id_boolEntry = None
 		self.t2mi_plp_id_boolEntry = None
+		indent = "- "
 		nim = nimmanager.nim_slots[index_to_scan]
 		if self.DVB_type.value == "DVB-S":
 			self.typeOfScanEntry = getConfigListEntry(_("Type of scan"), self.scan_type)
@@ -746,9 +747,9 @@ class ScanSetup(ConfigListScreen, Screen, CableTransponderSearchSupport, Terrest
 						self.is_id_boolEntry = getConfigListEntry(_('Transport Stream Type'), self.scan_sat.is_id_bool)
 						self.list.append(self.is_id_boolEntry)
 						if self.scan_sat.is_id_bool.value:
-							self.list.append(getConfigListEntry(_('Input Stream ID'), self.scan_sat.is_id))
-							self.list.append(getConfigListEntry(_('PLS Mode'), self.scan_sat.pls_mode))
-							self.list.append(getConfigListEntry(_('PLS Code'), self.scan_sat.pls_code))
+							self.list.append(getConfigListEntry(indent + _('Input Stream ID'), self.scan_sat.is_id))
+							self.list.append(getConfigListEntry(indent + _('PLS Mode'), self.scan_sat.pls_mode))
+							self.list.append(getConfigListEntry(indent + _('PLS Code'), self.scan_sat.pls_code))
 					else:
 						self.scan_sat.is_id.value = eDVBFrontendParametersSatellite.No_Stream_Id_Filter
 						self.scan_sat.pls_mode.value = eDVBFrontendParametersSatellite.PLS_Gold
@@ -756,7 +757,7 @@ class ScanSetup(ConfigListScreen, Screen, CableTransponderSearchSupport, Terrest
 					self.t2mi_plp_id_boolEntry = getConfigListEntry(_('T2MI PLP'), self.scan_sat.t2mi_plp_id_bool)
 					self.list.append(self.t2mi_plp_id_boolEntry)
 					if self.scan_sat.t2mi_plp_id_bool.value:
-						self.list.append(getConfigListEntry(_('T2MI PLP ID'), self.scan_sat.t2mi_plp_id))
+						self.list.append(getConfigListEntry(indent + _('T2MI PLP ID'), self.scan_sat.t2mi_plp_id))
 			elif self.scan_type.value == "predefined_transponder" and self.satList[index_to_scan]:
 				self.updateSatList()
 				self.preDefSatList = getConfigListEntry(_('Satellite'), self.scan_satselection[index_to_scan])
