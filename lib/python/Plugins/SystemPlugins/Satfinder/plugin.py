@@ -39,6 +39,7 @@ class Satfinder(ScanSetup, ServiceScan):
 		self.systemEntryTerr = None
 		self.frontend = None
 		self.is_id_boolEntry = None
+		self.t2mi_plp_id_boolEntry = None
 		ScanSetup.__init__(self, session)
 		self.setTitle(_("Signal Finder"))
 		self["Frontend"] = FrontendStatus(frontend_source = lambda : self.frontend, update_interval = 100)
@@ -118,7 +119,13 @@ class Satfinder(ScanSetup, ServiceScan):
 				self.scan_sat.pls_mode.value = eDVBFrontendParametersSatellite.PLS_Gold
 				self.scan_sat.pls_code.value = eDVBFrontendParametersSatellite.PLS_Default_Gold_Code
 			self.createSetup()
-
+		elif cur == self.t2mi_plp_id_boolEntry:
+			if self.t2mi_plp_id_boolEntry[1].value:
+				self.scan_sat.t2mi_plp_id.value = 0 if self.t2mi_plp_id_memory < 0 else self.t2mi_plp_id_memory
+			else:
+				self.t2mi_plp_id_memory = self.scan_sat.t2mi_plp_id.value
+				self.scan_sat.t2mi_plp_id.value = eDVBFrontendParametersSatellite.No_T2MI_PLP_Id
+			self.createSetup()
 		else:
 			if cur == self.satEntry:
 				self.preDefTransponders = None
@@ -179,6 +186,10 @@ class Satfinder(ScanSetup, ServiceScan):
 							self.scan_sat.is_id.value = eDVBFrontendParametersSatellite.No_Stream_Id_Filter
 							self.scan_sat.pls_mode.value = eDVBFrontendParametersSatellite.PLS_Gold
 							self.scan_sat.pls_code.value = eDVBFrontendParametersSatellite.PLS_Default_Gold_Code
+						self.t2mi_plp_id_boolEntry = getConfigListEntry(_('T2MI PLP'), self.scan_sat.t2mi_plp_id_bool)
+						self.list.append(self.t2mi_plp_id_boolEntry)
+						if self.scan_sat.t2mi_plp_id_bool.value:
+							self.list.append(getConfigListEntry(_('T2MI PLP ID'), self.scan_sat.t2mi_plp_id))
 				elif self.tuning_type.value == "predefined_transponder":
 					if self.preDefTransponders is None:
 						self.updatePreDefTransponders()
