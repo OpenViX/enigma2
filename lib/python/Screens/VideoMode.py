@@ -137,25 +137,42 @@ class VideoSetup(Screen, ConfigListScreen):
 					self.list.append(getConfigListEntry(_("Auto scart switching"), config.av.vcrswitch, _("When enabled, your receiver will detect activity on the VCR SCART input.")))
 
 		if SystemInfo["havecolorspace"]:
-			self.list.append(getConfigListEntry(_("HDMI Colorspace"), config.av.hdmicolorspace,_("This option allows you to change the Colorspace from Auto to RGB")))
+			self.list.append(getConfigListEntry(_("HDMI Colorspace"), config.av.hdmicolorspace,_("Change the Colorspace from Auto to RGB")))
 
 		if SystemInfo["havecolorimetry"]:
-			self.list.append(getConfigListEntry(_("HDMI Colorimetry"), config.av.hdmicolorimetry,_("This option allows you to change the Colorimetry for HDR")))
+			self.list.append(getConfigListEntry(_("HDMI Colorimetry"), config.av.hdmicolorimetry,_("Change the Colorimetry for HDR")))
 
 		if SystemInfo["havehdmicolordepth"]:
-			self.list.append(getConfigListEntry(_("HDMI Colordepth"), config.av.hdmicolordepth,_("This option allows you to change the Colordepth for UHD")))
+			self.list.append(getConfigListEntry(_("HDMI Colordepth"), config.av.hdmicolordepth,_("Change the Colordepth for UHD")))
+
+		if SystemInfo["havehdmihdrtype"]:
+			self.list.append(getConfigListEntry(_("HDMI HDR Type"), config.av.hdmihdrtype,_("Enable or disable to force HDR Modes for UHD")))
+
+		if SystemInfo["HDRSupport"]:
+			self.list.append(getConfigListEntry(_("HLG Support"), config.av.hlg_support,_("Enable or disable to force HLG Modes for UHD")))
+			self.list.append(getConfigListEntry(_("HDR10 Support"), config.av.hdr10_support,_("Enable or disable to force HDR10 Modes for UHD")))
+			self.list.append(getConfigListEntry(_("Allow 12bit"), config.av.allow_12bit,_("Enable or disable the 12 Bit Color Mode")))
+			self.list.append(getConfigListEntry(_("Allow 10bit"), config.av.allow_10bit,_("Enable or disable the 10 Bit Color Mode")))
 
 		if level >= 1:
+			if SystemInfo["CanPcmMultichannel"]:
+				self.list.append(getConfigListEntry(_("PCM Multichannel"), config.av.pcm_multichannel, _("Choose whether multi channel sound tracks should be output as PCM.")))
 			if SystemInfo["CanDownmixAC3"]:
 				self.list.append(getConfigListEntry(_("AC3 downmix"), config.av.downmix_ac3, _("Choose whether multi channel ac3 sound tracks should be downmixed to stereo.")))
 			if SystemInfo["CanDownmixDTS"]:
 				self.list.append(getConfigListEntry(_("DTS downmix"), config.av.downmix_dts, _("Choose whether multi channel dts sound tracks should be downmixed to stereo.")))
-			if SystemInfo["CanDownmixAAC"]:
+			if SystemInfo["CanDownmixAACPlus"]:
+				self.list.append(getConfigListEntry(_("AAC+ downmix"), config.av.downmix_aacplus, _("Choose whether multi channel aac+ sound tracks should be downmixed to stereo.")))
+			elif SystemInfo["CanDownmixAAC"]:
 				self.list.append(getConfigListEntry(_("AAC downmix"), config.av.downmix_aac, _("Choose whether multi channel aac sound tracks should be downmixed to stereo.")))
+			if SystemInfo["CanAC3Transcode"]:
+				self.list.append(getConfigListEntry(_("AC3 transcoding"), config.av.transcodeac3plus, None))
 			if SystemInfo["CanAACTranscode"]:
 				self.list.append(getConfigListEntry(_("AAC transcoding"), config.av.transcodeaac, _("Choose whether AAC sound tracks should be transcoded.")))
-			if SystemInfo["CanPcmMultichannel"]:
-				self.list.append(getConfigListEntry(_("PCM Multichannel"), config.av.pcm_multichannel, _("Choose whether multi channel sound tracks should be output as PCM.")))
+			if SystemInfo["CanDTSHD"]:
+				self.list.append(getConfigListEntry(_("DTS-HD HR/DTS-HD MA/DTS"), config.av.dtshd, ("Choose whether multi channel DTSHD sound tracks should be downmixed or transcoded..")))
+			if SystemInfo["CanWMAPRO"]:
+				self.list.append(getConfigListEntry(_("WMA Pro downmix"), config.av.wmapro, _("Choose whether WMA Pro sound tracks should be downmixed.")))
 			self.list.extend((
 				getConfigListEntry(_("General AC3 delay"), config.av.generalAC3delay, _("This option configures the general audio delay of Dolby Digital sound tracks.")),
 				getConfigListEntry(_("General PCM delay"), config.av.generalPCMdelay, _("This option configures the general audio delay of stereo sound tracks."))
