@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-12-09 11:18+0000\n"
-"PO-Revision-Date: 2018-12-10 09:55+0100\n"
+"POT-Creation-Date: 2018-12-22 07:14+0000\n"
+"PO-Revision-Date: 2018-12-22 10:18+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -1008,6 +1008,10 @@ msgstr "-SERVICE FOUT:%d\n"
 msgid "."
 msgstr "."
 
+msgctxt "ButtonSetup help separator"
+msgid "/"
+msgstr "/"
+
 msgid "/s"
 msgstr "/s"
 
@@ -1354,11 +1358,17 @@ msgstr "AAC downmix"
 msgid "AAC transcoding"
 msgstr "AAC transcoding"
 
+msgid "AAC+ downmix"
+msgstr "AAC+ downmix"
+
 msgid "AC3"
 msgstr "AC3"
 
 msgid "AC3 downmix"
 msgstr "AC3 downmix"
+
+msgid "AC3 transcoding"
+msgstr "AC3 transcoding"
 
 msgid "ACQUIRING TSID/ONID"
 msgstr "VERKRIJGT TSID/ONID"
@@ -1657,6 +1667,12 @@ msgstr "Geef een nummer aan de fysieke LNB die u configureert. U kunt deze LNB w
 
 msgid "Allocate unused memory index"
 msgstr "Wijs niet gebruikte geheugen index toe"
+
+msgid "Allow 10bit"
+msgstr "Staat 10bit toe"
+
+msgid "Allow 12bit"
+msgstr "Staat 12bit toe"
 
 msgid "Allow subtitle language to equal audio language"
 msgstr "Ondertiteltaal overeenkomstig aan audiotaal"
@@ -2541,6 +2557,15 @@ msgstr "Pas de herhalings- en vertragingsinstellingen aan?"
 msgid "Change step size"
 msgstr "Wijzig stapgrootte"
 
+msgid "Change the Colordepth for UHD"
+msgstr "Verander de kleurruimte voor UHD"
+
+msgid "Change the Colorimetry for HDR"
+msgstr "Verander de kleurruimte voor HDR"
+
+msgid "Change the Colorspace from Auto to RGB"
+msgstr "Verander de kleurruimte van Auto naar RGB"
+
 msgid "Change timer"
 msgstr "Wijzig timer"
 
@@ -2736,8 +2761,14 @@ msgstr "Stel hier in wat de \"0\"-toets moet doen wanneer PIP actief is."
 msgid "Choose whether AAC sound tracks should be transcoded."
 msgstr "Stel in of AAC-geluid moet worden getranscodeerd."
 
+msgid "Choose whether WMA Pro sound tracks should be downmixed."
+msgstr "Stel in of WMA Pro geluid moet worden gedownmixed."
+
 msgid "Choose whether multi channel aac sound tracks should be downmixed to stereo."
 msgstr "Stel in of meerkanaals aac-geluid moet worden teruggebracht tot stereo."
+
+msgid "Choose whether multi channel aac+ sound tracks should be downmixed to stereo."
+msgstr "Stel in of meerkanaals aac+geluid moet worden teruggebracht tot stereo."
 
 msgid "Choose whether multi channel ac3 sound tracks should be downmixed to stereo."
 msgstr "Stel in of meerkanaals ac3-geluid moet worden teruggebracht tot stereo."
@@ -3500,6 +3531,9 @@ msgstr "DTS"
 msgid "DTS downmix"
 msgstr "DTS downmix"
 
+msgid "DTS-HD HR/DTS-HD MA/DTS"
+msgstr "DTS-HD HR/DTS-HD MA/DTS"
+
 #
 msgid "DUAL LAYER DVD"
 msgstr "Dubbellaags DVD"
@@ -4161,6 +4195,9 @@ msgstr "Bezig met downloaden"
 msgid "Downloading plugin information. Please wait..."
 msgstr "Haalt plugininformatie op. Even wachten..."
 
+msgid "Downmix"
+msgstr "Downmix"
+
 msgid "Drama"
 msgstr "Drama"
 
@@ -4393,6 +4430,21 @@ msgstr "Verplaatsmodus inschakelen"
 msgid "Enable multiple bouquets"
 msgstr "Meerdere favorietenlijsten toestaan"
 
+msgid "Enable or disable the 10 Bit Color Mode"
+msgstr "Schakel 10bit kleurmodus in of uit"
+
+msgid "Enable or disable the 12 Bit Color Mode"
+msgstr "Schakel 12bit kleurmodus in of uit"
+
+msgid "Enable or disable to force HDR Modes for UHD"
+msgstr "Schakel forceren HDR modus voor UHD in of uit"
+
+msgid "Enable or disable to force HDR10 Modes for UHD"
+msgstr "Schakel forceren HDR10 modus voor UHD in of uit"
+
+msgid "Enable or disable to force HLG Modes for UHD"
+msgstr "Schakel forceren HGL modus voor UHD in of uit"
+
 msgid "Enable panic button"
 msgstr "Paniektoets gebruiken"
 
@@ -4419,6 +4471,9 @@ msgstr "Maakt het mogelijk de tuners van een remote E2-STB te gebruiken, als gee
 
 msgid "Enabled"
 msgstr "Ingeschakeld"
+
+msgid "Encrypted TV"
+msgstr "Gecodeerde Tv"
 
 msgid "Encrypted: "
 msgstr "Gecodeerd: "
@@ -4827,6 +4882,9 @@ msgstr "FLASH"
 #, python-format
 msgid "FP version:\t%s"
 msgstr "FP-versie:\t%s"
+
+msgid "FTA TV"
+msgstr "FTA TV"
 
 msgid "FTP"
 msgstr "FTP"
@@ -5323,11 +5381,17 @@ msgstr "HDMI kleurruimte"
 msgid "HDMI Colorspace"
 msgstr "HDMI kleurruimte"
 
+msgid "HDMI HDR Type"
+msgstr "HDMI HDR type"
+
 msgid "HDMIin"
 msgstr "HDMI-in"
 
 msgid "HDR, 12bit 4:2:0/4:2:2, no PIP"
 msgstr "HDR, 12bit 4:2:0/4:2:2, geen PIP"
+
+msgid "HDR10 Support"
+msgstr "HDR10 ondersteuning"
 
 msgid "HELP"
 msgstr "HELP"
@@ -5337,6 +5401,9 @@ msgstr "HH:mm"
 
 msgid "HH:mm:ss"
 msgstr "HH:mm:ss"
+
+msgid "HLG Support"
+msgstr "HLG ondersteuning"
 
 msgid "Haiti"
 msgstr "Haiti"
@@ -6060,6 +6127,9 @@ msgstr "Kernel:\t%s\n"
 #, python-format
 msgid "Kernel: %s"
 msgstr "Kernel: %s"
+
+msgid "Key"
+msgstr "Sleutel"
 
 msgid "Keyboard"
 msgstr "Toetsenbord"
@@ -7612,6 +7682,9 @@ msgstr "Ouderlijk toezicht aanbevolen"
 
 msgid "Parental control"
 msgstr "Kinderslot"
+
+msgid "Passthrough"
+msgstr "Passthrough"
 
 msgid "Password"
 msgstr "Wachtwoord"
@@ -11321,15 +11394,6 @@ msgstr "Met deze instelling kunt u de groene kleuren in het beeld versterken."
 msgid "This option allows you to bypass HDMI EDID check"
 msgstr "U kunt de HDMI EDID controle omzeilen"
 
-msgid "This option allows you to change the Colordepth for UHD"
-msgstr "Met deze optie verandert u de kleurruimte voor UHD"
-
-msgid "This option allows you to change the Colorimetry for HDR"
-msgstr "Met deze optie verandert u de kleurruimte voor HDR"
-
-msgid "This option allows you to change the Colorspace from Auto to RGB"
-msgstr "Met deze optie verandert u de kleurruimte van Auto naar RGB"
-
 msgid "This option allows you to change the virtual loudspeaker position."
 msgstr "Met deze optie bepaalt u de virtuele luidsprekeropstelling."
 
@@ -12453,6 +12517,9 @@ msgstr "WEP"
 msgid "WLAN connection"
 msgstr "WLAN verbinding"
 
+msgid "WMA Pro downmix"
+msgstr "WMA Pro downmix"
+
 msgid "WPA"
 msgstr "WPA"
 
@@ -13496,6 +13563,18 @@ msgstr "bevestigd"
 msgid "connected"
 msgstr "verbonden"
 
+msgid "controlled by HDMI"
+msgstr "Beheerd door HDMI"
+
+msgid "convert to AC3"
+msgstr "Converteer naar AC3"
+
+msgid "convert to DTS"
+msgstr "Converteer naar DTS"
+
+msgid "convert to multi-channel PCM"
+msgstr "Convert naar meerkanaals PCM"
+
 msgid "cooking"
 msgstr "koken"
 
@@ -13555,6 +13634,9 @@ msgstr "documentaire"
 
 msgid "documentary (general)"
 msgstr "documentaire (algemeen)"
+
+msgid "dolby"
+msgstr "Dolby"
 
 msgid "don't descramble, record ecm"
 msgstr "niet decoderen, neem ecm op"
@@ -13661,6 +13743,9 @@ msgstr "extensies."
 msgid "extra wide"
 msgstr "extra breed"
 
+msgid "extrawide"
+msgstr "extra breed"
+
 msgid "failed"
 msgstr "mislukt"
 
@@ -13699,6 +13784,12 @@ msgstr "volks/traditionele muziek"
 
 msgid "football/soccer"
 msgstr "voetbal/rugby"
+
+msgid "force disabled"
+msgstr "Geforceerd gedeactiveerd"
+
+msgid "force enabled"
+msgstr "Geforceerd geactiveerd"
 
 msgid "foreign countries/expeditions"
 msgstr "buitenland/expedities"
@@ -13773,6 +13864,9 @@ msgstr ""
 "is naar het ViX-team verstuurd.\n"
 "Citeer alstublieft"
 
+msgid "hdr10"
+msgstr "HDR10"
+
 msgid "height"
 msgstr "hoogte"
 
@@ -13796,6 +13890,9 @@ msgstr "hh:mmam/pm"
 
 msgid "hide"
 msgstr "verberg"
+
+msgid "hlg"
+msgstr "hlg"
 
 msgid "hops:"
 msgstr "hops:"
@@ -14171,6 +14268,9 @@ msgstr "status"
 msgid "science fiction/fantasy/horror"
 msgstr "science fiction/fantasie/horror"
 
+msgid "sdr"
+msgstr "SDR"
+
 msgid "se"
 msgstr "ZO"
 
@@ -14446,6 +14546,12 @@ msgstr "tot stand-by/herstart"
 
 msgid "updates available."
 msgstr "updates beschikbaar."
+
+msgid "use best / controlled by HDMI"
+msgstr "use best / controlled by HDMI"
+
+msgid "use_hdmi_cacenter"
+msgstr "use_hdmi_cacenter"
 
 msgid "user defined"
 msgstr "door u gedefinieerd"
@@ -15714,9 +15820,6 @@ msgstr "zapte"
 
 #~ msgid "Show OE Log"
 #~ msgstr "Toon OE-Log"
-
-#~ msgid "Show multi channel EPG"
-#~ msgstr "Toon multi-service EPG"
 
 #~ msgid "Show services beginning with"
 #~ msgstr "Laat zenders zien die beginnen met"
