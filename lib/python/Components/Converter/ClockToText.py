@@ -104,7 +104,7 @@ class ClockToText(Converter, object):
 	@cached
 	def getText(self):
 		time = self.source.time
-		if time is None:
+		if time is None or time < 0:
 			return ""
 
 		if isinstance(time, tuple):
