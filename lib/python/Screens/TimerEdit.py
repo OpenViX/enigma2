@@ -291,7 +291,7 @@ class TimerEditList(Screen):
 	def stopTimerQuestion(self):
 		cur = self["timerlist"].getCurrent()
 		if cur:
-			self.session.openWithCallback(self.removeTimer, MessageBox, _("Do you really want to stop current event and delete timer %s?") % (cur.name))
+			self.session.openWithCallback(self.removeTimer, MessageBox, _("Do you really want to stop current event and delete timer %s?") % cur.name, default = False)
 
 	def removeTimerQuestion(self):
 		cur = self["timerlist"].getCurrent()
