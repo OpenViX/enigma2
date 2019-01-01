@@ -171,7 +171,7 @@ class PositionerSetup(Screen):
 			cur.get("modulation", eDVBFrontendParametersSatellite.Modulation_QPSK),
 			cur.get("rolloff", eDVBFrontendParametersSatellite.RollOff_alpha_0_35),
 			cur.get("pilot", eDVBFrontendParametersSatellite.Pilot_Unknown),
-			cur.get("is_id", 0),
+			cur.get("is_id", eDVBFrontendParametersSatellite.No_Stream_Id_Filter),
 			cur.get("pls_mode", eDVBFrontendParametersSatellite.PLS_Gold),
 			cur.get("pls_code", eDVBFrontendParametersSatellite.PLS_Default_Gold_Code))
 
@@ -1325,7 +1325,7 @@ class TunerScreen(ConfigListScreen, Screen):
 				defaultSat["fec_s2"] = frontendData.get("fec_inner", eDVBFrontendParametersSatellite.FEC_Auto)
 				defaultSat["rolloff"] = frontendData.get("rolloff", eDVBFrontendParametersSatellite.RollOff_alpha_0_35)
 				defaultSat["pilot"] = frontendData.get("pilot", eDVBFrontendParametersSatellite.Pilot_Unknown)
-				defaultSat["is_id"] = frontendData.get("is_id", 0)
+				defaultSat["is_id"] = frontendData.get("is_id", eDVBFrontendParametersSatellite.No_Stream_Id_Filter)
 				defaultSat["pls_mode"] = frontendData.get("pls_mode", eDVBFrontendParametersSatellite.PLS_Gold)
 				defaultSat["pls_code"] = frontendData.get("pls_code", eDVBFrontendParametersSatellite.PLS_Default_Gold_Code)
 			else:

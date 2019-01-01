@@ -313,7 +313,7 @@ int eDVBPMTParser::getProgramInfo(program &program)
 									isaudio = 1;
 									audio.type = audioStream::atLPCM;
 									break;
-								case 0x44524131: /*DRA is "DRA1"*/
+								case 0x44524131: /* DRA is "DRA1" */
 									isaudio = 1;
 									audio.type = audioStream::atDRA;
 									break;
@@ -347,6 +347,24 @@ int eDVBPMTParser::getProgramInfo(program &program)
 								isvideo = 1;
 								video.type = videoStream::vtMPEG4_Part2;
 								break;
+							case EXTENSION_DESCRIPTOR:
+							{
+								ExtensionDescriptor &d = (ExtensionDescriptor&)*desc;
+								switch (d.getExtensionTag())
+								{
+								case 0x15: /* AC-4 descriptor */
+									if (!isvideo && !isaudio)
+									{
+										isaudio = 1;
+										audio.type = audioStream::atAC4;
+									}
+									break;
+								default:
+									eDebug("[eDVBPMTParser] TODO: Fix parsing for Extension descriptor with tag: %d", d.getExtensionTag());
+									break;
+								}
+								break;
+							}
 							default:
 								break;
 							}
@@ -389,13 +407,6 @@ int eDVBPMTParser::getProgramInfo(program &program)
 						prev_audio->rdsPid = es->getPid();
 						eDebug("[eDVBPMTParser] Rds PID %04x detected ? ! ?", prev_audio->rdsPid);
 					}
-					//HEVC 4K for Topway
-					if (!num_descriptors && streamtype == 0xEA && !isvideo && !isaudio)
-					{
-						isvideo = 1;
-						video.type = videoStream::vtH265_HEVC;
-					}		
-					
 					prev_audio = 0;
 					break;
 				}

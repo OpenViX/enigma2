@@ -457,10 +457,7 @@ class InfoBarButtonSetup():
 		selected = self.getKeyFunctions(key)
 		if not selected:
 			return
-		if len(selected) == 1:
-			return selected[0][0]
-		else:
-			return _("ButtonSetup") + " " + tuple(x[0] for x in ButtonSetupKeys if x[1] == key)[0]
+		return pgettext("ButtonSetup help separator", '/').join(sel[0] for sel in selected)
 
 	def ButtonSetupGlobal(self, key):
 		if self.longkeyPressed:
