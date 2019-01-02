@@ -117,6 +117,8 @@ static void parseDVBdate(tm& t, int mjd)
 	t.tm_year = t.tm_year + k;
 	t.tm_mon = t.tm_mon - 1 - k * 12;
 	t.tm_mon--;
+	
+	eDebug("[eDVBLocalTimerHandler] parseDVBdate is %d:%d:%d", t.tm_year, t.tm_mon, t.tm_mday);
 
 	t.tm_isdst =  0;
 	t.tm_gmtoff = 0;
