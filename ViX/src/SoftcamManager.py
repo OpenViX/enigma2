@@ -137,7 +137,9 @@ class VIXSoftcamManager(Screen):
 		self.session.open(Setup, 'vixsoftcammanager', 'SystemPlugins/ViX', self.menu_path, PluginLanguageDomain)
 
 	def selectionChanged(self):
-		cams = listdir('/usr/softcams')
+		cams = []
+		if path.exists('/usr/softcams/'):
+			cams = listdir('/usr/softcams')
 		SystemInfo["CCcamInstalled"] = False
 		SystemInfo["OScamInstalled"] = False
 		for softcam in cams:
@@ -169,7 +171,9 @@ class VIXSoftcamManager(Screen):
 			cb(selcam, desc)
 
 	def changeSelectionState(self):
-		cams = listdir('/usr/softcams')
+		cams = []
+		if path.exists('/usr/softcams/'):
+			cams = listdir('/usr/softcams')
 		if cams:
 			self["list"].changeSelectionState()
 			self.selectedFiles = self["list"].getSelectedList()
@@ -217,7 +221,9 @@ class VIXSoftcamManager(Screen):
 		self.selectionChanged()
 
 	def keyStart(self):
-		cams = listdir('/usr/softcams')
+		cams = []
+		if path.exists('/usr/softcams/'):
+			cams = listdir('/usr/softcams')
 		if cams:
 			self.sel = self['list'].getCurrent()[0]
 			selcam = self.sel[0]
@@ -257,7 +263,9 @@ class VIXSoftcamManager(Screen):
 				self.session.openWithCallback(self.showActivecam, VIXStopCam, self.sel[0])
 
 	def getRestartPID(self):
-		cams = listdir('/usr/softcams')
+		cams = []
+		if path.exists('/usr/softcams/'):
+			cams = listdir('/usr/softcams')
 		if cams:
 			self.sel = self['list'].getCurrent()[0]
 			selectedcam = self.sel[0]
