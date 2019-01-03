@@ -252,7 +252,7 @@ class ChoiceBox(Screen):
 		self["summary_list"].setText(summarytext)
 
 	def displayDescription(self, curpos=0):
-		if len(self.list[curpos][0]) > 2 and isinstance(self.list[curpos][0][2], str):
+		if self.list and len(self.list[curpos][0]) > 2 and isinstance(self.list[curpos][0][2], str):
 			self["description"].setText(self.list[curpos][0][2])
 		else:
 			self["description"].setText("")
