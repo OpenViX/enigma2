@@ -209,7 +209,7 @@ class AudioSelection(Screen, ConfigListScreen):
 					self.f = "/proc/stb/audio/3d_surround_speaker_position_choices"
 					self.choices = self.read_choices(self.f)
 
-				self.settings.surround_3d_speaker = ConfigSelection(choices = choices, default = config.av.surround_3d_speaker.value)
+				self.settings.surround_3d_speaker = ConfigSelection(choices = self.choices, default = config.av.surround_3d_speaker.value)
 				self.settings.surround_3d_speaker.addNotifier(self.change3DSurroundSpeaker)
 				conflist.append(getConfigListEntry(_("3D surround speaker position"), self.settings.surround_3d_speaker, None))
 

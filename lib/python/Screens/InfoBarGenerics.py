@@ -2583,6 +2583,7 @@ class InfoBarExtensions:
 		return _("CCcam Info")
 
 	def getCCcamInfo(self):
+		softcams = []
 		if pathExists('/usr/softcams/'):
 			softcams = os.listdir('/usr/softcams/')
 		for softcam in softcams:
@@ -2595,6 +2596,7 @@ class InfoBarExtensions:
 		return _("OScam Info")
 
 	def getOScamInfo(self):
+		softcams = []
 		if pathExists('/usr/softcams/'):
 			softcams = os.listdir('/usr/softcams/')
 		for softcam in softcams:
