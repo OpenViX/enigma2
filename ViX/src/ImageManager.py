@@ -740,8 +740,8 @@ class ImageBackup(Screen):
 			self.ROOTDEVTYPE = 'tar.bz2'
 			self.ROOTFSTYPE = 'tar.bz2'
 			self.KERNELFSTYPE = 'bin'
-		elif getImageFileSystem().replace(' ','') in ('hdemmc', 'hd-emmc'):	# handle new & old formats
-			self.ROOTDEVTYPE = 'hdemmc'					# HD51 receiver with multiple eMMC partitions in class
+		elif getImageFileSystem().replace(' ','') in ('hdemmc', 'hd-emmc', 'airdigitalemmc'):	# handle new & old formats
+			self.ROOTDEVTYPE = 'hdemmc'					# HD51/H9 receiver with multiple eMMC partitions in class
 			self.ROOTFSTYPE = 'tar.bz2'
 			self.KERNELFSTYPE = 'bin'
 			self.EMMCIMG = "disk.img"
@@ -982,6 +982,18 @@ class ImageBackup(Screen):
 			self.commands.append('touch %s/root.ubi' % self.WORKDIR)
 			self.commands.append('mkfs.ubifs -r %s/root -o %s/root.ubi %s' % (self.TMPDIR, self.WORKDIR, MKUBIFS_ARGS))
 			self.commands.append('ubinize -o %s/rootfs.ubifs %s %s/ubinize.cfg' % (self.WORKDIR, UBINIZE_ARGS, self.WORKDIR))
+			if getMachineBuild()  in ("h9","i55plus"):
+				self.commands.append('echo " "')
+				self.commands.append('echo "' + _("Create:") + " fastboot dump" + '"')
+				self.commands.append("dd if=/dev/mtd0 of=%s/fastboot.bin" % self.WORKDIR)
+				self.commands.append('echo "' + _("Create:") + " bootargs dump" + '"')
+				self.commands.append("dd if=/dev/mtd1 of=%s/bootargs.bin" % self.WORKDIR)
+				self.commands.append('echo "' + _("Create:") + " baseparam dump" + '"')
+				self.commands.append("dd if=/dev/mtd2 of=%s/baseparam.bin" % self.WORKDIR)
+				self.commands.append('echo "' + _("Create:") + " pq_param dump" + '"')
+				self.commands.append("dd if=/dev/mtd3 of=%s/pq_param.bin" % self.WORKDIR)
+				self.commands.append('echo "' + _("Create:") + " logo dump" + '"')
+				self.commands.append("dd if=/dev/mtd4 of=%s/logo.bin" % self.WORKDIR)
 		self.Console.eBatch(self.commands, self.Stage2Complete, debug=False)
 
 	def Stage2Complete(self, extra_args=None):
@@ -1173,6 +1185,14 @@ class ImageBackup(Screen):
 			move('%s/%s' % (self.WORKDIR, self.GB4Krescue), '%s/%s' % (self.MAINDEST, self.GB4Krescue))
 			system('cp -f /usr/share/gpt.bin %s/gpt.bin' %(self.MAINDEST))
 			print '[ImageManager] Stage5: Create: gpt.bin:',self.MODEL
+
+		if getMachineBuild() in ("h9","i55plus"):
+			system('mv %s/fastboot.bin %s/fastboot.bin' %(self.WORKDIR, self.MAINDEST))
+			system('mv %s/pq_param.bin %s/pq_param.bin' %(self.WORKDIR, self.MAINDEST))
+			system('mv %s/bootargs.bin %s/bootargs.bin' %(self.WORKDIR, self.MAINDEST))
+			system('mv %s/baseparam.bin %s/baseparam.bin' %(self.WORKDIR, self.MAINDEST))
+			system('mv %s/logo.bin %s/logo.bin' %(self.WORKDIR, self.MAINDEST))
+
 		fileout = open(self.MAINDEST + '/imageversion', 'w')
 		line = defaultprefix + '-' + getImageType() + '-backup-' + getImageVersion() + '.' + getImageBuild() + '-' + self.BackupDate
 		fileout.write(line)
