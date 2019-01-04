@@ -87,19 +87,18 @@ class About(Screen):
 		AboutText += _("Image:\t%s.%s%s (%s)\n") % (getImageVersion(), getImageBuild(), imageSubBuild, getImageType().title())
 
 		if SystemInfo["canMultiBoot"]:
-			image = GetCurrentImage()
+			slot = image = GetCurrentImage()
+			part = "eMMC slot %s" %slot
 			bootmode = ""
-			part = ""
 			if SystemInfo["canMode12"]:
 				bootmode = "bootmode = %s" %GetCurrentImageMode()
-			if SystemInfo["HasHiSi"]:
+			if SystemInfo["HasSDmmc"]:
+				slot += 1
 				if image != 0:
-					part = "%s%s" %(SystemInfo["canMultiBoot"][2], image*2)
-					image += 1
+					part = "SDC slot %s (%s%s) " %(image, SystemInfo["canMultiBoot"][2], image*2)
 				else:
-					part = "MMC"
-					image += 1
-			AboutText += _("Image Slot:\t%s") % "STARTUP_" + str(image) + " " + part + " " + bootmode + "\n"
+					part = "eMMC slot %s" %slot
+			AboutText += _("Image Slot:\t%s") % "STARTUP_" + str(slot) + "  " + part + " " + bootmode + "\n"
 
 		if getMachineName() in ('ET8500') and path.exists('/proc/mtd'):
 			self.dualboot = self.dualBoot()
@@ -178,6 +177,22 @@ class About(Screen):
 				AboutText += _("Bootloader:\t%s\n") % (bootloader)
 
 		self["AboutScrollLabel"] = ScrollLabel(AboutText)
+
+	def dualBoot(self):
+		rootfs2 = False
+		kernel2 = False
+		f = open("/proc/mtd")
+		self.dualbootL = f.readlines()
+		for x in self.dualbootL:
+			if 'rootfs2' in x:
+				rootfs2 = True
+			if 'kernel2' in x:
+				kernel2 = True
+		f.close()
+		if rootfs2 and kernel2:
+			return True
+		else:
+			return False
 
 	def showTranslationInfo(self):
 		self.session.open(TranslationInfo, self.menu_path)

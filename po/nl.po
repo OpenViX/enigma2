@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-08 22:27+0000\n"
-"PO-Revision-Date: 2018-11-09 17:23+0100\n"
+"POT-Creation-Date: 2018-12-30 08:29+0000\n"
+"PO-Revision-Date: 2018-12-30 10:51+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -1005,6 +1005,13 @@ msgstr "-GEEN SERVICE\n"
 msgid "-SERVICE ERROR:%d\n"
 msgstr "-SERVICE FOUT:%d\n"
 
+msgid "."
+msgstr "."
+
+msgctxt "ButtonSetup help separator"
+msgid "/"
+msgstr "/"
+
 msgid "/s"
 msgstr "/s"
 
@@ -1351,11 +1358,17 @@ msgstr "AAC downmix"
 msgid "AAC transcoding"
 msgstr "AAC transcoding"
 
+msgid "AAC+ downmix"
+msgstr "AAC+ downmix"
+
 msgid "AC3"
 msgstr "AC3"
 
 msgid "AC3 downmix"
 msgstr "AC3 downmix"
+
+msgid "AC3 transcoding"
+msgstr "AC3 transcoding"
 
 msgid "ACQUIRING TSID/ONID"
 msgstr "VERKRIJGT TSID/ONID"
@@ -1654,6 +1667,12 @@ msgstr "Geef een nummer aan de fysieke LNB die u configureert. U kunt deze LNB w
 
 msgid "Allocate unused memory index"
 msgstr "Wijs niet gebruikte geheugen index toe"
+
+msgid "Allow 10bit"
+msgstr "Staat 10bit toe"
+
+msgid "Allow 12bit"
+msgstr "Staat 12bit toe"
 
 msgid "Allow subtitle language to equal audio language"
 msgstr "Ondertiteltaal overeenkomstig aan audiotaal"
@@ -2538,6 +2557,15 @@ msgstr "Pas de herhalings- en vertragingsinstellingen aan?"
 msgid "Change step size"
 msgstr "Wijzig stapgrootte"
 
+msgid "Change the Colordepth for UHD"
+msgstr "Verander de kleurruimte voor UHD"
+
+msgid "Change the Colorimetry for HDR"
+msgstr "Verander de kleurruimte voor HDR"
+
+msgid "Change the Colorspace from Auto to RGB"
+msgstr "Verander de kleurruimte van Auto naar RGB"
+
 msgid "Change timer"
 msgstr "Wijzig timer"
 
@@ -2733,8 +2761,14 @@ msgstr "Stel hier in wat de \"0\"-toets moet doen wanneer PIP actief is."
 msgid "Choose whether AAC sound tracks should be transcoded."
 msgstr "Stel in of AAC-geluid moet worden getranscodeerd."
 
+msgid "Choose whether WMA Pro sound tracks should be downmixed."
+msgstr "Stel in of WMA Pro geluid moet worden gedownmixed."
+
 msgid "Choose whether multi channel aac sound tracks should be downmixed to stereo."
 msgstr "Stel in of meerkanaals aac-geluid moet worden teruggebracht tot stereo."
+
+msgid "Choose whether multi channel aac+ sound tracks should be downmixed to stereo."
+msgstr "Stel in of meerkanaals aac+geluid moet worden teruggebracht tot stereo."
 
 msgid "Choose whether multi channel ac3 sound tracks should be downmixed to stereo."
 msgstr "Stel in of meerkanaals ac3-geluid moet worden teruggebracht tot stereo."
@@ -3231,8 +3265,8 @@ msgstr "Verbinding met de ingestelde FTP-parameters is mislukt. Controleer de in
 msgid "Constellation & FFT mode"
 msgstr "Constellatie & FFT-modus"
 
-msgid "Consult your Unicable device spec sheet for this information."
-msgstr "Kijk in de specificaties van het Unicable apparaat voor deze informatie."
+msgid "Consult your SCR device spec sheet for this information."
+msgstr "Kijk in de specificaties van het SCR-apparaat voor deze informatie."
 
 msgid "Consult your motor's spec sheet for this information, or leave the default setting."
 msgstr "Kijk in de specificaties van uw motor, of gebruik de default waardes."
@@ -3496,6 +3530,9 @@ msgstr "DTS"
 
 msgid "DTS downmix"
 msgstr "DTS downmix"
+
+msgid "DTS-HD HR/DTS-HD MA/DTS"
+msgstr "DTS-HD HR/DTS-HD MA/DTS"
 
 #
 msgid "DUAL LAYER DVD"
@@ -4036,6 +4073,10 @@ msgstr "Wilt u de timer voor \"%s\" verwijderen?"
 msgid "Do you really want to remove your bookmark of %s?"
 msgstr "Weet u zeker dat u het markeerpunt van %s wilt verwijderen?"
 
+#, python-format
+msgid "Do you really want to stop the current recording and delete timer %s?"
+msgstr "Wilt u de huidige opname stoppen en de timer voor %s verwijderen?"
+
 msgid "Do you want to add any additional information ?"
 msgstr "Wilt u informatie toevoegen?"
 
@@ -4157,6 +4198,9 @@ msgstr "Bezig met downloaden"
 
 msgid "Downloading plugin information. Please wait..."
 msgstr "Haalt plugininformatie op. Even wachten..."
+
+msgid "Downmix"
+msgstr "Downmix"
 
 msgid "Drama"
 msgstr "Drama"
@@ -4390,6 +4434,21 @@ msgstr "Verplaatsmodus inschakelen"
 msgid "Enable multiple bouquets"
 msgstr "Meerdere favorietenlijsten toestaan"
 
+msgid "Enable or disable the 10 Bit Color Mode"
+msgstr "Schakel 10bit kleurmodus in of uit"
+
+msgid "Enable or disable the 12 Bit Color Mode"
+msgstr "Schakel 12bit kleurmodus in of uit"
+
+msgid "Enable or disable to force HDR Modes for UHD"
+msgstr "Schakel forceren HDR modus voor UHD in of uit"
+
+msgid "Enable or disable to force HDR10 Modes for UHD"
+msgstr "Schakel forceren HDR10 modus voor UHD in of uit"
+
+msgid "Enable or disable to force HLG Modes for UHD"
+msgstr "Schakel forceren HGL modus voor UHD in of uit"
+
 msgid "Enable panic button"
 msgstr "Paniektoets gebruiken"
 
@@ -4416,6 +4475,9 @@ msgstr "Maakt het mogelijk de tuners van een remote E2-STB te gebruiken, als gee
 
 msgid "Enabled"
 msgstr "Ingeschakeld"
+
+msgid "Encrypted TV"
+msgstr "Gecodeerde Tv"
 
 msgid "Encrypted: "
 msgstr "Gecodeerd: "
@@ -4825,6 +4887,9 @@ msgstr "FLASH"
 msgid "FP version:\t%s"
 msgstr "FP-versie:\t%s"
 
+msgid "FTA TV"
+msgstr "FTA TV"
+
 msgid "FTP"
 msgstr "FTP"
 
@@ -5108,7 +5173,7 @@ msgid "Gabon"
 msgstr "Gabon"
 
 msgid "Galapagos Islands"
-msgstr "Galapagos Islands"
+msgstr "Galapagos ijlanden"
 
 msgid "Gambia"
 msgstr "Gambia"
@@ -5135,16 +5200,16 @@ msgid "Genre"
 msgstr "Genre"
 
 msgid "Georgia"
-msgstr "Georgia"
+msgstr "Georgië"
 
 msgid "German"
 msgstr "Duits"
 
 msgid "Germany"
-msgstr "Germany"
+msgstr "Duitsland"
 
 msgid "Getting Event Info failed!"
-msgstr "Geen programma info gevonden!"
+msgstr "Geen programma-info gevonden!"
 
 msgid "Getting plugin information. Please wait..."
 msgstr "Plugin-gegevens worden opgehaald. Even wachten..."
@@ -5243,7 +5308,7 @@ msgid "Green long"
 msgstr "Lang-groen"
 
 msgid "Greenland"
-msgstr "Greenland"
+msgstr "Groenland"
 
 msgid "Grenada"
 msgstr "Grenada"
@@ -5312,7 +5377,7 @@ msgid "HDMI CEC Setup"
 msgstr "HDMI CEC instellingen"
 
 msgid "HDMI Colordepth"
-msgstr "HDMI-kleurdieote"
+msgstr "HDMI-kleurdiepte"
 
 msgid "HDMI Colorimetry"
 msgstr "HDMI kleurruimte"
@@ -5320,11 +5385,17 @@ msgstr "HDMI kleurruimte"
 msgid "HDMI Colorspace"
 msgstr "HDMI kleurruimte"
 
+msgid "HDMI HDR Type"
+msgstr "HDMI HDR type"
+
 msgid "HDMIin"
 msgstr "HDMI-in"
 
 msgid "HDR, 12bit 4:2:0/4:2:2, no PIP"
 msgstr "HDR, 12bit 4:2:0/4:2:2, geen PIP"
+
+msgid "HDR10 Support"
+msgstr "HDR10 ondersteuning"
 
 msgid "HELP"
 msgstr "HELP"
@@ -5334,6 +5405,9 @@ msgstr "HH:mm"
 
 msgid "HH:mm:ss"
 msgstr "HH:mm:ss"
+
+msgid "HLG Support"
+msgstr "HLG ondersteuning"
 
 msgid "Haiti"
 msgstr "Haiti"
@@ -6057,6 +6131,9 @@ msgstr "Kernel:\t%s\n"
 #, python-format
 msgid "Kernel: %s"
 msgstr "Kernel: %s"
+
+msgid "Key"
+msgstr "Sleutel"
 
 msgid "Keyboard"
 msgstr "Toetsenbord"
@@ -6815,6 +6892,13 @@ msgstr "Multi-EPG"
 msgid "Multiboot"
 msgstr "Multiboot"
 
+msgid "Multiboot ERROR! - no STARTUP in /boot -Please check /etc/fstab for correct boot partition"
+msgstr "Multiboot FOUT! - geen STARTUP in /boot - Check /etc/fstab op correct bootpartitie."
+
+#, python-format
+msgid "Multiboot ERROR! - no STARTUP_%s in /boot - Image may need manual restart"
+msgstr "Multiboot FOUT! - geen STARTUP_%s in /boot - Box moet mogelijk handmatig opnieuw gestart worden."
+
 msgid "Multiboot Image Restart"
 msgstr "Multibootimage herstarten"
 
@@ -7400,8 +7484,8 @@ msgstr "Controle op update"
 msgid "Only active when in standby"
 msgstr "Uitsluitend actief in stand-by"
 
-msgid "Only change this setting if you are using a Unicable device that has been reprogrammed with a custom programmer. For further information check with the person that reprogrammed the device."
-msgstr "Verander deze instelling alleen als u een Unicable apparaat gebruikt dat geprogrammeerd is met een aangepaste 'programmer'. Voor meer informatie overleg met degene die de aanpassing heeft gedaan."
+msgid "Only change this setting if you are using a SCR device that has been reprogrammed with a custom programmer. For further information check with the person that reprogrammed the device."
+msgstr "Verander deze instelling alleen als u een SCR-apparaat gebruikt dat geprogrammeerd is met een aangepaste 'programmer'. Voor meer informatie overleg met degene die de aanpassing heeft gedaan."
 
 msgid "Only extensions."
 msgstr "Alleen extensies."
@@ -7603,6 +7687,9 @@ msgstr "Ouderlijk toezicht aanbevolen"
 msgid "Parental control"
 msgstr "Kinderslot"
 
+msgid "Passthrough"
+msgstr "Passthrough"
+
 msgid "Password"
 msgstr "Wachtwoord"
 
@@ -7683,6 +7770,9 @@ msgstr "PiP"
 
 msgid "Picon"
 msgstr "Picon"
+
+msgid "Picon Width"
+msgstr "Picon breedte"
 
 msgid "Picon and Service Name"
 msgstr "Picon en kanaalnaam"
@@ -9234,8 +9324,8 @@ msgstr "Kies '1.0' voor standaard committed switches, '1.1' voor uncommitted swi
 msgid "Select 'A' or 'B' if your aerial system requires this, otherwise select 'none'. If you are unsure select 'none'."
 msgstr "Kies 'A' of 'B' als uw antenne-installatie dat vereist, anders kiest u 'geen'. Als u het niet zeker weet kiest u 'geen'."
 
-msgid "Select 'Unicable' if this tuner will use a Unicable device. For all other setups select 'FBC automatic'."
-msgstr "Kies 'Unicable' als deze tuner is aangesloten op een Unicable apparaat. Voor alle andere situaties kiest u 'FBC automatisch'."
+msgid "Select 'FBC SCR' if this tuner will connect to a SCR (Unicable/JESS) device. For all other setups select 'FBC automatic'."
+msgstr "Kies 'FBC SCR' als deze tuner is aangesloten op een SCR-apparaat (Unicable/JESS). Voor alle andere situaties kiest u 'FBC automatisch'."
 
 msgid "Select 'band' if using a 'universal' LNB, otherwise consult your LNB spec sheet."
 msgstr "Kies 'band' als u een universele LNB gebruikt. Consulteer de specs van uw LNB."
@@ -9249,8 +9339,8 @@ msgstr "Kies 'polarisatie als u een universele LNB gebruikt. Consulteer de specs
 msgid "Select 'provider' to scan from the predefined list of cable multiplexes. Select 'bands' to only scan certain parts of the spectrum. Select 'steps' to scan in steps of a particular frequency bandwidth."
 msgstr "Kies 'provider' om te scannen vanuit de voorgedefinieerde lijst van kable multiplexen. Kies 'type' om alleen een deel van het spectrum te scannen. Kies 'stappen' om in stappen een bepaald deel van het spectrum te scannen. "
 
-msgid "Select 'yes' if this tuner is connected to the Unicable device through another tuner, otherwise select 'no'."
-msgstr "Kies 'ja' als deze tuner verbonden is met een Unicable apparaat, anders kiest u 'nee'."
+msgid "Select 'yes' if this tuner is connected to the SCR device through another tuner, otherwise select 'no'."
+msgstr "Kies 'ja' als deze tuner verbonden is met een SCR-apparaat, anders kiest u 'nee'."
 
 msgid "Select 'yes' to choose what bands or step sizes will be scanned."
 msgstr "Kies 'ja' om aan te geven welke band of stapgroote gescand zal worden."
@@ -9379,8 +9469,14 @@ msgstr "Selecteer sorteermodus:"
 msgid "Select target folder"
 msgstr "Kies doelmap"
 
-msgid "Select the Unicable channel to be assigned to this tuner. This is a unique value. Be certain that no other device connected to this same Unicable system is allocated to the same Unicable channel."
-msgstr "Kies he Unicable kanaal (SCR) dat is toegewezen aan deze tuner. Stel zeker dat geen enkel ander systeem hetzelfde kanaal gebruikt."
+msgid "Select the User Band channel to be assigned to this tuner. This is an index into the table of frequencies the SCR switch or SCR LNB uses to pass the requested transponder to the tuner."
+msgstr "Kies het gebruikersbandkanaal dat u voor deze tuner wilt gebruiken. Dat is een index in de tabel met frequenties die de SCR-switch of de SCR-LNB gebruikt om de gewenste transponder met de tuner te verbinden."
+
+msgid "Select the User Band frequency to be assigned to this tuner. This is the frequency the SCR switch or SCR LNB uses to pass the requested transponder to the tuner."
+msgstr "Kies de gebruikersbandfrequentie die aan deze tuner moet worden toegekend. Dat is de frequentie die de SCR-switch of de SCR-LNB gebruikt om de gewenste transponder met de tuner te verbinden."
+
+msgid "Select the User Band to be assigned to this tuner. This is an index into the table of frequencies the SCR switch or SCR LNB uses to pass the requested transponder to the tuner."
+msgstr "Kies de gebruikersband die u voor deze tuner wilt gebruiken. Dat is een index in de tabel met frequenties die de SCR-switch of de SCR-LNB gebruikt om de gewenste transponder met de tuner te verbinden."
 
 msgid "Select the character or action under the virtual keyboard cursor"
 msgstr "Selecteer karakter of actie onder de cursor"
@@ -9388,17 +9484,17 @@ msgstr "Selecteer karakter of actie onder de cursor"
 msgid "Select the desired function and click on \"OK\" to assign it. Use \"CH+/-\" to toggle between the lists. Select an assigned function and click on \"OK\" to de-assign it. Use \"Next/Previous\" to change the order of the assigned functions."
 msgstr "Kies de gewenste functie en klik dan op \"OK\" om deze toe te wijzen. Gebruik \"CH+/-\" om te wisselen tussen de kolommen in de lijst. Kies de toegewezen functie en klik op \"OK\" om de toewijzing te verwijderen. Gebruik \"Volgende/Vorige\" om de volgorde van de toegewezen functies te veranderen."
 
-msgid "Select the format of your Unicable device. Choices are 'SCR Unicable' (Unicable I format), or 'SCR JESS' (Unicable II format)."
-msgstr "Kies het format van uw Unicable apparaat. keuzes zijn 'SCR Unicable' (Unicable 1 format), of 'SCR JESS' (Unicable 2 format)."
+msgid "Select the manufacturer of your SCR device. If the manufacturer is not listed, set 'SCR' to 'user defined' and enter the device parameters manually according to its spec sheet."
+msgstr "Kies de fabrikant van uw SCR-apparaat. Als deze niet in de lijst voorkomt, stelt u 'SCR' in op 'door gebruiker gedefinieerd' en geeft u vervolgens de parameters handmatig in c.f. de specs van het apparaat."
 
-msgid "Select the manufacturer of your Unicable device. If the manufacturer is not listed, set 'SCR' to 'user defined' and enter the device parameters manually according to its spec sheet."
-msgstr "Kies de fabrikant van uw Unicable apparaat. Als deze niet in de lijst voorkomt, stelt u 'SCR' in op 'door gebruiker gedefinieerd' en geeft u vervolgens de parameters handmatig in c.f. de specs van het apparaat."
-
-msgid "Select the model number of your Unicable device. If the model number is not listed, set 'SCR' to 'user defined' and enter the device parameters manually according to its spec sheet."
-msgstr "Kies het typenummer van uw Unicable apparaat. Als deze niet in de lijst voorkomt, stelt u 'SCR' in op 'door gebruiker gedefinieerd' en geeft u vervolgens de parameters handmatig in c.f. de specs van het apparaat."
+msgid "Select the model number of your SCR device. If the model number is not listed, set 'SCR' to 'user defined' and enter the device parameters manually according to its spec sheet."
+msgstr "Kies het typenummer van uw SCR-apparaat. Als deze niet in de lijst voorkomt, stelt u 'SCR' in op 'door gebruiker gedefinieerd' en geeft u vervolgens de parameters handmatig in c.f. de specs van het apparaat."
 
 msgid "Select the movie path"
 msgstr "Bepaal het opnamepad"
+
+msgid "Select the protocol used by your SCR device. Choices are 'SCR Unicable' (Unicable), or 'SCR JESS' (JESS, also known as Unicable II)."
+msgstr "Kies het format van uw SCR-apparaat. keuzes zijn 'SCR Unicable' (Unicable) en 'SCR JESS' (JESS, ook bekend als Unicable 2)."
 
 msgid "Select the satellite which is connected to Port-A of your switch. If you are unsure select 'automatic' and the receiver will attempt to determine this for you. If nothing is connected to this port, select 'nothing connected'."
 msgstr "Kies de satelliet die met de A-poort van uw switch verbonden is. Als u niet zeker bent kiest u 'automatisch' waarna de ontvanger zelf zal proberen de juiste waarde te bepalen. Als er niets met deze poort is verbonden, kiest u 'niets verbonden'."
@@ -9424,14 +9520,14 @@ msgstr "Kies de tuner die de gemotoriseerde schotel bestuurt."
 msgid "Select the tuner that this loopthrough depends on."
 msgstr "Kies de tuner waarvan deze doorlus plaats vindt."
 
-msgid "Select the tuner to which the signal cable of the Unicable device is connected."
-msgstr "Kies de tuner die met het Unicable apparaat verbonden is."
+msgid "Select the tuner to which the signal cable of the SCR device is connected."
+msgstr "Kies de tuner die met het SCR-apparaat verbonden is."
 
 msgid "Select the type of LNB/device being used (normally 'Universal'). If your LNB type is not available select 'user defined'."
 msgstr "Kies het type LNB/apparaat dat gebruikt wordt (meestal 'universeel'). Als het juiste type niet beschikbaar is kiest u 'door gebruiker bepaald'."
 
-msgid "Select the type of Unicable device you are using."
-msgstr "Kies het type Unicable dat u gebruikt."
+msgid "Select the type of Single Cable Reception device you are using."
+msgstr "Kies het type Single Cable Reception apparaat dat u gebruikt."
 
 msgid "Select the virtual keyboard locale from a menu"
 msgstr "Selecteer taal uit menu"
@@ -9544,11 +9640,14 @@ msgstr "Kanaalnaam"
 msgid "Service Number and Picon"
 msgstr "Kanaalnummer en picon"
 
+msgid "Service Number and Service Name"
+msgstr "Kanaalnummer en kanaalnaam"
+
 msgid "Service Number, Picon and Service Name"
 msgstr "Kanaalnummer, picon en kanaalnaam"
 
 msgid "Service Title mode"
-msgstr "Alleen kanaalnaam"
+msgstr "Kanaal titel modus"
 
 msgid "Service font size"
 msgstr "Kanaalnaam lettergrootte"
@@ -10041,6 +10140,9 @@ msgid "Show picon background color"
 msgstr "Toon picon-achtergrondkleur"
 
 msgid "Show picons in service list"
+msgstr "Toon picons in opnamelijst"
+
+msgid "Show picons in the movie list."
 msgstr "Toon picons in opnamelijst"
 
 msgid "Show positioner movement"
@@ -11209,6 +11311,12 @@ msgstr "Er zijn minstens %s updates beschikbaar."
 msgid "There are currently no outstanding actions."
 msgstr "Er zijn geen uitstaande acties."
 
+msgid "There are no saved playlists to delete!"
+msgstr "Er zijn geen playlists om te verwijderen!"
+
+msgid "There are no saved playlists to load!"
+msgstr "Er zijn geen playlists om te laden!"
+
 msgid "There are no updates available."
 msgstr "Er zijn momenteel geen updates beschikbaar."
 
@@ -11289,15 +11397,6 @@ msgstr "Met deze instelling kunt u de groene kleuren in het beeld versterken."
 
 msgid "This option allows you to bypass HDMI EDID check"
 msgstr "U kunt de HDMI EDID controle omzeilen"
-
-msgid "This option allows you to change the Colordepth for UHD"
-msgstr "Met deze optie verandert u de kleurruimte voor UHD"
-
-msgid "This option allows you to change the Colorimetry for HDR"
-msgstr "Met deze optie verandert u de kleurruimte voor HDR"
-
-msgid "This option allows you to change the Colorspace from Auto to RGB"
-msgstr "Met deze optie verandert u de kleurruimte van Auto naar RGB"
 
 msgid "This option allows you to change the virtual loudspeaker position."
 msgstr "Met deze optie bepaalt u de virtuele luidsprekeropstelling."
@@ -12422,6 +12521,9 @@ msgstr "WEP"
 msgid "WLAN connection"
 msgstr "WLAN verbinding"
 
+msgid "WMA Pro downmix"
+msgstr "WMA Pro downmix"
+
 msgid "WPA"
 msgstr "WPA"
 
@@ -13465,6 +13567,18 @@ msgstr "bevestigd"
 msgid "connected"
 msgstr "verbonden"
 
+msgid "controlled by HDMI"
+msgstr "Beheerd door HDMI"
+
+msgid "convert to AC3"
+msgstr "Converteer naar AC3"
+
+msgid "convert to DTS"
+msgstr "Converteer naar DTS"
+
+msgid "convert to multi-channel PCM"
+msgstr "Convert naar meerkanaals PCM"
+
 msgid "cooking"
 msgstr "koken"
 
@@ -13524,6 +13638,9 @@ msgstr "documentaire"
 
 msgid "documentary (general)"
 msgstr "documentaire (algemeen)"
+
+msgid "dolby"
+msgstr "Dolby"
 
 msgid "don't descramble, record ecm"
 msgstr "niet decoderen, neem ecm op"
@@ -13630,6 +13747,9 @@ msgstr "extensies."
 msgid "extra wide"
 msgstr "extra breed"
 
+msgid "extrawide"
+msgstr "extra breed"
+
 msgid "failed"
 msgstr "mislukt"
 
@@ -13668,6 +13788,12 @@ msgstr "volks/traditionele muziek"
 
 msgid "football/soccer"
 msgstr "voetbal/rugby"
+
+msgid "force disabled"
+msgstr "Geforceerd gedeactiveerd"
+
+msgid "force enabled"
+msgstr "Geforceerd geactiveerd"
 
 msgid "foreign countries/expeditions"
 msgstr "buitenland/expedities"
@@ -13742,6 +13868,9 @@ msgstr ""
 "is naar het ViX-team verstuurd.\n"
 "Citeer alstublieft"
 
+msgid "hdr10"
+msgstr "HDR10"
+
 msgid "height"
 msgstr "hoogte"
 
@@ -13765,6 +13894,9 @@ msgstr "hh:mmam/pm"
 
 msgid "hide"
 msgstr "verberg"
+
+msgid "hlg"
+msgstr "hlg"
 
 msgid "hops:"
 msgstr "hops:"
@@ -14140,6 +14272,9 @@ msgstr "status"
 msgid "science fiction/fantasy/horror"
 msgstr "science fiction/fantasie/horror"
 
+msgid "sdr"
+msgstr "SDR"
+
 msgid "se"
 msgstr "ZO"
 
@@ -14415,6 +14550,12 @@ msgstr "tot stand-by/herstart"
 
 msgid "updates available."
 msgstr "updates beschikbaar."
+
+msgid "use best / controlled by HDMI"
+msgstr "use best / controlled by HDMI"
+
+msgid "use_hdmi_cacenter"
+msgstr "use_hdmi_cacenter"
 
 msgid "user defined"
 msgstr "door u gedefinieerd"
@@ -15641,6 +15782,9 @@ msgstr "zapte"
 #~ msgid "Select operation:"
 #~ msgstr "Kies bewerking:"
 
+#~ msgid "Select the Unicable channel to be assigned to this tuner. This is a unique value. Be certain that no other device connected to this same Unicable system is allocated to the same Unicable channel."
+#~ msgstr "Kies he Unicable kanaal (SCR) dat is toegewezen aan deze tuner. Stel zeker dat geen enkel ander systeem hetzelfde kanaal gebruikt."
+
 #~ msgid "Select what you want the Channel +/- buttons to activate."
 #~ msgstr "Stel in wat de Ch+/- toetsen moeten doen:"
 
@@ -15680,9 +15824,6 @@ msgstr "zapte"
 
 #~ msgid "Show OE Log"
 #~ msgstr "Toon OE-Log"
-
-#~ msgid "Show multi channel EPG"
-#~ msgstr "Toon multi-service EPG"
 
 #~ msgid "Show services beginning with"
 #~ msgstr "Laat zenders zien die beginnen met"

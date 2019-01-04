@@ -7,15 +7,17 @@ from GUIComponent import GUIComponent
 from Tools.FuzzyDate import FuzzyTime
 from Components.MultiContent import MultiContentEntryText, MultiContentEntryPixmapAlphaTest, MultiContentEntryPixmapAlphaBlend, MultiContentEntryProgress
 from Components.config import config
+from Components.Renderer.Picon import getPiconName
 from Tools.LoadPixmap import LoadPixmap
 from Tools.Directories import SCOPE_ACTIVE_SKIN, resolveFilename
 from Screens.LocationBox import defaultInhibitDirs
+from ServiceReference import ServiceReference
 #
 from Tools.Trashcan import getTrashFolder
 import NavigationInstance
 import skin
 
-from enigma import eListboxPythonMultiContent, eListbox, gFont, iServiceInformation, eSize, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_VALIGN_CENTER, eServiceReference, eServiceCenter, eTimer
+from enigma import eListboxPythonMultiContent, eListbox, gFont, iServiceInformation, eSize, loadPNG, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_VALIGN_CENTER, BT_SCALE, BT_KEEP_ASPECT_RATIO, eServiceReference, eServiceCenter, eTimer
 
 AUDIO_EXTENSIONS = frozenset((".dts", ".mp3", ".wav", ".wave", ".wv", ".oga", ".ogg", ".flac", ".m4a", ".mp2", ".m2a", ".wma", ".ac3", ".mka", ".aac", ".ape", ".alac", ".amr", ".au", ".mid"))
 DVD_EXTENSIONS = frozenset((".iso", ".img", ".nrg"))
@@ -179,8 +181,6 @@ class MovieList(GUIComponent):
 		self.spaceRight = 2
 		self.spaceIconeText = 2
 		self.iconsWidth = 22
-		self.trashShift = 1
-		self.dirShift = 1
 		self.durationWidth = 160
 		self.dateWidth = 160
 		if config.usage.time.wide.value:
@@ -302,10 +302,6 @@ class MovieList(GUIComponent):
 			self.spaceIconeText = int(value)
 		def iconsWidth(value):
 			self.iconsWidth = int(value)
-		def trashShift(value):
-			self.trashShift = int(value)
-		def dirShift(value):
-			self.dirShift = int(value)
 		def spaceRight(value):
 			self.spaceRight = int(value)
 		def durationWidth(value):
@@ -348,16 +344,24 @@ class MovieList(GUIComponent):
 		self.invalidateItem(self.getCurrentIndex())
 
 	def buildMovieListEntry(self, serviceref, info, begin, data):
+
+		showPicons = "picon" in config.usage.movielist_servicename_mode.value
 		switch = config.usage.show_icons_in_movielist.value
+		piconWidth = config.usage.movielist_piconwidth.value if showPicons else 0
+		durationWidth = self.durationWidth if config.usage.load_length_of_movies_in_moviellist.value else 0
+
 		width = self.l.getItemSize().width()
-		if config.usage.load_length_of_movies_in_moviellist.value:
-			durationWidth = self.durationWidth
-		else:
-			durationWidth = 0
+		
 		dateWidth = self.dateWidth
 		if not config.movielist.use_fuzzy_dates.value:
 			dateWidth += 30
+
 		iconSize = self.iconsWidth
+		if switch == 'p':
+			iconSize = self.pbarLargeWidth
+		ih = self.itemHeight
+		col0iconSize = piconWidth if showPicons else iconSize
+
 		space = self.spaceIconeText
 		r = self.spaceRight
 		pathName = serviceref.getPath()
@@ -376,12 +380,12 @@ class MovieList(GUIComponent):
 					p = os.path.split(p[0])
 				txt = p[1]
 			if txt == ".Trash":
-				res.append(MultiContentEntryPixmapAlphaBlend(pos=(0,self.trashShift), size=(iconSize,self.iconTrash.size().height()), png=self.iconTrash))
-				res.append(MultiContentEntryText(pos=(iconSize+space, 0), size=(width-166, self.itemHeight), font=0, flags = RT_HALIGN_LEFT|RT_VALIGN_CENTER, text = _("Deleted items")))
+				res.append(MultiContentEntryPixmapAlphaBlend(pos=((col0iconSize-self.iconTrash.size().width())/2,(self.itemHeight-self.iconFolder.size().height())/2), size=(iconSize,self.iconTrash.size().height()), png=self.iconTrash))
+				res.append(MultiContentEntryText(pos=(col0iconSize + space, 0), size=(width-145, self.itemHeight), font=0, flags = RT_HALIGN_LEFT|RT_VALIGN_CENTER, text = _("Deleted items")))
 				res.append(MultiContentEntryText(pos=(width-145-r, 0), size=(145, self.itemHeight), font=1, flags=RT_HALIGN_RIGHT|RT_VALIGN_CENTER, text=_("Trash can")))
 				return res
-			res.append(MultiContentEntryPixmapAlphaBlend(pos=(0,self.dirShift), size=(iconSize,iconSize), png=self.iconFolder))
-			res.append(MultiContentEntryText(pos=(iconSize+space, 0), size=(width-166, self.itemHeight), font=0, flags = RT_HALIGN_LEFT|RT_VALIGN_CENTER, text = txt))
+			res.append(MultiContentEntryPixmapAlphaBlend(pos=((col0iconSize-self.iconFolder.size().width())/2,(self.itemHeight-self.iconFolder.size().height())/2), size=(iconSize,iconSize), png=self.iconFolder))
+			res.append(MultiContentEntryText(pos=(col0iconSize + space, 0), size=(width-145, self.itemHeight), font=0, flags = RT_HALIGN_LEFT|RT_VALIGN_CENTER, text = txt))
 			res.append(MultiContentEntryText(pos=(width-145-r, 0), size=(145, self.itemHeight), font=1, flags=RT_HALIGN_RIGHT|RT_VALIGN_CENTER, text=_("Directory")))
 			return res
 		if data == -1 or data is None:
@@ -435,20 +439,40 @@ class MovieList(GUIComponent):
 			iconSize = self.pbarLargeWidth
 		ih = self.itemHeight
 
-		# icon/progress
-		if data:
-			if switch == 'i' and hasattr(data, 'icon') and data.icon is not None:
-				res.append(MultiContentEntryPixmapAlphaBlend(pos=(colX,self.partIconeShift), size=(iconSize,data.icon.size().height()), png=data.icon))
-			elif switch in ('p', 's'):
-				if hasattr(data, 'part') and data.part > 0:
-					res.append(MultiContentEntryProgress(pos=(colX,self.pbarShift), size=(iconSize, self.pbarHeight), percent=data.part, borderWidth=2, foreColor=data.partcol, foreColorSelected=None, backColor=None, backColorSelected=None))
-				elif hasattr(data, 'icon') and data.icon is not None:
-					res.append(MultiContentEntryPixmapAlphaBlend(pos=(colX, self.pbarShift), size=(iconSize, self.pbarHeight), png=data.icon))
-		colX += iconSize+space
+		def addProgress():
+			# icon/progress
+			if data:
+				if switch == 'i' and hasattr(data, 'icon') and data.icon is not None:
+					res.append(MultiContentEntryPixmapAlphaBlend(pos=(colX,self.partIconeShift), size=(iconSize,data.icon.size().height()), png=data.icon))
+				elif switch in ('p', 's'):
+					if hasattr(data, 'part') and data.part > 0:
+						res.append(MultiContentEntryProgress(pos=(colX,self.pbarShift), size=(iconSize, self.pbarHeight), percent=data.part, borderWidth=2, foreColor=data.partcol, foreColorSelected=None, backColor=None, backColorSelected=None))
+					elif hasattr(data, 'icon') and data.icon is not None:
+						res.append(MultiContentEntryPixmapAlphaBlend(pos=(colX,self.pbarShift), size=(iconSize, self.pbarHeight), png=data.icon))
+			return iconSize
+
+		serviceref = info.getInfoString(serviceref, iServiceInformation.sServiceref)
+		displayPicon = None
+		if piconWidth > 0:
+			# Picon
+			picon = getPiconName(serviceref)
+			if picon != "":
+				displayPicon = loadPNG(picon)
+			if displayPicon is not None:
+				res.append(MultiContentEntryPixmapAlphaBlend(
+					pos = (colX, 0), size = (piconWidth, ih),
+					png = displayPicon,
+					backcolor = None, backcolor_sel = None, flags = BT_SCALE | BT_KEEP_ASPECT_RATIO))
+			colX += piconWidth + space
+		else:
+			colX += addProgress() + space
 
 		# Recording name
 		res.append(MultiContentEntryText(pos=(colX, 0), size=(width-iconSize-space-durationWidth-dateWidth-r-colX, ih), font = 0, flags = RT_HALIGN_LEFT|RT_VALIGN_CENTER, text = data.txt))
 		colX = width-iconSize-space-durationWidth-dateWidth-r
+
+		if piconWidth > 0:
+			colX += addProgress()
 
 		# Duration - optionally active
 		if durationWidth > 0:
