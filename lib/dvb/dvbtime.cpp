@@ -110,8 +110,8 @@ static void parseDVBdate(tm& t, int mjd)
 {
 	int k;
 
-	if (mjd < 40587) // MJD time is before Time epoch, cannot be represented.
-		mjd = 40587; // use MDJ = 1970-01-01.
+	//if (mjd < 40587) // MJD time is before Time epoch, cannot be represented.
+	//	mjd = 40587; // use MDJ = 1970-01-01.
 	
 	t.tm_year = (int) ((mjd - 15078.2) / 365.25);
 	t.tm_mon = (int) ((mjd - 14956.1 - (int)(t.tm_year * 365.25)) / 30.6001);
@@ -135,7 +135,7 @@ static inline void parseDVBtime_impl(tm& t, const uint8_t *data)
 
 time_t parseDVBtime(uint16_t mjd, uint32_t stime_bcd)
 {
-	tm t;
+	tm t = {0};
 	parseDVBdate(t, mjd);
 	t.tm_hour = fromBCD(stime_bcd >> 16);
 	t.tm_min = fromBCD((stime_bcd >> 8) & 0xFF);
@@ -145,14 +145,14 @@ time_t parseDVBtime(uint16_t mjd, uint32_t stime_bcd)
 
 time_t parseDVBtime(const uint8_t *data)
 {
-	tm t;
+	tm t = {0};
 	parseDVBtime_impl(t, data);
 	return timegm(&t);
 }
 
 time_t parseDVBtime(const uint8_t *data, uint16_t *hash)
 {
-	tm t;
+	tm t = {0};
 	parseDVBtime_impl(t, data);
 	*hash = t.tm_hour * 60 + t.tm_min;
 	*hash |= t.tm_mday << 11;
