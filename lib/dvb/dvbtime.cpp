@@ -110,10 +110,8 @@ static void parseDVBdate(tm& t, int mjd)
 {
 	int k;
 
-	eDebug("[eDVBLocalTimerHandler] parseDVBdate, mjd is %d", mjd);
-	
 	if (mjd < 40587) // MJD time is before Time epoch, cannot be represented.
-    	mjd = 40587; // use MDJ = 1970-01-01.
+		mjd = 40587; // use MDJ = 1970-01-01.
 	
 	t.tm_year = (int) ((mjd - 15078.2) / 365.25);
 	t.tm_mon = (int) ((mjd - 14956.1 - (int)(t.tm_year * 365.25)) / 30.6001);
@@ -123,8 +121,6 @@ static void parseDVBdate(tm& t, int mjd)
 	t.tm_mon = t.tm_mon - 1 - k * 12;
 	t.tm_mon--;
 	
-	eDebug("[eDVBLocalTimerHandler] parseDVBdate is %d:%d:%d", t.tm_year, t.tm_mon, t.tm_mday);
-
 	t.tm_isdst =  0;
 	t.tm_gmtoff = 0;
 }
