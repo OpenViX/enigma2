@@ -1158,8 +1158,8 @@ class ImageBackup(Screen):
 
 	def doBackup5(self):
 		print '[ImageManager] Stage5: Moving from work to backup folders'
-		if self.ROOTDEVTYPE == 'hdemmc' and path.exists('%s/disk.img' % self.WORKDIR):
-			move('%s/disk.img' % self.WORKDIR, '%s/disk.img' % self.MAINDEST)
+		if self.ROOTDEVTYPE in ('hdemmc', 'emmcimg') and path.exists('%s/%s' % (self.WORKDIR, self.EMMCIMG)):
+			move('%s/%s' %(self.WORKDIR, self.EMMCIMG), '%s/%s' %(self.MAINDEST, self.EMMCIMG))
 		if 'octagonemmc' in getImageFileSystem():
 			move('%s/%s' %(self.WORKDIR, self.EMMCIMG), '%s/%s' %(self.MAINDEST, self.EMMCIMG))
 			move('%s/%s' %(self.WORKDIR, "emmc_partitions.xml"), '%s/%s' %(self.MAINDEST, "emmc_partitions.xml"))
