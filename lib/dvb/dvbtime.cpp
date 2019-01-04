@@ -110,6 +110,8 @@ static void parseDVBdate(tm& t, int mjd)
 {
 	int k;
 
+	eDebug("[eDVBLocalTimerHandler] parseDVBdate, mjd is %d", mjd);
+	
 	t.tm_year = (int) ((mjd - 15078.2) / 365.25);
 	t.tm_mon = (int) ((mjd - 14956.1 - (int)(t.tm_year * 365.25)) / 30.6001);
 	t.tm_mday = (int) (mjd - 14956 - (int)(t.tm_year * 365.25) - (int)(t.tm_mon * 30.6001));
