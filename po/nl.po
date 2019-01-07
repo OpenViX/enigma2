@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-12-30 08:29+0000\n"
-"PO-Revision-Date: 2018-12-30 10:51+0100\n"
+"POT-Creation-Date: 2019-01-07 01:00+0000\n"
+"PO-Revision-Date: 2019-01-07 10:42+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -914,6 +914,10 @@ msgstr "%s %s afstandsbediening"
 #, python-format
 msgid "%s %s software because updates are available."
 msgstr "%s %s software want er zijn updates beschikbaar."
+
+#, python-format
+msgid "%s ( %s Cards )"
+msgstr "%s ( %s kaarten )"
 
 #, python-format
 msgid "%s (%s)\n"
@@ -2357,6 +2361,9 @@ msgstr "C-Band"
 msgid "CAID"
 msgstr "CAID"
 
+msgid "CAID:SrvID"
+msgstr "CAID:SrvID"
+
 msgid "CCcam Client Info"
 msgstr "CCcam klantinfo"
 
@@ -2826,6 +2833,10 @@ msgstr "Wis log"
 
 msgid "Clear playlist"
 msgstr "Afspeellijst leegmaken"
+
+#, python-format
+msgid "Client Info ( Oscam-Version: %s )"
+msgstr "KlantInfo ( Oscam-Versie: %s )"
 
 msgid "Client mode"
 msgstr "Client-modus"
@@ -5511,6 +5522,9 @@ msgstr "Honduras"
 msgid "Hong Kong"
 msgstr "Hong Kong"
 
+msgid "Hops"
+msgstr "Hops"
+
 msgid "Hops:"
 msgstr "Hops:"
 
@@ -5609,9 +5623,6 @@ msgstr ""
 "Als u een \"unconfirmed\" bericht krijgt:\n"
 "- Is er geen geldig IP-adres gevonden.\n"
 "- Controleer uw DHCP server, bekabeling en adapter instellingen."
-
-msgid "IP-Address"
-msgstr "IP-adres"
 
 #
 msgid "IP:"
@@ -7184,15 +7195,6 @@ msgstr "Geen vrije index beschikbaar"
 msgid "No free tuner!"
 msgstr "Geen vrije tuner!"
 
-msgid "No httpport defined in oscam.conf. This value is required!"
-msgstr "Geen httpport vastgelegd in oscam.conf: die is vereist!"
-
-msgid "No httppwd defined in oscam.conf"
-msgstr "Geen httppwd vastgelegd in oscam.conf"
-
-msgid "No httpuser defined in oscam.conf"
-msgstr "Geen httpuser vastgelegd in oscam.conf"
-
 msgid "No module found"
 msgstr "Geen module gevonden"
 
@@ -7559,14 +7561,15 @@ msgstr "Gewoon"
 msgid "Original"
 msgstr "Origineel"
 
-msgid "Oscam ECM-info"
-msgstr "Oscam ECM-info"
-
 msgid "Oscam Info - Configuration"
 msgstr "Oscam info - configuratie"
 
 msgid "Oscam Info - Main Menu"
 msgstr "Oscam info - hoofd Menu"
+
+#, python-format
+msgid "Oscam Log ( Oscam-Version: %s )"
+msgstr "Oscam log ( Oscam-Versie: %s )"
 
 msgid "Other"
 msgstr "Anders"
@@ -7603,6 +7606,9 @@ msgstr "PDC"
 
 msgid "PGS file"
 msgstr "PGS-bestand"
+
+msgid "PID"
+msgstr "PID"
 
 #
 msgid "PIP"
@@ -7872,7 +7878,7 @@ msgstr "Gelieve titels aan de compilatie toe te voegen."
 msgid "Please change the recording end time"
 msgstr "Wijzig de eindtijd van de opname"
 
-msgid "Please choose CCcam reader"
+msgid "Please choose CCcam-Reader"
 msgstr "Kies de CCcam-lezer"
 
 msgid "Please choose an extension..."
@@ -8538,7 +8544,7 @@ msgstr "Waardering niet bepaald"
 msgid "Re-enter PIN"
 msgstr "Voer PIN nogmaals in"
 
-msgid "Read user data from oscam.conf"
+msgid "Read Userdata from oscam.conf"
 msgstr "Lees gebruikersgegevens van oscam.conf"
 
 msgid "Reader"
@@ -8880,6 +8886,9 @@ msgstr "Standaard videoverbetering instellingen gebruiken?"
 
 msgid "Reset video enhancement settings to your last configuration?"
 msgstr "Laatste videoverbeterings configuratie gebruiken?"
+
+msgid "Reshare"
+msgstr "Reshare:"
 
 msgid "Reshare:"
 msgstr "Reshare:"
@@ -9615,6 +9624,10 @@ msgstr "Serienummer"
 
 msgid "Serv.Name"
 msgstr "Serv.Naam"
+
+#, python-format
+msgid "Server Info ( Oscam-Version: %s )"
+msgstr "Serverinfo ( Oscam-Versie: %s )"
 
 msgid "Server:"
 msgstr "Server:"
@@ -10991,6 +11004,9 @@ msgstr "Systeemtemperatuur: %s"
 msgid "System: "
 msgstr "Systeem: "
 
+msgid "T2MI RAW Mode"
+msgstr "T2MI RAW modus"
+
 msgid "TB"
 msgstr "TB"
 
@@ -11322,9 +11338,6 @@ msgstr "Er zijn momenteel geen updates beschikbaar."
 
 msgid "There has been an error, please try again later. If this issue persists, please check openvix.co.uk or world-of-satellite.com"
 msgstr "Er is een fout opgetreden. Als het probleem aanhoudt, controleer dan op openvix.co.uk of op world-of-satellite.com wat er aan de hand is."
-
-msgid "There is no [webif] section in oscam.conf"
-msgstr "Er is geen[webif] sectie in oscam.conf"
 
 msgid "There is no signal to lock on !"
 msgstr "Er is geen signaal om een lock te verkrijgen!"
@@ -12896,6 +12909,9 @@ msgstr "Draadloze netwerkinstellingen."
 msgid "Wireless network state"
 msgstr "Status draadloos netwerk"
 
+msgid "With T2MI RAW mode disabled (default) we can use single T2MI PLP de-encapsulation. With T2MI RAW mode enabled we can use astra-sm to analyze T2MI"
+msgstr "Indien T2MI RAW modus gedeactiveerd is (default), kunnen we de enkele T2MI PLP de-encapsulation gebruiken. Indien T2MI RAW modus geactiveerd is, kunnen we astra-sm gebruiken om T2MI te analyseren."
+
 msgid "With popup"
 msgstr "Met pop-up"
 
@@ -14036,6 +14052,12 @@ msgstr "muziek/ballet/dans (algemeen)"
 msgid "musical/opera"
 msgstr "musical/opera"
 
+msgid "n/A"
+msgstr "NVT"
+
+msgid "n/a"
+msgstr "NVT"
+
 msgid "nature/animals/environment"
 msgstr "natuur/dieren/milieu"
 
@@ -14145,15 +14167,8 @@ msgstr "origineel"
 msgid "original language"
 msgstr "originele taal"
 
-msgid "oscam.conf could not be found"
-msgstr "bestand oscam.conf niet gevonden"
-
-msgid ""
-"oscam.conf not found.\n"
-"Please enter username/password manually."
-msgstr ""
-"Bestand oscam.conf niet gevonden.\n"
-"Geef gebruikersnaam/wachtwoord handmatig in."
+msgid "oscam webif disabled"
+msgstr "Oscam web-if gedeactiveerd"
 
 msgid "packages selected."
 msgstr "pakketten geselecteerd."
@@ -15442,6 +15457,9 @@ msgstr "zapte"
 #~ msgid "Hotkey"
 #~ msgstr "Hotkey"
 
+#~ msgid "IP-Address"
+#~ msgstr "IP-adres"
+
 #~ msgid "Image Information"
 #~ msgstr "Informatie over de firmware"
 
@@ -15560,6 +15578,15 @@ msgstr "zapte"
 #~ msgid "No free tuner available!"
 #~ msgstr "Geen vrije tuner beschikbaar."
 
+#~ msgid "No httpport defined in oscam.conf. This value is required!"
+#~ msgstr "Geen httpport vastgelegd in oscam.conf: die is vereist!"
+
+#~ msgid "No httppwd defined in oscam.conf"
+#~ msgstr "Geen httppwd vastgelegd in oscam.conf"
+
+#~ msgid "No httpuser defined in oscam.conf"
+#~ msgstr "Geen httpuser vastgelegd in oscam.conf"
+
 #~ msgid "No stream clients"
 #~ msgstr "Geen stream-klanten"
 
@@ -15612,8 +15639,8 @@ msgstr "zapte"
 #~ msgid "Options..."
 #~ msgstr "Opties..."
 
-#~ msgid "PIDs"
-#~ msgstr "PIDs"
+#~ msgid "Oscam ECM-info"
+#~ msgstr "Oscam ECM-info"
 
 #~ msgid "Parental control editor"
 #~ msgstr "Kinderslot aanpassen"
@@ -15941,6 +15968,9 @@ msgstr "zapte"
 #~ msgid "The wizard found a configuration backup. Do you want to restore your old settings from %s?"
 #~ msgstr "De wizard vond een configuratiebackup. Wilt u uw oude instellingen van %s herstellen?"
 
+#~ msgid "There is no [webif] section in oscam.conf"
+#~ msgstr "Er is geen[webif] sectie in oscam.conf"
+
 #~ msgid "This can be either the IP or name of the fallback receiver, not including the scheme or port number (e.g. either 'xxx.xxx.xxx.xxx' or 'name_second_box')."
 #~ msgstr "Dit kan het IP-adres of de naam van de remote ontvanger zijn (dus of 'xxx.xxx.xxx.xxx' of 'naam-van-de-box')."
 
@@ -16100,6 +16130,16 @@ msgstr "zapte"
 
 #~ msgid "only 4K"
 #~ msgstr "alleen 4K"
+
+#~ msgid "oscam.conf could not be found"
+#~ msgstr "bestand oscam.conf niet gevonden"
+
+#~ msgid ""
+#~ "oscam.conf not found.\n"
+#~ "Please enter username/password manually."
+#~ msgstr ""
+#~ "Bestand oscam.conf niet gevonden.\n"
+#~ "Geef gebruikersnaam/wachtwoord handmatig in."
 
 #~ msgid "reliable"
 #~ msgstr "betrouwbaar"
