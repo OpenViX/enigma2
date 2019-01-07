@@ -272,7 +272,7 @@ class VIXBackupManager(Screen):
 			del self.emlist[:]
 			mtimes = []
 			for fil in images:
-				if fil.endswith('.tar.gz') and fil.startswith(config.backupmanager.folderprefix.value):
+				if fil.endswith('.tar.gz'): # prefix should only be used for naming files, not browsing them... # and fil.startswith(config.backupmanager.folderprefix.value):
 					mtimes.append((fil, stat(self.BackupDirectory + fil).st_mtime)) # (filname, mtime)
 			for fil in [x[0] for x in sorted(mtimes, key=lambda x: x[1], reverse=True)]: # sort by mtime
 				self.emlist.append(fil)
@@ -1365,7 +1365,9 @@ class BackupFiles(Screen):
 			if config.backupmanager.number_to_keep.value > 0 \
 			 and path.exists(self.BackupDirectory): # !?!
 				images = listdir(self.BackupDirectory)
-				patt = config.backupmanager.folderprefix.value + '-*.tar.gz'
+				# prefix should only be used for naming files, not browsing them
+				# patt = config.backupmanager.folderprefix.value + '-*.tar.gz'
+				patt = '*.tar.gz'
 				emlist = []
 				for fil in images:
 					if fnmatch.fnmatchcase(fil, patt):
