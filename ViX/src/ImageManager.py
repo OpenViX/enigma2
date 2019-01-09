@@ -1442,6 +1442,7 @@ class ImageManagerDownload(Screen):
 				'xp1000plus'      : 'OCTAGON-XP1000PLUS',
 				'xpeedlx'         : 'GI-Xpeed-LX',
 				'xpeedlx3'        : 'GI-Xpeed-LX3'
+				'zgemmah7'        : 'Zgemma-H7'				
 			}
 
 			try:
