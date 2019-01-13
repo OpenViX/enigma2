@@ -11926,7 +11926,7 @@ msgid "Use adaptive date display"
 msgstr "Mostrar fecha adaptativa"
 
 msgid "Adaptive date display allows recent dates to be displayed as 'Today' or 'Yesterday'.  It hides the year for recordings made this year.  It hides the day of the week for recordings made in previous years."
-msgstr "La visualización de fecha adaptativa permite que las fechas recientes se muestren como "Hoy" o "Ayer". Se esconde el año para las grabaciones realizadas este año. Oculta el día de la semana para grabaciones realizadas en años anteriores."
+msgstr "La visualización de fecha adaptativa permite que las fechas recientes se muestren como 'Hoy' o 'Ayer'. Se esconde el año para las grabaciones realizadas este año. Oculta el día de la semana para grabaciones realizadas en años anteriores."
 
 #~ msgid "3d mode"
 #~ msgstr "Modo 3D"
