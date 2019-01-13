@@ -10165,3 +10165,35 @@ msgstr ""
 
 msgid "Please wait"
 msgstr ""
+
+msgid "Use the LEFT/RIGHT buttons on your remote to adjust the height of the user interface. LEFT button decreases the size, RIGHT increases the size."
+msgstr ""
+
+msgid "Use the LEFT/RIGHT buttons on your remote to adjust the width of the user interface. LEFT button decreases the size, RIGHT increases the size."
+msgstr ""
+
+msgid "Use the LEFT/RIGHT buttons on your remote to move the user interface left/right."
+msgstr ""
+
+msgid "Use the LEFT/RIGHT buttons on your remote to move the user interface up/down."
+msgstr ""
+
+msgid ""
+"Use the deletion time to sort Trash directories.\n"
+"Most recently deleted at the top."
+msgstr ""
+
+msgid "When set, each directory will show the previous state used. When off, the default values will be shown."
+msgstr ""
+
+msgid "Show picons in the movie list."
+msgstr ""
+
+msgid "Picon Width"
+msgstr ""
+
+msgid "Sets the root directory of movie list, to remove the '..' from being shown in that folder."
+msgstr ""
+
+msgid "Adaptive date display allows recent dates to be displayed as 'Today' or 'Yesterday'.  It hides the year for recordings made this year.  It hides the day of the week for recordings made in previous years."
+msgstr ""

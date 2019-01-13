@@ -9379,14 +9379,17 @@ msgstr "Usar la medida de potencia"
 msgid "Use slim screen"
 msgstr "Usar la pantalla estrecha"
 
-msgid "Use the Left/Right buttons on your remote to adjust the size of the user interface. Left button decreases the size, Right increases the size."
-msgstr "Usar las teclas izquierda/derecha del mando para ajustar el tamaño de la interfaz de usuario. La tecla izquierda reduce el tamaño y la derecha lo aumenta."
+msgid "Use the LEFT/RIGHT buttons on your remote to adjust the height of the user interface. LEFT button decreases the size, RIGHT increases the size."
+msgstr "Use los botones IZQUIERDA/DERECHA de su mando para ajustar la altura de la interfaz de usuario. El botón IZQUIERDA disminuye el tamaño, DERECHA aumenta el tamaño."
 
-msgid "Use the Left/Right buttons on your remote to move the user interface left/right"
-msgstr "Use los botones Izquierda/Derecha de su mando para mover la interfaz de usuario hacia la izquierda/derecha"
+msgid "Use the LEFT/RIGHT buttons on your remote to adjust the width of the user interface. LEFT button decreases the size, RIGHT increases the size."
+msgstr "Use los botones IZQUIERDA/DERECHA de su mando para ajustar el ancho de la interfaz de usuario. El botón IZQUIERDA disminuye el tamaño, DERECHA aumenta el tamaño."
 
-msgid "Use the Left/Right buttons on your remote to move the user interface up/down"
-msgstr "Usar las teclas izquierda/derecha del mando para mover la interfaz de usuario arriba y abajo"
+msgid "Use the LEFT/RIGHT buttons on your remote to move the user interface left/right."
+msgstr "Use los botones IZQUIERDA/DERECHA de su mando para mover la interfaz de usuario hacia la izquierda/derecha."
+
+msgid "Use the LEFT/RIGHT buttons on your remote to move the user interface up/down."
+msgstr "Use los botones IZQUIERDA/DERECHA de su mando para mover la interfaz de usuario hacia arriba/abajo."
 
 msgid "Use the alternative or the conventional radio mode."
 msgstr "Usar el modo de radio alternativo o convencional."
@@ -11899,6 +11902,28 @@ msgstr ""
 
 msgid "Please wait"
 msgstr "Espere por favor"
+
+msgid ""
+"Use the deletion time to sort Trash directories.\n"
+"Most recently deleted at the top."
+msgstr ""
+"Utilice el tiempo de eliminación para ordenar los directorios de la papelera.\n"
+"Más recientemente eliminado en la parte superior."
+
+msgid "When set, each directory will show the previous state used. When off, the default values will be shown."
+msgstr "Cuando se establece, cada directorio mostrará el estado anterior utilizado. Cuando está apagado, se mostrarán los valores predeterminados."
+
+msgid "Show picons in the movie list."
+msgstr "Mostrar picons en la lista de películas."
+
+msgid "Picon Width"
+msgstr "Ancho de Picon"
+
+msgid "Sets the root directory of movie list, to remove the '..' from being shown in that folder."
+msgstr "Establece el directorio raíz de la lista de películas, para eliminar el '..' que se muestra en esa carpeta."
+
+msgid "Adaptive date display allows recent dates to be displayed as 'Today' or 'Yesterday'.  It hides the year for recordings made this year.  It hides the day of the week for recordings made in previous years."
+msgstr "La visualización de fecha adaptativa permite que las fechas recientes se muestren como "Hoy" o "Ayer". Se esconde el año para las grabaciones realizadas este año. Oculta el día de la semana para grabaciones realizadas en años anteriores."
 
 #~ msgid "3d mode"
 #~ msgstr "Modo 3D"
