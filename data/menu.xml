@@ -27,20 +27,23 @@
 			<menu weight="2" level="0" text="Tuner config" entryID="service_searching_selection">
 				<id val="scan"/>
 				<!-- Menu / Setup / Tuners / Settings -->
-				<item weight="1" text="Tuner setup" entryID="tuner_setup" requires="ClientModeDisabled"><screen module="Satconfig" screen="NimSelection"/></item>
+				<item weight="1" text="Tuner settings" entryID="tuner_setup" requires="ClientModeDisabled"><screen module="Satconfig" screen="NimSelection"/></item>
 				<item weight="2" text="Tuner setup" entryID="client_mode" requires="ClientModeEnabled"><screen module="ClientMode" screen="ClientModeScreen"/></item>
 				<item weight="3" entryID="tunermisc_setup"><setup id="tunermisc"/></item>
 				<item weight="20" text="Automatic scan" entryID="auto_scan" conditional="nimmanager.somethingConnected()" requires="ClientModeDisabled"><screen module="ScanSetup" screen="ScanSimple"/></item>
 				<item weight="30" text="Manual scan" entryID="manual_scan" conditional="nimmanager.somethingConnected()" requires="ClientModeDisabled"><screen module="ScanSetup"/></item>
-				<item weight="100" text="Fallback configuration" entryID="fallback_mode" requires="ClientModeDisabled"><screen  module="FallbackTunerSetup" screen="FallbackTunerSetup"/></item>
+				<item weight="100" text="Enable fallback remote receiver" entryID="fallback_mode" requires="ClientModeDisabled"><screen  module="FallbackTunerSetup" screen="FallbackTunerSetup"/></item>
 			</menu>
 			<!-- Menu / Setup / EPG -->
 			<menu weight="3" text="EPG" entryID="epg_menu">
 				<id val="epg"/>
 				<item level="0" entryID="epg_setup"><setup id="epgsettings"/></item>
-				<menu level="2" text="Load-save-delete" entryID="epgloadsave_menu">
-					<id val="epgloadsave_menu"/>
-					<item level="0" entryID="saveepgcache" text="Save EPG">
+				<item level="2" entryID="setup_epgmulti"><setup id="epgmulti"/></item>
+				<item level="2" entryID="setup_epgenhanced"><setup id="epgenhanced"/></item>
+				<item level="2" entryID="setup_epginfobar"><setup id="epginfobar"/></item>
+				<item level="2" entryID="setup_epginfobargraphical"><setup id="epginfobargraphical"/></item>
+				<item level="2" entryID="setup_epggraphical"><setup id="epggraphical"/></item>
+				<item level="2" entryID="saveepgcache" text="Save EPG">
 <code>
 from Components.EpgLoadSave import EpgSaveMsg
 def msgClosed(ret):
@@ -50,8 +53,8 @@ def msgClosed(ret):
 		epgcache.save()
 self.session.openWithCallback(msgClosed, EpgSaveMsg)
 </code>
-					</item>
-					<item level="0" entryID="loadepgcache" text="Load EPG">
+				</item>
+				<item level="2" entryID="loadepgcache" text="Load EPG">
 <code>
 from Components.EpgLoadSave import EpgLoadMsg
 def msgClosed(ret):
@@ -61,8 +64,8 @@ def msgClosed(ret):
 		epgcache.load()
 self.session.openWithCallback(msgClosed, EpgLoadMsg)
 </code>
-					</item>
-					<item level="0" entryID="deleteepgcache" text="Delete EPG">
+				</item>
+				<item level="2" entryID="deleteepgcache" text="Delete EPG">
 <code>
 from Components.EpgLoadSave import EpgDeleteMsg
 def msgClosed(ret):
@@ -76,13 +79,7 @@ def msgClosed(ret):
 		epgcache.flushEPG()
 self.session.openWithCallback(msgClosed, EpgDeleteMsg)
 </code>
-					</item>
-				</menu>
-				<item level="2" entryID="setup_epgmulti"><setup id="epgmulti"/></item>
-				<item level="2" entryID="setup_epgenhanced"><setup id="epgenhanced"/></item>
-				<item level="2" entryID="setup_epginfobar"><setup id="epginfobar"/></item>
-				<item level="2" entryID="setup_epginfobargraphical"><setup id="epginfobargraphical"/></item>
-				<item level="2" entryID="setup_epggraphical"><setup id="epggraphical"/></item>
+				</item>				
 			</menu>
 			<!-- Menu / Setup / User Interface -->
 			<menu weight="4" text="User interface" entryID="osd_setup" requires="OsdMenu">
@@ -99,7 +96,7 @@ self.session.openWithCallback(msgClosed, EpgDeleteMsg)
 					<item level="2" text="OSD position" entryID="osdsetup" requires="OsdSetup"><screen module="UserInterfacePositioner" screen="UserInterfacePositioner"/></item>
 				</menu>
 				<!-- Menu / Setup / User Interface / Front Panel -->
-				<menu weight="4" level="0" text="Front panel display" entryID="display_selection" requires="Display">
+				<menu weight="4" level="0" text="Panel frontal display" entryID="display_selection" requires="Display">
 					<id val="display"/>
 					<item weight="1" level="0" text="Settings" entryID="display_setup"><setup id="display"/></item>
 					<item weight="2" level="0" text="Skin" entryID="lcd_skin_setup"><screen module="SkinSelector" screen="LcdSkinSelector"/></item>
@@ -121,11 +118,11 @@ self.session.openWithCallback(msgClosed, EpgDeleteMsg)
 			<menu weight="5" text="Network" entryID="network_menu">
 				<id val="network"/>
 				<!-- Menu / Setup / Network / Device -->
-				<item weight="1" level="0" text="Device" entryID="device_setup"><screen module="NetworkSetup" screen="NetworkAdapterSelection"/></item>
+				<item weight="1" level="0" text="Network Setup" entryID="device_setup"><screen module="NetworkSetup" screen="NetworkAdapterSelection"/></item>
 				<!-- Menu / Setup / Network / Mounts -->
-				<item weight="2" level="1" text="Mounts" entryID="netmounts_setup"><screen module="NetworkSetup" screen="NetworkMountsMenu"/></item>
+				<item weight="2" level="1" text="Network mounts" entryID="netmounts_setup"><screen module="NetworkSetup" screen="NetworkMountsMenu"/></item>
 				<!-- Menu / Setup / Network / Utilities -->
-				<menu weight="3" level="0" text="Utilities" entryID="services_menu">
+				<menu weight="3" level="0" text="Utilidades" entryID="services_menu">
 					<id val="netservices"/>
 					<item level="2" text="AFP" entryID="netafp_setup"><screen module="NetworkSetup" screen="NetworkAfp"/></item>
 					<item level="2" text="FTP" entryID="netftp_setup"><screen module="NetworkSetup" screen="NetworkFtp"/></item>
@@ -159,19 +156,19 @@ self.session.open(SABnzbdSetupScreen)
 				<item weight="99" level="2" text="OScam info" entryID="oscaminfo" requires="OScamInstalled"><screen module="OScamInfo" screen="OscamInfoMenu"/></item>
 			</menu>
 			<!-- Menu / Setup / Storage -->
-			<menu weight="9" level="0" text="Storage" entryID="hardisk_selection" requires="Harddisk">
+			<menu weight="9" level="0" text="List of storage devices" entryID="hardisk_selection" requires="Harddisk">
 				<id val="harddisk"/>
 				<item level="1" text="Settings" entryID="harddisk_setup"><setup id="harddisk"/></item>
-				<item level="0" text="Initialize devices" entryID="harddisk_init"><screen module="HarddiskSetup" screen="HarddiskSelection"/></item>
+				<item level="0" text="Initialize" entryID="harddisk_init"><screen module="HarddiskSetup" screen="HarddiskSelection"/></item>
 				<item level="0" text="Filesystem check" entryID="harddisk_check"><screen module="HarddiskSetup" screen="HarddiskFsckSelection"/></item>
 			</menu>
 			<!-- Menu / Setup / Time Settings -->
 			<item level="0" entryID="time_setup"><setup id="time"/></item>
 			<!-- Menu / Setup / Recordings, Playback & Timeshift -->
-			<menu weight="11" level="1" text="Recordings, playback &amp; timeshift" entryID="rec_setup">
+			<menu weight="11" level="1" text="Recording and playback settings" entryID="rec_setup">
 			 	<id val="rec" />
 					<item weight="10" level="0" text="Timeshift" entryID="timshift_setup"><screen module="Timeshift" screen="TimeshiftSettings" /></item>
-					<item weight="15" level="0" text="Recording &amp; playback" entryID="recording_setup"><screen module="Recordings" screen="RecordingSettings" /></item>
+					<item weight="15" level="0" text="Recordings" entryID="recording_setup"><screen module="Recordings" screen="RecordingSettings" /></item>
 			</menu>
 			<!-- Menu / Setup / System (OLD SYSTEM ENTRY FOR COMPATIBILITY) -->
 			<menu weight="98" level="0" text="System" entryID="system_selection">
@@ -220,8 +217,8 @@ self.session.open(HdmiCECSetupScreen)
 		<menu weight="5" text="Timers" entryID="timer_menu">
 			<id val="timermenu"/>
 			<item weight="1" level="0" text="Timers" entryID="timer_edit"><screen module="TimerEdit" screen="TimerEditList"/></item>
-			<item weight="100" level="0" text="Cron timers" entryID="crontimer_edit"><screen module="CronTimer" screen="CronTimers"/></item>
-			<item weight="100" level="0" text="Power timers" entryID="powertimer_edit"><screen module="PowerTimerEdit" screen="PowerTimerEditList"/></item>
+			<item weight="100" level="0" text="Cron Manager" entryID="crontimer_edit"><screen module="CronTimer" screen="CronTimers"/></item>
+			<item weight="100" level="0" text="PowerTimer List" entryID="powertimer_edit"><screen module="PowerTimerEdit" screen="PowerTimerEditList"/></item>
 		</menu>
 
 <!-- Menu / Information -->
@@ -232,7 +229,7 @@ self.session.open(HdmiCECSetupScreen)
 			<item level="0" text="Memory" entryID="memory_screen"><screen module="About" screen="SystemMemoryInfo"/></item>
 			<item level="0" text="Network" entryID="network_screen"><screen module="About" screen="SystemNetworkInfo"/></item>
 			<item level="1" text="Service" entryID="service_info_screen"><screen module="ServiceInfo" screen="ServiceInfo"/></item>
-			<item level="2" text="Streaming clients" entryID="streaming_clients_info_screen"><screen module="StreamingClientsInfo"/></item>
+			<item level="2" text="Streaming clients info" entryID="streaming_clients_info_screen"><screen module="StreamingClientsInfo"/></item>
 		</menu>
 
 <!-- Menu / VCR Scart -->

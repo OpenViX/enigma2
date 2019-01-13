@@ -598,7 +598,7 @@ msgstr ""
 msgid "Add"
 msgstr ""
 
-msgid "Add AutoTimer"
+msgid "Add Autotimer"
 msgstr ""
 
 msgid "Add Timer"
@@ -1558,6 +1558,9 @@ msgstr ""
 msgid "Cron Manager"
 msgstr ""
 
+msgid "Cron manager"
+msgstr ""
+
 msgid "Current CEC address"
 msgstr ""
 
@@ -2031,7 +2034,7 @@ msgstr ""
 msgid "EPG Cache Check"
 msgstr ""
 
-msgid "EPG Search"
+msgid "EPG search"
 msgstr ""
 
 msgid "EPG settings"
@@ -2640,7 +2643,7 @@ msgstr ""
 msgid "IMDB search for current event"
 msgstr ""
 
-msgid "IMDb Search"
+msgid "IMDb search"
 msgstr ""
 
 msgid "IP address"
@@ -5887,36 +5890,52 @@ msgid "This plugin will be removed."
 msgstr ""
 
 msgid ""
-"This test checks for configured nameservers.\n"
-"If you get a \"unconfirmed\" message:\n"
-"- please check your DHCP, cabling and adapter setup\n"
-"- if you configured your nameservers manually please verify your entries in the \"Nameserver\" configuration"
-msgstr ""
-
-msgid ""
+"Local network\n"
+"\n"
 "This test checks whether a network cable is connected to your LAN adapter.\n"
+"\n"
 "If you get a \"disconnected\" message:\n"
-"- verify that a network cable is attached\n"
-"- verify that the cable is not broken"
+"- Verify that a network cable is attached.\n"
+"- Verify that the cable is not broken."
 msgstr ""
 
 msgid ""
-"This test checks whether a valid IP address is found for your LAN adapter.\n"
+"Nameserver\n"
+"\n"
+"This test checks for configured nameservers.\n"
+"\n"
 "If you get a \"unconfirmed\" message:\n"
-"- no valid IP address was found\n"
-"- please check your DHCP, cabling and adapter setup"
+"- Please check your DHCP server, cabling and adapter setup.\n"
+"- If you configured your nameservers manually please verify your entries in the \"Nameserver\" configuration."
 msgstr ""
 
 msgid ""
+"DHCP\n"
+"\n"
 "This test checks whether your LAN adapter is set up for automatic IP address configuration with DHCP.\n"
+"\n"
 "If you get a \"disabled\" message:\n"
-" - then your LAN adapter is configured for manual IP setup\n"
-"- verify thay you have entered correct IP informations in the adapter setup dialog.\n"
+"- Your LAN adapter is configured for manual IP setup.\n"
+"- Verify that you have entered correct IP informations in the adapter setup dialog.\n"
+"\n"
 "If you get an \"enabled\" message:\n"
-"-verify that you have a configured and working DHCP server in your network."
+"- Verify that you have a configured and working DHCP server in your network."
 msgstr ""
 
-msgid "This test detects your configured LAN adapter."
+msgid ""
+"IP address\n"
+"\n"
+"This test checks whether a valid IP address is found for your LAN adapter.\n"
+"\n"
+"If you get a \"unconfirmed\" message:\n"
+"- No valid IP address was found.\n"
+"- Please check your DHCP server, cabling and adapter setup."
+msgstr ""
+
+msgid ""
+"LAN adapter\n"
+"\n"
+"This test detects your configured LAN adapter."
 msgstr ""
 
 msgid ""
@@ -9133,7 +9152,7 @@ msgstr ""
 msgid "Setup the interval (in hours) to check for online updates."
 msgstr ""
 
-msgid "Setup your timezone."
+msgid "Setup your timezone area."
 msgstr ""
 
 msgid "Show CCcam Info in extensions?"
@@ -9649,8 +9668,6 @@ msgid "Use the wizard to set up basic features"
 msgstr ""
 
 msgid ""
-"Welcome.\n"
-"\n"
 "This start wizard will guide you through the basic setup of your %s %s.\n"
 "Press the OK button on your remote control to move to the next step."
 msgstr ""
@@ -9673,11 +9690,6 @@ msgstr ""
 msgid "Configure interface"
 msgstr ""
 
-msgid ""
-"Please setup your user interface by adjusting the values till the edges of the blue box are touching the edges of your TV.\n"
-"When you are ready press OK to continue."
-msgstr ""
-
 msgid "Refresh rate selection."
 msgstr ""
 
@@ -9695,7 +9707,7 @@ msgid ""
 "\n"
 "Please press OK if you can see this page on your TV (or select a different input port).\n"
 "\n"
-"The next input port will be automatically probed in 20 seconds."
+"The next input port will be automatically probed in 10 seconds."
 msgstr ""
 
 msgid "Video mode selection."
@@ -9839,4 +9851,314 @@ msgid "Your %s %s is shutting down. Please wait..."
 msgstr ""
 
 msgid "Your backup succeeded. We will now continue to explain the further upgrade process."
+msgstr ""
+
+msgid "Show True/False as graphical switch"
+msgstr ""
+
+msgid "Enable to display all true/false, yes/no, on/off and enable/disable set up options as a graphical switch."
+msgstr ""
+
+msgid "Country for EPG event genre information"
+msgstr ""
+
+msgid "Country for EPG event rating information"
+msgstr ""
+
+msgid "Auto Detect"
+msgstr ""
+
+msgid "Choose a country scheme for decoding genre information in EPG events."
+msgstr ""
+
+msgid "Choose a country scheme for decoding rating information in EPG events."
+msgstr ""
+
+msgid "Task warning on shutdown"
+msgstr ""
+
+msgid "On shutdown/restart warn about any pending jobs being carried out in the background."
+msgstr ""
+
+msgid "Ignore DVB-S namespace sub network"
+msgstr ""
+
+msgid "Ignore DVB-C namespace sub network"
+msgstr ""
+
+msgid "Ignore DVB-T namespace sub network"
+msgstr ""
+
+msgid "On valid ONIDs, ignore frequency sub network part"
+msgstr ""
+
+msgid "Send 'sourceactive' before zap timers" 
+msgstr ""
+
+msgid "Cover dashed flickering line for this service" 
+msgstr ""
+
+msgid "Uncover dashed flickering line for this service" 
+msgstr ""
+
+msgid "Center DVB subs on this service" 
+msgstr ""
+
+msgid "Do not center DVB subs on this service" 
+msgstr ""
+
+msgid "Configuration..." 
+msgstr ""
+
+msgid "Fallback address type" 
+msgstr ""
+
+msgid "Fallback receiver IP address" 
+msgstr ""
+
+msgid "Fallback receiver streaming port" 
+msgstr ""
+
+msgid "Enable usage of tuners from another Enigma2 receiver on the local network. Remote tuners will be used when tuners are not available on this receiver. (No free tuner or service type is not available.)" 
+msgstr ""
+
+msgid "'Network peer' automatically detects other Enigma2 receivers on the local network. You can also manually enter the URL or IP address." 
+msgstr ""
+
+msgid "Select a receiver to use for fallback tuners. If the host receiver is not listed, manually enter the URL or IP address" 
+msgstr ""
+
+msgid "Enter the IP address of the receiver to use for fallback tuners." 
+msgstr ""
+
+msgid "Enter the URL/IP of the fallback remote receiver, e.g. '192.168.0.1'. The other details such as 'http://' and port number will be filled in automatically when you select save." 
+msgstr ""
+
+msgid "Default port is '%d'. Change if required." 
+msgstr ""
+
+msgid "Client mode" 
+msgstr ""
+
+msgid "Choose the layout view mode (Text or Graphics)." 
+msgstr ""
+
+msgid "Choose the layout view mode (Text / Graphics Multi channel EPG or Single channel EPG)." 
+msgstr ""
+
+msgid "Highlight current events" 
+msgstr ""
+
+msgid "Enable to highlight events that are currently in progress." 
+msgstr ""
+
+msgid "Alignment of service names" 
+msgstr ""
+
+msgid "Configure alignment of the service names." 
+msgstr ""
+
+msgid "Alignment of service numbers" 
+msgstr ""
+
+msgid "Configure alignment of the service numbers." 
+msgstr ""
+
+msgid "Alignment of events" 
+msgstr ""
+
+msgid "Configure alignment of service events." 
+msgstr ""
+
+msgid "Alignment of timeline date" 
+msgstr ""
+
+msgid "Configure alignment of the timeline date." 
+msgstr ""
+
+msgid "Release notes" 
+msgstr ""
+
+msgid "Service & PIDs" 
+msgstr ""
+
+msgid "Tuner settings values" 
+msgstr ""
+
+msgid "Tuner live values" 
+msgstr ""
+
+msgid "Random password" 
+msgstr ""
+
+msgid "New password" 
+msgstr ""
+
+msgid ""
+"Setting a password is strongly advised if your STB is open to the internet.\n"
+"This is the case if you have in your router a port forwarded to the STB."
+msgstr ""
+
+msgid "Use picon_lcd directory for picons on color LCD" 
+msgstr ""
+
+msgid "Configure the brightness level of the front panel display for dimmed operation." 
+msgstr ""
+
+msgid "Dim the LCD after specified time." 
+msgstr ""
+
+msgid "Delay in milliseconds before start of scrolling text on display." 
+msgstr ""
+
+msgid "Delay in milliseconds after finish scrolling text on display." 
+msgstr ""
+
+msgid "Enable blinking rec symbol on the LCD Display" 
+msgstr ""
+
+msgid "In the Standby Record on the LCD Display" 
+msgstr ""
+
+msgid "Set CI assignment for detection of available services." 
+msgstr ""
+
+msgid "This option allows you to choose whether or not to display genre information for the event." 
+msgstr ""
+
+msgid "This option allows you to show menu number quick links." 
+msgstr ""
+
+msgid "Change the Colorspace from Auto to RGB" 
+msgstr ""
+
+msgid "Choose whether multi channel ac3 sound tracks should be downmixed to stereo." 
+msgstr ""
+
+msgid "Choose whether multi channel aac sound tracks should be downmixed to stereo." 
+msgstr ""
+
+msgid "Timezone area"
+msgstr ""
+
+msgid "Your timezone in the area."
+msgstr ""
+
+msgid "Choose between High Dynamic Range (HDR) or Picture in Picture (PIP). Both are not possible at the same time. A FULL REBOOT is required for it to take effect"
+msgstr ""
+
+msgid "Choose the display formatting style for dates. 'D' / 'DD' is the date and 'M' / 'MM' is the month in digits.  ('DD' and 'MM' have leading zeros for single digit values.) The screen display will be based on your choice but can be influenced by the skin."
+msgstr ""
+
+msgid "Choose the display formatting style for times. 'H' / 'HH' is the hour for a 24 hour clock, 'h' / 'hh' is the hour for a 12 hour clock, 'mm' is the minutes and 'ss' is the seconds.  ('HH' and 'hh' have leading zeros for single digit values.) The screen display will be based on your choice but can be influenced by the skin."
+msgstr ""
+
+msgid "Choose the front panel display formatting style for dates. 'D' / 'DD' is the date and 'M' / 'MM' is the month in digits.  ('DD' and 'MM' have leading zeros for single digit values.) The screen display will be based on your choice but can be influenced by the skin."
+msgstr ""
+
+msgid "Choose the front panel display formatting style for times. 'H' / 'HH' is the hour for a 24 hour clock, 'h' / 'hh' is the hour for a 12 hour clock, 'mm' is the minutes.  ('HH' and 'hh' have leading zeros for single digit values.) The front panel display will be based on your choice but can be influenced any applicable skin."
+msgstr ""
+
+msgid ""
+"NOTE: This feature is intended for people who cannot disable overscan on their television / display.  Please first try to disable overscan before using this feature.\n"
+"\n"
+"USAGE: Adjust the screen size and position settings so that the shaded user interface layer *just* covers the test pattern in the background.\n"
+"\n"
+"Select Yes to continue or No to exit."
+msgstr ""
+
+msgid ""
+"Welcome to OpenViX!\n"
+"\n"
+"NOTE: This section of the wizard is intended for people who cannot disable overscan on their television / display.  Please first try to disable overscan before using this feature.\n"
+"\n"
+"USAGE: If you continue adjust the screen size and position settings so that the shaded user interface layer *just* covers the test pattern in the background.\n"
+"\n"
+"Select Yes to change these settings or No to skip this step."
+msgstr ""
+
+#, python-format
+msgid "Your %s %s has no %s access, please check your network settings and make sure you have network cable connected and try again."
+msgstr ""
+
+#, python-format
+msgid "Your %s %s has no internet access, please check your network settings and make sure you have network cable connected and try again."
+msgstr ""
+
+#, python-format
+msgid "Your %s %s is not able to connect to the feeds, please try again later. If this persists please report on the OpenViX forum at world-of-satellite.com."
+msgstr ""
+
+msgid "Do you want to install plugins"
+msgstr ""
+
+msgid "Plugin install"
+msgstr ""
+
+msgid "Do you want to change the default skin"
+msgstr ""
+
+msgid "Skin install"
+msgstr ""
+
+msgid ""
+"Please setup your user interface by adjusting the values till the edges of the user interface box are covering the test pattern and touching the edges of your TV.\n"
+"When you are ready press OK to continue."
+msgstr ""
+
+msgid "Tuning info: live values"
+msgstr ""
+
+msgid "Tuning info: settings values"
+msgstr ""
+
+msgid "Tuner config"
+msgstr ""
+
+msgid "Tuner setup"
+msgstr ""
+
+msgid "Fallback tuner setup"
+msgstr ""
+
+msgid "OSD position"
+msgstr ""
+
+msgid "Device"
+msgstr ""
+
+msgid "Mounts"
+msgstr ""
+
+msgid "Password setup"
+msgstr ""
+
+msgid "Recording and playback"
+msgstr ""
+
+msgid "No updates found, Press OK to exit this screen."
+msgstr ""
+
+msgid "Generic"
+msgstr ""
+
+msgid "Select locale"
+msgstr ""
+
+msgid "Upper case"
+msgstr ""
+
+msgid "Available locales are:"
+msgstr ""
+
+msgid "Enter"
+msgstr ""
+
+msgid ""
+"Press up/down to scroll through the selected log\n"
+"\n"
+"Press left/right to see different log types"
+msgstr ""
+
+msgid "Please wait"
 msgstr ""
