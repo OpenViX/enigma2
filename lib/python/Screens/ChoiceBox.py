@@ -49,6 +49,7 @@ class ChoiceBox(Screen):
 				self["text"].setText(title)
 		elif text:
 			self["text"].setText(_(text))
+		self["description"] = Label()
 		self.list = []
 		self.summarylist = []
 		if keys is None:
@@ -80,13 +81,15 @@ class ChoiceBox(Screen):
 						new_keys.append(not x.isdigit() and x or "")
 				self.__keys = new_keys
 		for x in list:
-			strpos = str(self.__keys[pos])
-			self.list.append(ChoiceEntryComponent(key=strpos, text=x))
-			if self.__keys[pos] != "":
-				self.keymap[self.__keys[pos]] = list[pos]
-			self.summarylist.append((self.__keys[pos], x[0]))
-			pos += 1
-		self["list"] = ChoiceList(list=self.list, selection=selection)
+			if x:
+				strpos = str(self.__keys[pos])
+				self.list.append(ChoiceEntryComponent(key = strpos, text = x))
+				if self.__keys[pos] != "":
+					self.keymap[self.__keys[pos]] = list[pos]
+				self.summarylist.append((self.__keys[pos],x[0]))
+				pos += 1
+
+		self["list"] = ChoiceList(list = self.list, selection = selection)
 		self["summary_list"] = StaticText()
 		self["summary_selection"] = StaticText()
 		self.updateSummary(selection)
@@ -236,6 +239,7 @@ class ChoiceBox(Screen):
 		self.goKey("blue")
 
 	def updateSummary(self, curpos=0):
+		self.displayDescription(curpos)
 		pos = 0
 		summarytext = ""
 		for entry in self.summarylist:
@@ -248,6 +252,12 @@ class ChoiceBox(Screen):
 				summarytext += ' ' + entry[1] + '\n'
 			pos += 1
 		self["summary_list"].setText(summarytext)
+
+	def displayDescription(self, curpos=0):
+		if self.list and len(self.list[curpos][0]) > 2 and isinstance(self.list[curpos][0][2], str):
+			self["description"].setText(self.list[curpos][0][2])
+		else:
+			self["description"].setText("")
 
 	def cancel(self):
 		self.close(None)

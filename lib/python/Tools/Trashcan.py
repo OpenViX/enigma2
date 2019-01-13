@@ -14,11 +14,12 @@ def getTrashFolder(path=None):
 			print 'path is none'
 			return ""
 		else:
+			trashcan = Harddisk.findMountPoint(os.path.realpath(path))
 			if '/movie' in path:
-				mountpoint = Harddisk.findMountPoint(os.path.realpath(path))
-				trashcan = os.path.join(mountpoint, 'movie')
-			else:
-				trashcan = Harddisk.findMountPoint(os.path.realpath(path))
+				trashcan = os.path.join(trashcan, 'movie')
+			elif config.usage.default_path.value in path:
+				# if default_path happens to not be the default /hdd/media/movie, then we can have a trash folder there instead
+				trashcan = os.path.join(trashcan, config.usage.default_path.value)
 			return os.path.realpath(os.path.join(trashcan, ".Trash"))
 	except:
 		return None

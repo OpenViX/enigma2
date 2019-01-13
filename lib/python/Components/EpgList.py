@@ -44,11 +44,16 @@ class Rect:
 	def width(self):
 		return self.w
 
+# Various value are in minutes, while others are in seconds.
+# Use this to remind us what is going on...
+#
+SECS_IN_MIN = 60
+
 class EPGList(GUIComponent):
 	def __init__(self, type = EPG_TYPE_SINGLE, selChangedCB = None, timer = None, time_epoch = 120, overjump_empty = False, graphic=False):
 		self.cur_event = None
 		self.cur_service = None
-		self.offs = 0
+		self.time_focus = time() # default to now
 		self.time_base = None
 		self.time_epoch = time_epoch
 		self.select_rect = None
@@ -75,6 +80,17 @@ class EPGList(GUIComponent):
 			self.l.setBuildFunc(self.buildMultiEntry)
 		elif type == EPG_TYPE_GRAPH or type == EPG_TYPE_INFOBARGRAPH:
 			self.l.setBuildFunc(self.buildGraphEntry)
+			if self.type == EPG_TYPE_GRAPH:
+				value = config.epgselection.graph_servicetitle_mode.value
+				round_by = int(config.epgselection.graph_roundto.value)
+			elif self.type == EPG_TYPE_INFOBARGRAPH:
+				value = config.epgselection.infobar_servicetitle_mode.value
+				round_by = int(config.epgselection.infobar_roundto.value)
+			self.round_by_secs = round_by * SECS_IN_MIN
+			self.time_epoch_secs = time_epoch * SECS_IN_MIN
+			self.showServiceNumber = "servicenumber" in value
+			self.showServiceTitle = "servicename" in value
+			self.showPicon = "picon" in value
 		else:
 			assert(type == EPG_TYPE_SIMILAR)
 			self.l.setBuildFunc(self.buildSimilarEntry)
@@ -85,13 +101,13 @@ class EPGList(GUIComponent):
 				LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock.png')),
 				LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_prepost.png')),
 				LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_post.png')),
-				
+
 				LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_add.png')),
 				LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_pre.png')),
 				LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_zap.png')),
 				LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_prepost.png')),
 				LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_post.png')),
-				
+
 				LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_add.png')),
 				LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_pre.png')),
 				LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_zaprec.png')),
@@ -200,6 +216,7 @@ class EPGList(GUIComponent):
 		self.eventBorderWidth = 1
 		self.eventNamePadding = 3
 		self.NumberOfRows = None
+		self.serviceNumberWidth = 0
 
 	def applySkin(self, desktop, screen):
 		if self.skinAttributes is not None:
@@ -293,6 +310,16 @@ class EPGList(GUIComponent):
 		self.listWidth = self.instance.size().width()
 		self.setItemsPerPage()
 		self.setFontsize()
+
+		# cache service number width
+		if self.showServiceNumber:
+			if self.type == EPG_TYPE_GRAPH:
+				font_conf = config.epgselection.graph_servfs.value
+			elif self.type == EPG_TYPE_INFOBARGRAPH:
+				font_conf = config.epgselection.infobar_servfs.value
+			font = gFont(self.serviceFontNameGraph, self.serviceFontSizeGraph + font_conf)
+			self.serviceNumberWidth = getTextBoundarySize(self.instance, font, self.instance.size(), "0000" ).width()
+
 		return rc
 
 	def getCurrentChangeCount(self):
@@ -303,12 +330,8 @@ class EPGList(GUIComponent):
 	def isSelectable(self, service, service_name, events, picon, channel):
 		return (events and len(events) and True) or False
 
-	def setShowServiceMode(self, value):
-		self.showServiceNumber = "servicenumber" in value
-		self.showServiceTitle = "servicename" in value
-		self.showPicon = "picon" in value
-		self.recalcEntrySize()
-		self.selEntry(0) #Select entry again so that the clipping region gets updated if needed
+	def setTimeFocus(self, time_focus):
+		self.time_focus = time_focus
 
 	def setOverjump_Empty(self, overjump_empty):
 		if overjump_empty:
@@ -316,10 +339,13 @@ class EPGList(GUIComponent):
 		else:
 			self.l.setSelectableFunc(None)
 
-	def setEpoch(self, epoch):
-		self.offs = 0
+	def setTimeEpoch(self, epoch):
 		self.time_epoch = epoch
+		self.time_epoch_secs = epoch * SECS_IN_MIN
 		self.fillGraphEPG(None)
+
+	def getTimeEpoch(self):
+		return self.time_epoch
 
 	def setCurrentlyPlaying(self, serviceref):
 		self.currentlyPlaying = serviceref
@@ -362,7 +388,6 @@ class EPGList(GUIComponent):
 		if self.type == EPG_TYPE_GRAPH or self.type == EPG_TYPE_INFOBARGRAPH:
 			if self.cur_service is None:
 				return None, None
-			old_service = self.cur_service  #(service, service_name, events, picon)
 			events = self.cur_service[2]
 			refstr = self.cur_service[0]
 			if self.cur_event is None or not events or (self.cur_event and events and self.cur_event > len(events)-1):
@@ -394,39 +419,45 @@ class EPGList(GUIComponent):
 	def serviceChanged(self):
 		cur_sel = self.l.getCurrentSelection()
 		if cur_sel:
-			self.findBestEvent()
+			self.selectEventFromTime()
+			self.selEntry(0)
 
-	def findBestEvent(self):
-		old_service = self.cur_service  #(service, service_name, events, picon)
+	def selectEventFromTime(self):
 		cur_service = self.cur_service = self.l.getCurrentSelection()
-		time_base = self.getTimeBase()
-		last_time = time()
-		if old_service and self.cur_event is not None:
-			events = old_service[2]
-			cur_event = events[self.cur_event] if len(events) >= self.cur_event else 0 #(event_id, event_title, begin_time, duration)
-			last_time = cur_event[2]
 		if cur_service:
-			self.cur_event = 0
+			self.cur_event = None
 			events = cur_service[2]
-			best = None
 			if events and len(events):
-				best_diff = 0
-				idx = 0
-				for event in events: #iterate all events
-					ev_time = event[2]
-					ev_end_time = event[2] + event[3]
-					if ev_time < time_base:
-						ev_time = time_base
-					diff = abs(ev_time - last_time)
-					if best is None or (diff < best_diff):
-						best = idx
-						best_diff = diff
-					if ev_end_time < time():
-						best = idx+1
-					if best is not None and ev_time > last_time and ev_end_time > time():
-						break
-					idx += 1
-			self.cur_event = best
+				self.cur_event = 0
+				if self.time_focus >= events[0][2]:
+					for event in events: #iterate all events
+						ev_time = event[2]
+						ev_end_time = ev_time + event[3]
+						self.cur_event += 1
+						if ev_time <= self.time_focus < ev_end_time:
+							break
+					self.cur_event -= 1
+
+	def setTimeFocusFromEvent(self, cur_event):
+		cur_service = self.l.getCurrentSelection()
+		if cur_service:
+			events = cur_service[2]
+			if events and len(events):
+				self.cur_event = max(min(len(events) - 1, cur_event), 0)
+				event = events[self.cur_event]
+
+				# clip the selected event times to the current screen
+				time_base = self.getTimeBase()
+				ev_time = max(time_base, event[2])
+				ev_end_time = min(event[2] + event[3], time_base + self.time_epoch_secs)
+				if ev_time <= time() < ev_end_time:
+					# selected event contains the current time, user is interested in current things
+					self.time_focus = time()
+				else:
+					# user is looking at things roughly around the middle of the selected event
+					self.time_focus = ev_time + (ev_end_time - ev_time) / 2
+		else:
+			self.cur_event = None
 		self.selEntry(0)
 
 	def selectionChanged(self):
@@ -589,16 +620,14 @@ class EPGList(GUIComponent):
 				if self.showPicon:
 					piconw = config.epgselection.graph_piconwidth.value
 				if self.showServiceNumber:
-					font = gFont(self.serviceFontNameGraph, self.serviceFontSizeGraph + config.epgselection.graph_servfs.value)
-					channelw = getTextBoundarySize(self.instance, font, self.instance.size(), "0000" ).width()
+					channelw = self.serviceNumberWidth
 			elif self.type == EPG_TYPE_INFOBARGRAPH:
 				if self.showServiceTitle:
 					servicew = config.epgselection.infobar_servicewidth.value
 				if self.showPicon:
 					piconw = config.epgselection.infobar_piconwidth.value
 				if self.showServiceNumber:
-					font = gFont(self.serviceFontNameGraph, self.serviceFontSizeGraph + config.epgselection.infobar_servfs.value)
-					channelw = getTextBoundarySize(self.instance, font, self.instance.size(), "0000" ).width()
+					channelw = self.serviceNumberWidth
 			w = (channelw + piconw + servicew)
 			self.service_rect = Rect(0, 0, w, height)
 			self.event_rect = Rect(w, 0, width - w, height)
@@ -633,8 +662,8 @@ class EPGList(GUIComponent):
 			ewidth = width - xpos
 		return xpos, ewidth
 
-	def calcEntryPosAndWidth(self, event_rect, time_base, time_epoch, ev_start, ev_duration):
-		xpos, width = self.calcEntryPosAndWidthHelper(ev_start, ev_duration, time_base, time_base + time_epoch * 60, event_rect.width())
+	def calcEntryPosAndWidth(self, event_rect, time_base, time_epoch_secs, ev_start, ev_duration):
+		xpos, width = self.calcEntryPosAndWidthHelper(ev_start, ev_duration, time_base, time_base + time_epoch_secs, event_rect.width())
 		return xpos + event_rect.left(), width
 
 	def getPixmapForEntry(self, service, eventId, beginTime, duration):
@@ -754,11 +783,11 @@ class EPGList(GUIComponent):
 					(eListboxPythonMultiContent.TYPE_TEXT, r2.x, r2.y, split, r2.h, 0, RT_HALIGN_RIGHT | RT_VALIGN_CENTER, strftime(config.usage.time.short.value + " - ", begin)),
 					(eListboxPythonMultiContent.TYPE_TEXT, r2.x + split, r2.y, r2.w - split, r2.h, 0, RT_HALIGN_RIGHT | RT_VALIGN_CENTER, strftime(config.usage.time.short.value, end))
 				))
-				remaining = duration / 60
+				remaining = duration / SECS_IN_MIN
 				prefix = ""
 			else:
 				percent = (nowTime - beginTime) * 100 / duration
-				remaining = ((beginTime + duration) - int(time())) / 60
+				remaining = ((beginTime + duration) - int(time())) / SECS_IN_MIN
 				if remaining <= 0:
 					prefix = ""
 				else:
@@ -849,7 +878,7 @@ class EPGList(GUIComponent):
 		if self.showServiceNumber:
 			if not isinstance(channel, int):
 				channel = self.getChannelNumber(channel)
-			
+
 			if channel:
 				namefont = 0
 				namefontflag = int(config.epgselection.graph_servicenumber_alignment.value)
@@ -948,8 +977,8 @@ class EPGList(GUIComponent):
 
 		# Events for service
 		if events:
-			start = self.time_base + self.offs * self.time_epoch * 60
-			end = start + self.time_epoch * 60
+			start = self.time_base
+			end = start + self.time_epoch_secs
 
 			now = time()
 			for ev in events:  #(event_id, event_title, begin_time, duration)
@@ -1146,6 +1175,12 @@ class EPGList(GUIComponent):
 			sely = int(sely) - int(self.listHeight)
 		return int(selx), int(sely)
 
+# This method function is a little odd...
+# When it is called with a non-zero dir it runs through the code in the
+# dir != 0 part (at the top).  If this results in it moving screen-page
+# that code calls fillGraphEPG()/fillGraphEPGNoRefresh(), which makes a
+# call back here with dir=0, so the rest of the code gets run.
+#
 	def selEntry(self, dir, visible = True):
 		cur_service = self.cur_service    #(service, service_name, events, picon)
 		self.recalcEntrySize()
@@ -1153,56 +1188,79 @@ class EPGList(GUIComponent):
 		if cur_service:
 			update = True
 			entries = cur_service[2]
+
+			abs_time_focus = None
 			if dir == 0: #current
 				update = False
-			elif dir == +1: #next
-				if valid_event and self.cur_event + 1 < len(entries):
-					self.cur_event += 1
+
+			elif (dir > 0): # Move forward
+				if dir == +1:   # Next event
+					if valid_event and self.cur_event + 1 < len(entries):
+						self.setTimeFocusFromEvent(self.cur_event + 1)
+						self.l.invalidateEntry(self.l.getCurrentSelectionIndex())
+						return False    # Same page
+# Next event is on next page, so we need to move to it
+					incr = self.time_epoch_secs
+					fevent = 0
+					norefresh = True
+				elif dir == +2: # Next page
+					incr = self.time_epoch_secs
+					fevent = None
+					norefresh = False
+				elif dir == +24: # Next day
+					incr = 86400
+					fevent = None
+					norefresh = False
+			else:           # Move back (dir < 0)
+				if dir == -1:   # Prev event
+					if valid_event and self.cur_event - 1 >= 0:
+						self.setTimeFocusFromEvent(self.cur_event - 1)
+						self.l.invalidateEntry(self.l.getCurrentSelectionIndex())
+						return False    # Same page
+# Prev event is on prev page, so move to it iff it exists
+# It won't exists if time_base is less than time()
+					if time() > self.time_base:
+						return False    # Nothing to do
+					incr = -self.time_epoch_secs
+					fevent = 65535
+					norefresh = True
+				else:           # Prev page or Prev day
+					fevent = None
+					norefresh = False
+					if dir == -2: # Prev page
+						target = self.time_base - self.time_epoch_secs
+					else:         # Prev day
+						target = self.time_base - 86400
+# Work out the earliest we can go back to
+					abs0 = int(time() - int(config.epg.histminutes.value) * SECS_IN_MIN)
+					abs0 = abs0 - abs0 % self.round_by_secs
+					if target >= abs0:
+						incr = target - self.time_base
+					else:
+						incr = abs0 - self.time_base
+# If we go back to square one with prev page/day then set the focus on
+# now, rather than start of page
+						abs_time_focus = time()
+# If we are still here and moving - do the move now and return True to
+# indicate we've changed pages
+#
+			if dir != 0:
+				self.time_base += incr
+				if abs_time_focus:
+					self.time_focus = abs_time_focus
 				else:
-					self.offs += 1
-					self.fillGraphEPG(None) # refill
-					return True
-			elif dir == -1: #prev
-				if valid_event and self.cur_event - 1 >= 0:
-					self.cur_event -= 1
-				elif self.offs > 0:
-					self.offs -= 1
-					self.fillGraphEPG(None) # refill
-					return True
-				elif self.time_base > time():
-					self.time_base -= self.time_epoch * 60
-					self.fillGraphEPG(None) # refill
-					return True
-			elif dir == +2: #next page
-				self.offs += 1
-				self.fillGraphEPG(None) # refill
+					self.time_focus += incr
+				if norefresh:
+					self.fillGraphEPGNoRefresh()
+				else:
+					self.fillGraphEPG(None)
+				if fevent != None:
+					self.setTimeFocusFromEvent(fevent)
 				return True
-			elif dir == -2: #prev
-				if self.offs > 0:
-					self.offs -= 1
-					self.fillGraphEPG(None) # refill
-					return True
-			elif dir == +24:
-				self.time_base += 86400
-				self.fillGraphEPG(None, self.time_base) # refill
-				return True
-			elif dir == -24:
-				now = time() - int(config.epg.histminutes.value) * 60
-				if self.type == EPG_TYPE_GRAPH:
-					if (self.time_base - 86400) >= now - now % (int(config.epgselection.graph_roundto.value) * 60):
-						self.time_base -= 86400
-						self.fillGraphEPG(None, self.time_base) # refill
-						return True
-				elif self.type == EPG_TYPE_INFOBARGRAPH:
-					if (self.time_base - 86400) >= now - now % (int(config.epgselection.infobar_roundto.value) * 60):
-						self.time_base -= 86400
-						self.fillGraphEPG(None, self.time_base) # refill
-						return True
 
 		if cur_service and valid_event and (self.cur_event+1 <= len(entries)):
 			entry = entries[self.cur_event] #(event_id, event_title, begin_time, duration)
-			time_base = self.time_base + self.offs * self.time_epoch * 60
-			xpos, width = self.calcEntryPosAndWidth(self.event_rect, time_base, self.time_epoch, entry[2], entry[3])
+			xpos, width = self.calcEntryPosAndWidth(self.event_rect, self.time_base, self.time_epoch_secs, entry[2], entry[3])
 			self.select_rect = Rect(xpos ,0, width, self.event_rect.height)
 			self.l.setSelectionClip(eRect(xpos, 0, width, self.event_rect.h), visible and update)
 		else:
@@ -1233,14 +1291,14 @@ class EPGList(GUIComponent):
 
 	def fillSingleEPG(self, service):
 		t = time()
-		epg_time = t - config.epg.histminutes.value*60
+		epg_time = t - config.epg.histminutes.value*SECS_IN_MIN
 		test = [ 'RIBDT', (service.ref.toString(), 0, epg_time, -1) ]
 		self.list = self.queryEPG(test)
 		# Add explicit gaps if data isn't available.
 		for i in range(len(self.list) - 1, 0, -1):
 			this_beg = self.list[i][2]
 			prev_end = self.list[i-1][2] + self.list[i-1][3]
-			if prev_end + 5 * 60 < this_beg:
+			if prev_end + 5 * SECS_IN_MIN < this_beg:
 				self.list.insert(i, (self.list[i][0], None, prev_end, this_beg - prev_end, None))
 		self.l.setList(self.list)
 		self.recalcEntrySize()
@@ -1280,6 +1338,10 @@ class EPGList(GUIComponent):
 		return self.time_base
 
 	def fillGraphEPG(self, services, stime = None):
+		self.fillGraphEPGNoRefresh(services, stime)
+		self.selEntry(0)
+
+	def fillGraphEPGNoRefresh(self, services = None, stime = None):
 		if (self.type == EPG_TYPE_GRAPH or self.type == EPG_TYPE_INFOBARGRAPH) and not self.graphicsloaded:
 			if self.graphic:
 				self.nowEvPix = loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, 'epg/CurrentEvent.png'))
@@ -1310,8 +1372,7 @@ class EPGList(GUIComponent):
 		if stime is not None:
 			self.time_base = int(stime)
 		if services is None:
-			time_base = self.time_base + self.offs * self.time_epoch * 60
-			test = [ (service[0], 0, time_base, self.time_epoch) for service in self.list ]
+			test = [ (service[0], 0, self.time_base, self.time_epoch) for service in self.list ]
 			serviceList = self.list
 			piconIdx = 3
 			channelIdx = 4
@@ -1336,7 +1397,7 @@ class EPGList(GUIComponent):
 				if tmp_list is not None:
 					picon = None if piconIdx == 0 else serviceList[serviceIdx][piconIdx]
 					# We pass the serviceref if we don't have the channel number yet, so it can be grabbed
-					channel = serviceList[serviceIdx] if (channelIdx == None) else serviceList[serviceIdx][channelIdx] 
+					channel = serviceList[serviceIdx] if (channelIdx == None) else serviceList[serviceIdx][channelIdx]
 					self.list.append((service, sname, tmp_list[0][0] is not None and tmp_list or None, picon, channel))
 					serviceIdx += 1
 				service = x[0]
@@ -1351,7 +1412,7 @@ class EPGList(GUIComponent):
 
 		self.l.setList(self.list)
 		self.recalcEntrySize()
-		self.findBestEvent()
+		self.selectEventFromTime()
 
 	def sortSingleEPG(self, type):
 		list = self.list
@@ -1366,7 +1427,7 @@ class EPGList(GUIComponent):
 			self.moveToEventId(event_id)
 
 	def getChannelNumber(self,service):
-		if hasattr(service, "ref") and service.ref and '0:0:0:0:0:0:0:0:0' not in service.ref.toString(): 
+		if hasattr(service, "ref") and service.ref and '0:0:0:0:0:0:0:0:0' not in service.ref.toString():
 			numservice = service.ref
 			num = numservice and numservice.getChannelNum() or None
 			if num is not None:
@@ -1381,14 +1442,13 @@ class EPGList(GUIComponent):
 		rc = self.service_rect
 		return Rect( rc.left() + (self.instance and self.instance.position().x() or 0), rc.top(), rc.width(), rc.height() )
 
-	def getTimeEpoch(self):
-		return self.time_epoch
-
 	def getTimeBase(self):
-		return self.time_base + (self.offs * self.time_epoch * 60)
+		return self.time_base
 
+# This used to set the (now gone) self.offs = 0
+# Can be removed at some future time.
 	def resetOffset(self):
-		self.offs = 0
+		pass
 
 	def getSelectedEventId(self):
 		x = self.l.getCurrentSelection()
@@ -1459,9 +1519,10 @@ class TimelineText(GUIComponent):
 
 	def setTimeLineFontsize(self):
 		if self.type == EPG_TYPE_GRAPH:
-			self.l.setFont(0, gFont(self.timelineFontName, self.timelineFontSize + config.epgselection.graph_timelinefs.value))
+			font_conf= config.epgselection.graph_timelinefs.value
 		elif self.type == EPG_TYPE_INFOBARGRAPH:
-			self.l.setFont(0, gFont(self.timelineFontName, self.timelineFontSize + config.epgselection.infobar_timelinefs.value))
+			font_conf = config.epgselection.infobar_timelinefs.value
+		self.l.setFont(0, gFont(self.timelineFontName, self.timelineFontSize + font_conf))
 
 	def postWidgetCreate(self, instance):
 		self.setTimeLineFontsize()
@@ -1486,7 +1547,7 @@ class TimelineText(GUIComponent):
 			time_steps = 60 if time_epoch > 180 else 30
 			num_lines = time_epoch / time_steps
 			incWidth = event_rect.width() / num_lines
-			timeStepsCalc = time_steps * 60
+			timeStepsCalc = time_steps * SECS_IN_MIN
 
 			nowTime = localtime(time())
 			begTime = localtime(time_base)
@@ -1495,13 +1556,14 @@ class TimelineText(GUIComponent):
 				datestr = _("Today")
 			else:
 				if serviceWidth > 179:
-					datestr = strftime(config.usage.date.daylong.value, begTime)
+					date_fmt = config.usage.date.daylong.value
 				elif serviceWidth > 129:
-					datestr = strftime(config.usage.date.dayshort.value, begTime)
+					date_fmt = config.usage.date.dayshort.value
 				elif serviceWidth > 79:
-					datestr = strftime(config.usage.date.daysmall.value, begTime)
+					date_fmt = config.usage.date.daysmall.value
 				else:
-					datestr = strftime("%a", begTime)
+					date_fmt = "%a"
+				datestr = strftime(date_fmt, begTime)
 
 			foreColor = self.foreColor
 			backColor = self.backColor
@@ -1579,8 +1641,8 @@ class TimelineText(GUIComponent):
 			self.time_epoch = time_epoch
 
 		now = time()
-		if time_base <= now < (time_base + time_epoch * 60):
-			xpos = int((((now - time_base) * event_rect.width()) / (time_epoch * 60)) - (timeline_now.instance.size().width() / 2))
+		if time_base <= now < (time_base + time_epoch * SECS_IN_MIN):
+			xpos = int((((now - time_base) * event_rect.width()) / (time_epoch * SECS_IN_MIN)) - (timeline_now.instance.size().width() / 2))
 			old_pos = timeline_now.position
 			new_pos = (xpos + eventLeft, old_pos[1])
 			if old_pos != new_pos:

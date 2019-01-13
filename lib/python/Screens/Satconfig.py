@@ -129,6 +129,7 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 		self.singleSatEntry = None
 		self.toneamplitude = None
 		self.scpc = None
+		self.t2mirawmode = None
 		self.forcelnbpower = None
 		self.forcetoneburst = None
 		self.terrestrialRegionsEntry = None
@@ -145,7 +146,7 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 			self.list.append(self.multiType)
 
 		if self.nim.isCompatible("DVB-S"):
-			self.configMode = getConfigListEntry(_("Configuration mode"), self.nimConfig.configMode, _("Select 'Unicable' if this tuner will use a Unicable device. For all other setups select 'FBC automatic'.") if self.nim.isFBCLink() else _("Configure this tuner using simple or advanced options, or loop it through to another tuner, or copy a configuration from another tuner, or disable it."))
+			self.configMode = getConfigListEntry(_("Configuration mode"), self.nimConfig.configMode, _("Select 'FBC SCR' if this tuner will connect to a SCR (Unicable/JESS) device. For all other setups select 'FBC automatic'.") if self.nim.isFBCLink() else _("Configure this tuner using simple or advanced options, or loop it through to another tuner, or copy a configuration from another tuner, or disable it."))
 			self.list.append(self.configMode)
 
 			if self.nimConfig.configMode.value == "simple":			#simple setup
@@ -203,6 +204,9 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 				if fileExists("/proc/stb/frontend/%d/use_scpc_optimized_search_range" % self.nim.slot):
 					self.scpc = getConfigListEntry(_("SCPC optimized search range"), self.nimConfig.scpcSearchRange, _("Your receiver can use SCPC optimized search range. Consult your receiver's manual for more information."))
 					self.list.append(self.scpc)
+				if fileExists("/proc/stb/frontend/%d/t2mirawmode" % self.nim.slot):
+					self.t2mirawmode = getConfigListEntry(_("T2MI RAW Mode"), self.nimConfig.t2miRawMode, _("With T2MI RAW mode disabled (default) we can use single T2MI PLP de-encapsulation. With T2MI RAW mode enabled we can use astra-sm to analyze T2MI"))
+					self.list.append(self.t2mirawmode)
 		elif self.nim.isCompatible("DVB-C"):
 			self.configMode = getConfigListEntry(_("Configuration mode"), self.nimConfig.configMode, _("Select 'enabled' if this tuner has a signal cable connected, otherwise select 'nothing connected'."))
 			self.list.append(self.configMode)
@@ -321,7 +325,7 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 			self.advancedLof, self.advancedPowerMeasurement, self.turningSpeed, self.advancedType, self.advancedSCR, self.advancedPosition, self.advancedFormat, self.advancedManufacturer,\
 			self.advancedUnicable, self.advancedConnected, self.toneburst, self.committedDiseqcCommand, self.uncommittedDiseqcCommand, self.singleSatEntry,	self.commandOrder,\
 			self.showAdditionalMotorOptions, self.cableScanType, self.multiType, self.cableConfigScanDetails, self.terrestrialCountriesEntry, self.cableCountriesEntry, \
-			self.toneamplitude, self.scpc, self.forcelnbpower, self.forcetoneburst):
+			self.toneamplitude, self.scpc, self.t2mirawmode, self.forcelnbpower, self.forcetoneburst):
 				self.createSetup()
 
 	def run(self):
@@ -340,6 +344,9 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 				self.autoDiseqcRun(autodiseqc_ports)
 				return False
 		if self.have_advanced and self.nim.config_mode == "advanced":
+			# fillAdvancedList resets self.list so some entries like t2mirawmode removed
+			# saveAll will save any unsaved data before self.list entries are gone
+			self.saveAll()
 			self.fillAdvancedList()
 		for x in self.list:
 			if x in (self.turnFastEpochBegin, self.turnFastEpochEnd):
@@ -386,24 +393,24 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 				self.list.append(getConfigListEntry(_("Threshold"), currLnb.threshold, _("Enter the frequency at which you LNB switches between low band and high band. For more information consult the spec sheet of your LNB.")))
 
 			if currLnb.lof.value == "unicable":
-				self.advancedUnicable = getConfigListEntry("SCR (Unicable/JESS) "+_("type"), currLnb.unicable, _("Select the type of Unicable device you are using."))
+				self.advancedUnicable = getConfigListEntry("SCR (Unicable/JESS) "+_("type"), currLnb.unicable, _("Select the type of Single Cable Reception device you are using."))
 				self.list.append(self.advancedUnicable)
 				if currLnb.unicable.value == "unicable_user":
-					self.advancedFormat = getConfigListEntry(_("Format"), currLnb.format, _("Select the format of your Unicable device. Choices are 'SCR Unicable' (Unicable I format), or 'SCR JESS' (Unicable II format)."))
-					self.advancedPosition = getConfigListEntry(_("Position"), currLnb.positionNumber, _("Only change this setting if you are using a Unicable device that has been reprogrammed with a custom programmer. For further information check with the person that reprogrammed the device."))
-					self.advancedSCR = getConfigListEntry(_("Channel"), currLnb.scrList, _("Select the Unicable channel to be assigned to this tuner. This is a unique value. Be certain that no other device connected to this same Unicable system is allocated to the same Unicable channel."))
+					self.advancedFormat = getConfigListEntry(_("Format"), currLnb.format, _("Select the protocol used by your SCR device. Choices are 'SCR Unicable' (Unicable), or 'SCR JESS' (JESS, also known as Unicable II)."))
+					self.advancedPosition = getConfigListEntry(_("Position"), currLnb.positionNumber, _("Only change this setting if you are using a SCR device that has been reprogrammed with a custom programmer. For further information check with the person that reprogrammed the device."))
+					self.advancedSCR = getConfigListEntry(_("Channel"), currLnb.scrList, _("Select the User Band channel to be assigned to this tuner. This is an index into the table of frequencies the SCR switch or SCR LNB uses to pass the requested transponder to the tuner."))
 					self.list.append(self.advancedFormat)
 					self.list.append(self.advancedPosition)
 					self.list.append(self.advancedSCR)
-					self.list.append(getConfigListEntry(_("Frequency"), currLnb.scrfrequency, _("Consult your Unicable device spec sheet for this information.")))
-					self.list.append(getConfigListEntry("LOF/L", currLnb.lofl, _("Consult your Unicable device spec sheet for this information.")))
-					self.list.append(getConfigListEntry("LOF/H", currLnb.lofh, _("Consult your Unicable device spec sheet for this information.")))
-					self.list.append(getConfigListEntry(_("Threshold"), currLnb.threshold, _("Consult your Unicable device spec sheet for this information.")))
+					self.list.append(getConfigListEntry(_("Frequency"), currLnb.scrfrequency, _("Select the User Band frequency to be assigned to this tuner. This is the frequency the SCR switch or SCR LNB uses to pass the requested transponder to the tuner.")))
+					self.list.append(getConfigListEntry("LOF/L", currLnb.lofl, _("Consult your SCR device spec sheet for this information.")))
+					self.list.append(getConfigListEntry("LOF/H", currLnb.lofh, _("Consult your SCR device spec sheet for this information.")))
+					self.list.append(getConfigListEntry(_("Threshold"), currLnb.threshold, _("Consult your SCR device spec sheet for this information.")))
 				else:
-					self.advancedManufacturer = getConfigListEntry(_("Manufacturer"), currLnb.unicableManufacturer, _("Select the manufacturer of your Unicable device. If the manufacturer is not listed, set 'SCR' to 'user defined' and enter the device parameters manually according to its spec sheet."))
-					self.advancedType = getConfigListEntry(_("Model"), currLnb.unicableProduct, _("Select the model number of your Unicable device. If the model number is not listed, set 'SCR' to 'user defined' and enter the device parameters manually according to its spec sheet."))
-					self.advancedSCR = getConfigListEntry(_("Channel"), currLnb.scrList, _("Select the Unicable channel to be assigned to this tuner. This is a unique value. Be certain that no other device connected to this same Unicable system is allocated to the same Unicable channel."))
-					self.advancedPosition = getConfigListEntry(_("Position"), currLnb.positionNumber, _("Only change this setting if you are using a Unicable device that has been reprogrammed with a custom programmer. For further information check with the person that reprogrammed the device."))
+					self.advancedManufacturer = getConfigListEntry(_("Manufacturer"), currLnb.unicableManufacturer, _("Select the manufacturer of your SCR device. If the manufacturer is not listed, set 'SCR' to 'user defined' and enter the device parameters manually according to its spec sheet."))
+					self.advancedType = getConfigListEntry(_("Model"), currLnb.unicableProduct, _("Select the model number of your SCR device. If the model number is not listed, set 'SCR' to 'user defined' and enter the device parameters manually according to its spec sheet."))
+					self.advancedSCR = getConfigListEntry(_("Channel"), currLnb.scrList, _("Select the User Band to be assigned to this tuner. This is an index into the table of frequencies the SCR switch or SCR LNB uses to pass the requested transponder to the tuner."))
+					self.advancedPosition = getConfigListEntry(_("Position"), currLnb.positionNumber, _("Only change this setting if you are using a SCR device that has been reprogrammed with a custom programmer. For further information check with the person that reprogrammed the device."))
 					self.list.append(self.advancedManufacturer)
 					self.list.append(self.advancedType)
 					if currLnb.positions.value > 1:
@@ -417,11 +424,11 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 					if self.nim.isFBCLink():
 						if self.nimConfig.advanced.unicableconnected.value != True:
 							self.nimConfig.advanced.unicableconnected.value = True
-					self.advancedConnected = getConfigListEntry(_("Connected"), self.nimConfig.advanced.unicableconnected, _("Select 'yes' if this tuner is connected to the Unicable device through another tuner, otherwise select 'no'."))
+					self.advancedConnected = getConfigListEntry(_("Connected"), self.nimConfig.advanced.unicableconnected, _("Select 'yes' if this tuner is connected to the SCR device through another tuner, otherwise select 'no'."))
 					self.list.append(self.advancedConnected)
 					if self.nimConfig.advanced.unicableconnected.value:
 						self.nimConfig.advanced.unicableconnectedTo.setChoices(choices)
-						self.list.append(getConfigListEntry(_("Connected to"),self.nimConfig.advanced.unicableconnectedTo, _("Select the tuner to which the signal cable of the Unicable device is connected.")))
+						self.list.append(getConfigListEntry(_("Connected to"),self.nimConfig.advanced.unicableconnectedTo, _("Select the tuner to which the signal cable of the SCR device is connected.")))
 
 			else:	#kein Unicable
 				self.list.append(getConfigListEntry(_("Voltage mode"), Sat.voltage, _("Select 'polarisation' if using a 'universal' LNB, otherwise consult your LNB spec sheet.")))

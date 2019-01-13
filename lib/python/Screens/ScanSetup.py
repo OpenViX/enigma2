@@ -127,7 +127,8 @@ terrestrial_autoscan_nimtype = {
 'SSH108' : 'ssh108_t2_scan',
 'TT3L10' : 'tt3l10_t2_scan',
 'TURBO' : 'vuplus_turbo_t',
-'TT2L08' : 'tt2l08_t2_scan'
+'TT2L08' : 'tt2l08_t2_scan',
+'BCM3466' : 'bcm3466'
 }
 
 def GetDeviceId(filter, nim_idx):
@@ -257,28 +258,22 @@ class CableTransponderSearchSupport:
 
 			global cable_autoscan_nimtype
 			try:
-#				From PLI Merge
-#				nim_name = nimmanager.getNimName(nim_idx)
-#				if nim_name is not None and nim_name != "":
-#					device_id = ""
-#					nim_name = nim_name.split(' ')[-1][4:-1]
-#					if nim_name == 'TT3L10':
-#						try:
-#							device_id = GetDeviceId('TT3L10', nim_idx)
-#							device_id = "--device=%s" % (device_id)
-#						except Exception, err:
-#							print "GetCommand ->", err
-#							device_id = "--device=0"
-#					command = "%s %s" % (cable_autoscan_nimtype[nim_name], device_id)
-#					return command
-
-				sName = _nimSocket[str(nimIdx)]
-				sType = _supportNimType[sName]
-				return sType
-#			except Exception, err:
-#				print "GetCommand ->", err
-			except: pass
-			return 'tda1002x'
+				nim_name = nimmanager.getNimName(nim_idx)
+				if nim_name is not None and nim_name != "":
+					device_id = ""
+					nim_name = nim_name.split(' ')[-1][4:-1]
+					if nim_name in ("TT3L10", "BCM3466"):
+						try:
+							device_id = GetDeviceId(nim_name, nim_idx)
+							device_id = "--device=%s" % (device_id)
+						except Exception, err:
+							print "GetCommand ->", err
+							device_id = "--device=0"
+					command = "%s %s" % (cable_autoscan_nimtype[nim_name], device_id)
+					return command
+			except Exception, err:
+				print "GetCommand ->", err
+			return "tda1002x"
 
 		if not self.tryGetRawFrontend(nim_idx):
 			self.session.nav.stopService()
@@ -698,6 +693,7 @@ class ScanSetup(ConfigListScreen, Screen, CableTransponderSearchSupport, Terrest
 		self.TerrestrialRegionEntry = None
 		self.TerrestrialCompleteEntry = None
 		self.is_id_boolEntry = None
+		indent = "- "
 		nim = nimmanager.nim_slots[index_to_scan]
 		if self.DVB_type.value == "DVB-S":
 			self.typeOfScanEntry = getConfigListEntry(_("Type of scan"), self.scan_type)
@@ -749,13 +745,13 @@ class ScanSetup(ConfigListScreen, Screen, CableTransponderSearchSupport, Terrest
 						self.is_id_boolEntry = getConfigListEntry(_('Transport Stream Type'), self.scan_sat.is_id_bool)
 						self.list.append(self.is_id_boolEntry)
 						if self.scan_sat.is_id_bool.value:
-							self.list.append(getConfigListEntry(_('Input Stream ID'), self.scan_sat.is_id))
-							self.list.append(getConfigListEntry(_('PLS Mode'), self.scan_sat.pls_mode))
-							self.list.append(getConfigListEntry(_('PLS Code'), self.scan_sat.pls_code))
+							self.list.append(getConfigListEntry(indent + _('Input Stream ID'), self.scan_sat.is_id))
+							self.list.append(getConfigListEntry(indent + _('PLS Mode'), self.scan_sat.pls_mode))
+							self.list.append(getConfigListEntry(indent + _('PLS Code'), self.scan_sat.pls_code))
 					else:
 						self.scan_sat.is_id.value = eDVBFrontendParametersSatellite.No_Stream_Id_Filter
 						self.scan_sat.pls_mode.value = eDVBFrontendParametersSatellite.PLS_Gold
-						self.scan_sat.pls_code.value = 0
+						self.scan_sat.pls_code.value = eDVBFrontendParametersSatellite.PLS_Default_Gold_Code
 			elif self.scan_type.value == "predefined_transponder" and self.satList[index_to_scan]:
 				self.updateSatList()
 				self.preDefSatList = getConfigListEntry(_('Satellite'), self.scan_satselection[index_to_scan])
@@ -893,7 +889,7 @@ class ScanSetup(ConfigListScreen, Screen, CableTransponderSearchSupport, Terrest
 				self.pls_code_memory = self.scan_sat.pls_code.value
 				self.scan_sat.is_id.value = eDVBFrontendParametersSatellite.No_Stream_Id_Filter
 				self.scan_sat.pls_mode.value = eDVBFrontendParametersSatellite.PLS_Gold
-				self.scan_sat.pls_code.value = 0
+				self.scan_sat.pls_code.value = eDVBFrontendParametersSatellite.PLS_Default_Gold_Code
 			self.createSetup()
 
 	def createConfig(self, frontendData):
@@ -909,7 +905,7 @@ class ScanSetup(ConfigListScreen, Screen, CableTransponderSearchSupport, Terrest
 			"modulation": eDVBFrontendParametersSatellite.Modulation_QPSK,
 			"is_id": eDVBFrontendParametersSatellite.No_Stream_Id_Filter,
 			"pls_mode": eDVBFrontendParametersSatellite.PLS_Gold,
-			"pls_code": 0 }
+			"pls_code": eDVBFrontendParametersSatellite.PLS_Default_Gold_Code }
 		defaultCab = {
 			"frequency": 466000,
 			"inversion": eDVBFrontendParametersCable.Inversion_Unknown,

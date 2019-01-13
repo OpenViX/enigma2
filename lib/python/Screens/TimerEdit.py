@@ -24,6 +24,7 @@ class TimerEditList(Screen):
 	DISABLE = 2
 	CLEANUP = 3
 	DELETE = 4
+	STOP = 5
 
 	def __init__(self, session, menu_path = ""):
 		Screen.__init__(self, session)
@@ -114,7 +115,7 @@ class TimerEditList(Screen):
 		self.updateState()
 
 	def toggleDisabledState(self):
-		cur=self["timerlist"].getCurrent()
+		cur = self["timerlist"].getCurrent()
 		if cur:
 			t = cur
 			if t.disabled:
@@ -167,7 +168,11 @@ class TimerEditList(Screen):
 		cur = self["timerlist"].getCurrent()
 		if cur:
 			self["description"].setText(cur.description)
-			if self.key_red_choice != self.DELETE:
+			if cur.state == 2 and self.key_red_choice != self.STOP:
+				self["actions"].actions.update({"red":self.stopTimerQuestion})
+				self["key_red"].setText(_("Stop"))
+				self.key_red_choice = self.STOP
+			elif cur.state != 2 and self.key_red_choice != self.DELETE:
 				self["actions"].actions.update({"red":self.removeTimerQuestion})
 				self["key_red"].setText(_("Delete"))
 				self.key_red_choice = self.DELETE
@@ -265,12 +270,12 @@ class TimerEditList(Screen):
 			list.sort(key = lambda x: x[0].begin)
 
 	def showLog(self):
-		cur=self["timerlist"].getCurrent()
+		cur = self["timerlist"].getCurrent()
 		if cur:
 			self.session.openWithCallback(self.finishedEdit, TimerLog, cur, self.menu_path)
 
 	def openEdit(self):
-		cur=self["timerlist"].getCurrent()
+		cur = self["timerlist"].getCurrent()
 		if cur:
 			self.session.openWithCallback(self.finishedEdit, TimerEntry, cur, self.menu_path)
 
@@ -283,12 +288,15 @@ class TimerEditList(Screen):
 			self.refill()
 			self.updateState()
 
+	def stopTimerQuestion(self):
+		cur = self["timerlist"].getCurrent()
+		if cur:
+			self.session.openWithCallback(self.removeTimer, MessageBox, _("Do you really want to stop the current recording and delete timer %s?") % cur.name, default = False)
+
 	def removeTimerQuestion(self):
 		cur = self["timerlist"].getCurrent()
-		if not cur:
-			return
-
-		self.session.openWithCallback(self.removeTimer, MessageBox, _("Do you really want to delete %s?") % cur.name, default = False)
+		if cur:
+			self.session.openWithCallback(self.removeTimer, MessageBox, _("Do you really want to delete %s?") % cur.name, default = False)
 
 	def removeTimer(self, result):
 		if not result:

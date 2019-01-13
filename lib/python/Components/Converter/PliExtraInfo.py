@@ -387,7 +387,8 @@ class PliExtraInfo(Poll, Converter, object):
 			f.close()
 
 		fps  = str((video_rate + 500) / 1000)
-		return str(video_width) + "x" + str(video_height) + video_pol + fps
+		gamma = ("SDR", "HDR", "HDR10", "HLG", "")[info.getInfo(iServiceInformation.sGamma)]
+		return str(video_width) + "x" + str(video_height) + video_pol + fps + addspace(gamma)
 
 	def createVideoCodec(self, info):
 		return codec_data.get(info.getInfo(iServiceInformation.sVideoType), "N/A")
@@ -450,8 +451,9 @@ class PliExtraInfo(Poll, Converter, object):
 		if "DVB-T" in feraw.get("tuner_type"):
 			code_rate_lp = fedata.get("code_rate_lp")
 			code_rate_hp = fedata.get("code_rate_hp")
-			if code_rate_lp and code_rate_hp:
-				return code_rate_lp + "-" + code_rate_hp
+			guard_interval = fedata.get('guard_interval')
+			if code_rate_lp and code_rate_hp and guard_interval:
+				return code_rate_lp + "-" + code_rate_hp + "-" + guard_interval
 		else:
 			fec = fedata.get("fec_inner")
 			if fec:

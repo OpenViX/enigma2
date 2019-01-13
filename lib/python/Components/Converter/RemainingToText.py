@@ -5,7 +5,7 @@ from Components.config import config
 
 class RemainingToText(Poll, Converter, object):
 	DEFAULT = 0
-	WITH_SECONDS = 2
+	WITH_SECONDS = 1
 	NO_SECONDS = 2
 	IN_SECONDS = 3
 	PERCENTAGE = 4

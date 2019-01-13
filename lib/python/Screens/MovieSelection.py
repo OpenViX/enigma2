@@ -68,13 +68,14 @@ l_moviesort = [
 	(str(MovieList.SORT_ALPHANUMERIC), _("alphabetic"), 'A-Z'),
 	(str(MovieList.SORT_ALPHA_DATE_OLDEST_FIRST), _("alpha then oldest"), 'A1 A2 Z1'),
 	(str(MovieList.SORT_ALPHANUMERIC_FLAT_REVERSE), _("flat alphabetic reverse"), 'Z-A Flat'),
+	(str(MovieList.SORT_LONGEST), _("longest"), 'long-short'),
+	(str(MovieList.SORT_SHORTEST), _("shortest"), 'short-long'),
 	(str(MovieList.SHUFFLE), _("shuffle"), '?'),
 	(str(MovieList.SORT_ALPHANUMERIC_FLAT), _("flat alphabetic"), 'A-Z Flat'),
 	(str(MovieList.SORT_RECORDED_REVERSE), _("reverse by date"), '01/02/03'),
 	(str(MovieList.SORT_ALPHANUMERIC_REVERSE), _("alphabetic reverse"), 'Z-A'),
 	(str(MovieList.SORT_ALPHAREV_DATE_NEWEST_FIRST), _("alpharev then newest"),  'Z1 A2 A1')]
 
-#GML:1
 # 4th item is the textual value set in UsageConfig.py
 l_trashsort = [
 	(str(MovieList.TRASHSORT_SHOWRECORD), _("delete time - show record time (Trash ONLY)"), '03/02/01', "show record time"),
@@ -243,37 +244,11 @@ class MovieBrowserConfiguration(ConfigListScreen,Screen):
 		self.cfg = cfg
 		cfg.moviesort = ConfigSelection(default=str(config.movielist.moviesort.value), choices = l_moviesort)
 		cfg.description = ConfigYesNo(default=(config.movielist.description.value != MovieList.HIDE_DESCRIPTION))
-#GML:2 - movielist_trashcan_days
-#GML:1 - trashsort_deltime
-		configList = [getConfigListEntry(_("Use trash can in movie list"), config.usage.movielist_trashcan, _("When enabled, deleted recordings are moved to the trash can, instead of being deleted immediately.")),
-					  getConfigListEntry(_("Remove items from trash can after (days)"), config.usage.movielist_trashcan_days, _("Configure the number of days after which items are automatically removed from the trash can.\nA setting of 0 disables this.")),
-					  getConfigListEntry(_("Clean network trash cans"), config.usage.movielist_trashcan_network_clean, _("When enabled, network trash cans are probed for cleaning.")),
-					  getConfigListEntry(_("Disk space to reserve for recordings (in GB)"), config.usage.movielist_trashcan_reserve, _("Configure the minimum amount of disk space to be available for recordings. When the amount of space drops below this value, deleted items will be removed from the trash can.")),
-					  getConfigListEntry(_("Background delete option"), config.misc.erase_flags, _("Configure on which devices the background delete option should be used.")),
-					  getConfigListEntry(_("Background delete speed"), config.misc.erase_speed, _("Configure the speed of the background deletion process. Lower speed will consume less hard disk drive performance.")),
-					  getConfigListEntry(_("Font size"), config.movielist.fontsize, _("This allows you change the font size relative to skin size, so 1 increases by 1 point size, and -1 decreases by 1 point size")),
-					  getConfigListEntry(_("Number of rows"), config.movielist.itemsperpage, _("Number of rows to display")),
-					  getConfigListEntry(_("Use slim screen"), config.movielist.useslim, _("Use the alternative screen")),
-					  getConfigListEntry(_("Use adaptive date display"), config.movielist.use_fuzzy_dates, _("Adaptive date display allows recent dates to be displayed as 'Today' or 'Yesterday'.  It hides the year for recordings made this year.  It hides the day of the week for recordings made in previous years.")),
-					  getConfigListEntry(_("Sort"), cfg.moviesort, _("Set the default sorting method.")),
-					  getConfigListEntry(_("Sort Trash by deletion time"), config.usage.trashsort_deltime, _("Use the deletion time to sort Trash directories.\nMost recently deleted at the top.")),
-					  getConfigListEntry(_("Show extended description"), cfg.description, _("Show or hide the extended description, (skin dependant).")),
-					  getConfigListEntry(_("Use individual settings for each directory"), config.movielist.settings_per_directory, _("When set, each directory will show the previous state used. When off, the default values will be shown.")),
-					  getConfigListEntry(_("Behavior when a movie reaches the end"), config.usage.on_movie_eof, _("On reaching the end of a file during playback, you can choose the box's behavior.")),
-					  getConfigListEntry(_("Stop service on return to movie list"), config.movielist.stop_service, _("Stop previous broadcasted service on return to movie list.")),
-					  getConfigListEntry(_("Show status icons in movie list"), config.usage.show_icons_in_movielist, _("Shows the watched status of the movie."))]
-		if config.usage.show_icons_in_movielist.value:
-			configList.append(getConfigListEntry(_("Show icon for new/unseen items"), config.usage.movielist_unseen, _("Shows the icons when new/unseen, otherwise it will not show an icon.")))
-		configList.append(getConfigListEntry(_("Play audio in background"), config.movielist.play_audio_internal, _("Keeps the movie list open whilst playing audio files.")))
-		configList.append(getConfigListEntry(_("Root directory"), config.movielist.root, _("Sets the root directory of movie list, to remove the '..' from being shown in that folder.")))
-		configList.append(getConfigListEntry(_("Hide known extensions"), config.movielist.hide_extensions, _("Allows you to hide the extensions of known file types.")))
-		configList.append(getConfigListEntry(_("Show live tv when movie stopped"), config.movielist.show_live_tv_in_movielist, _("When set the PIG will return to live after a movie has stopped playing.")))
-		for btn in (('red', _('Red')), ('green', _('Green')), ('yellow', _('Yellow')), ('blue', _('Blue')),('redlong', _('Red long')), ('greenlong', _('Green long')), ('yellowlong', _('Yellow long')), ('bluelong', _('Blue long')), ('TV', _('TV')), ('Radio', _('Radio')), ('Text', _('Text')), ('F1', _('F1')), ('F2', _('F2')), ('F3', _('F3'))):
-			configList.append(getConfigListEntry(_("Button") + " " + _(btn[1]), userDefinedButtons[btn[0]], _("Allows you to setup the button to do what you choose.")))
-		ConfigListScreen.__init__(self, configList, session = self.session, on_change = self.changedEntry)
-		self["config"].setList(configList)
-		if config.usage.sort_settings.value:
-			self["config"].list.sort()
+
+		self.list = []
+		ConfigListScreen.__init__(self, self.list, session = self.session, on_change = self.changedEntry)
+
+		self.createSetup()
 
 		self["actions"] = ActionMap(["SetupActions", 'ColorActions'],
 		{
@@ -290,8 +265,50 @@ class MovieBrowserConfiguration(ConfigListScreen,Screen):
 			self["config"].onSelectionChanged.append(self.selectionChanged)
 		self.selectionChanged()
 
+	def createSetup(self):
+		self.list = [getConfigListEntry(_("Use trash can in movie list"), config.usage.movielist_trashcan, _("When enabled, deleted recordings are moved to the trash can, instead of being deleted immediately.")),
+					 getConfigListEntry(_("Remove items from trash can after (days)"), config.usage.movielist_trashcan_days, _("Configure the number of days after which items are automatically removed from the trash can.\nA setting of 0 disables this.")),
+					 getConfigListEntry(_("Clean network trash cans"), config.usage.movielist_trashcan_network_clean, _("When enabled, network trash cans are probed for cleaning.")),
+					 getConfigListEntry(_("Disk space to reserve for recordings (in GB)"), config.usage.movielist_trashcan_reserve, _("Configure the minimum amount of disk space to be available for recordings. When the amount of space drops below this value, deleted items will be removed from the trash can.")),
+					 getConfigListEntry(_("Background delete option"), config.misc.erase_flags, _("Configure on which devices the background delete option should be used.")),
+					 getConfigListEntry(_("Background delete speed"), config.misc.erase_speed, _("Configure the speed of the background deletion process. Lower speed will consume less hard disk drive performance.")),
+					 getConfigListEntry(_("Font size"), config.movielist.fontsize, _("This allows you change the font size relative to skin size, so 1 increases by 1 point size, and -1 decreases by 1 point size")),
+					 getConfigListEntry(_("Number of rows"), config.movielist.itemsperpage, _("Number of rows to display")),
+					 getConfigListEntry(_("Use slim screen"), config.movielist.useslim, _("Use the alternative screen")),
+					 getConfigListEntry(_("Use adaptive date display"), config.movielist.use_fuzzy_dates, _("Adaptive date display allows recent dates to be displayed as 'Today' or 'Yesterday'.  It hides the year for recordings made this year.  It hides the day of the week for recordings made in previous years.")),
+					 getConfigListEntry(_("Sort"), self.cfg.moviesort, _("Set the default sorting method.")),
+					 getConfigListEntry(_("Sort Trash by deletion time"), config.usage.trashsort_deltime, _("Use the deletion time to sort Trash directories.\nMost recently deleted at the top.")),
+					 getConfigListEntry(_("Show extended description"), self.cfg.description, _("Show or hide the extended description, (skin dependant).")),
+					 getConfigListEntry(_("Use individual settings for each directory"), config.movielist.settings_per_directory, _("When set, each directory will show the previous state used. When off, the default values will be shown.")),
+					 getConfigListEntry(_("Behavior when a movie reaches the end"), config.usage.on_movie_eof, _("On reaching the end of a file during playback, you can choose the box's behavior.")),
+					 getConfigListEntry(_("Stop service on return to movie list"), config.movielist.stop_service, _("Stop previous broadcasted service on return to movie list.")),
+					 getConfigListEntry(_("Show status icons in movie list"), config.usage.show_icons_in_movielist, _("Shows the watched status of the movie."))]
+		if config.usage.show_icons_in_movielist.value != 'o':
+			self.list.append(getConfigListEntry(_("Show icon for new/unseen items"), config.usage.movielist_unseen, _("Shows the icons when new/unseen, otherwise it will not show an icon.")))
+		self.list.append(getConfigListEntry(_("Service Title mode"), config.usage.movielist_servicename_mode, _("Show picons in the movie list.")))
+		if "picon" in config.usage.movielist_servicename_mode.value:
+			self.list.append(getConfigListEntry(_("Picon Width"), config.usage.movielist_piconwidth, _(".")))
+		self.list.append(getConfigListEntry(_("Play audio in background"), config.movielist.play_audio_internal, _("Keeps the movie list open whilst playing audio files.")))
+		self.list.append(getConfigListEntry(_("Root directory"), config.movielist.root, _("Sets the root directory of movie list, to remove the '..' from being shown in that folder.")))
+		self.list.append(getConfigListEntry(_("Hide known extensions"), config.movielist.hide_extensions, _("Allows you to hide the extensions of known file types.")))
+		self.list.append(getConfigListEntry(_("Show live tv when movie stopped"), config.movielist.show_live_tv_in_movielist, _("When set the PIG will return to live after a movie has stopped playing.")))
+		for btn in (('red', _('Red')), ('green', _('Green')), ('yellow', _('Yellow')), ('blue', _('Blue')),('redlong', _('Red long')), ('greenlong', _('Green long')), ('yellowlong', _('Yellow long')), ('bluelong', _('Blue long')), ('TV', _('TV')), ('Radio', _('Radio')), ('Text', _('Text')), ('F1', _('F1')), ('F2', _('F2')), ('F3', _('F3'))):
+			self.list.append(getConfigListEntry(_("Button") + " " + _(btn[1]), userDefinedButtons[btn[0]], _("Allows you to setup the button to do what you choose.")))
+		if config.usage.sort_settings.value:
+			self.list.sort()
+		self["config"].list = self.list
+		self["config"].l.setList(self.list)
+
 	def selectionChanged(self):
 		self["description"].setText(self.getCurrentDescription())
+
+	def keyLeft(self):
+		ConfigListScreen.keyLeft(self)
+		self.createSetup()
+
+	def keyRight(self):
+		ConfigListScreen.keyRight(self)
+		self.createSetup()
 
 	def save(self):
 		self.saveAll()
@@ -753,6 +770,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 				'copy': _("Copy"),
 				'reset': _("Reset"),
 				'tags': _("Tags"),
+				"createdir": _("Create directory"),
 				'addbookmark': _("Add bookmark"),
 				'bookmarks': _("Location"),
 				'rename': _("Rename"),
@@ -1118,6 +1136,14 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		except Exception, e:
 			print "[MovieSelection] DVD Player not installed:", e
 
+	def playSuburi(self, path):
+		suburi = os.path.splitext(path)[0][:-7]
+		for ext in AUDIO_EXTENSIONS:
+			if os.path.exists("%s%s" % (suburi, ext)):
+				current = eServiceReference(4097, 0, "file://%s&suburi=file://%s%s" % (path, suburi, ext))
+				self.close(current)
+				return True
+
 	def __serviceStarted(self):
 		if not self.list.playInBackground or not self.list.playInForeground:
 			return
@@ -1327,6 +1353,9 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			elif ext in DVD_EXTENSIONS:
 				if self.playAsDVD(path):
 					return
+			elif "_suburi." in path:
+				if self.playSuburi(path):
+					return
 			self.movieSelected()
 
 	# Note: DVDBurn overrides this method, hence the itemSelected indirection.
@@ -1346,7 +1375,6 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			action()
 
 	def saveLocalSettings(self):
-#GML:4
 		if not config.movielist.settings_per_directory.value:
 			return
 		try:
@@ -1360,8 +1388,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		config.movielist.moviesort.value = self.settings["moviesort"]
 		config.movielist.description.value = self.settings["description"]
 		config.usage.on_movie_eof.value = self.settings["movieoff"]
-		# save moviesort and movieeof values for using by hotkeys
-#		config.movielist.moviesort.save()
+		# save movieeof values for using by hotkeys
 		config.usage.on_movie_eof.save()
 
 	def loadLocalSettings(self):
@@ -1409,11 +1436,15 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		return needUpdate
 
 	def sortBy(self, newType):
-#GML:1
 		print '[MovieSelection] SORTBY:',newType
 		if newType < MovieList.TRASHSORT_SHOWRECORD:
 			self.settings["moviesort"] = newType
-			self.saveLocalSettings()
+# If we are using per-directory sort methods then set it now,
+# otherwise indicate to MovieList.py to use a temporary sort override.
+			if config.movielist.settings_per_directory.value:
+				self.saveLocalSettings()
+			else:
+				self["list"].temp_sort = newType
 			self.setSortType(newType)
 # Unset specific trash-sorting if other sort chosen while in Trash
 			if MovieList.InTrashFolder:
@@ -1483,19 +1514,33 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		menu = []
 		index = 0
 		used = 0
+# Determine the current sorting method so that it may be highlighted...
+#
 		for x in l_moviesort:
-			if int(x[0]) == int(config.movielist.moviesort.value):
+			if int(x[0]) == self["list"].current_sort:
 				used = index
 			menu.append((_(x[1]), x[0], "%d" % index))
 			index += 1
-#GML:1
 		if MovieList.InTrashFolder:
 			for x in l_trashsort:
 				if x[3] == config.usage.trashsort_deltime.value:
 					used = index
 				menu.append((_(x[1]), x[0], "%d" % index))
 				index += 1
-		self.session.openWithCallback(self.sortbyMenuCallback, ChoiceBox, title=_("Sort list:"), list=menu, selection = used)
+
+# Add a message to remind the user whether this will set a per-directory
+# method or just a temporary override.
+# Done by using the way that ChoiceBox handles a multi-line title:
+# it makes line1 the title and all succeeding lines go into the "text"
+# display.
+		title=_("Sort list:")
+		if config.movielist.settings_per_directory.value:
+			title = title + "\n\n" + _("Set the sort method for this directory")
+		else:
+			title = title + "\n\n" + _("Set a temporary sort method for this directory")
+			if self["list"].current_sort != self["list"].sort_type:
+				title = title + "\n" + _("(You are currently using a temporary sort method)")
+		self.session.openWithCallback(self.sortbyMenuCallback, ChoiceBox, title=title, list=menu, selection = used)
 
 	def getPixmapSortIndex(self, which):
 		index = int(which)
@@ -1503,7 +1548,6 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			index = MovieList.SORT_ALPHANUMERIC
 		elif index == MovieList.SORT_ALPHAREV_DATE_NEWEST_FIRST:
 			index = MovieList.SORT_ALPHANUMERIC_REVERSE
-#GML:1
 		elif (index == MovieList.TRASHSORT_SHOWRECORD) or (index == MovieList.TRASHSORT_SHOWDELETE):
 			index = MovieList.SORT_RECORDED
 		return index - 1
@@ -1790,9 +1834,17 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 	def can_createdir(self, item):
 		return True
 	def do_createdir(self):
+		dirname = ""
+		item = self.getCurrentSelection()
+		if item is not None and item[0] and item[1] and not isFolder(item):
+			info = item[1]
+			dirname = info.getName(item[0])
+			full_name = os.path.split(item[0].getPath())[1]
+			if full_name == dirname: # split extensions for files without metafile
+				dirname, self.extension = os.path.splitext(name)
 		self.session.openWithCallback(self.createDirCallback, VirtualKeyBoard,
 			title = _("Please enter the name of the new directory"),
-			text = "")
+			text = dirname)
 	def createDirCallback(self, name):
 		if not name:
 			return

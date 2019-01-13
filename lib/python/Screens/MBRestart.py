@@ -35,7 +35,7 @@ class MultiBoot(Screen):
 		self.skinName = "MultiBoot"
 		screentitle = _("Multiboot Image Restart")
 		self["key_red"] = StaticText(_("Cancel"))
-		if pathExists('/dev/%s1' %(SystemInfo["canMultiBoot"][2])): 
+		if not SystemInfo["HasSDmmc"] or SystemInfo["HasSDmmc"] and pathExists('/dev/%s4' %(SystemInfo["canMultiBoot"][2])):
 			self["labe14"] = StaticText(_("Use the cursor keys to select an installed image and then Reboot button."))
 		else:
 			self["labe14"] = StaticText(_("SDcard is not initialised for multiboot - Exit and use ViX MultiBoot Manager to initialise"))			
@@ -47,7 +47,7 @@ class MultiBoot(Screen):
 		imagedict = []
 		self.getImageList = None
 		self.title = screentitle
-		if not SystemInfo["HasHiSi"] or SystemInfo["HasHiSi"] and pathExists('/dev/%s1' %(SystemInfo["canMultiBoot"][2])):
+		if not SystemInfo["HasSDmmc"] or SystemInfo["HasSDmmc"] and pathExists('/dev/%s4' %(SystemInfo["canMultiBoot"][2])):
 			self.startit()
 
 		self["actions"] = ActionMap(["OkCancelActions", "ColorActions", "DirectionActions", "KeyboardInputActions", "MenuActions"],
@@ -78,8 +78,8 @@ class MultiBoot(Screen):
 		list = []
 		mode = GetCurrentImageMode() or 0
 		currentimageslot = GetCurrentImage()
-		if SystemInfo["HasHiSi"] and "sd" in SystemInfo["canMultiBoot"][2]:
-			currentimageslot += 1
+		if SystemInfo["HasSDmmc"]:
+			currentimageslot += 1			#allow for mmc as 1st slot, then SDCard slots 
 		if not SystemInfo["canMode12"]:
 			for x in sorted(imagedict.keys()):
 				if imagedict[x]["imagename"] != _("Empty slot"):
@@ -101,9 +101,20 @@ class MultiBoot(Screen):
 			slot = self.currentSelected[0][1]
 
 			if slot < 12:
-				import shutil
-				shutil.copyfile("/boot/STARTUP_%s" % slot, "/boot/STARTUP")
-				self.session.open(TryQuitMainloop, 2)
+				if pathExists("/boot/STARTUP_%s" % slot):
+					import shutil
+					shutil.copyfile("/boot/STARTUP_%s" % slot, "/boot/STARTUP")
+					self.session.open(TryQuitMainloop, 2)
+				elif SystemInfo["canMode12"] and pathExists("/boot/STARTUP"):
+					print "[MultiBoot Restart] No boot/Startup_%s - created Startup slot:" %slot
+					model = getMachineBuild()
+					startupFileContents = "boot emmcflash0.kernel%s 'brcm_cma=%s root=/dev/mmcblk0p%s rw rootwait %s_4.boxmode=1'\n" % (slot, SystemInfo["canMode12"][0], slot * 2 + SystemInfo["canMultiBoot"][0], model)
+					open('/boot/STARTUP', 'w').write(startupFileContents)
+					self.session.open(TryQuitMainloop, 2)
+				elif pathExists("/boot/STARTUP"):		
+					self.session.open(MessageBox, _("Multiboot ERROR! - no STARTUP_%s in /boot - Image may need manual restart" % slot), MessageBox.TYPE_INFO, timeout=20)
+				else:
+					self.session.open(MessageBox, _("Multiboot ERROR! - no STARTUP in /boot -Please check /etc/fstab for correct boot partition"), MessageBox.TYPE_INFO, timeout=20)
 			else:
 				slot -= 12
 				model = getMachineBuild()

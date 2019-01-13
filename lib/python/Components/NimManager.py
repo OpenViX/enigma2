@@ -1126,6 +1126,9 @@ def InitSecParams():
 	config.sec.motor_command_retries = ConfigInteger(default=1, limits = (0, 5))
 	config.sec.delay_after_diseqc_reset_cmd = ConfigInteger(default=50, limits = (0, 9999))
 	config.sec.delay_after_diseqc_peripherial_poweron_cmd = ConfigInteger(default=150, limits = (0, 9999))
+	config.sec.unicable_delay_after_enable_voltage_before_switch_command = ConfigInteger(default=200, limits = (0, 9999))
+	config.sec.unicable_delay_after_change_voltage_before_switch_command = ConfigInteger(default=75, limits = (0, 9999))
+	config.sec.unicable_delay_after_last_diseqc_command = ConfigInteger(default=150, limits = (0, 9999))
 
 	config.sec.delay_before_sequence_repeat.addNotifier(lambda configElement: secClass.setParam(secClass.DELAY_BEFORE_SEQUENCE_REPEAT, configElement.value))
 	config.sec.motor_running_timeout.addNotifier(lambda configElement: secClass.setParam(secClass.MOTOR_RUNNING_TIMEOUT, configElement.value))
@@ -1145,6 +1148,9 @@ def InitSecParams():
 	config.sec.delay_after_final_voltage_change.addNotifier(lambda configElement: secClass.setParam(secClass.DELAY_AFTER_FINAL_VOLTAGE_CHANGE, configElement.value))
 	config.sec.delay_after_final_continuous_tone_change.addNotifier(lambda configElement: secClass.setParam(secClass.DELAY_AFTER_FINAL_CONT_TONE_CHANGE, configElement.value))
 	config.sec.delay_after_continuous_tone_disable_before_diseqc.addNotifier(lambda configElement: secClass.setParam(secClass.DELAY_AFTER_CONT_TONE_DISABLE_BEFORE_DISEQC, configElement.value))
+	config.sec.unicable_delay_after_enable_voltage_before_switch_command.addNotifier(lambda configElement: secClass.setParam(secClass.UNICABLE_DELAY_AFTER_ENABLE_VOLTAGE_BEFORE_SWITCH_CMDS, configElement.value))
+	config.sec.unicable_delay_after_change_voltage_before_switch_command.addNotifier(lambda configElement: secClass.setParam(secClass.UNICABLE_DELAY_AFTER_VOLTAGE_CHANGE_BEFORE_SWITCH_CMDS, configElement.value))
+	config.sec.unicable_delay_after_last_diseqc_command.addNotifier(lambda configElement: secClass.setParam(secClass.UNICABLE_DELAY_AFTER_LAST_DISEQC_CMD, configElement.value))
 
 # TODO add support for satpos depending nims to advanced nim configuration
 # so a second/third/fourth cable from a motorized lnb can used behind a
@@ -1233,7 +1239,7 @@ def InitNimManager(nimmgr, update_slots = []):
 			section = lnbs[lnb]
 			if isinstance(section.unicable, ConfigNothing):
 				def getformat(value, index):
-					return index >= 4 and "jess" or "unicable" if value == "dSRC" else value
+					return ("jess" if index >= int(value.split(",")[1] if "," in value else 4) else "unicable") if value.startswith("dSCR") else value
 				def positionsChanged(configEntry):
 					section.positionNumber = ConfigSelection(["%d" % (x+1) for x in range(configEntry.value)], default="%d" % min(lnb, configEntry.value))
 				def scrListChanged(productparameters, srcfrequencylist, configEntry):
@@ -1242,15 +1248,15 @@ def InitNimManager(nimmgr, update_slots = []):
 					section.positions = ConfigInteger(default=int(productparameters.get("positions", 1)))
 					section.positions.addNotifier(positionsChanged)
 					section.positionsOffset = ConfigInteger(default=int(productparameters.get("positionsoffset", 0)))
-					section.lofl = ConfigInteger(default=int(productparameters.get("lofl", 9750)))
-					section.lofh = ConfigInteger(default=int(productparameters.get("lofh", 10600)))
-					section.threshold = ConfigInteger(default=int(productparameters.get("threshold", 11700)))
+					section.lofl = ConfigInteger(default=int(productparameters.get("lofl", 9750)), limits = (0, 99999))
+					section.lofh = ConfigInteger(default=int(productparameters.get("lofh", 10600)), limits = (0, 99999))
+					section.threshold = ConfigInteger(default=int(productparameters.get("threshold", 11700)), limits = (0, 99999))
 				def unicableProductChanged(manufacturer, lnb_or_matrix, configEntry):
 					config.unicable.unicableProduct.value = configEntry.value
 					config.unicable.unicableProduct.save()
 					productparameters = [p for p in [m.getchildren() for m in unicable_xml.find(lnb_or_matrix) if m.get("name") == manufacturer][0] if p.get("name") == configEntry.value][0]
 					srcfrequencylist = productparameters.get("scrs").split(",")
-					section.scrList = ConfigSelection([("%d" % (x + 1), "SCR %d (%s)" % ((x + 1), srcfrequencylist[x])) for x in range(len(srcfrequencylist))])
+					section.scrList = ConfigSelection([("%d" % (x + 1), "User Band %d (%s)" % ((x + 1), srcfrequencylist[x])) for x in range(len(srcfrequencylist))])
 					section.scrList.save_forced = True
 					section.scrList.addNotifier(boundFunction(scrListChanged, productparameters, srcfrequencylist))
 				def unicableManufacturerChanged(lnb_or_matrix, configEntry):
@@ -1272,7 +1278,7 @@ def InitNimManager(nimmgr, update_slots = []):
 					section.positions = ConfigInteger(default=configEntry.value == "jess" and 64 or 2)
 					section.positions.addNotifier(positionsChanged)
 					section.positionsOffset = ConfigInteger(default=0)
-					section.scrList = ConfigSelection([("%d" % (x + 1), "SCR %d" % (x + 1)) for x in range(configEntry.value == "jess" and 32 or 8)])
+					section.scrList = ConfigSelection([("%d" % (x + 1), "User Band %d" % (x + 1)) for x in range(configEntry.value == "jess" and 32 or 8)])
 					section.scrList.save_forced = True
 					srcfrequencyList = configEntry.value=="jess" and (1210, 1420, 1680, 2040, 984, 1020, 1056, 1092, 1128, 1164, 1256, 1292, 1328, 1364, 1458, 1494, 1530, 1566, 1602,\
 						1638, 1716, 1752, 1788, 1824, 1860, 1896, 1932, 1968, 2004, 2076, 2112, 2148) or (1284, 1400, 1516, 1632, 1748, 1864, 1980, 2096)
@@ -1418,6 +1424,11 @@ def InitNimManager(nimmgr, update_slots = []):
 			f.write(configElement.value)
 			f.close()
 
+	def t2miRawModeChanged(configElement):
+		slot = configElement.slot
+		if os.path.exists("/proc/stb/frontend/%d/t2mirawmode" % slot):
+			open("/proc/stb/frontend/%d/t2mirawmode" % slot, "w").write(configElement.value)
+
 	def createSatConfig(nim, x, empty_slots):
 		try:
 			nim.toneAmplitude
@@ -1430,6 +1441,9 @@ def InitNimManager(nimmgr, update_slots = []):
 			nim.scpcSearchRange.fe_id = x - empty_slots
 			nim.scpcSearchRange.slot_id = x
 			nim.scpcSearchRange.addNotifier(scpcSearchRangeChanged)
+			nim.t2miRawMode = ConfigSelection([("disable", _("disabled")), ("enable", _("enabled"))], "disable")
+			nim.t2miRawMode.slot = x
+			nim.t2miRawMode.addNotifier(t2miRawModeChanged)
 			nim.diseqc13V = ConfigYesNo(False)
 			nim.diseqcMode = ConfigSelection(diseqc_mode_choices, "single")
 			nim.connectedTo = ConfigSelection([(str(id), nimmgr.getNimDescription(id)) for id in nimmgr.getNimListOfType("DVB-S") if id != x])
