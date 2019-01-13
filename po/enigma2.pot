@@ -10192,5 +10192,11 @@ msgstr ""
 msgid "Sets the root directory of movie list, to remove the '..' from being shown in that folder."
 msgstr ""
 
+msgid "Use adaptive date display"
+msgstr ""
+
 msgid "Adaptive date display allows recent dates to be displayed as 'Today' or 'Yesterday'.  It hides the year for recordings made this year.  It hides the day of the week for recordings made in previous years."
+msgstr ""
+
+msgid "Blue long"
 msgstr ""
