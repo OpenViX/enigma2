@@ -11012,7 +11012,7 @@ msgid "no delay"
 msgstr "sin demora"
 
 msgid "No module found"
-msgstr "módulo no encontrado"
+msgstr "Módulo no encontrado"
 
 msgid "no or unknown card inserted"
 msgstr "no se ha insertado ninguna tarjeta o es desconocida"
