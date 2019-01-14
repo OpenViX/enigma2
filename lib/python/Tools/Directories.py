@@ -127,7 +127,6 @@ def resolveFilename(scope, base = "", path_prefix = None):
 					path = tmp + 'skin_default/'
 				else:
 					path = tmp
-		print "SCOPE_ACTIVE_SKIN path, base", path, base
 
 	elif scope == SCOPE_ACTIVE_LCDSKIN:
 		from Components.config import config
