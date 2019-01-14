@@ -521,10 +521,10 @@ msgid "720p 24Hz"
 msgstr "720p 24Hz"
 
 msgid "< Default >"
-msgstr "< Por Defecto >"
+msgstr "< Default >"
 
 msgid "< Default with Picon >"
-msgstr "< Por Defecto con Picon >"
+msgstr "< Default with Picon >"
 
 msgid "<Current movielist location>"
 msgstr "<Ubicación actual de la lista de películas>"
@@ -4526,7 +4526,7 @@ msgstr "Bloquear:"
 msgid "Log"
 msgstr "Log"
 
-msgid "Log manager"
+msgid "Log Manager"
 msgstr "Administrador de historiales"
 
 msgid "Log results to harddisk"
@@ -10476,7 +10476,7 @@ msgid "advertisement/shopping"
 msgstr "publicidad y compras"
 
 msgid "alpha then oldest"
-msgstr "alfabético entonces más antiguo"
+msgstr "alpha entonces más antiguo"
 
 msgid "alphabetic"
 msgstr "alfabético"
@@ -10485,10 +10485,7 @@ msgid "alphabetic reverse"
 msgstr "invertir orden alfabético"
 
 msgid "alpharev then newest"
-msgstr "el más nuevo alfabéticamente"
-
-msgid "Set the sort method for this directory"
-msgstr "Establecer el método de clasificación para este directorio"
+msgstr "alpharev entonces el más nuevo"
 
 msgid "alternative"
 msgstr "alternativa"
@@ -10788,12 +10785,6 @@ msgstr "orden alfabético plano"
 msgid "flat alphabetic reverse"
 msgstr "invertir a orden alfabético plano"
 
-msgid "longest"
-msgstr "más largo"
-
-msgid "shortest"
-msgstr "más corto"
-
 msgid "folk/traditional music"
 msgstr "música popular y tradicional"
 
@@ -11020,8 +11011,8 @@ msgstr "no hay lista de canales"
 msgid "no delay"
 msgstr "sin demora"
 
-msgid "No module found"
-msgstr "Módulo no encontrado"
+msgid "no module found"
+msgstr "módulo no encontrado"
 
 msgid "no or unknown card inserted"
 msgstr "no se ha insertado ninguna tarjeta o es desconocida"
@@ -11598,13 +11589,13 @@ msgid "On shutdown/restart warn about any pending jobs being carried out in the 
 msgstr "Al apagar/reiniciar, se advierte sobre cualquier trabajo pendiente que se realice en segundo plano."
 
 msgid "Ignore DVB-S namespace sub network"
-msgstr "Ignorar espacio de nombres DVB-S de subred"
+msgstr "Ignorar la subred de espacio de nombres DVB-S"
 
 msgid "Ignore DVB-C namespace sub network"
-msgstr "Ignorar espacio de nombres DVB-C de subred"
+msgstr "Ignorar la subred de espacio de nombres DVB-C"
 
 msgid "Ignore DVB-T namespace sub network"
-msgstr "Ignorar espacio de nombres DVB-T de subred"
+msgstr "Ignorar la subred de espacio de nombres DVB-T"
 
 msgid "On valid ONIDs, ignore frequency sub network part"
 msgstr "En ONIDs válidos, ignorar la parte de frecuencia de subred"
@@ -11945,54 +11936,6 @@ msgstr "Teclado Virtual Texto:"
 
 msgid "Virtual keyboard"
 msgstr "Teclado Virtual"
-
-msgid "Movielist menu"
-msgstr "Menú Lista de Peliculas"
-
-msgid "Console"
-msgstr "Consola"
-
-msgid "Speed:"
-msgstr "Velocidad:"
-
-msgid "Service name: "
-msgstr "Nombre canal: "
-
-msgid "Service ID: "
-msgstr "Servicio ID: "
-
-msgid "No clients streaming"
-msgstr "No hay clientes en streaming"
-
-msgid "Position of recording icons"
-msgstr "Posición de los iconos de grabación"
-
-msgid "Set the position of the recording icons"
-msgstr "Establecer la posición de los iconos de grabación"
-
-msgid "Use separate Picon pack for Front Display *"
-msgstr "Utilice el paquete de Picon separado para la pantalla frontal *"
-
-msgid "Set pin code persistent"
-msgstr "Establecer código pin persistente"
-
-msgid "Enter persistent PIN code"
-msgstr "Entrar código PIN persistente"
-
-msgid "Reset persistent PIN code"
-msgstr "Reinicializar código PIN persistente"
-
-msgid "Show CI messages"
-msgstr "Mostrar CI mensajes"
-
-msgid "bottom"
-msgstr "fondo"
-
-msgid "middle"
-msgstr "medio"
-
-msgid "hide"
-msgstr "escondido"
 
 #~ msgid "3d mode"
 #~ msgstr "Modo 3D"
