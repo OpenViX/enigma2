@@ -10209,3 +10209,57 @@ msgstr ""
 
 msgid "Virtual keyboard"
 msgstr ""
+
+msgid "< Default >"
+msgstr ""
+
+msgid "< Default with Picon >"
+msgstr ""
+
+msgid "Set the sort method for this directory"
+msgstr ""
+
+msgid "Movielist menu"
+msgstr ""
+
+msgid "longest"
+msgstr ""
+
+msgid "shortest"
+msgstr ""
+
+msgid "Console"
+msgstr ""
+
+msgid "No clients streaming"
+msgstr ""
+
+msgid "Position of recording icons"
+msgstr ""
+
+msgid "Set the position of the recording icons"
+msgstr ""
+
+msgid "Use separate Picon pack for Front Display *"
+msgstr ""
+
+msgid "Set pin code persistent"
+msgstr ""
+
+msgid "Enter persistent PIN code"
+msgstr ""
+
+msgid "Reset persistent PIN code"
+msgstr ""
+
+msgid "Show CI messages"
+msgstr ""
+
+msgid "bottom"
+msgstr ""
+
+msgid "middle"
+msgstr ""
+
+msgid "hide"
+msgstr ""
