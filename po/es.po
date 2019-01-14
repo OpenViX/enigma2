@@ -5271,7 +5271,7 @@ msgstr "Now"
 
 msgctxt "now/next: 'now' event label"
 msgid "Now"
-msgstr "Now"
+msgstr "Ahora"
 
 msgid "Now, use the contrast setting to turn up the brightness of the background as much as possible, but make sure that you can still see the difference between the two brightest levels of shades.If you have done that, press OK."
 msgstr "Ahora, use la configuración de contraste para aumentar el brillo del fondo tanto como sea posible, pero asegúrese de que aún pueda ver la diferencia entre los dos niveles de sombras más brillantes. Si lo ha hecho, Pulse OK."
