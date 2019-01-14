@@ -7876,7 +7876,7 @@ msgid "Sort Trash by deletion time"
 msgstr "Ordenar la papelera por tiempo de eliminación"
 
 msgid "Sort by"
-msgstr "Ordenar por"
+msgstr "Ordenar"
 
 msgid "Sort by default"
 msgstr "Ordenar por defecto"
