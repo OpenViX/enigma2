@@ -1393,7 +1393,7 @@ msgid "Blue"
 msgstr "Azul"
 
 msgid "Blue long"
-msgstr "Blue long"
+msgstr "Azul prolongado"
 
 msgid "Bookmarks"
 msgstr "Marcadores"

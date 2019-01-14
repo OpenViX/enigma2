@@ -380,10 +380,10 @@
 			<convert type="ServicePosition">VFDPosition</convert>
 		</widget>
 		<panel position="fill">
-			<widget source="session.CurrentService" render="Label" position="left" size="60,*" font="FdLcD;12" halign="left">
-				<convert type="ServicePosition">VFDPosition</convert>
-			</widget>
-			<widget name="Chapter" position="fill" font="FdLcD;12" halign="left" />
+		<widget source="session.CurrentService" render="Label" position="left" size="60,*" font="FdLcD;12" halign="left">
+			<convert type="ServicePosition">VFDPosition</convert>
+		</widget>
+		<widget name="Chapter" position="fill" font="FdLcD;12" halign="left" />
 		</panel>
 	</screen>
 
