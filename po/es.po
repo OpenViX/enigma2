@@ -11938,7 +11938,7 @@ msgid "Virtual keyboard"
 msgstr "Teclado Virtual"
 
 msgid "Set the sort method for this directory"
-msgstr "Establecer el método de clasificación para este directorio"
+msgstr "Establecer como quieres ordenar el directorio de películas"
 
 msgid "Movielist menu"
 msgstr "Menú Lista de Peliculas"
