@@ -10228,9 +10228,6 @@ msgstr ""
 msgid "shortest"
 msgstr ""
 
-msgid "Console"
-msgstr ""
-
 msgid "No clients streaming"
 msgstr ""
 

@@ -10476,16 +10476,16 @@ msgid "advertisement/shopping"
 msgstr "publicidad y compras"
 
 msgid "alpha then oldest"
-msgstr "alfabético entonces más antiguo"
+msgstr "por orden alfabético muestra primero el más antiguo"
 
 msgid "alphabetic"
-msgstr "alfabético"
+msgstr "muestra por orden alfabético"
 
 msgid "alphabetic reverse"
-msgstr "invertir orden alfabético"
+msgstr "muestra por orden alfabético al revés"
 
 msgid "alpharev then newest"
-msgstr "más nuevo alfabético-inverso"
+msgstr "muestra primero el más reciente alfabético al revés"
 
 msgid "alternative"
 msgstr "alternativa"
@@ -10564,7 +10564,7 @@ msgid "broadcasting/press"
 msgstr "difusión y prensa"
 
 msgid "by date"
-msgstr "por fecha"
+msgstr "por fecha más reciente"
 
 msgid "caid:"
 msgstr "caid:"
@@ -10780,7 +10780,7 @@ msgid "fitness & health"
 msgstr "salud y bienestar"
 
 msgid "flat alphabetic"
-msgstr "orden alfabético plano"
+msgstr "muestra por orden alfabético lista completa"
 
 msgid "flat alphabetic reverse"
 msgstr "invertir a orden alfabético plano"
@@ -11178,7 +11178,7 @@ msgid "restart GUI"
 msgstr "reiniciar GUI ahora"
 
 msgid "reverse by date"
-msgstr "invertir por fecha"
+msgstr "muestra primero el más antiguo"
 
 msgid "rewind to the previous chapter"
 msgstr "rebobinar al capítulo anterior"
@@ -11944,13 +11944,10 @@ msgid "Movielist menu"
 msgstr "Menú Lista de Peliculas"
 
 msgid "longest"
-msgstr "más largo"
+msgstr "muestra primero por duración de mayor a menor"
 
 msgid "shortest"
-msgstr "más corto"
-
-msgid "Console"
-msgstr "Consola"
+msgstr "muestra primero por duración de menor a mayor"
 
 msgid "No clients streaming"
 msgstr "No hay clientes en streaming"
