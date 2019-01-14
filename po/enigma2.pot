@@ -10200,3 +10200,12 @@ msgstr ""
 
 msgid "Blue long"
 msgstr ""
+
+msgid "Virtual KeyBoard Functions"
+msgstr ""
+
+msgid "Virtual KeyBoard Text:"
+msgstr ""
+
+msgid "Virtual keyboard"
+msgstr ""
