@@ -10222,7 +10222,7 @@ msgstr ""
 msgid "Console"
 msgstr ""
 
-msgid "Speed: "
+msgid "Speed:"
 msgstr ""
 
 msgid "Service name: "

@@ -11952,8 +11952,8 @@ msgstr "Menú Lista de Peliculas"
 msgid "Console"
 msgstr "Consola"
 
-msgid "Speed: "
-msgstr "Velocidad: "
+msgid "Speed:"
+msgstr "Velocidad:"
 
 msgid "Service name: "
 msgstr "Nombre canal: "
