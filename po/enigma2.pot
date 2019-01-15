@@ -10263,12 +10263,3 @@ msgstr ""
 
 msgid "hide"
 msgstr ""
-
-msgid "NEXT"
-msgstr ""
-
-msgid "NOW"
-msgstr ""
-
-msgid "MORE"
-msgstr ""

@@ -11982,15 +11982,6 @@ msgstr "medio"
 msgid "hide"
 msgstr "escondido"
 
-msgid "NEXT"
-msgstr "SIGUIENTE"
-
-msgid "NOW"
-msgstr "AHORA"
-
-msgid "MORE"
-msgstr "MAS"
-
 #~ msgid "3d mode"
 #~ msgstr "Modo 3D"
 
