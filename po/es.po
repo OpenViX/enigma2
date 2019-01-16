@@ -4768,9 +4768,6 @@ msgstr "Lunes"
 msgid "Monthly"
 msgstr "Mensual"
 
-msgid "MORE"
-msgstr "MÁS"
-
 msgid "Mosquito noise reduction"
 msgstr "Reducción de ruido de mosquito"
 
@@ -5269,8 +5266,8 @@ msgstr "Nada que actualizar"
 msgid "Nothing, just leave this menu"
 msgstr "Nada, solo deja este menu"
 
-msgid "NOW"
-msgstr "AHORA"
+msgid "Now"
+msgstr "Now"
 
 msgctxt "now/next: 'now' event label"
 msgid "Now"

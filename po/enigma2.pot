@@ -3208,9 +3208,6 @@ msgstr ""
 msgid "Monthly"
 msgstr ""
 
-msgid "MORE"
-msgstr ""
-
 msgid "Mosquito noise reduction"
 msgstr ""
 
@@ -3628,7 +3625,7 @@ msgstr ""
 msgid "Nothing, just leave this menu"
 msgstr ""
 
-msgid "NOW"
+msgid "Now"
 msgstr ""
 
 msgctxt "now/next: 'now' event label"
