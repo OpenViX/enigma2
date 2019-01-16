@@ -11979,9 +11979,6 @@ msgstr "medio"
 msgid "hide"
 msgstr "escondido"
 
-msgid "time changed, start prepare is now: %s"
-msgstr "tiempo cambiado, empezar a preparar es ahora: %s"
-
 #~ msgid "3d mode"
 #~ msgstr "Modo 3D"
 
