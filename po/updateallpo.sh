@@ -8,7 +8,7 @@
 # Run this script from within the po folder.
 #
 # Author: Pr2
-# Version: 1.1
+# Version: 1.0
 #
 # Retrieve languages from Makefile.am LANGS variable for backward compatibility
 #
@@ -37,15 +37,15 @@ cat enigma2-py.pot enigma2-xml.pot | msguniq --no-wrap --no-location -o enigma2.
 OLDIFS=$IFS
 IFS=" "
 for lang in "${languages[@]}" ; do
-	if [ -f $lang.po ]; then 
+	if [ -f $lang.po ]; then \
 		printf "Updating existing translation file %s.po\n" $lang
-		msgmerge --backup=none --no-wrap --no-location -s -U $lang.po enigma2.pot && touch $lang.po
-		msgattrib --no-wrap --no-obsolete $lang.po -o $lang.po
-		msgfmt -o $lang.mo $lang.po
+		msgmerge --backup=none --no-wrap --no-location -s -U $lang.po enigma2.pot && touch $lang.po; \
+		msgattrib --no-wrap --no-obsolete $lang.po -o $lang.po; \
+		msgfmt -o $lang.mo $lang.po; \
 	else \
 		printf "New file created: %s.po, please add it to github before commit\n" $lang
-		msginit -l $lang.po -o $lang.po -i enigma2.pot --no-translator
-		msgfmt -o $lang.mo $lang.po
+		msginit -l $lang.po -o $lang.po -i enigma2.pot --no-translator; \
+		msgfmt -o $lang.mo $lang.po; \
 	fi
 done
 rm enigma2-py.pot enigma2-xml.pot enigma2.pot
