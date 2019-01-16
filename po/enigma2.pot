@@ -10263,3 +10263,6 @@ msgstr ""
 
 msgid "hide"
 msgstr ""
+
+msgid "time changed, start prepare is now: %s"
+msgstr ""
