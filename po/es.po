@@ -3792,6 +3792,9 @@ msgstr "Configurar HDMI CEC"
 msgid "HDMI Colorspace"
 msgstr "HDMI Espacio de color"
 
+msgid "HDMI Colorimetry"
+msgstr "HDMI Colorimetria"
+
 msgid "HDMIin"
 msgstr "HDMIin"
 
@@ -5265,6 +5268,9 @@ msgstr "Nada que actualizar"
 
 msgid "Nothing, just leave this menu"
 msgstr "Nada, solo deja este menu"
+
+msgid "Now"
+msgstr "Now"
 
 msgctxt "now/next: 'now' event label"
 msgid "Now"
@@ -11742,8 +11748,14 @@ msgstr "Esta opción le permite mostrar enlaces rápidos de números de menú."
 msgid "Change the Colorspace from Auto to RGB" 
 msgstr "Cambia el espacio de color de Auto a RGB"
 
+msgid "Change the Colorimetry for HDR"
+msgstr "Cambiar la colorimetría por HDR"
+
 msgid "Choose whether multi channel ac3 sound tracks should be downmixed to stereo." 
 msgstr "Elija si las pistas de sonido ac3 multicanal se deben mezclar en estéreo."
+
+msgid "Choose whether multi channel dts sound tracks should be downmixed to stereo."
+msgstr "Elija si las pistas de sonido dts multicanal se deben mezclar en estéreo."
 
 msgid "Choose whether multi channel aac sound tracks should be downmixed to stereo." 
 msgstr "Elija si las pistas de sonido aac multicanal se deben mezclar en estéreo."

@@ -3628,6 +3628,9 @@ msgstr ""
 msgid "Nothing, just leave this menu"
 msgstr ""
 
+msgid "Now"
+msgstr ""
+
 msgctxt "now/next: 'now' event label"
 msgid "Now"
 msgstr ""
@@ -10035,7 +10038,13 @@ msgstr ""
 msgid "Change the Colorspace from Auto to RGB" 
 msgstr ""
 
+msgid "Change the Colorimetry for HDR"
+msgstr ""
+
 msgid "Choose whether multi channel ac3 sound tracks should be downmixed to stereo." 
+msgstr ""
+
+msgid "Choose whether multi channel dts sound tracks should be downmixed to stereo."
 msgstr ""
 
 msgid "Choose whether multi channel aac sound tracks should be downmixed to stereo." 
@@ -10265,4 +10274,7 @@ msgid "hide"
 msgstr ""
 
 msgid "time changed, start prepare is now: %s"
+msgstr ""
+
+msgid "HDMI Colorimetry"
 msgstr ""
