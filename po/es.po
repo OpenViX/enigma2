@@ -2369,7 +2369,7 @@ msgstr "Dirección actual CEC"
 msgid "Current Event:"
 msgstr "Programa actual:"
 
-msgid "Current Status:"
+msgid "Current status:"
 msgstr "Estado actual:"
 
 msgid "Current device: "

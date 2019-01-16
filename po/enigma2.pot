@@ -1567,7 +1567,7 @@ msgstr ""
 msgid "Current Event:"
 msgstr ""
 
-msgid "Current Status:"
+msgid "Current status:"
 msgstr ""
 
 msgid "Current device: "
