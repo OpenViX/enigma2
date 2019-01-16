@@ -24,7 +24,6 @@ enigma2.pot: enigma2-py.pot enigma2-xml.pot
 	else \
 		$(MSGINIT) -l $@ -o $@ -i $< --no-translator; \
 	fi
-endif
 
 .po.mo:
 	$(MSGFMT) -o $@ $<
