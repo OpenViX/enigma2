@@ -3416,9 +3416,6 @@ msgstr ""
 msgid "News Current Affairs"
 msgstr ""
 
-msgid "Next"
-msgstr ""
-
 msgctxt "now/next: 'next' event label"
 msgid "Next"
 msgstr ""
@@ -3626,6 +3623,9 @@ msgid "Nothing to upgrade"
 msgstr ""
 
 msgid "Nothing, just leave this menu"
+msgstr ""
+
+msgid "Now"
 msgstr ""
 
 msgctxt "now/next: 'now' event label"
