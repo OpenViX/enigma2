@@ -3416,6 +3416,9 @@ msgstr ""
 msgid "News Current Affairs"
 msgstr ""
 
+msgid "Next"
+msgstr ""
+
 msgctxt "now/next: 'next' event label"
 msgid "Next"
 msgstr ""
