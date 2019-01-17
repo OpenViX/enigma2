@@ -110,7 +110,7 @@ msgid ""
 "Current device: "
 msgstr ""
 "\n"
-"Selecciona tu dispositivo de copias de seguridad.\n"
+"Selecciona su dispositivo de copias de seguridad.\n"
 "Dispositivo actual "
 
 msgid ""
@@ -571,7 +571,7 @@ msgid ""
 "Do you want to keep your version?"
 msgstr ""
 "El fichero de configuración (%s) se ha modificado desde la instalación.\n"
-"¿Quieres conservar tu versión?"
+"¿Quieres conservar su versión?"
 
 #, python-format
 msgid ""
@@ -1130,7 +1130,7 @@ msgid ""
 "Your receiver will restart after the backup has been restored!"
 msgstr ""
 "¿Seguro que quieres restaurar la copia?\n"
-"Tu receptor se reiniciará cuando se restaure la copia de seguridad!"
+"Su receptor se reiniciará cuando se restaure la copia de seguridad!"
 
 msgid "Are you sure you want to save the EPG Cache to:\n"
 msgstr "¿Seguro que quieres guardar el Caché EPG en...?\n"
@@ -1514,7 +1514,7 @@ msgstr ""
 "Información CCcam %s\n"
 "por AliAbdul %s\n"
 "\n"
-"Este complemento te muestra el estado de tu CCcam."
+"Este complemento te muestra el estado de su CCcam."
 
 msgid "CCcam Info Config"
 msgstr "Configuración de información CCcam"
@@ -2078,10 +2078,10 @@ msgid "Configure the initial rewind speed. When you press the rewind button, rew
 msgstr "Configure la velocidad de rebobinado inicial. Cuando presiona el botón de rebobinado, el rebobinado comenzará a esta velocidad."
 
 msgid "Configure the latitude of your location."
-msgstr "Configurar la latitud de tu ubicación."
+msgstr "Configurar la latitud de su ubicación."
 
 msgid "Configure the longitude of your location."
-msgstr "Configurar la longitud de tu ubicación."
+msgstr "Configurar la longitud de su ubicación."
 
 msgid "Configure the minimum amount of disk space to be available for recordings. When the amount of space drops below this value, deleted items will be removed from the trash can."
 msgstr "Configurar el espacio en disco mínimo disponible para grabaciones. Cuando el espacio caiga por debajo de ese valor, los programas borrados se eliminarán de la papelera."
@@ -2833,7 +2833,7 @@ msgstr "Realmente quieres eliminar el temporizador para %s?"
 
 #, python-format
 msgid "Do you really want to remove your bookmark of %s?"
-msgstr "¿Seguro que quieres borrar tu marcador %s?"
+msgstr "¿Seguro que quieres borrar su marcador %s?"
 
 msgid "Do you want to add any additional information ?"
 msgstr "¿Quieres añadir información adicional?"
@@ -4009,7 +4009,7 @@ msgid ""
 "Do not care about the bright shades now. They will be set up in the next step.\n"
 "If you are happy with the result, press OK."
 msgstr ""
-"Si tu TV tiene la mejora de brillo o contrase, desactívela. Si hay una función \"dinámica\", ponla en estándar. Ajusta el nivel de luz trasera a un valor que te guste. Pon el contraste de tu TV lo más bajo posible.\n"
+"Si su TV tiene la mejora de brillo o contrase, desactívela. Si hay una función \"dinámica\", ponla en estándar. Ajusta el nivel de luz trasera a un valor que te guste. Pon el contraste de su TV lo más bajo posible.\n"
 "Pon el brillo lo más bajo posible, asegurándote de que los niveles de sombras de grises más bajos sean apreciables.\n"
 "No te preocupes todavía por las sombras. Podrás configurarlas en el siguiente paso.\n"
 "Si estás contento con los resultados, pulsa OK."
@@ -5169,7 +5169,7 @@ msgid ""
 " Please verify that you have attached a compatible WLAN device or enable your local network interface."
 msgstr ""
 "No se ha encontrado ninguna interfaz de red inalámbrica.\n"
-"Comprueba que hayas insertado un dispositivo WLAN compatible y habilitado tu interfaz de red local."
+"Comprueba que hayas insertado un dispositivo WLAN compatible y habilitado su interfaz de red local."
 
 msgid "No, but restart from the beginning"
 msgstr "No, pero reinicia desde el principio"
@@ -5673,18 +5673,18 @@ msgid ""
 "Please configure or verify your Nameservers by filling out the required values.\n"
 "When you are ready press OK to continue."
 msgstr ""
-"Configura o comprueba tu DNS rellenando los valores requeridos.\n"
+"Configura o comprueba su DNS rellenando los valores requeridos.\n"
 "Cuanto estés listo, pulsa OK para continuar."
 
 msgid ""
 "Please configure your internet connection by filling out the required values.\n"
 "When you are ready press OK to continue."
 msgstr ""
-"Configure tu conexión a internet rellenando los valores requeridos.\n"
+"Configure su conexión a internet rellenando los valores requeridos.\n"
 "Cuando estés listo, pulsa OK para continuar."
 
 msgid "Please connect your receiver to the internet"
-msgstr "Conecta tu receptor a internet"
+msgstr "Conecta su receptor a internet"
 
 msgid "Please do not change any values unless you know what you are doing!"
 msgstr "No cambies ningún valor a menos que estés totalmente seguro!"
@@ -7016,7 +7016,7 @@ msgid "Select wireless network"
 msgstr "Selecciona la red inalámbrica"
 
 msgid "Select your provider, and press OK to start the scan"
-msgstr "Selecciona tu proveedor y pulsa OK para iniciar la búsqueda"
+msgstr "Selecciona su proveedor y pulsa OK para iniciar la búsqueda"
 
 msgid "Selecting satellites 1 (USALS)"
 msgstr "Seleccionando satélites 1 (USALS)"
@@ -8423,7 +8423,7 @@ msgid ""
 "The Filesystem on your Timeshift-Device does not support hardlinks.\n"
 "Make sure it is formatted in EXT2 or EXT3!"
 msgstr ""
-"El sistema de archivos de tu dispositivo Timeshift no soporta enlaces físicos.\n"
+"El sistema de archivos de su dispositivo Timeshift no soporta enlaces físicos.\n"
 "Asegúrate de que esté formateado en EXT2 o EXT3!"
 
 msgid ""
@@ -8538,7 +8538,7 @@ msgstr ""
 "Por favor, instálalo."
 
 msgid "The wizard can backup your current settings. Do you want to do a backup now?"
-msgstr "El asistente puede hacer una copia de seguridad de tu configuración actual. ¿Quieres hacerlo ahora?"
+msgstr "El asistente puede hacer una copia de seguridad de su configuración actual. ¿Quieres hacerlo ahora?"
 
 msgid "The wizard is finished now."
 msgstr "El asistente ha terminado."
@@ -9531,7 +9531,7 @@ msgid ""
 msgstr ""
 "Selección de entrada de vídeo.\n"
 "\n"
-"Pulsa 'OK' si puedes ver esta página en tu TV (o selecciona otro puerto de entrada).\n"
+"Pulsa 'OK' si puedes ver esta página en su TV (o selecciona otro puerto de entrada).\n"
 "\n"
 "El siguiente puerto de entrada se examinará automáticamente en 20 segundos."
 
@@ -10167,7 +10167,7 @@ msgid "You have already sent this log, are you sure you want to resend it?\n"
 msgstr "Ya ha enviado este registro, ¿está seguro de que desea reenviarlo?\n"
 
 msgid "You have chosen to backup your settings. Please press OK to start the backup now."
-msgstr "Has elegido hacer una copia de tu configuración. Pulsa 'OK' para comenzar."
+msgstr "Has elegido hacer una copia de su configuración. Pulsa 'OK' para comenzar."
 
 msgid "You have chosen to restore your settings. Enigma2 will restart after restore. Please press OK to start the restore now."
 msgstr "Has elegido restaurar la configuración. Enigma2 se reiniciará después. Pulse 'OK' para comenzar ahora."
@@ -10217,7 +10217,7 @@ msgid "You seem to be in timeshift, Do you want to leave timeshift ?"
 msgstr "Parece que estás en Timeshift. Quieres abandonar Timeshift ?"
 
 msgid "You system does not support ext4"
-msgstr "Tu sistema no soporta ext4"
+msgstr "Su sistema no soporta ext4"
 
 #, python-format
 msgid "Your %s %s does not support PiP HD"
@@ -10249,7 +10249,7 @@ msgid ""
 "\n"
 "Please press OK to continue."
 msgstr ""
-"Tu conexión a internet está funcionando ahora.\n"
+"Su conexión a internet está funcionando ahora.\n"
 "\n"
 "Por favor Pulse OK para continuar."
 
@@ -10309,7 +10309,7 @@ msgid "Your backup succeeded. We will now continue to explain the further upgrad
 msgstr "La copia se ha guardado con éxito. Ahora te seguiremos explicando el proceso de actualización."
 
 msgid "Your collection exceeds the size of a single layer medium, you will need a blank dual layer DVD!"
-msgstr "Tu colección excede el tamaño de un medio de capa simple. Necesitas un DVD vacío de doble capa!"
+msgstr "Su colección excede el tamaño de un medio de capa simple. Necesitas un DVD vacío de doble capa!"
 
 #, python-format
 msgid ""
@@ -10320,7 +10320,7 @@ msgstr ""
 "%s"
 
 msgid "Your current collection will get lost!"
-msgstr "Tu colección actual se perderá!"
+msgstr "Su colección actual se perderá!"
 
 msgid ""
 "Your frontprocessor firmware must be upgraded.\n"
@@ -10343,7 +10343,7 @@ msgid ""
 "Your internet connection is not working!\n"
 "Please choose what you want to do next!"
 msgstr ""
-"Tu conexión a internet está funcionando!\n"
+"Su conexión a internet está funcionando!\n"
 "Elige lo que quieres hacer ahora!"
 
 #, python-format
@@ -10351,7 +10351,7 @@ msgid "Your internet connection is working (ip: %s)"
 msgstr "La conexión a internet funciona (ip: %s)"
 
 msgid "Your network configuration has been activated."
-msgstr "Tu configuración de red ha sido activada."
+msgstr "Su configuración de red ha sido activada."
 
 msgid "Your network has finished restarting"
 msgstr "Su red ha terminado de reiniciar"
@@ -12162,6 +12162,30 @@ msgstr "Si se usan varios conmutadores no confirmados, los comandos DiSEqC deben
 msgid "Force legacy signal stats"
 msgstr "Forzar legacy (estadísticas) de señales heredadas"
 
+msgid "This is a multitype tuner. Available options depend on the hardware. Cable and terrestrial cannot be configured at the same time. If you want to use as cable + satellite or terrestrial + satellite, configure cable/terrestrial first and then save. Re-open and configure again as satellite."
+msgstr "Este es un sintonizador multitipo. Las opciones disponibles dependen del hardware. Cable y terrestre no se pueden configurar al mismo tiempo. Si desea utilizar como cable + satélite o terrestre + satélite, primero configure cable/terrestre y luego guárdelo. Vuelva a abrir y configure nuevamente como satélite."
+
+msgid "Select your ATSC provider."
+msgstr "Seleccione su ATSC proveedor."
+
+msgid "Select your country. If not available select 'all'."
+msgstr "Selecciona su pais. Si no está disponible, seleccione 'todos'."
+
+msgid "Select your region. If not available change 'Country' to 'all' and select one of the default alternatives."
+msgstr "Seleccione su región. Si no está disponible, cambie 'País' a 'todos' y seleccione una de las alternativas predeterminadas."
+
+msgid "Enable this setting if your aerial system needs power"
+msgstr "Habilite esta configuración si su sistema de antena necesita energía"
+
+msgid "Country"
+msgstr "País"
+
+msgid "This setting depends on your cable provider and location. If you don't know the correct setting refer to the menu in the official cable receiver, or get it from your cable provider, or seek help via internet forum."
+msgstr "Esta configuración depende de su proveedor de cable y ubicación. Si no conoce la configuración correcta, consulte el menú en el receptor de cable oficial, consígalo de su proveedor de cable o busque ayuda a través del foro de Internet."
+
+msgid "Select your provider and region. If not present in this list you will need to select one of the other 'service scan types'."
+msgstr "Seleccione su proveedor y región. Si no está presente en esta lista, deberá seleccionar uno de los otros 'tipos de análisis de servicio'."
+
 msgid "Select Fast DiSEqC if your aerial system supports this. If you are unsure select 'no'."
 msgstr "Seleccione Fast DiSEqC si su sistema de antena lo admite. Si no está seguro, seleccione 'no'."
 
@@ -12497,7 +12521,7 @@ msgstr "Si se establece en 'sí', los valores de señal (SNR, etc.) se calcular�
 #~ "In the next step, an NFI image file can be downloaded from the update server and saved on the USB stick.\n"
 #~ "If you already have a prepared bootable USB stick, please insert it now. Otherwise plug in a USB stick with a minimum size of 64 MB!"
 #~ msgstr ""
-#~ "Este complemento crea un pen USB que puede utilizarse para actualizar el Firmware de tu %s %s sin necesidad de red o conexión WLAN.\n"
+#~ "Este complemento crea un pen USB que puede utilizarse para actualizar el Firmware de su %s %s sin necesidad de red o conexión WLAN.\n"
 #~ "Primero, se preparará la memoria USB para que sea arrancable.\n"
 #~ "Después, puede descargarse una imagen NFI desde el servidor de actualizaciones y guardarse en la memoria.\n"
 #~ "Si ya tienes una memoria USB arrancable, insértala ahora.  De lo contrario, inserta una memoria USB con un tamaño mínimo de 64 MB!"
@@ -12511,7 +12535,7 @@ msgstr "Si se establece en 'sí', los valores de señal (SNR, etc.) se calcular�
 #~ "2) Turn mains back on and hold the DOWN button on the front panel pressed for 10 seconds.\n"
 #~ "3) Wait for bootup and follow instructions of the wizard."
 #~ msgstr ""
-#~ "Para actualizar el Firmware de tu %s %s, sigue estos pasos:\n"
+#~ "Para actualizar el Firmware de su %s %s, sigue estos pasos:\n"
 #~ "1) Apaga el receptor con el botón de encendido trasero y asegúrate de que la memoria USB arrancable esté conectada.\n"
 #~ "2) Vuelve a encenderlo y presiona el botón ABAJO en el panel frontal durante 10 segundos.\n"
 #~ "3) Espera al reinicio y sigue las instrucciones del asistente."

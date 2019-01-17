@@ -10447,6 +10447,9 @@ msgstr ""
 msgid "Force legacy signal stats"
 msgstr ""
 
+msgid "This is a multitype tuner. Available options depend on the hardware. Cable and terrestrial cannot be configured at the same time. If you want to use as cable + satellite or terrestrial + satellite, configure cable/terrestrial first and then save. Re-open and configure again as satellite."
+msgstr ""
+
 msgid "Select Fast DiSEqC if your aerial system supports this. If you are unsure select 'no'."
 msgstr ""
 
@@ -10481,4 +10484,25 @@ msgid "Additional motor options allow you to enter details from your motor's spe
 msgstr ""
 
 msgid "If set to 'yes' signal values (SNR, etc) will be calculated from API V3. This is an old API version that has now been superseded."
+msgstr ""
+
+msgid "Select your ATSC provider."
+msgstr ""
+
+msgid "Select your country. If not available select 'all'."
+msgstr ""
+
+msgid "Select your region. If not available change 'Country' to 'all' and select one of the default alternatives."
+msgstr ""
+
+msgid "Enable this setting if your aerial system needs power"
+msgstr ""
+
+msgid "Country"
+msgstr ""
+
+msgid "This setting depends on your cable provider and location. If you don't know the correct setting refer to the menu in the official cable receiver, or get it from your cable provider, or seek help via internet forum."
+msgstr ""
+
+msgid "Select your provider and region. If not present in this list you will need to select one of the other 'service scan types'."
 msgstr ""

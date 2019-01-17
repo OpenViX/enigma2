@@ -355,7 +355,7 @@ class PowerTimerEntry(timer.TimerEntry, object):
 		self.backoff = 0
 
 		if int(old_prepare) > 60 and int(old_prepare) != int(self.start_prepare):
-			self.log(15, "time changed, start prepare is now: %s" % ctime(self.start_prepare))
+			self.log(15, "tiempo cambiado, empezar a preparar es ahora: %s" % ctime(self.start_prepare))
 
 def createTimer(xml):
 	timertype = str(xml.get("timertype") or "wakeup")
