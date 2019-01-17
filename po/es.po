@@ -11991,9 +11991,6 @@ msgstr "Cambiar la colorimetría por HDR"
 msgid "Choose whether multi channel dts sound tracks should be downmixed to stereo."
 msgstr "Elija si las pistas de sonido dts multicanal se deben mezclar en estéreo."
 
-msgid "time changed, start prepare is now: %s"
-msgstr "tiempo cambiado, empezar a preparar es ahora: %s"
-
 msgid "Enable client mode"
 msgstr "Habilitar modo cliente"
 

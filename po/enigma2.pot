@@ -10276,9 +10276,6 @@ msgstr ""
 msgid "Choose whether multi channel dts sound tracks should be downmixed to stereo."
 msgstr ""
 
-msgid "time changed, start prepare is now: %s"
-msgstr ""
-
 msgid "Enable client mode"
 msgstr ""
 
