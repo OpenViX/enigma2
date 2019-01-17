@@ -7951,7 +7951,7 @@ msgid "StandbyLED"
 msgstr "StandbyLED"
 
 msgid "Start"
-msgstr "Empezar"
+msgstr "Bienvenido Empecemos"
 
 msgid "Start from the beginning"
 msgstr "Empezar desde el principio"
@@ -12233,6 +12233,24 @@ msgstr "Ingrese su frecuencia de oscilador local de banda baja. Para más inform
 
 msgid "Enter the frequency at which you LNB switches between low band and high band. For more information consult the spec sheet of your LNB."
 msgstr "Ingrese la frecuencia a la que LNB cambia entre banda baja y banda alta. Para más información consulte la hoja de especificaciones de su LNB."
+
+msgid "Type of LNB/device"
+msgstr "Tipo de LNB/dispositivo"
+
+msgid "FBC SCR (Unicable or JESS)"
+msgstr "FBC SCR (Unicable o JESS)"
+
+msgid "SCR (Unicable or JESS) Type"
+msgstr "Tipo SCR (Unicable o JESS)"
+
+msgid "Model"
+msgstr "Modelo"
+
+msgid "Position"
+msgstr "Posición"
+
+msgid "Connected"
+msgstr "Conectado"
 
 #~ msgid "3d mode"
 #~ msgstr "Modo 3D"

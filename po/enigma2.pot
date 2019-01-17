@@ -10518,3 +10518,21 @@ msgstr ""
 
 msgid "Enter the frequency at which you LNB switches between low band and high band. For more information consult the spec sheet of your LNB."
 msgstr ""
+
+msgid "Type of LNB/device"
+msgstr ""
+
+msgid "FBC SCR (Unicable or JESS)"
+msgstr ""
+
+msgid "SCR (Unicable or JESS) Type"
+msgstr ""
+
+msgid "Model"
+msgstr ""
+
+msgid "Position"
+msgstr ""
+
+msgid "Connected"
+msgstr ""
