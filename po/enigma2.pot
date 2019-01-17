@@ -5369,7 +5369,7 @@ msgstr ""
 msgid "Standby / restart"
 msgstr ""
 
-msgid "start"
+msgid "Start"
 msgstr ""
 
 msgid "Start from the beginning"
@@ -10517,7 +10517,4 @@ msgid "Enter your low band local oscillator frequency. For more information cons
 msgstr ""
 
 msgid "Enter the frequency at which you LNB switches between low band and high band. For more information consult the spec sheet of your LNB."
-msgstr ""
-
-msgid "welcome"
 msgstr ""
