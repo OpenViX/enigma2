@@ -10390,6 +10390,9 @@ msgstr ""
 msgid "Select the User Band channel to be assigned to this tuner. This is an index into the table of frequencies the SCR switch or SCR LNB uses to pass the requested transponder to the tuner."
 msgstr ""
 
+msgid "Select the User Band to be assigned to this tuner. This is an index into the table of frequencies the SCR switch or SCR LNB uses to pass the requested transponder to the tuner."
+msgstr ""
+
 msgid "Select 'yes' if this tuner is connected to the SCR device through another tuner, otherwise select 'no'."
 msgstr ""
 
@@ -10505,4 +10508,13 @@ msgid "This setting depends on your cable provider and location. If you don't kn
 msgstr ""
 
 msgid "Select your provider and region. If not present in this list you will need to select one of the other 'service scan types'."
+msgstr ""
+
+msgid "Enter your high band local oscillator frequency. For more information consult the spec sheet of your LNB."
+msgstr ""
+
+msgid "Enter your low band local oscillator frequency. For more information consult the spec sheet of your LNB."
+msgstr ""
+
+msgid "Enter the frequency at which you LNB switches between low band and high band. For more information consult the spec sheet of your LNB."
 msgstr ""

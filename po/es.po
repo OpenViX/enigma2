@@ -6370,7 +6370,7 @@ msgid "Regard deep standby as standby"
 msgstr "Considerar hibernación como modo en espera"
 
 msgid "Region"
-msgstr "Region"
+msgstr "Región"
 
 msgid "Relative"
 msgstr "Relativo"
@@ -12105,6 +12105,9 @@ msgstr "Solo cambie esta configuración si está utilizando un dispositivo SCR q
 msgid "Select the User Band channel to be assigned to this tuner. This is an index into the table of frequencies the SCR switch or SCR LNB uses to pass the requested transponder to the tuner."
 msgstr "Seleccione el canal de la banda de usuario que se asignará a este sintonizador. Este es un índice en la tabla de frecuencias que usa el interruptor SCR o SCR LNB para pasar el transpondedor solicitado al sintonizador."
 
+msgid "Select the User Band to be assigned to this tuner. This is an index into the table of frequencies the SCR switch or SCR LNB uses to pass the requested transponder to the tuner."
+msgstr "Seleccione la banda de usuario que se asignará a este sintonizador. Este es un índice en la tabla de frecuencias que usa el interruptor SCR o SCR LNB para pasar el transpondedor solicitado al sintonizador."
+
 msgid "Select 'yes' if this tuner is connected to the SCR device through another tuner, otherwise select 'no'."
 msgstr "Seleccione 'sí' si este sintonizador está conectado al dispositivo SCR a través de otro sintonizador, de lo contrario, seleccione 'no'."
 
@@ -12221,6 +12224,15 @@ msgstr "Las opciones de motor adicionales le permiten ingresar detalles de la ho
 
 msgid "If set to 'yes' signal values (SNR, etc) will be calculated from API V3. This is an old API version that has now been superseded."
 msgstr "Si se establece en 'sí', los valores de señal (SNR, etc.) se calcularán a partir de API V3. Esta es una versión antigua de la API que ahora ha sido reemplazada."
+
+msgid "Enter your high band local oscillator frequency. For more information consult the spec sheet of your LNB."
+msgstr "Introduzca su frecuencia de oscilador local de banda alta. Para más información consulte la hoja de especificaciones de su LNB."
+
+msgid "Enter your low band local oscillator frequency. For more information consult the spec sheet of your LNB."
+msgstr "Ingrese su frecuencia de oscilador local de banda baja. Para más información consulte la hoja de especificaciones de su LNB."
+
+msgid "Enter the frequency at which you LNB switches between low band and high band. For more information consult the spec sheet of your LNB."
+msgstr "Ingrese la frecuencia a la que LNB cambia entre banda baja y banda alta. Para más información consulte la hoja de especificaciones de su LNB."
 
 #~ msgid "3d mode"
 #~ msgstr "Modo 3D"
