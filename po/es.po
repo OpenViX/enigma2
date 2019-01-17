@@ -11982,6 +11982,72 @@ msgstr "medio"
 msgid "hide"
 msgstr "escondido"
 
+msgid "HDMI Colorimetry"
+msgstr "HDMI Colorimetría"
+
+msgid "Change the Colorimetry for HDR"
+msgstr "Cambiar la colorimetría por HDR"
+
+msgid "Choose whether multi channel dts sound tracks should be downmixed to stereo."
+msgstr "Elija si las pistas de sonido dts multicanal se deben mezclar en estéreo."
+
+msgid "time changed, start prepare is now: %s"
+msgstr "tiempo cambiado, empezar a preparar es ahora: %s"
+
+msgid "Enable client mode"
+msgstr "Habilitar modo cliente"
+
+msgid "Client mode sets up this receiver to stream from another receiver. In this mode no local tuners will be available and channel lists, EPG, etc, will come from the remote receiver. All tuner settings will be cleared."
+msgstr "El modo cliente configura este receptor para transmitir desde otro receptor. En este modo, no habrá sintonizadores locales disponibles y las listas de canales, EPG, etc., provendrán del receptor remoto. Se borrarán todos los ajustes del sintonizador."
+
+msgid "Host receiver FTP password"
+msgstr "Contraseña FTP del receptor servidor"
+
+msgid "Enter the FTP password of the host receiver (normally just leave empty)."
+msgstr "Ingrese la contraseña de FTP del receptor servidor (normalmente solo deje en blanco)."
+
+msgid "Host receiver FTP port"
+msgstr "Puerto FTP del receptor servidor"
+
+msgid "Enter the FTP port of the host receiver (normally '21')."
+msgstr "Ingrese el puerto FTP del receptor servidor (normalmente '21')."
+
+msgid "Host receiver FTP username"
+msgstr "Nombre usuario FTP receptor servidor"
+
+msgid "Enter the FTP username of the host receiver (normally 'root')."
+msgstr "Ingrese el nombre de usuario de FTP del receptor servidor (normalmente 'root')."
+
+msgid "Host receiver IP address"
+msgstr "Dirección IP receptor servidor"
+
+msgid "Enter the IP address of the host receiver."
+msgstr "Introduzca la dirección IP del receptor servidor."
+
+msgid "Host receiver address type"
+msgstr "Tipo dirección receptor servidor"
+
+msgid "Select between entering an IP address or a domain."
+msgstr "Seleccione entre ingresar una dirección IP o un dominio."
+
+msgid "Host receiver streaming port"
+msgstr "Puerto streaming del receptor servidor"
+
+msgid "Enter the streaming port of the host receiver (normally '8001')."
+msgstr "Ingrese el puerto de transmisión del receptor servidor (normalmente '8001')."
+
+msgid "FTP passive mode"
+msgstr "FTP modo pasivo"
+
+msgid "Should the FTP connection to the remote receiver be established in passive mode (normally 'no')?"
+msgstr "¿Debería establecerse la conexión FTP al receptor remoto en modo pasivo (normalmente 'no')?"
+
+msgid "Schedule EPG and channel list import"
+msgstr "Programar EPG e importar lista de canales"
+
+msgid "Allows you to set a schedule to import the EPG and channels list. The EPG and channels list will always be imported on reboot or GUI restart."
+msgstr "Le permite establecer un horario para importar la EPG y la lista de canales. La EPG y la lista de canales siempre se importarán al reiniciar o al reinicio de la GUI."
+
 #~ msgid "3d mode"
 #~ msgstr "Modo 3D"
 
