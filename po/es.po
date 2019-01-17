@@ -12105,6 +12105,63 @@ msgstr "Solo cambie esta configuración si está utilizando un dispositivo SCR q
 msgid "Select the User Band channel to be assigned to this tuner. This is an index into the table of frequencies the SCR switch or SCR LNB uses to pass the requested transponder to the tuner."
 msgstr "Seleccione el canal de la banda de usuario que se asignará a este sintonizador. Este es un índice en la tabla de frecuencias que usa el interruptor SCR o SCR LNB para pasar el transpondedor solicitado al sintonizador."
 
+msgid "Select 'yes' if this tuner is connected to the SCR device through another tuner, otherwise select 'no'."
+msgstr "Seleccione 'sí' si este sintonizador está conectado al dispositivo SCR a través de otro sintonizador, de lo contrario, seleccione 'no'."
+
+msgid "Select '1.0' for standard committed switches, '1.1' for uncommitted switches, and '1.2' for systems using a positioner."
+msgstr "Seleccione '1.0' para los interruptores comprometidos estándar, '1.1' para los interruptores no confirmados y '1.2' para los sistemas que utilizan un motor."
+
+msgid "USALS automatically moves a motorised dish to the correct satellite based on the coordinates entered by the user. Without USALS each satellite will need to be setup and saved individually."
+msgstr "USALS mueve automáticamente un plato motorizado al satélite correcto según las coordenadas introducidas por el usuario. Sin USALS, cada satélite deberá configurarse y guardarse individualmente."
+
+msgid "Enter the number stored in the positioner that corresponds to this satellite."
+msgstr "Introduzca el número almacenado en el motor que corresponde a este satélite."
+
+msgid "Consult your motor's spec sheet for this information, or leave the default setting."
+msgstr "Consulte la hoja de especificaciones de su motor para obtener esta información, o deje la configuración predeterminada."
+
+msgid "Select how the satellite dish is set up. i.e. fixed dish, single LNB, DiSEqC switch, positioner, etc."
+msgstr "Seleccione cómo se configura la antena parabólica. es decir, plato fijo, LNB único, interruptor DiSEqC, motor, etc."
+
+msgid "Only select 'yes' if you are using a multiswich that requires a DiSEqC Port-A command signal. For all other setups select 'no'."
+msgstr "Solo seleccione 'sí' si está utilizando un multiswich que requiere una señal de comando DiSEqC Puerto-A. Para todas las demás configuraciones, seleccione 'no'."
+
+msgid "Leave this set to 'yes' unless you fully understand why you are adjusting it."
+msgstr "Deje este conjunto en 'sí' a menos que entienda completamente por qué lo está ajustando."
+
+msgid "Select 'yes' to only send the DiSEqC command when changing from one satellite to another, or select 'no' for the DiSEqC command to be resent on every zap."
+msgstr "Seleccione 'sí' para enviar solo el comando DiSEqC cuando cambie de un satélite a otro, o seleccione 'no' para que el comando DiSEqC sea reenviado en cada zap."
+
+msgid "Press OK to select a group of satellites to configure in one block."
+msgstr "Presione OK para seleccionar un grupo de satélites para configurar en un bloque."
+
+msgid "This setting allows the tuner configuration to be a duplication of how another tuner is already configured."
+msgstr "Esta configuración permite que la configuración del sintonizador sea una duplicación de cómo otro sintonizador ya está configurado."
+
+msgid "Loop through from"
+msgstr "Loop through desde"
+
+msgid "Select 'polarisation' if using a 'universal' LNB, otherwise consult your LNB spec sheet."
+msgstr "Seleccione 'polarización' si usa un LNB 'universal'; de lo contrario, consulte la hoja de especificaciones de su LNB."
+
+msgid "Select 'band' if using a 'universal' LNB, otherwise consult your LNB spec sheet."
+msgstr "Seleccione 'banda' si usa un LNB 'universal'; de lo contrario, consulte la hoja de especificaciones de su LNB."
+
+msgid "Select 'FBC SCR' if this tuner will connect to a SCR (Unicable/JESS) device. For all other setups select 'FBC automatic'."
+msgstr "Seleccione 'FBC SCR' si este sintonizador se conectará a un dispositivo SCR (Unicable/JESS). Para todas las demás configuraciones, seleccione 'FBC automático'."
+
+msgid "Select 'enabled' if this tuner has a signal cable connected, otherwise select 'nothing connected'."
+msgstr "Seleccione 'habilitado' si este sintonizador tiene un cable de señal conectado; de lo contrario, seleccione 'nada conectado'."
+
+msgid "Select 'provider' to scan from the predefined list of cable multiplexes. Select 'bands' to only scan certain parts of the spectrum. Select 'steps' to scan in steps of a particular frequency bandwidth."
+msgstr "Seleccione 'proveedor' para escanear desde la lista predefinida de múltiplex de cable. Seleccione 'bandas' para escanear solo ciertas partes del espectro. Seleccione 'pasos' para escanear en pasos de un ancho de banda de frecuencia particular."
+
+msgid "If using multiple uncommitted switches the DiSEqC commands must be sent multiple times. Set to the number of uncommitted switches in the chain minus one."
+msgstr "Si se usan varios conmutadores no confirmados, los comandos DiSEqC deben enviarse varias veces. Establezca el número de interruptores no comprometidos en la cadena menos uno."
+
+msgid "Force legacy signal stats"
+msgstr "Forzar legacy (estadísticas) de señales heredadas"
+
 msgid "Select Fast DiSEqC if your aerial system supports this. If you are unsure select 'no'."
 msgstr "Seleccione Fast DiSEqC si su sistema de antena lo admite. Si no está seguro, seleccione 'no'."
 
