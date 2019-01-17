@@ -10525,7 +10525,7 @@ msgstr ""
 msgid "FBC SCR (Unicable or JESS)"
 msgstr ""
 
-msgid "SCR (Unicable or JESS) Type"
+msgid "SCR (Unicable or JESS) type"
 msgstr ""
 
 msgid "Model"
@@ -10535,4 +10535,25 @@ msgid "Position"
 msgstr ""
 
 msgid "Connected"
+msgstr ""
+
+msgid "Speed:"
+msgstr ""
+
+msgid "Videocodec, size & format"
+msgstr ""
+
+msgid "Service ID"
+msgstr ""
+
+msgid "Service list"
+msgstr ""
+
+msgid "Channels"
+msgstr ""
+
+msgid "Key"
+msgstr ""
+
+msgid "Encrypted TV"
 msgstr ""

@@ -7072,7 +7072,7 @@ msgstr "Canal"
 msgid "Service Information"
 msgstr "Información de servicio"
 
-msgid "Service Name"
+msgid "Service name"
 msgstr "Nombre del canal"
 
 msgid "Service Title mode"
@@ -12240,7 +12240,7 @@ msgstr "Tipo de LNB/dispositivo"
 msgid "FBC SCR (Unicable or JESS)"
 msgstr "FBC SCR (Unicable o JESS)"
 
-msgid "SCR (Unicable or JESS) Type"
+msgid "SCR (Unicable or JESS) type"
 msgstr "Tipo SCR (Unicable o JESS)"
 
 msgid "Model"
@@ -12251,6 +12251,27 @@ msgstr "Posición"
 
 msgid "Connected"
 msgstr "Conectado"
+
+msgid "Speed:"
+msgstr "Velocidad:"
+
+msgid "Videocodec, size & format"
+msgstr "Videocodec, tamaño & formato"
+
+msgid "Service ID"
+msgstr "Servicio ID"
+
+msgid "Service list"
+msgstr "Lista Servicio"
+
+msgid "Channels"
+msgstr "Canales"
+
+msgid "Key"
+msgstr "Tecla"
+
+msgid "Encrypted TV"
+msgstr "TV Encriptado"
 
 #~ msgid "3d mode"
 #~ msgstr "Modo 3D"
