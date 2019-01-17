@@ -11610,10 +11610,10 @@ msgid "Uncover dashed flickering line for this service"
 msgstr "Descubrir la línea de arriba blanca discontinua para este canal"
 
 msgid "Center DVB subs on this service" 
-msgstr "Centre subwoofers DVB en este canal"
+msgstr "Centre subtítulos DVB en este canal"
 
 msgid "Do not center DVB subs on this service" 
-msgstr "No centre subwoofers DVB en este canal"
+msgstr "No centre subtítulos DVB en este canal"
 
 msgid "Configuration..." 
 msgstr "Configuración..."
