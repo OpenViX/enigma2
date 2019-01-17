@@ -5369,7 +5369,7 @@ msgstr ""
 msgid "Standby / restart"
 msgstr ""
 
-msgid "start"
+msgid "Start"
 msgstr ""
 
 msgid "Start from the beginning"

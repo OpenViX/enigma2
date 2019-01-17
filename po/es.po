@@ -7950,7 +7950,7 @@ msgstr "Modos Espera & Reinicios"
 msgid "StandbyLED"
 msgstr "StandbyLED"
 
-msgid "start"
+msgid "Start"
 msgstr "Inicio"
 
 msgid "Start from the beginning"
