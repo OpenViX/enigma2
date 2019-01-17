@@ -12045,6 +12045,102 @@ msgstr "Programar EPG e importar lista de canales"
 msgid "Allows you to set a schedule to import the EPG and channels list. The EPG and channels list will always be imported on reboot or GUI restart."
 msgstr "Le permite establecer un horario para importar la EPG y la lista de canales. La EPG y la lista de canales siempre se importarán al reiniciar o al reinicio de la GUI."
 
+msgid "Configure this tuner using simple or advanced options, or loop it through to another tuner, or copy a configuration from another tuner, or disable it."
+msgstr "Configure este sintonizador con opciones simples o avanzadas, o conéctelo a otro sintonizador, copie una configuración de otro sintonizador o desactívelo."
+
+msgid "Select the protocol used by your SCR device. Choices are 'SCR Unicable' (Unicable), or 'SCR JESS' (JESS, also known as Unicable II)."
+msgstr "Seleccione el protocolo utilizado por su dispositivo SCR. Las opciones son 'SCR Unicable' (Unicable) o 'SCR JESS' (JESS, también conocido como Unicable II)."
+
+msgid "Select the satellite which is connected to Port-A of your switch. If you are unsure select 'automatic' and the receiver will attempt to determine this for you. If nothing is connected to this port, select 'nothing connected'."
+msgstr "Seleccione el satélite que está conectado al puerto A de su conmutador. Si no está seguro, seleccione 'automático' y el receptor intentará determinar esto por usted. Si no hay nada conectado a este puerto, seleccione 'nada conectado'."
+
+msgid "Select the satellite which is connected to Port-B of your switch. If you are unsure select 'automatic' and the receiver will attempt to determine this for you. If nothing is connected to this port, select 'nothing connected'."
+msgstr "Seleccione el satélite que está conectado al puerto B de su conmutador. Si no está seguro, seleccione 'automático' y el receptor intentará determinar esto por usted. Si no hay nada conectado a este puerto, seleccione 'nada conectado'."
+
+msgid "Select the satellite which is connected to Port-C of your switch. If you are unsure select 'automatic' and the receiver will attempt to determine this for you. If nothing is connected to this port, select 'nothing connected'."
+msgstr "Seleccione el satélite que está conectado al puerto C de su conmutador. Si no está seguro, seleccione 'automático' y el receptor intentará determinar esto por usted. Si no hay nada conectado a este puerto, seleccione 'nada conectado'."
+
+msgid "Select the satellite which is connected to Port-D of your switch. If you are unsure select 'automatic' and the receiver will attempt to determine this for you. If nothing is connected to this port, select 'nothing connected'."
+msgstr "Seleccione el satélite que está conectado al puerto D de su conmutador. Si no está seguro, seleccione 'automático' y el receptor intentará determinar esto por usted. Si no hay nada conectado a este puerto, seleccione 'nada conectado'."
+
+msgid "Select the satellite you want to configure. Once that satellite is configured you can select and configure other satellites that will be accessed using this same tuner."
+msgstr "Seleccione el satélite que desea configurar. Una vez que se haya configurado ese satélite, puede seleccionar y configurar otros satélites a los que se accederá usando este mismo sintonizador."
+
+msgid "Select the satellite your dish receives from. If you are unsure select 'automatic' and the receiver will attempt to determine this for you."
+msgstr "Seleccione el satélite que recibe su plato. Si no está seguro, seleccione 'automático' y el receptor intentará determinar esto por usted."
+
+msgid "Select the tuner that controls the motorised dish."
+msgstr "Seleccione el sintonizador que controla el plato motorizado."
+
+msgid "Select the tuner that this loopthrough depends on."
+msgstr "Seleccione el sintonizador del que depende este bucle."
+
+msgid "Select the tuner to which the signal cable of the SCR device is connected."
+msgstr "Seleccione el sintonizador al que está conectado el cable de señal del dispositivo SCR."
+
+msgid "Select the type of LNB/device being used (normally 'Universal'). If your LNB type is not available select 'user defined'."
+msgstr "Seleccione el tipo de LNB/dispositivo que se está utilizando (normalmente 'Universal'). Si su tipo de LNB no está disponible, seleccione 'definido por el usuario'."
+
+msgid "Select the type of Single Cable Reception device you are using."
+msgstr "Seleccione el tipo de dispositivo de recepción de cable único que está utilizando."
+
+msgid "Selecting this option allows you to configure a group of satellites in one block."
+msgstr "La selección de esta opción le permite configurar un grupo de satélites en un bloque."
+
+msgid "Allocate a number to the physical LNB you are configuring. You will be able to select this LNB again for other satellites (e.g. motorised dishes) to save setting up the same LNB multiple times."
+msgstr "Asigne un número al LNB físico que está configurando. Podrá seleccionar este LNB nuevamente para otros satélites (por ejemplo, platos motorizados) para guardar la configuración del mismo LNB varias veces."
+
+msgid "This setting is for special setups only. It gives this LNB higher priority over other LNBs with lower values. The free LNB with the highest priority will be the first LNB selected for tuning services."
+msgstr "Esta configuración es solo para configuraciones especiales. Le da a este LNB una mayor prioridad sobre otros LNB con valores más bajos. El LNB gratuito con la prioridad más alta será el primer LNB seleccionado para los servicios de ajuste."
+
+msgid "Select the manufacturer of your SCR device. If the manufacturer is not listed, set 'SCR' to 'user defined' and enter the device parameters manually according to its spec sheet."
+msgstr "Seleccione el fabricante de su dispositivo SCR. Si el fabricante no está en la lista, configure 'SCR' en 'definido por el usuario' e ingrese los parámetros del dispositivo manualmente de acuerdo con su hoja de especificaciones."
+
+msgid "Select the model number of your SCR device. If the model number is not listed, set 'SCR' to 'user defined' and enter the device parameters manually according to its spec sheet."
+msgstr "Seleccione el número de modelo de su dispositivo SCR. Si el número de modelo no está en la lista, configure 'SCR' en 'definido por el usuario' e ingrese los parámetros del dispositivo manualmente de acuerdo con su hoja de especificaciones."
+
+msgid "Only change this setting if you are using a SCR device that has been reprogrammed with a custom programmer. For further information check with the person that reprogrammed the device."
+msgstr "Solo cambie esta configuración si está utilizando un dispositivo SCR que ha sido reprogramado con un programador personalizado. Para más información, consulte con la persona que reprogramó el dispositivo."
+
+msgid "Select the User Band channel to be assigned to this tuner. This is an index into the table of frequencies the SCR switch or SCR LNB uses to pass the requested transponder to the tuner."
+msgstr "Seleccione el canal de la banda de usuario que se asignará a este sintonizador. Este es un índice en la tabla de frecuencias que usa el interruptor SCR o SCR LNB para pasar el transpondedor solicitado al sintonizador."
+
+msgid "Select Fast DiSEqC if your aerial system supports this. If you are unsure select 'no'."
+msgstr "Seleccione Fast DiSEqC si su sistema de antena lo admite. Si no está seguro, seleccione 'no'."
+
+msgid "Select 'A' or 'B' if your aerial system requires this, otherwise select 'none'. If you are unsure select 'none'."
+msgstr "Seleccione 'A' o 'B' si su sistema de antena lo requiere; de lo contrario, seleccione 'ninguno'. Si no está seguro, seleccione 'ninguno'."
+
+msgid "If you are using a DiSEqC committed switch enter the port letter required to access the LNB used for this satellite."
+msgstr "Si está utilizando un conmutador comprometido DiSEqC, ingrese la letra de puerto requerida para acceder al LNB utilizado para este satélite."
+
+msgid "If you are using a DiSEqC uncommitted switch enter the port number required to access the LNB used for this satellite."
+msgstr "Si está utilizando un conmutador no comprometido DiSEqC, ingrese el número de puerto requerido para acceder al LNB utilizado para este satélite."
+
+msgid "Set sequence repeats if your aerial system requires this. Normally if the aerial system has been configured correctly sequence repeats will not be necessary. If yours does, recheck you have command order set correctly."
+msgstr "Establecer secuencia se repite si su sistema de antena lo requiere. Normalmente, si el sistema de antena se ha configurado correctamente, no será necesario repetir la secuencia. Si el suyo lo hace, vuelva a verificar que tiene orden de comando configurado correctamente."
+
+msgid "Enter your current latitude. This is the number of degrees you are from the equator as a decimal."
+msgstr "Ingrese su latitud actual. Este es el número de grados que eres del ecuador como decimal."
+
+msgid "Enter if you are in the east or west hemisphere."
+msgstr "Ingrese si está en el hemisferio este o oeste."
+
+msgid "Enter your current longitude. This is the number of degrees you are from zero meridian as a decimal."
+msgstr "Ingrese su longitud actual. Este es el número de grados desde el meridiano cero como decimal."
+
+msgid "Enter if you are north or south of the equator."
+msgstr "Ingrese si está al norte o al sur del ecuador."
+
+msgid "Additional motor options allow you to enter details from your motor's spec sheet so enigma can work out how long it will take to move the dish from one satellite to another satellite."
+msgstr "Las opciones de motor adicionales le permiten ingresar detalles de la hoja de especificaciones de su motor para que enigma pueda determinar cuánto tiempo tomará mover el plato de un satélite a otro."
+
+msgid "Additional motor options allow you to enter details from your motor's spec sheet so enigma can work out how long it will take to move to another satellite."
+msgstr "Las opciones de motor adicionales le permiten ingresar detalles de la hoja de especificaciones de su motor para que enigma pueda determinar cuánto tiempo tomará moverse a otro satélite."
+
+msgid "If set to 'yes' signal values (SNR, etc) will be calculated from API V3. This is an old API version that has now been superseded."
+msgstr "Si se establece en 'sí', los valores de señal (SNR, etc.) se calcularán a partir de API V3. Esta es una versión antigua de la API que ahora ha sido reemplazada."
+
 #~ msgid "3d mode"
 #~ msgstr "Modo 3D"
 
