@@ -498,25 +498,25 @@ class VIXImageManager(Screen):
 		if retval == 0:
 			if SystemInfo["canMultiBoot"]:
 				print "[ImageManager] slot %s result %s\n" %(self.multibootslot, result)
-				if pathExists("/boot/STARTUP_%s" % self.multibootslot):
-					copyfile("/boot/STARTUP_%s" % self.multibootslot, "/boot/STARTUP")
-					self.session.open(TryQuitMainloop, 2)
-				elif SystemInfo["canMode12"] and pathExists("/boot/STARTUP"):
-					print "[ImageManager - MultiBoot] No boot/STARTUP_%s - created STARTUP" %self.multibootslot
-					model = getMachineBuild()
-					startupFileContents = "boot emmcflash0.kernel%s 'brcm_cma=%s root=/dev/mmcblk0p%s rw rootwait %s_4.boxmode=1'\n" % (slot, SystemInfo["canMode12"][0], slot * 2 + SystemInfo["canMultiBoot"][0], model)
-				elif pathExists("/boot/STARTUP"):		
-					self.session.open(MessageBox, _("Multiboot ERROR! - no STARTUP_%s in /boot - Image may need manual restart." % self.multibootslot), MessageBox.TYPE_INFO, timeout=20)
+				self.container = Console()
+				if pathExists('/tmp/startupmount'):
+					self.ContainterFallback()
 				else:
-					self.session.open(MessageBox, _("Multiboot ERROR! - no STARTUP in /boot -Please check /etc/fstab for correct boot partition."), MessageBox.TYPE_INFO, timeout=20)
+					mkdir('/tmp/startupmount')
+					self.container.ePopen('mount /dev/%s1 /tmp/startupmount' % SystemInfo["canMultiBoot"][2], self.ContainterFallback)
 			else:
 				self.session.open(TryQuitMainloop, 2)
 		else:
 			self.session.openWithCallback(self.restore_infobox.close, MessageBox, _("OFGwrite error (also sent to any debug log):\n%s") % result, MessageBox.TYPE_INFO, timeout=20)
 			print "[ImageManager] OFGWriteResult failed:\n", result
 
-	def ReExit(self):
-		self.session.open(TryQuitMainloop, 2)
+	def ContainterFallback(self, data=None, retval=None, extra_args=None):
+		self.container.killAll()
+		if pathExists("/tmp/startupmount/STARTUP"):
+			copyfile("/tmp/startupmount/STARTUP_%s" % self.multibootslot, "/tmp/startupmount/STARTUP")
+			self.session.open(TryQuitMainloop, 2)
+		else:
+			self.session.open(MessageBox, _("Multiboot ERROR! - no STARTUP in boot partition"), MessageBox.TYPE_INFO, timeout=20)
 
 	def dualBoot(self):
 		rootfs2 = False
