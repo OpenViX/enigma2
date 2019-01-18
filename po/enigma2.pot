@@ -10572,3 +10572,6 @@ msgstr ""
 
 msgid "Autotimer overview"
 msgstr ""
+
+msgid "Audio channel"
+msgstr ""

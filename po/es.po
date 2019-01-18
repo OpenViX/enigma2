@@ -1478,7 +1478,7 @@ msgid "By Team ViX"
 msgstr "Por el equipo ViX"
 
 msgid "Bypass HDMI EDID Check"
-msgstr "Bypass HDMI EDID Comprobar"
+msgstr "Comprobar HDMI EDID Bypass"
 
 msgid "Bytes received:"
 msgstr "Bytes recibidos:"
@@ -12296,6 +12296,9 @@ msgstr "Barra-de-busqueda"
 
 msgid "Autotimer overview"
 msgstr "AutoTimer visión general"
+
+msgid "Audio channel"
+msgstr "Audio canal"
 
 #~ msgid "3d mode"
 #~ msgstr "Modo 3D"
