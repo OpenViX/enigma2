@@ -2872,7 +2872,7 @@ msgid ""
 "This will allow you to mount your windows shares on this device."
 msgstr ""
 "Quieres instalar el cliente de samba también?\n"
-"Esto te permitirá montar tus ventanas compartidas en este dispositivo."
+"Esto te permitirá montar sus ventanas compartidas en este dispositivo."
 
 msgid "Do you want to play DVD in drive?"
 msgstr "¿Quieres ejecutar el DVD en la unidad?"
@@ -4380,16 +4380,8 @@ msgid "Last speed"
 msgstr "Última velocidad"
 
 #, python-format
-msgid ""
-"Last update:\t%s\n"
-"\n"
-msgstr ""
-"Última actualización:\t%s\n"
-"\n"
-
-#, python-format
 msgid "Last update:\t%s\n"
-msgstr "Último update:\t%s\n"
+msgstr "Ultimo update:\t%s\n"
 
 #, python-format
 msgid "Last update: %s"
@@ -7174,16 +7166,16 @@ msgid "Set the date the timer must start."
 msgstr "Establecer la fecha de inicio del temporizador."
 
 msgid "Set the default location for your instant recordings. Press 'OK' to add new locations, select left/right to select an existing location."
-msgstr "Configura la ubicación por defecto de tus grabaciones instantáneas. Pulsa 'OK' para añadir ubicaciones nuevas o izquierda/derecha para escoger una actual."
+msgstr "Configura la ubicación por defecto de sus grabaciones instantáneas. Pulsa 'OK' para añadir ubicaciones nuevas o izquierda/derecha para escoger una actual."
 
 msgid "Set the default location for your recordings. Press 'OK' to add new locations, select left/right to select an existing location."
-msgstr "Configura la ubicación por defecto de tus grabaciones. Pulsa 'OK' para añadir ubicaciones nuevas o izquierda/derecha para escoger una actual."
+msgstr "Configura la ubicación por defecto de sus grabaciones. Pulsa 'OK' para añadir ubicaciones nuevas o izquierda/derecha para escoger una actual."
 
 msgid "Set the default location for your timers. Press 'OK' to add new locations, select left/right to select an existing location."
-msgstr "Configura la ubicación por defecto de tus temporizadores. Pulsa 'OK' para añadir ubicaciones nuevas o izquierda/derecha para escoger una actual."
+msgstr "Configura la ubicación por defecto de sus temporizadores. Pulsa 'OK' para añadir ubicaciones nuevas o izquierda/derecha para escoger una actual."
 
 msgid "Set the default location for your timeshift-files. Press 'OK' to add new locations, select left/right to select an existing location."
-msgstr "Configura la ubicación por defecto de tus archivos Timeshift. Pulsa 'OK' para añadir ubicaciones nuevas o izquierda/derecha para escoger una actual."
+msgstr "Configura la ubicación por defecto de sus archivos Timeshift. Pulsa 'OK' para añadir ubicaciones nuevas o izquierda/derecha para escoger una actual."
 
 msgid "Set the default sorting method."
 msgstr "Configura el método de clasificación por defecto."
@@ -8159,22 +8151,22 @@ msgid "Subtitle language selection 4"
 msgstr "Selección de 4º idioma de subtítulos"
 
 msgid "Subtitle position"
-msgstr "Posición de subtítulos"
+msgstr "Posición de Subtítulo"
 
 msgid "Subtitle selection"
-msgstr "Selección de subtítulo"
+msgstr "Selección de Subtítulo"
 
 msgid "Subtitle selection..."
-msgstr "Selección de subtítulos..."
+msgstr "Selección de Subtítulo..."
 
 msgid "Subtitle settings"
-msgstr "Ajustes de subtítulos"
+msgstr "Ajustes de Subtítulo"
 
 msgid "Subtitles"
 msgstr "Subtítulos"
 
 msgid "Subtitles settings"
-msgstr "Ajustes de subtítulos"
+msgstr "Ajustes de Subtítulos"
 
 msgid "Sun"
 msgstr "Dom"
@@ -12244,8 +12236,8 @@ msgstr "Tipo de LNB/dispositivo"
 msgid "FBC SCR (Unicable or JESS)"
 msgstr "FBC SCR (Unicable o JESS)"
 
-msgid "SCR (Unicable/JESS) type"
-msgstr "Tipo SCR (Unicable/JESS)"
+msgid "SCR (Unicable/JESS)"
+msgstr "SCR (Unicable/JESS)"
 
 msgid "Model"
 msgstr "Modelo"
@@ -12296,7 +12288,7 @@ msgid "Toggle new text inserts before or overwrites existing text"
 msgstr "Alternar nuevo texto inserta antes o sobrescribe texto existente"
 
 msgid "Seekbar"
-msgstr "Barra-de-busqueda"
+msgstr "Barrabusqueda"
 
 msgid "Autotimer overview"
 msgstr "AutoTimer visión general"
@@ -12315,6 +12307,13 @@ msgstr "E2 (re)inicios:\t%s\n"
 #, python-format
 msgid "Processor temp:\t%s"
 msgstr "Procesador temperatura:\t%s"
+
+#, python-format
+msgid "Skin:\t%s"
+msgstr "Skin:\t%s"
+
+msgid "type"
+msgstr "tipo"
 
 #~ msgid "3d mode"
 #~ msgstr "Modo 3D"

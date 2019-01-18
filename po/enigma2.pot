@@ -10525,7 +10525,7 @@ msgstr ""
 msgid "FBC SCR (Unicable or JESS)"
 msgstr ""
 
-msgid "SCR (Unicable/JESS) type"
+msgid "SCR (Unicable/JESS)"
 msgstr ""
 
 msgid "Model"
@@ -10590,4 +10590,11 @@ msgstr ""
 
 #, python-format
 msgid "Processor temp:\t%s"
+msgstr ""
+
+#, python-format
+msgid "Skin:\t%s"
+msgstr ""
+
+msgid "type"
 msgstr ""
