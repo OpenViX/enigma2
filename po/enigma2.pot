@@ -1570,6 +1570,9 @@ msgstr ""
 msgid "Current status:"
 msgstr ""
 
+msgid "Current Status:"
+msgstr ""
+
 msgid "Current device: "
 msgstr ""
 
