@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <regex>
 #include <cctype>
 #include <climits>
 #include <string>
@@ -460,13 +461,13 @@ std::string convertDVBUTF8(const unsigned char *data, int len, int table, int ts
 			if (table != 11)
 				table = data[i] + 4;
 			++i;
-			// eDebug("[convertDVBUTF8] (1..11)text encoded in ISO-8859-%d", table);
+			eLog(6, "[convertDVBUTF8] (1..11)text encoded in ISO-8859-%d", table);
 			break;
 		case ISO8859_xx:
 		{
 			int n = data[++i] << 8;
 			n |= (data[++i]);
-			// eDebug("[convertDVBUTF8] (0x10)text encoded in ISO-8859-%d", n);
+			eLog(6, "[convertDVBUTF8] (0x10)text encoded in ISO-8859-%d", n);
 			++i;
 			switch(n)
 			{
@@ -536,7 +537,7 @@ std::string convertDVBUTF8(const unsigned char *data, int len, int table, int ts
 	bool useTwoCharMapping = !table || (tsidonid && encodingHandler.getTransponderUseTwoCharMapping(tsidonid));
 
 	if (useTwoCharMapping && table == 5) { // i hope this dont break other transponders which realy use ISO8859-5 and two char byte mapping...
-//		eDebug("[convertDVBUTF8] Cyfra / Cyfrowy Polsat HACK... override given ISO8859-5 with ISO6937");
+		eLog(6, "[convertDVBUTF8] Cyfra / Cyfrowy Polsat HACK... override given ISO8859-5 with ISO6937");
 		table = 0;
 	}
 	else if ( table == -1 )
@@ -630,14 +631,14 @@ std::string convertDVBUTF8(const unsigned char *data, int len, int table, int ts
 	if (pconvertedLen)
 		*pconvertedLen = convertedLen;
 
-	//if (convertedLen < len)
-	//	eDebug("[convertDVBUTF8] %d chars converted, and %d chars left..", convertedLen, len-convertedLen);
-	//eDebug("[convertDVBUTF8] table=0x%02X twochar=%d output:%s\n", table, useTwoCharMapping, output.c_str());
+	if (convertedLen < len)
+		eLog(6, "[convertDVBUTF8] %d chars converted, and %d chars left..", convertedLen, len-convertedLen);
+	eLog(6, "[convertDVBUTF8] table=0x%02X twochar=%d output:%s\n", table, useTwoCharMapping, output.c_str());
 
-	//eDebug("[convertDVBUTF8] table=0x%02X tsid:onid=0x%X:0x%X data[0..14]=%s   output:%s\n",
-	//	table, (unsigned int)tsidonid >> 16, tsidonid & 0xFFFFU,
-	//	string_to_hex(std::string((char*)data, len < 15 ? len : 15)).c_str(),
-	//	output.c_str());
+	eLog(6, "[convertDVBUTF8] table=0x%02X tsid:onid=0x%X:0x%X data[0..14]=%s   output:%s\n",
+		table, (unsigned int)tsidonid >> 16, tsidonid & 0xFFFFU,
+		string_to_hex(std::string((char*)data, len < 15 ? len : 15)).c_str(),
+		output.c_str());
 
 	return output;
 }
@@ -920,4 +921,12 @@ std::string string_to_hex(const std::string& input)
         output.push_back(lut[c & 15]);
     }
     return output;
+}
+
+std::string strip_non_graph(std::string s)
+{
+	s = std::regex_replace(s, std::regex("[[^:graph:]]"), " ");
+	s = std::regex_replace(s, std::regex("\\s{2,}"), " ");
+	s = std::regex_replace(s, std::regex("^\\s+|\\s+$"), "");
+	return s;
 }
