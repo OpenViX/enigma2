@@ -747,7 +747,7 @@ msgid "Activate MAC address configuration"
 msgstr "Activar la configuración de la dirección MAC"
 
 msgid "Activate Picture in Picture"
-msgstr "Activar Picture in Picture"
+msgstr "Activar Pip"
 
 msgid "Activate current configuration"
 msgstr "Activar configuración actual"
@@ -9019,7 +9019,7 @@ msgstr "Conmutador LCD LiveTV"
 msgid "Toggle PIP-ZAP"
 msgstr "Conmutador PIP-ZAP"
 
-msgid "Toggle Picture In Graphics"
+msgid "Toggle picture In graphics"
 msgstr "Alternar imagen en gráficos"
 
 msgid "Toggle a cut mark at the current position"
@@ -12240,8 +12240,8 @@ msgstr "Tipo de LNB/dispositivo"
 msgid "FBC SCR (Unicable or JESS)"
 msgstr "FBC SCR (Unicable o JESS)"
 
-msgid "SCR (Unicable or JESS) type"
-msgstr "Tipo SCR (Unicable o JESS)"
+msgid "SCR (Unicable/JESS) type"
+msgstr "Tipo SCR (Unicable/JESS)"
 
 msgid "Model"
 msgstr "Modelo"
@@ -12270,8 +12270,32 @@ msgstr "Canales"
 msgid "Key"
 msgstr "Tecla"
 
+msgid "FTA TV"
+msgstr "TV FTA"
+
 msgid "Encrypted TV"
 msgstr "TV Encriptado"
+
+msgid "Add an autotimer for current event"
+msgstr "Agregar un AutoTimer para el evento actual"
+
+msgid "Show Autotimer list"
+msgstr "Mostrar lista AutoTimer"
+
+msgid "Show timer list"
+msgstr "Mostrar lista Temporizadores"
+
+msgid "Sort EPG list"
+msgstr "Ordenar EPG lista"
+
+msgid "Toggle new text inserts before or overwrites existing text"
+msgstr "Alternar nuevo texto inserta antes o sobrescribe texto existente"
+
+msgid "Seekbar"
+msgstr "Barra-de-busqueda"
+
+msgid "Autotimer overview"
+msgstr "AutoTimer visión general"
 
 #~ msgid "3d mode"
 #~ msgstr "Modo 3D"

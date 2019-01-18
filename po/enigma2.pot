@@ -10525,7 +10525,7 @@ msgstr ""
 msgid "FBC SCR (Unicable or JESS)"
 msgstr ""
 
-msgid "SCR (Unicable or JESS) type"
+msgid "SCR (Unicable/JESS) type"
 msgstr ""
 
 msgid "Model"
@@ -10555,5 +10555,20 @@ msgstr ""
 msgid "Key"
 msgstr ""
 
+msgid "FTA TV"
+msgstr ""
+
 msgid "Encrypted TV"
+msgstr ""
+
+msgid "Add an autotimer for current event"
+msgstr ""
+
+msgid "Toggle new text inserts before or overwrites existing text"
+msgstr ""
+
+msgid "Seekbar"
+msgstr ""
+
+msgid "Autotimer overview"
 msgstr ""
