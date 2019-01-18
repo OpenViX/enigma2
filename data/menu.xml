@@ -96,7 +96,7 @@ self.session.openWithCallback(msgClosed, EpgDeleteMsg)
 					<item level="2" text="OSD position" entryID="osdsetup" requires="OsdSetup"><screen module="UserInterfacePositioner" screen="UserInterfacePositioner"/></item>
 				</menu>
 				<!-- Menu / Setup / User Interface / Front Panel -->
-				<menu weight="4" level="0" text="Panel frontal display" entryID="display_selection" requires="Display">
+				<menu weight="4" level="0" text="Front panel display" entryID="display_selection" requires="Display">
 					<id val="display"/>
 					<item weight="1" level="0" text="Settings" entryID="display_setup"><setup id="display"/></item>
 					<item weight="2" level="0" text="Skin" entryID="lcd_skin_setup"><screen module="SkinSelector" screen="LcdSkinSelector"/></item>
@@ -122,7 +122,7 @@ self.session.openWithCallback(msgClosed, EpgDeleteMsg)
 				<!-- Menu / Setup / Network / Mounts -->
 				<item weight="2" level="1" text="Network mounts" entryID="netmounts_setup"><screen module="NetworkSetup" screen="NetworkMountsMenu"/></item>
 				<!-- Menu / Setup / Network / Utilities -->
-				<menu weight="3" level="0" text="Utilidades" entryID="services_menu">
+				<menu weight="3" level="0" text="Utilities" entryID="services_menu">
 					<id val="netservices"/>
 					<item level="2" text="AFP" entryID="netafp_setup"><screen module="NetworkSetup" screen="NetworkAfp"/></item>
 					<item level="2" text="FTP" entryID="netftp_setup"><screen module="NetworkSetup" screen="NetworkFtp"/></item>

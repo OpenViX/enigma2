@@ -12321,6 +12321,15 @@ msgstr "Lenguaje Automático"
 msgid "Miscellaneous"
 msgstr "Prioridad sintonizador"
 
+msgid "Front panel display"
+msgstr "Panel Frontal display"
+
+msgid "Utilities"
+msgstr "Utilidades"
+
+msgid "LED display panel"
+msgstr "Panel LED display"
+
 #~ msgid "3d mode"
 #~ msgstr "Modo 3D"
 

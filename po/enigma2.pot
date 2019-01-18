@@ -10604,3 +10604,12 @@ msgstr ""
 
 msgid "Miscellaneous"
 msgstr ""
+
+msgid "Front panel display"
+msgstr ""
+
+msgid "Utilities"
+msgstr ""
+
+msgid "LED display panel"
+msgstr ""
