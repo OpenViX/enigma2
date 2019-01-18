@@ -4388,6 +4388,10 @@ msgstr ""
 "\n"
 
 #, python-format
+msgid "Last update:\t%s\n"
+msgstr "Último update:\t%s\n"
+
+#, python-format
 msgid "Last update: %s"
 msgstr "Última actualización: %s"
 
@@ -12299,6 +12303,18 @@ msgstr "AutoTimer visión general"
 
 msgid "Audio channel"
 msgstr "Audio canal"
+
+#, python-format
+msgid "Image:\t%s.%s%s (%s)\n"
+msgstr "Imagen:\t%s.%s%s (%s)\n"
+
+#, python-format
+msgid "E2 (re)starts:\t%s\n"
+msgstr "E2 (re)inicios:\t%s\n"
+
+#, python-format
+msgid "Processor temp:\t%s"
+msgstr "Procesador temperatura:\t%s"
 
 #~ msgid "3d mode"
 #~ msgstr "Modo 3D"

@@ -10575,3 +10575,19 @@ msgstr ""
 
 msgid "Audio channel"
 msgstr ""
+
+#, python-format
+msgid "Last update:\t%s\n"
+msgstr ""
+
+#, python-format
+msgid "Image:\t%s.%s%s (%s)\n"
+msgstr ""
+
+#, python-format
+msgid "E2 (re)starts:\t%s\n"
+msgstr ""
+
+#, python-format
+msgid "Processor temp:\t%s"
+msgstr ""
