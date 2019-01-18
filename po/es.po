@@ -7347,7 +7347,7 @@ msgid "Show Log"
 msgstr "Ver historial"
 
 msgid "Show Log Manager in extensions list ?"
-msgstr "Mostrar Log Manager en la lista de extensiones ?"
+msgstr "Mostrar Administrador de historiales en la lista de extensiones ?"
 
 msgid "Show Media playback Remaining/Elapsed as"
 msgstr "Ver reproducción de medios restante/transcurrida como"
