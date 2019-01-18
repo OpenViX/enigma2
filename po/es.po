@@ -4340,8 +4340,8 @@ msgstr "Conexión de red local"
 msgid "LED Deep Standby"
 msgstr "LED en hibernación"
 
-msgid "LED Display Panel"
-msgstr "LED Display Panel"
+msgid "LED display panel"
+msgstr "Panel LED display"
 
 msgid "LED Normal"
 msgstr "LED normal"
@@ -12329,9 +12329,6 @@ msgstr "Panel Frontal display"
 
 msgid "Utilities"
 msgstr "Utilidades"
-
-msgid "LED display panel"
-msgstr "Panel LED display"
 
 msgid "Read Userdata from oscam.conf"
 msgstr "Lea los datos de usuario de oscam.conf"
