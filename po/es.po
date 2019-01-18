@@ -5717,7 +5717,7 @@ msgid "Please enter the name of the new directory"
 msgstr "Por favor ingrese el nombre del nuevo directorio"
 
 msgid "Please enter the new PIN code"
-msgstr "Por favor introduce el nuevo PIN código"
+msgstr "Por favor introduce el código PIN nuevo"
 
 msgid "Please enter the old PIN code"
 msgstr "Introduce el PIN anterior"
