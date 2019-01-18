@@ -12318,6 +12318,9 @@ msgstr "tipo"
 msgid "Automatic language"
 msgstr "Lenguaje Automático"
 
+msgid "Miscellaneous"
+msgstr "Prioridad sintonizador"
+
 #~ msgid "3d mode"
 #~ msgstr "Modo 3D"
 

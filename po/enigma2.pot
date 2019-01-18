@@ -10601,3 +10601,6 @@ msgstr ""
 
 msgid "Automatic language"
 msgstr ""
+
+msgid "Miscellaneous"
+msgstr ""
