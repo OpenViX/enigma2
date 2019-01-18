@@ -12315,6 +12315,9 @@ msgstr "Skin:\t%s"
 msgid "type"
 msgstr "tipo"
 
+msgid "Automatic language"
+msgstr "Lenguaje Automático"
+
 #~ msgid "3d mode"
 #~ msgstr "Modo 3D"
 

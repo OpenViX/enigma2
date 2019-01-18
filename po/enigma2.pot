@@ -10598,3 +10598,6 @@ msgstr ""
 
 msgid "type"
 msgstr ""
+
+msgid "Automatic language"
+msgstr ""
