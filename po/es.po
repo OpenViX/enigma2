@@ -8124,7 +8124,7 @@ msgstr "Subcanales"
 msgid "Subtitle"
 msgstr "Subtitulo"
 
-msgid "Subtitle Quickmenu"
+msgid "Subtitle quickmenu"
 msgstr "Menú rápido de subtítulo"
 
 msgid "Subtitle alignment"
