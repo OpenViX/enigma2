@@ -12331,7 +12331,7 @@ msgid "Read Userdata from oscam.conf"
 msgstr "Lea los datos de usuario de oscam.conf"
 
 msgid "Stop play TV"
-msgstr ""
+msgstr "Parar reproductor TV"
 
 #~ msgid "3d mode"
 #~ msgstr "Modo 3D"
