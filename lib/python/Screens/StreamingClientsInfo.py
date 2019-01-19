@@ -1,71 +1,103 @@
 from Screen import Screen
+from Screens.MessageBox import MessageBox
+from Components.MenuList import MenuList
 from Components.ActionMap import ActionMap
-from Components.Button import Button
-from Components.ScrollLabel import ScrollLabel
-from Components.Converter.ClientsStreaming import ClientsStreaming
-from Components.config import config
+from Components.Sources.StreamService import StreamServiceList
 from Components.Sources.StaticText import StaticText
-from enigma import eTimer, eStreamServer
-import skin
-
+from Components.Label import Label
+from enigma import eStreamServer
+from ServiceReference import ServiceReference
+import socket
+try:
+	from Plugins.Extensions.OpenWebif.controllers.stream import streamList
+except:
+	streamList = []
 
 class StreamingClientsInfo(Screen):
-	def __init__(self, session, menu_path = ""):
+	def __init__(self, session):
 		Screen.__init__(self, session)
-		self.timer = eTimer()
-		screentitle = _("Streaming clients info")
-		menu_path += screentitle
-		if config.usage.show_menupath.value == 'large':
-			title = menu_path
-			self["menu_path_compressed"] = StaticText("")
-		elif config.usage.show_menupath.value == 'small':
-			title = screentitle
-			self["menu_path_compressed"] = StaticText(menu_path + " >" if not menu_path.endswith(' / ') else menu_path[:-3] + " >" or "")
+		self.streamServer = eStreamServer.getInstance()
+		self.clients = []
+		self["menu"] = MenuList(self.clients)
+		self["key_red"] = StaticText(_("Close"))
+		self["key_green"] = StaticText("")
+		self["key_yellow"] = StaticText("")
+		self["info"] = Label()
+		self.updateClients()
+		self["actions"] = ActionMap(["ColorActions", "SetupActions"],
+		{
+			"cancel": self.close,
+			"ok": self.stopCurrentStream,
+			"red": self.close,
+			"green": self.stopAllStreams,
+			"yellow": self.stopCurrentStream
+		})
+
+	def updateClients(self):
+		self["key_green"].setText("")
+		self["key_yellow"].setText("")
+		self.setTitle(_("Streaming clients info"))
+		self.clients = []
+		if self.streamServer:
+			for x in self.streamServer.getConnectedClients():
+				service_name = ServiceReference(x[1]).getServiceName() or "(unknown service)"
+				ip = x[0]
+				if int(x[2]) == 0:
+					strtype = "S"
+				else:
+					strtype = "T"
+				try:
+					raw = socket.gethostbyaddr(ip)
+					ip = raw[0]
+				except:
+					pass
+				info = ("%s %-8s %s") % (strtype, ip, service_name)
+				self.clients.append((info, (x[0], x[1])))
+		if StreamServiceList and streamList:
+			for x in StreamServiceList:
+				ip = "ip n/a"
+				service_name = "(unknown service)"
+				for stream in streamList:
+					if hasattr(stream, 'getService') and stream.getService() and stream.getService().__deref__() == x:
+						service_name = ServiceReference(stream.ref.toString()).getServiceName()
+						ip = stream.clientIP or ip
+			info = ("T %s %s %s") % (ip, service_name, _("(VU+ type)"))
+			self.clients.append((info,(-1, x)))
+		self["menu"].setList(self.clients)
+		if self.clients:
+			self["info"].setText("")
+			self["key_green"].setText(_("Stop all streams"))
+			self["key_yellow"].setText(_("Stop current stream"))
 		else:
-			title = screentitle
-			self["menu_path_compressed"] = StaticText("")
-		Screen.setTitle(self, title)
+			self["info"].setText(_("No stream clients"))
 
-		self["ScrollLabel"] = ScrollLabel()
+	def stopCurrentStream(self):
+		self.updateClients()
+		if self.clients:
+			client = self["menu"].l.getCurrentSelection()
+			if client:
+				self.session.openWithCallback(self.stopCurrentStreamCallback, MessageBox, client[0] +" \n\n" + _("Stop current stream") + "?", MessageBox.TYPE_YESNO)
 
-		self["key_red"] = Button(_("Close"))
-		self["key_blue"] = StaticText()
-		self["actions"] = ActionMap(["ColorActions", "SetupActions", "DirectionActions"],
-			{
-				"cancel": self.exit,
-				"ok": self.exit,
-				"red": self.exit,
-				"blue": self.stopStreams,
-				"up": self["ScrollLabel"].pageUp,
-				"down": self["ScrollLabel"].pageDown
-			})
+	def stopCurrentStreamCallback(self, answer):
+		if answer:
+			client = self["menu"].l.getCurrentSelection()
+			if client and client[1][0] != -1 and self.streamServer:
+				for x in self.streamServer.getConnectedClients():
+					if client[1][0] == x[0] and client[1][1] == x[1]:
+						if not self.streamServer.stopStreamClient(client[1][0], client[1][1]):
+							self.session.open(MessageBox,  client[0] +" \n\n" + _("Error stop stream!"), MessageBox.TYPE_WARNING)
+				self.updateClients()
 
-		self.onLayoutFinish.append(self.start)
+	def stopAllStreams(self):
+		self.updateClients()
+		if self.clients:
+			self.session.openWithCallback(self.stopAllStreamsCallback, MessageBox, _("Stop all streams") + "?", MessageBox.TYPE_YESNO)
 
-	def exit(self):
-		self.stop()
-		self.close()
-
-	def start(self):
-		if self.update_info not in self.timer.callback:
-			self.timer.callback.append(self.update_info)
-		self.timer.startLongTimer(0)
-
-	def stop(self):
-		if self.update_info in self.timer.callback:
-			self.timer.callback.remove(self.update_info)
-		self.timer.stop()
-
-	def update_info(self):
-		clients = ClientsStreaming("INFO_RESOLVE")
-		text = clients.getText()
-		self["ScrollLabel"].setText(text or _("No clients streaming"))
-		self["key_blue"].setText(text and _("Stop Streams") or "")
-		self.timer.startLongTimer(5)
-
-	def stopStreams(self):
-		streamServer = eStreamServer.getInstance()
-		if not streamServer:
-			return
-		for x in streamServer.getConnectedClients():
-			streamServer.stopStream()
+	def stopAllStreamsCallback(self, answer):
+		if answer:
+			if self.streamServer:
+				for x in self.streamServer.getConnectedClients():
+					self.streamServer.stopStream()
+			self.updateClients()
+			if not self.clients:
+				self.close()
