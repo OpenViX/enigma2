@@ -2440,7 +2440,7 @@ msgstr ""
 msgid "Full transparency"
 msgstr ""
 
-msgid "Fullview resolution"
+msgid "Full view resolution"
 msgstr ""
 
 msgid "GB"
@@ -10615,9 +10615,6 @@ msgid "Utilities"
 msgstr ""
 
 msgid "LED display panel"
-msgstr ""
-
-msgid "Full view resolution"
 msgstr ""
 
 msgid "Stop play TV"
