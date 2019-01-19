@@ -4502,7 +4502,7 @@ msgid "Load playlist"
 msgstr "Cargar lista de reproducción"
 
 msgid "Load-save-delete"
-msgstr "Cargar-Guardar-Borrar"
+msgstr "Guardar-Cargar-Borrar"
 
 msgid "Load unlinked userbouquets"
 msgstr "Cargar userbouquets no vinculados"
