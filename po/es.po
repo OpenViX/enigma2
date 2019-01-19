@@ -8124,43 +8124,43 @@ msgid "Subtitle"
 msgstr "Subtitulo"
 
 msgid "Subtitle quickmenu"
-msgstr "Menú rápido de Subtítulos"
+msgstr "Menú rápido de subtítulo"
 
 msgid "Subtitle alignment"
 msgstr "Alineación de subtítulos"
 
 msgid "Subtitle border width"
-msgstr "Ancho del borde de subtítulos"
+msgstr "Ancho de borde de subtítulos"
 
 msgid "Subtitle delay when timing is bad"
-msgstr "Retraso de subtítulos con mala sincronización"
+msgstr "Retraso de subtítulos con sincronización mala"
 
 msgid "Subtitle delay when timing lacks"
-msgstr "Retraso de subtítulos cuando falta tiempo"
+msgstr "Retraso de subtítulos sin temporización"
 
 msgid "Subtitle font size"
 msgstr "Tamaño de fuente de subtítulos"
 
 msgid "Subtitle language selection 1"
-msgstr "Selección del 1º idioma de subtítulos"
+msgstr "Selección de 1º idioma de subtítulos"
 
 msgid "Subtitle language selection 2"
-msgstr "Selección del 2º idioma de subtítulos"
+msgstr "Selección de 2º idioma de subtítulos"
 
 msgid "Subtitle language selection 3"
-msgstr "Selección del 3º idioma de subtítulos"
+msgstr "Selección de 3º idioma de subtítulos"
 
 msgid "Subtitle language selection 4"
-msgstr "Selección del 4º idioma de subtítulos"
+msgstr "Selección de 4º idioma de subtítulos"
 
 msgid "Subtitle position"
-msgstr "Posición de subtítulos"
+msgstr "Posición de Subtítulo"
 
 msgid "Subtitle selection"
-msgstr "Selección de subtítulos"
+msgstr "Selección de Subtítulo"
 
 msgid "Subtitle selection..."
-msgstr "Selección de subtítulos..."
+msgstr "Selección de Subtítulo..."
 
 msgid "Subtitle settings"
 msgstr "Ajustes de Subtítulo"
