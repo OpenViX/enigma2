@@ -167,10 +167,8 @@ class RecordTimerEntry(timer.TimerEntry, object):
 
 		if serviceref and serviceref.isRecordable():
 			self.service_ref = serviceref
-		else:
-			self.service_ref = ServiceReference(None)
+
 		self.eit = eit
-		self.dontSave = False
 		self.name = name
 		self.description = description
 		self.disabled = disabled
@@ -235,8 +233,6 @@ class RecordTimerEntry(timer.TimerEntry, object):
 		self.isAutoTimer = isAutoTimer
 		self.wasInStandby = False
 
-		self.log_entries = []
-		self.flags = set()
 		self.resetState()
 
 	def __repr__(self):
