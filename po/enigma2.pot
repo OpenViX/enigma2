@@ -8186,6 +8186,9 @@ msgstr ""
 msgid "Load/Save"
 msgstr ""
 
+msgid "Load-save-delete"
+msgstr ""
+
 msgid "Logs"
 msgstr ""
 

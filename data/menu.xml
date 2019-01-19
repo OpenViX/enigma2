@@ -34,16 +34,13 @@
 				<item weight="30" text="Manual scan" entryID="manual_scan" conditional="nimmanager.somethingConnected()" requires="ClientModeDisabled"><screen module="ScanSetup"/></item>
 				<item weight="100" text="Enable fallback remote receiver" entryID="fallback_mode" requires="ClientModeDisabled"><screen  module="FallbackTunerSetup" screen="FallbackTunerSetup"/></item>
 			</menu>
-			<!-- Menu / Setup / EPG -->
+		<!-- Menu / Setup / EPG -->
 			<menu weight="3" text="EPG" entryID="epg_menu">
 				<id val="epg"/>
 				<item level="0" entryID="epg_setup"><setup id="epgsettings"/></item>
-				<item level="2" entryID="setup_epgmulti"><setup id="epgmulti"/></item>
-				<item level="2" entryID="setup_epgenhanced"><setup id="epgenhanced"/></item>
-				<item level="2" entryID="setup_epginfobar"><setup id="epginfobar"/></item>
-				<item level="2" entryID="setup_epginfobargraphical"><setup id="epginfobargraphical"/></item>
-				<item level="2" entryID="setup_epggraphical"><setup id="epggraphical"/></item>
-				<item level="2" entryID="saveepgcache" text="Save EPG">
+				<menu level="2" text="Load-save-delete" entryID="epgloadsave_menu">
+					<id val="epgloadsave_menu"/>
+					<item level="0" entryID="saveepgcache" text="Save EPG">
 <code>
 from Components.EpgLoadSave import EpgSaveMsg
 def msgClosed(ret):
@@ -53,8 +50,8 @@ def msgClosed(ret):
 		epgcache.save()
 self.session.openWithCallback(msgClosed, EpgSaveMsg)
 </code>
-				</item>
-				<item level="2" entryID="loadepgcache" text="Load EPG">
+					</item>
+					<item level="0" entryID="loadepgcache" text="Load EPG">
 <code>
 from Components.EpgLoadSave import EpgLoadMsg
 def msgClosed(ret):
@@ -64,8 +61,8 @@ def msgClosed(ret):
 		epgcache.load()
 self.session.openWithCallback(msgClosed, EpgLoadMsg)
 </code>
-				</item>
-				<item level="2" entryID="deleteepgcache" text="Delete EPG">
+					</item>
+					<item level="0" entryID="deleteepgcache" text="Delete EPG">
 <code>
 from Components.EpgLoadSave import EpgDeleteMsg
 def msgClosed(ret):
@@ -79,9 +76,15 @@ def msgClosed(ret):
 		epgcache.flushEPG()
 self.session.openWithCallback(msgClosed, EpgDeleteMsg)
 </code>
-				</item>				
+					</item>
+				</menu>
+				<item level="2" entryID="setup_epgmulti"><setup id="epgmulti"/></item>
+				<item level="2" entryID="setup_epgenhanced"><setup id="epgenhanced"/></item>
+				<item level="2" entryID="setup_epginfobar"><setup id="epginfobar"/></item>
+				<item level="2" entryID="setup_epginfobargraphical"><setup id="epginfobargraphical"/></item>
+				<item level="2" entryID="setup_epggraphical"><setup id="epggraphical"/></item>
 			</menu>
-			<!-- Menu / Setup / User Interface -->
+<!-- Menu / Setup / User Interface -->
 			<menu weight="4" text="User interface" entryID="osd_setup" requires="OsdMenu">
 				<id val="osd_menu"/>
 				<!-- Menu / Setup / User Interface / Settings -->

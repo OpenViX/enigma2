@@ -4501,11 +4501,11 @@ msgstr "Cargar EPG"
 msgid "Load playlist"
 msgstr "Cargar lista de reproducción"
 
+msgid "Load-save-delete"
+msgstr "Cargar-Guardar-Borrar"
+
 msgid "Load unlinked userbouquets"
 msgstr "Cargar userbouquets no vinculados"
-
-msgid "Load-Save-Delete"
-msgstr "Cargar-Guardar-Borrar"
 
 msgid "Local box"
 msgstr "Receptor local"
