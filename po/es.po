@@ -3630,8 +3630,8 @@ msgstr "Viernes"
 msgid "From :"
 msgstr "Desde:"
 
-msgid "Front Display Panel"
-msgstr "Panel frontal Display"
+msgid "Front panel display"
+msgstr "Panel Frontal Display"
 
 #, python-format
 msgid "Frontprocessor version: %d"
@@ -3643,7 +3643,7 @@ msgstr "Pantalla completa"
 msgid "Full transparency"
 msgstr "Transparencia completa"
 
-msgid "Fulview resulution"
+msgid "Full view resolution"
 msgstr "Resolución vista completa"
 
 msgid "GB"
@@ -12324,14 +12324,14 @@ msgstr "Lenguaje Automático"
 msgid "Miscellaneous"
 msgstr "Prioridad sintonizador"
 
-msgid "Front panel display"
-msgstr "Panel Frontal display"
-
 msgid "Utilities"
 msgstr "Utilidades"
 
 msgid "Read Userdata from oscam.conf"
 msgstr "Lea los datos de usuario de oscam.conf"
+
+msgid "Stop play TV"
+msgstr ""
 
 #~ msgid "3d mode"
 #~ msgstr "Modo 3D"
