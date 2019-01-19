@@ -8151,7 +8151,7 @@ msgid "Subtitle language selection 3"
 msgstr "Selección idioma 3 de subtítulos"
 
 msgid "Subtitle language selection 4"
-msgstr "Selección de idioma 4 de subtítulos"
+msgstr "Selección idioma 4 de subtítulos"
 
 msgid "Subtitle position"
 msgstr "Posición de Subtítulo"
