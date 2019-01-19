@@ -15,8 +15,8 @@
 		"exec"s code-->
 
 <!-- Menu / Setup -->
-		<menu weight="1" text="Setup" flushConfigOnClose="1" entryID="setup_selection" >
-			<id val="setup"/>
+		    <menu weight="1" text="Setup" flushConfigOnClose="1" entryID="setup_selection" >
+			    <id val="setup"/>
 			<!-- Menu / Setup / AV -->
 			<menu weight="1" level="0" text="Audio &amp; video" entryID="av_setup">
 				<id val="av"/>
