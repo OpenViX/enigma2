@@ -10622,3 +10622,7 @@ msgstr ""
 
 msgid "Stop play TV"
 msgstr ""
+
+#, python-format
+msgid "Do you really want to stop the current recording and delete timer %s?"
+msgstr ""

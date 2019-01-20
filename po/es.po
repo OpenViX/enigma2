@@ -12333,6 +12333,10 @@ msgstr "Lea los datos de usuario de oscam.conf"
 msgid "Stop play TV"
 msgstr "Parar reproductor TV"
 
+#, python-format
+msgid "Do you really want to stop the current recording and delete timer %s?"
+msgstr "Realmente quieres detener la grabación actual y borrar el temporizador %s?"
+
 #~ msgid "3d mode"
 #~ msgstr "Modo 3D"
 
