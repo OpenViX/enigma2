@@ -12344,6 +12344,18 @@ msgstr ""
 "Necesita reiniciar Enigma2 para cambiar de modo\n"
 "Quieres reiniciar la GUI ahora?"
 
+msgid "Connection using the supplied FTP parameters failed. Please recheck the details and try again."
+msgstr "Falló la conexión utilizando los parámetros FTP suministrados. Por favor, vuelva a comprobar los detalles y vuelva a intentarlo."
+
+msgid "Connected transcoding, limit - no PiP!"
+msgstr "Transcodificación conectada, límite - no PiP!"
+
+msgid "Constellation & FFT mode"
+msgstr "Constelación y modo FFt"
+
+msgid "Consult your SCR device spec sheet for this information."
+msgstr "Consulte la hoja de especificaciones de su dispositivo SCR para obtener esta información."
+
 #~ msgid "3d mode"
 #~ msgstr "Modo 3D"
 
