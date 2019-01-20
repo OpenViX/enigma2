@@ -516,7 +516,7 @@ class VIXImageManager(Screen):
 			copyfile("/tmp/startupmount/STARTUP_%s" % self.multibootslot, "/tmp/startupmount/STARTUP")
 			self.session.open(TryQuitMainloop, 2)
 		else:
-			self.session.open(MessageBox, _("Multiboot ERROR! - no STARTUP in boot partition"), MessageBox.TYPE_INFO, timeout=20)
+			self.session.open(MessageBox, _("Multiboot ERROR! - no STARTUP in boot partition."), MessageBox.TYPE_INFO, timeout=20)
 
 	def dualBoot(self):
 		rootfs2 = False
