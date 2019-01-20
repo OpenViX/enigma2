@@ -1,12 +1,15 @@
-from Screens.Screen import Screen
-from Screens.Standby import TryQuitMainloop
-from Screens.MessageBox import MessageBox
+from os import mkdir
+from shutil import copyfile
 from boxbranding import getMachineBuild
 from Components.Sources.StaticText import StaticText
 from Components.ActionMap import ActionMap
 from Components.ChoiceList import ChoiceList, ChoiceEntryComponent
+from Components.Console import Console
 from Components.Label import Label
 from Components.SystemInfo import SystemInfo
+from Screens.Screen import Screen
+from Screens.Standby import TryQuitMainloop
+from Screens.MessageBox import MessageBox
 from Tools.Directories import pathExists
 from Tools.BoundFunction import boundFunction
 from Tools.Multiboot import GetImagelist, GetCurrentImage, GetCurrentImageMode
@@ -98,29 +101,28 @@ class MultiBoot(Screen):
 	def reboot(self):
 		self.currentSelected = self["config"].l.getCurrentSelection()
 		if self.currentSelected[0][1] != "Queued":
-			slot = self.currentSelected[0][1]
+			self.container = Console()
+			if pathExists('/tmp/startupmount'):
+				self.ContainterFallback()
+			else:
+				mkdir('/tmp/startupmount')
+				self.container.ePopen('mount /dev/%s1 /tmp/startupmount' % SystemInfo["canMultiBoot"][2], self.ContainterFallback)
 
+	def ContainterFallback(self, data=None, retval=None, extra_args=None):
+		self.container.killAll()
+		slot = self.currentSelected[0][1]
+		print "[MultiBoot Restart] reboot3 slot:", slot
+		if pathExists("/tmp/startupmount/STARTUP"):
 			if slot < 12:
-				if pathExists("/boot/STARTUP_%s" % slot):
-					import shutil
-					shutil.copyfile("/boot/STARTUP_%s" % slot, "/boot/STARTUP")
-					self.session.open(TryQuitMainloop, 2)
-				elif SystemInfo["canMode12"] and pathExists("/boot/STARTUP"):
-					print "[MultiBoot Restart] No boot/Startup_%s - created Startup slot:" %slot
-					model = getMachineBuild()
-					startupFileContents = "boot emmcflash0.kernel%s 'brcm_cma=%s root=/dev/mmcblk0p%s rw rootwait %s_4.boxmode=1'\n" % (slot, SystemInfo["canMode12"][0], slot * 2 + SystemInfo["canMultiBoot"][0], model)
-					open('/boot/STARTUP', 'w').write(startupFileContents)
-					self.session.open(TryQuitMainloop, 2)
-				elif pathExists("/boot/STARTUP"):		
-					self.session.open(MessageBox, _("Multiboot ERROR! - no STARTUP_%s in /boot - Image may need manual restart" % slot), MessageBox.TYPE_INFO, timeout=20)
-				else:
-					self.session.open(MessageBox, _("Multiboot ERROR! - no STARTUP in /boot -Please check /etc/fstab for correct boot partition"), MessageBox.TYPE_INFO, timeout=20)
+				copyfile("/tmp/startupmount/STARTUP_%s" % self.currentSelected[0][1], "/tmp/startupmount/STARTUP")
 			else:
 				slot -= 12
 				model = getMachineBuild()
 				startupFileContents = "boot emmcflash0.kernel%s 'brcm_cma=%s root=/dev/mmcblk0p%s rw rootwait %s_4.boxmode=12'\n" % (slot, SystemInfo["canMode12"][1], slot * 2 + SystemInfo["canMultiBoot"][0], model)
-				open('/boot/STARTUP', 'w').write(startupFileContents)
-				self.session.open(TryQuitMainloop, 2)
+				open('/tmp/startupmount/STARTUP', 'w').write(startupFileContents)
+			self.session.open(TryQuitMainloop, 2)
+		else:
+			self.session.open(MessageBox, _("Multiboot ERROR! - no STARTUP in boot partition."), MessageBox.TYPE_INFO, timeout=20)
 
 	def selectionChanged(self):
 		currentSelected = self["config"].l.getCurrentSelection()
