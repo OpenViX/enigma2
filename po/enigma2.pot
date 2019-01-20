@@ -10626,3 +10626,8 @@ msgstr ""
 #, python-format
 msgid "Do you really want to stop the current recording and delete timer %s?"
 msgstr ""
+
+msgid ""
+"GUI needs a restart to switch modes\n"
+"Do you want to restart the GUI now?"
+msgstr ""

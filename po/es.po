@@ -12337,6 +12337,13 @@ msgstr "Parar reproductor TV"
 msgid "Do you really want to stop the current recording and delete timer %s?"
 msgstr "Realmente quieres detener la grabación actual y borrar el temporizador %s?"
 
+msgid ""
+"GUI needs a restart to switch modes\n"
+"Do you want to restart the GUI now?"
+msgstr ""
+"Necesita reiniciar Enigma2 para cambiar de modo\n"
+"Quieres reiniciar la GUI ahora?"
+
 #~ msgid "3d mode"
 #~ msgstr "Modo 3D"
 
