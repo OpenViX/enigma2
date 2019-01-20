@@ -122,7 +122,7 @@ class MultiBoot(Screen):
 				open('/tmp/startupmount/STARTUP', 'w').write(startupFileContents)
 			self.session.open(TryQuitMainloop, 2)
 		else:
-			self.session.open(MessageBox, _("Multiboot ERROR! - no STARTUP in boot partition"), MessageBox.TYPE_INFO, timeout=20)
+			self.session.open(MessageBox, _("Multiboot ERROR! - no STARTUP in boot partition."), MessageBox.TYPE_INFO, timeout=20)
 
 	def selectionChanged(self):
 		currentSelected = self["config"].l.getCurrentSelection()
