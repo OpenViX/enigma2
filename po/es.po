@@ -10782,7 +10782,7 @@ msgid "flat alphabetic"
 msgstr "por orden alfabético lista completa"
 
 msgid "flat alphabetic reverse"
-msgstr "al revés en orden alfabético plano"
+msgstr "por orden alfabético al revés lista completa"
 
 msgid "folk/traditional music"
 msgstr "música popular y tradicional"
