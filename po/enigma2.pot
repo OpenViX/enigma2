@@ -10643,3 +10643,6 @@ msgstr ""
 
 msgid "Consult your SCR device spec sheet for this information."
 msgstr ""
+
+msgid "FTP connection failure"
+msgstr ""

@@ -12356,6 +12356,9 @@ msgstr "Constelación y modo FFt"
 msgid "Consult your SCR device spec sheet for this information."
 msgstr "Consulte la hoja de especificaciones de su dispositivo SCR para obtener esta información."
 
+msgid "FTP connection failure"
+msgstr "FTP fallo de conexión"
+
 #~ msgid "3d mode"
 #~ msgstr "Modo 3D"
 
