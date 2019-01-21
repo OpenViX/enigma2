@@ -111,7 +111,7 @@ msgid ""
 msgstr ""
 "\n"
 "Selecciona su dispositivo de copias de seguridad.\n"
-"Dispositivo actual "
+"Dispositivo actual: "
 
 msgid ""
 "\n"
@@ -449,7 +449,7 @@ msgid "1X"
 msgstr "1X"
 
 msgid "1st Infobar timeout"
-msgstr "Duración de la 1ª barra de información"
+msgstr "Duración de la primera barra de información"
 
 msgid "2160p 24Hz"
 msgstr "2160p 24Hz"
@@ -7475,7 +7475,7 @@ msgid "Show icon for new/unseen items"
 msgstr "Ver icono de elementos nuevos/no vistos"
 
 msgid "Show in extensions list ?"
-msgstr "¿Ver en lista de extensiones?"
+msgstr "Ver en lista de extensiones ?"
 
 msgid "Show info"
 msgstr "Ver información"
@@ -9262,8 +9262,8 @@ msgstr "Actualizar la lista de canales solo"
 #, python-format
 msgid "Update completed, %d package was installed."
 msgid_plural "Update completed, %d packages were installed."
-msgstr[0] "Actualización hecha, %d paquete instalado."
-msgstr[1] "Actualización hecha, %d paquetes instalados."
+msgstr[0] "Actualización completada, %d paquete instalado."
+msgstr[1] "Actualización completada, %d paquetes instalados."
 
 #, python-format
 msgid "Update failed. Your %s %s does not have a working internet connection."
@@ -9925,10 +9925,10 @@ msgid "When maximum space for all logs is reached, the oldest logs will be delet
 msgstr "Cuando se alcanza el espacio máximo para todos los registros, se eliminarán los registros más antiguos."
 
 msgid "When nonzero, a recording will start earlier than the starting time indicated by the EPG."
-msgstr "En Nonzero, la grabación comenzará antes del tiempo de inicio indicado por EPG."
+msgstr "En distinto de cero, la grabación comenzará antes del tiempo de inicio indicado por EPG."
 
 msgid "When nonzero, a recording will stop later than the ending time indicated by the EPG."
-msgstr "En Nonzero, la grabación se detendrá después del tiempo de finalización indicado por EPG."
+msgstr "En distinto de cero, la grabación se detendrá después del tiempo de finalización indicado por EPG."
 
 msgid "When set the PIG will return to live after a movie has stopped playing."
 msgstr "Cuando está activado, PIG vuelve al directo cuando deja de reproducirse una película."
@@ -10821,7 +10821,7 @@ msgid "get the cards' server"
 msgstr "obtener el servidor de las tarjetas"
 
 msgid "go to deep standby"
-msgstr "hibernar"
+msgstr "ir a modo de espera profunda"
 
 msgid "go to standby"
 msgstr "ir a modo de espera"
@@ -10936,7 +10936,7 @@ msgid "mins"
 msgstr "mins"
 
 msgid "minute"
-msgstr "minute"
+msgstr "minuto"
 
 msgid "minutes"
 msgstr "minutos"
@@ -12537,7 +12537,7 @@ msgstr "FTP fallo de conexión"
 #~ msgstr ""
 #~ "No se ha encontrado un PIN válido de configuración!\n"
 #~ "¿Quieres cambiar el PIN de configuración ahora?\n"
-#~ "¡Si dices que 'No', la protección de configuración seguirá desabilitada."
+#~ "¡Si dices que 'No' la protección de configuración seguirá desabilitada!"
 
 #~ msgid "OpenVpn Log"
 #~ msgstr "Abrir el historial Vpn"
@@ -12631,7 +12631,7 @@ msgstr "FTP fallo de conexión"
 #~ "Now you can download an NFI image file!"
 #~ msgstr ""
 #~ "La memoria USB se ha preparado para arrancarse.\n"
-#~ "Ya puedes descargar un fichero de imagen NFI!"
+#~ "Ya puedes descargar un archivo NFI de imagen!"
 
 #~ msgid ""
 #~ "The following device was found:\n"
@@ -12661,7 +12661,7 @@ msgstr "FTP fallo de conexión"
 #~ "Este complemento crea un pen USB que puede utilizarse para actualizar el Firmware de su %s %s sin necesidad de red o conexión WLAN.\n"
 #~ "Primero, se preparará la memoria USB para que sea arrancable.\n"
 #~ "Después, puede descargarse una imagen NFI desde el servidor de actualizaciones y guardarse en la memoria.\n"
-#~ "Si ya tienes una memoria USB arrancable, insértala ahora.  De lo contrario, inserta una memoria USB con un tamaño mínimo de 64 MB!"
+#~ "Si ya tienes una memoria USB arrancable, insértala ahora. De lo contrario inserta una memoria USB con un tamaño mínimo de 64 MB!"
 
 #~ msgid "Timer log"
 #~ msgstr "Historial de temporizadores"
