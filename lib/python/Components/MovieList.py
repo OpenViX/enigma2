@@ -17,7 +17,7 @@ from Tools.Trashcan import getTrashFolder
 import NavigationInstance
 import skin
 
-from enigma import eListboxPythonMultiContent, eListbox, gFont, iServiceInformation, eSize, loadPNG, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_VALIGN_CENTER, BT_SCALE, BT_KEEP_ASPECT_RATIO, eServiceReference, eServiceCenter, eTimer
+from enigma import eListboxPythonMultiContent, eListbox, gFont, iServiceInformation, eSize, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_VALIGN_CENTER, BT_SCALE, BT_KEEP_ASPECT_RATIO, eServiceReference, eServiceCenter, eTimer
 
 AUDIO_EXTENSIONS = frozenset((".dts", ".mp3", ".wav", ".wave", ".wv", ".oga", ".ogg", ".flac", ".m4a", ".mp2", ".m2a", ".wma", ".ac3", ".mka", ".aac", ".ape", ".alac", ".amr", ".au", ".mid"))
 DVD_EXTENSIONS = frozenset((".iso", ".img", ".nrg"))
@@ -457,7 +457,7 @@ class MovieList(GUIComponent):
 			# Picon
 			picon = getPiconName(serviceref)
 			if picon != "":
-				displayPicon = loadPNG(picon)
+				displayPicon = LoadPixmap(picon)
 			if displayPicon is not None:
 				res.append(MultiContentEntryPixmapAlphaBlend(
 					pos = (colX, 0), size = (piconWidth, ih),
