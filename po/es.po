@@ -10779,10 +10779,10 @@ msgid "fitness & health"
 msgstr "salud y bienestar"
 
 msgid "flat alphabetic"
-msgstr "muestra por orden alfabético lista completa"
+msgstr "por orden alfabético lista completa"
 
 msgid "flat alphabetic reverse"
-msgstr "invertir a orden alfabético plano"
+msgstr "al revés en orden alfabético plano"
 
 msgid "folk/traditional music"
 msgstr "música popular y tradicional"
@@ -11943,10 +11943,10 @@ msgid "Movielist menu"
 msgstr "Menú Lista de Peliculas"
 
 msgid "longest"
-msgstr "muestra primero por duración de mayor a menor"
+msgstr "por duración de mayor a menor"
 
 msgid "shortest"
-msgstr "muestra primero por duración de menor a mayor"
+msgstr "por duración de menor a mayor"
 
 msgid "No clients streaming"
 msgstr "No hay clientes en streaming"
