@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-07 01:00+0000\n"
-"PO-Revision-Date: 2019-01-07 10:42+0100\n"
+"POT-Creation-Date: 2019-01-19 17:55+0000\n"
+"PO-Revision-Date: 2019-01-20 07:53+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SourceCharset: iso-8859-15\n"
-"X-Generator: Poedit 2.2\n"
+"X-Generator: Poedit 2.2.1\n"
 
 msgid ""
 "\n"
@@ -5054,12 +5054,6 @@ msgstr "Nadat u op OK drukt worden de volgende taken uitgevoerd!"
 msgid "Font size"
 msgstr "Lettergrootte"
 
-msgid "Force LNB Power"
-msgstr "Forceer LNB Power"
-
-msgid "Force ToneBurst"
-msgstr "Forceer Toneburst"
-
 msgid "Force de-interlace"
 msgstr "Forceer de-interlace"
 
@@ -6903,12 +6897,8 @@ msgstr "Multi-EPG"
 msgid "Multiboot"
 msgstr "Multiboot"
 
-msgid "Multiboot ERROR! - no STARTUP in /boot -Please check /etc/fstab for correct boot partition"
-msgstr "Multiboot FOUT! - geen STARTUP in /boot - Check /etc/fstab op correct bootpartitie."
-
-#, python-format
-msgid "Multiboot ERROR! - no STARTUP_%s in /boot - Image may need manual restart"
-msgstr "Multiboot FOUT! - geen STARTUP_%s in /boot - Box moet mogelijk handmatig opnieuw gestart worden."
+msgid "Multiboot ERROR! - no STARTUP in boot partition"
+msgstr "Multiboot FOUT! - geen STARTUP in bootpartitie."
 
 msgid "Multiboot Image Restart"
 msgstr "Multibootimage herstarten"
@@ -12706,12 +12696,6 @@ msgstr "Wat wilt u zoeken?"
 msgid "When enabled enigma2 will load unlinked userbouquets. This means that userbouquets that are available, but not included in the bouquets.tv or bouquets.radio files, will still be loaded. This allows you for example to keep your own user bouquet while installed settings are upgraded"
 msgstr "Indien ingeschakeld zal enigma2 niet geregistreerde favorietenlijsten laden. Dat betekent dat de lijsten die beschikbaar zijn maar niet zijn opgenomen in de radio- en TV-lijsten, toch geladen zullen worden. Dit stelt u b.v. in staat om eigen lijsten te bewaren, terwijl settings worden geüpgradet."
 
-msgid "When enabled the LNB power will not be switched off in standby"
-msgstr "Indien ingeschakeld zal de spanning van de LNB in stand-by niet worden uitgeschakeld."
-
-msgid "When enabled the LNB toneburst will be forced"
-msgstr "Indien ingeschakeld zal de LNB-toneburst worden geforceerd."
-
 msgid "When enabled the online checker will also check for experimental versions"
 msgstr "Indien geactiveerd zal ook worden gecontroleerd op experimentele versies."
 
@@ -15417,6 +15401,12 @@ msgstr "zapte"
 #~ msgid "Flashing failed"
 #~ msgstr "Flashen mislukt"
 
+#~ msgid "Force LNB Power"
+#~ msgstr "Forceer LNB Power"
+
+#~ msgid "Force ToneBurst"
+#~ msgstr "Forceer Toneburst"
+
 #~ msgid "Free Memory:"
 #~ msgstr "Vrij:"
 
@@ -15544,6 +15534,9 @@ msgstr "zapte"
 
 #~ msgid "MultiEPG settings"
 #~ msgstr "Multi-EPG instellingen"
+
+#~ msgid "Multiboot ERROR! - no STARTUP in /boot -Please check /etc/fstab for correct boot partition"
+#~ msgstr "Multiboot FOUT! - geen STARTUP in /boot - Check /etc/fstab op correcte bootpartitie."
 
 #~ msgid "Multiplex"
 #~ msgstr "Multiplex"
@@ -16076,6 +16069,12 @@ msgstr "zapte"
 
 #~ msgid "Videosize"
 #~ msgstr "Video-afmetingen"
+
+#~ msgid "When enabled the LNB power will not be switched off in standby"
+#~ msgstr "Indien ingeschakeld zal de spanning van de LNB in stand-by niet worden uitgeschakeld."
+
+#~ msgid "When enabled the LNB toneburst will be forced"
+#~ msgstr "Indien ingeschakeld zal de LNB-toneburst worden geforceerd."
 
 #~ msgid "When enabled, Enigma2 will load unlinked bouquets. This means that bouquets that are available, but not included in the bouquets.tv or bouquets.radio files, will still be loaded. This allows you for example to keep your own user bouquet while installed settings are upgraded"
 #~ msgstr "Indien ingeschakeld zal enigma2 niet geregistreerde favorietenlijsten laden. Dat betekent dat de lijsten die beschikbaar zijn maar niet zijn opgenomen in de radio- en TV-lijsten toch geladen zullen worden. Dit stelt u b.v. in staat om eigen lijsten te bewaren, terwijl settings worden geupgrade."
