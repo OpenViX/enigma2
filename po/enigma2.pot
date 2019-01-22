@@ -3631,6 +3631,9 @@ msgstr ""
 msgid "Nothing, just leave this menu"
 msgstr ""
 
+msgid "now"
+msgstr ""
+
 msgctxt "now/next: 'now' event label"
 msgid "Now"
 msgstr ""
