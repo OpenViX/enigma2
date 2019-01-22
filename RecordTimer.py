@@ -13,6 +13,7 @@ import Screens.Standby
 import Screens.InfoBar
 import Components.ParentalControl
 from Tools import Directories, Notifications, ASCIItranslit, Trashcan
+from Tools.XMLTools import stringToXML
 
 import timer
 import xml.etree.cElementTree
@@ -917,6 +918,8 @@ class RecordTimer(timer.Timer):
 	def __init__(self):
 		timer.Timer.__init__(self)
 
+		self.Filename = Directories.resolveFilename(Directories.SCOPE_CONFIG, "timers.xml")
+
 		try:
 			self.loadTimer()
 		except IOError:
@@ -1019,6 +1022,76 @@ class RecordTimer(timer.Timer):
 			from Tools.Notifications import AddPopup
 			from Screens.MessageBox import MessageBox
 			AddPopup(_("Timer overlap in timers.xml detected!\nPlease recheck it!") + timer_text, type = MessageBox.TYPE_ERROR, timeout = 0, id = "TimerLoadFailed")
+
+	def saveTimer(self):
+		list = ['<?xml version="1.0" ?>\n', '<timers>\n']
+
+		for timer in self.timer_list + self.processed_timers:
+			if timer.dontSave:
+				continue
+			list.append('<timer')
+			list.append(' begin="' + str(int(timer.begin)) + '"')
+			list.append(' end="' + str(int(timer.end)) + '"')
+			list.append(' serviceref="' + stringToXML(str(timer.service_ref)) + '"')
+			list.append(' repeated="' + str(int(timer.repeated)) + '"')
+			list.append(' rename_repeat="' + str(int(timer.rename_repeat)) + '"')
+			list.append(' name="' + str(stringToXML(timer.name)) + '"')
+			list.append(' description="' + str(stringToXML(timer.description)) + '"')
+			list.append(' afterevent="' + str(stringToXML({
+				AFTEREVENT.NONE: "nothing",
+				AFTEREVENT.STANDBY: "standby",
+				AFTEREVENT.DEEPSTANDBY: "deepstandby",
+				AFTEREVENT.AUTO: "auto"
+				}[timer.afterEvent])) + '"')
+			if timer.eit is not None:
+				list.append(' eit="' + str(timer.eit) + '"')
+			if timer.dirname:
+				list.append(' location="' + str(stringToXML(timer.dirname)) + '"')
+			if timer.tags:
+				list.append(' tags="' + str(stringToXML(' '.join(timer.tags))) + '"')
+			if timer.disabled:
+				list.append(' disabled="' + str(int(timer.disabled)) + '"')
+			list.append(' justplay="' + str(int(timer.justplay)) + '"')
+			list.append(' always_zap="' + str(int(timer.always_zap)) + '"')
+			list.append(' pipzap="' + str(int(timer.pipzap)) + '"')
+			list.append(' conflict_detection="' + str(int(timer.conflict_detection)) + '"')
+			list.append(' descramble="' + str(int(timer.descramble)) + '"')
+			list.append(' record_ecm="' + str(int(timer.record_ecm)) + '"')
+			list.append(' isAutoTimer="' + str(int(timer.isAutoTimer)) + '"')
+			if timer.flags:
+				list.append(' flags="' + ' '.join([stringToXML(x) for x in timer.flags]) + '"')
+			list.append('>\n')
+
+#		Handle repeat entries, which never end and so never get pruned by cleanupDaily
+#       Repeating timers get, e.g., repeated="127" (dow bitmap)
+
+			ignore_before = 0
+			if config.recording.keep_timers.value > 0:
+				if int(timer.repeated) > 0:
+					ignore_before = time() - config.recording.keep_timers.value*86400
+
+			for log_time, code, msg in timer.log_entries:
+				if log_time < ignore_before:
+					continue
+				list.append('<log')
+				list.append(' code="' + str(code) + '"')
+				list.append(' time="' + str(log_time) + '"')
+				list.append('>')
+				list.append(str(stringToXML(msg)))
+				list.append('</log>\n')
+
+			list.append('</timer>\n')
+
+		list.append('</timers>\n')
+
+		file = open(self.Filename + ".writing", "w")
+		for x in list:
+			file.write(x)
+		file.flush()
+
+		os.fsync(file.fileno())
+		file.close()
+		os.rename(self.Filename + ".writing", self.Filename)
 
 	def getNextZapTime(self):
 		now = time()
