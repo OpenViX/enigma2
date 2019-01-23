@@ -3631,7 +3631,7 @@ msgstr ""
 msgid "Nothing, just leave this menu"
 msgstr ""
 
-msgctxt "now"
+msgctxt "Now"
 msgid "Now"
 msgstr ""
 
