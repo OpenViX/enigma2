@@ -1295,7 +1295,9 @@ class InfoBarTimeshift:
 		# ToDo: Only do this on PTS Events and not events from other jobs
 		if timer.state == TimerEntry.StateEnded and (len(JobManager.getPendingJobs()) >= 1 or self.pts_mergeRecords_timer.isActive()):
 			self.ptsFrontpanelActions("start")
-			config.timeshift.isRecording.value = True
+# This will already be set if it needs to be set and otherwise it must
+# *not* be set.
+#			config.timeshift.isRecording.value = True
 
 	def ptsLiveTVStatus(self):
 		service = self.session.nav.getCurrentService()
