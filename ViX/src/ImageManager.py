@@ -372,6 +372,8 @@ class VIXImageManager(Screen):
 
 	def keyRestore(self):
 		self.sel = self['list'].getCurrent()
+		if not self.sel:
+			return
 		self.MTDKERNEL = getMachineMtdKernel()
 		self.MTDROOTFS = getMachineMtdRoot()	
 		if getMachineMake() == 'et8500' and path.exists('/proc/mtd'):
