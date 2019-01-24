@@ -2976,13 +2976,13 @@ msgid "ECM Time"
 msgstr "Hora ECM"
 
 msgid "ECM avg"
-msgstr "Promedio ECM"
+msgstr "Media ECM"
 
 msgid "ECM data will be included in the stream. This enables a client receiver to decode it."
 msgstr "Los datos ECM se incluirán en el flujo. Permite que un receptor cliente los descodifique."
 
 msgid "ECM last"
-msgstr "Último ECM"
+msgstr "ECM"
 
 msgid "ECM-Time"
 msgstr "Hora ECM"
