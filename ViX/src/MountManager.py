@@ -1,5 +1,5 @@
 # for localized messages
-from boxbranding import getMachineBrand, getMachineName
+from boxbranding import getMachineBrand, getMachineName, getMachineBuild
 from os import system, rename, path, mkdir, remove
 from time import sleep
 import re
@@ -152,7 +152,7 @@ class VIXDevicesPanel(Screen):
 		print 'DEVICETYPE:',devicetype
 		print 'TEST TYPE MMC:',devicetype.find('mmc')
 		print 'TEST TYPE SDHCI:',devicetype.find('rdb')
-		if devicetype.find('mmc') != -1 and (devicetype.find('rdb') != -1 or devicetype.find('soc') != -1):
+		if devicetype.find('mmc') != -1 and (devicetype.find('rdb') != -1 or (devicetype.find('soc') != -1 and getMachineBuild() != 'h9')):
 			return
 		d2 = device
 		name = _("HARD DISK: ")
@@ -394,7 +394,7 @@ class VIXDevicePanelConf(Screen, ConfigListScreen):
 		else:
 			device2 = re.sub('[0-9]', '', device)
 		devicetype = path.realpath('/sys/block/' + device2 + '/device')
-		if devicetype.find('mmc') != -1 and (devicetype.find('rdb') != -1 or devicetype.find('soc') != -1):
+		if devicetype.find('mmc') != -1 and (devicetype.find('rdb') != -1 or (devicetype.find('soc') != -1 and getMachineBuild() != 'h9')):
 			return
 		d2 = device
 		name = _("HARD DISK: ")
