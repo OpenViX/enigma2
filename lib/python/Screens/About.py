@@ -104,7 +104,7 @@ class About(Screen):
 			self.dualboot = self.dualBoot()
 			if self.dualboot:
 				AboutText += _("ET8500 Multiboot: Installed\n")
-			
+
 		skinWidth = getDesktop(0).size().width()
 		skinHeight = getDesktop(0).size().height()
 
@@ -304,7 +304,7 @@ class Devices(Screen):
 			if not parts:
 				continue
 			device = parts[3]
-			if not search('sd[a-z][1-9]', device):
+			if not search('sd[a-z][1-9]', device) and not search('mmcblk[0-9]p[1-9]', device):
 				continue
 			if device in list2:
 				continue
@@ -339,9 +339,12 @@ class Devices(Screen):
 					freeline = _("Free: ") + str(free) + _("MB")
 				else:
 					freeline = _("Free: ") + _("full")
-				self.list.append(mount + '\t' + sizeline + ' \t' + freeline)
+				if mount.find('mmc') == -1 and mount.find('boot') == -1:
+					self.list.append(mount + '\t' + sizeline + ' \t' + freeline)
 			else:
-				self.list.append(mount + '\t' + _('Not mounted'))
+				print "MOUNT:", mount
+				if mount.find('mmc') == -1:
+					self.list.append(mount + '\t' + _('Not mounted'))
 
 			list2.append(device)
 		self.list = '\n'.join(self.list)
