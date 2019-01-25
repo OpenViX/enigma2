@@ -306,6 +306,8 @@ class Devices(Screen):
 			device = parts[3]
 			if not search('sd[a-z][1-9]', device) and not search('mmcblk[0-9]p[1-9]', device):
 				continue
+			if SystemInfo["HasSDmmc"] and search('sd[a][1-9]', device):
+				continue
 			if device in list2:
 				continue
 
