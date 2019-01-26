@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-12-09 10:18+0000\n"
-"PO-Revision-Date: 2018-12-09 19:24+0100\n"
+"POT-Creation-Date: 2019-01-08 22:27+0000\n"
+"PO-Revision-Date: 2019-01-26 18:55+0100\n"
 "Last-Translator: Ralf Biedermann <ralf.biedermann@rbsoft.de>\n"
 "Language-Team: AndyBlacburn, j-ot&Trial\n"
 "Language: de\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
-"X-Generator: Poedit 2.1.1\n"
+"X-Generator: Poedit 2.2.1\n"
 "X-Poedit-SourceCharset: iso-8859-15\n"
 
 msgid ""
@@ -914,6 +914,10 @@ msgstr "%s %s Fernbedienung (native)"
 msgid "%s %s software because updates are available."
 msgstr "%s %s Software, da Aktualisierungen verfügbar sind."
 
+#, fuzzy, python-format
+msgid "%s ( %s Cards )"
+msgstr "%s (%s)\n"
+
 #, python-format
 msgid "%s (%s)\n"
 msgstr "%s (%s)\n"
@@ -1006,6 +1010,11 @@ msgstr "-SERVICE FEHLER:%d\n"
 
 msgid "."
 msgstr ""
+
+#, fuzzy
+msgctxt "ButtonSetup help separator"
+msgid "/"
+msgstr "/s"
 
 msgid "/s"
 msgstr "/s"
@@ -1353,11 +1362,19 @@ msgstr "AAC Downmix"
 msgid "AAC transcoding"
 msgstr "AAC Transkodierung"
 
+#, fuzzy
+msgid "AAC+ downmix"
+msgstr "AAC Downmix"
+
 msgid "AC3"
 msgstr "AC3"
 
 msgid "AC3 downmix"
 msgstr "AC3 Downmix"
+
+#, fuzzy
+msgid "AC3 transcoding"
+msgstr "AAC Transkodierung"
 
 msgid "ACQUIRING TSID/ONID"
 msgstr "Sammeln von TSID/ONID"
@@ -1656,6 +1673,14 @@ msgstr "Reserviere eine Anzahl physischer LNB die konfiguriert werden sollen. Du
 
 msgid "Allocate unused memory index"
 msgstr "Unbenutzten Speicher Index reservieren"
+
+#, fuzzy
+msgid "Allow 10bit"
+msgstr "10bit"
+
+#, fuzzy
+msgid "Allow 12bit"
+msgstr "12bit"
 
 msgid "Allow subtitle language to equal audio language"
 msgstr "Erlaube gleiche Sprache bei Untertitel und Ton"
@@ -2340,6 +2365,9 @@ msgstr "C-Band"
 msgid "CAID"
 msgstr "CAID"
 
+msgid "CAID:SrvID"
+msgstr ""
+
 msgid "CCcam Client Info"
 msgstr "CCcam Klienten Info"
 
@@ -2540,6 +2568,18 @@ msgstr "Ändern von Verzögerung- und Wiederholungswerten?"
 msgid "Change step size"
 msgstr "Schrittweite ändern"
 
+#, fuzzy
+msgid "Change the Colordepth for UHD"
+msgstr "Dies Option erlaubt die Konfiguration der Bittiefe für UHD"
+
+#, fuzzy
+msgid "Change the Colorimetry for HDR"
+msgstr "Dies Option erlaubt die Konfiguration der Farbmetrik für HDR"
+
+#, fuzzy
+msgid "Change the Colorspace from Auto to RGB"
+msgstr "Dies Option erlaubt es den Farbraum von Auto auf RGB zu stellen"
+
 msgid "Change timer"
 msgstr "Timer ändern"
 
@@ -2739,7 +2779,15 @@ msgstr "Wähle was bei der 0-Taste passieren soll wenn PiP aktiv ist."
 msgid "Choose whether AAC sound tracks should be transcoded."
 msgstr "Wähle ob AAC Tonspuren transkodiert werden sollen."
 
+#, fuzzy
+msgid "Choose whether WMA Pro sound tracks should be downmixed."
+msgstr "Wähle ob AAC Tonspuren transkodiert werden sollen."
+
 msgid "Choose whether multi channel aac sound tracks should be downmixed to stereo."
+msgstr "Wähle ob AAC Mehrkanalton zu Stereo runter gerechnet werden soll."
+
+#, fuzzy
+msgid "Choose whether multi channel aac+ sound tracks should be downmixed to stereo."
 msgstr "Wähle ob AAC Mehrkanalton zu Stereo runter gerechnet werden soll."
 
 msgid "Choose whether multi channel ac3 sound tracks should be downmixed to stereo."
@@ -2798,6 +2846,10 @@ msgstr "Log löschen"
 
 msgid "Clear playlist"
 msgstr "Wiedergabeliste leeren"
+
+#, python-format
+msgid "Client Info ( Oscam-Version: %s )"
+msgstr ""
 
 msgid "Client mode"
 msgstr "Client Modus"
@@ -3502,6 +3554,9 @@ msgstr "DTS"
 msgid "DTS downmix"
 msgstr "DTS Downmix"
 
+msgid "DTS-HD HR/DTS-HD MA/DTS"
+msgstr ""
+
 msgid "DUAL LAYER DVD"
 msgstr "DUAL LAYER DVD"
 
@@ -4040,6 +4095,10 @@ msgstr "Den Timer für %s wirklich löschen?"
 msgid "Do you really want to remove your bookmark of %s?"
 msgstr "Das Lesezeichen %s wirklich löschen?"
 
+#, fuzzy, python-format
+msgid "Do you really want to stop the current recording and delete timer %s?"
+msgstr "Den Timer für %s wirklich löschen?"
+
 msgid "Do you want to add any additional information ?"
 msgstr "Willst Du weitere Informationen hinzufügen?"
 
@@ -4161,6 +4220,10 @@ msgstr "Herunterladen"
 
 msgid "Downloading plugin information. Please wait..."
 msgstr "Lade Plugin-Informationen herunter. Bitte warten..."
+
+#, fuzzy
+msgid "Downmix"
+msgstr "DTS Downmix"
 
 msgid "Drama"
 msgstr "Drama"
@@ -4394,6 +4457,21 @@ msgstr "Verschiebemodus aktivieren"
 msgid "Enable multiple bouquets"
 msgstr "Mehrere Favoritenlisten erlauben"
 
+msgid "Enable or disable the 10 Bit Color Mode"
+msgstr "10Bit erzwingen aktivieren oder deaktivieren"
+
+msgid "Enable or disable the 12 Bit Color Mode"
+msgstr "12Bit erzwingen aktivieren oder deaktivieren"
+
+msgid "Enable or disable to force HDR Modes for UHD"
+msgstr "HDR Mode für UHD erzwingen aktivieren oder deaktivieren"
+
+msgid "Enable or disable to force HDR10 Modes for UHD"
+msgstr "HDR10 Mode für UHD erzwingen aktivieren oder deaktivieren"
+
+msgid "Enable or disable to force HLG Modes for UHD"
+msgstr "HLG Mode für UHD erzwingen aktivieren oder deaktivieren"
+
 msgid "Enable panic button"
 msgstr "Paniktaste aktivieren"
 
@@ -4420,6 +4498,10 @@ msgstr "Aktiviere die Benutzung eines anderen Enigma2 Receivers im Netzwerk wenn
 
 msgid "Enabled"
 msgstr "Eingeschaltet"
+
+#, fuzzy
+msgid "Encrypted TV"
+msgstr "Verschlüsselt: "
 
 msgid "Encrypted: "
 msgstr "Verschlüsselt: "
@@ -4826,6 +4908,9 @@ msgstr "FLASH"
 #, python-format
 msgid "FP version:\t%s"
 msgstr "Version:\t%s"
+
+msgid "FTA TV"
+msgstr ""
 
 msgid "FTP"
 msgstr "FTP"
@@ -5323,11 +5408,18 @@ msgstr "HDMI Farbmetrik"
 msgid "HDMI Colorspace"
 msgstr "HDMI Farbraum"
 
+msgid "HDMI HDR Type"
+msgstr ""
+
 msgid "HDMIin"
 msgstr "HDMIin"
 
 msgid "HDR, 12bit 4:2:0/4:2:2, no PIP"
 msgstr "HDR, 12bit 4:2:0/4:2:2, kein PIP"
+
+#, fuzzy
+msgid "HDR10 Support"
+msgstr "DLNA-Unterstützung"
 
 msgid "HELP"
 msgstr ""
@@ -5337,6 +5429,10 @@ msgstr ""
 
 msgid "HH:mm:ss"
 msgstr ""
+
+#, fuzzy
+msgid "HLG Support"
+msgstr "DLNA-Unterstützung"
 
 msgid "Haiti"
 msgstr "Haiti"
@@ -5440,6 +5536,10 @@ msgstr "Honduras"
 msgid "Hong Kong"
 msgstr "Hong Kong"
 
+#, fuzzy
+msgid "Hops"
+msgstr "Hops:"
+
 msgid "Hops:"
 msgstr "Hops:"
 
@@ -5537,9 +5637,6 @@ msgstr ""
 "Wenn eine \"Unbestätigt\"-Meldung erscheint:\n"
 "- Wurde keine gültige IP-Adresse gefunden.\n"
 "- Überprüfe DHCP, die Verkabelung und die Adapter-Einstellungen."
-
-msgid "IP-Address"
-msgstr "IP-Adresse"
 
 msgid "IP:"
 msgstr "IP:"
@@ -6056,6 +6153,10 @@ msgstr "Kernel:\t%s\n"
 #, python-format
 msgid "Kernel: %s"
 msgstr "Kernel: %s"
+
+#, fuzzy
+msgid "Key"
+msgstr "Kenya"
 
 msgid "Keyboard"
 msgstr "Tastatur"
@@ -7104,15 +7205,6 @@ msgstr "Kein freier Index verfügbar"
 msgid "No free tuner!"
 msgstr "Kein freier Tuner!"
 
-msgid "No httpport defined in oscam.conf. This value is required!"
-msgstr "Kein HTTP-Port in oscam.conf definiert. Dieser Wert wird benötigt!"
-
-msgid "No httppwd defined in oscam.conf"
-msgstr "Kein Passwort für das Web-Interface definiert. Dieser Wert wird benötigt"
-
-msgid "No httpuser defined in oscam.conf"
-msgstr "Kein Benutzer für das Web Interface definiert. Dieser Wert wird benötigt"
-
 msgid "No module found"
 msgstr "Kein Modul gefunden"
 
@@ -7476,14 +7568,15 @@ msgstr ""
 msgid "Original"
 msgstr "Original"
 
-msgid "Oscam ECM-info"
-msgstr "OScam ECM-Info"
-
 msgid "Oscam Info - Configuration"
 msgstr "OScam Info - Konfiguration"
 
 msgid "Oscam Info - Main Menu"
 msgstr "OScam Info - Hauptfenster"
+
+#, python-format
+msgid "Oscam Log ( Oscam-Version: %s )"
+msgstr ""
 
 msgid "Other"
 msgstr "Andere"
@@ -7520,6 +7613,10 @@ msgstr ""
 
 msgid "PGS file"
 msgstr "PGS Datei"
+
+#, fuzzy
+msgid "PID"
+msgstr "PIDs"
 
 msgid "PIP"
 msgstr "PiP"
@@ -7602,6 +7699,9 @@ msgstr "Kontrolle von Erwachsenen empfohlen"
 
 msgid "Parental control"
 msgstr "Jugendschutz"
+
+msgid "Passthrough"
+msgstr ""
 
 msgid "Password"
 msgstr "Passwort"
@@ -7784,7 +7884,8 @@ msgstr "Bitte füge Titel zur Zusammenstellung hinzu."
 msgid "Please change the recording end time"
 msgstr "Bitte Aufnahmeendzeit ändern"
 
-msgid "Please choose CCcam reader"
+#, fuzzy
+msgid "Please choose CCcam-Reader"
 msgstr "Bitte wähle CCcam-Kartenleser"
 
 msgid "Please choose an extension..."
@@ -8450,7 +8551,8 @@ msgstr "Einstufung unbekannt"
 msgid "Re-enter PIN"
 msgstr "Pin-Code erneut eingeben"
 
-msgid "Read user data from oscam.conf"
+#, fuzzy
+msgid "Read Userdata from oscam.conf"
 msgstr "Lese Benutzerdaten aus oscam.comf"
 
 msgid "Reader"
@@ -8793,6 +8895,10 @@ msgstr "Erweiterte A/V Einstellungen auf Standardwerte zurücksetzten?"
 
 msgid "Reset video enhancement settings to your last configuration?"
 msgstr "Erweiterte A/V Einstellungen auf Ihre letzte Konfiguration zurücksetzen?"
+
+#, fuzzy
+msgid "Reshare"
+msgstr "Freigabe:"
 
 msgid "Reshare:"
 msgstr ""
@@ -9523,6 +9629,10 @@ msgid "Serial no"
 msgstr "Seriennummer"
 
 msgid "Serv.Name"
+msgstr ""
+
+#, python-format
+msgid "Server Info ( Oscam-Version: %s )"
 msgstr ""
 
 msgid "Server:"
@@ -10896,6 +11006,9 @@ msgstr "Systemtemperatur: %s"
 msgid "System: "
 msgstr ""
 
+msgid "T2MI RAW Mode"
+msgstr ""
+
 msgid "TB"
 msgstr "TB"
 
@@ -11229,9 +11342,6 @@ msgstr "Es sind keine Updates verfügbar."
 msgid "There has been an error, please try again later. If this issue persists, please check openvix.co.uk or world-of-satellite.com"
 msgstr "Entschuldigung zur Zeit finden Wartungsarbeiten statt. Bitte später erneut versuchen. Wenn das Problem bestehen bleibt bitte auf openvix.co.uk oder world-of-satellite.com nachsehen"
 
-msgid "There is no [webif] section in oscam.conf"
-msgstr "Es gibt keine [webif} Sektion in oscam.conf"
-
 msgid "There is no signal to lock on !"
 msgstr "Es gibt kein Signal zum einrasten!"
 
@@ -11304,15 +11414,6 @@ msgstr "Diese Option erlaubt es den Grünanteil des Bildes zu verstärken."
 
 msgid "This option allows you to bypass HDMI EDID check"
 msgstr "Diese Option erlaubt es den HDMI EDID zu deaktivieren"
-
-msgid "This option allows you to change the Colordepth for UHD"
-msgstr "Dies Option erlaubt die Konfiguration der Bittiefe für UHD"
-
-msgid "This option allows you to change the Colorimetry for HDR"
-msgstr "Dies Option erlaubt die Konfiguration der Farbmetrik für HDR"
-
-msgid "This option allows you to change the Colorspace from Auto to RGB"
-msgstr "Dies Option erlaubt es den Farbraum von Auto auf RGB zu stellen"
 
 msgid "This option allows you to change the virtual loudspeaker position."
 msgstr "Dies Option erlaubt es virtuelle Lautsprecherpositionen anzugeben."
@@ -12427,6 +12528,10 @@ msgstr "WEP"
 msgid "WLAN connection"
 msgstr "WLAN Verbindung"
 
+#, fuzzy
+msgid "WMA Pro downmix"
+msgstr "AAC Downmix"
+
 msgid "WPA"
 msgstr "WPA"
 
@@ -12798,6 +12903,9 @@ msgstr "Funk-Netzwerk Konfiguration."
 
 msgid "Wireless network state"
 msgstr "Funk-Netzwerk Status"
+
+msgid "With T2MI RAW mode disabled (default) we can use single T2MI PLP de-encapsulation. With T2MI RAW mode enabled we can use astra-sm to analyze T2MI"
+msgstr ""
 
 msgid "With popup"
 msgstr "Mit Popup"
@@ -13470,6 +13578,18 @@ msgstr "Bestätigt"
 msgid "connected"
 msgstr "Verbunden"
 
+msgid "controlled by HDMI"
+msgstr "Von HDMI kontrolliert"
+
+msgid "convert to AC3"
+msgstr "Wandeln zu AC3"
+
+msgid "convert to DTS"
+msgstr "Wandeln zu DTS"
+
+msgid "convert to multi-channel PCM"
+msgstr "Wandeln zu  Multikanal PCM"
+
 msgid "cooking"
 msgstr "Kochen"
 
@@ -13529,6 +13649,9 @@ msgstr "Dokumentation"
 
 msgid "documentary (general)"
 msgstr "Dokumentation (allgemein)"
+
+msgid "dolby"
+msgstr ""
 
 msgid "don't descramble, record ecm"
 msgstr "Nicht entschlüsseln, Aufnahme ECM"
@@ -13635,6 +13758,10 @@ msgstr "Erweiterungen."
 msgid "extra wide"
 msgstr "Extrabreit"
 
+#, fuzzy
+msgid "extrawide"
+msgstr "Extrabreit"
+
 msgid "failed"
 msgstr "fehlgeschlagen"
 
@@ -13673,6 +13800,14 @@ msgstr "Folk/traditionelle Musik"
 
 msgid "football/soccer"
 msgstr "Fußball"
+
+#, fuzzy
+msgid "force disabled"
+msgstr "deaktiviert"
+
+#, fuzzy
+msgid "force enabled"
+msgstr "aktiviert"
 
 msgid "foreign countries/expeditions"
 msgstr "fremde Länder/Expeditionen"
@@ -13747,6 +13882,9 @@ msgstr ""
 "ist zum ViX Beta Team geschickt worden.\n"
 "Bitte zitieren"
 
+msgid "hdr10"
+msgstr ""
+
 msgid "height"
 msgstr "Höhe"
 
@@ -13770,6 +13908,9 @@ msgstr ""
 
 msgid "hide"
 msgstr "verstecke"
+
+msgid "hlg"
+msgstr ""
 
 msgid "hops:"
 msgstr "hops:"
@@ -13909,6 +14050,13 @@ msgstr "Musik/Ballett/Tanz (allgemein)"
 msgid "musical/opera"
 msgstr "Musical/Oper"
 
+#, fuzzy
+msgid "n/A"
+msgstr "N/V"
+
+msgid "n/a"
+msgstr ""
+
 msgid "nature/animals/environment"
 msgstr "Natur/Tiere/Umwelt"
 
@@ -14017,15 +14165,8 @@ msgstr "Original"
 msgid "original language"
 msgstr "Landessprache"
 
-msgid "oscam.conf could not be found"
-msgstr "Datei oscam.conf nicht gefunden"
-
-msgid ""
-"oscam.conf not found.\n"
-"Please enter username/password manually."
-msgstr ""
-"Datei oscam.conf nicht gefunden.\n"
-"Bitte Benutzername/Passwort eingeben."
+msgid "oscam webif disabled"
+msgstr "OScam Web-IF deaktiviert"
 
 msgid "packages selected."
 msgstr "Pakete ausgewählt."
@@ -14143,6 +14284,9 @@ msgstr "Status"
 
 msgid "science fiction/fantasy/horror"
 msgstr "Science Fiction/Fantasy/Horror"
+
+msgid "sdr"
+msgstr ""
 
 msgid "se"
 msgstr "süd ost"
@@ -14419,6 +14563,12 @@ msgstr "bis zu Bereitschaft/Neustart"
 
 msgid "updates available."
 msgstr "Updates verfügbar."
+
+msgid "use best / controlled by HDMI"
+msgstr ""
+
+msgid "use_hdmi_cacenter"
+msgstr ""
 
 msgid "user defined"
 msgstr "benutzerdefiniert"
@@ -15019,6 +15169,9 @@ msgstr "umgeschaltet"
 #~ msgid "Hierarchy information"
 #~ msgstr "Hierarchie..."
 
+#~ msgid "IP-Address"
+#~ msgstr "IP-Adresse"
+
 #~ msgid "Image Information"
 #~ msgstr "Image Informationen"
 
@@ -15133,6 +15286,15 @@ msgstr "umgeschaltet"
 #~ msgid "No free tuner available!"
 #~ msgstr "Kein freier Tuner verfügbar!"
 
+#~ msgid "No httpport defined in oscam.conf. This value is required!"
+#~ msgstr "Kein HTTP-Port in oscam.conf definiert. Dieser Wert wird benötigt!"
+
+#~ msgid "No httppwd defined in oscam.conf"
+#~ msgstr "Kein Passwort für das Web-Interface definiert. Dieser Wert wird benötigt"
+
+#~ msgid "No httpuser defined in oscam.conf"
+#~ msgstr "Kein Benutzer für das Web Interface definiert. Dieser Wert wird benötigt"
+
 #~ msgid "No stream clients"
 #~ msgstr "Keine Streaming Klienten"
 
@@ -15154,8 +15316,8 @@ msgstr "umgeschaltet"
 #~ msgid "Options..."
 #~ msgstr "Einstellungen..."
 
-#~ msgid "PIDs"
-#~ msgstr "PIDs"
+#~ msgid "Oscam ECM-info"
+#~ msgstr "OScam ECM-Info"
 
 #~ msgid "Parental control setup"
 #~ msgstr "Jugendschutz Einstellungen"
@@ -15393,6 +15555,9 @@ msgstr "umgeschaltet"
 #~ msgid "The wizard found a configuration backup. Do you want to restore your old settings from %s?"
 #~ msgstr "Der Assistent hat eine Konfigurations-Sicherungsdatei entdeckt. Die Einstellungen von %s wiederherstellen?"
 
+#~ msgid "There is no [webif] section in oscam.conf"
+#~ msgstr "Es gibt keine [webif} Sektion in oscam.conf"
+
 #~ msgid "This can be either the IP or name of the fallback receiver, not including the scheme or port number (e.g. either 'xxx.xxx.xxx.xxx' or 'name_second_box')."
 #~ msgstr "Dies kann entweder der Name oder die IP des Ausweichreceivers sein. Hier darf kein Typ oder Port angegeben werden also entweder xxx.xxx.xxx.xxx oder <name-der-box>."
 
@@ -15518,6 +15683,16 @@ msgstr "umgeschaltet"
 
 #~ msgid "only 4K"
 #~ msgstr "nur 4K"
+
+#~ msgid "oscam.conf could not be found"
+#~ msgstr "Datei oscam.conf nicht gefunden"
+
+#~ msgid ""
+#~ "oscam.conf not found.\n"
+#~ "Please enter username/password manually."
+#~ msgstr ""
+#~ "Datei oscam.conf nicht gefunden.\n"
+#~ "Bitte Benutzername/Passwort eingeben."
 
 #~ msgid "reliable"
 #~ msgstr "verlässlich"
