@@ -162,7 +162,7 @@ self.session.open(SABnzbdSetupScreen)
 			<menu weight="9" level="0" text="List of storage devices" entryID="hardisk_selection" requires="Harddisk">
 				<id val="harddisk"/>
 				<item level="1" text="Settings" entryID="harddisk_setup"><setup id="harddisk"/></item>
-				<item level="0" text="Initialize" entryID="harddisk_init"><screen module="HarddiskSetup" screen="HarddiskSelection"/></item>
+				<item level="0" text="Initialize devices" entryID="harddisk_init"><screen module="HarddiskSetup" screen="HarddiskSelection"/></item>
 				<item level="0" text="Filesystem check" entryID="harddisk_check"><screen module="HarddiskSetup" screen="HarddiskFsckSelection"/></item>
 			</menu>
 			<!-- Menu / Setup / Time Settings -->

@@ -4123,7 +4123,10 @@ msgid "Initialize"
 msgstr "Inicializar"
 
 msgid "Initialize Devices"
-msgstr "Formatear Dispositivos"
+msgstr "Inicializar Dispositivos"
+
+msgid "Initialize devices"
+msgstr "Inicializar dispositivos"
 
 msgid "Initializing storage device..."
 msgstr "Formateando dispositivo de almacenamiento..."

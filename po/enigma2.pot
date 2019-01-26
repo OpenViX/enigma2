@@ -2748,6 +2748,9 @@ msgstr ""
 msgid "Initialize"
 msgstr ""
 
+msgid "Initialize devices"
+msgstr ""
+
 msgid "Initialize Devices"
 msgstr ""
 
