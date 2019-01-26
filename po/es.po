@@ -4096,7 +4096,7 @@ msgid "Information"
 msgstr "Información"
 
 msgid "Init"
-msgstr "Formatear"
+msgstr "Iniciar"
 
 msgid "Initial fast forward speed"
 msgstr "Velocidad inicial de avance rápido"
@@ -4120,7 +4120,7 @@ msgid "Initialization"
 msgstr "Inicialización"
 
 msgid "Initialize"
-msgstr "Inicializar"
+msgstr "Formatear"
 
 msgid "Initialize Devices"
 msgstr "Inicializar Dispositivos"
