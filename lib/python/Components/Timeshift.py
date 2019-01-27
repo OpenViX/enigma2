@@ -124,6 +124,7 @@ class InfoBarTimeshift:
 		self.save_current_timeshift = False
 		self.save_timeshift_postaction = None
 		self.service_changed = 0
+		self.pts_trycount = 0
 
 		# Init Global Variables
 		self.session.ptsmainloopvalue = 0
