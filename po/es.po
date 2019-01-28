@@ -2075,7 +2075,7 @@ msgid "Configure the initial fast forward speed. When you press the fast forward
 msgstr "Configurar la velocidad inicial de avance rápido. Cuando pulses la tecla de avance rápido, empezará a esa velocidad."
 
 msgid "Configure the initial rewind speed. When you press the rewind button, rewinding will start at this speed."
-msgstr "Configure la velocidad de rebobinado inicial. Cuando presiona el botón de rebobinado, el rebobinado comenzará a esta velocidad."
+msgstr "Configure la velocidad de rebobinado inicial. Cuando pulsa el botón de rebobinado, el rebobinado comenzará a esta velocidad."
 
 msgid "Configure the latitude of your location."
 msgstr "Configurar la latitud de su ubicación."
@@ -3949,7 +3949,7 @@ msgid "Idle Time: "
 msgstr "Tiempo de inactividad "
 
 msgid "If enabled the output resolution of the box will try to match the resolution of the video content"
-msgstr "Si está habilitada, la resolución de salida de la caja intentará coincidir con la resolución del contenido del video"
+msgstr "Si está habilitada, la resolución de salida del receptor intentará coincidir con la resolución del contenido del video"
 
 msgid "If enabled the video will always be de-interlaced."
 msgstr "Si está habilitado el video siempre será desentrelazado."
@@ -4274,7 +4274,7 @@ msgid "Jump back 24 hours"
 msgstr "Retroceder 24 horas"
 
 msgid "Jump first press in channel selection"
-msgstr "Saltar primero al presionar en la lista de canales"
+msgstr "Saltar primero al pulsar en la lista de canales"
 
 msgid "Jump forward 24 hours"
 msgstr "Adelantar 24 horas"
@@ -8678,7 +8678,7 @@ msgid "This option allows you to choose how to display the remaining/elapsed tim
 msgstr "Esta opción le permite elegir cómo mostrar el tiempo restante / transcurrido para la reproducción de medios."
 
 msgid "This option allows you to choose what the first button press jumps to in channel list screen, (so pressing '2' jumps to 'A' or '2' first), when 'Quick Actions' preset actions are perfomed. "
-msgstr "Esta opción le permite elegir a qué salta al presionar el primer botón en la pantalla de la lista de canales (por lo tanto, al presionar '2' salta primero a 'A' o '2'), cuando se realizan las acciones predeterminadas de 'Acciones rápidas'. "
+msgstr "Esta opción le permite elegir a qué salta al pulsar el primer botón en la pantalla de la lista de canales (por lo tanto, al pulsar '2' salta primero a 'A' o '2'), cuando se realizan las acciones predeterminadas de 'Acciones rápidas'. "
 
 msgid "This option allows you to disable sorting of the menus"
 msgstr "Esta opción te permite desactivar el orden de los menús"
@@ -11845,7 +11845,7 @@ msgid ""
 "Please setup your user interface by adjusting the values till the edges of the user interface box are covering the test pattern and touching the edges of your TV.\n"
 "When you are ready press OK to continue."
 msgstr ""
-"Configure su interfaz de usuario ajustando los valores hasta que los bordes de la caja de la interfaz de usuario cubran el patrón de prueba y toquen los bordes de su televisor.\n"
+"Configure su interfaz de usuario ajustando los valores hasta que los bordes de la interfaz de usuario cubran el patrón de prueba y toquen los bordes de su televisor.\n"
 "Cuando esté listo, Pulse OK para continuar."
 
 msgid "Tuning info: live values"
@@ -12677,7 +12677,7 @@ msgstr "FTP fallo de conexión"
 #~ msgstr ""
 #~ "Para actualizar el Firmware de su %s %s, sigue estos pasos:\n"
 #~ "1) Apaga el receptor con el botón de encendido trasero y asegúrate de que la memoria USB arrancable esté conectada.\n"
-#~ "2) Vuelve a encenderlo y presiona el botón ABAJO en el panel frontal durante 10 segundos.\n"
+#~ "2) Vuelve a encenderlo y pulsa el botón ABAJO en el panel frontal durante 10 segundos.\n"
 #~ "3) Espera al reinicio y sigue las instrucciones del asistente."
 
 #~ msgid "USB stick wizard"
