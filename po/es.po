@@ -8669,13 +8669,13 @@ msgid "This option allows you to choose how to display standard defintion video 
 msgstr "Esta opción le permite elegir cómo visualizar el video de definición estándar en su TV."
 
 msgid "This option allows you to choose how to display the remaining/elapsed time for Media playback."
-msgstr "Esta opción le permite elegir cómo mostrar el tiempo restante / transcurrido para la reproducción de medios."
+msgstr "Esta opción le permite elegir cómo mostrar el tiempo restante transcurrido para la reproducción de medios."
 
 msgid "This option allows you to choose how to display the remaining/elapsed time for live TV."
-msgstr "Esta opción le permite elegir cómo mostrar el tiempo restante / transcurrido para TV en vivo."
+msgstr "Esta opción le permite elegir cómo mostrar el tiempo restante transcurrido para TV en vivo."
 
 msgid "This option allows you to choose how to display the remaining/elapsed time for media playback."
-msgstr "Esta opción le permite elegir cómo mostrar el tiempo restante / transcurrido para la reproducción de medios."
+msgstr "Esta opción le permite elegir cómo mostrar el tiempo restante transcurrido para la reproducción de medios."
 
 msgid "This option allows you to choose what the first button press jumps to in channel list screen, (so pressing '2' jumps to 'A' or '2' first), when 'Quick Actions' preset actions are perfomed. "
 msgstr "Esta opción le permite elegir a qué salta al pulsar el primer botón en la pantalla de la lista de canales (por lo tanto, al pulsar '2' salta primero a 'A' o '2'), cuando se realizan las acciones predeterminadas de 'Acciones rápidas'. "
