@@ -124,6 +124,7 @@ class InfoBarTimeshift:
 		self.save_current_timeshift = False
 		self.save_timeshift_postaction = None
 		self.service_changed = 0
+		self.pts_trycount = 0
 
 		# Init Global Variables
 		self.session.ptsmainloopvalue = 0
@@ -471,7 +472,7 @@ class InfoBarTimeshift:
 					self.session.openWithCallback(boundFunction(self.checkTimeshiftRunningCallback, returnFunction), MessageBox, message, simple = True, list = choice)
 				else:
 					# print 'TEST4'
-					message =  _("You seem to be in timeshift, Do you want to leave timeshift ?")
+					message =  _("You seem to be in timeshift, Do you want to leave timeshift? Streams & IPTV not fully supported!")
 					choice = [(_("Yes, but save timeshift as movie and stop recording"), "savetimeshift"),
 							  (_("Yes, but save timeshift as movie and continue recording"), "savetimeshiftandrecord"),
 							  (_("Yes, but don't save timeshift as movie"), "noSave"),
