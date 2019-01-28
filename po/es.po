@@ -5330,7 +5330,7 @@ msgid "Off"
 msgstr "Off"
 
 msgid "Offline decode delay (ms)"
-msgstr "Retraso de descodificación online (minutos)"
+msgstr "Retraso de descodificación online (milisegundos)"
 
 msgid "On"
 msgstr "On"
@@ -9820,7 +9820,7 @@ msgid "When enabled, a warning will be displayed and the user will get an option
 msgstr "Cuando esté habilitado, se mostrará una advertencia y el usuario tendrá la opción de detener o continuar el timeshift."
 
 msgid "When enabled, a warning will be displayed that timeshift is not supported in an IP stream.."
-msgstr "Cuando esté habilitado, se mostrará una advertencia de que timehift no es compatible con una transmisión IP.."
+msgstr "Cuando esté habilitado, se mostrará una advertencia de que timehift no es compatible con un streaming IP.."
 
 msgid "When enabled, always descramble receiving http streams. This takes up more resources (descrambling demuxers), only enable if necessary. Individual streams are always descrambled if 0x100 is added to the service type, regardless of this setting. Default off."
 msgstr "Cuando está habilitado, descifra siempre la recepción de secuencias http. Esto requiere más recursos (descifrar demuxers), solo habilitar si es necesario. Las secuencias individuales siempre se descifran si se agrega 0x100 al tipo de servicio, independientemente de esta configuración. Predeterminado desactivado."
@@ -10005,7 +10005,7 @@ msgid "With popup"
 msgstr "Con popup"
 
 msgid "With this option set to 'yes' the channel list will always show you the list of bouquets. If set to 'no' the current bouquet will be opened."
-msgstr "Con esta opción configurada en 'sí', la lista de canales siempre te mostrará la lista de ramos. Si se establece en 'no', se abrirá el bouquet actual."
+msgstr "Con esta opción configurada en 'sí', la lista de canales siempre te mostrará la lista de bouquets. Si se establece en 'no', se abrirá el bouquet actual."
 
 msgid "With this option you can hide Job Tasks from the extension screen (short blue button press)."
 msgstr "Con esta opción puedes ocultar las tareas en la pantalla de extensión (pulsación corta de la tecla azul)."
@@ -11663,22 +11663,22 @@ msgid "Enable to highlight events that are currently in progress."
 msgstr "Habilitar para resaltar eventos que están actualmente en progreso."
 
 msgid "Alignment of service names" 
-msgstr "Alineación de nombres de servicios"
+msgstr "Alineación de nombres de los canales"
 
 msgid "Configure alignment of the service names." 
-msgstr "Configurar la alineación de los nombres de servicio."
+msgstr "Configurar la alineación de los nombres de los canales."
 
 msgid "Alignment of service numbers" 
-msgstr "Alineación de números de servicio"
+msgstr "Alineación de números de los canales"
 
 msgid "Configure alignment of the service numbers." 
-msgstr "Configurar la alineación de los números de servicio."
+msgstr "Configurar la alineación de los números de los canales."
 
 msgid "Alignment of events" 
 msgstr "Alineación de eventos"
 
 msgid "Configure alignment of service events." 
-msgstr "Configurar alineación de eventos de servicio."
+msgstr "Configurar alineación de eventos de los canales."
 
 msgid "Alignment of timeline date" 
 msgstr "Alineación de la fecha de la línea de tiempo"
