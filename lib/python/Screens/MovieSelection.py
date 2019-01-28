@@ -1444,8 +1444,6 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			if config.movielist.settings_per_directory.value:
 				self.saveLocalSettings()
 			else:
-				config.movielist.moviesort.value = newType
-				config.movielist.moviesort.save()
 				self["list"].temp_sort = newType
 			self.setSortType(newType)
 # Unset specific trash-sorting if other sort chosen while in Trash
