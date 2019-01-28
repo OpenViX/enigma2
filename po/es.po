@@ -2184,7 +2184,7 @@ msgid "Configure whether (and for how long) a second infobar will be shown when 
 msgstr "Configurar si (y por cuánto tiempo) aparece una segunda barra de información al pulsar dos veces ¡OK'. La segunda barra contiene información adicional sobre el canal actual."
 
 msgid "Configure whether or not an rotor position will be displayed on infobar"
-msgstr "Configure si una posición del rotor se mostrará o no en la barra de información"
+msgstr "Configure si una posición del motor se mostrará o no en la barra de información"
 
 msgid "Configure which color format should be used on the SCART output."
 msgstr "Configurar qué formato de color utilizar en la salida SCART."
@@ -6642,7 +6642,7 @@ msgid "Root directory"
 msgstr "Directorio raíz"
 
 msgid "Rotor step position:"
-msgstr "Posición de paso de rotor:"
+msgstr "Posición de paso del motor:"
 
 msgid "Rotor turning speed"
 msgstr "Velocidad del motor"
@@ -8866,7 +8866,7 @@ msgid ""
 "This will (re-)calculate all positions of your rotor and may remove previously memorised positions and fine-tuning!\n"
 "Are you sure?"
 msgstr ""
-"Se (re)calculcarán todas las posiciones del rotor y pueden eliminarse posiciones memorizadas previas y sintonización!\n"
+"Se (re)calculcarán todas las posiciones del motor y pueden eliminarse posiciones memorizadas previas y sintonización!\n"
 "¿Estás seguro?"
 
 msgid "Three"
@@ -9862,7 +9862,7 @@ msgid "When enabled, it is possible to leave the Movie Player with exit."
 msgstr "Cuando está habilitado, es posible dejar el Reproductor de películas con salida."
 
 msgid "When enabled, measure power consumption to detect when the rotor stops turning (when supported by the tuner)."
-msgstr "Cuando está activado, se mide el consumo de energía para detectar cuando deja de girar el rotor (si lo soporta el sintonizador)."
+msgstr "Cuando está activado, se mide el consumo de energía para detectar cuando deja de girar el motor (si lo soporta el sintonizador)."
 
 msgid "When enabled, network trash cans are probed for cleaning."
 msgstr "Cuando está habilitado, la papelera de la red son investigados para su limpieza."
