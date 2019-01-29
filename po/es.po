@@ -966,7 +966,7 @@ msgid "Allows you to enable the debug logs. They contain very detailed informati
 msgstr "Le permite habilitar los registros de depuración. Contienen información muy detallada sobre todo lo que hace el sistema. Reinicio requerido para habilitar esto!"
 
 msgid "Allows you to enable/disable displaying icons on the front panel."
-msgstr "Le permite activar/desactivar la visualización de iconos en el panel frontal."
+msgstr "Le permite activar/desactivar la visualización de iconos en el display."
 
 msgid "Allows you to hide the extensions of known file types."
 msgstr "Le permite ocultar extensiones de tipos de archivo conocidos."
@@ -1967,19 +1967,19 @@ msgid "Configure if and how crypto icons will be shown in the channel selection 
 msgstr "Configure si y cómo se mostrarán los iconos criptográficos en la lista de selección de canales."
 
 msgid "Configure if and how service type icons will be shown."
-msgstr "Configurar si y cómo se mostrarán los iconos de tipo de servicio."
+msgstr "Configurar si y cómo se mostrarán los iconos de tipo de canal."
 
 msgid "Configure if and how the record indicator will be shown in the channel selection list."
 msgstr "Configure si y cómo se mostrará el indicador de registro en la lista de selección de canales."
 
 msgid "Configure if and how wide the service name column will be shown in the channel selection list."
-msgstr "Configure si la columna de nombre del servicio se mostrará en la lista de selección de canales, y con qué amplitud.."
+msgstr "Configure si la columna de nombre del canal se mostrará en la lista de selección de canales y con qué amplitud.."
 
 msgid "Configure if behind the subtitles a background is shown."
 msgstr "Configurar si detrás de los subtítulos se muestra un fondo."
 
 msgid "Configure if picons will be shown in the service list."
-msgstr "Configurar si los picons se mostrarán en la lista de servicios."
+msgstr "Configurar si los picons se mostrarán en la lista de canales."
 
 msgid "Configure if the subtitle should switch between normal, italic, bold and bolditalic"
 msgstr "Configure si el subtítulo debe cambiar entre normal, italic, bold y bolditalic"
@@ -2021,10 +2021,10 @@ msgid "Configure the border width of the subtitles. The dark border makes the su
 msgstr "Configurar el ancho del borde de los subtítulos. Un borde oscuro sobre fondo claro facilita la lectura."
 
 msgid "Configure the brightness level of the front panel display for normal operation."
-msgstr "Configure el nivel de brillo de la pantalla del panel frontal para el funcionamiento normal."
+msgstr "Configure el nivel de brillo del display para el funcionamiento normal."
 
 msgid "Configure the brightness level of the front panel display for standby."
-msgstr "Configure el nivel de brillo de la pantalla del panel frontal para el modo de espera."
+msgstr "Configure el nivel de brillo del display para el modo de espera."
 
 msgid "Configure the color of the external subtitles, alternative (normal in white, italic in yellow, bold in cyan, underscore in green), white or yellow."
 msgstr "Configure el color de los subtítulos externos, alternativa (normal en blanco, cursiva en amarillo, negrita en cian, subrayado en verde), blanco o amarillo."
@@ -2033,10 +2033,10 @@ msgid "Configure the color of the teletext subtitles."
 msgstr "Configurar el color de los subtítulos del teletexto."
 
 msgid "Configure the contrast level of the front panel display."
-msgstr "Configurar el nivel de contraste del panel frontal."
+msgstr "Configurar el nivel de contraste del display."
 
 msgid "Configure the cursor behavior in the channel selection list. When opening the channel selection list you can remain on the current service or already select up/down and you are able to revert the B+/B- buttons."
-msgstr "Configure el comportamiento del cursor en la lista de selección de canales. Al abrir la lista de selección de canales, puede permanecer en el servicio actual o bien seleccionar arriba / abajo y puede revertir los botones B+/B-."
+msgstr "Configure el comportamiento del cursor en la lista de selección de canales. Al abrir la lista de selección de canales, puede permanecer en el canal actual o bien seleccionar arriba/abajo y puede revertir los botones B+/B-."
 
 msgid "Configure the duration (in minutes) for the screensaver."
 msgstr "Configure la duración (en minutos) para el protector de pantalla."
@@ -2979,7 +2979,7 @@ msgid "ECM avg"
 msgstr "Media ECM"
 
 msgid "ECM data will be included in the stream. This enables a client receiver to decode it."
-msgstr "Los datos ECM se incluirán en el flujo. Permite que un receptor cliente los descodifique."
+msgstr "Los datos ECM se incluirán en el stream. Permite que un receptor cliente los descodifique."
 
 msgid "ECM last"
 msgstr "ECM"
@@ -3997,7 +3997,7 @@ msgid "If set to 'yes', the infobar will be displayed when Fast Forwarding or Re
 msgstr "Si se configura en 'sí', la barra de información se mostrará cuando se avance o retroceda rápidamente durante la reproducción de medios."
 
 msgid "If the text is too long to be displayed on the front panel, it will be repeated (number of times):"
-msgstr "Si el texto es demasiado largo para aprecer en el panel frontal, se repetirá (número de veces):"
+msgstr "Si el texto es demasiado largo para aprecer en el display, se repetirá (número de veces):"
 
 msgid ""
 "If you can see this, something is wrong with\n"
@@ -7129,7 +7129,7 @@ msgid "Services"
 msgstr "Canales"
 
 msgid "Services may be grouped in bouquets. When enabled, you can use more than one bouquet."
-msgstr "Los servicios pueden agruparse en bouquets. Cuando está habilitado, puedes usar más de un bouquet."
+msgstr "Los canales pueden agruparse en bouquets. Cuando está habilitado, puedes usar más de un bouquet."
 
 msgid "Set Framerate for MiniTV"
 msgstr "Establecer Framerate para MiniTV"
@@ -7205,10 +7205,10 @@ msgid "Set the name the recording will get."
 msgstr "Establecer el nombre de la grabación."
 
 msgid "Set the scrolling speed of text on the front display, this uses a software render in some skins."
-msgstr "Establezca la velocidad de desplazamiento del texto en la pantalla frontal, esto utiliza un software renderizado en algunos skins."
+msgstr "Establezca la velocidad de desplazamiento del texto en el display, esto utiliza un software renderizado en algunos skins."
 
 msgid "Set the scrolling speed of text on the front display."
-msgstr "Configura la velocidad de desplazamiento del panel frontal."
+msgstr "Configura la velocidad de desplazamiento del display."
 
 msgid "Set the time before checking video source for resolution/refresh rate infomation."
 msgstr "Establezca la hora antes de verificar la fuente de video para obtener información de resolución/frecuencia de actualización."
@@ -7355,7 +7355,7 @@ msgid "Show Media playback Remaining/Elapsed as"
 msgstr "Ver reproducción de medios restante/transcurrida como"
 
 msgid "Show MiniTV in the Front Display"
-msgstr "Mostrar MiniTV en la pantalla frontal"
+msgstr "Mostrar MiniTV en el display"
 
 msgid "Show OE Log"
 msgstr "Ver historial OE"
@@ -7367,7 +7367,7 @@ msgid "Show PIP"
 msgstr "Ver PIP"
 
 msgid "Show PIP in the Front Display"
-msgstr "Ver PIP en la pantalla frontal"
+msgstr "Ver PIP en el display"
 
 msgid "Show PVR status in Movie Player infobar"
 msgstr "Mostrar estado de PVR en infobar reproductor de películas"
@@ -7559,7 +7559,7 @@ msgid "Show service list or movies"
 msgstr "Mostrar lista de servicios o películas"
 
 msgid "Show service type icons"
-msgstr "Mostrar iconos de tipo de servicio"
+msgstr "Mostrar iconos de tipo de canal"
 
 msgid "Show shutdown menu"
 msgstr "Ver menú de apagado"
@@ -11718,7 +11718,7 @@ msgid "Use picon_lcd directory for picons on color LCD"
 msgstr "Use el directorio picon_lcd para picons color LCD"
 
 msgid "Configure the brightness level of the front panel display for dimmed operation." 
-msgstr "Configure el nivel de brillo de la pantalla del panel frontal para una operación atenuada."
+msgstr "Configure el nivel de brillo del display para una operación atenuada."
 
 msgid "Dim the LCD after specified time." 
 msgstr "Atenuar la pantalla LCD después de un tiempo especificado."
@@ -11736,7 +11736,7 @@ msgid "In the Standby Record on the LCD Display"
 msgstr "En Modo de Espera grabación en la pantalla LCD"
 
 msgid "Set CI assignment for detection of available services." 
-msgstr "Establecer asignación de CI para la detección de servicios disponibles."
+msgstr "Establecer asignación de CI para la detección de canales disponibles."
 
 msgid "This option allows you to choose whether or not to display genre information for the event." 
 msgstr "Esta opción le permite elegir si desea mostrar o no la información de género para el evento."
@@ -11769,10 +11769,10 @@ msgid "Choose the display formatting style for times. 'H' / 'HH' is the hour for
 msgstr "Elija el estilo de formato de visualización para los tiempos. 'H' / 'HH' es la hora para un reloj de 24 horas, 'h' / 'hh' es la hora para un reloj de 12 horas, 'mm' son los minutos y 'ss' son los segundos. ('HH' y 'hh' tienen ceros iniciales para los valores de un solo dígito). La visualización de la pantalla se basará en su elección, pero puede verse influida por el skin."
 
 msgid "Choose the front panel display formatting style for dates. 'D' / 'DD' is the date and 'M' / 'MM' is the month in digits.  ('DD' and 'MM' have leading zeros for single digit values.) The screen display will be based on your choice but can be influenced by the skin."
-msgstr "Elija el estilo de formato de la pantalla del panel frontal para las fechas. 'D' / 'DD' es la fecha y 'M' / 'MM' es el mes en dígitos. ('DD' y 'MM' tienen ceros iniciales para valores de un solo dígito). La visualización de la pantalla se basará en su elección, pero puede verse influida por el skin."
+msgstr "Elija el estilo de formato del display para las fechas. 'D' / 'DD' es la fecha y 'M' / 'MM' es el mes en dígitos. ('DD' y 'MM' tienen ceros iniciales para valores de un solo dígito). La visualización de la pantalla se basará en su elección, pero puede verse influida por el skin."
 
 msgid "Choose the front panel display formatting style for times. 'H' / 'HH' is the hour for a 24 hour clock, 'h' / 'hh' is the hour for a 12 hour clock, 'mm' is the minutes.  ('HH' and 'hh' have leading zeros for single digit values.) The front panel display will be based on your choice but can be influenced any applicable skin."
-msgstr "Elija el estilo de formato de la pantalla del panel frontal para los tiempos. 'H' / 'HH' es la hora para un reloj de 24 horas, 'h' / 'hh' es la hora para un reloj de 12 horas, 'mm' son los minutos. ('HH' y 'hh' tienen ceros iniciales para los valores de un solo dígito). La pantalla del panel frontal se basará en su elección, pero puede verse afectada por cualquier skin correspondiente."
+msgstr "Elija el estilo de formato del display para los tiempos. 'H' / 'HH' es la hora para un reloj de 24 horas, 'h' / 'hh' es la hora para un reloj de 12 horas, 'mm' son los minutos. ('HH' y 'hh' tienen ceros iniciales para los valores de un solo dígito). La pantalla del display se basará en su elección, pero puede verse afectada por cualquier skin correspondiente."
 
 msgid ""
 "NOTE: This feature is intended for people who cannot disable overscan on their television / display.  Please first try to disable overscan before using this feature.\n"
@@ -12465,7 +12465,7 @@ msgstr "FTP fallo de conexión"
 #~ msgstr "Editar la lista de canales"
 
 #~ msgid "Enables a feature so that the receiver can decrypt streams (if the ECM data is included in the stream and a valid card is available)."
-#~ msgstr "Habilita una función para que el receptor pueda descodificar streams (si los datos ECM se incluyen en el flujo y hay una tarjeta válida)."
+#~ msgstr "Habilita una función para que el receptor pueda descodificar streams (si los datos ECM se incluyen en el stream y hay una tarjeta válida)."
 
 #~ msgid "External (CF)"
 #~ msgstr "Externo (CF)"
@@ -12677,7 +12677,7 @@ msgstr "FTP fallo de conexión"
 #~ msgstr ""
 #~ "Para actualizar el Firmware de su %s %s, sigue estos pasos:\n"
 #~ "1) Apaga el receptor con el botón de encendido trasero y asegúrate de que la memoria USB arrancable esté conectada.\n"
-#~ "2) Vuelve a encenderlo y pulsa el botón ABAJO en el panel frontal durante 10 segundos.\n"
+#~ "2) Vuelve a encenderlo y pulsa el botón ABAJO en el display durante 10 segundos.\n"
 #~ "3) Espera al reinicio y sigue las instrucciones del asistente."
 
 #~ msgid "USB stick wizard"
