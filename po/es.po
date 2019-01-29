@@ -954,10 +954,10 @@ msgid "Allow unstable (experimental) updates"
 msgstr "Permitir actualizaciones inestables (experimentales)"
 
 msgid "Allows the %s %s to read the stored EPG data regularly."
-msgstr "Permite que el %s %s lea los datos grabados en el EPG periódicamente."
+msgstr "Permite que su %s %s  lea los datos grabados en el EPG periódicamente."
 
 msgid "Allows the %s %s to store the EPG data regularly."
-msgstr "Permite que el %s %s lea los datos grabados en el EPG periódicamente."
+msgstr "Permite que su %s %s  lea los datos grabados en el EPG periódicamente."
 
 msgid "Allows you to adjust the amount of time the resolution infomation display on screen."
 msgstr "Le permite ajustar la cantidad de tiempo que la información de resolución se muestra en la pantalla."
@@ -1794,10 +1794,10 @@ msgid "Choose the location for crash and debug logs folder."
 msgstr "Elija la ubicación de carpeta para registros de errores y depuración."
 
 msgid "Choose the location where the EPG data will be stored when the %s %s is shut down. The location must be available at boot time."
-msgstr "Elegir la ubicación donde se guardarán los datos EPG cuando se apaga el %s %s. La ubicación deberá estar disponible durante el reinicio."
+msgstr "Elegir la ubicación donde se guardarán los datos EPG cuando se apaga su %s %s . La ubicación deberá estar disponible durante el reinicio."
 
 msgid "Choose the name of the file that holds the EPG data when the %s %s is shut down. This can be handy to differentiate between several boxes."
-msgstr "Elegir el nombre del archivo que contiene los datos EPG cuando se apaga el %s %s. Puede ser útil para distinguir entre varios receptores."
+msgstr "Elegir el nombre del archivo que contiene los datos EPG cuando se apaga su %s %s . Puede ser útil para distinguir entre varios receptores."
 
 msgid "Choose time interval to which the graphics will be rounded off."
 msgstr "Elegir el intervalo de tiempo en el que se redondean los gráficos."
@@ -5183,7 +5183,7 @@ msgid "No, do nothing."
 msgstr "No hacer nada."
 
 msgid "No, just start my %s %s"
-msgstr "No, sólo arrancar el %s %s"
+msgstr "No, sólo arrancar su %s %s "
 
 msgid "No, never"
 msgstr "No, nunca"
@@ -8384,10 +8384,10 @@ msgstr ""
 "Pulsa 'OK' para empezar a usar su %s %s."
 
 msgid "The %s %s reads the stored EPG data every (hours)."
-msgstr "El %s %s lee los datos guardados en EPG cada (horas)."
+msgstr "Su %s %s  lee los datos guardados en EPG cada (horas)."
 
 msgid "The %s %s stores the EPG data every (hours)."
-msgstr "El %s %s lee los datos guardados en EPG cada (horas)."
+msgstr "Su %s %s  lee los datos guardados en EPG cada (horas)."
 
 msgid ""
 "The AutoTimer plugin is not installed!\n"
@@ -10207,7 +10207,7 @@ msgid ""
 "Your %s %s will now be halted. After you have performed the update instructions from the website, your new firmware will ask you to restore your settings."
 msgstr ""
 "Necesitas un PC conectado a su %s %s. Si necesitas ayuda, visita http://www.dm7025.de.\n"
-"Se apagará el %s %s. Después, sigue las instrucciones de la web y el nuevo Firmware te pedirá que restaures la configuración."
+"Se apagará su %s %s . Después, sigue las instrucciones de la web y el nuevo Firmware te pedirá que restaures la configuración."
 
 msgid "You seem to be in timeshft, the service will briefly stop as timeshift stops."
 msgstr "Pareces estar en Timeshft, el servicio se detendrá brevemente como se detiene Timeshift."
