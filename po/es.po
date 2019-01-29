@@ -1869,7 +1869,7 @@ msgid "Close"
 msgstr "Cerrar"
 
 msgid "Close PiP on exit"
-msgstr "Cerrar PiP y salir"
+msgstr "Cerrar PiP con botón 'EXIT'"
 
 msgid "Close bouquet list."
 msgstr "Cierra lista bouquet."
@@ -2181,7 +2181,7 @@ msgid "Configure to show the channel names, picons, or both in the EPG."
 msgstr "Configurar la visualización de nombres de canal, Picon o ambos en el EPG."
 
 msgid "Configure whether (and for how long) a second infobar will be shown when OK is pressed twice. The second infobar contains additional information about the current channel."
-msgstr "Configurar si (y por cuánto tiempo) aparece una segunda barra de información al pulsar dos veces ¡OK'. La segunda barra contiene información adicional sobre el canal actual."
+msgstr "Configurar si (y por cuánto tiempo) aparece una segunda barra de información al pulsar dos veces ¡OK'. La segunda barra contiene información adicional."
 
 msgid "Configure whether or not an rotor position will be displayed on infobar"
 msgstr "Configure si una posición del motor se mostrará o no en la barra de información"
@@ -6949,7 +6949,7 @@ msgid "Select folders"
 msgstr "Seleccionar carpetas"
 
 msgid "Select how to activate the Quick EPG mode:"
-msgstr "Seleccionar cómo activar el modo Quick EPG:"
+msgstr "Seleccionar cómo activar barra EPG único:"
 
 msgid "Select if timeshift should continue when set to record."
 msgstr "Seleccione si el cambio de tiempo debe continuar cuando se configura para grabar."
@@ -9859,7 +9859,7 @@ msgid "When enabled, http streams are descrambled on the server side. The (remot
 msgstr "Cuando está habilitado, las secuencias http se descifran en el lado del servidor. El receptor del cliente (remoto) no tiene que hacer descifrado. Predeterminado activado."
 
 msgid "When enabled, it is possible to leave the Movie Player with exit."
-msgstr "Cuando está habilitado, es posible dejar el Reproductor de películas con salida."
+msgstr "Cuando está habilitado, es posible dejar el Reproductor de películas con botón 'exit'."
 
 msgid "When enabled, measure power consumption to detect when the rotor stops turning (when supported by the tuner)."
 msgstr "Cuando está activado, se mide el consumo de energía para detectar cuando deja de girar el motor (si lo soporta el sintonizador)."
