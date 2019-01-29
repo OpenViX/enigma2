@@ -7084,7 +7084,7 @@ msgid "Service font size"
 msgstr "Tamaño de fuente del canal"
 
 msgid "Service info font size"
-msgstr "Tamaño de letra de la información de canal"
+msgstr "Tamaño de la fuente de información del evento"
 
 msgid ""
 "Service invalid!\n"
@@ -7094,7 +7094,7 @@ msgstr ""
 "(Tiempo cumplido leyendo PMT)"
 
 msgid "Service name font size"
-msgstr "Tamaño de letra de la información de canal"
+msgstr "Tamaño de la fuente del nombre del canal"
 
 msgid ""
 "Service not found!\n"
