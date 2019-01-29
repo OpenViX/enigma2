@@ -35,7 +35,7 @@ msgid ""
 "Backup your %s %s settings."
 msgstr ""
 "\n"
-"Copia de Su %s %s configuración."
+"Copia de su %s %s configuración."
 
 msgid ""
 "\n"
@@ -954,10 +954,10 @@ msgid "Allow unstable (experimental) updates"
 msgstr "Permitir actualizaciones inestables (experimentales)"
 
 msgid "Allows the %s %s to read the stored EPG data regularly."
-msgstr "Permite que la %s %s lea los datos grabados en el EPG periódicamente."
+msgstr "Permite que el %s %s lea los datos grabados en el EPG periódicamente."
 
 msgid "Allows the %s %s to store the EPG data regularly."
-msgstr "Permite que la %s %s lea los datos grabados en el EPG periódicamente."
+msgstr "Permite que el %s %s lea los datos grabados en el EPG periódicamente."
 
 msgid "Allows you to adjust the amount of time the resolution infomation display on screen."
 msgstr "Le permite ajustar la cantidad de tiempo que la información de resolución se muestra en la pantalla."
@@ -1794,10 +1794,10 @@ msgid "Choose the location for crash and debug logs folder."
 msgstr "Elija la ubicación de carpeta para registros de errores y depuración."
 
 msgid "Choose the location where the EPG data will be stored when the %s %s is shut down. The location must be available at boot time."
-msgstr "Elegir la ubicación donde se guardarán los datos EPG cuando se apaga la %s %s. La ubicación deberá estar disponible durante el reinicio."
+msgstr "Elegir la ubicación donde se guardarán los datos EPG cuando se apaga el %s %s. La ubicación deberá estar disponible durante el reinicio."
 
 msgid "Choose the name of the file that holds the EPG data when the %s %s is shut down. This can be handy to differentiate between several boxes."
-msgstr "Elegir el nombre del archivo que contiene los datos EPG cuando se apaga la %s %s. Puede ser útil para distinguir entre varios receptores."
+msgstr "Elegir el nombre del archivo que contiene los datos EPG cuando se apaga el %s %s. Puede ser útil para distinguir entre varios receptores."
 
 msgid "Choose time interval to which the graphics will be rounded off."
 msgstr "Elegir el intervalo de tiempo en el que se redondean los gráficos."
@@ -2759,7 +2759,7 @@ msgid "Display message before playing next movie"
 msgstr "Mostrar un mensaje antes de reproducir la siguiente película"
 
 msgid "Display the EIT now/next eventdata in infobar."
-msgstr "Visualizar datos actuales/siguientes EIT en la barra de información."
+msgstr "Visualizar datos ahora/siguiente EIT en la barra de información."
 
 msgid "Do not change"
 msgstr "No cambiar"
@@ -4036,13 +4036,13 @@ msgid "Inadyn setup"
 msgstr "Configurar Inadyn"
 
 msgid "Include AIT in http streams"
-msgstr "Incluir AIT en flujos http"
+msgstr "Incluir AIT en streams http"
 
 msgid "Include ECM in http streams"
-msgstr "Incluir ECM en flujos http"
+msgstr "Incluir ECM en streams http"
 
 msgid "Include EIT in http streams"
-msgstr "Incluir EIT en flujos http"
+msgstr "Incluir EIT en streams http"
 
 msgid "Incorrect service type for PiP!"
 msgstr "Tipo de servicio incorrecto para PiP!"
@@ -5183,7 +5183,7 @@ msgid "No, do nothing."
 msgstr "No hacer nada."
 
 msgid "No, just start my %s %s"
-msgstr "No, sólo arrancar la %s %s"
+msgstr "No, sólo arrancar el %s %s"
 
 msgid "No, never"
 msgstr "No, nunca"
@@ -8384,10 +8384,10 @@ msgstr ""
 "Pulsa 'OK' para empezar a usar su %s %s."
 
 msgid "The %s %s reads the stored EPG data every (hours)."
-msgstr "La %s %s lee los datos guardados en EPG cada (horas)."
+msgstr "El %s %s lee los datos guardados en EPG cada (horas)."
 
 msgid "The %s %s stores the EPG data every (hours)."
-msgstr "La %s %s lee los datos guardados en EPG cada (horas)."
+msgstr "El %s %s lee los datos guardados en EPG cada (horas)."
 
 msgid ""
 "The AutoTimer plugin is not installed!\n"
@@ -9760,7 +9760,7 @@ msgid ""
 msgstr ""
 "Bienvenido.\n"
 "\n"
-"Si quieres conectar su %s %s a internet, este asistente te guiará en la configuración básica de red de la %s %s.\n"
+"Si quieres conectar su %s %s a internet, este asistente te guiará en la configuración básica de red de su %s %s.\n"
 "\n"
 "Pulsa 'OK' para empezar a configurar la red"
 
@@ -9802,10 +9802,10 @@ msgid "When enabled the online checker will also check for experimental versions
 msgstr "Cuando está activado, el verificador online comprabará también las versiones experimentales"
 
 msgid "When enabled, AIT data will be included in http streams. This allows a client receiver to use HbbTV."
-msgstr "Cuando está activado, los datos AIT se incluirán en los flujos http. Permite que un receptor cliente utilice HbbTV."
+msgstr "Cuando está activado, los datos AIT se incluirán en los streams http. Esto permite que un receptor cliente use HbbTV."
 
 msgid "When enabled, EIT data will be included in http streams. This allows a client receiver to show EPG."
-msgstr "Cuando está activado, los datos AIT se incluirán en los flujos http. Permite que un receptor visualice el EPG."
+msgstr "Cuando está activado, los datos EIT se incluirán en los streams http. Esto permite que un receptor cliente use el EPG."
 
 msgid "When enabled, a popup message will be shown when a movie has finished and the next one will start."
 msgstr "Cuando está activado, aparecerá un mensaje cuando termine una película y empiece otra."
@@ -10206,8 +10206,8 @@ msgid ""
 "You need a PC connected to your %s %s. If you need further instructions, please visit the website http://www.dm7025.de.\n"
 "Your %s %s will now be halted. After you have performed the update instructions from the website, your new firmware will ask you to restore your settings."
 msgstr ""
-"Necesitas un PC conectado a la %s %s. Si necesitas ayuda, visita http://www.dm7025.de.\n"
-"Se apagará la %s %s. Después, sigue las instrucciones de la web y el nuevo Firmware te pedirá que restaures la configuración."
+"Necesitas un PC conectado a su %s %s. Si necesitas ayuda, visita http://www.dm7025.de.\n"
+"Se apagará el %s %s. Después, sigue las instrucciones de la web y el nuevo Firmware te pedirá que restaures la configuración."
 
 msgid "You seem to be in timeshft, the service will briefly stop as timeshift stops."
 msgstr "Pareces estar en Timeshft, el servicio se detendrá brevemente como se detiene Timeshift."
@@ -12426,7 +12426,7 @@ msgstr "FTP fallo de conexión"
 #~ msgstr "¡Conectado!"
 
 #~ msgid "Could not connect to %s %s .NFI image feed server:"
-#~ msgstr "No se ha podido conectar al servidor de imágenes .NFI de %s %s:"
+#~ msgstr "No pudo conectarse a %s %s .NFI servidor feed de imagen:"
 
 #~ msgid "Create more detailed crash log"
 #~ msgstr "Crear historial de fallo más detallado"
@@ -12465,7 +12465,7 @@ msgstr "FTP fallo de conexión"
 #~ msgstr "Editar la lista de canales"
 
 #~ msgid "Enables a feature so that the receiver can decrypt streams (if the ECM data is included in the stream and a valid card is available)."
-#~ msgstr "Habilita una función para que el receptor pueda descodificar flujos (si los datos ECM se incluyen en el flujo y hay una tarjeta válida)."
+#~ msgstr "Habilita una función para que el receptor pueda descodificar streams (si los datos ECM se incluyen en el flujo y hay una tarjeta válida)."
 
 #~ msgid "External (CF)"
 #~ msgstr "Externo (CF)"
