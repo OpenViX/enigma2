@@ -7104,7 +7104,7 @@ msgstr ""
 "(SID no encontrado en PAT)"
 
 msgid "Service number font size"
-msgstr "Tamaño de letra del número de canal"
+msgstr "Tamaño de fuente del número del canal"
 
 msgid "Service reference"
 msgstr "Referencia del canal"
