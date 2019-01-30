@@ -12450,7 +12450,7 @@ msgstr "FTP fallo de conexión"
 #~ msgstr "Ajustes de visualización"
 
 #~ msgid "Do you want to download the image to %s ?"
-#~ msgstr "¿Quieres descargar la imagen en %s?"
+#~ msgstr "Quieres descargar la imagen a %s ?"
 
 #~ msgid "Download %s from server"
 #~ msgstr "Descargar %s del servidor"
@@ -12594,7 +12594,7 @@ msgstr "FTP fallo de conexión"
 #~ msgstr "Seleccionar el tipo de EPG por defecto..."
 
 #~ msgid "Select desired image from feed list"
-#~ msgstr "Seleccionar la imagen deseada de la lista de fuentes"
+#~ msgstr "Seleccionar la imagen deseada de la lista feed"
 
 #~ msgid "Select if you want the Subservice mode to be activated."
 #~ msgstr "Selecciona si quieres que el modo Subcanal se active."
@@ -12684,13 +12684,13 @@ msgstr "FTP fallo de conexión"
 #~ msgstr "Asistente de memoria USB"
 
 #~ msgid "Uncommitted DiSEqC command"
-#~ msgstr "Comando DiSEqC 1.1"
+#~ msgstr "No comprometido Comando DiSEqC 1.1"
 
 #~ msgid "Use ViX colored Buttons*"
-#~ msgstr "Usar las teclas de colores de VIX*"
+#~ msgstr "Usar las botones de colores de VIX*"
 
 #~ msgid "Version:\t%s"
-#~ msgstr "Versión: %s"
+#~ msgstr "Versión:\t%s"
 
 #~ msgid "Video fine tuning"
 #~ msgstr "Ajuste fino de vídeo"
@@ -12723,7 +12723,7 @@ msgstr "FTP fallo de conexión"
 #~ msgstr "Imagen actualmente instalada: %s"
 
 #~ msgid "fine-tune your display"
-#~ msgstr "Afinar los ajustes de pantalla."
+#~ msgstr "Afinar los ajustes del display"
 
 #~ msgid "leave movie player..."
 #~ msgstr "Salir del reproductor de películas..."
