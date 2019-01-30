@@ -8384,10 +8384,10 @@ msgstr ""
 "Pulsa 'OK' para empezar a usar su %s %s."
 
 msgid "The %s %s reads the stored EPG data every (hours)."
-msgstr "Su %s %s lee los datos guardados en EPG cada (horas)."
+msgstr "Su %s %s carga los datos guardados en EPG cada (horas)."
 
 msgid "The %s %s stores the EPG data every (hours)."
-msgstr "Su %s %s lee los datos guardados en EPG cada (horas)."
+msgstr "Su %s %s carga los datos guardados en EPG cada (horas)."
 
 msgid ""
 "The AutoTimer plugin is not installed!\n"
