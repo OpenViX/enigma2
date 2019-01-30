@@ -18,6 +18,7 @@ from Components.Console import Console
 from Components.Sources.List import List
 from Components.Sources.StaticText import StaticText
 from Components.Harddisk import Harddisk
+from Components.SystemInfo import SystemInfo
 from Tools.LoadPixmap import LoadPixmap
 from Tools.Directories import SCOPE_ACTIVE_SKIN, resolveFilename, pathExists
 
@@ -132,6 +133,8 @@ class VIXDevicesPanel(Screen):
 				continue
 			device = parts[3]
 			if not re.search('sd[a-z][1-9]', device) and not re.search('mmcblk[0-9]p[1-9]', device):
+				continue
+			if SystemInfo["HasSDmmc"] and pathExists("/dev/sda4") and re.search('sd[a][1-4]', device):
 				continue
 			if device in list2:
 				continue
@@ -374,6 +377,8 @@ class VIXDevicePanelConf(Screen, ConfigListScreen):
 				continue
 			device = parts[3]
 			if not re.search('sd[a-z][1-9]', device) and not re.search('mmcblk[0-9]p[1-9]', device):
+				continue
+			if SystemInfo["HasSDmmc"] and pathExists("/dev/sda4") and re.search('sd[a][1-4]', device):
 				continue
 			if device in list2:
 				continue
