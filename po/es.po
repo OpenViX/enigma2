@@ -11982,7 +11982,7 @@ msgid "middle"
 msgstr "medio"
 
 msgid "hide"
-msgstr "escondido"
+msgstr "esconder"
 
 msgid "HDMI Colorimetry"
 msgstr "HDMI Colorimetría"
@@ -12647,7 +12647,7 @@ msgstr "FTP fallo de conexión"
 #~ "\n"
 #~ "%s\n"
 #~ "\n"
-#~ "¿Quieres escribir el USB Fasher en esta memoria USB?"
+#~ "Quieres escribir el flash USB en este dispositivo?"
 
 #~ msgid "The md5sum validation failed, the file may be corrupted!"
 #~ msgstr "La validación md5sum ha fallado. El fichero podría estar corrupto!"
