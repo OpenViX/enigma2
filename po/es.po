@@ -954,10 +954,10 @@ msgid "Allow unstable (experimental) updates"
 msgstr "Permitir actualizaciones inestables (experimentales)"
 
 msgid "Allows the %s %s to read the stored EPG data regularly."
-msgstr "Permite que su %s %s lea los datos grabados en el EPG periódicamente, tenga en cuenta los recursos que requiere el sistema!."
+msgstr "Permite que su %s %s lea los datos almacenados en el EPG periódicamente, tenga en cuenta los recursos que requiere el sistema."
 
 msgid "Allows the %s %s to store the EPG data regularly."
-msgstr "Permite que su %s %s guarde los datos grabados en el EPG periódicamente."
+msgstr "Permite que su %s %s guarde los datos en el EPG periódicamente."
 
 msgid "Allows you to adjust the amount of time the resolution infomation display on screen."
 msgstr "Le permite ajustar la cantidad de tiempo que la información de resolución se muestra en la pantalla."
@@ -11982,7 +11982,7 @@ msgid "middle"
 msgstr "medio"
 
 msgid "hide"
-msgstr "esconder"
+msgstr "ocultar"
 
 msgid "HDMI Colorimetry"
 msgstr "HDMI Colorimetría"
