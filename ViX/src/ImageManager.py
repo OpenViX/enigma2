@@ -176,6 +176,8 @@ class VIXImageManager(Screen):
 				self.BackupRunning = True
 		if self.BackupRunning:
 			self["key_green"].setText(_("View progress"))
+		elif getMachineBuild() in ("h9","i55plus"):
+			self["key_green"].setText(_(" "))
 		else:
 			self["key_green"].setText(_("New backup"))
 		self.activityTimer.startLongTimer(5)
@@ -336,16 +338,19 @@ class VIXImageManager(Screen):
 		self.populate_List()
 
 	def GreenPressed(self):
-		backup = None
-		self.BackupRunning = False
-		for job in Components.Task.job_manager.getPendingJobs():
-			if job.name.startswith(_("Image manager")):
-				backup = job
-				self.BackupRunning = True
-		if self.BackupRunning and backup:
-			self.showJobView(backup)
+		if getMachineBuild() in ("h9","i55plus"):
+			self.close()
 		else:
-			self.keyBackup()
+			backup = None
+			self.BackupRunning = False
+			for job in Components.Task.job_manager.getPendingJobs():
+				if job.name.startswith(_("Image manager")):
+					backup = job
+					self.BackupRunning = True
+			if self.BackupRunning and backup:
+				self.showJobView(backup)
+			else:
+				self.keyBackup()
 
 	def keyBackup(self):
 		message = _("Do you want to create a full image backup?\nThis can take about 6 minutes to complete.")
@@ -499,10 +504,9 @@ class VIXImageManager(Screen):
 				else:
 					CMD = "/usr/bin/ofgwrite -k -r -m%s '%s'" % (self.multibootslot, MAINDEST)
  			elif SystemInfo["HasHiSi"]:
-				if getMachineBuild() in ("h9","i55plus","u55"):
-					CMD = "/usr/bin/ofgwrite -f -k -r '%s'" % MAINDEST
-				else:
-					CMD = "/usr/bin/ofgwrite -r%s -k%s '%s'" % (self.MTDROOTFS, self.MTDKERNEL, MAINDEST)
+				CMD = "/usr/bin/ofgwrite -r%s -k%s '%s'" % (self.MTDROOTFS, self.MTDKERNEL, MAINDEST)
+			elif getMachineBuild() in ("h9","i55plus","u55"):
+				CMD = "/usr/bin/ofgwrite -f -k -r '%s'" % MAINDEST
 			else:
 				CMD = "/usr/bin/ofgwrite -k -r '%s'" % MAINDEST
 		else:
@@ -713,7 +717,9 @@ class ImageBackup(Screen):
 		self.KERNELFILE = getMachineKernelFile()
 		self.ROOTFSFILE = getMachineRootFile()
 		self.MAINDEST = self.MAINDESTROOT + '/' + getImageFolder() + '/'
+		self.MAINDEST2 = self.MAINDESTROOT + '/'
 		self.MODEL = getBoxType()
+		self.MCBUILD = getMachineBuild()
 		self.KERN = "mmc"
 		if SystemInfo["canMultiBoot"]:
 			kernel = GetCurrentImage()
@@ -739,6 +745,8 @@ class ImageBackup(Screen):
 		if getMachineBuild() in ("gb7252"):
 			self.GB4Kbin = 'boot.bin'
 			self.GB4Krescue = 'rescue.bin'
+		print '[ImageManager] Model:',self.MODEL
+		print '[ImageManager] Machine Build:',self.MCBUILD
 		print '[ImageManager] MTD Kernel:',self.MTDKERNEL
 		print '[ImageManager] MTD Root:',self.MTDROOTFS
 		print '[ImageManager] Type:',getImageFileSystem()
@@ -759,7 +767,6 @@ class ImageBackup(Screen):
 			self.KERNELFSTYPE = 'bin'
 			self.MTDBOOT = "none"
 			self.EMMCIMG = "usb_update.bin"
-			self.MAINDEST2 = self.MAINDESTROOT + '/'
 		elif 'dinobotemmc' in getImageFileSystem():
 			self.ROOTDEVTYPE = 'tar.bz2'
 			self.ROOTFSTYPE = 'tar.bz2'
@@ -1016,8 +1023,10 @@ class ImageBackup(Screen):
 				self.commands.append('echo " "')
 				self.commands.append('echo "' + _("Create:") + " fastboot dump" + '"')
 				self.commands.append("dd if=/dev/mtd0 of=%s/fastboot.bin" % self.WORKDIR)
+				self.commands.append("dd if=/dev/mtd0 of=%s/fastboot.bin" % self.MAINDEST2)
 				self.commands.append('echo "' + _("Create:") + " bootargs dump" + '"')
 				self.commands.append("dd if=/dev/mtd1 of=%s/bootargs.bin" % self.WORKDIR)
+				self.commands.append("dd if=/dev/mtd1 of=%s/bootargs.bin" % self.MAINDEST2)
 				self.commands.append('echo "' + _("Create:") + " baseparam dump" + '"')
 				self.commands.append("dd if=/dev/mtd2 of=%s/baseparam.bin" % self.WORKDIR)
 				self.commands.append('echo "' + _("Create:") + " pq_param dump" + '"')
