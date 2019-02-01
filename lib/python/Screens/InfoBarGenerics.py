@@ -2407,11 +2407,11 @@ class InfoBarPVRState:
 		return InfoBarMoviePlayerSummary
 
 	def _mayShow(self):
-		if self.has_key("state") and not config.usage.movieplayer_pvrstate.value:
+		if self.has_key("state") and config.usage.movieplayer_pvrstate.value:
 			self["state"].setText("")
 			self["statusicon"].setPixmapNum(6)
 			self["speed"].setText("")
-		if self.shown and self.seekstate != self.SEEK_STATE_EOF:
+		if self.shown and self.seekstate != self.SEEK_STATE_EOF and config.usage.movieplayer_pvrstate.value:
 			self.pvrStateDialog.show()
 			self.startHideTimer()
 

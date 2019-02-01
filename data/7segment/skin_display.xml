@@ -20,7 +20,9 @@
 			<convert type="VfdDisplay"></convert>
 		</widget>
 	</screen>
-
+    <screen name="StatusiconPanel" position="0,0" size="1,1">
+		<widget name="statusicon_summary" position="0,0" zPosition="3" size="23,20" pixmaps="play.png,pause.png,stop.png,forward.png,backward.png,slow.png"/>	
+	</screen>
 <!-- MyRecPanel -->
 	<screen name="MyRecPanel">
 		<widget source="session.RecordState" render="FixedLabel" position="0,0" size="1,1" text="REC ">
@@ -43,6 +45,7 @@
 	<screen name="InfoBarMoviePlayerSummary" position="0,0" size="1,1">
 		<panel name="MyClockPanel" />
 		<panel name="MyRecPanel" />
+		<panel name="StatusiconPanel" />		
 	</screen>
 
 <!-- menus-->
