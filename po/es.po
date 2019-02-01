@@ -954,7 +954,7 @@ msgid "Allow unstable (experimental) updates"
 msgstr "Permitir actualizaciones inestables (experimentales)"
 
 msgid "Allows the %s %s to read the stored EPG data regularly."
-msgstr "Permite que su %s %s lea los datos almacenados en el EPG periódicamente, tenga en cuenta los recursos que requiere el sistema."
+msgstr "Permite que su %s %s actualizar los datos almacenados en el EPG periódicamente, tenga en cuenta los recursos que requiere el sistema."
 
 msgid "Allows the %s %s to store the EPG data regularly."
 msgstr "Permite que su %s %s guarde los datos en el EPG periódicamente."
