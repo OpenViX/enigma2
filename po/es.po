@@ -9749,7 +9749,7 @@ msgstr ""
 "Ve hasta al final, pulsa 'OK' y selecciona 'fin del corte'. Ya está."
 
 msgid "Welcome to the image upgrade wizard. The wizard will assist you in upgrading the firmware of your %s %s by providing a backup facility for your current settings and a short explanation of how to upgrade your firmware."
-msgstr "Bienvenido al asistente de actualización de Image. El asistente te guiará sobre cómo actualizar Firmware de su %s %s con la posibilidad de hacer una copia de seguridad de la configuración actual y una breve explicación de cómo actualizar Firmware."
+msgstr "Bienvenido al asistente de actualización de Image. El asistente le guiará sobre cómo actualizar Firmware de su %s %s con la posibilidad de hacer una copia de seguridad de la configuración actual y una breve explicación de cómo actualizar Firmware."
 
 msgid ""
 "Welcome.\n"
@@ -9760,7 +9760,7 @@ msgid ""
 msgstr ""
 "Bienvenido.\n"
 "\n"
-"Si quieres conectar su %s %s a internet, este asistente te guiará en la configuración básica de red de su %s %s.\n"
+"Si quieres conectar su %s %s a Internet, este asistente te guiará en la configuración básica de red de su %s %s.\n"
 "\n"
 "Pulsa 'OK' para empezar a configurar la red"
 
