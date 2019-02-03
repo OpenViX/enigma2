@@ -176,8 +176,6 @@ class VIXImageManager(Screen):
 				self.BackupRunning = True
 		if self.BackupRunning:
 			self["key_green"].setText(_("View progress"))
-		elif getMachineBuild() in ("h9","i55plus"):
-			self["key_green"].setText(_(" "))
 		else:
 			self["key_green"].setText(_("New backup"))
 		self.activityTimer.startLongTimer(5)
@@ -338,19 +336,16 @@ class VIXImageManager(Screen):
 		self.populate_List()
 
 	def GreenPressed(self):
-		if getMachineBuild() in ("h9","i55plus"):
-			self.close()
+		backup = None
+		self.BackupRunning = False
+		for job in Components.Task.job_manager.getPendingJobs():
+			if job.name.startswith(_("Image manager")):
+				backup = job
+				self.BackupRunning = True
+		if self.BackupRunning and backup:
+			self.showJobView(backup)
 		else:
-			backup = None
-			self.BackupRunning = False
-			for job in Components.Task.job_manager.getPendingJobs():
-				if job.name.startswith(_("Image manager")):
-					backup = job
-					self.BackupRunning = True
-			if self.BackupRunning and backup:
-				self.showJobView(backup)
-			else:
-				self.keyBackup()
+			self.keyBackup()
 
 	def keyBackup(self):
 		message = _("Do you want to create a full image backup?\nThis can take about 6 minutes to complete.")
@@ -505,8 +500,6 @@ class VIXImageManager(Screen):
 					CMD = "/usr/bin/ofgwrite -k -r -m%s '%s'" % (self.multibootslot, MAINDEST)
  			elif SystemInfo["HasHiSi"]:
 				CMD = "/usr/bin/ofgwrite -r%s -k%s '%s'" % (self.MTDROOTFS, self.MTDKERNEL, MAINDEST)
-			elif getMachineBuild() in ("h9","i55plus","u55"):
-				CMD = "/usr/bin/ofgwrite -f -k -r '%s'" % MAINDEST
 			else:
 				CMD = "/usr/bin/ofgwrite -k -r '%s'" % MAINDEST
 		else:
@@ -747,6 +740,8 @@ class ImageBackup(Screen):
 			self.GB4Krescue = 'rescue.bin'
 		print '[ImageManager] Model:',self.MODEL
 		print '[ImageManager] Machine Build:',self.MCBUILD
+		print '[ImageManager] Kernel File:',self.KERNELFILE
+		print '[ImageManager] Root File:',self.ROOTFSFILE
 		print '[ImageManager] MTD Kernel:',self.MTDKERNEL
 		print '[ImageManager] MTD Root:',self.MTDROOTFS
 		print '[ImageManager] Type:',getImageFileSystem()
