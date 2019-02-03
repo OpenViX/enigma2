@@ -558,6 +558,7 @@ class SatfinderExtra(Satfinder):
 		{
 			"yellow": self.keyReadServices,
 		}, -3)
+		self["actions2"].setEnabled(False)
 		
 		# DVB stream info
 		self.serviceList = []
@@ -589,6 +590,7 @@ class SatfinderExtra(Satfinder):
 		self["onid"].setText("")
 		self["pos"].setText(self.DVB_type.value)
 		self["key_yellow"].setText("")
+		self["actions2"].setEnabled(False)
 		self.serviceList = []
 
 		if not dvbreader_available or self.frontend is None or self.demux < 0:
@@ -676,6 +678,7 @@ class SatfinderExtra(Satfinder):
 		self.serviceList = sorted(sdt_current_content, key=lambda listItem: listItem["service_name"])
 		if self.serviceList:
 			self["key_yellow"].setText(_("Service list"))
+			self["actions2"].setEnabled(True)
 
 		self.getOrbPosFromNit(currentProcess)
 

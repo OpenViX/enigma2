@@ -24,8 +24,6 @@
 	</setup>
 	<setup key="tunermisc" title="Tuner miscellaneous" titleshort="Miscellaneous" showOpenWebIF="1">
 		<item level="1" text="12V output" description="12V output." requires="12V_Output">config.usage.output_12V</item>
-		<item level="2" text="Force LNB Power" description="When enabled the LNB power will not be switched off in standby" requires="HasForceLNBOn">config.misc.forceLnbPower</item>
-		<item level="2" text="Force ToneBurst" description="When enabled the LNB toneburst will be forced" requires="HasForceToneburst">config.misc.forceToneBurst</item>
 		<item level="2" text="Preferred tuner" description="Configure which tuner will be preferred, when more than one tuner is available. If set to 'auto' the system will give priority to the tuner having the lowest number of channels/satellites.">config.usage.frontend_priority</item>
 		<item level="2" text="Preferred tuner DVB-S" description="When enabled, this setting has more weight than 'Preferred tuner'." requires="DVB-S_priority_tuner_available">config.usage.frontend_priority_dvbs</item>
 		<item level="2" text="Preferred tuner DVB-T" description="When enabled, this setting has more weight than 'Preferred tuner'." requires="DVB-T_priority_tuner_available">config.usage.frontend_priority_dvbt</item>
@@ -176,8 +174,6 @@
 		<item level="0" text="Margin before recording (minutes)" description="When nonzero, a recording will start earlier than the starting time indicated by the EPG.">config.recording.margin_before</item>
 		<item level="0" text="Margin after recording (minutes)" description="When nonzero, a recording will stop later than the ending time indicated by the EPG.">config.recording.margin_after</item>
 		<item level="2" text="Show message when recording starts" description="When enabled, a popup message will be shown when a recording starts.">config.usage.show_message_when_recording_starts</item>
-		<item level="2" text="Show movie lengths in movielist" description="When enabled, the length of each recording will be shown in the movielist (this might cause some additional loading time).">config.usage.load_length_of_movies_in_moviellist</item>
-		<item level="2" text="Show status icons in movie list" description="Configure the type of status indication icons shown in the movie list.">config.usage.show_icons_in_movielist</item>
 		<item level="2" text="Quit Movie Player with EXIT button" description="When enabled, it is possible to leave the Movie Player with exit.">config.usage.leave_movieplayer_onExit</item>
 		<item level="2" text="Behavior when a movie is started" description="Configure the behavior when movie playback is started.">config.usage.on_movie_start</item>
 		<item level="2" text="Behavior when a movie is stopped" description="Configure the behavior when movie playback is manually stopped.">config.usage.on_movie_stop</item>
@@ -292,7 +288,6 @@
 		<item level="2" text="Timeshift-save action on zap" description="Select if timeshift should continue when set to record.">config.timeshift.favoriteSaveAction</item>
 		<item level="2" text="Stop timeshift while recording?" description="Stops timeshift being used if a recording is in progress. (Advisable for USB sticks)">config.timeshift.stopwhilerecording</item>
 		<item level="2" text="Use timeshift seekbar while timeshifting?" description="If set to 'yes', allows you to use the seekbar to jump to a point within the event.">config.timeshift.showinfobar</item>
-		<item level="2" text="Show warning when in a stream" description="When enabled, a warning will be displayed that timeshift is not supported in an IP stream..">config.timeshift.stream_warning</item>
 	</setup>
 	<setup key="epgsingle" title="ChannelEPG">
 		<item level="2" text="Sort list by" description="You can have the list sorted by time or alphanumerical.">config.epgselection.sort</item>
