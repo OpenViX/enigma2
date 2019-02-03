@@ -1516,7 +1516,7 @@ def InitNimManager(nimmgr, update_slots = []):
 	def tunerTypeChanged(nimmgr, configElement, initial=False):
 		fe_id = configElement.fe_id
 		if configElement.value == "nothing":
-			if "nothing" not in config.Nims[fe_id].configMode.choices.choices.keys():
+			if ("nothing", _("disabled")) not in config.Nims[fe_id].configMode.choices.choices:
 				config.Nims[fe_id].configMode.choices.choices.update({"nothing": _("disabled")})
 			config.Nims[fe_id].configMode.value = "nothing"
 			return
