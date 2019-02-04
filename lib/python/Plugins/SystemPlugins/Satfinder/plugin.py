@@ -33,18 +33,12 @@ class Satfinder(ScanSetup, ServiceScan):
 		self.satfinderTunerEntry = None
 		self.satEntry = None
 		self.typeOfInputEntry = None
-		self.frequencyEntry = None
-		self.polarizationEntry = None
-		self.symbolrateEntry = None
-		self.inversionEntry = None
-		self.rolloffEntry = None
-		self.pilotEntry = None
 		self.modulationEntry = None
-		self.fecEntry = None
 		self.transponder = None
 		self.DVB_TypeEntry = None
 		self.systemEntryTerr = None
-
+		self.frontend = None
+		self.is_id_boolEntry = None
 		ScanSetup.__init__(self, session)
 		self.setTitle(_("Signal Finder"))
 		self["Frontend"] = FrontendStatus(frontend_source = lambda : self.frontend, update_interval = 100)
@@ -92,12 +86,17 @@ class Satfinder(ScanSetup, ServiceScan):
 
 	def newConfig(self):
 		cur = self["config"].getCurrent()
-		if cur in (self.typeOfTuningEntry, self.systemEntry, self.typeOfInputEntry, self.systemEntryATSC, self.DVB_TypeEntry, self.systemEntryTerr):
+		if cur in (
+					self.typeOfTuningEntry,
+					self.systemEntry,
+					self.typeOfInputEntry,
+					self.systemEntryATSC,
+					self.DVB_TypeEntry,
+					self.systemEntryTerr,
+					self.satEntry
+					):
 			self.createSetup()
-		elif cur == self.satfinderTunerEntry:
-			self.preDefTransponders = None
-			self.TerrestrialTransponders = None
-			self.CableTransponders = None
+		elif cur == self.satfinderTunerEntry: # switching tuners, update screen, get frontend, and retune (in prepareFrontend())
 			self.feid = int(self.satfinder_scan_nims.value)
 			self.createSetup()
 			self.prepareFrontend()
@@ -106,6 +105,20 @@ class Satfinder(ScanSetup, ServiceScan):
 				if self.session.nav.RecordTimer.isRecording():
 					msg += _("\nRecording in progress.")
 				self.session.open(MessageBox, msg, MessageBox.TYPE_ERROR)
+		elif cur == self.is_id_boolEntry:
+			if self.is_id_boolEntry[1].value:
+				self.scan_sat.is_id.value = 0 if self.is_id_memory < 0 else self.is_id_memory
+				self.scan_sat.pls_mode.value = self.pls_mode_memory
+				self.scan_sat.pls_code.value = self.pls_code_memory
+			else:
+				self.is_id_memory = self.scan_sat.is_id.value
+				self.pls_mode_memory = self.scan_sat.pls_mode.value
+				self.pls_code_memory = self.scan_sat.pls_code.value
+				self.scan_sat.is_id.value = eDVBFrontendParametersSatellite.No_Stream_Id_Filter
+				self.scan_sat.pls_mode.value = eDVBFrontendParametersSatellite.PLS_Gold
+				self.scan_sat.pls_code.value = eDVBFrontendParametersSatellite.PLS_Default_Gold_Code
+			self.createSetup()
+
 		else:
 			if cur == self.satEntry:
 				self.preDefTransponders = None
@@ -113,13 +126,6 @@ class Satfinder(ScanSetup, ServiceScan):
 		if cur not in (
 			self.systemEntry,
 			self.satfinderTunerEntry,
-			self.frequencyEntry,
-			self.polarizationEntry,
-			self.symbolrateEntry,
-			self.inversionEntry,
-			self.rolloffEntry,
-			self.fecEntry,
-			self.pilotEntry,
 			self.modulationEntry,
 			self.systemEntryATSC
 			):
@@ -149,31 +155,29 @@ class Satfinder(ScanSetup, ServiceScan):
 					else:
 						# downgrade to dvb-s, in case a -s2 config was active
 						self.scan_sat.system.value = eDVBFrontendParametersSatellite.System_DVB_S
-					self.frequencyEntry = getConfigListEntry(_('Frequency'), self.scan_sat.frequency)
-					self.list.append(self.frequencyEntry)
-					self.polarizationEntry = getConfigListEntry(_('Polarization'), self.scan_sat.polarization)
-					self.list.append(self.polarizationEntry)
-					self.symbolrateEntry = (getConfigListEntry(_('Symbol rate'), self.scan_sat.symbolrate))
-					self.list.append(self.symbolrateEntry)
-					self.inversionEntry = getConfigListEntry(_('Inversion'), self.scan_sat.inversion)
-					self.list.append(self.inversionEntry)
-
+					self.list.append(getConfigListEntry(_('Frequency'), self.scan_sat.frequency))
+					self.list.append(getConfigListEntry(_('Polarization'), self.scan_sat.polarization))
+					self.list.append(getConfigListEntry(_('Symbol rate'), self.scan_sat.symbolrate))
+					self.list.append(getConfigListEntry(_('Inversion'), self.scan_sat.inversion))
 					if self.scan_sat.system.value == eDVBFrontendParametersSatellite.System_DVB_S:
-						self.fecEntry = getConfigListEntry(_("FEC"), self.scan_sat.fec)
-						self.list.append(self.fecEntry)
+						self.list.append(getConfigListEntry(_("FEC"), self.scan_sat.fec))
 					elif self.scan_sat.system.value == eDVBFrontendParametersSatellite.System_DVB_S2:
-						self.fecEntry = getConfigListEntry(_("FEC"), self.scan_sat.fec_s2)
-						self.list.append(self.fecEntry)
+						self.list.append(getConfigListEntry(_("FEC"), self.scan_sat.fec_s2))
 						self.modulationEntry = getConfigListEntry(_('Modulation'), self.scan_sat.modulation)
 						self.list.append(self.modulationEntry)
-						self.rolloffEntry = getConfigListEntry(_('Roll-off'), self.scan_sat.rolloff)
-						self.list.append(self.rolloffEntry)
-						self.pilotEntry = getConfigListEntry(_('Pilot'), self.scan_sat.pilot)
-						self.list.append(self.pilotEntry)
+						self.list.append(getConfigListEntry(_('Roll-off'), self.scan_sat.rolloff))
+						self.list.append(getConfigListEntry(_('Pilot'), self.scan_sat.pilot))
 						if nim.isMultistream():
-							self.list.append(getConfigListEntry(_('Input Stream ID'), self.scan_sat.is_id))
-							self.list.append(getConfigListEntry(_('PLS Mode'), self.scan_sat.pls_mode))
-							self.list.append(getConfigListEntry(_('PLS Code'), self.scan_sat.pls_code))
+							self.is_id_boolEntry = getConfigListEntry(_('Transport Stream Type'), self.scan_sat.is_id_bool)
+							self.list.append(self.is_id_boolEntry)
+							if self.scan_sat.is_id_bool.value:
+								self.list.append(getConfigListEntry("   " + _('Input Stream ID'), self.scan_sat.is_id))
+								self.list.append(getConfigListEntry("   " + _('PLS Mode'), self.scan_sat.pls_mode))
+								self.list.append(getConfigListEntry("   " + _('PLS Code'), self.scan_sat.pls_code))
+						else:
+							self.scan_sat.is_id.value = eDVBFrontendParametersSatellite.No_Stream_Id_Filter
+							self.scan_sat.pls_mode.value = eDVBFrontendParametersSatellite.PLS_Gold
+							self.scan_sat.pls_code.value = eDVBFrontendParametersSatellite.PLS_Default_Gold_Code
 				elif self.tuning_type.value == "predefined_transponder":
 					if self.preDefTransponders is None:
 						self.updatePreDefTransponders()
