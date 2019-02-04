@@ -1551,7 +1551,7 @@ msgid "CHANGE BOUQUET"
 msgstr "CAMBIAR GRUPO"
 
 msgid "CI (Common Interface) Setup"
-msgstr "CI (Common Interface) Setup"
+msgstr "Configuración CI (Interfaz Común)"
 
 msgid "CI assignment"
 msgstr "Asignación CI"
@@ -12379,9 +12379,6 @@ msgstr "EPGMúltiple"
 
 msgid "Power menu"
 msgstr "Menú Modos Espera & Reinicios"
-
-msgid "CI (Common Interface) Setup"
-msgstr "Cónfiguración CI (Interfaz Común)"
 
 msgid "Show stream clients"
 msgstr "Mostrar streaming clientes info"
