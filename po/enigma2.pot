@@ -9245,7 +9245,7 @@ msgstr ""
 msgid "Show message when recording starts"
 msgstr ""
 
-msgid "Show movie lengths in movielist"
+msgid "Show movie lengths in movie list"
 msgstr ""
 
 msgid "Show picon background color"

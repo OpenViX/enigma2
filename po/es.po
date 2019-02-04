@@ -7507,7 +7507,7 @@ msgstr "Mostrar menú"
 msgid "Show message when recording starts"
 msgstr "Ver mensaje cuando empiece la grabación"
 
-msgid "Show movie lengths in movielist"
+msgid "Show movie lengths in movie list"
 msgstr "Mostrar la duración de películas en la lista"
 
 msgid "Show movies"
