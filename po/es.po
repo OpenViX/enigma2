@@ -7469,7 +7469,7 @@ msgid "Show full menu path"
 msgstr "Ver menu path"
 
 msgid "Show graphical multi EPG"
-msgstr "Show graphical multi EPG"
+msgstr "Mostrar gráficos múltiple EPG"
 
 msgid "Show help"
 msgstr "Mostrar ayuda"
@@ -7496,31 +7496,31 @@ msgid "Show infobar on skip forward/backward"
 msgstr "Mostrar la barra de información al pasar adelante/atrás"
 
 msgid "Show job tasks in extensions"
-msgstr "Ver tareas en extensiones"
+msgstr "Mostrar tareas en extensiones"
 
 msgid "Show live tv when movie stopped"
 msgstr "Ver TV en directo cuando se pare la película"
 
 msgid "Show menu"
-msgstr "Ver menú"
+msgstr "Mostrar menú"
 
 msgid "Show message when recording starts"
 msgstr "Ver mensaje cuando empiece la grabación"
 
 msgid "Show movie lengths in movielist"
-msgstr "Ver la duración de películas en la lista"
+msgstr "Mostrar la duración de películas en la lista"
 
 msgid "Show movies"
-msgstr "Ver películas"
+msgstr "Mostrar películas"
 
 msgid "Show multi EPG"
-msgstr "Ver multi EPG"
+msgstr "Mostrar múltiple EPG"
 
 msgid "Show network mounts ..."
-msgstr "Ver montajes de red..."
+msgstr "Mostrar montajes de red..."
 
 msgid "Show or hide the extended description, (skin dependant)."
-msgstr "Ver u ocultar la descripción extendida, (dependiente del skin)."
+msgstr "Mostrar u ocultar la descripción extendida, (dependiente del skin)."
 
 msgid "Show picon background color"
 msgstr "Mostrar picon en fondo color"
@@ -12294,7 +12294,7 @@ msgid "Toggle new text inserts before or overwrites existing text"
 msgstr "Alternar nuevo texto inserta antes o sobrescribe texto existente"
 
 msgid "Seekbar"
-msgstr "Barrabusqueda"
+msgstr "Barra búsqueda"
 
 msgid "Autotimer overview"
 msgstr "AutoTimer visión general"
@@ -12364,6 +12364,27 @@ msgstr "FTP fallo de conexión"
 
 msgid "Multiboot ERROR! - no STARTUP in /boot -Please check /etc/fstab for correct boot partition"
 msgstr "Multiboot ERROR! - no hay INICIO en /boot - Por favor revise /etc/fstab para la partición de arranque correcta"
+
+msgid "Graphical InfobarEPG"
+msgstr "Gráficos InfobarEPG"
+
+msgid "GraphicalEPG"
+msgstr "GráficosEPG"
+
+msgid "SingleEPG"
+msgstr "EPGSimple"
+
+msgid "MultiEPG"
+msgstr "EPGMúltiple"
+
+msgid "Power menu"
+msgstr "Menú Modos Espera & Reinicios"
+
+msgid "CI (Common Interface) Setup"
+msgstr "Cónfiguración CI (Interfaz Común)"
+
+msgid "Show stream clients"
+msgstr "Mostrar streaming clientes info"
 
 #~ msgid "3d mode"
 #~ msgstr "Modo 3D"

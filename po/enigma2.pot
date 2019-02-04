@@ -10652,3 +10652,27 @@ msgstr ""
 
 msgid "Multiboot ERROR! - no STARTUP in /boot -Please check /etc/fstab for correct boot partition"
 msgstr ""
+
+msgid "Graphical InfobarEPG"
+msgstr ""
+
+msgid "GraphicalEPG"
+msgstr ""
+
+msgid "SingleEPG"
+msgstr ""
+
+msgid "MultiEPG"
+msgstr ""
+
+msgid "Show graphical multi EPG"
+msgstr ""
+
+msgid "Power menu"
+msgstr ""
+
+msgid "CI (Common Interface) Setup"
+msgstr ""
+
+msgid "Show stream clients"
+msgstr ""
