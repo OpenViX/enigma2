@@ -10676,3 +10676,9 @@ msgstr ""
 
 msgid "Show stream clients"
 msgstr ""
+
+msgid "Left long"
+msgstr ""
+
+msgid "Right long"
+msgstr ""

@@ -2768,7 +2768,7 @@ msgid "Do not record"
 msgstr "No grabar"
 
 msgid "Do nothing"
-msgstr "Hacer nada"
+msgstr "No hacer nada"
 
 msgid ""
 "Do you really want to check the filesystem?\n"
@@ -3216,7 +3216,7 @@ msgid "Epg/Guide"
 msgstr "Epg/Guia"
 
 msgid "Epg/Guide long"
-msgstr "Epg/Guia extensa"
+msgstr "Epg/Guia prolongado"
 
 msgid "Equal to"
 msgstr "Igual a"
@@ -7469,7 +7469,7 @@ msgid "Show full menu path"
 msgstr "Ver menu path"
 
 msgid "Show graphical multi EPG"
-msgstr "Mostrar gráficos múltiple EPG"
+msgstr "Mostrar GráficosEPG"
 
 msgid "Show help"
 msgstr "Mostrar ayuda"
@@ -10912,7 +10912,7 @@ msgid "locked"
 msgstr "bloqueado"
 
 msgid "long"
-msgstr "largo"
+msgstr "prolongado"
 
 msgid "loopthrough to"
 msgstr "bucle a"
@@ -12382,6 +12382,12 @@ msgstr "Menú Modos Espera & Reinicios"
 
 msgid "Show stream clients"
 msgstr "Mostrar streaming clientes info"
+
+msgid "Left long"
+msgstr "Izquierda Prolongado"
+
+msgid "Right long"
+msgstr "Derecha Prolongado"
 
 #~ msgid "3d mode"
 #~ msgstr "Modo 3D"
