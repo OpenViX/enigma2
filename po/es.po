@@ -6600,7 +6600,7 @@ msgstr "Reanudar desde la última posición"
 
 #, python-format
 msgid "Resume position at %s"
-msgstr "Reanudar posición hasta %s"
+msgstr "Reanudar posición en %s"
 
 msgid "Resuming playback"
 msgstr "Reanudar reproducción"
