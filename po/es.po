@@ -1721,7 +1721,7 @@ msgid "Channel selection settings"
 msgstr "Selección de Canales configuración"
 
 msgid "Channel up"
-msgstr "Channel arriba"
+msgstr "Canal arriba"
 
 msgid "Channel:"
 msgstr "Canal:"
