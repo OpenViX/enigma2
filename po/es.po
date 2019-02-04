@@ -4063,7 +4063,7 @@ msgid "Info (EPG)"
 msgstr "Info (EPG)"
 
 msgid "Info (EPG) Long"
-msgstr "Info (EPG) Prolongado"
+msgstr "Info (EPG) prolongado"
 
 msgid "Info button (long)"
 msgstr "Tecla de información (prolongado)"
@@ -12384,10 +12384,10 @@ msgid "Show stream clients"
 msgstr "Mostrar streaming clientes info"
 
 msgid "Left long"
-msgstr "Izquierda Prolongado"
+msgstr "Izquierda prolongado"
 
 msgid "Right long"
-msgstr "Derecha Prolongado"
+msgstr "Derecha prolongado"
 
 #~ msgid "3d mode"
 #~ msgstr "Modo 3D"
