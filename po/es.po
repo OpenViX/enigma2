@@ -10215,8 +10215,8 @@ msgstr "Pareces estar en Timeshft, el servicio se detendrá brevemente como se d
 msgid "You seem to be in timeshift!"
 msgstr "Pareces estar en Timeshift!"
 
-msgid "You seem to be in timeshift, Do you want to leave timeshift ?"
-msgstr "Parece que estás en Timeshift. Quieres abandonar Timeshift ?"
+msgid "You seem to be in timeshift, Do you want to leave timeshift? Streams & IPTV not fully supported!"
+msgstr "Parece que estás en timeshift, ¿Quieres dejar timeshift? Streams & IPTV no son totalmente compatibles!"
 
 msgid "You system does not support ext4"
 msgstr "Su sistema no soporta ext4"
@@ -12361,6 +12361,9 @@ msgstr "Consulte la hoja de especificaciones de su dispositivo SCR para obtener 
 
 msgid "FTP connection failure"
 msgstr "FTP fallo de conexión"
+
+msgid "Multiboot ERROR! - no STARTUP in /boot -Please check /etc/fstab for correct boot partition"
+msgstr "Multiboot ERROR! - no hay INICIO en /boot - Por favor revise /etc/fstab para la partición de arranque correcta"
 
 #~ msgid "3d mode"
 #~ msgstr "Modo 3D"

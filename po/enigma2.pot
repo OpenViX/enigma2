@@ -6857,7 +6857,7 @@ msgstr ""
 msgid "You seem to be in timeshift!"
 msgstr ""
 
-msgid "You seem to be in timeshift, Do you want to leave timeshift ?"
+msgid "You seem to be in timeshift, Do you want to leave timeshift? Streams & IPTV not fully supported!"
 msgstr ""
 
 msgid "You system does not support ext4"
@@ -10648,4 +10648,7 @@ msgid "Consult your SCR device spec sheet for this information."
 msgstr ""
 
 msgid "FTP connection failure"
+msgstr ""
+
+msgid "Multiboot ERROR! - no STARTUP in /boot -Please check /etc/fstab for correct boot partition"
 msgstr ""
