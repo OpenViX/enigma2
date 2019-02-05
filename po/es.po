@@ -12389,18 +12389,6 @@ msgstr "Izquierda prolongado"
 msgid "Right long"
 msgstr "Derecha prolongado"
 
-msgid "Multiboot"
-msgstr "Multiboot"
-
-msgid "Multiboot ERROR! - no STARTUP in boot partition."
-msgstr "Multiboot ERROR! - No hay STARTUP en la partición de arranque."
-
-msgid "Multiboot Image Restart"
-msgstr "Multiboot Reiniciar Imagen"
-
-msgid "SDcard is not initialised for multiboot - Exit and use ViX MultiBoot Manager to initialise"
-msgstr "La tarjeta SD no está inicializada para arranque múltiple: salga y use ViX Administrador Multiboot para iniciar"
-
 #~ msgid "3d mode"
 #~ msgstr "Modo 3D"
 
