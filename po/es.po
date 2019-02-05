@@ -12389,6 +12389,31 @@ msgstr "Izquierda prolongado"
 msgid "Right long"
 msgstr "Derecha prolongado"
 
+msgid "Multiboot"
+msgstr "Multiboot"
+
+msgid "Multiboot Image Restart"
+msgstr "Multiboot Reiniciar Imagen"
+
+msgid "SDcard is not initialised for multiboot - Exit and use ViX MultiBoot Manager to initialise"
+msgstr "La tarjeta SD no está inicializada para arranque múltiple: salga y use ViX MultiBoot Manager para iniciar"
+
+msgid ""
+"Mode 1 suppports Kodi, PiP may not work.\n"
+"Mode 12 supports PiP, Kodi may not work."
+msgstr 
+"Modo 1 es compatible con Kodi, PiP puede no funcionar.\n"
+"El modo 12 es compatible con PiP, Kodi puede no funcionar."
+
+msgid "Use the cursor keys to select an installed image and then Reboot button."
+msgstr "Use las teclas del cursor para seleccionar una imagen instalada y luego el botón Reiniciar."
+
+msgid "Retrieving image slots - Please wait..."
+msgstr "Recuperando slots de imágenes - Por favor espere..."
+
+msgid "Multiboot ERROR! - no STARTUP in boot partition."
+msgstr "Multiboot ERROR! - No hay STARTUP en la partición de arranque."
+
 #~ msgid "3d mode"
 #~ msgstr "Modo 3D"
 
