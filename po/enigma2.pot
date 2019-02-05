@@ -10682,3 +10682,15 @@ msgstr ""
 
 msgid "Right long"
 msgstr ""
+
+msgid "Multiboot"
+msgstr ""
+
+msgid "Multiboot ERROR! - no STARTUP in boot partition."
+msgstr ""
+
+msgid "Multiboot Image Restart"
+msgstr ""
+
+msgid "SDcard is not initialised for multiboot - Exit and use ViX MultiBoot Manager to initialise"
+msgstr ""
