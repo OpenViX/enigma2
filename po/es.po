@@ -12414,6 +12414,22 @@ msgstr "Recuperando slots de imágenes - Por favor espere..."
 msgid "Multiboot ERROR! - no STARTUP in boot partition."
 msgstr "Multiboot ERROR! - No hay STARTUP en la partición de arranque."
 
+msgid "Select Image: STARTUP_1"
+msgstr "Seleccionar Imagen: STARTUP_1"
+
+msgid "ReBoot"
+msgstr "Reiniciar Boot"
+
+msgid "ReBoot_mode12"
+msgstr "ReiniciarBoot_modo12"
+
+msgid ""
+"Reboot Image: STARTUP_%s: %s\n"
+"Use < > keys to select Image and Reboot."
+msgstr ""
+"Reiniciar Imagen: STARTUP_%s: %s\n"
+"Use teclas < > para seleccionar la imagen y reiniciar."
+
 #~ msgid "3d mode"
 #~ msgstr "Modo 3D"
 

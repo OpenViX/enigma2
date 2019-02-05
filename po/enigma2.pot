@@ -10705,3 +10705,17 @@ msgstr ""
 
 msgid "Multiboot ERROR! - no STARTUP in boot partition."
 msgstr ""
+
+msgid "Select Image: STARTUP_1"
+msgstr ""
+
+msgid "ReBoot"
+msgstr ""
+
+msgid "ReBoot_mode12"
+msgstr ""
+
+msgid ""
+"Reboot Image: STARTUP_%s: %s\n"
+"Use < > keys to select Image and Reboot."
+msgstr ""
