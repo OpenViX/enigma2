@@ -50,7 +50,7 @@ class SubservicesQuickzap(InfoBarBase, InfoBarShowHide, InfoBarMenu,
 
 	def onLayoutFinished(self):
 		cur_num = self.currentlyPlayingSubservice
-		if cur_num:
+		if cur_num is not None:
 			self.currentSubserviceNumberLabel.setText(str(cur_num + 1))
 
 	def nextSubservice(self):
@@ -77,8 +77,8 @@ class SubservicesQuickzap(InfoBarBase, InfoBarShowHide, InfoBarMenu,
 			self.session.openWithCallback(self.subserviceSelected, ChoiceBox, title=_("Please select a subservice..."), list=self.subservices, selection=self.currentlyPlayingSubservice, keys=keys, windowTitle=_("Subservices"))
 
 	def subserviceSelected(self, service):
-		if service is not None:
-			self.playSubservice(service[1])
+		if service:
+			self.playSubservice([x[1] for x in self.subservices].index(service[1]))
 
 	def keyOK(self):
 		self.doShow()
