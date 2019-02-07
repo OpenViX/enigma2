@@ -12414,22 +12414,6 @@ msgstr "Recuperando slots de imágenes - Por favor espere..."
 msgid "Multiboot ERROR! - no STARTUP in boot partition."
 msgstr "Multiboot ERROR! - No hay STARTUP en la partición de arranque."
 
-msgid "Select Image: STARTUP_1"
-msgstr "Seleccionar Imagen: STARTUP_1"
-
-msgid "ReBoot"
-msgstr "Reiniciar Boot"
-
-msgid "ReBoot_mode12"
-msgstr "ReiniciarBoot_modo12"
-
-msgid ""
-"Reboot Image: STARTUP_%s: %s\n"
-"Use < > keys to select Image and Reboot."
-msgstr ""
-"Reiniciar Imagen: STARTUP_%s: %s\n"
-"Use teclas < > para seleccionar la imagen y reiniciar."
-
 #~ msgid "3d mode"
 #~ msgstr "Modo 3D"
 
@@ -12643,6 +12627,19 @@ msgstr ""
 #~ msgid "Prepare another USB stick for image flashing"
 #~ msgstr "Preparar otra memoria USB para Flashing de imagen"
 
+#~ msgid "ReBoot"
+#~ msgstr "Reiniciar Boot"
+
+#~ msgid "ReBoot_mode12"
+#~ msgstr "ReiniciarBoot_modo12"
+
+#~ msgid ""
+#~ "Reboot Image: STARTUP_%s: %s\n"
+#~ "Use < > keys to select Image and Reboot."
+#~ msgstr ""
+#~ "Reiniciar Imagen: STARTUP_%s: %s\n"
+#~ "Use teclas < > para seleccionar la imagen y reiniciar."
+
 #~ msgid "Reenter new PIN"
 #~ msgstr "Volver a introducir el nuevo PIN"
 
@@ -12669,6 +12666,9 @@ msgstr ""
 
 #~ msgid "Select if you want to use the ViX colored buttons (set to 'no' if you want to use (Multi Quick Button)."
 #~ msgstr "Selecciona si quieres utilizar los botones de color de ViX. Marca 'no' si quieres usar el botón rápido (multi)."
+
+#~msgid "Select Image: STARTUP_1"
+#~msgstr "Seleccionar Imagen: STARTUP_1"
 
 #~ msgid "Select what you want the Channel +/- buttons to activate."
 #~ msgstr "Selecciona lo que quieres que active la tecla de canal +/-."
