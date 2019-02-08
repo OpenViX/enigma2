@@ -122,9 +122,11 @@ class Satfinder(ScanSetup, ServiceScan):
 		elif cur == self.t2mi_plp_id_boolEntry:
 			if self.t2mi_plp_id_boolEntry[1].value:
 				self.scan_sat.t2mi_plp_id.value = 0 if self.t2mi_plp_id_memory < 0 else self.t2mi_plp_id_memory
+				self.scan_sat.t2mi_pid = eDVBFrontendParametersSatellite.T2MI_Default_Pid if self.t2mi_plp_id_memory < 0 else self.scan_sat.t2mi_pid
 			else:
 				self.t2mi_plp_id_memory = self.scan_sat.t2mi_plp_id.value
 				self.scan_sat.t2mi_plp_id.value = eDVBFrontendParametersSatellite.No_T2MI_PLP_Id
+				self.scan_sat.t2mi_pid.value = eDVBFrontendParametersSatellite.T2MI_Default_Pid
 			self.createSetup()
 		else:
 			if cur == self.satEntry:
@@ -190,6 +192,7 @@ class Satfinder(ScanSetup, ServiceScan):
 						self.list.append(self.t2mi_plp_id_boolEntry)
 						if self.scan_sat.t2mi_plp_id_bool.value:
 							self.list.append(getConfigListEntry(_('T2MI PLP ID'), self.scan_sat.t2mi_plp_id))
+							self.list.append(getConfigListEntry(_('T2MI PID'), self.scan_sat.t2mi_pid))
 				elif self.tuning_type.value == "predefined_transponder":
 					if self.preDefTransponders is None:
 						self.updatePreDefTransponders()
@@ -288,7 +291,7 @@ class Satfinder(ScanSetup, ServiceScan):
 			self.scan_sat.fec_s2, self.scan_sat.fec, self.scan_sat.modulation,
 			self.scan_sat.rolloff, self.scan_sat.system,
 			self.scan_sat.is_id, self.scan_sat.pls_mode, self.scan_sat.pls_code,
-			self.scan_sat.t2mi_plp_id,
+			self.scan_sat.t2mi_plp_id, self.scan_sat.t2mi_pid,
 			self.scan_ter.channel, self.scan_ter.frequency, self.scan_ter.inversion,
 			self.scan_ter.bandwidth, self.scan_ter.fechigh, self.scan_ter.feclow,
 			self.scan_ter.modulation, self.scan_ter.transmission,
@@ -446,7 +449,8 @@ class Satfinder(ScanSetup, ServiceScan):
 					self.scan_sat.is_id.value,
 					self.scan_sat.pls_mode.value,
 					self.scan_sat.pls_code.value,
-					self.scan_sat.t2mi_plp_id.value)
+					self.scan_sat.t2mi_plp_id.value,
+					self.scan_sat.t2mi_pid.value)
 				self.tuner.tune(transponder)
 				self.transponder = transponder
 			elif self.tuning_type.value == "predefined_transponder":
@@ -490,7 +494,8 @@ class Satfinder(ScanSetup, ServiceScan):
 				self.transponder[10],# input stream id
 				self.transponder[11],# pls mode
 				self.transponder[12],# pls code
-				self.transponder[13] # t2mi_plp_id
+				self.transponder[13],# t2mi_plp_id
+				self.transponder[14] # t2mi_pid
 			)
 		elif nimmanager.nim_slots[int(self.satfinder_scan_nims.value)].isCompatible("DVB-T"):
 			parm = buildTerTransponder(
