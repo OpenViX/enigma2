@@ -1393,7 +1393,7 @@ msgid "Blue"
 msgstr "Azul"
 
 msgid "Blue long"
-msgstr "Azul prolongado"
+msgstr "Azul (prolongado)"
 
 msgid "Bookmarks"
 msgstr "Marcadores"
@@ -3216,7 +3216,7 @@ msgid "Epg/Guide"
 msgstr "Epg/Guia"
 
 msgid "Epg/Guide long"
-msgstr "Epg/Guia prolongado"
+msgstr "Epg/Guia (prolongado)"
 
 msgid "Equal to"
 msgstr "Igual a"
@@ -3416,19 +3416,19 @@ msgid "F1/LAN"
 msgstr "F1/LAN"
 
 msgid "F1/LAN long"
-msgstr "F1/LAN prolongado"
+msgstr "F1/LAN (prolongado)"
 
 msgid "F2"
 msgstr "F2"
 
 msgid "F2 long"
-msgstr "F2 prolongado"
+msgstr "F2 (prolongado)"
 
 msgid "F3"
 msgstr "F3"
 
 msgid "F3 long"
-msgstr "F3 prolongado"
+msgstr "F3 (prolongado)"
 
 msgid "FAILED"
 msgstr "FALLIDO"
@@ -3757,7 +3757,7 @@ msgid "Green"
 msgstr "Verde"
 
 msgid "Green long"
-msgstr "Verde prolongado"
+msgstr "Verde (prolongado)"
 
 msgid "Grey"
 msgstr "Gris"
@@ -3823,7 +3823,7 @@ msgid "Help"
 msgstr "Ayuda"
 
 msgid "Help long"
-msgstr "Ayuda prolongado"
+msgstr "Ayuda (prolongado)"
 
 msgid "Helps setting up your antenna"
 msgstr "Ayuda a configurar su antena"
@@ -4063,7 +4063,7 @@ msgid "Info (EPG)"
 msgstr "Info (EPG)"
 
 msgid "Info (EPG) Long"
-msgstr "Info (EPG) prolongado"
+msgstr "Info EPG (prolongado)"
 
 msgid "Info button (long)"
 msgstr "Tecla de información (prolongado)"
@@ -4559,7 +4559,7 @@ msgid "Long << / >>"
 msgstr "Prolongado << / >>"
 
 msgid "Long Left/Right"
-msgstr "Prolongado izquierda/derecha"
+msgstr "Izquierda/derecha (prolongado)"
 
 msgid "Long filenames"
 msgstr "Nombres de ficheros largos"
@@ -5300,7 +5300,7 @@ msgid "OK button (long)"
 msgstr "Tecla OK (prolongado)"
 
 msgid "OK button (short)"
-msgstr "Tecla OK (corto)"
+msgstr "Tecla OK (corta)"
 
 msgid "OK, guide me through the upgrade process"
 msgstr "Sí, guíame por el proceso de actualización"
@@ -5950,7 +5950,7 @@ msgid "Power LCD Display"
 msgstr "Power LCD Display"
 
 msgid "Power long"
-msgstr "Power prolongado"
+msgstr "Power (prolongado)"
 
 msgid "Power threshold in mA"
 msgstr "Umbral de potencia en mA"
@@ -6341,7 +6341,7 @@ msgid "Red colored"
 msgstr "Color rojo"
 
 msgid "Red long"
-msgstr "Rojo prolongado"
+msgstr "Rojo (prolongado)"
 
 msgid "Reduce time scale"
 msgstr "Reducir la escala de tiempo"
@@ -10052,7 +10052,7 @@ msgid "Yellow DVB subtitles"
 msgstr "Subtítulos DVB en amarillo"
 
 msgid "Yellow long"
-msgstr "Amarillo prolongado"
+msgstr "Amarillo (prolongado)"
 
 msgid "Yes"
 msgstr "Sí"
@@ -12384,10 +12384,10 @@ msgid "Show stream clients"
 msgstr "Mostrar streaming clientes info"
 
 msgid "Left long"
-msgstr "Izquierda prolongado"
+msgstr "Izquierda (prolongado)"
 
 msgid "Right long"
-msgstr "Derecha prolongado"
+msgstr "Derecha (prolongado)"
 
 msgid "Multiboot"
 msgstr "Multiboot"
