@@ -4066,7 +4066,7 @@ msgid "Info (EPG) Long"
 msgstr "Info EPG (prolongado)"
 
 msgid "Info button (long)"
-msgstr "Tecla de información (prolongado)"
+msgstr "Tecla de información (prolongada)"
 
 msgid "Info button (short)"
 msgstr "Tecla de información (corta)"
@@ -5297,7 +5297,7 @@ msgid "OK"
 msgstr "OK"
 
 msgid "OK button (long)"
-msgstr "Tecla OK (prolongado)"
+msgstr "Tecla OK (prolongada)"
 
 msgid "OK button (short)"
 msgstr "Tecla OK (corta)"
