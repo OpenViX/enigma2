@@ -1283,7 +1283,10 @@ void eEPGCache::gotMessage( const Message &msg )
 void eEPGCache::thread()
 {
 	hasStarted();
-	nice(4);
+	if (nice(4) == -1)
+	{
+		eDebug("[eEPGCache] thread failed to modify scheduling priority (%m)");
+	}
 	load();
 	cleanLoop();
 	runLoop();
