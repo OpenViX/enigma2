@@ -72,6 +72,8 @@ class VIXMenu(Screen, ProtectedScreen):
 			self.list.append(("swap-manager", _("SWAP manager"), _("Create and Manage your SWAP files."), None))
 			if SystemInfo["canMultiBoot"]:
 				self.list.append(("multiboot manager", _("MultiBoot manager"), _("Create empty slot."), None))
+ 			if SystemInfo["HasH9SD"]:
+				self.list.append(("H9SDcard manager", _("H9SDcard Manager"), _("Move Nand root to SD card"), None))
 		self["menu"] = List(self.list)
 		self["key_red"] = StaticText(_("Close"))
 
@@ -137,6 +139,9 @@ class VIXMenu(Screen, ProtectedScreen):
 				elif currentEntry == "multiboot manager":
 					from Multibootmgr import MultiBoot
 					self.session.open(MultiBoot, self.menu_path)
+				elif currentEntry == "H9SDcard manager":
+					from H9SDmanager import H9SDmanager
+					self.session.open(H9SDmanager, self.menu_path)
 				elif currentEntry == "ipkg-install":
 					from IPKInstaller import VIXIPKInstaller
 					self.session.open(VIXIPKInstaller, self.menu_path)

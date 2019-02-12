@@ -126,6 +126,7 @@ class VIXDevicesPanel(Screen):
 		self.activityTimer.stop()
 		self.list = []
 		list2 = []
+		z = open('/proc/cmdline', 'r').read()
 		f = open('/proc/partitions', 'r')
 		for line in f.readlines():
 			parts = line.strip().split()
@@ -135,6 +136,8 @@ class VIXDevicesPanel(Screen):
 			if not re.search('sd[a-z][1-9]', device) and not re.search('mmcblk[0-9]p[1-9]', device):
 				continue
 			if SystemInfo["HasSDmmc"] and pathExists("/dev/sda4") and re.search('sd[a][1-4]', device):
+				continue
+			if SystemInfo["HasMMC"] and "root=/dev/mmcblk0p1" in z and re.search('mmcblk0p1', device):
 				continue
 			if device in list2:
 				continue
@@ -370,6 +373,7 @@ class VIXDevicePanelConf(Screen, ConfigListScreen):
 		# 	remove('/tmp/devices.tmp')
 		# swapdevices = swapdevices.replace('\n', '')
 		# swapdevices = swapdevices.split('/')
+		z = open('/proc/cmdline', 'r').read()
 		f = open('/proc/partitions', 'r')
 		for line in f.readlines():
 			parts = line.strip().split()
@@ -379,6 +383,8 @@ class VIXDevicePanelConf(Screen, ConfigListScreen):
 			if not re.search('sd[a-z][1-9]', device) and not re.search('mmcblk[0-9]p[1-9]', device):
 				continue
 			if SystemInfo["HasSDmmc"] and pathExists("/dev/sda4") and re.search('sd[a][1-4]', device):
+				continue
+			if SystemInfo["HasMMC"] and "root=/dev/mmcblk0p1" in z and re.search('mmcblk0p1', device):
 				continue
 			if device in list2:
 				continue
