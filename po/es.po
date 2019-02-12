@@ -12411,6 +12411,9 @@ msgstr "Recuperando slots de imágenes - Por favor espere..."
 msgid "Multiboot ERROR! - no STARTUP in boot partition."
 msgstr "Multiboot ERROR! - No hay STARTUP en la partición de arranque."
 
+msgid "Open service list"
+msgstr "Abrir lista de canales"
+
 #~ msgid "3d mode"
 #~ msgstr "Modo 3D"
 
