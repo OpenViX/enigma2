@@ -2165,6 +2165,9 @@ msgstr "Configurar la transparencia del fondo negro de los subtítulos gráficos
 msgid "Configure the tuner mode."
 msgstr "Configurar el modo de sintonizador."
 
+msgid "Configure the type of status indication icons shown in the movie list."
+msgstr "Configure el tipo de iconos de indicación de estado que se muestran en la lista de películas."
+
 msgid "Configure the vertical position of the subtitles, measured from the bottom of the screen."
 msgstr "Configurar la posición vertical de los subtítulos, medida desde la parte inferior de la pantalla."
 
@@ -12473,9 +12476,6 @@ msgstr "Abrir lista de canales"
 
 #~ msgid "Configure the refresh rate of the screen."
 #~ msgstr "Configurar la velocidad de actualización de la pantalla."
-
-#~ msgid "Configure the type of status indication icons shown in the movie list."
-#~ msgstr "Configure el tipo de iconos de indicación de estado que se muestran en la lista de películas."
 
 #~ msgid "Connected!"
 #~ msgstr "¡Conectado!"
