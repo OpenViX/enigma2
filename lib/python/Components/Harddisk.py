@@ -602,9 +602,12 @@ class HarddiskManager:
 		devpath = "/sys/block/" + blockdev
 		error = False
 		removable = False
+		z = open('/proc/cmdline', 'r').read()
 		BLACKLIST=[]
 		if SystemInfo["HasMMC"]:
 			BLACKLIST=["%s" %(getMachineMtdRoot()[0:7])]
+		if SystemInfo["HasMMC"] and "root=/dev/mmcblk0p1" in z:
+			BLACKLIST=["mmcblk0p1"]
 		blacklisted = False
 		if blockdev[:7] in BLACKLIST:
 			blacklisted = True
