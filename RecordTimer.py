@@ -437,9 +437,14 @@ class RecordTimerEntry(timer.TimerEntry, object):
 			ChannelSelectionInstance.addToHistory(self.service_ref.ref)
 		NavigationInstance.instance.playService(self.service_ref.ref)
 
-	# Report the tuner that the current recording is using
+# Report the tuner that the current recording is using
 	def log_tuner(self, level, state):
-		feinfo = self.record_service and hasattr(self.record_service, "frontendInfo") and self.record_service.frontendInfo()
+# If we have a Zap timer then the tuner is for the current service
+		if self.justplay:
+			timer_rs = NavigationInstance.instance.getCurrentService()
+		else:
+			timer_rs = self.record_service
+		feinfo = timer_rs and hasattr(timer_rs, "frontendInfo") and timer_rs.frontendInfo()
 		fedata = feinfo and hasattr(feinfo, "getFrontendData") and feinfo.getFrontendData()
 		tuner_info = fedata and "tuner_number" in fedata and chr(ord('A') + fedata.get("tuner_number")) or "(fallback) stream"
 		self.log(level, "%s recording on tuner: %s" % (state, tuner_info))
@@ -642,6 +647,11 @@ class RecordTimerEntry(timer.TimerEntry, object):
 # Trying to back off isn't worth it as backing off in Record timers
 # currently only refers to *starting* a recording.
 #
+# But first, if this is just a zap timer there is no more to do!!!
+# This prevents a daft "go to standby?" prompt if a Zap timer wakes the
+# box up from standby.
+			if self.justplay:
+				return True
 			from Components.Converter.ClientsStreaming import ClientsStreaming;
 			if (not Screens.Standby.inStandby and NavigationInstance.instance.getCurrentlyPlayingServiceReference() and
 				('0:0:0:0:0:0:0:0:0' in NavigationInstance.instance.getCurrentlyPlayingServiceReference().toString() or

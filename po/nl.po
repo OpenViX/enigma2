@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-27 11:53+0000\n"
-"PO-Revision-Date: 2019-01-29 16:24+0100\n"
+"POT-Creation-Date: 2019-02-01 20:29+0000\n"
+"PO-Revision-Date: 2019-02-02 08:10+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -3182,9 +3182,6 @@ msgstr "Stel de mate van transparantie in van de zwarte achtergrond van grafisch
 
 msgid "Configure the tuner mode."
 msgstr "Configureer de tunermodus."
-
-msgid "Configure the type of status indication icons shown in the movie list."
-msgstr "Geef aan welk type icoon moet worden gebruikt in de opnamelijst."
 
 msgid "Configure the vertical position of the subtitles, measured from the bottom of the screen."
 msgstr "Stel de verticale positie in van de ondertitels, gemeten vanaf de onderzijde van het scherm."
@@ -7507,7 +7504,7 @@ msgid "Open nameserver configuration"
 msgstr "Open naamserverconfiguratie"
 
 msgid "Open service list"
-msgstr "Open de kanaallist"
+msgstr "Open de kanaalljist"
 
 msgid "Open service list and select the next channel"
 msgstr "Open de zenderlijst en selecteer de volgende zender"
@@ -10127,7 +10124,8 @@ msgstr "Toon menunummers"
 msgid "Show message when recording starts"
 msgstr "Toon bericht wanneer opname begint"
 
-msgid "Show movie lengths in movielist"
+#, fuzzy
+msgid "Show movie lengths in movie list"
 msgstr "Toon opnamelengte in opnamelijst"
 
 msgid "Show movies"
@@ -15077,6 +15075,9 @@ msgstr "zapte"
 
 #~ msgid "Configure the refresh rate of the screen."
 #~ msgstr "Bepaal de verversingsfrequentie van het scherm."
+
+#~ msgid "Configure the type of status indication icons shown in the movie list."
+#~ msgstr "Geef aan welk type icoon moet worden gebruikt in de opnamelijst."
 
 #~ msgid "Configure which tuner will be preferred for recordings, when more than one tuner is available. 'Disabled' would select a tuner based on preferred tuner in customise screen. 'Auto' would choose based on E2's default rules, ignoring preferred tuner in customise screen."
 #~ msgstr "Stel in welke tuner de voorkeur heeft voor opnames als meerdere tuners beschikbaar zijn. \"Uitgeschakeld\" betekent dat de tunerkeuze wordt bepaald door de instelling \"Voorkeurstuner\" in het scherm \"Aanpassen\". \"Auto\" betekent dat de keuze wordt gebaseerd op de standaard regels van Enigma, waarbij de instelling \"Voorkeurstuner\" in het scherm \"Aanpassen\" wordt genegeerd. "
