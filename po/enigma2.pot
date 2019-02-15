@@ -3701,16 +3701,25 @@ msgstr ""
 msgid "Only free scan"
 msgstr ""
 
-msgid "Open satellites list"
+msgid "Open the favourites list"
 msgstr ""
 
-msgid "Open service list"
+msgid "Open the satellites list"
 msgstr ""
 
-msgid "Open service list and select next channel"
+msgid "Open the service list"
 msgstr ""
 
-msgid "Open service list and select previous channel"
+msgid "Open service list and select the previous channel"
+msgstr ""
+
+msgid "Open service list and select the next channel"
+msgstr ""
+
+msgid "Open service list and select the previous channel for PiP"
+msgstr ""
+
+msgid "Open service list and select the next channel for PiP"
 msgstr ""
 
 msgid "Open the movie list"
@@ -7922,7 +7931,7 @@ msgstr ""
 msgid "sports magazine"
 msgstr ""
 
-msgid "standard"
+msgid "Date first"
 msgstr ""
 
 msgid "start cut here"
@@ -10698,4 +10707,16 @@ msgid "Retrieving image slots - Please wait..."
 msgstr ""
 
 msgid "Multiboot ERROR! - no STARTUP in boot partition."
+msgstr ""
+
+msgid "Switch to the next channel in history"
+msgstr ""
+
+msgid "Switch to the previous channel in history"
+msgstr ""
+
+msgid "Switch to the next channel"
+msgstr ""
+
+msgid "Switch to the previous channel"
 msgstr ""

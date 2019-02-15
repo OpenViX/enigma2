@@ -11332,8 +11332,8 @@ msgstr "sse"
 msgid "ssw"
 msgstr "ssw"
 
-msgid "standard"
-msgstr "estándar"
+msgid "Date first"
+msgstr "Primero Fecha"
 
 msgid "start cut here"
 msgstr "comenzar el corte aquí"
