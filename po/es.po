@@ -12414,6 +12414,12 @@ msgstr "Multiboot ERROR! - No hay STARTUP en la partición de arranque."
 msgid "Date first"
 msgstr "Fecha primero"
 
+msgid "There are no saved playlists to delete!"
+msgstr "No hay listas de reproducción guardadas para eliminar!"
+
+msgid "There are no saved playlists to load!"
+msgstr "No hay listas de reproducción guardadas para cargar!"
+
 #~ msgid "3d mode"
 #~ msgstr "Modo 3D"
 

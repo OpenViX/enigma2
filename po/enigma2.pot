@@ -10726,3 +10726,9 @@ msgstr ""
 
 msgid "Switch to the previous channel"
 msgstr ""
+
+msgid "There are no saved playlists to delete!"
+msgstr ""
+
+msgid "There are no saved playlists to load!"
+msgstr ""
