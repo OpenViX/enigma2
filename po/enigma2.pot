@@ -3707,6 +3707,9 @@ msgstr ""
 msgid "Open the satellites list"
 msgstr ""
 
+msgid "Open service list"
+msgstr ""
+
 msgid "Open the service list"
 msgstr ""
 
@@ -5373,6 +5376,9 @@ msgid "Sports"
 msgstr ""
 
 msgid "Standard"
+msgstr ""
+
+msgid "standard"
 msgstr ""
 
 msgid "Standby"

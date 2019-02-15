@@ -5383,6 +5383,9 @@ msgstr "Abre la lista de servicios y selecciona el canal anterior"
 msgid "Open service list and select the previous channel for PiP"
 msgstr "Abra la lista de servicios y seleccione el canal anterior para PiP"
 
+msgid "Open service list"
+msgstr "Abrir lista de servicios"
+
 msgid "Open setup tuner "
 msgstr "Abrir configuración sintonizador "
 
@@ -7928,11 +7931,14 @@ msgstr "Pantalla dividida"
 msgid "Sports"
 msgstr "Deportes"
 
+msgid "standard"
+msgstr "estándar"
+
 msgid "Standard"
 msgstr "Estándar"
 
 msgid "Standart list"
-msgstr "Lista estandar"
+msgstr "Lista estándar"
 
 msgid "Standby"
 msgstr "Modo de espera"
@@ -11332,9 +11338,6 @@ msgstr "sse"
 msgid "ssw"
 msgstr "ssw"
 
-msgid "Date first"
-msgstr "Primero Fecha"
-
 msgid "start cut here"
 msgstr "comenzar el corte aquí"
 
@@ -12407,6 +12410,9 @@ msgstr "Recuperando slots de imágenes - Por favor espere..."
 
 msgid "Multiboot ERROR! - no STARTUP in boot partition."
 msgstr "Multiboot ERROR! - No hay STARTUP en la partición de arranque."
+
+msgid "Date first"
+msgstr "Fecha primero"
 
 #~ msgid "3d mode"
 #~ msgstr "Modo 3D"
