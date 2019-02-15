@@ -148,7 +148,7 @@ class MovieList(GUIComponent):
 	HIDE_DESCRIPTION = 1
 	SHOW_DESCRIPTION = 2
 
-# So MovieSelection.selectSortby() can find out whether we are 
+# So MovieSelection.selectSortby() can find out whether we are
 # in a Trash folder and, if so, what the last sort was
 # The numbering starts after SORT_* values above.
 # in MovieSelection.py (that has no SORT_GROUPWISE)
@@ -351,7 +351,7 @@ class MovieList(GUIComponent):
 		durationWidth = self.durationWidth if config.usage.load_length_of_movies_in_moviellist.value else 0
 
 		width = self.l.getItemSize().width()
-		
+
 		dateWidth = self.dateWidth
 		if not config.movielist.use_fuzzy_dates.value:
 			dateWidth += 30
@@ -684,8 +684,9 @@ class MovieList(GUIComponent):
 		self.list.sort(key=self.buildGroupwiseSortkey)
 
 # Have we had a temporary sort method override set in MovieSelectiom.py?
-# If so use it, remove it (it's a one-off) and remember the method so
-# that the "Sort by" menu can highlight it.
+# If so use it, remove it (it's a one-off) and set the current method so
+# that the "Sort by" menu can highlight it and "Sort" knows which to
+# move on from (both in Screens/MovieSelection.py).
 #
 		try:
 			self.current_sort = self.temp_sort
