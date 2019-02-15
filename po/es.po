@@ -2165,9 +2165,6 @@ msgstr "Configurar la transparencia del fondo negro de los subtítulos gráficos
 msgid "Configure the tuner mode."
 msgstr "Configurar el modo de sintonizador."
 
-msgid "Configure the type of status indication icons shown in the movie list."
-msgstr "Configure el tipo de iconos de indicación de estado que se muestran en la lista de películas."
-
 msgid "Configure the vertical position of the subtitles, measured from the bottom of the screen."
 msgstr "Configurar la posición vertical de los subtítulos, medida desde la parte inferior de la pantalla."
 
@@ -5340,9 +5337,6 @@ msgstr "Al final de la película"
 
 msgid "On end of movie (as menu)"
 msgstr "Al final de la película (como menú)"
-
-msgid "On reaching the end of a file during playback, you can choose the box's behavior."
-msgstr "Al llegar al final de un archivo durante la reproducción, puedes configurar el comportamiento del receptor."
 
 msgid "On your remote, click on the button you want to change"
 msgstr "En su mando, haga clic en el botón que desea cambiar"

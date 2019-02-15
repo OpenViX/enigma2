@@ -3680,9 +3680,6 @@ msgstr ""
 msgid "On end of movie"
 msgstr ""
 
-msgid "On reaching the end of a file during playback, you can choose the box's behavior."
-msgstr ""
-
 msgid "Once per day"
 msgstr ""
 
@@ -8667,9 +8664,6 @@ msgid "Configure the transparency of the black background of graphical DVB subti
 msgstr ""
 
 msgid "Configure the tuner mode."
-msgstr ""
-
-msgid "Configure the type of status indication icons shown in the movie list."
 msgstr ""
 
 msgid "Configure the vertical position of the subtitles, measured from the bottom of the screen."
