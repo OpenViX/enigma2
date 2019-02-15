@@ -6,6 +6,7 @@ dist: trusty
 branches:
   only:
   - Dev
+  - T2MI
 
 addons:
   apt:
