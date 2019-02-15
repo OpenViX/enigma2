@@ -852,10 +852,10 @@ msgid "Add service"
 msgstr "Añadir canal"
 
 msgid "Add service to bouquet"
-msgstr "Añadir servicio al bouquet"
+msgstr "Añadir canal al bouquet"
 
 msgid "Add service to favourites"
-msgstr "Añadir servicio a favoritos"
+msgstr "Añadir canal a favoritos"
 
 msgid "Add timer"
 msgstr "Añadir temporizador"
