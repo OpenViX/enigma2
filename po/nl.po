@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-01 20:29+0000\n"
-"PO-Revision-Date: 2019-02-02 08:10+0100\n"
+"POT-Creation-Date: 2019-02-14 07:44+0000\n"
+"PO-Revision-Date: 2019-02-14 15:25+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -3602,6 +3602,9 @@ msgstr "Deens"
 
 msgid "Date"
 msgstr "Datum"
+
+msgid "Date first"
+msgstr "Datum eerst"
 
 msgid "Date style"
 msgstr "Datumstijl"
@@ -7448,9 +7451,6 @@ msgstr "Bij het einde van bestand"
 
 msgid "On end of movie (as menu)"
 msgstr "Aan het einde van de film (als menu)"
-
-msgid "On reaching the end of a file during playback, you can choose the box's behavior."
-msgstr "U kunt instellen wat er moet gebeuren bij het einde van het afspelen."
 
 msgid "On shutdown/restart warn about any pending jobs being carried out in the background."
 msgstr "Waarschuw bij afsluiten/herstarten als er op de achtergrond taken worden uitgevoerd."
@@ -14431,9 +14431,6 @@ msgstr "ZZO"
 msgid "ssw"
 msgstr "ZZW"
 
-msgid "standard"
-msgstr "standaard"
-
 msgid "start cut here"
 msgstr "start knippen hier"
 
@@ -15618,6 +15615,9 @@ msgstr "zapte"
 #~ msgid "On destination '%s' is %s free space only!"
 #~ msgstr "Bestemming '%s' heeft slechts %s vrije ruimte!"
 
+#~ msgid "On reaching the end of a file during playback, you can choose the box's behavior."
+#~ msgstr "U kunt instellen wat er moet gebeuren bij het einde van het afspelen."
+
 #~ msgid "Open AutoTimer"
 #~ msgstr "Open AutoTimer"
 
@@ -16158,6 +16158,9 @@ msgstr "zapte"
 
 #~ msgid "special characters"
 #~ msgstr "speciale tekens"
+
+#~ msgid "standard"
+#~ msgstr "standaard"
 
 #~ msgid "traditional (fast)"
 #~ msgstr "conventioneel (snel)"
