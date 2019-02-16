@@ -22,15 +22,17 @@ class Console(Screen):
 
 		self.errorOcurred = False
 
+		self.Shown = True
 		self["text"] = ScrollLabel("")
 		self["key_red"] = StaticText(_("Cancel"))
-		self["actions"] = ActionMap(["WizardActions", "DirectionActions"],
+		self["actions"] = ActionMap(["ColorActions", "WizardActions", "DirectionActions"],
 		{
 			"ok": self.cancel,
 			"back": self.cancel,
 			"up": self["text"].pageUp,
-			"down": self["text"].pageDown
-		}, -1)
+			"down": self["text"].pageDown,
+			"yellow": self.yellow,
+		}, -2)
 
 		self.cmdlist = isinstance(cmdlist, list) and cmdlist or [cmdlist]
 		self.newtitle = title == "Console" and _("Console") or title
@@ -43,6 +45,15 @@ class Console(Screen):
 		self.container.dataAvail.append(self.dataAvail)
 		self.onLayoutFinish.append(self.startRun) # dont start before gui is finished
 
+	def yellow(self):
+		print 'Yellow pressed'
+		if self.Shown == True:
+				self.hide()
+				self.Shown = False
+		else:
+				self.show()
+				self.Shown = True
+				
 	def updateTitle(self):
 		self.setTitle(self.newtitle)
 
@@ -69,7 +80,7 @@ class Console(Screen):
 			if not self.errorOcurred and self.closeOnSuccess:
 				self.cancel()
 			else:
-				self["text"].appendText(_("\nPress OK or Exit to abort!"))
+				self["text"].appendText(_("\nPress OK or Exit to close!"))
 				self["key_red"].setText(_("Exit"))
 
 	def cancel(self):

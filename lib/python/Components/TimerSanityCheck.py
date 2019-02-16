@@ -6,6 +6,9 @@ import RecordTimer
 from Tools.CIHelper import cihelper
 from Components.config import config
 
+from Tools.CIHelper import cihelper
+from Components.config import config
+
 class TimerSanityCheck:
 	def __init__(self, timerlist, newtimer=None):
 		self.localtimediff = 25*3600 - mktime(gmtime(25*3600))
@@ -177,6 +180,8 @@ class TimerSanityCheck:
 		newTimerTunerType = None
 		cnt = 0
 		idx = 0
+		is_ci_use = 0
+		is_ci_timer_conflict = 0
 		overlaplist = []
 		is_ci_use = 0
 		is_ci_timer_conflict = 0
@@ -287,7 +292,7 @@ class TimerSanityCheck:
 			idx += 1
 
 		if ConflictTimer is None:
-			print "[TimerSanityCheck] conflict not found!"
+			print "[TimerSanityCheck] no conflict found."
 			return True
 
 ##################################################################################

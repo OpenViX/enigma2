@@ -57,6 +57,28 @@ void eSlider::setSliderBorderWidth(int pixel)
 	invalidate();
 }
 
+void eSlider::setScrollbarSliderPicture(ePtr<gPixmap> &pixmap)
+{
+	setScrollbarSliderPicture(pixmap.operator->());
+}
+
+void eSlider::setScrollbarSliderPicture(gPixmap *pixmap)
+{
+	m_pixmap = pixmap;
+	event(evtChangedSlider);
+}
+
+void eSlider::setScrollbarBackgroundPicture(ePtr<gPixmap> &pixmap)
+{
+	setScrollbarBackgroundPicture(pixmap.operator->());
+}
+
+void eSlider::setScrollbarBackgroundPicture(gPixmap *pixmap)
+{
+	m_backgroundpixmap = pixmap;
+	invalidate();
+}
+
 void eSlider::setSliderBorderColor(const gRGB &color)
 {
 	m_sliderborder_color = color;
@@ -69,6 +91,12 @@ void eSlider::setSliderForegroundColor(const gRGB &color)
 	m_sliderforeground_color = color;
 	m_have_sliderforeground_color = true;
 	invalidate();
+}
+
+void eSlider::setAlphatest(int alphatest)
+{
+	m_alphatest = alphatest;
+	setTransparent(alphatest);
 }
 
 int eSlider::event(int event, void *data, void *data2)

@@ -18,17 +18,16 @@ dist_install_DATA = \
 	folder.png \
 	fza.png \
 	hdd.png \
-	hdd24.png \
 	ico_mp_forward.png \
 	ico_mp_pause.png \
 	ico_mp_play.png \
 	ico_mp_rewind.png \
 	ico_mp_stop.png \
-	ico_dvb_c-fs8.png \
-	ico_dvb_s-fs8.png \
-	ico_dvb_t-fs8.png \
-	ico_service_group-fs8.png \
-	ico_stream-fs8.png \
+	ico_dvb_c.png \
+	ico_dvb_s.png \
+	ico_dvb_t.png \
+	ico_service_group.png \
+	ico_stream.png \
 	icon_crypt.png \
 	icon_dolby.png \
 	icon_event.png \
@@ -49,15 +48,16 @@ dist_install_DATA = \
 	input_rcnew.png \
 	input_rcold-configured.png \
 	input_rcold.png \
+	input_warning.png \
 	lock_error.png \
 	lock_off.png \
 	lock_on.png \
 	lock.png \
 	lockBouquet.png \
 	loop.png \
+	marker.png \
 	menu_off.png \
 	menu_on.png \
-	marker.png \
 	mp_buttons.png \
 	movie_play.png \
 	movie_play_rec.png \
@@ -114,7 +114,6 @@ dist_install_DATA = \
 	repzaprecclock_pre.png \
 	repzaprecclock_prepost.png \
 	stream.png \
-	stream24.png \
 	scan-c.png \
 	scan-s.png \
 	scan-t.png \

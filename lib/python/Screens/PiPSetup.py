@@ -7,7 +7,8 @@ from Components.config import config
 # this is not so great.
 MAX_X = 720
 MAX_Y = 576
-MAX_W, MAX_H = SystemInfo["MaxPIPSize"]
+MAX_W = MAX_X * 3 / 4
+MAX_H = MAX_Y * 3 / 4
 MIN_W = MAX_X / 8
 MIN_H = MAX_Y / 8
 
@@ -82,6 +83,7 @@ class PiPSetup(Screen):
 		resize += 100 # resize is in percent, so resize=+20 means: 120%
 
 		oldsize = self.size
+
 		if self.mode != "split":
 			w = clip(self.size[0] * resize / 100, MIN_W, MAX_W)
 			h = clip(self.size[1] * resize / 100, MIN_H, MAX_H)

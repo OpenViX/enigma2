@@ -414,11 +414,13 @@ class eDVBFrontendParametersATSC;
 
 class iDVBFrontendParameters: public iObject
 {
-public:
 #ifdef SWIG
+public:
 	iDVBFrontendParameters();
 	~iDVBFrontendParameters();
+private:
 #endif
+public:
 	enum { flagOnlyFree = 1 };
 	virtual SWIG_VOID(RESULT) getSystem(int &SWIG_OUTPUT) const = 0;
 	virtual SWIG_VOID(RESULT) getDVBS(eDVBFrontendParametersSatellite &SWIG_OUTPUT) const = 0;
@@ -484,8 +486,8 @@ class iDVBTransponderData: public iObject
 public:
 	virtual std::string getTunerType() const = 0;
 	virtual int getInversion() const = 0;
-	virtual unsigned int getFrequency() const = 0;
-	virtual unsigned int getSymbolRate() const = 0;
+	virtual int getFrequency() const = 0;
+	virtual int getSymbolRate() const = 0;
 	virtual int getOrbitalPosition() const = 0;
 	virtual int getFecInner() const = 0;
 	virtual int getModulation() const = 0;
@@ -685,7 +687,7 @@ class iDVBDemux: public iObject
 public:
 	virtual RESULT createSectionReader(eMainloop *context, ePtr<iDVBSectionReader> &reader)=0;
 	virtual RESULT createPESReader(eMainloop *context, ePtr<iDVBPESReader> &reader)=0;
-	virtual RESULT createTSRecorder(ePtr<iDVBTSRecorder> &recorder, int packetsize = 188, bool streaming=false)=0;
+	virtual RESULT createTSRecorder(ePtr<iDVBTSRecorder> &recorder, unsigned int packetsize = 188, bool streaming=false)=0;
 	virtual RESULT getMPEGDecoder(ePtr<iTSMPEGDecoder> &reader, int index = 0)=0;
 	virtual RESULT getSTC(pts_t &pts, int num=0)=0;
 	virtual RESULT getCADemuxID(uint8_t &id)=0;

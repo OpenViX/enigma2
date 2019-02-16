@@ -13,16 +13,14 @@ class SleepTimerEdit(ConfigListScreen, Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.skinName = ["SleepTimerSetup", "Setup"]
-		self.setup_title = _("SleepTimer Configuration")
+		self.setup_title = _("Sleep/wakeup timer")
 		self.setTitle(self.setup_title)
 		self["key_red"] = StaticText(_("Cancel"))
 		self["key_green"] = StaticText(_("Save"))
 		self["description"] = Label("")
-
 		self.list = []
 		ConfigListScreen.__init__(self, self.list, session = session)
 		self.createSetup()
-
 		self["setupActions"] = ActionMap(["SetupActions", "ColorActions"],
 		{
 			"green": self.ok,
@@ -33,6 +31,12 @@ class SleepTimerEdit(ConfigListScreen, Screen):
 
 	def createSetup(self):
 		self.list = []
+		sub1 = "   "
+		sub2 = "      "
+		sub3 = "         "
+		sub4 = "            "
+		sub5 = "               "
+		sub6 = "                  "
 		if InfoBar.instance and InfoBar.instance.sleepTimer.isActive():
 			statusSleeptimerText = _("(activated +%d min)") % InfoBar.instance.sleepTimerState()
 		else:
@@ -40,70 +44,70 @@ class SleepTimerEdit(ConfigListScreen, Screen):
 		self.list.append(getConfigListEntry(_("Sleeptimer") + " " + statusSleeptimerText,
 			config.usage.sleep_timer,
 			_("Configure the duration in minutes for the sleeptimer. Select this entry and click OK or green to start/stop the sleeptimer")))
-		self.list.append(getConfigListEntry(_("Inactivity Sleeptimer"),
+		self.list.append(getConfigListEntry(_("Inactivity Sleeptimer")  ,
 			config.usage.inactivity_timer,
 			_("Configure the duration in hours the receiver should go to standby when the receiver is not controlled.")))
 		if int(config.usage.inactivity_timer.value):
-			self.list.append(getConfigListEntry(_("Specify timeframe to ignore inactivity sleeptimer"),
+			self.list.append(getConfigListEntry(sub1 + _("Specify timeframe to ignore inactivity sleeptimer"),
 				config.usage.inactivity_timer_blocktime,
-				_("When enabled you can specify a timeframe when the inactivity sleeptimer is ignored. Not the detection is disabled during this timeframe but the inactivity timeout is disabled")))
+					_("When enabled you can specify a timeframe when the inactivity sleeptimer is ignored. Not the detection is disabled during this timeframe but the inactivity timeout is disabled")))
 			if config.usage.inactivity_timer_blocktime.value:
-				self.list.append(getConfigListEntry(_("Set blocktimes by weekday"),
+				self.list.append(getConfigListEntry(sub2 + _("Set blocktimes by weekday"),
 					config.usage.inactivity_timer_blocktime_by_weekdays,
 					_("Specify if you want to set the blocktimes separately by weekday")))
 				if config.usage.inactivity_timer_blocktime_by_weekdays.value:
 					for i in range(7):
-						self.list.append(getConfigListEntry([_("Monday"), _("Tuesday"), _("Wednesday"), _("Thursday"), _("Friday"), _("Saturday"), _("Sunday")][i],
+						self.list.append(getConfigListEntry(sub3 + [_("Monday"), _("Tuesday"), _("Wednesday"), _("Thursday"), _("Friday"), _("Saturday"), _("Sunday")][i],
 							config.usage.inactivity_timer_blocktime_day[i]))
 						if config.usage.inactivity_timer_blocktime_day[i].value:
-							self.list.append(getConfigListEntry(_("Start time to ignore inactivity sleeptimer"),
+							self.list.append(getConfigListEntry(sub6 + _("Start time to ignore inactivity sleeptimer"),
 								config.usage.inactivity_timer_blocktime_begin_day[i],
 								_("Specify the start time when the inactivity sleeptimer should be ignored")))
-							self.list.append(getConfigListEntry(_("End time to ignore inactivity sleeptimer"),
+							self.list.append(getConfigListEntry(sub6 + _("End time to ignore inactivity sleeptimer"),
 								config.usage.inactivity_timer_blocktime_end_day[i],
 								_("Specify the end time until the inactivity sleeptimer should be ignored")))
-							self.list.append(getConfigListEntry(_("Specify extra timeframe to ignore inactivity sleeptimer"),
+							self.list.append(getConfigListEntry(sub6 + sub1 + _("Specify extra timeframe to ignore inactivity sleeptimer"),
 								config.usage.inactivity_timer_blocktime_extra_day[i],
 								_("When enabled you can specify an extra timeframe when the inactivity sleeptimer is ignored. Not the detection is disabled during this timeframe but the inactivity timeout is disabled")))
 							if config.usage.inactivity_timer_blocktime_extra_day[i].value:
-								self.list.append(getConfigListEntry(_("Extra start time to ignore inactivity sleeptimer"),
+								self.list.append(getConfigListEntry(sub6 + sub2 + _("Extra start time to ignore inactivity sleeptimer"),
 									config.usage.inactivity_timer_blocktime_extra_begin_day[i],
 									_("Specify the extra start time when the inactivity sleeptimer should be ignored")))
-								self.list.append(getConfigListEntry(_("Extra end time to ignore inactivity sleeptimer"),
+								self.list.append(getConfigListEntry(sub6 + sub2 + _("Extra end time to ignore inactivity sleeptimer"),
 									config.usage.inactivity_timer_blocktime_extra_end_day[i],
 									_("Specify the extra end time until the inactivity sleeptimer should be ignored")))
 				else:
-					self.list.append(getConfigListEntry(_("Start time to ignore inactivity sleeptimer"),
+					self.list.append(getConfigListEntry(sub3 + _("Start time to ignore inactivity sleeptimer"),
 						config.usage.inactivity_timer_blocktime_begin,
 						_("Specify the start time when the inactivity sleeptimer should be ignored")))
-					self.list.append(getConfigListEntry(_("End time to ignore inactivity sleeptimer"),
+					self.list.append(getConfigListEntry(sub3 + _("End time to ignore inactivity sleeptimer"),
 						config.usage.inactivity_timer_blocktime_end,
 						_("Specify the end time until the inactivity sleeptimer should be ignored")))
-					self.list.append(getConfigListEntry(_("Specify extra timeframe to ignore inactivity sleeptimer"),
+					self.list.append(getConfigListEntry(sub4 + _("Specify extra timeframe to ignore inactivity sleeptimer"),
 						config.usage.inactivity_timer_blocktime_extra,
 						_("When enabled you can specify an extra timeframe when the inactivity sleeptimer is ignored. Not the detection is disabled during this timeframe but the inactivity timeout is disabled")))
 					if config.usage.inactivity_timer_blocktime_extra.value:
-						self.list.append(getConfigListEntry(_("Extra start time to ignore inactivity sleeptimer"),
+						self.list.append(getConfigListEntry(sub5 + _("Extra start time to ignore inactivity sleeptimer"),
 							config.usage.inactivity_timer_blocktime_extra_begin,
 							_("Specify the extra start time when the inactivity sleeptimer should be ignored")))
-						self.list.append(getConfigListEntry(_("Extra end time to ignore inactivity sleeptimer"),
+						self.list.append(getConfigListEntry(sub5 + _("Extra end time to ignore inactivity sleeptimer"),
 							config.usage.inactivity_timer_blocktime_extra_end,
 							_("Specify the extra end time until the inactivity sleeptimer should be ignored")))
 		self.list.append(getConfigListEntry(_("Shutdown when in Standby"),
 			config.usage.standby_to_shutdown_timer,
 			_("Configure the duration when the receiver should go to shut down in case the receiver is in standby mode.")))
 		if int(config.usage.standby_to_shutdown_timer.value):
-			self.list.append(getConfigListEntry(_("Specify timeframe to ignore the shutdown in standby"),
+			self.list.append(getConfigListEntry(sub1 + _("Specify timeframe to ignore the shutdown in standby"),
 				config.usage.standby_to_shutdown_timer_blocktime,
 				_("When enabled you can specify a timeframe to ignore the shutdown timer when the receiver is in standby mode")))
 			if config.usage.standby_to_shutdown_timer_blocktime.value:
-				self.list.append(getConfigListEntry(_("Start time to ignore shutdown in standby"),
+				self.list.append(getConfigListEntry(sub2 + _("Start time to ignore shutdown in standby"),
 					config.usage.standby_to_shutdown_timer_blocktime_begin,
 					_("Specify the start time to ignore the shutdown timer when the receiver is in standby mode")))
-				self.list.append(getConfigListEntry(_("End time to ignore shutdown in standby"),
+				self.list.append(getConfigListEntry(sub2 + _("End time to ignore shutdown in standby"),
 					config.usage.standby_to_shutdown_timer_blocktime_end,
 					_("Specify the end time to ignore the shutdown timer when the receiver is in standby mode")))
-		self.list.append(getConfigListEntry(_("Enable wakeup timer"),
+		self.list.append(getConfigListEntry(_("Wakeup timer"),
 			config.usage.wakeup_enabled,
 			_("Note: when enabled, and you do want standby mode after wake up, set option 'Startup to Standby' as 'No, except Wakeup timer'.")))
 		if config.usage.wakeup_enabled.value != "no":

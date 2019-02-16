@@ -107,7 +107,7 @@ class PositionerSetup(Screen):
 					self.oldref_stop = True
 				else:
 					for n in nimmanager.nim_slots:
-						if n.config_mode in ("loopthrough", "satposdepends"):
+						if n.config_mode in ("loopthrough_internal", "loopthrough_external", "satposdepends"):
 							root_id = nimmanager.sec.getRoot(n.slot_id, int(n.config.connectedTo.value))
 							if int(n.config.connectedTo.value) == self.feid:
 								self.oldref_stop = True
@@ -1342,6 +1342,7 @@ class TunerScreen(ConfigListScreen, Screen):
 			"fec": eDVBFrontendParametersSatellite.FEC_Auto,
 			"fec_s2": eDVBFrontendParametersSatellite.FEC_9_10,
 			"modulation": eDVBFrontendParametersSatellite.Modulation_QPSK,
+			"is_id":0,
 			"pls_mode": eDVBFrontendParametersSatellite.PLS_Gold,
 			"pls_code": eDVBFrontendParametersSatellite.PLS_Default_Gold_Code }
 		if frontendData is not None:
@@ -1411,7 +1412,7 @@ class TunerScreen(ConfigListScreen, Screen):
 			(eDVBFrontendParametersSatellite.Pilot_On, _("On")),
 			(eDVBFrontendParametersSatellite.Pilot_Unknown, _("Auto"))])
 		self.scan_sat.is_id = ConfigInteger(default = defaultSat.get("is_id",0), limits = (0, 255))
-		self.scan_sat.pls_mode = ConfigSelection(default = defaultSat.get("pls_mode", eDVBFrontendParametersSatellite.PLS_Gold), choices = [
+		self.scan_sat.pls_mode = ConfigSelection(default = defaultSat["pls_mode"], choices = [
 			(eDVBFrontendParametersSatellite.PLS_Root, _("Root")),
 			(eDVBFrontendParametersSatellite.PLS_Gold, _("Gold")),
 			(eDVBFrontendParametersSatellite.PLS_Combo, _("Combo"))])
@@ -1485,7 +1486,7 @@ class TunerScreen(ConfigListScreen, Screen):
 
 	def updateTransponders(self):
 		if len(self.tuning.sat.choices):
-			transponderlist = nimmanager.getTransponders(int(self.tuning.sat.value), self.feid)
+			transponderlist = nimmanager.getTransponders(int(self.tuning.sat.value))
 			tps = []
 			for transponder in transponderlist:
 				tps.append(self.transponderToString(transponder, scale = 1000))
@@ -1574,12 +1575,12 @@ def PositionerMain(session, **kwargs):
 
 def PositionerSetupStart(menuid, **kwargs):
 	if menuid == "scan" and nimmanager.somethingConnected():
-		return [(_("Positioner setup"), PositionerMain, "positioner_setup", None)]
+		return [(_("Positioner"), PositionerMain, "positioner_setup", None)]
 	else:
 		return []
 
 def Plugins(**kwargs):
 	if (nimmanager.hasNimType("DVB-S")):
-		return PluginDescriptor(name=_("Positioner setup"), description = _("Setup your positioner"), where = PluginDescriptor.WHERE_MENU, needsRestart = False, fnc = PositionerSetupStart)
+		return PluginDescriptor(name=_("Positioner"), description = _("Setup your positioner"), where = PluginDescriptor.WHERE_MENU, needsRestart = False, fnc = PositionerSetupStart)
 	else:
 		return []

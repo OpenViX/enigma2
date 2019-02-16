@@ -143,9 +143,9 @@ int fbClass::SetMode(int nxRes, int nyRes, int nbpp)
 			eDebug("[fb] FBIOPUT_VSCREENINFO: %m");
 			return -1;
 		}
-		eDebug("[fb] double buffering not available.");
+		eDebug("[fb] double buffering not available!");
 	} else
-		eDebug("[fb] double buffering available!");
+		eDebug("[fb] double buffering is available.");
 
 	m_number_of_pages = screeninfo.yres_virtual / nyRes;
 

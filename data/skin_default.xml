@@ -44,9 +44,9 @@
 		<color name="foreground" value="#ffffff"/>
 		<color name="secondBG" value="#18101214"/>
 	</colors>
-        <switchpixmap>
-		<pixmap name="menu_on" filename="skin_default/icons/menu_on.png"/>
-		<pixmap name="menu_off" filename="skin_default/icons/menu_off.png"/>
+	<switchpixmap>
+		<pixmap name="menu_on" filename="skin_default/icons/menu_on.png" />
+		<pixmap name="menu_off" filename="skin_default/icons/menu_off.png" />
 	</switchpixmap>
 	<!-- Screwed Stone II skin (skin_default.xml) /Nemesis -->
 	<!-- About screen -->
@@ -94,6 +94,12 @@
 		<widget name="info" position="330,370" size="200,100" font="Regular;14" zPosition="1" halign="center" foregroundColor="#909090" transparent="1"/>
 		<widget name="params" rowsincolumn="23"/>
 	</screen>
+	<!-- NetworkInfo screen -->
+	<screen name="SystemNetworkInfo" position="center,center" size="560,500">
+		<widget name="AboutScrollLabel" position="30,0" size="458,375" valign="left" font="Regular;20" transparent="1" />
+		<widget source="IFtext" render="Label" position="30,405" size="120,25" zPosition="10" font="Regular;20" halign="left" valign="center" transparent="1" backgroundColor="window-bg" />
+		<widget source="IF" render="Label" position="130,405" size="600,25" zPosition="10" font="Regular;20" halign="left" valign="center" transparent="1" backgroundColor="window-bg" />
+	</screen>
 	<!-- Adapter setup -->
 	<screen name="AdapterSetup" position="center,center" size="560,400" title="Network setup">
 		<ePixmap pixmap="skin_default/buttons/red.png" position="0,0" size="140,40" alphatest="on"/>
@@ -139,17 +145,11 @@
 		<widget source="Statustext" render="Label" position="10,375" size="115,21" zPosition="10" font="Regular;20" halign="left" backgroundColor="#25062748" transparent="1"/>
 		<widget name="statuspic" pixmaps="skin_default/buttons/button_green.png,skin_default/buttons/button_green_off.png" position="130,380" zPosition="10" size="15,16" transparent="1" alphatest="on"/>
 	</screen>
-	<!-- Streaming Clients Info screen -->
-	<screen name="StreamingClientsInfo" position="center,center" size="540,490" title="Streaming clients info">
-		<widget name="menu" font="Regular;20" position="10,60" size="530,320" zPosition="1" />
-		<widget name="info" position="10,60" size="530,22" font="Regular;20" halign="center" transparent="1" zPosition="2"/>
-		<ePixmap pixmap="skin_default/buttons/red.png" position="0,0" size="140,40" alphatest="on"/>
-		<ePixmap pixmap="skin_default/buttons/green.png" position="135,0" size="140,40" alphatest="on"/>
-		<ePixmap pixmap="skin_default/buttons/yellow.png" position="270,0" size="140,40" alphatest="on"/>
-		<ePixmap pixmap="skin_default/buttons/blue.png" position="405,0" size="140,40" alphatest="on"/>
-		<widget name="key_red" position="0,0" zPosition="1" size="135,40" font="Regular;18" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
-		<widget name="key_green" position="135,0" zPosition="1" size="135,40" font="Regular;18" halign="center" valign="center" backgroundColor="#1f771f" transparent="1"/>
-		<widget name="key_yellow" position="270,0" zPosition="1" size="135,40" font="Regular;18" halign="center" valign="center" backgroundColor="#18188b" transparent="1"/>
+	<screen name="StreamingClientsInfo" position="center,center" size="600,500">
+		<eLabel position="center,117" zPosition="-2" size="600,500" backgroundColor="#25062748" />
+		<widget source="Title" render="Label" position="center,126" size="580,44" font="Regular; 35" valign="top" zPosition="0" backgroundColor="#25062748" halign="center" />
+		<widget source="total" render="Label" position="center,174" size="580,50" zPosition="1" font="Regular; 22" halign="left" backgroundColor="#25062748" valign="center" />
+		<widget source="liste" render="Label" position="center,234" size="580,370" zPosition="1" noWrap="1" font="Regular; 20" valign="top" />
 	</screen>
 	<!-- Audio selection -->
 	<screen name="AudioSelection" position="center,center" size="485,330" title="Audio">
@@ -606,6 +606,7 @@ self.autoResize()
 		<widget name="ErrorPixmap" pixmap="skin_default/icons/input_error.png" position="5,5" size="53,53" alphatest="on"/>
 		<widget name="QuestionPixmap" pixmap="skin_default/icons/input_question.png" position="5,5" size="53,53" alphatest="on"/>
 		<widget name="InfoPixmap" pixmap="skin_default/icons/input_info.png" position="5,5" size="53,53" alphatest="on"/>
+		<widget name="WarningPixmap" pixmap="skin_default/icons/input_warning.png" position="5,5" size="53,53" alphatest="on"/>
 		<widget name="list" position="100,100" size="480,375"/>
 		<applet type="onLayoutFinish">
 # this should be factored out into some helper code, but currently demonstrates applets.
@@ -717,6 +718,26 @@ self.instance.move(ePoint(orgpos.x() + (orgwidth - newwidth)/2, orgpos.y() + (or
 		<ePixmap pixmap="skin_default/div-h.png" position="0,340" zPosition="1" size="560,2"/>
 		<widget source="introduction" render="Label" position="0,350" size="560,50" zPosition="10" font="Regular;21" halign="center" valign="center" backgroundColor="#25062748" transparent="1"/>
 	</screen>
+	<!-- Mac-adress -->
+	<screen name="NetworkMacSetup" position="center,center" size="560,400" title="MAC-adress setup" >
+		<ePixmap pixmap="skin_default/buttons/red.png" position="0,0" size="140,40" alphatest="on" />
+		<ePixmap pixmap="skin_default/buttons/green.png" position="140,0" size="140,40" alphatest="on" />
+		<widget source="key_red" render="Label" position="0,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" />
+		<widget source="key_green" render="Label" position="140,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1" />
+		<widget name="config" position="5,50" size="550,280" scrollbarMode="showOnDemand" />
+		<ePixmap pixmap="skin_default/div-h.png" position="0,340" zPosition="1" size="560,2" />
+		<widget source="introduction" render="Label" position="0,350" size="560,50" zPosition="10" font="Regular;21" halign="center" valign="center" backgroundColor="#25062748" transparent="1" />
+	</screen>
+	<!-- IPv6 -->
+	<screen name="IPv6Setup" position="center,center" size="560,400" title="IPv6 setup" >
+		<ePixmap pixmap="skin_default/buttons/red.png" position="0,0" size="140,40" alphatest="on" />
+		<ePixmap pixmap="skin_default/buttons/green.png" position="140,0" size="140,40" alphatest="on" />
+		<widget source="key_red" render="Label" position="0,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" />
+		<widget source="key_green" render="Label" position="140,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1" />
+		<widget name="config" position="5,50" size="550,280" scrollbarMode="showOnDemand" />
+		<ePixmap pixmap="skin_default/div-h.png" position="0,340" zPosition="1" size="560,2" />
+		<widget source="introduction" render="Label" position="0,350" size="560,50" zPosition="10" font="Regular;21" halign="center" valign="center" backgroundColor="#25062748" transparent="1" />
+	</screen>
 	<!-- Network adapter selection -->
 	<screen name="NetworkAdapterSelection" position="center,center" size="560,400" title="Select a network adapter">
 		<ePixmap pixmap="skin_default/buttons/red.png" position="0,0" size="140,40" alphatest="on"/>
@@ -785,6 +806,18 @@ self.instance.move(ePoint(orgpos.x() + (orgwidth - newwidth)/2, orgpos.y() + (or
 	<screen name="NetworkSetup" position="center,center" size="460,330" title="Network setup">
 		<widget name="menu" position="10,10" size="440,310"/>
 	</screen>
+	<!-- Inetd recovery -->
+	<screen name="InetdRecovery" position="center,center" size="560,412" title="Inetd recovery">
+		<ePixmap pixmap="skin_default/buttons/red.png" position="0,0" size="140,40" alphatest="on" />
+		<ePixmap pixmap="skin_default/buttons/green.png" position="140,0" size="140,40" alphatest="on" />
+		<ePixmap pixmap="skin_default/buttons/yellow.png" position="280,0" size="140,40" alphatest="on" />
+		<ePixmap pixmap="skin_default/buttons/blue.png" position="420,0" size="140,40" alphatest="on" />
+		<widget name="key_red" position="0,0" zPosition="1" size="140,40" font="Regular;19" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" />
+		<widget name="key_green" position="140,0" zPosition="1" size="140,40" font="Regular;19" halign="center" valign="center" backgroundColor="#1f771f" transparent="1" />
+		<widget name="key_yellow" position="280,0" zPosition="1" size="140,40" font="Regular;19" halign="center" valign="center" backgroundColor="#a08500" transparent="1" />
+		<widget name="key_blue" position="420,0" zPosition="1" size="140,40" font="Regular;19" halign="center" valign="center" backgroundColor="#18188b" transparent="1" />
+		<widget name="config" position="10,50" size="540,355" scrollbarMode="showOnDemand" />
+	</screen>
 	<!-- Nim selection -->
 	<screen name="NimSelection" position="center,center" size="490,330" title="Select a tuner">
 		<widget source="nimlist" render="Listbox" position="0,0" size="460,360" scrollbarMode="showOnDemand">
@@ -817,8 +850,8 @@ self.instance.move(ePoint(orgpos.x() + (orgwidth - newwidth)/2, orgpos.y() + (or
 		<widget name="number" position="145,15" size="80,25" halign="right" font="Regular;23"/>
 	</screen>
 	<!-- BufferIndicator -->
-	<screen name="BufferIndicator" title="Channel" position="c-100,45" size="200,35" backgroundColor="transparent" flags="wfNoBorder" zPosition="100">
-		<widget name="status" position="0,0" size="200,35" backgroundColor="transparent" transparent="1" font="Regular;26" borderColor="black" borderWidth="2" valign="center" halign="center"/>
+	<screen name="BufferIndicator" title="Channel" position="c-150,45" size="300,35" backgroundColor="transparent" flags="wfNoBorder" zPosition="100">
+		<widget name="status" position="0,0" size="300,35" backgroundColor="transparent" transparent="1" font="Regular;26" borderColor="black" borderWidth="2" valign="center" halign="center"/>
 	</screen>
 	<!-- Numerical help dialog -->
 	<screen name="NumericalTextInputHelpDialog" position="190,400" zPosition="2" size="424,124" backgroundColor="#202020" flags="wfNoBorder">
@@ -1010,7 +1043,6 @@ self.instance.move(ePoint(orgpos.x() + (orgwidth - newwidth)/2, orgpos.y() + (or
 		<ePixmap pixmap="skin_default/buttons/green.png" position="140,0" size="140,40" alphatest="on"/>
 		<widget source="key_red" render="Label" position="0,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
 		<widget source="key_green" render="Label" position="140,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1"/>
-
 		<widget name="config" position="10,50" size="400,300" scrollbarMode="showOnDemand"/>
 		<widget name="footer" position="0,0" size="0,0"/>
 	</screen>
@@ -1130,9 +1162,6 @@ self.instance.move(ePoint(orgpos.x() + (orgwidth - newwidth)/2, orgpos.y() + (or
 		<widget source="VKeyIcon" render="Pixmap" pixmap="skin_default/buttons/key_text.png" position="520,10" zPosition="10" size="35,25" transparent="1" alphatest="on">
 			<convert type="ConditionalShowHide"/>
 		</widget>
-	</screen>
-	<screen name="SelectImage" position="center,center" size="550,400">
-		<widget name="list" position="fill" scrollbarMode="showOnDemand"/>
 	</screen>
 	<!-- Simple channelselection -->
 	<screen name="SimpleChannelSelection" position="center,center" size="560,430" title="Channel selection">
@@ -1327,5 +1356,47 @@ self.instance.move(ePoint(orgpos.x() + (orgwidth - newwidth)/2, orgpos.y() + (or
 		<widget source="key_red" render="Label" position="0,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
 		<widget source="key_green" render="Label" position="140,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1"/>
 		<widget name="filelist" position="5,50" size="510,370" scrollbarMode="showOnDemand"/>
+	</screen>
+	<screen name="LCDSkinSelector" position="center,center" size="700,350" title="LCD Skin-Selector" >
+		<widget name="lab1" position="50,30" size="250,26" zPosition="1"  font="Regular;22" halign="left" transparent="1" />
+		<widget name="lab2" position="380,30" size="250,26" zPosition="1" font="Regular;22" halign="left" transparent="1" />
+		<widget name="SkinList" position="50,85" size="270,200" enableWrapAround="1" scrollbarMode="showOnDemand" />
+		<widget name="Preview" position="380,80" size="280,210" zPosition="2" backgroundColor="background" transparent="0" alphatest="on" />
+		<widget name="lab3" position="0,320" halign="center" size="700,26" zPosition="1" foregroundColor="#FFE500" font="Regular;22" transparent="1" />
+	</screen>
+	<screen name="LCDClockSelector" position="center,center" size="700,350" title="LCD Clock-Selector" >
+		<widget name="lab1" position="50,30" size="250,26" zPosition="1"  font="Regular;22" halign="left" transparent="1" />
+		<widget name="lab2" position="380,30" size="250,26" zPosition="1" font="Regular;22" halign="left" transparent="1" />
+		<widget name="ClockList" position="50,85" size="270,200" enableWrapAround="1" scrollbarMode="showOnDemand" />
+		<widget name="Preview" position="380,80" size="280,210" zPosition="2" backgroundColor="background" transparent="0" alphatest="on" />
+		<widget name="lab3" position="0,320" halign="center" size="700,26" zPosition="1" foregroundColor="#FFE500" font="Regular;22" transparent="1" />
+	</screen>
+	<!--CI+-Helper /-->
+	<screen name="CIHelper" title="CIHelper Setup" position="center,center" size="560,412">
+		<widget name="autostart" position="30,80" size="250,30" font="Regular;22" valign="center" halign="left" transparent="1" />
+		<widget name="labdisabled" position="300,80" size="172,30" font="Regular;22" valign="center" halign="center" backgroundColor="red" zPosition="1" />
+		<widget name="labactive" position="300,80" size="172,30" font="Regular;22" valign="center" halign="center" backgroundColor="green" zPosition="2" />
+		<widget name="status" position="30,140" size="250,30" font="Regular;22" valign="center" halign="left" transparent="1" />
+		<widget name="labstop" position="300,140" size="172,30" font="Regular;22" valign="center" halign="center" backgroundColor="red" zPosition="1" />
+		<widget name="labrun" position="300,140" size="172,30" font="Regular;22" valign="center" halign="center" backgroundColor="green" zPosition="2" />
+		<widget name="ci0" position="70,300" size="300,30" font="Regular;22" valign="center" halign="left" transparent="1" />
+		<widget name="ci0active" position="30,300" zPosition="1" pixmap="skin_default/icons/lock_on.png" size="32,32" alphatest="on" />
+		<widget name="ci0inactive" position="30,300" zPosition="2" pixmap="skin_default/icons/lock_off.png" size="32,32" alphatest="on" />
+		<widget name="ci1" position="70,350" size="300,30" font="Regular;22" valign="center" halign="left" transparent="1" />
+		<widget name="ci1active" position="30,350" zPosition="1" pixmap="skin_default/icons/lock_on.png" size="32,32" alphatest="on" />
+		<widget name="ci1inactive" position="30,350" zPosition="2" pixmap="skin_default/icons/lock_off.png" size="32,32" alphatest="on" />
+		<ePixmap pixmap="skin_default/buttons/red.png" position="0,0" size="140,40" alphatest="on" />
+		<ePixmap pixmap="skin_default/buttons/green.png" position="140,0" size="140,40" alphatest="on" />
+		<ePixmap pixmap="skin_default/buttons/yellow.png" position="280,0" size="140,40" alphatest="on" />
+		<ePixmap pixmap="skin_default/buttons/blue.png" position="420,0" size="140,40" alphatest="on" />
+		<widget name="key_red" position="0,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" />
+		<widget name="key_green" position="140,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1" />
+		<widget name="key_yellow" position="280,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" transparent="1" />
+		<widget name="key_blue" position="420,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#18188b" transparent="1" />
+	</screen>
+	<screen name="CIHelperSetup" title="CIHelper Setup" position="center,center" size="560,412">
+		<ePixmap pixmap="skin_default/buttons/red.png" position="0,0" size="140,40" alphatest="on" />
+		<widget name="key_red" position="0,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" />
+		<widget name="config" position="5,50" size="550,375" scrollbarMode="showOnDemand" />
 	</screen>
 </skin>

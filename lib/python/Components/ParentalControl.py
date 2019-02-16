@@ -28,7 +28,7 @@ def InitParentalControl():
 	config.ParentalControl.retries.servicepin.time = ConfigInteger(default = 3)
 	config.ParentalControl.servicepin = ConfigSubList()
 	config.ParentalControl.servicepin.append(ConfigPIN(default = 0))
-	config.ParentalControl.age = ConfigSelection(default = "18", choices = [("0", _("No age block"))] + list((str(x), "%d+" % x) for x in range(3,19)))
+	config.ParentalControl.age = ConfigSelection(default = "0", choices = [("0", _("No age block"))] + list((str(x), "%d+" % x) for x in range(3,19)))
 	config.ParentalControl.hideBlacklist = ConfigYesNo(default = False)
 	config.ParentalControl.config_sections = ConfigSubsection()
 	config.ParentalControl.config_sections.main_menu = ConfigYesNo(default = False)
@@ -176,9 +176,9 @@ class ParentalControl:
 		elif result == False:
 			messageText = _("The pin code you entered is wrong.")
 			if self.session:
-				self.session.open(MessageBox, messageText, MessageBox.TYPE_INFO, timeout=3)
+				self.session.open(MessageBox, messageText, MessageBox.TYPE_INFO, timeout=7)
 			else:
-				AddPopup(messageText, MessageBox.TYPE_ERROR, timeout = 3)
+				AddPopup(messageText, MessageBox.TYPE_ERROR, timeout =7)
 
 	def saveListToFile(self, sWhichList, vList):
 		file = open(resolveFilename(SCOPE_CONFIG, sWhichList), 'w')

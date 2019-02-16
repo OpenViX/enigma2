@@ -41,6 +41,7 @@ from Tools.Alternatives import GetWithAlternative
 from Tools.Directories import fileExists
 from Plugins.Plugin import PluginDescriptor
 from Components.PluginComponent import plugins
+from Components.SystemInfo import SystemInfo
 from Screens.ChoiceBox import ChoiceBox
 from Screens.EventView import EventViewEPGSelect
 import os, unicodedata
@@ -151,6 +152,9 @@ class ChannelContextMenu(Screen):
 		inAlternativeList = current_root and 'FROM BOUQUET "alternatives' in current_root.getPath()
 		self.inBouquet = csel.getMutableList() is not None
 		haveBouquets = config.usage.multibouquet.value
+
+		menu.append(ChoiceEntryComponent("menu", (_("Configuration..."), self.openSetup)))
+
 		from Components.ParentalControl import parentalControl
 		self.parentalControl = parentalControl
 		self.parentalControlEnabled = config.ParentalControl.servicepin[0].value and config.ParentalControl.servicepinactive.value
@@ -178,9 +182,9 @@ class ChannelContextMenu(Screen):
 							append_when_current_valid(current, menu, (_("Unhide parental control services"), self.unhideParentalServices), level=0, key="1")
 					if SystemInfo["3DMode"] and fileExists("/usr/lib/enigma2/python/Plugins/SystemPlugins/OSD3DSetup/plugin.pyo"):
 						if eDVBDB.getInstance().getFlag(eServiceReference(current.toString())) & FLAG_IS_DEDICATED_3D:
-							append_when_current_valid(current, menu, (_("Unmark service as dedicated 3D service"), self.removeDedicated3DFlag), level=2)
+							append_when_current_valid(current, menu, (_("Unmark service as dedicated 3D service"), self.removeDedicated3DFlag), level=0)
 						else:
-							append_when_current_valid(current, menu, (_("Mark service as dedicated 3D service"), self.addDedicated3DFlag), level=2)
+							append_when_current_valid(current, menu, (_("Mark service as dedicated 3D service"), self.addDedicated3DFlag), level=0)
 					if not (current_sel_path):
 						if Screens.InfoBar.InfoBar.instance.checkHideVBI(current):
 							append_when_current_valid(current, menu, (_("Uncover dashed flickering line for this service"), self.toggleVBI), level=1)
@@ -192,7 +196,6 @@ class ChannelContextMenu(Screen):
 								append_when_current_valid(current, menu, (_("Do not center DVB subs on this service"), self.removeCenterDVBSubsFlag), level=2)
 							else:
 								append_when_current_valid(current, menu, (_("Do center DVB subs on this service"), self.addCenterDVBSubsFlag), level=2)
-
 					if haveBouquets:
 						bouquets = self.csel.getBouquetList()
 						if bouquets is None:
@@ -257,7 +260,7 @@ class ChannelContextMenu(Screen):
 				if csel.movemode:
 					append_when_current_valid(current, menu, (_("disable move mode"), self.toggleMoveMode), level=0, key="6")
 				else:
-					append_when_current_valid(current, menu, (_("enable move mode"), self.toggleMoveMode), level=0, key="6")
+					append_when_current_valid(current, menu, (_("enable move mode"), self.toggleMoveMode), level=1, key="6")
 				if not csel.entry_marked and not inBouquetRootList and current_root and not (current_root.flags & eServiceReference.isGroup):
 					if current.type != -1:
 						menu.append(ChoiceEntryComponent(text=(_("add marker"), self.showMarkerInputBox)))
@@ -288,7 +291,18 @@ class ChannelContextMenu(Screen):
 					append_when_current_valid(current, menu, (_("end alternatives edit"), self.bouquetMarkEnd), level=0)
 					append_when_current_valid(current, menu, (_("abort alternatives edit"), self.bouquetMarkAbort), level=0)
 
-		menu.append(ChoiceEntryComponent("menu", (_("Configuration..."), self.openSetup)))
+		menu.append(ChoiceEntryComponent(text = (_("Reload Services"), self.reloadServices)))
+		#if csel.bouquet_mark_edit == OFF and not csel.movemode:
+		#	if not inBouquetRootList:
+		#		isPlayable = not (current_sel_flags & (eServiceReference.isMarker|eServiceReference.isDirectory))
+		#		if isPlayable:
+		#			if SystemInfo["PIPAvailable"]:
+		#				if not self.parentalControlEnabled or self.parentalControl.getProtectionLevel(csel.getCurrentSelection().toCompareString()) == -1:
+		#					if self.csel.dopipzap:
+		#						append_when_current_valid(current, menu, (_("play in mainwindow"), self.playMain), level=0, key="red")
+		#					else:	
+		#						append_when_current_valid(current, menu, (_("play as picture in picture"), self.showServiceInPiP), level=0, key="blue")
+		#			append_when_current_valid(current, menu, (_("find currently played service"), self.findCurrentlyPlayed), level=0, key="1")
 		self["menu"] = ChoiceList(menu)
 
 	def set3DMode(self, value):
@@ -352,7 +366,8 @@ class ChannelContextMenu(Screen):
 		return ""
 
 	def removeEntry(self):
-		if self.removeFunction and self.csel.servicelist.getCurrent() and self.csel.servicelist.getCurrent().valid():
+		currentPlayingService = (hasattr(self.csel, "dopipzap") and self.csel.dopipzap) and self.session.pip.getCurrentService() or self.session.nav.getCurrentlyPlayingServiceOrGroup()
+		if self.removeFunction and self.csel.servicelist.getCurrent() and self.csel.servicelist.getCurrent().valid() and (self.csel.servicelist.getCurrent() != currentPlayingService):
 			if self.csel.confirmRemove:
 				list = [(_("yes"), True), (_("no"), False), (_("yes") + " " + _("and never ask in this session again"), "never")]
 				self.session.openWithCallback(self.removeFunction, MessageBox, _("Are you sure to remove this entry?") + "\n%s" % self.getCurrentSelectionName(), list=list)
@@ -427,6 +442,11 @@ class ChannelContextMenu(Screen):
 
 	def cancelClick(self, dummy=False):
 		self.close(False)
+
+	def reloadServices(self):
+		eDVBDB.getInstance().reloadBouquets()
+		eDVBDB.getInstance().reloadServicelist()
+		self.session.openWithCallback(self.close, MessageBox, _("The servicelist is reloaded."), MessageBox.TYPE_INFO, timeout = 5)
 
 	def showServiceInformations(self):
 		current = self.csel.getCurrentSelection()
@@ -514,6 +534,8 @@ class ChannelContextMenu(Screen):
 			if hasattr(self.session, 'pipshown') and self.session.pipshown and hasattr(self.session, 'pip'):
 				del self.session.pip
 			self.session.pip = self.session.instantiateDialog(PictureInPicture)
+			if SystemInfo["hasOSDAnimation"]:
+				self.session.pip.setAnimationMode(0)
 			self.session.pip.show()
 			if self.session.pip.playService(newservice):
 				self.session.pipshown = True
@@ -659,7 +681,7 @@ class SelectionEventInfo:
 
 	def __selectionChanged(self):
 		if self.execing:
-			self.timer.start(100, True)
+			self.timer.start(int(config.usage.servicelist_eventinfo_delay.value), True)
 
 	def updateEventInfo(self):
 		cur = self.getCurrentSelection()
@@ -1282,7 +1304,7 @@ class ChannelSelectionBase(Screen):
 		Screen.__init__(self, session)
 		self.setScreenPathMode(None)
 		self["key_red"] = Button(_("All"))
-		self["key_green"] = Button(_("Satellites"))
+		self["key_green"] = Button(_("Reception lists"))
 		self["key_yellow"] = Button(_("Provider"))
 		self["key_blue"] = Button(_("Favourites"))
 
@@ -1334,7 +1356,8 @@ class ChannelSelectionBase(Screen):
 				"9": self.keyNumberGlobal,
 				"0": self.keyNumber0
 			}, -2)
-		self.maintitle = _("Channel selection")
+		#self.maintitle = _("Channel selection")
+		self.maintitle = _(" ")
 		self.recallBouquetMode()
 
 	def getBouquetNumOffset(self, bouquet):
@@ -1425,7 +1448,7 @@ class ChannelSelectionBase(Screen):
 			if 'FROM PROVIDERS' in pathstr:
 				return _("Provider")
 			if 'FROM SATELLITES' in pathstr:
-				return _("Satellites")
+				return _("Reception lists")
 			if ') ORDER BY name' in pathstr:
 				return _("All")
 		return str
@@ -1445,12 +1468,13 @@ class ChannelSelectionBase(Screen):
 				else:
 					end_ref = None
 				nameStr = self.getServiceName(base_ref)
-				titleStr += ' - ' + nameStr
+				if not 'Bouquets' in nameStr:
+					titleStr += ' - ' + nameStr
 				if end_ref is not None:
 					if Len > 2:
-						titleStr += '/../'
+						titleStr += ' -..- '
 					else:
-						titleStr += '/'
+						titleStr += ' - '
 					nameStr = self.getServiceName(end_ref)
 					titleStr += nameStr
 				self.setTitle(titleStr)
@@ -1502,6 +1526,7 @@ class ChannelSelectionBase(Screen):
 		return False
 
 	def showAllServices(self):
+		self["key_green"].setText(_("Reception lists"))
 		if not self.pathChangeDisabled:
 			refstr = '%s ORDER BY name'%(self.service_types)
 			if not self.preEnterPath(refstr):
@@ -1517,6 +1542,10 @@ class ChannelSelectionBase(Screen):
 	def showSatellites(self, changeMode=False):
 		if not self.pathChangeDisabled:
 			refstr = '%s FROM SATELLITES ORDER BY satellitePosition'%(self.service_types)
+			if self.showSatDetails:
+				self["key_green"].setText(_("Simple"))
+			else:
+				self["key_green"].setText(_("Extended"))
 			if not self.preEnterPath(refstr):
 				ref = eServiceReference(refstr)
 				justSet = False
@@ -1537,6 +1566,10 @@ class ChannelSelectionBase(Screen):
 						justSet = True
 						self.clearPath()
 						self.enterPath(ref, True)
+						if self.showSatDetails:
+							self["key_green"].setText(_("Simple"))
+						else:
+							self["key_green"].setText(_("Extended"))
 				if justSet:
 					addCableAndTerrestrialLater = []
 					serviceHandler = eServiceCenter.getInstance()
@@ -1605,6 +1638,7 @@ class ChannelSelectionBase(Screen):
 								self.setCurrentSelectionAlternative(eServiceReference(refstr))
 
 	def showProviders(self):
+		self["key_green"].setText(_("Reception lists"))
 		if not self.pathChangeDisabled:
 			refstr = '%s FROM PROVIDERS ORDER BY name'%(self.service_types)
 			if not self.preEnterPath(refstr):
@@ -1690,6 +1724,7 @@ class ChannelSelectionBase(Screen):
 			Screens.InfoBar.InfoBar.instance.instantRecord(serviceRef=ref)
 
 	def showFavourites(self):
+		self["key_green"].setText(_("Reception lists"))
 		if not self.pathChangeDisabled:
 			if not self.preEnterPath(self.bouquet_rootstr):
 				if self.isBasePathEqual(self.bouquet_root):
@@ -1875,8 +1910,9 @@ class ChannelSelection(ChannelSelectionBase, ChannelSelectionEdit, ChannelSelect
 			})
 
 		self.startServiceRef = None
-
-		self.history = [ ]
+		self.history_tv = []
+		self.history_radio = []
+		self.history = self.history_tv
 		self.history_pos = 0
 
 		if config.servicelist.startupservice.value and config.servicelist.startuproot.value:
@@ -1944,6 +1980,7 @@ class ChannelSelection(ChannelSelectionBase, ChannelSelectionEdit, ChannelSelect
 	def setModeTv(self):
 		if self.revertMode is None:
 			self.revertMode = self.mode
+		self.history = self.history_tv
 		self.lastservice = config.tv.lastservice
 		self.lastroot = config.tv.lastroot
 		config.servicelist.lastmode.value = "tv"
@@ -1960,6 +1997,7 @@ class ChannelSelection(ChannelSelectionBase, ChannelSelectionEdit, ChannelSelect
 		if self.revertMode is None:
 			self.revertMode = self.mode
 		if config.usage.e1like_radio_mode.value:
+			self.history = self.history_radio
 			self.lastservice = config.radio.lastservice
 			self.lastroot = config.radio.lastroot
 			config.servicelist.lastmode.value = "radio"
@@ -2009,6 +2047,7 @@ class ChannelSelection(ChannelSelectionBase, ChannelSelectionEdit, ChannelSelect
 					self.movemode and self.toggleMoveMode()
 					self.editMode = False
 					self.protectContextMenu = True
+					self["key_green"].setText(_("Reception lists"))
 					self.close(ref)
 
 	def bouquetParentalControlCallback(self, ref):
@@ -2383,6 +2422,8 @@ class ChannelSelectionRadio(ChannelSelectionBase, ChannelSelectionEdit, ChannelS
 		self.onLayoutFinish.append(self.onCreate)
 
 		self.info = session.instantiateDialog(RadioInfoBar) # our simple infobar
+		if SystemInfo["hasOSDAnimation"]:
+			self.info.setAnimationMode(0)
 
 		self["actions"] = ActionMap(["OkCancelActions", "TvRadioActions"],
 			{
@@ -2412,7 +2453,10 @@ class ChannelSelectionRadio(ChannelSelectionBase, ChannelSelectionEdit, ChannelS
 		self.onExecEnd.append(self.__onExecEnd)
 
 	def __onClose(self):
-		lastservice = eServiceReference(config.tv.lastservice.value)
+		del self.info["RdsDecoder"]
+		self.session.deleteDialog(self.info)
+		self.infobar.rds_display.onRassInteractivePossibilityChanged.remove(self.RassInteractivePossibilityChanged)
+		lastservice=eServiceReference(config.tv.lastservice.value)
 		self.session.nav.playService(lastservice)
 
 	def startRassInteractive(self):
@@ -2435,7 +2479,6 @@ class ChannelSelectionRadio(ChannelSelectionBase, ChannelSelectionEdit, ChannelS
 		self.info.hide()
 
 	def cancel(self):
-		self.infobar.rds_display.onRassInteractivePossibilityChanged.remove(self.RassInteractivePossibilityChanged)
 		self.info.hide()
 		#set previous tv service
 		self.close(None)

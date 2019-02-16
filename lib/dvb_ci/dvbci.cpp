@@ -4,7 +4,6 @@
 
 #include <ios>
 #include <fstream>
-#include <sstream>
 #include <iomanip>
 
 #include <lib/base/init.h>
@@ -35,125 +34,74 @@
 
 eDVBCIInterfaces *eDVBCIInterfaces::instance = 0;
 
-
-eCIClient::eCIClient(eDVBCIInterfaces *handler, int socket) : eUnixDomainSocket(socket, 1, eApp), parent(handler)
+static char* readInputCI(int NimNumber)
 {
-	receivedData = NULL;
-	receivedCmd = 0;
-	CONNECT(connectionClosed_, eCIClient::connectionLost);
-	CONNECT(readyRead_, eCIClient::dataAvailable);
-}
+	char id1[] = "NIM Socket";
+	char id2[] = "Input_Name";
+	char keys1[] = "1234567890";
+	char keys2[] = "12ABCDabcd";
+	char *inputName = 0;
+	char buf[256];
+	FILE *f;
 
-void eCIClient::connectionLost()
-{
-	if (parent) parent->connectionLost();
-}
-
-void eCIClient::dataAvailable()
-{
-	if (!receivedCmd)
+	f = fopen("/proc/bus/nim_sockets", "rt");
+	if (f)
 	{
-		if ((unsigned int)bytesAvailable() < sizeof(ciplus_header)) return;
-		if ((unsigned int)readBlock((char*)&header, sizeof(ciplus_header)) < sizeof(ciplus_header)) return;
-		header.magic = ntohl(header.magic);
-		header.cmd = ntohl(header.cmd);
-		header.size = ntohl(header.size);
-		if (header.magic != CIPLUSHELPER_MAGIC)
+		while (fgets(buf, sizeof(buf), f))
 		{
-			if (parent) parent->connectionLost();
-			return;
-		}
-		receivedCmd = header.cmd;
-		receivedCmdSize = header.size;
-	}
-	if (receivedCmdSize)
-	{
-		if ((unsigned int)bytesAvailable() < receivedCmdSize) return;
-		if (receivedCmdSize) delete [] receivedData;
-		receivedData = new unsigned char[receivedCmdSize];
-		if ((unsigned int)readBlock((char*)receivedData, receivedCmdSize) < receivedCmdSize) return;
+			char *p = strcasestr(buf, id1);
+			if (!p)
+				continue;
 
-		ciplus_message *message = (ciplus_message *)receivedData;
-		switch (header.cmd)
+			p += strlen(id1);
+			p += strcspn(p, keys1);
+			if (*p && strtol(p, 0, 0) == NimNumber)
+				break;
+		}
+
+		while (fgets(buf, sizeof(buf), f))
 		{
-		default:
+			if (strcasestr(buf, id1))
+				break;
+
+			char *p = strcasestr(buf, id2);
+			if (!p)
+				continue;
+
+			p = strchr(p + strlen(id2), ':');
+			if (!p)
+				continue;
+
+			p++;
+			p += strcspn(p, keys2);
+			size_t len = strspn(p, keys2);
+			if (len > 0)
 			{
-				unsigned char *data = &receivedData[sizeof(ciplus_message)];
-				parent->getSlot(ntohl(message->slot))->send(data, ntohl(message->size));
+				inputName = strndup(p, len);
+				break;
 			}
-			break;
-		case eCIClient::CIPLUSHELPER_STATE_CHANGED:
-			{
-				eDVBCISession::setAction(ntohl(message->session), receivedData[sizeof(ciplus_message)]);
-			}
-			break;
 		}
-		receivedCmdSize = 0;
-		receivedCmd = 0;
+
+		fclose(f);
 	}
+
+	return inputName;
 }
 
-void eCIClient::sendData(int cmd, int slot, int session, unsigned long idtag, unsigned char *tag, unsigned char *data, int len)
+static std::string getTunerLetterDM(int NimNumber)
 {
-	ciplus_message message;
-	message.slot = ntohl(slot);
-	message.idtag = ntohl(idtag);
-	memcpy(&message.tag, tag, 4);
-	message.session = ntohl(session);
-	message.size = ntohl(len);
-
-	ciplus_header header;
-	header.magic = htonl(CIPLUSHELPER_MAGIC);
-	header.size = htonl(sizeof(message) + len);
-	header.cmd = htonl(cmd);
-
-	writeBlock((const char*)&header, sizeof(header));
-	writeBlock((const char*)&message, sizeof(message));
-	if (len)
-	{
-		writeBlock((const char*)data, len);
-	}
+	char *srcCI = readInputCI(NimNumber);
+	if (srcCI) return std::string(srcCI);
+	return eDVBCISlot::getTunerLetter(NimNumber);
 }
 
-void eDVBCIInterfaces::newConnection(int socket)
-{
-	if (client)
-	{
-		delete client;
-	}
-	client = new eCIClient(this, socket);
-}
-
-void eDVBCIInterfaces::connectionLost()
-{
-	if (client)
-	{
-		delete client;
-		client = NULL;
-	}
-}
-
-void eDVBCIInterfaces::sendDataToHelper(int cmd, int slot, int session, unsigned long idtag, unsigned char *tag, unsigned char *data, int len)
-{
-	if (client)	client->sendData(cmd, slot, session, idtag, tag, data, len);
-}
-
-bool eDVBCIInterfaces::isClientConnected()
-{
-	if (client) return true;
-	return false;
-}
-
-#define CIPLUS_SERVER_SOCKET "/tmp/.listen.ciplus.socket"
 
 eDVBCIInterfaces::eDVBCIInterfaces()
- : eServerSocket(CIPLUS_SERVER_SOCKET, eApp)
 {
 	int num_ci = 0;
 	std::stringstream path;
 
 	instance = this;
-	client = NULL;
 	m_stream_interface = interface_none;
 	m_stream_finish_mode = finish_none;
 
@@ -164,7 +112,6 @@ eDVBCIInterfaces::eDVBCIInterfaces()
 		path.str("");
 		path.clear();
 		path << "/dev/ci" << num_ci;
-
 		if(::access(path.str().c_str(), R_OK) < 0)
 			break;
 
@@ -752,7 +699,6 @@ void eDVBCIInterfaces::removePMTHandler(eDVBServicePMTHandler *pmthandler)
 				caids.push_back(0xFFFF);
 				slot->sendCAPMT(pmthandler, caids);  // send a capmt without caids to remove a running service
 				slot->removeService(service_to_remove.getServiceID().get());
-
 				if (slot->current_tuner == -1)
 				{
 					// no previous tuner to go back to, signal to CI interface CI action is finished
@@ -857,8 +803,18 @@ int eDVBCIInterfaces::setInputSource(int tuner_no, const std::string &source)
 	{
 		char buf[64];
 		snprintf(buf, sizeof(buf), "/proc/stb/tsmux/input%d", tuner_no);
+		char *srcCI = NULL;
 
-		if (CFile::write(buf, source.c_str()) == -1)
+		if (source.find("CI") == std::string::npos)
+		{
+			srcCI = readInputCI(tuner_no);
+		}
+
+		if (srcCI && CFile::write(buf, srcCI) == -1)
+		{
+			eDebug("[CI] eDVBCIInterfaces setInputSource for input %s failed!", srcCI);
+		}
+		else if (CFile::write(buf, source.c_str()) == -1)
 		{
 			eDebug("[CI] eDVBCIInterfaces setInputSource for input %s failed!", source.c_str());
 			return 0;
@@ -1102,7 +1058,7 @@ int eDVBCISlot::send(const unsigned char *data, size_t len)
 
 void eDVBCISlot::data(int what)
 {
-	eDebugCI("[CI] Slot %d what %d\n", getSlotID(), what);
+	eDebugCI("[CI] CISlot %d what %d\n", getSlotID(), what);
 	if(what == eSocketNotifier::Priority) {
 		if(state != stateRemoved) {
 			state = stateRemoved;
@@ -1184,7 +1140,7 @@ eDVBCISlot::eDVBCISlot(eMainloop *context, int nr)
 
 	fd = ::open(filename, O_RDWR | O_NONBLOCK | O_CLOEXEC);
 
-	eDebugCI("[CI] Slot %d has fd %d", getSlotID(), fd);
+	eDebugCI("[CI] CI Slot %d has fd %d", getSlotID(), fd);
 	state = stateInvalid;
 
 	if (fd >= 0)
@@ -1224,12 +1180,12 @@ int eDVBCISlot::getSlotID()
 
 int eDVBCISlot::reset()
 {
-	eDebug("[CI] Slot %d: reset requested", getSlotID());
+	eDebug("[CI] CI Slot %d: reset requested", getSlotID());
 
 	if (state == stateInvalid)
 	{
 		unsigned char buf[256];
-		eDebug("[CI] flush");
+		eDebug("[CI] ci flush");
 		while(::read(fd, buf, 256)>0);
 		state = stateResetted;
 	}
@@ -1247,7 +1203,7 @@ int eDVBCISlot::reset()
 
 int eDVBCISlot::startMMI()
 {
-	eDebug("[CI] Slot %d: startMMI()", getSlotID());
+	eDebug("[CI] CI Slot %d: startMMI()", getSlotID());
 
 	if(application_manager)
 		application_manager->startMMI();
@@ -1257,7 +1213,7 @@ int eDVBCISlot::startMMI()
 
 int eDVBCISlot::stopMMI()
 {
-	eDebug("[CI] Slot %d: stopMMI()", getSlotID());
+	eDebug("[CI] CI Slot %d: stopMMI()", getSlotID());
 
 	if(mmi_session)
 		mmi_session->stopMMI();
@@ -1267,7 +1223,7 @@ int eDVBCISlot::stopMMI()
 
 int eDVBCISlot::answerText(int answer)
 {
-	eDebug("[CI] Slot %d: answerText(%d)", getSlotID(), answer);
+	eDebug("[CI] CI Slot %d: answerText(%d)", getSlotID(), answer);
 
 	if(mmi_session)
 		mmi_session->answerText(answer);
@@ -1285,7 +1241,7 @@ int eDVBCISlot::getMMIState()
 
 int eDVBCISlot::answerEnq(char *value)
 {
-	eDebug("[CI] Slot %d: answerENQ(%s)", getSlotID(), value);
+	eDebug("[CI] CI Slot %d: answerENQ(%s)", getSlotID(), value);
 
 	if(mmi_session)
 		mmi_session->answerEnq(value);
@@ -1295,7 +1251,7 @@ int eDVBCISlot::answerEnq(char *value)
 
 int eDVBCISlot::cancelEnq()
 {
-	eDebug("[CI] Slot %d: cancelENQ", getSlotID());
+	eDebug("[CI] CI Slot %d: cancelENQ", getSlotID());
 
 	if(mmi_session)
 		mmi_session->cancelEnq();
@@ -1331,7 +1287,7 @@ int eDVBCISlot::sendCAPMT(eDVBServicePMTHandler *pmthandler, const std::vector<u
 			(pmt_version == it->second) &&
 			!sendEmpty )
 		{
-			eDebug("[CI] [eDVBCISlot] dont send self capmt version twice");
+			eDebug("[eDVBCISlot] dont send self capmt version twice");
 			return -1;
 		}
 
@@ -1342,7 +1298,7 @@ int eDVBCISlot::sendCAPMT(eDVBServicePMTHandler *pmthandler, const std::vector<u
 		{
 			unsigned char raw_data[2048];
 
-//			eDebug("[CI] send %s capmt for service %04x to slot %d",
+//			eDebug("[eDVBCISlot] send %s capmt for service %04x to slot %d",
 //				it != running_services.end() ? "UPDATE" : running_services.empty() ? "ONLY" : "ADD",
 //				program_number, slotid);
 
@@ -1350,7 +1306,7 @@ int eDVBCISlot::sendCAPMT(eDVBServicePMTHandler *pmthandler, const std::vector<u
 				it != running_services.end() ? 0x05 /*update*/ : running_services.empty() ? 0x03 /*only*/ : 0x04 /*add*/, 0x01, caids );
 			while( i != ptr->getSections().end() )
 			{
-		//			eDebug("[CI] append");
+		//			eDebug("[eDVBCISlot] append");
 				capmt.append(*i++);
 			}
 			capmt.writeToBuffer(raw_data);
@@ -1378,18 +1334,18 @@ int eDVBCISlot::sendCAPMT(eDVBServicePMTHandler *pmthandler, const std::vector<u
 
 			if (sendEmpty)
 			{
-//				eDebugNoNewLineStart("[CI[ SEND EMPTY CAPMT.. old version is %02x", raw_data[hlen+3]);
+//				eDebugNoNewLine("[eDVBCISlot] SEND EMPTY CAPMT.. old version is %02x", raw_data[hlen+3]);
 				if (sendEmpty && running_services.size() == 1)  // check if this is the capmt for the last running service
 					raw_data[hlen] = 0x03; // send only instead of update... because of strange effects with alphacrypt
 				raw_data[hlen+3] &= ~0x3E;
 				raw_data[hlen+3] |= ((pmt_version+1) & 0x1F) << 1;
-//				eDebugNoNewLine(" new version is %02x\n", raw_data[hlen+3]);
+//				eDebug(" new version is %02x", raw_data[hlen+3]);
 			}
 
-//			eDebugNoNewLineStart("[CI[ ca_manager %p dump capmt:", ca_manager);
+//			eDebug("ca_manager %p dump capmt:", ca_manager);
 //			for(int i=0;i<wp;i++)
 //				eDebugNoNewLine("%02x ", raw_data[i]);
-//			eDebugNoNewLine("\n");
+//			eDebug("");
 
 			//dont need tag and lenfield
 			ca_manager->sendCAPMT(raw_data + hlen, wp - hlen);
@@ -1412,8 +1368,19 @@ int eDVBCISlot::setSource(const std::string &source)
 	char buf[64];
 	current_source = source;
 	snprintf(buf, sizeof(buf), "/proc/stb/tsmux/ci%d_input", slotid);
+	char *srcCI = NULL;
 
-	if(CFile::write(buf, source.c_str()) == -1)
+	if(source.find("CI") == std::string::npos || source.size() == 1)
+	{
+		srcCI = readInputCI(source[0]-65);
+	}
+
+	if(srcCI && CFile::write(buf, srcCI) == -1)
+	{
+		eDebug("[CI] Slot: %d setSource: %s failed!", getSlotID(), srcCI);
+		return 0;
+	}
+	else if(CFile::write(buf, source.c_str()) == -1)
 	{
 		eDebug("[CI] Slot: %d setSource: %s failed!", getSlotID(), source.c_str());
 		return 0;

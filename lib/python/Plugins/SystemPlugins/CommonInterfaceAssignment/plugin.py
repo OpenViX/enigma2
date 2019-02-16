@@ -654,7 +654,7 @@ def main(session, **kwargs):
 
 def menu(menuid, **kwargs):
 	if menuid == "cam" and isModule():
-		return [(_("Common Interface assignment"), main, "ci_assign", 11)]
+		return [(_("CI assignment"), main, "ci_assign", 11)]
 	return []
 
 def Plugins(**kwargs):
@@ -663,4 +663,4 @@ def Plugins(**kwargs):
 		description = _("a gui to assign services/providers/caids to common interface modules")
 	return [PluginDescriptor(where = PluginDescriptor.WHERE_SESSIONSTART, needsRestart = False, fnc = sessionstart),
 			PluginDescriptor(where = PluginDescriptor.WHERE_AUTOSTART, needsRestart = False, fnc = autostart),
-			PluginDescriptor(name = _("Common Interface assignment"), description = description, where = PluginDescriptor.WHERE_MENU, needsRestart = False, fnc = menu)]
+			PluginDescriptor(name = _("CI assignment"), description = description, where = PluginDescriptor.WHERE_MENU, needsRestart = False, fnc = menu)]

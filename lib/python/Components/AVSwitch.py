@@ -1,7 +1,8 @@
 from config import config, ConfigSlider, ConfigSelection, ConfigYesNo, ConfigEnableDisable, ConfigSubsection, ConfigBoolean, ConfigSelectionNumber, ConfigNothing, NoSave
-from enigma import eAVSwitch, eDVBVolumecontrol, getDesktop
+from enigma import eAVSwitch, getDesktop
 from SystemInfo import SystemInfo
 import os
+from boxbranding import getBoxType, getMachineBuild
 
 class AVSwitch:
 	def setInput(self, input):
@@ -168,7 +169,19 @@ def InitAVSwitch():
 	config.av.wss.addNotifier(setWSS)
 
 	iAVSwitch.setInput("ENCODER") # init on startup
-	SystemInfo["ScartSwitch"] = eAVSwitch.getInstance().haveScartSwitch()
+
+	if getMachineBuild() in ('gb7325'):
+		detected = eAVSwitch.getInstance().haveScartSwitch()
+	else:
+		detected = False
+
+	SystemInfo["ScartSwitch"] = detected
+
+	if SystemInfo["HasMultichannelPCM"]:
+		def setPCMMultichannel(configElement):
+			open(SystemInfo["HasMultichannelPCM"], "w").write(configElement.value and "enable" or "disable")
+		config.av.pcm_multichannel = ConfigYesNo(default = False)
+		config.av.pcm_multichannel.addNotifier(setPCMMultichannel)
 
 	if SystemInfo["CanDownmixAC3"]:
 		def setAC3Downmix(configElement):
@@ -176,17 +189,47 @@ def InitAVSwitch():
 		config.av.downmix_ac3 = ConfigYesNo(default = True)
 		config.av.downmix_ac3.addNotifier(setAC3Downmix)
 
+	if SystemInfo["CanDownmixAC3Plus"]:
+		def setAC3PlusDownmix(configElement):
+			open("/proc/stb/audio/ac3plus", "w").write(configElement.value and "downmix" or "passthrough")
+		config.av.downmix_ac3plus = ConfigYesNo(default = True)
+		config.av.downmix_ac3plus.addNotifier(setAC3PlusDownmix)	
+
 	if SystemInfo["CanDownmixDTS"]:
 		def setDTSDownmix(configElement):
 			open("/proc/stb/audio/dts", "w").write(configElement.value and "downmix" or "passthrough")
 		config.av.downmix_dts = ConfigYesNo(default = True)
 		config.av.downmix_dts.addNotifier(setDTSDownmix)
 
+	if SystemInfo["CanDownmixDTSHD"]:
+		def setDTSHDDownmix(configElement):
+			open("/proc/stb/audio/dtshd", "w").write(configElement.value and "downmix" or "passthrough")
+		config.av.downmix_dtshd = ConfigYesNo(default = True)
+		config.av.downmix_dtshd.addNotifier(setDTSHDDownmix)
+
 	if SystemInfo["CanDownmixAAC"]:
 		def setAACDownmix(configElement):
 			open("/proc/stb/audio/aac", "w").write(configElement.value and "downmix" or "passthrough")
 		config.av.downmix_aac = ConfigYesNo(default = True)
 		config.av.downmix_aac.addNotifier(setAACDownmix)
+
+	if SystemInfo["CanDownmixAACPlus"]:
+		def setAACPlusDownmix(configElement):
+			open("/proc/stb/audio/aacplus", "w").write(configElement.value and "downmix" or "passthrough")
+		config.av.downmix_aacplus = ConfigYesNo(default = True)
+		config.av.downmix_aacplus.addNotifier(setAACPlusDownmix)
+
+	if SystemInfo["CanDownmixWMApro"]:
+		def setWMAproDownmix(configElement):
+			open("/proc/stb/audio/wmapro", "w").write(configElement.value)
+		config.av.downmix_wmapro = ConfigSelection(default = "downmix", choices = [("downmix",_("Downmix")), ("passthrough",_("Passthrough")), ("multichannel",_("convert to multi channel PCM")), ("hdmi_best",_("use best, controlled by HDMI"))])
+		config.av.downmix_wmapro.addNotifier(setWMAproDownmix)
+
+	if SystemInfo["CanAACTranscode"]:
+		def setAACTranscode(configElement):
+			open("/proc/stb/audio/aac_transcode", "w").write(configElement.value)
+		config.av.transcode_aac = ConfigSelection(default = "off", choices = [("off", _("off")), ("ac3", _("AC3")), ("dts", _("DTS"))])
+		config.av.transcode_aac.addNotifier(setAACTranscode)
 
 	try:
 		SystemInfo["CanChangeOsdAlpha"] = open("/proc/stb/video/alpha", "r") and True or False
@@ -196,7 +239,7 @@ def InitAVSwitch():
 	if SystemInfo["CanChangeOsdAlpha"]:
 		def setAlpha(config):
 			open("/proc/stb/video/alpha", "w").write(str(config.value))
-		config.av.osd_alpha = ConfigSlider(default=255, limits=(0,255))
+		config.av.osd_alpha = ConfigSlider(default=255, increment = 5, limits=(20,255))
 		config.av.osd_alpha.addNotifier(setAlpha)
 
 	if os.path.exists("/proc/stb/vmpeg/0/pep_scaler_sharpness"):
@@ -209,7 +252,10 @@ def InitAVSwitch():
 			except IOError:
 				print "couldn't write pep_scaler_sharpness"
 
-		config.av.scaler_sharpness = ConfigSlider(default=13, limits=(0,26))
+		if getBoxType() in ('gbquad', 'gbquadplus'):
+			config.av.scaler_sharpness = ConfigSlider(default=5, limits=(0,26))
+		else:
+			config.av.scaler_sharpness = ConfigSlider(default=13, limits=(0,26))
 		config.av.scaler_sharpness.addNotifier(setScaler_sharpness)
 	else:
 		config.av.scaler_sharpness = NoSave(ConfigNothing())
@@ -262,7 +308,3 @@ def InitAVSwitch():
 		config.av.hdmi_audio_source = ConfigSelection(default = "pcm", choices = [("pcm", _("PCM")), ("spdif", _("SPDIF"))])
 		config.av.hdmi_audio_source.addNotifier(setHDMIAudioSource)
 
-	def setVolumeStepsize(configElement):
-		eDVBVolumecontrol.getInstance().setVolumeSteps(int(configElement.value))
-	config.av.volume_stepsize = ConfigSelectionNumber(1, 10, 1, default = 5)
-	config.av.volume_stepsize.addNotifier(setVolumeStepsize)

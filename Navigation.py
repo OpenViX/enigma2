@@ -1,8 +1,10 @@
-from enigma import eServiceCenter, eServiceReference, pNavigation, getBestPlayableServiceReference, iPlayableService, setPreferredTuner, eStreamServer
+from enigma import eServiceCenter, eServiceReference, eTimer, pNavigation, getBestPlayableServiceReference, iPlayableService, setPreferredTuner, eStreamServer
 from Components.ImportChannels import ImportChannels
 from Components.ParentalControl import parentalControl
 from Components.SystemInfo import SystemInfo
 from Components.config import config, configfile
+from Components.PluginComponent import plugins
+from Plugins.Plugin import PluginDescriptor
 from Tools.BoundFunction import boundFunction
 from Tools.StbHardware import getFPWasTimerWakeup
 from Tools import Notifications
@@ -16,7 +18,7 @@ from Components.Sources.StreamService import StreamServiceList
 
 # TODO: remove pNavgation, eNavigation and rewrite this stuff in python.
 class Navigation:
-	def __init__(self):
+	def __init__(self, nextRecordTimerAfterEventActionAuto=False):
 		if NavigationInstance.instance is not None:
 			raise NavigationInstance.instance
 
@@ -34,15 +36,61 @@ class Navigation:
 		self.currentlyPlayingServiceReference = None
 		self.currentlyPlayingServiceOrGroup = None
 		self.currentlyPlayingService = None
-		self.RecordTimer = RecordTimer.RecordTimer()
-		self.__wasTimerWakeup = getFPWasTimerWakeup()
+		self.RecordTimer = None
+		for p in plugins.getPlugins(PluginDescriptor.WHERE_RECORDTIMER):
+			self.RecordTimer = p()
+			if self.RecordTimer:
+				break
+		if not self.RecordTimer:
+			self.RecordTimer = RecordTimer.RecordTimer()
+		self.nextRecordTimerAfterEventActionAuto = nextRecordTimerAfterEventActionAuto
+		self.__wasTimerWakeup = False
+		self.__wasRecTimerWakeup = False
+		self.syncCount = 0
 		self.__isRestartUI = config.misc.RestartUI.value
 		startup_to_standby = config.usage.startup_to_standby.value
 		wakeup_time_type = config.misc.prev_wakeup_time_type.value
+
+		wasTimerWakeup = getFPWasTimerWakeup()
+		if not wasTimerWakeup: #work-around for boxes where driver not sent was_timer_wakeup signal to e2
+			print"[NAVIGATION] getNextRecordingTime= %s" % self.RecordTimer.getNextRecordingTime()
+			print"[NAVIGATION] current Time=%s" % time()
+			print"[NAVIGATION] timediff=%s" % abs(self.RecordTimer.getNextRecordingTime() - time())
+
+			if time() <= 31536000: # check for NTP-time sync, if no sync, wait for transponder time
+				self.timesynctimer = eTimer()
+				self.timesynctimer.callback.append(self.TimeSynctimer)
+				self.timesynctimer.start(5000, True)
+				print"[NAVIGATION] wait for time sync"
+				
+			elif abs(self.RecordTimer.getNextRecordingTime() - time()) <= 360: # if there is a recording sheduled in the next 5 mins, set the wasTimerWakeup flag
+				wasTimerWakeup = True
+				f = open("/tmp/was_timer_wakeup_workaround.txt", "w")
+				file = f.write(str(wasTimerWakeup))
+				f.close()
+
+		print"[NAVIGATION] wasTimerWakeup = %s" % wasTimerWakeup
+
+		if wasTimerWakeup:
+			self.__wasTimerWakeup = True
+			if time() <= 31536000:
+				self.timesynctimer = eTimer()
+				self.timesynctimer.callback.append(self.TimeSynctimer)
+				self.timesynctimer.start(5000, True)
+				print"[NAVIGATION] wait for time sync"
+	
+			elif nextRecordTimerAfterEventActionAuto and abs(self.RecordTimer.getNextRecordingTime() - time()) <= 360:
+				self.__wasRecTimerWakeup = True
+				print 'RECTIMER: wakeup to standby detected.'
+				f = open("/tmp/was_rectimer_wakeup", "w")
+				f.write('1')
+				f.close()
+				# as we woke the box to record, place the box in standby.
+				self.standbytimer = eTimer()
+				self.standbytimer.callback.append(self.gotostandby)
+				self.standbytimer.start(15000, True)
 		if config.usage.remote_fallback_import_restart.value:
 			ImportChannels()
-		if self.__wasTimerWakeup:
-			RecordTimer.RecordTimerEntry.setWasInDeepStandby()
 		if config.misc.RestartUI.value:
 			config.misc.RestartUI.value = False
 			config.misc.RestartUI.save()
@@ -63,6 +111,38 @@ class Navigation:
 
 	def isRestartUI(self):
 		return self.__isRestartUI
+
+	def wasRecTimerWakeup(self):
+		return self.__wasRecTimerWakeup
+
+	def TimeSynctimer(self):
+		self.syncCount += 1
+		if self.nextRecordTimerAfterEventActionAuto and abs(self.RecordTimer.getNextRecordingTime() - time()) <= 360:
+			self.__wasRecTimerWakeup = True
+			print 'RECTIMER: wakeup to standby detected.'
+			print"[NAVIGATION] getNextRecordingTime= %s" % self.RecordTimer.getNextRecordingTime()
+			print"[NAVIGATION] current Time=%s" % time()
+			print"[NAVIGATION] timediff=%s" % abs(self.RecordTimer.getNextRecordingTime() - time())
+			f = open("/tmp/was_rectimer_wakeup", "w")
+			f.write('1')
+			f.close()
+			self.gotostandby()
+		else:
+			if self.syncCount <= 24 and time() <= 31536000: # max 2 mins or when time is in sync
+				self.timesynctimer.start(5000, True)
+			else:
+				print"[NAVIGATION] No Recordings found, end work-around"
+
+		print"[NAVIGATION] wasTimerWakeup after time sync = %s, sync time = %s sec." % (self.__wasRecTimerWakeup, self.syncCount * 5)
+
+	def gotostandby(self):
+		from Tools import Notifications
+		Notifications.AddNotification(Screens.Standby.Standby)
+
+	def checkShutdownAfterRecording(self):
+		if len(self.getRecordings()) or abs(self.RecordTimer.getNextRecordingTime() - time()) <= 360:
+			if not Screens.Standby.inTryQuitMainloop: # not a shutdown messagebox is open
+				RecordTimer.RecordTimerEntry.TryQuitMainloop(False) # start shutdown handling
 
 	def dispatchEvent(self, i):
 		for x in self.event:

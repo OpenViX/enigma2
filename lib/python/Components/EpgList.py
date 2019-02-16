@@ -229,6 +229,9 @@ class EPGList(GUIComponent):
 		else:
 			return None
 
+	def getPixmapForEntry(self, service, eventId, beginTime, duration):
+		getPixmapForEntry = getClockTypesForEntry(self, service, eventId, beginTime, duration)
+
 	def buildSingleEntry(self, service, eventId, beginTime, duration, EventName):
 		clock_types = self.getClockTypesForEntry(service, eventId, beginTime, duration)
 		r1=self.weekday_rect

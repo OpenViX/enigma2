@@ -27,13 +27,16 @@ def main(session, **kwargs):
 	from overscanwizard import OverscanWizard
 	session.open(OverscanWizard, timeOut=False)
 
-def startSetup(menuid):
-	return menuid == "video" and [(_("Overscan wizard"), main, "sd_position_setup", 0)] or []
-
 def startup(reason, **kwargs):
 	setConfiguredPosition()
 
+def OSDPosSetup(menuid, **kwargs):
+	if menuid == "ui_menu":
+		return [(_("Position and size"), main, "osd_position_setup", 80)]
+	else:
+		return []
+
 def Plugins(**kwargs):
 	from Plugins.Plugin import PluginDescriptor
-	return [PluginDescriptor(name = "Overscan wizard", description = "", where = PluginDescriptor.WHERE_SESSIONSTART, fnc = startup),
-		PluginDescriptor(name = "Overscan wizard", description = _("Wizard to arrange the overscan"), where = PluginDescriptor.WHERE_MENU, fnc = startSetup)]
+	return [PluginDescriptor(name = "Overscan Wizard", description = _("Wizard to arrange the overscan"), where = PluginDescriptor.WHERE_SESSIONSTART, fnc = startup),
+		PluginDescriptor(name = "Overscan Wizard", description = _("Wizard to arrange the overscan"), where = PluginDescriptor.WHERE_MENU, fnc = OSDPosSetup)]

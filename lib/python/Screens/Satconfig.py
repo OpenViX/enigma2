@@ -69,7 +69,7 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 				nim.powerMeasurement.save()
 		if not hasattr(self, 'additionalMotorOptions'):
 			self.additionalMotorOptions = NoSave(ConfigYesNo(False))
-		self.showAdditionalMotorOptions = getConfigListEntry(_("Extra motor options"), self.additionalMotorOptions, _("Additional motor options allow you to enter details from your motor's spec sheet so enigma can work out how long it will take to move the dish from one satellite to another satellite."))
+		self.showAdditionalMotorOptions = getConfigListEntry(_("Extra motor options"), self.additionalMotorOptions, _("Additional motor options allow you to enter details from your motor's spec sheet so enigma can work out how long it will take to move to another satellite."))
 		self.list.append(self.showAdditionalMotorOptions)
 		if self.additionalMotorOptions.value:
 			self.list.append(getConfigListEntry("   " + _("Horizontal turning speed") + " [" + chr(176) + "/sec]", nim.turningspeedH, _("Consult your motor's spec sheet for this information, or leave the default setting.")))
@@ -431,7 +431,7 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 						self.nimConfig.advanced.unicableconnectedTo.setChoices(choices)
 						self.list.append(getConfigListEntry(_("Connected to"),self.nimConfig.advanced.unicableconnectedTo, _("Select the tuner to which the signal cable of the SCR device is connected.")))
 
-			else:	#kein Unicable
+			else:	#no Unicable
 				self.list.append(getConfigListEntry(_("Voltage mode"), Sat.voltage, _("Select 'polarisation' if using a 'universal' LNB, otherwise consult your LNB spec sheet.")))
 				self.list.append(getConfigListEntry(_("Increased voltage"), currLnb.increased_voltage))
 				self.list.append(getConfigListEntry(_("Tone mode"), Sat.tonemode, _("Select 'band' if using a 'universal' LNB, otherwise consult your LNB spec sheet.")))
@@ -602,7 +602,7 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 		self.nimConfig = self.nim.config
 		self.createConfigMode()
 		self.createSetup()
-		self.setTitle(_("Setup") + " " + self.nim.friendly_full_description)
+		self.setTitle(_("Setup tuner") + " " + self.nim.input_name)
 		
 		if not self.selectionChanged in self["config"].onSelectionChanged:
 			self["config"].onSelectionChanged.append(self.selectionChanged)
@@ -745,9 +745,11 @@ class NimSelection(Screen):
 
 	def extraInfo(self):
 		nim = self["nimlist"].getCurrent()
+		nimname = nim[1]
 		nim = nim and nim[3]
 		if config.usage.setup_level.index >= 2 and nim is not None:
-			text = _("Capabilities: ") + eDVBResourceManager.getInstance().getFrontendCapabilities(nim.slot)
+			nimcapabilities = eDVBResourceManager.getInstance().getFrontendCapabilities(nim.slot)
+			text = _("Capabilities ") + str(nimname) + " \n" + str(nimcapabilities)
 			self.session.open(MessageBox, text, MessageBox.TYPE_INFO, simple=True)
 
 	def okbuttonClick(self):

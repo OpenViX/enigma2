@@ -171,6 +171,8 @@ eHdmiCEC *eHdmiCEC::getInstance()
 void eHdmiCEC::reportPhysicalAddress()
 {
 	struct cec_message txmessage;
+	memset(&txmessage, 0, sizeof(txmessage));
+
 	txmessage.address = 0x0f; /* broadcast */
 	txmessage.data[0] = 0x84; /* report address */
 	txmessage.data[1] = physicalAddress[0];
@@ -376,7 +378,7 @@ void eHdmiCEC::hdmiEvent(int what)
 			{
 				eDebugNoNewLine(" %02X", rxmessage.data[i]);
 			}
-			eDebugNoNewLine("\n");
+			eDebugEOL();
 			bool hdmicec_report_active_menu = eConfigManager::getConfigBoolValue("config.hdmicec.report_active_menu", false);
 			if (hdmicec_report_active_menu)
 			{
@@ -529,7 +531,7 @@ void eHdmiCEC::sendMessage(struct cec_message &message)
 		{
 			eDebugNoNewLine(" %02X", message.data[i]);
 		}
-		eDebugNoNewLine("\n");
+		eDebugEOL();
 		if (linuxCEC)
 		{
 			struct cec_msg msg;

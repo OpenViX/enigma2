@@ -52,7 +52,7 @@ class FrontendInfo(Converter, object):
 				return _("N/A")
 		elif self.type == self.AGC:
 			percent = self.source.agc
-		elif (self.type == self.SNR and not swapsnr) or (self.type == self.SNRdB and swapsnr):
+		elif (self.type == self.SNR and swapsnr) or (self.type == self.SNRdB and not swapsnr):
 			percent = self.source.snr
 		elif self.type  == self.SNR or self.type == self.SNRdB:
 			if self.source.snr_db is not None:
@@ -68,7 +68,7 @@ class FrontendInfo(Converter, object):
 					if n.slot == self.source.slot_number:
 						color = "\c0000??00"
 					elif self.source.tuner_mask & 1 << n.slot:
-						color = "\c00????00"
+						color = "\c00??????"
 					elif len(nimmanager.nim_slots) <= self.space_for_tuners or self.show_all_non_link_tuners and not (n.isFBCLink() or n.internally_connectable):
 						color = "\c007?7?7?"
 					else:

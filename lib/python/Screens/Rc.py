@@ -37,7 +37,7 @@ class Rc:
 		if self.isDefaultRc:
 			target = resolveFilename(SCOPE_SKIN, "rcpositions.xml")
 		else:
-			target = rc_model.getRcPositions()
+			target = rc_model.getRcLocation() + 'rcpositions.xml'
 		tree = ElementTree(file = target)
 		rcs = tree.getroot()
 		self.rcs = {}

@@ -1,4 +1,4 @@
-AC_INIT([enigma2],[4],[forum@openpli.org])
+AC_INIT([enigma2],[6.1],[http://teamblue.tech])
 AM_INIT_AUTOMAKE([dist-bzip2 no-define tar-pax -Wno-portability])
 AC_CONFIG_HEADERS([enigma2_config.h])
 
@@ -11,11 +11,16 @@ AC_SYS_LARGEFILE
 
 AC_PROG_CC
 AC_PROG_CXX
+AX_CXX_COMPILE_STDCXX_11
 m4_ifdef([LT_INIT], [LT_INIT], [AC_PROG_LIBTOOL])
 AC_CONFIG_MACRO_DIR([m4])
 AC_OPENMP()
 
 AC_PATH_PROG(MSGFMT, msgfmt, AC_MSG_ERROR(Could not find msgfmt))
+AC_PATH_PROG(MSGINIT, msginit, AC_MSG_ERROR(Could not find msginit))
+AC_PATH_PROG(MSGMERGE, msgmerge, AC_MSG_ERROR(Could not find msgmerge))
+AC_PATH_PROG(MSGUNIQ, msguniq, AC_MSG_ERROR(Could not find msguniq))
+AC_PATH_PROG(XGETTEXT, xgettext, AC_MSG_ERROR(Could not find xgettext))
 
 AM_PATH_PYTHON
 AX_PYTHON_DEVEL
@@ -29,9 +34,13 @@ TUXBOX_APPS_DVB
 AM_CONDITIONAL(HAVE_GIT_DIR, test -d "$srcdir/.git")
 AM_CONDITIONAL(HAVE_FAKE_GIT_DIR, test -f "$srcdir/.git/last_commit_info")
 
-dnl versions of plugins-base
-PKG_CHECK_MODULES(TUXTXT, tuxbox-tuxtxt)
-PKG_CHECK_MODULES(BASE, [freetype2 fribidi glib-2.0 libdvbsi++ libpng libxml-2.0 sigc++-2.0 libssl libcrypto])
+dnl versions of gstreamer and plugins-base
+AC_ARG_WITH(gstversion,
+	AS_HELP_STRING([--with-gstversion],[use gstreamer version (major.minor)]),
+	[GST_MAJORMINOR=$withval],[GST_MAJORMINOR=0.10])
+
+PKG_CHECK_MODULES(GSTREAMER, gstreamer-$GST_MAJORMINOR gstreamer-pbutils-$GST_MAJORMINOR)
+PKG_CHECK_MODULES(BASE, [freetype2 fribidi gstreamer-$GST_MAJORMINOR gstreamer-pbutils-$GST_MAJORMINOR libdvbsi++ libpng libxml-2.0 sigc++-2.0 libssl libcrypto])
 PKG_CHECK_MODULES(LIBDDVD, libdreamdvd, HAVE_LIBDDVD="yes", HAVE_LIBDDVD="no")
 AM_CONDITIONAL(HAVE_LIBDDVD, test "$HAVE_LIBDDVD" = "yes")
 PKG_CHECK_MODULES(AVAHI, avahi-client)
@@ -44,24 +53,74 @@ AC_SUBST(LIBJPEG_LIBS)
 AC_CHECK_LIB([ungif], [DGifOpen], [LIBGIF_LIBS="-lungif"], [AC_CHECK_LIB([gif], [DGifOpen], [LIBGIF_LIBS="-lgif"], [AC_MSG_ERROR([Could not find libgif or libungif])])])
 AC_SUBST(LIBGIF_LIBS)
 
-AC_ARG_WITH(crashlogemail,
-	[  --with-crashlogemail=crash log email address],
-	[CRASHLOGEMAIL="$withval"],[CRASHLOGEMAIL="the OpenPLi forum"])
-AC_SUBST(CRASHLOGEMAIL)
-AC_DEFINE_UNQUOTED(CRASH_EMAILADDR,"$CRASHLOGEMAIL",[crash log email address])
-
 AC_ARG_WITH(boxtype,
-	[  --with-boxtype=NAME box type [[none,dm7025,dm800...]]],
-	[BOXTYPE="$withval"],[BOXTYPE="dm800"])
+	[  --with-boxtype=NAME box type [[none,gb7356,gb7358...]]],
+	[BOXTYPE="$withval"],[BOXTYPE="gb7358"])
 AC_SUBST(BOXTYPE)
 AC_DEFINE_UNQUOTED(BOXTYPE,"$BOXTYPE",[box type])
 
+AC_ARG_WITH(machinebuild,
+	[  --with-machinebuild=NAME machine build [[none,gbipbox,gbquad...]]],
+	[MACHINEBUILD="$withval"],[MACHINEBUILD="gbipbox"])
+AC_SUBST(MACHINEBUILD)
+AC_DEFINE_UNQUOTED(MACHINEBUILD,"$MACHINEBUILD",[machine build])
+
+AC_ARG_WITH(distro,
+	[  --with-distro=NAME distro name [[openvix,openaaf,...]]],
+	[DISTRO="$withval"],[DISTRO="openaaf"])
+AC_SUBST(DISTRO)
+AC_DEFINE_UNQUOTED(DISTRO,"$DISTRO",[distro name])
+
+AC_ARG_WITH(machinebrand,
+	[  --with-machinebrand=NAME brand name [[Vu,Xtrend,...]]],
+	[MACHINE_BRAND="$withval"],[MACHINE_BRAND="Vu+"])
+AC_SUBST(MACHINE_BRAND)
+AC_DEFINE_UNQUOTED(MACHINE_BRAND,"$MACHINE_BRAND",[machine brand])
+
+AC_ARG_WITH(machinename,
+	[  --with-machinename=NAME machine name [[Solo,Ultimo,...]]],
+	[MACHINE_NAME="$withval"],[MACHINE_NAME="Ultimo"])
+AC_SUBST(MACHINE_NAME)
+AC_DEFINE_UNQUOTED(MACHINE_NAME,"$MACHINE_NAME",[machine name])
+
+AC_ARG_WITH(imageversion,
+	[  --with-imageversion=NAME version number [[2.0]]],
+	[IMAGEVERSION="$withval"],[IMAGEVERSION=""])
+AC_SUBST(IMAGEVERSION)
+AC_DEFINE_UNQUOTED(IMAGEVERSION,"$IMAGEVERSION",[version number])
+
+AC_ARG_WITH(imagebuild,
+	[  --with-imagebuild=NAME build number [[5]]],
+	[IMAGEBUILD="$withval"],[IMAGEBUILD=""])
+AC_SUBST(IMAGEBUILD)
+AC_DEFINE_UNQUOTED(IMAGEBUILD,"$IMAGEBUILD",[build number])
+
+AC_ARG_WITH(driverdate,
+	[  --with-driverdate=NAME driver date [[5]]],
+	[DRIVERDATE="$withval"],[DRIVERDATE=""])
+AC_SUBST(DRIVERDATE)
+AC_DEFINE_UNQUOTED(DRIVERDATE,"$DRIVERDATE",[driver date])
+
 AM_CONDITIONAL(DREAMBOX, test `echo "$BOXTYPE" | cut -b 1-2` == "dm")
+AM_CONDITIONAL(SKYLAKE, test `echo "$BOXTYPE" | cut -b 1-2` == "hd")
 AM_CONDITIONAL(HAVE_TEMPFANCONTROL, test "$BOXTYPE" == dm8000 -o "$BOXTYPE" == dm800se -o "$BOXTYPE" == dm500hd)
+AM_CONDITIONAL(GIGABLUE, test `echo "$BOXTYPE" | cut -b 1-2` == "gb")
+AM_CONDITIONAL(GBIPBOX, test "$MACHINEBUILD" == gbipbox)
+
 if test `echo "$BOXTYPE" | cut -b 1-2` == "dm"; then
 	AC_DEFINE(DREAMBOX, 1, [Dreambox hardware])
 	AC_DEFINE(KEY_PLAY_ACTUALLY_IS_KEY_PLAYPAUSE, 1,[define when rc sends a KEY_PLAY event for its KEY_PLAYPAUSE key])
 fi
+
+AC_ARG_WITH(osdanimation,
+	AC_HELP_STRING([--with-osdanimation], [use osd animation, yes or no]),
+	[[withosdanimation=$withval]],
+	[[withosdanimation=no]]
+)
+if test x"$withosdanimation" != xno ; then
+	AC_DEFINE(HAVE_OSDANIMATION, 1,[Define if driver supports animation of osd])
+fi
+AM_CONDITIONAL(HAVE_OSDANIMATION, test x"$withosdanimation" != xno)
 
 AC_ARG_WITH(textlcd,
 	AC_HELP_STRING([--with-textlcd], [use ascii based lcd, yes or no]),
@@ -73,24 +132,95 @@ if test x"$withtextlcd" != xno ; then
 fi
 AM_CONDITIONAL(HAVE_TEXTLCD, test x"$withtextlcd" != xno)
 
-AC_ARG_WITH(7segment,
-	AC_HELP_STRING([--with-7segment], [use 7 segment lcd, yes or no]),
-	[[TEXTSKIN="7segment"]],
-	[[TEXTSKIN="default"]]
+AC_ARG_WITH(colorlcd220,
+	AC_HELP_STRING([--with-colorlcd220], [use 220x176 16bpp color display, yes or no]),
+	[[withcolorlcd220=$withval]],
+	[[withcolorlcd220=no]]
 )
-AC_SUBST(TEXTSKIN)
-
-if test `echo "$BOXTYPE" | cut -b 1-7` == "mbmicro"; then
-	AC_DEFINE(FORCE_NO_BLENDING_ACCELERATION, 1,[define when the framebuffer acceleration does not have alphablending support, though the autodetection might indicate that it does])
-	AC_DEFINE(FORCE_NO_FILL_ACCELERATION, 1,[define when the framebuffer acceleration does not have fill support])
-	AC_DEFINE(FORCE_ADVANCED_REMOTE, 1,[define to fixup the input device identification when the remote control is actually an 'advanced' remote (with play/forward/rewind keys)])
-	AC_DEFINE(KEY_PLAY_ACTUALLY_IS_KEY_PLAYPAUSE, 1,[define when rc sends a KEY_PLAY event for its KEY_PLAYPAUSE key])
+if test x"$withcolorlcd220" != xno ; then
+	AC_DEFINE(HAVE_COLORLCD220, 1,[Define when using a 220x176 color display device])
 fi
+AM_CONDITIONAL(HAVE_COLORLCD220, test x"$withcolorlcd220" != xno)
+
+AC_ARG_WITH(colorlcd400,
+	AC_HELP_STRING([--with-colorlcd400], [use 400x240 16bpp color display, yes or no]),
+	[[withcolorlcd400=$withval]],
+	[[withcolorlcd400=no]]
+)
+if test x"$withcolorlcd400" != xno ; then
+	AC_DEFINE(HAVE_COLORLCD400, 1,[Define when using a 400x240 color display device])
+fi
+
+AM_CONDITIONAL(HAVE_COLORLCD400, test x"$withcolorlcd400" != xno)
+
+AC_ARG_WITH(bwlcd255,
+	AC_HELP_STRING([--with-bwlcd255], [use 255x64 1bpp black and white display, yes or no]),
+	[[withbwlcd255=$withval]],
+	[[withbwlcd255=no]]
+)
+if test x"$withbwlcd255" != xno ; then
+	AC_DEFINE(HAVE_BWLCD255, 1,[Define when using a 255x64 black and white display device])
+fi
+
+AM_CONDITIONAL(HAVE_BWLCD255, test x"$withbwlcd255" != xno)
 
 if test `echo "$BOXTYPE" | cut -b 1-2` == "vu"; then
 	AC_DEFINE(FORCE_NO_BLENDING_ACCELERATION, 1,[define when the framebuffer acceleration does not have alphablending support, though the autodetection might indicate that it does])
-	AC_DEFINE(FORCE_NO_FILL_ACCELERATION, 1,[define when the framebuffer acceleration does not have fill support])
 	AC_DEFINE(FORCE_ADVANCED_REMOTE, 1,[define to fixup the input device identification when the remote control is actually an 'advanced' remote (with play/forward/rewind keys)])
+fi
+
+#if test `echo "$BOXTYPE" | cut -b 1-2` == "gb"; then
+if test "$BOXTYPE" == "gb800solo" -o "$BOXTYPE" == "gb7325" ; then
+	AC_DEFINE(KEY_PLAY_ACTUALLY_IS_KEY_PLAYPAUSE, 1,[define when rc sends a KEY_PLAY event for its KEY_PLAYPAUSE key])
+	AC_DEFINE(KEY_GUIDE_TO_KEY_EPG, 1,[define when rc sends a KEY_HELP event for its KEY_EPG key])
+	AC_DEFINE(KEY_F2_TO_KEY_F6, 1,[define when rc sends a KEY_F2 event for its KEY_F6 key])
+	AC_DEFINE(KEY_SCREEN_TO_KEY_MODE, 1,[define when rc sends a KEY_MODE event for its KEY_ASPECT key])
+	AC_DEFINE(LCD_COLOR_BITORDER_RGB565, 1,[define if lcd uses RGB565 bitorder])
+fi
+
+if test "$BOXTYPE" == "$BOXTYPE" == "gb7358" -o "$BOXTYPE" == "gb7362" -o "$BOXTYPE" == "gb73625" -o "$BOXTYPE" == "gb7356" ; then
+	AC_DEFINE(KEY_PLAY_ACTUALLY_IS_KEY_PLAYPAUSE, 1,[define when rc sends a KEY_PLAY event for its KEY_PLAYPAUSE key])
+	AC_DEFINE(KEY_GUIDE_TO_KEY_EPG, 1,[define when rc sends a KEY_HELP event for its KEY_EPG key])
+	AC_DEFINE(KEY_F2_TO_KEY_F6, 1,[define when rc sends a KEY_F2 event for its KEY_F6 key])
+	AC_DEFINE(KEY_SCREEN_TO_KEY_MODE, 1,[define when rc sends a KEY_MODE event for its KEY_ASPECT key])
+fi
+
+if test "$BOXTYPE" == "gb7252"; then
+	AC_DEFINE(KEY_PLAY_ACTUALLY_IS_KEY_PLAYPAUSE, 1,[define when rc sends a KEY_PLAY event for its KEY_PLAYPAUSE key])
+	AC_DEFINE(KEY_GUIDE_TO_KEY_EPG, 1,[define when rc sends a KEY_HELP event for its KEY_EPG key])
+	AC_DEFINE(KEY_F1_TO_KEY_F6, 1,[define when rc sends a KEY_F1 event for its KEY_F6 key])
+	AC_DEFINE(KEY_F2_TO_KEY_AUX, 1,[define when rc sends a KEY_F2 event for its KEY_AUX key])
+	AC_DEFINE(KEY_SCREEN_TO_KEY_MODE, 1,[define when rc sends a KEY_MODE event for its KEY_ASPECT key])
+fi
+
+#if test "$MACHINEBUILD" == "gbipbox"; then
+#	AC_DEFINE(FORCE_SERVICEAVAIL, 1,[define SERVICEAVAIL for GBIPBOX allways true ])
+#fi
+
+if test "$BOXTYPE" == "xc7362"; then
+	AC_DEFINE(KEY_FAV_TO_KEY_PVR, 1,[define FAV KEY to PVR])
+fi
+
+if test "$BOXTYPE" == "hd2400" -o "$BOXTYPE" == "hd51" -o "$BOXTYPE" == "hd52"; then
+	AC_DEFINE(KEY_PLAY_ACTUALLY_IS_KEY_PLAYPAUSE, 1,[define when rc sends a KEY_PLAY event for its KEY_PLAYPAUSE key])
+	AC_DEFINE(KEY_F3_TO_KEY_LIST, 1,[define when rc sends a KEY_F3 event for its KEY_LIST key])
+fi
+
+AC_ARG_WITH(gigabluelcd,
+	AC_HELP_STRING([--with-gigabluelcd], [use 220x176 16bpp color display, yes or no]),
+	[[withgigabluelcd=$withval]],
+	[[withgigabluelcd=no]]
+)
+if test x"$withgigabluelcd" != xno ; then
+	AC_DEFINE(HAVE_GIGABLUELCD, 1,[Define when using a 220x176 color display device])
+fi
+AM_CONDITIONAL(HAVE_GIGABLUELCD, test x"$withgigabluelcd" != xno)
+
+if test "$BOXTYPE" == "gbmv200"; then
+	AC_DEFINE(HAVE_HISILICON, 1,[define add HISILICON chip])
+	AC_DEFINE(CONFIG_HISILICON_FB, 1,[define add HISILICON framebuffer blit])
+	AC_DEFINE(FORCE_ALPHABLENDING_ACCELERATION, 1,[define when the framebuffer acceleration has alphablending support, but detection slow down all])
+	AC_DEFINE(VMSG_TYPE2, 1,[define vtuner_message type 2])
 fi
 
 AC_ARG_WITH(libsdl,
@@ -254,27 +384,31 @@ AC_CHECK_LIB([rt], [clock_gettime], [BASE_LIBS+=" -lrt"], [AC_MSG_ERROR([Could n
 ENIGMA2_CFLAGS="-fno-rtti -fno-exceptions -rdynamic -funwind-tables"
 AC_SUBST(ENIGMA2_CFLAGS)
 
-AX_CXX_COMPILE_STDCXX_11([ext],[mandatory])
-
-CPPFLAGS="$CPPFLAGS $PYTHON_CPPFLAGS"
+CPPFLAGS="$CPPFLAGS $PYTHON_CPPFLAGS -std=c++11"
 CFLAGS="$CFLAGS -Wall"
-CXXFLAGS="$CXXFLAGS -Wall $BASE_CFLAGS $ENIGMA2_CFLAGS $PTHREAD_CFLAGS $OPENMP_CFLAGS $ALSA_CFLAGS $AMCODEC_CFLAGS $AMADEC_CFLAGS $DVBCSA_CFLAGS"
+CXXFLAGS="$CXXFLAGS -Wall -std=c++11 $BASE_CFLAGS $ENIGMA2_CFLAGS $PTHREAD_CFLAGS $OPENMP_CFLAGS $ALSA_CFLAGS $AMCODEC_CFLAGS $AMADEC_CFLAGS $DVBCSA_CFLAGS"
+
+AX_SWIG_PYTHON_OPT="$AX_SWIG_PYTHON_OPT -DSWIG_PYTHON_LEGACY_BOOL"
 
 AC_CONFIG_FILES([
 Makefile
 data/Makefile
 data/fonts/Makefile
 data/countries/Makefile
+data/displaytext/Makefile
 data/extensions/Makefile
+data/gbipbox/Makefile
 data/keymaps/Makefile
-data/hw_info/Makefile
-data/rc_models/Makefile
+data/lcd220/Makefile
+data/lcd400/Makefile
+data/lcd_skin220/Makefile
+data/lcd_skin400/Makefile
 data/skin_default/Makefile
 data/skin_default/menu/Makefile
 data/skin_default/icons/Makefile
 data/skin_default/buttons/Makefile
-data/skin_default/spinner/Makefile
 data/skin_default/LCDIcons/Makefile
+data/vfd255/Makefile
 include/Makefile
 lib/Makefile
 lib/base/eenv.cpp
@@ -285,12 +419,7 @@ lib/python/Components/Renderer/Makefile
 lib/python/Components/Sources/Makefile
 lib/python/Screens/Makefile
 lib/python/Plugins/Makefile
-lib/python/Plugins/SystemPlugins/CableScan/Makefile
-lib/python/Plugins/SystemPlugins/FastScan/Makefile
-lib/python/Plugins/SystemPlugins/OSDPositionSetup/Makefile
-lib/python/Plugins/SystemPlugins/OSD3DSetup/Makefile
-lib/python/Plugins/SystemPlugins/HdmiCEC/Makefile
-lib/python/Plugins/SystemPlugins/VideoClippingSetup/Makefile
+lib/python/Plugins/Extensions/Makefile
 lib/python/Plugins/Extensions/CutListEditor/Makefile
 lib/python/Plugins/Extensions/CutListEditor/meta/Makefile
 lib/python/Plugins/Extensions/DVDBurn/Makefile
@@ -299,7 +428,6 @@ lib/python/Plugins/Extensions/DVDPlayer/Makefile
 lib/python/Plugins/Extensions/DVDPlayer/meta/Makefile
 lib/python/Plugins/Extensions/GraphMultiEPG/Makefile
 lib/python/Plugins/Extensions/GraphMultiEPG/meta/Makefile
-lib/python/Plugins/Extensions/Makefile
 lib/python/Plugins/Extensions/MediaPlayer/Makefile
 lib/python/Plugins/Extensions/MediaPlayer/meta/Makefile
 lib/python/Plugins/Extensions/MediaScanner/Makefile
@@ -313,19 +441,26 @@ lib/python/Plugins/Extensions/SocketMMI/src/Makefile
 lib/python/Plugins/Extensions/TuxboxPlugins/Makefile
 lib/python/Plugins/Extensions/TuxboxPlugins/meta/Makefile
 lib/python/Plugins/PLi/Makefile
+lib/python/Plugins/SystemPlugins/Makefile
+lib/python/Plugins/SystemPlugins/AnimationSetup/Makefile
+lib/python/Plugins/SystemPlugins/CableScan/Makefile
 lib/python/Plugins/SystemPlugins/CommonInterfaceAssignment/Makefile
 lib/python/Plugins/SystemPlugins/CommonInterfaceAssignment/meta/Makefile
 lib/python/Plugins/SystemPlugins/DefaultServicesScanner/Makefile
 lib/python/Plugins/SystemPlugins/DefaultServicesScanner/meta/Makefile
+lib/python/Plugins/SystemPlugins/DeviceManager/Makefile
+lib/python/Plugins/SystemPlugins/DeviceManager/icons/Makefile
 lib/python/Plugins/SystemPlugins/DiseqcTester/Makefile
 lib/python/Plugins/SystemPlugins/DiseqcTester/meta/Makefile
+lib/python/Plugins/SystemPlugins/FastScan/Makefile
+lib/python/Plugins/SystemPlugins/GBAspectRatioSwitch/Makefile
+lib/python/Plugins/SystemPlugins/HdmiCEC/Makefile
 lib/python/Plugins/SystemPlugins/Hotplug/Makefile
 lib/python/Plugins/SystemPlugins/Hotplug/meta/Makefile
-lib/python/Plugins/SystemPlugins/Makefile
-lib/python/Plugins/SystemPlugins/TempFanControl/Makefile
-lib/python/Plugins/SystemPlugins/TempFanControl/meta/Makefile
 lib/python/Plugins/SystemPlugins/NetworkWizard/Makefile
 lib/python/Plugins/SystemPlugins/NetworkWizard/meta/Makefile
+lib/python/Plugins/SystemPlugins/OSD3DSetup/Makefile
+lib/python/Plugins/SystemPlugins/OSDPositionSetup/Makefile
 lib/python/Plugins/SystemPlugins/PositionerSetup/Makefile
 lib/python/Plugins/SystemPlugins/PositionerSetup/meta/Makefile
 lib/python/Plugins/SystemPlugins/SatelliteEquipmentControl/Makefile
@@ -334,14 +469,17 @@ lib/python/Plugins/SystemPlugins/Satfinder/Makefile
 lib/python/Plugins/SystemPlugins/Satfinder/meta/Makefile
 lib/python/Plugins/SystemPlugins/SkinSelector/Makefile
 lib/python/Plugins/SystemPlugins/SkinSelector/meta/Makefile
+lib/python/Plugins/SystemPlugins/SoftcamStartup/Makefile
 lib/python/Plugins/SystemPlugins/SoftwareManager/Makefile
 lib/python/Plugins/SystemPlugins/SoftwareManager/meta/Makefile
+lib/python/Plugins/SystemPlugins/SwapManager/Makefile
+lib/python/Plugins/SystemPlugins/VideoClippingSetup/Makefile
 lib/python/Plugins/SystemPlugins/VideoEnhancement/Makefile
 lib/python/Plugins/SystemPlugins/VideoEnhancement/meta/Makefile
-lib/python/Plugins/SystemPlugins/VideoTune/Makefile
-lib/python/Plugins/SystemPlugins/VideoTune/meta/Makefile
 lib/python/Plugins/SystemPlugins/Videomode/Makefile
 lib/python/Plugins/SystemPlugins/Videomode/meta/Makefile
+lib/python/Plugins/SystemPlugins/VideoTune/Makefile
+lib/python/Plugins/SystemPlugins/VideoTune/meta/Makefile
 lib/python/Plugins/SystemPlugins/WirelessLan/Makefile
 lib/python/Plugins/SystemPlugins/WirelessLan/meta/Makefile
 lib/python/Tools/Makefile

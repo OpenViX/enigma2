@@ -90,7 +90,7 @@ class SkinSelector(Screen):
 		self.loadPreview()
 
 	def info(self):
-		aboutbox = self.session.open(MessageBox,_("Enigma2 skin selector"), MessageBox.TYPE_INFO)
+		aboutbox = self.session.open(MessageBox,_("STB-GUI Skinselector\n\nIf you experience any problems please contact\nstephan@reichholf.net\n\n\xA9 2006 - Stephan Reichholf"), MessageBox.TYPE_INFO)
 		aboutbox.setTitle(_("About..."))
 
 	def ok(self):
@@ -129,10 +129,10 @@ def SkinSelMain(session, **kwargs):
 	session.open(SkinSelector)
 
 def SkinSelSetup(menuid, **kwargs):
-	# only show in the menu when set to intermediate or higher
-	if menuid == "gui" and config.usage.setup_level.index >= 1:
+	if menuid == "ui_menu":
 		return [(_("Skin"), SkinSelMain, "skin_selector", None)]
-	return []
+	else:
+		return []
 
 def Plugins(**kwargs):
-	return PluginDescriptor(name="Skin", description= _("Select your Skin"), where = PluginDescriptor.WHERE_MENU, needsRestart = False, fnc=SkinSelSetup)
+	return PluginDescriptor(name=_("Skin"), description= _("Select your Skin"), where = PluginDescriptor.WHERE_MENU, needsRestart = False, fnc=SkinSelSetup)

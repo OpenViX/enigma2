@@ -4,6 +4,7 @@ from Components.ChoiceList import ChoiceList, ChoiceEntryComponent
 from Components.SystemInfo import SystemInfo
 from Components.config import config, ConfigSubsection, ConfigText, ConfigYesNo
 from Components.PluginComponent import plugins
+from Screens.Console import Console
 from Screens.ChoiceBox import ChoiceBox
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
@@ -18,15 +19,18 @@ def getHotkeys():
 	return [(_("Red") + " " + _("long"), "red_long", ""),
 		(_("Green") + " " + _("long"), "green_long", ""),
 		(_("Yellow") + " " + _("long"), "yellow_long", ""),
-		(_("Blue") + " " + _("long"), "blue_long", "SoftcamSetup"),
+		#(_("Blue") + " " + _("long"), "blue_long", "Plugins/PLi/SoftcamSetup/1"),
+		(_("Blue") + " " + _("long"), "blue_long", ""),
 		("F1/LAN", "f1", ""),
 		("F1" + " " + _("long"), "f1_long", ""),
-		("F2", "f2", ""),
+		("F2", "f2", "Infobar/showPiP"),
 		("F2" + " " + _("long"), "f2_long", ""),
 		("F3", "f3", ""),
 		("F3" + " " + _("long"), "f3_long", ""),
+		("F4", "f4", ""),
+		("F4" + " " + _("long"), "f4_long", ""),
 		(_("Red"), "red", ""),
-		(_("Green"), "green", ""),
+		(_("Green"), "green", "Module/Screens.PluginBrowser/PluginBrowser"),
 		(_("Yellow"), "yellow", ""),
 		(_("Blue"), "blue", ""),
 		("Rec", "rec", ""),
@@ -34,15 +38,13 @@ def getHotkeys():
 		("Radio" + " " + _("long"), "radio_long", ""),
 		("TV", "showTv", ""),
 		("TV" + " " + _("long"), "showTv_long", SystemInfo["LcdLiveTV"] and "Infobar/ToggleLCDLiveTV" or ""),
-		("TV2", "toggleTvRadio", ""),
-		("TV2" + " " + _("long"), "toggleTvRadio_long", SystemInfo["LcdLiveTV"] and "Infobar/ToggleLCDLiveTV" or ""),
 		("Teletext", "text", ""),
 		("Help", "displayHelp", ""),
 		("Help" + " " + _("long"), "displayHelp_long", ""),
 		("Subtitle", "subtitle", ""),
 		("Menu", "mainMenu", ""),
 		("Info (EPG)", "info", "Infobar/openEventView"),
-		("Info (EPG)" + " " + _("long"), "info_long", "Infobar/showEventInfoPlugins"),
+		("Info (EPG)" + " " + _("long"), "info_long", "Infobar/openSingleServiceEPG"),
 		("List/Fav/PVR", "list", ""),
 		("List/Fav/PVR" + " " + _("long"), "list_long", "Plugins/Extensions/Kodi/1"),
 		("Back/Recall", "back", ""),
@@ -86,6 +88,8 @@ def getHotkeys():
 		("Sleep" + " " + _("long"), "sleep_long", ""),
 		("Context", "contextmenu", ""),
 		("Context" + " " + _("long"), "contextmenu_long", ""),
+		("Video", "video", ""),
+		("Video" + " " + _("long"), "video_long", ""),
 		("Video Mode", "vmode", ""),
 		("Video Mode" + " " + _("long"), "vmode_long", ""),
 		("Home", "home", ""),
@@ -97,14 +101,6 @@ def getHotkeys():
 		("Media" + " " + _("long"), "media_long", ""),
 		("Favorites", "favorites", "Infobar/openFavouritesList"),
 		("Favorites" + " " + _("long"), "favorites_long", ""),
-		("Mouse", "mouse", ""),
-		("Mouse" + " " + _("long"), "mouse_long", ""),
-		("Sat", "sat", ""),
-		("Sat" + " " + _("long"), "sat_long", ""),
-		("Homepage", "homepage", ""),
-		("Homepage" + " " + _("long"), "homepage_long", ""),
-		("EjectCD", "ejectcd", ""),
-		("EjectCD" + " " + _("long"), "ejectcd_long", ""),
 		("WWW Portal", "www", ""),
 		("WWW Portal" + " " + _("long"), "www_long", "")]
 
@@ -158,7 +154,6 @@ def getHotkeyFunctions():
 	hotkeyFunctions.append((_("Show Audioselection"), "Infobar/audioSelection", "InfoBar"))
 	hotkeyFunctions.append((_("Switch to radio mode"), "Infobar/showRadio", "InfoBar"))
 	hotkeyFunctions.append((_("Switch to TV mode"), "Infobar/showTv", "InfoBar"))
-	hotkeyFunctions.append((_("Toggle TV/RADIO mode"), "Infobar/toggleTvRadio", "InfoBar"))
 	hotkeyFunctions.append((_("Instant record"), "Infobar/instantRecord", "InfoBar"))
 	hotkeyFunctions.append((_("Start instant recording"), "Infobar/startInstantRecording", "InfoBar"))
 	hotkeyFunctions.append((_("Activate timeshift End"), "Infobar/activateTimeshiftEnd", "InfoBar"))
@@ -183,14 +178,14 @@ def getHotkeyFunctions():
 		hotkeyFunctions.append((_("Toggle LCD LiveTV"), "Infobar/ToggleLCDLiveTV", "InfoBar"))
 	hotkeyFunctions.append((_("Toggle dashed flickering line for this service"), "Infobar/ToggleHideVBI", "InfoBar"))
 	hotkeyFunctions.append((_("Do nothing"), "Void", "InfoBar"))
+	if SystemInfo["HasMultiBootGB"]:
+		hotkeyFunctions.append((_("MultiBoot Selector"), "Module/Screens.MultiBootStartupGB/MultiBootStartup", "InfoBar"))
 	if SystemInfo["HasHDMI-CEC"]:
 		hotkeyFunctions.append((_("HDMI-CEC Source Active"), "Infobar/SourceActiveHdmiCec", "InfoBar"))
 		hotkeyFunctions.append((_("HDMI-CEC Source Inactive"), "Infobar/SourceInactiveHdmiCec", "InfoBar"))
-	if SystemInfo["HasSoftcamInstalled"]:
-		hotkeyFunctions.append((_("Softcam Setup"), "SoftcamSetup", "Setup"))
 	hotkeyFunctions.append((_("HotKey Setup"), "Module/Screens.Hotkey/HotkeySetup", "Setup"))
-	hotkeyFunctions.append((_("Software update"), "Module/Screens.SoftwareUpdate/UpdatePlugin", "Setup"))
-	hotkeyFunctions.append((_("Latest Commits"), "Module/Screens.About/CommitInfo", "Setup"))
+	#hotkeyFunctions.append((_("Software update"), "Module/Screens.SoftwareUpdate/UpdatePlugin", "Setup"))
+	#hotkeyFunctions.append((_("Latest Commits"), "Module/Screens.About/CommitInfo", "Setup"))
 	hotkeyFunctions.append((_("CI (Common Interface) Setup"), "Module/Screens.Ci/CiSelection", "Setup"))
 	hotkeyFunctions.append((_("Tuner Configuration"), "Module/Screens.Satconfig/NimSelection", "Scanning"))
 	hotkeyFunctions.append((_("Manual Scan"), "Module/Screens.ScanSetup/ScanSetup", "Scanning"))
@@ -205,12 +200,6 @@ def getHotkeyFunctions():
 	for plugin in plugins.getPluginsForMenu("system"):
 		if plugin[2]:
 			hotkeyFunctions.append((plugin[0], "MenuPlugin/system/" + plugin[2], "Setup"))
-	for plugin in plugins.getPluginsForMenu("video"):
-		if plugin[2]:
-			hotkeyFunctions.append((plugin[0], "MenuPlugin/video/" + plugin[2], "Setup"))
-	for plugin in plugins.getPluginsForMenu("gui"):
-		if plugin[2]:
-			hotkeyFunctions.append((plugin[0], "MenuPlugin/gui/" + plugin[2], "Setup"))
 	hotkeyFunctions.append((_("PowerMenu"), "Menu/shutdown", "Power"))
 	hotkeyFunctions.append((_("Standby"), "Module/Screens.Standby/Standby", "Power"))
 	hotkeyFunctions.append((_("Restart"), "Module/Screens.Standby/TryQuitMainloop/2", "Power"))
@@ -222,6 +211,7 @@ def getHotkeyFunctions():
 	hotkeyFunctions.append((_("Harddisk Setup"), "Setup/harddisk", "Setup"))
 	hotkeyFunctions.append((_("Subtitles Settings"), "Setup/subtitlesetup", "Setup"))
 	hotkeyFunctions.append((_("Language"), "Module/Screens.LanguageSelection/LanguageSelection", "Setup"))
+	hotkeyFunctions.append((_("Skin setup"), "Module/Screens.SkinSelector/SkinSelector", "Setup"))
 	hotkeyFunctions.append((_("Memory Info"), "Module/Screens.About/MemoryInfo", "Setup"))
 	if os.path.isdir("/etc/ppanels"):
 		for x in [x for x in os.listdir("/etc/ppanels") if x.endswith(".xml")]:
@@ -243,6 +233,7 @@ class HotkeySetup(Screen):
 		self.list = []
 		self.hotkeys = getHotkeys()
 		self.hotkeyFunctions = getHotkeyFunctions()
+
 		for x in self.hotkeys:
 			self.list.append(ChoiceEntryComponent('',(x[0], x[1])))
 		self["list"] = ChoiceList(list=self.list)
@@ -624,11 +615,8 @@ class InfoBarHotkey():
 					exec "self.session.open(" + ",".join(selected[2:]) + ")"
 				except:
 					print "[Hotkey] error during executing module %s, screen %s" % (selected[1], selected[2])
-			elif selected[0] == "SoftcamSetup" and SystemInfo["HasSoftcamInstalled"]:
-				from Screens.SoftcamSetup import SoftcamSetup
-				self.session.open(SoftcamSetup)
 			elif selected[0] == "Setup":
-				from Screens.Setup import *
+				exec "from Screens.Setup import *"
 				exec "self.session.open(Setup, \"" + selected[1] + "\")"
 			elif selected[0].startswith("Zap"):
 				if selected[0] == "ZapPanic":

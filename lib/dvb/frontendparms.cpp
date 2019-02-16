@@ -113,12 +113,12 @@ int eDVBTransponderData::getInversion() const
 	return -1;
 }
 
-unsigned int eDVBTransponderData::getFrequency() const
+int eDVBTransponderData::getFrequency() const
 {
 	return 0;
 }
 
-unsigned int eDVBTransponderData::getSymbolRate() const
+int eDVBTransponderData::getSymbolRate() const
 {
 	return 0;
 }
@@ -238,14 +238,14 @@ int eDVBSatelliteTransponderData::getInversion() const
 	}
 }
 
-unsigned int eDVBSatelliteTransponderData::getFrequency() const
+int eDVBSatelliteTransponderData::getFrequency() const
 {
 	if (originalValues) return transponderParameters.frequency;
 
 	return getProperty(DTV_FREQUENCY) + frequencyOffset;
 }
 
-unsigned int eDVBSatelliteTransponderData::getSymbolRate() const
+int eDVBSatelliteTransponderData::getSymbolRate() const
 {
 	if (originalValues) return transponderParameters.symbol_rate;
 
@@ -395,14 +395,14 @@ int eDVBCableTransponderData::getInversion() const
 	}
 }
 
-unsigned int eDVBCableTransponderData::getFrequency() const
+int eDVBCableTransponderData::getFrequency() const
 {
 	if (originalValues) return transponderParameters.frequency;
 
 	return getProperty(DTV_FREQUENCY) / 1000;
 }
 
-unsigned int eDVBCableTransponderData::getSymbolRate() const
+int eDVBCableTransponderData::getSymbolRate() const
 {
 	if (originalValues) return transponderParameters.symbol_rate;
 
@@ -420,6 +420,7 @@ int eDVBCableTransponderData::getFecInner() const
 	case FEC_2_3: return eDVBFrontendParametersCable::FEC_2_3;
 	case FEC_3_4: return eDVBFrontendParametersCable::FEC_3_4;
 	case FEC_5_6: return eDVBFrontendParametersCable::FEC_5_6;
+	case FEC_6_7: return eDVBFrontendParametersCable::FEC_6_7;
 	case FEC_7_8: return eDVBFrontendParametersCable::FEC_7_8;
 	case FEC_8_9: return eDVBFrontendParametersCable::FEC_8_9;
 	case FEC_3_5: return eDVBFrontendParametersCable::FEC_3_5;
@@ -487,7 +488,7 @@ int eDVBTerrestrialTransponderData::getInversion() const
 	}
 }
 
-unsigned int eDVBTerrestrialTransponderData::getFrequency() const
+int eDVBTerrestrialTransponderData::getFrequency() const
 {
 	if (originalValues) return transponderParameters.frequency;
 
@@ -659,7 +660,7 @@ int eDVBATSCTransponderData::getInversion() const
 	}
 }
 
-unsigned int eDVBATSCTransponderData::getFrequency() const
+int eDVBATSCTransponderData::getFrequency() const
 {
 	if (originalValues) return transponderParameters.frequency;
 

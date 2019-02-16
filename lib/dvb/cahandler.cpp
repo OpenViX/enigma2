@@ -602,7 +602,7 @@ int eDVBCAService::buildCAPMT(eTable<ProgramMapSection> *ptr)
 			if ((*desc)->getTag() == CA_DESCRIPTOR)
 				scrambled = true;
 		}
-
+		
 		for (ElementaryStreamInfoConstIterator es = (*pmt)->getEsInfo()->begin();
 			es != (*pmt)->getEsInfo()->end() && !scrambled; ++es)
 		{

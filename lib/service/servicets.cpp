@@ -183,10 +183,7 @@ int eServiceTS::openHttpConnection(std::string url)
 	request.append("Connection: close\n");
 	request.append("\n");
 	//eDebug(request.c_str());
-	if (write(fd, request.c_str(), request.length()) == -1)
-	{
-		eDebug("[eServiceTS] failed to write response %m");
-	}
+	write(fd, request.c_str(), request.length());
 
 	int rc;
 	size_t buflen = 1000;
@@ -269,8 +266,10 @@ RESULT eServiceTS::stop()
 		m_destfd = -1;
 	}
 	printf("TS: %s stop\n", m_filename.c_str());
-	m_streamthread->stop();
-	m_decodedemux->flush();
+	if (m_streamthread != NULL)
+		m_streamthread->stop();
+	if (m_decodedemux != NULL)
+		m_decodedemux->flush();
 	m_audioInfo = 0;
 	return 0;
 }

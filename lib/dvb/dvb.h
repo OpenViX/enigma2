@@ -178,9 +178,12 @@ class eDVBResourceManager: public iObject, public sigc::trackable
 	ePtr<iDVBChannelList> m_list;
 	ePtr<iDVBSatelliteEquipmentControl> m_sec;
 	static eDVBResourceManager *instance;
+
 	friend class eDVBChannel;
 	friend class eFBCTunerManager;
 	ePtr<eFBCTunerManager> m_fbcmng;
+	friend class eRTSPStreamClient;
+
 	RESULT addChannel(const eDVBChannelID &chid, eDVBChannel *ch);
 	RESULT removeChannel(eDVBChannel *ch);
 
@@ -307,6 +310,7 @@ private:
 	sigc::signal2<void,iDVBChannel*,int> m_event;
 	int m_state;
 	ePtr<iTsSource> m_source;
+	std::string m_streaminfo_file;
 
 			/* for channel list */
 	ePtr<eDVBResourceManager> m_mgr;

@@ -101,6 +101,7 @@ private:
 #define BT_ALPHABLEND 2
 #define BT_SCALE 4
 #define BT_KEEP_ASPECT_RATIO 8
+#define BT_FIXRATIO 8
 #endif // SWIG
 
 #endif

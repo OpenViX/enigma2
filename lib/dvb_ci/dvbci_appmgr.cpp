@@ -17,7 +17,7 @@ eDVBCIApplicationManagerSession::~eDVBCIApplicationManagerSession()
 
 int eDVBCIApplicationManagerSession::receivedAPDU(const unsigned char *tag,const void *data, int len)
 {
-	eDebugNoNewLine("[CI AM] SESSION(%d)/APP %02x %02x %02x: ", session_nb, tag[0], tag[1], tag[2]);
+	eDebugNoNewLineStart("[CI AM] SESSION(%d)/APP %02x %02x %02x: ", session_nb, tag[0], tag[1], tag[2]);
 	for (int i=0; i<len; i++)
 		eDebugNoNewLine("%02x ", ((const unsigned char*)data)[i]);
 	eDebugNoNewLine("\n");
@@ -29,24 +29,23 @@ int eDVBCIApplicationManagerSession::receivedAPDU(const unsigned char *tag,const
 		case 0x21:
 		{
 			int dl;
-			eDebug("[CI AM] application info:");
-			eDebug("[CI AM]   len: %d", len);
-			eDebug("[CI AM]   application_type: %d", ((unsigned char*)data)[0]);
-			eDebug("[CI AM]   application_manufacturer: %02x %02x", ((unsigned char*)data)[2], ((unsigned char*)data)[1]);
-			eDebug("[CI AM]   manufacturer_code: %02x %02x", ((unsigned char*)data)[4],((unsigned char*)data)[3]);
+			eDebug("[CI AM]application info:");
+			eDebug("[CI AM]  len: %d", len);
+			eDebug("[CI AM]  application_type: %d", ((unsigned char*)data)[0]);
+			eDebug("[CI AM]  application_manufacturer: %02x %02x", ((unsigned char*)data)[2], ((unsigned char*)data)[1]);
+			eDebug("[CI AM]  manufacturer_code: %02x %02x", ((unsigned char*)data)[4],((unsigned char*)data)[3]);
+			eDebugNoNewLineStart("[CI AM]   menu string: ");
 			dl=((unsigned char*)data)[5];
 			if ((dl + 6) > len)
 			{
-				eDebug("[CI AM] warning, invalid length (%d vs %d)", dl+6, len);
+				eDebugNoNewLineEnd("[CI AM] warning, invalid length (%d vs %d)", dl+6, len);
 				dl=len-6;
 			}
 			char str[dl + 1];
 			memcpy(str, ((char*)data) + 6, dl);
 			str[dl] = '\0';
-			eDebugNoNewLine("[CI AM]   menu string: ");
 			for (int i = 0; i < dl; ++i)
 				eDebugNoNewLine("%c", ((unsigned char*)data)[i+6]);
-			eDebugNoNewLine("\n");
 
 			eDVBCI_UI::getInstance()->setAppName(slot->getSlotID(), str);
 

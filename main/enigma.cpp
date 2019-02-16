@@ -1,4 +1,6 @@
 #include <unistd.h>
+#include <iostream>
+#include <fstream>
 #include <fcntl.h>
 #include <stdio.h>
 #include <sys/types.h>
@@ -35,6 +37,11 @@
 #include "bsod.h"
 #include "version_info.h"
 
+#include <gst/gst.h>
+
+#include <lib/base/eerroroutput.h>
+ePtr<eErrorOutput> m_erroroutput;
+
 #ifdef OBJECT_DEBUG
 int object_total_remaining;
 
@@ -62,6 +69,7 @@ void keyEvent(const eRCKey &key)
 
 	ePtr<eActionMap> ptr;
 	eActionMap::getInstance(ptr);
+	/*eDebug("key.code : %02x \n", key.code);*/
 
 	if ((key.code == last.code) && (key.producer == last.producer) && key.flags & eRCKey::flagRepeat)
 		num_repeat++;
@@ -95,9 +103,6 @@ void keyEvent(const eRCKey &key)
 #include <lib/dvb/dvbtime.h>
 #include <lib/dvb/epgcache.h>
 
-/* Defined in eerror.cpp */
-void setDebugTime(bool enable);
-
 class eMain: public eApplication, public sigc::trackable
 {
 	eInit init;
@@ -130,6 +135,49 @@ public:
 		e2avahi_close();
 	}
 };
+
+static const std::string getConfigCurrentSpinner(const std::string &key)
+{
+	std::string value = "";
+	std::ifstream in(eEnv::resolve("${sysconfdir}/enigma2/settings").c_str());
+
+	if (in.good())
+	{
+		do
+		{
+			std::string line;
+			std::getline(in, line);
+			size_t size = key.size();
+			if (line.compare(0, size, key)== 0)
+			{
+				value = line.substr(size + 1);
+				size_t end_pos = value.find("skin.xml");
+				if (end_pos != std::string::npos)
+				{
+					value = value.substr(0, end_pos);
+				}
+				break;
+			}
+		} while (in.good());
+		in.close();
+	}
+	// no config.skin.primary_skin found -> Use default one
+	if (value.empty())
+		value = "GigabluePax/";
+
+	// return SCOPE_CURRENT_SKIN ( /usr/share/enigma2/MYSKIN/skin_default/spinner ) BUT check if /usr/share/enigma2/MYSKIN/skin_default/spinner/wait1.png exist
+	std::string png_location = "/usr/share/enigma2/" + value + "skin_default/spinner/wait1.png";
+	std::ifstream png(png_location.c_str());
+	if (png.good())
+	{
+		png.close();
+		return value; // /usr/share/enigma2/MYSKIN/skin_default/spinner/wait1.png exists )
+	}
+	else
+	{
+		return ""; // No spinner found -> use "" ( /usr/share/enigma2/skin_default/spinner/wait1.png )
+	}
+}
 
 int exit_code;
 
@@ -195,22 +243,28 @@ int main(int argc, char **argv)
 	atexit(object_dump);
 #endif
 
+	gst_init(&argc, &argv);
+
+	for (int i = 0; i < argc; i++)
+	{
+		if (!(strcmp(argv[i], "--debug-no-color")) or !(strcmp(argv[i], "--nc")))
+		{
+			logOutputColors = 0;
+		}
+	}
+
+	m_erroroutput = new eErrorOutput();
+	m_erroroutput->run();
+
 	// set pythonpath if unset
 	setenv("PYTHONPATH", eEnv::resolve("${libdir}/enigma2/python").c_str(), 0);
-	printf("PYTHONPATH: %s\n", getenv("PYTHONPATH"));
-	printf("DVB_API_VERSION %d DVB_API_VERSION_MINOR %d\n", DVB_API_VERSION, DVB_API_VERSION_MINOR);
-
-	// get enigma2 debug level settings
-	debugLvl = getenv("ENIGMA_DEBUG_LVL") ? atoi(getenv("ENIGMA_DEBUG_LVL")) : 3;
-	if (debugLvl < 0)
-		debugLvl = 0;
-	printf("ENIGMA_DEBUG_LVL=%d\n", debugLvl);
-	if (getenv("ENIGMA_DEBUG_TIME"))
-		setDebugTime(atoi(getenv("ENIGMA_DEBUG_TIME")) != 0);
+	printf("[enigma2] PYTHONPATH: %s\n", getenv("PYTHONPATH"));
+	printf("[enigma2] DVB_API_VERSION %d DVB_API_VERSION_MINOR %d\n", DVB_API_VERSION, DVB_API_VERSION_MINOR);
 
 	ePython python;
 	eMain main;
 
+#if 1
 	ePtr<gMainDC> my_dc;
 	gMainDC::getInstance(my_dc);
 
@@ -247,12 +301,13 @@ int main(int argc, char **argv)
 	dsk_lcd.setDC(my_lcd_dc);
 
 	dsk.setBackgroundColor(gRGB(0,0,0,0xFF));
+#endif
 
 		/* redrawing is done in an idle-timer, so we have to set the context */
 	dsk.setRedrawTask(main);
 	dsk_lcd.setRedrawTask(main);
 
-
+	std::string active_skin = getConfigCurrentSpinner("config.skin.primary_skin");
 	eDebug("[MAIN] Loading spinners...");
 
 	{
@@ -263,7 +318,7 @@ int main(int argc, char **argv)
 		{
 			char filename[64];
 			std::string rfilename;
-			snprintf(filename, sizeof(filename), "${datadir}/enigma2/skin_default/spinner/wait%d.png", i + 1);
+			snprintf(filename, sizeof(filename), "${datadir}/enigma2/%sskin_default/spinner/wait%d.png", active_skin.c_str(), i + 1);
 			rfilename = eEnv::resolve(filename);
 
 			if (::access(rfilename.c_str(), R_OK) < 0)
@@ -318,7 +373,7 @@ int main(int argc, char **argv)
 		p.clear();
 		p.flush();
 	}
-
+	m_erroroutput = NULL;
 	return exit_code;
 }
 
@@ -340,12 +395,12 @@ void runMainloop()
 
 const char *getEnigmaVersionString()
 {
-	return enigma2_version;
+	return enigma2_date;
 }
 
-const char *getBoxType()
+const char *getGStreamerVersionString()
 {
-	return BOXTYPE;
+	return gst_version_string();
 }
 
 #include <malloc.h>

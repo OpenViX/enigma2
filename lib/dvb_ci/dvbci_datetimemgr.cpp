@@ -12,7 +12,7 @@ eDVBCIDateTimeSession::eDVBCIDateTimeSession():
 
 int eDVBCIDateTimeSession::receivedAPDU(const unsigned char *tag,const void *data, int len)
 {
-	eDebugNoNewLine("[CI DT] SESSION(%d)/DATETIME %02x %02x %02x: ", session_nb, tag[0],tag[1], tag[2]);
+	eDebugNoNewLineStart("[CI DT] SESSION(%d)/DATETIME %02x %02x %02x: ", session_nb, tag[0],tag[1], tag[2]);
 	for (int i=0; i<len; i++)
 		eDebugNoNewLine("%02x ", ((const unsigned char*)data)[i]);
 	eDebugNoNewLine("\n");
@@ -45,7 +45,7 @@ int eDVBCIDateTimeSession::doAction()
 		sendDateTime();
 		return 0;
 	case stateFinal:
-		eDebug("[CI DT] stateFinal and action should not happen");
+		eDebug("[CI DT] stateFinal und action! kann doch garnicht sein ;)");
 	default:
 		return 0;
 	}

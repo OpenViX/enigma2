@@ -64,6 +64,12 @@ struct gOpcode
 		shutdown,
 
 		setCompositing,
+
+#ifdef HAVE_OSDANIMATION
+		sendShow,
+		sendHide,
+#endif
+
 	} opcode;
 
 	gDC *dc;
@@ -144,6 +150,14 @@ struct gOpcode
 		} *setOffset;
 
 		gCompositingData *setCompositing;
+
+#ifdef HAVE_OSDANIMATION
+		struct psetShowHideInfo {
+			ePoint point;
+			eSize size;
+		} *setShowHideInfo;
+#endif
+
 	} parm;
 };
 
@@ -246,7 +260,8 @@ public:
 		BT_ALPHATEST = 1,
 		BT_ALPHABLEND = 2,
 		BT_SCALE = 4, /* will be automatically set by blitScale */
-		BT_KEEP_ASPECT_RATIO = 8
+		BT_KEEP_ASPECT_RATIO = 8,
+		BT_FIXRATIO = 8
 	};
 
 	void blit(gPixmap *pixmap, ePoint pos, const eRect &clip=eRect(), int flags=0);
@@ -272,6 +287,12 @@ public:
 	void setCompositing(gCompositingData *comp);
 
 	void flush();
+
+#ifdef HAVE_OSDANIMATION
+	void sendShow(ePoint point, eSize size);
+	void sendHide(ePoint point, eSize size);
+#endif
+
 };
 
 class gDC: public iObject

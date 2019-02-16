@@ -31,7 +31,7 @@ void eWidget::move(ePoint pos)
 	if (m_position == pos)
 		return;
 
-			/* ?? what about native move support? */
+	/* ?? what about native move support? */
 	invalidate();
 
 	m_position = pos;

@@ -48,6 +48,7 @@ EXTENSIONS = {
 		"asf": "movie",
 		"3gp": "movie",
 		"3g2": "movie",
+		"webm": "movie",
 		"mpeg": "movie",
 		"mpe": "movie",
 		"rm": "movie",

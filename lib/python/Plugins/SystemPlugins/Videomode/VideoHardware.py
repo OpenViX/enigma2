@@ -16,9 +16,9 @@ class VideoHardware:
 
 	modes = { }  # a list of (high-level) modes for a certain port.
 
-	rates["PAL"] =			{ "50Hz":	{ 50: "pal" },
-								"60Hz":		{ 60: "pal60" },
-								"multi":	{ 50: "pal", 60: "pal60" } }
+	rates["PAL"] =			{ "50Hz":		{ 50: "pal" },
+								"60Hz": 	{ 60: "pal60" },
+								"multi": 	{ 50: "pal", 60: "pal60" } }
 
 	rates["NTSC"] =			{ "60Hz": 	{ 60: "ntsc" } }
 
@@ -40,7 +40,7 @@ class VideoHardware:
 	rates["1080i"] =		{ "50Hz":	{ 50: "1080i50" },
 								"60Hz":		{ 60: "1080i" },
 								"multi":	{ 50: "1080i50", 60: "1080i" },
-								"auto": 	{ 50: "1080i50", 60: "1080i", 24: "1080p24" } }
+								"auto":		{ 50: "1080i50", 60: "1080i", 24: "1080p24" } }
 
 	rates["1080p"] =		{ "50Hz":	{ 50: "1080p50" },
 								"60Hz":		{ 60: "1080p" },
@@ -59,7 +59,7 @@ class VideoHardware:
 
 	rates["PC"] = {
 		"1024x768": { 60: "1024x768" }, # not possible on DM7025
-		"800x600" : { 60: "800x600" },  # also not possible
+		"800x600" : { 60: "800x600" }, # also not possible
 		"720x480" : { 60: "720x480" },
 		"720x576" : { 60: "720x576" },
 		"1280x720": { 60: "1280x720" },
@@ -70,8 +70,7 @@ class VideoHardware:
 		"1366x768" : { 60: "1366x768"},
 		"1366x768 multi" : { 50: "1366x768", 60: "1366x768_50" },
 		"1280x768": { 60: "1280x768" },
-		"640x480" : { 60: "640x480" }
-	}
+		"640x480" : { 60: "640x480" } }
 
 	if SystemInfo["HasScart"]:
 		modes["Scart"] = ["PAL", "NTSC", "Multi"]
@@ -291,11 +290,9 @@ class VideoHardware:
 			for (mode, rates) in modes:
 				ratelist = []
 				for rate in rates:
-					if rate in ("auto"):
-						if SystemInfo["Has24hz"]:
-							ratelist.append((rate, rate))
-					else:
-						ratelist.append((rate, rate))
+					if rate in ("auto") and not SystemInfo["Has24hz"]:
+						continue
+					ratelist.append((rate, rate))
 				config.av.videorate[mode] = ConfigSelection(choices = ratelist)
 		config.av.videoport = ConfigSelection(choices = lst)
 
@@ -352,9 +349,9 @@ class VideoHardware:
 				aspect = "16:9"
 			else:
 				aspect = {"16_9": "16:9", "16_10": "16:10"}[config.av.aspect.value]
-			policy_choices = {"pillarbox": "panscan", "panscan": "letterbox", "nonlinear": "nonlinear", "scale": "bestfit", "full": "full", "auto": "auto"}
+			policy_choices = {"pillarbox": "panscan", "panscan": "letterbox", "nonlinear": "nonlinear", "scale": "bestfit", "bestfit": "bestfit", "letterbox": "letterbox", "full": "full", "auto": "auto"}
 			policy = policy_choices[config.av.policy_43.value]
-			policy2_choices = {"letterbox": "letterbox", "panscan": "panscan", "scale": "bestfit", "full": "full", "auto": "auto"}
+			policy2_choices = {"letterbox": "letterbox", "panscan": "panscan", "nonlinear": "nonlinear", "scale": "bestfit", "bestfit": "bestfit", "full": "full", "auto": "auto"}
 			policy2 = policy2_choices[config.av.policy_169.value]
 		elif is_auto:
 			aspect = "any"

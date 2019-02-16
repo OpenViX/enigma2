@@ -92,7 +92,7 @@ class AutoDiseqc(Screen, ConfigListScreen):
 			eDVBFrontendParametersSatellite.System_DVB_S,
 			eDVBFrontendParametersSatellite.Modulation_Auto,
 			eDVBFrontendParametersSatellite.RollOff_auto,
-			eDVBFrontendParametersSatellite.Pilot_Unknown,
+			eDVBFrontendParametersSatellite.Pilot_Unknown,		
 			eDVBFrontendParametersSatellite.No_Stream_Id_Filter,
 			eDVBFrontendParametersSatellite.PLS_Gold,
 			eDVBFrontendParametersSatellite.PLS_Default_Gold_Code,
@@ -100,25 +100,25 @@ class AutoDiseqc(Screen, ConfigListScreen):
 			318,
 			"Hotbird 13.0e"),
 
- 		# eutelsat 160 hrt
- 		(
- 			10721,
- 			27500,
- 			eDVBFrontendParametersSatellite.Polarisation_Horizontal,
- 			eDVBFrontendParametersSatellite.FEC_3_4,
- 			eDVBFrontendParametersSatellite.Inversion_Off,
- 			160,
- 			eDVBFrontendParametersSatellite.System_DVB_S,
- 			eDVBFrontendParametersSatellite.Modulation_Auto,
- 			eDVBFrontendParametersSatellite.RollOff_auto,
-			eDVBFrontendParametersSatellite.Pilot_Unknown,
+		# eutelsat 160 hrt
+		(
+			10721,
+			27500,
+			eDVBFrontendParametersSatellite.Polarisation_Horizontal,
+			eDVBFrontendParametersSatellite.FEC_3_4,
+			eDVBFrontendParametersSatellite.Inversion_Off,
+			160,
+			eDVBFrontendParametersSatellite.System_DVB_S,
+			eDVBFrontendParametersSatellite.Modulation_Auto,
+			eDVBFrontendParametersSatellite.RollOff_auto,
+			eDVBFrontendParametersSatellite.Pilot_Unknown,		
 			eDVBFrontendParametersSatellite.No_Stream_Id_Filter,
 			eDVBFrontendParametersSatellite.PLS_Gold,
 			eDVBFrontendParametersSatellite.PLS_Default_Gold_Code,
- 			20100,
- 			366,
- 			"Eutelsat 16A 16.0e"),
- 
+			20100,
+			366,
+			"Eutelsat 16A 16.0e"),
+
 		# thor  3592 CT24
 		(
 			12072,

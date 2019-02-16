@@ -752,8 +752,13 @@ int eMPEGStreamInformationWriter::PendingWrite::wait()
 {
 	//eDebug("[eMPEGStreamInformationWriter] PendingWrite waiting for IO completion");
 	struct aiocb* aio = &m_aio;
-	while (aio_error(aio) == EINPROGRESS)
+	int res;
+	while (1)
 	{
+		res = aio_error(aio);
+		if (res != EINPROGRESS)
+			break;
+
 		eDebug("[eMPEGStreamInformationWriter] Waiting for I/O to complete");
 		int r = aio_suspend(&aio, 1, NULL);
 		if (r < 0)
@@ -762,27 +767,46 @@ int eMPEGStreamInformationWriter::PendingWrite::wait()
 			return -1;
 		}
 	}
-	int r = aio_return(aio);
-	if (r < 0)
+	if (res == 0 || res == ECANCELED)
 	{
-		eDebug("[eMPEGStreamInformationWriter] aio_return returned failure: %m");
+		__ssize_t r = aio_return(aio);
+		if (r < 0)
+		{
+			eDebug("[eMPEGStreamInformationWriter] aio_return returned failure: %m");
+		}
+		return r;
 	}
-	return r;
+	else if (res > 0)
+	{
+		eDebug("[eMPEGStreamInformationWriter] aio_error returned failure: %m");
+		return -res;
+	}
+	return 0;
 }
 
 bool eMPEGStreamInformationWriter::PendingWrite::poll()
 {
 	if (m_buffer == NULL)
 		return true; // Nothing pending
-	if (aio_error(&m_aio) == EINPROGRESS)
+
+	int res = aio_error(&m_aio);
+	if (res == EINPROGRESS)
 	{
 		return false; // still busy
 	}
-	int r = aio_return(&m_aio);
-	if (r < 0)
+	if (res == 0 || res == ECANCELED)
 	{
-		eDebug("[eMPEGStreamInformationWriter] aio_return returned failure: %m");
+		__ssize_t r = aio_return(&m_aio);
+		if (r < 0)
+		{
+			eDebug("[eMPEGStreamInformationWriter] aio_return returned failure: %m");
+		}
 	}
+	else //res > 0
+	{
+		eDebug("[eMPEGStreamInformationWriter] aio_error returned failure: %m");
+	}
+	m_aio.aio_buf = NULL;
 	free(m_buffer);
 	m_buffer = NULL;
 	return true;

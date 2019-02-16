@@ -1,20 +1,34 @@
 import sys
 from enigma import ePythonOutput
 
-class EnigmaLogDebug:
-
-	lvlDebug = 4
-
+class EnigmaOutput:
 	def __init__(self):
-		self.line = ''
+		self.buf = ''
+		self.isTraceback = False
 
 	def write(self, data):
 		if isinstance(data, unicode):
 			data = data.encode("UTF-8")
-		self.line += data
+		self.buf += data
 		if '\n' in data:
-			ePythonOutput(self.line, self.lvlDebug)
-			self.line = ''
+			if not self.isTraceback and 'Traceback (most recent call last):\n' == self.buf:
+				self.isTraceback = True
+			if self.isTraceback == False:
+				frame = sys._getframe(1)
+				filename = frame.f_code.co_filename
+				if 'BugHunting' in filename:
+					ePythonOutput('',0,'',self.buf)
+				else:
+					if '/usr/lib/enigma2/python/' in filename:
+						filename = filename.replace('/usr/lib/enigma2/python/', '')
+					elif '/git/' in filename:
+						filename = filename.split('/git/')[1]
+					ePythonOutput(filename, frame.f_lineno, frame.f_code.co_name, self.buf)
+			else:
+				ePythonOutput('',0,'',self.buf)
+			if self.isTraceback and self.buf[0] != ' ' and 'Traceback (most recent call last):\n' != self.buf:
+				self.isTraceback = False
+			self.buf = ''
 
 	def flush(self):
 		pass
@@ -22,26 +36,4 @@ class EnigmaLogDebug:
 	def isatty(self):
 		return True
 
-class EnigmaLogFatal:
-
-	lvlError = 1
-
-	def __init__(self):
-		self.line = ''
-
-	def write(self, data):
-		if isinstance(data, unicode):
-			data = data.encode("UTF-8")
-		self.line += data
-		if '\n' in data:
-			ePythonOutput(self.line, self.lvlError)
-			self.line = ''
-
-	def flush(self):
-		pass
-
-	def isatty(self):
-		return True
-
-sys.stdout = EnigmaLogDebug()
-sys.stderr = EnigmaLogFatal()
+sys.stdout = sys.stderr = EnigmaOutput()

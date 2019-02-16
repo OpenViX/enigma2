@@ -103,7 +103,7 @@ class SecConfigure:
 
 	def linkInternally(self, slotid):
 		nim = self.NimManager.getNim(slotid)
-		if nim.internallyConnectableTo is not None:
+		if nim.internallyConnectableTo() is not None and nim.internallyConnectableTo() >= 0:
 			nim.setInternalLink()
 
 	def linkNIMs(self, sec, nim1, nim2):
@@ -125,7 +125,7 @@ class SecConfigure:
 		sec = secClass.getInstance()
 		self.configuredSatellites = set()
 		for slotid in self.NimManager.getNimListOfType("DVB-S"):
-			if self.NimManager.nimInternallyConnectableTo(slotid) is not None:
+			if self.NimManager.nimInternallyConnectableTo(slotid) is not None and self.NimManager.nimInternallyConnectableTo(slotid) >= 0:
 				self.NimManager.nimRemoveInternalLink(slotid)
 		sec.clear() ## this do unlinking NIMs too !!
 		print "[SecConfigure] sec config cleared"
@@ -475,7 +475,7 @@ class SecConfigure:
 		self.update()
 
 class NIM(object):
-	def __init__(self, slot, type, description, has_outputs = True, internally_connectable = None, multi_type = {}, frontend_id = None, i2c = None, is_empty = False, supports_blind_scan = False):
+	def __init__(self, slot, type, description, has_outputs = True, internally_connectable = None, multi_type = {}, frontend_id = None, i2c = None, is_empty = False, supports_blind_scan = False, input_name = None):
 		nim_types = ["DVB-S", "DVB-S2", "DVB-S2X", "DVB-C", "DVB-T", "DVB-T2", "ATSC"]
 
 		if type and type not in nim_types:
@@ -492,6 +492,7 @@ class NIM(object):
 		self.i2c = i2c
 		self.frontend_id = frontend_id
 		self.__is_empty = is_empty
+		self.input_name = input_name
 
 		self.compatible = {
 				None: (None,),
@@ -565,12 +566,12 @@ class NIM(object):
 		return self.internally_connectable
 
 	def setInternalLink(self):
-		if self.internally_connectable is not None:
+		if self.internally_connectable is not None and self.internally_connectable >= 0:
 			print "[NIM] setting internal link on frontend id", self.frontend_id
 			open("/proc/stb/frontend/%d/rf_switch" % self.frontend_id, "w").write("internal")
 
 	def removeInternalLink(self):
-		if self.internally_connectable is not None:
+		if self.internally_connectable is not None and self.internally_connectable >= 0:
 			print "[NIM] removing internal link on frontend id", self.frontend_id
 			open("/proc/stb/frontend/%d/rf_switch" % self.frontend_id, "w").write("external")
 
@@ -751,7 +752,7 @@ class NimManager:
 			db.readATSC(self.atscList, self.transpondersatsc)
 
 	def enumerateNIMs(self):
-		# enum available NIMs. This is currently very dreambox-centric and uses the /proc/bus/nim_sockets interface.
+		# enum available NIMs. This is currently very receiver-centric and uses the /proc/bus/nim_sockets interface.
 		# the result will be stored into nim_slots.
 		# the content of /proc/bus/nim_sockets looks like:
 		# NIM Socket 0:
@@ -792,6 +793,8 @@ class NimManager:
 			elif line.startswith("Type:"):
 				entries[current_slot]["type"] = str(line[6:])
 				entries[current_slot]["isempty"] = False
+			elif line.strip().startswith("Input_Name:"):
+				entries[current_slot]["input_name"] = str(line.strip()[12:])
 			elif line.startswith("Name:"):
 				entries[current_slot]["name"] = str(line[6:])
 				entries[current_slot]["isempty"] = False
@@ -809,7 +812,7 @@ class NimManager:
 				entries[current_slot]["frontend_device"] = input
 			elif  line.startswith("Mode"):
 				# "Mode 0: DVB-T" -> ["Mode 0", "DVB-T"]
-				split = line.split(": ")
+				split = line.split(":")
 				if len(split) > 1 and split[1]:
 					# "Mode 0" -> ["Mode", "0"]
 					split2 = split[0].split(" ")
@@ -842,9 +845,11 @@ class NimManager:
 				entry["frontend_device"] = entry["internally_connectable"] = None
 			if "multi_type" not in entry:
 				entry["multi_type"] = {}
+			if not (entry.has_key("input_name")):
+				entry["input_name"] = chr(ord('A') + id)
 			if "supports_blind_scan" not in entry:
 				entry["supports_blind_scan"] = False
-			self.nim_slots.append(NIM(slot = id, description = entry["name"], type = entry["type"], has_outputs = entry["has_outputs"], internally_connectable = entry["internally_connectable"], multi_type = entry["multi_type"], frontend_id = entry["frontend_device"], i2c = entry["i2c"], is_empty = entry["isempty"], supports_blind_scan = entry["supports_blind_scan"]))
+			self.nim_slots.append(NIM(slot = id, description = entry["name"], type = entry["type"], has_outputs = entry["has_outputs"], internally_connectable = entry["internally_connectable"], multi_type = entry["multi_type"], frontend_id = entry["frontend_device"], i2c = entry["i2c"], is_empty = entry["isempty"], supports_blind_scan = entry["supports_blind_scan"], input_name = entry.get("input_name", None)))
 
 	def hasNimType(self, chktype):
 		return any(slot.canBeCompatible(chktype) for slot in self.nim_slots)
@@ -857,6 +862,10 @@ class NimManager:
 
 	def getNimName(self, slotid):
 		return self.nim_slots[slotid].description
+
+	def getNimSlotInputName(self, slotid):
+		# returns just "A", "B", ...
+		return self.nim_slots[slotid].slot_input_name
 
 	def getNim(self, slotid):
 		return self.nim_slots[slotid]
@@ -973,7 +982,7 @@ class NimManager:
 	def somethingConnected(self, slotid = -1):
 		if slotid == -1:
 			for id in range(self.getSlotCount()):
-				if self.somethingConnected(id) and not (self.nim_slots[id].isFBCLink() or self.getNimConfig(id).configMode.value == "loopthrough"):
+				if self.somethingConnected(id) and not (self.nim_slots[id].isFBCLink() or self.getNimConfig(id).configMode.value == "loopthrough_internal" or self.getNimConfig(id).configMode.value == "loopthrough_external"):
 					return True
 			return False
 		else:
@@ -987,10 +996,10 @@ class NimManager:
 		list = []
 		if self.nim_slots[slotid].isCompatible("DVB-S"):
 			nim = config.Nims[slotid]
-			#print "slotid:", slotid
+			#print "[NimManager] slotid:", slotid
 
-			#print "self.satellites:", self.satList[config.Nims[slotid].diseqcA.index]
-			#print "diseqcA:", config.Nims[slotid].diseqcA.value
+			#print "[NimManager] self.satellites:", self.satList[config.Nims[slotid].diseqcA.index]
+			#print "[NimManager] diseqcA:", config.Nims[slotid].diseqcA.value
 			configMode = nim.configMode.value
 
 			if configMode == "equal":

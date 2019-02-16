@@ -31,7 +31,7 @@ class OverscanWizard(Screen, ConfigListScreen):
 		from Components.ActionMap import ActionMap
 		from Components.Button import Button
 
-		self["title"] = Label(_("Overscan wizard"))
+		self["title"] = Label(_("Overscan Wizard"))
 		self["introduction"] = Label()
 
 		self["actions"] = ActionMap(["SetupActions", "ColorActions", "MenuActions"],
@@ -50,7 +50,7 @@ class OverscanWizard(Screen, ConfigListScreen):
 
 		self.Timer = eTimer()
 		if timeOut:
-			self.countdown = 10
+			self.countdown = 20
 			self.Timer.callback.append(self.TimerTimeout)
 			self.Timer.start(1000)
 
@@ -117,18 +117,18 @@ class OverscanWizard(Screen, ConfigListScreen):
 				"Unfortunately, your model of receiver is not capable to adjust the dimensions of the user interface. "
 				"If not everything is visible, you should change the installed skin to one that supports the overscan area of your TV.\n\n"
 				"When you select a different skin, the user interface of your receiver will restart.\n\n"
-				"Note: you can always start the Overscan wizard later,  via\n\nmenu->installation->system->Overscan wizard"))
+				"Note: you can always start the Overscan Wizard later,  via\n\nmenu->settings->system->userinterface->position & size"))
 			self.yes_no.value = False
 			self.list.append(getConfigListEntry(_("Do you want to select a different skin?"), self.yes_no))
 		elif self.step == 5:
 			self.Timer.stop()
-			self["title"].setText(_("Overscan wizard"))
+			self["title"].setText(_("Overscan Wizard"))
 			self["introduction"].setText(_("The overscan wizard has been completed.\n\n"
-				"Note: you can always start the Overscan wizard later,  via\n\nMenu->Installation->System->Audio/Video->Overscan wizard"))
+				"Note: you can always start the Overscan Wizard later,  via\n\nmenu->settings->system->userinterface->position & size"))
 			self.yes_no.value = True
 			self.list.append(getConfigListEntry(_("Do you want to quit the overscan wizard?"), self.yes_no))
 		elif self.step == 6:
-			config.skin.primary_skin.value = "PLi-HD/skin.xml"
+			config.skin.primary_skin.value = "GigabluePax/skin.xml"
 			config.save()
 			self["introduction"].setText(_("The user interface of the receiver will now restart to select the selected skin"))
 			quitMainloop(3)
@@ -139,7 +139,7 @@ class OverscanWizard(Screen, ConfigListScreen):
 
 	def TimerTimeout(self):
 		self.countdown -= 1
-		self["title"].setText(_("Overscan wizard") + " (%s)" % self.countdown)
+		self["title"].setText(_("Overscan Wizard") + " (%s)" % self.countdown)
 		if not(self.countdown):
 			self.keyCancel()
 

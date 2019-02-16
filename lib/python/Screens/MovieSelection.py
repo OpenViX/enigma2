@@ -680,13 +680,8 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		return config.ParentalControl.setuppinactive.value and config.ParentalControl.config_sections.movie_list.value
 
 	def standbyCountChanged(self, value):
-		path = self.getTitle().split(" /", 1)
-		if path and len(path) > 1:
-			if [x for x in path[1].split("/") if x.startswith(".") and not x.startswith(".Trash")]:
-				moviepath = defaultMoviePath()
-				if moviepath:
-					config.movielist.last_videodir.value = defaultMoviePath()
-					self.close(None)
+		self.execing = False
+		self.close(None)
 
 	def unhideParentalServices(self):
 		if self.protectContextMenu:
@@ -1369,7 +1364,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 	def setCurrentRef(self, path):
 		self.current_ref = eServiceReference("2:0:1:0:0:0:0:0:0:0:" + path)
 		# Magic: this sets extra things to show
-		self.current_ref.setName('16384:jpg 16384:png 16384:gif 16384:bmp')
+		# self.current_ref.setName('16384:jpg 16384:png 16384:gif 16384:bmp')
 
 	def reloadList(self, sel = None, home = False):
 		self.reload_sel = sel
@@ -1500,7 +1495,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 
 	def showTagsMenu(self, tagele):
 		self.selected_tags_ele = tagele
-		lst = [(_("show all tags"), None)] + [(tag, self.getTagDescription(tag)) for tag in sorted(self.tags)]
+		lst = [(_("show all tags"), None)] + [(tag, self.getTagDescription(tag)) for tag in self.tags]
 		self.session.openWithCallback(self.tagChosen, ChoiceBox, title=_("Please select tag to filter..."), list = lst)
 
 	def showTagWarning(self):

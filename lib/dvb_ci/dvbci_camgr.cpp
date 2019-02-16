@@ -16,10 +16,9 @@ eDVBCICAManagerSession::~eDVBCICAManagerSession()
 
 int eDVBCICAManagerSession::receivedAPDU(const unsigned char *tag, const void *data, int len)
 {
-	eDebugNoNewLine("[CI CA] SESSION(%d)/CA %02x %02x %02x: ", session_nb, tag[0], tag[1],tag[2]);
+	eDebugNoNewLineStart("[CI CA] SESSION(%d)/CA %02x %02x %02x: ", session_nb, tag[0], tag[1],tag[2]);
 	for (int i=0; i<len; i++)
 		eDebugNoNewLine("%02x ", ((const unsigned char*)data)[i]);
-	eDebugNoNewLine("\n");
 
 	if ((tag[0]==0x9f) && (tag[1]==0x80))
 	{
@@ -33,7 +32,6 @@ int eDVBCICAManagerSession::receivedAPDU(const unsigned char *tag, const void *d
 				caids.push_back((((const unsigned char*)data)[i]<<8)|(((const unsigned char*)data)[i+1]));
 			}
 			std::sort(caids.begin(), caids.end());
-			eDebugNoNewLine("\n");
 			eDVBCIInterfaces::getInstance()->recheckPMTHandlers();
 			break;
 		default:
@@ -56,7 +54,7 @@ int eDVBCICAManagerSession::doAction()
 		return 0;
 	}
 	case stateFinal:
-		eDebug("[CI CA] stateFinal and action should not happen");
+		eDebug("[CI CA] stateFinal und action! kann doch garnicht sein ;)");
 	default:
 		return 0;
 	}

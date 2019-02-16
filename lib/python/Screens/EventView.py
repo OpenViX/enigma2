@@ -267,7 +267,7 @@ class EventViewBase:
 				isRecordEvent = True
 				break
 		if isRecordEvent and self.key_green_choice != self.REMOVE_TIMER:
-			self["key_green"].setText(_("Change timer"))
+			self["key_green"].setText(_("Remove timer"))
 			self.key_green_choice = self.REMOVE_TIMER
 		elif not isRecordEvent and self.key_green_choice != self.ADD_TIMER:
 			self["key_green"].setText(_("Add timer"))
@@ -333,7 +333,7 @@ class EventViewSimple(Screen, EventViewBase):
 	def __init__(self, session, Event, Ref, callback=None, similarEPGCB=None, parent=None):
 		Screen.__init__(self, session)
 		self.skinName = "EventView"
-		EventViewBase.__init__(self, Event, Ref, callback, similarEPGCB, parent)
+		EventViewBase.__init__(self, Event, Ref, callback, similarEPGCB)
 
 class EventViewEPGSelect(Screen, EventViewBase):
 	def __init__(self, session, Event, Ref, callback=None, singleEPGCB=None, multiEPGCB=None, similarEPGCB=None, parent=None):
@@ -341,7 +341,7 @@ class EventViewEPGSelect(Screen, EventViewBase):
 		self.skinName = "EventView"
 		self.singleEPGCB = singleEPGCB
 		self.multiEPGCB = multiEPGCB
-		EventViewBase.__init__(self, Event, Ref, callback, similarEPGCB, parent)
+		EventViewBase.__init__(self, Event, Ref, callback, similarEPGCB)
 		self["key_yellow"].setText(_("Single EPG"))
 		self["key_blue"].setText(_("Multi EPG"))
 		self["epgactions"] = ActionMap(["EventViewEPGActions"],

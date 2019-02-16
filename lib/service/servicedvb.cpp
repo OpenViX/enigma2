@@ -90,6 +90,10 @@ int eStaticServiceDVBInformation::getLength(const eServiceReference &ref)
 
 int eStaticServiceDVBInformation::isPlayable(const eServiceReference &ref, const eServiceReference &ignore, bool simulate)
 {
+	if (ref.path.substr(0, 7) == "http://") {
+		return 1;
+	}
+
 	ePtr<eDVBResourceManager> res_mgr;
 	if ( eDVBResourceManager::getInstance( res_mgr ) )
 		eDebug("[eStaticServiceDVBInformation] isPlayable... no res manager!!");
@@ -396,7 +400,7 @@ int eStaticServiceDVBPVRInformation::getLength(const eServiceReference &ref)
 
 			/* check if cached data is still valid */
 	if (m_parser.m_data_ok && (s.st_size == m_parser.m_filesize) && (m_parser.m_length))
-		return m_parser.m_length / 90000;
+		return (int)(m_parser.m_length / 90000);
 
 			/* open again, this time with stream info */
 	if (tstools.openFile(ref.path.c_str()))
@@ -416,7 +420,7 @@ int eStaticServiceDVBPVRInformation::getLength(const eServiceReference &ref)
  	m_parser.m_length = len;
 	m_parser.m_filesize = s.st_size;
 	m_parser.updateMeta(ref.path);
-	return m_parser.m_length / 90000;
+	return (int)(m_parser.m_length / 90000);
 }
 
 int eStaticServiceDVBPVRInformation::getInfo(const eServiceReference &ref, int w)
@@ -631,7 +635,9 @@ RESULT eDVBPVRServiceOfflineOperations::reindex()
 	int result;
 	/* Release global interpreter lock */
 	Py_BEGIN_ALLOW_THREADS;
-	result = reindex_work(m_ref.path.c_str());
+	{
+		result = reindex_work(m_ref.path.c_str());
+	}
 	Py_END_ALLOW_THREADS;
 	return result;
 }
@@ -1002,7 +1008,7 @@ RESULT eServiceFactoryDVB::lookupService(ePtr<eDVBService> &service, const eServ
 		int err;
 		if ((err = eDVBDB::getInstance()->getService((eServiceReferenceDVB&)ref, service)) != 0)
 		{
-			eLog(6, "[eServiceFactoryDVB] lookupService getService failed!");
+//			eDebug("[eServiceFactoryDVB] lookupService getService failed!");
 			return err;
 		}
 	}
@@ -2048,6 +2054,11 @@ void eDVBServicePlay::getAITApplications(std::map<int, std::string> &aitlist)
 	return m_service_handler.getAITApplications(aitlist);
 }
 
+PyObject * eDVBServicePlay::getHbbTVApplications()
+{
+	return m_service_handler.getHbbTVApplications();
+}
+
 void eDVBServicePlay::getCaIds(std::vector<int> &caids, std::vector<int> &ecmpids, std::vector<std::string> &ecmdatabytes)
 {
 	m_service_handler.getCaIds(caids, ecmpids, ecmdatabytes);
@@ -2112,6 +2123,8 @@ RESULT eDVBServicePlay::getTrackInfo(struct iAudioTrackInfo &info, unsigned int 
 		info.m_description = "AC3+";
 	else if (program.audioStreams[i].type == eDVBServicePMTHandler::audioStream::atAAC)
 		info.m_description = "AAC";
+	else if (program.audioStreams[i].type == eDVBServicePMTHandler::audioStream::atDRA)
+		info.m_description = "DRA";
 	else if (program.audioStreams[i].type == eDVBServicePMTHandler::audioStream::atAACHE)
 		info.m_description = "AAC-HE";
 	else if (program.audioStreams[i].type == eDVBServicePMTHandler::audioStream::atDTS)
@@ -2894,7 +2907,7 @@ void eDVBServicePlay::updateDecoder(bool sendSeekableStateChanged)
 		}
 		eDebugNoNewLine(", and the pcr pid is %04x", program.pcrPid);
 		pcrpid = program.pcrPid;
-		eDebugNoNewLine(", and the text pid is %04x\n", program.textPid);
+		eDebugNoNewLine(", and the text pid is %04x", program.textPid);
 		tpid = program.textPid;
 	}
 

@@ -226,7 +226,7 @@ class DiseqcTester(Screen, TuneTest, ResultParser):
 
 	def readTransponderList(self):
 		for sat in nimmanager.getSatListForNim(self.feid):
-			for transponder in nimmanager.getTransponders(sat[0], self.feid):
+			for transponder in nimmanager.getTransponders(sat[0]):
 				mytransponder = (transponder[1] / 1000, transponder[2] / 1000, transponder[3], transponder[4], transponder[7], sat[0], transponder[5], transponder[6], transponder[8], transponder[9], transponder[10], transponder[11], transponder[12], transponder[13], transponder[14])
 				self.analyseTransponder(mytransponder)
 
@@ -604,7 +604,7 @@ class DiseqcTesterNimSelection(NimSelection):
 	def showNim(self, nim):
 		nimConfig = nimmanager.getNimConfig(nim.slot)
 		if nim.isCompatible("DVB-S"):
-			if nimConfig.configMode.value in ("loopthrough", "equal", "satposdepends", "nothing"):
+			if nimConfig.configMode.value in ("loopthrough_internal", "loopthrough_external", "equal", "satposdepends", "nothing"):
 				return False
 			configured_sats = nimmanager.getSatListForNim(nim.slot)
 			if len(configured_sats) == 0:

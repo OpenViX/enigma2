@@ -2,6 +2,7 @@ from enigma import getPrevAsciiCode
 from Tools.NumericalTextInput import NumericalTextInput
 from Tools.Directories import resolveFilename, SCOPE_CONFIG, fileExists
 from Components.Harddisk import harddiskmanager
+from Components.SystemInfo import SystemInfo
 from Tools.LoadPixmap import LoadPixmap
 import copy
 import os
@@ -29,32 +30,29 @@ from time import localtime, strftime
 #
 class ConfigElement(object):
 	def __init__(self):
+		self.extra_args = {}
 		self.saved_value = None
 		self.save_forced = False
 		self.last_value = None
 		self.save_disabled = False
-		self.__notifiers = None
-		self.__notifiers_final = None
+		self.__notifiers = { }
+		self.__notifiers_final = { }
 		self.enabled = True
 		self.callNotifiersOnSaveAndCancel = False
 
 	def getNotifiers(self):
-		if self.__notifiers is None:
-			self.__notifiers = []
-		return self.__notifiers
+		return [func for (func, val, call_on_save_and_cancel) in self.__notifiers.itervalues()]
 
 	def setNotifiers(self, val):
-		self.__notifiers = val
+		print "just readonly access to notifiers is allowed! append/remove doesnt work anymore! please use addNotifier, removeNotifier, clearNotifiers"
 
 	notifiers = property(getNotifiers, setNotifiers)
 
 	def getNotifiersFinal(self):
-		if self.__notifiers_final is None:
-			self.__notifiers_final = []
-		return self.__notifiers_final
+		return [func for (func, val, call_on_save_and_cancel) in self.__notifiers_final.itervalues()]
 
 	def setNotifiersFinal(self, val):
-		self.__notifiers_final = val
+		print "just readonly access to notifiers_final is allowed! append/remove doesnt work anymore! please use addNotifier, removeNotifier, clearNotifiers"
 
 	notifiers_final = property(getNotifiersFinal, setNotifiersFinal)
 
@@ -99,26 +97,45 @@ class ConfigElement(object):
 
 	def isChanged(self):
 		sv = self.saved_value
-		if sv is None and self.value == self.default:
+		if sv is None and str(self.value) == str(self.default):
 			return False
-		return self.tostring(self.value) != sv
+		return self.tostring(self.value) != self.tostring(sv)
 
 	def changed(self):
 		if self.__notifiers:
 			for x in self.notifiers:
-				x(self)
+				try:
+					if self.extra_args and self.extra_args[x]:
+						x(self, self.extra_args[x])
+					else:
+						x(self)
+				except:
+					x(self)
 
 	def changedFinal(self):
 		if self.__notifiers_final:
 			for x in self.notifiers_final:
-				x(self)
+				try:
+					if self.extra_args and self.extra_args[x]:
+						x(self, self.extra_args[x])
+					else:
+						x(self)
+				except:
+					x(self)
 
-	def addNotifier(self, notifier, initial_call=True, immediate_feedback=True):
+	# immediate_feedback = True means call notifier on every value CHANGE
+	# immediate_feedback = False means call notifier on leave the config element (up/down) when value have CHANGED
+	# call_on_save_or_cancel = True means call notifier always on save/cancel.. even when value have not changed
+	def addNotifier(self, notifier, initial_call=True, immediate_feedback=True, call_on_save_or_cancel=False, extra_args=None):
+		if not extra_args: extra_args = []
 		assert callable(notifier), "notifiers must be callable"
+		try:
+			self.extra_args[notifier] = extra_args
+		except: pass	
 		if immediate_feedback:
-			self.notifiers.append(notifier)
+			self.__notifiers[str(notifier)] = (notifier, self.value, call_on_save_or_cancel)
 		else:
-			self.notifiers_final.append(notifier)
+			self.__notifiers_final[str(notifier)] = (notifier, self.value, call_on_save_or_cancel)
 		# CHECKME:
 		# do we want to call the notifier
 		#  - at all when adding it? (yes, though optional)
@@ -128,11 +145,27 @@ class ConfigElement(object):
 		#    (though that's not so easy to detect.
 		#     the entry could just be new.)
 		if initial_call:
-			notifier(self)
+			if extra_args:
+				notifier(self,extra_args)
+			else:
+				notifier(self)
 
 	def removeNotifier(self, notifier):
-		notifier in self.notifiers and self.notifiers.remove(notifier)
-		notifier in self.notifiers_final and self.notifiers_final.remove(notifier)
+		try:
+			del self.__notifiers[str(notifier)]
+		except:
+			try:
+				del self.__notifiers_final[str(notifier)]
+			except:
+				pass
+
+	def clearNotifiers(self):
+		self.__notifiers = { }
+		self.__notifiers_final = { }
+
+	#def removeNotifier(self, notifier):
+	#	notifier in self.notifiers and self.notifiers.remove(notifier)
+	#	notifier in self.notifiers_final and self.notifiers_final.remove(notifier)
 
 	def disableSave(self):
 		self.save_disabled = True
@@ -415,7 +448,7 @@ class ConfigBoolean(ConfigElement):
 			return ("text", self.descriptions[self.value])
 
 	def tostring(self, value):
-		if not value:
+		if not value or value == 'false':
 			return "false"
 		else:
 			return "true"
@@ -455,7 +488,7 @@ class ConfigOnOff(ConfigBoolean):
 
 class ConfigEnableDisable(ConfigBoolean):
 	def __init__(self, default=False, graphic=True):
-		ConfigBoolean.__init__(self, default=default, descriptions={False: _("disable"), True: _("enable")}, graphic=graphic)
+		ConfigBoolean.__init__(self, default=default, descriptions={False: _("disabled"), True: _("enabled")}, graphic=graphic)
 
 class ConfigDateTime(ConfigElement):
 	def __init__(self, default, formatstring, increment=86400):
@@ -633,7 +666,8 @@ class ConfigSequence(ConfigElement):
 			return ("text", value)
 
 	def tostring(self, val):
-		return self.seperator.join([self.saveSingle(x) for x in val])
+		if val is not None:
+			return self.seperator.join([self.saveSingle(x) for x in val])
 
 	def saveSingle(self, v):
 		return str(v)
@@ -734,6 +768,141 @@ mac_limits = [(1, 255), (1, 255), (1, 255), (1, 255), (1, 255), (1, 255)]
 class ConfigMAC(ConfigSequence):
 	def __init__(self, default):
 		ConfigSequence.__init__(self, seperator=":", limits=mac_limits, default=default)
+
+class ConfigMacText(ConfigElement, NumericalTextInput):
+	def __init__(self, default = "", visible_width = False):
+		ConfigElement.__init__(self)
+		NumericalTextInput.__init__(self, nextFunc = self.nextFunc, handleTimeout = False)
+
+		self.marked_pos = 0
+		self.allmarked = (default != "")
+		self.fixed_size = 17
+		self.visible_width = visible_width
+		self.offset = 0
+		self.overwrite = 17
+		self.help_window = None
+		self.value = self.last_value = self.default = default
+		self.useableChars = '0123456789ABCDEF'
+
+	def validateMarker(self):
+		textlen = len(self.text)
+		if self.marked_pos > textlen-1:
+			self.marked_pos = textlen-1
+		elif self.marked_pos < 0:
+			self.marked_pos = 0
+
+	def insertChar(self, ch, pos, owr):
+		if self.text[pos] == ':':
+			pos += 1
+		if owr or self.overwrite:
+			self.text = self.text[0:pos] + ch + self.text[pos + 1:]
+		elif self.fixed_size:
+			self.text = self.text[0:pos] + ch + self.text[pos:-1]
+		else:
+			self.text = self.text[0:pos] + ch + self.text[pos:]
+
+	def handleKey(self, key):
+		if key == KEY_LEFT:
+			self.timeout()
+			if self.allmarked:
+				self.marked_pos = len(self.text)
+				self.allmarked = False
+			else:
+				if self.text[self.marked_pos-1] == ':':
+					self.marked_pos -= 2
+				else:
+					self.marked_pos -= 1
+		elif key == KEY_RIGHT:
+			self.timeout()
+			if self.allmarked:
+				self.marked_pos = 0
+				self.allmarked = False
+			else:
+				if self.marked_pos < (len(self.text)-1):
+					if self.text[self.marked_pos+1] == ':':
+						self.marked_pos += 2
+					else:
+						self.marked_pos += 1
+		elif key in KEY_NUMBERS:
+			owr = self.lastKey == getKeyNumber(key)
+			newChar = self.getKey(getKeyNumber(key))
+			self.insertChar(newChar, self.marked_pos, owr)
+		elif key == KEY_TIMEOUT:
+			self.timeout()
+			if self.help_window:
+				self.help_window.update(self)
+			if self.text[self.marked_pos] == ':':
+				self.marked_pos += 1
+			return
+
+		if self.help_window:
+			self.help_window.update(self)
+		self.validateMarker()
+		self.changed()
+
+	def nextFunc(self):
+		self.marked_pos += 1
+		self.validateMarker()
+		self.changed()
+
+	def getValue(self):
+		try:
+			return self.text.encode("utf-8")
+		except UnicodeDecodeError:
+			print "Broken UTF8!"
+			return self.text
+
+	def setValue(self, val):
+		try:
+			self.text = val.decode("utf-8")
+		except UnicodeDecodeError:
+			self.text = val.decode("utf-8", "ignore")
+			print "Broken UTF8!"
+
+	value = property(getValue, setValue)
+	_value = property(getValue, setValue)
+
+	def getText(self):
+		return self.text.encode("utf-8")
+
+	def getMulti(self, selected):
+		if self.visible_width:
+			if self.allmarked:
+				mark = range(0, min(self.visible_width, len(self.text)))
+			else:
+				mark = [self.marked_pos-self.offset]
+			return "mtext"[1-selected:], self.text[self.offset:self.offset+self.visible_width].encode("utf-8")+" ", mark
+		else:
+			if self.allmarked:
+				mark = range(0, len(self.text))
+			else:
+				mark = [self.marked_pos]
+			return "mtext"[1-selected:], self.text.encode("utf-8")+" ", mark
+
+	def onSelect(self, session):
+		self.allmarked = (self.value != "")
+		if session is not None:
+			from Screens.NumericalTextInputHelpDialog import NumericalTextInputHelpDialog
+			self.help_window = session.instantiateDialog(NumericalTextInputHelpDialog, self)
+			if SystemInfo["hasOSDAnimation"]:
+				self.help_window.setAnimationMode(0)
+			self.help_window.show()
+
+	def onDeselect(self, session):
+		self.marked_pos = 0
+		self.offset = 0
+		if self.help_window:
+			session.deleteDialog(self.help_window)
+			self.help_window = None
+		if not self.last_value == self.value:
+			self.changedFinal()
+			self.last_value = self.value
+
+	def getHTML(self, id):
+		return '<input type="text" name="' + id + '" value="' + self.value + '" /><br>\n'
+
+	def unsafeAssign(self, value):
+		self.value = str(value)
 
 class ConfigPosition(ConfigSequence):
 	def __init__(self, default, args):
@@ -1043,7 +1212,7 @@ class ConfigPassword(ConfigText):
 		mtext, text, mark = ConfigText.getMulti(self, selected)
 		if self.hidden:
 			text = len(text) * self.censor_char
-		return (mtext, text, mark)
+		return mtext, text, mark
 
 	def onSelect(self, session):
 		ConfigText.onSelect(self, session)
@@ -1077,15 +1246,39 @@ class ConfigSelectionNumber(ConfigSelection):
 	def setValue(self, val):
 		ConfigSelection.setValue(self, str(val))
 
+	value = property(getValue, setValue)
+
+	def getIndex(self):
+		return self.choices.index(self.value)
+
+	index = property(getIndex)
+
+	def isChanged(self):
+		sv = self.saved_value
+		strv = str(self.tostring(self.value))
+		if sv is None and strv == str(self.default):
+			return False
+		return strv != str(sv)
+
 	def handleKey(self, key):
 		if not self.wraparound:
 			if key == KEY_RIGHT:
-				if len(self.choices) == (self.choices.index(self.value) + 1):
+				if len(self.choices) == (self.choices.index(str(self.value)) + 1):
 					return
 			if key == KEY_LEFT:
-				if self.choices.index(self.value) == 0:
+				if self.choices.index(str(self.value)) == 0:
 					return
-		ConfigSelection.handleKey(self, key)
+		nchoices = len(self.choices)
+		if nchoices > 1:
+			i = self.choices.index(str(self.value))
+			if key == KEY_LEFT:
+				self.value = self.choices[(i + nchoices - 1) % nchoices]
+			elif key == KEY_RIGHT:
+				self.value = self.choices[(i + 1) % nchoices]
+			elif key == KEY_HOME:
+				self.value = self.choices[0]
+			elif key == KEY_END:
+				self.value = self.choices[nchoices - 1]
 
 class ConfigNumber(ConfigText):
 	def __init__(self, default=0):
@@ -1103,9 +1296,9 @@ class ConfigNumber(ConfigText):
 	def isChanged(self):
 		sv = self.saved_value
 		strv = self.tostring(self.value)
-		if sv is None and strv == self.default:
+		if sv is None and strv == str(self.default):
 			return False
-		return strv != sv
+		return strv != self.tostring(sv)
 
 	def conform(self):
 		pos = len(self.text) - self.marked_pos
@@ -1212,7 +1405,7 @@ class ConfigSlider(ConfigElement):
 
 	def getMulti(self, selected):
 		self.checkValues()
-		return ("slider", self.value, self.max)
+		return "slider", self.value, self.max
 
 	def fromstring(self, value):
 		return int(value)
@@ -1232,7 +1425,8 @@ class ConfigSatlist(ConfigSelection):
 	orbital_position = property(getOrbitalPosition)
 
 class ConfigSet(ConfigElement):
-	def __init__(self, choices, default=[]):
+	def __init__(self, choices, default=None):
+		if not default: default = []
 		ConfigElement.__init__(self)
 		if isinstance(choices, list):
 			choices.sort()
@@ -1283,7 +1477,7 @@ class ConfigSet(ConfigElement):
 
 	def getMulti(self, selected):
 		if not selected or self.pos == -1:
-			return ("text", self.genString(self.value))
+			return "text", self.genString(self.value)
 		else:
 			tmp = self.value[:]
 			ch = self.choices[self.pos]
@@ -1386,7 +1580,8 @@ class ConfigDictionarySet(ConfigElement):
 		self.saved_value = self.tostring(self.dirs)
 
 class ConfigLocations(ConfigElement):
-	def __init__(self, default=[], visible_width=False):
+	def __init__(self, default=None, visible_width=False):
+		if not default: default = []
 		ConfigElement.__init__(self)
 		self.visible_width = visible_width
 		self.pos = -1
@@ -1504,9 +1699,9 @@ class ConfigLocations(ConfigElement):
 		if not selected:
 			valstr = " ".join(self.value)
 			if self.visible_width and len(valstr) > self.visible_width:
-				return ("text", valstr[0:self.visible_width])
+				return "text", valstr[0:self.visible_width]
 			else:
-				return ("text", valstr)
+				return "text", valstr
 		else:
 			i = 0
 			valstr = ""
@@ -1723,9 +1918,9 @@ class Config(ConfigSubsection):
 			if isinstance(val, dict):
 				self.pickle_this(name, val, result)
 			elif isinstance(val, tuple):
-				result += [name, '=', val[0], '\n']
+				result += [name, '=', str(val[0]), '\n']
 			else:
-				result += [name, '=', val, '\n']
+				result += [name, '=', str(val), '\n']
 
 	def pickle(self):
 		result = []
@@ -1788,6 +1983,9 @@ config = Config()
 config.misc = ConfigSubsection()
 
 class ConfigFile:
+	def __init__(self):
+		pass
+
 	CONFIG_FILE = resolveFilename(SCOPE_CONFIG, "settings")
 
 	def load(self):
@@ -1928,14 +2126,14 @@ class ConfigCECAddress(ConfigSequence):
 		leftPos = sum(block_strlen[:(self.marked_block)]) + self.marked_block
 		rightPos = sum(block_strlen[:(self.marked_block + 1)]) + self.marked_block
 		mBlock = range(leftPos, rightPos)
-		return (value, mBlock)
+		return value, mBlock
 
 	def getMulti(self, selected):
 		(value, mBlock) = self.genText()
 		if self.enabled:
 			return ("mtext"[1 - selected:], value, mBlock)
 		else:
-			return ("text", value)
+			return "text", value
 
 	def getHTML(self, id):
 		# we definitely don't want leading zeros

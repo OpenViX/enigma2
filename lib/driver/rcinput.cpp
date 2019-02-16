@@ -20,6 +20,8 @@ void eRCDeviceInputDev::handleCode(long rccode)
 	if (ev->type != EV_KEY)
 		return;
 
+	//eDebug("[eRCDeviceInputDev] %x %x %x", ev->value, ev->code, ev->type);
+
 	int km = iskeyboard ? input->getKeyboardMode() : eRCInput::kmNone;
 
 	switch (ev->code)
@@ -87,6 +89,56 @@ void eRCDeviceInputDev::handleCode(long rccode)
 			return;
 		}
 	}
+
+#if KEY_FAV_TO_KEY_PVR
+	if (ev->code == KEY_FAVORITES)
+	{
+		/* spycat remote dont have a PVR Key. Correct this, so we do not have to place hacks in the keymaps. */
+		ev->code = KEY_PVR;
+	}
+#endif
+
+#if KEY_F3_TO_KEY_LIST
+	if (ev->code == KEY_F3)
+	{
+		/* Xtrend New Remote rc has a KEY_F3 key, which sends KEY_LIST events. Correct this, so we do not have to place hacks in the keymaps. */
+		ev->code = KEY_LIST;
+	}
+#endif
+
+#if KEY_F2_TO_KEY_F6
+	if (ev->code == KEY_F2)
+	{
+		/* Gigablue New Remote rc has a KEY_PIP key, which sends KEY_F2 events. Correct this, so we do not have to place hacks in the keymaps. */
+		ev->code = KEY_F6;
+		
+	}
+#endif
+
+#if KEY_F1_TO_KEY_F6
+	if (ev->code == KEY_F1)
+	{
+		/* define when rc sends a KEY_F1 event for its KEY_F6 key */
+		ev->code = KEY_F6;
+	}
+#endif
+
+#if KEY_F2_TO_KEY_AUX
+	if (ev->code == KEY_F2)
+	{
+		/* define when rc sends a KEY_F2 event for its KEY_AUX key */
+		ev->code = KEY_AUX;
+	}
+#endif
+
+#if KEY_GUIDE_TO_KEY_EPG
+	if (ev->code == KEY_HELP)
+	{
+		/* GB800 rc has a KEY_GUIDE key, which sends KEY_HELP events. Correct this, so we do not have to place hacks in the keymaps. */
+		ev->code = KEY_EPG;
+		
+	}
+#endif	
 
 #if KEY_PLAY_ACTUALLY_IS_KEY_PLAYPAUSE
 	if (ev->code == KEY_PLAY)

@@ -57,11 +57,11 @@ def channel2frequency(channel, nim):
 			return (474000 + 8000*(channel-21))*1000
 	return 474000000
 
-def ConvertToHumanReadable(tp, tunertype = None):
+def ConvertToHumanReadable(tp, type = None):
 	ret = { }
-	if tunertype is None:
-		tunertype = tp.get("tuner_type", "None")
-	if tunertype == "DVB-S":
+	if type is None:
+		type = tp.get("tuner_type", "None")
+	if type == "DVB-S":
 		ret["tuner_type"] = _("Satellite")
 		ret["inversion"] = {
 			eDVBFrontendParametersSatellite.Inversion_Unknown : _("Auto"),
@@ -121,7 +121,7 @@ def ConvertToHumanReadable(tp, tunertype = None):
 			ret["pls_mode"] = None
 			ret["is_id"] = None
 			ret["pls_code"] = None
-	elif tunertype == "DVB-C":
+	elif type == "DVB-C":
 		ret["tuner_type"] = _("Cable")
 		ret["modulation"] = {
 			eDVBFrontendParametersCable.Modulation_Auto: _("Auto"),
@@ -150,7 +150,7 @@ def ConvertToHumanReadable(tp, tunertype = None):
 		ret["system"] = {
 			eDVBFrontendParametersCable.System_DVB_C_ANNEX_A : "DVB-C",
 			eDVBFrontendParametersCable.System_DVB_C_ANNEX_C : "DVB-C ANNEX C"}.get(tp.get("system"))
-	elif tunertype == "DVB-T":
+	elif type == "DVB-T":
 		ret["tuner_type"] = _("Terrestrial")
 		ret["bandwidth"] = {
 			0 : _("Auto"),
@@ -219,8 +219,8 @@ def ConvertToHumanReadable(tp, tunertype = None):
 			eDVBFrontendParametersTerrestrial.System_DVB_T_T2 : "DVB-T/T2",
 			eDVBFrontendParametersTerrestrial.System_DVB_T : "DVB-T",
 			eDVBFrontendParametersTerrestrial.System_DVB_T2 : "DVB-T2"}.get(tp.get("system"))
-		ret["channel"] = _("CH%s") % getChannelNumber(tp.get("frequency"), "DVB-T")
-	elif tunertype == "ATSC":
+		ret["channel"] = "CH%s" % getChannelNumber(tp.get("frequency"), "DVB-T")
+	elif type == "ATSC":
 		ret["tuner_type"] = "ATSC"
 		ret["modulation"] = {
 			eDVBFrontendParametersATSC.Modulation_Auto: _("Auto"),
@@ -238,8 +238,8 @@ def ConvertToHumanReadable(tp, tunertype = None):
 		ret["system"] = {
 			eDVBFrontendParametersATSC.System_ATSC : "ATSC",
 			eDVBFrontendParametersATSC.System_DVB_C_ANNEX_B : "DVB-C ANNEX B"}.get(tp.get("system"))
-	elif tunertype != "None":
-		print "ConvertToHumanReadable: no or unknown tunertype in tpdata dict for tunertype:", tunertype
+	elif type != "None":
+		print "ConvertToHumanReadable: no or unknown type in tpdata dict for type:", type
 	for k,v in tp.items():
 		if k not in ret:
 			ret[k] = v

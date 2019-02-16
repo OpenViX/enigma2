@@ -24,6 +24,9 @@ def LanguageEntryComponent(file, name, index):
 class LanguageSelection(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
+
+		language.InitLang()
+
 		self.setTitle(_("Language selection"))
 		self.oldActiveLanguage = language.getActiveLanguage()
 

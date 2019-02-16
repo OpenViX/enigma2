@@ -2,8 +2,10 @@
 <unicable version="20190118">
 	<lnb>
 		<manufacturer name="Dura-Sat(DUR-line)">
+			<product name="Unicable LNB" scrs="1210,1420,1680,2040"/>
 			<product name="UK101" scrs="1210,1420,1680,2040"/>
 			<product name="UK102" scrs="1210,1420,1680,2040"/>
+			<product name="UK119" format="jess" scrs= "1076,1178,1280,1382,1484,1586,1688,1790,975,1025,1225,1330,1430,1535,1630,1730,1840,1880,1920,1960,2000,2040,2080,2125"/>
 			<product name="UK124" format="jess" scrs= "1210,1420,1680,2040,1005,1050,1095,1140,1260,1305,1350,1475,1520,1565,1610,1725,1770,1815,1860,1905,1950,1995,2085,2130"/>
 		</manufacturer>
 		<manufacturer name="DStv">
@@ -35,7 +37,8 @@
 			<product name="IDLB-QUDL42-UNI2L-1PP" scrs="1210,1420,1680,2040"/>
 			<product name="IDLU-24UL40-UNMOO-OPP" positions="4" format="jess" scrs="1210,1420,1680,2040,1005,1050,1095,1140,1260,1305,1350,1475,1520,1565,1610,1725,1770,1815,1860,1905,1950,1995,2085,2130"/>
 			<product name="IDLU-32UL40-UNBOO-OPP" positions="4" format="jess" scrs="1210,1420,1680,2040,984,1020,1056,1092,1128,1164,1256,1292,1328,1364,1458,1494,1530,1566,1602,1638,1716,1752,1788,1824,1860,1896,1932,1968,2004,2076,2112,2148"/>
-	    </manufacturer>
+			<product name="IDLU-UWT110-CUO1O-32P" positions="4" format="jess" scrs="1210,1420,1680,2040,984,1020,1056,1092,1128,1164,1256,1292,1328,1364,1458,1494,1530,1566,1602,1638,1716,1752,1788,1824,1860,1896,1932,1968,2004,2076,2112,2148"/>
+		</manufacturer>
 		<manufacturer name="Kathrein">
 			<product name="UAS481" lofl="10200" lofh="10200" scrs="1400,1516,1632,1748"/>
 		</manufacturer>
@@ -119,6 +122,9 @@
 			<product name="UCP18" scrs="1284,1400,1516,1632,1748,1864,1980,2096"/>
 			<product name="UCP20" scrs="1210,1420"/>
 			<product name="UCP30" positions="2" scrs="1210,1420,1680"/>
+			<product name="DCR 5-1-8" scrs="1280,1382,1484,1586,1688,1790,1892,1994"/>
+			<product name="DCR 5-2-4" scrs="1280,1382,1484,1586"/>
+			<product name="VDU518NT" scrs="1076,1178,1280,1382,1484,1586,1688,1790"/>
 			<product name="UCP30V2" positions="2" scrs="1284,1400,1516"/>
 			<product name="VDU543NT" scrs="1280,1382,1484"/>
 			<product name="VDU563NT" scrs="1280,1382,1484"/>
@@ -278,7 +284,7 @@
 		</manufacturer>
 		<manufacturer name="ROTEK">
 			<product name="EKL2/1" scrs="1400,1516"/>
-			<product name="EKL2/1E,1632,1748"/>
+			<product name="EKL2/1E" scrs=",,1632,1748"/>
 		</manufacturer>
 		<manufacturer name="SetOne">
 			<product name="SCR 5/8" scrs="1284,1400,1516,1632,1748,1864,1980,2096"/>
@@ -290,6 +296,7 @@
 			<product name="DPA 989" positions="2" scrs="1284,1400,1516,1632,1748,1864,1980,2096"/>
 		</manufacturer>
 		<manufacturer name="Spaun">
+			<product name="SUS 212" scrs="1076,1178"/>
 			<product name="SUS 21 F" positions="2" scrs="1076,1178"/>
 			<product name="SUS 21 FI" positions="2" scrs="1210,1420"/>
 			<product name="SUS 4441 F" scrs="1210,1420,1680,2040"/>

@@ -6,9 +6,10 @@ from Components.ActionMap import NumberActionMap
 from Components.ConfigList import ConfigListScreen
 from Tools.BoundFunction import boundFunction
 from Components.MenuList import MenuList
-from Components.Sources.StaticText import StaticText
+from Components.Button import Button
 from Components.Label import Label
 from Components.NimManager import nimmanager
+from Components.Pixmap import Pixmap
 from Components.SystemInfo import SystemInfo
 from Components.UsageConfig import defaultMoviePath
 from Screens.MovieSelection import getPreferredTagEditor
@@ -25,7 +26,7 @@ from datetime import datetime
 import urllib
 
 class TimerEntry(Screen, ConfigListScreen):
-	def __init__(self, session, timer):
+	def __init__(self, session, timer, edit=False):
 		Screen.__init__(self, session)
 		self.timer = timer
 
@@ -37,10 +38,12 @@ class TimerEntry(Screen, ConfigListScreen):
 		self.entryDate = None
 		self.entryService = None
 
-		self["key_red"] = StaticText(_("Cancel"))
-		self["key_green"] = StaticText(_("Save"))
-		self["key_yellow"] = StaticText(_("Timer type"))
-		self["key_blue"] = StaticText("")
+		self["key_green"] = self["oktext"] = Label(_("OK"))
+		self["key_red"] = self["canceltext"] = Label(_("Cancel"))
+		self["ok"] = Pixmap()
+		self["cancel"] = Pixmap()
+		self["key_yellow"] = Label(_("Timer type"))
+		self["key_blue"] = Label()
 
 		self.createConfig()
 
@@ -53,8 +56,6 @@ class TimerEntry(Screen, ConfigListScreen):
 			"volumeDown": self.decrementStart,
 			"size+": self.incrementEnd,
 			"size-": self.decrementEnd,
-			"red": self.keyCancel,
-			"green": self.keyGo,
 			"yellow": self.changeTimerType,
 			"blue": self.changeZapWakeupType
 		}, -2)
@@ -311,7 +312,7 @@ class TimerEntry(Screen, ConfigListScreen):
 				_("Select channel to record from"),
 				currentBouquet=True
 			)
-		elif cur == self.dirname:
+		elif config.usage.setup_level.index >= 2 and cur == self.dirname:
 			menu = [(_("Open select location"), "empty")]
 			if self.timerentry_type.value == "repeated" and self.timerentry_name.value:
 				menu.append((_("Open select location as timer name"), "timername"))
@@ -522,8 +523,11 @@ class TimerEntry(Screen, ConfigListScreen):
 	def saveTimer(self):
 		self.session.nav.RecordTimer.saveTimer()
 
-	def keyCancel(self):
-		self.close((False,))
+	def keyCancel(self, answer=True, message=""):
+		if answer:
+			self.close((False,))
+		else:
+			print "[TimerEntry] keyCancel something went wrong with fallback timer", message
 
 	def pathSelected(self, res):
 		if res is not None:
@@ -548,10 +552,10 @@ class TimerLog(Screen):
 		self["loglist"] = MenuList(self.list)
 		self["logentry"] = Label()
 
-		self["key_red"] = StaticText(_("Delete entry"))
-		self["key_green"] = StaticText("")
-		self["key_yellow"] = StaticText("")
-		self["key_blue"] = StaticText(_("Clear log"))
+		self["key_red"] = Button(_("Delete entry"))
+		self["key_green"] = Button()
+		self["key_yellow"] = Button("")
+		self["key_blue"] = Button(_("Clear log"))
 
 		self.onShown.append(self.updateText)
 

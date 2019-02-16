@@ -3,6 +3,7 @@ from SystemInfo import SystemInfo
 from fcntl import ioctl
 import os
 import struct
+from boxbranding import getBoxType
 import platform
 
 # include/uapi/asm-generic/ioctl.h
@@ -203,6 +204,8 @@ class RcTypeControl():
 			if config.plugins.remotecontroltype.rctype.value != 0:
 				self.writeRcType(config.plugins.remotecontroltype.rctype.value)
 		else:
+			self.isSupported = False
+		if getBoxType().startswith('gb'):
 			self.isSupported = False
 
 	def multipleRcSupported(self):

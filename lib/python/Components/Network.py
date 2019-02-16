@@ -8,12 +8,13 @@ from Plugins.Plugin import PluginDescriptor
 class Network:
 	def __init__(self):
 		self.ifaces = {}
+		self.configuredInterfaces = []
 		self.configuredNetworkAdapters = []
 		self.NetworkState = 0
 		self.DnsState = 0
 		self.nameservers = []
 		self.ethtool_bin = "/usr/sbin/ethtool"
-		self.console = Console()
+		self.Console = Console()
 		self.linkConsole = Console()
 		self.restartConsole = Console()
 		self.deactivateInterfaceConsole = Console()
@@ -61,8 +62,10 @@ class Network:
 		return [ int(n) for n in ip.split('.') ]
 
 	def getAddrInet(self, iface, callback):
-		cmd = ("/sbin/ip", "/sbin/ip", "-o", "addr", "show", "dev", iface)
-		self.console.ePopen(cmd, self.IPaddrFinished, [iface, callback])
+		if not self.Console:
+			self.Console = Console()
+		cmd = "busybox ip -o addr show dev " + iface + " | grep -v inet6"
+		self.Console.ePopen(cmd, self.IPaddrFinished, [iface, callback])
 
 	def IPaddrFinished(self, result, retval, extra_args):
 		(iface, callback ) = extra_args
@@ -110,7 +113,7 @@ class Network:
 			data['gateway'] = [0, 0, 0, 0]
 
 		cmd = "route -n | grep " + iface
-		self.console.ePopen(cmd,self.routeFinished, [iface, data, callback])
+		self.Console.ePopen(cmd,self.routeFinished, [iface, data, callback])
 
 	def routeFinished(self, result, retval, extra_args):
 		(iface, data, callback) = extra_args
@@ -162,6 +165,7 @@ class Network:
 
 	def writeNameserverConfig(self):
 		fp = file('/etc/resolv.conf', 'w')
+		fp.write("options rotate timeout:3\n")
 		for nameserver in self.nameservers:
 			fp.write("nameserver %d.%d.%d.%d\n" % tuple(nameserver))
 		fp.close()
@@ -180,7 +184,7 @@ class Network:
 		currif = ""
 		for i in interfaces:
 			split = i.strip().split(' ')
-			if split[0] == "iface":
+			if split[0] == "iface" and split[2] != "inet6":
 				currif = split[1]
 				ifaces[currif] = {}
 				if len(split) == 4 and split[3] == "dhcp":
@@ -213,7 +217,7 @@ class Network:
 		for ifacename, iface in ifaces.items():
 			if ifacename in self.ifaces:
 				self.ifaces[ifacename]["dhcp"] = iface["dhcp"]
-		if not self.console.appContainers:
+		if not self.Console.appContainers:
 			# save configured interfacelist
 			self.configuredNetworkAdapters = self.configuredInterfaces
 			# load ns only once
@@ -283,7 +287,18 @@ class Network:
 
 	def getFriendlyAdapterDescription(self, iface):
 		if not self.isWirelessInterface(iface):
-			return _('Ethernet network interface')
+			moduledir = self.getLanModuleDir(iface)
+			# print "[Network] moduledir", moduledir
+			if moduledir:
+				name = os.path.basename(os.path.realpath(moduledir))
+				if name in ('smsc75xx'):
+					name = _('External') + ' - ' + 'SMSC75XX'
+				if name in ('bcmgenet'):
+					name = _('Internal') + ' - ' + 'BCM'
+			else:
+				name = _('Unknown')
+
+			return name + ' ' + _('Ethernet network interface')
 
 		moduledir = self.getWlanModuleDir(iface)
 		if moduledir:
@@ -482,7 +497,7 @@ class Network:
 		self.restartConsole.killAll()
 
 	def stopGetInterfacesConsole(self):
-		self.console.killAll()
+		self.Console.killAll()
 
 	def stopDeactivateInterfaceConsole(self):
 		self.deactivateInterfaceConsole.killAll()
@@ -624,6 +639,18 @@ class Network:
 				return 'brcm-wl'
 		return 'wext'
 
+	def getLanModuleDir(self, iface = None):
+		devicedir = self.sysfsPath(iface) + '/device'
+		if not os.path.isdir(devicedir):
+			return None
+		moduledir = devicedir + '/driver/module'
+		if os.path.isdir(moduledir):
+			return moduledir
+		moduledir = devicedir + '/driver'
+		if os.path.isdir(moduledir):
+			return moduledir
+		return None
+
 	def calc_netmask(self,nmask):
 		from struct import pack
 		from socket import inet_ntoa
@@ -643,22 +670,7 @@ class Network:
 		if self.config_ready is not None:
 			for p in plugins.getPlugins(PluginDescriptor.WHERE_NETWORKCONFIG_READ):
 				p(reason=self.config_ready)
-
-	def hotplug(self, event):
-		interface = event['INTERFACE']
-		if self.isBlacklisted(interface):
-			return
-		action = event['ACTION']
-		if action == "add":
-			print "[Network] Add new interface:", interface
-			self.getAddrInet(interface, None)
-		elif action == "remove":
-			print "[Network] Removed interface:", interface
-			try:
-				del self.ifaces[interface]
-			except KeyError:
-				pass
-
+	
 iNetwork = Network()
 
 def InitNetwork():

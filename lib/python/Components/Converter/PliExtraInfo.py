@@ -173,18 +173,15 @@ class PliExtraInfo(Poll, Converter, object):
 		if onid < 0 : onid = 0
 		return "%d-%d:%05d:%04d:%04d:%04d" % (onid, tsid, sidpid, vpid, apid, pcrpid)
 
-	def createTransponderInfo(self, fedata, feraw, info):
+	def createTransponderInfo(self, fedata, feraw):
 		if not feraw:
-			refstr = info.getInfoString(iServiceInformation.sServiceref)
-			if "%3a//" in refstr.lower():
-				return refstr.split(":")[10].replace("%3a", ":").replace("%3A", ":")
 			return ""
 		elif "DVB-T" in feraw.get("tuner_type"):
 			tmp = addspace(self.createChannelNumber(fedata, feraw)) + addspace(self.createFrequency(feraw)) + addspace(self.createPolarization(fedata))
 		else:
 			tmp = addspace(self.createFrequency(feraw)) + addspace(self.createPolarization(fedata))
 		return addspace(self.createTunerSystem(fedata)) + tmp + addspace(self.createSymbolRate(fedata, feraw)) + addspace(self.createFEC(fedata, feraw)) \
-			+ addspace(self.createModulation(fedata)) + addspace(self.createOrbPos(feraw)) + addspace(self.createMisPls(fedata))
+			+ addspace(self.createModulation(fedata)) + addspace(self.createOrbPos(feraw))
 
 	def createFrequency(self, feraw):
 		frequency = feraw.get("frequency")
@@ -259,14 +256,6 @@ class PliExtraInfo(Poll, Converter, object):
 	def createProviderName(self, info):
 		return info.getInfoString(iServiceInformation.sProvider)
 
-	def createMisPls(self, fedata):
-		tmp = ""
-		if fedata.get("is_id") > -1:
-			tmp = "MIS %d" % fedata.get("is_id")
-		if fedata.get("pls_code") > 0:
-			tmp = addspace(tmp) + "%s %d" % (fedata.get("pls_mode"), fedata.get("pls_code"))
-		return tmp
-
 	@cached
 	def getText(self):
 		service = self.source.service
@@ -315,11 +304,11 @@ class PliExtraInfo(Poll, Converter, object):
 		if self.type == "All":
 			self.getCryptoInfo(info)
 			if config.usage.show_cryptoinfo.value:
-				return addspace(self.createProviderName(info)) + self.createTransponderInfo(fedata, feraw, info) + "\n" \
+				return addspace(self.createProviderName(info)) + self.createTransponderInfo(fedata, feraw) + "\n" \
 				+ addspace(self.createCryptoBar(info)) + addspace(self.createCryptoSpecial(info)) + "\n" \
 				+ addspace(self.createPIDInfo(info)) + addspace(self.createVideoCodec(info)) + self.createResolution(info)
 			else:
-				return addspace(self.createProviderName(info)) + self.createTransponderInfo(fedata, feraw, info) + "\n" \
+				return addspace(self.createProviderName(info)) + self.createTransponderInfo(fedata, feraw) + "\n" \
 				+ addspace(self.createCryptoBar(info)) + self.current_source + "\n" \
 				+ addspace(self.createCryptoSpecial(info)) + addspace(self.createVideoCodec(info)) + self.createResolution(info)
 
@@ -335,7 +324,7 @@ class PliExtraInfo(Poll, Converter, object):
 			+ addspace(self.createVideoCodec(info)) + self.createResolution(info)
 
 		if self.type == "TransponderInfo":
-			return self.createTransponderInfo(fedata, feraw, info)
+			return self.createTransponderInfo(fedata, feraw)
 
 		if self.type == "TransponderFrequency":
 			return self.createFrequency(feraw)
