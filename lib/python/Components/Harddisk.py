@@ -423,7 +423,7 @@ class Harddisk:
 			big_o_options.append("sparse_super")
 		elif size > 2048:
 			task.args += ["-T", "largefile", "-N", str(int(size * 32))]  # Over 2GB: 32 i-nodes per megabyte.
-		task.args += ["-m0", "-O", ",".join(big_o_options), self.partitionPath("1")]
+		task.args += ["-m0", "-O ^metadata_csum", "-O", ",".join(big_o_options), self.partitionPath("1")]
 		task = MountTask(job, self)
 		task.weighting = 3
 		print("[Harddisk] Mounting storage device.")
