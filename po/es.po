@@ -3789,8 +3789,20 @@ msgstr "HDMI CEC"
 msgid "HDMI CEC Setup"
 msgstr "Configurar HDMI CEC"
 
+msgid "HDMI Colordepth"
+msgstr "HDMI Profundidad del color"
+
+msgid "HDMI Colorimetry"
+msgstr "HDMI Colorimetría"
+
 msgid "HDMI Colorspace"
 msgstr "HDMI Espacio de color"
+
+msgid "HDMI HDR Type"
+msgstr "HDMI HDR tipo"
+
+msgid "Enable or disable to force HDR Modes for UHD"
+msgstr "Habilitar o deshabilitar para forzar los modos HDR para UHD"
 
 msgid "HDMIin"
 msgstr "HDMIin"
@@ -11981,8 +11993,8 @@ msgstr "medio"
 msgid "hide"
 msgstr "ocultar"
 
-msgid "HDMI Colorimetry"
-msgstr "HDMI Colorimetría"
+msgid "Change the Colordepth for UHD"
+msgstr "Cambiar la profundidad de color para UHD"
 
 msgid "Change the Colorimetry for HDR"
 msgstr "Cambiar la colorimetría por HDR"
@@ -12419,6 +12431,57 @@ msgstr "No hay listas de reproducción guardadas para eliminar!"
 
 msgid "There are no saved playlists to load!"
 msgstr "No hay listas de reproducción guardadas para cargar!"
+
+msgid "HLG Support"
+msgstr "HLG soporte"
+
+msgid "Enable or disable to force HLG Modes for UHD"
+msgstr "Habilitar o deshabilitar para forzar los modos HLG para UHD"
+
+msgid "HDR10 Support"
+msgstr "HDR10 soporte"
+
+msgid "Enable or disable to force HDR10 Modes for UHD"
+msgstr "Habilitar o deshabilitar para forzar los modos HDR10 para UHD"
+
+msgid "Allow 10bit"
+msgstr "Permitir 10bit"
+
+msgid "Allow 12bit"
+msgstr "Permitir 12bit"
+
+msgid "Enable or disable the 12 Bit Color Mode"
+msgstr "Habilitar o deshabilitar el modo de color de 12 bits"
+
+msgid "Enable or disable the 10 Bit Color Mode"
+msgstr "Habilitar o deshabilitar el modo de color de 10 bits"
+
+msgid "AC3 downmix"
+msgstr "AC3 downmix"
+
+msgid "DTS downmix"
+msgstr "DTS downmix"
+
+msgid "Choose whether multi channel aac+ sound tracks should be downmixed to stereo."
+msgstr "Elija si las pistas de sonido aac + multicanal se deben mezclar en estéreo."
+
+msgid "AC3 transcoding"
+msgstr "AC3 transcoding"
+
+msgid "DTS-HD HR/DTS-HD MA/DTS"
+msgstr "DTS-HD HR/DTS-HD MA/DTS"
+
+msgid "Choose whether multi channel DTSHD sound tracks should be downmixed or transcoded.."
+msgstr "Elija si las pistas de sonido DTSHD multicanal deben ser mezcladas o transcodificadas."
+
+msgid "WMA Pro downmix"
+msgstr "WMA Pro downmix"
+
+msgid "Choose whether WMA Pro sound tracks should be downmixed."
+msgstr "Elija si las pistas de sonido WMA Pro deben mezclarse."
+
+msgid "Video Chip Mode*"
+msgstr "Modo Video Chip*"
 
 #~ msgid "3d mode"
 #~ msgstr "Modo 3D"
