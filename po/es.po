@@ -12451,10 +12451,10 @@ msgid "Allow 12bit"
 msgstr "Permitir 12bit"
 
 msgid "Enable or disable the 12 Bit Color Mode"
-msgstr "Habilitar o deshabilitar el modo de color de 12 bits"
+msgstr "Habilitar o deshabilitar el modo de color de 12 Bit"
 
 msgid "Enable or disable the 10 Bit Color Mode"
-msgstr "Habilitar o deshabilitar el modo de color de 10 bits"
+msgstr "Habilitar o deshabilitar el modo de color de 10 Bit"
 
 msgid "AC3 downmix"
 msgstr "AC3 downmix"
@@ -12463,7 +12463,7 @@ msgid "DTS downmix"
 msgstr "DTS downmix"
 
 msgid "Choose whether multi channel aac+ sound tracks should be downmixed to stereo."
-msgstr "Elija si las pistas de sonido aac + multicanal se deben mezclar en estéreo."
+msgstr "Elija si las pistas de sonido aac+ multicanal se deben mezclar en estéreo."
 
 msgid "AC3 transcoding"
 msgstr "AC3 transcoding"
@@ -12472,7 +12472,7 @@ msgid "DTS-HD HR/DTS-HD MA/DTS"
 msgstr "DTS-HD HR/DTS-HD MA/DTS"
 
 msgid "Choose whether multi channel DTSHD sound tracks should be downmixed or transcoded.."
-msgstr "Elija si las pistas de sonido DTSHD multicanal deben ser mezcladas o transcodificadas."
+msgstr "Elija si las pistas de sonido DTSHD multicanal deben ser mezcladas o transcodificadas.."
 
 msgid "WMA Pro downmix"
 msgstr "WMA Pro downmix"
