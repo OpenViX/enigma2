@@ -101,6 +101,7 @@ int eDVBAudio::startPid(int pid, int type)
 			bypass = 1;
 			break;
 		case aAC3:
+		case aAC4: /* FIXME: AC4 most probably will use other bypass value */
 			bypass = 0;
 			break;
 		case aDTS:
@@ -120,7 +121,7 @@ int eDVBAudio::startPid(int pid, int type)
 			break;
 		case aDRA:
 			bypass = 0x40;
-			break;			
+			break;
 		case aDDP:
 			bypass = 0x22;
 			break;

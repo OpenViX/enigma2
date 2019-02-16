@@ -335,6 +335,11 @@ def InitUsageConfig():
 		('i', _("Icons")),
 	])
 	config.usage.movielist_unseen = ConfigYesNo(default = True)
+	config.usage.movielist_servicename_mode = ConfigSelection(default = "", choices = [
+		("", _("None")), 
+		("picon", _("Picon"))
+	])
+	config.usage.movielist_piconwidth = ConfigSelectionNumber(default = 100, stepwidth = 1, min = 50, max = 500, wraparound = True)
 
 	config.usage.swap_snr_on_osd = ConfigYesNo(default = False)
 	config.usage.swap_time_display_on_osd = ConfigSelection(default = "0", choices = [("0", _("Skin Setting")), ("1", _("Mins")), ("2", _("Mins Secs")), ("3", _("Hours Mins")), ("4", _("Hours Mins Secs")), ("5", _("Percentage"))])
@@ -880,18 +885,6 @@ def InitUsageConfig():
 		config.misc.zapmode.addNotifier(setZapmode, immediate_feedback = False)
 	config.usage.historymode = ConfigSelection(default = "1", choices = [("0", _("Just zap")), ("1", _("Show menu"))])
 
-	if SystemInfo["HasForceLNBOn"]:
-		def forceLNBPowerChanged(configElement):
-			open(SystemInfo["HasForceLNBOn"], "w").write(configElement.value)
-		config.misc.forceLnbPower = ConfigSelection(default = "off", choices = [ ("on", _("Yes")), ("off", _("No"))] )
-		config.misc.forceLnbPower.addNotifier(forceLNBPowerChanged)
-
-	if SystemInfo["HasForceToneburst"]:
-		def forceToneBurstChanged(configElement):
-			open(SystemInfo["HasForceToneburst"], "w").write(configElement.value)
-		config.misc.forceToneBurst = ConfigSelection(default = "disable", choices = [ ("enable", _("Yes")), ("disable", _("No"))] )
-		config.misc.forceToneBurst.addNotifier(forceToneBurstChanged)
-
 	config.subtitles = ConfigSubsection()
 	config.subtitles.ttx_subtitle_colors = ConfigSelection(default = "1", choices = [
 		("0", _("original")),
@@ -1090,7 +1083,7 @@ def InitUsageConfig():
 		("picon", _("Picon")),
 		("picon+servicename", _("Picon and Service Name")), 
 		("servicenumber+picon", _("Service Number and Picon")), 
-		("servicenumber+servicename", _("Service Number, Picon and Service Name")), 
+		("servicenumber+servicename", _("Service Number and Service Name")), 
 		("servicenumber+picon+servicename", _("Service Number, Picon and Service Name"))])
 	config.epgselection.graph_channel1 = ConfigYesNo(default = False)
 	possibleAlignmentChoices = [

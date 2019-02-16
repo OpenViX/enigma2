@@ -17,6 +17,7 @@ from Components.Network import iNetwork
 from Components.SystemInfo import SystemInfo
 from Tools.StbHardware import getFPVersion
 from Tools.Multiboot import GetCurrentImage, GetCurrentImageMode
+from Tools.Directories import fileExists, fileCheck, pathExists
 from os import path
 from re import search
 import skin
@@ -87,25 +88,24 @@ class About(Screen):
 		AboutText += _("Image:\t%s.%s%s (%s)\n") % (getImageVersion(), getImageBuild(), imageSubBuild, getImageType().title())
 
 		if SystemInfo["canMultiBoot"]:
-			image = GetCurrentImage()
+			slot = image = GetCurrentImage()
+			part = "eMMC slot %s" %slot
 			bootmode = ""
-			part = ""
 			if SystemInfo["canMode12"]:
 				bootmode = "bootmode = %s" %GetCurrentImageMode()
-			if SystemInfo["HasHiSi"]:
+			if SystemInfo["HasSDmmc"]:
+				slot += 1
 				if image != 0:
-					part = "%s%s" %(SystemInfo["canMultiBoot"][2], image*2)
-					image += 1
+					part = "SDC slot %s (%s%s) " %(image, SystemInfo["canMultiBoot"][2], image*2)
 				else:
-					part = "MMC"
-					image += 1
-			AboutText += _("Image Slot:\t%s") % "STARTUP_" + str(image) + " " + part + " " + bootmode + "\n"
+					part = "eMMC slot %s" %slot
+			AboutText += _("Image Slot:\t%s") % "STARTUP_" + str(slot) + "  " + part + " " + bootmode + "\n"
 
 		if getMachineName() in ('ET8500') and path.exists('/proc/mtd'):
 			self.dualboot = self.dualBoot()
 			if self.dualboot:
 				AboutText += _("ET8500 Multiboot: Installed\n")
-			
+
 		skinWidth = getDesktop(0).size().width()
 		skinHeight = getDesktop(0).size().height()
 
@@ -305,7 +305,9 @@ class Devices(Screen):
 			if not parts:
 				continue
 			device = parts[3]
-			if not search('sd[a-z][1-9]', device):
+			if not search('sd[a-z][1-9]', device) and not search('mmcblk[0-9]p[1-9]', device):
+				continue
+			if SystemInfo["HasSDmmc"] and pathExists("/dev/sda4") and search('sd[a][1-4]', device):
 				continue
 			if device in list2:
 				continue
@@ -340,9 +342,12 @@ class Devices(Screen):
 					freeline = _("Free: ") + str(free) + _("MB")
 				else:
 					freeline = _("Free: ") + _("full")
-				self.list.append(mount + '\t' + sizeline + ' \t' + freeline)
+				if mount.find('mmc') == -1 and mount.find('boot') == -1:
+					self.list.append(mount + '\t' + sizeline + ' \t' + freeline)
 			else:
-				self.list.append(mount + '\t' + _('Not mounted'))
+				print "MOUNT:", mount
+				if mount.find('mmc') == -1:
+					self.list.append(mount + '\t' + _('Not mounted'))
 
 			list2.append(device)
 		self.list = '\n'.join(self.list)

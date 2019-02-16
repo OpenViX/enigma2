@@ -40,7 +40,7 @@ class Network:
 		return self.remoteRootFS
 
 	def isBlacklisted(self, iface):
-		return iface in ('lo', 'wifi0', 'wmaster0', 'sit0', 'tun0', 'sys0')
+		return iface in ('lo', 'wifi0', 'wmaster0', 'sit0', 'tun0', 'sys0', 'p2p0')
 
 	def getInterfaces(self, callback = None):
 		self.configuredInterfaces = []
@@ -140,6 +140,7 @@ class Network:
 				self.configuredInterfaces.append(ifacename)
 			if iface['dhcp']:
 				fp.write("iface "+ ifacename +" inet dhcp\n")
+				fp.write("udhcpc_opts -T1 -t9\n")
 				fp.write("  hostname $(hostname)\n")
 			if not iface['dhcp']:
 				fp.write("iface "+ ifacename +" inet static\n")

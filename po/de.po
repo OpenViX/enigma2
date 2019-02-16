@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-05 06:12+0000\n"
-"PO-Revision-Date: 2018-11-05 14:48+0100\n"
+"POT-Creation-Date: 2019-01-08 22:27+0000\n"
+"PO-Revision-Date: 2019-01-26 18:55+0100\n"
 "Last-Translator: Ralf Biedermann <ralf.biedermann@rbsoft.de>\n"
 "Language-Team: AndyBlacburn, j-ot&Trial\n"
 "Language: de\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
-"X-Generator: Poedit 2.1.1\n"
+"X-Generator: Poedit 2.2.1\n"
 "X-Poedit-SourceCharset: iso-8859-15\n"
 
 msgid ""
@@ -914,6 +914,10 @@ msgstr "%s %s Fernbedienung (native)"
 msgid "%s %s software because updates are available."
 msgstr "%s %s Software, da Aktualisierungen verfügbar sind."
 
+#, fuzzy, python-format
+msgid "%s ( %s Cards )"
+msgstr "%s (%s)\n"
+
 #, python-format
 msgid "%s (%s)\n"
 msgstr "%s (%s)\n"
@@ -970,6 +974,9 @@ msgstr "( Alle Kartenleser )"
 msgid "(Show only reader:"
 msgstr "( Zeige nur Kartenleser:"
 
+msgid "(You are currently using a temporary sort method)"
+msgstr "(Due benutzt z.Z. eine temporäre Sortiermethode)"
+
 msgid "(ZAP as PiP)"
 msgstr "(Mit PiP umschalten)"
 
@@ -1000,6 +1007,14 @@ msgstr "-KEINE SENDUNG\n"
 #, python-format
 msgid "-SERVICE ERROR:%d\n"
 msgstr "-SERVICE FEHLER:%d\n"
+
+msgid "."
+msgstr ""
+
+#, fuzzy
+msgctxt "ButtonSetup help separator"
+msgid "/"
+msgstr "/s"
 
 msgid "/s"
 msgstr "/s"
@@ -1347,11 +1362,19 @@ msgstr "AAC Downmix"
 msgid "AAC transcoding"
 msgstr "AAC Transkodierung"
 
+#, fuzzy
+msgid "AAC+ downmix"
+msgstr "AAC Downmix"
+
 msgid "AC3"
 msgstr "AC3"
 
 msgid "AC3 downmix"
 msgstr "AC3 Downmix"
+
+#, fuzzy
+msgid "AC3 transcoding"
+msgstr "AAC Transkodierung"
 
 msgid "ACQUIRING TSID/ONID"
 msgstr "Sammeln von TSID/ONID"
@@ -1650,6 +1673,14 @@ msgstr "Reserviere eine Anzahl physischer LNB die konfiguriert werden sollen. Du
 
 msgid "Allocate unused memory index"
 msgstr "Unbenutzten Speicher Index reservieren"
+
+#, fuzzy
+msgid "Allow 10bit"
+msgstr "10bit"
+
+#, fuzzy
+msgid "Allow 12bit"
+msgstr "12bit"
 
 msgid "Allow subtitle language to equal audio language"
 msgstr "Erlaube gleiche Sprache bei Untertitel und Ton"
@@ -2334,6 +2365,9 @@ msgstr "C-Band"
 msgid "CAID"
 msgstr "CAID"
 
+msgid "CAID:SrvID"
+msgstr ""
+
 msgid "CCcam Client Info"
 msgstr "CCcam Klienten Info"
 
@@ -2534,6 +2568,18 @@ msgstr "Ändern von Verzögerung- und Wiederholungswerten?"
 msgid "Change step size"
 msgstr "Schrittweite ändern"
 
+#, fuzzy
+msgid "Change the Colordepth for UHD"
+msgstr "Dies Option erlaubt die Konfiguration der Bittiefe für UHD"
+
+#, fuzzy
+msgid "Change the Colorimetry for HDR"
+msgstr "Dies Option erlaubt die Konfiguration der Farbmetrik für HDR"
+
+#, fuzzy
+msgid "Change the Colorspace from Auto to RGB"
+msgstr "Dies Option erlaubt es den Farbraum von Auto auf RGB zu stellen"
+
 msgid "Change timer"
 msgstr "Timer ändern"
 
@@ -2733,7 +2779,15 @@ msgstr "Wähle was bei der 0-Taste passieren soll wenn PiP aktiv ist."
 msgid "Choose whether AAC sound tracks should be transcoded."
 msgstr "Wähle ob AAC Tonspuren transkodiert werden sollen."
 
+#, fuzzy
+msgid "Choose whether WMA Pro sound tracks should be downmixed."
+msgstr "Wähle ob AAC Tonspuren transkodiert werden sollen."
+
 msgid "Choose whether multi channel aac sound tracks should be downmixed to stereo."
+msgstr "Wähle ob AAC Mehrkanalton zu Stereo runter gerechnet werden soll."
+
+#, fuzzy
+msgid "Choose whether multi channel aac+ sound tracks should be downmixed to stereo."
 msgstr "Wähle ob AAC Mehrkanalton zu Stereo runter gerechnet werden soll."
 
 msgid "Choose whether multi channel ac3 sound tracks should be downmixed to stereo."
@@ -2792,6 +2846,10 @@ msgstr "Log löschen"
 
 msgid "Clear playlist"
 msgstr "Wiedergabeliste leeren"
+
+#, python-format
+msgid "Client Info ( Oscam-Version: %s )"
+msgstr ""
 
 msgid "Client mode"
 msgstr "Client Modus"
@@ -3231,7 +3289,7 @@ msgstr "Verbindung mit den FRP-Einstellungen fehlgeschlagen. Bitte überprüfen 
 msgid "Constellation & FFT mode"
 msgstr "Konstellation & FFT Modus"
 
-msgid "Consult your Unicable device spec sheet for this information."
+msgid "Consult your SCR device spec sheet for this information."
 msgstr "Lese das Handbuch deines Unicable-Gerätes für diese Informationen."
 
 msgid "Consult your motor's spec sheet for this information, or leave the default setting."
@@ -3495,6 +3553,9 @@ msgstr "DTS"
 
 msgid "DTS downmix"
 msgstr "DTS Downmix"
+
+msgid "DTS-HD HR/DTS-HD MA/DTS"
+msgstr ""
 
 msgid "DUAL LAYER DVD"
 msgstr "DUAL LAYER DVD"
@@ -4034,6 +4095,10 @@ msgstr "Den Timer für %s wirklich löschen?"
 msgid "Do you really want to remove your bookmark of %s?"
 msgstr "Das Lesezeichen %s wirklich löschen?"
 
+#, fuzzy, python-format
+msgid "Do you really want to stop the current recording and delete timer %s?"
+msgstr "Den Timer für %s wirklich löschen?"
+
 msgid "Do you want to add any additional information ?"
 msgstr "Willst Du weitere Informationen hinzufügen?"
 
@@ -4155,6 +4220,10 @@ msgstr "Herunterladen"
 
 msgid "Downloading plugin information. Please wait..."
 msgstr "Lade Plugin-Informationen herunter. Bitte warten..."
+
+#, fuzzy
+msgid "Downmix"
+msgstr "DTS Downmix"
 
 msgid "Drama"
 msgstr "Drama"
@@ -4388,6 +4457,21 @@ msgstr "Verschiebemodus aktivieren"
 msgid "Enable multiple bouquets"
 msgstr "Mehrere Favoritenlisten erlauben"
 
+msgid "Enable or disable the 10 Bit Color Mode"
+msgstr "10Bit erzwingen aktivieren oder deaktivieren"
+
+msgid "Enable or disable the 12 Bit Color Mode"
+msgstr "12Bit erzwingen aktivieren oder deaktivieren"
+
+msgid "Enable or disable to force HDR Modes for UHD"
+msgstr "HDR Mode für UHD erzwingen aktivieren oder deaktivieren"
+
+msgid "Enable or disable to force HDR10 Modes for UHD"
+msgstr "HDR10 Mode für UHD erzwingen aktivieren oder deaktivieren"
+
+msgid "Enable or disable to force HLG Modes for UHD"
+msgstr "HLG Mode für UHD erzwingen aktivieren oder deaktivieren"
+
 msgid "Enable panic button"
 msgstr "Paniktaste aktivieren"
 
@@ -4414,6 +4498,10 @@ msgstr "Aktiviere die Benutzung eines anderen Enigma2 Receivers im Netzwerk wenn
 
 msgid "Enabled"
 msgstr "Eingeschaltet"
+
+#, fuzzy
+msgid "Encrypted TV"
+msgstr "Verschlüsselt: "
 
 msgid "Encrypted: "
 msgstr "Verschlüsselt: "
@@ -4820,6 +4908,9 @@ msgstr "FLASH"
 #, python-format
 msgid "FP version:\t%s"
 msgstr "Version:\t%s"
+
+msgid "FTA TV"
+msgstr ""
 
 msgid "FTP"
 msgstr "FTP"
@@ -5317,11 +5408,18 @@ msgstr "HDMI Farbmetrik"
 msgid "HDMI Colorspace"
 msgstr "HDMI Farbraum"
 
+msgid "HDMI HDR Type"
+msgstr ""
+
 msgid "HDMIin"
 msgstr "HDMIin"
 
 msgid "HDR, 12bit 4:2:0/4:2:2, no PIP"
 msgstr "HDR, 12bit 4:2:0/4:2:2, kein PIP"
+
+#, fuzzy
+msgid "HDR10 Support"
+msgstr "DLNA-Unterstützung"
 
 msgid "HELP"
 msgstr ""
@@ -5331,6 +5429,10 @@ msgstr ""
 
 msgid "HH:mm:ss"
 msgstr ""
+
+#, fuzzy
+msgid "HLG Support"
+msgstr "DLNA-Unterstützung"
 
 msgid "Haiti"
 msgstr "Haiti"
@@ -5434,6 +5536,10 @@ msgstr "Honduras"
 msgid "Hong Kong"
 msgstr "Hong Kong"
 
+#, fuzzy
+msgid "Hops"
+msgstr "Hops:"
+
 msgid "Hops:"
 msgstr "Hops:"
 
@@ -5531,9 +5637,6 @@ msgstr ""
 "Wenn eine \"Unbestätigt\"-Meldung erscheint:\n"
 "- Wurde keine gültige IP-Adresse gefunden.\n"
 "- Überprüfe DHCP, die Verkabelung und die Adapter-Einstellungen."
-
-msgid "IP-Address"
-msgstr "IP-Adresse"
 
 msgid "IP:"
 msgstr "IP:"
@@ -6050,6 +6153,10 @@ msgstr "Kernel:\t%s\n"
 #, python-format
 msgid "Kernel: %s"
 msgstr "Kernel: %s"
+
+#, fuzzy
+msgid "Key"
+msgstr "Kenya"
 
 msgid "Keyboard"
 msgstr "Tastatur"
@@ -6808,6 +6915,13 @@ msgstr "Multi-EPG"
 msgid "Multiboot"
 msgstr "Multiboot"
 
+msgid "Multiboot ERROR! - no STARTUP in /boot -Please check /etc/fstab for correct boot partition"
+msgstr "Multiboot Fehler! - kein STARTUP in /boot - Bitte /etc/fstab auf korrekte Boot Partition prüfen."
+
+#, python-format
+msgid "Multiboot ERROR! - no STARTUP_%s in /boot - Image may need manual restart"
+msgstr "Multiboot Fehler! - kein STARTUP_%s in /boot - Image könnte manuelle Neustart benötigen."
+
 msgid "Multiboot Image Restart"
 msgstr "Multiboot Image Neustart"
 
@@ -7090,15 +7204,6 @@ msgstr "Kein freier Index verfügbar"
 
 msgid "No free tuner!"
 msgstr "Kein freier Tuner!"
-
-msgid "No httpport defined in oscam.conf. This value is required!"
-msgstr "Kein HTTP-Port in oscam.conf definiert. Dieser Wert wird benötigt!"
-
-msgid "No httppwd defined in oscam.conf"
-msgstr "Kein Passwort für das Web-Interface definiert. Dieser Wert wird benötigt"
-
-msgid "No httpuser defined in oscam.conf"
-msgstr "Kein Benutzer für das Web Interface definiert. Dieser Wert wird benötigt"
 
 msgid "No module found"
 msgstr "Kein Modul gefunden"
@@ -7388,7 +7493,7 @@ msgstr "Online Versionsprüfung"
 msgid "Only active when in standby"
 msgstr "Nur aktiv wenn in Bereitschaft"
 
-msgid "Only change this setting if you are using a Unicable device that has been reprogrammed with a custom programmer. For further information check with the person that reprogrammed the device."
+msgid "Only change this setting if you are using a SCR device that has been reprogrammed with a custom programmer. For further information check with the person that reprogrammed the device."
 msgstr "Ändere diesen Wert nur wenn Du ein Unicable Gerät verwendest das mit einem Programmiergerät umprogrammiert wurde. Für weitere Informationen frage die Person die es umprogrammiert hat."
 
 msgid "Only extensions."
@@ -7463,14 +7568,15 @@ msgstr ""
 msgid "Original"
 msgstr "Original"
 
-msgid "Oscam ECM-info"
-msgstr "OScam ECM-Info"
-
 msgid "Oscam Info - Configuration"
 msgstr "OScam Info - Konfiguration"
 
 msgid "Oscam Info - Main Menu"
 msgstr "OScam Info - Hauptfenster"
+
+#, python-format
+msgid "Oscam Log ( Oscam-Version: %s )"
+msgstr ""
 
 msgid "Other"
 msgstr "Andere"
@@ -7507,6 +7613,10 @@ msgstr ""
 
 msgid "PGS file"
 msgstr "PGS Datei"
+
+#, fuzzy
+msgid "PID"
+msgstr "PIDs"
 
 msgid "PIP"
 msgstr "PiP"
@@ -7590,6 +7700,9 @@ msgstr "Kontrolle von Erwachsenen empfohlen"
 msgid "Parental control"
 msgstr "Jugendschutz"
 
+msgid "Passthrough"
+msgstr ""
+
 msgid "Password"
 msgstr "Passwort"
 
@@ -7670,6 +7783,9 @@ msgstr "PiP"
 
 msgid "Picon"
 msgstr "PIcon"
+
+msgid "Picon Width"
+msgstr "PIcon Breite"
 
 msgid "Picon and Service Name"
 msgstr "PIcon und Sendername"
@@ -7768,7 +7884,8 @@ msgstr "Bitte füge Titel zur Zusammenstellung hinzu."
 msgid "Please change the recording end time"
 msgstr "Bitte Aufnahmeendzeit ändern"
 
-msgid "Please choose CCcam reader"
+#, fuzzy
+msgid "Please choose CCcam-Reader"
 msgstr "Bitte wähle CCcam-Kartenleser"
 
 msgid "Please choose an extension..."
@@ -8434,7 +8551,8 @@ msgstr "Einstufung unbekannt"
 msgid "Re-enter PIN"
 msgstr "Pin-Code erneut eingeben"
 
-msgid "Read user data from oscam.conf"
+#, fuzzy
+msgid "Read Userdata from oscam.conf"
 msgstr "Lese Benutzerdaten aus oscam.comf"
 
 msgid "Reader"
@@ -8777,6 +8895,10 @@ msgstr "Erweiterte A/V Einstellungen auf Standardwerte zurücksetzten?"
 
 msgid "Reset video enhancement settings to your last configuration?"
 msgstr "Erweiterte A/V Einstellungen auf Ihre letzte Konfiguration zurücksetzen?"
+
+#, fuzzy
+msgid "Reshare"
+msgstr "Freigabe:"
 
 msgid "Reshare:"
 msgstr ""
@@ -9217,8 +9339,8 @@ msgstr "Wähle '1.0' für standard sommited Switche, '1.1' für uncomitted Schwi
 msgid "Select 'A' or 'B' if your aerial system requires this, otherwise select 'none'. If you are unsure select 'none'."
 msgstr "W#hle 'A' oder 'B' wenn die Anlage es benötigt sonst wähle 'keine'. Wenn Du unsicher bis wähle 'keine'."
 
-msgid "Select 'Unicable' if this tuner will use a Unicable device. For all other setups select 'FBC automatic'."
-msgstr "Wähle 'Unicable' wenn dieser Tuner ein Unicable Gerät verwendet. Für alle anderen Systeme wähle 'FBC automatisch'."
+msgid "Select 'FBC SCR' if this tuner will connect to a SCR (Unicable/JESS) device. For all other setups select 'FBC automatic'."
+msgstr "Wähle 'FBC SCR' wenn dieser Tuner ein Unicable Gerät verwendet. Für alle anderen Systeme wähle 'FBC automatisch'."
 
 msgid "Select 'band' if using a 'universal' LNB, otherwise consult your LNB spec sheet."
 msgstr "Wähle 'Band' wenn ein Universal-LNB verwendet wird sonst schaue in den Spezifikationen des LNBs nach."
@@ -9232,7 +9354,7 @@ msgstr "Wähle 'Polarisation' wenn ein Universal-LNB verwendet wird ansonsten sc
 msgid "Select 'provider' to scan from the predefined list of cable multiplexes. Select 'bands' to only scan certain parts of the spectrum. Select 'steps' to scan in steps of a particular frequency bandwidth."
 msgstr "Wähle 'Anbieter' für die Suche aus der Liste der vordefinierten Kabelanbieter. Wähle 'Band' um nur bestimmte Bereiche zu durchsuchen. Wähle 'Schritte' um die Schrittweite der Suche einzustellen."
 
-msgid "Select 'yes' if this tuner is connected to the Unicable device through another tuner, otherwise select 'no'."
+msgid "Select 'yes' if this tuner is connected to the SCR device through another tuner, otherwise select 'no'."
 msgstr "Wähle 'Ja' wenn dieser Tuner an ein Unicable Gerät durch einen anderen Tuner angeschlossen ist ansonsten wähle 'nein'."
 
 msgid "Select 'yes' to choose what bands or step sizes will be scanned."
@@ -9362,8 +9484,14 @@ msgstr "Wähle den Sortier-Modus:"
 msgid "Select target folder"
 msgstr "Wähle Zielverzeichnisse"
 
-msgid "Select the Unicable channel to be assigned to this tuner. This is a unique value. Be certain that no other device connected to this same Unicable system is allocated to the same Unicable channel."
-msgstr "Wähle den Unicable Kanal der diesem Tuner zugeordnet werden soll. Das ist eine eindeutige Nummer. Stelle sicher das kein anderes Gerät in deinem System den selben Kanal zugerodnet wurde."
+msgid "Select the User Band channel to be assigned to this tuner. This is an index into the table of frequencies the SCR switch or SCR LNB uses to pass the requested transponder to the tuner."
+msgstr "Wähle das User Band das diesem Tuner zugeordnet ist. Dies in ein Index der Tabelle mit Frequenzen vom SCR-Schalter oder SCR-LNB welche benutzt wird um den gewählten Transponder zum Tuner zu schicken."
+
+msgid "Select the User Band frequency to be assigned to this tuner. This is the frequency the SCR switch or SCR LNB uses to pass the requested transponder to the tuner."
+msgstr "Wähle das User Band das diesem Tuner zugeordnet ist. Dies ist die Frequenz vom SCR-Schalter oder SCR-LNB welche benutzt wird um den gewählten Transponder zum Tuner zu schicken."
+
+msgid "Select the User Band to be assigned to this tuner. This is an index into the table of frequencies the SCR switch or SCR LNB uses to pass the requested transponder to the tuner."
+msgstr "Wähle das User Band das diesem Tuner zugeordnet ist. Dies in ein Index der Tabelle mit Frequenzen vom SCR-Schalter oder SCR-LNB welche benutzt wird um den gewählten Transponder zum Tuner zu schicken."
 
 msgid "Select the character or action under the virtual keyboard cursor"
 msgstr "Wähle Zeichen oder Aktion beim Cursor der virtuellen Tastatur"
@@ -9371,17 +9499,17 @@ msgstr "Wähle Zeichen oder Aktion beim Cursor der virtuellen Tastatur"
 msgid "Select the desired function and click on \"OK\" to assign it. Use \"CH+/-\" to toggle between the lists. Select an assigned function and click on \"OK\" to de-assign it. Use \"Next/Previous\" to change the order of the assigned functions."
 msgstr "Gewünschte Funktion auswählen und \"OK\" drücken um sie zu belegen. Benutze  \"CH+/-\" um zwischen den Listen umzuschalten. Wähle zugeordnete Funktion aus und drücke  \"OK\" um die Belegung zu entfernen."
 
-msgid "Select the format of your Unicable device. Choices are 'SCR Unicable' (Unicable I format), or 'SCR JESS' (Unicable II format)."
-msgstr "Wähle das Unicable Format von deinem Gerät. Zur Wahl stehen 'SCR Unicable' (Unicable I Format) oder 'SCR JESS' (Unicable II Format)."
+msgid "Select the manufacturer of your SCR device. If the manufacturer is not listed, set 'SCR' to 'user defined' and enter the device parameters manually according to its spec sheet."
+msgstr "Wähle den Hersteller von deinem Unicable Gerät. Wenn der Hersteller nicht aufgeführt ist setze 'SCR' auf 'Benutzerbefiniert' und gebe die Werte an Hand der Spezifikationen des Gerätes ein."
 
-msgid "Select the manufacturer of your Unicable device. If the manufacturer is not listed, set 'SCR' to 'user defined' and enter the device parameters manually according to its spec sheet."
-msgstr "Wähle den Hersteller von deinem Unicable Gerät. Wenn der Hersteller nicht aufgeführt ist setze 'SCR' auf 'Benutzerbediniert' und gebe die Werte an Hand der Spezifikationen des Gerätes ein."
-
-msgid "Select the model number of your Unicable device. If the model number is not listed, set 'SCR' to 'user defined' and enter the device parameters manually according to its spec sheet."
-msgstr "Wähle die Modellnummer deines Unicable Gerätes. Wenn die Nummer nicht aufgeführt ist setze 'SCR' auf 'Benutzerbediniert' und gebe die Werte an Hand der Spezifikationen des Gerätes ein."
+msgid "Select the model number of your SCR device. If the model number is not listed, set 'SCR' to 'user defined' and enter the device parameters manually according to its spec sheet."
+msgstr "Wähle die Modellnummer deines Unicable Gerätes. Wenn die Nummer nicht aufgeführt ist setze 'SCR' auf 'Benutzerbefiniert' und gebe die Werte an Hand der Spezifikationen des Gerätes ein."
 
 msgid "Select the movie path"
 msgstr "Wähle Filmpfad"
+
+msgid "Select the protocol used by your SCR device. Choices are 'SCR Unicable' (Unicable), or 'SCR JESS' (JESS, also known as Unicable II)."
+msgstr "Wähle das Unicable Format von deinem Gerät. Zur Wahl stehen 'SCR Unicable' (Unicable I Format) oder 'SCR JESS' (Unicable II Format)."
 
 msgid "Select the satellite which is connected to Port-A of your switch. If you are unsure select 'automatic' and the receiver will attempt to determine this for you. If nothing is connected to this port, select 'nothing connected'."
 msgstr "Wähle den Satelliten der mit Port-A von deinem Switch verbunden ist. Wenn Du unsicher bist wähle 'automatisch' und die Box wird versuchen es für dich herauszufinden. Wenn nichts angeschlossen ist wähle 'Nichts angeschlossen'."
@@ -9407,13 +9535,13 @@ msgstr "Wähle den Tuner der den Motor kontrolliert."
 msgid "Select the tuner that this loopthrough depends on."
 msgstr "Wähle den Tuner von dem das Signal durchgereicht werden soll."
 
-msgid "Select the tuner to which the signal cable of the Unicable device is connected."
+msgid "Select the tuner to which the signal cable of the SCR device is connected."
 msgstr "Wähle den Tuner an dem das Unicable Kabel angeschlossen ist."
 
 msgid "Select the type of LNB/device being used (normally 'Universal'). If your LNB type is not available select 'user defined'."
 msgstr "Wähle den Typ von LNB/Gerät das benutzt wird (normalerweise 'Universal'). Wenn dein LNB Typ nicht aufgeführt ist wähle 'Benutzerdefiniert'."
 
-msgid "Select the type of Unicable device you are using."
+msgid "Select the type of Single Cable Reception device you are using."
 msgstr "Wähle den Unicable Type den Du benutzt."
 
 msgid "Select the virtual keyboard locale from a menu"
@@ -9503,6 +9631,10 @@ msgstr "Seriennummer"
 msgid "Serv.Name"
 msgstr ""
 
+#, python-format
+msgid "Server Info ( Oscam-Version: %s )"
+msgstr ""
+
 msgid "Server:"
 msgstr ""
 
@@ -9523,6 +9655,9 @@ msgstr "Sender ID"
 
 msgid "Service Name"
 msgstr "Sendername"
+
+msgid "Service Number and Picon"
+msgstr "Sendernummer und PIcon"
 
 msgid "Service Number and Service Name"
 msgstr "Sendernummer und Sendername"
@@ -9598,6 +9733,9 @@ msgstr "Setze CI Zuweisung für Erkennung verfügbarer Sender."
 
 msgid "Set Framerate for MiniTV"
 msgstr "Setze Bildrate für MiniTV"
+
+msgid "Set a temporary sort method for this directory"
+msgstr "Wähle temporäre Sortiermethode für dieses Verzeichnis"
 
 msgid "Set as startup service"
 msgstr "Als Startsender benutzen"
@@ -9686,6 +9824,9 @@ msgstr "Wähle die Durchlaufgeschwindigkeit für Text im Display. Dies wird von 
 
 msgid "Set the scrolling speed of text on the front display."
 msgstr "Wähle die Durchlaufgeschwindigkeit für Text im Display."
+
+msgid "Set the sort method for this directory"
+msgstr "Setze die Sortiermethode für dieses Verzeichnis"
 
 msgid "Set the time before checking video source for resolution/refresh rate infomation."
 msgstr "Verzögerung einstellen nach der Auflösung/Wiederholrate des Videos geprüft wird."
@@ -10017,6 +10158,9 @@ msgstr "Zeige Hintergrundfarbe von PIcon"
 
 msgid "Show picons in service list"
 msgstr "Zeige PIcon in der Senderliste"
+
+msgid "Show picons in the movie list."
+msgstr "Zeige PIcon in der Filmliste."
 
 msgid "Show positioner movement"
 msgstr "Zeige Rotorbewegung"
@@ -10862,6 +11006,9 @@ msgstr "Systemtemperatur: %s"
 msgid "System: "
 msgstr ""
 
+msgid "T2MI RAW Mode"
+msgstr ""
+
 msgid "TB"
 msgstr "TB"
 
@@ -11183,14 +11330,17 @@ msgstr "Es sind mindestens %s Updates verfügbar."
 msgid "There are currently no outstanding actions."
 msgstr "Es sind keine Aktivitäten geplant."
 
+msgid "There are no saved playlists to delete!"
+msgstr "Es gibt keine gespeicherten Wiedergabeliste zum Löschen!"
+
+msgid "There are no saved playlists to load!"
+msgstr "Es gibt keine gespeicherten Wiedergabeliste zum Laden!"
+
 msgid "There are no updates available."
 msgstr "Es sind keine Updates verfügbar."
 
 msgid "There has been an error, please try again later. If this issue persists, please check openvix.co.uk or world-of-satellite.com"
 msgstr "Entschuldigung zur Zeit finden Wartungsarbeiten statt. Bitte später erneut versuchen. Wenn das Problem bestehen bleibt bitte auf openvix.co.uk oder world-of-satellite.com nachsehen"
-
-msgid "There is no [webif] section in oscam.conf"
-msgstr "Es gibt keine [webif} Sektion in oscam.conf"
 
 msgid "There is no signal to lock on !"
 msgstr "Es gibt kein Signal zum einrasten!"
@@ -11264,15 +11414,6 @@ msgstr "Diese Option erlaubt es den Grünanteil des Bildes zu verstärken."
 
 msgid "This option allows you to bypass HDMI EDID check"
 msgstr "Diese Option erlaubt es den HDMI EDID zu deaktivieren"
-
-msgid "This option allows you to change the Colordepth for UHD"
-msgstr "Dies Option erlaubt die Konfiguration der Bittiefe für UHD"
-
-msgid "This option allows you to change the Colorimetry for HDR"
-msgstr "Dies Option erlaubt die Konfiguration der Farbmetrik für HDR"
-
-msgid "This option allows you to change the Colorspace from Auto to RGB"
-msgstr "Dies Option erlaubt es den Farbraum von Auto auf RGB zu stellen"
 
 msgid "This option allows you to change the virtual loudspeaker position."
 msgstr "Dies Option erlaubt es virtuelle Lautsprecherpositionen anzugeben."
@@ -12387,6 +12528,10 @@ msgstr "WEP"
 msgid "WLAN connection"
 msgstr "WLAN Verbindung"
 
+#, fuzzy
+msgid "WMA Pro downmix"
+msgstr "AAC Downmix"
+
 msgid "WPA"
 msgstr "WPA"
 
@@ -12758,6 +12903,9 @@ msgstr "Funk-Netzwerk Konfiguration."
 
 msgid "Wireless network state"
 msgstr "Funk-Netzwerk Status"
+
+msgid "With T2MI RAW mode disabled (default) we can use single T2MI PLP de-encapsulation. With T2MI RAW mode enabled we can use astra-sm to analyze T2MI"
+msgstr ""
 
 msgid "With popup"
 msgstr "Mit Popup"
@@ -13430,6 +13578,18 @@ msgstr "Bestätigt"
 msgid "connected"
 msgstr "Verbunden"
 
+msgid "controlled by HDMI"
+msgstr "Von HDMI kontrolliert"
+
+msgid "convert to AC3"
+msgstr "Wandeln zu AC3"
+
+msgid "convert to DTS"
+msgstr "Wandeln zu DTS"
+
+msgid "convert to multi-channel PCM"
+msgstr "Wandeln zu  Multikanal PCM"
+
 msgid "cooking"
 msgstr "Kochen"
 
@@ -13489,6 +13649,9 @@ msgstr "Dokumentation"
 
 msgid "documentary (general)"
 msgstr "Dokumentation (allgemein)"
+
+msgid "dolby"
+msgstr ""
 
 msgid "don't descramble, record ecm"
 msgstr "Nicht entschlüsseln, Aufnahme ECM"
@@ -13595,6 +13758,10 @@ msgstr "Erweiterungen."
 msgid "extra wide"
 msgstr "Extrabreit"
 
+#, fuzzy
+msgid "extrawide"
+msgstr "Extrabreit"
+
 msgid "failed"
 msgstr "fehlgeschlagen"
 
@@ -13633,6 +13800,14 @@ msgstr "Folk/traditionelle Musik"
 
 msgid "football/soccer"
 msgstr "Fußball"
+
+#, fuzzy
+msgid "force disabled"
+msgstr "deaktiviert"
+
+#, fuzzy
+msgid "force enabled"
+msgstr "aktiviert"
 
 msgid "foreign countries/expeditions"
 msgstr "fremde Länder/Expeditionen"
@@ -13707,6 +13882,9 @@ msgstr ""
 "ist zum ViX Beta Team geschickt worden.\n"
 "Bitte zitieren"
 
+msgid "hdr10"
+msgstr ""
+
 msgid "height"
 msgstr "Höhe"
 
@@ -13730,6 +13908,9 @@ msgstr ""
 
 msgid "hide"
 msgstr "verstecke"
+
+msgid "hlg"
+msgstr ""
 
 msgid "hops:"
 msgstr "hops:"
@@ -13869,6 +14050,13 @@ msgstr "Musik/Ballett/Tanz (allgemein)"
 msgid "musical/opera"
 msgstr "Musical/Oper"
 
+#, fuzzy
+msgid "n/A"
+msgstr "N/V"
+
+msgid "n/a"
+msgstr ""
+
 msgid "nature/animals/environment"
 msgstr "Natur/Tiere/Umwelt"
 
@@ -13977,15 +14165,8 @@ msgstr "Original"
 msgid "original language"
 msgstr "Landessprache"
 
-msgid "oscam.conf could not be found"
-msgstr "Datei oscam.conf nicht gefunden"
-
-msgid ""
-"oscam.conf not found.\n"
-"Please enter username/password manually."
-msgstr ""
-"Datei oscam.conf nicht gefunden.\n"
-"Bitte Benutzername/Passwort eingeben."
+msgid "oscam webif disabled"
+msgstr "OScam Web-IF deaktiviert"
 
 msgid "packages selected."
 msgstr "Pakete ausgewählt."
@@ -14103,6 +14284,9 @@ msgstr "Status"
 
 msgid "science fiction/fantasy/horror"
 msgstr "Science Fiction/Fantasy/Horror"
+
+msgid "sdr"
+msgstr ""
 
 msgid "se"
 msgstr "süd ost"
@@ -14379,6 +14563,12 @@ msgstr "bis zu Bereitschaft/Neustart"
 
 msgid "updates available."
 msgstr "Updates verfügbar."
+
+msgid "use best / controlled by HDMI"
+msgstr ""
+
+msgid "use_hdmi_cacenter"
+msgstr ""
 
 msgid "user defined"
 msgstr "benutzerdefiniert"
@@ -14979,6 +15169,9 @@ msgstr "umgeschaltet"
 #~ msgid "Hierarchy information"
 #~ msgstr "Hierarchie..."
 
+#~ msgid "IP-Address"
+#~ msgstr "IP-Adresse"
+
 #~ msgid "Image Information"
 #~ msgstr "Image Informationen"
 
@@ -15093,6 +15286,15 @@ msgstr "umgeschaltet"
 #~ msgid "No free tuner available!"
 #~ msgstr "Kein freier Tuner verfügbar!"
 
+#~ msgid "No httpport defined in oscam.conf. This value is required!"
+#~ msgstr "Kein HTTP-Port in oscam.conf definiert. Dieser Wert wird benötigt!"
+
+#~ msgid "No httppwd defined in oscam.conf"
+#~ msgstr "Kein Passwort für das Web-Interface definiert. Dieser Wert wird benötigt"
+
+#~ msgid "No httpuser defined in oscam.conf"
+#~ msgstr "Kein Benutzer für das Web Interface definiert. Dieser Wert wird benötigt"
+
 #~ msgid "No stream clients"
 #~ msgstr "Keine Streaming Klienten"
 
@@ -15114,8 +15316,8 @@ msgstr "umgeschaltet"
 #~ msgid "Options..."
 #~ msgstr "Einstellungen..."
 
-#~ msgid "PIDs"
-#~ msgstr "PIDs"
+#~ msgid "Oscam ECM-info"
+#~ msgstr "OScam ECM-Info"
 
 #~ msgid "Parental control setup"
 #~ msgstr "Jugendschutz Einstellungen"
@@ -15244,6 +15446,9 @@ msgstr "umgeschaltet"
 #~ msgid "Select operation:"
 #~ msgstr "Wähle Funktion:"
 
+#~ msgid "Select the Unicable channel to be assigned to this tuner. This is a unique value. Be certain that no other device connected to this same Unicable system is allocated to the same Unicable channel."
+#~ msgstr "Wähle den Unicable Kanal der diesem Tuner zugeordnet werden soll. Das ist eine eindeutige Nummer. Stelle sicher das kein anderes Gerät in deinem System den selben Kanal zugerodnet wurde."
+
 #~ msgid "Selected: %s"
 #~ msgstr "Ausgewählt: %s"
 
@@ -15349,6 +15554,9 @@ msgstr "umgeschaltet"
 
 #~ msgid "The wizard found a configuration backup. Do you want to restore your old settings from %s?"
 #~ msgstr "Der Assistent hat eine Konfigurations-Sicherungsdatei entdeckt. Die Einstellungen von %s wiederherstellen?"
+
+#~ msgid "There is no [webif] section in oscam.conf"
+#~ msgstr "Es gibt keine [webif} Sektion in oscam.conf"
 
 #~ msgid "This can be either the IP or name of the fallback receiver, not including the scheme or port number (e.g. either 'xxx.xxx.xxx.xxx' or 'name_second_box')."
 #~ msgstr "Dies kann entweder der Name oder die IP des Ausweichreceivers sein. Hier darf kein Typ oder Port angegeben werden also entweder xxx.xxx.xxx.xxx oder <name-der-box>."
@@ -15475,6 +15683,16 @@ msgstr "umgeschaltet"
 
 #~ msgid "only 4K"
 #~ msgstr "nur 4K"
+
+#~ msgid "oscam.conf could not be found"
+#~ msgstr "Datei oscam.conf nicht gefunden"
+
+#~ msgid ""
+#~ "oscam.conf not found.\n"
+#~ "Please enter username/password manually."
+#~ msgstr ""
+#~ "Datei oscam.conf nicht gefunden.\n"
+#~ "Bitte Benutzername/Passwort eingeben."
 
 #~ msgid "reliable"
 #~ msgstr "verlässlich"

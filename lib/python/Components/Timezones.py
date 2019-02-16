@@ -48,12 +48,13 @@ class Timezones:
 			# Their use is deprecated.
 			self.autopoller = autopoller
 			self.autotimer = autotimer
+			self.at_poll_delay = config.plugins.autotimer.delay.value
 		except ImportError:
 			self.autopoller = None
 			self.autotimer = None
+			self.at_poll_delay = None
 		self.timer = eTimer()
 		self.ATupdate = None
-		self.at_poll_delay = config.plugins.autotimer.delay.value
 		if self.at_poll_delay is None:
 			self.at_poll_delay = 3
 

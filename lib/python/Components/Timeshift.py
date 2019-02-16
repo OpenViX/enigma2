@@ -47,7 +47,7 @@ from Tools.BoundFunction import boundFunction
 from Tools.Directories import pathExists, fileExists, getRecordingFilename, copyfile, resolveFilename, SCOPE_TIMESHIFT
 from Tools.TimeShift import CopyTimeshiftJob, MergeTimeshiftJob, CreateAPSCFilesJob
 
-from enigma import eBackgroundFileEraser, eTimer, eServiceCenter, iServiceInformation, iPlayableService, eEPGCache
+from enigma import eBackgroundFileEraser, eTimer, eServiceCenter, iServiceInformation, iPlayableService, eEPGCache, eServiceReference
 from boxbranding import getBoxType, getBrandOEM
 
 from time import time, localtime, strftime
@@ -62,8 +62,17 @@ class InfoBarTimeshift:
 				"timeshiftStart": (self.startTimeshift, _("Start timeshift")),  # the "yellow key"
 				"timeshiftStop": (self.stopTimeshift, _("Stop timeshift")),     # currently undefined :), probably 'TV'
 				"instantRecord": self.instantRecord,
-				"restartTimeshift": self.restartTimeshift
+				"restartTimeshift": self.restartTimeshift,
+				"seekFwdManual": (self.seekFwdManual, _("Seek forward (enter time)")),
+				"seekBackManual": (self.seekBackManual, _("Seek backward (enter time)")),
+				"seekdef:1": (boundFunction(self.seekdef,1), _("Seek")),
+				"seekdef:3": (boundFunction(self.seekdef,3), _("Seek")),
+				"seekdef:4": (boundFunction(self.seekdef,4), _("Seek")),
+				"seekdef:6": (boundFunction(self.seekdef,6), _("Seek")),
+				"seekdef:7": (boundFunction(self.seekdef,7), _("Seek")),
+				"seekdef:9": (boundFunction(self.seekdef,9), _("Seek"))
 			}, prio=1)
+
 		self["TimeshiftActivateActions"] = ActionMap(["InfobarTimeshiftActivateActions"],
 			{
 				"timeshiftActivateEnd": self.activateTimeshiftEnd, # something like "rewind key"
@@ -115,6 +124,7 @@ class InfoBarTimeshift:
 		self.save_current_timeshift = False
 		self.save_timeshift_postaction = None
 		self.service_changed = 0
+		self.pts_trycount = 0
 
 		# Init Global Variables
 		self.session.ptsmainloopvalue = 0
@@ -313,24 +323,46 @@ class InfoBarTimeshift:
 					# print 'TS AUTO START TEST5'
 					self.pts_delay_timer.start(1000, True)
 
+	def seekdef(self, key):
+		if self.seekstate == self.SEEK_STATE_PLAY:
+			return 0 # trade as unhandled action
+		time = (-config.seek.selfdefined_13.value, False, config.seek.selfdefined_13.value,
+			-config.seek.selfdefined_46.value, False, config.seek.selfdefined_46.value,
+			-config.seek.selfdefined_79.value, False, config.seek.selfdefined_79.value)[key-1]
+		self.doSeekRelative(time * 90000)
+		self.pvrStateDialog.show()
+		return 1
+
 	def getTimeshift(self):
 		service = self.session.nav.getCurrentService()
 		return service and service.timeshift()
+
+	def playpauseService2(self):
+		service = self.session.nav.getCurrentService()
+		playingref = self.session.nav.getCurrentlyPlayingServiceReference()
+		if not playingref or playingref.type < eServiceReference.idUser:
+			return 0
+		if service and service.streamed():
+			pauseable = service.pause()
+			if pauseable:
+				if self.seekstate == self.SEEK_STATE_PLAY:
+					pauseable.pause()
+					self.seekstate = self.SEEK_STATE_PAUSE
+				else:
+					pauseable.unpause()
+					self.seekstate = self.SEEK_STATE_PLAY
+				return
+		return 0
 
 	def timeshiftEnabled(self):
 		ts = self.getTimeshift()
 		return ts and ts.isTimeshiftEnabled()
 
 	def startTimeshift(self):
-		if self.session.nav.getCurrentlyPlayingServiceReference() and 'http' in self.session.nav.getCurrentlyPlayingServiceReference().toString():
-			if config.timeshift.stream_warning.value:
-				self.session.open(MessageBox, _("Timeshift on a stream is not supported!"), MessageBox.TYPE_ERROR, timeout=5)
-			print '[Timeshift] unable to activate, due being on a stream.'
-			return
 		ts = self.getTimeshift()
 		if ts is None:
 			# self.session.open(MessageBox, _("Timeshift not possible!"), MessageBox.TYPE_ERROR, timeout=5)
-			return 0
+			return self.playpauseService2()
 
 		if ts.isTimeshiftEnabled():
 			print "hu, timeshift already enabled?"
@@ -440,7 +472,7 @@ class InfoBarTimeshift:
 					self.session.openWithCallback(boundFunction(self.checkTimeshiftRunningCallback, returnFunction), MessageBox, message, simple = True, list = choice)
 				else:
 					# print 'TEST4'
-					message =  _("You seem to be in timeshift, Do you want to leave timeshift ?")
+					message =  _("You seem to be in timeshift, Do you want to leave timeshift? Streams & IPTV not fully supported!")
 					choice = [(_("Yes, but save timeshift as movie and stop recording"), "savetimeshift"),
 							  (_("Yes, but save timeshift as movie and continue recording"), "savetimeshiftandrecord"),
 							  (_("Yes, but don't save timeshift as movie"), "noSave"),
@@ -477,11 +509,6 @@ class InfoBarTimeshift:
 
 	def autostartPermanentTimeshift(self):
 		self["TimeshiftActions"].setEnabled(True)
-		if self.session.nav.getCurrentlyPlayingServiceReference() and 'http' in self.session.nav.getCurrentlyPlayingServiceReference().toString() and int(config.timeshift.startdelay.value):
-			if config.timeshift.stream_warning.value:
-				self.session.open(MessageBox, _("Timeshift on a stream is not supported!"), MessageBox.TYPE_ERROR, timeout=5)
-			print '[Timeshift] unable to activate, due being on a stream.'
-			return
 		ts = self.getTimeshift()
 		if ts is None:
 			# print '[TimeShift] tune lock failed, so could not start.'
@@ -1269,7 +1296,9 @@ class InfoBarTimeshift:
 		# ToDo: Only do this on PTS Events and not events from other jobs
 		if timer.state == TimerEntry.StateEnded and (len(JobManager.getPendingJobs()) >= 1 or self.pts_mergeRecords_timer.isActive()):
 			self.ptsFrontpanelActions("start")
-			config.timeshift.isRecording.value = True
+# This will already be set if it needs to be set and otherwise it must
+# *not* be set.
+#			config.timeshift.isRecording.value = True
 
 	def ptsLiveTVStatus(self):
 		service = self.session.nav.getCurrentService()

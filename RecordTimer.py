@@ -31,6 +31,11 @@ from sys import maxint
 # event data         (ONLY for time adjustments etc.)
 
 
+# We need to handle concurrency when updating timers.xml
+#
+import threading
+write_lock = threading.Lock()
+
 # parses an event, and gives out a (begin, end, name, duration, eit)-tuple.
 # begin and end will be corrected
 def parseEvent(ev, description = True):
@@ -432,9 +437,14 @@ class RecordTimerEntry(timer.TimerEntry, object):
 			ChannelSelectionInstance.addToHistory(self.service_ref.ref)
 		NavigationInstance.instance.playService(self.service_ref.ref)
 
-	# Report the tuner that the current recording is using
+# Report the tuner that the current recording is using
 	def log_tuner(self, level, state):
-		feinfo = self.record_service and hasattr(self.record_service, "frontendInfo") and self.record_service.frontendInfo()
+# If we have a Zap timer then the tuner is for the current service
+		if self.justplay:
+			timer_rs = NavigationInstance.instance.getCurrentService()
+		else:
+			timer_rs = self.record_service
+		feinfo = timer_rs and hasattr(timer_rs, "frontendInfo") and timer_rs.frontendInfo()
 		fedata = feinfo and hasattr(feinfo, "getFrontendData") and feinfo.getFrontendData()
 		tuner_info = fedata and "tuner_number" in fedata and chr(ord('A') + fedata.get("tuner_number")) or "(fallback) stream"
 		self.log(level, "%s recording on tuner: %s" % (state, tuner_info))
@@ -637,6 +647,11 @@ class RecordTimerEntry(timer.TimerEntry, object):
 # Trying to back off isn't worth it as backing off in Record timers
 # currently only refers to *starting* a recording.
 #
+# But first, if this is just a zap timer there is no more to do!!!
+# This prevents a daft "go to standby?" prompt if a Zap timer wakes the
+# box up from standby.
+			if self.justplay:
+				return True
 			from Components.Converter.ClientsStreaming import ClientsStreaming;
 			if (not Screens.Standby.inStandby and NavigationInstance.instance.getCurrentlyPlayingServiceReference() and
 				('0:0:0:0:0:0:0:0:0' in NavigationInstance.instance.getCurrentlyPlayingServiceReference().toString() or
@@ -1084,14 +1099,32 @@ class RecordTimer(timer.Timer):
 
 		list.append('</timers>\n')
 
-		file = open(self.Filename + ".writing", "w")
-		for x in list:
-			file.write(x)
-		file.flush()
+# We have to run this section with a lock.
+#  Imagine setting a timer manually while the (background) AutoTimer
+#  scan is also setting a timer.
+#  So we have two timers being set at "the same time".
+# Two process arrive at the open().
+# First opens it and writes to *.writing.
+# Second opens it and overwrites (possibly slightly different data) to
+# the same file.
+# First then gets to the rename - succeeds
+# Second then tries to rename, but the "*.writing" file is now absent.
+# Result:
+#  OSError: [Errno 2] No such file or directory
+#
+# NOTE that as Python threads are not concurrent (they run serially and
+# switch when one does something like I/O) we don't need to run the
+# list-creating loop under the lock.
+#
+		with write_lock:
+			file = open(self.Filename + ".writing", "w")
+			for x in list:
+				file.write(x)
+			file.flush()
 
-		os.fsync(file.fileno())
-		file.close()
-		os.rename(self.Filename + ".writing", self.Filename)
+			os.fsync(file.fileno())
+			file.close()
+			os.rename(self.Filename + ".writing", self.Filename)
 
 	def getNextZapTime(self):
 		now = time()
@@ -1199,33 +1232,6 @@ class RecordTimer(timer.Timer):
 			else:
 				isAutoTimer = False
 			check = ':'.join(x.service_ref.ref.toString().split(':')[:11]) == refstr
-			if not check:
-				sref = x.service_ref.ref
-				parent_sid = sref.getUnsignedData(5)
-				parent_tsid = sref.getUnsignedData(6)
-				if parent_sid and parent_tsid:
-					# check for subservice
-					sid = sref.getUnsignedData(1)
-					tsid = sref.getUnsignedData(2)
-					sref.setUnsignedData(1, parent_sid)
-					sref.setUnsignedData(2, parent_tsid)
-					sref.setUnsignedData(5, 0)
-					sref.setUnsignedData(6, 0)
-					check = sref.toCompareString() == refstr
-					num = 0
-					if check:
-						check = False
-						event = eEPGCache.getInstance().lookupEventId(sref, eventid)
-						num = event and event.getNumOfLinkageServices() or 0
-					sref.setUnsignedData(1, sid)
-					sref.setUnsignedData(2, tsid)
-					sref.setUnsignedData(5, parent_sid)
-					sref.setUnsignedData(6, parent_tsid)
-					for cnt in range(num):
-						subservice = event.getLinkageService(sref, cnt)
-						if sref.toCompareString() == subservice.toCompareString():
-							check = True
-							break
 			if check:
 				timer_end = x.end
 				timer_begin = x.begin
@@ -1377,4 +1383,12 @@ class RecordTimer(timer.Timer):
 		self.saveTimer()
 
 	def shutdown(self):
+		self.saveTimer()
+
+	def cleanup(self):
+		timer.Timer.cleanup(self)
+		self.saveTimer()
+
+	def cleanupDaily(self, days):
+		timer.Timer.cleanupDaily(self, days)
 		self.saveTimer()

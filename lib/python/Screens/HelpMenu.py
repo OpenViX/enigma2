@@ -2,6 +2,7 @@ from Screens.Screen import Screen
 from Components.Label import Label
 from Components.ActionMap import ActionMap
 from Components.HelpMenuList import HelpMenuList
+from Components.Sources.StaticText import StaticText
 from Screens.Rc import Rc
 
 class HelpMenu(Screen, Rc):
@@ -52,6 +53,7 @@ class HelpableScreen:
 			{
 				"displayHelp": self.showHelp,
 			})
+		self["key_help"] = StaticText(_("HELP"))
 
 	def showHelp(self):
 		try:

@@ -1,4 +1,4 @@
-from boxbranding import getImageVersion, getMachineBuild
+from boxbranding import getImageVersion, getMachineBuild, getBoxType
 from sys import modules
 import socket, fcntl, struct
 
@@ -81,7 +81,7 @@ def getCPUSpeedString():
 		print "[About] getCPUSpeedString, /proc/cpuinfo not available"
 
 	if cpu_speed == 0:
-		if getMachineBuild() in ('hd51','hd52','sf4008'):
+		if getMachineBuild() in ('h7','hd51','hd52','sf4008'):
 			try:
 				import binascii
 				f = open('/sys/firmware/devicetree/base/cpus/cpu@0/clock-frequency', 'rb')
@@ -107,6 +107,8 @@ def getCPUSpeedString():
 	return _("unavailable")
 
 def getCPUArch():
+	if getBoxType() in ('osmio4k',):
+		return "ARM V7"
 	if "ARM" in getCPUString():
 		return getCPUString()
 	return _("Mipsel")
