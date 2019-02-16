@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-14 07:44+0000\n"
-"PO-Revision-Date: 2019-02-14 15:25+0100\n"
+"POT-Creation-Date: 2019-02-15 22:12+0000\n"
+"PO-Revision-Date: 2019-02-16 12:07+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -7746,6 +7746,9 @@ msgstr "Maak een settingsback-up; het maken van een back-up alvorens te updaten 
 msgid "Perform an online update check in the background"
 msgstr "Controleer op de achtergrond op updates."
 
+msgid "Permanent sort key changes"
+msgstr "Permanente sorteer aanpassingen"
+
 msgid "Permanently delete all recordings in the trash can?"
 msgstr "Alle bestanden in de prullenbak nu permanent verwijderen?"
 
@@ -9792,6 +9795,9 @@ msgstr "Stel de gewenste primetime in (uur)."
 msgid "Set the desired primetime (minutes)."
 msgstr "Stel de gewenste primetime in (minuten)."
 
+msgid "Set the global sort method"
+msgstr "Kies de globale sorteermethode."
+
 msgid "Set the jump-size of the seekbar."
 msgstr "Stel hier de grootte van de tijdsprong van de zoekbalk in."
 
@@ -10124,7 +10130,6 @@ msgstr "Toon menunummers"
 msgid "Show message when recording starts"
 msgstr "Toon bericht wanneer opname begint"
 
-#, fuzzy
 msgid "Show movie lengths in movie list"
 msgstr "Toon opnamelengte in opnamelijst"
 
@@ -12826,6 +12831,9 @@ msgstr "Indien 'Ja' wordt gekozen, wordt in de opnamelijst live-TV op de achterg
 msgid "When set, each directory will show the previous state used. When off, the default values will be shown."
 msgstr "Indien ingeschakeld, worden de vorige waarden van elke map getoond. Indien uitgeschakeld worden de defaults getoond. "
 
+msgid "When set, sort changes via the sort key will be permanent."
+msgstr "Indien ingeschakeld, zullen de veranderingen permanent zijn."
+
 msgid "When the content has an aspect ratio of 16:9, choose whether to scale/stretch the picture."
 msgstr "Als het beeld een verhouding heeft van 16:9 kan het beeld worden uitgerekt of geschaald."
 
@@ -12834,6 +12842,9 @@ msgstr "Als het beeld een verhouding heeft van 4:3 kan het beeld worden uitgerek
 
 msgid "When tuned to a service the system will normally scan the transponder for any changes and save them. Only set to 'yes' if you're absolutely sure of what you're doing."
 msgstr "Als uw %s %s op een kanaal is afgestemd, wordt normaal gesproken de transponder gescand op veranderingen. Schakel dit alleen uit, als u zeker bent van wat u doet."
+
+msgid "When unset, sort changes will be temporary - just for this view of a directory."
+msgstr "Indien uitgeschakeld, zullen de veranderingen tijdelijk zijn; alleen voor deze keer dat u deze map inziet."
 
 #, python-format
 msgid ""
