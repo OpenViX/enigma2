@@ -10798,3 +10798,6 @@ msgstr ""
 
 msgid "WMA Pro downmix"
 msgstr ""
+
+msgid "Use as PiP if possible"
+msgstr ""

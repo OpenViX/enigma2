@@ -12486,6 +12486,9 @@ msgstr "Video Modo Chip*"
 msgid "WMA Pro downmix"
 msgstr "WMA Pro downmix"
 
+msgid "Use as PiP if possible"
+msgstr "Usar como PiP si es posible"
+
 #~ msgid "3d mode"
 #~ msgstr "Modo 3D"
 
