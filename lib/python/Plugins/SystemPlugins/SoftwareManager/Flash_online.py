@@ -24,7 +24,7 @@ from boxbranding import getBoxType, getMachineBrand, getMachineName, getMachineR
 
 #############################################################################################################
 # Create a List of imagetypes
-# 0 = Name Of Image, 1 = link to file
+# 0 = Name Of Image, 1 = url part 1, url part 2
 images = []
 global imagesCounter
 imagesCounter = 0
