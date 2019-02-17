@@ -377,12 +377,18 @@ class EPGSelection(Screen, HelpableScreen):
 		self.refreshTimer.timeout.get().append(self.refreshlist)
 		self.listTimer = eTimer()
 		self.listTimer.callback.append(self.hidewaitingtext)
-		if not HardwareInfo().is_nextgen():
-			self.createTimer = eTimer()
-			self.createTimer.callback.append(self.onCreate)
-			self.onLayoutFinish.append(self.LayoutFinish)
-		else:
-			self.onLayoutFinish.append(self.onCreate)
+
+#		if not HardwareInfo().is_nextgen():
+#			self.createTimer = eTimer()
+#			self.createTimer.callback.append(self.onCreate)
+#			self.onLayoutFinish.append(self.LayoutFinish)
+#		else:
+#			self.onLayoutFinish.append(self.onCreate)
+
+# Test with the "please wait" message enabled on all hardware
+		self.createTimer = eTimer()
+		self.createTimer.callback.append(self.onCreate)
+		self.onLayoutFinish.append(self.LayoutFinish)
 
 	def createSetup(self):
 		self.closeEventViewDialog()
