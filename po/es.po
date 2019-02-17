@@ -12420,6 +12420,72 @@ msgstr "No hay listas de reproducción guardadas para eliminar!"
 msgid "There are no saved playlists to load!"
 msgstr "No hay listas de reproducción guardadas para cargar!"
 
+msgid "AC3 transcoding"
+msgstr "AC3 transcoding"
+
+msgid "AC3 downmix"
+msgstr "AC3 downmix"
+
+msgid "Allow 10bit"
+msgstr "Permitir 10bit"
+
+msgid "Allow 12bit"
+msgstr "Permitir 12bit"
+
+msgid "Change the Colordepth for UHD"
+msgstr "Cambiar la profundidad de color para UHD"
+
+msgid "Choose whether multi channel aac+ sound tracks should be downmixed to stereo."
+msgstr "Elija si las pistas de sonido aac+ multicanal se deben mezclar en estéreo."
+
+msgid "Choose whether multi channel DTSHD sound tracks should be downmixed or transcoded.."
+msgstr "Elija si las pistas de sonido DTSHD multicanal deben ser mezcladas o transcodificadas.."
+
+msgid "Choose whether WMA Pro sound tracks should be downmixed."
+msgstr "Elija si las pistas de sonido WMA Pro deben mezclarse."
+
+msgid "DTS downmix"
+msgstr "DTS downmix"
+
+msgid "DTS-HD HR/DTS-HD MA/DTS"
+msgstr "DTS-HD HR/DTS-HD MA/DTS"
+
+msgid "Enable or disable to force HDR Modes for UHD"
+msgstr "Habilitar o deshabilitar para forzar los modos HDR para UHD"
+
+msgid "Enable or disable to force HLG Modes for UHD"
+msgstr "Habilitar o deshabilitar para forzar los modos HLG para UHD"
+
+msgid "Enable or disable to force HDR10 Modes for UHD"
+msgstr "Habilitar o deshabilitar para forzar los modos HDR10 para UHD"
+
+msgid "Enable or disable the 12 Bit Color Mode"
+msgstr "Habilitar o deshabilitar el modo de color 12 Bit"
+
+msgid "Enable or disable the 10 Bit Color Mode"
+msgstr "Habilitar o deshabilitar el modo de color 10 Bit"
+
+msgid "HDMI HDR Type"
+msgstr "HDMI HDR tipo"
+
+msgid "HDMI Colordepth"
+msgstr "HDMI Profundidad de color"
+
+msgid "HDR, 12bit 4:2:0/4:2:2, no PIP"
+msgstr "HDR, 12bit 4:2:0/4:2:2, no PIP"
+
+msgid "HDR10 Support"
+msgstr "HDR10 Soporte"
+
+msgid "HLG Support"
+msgstr "HLG Soporte"
+
+msgid "Video Chip Mode*"
+msgstr "Video Modo Chip*"
+
+msgid "WMA Pro downmix"
+msgstr "WMA Pro downmix"
+
 #~ msgid "3d mode"
 #~ msgstr "Modo 3D"
 
