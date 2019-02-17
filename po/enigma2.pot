@@ -10769,10 +10769,25 @@ msgstr ""
 msgid "Enable or disable the 10 Bit Color Mode"
 msgstr ""
 
+msgid "AC3 downmix"
+msgstr ""
+
+msgid "DTS downmix"
+msgstr ""
+
 msgid "Choose whether multi channel aac+ sound tracks should be downmixed to stereo."
 msgstr ""
 
+msgid "AC3 transcoding"
+msgstr ""
+
+msgid "DTS-HD HR/DTS-HD MA/DTS"
+msgstr ""
+
 msgid "Choose whether multi channel DTSHD sound tracks should be downmixed or transcoded.."
+msgstr ""
+
+msgid "WMA Pro downmix"
 msgstr ""
 
 msgid "Choose whether WMA Pro sound tracks should be downmixed."
