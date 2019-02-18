@@ -629,7 +629,7 @@ int eDVBServicePMTHandler::getProgramInfo(program &program)
 			else if (allow_hearingimpaired && autosub_dvb_hearing != -1)
 				program.defaultSubtitleStream = autosub_dvb_hearing;
 		}
-		if (program.defaultSubtitleStream != -1 && (equallanguagemask & (1<<(autosub_level-1))) == 0 && program.subtitleStreams[program.defaultSubtitleStream].language_code.compare(program.audioStreams[program.defaultAudioStream].language_code) == 0 )
+		if (program.defaultSubtitleStream != -1 && (equallanguagemask & (1<<(autosub_level-1))) == 0 && compareAudioSubtitleCode(program.subtitleStreams[program.defaultSubtitleStream].language_code, program.audioStreams[program.defaultAudioStream].language_code) == 0 )
 			program.defaultSubtitleStream = -1;
 
 		ret = 0;
@@ -771,6 +771,24 @@ int eDVBServicePMTHandler::getProgramInfo(program &program)
 	m_cached_program = program;
 	m_have_cached_program = true;
 	return ret;
+}
+
+int eDVBServicePMTHandler::compareAudioSubtitleCode(const std::string &subtitleTrack, const std::string &audioTrack)
+{
+        std::size_t pos = audioTrack.find("/");
+        if ( pos != std::string::npos)
+	{
+                std::string firstAudio = audioTrack.substr(0, pos);
+                std::string secondAudio = audioTrack.substr(pos + 1);
+                if (subtitleTrack.compare(firstAudio) == 0 || subtitleTrack.compare(secondAudio) == 0)
+                        return 0;
+	}
+        else
+	{
+                if (subtitleTrack.compare(audioTrack) == 0)
+                        return 0;
+	}
+        return -1;
 }
 
 int eDVBServicePMTHandler::getChannel(eUsePtr<iDVBChannel> &channel)

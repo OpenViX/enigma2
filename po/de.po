@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-01-08 22:27+0000\n"
-"PO-Revision-Date: 2019-01-26 18:55+0100\n"
+"PO-Revision-Date: 2019-02-16 17:13+0100\n"
 "Last-Translator: Ralf Biedermann <ralf.biedermann@rbsoft.de>\n"
 "Language-Team: AndyBlacburn, j-ot&Trial\n"
 "Language: de\n"
@@ -4458,19 +4458,19 @@ msgid "Enable multiple bouquets"
 msgstr "Mehrere Favoritenlisten erlauben"
 
 msgid "Enable or disable the 10 Bit Color Mode"
-msgstr "10Bit erzwingen aktivieren oder deaktivieren"
+msgstr "10 Bit Farbmodus aktivieren/deaktivieren"
 
 msgid "Enable or disable the 12 Bit Color Mode"
-msgstr "12Bit erzwingen aktivieren oder deaktivieren"
+msgstr "12 Bit Farbmodus aktivieren/deaktivieren"
 
 msgid "Enable or disable to force HDR Modes for UHD"
-msgstr "HDR Mode für UHD erzwingen aktivieren oder deaktivieren"
+msgstr "HDR Modus bei UHD aktivieren/deaktivieren"
 
 msgid "Enable or disable to force HDR10 Modes for UHD"
-msgstr "HDR10 Mode für UHD erzwingen aktivieren oder deaktivieren"
+msgstr "HDR Modus bei UHD aktivieren/deaktivieren"
 
 msgid "Enable or disable to force HLG Modes for UHD"
-msgstr "HLG Mode für UHD erzwingen aktivieren oder deaktivieren"
+msgstr "HDR Modus bei UHD aktivieren/deaktivieren"
 
 msgid "Enable panic button"
 msgstr "Paniktaste aktivieren"
@@ -10915,7 +10915,7 @@ msgid "Swedish"
 msgstr "Schwedisch"
 
 msgid "Switch"
-msgstr "Wechseln"
+msgstr "Multischalter"
 
 msgid "Switch TV to correct input"
 msgstr "Fernseher auf passenden Eingang schalten"
@@ -13579,16 +13579,16 @@ msgid "connected"
 msgstr "Verbunden"
 
 msgid "controlled by HDMI"
-msgstr "Von HDMI kontrolliert"
+msgstr "Kontrolliert über HDMI"
 
 msgid "convert to AC3"
-msgstr "Wandeln zu AC3"
+msgstr "In AC3 umwandeln"
 
 msgid "convert to DTS"
-msgstr "Wandeln zu DTS"
+msgstr "In DTS umwandeln"
 
 msgid "convert to multi-channel PCM"
-msgstr "Wandeln zu  Multikanal PCM"
+msgstr "In Mehrkanal-PCM umwandeln"
 
 msgid "cooking"
 msgstr "Kochen"
@@ -13651,7 +13651,7 @@ msgid "documentary (general)"
 msgstr "Dokumentation (allgemein)"
 
 msgid "dolby"
-msgstr ""
+msgstr "Dolby"
 
 msgid "don't descramble, record ecm"
 msgstr "Nicht entschlüsseln, Aufnahme ECM"
@@ -14166,7 +14166,7 @@ msgid "original language"
 msgstr "Landessprache"
 
 msgid "oscam webif disabled"
-msgstr "OScam Web-IF deaktiviert"
+msgstr "OScam Web-Interface deaktiviert"
 
 msgid "packages selected."
 msgstr "Pakete ausgewählt."
