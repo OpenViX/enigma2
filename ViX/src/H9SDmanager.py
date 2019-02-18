@@ -9,10 +9,7 @@ from Components.config import config
 from Components.Label import Label
 from Components.Sources.StaticText import StaticText
 from Components.SystemInfo import SystemInfo
-from Components.Harddisk import Harddisk
 from Tools.BoundFunction import boundFunction
-from Tools.Directories import pathExists
-from Tools.Multiboot import GetImagelist, GetCurrentImage, GetCurrentImageMode, EmptySlot
 
 class H9SDmanager(Screen):
 
@@ -23,13 +20,11 @@ class H9SDmanager(Screen):
 		<widget source="Title" render="Label" position="60,10" foregroundColor="#00ffffff" size="480,50" halign="left" font="Regular; 28" backgroundColor="#00000000" />
 		<eLabel name="line" position="1,60" size="748,1" backgroundColor="#00ffffff" zPosition="1" />
 		<eLabel name="line2" position="1,250" size="748,4" backgroundColor="#00ffffff" zPosition="1" />
-		<widget name="config" position="2,280" size="730,380" halign="center" font="Regular; 22" backgroundColor="#00000000" foregroundColor="#00e5b243" />
 		<widget source="labe14" render="Label" position="2,80" size="730,30" halign="center" font="Regular; 22" backgroundColor="#00000000" foregroundColor="#00ffffff" />
-		<widget source="labe15" render="Label" position="2,130" size="730,60" halign="center" font="Regular; 22" backgroundColor="#00000000" foregroundColor="#00ffffff" />
 		<widget source="key_red" render="Label" position="30,200" size="150,30" noWrap="1" zPosition="1" valign="center" font="Regular; 20" halign="left" backgroundColor="#00000000" foregroundColor="#00ffffff" />
 		<widget source="key_green" render="Label" position="200,200" size="150,30" noWrap="1" zPosition="1" valign="center" font="Regular; 20" halign="left" backgroundColor="#00000000" foregroundColor="#00ffffff" />
-		<eLabel position="20,200" size="6,40" backgroundColor="#00e61700" /> <!-- Should be a pixmap -->
-		<eLabel position="190,200" size="6,40" backgroundColor="#0061e500" /> <!-- Should be a pixmap -->
+		<ePixmap pixmap="skin_default/buttons/red.png" position="30,200" size="40,40" alphatest="on" />
+		<ePixmap pixmap="skin_default/buttons/green.png" position="200,200" size="40,40" alphatest="on" />
 	</screen>
 	"""
 
@@ -58,23 +53,23 @@ class H9SDmanager(Screen):
 			self["menu_path_compressed"] = StaticText("")
 		Screen.setTitle(self, title)
 		self.title = screentitle
-		self["labe14"] = StaticText(_("Press Init to move Nand root to SDcard."))
-		self["labe15"] = StaticText("")
-		self["key_red"] = StaticText(_("Cancel"))
-		self["key_green"] = StaticText(_("Init Zgemma H9 SDcard"))
-		self["config"] = ChoiceList(list=[ChoiceEntryComponent('',((""), "Queued"))])
-		self["actions"] = ActionMap(["ColorActions", "MenuActions"],
+		self["labe14"] = StaticText(_("Press appropiate Init to move Nand root to SDcard or USB."))
+		self["key_red"] = StaticText(_("Reboot"))
+		self["key_green"] = StaticText(_("Init SDcard"))
+		self["key_yellow"] = StaticText(_("Init USB/SDA1"))
+		self["actions"] = ActionMap(["OkCancelActions", "ColorActions"],
 		{
-			"red": boundFunction(self.close, None),
-			"green": self.H9SDInit,
-			"menu": boundFunction(self.close, True),
+			"red": self.reboot,
+			"green": self.SDInit,
+			"ok": boundFunction(self.close, None),
+			"cancel": boundFunction(self.close, None),
 		}, -1)
 		self.onLayoutFinish.append(self.layoutFinished)
 
 	def layoutFinished(self):
 		self.setTitle(self.title)
 
-	def H9SDInit(self):
+	def SDInit(self):
 		if SystemInfo["HasH9SD"]:
 			self.TITLE = _("Init Zgemma H9 SDCARD - please reboot after use.")
 			cmdlist = []
@@ -95,3 +90,25 @@ class H9SDmanager(Screen):
 			self.session.open(Console, title = self.TITLE, cmdlist = cmdlist, closeOnSuccess = True)
 		else:
 			self.close()
+
+	def reboot(self):
+		self.session.open(TryQuitMainloop, 2)
+
+	def USBInit(self):
+			self.TITLE = _("Init Zgemma H9 USB/SDA1 - please reboot after use.")
+			cmdlist = []
+			cmdlist.append("opkg update")
+			cmdlist.append("opkg install rsync")
+			cmdlist.append("umount /dev/mmcblk0p1")
+			cmdlist.append("dd if=/dev/zero of=/dev/sda1 bs=1M count=150")
+			cmdlist.append('mkfs.ext4 -L "H9-ROOTFS" /dev/sda1')
+			cmdlist.append("mkdir /tmp/mmc")
+			cmdlist.append("mount /dev/mmcblk0p1 /tmp/mmc")
+			cmdlist.append("mkdir /tmp/root")
+			cmdlist.append("mount --bind / /tmp/root")
+			cmdlist.append("rsync -aAX /tmp/root/ /tmp/mmc/")
+			cmdlist.append("umount /tmp/root")
+			cmdlist.append("umount /tmp/mmc")
+			cmdlist.append("rmdir /tmp/root")
+			cmdlist.append("rmdir /tmp/mmc")
+			self.session.open(Console, title = self.TITLE, cmdlist = cmdlist, closeOnSuccess = True)
