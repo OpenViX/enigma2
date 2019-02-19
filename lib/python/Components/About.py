@@ -153,14 +153,14 @@ def getCpuCoresInt():
 	return cores
 
 def getCpuCoresString():
-	MachinesCores = {
-					0 : _("unavailable"),
-					1 : _("Single core"),
-					2 : _("Dual core"),
-					4 : _("Quad core"),
-					8 : _("Octo core")
-					}
-	return MachinesCores[getCpuCoresInt()] 
+	cores = getCpuCoresInt()
+	return {
+			0 : _("unavailable"),
+			1 : _("Single core"),
+			2 : _("Dual core"),
+			4 : _("Quad core"),
+			8 : _("Octo core")
+			}.get(cores, _("%d cores") % cores)
 
 def _ifinfo(sock, addr, ifname):
 	iface = struct.pack('256s', ifname[:15])
