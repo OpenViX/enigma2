@@ -17,7 +17,7 @@ from Components.Renderer.Picon import getPiconName
 from Screens.TimerEdit import TimerSanityConflict
 profile("ChannelSelection.py 1")
 from EpgSelection import EPGSelection
-from enigma import eActionMap, eServiceReference, eEPGCache, eServiceCenter, eRCInput, eTimer, ePoint, eDVBDB, iPlayableService, iServiceInformation, getPrevAsciiCode, eEnv, eDVBLocalTimeHandler
+from enigma import eActionMap, eServiceReference, eEPGCache, eServiceCenter, eRCInput, eTimer, ePoint, eDVBDB, iPlayableService, iServiceInformation, getPrevAsciiCode, eEnv, loadPNG, eDVBLocalTimeHandler
 from Components.config import config, configfile, ConfigSubsection, ConfigText, ConfigYesNo
 from Tools.NumericalTextInput import NumericalTextInput
 profile("ChannelSelection.py 2")
@@ -46,7 +46,6 @@ from ServiceReference import ServiceReference
 from Tools.BoundFunction import boundFunction
 from Tools import Notifications
 from Tools.Alternatives import GetWithAlternative
-from Tools.LoadPixmap import LoadPixmap
 from Plugins.Plugin import PluginDescriptor
 from Components.PluginComponent import plugins
 from Screens.ChoiceBox import ChoiceBox
@@ -2972,7 +2971,7 @@ class HistoryZapSelector(Screen):
 			png = ""
 			picon = getPiconName(str(ServiceReference(x[1])))
 			if picon != "":
-				png = LoadPixmap(picon)
+				png = loadPNG(picon)
 			if self.invertItems:
 				self.list.insert(0, (x[1], cnt == mark_item and "»" or "", x[0], eventName, descriptionName, durationTime, png, orbpos))
 			else:
