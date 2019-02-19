@@ -10801,3 +10801,6 @@ msgstr ""
 
 msgid "Use as PiP if possible"
 msgstr ""
+
+msgid "When enabled enigma2 will load unlinked userbouquets. This means that userbouquets that are available, but not included in the bouquets.tv or bouquets.radio files, will still be loaded. This allows you for example to keep your own user bouquet while installed settings are upgraded"
+msgstr ""
