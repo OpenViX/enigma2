@@ -1,18 +1,6 @@
 from enigma import loadPNG, loadJPG
-from Tools.LRUCache import lru_cache
 
-def LoadPixmap(path, desktop=None, cached=None):
-	if cached is None or cached:
-		ret = _cached_load(path, desktop)
-		return ret
-	else:
-		return _load(path, desktop)
-
-@lru_cache(maxsize=256)
-def _cached_load(path, desktop):
-	return _load(path, desktop)
-
-def _load(path, desktop):
+def LoadPixmap(path, desktop = None, cached = False):
 	if path[-4:] == ".png":
 		ptr = loadPNG(path)
 	elif path[-4:] == ".jpg":
