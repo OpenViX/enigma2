@@ -12490,7 +12490,7 @@ msgid "Use as PiP if possible"
 msgstr "Usar como PiP si es posible"
 
 msgid "Permanent sort key changes"
-msgstr "Cambios botón ordenar permanente"
+msgstr "Cambios botón 'ordenar' permanente"
 
 msgid "Set the global sort method"
 msgstr "Establecer método 'ordenar' global"
