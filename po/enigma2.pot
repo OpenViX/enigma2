@@ -10804,3 +10804,15 @@ msgstr ""
 
 msgid "When enabled enigma2 will load unlinked userbouquets. This means that userbouquets that are available, but not included in the bouquets.tv or bouquets.radio files, will still be loaded. This allows you for example to keep your own user bouquet while installed settings are upgraded"
 msgstr ""
+
+msgid "Permanent sort key changes"
+msgstr ""
+
+msgid "Set the global sort method"
+msgstr ""
+
+msgid "When set, sort changes via the sort key will be permanent."
+msgstr ""
+
+msgid "When unset, sort changes will be temporary - just for this view of a directory."
+msgstr ""
