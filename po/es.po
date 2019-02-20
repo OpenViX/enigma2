@@ -12490,16 +12490,16 @@ msgid "Use as PiP if possible"
 msgstr "Usar como PiP si es posible"
 
 msgid "Permanent sort key changes"
-msgstr "Cambios en tecla ordenar permanente"
+msgstr "Cambios botón ordenar permanente"
 
 msgid "Set the global sort method"
-msgstr "Establecer el método ordenar global"
+msgstr "Establecer método 'ordenar' global"
 
 msgid "When set, sort changes via the sort key will be permanent."
-msgstr "Cuando se establece, los cambios de clasificación a través de tecla ordenar serán permanentes."
+msgstr "Cuando se establece, los cambios de clasificación a través de la tecla 'ordenar' serán permanentes."
 
 msgid "When unset, sort changes will be temporary - just for this view of a directory."
-msgstr "Cuando no estén configurados, los cambios de clasificación serán temporales, solo para esta vista de un directorio."
+msgstr "Cuando no estén configurados, los cambios de clasificación serán temporales - solo para esta vista de un directorio."
 
 #~ msgid "3d mode"
 #~ msgstr "Modo 3D"
