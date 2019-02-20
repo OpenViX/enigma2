@@ -53,10 +53,9 @@ class H9SDmanager(Screen):
 			self["menu_path_compressed"] = StaticText("")
 		Screen.setTitle(self, title)
 		self.title = screentitle
-		self["labe14"] = StaticText(_("Press appropiate Init to move Nand root to SDcard or USB."))
+		self["labe14"] = StaticText(_("Press appropiate Init to move Nand root to SDcard."))
 		self["key_red"] = StaticText(_("Reboot"))
 		self["key_green"] = StaticText(_("Init SDcard"))
-		self["key_yellow"] = StaticText(_("Init USB/SDA1"))
 		self["actions"] = ActionMap(["OkCancelActions", "ColorActions"],
 		{
 			"red": self.reboot,
