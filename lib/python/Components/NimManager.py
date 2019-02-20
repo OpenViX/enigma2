@@ -1165,13 +1165,8 @@ def InitSecParams():
 
 def InitNimManager(nimmgr, update_slots = []):
 	hw = HardwareInfo()
-	addNimConfig = False
-	try:
-		config.Nims
-	except:
-		addNimConfig = True
 
-	if addNimConfig:
+	if not hasattr(config, "Nims"):
 		InitSecParams()
 		config.Nims = ConfigSubList()
 		for x in range(len(nimmgr.nim_slots)):
@@ -1435,9 +1430,7 @@ def InitNimManager(nimmgr, update_slots = []):
 			open("/proc/stb/frontend/%d/t2mirawmode" % slot, "w").write(configElement.value)
 
 	def createSatConfig(nim, x, empty_slots):
-		try:
-			nim.toneAmplitude
-		except:
+		if not hasattr(nim, "toneAmplitude"):
 			nim.toneAmplitude = ConfigSelection([("11", "340mV"), ("10", "360mV"), ("9", "600mV"), ("8", "700mV"), ("7", "800mV"), ("6", "900mV"), ("5", "1100mV")], "7")
 			nim.toneAmplitude.fe_id = x - empty_slots
 			nim.toneAmplitude.slot_id = x
@@ -1480,11 +1473,8 @@ def InitNimManager(nimmgr, update_slots = []):
 			nim.fastTurningEnd = ConfigDateTime(default = mktime(etime.timetuple()), formatstring = _("%H:%M"), increment = 900)
 
 	def createCableConfig(nim, x):
-		try:
-			nim.cable
-		except:
-			#list = [(str(n), x[0]) for n, x in enumerate(nimmgr.cablesList)]
-			list = [x[0] for x in nimmgr.cablesList]
+		if not hasattr(nim, "cable"):
+			list = [(x[0], x[0]) for x in nimmgr.cablesList]
 			nim.cable = ConfigSubsection()
 			nim.cable.scan_networkid = ConfigInteger(default = 0, limits = (0, 99999))
 			possible_scan_types = [("bands", _("Frequency bands")), ("steps", _("Frequency steps"))]
@@ -1519,20 +1509,14 @@ def InitNimManager(nimmgr, update_slots = []):
 			nim.cable.scan_sr_ext2 = ConfigInteger(default = 0, limits = (0, 7230))
 
 	def createTerrestrialConfig(nim, x):
-		try:
-			nim.terrestrial
-		except:
-			#list = [(str(n), x[0]) for n, x in enumerate(nimmgr.terrestrialsList)]
-			list = [x[0] for x in nimmgr.terrestrialsList]
+		if not hasattr(nim, "terrestrial"):
+			list = [(x[0], x[0]) for x in nimmgr.terrestrialsList]
 			nim.terrestrial = ConfigSelection(choices = list)
 			nim.terrestrial_5V = ConfigOnOff()
 
 	def createATSCConfig(nim, x):
-		try:
-			nim.atsc
-		except:
-			#list = [(str(n), x[0]) for n, x in enumerate(nimmgr.atscList)]
-			list = [x[0]for x in nimmgr.atscList]
+		if not hasattr(nim, "atsc"):
+			list = [(x[0], x[0]) for x in nimmgr.atscList]
 			nim.atsc = ConfigSelection(choices = list)
 
 	def tunerTypeChanged(nimmgr, configElement, initial=False):
@@ -1621,28 +1605,13 @@ def InitNimManager(nimmgr, update_slots = []):
 			tmp.addNotifier(configModeChanged, initial_call = False)
 			nim.configMode = tmp
 		elif slot.isCompatible("DVB-C"):
-			nim.configMode = ConfigSelection(
-				choices = {
-					"enabled": _("enabled"),
-					"nothing": _("disabled"),
-					},
-				default = "enabled")
+			nim.configMode = ConfigSelection(choices = {"enabled": _("enabled"), "nothing": _("disabled")}, default = "enabled")
 			createCableConfig(nim, x)
 		elif slot.isCompatible("DVB-T"):
-			nim.configMode = ConfigSelection(
-				choices = {
-					"enabled": _("enabled"),
-					"nothing": _("disabled"),
-					},
-				default = "enabled")
+			nim.configMode = ConfigSelection(choices = {"enabled": _("enabled"), "nothing": _("disabled")}, default = "enabled")
 			createTerrestrialConfig(nim, x)
 		elif slot.isCompatible("ATSC"):
-			nim.configMode = ConfigSelection(
-				choices = {
-					"enabled": _("enabled"),
-					"nothing": _("disabled"),
-					},
-				default = "enabled")
+			nim.configMode = ConfigSelection(choices = {"enabled": _("enabled"), "nothing": _("disabled")}, default = "enabled")
 			createATSCConfig(nim, x)
 		else:
 			empty_slots += 1
@@ -1686,20 +1655,8 @@ def InitNimManager(nimmgr, update_slots = []):
 		if empty:
 			empty_slots += 1
 
-		# check for multitype tuners
-		addMultiType = False
-		try:
-			nim.multiType
-		except:
-			addMultiType = True
-
-		if slot.isMultiType() and addMultiType:
-			typeList = []
-			for id in slot.getMultiTypeList().keys():
-				type = slot.getMultiTypeList()[id]
-				typeList.append((id, type))
-			typeList.append(("nothing", _("disabled")))
-			nim.multiType = ConfigSelection(typeList, "0")
+		if slot.isMultiType() and not hasattr(nim, "multiType"):
+			nim.multiType = ConfigSelection([(id, slot.getMultiTypeList()[id]) for id in slot.getMultiTypeList().keys()] + [("nothing", _("disabled"))], "0")
 			nim.multiType.fe_id = x - empty_slots
 			nim.multiType.addNotifier(boundFunction(tunerTypeChanged, nimmgr), initial_call=True)
 		if slot.isHotSwitchable():
