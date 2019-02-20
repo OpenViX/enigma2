@@ -53,6 +53,7 @@ config.movielist.videodirs = ConfigLocations(default=[resolveFilename(SCOPE_HDD)
 config.movielist.last_selected_tags = ConfigSet([], default=[])
 config.movielist.play_audio_internal = ConfigYesNo(default=True)
 config.movielist.settings_per_directory = ConfigYesNo(default=True)
+config.movielist.perm_sort_changes = ConfigYesNo(default=True)
 config.movielist.root = ConfigSelection(default="/media", choices=["/","/media","/media/hdd","/media/hdd/movie","/media/usb","/media/usb/movie"])
 config.movielist.hide_extensions = ConfigYesNo(default=False)
 config.movielist.stop_service = ConfigYesNo(default=True)
@@ -241,13 +242,12 @@ class MovieBrowserConfiguration(ConfigListScreen,Screen):
 
 		self.onChangedEntry = [ ]
 		cfg = ConfigSubsection()
-		self.cfg = cfg
 		cfg.moviesort = ConfigSelection(default=str(config.movielist.moviesort.value), choices = l_moviesort)
 		cfg.description = ConfigYesNo(default=(config.movielist.description.value != MovieList.HIDE_DESCRIPTION))
+		self.cfg = cfg
 
 		self.list = []
 		ConfigListScreen.__init__(self, self.list, session = self.session, on_change = self.changedEntry)
-
 		self.createSetup()
 
 		self["actions"] = ActionMap(["SetupActions", 'ColorActions'],
@@ -279,8 +279,10 @@ class MovieBrowserConfiguration(ConfigListScreen,Screen):
 					 getConfigListEntry(_("Sort"), self.cfg.moviesort, _("Set the default sorting method.")),
 					 getConfigListEntry(_("Sort Trash by deletion time"), config.usage.trashsort_deltime, _("Use the deletion time to sort Trash directories.\nMost recently deleted at the top.")),
 					 getConfigListEntry(_("Show extended description"), self.cfg.description, _("Show or hide the extended description, (skin dependant).")),
-					 getConfigListEntry(_("Use individual settings for each directory"), config.movielist.settings_per_directory, _("When set, each directory will show the previous state used. When off, the default values will be shown.")),
-					 getConfigListEntry(_("Stop service on return to movie list"), config.movielist.stop_service, _("Stop previous broadcasted service on return to movie list.")),
+					 getConfigListEntry(_("Use individual settings for each directory"), config.movielist.settings_per_directory, _("When set, each directory will show the previous state used. When off, the default values will be shown."))]
+		if not config.movielist.settings_per_directory.value:
+			self.list += [getConfigListEntry(_("Permanent sort key changes"), config.movielist.perm_sort_changes, _("When set, sort changes via the sort key will be permanent.") + "\n" + _("When unset, sort changes will be temporary - just for this view of a directory."))]
+		self.list += [getConfigListEntry(_("Stop service on return to movie list"), config.movielist.stop_service, _("Stop previous broadcasted service on return to movie list.")),
 					 getConfigListEntry(_("Show status icons in movie list"), config.usage.show_icons_in_movielist, _("Shows the watched status of the movie."))]
 		if config.usage.show_icons_in_movielist.value != 'o':
 			self.list.append(getConfigListEntry(_("Show icon for new/unseen items"), config.usage.movielist_unseen, _("Shows the icons when new/unseen, otherwise it will not show an icon.")))
@@ -1418,6 +1420,12 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 				}
 			self.applyConfigSettings(updates)
 
+# Remember this starting sort method for this dir.
+# selectSortby() needs this to highlight the current sort and
+# do_sort() needs it to know whence to move on.
+#
+		self["list"].current_sort = self.settings["moviesort"]
+
 	def applyConfigSettings(self, updates):
 		needUpdate = ("description" in updates) and (updates["description"] != self.settings["description"])
 		self.settings.update(updates)
@@ -1439,12 +1447,20 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		print '[MovieSelection] SORTBY:',newType
 		if newType < MovieList.TRASHSORT_SHOWRECORD:
 			self.settings["moviesort"] = newType
-# If we are using per-directory sort methods then set it now,
-# otherwise indicate to MovieList.py to use a temporary sort override.
+# If we are using per-directory sort methods then set it now...
+#
 			if config.movielist.settings_per_directory.value:
 				self.saveLocalSettings()
 			else:
-				self["list"].temp_sort = newType
+# ..otherwise, if we are setting permanent sort methods, save it,
+# while, for temporary sort methods, indicate to MovieList.py to
+# use a temporary sort override.
+#
+				if config.movielist.perm_sort_changes.value:
+					config.movielist.moviesort.setValue(newType)
+					config.movielist.moviesort.save()
+				else:
+					self["list"].temp_sort = newType
 			self.setSortType(newType)
 # Unset specific trash-sorting if other sort chosen while in Trash
 			if MovieList.InTrashFolder:
@@ -1510,6 +1526,11 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 	def do_sortby(self):
 		self.selectSortby()
 
+# This is the code that displays a menu of all sort options and lets you
+# select one to use.  The "Sort by" option.
+# It must be compatible with do_sort().
+# NOTE: sort methods may be temporary or permanent!
+#
 	def selectSortby(self):
 		menu = []
 		index = 0
@@ -1528,18 +1549,26 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 				menu.append((_(x[1]), x[0], "%d" % index))
 				index += 1
 
-# Add a message to remind the user whether this will set a per-directory
-# method or just a temporary override.
+# Add a help window message to remind the user whether this will set a
+# per-directory method or just a temporary override.
 # Done by using the way that ChoiceBox handles a multi-line title:
 # it makes line1 the title and all succeeding lines go into the "text"
 # display.
+# We set a text for "settings_per_directory" even though it will never
+# get here...just in case one day it does.
+#
 		title=_("Sort list:")
 		if config.movielist.settings_per_directory.value:
 			title = title + "\n\n" + _("Set the sort method for this directory")
 		else:
-			title = title + "\n\n" + _("Set a temporary sort method for this directory")
-			if self["list"].current_sort != self["list"].sort_type:
-				title = title + "\n" + _("(You are currently using a temporary sort method)")
+			if config.movielist.perm_sort_changes.value:
+				title = title + "\n\n" + _("Set the global sort method")
+			else:
+				title = title + "\n\n" + _("Set a temporary sort method for this directory")
+# You can't be currently using a temporary sort method if you use
+# perm_sort_changes
+				if self["list"].current_sort != self["list"].sort_type:
+					title = title + "\n" + _("(You are currently using a temporary sort method)")
 		self.session.openWithCallback(self.sortbyMenuCallback, ChoiceBox, title=title, list=menu, selection = used)
 
 	def getPixmapSortIndex(self, which):
@@ -2291,10 +2320,17 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		print '[MovieSelection] SORT:',config.movielist.moviesort.value
 		self.sortBy(int(config.movielist.moviesort.value))
 
+# This is the code that advances to the "next" sort method
+# on each button press.  The "Sort" option.
+# It must be compatible with selectSortby().
+# NOTE: sort methods may be temporary or permanent!
+#
 	def do_sort(self):
 		index = 0
+# Find the current sort method, then advance to the next...
+#
 		for index, item in enumerate(l_moviesort):
-			if int(item[0]) == int(config.movielist.moviesort.value):
+			if int(item[0]) == self["list"].current_sort:
 				break
 		if index >= len(l_moviesort) - 1:
 			index = 0

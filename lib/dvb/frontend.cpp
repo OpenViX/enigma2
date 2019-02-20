@@ -782,7 +782,7 @@ int eDVBFrontend::closeFrontend(bool force, bool no_delayed)
 		if (!::close(m_fd))
 			m_fd=-1;
 		else
-			eWarning("[eDVBFrontend $d] couldnt close frontend", m_dvbid);
+			eWarning("[eDVBFrontend %d] couldnt close frontend", m_dvbid);
 	}
 	else if (m_simulate)
 	{
@@ -1957,7 +1957,7 @@ int eDVBFrontend::tuneLoopInt()  // called by m_tuneTimer
 					}
 					else if (sec_fe->m_need_rotor_workaround)
 					{
-						char dev[16];
+						char dev[32];
 						int slotid = sec_fe->m_slotid;
 						// FIXMEEEEEE hardcoded i2c devices for dm7025 and dm8000
 						if (slotid < 2)
