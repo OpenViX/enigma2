@@ -293,7 +293,7 @@ class TryQuitMainloop(MessageBox):
 		self.retval = retvalue
 		self.connected = False
 		reason = getReasons(session)
-		if reason:
+		if reason and not(internalHDDNotSleeping() and retvalue in (3, 6, 42)):
 			text = { 1: _("Really shutdown your %s %s now?") % (MACHINEBRAND, MACHINENAME),
 				2: _("Really reboot your %s %s now?") % (MACHINEBRAND, MACHINENAME),
 				3: _("Really restart your %s %s now?") % (MACHINEBRAND, MACHINENAME),
