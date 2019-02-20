@@ -9790,7 +9790,7 @@ msgid "What do you want to scan?"
 msgstr "¿Qué quieres buscar?"
 
 msgid "When enabled enigma2 will load unlinked userbouquets. This means that userbouquets that are available, but not included in the bouquets.tv or bouquets.radio files, will still be loaded. This allows you for example to keep your own user bouquet while installed settings are upgraded"
-msgstr "Cuando esté habilitado, enigma2 cargará los paquetes de usuarios no vinculados. Esto significa que los paquetes de usuario que están disponibles, pero no están incluidos en los archivos bouquets.tv o bouquets.radio, todavía se cargarán. Esto le permite, por ejemplo, mantener su propio bouquet de usuarios mientras se actualizan las configuraciones instaladas"
+msgstr "Cuando esté habilitado, enigma2 cargará los paquetes de usuarios no vinculados. Esto significa que los paquetes de usuario que están disponibles, pero no están incluidos en los archivos bouquets.tv o bouquets.radio, todavía se cargarán. Esto le permite, por ejemplo, mantener su propio bouquet de usuarios mientras se actualizan configuraciones instaladas"
 
 msgid "When enabled the LNB power will not be switched off in standby"
 msgstr "Cuando está habilitada, la alimentación de LNB no se apagará en el modo de espera"
