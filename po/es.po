@@ -12501,6 +12501,9 @@ msgstr "Cuando se establece, los cambios de clasificación a través de la tecla
 msgid "When unset, sort changes will be temporary - just for this view of a directory."
 msgstr "Cuando no estén configurados, los cambios de clasificación serán temporales - solo para esta vista de un directorio."
 
+msgid "Repeat how often"
+msgstr "Cuantas veces repetir?"
+
 #~ msgid "3d mode"
 #~ msgstr "Modo 3D"
 

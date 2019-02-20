@@ -12741,3 +12741,6 @@ msgid ""
 "When unset, sort changes will be temporary - just for this view of a "
 "directory."
 msgstr ""
+
+msgid "Repeat how often"
+msgstr ""
