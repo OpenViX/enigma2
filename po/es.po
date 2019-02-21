@@ -12501,6 +12501,27 @@ msgstr "Cuando se establece, los cambios de clasificación a través de la tecla
 msgid "When unset, sort changes will be temporary - just for this view of a directory."
 msgstr "Cuando no estén configurados, los cambios de clasificación serán temporales - solo para esta vista de un directorio."
 
+msgid "H9 switch Nand and SDcard"
+msgstr ""
+
+msgid "SwaptoNand"
+msgstr "SwapaNand"
+
+msgid "SwaptoSD"
+msgstr "SwapaSD"
+
+msgid "H9 SDcard switch ERROR! - already on Nand"
+msgstr "H9 SDcard interruptor ERROR! - ya en Nand"
+
+msgid "H9 SDcard switch ERROR! - already on mmc"
+msgstr "H9 SDcard interruptor ERROR! - ya en mmc"
+
+msgid "H9 SDcard switch ERROR! - H9 root files not transferred to SD card"
+msgstr "H9 SDcard interruptor ERROR! - Archivos raíz H9 no transferidos a la tarjeta SD"
+
+msgid "H9 USB switch ERROR! - H9 root files not transferred to USB"
+msgstr "Interruptor USB H9 ERROR! - Archivos raíz H9 no transferidos a USB"
+
 #~ msgid "3d mode"
 #~ msgstr "Modo 3D"
 

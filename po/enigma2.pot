@@ -12741,3 +12741,24 @@ msgid ""
 "When unset, sort changes will be temporary - just for this view of a "
 "directory."
 msgstr ""
+
+msgid "H9 switch Nand and SDcard"
+msgstr ""
+
+msgid "SwaptoNand"
+msgstr ""
+
+msgid "SwaptoSD"
+msgstr ""
+
+msgid "H9 SDcard switch ERROR! - already on Nand"
+msgstr ""
+
+msgid "H9 SDcard switch ERROR! - already on mmc"
+msgstr ""
+
+msgid "H9 SDcard switch ERROR! - H9 root files not transferred to SD card"
+msgstr ""
+
+msgid "H9 USB switch ERROR! - H9 root files not transferred to USB"
+msgstr ""
