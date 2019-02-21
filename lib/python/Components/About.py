@@ -64,7 +64,7 @@ def getChipSetString():
 	except IOError:
 		return _("unavailable")
 
-def getCPUSpeedString():
+def getCPUSpeedMHzInt():
 	cpu_speed = 0
 	try:
 		file = open('/proc/cpuinfo', 'r')
@@ -78,7 +78,7 @@ def getCPUSpeedString():
 					cpu_speed = float(splitted[1].split(' ')[0])
 					break
 	except IOError:
-		print "[About] getCPUSpeedString, /proc/cpuinfo not available"
+		print "[About] getCPUSpeedMHzInt, /proc/cpuinfo not available"
 
 	if cpu_speed == 0:
 		if getMachineBuild() in ('h7','hd51','hd52','sf4008'):
@@ -89,15 +89,18 @@ def getCPUSpeedString():
 				f.close()
 				cpu_speed = round(int(binascii.hexlify(clockfrequency), 16)/1000000,1)
 			except IOError:
-				return "1.7 GHz"
+				cpu_speed = 1700
 		else:
 			try: # Solo4K sf8008
 				file = open('/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq', 'r')
 				cpu_speed = float(file.read()) / 1000
 				file.close()
 			except IOError:
-				print "[About] getCPUSpeedString, /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq not available"
+				print "[About] getCPUSpeedMHzInt, /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq not available"
+	return int(cpu_speed)
 
+def getCPUSpeedString():
+	cpu_speed = float(getCPUSpeedMHzInt())
 	if cpu_speed > 0:
 		if cpu_speed >= 1000:
 			cpu_speed = "%s GHz" % str(round(cpu_speed/1000,1))
@@ -133,15 +136,9 @@ def getCPUString():
 	except IOError:
 		return _("unavailable")
 
-def getCpuCoresString():
-	MachinesCores = {
-					1 : 'Single core',
-					2 : 'Dual core',
-					4 : 'Quad core',
-					8 : 'Octo core'
-					}
+def getCpuCoresInt():
+	cores = 0
 	try:
-		cores = 1
 		file = open('/proc/cpuinfo', 'r')
 		lines = file.readlines()
 		file.close()
@@ -151,9 +148,19 @@ def getCpuCoresString():
 				splitted[1] = splitted[1].replace('\n','')
 				if splitted[0].startswith("processor"):
 					cores = int(splitted[1]) + 1
-		return MachinesCores[cores]
 	except IOError:
-		return _("unavailable")
+		pass
+	return cores
+
+def getCpuCoresString():
+	cores = getCpuCoresInt()
+	return {
+			0 : _("unavailable"),
+			1 : _("Single core"),
+			2 : _("Dual core"),
+			4 : _("Quad core"),
+			8 : _("Octo core")
+			}.get(cores, _("%d cores") % cores)
 
 def _ifinfo(sock, addr, ifname):
 	iface = struct.pack('256s', ifname[:15])
