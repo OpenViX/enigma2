@@ -1357,7 +1357,7 @@ msgid "Begin time"
 msgstr "Hora de inicio"
 
 msgid "Behavior of 'pause' when paused"
-msgstr "Comportamiento de 'pausa' cuando está en pausa"
+msgstr "Comportamiento de \"pausa\" en pausa"
 
 msgid "Behavior of 0 key in PiP-mode"
 msgstr "Comportamiento de la tecla '0' en modo Pip"
@@ -2006,7 +2006,7 @@ msgid "Configure the amount of time that will be presented."
 msgstr "Configurar la duración de la presentación."
 
 msgid "Configure the behavior of the 'pause' key when movie playback is already paused."
-msgstr "Configurar el comportamiento de la tecla 'pausa' cuando la reproducción de películas ya está en pausa."
+msgstr "Configurar el comportamiento de la tecla \"pausa\" cuando la reproducción de películas ya está en pausa."
 
 msgid "Configure the behavior when movie playback is manually stopped."
 msgstr "Configurar el comportamiento cuando la reproducción de películas se para manualmente."
@@ -12490,34 +12490,394 @@ msgid "Use as PiP if possible"
 msgstr "Usar como PiP si es posible"
 
 msgid "Permanent sort key changes"
-msgstr "Cambios en la tecla de orden permanente"
+msgstr "Cambios botón 'ordenar' permanente"
 
 msgid "Set the global sort method"
-msgstr "Establecer el método de clasificación global"
+msgstr "Establecer método 'ordenar' global"
 
 msgid "When set, sort changes via the sort key will be permanent."
-msgstr "Cuando se establece, los cambios de clasificación a través del botón ordenar clasificación serán permanentes."
+msgstr "Cuando se establece, los cambios de clasificación a través de la tecla 'ordenar' serán permanentes."
 
 msgid "When unset, sort changes will be temporary - just for this view of a directory."
 msgstr "Cuando no estén configurados, los cambios de clasificación serán temporales - solo para esta vista de un directorio."
 
-msgid "H9 switch Nand and SDcard"
-msgstr "H9 interruptor Nand y SDcard"
+#~ msgid "3d mode"
+#~ msgstr "Modo 3D"
 
-msgid "SwaptoNand"
-msgstr "SwapaNand"
+#~ msgid "A recording is currently running. Please stop the recording before trying to start the satfinder."
+#~ msgstr "Hay una grabación en curso. Detén la grabación antes de iniciar el buscador de satélites."
 
-msgid "SwaptoSD"
-msgstr "SwapaSD"
+#~ msgid "AA"
+#~ msgstr "AA"
 
-msgid "H9 SDcard switch ERROR! - already on Nand"
-msgstr "H9 SDcard interruptor ERROR! - ya en Nand"
+#~ msgid "AB"
+#~ msgstr "AB"
 
-msgid "H9 SDcard switch ERROR! - already on mmc"
-msgstr "H9 SDcard interruptor ERROR! - ya en mmc"
+#~ msgid "Action on long power button press"
+#~ msgstr "Acción con pulsación larga de la tecla de encendido"
 
-msgid "H9 SDcard switch ERROR! - H9 root files not transferred to SD card"
-msgstr "H9 SDcard switch ERROR! - Archivos raíz H9 no transferidos a la tarjeta SD"
+#~ msgid "Action on short power button press"
+#~ msgstr "Acción con pulsación corta de la tecla de encendido"
 
-msgid "H9 USB switch ERROR! - H9 root files not transferred to USB"
-msgstr "Interruptor USB H9 ERROR! - Archivos raíz H9 no transferidos a USB"
+#~ msgid "Adjust 3D settings"
+#~ msgstr "Ajustar configuración 3D"
+
+#~ msgid "Advanced video setup"
+#~ msgstr "Configuración avanzada de vídeo"
+
+#~ msgid "Allows more detailed information to be in the crash log"
+#~ msgstr "Permite más detalles en el historial de caídas"
+
+#~ msgid "BA"
+#~ msgstr "BA"
+
+#~ msgid "BB"
+#~ msgstr "BB"
+
+#~ msgid "Change pin code"
+#~ msgstr "Cambiar código pin"
+
+#~ msgid "Change service PIN"
+#~ msgstr "Cambiar el PIN de canal"
+
+#~ msgid "Change service PINs"
+#~ msgstr "Cambiar los PIN de canal"
+
+#~ msgid "Changelog"
+#~ msgstr "Cambios de historial"
+
+#~ msgid "Channel +/- button mode"
+#~ msgstr "Modo de tecla de canal +/-"
+
+#~ msgid "Checking Feeds"
+#~ msgstr "Comprobando fuentes"
+
+#~ msgid "Configure the function of a long press of the power button."
+#~ msgstr "Configurar la función de una pulsación larga de la tecla de encendido."
+
+#~ msgid "Configure the function of a short press of the power button."
+#~ msgstr "Configurar la función de una pulsación corta de la tecla de encendido."
+
+#~ msgid "Configure the refresh rate of the screen."
+#~ msgstr "Configurar la velocidad de actualización de la pantalla."
+
+#~ msgid "Connected!"
+#~ msgstr "¡Conectado!"
+
+#~ msgid "Could not connect to %s %s .NFI image feed server:"
+#~ msgstr "No pudo conectarse a %s %s .NFI servidor feed de imagen:"
+
+#~ msgid "Create more detailed crash log"
+#~ msgstr "Crear historial de fallo más detallado"
+
+#~ msgid "Currently installed image"
+#~ msgstr "Imagen actualmente instalada"
+
+#~ msgid "Delete..."
+#~ msgstr "Borrar..."
+
+#~ msgid "Device Information"
+#~ msgstr "Información del dispositivo:"
+
+#~ msgid "Dialing:"
+#~ msgstr "Marcando:"
+
+#~ msgid "Disconnect"
+#~ msgstr "Desconectar"
+
+#~ msgid "Display"
+#~ msgstr "Ajustes de visualización"
+
+#~ msgid "Do you want to download the image to %s ?"
+#~ msgstr "Quieres descargar la imagen a %s ?"
+
+#~ msgid "Download %s from server"
+#~ msgstr "Descargar %s del servidor"
+
+#~ msgid "Download .NFI-files for USB-flasher"
+#~ msgstr "Descargar archivos .NFI para USB-Flasher"
+
+#~ msgid "Edit bouquets list"
+#~ msgstr "Editar lista de grupos"
+
+#~ msgid "Edit services list"
+#~ msgstr "Editar la lista de canales"
+
+#~ msgid "Enables a feature so that the receiver can decrypt streams (if the ECM data is included in the stream and a valid card is available)."
+#~ msgstr "Habilita una función para que el receptor pueda descodificar streams (si los datos ECM se incluyen en el stream y hay una tarjeta válida)."
+
+#~ msgid "External (CF)"
+#~ msgstr "Externo (CF)"
+
+#~ msgid "Finished restarting your network"
+#~ msgstr "Se ha terminado de reiniciar la red"
+
+#~ msgid "Flash"
+#~ msgstr "Flash"
+
+#~ msgid "Flashing failed"
+#~ msgstr "Ha fallado el parpadeo"
+
+#~ msgid "Free Memory:"
+#~ msgstr "Memoria libre:"
+
+#~ msgid "Ftpd service type: Vsftpd server"
+#~ msgstr "Tipo de servicio Ftpd: servidor Vsftpd"
+
+#~ msgid "Get latest experimental image"
+#~ msgstr "Obtener la última imagen experimental"
+
+#~ msgid "Get latest release image"
+#~ msgstr "Obtener la última versión de la imagen "
+
+#~ msgid "Image Information"
+#~ msgstr "Información de Image"
+
+#~ msgid "Inadyn Log"
+#~ msgstr "Historial Inadyn"
+
+#~ msgid "Memory Information"
+#~ msgstr "Información de la memoria"
+
+#~ msgid "MiniDLNA Log"
+#~ msgstr "Historial MiniDLNA"
+
+#~ msgid "Move to other directory"
+#~ msgstr "Ir a otro directorio"
+
+#~ msgid "NFI image flashing"
+#~ msgstr "Imagen NFI Flashing"
+
+#~ msgid "NFI image flashing completed. Press Yellow to Reboot!"
+#~ msgstr "Se ha descargado correctamente la imagen NFI Flashing. Pulsa la tecla amarilla para reiniciar!"
+
+#~ msgid "Network Information"
+#~ msgstr "Información de red"
+
+#~ msgid "New PIN"
+#~ msgstr "Nuevo PIN"
+
+#~ msgid "No details for this image file"
+#~ msgstr "Sin detalles para este fichero de imagen"
+
+#~ msgid "No updates available. Please try again later."
+#~ msgstr "Sin actualizaciones disponibles. Inténtalo más tarde."
+
+#~ msgid ""
+#~ "No valid service PIN found!\n"
+#~ "Do you like to change the service PIN now?\n"
+#~ "When you say 'No' here the service protection stay disabled!"
+#~ msgstr ""
+#~ "No se ha encontrado un PIN válido de canales!\n"
+#~ "¿Quieres cambiar el PIN de canal ahora?\n"
+#~ "Si respondes 'No', la protección de canales seguirá desabilitada."
+
+#~ msgid ""
+#~ "No valid setup PIN found!\n"
+#~ "Do you like to change the setup PIN now?\n"
+#~ "When you say 'No' here the setup protection stay disabled!"
+#~ msgstr ""
+#~ "No se ha encontrado un PIN válido de configuración!\n"
+#~ "¿Quieres cambiar el PIN de configuración ahora?\n"
+#~ "¡Si dices que 'No' la protección de configuración seguirá desabilitada!"
+
+#~ msgid "OpenVpn Log"
+#~ msgstr "Abrir el historial Vpn"
+
+#~ msgid "Parental control editor"
+#~ msgstr "Editor de control paterno"
+
+#~ msgid "Parental control setup"
+#~ msgstr "Configuración del control paterno"
+
+#~ msgid "Parental control type"
+#~ msgstr "Tipo de control paterno"
+
+#~ msgid "Phone number"
+#~ msgstr "Número de teléfono"
+
+#~ msgid "Please check your network settings!"
+#~ msgstr "Comprueba la configuración de red!"
+
+#~ msgid "Please select an NFI file and press green key to flash!"
+#~ msgstr "Seleccione un fichero NFI y pulsa la tecla verde para flashear!"
+
+#~ msgid "Please wait for activation of your network configuration..."
+#~ msgstr "Espera a la activación de su configuración de red..."
+
+#~ msgid "Please wait whilst feeds state is checked."
+#~ msgstr "Espera hasta que se verifique el estado de las fuentes."
+
+#~ msgid "PowerTimer Overview"
+#~ msgstr "Vista rápida del temporizador de alimentación"
+
+#~ msgid "Prepare another USB stick for image flashing"
+#~ msgstr "Preparar otra memoria USB para Flashing de imagen"
+
+#~ msgid "Reenter new PIN"
+#~ msgstr "Volver a introducir el nuevo PIN"
+
+#~ msgid "Restart enigma"
+#~ msgstr "Reiniciar Enigma"
+
+#~ msgid "Restore is running..."
+#~ msgstr "Restauración en curso..."
+
+#~ msgid "Samba Log"
+#~ msgstr "Historial Samba"
+
+#~ msgid "Select an image to be downloaded"
+#~ msgstr "Seleccionar imagen para descargar"
+
+#~ msgid "Select default EPG type..."
+#~ msgstr "Seleccionar el tipo de EPG por defecto..."
+
+#~ msgid "Select desired image from feed list"
+#~ msgstr "Seleccionar la imagen deseada de la lista feed"
+
+#~ msgid "Select if you want the Subservice mode to be activated."
+#~ msgstr "Selecciona si quieres que el modo Subcanal se active."
+
+#~ msgid "Select if you want to use the ViX colored buttons (set to 'no' if you want to use (Multi Quick Button)."
+#~ msgstr "Selecciona si quieres utilizar los botones de color de ViX. Marca 'no' si quieres usar el botón rápido (multi)."
+
+#~ msgid "Select what you want the Channel +/- buttons to activate."
+#~ msgstr "Selecciona lo que quieres que active la tecla de canal +/-."
+
+#~ msgid "Select what you want the TV button to activate."
+#~ msgstr "Selecciona lo que quieres que active la tecla TV."
+
+#~ msgid "Shall the USB stick wizard proceed and program the image file %s into flash memory?"
+#~ msgstr "¿El asistente de USB programará el fichero de imagen %s en la memoria flash?"
+
+#~ msgid "Show services beginning with"
+#~ msgstr "Mostrar canales que empiecen por"
+
+#~ msgid "Show status icons in movielist"
+#~ msgstr "Ver iconos de estado en la lista de películas"
+
+#~ msgid "Show tag menu"
+#~ msgstr "Ver menú de etiquetas"
+
+#~ msgid "Single transponder"
+#~ msgstr "Transpondedor único"
+
+#~ msgid "Subservice mode"
+#~ msgstr "Modo subcanal"
+
+#~ msgid "TV button mode"
+#~ msgstr "Modo de tecla tv"
+
+#~ msgid ""
+#~ "The USB stick was prepared to be bootable.\n"
+#~ "Now you can download an NFI image file!"
+#~ msgstr ""
+#~ "La memoria USB se ha preparado para arrancarse.\n"
+#~ "Ya puedes descargar un archivo NFI de imagen!"
+
+#~ msgid ""
+#~ "The following device was found:\n"
+#~ "\n"
+#~ "%s\n"
+#~ "\n"
+#~ "Do you want to write the USB flasher to this stick?"
+#~ msgstr ""
+#~ "Se ha encontrado el siguiente dispositivo:\n"
+#~ "\n"
+#~ "%s\n"
+#~ "\n"
+#~ "Quieres escribir el flash USB en este dispositivo?"
+
+#~ msgid "The md5sum validation failed, the file may be corrupted!"
+#~ msgstr "La validación md5sum ha fallado. El fichero podría estar corrupto!"
+
+#~ msgid "The wizard found a configuration backup. Do you want to restore your old settings from %s?"
+#~ msgstr "El asistente encontró una configuración guardada. ¿Quieres restaurar la configuración antigua desde %s?"
+
+#~ msgid ""
+#~ "This plugin creates a USB stick which can be used to update the firmware of your %s %s without the need for a network or WLAN connection.\n"
+#~ "First, a USB stick needs to be prepared so that it becomes bootable.\n"
+#~ "In the next step, an NFI image file can be downloaded from the update server and saved on the USB stick.\n"
+#~ "If you already have a prepared bootable USB stick, please insert it now. Otherwise plug in a USB stick with a minimum size of 64 MB!"
+#~ msgstr ""
+#~ "Este complemento crea un pen USB que puede utilizarse para actualizar el Firmware de su %s %s sin necesidad de red o conexión WLAN.\n"
+#~ "Primero, se preparará la memoria USB para que sea arrancable.\n"
+#~ "Después, puede descargarse una imagen NFI desde el servidor de actualizaciones y guardarse en la memoria.\n"
+#~ "Si ya tienes una memoria USB arrancable, insértala ahora. De lo contrario inserta una memoria USB con un tamaño mínimo de 64 MB!"
+
+#~ msgid "Timer log"
+#~ msgstr "Historial de temporizadores"
+
+#~ msgid ""
+#~ "To update your %s %s firmware, please follow these steps:\n"
+#~ "1) Turn off your box with the rear power switch and make sure the bootable USB stick is plugged in.\n"
+#~ "2) Turn mains back on and hold the DOWN button on the front panel pressed for 10 seconds.\n"
+#~ "3) Wait for bootup and follow instructions of the wizard."
+#~ msgstr ""
+#~ "Para actualizar el Firmware de su %s %s sigue estos pasos:\n"
+#~ "1) Apaga el receptor con el botón de encendido trasero y asegúrate de que la memoria USB arrancable esté conectada.\n"
+#~ "2) Vuelve a encenderlo y pulsa el botón ABAJO en el display durante 10 segundos.\n"
+#~ "3) Espera al reinicio y sigue las instrucciones del asistente."
+
+#~ msgid "USB stick wizard"
+#~ msgstr "Asistente de memoria USB"
+
+#~ msgid "Uncommitted DiSEqC command"
+#~ msgstr "No comprometido Comando DiSEqC 1.1"
+
+#~ msgid "Use ViX colored Buttons*"
+#~ msgstr "Usar las botones de colores de VIX*"
+
+#~ msgid "Version:\t%s"
+#~ msgstr "Versión:\t%s"
+
+#~ msgid "Video fine tuning"
+#~ msgstr "Ajuste fino de vídeo"
+
+#~ msgid "Video fine-tuning"
+#~ msgstr "Ajuste fino de vídeo"
+
+#~ msgid "Video setup"
+#~ msgstr "Configuración de vídeo"
+
+#~ msgid "Video wizard"
+#~ msgstr "Asistente de vídeo"
+
+#~ msgid "When enabled, the original line breaks will be removed from the teletext subtitles."
+#~ msgstr "Cuando está activado, los saltos de línea originales se eliminan de los subtítulos de teletexto."
+
+#~ msgid "You can disable Telnet Server and use ssh to login."
+#~ msgstr "Puedes desactivar el servidor Telnet y usar ssh para conectarte."
+
+#~ msgid "You have chosen to create a new .NFI flasher bootable USB stick. This will repartition the USB stick and therefore all data on it will be erased."
+#~ msgstr "Has elegido crear una nueva memoria USB .NFI Flasher autoarrancable. Se reparticionará la memoria USB y todos los datos serán borrados."
+
+#~ msgid "complex"
+#~ msgstr "Complejo"
+
+#~ msgid "continue"
+#~ msgstr "Continuar"
+
+#~ msgid "currently installed image: %s"
+#~ msgstr "Imagen actualmente instalada: %s"
+
+#~ msgid "fine-tune your display"
+#~ msgstr "Afinar los ajustes del display"
+
+#~ msgid "leave movie player..."
+#~ msgstr "Salir del reproductor de películas..."
+
+#~ msgid "service PIN"
+#~ msgstr "PIN del canal"
+
+#~ msgid "setup PIN"
+#~ msgstr "Configurar PIN"
+
+#~ msgid "special characters"
+#~ msgstr "Caracteres especiales"
+
+#~ msgid "uShare Log"
+#~ msgstr "Historial de uShare"
+
+#~ msgid "whitelist"
+#~ msgstr "Lista blanca"
