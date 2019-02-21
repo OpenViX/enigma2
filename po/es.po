@@ -12502,7 +12502,7 @@ msgid "When unset, sort changes will be temporary - just for this view of a dire
 msgstr "Cuando no estén configurados, los cambios de clasificación serán temporales - solo para esta vista de un directorio."
 
 msgid "H9 switch Nand and SDcard"
-msgstr ""
+msgstr "H9 interruptor Nand y SDcard"
 
 msgid "SwaptoNand"
 msgstr "SwapaNand"
