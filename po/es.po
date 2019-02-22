@@ -12420,6 +12420,12 @@ msgstr "No hay listas de reproducción guardadas para eliminar!"
 msgid "There are no saved playlists to load!"
 msgstr "No hay listas de reproducción guardadas para cargar!"
 
+msgid "AC3 transcoding"
+msgstr "AC3 transcoding"
+
+msgid "AC3 downmix"
+msgstr "AC3 downmix"
+
 msgid "Allow 10bit"
 msgstr "Permitir 10bit"
 
@@ -12437,6 +12443,9 @@ msgstr "Elija si las pistas de sonido DTSHD multicanal deben ser mezcladas o tra
 
 msgid "Choose whether WMA Pro sound tracks should be downmixed."
 msgstr "Elija si las pistas de sonido WMA Pro deben mezclarse."
+
+msgid "DTS downmix"
+msgstr "DTS downmix"
 
 msgid "DTS-HD HR/DTS-HD MA/DTS"
 msgstr "DTS-HD HR/DTS-HD MA/DTS"
@@ -12473,6 +12482,9 @@ msgstr "HLG Soporte"
 
 msgid "Video Chip Mode*"
 msgstr "Video Modo Chip*"
+
+msgid "WMA Pro downmix"
+msgstr "WMA Pro downmix"
 
 msgid "Use as PiP if possible"
 msgstr "Usar como PiP si es posible"
