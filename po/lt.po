@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-26 00:27+0100\n"
+"POT-Creation-Date: 2019-02-22 15:14+0100\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: arn354 <arn354@email.de>\n"
 "Language-Team: none\n"
@@ -679,6 +679,10 @@ msgstr ""
 
 msgid "<Current movielist location>"
 msgstr "<Dabartinė filmų sąrašo vieta>"
+
+#, fuzzy
+msgid "<Default Skin>"
+msgstr "Numatytieji nustatymai"
 
 msgid "<Default movie location>"
 msgstr "<Numatyta filmų vieta>"
@@ -2212,6 +2216,21 @@ msgstr "Konfigūravimo būdas"
 #, fuzzy
 msgid "Configuration..."
 msgstr "Tinklo konfigūracija..."
+
+msgid "Configure DVB-ATSC"
+msgstr ""
+
+#, fuzzy
+msgid "Configure DVB-C"
+msgstr "Konfigūruojama"
+
+#, fuzzy
+msgid "Configure DVB-S"
+msgstr "Konfigūruojama"
+
+#, fuzzy
+msgid "Configure DVB-T"
+msgstr "Konfigūruojama"
 
 msgid "Configure an additional delay to improve external subtitle synchronisation."
 msgstr ""
@@ -4919,6 +4938,14 @@ msgstr "Apsaugoti nustatymus"
 msgid "Hotkey zap"
 msgstr ""
 
+#, fuzzy
+msgid "Hotswitchable"
+msgstr "Įjungti"
+
+#, fuzzy
+msgid "Hotswitchable tuner"
+msgstr "Perjungiamų imtuvą tipai:"
+
 msgid "Hour"
 msgstr ""
 
@@ -5311,6 +5338,10 @@ msgstr "Negaliojanti pasirinkta direktorija: %s"
 
 #, fuzzy
 msgid "Invalid location"
+msgstr "Neteisinga vieta"
+
+#, fuzzy
+msgid "Invalid reason"
 msgstr "Neteisinga vieta"
 
 msgid "Invalid transponder data"
@@ -7509,6 +7540,9 @@ msgstr "Pozicionieriaus nustatymas"
 msgid "Positioner setup log"
 msgstr "Pozicionieriaus nustatymas"
 
+msgid "Power LED"
+msgstr ""
+
 msgid "Power management. Consult your receiver's manual for more information."
 msgstr ""
 
@@ -8653,6 +8687,18 @@ msgid "Select 'A' or 'B' if your aerial system requires this, otherwise select '
 msgstr ""
 
 msgid "Select 'FBC SCR' if this tuner will connect to a SCR (Unicable/JESS) device. For all other setups select 'FBC automatic'."
+msgstr ""
+
+msgid "Select 'Yes' when you want to configure this tuner for DVB-ATSC"
+msgstr ""
+
+msgid "Select 'Yes' when you want to configure this tuner for DVB-C"
+msgstr ""
+
+msgid "Select 'Yes' when you want to configure this tuner for DVB-S"
+msgstr ""
+
+msgid "Select 'Yes' when you want to configure this tuner for DVB-T"
 msgstr ""
 
 msgid "Select 'band' if using a 'universal' LNB, otherwise consult your LNB spec sheet."
@@ -9975,13 +10021,14 @@ msgstr "Budėjimas"
 msgid "Standby / restart"
 msgstr "Budėti / Perkrauti"
 
+#, fuzzy
+msgid "Standby LED"
+msgstr "Visiškai išjungti"
+
 msgid "Standby after current event"
 msgstr ""
 
 msgid "Standby in "
-msgstr ""
-
-msgid "StandbyLED"
 msgstr ""
 
 #, fuzzy
@@ -10342,7 +10389,8 @@ msgstr "Perjungti į ankstesnį subkanalą"
 msgid "Switch to radio mode"
 msgstr "Perjungti į ankstesnį subkanalą"
 
-msgid "Switchable tuner types:"
+#, fuzzy
+msgid "Switchable tuner types"
 msgstr "Perjungiamų imtuvą tipai:"
 
 msgid "Switzerland"
@@ -10758,7 +10806,7 @@ msgid ""
 "Please - do not panic on any displayed suspicious information!"
 msgstr ""
 
-msgid "This is a multitype tuner. Available options depend on the hardware. Cable and terrestrial cannot be configured at the same time. If you want to use as cable + satellite or terrestrial + satellite, configure cable/terrestrial first and then save. Re-open and configure again as satellite."
+msgid "This is a multitype tuner. Available options depend on the hardware."
 msgstr ""
 
 msgid "This is the order in which DiSEqC commands are sent to the aerial system. The order must correspond exactly with the order the physical devices are arranged along the signal cable (starting from the receiver end)."
@@ -11262,6 +11310,9 @@ msgid "Turn on the power LED during deep standby."
 msgstr ""
 
 msgid "Turn on the power LED during standby."
+msgstr ""
+
+msgid "Turn on the power LED."
 msgstr ""
 
 msgid "Turning step size"
@@ -13094,9 +13145,6 @@ msgstr ""
 msgid "epg cache backup"
 msgstr ""
 
-msgid "equal to"
-msgstr "lygus į"
-
 msgid "equestrian"
 msgstr ""
 
@@ -13329,10 +13377,6 @@ msgstr "užrakinta"
 
 msgid "long"
 msgstr ""
-
-#, fuzzy
-msgid "loopthrough to"
-msgstr "šiurkštus į"
 
 msgid "magazines/reports/documentary"
 msgstr ""
@@ -13722,9 +13766,6 @@ msgstr "paieškos eiga"
 
 msgid "science fiction/fantasy/horror"
 msgstr ""
-
-msgid "second cable of motorized LNB"
-msgstr "antras kabelis nuo poliarizuotos LNB"
 
 msgid "seconds"
 msgstr "sekundžių"

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-26 00:27+0100\n"
-"PO-Revision-Date: 2019-01-26 00:32+0100\n"
+"POT-Creation-Date: 2019-02-22 15:14+0100\n"
+"PO-Revision-Date: 2019-02-22 15:35+0100\n"
 "Last-Translator: -=niki=- <niki_msn@hotmail.de>\n"
 "Language-Team: none\n"
 "Language: de\n"
@@ -437,7 +437,7 @@ msgstr "%s%d min"
 
 #, python-format
 msgid "%s%d%s"
-msgstr ""
+msgstr "%s%d%s"
 
 #, python-format
 msgid "%s/%s: %s"
@@ -720,6 +720,9 @@ msgstr "0000 - Standard (deaktiviert)"
 
 msgid "<Current movielist location>"
 msgstr "<Aktuelles Filmlisten Verzeichnis>"
+
+msgid "<Default Skin>"
+msgstr "<Default Benutzeroberfläche>"
 
 msgid "<Default movie location>"
 msgstr "<Standard Filmlisten Verzeichnis>"
@@ -1759,7 +1762,7 @@ msgid "Cancel"
 msgstr "Abbrechen"
 
 msgid "Cancel any text changes and exit"
-msgstr ""
+msgstr "Jegliche Textänderung abbrechen und verlassen"
 
 msgid "Cancelled upon user request"
 msgstr "Stornierte Anfrage"
@@ -2156,6 +2159,18 @@ msgstr "Konfigurationsmodus: %s"
 
 msgid "Configuration..."
 msgstr "Konfiguration..."
+
+msgid "Configure DVB-ATSC"
+msgstr ""
+
+msgid "Configure DVB-C"
+msgstr "Konfiguriere DVB-C"
+
+msgid "Configure DVB-S"
+msgstr "Konfiguriere DVB-S"
+
+msgid "Configure DVB-T"
+msgstr "Konfiguriere  DVB-T"
 
 msgid "Configure an additional delay to improve external subtitle synchronisation."
 msgstr "Konfiguriert eine zusätzliche Verzögerung zur besseren Synchronisation externer Untertitel."
@@ -2780,7 +2795,7 @@ msgid "DVB subtitle black transparency"
 msgstr "Schwarztransparenz DVB-Untertitel"
 
 msgid "DVB type"
-msgstr ""
+msgstr "DVB Typ"
 
 msgid "DVB-C"
 msgstr "DVB-C"
@@ -3119,7 +3134,7 @@ msgid "Display >16:9 content as"
 msgstr "Inhalt mit einem Bildformate grösser als 16:9 anzeigen als"
 
 msgid "Display EPG as MultiEPG"
-msgstr ""
+msgstr "Zeige EPG als MultiEPG"
 
 msgid "Display EPG info for current event"
 msgstr "Zeige EPG für aktuelle Sendung"
@@ -3184,7 +3199,7 @@ msgstr ""
 
 #, python-format
 msgid "Do you really want to delete %s?"
-msgstr "%s wirklich löschen?"
+msgstr "Wollen Sie %s wirklich löschen?"
 
 #, python-format
 msgid "Do you really want to download the plugin \"%s\"?"
@@ -3218,7 +3233,7 @@ msgstr "Wollen Sie das Lesezeichen %s wirklich löschen?"
 
 #, python-format
 msgid "Do you really want to stop current event and delete timer %s?"
-msgstr ""
+msgstr "Do you really want to stop current event and delete timer %s?"
 
 #, python-format
 msgid "Do you really want to unhold the plugin \"%s\"?"
@@ -3490,7 +3505,7 @@ msgid "Embedded"
 msgstr "eingebettet"
 
 msgid "Empty slot"
-msgstr ""
+msgstr "Leerer Steckplatz"
 
 msgid "Enable"
 msgstr "Aktivieren"
@@ -3653,7 +3668,7 @@ msgid "Enigma2 Version: %s"
 msgstr "Enigma2 Version: %s"
 
 msgid "Enter"
-msgstr ""
+msgstr "Eingabe"
 
 msgid "Enter IP address"
 msgstr "IP-Adresse eingeben"
@@ -3680,7 +3695,7 @@ msgid "Enter pin code"
 msgstr "PIN-Code eingeben"
 
 msgid "Enter text and exit"
-msgstr ""
+msgstr "Text eingeben und verlassen"
 
 msgid "Enter the frequency at which you LNB switches between low band and high band. For more information consult the spec sheet of your LNB."
 msgstr "Geben Sie die Frequenz ein, mit der Ihr LNB zwischen Low- und High-Band wechselt. Weitere Informationen finden Sie im Datenblatt Ihres LNB."
@@ -3869,7 +3884,7 @@ msgid "Extended"
 msgstr "Erweitert"
 
 msgid "Extended PID info"
-msgstr ""
+msgstr "Erweiterte PID Information"
 
 msgid "Extended Software"
 msgstr "Fortgeschrittene Software"
@@ -4526,7 +4541,7 @@ msgid "HDMI allow unsupported modes"
 msgstr "HDMI nicht unterstützte Modi zulassen"
 
 msgid "HDMI audio source"
-msgstr ""
+msgstr "HDMI Audio Quelle"
 
 msgid "HDMI bypass EDID checking"
 msgstr "HDMI EDID Check umgehen"
@@ -4550,10 +4565,10 @@ msgid "HDR10"
 msgstr "HDR10"
 
 msgid "HDR10 support"
-msgstr ""
+msgstr "HDR 10 Unterstützung"
 
 msgid "HELP"
-msgstr ""
+msgstr "HELP"
 
 msgid "HI-cleanup for external subtitles"
 msgstr "Hörgeschädigten-Bereinigung für externe Untertitel"
@@ -4562,7 +4577,7 @@ msgid "HLG"
 msgstr "HLG"
 
 msgid "HLG support"
-msgstr ""
+msgstr "HLG Unterstützung"
 
 msgid "Haiti"
 msgstr "Haiti"
@@ -4694,6 +4709,14 @@ msgstr "Tastenbelegung Einstellungen"
 msgid "Hotkey zap"
 msgstr "Zaptaste"
 
+#, fuzzy
+msgid "Hotswitchable"
+msgstr "nicht prüfbar"
+
+#, fuzzy
+msgid "Hotswitchable tuner"
+msgstr "Umschaltbare Tuner-Typen:"
+
 msgid "Hour"
 msgstr "Stunde"
 
@@ -4719,10 +4742,10 @@ msgid "IDLE"
 msgstr "IDLE"
 
 msgid "INFO"
-msgstr ""
+msgstr "INFO"
 
 msgid "INS"
-msgstr ""
+msgstr "INS"
 
 msgid "IP address"
 msgstr "IP-Adresse"
@@ -5060,6 +5083,9 @@ msgstr "Ungültiges Verzeichnis ausgewählt: %s"
 
 msgid "Invalid location"
 msgstr "Fehlerhafter Ort"
+
+msgid "Invalid reason"
+msgstr "Ungültiger Grund"
 
 msgid "Invalid transponder data"
 msgstr "Ungültige Transponderdaten"
@@ -5453,13 +5479,13 @@ msgid "Longitude"
 msgstr "Längengrad"
 
 msgid "Loop through from"
-msgstr ""
+msgstr "Durchgeschleift von"
 
 msgid "Lower Framerate save CPU Time"
 msgstr "Geringe Framerate reduziert die CPU Belastung"
 
 msgid "Lower case"
-msgstr ""
+msgstr "kleinbuchstaben"
 
 msgid "Luxembourg"
 msgstr "Luxembourg"
@@ -7104,6 +7130,9 @@ msgstr "Einstellungen Rotor"
 msgid "Positioner setup log"
 msgstr "Einstellungen Rotor Log"
 
+msgid "Power LED"
+msgstr ""
+
 msgid "Power management. Consult your receiver's manual for more information."
 msgstr "Energieverwaltung. Weitere Informationen finden Sie in der Bedienungsanleitung Ihres Receivers."
 
@@ -8168,6 +8197,18 @@ msgstr "Wählen Sie \"A\" oder \"B\", wenn Ihr Antennensystem dies erfordert, an
 msgid "Select 'FBC SCR' if this tuner will connect to a SCR (Unicable/JESS) device. For all other setups select 'FBC automatic'."
 msgstr "Wählen Sie \"FBC SCR\", wenn dieser Tuner mit einem SCR (Unicable/JESS) Gerät verbunden ist, andernfalls wählen Sie \"FBC automatic\"."
 
+msgid "Select 'Yes' when you want to configure this tuner for DVB-ATSC"
+msgstr ""
+
+msgid "Select 'Yes' when you want to configure this tuner for DVB-C"
+msgstr ""
+
+msgid "Select 'Yes' when you want to configure this tuner for DVB-S"
+msgstr ""
+
+msgid "Select 'Yes' when you want to configure this tuner for DVB-T"
+msgstr ""
+
 msgid "Select 'band' if using a 'universal' LNB, otherwise consult your LNB spec sheet."
 msgstr "Wählen Sie \"Band\", wenn Sie ein \"universelles\" LNB verwenden, andernfalls konsultieren Sie Ihr LNB-Datenblatt."
 
@@ -8319,7 +8360,7 @@ msgid "Select interface"
 msgstr "Netzwerkkarte auswählen"
 
 msgid "Select locale"
-msgstr ""
+msgstr "Sprache auswählen"
 
 msgid "Select location"
 msgstr "Ort wählen"
@@ -9356,14 +9397,15 @@ msgstr "Standby"
 msgid "Standby / restart"
 msgstr "Standby / Neustart"
 
+#, fuzzy
+msgid "Standby LED"
+msgstr "LED im Standby-Modus"
+
 msgid "Standby after current event"
 msgstr "Standby nach aktueller Sendung"
 
 msgid "Standby in "
 msgstr "Standby in "
-
-msgid "StandbyLED"
-msgstr "LED im Standby-Modus"
 
 msgid "Start"
 msgstr "Start"
@@ -9683,7 +9725,8 @@ msgstr "Zum vorhergehenden Unterkanal schalten"
 msgid "Switch to radio mode"
 msgstr "Zum Radio Modus wechseln"
 
-msgid "Switchable tuner types:"
+#, fuzzy
+msgid "Switchable tuner types"
 msgstr "Umschaltbare Tuner-Typen:"
 
 msgid "Switzerland"
@@ -10108,8 +10151,8 @@ msgstr ""
 "Es ist unwichtig für normale Benutzer.\n"
 "Bitte keine Panik, falls komische Informationen angezeigt werden!"
 
-msgid "This is a multitype tuner. Available options depend on the hardware. Cable and terrestrial cannot be configured at the same time. If you want to use as cable + satellite or terrestrial + satellite, configure cable/terrestrial first and then save. Re-open and configure again as satellite."
-msgstr "Dies ist ein Multitype-Tuner. Die verfügbaren Optionen hängen von der Hardware ab. Kabel und terrestrisch können nicht gleichzeitig konfiguriert werden. Wenn Sie als Kabel + Satellit oder terrestrisch + Satellit verwenden möchten, konfigurieren Sie zunächst Kabel / terrestrisch und speichern Sie dann. Erneut öffnen und als Satellit konfigurieren."
+msgid "This is a multitype tuner. Available options depend on the hardware."
+msgstr ""
 
 msgid "This is the order in which DiSEqC commands are sent to the aerial system. The order must correspond exactly with the order the physical devices are arranged along the signal cable (starting from the receiver end)."
 msgstr "In dieser Reihenfolge werden DiSEqC-Befehle an das Antennensystem gesendet. Die Reihenfolge muss genau der Reihenfolge entsprechen, in der die physikalischen Geräte entlang des Signalkabels angeordnet sind (ausgehend vom Empfängerende)."
@@ -10589,6 +10632,10 @@ msgid "Turn on the power LED during deep standby."
 msgstr "Die LED im Standy-Modus ausschalten."
 
 msgid "Turn on the power LED during standby."
+msgstr "Die LED im Standy-Modus ausschalten."
+
+#, fuzzy
+msgid "Turn on the power LED."
 msgstr "Die LED im Standy-Modus ausschalten."
 
 msgid "Turning step size"
@@ -12434,9 +12481,6 @@ msgstr "Unterhaltung (6-14 Jahre)"
 msgid "epg cache backup"
 msgstr "EPG-Cache Sicherung"
 
-msgid "equal to"
-msgstr "gleich wie"
-
 msgid "equestrian"
 msgstr "Pferdesport"
 
@@ -12658,9 +12702,6 @@ msgstr "gesperrt"
 
 msgid "long"
 msgstr "lange"
-
-msgid "loopthrough to"
-msgstr ""
 
 msgid "magazines/reports/documentary"
 msgstr "Magazine/Reportagen/Dokumentationen"
@@ -13042,9 +13083,6 @@ msgstr "Status"
 
 msgid "science fiction/fantasy/horror"
 msgstr "Science-Fiction/Fantasie/Horror"
-
-msgid "second cable of motorized LNB"
-msgstr "Zweites Kabel vom Rotor"
 
 msgid "seconds"
 msgstr "Sekunden"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-26 00:27+0100\n"
+"POT-Creation-Date: 2019-02-22 15:14+0100\n"
 "PO-Revision-Date: 2015-10-31 16:41+0100\n"
 "Last-Translator: Pr2 <dummy@dummy.com>\n"
 "Language-Team: none\n"
@@ -693,6 +693,10 @@ msgstr ""
 
 msgid "<Current movielist location>"
 msgstr "<Emplacement actuel liste film>"
+
+#, fuzzy
+msgid "<Default Skin>"
+msgstr "Paramètres par défaut"
 
 msgid "<Default movie location>"
 msgstr "<Emplacement par défaut film>"
@@ -2179,6 +2183,21 @@ msgstr "Mode de configuration : %s"
 
 msgid "Configuration..."
 msgstr "Configuration..."
+
+msgid "Configure DVB-ATSC"
+msgstr ""
+
+#, fuzzy
+msgid "Configure DVB-C"
+msgstr "Configuration"
+
+#, fuzzy
+msgid "Configure DVB-S"
+msgstr "Configuration"
+
+#, fuzzy
+msgid "Configure DVB-T"
+msgstr "Configuration"
 
 msgid "Configure an additional delay to improve external subtitle synchronisation."
 msgstr "Configurez un délai additionnel pour améliorer la synchronisation des sous-titres externes."
@@ -4808,6 +4827,14 @@ msgstr "Configuration Hotkey"
 msgid "Hotkey zap"
 msgstr "Hotkey zap"
 
+#, fuzzy
+msgid "Hotswitchable"
+msgstr "Activer"
+
+#, fuzzy
+msgid "Hotswitchable tuner"
+msgstr "Types de tuner permutables :"
+
 msgid "Hour"
 msgstr "Heure"
 
@@ -5180,6 +5207,10 @@ msgid "Invalid directory selected: %s"
 msgstr "Répertoire sélectionné non valide : %s"
 
 msgid "Invalid location"
+msgstr "Emplacement non valide"
+
+#, fuzzy
+msgid "Invalid reason"
 msgstr "Emplacement non valide"
 
 msgid "Invalid transponder data"
@@ -7280,6 +7311,9 @@ msgstr "Paramètres positionneur"
 msgid "Positioner setup log"
 msgstr "Configuration du positionneur log"
 
+msgid "Power LED"
+msgstr ""
+
 msgid "Power management. Consult your receiver's manual for more information."
 msgstr ""
 
@@ -8369,6 +8403,18 @@ msgid "Select 'A' or 'B' if your aerial system requires this, otherwise select '
 msgstr ""
 
 msgid "Select 'FBC SCR' if this tuner will connect to a SCR (Unicable/JESS) device. For all other setups select 'FBC automatic'."
+msgstr ""
+
+msgid "Select 'Yes' when you want to configure this tuner for DVB-ATSC"
+msgstr ""
+
+msgid "Select 'Yes' when you want to configure this tuner for DVB-C"
+msgstr ""
+
+msgid "Select 'Yes' when you want to configure this tuner for DVB-S"
+msgstr ""
+
+msgid "Select 'Yes' when you want to configure this tuner for DVB-T"
 msgstr ""
 
 msgid "Select 'band' if using a 'universal' LNB, otherwise consult your LNB spec sheet."
@@ -9609,14 +9655,15 @@ msgstr "Veille"
 msgid "Standby / restart"
 msgstr "Veille / Redémarrage"
 
+#, fuzzy
+msgid "Standby LED"
+msgstr "LED de veille"
+
 msgid "Standby after current event"
 msgstr "Mise en veille après l'évènement actuel"
 
 msgid "Standby in "
 msgstr "Mise en veille dans "
-
-msgid "StandbyLED"
-msgstr "LED de veille"
 
 msgid "Start"
 msgstr "Démarrer"
@@ -9940,7 +9987,8 @@ msgstr "Basculer vers sous-service précédent"
 msgid "Switch to radio mode"
 msgstr "Basculer vers le mode Radio"
 
-msgid "Switchable tuner types:"
+#, fuzzy
+msgid "Switchable tuner types"
 msgstr "Types de tuner permutables :"
 
 msgid "Switzerland"
@@ -10355,7 +10403,7 @@ msgstr ""
 "Ceci n’est pas important pour les utilisateur normaux.\n"
 "SVP - ne paniquez pas si cela affiche des informations suspectes!"
 
-msgid "This is a multitype tuner. Available options depend on the hardware. Cable and terrestrial cannot be configured at the same time. If you want to use as cable + satellite or terrestrial + satellite, configure cable/terrestrial first and then save. Re-open and configure again as satellite."
+msgid "This is a multitype tuner. Available options depend on the hardware."
 msgstr ""
 
 msgid "This is the order in which DiSEqC commands are sent to the aerial system. The order must correspond exactly with the order the physical devices are arranged along the signal cable (starting from the receiver end)."
@@ -10863,6 +10911,10 @@ msgid "Turn on the power LED during deep standby."
 msgstr "Allumer la LED power pendant le standby."
 
 msgid "Turn on the power LED during standby."
+msgstr "Allumer la LED power pendant le standby."
+
+#, fuzzy
+msgid "Turn on the power LED."
 msgstr "Allumer la LED power pendant le standby."
 
 msgid "Turning step size"
@@ -12717,9 +12769,6 @@ msgstr "Divertissement (6-14 ans)"
 msgid "epg cache backup"
 msgstr "sauvegarde du cache de l'epg"
 
-msgid "equal to"
-msgstr "Égale au"
-
 msgid "equestrian"
 msgstr "Équestre"
 
@@ -12948,10 +12997,6 @@ msgstr "Verrouillé"
 
 msgid "long"
 msgstr "long"
-
-#, fuzzy
-msgid "loopthrough to"
-msgstr "Rebouclé en externe par"
 
 msgid "magazines/reports/documentary"
 msgstr "Magazines/Rapports/Documentaires"
@@ -13337,9 +13382,6 @@ msgstr "Etat de l'analyse"
 
 msgid "science fiction/fantasy/horror"
 msgstr "Science-fiction/Fantastique/Horreur"
-
-msgid "second cable of motorized LNB"
-msgstr "Deuxième câble du LNB motorisé"
 
 msgid "seconds"
 msgstr "Secondes"

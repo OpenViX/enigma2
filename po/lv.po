@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-26 00:27+0100\n"
+"POT-Creation-Date: 2019-02-22 15:14+0100\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: arn354 <arn354@email.de>\n"
 "Language-Team: none\n"
@@ -708,6 +708,10 @@ msgstr ""
 
 msgid "<Current movielist location>"
 msgstr "<Tekošā filmu saraksta atrašanās vieta>"
+
+#, fuzzy
+msgid "<Default Skin>"
+msgstr "Noklusējuma iestatījumi"
 
 msgid "<Default movie location>"
 msgstr "<Filmu atrašanās vieta pēc noklusējuma>"
@@ -2222,6 +2226,21 @@ msgstr "Konfigurēšanas režīms: %s"
 
 msgid "Configuration..."
 msgstr "Konfigurācija..."
+
+msgid "Configure DVB-ATSC"
+msgstr ""
+
+#, fuzzy
+msgid "Configure DVB-C"
+msgstr "Konfigurē"
+
+#, fuzzy
+msgid "Configure DVB-S"
+msgstr "Konfigurē"
+
+#, fuzzy
+msgid "Configure DVB-T"
+msgstr "Konfigurē"
 
 msgid "Configure an additional delay to improve external subtitle synchronisation."
 msgstr "Uzstāda papildus aizturi lai darbotos ārējo subtitru sinhronizācija."
@@ -4896,6 +4915,14 @@ msgstr "Pozicioniera iestatījumi"
 msgid "Hotkey zap"
 msgstr ""
 
+#, fuzzy
+msgid "Hotswitchable"
+msgstr "Aktivizēt"
+
+#, fuzzy
+msgid "Hotswitchable tuner"
+msgstr "Pārslēdzamo uztvērēju tipi:"
+
 msgid "Hour"
 msgstr ""
 
@@ -5277,6 +5304,10 @@ msgid "Invalid directory selected: %s"
 msgstr "Izvēlēta nepareiza mape: %s"
 
 msgid "Invalid location"
+msgstr "Nederīga vieta"
+
+#, fuzzy
+msgid "Invalid reason"
 msgstr "Nederīga vieta"
 
 msgid "Invalid transponder data"
@@ -7425,6 +7456,9 @@ msgstr "Pozicioniera iestatījumi"
 msgid "Positioner setup log"
 msgstr "Pozicioniera iestatījumi"
 
+msgid "Power LED"
+msgstr ""
+
 msgid "Power management. Consult your receiver's manual for more information."
 msgstr ""
 
@@ -8561,6 +8595,18 @@ msgid "Select 'A' or 'B' if your aerial system requires this, otherwise select '
 msgstr ""
 
 msgid "Select 'FBC SCR' if this tuner will connect to a SCR (Unicable/JESS) device. For all other setups select 'FBC automatic'."
+msgstr ""
+
+msgid "Select 'Yes' when you want to configure this tuner for DVB-ATSC"
+msgstr ""
+
+msgid "Select 'Yes' when you want to configure this tuner for DVB-C"
+msgstr ""
+
+msgid "Select 'Yes' when you want to configure this tuner for DVB-S"
+msgstr ""
+
+msgid "Select 'Yes' when you want to configure this tuner for DVB-T"
 msgstr ""
 
 msgid "Select 'band' if using a 'universal' LNB, otherwise consult your LNB spec sheet."
@@ -9844,14 +9890,15 @@ msgstr "Gaidstāve"
 msgid "Standby / restart"
 msgstr "Gaidstāve / pārstartēt"
 
+#, fuzzy
+msgid "Standby LED"
+msgstr "Dziļā gaidstāve"
+
 msgid "Standby after current event"
 msgstr "Gaidstāve pēc pašreizējā notikuma"
 
 msgid "Standby in "
 msgstr "Gaidstāvē "
-
-msgid "StandbyLED"
-msgstr ""
 
 #, fuzzy
 msgid "Start"
@@ -10195,7 +10242,8 @@ msgstr "Pārslēgt uz iepriekšējo papildkanālu"
 msgid "Switch to radio mode"
 msgstr "Pārslēgt iepriekšējo kanālu"
 
-msgid "Switchable tuner types:"
+#, fuzzy
+msgid "Switchable tuner types"
 msgstr "Pārslēdzamo uztvērēju tipi:"
 
 msgid "Switzerland"
@@ -10612,7 +10660,7 @@ msgid ""
 "Please - do not panic on any displayed suspicious information!"
 msgstr ""
 
-msgid "This is a multitype tuner. Available options depend on the hardware. Cable and terrestrial cannot be configured at the same time. If you want to use as cable + satellite or terrestrial + satellite, configure cable/terrestrial first and then save. Re-open and configure again as satellite."
+msgid "This is a multitype tuner. Available options depend on the hardware."
 msgstr ""
 
 msgid "This is the order in which DiSEqC commands are sent to the aerial system. The order must correspond exactly with the order the physical devices are arranged along the signal cable (starting from the receiver end)."
@@ -11106,6 +11154,9 @@ msgid "Turn on the power LED during deep standby."
 msgstr ""
 
 msgid "Turn on the power LED during standby."
+msgstr ""
+
+msgid "Turn on the power LED."
 msgstr ""
 
 msgid "Turning step size"
@@ -12967,9 +13018,6 @@ msgstr "izklaide (6-14 gadu veciem)"
 msgid "epg cache backup"
 msgstr ""
 
-msgid "equal to"
-msgstr "vienāds ar"
-
 msgid "equestrian"
 msgstr "jātnieka"
 
@@ -13200,10 +13248,6 @@ msgstr "noenkurojies"
 
 msgid "long"
 msgstr ""
-
-#, fuzzy
-msgid "loopthrough to"
-msgstr "loopthrough to"
 
 msgid "magazines/reports/documentary"
 msgstr "avīzes/atskaites/dokumentālais"
@@ -13595,9 +13639,6 @@ msgstr "meklēšanas statuss"
 
 msgid "science fiction/fantasy/horror"
 msgstr "zinātniskā fantastika/fantāzijas/šausmu"
-
-msgid "second cable of motorized LNB"
-msgstr "otrs motorizētās LNB kabelis"
 
 msgid "seconds"
 msgstr "sekundes"

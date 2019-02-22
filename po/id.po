@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-26 00:27+0100\n"
+"POT-Creation-Date: 2019-02-22 15:14+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Budiarno\n"
 "Language-Team: \n"
@@ -688,6 +688,10 @@ msgstr ": 0000 - bawaan (dimatikan)"
 
 msgid "<Current movielist location>"
 msgstr "<Lokasi daftar film saat ini>"
+
+#, fuzzy
+msgid "<Default Skin>"
+msgstr "Pengaturan bawaan"
 
 msgid "<Default movie location>"
 msgstr "<Lokasi film bawaan>"
@@ -2176,6 +2180,21 @@ msgstr "Mode penyetelan: %s"
 
 msgid "Configuration..."
 msgstr "Penyetelan..."
+
+msgid "Configure DVB-ATSC"
+msgstr ""
+
+#, fuzzy
+msgid "Configure DVB-C"
+msgstr "Pengaturan"
+
+#, fuzzy
+msgid "Configure DVB-S"
+msgstr "Pengaturan"
+
+#, fuzzy
+msgid "Configure DVB-T"
+msgstr "Pengaturan"
 
 msgid "Configure an additional delay to improve external subtitle synchronisation."
 msgstr "Atur penundaan tambahan untuk memperbaiki sinkronisasi teks film dari luar."
@@ -4809,6 +4828,13 @@ msgstr ""
 msgid "Hotkey zap"
 msgstr ""
 
+msgid "Hotswitchable"
+msgstr ""
+
+#, fuzzy
+msgid "Hotswitchable tuner"
+msgstr "Switchable tuner types:"
+
 msgid "Hour"
 msgstr ""
 
@@ -5191,6 +5217,10 @@ msgid "Invalid directory selected: %s"
 msgstr "Invalid directory selected: %s"
 
 msgid "Invalid location"
+msgstr "Invalid location"
+
+#, fuzzy
+msgid "Invalid reason"
 msgstr "Invalid location"
 
 msgid "Invalid transponder data"
@@ -7297,6 +7327,9 @@ msgstr "Atur Posisioner"
 msgid "Positioner setup log"
 msgstr ""
 
+msgid "Power LED"
+msgstr ""
+
 msgid "Power management. Consult your receiver's manual for more information."
 msgstr ""
 
@@ -8381,6 +8414,18 @@ msgid "Select 'A' or 'B' if your aerial system requires this, otherwise select '
 msgstr ""
 
 msgid "Select 'FBC SCR' if this tuner will connect to a SCR (Unicable/JESS) device. For all other setups select 'FBC automatic'."
+msgstr ""
+
+msgid "Select 'Yes' when you want to configure this tuner for DVB-ATSC"
+msgstr ""
+
+msgid "Select 'Yes' when you want to configure this tuner for DVB-C"
+msgstr ""
+
+msgid "Select 'Yes' when you want to configure this tuner for DVB-S"
+msgstr ""
+
+msgid "Select 'Yes' when you want to configure this tuner for DVB-T"
 msgstr ""
 
 msgid "Select 'band' if using a 'universal' LNB, otherwise consult your LNB spec sheet."
@@ -9624,13 +9669,14 @@ msgstr "Standby"
 msgid "Standby / restart"
 msgstr "Standby / restart"
 
+#, fuzzy
+msgid "Standby LED"
+msgstr "Deep standby"
+
 msgid "Standby after current event"
 msgstr ""
 
 msgid "Standby in "
-msgstr ""
-
-msgid "StandbyLED"
 msgstr ""
 
 #, fuzzy
@@ -9959,7 +10005,8 @@ msgstr "Switch to previous sub service"
 msgid "Switch to radio mode"
 msgstr ""
 
-msgid "Switchable tuner types:"
+#, fuzzy
+msgid "Switchable tuner types"
 msgstr "Switchable tuner types:"
 
 msgid "Switzerland"
@@ -10373,7 +10420,7 @@ msgid ""
 "Please - do not panic on any displayed suspicious information!"
 msgstr ""
 
-msgid "This is a multitype tuner. Available options depend on the hardware. Cable and terrestrial cannot be configured at the same time. If you want to use as cable + satellite or terrestrial + satellite, configure cable/terrestrial first and then save. Re-open and configure again as satellite."
+msgid "This is a multitype tuner. Available options depend on the hardware."
 msgstr ""
 
 msgid "This is the order in which DiSEqC commands are sent to the aerial system. The order must correspond exactly with the order the physical devices are arranged along the signal cable (starting from the receiver end)."
@@ -10860,6 +10907,9 @@ msgid "Turn on the power LED during deep standby."
 msgstr ""
 
 msgid "Turn on the power LED during standby."
+msgstr ""
+
+msgid "Turn on the power LED."
 msgstr ""
 
 msgid "Turning step size"
@@ -12717,9 +12767,6 @@ msgstr "hiburan (umur 6-14 tahun)"
 msgid "epg cache backup"
 msgstr ""
 
-msgid "equal to"
-msgstr "setara"
-
 msgid "equestrian"
 msgstr "equestrian"
 
@@ -12948,10 +12995,6 @@ msgstr "terkunci"
 
 msgid "long"
 msgstr ""
-
-#, fuzzy
-msgid "loopthrough to"
-msgstr "loopthrough to"
 
 msgid "magazines/reports/documentary"
 msgstr "majalah/laporan/dokumenter"
@@ -13334,9 +13377,6 @@ msgstr "scan state"
 
 msgid "science fiction/fantasy/horror"
 msgstr "science fiction/fantasy/horror"
-
-msgid "second cable of motorized LNB"
-msgstr "second cable of motorized LNB"
 
 msgid "seconds"
 msgstr "seconds"

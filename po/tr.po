@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue (Apachi70)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-26 00:27+0100\n"
+"POT-Creation-Date: 2019-02-22 15:14+0100\n"
 "PO-Revision-Date: 2018-12-21 12:13+0100\n"
 "Last-Translator: Apachi70 <apachi70000@gmail.com>\n"
 "Language-Team: Turkish <apachi70000@gmail.com>\n"
@@ -710,6 +710,10 @@ msgstr ": 0000 - varsayılan (devre dışı)"
 
 msgid "<Current movielist location>"
 msgstr "<Mevcut film listesi konumu>"
+
+#, fuzzy
+msgid "<Default Skin>"
+msgstr "Varsayılan ayarlar"
 
 msgid "<Default movie location>"
 msgstr "<Varsayılan film konumu>"
@@ -2149,6 +2153,21 @@ msgstr "Yapılandırma modu: %s"
 
 msgid "Configuration..."
 msgstr "Yapılandırma..."
+
+msgid "Configure DVB-ATSC"
+msgstr ""
+
+#, fuzzy
+msgid "Configure DVB-C"
+msgstr "Yapılandırılıyor"
+
+#, fuzzy
+msgid "Configure DVB-S"
+msgstr "Yapılandırılıyor"
+
+#, fuzzy
+msgid "Configure DVB-T"
+msgstr "Yapılandırılıyor"
 
 msgid "Configure an additional delay to improve external subtitle synchronisation."
 msgstr "Harici altyazı senkronizasyonunu artırmak için ek bir gecikme yapılandır."
@@ -4690,6 +4709,14 @@ msgstr "Kısayol Kurulum"
 msgid "Hotkey zap"
 msgstr "Kısayol kanal değişimi"
 
+#, fuzzy
+msgid "Hotswitchable"
+msgstr "test edilemeyen"
+
+#, fuzzy
+msgid "Hotswitchable tuner"
+msgstr "Seçilebilir tuner tipleri:"
+
 msgid "Hour"
 msgstr "Saat"
 
@@ -5053,6 +5080,10 @@ msgid "Invalid directory selected: %s"
 msgstr "Seçilen klasör geçersiz: %s"
 
 msgid "Invalid location"
+msgstr "Geçersiz konum"
+
+#, fuzzy
+msgid "Invalid reason"
 msgstr "Geçersiz konum"
 
 msgid "Invalid transponder data"
@@ -7099,6 +7130,9 @@ msgstr "Pozisyoner kurulumu"
 msgid "Positioner setup log"
 msgstr "Pozisyoner Kur log"
 
+msgid "Power LED"
+msgstr ""
+
 msgid "Power management. Consult your receiver's manual for more information."
 msgstr "Güç yönetimi. Daha fazla bilgi için alıcınızın kılavuzuna bakın."
 
@@ -8159,6 +8193,18 @@ msgstr "Anten sisteminizin bunu gerektirmesi durumunda 'A' veya 'B'yi seçin, ak
 
 msgid "Select 'FBC SCR' if this tuner will connect to a SCR (Unicable/JESS) device. For all other setups select 'FBC automatic'."
 msgstr "Bu tuner bir SCR (Unicable / JESS) cihazına bağlanacaksa 'FBC SCR' öğesini seçin. Diğer tüm kurulumlar için 'FBC otomatik' seçeneğini seçin."
+
+msgid "Select 'Yes' when you want to configure this tuner for DVB-ATSC"
+msgstr ""
+
+msgid "Select 'Yes' when you want to configure this tuner for DVB-C"
+msgstr ""
+
+msgid "Select 'Yes' when you want to configure this tuner for DVB-S"
+msgstr ""
+
+msgid "Select 'Yes' when you want to configure this tuner for DVB-T"
+msgstr ""
 
 msgid "Select 'band' if using a 'universal' LNB, otherwise consult your LNB spec sheet."
 msgstr "'Evrensel' bir LNB kullanıyorsanız 'bant' seçeneğini seçin, aksi takdirde LNB spec sayfanıza başvurun."
@@ -9352,14 +9398,15 @@ msgstr "Hazırda beklet"
 msgid "Standby / restart"
 msgstr "Yeniden başlat / Bekleme modu"
 
+#, fuzzy
+msgid "Standby LED"
+msgstr "StandbyLED"
+
 msgid "Standby after current event"
 msgstr "Geçerli olaydan sonra bekleme"
 
 msgid "Standby in "
 msgstr "Standby in "
-
-msgid "StandbyLED"
-msgstr "StandbyLED"
 
 msgid "Start"
 msgstr "Başlat"
@@ -9679,7 +9726,8 @@ msgstr "Önceki alt servise geç"
 msgid "Switch to radio mode"
 msgstr "Radyo moduna geç"
 
-msgid "Switchable tuner types:"
+#, fuzzy
+msgid "Switchable tuner types"
 msgstr "Seçilebilir tuner tipleri:"
 
 msgid "Switzerland"
@@ -10102,8 +10150,8 @@ msgstr ""
 "Bu normal bir kullanıcı için önemli değildir.\n"
 "Lütfen - Herhangi bir şüpheli bilgiler görüntülenir üzerinde panik yok!"
 
-msgid "This is a multitype tuner. Available options depend on the hardware. Cable and terrestrial cannot be configured at the same time. If you want to use as cable + satellite or terrestrial + satellite, configure cable/terrestrial first and then save. Re-open and configure again as satellite."
-msgstr "Bu bir multitype tuner. Kullanılabilir seçenekler donanıma göre değişir. Kablo ve karasal aynı anda yapılamaz. Kablo + uydu veya karasal + uydu olarak kullanmak istiyorsanız, önce kablo / karasal yapılandırın ve sonra kaydedin. Uydu olarak tekrar açın ve yeniden yapılandırın."
+msgid "This is a multitype tuner. Available options depend on the hardware."
+msgstr ""
 
 msgid "This is the order in which DiSEqC commands are sent to the aerial system. The order must correspond exactly with the order the physical devices are arranged along the signal cable (starting from the receiver end)."
 msgstr "Bu, DiSEqC komutlarının anten sistemine gönderildiği sıradır. Sipariş, fiziksel aygıtların sinyal kablosu boyunca (alıcı ucundan başlayarak) düzenlendiği sırayla tam olarak uyuşmalıdır."
@@ -10585,6 +10633,10 @@ msgid "Turn on the power LED during deep standby."
 msgstr "Bekleme sırasında LED gücü açın."
 
 msgid "Turn on the power LED during standby."
+msgstr "Bekleme sırasında LED gücü açın."
+
+#, fuzzy
+msgid "Turn on the power LED."
 msgstr "Bekleme sırasında LED gücü açın."
 
 msgid "Turning step size"
@@ -12428,9 +12480,6 @@ msgstr "eğlence (10-16 yaş arası)"
 msgid "epg cache backup"
 msgstr "epg bellek yedeği"
 
-msgid "equal to"
-msgstr "eşittir"
-
 msgid "equestrian"
 msgstr "binicilik"
 
@@ -12655,10 +12704,6 @@ msgstr "kilitli"
 
 msgid "long"
 msgstr "uzun"
-
-#, fuzzy
-msgid "loopthrough to"
-msgstr "Harici loopthrough"
 
 msgid "magazines/reports/documentary"
 msgstr "magazin/rapor/belgesel"
@@ -13041,9 +13086,6 @@ msgstr "kanal arama durumu"
 
 msgid "science fiction/fantasy/horror"
 msgstr "bilim kurgu/fantastik/korku"
-
-msgid "second cable of motorized LNB"
-msgstr "motorlu LNB ikinci kablosu"
 
 msgid "seconds"
 msgstr "saniye"

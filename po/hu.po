@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-26 00:27+0100\n"
+"POT-Creation-Date: 2019-02-22 15:14+0100\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: arn354 <arn354@email.de>\n"
 "Language-Team: none\n"
@@ -696,6 +696,10 @@ msgstr ""
 
 msgid "<Current movielist location>"
 msgstr "<Fájllista aktuális tárhelye>"
+
+#, fuzzy
+msgid "<Default Skin>"
+msgstr "Alapértelmezett beállítások"
 
 msgid "<Default movie location>"
 msgstr "<Felvételek tárhelye>"
@@ -2208,6 +2212,21 @@ msgstr "Konfigurációs mód: %s"
 
 msgid "Configuration..."
 msgstr "Beállítások..."
+
+msgid "Configure DVB-ATSC"
+msgstr ""
+
+#, fuzzy
+msgid "Configure DVB-C"
+msgstr "Konfigurálás"
+
+#, fuzzy
+msgid "Configure DVB-S"
+msgstr "Konfigurálás"
+
+#, fuzzy
+msgid "Configure DVB-T"
+msgstr "Konfigurálás"
 
 msgid "Configure an additional delay to improve external subtitle synchronisation."
 msgstr "Extra késleltetés beállítása külső feliratfájl esetén, szinkronizáció hibák korrigálásához."
@@ -4880,6 +4899,14 @@ msgstr "Forgatómotor Beálltások"
 msgid "Hotkey zap"
 msgstr ""
 
+#, fuzzy
+msgid "Hotswitchable"
+msgstr "Engedélyezve"
+
+#, fuzzy
+msgid "Hotswitchable tuner"
+msgstr "Váltható tuner típusok:"
+
 msgid "Hour"
 msgstr ""
 
@@ -5261,6 +5288,10 @@ msgid "Invalid directory selected: %s"
 msgstr "A kiválasztott mappa érvénytelen: %s"
 
 msgid "Invalid location"
+msgstr "Érvénytelen hely"
+
+#, fuzzy
+msgid "Invalid reason"
 msgstr "Érvénytelen hely"
 
 msgid "Invalid transponder data"
@@ -7407,6 +7438,9 @@ msgstr "Forgatómotor beállítás"
 msgid "Positioner setup log"
 msgstr "Forgatómotor beállítás"
 
+msgid "Power LED"
+msgstr ""
+
 msgid "Power management. Consult your receiver's manual for more information."
 msgstr ""
 
@@ -8540,6 +8574,18 @@ msgid "Select 'A' or 'B' if your aerial system requires this, otherwise select '
 msgstr ""
 
 msgid "Select 'FBC SCR' if this tuner will connect to a SCR (Unicable/JESS) device. For all other setups select 'FBC automatic'."
+msgstr ""
+
+msgid "Select 'Yes' when you want to configure this tuner for DVB-ATSC"
+msgstr ""
+
+msgid "Select 'Yes' when you want to configure this tuner for DVB-C"
+msgstr ""
+
+msgid "Select 'Yes' when you want to configure this tuner for DVB-S"
+msgstr ""
+
+msgid "Select 'Yes' when you want to configure this tuner for DVB-T"
 msgstr ""
 
 msgid "Select 'band' if using a 'universal' LNB, otherwise consult your LNB spec sheet."
@@ -9823,14 +9869,15 @@ msgstr "Készenlét"
 msgid "Standby / restart"
 msgstr "Kikapcsolás"
 
+#, fuzzy
+msgid "Standby LED"
+msgstr "Mély-készenlét"
+
 msgid "Standby after current event"
 msgstr "Készenlét az aktuális műsor végén"
 
 msgid "Standby in "
 msgstr "Készenlétbe: "
-
-msgid "StandbyLED"
-msgstr ""
 
 #, fuzzy
 msgid "Start"
@@ -10174,7 +10221,8 @@ msgstr "Ugrás az előző alcsatornára"
 msgid "Switch to radio mode"
 msgstr "Ugrás az előző alcsatornára"
 
-msgid "Switchable tuner types:"
+#, fuzzy
+msgid "Switchable tuner types"
 msgstr "Váltható tuner típusok:"
 
 msgid "Switzerland"
@@ -10595,7 +10643,7 @@ msgid ""
 "Please - do not panic on any displayed suspicious information!"
 msgstr ""
 
-msgid "This is a multitype tuner. Available options depend on the hardware. Cable and terrestrial cannot be configured at the same time. If you want to use as cable + satellite or terrestrial + satellite, configure cable/terrestrial first and then save. Re-open and configure again as satellite."
+msgid "This is a multitype tuner. Available options depend on the hardware."
 msgstr ""
 
 msgid "This is the order in which DiSEqC commands are sent to the aerial system. The order must correspond exactly with the order the physical devices are arranged along the signal cable (starting from the receiver end)."
@@ -11089,6 +11137,9 @@ msgid "Turn on the power LED during deep standby."
 msgstr ""
 
 msgid "Turn on the power LED during standby."
+msgstr ""
+
+msgid "Turn on the power LED."
 msgstr ""
 
 msgid "Turning step size"
@@ -12948,9 +12999,6 @@ msgstr "szórakoztató (6-14 éves korosztály"
 msgid "epg cache backup"
 msgstr ""
 
-msgid "equal to"
-msgstr "egyenlő"
-
 msgid "equestrian"
 msgstr "lovaglás"
 
@@ -13181,10 +13229,6 @@ msgstr "hangolva"
 
 msgid "long"
 msgstr ""
-
-#, fuzzy
-msgid "loopthrough to"
-msgstr "átfűzés ide"
 
 msgid "magazines/reports/documentary"
 msgstr "magazin/riport/dokumentum"
@@ -13576,9 +13620,6 @@ msgstr "keresési állapot"
 
 msgid "science fiction/fantasy/horror"
 msgstr "szcifi/fantasy/horror"
-
-msgid "second cable of motorized LNB"
-msgstr "forgatós fej második kábele"
 
 msgid "seconds"
 msgstr "másodperc"

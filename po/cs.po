@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-26 00:27+0100\n"
+"POT-Creation-Date: 2019-02-22 15:14+0100\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: arn354 <arn354@email.de>\n"
 "Language-Team: none\n"
@@ -772,6 +772,11 @@ msgstr ""
 #
 msgid "<Current movielist location>"
 msgstr "<současný seznam souborů>"
+
+#
+#, fuzzy
+msgid "<Default Skin>"
+msgstr "Standardní nastavení"
 
 #
 msgid "<Default movie location>"
@@ -2499,6 +2504,24 @@ msgstr "Konfigurační mód:  %s"
 #
 msgid "Configuration..."
 msgstr "nastavení..."
+
+msgid "Configure DVB-ATSC"
+msgstr ""
+
+#
+#, fuzzy
+msgid "Configure DVB-C"
+msgstr "Nastavuji"
+
+#
+#, fuzzy
+msgid "Configure DVB-S"
+msgstr "Nastavuji"
+
+#
+#, fuzzy
+msgid "Configure DVB-T"
+msgstr "Nastavuji"
 
 msgid "Configure an additional delay to improve external subtitle synchronisation."
 msgstr "Nastavení zpoždění pro lepší synchronizaci externích titulků."
@@ -5537,6 +5560,16 @@ msgstr "Nastavení Hotkey"
 msgid "Hotkey zap"
 msgstr ""
 
+#
+#, fuzzy
+msgid "Hotswitchable"
+msgstr "Povolit"
+
+#
+#, fuzzy
+msgid "Hotswitchable tuner"
+msgstr "Přepínatelné typy tunerů:"
+
 msgid "Hour"
 msgstr ""
 
@@ -5981,6 +6014,11 @@ msgstr "Zvolen neplatný adresář: %s"
 
 #
 msgid "Invalid location"
+msgstr "Neplatné umístění"
+
+#
+#, fuzzy
+msgid "Invalid reason"
 msgstr "Neplatné umístění"
 
 #
@@ -8463,6 +8501,9 @@ msgstr "Nastavení pozicioneru"
 msgid "Positioner setup log"
 msgstr "Nastavení pozicioneru"
 
+msgid "Power LED"
+msgstr ""
+
 msgid "Power management. Consult your receiver's manual for more information."
 msgstr ""
 
@@ -9799,6 +9840,18 @@ msgid "Select 'A' or 'B' if your aerial system requires this, otherwise select '
 msgstr ""
 
 msgid "Select 'FBC SCR' if this tuner will connect to a SCR (Unicable/JESS) device. For all other setups select 'FBC automatic'."
+msgstr ""
+
+msgid "Select 'Yes' when you want to configure this tuner for DVB-ATSC"
+msgstr ""
+
+msgid "Select 'Yes' when you want to configure this tuner for DVB-C"
+msgstr ""
+
+msgid "Select 'Yes' when you want to configure this tuner for DVB-S"
+msgstr ""
+
+msgid "Select 'Yes' when you want to configure this tuner for DVB-T"
 msgstr ""
 
 msgid "Select 'band' if using a 'universal' LNB, otherwise consult your LNB spec sheet."
@@ -11248,14 +11301,16 @@ msgstr "Pohotovostní režim"
 msgid "Standby / restart"
 msgstr "Standby / restart"
 
+#
+#, fuzzy
+msgid "Standby LED"
+msgstr "Hluboký spánek"
+
 msgid "Standby after current event"
 msgstr "Standby po této události"
 
 msgid "Standby in "
 msgstr "standby za "
-
-msgid "StandbyLED"
-msgstr ""
 
 #
 #, fuzzy
@@ -11653,7 +11708,8 @@ msgid "Switch to radio mode"
 msgstr "Přepnout do Radio módu"
 
 #
-msgid "Switchable tuner types:"
+#, fuzzy
+msgid "Switchable tuner types"
 msgstr "Přepínatelné typy tunerů:"
 
 msgid "Switzerland"
@@ -12103,7 +12159,7 @@ msgstr ""
 "Pro běžné uživatele nejsou důležité.\n"
 "Nepanikařte, jestliže uvidíte nějaké podezřelé údaje!"
 
-msgid "This is a multitype tuner. Available options depend on the hardware. Cable and terrestrial cannot be configured at the same time. If you want to use as cable + satellite or terrestrial + satellite, configure cable/terrestrial first and then save. Re-open and configure again as satellite."
+msgid "This is a multitype tuner. Available options depend on the hardware."
 msgstr ""
 
 msgid "This is the order in which DiSEqC commands are sent to the aerial system. The order must correspond exactly with the order the physical devices are arranged along the signal cable (starting from the receiver end)."
@@ -12664,6 +12720,10 @@ msgid "Turn on the power LED during deep standby."
 msgstr "Zapne LED napájení při standby."
 
 msgid "Turn on the power LED during standby."
+msgstr "Zapne LED napájení při standby."
+
+#, fuzzy
+msgid "Turn on the power LED."
 msgstr "Zapne LED napájení při standby."
 
 msgid "Turning step size"
@@ -14747,10 +14807,6 @@ msgstr "zábavný (6-14 let)"
 msgid "epg cache backup"
 msgstr "Zálohovat EPG cache"
 
-#
-msgid "equal to"
-msgstr "stejné s"
-
 msgid "equestrian"
 msgstr "jezdectví"
 
@@ -15021,11 +15077,6 @@ msgstr "zamknuto"
 
 msgid "long"
 msgstr ""
-
-#
-#, fuzzy
-msgid "loopthrough to"
-msgstr "propojeno s"
 
 msgid "magazines/reports/documentary"
 msgstr "magazíny/reportáže/dokumentární"
@@ -15482,10 +15533,6 @@ msgstr "stav prohledávání"
 
 msgid "science fiction/fantasy/horror"
 msgstr "scifi/fantastický/horor"
-
-#
-msgid "second cable of motorized LNB"
-msgstr "druhý kabel z natáčeného LNB"
 
 #
 msgid "seconds"

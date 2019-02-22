@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-26 00:27+0100\n"
+"POT-Creation-Date: 2019-02-22 15:14+0100\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: arn354 <arn354@email.de>\n"
 "Language-Team: none\n"
@@ -732,6 +732,11 @@ msgstr ""
 #
 msgid "<Current movielist location>"
 msgstr ""
+
+#
+#, fuzzy
+msgid "<Default Skin>"
+msgstr "Wyzigje ynstellingen"
 
 #
 msgid "<Default movie location>"
@@ -2465,6 +2470,24 @@ msgstr "Ynstellingen modus"
 #, fuzzy
 msgid "Configuration..."
 msgstr "Netwurk configuraasje"
+
+msgid "Configure DVB-ATSC"
+msgstr ""
+
+#
+#, fuzzy
+msgid "Configure DVB-C"
+msgstr "Oan it ynstellen"
+
+#
+#, fuzzy
+msgid "Configure DVB-S"
+msgstr "Oan it ynstellen"
+
+#
+#, fuzzy
+msgid "Configure DVB-T"
+msgstr "Oan it ynstellen"
 
 msgid "Configure an additional delay to improve external subtitle synchronisation."
 msgstr ""
@@ -5464,6 +5487,14 @@ msgstr "Ynstellingen befeiligje"
 msgid "Hotkey zap"
 msgstr ""
 
+#
+#, fuzzy
+msgid "Hotswitchable"
+msgstr "Ynskeakelje"
+
+msgid "Hotswitchable tuner"
+msgstr ""
+
 msgid "Hour"
 msgstr ""
 
@@ -5902,6 +5933,11 @@ msgstr "Unjildige map selektearre: %s"
 #
 #, fuzzy
 msgid "Invalid location"
+msgstr "Plak net tastien"
+
+#
+#, fuzzy
+msgid "Invalid reason"
 msgstr "Plak net tastien"
 
 msgid "Invalid transponder data"
@@ -8397,6 +8433,9 @@ msgstr "Rotor ynstellingen"
 msgid "Positioner setup log"
 msgstr "Rotor ynstellingen"
 
+msgid "Power LED"
+msgstr ""
+
 msgid "Power management. Consult your receiver's manual for more information."
 msgstr ""
 
@@ -9717,6 +9756,18 @@ msgid "Select 'A' or 'B' if your aerial system requires this, otherwise select '
 msgstr ""
 
 msgid "Select 'FBC SCR' if this tuner will connect to a SCR (Unicable/JESS) device. For all other setups select 'FBC automatic'."
+msgstr ""
+
+msgid "Select 'Yes' when you want to configure this tuner for DVB-ATSC"
+msgstr ""
+
+msgid "Select 'Yes' when you want to configure this tuner for DVB-C"
+msgstr ""
+
+msgid "Select 'Yes' when you want to configure this tuner for DVB-S"
+msgstr ""
+
+msgid "Select 'Yes' when you want to configure this tuner for DVB-T"
 msgstr ""
 
 msgid "Select 'band' if using a 'universal' LNB, otherwise consult your LNB spec sheet."
@@ -11200,13 +11251,15 @@ msgstr "Paraatmode"
 msgid "Standby / restart"
 msgstr "Paraatmode / Nijstart"
 
+#
+#, fuzzy
+msgid "Standby LED"
+msgstr "Sliip stand"
+
 msgid "Standby after current event"
 msgstr ""
 
 msgid "Standby in "
-msgstr ""
-
-msgid "StandbyLED"
 msgstr ""
 
 #
@@ -11628,8 +11681,9 @@ msgid "Switch to radio mode"
 msgstr "Gjin nei foarige undersender"
 
 #
-msgid "Switchable tuner types:"
-msgstr ""
+#, fuzzy
+msgid "Switchable tuner types"
+msgstr "Ynstellingen modus"
 
 msgid "Switzerland"
 msgstr ""
@@ -12073,7 +12127,7 @@ msgid ""
 "Please - do not panic on any displayed suspicious information!"
 msgstr ""
 
-msgid "This is a multitype tuner. Available options depend on the hardware. Cable and terrestrial cannot be configured at the same time. If you want to use as cable + satellite or terrestrial + satellite, configure cable/terrestrial first and then save. Re-open and configure again as satellite."
+msgid "This is a multitype tuner. Available options depend on the hardware."
 msgstr ""
 
 msgid "This is the order in which DiSEqC commands are sent to the aerial system. The order must correspond exactly with the order the physical devices are arranged along the signal cable (starting from the receiver end)."
@@ -12644,6 +12698,9 @@ msgid "Turn on the power LED during deep standby."
 msgstr ""
 
 msgid "Turn on the power LED during standby."
+msgstr ""
+
+msgid "Turn on the power LED."
 msgstr ""
 
 msgid "Turning step size"
@@ -14670,10 +14727,6 @@ msgstr ""
 msgid "epg cache backup"
 msgstr ""
 
-#
-msgid "equal to"
-msgstr "gelyk oan"
-
 msgid "equestrian"
 msgstr ""
 
@@ -14941,11 +14994,6 @@ msgstr "op slot"
 
 msgid "long"
 msgstr ""
-
-#
-#, fuzzy
-msgid "loopthrough to"
-msgstr "trochskeakele nei"
 
 msgid "magazines/reports/documentary"
 msgstr ""
@@ -15403,10 +15451,6 @@ msgstr "sykjen status"
 
 msgid "science fiction/fantasy/horror"
 msgstr ""
-
-#
-msgid "second cable of motorized LNB"
-msgstr "twadde kabel fan LNB-motor"
 
 #
 msgid "seconds"

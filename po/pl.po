@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-26 00:27+0100\n"
+"POT-Creation-Date: 2019-02-22 15:14+0100\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: arn354 <arn354@email.de>\n"
 "Language-Team: none\n"
@@ -769,6 +769,11 @@ msgstr ""
 #
 msgid "<Current movielist location>"
 msgstr "<Bieżąca lokalizacja nagrań>"
+
+#
+#, fuzzy
+msgid "<Default Skin>"
+msgstr "Ustawienia domyślne"
 
 #
 msgid "<Default movie location>"
@@ -2518,6 +2523,24 @@ msgstr "Tryb konfiguracji: %s"
 #
 msgid "Configuration..."
 msgstr "Konfiguracja..."
+
+msgid "Configure DVB-ATSC"
+msgstr ""
+
+#
+#, fuzzy
+msgid "Configure DVB-C"
+msgstr "Konfigurowanie"
+
+#
+#, fuzzy
+msgid "Configure DVB-S"
+msgstr "Konfigurowanie"
+
+#
+#, fuzzy
+msgid "Configure DVB-T"
+msgstr "Konfigurowanie"
 
 msgid "Configure an additional delay to improve external subtitle synchronisation."
 msgstr "Ustaw dodatkowe opóźnienie, aby polepszyć synchronizację napisów zewnętrznych"
@@ -5557,6 +5580,16 @@ msgstr "Ustawienia pozycjonera"
 msgid "Hotkey zap"
 msgstr ""
 
+#
+#, fuzzy
+msgid "Hotswitchable"
+msgstr "Włącz"
+
+#
+#, fuzzy
+msgid "Hotswitchable tuner"
+msgstr "Wymienne typy tunerów:"
+
 msgid "Hour"
 msgstr ""
 
@@ -6002,6 +6035,11 @@ msgstr "Wybrano niewłaściwy katalog: %s"
 
 #
 msgid "Invalid location"
+msgstr "Nieprawidłowa lokalizacja"
+
+#
+#, fuzzy
+msgid "Invalid reason"
 msgstr "Nieprawidłowa lokalizacja"
 
 #
@@ -8509,6 +8547,9 @@ msgstr "Ustawienia pozycjonera"
 msgid "Positioner setup log"
 msgstr "Ustawienia pozycjonera"
 
+msgid "Power LED"
+msgstr ""
+
 msgid "Power management. Consult your receiver's manual for more information."
 msgstr ""
 
@@ -9875,6 +9916,18 @@ msgid "Select 'A' or 'B' if your aerial system requires this, otherwise select '
 msgstr ""
 
 msgid "Select 'FBC SCR' if this tuner will connect to a SCR (Unicable/JESS) device. For all other setups select 'FBC automatic'."
+msgstr ""
+
+msgid "Select 'Yes' when you want to configure this tuner for DVB-ATSC"
+msgstr ""
+
+msgid "Select 'Yes' when you want to configure this tuner for DVB-C"
+msgstr ""
+
+msgid "Select 'Yes' when you want to configure this tuner for DVB-S"
+msgstr ""
+
+msgid "Select 'Yes' when you want to configure this tuner for DVB-T"
 msgstr ""
 
 msgid "Select 'band' if using a 'universal' LNB, otherwise consult your LNB spec sheet."
@@ -11367,15 +11420,16 @@ msgstr "Czuwanie"
 msgid "Standby / restart"
 msgstr "Czuwanie / Restart"
 
+#
+#, fuzzy
+msgid "Standby LED"
+msgstr "Dioda w trybie czuwania"
+
 msgid "Standby after current event"
 msgstr "Przejdź w tryb czuwania po bieżącym wydarzeniu"
 
 msgid "Standby in "
 msgstr "Tryb czuwania za"
-
-#
-msgid "StandbyLED"
-msgstr "Dioda w trybie czuwania"
 
 #
 #, fuzzy
@@ -11788,7 +11842,8 @@ msgid "Switch to radio mode"
 msgstr "Przełącz na HDMI w trybie"
 
 #
-msgid "Switchable tuner types:"
+#, fuzzy
+msgid "Switchable tuner types"
 msgstr "Wymienne typy tunerów:"
 
 msgid "Switzerland"
@@ -12256,7 +12311,7 @@ msgid ""
 "Please - do not panic on any displayed suspicious information!"
 msgstr ""
 
-msgid "This is a multitype tuner. Available options depend on the hardware. Cable and terrestrial cannot be configured at the same time. If you want to use as cable + satellite or terrestrial + satellite, configure cable/terrestrial first and then save. Re-open and configure again as satellite."
+msgid "This is a multitype tuner. Available options depend on the hardware."
 msgstr ""
 
 msgid "This is the order in which DiSEqC commands are sent to the aerial system. The order must correspond exactly with the order the physical devices are arranged along the signal cable (starting from the receiver end)."
@@ -12818,6 +12873,10 @@ msgid "Turn on the power LED during deep standby."
 msgstr "Włączaj diodę zasilania w trybie czuwania"
 
 msgid "Turn on the power LED during standby."
+msgstr "Włączaj diodę zasilania w trybie czuwania"
+
+#, fuzzy
+msgid "Turn on the power LED."
 msgstr "Włączaj diodę zasilania w trybie czuwania"
 
 msgid "Turning step size"
@@ -14908,10 +14967,6 @@ msgstr "Rozrywka (6-14 lat)"
 msgid "epg cache backup"
 msgstr ""
 
-#
-msgid "equal to"
-msgstr "Równy"
-
 msgid "equestrian"
 msgstr "Jeździectwo"
 
@@ -15179,11 +15234,6 @@ msgstr "Zablokowany"
 
 msgid "long"
 msgstr ""
-
-#
-#, fuzzy
-msgid "loopthrough to"
-msgstr "Przez przelotkę do"
 
 msgid "magazines/reports/documentary"
 msgstr "Reportaż/Dokument/Mgazyn"
@@ -15644,10 +15694,6 @@ msgstr "Status skanowania"
 
 msgid "science fiction/fantasy/horror"
 msgstr "SF/Fantasy/Horror"
-
-#
-msgid "second cable of motorized LNB"
-msgstr "Drugi kabel zmotoryzowanego LNB"
 
 #
 msgid "seconds"

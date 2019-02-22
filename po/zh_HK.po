@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-26 00:27+0100\n"
+"POT-Creation-Date: 2019-02-22 15:14+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: 王彪 <satfan@163.com>\n"
 "Language-Team: 中國\n"
@@ -684,6 +684,10 @@ msgstr ""
 
 msgid "<Current movielist location>"
 msgstr "<當前電影列表位置>"
+
+#, fuzzy
+msgid "<Default Skin>"
+msgstr "預設設定"
 
 msgid "<Default movie location>"
 msgstr "<預設錄影位置>"
@@ -2180,6 +2184,21 @@ msgstr ""
 
 msgid "Configuration..."
 msgstr ""
+
+msgid "Configure DVB-ATSC"
+msgstr ""
+
+#, fuzzy
+msgid "Configure DVB-C"
+msgstr "配置"
+
+#, fuzzy
+msgid "Configure DVB-S"
+msgstr "配置"
+
+#, fuzzy
+msgid "Configure DVB-T"
+msgstr "配置"
 
 msgid "Configure an additional delay to improve external subtitle synchronisation."
 msgstr ""
@@ -4822,6 +4841,13 @@ msgid "Hotkey zap"
 msgstr ""
 
 #, fuzzy
+msgid "Hotswitchable"
+msgstr "啟用"
+
+msgid "Hotswitchable tuner"
+msgstr ""
+
+#, fuzzy
 msgid "Hour"
 msgstr "小時(s)"
 
@@ -5200,6 +5226,10 @@ msgstr "選擇了無效目錄: %s"
 
 msgid "Invalid location"
 msgstr ""
+
+#, fuzzy
+msgid "Invalid reason"
+msgstr "手動轉發器掃描"
 
 #, fuzzy
 msgid "Invalid transponder data"
@@ -7355,6 +7385,9 @@ msgstr "極軸設定(DiSEqC 1.2)"
 msgid "Positioner setup log"
 msgstr "極軸設定(DiSEqC 1.2)"
 
+msgid "Power LED"
+msgstr ""
+
 msgid "Power management. Consult your receiver's manual for more information."
 msgstr ""
 
@@ -8498,6 +8531,18 @@ msgid "Select 'A' or 'B' if your aerial system requires this, otherwise select '
 msgstr ""
 
 msgid "Select 'FBC SCR' if this tuner will connect to a SCR (Unicable/JESS) device. For all other setups select 'FBC automatic'."
+msgstr ""
+
+msgid "Select 'Yes' when you want to configure this tuner for DVB-ATSC"
+msgstr ""
+
+msgid "Select 'Yes' when you want to configure this tuner for DVB-C"
+msgstr ""
+
+msgid "Select 'Yes' when you want to configure this tuner for DVB-S"
+msgstr ""
+
+msgid "Select 'Yes' when you want to configure this tuner for DVB-T"
 msgstr ""
 
 msgid "Select 'band' if using a 'universal' LNB, otherwise consult your LNB spec sheet."
@@ -9784,15 +9829,15 @@ msgid "Standby / restart"
 msgstr ""
 
 #, fuzzy
+msgid "Standby LED"
+msgstr "待機"
+
+#, fuzzy
 msgid "Standby after current event"
 msgstr "自定義當前事件時長"
 
 #, fuzzy
 msgid "Standby in "
-msgstr "待機"
-
-#, fuzzy
-msgid "StandbyLED"
 msgstr "待機"
 
 msgid "Start"
@@ -10139,7 +10184,7 @@ msgstr ""
 msgid "Switch to radio mode"
 msgstr "選擇音頻模式"
 
-msgid "Switchable tuner types:"
+msgid "Switchable tuner types"
 msgstr ""
 
 msgid "Switzerland"
@@ -10548,7 +10593,7 @@ msgid ""
 "Please - do not panic on any displayed suspicious information!"
 msgstr ""
 
-msgid "This is a multitype tuner. Available options depend on the hardware. Cable and terrestrial cannot be configured at the same time. If you want to use as cable + satellite or terrestrial + satellite, configure cable/terrestrial first and then save. Re-open and configure again as satellite."
+msgid "This is a multitype tuner. Available options depend on the hardware."
 msgstr ""
 
 msgid "This is the order in which DiSEqC commands are sent to the aerial system. The order must correspond exactly with the order the physical devices are arranged along the signal cable (starting from the receiver end)."
@@ -11032,6 +11077,9 @@ msgid "Turn on the power LED during deep standby."
 msgstr ""
 
 msgid "Turn on the power LED during standby."
+msgstr ""
+
+msgid "Turn on the power LED."
 msgstr ""
 
 #, fuzzy
@@ -12842,9 +12890,6 @@ msgstr ""
 msgid "epg cache backup"
 msgstr ""
 
-msgid "equal to"
-msgstr "相同"
-
 msgid "equestrian"
 msgstr ""
 
@@ -13077,10 +13122,6 @@ msgstr "鎖定"
 
 msgid "long"
 msgstr ""
-
-#, fuzzy
-msgid "loopthrough to"
-msgstr "聯繫"
 
 msgid "magazines/reports/documentary"
 msgstr ""
@@ -13472,9 +13513,6 @@ msgstr "掃描狀態"
 
 msgid "science fiction/fantasy/horror"
 msgstr ""
-
-msgid "second cable of motorized LNB"
-msgstr "第二條線纜連接Rotor"
 
 msgid "seconds"
 msgstr "秒"
