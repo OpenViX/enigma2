@@ -9,15 +9,15 @@ msgstr ""
 "Project-Id-Version: enigma2 teamBlue (Apachi70)\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-02-22 15:14+0100\n"
-"PO-Revision-Date: 2018-12-21 12:13+0100\n"
-"Last-Translator: Apachi70 <apachi70000@gmail.com>\n"
+"PO-Revision-Date: 2019-02-22 23:32+0100\n"
+"Last-Translator: Apachi70 (TeamBlue) <apachi70000@gmail.com>\n"
 "Language-Team: Turkish <apachi70000@gmail.com>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural= (1 != 1);\n"
-"X-Generator: Poedit 2.2\n"
+"X-Generator: Poedit 2.2.1\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
 msgid ""
@@ -315,10 +315,10 @@ msgid "%d hour"
 msgid_plural "%d hours"
 msgstr[0] "%d saat"
 
-#, fuzzy, python-format
+#, python-format
 msgid "%d job is running in the background!"
 msgid_plural "%d jobs are running in the background!"
-msgstr[0] "%d görev arkaplanda çalışıyor!"
+msgstr[0] "%d işi arka planda çalışıyor!"
 
 #, python-format
 msgid "%d kB"
@@ -427,7 +427,7 @@ msgstr "%s%d dk"
 
 #, python-format
 msgid "%s%d%s"
-msgstr ""
+msgstr "%s%d%s"
 
 #, python-format
 msgid "%s/%s: %s"
@@ -711,9 +711,8 @@ msgstr ": 0000 - varsayılan (devre dışı)"
 msgid "<Current movielist location>"
 msgstr "<Mevcut film listesi konumu>"
 
-#, fuzzy
 msgid "<Default Skin>"
-msgstr "Varsayılan ayarlar"
+msgstr "<Varsayılan arayüzü>"
 
 msgid "<Default movie location>"
 msgstr "<Varsayılan film konumu>"
@@ -862,7 +861,7 @@ msgstr "ASPECT key"
 
 #, fuzzy
 msgid "ASS File"
-msgstr "ASS dosyası"
+msgstr "ASS Dosyası"
 
 msgid "ASS file"
 msgstr "ASS dosyası"
@@ -1314,10 +1313,10 @@ msgstr "Ses PID"
 
 #, python-format
 msgid "Audio PID%s, codec & lang"
-msgstr ""
+msgstr "Ses PID%s, kodek & uzun"
 
 msgid "Audio PID, codec & lang"
-msgstr ""
+msgstr "Ses PID, kodek & uzun"
 
 msgid "Audio auto volume level"
 msgstr "Ses otomatik ses seviyesi"
@@ -1511,7 +1510,7 @@ msgid "Barbados"
 msgstr "Barbados"
 
 msgid "Basic PID info"
-msgstr ""
+msgstr "Temel PID bilgisi"
 
 msgid "Basic settings"
 msgstr "Temel ayarlar"
@@ -2050,9 +2049,8 @@ msgstr "Kayıt günlüğünü sil"
 msgid "Clear playlist"
 msgstr "Çalma listesini temizle"
 
-#, fuzzy
 msgid "Client is streaming from this box!"
-msgstr "Toplam İstemci akışı: "
+msgstr "Alici bu kutudan yayın yapıyor!"
 
 msgid "ClientIP"
 msgstr "ClientIP"
@@ -2155,19 +2153,16 @@ msgid "Configuration..."
 msgstr "Yapılandırma..."
 
 msgid "Configure DVB-ATSC"
-msgstr ""
+msgstr "DVB-ATSC'yi yapılandırın"
 
-#, fuzzy
 msgid "Configure DVB-C"
-msgstr "Yapılandırılıyor"
+msgstr "DVB-C'yi yapılandırın"
 
-#, fuzzy
 msgid "Configure DVB-S"
-msgstr "Yapılandırılıyor"
+msgstr "DVB-S'yi yapılandırın"
 
-#, fuzzy
 msgid "Configure DVB-T"
-msgstr "Yapılandırılıyor"
+msgstr "DVB-T'yi yapılandırın"
 
 msgid "Configure an additional delay to improve external subtitle synchronisation."
 msgstr "Harici altyazı senkronizasyonunu artırmak için ek bir gecikme yapılandır."
@@ -2719,7 +2714,7 @@ msgid "Customize"
 msgstr "Özelleştir"
 
 msgid "Customize OpenWebIF settings for fallback tuner"
-msgstr ""
+msgstr "Geri dönüş tuneri için OpenWebIF ayarlarını özelleştirme"
 
 msgid "Customize channel list cursor behavior"
 msgstr "Kanal listesi imleç davranışını özelleştir"
@@ -2783,7 +2778,7 @@ msgid "DVB CI Delay"
 msgstr "DVB CI Gecikmesi"
 
 msgid "DVB Subtitles PID & lang"
-msgstr ""
+msgstr "DVB Altyazı PID & uzun"
 
 msgid "DVB drivers: "
 msgstr "DVB sürücüleri: "
@@ -2791,9 +2786,8 @@ msgstr "DVB sürücüleri: "
 msgid "DVB subtitle black transparency"
 msgstr "DVB altyazı siyah saydamlığı"
 
-#, fuzzy
 msgid "DVB type"
-msgstr "tip"
+msgstr "DVB tipi"
 
 msgid "DVB-C"
 msgstr "DVB-C"
@@ -2849,9 +2843,8 @@ msgstr "Devre dışı bırakmak"
 msgid "Debug to file"
 msgstr "Dosyaya hata ayıkla"
 
-#, fuzzy
 msgid "Deep Standby LED"
-msgstr "Derin bekleme"
+msgstr "Derin bekleme LED"
 
 msgid "Deep standby"
 msgstr "Derin bekleme"
@@ -3133,15 +3126,13 @@ msgid "Display >16:9 content as"
 msgstr ">16:9 içeriği şu şekilde göster"
 
 msgid "Display EPG as MultiEPG"
-msgstr ""
+msgstr "EPG'yi MultiEPG olarak göster"
 
-#, fuzzy
 msgid "Display EPG info for current event"
-msgstr "Yalnızca mevcut etkinlik için zaman kaymasını kaydet"
+msgstr "Mevcut etkinlik için EPG bilgisini göster"
 
-#, fuzzy
 msgid "Display EPG list for current channel"
-msgstr "Mevcut kanal için EPG göster..."
+msgstr "Mevcut kanal için EPG listesini göster"
 
 msgid "Display and userinterface"
 msgstr "Görüntüleme ve kullanıcı arayüzü"
@@ -3232,9 +3223,9 @@ msgstr "\"%s\"eklentisini silmek istiyor musunuz?"
 msgid "Do you really want to remove your bookmark of %s?"
 msgstr "%s isimli yer imini silmek istiyor musunuz?"
 
-#, fuzzy, python-format
+#, python-format
 msgid "Do you really want to stop current event and delete timer %s?"
-msgstr "%s 'i silmek istediğinize emin misiniz?"
+msgstr "Şu anki etkinliği durdurmak ve%s zamanlayıcısını silmek istiyor musunuz?"
 
 #, python-format
 msgid "Do you really want to unhold the plugin \"%s\"?"
@@ -3501,12 +3492,11 @@ msgstr "El Salvador"
 msgid "Electronic Program Guide"
 msgstr "Elektronik Televizyon Rehberi"
 
-#, fuzzy
 msgid "Embedded"
-msgstr "gömülü"
+msgstr "Gömülü"
 
 msgid "Empty slot"
-msgstr ""
+msgstr "Boş yuva"
 
 msgid "Enable"
 msgstr "Etkinleştir"
@@ -3529,9 +3519,8 @@ msgstr "Enable CIHelper for SLOT CI1"
 msgid "Enable EIT EPG"
 msgstr "EIT EPG etkinleştir"
 
-#, fuzzy
 msgid "Enable HDMI-CEC"
-msgstr "HDMI-CEC"
+msgstr "HDMI-CEC'yi etkinleştir"
 
 msgid "Enable MHW EPG"
 msgstr "MHW EPG etkinleştir"
@@ -3885,9 +3874,8 @@ msgstr "Uyku zamanlayıcısını 15 dakika uzat"
 msgid "Extended"
 msgstr "Genişletilmiş"
 
-#, fuzzy
 msgid "Extended PID info"
-msgstr "Genişletilmiş ayarlar"
+msgstr "Genişletilmiş PID bilgisi"
 
 msgid "Extended Software"
 msgstr "Geliştirilmiş Yazılım"
@@ -4709,13 +4697,11 @@ msgstr "Kısayol Kurulum"
 msgid "Hotkey zap"
 msgstr "Kısayol kanal değişimi"
 
-#, fuzzy
 msgid "Hotswitchable"
-msgstr "test edilemeyen"
+msgstr "Hotswitchable"
 
-#, fuzzy
 msgid "Hotswitchable tuner"
-msgstr "Seçilebilir tuner tipleri:"
+msgstr "Hotswitchable tuner"
 
 msgid "Hour"
 msgstr "Saat"
@@ -5082,9 +5068,8 @@ msgstr "Seçilen klasör geçersiz: %s"
 msgid "Invalid location"
 msgstr "Geçersiz konum"
 
-#, fuzzy
 msgid "Invalid reason"
-msgstr "Geçersiz konum"
+msgstr "Geçersiz sebep"
 
 msgid "Invalid transponder data"
 msgstr "Geçersiz transponder verisi"
@@ -5475,9 +5460,8 @@ msgstr "Tuşa uzun basarak"
 msgid "Longitude"
 msgstr "Boylam"
 
-#, fuzzy
 msgid "Loop through from"
-msgstr "Harici loopthrough"
+msgstr "Harici loopthrough icinden"
 
 msgid "Lower Framerate save CPU Time"
 msgstr "CPU zamanı kaydetmek alt Kare Hızı"
@@ -5917,9 +5901,8 @@ msgstr "Çoklu uydu"
 msgid "Multisat all select"
 msgstr "Multisat tümünü seçmek"
 
-#, fuzzy
 msgid "Multistream"
-msgstr "Çoklu uydu"
+msgstr "Multistream"
 
 msgid "Music/Ballet/Dance"
 msgstr "Müzik/Bale/Dans"
@@ -5986,7 +5969,7 @@ msgid "Nameserver setup"
 msgstr "İsim sunucusu (DNS) kurulumu"
 
 msgid "Namespace & Orbital pos."
-msgstr ""
+msgstr "Ad Alanı ve Orbital pos."
 
 msgid "Namibia"
 msgstr "Namibya"
@@ -6522,7 +6505,7 @@ msgid "Orbital position"
 msgstr "Yörüngesel pozisyon"
 
 msgid "Ordinary"
-msgstr ""
+msgstr "Sıradan"
 
 msgid "Original"
 msgstr "Orjinal"
@@ -6530,9 +6513,8 @@ msgstr "Orjinal"
 msgid "Other"
 msgstr "Diğer"
 
-#, fuzzy
 msgid "Other Subtitles & lang"
-msgstr "Altyazı Ayarları"
+msgstr "Diğer altyazılar & uzun"
 
 msgid "Overall progress:"
 msgstr "Genel ilerleme:"
@@ -6597,9 +6579,8 @@ msgstr "PCR PID"
 msgid "PDC"
 msgstr "PDC"
 
-#, fuzzy
 msgid "PGS File"
-msgstr "PGS dosyası"
+msgstr "PGS Dosyası"
 
 msgid "PGS file"
 msgstr "PGS dosyası"
@@ -6702,7 +6683,7 @@ msgid "Passthrough"
 msgstr "Geçiş"
 
 msgid "Password"
-msgstr ""
+msgstr "Parola"
 
 msgid "Pause"
 msgstr "Duraklat"
@@ -7081,9 +7062,8 @@ msgstr "Lehçe"
 msgid "Popup"
 msgstr "Aniden belirmek"
 
-#, fuzzy
 msgid "Port"
-msgstr "Port A"
+msgstr "Port "
 
 msgid "Port A"
 msgstr "Port A"
@@ -7131,7 +7111,7 @@ msgid "Positioner setup log"
 msgstr "Pozisyoner Kur log"
 
 msgid "Power LED"
-msgstr ""
+msgstr "Güç LED"
 
 msgid "Power management. Consult your receiver's manual for more information."
 msgstr "Güç yönetimi. Daha fazla bilgi için alıcınızın kılavuzuna bakın."
@@ -7888,16 +7868,14 @@ msgstr "SNR:"
 msgid "SPDIF"
 msgstr "SPDIF"
 
-#, fuzzy
 msgid "SRT File"
-msgstr "SRT dosyası"
+msgstr "SRT Dosyası"
 
 msgid "SRT file"
 msgstr "SRT dosyası"
 
-#, fuzzy
 msgid "SSA File"
-msgstr "SSA dosyası"
+msgstr "SSA Dosyası"
 
 msgid "SSA file"
 msgstr "SSA dosyası"
@@ -8195,16 +8173,16 @@ msgid "Select 'FBC SCR' if this tuner will connect to a SCR (Unicable/JESS) devi
 msgstr "Bu tuner bir SCR (Unicable / JESS) cihazına bağlanacaksa 'FBC SCR' öğesini seçin. Diğer tüm kurulumlar için 'FBC otomatik' seçeneğini seçin."
 
 msgid "Select 'Yes' when you want to configure this tuner for DVB-ATSC"
-msgstr ""
+msgstr "DVB-ATSC için bu tarayıcıyı yapılandırmak istediğinizde 'Evet'i seçin"
 
 msgid "Select 'Yes' when you want to configure this tuner for DVB-C"
-msgstr ""
+msgstr "DVB-C için bu tarayıcıyı yapılandırmak istediğinizde 'Evet'i seçin"
 
 msgid "Select 'Yes' when you want to configure this tuner for DVB-S"
-msgstr ""
+msgstr "DVB-S için bu tarayıcıyı yapılandırmak istediğinizde 'Evet'i seçin"
 
 msgid "Select 'Yes' when you want to configure this tuner for DVB-T"
-msgstr ""
+msgstr "DVB-T için bu tarayıcıyı yapılandırmak istediğinizde 'Evet'i seçin"
 
 msgid "Select 'band' if using a 'universal' LNB, otherwise consult your LNB spec sheet."
 msgstr "'Evrensel' bir LNB kullanıyorsanız 'bant' seçeneğini seçin, aksi takdirde LNB spec sayfanıza başvurun."
@@ -8567,13 +8545,11 @@ msgstr "Kanal bilgisi"
 msgid "Service info - ECM Info"
 msgstr "Servis bilgisi - ECM Bilgisi"
 
-#, fuzzy
 msgid "Service info - service & Basic PID Info"
-msgstr "Kanal bilgisi - kanal & PIDs"
+msgstr "Servis bilgisi - servis ve Temel PID Bilgisi"
 
-#, fuzzy
 msgid "Service info - service & Extended PID Info"
-msgstr "Kanal bilgisi - kanal & PIDs"
+msgstr "Servis bilgisi - servis ve Genişletilmiş PID Bilgisi"
 
 msgid "Service info - service & PIDs"
 msgstr "Kanal bilgisi - kanal & PIDs"
@@ -8678,14 +8654,13 @@ msgid "Set the MAC-adress of your receiver.\n"
 msgstr "Alıcınızın MAC adresini ayarlayın.\n"
 
 msgid "Set the User ID of the OpenWebif from your fallback tuner"
-msgstr ""
+msgstr "OpenWebif Kullanıcı Kimliğini geri dönüş tarayıcınızdan ayarlayın"
 
 msgid "Set the password of the OpenWebif from your fallback tuner"
-msgstr ""
+msgstr "OpenWebif'in şifresini geri dönüş tarayıcınızdan ayarlayın"
 
-#, fuzzy
 msgid "Set the port of the OpenWebif from your fallback tuner"
-msgstr "Kanalları yedek tunerden içe aktar"
+msgstr "OpenWebif'in bağlantı noktasını geri dönüş tarayıcınızdan ayarlayın"
 
 msgid "Set the type of the progress indication in the channel selection screen."
 msgstr "Kanal seçimi ekranında ilerleme göstergesi türünü ayarlayın."
@@ -8897,9 +8872,8 @@ msgstr "En son hareketin göster"
 msgid "Show latest upgrade log"
 msgstr "En son yükseltme kaydını göster"
 
-#, fuzzy
 msgid "Show menu or plugin numbers"
-msgstr "Menü numaralarını göster"
+msgstr "Menü veya eklenti numaralarını göster"
 
 msgid "Show menu paths"
 msgstr "Menü yollarını göster"
@@ -9398,9 +9372,8 @@ msgstr "Hazırda beklet"
 msgid "Standby / restart"
 msgstr "Yeniden başlat / Bekleme modu"
 
-#, fuzzy
 msgid "Standby LED"
-msgstr "StandbyLED"
+msgstr "Bekleme LED"
 
 msgid "Standby after current event"
 msgstr "Geçerli olaydan sonra bekleme"
@@ -9726,9 +9699,8 @@ msgstr "Önceki alt servise geç"
 msgid "Switch to radio mode"
 msgstr "Radyo moduna geç"
 
-#, fuzzy
 msgid "Switchable tuner types"
-msgstr "Seçilebilir tuner tipleri:"
+msgstr "Değiştirilebilir tuner tipleri"
 
 msgid "Switzerland"
 msgstr "İsviçre"
@@ -9764,7 +9736,7 @@ msgid "System & Modulation"
 msgstr "Sistem & Modülasyon"
 
 msgid "T2MI RAW Mode"
-msgstr ""
+msgstr "T2MI RAW modu"
 
 #. TRANSLATORS: Add here whatever should be shown in the "translator" about screen, up to 6 lines (use \n for newline)
 msgid "TRANSLATOR_INFO"
@@ -9788,9 +9760,8 @@ msgstr "TV fiziksel adres raporu"
 msgid "TXT PID"
 msgstr "TXT PID"
 
-#, fuzzy
 msgid "TXT Subtitles page & lang"
-msgstr "Altyazı Ayarları"
+msgstr "TXT Altyazı sayfası & uzun"
 
 msgid "Table of content for collection"
 msgstr "Toplananlar içerik tablosu"
@@ -10151,7 +10122,7 @@ msgstr ""
 "Lütfen - Herhangi bir şüpheli bilgiler görüntülenir üzerinde panik yok!"
 
 msgid "This is a multitype tuner. Available options depend on the hardware."
-msgstr ""
+msgstr "Bu multitype alıcısı. Kullanılabilir seçenekler donanıma bağlıdır."
 
 msgid "This is the order in which DiSEqC commands are sent to the aerial system. The order must correspond exactly with the order the physical devices are arranged along the signal cable (starting from the receiver end)."
 msgstr "Bu, DiSEqC komutlarının anten sistemine gönderildiği sıradır. Sipariş, fiziksel aygıtların sinyal kablosu boyunca (alıcı ucundan başlayarak) düzenlendiği sırayla tam olarak uyuşmalıdır."
@@ -10225,9 +10196,8 @@ msgstr "Bu seçenek ekranın kapanmasına izin verir."
 msgid "This option allows you to show all symbols on the display."
 msgstr "Bu seçenek, ekrandaki tüm sembolleri göstermenizi sağlar."
 
-#, fuzzy
 msgid "This option allows you to show menu and/or plugin number quick links."
-msgstr "Bu seçenek, menü numarasını hızlı bağlantılar göstermenizi sağlar."
+msgstr "Bu seçenek, menü ve / veya eklenti numarası hızlı bağlantılarını göstermenizi sağlar."
 
 msgid "This option allows you to show menu paths."
 msgstr "Bu seçenek, menü yollarını göstermenizi sağlar."
@@ -10543,9 +10513,8 @@ msgstr "İletim (transmisyon) modu"
 msgid "Transponder"
 msgstr "Transponder"
 
-#, fuzzy
 msgid "Transport Stream Type"
-msgstr "Giriş Akışı Kimliği"
+msgstr "Taşıma Akışı Türü"
 
 msgid "Trash can"
 msgstr "Çöp kutusu"
@@ -10628,16 +10597,14 @@ msgstr "Türkmenistan"
 msgid "Turks and Caicos Islands"
 msgstr "Turks ve Caicos Adaları"
 
-#, fuzzy
 msgid "Turn on the power LED during deep standby."
-msgstr "Bekleme sırasında LED gücü açın."
+msgstr "Derin bekleme sırasında güç LED'ini açın."
 
 msgid "Turn on the power LED during standby."
 msgstr "Bekleme sırasında LED gücü açın."
 
-#, fuzzy
 msgid "Turn on the power LED."
-msgstr "Bekleme sırasında LED gücü açın."
+msgstr "Güç LED'ini açın."
 
 msgid "Turning step size"
 msgstr "Dönme adımı boyutu"
@@ -10954,7 +10921,7 @@ msgid "User Feed URL"
 msgstr "Kullanıcı Feed URL"
 
 msgid "User ID"
-msgstr ""
+msgstr "Kullanıcı kimliği"
 
 msgid "User defined"
 msgstr "Kullanıcı tanımlı"
@@ -10997,9 +10964,8 @@ msgstr "VLAN bağlantısı"
 msgid "VMGM (intro trailer)"
 msgstr "VMGM (tanıtım filmi)"
 
-#, fuzzy
 msgid "VOB File"
-msgstr "VOB dosyası"
+msgstr "VOB Dosyası"
 
 msgid "VOB file"
 msgstr "VOB dosyası"
@@ -11377,9 +11343,8 @@ msgstr "Kanal seçimi yeni bir kanal seçtiğinizde sonra etkinleştirildiğinde
 msgid "When enabled you can control the volume with the arrow buttons instead of getting the channel selection list"
 msgstr "Etkinleştirildiğinde, kanal seçim listesini almak yerine ses seviyesini ok düğmeleriyle kontrol edebilirsiniz"
 
-#, fuzzy
 msgid "When enabled you can customize the OpenWebIf settings for the fallback tuner"
-msgstr "Etkinleştirildiğinde, yedek tunerden gelen zamanlayıcı içe aktarılır"
+msgstr "Etkinleştirildiğinde, geri dönüş tuneri için OpenWebIf ayarlarını özelleştirebilirsiniz"
 
 msgid "When enabled you can specify a timeframe to ignore the shutdown timer when the receiver is in standby mode"
 msgstr "Etkin olduğunda alıcı bekleme modunda olduğunda kapatma zamanlayıcısı görmezden bir zaman aralığı belirtebilirsiniz"
@@ -11405,9 +11370,8 @@ msgstr "ECM veri http akışları dahil edilecektir. Bu istemci alıcının şif
 msgid "When enabled, EIT data will be included in http streams. This allows a client receiver to show EPG."
 msgstr "EIT veri http akışına dahil edilecektir. Bu istemci alıcının EPG göstermesini sağlar."
 
-#, fuzzy
 msgid "When enabled, HDMI-CEC is enabled with standard configuration"
-msgstr "İP yapılandırması için DHCP kullan."
+msgstr "Etkinleştirildiğinde, HDMI-CEC standart yapılandırma ile etkindir"
 
 msgid "When enabled, a popup message will be shown when a movie has finished and the next one will start."
 msgstr "Açılan bir iletiyle bir film bittiği gösterilir ve bir sonraki programı gösterir."
@@ -11585,7 +11549,7 @@ msgid "Wireless network state"
 msgstr "Kablosuz ağ durumu"
 
 msgid "With T2MI RAW mode disabled (default) we can use single T2MI PLP de-encapsulation. With T2MI RAW mode enabled we can use astra-sm to analyze T2MI"
-msgstr ""
+msgstr "T2MI RAW modu devre dışıyken (varsayılan) tek T2MI PLP kapsüllenme özelliğini kullanabiliriz. T2MI RAW modu etkinken, T2MI'yi analiz etmek için astra-sm kullanabiliriz"
 
 msgid "With errors:"
 msgstr "Hatalarla:"
@@ -12621,17 +12585,14 @@ msgstr "yardım..."
 msgid "horizontal"
 msgstr "yatay (h)"
 
-#, fuzzy
 msgid "in menu and plugins"
-msgstr "Eklentileri indir"
+msgstr "menüde ve eklentilerde"
 
-#, fuzzy
 msgid "in menu only"
-msgstr "Ana menü"
+msgstr "sadece menüde"
 
-#, fuzzy
 msgid "in plugins only"
-msgstr "Ses eklentileri"
+msgstr "sadece eklentilerde"
 
 msgid "information/education/school program"
 msgstr "bilgi / eğitim / okul programı"
