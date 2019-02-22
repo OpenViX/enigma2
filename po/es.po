@@ -12493,7 +12493,7 @@ msgid "Permanent sort key changes"
 msgstr "Cambios botón 'ordenar' permanente"
 
 msgid "Set the global sort method"
-msgstr "Establecer método 'ordenar' global"
+msgstr "Establecer global método 'ordenar'"
 
 msgid "When set, sort changes via the sort key will be permanent."
 msgstr "Cuando se establece, los cambios de clasificación a través del botón 'ordenar' serán permanentes."
