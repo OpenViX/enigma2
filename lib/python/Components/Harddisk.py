@@ -643,17 +643,7 @@ class HarddiskManager:
 		devpath = "/sys/block/" + blockdev
 		error = False
 		removable = False
-		z = open('/proc/cmdline', 'r').read()
-		BLACKLIST=[]
-		if SystemInfo["HasMMC"]:
-			BLACKLIST=["%s" %(getMachineMtdRoot()[0:7])]
-		if SystemInfo["HasMMC"] and "root=/dev/mmcblk0p1" in z:
-			BLACKLIST=["mmcblk0p1"]
 		blacklisted = False
-		if blockdev[:7] in BLACKLIST:
-			blacklisted = True
-		if blockdev.startswith("mmcblk") and (re.search(r"mmcblk\dboot", blockdev) or re.search(r"mmcblk\drpmb", blockdev)):
-			blacklisted = True
 		is_cdrom = False
 		partitions = []
 		try:
@@ -678,8 +668,6 @@ class HarddiskManager:
 				for partition in os.listdir(devpath):
 					if partition[0:len(blockdev)] != blockdev:
 						continue
-					if dev == 179 and not re.search(r"mmcblk\dp\d+", partition):
-						continue
 					partitions.append(partition)
 			else:
 				self.cd = blockdev
@@ -688,8 +676,7 @@ class HarddiskManager:
 		# check for medium
 		medium_found = True
 		try:
-			if os.path.exists("/dev/" + blockdev):
-				open("/dev/" + blockdev).close()
+			open("/dev/" + blockdev).close()
 		except IOError, err:
 			if err.errno == 159: # no medium present
 				medium_found = False
