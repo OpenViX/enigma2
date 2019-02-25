@@ -89,7 +89,7 @@ msgid ""
 "Press OK or Exit to close!"
 msgstr ""
 "\n"
-"Drücke OK oder Exit zum beenden!"
+"Drücke OK oder Exit zum Beenden!"
 
 msgid ""
 "\n"
@@ -1104,7 +1104,7 @@ msgid "Alpha"
 msgstr "Alpha"
 
 msgid "Also import at reboot/restart enigma2"
-msgstr "Auch beim reboot/restart enigma2 importieren"
+msgstr "Auch beim Reboot/Restart Enigma2 importieren"
 
 msgid "Also import from the extension menu"
 msgstr "Auch aus dem Erweiterungsmenü importieren"
@@ -3445,7 +3445,7 @@ msgstr "FEHLER - Suche fehlgeschlagen (%s)!"
 
 #, python-format
 msgid "ERROR downloading file %s"
-msgstr "FEHLER beim herunterladen %s"
+msgstr "FEHLER beim Herunterladen %s"
 
 msgid "East"
 msgstr "Ost"
@@ -6495,7 +6495,7 @@ msgid "Only move the dish quickly before this hour."
 msgstr "Beweget den Spiegel vor dieser Stunde schnell."
 
 msgid "Only on startup"
-msgstr "Nur beim starten"
+msgstr "Nur beim Starten"
 
 msgid "Only select 'yes' if you are using a multiswich that requires a DiSEqC Port-A command signal. For all other setups select 'no'."
 msgstr "Wählen Sie nur \"Ja\", wenn Sie einen Multiswitch verwenden, der ein DiSEqC Port-A-Befehlssignal benötigt. Für alle anderen Setups wählen Sie 'Nein'."
@@ -11528,7 +11528,7 @@ msgid "When enabled, the receiver will select an AC3 track (when available)."
 msgstr "AC3 Tonspur verwenden (falls vorhanden)."
 
 msgid "When enabled, the receiver will select an AC3+ track (when available)."
-msgstr "Wenn aktiviert, wird nach Möglichkeit die AC3 Tonspur verwendet."
+msgstr "Wenn aktiviert, wird nach Möglichkeit die AC3+ Tonspur verwendet."
 
 msgid "When enabled, this setting has more weight than 'Preferred tuner for recordings'."
 msgstr "Wenn aktiviert, hat diese Einstellung mehr Priorität als 'bevorzugte Tuner für Aufnahmen'."
