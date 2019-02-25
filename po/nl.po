@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-15 22:12+0000\n"
-"PO-Revision-Date: 2019-02-16 12:07+0100\n"
+"POT-Creation-Date: 2019-02-22 19:02+0000\n"
+"PO-Revision-Date: 2019-02-25 13:31+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -763,6 +763,10 @@ msgid "%d channel found"
 msgid_plural "%d channels found"
 msgstr[0] "%d kanaal gevonden"
 msgstr[1] "%d kanalen gevonden"
+
+#, python-format
+msgid "%d cores"
+msgstr "%d cores"
 
 #, python-format
 msgid "%d hour"
@@ -4230,6 +4234,9 @@ msgstr "Drivers: %s"
 msgid "Drop unconfigured satellites"
 msgstr "Verwijder niet geconfigureerde satellieten"
 
+msgid "Dual core"
+msgstr "Dual core"
+
 msgid "Dutch"
 msgstr "Nederlands"
 
@@ -5353,6 +5360,27 @@ msgstr "Guinea-Bissau"
 
 msgid "Guyana"
 msgstr "Guyana"
+
+msgid "H9 SDcard switch ERROR! - H9 root files not transferred to SD card"
+msgstr "H9 SDcard switch ERROR! - H9 root files not transferred to SD card"
+
+msgid "H9 SDcard switch ERROR! - already on Nand"
+msgstr "H9 SD-kaart switch FOUT! - reeds op Nand"
+
+msgid "H9 SDcard switch ERROR! - already on mmc"
+msgstr "H9 SD-kaart switch FOUT! - reeds op mmc"
+
+msgid "H9 USB switch ERROR! - H9 root files not transferred to USB"
+msgstr "H9 USB switch ERROR! - H9 root files not transferred toUSB"
+
+msgid "H9 USB switch ERROR! - already on USB"
+msgstr "H9 USB switch FOUT! - reeds op USB"
+
+msgid "H9 switch Nand and SDcard"
+msgstr "H9 switch Nand en SD-kaart"
+
+msgid "H9SDroot"
+msgstr "H9SD-root"
 
 msgid "H: = Hourly / D: = Daily / W: = Weekly / M: = Monthly"
 msgstr "U: = Uurlijks / D: = Dagelijks / W: = Wekelijks / M: = Maandelijks"
@@ -7434,6 +7462,9 @@ msgstr "OScam info"
 msgid "OVR"
 msgstr "OVR"
 
+msgid "Octo core"
+msgstr "Octo core"
+
 msgid "Off"
 msgstr "Uit"
 
@@ -8478,6 +8509,9 @@ msgstr "Python:\t%s\n"
 
 msgid "Qatar"
 msgstr "Qatar"
+
+msgid "Quad core"
+msgstr "Quad core"
 
 msgid "Question"
 msgstr "Vraag"
@@ -10319,6 +10353,9 @@ msgstr "Enkel"
 msgid "Single EPG"
 msgstr "Zender EPG"
 
+msgid "Single core"
+msgstr "Single core"
+
 msgid "Single satellite"
 msgstr "Één satelliet"
 
@@ -10894,6 +10931,12 @@ msgstr "Wissel tussen SNR in '%' en 'dB'"
 
 msgid "Swap services"
 msgstr "Zenders omwisselen"
+
+msgid "SwaptoNand"
+msgstr ""
+
+msgid "SwaptoSD"
+msgstr ""
 
 msgid "Swaziland"
 msgstr "Swaziland"
