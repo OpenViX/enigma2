@@ -1,19 +1,18 @@
-from time import localtime, mktime
-from datetime import datetime
-import xml.etree.cElementTree
 import os
-
-from enigma import  eDVBFrontendParametersSatellite, \
-	eDVBSatelliteEquipmentControl as secClass, \
-	eDVBSatelliteDiseqcParameters as diseqcParam, \
-	eDVBSatelliteSwitchParameters as switchParam, \
-	eDVBSatelliteRotorParameters as rotorParam, \
-	eDVBResourceManager, eDVBDB, eEnv
 
 from Tools.HardwareInfo import HardwareInfo
 from Tools.BoundFunction import boundFunction
-from Components.About import about
+
 from config import config, ConfigSubsection, ConfigSelection, ConfigFloat, ConfigSatlist, ConfigYesNo, ConfigInteger, ConfigSubList, ConfigNothing, ConfigSubDict, ConfigOnOff, ConfigDateTime, ConfigText
+
+from enigma import eDVBFrontendParametersSatellite, eDVBSatelliteEquipmentControl as secClass, eDVBSatelliteDiseqcParameters as diseqcParam, eDVBSatelliteSwitchParameters as switchParam, eDVBSatelliteRotorParameters as rotorParam, eDVBResourceManager, eDVBDB, eEnv
+
+from time import localtime, mktime
+from datetime import datetime
+
+import xml.etree.cElementTree
+
+from Components.About import about
 
 config.unicable = ConfigSubsection()
 
