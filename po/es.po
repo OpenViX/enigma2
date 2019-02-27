@@ -12523,23 +12523,23 @@ msgid "H9 USB switch ERROR! - H9 root files not transferred to USB"
 msgstr "Interruptor USB H9 ERROR! - Archivos raíz H9 no transferidos a USB"
 
 #, python-format
-msgid "ranura%s - %s mode 1"
+msgid "slot%s - %s mode 1"
 msgstr "ranura%s - %s modalidad 1"
 
 #, python-format
-msgid "ranura%s - %s mode 1 (current image)"
+msgid "slot%s - %s mode 1 (current image)"
 msgstr "ranura%s - %s modalidad 1 (imagen actual)"
 
 #, python-format
-msgid "ranura%s - %s mode 12"
+msgid "slot%s - %s mode 12"
 msgstr "ranura%s - %s modalidad 12"
 
 #, python-format
-msgid "ranura%s - %s mode 12 (current image)"
+msgid "slot%s - %s mode 12 (current image)"
 msgstr "ranura%s - %s modalidad 12 (imagen actual)"
 
 #, python-format
-msgid "ranura%s -%s - %s (current image)"
+msgid "slot%s -%s - %s (current image)"
 msgstr "ranura%s -%s - %s (imagen actual)"
 
 #~ msgid "3d mode"
