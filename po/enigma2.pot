@@ -10857,7 +10857,3 @@ msgstr ""
 #, python-format
 msgid "slot%s -%s - %s (current image)"
 msgstr ""
-
-#, python-format
-msgid "slot%s -%s- %s "
-msgstr ""

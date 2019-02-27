@@ -12528,7 +12528,7 @@ msgstr "slot%s - %s modo 1"
 
 #, python-format
 msgid "slot%s - %s mode 1 (current image)"
-msgstr "slot%s - %s modo 1 (imagen actual)"
+msgstr "slot%s - %s modo 1 (imagen presente)"
 
 #, python-format
 msgid "slot%s - %s mode 12"
@@ -12536,15 +12536,11 @@ msgstr "slot%s - %s modo 12"
 
 #, python-format
 msgid "slot%s - %s mode 12 (current image)"
-msgstr "slot%s - %s modo 12 (imagen actual)"
+msgstr "slot%s - %s modo 12 (imagen presente)"
 
 #, python-format
 msgid "slot%s -%s - %s (current image)"
-msgstr "slot%s -%s - %s (imagen actual)"
-
-#, python-format
-msgid "slot%s -%s- %s "
-msgstr "slot%s -%s- %s "
+msgstr "slot%s -%s - %s (imagen presente)"
 
 #~ msgid "3d mode"
 #~ msgstr "Modo 3D"
