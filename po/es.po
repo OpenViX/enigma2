@@ -12524,23 +12524,23 @@ msgstr "Interruptor USB H9 ERROR! - Archivos raíz H9 no transferidos a USB"
 
 #, python-format
 msgid "slot%s - %s mode 1"
-msgstr "ranura%s - %s modalidad 1"
+msgstr "slot%s - %s modalidad 1"
 
 #, python-format
 msgid "slot%s - %s mode 1 (current image)"
-msgstr "ranura%s - %s modalidad 1 (imagen actual)"
+msgstr "slot%s - %s modalidad 1 (imagen actual)"
 
 #, python-format
 msgid "slot%s - %s mode 12"
-msgstr "ranura%s - %s modalidad 12"
+msgstr "slot%s - %s modalidad 12"
 
 #, python-format
 msgid "slot%s - %s mode 12 (current image)"
-msgstr "ranura%s - %s modalidad 12 (imagen actual)"
+msgstr "slot%s - %s modalidad 12 (imagen actual)"
 
 #, python-format
 msgid "slot%s -%s - %s (current image)"
-msgstr "ranura%s -%s - %s (imagen actual)"
+msgstr "slot%s -%s - %s (imagen actual)"
 
 #~ msgid "3d mode"
 #~ msgstr "Modo 3D"
