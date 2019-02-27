@@ -12406,7 +12406,7 @@ msgid "Use the cursor keys to select an installed image and then Reboot button."
 msgstr "Use las teclas del cursor para seleccionar una imagen instalada y luego el botón Reiniciar."
 
 msgid "Retrieving image slots - Please wait..."
-msgstr "Recuperando slots de imágenes - Por favor espere..."
+msgstr "Recuperando ranuras de imágenes - Por favor espere..."
 
 msgid "Multiboot ERROR! - no STARTUP in boot partition."
 msgstr "Multiboot ERROR! - No hay STARTUP en la partición de arranque."
@@ -12523,24 +12523,24 @@ msgid "H9 USB switch ERROR! - H9 root files not transferred to USB"
 msgstr "Interruptor USB H9 ERROR! - Archivos raíz H9 no transferidos a USB"
 
 #, python-format
-msgid "slot%s - %s mode 1"
-msgstr "slot%s - %s modalidad 1"
+msgid "ranura%s - %s mode 1"
+msgstr "ranura%s - %s modalidad 1"
 
 #, python-format
-msgid "slot%s - %s mode 1 (current image)"
-msgstr "slot%s - %s modalidad 1 (imagen actual)"
+msgid "ranura%s - %s mode 1 (current image)"
+msgstr "ranura%s - %s modalidad 1 (imagen actual)"
 
 #, python-format
-msgid "slot%s - %s mode 12"
-msgstr "slot%s - %s modalidad 12"
+msgid "ranura%s - %s mode 12"
+msgstr "ranura%s - %s modalidad 12"
 
 #, python-format
-msgid "slot%s - %s mode 12 (current image)"
-msgstr "slot%s - %s modalidad 12 (imagen actual)"
+msgid "ranura%s - %s mode 12 (current image)"
+msgstr "ranura%s - %s modalidad 12 (imagen actual)"
 
 #, python-format
-msgid "slot%s -%s - %s (current image)"
-msgstr "slot%s -%s - %s (imagen actual)"
+msgid "ranura%s -%s - %s (current image)"
+msgstr "ranura%s -%s - %s (imagen actual)"
 
 #~ msgid "3d mode"
 #~ msgstr "Modo 3D"
