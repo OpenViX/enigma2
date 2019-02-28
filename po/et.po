@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX-Enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-23 09:52+0000\n"
-"PO-Revision-Date: 2018-12-01 15:06+0200\n"
+"POT-Creation-Date: 2019-02-12 12:13+0000\n"
+"PO-Revision-Date: 2019-02-25 16:56+0200\n"
 "Last-Translator: rimas <rimas@domeen.ee>\n"
 "Language-Team: Digi-tv.ee\n"
 "Language: et\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
-"X-Generator: Poedit 2.2\n"
+"X-Generator: Poedit 2.2.1\n"
 
 msgid ""
 "\n"
@@ -914,6 +914,10 @@ msgid "%s %s software because updates are available."
 msgstr "%s %s tarkvara, sest leidub uuendusi."
 
 #, python-format
+msgid "%s ( %s Cards )"
+msgstr "%s ( %s kaarti )"
+
+#, python-format
 msgid "%s (%s)\n"
 msgstr "%s (%s)\n"
 
@@ -1005,6 +1009,10 @@ msgstr "-TEENUSE VIGA:%d\n"
 
 msgid "."
 msgstr "."
+
+msgctxt "ButtonSetup help separator"
+msgid "/"
+msgstr "/"
 
 msgid "/s"
 msgstr "/s"
@@ -1217,6 +1225,9 @@ msgstr "Taustal toimub uuenduste otsing. Oota paar minutit ja proovi uuesti."
 msgid "A background update check is in progress, please wait a few minutes and try again."
 msgstr "Taustal toimub uuenduste otsing. Oota paar minutit ja proovi uuesti."
 
+msgid "A client is streaming from this box!"
+msgstr "Klient striimib sellest vastuvõtjast!"
+
 #, python-format
 msgid ""
 "A configuration file (%s) has been modified since it was installed.\n"
@@ -1352,11 +1363,17 @@ msgstr "AAC > stereo"
 msgid "AAC transcoding"
 msgstr "AAC transkodeerimine"
 
+msgid "AAC+ downmix"
+msgstr "AAC+ > stereo"
+
 msgid "AC3"
 msgstr "AC3"
 
 msgid "AC3 downmix"
 msgstr "AC3 > stereo"
+
+msgid "AC3 transcoding"
+msgstr "AC3 transkodeerimine"
 
 msgid "ACQUIRING TSID/ONID"
 msgstr "TSID/ONID HANKIMINE"
@@ -1655,6 +1672,12 @@ msgstr "Määra seadistatava reaalse LNB number. Sama LNB saab määrata uuesti 
 
 msgid "Allocate unused memory index"
 msgstr "Jaota vaba mäluindeks"
+
+msgid "Allow 10bit"
+msgstr "Luba 10bit"
+
+msgid "Allow 12bit"
+msgstr "Luba 12bit"
 
 msgid "Allow subtitle language to equal audio language"
 msgstr "Luba subtiitrid heli keelevaliku järgi"
@@ -2341,6 +2364,9 @@ msgstr "C-sagedusala"
 msgid "CAID"
 msgstr "CAID"
 
+msgid "CAID:SrvID"
+msgstr "CAID:SrvID"
+
 msgid "CCcam Client Info"
 msgstr "CCcam kliendi info"
 
@@ -2541,6 +2567,15 @@ msgstr "Kas muuta korduse ja viiteaja seadistusi?"
 msgid "Change step size"
 msgstr "Muuda sammu suurust"
 
+msgid "Change the Colordepth for UHD"
+msgstr "Muuda UHD värvisügavust"
+
+msgid "Change the Colorimetry for HDR"
+msgstr "Muuda HDR kolorimeetriat"
+
+msgid "Change the Colorspace from Auto to RGB"
+msgstr "Muuda värviruum automaatne > RGB"
+
 msgid "Change timer"
 msgstr "Muuda taimerit"
 
@@ -2740,8 +2775,14 @@ msgstr "Vali, mida '0' nupp PiP-režiimis teeb."
 msgid "Choose whether AAC sound tracks should be transcoded."
 msgstr "Määra, kas AAC heli transkodeerida."
 
+msgid "Choose whether WMA Pro sound tracks should be downmixed."
+msgstr "Määra, kas WMA Pro heli taandada."
+
 msgid "Choose whether multi channel aac sound tracks should be downmixed to stereo."
 msgstr "Määra, kas mitmekanaline AAC heli taandada stereoks."
+
+msgid "Choose whether multi channel aac+ sound tracks should be downmixed to stereo."
+msgstr "Määra, kas mitmekanaline AAC+ heli taandada stereoks."
 
 msgid "Choose whether multi channel ac3 sound tracks should be downmixed to stereo."
 msgstr "Määra, kas mitmekanaline AC3 heli taandada stereoks."
@@ -2799,6 +2840,10 @@ msgstr "Kustuta logi"
 
 msgid "Clear playlist"
 msgstr "Tühjenda pleilist"
+
+#, python-format
+msgid "Client Info ( Oscam-Version: %s )"
+msgstr "Kliendi info (Oscam: %s )"
 
 msgid "Client mode"
 msgstr "Kliendirežiim"
@@ -3142,9 +3187,6 @@ msgstr "Määra DVB subtiitrite tausta läbipaistvus."
 msgid "Configure the tuner mode."
 msgstr "Määra tuuneri režiim."
 
-msgid "Configure the type of status indication icons shown in the movie list."
-msgstr "Määra, kuidas tähistatakse salvestuste olek filmilistis."
-
 msgid "Configure the vertical position of the subtitles, measured from the bottom of the screen."
 msgstr "Määra subtiitrite vertikaalne asukoht mõõdetuna ekraani alaservast."
 
@@ -3238,8 +3280,8 @@ msgstr "Ühendus antud FTP parameetritega nurjus. Kontrolli üle ja proovi uuest
 msgid "Constellation & FFT mode"
 msgstr "Konstellatsioon ja FFT"
 
-msgid "Consult your Unicable device spec sheet for this information."
-msgstr "Seda infot otsi unicable seadme spetsifikatsioonilehelt."
+msgid "Consult your SCR device spec sheet for this information."
+msgstr "Seda infot otsi SCR seadme spetsifikatsioonilehelt."
 
 msgid "Consult your motor's spec sheet for this information, or leave the default setting."
 msgstr "Seda infot otsi ajami spetsifikatsioonilehelt või kasuta vaikeväärtust."
@@ -3504,6 +3546,9 @@ msgstr "DTS"
 msgid "DTS downmix"
 msgstr "DTS > stereo"
 
+msgid "DTS-HD HR/DTS-HD MA/DTS"
+msgstr "DTS-HD HR/DTS-HD MA/DTS"
+
 msgid "DUAL LAYER DVD"
 msgstr "Kahekihiline DVD"
 
@@ -3560,6 +3605,9 @@ msgstr "Taani"
 
 msgid "Date"
 msgstr "Kuupäev"
+
+msgid "Date first"
+msgstr "Kuupäev ees"
 
 msgid "Date style"
 msgstr "Kuupäeva kuju"
@@ -4041,6 +4089,10 @@ msgstr "Kas eemaldada \"%s\" taimer?"
 msgid "Do you really want to remove your bookmark of %s?"
 msgstr "Kas kustutada %s järjehoidja?"
 
+#, python-format
+msgid "Do you really want to stop the current recording and delete timer %s?"
+msgstr "Kas peatada salvestus ja eemaldada \"%s\" taimer?"
+
 msgid "Do you want to add any additional information ?"
 msgstr "Kas lisada veel andmeid?"
 
@@ -4162,6 +4214,9 @@ msgstr "Hankimine"
 
 msgid "Downloading plugin information. Please wait..."
 msgstr "Andmete laadimine. Oota veidi."
+
+msgid "Downmix"
+msgstr "Heli taandamine"
 
 msgid "Drama"
 msgstr "Draama"
@@ -4395,6 +4450,21 @@ msgstr "Liiguta kanaleid"
 msgid "Enable multiple bouquets"
 msgstr "Lemmiknimekirjad lubatud"
 
+msgid "Enable or disable the 10 Bit Color Mode"
+msgstr "Luba või keela 10-bit värvirežiim"
+
+msgid "Enable or disable the 12 Bit Color Mode"
+msgstr "Luba või keela 12-bit värvirežiim"
+
+msgid "Enable or disable to force HDR Modes for UHD"
+msgstr "Luba või keela sunnitud HDR režiimi kasutus UHD tarbeks"
+
+msgid "Enable or disable to force HDR10 Modes for UHD"
+msgstr "Luba või keela sunnitud HDR10 režiimi kasutus UHD tarbeks"
+
+msgid "Enable or disable to force HLG Modes for UHD"
+msgstr "Luba või keela sunnitud HLG režiimi kasutus UHD tarbeks"
+
 msgid "Enable panic button"
 msgstr "Paanikanupp lubatud"
 
@@ -4421,6 +4491,9 @@ msgstr "Luba teise Enigma2 vastuvõtja tuunerite kasutamine kohtvõrgus. Kaugtuu
 
 msgid "Enabled"
 msgstr "Lubatud"
+
+msgid "Encrypted TV"
+msgstr "Kodeeritud kanal"
 
 msgid "Encrypted: "
 msgstr "Kodeeritud: "
@@ -4828,6 +4901,9 @@ msgstr "SISEMÄLU"
 msgid "FP version:\t%s"
 msgstr "FP versioon:\t%s"
 
+msgid "FTA TV"
+msgstr "Vabakanal"
+
 msgid "FTP"
 msgstr "FTP"
 
@@ -4979,12 +5055,6 @@ msgstr "Pärast OK vajutamist tehakse järgmised toimingud!"
 
 msgid "Font size"
 msgstr "Tähesuurus"
-
-msgid "Force LNB Power"
-msgstr "Sunnitud LNB toide"
-
-msgid "Force ToneBurst"
-msgstr "Sunnitud toonimpulss"
 
 msgid "Force de-interlace"
 msgstr "Sunnitud ülerealaotuse eemaldamine (deinterlace)"
@@ -5322,11 +5392,17 @@ msgstr "HDMI kolorimeetria"
 msgid "HDMI Colorspace"
 msgstr "HDMI värviruum"
 
+msgid "HDMI HDR Type"
+msgstr "HDMI HDR tüüp"
+
 msgid "HDMIin"
 msgstr "HDMIin"
 
 msgid "HDR, 12bit 4:2:0/4:2:2, no PIP"
 msgstr "HDR, 12bit 4:2:0/4:2:2, PIP puudub"
+
+msgid "HDR10 Support"
+msgstr "HDR10 tugi"
 
 msgid "HELP"
 msgstr ""
@@ -5336,6 +5412,9 @@ msgstr "HH:mm"
 
 msgid "HH:mm:ss"
 msgstr "HH:mm:ss"
+
+msgid "HLG Support"
+msgstr "HLG tugi"
 
 msgid "Haiti"
 msgstr "Haiti"
@@ -5439,6 +5518,10 @@ msgstr "Honduras"
 msgid "Hong Kong"
 msgstr "Hong Kong"
 
+#, fuzzy
+msgid "Hops"
+msgstr "Hops:"
+
 msgid "Hops:"
 msgstr "Hops:"
 
@@ -5536,9 +5619,6 @@ msgstr ""
 "Kui näed teadet \"kinnitamata\":\n"
 "- kehtivat IP aadressi ei leitud\n"
 "- kontrolli DHCP ja võrgukaardi seadeid ning kaabeldust."
-
-msgid "IP-Address"
-msgstr "IP aadress"
 
 msgid "IP:"
 msgstr "IP:"
@@ -6055,6 +6135,10 @@ msgstr "Kernel:\t%s\n"
 #, python-format
 msgid "Kernel: %s"
 msgstr "Kernel: %s"
+
+#, fuzzy
+msgid "Key"
+msgstr "Keenia"
 
 msgid "Keyboard"
 msgstr "Klaviatuur"
@@ -6813,6 +6897,9 @@ msgstr "Multi EPG"
 msgid "Multiboot"
 msgstr "Multibuut"
 
+msgid "Multiboot ERROR! - no STARTUP in boot partition."
+msgstr ""
+
 msgid "Multiboot Image Restart"
 msgstr "Multibuut püsivara taaskäivitus"
 
@@ -7097,15 +7184,6 @@ msgstr "Vaba indeks puudub"
 msgid "No free tuner!"
 msgstr "Vaba tuuner puudub!"
 
-msgid "No httpport defined in oscam.conf. This value is required!"
-msgstr "Oscam.conf failis on 'httpport' määramata. See väärtus on kohustuslik!"
-
-msgid "No httppwd defined in oscam.conf"
-msgstr "Oscam.conf failis on 'httppwd' määramata"
-
-msgid "No httpuser defined in oscam.conf"
-msgstr "Oscam.conf failis on 'httpuser' määramata"
-
 msgid "No module found"
 msgstr "Moodulit ei leitud"
 
@@ -7367,9 +7445,6 @@ msgstr "Filmi lõpus"
 msgid "On end of movie (as menu)"
 msgstr "Filmi lõpus (menüüna)"
 
-msgid "On reaching the end of a file during playback, you can choose the box's behavior."
-msgstr "Saad määrata vastuvõtja käitumise taasesituse lõppemisel."
-
 msgid "On shutdown/restart warn about any pending jobs being carried out in the background."
 msgstr "Hoiatus seiskamisel/taaskäivitusel, kui käsil on mõni taustal toimuv töö."
 
@@ -7394,8 +7469,8 @@ msgstr "Uuenduste kontroll"
 msgid "Only active when in standby"
 msgstr "Aktiivne ainult ooteseisundis"
 
-msgid "Only change this setting if you are using a Unicable device that has been reprogrammed with a custom programmer. For further information check with the person that reprogrammed the device."
-msgstr "Muuda seda sätet ainult juhul, kui kasutatav unicable seade on ise ümber programmeeritud. Enamat infot uuri isikult, kes seadme programmeeris."
+msgid "Only change this setting if you are using a SCR device that has been reprogrammed with a custom programmer. For further information check with the person that reprogrammed the device."
+msgstr "Muuda seda sätet ainult juhul, kui kasutatav SCR seade on ise ümber programmeeritud. Enamat infot uuri isikult, kes seadme programmeeris."
 
 msgid "Only extensions."
 msgstr "Ainult laiendused."
@@ -7469,14 +7544,15 @@ msgstr "Tavaline"
 msgid "Original"
 msgstr "Algupärane"
 
-msgid "Oscam ECM-info"
-msgstr "OScam ecm info"
-
 msgid "Oscam Info - Configuration"
 msgstr "Oscam info - seadistus"
 
 msgid "Oscam Info - Main Menu"
 msgstr "Oscam info - peamenüü"
+
+#, python-format
+msgid "Oscam Log ( Oscam-Version: %s )"
+msgstr "Oscam logi (Oscam: %s )"
 
 msgid "Other"
 msgstr "Miski muu"
@@ -7513,6 +7589,9 @@ msgstr "PDC"
 
 msgid "PGS file"
 msgstr "PGS fail"
+
+msgid "PID"
+msgstr "PID"
 
 msgid "PIP"
 msgstr "PiP"
@@ -7595,6 +7674,9 @@ msgstr "Soovitatav on vanemlik järelevalve"
 
 msgid "Parental control"
 msgstr "Lapselukk"
+
+msgid "Passthrough"
+msgstr "Läbiviik"
 
 msgid "Password"
 msgstr "Parool"
@@ -7777,8 +7859,8 @@ msgstr "Lisa nimetused kogumikku."
 msgid "Please change the recording end time"
 msgstr "Muuda salvestuse lõpuaega"
 
-msgid "Please choose CCcam reader"
-msgstr "Vali CCcam-lugeja"
+msgid "Please choose CCcam-Reader"
+msgstr "Vali CCcam lugeja"
 
 msgid "Please choose an extension..."
 msgstr "Vali laiendus"
@@ -8443,7 +8525,7 @@ msgstr "Vanusepiirang määramata"
 msgid "Re-enter PIN"
 msgstr "Sisesta PIN kood uuesti"
 
-msgid "Read user data from oscam.conf"
+msgid "Read Userdata from oscam.conf"
 msgstr "Loe kasutajaandmed oscam.conf failist"
 
 msgid "Reader"
@@ -8784,6 +8866,10 @@ msgstr "Kas taastada pildiparanduste vaikeväärtused?"
 
 msgid "Reset video enhancement settings to your last configuration?"
 msgstr "Kas taastad pildiparanduste viimati kasutatud seaded?"
+
+#, fuzzy
+msgid "Reshare"
+msgstr "Jaga edasi:"
 
 msgid "Reshare:"
 msgstr "Jaga edasi:"
@@ -9224,8 +9310,8 @@ msgstr ""
 msgid "Select 'A' or 'B' if your aerial system requires this, otherwise select 'none'. If you are unsure select 'none'."
 msgstr "Vali 'A' või 'B*, kui antennisüsteem seda nõuab, muudel juhtudel vali 'pole'. Kui ei ole kindel, vali 'pole'."
 
-msgid "Select 'Unicable' if this tuner will use a Unicable device. For all other setups select 'FBC automatic'."
-msgstr "Vali 'Unicable', kui see tuuner kasutab unicable seadet. Kõigil ülejäänud juhtudel vali 'FBC automaatne'."
+msgid "Select 'FBC SCR' if this tuner will connect to a SCR (Unicable/JESS) device. For all other setups select 'FBC automatic'."
+msgstr "Vali 'FBC SCR', kui see tuuner kasutab unicable seadet. Kõigil ülejäänud juhtudel vali 'FBC automaatne'."
 
 msgid "Select 'band' if using a 'universal' LNB, otherwise consult your LNB spec sheet."
 msgstr "Universaalse LNB puhul vali 'sagedusala', muudel juhtudel vaata LNB käsiraamatust."
@@ -9239,8 +9325,8 @@ msgstr "Vali 'polarisatsioon', kui kasutuses on universaalne LNB. Muudel juhtude
 msgid "Select 'provider' to scan from the predefined list of cable multiplexes. Select 'bands' to only scan certain parts of the spectrum. Select 'steps' to scan in steps of a particular frequency bandwidth."
 msgstr "Valides 'Levitaja', saab otsingus kasutada eelmääratud kaablioperaatorite nimekirja. Valides 'sagedusalad' skaneeritakse ainult teatud osa spektrumist. Valides 'sageduse samm' skaneeritakse sammu kaupa teatud ribalaius."
 
-msgid "Select 'yes' if this tuner is connected to the Unicable device through another tuner, otherwise select 'no'."
-msgstr "Vali 'jah', kui see tuuner on ühendatud unicable seadmega teise tuuneri kaudu. Muudel juhtudel vali ei."
+msgid "Select 'yes' if this tuner is connected to the SCR device through another tuner, otherwise select 'no'."
+msgstr "Vali 'jah', kui see tuuner on ühendatud SCR seadmega teise tuuneri kaudu. Muudel juhtudel vali ei."
 
 msgid "Select 'yes' to choose what bands or step sizes will be scanned."
 msgstr "Määra 'jah', valimaks skaneeritavad sagedusalad või otsingu sammud."
@@ -9369,8 +9455,14 @@ msgstr "Vali järjestusviis:"
 msgid "Select target folder"
 msgstr "Vali sihtkataloog"
 
-msgid "Select the Unicable channel to be assigned to this tuner. This is a unique value. Be certain that no other device connected to this same Unicable system is allocated to the same Unicable channel."
-msgstr "Vali sellele tuunerile määratud   kanal. See väärtus on ainukordne. Veendu, et teisi seadmeid ei ole ühendatud samasse unicable süsteemi sama unicable kanali kaudu."
+msgid "Select the User Band channel to be assigned to this tuner. This is an index into the table of frequencies the SCR switch or SCR LNB uses to pass the requested transponder to the tuner."
+msgstr ""
+
+msgid "Select the User Band frequency to be assigned to this tuner. This is the frequency the SCR switch or SCR LNB uses to pass the requested transponder to the tuner."
+msgstr ""
+
+msgid "Select the User Band to be assigned to this tuner. This is an index into the table of frequencies the SCR switch or SCR LNB uses to pass the requested transponder to the tuner."
+msgstr ""
 
 msgid "Select the character or action under the virtual keyboard cursor"
 msgstr "Vali kursori alla jääv tähemärk või tegevus"
@@ -9378,17 +9470,17 @@ msgstr "Vali kursori alla jääv tähemärk või tegevus"
 msgid "Select the desired function and click on \"OK\" to assign it. Use \"CH+/-\" to toggle between the lists. Select an assigned function and click on \"OK\" to de-assign it. Use \"Next/Previous\" to change the order of the assigned functions."
 msgstr "Nupule soovitud toimingu määramiseks vajuta puldil seda nuppu. Nimekirjade vahetamiseks kasuta 'CH+/-' nuppe. Toimingu eemaldamiseks vali määratud toiming ja vajuta 'OK'. Toimingute järjekorra muutmiseks kasuta 'Eelmine/Järgmine' nuppe."
 
-msgid "Select the format of your Unicable device. Choices are 'SCR Unicable' (Unicable I format), or 'SCR JESS' (Unicable II format)."
-msgstr "Vali unicable seadme vorming. Valikud on 'SCR Unicable' (Unicable I vorming) või 'SCR JESS' (Unicable II vorming)."
+msgid "Select the manufacturer of your SCR device. If the manufacturer is not listed, set 'SCR' to 'user defined' and enter the device parameters manually according to its spec sheet."
+msgstr "Vali SCR seadme tootja. Kui tootjat nimekirjas ei ole, määra 'SCR' väärtuseks 'kasutaja määratud' ja sisesta seadme parameetrid käsitsi vastavalt selle spetsifikatsioonile."
 
-msgid "Select the manufacturer of your Unicable device. If the manufacturer is not listed, set 'SCR' to 'user defined' and enter the device parameters manually according to its spec sheet."
-msgstr "Vali unicable seadme tootja. Kui tootjat nimekirjas ei ole, määra 'SCR' väärtuseks 'kasutaja määratud' ja sisesta seadme parameetrid käsitsi vastavalt selle spetsifikatsioonile."
-
-msgid "Select the model number of your Unicable device. If the model number is not listed, set 'SCR' to 'user defined' and enter the device parameters manually according to its spec sheet."
-msgstr "Vali unicable seadme mudeli number. Kui seda nimekirjas ei ole, määra 'SCR' väärtuseks 'kasutaja määratud' ja sisesta seadme parameetrid käsitsi vastavalt selle spetsifikatsioonile."
+msgid "Select the model number of your SCR device. If the model number is not listed, set 'SCR' to 'user defined' and enter the device parameters manually according to its spec sheet."
+msgstr "Vali SCR seadme mudeli number. Kui seda nimekirjas ei ole, määra 'SCR' väärtuseks 'kasutaja määratud' ja sisesta seadme parameetrid käsitsi vastavalt selle spetsifikatsioonile."
 
 msgid "Select the movie path"
 msgstr "Vali salvestuskataloog"
+
+msgid "Select the protocol used by your SCR device. Choices are 'SCR Unicable' (Unicable), or 'SCR JESS' (JESS, also known as Unicable II)."
+msgstr "Vali SCR seadme vorming. Valikud on 'SCR Unicable' (Unicable I vorming) või 'SCR JESS' (Unicable II vorming)."
 
 msgid "Select the satellite which is connected to Port-A of your switch. If you are unsure select 'automatic' and the receiver will attempt to determine this for you. If nothing is connected to this port, select 'nothing connected'."
 msgstr "Vali satelliit, mis on ühendatud lüliti porti A. Kui pole kindel, vali 'automaatne' ja vastuvõtja üritab seda teha ise. Kui see port on ühendamata, vali 'pole ühendatud'."
@@ -9414,14 +9506,14 @@ msgstr "Vali tuuner, mis juhib ajamiga antenni."
 msgid "Select the tuner that this loopthrough depends on."
 msgstr "Vali tuuner, millest see läbiviik sõltub."
 
-msgid "Select the tuner to which the signal cable of the Unicable device is connected."
-msgstr "Vali tuuner, millega on unicable seadme signaalikaabel ühendatud."
+msgid "Select the tuner to which the signal cable of the SCR device is connected."
+msgstr "Vali tuuner, millega on SCR seadme signaalikaabel ühendatud."
 
 msgid "Select the type of LNB/device being used (normally 'Universal'). If your LNB type is not available select 'user defined'."
 msgstr "Vali kasutatava LNB/seadme tüüp (tavaliselt 'universaalne'). Kui pole valikus, vali 'kasutaja määratud'."
 
-msgid "Select the type of Unicable device you are using."
-msgstr "Vali kasutuses oleva Unicable seadme tüüp."
+msgid "Select the type of Single Cable Reception device you are using."
+msgstr "Vali kasutatava Single Cable Reception (SCR) seadme tüüp."
 
 msgid "Select the virtual keyboard locale from a menu"
 msgstr "Vali menüüst virtuaalklahvistiku keel"
@@ -9509,6 +9601,10 @@ msgstr "Seerianumber"
 
 msgid "Serv.Name"
 msgstr "Kanalinimi"
+
+#, python-format
+msgid "Server Info ( Oscam-Version: %s )"
+msgstr "Serveri info (Oscam: %s )"
 
 msgid "Server:"
 msgstr "Server:"
@@ -10013,7 +10109,7 @@ msgstr "Numbrite kuvamine menüüdes"
 msgid "Show message when recording starts"
 msgstr "Teavitus salvestuse algamisel"
 
-msgid "Show movie lengths in movielist"
+msgid "Show movie lengths in movie list"
 msgstr "Kestuse kuvamine filmilistis"
 
 msgid "Show movies"
@@ -10126,9 +10222,6 @@ msgstr "Transponderi info"
 
 msgid "Show transponder remaining/elapsed as"
 msgstr "Jäänud/kulunud transponderi näit"
-
-msgid "Show warning when in a stream"
-msgstr "Hoiatus IPTV kanalil"
 
 msgid "Show warning when timeshift is stopped"
 msgstr "Teavitus ajanihke lõppemisel"
@@ -10881,6 +10974,9 @@ msgstr "Süsteemi temperatuur: %s"
 msgid "System: "
 msgstr "Süsteem: "
 
+msgid "T2MI RAW Mode"
+msgstr ""
+
 msgid "TB"
 msgstr "TB"
 
@@ -11202,14 +11298,17 @@ msgstr "Saadaval on vähemalt %s uuendust."
 msgid "There are currently no outstanding actions."
 msgstr "Täitmata tegevusi ei ole."
 
+msgid "There are no saved playlists to delete!"
+msgstr "Salvestatud pleiliste pole!"
+
+msgid "There are no saved playlists to load!"
+msgstr "Salvestatud pleiliste pole!"
+
 msgid "There are no updates available."
 msgstr "Uuendusi ei ole saadaval."
 
 msgid "There has been an error, please try again later. If this issue persists, please check openvix.co.uk or world-of-satellite.com"
 msgstr "Toimus viga, proovi hiljem uuesti. Probleemi jätkudes vaata lehele openvix.co.uk või world-of-satellite.com"
-
-msgid "There is no [webif] section in oscam.conf"
-msgstr "[webif] osa puudub 'oscam.conf' failis"
 
 msgid "There is no signal to lock on !"
 msgstr "Lukustamiseks puudub signaal!"
@@ -11282,15 +11381,6 @@ msgstr "Siin saab võimendada pildi rohelisi toone."
 
 msgid "This option allows you to bypass HDMI EDID check"
 msgstr "Siin saab keelata HDMI EDID kontrolli"
-
-msgid "This option allows you to change the Colordepth for UHD"
-msgstr "Siin saab muuta UHD värvisügavust"
-
-msgid "This option allows you to change the Colorimetry for HDR"
-msgstr "Siin saab muuta HDR kolorimeetriat"
-
-msgid "This option allows you to change the Colorspace from Auto to RGB"
-msgstr "See saab muuta värviruumi automaatne > RGB"
 
 msgid "This option allows you to change the virtual loudspeaker position."
 msgstr "Siin saab muuta virtuaalse kõlari asukohta."
@@ -11568,9 +11658,6 @@ msgstr "Ajanihke failide asukoht"
 
 msgid "Timeshift not possible!"
 msgstr "Ajanihke kasutamine pole võimalik!"
-
-msgid "Timeshift on a stream is not supported!"
-msgstr "Voogesitusel ei ole ajanihe võimalik!"
 
 msgid "Timeshift save failed!"
 msgstr "Ajanihke talletamine nurjus!"
@@ -12405,6 +12492,9 @@ msgstr "WEP"
 msgid "WLAN connection"
 msgstr "WLAN ühendus"
 
+msgid "WMA Pro downmix"
+msgstr "WMA Pro > stereo"
+
 msgid "WPA"
 msgstr "WPA"
 
@@ -12574,12 +12664,6 @@ msgstr "Mida soovid otsida?"
 msgid "When enabled enigma2 will load unlinked userbouquets. This means that userbouquets that are available, but not included in the bouquets.tv or bouquets.radio files, will still be loaded. This allows you for example to keep your own user bouquet while installed settings are upgraded"
 msgstr "Kui lubatud, laadib enigma2 ka sidumata lemmiknimekirjad. See tähendab, et lemmiknimekirjad, mis on olemas, aga puuduvad bouquets.tv või bouquets.radio failides, laaditakse ikkagi. Nii saab oma lemmiknimekirjad säilitada ka paigaldatud kanalinimekirjade uuendamisel"
 
-msgid "When enabled the LNB power will not be switched off in standby"
-msgstr "Kui lubatud, ei lülitata ooteseisundis LNB toidet välja"
-
-msgid "When enabled the LNB toneburst will be forced"
-msgstr "Kui lubatud, on LNB toonimpulss kasutuses jõuga"
-
 msgid "When enabled the online checker will also check for experimental versions"
 msgstr "Kui lubatud, otsitakse ka eksperimentaalseid uuendusi"
 
@@ -12600,9 +12684,6 @@ msgstr "Kui lubatud, lubatakse vaba tuuneri puudumisel algaval salvestusel vaada
 
 msgid "When enabled, a warning will be displayed and the user will get an option to stop or to continue the timeshift."
 msgstr "Kui lubatud, kuvatakse hoiatus ja kasutajal on võimalus ajanihe peatada või jätkata."
-
-msgid "When enabled, a warning will be displayed that timeshift is not supported in an IP stream.."
-msgstr "Kui lubatud, teavitatakse sellest, et IPTV ei toeta ajanihet."
 
 msgid "When enabled, always descramble receiving http streams. This takes up more resources (descrambling demuxers), only enable if necessary. Individual streams are always descrambled if 0x100 is added to the service type, regardless of this setting. Default off."
 msgstr "Kui lubatud, dekodeeritakse sisenevad http vood alati. See võtab rohkem ressursse, luba ainult vajadusel. Konkreetne voog dekodeeritakse hoolimata seadistustes määratust alati, kui kanalitüübile lisatakse 0x100. Vaikeväärtus on 'ei'."
@@ -12776,6 +12857,9 @@ msgstr "Traadita võrgu seadistus."
 
 msgid "Wireless network state"
 msgstr "Traadita võrgu olek"
+
+msgid "With T2MI RAW mode disabled (default) we can use single T2MI PLP de-encapsulation. With T2MI RAW mode enabled we can use astra-sm to analyze T2MI"
+msgstr ""
 
 msgid "With popup"
 msgstr "Hüpikaknaga"
@@ -13009,6 +13093,9 @@ msgstr "Ajanihe on kasutusel!"
 
 msgid "You seem to be in timeshift, Do you want to leave timeshift ?"
 msgstr "Ajanihe on kasutusel. Kas see tuleks peatada?"
+
+msgid "You seem to be in timeshift, Do you want to leave timeshift? Streams & IPTV not fully supported!"
+msgstr "Ajanihe on kasutusel. Kas see tuleks peatada? Voogesitus ja IPTV pole täielikult toetatud!"
 
 #, python-format
 msgid "Your %s %s does not support PiP HD"
@@ -13447,6 +13534,18 @@ msgstr "kinnitatud"
 msgid "connected"
 msgstr "ühendatud"
 
+msgid "controlled by HDMI"
+msgstr "HDMI juhitav"
+
+msgid "convert to AC3"
+msgstr "Teisenda > AC3"
+
+msgid "convert to DTS"
+msgstr "Teisenda > DTS"
+
+msgid "convert to multi-channel PCM"
+msgstr "Teisenda > mitmekanaline PCM"
+
 msgid "cooking"
 msgstr "kokasaade"
 
@@ -13506,6 +13605,9 @@ msgstr "dokumentaal"
 
 msgid "documentary (general)"
 msgstr "dokumentaal"
+
+msgid "dolby"
+msgstr "Dolby"
 
 msgid "don't descramble, record ecm"
 msgstr "ära dekodeeri, salvesta ecm"
@@ -13612,6 +13714,9 @@ msgstr "laiendust."
 msgid "extra wide"
 msgstr "eriti lai"
 
+msgid "extrawide"
+msgstr "eriti lai"
+
 msgid "failed"
 msgstr "nurjus"
 
@@ -13650,6 +13755,14 @@ msgstr "folk/rahvamuusika"
 
 msgid "football/soccer"
 msgstr "jalgpall"
+
+#, fuzzy
+msgid "force disabled"
+msgstr "keelatud"
+
+#, fuzzy
+msgid "force enabled"
+msgstr "lubatud"
 
 msgid "foreign countries/expeditions"
 msgstr "välisriigid/uurimisreisid"
@@ -13724,6 +13837,9 @@ msgstr ""
 "saadeti ViX tiimile.\n"
 "palun osunda"
 
+msgid "hdr10"
+msgstr "hdr10"
+
 msgid "height"
 msgstr "kõrgus"
 
@@ -13747,6 +13863,9 @@ msgstr "hh:mmam/pm"
 
 msgid "hide"
 msgstr "Peida"
+
+msgid "hlg"
+msgstr "hlg"
 
 msgid "hops:"
 msgstr "hops:"
@@ -13886,6 +14005,13 @@ msgstr "muusika/ballett/tants"
 msgid "musical/opera"
 msgstr "muusikal/ooper"
 
+#, fuzzy
+msgid "n/A"
+msgstr "Pole"
+
+msgid "n/a"
+msgstr ""
+
 msgid "nature/animals/environment"
 msgstr "loodus/loomad/keskkond"
 
@@ -13994,15 +14120,8 @@ msgstr "algupärane"
 msgid "original language"
 msgstr "algupärane keel"
 
-msgid "oscam.conf could not be found"
-msgstr "oscam.conf faili ei leitud"
-
-msgid ""
-"oscam.conf not found.\n"
-"Please enter username/password manually."
-msgstr ""
-"oscam.conf ei leitud.\n"
-"Sisesta kasutajanimi/parool käsitsi."
+msgid "oscam webif disabled"
+msgstr "oscam veebiliides keelatud"
 
 msgid "packages selected."
 msgstr "paketti valitud."
@@ -14120,6 +14239,9 @@ msgstr "otsingu seis"
 
 msgid "science fiction/fantasy/horror"
 msgstr "ulme/fantaasia/õudus"
+
+msgid "sdr"
+msgstr "sdr"
 
 msgid "se"
 msgstr "kagu"
@@ -14283,9 +14405,6 @@ msgstr "kagu"
 msgid "ssw"
 msgstr "edel"
 
-msgid "standard"
-msgstr "tavaline"
-
 msgid "start cut here"
 msgstr "Alusta lõiget siit"
 
@@ -14396,6 +14515,12 @@ msgstr "ooteseisundi/taaskäivituseni"
 
 msgid "updates available."
 msgstr "uuendust saadaval."
+
+msgid "use best / controlled by HDMI"
+msgstr "kasuta parimat / HDMI juhitav"
+
+msgid "use_hdmi_cacenter"
+msgstr ""
 
 msgid "user defined"
 msgstr "Kasutaja määratud"
@@ -14565,6 +14690,9 @@ msgstr "vahetatud"
 #~ msgid "Configure if service picons will be shown in quickzap."
 #~ msgstr "Määra, kas kanalivahetusel kuvatakse pikonid."
 
+#~ msgid "Configure the type of status indication icons shown in the movie list."
+#~ msgstr "Määra, kuidas tähistatakse salvestuste olek filmilistis."
+
 #~ msgid "Convert ext3 filesystem to ext4"
 #~ msgstr "Teisenda ext3 > ext4"
 
@@ -14608,6 +14736,12 @@ msgstr "vahetatud"
 #~ msgid "File manager"
 #~ msgstr "Failihaldur"
 
+#~ msgid "Force LNB Power"
+#~ msgstr "Sunnitud LNB toide"
+
+#~ msgid "Force ToneBurst"
+#~ msgstr "Sunnitud toonimpulss"
+
 #~ msgid "Front Display Panel"
 #~ msgstr "Esipaneeli näidik"
 
@@ -14616,6 +14750,9 @@ msgstr "vahetatud"
 
 #~ msgid "Hard disk settings"
 #~ msgstr "Kõvaketta seaded"
+
+#~ msgid "IP-Address"
+#~ msgstr "IP aadress"
 
 #~ msgid "Inadyn setup"
 #~ msgstr "Inadyn seaded"
@@ -14659,6 +14796,15 @@ msgstr "vahetatud"
 #~ msgid "No free tuner available!"
 #~ msgstr "Vaba tuuner puudub!"
 
+#~ msgid "No httpport defined in oscam.conf. This value is required!"
+#~ msgstr "Oscam.conf failis on 'httpport' määramata. See väärtus on kohustuslik!"
+
+#~ msgid "No httppwd defined in oscam.conf"
+#~ msgstr "Oscam.conf failis on 'httppwd' määramata"
+
+#~ msgid "No httpuser defined in oscam.conf"
+#~ msgstr "Oscam.conf failis on 'httpuser' määramata"
+
 #~ msgid "Not configured"
 #~ msgstr "Seadistamata"
 
@@ -14674,8 +14820,14 @@ msgstr "vahetatud"
 #~ msgid "On destination '%s' is %s free space only!"
 #~ msgstr "Sihtkohas %s on ainult %s vaba kettaruumi!"
 
+#~ msgid "On reaching the end of a file during playback, you can choose the box's behavior."
+#~ msgstr "Saad määrata vastuvõtja käitumise taasesituse lõppemisel."
+
 #~ msgid "Options..."
 #~ msgstr "Valikud..."
+
+#~ msgid "Oscam ECM-info"
+#~ msgstr "OScam ecm info"
 
 #~ msgid "Password deleted sucessfully for the root user"
 #~ msgstr "Juurkasutaja parool kustutati"
@@ -14728,6 +14880,9 @@ msgstr "vahetatud"
 #~ msgid "Select operation:"
 #~ msgstr "Vali tegevus:"
 
+#~ msgid "Select the Unicable channel to be assigned to this tuner. This is a unique value. Be certain that no other device connected to this same Unicable system is allocated to the same Unicable channel."
+#~ msgstr "Vali sellele tuunerile määratud   kanal. See väärtus on ainukordne. Veendu, et teisi seadmeid ei ole ühendatud samasse unicable süsteemi sama unicable kanali kaudu."
+
 #~ msgid "Selected: %s"
 #~ msgstr "Valitud: %s"
 
@@ -14739,6 +14894,9 @@ msgstr "vahetatud"
 
 #~ msgid "Show picons in quickzap"
 #~ msgstr "Pikonid kanalivahetusel"
+
+#~ msgid "Show warning when in a stream"
+#~ msgstr "Hoiatus IPTV kanalil"
 
 #~ msgid "Signal Finder"
 #~ msgstr "Signaalimõõdik"
@@ -14773,11 +14931,17 @@ msgstr "vahetatud"
 #~ msgid "Terrestrial provider"
 #~ msgstr "DVB-T levitaja"
 
+#~ msgid "There is no [webif] section in oscam.conf"
+#~ msgstr "[webif] osa puudub 'oscam.conf' failis"
+
 #~ msgid "Time settings"
 #~ msgstr "Aja seaded"
 
 #~ msgid "Timer conflict detection when fallback is enabled"
 #~ msgstr "Taimerikonflikti tuvastus, kui kaugvastuvõtja on lubatud"
+
+#~ msgid "Timeshift on a stream is not supported!"
+#~ msgstr "Voogesitusel ei ole ajanihe võimalik!"
 
 #~ msgid "Timeshift settings"
 #~ msgstr "Ajanihke seaded"
@@ -14797,6 +14961,15 @@ msgstr "vahetatud"
 #~ msgid "Video Enhancement Settings"
 #~ msgstr "Pildi paranduste sätted"
 
+#~ msgid "When enabled the LNB power will not be switched off in standby"
+#~ msgstr "Kui lubatud, ei lülitata ooteseisundis LNB toidet välja"
+
+#~ msgid "When enabled the LNB toneburst will be forced"
+#~ msgstr "Kui lubatud, on LNB toonimpulss kasutuses jõuga"
+
+#~ msgid "When enabled, a warning will be displayed that timeshift is not supported in an IP stream.."
+#~ msgstr "Kui lubatud, teavitatakse sellest, et IPTV ei toeta ajanihet."
+
 #~ msgid "When enabled, graphical DVB subtitles will be centered horizontally."
 #~ msgstr "Kui lubatud, tsentreeritakse DVB subtiitrid horisontaalselt."
 
@@ -14808,6 +14981,19 @@ msgstr "vahetatud"
 
 #~ msgid "Your %s %s is not connected to the internet, please check your network settings and try again."
 #~ msgstr "%s %s ei ole ühendatud internetti. Kontrolli võrgu seadeid ja ürita uuesti."
+
+#~ msgid "oscam.conf could not be found"
+#~ msgstr "oscam.conf faili ei leitud"
+
+#~ msgid ""
+#~ "oscam.conf not found.\n"
+#~ "Please enter username/password manually."
+#~ msgstr ""
+#~ "oscam.conf ei leitud.\n"
+#~ "Sisesta kasutajanimi/parool käsitsi."
+
+#~ msgid "standard"
+#~ msgstr "tavaline"
 
 #~ msgid "uShare setup"
 #~ msgstr "uShare seaded"
