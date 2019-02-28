@@ -10838,6 +10838,9 @@ msgstr ""
 msgid "H9 USB switch ERROR! - H9 root files not transferred to USB"
 msgstr ""
 
+msgid "Empty slot"
+msgstr ""
+
 #, python-format
 msgid "slot%s - %s mode 1"
 msgstr ""

@@ -12522,6 +12522,9 @@ msgstr "H9 SDcard interruptor ERROR! - Archivos raíz H9 no transferidos a la ta
 msgid "H9 USB switch ERROR! - H9 root files not transferred to USB"
 msgstr "Interruptor USB H9 ERROR! - Archivos raíz H9 no transferidos a USB"
 
+msgid "Empty slot"
+msgstr "Ranura vacía"
+
 #, python-format
 msgid "slot%s - %s mode 1"
 msgstr "slot%s - %s modalidad 1"
