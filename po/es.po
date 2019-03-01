@@ -1694,7 +1694,7 @@ msgid "Channel list context menu"
 msgstr "Menú de contexto de lista de canales"
 
 msgid "Channel list cursor behavior"
-msgstr "Comportamiento del cursor de la lista de canales"
+msgstr "Comportamiento del cursor en lista de canales"
 
 msgid "Channel list on mode change"
 msgstr "Lista de canales en cambio de modo"
@@ -4312,7 +4312,7 @@ msgid "KA-SAT"
 msgstr "KA-SAT (9°E)"
 
 msgid "Keep service"
-msgstr "Mantener el servicio"
+msgstr "Mantener el canal"
 
 msgid "Keeps the movie list open whilst playing audio files."
 msgstr "Mantiene la lista de películas abierta mientras se reproducen archivos de audio."
@@ -6609,7 +6609,7 @@ msgid "Return to previous service"
 msgstr "Volver al canal anterior"
 
 msgid "Reverse bouquet buttons"
-msgstr "Botones de bouquets inversos"
+msgstr "Botones bouquets inversos"
 
 msgid "Reverse list"
 msgstr "Lista inversa"
