@@ -7538,7 +7538,7 @@ msgid "Show program information..."
 msgstr "Ver información del programa..."
 
 msgid "Show record indicator"
-msgstr "Mostrar indicador de grabación de canal"
+msgstr "Mostrar indicador de grabación del canal"
 
 msgid "Show screensaver"
 msgstr "Mostrar Salvapantallas"
