@@ -1970,7 +1970,7 @@ msgid "Configure if and how service type icons will be shown."
 msgstr "Configurar si y cómo se mostrarán los iconos de tipo de canal."
 
 msgid "Configure if and how the record indicator will be shown in the channel selection list."
-msgstr "Configure si y cómo se mostrará el indicador de registro en la lista de selección de canales."
+msgstr "Configure si y cómo se mostrará el indicador de grabación del canal en la lista de canales."
 
 msgid "Configure if and how wide the service name column will be shown in the channel selection list."
 msgstr "Configure si la columna de nombre del canal se mostrará en la lista de selección de canales y con qué amplitud.."
@@ -7538,7 +7538,7 @@ msgid "Show program information..."
 msgstr "Ver información del programa..."
 
 msgid "Show record indicator"
-msgstr "Mostrar indicador de registro"
+msgstr "Mostrar indicador de grabación de canal"
 
 msgid "Show screensaver"
 msgstr "Mostrar Salvapantallas"
