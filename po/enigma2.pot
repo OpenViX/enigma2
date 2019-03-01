@@ -10860,3 +10860,9 @@ msgstr ""
 #, python-format
 msgid "slot%s -%s - %s (current image)"
 msgstr ""
+
+msgid "Show record indicator"
+msgstr ""
+
+msgid "Configure if and how the record indicator will be shown in the channel selection list."
+msgstr ""
