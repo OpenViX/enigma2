@@ -1,5 +1,6 @@
 #include <lib/base/nconfig.h> // access to python config
 #include <lib/base/eerror.h>
+#include <lib/base/estring.h>
 #include <lib/dvb/pmt.h>
 #include <lib/dvb/cahandler.h>
 #include <lib/dvb/specs.h>
@@ -775,20 +776,20 @@ int eDVBServicePMTHandler::getProgramInfo(program &program)
 
 int eDVBServicePMTHandler::compareAudioSubtitleCode(const std::string &subtitleTrack, const std::string &audioTrack)
 {
-        std::size_t pos = audioTrack.find("/");
-        if ( pos != std::string::npos)
+	std::size_t pos = audioTrack.find("/");
+	if ( pos != std::string::npos)
 	{
-                std::string firstAudio = audioTrack.substr(0, pos);
-                std::string secondAudio = audioTrack.substr(pos + 1);
-                if (subtitleTrack.compare(firstAudio) == 0 || subtitleTrack.compare(secondAudio) == 0)
-                        return 0;
+		std::string firstAudio = audioTrack.substr(0, pos);
+		std::string secondAudio = audioTrack.substr(pos + 1);
+		if (strcasecmp(subtitleTrack, firstAudio) == 0 || strcasecmp(subtitleTrack, secondAudio) == 0)
+			return 0;
 	}
-        else
+	else
 	{
-                if (subtitleTrack.compare(audioTrack) == 0)
-                        return 0;
+		if (strcasecmp(subtitleTrack, audioTrack) == 0)
+			return 0;
 	}
-        return -1;
+	return -1;
 }
 
 int eDVBServicePMTHandler::getChannel(eUsePtr<iDVBChannel> &channel)
