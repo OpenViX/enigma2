@@ -271,12 +271,12 @@ def collectAttributes(skinAttributes, node, context, skin_path_prefix=None, igno
 			# Similar situation for a scrollbar in a listbox; when the scrollbar setting is applied after
 			# the size, a scrollbar will not be shown until the selection moves for the first time
 			if attrib == 'size':
-			        size = value.encode("utf-8")
+				size = value.encode("utf-8")
 			elif attrib == 'position':
-			        pos = value.encode("utf-8")
+				pos = value.encode("utf-8")
 			elif attrib == 'font':
-			        font = value.encode("utf-8")
-			        skinAttributes.append((attrib, font))
+				font = value.encode("utf-8")
+				skinAttributes.append((attrib, font))
 			else:
 				skinAttributes.append((attrib, value.encode("utf-8")))
 	if pos is not None:
@@ -949,7 +949,7 @@ def readSkin(screen, skin, names, desktop):
 
 	# now walk all widgets and stuff
 	def process_none(widget, context):
-	        pass
+		pass
 
 	def process_widget(widget, context):
 		get_attr = widget.attrib.get
@@ -1088,16 +1088,16 @@ def readSkin(screen, skin, names, desktop):
 		try:
 			c = cc(context, widget.attrib.get('position'), widget.attrib.get('size'), widget.attrib.get('font'))
 		except Exception, ex:
-		        raise SkinError("Failed to create skincontext (%s,%s,%s) in %s: %s" % (widget.attrib.get('position'), widget.attrib.get('size'), widget.attrib.get('font'), context, ex) )
+			raise SkinError("Failed to create skincontext (%s,%s,%s) in %s: %s" % (widget.attrib.get('position'), widget.attrib.get('size'), widget.attrib.get('font'), context, ex) )
 		process_screen(widget, c)
 
 	processors = {
-			None: process_none,
-			"widget": process_widget,
-			"applet": process_applet,
-			"eLabel": process_elabel,
-			"ePixmap": process_epixmap,
-			"panel": process_panel
+		None: process_none,
+		"widget": process_widget,
+		"applet": process_applet,
+		"eLabel": process_elabel,
+		"ePixmap": process_epixmap,
+		"panel": process_panel
 	}
 
 	try:
