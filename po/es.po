@@ -1369,7 +1369,7 @@ msgid "Behavior when a movie is stopped"
 msgstr "Comportamiento cuando se ha parado una película"
 
 msgid "Behavior when a movie reaches the end"
-msgstr "Comportamiento cuando una película está llegando al final"
+msgstr "Cuando una película llega a su final"
 
 msgid "Big PiP"
 msgstr "Big PiP"
