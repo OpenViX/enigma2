@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-22 19:02+0000\n"
-"PO-Revision-Date: 2019-02-25 13:31+0100\n"
+"POT-Creation-Date: 2019-03-03 10:25+0000\n"
+"PO-Revision-Date: 2019-03-03 12:45+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -2955,6 +2955,18 @@ msgstr "Configuratie modus: %s"
 msgid "Configuration..."
 msgstr "Configuratie..."
 
+msgid "Configure ATSC"
+msgstr "Configureer ATSC"
+
+msgid "Configure DVB-C"
+msgstr "Configureer DVB-C"
+
+msgid "Configure DVB-S"
+msgstr "Configureer DVB-S"
+
+msgid "Configure DVB-T"
+msgstr "Configureer DVB-T"
+
 msgid "Configure alignment of service events."
 msgstr "Configureer uitlijning van programma's."
 
@@ -5585,6 +5597,13 @@ msgstr "Hostname:"
 
 msgid "Hostname: "
 msgstr "Hostname: "
+
+msgid "Hotswitchable"
+msgstr "Het-verwisselbaar"
+
+#
+msgid "Hotswitchable tuner"
+msgstr "Heet-verwisselbare tuner"
 
 msgid "Hour"
 msgstr "Uur"
@@ -9363,6 +9382,18 @@ msgstr "Kies 'A' of 'B' als uw antenne-installatie dat vereist, anders kiest u '
 msgid "Select 'FBC SCR' if this tuner will connect to a SCR (Unicable/JESS) device. For all other setups select 'FBC automatic'."
 msgstr "Kies 'FBC SCR' als deze tuner is aangesloten op een SCR-apparaat (Unicable/JESS). Voor alle andere situaties kiest u 'FBC automatisch'."
 
+msgid "Select 'Yes' when you want to configure this tuner for ATSC"
+msgstr "Kies 'Ja' als u deze tuner voor ATSC wilt configureren"
+
+msgid "Select 'Yes' when you want to configure this tuner for DVB-C"
+msgstr "Kies 'Ja' als u deze tuner voor DVB-C wilt configureren"
+
+msgid "Select 'Yes' when you want to configure this tuner for DVB-S"
+msgstr "Kies 'Ja' als u deze tuner voor DVB-S wilt configureren"
+
+msgid "Select 'Yes' when you want to configure this tuner for DVB-T"
+msgstr "Kies 'Ja' als u deze tuner voor DVB-T wilt configureren"
+
 msgid "Select 'band' if using a 'universal' LNB, otherwise consult your LNB spec sheet."
 msgstr "Kies 'band' als u een universele LNB gebruikt. Consulteer de specs van uw LNB."
 
@@ -10933,10 +10964,10 @@ msgid "Swap services"
 msgstr "Zenders omwisselen"
 
 msgid "SwaptoNand"
-msgstr ""
+msgstr "Swap-naar-Nand"
 
 msgid "SwaptoSD"
-msgstr ""
+msgstr "Swap-naar-SD"
 
 msgid "Swaziland"
 msgstr "Swaziland"
@@ -10993,8 +11024,8 @@ msgid "Switch to the previous channel in history"
 msgstr "Ga naar de vorige zender uit de geschiedenis"
 
 #
-msgid "Switchable tuner types:"
-msgstr "Verwisselbare tunertypes:"
+msgid "Switchable tuner types"
+msgstr "Verwisselbare tunertypes"
 
 msgid "Switzerland"
 msgstr "Switzerland"
@@ -11405,8 +11436,8 @@ msgstr "Hier kunt u het aantal regels dat vertoond wordt aanpassen."
 msgid "This field allows you to search an additional symbol rate up to %s."
 msgstr "Hiermee kunt u aanvullend zoeken met een symbol rate tot %s."
 
-msgid "This is a multitype tuner. Available options depend on the hardware. Cable and terrestrial cannot be configured at the same time. If you want to use as cable + satellite or terrestrial + satellite, configure cable/terrestrial first and then save. Re-open and configure again as satellite."
-msgstr "Dit is een ontvanger met meerdere tunertypes. De beschikbare opties zijn afhankelijk van de hardware. Kabel en terrestrial kunnen niet tegelijkertijd worden geconfigureerd. Als u kabel + satelliet of terrestrial + satelliet wilt gebruiken, configureert eerst de enen en slaat dan op. Vervolgens configureert u de andere."
+msgid "This is a multitype tuner. Available options depend on the hardware."
+msgstr "Dit is een multi-type tuner. De beschikbare opties hangen van de hardware af."
 
 msgid "This is the order in which DiSEqC commands are sent to the aerial system. The order must correspond exactly with the order the physical devices are arranged along the signal cable (starting from the receiver end)."
 msgstr "Dit is de volgorde waarin DiSEqC commando's worden verstuurd naar het antennesysteem. De volgorde moet precies overeenkomen met dat systeem in de volgorde gerekend vanaf de ontvanger.."
@@ -13754,9 +13785,6 @@ msgstr "ontspanning (algemeenr)"
 msgid "epg cache backup"
 msgstr "epg cache back-up"
 
-msgid "equal to"
-msgstr "gelijk aan"
-
 msgid "equestrian"
 msgstr "ruitersport"
 
@@ -14015,9 +14043,6 @@ msgstr "lang"
 
 msgid "longest"
 msgstr "langste"
-
-msgid "loopthrough to"
-msgstr "doorlus naar"
 
 msgid "magazines/reports/documentary"
 msgstr "tijdschriften/reportages/documentaire"
@@ -14325,9 +14350,6 @@ msgstr "SDR"
 
 msgid "se"
 msgstr "ZO"
-
-msgid "second cable of motorized LNB"
-msgstr "2e kabel van gemotoriseerde LNB"
 
 msgid "seconds"
 msgstr "seconden"
@@ -16022,6 +16044,9 @@ msgstr "zapte"
 #~ msgid "This can be either the IP or name of the fallback receiver, not including the scheme or port number (e.g. either 'xxx.xxx.xxx.xxx' or 'name_second_box')."
 #~ msgstr "Dit kan het IP-adres of de naam van de remote ontvanger zijn (dus of 'xxx.xxx.xxx.xxx' of 'naam-van-de-box')."
 
+#~ msgid "This is a multitype tuner. Available options depend on the hardware. Cable and terrestrial cannot be configured at the same time. If you want to use as cable + satellite or terrestrial + satellite, configure cable/terrestrial first and then save. Re-open and configure again as satellite."
+#~ msgstr "Dit is een ontvanger met meerdere tunertypes. De beschikbare opties zijn afhankelijk van de hardware. Kabel en terrestrial kunnen niet tegelijkertijd worden geconfigureerd. Als u kabel + satelliet of terrestrial + satelliet wilt gebruiken, configureert eerst de enen en slaat dan op. Vervolgens configureert u de andere."
+
 #~ msgid ""
 #~ "This plugin creates a USB stick which can be used to update the firmware of your %s %s without the need for a network or WLAN connection.\n"
 #~ "First, a USB stick needs to be prepared so that it becomes bootable.\n"
@@ -16179,11 +16204,17 @@ msgstr "zapte"
 #~ msgid "default"
 #~ msgstr "standaard"
 
+#~ msgid "equal to"
+#~ msgstr "gelijk aan"
+
 #~ msgid "fine-tune your display"
 #~ msgstr "uw scherm fijn-afstellen"
 
 #~ msgid "leave movie player..."
 #~ msgstr "opnamemenu afsluiten"
+
+#~ msgid "loopthrough to"
+#~ msgstr "doorlus naar"
 
 #~ msgid "not used"
 #~ msgstr "niet gebruikt"
@@ -16203,6 +16234,9 @@ msgstr "zapte"
 
 #~ msgid "reliable"
 #~ msgstr "betrouwbaar"
+
+#~ msgid "second cable of motorized LNB"
+#~ msgstr "2e kabel van gemotoriseerde LNB"
 
 #~ msgid "service PIN"
 #~ msgstr "zender pincode"
