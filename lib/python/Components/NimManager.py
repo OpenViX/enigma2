@@ -514,6 +514,7 @@ class NIM(object):
 			}
 
 		# get multi type using delsys information
+		self.hotswitchable = False
 		if self.frontend_id is not None:
 			types = [type for type in nim_types if eDVBResourceManager.getInstance().frontendIsCompatible(self.frontend_id, type)]
 			print "[NIM] get types from delsys", types
