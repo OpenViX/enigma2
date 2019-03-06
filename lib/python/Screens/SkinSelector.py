@@ -8,30 +8,19 @@ from Components.Sources.StaticText import StaticText
 from Components.MenuList import MenuList
 from Components.config import config, configfile
 from Tools.Directories import resolveFilename, SCOPE_ACTIVE_SKIN
-from enigma import eEnv, ePicLoad
+from enigma import eEnv, ePicLoad, eTimer
 import os
 
 class SkinSelectorBase:
 	def __init__(self, session):
 		self.skinlist = []
 		self.previewPath = ""
-		if self.SKINXML and os.path.exists(os.path.join(self.root, self.SKINXML)):
-			self.skinlist.append(self.DEFAULTSKIN)
-		if self.PICONSKINXML and os.path.exists(os.path.join(self.root, self.PICONSKINXML)):
-			self.skinlist.append(self.PICONDEFAULTSKIN)
-		for root, dirs, files in os.walk(self.root, followlinks=True):
-			for subdir in dirs:
-				dir = os.path.join(root,subdir)
-				if os.path.exists(os.path.join(dir,self.SKINXML)):
-					self.skinlist.append(subdir)
-			dirs = []
 
 		self["key_red"] = StaticText(_("Close"))
 		self["key_green"] = StaticText(_("Save"))
-		self["introduction"] = StaticText(_("Press OK to activate the selected skin."))
-		self["SkinList"] = MenuList(self.skinlist)
+		self["introduction"] = StaticText(_("Please wait... Loading list..."))
+		self["SkinList"] = MenuList([])
 		self["Preview"] = Pixmap()
-		self.skinlist.sort()
 
 		self["actions"] = NumberActionMap(["SetupActions", "DirectionActions", "TimerEditActions", "ColorActions"],
 		{
@@ -50,6 +39,8 @@ class SkinSelectorBase:
 		self.picload.PictureData.get().append(self.showPic)
 
 		self.onLayoutFinish.append(self.layoutFinished)
+		self.listTimer = eTimer()
+		self.listTimer.callback.append(self.refreshList)
 
 	def showPic(self, picInfo=""):
 		ptr = self.picload.getData()
@@ -59,6 +50,25 @@ class SkinSelectorBase:
 
 	def layoutFinished(self):
 		self.picload.setPara((self["Preview"].instance.size().width(), self["Preview"].instance.size().height(), 1.0, 1, 1, 1, "#ff000000"))
+		self.show()
+		self.listTimer.start(1, True)
+
+	def refreshList(self):
+		if self.SKINXML and os.path.exists(os.path.join(self.root, self.SKINXML)):
+			self.skinlist.append(self.DEFAULTSKIN)
+		if self.PICONSKINXML and os.path.exists(os.path.join(self.root, self.PICONSKINXML)):
+			self.skinlist.append(self.PICONDEFAULTSKIN)
+
+		for root, dirs, files in os.walk(self.root, followlinks=True):
+			for subdir in dirs:
+				dir = os.path.join(root,subdir)
+				if os.path.exists(os.path.join(dir,self.SKINXML)):
+					self.skinlist.append(subdir)
+			dirs = []
+		self.skinlist.sort()
+		self["SkinList"].l.setList(self.skinlist)
+		self["introduction"].setText(_("Press OK to activate the selected skin."))
+
 		tmp = self.config.value.find("/"+self.SKINXML)
 		if tmp != -1:
 			tmp = self.config.value[:tmp]
