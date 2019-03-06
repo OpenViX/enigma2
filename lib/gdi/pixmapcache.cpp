@@ -1,9 +1,4 @@
-#include <zlib.h>
-#include <png.h>
-#include <stdio.h>
-#include <lib/base/cfile.h>
 #include <lib/gdi/pixmapcache.h>
-#include <lib/gdi/epng.h>
 
 #include <algorithm>
 #include <map>
