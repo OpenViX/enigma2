@@ -10,7 +10,7 @@
 #include <string>
 #include <lib/base/elock.h>
 
-int PixmapCache::MaximumSize = 256;
+uint PixmapCache::MaximumSize = 256;
 
 /* Keep a table of already-loaded pixmaps, and return the old one when
  * needed. The "dispose" method isn't very efficient, but not called unless
@@ -90,7 +90,7 @@ gPixmap* PixmapCache::Get(const char *filename)
 			// find out whether the image has been modified
 			// if so, it'll need to be reloaded from disk
 			struct stat img_stat;
-			if (stat(filename, &img_stat) == 0 && img_stat.st_mtime == it->second.modifiedDate && img_stat.st_size == it->second.filesize))
+			if (stat(filename, &img_stat) == 0 && img_stat.st_mtime == it->second.modifiedDate && img_stat.st_size == it->second.filesize)
 			{
 				eDebug("[PixmapCache] Found %s (%dx%d)", filename, it->second.pixmap->size().width(), it->second.pixmap->size().height());
 				// file still exists and hasn't been modified
