@@ -6,9 +6,34 @@
 #include <signal.h>
 #include <sys/sysinfo.h>
 #include <sys/mman.h>
-#ifdef HAVE_AMLOGIC
-#include <lib/dvb/amldecoder.h>
+#include <linux/dvb/dmx.h>
+#include <lib/base/eerror.h>
+#include <lib/base/cfile.h>
+#include <lib/dvb/idvb.h>
+#include <lib/dvb/demux.h>
+#include <lib/dvb/esection.h>
+#include <lib/dvb/decoder.h>
+
+#include "crc32.h"
+
+#ifndef DMX_SET_SOURCE
+/**
+ * DMX_SET_SOURCE and dmx_source enum removed on 4.14 kernel
+ * Check commit 13adefbe9e566c6db91579e4ce17f1e5193d6f2c
+**/
+enum dmx_source {
+	DMX_SOURCE_FRONT0 = 0,
+	DMX_SOURCE_FRONT1,
+	DMX_SOURCE_FRONT2,
+	DMX_SOURCE_FRONT3,
+	DMX_SOURCE_DVR0 = 16,
+	DMX_SOURCE_DVR1,
+	DMX_SOURCE_DVR2,
+	DMX_SOURCE_DVR3
+};
+#define DMX_SET_SOURCE _IOW('o', 49, enum dmx_source)
 #endif
+
 
 //#define SHOW_WRITE_TIME
 static int determineBufferCount()
@@ -33,24 +58,10 @@ static int determineBufferCount()
 
 static int recordingBufferCount = determineBufferCount();
 
-#include <linux/dvb/dmx.h>
-
-#include "crc32.h"
-
-#include <lib/base/eerror.h>
-#include <lib/base/cfile.h>
-#include <lib/dvb/idvb.h>
-#include <lib/dvb/demux.h>
-#include <lib/dvb/esection.h>
-#include <lib/dvb/decoder.h>
-
 eDVBDemux::eDVBDemux(int adapter, int demux):
 	adapter(adapter),
 	demux(demux),
 	source(-1),
-#ifdef HAVE_AMLOGIC
-	m_pvr_fd(-1),
-#endif
 	m_dvr_busy(0),
 	m_dvr_id(-1),
 	m_dvr_source_offset(DMX_SOURCE_DVR0)
@@ -77,12 +88,7 @@ int eDVBDemux::openDVR(int flags)
 	char filename[32];
 	snprintf(filename, sizeof(filename), "/dev/dvb/adapter%d/dvr%d", adapter, demux);
 	eDebug("[eDVBDemux] open dvr %s", filename);
-#if HAVE_AMLOGIC
-	m_pvr_fd =  ::open(filename, flags);
-	return m_pvr_fd;
-#else
 	return ::open(filename, flags);
-#endif
 }
 
 DEFINE_REF(eDVBDemux)
@@ -150,11 +156,7 @@ RESULT eDVBDemux::createTSRecorder(ePtr<iDVBTSRecorder> &recorder, unsigned int 
 
 RESULT eDVBDemux::getMPEGDecoder(ePtr<iTSMPEGDecoder> &decoder, int index)
 {
-#ifdef HAVE_AMLOGIC
-	decoder = new eAMLTSMPEGDecoder(this, index);
-#else
 	decoder = new eTSMPEGDecoder(this, index);
-#endif
 	return 0;
 }
 
