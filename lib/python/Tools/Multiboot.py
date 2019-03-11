@@ -1,6 +1,7 @@
 from Components.SystemInfo import SystemInfo
 from Components.Console import Console
 from boxbranding import getMachineMtdRoot
+from Tools.Directories import pathExists
 import os, time
 import shutil
 import subprocess
@@ -109,7 +110,10 @@ class GetImagelist():
 
 class boxbranding_reader:		# many thanks to Huevos for creating this reader - well beyond my skill levels! 
 	def __init__(self):
-		self.branding_path = "/tmp/testmount/usr/lib/enigma2/python/"
+		if pathExists('/tmp/testmount/usr/lib64'):
+			self.branding_path = "/tmp/testmount/usr/lib64/enigma2/python/"
+		else:
+			self.branding_path = "/tmp/testmount/usr/lib/enigma2/python/"
 		self.branding_file = "boxbranding.so"
 		self.tmp_path = "/tmp/"
 		self.helper_file = "helper.py"

@@ -8,30 +8,19 @@ from Components.Sources.StaticText import StaticText
 from Components.MenuList import MenuList
 from Components.config import config, configfile
 from Tools.Directories import resolveFilename, SCOPE_ACTIVE_SKIN
-from enigma import eEnv, ePicLoad
+from enigma import eEnv, ePicLoad, eTimer
 import os
 
 class SkinSelectorBase:
 	def __init__(self, session):
 		self.skinlist = []
 		self.previewPath = ""
-		if self.SKINXML and os.path.exists(os.path.join(self.root, self.SKINXML)):
-			self.skinlist.append(self.DEFAULTSKIN)
-		if self.PICONSKINXML and os.path.exists(os.path.join(self.root, self.PICONSKINXML)):
-			self.skinlist.append(self.PICONDEFAULTSKIN)
-		for root, dirs, files in os.walk(self.root, followlinks=True):
-			for subdir in dirs:
-				dir = os.path.join(root,subdir)
-				if os.path.exists(os.path.join(dir,self.SKINXML)):
-					self.skinlist.append(subdir)
-			dirs = []
 
 		self["key_red"] = StaticText(_("Close"))
 		self["key_green"] = StaticText(_("Save"))
-		self["introduction"] = StaticText(_("Press OK to activate the selected skin."))
-		self["SkinList"] = MenuList(self.skinlist)
+		self["introduction"] = StaticText(_("Please wait... Loading list..."))
+		self["SkinList"] = MenuList([])
 		self["Preview"] = Pixmap()
-		self.skinlist.sort()
 
 		self["actions"] = NumberActionMap(["SetupActions", "DirectionActions", "TimerEditActions", "ColorActions"],
 		{
@@ -50,6 +39,8 @@ class SkinSelectorBase:
 		self.picload.PictureData.get().append(self.showPic)
 
 		self.onLayoutFinish.append(self.layoutFinished)
+		self.listTimer = eTimer()
+		self.listTimer.callback.append(self.refreshList)
 
 	def showPic(self, picInfo=""):
 		ptr = self.picload.getData()
@@ -59,6 +50,25 @@ class SkinSelectorBase:
 
 	def layoutFinished(self):
 		self.picload.setPara((self["Preview"].instance.size().width(), self["Preview"].instance.size().height(), 1.0, 1, 1, 1, "#ff000000"))
+		self.show()
+		self.listTimer.start(1, True)
+
+	def refreshList(self):
+		if self.SKINXML and os.path.exists(os.path.join(self.root, self.SKINXML)):
+			self.skinlist.append(self.DEFAULTSKIN)
+		if self.PICONSKINXML and os.path.exists(os.path.join(self.root, self.PICONSKINXML)):
+			self.skinlist.append(self.PICONDEFAULTSKIN)
+
+		for root, dirs, files in os.walk(self.root, followlinks=True):
+			for subdir in dirs:
+				dir = os.path.join(root,subdir)
+				if os.path.exists(os.path.join(dir,self.SKINXML)):
+					self.skinlist.append(subdir)
+			dirs = []
+		self.skinlist.sort()
+		self["SkinList"].l.setList(self.skinlist)
+		self["introduction"].setText(_("Press OK to activate the selected skin."))
+
 		tmp = self.config.value.find("/"+self.SKINXML)
 		if tmp != -1:
 			tmp = self.config.value[:tmp]
@@ -109,6 +119,7 @@ class SkinSelectorBase:
 		aboutbox.setTitle(_("About..."))
 
 	def loadPreview(self):
+		self.changedEntry()
 		if self["SkinList"].getCurrent() == self.DEFAULTSKIN:
 			pngpath = "."
 			pngpath = os.path.join(os.path.join(self.root, pngpath), "prev.png")
@@ -151,6 +162,7 @@ class SkinSelector(Screen, SkinSelectorBase):
 	def __init__(self, session, menu_path="", skin_name=None):
 		Screen.__init__(self, session)
 		SkinSelectorBase.__init__(self, session)
+		self.onChangedEntry = []
 		self.skinName = ["SkinSelector"]
 		if isinstance(skin_name, str):
 			self.skinName.insert(0,skin_name)
@@ -169,6 +181,19 @@ class SkinSelector(Screen, SkinSelectorBase):
 		Screen.setTitle(self, title)
 		self.config = config.skin.primary_skin
 
+	# for summary
+	def changedEntry(self):
+		for x in self.onChangedEntry:
+			x()
+
+	def createSummary(self):
+		return SkinSelectorSummary
+
+	def getCurrentName(self):
+		current = self["SkinList"].getCurrent()
+		return None if current is None else current.replace("_", " ")
+
+
 class LcdSkinSelector(Screen, SkinSelectorBase):
 	SKINXML = "skin_display.xml"
 	DEFAULTSKIN = _("< Default >")
@@ -181,6 +206,7 @@ class LcdSkinSelector(Screen, SkinSelectorBase):
 	def __init__(self, session, menu_path=""):
 		Screen.__init__(self, session)
 		SkinSelectorBase.__init__(self, session)
+		self.onChangedEntry = []
 		screentitle = _("Skin setup")
 		if config.usage.show_menupath.value == 'large':
 			menu_path += screentitle
@@ -195,3 +221,36 @@ class LcdSkinSelector(Screen, SkinSelectorBase):
 		Screen.setTitle(self, title)
 		self.skinName = "SkinSelector"
 		self.config = config.skin.display_skin
+
+	# for summary
+	def changedEntry(self):
+		for x in self.onChangedEntry:
+			x()
+
+	def createSummary(self):
+		return SkinSelectorSummary
+
+	def getCurrentName(self):
+		current = self["SkinList"].getCurrent()
+		return None if current is None else current.replace("_", " ")
+
+
+class SkinSelectorSummary(Screen):
+	def __init__(self, session, parent):
+		Screen.__init__(self, session, parent = parent)
+		self["Name"] = StaticText("")
+		if hasattr(self.parent,"onChangedEntry"):
+			self.onShow.append(self.addWatcher)
+			self.onHide.append(self.removeWatcher)
+
+	def addWatcher(self):
+		if hasattr(self.parent,"onChangedEntry"):
+			self.parent.onChangedEntry.append(self.selectionChanged)
+			self.selectionChanged()
+
+	def removeWatcher(self):
+		if hasattr(self.parent,"onChangedEntry"):
+			self.parent.onChangedEntry.remove(self.selectionChanged)
+
+	def selectionChanged(self):
+		self["Name"].text = self.parent.getCurrentName()

@@ -1,7 +1,7 @@
 import skin
 from time import localtime, time, strftime
 
-from enigma import eEPGCache, eListbox, eListboxPythonMultiContent, loadPNG, gFont, getDesktop, eRect, eSize, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_HALIGN_CENTER, RT_VALIGN_CENTER, RT_VALIGN_TOP, RT_WRAP, BT_SCALE, BT_KEEP_ASPECT_RATIO
+from enigma import eEPGCache, eListbox, eListboxPythonMultiContent, loadPNG, gFont, getDesktop, eRect, eSize, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_HALIGN_CENTER, RT_VALIGN_CENTER, RT_VALIGN_TOP, RT_WRAP, BT_SCALE, BT_KEEP_ASPECT_RATIO, BT_ALIGN_CENTER
 
 from GUIComponent import GUIComponent
 from Components.MultiContent import MultiContentEntryText, MultiContentEntryPixmapAlphaBlend, MultiContentEntryPixmapAlphaTest
@@ -96,47 +96,30 @@ class EPGList(GUIComponent):
 			self.l.setBuildFunc(self.buildSimilarEntry)
 		self.epgcache = eEPGCache.getInstance()
 
-		self.clocks = [ LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_add.png')),
-				LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_pre.png')),
-				LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock.png')),
-				LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_prepost.png')),
-				LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_post.png')),
+		# Common clock icons
+		add = loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_add.png'))
+		pre = loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_pre.png'))
+		clock = loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock.png'))
+		zap = loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_zap.png'))
+		zaprec = loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_zaprec.png'))
+		prepost = loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_prepost.png'))
+		post = loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_post.png'))
+		self.clocks = [
+			add, pre, clock, prepost, post,
+			add, pre, zap, prepost, post,
+			add, pre, zaprec, prepost, post,
+			add, pre, clock, prepost, post]
 
-				LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_add.png')),
-				LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_pre.png')),
-				LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_zap.png')),
-				LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_prepost.png')),
-				LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_post.png')),
+		# Common selected clock icons
+		pre = loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_selpre.png'))
+		prepost = loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_selprepost.png'))
+		post = loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_selpost.png'))
+		self.selclocks = [ 
+			add, pre, clock, prepost, post,
+			add, pre, zap, prepost, post,
+			add, pre, zaprec, prepost, post]
 
-				LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_add.png')),
-				LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_pre.png')),
-				LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_zaprec.png')),
-				LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_prepost.png')),
-				LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_post.png')),
-
-				LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_add.png')),
-				LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_pre.png')),
-				LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock.png')),
-				LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_prepost.png')),
-				LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_post.png'))]
-
-		self.selclocks = [ LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_add.png')),
-				LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_selpre.png')),
-				LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock.png')),
-				LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_selprepost.png')),
-				LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_selpost.png')),
-				LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_add.png')),
-				LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_selpre.png')),
-				LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_zap.png')),
-				LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_selprepost.png')),
-				LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_selpost.png')),
-				LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_add.png')),
-				LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_selpre.png')),
-				LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_zaprec.png')),
-				LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_selprepost.png')),
-				LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_selpost.png'))]
-
-		self.autotimericon = LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_autotimer.png'))
+		self.autotimericon = loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_autotimer.png'))
 
 		self.nowEvPix = None
 		self.nowSelEvPix = None
@@ -618,18 +601,18 @@ class EPGList(GUIComponent):
 			channelw = 0
 			if self.type == EPG_TYPE_GRAPH:
 				if self.showServiceTitle:
-					servicew = config.epgselection.graph_servicewidth.value
+					servicew = config.epgselection.graph_servicewidth.value + 2*self.serviceNamePadding
 				if self.showPicon:
 					piconw = config.epgselection.graph_piconwidth.value
 				if self.showServiceNumber:
-					channelw = self.serviceNumberWidth
+					channelw = self.serviceNumberWidth + 2*self.serviceNumberPadding
 			elif self.type == EPG_TYPE_INFOBARGRAPH:
 				if self.showServiceTitle:
-					servicew = config.epgselection.infobar_servicewidth.value
+					servicew = config.epgselection.infobar_servicewidth.value + 2*self.serviceNamePadding
 				if self.showPicon:
 					piconw = config.epgselection.infobar_piconwidth.value
 				if self.showServiceNumber:
-					channelw = self.serviceNumberWidth
+					channelw = self.serviceNumberWidth + 2*self.serviceNumberPadding
 			w = (channelw + piconw + servicew)
 			self.service_rect = Rect(0, 0, w, height)
 			self.event_rect = Rect(w, 0, width - w, height)
@@ -850,7 +833,7 @@ class EPGList(GUIComponent):
 					backcolor = serviceBackColor, backcolor_sel = serviceBackColor,
 					border_width = self.serviceBorderWidth, border_color = self.borderColorService))
 
-		displayPicon = None
+		colX = r1.x + self.serviceBorderWidth
 		if self.showPicon:
 			if picon is None: # go find picon and cache its location
 				picon = getPiconName(service)
@@ -858,25 +841,30 @@ class EPGList(GUIComponent):
 				self.list[curIdx] = (service, service_name, events, picon, channel)
 			piconWidth = self.picon_size.width()
 			piconHeight = self.picon_size.height()
+			displayPicon = None
 			if picon != "":
 				displayPicon = loadPNG(picon)
 			if displayPicon is not None:
 				res.append(MultiContentEntryPixmapAlphaBlend(
-					pos = (r1.x + self.serviceBorderWidth, r1.y + self.serviceBorderWidth),
+					pos = (colX, r1.y + self.serviceBorderWidth),
 					size = (piconWidth, piconHeight),
 					png = displayPicon,
-					backcolor = None, backcolor_sel = None, flags = BT_SCALE | BT_KEEP_ASPECT_RATIO))
+					backcolor = None, backcolor_sel = None, flags = BT_SCALE | BT_KEEP_ASPECT_RATIO | BT_ALIGN_CENTER))
+				colX += piconWidth
 			elif not self.showServiceTitle:
 				# no picon so show servicename anyway in picon space
 				namefont = 1
 				namefontflag = int(config.epgselection.graph_servicename_alignment.value)
 				namewidth = piconWidth
-			else:
-				piconWidth = 0
-		else:
-			piconWidth = 0
+				res.append(MultiContentEntryText(
+					pos = (colX, r1.y + self.serviceBorderWidth),
+					size = (piconWidth, r1.h - 2 * self.serviceBorderWidth),
+					font = namefont, flags = namefontflag,
+					text = service_name,
+					color = serviceForeColor, color_sel = serviceForeColor,
+					backcolor = serviceBackColor, backcolor_sel = serviceBackColor))
+				colX += piconWidth
 
-		channelWidth = 0
 		if self.showServiceNumber:
 			if not isinstance(channel, int):
 				channel = self.getChannelNumber(channel)
@@ -885,26 +873,23 @@ class EPGList(GUIComponent):
 				namefont = 0
 				namefontflag = int(config.epgselection.graph_servicenumber_alignment.value)
 				font = gFont(self.serviceFontNameGraph, self.serviceFontSizeGraph + config.epgselection.graph_servfs.value)
-				channelWidth = getTextBoundarySize(self.instance, font, self.instance.size(), (channel < 10000)  and "0000" or str(channel) ).width()
+				channelWidth = getTextBoundarySize(self.instance, font, self.instance.size(), (channel < 10000) and "0000" or str(channel) ).width()
 				res.append(MultiContentEntryText(
-					pos = (r1.x + self.serviceNamePadding + piconWidth + self.serviceNamePadding, r1.y + self.serviceBorderWidth),
+					pos = (colX + self.serviceNumberPadding, r1.y + self.serviceBorderWidth),
 					size = (channelWidth, r1.h - 2 * self.serviceBorderWidth),
 					font = namefont, flags = namefontflag,
 					text = str(channel),
 					color = serviceForeColor, color_sel = serviceForeColor,
 					backcolor = serviceBackColor, backcolor_sel = serviceBackColor))
+				colX += channelWidth + 2 * self.serviceNumberPadding
 
 		if self.showServiceTitle: # we have more space so reset parms
 			namefont = 0
 			namefontflag = int(config.epgselection.graph_servicename_alignment.value)
-			namewidth = r1.w - channelWidth - piconWidth
-
-		if self.showServiceTitle or displayPicon is None:
+			namewidth = r1.w - colX - 2 * self.serviceNamePadding - self.serviceBorderWidth
 			res.append(MultiContentEntryText(
-				pos = (r1.x + self.serviceNamePadding + piconWidth + self.serviceNamePadding + channelWidth + self.serviceNumberPadding,
-					r1.y + self.serviceBorderWidth),
-				size = (namewidth - 3 * (self.serviceBorderWidth + self.serviceNamePadding),
-					r1.h - 2 * self.serviceBorderWidth),
+				pos = (colX + self.serviceNamePadding, r1.y + self.serviceBorderWidth),
+				size = (namewidth, r1.h - 2 * self.serviceBorderWidth),
 				font = namefont, flags = namefontflag,
 				text = service_name,
 				color = serviceForeColor, color_sel = serviceForeColor,
@@ -1065,8 +1050,8 @@ class EPGList(GUIComponent):
 					infowidth = config.epgselection.infobar_infowidth.value
 				if evW < infowidth and infoPix is not None:
 					res.append(MultiContentEntryPixmapAlphaBlend(
-						pos = (evX, evY), size = (evW, evH),
-						png = infoPix))
+						pos = (left + xpos + self.eventBorderWidth, evY), size = (ewidth - 2 * self.eventBorderWidth, evH),
+						png = infoPix, flags = BT_ALIGN_CENTER))
 				else:
 					res.append(MultiContentEntryText(
 						pos = (evX, evY), size = (evW, evH),
