@@ -1151,10 +1151,7 @@ void eListboxPythonMultiContent::paint(gPainter &painter, eWindowStyle &style, c
 					clearRegion(painter, style, local_style, ePyObject(), ePyObject(), pbackColor, pbackColorSelected, selected, rc, sel_clip, offset, m_itemsize, cursorValid, mustClear);
 				}
 				flags |= (type == TYPE_PIXMAP_ALPHATEST) ? gPainter::BT_ALPHATEST : (type == TYPE_PIXMAP_ALPHABLEND) ? gPainter::BT_ALPHABLEND : 0;
-				if (flags & gPainter::BT_SCALE)
-					painter.blitScale(pixmap, rect, rect, flags);
-				else
-					painter.blit(pixmap, rect.topLeft(), rect, flags);
+				painter.blit(pixmap, rect, rect, flags);
 				painter.clippop();
 				break;
 			}
@@ -1251,6 +1248,11 @@ void eListboxPythonMultiContent::setList(ePyObject list)
 {
 	m_old_clip = m_clip = gRegion::invalidRegion();
 	eListboxPythonStringContent::setList(list);
+}
+
+void eListboxPythonMultiContent::resetClip()
+{
+	m_old_clip = m_clip = gRegion::invalidRegion();
 }
 
 void eListboxPythonMultiContent::updateClip(gRegion &clip)

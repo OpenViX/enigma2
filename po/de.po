@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-08 22:27+0000\n"
-"PO-Revision-Date: 2019-02-16 17:13+0100\n"
+"POT-Creation-Date: 2019-03-07 18:27+0000\n"
+"PO-Revision-Date: 2019-03-07 21:09+0100\n"
 "Last-Translator: Ralf Biedermann <ralf.biedermann@rbsoft.de>\n"
 "Language-Team: AndyBlacburn, j-ot&Trial\n"
 "Language: de\n"
@@ -763,6 +763,10 @@ msgid_plural "%d channels found"
 msgstr[0] "%d Sender gefunden"
 msgstr[1] "%d Sender gefunden!"
 
+#, fuzzy, python-format
+msgid "%d cores"
+msgstr "Rot gefärbt"
+
 #, python-format
 msgid "%d hour"
 msgid_plural "%d hours"
@@ -1226,6 +1230,10 @@ msgstr "Eine Updateprüfung läuft im Hintergrund. Bitte ein paar Minuten warten
 
 msgid "A background update check is in progress, please wait a few minutes and try again."
 msgstr "Eine Updateprüfung läuft im Hintergrund. Bitte ein paar Minuten warten und erneut versuchen."
+
+#, fuzzy
+msgid "A client is streaming from this box!"
+msgstr "Keine streamenden Klienten"
 
 #, python-format
 msgid ""
@@ -2961,6 +2969,22 @@ msgstr "Konfigurationsmodus: %s"
 msgid "Configuration..."
 msgstr "Konfiguration..."
 
+#, fuzzy
+msgid "Configure ATSC"
+msgstr "Konfiguriere"
+
+#, fuzzy
+msgid "Configure DVB-C"
+msgstr "Konfiguriere"
+
+#, fuzzy
+msgid "Configure DVB-S"
+msgstr "Konfiguriere"
+
+#, fuzzy
+msgid "Configure DVB-T"
+msgstr "Konfiguriere"
+
 msgid "Configure alignment of service events."
 msgstr "Konfiguriere Ausrichtung der Sendungen."
 
@@ -3192,9 +3216,6 @@ msgstr "Konfiguriere die Transparenz des schwarzen Hintergrunds von grafischen D
 
 msgid "Configure the tuner mode."
 msgstr "Konfiguriere den Tuner-Modus."
-
-msgid "Configure the type of status indication icons shown in the movie list."
-msgstr "Konfiguriere den Typ der Statusanzeige in der Filmliste."
 
 msgid "Configure the vertical position of the subtitles, measured from the bottom of the screen."
 msgstr "Konfiguriere die vertikale Position von Untertiteln, gemessen vom unteren Bildrand."
@@ -3614,6 +3635,10 @@ msgstr "Dänisch"
 
 msgid "Date"
 msgstr "Datum"
+
+#, fuzzy
+msgid "Date first"
+msgstr "Zeitformat"
 
 msgid "Date style"
 msgstr "Zeitformat"
@@ -4238,6 +4263,9 @@ msgstr "Treiber: %s"
 
 msgid "Drop unconfigured satellites"
 msgstr "Vergesse nicht konfigurierte Satelliten"
+
+msgid "Dual core"
+msgstr ""
 
 msgid "Dutch"
 msgstr "Holländisch"
@@ -5064,12 +5092,6 @@ msgstr "Folgendes wird ausgeführt, nachdem OK gedrückt wurde!"
 msgid "Font size"
 msgstr "Schriftgröße"
 
-msgid "Force LNB Power"
-msgstr "Erzwinge LNB Strom"
-
-msgid "Force ToneBurst"
-msgstr "Erzwinge Toneburst"
-
 msgid "Force de-interlace"
 msgstr "DeInterlacing erzwingen"
 
@@ -5369,6 +5391,27 @@ msgstr "Guinea-Bissau"
 msgid "Guyana"
 msgstr "Guyana"
 
+msgid "H9 SDcard switch ERROR! - H9 root files not transferred to SD card"
+msgstr "H9 SD-Karte Wechselfehler! - H9 root Dateien noch nicht auf SD-Karte verschoben"
+
+msgid "H9 SDcard switch ERROR! - already on Nand"
+msgstr "H9 SD-Karte Wechselfehler! - Steht schon auf Nand"
+
+msgid "H9 SDcard switch ERROR! - already on mmc"
+msgstr "H9 SD-Karte Wechselfehler! - Steht schon auf MMC"
+
+msgid "H9 USB switch ERROR! - H9 root files not transferred to USB"
+msgstr "H9 USB Wechselfehler! - H9 root Dateien noch nicht auf USB verschoben"
+
+msgid "H9 USB switch ERROR! - already on USB"
+msgstr "H9 USB Wechselfehler! - Steht schon auf USB"
+
+msgid "H9 switch Nand and SDcard"
+msgstr "H9 wechsle Nand und SD-Karte"
+
+msgid "H9SDroot"
+msgstr ""
+
 msgid "H: = Hourly / D: = Daily / W: = Weekly / M: = Monthly"
 msgstr "H: = Stündlich / D: = Täglich / W: =Wöchentlich / M: =Monatlich"
 
@@ -5575,6 +5618,13 @@ msgstr "Hostname:"
 
 msgid "Hostname: "
 msgstr "Hostname: "
+
+msgid "Hotswitchable"
+msgstr ""
+
+#, fuzzy
+msgid "Hotswitchable tuner"
+msgstr "Umschaltbare Tuner-Typen:"
 
 msgid "Hour"
 msgstr "Stunde"
@@ -6915,11 +6965,8 @@ msgstr "Multi-EPG"
 msgid "Multiboot"
 msgstr "Multiboot"
 
-msgid "Multiboot ERROR! - no STARTUP in /boot -Please check /etc/fstab for correct boot partition"
-msgstr "Multiboot Fehler! - kein STARTUP in /boot - Bitte /etc/fstab auf korrekte Boot Partition prüfen."
-
-#, python-format
-msgid "Multiboot ERROR! - no STARTUP_%s in /boot - Image may need manual restart"
+#, fuzzy
+msgid "Multiboot ERROR! - no STARTUP in boot partition."
 msgstr "Multiboot Fehler! - kein STARTUP_%s in /boot - Image könnte manuelle Neustart benötigen."
 
 msgid "Multiboot Image Restart"
@@ -7448,6 +7495,9 @@ msgstr "OScam Info"
 msgid "OVR"
 msgstr ""
 
+msgid "Octo core"
+msgstr ""
+
 msgid "Off"
 msgstr "Aus"
 
@@ -7465,9 +7515,6 @@ msgstr "Am Ende eines Films"
 
 msgid "On end of movie (as menu)"
 msgstr "Am Ende eines Films (als Menü)"
-
-msgid "On reaching the end of a file during playback, you can choose the box's behavior."
-msgstr "Am Ende einer Filmwiedergabe kann das Verhalten der Box bestimmt werden."
 
 msgid "On shutdown/restart warn about any pending jobs being carried out in the background."
 msgstr "Bei Neustart/Ausschalten warne wenn noch aktive Tasks im Hintergrund laufen."
@@ -7701,7 +7748,7 @@ msgid "Parental control"
 msgstr "Jugendschutz"
 
 msgid "Passthrough"
-msgstr ""
+msgstr "Durchschleifen"
 
 msgid "Password"
 msgstr "Passwort"
@@ -7762,6 +7809,9 @@ msgstr "Einstellungen zu sichern bevor ein Update durchgeführt wird ist sehr zu
 
 msgid "Perform an online update check in the background"
 msgstr "Hintergrundsuche nach Updates"
+
+msgid "Permanent sort key changes"
+msgstr "Permanente Änderung der Sortierung"
 
 msgid "Permanently delete all recordings in the trash can?"
 msgstr "Alle Aufnahmen im Mülleimer löschen?"
@@ -8492,6 +8542,10 @@ msgstr "Python:\t%s\n"
 
 msgid "Qatar"
 msgstr "Qatar"
+
+#, fuzzy
+msgid "Quad core"
+msgstr "Rot gefärbt"
 
 msgid "Question"
 msgstr "Frage"
@@ -9342,6 +9396,18 @@ msgstr "W#hle 'A' oder 'B' wenn die Anlage es benötigt sonst wähle 'keine'. We
 msgid "Select 'FBC SCR' if this tuner will connect to a SCR (Unicable/JESS) device. For all other setups select 'FBC automatic'."
 msgstr "Wähle 'FBC SCR' wenn dieser Tuner ein Unicable Gerät verwendet. Für alle anderen Systeme wähle 'FBC automatisch'."
 
+msgid "Select 'Yes' when you want to configure this tuner for ATSC"
+msgstr "Wähle 'Ja' wenn dieser Tuner ATSC unterstützen soll"
+
+msgid "Select 'Yes' when you want to configure this tuner for DVB-C"
+msgstr "Wähle 'Ja' wenn dieser Tuner DVB-C unterstützen soll"
+
+msgid "Select 'Yes' when you want to configure this tuner for DVB-S"
+msgstr "Wähle 'Ja' wenn dieser Tuner DVB-S unterstützen soll"
+
+msgid "Select 'Yes' when you want to configure this tuner for DVB-T"
+msgstr "Wähle 'Ja' wenn dieser Tuner DVB-T unterstützen soll"
+
 msgid "Select 'band' if using a 'universal' LNB, otherwise consult your LNB spec sheet."
 msgstr "Wähle 'Band' wenn ein Universal-LNB verwendet wird sonst schaue in den Spezifikationen des LNBs nach."
 
@@ -9807,6 +9873,10 @@ msgstr "Wähle die gewünschte Primetime (Stunde)."
 msgid "Set the desired primetime (minutes)."
 msgstr "Wähle die gewünschte Primetime (Minuten)."
 
+#, fuzzy
+msgid "Set the global sort method"
+msgstr "Standardsortiermethode wählen."
+
 msgid "Set the jump-size of the seekbar."
 msgstr "Wähle die Sprungweite für die Seekbar."
 
@@ -10138,7 +10208,8 @@ msgstr "Zeige Menünummern"
 msgid "Show message when recording starts"
 msgstr "Zeige Nachricht wenn eine Aufnahme startet"
 
-msgid "Show movie lengths in movielist"
+#, fuzzy
+msgid "Show movie lengths in movie list"
 msgstr "Zeige Filmlänge in Filmliste"
 
 msgid "Show movies"
@@ -10252,9 +10323,6 @@ msgstr "Transponder-Info anzeigen"
 msgid "Show transponder remaining/elapsed as"
 msgstr "Zeige Transponder verbleibend/verstrichen"
 
-msgid "Show warning when in a stream"
-msgstr "Zeige Warnung wenn IP-Stream aktiv"
-
 msgid "Show warning when timeshift is stopped"
 msgstr "Zeige Warnung wenn TimeShift beendet wird"
 
@@ -10329,6 +10397,10 @@ msgstr "Einzeln"
 
 msgid "Single EPG"
 msgstr "Einfach-EPG"
+
+#, fuzzy
+msgid "Single core"
+msgstr "Einzeln"
 
 msgid "Single satellite"
 msgstr "Einzelnen Satelliten"
@@ -10905,6 +10977,12 @@ msgstr "Wechsel SNR in '%' gegen SNR in 'dB'"
 msgid "Swap services"
 msgstr "Sender tauschen"
 
+msgid "SwaptoNand"
+msgstr ""
+
+msgid "SwaptoSD"
+msgstr ""
+
 msgid "Swaziland"
 msgstr "Swaziland"
 
@@ -10959,7 +11037,8 @@ msgstr "Schalte zu vorherigen Sender"
 msgid "Switch to the previous channel in history"
 msgstr "Schalte zu vorherigen Sender in Vergangenheit"
 
-msgid "Switchable tuner types:"
+#, fuzzy
+msgid "Switchable tuner types"
 msgstr "Umschaltbare Tuner-Typen:"
 
 msgid "Switzerland"
@@ -11373,8 +11452,8 @@ msgstr "Dies erlaubt anzugeben wie viele Zeilen gezeigt werden sollen."
 msgid "This field allows you to search an additional symbol rate up to %s."
 msgstr "Dieses Feld erlaubt es eine weitere Symbolrate bis zu %s zu durchsuchen."
 
-msgid "This is a multitype tuner. Available options depend on the hardware. Cable and terrestrial cannot be configured at the same time. If you want to use as cable + satellite or terrestrial + satellite, configure cable/terrestrial first and then save. Re-open and configure again as satellite."
-msgstr "Dies ist ein Tuner für mehrere Empfangsarten. Mögliche Einstellungen hängen von der Hardware ab. Kabel und DVB-T können nicht gleichzeitig konfiguriert sein. Wenn Du Kabel+Sat oder DVB-T+Sat möchtest, konfiguriere zuerst Kabel/DVB-T und speichere. Öffne den Punkt erneut und konfiguriere Sat."
+msgid "This is a multitype tuner. Available options depend on the hardware."
+msgstr "Dies ist ein Multi-Tuner. Zur Verfügung stehende Optionen hängen von der Hardware ab."
 
 msgid "This is the order in which DiSEqC commands are sent to the aerial system. The order must correspond exactly with the order the physical devices are arranged along the signal cable (starting from the receiver end)."
 msgstr "Dies ist die Reihenfolge in der DiSEqC Kommandos geschickt werden. Die Reihenfolge muss den Positionen der Geräte entsprechen die am Kabel angeschlossen sind (startend bei der Box)."
@@ -11691,9 +11770,6 @@ msgstr "TimeShift Verzeichnis"
 
 msgid "Timeshift not possible!"
 msgstr "TimeShift nicht möglich!"
-
-msgid "Timeshift on a stream is not supported!"
-msgstr "TimeShift wird bei diesem Stream nicht unterstützt!"
 
 msgid "Timeshift save failed!"
 msgstr "Sichern TimeShift fehlgeschlagen!"
@@ -12701,12 +12777,6 @@ msgstr "Was durchsuchen?"
 msgid "When enabled enigma2 will load unlinked userbouquets. This means that userbouquets that are available, but not included in the bouquets.tv or bouquets.radio files, will still be loaded. This allows you for example to keep your own user bouquet while installed settings are upgraded"
 msgstr "Wenn aktiviert lädt Enigma2 nicht verbundene Favoritenlisten. Das heißt Favoritenlisten die vorhanden sind aber nicht in bouquets.tv oder bouquets.radio aufgeführt sind werden trotzdem geladen. Dies erlaubt es z.B. automatisch generierte oder installierte Favoritenlisten mit eigenen Erweiterungen zu versehen"
 
-msgid "When enabled the LNB power will not be switched off in standby"
-msgstr "Wenn aktiviert wird die LNB-Spannung in Bereitschaft nicht ausgeschaltet"
-
-msgid "When enabled the LNB toneburst will be forced"
-msgstr "Wenn aktiviert wird immer LNB-ToneBurst erzwungen"
-
 msgid "When enabled the online checker will also check for experimental versions"
 msgstr "Wenn aktiviert werden auch experimentelle Updates gesucht"
 
@@ -12727,9 +12797,6 @@ msgstr "Wenn aktiviert ist es einer Aufnahme gestattet das Live-Programm zu unte
 
 msgid "When enabled, a warning will be displayed and the user will get an option to stop or to continue the timeshift."
 msgstr "Wenn aktiviert wird eine Warnung angezeigt und der Benutzer hat die Möglichkeit TimeShift zu stoppen oder fortzuführen."
-
-msgid "When enabled, a warning will be displayed that timeshift is not supported in an IP stream.."
-msgstr "Wenn aktiviert wird eine Warnung angezeigt das TimeShift bei IP-Streams nicht unterstützt wird."
 
 msgid "When enabled, always descramble receiving http streams. This takes up more resources (descrambling demuxers), only enable if necessary. Individual streams are always descrambled if 0x100 is added to the service type, regardless of this setting. Default off."
 msgstr "Wenn aktiviert werden empfangene Streams entschlüsselt. Diese Option verlang nach mehr Resourcen (entschlüsseln demuxer). Nur aktivieren wenn nötig. Einzelne Streams werden immer entschlüsselt wenn 0x100 als Service Typ benutzt wird. Standard ist aus."
@@ -12845,6 +12912,9 @@ msgstr "Wenn aktiviert PIG wird Live-TV zeigen wenn der Film beendet wurde."
 msgid "When set, each directory will show the previous state used. When off, the default values will be shown."
 msgstr "Wenn gesetzt merken sich die Verzeichnisse ihren Zustand. Wenn ausgeschaltet wird eine Standardansicht genommen."
 
+msgid "When set, sort changes via the sort key will be permanent."
+msgstr "Wenn aktiviert sind Änderungen der Sortierung permanent"
+
 msgid "When the content has an aspect ratio of 16:9, choose whether to scale/stretch the picture."
 msgstr "Wenn der Bildinhalt ein Aspect/Ratio von 16:9 hat wähle ob das Bild skaliert/gestreckt werden soll."
 
@@ -12853,6 +12923,9 @@ msgstr "Wenn der Bildinhalt ein Aspect/Ratio von 4:3 hat wähle ob das Bild skal
 
 msgid "When tuned to a service the system will normally scan the transponder for any changes and save them. Only set to 'yes' if you're absolutely sure of what you're doing."
 msgstr "Wenn ein Sender eingestellt ist durchsucht die Box den Transponder nach Änderungen und speichert sie. Nur 'Nein' einstellen wenn Du weißt was Du tust."
+
+msgid "When unset, sort changes will be temporary - just for this view of a directory."
+msgstr "Wenn nicht aktiviert sind Änderungen der Sortierung nur temporär - nur für diese Ansicht eines Verzeichnisses"
 
 #, python-format
 msgid ""
@@ -13137,6 +13210,10 @@ msgid "You seem to be in timeshift!"
 msgstr "TimeShift scheint aktiv zu sein!"
 
 msgid "You seem to be in timeshift, Do you want to leave timeshift ?"
+msgstr "TimeShift scheint aktiv zu sein. TimeShift stoppen?"
+
+#, fuzzy
+msgid "You seem to be in timeshift, Do you want to leave timeshift? Streams & IPTV not fully supported!"
 msgstr "TimeShift scheint aktiv zu sein. TimeShift stoppen?"
 
 #, python-format
@@ -13716,9 +13793,6 @@ msgstr "Unterhaltung (allgemein)"
 msgid "epg cache backup"
 msgstr "Backup vom EPG Cache"
 
-msgid "equal to"
-msgstr "Gleich wie"
-
 msgid "equestrian"
 msgstr "Reiter"
 
@@ -13980,9 +14054,6 @@ msgstr "lang"
 
 msgid "longest"
 msgstr "längstes"
-
-msgid "loopthrough to"
-msgstr "Verbunden mit"
 
 msgid "magazines/reports/documentary"
 msgstr "Magazin/Report/Dokumentation"
@@ -14291,9 +14362,6 @@ msgstr ""
 msgid "se"
 msgstr "süd ost"
 
-msgid "second cable of motorized LNB"
-msgstr "Zweites Kabel vom Rotor"
-
 msgid "seconds"
 msgstr "Sekunden"
 
@@ -14449,9 +14517,6 @@ msgstr "süd süd ost"
 
 msgid "ssw"
 msgstr "süd süd west"
-
-msgid "standard"
-msgstr "Standard"
 
 msgid "start cut here"
 msgstr "Schnitt hier starten"
@@ -14839,6 +14904,9 @@ msgstr "umgeschaltet"
 #~ msgid "Configure the refresh rate of the screen."
 #~ msgstr "Konfiguriere die Wiederholrate für den Bildschirm."
 
+#~ msgid "Configure the type of status indication icons shown in the movie list."
+#~ msgstr "Konfiguriere den Typ der Statusanzeige in der Filmliste."
+
 #~ msgid "Configure which tuner will be preferred for recordings, when more than one tuner is available. 'Disabled' would select a tuner based on preferred tuner in customise screen. 'Auto' would choose based on E2's default rules, ignoring preferred tuner in customise screen."
 #~ msgstr "Konfiguriere welcher Tuner für Aufnahmen bevorzugt werden soll wenn mehr als ein Tuner verfügbar ist. 'Deaktiviert' verwendet den bevorzugten Tuner der unter Anpassen eingestellt ist. 'Auto' wählt den Tuner nach E2-Regeln und ignoriert die Einstellung in Anpassen."
 
@@ -15142,6 +15210,12 @@ msgstr "umgeschaltet"
 #~ msgid "Flashing failed"
 #~ msgstr "Flashen fehlgeschlagen"
 
+#~ msgid "Force LNB Power"
+#~ msgstr "Erzwinge LNB Strom"
+
+#~ msgid "Force ToneBurst"
+#~ msgstr "Erzwinge Toneburst"
+
 #~ msgid "Free Memory:"
 #~ msgstr "Speicher frei:"
 
@@ -15251,6 +15325,9 @@ msgstr "umgeschaltet"
 #~ msgid "MultiEPG settings"
 #~ msgstr "MultiEPG Einstellungen"
 
+#~ msgid "Multiboot ERROR! - no STARTUP in /boot -Please check /etc/fstab for correct boot partition"
+#~ msgstr "Multiboot Fehler! - kein STARTUP in /boot - Bitte /etc/fstab auf korrekte Boot Partition prüfen."
+
 #~ msgid "Multiplex"
 #~ msgstr "Multiplex"
 
@@ -15312,6 +15389,9 @@ msgstr "umgeschaltet"
 
 #~ msgid "On destination '%s' is %s free space only!"
 #~ msgstr "Auf Ziel '%s' ist nur noch %s freier Speicher!"
+
+#~ msgid "On reaching the end of a file during playback, you can choose the box's behavior."
+#~ msgstr "Am Ende einer Filmwiedergabe kann das Verhalten der Box bestimmt werden."
 
 #~ msgid "Options..."
 #~ msgstr "Einstellungen..."
@@ -15479,6 +15559,9 @@ msgstr "umgeschaltet"
 #~ msgid "Show status icons in movielist"
 #~ msgstr "Zeige Status-Icons in der Filmliste"
 
+#~ msgid "Show warning when in a stream"
+#~ msgstr "Zeige Warnung wenn IP-Stream aktiv"
+
 #~ msgid "Show/Hide focus bar"
 #~ msgstr "Zeige/Verstecke Fokus Rahmen"
 
@@ -15561,6 +15644,9 @@ msgstr "umgeschaltet"
 #~ msgid "This can be either the IP or name of the fallback receiver, not including the scheme or port number (e.g. either 'xxx.xxx.xxx.xxx' or 'name_second_box')."
 #~ msgstr "Dies kann entweder der Name oder die IP des Ausweichreceivers sein. Hier darf kein Typ oder Port angegeben werden also entweder xxx.xxx.xxx.xxx oder <name-der-box>."
 
+#~ msgid "This is a multitype tuner. Available options depend on the hardware. Cable and terrestrial cannot be configured at the same time. If you want to use as cable + satellite or terrestrial + satellite, configure cable/terrestrial first and then save. Re-open and configure again as satellite."
+#~ msgstr "Dies ist ein Tuner für mehrere Empfangsarten. Mögliche Einstellungen hängen von der Hardware ab. Kabel und DVB-T können nicht gleichzeitig konfiguriert sein. Wenn Du Kabel+Sat oder DVB-T+Sat möchtest, konfiguriere zuerst Kabel/DVB-T und speichere. Öffne den Punkt erneut und konfiguriere Sat."
+
 #~ msgid ""
 #~ "This plugin creates a USB stick which can be used to update the firmware of your %s %s without the need for a network or WLAN connection.\n"
 #~ "First, a USB stick needs to be prepared so that it becomes bootable.\n"
@@ -15579,6 +15665,9 @@ msgstr "umgeschaltet"
 
 #~ msgid "Timer overview"
 #~ msgstr "Timer Überblick"
+
+#~ msgid "Timeshift on a stream is not supported!"
+#~ msgstr "TimeShift wird bei diesem Stream nicht unterstützt!"
 
 #~ msgid "Timeshift settings"
 #~ msgstr "TimeShift Einstellungen"
@@ -15636,8 +15725,17 @@ msgstr "umgeschaltet"
 #~ msgid "Videosize"
 #~ msgstr "Bildgröße"
 
+#~ msgid "When enabled the LNB power will not be switched off in standby"
+#~ msgstr "Wenn aktiviert wird die LNB-Spannung in Bereitschaft nicht ausgeschaltet"
+
+#~ msgid "When enabled the LNB toneburst will be forced"
+#~ msgstr "Wenn aktiviert wird immer LNB-ToneBurst erzwungen"
+
 #~ msgid "When enabled, Enigma2 will load unlinked bouquets. This means that bouquets that are available, but not included in the bouquets.tv or bouquets.radio files, will still be loaded. This allows you for example to keep your own user bouquet while installed settings are upgraded"
 #~ msgstr "Wenn aktiviert lädt Enigma2 nicht verbundene Favoritenlisten. Das heißt Favoritenlisten die vorhanden sind aber nicht in bouquets.tv oder bouquets.radio aufgeführt sind werden trotzdem geladen. Dies erlaubt es z.B. automatisch generierte oder installierte Favoritenlisten mit eigenen Erweiterungen zu versehen."
+
+#~ msgid "When enabled, a warning will be displayed that timeshift is not supported in an IP stream.."
+#~ msgstr "Wenn aktiviert wird eine Warnung angezeigt das TimeShift bei IP-Streams nicht unterstützt wird."
 
 #~ msgid "When enabled, graphical DVB subtitles will be centered horizontally."
 #~ msgstr "Wenn aktiviert werden grafische DVB Untertitel horizontal zentriert."
@@ -15675,8 +15773,14 @@ msgstr "umgeschaltet"
 #~ msgid "default"
 #~ msgstr "Standard"
 
+#~ msgid "equal to"
+#~ msgstr "Gleich wie"
+
 #~ msgid "leave movie player..."
 #~ msgstr "Abspielmodus verlassen..."
+
+#~ msgid "loopthrough to"
+#~ msgstr "Verbunden mit"
 
 #~ msgid "not used"
 #~ msgstr "nicht verwendet"
@@ -15696,6 +15800,12 @@ msgstr "umgeschaltet"
 
 #~ msgid "reliable"
 #~ msgstr "verlässlich"
+
+#~ msgid "second cable of motorized LNB"
+#~ msgstr "Zweites Kabel vom Rotor"
+
+#~ msgid "standard"
+#~ msgstr "Standard"
 
 #~ msgid "traditional (fast)"
 #~ msgstr "traditionell (schnell)"
