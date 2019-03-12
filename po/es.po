@@ -1369,7 +1369,7 @@ msgid "Behavior when a movie is stopped"
 msgstr "Comportamiento cuando se ha parado una película"
 
 msgid "Behavior when a movie reaches the end"
-msgstr "Comportamiento cuando finaliza una película"
+msgstr "Comportamiento si una película acaba"
 
 msgid "Big PiP"
 msgstr "Big PiP"
@@ -12159,10 +12159,10 @@ msgid "Force legacy signal stats"
 msgstr "Forzar legacy (estadísticas) de señales heredadas"
 
 msgid "This is a multitype tuner. Available options depend on the hardware."
-msgstr "Este es un sintonizador multitipo. Las opciones disponibles dependen del hardware."
+msgstr "Este es un sintonizador multitipo. Las opciones disponibles dependen de hardware."
 
 msgid "Select your ATSC provider."
-msgstr "Seleccione su ATSC proveedor."
+msgstr "Seleccione su proveedor ATSC."
 
 msgid "Select your country. If not available select 'all'."
 msgstr "Selecciona su pais. Si no está disponible, seleccione 'todos'."
