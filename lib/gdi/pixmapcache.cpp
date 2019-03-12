@@ -7,16 +7,11 @@
 
 uint PixmapCache::MaximumSize = 256;
 
-/* Keep a table of already-loaded pixmaps, and return the old one when
- * needed. The "dispose" method isn't very efficient, but not called unless
- * a pixmap is being replaced by another when the cache is full and even then,
- * not loading the same pixmap repeatedly will probably make up for that.
- * There is a race condition, when two threads load the same image,
- * the worst case scenario is then that the pixmap is loaded twice. This
- * isn't any worse than before, and all the UI pixmaps will be loaded
- * from the same thread anyway. */
-
-// cache objects work best when we manage the ref counting manually. ePtr brings memory protection violations on shutdown
+// Cache objects work best when we manage the ref counting manually. ePtr brings memory protection violations on shutdown
+// We track the filesize and modified date of the file. If either change, the item is considered stale is removedand must be reloaded
+// We also track the last used time so the cache can remove least recently used items when it gets too full. Full is defined
+// as a number of items, rather than memory used, so there's a potential for the cache to occupy too much memory if
+// many large images are loaded with the cached flag set
 struct CacheItem
 {
 public:
@@ -57,6 +52,13 @@ static bool CompareLastUsed(NameToPixmap::value_type i, NameToPixmap::value_type
 static eSingleLock pixmapCacheLock;
 static NameToPixmap pixmapCache;
 
+/* The "dispose" method isn't very efficient, but not called unless
+ * a pixmap is being replaced by another when the cache is full and even then,
+ * not loading the same pixmap repeatedly will probably make up for that.
+ * There is a race condition, when two threads load the same image,
+ * the worst case scenario is then that the pixmap is loaded twice. This
+ * isn't any worse than before, and all the UI pixmaps will be loaded
+ * from the same thread anyway. */
 void PixmapCache::PixmapDisposed(gPixmap* pixmap)
 {
 	eSingleLocker lock(pixmapCacheLock);
