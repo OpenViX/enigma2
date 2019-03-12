@@ -7790,7 +7790,7 @@ msgstr ""
 msgid "science fiction/fantasy/horror"
 msgstr ""
 
-msgid "second cable of motorized LNB"
+msgid "Second cable of motorized LNB"
 msgstr ""
 
 msgid "seconds"
@@ -10468,7 +10468,7 @@ msgstr ""
 msgid "Force legacy signal stats"
 msgstr ""
 
-msgid "This is a multitype tuner. Available options depend on the hardware. Cable and terrestrial cannot be configured at the same time. If you want to use as cable + satellite or terrestrial + satellite, configure cable/terrestrial first and then save. Re-open and configure again as satellite."
+msgid "This is a multitype tuner. Available options depend on the hardware."
 msgstr ""
 
 msgid "Select Fast DiSEqC if your aerial system supports this. If you are unsure select 'no'."

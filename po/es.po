@@ -11212,9 +11212,6 @@ msgstr "ciencia ficción, fantasía y terror"
 msgid "se"
 msgstr "se"
 
-msgid "second cable of motorized LNB"
-msgstr "segundo cable del LNB motorizado"
-
 msgid "seconds"
 msgstr "segundos"
 
@@ -12141,7 +12138,7 @@ msgid "This setting allows the tuner configuration to be a duplication of how an
 msgstr "Esta configuración permite que la configuración del sintonizador sea una duplicación de cómo otro sintonizador ya está configurado."
 
 msgid "Loop through from"
-msgstr "Loop through desde"
+msgstr "Conectado desde"
 
 msgid "Select 'polarisation' if using a 'universal' LNB, otherwise consult your LNB spec sheet."
 msgstr "Seleccione 'polarización' si usa un LNB 'universal'; de lo contrario, consulte la hoja de especificaciones de su LNB."
@@ -12164,8 +12161,8 @@ msgstr "Si se usan varios conmutadores no confirmados, los comandos DiSEqC deben
 msgid "Force legacy signal stats"
 msgstr "Forzar legacy (estadísticas) de señales heredadas"
 
-msgid "This is a multitype tuner. Available options depend on the hardware. Cable and terrestrial cannot be configured at the same time. If you want to use as cable + satellite or terrestrial + satellite, configure cable/terrestrial first and then save. Re-open and configure again as satellite."
-msgstr "Este es un sintonizador multitipo. Las opciones disponibles dependen del hardware. Cable y terrestre no se pueden configurar al mismo tiempo. Si desea utilizar como cable + satélite o terrestre + satélite, primero configure cable/terrestre y luego guárdelo. Vuelva a abrir y configure nuevamente como satélite."
+msgid "This is a multitype tuner. Available options depend on the hardware."
+msgstr "Este es un sintonizador multitipo. Las opciones disponibles dependen del hardware."
 
 msgid "Select your ATSC provider."
 msgstr "Seleccione su ATSC proveedor."
