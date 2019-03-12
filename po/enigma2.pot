@@ -7490,9 +7490,6 @@ msgstr ""
 msgid "locked"
 msgstr ""
 
-msgid "loopthrough to"
-msgstr ""
-
 msgid "magazines/reports/documentary"
 msgstr ""
 

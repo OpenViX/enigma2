@@ -10911,9 +10911,6 @@ msgstr "bloqueado"
 msgid "long"
 msgstr "prolongado"
 
-msgid "loopthrough to"
-msgstr "bucle a"
-
 msgid "magazines/reports/documentary"
 msgstr "reportajes y documentales"
 
