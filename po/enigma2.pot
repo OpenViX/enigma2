@@ -7305,7 +7305,7 @@ msgstr ""
 msgid "entertainment (6-14 year old)"
 msgstr ""
 
-msgid "equal to"
+msgid "Equal to"
 msgstr ""
 
 msgid "equestrian"
@@ -10865,4 +10865,7 @@ msgid "Show record indicator"
 msgstr ""
 
 msgid "Configure if and how the record indicator will be shown in the channel selection list."
+msgstr ""
+
+msgid "Enter the frequency step size for the tuner to use when searching for cable multiplexes. For more information consult your cable provider's documentation."
 msgstr ""

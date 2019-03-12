@@ -10712,9 +10712,6 @@ msgstr "entretenimiento (6-14 años)"
 msgid "epg cache backup"
 msgstr "copia epg cache"
 
-msgid "equal to"
-msgstr "igual a"
-
 msgid "equestrian"
 msgstr "ecuestre"
 
@@ -12541,6 +12538,9 @@ msgstr "slot%s - %s modalidad 12 (imagen actual)"
 #, python-format
 msgid "slot%s -%s - %s (current image)"
 msgstr "slot%s -%s - %s (imagen actual)"
+
+msgid "Enter the frequency step size for the tuner to use when searching for cable multiplexes. For more information consult your cable provider's documentation."
+msgstr "Ingrese el tamaño de paso de frecuencia para que el sintonizador use cuando busque multiplexos de cable. Para más información consulte la documentación de su proveedor de cable."
 
 #~ msgid "3d mode"
 #~ msgstr "Modo 3D"
