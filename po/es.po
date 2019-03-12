@@ -12539,6 +12539,24 @@ msgstr "slot%s -%s - %s (imagen actual)"
 msgid "Enter the frequency step size for the tuner to use when searching for cable multiplexes. For more information consult your cable provider's documentation."
 msgstr "Ingrese el tamaño de paso de frecuencia para que el sintonizador use cuando busque multiplexos de cable. Para más información consulte la documentación de su proveedor de cable."
 
+msgid "A client is streaming from this box!"
+msgstr "Un cliente está transmitiendo desde esta receptor!"
+
+msgid "No data received yet"
+msgstr "Aún no se han recibido datos"
+
+msgid "Select 'Yes' when you want to configure this tuner for ATSC"
+msgstr "Seleccione 'Sí' cuando desee configurar este sintonizador para ATSC"
+
+msgid "Select 'Yes' when you want to configure this tuner for DVB-C"
+msgstr "Seleccione 'Sí' cuando desee configurar este sintonizador para DVB-C"
+
+msgid "Select 'Yes' when you want to configure this tuner for DVB-S"
+msgstr "Seleccione 'Sí' cuando desee configurar este sintonizador para DVB-S"
+
+msgid "Select 'Yes' when you want to configure this tuner for DVB-T"
+msgstr "Seleccione 'Sí' cuando desee configurar este sintonizador para DVB-T"
+
 #~ msgid "3d mode"
 #~ msgstr "Modo 3D"
 
