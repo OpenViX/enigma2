@@ -1369,7 +1369,7 @@ msgid "Behavior when a movie is stopped"
 msgstr "Comportamiento cuando se ha parado una película"
 
 msgid "Behavior when a movie reaches the end"
-msgstr "Comportamiento si una película acaba"
+msgstr "Comportamiento si una película finaliza"
 
 msgid "Big PiP"
 msgstr "Big PiP"
@@ -2133,13 +2133,13 @@ msgid "Configure the secondary EPG language."
 msgstr "Configurar el idioma secundario del EPG."
 
 msgid "Configure the skip time interval for the 1 and 3 buttons."
-msgstr "Configure el intervalo de tiempo de omisión para los botones 1 y 3."
+msgstr "Configure el salto en intervalo de tiempo para los botones 1 y 3."
 
 msgid "Configure the skip time interval for the 4 and 6 buttons."
-msgstr "Configure el intervalo de tiempo de omisión para los botones 4 y 6."
+msgstr "Configure el salto en intervalo de tiempo para los botones 4 y 6."
 
 msgid "Configure the skip time interval for the 7 and 9 buttons."
-msgstr "Configure el intervalo de tiempo de omisión para los botones 7 y 9."
+msgstr "Configure el salto en intervalo de tiempo para los botones 7 y 9."
 
 msgid "Configure the slow motion speeds."
 msgstr "Configurar las velocidades a cámara lenta."
@@ -2401,13 +2401,13 @@ msgid "Custom"
 msgstr "Personalizado"
 
 msgid "Custom skip time for '1''3' buttons"
-msgstr "Tiempo de omisión personalizado para los botones '1''3'"
+msgstr "Personalizar intervalo de salto de los botones '1''3'"
 
 msgid "Custom skip time for '4'/'6' buttons"
-msgstr "Personalizar intervalo de salto '4'/'6' de teclas"
+msgstr "Personalizar intervalo de salto de los botones '4'/'6'"
 
 msgid "Custom skip time for '7'/'9' buttons"
-msgstr "Personalizar intervalo de salto '7'/'9' de teclas"
+msgstr "Personalizar intervalo de salto de los botones '7'/'9'"
 
 msgid "Customize"
 msgstr "Configurar"
