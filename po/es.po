@@ -10903,7 +10903,7 @@ msgid "literature"
 msgstr "literatura"
 
 msgid "live broadcast"
-msgstr "En directo"
+msgstr "en directo"
 
 msgid "locked"
 msgstr "bloqueado"
@@ -12540,7 +12540,7 @@ msgid "Enter the frequency step size for the tuner to use when searching for cab
 msgstr "Ingrese el tamaño de paso de frecuencia para que el sintonizador use cuando busque multiplexos de cable. Para más información consulte la documentación de su proveedor de cable."
 
 msgid "A client is streaming from this box!"
-msgstr "El receptor está con un cliente transmitiendo ahora!"
+msgstr "Un cliente está transmitiendo desde esta receptor!"
 
 msgid "No data received yet"
 msgstr "Aún no se han recibido datos"
