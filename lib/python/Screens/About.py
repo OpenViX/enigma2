@@ -594,57 +594,84 @@ class SystemNetworkInfo(Screen):
 
 	def getInfoCB(self, data, status):
 		self.LinkState = None
-		if data is not None:
-			if data is True:
-				if status is not None:
-					if self.iface == 'wlan0' or self.iface == 'wlan3' or self.iface == 'ra0':
-						if status[self.iface]["essid"] == "off":
-							essid = _("No connection")
-						else:
-							essid = status[self.iface]["essid"]
+		if data is not None and data:
+			if status is not None:
+# getDataForInterface()->iwconfigFinished() in
+# Plugins/SystemPlugins/WirelessLan/Wlan.py sets fields to boolean False
+# if there is no info for them, so we need to check that possibility
+# for each status[self.iface] field...
+#
+				if self.iface == 'wlan0' or self.iface == 'wlan3' or self.iface == 'ra0':
+# accesspoint is used in the "enc" code too, so we get it regardless
+#
+					if not status[self.iface]["accesspoint"]:
+						accesspoint = _("Unknown")
+					else:
 						if status[self.iface]["accesspoint"] == "Not-Associated":
 							accesspoint = _("Not-Associated")
 							essid = _("No connection")
 						else:
 							accesspoint = status[self.iface]["accesspoint"]
-						if self.has_key("BSSID"):
-							self.AboutText += _('Accesspoint:') + '\t' + accesspoint + '\n'
-						if self.has_key("ESSID"):
-							self.AboutText += _('SSID:') + '\t' + essid + '\n'
+					if self.has_key("BSSID"):
+						self.AboutText += _('Accesspoint:') + '\t' + accesspoint + '\n'
 
-						quality = status[self.iface]["quality"]
-						if self.has_key("quality"):
-							self.AboutText += _('Link quality:') + '\t' + quality + '\n'
-
-						if status[self.iface]["bitrate"] == '0':
-							bitrate = _("Unsupported")
+					if self.has_key("ESSID"):
+						if not status[self.iface]["essid"]:
+							essid = _("Unknown")
 						else:
-							bitrate = str(status[self.iface]["bitrate"]) + " Mb/s"
-						if self.has_key("bitrate"):
-							self.AboutText += _('Bitrate:') + '\t' + bitrate + '\n'
-
-						signal = status[self.iface]["signal"]
-						if self.has_key("signal"):
-							self.AboutText += _('Signal strength:') + '\t' + signal + '\n'
-
-						if status[self.iface]["encryption"] == "off":
-							if accesspoint == "Not-Associated":
-								encryption = _("Disabled")
+							if status[self.iface]["essid"] == "off":
+								essid = _("No connection")
 							else:
-								encryption = _("Unsupported")
-						else:
-							encryption = _("Enabled")
-						if self.has_key("enc"):
-							self.AboutText += _('Encryption:') + '\t' + encryption + '\n'
+								essid = status[self.iface]["essid"]
+						self.AboutText += _('SSID:') + '\t' + essid + '\n'
 
-						if status[self.iface]["essid"] == "off" or status[self.iface]["accesspoint"] == "Not-Associated" or status[self.iface]["accesspoint"] is False:
-							self.LinkState = False
-							self["statuspic"].setPixmapNum(1)
-							self["statuspic"].show()
+					if self.has_key("quality"):
+						if not status[self.iface]["quality"]:
+							quality = _("Unknown")
 						else:
-							self.LinkState = True
-							iNetwork.checkNetworkState(self.checkNetworkCB)
-						self["AboutScrollLabel"].setText(self.AboutText)
+							quality = status[self.iface]["quality"]
+						self.AboutText += _('Link quality:') + '\t' + quality + '\n'
+
+					if self.has_key("bitrate"):
+						if not status[self.iface]["bitrate"]:
+							bitrate = _("Unknown")
+						else:
+							if status[self.iface]["bitrate"] == '0':
+								bitrate = _("Unsupported")
+							else:
+								bitrate = str(status[self.iface]["bitrate"]) + " Mb/s"
+						self.AboutText += _('Bitrate:') + '\t' + bitrate + '\n'
+
+					if self.has_key("signal"):
+						if not status[self.iface]["signal"]:
+							signal = _("Unknown")
+						else:
+							signal = status[self.iface]["signal"]
+						self.AboutText += _('Signal strength:') + '\t' + signal + '\n'
+
+					if self.has_key("enc"):
+						if not status[self.iface]["encryption"]:
+							encryption = _("Unknown")
+						else:
+							if status[self.iface]["encryption"] == "off":
+								if accesspoint == "Not-Associated":
+									encryption = _("Disabled")
+								else:
+									encryption = _("Unsupported")
+							else:
+								encryption = _("Enabled")
+						self.AboutText += _('Encryption:') + '\t' + encryption + '\n'
+
+					if ((status[self.iface]["essid"] and status[self.iface]["essid"] == "off") or
+					    not status[self.iface]["accesspoint"] or
+					    status[self.iface]["accesspoint"] == "Not-Associated"):
+						self.LinkState = False
+						self["statuspic"].setPixmapNum(1)
+						self["statuspic"].show()
+					else:
+						self.LinkState = True
+						iNetwork.checkNetworkState(self.checkNetworkCB)
+					self["AboutScrollLabel"].setText(self.AboutText)
 
 	def exit(self):
 		self.close(True)
