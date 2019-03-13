@@ -12540,7 +12540,7 @@ msgid "Enter the frequency step size for the tuner to use when searching for cab
 msgstr "Ingrese el tamaño de paso de frecuencia para que el sintonizador use cuando busque multiplexos de cable. Para más información consulte la documentación de su proveedor de cable."
 
 msgid "A client is streaming from this box!"
-msgstr "Un cliente está transmitiendo desde esta receptor!"
+msgstr "Un cliente está transmitiendo desde esta STB!"
 
 msgid "No data received yet"
 msgstr "Aún no se han recibido datos"
