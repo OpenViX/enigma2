@@ -8,8 +8,8 @@ from Components.Button import Button
 from Components.Label import Label
 from Components.SelectionList import SelectionList, SelectionEntryComponent
 from Components.config import getConfigListEntry, config, ConfigNothing, ConfigYesNo, configfile, NoSave, ConfigSelection
-from Components.Sources.StaticText import StaticText
 from Components.Sources.List import List
+from Components.Sources.StaticText import StaticText
 from Screens.MessageBox import MessageBox
 from Screens.ChoiceBox import ChoiceBox
 from Screens.ServiceStopScreen import ServiceStopScreen
@@ -94,7 +94,6 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 			self.nimConfig.configMode.setChoices(choices, self.nim.isFBCLink() and "nothing" or "simple")
 
 	def createSetup(self):
-		print "[Satconfig] Creating setup"
 		self.list = [ ]
 
 		self.multiType = None
@@ -382,6 +381,7 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 		return True
 
 	def autoDiseqcRun(self, ports):
+		self.stopService()
 		self.session.openWithCallback(self.autoDiseqcCallback, AutoDiseqc, self.slotid, ports, self.nimConfig.simpleDiSEqCSetVoltageTone, self.nimConfig.simpleDiSEqCOnlyOnSatChange)
 
 	def autoDiseqcCallback(self, result):
@@ -389,6 +389,7 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 		if Wizard.instance is not None:
 			Wizard.instance.back()
 		else:
+			self.restartPrevService(close=False)
 			self.createSetup()
 
 	def fillListWithAdvancedSatEntrys(self, Sat):
@@ -447,7 +448,7 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 							self.nimConfig.advanced.unicableconnected.value = True
 					self.advancedConnected = getConfigListEntry(self.indent % _("Connected"), self.nimConfig.advanced.unicableconnected, _("Select 'yes' if this tuner is connected to the SCR device through another tuner, otherwise select 'no'."))
 					self.list.append(self.advancedConnected)
-					if self.nimConfig.advanced.unicableconnected.value:
+					if self.nimConfig.advanced.unicableconnected.value == True:
 						self.nimConfig.advanced.unicableconnectedTo.setChoices(choices)
 						self.list.append(getConfigListEntry(self.indent % _("Connected to"), self.nimConfig.advanced.unicableconnectedTo, _("Select the tuner to which the signal cable of the SCR device is connected.")))
 
@@ -687,9 +688,7 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 			self.newConfig()
 
 	def setTextKeyBlue(self):
-		self["key_blue"].setText("")
-		if self["config"].isChanged():
-			self["key_blue"].setText(_("Set default"))
+		self["key_blue"].setText(self.isChanged() and _("Set default") or "")
 
 	def keyRight(self):
 		if self.nim.isFBCLink() and self["config"].getCurrent() in (self.advancedLof, self.advancedConnected):
@@ -749,7 +748,9 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 		self.restartPrevService()
 
 	def changeConfigurationMode(self):
-		if self.configMode:
+		if self.nimConfig.configMode.value == "simple":
+			self.autoDiseqcRun(self.nimConfig.diseqcMode.value == "diseqc_a_b_c_d" and 4 or self.nimConfig.diseqcMode.value == "diseqc_a_b" and 2 or 1)
+		elif self.configMode:
 			self.nimConfig.configMode.selectNext()
 			self["config"].invalidate(self.configMode)
 			self.setTextKeyBlue()
