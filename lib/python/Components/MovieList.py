@@ -1,18 +1,19 @@
+import os
+import struct
+import random
+
+from enigma import eListboxPythonMultiContent, eListbox, gFont, iServiceInformation, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_VALIGN_CENTER, eServiceReference, eServiceReferenceFS, eServiceCenter, eTimer
+
 from GUIComponent import GUIComponent
 from Tools.FuzzyDate import FuzzyTime
 from ServiceReference import ServiceReference
 from Components.MultiContent import MultiContentEntryText, MultiContentEntryPixmapAlphaTest, MultiContentEntryProgress
 from Components.config import config
-import os
-import struct
-import random
 from Tools.LoadPixmap import LoadPixmap
 from Tools.Directories import SCOPE_CURRENT_SKIN, resolveFilename
 from Screens.LocationBox import defaultInhibitDirs
 import NavigationInstance
 import skin
-
-from enigma import eListboxPythonMultiContent, eListbox, gFont, iServiceInformation, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, eServiceReference, eServiceCenter, eTimer, RT_VALIGN_CENTER
 
 AUDIO_EXTENSIONS = frozenset((".dts", ".mp3", ".wav", ".wave", ".wv", ".oga", ".ogg", ".flac", ".m4a", ".mp2", ".m2a", ".wma", ".ac3", ".mka", ".aac", ".ape", ".alac", ".amr", ".au", ".mid"))
 DVD_EXTENSIONS = frozenset((".iso", ".img", ".nrg"))
@@ -612,7 +613,7 @@ class MovieList(GUIComponent):
 				# enigma wants an extra '/' appended
 				if not parent.endswith('/'):
 					parent += '/'
-			ref = eServiceReference(eServiceReference.idFile, eServiceReference.flagDirectory, 1)
+			ref = eServiceReference(eServiceReference.idFile, eServiceReference.flagDirectory, eServiceReferenceFS.directory)
 			ref.setPath(parent)
 				ref.flags = eServiceReference.flagDirectory
 				self.list.append((ref, None, 0, -1))
