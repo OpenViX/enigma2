@@ -4,7 +4,8 @@ from enigma import RT_HALIGN_LEFT, eListboxPythonMultiContent, gFont
 from Tools.LoadPixmap import LoadPixmap
 import skin
 
-def ChoiceEntryComponent(key = None, text = ["--"]):
+def ChoiceEntryComponent(key = None, text=None):
+	text = ["--"] if text is None else text
 	res = [ text ]
 	if text[0] == "--":
 		x, y, w, h = skin.parameters.get("ChoicelistDash",(0, 0, 800, 25))
