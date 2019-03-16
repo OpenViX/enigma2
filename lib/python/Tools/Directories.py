@@ -356,6 +356,9 @@ def getSize(path, pattern=".*"):
 		path_size = os.path.getsize(path)
 	return path_size
 
+def shellquote(s):
+	return "'" + s.replace("'", "'\\''") + "'"
+
 def lsof():
 	lsof = []
 	for pid in os.listdir('/proc'):
