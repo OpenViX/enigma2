@@ -5,7 +5,7 @@ from Components.Label import Label
 from Components.config import config
 from Components.Sources.StaticText import StaticText
 from ServiceReference import ServiceReference
-from enigma import eListboxPythonMultiContent, eListbox, gFont, iServiceInformation, eServiceCenter, RT_HALIGN_LEFT
+from enigma import eListboxPythonMultiContent, eListbox, gFont, iServiceInformation, eServiceCenter, RT_HALIGN_LEFT, eDVBFrontendParametersSatellite
 from Tools.Transponder import ConvertToHumanReadable, getChannelNumber
 import skin
 
