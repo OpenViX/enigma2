@@ -10885,6 +10885,9 @@ msgstr ""
 msgid "Select 'Yes' when you want to configure this tuner for DVB-T"
 msgstr ""
 
+msgid "Hotswitchable"
+msgstr ""
+
 msgid "Hotswitchable tuner"
 msgstr ""
 

@@ -12557,6 +12557,9 @@ msgstr "Seleccione 'Sí' cuando desee configurar este sintonizador para DVB-S"
 msgid "Select 'Yes' when you want to configure this tuner for DVB-T"
 msgstr "Seleccione 'Sí' cuando desee configurar este sintonizador para DVB-T"
 
+msgid "Hotswitchable"
+msgstr "Conmutable"
+
 msgid "Hotswitchable tuner"
 msgstr "Sintonizador Conmutable"
 
