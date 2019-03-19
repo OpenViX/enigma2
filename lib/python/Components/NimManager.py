@@ -528,7 +528,7 @@ class NIM(object):
 			elif len(self.multi_type) > 1:
 				print "[NIM] DVB API not reporting tuner %d as multitype" % self.frontend_id
 
-	def getHotswitchableTunersEnabled(self)
+	def getHotswitchableTunersEnabled(self):
 			return [x for x in slot.multi_type.values() if
 				nim.configModeDVBS.value and x.startswith("DVB-S") or
 				nim.configModeDVBC.value and x.startswith("DVB-C") or
