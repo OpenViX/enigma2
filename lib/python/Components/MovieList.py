@@ -613,8 +613,8 @@ class MovieList(GUIComponent):
 				# enigma wants an extra '/' appended
 				if not parent.endswith('/'):
 					parent += '/'
-				ref = eServiceReference(eServiceReference.idFile, eServiceReference.flagDirectory, eServiceReferenceFS.directory)
-				ref.setPath(parent)
+			ref = eServiceReference(eServiceReference.idFile, eServiceReference.flagDirectory, eServiceReferenceFS.directory)
+			ref.setPath(parent)
 				ref.flags = eServiceReference.flagDirectory
 				self.list.append((ref, None, 0, -1))
 				numberOfDirs += 1
