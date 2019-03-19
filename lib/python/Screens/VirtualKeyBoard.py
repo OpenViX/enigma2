@@ -32,75 +32,94 @@ class VirtualKeyBoardEntryComponent:
 		pass
 
 
+VKB_DONE_GRAPHIC = 0
+VKB_ENTER_GRAPHIC = 1
+VKB_OK_GRAPHIC = 2
+VKB_SAVE_GRAPHIC = 3
+VKB_DONE_TEXT = 4
+VKB_OK_TEXT = 5
+VKB_SAVE_TEXT = 6
+
 # For more information about using VirtualKeyBoard see /doc/VIRTUALKEYBOARD
 #
 class VirtualKeyBoard(Screen, HelpableScreen):
-	def __init__(self, session, title=_("Virtual KeyBoard Text:"), text="", maxSize=False, visible_width=False, type=Input.TEXT, currPos=0, allMarked=False):
+	def __init__(self, session, title=_("Virtual KeyBoard Text:"), text="", maxSize=False, visible_width=False, type=Input.TEXT, currPos=0, allMarked=False, style=VKB_ENTER_GRAPHIC):
 		Screen.__init__(self, session)
 		HelpableScreen.__init__(self)
 		self.setTitle(_("Virtual keyboard"))
 		prompt = title  # Title should only be used for screen titles!
+		greenLabel, self.button = {
+			VKB_DONE_GRAPHIC: ("Done", u"ENTER"),
+			VKB_ENTER_GRAPHIC: ("Enter", u"ENTER"),
+			VKB_OK_GRAPHIC: ("OK", u"ENTER"),
+			VKB_SAVE_GRAPHIC: ("Save", u"ENTER"),
+			VKB_DONE_TEXT: ("Done", u"DONE"),
+			VKB_OK_TEXT: ("OK", u"OK"),
+			VKB_SAVE_TEXT: ("Save", u"SAVE"),
+		}.get(style, ("Enter", u"ENTER"))
 		self.key_bg = LoadPixmap(path=resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/vkey_bg.png"))
-		self.key_red_bg = LoadPixmap(path=resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/vkey_red.png"))
-		self.key_green_bg = LoadPixmap(path=resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/vkey_green.png"))
-		self.key_yellow_bg = LoadPixmap(path=resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/vkey_yellow.png"))
-		self.key_blue_bg = LoadPixmap(path=resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/vkey_blue.png"))
 		self.key_sel = LoadPixmap(path=resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/vkey_sel.png"))
-		self.key_backspace = LoadPixmap(path=resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/vkey_backspace.png"))
-		self.key_enter = LoadPixmap(path=resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/vkey_enter.png"))
-		self.key_first = LoadPixmap(path=resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/vkey_first.png"))
-		self.key_last = LoadPixmap(path=resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/vkey_last.png"))
-		self.key_left = LoadPixmap(path=resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/vkey_left.png"))
-		self.key_right = LoadPixmap(path=resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/vkey_right.png"))
-		self.key_shift0 = LoadPixmap(path=resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/vkey_shift0.png"))
-		self.key_shift1 = LoadPixmap(path=resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/vkey_shift1.png"))
-		self.key_shift2 = LoadPixmap(path=resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/vkey_shift2.png"))
-		self.key_shift3 = LoadPixmap(path=resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/vkey_shift3.png"))
-		self.key_space = LoadPixmap(path=resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/vkey_space.png"))
-		self.key_space_alt = LoadPixmap(path=resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/vkey_space_alt.png"))
+		key_red_bg = LoadPixmap(path=resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/vkey_red.png"))
+		key_green_bg = LoadPixmap(path=resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/vkey_green.png"))
+		key_yellow_bg = LoadPixmap(path=resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/vkey_yellow.png"))
+		key_blue_bg = LoadPixmap(path=resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/vkey_blue.png"))
+		key_backspace = LoadPixmap(path=resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/vkey_backspace.png"))
+		key_enter = LoadPixmap(path=resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/vkey_enter.png"))
+		key_first = LoadPixmap(path=resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/vkey_first.png"))
+		key_last = LoadPixmap(path=resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/vkey_last.png"))
+		key_left = LoadPixmap(path=resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/vkey_left.png"))
+		key_right = LoadPixmap(path=resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/vkey_right.png"))
+		key_shift0 = LoadPixmap(path=resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/vkey_shift0.png"))
+		key_shift1 = LoadPixmap(path=resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/vkey_shift1.png"))
+		key_shift2 = LoadPixmap(path=resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/vkey_shift2.png"))
+		key_shift3 = LoadPixmap(path=resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/vkey_shift3.png"))
+		key_space = LoadPixmap(path=resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/vkey_space.png"))
+		key_space_alt = LoadPixmap(path=resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/vkey_space_alt.png"))
 		self.keyBackgrounds = {
-			"EXIT": self.key_red_bg,
-			"OK": self.key_green_bg,
-			"ENTER": self.key_green_bg,
-			"LOC": self.key_yellow_bg,
-			"SHFT": self.key_blue_bg
+			"EXIT": key_red_bg,
+			"DONE": key_green_bg,
+			"ENTER": key_green_bg,
+			"OK": key_green_bg,
+			"SAVE": key_green_bg,
+			"LOC": key_yellow_bg,
+			"SHFT": key_blue_bg
 		}
 		self.keyImages = [{
-			"BACKSPACE": self.key_backspace,
-			"ENTER": self.key_enter,
-			"FIRST": self.key_first,
-			"LAST": self.key_last,
-			"LEFT": self.key_left,
-			"RIGHT": self.key_right,
-			"SHIFT": self.key_shift0,
-			"SPACE": self.key_space_alt
+			"BACKSPACE": key_backspace,
+			"ENTER": key_enter,
+			"FIRST": key_first,
+			"LAST": key_last,
+			"LEFT": key_left,
+			"RIGHT": key_right,
+			"SHIFT": key_shift0,
+			"SPACE": key_space_alt
 		}, {
-			"BACKSPACE": self.key_backspace,
-			"ENTER": self.key_enter,
-			"FIRST": self.key_first,
-			"LAST": self.key_last,
-			"LEFT": self.key_left,
-			"RIGHT": self.key_right,
-			"SHIFT": self.key_shift1,
-			"SPACE": self.key_space_alt
+			"BACKSPACE": key_backspace,
+			"ENTER": key_enter,
+			"FIRST": key_first,
+			"LAST": key_last,
+			"LEFT": key_left,
+			"RIGHT": key_right,
+			"SHIFT": key_shift1,
+			"SPACE": key_space_alt
 		}, {
-			"BACKSPACE": self.key_backspace,
-			"ENTER": self.key_enter,
-			"FIRST": self.key_first,
-			"LAST": self.key_last,
-			"LEFT": self.key_left,
-			"RIGHT": self.key_right,
-			"SHIFT": self.key_shift2,
-			"SPACE": self.key_space_alt
+			"BACKSPACE": key_backspace,
+			"ENTER": key_enter,
+			"FIRST": key_first,
+			"LAST": key_last,
+			"LEFT": key_left,
+			"RIGHT": key_right,
+			"SHIFT": key_shift2,
+			"SPACE": key_space_alt
 		}, {
-			"BACKSPACE": self.key_backspace,
-			"ENTER": self.key_enter,
-			"FIRST": self.key_first,
-			"LAST": self.key_last,
-			"LEFT": self.key_left,
-			"RIGHT": self.key_right,
-			"SHIFT": self.key_shift3,
-			"SPACE": self.key_space_alt
+			"BACKSPACE": key_backspace,
+			"ENTER": key_enter,
+			"FIRST": key_first,
+			"LAST": key_last,
+			"LEFT": key_left,
+			"RIGHT": key_right,
+			"SHIFT": key_shift3,
+			"SPACE": key_space_alt
 		}]
 		self.shiftMsgs = [
 			_("Lower case"),
@@ -112,102 +131,102 @@ class VirtualKeyBoard(Screen, HelpableScreen):
 			[
 				[u"`", u"1", u"2", u"3", u"4", u"5", u"6", u"7", u"8", u"9", u"0", u"-", u"=", u"BACKSPACE"],
 				[u"FIRST", u"q", u"w", u"e", u"r", u"t", u"y", u"u", u"i", u"o", u"p", u"[", u"]", u"\\"],
-				[u"LAST", u"a", u"s", u"d", u"f", u"g", u"h", u"j", u"k", u"l", u";", u"'", u"", u"ENTER"],
+				[u"LAST", u"a", u"s", u"d", u"f", u"g", u"h", u"j", u"k", u"l", u";", u"'", u"", self.button],
 				[u"SHIFT", u"z", u"x", u"c", u"v", u"b", u"n", u"m", u",", u".", u"/", u"", u"", u"SHIFT"],
-				[u"EXIT", u"LOC", u"LEFT", u"RIGHT", u"ALL", u"CLR", u"SPACE"]
+				[u"EXIT", u"LOC", u"LEFT", u"RIGHT", u"ALL", u"CLR", u"SPACE", u"DEL"]
 			], [
 				[u"~", u"!", u"@", u"#", u"$", u"%", u"^", u"&", u"*", u"(", u")", u"_", u"+", u"BACKSPACE"],
 				[u"FIRST", u"Q", u"W", u"E", u"R", u"T", u"Y", u"U", u"I", u"O", u"P", u"{", u"}", u"|"],
-				[u"LAST", u"A", u"S", u"D", u"F", u"G", u"H", u"J", u"K", u"L", u":", u"\"", u"", u"ENTER"],
+				[u"LAST", u"A", u"S", u"D", u"F", u"G", u"H", u"J", u"K", u"L", u":", u"\"", u"", self.button],
 				[u"SHIFT", u"Z", u"X", u"C", u"V", u"B", u"N", u"M", u"<", u">", u"?", u"", u"", u"SHIFT"],
-				[u"EXIT", u"LOC", u"LEFT", u"RIGHT", u"ALL", u"CLR", u"SPACE"]
+				[u"EXIT", u"LOC", u"LEFT", u"RIGHT", u"ALL", u"CLR", u"SPACE", u"DEL"]
 			]
 		]
 		self.french = [
 			[
 				[u"\u00B2", u"&", u"\u00E9", u"\"", u"'", u"(", u"-", u"\u00E8", u"_", u"\u00E7", u"\u00E0", u")", u"=", u"BACKSPACE"],
 				[u"FIRST", u"a", u"z", u"e", u"r", u"t", u"y", u"u", u"i", u"o", u"p", u"$", u"[", u"]"],
-				[u"LAST", u"q", u"s", u"d", u"f", u"g", u"h", u"j", u"k", u"l", u"m", u"\u00F9", u"*", u"ENTER"],
+				[u"LAST", u"q", u"s", u"d", u"f", u"g", u"h", u"j", u"k", u"l", u"m", u"\u00F9", u"*", self.button],
 				[u"SHIFT", u"<", u"w", u"x", u"c", u"v", u"b", u"n", u",", u";", u":", u"!", u"\u20AC", u"SHIFT"],
-				[u"EXIT", u"LOC", u"LEFT", u"RIGHT", u"ALL", u"CLR", u"SPACE", u"#", u"@", u"`"]
+				[u"EXIT", u"LOC", u"LEFT", u"RIGHT", u"ALL", u"CLR", u"SPACE", u"DEL", u"#", u"@", u"`"]
 			], [
 				[u"", u"1", u"2", u"3", u"4", u"5", u"6", u"7", u"8", u"9", u"0", u"\u00B0", u"+", u"BACKSPACE"],
 				[u"FIRST", u"A", u"Z", u"E", u"R", u"T", u"Y", u"U", u"I", u"O", u"P", u"\u00A3", u"{", u"}"],
-				[u"LAST", u"Q", u"S", u"D", u"F", u"G", u"H", u"J", u"K", u"L", u"M", u"%", u"\u00B5", u"ENTER"],
+				[u"LAST", u"Q", u"S", u"D", u"F", u"G", u"H", u"J", u"K", u"L", u"M", u"%", u"\u00B5", self.button],
 				[u"SHIFT", u">", u"W", u"X", u"C", u"V", u"B", u"N", u"?", u".", u"/", u"\u00A7", u"\u00A6", u"SHIFT"],
-				[u"EXIT", u"LOC", u"LEFT", u"RIGHT", u"ALL", u"CLR", u"SPACE", u"~", u"^", u"\\"]
+				[u"EXIT", u"LOC", u"LEFT", u"RIGHT", u"ALL", u"CLR", u"SPACE", u"DEL", u"~", u"^", u"\\"]
 			], [
 				[u"", u"", u"\u00E2", u"\u00EA", u"\u00EE", u"\u00F4", u"\u00FB", u"\u00E4", u"\u00EB", u"\u00EF", u"\u00F6", u"\u00FC", u"", u"BACKSPACE"],
 				[u"FIRST", u"", u"\u00E0", u"\u00E8", u"\u00EC", u"\u00F2", u"\u00F9", u"\u00E1", u"\u00E9", u"\u00ED", u"\u00F3", u"\u00FA", u"", u""],
-				[u"LAST", u"", u"\u00C2", u"\u00CA", u"\u00CE", u"\u00D4", u"\u00DB", u"\u00C4", u"\u00CB", u"\u00CF", u"\u00D6", u"\u00DC", u"", u"ENTER"],
+				[u"LAST", u"", u"\u00C2", u"\u00CA", u"\u00CE", u"\u00D4", u"\u00DB", u"\u00C4", u"\u00CB", u"\u00CF", u"\u00D6", u"\u00DC", u"", self.button],
 				[u"SHIFT", u"", u"\u00C0", u"\u00C8", u"\u00CC", u"\u00D2", u"\u00D9", u"\u00C1", u"\u00C9", u"\u00CD", u"\u00D3", u"\u00DA", u"", u"SHIFT"],
-				[u"EXIT", u"LOC", u"LEFT", u"RIGHT", u"ALL", u"CLR", u"SPACE"]
+				[u"EXIT", u"LOC", u"LEFT", u"RIGHT", u"ALL", u"CLR", u"SPACE", u"DEL"]
 			]
 		]
 		self.german = [
 			[
 				[u"", u"1", u"2", u"3", u"4", u"5", u"6", u"7", u"8", u"9", u"0", u"\u00DF", u"'", u"BACKSPACE"],
 				[u"FIRST", u"q", u"w", u"e", u"r", u"t", u"z", u"u", u"i", u"o", u"p", u"\u00FC", u"[", u"]"],
-				[u"LAST", u"a", u"s", u"d", u"f", u"g", u"h", u"j", u"k", u"l", u"\u00F6", u"\u00E4", u"+", U"ENTER"],
+				[u"LAST", u"a", u"s", u"d", u"f", u"g", u"h", u"j", u"k", u"l", u"\u00F6", u"\u00E4", u"+", self.button],
 				[u"SHIFT", u"<", u"y", u"x", u"c", u"v", u"b", u"n", u"m", u",", ".", u"-", u"#", u"SHIFT"],
-				[u"EXIT", u"LOC", u"LEFT", u"RIGHT", u"ALL", u"CLR", u"SPACE", u"|", u"\\", u"\u00B5"]
+				[u"EXIT", u"LOC", u"LEFT", u"RIGHT", u"ALL", u"CLR", u"SPACE", u"DEL", u"|", u"\\", u"\u00B5"]
 			], [
 				[u"\u00B0", u"!", u"\"", u"\u00A7", u"$", u"%", u"&", u"/", u"(", u")", u"=", u"?", u"`", u"BACKSPACE"],
 				[u"FIRST", u"Q", u"W", u"E", u"R", u"T", u"Z", u"U", u"I", u"O", u"P", u"\u00DC", u"{", u"}"],
-				[u"LAST", u"A", u"S", u"D", u"F", u"G", u"H", u"J", u"K", u"L", u"\u00D6", u"\u00C4", u"*", U"ENTER"],
+				[u"LAST", u"A", u"S", u"D", u"F", u"G", u"H", u"J", u"K", u"L", u"\u00D6", u"\u00C4", u"*", self.button],
 				[u"SHIFT", u">", u"Y", u"X", u"C", u"V", u"B", u"N", u"M", u";", u":", u"_", u"@", U"SHIFT"],
-				[u"EXIT", u"LOC", u"LEFT", u"RIGHT", u"ALL", u"CLR", u"SPACE", u"\u20AC", u"\u00B2", u"\u00B3"]
+				[u"EXIT", u"LOC", u"LEFT", u"RIGHT", u"ALL", u"CLR", u"SPACE", u"DEL", u"\u20AC", u"\u00B2", u"\u00B3"]
 			]
 		]
 		self.russian = [
 			[
 				[u"\u0451", u"1", u"2", u"3", u"4", u"5", u"6", u"7", u"8", u"9", u"0", u"-", u"=", u"BACKSPACE"],
 				[u"FIRST", u"\u0439", u"\u0446", u"\u0443", u"\u043A", u"\u0435", u"\u043D", u"\u0433", u"\u0448", u"\u0449", u"\u0437", u"\u0445", u"\u044A", u"\u00A7"],
-				[u"LAST", u"\u0444", u"\u044B", u"\u0432", u"\u0430", u"\u043F", u"\u0440", u"\u043E", u"\u043B", u"\u0434", u"\u0436", u"\u044D", u"\\", u"ENTER"],
+				[u"LAST", u"\u0444", u"\u044B", u"\u0432", u"\u0430", u"\u043F", u"\u0440", u"\u043E", u"\u043B", u"\u0434", u"\u0436", u"\u044D", u"\\", self.button],
 				[u"SHIFT", u"\u044F", u"\u0447", u"\u0441", u"\u043C", u"\u0438", u"\u0442", u"\u044C", u"\u0431", u"\u044E", u".", u"@", u"&", u"SHIFT"],
-				[u"EXIT", u"LOC", u"LEFT", u"RIGHT", u"ALL", u"CLR", u"SPACE", u"<"]
+				[u"EXIT", u"LOC", u"LEFT", u"RIGHT", u"ALL", u"CLR", u"SPACE", u"DEL", u"<"]
 			], [
 				[u"\u0401", u"!", u"\"", u"\u2116", u";", u"%", u":", u"?", u"*", u"(", u")", u"_", u"+", u"BACKSPACE"],
 				[u"FIRST", u"\u0419", u"\u0426", u"\u0423", u"\u041A", u"\u0415", u"\u041D", u"\u0413", u"\u0428", u"\u0429", u"\u0417", u"\u0425", u"\u042A", u"\u20BD"],
-				[u"LAST", u"\u0424", u"\u042B", u"\u0412", u"\u0410", u"\u041F", u"\u0420", u"\u041E", u"\u041B", u"\u0414", u"\u0416", u"\u042D", u"/", u"ENTER"],
+				[u"LAST", u"\u0424", u"\u042B", u"\u0412", u"\u0410", u"\u041F", u"\u0420", u"\u041E", u"\u041B", u"\u0414", u"\u0416", u"\u042D", u"/", self.button],
 				[u"SHIFT", u"\u042F", u"\u0427", u"\u0421", u"\u041C", u"\u0418", u"\u0422", u"\u042C", u"\u0411", u"\u042E", u",", u"#", u"$", u"SHIFT"],
-				[u"EXIT", u"LOC", u"LEFT", u"RIGHT", u"ALL", u"CLR", u"SPACE", u">"]
+				[u"EXIT", u"LOC", u"LEFT", u"RIGHT", u"ALL", u"CLR", u"SPACE", u"DEL", u">"]
 			]
 		]
 		self.scandinavian = [
 			[
 				[u"\u00A7", u"1", u"2", u"3", u"4", u"5", u"6", u"7", u"8", u"9", u"0", u"+", u"@", u"BACKSPACE"],
 				[u"FIRST", u"q", u"w", u"e", u"r", u"t", u"y", u"u", u"i", u"o", u"p", u"\u00E5", u"[", u"]"],
-				[u"LAST", u"a", u"s", u"d", u"f", u"g", u"h", u"j", u"k", u"l", u"\u00F6", u"\u00E4", u"'", u"ENTER"],
+				[u"LAST", u"a", u"s", u"d", u"f", u"g", u"h", u"j", u"k", u"l", u"\u00F6", u"\u00E4", u"'", self.button],
 				[u"SHIFT", u"<", u"z", u"x", u"c", u"v", u"b", u"n", u"m", u",", ".", u"-", u"\u00AB", u"SHIFT"],
-				[u"EXIT", u"LOC", u"LEFT", u"RIGHT", u"ALL", u"CLR", u"SPACE"]
+				[u"EXIT", u"LOC", u"LEFT", u"RIGHT", u"ALL", u"CLR", u"SPACE", u"DEL"]
 			], [
 				[u"\u00BD", u"!", u"\"", u"#", u"\u00A4", u"%", u"&", u"/", u"(", u")", u"=", u"?", u"|", u"BACKSPACE"],
 				[u"FIRST", u"Q", u"W", u"E", u"R", u"T", u"Y", u"U", u"I", u"O", u"P", u"\u00C5", u"{", u"}"],
-				[u"LAST", u"A", u"S", u"D", u"F", u"G", u"H", u"J", u"K", u"L", u"\u00D6", u"\u00C4", u"*", u"ENTER"],
+				[u"LAST", u"A", u"S", u"D", u"F", u"G", u"H", u"J", u"K", u"L", u"\u00D6", u"\u00C4", u"*", self.button],
 				[u"SHIFT", u">", u"Z", u"X", u"C", u"V", u"B", u"N", u"M", u";", u":", u"_", u"\u00BB", u"SHIFT"],
-				[u"EXIT", u"LOC", u"LEFT", u"RIGHT", u"ALL", u"CLR", u"SPACE"]
+				[u"EXIT", u"LOC", u"LEFT", u"RIGHT", u"ALL", u"CLR", u"SPACE", u"DEL"]
 			], [
 				[u"", u"\u00E2", u"\u00EA", u"\u00EE", u"\u00F4", u"\u00FB", u"\u00E4", u"\u00EB", u"\u00EF", u"\u00F6", u"\u00FC", u"\u00E3", u"\u00F5", u"BACKSPACE"],
 				[u"FIRST", u"\u00E0", u"\u00E8", u"\u00EC", u"\u00F2", u"\u00F9", u"\u00E1", u"\u00E9", u"\u00ED", u"\u00F3", u"\u00FA", u"", u"", u""],
-				[u"LAST", u"\u00C2", u"\u00CA", u"\u00CE", u"\u00D4", u"\u00DB", u"\u00C4", u"\u00CB", u"\u00CF", u"\u00D6", u"\u00DC", u"\u00C3", u"\u00D5", u"ENTER"],
+				[u"LAST", u"\u00C2", u"\u00CA", u"\u00CE", u"\u00D4", u"\u00DB", u"\u00C4", u"\u00CB", u"\u00CF", u"\u00D6", u"\u00DC", u"\u00C3", u"\u00D5", self.button],
 				[u"SHIFT", u"\u00C0", u"\u00C8", u"\u00CC", u"\u00D2", u"\u00D9", u"\u00C1", u"\u00C9", u"\u00CD", u"\u00D3", u"\u00DA", u"", u"", u"SHIFT"],
-				[u"EXIT", u"LOC", u"LEFT", u"RIGHT", u"ALL", u"CLR", u"SPACE"]
+				[u"EXIT", u"LOC", u"LEFT", u"RIGHT", u"ALL", u"CLR", u"SPACE", u"DEL"]
 			]
 		]
 		self.spanish = [
 			[
 				[u"\\", u"1", u"2", u"3", u"4", u"5", u"6", u"7", u"8", u"9", u"0", u"'", u"\u00A1", u"BACKSPACE"],
 				[u"FIRST", u"q", u"w", u"e", u"r", u"t", u"y", u"u", u"i", u"o", u"p", u"@", u"+", u"\u00E7"],
-				[u"LAST", u"a", u"s", u"d", u"f", u"g", u"h", u"j", u"k", u"l", u"\u00F1", u"[", u"]", u"ENTER"],
+				[u"LAST", u"a", u"s", u"d", u"f", u"g", u"h", u"j", u"k", u"l", u"\u00F1", u"[", u"]", self.button],
 				[u"SHIFT", u"<", u"z", u"x", u"c", u"v", u"b", u"n", u"m", u",", ".", u"-", u"\u20AC", u"SHIFT"],
-				[u"EXIT", u"LOC", u"LEFT", u"RIGHT", u"ALL", u"CLR", u"SPACE", u"", u"\u00E1", u"\u00E9", u"\u00ED", u"\u00F3", u"\u00FA", u"\u00FC"]
+				[u"EXIT", u"LOC", u"LEFT", u"RIGHT", u"ALL", u"CLR", u"SPACE", u"DEL", u"\u00E1", u"\u00E9", u"\u00ED", u"\u00F3", u"\u00FA", u"\u00FC"]
 			], [
 				[u"|", u"!", u"\"", u"\u00B7", u"$", u"%", u"&", u"/", u"(", u")", u"=", u"?", u"\u00BF", u"BACKSPACE"],
 				[u"FIRST", u"Q", u"W", u"E", u"R", u"T", u"Y", u"U", u"I", u"O", u"P", u"#", u"*", u"\u00C7"],
-				[u"LAST", u"A", u"S", u"D", u"F", u"G", u"H", u"J", u"K", u"L", u"\u00D1", u"{", u"}", u"ENTER"],
+				[u"LAST", u"A", u"S", u"D", u"F", u"G", u"H", u"J", u"K", u"L", u"\u00D1", u"{", u"}", self.button],
 				[u"SHIFT", u">", u"Z", u"X", u"C", u"V", u"B", u"N", u"M", u";", u":", u"_", u"\u00AC", u"SHIFT"],
-				[u"EXIT", u"LOC", u"LEFT", u"RIGHT", u"ALL", u"CLR", u"SPACE", u"", u"\u00C1", u"\u00C9", u"\u00CD", u"\u00D3", u"\u00DA", u"\u00DC"]
+				[u"EXIT", u"LOC", u"LEFT", u"RIGHT", u"ALL", u"CLR", u"SPACE", u"DEL", u"\u00C1", u"\u00C9", u"\u00CD", u"\u00D3", u"\u00DA", u"\u00DC"]
 			]
 		]
 		self.locales = {
@@ -226,21 +245,21 @@ class VirtualKeyBoard(Screen, HelpableScreen):
 				[
 					[u";", u"+", u"\u011B", u"\u0161", u"\u010D", u"\u0159", u"\u017E", u"\u00FD", u"\u00E1", u"\u00ED", u"\u00E9", u"=", u"", u"BACKSPACE"],
 					[u"FIRST", u"q", u"w", u"e", u"r", u"t", u"z", u"u", u"i", u"o", u"p", u"\u00FA", u")", u""],
-					[u"LAST", u"a", u"s", u"d", u"f", u"g", u"h", u"j", u"k", u"l", u"\u016F", u"\u00A7", u"", u"ENTER"],
+					[u"LAST", u"a", u"s", u"d", u"f", u"g", u"h", u"j", u"k", u"l", u"\u016F", u"\u00A7", u"", self.button],
 					[u"SHIFT", u"y", u"x", u"c", u"v", u"b", u"n", u"m", u",", ".", u"-", u"\u0148", u"", u"SHIFT"],
-					[u"EXIT", u"LOC", u"LEFT", u"RIGHT", u"ALL", u"CLR", u"SPACE"]
+					[u"EXIT", u"LOC", u"LEFT", u"RIGHT", u"ALL", u"CLR", u"SPACE", u"DEL"]
 				], [
-					[u"", u"1", u"2", u"3", u"4", u"5", u"6", u"7", u"8", u"9", u"0", u"%", u"", u"BACKSPACE"],
+					[u".", u"1", u"2", u"3", u"4", u"5", u"6", u"7", u"8", u"9", u"0", u"%", u"", u"BACKSPACE"],
 					[u"FIRST", u"Q", u"W", u"E", u"R", u"T", u"Z", u"U", u"I", u"O", u"P", u"/", u"(", u""],
-					[u"LAST", u"A", u"S", u"D", u"F", u"G", u"H", u"J", u"K", u"L", u"\"", u"!", u"'", u"ENTER"],
+					[u"LAST", u"A", u"S", u"D", u"F", u"G", u"H", u"J", u"K", u"L", u"\"", u"!", u"'", self.button],
 					[u"SHIFT", u"Y", u"X", u"C", u"V", u"B", u"N", u"M", u"?", u":", u"_", u"\u0147", u"", u"SHIFT"],
-					[u"EXIT", u"LOC", u"LEFT", u"RIGHT", u"ALL", u"CLR", u"SPACE"]
+					[u"EXIT", u"LOC", u"LEFT", u"RIGHT", u"ALL", u"CLR", u"SPACE", u"DEL"]
 				], [
 					[u"", u"~", u"\u011A", u"\u0160", u"\u010C", u"\u0158", u"\u017D", u"\u00DD", u"\u00C1", u"\u00CD", u"\u00C9", u"`", u"", u"BACKSPACE"],
 					[u"FIRST", u"\\", u"|", u"\u20AC", u"\u0165", u"\u0164", u"", u"", u"", u"\u00F3", u"\u00D3", u"\u00DA", u"\u00F7", u"\u00D7"],
-					[u"LAST", u"", u"\u0111", u"\u00D0", u"[", u"]", u"\u010F", u"\u010E", u"\u0142", u"\u0141", u"\u016E", u"$", u"\u00DF", u"ENTER"],
+					[u"LAST", u"", u"\u0111", u"\u00D0", u"[", u"]", u"\u010F", u"\u010E", u"\u0142", u"\u0141", u"\u016E", u"$", u"\u00DF", self.button],
 					[u"SHIFT", u"", u"#", u"&", u"@", u"{", u"}", u"", u"<", u">", u"*", u"", u"\u00A4", u"SHIFT"],
-					[u"EXIT", u"LOC", u"LEFT", u"RIGHT", u"ALL", u"CLR", u"SPACE"]
+					[u"EXIT", u"LOC", u"LEFT", u"RIGHT", u"ALL", u"CLR", u"SPACE", u"DEL"]
 				]
 			]],
 			"nl_NL": [_("Dutch"), _("Netherlands"), self.dutch(self.english)],
@@ -258,21 +277,21 @@ class VirtualKeyBoard(Screen, HelpableScreen):
 				[
 					[u"`", u"1", u"2", u"3", u"4", u"5", u"6", u"7", u"8", u"9", u"0", u"-", u"=", u"BACKSPACE"],
 					[u"FIRST", u";", u"\u03C2", u"\u03B5", u"\u03C1", u"\u03C4", u"\u03C5", u"\u03B8", u"\u03B9", u"\u03BF", u"\u03C0", u"[", u"]", u"/"],
-					[u"LAST", u"\u03B1", u"\u03C3", u"\u03B4", u"\u03C6", u"\u03B3", u"\u03B7", u"\u03BE", u"\u03BA", u"\u03BB", u"", u"'", u"\\", u"ENTER"],
+					[u"LAST", u"\u03B1", u"\u03C3", u"\u03B4", u"\u03C6", u"\u03B3", u"\u03B7", u"\u03BE", u"\u03BA", u"\u03BB", u"", u"'", u"\\", self.button],
 					[u"SHIFT", u"<", u"\u03B6", u"\u03C7", u"\u03C8", u"\u03C9", u"\u03B2", u"\u03BD", u"\u03BC", u",", ".", u"\u03CA", u"\u03CB", u"SHIFT"],
 					[u"EXIT", u"LOC", u"LEFT", u"RIGHT", u"ALL", u"CLR", u"SPACE", u"\u03AC", u"\u03AD", u"\u03AE", u"\u03AF", u"\u03CC", u"\u03CD", u"\u03CE"]
 				], [
 					[u"~", u"!", u"@", u"#", u"$", u"%", u"^", u"&", u"*", u"(", u")", u"_", u"+", u"BACKSPACE"],
 					[u"FIRST", u":", u"", u"\u0395", u"\u03A1", u"\u03A4", u"\u03A5", u"\u0398", u"\u0399", u"\u039F", u"\u03A0", u"{", u"}", u"?"],
-					[u"LAST", u"\u0391", u"\u03A3", u"\u0394", u"\u03A6", u"\u0393", u"\u0397", u"\u039E", u"\u039A", u"\u039B", u"", u"\"", u"|", u"ENTER"],
+					[u"LAST", u"\u0391", u"\u03A3", u"\u0394", u"\u03A6", u"\u0393", u"\u0397", u"\u039E", u"\u039A", u"\u039B", u"", u"\"", u"|", self.button],
 					[u"SHIFT", u">", u"\u0396", u"\u03A7", u"\u03A8", u"\u03A9", u"\u0392", u"\u039D", u"\u039C", u"<", u">", u"\u03AA", u"\u03AB", u"SHIFT"],
 					[u"EXIT", u"LOC", u"LEFT", u"RIGHT", u"ALL", u"CLR", u"SPACE", u"\u0386", u"\u0388", u"\u0389", u"\u038A", u"\u038C", u"\u038E", u"\u038F"]
 				], [
 					[u"", u"", u"\u00B2", u"\u00B3", u"\u00A3", u"\u00A7", u"\u00B6", u"\u20AC", u"\u00A4", u"\u00A6", u"\u00B0", u"\u00B1", u"\u00BD", u"BACKSPACE"],
 					[u"FIRST", u"", u"", u"", u"", u"", u"", u"", u"", u"", u"", u"", u"", u""],
-					[u"LAST", u"", u"", u"", u"", u"", u"", u"", u"", u"", u"", u"", u"", u"ENTER"],
+					[u"LAST", u"", u"", u"", u"", u"", u"", u"", u"", u"", u"", u"", u"", self.button],
 					[u"SHIFT", u"", u"", u"", u"", u"", u"", u"", u"", u"", u"", u"", u"", u"SHIFT"],
-					[u"EXIT", u"LOC", u"LEFT", u"RIGHT", u"ALL", u"CLR", u"SPACE"]
+					[u"EXIT", u"LOC", u"LEFT", u"RIGHT", u"ALL", u"CLR", u"SPACE", u"DEL"]
 				]
 			]],
 			"lv_LV": [_("Latvian"), _("Latvia"), self.latvian(self.english)],
@@ -285,21 +304,21 @@ class VirtualKeyBoard(Screen, HelpableScreen):
 				[
 					[u"~", u"!", u"@", u"#", u"$", u"%", u"^", u"&", u"*", u"(", u")", u"\u00E1", u"\u00E4", u"BACKSPACE"],
 					[u"FIRST", u"q", u"w", u"e", u"r", u"t", u"y", u"u", u"i", u"o", u"p", u"\u010D", u"\u010F", u"\u00E9"],
-					[u"LAST", u"a", u"s", u"d", u"f", u"g", u"h", u"j", u"k", u"l", u"\u00ED", u"\u013A", u"\u013E", u"ENTER"],
+					[u"LAST", u"a", u"s", u"d", u"f", u"g", u"h", u"j", u"k", u"l", u"\u00ED", u"\u013A", u"\u013E", self.button],
 					[u"SHIFT", u"<", u"z", u"x", u"c", u"v", u"b", u"n", u"m", u",", ".", u"\u0148", u"\u00F3", u"SHIFT"],
 					[u"EXIT", u"LOC", u"LEFT", u"RIGHT", u"ALL", u"CLR", u"SPACE", u"\u00F4", u"\u0155", u"\u0161", u"\u0165", u"\u00FA", u"\u00FD", u"\u017E"]
 				], [
 					[u"`", u"1", u"2", u"3", u"4", u"5", u"6", u"7", u"8", u"9", u"0", u"\u00C1", u"\u00C4", u"BACKSPACE"],
 					[u"FIRST", u"Q", u"W", u"E", u"R", u"T", u"Y", u"U", u"I", u"O", u"P", u"\u010C", u"\u010E", u"\u00C9"],
-					[u"LAST", u"A", u"S", u"D", u"F", u"G", u"H", u"J", u"K", u"L", u"\u00CD", u"\u0139", u"\u013D", u"ENTER"],
+					[u"LAST", u"A", u"S", u"D", u"F", u"G", u"H", u"J", u"K", u"L", u"\u00CD", u"\u0139", u"\u013D", self.button],
 					[u"SHIFT", u">", u"Z", u"X", u"C", u"V", u"B", u"N", u"M", u"?", u":", u"\u0147", u"\u00D3", u"SHIFT"],
 					[u"EXIT", u"LOC", u"LEFT", u"RIGHT", u"ALL", u"CLR", u"SPACE", u"\u00D4", u"\u0154", u"\u0160", u"\u0164", u"\u00DA", u"\u00DD", u"\u017D"]
 				], [
 					[u"", u"", u"\u00A7", u"\u00B0", u"\u00A4", u"\u20AC", u"\u00DF", u"\u0111", u"\u0110", u"\u0142", u"\u0141", u"", u"", u"BACKSPACE"],
 					[u"FIRST", u"", u"", u"'", u"\"", u"+", u"-", u"\u00D7", u"\u00F7", u"=", u"_", u"~", u"", u""],
-					[u"LAST", u"", u"", u"/", u"\\", u";", u"[", u"]", u"{", u"}", u"|", u"", u"", u"ENTER"],
+					[u"LAST", u"", u"", u"/", u"\\", u";", u"[", u"]", u"{", u"}", u"|", u"", u"", self.button],
 					[u"SHIFT", u"", u"", u"", u"", u"", u"", u"", u"", u"", u"", u"", u"", u"SHIFT"],
-					[u"EXIT", u"LOC", u"LEFT", u"RIGHT", u"ALL", u"CLR", u"SPACE"]
+					[u"EXIT", u"LOC", u"LEFT", u"RIGHT", u"ALL", u"CLR", u"SPACE", u"DEL"]
 				]
 			]],
 			"es_ES": [_("Spanish"), _("Spain"), self.spanish],
@@ -310,13 +329,13 @@ class VirtualKeyBoard(Screen, HelpableScreen):
 					[u"FIRST", u"\u0E46", u"\u0E44", u"\u0E33", u"\u0E1E", u"\u0E30", u"\u0E31", u"\u0E35", u"\u0E23", u"\u0E19", u"\u0E22", u"\u0E1A", u"\u0E25", u""],
 					[u"LAST", u"\u0E1F", u"\u0E2B", u"\u0E01", u"\u0E14", u"\u0E40", u"\u0E49", u"\u0E48", u"\u0E32", u"\u0E2A", u"\u0E27", u"\u0E07", u"\u0E03", u"OK"],
 					[u"SHIFT", u"\u0E1C", u"\u0E1B", u"\u0E41", u"\u0E2D", u"\u0E34", u"\u0E37", u"\u0E17", u"\u0E21", u"\u0E43", u"\u0E1D", u"", u"", u"SHIFT"],
-					[u"EXIT", u"LOC", u"LEFT", u"RIGHT", u"ALL", u"CLR", u"SPACE"]
+					[u"EXIT", u"LOC", u"LEFT", u"RIGHT", u"ALL", u"CLR", u"SPACE", u"DEL"]
 				], [
 					[u"", u"", u"\u0E51", u"\u0E52", u"\u0E53", u"\u0E54", u"\u0E39", u"\u0E55", u"\u0E56", u"\u0E57", u"\u0E58", u"\u0E59", u"", u"BACKSPACE"],
 					[u"FIRST", u"\u0E50", u"", u"\u0E0E", u"\u0E11", u"\u0E18", u"\u0E4D", u"\u0E4A", u"\u0E13", u"\u0E2F", u"\u0E0D", u"\u0E10", u"\u0E05", u""],
 					[u"LAST", u"\u0E24", u"\u0E06", u"\u0E0F", u"\u0E42", u"\u0E0C", u"\u0E47", u"\u0E4B", u"\u0E29", u"\u0E28", u"\u0E0B", u"", u"\u0E3F", u"OK"],
 					[u"SHIFT", u"", u"", u"\u0E09", u"\u0E2E", u"\u0E3A", u"\u0E4C", u"", u"\u0E12", u"\u0E2C", u"\u0E26", u"", u"", u"SHIFT"],
-					[u"EXIT", u"LOC", u"LEFT", u"RIGHT", u"ALL", u"CLR", u"SPACE"]
+					[u"EXIT", u"LOC", u"LEFT", u"RIGHT", u"ALL", u"CLR", u"SPACE", u"DEL"]
 				]
 			]],
 			"uk_UA": [_("Ukrainian"), _("Ukraine"), self.ukranian(self.russian)]
@@ -324,7 +343,7 @@ class VirtualKeyBoard(Screen, HelpableScreen):
 
 		self["actions"] = HelpableNumberActionMap(self, "VirtualKeyBoardActions", {
 			"cancel": (self.cancel, _("Cancel any text changes and exit")),
-			"save": (self.enter, _("Enter text and exit")),
+			"save": (self.save, _("Save / Enter text and exit")),
 			"locale": (self.localeMenu, _("Select the virtual keyboard locale from a menu")),
 			"shift": (self.shiftClicked, _("Select the virtual keyboard shifted character set")),
 			"select": (self.processSelect, _("Select the character or action under the virtual keyboard cursor")),
@@ -361,7 +380,7 @@ class VirtualKeyBoard(Screen, HelpableScreen):
 		self["language"] = Label(_("Language") + ": " + self.lang)
 		self["key_info"] = StaticText(_("INFO"))
 		self["key_red"] = StaticText(_("Exit"))
-		self["key_green"] = StaticText(_("Enter"))
+		self["key_green"] = StaticText(_(greenLabel))
 		self["key_yellow"] = StaticText(_("Select locale"))
 		self["key_blue"] = StaticText(self.shiftMsgs[1])
 		self["key_help"] = StaticText(_("HELP"))
@@ -391,22 +410,22 @@ class VirtualKeyBoard(Screen, HelpableScreen):
 		keyList.extend([[
 			[u"\u0630", u"\u0661", u"\u0662", u"\u0663", u"\u0664", u"\u0665", u"\u0666", u"\u0667", u"\u0668", u"\u0669", u"\u0660", u"-", u"=", u"BACKSPACE"],
 			[u"FIRST", u"\u0636", u"\u0635", u"\u062B", u"\u0642", u"\u0641", u"\u063A", u"\u0639", u"\u0647", u"\u062E", u"\u062D", u"\u062C", u"\u062F", u"\\"],
-			[u"LAST", u"\u0634", u"\u0633", u"\u064A", u"\u0628", u"\u0644", u"\u0627", u"\u062A", u"\u0646", u"\u0645", u"\u0643", u"\u0637", u"", u"ENTER"],
+			[u"LAST", u"\u0634", u"\u0633", u"\u064A", u"\u0628", u"\u0644", u"\u0627", u"\u062A", u"\u0646", u"\u0645", u"\u0643", u"\u0637", u"", self.button],
 			[u"SHIFT", u"\u0626", u"\u0621", u"\u0624", u"\u0631", u"\uFEFB", u"\u0649", u"\u0629", u"\u0648", u"\u0632", u"\u0638", u"", u"", u"SHIFT"],
-			[u"EXIT", u"LOC", u"LEFT", u"RIGHT", u"ALL", u"CLR", u"SPACE"]
+			[u"EXIT", u"LOC", u"LEFT", u"RIGHT", u"ALL", u"CLR", u"SPACE", u"DEL"]
 		], [
 			[u"\u0651", u"!", u"@", u"#", u"$", u"%", u"^", u"&", u"\u066D", u"(", u")", u"_", u"+", u"BACKSPACE"],
 			[u"FIRST", u"\u0636", u"\u0635", u"\u062B", u"\u0642", u"\u0641", u"\u063A", u"\u0639", u"\u00F7", u"\u00D7", u"\u061B", u">", u"<", u"|"],
-			[u"LAST", u"\u0634", u"\u0633", u"\u064A", u"\u0628", u"\u0644", u"\u0623", u"\u0640", u"\u060C", u"/", u":", u"\"", u"", u"ENTER"],
+			[u"LAST", u"\u0634", u"\u0633", u"\u064A", u"\u0628", u"\u0644", u"\u0623", u"\u0640", u"\u060C", u"/", u":", u"\"", u"", self.button],
 			[u"SHIFT", u"\u0626", u"\u0621", u"\u0624", u"\u0631", u"\uFEF5", u"\u0622", u"\u0629", u",", u".", u"\u061F", u"", u"", u"SHIFT"],
-			[u"EXIT", u"LOC", u"LEFT", u"RIGHT", u"ALL", u"CLR", u"SPACE"]
+			[u"EXIT", u"LOC", u"LEFT", u"RIGHT", u"ALL", u"CLR", u"SPACE", u"DEL"]
 		]])
 		return keyList
 
 	def australian(self, base):
 		keyList = copy.deepcopy(base)
-		keyList[0][-1].extend([u"www.", u".com", u".net", u".org", u".edu", u".au", u".tv"])
-		keyList[1][-1].extend([u"www.", u".com", u".net", u".org", u".edu", u".au", u".tv"])
+		keyList[0][4].extend([u"www.", u".com", u".net", u".org", u".edu", u".au"])
+		keyList[1][4].extend([u"www.", u".com", u".net", u".org", u".edu", u".au"])
 		return keyList
 
 	def belgian(self, base):
@@ -435,7 +454,7 @@ class VirtualKeyBoard(Screen, HelpableScreen):
 		keyList[0][2][11] = u"\u00B4"
 		keyList[0][2][12] = u"\\"
 		keyList[0][3] = [u"SHIFT", u"]", u"z", u"x", u"c", u"v", u"b", u"n", u"m", u",", u".", u"-", u"{", u"SHIFT"]
-		keyList[0][-1].extend([u"www.", u".com", u".net", u".org", u".edu", u".nl", u".tv"])
+		keyList[0][4].extend([u"www.", u".com", u".net", u".org", u".edu", u".nl"])
 		keyList[1][0] = [u"\u00A7", u"!", u"\"", u"#", u"$", u"%", u"&", u"_", u"(", u")", u"'", u"?", u"~", u"BACKSPACE"]
 		keyList[1][1][11] = u"^"
 		keyList[1][1][12] = u"|"
@@ -444,13 +463,13 @@ class VirtualKeyBoard(Screen, HelpableScreen):
 		keyList[1][2][11] = u"`"
 		keyList[1][2][12] = u"\u00A6"
 		keyList[1][3] = [u"SHIFT", u"[", u"Z", u"X", u"C", u"V", u"B", u"N", u"M", u";", u":", u"=", u"}", u"SHIFT"]
-		keyList[1][-1].extend([u"www.", u".com", u".net", u".org", u".edu", u".nl", u".tv"])
+		keyList[1][4].extend([u"www.", u".com", u".net", u".org", u".edu", u".nl"])
 		keyList.append([
 			[u"\u00AC", u"\u00B9", u"\u00B2", u"\u00B3", u"\u00BC", u"\u00BD", u"\u00BE", u"\u00A3", u"{", u"}", u"$", u"\\", u"", u"BACKSPACE"],
 			[u"FIRST", u"", u"", u"\u20AC", u"\u00B6", u"", u"", u"", u"", u"", u"", u"", u"", u""],
-			[u"LAST", u"", u"\u00E1", u"\u00E9", u"\u00ED", u"\u00F3", u"\u00FA", u"\u00C1", u"\u00C9", u"\u00CD", u"\u00D3", u"\u00DA", u"", u"ENTER"],
+			[u"LAST", u"", u"\u00E1", u"\u00E9", u"\u00ED", u"\u00F3", u"\u00FA", u"\u00C1", u"\u00C9", u"\u00CD", u"\u00D3", u"\u00DA", u"", self.button],
 			[u"SHIFT", u"\u00A6", u"\u00AB", u"\u00BB", u"\u00A2", u"", u"", u"", u"\u00B5", u"", u"\u00B7", u"", u"", u"SHIFT"],
-			[u"EXIT", u"LOC", u"LEFT", u"RIGHT", u"ALL", u"CLR", u"SPACE"]
+			[u"EXIT", u"LOC", u"LEFT", u"RIGHT", u"ALL", u"CLR", u"SPACE", u"DEL"]
 		])
 		return keyList
 
@@ -480,9 +499,9 @@ class VirtualKeyBoard(Screen, HelpableScreen):
 		keyList.append([
 			[u"", u"", u"", u"", u"", u"", u"", u"", u"", u"", u"", u"", u"", u"BACKSPACE"],
 			[u"FIRST", u"", u"\u0113", u"\u0112", u"\u0157", u"\u0156", u"\u016B", u"\u016A", u"\u012B", u"\u012A", u"\u014D", u"\u014C", u"", u""],
-			[u"LAST", u"\u0101", u"\u0100", u"\u0161", u"\u0160", u"\u0123", u"\u0122", u"\u0137", u"\u0136", u"\u013C", u"\u013B", u"", u"", u"ENTER"],
+			[u"LAST", u"\u0101", u"\u0100", u"\u0161", u"\u0160", u"\u0123", u"\u0122", u"\u0137", u"\u0136", u"\u013C", u"\u013B", u"", u"", self.button],
 			[u"SHIFT", u"\u017E", u"\u017D", u"\u010D", u"\u010C", u"", u"\u0146", u"\u0145", u"", u"", u"", u"", u"", u"SHIFT"],
-			[u"EXIT", u"LOC", u"LEFT", u"RIGHT", u"ALL", u"CLR", u"SPACE"]
+			[u"EXIT", u"LOC", u"LEFT", u"RIGHT", u"ALL", u"CLR", u"SPACE", u"DEL"]
 		])
 		return keyList
 
@@ -497,9 +516,9 @@ class VirtualKeyBoard(Screen, HelpableScreen):
 		keyList.append([
 			[u"\u02DC", u"\u00BC", u"\u00BD", u"\u00BE", u"\u00A4", u"\u00A2", u"\u00B0", u"\u00A7", u"\u00D7", u"\u00AB", u"\u00BB", u"\u00F7", u"\u00B1", u"BACKSPACE"],
 			[u"FIRST", u"1", u"2", u"3", u"4", u"5", u"6", u"7", u"8", u"9", u"0", u"-", u"=", u"\u00AD"],
-			[u"LAST", u"!", u"@", u"#", u"$", u"%", u"^", u"&", u"*", u"(", u")", u"_", u"+", u"ENTER"],
+			[u"LAST", u"!", u"@", u"#", u"$", u"%", u"^", u"&", u"*", u"(", u")", u"_", u"+", self.button],
 			[u"SHIFT", u"", u"\u00DF", u"\u00A9", u"\u00AE", u"\u2122", u"\u00AC", u"\u00A3", u"\u20AC", u"\u00B7", u"\u00B9", u"\u00B2", u"\u00B3", u"SHIFT"],
-			[u"EXIT", u"LOC", u"LEFT", u"RIGHT", u"ALL", u"CLR", u"SPACE"]
+			[u"EXIT", u"LOC", u"LEFT", u"RIGHT", u"ALL", u"CLR", u"SPACE", u"DEL"]
 		])
 		return keyList
 
@@ -523,21 +542,23 @@ class VirtualKeyBoard(Screen, HelpableScreen):
 		keyList.append([
 			[u"\u00F7", u"\u06F1", u"\u06F2", u"\u06F3", u"\u06F4", u"\u06F5", u"\u06F6", u"\u06F7", u"\u06F8", u"\u06F9", u"\u06F0", u"-", u"=", u"BACKSPACE"],
 			[u"FIRST", u"\u0636", u"\u0635", u"\u062B", u"\u0642", u"\u0641", u"\u063A", u"\u0639", u"\u0647", u"\u062E", u"\u062D", u"\u062C", u"\u0686", u"\u067E"],
-			[u"LAST", u"\u0634", u"\u0633", u"\u0649", u"\u0628", u"\u0644", u"\u0622", u"\u0627", u"\u062A", u"\u0646", u"\u0645", u"\u06A9", u"\u06AF", u"ENTER"],
+			[u"LAST", u"\u0634", u"\u0633", u"\u0649", u"\u0628", u"\u0644", u"\u0622", u"\u0627", u"\u062A", u"\u0646", u"\u0645", u"\u06A9", u"\u06AF", self.button],
 			[u"SHIFT", u"\u0638", u"\u0637", u"\u0698", u"\u0632", u"\u0631", u"\u0630", u"\u062F", u"\u0626", u"\u0621", u"\u0648", u"\u060C", u"\u061F", u"SHIFT"],
-			[u"EXIT", u"LOC", u"LEFT", u"RIGHT", u"ALL", u"CLR", u"SPACE"]
+			[u"EXIT", u"LOC", u"LEFT", u"RIGHT", u"ALL", u"CLR", u"SPACE", u"DEL"]
 		])
 		return keyList
 
 	def polish(self, base):
 		keyList = copy.deepcopy(base)
-		keyList[0][3][11] = u"\u0105"
-		keyList[0][3][12] = u"\u0107"
-		keyList[0][-1].extend([u"\u0119", u"\u0142", u"\u0144", u"\u00F3", u"\u015B", u"\u017A", u"\u017C"])
-		keyList[1][2][12] = u"\u20AC"
-		keyList[1][3][11] = u"\u0104"
-		keyList[1][3][12] = u"\u0106"
-		keyList[1][-1].extend([u"\u0118", u"\u0141", u"\u0143", u"\u00D3", u"\u015A", u"\u0179", u"\u017B"])
+		keyList[0][2][12] = u"\u0105"
+		keyList[0][3][11] = u"\u0107"
+		keyList[0][3][12] = u"\u0119"
+		keyList[0][4].extend([u"\u0142", u"\u0144", u"\u00F3", u"\u015B", u"\u017A", u"\u017C"])
+		keyList[1][2][12] = u"\u0104"
+		keyList[1][3][11] = u"\u0106"
+		keyList[1][3][12] = u"\u0118"
+		keyList[1][4][7] = u"\u20AC"
+		keyList[1][4].extend([u"\u0141", u"\u0143", u"\u00D3", u"\u015A", u"\u0179", u"\u017B"])
 		return keyList
 
 	def swedish(self, base):
@@ -591,7 +612,7 @@ class VirtualKeyBoard(Screen, HelpableScreen):
 		keyList[0][1][13] = u"\u00A6"
 		keyList[0][2][12] = u"#"
 		keyList[0][3] = [u"SHIFT", u"\\", u"z", u"x", u"c", u"v", u"b", u"n", u"m", u",", u".", u"/", u"", u"SHIFT"]
-		# keyList[0][-1].extend([u"\u00E1", u"\u00E9", u"\u00ED", u"\u00F3", u"\u00FA"])  # English users don't use the accented characters.
+		# keyList[0][4].extend([u"\u00E1", u"\u00E9", u"\u00ED", u"\u00F3", u"\u00FA"])  # English users don't use the accented characters.
 		keyList[1][0][0] = u"\u00AC"
 		keyList[1][0][2] = u"\""
 		keyList[1][0][3] = u"\u00A3"
@@ -599,7 +620,7 @@ class VirtualKeyBoard(Screen, HelpableScreen):
 		keyList[1][2][11] = u"@"
 		keyList[1][2][12] = u"~"
 		keyList[1][3] = [u"SHIFT", u"|", u"Z", u"X", u"C", u"V", u"B", u"N", u"M", u"<", u">", u"?", u"", u"SHIFT"]
-		# keyList[1][-1].extend([u"\u00C1", u"\u00C9", u"\u00CD", u"\u00D3", u"\u00DA"])  # English users don't use the accented characters.
+		# keyList[1][4].extend([u"\u00C1", u"\u00C9", u"\u00CD", u"\u00D3", u"\u00DA"])  # English users don't use the accented characters.
 		return keyList
 
 	def smsGotChar(self):
@@ -669,9 +690,6 @@ class VirtualKeyBoard(Screen, HelpableScreen):
 		self.previousSelectedKey = self.selectedKey
 		self["list"].setList(self.list)
 
-	def okClicked(self):  # Deprecated legacy interface to new processSelect used by YouTubeVirtualKeyBoard
-		self.processSelect()
-
 	def processSelect(self):
 		self.smsChar = None
 		text = self.keyList[self.shiftLevel][self.selectedKey / self.keyboardWidth][self.selectedKey % self.keyboardWidth].encode("UTF-8")
@@ -688,26 +706,30 @@ class VirtualKeyBoard(Screen, HelpableScreen):
 		elif text == u"CLR":
 			self["text"].deleteAllChars()
 			self["text"].update()
+		elif text == u"DEL":
+			self["text"].deleteForward()
+		elif text == u"DONE":
+			self.save()
 		elif text == u"ENTER":
-			self.enter()
+			self.save()
 		elif text == u"ESC":
 			self.cancel()
 		elif text == u"EXIT":
 			self.cancel()
 		elif text == u"FIRST":
 			self["text"].home()
-		elif text == u"LOC":
-			self.localeMenu()
 		elif text == u"LAST":
 			self["text"].end()
 		elif text == u"LEFT":
 			self["text"].left()
+		elif text == u"LOC":
+			self.localeMenu()
 		elif text == u"OK":
-			self.enter()
+			self.save()
 		elif text == u"RIGHT":
 			self["text"].right()
-		elif text == u"ENTER":
-			self.enter()
+		elif text == u"SAVE":
+			self.save()
 		elif text == u"SHIFT":
 			self.shiftClicked()
 		elif text == u"Shift":
@@ -720,10 +742,7 @@ class VirtualKeyBoard(Screen, HelpableScreen):
 	def cancel(self):
 		self.close(None)
 
-	def save(self):  # Deprecated legacy interface to new enter
-		self.enter()
-
-	def enter(self):
+	def save(self):
 		self.close(self["text"].getText())
 
 	def localeMenu(self):
