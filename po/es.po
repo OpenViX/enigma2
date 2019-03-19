@@ -9034,7 +9034,7 @@ msgid "Toggle between bouquet/epg lists"
 msgstr "Alternar entre listas bouquet/epg"
 
 msgid "Tone amplitude"
-msgstr "Amplitud tonal"
+msgstr "Amplitud de tono"
 
 msgid "Tone mode"
 msgstr "Modo tono"
@@ -12558,13 +12558,28 @@ msgid "Select 'Yes' when you want to configure this tuner for DVB-T"
 msgstr "Seleccione 'Sí' cuando desee configurar este sintonizador para DVB-T"
 
 msgid "Hotswitchable"
-msgstr "Conmutable"
+msgstr "Conmutador"
 
 msgid "Hotswitchable tuner"
 msgstr "Sintonizador Conmutable"
 
 msgid "Switchable tuner types"
 msgstr "Tipos de sintonizador conmutables"
+
+msgid "T2MI RAW Mode"
+msgstr "Modo T2MI RAW"
+
+msgid "SCPC optimized search range"
+msgstr "SCPC Optimizar búsqueda de rango"
+
+msgid "Your receiver can use tone amplitude. Consult your receiver's manual for more information."
+msgstr "Su receptor puede utilizar la amplitud de tono. Consulte el manual de su receptor para más información."
+
+msgid "Your receiver can use SCPC optimized search range. Consult your receiver's manual for more information."
+msgstr "Su receptor puede utilizar el rango de búsqueda optimizado SCPC. Consulte el manual de su receptor para más información."
+
+msgid "With T2MI RAW mode disabled (default) we can use single T2MI PLP de-encapsulation. With T2MI RAW mode enabled we can use astra-sm to analyze T2MI"
+msgstr "Con el modo T2MI RAW deshabilitado (predeterminado) podemos usar una sola desencapsulación T2MI PLP. Con el modo T2MI RAW habilitado podemos usar astra-sm para analizar T2MI"
 
 #~ msgid "3d mode"
 #~ msgstr "Modo 3D"
