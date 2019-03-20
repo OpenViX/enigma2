@@ -3,7 +3,6 @@
 #include <linux/dvb/version.h>
 
 #include <lib/base/eerror.h>
-#include <lib/base/estring.h>
 #include <lib/base/wrappers.h>
 #include <lib/dvb/cahandler.h>
 #include <lib/dvb/idvb.h>
@@ -801,29 +800,24 @@ std::string eDVBResourceManager::getFrontendCapabilities(int index)
 	return "";
 }
 
-void eDVBResourceManager::setFrontendType(int index, const char *types)
+void eDVBResourceManager::setFrontendType(int index, const char *type)
 {
 	for (eSmartPtrList<eDVBRegisteredFrontend>::iterator i(m_frontend.begin()); i != m_frontend.end(); ++i)
 	{
-		if (i->m_frontend->getSlotID() != index)
+		if (i->m_frontend->getSlotID() == index)
 		{
-			continue;
-		}
-
-		std::vector<fe_delivery_system_t> whitelist;
-		for (const auto& type : split(types, ","))
-		{
-			if (type == "DVB-S2" || type == "DVB-S")
+			std::vector<fe_delivery_system_t> whitelist;
+			if (!strcmp(type, "DVB-S2") || !strcmp(type, "DVB-S"))
 			{
 				whitelist.push_back(SYS_DVBS);
 				whitelist.push_back(SYS_DVBS2);
 			}
-			else if (type == "DVB-T2" || type == "DVB-T")
+			else if (!strcmp(type, "DVB-T2") || !strcmp(type, "DVB-T"))
 			{
 				whitelist.push_back(SYS_DVBT);
 				whitelist.push_back(SYS_DVBT2);
 			}
-			else if (type == "DVB-C")
+			else if (!strcmp(type, "DVB-C"))
 			{
 #if defined SYS_DVBC_ANNEX_A
 				whitelist.push_back(SYS_DVBC_ANNEX_A);
@@ -832,14 +826,14 @@ void eDVBResourceManager::setFrontendType(int index, const char *types)
 				whitelist.push_back(SYS_DVBC_ANNEX_AC);
 #endif
 			}
-			else if (type == "ATSC")
+			else if (!strcmp(type, "ATSC"))
 			{
 				whitelist.push_back(SYS_ATSC);
 				whitelist.push_back(SYS_DVBC_ANNEX_B);
 			}
+			i->m_frontend->setDeliverySystemWhitelist(whitelist);
+			break;
 		}
-		i->m_frontend->setDeliverySystemWhitelist(whitelist);
-		break;
 	}
 }
 
