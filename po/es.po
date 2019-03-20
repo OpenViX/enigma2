@@ -3216,7 +3216,7 @@ msgid "Epg/Guide long"
 msgstr "Epg/Guia (prolongado)"
 
 msgid "equal to"
-msgstr "Igual a"
+msgstr "igual a"
 
 msgid "Error"
 msgstr "Error"
