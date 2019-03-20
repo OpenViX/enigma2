@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-07 18:27+0000\n"
-"PO-Revision-Date: 2019-03-07 21:09+0100\n"
+"POT-Creation-Date: 2019-03-18 07:44+0000\n"
+"PO-Revision-Date: 2019-03-19 09:19+0100\n"
 "Last-Translator: Ralf Biedermann <ralf.biedermann@rbsoft.de>\n"
 "Language-Team: AndyBlacburn, j-ot&Trial\n"
 "Language: de\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
-"X-Generator: Poedit 2.2.1\n"
+"X-Generator: Poedit 2.0.5\n"
 "X-Poedit-SourceCharset: iso-8859-15\n"
 
 msgid ""
@@ -763,9 +763,9 @@ msgid_plural "%d channels found"
 msgstr[0] "%d Sender gefunden"
 msgstr[1] "%d Sender gefunden!"
 
-#, fuzzy, python-format
+#, python-format
 msgid "%d cores"
-msgstr "Rot gefärbt"
+msgstr "%d Kerne"
 
 #, python-format
 msgid "%d hour"
@@ -918,9 +918,9 @@ msgstr "%s %s Fernbedienung (native)"
 msgid "%s %s software because updates are available."
 msgstr "%s %s Software, da Aktualisierungen verfügbar sind."
 
-#, fuzzy, python-format
+#, python-format
 msgid "%s ( %s Cards )"
-msgstr "%s (%s)\n"
+msgstr "%s (%s Karten)"
 
 #, python-format
 msgid "%s (%s)\n"
@@ -1015,10 +1015,9 @@ msgstr "-SERVICE FEHLER:%d\n"
 msgid "."
 msgstr ""
 
-#, fuzzy
 msgctxt "ButtonSetup help separator"
 msgid "/"
-msgstr "/s"
+msgstr ""
 
 msgid "/s"
 msgstr "/s"
@@ -1231,9 +1230,8 @@ msgstr "Eine Updateprüfung läuft im Hintergrund. Bitte ein paar Minuten warten
 msgid "A background update check is in progress, please wait a few minutes and try again."
 msgstr "Eine Updateprüfung läuft im Hintergrund. Bitte ein paar Minuten warten und erneut versuchen."
 
-#, fuzzy
 msgid "A client is streaming from this box!"
-msgstr "Keine streamenden Klienten"
+msgstr "Ein Klient streamt von dieser Box!"
 
 #, python-format
 msgid ""
@@ -1370,9 +1368,8 @@ msgstr "AAC Downmix"
 msgid "AAC transcoding"
 msgstr "AAC Transkodierung"
 
-#, fuzzy
 msgid "AAC+ downmix"
-msgstr "AAC Downmix"
+msgstr "AAC+ Downmix"
 
 msgid "AC3"
 msgstr "AC3"
@@ -1380,9 +1377,8 @@ msgstr "AC3"
 msgid "AC3 downmix"
 msgstr "AC3 Downmix"
 
-#, fuzzy
 msgid "AC3 transcoding"
-msgstr "AAC Transkodierung"
+msgstr "AC3 Transkodierung"
 
 msgid "ACQUIRING TSID/ONID"
 msgstr "Sammeln von TSID/ONID"
@@ -1682,13 +1678,11 @@ msgstr "Reserviere eine Anzahl physischer LNB die konfiguriert werden sollen. Du
 msgid "Allocate unused memory index"
 msgstr "Unbenutzten Speicher Index reservieren"
 
-#, fuzzy
 msgid "Allow 10bit"
-msgstr "10bit"
+msgstr "10bit erlauben"
 
-#, fuzzy
 msgid "Allow 12bit"
-msgstr "12bit"
+msgstr "12bit erlauben"
 
 msgid "Allow subtitle language to equal audio language"
 msgstr "Erlaube gleiche Sprache bei Untertitel und Ton"
@@ -2576,17 +2570,14 @@ msgstr "Ändern von Verzögerung- und Wiederholungswerten?"
 msgid "Change step size"
 msgstr "Schrittweite ändern"
 
-#, fuzzy
 msgid "Change the Colordepth for UHD"
-msgstr "Dies Option erlaubt die Konfiguration der Bittiefe für UHD"
+msgstr "Diese Option erlaubt die Konfiguration der Bittiefe für UHD"
 
-#, fuzzy
 msgid "Change the Colorimetry for HDR"
-msgstr "Dies Option erlaubt die Konfiguration der Farbmetrik für HDR"
+msgstr "Diese Option erlaubt die Konfiguration der Farbmetrik für HDR"
 
-#, fuzzy
 msgid "Change the Colorspace from Auto to RGB"
-msgstr "Dies Option erlaubt es den Farbraum von Auto auf RGB zu stellen"
+msgstr "Diese Option erlaubt es den Farbraum von Auto auf RGB zu stellen"
 
 msgid "Change timer"
 msgstr "Timer ändern"
@@ -2787,16 +2778,14 @@ msgstr "Wähle was bei der 0-Taste passieren soll wenn PiP aktiv ist."
 msgid "Choose whether AAC sound tracks should be transcoded."
 msgstr "Wähle ob AAC Tonspuren transkodiert werden sollen."
 
-#, fuzzy
 msgid "Choose whether WMA Pro sound tracks should be downmixed."
-msgstr "Wähle ob AAC Tonspuren transkodiert werden sollen."
+msgstr "Wähle ob WMA Pro Mehrkanalton zu Stereo runter gerechnet werden soll."
 
 msgid "Choose whether multi channel aac sound tracks should be downmixed to stereo."
 msgstr "Wähle ob AAC Mehrkanalton zu Stereo runter gerechnet werden soll."
 
-#, fuzzy
 msgid "Choose whether multi channel aac+ sound tracks should be downmixed to stereo."
-msgstr "Wähle ob AAC Mehrkanalton zu Stereo runter gerechnet werden soll."
+msgstr "Wähle ob AAC+ Mehrkanalton zu Stereo runter gerechnet werden soll."
 
 msgid "Choose whether multi channel ac3 sound tracks should be downmixed to stereo."
 msgstr "Wähle ob AC3 Mehrkanalton zu Stereo runter gerechnet werden soll."
@@ -2969,21 +2958,17 @@ msgstr "Konfigurationsmodus: %s"
 msgid "Configuration..."
 msgstr "Konfiguration..."
 
-#, fuzzy
 msgid "Configure ATSC"
-msgstr "Konfiguriere"
+msgstr "Konfiguriere ATSC"
 
-#, fuzzy
 msgid "Configure DVB-C"
-msgstr "Konfiguriere"
+msgstr "Konfiguriere DVB-C"
 
-#, fuzzy
 msgid "Configure DVB-S"
-msgstr "Konfiguriere"
+msgstr "Konfiguriere DVB-S"
 
-#, fuzzy
 msgid "Configure DVB-T"
-msgstr "Konfiguriere"
+msgstr "Konfiguriere DVB-T"
 
 msgid "Configure alignment of service events."
 msgstr "Konfiguriere Ausrichtung der Sendungen."
@@ -3636,9 +3621,8 @@ msgstr "Dänisch"
 msgid "Date"
 msgstr "Datum"
 
-#, fuzzy
 msgid "Date first"
-msgstr "Zeitformat"
+msgstr "Datum zuerst"
 
 msgid "Date style"
 msgstr "Zeitformat"
@@ -4120,9 +4104,9 @@ msgstr "Den Timer für %s wirklich löschen?"
 msgid "Do you really want to remove your bookmark of %s?"
 msgstr "Das Lesezeichen %s wirklich löschen?"
 
-#, fuzzy, python-format
+#, python-format
 msgid "Do you really want to stop the current recording and delete timer %s?"
-msgstr "Den Timer für %s wirklich löschen?"
+msgstr "Aufnahme anhalten und den Timer für %s wirklich löschen?"
 
 msgid "Do you want to add any additional information ?"
 msgstr "Willst Du weitere Informationen hinzufügen?"
@@ -4246,9 +4230,8 @@ msgstr "Herunterladen"
 msgid "Downloading plugin information. Please wait..."
 msgstr "Lade Plugin-Informationen herunter. Bitte warten..."
 
-#, fuzzy
 msgid "Downmix"
-msgstr "DTS Downmix"
+msgstr ""
 
 msgid "Drama"
 msgstr "Drama"
@@ -4527,7 +4510,6 @@ msgstr "Aktiviere die Benutzung eines anderen Enigma2 Receivers im Netzwerk wenn
 msgid "Enabled"
 msgstr "Eingeschaltet"
 
-#, fuzzy
 msgid "Encrypted TV"
 msgstr "Verschlüsselt: "
 
@@ -4567,9 +4549,6 @@ msgstr "Englisch"
 msgid "Enigma2 skin selector"
 msgstr "Enigma2 Skinauswahl"
 
-msgid "Enter"
-msgstr "Eingabe"
-
 msgid "Enter PIN"
 msgstr "PIN-Code ändern"
 
@@ -4587,9 +4566,6 @@ msgstr "Dauerhaften PIN-Code eingeben"
 
 msgid "Enter pin code"
 msgstr "PIN-Code eingeben"
-
-msgid "Enter text and exit"
-msgstr "Text eingeben und beenden"
 
 msgid "Enter the FTP password of the host receiver (normally just leave empty)."
 msgstr "Gebe FTP Passowrt für den Notfallreceiver an (normalerweise leer lassen)."
@@ -5460,9 +5436,8 @@ msgstr "HDMIin"
 msgid "HDR, 12bit 4:2:0/4:2:2, no PIP"
 msgstr "HDR, 12bit 4:2:0/4:2:2, kein PIP"
 
-#, fuzzy
 msgid "HDR10 Support"
-msgstr "DLNA-Unterstützung"
+msgstr "HDR10 Unterstützung"
 
 msgid "HELP"
 msgstr ""
@@ -5473,9 +5448,8 @@ msgstr ""
 msgid "HH:mm:ss"
 msgstr ""
 
-#, fuzzy
 msgid "HLG Support"
-msgstr "DLNA-Unterstützung"
+msgstr "HLG Unterstützung"
 
 msgid "Haiti"
 msgstr "Haiti"
@@ -5579,9 +5553,8 @@ msgstr "Honduras"
 msgid "Hong Kong"
 msgstr "Hong Kong"
 
-#, fuzzy
 msgid "Hops"
-msgstr "Hops:"
+msgstr ""
 
 msgid "Hops:"
 msgstr "Hops:"
@@ -5622,7 +5595,6 @@ msgstr "Hostname: "
 msgid "Hotswitchable"
 msgstr ""
 
-#, fuzzy
 msgid "Hotswitchable tuner"
 msgstr "Umschaltbare Tuner-Typen:"
 
@@ -6204,9 +6176,8 @@ msgstr "Kernel:\t%s\n"
 msgid "Kernel: %s"
 msgstr "Kernel: %s"
 
-#, fuzzy
 msgid "Key"
-msgstr "Kenya"
+msgstr "Key"
 
 msgid "Keyboard"
 msgstr "Tastatur"
@@ -6965,9 +6936,8 @@ msgstr "Multi-EPG"
 msgid "Multiboot"
 msgstr "Multiboot"
 
-#, fuzzy
 msgid "Multiboot ERROR! - no STARTUP in boot partition."
-msgstr "Multiboot Fehler! - kein STARTUP_%s in /boot - Image könnte manuelle Neustart benötigen."
+msgstr "Multiboot Fehler! - kein STARTUP in /boot."
 
 msgid "Multiboot Image Restart"
 msgstr "Multiboot Image Neustart"
@@ -7661,9 +7631,8 @@ msgstr ""
 msgid "PGS file"
 msgstr "PGS Datei"
 
-#, fuzzy
 msgid "PID"
-msgstr "PIDs"
+msgstr ""
 
 msgid "PIP"
 msgstr "PiP"
@@ -7934,7 +7903,6 @@ msgstr "Bitte füge Titel zur Zusammenstellung hinzu."
 msgid "Please change the recording end time"
 msgstr "Bitte Aufnahmeendzeit ändern"
 
-#, fuzzy
 msgid "Please choose CCcam-Reader"
 msgstr "Bitte wähle CCcam-Kartenleser"
 
@@ -8543,9 +8511,8 @@ msgstr "Python:\t%s\n"
 msgid "Qatar"
 msgstr "Qatar"
 
-#, fuzzy
 msgid "Quad core"
-msgstr "Rot gefärbt"
+msgstr "4 Kerne"
 
 msgid "Question"
 msgstr "Frage"
@@ -8605,7 +8572,6 @@ msgstr "Einstufung unbekannt"
 msgid "Re-enter PIN"
 msgstr "Pin-Code erneut eingeben"
 
-#, fuzzy
 msgid "Read Userdata from oscam.conf"
 msgstr "Lese Benutzerdaten aus oscam.comf"
 
@@ -8950,9 +8916,8 @@ msgstr "Erweiterte A/V Einstellungen auf Standardwerte zurücksetzten?"
 msgid "Reset video enhancement settings to your last configuration?"
 msgstr "Erweiterte A/V Einstellungen auf Ihre letzte Konfiguration zurücksetzen?"
 
-#, fuzzy
 msgid "Reshare"
-msgstr "Freigabe:"
+msgstr ""
 
 msgid "Reshare:"
 msgstr ""
@@ -9203,6 +9168,9 @@ msgstr "Saudi Arabia"
 
 msgid "Save"
 msgstr "Speichern"
+
+msgid "Save / Enter text and exit"
+msgstr "Text eingeben und beenden"
 
 msgid "Save EPG"
 msgstr "EPG speichern"
@@ -9873,7 +9841,6 @@ msgstr "Wähle die gewünschte Primetime (Stunde)."
 msgid "Set the desired primetime (minutes)."
 msgstr "Wähle die gewünschte Primetime (Minuten)."
 
-#, fuzzy
 msgid "Set the global sort method"
 msgstr "Standardsortiermethode wählen."
 
@@ -10208,7 +10175,6 @@ msgstr "Zeige Menünummern"
 msgid "Show message when recording starts"
 msgstr "Zeige Nachricht wenn eine Aufnahme startet"
 
-#, fuzzy
 msgid "Show movie lengths in movie list"
 msgstr "Zeige Filmlänge in Filmliste"
 
@@ -10398,9 +10364,8 @@ msgstr "Einzeln"
 msgid "Single EPG"
 msgstr "Einfach-EPG"
 
-#, fuzzy
 msgid "Single core"
-msgstr "Einzeln"
+msgstr "Ein Kern"
 
 msgid "Single satellite"
 msgstr "Einzelnen Satelliten"
@@ -11037,7 +11002,6 @@ msgstr "Schalte zu vorherigen Sender"
 msgid "Switch to the previous channel in history"
 msgstr "Schalte zu vorherigen Sender in Vergangenheit"
 
-#, fuzzy
 msgid "Switchable tuner types"
 msgstr "Umschaltbare Tuner-Typen:"
 
@@ -12604,9 +12568,8 @@ msgstr "WEP"
 msgid "WLAN connection"
 msgstr "WLAN Verbindung"
 
-#, fuzzy
 msgid "WMA Pro downmix"
-msgstr "AAC Downmix"
+msgstr "WMA Pro Downmix"
 
 msgid "WPA"
 msgstr "WPA"
@@ -13212,9 +13175,8 @@ msgstr "TimeShift scheint aktiv zu sein!"
 msgid "You seem to be in timeshift, Do you want to leave timeshift ?"
 msgstr "TimeShift scheint aktiv zu sein. TimeShift stoppen?"
 
-#, fuzzy
 msgid "You seem to be in timeshift, Do you want to leave timeshift? Streams & IPTV not fully supported!"
-msgstr "TimeShift scheint aktiv zu sein. TimeShift stoppen?"
+msgstr "TimeShift scheint aktiv zu sein. TimeShift stoppen? Streams und IPTV werden nicht komplett unterstützt!"
 
 #, python-format
 msgid "Your %s %s does not support PiP HD"
@@ -13832,9 +13794,8 @@ msgstr "Erweiterungen."
 msgid "extra wide"
 msgstr "Extrabreit"
 
-#, fuzzy
 msgid "extrawide"
-msgstr "Extrabreit"
+msgstr "extrabreit"
 
 msgid "failed"
 msgstr "fehlgeschlagen"
@@ -13875,13 +13836,11 @@ msgstr "Folk/traditionelle Musik"
 msgid "football/soccer"
 msgstr "Fußball"
 
-#, fuzzy
 msgid "force disabled"
-msgstr "deaktiviert"
+msgstr "deaktiviert erzwingen"
 
-#, fuzzy
 msgid "force enabled"
-msgstr "aktiviert"
+msgstr "aktiviert erzwingen"
 
 msgid "foreign countries/expeditions"
 msgstr "fremde Länder/Expeditionen"
@@ -14121,7 +14080,6 @@ msgstr "Musik/Ballett/Tanz (allgemein)"
 msgid "musical/opera"
 msgstr "Musical/Oper"
 
-#, fuzzy
 msgid "n/A"
 msgstr "N/V"
 
@@ -15182,6 +15140,9 @@ msgstr "umgeschaltet"
 
 #~ msgid "Enigma2 Changes"
 #~ msgstr "Enigma2 Änderungen"
+
+#~ msgid "Enter"
+#~ msgstr "Eingabe"
 
 #~ msgid "Enter your password here:"
 #~ msgstr "Passwort eingeben:"
