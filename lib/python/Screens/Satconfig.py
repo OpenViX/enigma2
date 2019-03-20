@@ -146,7 +146,7 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 				self.nimConfig.configMode.value = "nothing"
 			elif self.nim.isCompatible("DVB-S"):
 				if self.nimConfig.configMode.value in ("nothing", "enabled"):
-					self.nimConfig.configMode.value = "simple"
+					self.nimConfig.configMode.value = "advanced"
 			else:
 				self.nimConfig.configMode.value = "enabled"
 
@@ -163,6 +163,8 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 				self.nimConfig.configMode.choices.choices.pop("nothing", None)
 			if (not self.nim.isMultiType() or self.nimConfig.configMode.value != "nothing") and (not self.nim.isHotSwitchable() or self.nimConfig.configModeDVBS.value):
 				self.list.append(self.configMode)
+			else:
+				self.nimConfig.configMode.default = self.nimConfig.configMode.value = "nothing"
 			if self.nimConfig.configMode.value == "simple":			#simple setup
 				self.diseqcModeEntry = getConfigListEntry(self.indent % pgettext("Satellite configuration mode", "Mode"), self.nimConfig.diseqcMode, _("Select how the satellite dish is set up. i.e. fixed dish, single LNB, DiSEqC switch, positioner, etc."))
 				self.list.append(self.diseqcModeEntry)
