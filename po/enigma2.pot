@@ -7305,7 +7305,7 @@ msgstr ""
 msgid "entertainment (6-14 year old)"
 msgstr ""
 
-msgid "Equal to"
+msgid "equal to"
 msgstr ""
 
 msgid "equestrian"
@@ -7787,7 +7787,7 @@ msgstr ""
 msgid "science fiction/fantasy/horror"
 msgstr ""
 
-msgid "Second cable of motorized LNB"
+msgid "second cable of motorized LNB"
 msgstr ""
 
 msgid "seconds"
@@ -10441,7 +10441,7 @@ msgstr ""
 msgid "This setting allows the tuner configuration to be a duplication of how another tuner is already configured."
 msgstr ""
 
-msgid "Loop through from"
+msgid "loopthrough to"
 msgstr ""
 
 msgid "Select 'polarisation' if using a 'universal' LNB, otherwise consult your LNB spec sheet."
