@@ -995,8 +995,21 @@ class ScanSetup(ConfigListScreen, Screen, CableTransponderSearchSupport, Terrest
 					continue
 			nim_list.append((str(n.slot), n.friendly_full_description))
 
-			modes = [x[:5] for x in n.getHotswitchableTunersEnabled()]
-			self.nim_type_dict[n.slot] = {"modes": modes, "selection": ConfigSelection(choices = [(x, {"DVB-S" : _("Satellite"), "DVB-T":  _("Terrestrial"), "DVB-C" : _("Cable"), "ATSC": _("ATSC")}.get(x, "")) for x in modes]}
+			choices = []
+			modes = []
+			if n.isCompatible("DVB-S"):
+				modes.append("DVB-S")
+				choices.append(("DVB-S", _("Satellite")))
+			if n.isCompatible("DVB-T") or (n.isCompatible("DVB-S") and n.canBeCompatible("DVB-T")):
+				modes.append("DVB-T")
+				choices.append(("DVB-T", _("Terrestrial")))
+			if n.isCompatible("DVB-C") or (n.isCompatible("DVB-S") and n.canBeCompatible("DVB-C")):
+				modes.append("DVB-C")
+				choices.append(("DVB-C", _("Cable")))
+			if n.isCompatible("ATSC"):
+				modes.append("ATSC")
+				choices.append(("ATSC", _("ATSC")))
+			self.nim_type_dict[n.slot] = {"modes": modes, "selection": ConfigSelection(choices = choices)}
 			if ttype in modes:
 				self.nim_type_dict[n.slot]["selection"].value = ttype
 
