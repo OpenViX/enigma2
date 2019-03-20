@@ -12545,21 +12545,6 @@ msgstr "Un cliente está transmitiendo desde esta STB!"
 msgid "No data received yet"
 msgstr "Aún no se han recibido datos"
 
-msgid "Select 'Yes' when you want to configure this tuner for ATSC"
-msgstr "Seleccione 'Sí' cuando desee configurar este sintonizador para ATSC"
-
-msgid "Select 'Yes' when you want to configure this tuner for DVB-C"
-msgstr "Seleccione 'Sí' cuando desee configurar este sintonizador para DVB-C"
-
-msgid "Select 'Yes' when you want to configure this tuner for DVB-S"
-msgstr "Seleccione 'Sí' cuando desee configurar este sintonizador para DVB-S"
-
-msgid "Select 'Yes' when you want to configure this tuner for DVB-T"
-msgstr "Seleccione 'Sí' cuando desee configurar este sintonizador para DVB-T"
-
-msgid "Hotswitchable tuner"
-msgstr "Sintonizador Conmutable"
-
 msgid "Switchable tuner types"
 msgstr "Tipos de sintonizador conmutables"
 
@@ -12577,6 +12562,15 @@ msgstr "Su receptor puede utilizar el rango de búsqueda optimizado SCPC. Consul
 
 msgid "With T2MI RAW mode disabled (default) we can use single T2MI PLP de-encapsulation. With T2MI RAW mode enabled we can use astra-sm to analyze T2MI"
 msgstr "Con el modo T2MI RAW deshabilitado (predeterminado) podemos usar una sola desencapsulación T2MI PLP. Con el modo T2MI RAW habilitado podemos usar astra-sm para analizar T2MI"
+
+msgid "Equal to"
+msgstr "Igual a"
+
+msgid "Second cable of motorized LNB"
+msgstr "Segundo cable motorizado LNB"
+
+msgid "Loop through from"
+msgstr "Conectado desde"
 
 #~ msgid "3d mode"
 #~ msgstr "Modo 3D"

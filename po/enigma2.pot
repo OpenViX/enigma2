@@ -10873,21 +10873,6 @@ msgstr ""
 msgid "No data received yet"
 msgstr ""
 
-msgid "Select 'Yes' when you want to configure this tuner for ATSC"
-msgstr ""
-
-msgid "Select 'Yes' when you want to configure this tuner for DVB-C"
-msgstr ""
-
-msgid "Select 'Yes' when you want to configure this tuner for DVB-S"
-msgstr ""
-
-msgid "Select 'Yes' when you want to configure this tuner for DVB-T"
-msgstr ""
-
-msgid "Hotswitchable tuner"
-msgstr ""
-
 msgid "Switchable tuner types"
 msgstr ""
 
@@ -10904,4 +10889,13 @@ msgid "Your receiver can use SCPC optimized search range. Consult your receiver'
 msgstr ""
 
 msgid "With T2MI RAW mode disabled (default) we can use single T2MI PLP de-encapsulation. With T2MI RAW mode enabled we can use astra-sm to analyze T2MI"
+msgstr ""
+
+msgid "Equal to"
+msgstr ""
+
+msgid "Second cable of motorized LNB"
+msgstr ""
+
+msgid "Loop through from"
 msgstr ""
