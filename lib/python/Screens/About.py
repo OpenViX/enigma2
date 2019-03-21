@@ -164,7 +164,7 @@ class About(Screen):
 		self["FlashDate"] = StaticText(FlashDate)
 		AboutText += FlashDate + "\n"
 
-		EnigmaSkin = _('Skin & Resolution: %s (%sx%s)') % (config.skin.primary_skin.value[0:-9], getDesktop(0).size().width(), getDesktop(0).size().height())
+		EnigmaSkin = _('Skin & Resolution: %s (%sx%s)') % (config.skin.primary_skin.value.split('/')[0], getDesktop(0).size().width(), getDesktop(0).size().height())
 		self["EnigmaSkin"] = StaticText(EnigmaSkin)
 		AboutText += EnigmaSkin + "\n"
 
