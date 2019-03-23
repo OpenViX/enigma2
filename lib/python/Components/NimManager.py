@@ -529,11 +529,16 @@ class NIM(object):
 				print "[NIM] DVB API not reporting tuner %d as multitype" % self.frontend_id
 
 	def getTunerTypesEnabled(self):
-		return [x for x in self.multi_type.values() if
-			self.config.configModeDVBS.value and x.startswith("DVB-S") or
-			self.config.configModeDVBC.value and x.startswith("DVB-C") or
-			self.config.configModeDVBT.value and x.startswith("DVB-T") or
-			self.config.configModeATSC.value and x.startswith("ATSC")] if self.hotswitchable else [self.getType()]
+		try:
+			if self.hotswitchable:
+				return [x for x in self.multi_type.values() if
+					self.config.configModeDVBS.value and x.startswith("DVB-S") or
+					self.config.configModeDVBC.value and x.startswith("DVB-C") or
+					self.config.configModeDVBT.value and x.startswith("DVB-T") or
+					self.config.configModeATSC.value and x.startswith("ATSC")]
+		except:
+			pass
+		return [self.getType()]
 
 	def isCompatible(self, what):
 		return self.isSupported() and bool([x for x in self.getTunerTypesEnabled() if what in self.compatible[x]])
@@ -1645,7 +1650,7 @@ def InitNimManager(nimmgr, update_slots = []):
 				nim.configModeDVBC.value = nim.multiType.value.startswith("DVB-C")
 				nim.configModeDVBT.value = nim.multiType.value.startswith("DVB-T")
 				nim.configModeATSC.value = nim.multiType.value.startswith("ATSC")
-				nim.multiType = ""
+				nim.multiType.value = ""
 
 			nim.configModeDVBS.addNotifier(boundFunction(hotswitchableConfigChanged, nim, slot, slot_id), initial_call=False)
 			nim.configModeDVBC.addNotifier(boundFunction(hotswitchableConfigChanged, nim, slot, slot_id), initial_call=False)
