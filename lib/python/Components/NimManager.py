@@ -103,7 +103,7 @@ class SecConfigure:
 
 	def linkInternally(self, slotid):
 		nim = self.NimManager.getNim(slotid)
-		if nim.internallyConnectableTo() is not None and nim.internallyConnectableTo() >= 0:
+		if nim.internallyConnectableTo is not None:
 			nim.setInternalLink()
 
 	def linkNIMs(self, sec, nim1, nim2):
@@ -125,7 +125,7 @@ class SecConfigure:
 		sec = secClass.getInstance()
 		self.configuredSatellites = set()
 		for slotid in self.NimManager.getNimListOfType("DVB-S"):
-			if self.NimManager.nimInternallyConnectableTo(slotid) is not None and self.NimManager.nimInternallyConnectableTo(slotid) >= 0:
+			if self.NimManager.nimInternallyConnectableTo(slotid) is not None:
 				self.NimManager.nimRemoveInternalLink(slotid)
 		sec.clear() ## this do unlinking NIMs too !!
 		print "[SecConfigure] sec config cleared"
@@ -582,12 +582,12 @@ class NIM(object):
 		return self.internally_connectable
 
 	def setInternalLink(self):
-		if self.internally_connectable is not None and self.internally_connectable >= 0:
+		if self.internally_connectable is not None:
 			print "[NIM] setting internal link on frontend id", self.frontend_id
 			open("/proc/stb/frontend/%d/rf_switch" % self.frontend_id, "w").write("internal")
 
 	def removeInternalLink(self):
-		if self.internally_connectable is not None and self.internally_connectable >= 0:
+		if self.internally_connectable is not None:
 			print "[NIM] removing internal link on frontend id", self.frontend_id
 			open("/proc/stb/frontend/%d/rf_switch" % self.frontend_id, "w").write("external")
 
@@ -834,7 +834,7 @@ class NimManager:
 				entries[current_slot]["frontend_device"] = input
 			elif  line.startswith("Mode"):
 				# "Mode 0: DVB-T" -> ["Mode 0", "DVB-T"]
-				split = line.split(":")
+				split = line.split(": ")
 				if len(split) > 1 and split[1]:
 					# "Mode 0" -> ["Mode", "0"]
 					split2 = split[0].split(" ")
@@ -1165,7 +1165,7 @@ def InitSecParams():
 # the C(++) part should can handle this
 # the configElement should be only visible when diseqc 1.2 is disabled
 
-def InitNimManager(nimmgr, update_slots = None):
+def InitNimManager(nimmgr, update_slots=None):
 	update_slots = [] if update_slots is None else update_slots
 	hw = HardwareInfo()
 
