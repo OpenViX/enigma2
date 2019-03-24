@@ -30,7 +30,7 @@ from time import localtime, strftime
 #
 class ConfigElement(object):
 	def __init__(self):
-		self.extra_args = {}
+		self.extra_args = { }
 		self.saved_value = None
 		self.save_forced = False
 		self.last_value = None
@@ -1212,7 +1212,7 @@ class ConfigPassword(ConfigText):
 		mtext, text, mark = ConfigText.getMulti(self, selected)
 		if self.hidden:
 			text = len(text) * self.censor_char
-		return mtext, text, mark
+		return (mtext, text, mark)
 
 	def onSelect(self, session):
 		ConfigText.onSelect(self, session)
@@ -1405,7 +1405,7 @@ class ConfigSlider(ConfigElement):
 
 	def getMulti(self, selected):
 		self.checkValues()
-		return "slider", self.value, self.max
+		return ("slider", self.value, self.max)
 
 	def fromstring(self, value):
 		return int(value)
@@ -1477,7 +1477,7 @@ class ConfigSet(ConfigElement):
 
 	def getMulti(self, selected):
 		if not selected or self.pos == -1:
-			return "text", self.genString(self.value)
+			return ("text", self.genString(self.value))
 		else:
 			tmp = self.value[:]
 			ch = self.choices[self.pos]
@@ -1699,9 +1699,9 @@ class ConfigLocations(ConfigElement):
 		if not selected:
 			valstr = " ".join(self.value)
 			if self.visible_width and len(valstr) > self.visible_width:
-				return "text", valstr[0:self.visible_width]
+				return ("text", valstr[0:self.visible_width])
 			else:
-				return "text", valstr
+				return ("text", valstr)
 		else:
 			i = 0
 			valstr = ""
@@ -1983,9 +1983,6 @@ config = Config()
 config.misc = ConfigSubsection()
 
 class ConfigFile:
-	def __init__(self):
-		pass
-
 	CONFIG_FILE = resolveFilename(SCOPE_CONFIG, "settings")
 
 	def load(self):
@@ -2126,14 +2123,14 @@ class ConfigCECAddress(ConfigSequence):
 		leftPos = sum(block_strlen[:(self.marked_block)]) + self.marked_block
 		rightPos = sum(block_strlen[:(self.marked_block + 1)]) + self.marked_block
 		mBlock = range(leftPos, rightPos)
-		return value, mBlock
+		return (value, mBlock)
 
 	def getMulti(self, selected):
 		(value, mBlock) = self.genText()
 		if self.enabled:
 			return ("mtext"[1 - selected:], value, mBlock)
 		else:
-			return "text", value
+			return ("text", value)
 
 	def getHTML(self, id):
 		# we definitely don't want leading zeros
