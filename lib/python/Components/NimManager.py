@@ -1510,7 +1510,7 @@ def InitNimManager(nimmgr, update_slots=None):
 	def tunerTypeChanged(nimmgr, configElement, initial=False):
 		fe_id = configElement.fe_id
 		if configElement.value == 'nothing':
-			"[InitNimManager] disable multitype tuner %s" % fe_id
+			print "[InitNimManager] disable multitype tuner %s" % fe_id
 			eDVBResourceManager.getInstance().setFrontendType(nimmgr.nim_slots[fe_id].frontend_id, "UNDEFINED")
 		else:
 			print "[InitNimManager] tunerTypeChanged: setFrontendType %s" % nimmgr.nim_slots[fe_id].getType()
