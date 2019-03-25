@@ -623,6 +623,8 @@ class HarddiskManager:
 			else:
 				dev = None
 			blacklisted = dev in [1, 7, 31, 253, 254] + (SystemInfo["HasMMC"] and [179] or []) #ram, loop, mtdblock, romblock, ramzswap, mmc
+			if blockdev == "mmcblk1" and "mmcblk1" not in BLACKLIST:
+				blacklisted = False
 			if blockdev[0:2] == 'sr':
 				is_cdrom = True
 			if blockdev[0:2] == 'hd':
