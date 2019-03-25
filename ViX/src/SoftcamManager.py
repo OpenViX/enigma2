@@ -242,8 +242,8 @@ class VIXSoftcamManager(Screen):
 					else:
 						self.session.openWithCallback(self.showActivecam, VIXStartCam, self.sel[0])
 				elif selcam.lower().startswith('oscam'):
-					if not path.exists('/etc/tuxbox/config/oscam.conf') and not path.exists('/etc/tuxbox/config/oscam/oscam.conf'):
-						self.session.open(MessageBox, _("No config files found, please setup Oscam first\nin /etc/tuxbox/config or in /etc/tuxbox/config/oscam."), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
+					if not path.exists('/etc/tuxbox/config/oscam.conf'):
+						self.session.open(MessageBox, _("No config files found, please setup Oscam first\nin /etc/tuxbox/config"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 					else:
 						self.session.openWithCallback(self.showActivecam, VIXStartCam, self.sel[0])
 				elif selcam.lower().startswith('mgcam'):
@@ -734,8 +734,6 @@ class SoftcamAutoPoller:
 							port = ''
 							if path.exists('/etc/tuxbox/config/oscam.conf'):
 								oscamconf = '/etc/tuxbox/config/oscam.conf'
-							elif path.exists('/etc/tuxbox/config/oscam/oscam.conf'):
-								oscamconf = '/etc/tuxbox/config/oscam/oscam.conf'
 							f = open(oscamconf, 'r')
 							for line in f.readlines():
 								if line.find('httpport') != -1:
