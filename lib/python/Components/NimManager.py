@@ -1642,6 +1642,8 @@ def InitNimManager(nimmgr, update_slots = []):
 				nim.configMode.value = "nothing"
 
 		if slot.isCombined():
+
+			#Convert during an upgrade that multiType is 'converted' to combined config when needed
 			if nim.configMode.value and not slot.getTunerTypesEnabled():
 				nim.multiType = ConfigText(default = "")
 				if nim.multiType.value:
