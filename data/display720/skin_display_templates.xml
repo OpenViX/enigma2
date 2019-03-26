@@ -493,4 +493,19 @@
 		<widget source="parent.Title" render="Label" position="10,20" size="670,250" font="FdLcD;80" halign="center" valign="center" foregroundColor="#e5b243" />
 		<panel name="LCDTime" />
 	</screen> 
+
+	<!-- SKINSELECTOR -->
+	<screen name="SkinSelectorSummary" position="0,0" size="720,576">
+		<widget source="parent.Title" render="Label" position="10,50" size="700,110" foregroundColor="yellow" font="FdLcD;85" halign="center" valign="center" zPosition="2" />
+		<widget source="Name" render="Label" position="10,200" size="700,160" foregroundColor="white" font="FdLcDLight;65" halign="center" valign="top" zPosition="2" />
+		<panel name="LCDTime" />
+	</screen>
+
+	<!-- TIMEREDITLIST -->
+	<screen name="TimerEditListSummary" position="0,0" size="720,576"> 
+		<widget source="service" render="Label" position="10,40" size="700,90" font="FdLcD;75" foregroundColor="yellow" halign="center" valign="center" />
+		<widget source="name" render="Label" position="10,150" size="700,150" font="FdLcDLight;60" foregroundColor="white" halign="center" valign="top" />
+		<widget source="time" render="Label" position="10,340" size="700,70" font="FdLcD;60" foregroundColor="green" halign="center" valign="center" />
+		<widget source="duration" render="Label" position="10,430" size="700,70" font="FdLcD;60" foregroundColor="white" halign="center" valign="center" />
+	</screen>
 </skin>

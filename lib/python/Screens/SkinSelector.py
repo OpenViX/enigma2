@@ -119,6 +119,7 @@ class SkinSelectorBase:
 		aboutbox.setTitle(_("About..."))
 
 	def loadPreview(self):
+		self.changedEntry()
 		if self["SkinList"].getCurrent() == self.DEFAULTSKIN:
 			pngpath = "."
 			pngpath = os.path.join(os.path.join(self.root, pngpath), "prev.png")
@@ -161,6 +162,7 @@ class SkinSelector(Screen, SkinSelectorBase):
 	def __init__(self, session, menu_path="", skin_name=None):
 		Screen.__init__(self, session)
 		SkinSelectorBase.__init__(self, session)
+		self.onChangedEntry = []
 		self.skinName = ["SkinSelector"]
 		if isinstance(skin_name, str):
 			self.skinName.insert(0,skin_name)
@@ -179,6 +181,19 @@ class SkinSelector(Screen, SkinSelectorBase):
 		Screen.setTitle(self, title)
 		self.config = config.skin.primary_skin
 
+	# for summary
+	def changedEntry(self):
+		for x in self.onChangedEntry:
+			x()
+
+	def createSummary(self):
+		return SkinSelectorSummary
+
+	def getCurrentName(self):
+		current = self["SkinList"].getCurrent()
+		return None if current is None else current.replace("_", " ")
+
+
 class LcdSkinSelector(Screen, SkinSelectorBase):
 	SKINXML = "skin_display.xml"
 	DEFAULTSKIN = _("< Default >")
@@ -191,6 +206,7 @@ class LcdSkinSelector(Screen, SkinSelectorBase):
 	def __init__(self, session, menu_path=""):
 		Screen.__init__(self, session)
 		SkinSelectorBase.__init__(self, session)
+		self.onChangedEntry = []
 		screentitle = _("Skin setup")
 		if config.usage.show_menupath.value == 'large':
 			menu_path += screentitle
@@ -205,3 +221,36 @@ class LcdSkinSelector(Screen, SkinSelectorBase):
 		Screen.setTitle(self, title)
 		self.skinName = "SkinSelector"
 		self.config = config.skin.display_skin
+
+	# for summary
+	def changedEntry(self):
+		for x in self.onChangedEntry:
+			x()
+
+	def createSummary(self):
+		return SkinSelectorSummary
+
+	def getCurrentName(self):
+		current = self["SkinList"].getCurrent()
+		return None if current is None else current.replace("_", " ")
+
+
+class SkinSelectorSummary(Screen):
+	def __init__(self, session, parent):
+		Screen.__init__(self, session, parent = parent)
+		self["Name"] = StaticText("")
+		if hasattr(self.parent,"onChangedEntry"):
+			self.onShow.append(self.addWatcher)
+			self.onHide.append(self.removeWatcher)
+
+	def addWatcher(self):
+		if hasattr(self.parent,"onChangedEntry"):
+			self.parent.onChangedEntry.append(self.selectionChanged)
+			self.selectionChanged()
+
+	def removeWatcher(self):
+		if hasattr(self.parent,"onChangedEntry"):
+			self.parent.onChangedEntry.remove(self.selectionChanged)
+
+	def selectionChanged(self):
+		self["Name"].text = self.parent.getCurrentName()

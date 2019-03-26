@@ -26,7 +26,7 @@ from Screens.VirtualKeyBoard import VirtualKeyBoard
 from RecordTimer import AFTEREVENT
 
 
-class TimerEntry(Screen, ConfigListScreen):
+class TimerEntry(ConfigListScreen, Screen):
 	def __init__(self, session, timer, menu_path=""):
 		Screen.__init__(self, session)
 		screentitle = _("Timer entry")
