@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-22 15:14+0100\n"
+"POT-Creation-Date: 2019-03-29 23:05+0100\n"
 "PO-Revision-Date: 2015-08-25 18:31+0100\n"
 "Last-Translator: andy1 <dmmm8000pvr@gmail.com>\n"
 "Language-Team: none\n"
@@ -205,6 +205,10 @@ msgstr "ukjent kanal"
 #
 msgid " extensions."
 msgstr " utvidelser."
+
+#, fuzzy
+msgid " min"
+msgstr "%d minutt"
 
 msgid " ms"
 msgstr ""
@@ -446,10 +450,6 @@ msgstr[1] "%s nye oppdateringer er tilgjengelige"
 #
 #, python-format
 msgid "%s%d min"
-msgstr ""
-
-#, python-format
-msgid "%s%d%s"
 msgstr ""
 
 #, python-format
@@ -784,6 +784,9 @@ msgid ""
 msgstr ""
 "En konfigurasjonsfil (%s) har blitt endret siden installasjonen.\n"
 "Vil du bruke din versjon ?"
+
+msgid "A file from media is in use!"
+msgstr ""
 
 msgid ""
 "A finished record timer wants to set your\n"
@@ -1174,6 +1177,9 @@ msgid "Allow subtitles for hearing impaired"
 msgstr "Bruk undertekst for hørselshemmede"
 
 msgid "Allows you to enable the debug log. They contain very detailed information of everything the system does."
+msgstr ""
+
+msgid "Allows you to enable the twisted log. They contain very detailed information of everything the twisted does."
 msgstr ""
 
 #
@@ -2352,6 +2358,11 @@ msgstr "Farge format"
 msgid "Color space"
 msgstr "Farge format"
 
+#
+#, fuzzy
+msgid "Combined"
+msgstr "Farge format"
+
 msgid "Combo"
 msgstr ""
 
@@ -2418,8 +2429,10 @@ msgstr "Oppsettstype: %s"
 msgid "Configuration..."
 msgstr "Innstilling..."
 
-msgid "Configure DVB-ATSC"
-msgstr ""
+#
+#, fuzzy
+msgid "Configure ATSC"
+msgstr "Stiller inn"
 
 #
 #, fuzzy
@@ -4091,6 +4104,11 @@ msgstr "Aktiver OK for kanal valg"
 msgid "Enable to display all true/false, yes/no, on/off and enable/disable set up options as a graphical switch."
 msgstr ""
 
+#
+#, fuzzy
+msgid "Enable twisted log *"
+msgstr "Aktivert"
+
 msgid "Enable volume control with arrow buttons"
 msgstr "Aktiver lyd kontroll med piltastene"
 
@@ -5353,16 +5371,6 @@ msgstr "Snarveistast innstilling"
 msgid "Hotkey zap"
 msgstr "Snarveistast zap"
 
-#
-#, fuzzy
-msgid "Hotswitchable"
-msgstr "Aktiver"
-
-#
-#, fuzzy
-msgid "Hotswitchable tuner"
-msgstr "Valgbar tuner:"
-
 msgid "Hour"
 msgstr ""
 
@@ -5793,11 +5801,6 @@ msgstr "Ugyldig katalog valgt:%s"
 
 #
 msgid "Invalid location"
-msgstr "Ugyldig plassering"
-
-#
-#, fuzzy
-msgid "Invalid reason"
 msgstr "Ugyldig plassering"
 
 #
@@ -6508,6 +6511,11 @@ msgid "Missing "
 msgstr "Savnet"
 
 #
+#, fuzzy
+msgid "Mode"
+msgstr "Type"
+
+#
 msgctxt "Satellite configuration mode"
 msgid "Mode"
 msgstr "Type"
@@ -6540,6 +6548,11 @@ msgstr "Modell:"
 #, fuzzy
 msgid "Model: unknown"
 msgstr "Modell:"
+
+#
+#, fuzzy
+msgid "Modes"
+msgstr "Type"
 
 #
 msgid "Modulation"
@@ -6749,6 +6762,11 @@ msgstr "Alle satellitt posisjoner"
 #, fuzzy
 msgid "MultiBoot Selector"
 msgstr "Alle satellitt posisjoner egendefinert valg"
+
+#
+#, fuzzy
+msgid "MultiType"
+msgstr "Type"
 
 #, fuzzy
 msgid "Multichannel PCM"
@@ -7127,9 +7145,6 @@ msgstr "Ingen standby"
 
 msgid "No streaming Channel from this STB at this moment"
 msgstr ""
-
-msgid "No suitable sat tuner found!"
-msgstr "Ingen passende sat tuner ble funnet!"
 
 msgid "No tags are set on these movies."
 msgstr "Ingen tagger er satt på disse opptakene."
@@ -8282,6 +8297,19 @@ msgstr "Forbereder.. vennligst vent"
 msgid "Press '0' to toggle PiP mode"
 msgstr "Trykk '0' for å skru av/på PiP (Bilde i bilde)."
 
+#, fuzzy
+msgid "Press 'OK' for attach function."
+msgstr "Trykk OK for å veksle mellom valgene."
+
+msgid "Press 'OK' for attach next function or 'CH+/-' for edit attached."
+msgstr ""
+
+msgid "Press 'OK' for remove item or 'CH+/-' for toggle to list of features."
+msgstr ""
+
+msgid "Press 'OK' for remove item or < > for change order or 'CH+/-' for toggle to list of features."
+msgstr ""
+
 msgid "Press INFO on your remote control for additional information."
 msgstr "Trykk INFO på fjernkontrollen for ytterligere informasjon."
 
@@ -8337,6 +8365,12 @@ msgstr "Trykk OK for å veksle mellom valgene."
 #, fuzzy
 msgid "Press OK, save and exit..."
 msgstr "Lagre og avslutt"
+
+msgid "Press or select button and then press 'OK' for attach function."
+msgstr ""
+
+msgid "Press or select button and then press 'OK' for attach next function or edit attached."
+msgstr ""
 
 msgid "Press yellow to set this interface as default interface."
 msgstr "Trykk gul for å velge dette som standard grensesnitt."
@@ -9430,7 +9464,7 @@ msgstr ""
 msgid "Select 'FBC SCR' if this tuner will connect to a SCR (Unicable/JESS) device. For all other setups select 'FBC automatic'."
 msgstr ""
 
-msgid "Select 'Yes' when you want to configure this tuner for DVB-ATSC"
+msgid "Select 'Yes' when you want to configure this tuner for ATSC"
 msgstr ""
 
 msgid "Select 'Yes' when you want to configure this tuner for DVB-C"
@@ -11211,11 +11245,6 @@ msgstr "Gå til forrige underkanal"
 #
 msgid "Switch to radio mode"
 msgstr "Gå til radio modus"
-
-#
-#, fuzzy
-msgid "Switchable tuner types"
-msgstr "Valgbar tuner:"
 
 msgid "Switzerland"
 msgstr ""
@@ -15166,6 +15195,10 @@ msgstr "Aktiver"
 
 msgid "until standby/restart"
 msgstr "til slår av/starter på nytt"
+
+#, fuzzy
+msgid "update bookmarks"
+msgstr "Automatisk skann"
 
 msgid "use best, controlled by HDMI"
 msgstr ""

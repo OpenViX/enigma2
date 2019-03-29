@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-22 15:14+0100\n"
-"PO-Revision-Date: 2019-02-22 15:35+0100\n"
+"POT-Creation-Date: 2019-03-29 23:05+0100\n"
+"PO-Revision-Date: 2019-03-29 23:22+0100\n"
 "Last-Translator: -=niki=- <niki_msn@hotmail.de>\n"
 "Language-Team: none\n"
 "Language: de\n"
@@ -197,6 +197,9 @@ msgstr " (unbekannter Modus)"
 
 msgid " extensions."
 msgstr " Erweiterungen."
+
+msgid " min"
+msgstr "min"
 
 msgid " ms"
 msgstr " ms"
@@ -434,10 +437,6 @@ msgstr[1] "%s Aktualisierungen verfügbar"
 #, python-format
 msgid "%s%d min"
 msgstr "%s%d min"
-
-#, python-format
-msgid "%s%d%s"
-msgstr "%s%d%s"
 
 #, python-format
 msgid "%s/%s: %s"
@@ -760,6 +759,9 @@ msgid ""
 msgstr ""
 "Eine Konfigurationsdatei (%s) wurde seit der Installation verändert.\n"
 "Wollen Sie diese Version behalten?"
+
+msgid "A file from media is in use!"
+msgstr "Eine Mediendatei ist in Benutzung!"
 
 msgid ""
 "A finished record timer wants to set your\n"
@@ -1099,6 +1101,9 @@ msgstr "Erlaube Untertitel für Hörgeschädigte"
 
 msgid "Allows you to enable the debug log. They contain very detailed information of everything the system does."
 msgstr "Aktivieren Sie das Debug Log. Diese enthalten sehr detaillierte Informationen von allem was das System macht."
+
+msgid "Allows you to enable the twisted log. They contain very detailed information of everything the twisted does."
+msgstr "Aktivieren Sie das Twisted Log. Diese enthalten sehr detaillierte Informationen von allem was Twisted macht."
 
 msgid "Alpha"
 msgstr "Alpha"
@@ -2108,6 +2113,9 @@ msgstr "Farbformat"
 msgid "Color space"
 msgstr "Farbraum"
 
+msgid "Combined"
+msgstr "Kombiniert"
+
 msgid "Combo"
 msgstr "Combo"
 
@@ -2160,8 +2168,8 @@ msgstr "Konfigurationsmodus: %s"
 msgid "Configuration..."
 msgstr "Konfiguration..."
 
-msgid "Configure DVB-ATSC"
-msgstr ""
+msgid "Configure ATSC"
+msgstr "Konfiguriere ATSC"
 
 msgid "Configure DVB-C"
 msgstr "Konfiguriere DVB-C"
@@ -3607,6 +3615,9 @@ msgstr "Aktiviere Konflikterkennung für Aufnahmen"
 msgid "Enable to display all true/false, yes/no, on/off and enable/disable set up options as a graphical switch."
 msgstr "Aktivieren Sie diese Option, um alle Optionen für \"Wahr / Falsch\", \"Ja / Nein\", \"Ein / Aus\" und \"Ein- / Ausschalten\" als grafischen Schalter anzuzeigen."
 
+msgid "Enable twisted log *"
+msgstr "Twisted Log aktivieren *"
+
 msgid "Enable volume control with arrow buttons"
 msgstr "Lautstärkeregelung mit den Pfeiltasten aktivieren"
 
@@ -4709,14 +4720,6 @@ msgstr "Tastenbelegung Einstellungen"
 msgid "Hotkey zap"
 msgstr "Zaptaste"
 
-#, fuzzy
-msgid "Hotswitchable"
-msgstr "nicht prüfbar"
-
-#, fuzzy
-msgid "Hotswitchable tuner"
-msgstr "Umschaltbare Tuner-Typen:"
-
 msgid "Hour"
 msgstr "Stunde"
 
@@ -5083,9 +5086,6 @@ msgstr "Ungültiges Verzeichnis ausgewählt: %s"
 
 msgid "Invalid location"
 msgstr "Fehlerhafter Ort"
-
-msgid "Invalid reason"
-msgstr "Ungültiger Grund"
 
 msgid "Invalid transponder data"
 msgstr "Ungültige Transponderdaten"
@@ -5687,6 +5687,10 @@ msgstr "Sendeintervall Mininum"
 msgid "Missing "
 msgstr "Fehlend "
 
+#, fuzzy
+msgid "Mode"
+msgstr "Modus"
+
 msgctxt "Satellite configuration mode"
 msgid "Mode"
 msgstr "Modus"
@@ -5711,6 +5715,9 @@ msgstr "Modell: %s %s\n"
 
 msgid "Model: unknown"
 msgstr "Modell: unbekannt"
+
+msgid "Modes"
+msgstr "Modi"
 
 msgid "Modulation"
 msgstr "Modulation"
@@ -5904,6 +5911,9 @@ msgstr "MultiBoot"
 msgid "MultiBoot Selector"
 msgstr "Multi-Boot auswählen"
 
+msgid "MultiType"
+msgstr "MultiType"
+
 msgid "Multichannel PCM"
 msgstr "Mehrkanalton PCM"
 
@@ -5920,7 +5930,7 @@ msgid "Multisat all select"
 msgstr "Multisat alle auswählen"
 
 msgid "Multistream"
-msgstr ""
+msgstr "Multistream"
 
 msgid "Music/Ballet/Dance"
 msgstr "Musik/Ballett/Tanz"
@@ -5987,7 +5997,7 @@ msgid "Nameserver setup"
 msgstr "DNS-Einstellungen"
 
 msgid "Namespace & Orbital pos."
-msgstr ""
+msgstr "Namespace & Orbital pos."
 
 msgid "Namibia"
 msgstr "Namibia"
@@ -6231,9 +6241,6 @@ msgstr "Kein Standby"
 
 msgid "No streaming Channel from this STB at this moment"
 msgstr "Derzeit streamen keine Geräte von dieser Box"
-
-msgid "No suitable sat tuner found!"
-msgstr "Kein Satellitenempfänger gefunden!"
 
 msgid "No tags are set on these movies."
 msgstr "Keine Tags für diese Filme gesetzt."
@@ -7205,6 +7212,18 @@ msgstr "Vorbereitung läuft... Bitte warten"
 msgid "Press '0' to toggle PiP mode"
 msgstr "Drücke '0' zum Umschalten des PiP-Modus"
 
+msgid "Press 'OK' for attach function."
+msgstr ""
+
+msgid "Press 'OK' for attach next function or 'CH+/-' for edit attached."
+msgstr ""
+
+msgid "Press 'OK' for remove item or 'CH+/-' for toggle to list of features."
+msgstr ""
+
+msgid "Press 'OK' for remove item or < > for change order or 'CH+/-' for toggle to list of features."
+msgstr ""
+
 msgid "Press INFO on your remote control for additional information."
 msgstr "INFO drücken für zusätzliche Informationen."
 
@@ -7256,6 +7275,12 @@ msgstr "Drücken Sie OK, um die Auswahl umzuschalten."
 
 msgid "Press OK, save and exit..."
 msgstr "Drücke OK zum Speichern und Beenden..."
+
+msgid "Press or select button and then press 'OK' for attach function."
+msgstr ""
+
+msgid "Press or select button and then press 'OK' for attach next function or edit attached."
+msgstr ""
 
 msgid "Press yellow to set this interface as default interface."
 msgstr "Drücken Sie Gelb, um diese Schnittstelle als Standard zu setzen."
@@ -8197,17 +8222,17 @@ msgstr "Wählen Sie \"A\" oder \"B\", wenn Ihr Antennensystem dies erfordert, an
 msgid "Select 'FBC SCR' if this tuner will connect to a SCR (Unicable/JESS) device. For all other setups select 'FBC automatic'."
 msgstr "Wählen Sie \"FBC SCR\", wenn dieser Tuner mit einem SCR (Unicable/JESS) Gerät verbunden ist, andernfalls wählen Sie \"FBC automatic\"."
 
-msgid "Select 'Yes' when you want to configure this tuner for DVB-ATSC"
-msgstr ""
+msgid "Select 'Yes' when you want to configure this tuner for ATSC"
+msgstr "Wähle 'Ja' wenn Du diesen Empfänger für ATSC konfigurieren möchtest"
 
 msgid "Select 'Yes' when you want to configure this tuner for DVB-C"
-msgstr ""
+msgstr "Wähle 'Ja' wenn Du diesen Empfänger für DVB-C konfigurieren möchtest"
 
 msgid "Select 'Yes' when you want to configure this tuner for DVB-S"
-msgstr ""
+msgstr "Wähle 'Ja' wenn Du diesen Empfänger für DVB-S konfigurieren möchtest"
 
 msgid "Select 'Yes' when you want to configure this tuner for DVB-T"
-msgstr ""
+msgstr "Wähle 'Ja' wenn Du diesen Empfänger für DVB-T konfigurieren möchtest"
 
 msgid "Select 'band' if using a 'universal' LNB, otherwise consult your LNB spec sheet."
 msgstr "Wählen Sie \"Band\", wenn Sie ein \"universelles\" LNB verwenden, andernfalls konsultieren Sie Ihr LNB-Datenblatt."
@@ -9397,7 +9422,6 @@ msgstr "Standby"
 msgid "Standby / restart"
 msgstr "Standby / Neustart"
 
-#, fuzzy
 msgid "Standby LED"
 msgstr "LED im Standby-Modus"
 
@@ -9724,10 +9748,6 @@ msgstr "Zum vorhergehenden Unterkanal schalten"
 
 msgid "Switch to radio mode"
 msgstr "Zum Radio Modus wechseln"
-
-#, fuzzy
-msgid "Switchable tuner types"
-msgstr "Umschaltbare Tuner-Typen:"
 
 msgid "Switzerland"
 msgstr "Switzerland"
@@ -10152,7 +10172,7 @@ msgstr ""
 "Bitte keine Panik, falls komische Informationen angezeigt werden!"
 
 msgid "This is a multitype tuner. Available options depend on the hardware."
-msgstr ""
+msgstr "Dies ist ein MultiType Empfänger. Verfügbare Optionen hängen von der Hardware ab."
 
 msgid "This is the order in which DiSEqC commands are sent to the aerial system. The order must correspond exactly with the order the physical devices are arranged along the signal cable (starting from the receiver end)."
 msgstr "In dieser Reihenfolge werden DiSEqC-Befehle an das Antennensystem gesendet. Die Reihenfolge muss genau der Reihenfolge entsprechen, in der die physikalischen Geräte entlang des Signalkabels angeordnet sind (ausgehend vom Empfängerende)."
@@ -10627,16 +10647,14 @@ msgstr "Turkmenistan"
 msgid "Turks and Caicos Islands"
 msgstr "Turks and Caicos Islands"
 
-#, fuzzy
 msgid "Turn on the power LED during deep standby."
-msgstr "Die LED im Standy-Modus ausschalten."
+msgstr "Die LED im DeepStandby einschalten."
 
 msgid "Turn on the power LED during standby."
-msgstr "Die LED im Standy-Modus ausschalten."
+msgstr "Die LED im Standby ausschalten."
 
-#, fuzzy
 msgid "Turn on the power LED."
-msgstr "Die LED im Standy-Modus ausschalten."
+msgstr "Die LED einschalten."
 
 msgid "Turning step size"
 msgstr "Dreh-Schrittweite"
@@ -10844,7 +10862,7 @@ msgid "Upgrading"
 msgstr "Aktualisiere"
 
 msgid "Upper case"
-msgstr ""
+msgstr "Großschreibung"
 
 msgid "Uruguay"
 msgstr "Uruguay"
@@ -10958,7 +10976,7 @@ msgid "User Feed URL"
 msgstr "Benutzerfeed Adresse"
 
 msgid "User ID"
-msgstr ""
+msgstr "Benutzer ID"
 
 msgid "User defined"
 msgstr "Benutzerdefiniert"
@@ -11014,7 +11032,7 @@ msgid "Vanuatu"
 msgstr "Vanuatu"
 
 msgid "Various"
-msgstr ""
+msgstr "Verschiedene"
 
 msgid "Venezuela (Bolivarian Republic of)"
 msgstr "Venezuela (Bolivarian Republic of)"
@@ -13299,6 +13317,9 @@ msgstr "nicht prüfbar"
 
 msgid "until standby/restart"
 msgstr "Bis zum Standby/Neustart"
+
+msgid "update bookmarks"
+msgstr "aktualisiere Lesezeichen"
 
 msgid "use best, controlled by HDMI"
 msgstr ""

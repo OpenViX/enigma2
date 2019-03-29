@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tuxbox-enigma 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-22 15:14+0100\n"
+"POT-Creation-Date: 2019-03-29 23:05+0100\n"
 "PO-Revision-Date: 2016-06-17 12:13+0800\n"
 "Last-Translator: nx111 <gdzdz@163.com>\n"
 "Language-Team: NEWBOLT\n"
@@ -188,6 +188,10 @@ msgstr "未知"
 
 msgid " extensions."
 msgstr "扩展"
+
+#, fuzzy
+msgid " min"
+msgstr "%d 分钟"
 
 msgid " ms"
 msgstr ""
@@ -425,10 +429,6 @@ msgstr[1] "%s pembaruan paket-paket tersedia"
 
 #, python-format
 msgid "%s%d min"
-msgstr ""
-
-#, python-format
-msgid "%s%d%s"
 msgstr ""
 
 #, python-format
@@ -725,6 +725,9 @@ msgid ""
 msgstr ""
 "配置文件(%s)在安装后被修改了.\n"
 "是否想要保留您的版本？"
+
+msgid "A file from media is in use!"
+msgstr ""
 
 msgid ""
 "A finished record timer wants to set your\n"
@@ -1080,6 +1083,9 @@ msgid "Allow subtitles for hearing impaired"
 msgstr ""
 
 msgid "Allows you to enable the debug log. They contain very detailed information of everything the system does."
+msgstr ""
+
+msgid "Allows you to enable the twisted log. They contain very detailed information of everything the twisted does."
 msgstr ""
 
 msgid "Alpha"
@@ -2127,6 +2133,10 @@ msgstr "色彩格式"
 msgid "Color space"
 msgstr "色彩"
 
+#, fuzzy
+msgid "Combined"
+msgstr "色彩"
+
 msgid "Combo"
 msgstr ""
 
@@ -2181,8 +2191,9 @@ msgstr ""
 msgid "Configuration..."
 msgstr "设置..."
 
-msgid "Configure DVB-ATSC"
-msgstr ""
+#, fuzzy
+msgid "Configure ATSC"
+msgstr "配置"
 
 #, fuzzy
 msgid "Configure DVB-C"
@@ -3688,6 +3699,10 @@ msgstr ""
 msgid "Enable to display all true/false, yes/no, on/off and enable/disable set up options as a graphical switch."
 msgstr ""
 
+#, fuzzy
+msgid "Enable twisted log *"
+msgstr "启用的"
+
 msgid "Enable volume control with arrow buttons"
 msgstr ""
 
@@ -4827,14 +4842,6 @@ msgstr "网络设置"
 msgid "Hotkey zap"
 msgstr ""
 
-#, fuzzy
-msgid "Hotswitchable"
-msgstr "启用"
-
-#, fuzzy
-msgid "Hotswitchable tuner"
-msgstr "可换调谐器类型"
-
 msgid "Hour"
 msgstr "小时(n) "
 
@@ -5214,10 +5221,6 @@ msgstr "选择了无效目录: %s"
 
 msgid "Invalid location"
 msgstr ""
-
-#, fuzzy
-msgid "Invalid reason"
-msgstr "手动转发器扫描"
 
 #, fuzzy
 msgid "Invalid transponder data"
@@ -5850,6 +5853,10 @@ msgstr "间隔 %d 分钟"
 msgid "Missing "
 msgstr "丢失"
 
+#, fuzzy
+msgid "Mode"
+msgstr "输出模式"
+
 msgctxt "Satellite configuration mode"
 msgid "Mode"
 msgstr ""
@@ -5876,6 +5883,10 @@ msgstr "型号:"
 #, fuzzy
 msgid "Model: unknown"
 msgstr "型号:"
+
+#, fuzzy
+msgid "Modes"
+msgstr "输出模式"
 
 msgid "Modulation"
 msgstr "调制"
@@ -6077,6 +6088,10 @@ msgstr "多星"
 #, fuzzy
 msgid "MultiBoot Selector"
 msgstr "Multi-EPG组 选择"
+
+#, fuzzy
+msgid "MultiType"
+msgstr "多媒体"
 
 #, fuzzy
 msgid "Multichannel PCM"
@@ -6407,10 +6422,6 @@ msgstr ""
 
 msgid "No streaming Channel from this STB at this moment"
 msgstr ""
-
-#, fuzzy
-msgid "No suitable sat tuner found!"
-msgstr "没有发现卫星前端"
 
 msgid "No tags are set on these movies."
 msgstr "这些影片没有标签"
@@ -7448,6 +7459,19 @@ msgstr "准备中... 请稍候!"
 msgid "Press '0' to toggle PiP mode"
 msgstr "按'0'切换 内/外 画中画."
 
+#, fuzzy
+msgid "Press 'OK' for attach function."
+msgstr "按OK键修改选择"
+
+msgid "Press 'OK' for attach next function or 'CH+/-' for edit attached."
+msgstr ""
+
+msgid "Press 'OK' for remove item or 'CH+/-' for toggle to list of features."
+msgstr ""
+
+msgid "Press 'OK' for remove item or < > for change order or 'CH+/-' for toggle to list of features."
+msgstr ""
+
 msgid "Press INFO on your remote control for additional information."
 msgstr "按INFO键查看更多信息."
 
@@ -7505,6 +7529,12 @@ msgstr "按OK键修改选择"
 #, fuzzy
 msgid "Press OK, save and exit..."
 msgstr "按OK键保存设置"
+
+msgid "Press or select button and then press 'OK' for attach function."
+msgstr ""
+
+msgid "Press or select button and then press 'OK' for attach next function or edit attached."
+msgstr ""
 
 msgid "Press yellow to set this interface as default interface."
 msgstr "按黄键设置默认网卡"
@@ -8520,7 +8550,7 @@ msgstr ""
 msgid "Select 'FBC SCR' if this tuner will connect to a SCR (Unicable/JESS) device. For all other setups select 'FBC automatic'."
 msgstr ""
 
-msgid "Select 'Yes' when you want to configure this tuner for DVB-ATSC"
+msgid "Select 'Yes' when you want to configure this tuner for ATSC"
 msgstr ""
 
 msgid "Select 'Yes' when you want to configure this tuner for DVB-C"
@@ -10164,10 +10194,6 @@ msgstr ""
 #, fuzzy
 msgid "Switch to radio mode"
 msgstr "选择音频模式"
-
-#, fuzzy
-msgid "Switchable tuner types"
-msgstr "可换调谐器类型"
 
 msgid "Switzerland"
 msgstr ""
@@ -13725,6 +13751,10 @@ msgstr "启用"
 
 msgid "until standby/restart"
 msgstr "直到待机/重启"
+
+#, fuzzy
+msgid "update bookmarks"
+msgstr "自动扫描"
 
 msgid "use best, controlled by HDMI"
 msgstr ""

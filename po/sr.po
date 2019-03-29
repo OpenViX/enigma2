@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-22 15:14+0100\n"
+"POT-Creation-Date: 2019-03-29 23:05+0100\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: arn354 <arn354@email.de>\n"
 "Language-Team: none\n"
@@ -200,6 +200,11 @@ msgstr "Nepoznat kanal"
 #
 msgid " extensions."
 msgstr "proširenja."
+
+#
+#, fuzzy
+msgid " min"
+msgstr "%d min"
 
 msgid " ms"
 msgstr "ms"
@@ -463,10 +468,6 @@ msgstr[2] "ažuriranja dostupna."
 
 #, python-format
 msgid "%s%d min"
-msgstr ""
-
-#, python-format
-msgid "%s%d%s"
 msgstr ""
 
 #, python-format
@@ -809,6 +810,9 @@ msgid ""
 msgstr ""
 "Konfiguracioni fajl (%s) je promenjen posle instalacije.\n"
 "Želite li zadržati vašu verziju?"
+
+msgid "A file from media is in use!"
+msgstr ""
 
 msgid ""
 "A finished record timer wants to set your\n"
@@ -1230,6 +1234,9 @@ msgid "Allow subtitles for hearing impaired"
 msgstr ""
 
 msgid "Allows you to enable the debug log. They contain very detailed information of everything the system does."
+msgstr ""
+
+msgid "Allows you to enable the twisted log. They contain very detailed information of everything the twisted does."
 msgstr ""
 
 #
@@ -2452,6 +2459,11 @@ msgstr "Kolor format"
 msgid "Color space"
 msgstr "Kolor format"
 
+#
+#, fuzzy
+msgid "Combined"
+msgstr "Kolor format"
+
 msgid "Combo"
 msgstr ""
 
@@ -2523,8 +2535,10 @@ msgstr "Mod konfiguracije"
 msgid "Configuration..."
 msgstr "Mrežna konfiguracija..."
 
-msgid "Configure DVB-ATSC"
-msgstr ""
+#
+#, fuzzy
+msgid "Configure ATSC"
+msgstr "Konfigurišem"
 
 #
 #, fuzzy
@@ -4275,6 +4289,11 @@ msgstr ""
 
 #
 #, fuzzy
+msgid "Enable twisted log *"
+msgstr "Omogućeno"
+
+#
+#, fuzzy
 msgid "Enable volume control with arrow buttons"
 msgstr "Izaberi video ulaz sa UP/DOWN tipkama"
 
@@ -5589,16 +5608,6 @@ msgstr "Zaštitite postavke"
 msgid "Hotkey zap"
 msgstr ""
 
-#
-#, fuzzy
-msgid "Hotswitchable"
-msgstr "Omogući"
-
-#
-#, fuzzy
-msgid "Hotswitchable tuner"
-msgstr "Zamenljivi tipovi tjunera:"
-
 msgid "Hour"
 msgstr ""
 
@@ -6046,11 +6055,6 @@ msgstr "Izabran je nevažeči direktorijum: %s"
 #
 #, fuzzy
 msgid "Invalid location"
-msgstr "Nevažeća lokacija"
-
-#
-#, fuzzy
-msgid "Invalid reason"
 msgstr "Nevažeća lokacija"
 
 msgid "Invalid transponder data"
@@ -6805,6 +6809,11 @@ msgstr ""
 
 #
 #, fuzzy
+msgid "Mode"
+msgstr "Način"
+
+#
+#, fuzzy
 msgctxt "Satellite configuration mode"
 msgid "Mode"
 msgstr "Način"
@@ -6838,6 +6847,11 @@ msgstr "Model:"
 #, fuzzy
 msgid "Model: unknown"
 msgstr "Model:"
+
+#
+#, fuzzy
+msgid "Modes"
+msgstr "Način"
 
 #
 msgid "Modulation"
@@ -7054,6 +7068,11 @@ msgstr "Multisat"
 #, fuzzy
 msgid "MultiBoot Selector"
 msgstr "Multi EPG izbor buketa"
+
+#
+#, fuzzy
+msgid "MultiType"
+msgstr "Multimedija"
 
 #
 #, fuzzy
@@ -7443,9 +7462,6 @@ msgid "No standby"
 msgstr "ne stanje pripravnosti"
 
 msgid "No streaming Channel from this STB at this moment"
-msgstr ""
-
-msgid "No suitable sat tuner found!"
 msgstr ""
 
 #
@@ -8662,6 +8678,20 @@ msgstr "Pripremam... Molim pričekajte"
 msgid "Press '0' to toggle PiP mode"
 msgstr ""
 
+#
+#, fuzzy
+msgid "Press 'OK' for attach function."
+msgstr "Pritisnite OK da prebacite izbor."
+
+msgid "Press 'OK' for attach next function or 'CH+/-' for edit attached."
+msgstr ""
+
+msgid "Press 'OK' for remove item or 'CH+/-' for toggle to list of features."
+msgstr ""
+
+msgid "Press 'OK' for remove item or < > for change order or 'CH+/-' for toggle to list of features."
+msgstr ""
+
 msgid "Press INFO on your remote control for additional information."
 msgstr "Pritisni INFO na svom daljinskom za dodatne informacije."
 
@@ -8726,6 +8756,12 @@ msgid "Press OK to toggle the selection."
 msgstr "Pritisnite OK da prebacite izbor."
 
 msgid "Press OK, save and exit..."
+msgstr ""
+
+msgid "Press or select button and then press 'OK' for attach function."
+msgstr ""
+
+msgid "Press or select button and then press 'OK' for attach next function or edit attached."
 msgstr ""
 
 #
@@ -9916,7 +9952,7 @@ msgstr ""
 msgid "Select 'FBC SCR' if this tuner will connect to a SCR (Unicable/JESS) device. For all other setups select 'FBC automatic'."
 msgstr ""
 
-msgid "Select 'Yes' when you want to configure this tuner for DVB-ATSC"
+msgid "Select 'Yes' when you want to configure this tuner for ATSC"
 msgstr ""
 
 msgid "Select 'Yes' when you want to configure this tuner for DVB-C"
@@ -11866,11 +11902,6 @@ msgstr "prebaci na prethodni podkanal "
 #, fuzzy
 msgid "Switch to radio mode"
 msgstr "prebaci na prethodni podkanal "
-
-#
-#, fuzzy
-msgid "Switchable tuner types"
-msgstr "Zamenljivi tipovi tjunera:"
 
 msgid "Switzerland"
 msgstr ""
@@ -15948,6 +15979,11 @@ msgstr "Omogući"
 #
 msgid "until standby/restart"
 msgstr "do spreman/restart"
+
+#
+#, fuzzy
+msgid "update bookmarks"
+msgstr "Automatsko skeniranje "
 
 msgid "use best, controlled by HDMI"
 msgstr ""

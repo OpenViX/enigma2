@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue (Apachi70)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-22 15:14+0100\n"
+"POT-Creation-Date: 2019-03-29 23:05+0100\n"
 "PO-Revision-Date: 2019-02-22 23:32+0100\n"
 "Last-Translator: Apachi70 (TeamBlue) <apachi70000@gmail.com>\n"
 "Language-Team: Turkish <apachi70000@gmail.com>\n"
@@ -198,6 +198,10 @@ msgstr " (bilinmeyen mod)"
 
 msgid " extensions."
 msgstr " eklentiler."
+
+#, fuzzy
+msgid " min"
+msgstr "%d dk"
 
 msgid " ms"
 msgstr " ms"
@@ -424,10 +428,6 @@ msgstr[0] "%s mevcut paket güncellendi"
 #, python-format
 msgid "%s%d min"
 msgstr "%s%d dk"
-
-#, python-format
-msgid "%s%d%s"
-msgstr "%s%d%s"
 
 #, python-format
 msgid "%s/%s: %s"
@@ -750,6 +750,9 @@ msgid ""
 msgstr ""
 "Kurulumdan sonra (%s) yapılandırma dosyası değiştirilmiş.\n"
 "Kendi dosyanızı tutmak istiyor musunuz?"
+
+msgid "A file from media is in use!"
+msgstr ""
 
 msgid ""
 "A finished record timer wants to set your\n"
@@ -1089,6 +1092,10 @@ msgid "Allow subtitles for hearing impaired"
 msgstr "İşitme engelliler için altyazı sağlar"
 
 msgid "Allows you to enable the debug log. They contain very detailed information of everything the system does."
+msgstr "Hata ayıklama günlüklerini etkinleştirmenizi sağlar. Sistemin her şeyi hakkında çok ayrıntılı bilgiler içerir."
+
+#, fuzzy
+msgid "Allows you to enable the twisted log. They contain very detailed information of everything the twisted does."
 msgstr "Hata ayıklama günlüklerini etkinleştirmenizi sağlar. Sistemin her şeyi hakkında çok ayrıntılı bilgiler içerir."
 
 msgid "Alpha"
@@ -2100,6 +2107,10 @@ msgstr "Renk formatı"
 msgid "Color space"
 msgstr "Renk alanı"
 
+#, fuzzy
+msgid "Combined"
+msgstr "Kolombiya"
+
 msgid "Combo"
 msgstr "Kombo"
 
@@ -2152,7 +2163,8 @@ msgstr "Yapılandırma modu: %s"
 msgid "Configuration..."
 msgstr "Yapılandırma..."
 
-msgid "Configure DVB-ATSC"
+#, fuzzy
+msgid "Configure ATSC"
 msgstr "DVB-ATSC'yi yapılandırın"
 
 msgid "Configure DVB-C"
@@ -3598,6 +3610,10 @@ msgstr "Zamanlayıcı çakışma algılamasını etkinleştirmek"
 msgid "Enable to display all true/false, yes/no, on/off and enable/disable set up options as a graphical switch."
 msgstr "Tüm doğru / yanlış, evet / hayır, açma / kapama ve ayarlama seçeneklerini grafik bir anahtar olarak etkinleştirme / devre dışı bırakmayı etkinleştirme."
 
+#, fuzzy
+msgid "Enable twisted log *"
+msgstr "Hata ayıklama kaydını etkinleştir"
+
 msgid "Enable volume control with arrow buttons"
 msgstr "Ok tuşları ile ses kontrolünü etkinleştir"
 
@@ -4697,12 +4713,6 @@ msgstr "Kısayol Kurulum"
 msgid "Hotkey zap"
 msgstr "Kısayol kanal değişimi"
 
-msgid "Hotswitchable"
-msgstr "Hotswitchable"
-
-msgid "Hotswitchable tuner"
-msgstr "Hotswitchable tuner"
-
 msgid "Hour"
 msgstr "Saat"
 
@@ -5067,9 +5077,6 @@ msgstr "Seçilen klasör geçersiz: %s"
 
 msgid "Invalid location"
 msgstr "Geçersiz konum"
-
-msgid "Invalid reason"
-msgstr "Geçersiz sebep"
 
 msgid "Invalid transponder data"
 msgstr "Geçersiz transponder verisi"
@@ -5669,6 +5676,10 @@ msgstr "Asgari gönderme aralığı"
 msgid "Missing "
 msgstr "Kayıp "
 
+#, fuzzy
+msgid "Mode"
+msgstr "Kip"
+
 msgctxt "Satellite configuration mode"
 msgid "Mode"
 msgstr "Kip"
@@ -5693,6 +5704,10 @@ msgstr "Model: %s %s\n"
 
 msgid "Model: unknown"
 msgstr "Model: bilinmiyor"
+
+#, fuzzy
+msgid "Modes"
+msgstr "Kip"
 
 msgid "Modulation"
 msgstr "Modülasyon"
@@ -5885,6 +5900,10 @@ msgstr "MultiBoot"
 
 msgid "MultiBoot Selector"
 msgstr "MultiBoot Seçici"
+
+#, fuzzy
+msgid "MultiType"
+msgstr "Çoklu ortam"
 
 msgid "Multichannel PCM"
 msgstr "Çok Kanallı PCM"
@@ -6211,9 +6230,6 @@ msgstr "Beklemede değil"
 
 msgid "No streaming Channel from this STB at this moment"
 msgstr "Şu anda alıcıdan hiçbir kanal akışı sunulmuyor"
-
-msgid "No suitable sat tuner found!"
-msgstr "Hiç bir Uygun sat tuner bulunamadi!"
 
 msgid "No tags are set on these movies."
 msgstr "Bu filmlerde etiket yok."
@@ -7185,6 +7201,19 @@ msgstr "Hazırlanıyor... Lütfen bekleyin"
 msgid "Press '0' to toggle PiP mode"
 msgstr "PiP modu arasında geçiş yapmak için '0' tuşuna basın"
 
+#, fuzzy
+msgid "Press 'OK' for attach function."
+msgstr "Seçiminde geçiş yapmak için OK tuşuna basın."
+
+msgid "Press 'OK' for attach next function or 'CH+/-' for edit attached."
+msgstr ""
+
+msgid "Press 'OK' for remove item or 'CH+/-' for toggle to list of features."
+msgstr ""
+
+msgid "Press 'OK' for remove item or < > for change order or 'CH+/-' for toggle to list of features."
+msgstr ""
+
 msgid "Press INFO on your remote control for additional information."
 msgstr "Ek bilgi için uzaktan kumanda üzerindeki INFO (EPG) tuşuna basın."
 
@@ -7236,6 +7265,12 @@ msgstr "Seçiminde geçiş yapmak için OK tuşuna basın."
 
 msgid "Press OK, save and exit..."
 msgstr "OK tuşuna basın, kaydedin ve çıkın ..."
+
+msgid "Press or select button and then press 'OK' for attach function."
+msgstr ""
+
+msgid "Press or select button and then press 'OK' for attach next function or edit attached."
+msgstr ""
 
 msgid "Press yellow to set this interface as default interface."
 msgstr "Bu arayüzü varsayılan arayüz olarak atamak için sarı tuşa basın."
@@ -8172,7 +8207,8 @@ msgstr "Anten sisteminizin bunu gerektirmesi durumunda 'A' veya 'B'yi seçin, ak
 msgid "Select 'FBC SCR' if this tuner will connect to a SCR (Unicable/JESS) device. For all other setups select 'FBC automatic'."
 msgstr "Bu tuner bir SCR (Unicable / JESS) cihazına bağlanacaksa 'FBC SCR' öğesini seçin. Diğer tüm kurulumlar için 'FBC otomatik' seçeneğini seçin."
 
-msgid "Select 'Yes' when you want to configure this tuner for DVB-ATSC"
+#, fuzzy
+msgid "Select 'Yes' when you want to configure this tuner for ATSC"
 msgstr "DVB-ATSC için bu tarayıcıyı yapılandırmak istediğinizde 'Evet'i seçin"
 
 msgid "Select 'Yes' when you want to configure this tuner for DVB-C"
@@ -9698,9 +9734,6 @@ msgstr "Önceki alt servise geç"
 
 msgid "Switch to radio mode"
 msgstr "Radyo moduna geç"
-
-msgid "Switchable tuner types"
-msgstr "Değiştirilebilir tuner tipleri"
 
 msgid "Switzerland"
 msgstr "İsviçre"
@@ -13263,6 +13296,10 @@ msgstr "test edilemeyen"
 
 msgid "until standby/restart"
 msgstr "h.bekle/y.başlatana kadar"
+
+#, fuzzy
+msgid "update bookmarks"
+msgstr "Otomatik yer imleri"
 
 msgid "use best, controlled by HDMI"
 msgstr "en iyi HDMI ile kullanın"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-22 15:14+0100\n"
+"POT-Creation-Date: 2019-03-29 23:05+0100\n"
 "PO-Revision-Date: 2015-10-31 16:41+0100\n"
 "Last-Translator: Pr2 <dummy@dummy.com>\n"
 "Language-Team: none\n"
@@ -196,6 +196,10 @@ msgstr "Service inconnu"
 
 msgid " extensions."
 msgstr " Extensions."
+
+#, fuzzy
+msgid " min"
+msgstr "%d min"
 
 msgid " ms"
 msgstr " ms"
@@ -435,10 +439,6 @@ msgstr[1] "%s mise à jour disponibles."
 #, python-format
 msgid "%s%d min"
 msgstr "%s%d min"
-
-#, python-format
-msgid "%s%d%s"
-msgstr ""
 
 #, python-format
 msgid "%s/%s: %s"
@@ -734,6 +734,9 @@ msgid ""
 msgstr ""
 "Un fichier de configuration (%s) a été modifié depuis l'installation.\n"
 "Voulez-vous garder votre version ?"
+
+msgid "A file from media is in use!"
+msgstr ""
 
 msgid ""
 "A finished record timer wants to set your\n"
@@ -1085,6 +1088,10 @@ msgid "Allow subtitles for hearing impaired"
 msgstr "Autoriser les sous-titres pour malentendants"
 
 msgid "Allows you to enable the debug log. They contain very detailed information of everything the system does."
+msgstr "Permet d’activer le log de débogage. Il contient des informations très détaillées sur tout ce que le système fait."
+
+#, fuzzy
+msgid "Allows you to enable the twisted log. They contain very detailed information of everything the twisted does."
 msgstr "Permet d’activer le log de débogage. Il contient des informations très détaillées sur tout ce que le système fait."
 
 msgid "Alpha"
@@ -2129,6 +2136,10 @@ msgstr "Format de Couleur"
 msgid "Color space"
 msgstr "Format de couleur"
 
+#, fuzzy
+msgid "Combined"
+msgstr "Format de couleur"
+
 msgid "Combo"
 msgstr ""
 
@@ -2184,8 +2195,9 @@ msgstr "Mode de configuration : %s"
 msgid "Configuration..."
 msgstr "Configuration..."
 
-msgid "Configure DVB-ATSC"
-msgstr ""
+#, fuzzy
+msgid "Configure ATSC"
+msgstr "Configuration"
 
 #, fuzzy
 msgid "Configure DVB-C"
@@ -3686,6 +3698,10 @@ msgstr "Activer la détection des conflits de la minuterie"
 msgid "Enable to display all true/false, yes/no, on/off and enable/disable set up options as a graphical switch."
 msgstr ""
 
+#, fuzzy
+msgid "Enable twisted log *"
+msgstr "Activer le log de débogage"
+
 msgid "Enable volume control with arrow buttons"
 msgstr "Activer le contrôle du volume avec les flèches"
 
@@ -4827,14 +4843,6 @@ msgstr "Configuration Hotkey"
 msgid "Hotkey zap"
 msgstr "Hotkey zap"
 
-#, fuzzy
-msgid "Hotswitchable"
-msgstr "Activer"
-
-#, fuzzy
-msgid "Hotswitchable tuner"
-msgstr "Types de tuner permutables :"
-
 msgid "Hour"
 msgstr "Heure"
 
@@ -5207,10 +5215,6 @@ msgid "Invalid directory selected: %s"
 msgstr "Répertoire sélectionné non valide : %s"
 
 msgid "Invalid location"
-msgstr "Emplacement non valide"
-
-#, fuzzy
-msgid "Invalid reason"
 msgstr "Emplacement non valide"
 
 msgid "Invalid transponder data"
@@ -5829,6 +5833,10 @@ msgstr "Intervalle minimum d'envoi"
 msgid "Missing "
 msgstr "Manquant "
 
+#, fuzzy
+msgid "Mode"
+msgstr "Mode"
+
 msgctxt "Satellite configuration mode"
 msgid "Mode"
 msgstr "Mode"
@@ -5854,6 +5862,10 @@ msgstr "Modèle: %s %s\n"
 
 msgid "Model: unknown"
 msgstr "Modèle: inconnu"
+
+#, fuzzy
+msgid "Modes"
+msgstr "Mode"
 
 msgid "Modulation"
 msgstr "Modulation"
@@ -6049,6 +6061,10 @@ msgstr "Multisat"
 #, fuzzy
 msgid "MultiBoot Selector"
 msgstr "Sélectionner tous les multisat"
+
+#, fuzzy
+msgid "MultiType"
+msgstr "Multimédia"
 
 #, fuzzy
 msgid "Multichannel PCM"
@@ -6379,9 +6395,6 @@ msgstr "Pas de veille"
 
 msgid "No streaming Channel from this STB at this moment"
 msgstr ""
-
-msgid "No suitable sat tuner found!"
-msgstr "Aucun tuner sat approprié trouvé!"
 
 msgid "No tags are set on these movies."
 msgstr "Aucun pointeur réglé sur ces films."
@@ -7389,6 +7402,19 @@ msgstr "Préparation... Veuillez patienter"
 msgid "Press '0' to toggle PiP mode"
 msgstr "Apppuyer sur ‘0’ pour permuter le mode PiP"
 
+#, fuzzy
+msgid "Press 'OK' for attach function."
+msgstr "Pressez OK pour basculer le choix"
+
+msgid "Press 'OK' for attach next function or 'CH+/-' for edit attached."
+msgstr ""
+
+msgid "Press 'OK' for remove item or 'CH+/-' for toggle to list of features."
+msgstr ""
+
+msgid "Press 'OK' for remove item or < > for change order or 'CH+/-' for toggle to list of features."
+msgstr ""
+
 msgid "Press INFO on your remote control for additional information."
 msgstr "Pressez sur INFO de votre télécommande pour plus d'informations."
 
@@ -7442,6 +7468,12 @@ msgstr "Pressez OK pour basculer le choix"
 
 msgid "Press OK, save and exit..."
 msgstr "Appuyer sur OK, sauvegarder et quitter…"
+
+msgid "Press or select button and then press 'OK' for attach function."
+msgstr ""
+
+msgid "Press or select button and then press 'OK' for attach next function or edit attached."
+msgstr ""
 
 msgid "Press yellow to set this interface as default interface."
 msgstr "Pressez le bouton Jaune pour choisir l'interface comme interface standard."
@@ -8405,7 +8437,7 @@ msgstr ""
 msgid "Select 'FBC SCR' if this tuner will connect to a SCR (Unicable/JESS) device. For all other setups select 'FBC automatic'."
 msgstr ""
 
-msgid "Select 'Yes' when you want to configure this tuner for DVB-ATSC"
+msgid "Select 'Yes' when you want to configure this tuner for ATSC"
 msgstr ""
 
 msgid "Select 'Yes' when you want to configure this tuner for DVB-C"
@@ -9986,10 +10018,6 @@ msgstr "Basculer vers sous-service précédent"
 
 msgid "Switch to radio mode"
 msgstr "Basculer vers le mode Radio"
-
-#, fuzzy
-msgid "Switchable tuner types"
-msgstr "Types de tuner permutables :"
 
 msgid "Switzerland"
 msgstr ""
@@ -13604,6 +13632,10 @@ msgstr "Activer"
 
 msgid "until standby/restart"
 msgstr "Jusqu'à veille/redémarrage"
+
+#, fuzzy
+msgid "update bookmarks"
+msgstr "Analyse Automatique"
 
 msgid "use best, controlled by HDMI"
 msgstr ""

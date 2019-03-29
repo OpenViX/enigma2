@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-22 15:14+0100\n"
+"POT-Creation-Date: 2019-03-29 23:05+0100\n"
 "PO-Revision-Date: 2010-03-09 21:03+0100\n"
 "Last-Translator: \n"
 "Language-Team: HDTV ROMANIA(superonic,costel_mbc,neutrin,otheitis,cipy_1982,neutrin,runcanion)\n"
@@ -176,6 +176,9 @@ msgid " (unknown mode)"
 msgstr "serviciu necunoscut"
 
 msgid " extensions."
+msgstr ""
+
+msgid " min"
 msgstr ""
 
 msgid " ms"
@@ -413,10 +416,6 @@ msgstr[1] ""
 
 #, python-format
 msgid "%s%d min"
-msgstr ""
-
-#, python-format
-msgid "%s%d%s"
 msgstr ""
 
 #, python-format
@@ -716,6 +715,9 @@ msgid ""
 msgstr ""
 "Un file de configuratia (%s) a fost modificat de la instalare.\n"
 "Vrei sa tinem pe versiuna?"
+
+msgid "A file from media is in use!"
+msgstr ""
 
 msgid ""
 "A finished record timer wants to set your\n"
@@ -1075,6 +1077,9 @@ msgid "Allow subtitles for hearing impaired"
 msgstr ""
 
 msgid "Allows you to enable the debug log. They contain very detailed information of everything the system does."
+msgstr ""
+
+msgid "Allows you to enable the twisted log. They contain very detailed information of everything the twisted does."
 msgstr ""
 
 msgid "Alpha"
@@ -2151,6 +2156,10 @@ msgstr "Format color"
 msgid "Color space"
 msgstr "Format color"
 
+#, fuzzy
+msgid "Combined"
+msgstr "Format color"
+
 msgid "Combo"
 msgstr ""
 
@@ -2209,8 +2218,9 @@ msgstr "Mod configurare"
 msgid "Configuration..."
 msgstr "Configurare retea..."
 
-msgid "Configure DVB-ATSC"
-msgstr ""
+#, fuzzy
+msgid "Configure ATSC"
+msgstr "Se configureaza"
 
 #, fuzzy
 msgid "Configure DVB-C"
@@ -3746,6 +3756,10 @@ msgid "Enable to display all true/false, yes/no, on/off and enable/disable set u
 msgstr ""
 
 #, fuzzy
+msgid "Enable twisted log *"
+msgstr "Activat"
+
+#, fuzzy
 msgid "Enable volume control with arrow buttons"
 msgstr "Selectati intrarea vieo cu tastele sus/jos"
 
@@ -4902,13 +4916,6 @@ msgstr "Configurare protectie"
 msgid "Hotkey zap"
 msgstr ""
 
-#, fuzzy
-msgid "Hotswitchable"
-msgstr "Activeaza"
-
-msgid "Hotswitchable tuner"
-msgstr ""
-
 msgid "Hour"
 msgstr ""
 
@@ -5293,10 +5300,6 @@ msgstr "Director selectat nevalid: %s"
 
 #, fuzzy
 msgid "Invalid location"
-msgstr "Locatie nevalida"
-
-#, fuzzy
-msgid "Invalid reason"
 msgstr "Locatie nevalida"
 
 msgid "Invalid transponder data"
@@ -5947,6 +5950,10 @@ msgid "Missing "
 msgstr ""
 
 #, fuzzy
+msgid "Mode"
+msgstr "Mod"
+
+#, fuzzy
 msgctxt "Satellite configuration mode"
 msgid "Mode"
 msgstr "Mod"
@@ -5974,6 +5981,10 @@ msgstr "Model:"
 #, fuzzy
 msgid "Model: unknown"
 msgstr "Model:"
+
+#, fuzzy
+msgid "Modes"
+msgstr "Mod"
 
 msgid "Modulation"
 msgstr "Modulatie"
@@ -6173,6 +6184,10 @@ msgstr "Multisat"
 #, fuzzy
 msgid "MultiBoot Selector"
 msgstr "Selectare subtitrare"
+
+#, fuzzy
+msgid "MultiType"
+msgstr "Multimedia"
 
 #, fuzzy
 msgid "Multichannel PCM"
@@ -6505,9 +6520,6 @@ msgid "No standby"
 msgstr "fara standby"
 
 msgid "No streaming Channel from this STB at this moment"
-msgstr ""
-
-msgid "No suitable sat tuner found!"
 msgstr ""
 
 msgid "No tags are set on these movies."
@@ -7545,6 +7557,19 @@ msgstr "Se pregateste... Va rugam asteptati"
 msgid "Press '0' to toggle PiP mode"
 msgstr ""
 
+#, fuzzy
+msgid "Press 'OK' for attach function."
+msgstr "Apasati OK pentru a edita setarile."
+
+msgid "Press 'OK' for attach next function or 'CH+/-' for edit attached."
+msgstr ""
+
+msgid "Press 'OK' for remove item or 'CH+/-' for toggle to list of features."
+msgstr ""
+
+msgid "Press 'OK' for remove item or < > for change order or 'CH+/-' for toggle to list of features."
+msgstr ""
+
 msgid "Press INFO on your remote control for additional information."
 msgstr ""
 
@@ -7598,6 +7623,12 @@ msgid "Press OK to toggle the selection."
 msgstr ""
 
 msgid "Press OK, save and exit..."
+msgstr ""
+
+msgid "Press or select button and then press 'OK' for attach function."
+msgstr ""
+
+msgid "Press or select button and then press 'OK' for attach next function or edit attached."
 msgstr ""
 
 msgid "Press yellow to set this interface as default interface."
@@ -8609,7 +8640,7 @@ msgstr ""
 msgid "Select 'FBC SCR' if this tuner will connect to a SCR (Unicable/JESS) device. For all other setups select 'FBC automatic'."
 msgstr ""
 
-msgid "Select 'Yes' when you want to configure this tuner for DVB-ATSC"
+msgid "Select 'Yes' when you want to configure this tuner for ATSC"
 msgstr ""
 
 msgid "Select 'Yes' when you want to configure this tuner for DVB-C"
@@ -10294,10 +10325,6 @@ msgstr "Schimba la subserviciul anterior"
 #, fuzzy
 msgid "Switch to radio mode"
 msgstr "Schimba la subserviciul anterior"
-
-#, fuzzy
-msgid "Switchable tuner types"
-msgstr "Mod configurare"
 
 msgid "Switzerland"
 msgstr ""
@@ -13871,6 +13898,10 @@ msgstr "Activeaza"
 
 msgid "until standby/restart"
 msgstr ""
+
+#, fuzzy
+msgid "update bookmarks"
+msgstr "Scanare automata"
 
 msgid "use best, controlled by HDMI"
 msgstr ""

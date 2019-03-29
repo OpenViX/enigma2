@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-22 15:14+0100\n"
+"POT-Creation-Date: 2019-03-29 23:05+0100\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: arn354 <arn354@email.de>\n"
 "Language-Team: none\n"
@@ -206,6 +206,10 @@ msgstr "okänd kanal"
 #
 msgid " extensions."
 msgstr " utökningar."
+
+#, fuzzy
+msgid " min"
+msgstr "%d min"
 
 msgid " ms"
 msgstr " ms"
@@ -451,10 +455,6 @@ msgstr[1] "%s uppdateringar tillgängliga."
 #, python-format
 msgid "%s%d min"
 msgstr "%s%d min"
-
-#, python-format
-msgid "%s%d%s"
-msgstr ""
 
 #, python-format
 msgid "%s/%s: %s"
@@ -795,6 +795,9 @@ msgid ""
 msgstr ""
 "En konfigurationsfil (%s) har ändrats sedan installationen.\n"
 "Vill du behålla din version?"
+
+msgid "A file from media is in use!"
+msgstr ""
 
 msgid ""
 "A finished record timer wants to set your\n"
@@ -1207,6 +1210,9 @@ msgid "Allow subtitles for hearing impaired"
 msgstr "Tillåt undertexter för hörselskadade"
 
 msgid "Allows you to enable the debug log. They contain very detailed information of everything the system does."
+msgstr ""
+
+msgid "Allows you to enable the twisted log. They contain very detailed information of everything the twisted does."
 msgstr ""
 
 #
@@ -2406,6 +2412,11 @@ msgstr "Färgformat"
 msgid "Color space"
 msgstr "Färgformat"
 
+#
+#, fuzzy
+msgid "Combined"
+msgstr "Färgformat"
+
 msgid "Combo"
 msgstr ""
 
@@ -2472,8 +2483,10 @@ msgstr "Konfigurationsläge: %s"
 msgid "Configuration..."
 msgstr "Konfiguration..."
 
-msgid "Configure DVB-ATSC"
-msgstr ""
+#
+#, fuzzy
+msgid "Configure ATSC"
+msgstr "Konfigurering"
 
 #
 #, fuzzy
@@ -4181,6 +4194,11 @@ msgstr ""
 
 #
 #, fuzzy
+msgid "Enable twisted log *"
+msgstr "Aktiverad"
+
+#
+#, fuzzy
 msgid "Enable volume control with arrow buttons"
 msgstr "Välj videoingång med upp/ner knapparna"
 
@@ -5456,16 +5474,6 @@ msgstr "Motorinstallation"
 msgid "Hotkey zap"
 msgstr ""
 
-#
-#, fuzzy
-msgid "Hotswitchable"
-msgstr "Aktivera"
-
-#
-#, fuzzy
-msgid "Hotswitchable tuner"
-msgstr "Växlingbara tunertyper:"
-
 msgid "Hour"
 msgstr ""
 
@@ -5898,11 +5906,6 @@ msgstr "Ogiltigt bibliotek valt: %s"
 
 #
 msgid "Invalid location"
-msgstr "Ogiltig sökväg"
-
-#
-#, fuzzy
-msgid "Invalid reason"
 msgstr "Ogiltig sökväg"
 
 msgid "Invalid transponder data"
@@ -6623,6 +6626,11 @@ msgid "Missing "
 msgstr "Saknad"
 
 #
+#, fuzzy
+msgid "Mode"
+msgstr "Läge"
+
+#
 msgctxt "Satellite configuration mode"
 msgid "Mode"
 msgstr "Läge"
@@ -6655,6 +6663,11 @@ msgstr "Modell: "
 #, fuzzy
 msgid "Model: unknown"
 msgstr "Modell: "
+
+#
+#, fuzzy
+msgid "Modes"
+msgstr "Läge"
 
 #
 msgid "Modulation"
@@ -6870,6 +6883,11 @@ msgstr "Multisat"
 #, fuzzy
 msgid "MultiBoot Selector"
 msgstr "Multi-EPG favoritlisteval"
+
+#
+#, fuzzy
+msgid "MultiType"
+msgstr "Multimedia"
 
 #, fuzzy
 msgid "Multichannel PCM"
@@ -7246,9 +7264,6 @@ msgstr "Inget viloläge"
 
 msgid "No streaming Channel from this STB at this moment"
 msgstr ""
-
-msgid "No suitable sat tuner found!"
-msgstr "Ingen passande sat tuner hittad!"
 
 #
 msgid "No tags are set on these movies."
@@ -8432,6 +8447,20 @@ msgstr "Förbereder... Vänligen vänta"
 msgid "Press '0' to toggle PiP mode"
 msgstr ""
 
+#
+#, fuzzy
+msgid "Press 'OK' for attach function."
+msgstr "Tryck OK för att växla val."
+
+msgid "Press 'OK' for attach next function or 'CH+/-' for edit attached."
+msgstr ""
+
+msgid "Press 'OK' for remove item or 'CH+/-' for toggle to list of features."
+msgstr ""
+
+msgid "Press 'OK' for remove item or < > for change order or 'CH+/-' for toggle to list of features."
+msgstr ""
+
 msgid "Press INFO on your remote control for additional information."
 msgstr "Tryck INFO på din fjärrkontroll för ytterligare information."
 
@@ -8495,6 +8524,12 @@ msgid "Press OK to toggle the selection."
 msgstr "Tryck OK för att växla val."
 
 msgid "Press OK, save and exit..."
+msgstr ""
+
+msgid "Press or select button and then press 'OK' for attach function."
+msgstr ""
+
+msgid "Press or select button and then press 'OK' for attach next function or edit attached."
 msgstr ""
 
 #
@@ -9661,7 +9696,7 @@ msgstr ""
 msgid "Select 'FBC SCR' if this tuner will connect to a SCR (Unicable/JESS) device. For all other setups select 'FBC automatic'."
 msgstr ""
 
-msgid "Select 'Yes' when you want to configure this tuner for DVB-ATSC"
+msgid "Select 'Yes' when you want to configure this tuner for ATSC"
 msgstr ""
 
 msgid "Select 'Yes' when you want to configure this tuner for DVB-C"
@@ -11520,11 +11555,6 @@ msgstr "Växla till föregående underkanal"
 #, fuzzy
 msgid "Switch to radio mode"
 msgstr "Byt till föregående underkanal"
-
-#
-#, fuzzy
-msgid "Switchable tuner types"
-msgstr "Växlingbara tunertyper:"
 
 msgid "Switzerland"
 msgstr ""
@@ -15593,6 +15623,11 @@ msgstr "Aktivera"
 #
 msgid "until standby/restart"
 msgstr "tills viloläge/omstart"
+
+#
+#, fuzzy
+msgid "update bookmarks"
+msgstr "Automatisk sökning"
 
 msgid "use best, controlled by HDMI"
 msgstr ""

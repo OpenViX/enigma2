@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-22 15:14+0100\n"
+"POT-Creation-Date: 2019-03-29 23:05+0100\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: arn354 <arn354@email.de>\n"
 "Language-Team: none\n"
@@ -179,6 +179,10 @@ msgstr "nežinomas kanalas"
 
 msgid " extensions."
 msgstr " išplėtimai."
+
+#, fuzzy
+msgid " min"
+msgstr "%d min"
 
 msgid " ms"
 msgstr " ms"
@@ -416,10 +420,6 @@ msgstr[1] " pasiekiami atnaujinimai."
 
 #, python-format
 msgid "%s%d min"
-msgstr ""
-
-#, python-format
-msgid "%s%d%s"
 msgstr ""
 
 #, python-format
@@ -720,6 +720,9 @@ msgid ""
 msgstr ""
 "Konfigūracijos failas (%s) bus pakeistas pradedant nuo įdiegimo.\n"
 "Ar norite išsaugoti savo versiją?"
+
+msgid "A file from media is in use!"
+msgstr ""
 
 msgid ""
 "A finished record timer wants to set your\n"
@@ -1082,6 +1085,9 @@ msgid "Allow subtitles for hearing impaired"
 msgstr ""
 
 msgid "Allows you to enable the debug log. They contain very detailed information of everything the system does."
+msgstr ""
+
+msgid "Allows you to enable the twisted log. They contain very detailed information of everything the twisted does."
 msgstr ""
 
 msgid "Alpha"
@@ -2159,6 +2165,10 @@ msgstr "Spalvų formatas"
 msgid "Color space"
 msgstr "Spalvų formatas"
 
+#, fuzzy
+msgid "Combined"
+msgstr "Spalvų formatas"
+
 msgid "Combo"
 msgstr ""
 
@@ -2217,8 +2227,9 @@ msgstr "Konfigūravimo būdas"
 msgid "Configuration..."
 msgstr "Tinklo konfigūracija..."
 
-msgid "Configure DVB-ATSC"
-msgstr ""
+#, fuzzy
+msgid "Configure ATSC"
+msgstr "Konfigūruojama"
 
 #, fuzzy
 msgid "Configure DVB-C"
@@ -3770,6 +3781,10 @@ msgid "Enable to display all true/false, yes/no, on/off and enable/disable set u
 msgstr ""
 
 #, fuzzy
+msgid "Enable twisted log *"
+msgstr "Įjungta"
+
+#, fuzzy
 msgid "Enable volume control with arrow buttons"
 msgstr "Išsirinkite vaizdo įėjimą su mygtukais aukštyn/žemyn"
 
@@ -4938,14 +4953,6 @@ msgstr "Apsaugoti nustatymus"
 msgid "Hotkey zap"
 msgstr ""
 
-#, fuzzy
-msgid "Hotswitchable"
-msgstr "Įjungti"
-
-#, fuzzy
-msgid "Hotswitchable tuner"
-msgstr "Perjungiamų imtuvą tipai:"
-
 msgid "Hour"
 msgstr ""
 
@@ -5338,10 +5345,6 @@ msgstr "Negaliojanti pasirinkta direktorija: %s"
 
 #, fuzzy
 msgid "Invalid location"
-msgstr "Neteisinga vieta"
-
-#, fuzzy
-msgid "Invalid reason"
 msgstr "Neteisinga vieta"
 
 msgid "Invalid transponder data"
@@ -5997,6 +6000,10 @@ msgid "Missing "
 msgstr ""
 
 #, fuzzy
+msgid "Mode"
+msgstr "Pasirinkimas"
+
+#, fuzzy
 msgctxt "Satellite configuration mode"
 msgid "Mode"
 msgstr "Pasirinkimas"
@@ -6024,6 +6031,10 @@ msgstr "Modelis:"
 #, fuzzy
 msgid "Model: unknown"
 msgstr "Modelis:"
+
+#, fuzzy
+msgid "Modes"
+msgstr "Pasirinkimas"
 
 msgid "Modulation"
 msgstr "Paaukštėjimas"
@@ -6223,6 +6234,10 @@ msgstr "Daug palydovų"
 #, fuzzy
 msgid "MultiBoot Selector"
 msgstr "Multi-EPG paketų pasirinkimas"
+
+#, fuzzy
+msgid "MultiType"
+msgstr "Multimedija"
 
 #, fuzzy
 msgid "Multichannel PCM"
@@ -6557,9 +6572,6 @@ msgid "No standby"
 msgstr "nebudėti"
 
 msgid "No streaming Channel from this STB at this moment"
-msgstr ""
-
-msgid "No suitable sat tuner found!"
 msgstr ""
 
 msgid "No tags are set on these movies."
@@ -7621,6 +7633,19 @@ msgstr "Pasiruošiama... Prašome laukti"
 msgid "Press '0' to toggle PiP mode"
 msgstr ""
 
+#, fuzzy
+msgid "Press 'OK' for attach function."
+msgstr "Spauskite OK dėl pasirinkimo."
+
+msgid "Press 'OK' for attach next function or 'CH+/-' for edit attached."
+msgstr ""
+
+msgid "Press 'OK' for remove item or 'CH+/-' for toggle to list of features."
+msgstr ""
+
+msgid "Press 'OK' for remove item or < > for change order or 'CH+/-' for toggle to list of features."
+msgstr ""
+
 msgid "Press INFO on your remote control for additional information."
 msgstr "Spauskite INFO ant savo distancinio valdymo pulto dėl papildomos informacijos."
 
@@ -7674,6 +7699,12 @@ msgid "Press OK to toggle the selection."
 msgstr "Spauskite OK dėl pasirinkimo."
 
 msgid "Press OK, save and exit..."
+msgstr ""
+
+msgid "Press or select button and then press 'OK' for attach function."
+msgstr ""
+
+msgid "Press or select button and then press 'OK' for attach next function or edit attached."
 msgstr ""
 
 msgid "Press yellow to set this interface as default interface."
@@ -8689,7 +8720,7 @@ msgstr ""
 msgid "Select 'FBC SCR' if this tuner will connect to a SCR (Unicable/JESS) device. For all other setups select 'FBC automatic'."
 msgstr ""
 
-msgid "Select 'Yes' when you want to configure this tuner for DVB-ATSC"
+msgid "Select 'Yes' when you want to configure this tuner for ATSC"
 msgstr ""
 
 msgid "Select 'Yes' when you want to configure this tuner for DVB-C"
@@ -10388,10 +10419,6 @@ msgstr "Perjungti į ankstesnį subkanalą"
 #, fuzzy
 msgid "Switch to radio mode"
 msgstr "Perjungti į ankstesnį subkanalą"
-
-#, fuzzy
-msgid "Switchable tuner types"
-msgstr "Perjungiamų imtuvą tipai:"
 
 msgid "Switzerland"
 msgstr ""
@@ -13993,6 +14020,10 @@ msgstr "Įjungti"
 
 msgid "until standby/restart"
 msgstr "iki budėjimo/paleisti iš naujo"
+
+#, fuzzy
+msgid "update bookmarks"
+msgstr "Automatinė paieška"
 
 msgid "use best, controlled by HDMI"
 msgstr ""

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-22 15:14+0100\n"
+"POT-Creation-Date: 2019-03-29 23:05+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -155,6 +155,9 @@ msgid " (unknown mode)"
 msgstr ""
 
 msgid " extensions."
+msgstr ""
+
+msgid " min"
 msgstr ""
 
 msgid " ms"
@@ -392,10 +395,6 @@ msgstr[1] ""
 
 #, python-format
 msgid "%s%d min"
-msgstr ""
-
-#, python-format
-msgid "%s%d%s"
 msgstr ""
 
 #, python-format
@@ -656,6 +655,9 @@ msgstr ""
 msgid ""
 "A configuration file (%s) was modified since Installation.\n"
 "Do you want to keep your version?"
+msgstr ""
+
+msgid "A file from media is in use!"
 msgstr ""
 
 msgid ""
@@ -1813,6 +1815,9 @@ msgstr ""
 msgid "Color space"
 msgstr ""
 
+msgid "Combined"
+msgstr ""
+
 msgid "Combo"
 msgstr ""
 
@@ -1853,7 +1858,7 @@ msgstr ""
 msgid "Configuration..."
 msgstr ""
 
-msgid "Configure DVB-ATSC"
+msgid "Configure ATSC"
 msgstr ""
 
 msgid "Configure DVB-C"
@@ -3853,12 +3858,6 @@ msgstr ""
 msgid "Hotkey zap"
 msgstr ""
 
-msgid "Hotswitchable"
-msgstr ""
-
-msgid "Hotswitchable tuner"
-msgstr ""
-
 msgid "Hour"
 msgstr ""
 
@@ -4132,9 +4131,6 @@ msgid "Invalid directory selected: %s"
 msgstr ""
 
 msgid "Invalid location"
-msgstr ""
-
-msgid "Invalid reason"
 msgstr ""
 
 msgid "Invalid transponder data"
@@ -4652,6 +4648,9 @@ msgstr ""
 msgid "Missing "
 msgstr ""
 
+msgid "Mode"
+msgstr ""
+
 msgctxt "Satellite configuration mode"
 msgid "Mode"
 msgstr ""
@@ -4675,6 +4674,9 @@ msgid "Model: %s %s\n"
 msgstr ""
 
 msgid "Model: unknown"
+msgstr ""
+
+msgid "Modes"
 msgstr ""
 
 msgid "Modulation"
@@ -4858,6 +4860,9 @@ msgid "Multi channel downmix"
 msgstr ""
 
 msgid "MultiBoot Selector"
+msgstr ""
+
+msgid "MultiType"
 msgstr ""
 
 msgid "Multichannel PCM"
@@ -5137,9 +5142,6 @@ msgid "No standby"
 msgstr ""
 
 msgid "No streaming Channel from this STB at this moment"
-msgstr ""
-
-msgid "No suitable sat tuner found!"
 msgstr ""
 
 msgid "No tags are set on these movies."
@@ -5899,6 +5901,18 @@ msgstr ""
 msgid "Press '0' to toggle PiP mode"
 msgstr ""
 
+msgid "Press 'OK' for attach function."
+msgstr ""
+
+msgid "Press 'OK' for attach next function or 'CH+/-' for edit attached."
+msgstr ""
+
+msgid "Press 'OK' for remove item or 'CH+/-' for toggle to list of features."
+msgstr ""
+
+msgid "Press 'OK' for remove item or < > for change order or 'CH+/-' for toggle to list of features."
+msgstr ""
+
 msgid "Press INFO on your remote control for additional information."
 msgstr ""
 
@@ -5949,6 +5963,12 @@ msgid "Press OK to toggle the selection."
 msgstr ""
 
 msgid "Press OK, save and exit..."
+msgstr ""
+
+msgid "Press or select button and then press 'OK' for attach function."
+msgstr ""
+
+msgid "Press or select button and then press 'OK' for attach next function or edit attached."
 msgstr ""
 
 msgid "Press yellow to set this interface as default interface."
@@ -6800,7 +6820,7 @@ msgstr ""
 msgid "Select 'FBC SCR' if this tuner will connect to a SCR (Unicable/JESS) device. For all other setups select 'FBC automatic'."
 msgstr ""
 
-msgid "Select 'Yes' when you want to configure this tuner for DVB-ATSC"
+msgid "Select 'Yes' when you want to configure this tuner for ATSC"
 msgstr ""
 
 msgid "Select 'Yes' when you want to configure this tuner for DVB-C"
@@ -8087,9 +8107,6 @@ msgid "Switch to previous sub service"
 msgstr ""
 
 msgid "Switch to radio mode"
-msgstr ""
-
-msgid "Switchable tuner types"
 msgstr ""
 
 msgid "Switzerland"
@@ -10990,6 +11007,9 @@ msgstr ""
 msgid "until standby/restart"
 msgstr ""
 
+msgid "update bookmarks"
+msgstr ""
+
 msgid "use best, controlled by HDMI"
 msgstr ""
 
@@ -11494,6 +11514,9 @@ msgstr ""
 msgid "Allows you to enable the debug log. They contain very detailed information of everything the system does."
 msgstr ""
 
+msgid "Allows you to enable the twisted log. They contain very detailed information of everything the twisted does."
+msgstr ""
+
 msgid "Alpha"
 msgstr ""
 
@@ -11972,6 +11995,9 @@ msgid "Enable teletext caching"
 msgstr ""
 
 msgid "Enable to display all true/false, yes/no, on/off and enable/disable set up options as a graphical switch."
+msgstr ""
+
+msgid "Enable twisted log *"
 msgstr ""
 
 msgid "Enable volume control with arrow buttons"

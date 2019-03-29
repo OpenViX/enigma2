@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-22 15:14+0100\n"
+"POT-Creation-Date: 2019-03-29 23:05+0100\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: arn354 <arn354@email.de>\n"
 "Language-Team: none\n"
@@ -179,6 +179,10 @@ msgstr "ไม่ทราบชนิดบริการ"
 
 msgid " extensions."
 msgstr " ส่วนเพิ่มเติม"
+
+#, fuzzy
+msgid " min"
+msgstr "%d นาที"
 
 msgid " ms"
 msgstr ""
@@ -416,10 +420,6 @@ msgstr[1] " มีรายการปรับปรุง"
 
 #, python-format
 msgid "%s%d min"
-msgstr ""
-
-#, python-format
-msgid "%s%d%s"
 msgstr ""
 
 #, python-format
@@ -719,6 +719,9 @@ msgid ""
 msgstr ""
 "ไฟล์เก็บค่า (%s) ถูกแก้ไขช่วงติดตั้ง\n"
 "ต้องการใช้เวอร์ชั่นที่ถูกแก้ไขหรือไม่?"
+
+msgid "A file from media is in use!"
+msgstr ""
 
 msgid ""
 "A finished record timer wants to set your\n"
@@ -1078,6 +1081,9 @@ msgid "Allow subtitles for hearing impaired"
 msgstr ""
 
 msgid "Allows you to enable the debug log. They contain very detailed information of everything the system does."
+msgstr ""
+
+msgid "Allows you to enable the twisted log. They contain very detailed information of everything the twisted does."
 msgstr ""
 
 msgid "Alpha"
@@ -2153,6 +2159,10 @@ msgstr "ระบบสี"
 msgid "Color space"
 msgstr "ระบบสี"
 
+#, fuzzy
+msgid "Combined"
+msgstr "ระบบสี"
+
 msgid "Combo"
 msgstr ""
 
@@ -2211,8 +2221,9 @@ msgstr "โหมดการตั้งค่า"
 msgid "Configuration..."
 msgstr "ตั้งค่าเครือข่าย..."
 
-msgid "Configure DVB-ATSC"
-msgstr ""
+#, fuzzy
+msgid "Configure ATSC"
+msgstr "กำลังตั้งค่า"
 
 #, fuzzy
 msgid "Configure DVB-C"
@@ -3754,6 +3765,10 @@ msgid "Enable to display all true/false, yes/no, on/off and enable/disable set u
 msgstr ""
 
 #, fuzzy
+msgid "Enable twisted log *"
+msgstr "เปิดใช้งาน"
+
+#, fuzzy
 msgid "Enable volume control with arrow buttons"
 msgstr "เลือกช่องต่อสัญญาณวิดีโอโดยกดปุ่มขึ้น/ลง"
 
@@ -4920,13 +4935,6 @@ msgstr "ป้องกันการตั้งค่า"
 msgid "Hotkey zap"
 msgstr ""
 
-#, fuzzy
-msgid "Hotswitchable"
-msgstr "เปิดใช้"
-
-msgid "Hotswitchable tuner"
-msgstr ""
-
 msgid "Hour"
 msgstr ""
 
@@ -5317,10 +5325,6 @@ msgstr "โฟล์เดอร์นี้: %s ไม่ถูกต้อง"
 
 #, fuzzy
 msgid "Invalid location"
-msgstr "ปลายทางไม่ถูกต้อง"
-
-#, fuzzy
-msgid "Invalid reason"
 msgstr "ปลายทางไม่ถูกต้อง"
 
 msgid "Invalid transponder data"
@@ -5975,6 +5979,10 @@ msgid "Missing "
 msgstr ""
 
 #, fuzzy
+msgid "Mode"
+msgstr "โหมด"
+
+#, fuzzy
 msgctxt "Satellite configuration mode"
 msgid "Mode"
 msgstr "โหมด"
@@ -6002,6 +6010,10 @@ msgstr "รุ่น:"
 #, fuzzy
 msgid "Model: unknown"
 msgstr "รุ่น:"
+
+#, fuzzy
+msgid "Modes"
+msgstr "โหมด"
 
 msgid "Modulation"
 msgstr "Modulation"
@@ -6201,6 +6213,10 @@ msgstr "Multisat"
 #, fuzzy
 msgid "MultiBoot Selector"
 msgstr "เลือกซับไตเติ้ล"
+
+#, fuzzy
+msgid "MultiType"
+msgstr "มัลติมีเดีย"
 
 #, fuzzy
 msgid "Multichannel PCM"
@@ -6534,9 +6550,6 @@ msgid "No standby"
 msgstr "ไม่ Standby"
 
 msgid "No streaming Channel from this STB at this moment"
-msgstr ""
-
-msgid "No suitable sat tuner found!"
 msgstr ""
 
 msgid "No tags are set on these movies."
@@ -7584,6 +7597,19 @@ msgstr "กำลังเตรียมงาน... รอสักครู�
 msgid "Press '0' to toggle PiP mode"
 msgstr ""
 
+#, fuzzy
+msgid "Press 'OK' for attach function."
+msgstr "กดปุ่ม OK เพื่อเปลี่ยน"
+
+msgid "Press 'OK' for attach next function or 'CH+/-' for edit attached."
+msgstr ""
+
+msgid "Press 'OK' for remove item or 'CH+/-' for toggle to list of features."
+msgstr ""
+
+msgid "Press 'OK' for remove item or < > for change order or 'CH+/-' for toggle to list of features."
+msgstr ""
+
 msgid "Press INFO on your remote control for additional information."
 msgstr ""
 
@@ -7637,6 +7663,12 @@ msgid "Press OK to toggle the selection."
 msgstr "กดปุ่ม OK เพื่อเปลี่ยน"
 
 msgid "Press OK, save and exit..."
+msgstr ""
+
+msgid "Press or select button and then press 'OK' for attach function."
+msgstr ""
+
+msgid "Press or select button and then press 'OK' for attach next function or edit attached."
 msgstr ""
 
 msgid "Press yellow to set this interface as default interface."
@@ -8649,7 +8681,7 @@ msgstr ""
 msgid "Select 'FBC SCR' if this tuner will connect to a SCR (Unicable/JESS) device. For all other setups select 'FBC automatic'."
 msgstr ""
 
-msgid "Select 'Yes' when you want to configure this tuner for DVB-ATSC"
+msgid "Select 'Yes' when you want to configure this tuner for ATSC"
 msgstr ""
 
 msgid "Select 'Yes' when you want to configure this tuner for DVB-C"
@@ -10341,10 +10373,6 @@ msgstr "ไปบริการย่อยก่อนหน้า"
 #, fuzzy
 msgid "Switch to radio mode"
 msgstr "ไปบริการย่อยก่อนหน้า"
-
-#, fuzzy
-msgid "Switchable tuner types"
-msgstr "โหมดการตั้งค่า"
 
 msgid "Switzerland"
 msgstr ""
@@ -13922,6 +13950,10 @@ msgstr "เปิดใช้"
 
 msgid "until standby/restart"
 msgstr ""
+
+#, fuzzy
+msgid "update bookmarks"
+msgstr "ค้นหาอัตโนมัติ"
 
 msgid "use best, controlled by HDMI"
 msgstr ""
