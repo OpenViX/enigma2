@@ -34,7 +34,6 @@ class RestoreWizard(WizardLanguage, Rc):
 		self.fullbackupfilename = None
 		self.delaymess = None
 		self.selectedDevice = None
-		self.CallNetwork = "dhcp"
 		self.Console = Console()
 
 	def getTranslation(self, text):
@@ -127,7 +126,7 @@ class RestoreWizard(WizardLanguage, Rc):
 
 	def buildList(self, action):
 		if self.NextStep is 'reboot':
-			self.Console.ePopen("killall -9 enigma2")
+			self.Console.ePopen("killall -9 enigma2 && init 6")
 		elif self.NextStep is 'settingsquestion' or self.NextStep is 'settingsrestore' or self.NextStep is 'pluginsquestion' or self.NextStep is 'pluginsrestoredevice' or self.NextStep is 'end' or self.NextStep is 'noplugins':
 			self.buildListfinishedCB(False)
 		elif self.NextStep is 'settingrestorestarted':
@@ -198,7 +197,6 @@ class RestoreWizard(WizardLanguage, Rc):
 
 	def doRestoreSettings2(self):
 		print '[RestoreWizard] Stage 2: Restoring settings'
-		self.CallNetwork = [x.split(" ")[3] for x in open("/etc/network/interfaces").read().splitlines() if x.startswith("iface eth0")]
 		self.Console.ePopen("tar -xzvf " + self.fullbackupfilename + " -C /", self.settingRestore_Finished)
 		self.pleaseWait = self.session.open(MessageBox, _("Please wait while settings restore completes..."), type=MessageBox.TYPE_INFO, enable_input=False, wizard=True)
 		self.pleaseWait.setTitle(_("Restore wizard"))
@@ -206,14 +204,6 @@ class RestoreWizard(WizardLanguage, Rc):
 	def settingRestore_Finished(self, result, retval, extra_args=None):
 		self.didSettingsRestore = True
 		network = [x.split(" ")[3] for x in open("/etc/network/interfaces").read().splitlines() if x.startswith("iface eth0")]
-		if network[0] == "static" and self.CallNetwork[0] == "dhcp":
-			from Plugins.SystemPlugins.NetworkWizard.NetworkWizard import NetworkWizard
-			self.session.openWithCallback(self.AdapterSetupClosed, NetworkWizard)
-		else:
-			self.AdapterSetupClosed()
-
-	def AdapterSetupClosed(self, *ret):
-		# self.NextStep = 'plugindetection'
 		self.pleaseWait.close()
 		self.doRestorePlugins1()
 
