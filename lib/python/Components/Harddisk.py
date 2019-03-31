@@ -127,10 +127,6 @@ class Harddisk:
 		if self.type == DEVTYPE_UDEV:
 			card = "sdhci" in self.phys_path
 			type_name = " (SD/MMC)"
-		# CF(7025 specific)
-		elif self.type == DEVTYPE_DEVFS:
-			card = self.device[:2] == "hd" and "host0" not in self.dev_path
-			type_name = " (CF)"
 
 		hw_type = HardwareInfo().get_device_name()
 		if hw_type == 'elite' or hw_type == 'premium' or hw_type == 'premium+' or hw_type == 'ultra' :
