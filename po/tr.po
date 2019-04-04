@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue (Apachi70)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-29 23:05+0100\n"
+"POT-Creation-Date: 2019-04-04 22:19+0200\n"
 "PO-Revision-Date: 2019-02-22 23:32+0100\n"
 "Last-Translator: Apachi70 (TeamBlue) <apachi70000@gmail.com>\n"
 "Language-Team: Turkish <apachi70000@gmail.com>\n"
@@ -3674,9 +3674,6 @@ msgstr "Enigma2 inşa etmek: %s"
 msgid "Enigma2 Version: %s"
 msgstr "Enigma2 Sürüm: %s"
 
-msgid "Enter"
-msgstr "Girmek"
-
 msgid "Enter IP address"
 msgstr "IP adresini girin"
 
@@ -3700,9 +3697,6 @@ msgstr "Kalıcı PIN kodunu girin"
 
 msgid "Enter pin code"
 msgstr "Şifreyi girin"
-
-msgid "Enter text and exit"
-msgstr "Metin gir ve çık"
 
 msgid "Enter the frequency at which you LNB switches between low band and high band. For more information consult the spec sheet of your LNB."
 msgstr "LNB'nin düşük bant ve yüksek bant arasında geçiş yaptığı frekansı girin. Daha fazla bilgi için LNB'nizin spec sayfasını inceleyiniz."
@@ -4776,14 +4770,14 @@ msgstr "Simgeler"
 msgid "If enabled, AIT data is included in recordings."
 msgstr "Etkinse, AIT verileri kayıtlara dahil edilir."
 
+msgid "If enabled, bookmarks will be updated with the new location when you move or copy a recording.."
+msgstr ""
+
 msgid "If enabled, display shows 12 chars instead 8, but in latin-1/translit only."
 msgstr "Etkinleştirildiğinde, ekran 12 yerine 12 karakter gösterir, ancak sadece latin-1 / translit."
 
 msgid "If enabled, then there will be displayed icons for new/unseen items too."
 msgstr "Etkinleştirilirse, yeni / görünmeyen öğeler için de simgeler görüntülenir."
-
-msgid "If is disabled, then after Copy/Move will not be target directory stored into bookmarks."
-msgstr "Devre dışı ise, Kopyala / Taşı seçildikten sonra yer imleri içine kaydedilmiş hedef dizin olmayacaktır."
 
 msgid "If is enabled and movie playback is finished, then after return to movielist will not be automaticaly start service playback."
 msgstr "Etkinleştirilirse ve film oynatma biterse, movielist'e döndükten sonra otomatik olarak servis oynatma başlatılmaz."
@@ -8013,6 +8007,10 @@ msgstr "Suudi Arabistan"
 
 msgid "Save"
 msgstr "Kaydet"
+
+#, fuzzy
+msgid "Save / Enter text and exit"
+msgstr "Metin gir ve çık"
 
 msgid "Save EPG"
 msgstr "EPG Kaydet"

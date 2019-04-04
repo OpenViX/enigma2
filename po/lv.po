@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-29 23:05+0100\n"
+"POT-Creation-Date: 2019-04-04 22:19+0200\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: arn354 <arn354@email.de>\n"
 "Language-Team: none\n"
@@ -3841,10 +3841,6 @@ msgid "Enigma2 Version: %s"
 msgstr ""
 
 #, fuzzy
-msgid "Enter"
-msgstr "centrs"
-
-#, fuzzy
 msgid "Enter IP address"
 msgstr "IP adrese"
 
@@ -3871,10 +3867,6 @@ msgstr "Ievadiet pin kodu"
 
 msgid "Enter pin code"
 msgstr "Ievadiet pin kodu"
-
-#, fuzzy
-msgid "Enter text and exit"
-msgstr "izejot, saglabāt repertuāru"
 
 msgid "Enter the frequency at which you LNB switches between low band and high band. For more information consult the spec sheet of your LNB."
 msgstr ""
@@ -4998,15 +4990,15 @@ msgstr "Ikona"
 msgid "If enabled, AIT data is included in recordings."
 msgstr ""
 
+msgid "If enabled, bookmarks will be updated with the new location when you move or copy a recording.."
+msgstr ""
+
 msgid "If enabled, display shows 12 chars instead 8, but in latin-1/translit only."
 msgstr ""
 
 #, fuzzy
 msgid "If enabled, then there will be displayed icons for new/unseen items too."
 msgstr "Ja iespējots, sākoties jaunam notikumam tiks parādīta infojosla."
-
-msgid "If is disabled, then after Copy/Move will not be target directory stored into bookmarks."
-msgstr ""
 
 msgid "If is enabled and movie playback is finished, then after return to movielist will not be automaticaly start service playback."
 msgstr ""
@@ -8415,6 +8407,10 @@ msgstr ""
 
 msgid "Save"
 msgstr "Saglabāt"
+
+#, fuzzy
+msgid "Save / Enter text and exit"
+msgstr "izejot, saglabāt repertuāru"
 
 #, fuzzy
 msgid "Save EPG"

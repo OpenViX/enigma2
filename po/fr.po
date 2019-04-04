@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-29 23:05+0100\n"
+"POT-Creation-Date: 2019-04-04 22:19+0200\n"
 "PO-Revision-Date: 2015-10-31 16:41+0100\n"
 "Last-Translator: Pr2 <dummy@dummy.com>\n"
 "Language-Team: none\n"
@@ -3765,10 +3765,6 @@ msgid "Enigma2 Version: %s"
 msgstr "Version Enigma2: %s"
 
 #, fuzzy
-msgid "Enter"
-msgstr "Centré"
-
-#, fuzzy
 msgid "Enter IP address"
 msgstr "Adresse IP"
 
@@ -3795,10 +3791,6 @@ msgstr "Saisir code PIN"
 
 msgid "Enter pin code"
 msgstr "Saisir code PIN"
-
-#, fuzzy
-msgid "Enter text and exit"
-msgstr "Sauvegarder et quitter"
 
 msgid "Enter the frequency at which you LNB switches between low band and high band. For more information consult the spec sheet of your LNB."
 msgstr ""
@@ -4910,15 +4902,15 @@ msgstr "Icônes"
 msgid "If enabled, AIT data is included in recordings."
 msgstr "Si activé, les données AIT seront incluses dans les enregistrements."
 
+msgid "If enabled, bookmarks will be updated with the new location when you move or copy a recording.."
+msgstr ""
+
 msgid "If enabled, display shows 12 chars instead 8, but in latin-1/translit only."
 msgstr ""
 
 #, fuzzy
 msgid "If enabled, then there will be displayed icons for new/unseen items too."
 msgstr "Lorsqu'elle est activée, la barre d'informations s'affiche quand un nouvel événement commence."
-
-msgid "If is disabled, then after Copy/Move will not be target directory stored into bookmarks."
-msgstr ""
 
 msgid "If is enabled and movie playback is finished, then after return to movielist will not be automaticaly start service playback."
 msgstr ""
@@ -8238,6 +8230,10 @@ msgstr ""
 
 msgid "Save"
 msgstr "Sauver"
+
+#, fuzzy
+msgid "Save / Enter text and exit"
+msgstr "Sauvegarder et quitter"
 
 msgid "Save EPG"
 msgstr "Sauver EPG"
