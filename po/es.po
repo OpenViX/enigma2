@@ -3215,8 +3215,8 @@ msgstr "Epg/Guia"
 msgid "Epg/Guide long"
 msgstr "Epg/Guia (prolongado)"
 
-msgid "equal to"
-msgstr "igual a"
+msgid "Equal to"
+msgstr "Igual a"
 
 msgid "Error"
 msgstr "Error"
@@ -6872,8 +6872,8 @@ msgstr "Buscando nuevos paquetes instalados o borrados. Por favor, espera..."
 msgid "Searching west ..."
 msgstr "Buscando al oeste ..."
 
-msgid "second cable of motorized LNB"
-msgstr "segundo cable motorizado LNB"
+msgid "Second cable of motorized LNB"
+msgstr "Segundo cable motorizado LNB"
 
 msgid "Secondary DNS"
 msgstr "DNS Secundario"
@@ -12131,8 +12131,8 @@ msgstr "Presione OK para seleccionar un grupo de satélites para configurar en u
 msgid "This setting allows the tuner configuration to be a duplication of how another tuner is already configured."
 msgstr "Esta configuración permite que la configuración del sintonizador sea una duplicación de cómo otro sintonizador ya está configurado."
 
-msgid "loopthrough to"
-msgstr "conectado a"
+msgid "Loop through from"
+msgstr "Conectado desde"
 
 msgid "Select 'polarisation' if using a 'universal' LNB, otherwise consult your LNB spec sheet."
 msgstr "Seleccione 'polarización' si usa un LNB 'universal'; de lo contrario, consulte la hoja de especificaciones de su LNB."
