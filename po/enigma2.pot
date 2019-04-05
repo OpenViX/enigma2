@@ -10873,7 +10873,16 @@ msgstr ""
 msgid "No data received yet"
 msgstr ""
 
-msgid "Switchable tuner types"
+msgid "Select 'Yes' when you want to configure this tuner for ATSC"
+msgstr ""
+
+msgid "Select 'Yes' when you want to configure this tuner for DVB-C"
+msgstr ""
+
+msgid "Select 'Yes' when you want to configure this tuner for DVB-S"
+msgstr ""
+
+msgid "Select 'Yes' when you want to configure this tuner for DVB-T"
 msgstr ""
 
 msgid "T2MI RAW Mode"
