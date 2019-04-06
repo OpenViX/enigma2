@@ -15683,7 +15683,6 @@ msgstr "umgeschaltet"
 #~ msgid "Videocodec"
 #~ msgstr "Videocodec"
 
-
 #~ msgid "Videosize"
 #~ msgstr "Bildgröße"
 
