@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-04-04 22:19+0200\n"
-"PO-Revision-Date: 2019-04-04 22:24+0200\n"
+"PO-Revision-Date: 2019-04-06 13:33+0200\n"
 "Last-Translator: -=niki=- <niki_msn@hotmail.de>\n"
 "Language-Team: none\n"
 "Language: de\n"
@@ -1896,7 +1896,7 @@ msgid "Channel Info"
 msgstr "Kanal Info"
 
 msgid "Channel context menu"
-msgstr "Kanal-Kontextmenü"
+msgstr "Kanal Kontextmenü"
 
 msgid "Channel list type"
 msgstr "Kanallisten-Typ"
@@ -4184,7 +4184,7 @@ msgid "Force legacy signal stats"
 msgstr "Erzwinge rohe Signaldaten"
 
 msgid "Format"
-msgstr "Formatieren"
+msgstr ""
 
 msgid "Format as"
 msgstr "Formatieren als"
@@ -6535,7 +6535,7 @@ msgid "Other"
 msgstr "Andere"
 
 msgid "Other Subtitles & lang"
-msgstr ""
+msgstr "Andere Untertitel & Sprachen"
 
 msgid "Overall progress:"
 msgstr "Genereller Fortschritt:"
@@ -8427,10 +8427,10 @@ msgid "Select the Swap File Size:"
 msgstr "Wähle die Größe des Swap:"
 
 msgid "Select the User Band channel to be assigned to this tuner. This is an index into the table of frequencies the SCR switch or SCR LNB uses to pass the requested transponder to the tuner."
-msgstr ""
+msgstr "Wählen Sie den Kanal der diesem Empfänger zugewiesen werden soll. Dies ist der Index in die Tabelle der Frequenzen welche der SCR Switch oder SCR LNB nutzt um den angeforderten Transponder an den Empfänger zu übertragen."
 
 msgid "Select the User Band frequency to be assigned to this tuner. This is the frequency the SCR switch or SCR LNB uses to pass the requested transponder to the tuner."
-msgstr ""
+msgstr "Wählen Sie die Frequenz die diesem Empfänger zugewiesen werden soll. Dies ist Frequenz welche der SCR Switch oder SCR LNB nutzt um den angeforderten Transponder an den Empfänger zu übertragen."
 
 msgid "Select the User Band to be assigned to this tuner. This is an index into the table of frequencies the SCR switch or SCR LNB uses to pass the requested transponder to the tuner."
 msgstr ""
@@ -8448,7 +8448,7 @@ msgid "Select the movie path"
 msgstr "Den Filmpfad auswählen"
 
 msgid "Select the protocol used by your SCR device. Choices are 'SCR Unicable' (Unicable), or 'SCR JESS' (JESS, also known as Unicable II)."
-msgstr "Wählen Sie das Format Ihres Unicable-Geräts. Zur Auswahl stehen \"SCR Unicable\" (Unicable I ) oder \"SCR JESS\" (Unicable II )."
+msgstr "Wählen Sie das Protokoll Ihres Unicable-Geräts. Zur Auswahl stehen \"SCR Unicable\" (Unicable I ) oder \"SCR JESS\" (Unicable II )."
 
 msgid "Select the satellite which is connected to Port-A of your switch. If you are unsure select 'automatic' and the receiver will attempt to determine this for you. If nothing is connected to this port, select 'nothing connected'."
 msgstr "Wählen Sie den Satelliten aus, der mit Port A Ihres Switches verbunden ist. Wenn Sie sich nicht sicher sind, wählen Sie \"automatisch\" und der Empfänger wird versuchen, dies für Sie zu ermitteln. Wenn an diesem Port nichts angeschlossen ist, wählen Sie \"nichts verbunden\"."
