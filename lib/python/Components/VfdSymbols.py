@@ -12,7 +12,7 @@ POLLTIME = 5 # seconds
 
 def SymbolsCheck(session, **kwargs):
 		global symbolspoller, POLLTIME
-		if getBoxType() in ('dummy'):
+		if getBoxType() in ('dummy', ):
 			POLLTIME = 1
 		symbolspoller = SymbolsCheckPoller(session)
 		symbolspoller.start()
@@ -65,13 +65,13 @@ class SymbolsCheckPoller:
 				open("/proc/stb/lcd/symbol_circle", "w").write("3")
 			else:
 				open("/proc/stb/lcd/symbol_circle", "w").write("0")
-		elif getBoxType() in ('dummy'):
+		elif getBoxType() in ('dummy', ):
 			recordings = len(NavigationInstance.instance.getRecordings())
 			if recordings > 0:
 				open("/proc/stb/lcd/symbol_recording", "w").write("1")
 			else:
 				open("/proc/stb/lcd/symbol_recording", "w").write("0")
-		elif getBoxType() in ('dummy'):
+		elif getBoxType() in ('dummy', ):
 			recordings = len(NavigationInstance.instance.getRecordings())
 			self.blink = not self.blink
 			if recordings > 0:
@@ -83,7 +83,7 @@ class SymbolsCheckPoller:
 					self.led = "0"
 			elif self.led == "1":
 				open("/proc/stb/lcd/powerled", "w").write("0")
-		elif getBoxType() in ('dummy'):
+		elif getBoxType() in ('dummy', ):
 			recordings = len(NavigationInstance.instance.getRecordings())
 			self.blink = not self.blink
 			if recordings > 0:

@@ -54,7 +54,7 @@ def getKernelVersionString():
 		return _("unknown")
 
 def getChipSetString():
-	if getMachineBuild() in ('gb73625'):
+	if getMachineBuild() in ('gb73625', ):
 		return "BCM73625"
 	else:
 		try:
@@ -66,11 +66,11 @@ def getChipSetString():
 			return "unavailable"
 
 def getCPUString():
-	if getMachineBuild() in ('xc7362'):
+	if getMachineBuild() in ('xc7362', ):
 		return "Broadcom"
-	elif getMachineBuild() in ('gbmv200'):
+	elif getMachineBuild() in ('gbmv200', ):
 		return "Hisilicon"
-	#elif getMachineBuild() in ('gb73625'):
+	#elif getMachineBuild() in ('gb73625', ):
 	#	return "BCM73625"
 	else:
 		try:
@@ -119,7 +119,7 @@ def getImageTypeString():
 		return _("undefined")
 
 def getCPUInfoString():
-	if getMachineBuild() in ('gbmv200'):
+	if getMachineBuild() in ('gbmv200', ):
 		return "Hisilicon 1,6 GHz 4 Cores"
 
 	try:
@@ -165,7 +165,7 @@ def getCPUInfoString():
 		return _("undefined")
 
 def getCPUSpeedString():
-	if getMachineBuild() in ('gbmv200'):
+	if getMachineBuild() in ('gbmv200', ):
 		return "1,6 GHz"
 	mhz = "unavailable"
 	try:

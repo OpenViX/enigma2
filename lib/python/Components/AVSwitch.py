@@ -170,7 +170,7 @@ def InitAVSwitch():
 
 	iAVSwitch.setInput("ENCODER") # init on startup
 
-	if getMachineBuild() in ('gb7325'):
+	if getMachineBuild() in ('gb7325', ):
 		detected = eAVSwitch.getInstance().haveScartSwitch()
 	else:
 		detected = False

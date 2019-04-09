@@ -291,9 +291,9 @@ class Network:
 			# print "[Network] moduledir", moduledir
 			if moduledir:
 				name = os.path.basename(os.path.realpath(moduledir))
-				if name in ('smsc75xx'):
+				if name in ('smsc75xx', ):
 					name = _('External') + ' - ' + 'SMSC75XX'
-				if name in ('bcmgenet'):
+				if name in ('bcmgenet', ):
 					name = _('Internal') + ' - ' + 'BCM'
 			else:
 				name = _('Unknown')

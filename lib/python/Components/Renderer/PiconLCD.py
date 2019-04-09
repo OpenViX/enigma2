@@ -115,14 +115,14 @@ class PiconLCD(Renderer):
 			pngname = findLcdPicon("picon_default")
 		self.defaultpngname = None
 		if not pngname:
-			if getBoxType() in ('vuultimo'):
+			if getBoxType() in ('vuultimo', ):
 				tmp = resolveFilename(SCOPE_ACTIVE_SKIN, "lcd_picon_default.png")
 			else:
 				tmp = resolveFilename(SCOPE_ACTIVE_SKIN, "picon_default.png")
 			if pathExists(tmp):
 				pngname = tmp
 			else:
-				if getBoxType() in ('vuultimo'):
+				if getBoxType() in ('vuultimo', ):
 					pngname = resolveFilename(SCOPE_ACTIVE_SKIN, "lcd_picon_default.png")
 				else:
 					pngname = resolveFilename(SCOPE_ACTIVE_SKIN, "picon_default.png")

@@ -287,9 +287,9 @@ class SwapManager(Screen):
 	def doCSplace(self, name):
 		if name:
 			self.new_place = name[1]
-			if chipset in ('bcm7325'):
+			if chipset in ('bcm7325', ):
 				myoptions = [[_("16 MB"), '16384'],[_("32 MB"), '32768'],[_("64 MB"), '65536'],[_("128 MB (recommended for this chipset)"), '131072'],[_("256 MB"), '262144'],[_("512 MB"), '524288'],[_("1024 MB"), '1048576'],[_("2048 MB (maximum)"), '2097152']]
-			if chipset in ('bcm7358'):
+			if chipset in ('bcm7358', ):
 				myoptions = [[_("16 MB"), '16384'],[_("32 MB"), '32768'],[_("64 MB"), '65536'],[_("128 MB"), '131072'],[_("256 MB (recommended for this chipset)"), '262144'],[_("512 MB"), '524288'],[_("1024 MB"), '1048576'],[_("2048 MB (maximum)"), '2097152']]
 			if chipset in ('bcm7356', 'bcm7362'):
 				myoptions = [[_("16 MB"), '16384'],[_("32 MB"), '32768'],[_("64 MB"), '65536'],[_("128 MB"), '131072'],[_("256 MB"), '262144'],[_("512 MB (recommended for this chipset)"), '524288'],[_("1024 MB"), '1048576'],[_("2048 MB (maximum)"), '2097152']]
