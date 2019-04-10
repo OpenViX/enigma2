@@ -155,11 +155,7 @@ class VIXDevicesPanel(Screen):
 		else:
 			device2 = re.sub('[0-9]', '', device)
 		devicetype = path.realpath('/sys/block/' + device2 + '/device')
-		print 'DEVICETYPE:',devicetype
-		print 'TEST TYPE MMC:',devicetype.find('mmc')
-		print 'TEST TYPE SDHCI:',devicetype.find('rdb')
-		print 'TEST TYPE soc:',devicetype.find('soc')
-		if devicetype.find('mmc') != -1 and (devicetype.find('rdb') != -1 or (devicetype.find('soc') != -1 and  'h9' not in getMachineBuild())):
+		if devicetype.find('mmc') != -1 and (devicetype.find('rdb') != -1 or (devicetype.find('soc') != -1 and  getMachineBuild() not in ("h9", "i55plus", "h9combo"))):
 			return
 		if  getMachineBuild() == 'h9combo' and "mmcblk0" in device:
 			return
@@ -408,7 +404,7 @@ class VIXDevicePanelConf(Screen, ConfigListScreen):
 		else:
 			device2 = re.sub('[0-9]', '', device)
 		devicetype = path.realpath('/sys/block/' + device2 + '/device')
-		if devicetype.find('mmc') != -1 and (devicetype.find('rdb') != -1 or (devicetype.find('soc') != -1 and  'h9' not in getMachineBuild())):
+		if devicetype.find('mmc') != -1 and (devicetype.find('rdb') != -1 or (devicetype.find('soc') != -1 and  getMachineBuild() not in ("h9", "i55plus", "h9combo"))):
 			return
 		if  getMachineBuild() == 'h9combo' and "mmcblk0" in device:
 			return
