@@ -293,6 +293,7 @@ class ServiceInfo(Screen):
 			else:
 				tuner = (_("NIM & Type"), chr(ord('A') + frontendData["tuner_number"]) + " - " + frontendData["tuner_type"], TYPE_TEXT)
 			if frontendDataOrg["tuner_type"] == "DVB-S":
+				t2mi = lambda x: None if x == -1 else str(x)
 				if frontendData.get("is_id", eDVBFrontendParametersSatellite.No_Stream_Id_Filter) > eDVBFrontendParametersSatellite.No_Stream_Id_Filter: # multistream
 					return (tuner,
 						(_("System & Modulation"), "%s %s" % (frontendData["system"], frontendData["modulation"]), TYPE_TEXT),
@@ -301,6 +302,8 @@ class ServiceInfo(Screen):
 						(_("Symbol rate & FEC"), "%s - %s" % (frontendData.get("symbol_rate", 0), frontendData["fec_inner"]), TYPE_TEXT),
 						(_("Input Stream ID"), "%s" % (frontendData.get("is_id", eDVBFrontendParametersSatellite.No_Stream_Id_Filter)), TYPE_TEXT),
 						(_("PLS Mode & PLS Code"), "%s - %s" % (frontendData["pls_mode"], frontendData["pls_code"]), TYPE_TEXT),
+						(_("T2MI PLP ID"), t2mi(frontendData.get("t2mi_plp_id", eDVBFrontendParametersSatellite.No_T2MI_PLP_Id)), TYPE_TEXT),
+						(_("T2MI PID"), None if frontendData.get("t2mi_plp_id", eDVBFrontendParametersSatellite.No_T2MI_PLP_Id) == eDVBFrontendParametersSatellite.No_T2MI_PLP_Id else str(frontendData.get("t2mi_pid", eDVBFrontendParametersSatellite.T2MI_Default_Pid)), TYPE_TEXT),
 						(_("Inversion, Pilot & Roll-off"), "%s - %s - %s" % (frontendData["inversion"], frontendData.get("pilot", None), str(frontendData.get("rolloff", None))), TYPE_TEXT))
 				else: # not multistream
 					return (tuner,
@@ -308,6 +311,8 @@ class ServiceInfo(Screen):
 						(_("Orbital position"), "%s" % frontendData["orbital_position"], TYPE_TEXT),
 						(_("Frequency & Polarization"), "%s - %s" % (frontendData.get("frequency", 0), frontendData["polarization"]), TYPE_TEXT),
 						(_("Symbol rate & FEC"), "%s - %s" % (frontendData.get("symbol_rate", 0), frontendData["fec_inner"]), TYPE_TEXT),
+						(_("T2MI PLP ID"), t2mi(frontendData.get("t2mi_plp_id", eDVBFrontendParametersSatellite.No_T2MI_PLP_Id)), TYPE_TEXT),
+						(_("T2MI PID"), None if frontendData.get("t2mi_plp_id", eDVBFrontendParametersSatellite.No_T2MI_PLP_Id) == eDVBFrontendParametersSatellite.No_T2MI_PLP_Id else str(frontendData.get("t2mi_pid", eDVBFrontendParametersSatellite.T2MI_Default_Pid)), TYPE_TEXT),
 						(_("Inversion, Pilot & Roll-off"), "%s - %s - %s" % (frontendData["inversion"], frontendData.get("pilot", None), str(frontendData.get("rolloff", None))), TYPE_TEXT))
 			elif frontendDataOrg["tuner_type"] == "DVB-C":
 				return (tuner,
