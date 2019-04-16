@@ -11872,6 +11872,9 @@ msgstr "Genérico"
 msgid "Select locale"
 msgstr "Seleccionar lugar"
 
+msgid "Lower case"
+msgstr "Minúsculas"
+
 msgid "Upper case"
 msgstr "Mayúsculas"
 
