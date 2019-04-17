@@ -613,3 +613,7 @@ openvix: release 5.2.037
 openvix: developer 5.2.038.001
 openvix: developer 5.2.038.002
 openvix: release 5.2.038
+openvix: developer 5.2.039.001
+openvix: developer 5.2.039.002
+openvix: developer 5.2.039.003
+openvix: release 5.2.039
