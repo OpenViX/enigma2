@@ -2551,7 +2551,7 @@ msgid "Delay after set voltage before measure motor power"
 msgstr "Retraso después del voltaje ajustado antes de medir la potencia del motor"
 
 msgid "Delay after toneburst"
-msgstr "Retraso después toneburst"
+msgstr "Retraso después MiniDiseqC"
 
 msgid "Delay after voltage change before motor command"
 msgstr "Retraso después del cambio de voltaje antes del comando del motor"
@@ -3568,7 +3568,7 @@ msgid "Force LNB Power"
 msgstr "Forzar LNB Alimentación"
 
 msgid "Force ToneBurst"
-msgstr "Forzar ToneBurst"
+msgstr "Forzar MiniDiseqC"
 
 msgid "Force de-interlace"
 msgstr "Fuerza de-interlace"
@@ -9040,10 +9040,10 @@ msgid "Tone mode"
 msgstr "Modo tono"
 
 msgid "Toneburst"
-msgstr "Toneburst"
+msgstr "MiniDiseqC"
 
 msgid "Toneburst A/B"
-msgstr "Tonoburst A/B"
+msgstr "MiniDiseqC A/B"
 
 msgid "Top and Bottom"
 msgstr "Arriba y abajo"
@@ -9796,7 +9796,7 @@ msgid "When enabled the LNB power will not be switched off in standby"
 msgstr "Cuando está habilitada, la alimentación de LNB no se apagará en el modo de espera"
 
 msgid "When enabled the LNB toneburst will be forced"
-msgstr "Cuando se habilite se forzará el sonido tonal LNB"
+msgstr "Cuando se habilite forzará MiniDiseqC LNB"
 
 msgid "When enabled the online checker will also check for experimental versions"
 msgstr "Cuando está activado, el verificador online comprabará también las versiones experimentales"
