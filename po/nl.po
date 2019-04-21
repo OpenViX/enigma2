@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-03 10:25+0000\n"
-"PO-Revision-Date: 2019-03-03 12:45+0100\n"
+"POT-Creation-Date: 2019-04-21 07:52+0100\n"
+"PO-Revision-Date: 2019-04-21 14:43+0200\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -1745,6 +1745,12 @@ msgstr "Ook na stand-by"
 msgid "Alternative"
 msgstr "Alternatief"
 
+msgid "Alternative 1"
+msgstr "Alternatief 1"
+
+msgid "Alternative 2"
+msgstr "Alternatief 2"
+
 msgid "Alternative numbering mode"
 msgstr "Alternatieve nummermethode"
 
@@ -2898,6 +2904,9 @@ msgstr "Kleurformaat"
 
 msgid "Color space"
 msgstr "Kleurruimte"
+
+msgid "Combined"
+msgstr "Gecombineerd"
 
 msgid "Combo"
 msgstr "Combo"
@@ -4211,6 +4220,9 @@ msgstr "Niet zappen en de timer uitschakelen"
 msgid "Don't zap and remove timer"
 msgstr "Niet zappen en de timer verwijderen"
 
+msgid "Done"
+msgstr "Klaar"
+
 #, python-format
 msgid "Done - Installed, upgraded or removed %d package (%s)"
 msgid_plural "Done - Installed, upgraded or removed %d packages (%s)"
@@ -4568,9 +4580,6 @@ msgstr "Voer blijvende PIN in"
 
 msgid "Enter pin code"
 msgstr "Voer pincode in"
-
-msgid "Enter text and exit"
-msgstr "Geef tekst in en sluit af"
 
 msgid "Enter the FTP password of the host receiver (normally just leave empty)."
 msgstr "Geef het FTP-wachtwoord van de gast-ontvanger."
@@ -5597,13 +5606,6 @@ msgstr "Hostname:"
 
 msgid "Hostname: "
 msgstr "Hostname: "
-
-msgid "Hotswitchable"
-msgstr "Het-verwisselbaar"
-
-#
-msgid "Hotswitchable tuner"
-msgstr "Heet-verwisselbare tuner"
 
 msgid "Hour"
 msgstr "Uur"
@@ -6738,6 +6740,9 @@ msgstr "Diverse"
 msgid "Missing "
 msgstr "Ontbrekend "
 
+msgid "Mode"
+msgstr "Modus"
+
 msgctxt "Satellite configuration mode"
 msgid "Mode"
 msgstr "Modus"
@@ -6766,6 +6771,9 @@ msgstr "Model: "
 #, python-format
 msgid "Model: %s %s\n"
 msgstr "Model:\t%s %s\n"
+
+msgid "Modes"
+msgstr "Modi"
 
 msgid "Modulation"
 msgstr "Modulatie"
@@ -6943,6 +6951,9 @@ msgstr "Multi-EPG"
 
 msgid "MultiEPG"
 msgstr "Multi-EPG"
+
+msgid "MultiType"
+msgstr "Multitype"
 
 msgid "Multiboot"
 msgstr "Multiboot"
@@ -7267,9 +7278,6 @@ msgstr "Geen zender/provider gekozen"
 
 msgid "No standby"
 msgstr "Geen stand-by"
-
-msgid "No suitable sat tuner found!"
-msgstr "Geen geschikte satelliettuner gevonden!"
 
 msgid "No tags are set on these movies."
 msgstr "Geen markeringen geplaatst op deze opnames."
@@ -9189,6 +9197,9 @@ msgstr "Saudi Arabia"
 msgid "Save"
 msgstr "Opslaan"
 
+msgid "Save / Enter text and exit"
+msgstr "Sla op/Geef tekst in en sluit af"
+
 msgid "Save EPG"
 msgstr "Sla EPG op"
 
@@ -11023,10 +11034,6 @@ msgstr "Ga naar het vorige kanaal"
 msgid "Switch to the previous channel in history"
 msgstr "Ga naar de vorige zender uit de geschiedenis"
 
-#
-msgid "Switchable tuner types"
-msgstr "Verwisselbare tunertypes"
-
 msgid "Switzerland"
 msgstr "Switzerland"
 
@@ -11070,6 +11077,15 @@ msgstr "Systeemtemperatuur: %s"
 
 msgid "System: "
 msgstr "Systeem: "
+
+msgid "T2MI PID"
+msgstr "T2MI PID"
+
+msgid "T2MI PLP"
+msgstr "T2MI PLP"
+
+msgid "T2MI PLP ID"
+msgstr "T2MI PLP ID"
 
 msgid "T2MI RAW Mode"
 msgstr "T2MI RAW modus"
@@ -11236,10 +11252,10 @@ msgstr ""
 
 msgid ""
 "The Filesystem on your Timeshift-Device does not support hardlinks.\n"
-"Make sure it is formatted in EXT2 or EXT3!"
+"Make sure it is formatted in EXT2, EXT3 or EXT4!"
 msgstr ""
 "Het bestandssysteem van uw timeshift-medium ondersteunt geen hardlinks.\n"
-"Formatteer die in EXT3 or EXT4!"
+"Formatteer die in EXT2, EXT3 of EXT4!"
 
 msgid ""
 "The IMDb plugin is not installed!\n"
@@ -15518,6 +15534,13 @@ msgstr "zapte"
 #~ msgid "Hotkey"
 #~ msgstr "Hotkey"
 
+#~ msgid "Hotswitchable"
+#~ msgstr "Het-verwisselbaar"
+
+#
+#~ msgid "Hotswitchable tuner"
+#~ msgstr "Heet-verwisselbare tuner"
+
 #~ msgid "IP-Address"
 #~ msgstr "IP-adres"
 
@@ -15609,9 +15632,6 @@ msgstr "zapte"
 #~ msgid "Multiboot ERROR! - no STARTUP in /boot -Please check /etc/fstab for correct boot partition"
 #~ msgstr "Multiboot FOUT! - geen STARTUP in /boot - Check /etc/fstab op correcte bootpartitie."
 
-#~ msgid "Multiplex"
-#~ msgstr "Multiplex"
-
 #~ msgid "NFI image flashing"
 #~ msgstr "NFI image schrijven"
 
@@ -15653,6 +15673,9 @@ msgstr "zapte"
 
 #~ msgid "No stream clients"
 #~ msgstr "Geen stream-klanten"
+
+#~ msgid "No suitable sat tuner found!"
+#~ msgstr "Geen geschikte satelliettuner gevonden!"
 
 #~ msgid "No updates available. Please try again later."
 #~ msgstr "Geen updates beschikbaar. Probeer het later nog eens."
@@ -15991,6 +16014,10 @@ msgstr "zapte"
 
 #~ msgid "Switch channel up"
 #~ msgstr "Ga naar volgende kanaal"
+
+#
+#~ msgid "Switchable tuner types"
+#~ msgstr "Verwisselbare tunertypes"
 
 #~ msgid ""
 #~ "System temperature: %s%sC\n"
