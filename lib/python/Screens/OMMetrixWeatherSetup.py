@@ -6,6 +6,7 @@
 #    Coded by Sinthex IT-Solutions (c) 2014
 #    www.open-store.net
 #
+#    teamBlue - change to MSN weather step 1, thx to openatv
 #
 #  This plugin is licensed under the Creative Commons
 #  Attribution-NonCommercial-ShareAlike 3.0 Unported License.
@@ -57,11 +58,8 @@ class OMMetrixWeatherSetup(Screen,ConfigListScreen):
 
 	def initConfigList(self):
 		self.list = []
-		self.list.append(getConfigListEntry(_("Show Weather Widget"), config.plugins.MetrixWeather.enabled)) 
-		self.list.append(getConfigListEntry(_(" ")))
-		self.list.append(getConfigListEntry(_("Weather ID"), config.plugins.MetrixWeather.woeid))
-		self.list.append(getConfigListEntry(_("Get your Weather ID on weather.open-store.net")))
-		self.list.append(getConfigListEntry(_(" ")))
+		self.list.append(getConfigListEntry(_("Show Weather Widget"), config.plugins.MetrixWeather.enabled))
+		self.list.append(getConfigListEntry(_("MSN Weather City Name"), config.plugins.MetrixWeather.weathercity))
 		self.list.append(getConfigListEntry(_("Unit"), config.plugins.MetrixWeather.tempUnit))
 		self["config"].setList(self.list)
 
