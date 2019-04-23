@@ -200,7 +200,7 @@ class OMMetrixWeatherWidget(Renderer):
 			condition = ")"
 		return str(condition)
 
-	def getTemp(self,temp):
+	def getTemp(self):
 		if config.plugins.MetrixWeather.tempUnit.value == "Fahrenheit":
 			return 'F'
 		else:
