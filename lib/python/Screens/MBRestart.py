@@ -114,12 +114,13 @@ class MultiBoot(Screen):
 				self.ContainterFallback()
 			else:
 				mkdir('/tmp/startupmount')
-				if fileExists("/dev/block/by-name/bootoptions"):
-					print "[MultiBoot Restart] bootoptions"
-					self.container.ePopen('mount /dev/block/by-name/bootoptions /tmp/startupmount', self.ContainterFallback)
-				elif fileExists("/dev/block/by-name/boot"):
-					print "[MultiBoot Restart] by-name/boot"
-					self.container.ePopen('mount /dev/block/by-name/boot /tmp/startupmount', self.ContainterFallback)
+				if SystemInfo["HasRootSubdir"]:
+					if fileExists("/dev/block/by-name/bootoptions"):
+						print "[MultiBoot Restart] bootoptions"
+						self.container.ePopen('mount /dev/block/by-name/bootoptions /tmp/startupmount', self.ContainterFallback)
+					elif fileExists("/dev/block/by-name/boot"):
+						print "[MultiBoot Restart] by-name/boot"
+						self.container.ePopen('mount /dev/block/by-name/boot /tmp/startupmount', self.ContainterFallback)
 				else:
 					print "[MultiBoot Restart] mtdboot"
 					self.container.ePopen('mount /dev/%s /tmp/startupmount' % self.mtdboot, self.ContainterFallback)
