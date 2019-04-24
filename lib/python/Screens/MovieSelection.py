@@ -1870,7 +1870,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			dirname = info.getName(item[0])
 			full_name = os.path.split(item[0].getPath())[1]
 			if full_name == dirname: # split extensions for files without metafile
-				dirname, self.extension = os.path.splitext(name)
+				dirname, self.extension = os.path.splitext(dirname)
 		self.session.openWithCallback(self.createDirCallback, VirtualKeyBoard,
 			title = _("Please enter the name of the new directory"),
 			text = dirname)
