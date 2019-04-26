@@ -591,22 +591,28 @@ class RecordTimerEntry(timer.TimerEntry, object):
 						if notify:
 							Notifications.AddPopup(text=_("Zapped to timer service %s!") % self.service_ref.getServiceName(), type=MessageBox.TYPE_INFO, timeout=5)
 
+# If the user is looking at a MovieList then we need to update this
+# lastservice, so that we get back to the updated one when closing the
+# list.
+#
+						if self.InfoBarInstance:
+							self.InfoBarInstance.lastservice = self.service_ref.ref
+
 # If there is a MoviePlayer active it will set things back to the
-# original channel after it finishes (which will be after we run).
-# So for that case, stop the player and defer our zap...which
-# lets the player shutdown and do all of its fiddling before we start.
-# Repeated every 1s until done.
-# IPTV bouquet playing manages on its own - it's just a service.
-# Plugins (e.g. Kodi) are another matter...currently ignored.
-# Also, could just call failureCB(True) after closing MoviePlayer...
+# original channel after it finishes (which will be after we run) unless
+# we update the lastservice entry.
 #
 						from Screens.InfoBar import MoviePlayer
-						if MoviePlayer.instance is not None and MoviePlayer.instance.execing:
-# This is one of the more weirdly named functions, it actually
+						if MoviePlayer.instance is not None:
+							MoviePlayer.instance.lastservice = self.service_ref.ref
+# Shut it down if it's actually running...
+# ...uses one of the more weirdly named functions, it actually
 # functions as setMoviePlayerInactive
-							NavigationInstance.instance.isMovieplayerActive()
-# next_state is StateRunning but we can leave self.begin unchanged
-							return False
+#
+							if MoviePlayer.instance.execing:
+								print "[RecordTimer] Shutting down MoviePlayer"
+								NavigationInstance.instance.isMovieplayerActive()
+
 						self._bouquet_search()
 				return True
 			else:
