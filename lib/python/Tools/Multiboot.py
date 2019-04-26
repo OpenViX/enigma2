@@ -238,11 +238,14 @@ class EmptySlot():
 		self.slot = Contents
 		if not os.path.isdir('/tmp/testmount'):
 			os.mkdir('/tmp/testmount')
-		if SystemInfo["HasSDmmc"]:			# allow for mmc & SDcard in passed slot number, so SDcard slot -1
-			self.slot -= 1
-		self.part = "%s%s" %(self.mtdboot, str(self.slot * 2 + self.firstslot))
-		if SystemInfo["HasSDmmc"] and self.slot == 0:	# this is the mmc slot, so pick up from MtdRoot
-			self.part = getMachineMtdRoot()
+		if SystemInfo["HasRootSubdir"]:
+			self.part = "%s%s" %(self.mtdboot, GetCurrentRoot())
+		else:
+			if SystemInfo["HasSDmmc"]:			# allow for mmc & SDcard in passed slot number, so SDcard slot -1
+				self.slot -= 1
+			self.part = "%s%s" %(self.mtdboot, str(self.slot * 2 + self.firstslot))
+			if SystemInfo["HasSDmmc"] and self.slot == 0:	# this is the mmc slot, so pick up from MtdRoot
+				self.part = getMachineMtdRoot()
 		self.phase = self.MOUNT
 		self.run()
 
@@ -252,8 +255,12 @@ class EmptySlot():
 	
 	def appClosed(self, data, retval, extra_args):
 		if retval == 0 and self.phase == self.MOUNT:
-			if os.path.isfile("/tmp/testmount/usr/bin/enigma2"):
-				os.rename('/tmp/testmount/usr/bin/enigma2', '/tmp/testmount/usr/bin/enigmax.bin')
+			if SystemInfo["HasRootSubdir"]:
+				if os.path.isfile("/tmp/testmount/linuxrootfs%s/usr/bin/enigma2" %self.slot):
+					os.rename('/tmp/testmount/linuxrootfs%s/usr/bin/enigma2' %self.slot, '/tmp/testmount/linuxrootfs%s/usr/bin/enigmax.bin' %self.slot)
+			else:
+				if os.path.isfile("/tmp/testmount/usr/bin/enigma2"):
+					os.rename('/tmp/testmount/usr/bin/enigma2', '/tmp/testmount/usr/bin/enigmax.bin')
 			self.phase = self.UNMOUNT
 			self.run()
 		else:
