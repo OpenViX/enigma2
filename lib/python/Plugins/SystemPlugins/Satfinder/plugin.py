@@ -200,6 +200,7 @@ class Satfinder(ScanSetup, ServiceScan):
 							self.scan_sat.t2mi_plp_id.value = eDVBFrontendParametersSatellite.No_T2MI_PLP_Id
 							self.scan_sat.t2mi_pid.value = eDVBFrontendParametersSatellite.T2MI_Default_Pid
 				elif self.tuning_type.value == "predefined_transponder":
+					self.scan_nims.value = self.satfinder_scan_nims.value
 					if self.preDefTransponders is None:
 						self.updatePreDefTransponders()
 					self.list.append(getConfigListEntry(_("Transponder"), self.preDefTransponders))
