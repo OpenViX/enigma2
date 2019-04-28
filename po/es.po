@@ -12600,6 +12600,9 @@ msgstr "Guardar/Entrar texto y salir"
 msgid "Zapped to timer service %s!"
 msgstr "Zapeado al canal de temporizador %s!"
 
+msgid "No images found"
+msgstr "No se encontraron imágenes"
+
 #~ msgid "3d mode"
 #~ msgstr "Modo 3D"
 
