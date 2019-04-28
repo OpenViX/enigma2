@@ -248,5 +248,6 @@ self.session.open(HdmiCECSetupScreen)
 			<item text="H9SDroot" entryID="H9SDswap" requires="HasH9SD"><screen module="H9SDswap" screen="H9SDswap">1</screen></item>
 			<item text="Deep standby" requires="DeepstandbySupport" entryID="deep_standby"><screen module="Standby" screen="TryQuitMainloop">1</screen></item>
 			<item text="Shut down" requires="!DeepstandbySupport" entryID="deep_standby"><screen module="Standby" screen="TryQuitMainloop">1</screen></item>
-		    </menu>
+			<item weight="24" level="0" text="Recovery Mode" requires="RecoveryMode" entryID="maintenance_mode"><screen module="Standby" screen="TryQuitMainloop">16</screen></item>
+		</menu>
 </menu>
