@@ -1,18 +1,18 @@
 <wizard>
 
 		<step id="start" nextstep="introduction">
-			<text value="Welcome.\n\nThis start wizard will guide you through the basic setup of your %s %s.\nPress the OK button on your remote control to move to the next step." />
+			<text value="Welcome.\n\nThis start wizard will guide you through the basic setup of your %s %s.\nPress the OK button on your remote control to move to the next step."/>
 			<code>
 self.clearSelectedKeys()
 self.selectKey("OK")
 			</code>
 		</step>
 
-		<step id="introduction" >
-			<text value="Use the up/down keys on your remote control to select an option. After that, press OK." />
+		<step id="introduction">
+			<text value="Use the up/down keys on your remote control to select an option. After that, press OK."/>
 			<list>
-				<listentry caption="Use the wizard to set up basic features" step="network" />
-				<listentry caption="Exit the wizard" step="end" />
+				<listentry caption="Use the wizard to set up basic features" step="network"/>
+				<listentry caption="Exit the wizard" step="end"/>
 			</list>
 			<code>
 self.clearSelectedKeys()
@@ -21,11 +21,11 @@ self.selectKey("DOWN")
 			</code>
 		</step>
 
-		<step id="network" >
-			<text value="Please connect your %s %s to the internet" />
+		<step id="network">
+			<text value="Please connect your %s %s to the internet"/>
 			<list>
-				<listentry caption="Check the internet connection" step="update" />
-				<listentry caption="Skip internet connection check (disables automatic package installation)" step="nima" />
+				<listentry caption="Check the internet connection" step="update"/>
+				<listentry caption="Skip internet connection check (disables automatic package installation)" step="timezone"/>
 			</list>
 			<code>
 self.clearSelectedKeys()
@@ -35,22 +35,22 @@ self.selectKey("DOWN")
 		</step>
 
 		<step id="update">
-			<text value="Checking the internet connection" />
-			<config screen="InstallWizard" module="InstallWizard" args="0" type="ConfigList" />
+			<text value="Checking the internet connection"/>
+			<config screen="InstallWizard" module="InstallWizard" args="0" type="ConfigList"/>
 			<code>
 self.clearSelectedKeys()
 self.selectKey("OK")
 			</code>
 		</step>
 
-		<step id="networkfailed" >
+		<step id="networkfailed">
 			<condition>
 self.condition = not config.misc.installwizard.ipkgloaded.value
 			</condition>
-			<text value="Your %s %s does not have an internet connection" />
+			<text value="Your %s %s does not have an internet connection"/>
 			<list>
-				<listentry caption="Check the internet connection again" step="update" />
-				<listentry caption="Skip internet connection check (disables automatic package installation)" step="nima" />
+				<listentry caption="Check the internet connection again" step="update"/>
+				<listentry caption="Skip internet connection check (disables automatic package installation)" step="timezone"/>
 			</list>
 			<code>
 self.clearSelectedKeys()
@@ -59,13 +59,24 @@ self.selectKey("DOWN")
 			</code>
 		</step>
 
+		<step id="timezone">
+			<text value="Please set your time zone"/>
+			<displaytext value="Please set your time zone"/>
+			<config screen="Setup" module="Setup" args="'timezone'" type="ConfigList"/>
+			<code>
+self.clearSelectedKeys()
+self.selectKey("LEFT")
+self.selectKey("RIGHT")
+			</code>
+		</step>
+
 		<step id="nima">
 			<condition>
 from Components.NimManager import nimmanager
 self.condition = len(nimmanager.nim_slots) > 0 and not nimmanager.nim_slots[0].empty
 			</condition>
-			<text value="Please set up tuner A" />
-			<config screen="NimSetup" module="Satconfig" args="0" type="ConfigList" />
+			<text value="Please set up tuner A"/>
+			<config screen="NimSetup" module="Satconfig" args="0" type="ConfigList"/>
 			<code>
 self.clearSelectedKeys()
 self.selectKey("LEFT")
@@ -78,8 +89,8 @@ self.selectKey("RIGHT")
 from Components.NimManager import nimmanager
 self.condition = len(nimmanager.nim_slots) > 1 and not nimmanager.nim_slots[1].empty
 			</condition>
-			<text value="Please set up tuner B" />
-			<config screen="NimSetup" module="Satconfig" args="1" type="ConfigList" />
+			<text value="Please set up tuner B"/>
+			<config screen="NimSetup" module="Satconfig" args="1" type="ConfigList"/>
 			<code>
 self.clearSelectedKeys()
 self.selectKey("LEFT")
@@ -92,8 +103,8 @@ self.selectKey("RIGHT")
 from Components.NimManager import nimmanager
 self.condition = len(nimmanager.nim_slots) > 2 and not nimmanager.nim_slots[2].empty and not nimmanager.nim_slots[2].isFBCLink()
 			</condition>
-			<text value="Please set up tuner C" />
-			<config screen="NimSetup" module="Satconfig" args="2" type="ConfigList" />
+			<text value="Please set up tuner C"/>
+			<config screen="NimSetup" module="Satconfig" args="2" type="ConfigList"/>
 			<code>
 self.clearSelectedKeys()
 self.selectKey("LEFT")
@@ -106,8 +117,8 @@ self.selectKey("RIGHT")
 from Components.NimManager import nimmanager
 self.condition = len(nimmanager.nim_slots) > 3 and not nimmanager.nim_slots[3].empty and not nimmanager.nim_slots[3].isFBCLink()
 			</condition>
-			<text value="Please set up tuner D" />
-			<config screen="NimSetup" module="Satconfig" args="3" type="ConfigList" />
+			<text value="Please set up tuner D"/>
+			<config screen="NimSetup" module="Satconfig" args="3" type="ConfigList"/>
 			<code>
 self.clearSelectedKeys()
 self.selectKey("LEFT")
@@ -120,8 +131,8 @@ self.selectKey("RIGHT")
 from Components.NimManager import nimmanager
 self.condition = len(nimmanager.nim_slots) > 4 and not nimmanager.nim_slots[4].empty and not nimmanager.nim_slots[4].isFBCLink()
 			</condition>
-			<text value="Please set up tuner E" />
-			<config screen="NimSetup" module="Satconfig" args="4" type="ConfigList" />
+			<text value="Please set up tuner E"/>
+			<config screen="NimSetup" module="Satconfig" args="4" type="ConfigList"/>
 			<code>
 self.clearSelectedKeys()
 self.selectKey("LEFT")
@@ -134,8 +145,8 @@ self.selectKey("RIGHT")
 from Components.NimManager import nimmanager
 self.condition = len(nimmanager.nim_slots) > 5 and not nimmanager.nim_slots[5].empty and not nimmanager.nim_slots[5].isFBCLink()
 			</condition>
-			<text value="Please set up tuner F" />
-			<config screen="NimSetup" module="Satconfig" args="5" type="ConfigList" />
+			<text value="Please set up tuner F"/>
+			<config screen="NimSetup" module="Satconfig" args="5" type="ConfigList"/>
 			<code>
 self.clearSelectedKeys()
 self.selectKey("LEFT")
@@ -148,8 +159,8 @@ self.selectKey("RIGHT")
 from Components.NimManager import nimmanager
 self.condition = len(nimmanager.nim_slots) > 6 and not nimmanager.nim_slots[6].empty and not nimmanager.nim_slots[6].isFBCLink()
 			</condition>
-			<text value="Please set up tuner G" />
-			<config screen="NimSetup" module="Satconfig" args="6" type="ConfigList" />
+			<text value="Please set up tuner G"/>
+			<config screen="NimSetup" module="Satconfig" args="6" type="ConfigList"/>
 			<code>
 self.clearSelectedKeys()
 self.selectKey("LEFT")
@@ -162,8 +173,8 @@ self.selectKey("RIGHT")
 from Components.NimManager import nimmanager
 self.condition = len(nimmanager.nim_slots) > 7 and not nimmanager.nim_slots[7].empty and not nimmanager.nim_slots[7].isFBCLink()
 			</condition>
-			<text value="Please set up tuner H" />
-			<config screen="NimSetup" module="Satconfig" args="7" type="ConfigList" />
+			<text value="Please set up tuner H"/>
+			<config screen="NimSetup" module="Satconfig" args="7" type="ConfigList"/>
 			<code>
 self.clearSelectedKeys()
 self.selectKey("LEFT")
@@ -176,8 +187,8 @@ self.selectKey("RIGHT")
 from Components.NimManager import nimmanager
 self.condition = len(nimmanager.nim_slots) > 8 and not nimmanager.nim_slots[8].empty and not nimmanager.nim_slots[8].isFBCLink()
 			</condition>
-			<text value="Please set up tuner I" />
-			<config screen="NimSetup" module="Satconfig" args="8" type="ConfigList" />
+			<text value="Please set up tuner I"/>
+			<config screen="NimSetup" module="Satconfig" args="8" type="ConfigList"/>
 			<code>
 self.clearSelectedKeys()
 self.selectKey("LEFT")
@@ -190,8 +201,8 @@ self.selectKey("RIGHT")
 from Components.NimManager import nimmanager
 self.condition = len(nimmanager.nim_slots) > 9 and not nimmanager.nim_slots[9].empty and not nimmanager.nim_slots[9].isFBCLink()
 			</condition>
-			<text value="Please set up tuner J" />
-			<config screen="NimSetup" module="Satconfig" args="9" type="ConfigList" />
+			<text value="Please set up tuner J"/>
+			<config screen="NimSetup" module="Satconfig" args="9" type="ConfigList"/>
 			<code>
 self.clearSelectedKeys()
 self.selectKey("LEFT")
@@ -204,8 +215,8 @@ self.selectKey("RIGHT")
 from Components.NimManager import nimmanager
 self.condition = len(nimmanager.nim_slots) > 10 and not nimmanager.nim_slots[10].empty and not nimmanager.nim_slots[10].isFBCLink()
 			</condition>
-			<text value="Please set up tuner K" />
-			<config screen="NimSetup" module="Satconfig" args="10" type="ConfigList" />
+			<text value="Please set up tuner K"/>
+			<config screen="NimSetup" module="Satconfig" args="10" type="ConfigList"/>
 			<code>
 self.clearSelectedKeys()
 self.selectKey("LEFT")
@@ -218,8 +229,8 @@ self.selectKey("RIGHT")
 from Components.NimManager import nimmanager
 self.condition = nimmanager.somethingConnected() and config.misc.installwizard.hasnetwork.value and config.misc.installwizard.ipkgloaded.value
 			</condition>
-			<text value="Do you want to install a channel list?" />
-			<config screen="InstallWizard" module="InstallWizard" args="1" type="ConfigList" />
+			<text value="Do you want to install a channel list?"/>
+			<config screen="InstallWizard" module="InstallWizard" args="1" type="ConfigList"/>
 			<code>
 self.clearSelectedKeys()
 self.selectKey("LEFT")
@@ -232,8 +243,8 @@ self.selectKey("RIGHT")
 from Components.NimManager import nimmanager
 self.condition = not nimmanager.somethingConnected() and config.misc.installwizard.hasnetwork.value and config.misc.installwizard.ipkgloaded.value
 			</condition>
-			<text value="Please configure the fallback tuner setup?" />
-			<config screen="SetupFallbacktuner" module="SetupFallbacktuner" type="ConfigList" />
+			<text value="Please configure the fallback tuner setup?"/>
+			<config screen="SetupFallbacktuner" module="SetupFallbacktuner" type="ConfigList"/>
 			<code>
 self.clearSelectedKeys()
 self.selectKey("LEFT")
@@ -242,7 +253,7 @@ self.selectKey("RIGHT")
 		</step>
 
 		<step id="scanquestion">
-			<text value="Do you want to do a service scan?" />
+			<text value="Do you want to do a service scan?"/>
 			<condition>
 from Components.NimManager import nimmanager
 self.condition = nimmanager.somethingConnected() and not config.misc.installwizard.channellistdownloaded.value
@@ -251,9 +262,9 @@ self.condition = nimmanager.somethingConnected() and not config.misc.installwiza
 self.hideRc()
 			</code>
 			<list>
-				<listentry caption="No, scan later manually" step="plugins" />
-				<listentry caption="Yes, do an automatic scan now" step="scan" />
-				<listentry caption="Yes, do a manual scan now" step="manualscan" />
+				<listentry caption="No, scan later manually" step="plugins"/>
+				<listentry caption="Yes, do an automatic scan now" step="scan"/>
+				<listentry caption="Yes, do a manual scan now" step="manualscan"/>
 			</list>
 		</step>
 
@@ -262,8 +273,8 @@ self.hideRc()
 from Components.NimManager import nimmanager
 self.condition = nimmanager.somethingConnected() and not config.misc.installwizard.channellistdownloaded.value
 			</condition>
-			<text value="What do you want to scan?" />
-			<config screen="ScanSimple" module="ScanSetup" type="ConfigList" />
+			<text value="What do you want to scan?"/>
+			<config screen="ScanSimple" module="ScanSetup" type="ConfigList"/>
 		</step>
 
 		<step id="manualscan">
@@ -271,8 +282,8 @@ self.condition = nimmanager.somethingConnected() and not config.misc.installwiza
 from Components.NimManager import nimmanager
 self.condition = nimmanager.somethingConnected() and not config.misc.installwizard.channellistdownloaded.value
 			</condition>
-			<text value="What do you want to scan?" />
-			<config screen="ScanSetup" module="ScanSetup" type="ConfigList" />
+			<text value="What do you want to scan?"/>
+			<config screen="ScanSetup" module="ScanSetup" type="ConfigList"/>
 		</step>
 
 		<step id="nextscan">
@@ -280,20 +291,20 @@ self.condition = nimmanager.somethingConnected() and not config.misc.installwiza
 from Components.NimManager import nimmanager
 self.condition = nimmanager.somethingConnected() and not config.misc.installwizard.channellistdownloaded.value
 			</condition>
-			<text value="Do you want to do another manual service scan?" />
+			<text value="Do you want to do another manual service scan?"/>
 			<list>
-				<listentry caption="No, scan later manually" step="plugins" />
-				<listentry caption="Yes, do another manual scan now" step="manualscan" />
+				<listentry caption="No, scan later manually" step="plugins"/>
+				<listentry caption="Yes, do another manual scan now" step="manualscan"/>
 			</list>
 		</step>
 
 <!--
 
 		<step id="finisheddefaultsatlists">
-			<text value="Do you want to enable the parental control feature on your %s %s?" />
+			<text value="Do you want to enable the parental control feature on your %s %s?"/>
 			<list>
-				<listentry caption="No" step="end" />
-				<listentry caption="Yes" step="parentalsetup" />
+				<listentry caption="No" step="end"/>
+				<listentry caption="Yes" step="parentalsetup"/>
 			</list>
 			<code pos="after">
 if self["list"].index == 1:
@@ -305,10 +316,10 @@ config.ParentalControl.servicepinactive.save()
 		</step>
 
 		<step id="parentalsetup">
-			<text value="You need to set a PIN code and hide it from your children.\n\nDo you want to set the pin now?" />
+			<text value="You need to set a PIN code and hide it from your children.\n\nDo you want to set the pin now?"/>
 			<list>
-				<listentry caption="Yes" step="finishparentalsetup" />
-				<listentry caption="No" step="warnpin" />
+				<listentry caption="Yes" step="finishparentalsetup"/>
+				<listentry caption="No" step="warnpin"/>
 			</list>
 			<code pos="after">
 from ParentalControlSetup import ParentalControlSetup
@@ -318,22 +329,22 @@ if self["list"].index == 0:
 		</step>
 
 		<step id="warnpin">
-			<text value="Please be aware, that anyone can disable the parental control, if you have not set a PIN." />
+			<text value="Please be aware, that anyone can disable the parental control, if you have not set a PIN."/>
 		</step>
 		<step id="finishparentalsetup">
 			<code>
 config.ParentalControl.servicepinactive.value = True
 config.ParentalControl.servicepinactive.save()
 			</code>
-			<text value="After the start wizard is completed, you need to protect single services. Refer to your %s %s's manual on how to do that." />
+			<text value="After the start wizard is completed, you need to protect single services. Refer to your %s %s's manual on how to do that."/>
 		</step>
 
 		<step id="softcam">
 			<condition>
 self.condition = config.misc.installwizard.hasnetwork.value and config.misc.installwizard.ipkgloaded.value
 			</condition>
-			<text value="Would you like to be able to install softcams?\n\nAttention - Country specific illegal!\n\nCheck legality for your specific country in advance!" />
-			<config screen="InstallWizard" module="InstallWizard" args="2" type="ConfigList" />
+			<text value="Would you like to be able to install softcams?\n\nAttention - Country specific illegal!\n\nCheck legality for your specific country in advance!"/>
+			<config screen="InstallWizard" module="InstallWizard" args="2" type="ConfigList"/>
 			<code>
 self.clearSelectedKeys()
 self.selectKey("LEFT")
@@ -346,8 +357,8 @@ self.selectKey("RIGHT")
 			<condition>
 self.condition = config.misc.installwizard.hasnetwork.value and config.misc.installwizard.ipkgloaded.value
 			</condition>
-			<text value="Plugin install" />
-			<config screen="InstallWizard" module="InstallWizard" args="2" type="ConfigList" />
+			<text value="Plugin install"/>
+			<config screen="InstallWizard" module="InstallWizard" args="2" type="ConfigList"/>
 			<code>
 self.clearSelectedKeys()
 self.selectKey("OK")
@@ -355,8 +366,8 @@ self.selectKey("OK")
 		</step>
 
 		<step id="setup">
-			<text value="Please setup the following basic configs!" />
-			<config screen="Setup" module="Setup" args="wizardsetup" type="ConfigList" />
+			<text value="Please setup the following basic configs!"/>
+			<config screen="Setup" module="Setup" args="wizardsetup" type="ConfigList"/>
 			<code>
 self.clearSelectedKeys()
 self.selectKey("OK")
@@ -367,7 +378,7 @@ self.selectKey("OK")
 			<condition>
 self.condition = self.isLastWizard
 			</condition>
-			<text value="Thank you for using the wizard. Your %s %s is now ready to use.\nPlease press OK to start using your %s %s.." />
+			<text value="Thank you for using the wizard. Your %s %s is now ready to use.\nPlease press OK to start using your %s %s.."/>
 			<code>
 self.clearSelectedKeys()
 self.selectKey("OK")
