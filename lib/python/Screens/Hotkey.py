@@ -180,7 +180,7 @@ def getHotkeyFunctions():
 	hotkeyFunctions.append((_("Toggle dashed flickering line for this service"), "Infobar/ToggleHideVBI", "InfoBar"))
 	hotkeyFunctions.append((_("Do nothing"), "Void", "InfoBar"))
 	if SystemInfo["canMultiBoot"]:
-		hotkeyFunctions.append((_("MultiBoot Selector"), "Module/Screens.MultiSelector/MultiBootSelector", "InfoBar"))
+		hotkeyFunctions.append((_("MultiBoot Selector"), "Module/Screens.MultiBootSelector/MultiBootSelector", "InfoBar"))
 	if SystemInfo["HasHDMI-CEC"]:
 		hotkeyFunctions.append((_("HDMI-CEC Source Active"), "Infobar/SourceActiveHdmiCec", "InfoBar"))
 		hotkeyFunctions.append((_("HDMI-CEC Source Inactive"), "Infobar/SourceInactiveHdmiCec", "InfoBar"))
