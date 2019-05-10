@@ -7046,7 +7046,7 @@ msgid "Plugin browser"
 msgstr "Erweiterungen"
 
 msgid "Plugin install"
-msgstr "Erweiterung deinstallieren"
+msgstr "Erweiterungen installieren"
 
 msgid "Plugin manager activity information"
 msgstr "Informationen über geplante Aktionen Erweiterungen"

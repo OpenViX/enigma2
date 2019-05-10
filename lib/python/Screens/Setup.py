@@ -91,6 +91,7 @@ class Setup(ConfigListScreen, Screen):
 		self.item = None
 		self.onChangedEntry = [ ]
 		self.setup = setup
+		self.setup_title= ''
 		list = []
 		self.onNotifiers = [ ]
 		self.refill(list)
