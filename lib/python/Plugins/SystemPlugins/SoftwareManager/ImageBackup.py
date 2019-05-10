@@ -75,7 +75,7 @@ class ImageBackup(Screen):
 		self["key_green"] = Button("USB")
 		self["key_red"] = Button("HDD")
 		self["key_blue"] = Button(_("Exit"))
-		if SystemInfo["HasMultiBootGB"]:
+		if SystemInfo["canMultiBoot"]:
 			self["key_yellow"] = Button(_("STARTUP"))
 			self["info-multi"] = Label(_("You can select with yellow the OnlineFlash Image\n or select Recovery to create a USB Disk Image for clean Install."))
 			self.read_current_multiboot()
@@ -128,7 +128,7 @@ class ImageBackup(Screen):
 				self.doFullBackup(USB_DEVICE)
 
 	def yellow(self):
-		if SystemInfo["HasMultiBootGB"]:
+		if SystemInfo["canMultiBoot"]:
 			self.selection = self.selection + 1
 			if self.selection == len(self.list):
 				self.selection = 0
@@ -166,7 +166,7 @@ class ImageBackup(Screen):
 
 	def list_files(self, PATH):
 		files = []
-		if SystemInfo["HasMultiBootGB"]:
+		if SystemInfo["canMultiBoot"]:
 			self.path = PATH
 			for name in listdir(self.path):
 				if path.isfile(path.join(self.path, name)):
@@ -195,7 +195,7 @@ class ImageBackup(Screen):
 		self.IMAGEVERSION = self.imageInfo()
 		if "ubi" in self.ROOTFSTYPE.split():
 			self.MKFS = "/usr/sbin/mkfs.ubifs"
-		elif "tar.bz2" in self.ROOTFSTYPE.split() or SystemInfo["HasMultiBootGB"]:
+		elif "tar.bz2" in self.ROOTFSTYPE.split() or SystemInfo["canMultiBoot"]:
 			self.MKFS = "/bin/tar"
 			self.BZIP2 = "/usr/bin/bzip2"
 		else:
@@ -236,7 +236,7 @@ class ImageBackup(Screen):
 		elif SystemInfo["HasMultiBoot"] and self.list[self.selection] == "Recovery":
 			self.message += _("because of the used filesystem the backup\n")
 			self.message += _("will take about 30 minutes for this system.\n")
-		elif "tar.bz2" in self.ROOTFSTYPE.split() or SystemInfo["HasMultiBootGB"]:
+		elif "tar.bz2" in self.ROOTFSTYPE.split() or SystemInfo["canMultiBoot"]:
 			self.message += _("because of the used filesystem the backup\n")
 			self.message += _("will take about 1-4 minutes for this system.\n")
 		else:
@@ -251,7 +251,7 @@ class ImageBackup(Screen):
 		if not path.exists("/tmp/bi/root"):
 			makedirs("/tmp/bi/root")
 		system("sync")
-		if SystemInfo["HasMultiBootGB"]:
+		if SystemInfo["canMultiBoot"]:
 			system("mount /dev/%s /tmp/bi/root" %self.MTDROOTFS)
 		else:
 			system("mount --bind / /tmp/bi/root")
@@ -263,7 +263,7 @@ class ImageBackup(Screen):
 			print "[ImageBackup] jffs2 cmd1: ", cmd1
 			print "[ImageBackup] jffs2 cmd2: ", cmd2
 			print "[ImageBackup] jffs2 cmd3: ", cmd3
-		elif "tar.bz2" in self.ROOTFSTYPE.split() or SystemInfo["HasMultiBootGB"]:
+		elif "tar.bz2" in self.ROOTFSTYPE.split() or SystemInfo["canMultiBoot"]:
 			cmd1 = "%s -cf %s/rootfs.tar -C /tmp/bi/root --exclude=/var/nmbd/* ." % (self.MKFS, self.WORKDIR)
 			cmd2 = "%s %s/rootfs.tar" % (self.BZIP2, self.WORKDIR)
 			cmd3 = None
@@ -316,7 +316,7 @@ class ImageBackup(Screen):
 		cmdlist.append('echo " "')
 		cmdlist.append('echo "Create: kernel dump"')
 		cmdlist.append('echo " "')
-		if SystemInfo["HasMultiBootGB"]:
+		if SystemInfo["canMultiBoot"]:
 			cmdlist.append("dd if=/dev/%s of=%s/kernel.bin" % (self.MTDKERNEL ,self.WORKDIR))
 		elif self.MTDKERNEL == "mmcblk0p1" or self.MTDKERNEL == "mmcblk0p3":
 			cmdlist.append("dd if=/dev/%s of=%s/%s" % (self.MTDKERNEL ,self.WORKDIR, self.KERNELBIN))
@@ -422,7 +422,7 @@ class ImageBackup(Screen):
 		else:
 			system('mv %s/root.%s %s/%s' %(self.WORKDIR, self.ROOTFSTYPE, self.MAINDEST, self.ROOTFSBIN))
 
-		if SystemInfo["HasMultiBootGB"]:
+		if SystemInfo["canMultiBoot"]:
 			system('mv %s/kernel.bin %s/kernel.bin' %(self.WORKDIR, self.MAINDEST))
 		elif self.MTDKERNEL == "mmcblk0p1" or self.MTDKERNEL == "mmcblk0p3":
 			system('mv %s/%s %s/%s' %(self.WORKDIR, self.KERNELBIN, self.MAINDEST, self.KERNELBIN))
@@ -473,7 +473,7 @@ class ImageBackup(Screen):
 			print '[ImageBackup] NOFORCE bin file not found'
 			file_found = False
 
-		if SystemInfo["HasMultiBootGB"] and not self.list[self.selection] == "Recovery":
+		if SystemInfo["canMultiBoot"] and not self.list[self.selection] == "Recovery":
 			cmdlist.append('echo "_________________________________________________\n"')
 			cmdlist.append('echo "Multiboot Image created on:" %s' %self.MAINDEST)
 			cmdlist.append('echo "and there is made an extra copy on:"')
