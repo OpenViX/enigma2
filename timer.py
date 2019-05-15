@@ -307,10 +307,25 @@ class Timer:
 
 	def processActivation(self):
 		t = int(time()) + 1
-		# we keep on processing the first entry until it goes into the future.
+# We keep on processing the first entry until it goes into the future.
+#
+# As we activate a timer, mark it as such and don't activate it again if
+# it is so marked.
+# This is to prevent a situation that obtains for Record timers.
+# These do not remove themselves from the timer_list at the start of
+# their doActivate() (as various parts of that code expects them to
+# still be there - each timers steps through various states) and hence
+# one thread can activate it and then, on a file-system access, python
+# switches to another thread and, if that happens to end up running the
+# timer code, the same timer will be run again.
+#
+# Since this tag is only for use here, we remove it after use.
+#
 		while True:
-			timer_list = [ tmr for tmr in self.timer_list if not tmr.disabled ]
+			timer_list = [ tmr for tmr in self.timer_list if (not tmr.disabled and not getattr(tmr, "currentlyActivated", False)) ]
 			if timer_list and timer_list[0].getNextActivation() < t:
+				timer_list[0].currentlyActivated = True
 				self.doActivate(timer_list[0])
+				del timer_list[0].currentlyActivated
 			else:
 				break

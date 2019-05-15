@@ -439,9 +439,8 @@ class EPGSelection(Screen, HelpableScreen):
 		if self.type == EPG_TYPE_GRAPH or self.type == EPG_TYPE_INFOBARGRAPH:
 			populateBouquetList()
 			self['list'].fillGraphEPGNoRefresh(self.services, self.ask_time)
-			if self.type == EPG_TYPE_GRAPH:
-				if not config.epgselection.graph_channel1.value:
-					self['list'].moveToService(serviceref)
+			if self.type == EPG_TYPE_INFOBARGRAPH or not config.epgselection.graph_channel1.value:
+				self['list'].moveToService(serviceref)
 			self['list'].setCurrentlyPlaying(serviceref)
 			self.moveTimeLines()
 		if self.type == EPG_TYPE_MULTI:
