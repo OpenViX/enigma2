@@ -40,3 +40,5 @@ compile
 mipsel-oe-linux-libtool
 *.patch
 *.diff
+/.vs
+.vscode/
