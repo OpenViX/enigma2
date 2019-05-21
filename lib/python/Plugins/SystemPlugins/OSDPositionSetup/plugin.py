@@ -1,5 +1,6 @@
 from Screens.Screen import Screen
 from Components.config import config, ConfigSubsection, ConfigInteger
+from Plugins.Plugin import PluginDescriptor
 
 config.plugins.OSDPositionSetup = ConfigSubsection()
 config.plugins.OSDPositionSetup.dst_left = ConfigInteger(default = 0)
@@ -37,6 +38,5 @@ def OSDPosSetup(menuid, **kwargs):
 		return []
 
 def Plugins(**kwargs):
-	from Plugins.Plugin import PluginDescriptor
-	return [PluginDescriptor(name = "Overscan Wizard", description = _("Wizard to arrange the overscan"), where = PluginDescriptor.WHERE_SESSIONSTART, fnc = startup),
-		PluginDescriptor(name = "Overscan Wizard", description = _("Wizard to arrange the overscan"), where = PluginDescriptor.WHERE_MENU, fnc = OSDPosSetup)]
+	return [PluginDescriptor(name = _("Overscan wizard"), description = "", where = PluginDescriptor.WHERE_SESSIONSTART, fnc = startup),
+		PluginDescriptor(name = _("Overscan wizard"), description = _("Wizard to arrange the overscan"), where = PluginDescriptor.WHERE_MENU, fnc = OSDPosSetup)]
