@@ -500,7 +500,7 @@ class VIXImageManager(Screen):
 			if SystemInfo["canMultiBoot"]:
  				if SystemInfo["HasSDmmc"]:
 					CMD = "/usr/bin/ofgwrite -r%s -k%s '%s'" % (self.MTDROOTFS, self.MTDKERNEL, MAINDEST)
-				elif SystemInfo["HasRootSubdir"]:
+				elif SystemInfo["HasRootSubdir"] and not SystemInfo["canMode12"]:
 					CMD = "/usr/bin/ofgwrite -f -r -k -m%s '%s'" % (self.multibootslot, MAINDEST)
 				else:
 					CMD = "/usr/bin/ofgwrite -r -k -m%s '%s'" % (self.multibootslot, MAINDEST)
