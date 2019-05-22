@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-21 07:52+0100\n"
-"PO-Revision-Date: 2019-04-21 14:43+0200\n"
+"POT-Creation-Date: 2019-04-28 17:24+0100\n"
+"PO-Revision-Date: 2019-04-29 10:29+0200\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -7246,6 +7246,9 @@ msgstr "Geen vrije index beschikbaar"
 msgid "No free tuner!"
 msgstr "Geen vrije tuner!"
 
+msgid "No images found"
+msgstr "Geen image gevonden"
+
 msgid "No module found"
 msgstr "Geen module gevonden"
 
@@ -8624,6 +8627,9 @@ msgstr "Wilt u de afgewerkte timers echt verwijderen?"
 msgid "Really exit the subservices quickzap?"
 msgstr "Subkanalen snelzap verlaten?"
 
+msgid "Really reboot into Recovery Mode?"
+msgstr "Echt herstarten in herstelmodus?"
+
 msgid "Really reboot now?"
 msgstr "Nu herstarten?"
 
@@ -8699,6 +8705,9 @@ msgstr "Een opname heeft altijd voorrang"
 
 msgid "Recordings, playback & timeshift"
 msgstr "Opname, afspelen en timeshift"
+
+msgid "Recovery Mode"
+msgstr "Herstelmodus"
 
 msgid "Red"
 msgstr "Rood"
@@ -13260,6 +13269,10 @@ msgstr ""
 #, python-format
 msgid "Your %s %s is rebooting"
 msgstr "Uw %s %s wordt opnieuw gestart"
+
+#, python-format
+msgid "Your %s %s is rebooting into Recovery Mode"
+msgstr "Uw %s %s wordt opnieuw gestart in herstelmodus"
 
 #, python-format
 msgid "Your %s %s is shutting down"

@@ -30,7 +30,6 @@ def GetCurrentRoot():
 	if SystemInfo["HasRootSubdir"]:
 		return SystemInfo["HasRootSubdir"] and (int(open('/sys/firmware/devicetree/base/chosen/bootargs', 'r').read()[:-1].split("root=/dev/mmcblk0p")[1].split(' ')[0]))
 
-
 def GetCurrentImageMode():
 	return SystemInfo["canMultiBoot"] and SystemInfo["canMode12"] and int(open('/sys/firmware/devicetree/base/chosen/bootargs', 'r').read().replace('\0', '').split('=')[-1])
 
@@ -58,18 +57,19 @@ class GetImagelist():
 			self.phase = self.MOUNT
 			self.part = SystemInfo["canMultiBoot"][2]	# pick up slot type
 			self.run()
-		else:	
+		else:
 			callback({})
-	
+
 	def run(self):
 		if SystemInfo["HasRootSubdir"]:
-			if self.phase == self.MOUNT:
-				self.part2 = getMachineMtdRoot()
-				self.imagelist[self.slot2] = { 'imagename': _("Empty slot"), 'part': '%s' %self.part2 }
 			if self.slot == 1 and os.path.islink("/dev/block/by-name/linuxrootfs"):
+				self.part2 = os.readlink("/dev/block/by-name/linuxrootfs")[5:]
 				self.container.ePopen('mount /dev/block/by-name/linuxrootfs /tmp/testmount' if self.phase == self.MOUNT else 'umount /tmp/testmount', self.appClosed)
 			else:
+				self.part2 = os.readlink("/dev/block/by-name/userdata")[5:]
 				self.container.ePopen('mount /dev/block/by-name/userdata /tmp/testmount' if self.phase == self.MOUNT else 'umount /tmp/testmount', self.appClosed)
+			if self.phase == self.MOUNT:
+				self.imagelist[self.slot2] = { 'imagename': _("Empty slot"), 'part': '%s' %self.part2 }
 		else:
 			if self.SDmmc == self.LastRun:
 				self.part2 = getMachineMtdRoot()	# process mmc slot
@@ -250,7 +250,13 @@ class EmptySlot():
 		self.run()
 
 	def run(self):
-		self.container.ePopen('mount /dev/%s /tmp/testmount' %self.part if self.phase == self.MOUNT else 'umount /tmp/testmount', self.appClosed)
+		if SystemInfo["HasRootSubdir"]:
+			if self.slot == 1 and os.path.islink("/dev/block/by-name/linuxrootfs"):
+				self.container.ePopen('mount /dev/block/by-name/linuxrootfs /tmp/testmount' if self.phase == self.MOUNT else 'umount /tmp/testmount', self.appClosed)
+			else:
+				self.container.ePopen('mount /dev/block/by-name/userdata /tmp/testmount' if self.phase == self.MOUNT else 'umount /tmp/testmount', self.appClosed)
+		else:
+			self.container.ePopen('mount /dev/%s /tmp/testmount' %self.part if self.phase == self.MOUNT else 'umount /tmp/testmount', self.appClosed)
 
 	
 	def appClosed(self, data, retval, extra_args):

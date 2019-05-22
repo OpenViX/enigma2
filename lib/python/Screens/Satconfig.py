@@ -298,6 +298,7 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 
 		self["config"].list = self.list
 		self["config"].l.setList(self.list)
+		self.setTextKeyYellow()
 
 	def newConfig(self):
 		self.setTextKeyBlue()
@@ -613,10 +614,10 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 		ServiceStopScreen.__init__(self)
 		ConfigListScreen.__init__(self, self.list)
 
-		self["key_red"] = Label(_("Close"))
-		self["key_green"] = Label(_("Save"))
-		self["key_yellow"] = Label(_("Configuration mode"))
-		self["key_blue"] = Label()
+		self["key_red"] = StaticText(_("Close"))
+		self["key_green"] = StaticText(_("Save"))
+		self["key_yellow"] = StaticText()
+		self["key_blue"] = StaticText()
 		self["description"] = Label("")
 
 		self["actions"] = ActionMap(["SetupActions", "SatlistShortcutAction", "ColorActions"],
@@ -653,8 +654,11 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 		else:
 			self.newConfig()
 
+	def setTextKeyYellow(self):
+		self["key_yellow"].setText(self.nimConfig.configMode.value == "simple" and _("Auto Diseqc") or _("Configuration mode"))
+
 	def setTextKeyBlue(self):
-		self["key_blue"].setText(self.isChanged() and _("Set default") or "")
+		self["key_blue"].setText(self["config"].isChanged() and _("Set default") or "")
 
 	def keyRight(self):
 		if self.nim.isFBCLink() and self["config"].getCurrent() in (self.advancedLof, self.advancedConnected):

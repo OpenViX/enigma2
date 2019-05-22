@@ -87,6 +87,15 @@ class About(Screen):
 			imageSubBuild = ".%s" % getImageDevBuild()
 		AboutText += _("Image:\t%s.%s%s (%s)\n") % (getImageVersion(), getImageBuild(), imageSubBuild, getImageType().title())
 
+		if SystemInfo["HasH9SD"]:
+			f = open('/sys/firmware/devicetree/base/chosen/bootargs', 'r').read()
+			if "rootfstype=ext4" in f:
+				part = "        - SD card in use for Image root \n" 
+			else:
+				part = "        - eMMC slot in use for Image root \n"
+			AboutText += _("%s") % part
+
+
 		if SystemInfo["canMultiBoot"]:
 			slot = image = GetCurrentImage()
 			part = "eMMC slot %s" %slot
