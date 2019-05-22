@@ -83,7 +83,7 @@ class MultiBoot(Screen):
 	def ImageList(self, imagedict):
 		list = []
 		mode = GetCurrentImageMode() or 0
-		currentimageslot = GetCurrentImage() or 1
+		currentimageslot = GetCurrentImage()
 		print "[MultiBoot Restart] reboot1 slot:\n", currentimageslot 
 		if SystemInfo["HasSDmmc"]:
 			currentimageslot += 1			#allow for mmc as 1st slot, then SDCard slots
@@ -127,28 +127,35 @@ class MultiBoot(Screen):
 
 	def ContainterFallback(self, data=None, retval=None, extra_args=None):
 		self.container.killAll()
+		slot12 = 1
 		slot = self.currentSelected[0][1]
+		Startup = False
 		print "[MultiBoot Restart] reboot3 slot:", slot
 		if pathExists("/tmp/startupmount/STARTUP"):
 			if  fileExists("/tmp/startupmount/STARTUP_1"):
-				copyfile("/tmp/startupmount/STARTUP_%s" % slot, "/tmp/startupmount/STARTUP")
-			elif fileExists("/tmp/startupmount/STARTUP_LINUX_4_BOXMODE_12"):
 				if slot < 12:
-					copyfile("/tmp/startupmount/STARTUP_LINUX_%s_BOXMODE_1" % slot, "/tmp/startupmount/STARTUP")
+					Startup = "/tmp/startupmount/STARTUP_%s" %slot
 				else:
+					slot12 = slot 								#	BOXMODE	OE-A		STARTUP_1 -> STARTUP_n
 					slot -= 12
-					copyfile("/tmp/startupmount/STARTUP_LINUX_%s_BOXMODE_12" % slot, "/tmp/startupmount/STARTUP")
+					Startup = "/tmp/startupmount/STARTUP_%s" %slot
+					f = open('%s' %Startup, 'r').read().replace("boxmode=1'", "boxmode=12'").replace("%s" %SystemInfo["canMode12"][0], "%s" %SystemInfo["canMode12"][1])
+					print "[MultiBoot Restart] reboot4 mode12:", f
+					open('/tmp/startupmount/STARTUP', 'w').write(f)
 			elif fileExists("/tmp/startupmount/STARTUP_LINUX_4"):
-				copyfile("/tmp/startupmount/STARTUP_LINUX_%s" % slot, "/tmp/startupmount/STARTUP")
-			else:
+				Startup = "/tmp/startupmount/STARTUP_LINUX_%s" %slot
+			elif  fileExists("/tmp/startupmount/STARTUP_LINUX_4_BOXMODE_1"):
 				if slot < 12:
-					startupFileContents = "boot emmcflash0.kernel%s 'brcm_cma=%s root=/dev/mmcblk0p%s rw rootwait %s_4.boxmode=12'\n" % (slot, SystemInfo["canMode12"][0], slot * 2 + SystemInfo["canMultiBoot"][0], model)
+					Startup = "/tmp/startupmount/STARTUP_LINUX_%s_BOXMODE_1" %slot
 				else:
 					slot -= 12
-					model = getMachineBuild()
-					startupFileContents = "boot emmcflash0.kernel%s 'brcm_cma=%s root=/dev/mmcblk0p%s rw rootwait %s_4.boxmode=12'\n" % (slot, SystemInfo["canMode12"][1], slot * 2 + SystemInfo["canMultiBoot"][0], model)
-					open('/tmp/startupmount/STARTUP', 'w').write(startupFileContents)
-			self.session.open(TryQuitMainloop, 2)
+					Startup = "/tmp/startupmount/STARTUP_LINUX_%s_BOXMODE_12" %slot
+			if Startup == False:
+				self.session.open(MessageBox, _("Multiboot ERROR! - invalid STARTUP in boot partition."), MessageBox.TYPE_INFO, timeout=20)
+			else:
+				if slot12 < 12:
+					copyfile("%s" % Startup, "/tmp/startupmount/STARTUP")
+				self.session.open(TryQuitMainloop, 2)
 		else:
 			self.session.open(MessageBox, _("Multiboot ERROR! - no STARTUP in boot partition."), MessageBox.TYPE_INFO, timeout=20)
 
