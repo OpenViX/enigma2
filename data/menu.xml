@@ -217,7 +217,7 @@ self.session.open(HdmiCECSetupScreen)
 		<item weight="2" text="Plugins" entryID="plugin_selection"><screen module="PluginBrowser" screen="PluginBrowser"/></item>
 
 <!-- Menu / Timers -->
-		    <menu weight="5" text="Timers" entryID="timer_menu">
+		    <menu weight="5" text="Timer selection" entryID="timer_menu">
 			<id val="timermenu"/>
 			<item weight="1" level="0" text="Timers" entryID="timer_edit"><screen module="TimerEdit" screen="TimerEditList"/></item>
 			<item weight="100" level="0" text="Cron Manager" entryID="crontimer_edit"><screen module="CronTimer" screen="CronTimers"/></item>
