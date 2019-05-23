@@ -5532,7 +5532,7 @@ msgid "Perform a complete image backup before updating."
 msgstr "Realice una copia de seguridad completa de la imagen antes de actualizar."
 
 msgid "Perform a full image backup"
-msgstr "Hacer una copia completa de Image"
+msgstr "Hacer una copia completa de Imagen"
 
 msgid "Perform a settings backup before updating."
 msgstr "Realice una copia de seguridad de la configuración antes de actualizar."
