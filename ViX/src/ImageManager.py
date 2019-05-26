@@ -978,7 +978,7 @@ class ImageBackup(Screen):
 		print '[ImageManager] Stage2: Making Root Image.'
 		if "jffs2" in self.ROOTFSFILE:
 			print '[ImageManager] Stage2: JFFS2 Detected.'
-			self.ROOTFSTYPE = 'ubifs'
+			self.ROOTFSTYPE = 'jffs2'
 			if getMachineBuild() == 'gb800solo':
 				JFFS2OPTIONS = " --disable-compressor=lzo -e131072 -l -p125829120"
 			else:
@@ -1004,7 +1004,7 @@ class ImageBackup(Screen):
 				print '[ImageManager] Stage2: Create: rescue dump rescue.bin:',self.MODEL
 		else:
 			print '[ImageManager] Stage2: UBIFS Detected.'
-			self.ROOTFSTYPE = 'jffs2'
+			self.ROOTFSTYPE = 'ubifs'
 			output = open('%s/ubinize.cfg' % self.WORKDIR, 'w')
 			output.write('[ubifs]\n')
 			output.write('mode=ubi\n')
@@ -1018,6 +1018,7 @@ class ImageBackup(Screen):
 			if getMachineBuild() in ("h9","i55plus"):
 				z = open('/proc/cmdline', 'r').read()
 				if SystemInfo["HasMMC"] and "root=/dev/mmcblk0p1" in z: 
+					self.ROOTFSTYPE = "tar.bz2"
 					self.commands.append("/bin/tar -cf %s/rootfs.tar -C %s/root --exclude ./var/nmbd --exclude ./.resizerootfs --exclude ./.resize-rootfs --exclude ./.resize-linuxrootfs --exclude ./.resize-userdata --exclude ./var/lib/samba/private/msg.sock ." % (self.WORKDIR, self.TMPDIR))
 					self.commands.append("/usr/bin/bzip2 %s/rootfs.tar" % self.WORKDIR)
 				else:
@@ -1245,7 +1246,7 @@ class ImageBackup(Screen):
 			system('cp -f /usr/share/bootargs.bin %s/bootargs.bin' %(self.MAINDEST2))
 			z = open('/proc/cmdline', 'r').read()
 			if SystemInfo["HasMMC"] and "root=/dev/mmcblk0p1" in z: 
-				move('%s/rootfs.tar.bz2' % self.WORKDIR, '%s/%s' % (self.MAINDEST, self.ROOTFSFILE))
+				move('%s/rootfs.tar.bz2' % self.WORKDIR, '%s/rootfs.tar.bz2' % (self.MAINDEST))
 			else:
 				move('%s/rootfs.%s' % (self.WORKDIR, self.ROOTFSTYPE), '%s/%s' % (self.MAINDEST, self.ROOTFSFILE))
 		else:
@@ -1305,7 +1306,7 @@ class ImageBackup(Screen):
 			remove(self.swapdevice + config.imagemanager.folderprefix.value + '-' + getImageType() + "-swapfile_backup")
 		if path.exists(self.WORKDIR):
 			rmtree(self.WORKDIR)
-		if (path.exists(self.MAINDEST + '/' + self.ROOTFSFILE) and path.exists(self.MAINDEST + '/' + self.KERNELFILE)) or (self.EMMCIMG == "emmc.img" and path.exists('%s/disk.img' % self.MAINDEST)):
+		if (path.exists(self.MAINDEST + '/' + self.ROOTFSFILE) and path.exists(self.MAINDEST + '/' + self.KERNELFILE)) or (getMachineBuild() in ("h9","i55plus") and "root=/dev/mmcblk0p1" in z):
 			for root, dirs, files in walk(self.MAINDEST):
 				for momo in dirs:
 					chmod(path.join(root, momo), 0644)
