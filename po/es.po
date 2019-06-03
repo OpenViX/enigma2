@@ -12612,6 +12612,12 @@ msgstr "Modo Recuperación"
 msgid "Your %s %s is rebooting into Recovery Mode"
 msgstr "Su %s %s esta reiniciando en Modo Recuperación"
 
+msgid "Auto Diseqc"
+msgstr "Auto Diseqc"
+
+msgid "Multiboot ERROR! - invalid STARTUP in boot partition."
+msgstr "Multiboot ERROR! - STARTUP inválido en la partición de arranque."
+																		   
 #~ msgid "3d mode"
 #~ msgstr "Modo 3D"
 
