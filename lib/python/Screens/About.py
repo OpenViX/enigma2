@@ -103,7 +103,8 @@ class About(Screen):
 		#AboutText += _("Installed: ") + about.getFlashDateString() + "\n"
 		#AboutText += _("Image: ") + about.getImageTypeString() + "\n"
 
-		CPUinfo = _("CPU: ") + about.getCPUInfoString()
+		cpu = about.getCPUInfoString()
+		CPUinfo = _("CPU: ") + cpu
 		self["CPUinfo"] = StaticText(CPUinfo)
 		AboutText += CPUinfo + "\n"
 
@@ -124,7 +125,6 @@ class About(Screen):
 			boltversion = strip_non_ascii(boltversion)
 			AboutText += _("Bolt") + ":" + boltversion + "\n"
 			self["BoltVersion"] = StaticText(boltversion)
-
 
 		AboutText += _("Enigma (re)starts: %d\n") % config.misc.startCounter.value
 
@@ -170,7 +170,7 @@ class About(Screen):
 
 		AboutText += _("Python version: ") + about.getPythonVersionString() + "\n"
 
-		GStreamerVersion = _("GStreamer: ") + about.getGStreamerVersionString().replace("GStreamer","")
+		GStreamerVersion = _("GStreamer: ") + about.getGStreamerVersionString(cpu).replace("GStreamer","")
 		self["GStreamerVersion"] = StaticText(GStreamerVersion)
 		AboutText += GStreamerVersion + "\n"
 
