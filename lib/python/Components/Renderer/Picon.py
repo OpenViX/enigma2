@@ -1,6 +1,6 @@
 import os, re, unicodedata
 from Renderer import Renderer
-from enigma import ePixmap, eServiceCenter, eServiceReference, iServiceInformation
+from enigma import ePixmap
 from Tools.Alternatives import GetWithAlternative
 from Tools.Directories import pathExists, SCOPE_SKIN_IMAGE, SCOPE_CURRENT_SKIN, resolveFilename
 from Components.Harddisk import harddiskmanager
@@ -61,14 +61,9 @@ def findPicon(serviceName):
 				return pngname
 	return ""
 
-def getPiconName(serviceRef):
-	service = eServiceReference(serviceRef)
-	if service.getPath().startswith("/") and serviceRef.startswith("1:"):
-		info = eServiceCenter.getInstance().info(eServiceReference(serviceRef))
-		refstr = info and info.getInfoString(service, iServiceInformation.sServiceref)
-		serviceRef = refstr and eServiceReference(refstr).toCompareString()
+def getPiconName(serviceName):
 	#remove the path and name fields, and replace ':' by '_'
-	fields = GetWithAlternative(serviceRef).split(':', 10)[:10]
+	fields = GetWithAlternative(serviceName).split(':', 10)[:10]
 	if not fields or len(fields) < 10:
 		return ""
 	pngname = findPicon('_'.join(fields))
@@ -86,7 +81,7 @@ def getPiconName(serviceRef):
 		pngname = findPicon('_'.join(fields))
 	if not pngname: # picon by channel name
 		try:
-			name = ServiceReference(serviceRef).getServiceName()
+			name = ServiceReference(serviceName).getServiceName()
 			#print "[Picon] unicodedata.normalize: ", name
 			name = unicodedata.normalize('NFKD', unicode(name, 'utf_8', errors='ignore')).encode('ASCII', 'ignore')
 			name = re.sub('[^a-z0-9]', '', name.replace('&', 'and').replace('+', 'plus').replace('*', 'star').lower())
@@ -137,7 +132,6 @@ class Picon(Renderer):
 				self.showPicon = value == "0"
 				attribs.remove((attrib,value))
 		self.skinAttributes = attribs
-		self.changed((self.CHANGED_ALL,))
 		return Renderer.applySkin(self, desktop, parent)
 
 	GUI_WIDGET = ePixmap
