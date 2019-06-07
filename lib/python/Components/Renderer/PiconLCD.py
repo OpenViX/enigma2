@@ -1,6 +1,6 @@
 import os, re, unicodedata
 from Renderer import Renderer
-from enigma import ePixmap, ePicLoad
+from enigma import ePixmap, ePicLoad, eServiceCenter, eServiceReference, iServiceInformation
 from Tools.Alternatives import GetWithAlternative
 from Tools.Directories import pathExists, SCOPE_ACTIVE_SKIN, resolveFilename
 from Components.Harddisk import harddiskmanager
@@ -80,9 +80,14 @@ def findLcdPicon(serviceName):
 		else:
 			return ""
 
-def getLcdPiconName(serviceName):
+def getLcdPiconName(serviceRef):
+	service = eServiceReference(serviceRef)
+	if service.getPath().startswith("/") and serviceRef.startswith("1:"):
+		info = eServiceCenter.getInstance().info(eServiceReference(serviceRef))
+		refstr = info and info.getInfoString(service, iServiceInformation.sServiceref)
+		serviceRef = refstr and eServiceReference(refstr).toCompareString()
 	#remove the path and name fields, and replace ':' by '_'
-	sname = '_'.join(GetWithAlternative(serviceName).split(':', 10)[:10])
+	sname = '_'.join(GetWithAlternative(serviceRef).split(':', 10)[:10])
 	pngname = findLcdPicon(sname)
 	if not pngname:
 		fields = sname.split('_', 3)
@@ -92,7 +97,7 @@ def getLcdPiconName(serviceName):
 			fields[0] = '1'
 		pngname = findLcdPicon('_'.join(fields))
 	if not pngname: # picon by channel name
-		name = ServiceReference(serviceName).getServiceName()
+		name = ServiceReference(serviceRef).getServiceName()
 		name = unicodedata.normalize('NFKD', unicode(name, 'utf_8', errors='ignore')).encode('ASCII', 'ignore')
 		name = re.sub('[^a-z0-9]', '', name.replace('&', 'and').replace('+', 'plus').replace('*', 'star').lower())
 		if name:
@@ -146,6 +151,7 @@ class PiconLCD(Renderer):
 			elif attrib == "size":
 				self.piconsize = value
 		self.skinAttributes = attribs
+		self.changed((self.CHANGED_ALL,))
 		return Renderer.applySkin(self, desktop, parent)
 
 	GUI_WIDGET = ePixmap
