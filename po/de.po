@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-04 22:19+0200\n"
-"PO-Revision-Date: 2019-04-06 13:33+0200\n"
+"POT-Creation-Date: 2019-06-02 14:36+0200\n"
+"PO-Revision-Date: 2019-06-06 19:54+0200\n"
 "Last-Translator: -=niki=- <niki_msn@hotmail.de>\n"
 "Language-Team: none\n"
 "Language: de\n"
@@ -192,8 +192,18 @@ msgstr " (höher als Rotor kein auto)"
 msgid " (lower than any auto)"
 msgstr " (geringer als jedes auto)"
 
-msgid " (unknown mode)"
-msgstr " (unbekannter Modus)"
+#, python-format
+msgid " - %d elements exist! Overwrite"
+msgstr " - %d Elemente vorhanden! Überschreibe"
+
+msgid " - 1 element exist! Overwrite"
+msgstr " - 1 Element vorhanden! Überschreibe"
+
+msgid " - file exist! Overwrite"
+msgstr " - Datei vorhanden! Überschreibe"
+
+msgid " - folder exist! Overwrite"
+msgstr " - Ordner vorhanden! Überschreibe"
 
 msgid " extensions."
 msgstr " Erweiterungen."
@@ -420,8 +430,16 @@ msgid "%s %s free disk space"
 msgstr "%s %s freier Festplattenspeicher"
 
 #, python-format
+msgid "%s (%04o)"
+msgstr "%s (%04o)"
+
+#, python-format
 msgid "%s (%s)\n"
 msgstr "%s (%s)\n"
+
+#, python-format
+msgid "%s build date %s"
+msgstr "%s Erstell Datum %s"
 
 #. TRANSLATORS: The satellite with name '%s' is no longer used after a configuration change. The user is asked whether or not the satellite should be deleted.
 #, python-format
@@ -443,8 +461,22 @@ msgid "%s/%s: %s"
 msgstr "%s/%s: %s"
 
 #, python-format
+msgid "%s: %s"
+msgstr "%s: %s"
+
+#, python-format
 msgid "%s:%s"
 msgstr "%s:%s"
+
+#, python-format
+msgid "(%d jobs)"
+msgstr "(%d Aufträge)"
+
+msgid "(1 job)"
+msgstr "(1 Autrag)"
+
+msgid "(Selectmode)"
+msgstr "(Auswahlmodus)"
 
 msgid "(ZAP as PiP)"
 msgstr "(ZAP als PiP)"
@@ -473,74 +505,6 @@ msgstr "* Nur verfügbar, wenn mehr als ein Netzwerkadapter aktiv ist."
 
 msgid "* current animation"
 msgstr "* aktuelle Animation"
-
-msgid ""
-"*** boxmode=1 (Standard) ***\n"
-"\n"
-"+++ Features +++\n"
-"3840x2160p60 10-bit HEVC, 3840x2160p60 8-bit VP9, 1920x1080p60 8-bit AVC,\n"
-"MAIN only (no PIP), Limited display usages, UHD only (no SD),\n"
-"No multi-PIP, No transcoding\n"
-"\n"
-"--- Restrictions ---\n"
-"Decoder 0: 3840x2160p60 10-bit HEVC, 3840x2160p60 8-bit VP9, 1920x1080p60 8-bit AVC\n"
-"OSD Grafic 0: 1080p60 32 bit ARGB\n"
-"Display 0 Encode Restrictions: 3840x2160p60 12-bit 4:2:0 (HDMI),\n"
-"3840x2160p60 12-bit 4:2:2 (HDMI), 3840x2160p60 8-bit 4:4:4 (HDMI),\n"
-"1920x1080p60 (component), Only one display format at a time\n"
-"\n"
-"If you want 1080p60 component, HDMI also needs to be 1080p60."
-msgstr ""
-"*** boxmode=1 (Standard) ***\n"
-"\n"
-"+++ Features +++\n"
-"3840x2160p60 10-bit HEVC, 3840x2160p60 8-bit VP9, 1920x1080p60 8-bit AVC,\n"
-"MAIN only (no PIP), Limited display usages, UHD only (no SD),\n"
-"No multi-PIP, No transcoding\n"
-"\n"
-"--- Restrictions ---\n"
-"Decoder 0: 3840x2160p60 10-bit HEVC, 3840x2160p60 8-bit VP9, 1920x1080p60 8-bit AVC\n"
-"OSD Grafic 0: 1080p60 32 bit ARGB\n"
-"Display 0 Encode Restrictions: 3840x2160p60 12-bit 4:2:0 (HDMI),\n"
-"3840x2160p60 12-bit 4:2:2 (HDMI), 3840x2160p60 8-bit 4:4:4 (HDMI),\n"
-"1920x1080p60 (component), Only one display format at a time\n"
-"\n"
-"If you want 1080p60 component, HDMI also needs to be 1080p60."
-
-msgid ""
-"*** boxmode=12 (Experimental) ***\n"
-"\n"
-"+++ Features +++\n"
-"3840x2160p50 10-bit decode for MAIN, 1080p25/50i PIP support, HDMI input (if available),\n"
-" UHD display only, No SD display, No transcoding\n"
-"\n"
-"--- Restrictions ---\n"
-"Decoder 0: 3840x2160p50 10-bit HEVC, 3840x2160p50 8-bit VP9,\n"
-"1920x1080p50 8-bit AVC/MPEG\n"
-"Decoder 1: 1920x1080p25/50i 10-bit HEVC, 1920x1080p25/50i 8-bit VP9/AVC/MPEG2,\n"
-"HDMI In (if available), 3840x2160p50\n"
-"OSD Graphic 0 (UHD): 1080p50 32-bit ARGB\n"
-"Window 0 (MAIN/UHD): Limited display capabilities, 1080i50 10-bit de-interlacing\n"
-"Multi-PIP mode (3x): Enigma2 supported no multi-PIP\n"
-"Window 1 (PIP/UHD) (Enigma2 PIP Mode): Up to 1/2 x 1/2 screen display, 576i50 de-interlacing\n"
-"Display 0 (UHD) Encode Restrictions: 3840x2160p50"
-msgstr ""
-"*** boxmode=12 (Experimental) ***\n"
-"\n"
-"+++ Features +++\n"
-"3840x2160p50 10-bit decode for MAIN, 1080p25/50i PIP support, HDMI input (if available),\n"
-" UHD display only, No SD display, No transcoding\n"
-"\n"
-"--- Restrictions ---\n"
-"Decoder 0: 3840x2160p50 10-bit HEVC, 3840x2160p50 8-bit VP9,\n"
-"1920x1080p50 8-bit AVC/MPEG\n"
-"Decoder 1: 1920x1080p25/50i 10-bit HEVC, 1920x1080p25/50i 8-bit VP9/AVC/MPEG2,\n"
-"HDMI In (if available), 3840x2160p50\n"
-"OSD Graphic 0 (UHD): 1080p50 32-bit ARGB\n"
-"Window 0 (MAIN/UHD): Limited display capabilities, 1080i50 10-bit de-interlacing\n"
-"Multi-PIP mode (3x): Enigma2 supported no multi-PIP\n"
-"Window 1 (PIP/UHD) (Enigma2 PIP Mode): Up to 1/2 x 1/2 screen display, 576i50 de-interlacing\n"
-"Display 0 (UHD) Encode Restrictions: 3840x2160p50"
 
 msgid "-NO SERVICE\n"
 msgstr "-KEIN SERVICE\n"
@@ -626,12 +590,6 @@ msgstr "2"
 
 msgid "2048 MB (maximum)"
 msgstr "2048 MB (maximum)"
-
-msgid "2160p50 with PiP (Experimental)"
-msgstr "2160p50 mit PiP (Experimental)"
-
-msgid "2160p60 without PiP (Standard)"
-msgstr "2160p60 ohne PiP (Standard)"
 
 msgid "23.976"
 msgstr "23.976"
@@ -892,8 +850,11 @@ msgstr "Über"
 msgid "About..."
 msgstr "Über..."
 
+msgid "Accessed:"
+msgstr "Zugriffe:"
+
 msgid "Accesspoint:"
-msgstr "Zugangspunkt:"
+msgstr "Zugriffspunkt:"
 
 msgid "Activate"
 msgstr "Aktivieren"
@@ -913,8 +874,20 @@ msgstr "Bild im Bild aktivieren"
 msgid "Activate current configuration"
 msgstr "Aktuelle Konfiguration verwenden"
 
+msgid "Activate left-hand file list as multi-select source"
+msgstr ""
+
+msgid "Activate left-hand file list as source"
+msgstr ""
+
 msgid "Activate network settings"
 msgstr "Aktiviere Netzwerkeinstellungen"
+
+msgid "Activate right-hand file list as multi-select source"
+msgstr ""
+
+msgid "Activate right-hand file list as source"
+msgstr ""
 
 msgid "Activate the configured network settings."
 msgstr "Aktiviert die Netzwerkeinstellungen."
@@ -949,6 +922,9 @@ msgstr "Füge neuen Titel hinzu"
 msgid "Add bookmark"
 msgstr "Lesezeichen hinzufügen"
 
+msgid "Add current folder to bookmarks"
+msgstr ""
+
 msgid "Add directory to playlist"
 msgstr "Verzeichnis zur Wiedergabeliste hinzufügen"
 
@@ -957,6 +933,12 @@ msgstr "Datei zur Wiedergabeliste hinzufügen"
 
 msgid "Add files to playlist"
 msgstr "Dateien zur Wiedergabeliste hinzufügen"
+
+msgid "Add plugin to Extensions menu*"
+msgstr ""
+
+msgid "Add plugin to main menu*"
+msgstr ""
 
 msgid "Add provider"
 msgstr "Provider hinzufügen"
@@ -972,6 +954,9 @@ msgstr "Aufnahme hinzufügen (unbegrenzt)"
 
 msgid "Add recording (stop after current event)"
 msgstr "Aufnahme hinzufügen (aktuelle Sendung)"
+
+msgid "Add selected folder to bookmarks"
+msgstr ""
 
 msgid "Add service"
 msgstr "Kanal hinzufügen"
@@ -1123,8 +1108,11 @@ msgstr "Auch im Standby"
 msgid "Alternative"
 msgstr "Alternativen hinzufügen"
 
-msgid "Alternative Image 1 partition for boot repair not found."
-msgstr "Alternative Image 1-Partition für Boot-Reparatur nicht gefunden."
+msgid "Alternative 1"
+msgstr ""
+
+msgid "Alternative 2"
+msgstr ""
 
 msgid "Alternative numbering mode"
 msgstr "Alternativer Nummerierungs-Modus"
@@ -1709,6 +1697,9 @@ msgstr "CIHelper für SLOT CI0"
 msgid "CIHelper for SLOT CI1"
 msgstr "CIHelper für SLOT CI1"
 
+msgid "CPU priority for script execution"
+msgstr ""
+
 msgid "CPU: "
 msgstr "CPU: "
 
@@ -1737,6 +1728,9 @@ msgstr "Berechnen"
 msgid "Calculate all positions"
 msgstr "Berechne alle Positionen"
 
+msgid "Calculate file checksums"
+msgstr ""
+
 msgid "Calculation complete"
 msgstr "Berechnung abgeschlossen"
 
@@ -1752,13 +1746,27 @@ msgstr "Kamerun"
 msgid "Can be used for different fps between external subtitles and video."
 msgstr "Kann für unterschiedliche fps-Werte zwischen externen Untertiteln und dem Video verwendet werden."
 
-#, python-format
-msgid "Can not repair file %s"
-msgstr "Kann Datei %s nicht reparieren"
+msgid ""
+"Can be used to test defect pixels on TV screen.\n"
+"\n"
+"Available color test screens:\n"
+"\n"
+"red\n"
+"green\n"
+"blue\n"
+"white\n"
+"black\n"
+"cyan\n"
+"magenta\n"
+"yellow\n"
+"\n"
+"Screens change with left/right buttons or use red, green, blue to toggle.\n"
+"Yellow for returning back to this intro"
+msgstr ""
 
 #, python-format
-msgid "Can not write file %s"
-msgstr "Kann Datei %s nicht schreiben"
+msgid "Can't read link contents: %s"
+msgstr ""
 
 msgid "Canada"
 msgstr "Kanada"
@@ -1768,6 +1776,9 @@ msgstr "Abbrechen"
 
 msgid "Cancel any text changes and exit"
 msgstr "Jegliche Textänderung abbrechen und verlassen"
+
+msgid "Cancel execution?"
+msgstr ""
 
 msgid "Cancelled upon user request"
 msgstr "Stornierte Anfrage"
@@ -1828,14 +1839,8 @@ msgstr "Fähigkeiten "
 msgid "Capacity: "
 msgstr "Kapazität: "
 
-msgid "Card"
-msgstr "Karte"
-
 msgid "Cascade PiP"
 msgstr "Kaskadiere PiP"
-
-msgid "Caution, next boot is starts with these settings!"
-msgstr "Vorsicht, der nächste Bootvorgang wird mit diesen Einstellungen gestartet!"
 
 msgid "Cayman Islands"
 msgstr "Cayman Islands"
@@ -1863,6 +1868,12 @@ msgstr "PIN ändern"
 
 msgid "Change bouquets in quickzap"
 msgstr "Bouquet wechseln bei Quickzap"
+
+msgid "Change buttons for list navigation"
+msgstr ""
+
+msgid "Change execute permissions (755/644)"
+msgstr ""
 
 msgid "Change old drive with this new drive"
 msgstr "Ersetze altes Laufwerk mit diesem neuen Laufwerk"
@@ -1894,6 +1905,9 @@ msgstr "Kanal"
 
 msgid "Channel Info"
 msgstr "Kanal Info"
+
+msgid "Channel button always changes sides"
+msgstr ""
 
 msgid "Channel context menu"
 msgstr "Kanal Kontextmenü"
@@ -2122,9 +2136,6 @@ msgstr "Combo"
 msgid "Command execution..."
 msgstr "Befehl wird ausgeführt..."
 
-msgid "Command line error!"
-msgstr "Befehlszeilenfehler!"
-
 msgid "Command order"
 msgstr "Befehlsfolge"
 
@@ -2139,9 +2150,6 @@ msgstr "Kommunikation"
 
 msgid "Comoros"
 msgstr "Comoros"
-
-msgid "Compact flash"
-msgstr "Compact Flash"
 
 msgid "Complete"
 msgstr "Komplett"
@@ -2606,6 +2614,25 @@ msgstr "Cook Islands"
 msgid "Copy"
 msgstr "Kopieren"
 
+#, python-format
+msgid "Copy %d elements"
+msgstr ""
+
+msgid "Copy 1 element"
+msgstr ""
+
+msgid "Copy file"
+msgstr ""
+
+msgid "Copy file/directory to target directory"
+msgstr ""
+
+msgid "Copy files/directories to target directory"
+msgstr ""
+
+msgid "Copy folder"
+msgstr ""
+
 msgid "Costa Rica"
 msgstr "Costa Rica"
 
@@ -2647,11 +2674,20 @@ msgstr "DVD-ISO erstellen"
 msgid "Create ISO"
 msgstr "DVD-ISO erstellen"
 
+msgid "Create directory/folder"
+msgstr ""
+
 msgid "Create new folder and exit"
 msgstr "Neuen Ordner erstellen und verlassen"
 
 msgid "Create separate radio userbouquet"
 msgstr "Erstelle eigenes Radio Bouquet"
+
+msgid "Create symlink to file"
+msgstr ""
+
+msgid "Create user-named symbolic link"
+msgstr ""
 
 #, python-format
 msgid "Creating directory %s failed."
@@ -2674,10 +2710,6 @@ msgstr "Cuba"
 
 msgid "Curacao"
 msgstr "Curacao"
-
-#, python-format
-msgid "Current Bootsettings: %s (%s)%s"
-msgstr "Aktuelle Booteinstellung: %s (%s)%s"
 
 msgid "Current CEC address"
 msgstr "Aktuelle CEC-Adresse"
@@ -2835,6 +2867,9 @@ msgstr "DVD Datei Browser"
 msgid "DVD Menu"
 msgstr "DVD Menü"
 
+msgid "DVD Player"
+msgstr ""
+
 msgid "DVD Titlelist"
 msgstr "DVD Titelliste"
 
@@ -2849,6 +2884,9 @@ msgstr "Dänisch"
 
 msgid "Date"
 msgstr "Datum"
+
+msgid "Date reverse"
+msgstr ""
 
 msgid "Date/time input"
 msgstr "Zeit/Datum-Eingabe"
@@ -2868,8 +2906,32 @@ msgstr "Tiefschlaf / Ausschalten"
 msgid "Default"
 msgstr "Standard"
 
+msgid "Default CPU priority (nice) for executed scripts. This can reduce the load so that scripts do not interfere with the rest of the system. (higher values = lower priority)"
+msgstr ""
+
+msgid "Default Folder"
+msgstr ""
+
+msgid "Default I/O priority (ionice) for executed scripts. This can reduce the load so that scripts do not interfere with the rest of the system. (higher values = lower priority)"
+msgstr ""
+
 msgid "Default Services Scanner"
 msgstr "Standard Kanal Sucher"
+
+msgid "Default directory sorting"
+msgstr ""
+
+msgid "Default file sorting left"
+msgstr ""
+
+msgid "Default file sorting right"
+msgstr ""
+
+msgid "Default folder"
+msgstr ""
+
+msgid "Default folder if the left or right folder isn't saved, and target folder for button 5."
+msgstr ""
 
 msgid "Default movie location"
 msgstr "Standard Filmlisten Ort"
@@ -2879,6 +2941,15 @@ msgstr "Standard Aufnahmetyp"
 
 msgid "Default settings"
 msgstr "Voreinstellungen"
+
+msgid "Default sorting method for directories on both sides."
+msgstr ""
+
+msgid "Default sorting method for files on the left side."
+msgstr ""
+
+msgid "Default sorting method for files on the right side."
+msgstr ""
 
 msgid "Delay after change voltage before switch command"
 msgstr "Verzögerung nach Spannungsänderung vor Schaltbefehl"
@@ -2946,6 +3017,13 @@ msgstr "Hier können Sie die Verzögerung (in Millisekunden) Zwischen den einzel
 msgid "Delete"
 msgstr "Löschen"
 
+#, python-format
+msgid "Delete %d elements"
+msgstr ""
+
+msgid "Delete 1 element"
+msgstr ""
+
 msgid "Delete entry"
 msgstr "Eintrag löschen"
 
@@ -2954,6 +3032,12 @@ msgstr "Löschen fehlgeschlagen!"
 
 msgid "Delete file"
 msgstr "Datei löschen"
+
+msgid "Delete file or directory (and all its contents)"
+msgstr ""
+
+msgid "Delete folder"
+msgstr ""
 
 msgid "Delete playlist entry"
 msgstr "Wiedergabelisteneintrag löschen"
@@ -2965,6 +3049,9 @@ msgid "Delete the character to the left of text buffer cursor"
 msgstr ""
 
 msgid "Delete the character under the text buffer cursor"
+msgstr ""
+
+msgid "Delete the selected files or directories"
 msgstr ""
 
 msgid "Delete timer"
@@ -3294,11 +3381,9 @@ msgstr "Soll diese Zusammenstellung erstellt werden?"
 msgid "Do you want to quit the overscan wizard?"
 msgstr "Sind Sie sicher, dass Sie den Assistenten verlassen möchten?"
 
-msgid "Do you want to reboot now with selected image?"
-msgstr "Möchten Sie jetzt mit dem ausgewählten Image neu starten?"
-
-msgid "Do you want to reboot now?"
-msgstr "Wollen Sie neu starten?"
+#, python-format
+msgid "Do you want to reboot now the image in slot %s?"
+msgstr ""
 
 msgid "Do you want to reboot your Receiver?"
 msgstr "Wollen Sie Ihren Receiver neu starten?"
@@ -3359,6 +3444,9 @@ msgstr "Nicht umschalten und Aufnahme deaktivieren"
 
 msgid "Don't zap and remove timer"
 msgstr "Nicht umschalten und Aufnahme löschen"
+
+msgid "Done"
+msgstr ""
 
 #, python-format
 msgid "Done - Installed or upgraded %d packages"
@@ -3475,6 +3563,9 @@ msgstr "Titel ändern"
 
 msgid "Edit chapters of current title"
 msgstr "Kapitel des ausgewählten Titels schneiden"
+
+msgid "Edit position is the line end"
+msgstr ""
 
 msgid "Edit selection"
 msgstr "Auswahl bearbeiten"
@@ -3678,6 +3769,9 @@ msgstr "Enigma2 Build: %s"
 msgid "Enigma2 Version: %s"
 msgstr "Enigma2 Version: %s"
 
+msgid "Enter"
+msgstr ""
+
 msgid "Enter IP address"
 msgstr "IP-Adresse eingeben"
 
@@ -3695,6 +3789,9 @@ msgstr "Geben Sie an, ob Sie sich nördlich oder südlich des Äquators befinden
 
 msgid "Enter main menu..."
 msgstr "Öffne Hauptmenü..."
+
+msgid "Enter multi-file selection mode"
+msgstr ""
 
 msgid "Enter persistent PIN code"
 msgstr "Festen PIN eingeben"
@@ -3748,6 +3845,12 @@ msgstr "Fehler Überprüfung Datenträger. Datenträger könnte beschädigt sein
 msgid "Error code"
 msgstr "Fehler-Code"
 
+#, python-format
+msgid ""
+"Error creating directory %s:\n"
+"%s"
+msgstr ""
+
 msgid "Error executing plugin"
 msgstr "Ausführen des Plugins fehlgeschlagen"
 
@@ -3755,8 +3858,16 @@ msgid "Error formatting disk. The disk may be damaged"
 msgstr "Fehler Formatierung Datenträger. Datenträger könnte beschädigt sein"
 
 #, python-format
-msgid "Error in file %s"
-msgstr "Fehler in Datei %s"
+msgid ""
+"Error linking %s to %s:\n"
+"%s"
+msgstr ""
+
+#, python-format
+msgid ""
+"Error renaming %s to %s:\n"
+"%s"
+msgstr ""
 
 msgid "Error when writing epg.dat on server"
 msgstr "Fehler beim Schreiben der epg.dat am Server"
@@ -4092,21 +4203,55 @@ msgstr "Favoriten"
 msgid "Fiji"
 msgstr "Fiji"
 
-#, python-format
-msgid "File '/boot/%s' copy to '/boot/STARTUP' failed!"
-msgstr "Kopiere Datei '/boot/%s' nach '/boot/STARTUP' : Fehlgeschlagen!"
+msgid "File Commander"
+msgstr ""
+
+msgid "File Commander - all Task's completed!"
+msgstr ""
+
+msgid "File Commander Settings"
+msgstr ""
+
+msgid "File Commander context menu"
+msgstr ""
+
+msgid "File Commander menu"
+msgstr ""
 
 msgid "File appears to be busy.\n"
 msgstr "Die Datei ist gerade in Verwendung.\n"
 
-msgid "File not found - rename failed!"
-msgstr "Datei nicht gefunden - Umbenennen fehlgeschlagen!"
+msgid "File checksums to calculate for button 9"
+msgstr ""
+
+msgid "File checksums/hashes"
+msgstr ""
+
+msgid "File transfer was cancelled by user"
+msgstr ""
+
+#, fuzzy, python-format
+msgid "File write error: '%s'"
+msgstr "mit Fehlern"
+
+#, fuzzy
+msgid "File/Directory Status Information"
+msgstr "Network Information"
 
 msgid "Filename"
 msgstr "Dateiname"
 
 msgid "Filesystem check"
 msgstr "Dateisystemüberprüfung"
+
+msgid "Filter extension for 'My Extension' setting of 'Filter extension'. Use the extension name without a '.'."
+msgstr ""
+
+msgid "Filter extension, (*) appears in title"
+msgstr ""
+
+msgid "Filter visible file classes by extension."
+msgstr ""
 
 msgid "Final position at"
 msgstr "Endposition auf"
@@ -4367,9 +4512,6 @@ msgstr "Deutsch"
 msgid "Germany"
 msgstr "Deutschland"
 
-msgid "Get your Weather ID on weather.open-store.net"
-msgstr "Die WetterID gibt's unter weather.open-store.net"
-
 msgid "Getting plugin information. Please wait..."
 msgstr "Lade Plugin-Informationen. Bitte warten..."
 
@@ -4381,6 +4523,9 @@ msgstr "Gibraltar"
 
 msgid "Go down the list"
 msgstr "Liste nach unten durchgehen"
+
+msgid "Go to bookmarked folder"
+msgstr ""
 
 msgid "Go to first movie or last item"
 msgstr "Zum ersten Film oder letzten Eintrag springen"
@@ -4399,6 +4544,10 @@ msgstr "Springe zur nächsten Sendung"
 
 msgid "Go to next page of service"
 msgstr "Springe zur nächsten Kanal-Seite"
+
+#, fuzzy
+msgid "Go to parent directory"
+msgstr "Übergeordnetes Verzeichnis"
 
 msgid "Go to previous event"
 msgstr "Springe zur vorherigen Sendung"
@@ -4474,6 +4623,9 @@ msgstr "Greenland"
 
 msgid "Grenada"
 msgstr "Grenada"
+
+msgid "Group:"
+msgstr ""
 
 msgid "Grow drop"
 msgstr "Von oben zunehmend"
@@ -4593,9 +4745,6 @@ msgstr "Receiver mit Fernseher in den Standby versetzen"
 msgid "Handle wakeup from TV"
 msgstr "Receiver mit Fernseher aufwecken"
 
-msgid "Hard disk"
-msgstr "Festplatte"
-
 msgid "Hard disk setup"
 msgstr "Festplatten-Einstellungen"
 
@@ -4714,6 +4863,10 @@ msgstr "Tastenbelegung Einstellungen"
 msgid "Hotkey zap"
 msgstr "Zaptaste"
 
+#, fuzzy
+msgid "Hotplug"
+msgstr "Plugins sperren"
+
 msgid "Hour"
 msgstr "Stunde"
 
@@ -4734,6 +4887,9 @@ msgstr "Hungary"
 
 msgid "I"
 msgstr "I"
+
+msgid "I/O priority for script execution"
+msgstr ""
 
 msgid "IDLE"
 msgstr "IDLE"
@@ -4773,6 +4929,9 @@ msgstr "Iceland"
 
 msgid "Icons"
 msgstr "Symbole"
+
+msgid "If editing a file, can you set the cursor start position at end or begin of the line."
+msgstr ""
 
 msgid "If enabled, AIT data is included in recordings."
 msgstr ""
@@ -4966,6 +5125,9 @@ msgstr "Platte initialisieren"
 msgid "Initializing storage device..."
 msgstr "Initalisiere Speichermedium...."
 
+msgid "Inode:"
+msgstr ""
+
 msgid "Input"
 msgstr "Eingabe"
 
@@ -5126,6 +5288,9 @@ msgstr "Israel"
 msgid "It follows:"
 msgstr "Es folgt:"
 
+msgid "It is not possible to get the file status of <List of Storage Devices>"
+msgstr ""
+
 msgid ""
 "It seems you did not see all the eight arrow heads. This means your TV has overscan enabled, and is not configured properly.\n"
 "\n"
@@ -5136,6 +5301,9 @@ msgstr ""
 "\n"
 "Sehen Sie in der Bedienungsanleitung Ihres Fernsehers nach, wie Sie den Overscan auf Ihrem Fernsehgerät deaktivieren können. Suchen Sie nach Begriffen wie \"Just fit\", \"Full width\" usw. Wenn Sie es nicht finden können, fragen Sie andere Benutzer unter http://forums.openpli.org.\n"
 "\n"
+
+msgid "It's not possible to rename the filesystem root."
+msgstr ""
 
 msgid "Italian"
 msgstr "Italienisch"
@@ -5306,6 +5474,13 @@ msgstr "Lettisch"
 msgid "Leave DVD player?"
 msgstr "DVD Player beenden?"
 
+msgid "Leave File Commander"
+msgstr ""
+
+#, fuzzy
+msgid "Leave multi-select mode"
+msgstr "Kanal Titel Modus"
+
 msgid "Leave this set to 'yes' unless you fully understand why you are adjusting it."
 msgstr "Lassen Sie diese Einstellung auf \"Ja\", es sei denn, Sie verstehen vollständig, warum Sie sie anpassen."
 
@@ -5370,17 +5545,29 @@ msgstr "Verbindungsqualität:"
 msgid "Link quality:"
 msgstr "Verbindungsqualität:"
 
+#, fuzzy
+msgid "Link target:"
+msgstr "Verbindungsqualität:"
+
 msgid "Link:"
 msgstr "Verbindung:"
 
 msgid "Linked titles with a DVD menu"
 msgstr "Verknüpfte Titel mit einem DVD-Menü"
 
+#, fuzzy
+msgid "Links:"
+msgstr "Verbindung:"
+
 msgid "List available networks"
 msgstr "Zeige verfügbare Netzwerke"
 
 msgid "List mode"
 msgstr "Listen Modus"
+
+#, fuzzy
+msgid "List of Storage Devices"
+msgstr "Speichergeräteliste"
 
 msgid "List of storage devices"
 msgstr "Speichergeräteliste"
@@ -5502,11 +5689,12 @@ msgstr "MAC:"
 msgid "MIME Version"
 msgstr "MIME Version"
 
-msgid "MMC card"
-msgstr "MMC-Karte"
-
 msgid "MORE"
 msgstr "MEHR"
+
+#, fuzzy
+msgid "MSN Weather City Name"
+msgstr "Zeige Wetter Widget"
 
 msgid "Macao"
 msgstr "Macao"
@@ -5522,6 +5710,12 @@ msgstr "Hauptmenü"
 
 msgid "Maintain old EPG data for"
 msgstr "Behalte abgelaufene EPG-Daten (in Minuten)"
+
+msgid "Make File Commander accessible from the Extensions menu."
+msgstr ""
+
+msgid "Make File Commander accessible from the main menu."
+msgstr ""
 
 msgid "Make it possible to manually initiate the channels import and/or EPG via the extension menu"
 msgstr "Erlaubt es, den Kanal-Import und / oder EPG manuell über das Erweiterungsmenü zu initiieren"
@@ -5653,6 +5847,9 @@ msgstr "Nachricht..."
 msgid "Messages"
 msgstr "Nachrichten"
 
+msgid "Metadata changed:"
+msgstr ""
+
 msgid "Mexico"
 msgstr "Mexico"
 
@@ -5693,6 +5890,11 @@ msgctxt "Video output mode"
 msgid "Mode"
 msgstr "Modus"
 
+msgid ""
+"Mode 1 suppports Kodi, PiP may not work.\n"
+"Mode 12 supports PiP, Kodi may not work."
+msgstr ""
+
 msgid "Model"
 msgstr "Modell"
 
@@ -5712,6 +5914,9 @@ msgstr "Modell: unbekannt"
 
 msgid "Modes"
 msgstr "Modi"
+
+msgid "Modified:"
+msgstr ""
 
 msgid "Modulation"
 msgstr "Modulation"
@@ -5809,6 +6014,14 @@ msgstr "Einhängen"
 msgid "Move"
 msgstr "Verschieben"
 
+#, fuzzy, python-format
+msgid "Move %d elements"
+msgstr "Steuerung"
+
+#, fuzzy
+msgid "Move 1 element"
+msgstr "Steuerung"
+
 msgid "Move PIP"
 msgstr "Bild im Bild verschieben"
 
@@ -5818,8 +6031,27 @@ msgstr "Bild im Bild tauschen und beenden"
 msgid "Move Picture in Picture"
 msgstr "Bild im Bild verschieben"
 
+#, fuzzy
+msgid "Move down list"
+msgstr "Liste nach unten durchgehen"
+
 msgid "Move east"
 msgstr "Drehen nach Osten"
+
+#, fuzzy
+msgid "Move file"
+msgstr "Drehen nach Osten"
+
+msgid "Move file/directory to target directory"
+msgstr ""
+
+#, fuzzy
+msgid "Move files/directories to target directory"
+msgstr "In dasselbe Verzeichnis wechseln verweigert"
+
+#, fuzzy
+msgid "Move folder"
+msgstr "[Verschiebemodus]"
 
 msgid "Move the text buffer cursor left"
 msgstr ""
@@ -5848,6 +6080,10 @@ msgstr ""
 msgid "Move to position X"
 msgstr "Drehe zur Position X"
 
+#, fuzzy
+msgid "Move up list"
+msgstr "Liste nach oben durchgehen"
+
 msgid "Move west"
 msgstr "Drehen nach Westen"
 
@@ -5859,6 +6095,10 @@ msgstr "Zur Index Position bewegt"
 
 msgid "Movement"
 msgstr "Steuerung"
+
+#, fuzzy
+msgid "Movie"
+msgstr "Ansteuern"
 
 msgid "Movie list configuration"
 msgstr "Filmlisten Einstellungen"
@@ -5908,6 +6148,14 @@ msgstr "Multi-Boot auswählen"
 msgid "MultiType"
 msgstr "MultiType"
 
+#, python-format
+msgid "Multiboot ERROR! - no %s in boot partition."
+msgstr ""
+
+#, fuzzy
+msgid "Multiboot Image Selector"
+msgstr "Multi-Boot auswählen"
+
 msgid "Multichannel PCM"
 msgstr "Mehrkanalton PCM"
 
@@ -5926,11 +6174,22 @@ msgstr "Multisat alle auswählen"
 msgid "Multistream"
 msgstr "Multistream"
 
+msgid "Music"
+msgstr ""
+
 msgid "Music/Ballet/Dance"
 msgstr "Musik/Ballett/Tanz"
 
 msgid "Mute"
 msgstr "Stummschaltung"
+
+#, fuzzy
+msgid "My Extension"
+msgstr "Erweiterungen"
+
+#, fuzzy
+msgid "My extension"
+msgstr " Erweiterungen."
 
 msgid "Myanmar"
 msgstr "Myanmar"
@@ -5974,8 +6233,9 @@ msgstr "NTSC"
 msgid "Name"
 msgstr "Name"
 
-msgid "Name already exists - rename failed!"
-msgstr "Name existiert bereits - Umbenennung fehlgeschlagen!"
+#, fuzzy
+msgid "Name reverse"
+msgstr "Nameserver"
 
 msgid "Nameserver"
 msgstr "Nameserver"
@@ -6035,13 +6295,6 @@ msgstr "Netzwerk-Konfiguration"
 msgid "Network configuration..."
 msgstr "Netzwerk-Konfiguration..."
 
-msgid "Network mount"
-msgstr "Netzwerk-Freigaben"
-
-#, python-format
-msgid "Network mount %s"
-msgstr "Netzwerk Mount %s"
-
 msgid "Network name (SSID)"
 msgstr "Netzwerkname (SSID)"
 
@@ -6084,6 +6337,9 @@ msgstr "Neue Pakete"
 msgid "New Zealand"
 msgstr "New Zealand"
 
+msgid "New folder"
+msgstr ""
+
 msgid "News Current Affairs"
 msgstr "Nachrichten/Aktuelles Tagesgeschehen"
 
@@ -6094,9 +6350,6 @@ msgstr "Es folgt"
 msgctxt "now/next: 'next' event label"
 msgid "Next"
 msgstr "Es folgt"
-
-msgid "Next boot will start from Image 1."
-msgstr "Der nächste Start beginnt mit Image 1."
 
 msgid "Nicaragua"
 msgstr "Nicaragua"
@@ -6163,6 +6416,10 @@ msgstr ""
 "\n"
 "\n"
 
+#, fuzzy
+msgid "No active subservices available."
+msgstr "Keine Updates verfügbar"
+
 msgid "No age block"
 msgstr "Keine Alterseinschränkung"
 
@@ -6202,6 +6459,10 @@ msgstr "Kein freier Index verfügbar"
 
 msgid "No free tuner!"
 msgstr "Kein freier Tuner!"
+
+#, fuzzy
+msgid "No images found"
+msgstr "Kein Image gefunden"
 
 msgid "No network connection available."
 msgstr "Keine Netzwerkverbindung verfügbar."
@@ -6408,6 +6669,9 @@ msgstr "Anzahl Stellen der Kanalnummer"
 msgid "Number of channels shown in channel selection list"
 msgstr "Anzahl Kanäle in der Kanalliste"
 
+msgid "Number of lines in script messages"
+msgstr ""
+
 msgid "Number of repeating text on display."
 msgstr "Anzahl der Textwiederholung im Display."
 
@@ -6455,6 +6719,10 @@ msgstr "Oman"
 
 msgid "On"
 msgstr "An"
+
+#, fuzzy
+msgid "On device:"
+msgstr "Eingabegeräte"
 
 msgid "On end of movie"
 msgstr "Beim Filmende"
@@ -6513,11 +6781,18 @@ msgstr "Öffne maktierte Stelle als Timername"
 msgid "Open service list"
 msgstr "Kanalliste öffnen"
 
+#, fuzzy
+msgid "Open settings/actions menu"
+msgstr "In Erweiterungsmenü anzeigen"
+
 msgid "Open setup tuner "
 msgstr "Einstellungen für Tuner "
 
 msgid "Open the movie list"
 msgstr "Zurück zur Videoliste"
+
+msgid "Open with File Commander"
+msgstr ""
 
 msgid "Options disable timer"
 msgstr "Möglichkeiten Timer zu deaktivieren"
@@ -6588,6 +6863,9 @@ msgstr "Softcam während der Aktualisierung überschreiben ?"
 msgid "Overwrite spinner files during software upgrade?"
 msgstr "Spinner (Eieruhr) während der Aktualisierung überschreiben ?"
 
+msgid "Owner:"
+msgstr ""
+
 msgid "PAL"
 msgstr "PAL"
 
@@ -6651,6 +6929,14 @@ msgstr "Pakete aktualisiert"
 msgid "Packet manager"
 msgstr "Paketmanager"
 
+#, fuzzy
+msgid "Page down list"
+msgstr "Liste nach unten durchgehen"
+
+#, fuzzy
+msgid "Page up list"
+msgstr "Wiedergabeliste speichern"
+
 msgid "Pakistan"
 msgstr "Pakistan"
 
@@ -6675,6 +6961,10 @@ msgstr "Papua New Guinea"
 
 msgid "Paraguay"
 msgstr "Paraguay"
+
+#, fuzzy
+msgid "Parent Directory"
+msgstr "Übergeordnetes Verzeichnis"
 
 msgid "Parent directory"
 msgstr "Übergeordnetes Verzeichnis"
@@ -6706,6 +6996,9 @@ msgstr ""
 msgid "Password"
 msgstr ""
 
+msgid "Path to save not exist: '/tmp/'"
+msgstr ""
+
 msgid "Pause"
 msgstr "Pause"
 
@@ -6729,6 +7022,10 @@ msgstr "Alle Aufnahmen im Mülleimer löschen?"
 
 msgid "Permanently remove all deleted items"
 msgstr "Gelöschte Filme endgültig entfernen"
+
+#, fuzzy
+msgid "Permissions:"
+msgstr "Partitionen"
 
 msgid "Persian"
 msgstr "Persisch"
@@ -6754,6 +7051,10 @@ msgstr "Bild im Bild Einstellungen"
 msgid "Picture player"
 msgstr "Bildbetrachter"
 
+#, fuzzy
+msgid "Pictures"
+msgstr "Bildbetrachter"
+
 #. TRANSLATORS: (aspect ratio policy: black bars on left/right) in doubt, keep english term.
 msgid "Pillarbox"
 msgstr "Pillarbox"
@@ -6764,10 +7065,17 @@ msgstr "Pilot"
 msgid "Pitcairn"
 msgstr "Pitcairn"
 
+msgid "Pixels\n"
+msgstr ""
+
 msgid "Play"
 msgstr "Abspielen"
 
 msgid "Play DVD"
+msgstr "DVD abspielen"
+
+#, fuzzy
+msgid "Play DVDs"
 msgstr "DVD abspielen"
 
 msgid "Play audio-CD..."
@@ -6805,6 +7113,9 @@ msgstr "Vorherige wiedergeben"
 
 msgid "Play recorded movies..."
 msgstr "Aufgenommene Filme abspielen..."
+
+msgid "Play/view/edit/install/extract/run file or enter directory"
+msgstr ""
 
 msgid "Please add titles to the compilation."
 msgstr "Bitte fügen Sie Titel zur Ihrer Zusammenstellung hinzu."
@@ -6856,6 +7167,10 @@ msgstr "Bitte einen Dateinamen eingeben (leer = Dateiname ist aktuelles Datum)"
 msgid "Please enter name of the new directory"
 msgstr "Bitte den Namen des neuen Verzeichnisses eingeben"
 
+#, fuzzy
+msgid "Please enter name of the new symlink"
+msgstr "Bitte den Namen des neuen Verzeichnisses eingeben"
+
 msgid "Please enter new description:"
 msgstr "Bitte eine neue Beschreibung eingeben:"
 
@@ -6867,6 +7182,14 @@ msgstr "Bitte den korrekten PIN-Code eingeben"
 
 msgid "Please enter the new PIN code"
 msgstr "Bitte den neuen PIN-Code eingeben"
+
+#, fuzzy
+msgid "Please enter the new directory name"
+msgstr "Bitte den Namen des neuen Verzeichnisses eingeben"
+
+#, fuzzy
+msgid "Please enter the new file name"
+msgstr "Bitte neuen Dateinamen eingeben"
 
 msgid "Please enter the old PIN code"
 msgstr "Bitte den alten PIN-Code eingeben"
@@ -6972,6 +7295,10 @@ msgstr "Einstellungen für Tuner J"
 
 msgid "Please set up tuner K"
 msgstr "Einstellungen für Tuner K"
+
+#, fuzzy
+msgid "Please set your time zone"
+msgstr "Zeitzone einstellen."
 
 msgid "Please setup the following basic configs!"
 msgstr ""
@@ -7421,9 +7748,6 @@ msgstr "RGB"
 msgid "Radio"
 msgstr "Radio"
 
-msgid "Ram disk"
-msgstr "Ramdisk"
-
 msgid "Random"
 msgstr "Zufällig"
 
@@ -7487,6 +7811,9 @@ msgstr "Wollen Sie den Frontprozessor wirklich aktualisieren und anschließend n
 msgid "Really upgrade your %s %s and reboot now?"
 msgstr "Wollen Sie Ihre %s %s wirklich aktualisieren und anschließend neu starten?"
 
+msgid "Reboot"
+msgstr ""
+
 msgid "Rec"
 msgstr "Rec"
 
@@ -7536,6 +7863,10 @@ msgstr "Aufnahmen"
 msgid "Recordings always have priority"
 msgstr "Aufnahmen haben immer Vorrang"
 
+#, fuzzy
+msgid "Records"
+msgstr "Aufnahme"
+
 msgid "Recover"
 msgstr "Wiederherstellen"
 
@@ -7562,6 +7893,10 @@ msgstr "Bildwiederholfrequenz"
 
 msgid "Refresh rate selection."
 msgstr "Auswahl der Bildwiederholfrequenz."
+
+#, fuzzy
+msgid "Refresh screen"
+msgstr "Bildwiederholfrequenz"
 
 msgid "Refusing to move to the same directory"
 msgstr "In dasselbe Verzeichnis wechseln verweigert"
@@ -7632,6 +7967,9 @@ msgstr "Lesezeichen entfernen"
 msgid "Remove completed timers after (days)"
 msgstr "Entferne abgeschlossene Timer nach (Tage)"
 
+msgid "Remove current folder from bookmarks"
+msgstr ""
+
 msgid "Remove currently selected title"
 msgstr "Entferne aktuell ausgewählten Titel"
 
@@ -7640,6 +7978,9 @@ msgstr "Löschen aus Mülleimer nach (Tagen)"
 
 msgid "Remove plugins"
 msgstr "Plugins entfernen"
+
+msgid "Remove selected folder from bookmarks"
+msgstr ""
 
 msgid "Remove texts for the hearing impaired from external subtitles (instrumental music or environmental sounds, e.g., when a doorbell rings or a gun shot is heard)."
 msgstr "Entfernt Texte für Hörgeschädigte aus externen Untertiteln (z.B. Beschreibungen von Geräuschen)."
@@ -7669,8 +8010,9 @@ msgstr "Partitionstabelle erneut einlesen"
 msgid "Rename"
 msgstr "Umbenennen"
 
-msgid "Rename failed!"
-msgstr "Umbenennen fehlgeschlagen!"
+#, fuzzy
+msgid "Rename file/directory"
+msgstr "Verzeichnis erstellen"
 
 msgid "Rename name and description for new events"
 msgstr "Ändere für neue Timer den Namen und die Beschreibung"
@@ -7810,6 +8152,10 @@ msgstr "Wiedergabestart ab %s"
 msgid "Resuming playback"
 msgstr "Setze Wiedergabe fort"
 
+#, fuzzy
+msgid "Retrieving image slots - Please wait..."
+msgstr "Datei wird entpackt, Bitte warten..."
+
 msgid "Return to movie list"
 msgstr "Zurück zur Videoliste"
 
@@ -7822,8 +8168,16 @@ msgstr "Wiedervereinigung"
 msgid "Reverse bouquet buttons"
 msgstr "Bouquet-Tasten invertieren"
 
+#, fuzzy
+msgid "Reverse left file sorting"
+msgstr "Liste umkehren"
+
 msgid "Reverse list"
 msgstr "Liste umkehren"
+
+#, fuzzy
+msgid "Reverse right file sorting"
+msgstr "Nie während der Aufnahme entschlüsseln"
 
 msgid "Revision Date"
 msgstr "Änderungsdatum"
@@ -7867,6 +8221,9 @@ msgstr "Motor: "
 msgid "Round start time on"
 msgstr "Runde Startzeit auf"
 
+msgid "Run script"
+msgstr ""
+
 msgid "Running"
 msgstr "Läuft"
 
@@ -7896,6 +8253,9 @@ msgstr "SCR Unicable"
 
 msgid "SDR"
 msgstr "SDR"
+
+msgid "SDcard is not initialised for multiboot - Exit and use MultiBoot Image Manager to initialise"
+msgstr ""
 
 msgid "SINGLE LAYER DVD"
 msgstr "SINGLE LAYER DVD"
@@ -8041,11 +8401,31 @@ msgstr "Speichern und Timeshift neustarten"
 msgid "Save and stop timeshift"
 msgstr "Speichern und Timeshift stoppen"
 
+#, fuzzy
+msgid "Save left folder on exit"
+msgstr "Neuen Ordner erstellen und verlassen"
+
 msgid "Save playlist"
 msgstr "Wiedergabeliste speichern"
 
+#, fuzzy
+msgid "Save right folder on exit"
+msgstr "Neuen Ordner erstellen und verlassen"
+
 msgid "Save the EPG data regularly"
 msgstr "Die EPG Daten regelmäßig speichern"
+
+#, python-format
+msgid ""
+"Save the commands and the output to a file?\n"
+"('%s')"
+msgstr ""
+
+msgid "Save the left folder list location on exit."
+msgstr ""
+
+msgid "Save the right folder list location on exit."
+msgstr ""
 
 msgid "Save timeshift and zap"
 msgstr "Timeshift speichern und umschalten"
@@ -8158,6 +8538,10 @@ msgstr "Text-Durchlauf Verzögerung"
 msgid "Scroll repeats"
 msgstr "Text-Durchlauf Wiederholung"
 
+#, fuzzy
+msgid "Search"
+msgstr "Durchsuche"
+
 msgid "Search east"
 msgstr "Östlich suchen"
 
@@ -8264,12 +8648,8 @@ msgstr "Wählen Sie \"Ja\", um das %s-Band in Ihre Suche einzubeziehen."
 msgid "Select 'yes' to only send the DiSEqC command when changing from one satellite to another, or select 'no' for the DiSEqC command to be resent on every zap."
 msgstr "Wählen Sie \"Ja\", um nur bei Satellitenwechsel den DiSEqC-Befehl zu senden, oder wählen Sie \"Nein\", damit der DiSEqC-Befehl bei jedem Zap gesendet wird."
 
-#, python-format
-msgid "Select Bootoption: %s"
-msgstr "Bootoption wählen: %s"
-
-msgid "Select Bootoption: not supported - see info"
-msgstr "Bootoption wählen: nicht unterstützt - siehe Info"
+msgid "Select (source list) or enter directory (target list)"
+msgstr ""
 
 msgid "Select CAId"
 msgstr "CAID auswählen"
@@ -8282,13 +8662,6 @@ msgstr "Wählen Sie Fast DiSEqC, wenn Ihr Antennensystem dies unterstützt. Wenn
 
 msgid "Select HDD"
 msgstr "Festplattenauswahl"
-
-#, python-format
-msgid "Select Image: %s"
-msgstr "Image wählen: %s"
-
-msgid "Select Image: STARTUP_1"
-msgstr "Image wählen: STARTUP_1"
 
 msgid "Select LCD clock:"
 msgstr "LCD Uhr auswählen:"
@@ -8304,6 +8677,10 @@ msgstr "Filmauswahl"
 
 msgid "Select a network adapter"
 msgstr "Netzwerkadapter auswählen"
+
+#, fuzzy
+msgid "Select a path"
+msgstr "Tuner auswählen"
 
 msgid "Select a skin"
 msgstr "Benutzeroberfläche wählen"
@@ -8432,9 +8809,6 @@ msgstr "Wählen Sie den Kanal der diesem Empfänger zugewiesen werden soll. Dies
 msgid "Select the User Band frequency to be assigned to this tuner. This is the frequency the SCR switch or SCR LNB uses to pass the requested transponder to the tuner."
 msgstr "Wählen Sie die Frequenz die diesem Empfänger zugewiesen werden soll. Dies ist Frequenz welche der SCR Switch oder SCR LNB nutzt um den angeforderten Transponder an den Empfänger zu übertragen."
 
-msgid "Select the User Band to be assigned to this tuner. This is an index into the table of frequencies the SCR switch or SCR LNB uses to pass the requested transponder to the tuner."
-msgstr ""
-
 msgid "Select the character or action under the virtual keyboard cursor"
 msgstr ""
 
@@ -8515,6 +8889,10 @@ msgstr "Stil der Benutzeroberfläche wählen"
 
 msgid "Select your country. If not available select 'all'."
 msgstr "Wähle dein Land. Wenn nicht verfügbar, wählen Sie \"Alle\"."
+
+#, fuzzy
+msgid "Select your personal settings:"
+msgstr "Wählen Sie die horizontale Auflösung:"
 
 msgid "Select your provider and region. If not present in this list you will need to select one of the other 'service scan types'."
 msgstr "Wählen Sie Ihren Anbieter und die Region aus. Wenn Sie in dieser Liste nicht vorhanden sind, müssen Sie einen der anderen Service-Scan-Typen auswählen."
@@ -8673,6 +9051,9 @@ msgstr "End-Zeit eingeben"
 msgid "Set fixed"
 msgstr "Adresse fest einstellen"
 
+msgid "Set for 'stout' and 'sterr' the number of lines in script info or script error messages."
+msgstr ""
+
 msgid "Set fps for external subtitles"
 msgstr "Einstellung fps für externe Untertitel"
 
@@ -8738,6 +9119,10 @@ msgstr "Einstellungen"
 
 msgid "Settings can be different for each directory separately (for non removeable devices only)."
 msgstr "Die Einstellungen können für jedes Verzeichnis anders sein (nur für nicht entfernbare Geräte)."
+
+#, fuzzy
+msgid "Settings..."
+msgstr "Einstellungen"
 
 msgid "Setup"
 msgstr "Einstellungen"
@@ -8817,6 +9202,12 @@ msgstr "Zeige PIP"
 msgid "Show SNR percentage instead of dB value"
 msgstr "Zeige SNR Prozentsatz anstelle von dB-Wert"
 
+msgid "Show Script completed message"
+msgstr ""
+
+msgid "Show Task's completed message"
+msgstr ""
+
 msgid "Show True/False as graphical switch"
 msgstr "Zeige True / False als grafischen Schalter"
 
@@ -8864,6 +9255,13 @@ msgstr "Zeige aktuellen Modus"
 
 msgid "Show detailed event info"
 msgstr "Zeige detailierte Sendungsinformation"
+
+#, fuzzy
+msgid "Show directories first"
+msgstr "Zeige Favoritenliste"
+
+msgid "Show directories on first or last in list.(must restart File Commander)"
+msgstr ""
 
 msgid "Show disclaimer"
 msgstr "Zeige Haftungsausschluss"
@@ -8924,6 +9322,12 @@ msgstr "Zeige Nummerierung des Menüs"
 
 msgid "Show menu paths"
 msgstr "Zeige Menüpfade"
+
+msgid "Show message if File Commander is not running and all Task's are completed."
+msgstr ""
+
+msgid "Show message if a background script ends successefully. Has 'stout', then this is displayed as additional info."
+msgstr ""
 
 msgid "Show message when recording starts"
 msgstr "Benachrichtigung anzeigen, wenn eine Aufnahme startet"
@@ -9018,11 +9422,22 @@ msgstr "Zur Untertitel Auswahl"
 msgid "Show symbols on display"
 msgstr "Zeige Symbole im Display"
 
+#, fuzzy
+msgid "Show task list"
+msgstr "Zeige Kanalliste"
+
 msgid "Show the media player..."
 msgstr "Zeige den Mediaplayer."
 
 msgid "Show the plugin browser.."
 msgstr "Zeige Pluginliste."
+
+#, fuzzy
+msgid "Show unknown extension as text"
+msgstr "In Erweiterungsmenü anzeigen"
+
+msgid "Show unknown file extensions with 'Addon File-Viewer'."
+msgstr ""
 
 msgid "Show vertical timelines"
 msgstr "Zeige vertikale Zeitlinien"
@@ -9126,6 +9541,17 @@ msgstr "Breitengrad ausrichten"
 msgid "Site longitude"
 msgstr "Längengrad ausrichten"
 
+msgid "Size"
+msgstr ""
+
+#, fuzzy
+msgid "Size reverse"
+msgstr "Kanal Referenz"
+
+#, fuzzy
+msgid "Size:"
+msgstr "Swap Größe:"
+
 msgid "Skin"
 msgstr "Skin"
 
@@ -9144,6 +9570,10 @@ msgstr "Überspringe leere Sender"
 
 msgid "Skip internet connection check (disables automatic package installation)"
 msgstr "Überspringe Internet-Verbindungstest (automatische Paketinstallation deaktivieren)"
+
+#, fuzzy
+msgid "Skip selection"
+msgstr "Auswahl bearbeiten"
 
 msgid "Sleep/wakeup timer"
 msgstr "Aus-/Einschalt-Timer"
@@ -9211,6 +9641,9 @@ msgstr "Glatt"
 
 msgid "Social/Political/Economics"
 msgstr "Soziales/Politik/Wirtschaft"
+
+msgid "SocketMMI"
+msgstr ""
 
 msgid "Softcam startup"
 msgstr "Softcam Einstellung"
@@ -9325,6 +9758,12 @@ msgstr "Pluginliste nach Standard sortieren?"
 #. TRANSLATORS: This must fit into the header button in the EPG-List
 msgid "Sort time"
 msgstr "Sortiere nach Zeit"
+
+msgid "Sorting left files by name, date or size"
+msgstr ""
+
+msgid "Sorting right files by name, date or size"
+msgstr ""
 
 msgid "Sound"
 msgstr "Ton"
@@ -9557,6 +9996,10 @@ msgstr "Timeshift beenden?"
 msgid "Stopped"
 msgstr "Gestoppt"
 
+#, fuzzy
+msgid "Storage devices"
+msgstr "Speichergeräteliste"
+
 msgid "Storage media"
 msgstr "Speichergeräte"
 
@@ -9680,6 +10123,9 @@ msgstr "Swap Ort:"
 msgid "Swap Size:"
 msgstr "Swap Größe:"
 
+msgid "Swap buttons right/left with channel plus/minus or the channel button changed always the side."
+msgstr ""
+
 msgid "Swap services"
 msgstr "Kanäle tauschen"
 
@@ -9758,6 +10204,9 @@ msgstr "Symbol rate & FEC"
 msgid "Symbol rate:"
 msgstr "Symbolrate:"
 
+msgid "Symlink to "
+msgstr ""
+
 msgid "Sync NTP every (minutes)"
 msgstr "Zeitserver sync. alle (min)"
 
@@ -9778,6 +10227,17 @@ msgstr "System"
 
 msgid "System & Modulation"
 msgstr "System & Modulation"
+
+#, fuzzy
+msgid "T2MI PID"
+msgstr "PMT PID"
+
+msgid "T2MI PLP"
+msgstr ""
+
+#, fuzzy
+msgid "T2MI PLP ID"
+msgstr "PLP ID"
 
 msgid "T2MI RAW Mode"
 msgstr ""
@@ -9818,6 +10278,10 @@ msgstr "Tajikistan"
 
 msgid "Tanzania, United Republic of"
 msgstr "Tanzania, United Republic of"
+
+#, fuzzy
+msgid "Task list"
+msgstr "Negativliste"
 
 msgid "Teletext subtitle color"
 msgstr "Farbe Teletext-Untertitel"
@@ -10396,8 +10860,19 @@ msgstr "Donnerstag"
 msgid "Time"
 msgstr "Zeit"
 
+msgid "Time between slides in image viewer slideshow."
+msgstr ""
+
+#, fuzzy
+msgid "Time for Slideshow"
+msgstr "Timer-Übersicht"
+
 msgid "Time scale"
 msgstr "Zeitskala"
+
+#, fuzzy
+msgid "Time zone settings"
+msgstr "Video Einstellungen"
 
 msgid "Timer"
 msgstr "Zeitsteuerung"
@@ -10679,6 +11154,10 @@ msgstr "Art des LNB / Geräts"
 msgid "Type of scan"
 msgstr "Art der Suche"
 
+#, fuzzy
+msgid "Type:"
+msgstr "Typ"
+
 msgid "UNKNOWN"
 msgstr "Unbekannt"
 
@@ -10713,9 +11192,6 @@ msgstr ""
 msgid "USB Stick"
 msgstr "USB-Stick"
 
-msgid "USB stick"
-msgstr "USB-Stick"
-
 msgid "Uganda"
 msgstr "Uganda"
 
@@ -10724,9 +11200,6 @@ msgstr "Ukraine"
 
 msgid "Ukrainian"
 msgstr "Ukrainisch"
-
-msgid "Unable to read image number"
-msgstr "Kann die Image-Nummer nicht lesen"
 
 #, python-format
 msgid ""
@@ -10939,6 +11412,9 @@ msgstr "Benutze originale Teletext Position"
 msgid "Use power measurement"
 msgstr "Stromaufnahme messen"
 
+msgid "Use the cursor keys to select an installed image and then Reboot button."
+msgstr ""
+
 msgid "Use the network wizard to configure selected network adapter"
 msgstr "Nutzen Sie den Netzwerkassistenten, um den selektierten Adapter zu konfigurieren"
 
@@ -11147,6 +11623,9 @@ msgstr "Eine Liste der verfügbaren Software-Erweiterungen anzeigen"
 msgid "View list of available system extensions"
 msgstr "Eine Liste der verfügbaren System-Erweiterungen anzeigen"
 
+msgid "View or edit file (if size < 1MB)"
+msgstr ""
+
 msgid "View photos..."
 msgstr "Fotos ansehen ..."
 
@@ -11287,9 +11766,6 @@ msgstr ""
 "Bitte senden Sie die Logdatei %senigma2_crash_xxxxxx.log an www.teamblue.tech.\n"
 "Ihr Receiver startet in 10 Sekunden neu!\n"
 "Komponente: enigma2"
-
-msgid "Weather ID"
-msgstr "Wetter ID"
 
 msgid "Web Browser"
 msgstr "Web Browser"
@@ -11633,17 +12109,11 @@ msgstr "Wollen Sie die eingegebene PIN %s dauerhaft speichern?"
 msgid "Write error while recording. Disk full?\n"
 msgstr "Schreibfehler bei der Aufnahme. Festplatte voll?\n"
 
-msgid "Write error!"
-msgstr "Schreibfehler!"
-
 msgid "Write failed!"
 msgstr "Schreiben fehlgeschlagen!"
 
 msgid "Write to /tmp/positionersetup.log"
 msgstr "Fehler beim Schreiben: /tmp/positionersetup.log"
-
-msgid "Wrong Bootsettings detected!"
-msgstr "Falsche Booteinstellung erkannt!"
 
 msgid "YCbCr420"
 msgstr "YCbCr420"
@@ -11907,20 +12377,6 @@ msgstr "Ihre STB wird während des Flash-Vorgangs einfrieren.\n"
 
 msgid "Your backup succeeded. We will now continue to explain the further upgrade process."
 msgstr "Ihre Sicherung ist geglückt. Der Receiver wird nun den weiteren Aktualisierungs-Prozess erklären."
-
-#, python-format
-msgid ""
-"Your box needs Bootloaderversion(s)\n"
-"\n"
-"%s\n"
-"\n"
-"to make compatible with Bootoptions!"
-msgstr ""
-"Ihre Box benötigt Bootloaderversion \n"
-"\n"
-"%s\n"
-"\n"
-"um mit den Bootoptions kompatibel zu sein!"
 
 msgid "Your collection exceeds the size of a single layer medium, you will need a blank dual layer DVD!"
 msgstr "Die Zusammenstellung überschreitet die Größe eines einfachen Mediums, Sie werden einen Doppelschicht-Rohling (Dual Layer) benötigen!"
@@ -12382,11 +12838,21 @@ msgstr ""
 msgid "cooking"
 msgstr "Kochen"
 
+#, fuzzy
+msgid "copy file"
+msgstr "%d Datei"
+
+msgid "copy folder"
+msgstr ""
+
 msgid "copy to bouquets"
 msgstr "In Bouquets kopieren"
 
 msgid "create directory"
 msgstr "Verzeichnis erstellen"
+
+msgid "create symlink ..."
+msgstr ""
 
 msgid "daily"
 msgstr "Täglich"
@@ -12604,6 +13070,10 @@ msgstr "Frei"
 msgid "from"
 msgstr "Von"
 
+#, fuzzy
+msgid "from dir"
+msgstr "Von"
+
 msgid "further education"
 msgstr "Weiterbildung"
 
@@ -12633,6 +13103,9 @@ msgstr "Höhe"
 
 msgid "help..."
 msgstr "Hilfe..."
+
+msgid "hide"
+msgstr ""
 
 msgid "horizontal"
 msgstr "horizontal"
@@ -12706,6 +13179,10 @@ msgstr "Standard Listenansicht"
 msgid "list style single line"
 msgstr "Einzeilige Listenansicht"
 
+#, fuzzy
+msgid "listens to hotplug events"
+msgstr "Ausrichtung der Sendungsnamen"
+
 msgid "literature"
 msgstr "Literatur"
 
@@ -12720,6 +13197,9 @@ msgstr "lange"
 
 msgid "magazines/reports/documentary"
 msgstr "Magazine/Reportagen/Dokumentationen"
+
+msgid "manage local Files"
+msgstr ""
 
 msgid "manual"
 msgstr "Manuell"
@@ -12753,6 +13233,14 @@ msgstr "Zum letzten Eintrag gehen"
 
 msgid "move down to next entry"
 msgstr "Zum nächsten Eintrag gehen"
+
+#, fuzzy
+msgid "move file"
+msgstr "Titel entfernen"
+
+#, fuzzy
+msgid "move folder"
+msgstr "[Verschiebemodus]"
 
 msgid "move up to first entry"
 msgstr "Zum ersten Eintrag gehen"
@@ -12810,9 +13298,6 @@ msgstr "Keine Domain gefunden"
 
 msgid "no gateway found"
 msgstr "kein Gateway gefunden"
-
-msgid "no image found"
-msgstr "Kein Image gefunden"
 
 msgid "no log entrys"
 msgstr "Keine Logeinträge"
@@ -12937,9 +13422,6 @@ msgstr "Darstellende Künste"
 
 msgid "picons"
 msgstr "Picons"
-
-msgid "placeholder message 2"
-msgstr "Platzhalter Ausgabe 2"
 
 msgid "play as picture in picture"
 msgstr "Als Bild im Bild wiedergeben"
@@ -13180,6 +13662,30 @@ msgstr "Rückwärts spulen"
 msgid "skip forward"
 msgstr "Vorwärts spulen"
 
+#, python-format
+msgid "slot%s - %s mode 1"
+msgstr ""
+
+#, python-format
+msgid "slot%s - %s mode 1 (current image)"
+msgstr ""
+
+#, python-format
+msgid "slot%s - %s mode 12"
+msgstr ""
+
+#, python-format
+msgid "slot%s - %s mode 12 (current image)"
+msgstr ""
+
+#, fuzzy, python-format
+msgid "slot%s -%s - %s (current image)"
+msgstr "Sectoren: %s (max) %s (aktuell)"
+
+#, python-format
+msgid "slot%s -%s- %s "
+msgstr ""
+
 msgid "soap/melodram/folkloric"
 msgstr "Soap/Melodrama/Volkstümlich"
 
@@ -13270,6 +13776,9 @@ msgstr "Diese Aufnahme"
 msgid "this service is protected by a parental control pin"
 msgstr "Dieser Kanal ist durch einen Jugendschutz-PIN-Code geschützt"
 
+msgid "to dir"
+msgstr ""
+
 msgid "toggels between tv and radio..."
 msgstr "Schaltet zwischen Radio und TV um.."
 
@@ -13296,6 +13805,10 @@ msgstr "Nicht bestätigt"
 
 msgid "undefined"
 msgstr "Nicht bekannt"
+
+#, fuzzy
+msgid "unknow"
+msgstr "Unbekannt"
 
 msgid "unknown"
 msgstr "Unbekannt"
@@ -13392,6 +13905,10 @@ msgstr "mit Empfangsmodul"
 
 msgid "with_errors"
 msgstr "mit Fehlern"
+
+#, fuzzy
+msgid "without"
+msgstr "mit Text"
 
 msgid "working"
 msgstr "Arbeite"

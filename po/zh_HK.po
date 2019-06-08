@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-04 22:19+0200\n"
+"POT-Creation-Date: 2019-06-02 14:36+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: 王彪 <satfan@163.com>\n"
 "Language-Team: 中國\n"
@@ -176,9 +176,18 @@ msgstr ""
 msgid " (lower than any auto)"
 msgstr ""
 
-#, fuzzy
-msgid " (unknown mode)"
-msgstr "未知"
+#, python-format
+msgid " - %d elements exist! Overwrite"
+msgstr ""
+
+msgid " - 1 element exist! Overwrite"
+msgstr ""
+
+msgid " - file exist! Overwrite"
+msgstr ""
+
+msgid " - folder exist! Overwrite"
+msgstr ""
 
 msgid " extensions."
 msgstr " 擴展."
@@ -406,9 +415,17 @@ msgstr ""
 msgid "%s %s free disk space"
 msgstr ""
 
+#, fuzzy, python-format
+msgid "%s (%04o)"
+msgstr "%s (%s)\n"
+
 #, python-format
 msgid "%s (%s)\n"
 msgstr "%s (%s)\n"
+
+#, fuzzy, python-format
+msgid "%s build date %s"
+msgstr "最後更新"
 
 #. TRANSLATORS: The satellite with name '%s' is no longer used after a configuration change. The user is asked whether or not the satellite should be deleted.
 #, python-format
@@ -430,8 +447,23 @@ msgid "%s/%s: %s"
 msgstr ""
 
 #, python-format
+msgid "%s: %s"
+msgstr ""
+
+#, python-format
 msgid "%s:%s"
 msgstr ""
+
+#, python-format
+msgid "(%d jobs)"
+msgstr ""
+
+msgid "(1 job)"
+msgstr ""
+
+#, fuzzy
+msgid "(Selectmode)"
+msgstr "選擇一部電影"
 
 msgid "(ZAP as PiP)"
 msgstr ""
@@ -463,43 +495,6 @@ msgstr "* 僅在一個或多個網卡啟動才有效."
 #, fuzzy
 msgid "* current animation"
 msgstr "啟動當前配置"
-
-msgid ""
-"*** boxmode=1 (Standard) ***\n"
-"\n"
-"+++ Features +++\n"
-"3840x2160p60 10-bit HEVC, 3840x2160p60 8-bit VP9, 1920x1080p60 8-bit AVC,\n"
-"MAIN only (no PIP), Limited display usages, UHD only (no SD),\n"
-"No multi-PIP, No transcoding\n"
-"\n"
-"--- Restrictions ---\n"
-"Decoder 0: 3840x2160p60 10-bit HEVC, 3840x2160p60 8-bit VP9, 1920x1080p60 8-bit AVC\n"
-"OSD Grafic 0: 1080p60 32 bit ARGB\n"
-"Display 0 Encode Restrictions: 3840x2160p60 12-bit 4:2:0 (HDMI),\n"
-"3840x2160p60 12-bit 4:2:2 (HDMI), 3840x2160p60 8-bit 4:4:4 (HDMI),\n"
-"1920x1080p60 (component), Only one display format at a time\n"
-"\n"
-"If you want 1080p60 component, HDMI also needs to be 1080p60."
-msgstr ""
-
-msgid ""
-"*** boxmode=12 (Experimental) ***\n"
-"\n"
-"+++ Features +++\n"
-"3840x2160p50 10-bit decode for MAIN, 1080p25/50i PIP support, HDMI input (if available),\n"
-" UHD display only, No SD display, No transcoding\n"
-"\n"
-"--- Restrictions ---\n"
-"Decoder 0: 3840x2160p50 10-bit HEVC, 3840x2160p50 8-bit VP9,\n"
-"1920x1080p50 8-bit AVC/MPEG\n"
-"Decoder 1: 1920x1080p25/50i 10-bit HEVC, 1920x1080p25/50i 8-bit VP9/AVC/MPEG2,\n"
-"HDMI In (if available), 3840x2160p50\n"
-"OSD Graphic 0 (UHD): 1080p50 32-bit ARGB\n"
-"Window 0 (MAIN/UHD): Limited display capabilities, 1080i50 10-bit de-interlacing\n"
-"Multi-PIP mode (3x): Enigma2 supported no multi-PIP\n"
-"Window 1 (PIP/UHD) (Enigma2 PIP Mode): Up to 1/2 x 1/2 screen display, 576i50 de-interlacing\n"
-"Display 0 (UHD) Encode Restrictions: 3840x2160p50"
-msgstr ""
 
 msgid "-NO SERVICE\n"
 msgstr ""
@@ -585,12 +580,6 @@ msgid "2"
 msgstr "2"
 
 msgid "2048 MB (maximum)"
-msgstr ""
-
-msgid "2160p50 with PiP (Experimental)"
-msgstr ""
-
-msgid "2160p60 without PiP (Standard)"
 msgstr ""
 
 msgid "23.976"
@@ -859,6 +848,10 @@ msgstr "關於"
 msgid "About..."
 msgstr "關於..."
 
+#, fuzzy
+msgid "Accessed:"
+msgstr "接入點:"
+
 msgid "Accesspoint:"
 msgstr "接入點:"
 
@@ -883,8 +876,20 @@ msgstr "啟用畫中畫"
 msgid "Activate current configuration"
 msgstr ""
 
+msgid "Activate left-hand file list as multi-select source"
+msgstr ""
+
+msgid "Activate left-hand file list as source"
+msgstr ""
+
 msgid "Activate network settings"
 msgstr "啟用網路設定"
+
+msgid "Activate right-hand file list as multi-select source"
+msgstr ""
+
+msgid "Activate right-hand file list as source"
+msgstr ""
 
 msgid "Activate the configured network settings."
 msgstr ""
@@ -921,6 +926,10 @@ msgstr "增加一個新標題"
 msgid "Add bookmark"
 msgstr ""
 
+#, fuzzy
+msgid "Add current folder to bookmarks"
+msgstr "自動掃描"
+
 msgid "Add directory to playlist"
 msgstr ""
 
@@ -928,6 +937,13 @@ msgid "Add file to playlist"
 msgstr ""
 
 msgid "Add files to playlist"
+msgstr ""
+
+#, fuzzy
+msgid "Add plugin to Extensions menu*"
+msgstr " 擴展."
+
+msgid "Add plugin to main menu*"
 msgstr ""
 
 msgid "Add provider"
@@ -944,6 +960,10 @@ msgstr ""
 
 msgid "Add recording (stop after current event)"
 msgstr ""
+
+#, fuzzy
+msgid "Add selected folder to bookmarks"
+msgstr "選擇要備份的檔/目錄"
 
 msgid "Add service"
 msgstr ""
@@ -1104,8 +1124,13 @@ msgstr "待機"
 msgid "Alternative"
 msgstr ""
 
-msgid "Alternative Image 1 partition for boot repair not found."
-msgstr ""
+#, fuzzy
+msgid "Alternative 1"
+msgstr "[編輯專案]"
+
+#, fuzzy
+msgid "Alternative 2"
+msgstr "[編輯專案]"
 
 msgid "Alternative numbering mode"
 msgstr ""
@@ -1725,6 +1750,9 @@ msgstr ""
 msgid "CIHelper for SLOT CI1"
 msgstr ""
 
+msgid "CPU priority for script execution"
+msgstr ""
+
 msgid "CPU: "
 msgstr ""
 
@@ -1753,6 +1781,9 @@ msgstr ""
 msgid "Calculate all positions"
 msgstr ""
 
+msgid "Calculate file checksums"
+msgstr ""
+
 msgid "Calculation complete"
 msgstr ""
 
@@ -1768,12 +1799,26 @@ msgstr ""
 msgid "Can be used for different fps between external subtitles and video."
 msgstr ""
 
-#, python-format
-msgid "Can not repair file %s"
+msgid ""
+"Can be used to test defect pixels on TV screen.\n"
+"\n"
+"Available color test screens:\n"
+"\n"
+"red\n"
+"green\n"
+"blue\n"
+"white\n"
+"black\n"
+"cyan\n"
+"magenta\n"
+"yellow\n"
+"\n"
+"Screens change with left/right buttons or use red, green, blue to toggle.\n"
+"Yellow for returning back to this intro"
 msgstr ""
 
 #, python-format
-msgid "Can not write file %s"
+msgid "Can't read link contents: %s"
 msgstr ""
 
 msgid "Canada"
@@ -1784,6 +1829,10 @@ msgstr "取消"
 
 msgid "Cancel any text changes and exit"
 msgstr ""
+
+#, fuzzy
+msgid "Cancel execution?"
+msgstr "執行命令..."
 
 msgid "Cancelled upon user request"
 msgstr ""
@@ -1834,13 +1883,7 @@ msgstr "容量: "
 msgid "Capacity: "
 msgstr "容量: "
 
-msgid "Card"
-msgstr "Card"
-
 msgid "Cascade PiP"
-msgstr ""
-
-msgid "Caution, next boot is starts with these settings!"
 msgstr ""
 
 msgid "Cayman Islands"
@@ -1872,6 +1915,12 @@ msgstr "更改目錄."
 
 msgid "Change bouquets in quickzap"
 msgstr "快速切換自定義組"
+
+msgid "Change buttons for list navigation"
+msgstr ""
+
+msgid "Change execute permissions (755/644)"
+msgstr ""
 
 msgid "Change old drive with this new drive"
 msgstr ""
@@ -1906,6 +1955,9 @@ msgstr "頻道"
 #, fuzzy
 msgid "Channel Info"
 msgstr "頻道"
+
+msgid "Channel button always changes sides"
+msgstr ""
 
 #, fuzzy
 msgid "Channel context menu"
@@ -2147,10 +2199,6 @@ msgstr ""
 msgid "Command execution..."
 msgstr "執行命令..."
 
-#, fuzzy
-msgid "Command line error!"
-msgstr "命令順序"
-
 msgid "Command order"
 msgstr "命令順序"
 
@@ -2165,9 +2213,6 @@ msgid "Communication"
 msgstr "通訊"
 
 msgid "Comoros"
-msgstr ""
-
-msgid "Compact flash"
 msgstr ""
 
 msgid "Complete"
@@ -2649,6 +2694,26 @@ msgstr ""
 msgid "Copy"
 msgstr "複製"
 
+#, python-format
+msgid "Copy %d elements"
+msgstr ""
+
+msgid "Copy 1 element"
+msgstr ""
+
+#, fuzzy
+msgid "Copy file"
+msgstr "%d file"
+
+msgid "Copy file/directory to target directory"
+msgstr ""
+
+msgid "Copy files/directories to target directory"
+msgstr ""
+
+msgid "Copy folder"
+msgstr ""
+
 msgid "Costa Rica"
 msgstr ""
 
@@ -2693,10 +2758,20 @@ msgid "Create ISO"
 msgstr "創建DVD-ISO"
 
 #, fuzzy
+msgid "Create directory/folder"
+msgstr "創建目錄"
+
+#, fuzzy
 msgid "Create new folder and exit"
 msgstr "創建movie檔夾失敗"
 
 msgid "Create separate radio userbouquet"
+msgstr ""
+
+msgid "Create symlink to file"
+msgstr ""
+
+msgid "Create user-named symbolic link"
 msgstr ""
 
 #, python-format
@@ -2721,10 +2796,6 @@ msgstr ""
 
 msgid "Curacao"
 msgstr ""
-
-#, fuzzy, python-format
-msgid "Current Bootsettings: %s (%s)%s"
-msgstr "當前設定:"
 
 msgid "Current CEC address"
 msgstr ""
@@ -2887,6 +2958,9 @@ msgstr "DVD檔流覽器"
 msgid "DVD Menu"
 msgstr "藍色面板功能表"
 
+msgid "DVD Player"
+msgstr ""
+
 msgid "DVD Titlelist"
 msgstr "DVD 標題"
 
@@ -2901,6 +2975,9 @@ msgstr "丹麥"
 
 msgid "Date"
 msgstr "日期"
+
+msgid "Date reverse"
+msgstr ""
 
 msgid "Date/time input"
 msgstr ""
@@ -2922,9 +2999,38 @@ msgstr ""
 msgid "Default"
 msgstr "預設"
 
+msgid "Default CPU priority (nice) for executed scripts. This can reduce the load so that scripts do not interfere with the rest of the system. (higher values = lower priority)"
+msgstr ""
+
+#, fuzzy
+msgid "Default Folder"
+msgstr "預設"
+
+msgid "Default I/O priority (ionice) for executed scripts. This can reduce the load so that scripts do not interfere with the rest of the system. (higher values = lower priority)"
+msgstr ""
+
 #, fuzzy
 msgid "Default Services Scanner"
 msgstr "預設頻道列表"
+
+#, fuzzy
+msgid "Default directory sorting"
+msgstr "預設設定"
+
+#, fuzzy
+msgid "Default file sorting left"
+msgstr "更改預設錄製偏移"
+
+#, fuzzy
+msgid "Default file sorting right"
+msgstr "更改預設錄製偏移"
+
+#, fuzzy
+msgid "Default folder"
+msgstr "預設"
+
+msgid "Default folder if the left or right folder isn't saved, and target folder for button 5."
+msgstr ""
 
 msgid "Default movie location"
 msgstr "預設錄影位置"
@@ -2935,6 +3041,15 @@ msgstr "更改預設錄製偏移"
 
 msgid "Default settings"
 msgstr "預設設定"
+
+msgid "Default sorting method for directories on both sides."
+msgstr ""
+
+msgid "Default sorting method for files on the left side."
+msgstr ""
+
+msgid "Default sorting method for files on the right side."
+msgstr ""
 
 msgid "Delay after change voltage before switch command"
 msgstr ""
@@ -3003,6 +3118,14 @@ msgstr ""
 msgid "Delete"
 msgstr "刪除"
 
+#, fuzzy, python-format
+msgid "Delete %d elements"
+msgstr "刪除項目"
+
+#, fuzzy
+msgid "Delete 1 element"
+msgstr "刪除項目"
+
 msgid "Delete entry"
 msgstr "刪除項目"
 
@@ -3011,6 +3134,13 @@ msgstr "刪除失敗."
 
 msgid "Delete file"
 msgstr ""
+
+msgid "Delete file or directory (and all its contents)"
+msgstr ""
+
+#, fuzzy
+msgid "Delete folder"
+msgstr "刪除失敗."
 
 msgid "Delete playlist entry"
 msgstr ""
@@ -3022,6 +3152,9 @@ msgid "Delete the character to the left of text buffer cursor"
 msgstr ""
 
 msgid "Delete the character under the text buffer cursor"
+msgstr ""
+
+msgid "Delete the selected files or directories"
 msgstr ""
 
 #, fuzzy
@@ -3358,12 +3491,8 @@ msgstr " 是否燒錄這個收藏到DVD光碟?"
 msgid "Do you want to quit the overscan wizard?"
 msgstr "確定要退出此嚮導?"
 
-#, fuzzy
-msgid "Do you want to reboot now with selected image?"
-msgstr " 是否重啟您的Dreambox?"
-
-#, fuzzy
-msgid "Do you want to reboot now?"
+#, fuzzy, python-format
+msgid "Do you want to reboot now the image in slot %s?"
 msgstr " 是否重啟您的Dreambox?"
 
 #, fuzzy
@@ -3432,6 +3561,9 @@ msgid "Don't zap and disable timer"
 msgstr "禁用計時器"
 
 msgid "Don't zap and remove timer"
+msgstr ""
+
+msgid "Done"
 msgstr ""
 
 #, python-format
@@ -3557,6 +3689,9 @@ msgstr "編輯標題"
 
 msgid "Edit chapters of current title"
 msgstr "編輯章節當前標題"
+
+msgid "Edit position is the line end"
+msgstr ""
 
 #, fuzzy
 msgid "Edit selection"
@@ -3772,6 +3907,10 @@ msgid "Enigma2 Version: %s"
 msgstr "Enigma 2 終止"
 
 #, fuzzy
+msgid "Enter"
+msgstr "間隔"
+
+#, fuzzy
 msgid "Enter IP address"
 msgstr "Dreambox IP地址"
 
@@ -3789,6 +3928,10 @@ msgstr ""
 
 msgid "Enter main menu..."
 msgstr "進入主功能表..."
+
+#, fuzzy
+msgid "Enter multi-file selection mode"
+msgstr "關閉標題選項"
 
 msgid "Enter persistent PIN code"
 msgstr ""
@@ -3843,6 +3986,12 @@ msgstr ""
 msgid "Error code"
 msgstr ""
 
+#, fuzzy, python-format
+msgid ""
+"Error creating directory %s:\n"
+"%s"
+msgstr "創建目錄%s 失敗."
+
 msgid "Error executing plugin"
 msgstr "執行插件發生錯誤"
 
@@ -3850,7 +3999,15 @@ msgid "Error formatting disk. The disk may be damaged"
 msgstr ""
 
 #, python-format
-msgid "Error in file %s"
+msgid ""
+"Error linking %s to %s:\n"
+"%s"
+msgstr ""
+
+#, python-format
+msgid ""
+"Error renaming %s to %s:\n"
+"%s"
 msgstr ""
 
 msgid "Error when writing epg.dat on server"
@@ -4196,20 +4353,57 @@ msgstr "自定義組"
 msgid "Fiji"
 msgstr ""
 
-#, python-format
-msgid "File '/boot/%s' copy to '/boot/STARTUP' failed!"
+#, fuzzy
+msgid "File Commander"
+msgstr "命令順序"
+
+msgid "File Commander - all Task's completed!"
+msgstr ""
+
+#, fuzzy
+msgid "File Commander Settings"
+msgstr "音視頻設定"
+
+#, fuzzy
+msgid "File Commander context menu"
+msgstr "頻道列表功能表"
+
+msgid "File Commander menu"
 msgstr ""
 
 msgid "File appears to be busy.\n"
 msgstr ""
 
-msgid "File not found - rename failed!"
+msgid "File checksums to calculate for button 9"
 msgstr ""
+
+msgid "File checksums/hashes"
+msgstr ""
+
+msgid "File transfer was cancelled by user"
+msgstr ""
+
+#, fuzzy, python-format
+msgid "File write error: '%s'"
+msgstr "with %d error"
+
+#, fuzzy
+msgid "File/Directory Status Information"
+msgstr "網路配置"
 
 msgid "Filename"
 msgstr "檔案名"
 
 msgid "Filesystem check"
+msgstr ""
+
+msgid "Filter extension for 'My Extension' setting of 'Filter extension'. Use the extension name without a '.'."
+msgstr ""
+
+msgid "Filter extension, (*) appears in title"
+msgstr ""
+
+msgid "Filter visible file classes by extension."
 msgstr ""
 
 msgid "Final position at"
@@ -4480,9 +4674,6 @@ msgstr "德語"
 msgid "Germany"
 msgstr "德語"
 
-msgid "Get your Weather ID on weather.open-store.net"
-msgstr ""
-
 msgid "Getting plugin information. Please wait..."
 msgstr "正在下載插件資訊, 請稍候..."
 
@@ -4494,6 +4685,9 @@ msgid "Gibraltar"
 msgstr "媒體庫"
 
 msgid "Go down the list"
+msgstr ""
+
+msgid "Go to bookmarked folder"
 msgstr ""
 
 msgid "Go to first movie or last item"
@@ -4513,6 +4707,10 @@ msgstr ""
 
 msgid "Go to next page of service"
 msgstr ""
+
+#, fuzzy
+msgid "Go to parent directory"
+msgstr "開始目錄"
 
 msgid "Go to previous event"
 msgstr ""
@@ -4594,6 +4792,9 @@ msgstr "愛爾蘭"
 #, fuzzy
 msgid "Grenada"
 msgstr "加拿大"
+
+msgid "Group:"
+msgstr ""
 
 msgid "Grow drop"
 msgstr ""
@@ -4713,9 +4914,6 @@ msgid "Handle standby from TV"
 msgstr ""
 
 msgid "Handle wakeup from TV"
-msgstr ""
-
-msgid "Hard disk"
 msgstr ""
 
 msgid "Hard disk setup"
@@ -4848,6 +5046,10 @@ msgid "Hotkey zap"
 msgstr ""
 
 #, fuzzy
+msgid "Hotplug"
+msgstr "下載插件"
+
+#, fuzzy
 msgid "Hour"
 msgstr "小時(s)"
 
@@ -4869,6 +5071,9 @@ msgid "Hungary"
 msgstr "匈牙利語"
 
 msgid "I"
+msgstr ""
+
+msgid "I/O priority for script execution"
 msgstr ""
 
 msgid "IDLE"
@@ -4911,6 +5116,9 @@ msgid "Iceland"
 msgstr "冰島"
 
 msgid "Icons"
+msgstr ""
+
+msgid "If editing a file, can you set the cursor start position at end or begin of the line."
 msgstr ""
 
 msgid "If enabled, AIT data is included in recordings."
@@ -5104,6 +5312,9 @@ msgstr "初始化"
 msgid "Initializing storage device..."
 msgstr ""
 
+msgid "Inode:"
+msgstr ""
+
 msgid "Input"
 msgstr "輸入"
 
@@ -5276,11 +5487,17 @@ msgstr "以色列"
 msgid "It follows:"
 msgstr "如下:"
 
+msgid "It is not possible to get the file status of <List of Storage Devices>"
+msgstr ""
+
 msgid ""
 "It seems you did not see all the eight arrow heads. This means your TV has overscan enabled, and is not configured properly.\n"
 "\n"
 "Please refer to your TV's manual to find how you can disable overscan on your TV. Look for terms like 'Just fit', 'Full width', etc. If you can't find it, ask other users at http://forums.openpli.org.\n"
 "\n"
+msgstr ""
+
+msgid "It's not possible to rename the filesystem root."
 msgstr ""
 
 msgid "Italian"
@@ -5461,6 +5678,13 @@ msgstr "拉脫維亞"
 msgid "Leave DVD player?"
 msgstr ""
 
+msgid "Leave File Commander"
+msgstr ""
+
+#, fuzzy
+msgid "Leave multi-select mode"
+msgstr "請選擇一個IPK"
+
 msgid "Leave this set to 'yes' unless you fully understand why you are adjusting it."
 msgstr ""
 
@@ -5527,16 +5751,27 @@ msgstr "鏈結品質:"
 msgid "Link quality:"
 msgstr ""
 
+#, fuzzy
+msgid "Link target:"
+msgstr "鏈結品質:"
+
 msgid "Link:"
 msgstr "連接:"
 
 msgid "Linked titles with a DVD menu"
 msgstr "與DVD功能表的連接的標題"
 
+#, fuzzy
+msgid "Links:"
+msgstr "連接:"
+
 msgid "List available networks"
 msgstr ""
 
 msgid "List mode"
+msgstr ""
+
+msgid "List of Storage Devices"
 msgstr ""
 
 msgid "List of storage devices"
@@ -5672,11 +5907,12 @@ msgstr ""
 msgid "MIME Version"
 msgstr "反向"
 
-msgid "MMC card"
-msgstr ""
-
 msgid "MORE"
 msgstr "更多"
+
+#, fuzzy
+msgid "MSN Weather City Name"
+msgstr "天氣預報"
 
 msgid "Macao"
 msgstr ""
@@ -5691,6 +5927,12 @@ msgid "Main menu"
 msgstr "主功能表"
 
 msgid "Maintain old EPG data for"
+msgstr ""
+
+msgid "Make File Commander accessible from the Extensions menu."
+msgstr ""
+
+msgid "Make File Commander accessible from the main menu."
 msgstr ""
 
 msgid "Make it possible to manually initiate the channels import and/or EPG via the extension menu"
@@ -5831,6 +6073,9 @@ msgstr "資訊..."
 msgid "Messages"
 msgstr "資訊"
 
+msgid "Metadata changed:"
+msgstr ""
+
 msgid "Mexico"
 msgstr "墨西哥"
 
@@ -5872,6 +6117,11 @@ msgctxt "Video output mode"
 msgid "Mode"
 msgstr ""
 
+msgid ""
+"Mode 1 suppports Kodi, PiP may not work.\n"
+"Mode 12 supports PiP, Kodi may not work."
+msgstr ""
+
 #, fuzzy
 msgid "Model"
 msgstr "型號:"
@@ -5894,6 +6144,9 @@ msgstr "未知"
 #, fuzzy
 msgid "Modes"
 msgstr "型號:"
+
+msgid "Modified:"
+msgstr ""
 
 msgid "Modulation"
 msgstr "調製"
@@ -6009,6 +6262,14 @@ msgstr "安裝(Mount)"
 msgid "Move"
 msgstr "移動"
 
+#, python-format
+msgid "Move %d elements"
+msgstr ""
+
+#, fuzzy
+msgid "Move 1 element"
+msgstr "東移"
+
 #, fuzzy
 msgid "Move PIP"
 msgstr "移動"
@@ -6019,8 +6280,27 @@ msgstr ""
 msgid "Move Picture in Picture"
 msgstr "移動畫中畫"
 
+#, fuzzy
+msgid "Move down list"
+msgstr "西移"
+
 msgid "Move east"
 msgstr "東移"
+
+#, fuzzy
+msgid "Move file"
+msgstr "東移"
+
+msgid "Move file/directory to target directory"
+msgstr ""
+
+#, fuzzy
+msgid "Move files/directories to target directory"
+msgstr "為新的目錄重命名"
+
+#, fuzzy
+msgid "Move folder"
+msgstr "[移動模式]"
 
 msgid "Move the text buffer cursor left"
 msgstr ""
@@ -6049,6 +6329,10 @@ msgstr ""
 msgid "Move to position X"
 msgstr ""
 
+#, fuzzy
+msgid "Move up list"
+msgstr "東移"
+
 msgid "Move west"
 msgstr "西移"
 
@@ -6059,6 +6343,9 @@ msgid "Moved to position at index"
 msgstr ""
 
 msgid "Movement"
+msgstr ""
+
+msgid "Movie"
 msgstr ""
 
 msgid "Movie list configuration"
@@ -6112,6 +6399,14 @@ msgstr "容器選擇"
 msgid "MultiType"
 msgstr "Multimedia"
 
+#, python-format
+msgid "Multiboot ERROR! - no %s in boot partition."
+msgstr ""
+
+#, fuzzy
+msgid "Multiboot Image Selector"
+msgstr "容器選擇"
+
 #, fuzzy
 msgid "Multichannel PCM"
 msgstr "歷史記錄裏的下一個頻道"
@@ -6132,11 +6427,22 @@ msgstr ""
 msgid "Multistream"
 msgstr "多星"
 
+msgid "Music"
+msgstr ""
+
 msgid "Music/Ballet/Dance"
 msgstr ""
 
 msgid "Mute"
 msgstr "靜音"
+
+#, fuzzy
+msgid "My Extension"
+msgstr "擴展"
+
+#, fuzzy
+msgid "My extension"
+msgstr " 擴展."
 
 msgid "Myanmar"
 msgstr ""
@@ -6186,8 +6492,9 @@ msgstr "NTSC"
 msgid "Name"
 msgstr "名稱"
 
-msgid "Name already exists - rename failed!"
-msgstr ""
+#, fuzzy
+msgid "Name reverse"
+msgstr "DNS伺服器"
 
 msgid "Nameserver"
 msgstr "DNS伺服器"
@@ -6254,13 +6561,6 @@ msgstr "網路配置"
 msgid "Network configuration..."
 msgstr ""
 
-msgid "Network mount"
-msgstr ""
-
-#, python-format
-msgid "Network mount %s"
-msgstr ""
-
 msgid "Network name (SSID)"
 msgstr ""
 
@@ -6304,6 +6604,9 @@ msgstr "套裝軟體:"
 msgid "New Zealand"
 msgstr "新西蘭"
 
+msgid "New folder"
+msgstr ""
+
 msgid "News Current Affairs"
 msgstr ""
 
@@ -6313,9 +6616,6 @@ msgstr ""
 
 msgctxt "now/next: 'next' event label"
 msgid "Next"
-msgstr ""
-
-msgid "Next boot will start from Image 1."
 msgstr ""
 
 msgid "Nicaragua"
@@ -6369,6 +6669,10 @@ msgid ""
 "\n"
 msgstr ""
 
+#, fuzzy
+msgid "No active subservices available."
+msgstr "無可用的描述."
+
 msgid "No age block"
 msgstr ""
 
@@ -6408,6 +6712,10 @@ msgstr ""
 
 msgid "No free tuner!"
 msgstr "沒有空閒的調諧器"
+
+#, fuzzy
+msgid "No images found"
+msgstr "未找到模組"
 
 msgid "No network connection available."
 msgstr "無可用網路連接."
@@ -6618,6 +6926,9 @@ msgstr "計畫錄製數量."
 msgid "Number of channels shown in channel selection list"
 msgstr "選擇頻道時顯示事件進度"
 
+msgid "Number of lines in script messages"
+msgstr ""
+
 msgid "Number of repeating text on display."
 msgstr ""
 
@@ -6665,6 +6976,10 @@ msgstr ""
 
 msgid "On"
 msgstr "打開"
+
+#, fuzzy
+msgid "On device:"
+msgstr "裝置:"
 
 msgid "On end of movie"
 msgstr ""
@@ -6730,10 +7045,17 @@ msgid "Open service list"
 msgstr ""
 
 #, fuzzy
+msgid "Open settings/actions menu"
+msgstr " 擴展."
+
+#, fuzzy
 msgid "Open setup tuner "
 msgstr "請選擇調諧器 B."
 
 msgid "Open the movie list"
+msgstr ""
+
+msgid "Open with File Commander"
 msgstr ""
 
 #, fuzzy
@@ -6811,6 +7133,9 @@ msgstr ""
 msgid "Overwrite spinner files during software upgrade?"
 msgstr ""
 
+msgid "Owner:"
+msgstr ""
+
 msgid "PAL"
 msgstr "PAL"
 
@@ -6882,6 +7207,12 @@ msgstr "升級軟體列表"
 msgid "Packet manager"
 msgstr "軟體管理器"
 
+msgid "Page down list"
+msgstr ""
+
+msgid "Page up list"
+msgstr ""
+
 msgid "Pakistan"
 msgstr ""
 
@@ -6906,6 +7237,10 @@ msgstr ""
 
 msgid "Paraguay"
 msgstr ""
+
+#, fuzzy
+msgid "Parent Directory"
+msgstr "開始目錄"
 
 msgid "Parent directory"
 msgstr ""
@@ -6941,6 +7276,9 @@ msgstr ""
 msgid "Password"
 msgstr ""
 
+msgid "Path to save not exist: '/tmp/'"
+msgstr ""
+
 msgid "Pause"
 msgstr ""
 
@@ -6965,6 +7303,10 @@ msgstr ""
 
 msgid "Permanently remove all deleted items"
 msgstr ""
+
+#, fuzzy
+msgid "Permissions:"
+msgstr "分區"
 
 msgid "Persian"
 msgstr ""
@@ -6992,6 +7334,9 @@ msgstr "畫中畫 開/關"
 msgid "Picture player"
 msgstr ""
 
+msgid "Pictures"
+msgstr ""
+
 #. TRANSLATORS: (aspect ratio policy: black bars on left/right) in doubt, keep english term.
 msgid "Pillarbox"
 msgstr "原始大小"
@@ -7002,10 +7347,17 @@ msgstr "Pilot"
 msgid "Pitcairn"
 msgstr ""
 
+msgid "Pixels\n"
+msgstr ""
+
 msgid "Play"
 msgstr "播放"
 
 msgid "Play DVD"
+msgstr "播放DVD"
+
+#, fuzzy
+msgid "Play DVDs"
 msgstr "播放DVD"
 
 msgid "Play audio-CD..."
@@ -7043,6 +7395,9 @@ msgstr ""
 
 msgid "Play recorded movies..."
 msgstr "播放錄製的電影..."
+
+msgid "Play/view/edit/install/extract/run file or enter directory"
+msgstr ""
 
 msgid "Please add titles to the compilation."
 msgstr "請添加標題."
@@ -7095,6 +7450,10 @@ msgid "Please enter name of the new directory"
 msgstr "為新的目錄重命名"
 
 #, fuzzy
+msgid "Please enter name of the new symlink"
+msgstr "為新的目錄重命名"
+
+#, fuzzy
 msgid "Please enter new description:"
 msgstr "請在這裏輸入您的名字  (可選):"
 
@@ -7108,6 +7467,14 @@ msgstr "請輸入正確的密碼"
 #, fuzzy
 msgid "Please enter the new PIN code"
 msgstr "請輸入舊密碼"
+
+#, fuzzy
+msgid "Please enter the new directory name"
+msgstr "為新的目錄重命名"
+
+#, fuzzy
+msgid "Please enter the new file name"
+msgstr "請輸入一個新的檔案名"
 
 msgid "Please enter the old PIN code"
 msgstr ""
@@ -7224,6 +7591,10 @@ msgstr "請選擇調諧器 B."
 #, fuzzy
 msgid "Please set up tuner K"
 msgstr "請選擇調諧器 B."
+
+#, fuzzy
+msgid "Please set your time zone"
+msgstr "選擇您的選擇."
 
 msgid "Please setup the following basic configs!"
 msgstr ""
@@ -7709,9 +8080,6 @@ msgstr "RGB"
 msgid "Radio"
 msgstr ""
 
-msgid "Ram disk"
-msgstr ""
-
 msgid "Random"
 msgstr "隨機"
 
@@ -7776,6 +8144,9 @@ msgstr ""
 msgid "Really upgrade your %s %s and reboot now?"
 msgstr "立即重啟(Reboot)?"
 
+msgid "Reboot"
+msgstr ""
+
 msgid "Rec"
 msgstr ""
 
@@ -7829,6 +8200,10 @@ msgid "Recordings always have priority"
 msgstr "總是優先錄製"
 
 #, fuzzy
+msgid "Records"
+msgstr "錄製"
+
+#, fuzzy
 msgid "Recover"
 msgstr "錄製"
 
@@ -7858,6 +8233,10 @@ msgstr ""
 
 msgid "Refresh rate selection."
 msgstr "選擇刷新率."
+
+#, fuzzy
+msgid "Refresh screen"
+msgstr "EPG 刷新"
 
 #, fuzzy
 msgid "Refusing to move to the same directory"
@@ -7935,6 +8314,9 @@ msgstr ""
 msgid "Remove completed timers after (days)"
 msgstr ""
 
+msgid "Remove current folder from bookmarks"
+msgstr ""
+
 msgid "Remove currently selected title"
 msgstr "移除當前選擇的標題"
 
@@ -7943,6 +8325,9 @@ msgstr ""
 
 msgid "Remove plugins"
 msgstr "移除插件"
+
+msgid "Remove selected folder from bookmarks"
+msgstr ""
 
 msgid "Remove texts for the hearing impaired from external subtitles (instrumental music or environmental sounds, e.g., when a doorbell rings or a gun shot is heard)."
 msgstr ""
@@ -7975,8 +8360,8 @@ msgid "Rename"
 msgstr "重命"
 
 #, fuzzy
-msgid "Rename failed!"
-msgstr "移除失敗."
+msgid "Rename file/directory"
+msgstr "創建目錄"
 
 #, fuzzy
 msgid "Rename name and description for new events"
@@ -8121,6 +8506,10 @@ msgstr "恢復位置到 %s"
 msgid "Resuming playback"
 msgstr "恢復播放"
 
+#, fuzzy
+msgid "Retrieving image slots - Please wait..."
+msgstr "正在安裝... 請稍候..."
+
 msgid "Return to movie list"
 msgstr "返回電影列表"
 
@@ -8134,8 +8523,15 @@ msgid "Reverse bouquet buttons"
 msgstr ""
 
 #, fuzzy
+msgid "Reverse left file sorting"
+msgstr "電影列表"
+
+#, fuzzy
 msgid "Reverse list"
 msgstr "電影列表"
+
+msgid "Reverse right file sorting"
+msgstr ""
 
 msgid "Revision Date"
 msgstr ""
@@ -8180,6 +8576,9 @@ msgstr "作者:"
 msgid "Round start time on"
 msgstr ""
 
+msgid "Run script"
+msgstr ""
+
 msgid "Running"
 msgstr "正在運行"
 
@@ -8213,6 +8612,9 @@ msgstr "Unicable Matrix"
 #, fuzzy
 msgid "SDR"
 msgstr "OSD"
+
+msgid "SDcard is not initialised for multiboot - Exit and use MultiBoot Image Manager to initialise"
+msgstr ""
 
 msgid "SINGLE LAYER DVD"
 msgstr ""
@@ -8373,10 +8775,30 @@ msgstr "啟動時光平移"
 msgid "Save and stop timeshift"
 msgstr "時光平移結束"
 
+#, fuzzy
+msgid "Save left folder on exit"
+msgstr "創建movie檔夾失敗"
+
 msgid "Save playlist"
 msgstr ""
 
+#, fuzzy
+msgid "Save right folder on exit"
+msgstr "創建movie檔夾失敗"
+
 msgid "Save the EPG data regularly"
+msgstr ""
+
+#, python-format
+msgid ""
+"Save the commands and the output to a file?\n"
+"('%s')"
+msgstr ""
+
+msgid "Save the left folder list location on exit."
+msgstr ""
+
+msgid "Save the right folder list location on exit."
 msgstr ""
 
 msgid "Save timeshift and zap"
@@ -8497,6 +8919,10 @@ msgstr "全球延遲"
 msgid "Scroll repeats"
 msgstr "DiSEqC-重複"
 
+#, fuzzy
+msgid "Search"
+msgstr "向東搜索"
+
 msgid "Search east"
 msgstr "向東搜索"
 
@@ -8605,11 +9031,7 @@ msgstr ""
 msgid "Select 'yes' to only send the DiSEqC command when changing from one satellite to another, or select 'no' for the DiSEqC command to be resent on every zap."
 msgstr ""
 
-#, fuzzy, python-format
-msgid "Select Bootoption: %s"
-msgstr "選擇位置"
-
-msgid "Select Bootoption: not supported - see info"
+msgid "Select (source list) or enter directory (target list)"
 msgstr ""
 
 msgid "Select CAId"
@@ -8624,14 +9046,6 @@ msgstr ""
 
 msgid "Select HDD"
 msgstr "選擇硬碟"
-
-#, fuzzy, python-format
-msgid "Select Image: %s"
-msgstr "選擇Softcam:"
-
-#, fuzzy
-msgid "Select Image: STARTUP_1"
-msgstr "選擇Softcam:"
 
 #, fuzzy
 msgid "Select LCD clock:"
@@ -8649,6 +9063,10 @@ msgstr "選擇一部電影"
 
 msgid "Select a network adapter"
 msgstr ""
+
+#, fuzzy
+msgid "Select a path"
+msgstr "選擇"
 
 msgid "Select a skin"
 msgstr ""
@@ -8795,9 +9213,6 @@ msgstr ""
 msgid "Select the User Band frequency to be assigned to this tuner. This is the frequency the SCR switch or SCR LNB uses to pass the requested transponder to the tuner."
 msgstr ""
 
-msgid "Select the User Band to be assigned to this tuner. This is an index into the table of frequencies the SCR switch or SCR LNB uses to pass the requested transponder to the tuner."
-msgstr ""
-
 msgid "Select the character or action under the virtual keyboard cursor"
 msgstr ""
 
@@ -8880,6 +9295,10 @@ msgstr ""
 
 msgid "Select your country. If not available select 'all'."
 msgstr ""
+
+#, fuzzy
+msgid "Select your personal settings:"
+msgstr "選擇位置"
 
 msgid "Select your provider and region. If not present in this list you will need to select one of the other 'service scan types'."
 msgstr ""
@@ -9051,6 +9470,9 @@ msgstr ""
 msgid "Set fixed"
 msgstr ""
 
+msgid "Set for 'stout' and 'sterr' the number of lines in script info or script error messages."
+msgstr ""
+
 msgid "Set fps for external subtitles"
 msgstr ""
 
@@ -9118,6 +9540,10 @@ msgstr "設定"
 
 msgid "Settings can be different for each directory separately (for non removeable devices only)."
 msgstr ""
+
+#, fuzzy
+msgid "Settings..."
+msgstr "設定"
 
 msgid "Setup"
 msgstr "設定"
@@ -9206,6 +9632,12 @@ msgstr "顯示資訊"
 msgid "Show SNR percentage instead of dB value"
 msgstr ""
 
+msgid "Show Script completed message"
+msgstr ""
+
+msgid "Show Task's completed message"
+msgstr ""
+
 msgid "Show True/False as graphical switch"
 msgstr ""
 
@@ -9255,6 +9687,13 @@ msgid "Show current mode"
 msgstr "顯示加密符號"
 
 msgid "Show detailed event info"
+msgstr ""
+
+#, fuzzy
+msgid "Show directories first"
+msgstr "取消喜愛頻道編輯"
+
+msgid "Show directories on first or last in list.(must restart File Commander)"
 msgstr ""
 
 msgid "Show disclaimer"
@@ -9324,6 +9763,12 @@ msgstr "電話號碼"
 #, fuzzy
 msgid "Show menu paths"
 msgstr "顯示Gemini專案"
+
+msgid "Show message if File Commander is not running and all Task's are completed."
+msgstr ""
+
+msgid "Show message if a background script ends successefully. Has 'stout', then this is displayed as additional info."
+msgstr ""
 
 msgid "Show message when recording starts"
 msgstr ""
@@ -9432,12 +9877,23 @@ msgid "Show symbols on display"
 msgstr "無視頻輸出"
 
 #, fuzzy
+msgid "Show task list"
+msgstr "打開頻道列表"
+
+#, fuzzy
 msgid "Show the media player..."
 msgstr "廣播重播模式下..."
 
 #, fuzzy
 msgid "Show the plugin browser.."
 msgstr "流覽插件"
+
+#, fuzzy
+msgid "Show unknown extension as text"
+msgstr " 擴展."
+
+msgid "Show unknown file extensions with 'Addon File-Viewer'."
+msgstr ""
 
 msgid "Show vertical timelines"
 msgstr ""
@@ -9548,6 +10004,16 @@ msgstr ""
 msgid "Site longitude"
 msgstr ""
 
+msgid "Size"
+msgstr ""
+
+msgid "Size reverse"
+msgstr ""
+
+#, fuzzy
+msgid "Size:"
+msgstr "交換檔大小:"
+
 msgid "Skin"
 msgstr "設定皮膚"
 
@@ -9567,6 +10033,10 @@ msgstr ""
 
 msgid "Skip internet connection check (disables automatic package installation)"
 msgstr ""
+
+#, fuzzy
+msgid "Skip selection"
+msgstr "計時器選擇"
 
 #, fuzzy
 msgid "Sleep/wakeup timer"
@@ -9639,6 +10109,9 @@ msgid "Smooth"
 msgstr ""
 
 msgid "Social/Political/Economics"
+msgstr ""
+
+msgid "SocketMMI"
 msgstr ""
 
 #, fuzzy
@@ -9754,6 +10227,12 @@ msgstr ""
 
 #. TRANSLATORS: This must fit into the header button in the EPG-List
 msgid "Sort time"
+msgstr ""
+
+msgid "Sorting left files by name, date or size"
+msgstr ""
+
+msgid "Sorting right files by name, date or size"
 msgstr ""
 
 msgid "Sound"
@@ -10008,6 +10487,10 @@ msgid "Stopped"
 msgstr "停止"
 
 #, fuzzy
+msgid "Storage devices"
+msgstr "啟用 /媒體"
+
+#, fuzzy
 msgid "Storage media"
 msgstr "啟用 /媒體"
 
@@ -10136,6 +10619,9 @@ msgstr "交換檔位置:"
 msgid "Swap Size:"
 msgstr "交換檔大小:"
 
+msgid "Swap buttons right/left with channel plus/minus or the channel button changed always the side."
+msgstr ""
+
 msgid "Swap services"
 msgstr ""
 
@@ -10225,6 +10711,9 @@ msgstr "符號率:"
 msgid "Symbol rate:"
 msgstr "符號率:"
 
+msgid "Symlink to "
+msgstr ""
+
 #, fuzzy
 msgid "Sync NTP every (minutes)"
 msgstr "每分鐘"
@@ -10247,6 +10736,15 @@ msgstr "系統設定"
 #, fuzzy
 msgid "System & Modulation"
 msgstr "調製"
+
+msgid "T2MI PID"
+msgstr ""
+
+msgid "T2MI PLP"
+msgstr ""
+
+msgid "T2MI PLP ID"
+msgstr ""
 
 msgid "T2MI RAW Mode"
 msgstr ""
@@ -10288,6 +10786,10 @@ msgstr ""
 
 msgid "Tanzania, United Republic of"
 msgstr ""
+
+#, fuzzy
+msgid "Task list"
+msgstr "黑名單"
 
 msgid "Teletext subtitle color"
 msgstr ""
@@ -10832,8 +11334,18 @@ msgstr "星期四"
 msgid "Time"
 msgstr "時間"
 
+msgid "Time between slides in image viewer slideshow."
+msgstr ""
+
+msgid "Time for Slideshow"
+msgstr ""
+
 msgid "Time scale"
 msgstr ""
+
+#, fuzzy
+msgid "Time zone settings"
+msgstr "編輯設定"
 
 msgid "Timer"
 msgstr "計時器"
@@ -11134,6 +11646,10 @@ msgstr "掃描類型"
 msgid "Type of scan"
 msgstr "掃描類型"
 
+#, fuzzy
+msgid "Type:"
+msgstr "類型"
+
 msgid "UNKNOWN"
 msgstr ""
 
@@ -11161,9 +11677,6 @@ msgstr ""
 msgid "USB Stick"
 msgstr "USB-Stick"
 
-msgid "USB stick"
-msgstr ""
-
 msgid "Uganda"
 msgstr ""
 
@@ -11173,9 +11686,6 @@ msgstr "烏克蘭"
 
 msgid "Ukrainian"
 msgstr "烏克蘭"
-
-msgid "Unable to read image number"
-msgstr ""
 
 #, python-format
 msgid ""
@@ -11394,6 +11904,9 @@ msgstr ""
 msgid "Use power measurement"
 msgstr "使用功率測量"
 
+msgid "Use the cursor keys to select an installed image and then Reboot button."
+msgstr ""
+
 msgid "Use the network wizard to configure selected network adapter"
 msgstr ""
 
@@ -11608,6 +12121,9 @@ msgstr "檢視可用的軟體列表"
 msgid "View list of available system extensions"
 msgstr "檢視可用的系統裝置列表"
 
+msgid "View or edit file (if size < 1MB)"
+msgstr ""
+
 msgid "View photos..."
 msgstr ""
 
@@ -11750,10 +12266,6 @@ msgid ""
 "Your receiver restarts in 10 seconds!\n"
 "Component: enigma2"
 msgstr ""
-
-#, fuzzy
-msgid "Weather ID"
-msgstr "天氣"
 
 #, fuzzy
 msgid "Web Browser"
@@ -12084,17 +12596,10 @@ msgstr ""
 msgid "Write error while recording. Disk full?\n"
 msgstr "錄製節目時出現錯誤.磁片已滿?\n"
 
-#, fuzzy
-msgid "Write error!"
-msgstr "with %d error"
-
 msgid "Write failed!"
 msgstr "寫入失敗！"
 
 msgid "Write to /tmp/positionersetup.log"
-msgstr ""
-
-msgid "Wrong Bootsettings detected!"
 msgstr ""
 
 msgid "YCbCr420"
@@ -12337,15 +12842,6 @@ msgstr ""
 
 msgid "Your backup succeeded. We will now continue to explain the further upgrade process."
 msgstr "備份成功.現在將繼續說明下一步的升級過程."
-
-#, python-format
-msgid ""
-"Your box needs Bootloaderversion(s)\n"
-"\n"
-"%s\n"
-"\n"
-"to make compatible with Bootoptions!"
-msgstr ""
 
 msgid "Your collection exceeds the size of a single layer medium, you will need a blank dual layer DVD!"
 msgstr "您的收藏超過單層DVD大小,您將需要一個空白雙層DVD！！！"
@@ -12798,11 +13294,21 @@ msgstr "歷史記錄裏的下一個頻道"
 msgid "cooking"
 msgstr ""
 
+#, fuzzy
+msgid "copy file"
+msgstr "%d file"
+
+msgid "copy folder"
+msgstr ""
+
 msgid "copy to bouquets"
 msgstr "複製到自定義組"
 
 msgid "create directory"
 msgstr "創建目錄"
+
+msgid "create symlink ..."
+msgstr ""
 
 msgid "daily"
 msgstr "每天"
@@ -13030,6 +13536,10 @@ msgstr "空閒"
 msgid "from"
 msgstr "來自"
 
+#, fuzzy
+msgid "from dir"
+msgstr "來自"
+
 msgid "further education"
 msgstr ""
 
@@ -13059,6 +13569,9 @@ msgstr ""
 
 msgid "help..."
 msgstr "説明..."
+
+msgid "hide"
+msgstr ""
 
 msgid "horizontal"
 msgstr "水準"
@@ -13135,6 +13648,9 @@ msgstr "預設列表樣式"
 msgid "list style single line"
 msgstr "單行列表樣式"
 
+msgid "listens to hotplug events"
+msgstr ""
+
 msgid "literature"
 msgstr ""
 
@@ -13148,6 +13664,9 @@ msgid "long"
 msgstr ""
 
 msgid "magazines/reports/documentary"
+msgstr ""
+
+msgid "manage local Files"
 msgstr ""
 
 msgid "manual"
@@ -13182,6 +13701,14 @@ msgstr "向下移動到最後項目"
 
 msgid "move down to next entry"
 msgstr "向下移動到下一個項目"
+
+#, fuzzy
+msgid "move file"
+msgstr "移除標題"
+
+#, fuzzy
+msgid "move folder"
+msgstr "[移動模式]"
 
 msgid "move up to first entry"
 msgstr "向上移動到第一個項目"
@@ -13242,10 +13769,6 @@ msgstr "未找到安裝點"
 #, fuzzy
 msgid "no gateway found"
 msgstr "未找到"
-
-#, fuzzy
-msgid "no image found"
-msgstr "未找到模組"
 
 #, fuzzy
 msgid "no log entrys"
@@ -13370,9 +13893,6 @@ msgid "performing arts"
 msgstr ""
 
 msgid "picons"
-msgstr ""
-
-msgid "placeholder message 2"
 msgstr ""
 
 msgid "play as picture in picture"
@@ -13622,6 +14142,30 @@ msgstr "快倒"
 msgid "skip forward"
 msgstr "快進"
 
+#, python-format
+msgid "slot%s - %s mode 1"
+msgstr ""
+
+#, python-format
+msgid "slot%s - %s mode 1 (current image)"
+msgstr ""
+
+#, python-format
+msgid "slot%s - %s mode 12"
+msgstr ""
+
+#, python-format
+msgid "slot%s - %s mode 12 (current image)"
+msgstr ""
+
+#, python-format
+msgid "slot%s -%s - %s (current image)"
+msgstr ""
+
+#, python-format
+msgid "slot%s -%s- %s "
+msgstr ""
+
 msgid "soap/melodram/folkloric"
 msgstr ""
 
@@ -13716,6 +14260,9 @@ msgstr "這個錄影"
 msgid "this service is protected by a parental control pin"
 msgstr "此頻道受家長控制."
 
+msgid "to dir"
+msgstr ""
+
 msgid "toggels between tv and radio..."
 msgstr ""
 
@@ -13742,6 +14289,10 @@ msgstr "測驗未通過"
 
 msgid "undefined"
 msgstr ""
+
+#, fuzzy
+msgid "unknow"
+msgstr "未知"
 
 msgid "unknown"
 msgstr "未知"
@@ -13843,6 +14394,9 @@ msgstr ""
 #, fuzzy
 msgid "with_errors"
 msgstr "with %d error"
+
+msgid "without"
+msgstr ""
 
 msgid "working"
 msgstr ""

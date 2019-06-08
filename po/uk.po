@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-04 22:19+0200\n"
+"POT-Creation-Date: 2019-06-02 14:36+0200\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: arn354 <arn354@email.de>\n"
 "Language-Team: none\n"
@@ -189,9 +189,18 @@ msgstr ""
 msgid " (lower than any auto)"
 msgstr ""
 
-#, fuzzy
-msgid " (unknown mode)"
-msgstr "Невідома помилка!"
+#, python-format
+msgid " - %d elements exist! Overwrite"
+msgstr ""
+
+msgid " - 1 element exist! Overwrite"
+msgstr ""
+
+msgid " - file exist! Overwrite"
+msgstr ""
+
+msgid " - folder exist! Overwrite"
+msgstr ""
 
 msgid " extensions."
 msgstr " Доповнень."
@@ -431,9 +440,17 @@ msgstr ""
 msgid "%s %s free disk space"
 msgstr "%s %s вільне місце на диску"
 
+#, fuzzy, python-format
+msgid "%s (%04o)"
+msgstr "%s (%s)\n"
+
 #, python-format
 msgid "%s (%s)\n"
 msgstr "%s (%s)\n"
+
+#, fuzzy, python-format
+msgid "%s build date %s"
+msgstr "Останнє оновлення: "
 
 #. TRANSLATORS: The satellite with name '%s' is no longer used after a configuration change. The user is asked whether or not the satellite should be deleted.
 #, python-format
@@ -455,9 +472,24 @@ msgstr "%s%d хв"
 msgid "%s/%s: %s"
 msgstr "%s/%s: %s"
 
+#, fuzzy, python-format
+msgid "%s: %s"
+msgstr "%s/%s: %s"
+
 #, python-format
 msgid "%s:%s"
 msgstr ""
+
+#, python-format
+msgid "(%d jobs)"
+msgstr ""
+
+msgid "(1 job)"
+msgstr ""
+
+#, fuzzy
+msgid "(Selectmode)"
+msgstr "Вибір відео"
 
 msgid "(ZAP as PiP)"
 msgstr ""
@@ -489,43 +521,6 @@ msgstr "* Доступно якщо активно більше одного і�
 #, fuzzy
 msgid "* current animation"
 msgstr "Активувати поточні налаштування"
-
-msgid ""
-"*** boxmode=1 (Standard) ***\n"
-"\n"
-"+++ Features +++\n"
-"3840x2160p60 10-bit HEVC, 3840x2160p60 8-bit VP9, 1920x1080p60 8-bit AVC,\n"
-"MAIN only (no PIP), Limited display usages, UHD only (no SD),\n"
-"No multi-PIP, No transcoding\n"
-"\n"
-"--- Restrictions ---\n"
-"Decoder 0: 3840x2160p60 10-bit HEVC, 3840x2160p60 8-bit VP9, 1920x1080p60 8-bit AVC\n"
-"OSD Grafic 0: 1080p60 32 bit ARGB\n"
-"Display 0 Encode Restrictions: 3840x2160p60 12-bit 4:2:0 (HDMI),\n"
-"3840x2160p60 12-bit 4:2:2 (HDMI), 3840x2160p60 8-bit 4:4:4 (HDMI),\n"
-"1920x1080p60 (component), Only one display format at a time\n"
-"\n"
-"If you want 1080p60 component, HDMI also needs to be 1080p60."
-msgstr ""
-
-msgid ""
-"*** boxmode=12 (Experimental) ***\n"
-"\n"
-"+++ Features +++\n"
-"3840x2160p50 10-bit decode for MAIN, 1080p25/50i PIP support, HDMI input (if available),\n"
-" UHD display only, No SD display, No transcoding\n"
-"\n"
-"--- Restrictions ---\n"
-"Decoder 0: 3840x2160p50 10-bit HEVC, 3840x2160p50 8-bit VP9,\n"
-"1920x1080p50 8-bit AVC/MPEG\n"
-"Decoder 1: 1920x1080p25/50i 10-bit HEVC, 1920x1080p25/50i 8-bit VP9/AVC/MPEG2,\n"
-"HDMI In (if available), 3840x2160p50\n"
-"OSD Graphic 0 (UHD): 1080p50 32-bit ARGB\n"
-"Window 0 (MAIN/UHD): Limited display capabilities, 1080i50 10-bit de-interlacing\n"
-"Multi-PIP mode (3x): Enigma2 supported no multi-PIP\n"
-"Window 1 (PIP/UHD) (Enigma2 PIP Mode): Up to 1/2 x 1/2 screen display, 576i50 de-interlacing\n"
-"Display 0 (UHD) Encode Restrictions: 3840x2160p50"
-msgstr ""
 
 msgid "-NO SERVICE\n"
 msgstr ""
@@ -612,12 +607,6 @@ msgid "2"
 msgstr "2"
 
 msgid "2048 MB (maximum)"
-msgstr ""
-
-msgid "2160p50 with PiP (Experimental)"
-msgstr ""
-
-msgid "2160p60 without PiP (Standard)"
 msgstr ""
 
 msgid "23.976"
@@ -893,6 +882,10 @@ msgstr "Информація"
 msgid "About..."
 msgstr "Информація..."
 
+#, fuzzy
+msgid "Accessed:"
+msgstr "Точка доступа:"
+
 msgid "Accesspoint:"
 msgstr "Точка доступа:"
 
@@ -917,8 +910,20 @@ msgstr "Включити картинку в картинці"
 msgid "Activate current configuration"
 msgstr "Активувати поточні налаштування"
 
+msgid "Activate left-hand file list as multi-select source"
+msgstr ""
+
+msgid "Activate left-hand file list as source"
+msgstr ""
+
 msgid "Activate network settings"
 msgstr "Активувати мережеві установки"
+
+msgid "Activate right-hand file list as multi-select source"
+msgstr ""
+
+msgid "Activate right-hand file list as source"
+msgstr ""
 
 msgid "Activate the configured network settings."
 msgstr "Активувати вибрані настройки мережі."
@@ -955,6 +960,10 @@ msgstr "Додати нову назву"
 msgid "Add bookmark"
 msgstr "Додати закладку"
 
+#, fuzzy
+msgid "Add current folder to bookmarks"
+msgstr "Автоматичний пошук"
+
 msgid "Add directory to playlist"
 msgstr "Додати папку до списку відтворення"
 
@@ -963,6 +972,13 @@ msgstr "Додати файл до списку відтворення"
 
 msgid "Add files to playlist"
 msgstr "Додати файли в плейлист"
+
+#, fuzzy
+msgid "Add plugin to Extensions menu*"
+msgstr "Показати плагіни в меню доповнень"
+
+msgid "Add plugin to main menu*"
+msgstr ""
 
 msgid "Add provider"
 msgstr "Додати провайдера"
@@ -978,6 +994,10 @@ msgstr "Почати запис (закінчення не визначено)"
 
 msgid "Add recording (stop after current event)"
 msgstr "Почати запис (стоп після поточного події)"
+
+#, fuzzy
+msgid "Add selected folder to bookmarks"
+msgstr "Вибір файлів/папок для резервного копіювання."
 
 msgid "Add service"
 msgstr "Додати сервіс"
@@ -1136,8 +1156,13 @@ msgstr "перейти в Режим очікування"
 msgid "Alternative"
 msgstr "Альтернативний DNS"
 
-msgid "Alternative Image 1 partition for boot repair not found."
-msgstr ""
+#, fuzzy
+msgid "Alternative 1"
+msgstr "Альтернативний DNS"
+
+#, fuzzy
+msgid "Alternative 2"
+msgstr "Альтернативний DNS"
 
 msgid "Alternative numbering mode"
 msgstr "Альтернативний режим нумерації каналів"
@@ -1762,6 +1787,9 @@ msgstr ""
 msgid "CIHelper for SLOT CI1"
 msgstr ""
 
+msgid "CPU priority for script execution"
+msgstr ""
+
 msgid "CPU: "
 msgstr ""
 
@@ -1790,6 +1818,9 @@ msgstr "Розрахунок"
 msgid "Calculate all positions"
 msgstr "Розрахувати всі позиції"
 
+msgid "Calculate file checksums"
+msgstr ""
+
 msgid "Calculation complete"
 msgstr "Розрахунок закінчено"
 
@@ -1805,12 +1836,26 @@ msgstr ""
 msgid "Can be used for different fps between external subtitles and video."
 msgstr "Може бути використаний для набору кадрів в секунду між зовнішніми субтитрами і відео."
 
-#, python-format
-msgid "Can not repair file %s"
+msgid ""
+"Can be used to test defect pixels on TV screen.\n"
+"\n"
+"Available color test screens:\n"
+"\n"
+"red\n"
+"green\n"
+"blue\n"
+"white\n"
+"black\n"
+"cyan\n"
+"magenta\n"
+"yellow\n"
+"\n"
+"Screens change with left/right buttons or use red, green, blue to toggle.\n"
+"Yellow for returning back to this intro"
 msgstr ""
 
 #, python-format
-msgid "Can not write file %s"
+msgid "Can't read link contents: %s"
 msgstr ""
 
 msgid "Canada"
@@ -1821,6 +1866,10 @@ msgstr "Відмінити"
 
 msgid "Cancel any text changes and exit"
 msgstr ""
+
+#, fuzzy
+msgid "Cancel execution?"
+msgstr "Селектор каналів"
 
 msgid "Cancelled upon user request"
 msgstr ""
@@ -1871,13 +1920,7 @@ msgstr "Ємність: "
 msgid "Capacity: "
 msgstr "Ємність: "
 
-msgid "Card"
-msgstr "Карта"
-
 msgid "Cascade PiP"
-msgstr ""
-
-msgid "Caution, next boot is starts with these settings!"
 msgstr ""
 
 msgid "Cayman Islands"
@@ -1909,6 +1952,12 @@ msgstr "Змінити PIN-код налаштувань"
 
 msgid "Change bouquets in quickzap"
 msgstr "Змінити букети при швидкому перемиканні"
+
+msgid "Change buttons for list navigation"
+msgstr ""
+
+msgid "Change execute permissions (755/644)"
+msgstr ""
 
 msgid "Change old drive with this new drive"
 msgstr ""
@@ -1942,6 +1991,9 @@ msgstr "Канал"
 #, fuzzy
 msgid "Channel Info"
 msgstr "Канал"
+
+msgid "Channel button always changes sides"
+msgstr ""
 
 #, fuzzy
 msgid "Channel context menu"
@@ -2187,10 +2239,6 @@ msgstr ""
 msgid "Command execution..."
 msgstr "Виконання команди..."
 
-#, fuzzy
-msgid "Command line error!"
-msgstr "Послідовність команд"
-
 msgid "Command order"
 msgstr "Послідовність команд"
 
@@ -2207,9 +2255,6 @@ msgstr "Зв'язок"
 #, fuzzy
 msgid "Comoros"
 msgstr "Завтра"
-
-msgid "Compact flash"
-msgstr "Компакт-флэш"
 
 msgid "Complete"
 msgstr "Повний"
@@ -2707,6 +2752,26 @@ msgstr ""
 msgid "Copy"
 msgstr "Копіювання"
 
+#, python-format
+msgid "Copy %d elements"
+msgstr ""
+
+msgid "Copy 1 element"
+msgstr ""
+
+#, fuzzy
+msgid "Copy file"
+msgstr "%d файл"
+
+msgid "Copy file/directory to target directory"
+msgstr ""
+
+msgid "Copy files/directories to target directory"
+msgstr ""
+
+msgid "Copy folder"
+msgstr ""
+
 msgid "Costa Rica"
 msgstr ""
 
@@ -2753,10 +2818,21 @@ msgid "Create ISO"
 msgstr "Створити DVD-ISO"
 
 #, fuzzy
+msgid "Create directory/folder"
+msgstr "створити каталог"
+
+#, fuzzy
 msgid "Create new folder and exit"
 msgstr "Створити нову папку"
 
 msgid "Create separate radio userbouquet"
+msgstr ""
+
+#, fuzzy
+msgid "Create symlink to file"
+msgstr "Створити новий файл"
+
+msgid "Create user-named symbolic link"
 msgstr ""
 
 #, python-format
@@ -2781,10 +2857,6 @@ msgstr ""
 
 msgid "Curacao"
 msgstr ""
-
-#, fuzzy, python-format
-msgid "Current Bootsettings: %s (%s)%s"
-msgstr "Поточні налаштування:"
 
 msgid "Current CEC address"
 msgstr ""
@@ -2951,6 +3023,10 @@ msgid "DVD Menu"
 msgstr "Меню"
 
 #, fuzzy
+msgid "DVD Player"
+msgstr "DVD плеєр"
+
+#, fuzzy
 msgid "DVD Titlelist"
 msgstr "білий список"
 
@@ -2965,6 +3041,10 @@ msgstr "Датський"
 
 msgid "Date"
 msgstr "Дата"
+
+#, fuzzy
+msgid "Date reverse"
+msgstr "за зворотнім алфавітом"
 
 msgid "Date/time input"
 msgstr "Введення Час/Дата "
@@ -2987,9 +3067,38 @@ msgstr "Глубокий Режим очікування"
 msgid "Default"
 msgstr "За замовчуванням"
 
+msgid "Default CPU priority (nice) for executed scripts. This can reduce the load so that scripts do not interfere with the rest of the system. (higher values = lower priority)"
+msgstr ""
+
+#, fuzzy
+msgid "Default Folder"
+msgstr "За замовчуванням"
+
+msgid "Default I/O priority (ionice) for executed scripts. This can reduce the load so that scripts do not interfere with the rest of the system. (higher values = lower priority)"
+msgstr ""
+
 #, fuzzy
 msgid "Default Services Scanner"
 msgstr "Місце записів за замовчуванням"
+
+#, fuzzy
+msgid "Default directory sorting"
+msgstr "Налаштування за замовчуванням"
+
+#, fuzzy
+msgid "Default file sorting left"
+msgstr "Тип запису"
+
+#, fuzzy
+msgid "Default file sorting right"
+msgstr "Тип запису"
+
+#, fuzzy
+msgid "Default folder"
+msgstr "За замовчуванням"
+
+msgid "Default folder if the left or right folder isn't saved, and target folder for button 5."
+msgstr ""
 
 msgid "Default movie location"
 msgstr "Місце записів за замовчуванням"
@@ -3000,6 +3109,15 @@ msgstr "Тип запису"
 
 msgid "Default settings"
 msgstr "Налаштування за замовчуванням"
+
+msgid "Default sorting method for directories on both sides."
+msgstr ""
+
+msgid "Default sorting method for files on the left side."
+msgstr ""
+
+msgid "Default sorting method for files on the right side."
+msgstr ""
 
 msgid "Delay after change voltage before switch command"
 msgstr ""
@@ -3068,6 +3186,14 @@ msgstr ""
 msgid "Delete"
 msgstr "Видалити"
 
+#, fuzzy, python-format
+msgid "Delete %d elements"
+msgstr "Видалені"
+
+#, fuzzy
+msgid "Delete 1 element"
+msgstr "Видалити вибране"
+
 msgid "Delete entry"
 msgstr "Видалити вибране"
 
@@ -3075,6 +3201,13 @@ msgid "Delete failed!"
 msgstr "Неможливо видалити!"
 
 msgid "Delete file"
+msgstr "Видалити файл"
+
+msgid "Delete file or directory (and all its contents)"
+msgstr ""
+
+#, fuzzy
+msgid "Delete folder"
 msgstr "Видалити файл"
 
 msgid "Delete playlist entry"
@@ -3087,6 +3220,9 @@ msgid "Delete the character to the left of text buffer cursor"
 msgstr ""
 
 msgid "Delete the character under the text buffer cursor"
+msgstr ""
+
+msgid "Delete the selected files or directories"
 msgstr ""
 
 msgid "Delete timer"
@@ -3435,12 +3571,8 @@ msgstr "Ви хочете пропалити цю колекцію на DVD но
 msgid "Do you want to quit the overscan wizard?"
 msgstr "Ви впевнені, що хочете вийти з цього майстра?"
 
-#, fuzzy
-msgid "Do you want to reboot now with selected image?"
-msgstr "Ви хочете перезавантажити ваш ресивер?"
-
-#, fuzzy
-msgid "Do you want to reboot now?"
+#, fuzzy, python-format
+msgid "Do you want to reboot now the image in slot %s?"
 msgstr "Ви хочете перезавантажити ваш ресивер?"
 
 #, fuzzy
@@ -3511,6 +3643,9 @@ msgstr "Варіант для всіх іміджів"
 #, fuzzy
 msgid "Don't zap and remove timer"
 msgstr "Відмітка часу по центру без дати"
+
+msgid "Done"
+msgstr ""
 
 #, fuzzy, python-format
 msgid "Done - Installed or upgraded %d packages"
@@ -3634,6 +3769,10 @@ msgstr "Редагувати заголовок"
 
 msgid "Edit chapters of current title"
 msgstr "Редагувати розділи поточного заголовка"
+
+#, fuzzy
+msgid "Edit position is the line end"
+msgstr "Переміщення до позиції номера"
 
 #, fuzzy
 msgid "Edit selection"
@@ -3848,6 +3987,10 @@ msgid "Enigma2 Version: %s"
 msgstr ""
 
 #, fuzzy
+msgid "Enter"
+msgstr "центр"
+
+#, fuzzy
 msgid "Enter IP address"
 msgstr "IP адреса"
 
@@ -3867,6 +4010,10 @@ msgstr ""
 
 msgid "Enter main menu..."
 msgstr "Увійти в головне меню..."
+
+#, fuzzy
+msgid "Enter multi-file selection mode"
+msgstr "Закрити вибір назв"
 
 #, fuzzy
 msgid "Enter persistent PIN code"
@@ -3922,6 +4069,12 @@ msgstr ""
 msgid "Error code"
 msgstr "Код помилки"
 
+#, fuzzy, python-format
+msgid ""
+"Error creating directory %s:\n"
+"%s"
+msgstr "Не вдалося створити каталог %s"
+
 msgid "Error executing plugin"
 msgstr "Помилка запуску плагіна"
 
@@ -3929,7 +4082,15 @@ msgid "Error formatting disk. The disk may be damaged"
 msgstr ""
 
 #, python-format
-msgid "Error in file %s"
+msgid ""
+"Error linking %s to %s:\n"
+"%s"
+msgstr ""
+
+#, python-format
+msgid ""
+"Error renaming %s to %s:\n"
+"%s"
 msgstr ""
 
 msgid "Error when writing epg.dat on server"
@@ -4280,15 +4441,43 @@ msgstr "Фаворити"
 msgid "Fiji"
 msgstr ""
 
-#, python-format
-msgid "File '/boot/%s' copy to '/boot/STARTUP' failed!"
+#, fuzzy
+msgid "File Commander"
+msgstr "Послідовність команд"
+
+msgid "File Commander - all Task's completed!"
+msgstr ""
+
+#, fuzzy
+msgid "File Commander Settings"
+msgstr "Перегляд установок"
+
+#, fuzzy
+msgid "File Commander context menu"
+msgstr "Меню списка каналів"
+
+msgid "File Commander menu"
 msgstr ""
 
 msgid "File appears to be busy.\n"
 msgstr "Файл виявився зайнятим.\n"
 
-msgid "File not found - rename failed!"
+msgid "File checksums to calculate for button 9"
 msgstr ""
+
+msgid "File checksums/hashes"
+msgstr ""
+
+msgid "File transfer was cancelled by user"
+msgstr ""
+
+#, fuzzy, python-format
+msgid "File write error: '%s'"
+msgstr "с %d помилкою"
+
+#, fuzzy
+msgid "File/Directory Status Information"
+msgstr "Конфігурація мережі..."
 
 #, fuzzy
 msgid "Filename"
@@ -4296,6 +4485,15 @@ msgstr "ім'я файлу"
 
 msgid "Filesystem check"
 msgstr "Перевірка файлової системи"
+
+msgid "Filter extension for 'My Extension' setting of 'Filter extension'. Use the extension name without a '.'."
+msgstr ""
+
+msgid "Filter extension, (*) appears in title"
+msgstr ""
+
+msgid "Filter visible file classes by extension."
+msgstr ""
 
 msgid "Final position at"
 msgstr "Підсумкова позиція"
@@ -4567,9 +4765,6 @@ msgstr "Німецький"
 msgid "Germany"
 msgstr "Германія"
 
-msgid "Get your Weather ID on weather.open-store.net"
-msgstr ""
-
 msgid "Getting plugin information. Please wait..."
 msgstr "Отримання інформації про плагін. Будь ласка чекайте..."
 
@@ -4581,6 +4776,9 @@ msgstr ""
 
 msgid "Go down the list"
 msgstr "Перемістити вниз до останнього запису"
+
+msgid "Go to bookmarked folder"
+msgstr ""
 
 msgid "Go to first movie or last item"
 msgstr "Перейти до першого відео або до останнього рядка"
@@ -4599,6 +4797,10 @@ msgstr "Перейти на наступну подію"
 
 msgid "Go to next page of service"
 msgstr "Перейти на наступну сторінку сервісів"
+
+#, fuzzy
+msgid "Go to parent directory"
+msgstr "Батьківський каталог"
 
 msgid "Go to previous event"
 msgstr "Перейти на попередню подію"
@@ -4678,6 +4880,9 @@ msgstr "Ірландія"
 #, fuzzy
 msgid "Grenada"
 msgstr "Канада"
+
+msgid "Group:"
+msgstr ""
 
 msgid "Grow drop"
 msgstr ""
@@ -4809,9 +5014,6 @@ msgstr "Режим очікування при вимкненню ТБ"
 msgid "Handle wakeup from TV"
 msgstr "Увімкнути при включенні ТВ"
 
-msgid "Hard disk"
-msgstr "Жорсткий диск"
-
 msgid "Hard disk setup"
 msgstr "Налаштування диска"
 
@@ -4940,6 +5142,10 @@ msgstr "Захистити установки"
 msgid "Hotkey zap"
 msgstr ""
 
+#, fuzzy
+msgid "Hotplug"
+msgstr "Завантажити плагіни"
+
 msgid "Hour"
 msgstr "Годинник"
 
@@ -4962,6 +5168,9 @@ msgstr "Угорщина"
 #, fuzzy
 msgid "I"
 msgstr "С"
+
+msgid "I/O priority for script execution"
+msgstr ""
 
 msgid "IDLE"
 msgstr ""
@@ -5004,6 +5213,9 @@ msgstr "Ірландія"
 
 msgid "Icons"
 msgstr "Іконка"
+
+msgid "If editing a file, can you set the cursor start position at end or begin of the line."
+msgstr ""
 
 msgid "If enabled, AIT data is included in recordings."
 msgstr ""
@@ -5200,6 +5412,9 @@ msgstr "Ініціалізація"
 msgid "Initializing storage device..."
 msgstr "Ініціалізація жесткого диска..."
 
+msgid "Inode:"
+msgstr ""
+
 msgid "Input"
 msgstr "Вхід"
 
@@ -5369,11 +5584,17 @@ msgstr ""
 msgid "It follows:"
 msgstr ""
 
+msgid "It is not possible to get the file status of <List of Storage Devices>"
+msgstr ""
+
 msgid ""
 "It seems you did not see all the eight arrow heads. This means your TV has overscan enabled, and is not configured properly.\n"
 "\n"
 "Please refer to your TV's manual to find how you can disable overscan on your TV. Look for terms like 'Just fit', 'Full width', etc. If you can't find it, ask other users at http://forums.openpli.org.\n"
 "\n"
+msgstr ""
+
+msgid "It's not possible to rename the filesystem root."
 msgstr ""
 
 msgid "Italian"
@@ -5552,6 +5773,13 @@ msgstr "Латвійський"
 msgid "Leave DVD player?"
 msgstr "Вийти з DVD плеєра?"
 
+msgid "Leave File Commander"
+msgstr ""
+
+#, fuzzy
+msgid "Leave multi-select mode"
+msgstr "Режим названия сервиса"
+
 msgid "Leave this set to 'yes' unless you fully understand why you are adjusting it."
 msgstr ""
 
@@ -5618,17 +5846,29 @@ msgstr "Якість зв'язку:"
 msgid "Link quality:"
 msgstr "Якість зв'язку:"
 
+#, fuzzy
+msgid "Link target:"
+msgstr "Якість зв'язку:"
+
 msgid "Link:"
 msgstr "Посилання:"
 
 msgid "Linked titles with a DVD menu"
 msgstr "Заголовки пов'язані з DVD меню"
 
+#, fuzzy
+msgid "Links:"
+msgstr "Посилання:"
+
 msgid "List available networks"
 msgstr "Перегляд списку доступних мереж"
 
 msgid "List mode"
 msgstr "Режим списку"
+
+#, fuzzy
+msgid "List of Storage Devices"
+msgstr "Список пристроїв зберігання"
 
 msgid "List of storage devices"
 msgstr "Список пристроїв зберігання"
@@ -5762,11 +6002,11 @@ msgstr ""
 msgid "MIME Version"
 msgstr "Інверсія"
 
-msgid "MMC card"
-msgstr "MMC карта"
-
 msgid "MORE"
 msgstr "ПОТІМ"
+
+msgid "MSN Weather City Name"
+msgstr ""
 
 msgid "Macao"
 msgstr ""
@@ -5782,6 +6022,12 @@ msgstr "Головне меню"
 
 msgid "Maintain old EPG data for"
 msgstr "Зберігати минулі дані EPG для (хв)"
+
+msgid "Make File Commander accessible from the Extensions menu."
+msgstr ""
+
+msgid "Make File Commander accessible from the main menu."
+msgstr ""
 
 msgid "Make it possible to manually initiate the channels import and/or EPG via the extension menu"
 msgstr ""
@@ -5922,6 +6168,9 @@ msgstr "Повідомлення..."
 msgid "Messages"
 msgstr "Повідомлення"
 
+msgid "Metadata changed:"
+msgstr ""
+
 msgid "Mexico"
 msgstr "Мексика"
 
@@ -5962,6 +6211,11 @@ msgctxt "Video output mode"
 msgid "Mode"
 msgstr ""
 
+msgid ""
+"Mode 1 suppports Kodi, PiP may not work.\n"
+"Mode 12 supports PiP, Kodi may not work."
+msgstr ""
+
 #, fuzzy
 msgid "Model"
 msgstr "Модель: "
@@ -5984,6 +6238,9 @@ msgstr "Модель: "
 #, fuzzy
 msgid "Modes"
 msgstr "Модель: "
+
+msgid "Modified:"
+msgstr ""
 
 msgid "Modulation"
 msgstr "Модуляція"
@@ -6085,6 +6342,14 @@ msgstr "Перегляд підключень"
 msgid "Move"
 msgstr "Переміщення"
 
+#, fuzzy, python-format
+msgid "Move %d elements"
+msgstr "Переміщення"
+
+#, fuzzy
+msgid "Move 1 element"
+msgstr "Переміщення"
+
 #, fuzzy
 msgid "Move PIP"
 msgstr "Переміщення"
@@ -6096,8 +6361,27 @@ msgstr "Перемістити PiP на основний екран"
 msgid "Move Picture in Picture"
 msgstr "Включити картинку в картинці"
 
+#, fuzzy
+msgid "Move down list"
+msgstr "Перемістити вниз до останнього запису"
+
 msgid "Move east"
 msgstr "Переміщення на схід"
+
+#, fuzzy
+msgid "Move file"
+msgstr "Переміщення на схід"
+
+msgid "Move file/directory to target directory"
+msgstr ""
+
+#, fuzzy
+msgid "Move files/directories to target directory"
+msgstr "Будь ласка, введіть ім'я нового каталогу"
+
+#, fuzzy
+msgid "Move folder"
+msgstr "[режим переміщення]"
 
 msgid "Move the text buffer cursor left"
 msgstr ""
@@ -6126,6 +6410,10 @@ msgstr ""
 msgid "Move to position X"
 msgstr "Переміщення до позиції Х"
 
+#, fuzzy
+msgid "Move up list"
+msgstr "Перейти в кінець списку"
+
 msgid "Move west"
 msgstr "Переміщення на захід"
 
@@ -6137,6 +6425,10 @@ msgstr "Переміщення до позиції номера"
 
 msgid "Movement"
 msgstr "Переміщення"
+
+#, fuzzy
+msgid "Movie"
+msgstr "Переміщуємо"
 
 msgid "Movie list configuration"
 msgstr "Конфігурація списку відео"
@@ -6189,6 +6481,14 @@ msgstr "Багатофайловий режим"
 msgid "MultiType"
 msgstr "Мультмедіа"
 
+#, python-format
+msgid "Multiboot ERROR! - no %s in boot partition."
+msgstr ""
+
+#, fuzzy
+msgid "Multiboot Image Selector"
+msgstr "Багатофайловий режим"
+
 #, fuzzy
 msgid "Multichannel PCM"
 msgstr "Канал"
@@ -6209,11 +6509,22 @@ msgstr ""
 msgid "Multistream"
 msgstr "Декілька супутників"
 
+msgid "Music"
+msgstr ""
+
 msgid "Music/Ballet/Dance"
 msgstr "Музика/Балет/Танець"
 
 msgid "Mute"
 msgstr "без звуку"
+
+#, fuzzy
+msgid "My Extension"
+msgstr "Плагіни та Додатки"
+
+#, fuzzy
+msgid "My extension"
+msgstr " Доповнень."
 
 msgid "Myanmar"
 msgstr ""
@@ -6261,8 +6572,9 @@ msgstr "NTSC"
 msgid "Name"
 msgstr "Ім'я"
 
-msgid "Name already exists - rename failed!"
-msgstr ""
+#, fuzzy
+msgid "Name reverse"
+msgstr "DNS сервер"
 
 msgid "Nameserver"
 msgstr "DNS сервер"
@@ -6327,13 +6639,6 @@ msgstr "Конфігурація мережі..."
 msgid "Network configuration..."
 msgstr "Конфігурація мережі..."
 
-msgid "Network mount"
-msgstr "Мережеві підключення"
-
-#, python-format
-msgid "Network mount %s"
-msgstr "Мережеві підключення %s"
-
 msgid "Network name (SSID)"
 msgstr "Мережеве ім'я (SSID)"
 
@@ -6378,6 +6683,9 @@ msgstr ""
 msgid "New Zealand"
 msgstr "Нова Зеландія"
 
+msgid "New folder"
+msgstr ""
+
 msgid "News Current Affairs"
 msgstr "Новини поточної події"
 
@@ -6387,9 +6695,6 @@ msgstr ""
 
 msgctxt "now/next: 'next' event label"
 msgid "Next"
-msgstr ""
-
-msgid "Next boot will start from Image 1."
 msgstr ""
 
 msgid "Nicaragua"
@@ -6443,6 +6748,10 @@ msgid ""
 "\n"
 msgstr ""
 
+#, fuzzy
+msgid "No active subservices available."
+msgstr "Оновлень поки немає"
+
 msgid "No age block"
 msgstr ""
 
@@ -6483,6 +6792,10 @@ msgstr "Немає вільного номера пам'яті"
 
 msgid "No free tuner!"
 msgstr "Немає вільного тюнера!"
+
+#, fuzzy
+msgid "No images found"
+msgstr "не знайдено модуль"
 
 msgid "No network connection available."
 msgstr "Немає доступного мережевого підключення."
@@ -6694,6 +7007,9 @@ msgstr "Офіційна нумерація каналів"
 msgid "Number of channels shown in channel selection list"
 msgstr "Показати номер каналу в селекторі каналів"
 
+msgid "Number of lines in script messages"
+msgstr ""
+
 msgid "Number of repeating text on display."
 msgstr ""
 
@@ -6742,6 +7058,10 @@ msgstr ""
 
 msgid "On"
 msgstr "Вкл."
+
+#, fuzzy
+msgid "On device:"
+msgstr "Налаштування пульта"
 
 msgid "On end of movie"
 msgstr "Наприкінці фільму"
@@ -6807,11 +7127,18 @@ msgid "Open service list"
 msgstr "Відкрити список сервісів"
 
 #, fuzzy
+msgid "Open settings/actions menu"
+msgstr "Показати плагіни в меню доповнень"
+
+#, fuzzy
 msgid "Open setup tuner "
 msgstr "Налаштуйте тюнер А"
 
 msgid "Open the movie list"
 msgstr "Відкрити список відео"
+
+msgid "Open with File Commander"
+msgstr ""
 
 #, fuzzy
 msgid "Options disable timer"
@@ -6898,6 +7225,9 @@ msgstr "Перезаписати конф. файли під час оновле
 msgid "Overwrite spinner files during software upgrade?"
 msgstr "Перезаписати конф. файли під час оновлення ПО?"
 
+msgid "Owner:"
+msgstr ""
+
 msgid "PAL"
 msgstr "PAL"
 
@@ -6967,6 +7297,14 @@ msgstr "Список пакетів оновлення"
 msgid "Packet manager"
 msgstr "Менеджер пакетів"
 
+#, fuzzy
+msgid "Page down list"
+msgstr "Перемістити вниз до останнього запису"
+
+#, fuzzy
+msgid "Page up list"
+msgstr "Зберегти плейлист"
+
 msgid "Pakistan"
 msgstr "Пакістан"
 
@@ -6991,6 +7329,10 @@ msgstr ""
 
 msgid "Paraguay"
 msgstr ""
+
+#, fuzzy
+msgid "Parent Directory"
+msgstr "Батьківський каталог"
 
 msgid "Parent directory"
 msgstr "Батьківський каталог"
@@ -7026,6 +7368,9 @@ msgstr ""
 msgid "Password"
 msgstr ""
 
+msgid "Path to save not exist: '/tmp/'"
+msgstr ""
+
 msgid "Pause"
 msgstr "Пауза"
 
@@ -7050,6 +7395,10 @@ msgstr "Остаточне видалення всіх записів в кош�
 
 msgid "Permanently remove all deleted items"
 msgstr "Очищення кошика"
+
+#, fuzzy
+msgid "Permissions:"
+msgstr "Поляризація"
 
 msgid "Persian"
 msgstr "Персидський"
@@ -7077,6 +7426,10 @@ msgstr "Перемістити картинку в картинці"
 msgid "Picture player"
 msgstr "Перегляд фото"
 
+#, fuzzy
+msgid "Pictures"
+msgstr "Перегляд фото"
+
 #. TRANSLATORS: (aspect ratio policy: black bars on left/right) in doubt, keep english term.
 msgid "Pillarbox"
 msgstr "Pillarbox"
@@ -7087,10 +7440,17 @@ msgstr "Пілот"
 msgid "Pitcairn"
 msgstr ""
 
+msgid "Pixels\n"
+msgstr ""
+
 msgid "Play"
 msgstr "Відтворити"
 
 msgid "Play DVD"
+msgstr "Відтворити DVD"
+
+#, fuzzy
+msgid "Play DVDs"
 msgstr "Відтворити DVD"
 
 msgid "Play audio-CD..."
@@ -7129,6 +7489,9 @@ msgstr "Відігравати наступне відео"
 
 msgid "Play recorded movies..."
 msgstr "Відтворити записане відео..."
+
+msgid "Play/view/edit/install/extract/run file or enter directory"
+msgstr ""
 
 msgid "Please add titles to the compilation."
 msgstr "Будь ласка додайте назви до компіляції"
@@ -7186,6 +7549,10 @@ msgid "Please enter name of the new directory"
 msgstr "Будь ласка, введіть ім'я нового каталогу"
 
 #, fuzzy
+msgid "Please enter name of the new symlink"
+msgstr "Будь ласка, введіть ім'я нового каталогу"
+
+#, fuzzy
 msgid "Please enter new description:"
 msgstr "Будь ласка, введіть нове ім'я:"
 
@@ -7198,6 +7565,14 @@ msgstr "Будь ласка, введіть правильний PIN-код"
 #, fuzzy
 msgid "Please enter the new PIN code"
 msgstr "Будь ласка, введіть старий PIN-код"
+
+#, fuzzy
+msgid "Please enter the new directory name"
+msgstr "Будь ласка, введіть ім'я нового каталогу"
+
+#, fuzzy
+msgid "Please enter the new file name"
+msgstr "Будь ласка, введіть нове ім'я файлу"
 
 msgid "Please enter the old PIN code"
 msgstr "Будь ласка, введіть старий PIN-код"
@@ -7315,6 +7690,10 @@ msgstr "Налаштуйте тюнер А"
 #, fuzzy
 msgid "Please set up tuner K"
 msgstr "Налаштуйте тюнер А"
+
+#, fuzzy
+msgid "Please set your time zone"
+msgstr "Настройки вашего позиционера"
 
 msgid "Please setup the following basic configs!"
 msgstr ""
@@ -7803,9 +8182,6 @@ msgstr "RGB"
 msgid "Radio"
 msgstr "Радіо"
 
-msgid "Ram disk"
-msgstr "Ram диск"
-
 msgid "Random"
 msgstr "випадково"
 
@@ -7870,6 +8246,9 @@ msgstr "Оновити фронтпроцессор і перезавантаж�
 msgid "Really upgrade your %s %s and reboot now?"
 msgstr "Оновити ваш ресивер і перезавантажити зараз?"
 
+msgid "Reboot"
+msgstr ""
+
 msgid "Rec"
 msgstr "Запис"
 
@@ -7924,6 +8303,10 @@ msgid "Recordings always have priority"
 msgstr "Записи завжди мають пріоритет"
 
 #, fuzzy
+msgid "Records"
+msgstr "Запис"
+
+#, fuzzy
 msgid "Recover"
 msgstr "Запис"
 
@@ -7954,6 +8337,10 @@ msgstr "Частота оновлення"
 
 msgid "Refresh rate selection."
 msgstr "Вибір частоти оновлення"
+
+#, fuzzy
+msgid "Refresh screen"
+msgstr "Частота оновлення"
 
 #, fuzzy
 msgid "Refusing to move to the same directory"
@@ -8032,6 +8419,9 @@ msgstr "Видалити закладку"
 msgid "Remove completed timers after (days)"
 msgstr "Видалення завершених таймерів через (в днях)"
 
+msgid "Remove current folder from bookmarks"
+msgstr ""
+
 msgid "Remove currently selected title"
 msgstr "Видалити вибраний заголовок"
 
@@ -8040,6 +8430,9 @@ msgstr "Видаляти записи з кошика через (в днях)"
 
 msgid "Remove plugins"
 msgstr "Видалення плагінів"
+
+msgid "Remove selected folder from bookmarks"
+msgstr ""
 
 msgid "Remove texts for the hearing impaired from external subtitles (instrumental music or environmental sounds, e.g., when a doorbell rings or a gun shot is heard)."
 msgstr ""
@@ -8072,8 +8465,8 @@ msgid "Rename"
 msgstr "Перейменувати"
 
 #, fuzzy
-msgid "Rename failed!"
-msgstr "Збій мовлення!"
+msgid "Rename file/directory"
+msgstr "створити каталог"
 
 msgid "Rename name and description for new events"
 msgstr ""
@@ -8218,6 +8611,10 @@ msgstr "Поточна позиція %s"
 msgid "Resuming playback"
 msgstr "Відновлення відтворення"
 
+#, fuzzy
+msgid "Retrieving image slots - Please wait..."
+msgstr "Будь ласка зачекайте..."
+
 msgid "Return to movie list"
 msgstr "Повернутися до списку фільмів"
 
@@ -8230,8 +8627,16 @@ msgstr ""
 msgid "Reverse bouquet buttons"
 msgstr "Поміняти місцями кнопку"
 
+#, fuzzy
+msgid "Reverse left file sorting"
+msgstr "це записано"
+
 msgid "Reverse list"
 msgstr ""
+
+#, fuzzy
+msgid "Reverse right file sorting"
+msgstr "це записано"
 
 msgid "Revision Date"
 msgstr ""
@@ -8277,6 +8682,9 @@ msgstr "Автор: "
 msgid "Round start time on"
 msgstr "Круглий час початку на"
 
+msgid "Run script"
+msgstr ""
+
 #, fuzzy
 msgid "Running"
 msgstr "Працює"
@@ -8311,6 +8719,9 @@ msgstr "Unicable LNB"
 #, fuzzy
 msgid "SDR"
 msgstr "SNR"
+
+msgid "SDcard is not initialised for multiboot - Exit and use MultiBoot Image Manager to initialise"
+msgstr ""
 
 msgid "SINGLE LAYER DVD"
 msgstr "Одношаровий DVD"
@@ -8463,10 +8874,30 @@ msgstr "Почати таймшифт"
 msgid "Save and stop timeshift"
 msgstr "Зупинити timeshift"
 
+#, fuzzy
+msgid "Save left folder on exit"
+msgstr "Створити нову папку"
+
 msgid "Save playlist"
 msgstr "Зберегти плейлист"
 
+#, fuzzy
+msgid "Save right folder on exit"
+msgstr "Створити нову папку"
+
 msgid "Save the EPG data regularly"
+msgstr ""
+
+#, python-format
+msgid ""
+"Save the commands and the output to a file?\n"
+"('%s')"
+msgstr ""
+
+msgid "Save the left folder list location on exit."
+msgstr ""
+
+msgid "Save the right folder list location on exit."
 msgstr ""
 
 #, fuzzy
@@ -8593,6 +9024,10 @@ msgstr "без затримки"
 msgid "Scroll repeats"
 msgstr "DiSEqC повтор"
 
+#, fuzzy
+msgid "Search"
+msgstr "Пошук"
+
 msgid "Search east"
 msgstr "Пошук на сході"
 
@@ -8700,11 +9135,7 @@ msgstr ""
 msgid "Select 'yes' to only send the DiSEqC command when changing from one satellite to another, or select 'no' for the DiSEqC command to be resent on every zap."
 msgstr ""
 
-#, fuzzy, python-format
-msgid "Select Bootoption: %s"
-msgstr "Вибрати розташування бекапа"
-
-msgid "Select Bootoption: not supported - see info"
+msgid "Select (source list) or enter directory (target list)"
 msgstr ""
 
 msgid "Select CAId"
@@ -8719,14 +9150,6 @@ msgstr ""
 
 msgid "Select HDD"
 msgstr "Вибрати HDD"
-
-#, fuzzy, python-format
-msgid "Select Image: %s"
-msgstr "Вибрати скін"
-
-#, fuzzy
-msgid "Select Image: STARTUP_1"
-msgstr "Вибрати скін"
 
 #, fuzzy
 msgid "Select LCD clock:"
@@ -8744,6 +9167,10 @@ msgstr "Вибрати відео"
 
 msgid "Select a network adapter"
 msgstr "Вибір мережевого адаптера"
+
+#, fuzzy
+msgid "Select a path"
+msgstr "Вибрати тюнер"
 
 msgid "Select a skin"
 msgstr "Вибрати скін"
@@ -8883,9 +9310,6 @@ msgstr ""
 msgid "Select the User Band frequency to be assigned to this tuner. This is the frequency the SCR switch or SCR LNB uses to pass the requested transponder to the tuner."
 msgstr ""
 
-msgid "Select the User Band to be assigned to this tuner. This is an index into the table of frequencies the SCR switch or SCR LNB uses to pass the requested transponder to the tuner."
-msgstr ""
-
 msgid "Select the character or action under the virtual keyboard cursor"
 msgstr ""
 
@@ -8970,6 +9394,10 @@ msgstr "Виберіть формат скіну"
 
 msgid "Select your country. If not available select 'all'."
 msgstr ""
+
+#, fuzzy
+msgid "Select your personal settings:"
+msgstr "Вибрати розташування бекапа"
 
 msgid "Select your provider and region. If not present in this list you will need to select one of the other 'service scan types'."
 msgstr ""
@@ -9141,6 +9569,9 @@ msgstr "Встановити час закінчення"
 msgid "Set fixed"
 msgstr "Фіксувати"
 
+msgid "Set for 'stout' and 'sterr' the number of lines in script info or script error messages."
+msgstr ""
+
 msgid "Set fps for external subtitles"
 msgstr "Набір кадрів в секунду для зовнішніх субтитрів"
 
@@ -9209,6 +9640,10 @@ msgstr "Налаштування"
 
 msgid "Settings can be different for each directory separately (for non removeable devices only)."
 msgstr ""
+
+#, fuzzy
+msgid "Settings..."
+msgstr "Налаштування"
 
 msgid "Setup"
 msgstr "Налаштування"
@@ -9298,6 +9733,12 @@ msgstr "Показати EPG..."
 msgid "Show SNR percentage instead of dB value"
 msgstr "Показати відсотки SNR замість значення dB в інфобарі"
 
+msgid "Show Script completed message"
+msgstr ""
+
+msgid "Show Task's completed message"
+msgstr ""
+
 msgid "Show True/False as graphical switch"
 msgstr ""
 
@@ -9346,6 +9787,13 @@ msgstr "Показати поточний режим"
 
 msgid "Show detailed event info"
 msgstr "Показати детально інфо події"
+
+#, fuzzy
+msgid "Show directories first"
+msgstr "перервати редагування фаворитів"
+
+msgid "Show directories on first or last in list.(must restart File Commander)"
+msgstr ""
 
 #, fuzzy
 msgid "Show disclaimer"
@@ -9415,6 +9863,12 @@ msgstr "Номер набору"
 #, fuzzy
 msgid "Show menu paths"
 msgstr "Показати меню тегів"
+
+msgid "Show message if File Commander is not running and all Task's are completed."
+msgstr ""
+
+msgid "Show message if a background script ends successefully. Has 'stout', then this is displayed as additional info."
+msgstr ""
 
 msgid "Show message when recording starts"
 msgstr "Показати повідомлення при початку запису"
@@ -9525,12 +9979,23 @@ msgid "Show symbols on display"
 msgstr "Показати Пікони в списку сервісів"
 
 #, fuzzy
+msgid "Show task list"
+msgstr "Відкрити список сервісів"
+
+#, fuzzy
 msgid "Show the media player..."
 msgstr "Перейти на радіо плеєр..."
 
 #, fuzzy
 msgid "Show the plugin browser.."
 msgstr "Браузер плагінів"
+
+#, fuzzy
+msgid "Show unknown extension as text"
+msgstr "Показати плагіни в меню доповнень"
+
+msgid "Show unknown file extensions with 'Addon File-Viewer'."
+msgstr ""
 
 #, fuzzy
 msgid "Show vertical timelines"
@@ -9642,6 +10107,17 @@ msgstr "Широта по сайту"
 msgid "Site longitude"
 msgstr "Довгота по сайту"
 
+msgid "Size"
+msgstr ""
+
+#, fuzzy
+msgid "Size reverse"
+msgstr "Референс"
+
+#, fuzzy
+msgid "Size:"
+msgstr "Підкачка:"
+
 msgid "Skin"
 msgstr "Вибір графічної оболочки"
 
@@ -9661,6 +10137,10 @@ msgstr "Пропускати порожні сервіси"
 
 msgid "Skip internet connection check (disables automatic package installation)"
 msgstr "Пропустити перевірку інтернет з'єднання (відключає автоматичну установку пакетів)"
+
+#, fuzzy
+msgid "Skip selection"
+msgstr "Вибір EPG"
 
 #, fuzzy
 msgid "Sleep/wakeup timer"
@@ -9730,6 +10210,9 @@ msgstr ""
 
 msgid "Social/Political/Economics"
 msgstr "Соціальне/Політика/Економіка"
+
+msgid "SocketMMI"
+msgstr ""
 
 #, fuzzy
 msgid "Softcam startup"
@@ -9845,6 +10328,12 @@ msgstr ""
 #. TRANSLATORS: This must fit into the header button in the EPG-List
 msgid "Sort time"
 msgstr "За часом"
+
+msgid "Sorting left files by name, date or size"
+msgstr ""
+
+msgid "Sorting right files by name, date or size"
+msgstr ""
 
 msgid "Sound"
 msgstr "Звук"
@@ -10096,6 +10585,10 @@ msgid "Stopped"
 msgstr "Зупинено"
 
 #, fuzzy
+msgid "Storage devices"
+msgstr "Список пристроїв зберігання"
+
+#, fuzzy
 msgid "Storage media"
 msgstr "нові media"
 
@@ -10225,6 +10718,9 @@ msgstr "Підкачка:"
 msgid "Swap Size:"
 msgstr "Підкачка:"
 
+msgid "Swap buttons right/left with channel plus/minus or the channel button changed always the side."
+msgstr ""
+
 msgid "Swap services"
 msgstr "Поміняти місцями сервіси"
 
@@ -10312,6 +10808,9 @@ msgstr "Швидкість потоку"
 msgid "Symbol rate:"
 msgstr ""
 
+msgid "Symlink to "
+msgstr ""
+
 msgid "Sync NTP every (minutes)"
 msgstr ""
 
@@ -10333,6 +10832,16 @@ msgstr "Система"
 #, fuzzy
 msgid "System & Modulation"
 msgstr "Модуляція"
+
+#, fuzzy
+msgid "T2MI PID"
+msgstr "РМТ PID"
+
+msgid "T2MI PLP"
+msgstr ""
+
+msgid "T2MI PLP ID"
+msgstr ""
 
 msgid "T2MI RAW Mode"
 msgstr ""
@@ -10376,6 +10885,10 @@ msgstr "Пакістан"
 
 msgid "Tanzania, United Republic of"
 msgstr ""
+
+#, fuzzy
+msgid "Task list"
+msgstr "чорний список"
 
 msgid "Teletext subtitle color"
 msgstr "Колір телетексту субтитрів"
@@ -10942,8 +11455,19 @@ msgstr "Четвер"
 msgid "Time"
 msgstr "Час"
 
+msgid "Time between slides in image viewer slideshow."
+msgstr ""
+
+#, fuzzy
+msgid "Time for Slideshow"
+msgstr "Огляд таймерів"
+
 msgid "Time scale"
 msgstr "Тимчасовий масштаб сітки"
+
+#, fuzzy
+msgid "Time zone settings"
+msgstr "Перегляд установок"
 
 msgid "Timer"
 msgstr "Таймер"
@@ -11241,6 +11765,10 @@ msgstr "Тип сканування"
 msgid "Type of scan"
 msgstr "Тип сканування"
 
+#, fuzzy
+msgid "Type:"
+msgstr "Тип"
+
 msgid "UNKNOWN"
 msgstr ""
 
@@ -11276,9 +11804,6 @@ msgstr ""
 msgid "USB Stick"
 msgstr "USB флеш"
 
-msgid "USB stick"
-msgstr "USB флеш"
-
 msgid "Uganda"
 msgstr ""
 
@@ -11287,9 +11812,6 @@ msgstr "Україна"
 
 msgid "Ukrainian"
 msgstr "Українська"
-
-msgid "Unable to read image number"
-msgstr ""
 
 #, fuzzy, python-format
 msgid ""
@@ -11512,6 +12034,9 @@ msgstr "Використовувати початкове положення т�
 msgid "Use power measurement"
 msgstr "Використовувати вимірювання потужності"
 
+msgid "Use the cursor keys to select an installed image and then Reboot button."
+msgstr ""
+
 msgid "Use the network wizard to configure selected network adapter"
 msgstr "Використовувати майстер для налаштування мережі"
 
@@ -11733,6 +12258,9 @@ msgstr "Перегляньте список доступних програмн�
 msgid "View list of available system extensions"
 msgstr "Перегляньте список доступних системних доповнень"
 
+msgid "View or edit file (if size < 1MB)"
+msgstr ""
+
 msgid "View photos..."
 msgstr "Перегляд фотографій..."
 
@@ -11877,9 +12405,6 @@ msgid ""
 "Please send the logfile %senigma2_crash_xxxxxx.log to www.teamblue.tech.\n"
 "Your receiver restarts in 10 seconds!\n"
 "Component: enigma2"
-msgstr ""
-
-msgid "Weather ID"
 msgstr ""
 
 msgid "Web Browser"
@@ -12236,19 +12761,12 @@ msgstr ""
 msgid "Write error while recording. Disk full?\n"
 msgstr "Помилка під час запису. Диск переповнений?\n"
 
-#, fuzzy
-msgid "Write error!"
-msgstr "с %d помилкою"
-
 msgid "Write failed!"
 msgstr "Запис невдалий!"
 
 #, fuzzy
 msgid "Write to /tmp/positionersetup.log"
 msgstr "Не вдалося записати /tmp/positionersetup.log: "
-
-msgid "Wrong Bootsettings detected!"
-msgstr ""
 
 msgid "YCbCr420"
 msgstr ""
@@ -12496,15 +13014,6 @@ msgstr ""
 
 msgid "Your backup succeeded. We will now continue to explain the further upgrade process."
 msgstr "Резервна копія створена. Тепер ми продовжимо процес оновлення. "
-
-#, python-format
-msgid ""
-"Your box needs Bootloaderversion(s)\n"
-"\n"
-"%s\n"
-"\n"
-"to make compatible with Bootoptions!"
-msgstr ""
 
 msgid "Your collection exceeds the size of a single layer medium, you will need a blank dual layer DVD!"
 msgstr "Ваша колекція перевищує розмір одношарового диска. Вам потрібен чистий двошаровий DVD!"
@@ -12972,11 +13481,21 @@ msgstr "Канал"
 msgid "cooking"
 msgstr "риготування"
 
+#, fuzzy
+msgid "copy file"
+msgstr "%d файл"
+
+msgid "copy folder"
+msgstr ""
+
 msgid "copy to bouquets"
 msgstr "копіювати в пакет"
 
 msgid "create directory"
 msgstr "створити каталог"
+
+msgid "create symlink ..."
+msgstr ""
 
 msgid "daily"
 msgstr "щодня"
@@ -13202,6 +13721,9 @@ msgstr "вільно"
 msgid "from"
 msgstr ""
 
+msgid "from dir"
+msgstr ""
+
 msgid "further education"
 msgstr "дальнейшее образование"
 
@@ -13231,6 +13753,9 @@ msgstr "висота"
 
 msgid "help..."
 msgstr "допомога..."
+
+msgid "hide"
+msgstr ""
 
 msgid "horizontal"
 msgstr "горизонтальна"
@@ -13307,6 +13832,10 @@ msgstr "список за замовчуванням"
 msgid "list style single line"
 msgstr "список в один рядок"
 
+#, fuzzy
+msgid "listens to hotplug events"
+msgstr "Вирівнювання подій"
+
 msgid "literature"
 msgstr "література"
 
@@ -13321,6 +13850,9 @@ msgstr ""
 
 msgid "magazines/reports/documentary"
 msgstr "журнали/репортажі/документальний"
+
+msgid "manage local Files"
+msgstr ""
 
 msgid "manual"
 msgstr "ручний"
@@ -13354,6 +13886,14 @@ msgstr "перемістити вниз до останнього запису"
 
 msgid "move down to next entry"
 msgstr "перемістити вниз до наступного запису"
+
+#, fuzzy
+msgid "move file"
+msgstr "Видалити опис"
+
+#, fuzzy
+msgid "move folder"
+msgstr "[режим переміщення]"
 
 msgid "move up to first entry"
 msgstr "перемістити вгору до першого запису"
@@ -13414,10 +13954,6 @@ msgstr "не знайдено модуль"
 
 #, fuzzy
 msgid "no gateway found"
-msgstr "не знайдено модуль"
-
-#, fuzzy
-msgid "no image found"
 msgstr "не знайдено модуль"
 
 #, fuzzy
@@ -13544,9 +14080,6 @@ msgstr "виконавські види мистецтва"
 #, fuzzy
 msgid "picons"
 msgstr "Іконка"
-
-msgid "placeholder message 2"
-msgstr ""
 
 msgid "play as picture in picture"
 msgstr "увімкнути як картинку в картинці"
@@ -13796,6 +14329,30 @@ msgstr "Перемотка назад"
 msgid "skip forward"
 msgstr "Перемотка вперед"
 
+#, python-format
+msgid "slot%s - %s mode 1"
+msgstr ""
+
+#, python-format
+msgid "slot%s - %s mode 1 (current image)"
+msgstr ""
+
+#, python-format
+msgid "slot%s - %s mode 12"
+msgstr ""
+
+#, python-format
+msgid "slot%s - %s mode 12 (current image)"
+msgstr ""
+
+#, python-format
+msgid "slot%s -%s - %s (current image)"
+msgstr ""
+
+#, python-format
+msgid "slot%s -%s- %s "
+msgstr ""
+
 msgid "soap/melodram/folkloric"
 msgstr "мильна опера/мелодрама/фольклор"
 
@@ -13891,6 +14448,9 @@ msgstr "це записано"
 msgid "this service is protected by a parental control pin"
 msgstr "цей сервіс захищений PIN-кодом батьківського контролю"
 
+msgid "to dir"
+msgstr ""
+
 #, fuzzy
 msgid "toggels between tv and radio..."
 msgstr "Слухати радіо..."
@@ -13919,6 +14479,10 @@ msgstr "не присвоєно"
 
 msgid "undefined"
 msgstr "визначений користувачем"
+
+#, fuzzy
+msgid "unknow"
+msgstr "<невідомий>"
 
 msgid "unknown"
 msgstr "<невідомий>"
@@ -14022,6 +14586,10 @@ msgstr "Перемикані типи тюнерів:"
 #, fuzzy
 msgid "with_errors"
 msgstr "с %d помилкою"
+
+#, fuzzy
+msgid "without"
+msgstr "Без повідомлення"
 
 msgid "working"
 msgstr "працюючий"
