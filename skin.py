@@ -13,7 +13,7 @@ from Tools.Import import my_import
 from Tools.LoadPixmap import LoadPixmap
 from Components.RcModel import rc_model
 from boxbranding import getBoxType
-# from Components.SystemInfo import SystemInfo
+from Components.SystemInfo import SystemInfo
 
 colorNames = {}
 switchPixmap = {}
