@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-02 14:36+0200\n"
+"POT-Creation-Date: 2019-06-08 15:13+0200\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -1996,9 +1996,6 @@ msgstr ""
 msgid "CI (Common Interface) Setup"
 msgstr "CI (Common Interface)"
 
-msgid "CI Helper"
-msgstr ""
-
 #
 msgid "CI assignment"
 msgstr "CI přiřazení"
@@ -2007,16 +2004,6 @@ msgstr "CI přiřazení"
 #, fuzzy
 msgid "CI slot: "
 msgstr "žádný CI slot nenalezen"
-
-#, fuzzy
-msgid "CIHelper Setup"
-msgstr "Nastavení Hotkey"
-
-msgid "CIHelper for SLOT CI0"
-msgstr ""
-
-msgid "CIHelper for SLOT CI1"
-msgstr ""
 
 msgid "CPU priority for script execution"
 msgstr ""
@@ -4319,12 +4306,6 @@ msgstr "Povolit 'neutrino' styl přepínání"
 #
 msgid "Enable 5V for active antenna"
 msgstr "Povolit 5V pro aktivní anténu"
-
-msgid "Enable CIHelper for SLOT CI0"
-msgstr ""
-
-msgid "Enable CIHelper for SLOT CI1"
-msgstr ""
 
 #
 msgid "Enable EIT EPG"
@@ -7856,6 +7837,15 @@ msgstr "Norsky"
 msgid "Not Defined"
 msgstr "Nedefinován"
 
+#
+#, fuzzy
+msgid "Not Installed"
+msgstr "Instalovat"
+
+#, fuzzy
+msgid "Not Required"
+msgstr "Nedefinován"
+
 msgid "Not associated"
 msgstr "Neasociováno"
 
@@ -10540,11 +10530,6 @@ msgstr "Vyberte interface"
 
 #
 #, fuzzy
-msgid "Select locale"
-msgstr "Zvolte akci"
-
-#
-#, fuzzy
 msgid "Select location"
 msgstr "Zvolte akci"
 
@@ -10661,6 +10646,9 @@ msgid "Select the virtual keyboard locale from a menu"
 msgstr ""
 
 msgid "Select the virtual keyboard shifted character set"
+msgstr ""
+
+msgid "Select the virtual keyboard shifted character set for the next character only"
 msgstr ""
 
 #
@@ -11033,6 +11021,9 @@ msgstr "Ostrost"
 
 msgid "Shellscript"
 msgstr "Skript"
+
+msgid "Shift"
+msgstr ""
 
 msgid "Short filenames"
 msgstr "krátké názvy souborů"
@@ -11661,9 +11652,6 @@ msgstr ""
 #
 msgid "Some plugins are not available:\n"
 msgstr "Některé pluginy nejsou dostupné:\n"
-
-msgid "Sorry CIHelper Config is Missing"
-msgstr ""
 
 msgid "Sorry feeds are down for maintenance"
 msgstr ""

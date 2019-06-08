@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-02 14:36+0200\n"
+"POT-Creation-Date: 2019-06-08 15:13+0200\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -1757,25 +1757,12 @@ msgstr "C"
 msgid "CI (Common Interface) Setup"
 msgstr "CI modulfogadó"
 
-msgid "CI Helper"
-msgstr ""
-
 msgid "CI assignment"
 msgstr "CI hozzárendelés"
 
 #, fuzzy
 msgid "CI slot: "
 msgstr "nincs található CI foglalat"
-
-#, fuzzy
-msgid "CIHelper Setup"
-msgstr "Forgatómotor Beálltások"
-
-msgid "CIHelper for SLOT CI0"
-msgstr ""
-
-msgid "CIHelper for SLOT CI1"
-msgstr ""
 
 msgid "CPU priority for script execution"
 msgstr ""
@@ -3801,12 +3788,6 @@ msgstr ""
 
 msgid "Enable 5V for active antenna"
 msgstr "5V kimenet az akítv antennához engedélyezve"
-
-msgid "Enable CIHelper for SLOT CI0"
-msgstr ""
-
-msgid "Enable CIHelper for SLOT CI1"
-msgstr ""
 
 msgid "Enable EIT EPG"
 msgstr "EIT EPG engedélyezése"
@@ -6897,6 +6878,14 @@ msgstr "Norvég"
 msgid "Not Defined"
 msgstr "Felh. által megadva"
 
+#, fuzzy
+msgid "Not Installed"
+msgstr "Telepítés"
+
+#, fuzzy
+msgid "Not Required"
+msgstr "Felh. által megadva"
+
 msgid "Not associated"
 msgstr "Nem-csatlakozott"
 
@@ -9201,10 +9190,6 @@ msgid "Select interface"
 msgstr "Interfész kiválasztása"
 
 #, fuzzy
-msgid "Select locale"
-msgstr "Válasszon mentés-helyet"
-
-#, fuzzy
 msgid "Select location"
 msgstr "Válasszon mentés-helyet"
 
@@ -9309,6 +9294,9 @@ msgid "Select the virtual keyboard locale from a menu"
 msgstr ""
 
 msgid "Select the virtual keyboard shifted character set"
+msgstr ""
+
+msgid "Select the virtual keyboard shifted character set for the next character only"
 msgstr ""
 
 msgid "Select upgrade source"
@@ -9633,6 +9621,9 @@ msgstr "Élesség"
 #, fuzzy
 msgid "Shellscript"
 msgstr "Leírás"
+
+msgid "Shift"
+msgstr ""
 
 msgid "Short filenames"
 msgstr "Rövid fájlnevek"
@@ -10200,9 +10191,6 @@ msgstr ""
 
 msgid "Some plugins are not available:\n"
 msgstr "Egyes pluginek nem elérhetőek:\n"
-
-msgid "Sorry CIHelper Config is Missing"
-msgstr ""
 
 msgid "Sorry feeds are down for maintenance"
 msgstr ""

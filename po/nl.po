@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-02 14:36+0200\n"
+"POT-Creation-Date: 2019-06-08 15:13+0200\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -1757,25 +1757,12 @@ msgstr "C"
 msgid "CI (Common Interface) Setup"
 msgstr "Common Interface"
 
-msgid "CI Helper"
-msgstr ""
-
 msgid "CI assignment"
 msgstr "CI toewijzing"
 
 #, fuzzy
 msgid "CI slot: "
 msgstr "Geen CI slots gevonden"
-
-#, fuzzy
-msgid "CIHelper Setup"
-msgstr "Instellen DiSEqC-motor"
-
-msgid "CIHelper for SLOT CI0"
-msgstr ""
-
-msgid "CIHelper for SLOT CI1"
-msgstr ""
 
 msgid "CPU priority for script execution"
 msgstr ""
@@ -3975,12 +3962,6 @@ msgstr "Gebruik de 'neutrino' manier om te zappen"
 
 msgid "Enable 5V for active antenna"
 msgstr "5V voor actieve antenne inschakelen"
-
-msgid "Enable CIHelper for SLOT CI0"
-msgstr ""
-
-msgid "Enable CIHelper for SLOT CI1"
-msgstr ""
 
 msgid "Enable EIT EPG"
 msgstr "EIT EPG inschakelen"
@@ -7087,6 +7068,14 @@ msgstr "Noors"
 msgid "Not Defined"
 msgstr "niet ingesteld"
 
+#, fuzzy
+msgid "Not Installed"
+msgstr "Installeer"
+
+#, fuzzy
+msgid "Not Required"
+msgstr "niet ingesteld"
+
 msgid "Not associated"
 msgstr "Geen verband"
 
@@ -9400,10 +9389,6 @@ msgid "Select interface"
 msgstr "Selecteer interface"
 
 #, fuzzy
-msgid "Select locale"
-msgstr "Maak uw keuze"
-
-#, fuzzy
 msgid "Select location"
 msgstr "Maak uw keuze"
 
@@ -9508,6 +9493,9 @@ msgid "Select the virtual keyboard locale from a menu"
 msgstr ""
 
 msgid "Select the virtual keyboard shifted character set"
+msgstr ""
+
+msgid "Select the virtual keyboard shifted character set for the next character only"
 msgstr ""
 
 msgid "Select upgrade source"
@@ -9840,6 +9828,9 @@ msgstr "Scherpte"
 #, fuzzy
 msgid "Shellscript"
 msgstr "Beschrijving"
+
+msgid "Shift"
+msgstr ""
 
 msgid "Short filenames"
 msgstr "Korte bestandsnamen"
@@ -10406,9 +10397,6 @@ msgstr ""
 
 msgid "Some plugins are not available:\n"
 msgstr "Enkele plugins zijn niet beschikbaar:\n"
-
-msgid "Sorry CIHelper Config is Missing"
-msgstr ""
 
 msgid "Sorry feeds are down for maintenance"
 msgstr ""

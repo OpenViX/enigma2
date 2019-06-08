@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-02 14:36+0200\n"
+"POT-Creation-Date: 2019-06-08 15:13+0200\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -1761,24 +1761,11 @@ msgstr "C"
 msgid "CI (Common Interface) Setup"
 msgstr "رابط مشترک"
 
-msgid "CI Helper"
-msgstr ""
-
 #
 msgid "CI assignment"
 msgstr "CI وظیفه"
 
 msgid "CI slot: "
-msgstr ""
-
-#, fuzzy
-msgid "CIHelper Setup"
-msgstr "محافظت از تنظیمات"
-
-msgid "CIHelper for SLOT CI0"
-msgstr ""
-
-msgid "CIHelper for SLOT CI1"
 msgstr ""
 
 msgid "CPU priority for script execution"
@@ -3843,12 +3830,6 @@ msgstr ""
 
 msgid "Enable 5V for active antenna"
 msgstr "فعال کردن 5 ولت برای آنتن فعال"
-
-msgid "Enable CIHelper for SLOT CI0"
-msgstr ""
-
-msgid "Enable CIHelper for SLOT CI1"
-msgstr ""
 
 msgid "Enable EIT EPG"
 msgstr "فعال کردن EIT EPG"
@@ -7021,6 +7002,14 @@ msgstr "نروژی"
 msgid "Not Defined"
 msgstr ""
 
+#, fuzzy
+msgid "Not Installed"
+msgstr "نصب"
+
+#, fuzzy
+msgid "Not Required"
+msgstr "تست شبکه:"
+
 msgid "Not associated"
 msgstr ""
 
@@ -9366,10 +9355,6 @@ msgid "Select interface"
 msgstr "انتخاب رابط"
 
 #, fuzzy
-msgid "Select locale"
-msgstr "انتخاب محل نسخه پشتیبان"
-
-#, fuzzy
 msgid "Select location"
 msgstr "انتخاب محل نسخه پشتیبان"
 
@@ -9477,6 +9462,9 @@ msgid "Select the virtual keyboard locale from a menu"
 msgstr ""
 
 msgid "Select the virtual keyboard shifted character set"
+msgstr ""
+
+msgid "Select the virtual keyboard shifted character set for the next character only"
 msgstr ""
 
 #, fuzzy
@@ -9815,6 +9803,9 @@ msgstr "Sharpness"
 #, fuzzy
 msgid "Shellscript"
 msgstr "توضیحات"
+
+msgid "Shift"
+msgstr ""
 
 msgid "Short filenames"
 msgstr "نام های کوتاه فایل"
@@ -10408,9 +10399,6 @@ msgstr ""
 
 msgid "Some plugins are not available:\n"
 msgstr "بعضی از پلاگین ها در دسترس نیستند:\n"
-
-msgid "Sorry CIHelper Config is Missing"
-msgstr ""
 
 msgid "Sorry feeds are down for maintenance"
 msgstr ""

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-02 14:36+0200\n"
+"POT-Creation-Date: 2019-06-08 15:13+0200\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -1771,25 +1771,12 @@ msgstr "C"
 msgid "CI (Common Interface) Setup"
 msgstr "Common interfeiss"
 
-msgid "CI Helper"
-msgstr ""
-
 msgid "CI assignment"
 msgstr "CI piešķiršana"
 
 #, fuzzy
 msgid "CI slot: "
 msgstr "nav atrasti CI sloti"
-
-#, fuzzy
-msgid "CIHelper Setup"
-msgstr "Pozicioniera iestatījumi"
-
-msgid "CIHelper for SLOT CI0"
-msgstr ""
-
-msgid "CIHelper for SLOT CI1"
-msgstr ""
 
 msgid "CPU priority for script execution"
 msgstr ""
@@ -3817,12 +3804,6 @@ msgstr ""
 
 msgid "Enable 5V for active antenna"
 msgstr "Aktivizēt 5V aktīvai antenai"
-
-msgid "Enable CIHelper for SLOT CI0"
-msgstr ""
-
-msgid "Enable CIHelper for SLOT CI1"
-msgstr ""
 
 msgid "Enable EIT EPG"
 msgstr "Aktivizēt EIT EPG"
@@ -6916,6 +6897,14 @@ msgstr "Norvēģu"
 msgid "Not Defined"
 msgstr "Lietotāja definēts"
 
+#, fuzzy
+msgid "Not Installed"
+msgstr "Uzstādīt"
+
+#, fuzzy
+msgid "Not Required"
+msgstr "Lietotāja definēts"
+
 msgid "Not associated"
 msgstr "Nav piešķirts"
 
@@ -9222,10 +9211,6 @@ msgid "Select interface"
 msgstr "Izvēlieties interfeisu"
 
 #, fuzzy
-msgid "Select locale"
-msgstr "Izvēlieties dublējumkopijas atrašanās vietu"
-
-#, fuzzy
 msgid "Select location"
 msgstr "Izvēlieties dublējumkopijas atrašanās vietu"
 
@@ -9330,6 +9315,9 @@ msgid "Select the virtual keyboard locale from a menu"
 msgstr ""
 
 msgid "Select the virtual keyboard shifted character set"
+msgstr ""
+
+msgid "Select the virtual keyboard shifted character set for the next character only"
 msgstr ""
 
 msgid "Select upgrade source"
@@ -9654,6 +9642,9 @@ msgstr "Asums"
 #, fuzzy
 msgid "Shellscript"
 msgstr "Apraksts"
+
+msgid "Shift"
+msgstr ""
 
 msgid "Short filenames"
 msgstr "Īsie failu nosaukumi"
@@ -10221,9 +10212,6 @@ msgstr ""
 
 msgid "Some plugins are not available:\n"
 msgstr "Daži spraudņi nav pieejami:\n"
-
-msgid "Sorry CIHelper Config is Missing"
-msgstr ""
 
 msgid "Sorry feeds are down for maintenance"
 msgstr ""

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-02 14:36+0200\n"
+"POT-Creation-Date: 2019-06-08 15:13+0200\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -1724,25 +1724,12 @@ msgstr ""
 msgid "CI (Common Interface) Setup"
 msgstr ""
 
-msgid "CI Helper"
-msgstr ""
-
 msgid "CI assignment"
 msgstr ""
 
 #, fuzzy
 msgid "CI slot: "
 msgstr "няма открити CI слотве"
-
-#, fuzzy
-msgid "CIHelper Setup"
-msgstr "Защита настройки"
-
-msgid "CIHelper for SLOT CI0"
-msgstr ""
-
-msgid "CIHelper for SLOT CI1"
-msgstr ""
 
 msgid "CPU priority for script execution"
 msgstr ""
@@ -3718,12 +3705,6 @@ msgstr ""
 
 msgid "Enable 5V for active antenna"
 msgstr "Включи 5V за активната антена"
-
-msgid "Enable CIHelper for SLOT CI0"
-msgstr ""
-
-msgid "Enable CIHelper for SLOT CI1"
-msgstr ""
 
 msgid "Enable EIT EPG"
 msgstr ""
@@ -6758,6 +6739,14 @@ msgstr "Норвежки"
 msgid "Not Defined"
 msgstr "Потребителска"
 
+#, fuzzy
+msgid "Not Installed"
+msgstr "Инсталирай"
+
+#, fuzzy
+msgid "Not Required"
+msgstr "Потребителска"
+
 msgid "Not associated"
 msgstr ""
 
@@ -9000,10 +8989,6 @@ msgid "Select interface"
 msgstr ""
 
 #, fuzzy
-msgid "Select locale"
-msgstr "Избор на таймер"
-
-#, fuzzy
 msgid "Select location"
 msgstr "Избор на таймер"
 
@@ -9108,6 +9093,9 @@ msgid "Select the virtual keyboard locale from a menu"
 msgstr ""
 
 msgid "Select the virtual keyboard shifted character set"
+msgstr ""
+
+msgid "Select the virtual keyboard shifted character set for the next character only"
 msgstr ""
 
 msgid "Select upgrade source"
@@ -9426,6 +9414,9 @@ msgstr ""
 #, fuzzy
 msgid "Shellscript"
 msgstr "Описание"
+
+msgid "Shift"
+msgstr ""
 
 msgid "Short filenames"
 msgstr ""
@@ -9982,9 +9973,6 @@ msgstr ""
 
 msgid "Some plugins are not available:\n"
 msgstr "Някои плъгини не са налични:\n"
-
-msgid "Sorry CIHelper Config is Missing"
-msgstr ""
 
 msgid "Sorry feeds are down for maintenance"
 msgstr ""

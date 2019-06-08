@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-02 14:36+0200\n"
+"POT-Creation-Date: 2019-06-08 15:13+0200\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -1888,9 +1888,6 @@ msgstr "C"
 msgid "CI (Common Interface) Setup"
 msgstr "Afruglara tengi"
 
-msgid "CI Helper"
-msgstr ""
-
 msgid "CI assignment"
 msgstr "CI stillingar"
 
@@ -1898,17 +1895,6 @@ msgstr "CI stillingar"
 #, fuzzy
 msgid "CI slot: "
 msgstr "fann engin CI tengi"
-
-#
-#, fuzzy
-msgid "CIHelper Setup"
-msgstr "Læsa valmynd"
-
-msgid "CIHelper for SLOT CI0"
-msgstr ""
-
-msgid "CIHelper for SLOT CI1"
-msgstr ""
 
 msgid "CPU priority for script execution"
 msgstr ""
@@ -4086,12 +4072,6 @@ msgstr ""
 #
 msgid "Enable 5V for active antenna"
 msgstr "Kveikja á 5V fyrir loftnet með magnara"
-
-msgid "Enable CIHelper for SLOT CI0"
-msgstr ""
-
-msgid "Enable CIHelper for SLOT CI1"
-msgstr ""
 
 msgid "Enable EIT EPG"
 msgstr ""
@@ -7592,6 +7572,16 @@ msgstr "Norska"
 msgid "Not Defined"
 msgstr "Stillt af notanda"
 
+#
+#, fuzzy
+msgid "Not Installed"
+msgstr "Setja inn"
+
+#
+#, fuzzy
+msgid "Not Required"
+msgstr "Stillt af notanda"
+
 #, fuzzy
 msgid "Not associated"
 msgstr "Ekki tengt"
@@ -10246,10 +10236,6 @@ msgid "Select interface"
 msgstr "Veldu netkort"
 
 #, fuzzy
-msgid "Select locale"
-msgstr "Veldu stað fyrir afrit"
-
-#, fuzzy
 msgid "Select location"
 msgstr "Veldu stað fyrir afrit"
 
@@ -10364,6 +10350,9 @@ msgid "Select the virtual keyboard locale from a menu"
 msgstr ""
 
 msgid "Select the virtual keyboard shifted character set"
+msgstr ""
+
+msgid "Select the virtual keyboard shifted character set for the next character only"
 msgstr ""
 
 #
@@ -10744,6 +10733,9 @@ msgstr "Skerpa"
 #, fuzzy
 msgid "Shellscript"
 msgstr "Lýsing"
+
+msgid "Shift"
+msgstr ""
 
 msgid "Short filenames"
 msgstr "Stutt skráarnöfn"
@@ -11403,9 +11395,6 @@ msgstr ""
 
 msgid "Some plugins are not available:\n"
 msgstr "Sum íforrit eru ekki til:\n"
-
-msgid "Sorry CIHelper Config is Missing"
-msgstr ""
 
 msgid "Sorry feeds are down for maintenance"
 msgstr ""

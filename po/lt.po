@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-02 14:36+0200\n"
+"POT-Creation-Date: 2019-06-08 15:13+0200\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -1754,25 +1754,12 @@ msgstr "C"
 msgid "CI (Common Interface) Setup"
 msgstr "Įstatomi moduliai"
 
-msgid "CI Helper"
-msgstr ""
-
 msgid "CI assignment"
 msgstr "CI nustatymas"
 
 #, fuzzy
 msgid "CI slot: "
 msgstr "jokie CI skaitytuvai nesurasti"
-
-#, fuzzy
-msgid "CIHelper Setup"
-msgstr "Apsaugoti nustatymus"
-
-msgid "CIHelper for SLOT CI0"
-msgstr ""
-
-msgid "CIHelper for SLOT CI1"
-msgstr ""
 
 msgid "CPU priority for script execution"
 msgstr ""
@@ -3821,12 +3808,6 @@ msgstr ""
 
 msgid "Enable 5V for active antenna"
 msgstr "Įjungti 5V aktyviai antenai"
-
-msgid "Enable CIHelper for SLOT CI0"
-msgstr ""
-
-msgid "Enable CIHelper for SLOT CI1"
-msgstr ""
 
 msgid "Enable EIT EPG"
 msgstr "Įjungti EIT EPG"
@@ -6976,6 +6957,14 @@ msgid "Not Defined"
 msgstr "Vartotojo pasirinktas"
 
 #, fuzzy
+msgid "Not Installed"
+msgstr "Įdiegti"
+
+#, fuzzy
+msgid "Not Required"
+msgstr "Vartotojo pasirinktas"
+
+#, fuzzy
 msgid "Not associated"
 msgstr "Ne-Asocijuotas"
 
@@ -9312,10 +9301,6 @@ msgid "Select interface"
 msgstr "Išsrinkite sąsają"
 
 #, fuzzy
-msgid "Select locale"
-msgstr "Išsirinkite atsarginės kopijos vietą"
-
-#, fuzzy
 msgid "Select location"
 msgstr "Išsirinkite atsarginės kopijos vietą"
 
@@ -9423,6 +9408,9 @@ msgid "Select the virtual keyboard locale from a menu"
 msgstr ""
 
 msgid "Select the virtual keyboard shifted character set"
+msgstr ""
+
+msgid "Select the virtual keyboard shifted character set for the next character only"
 msgstr ""
 
 #, fuzzy
@@ -9756,6 +9744,9 @@ msgstr "Aštrumas"
 #, fuzzy
 msgid "Shellscript"
 msgstr "Aprašymas"
+
+msgid "Shift"
+msgstr ""
 
 msgid "Short filenames"
 msgstr "Trumpi failų pavadinimai"
@@ -10342,9 +10333,6 @@ msgstr ""
 
 msgid "Some plugins are not available:\n"
 msgstr "Kai kurių papildomų programų nėra:\n"
-
-msgid "Sorry CIHelper Config is Missing"
-msgstr ""
 
 msgid "Sorry feeds are down for maintenance"
 msgstr ""

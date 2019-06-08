@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-02 14:36+0200\n"
+"POT-Creation-Date: 2019-06-08 15:13+0200\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -1740,25 +1740,12 @@ msgstr "C"
 msgid "CI (Common Interface) Setup"
 msgstr "Κοινή Διεπαφή"
 
-msgid "CI Helper"
-msgstr ""
-
 msgid "CI assignment"
 msgstr "Ορισμός CI"
 
 #, fuzzy
 msgid "CI slot: "
 msgstr "δεν βρέθηκαν κοινές διεπαφές (CI)"
-
-#, fuzzy
-msgid "CIHelper Setup"
-msgstr "Ρύθμιση Μοτέρ"
-
-msgid "CIHelper for SLOT CI0"
-msgstr ""
-
-msgid "CIHelper for SLOT CI1"
-msgstr ""
 
 msgid "CPU priority for script execution"
 msgstr ""
@@ -3787,12 +3774,6 @@ msgstr ""
 
 msgid "Enable 5V for active antenna"
 msgstr "Ενεργοποίηση των 5 V για την ενεργή κεραία"
-
-msgid "Enable CIHelper for SLOT CI0"
-msgstr ""
-
-msgid "Enable CIHelper for SLOT CI1"
-msgstr ""
 
 msgid "Enable EIT EPG"
 msgstr "Ενεργοποίηση EIT EPG"
@@ -6888,6 +6869,14 @@ msgstr "Νορβηγικά"
 msgid "Not Defined"
 msgstr "Μη ρυθμισμένο"
 
+#, fuzzy
+msgid "Not Installed"
+msgstr "Εγκατάσταση"
+
+#, fuzzy
+msgid "Not Required"
+msgstr "Μη ρυθμισμένο"
+
 msgid "Not associated"
 msgstr "Χωρίς συσχέτιση"
 
@@ -9197,10 +9186,6 @@ msgid "Select interface"
 msgstr "Επιλογή διεπαφής"
 
 #, fuzzy
-msgid "Select locale"
-msgstr "Επιλογή ενέργειας"
-
-#, fuzzy
 msgid "Select location"
 msgstr "Επιλογή ενέργειας"
 
@@ -9305,6 +9290,9 @@ msgid "Select the virtual keyboard locale from a menu"
 msgstr ""
 
 msgid "Select the virtual keyboard shifted character set"
+msgstr ""
+
+msgid "Select the virtual keyboard shifted character set for the next character only"
 msgstr ""
 
 msgid "Select upgrade source"
@@ -9629,6 +9617,9 @@ msgstr "Οξύτητα"
 #, fuzzy
 msgid "Shellscript"
 msgstr "Περιγραφή"
+
+msgid "Shift"
+msgstr ""
 
 msgid "Short filenames"
 msgstr "Σύντομα ονόματα"
@@ -10196,9 +10187,6 @@ msgstr ""
 
 msgid "Some plugins are not available:\n"
 msgstr "Μερικά πρόσθετα δεν είναι διαθέσιμα:\n"
-
-msgid "Sorry CIHelper Config is Missing"
-msgstr ""
 
 msgid "Sorry feeds are down for maintenance"
 msgstr ""

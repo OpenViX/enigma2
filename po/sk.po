@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-02 14:36+0200\n"
+"POT-Creation-Date: 2019-06-08 15:13+0200\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -1773,25 +1773,12 @@ msgstr "C"
 msgid "CI (Common Interface) Setup"
 msgstr "Common Interface"
 
-msgid "CI Helper"
-msgstr ""
-
 msgid "CI assignment"
 msgstr "Priradenie CI"
 
 #, fuzzy
 msgid "CI slot: "
 msgstr "nenájdené otvory CI"
-
-#, fuzzy
-msgid "CIHelper Setup"
-msgstr "Ochrániť nastavenia"
-
-msgid "CIHelper for SLOT CI0"
-msgstr ""
-
-msgid "CIHelper for SLOT CI1"
-msgstr ""
 
 msgid "CPU priority for script execution"
 msgstr ""
@@ -3840,12 +3827,6 @@ msgstr ""
 
 msgid "Enable 5V for active antenna"
 msgstr "Zapnúť 5 V pre aktívnu anténu"
-
-msgid "Enable CIHelper for SLOT CI0"
-msgstr ""
-
-msgid "Enable CIHelper for SLOT CI1"
-msgstr ""
 
 msgid "Enable EIT EPG"
 msgstr ""
@@ -6994,6 +6975,14 @@ msgstr "Nórčina"
 msgid "Not Defined"
 msgstr "Užívateľsky definované"
 
+#, fuzzy
+msgid "Not Installed"
+msgstr "Inštalovať"
+
+#, fuzzy
+msgid "Not Required"
+msgstr "Užívateľsky definované"
+
 msgid "Not associated"
 msgstr ""
 
@@ -9325,10 +9314,6 @@ msgid "Select interface"
 msgstr "Zvoľte rozhranie"
 
 #, fuzzy
-msgid "Select locale"
-msgstr "Zvoliť umiestnenie zálohy"
-
-#, fuzzy
 msgid "Select location"
 msgstr "Zvoliť umiestnenie zálohy"
 
@@ -9436,6 +9421,9 @@ msgid "Select the virtual keyboard locale from a menu"
 msgstr ""
 
 msgid "Select the virtual keyboard shifted character set"
+msgstr ""
+
+msgid "Select the virtual keyboard shifted character set for the next character only"
 msgstr ""
 
 #, fuzzy
@@ -9769,6 +9757,9 @@ msgstr "Ostrosť"
 #, fuzzy
 msgid "Shellscript"
 msgstr "Opis"
+
+msgid "Shift"
+msgstr ""
 
 msgid "Short filenames"
 msgstr "Krátke názvy súborov"
@@ -10349,9 +10340,6 @@ msgstr ""
 
 msgid "Some plugins are not available:\n"
 msgstr "Niektoré moduly nie sú dostupné:\n"
-
-msgid "Sorry CIHelper Config is Missing"
-msgstr ""
 
 msgid "Sorry feeds are down for maintenance"
 msgstr ""

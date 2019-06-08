@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-02 14:36+0200\n"
+"POT-Creation-Date: 2019-06-08 15:13+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Budiarno\n"
 "Language-Team: \n"
@@ -1734,23 +1734,11 @@ msgstr "C"
 msgid "CI (Common Interface) Setup"
 msgstr "Pengaturan CI (Common Interface)"
 
-msgid "CI Helper"
-msgstr ""
-
 msgid "CI assignment"
 msgstr "penetapan CI"
 
 msgid "CI slot: "
 msgstr "slot CI"
-
-msgid "CIHelper Setup"
-msgstr ""
-
-msgid "CIHelper for SLOT CI0"
-msgstr ""
-
-msgid "CIHelper for SLOT CI1"
-msgstr ""
 
 msgid "CPU priority for script execution"
 msgstr ""
@@ -3755,12 +3743,6 @@ msgstr "Aktifkan kontrol zap gaya 'neutrino'"
 
 msgid "Enable 5V for active antenna"
 msgstr "Aktifkan 5V pada antena aktif"
-
-msgid "Enable CIHelper for SLOT CI0"
-msgstr ""
-
-msgid "Enable CIHelper for SLOT CI1"
-msgstr ""
 
 msgid "Enable EIT EPG"
 msgstr "Aktifkan EPG EIT"
@@ -6812,6 +6794,13 @@ msgstr "Norwegia"
 msgid "Not Defined"
 msgstr ""
 
+#, fuzzy
+msgid "Not Installed"
+msgstr "Pasang"
+
+msgid "Not Required"
+msgstr ""
+
 msgid "Not associated"
 msgstr "Not associated"
 
@@ -9038,10 +9027,6 @@ msgstr ""
 msgid "Select interface"
 msgstr "Select interface"
 
-#, fuzzy
-msgid "Select locale"
-msgstr "Pilih film"
-
 msgid "Select location"
 msgstr ""
 
@@ -9146,6 +9131,9 @@ msgid "Select the virtual keyboard locale from a menu"
 msgstr ""
 
 msgid "Select the virtual keyboard shifted character set"
+msgstr ""
+
+msgid "Select the virtual keyboard shifted character set for the next character only"
 msgstr ""
 
 msgid "Select upgrade source"
@@ -9463,6 +9451,9 @@ msgid "Sharpness"
 msgstr "Ketajaman"
 
 msgid "Shellscript"
+msgstr ""
+
+msgid "Shift"
 msgstr ""
 
 msgid "Short filenames"
@@ -10005,9 +9996,6 @@ msgstr "Pembaruan tidak tersedia. Silakan coba lain waktu."
 
 msgid "Some plugins are not available:\n"
 msgstr "Beberapa plugin tidak tersedia:\n"
-
-msgid "Sorry CIHelper Config is Missing"
-msgstr ""
 
 msgid "Sorry feeds are down for maintenance"
 msgstr ""

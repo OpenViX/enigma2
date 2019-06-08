@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-02 14:36+0200\n"
+"POT-Creation-Date: 2019-06-08 15:13+0200\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -1853,24 +1853,11 @@ msgstr "C"
 msgid "CI (Common Interface) Setup"
 msgstr "ממשק משותף"
 
-msgid "CI Helper"
-msgstr ""
-
 #
 msgid "CI assignment"
 msgstr ""
 
 msgid "CI slot: "
-msgstr ""
-
-#, fuzzy
-msgid "CIHelper Setup"
-msgstr "Protect setup"
-
-msgid "CIHelper for SLOT CI0"
-msgstr ""
-
-msgid "CIHelper for SLOT CI1"
 msgstr ""
 
 msgid "CPU priority for script execution"
@@ -3980,12 +3967,6 @@ msgstr ""
 
 msgid "Enable 5V for active antenna"
 msgstr "Enable 5V for active antenna"
-
-msgid "Enable CIHelper for SLOT CI0"
-msgstr ""
-
-msgid "Enable CIHelper for SLOT CI1"
-msgstr ""
 
 msgid "Enable EIT EPG"
 msgstr ""
@@ -7309,6 +7290,16 @@ msgstr "נורווגית"
 msgid "Not Defined"
 msgstr "User defined"
 
+#
+#, fuzzy
+msgid "Not Installed"
+msgstr "התקן"
+
+#
+#, fuzzy
+msgid "Not Required"
+msgstr "User defined"
+
 msgid "Not associated"
 msgstr ""
 
@@ -9755,10 +9746,6 @@ msgid "Select interface"
 msgstr "בחר ממשק"
 
 #, fuzzy
-msgid "Select locale"
-msgstr "בחר מקום גיבוי"
-
-#, fuzzy
 msgid "Select location"
 msgstr "בחר מקום גיבוי"
 
@@ -9870,6 +9857,9 @@ msgid "Select the virtual keyboard locale from a menu"
 msgstr ""
 
 msgid "Select the virtual keyboard shifted character set"
+msgstr ""
+
+msgid "Select the virtual keyboard shifted character set for the next character only"
 msgstr ""
 
 #, fuzzy
@@ -10225,6 +10215,9 @@ msgstr "חדות"
 #, fuzzy
 msgid "Shellscript"
 msgstr "תאור"
+
+msgid "Shift"
+msgstr ""
 
 msgid "Short filenames"
 msgstr ""
@@ -10856,9 +10849,6 @@ msgstr ""
 
 msgid "Some plugins are not available:\n"
 msgstr "מספר פלאגינים לא זמינים:\n"
-
-msgid "Sorry CIHelper Config is Missing"
-msgstr ""
 
 msgid "Sorry feeds are down for maintenance"
 msgstr ""

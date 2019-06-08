@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-02 14:36+0200\n"
+"POT-Creation-Date: 2019-06-08 15:13+0200\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -1918,25 +1918,11 @@ msgstr ""
 msgid "CI (Common Interface) Setup"
 msgstr "Zajedničko sučelje"
 
-msgid "CI Helper"
-msgstr ""
-
 #
 msgid "CI assignment"
 msgstr ""
 
 msgid "CI slot: "
-msgstr ""
-
-#
-#, fuzzy
-msgid "CIHelper Setup"
-msgstr "Zaštićene postavke"
-
-msgid "CIHelper for SLOT CI0"
-msgstr ""
-
-msgid "CIHelper for SLOT CI1"
 msgstr ""
 
 msgid "CPU priority for script execution"
@@ -4176,12 +4162,6 @@ msgstr ""
 #
 msgid "Enable 5V for active antenna"
 msgstr "Uključi 5V za aktivnu antenu"
-
-msgid "Enable CIHelper for SLOT CI0"
-msgstr ""
-
-msgid "Enable CIHelper for SLOT CI1"
-msgstr ""
 
 msgid "Enable EIT EPG"
 msgstr ""
@@ -7637,6 +7617,16 @@ msgstr "Norveški"
 msgid "Not Defined"
 msgstr "Korisnički def"
 
+#
+#, fuzzy
+msgid "Not Installed"
+msgstr "Korisnički def"
+
+#
+#, fuzzy
+msgid "Not Required"
+msgstr "Korisnički def"
+
 msgid "Not associated"
 msgstr ""
 
@@ -10274,11 +10264,6 @@ msgstr ""
 
 #
 #, fuzzy
-msgid "Select locale"
-msgstr "Lokacija sigurnosne kopije"
-
-#
-#, fuzzy
 msgid "Select location"
 msgstr "Lokacija sigurnosne kopije"
 
@@ -10396,6 +10381,9 @@ msgid "Select the virtual keyboard locale from a menu"
 msgstr ""
 
 msgid "Select the virtual keyboard shifted character set"
+msgstr ""
+
+msgid "Select the virtual keyboard shifted character set for the next character only"
 msgstr ""
 
 #
@@ -10766,6 +10754,9 @@ msgstr ""
 #, fuzzy
 msgid "Shellscript"
 msgstr "Opis"
+
+msgid "Shift"
+msgstr ""
 
 msgid "Short filenames"
 msgstr ""
@@ -11403,9 +11394,6 @@ msgstr ""
 #
 msgid "Some plugins are not available:\n"
 msgstr "Neki dodaci nisu dostupni:\n"
-
-msgid "Sorry CIHelper Config is Missing"
-msgstr ""
 
 msgid "Sorry feeds are down for maintenance"
 msgstr ""

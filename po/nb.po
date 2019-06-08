@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-02 14:36+0200\n"
+"POT-Creation-Date: 2019-06-08 15:13+0200\n"
 "PO-Revision-Date: 2015-08-25 18:31+0100\n"
 "Last-Translator: andy1 <dmmm8000pvr@gmail.com>\n"
 "Language-Team: none\n"
@@ -1909,9 +1909,6 @@ msgstr ""
 msgid "CI (Common Interface) Setup"
 msgstr "CI (Common Interface) Oppsett"
 
-msgid "CI Helper"
-msgstr ""
-
 #
 msgid "CI assignment"
 msgstr "CI tildeling"
@@ -1920,17 +1917,6 @@ msgstr "CI tildeling"
 #, fuzzy
 msgid "CI slot: "
 msgstr "ingen CI slot er funnet"
-
-#
-#, fuzzy
-msgid "CIHelper Setup"
-msgstr "Snarveistast innstilling"
-
-msgid "CIHelper for SLOT CI0"
-msgstr ""
-
-msgid "CIHelper for SLOT CI1"
-msgstr ""
 
 msgid "CPU priority for script execution"
 msgstr ""
@@ -4148,12 +4134,6 @@ msgstr "Aktiver 'neutrino' stil på fjernkontrollen for kanalbytte"
 #
 msgid "Enable 5V for active antenna"
 msgstr "Slå på 5V for aktiv DVB-T antenne"
-
-msgid "Enable CIHelper for SLOT CI0"
-msgstr ""
-
-msgid "Enable CIHelper for SLOT CI1"
-msgstr ""
 
 msgid "Enable EIT EPG"
 msgstr "Aktiver EIT EPG"
@@ -7577,6 +7557,16 @@ msgstr "Norsk"
 msgid "Not Defined"
 msgstr "Ikke definert"
 
+#
+#, fuzzy
+msgid "Not Installed"
+msgstr "Installer"
+
+#
+#, fuzzy
+msgid "Not Required"
+msgstr "Ikke definert"
+
 msgid "Not associated"
 msgstr "Ikke tilknyttet"
 
@@ -10096,11 +10086,6 @@ msgstr "Velg grensesnitt"
 
 #
 #, fuzzy
-msgid "Select locale"
-msgstr "Velg handling"
-
-#
-#, fuzzy
 msgid "Select location"
 msgstr "Velg handling"
 
@@ -10213,6 +10198,9 @@ msgid "Select the virtual keyboard locale from a menu"
 msgstr ""
 
 msgid "Select the virtual keyboard shifted character set"
+msgstr ""
+
+msgid "Select the virtual keyboard shifted character set for the next character only"
 msgstr ""
 
 msgid "Select upgrade source"
@@ -10559,6 +10547,9 @@ msgstr "Skarphet"
 #
 msgid "Shellscript"
 msgstr "Skript"
+
+msgid "Shift"
+msgstr ""
 
 msgid "Short filenames"
 msgstr "Korte filnavn"
@@ -11176,9 +11167,6 @@ msgstr ""
 #
 msgid "Some plugins are not available:\n"
 msgstr "Noen programtillegg er ikke tilgjengelig:\n"
-
-msgid "Sorry CIHelper Config is Missing"
-msgstr ""
 
 msgid "Sorry feeds are down for maintenance"
 msgstr ""

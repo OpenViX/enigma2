@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-02 14:36+0200\n"
+"POT-Creation-Date: 2019-06-08 15:13+0200\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -2031,9 +2031,6 @@ msgstr "C"
 msgid "CI (Common Interface) Setup"
 msgstr "Stanje CI vmesnika"
 
-msgid "CI Helper"
-msgstr ""
-
 #
 msgid "CI assignment"
 msgstr "CI dodelitev"
@@ -2042,17 +2039,6 @@ msgstr "CI dodelitev"
 #, fuzzy
 msgid "CI slot: "
 msgstr "ni najdene nobene CI vrate"
-
-#
-#, fuzzy
-msgid "CIHelper Setup"
-msgstr "Nastavitve rotorja"
-
-msgid "CIHelper for SLOT CI0"
-msgstr ""
-
-msgid "CIHelper for SLOT CI1"
-msgstr ""
 
 msgid "CPU priority for script execution"
 msgstr ""
@@ -4351,12 +4337,6 @@ msgstr "Vklopi 'neutrino' način preklapljanja med kanali"
 #
 msgid "Enable 5V for active antenna"
 msgstr "Omogoči 5V za potrebe aktivne antene"
-
-msgid "Enable CIHelper for SLOT CI0"
-msgstr ""
-
-msgid "Enable CIHelper for SLOT CI1"
-msgstr ""
 
 #
 msgid "Enable EIT EPG"
@@ -7896,6 +7876,16 @@ msgstr "Norveško"
 msgid "Not Defined"
 msgstr "Ni nastavljeno"
 
+#
+#, fuzzy
+msgid "Not Installed"
+msgstr "Namesti"
+
+#
+#, fuzzy
+msgid "Not Required"
+msgstr "Ni nastavljeno"
+
 msgid "Not associated"
 msgstr "Ni povezano"
 
@@ -10612,11 +10602,6 @@ msgstr "Izberite vmesnik"
 
 #
 #, fuzzy
-msgid "Select locale"
-msgstr "Izberi dogodek"
-
-#
-#, fuzzy
 msgid "Select location"
 msgstr "Izberi dogodek"
 
@@ -10733,6 +10718,9 @@ msgid "Select the virtual keyboard locale from a menu"
 msgstr ""
 
 msgid "Select the virtual keyboard shifted character set"
+msgstr ""
+
+msgid "Select the virtual keyboard shifted character set for the next character only"
 msgstr ""
 
 #
@@ -11112,6 +11100,9 @@ msgstr "Ostrina"
 #, fuzzy
 msgid "Shellscript"
 msgstr "Opis"
+
+msgid "Shift"
+msgstr ""
 
 msgid "Short filenames"
 msgstr "Kratka imena datotek"
@@ -11787,9 +11778,6 @@ msgstr ""
 #
 msgid "Some plugins are not available:\n"
 msgstr "Nekateri vtičniki niso na voljo:\n"
-
-msgid "Sorry CIHelper Config is Missing"
-msgstr ""
 
 msgid "Sorry feeds are down for maintenance"
 msgstr ""

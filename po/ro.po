@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-02 14:36+0200\n"
+"POT-Creation-Date: 2019-06-08 15:13+0200\n"
 "PO-Revision-Date: 2010-03-09 21:03+0100\n"
 "Last-Translator: \n"
 "Language-Team: HDTV ROMANIA(superonic,costel_mbc,neutrin,otheitis,cipy_1982,neutrin,runcanion)\n"
@@ -1743,25 +1743,12 @@ msgstr "C"
 msgid "CI (Common Interface) Setup"
 msgstr "Common Interface"
 
-msgid "CI Helper"
-msgstr ""
-
 msgid "CI assignment"
 msgstr "Asignarea CI"
 
 #, fuzzy
 msgid "CI slot: "
 msgstr "niciun slot CI gasit"
-
-#, fuzzy
-msgid "CIHelper Setup"
-msgstr "Configurare protectie"
-
-msgid "CIHelper for SLOT CI0"
-msgstr ""
-
-msgid "CIHelper for SLOT CI1"
-msgstr ""
 
 msgid "CPU priority for script execution"
 msgstr ""
@@ -3796,12 +3783,6 @@ msgstr ""
 
 msgid "Enable 5V for active antenna"
 msgstr "Activeaza 5V pentru antena activa"
-
-msgid "Enable CIHelper for SLOT CI0"
-msgstr ""
-
-msgid "Enable CIHelper for SLOT CI1"
-msgstr ""
 
 msgid "Enable EIT EPG"
 msgstr ""
@@ -6920,6 +6901,14 @@ msgstr "Norvegiana"
 msgid "Not Defined"
 msgstr "Userul ales"
 
+#, fuzzy
+msgid "Not Installed"
+msgstr "Instalare"
+
+#, fuzzy
+msgid "Not Required"
+msgstr "Userul ales"
+
 msgid "Not associated"
 msgstr ""
 
@@ -9229,10 +9218,6 @@ msgid "Select interface"
 msgstr ""
 
 #, fuzzy
-msgid "Select locale"
-msgstr "Alege locatia copiei de siguranta"
-
-#, fuzzy
 msgid "Select location"
 msgstr "Alege locatia copiei de siguranta"
 
@@ -9340,6 +9325,9 @@ msgid "Select the virtual keyboard locale from a menu"
 msgstr ""
 
 msgid "Select the virtual keyboard shifted character set"
+msgstr ""
+
+msgid "Select the virtual keyboard shifted character set for the next character only"
 msgstr ""
 
 #, fuzzy
@@ -9669,6 +9657,9 @@ msgstr ""
 #, fuzzy
 msgid "Shellscript"
 msgstr "Descriere"
+
+msgid "Shift"
+msgstr ""
 
 msgid "Short filenames"
 msgstr ""
@@ -10244,9 +10235,6 @@ msgstr ""
 
 msgid "Some plugins are not available:\n"
 msgstr "Anumite plugin-uri nu sunt disponibile:\n"
-
-msgid "Sorry CIHelper Config is Missing"
-msgstr ""
 
 msgid "Sorry feeds are down for maintenance"
 msgstr ""

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-02 14:36+0200\n"
+"POT-Creation-Date: 2019-06-08 15:13+0200\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -1953,9 +1953,6 @@ msgstr "C"
 msgid "CI (Common Interface) Setup"
 msgstr "CI-liitäntä/CAM"
 
-msgid "CI Helper"
-msgstr ""
-
 #
 msgid "CI assignment"
 msgstr "CI-määritys"
@@ -1964,17 +1961,6 @@ msgstr "CI-määritys"
 #, fuzzy
 msgid "CI slot: "
 msgstr "CI-portteja ei löytynyt"
-
-#
-#, fuzzy
-msgid "CIHelper Setup"
-msgstr "Kääntömoottorin asetukset"
-
-msgid "CIHelper for SLOT CI0"
-msgstr ""
-
-msgid "CIHelper for SLOT CI1"
-msgstr ""
 
 msgid "CPU priority for script execution"
 msgstr ""
@@ -4238,12 +4224,6 @@ msgstr ""
 #
 msgid "Enable 5V for active antenna"
 msgstr "Syötä 5 voltin käyttöjännite aktiiviantennille"
-
-msgid "Enable CIHelper for SLOT CI0"
-msgstr ""
-
-msgid "Enable CIHelper for SLOT CI1"
-msgstr ""
 
 msgid "Enable EIT EPG"
 msgstr "Ota käyttöön EIT EPG"
@@ -7714,6 +7694,16 @@ msgstr "Norja"
 msgid "Not Defined"
 msgstr "Käyttäjän määrittelemä"
 
+#
+#, fuzzy
+msgid "Not Installed"
+msgstr "Asenna"
+
+#
+#, fuzzy
+msgid "Not Required"
+msgstr "Käyttäjän määrittelemä"
+
 msgid "Not associated"
 msgstr "Ei liitetty"
 
@@ -10378,11 +10368,6 @@ msgstr "Valitse verkkosovitin"
 
 #
 #, fuzzy
-msgid "Select locale"
-msgstr "Valitse varmuuskopion sijainti"
-
-#
-#, fuzzy
 msgid "Select location"
 msgstr "Valitse varmuuskopion sijainti"
 
@@ -10497,6 +10482,9 @@ msgid "Select the virtual keyboard locale from a menu"
 msgstr ""
 
 msgid "Select the virtual keyboard shifted character set"
+msgstr ""
+
+msgid "Select the virtual keyboard shifted character set for the next character only"
 msgstr ""
 
 #
@@ -10867,6 +10855,9 @@ msgstr "Terävyys"
 #, fuzzy
 msgid "Shellscript"
 msgstr "Kuvaus"
+
+msgid "Shift"
+msgstr ""
 
 msgid "Short filenames"
 msgstr "Lyhyet tiedostonimet"
@@ -11515,9 +11506,6 @@ msgstr ""
 #
 msgid "Some plugins are not available:\n"
 msgstr "Seuraavat lisäosat eivät ole saatavilla:\n"
-
-msgid "Sorry CIHelper Config is Missing"
-msgstr ""
 
 msgid "Sorry feeds are down for maintenance"
 msgstr ""

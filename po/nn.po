@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-02 14:36+0200\n"
+"POT-Creation-Date: 2019-06-08 15:13+0200\n"
 "PO-Revision-Date: 2013-10-23 19:15+0100\n"
 "Last-Translator: andy1 <dmmm8000pvr@gmail.com>\n"
 "Language-Team: none\n"
@@ -1869,23 +1869,11 @@ msgstr ""
 msgid "CI (Common Interface) Setup"
 msgstr ""
 
-msgid "CI Helper"
-msgstr ""
-
 #
 msgid "CI assignment"
 msgstr "CI tildeling"
 
 msgid "CI slot: "
-msgstr ""
-
-msgid "CIHelper Setup"
-msgstr ""
-
-msgid "CIHelper for SLOT CI0"
-msgstr ""
-
-msgid "CIHelper for SLOT CI1"
 msgstr ""
 
 msgid "CPU priority for script execution"
@@ -4058,12 +4046,6 @@ msgstr ""
 #
 msgid "Enable 5V for active antenna"
 msgstr "Aktivere 5V for aktiv antenne"
-
-msgid "Enable CIHelper for SLOT CI0"
-msgstr ""
-
-msgid "Enable CIHelper for SLOT CI1"
-msgstr ""
 
 msgid "Enable EIT EPG"
 msgstr "Aktivere EIT EPG"
@@ -7400,6 +7382,14 @@ msgstr "Norsk"
 msgid "Not Defined"
 msgstr ""
 
+#
+#, fuzzy
+msgid "Not Installed"
+msgstr "Installere"
+
+msgid "Not Required"
+msgstr ""
+
 msgid "Not associated"
 msgstr "Ikke tilknyttet"
 
@@ -9817,10 +9807,6 @@ msgstr "Velg enhet."
 msgid "Select interface"
 msgstr "Velg grensesnitt"
 
-#, fuzzy
-msgid "Select locale"
-msgstr "Velg en film"
-
 msgid "Select location"
 msgstr ""
 
@@ -9930,6 +9916,9 @@ msgid "Select the virtual keyboard locale from a menu"
 msgstr ""
 
 msgid "Select the virtual keyboard shifted character set"
+msgstr ""
+
+msgid "Select the virtual keyboard shifted character set for the next character only"
 msgstr ""
 
 msgid "Select upgrade source"
@@ -10264,6 +10253,9 @@ msgid "Sharpness"
 msgstr "Skarphet"
 
 msgid "Shellscript"
+msgstr ""
+
+msgid "Shift"
 msgstr ""
 
 msgid "Short filenames"
@@ -10856,9 +10848,6 @@ msgstr "Det finnes ingen nye oppdateringer. Vennligst prøv igjen senere."
 #
 msgid "Some plugins are not available:\n"
 msgstr "Noen programtillegg er ikke tilgjengelig:\n"
-
-msgid "Sorry CIHelper Config is Missing"
-msgstr ""
 
 msgid "Sorry feeds are down for maintenance"
 msgstr ""

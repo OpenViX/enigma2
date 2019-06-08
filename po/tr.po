@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue (Apachi70)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-02 14:36+0200\n"
+"POT-Creation-Date: 2019-06-08 15:13+0200\n"
 "PO-Revision-Date: 2019-04-06 08:43+0200\n"
 "Last-Translator: Apachi70 <apachi70000@gmail.com>\n"
 "Language-Team: Turkish <apachi70000@gmail.com>\n"
@@ -1677,23 +1677,11 @@ msgstr "CI"
 msgid "CI (Common Interface) Setup"
 msgstr "CI (Ortak Arayüz) Kurulumu"
 
-msgid "CI Helper"
-msgstr "CI Helper"
-
 msgid "CI assignment"
 msgstr "CI ataması"
 
 msgid "CI slot: "
 msgstr "CI yuvası: "
-
-msgid "CIHelper Setup"
-msgstr "CI Yardımcısı Kurulumu"
-
-msgid "CIHelper for SLOT CI0"
-msgstr "CIHelper for SLOT CI0"
-
-msgid "CIHelper for SLOT CI1"
-msgstr "CIHelper for SLOT CI1"
 
 msgid "CPU priority for script execution"
 msgstr ""
@@ -3628,12 +3616,6 @@ msgstr "'neutrino' tarzı kanal değişimini etkinleştir"
 
 msgid "Enable 5V for active antenna"
 msgstr "Aktif anten için 5V etkinleştir"
-
-msgid "Enable CIHelper for SLOT CI0"
-msgstr "Enable CIHelper for SLOT CI0"
-
-msgid "Enable CIHelper for SLOT CI1"
-msgstr "Enable CIHelper for SLOT CI1"
 
 msgid "Enable EIT EPG"
 msgstr "EIT EPG etkinleştir"
@@ -6601,6 +6583,14 @@ msgstr "Norveççe"
 msgid "Not Defined"
 msgstr "Kullanıcı tanımlı"
 
+#, fuzzy
+msgid "Not Installed"
+msgstr "Yükle"
+
+#, fuzzy
+msgid "Not Required"
+msgstr "Kullanıcı tanımlı"
+
 msgid "Not associated"
 msgstr "İliŞkili değil"
 
@@ -8759,9 +8749,6 @@ msgstr "Giriş aygıtı seç."
 msgid "Select interface"
 msgstr "Arayüz seç"
 
-msgid "Select locale"
-msgstr "Yerel seç"
-
 msgid "Select location"
 msgstr "Yer seç"
 
@@ -8862,6 +8849,10 @@ msgid "Select the virtual keyboard locale from a menu"
 msgstr "Bir menüden sanal klavye bölgesini seçin"
 
 msgid "Select the virtual keyboard shifted character set"
+msgstr "Sanal klavye kaydırılmış karakter kümesini seçin"
+
+#, fuzzy
+msgid "Select the virtual keyboard shifted character set for the next character only"
 msgstr "Sanal klavye kaydırılmış karakter kümesini seçin"
 
 msgid "Select upgrade source"
@@ -9163,6 +9154,9 @@ msgstr "Keskinlik"
 
 msgid "Shellscript"
 msgstr "Shell Komut"
+
+msgid "Shift"
+msgstr ""
 
 msgid "Short filenames"
 msgstr "Kısa dosya adları"
@@ -9681,9 +9675,6 @@ msgstr "Bazı hata oluştu - Lütfen daha sonra tekrar deneyin"
 
 msgid "Some plugins are not available:\n"
 msgstr "Bazi eklentiler kullanilabilir degil:\n"
-
-msgid "Sorry CIHelper Config is Missing"
-msgstr "Maalesef CIHelper config eksik"
 
 msgid "Sorry feeds are down for maintenance"
 msgstr "Maalesef Feed bakımda"

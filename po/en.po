@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-02 14:36+0200\n"
+"POT-Creation-Date: 2019-06-08 15:13+0200\n"
 "PO-Revision-Date: 2015-01-29 18:01+0100\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -1604,22 +1604,10 @@ msgstr ""
 msgid "CI (Common Interface) Setup"
 msgstr ""
 
-msgid "CI Helper"
-msgstr ""
-
 msgid "CI assignment"
 msgstr ""
 
 msgid "CI slot: "
-msgstr ""
-
-msgid "CIHelper Setup"
-msgstr ""
-
-msgid "CIHelper for SLOT CI0"
-msgstr ""
-
-msgid "CIHelper for SLOT CI1"
 msgstr ""
 
 msgid "CPU priority for script execution"
@@ -3514,12 +3502,6 @@ msgid "Enable 'neutrino' style zap controlling"
 msgstr ""
 
 msgid "Enable 5V for active antenna"
-msgstr ""
-
-msgid "Enable CIHelper for SLOT CI0"
-msgstr ""
-
-msgid "Enable CIHelper for SLOT CI1"
 msgstr ""
 
 msgid "Enable EIT EPG"
@@ -6406,6 +6388,12 @@ msgstr ""
 msgid "Not Defined"
 msgstr ""
 
+msgid "Not Installed"
+msgstr ""
+
+msgid "Not Required"
+msgstr ""
+
 msgid "Not associated"
 msgstr ""
 
@@ -8514,9 +8502,6 @@ msgstr ""
 msgid "Select interface"
 msgstr ""
 
-msgid "Select locale"
-msgstr ""
-
 msgid "Select location"
 msgstr ""
 
@@ -8617,6 +8602,9 @@ msgid "Select the virtual keyboard locale from a menu"
 msgstr ""
 
 msgid "Select the virtual keyboard shifted character set"
+msgstr ""
+
+msgid "Select the virtual keyboard shifted character set for the next character only"
 msgstr ""
 
 msgid "Select upgrade source"
@@ -8911,6 +8899,9 @@ msgid "Sharpness"
 msgstr ""
 
 msgid "Shellscript"
+msgstr ""
+
+msgid "Shift"
 msgstr ""
 
 msgid "Short filenames"
@@ -9426,9 +9417,6 @@ msgid "Some error occurred - Please try later"
 msgstr ""
 
 msgid "Some plugins are not available:\n"
-msgstr ""
-
-msgid "Sorry CIHelper Config is Missing"
 msgstr ""
 
 msgid "Sorry feeds are down for maintenance"

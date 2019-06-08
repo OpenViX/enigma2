@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-02 14:36+0200\n"
+"POT-Creation-Date: 2019-06-08 15:13+0200\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -1754,25 +1754,12 @@ msgstr "C"
 msgid "CI (Common Interface) Setup"
 msgstr "CI liides"
 
-msgid "CI Helper"
-msgstr ""
-
 msgid "CI assignment"
 msgstr "CI määrangud"
 
 #, fuzzy
 msgid "CI slot: "
 msgstr "moodulit ei leitud"
-
-#, fuzzy
-msgid "CIHelper Setup"
-msgstr "Seadistuste kaitse"
-
-msgid "CIHelper for SLOT CI0"
-msgstr ""
-
-msgid "CIHelper for SLOT CI1"
-msgstr ""
 
 msgid "CPU priority for script execution"
 msgstr ""
@@ -3794,12 +3781,6 @@ msgstr ""
 
 msgid "Enable 5V for active antenna"
 msgstr "Luba 5 V toide aktiivantennile"
-
-msgid "Enable CIHelper for SLOT CI0"
-msgstr ""
-
-msgid "Enable CIHelper for SLOT CI1"
-msgstr ""
 
 msgid "Enable EIT EPG"
 msgstr "Luba EIT EPG"
@@ -6882,6 +6863,14 @@ msgstr "Norra"
 msgid "Not Defined"
 msgstr "Kasutaja määratud"
 
+#, fuzzy
+msgid "Not Installed"
+msgstr "Paigalda"
+
+#, fuzzy
+msgid "Not Required"
+msgstr "Kasutaja määratud"
+
 msgid "Not associated"
 msgstr "Määramata"
 
@@ -9177,10 +9166,6 @@ msgid "Select interface"
 msgstr "Vali liides"
 
 #, fuzzy
-msgid "Select locale"
-msgstr "Varukoopia asukoht"
-
-#, fuzzy
 msgid "Select location"
 msgstr "Varukoopia asukoht"
 
@@ -9285,6 +9270,9 @@ msgid "Select the virtual keyboard locale from a menu"
 msgstr ""
 
 msgid "Select the virtual keyboard shifted character set"
+msgstr ""
+
+msgid "Select the virtual keyboard shifted character set for the next character only"
 msgstr ""
 
 msgid "Select upgrade source"
@@ -9609,6 +9597,9 @@ msgstr "Teravus"
 #, fuzzy
 msgid "Shellscript"
 msgstr "Kirjeldus"
+
+msgid "Shift"
+msgstr ""
 
 msgid "Short filenames"
 msgstr "Lühikesed failinimed"
@@ -10176,9 +10167,6 @@ msgstr ""
 
 msgid "Some plugins are not available:\n"
 msgstr "Mõned laiendused pole saadaval:\n"
-
-msgid "Sorry CIHelper Config is Missing"
-msgstr ""
 
 msgid "Sorry feeds are down for maintenance"
 msgstr ""

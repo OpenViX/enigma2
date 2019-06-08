@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-02 14:36+0200\n"
+"POT-Creation-Date: 2019-06-08 15:13+0200\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -1755,25 +1755,12 @@ msgstr "C"
 msgid "CI (Common Interface) Setup"
 msgstr "Qerta Ortax"
 
-msgid "CI Helper"
-msgstr ""
-
 msgid "CI assignment"
 msgstr "CI assignment"
 
 #, fuzzy
 msgid "CI slot: "
 msgstr "no CI slots found"
-
-#, fuzzy
-msgid "CIHelper Setup"
-msgstr "Protect setup"
-
-msgid "CIHelper for SLOT CI0"
-msgstr ""
-
-msgid "CIHelper for SLOT CI1"
-msgstr ""
 
 msgid "CPU priority for script execution"
 msgstr ""
@@ -3799,12 +3786,6 @@ msgstr ""
 
 msgid "Enable 5V for active antenna"
 msgstr "Enable 5V for active antenna"
-
-msgid "Enable CIHelper for SLOT CI0"
-msgstr ""
-
-msgid "Enable CIHelper for SLOT CI1"
-msgstr ""
 
 msgid "Enable EIT EPG"
 msgstr "Enable EIT EPG"
@@ -6893,6 +6874,14 @@ msgstr "Norwegian"
 msgid "Not Defined"
 msgstr "User defined"
 
+#, fuzzy
+msgid "Not Installed"
+msgstr "Install"
+
+#, fuzzy
+msgid "Not Required"
+msgstr "User defined"
+
 msgid "Not associated"
 msgstr "Not associated"
 
@@ -9191,10 +9180,6 @@ msgid "Select interface"
 msgstr "Select interface"
 
 #, fuzzy
-msgid "Select locale"
-msgstr "Select backup location"
-
-#, fuzzy
 msgid "Select location"
 msgstr "Select backup location"
 
@@ -9299,6 +9284,9 @@ msgid "Select the virtual keyboard locale from a menu"
 msgstr ""
 
 msgid "Select the virtual keyboard shifted character set"
+msgstr ""
+
+msgid "Select the virtual keyboard shifted character set for the next character only"
 msgstr ""
 
 msgid "Select upgrade source"
@@ -9623,6 +9611,9 @@ msgstr "Sharpness"
 #, fuzzy
 msgid "Shellscript"
 msgstr "Description"
+
+msgid "Shift"
+msgstr ""
 
 msgid "Short filenames"
 msgstr "Short filenames"
@@ -10190,9 +10181,6 @@ msgstr ""
 
 msgid "Some plugins are not available:\n"
 msgstr "Some plugins are not available:\n"
-
-msgid "Sorry CIHelper Config is Missing"
-msgstr ""
 
 msgid "Sorry feeds are down for maintenance"
 msgstr ""

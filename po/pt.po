@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-02 14:36+0200\n"
+"POT-Creation-Date: 2019-06-08 15:13+0200\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -1987,9 +1987,6 @@ msgstr "C"
 msgid "CI (Common Interface) Setup"
 msgstr "Interface Comum"
 
-msgid "CI Helper"
-msgstr ""
-
 #
 msgid "CI assignment"
 msgstr "Escolha de CI"
@@ -1998,16 +1995,6 @@ msgstr "Escolha de CI"
 #, fuzzy
 msgid "CI slot: "
 msgstr "slots CI não encontrados"
-
-#, fuzzy
-msgid "CIHelper Setup"
-msgstr "Configuração do posicionador"
-
-msgid "CIHelper for SLOT CI0"
-msgstr ""
-
-msgid "CIHelper for SLOT CI1"
-msgstr ""
 
 msgid "CPU priority for script execution"
 msgstr ""
@@ -4324,12 +4311,6 @@ msgstr "Activar estilo 'neutrino' no controlo do zapping"
 #
 msgid "Enable 5V for active antenna"
 msgstr "Activar saída de 5V para a antena"
-
-msgid "Enable CIHelper for SLOT CI0"
-msgstr ""
-
-msgid "Enable CIHelper for SLOT CI1"
-msgstr ""
 
 msgid "Enable EIT EPG"
 msgstr "Activar Guia de Programação EIT"
@@ -7885,6 +7866,15 @@ msgstr "Norueguês"
 msgid "Not Defined"
 msgstr "Não configurado"
 
+#
+#, fuzzy
+msgid "Not Installed"
+msgstr "Instalar"
+
+#, fuzzy
+msgid "Not Required"
+msgstr "Não configurado"
+
 #, fuzzy
 msgid "Not associated"
 msgstr "Não associado"
@@ -10598,10 +10588,6 @@ msgid "Select interface"
 msgstr "Seleccionar interface"
 
 #, fuzzy
-msgid "Select locale"
-msgstr "Seleccionar acção"
-
-#, fuzzy
 msgid "Select location"
 msgstr "Seleccionar acção"
 
@@ -10719,6 +10705,9 @@ msgid "Select the virtual keyboard locale from a menu"
 msgstr ""
 
 msgid "Select the virtual keyboard shifted character set"
+msgstr ""
+
+msgid "Select the virtual keyboard shifted character set for the next character only"
 msgstr ""
 
 #
@@ -11101,6 +11090,9 @@ msgstr "Nitidez"
 #, fuzzy
 msgid "Shellscript"
 msgstr "Descrição"
+
+msgid "Shift"
+msgstr ""
 
 msgid "Short filenames"
 msgstr "Nomes curtos de ficheiros"
@@ -11759,9 +11751,6 @@ msgstr ""
 #
 msgid "Some plugins are not available:\n"
 msgstr "Alguns Plugins não estão disponíveis:\n"
-
-msgid "Sorry CIHelper Config is Missing"
-msgstr ""
 
 msgid "Sorry feeds are down for maintenance"
 msgstr ""

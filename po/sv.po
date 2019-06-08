@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-02 14:36+0200\n"
+"POT-Creation-Date: 2019-06-08 15:13+0200\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -1961,9 +1961,6 @@ msgstr "C"
 msgid "CI (Common Interface) Setup"
 msgstr "Common Interface"
 
-msgid "CI Helper"
-msgstr ""
-
 #
 msgid "CI assignment"
 msgstr "CI tilldelning"
@@ -1972,16 +1969,6 @@ msgstr "CI tilldelning"
 #, fuzzy
 msgid "CI slot: "
 msgstr "ingen CI slot hittad"
-
-#, fuzzy
-msgid "CIHelper Setup"
-msgstr "Motorinstallation"
-
-msgid "CIHelper for SLOT CI0"
-msgstr ""
-
-msgid "CIHelper for SLOT CI1"
-msgstr ""
 
 msgid "CPU priority for script execution"
 msgstr ""
@@ -4241,12 +4228,6 @@ msgstr ""
 #
 msgid "Enable 5V for active antenna"
 msgstr "Aktivera 5V för aktiv antenn"
-
-msgid "Enable CIHelper for SLOT CI0"
-msgstr ""
-
-msgid "Enable CIHelper for SLOT CI1"
-msgstr ""
 
 msgid "Enable EIT EPG"
 msgstr "Aktivera EIT EPG"
@@ -7709,6 +7690,16 @@ msgstr "Norska"
 msgid "Not Defined"
 msgstr "Användardefinierat"
 
+#
+#, fuzzy
+msgid "Not Installed"
+msgstr "Installera"
+
+#
+#, fuzzy
+msgid "Not Required"
+msgstr "Användardefinierat"
+
 msgid "Not associated"
 msgstr "Ej associerad"
 
@@ -10349,11 +10340,6 @@ msgstr "Välj kort"
 
 #
 #, fuzzy
-msgid "Select locale"
-msgstr "Välj backupdestination"
-
-#
-#, fuzzy
 msgid "Select location"
 msgstr "Välj backupdestination"
 
@@ -10468,6 +10454,9 @@ msgid "Select the virtual keyboard locale from a menu"
 msgstr ""
 
 msgid "Select the virtual keyboard shifted character set"
+msgstr ""
+
+msgid "Select the virtual keyboard shifted character set for the next character only"
 msgstr ""
 
 #
@@ -10836,6 +10825,9 @@ msgstr "Skärpa"
 #, fuzzy
 msgid "Shellscript"
 msgstr "Beskrivning"
+
+msgid "Shift"
+msgstr ""
 
 msgid "Short filenames"
 msgstr "Korta filnamn"
@@ -11474,9 +11466,6 @@ msgstr ""
 #
 msgid "Some plugins are not available:\n"
 msgstr "Några plugins är inte tillgängliga:\n"
-
-msgid "Sorry CIHelper Config is Missing"
-msgstr ""
 
 msgid "Sorry feeds are down for maintenance"
 msgstr ""

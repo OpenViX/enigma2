@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-02 14:36+0200\n"
+"POT-Creation-Date: 2019-06-08 15:13+0200\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -1767,25 +1767,12 @@ msgstr "С"
 msgid "CI (Common Interface) Setup"
 msgstr "Інтерфейс модулів"
 
-msgid "CI Helper"
-msgstr ""
-
 msgid "CI assignment"
 msgstr "Призначення CI"
 
 #, fuzzy
 msgid "CI slot: "
 msgstr "не знайдено модуль"
-
-#, fuzzy
-msgid "CIHelper Setup"
-msgstr "Захистити установки"
-
-msgid "CIHelper for SLOT CI0"
-msgstr ""
-
-msgid "CIHelper for SLOT CI1"
-msgstr ""
 
 msgid "CPU priority for script execution"
 msgstr ""
@@ -3825,12 +3812,6 @@ msgstr ""
 
 msgid "Enable 5V for active antenna"
 msgstr "Увімкнути 5V для активної антени"
-
-msgid "Enable CIHelper for SLOT CI0"
-msgstr ""
-
-msgid "Enable CIHelper for SLOT CI1"
-msgstr ""
 
 msgid "Enable EIT EPG"
 msgstr "Увімкнути EIT EPG"
@@ -6933,6 +6914,14 @@ msgstr "Норвезька"
 msgid "Not Defined"
 msgstr "Визначено користувачем"
 
+#, fuzzy
+msgid "Not Installed"
+msgstr "Встановити"
+
+#, fuzzy
+msgid "Not Required"
+msgstr "Визначено користувачем"
+
 msgid "Not associated"
 msgstr "Немає асоціацій"
 
@@ -9254,10 +9243,6 @@ msgid "Select interface"
 msgstr "Виберіть інтерфейс"
 
 #, fuzzy
-msgid "Select locale"
-msgstr "Вибрати розташування бекапа"
-
-#, fuzzy
 msgid "Select location"
 msgstr "Вибрати розташування бекапа"
 
@@ -9363,6 +9348,9 @@ msgid "Select the virtual keyboard locale from a menu"
 msgstr ""
 
 msgid "Select the virtual keyboard shifted character set"
+msgstr ""
+
+msgid "Select the virtual keyboard shifted character set for the next character only"
 msgstr ""
 
 msgid "Select upgrade source"
@@ -9687,6 +9675,9 @@ msgstr "Різкість"
 #, fuzzy
 msgid "Shellscript"
 msgstr "Скрипти"
+
+msgid "Shift"
+msgstr ""
 
 msgid "Short filenames"
 msgstr "Коротка назва"
@@ -10251,9 +10242,6 @@ msgstr ""
 
 msgid "Some plugins are not available:\n"
 msgstr "Деякі плагіни недоступні:\n"
-
-msgid "Sorry CIHelper Config is Missing"
-msgstr ""
 
 msgid "Sorry feeds are down for maintenance"
 msgstr ""

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-02 14:36+0200\n"
+"POT-Creation-Date: 2019-06-08 15:13+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: 王彪 <satfan@163.com>\n"
 "Language-Team: 中國\n"
@@ -1729,26 +1729,12 @@ msgstr "C"
 msgid "CI (Common Interface) Setup"
 msgstr "通用介面 (CI)"
 
-#, fuzzy
-msgid "CI Helper"
-msgstr "説明"
-
 msgid "CI assignment"
 msgstr "CI-證書"
 
 #, fuzzy
 msgid "CI slot: "
 msgstr "未找到CI插座"
-
-#, fuzzy
-msgid "CIHelper Setup"
-msgstr "DNS設定"
-
-msgid "CIHelper for SLOT CI0"
-msgstr ""
-
-msgid "CIHelper for SLOT CI1"
-msgstr ""
 
 msgid "CPU priority for script execution"
 msgstr ""
@@ -3745,12 +3731,6 @@ msgstr ""
 
 msgid "Enable 5V for active antenna"
 msgstr "為有源天線啟用5V供電"
-
-msgid "Enable CIHelper for SLOT CI0"
-msgstr ""
-
-msgid "Enable CIHelper for SLOT CI1"
-msgstr ""
 
 msgid "Enable EIT EPG"
 msgstr ""
@@ -6854,6 +6834,14 @@ msgstr "挪威語"
 msgid "Not Defined"
 msgstr "未啟用"
 
+#, fuzzy
+msgid "Not Installed"
+msgstr "安裝"
+
+#, fuzzy
+msgid "Not Required"
+msgstr "未啟用"
+
 msgid "Not associated"
 msgstr ""
 
@@ -9154,10 +9142,6 @@ msgid "Select interface"
 msgstr "選擇介面"
 
 #, fuzzy
-msgid "Select locale"
-msgstr "選擇位置"
-
-#, fuzzy
 msgid "Select location"
 msgstr "選擇位置"
 
@@ -9265,6 +9249,9 @@ msgid "Select the virtual keyboard locale from a menu"
 msgstr ""
 
 msgid "Select the virtual keyboard shifted character set"
+msgstr ""
+
+msgid "Select the virtual keyboard shifted character set for the next character only"
 msgstr ""
 
 msgid "Select upgrade source"
@@ -9587,6 +9574,9 @@ msgstr "銳化"
 #, fuzzy
 msgid "Shellscript"
 msgstr "腳本"
+
+msgid "Shift"
+msgstr ""
 
 msgid "Short filenames"
 msgstr ""
@@ -10151,9 +10141,6 @@ msgstr ""
 
 msgid "Some plugins are not available:\n"
 msgstr "不使用這些插件:\n"
-
-msgid "Sorry CIHelper Config is Missing"
-msgstr ""
 
 msgid "Sorry feeds are down for maintenance"
 msgstr ""

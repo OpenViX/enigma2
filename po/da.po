@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-02 14:36+0200\n"
+"POT-Creation-Date: 2019-06-08 15:13+0200\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -1975,9 +1975,6 @@ msgstr "C"
 msgid "CI (Common Interface) Setup"
 msgstr "CA Modul"
 
-msgid "CI Helper"
-msgstr ""
-
 #
 msgid "CI assignment"
 msgstr "CI  tildeling"
@@ -1986,17 +1983,6 @@ msgstr "CI  tildeling"
 #, fuzzy
 msgid "CI slot: "
 msgstr "ingen CI slots fundet"
-
-#
-#, fuzzy
-msgid "CIHelper Setup"
-msgstr "Beskytte opsætning?"
-
-msgid "CIHelper for SLOT CI0"
-msgstr ""
-
-msgid "CIHelper for SLOT CI1"
-msgstr ""
 
 msgid "CPU priority for script execution"
 msgstr ""
@@ -4312,12 +4298,6 @@ msgstr ""
 #
 msgid "Enable 5V for active antenna"
 msgstr "Aktivere 5V for aktiv antenne"
-
-msgid "Enable CIHelper for SLOT CI0"
-msgstr ""
-
-msgid "Enable CIHelper for SLOT CI1"
-msgstr ""
 
 msgid "Enable EIT EPG"
 msgstr "Aktiver EIT EPG"
@@ -7884,6 +7864,16 @@ msgstr "Norsk"
 msgid "Not Defined"
 msgstr "Brugerdefineret"
 
+#
+#, fuzzy
+msgid "Not Installed"
+msgstr "Installer"
+
+#
+#, fuzzy
+msgid "Not Required"
+msgstr "Brugerdefineret"
+
 #, fuzzy
 msgid "Not associated"
 msgstr "Ikke aktiveret"
@@ -10599,11 +10589,6 @@ msgstr "Vælg interface"
 
 #
 #, fuzzy
-msgid "Select locale"
-msgstr "Vælg backup placering"
-
-#
-#, fuzzy
 msgid "Select location"
 msgstr "Vælg backup placering"
 
@@ -10721,6 +10706,9 @@ msgid "Select the virtual keyboard locale from a menu"
 msgstr ""
 
 msgid "Select the virtual keyboard shifted character set"
+msgstr ""
+
+msgid "Select the virtual keyboard shifted character set for the next character only"
 msgstr ""
 
 #
@@ -11104,6 +11092,9 @@ msgstr "Skarphed"
 #, fuzzy
 msgid "Shellscript"
 msgstr "Beskrivelse"
+
+msgid "Shift"
+msgstr ""
 
 msgid "Short filenames"
 msgstr "Korte filnavne"
@@ -11773,9 +11764,6 @@ msgstr ""
 #
 msgid "Some plugins are not available:\n"
 msgstr "Nogle plugins er ikke tilstede:\n"
-
-msgid "Sorry CIHelper Config is Missing"
-msgstr ""
 
 msgid "Sorry feeds are down for maintenance"
 msgstr ""

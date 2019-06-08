@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tuxbox-enigma 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-02 14:36+0200\n"
+"POT-Creation-Date: 2019-06-08 15:13+0200\n"
 "PO-Revision-Date: 2016-06-17 12:13+0800\n"
 "Last-Translator: nx111 <gdzdz@163.com>\n"
 "Language-Team: NEWBOLT\n"
@@ -1728,25 +1728,12 @@ msgstr ""
 msgid "CI (Common Interface) Setup"
 msgstr "通用接口 (CI)"
 
-msgid "CI Helper"
-msgstr ""
-
 msgid "CI assignment"
 msgstr "CI选择"
 
 #, fuzzy
 msgid "CI slot: "
 msgstr "未找到CI"
-
-#, fuzzy
-msgid "CIHelper Setup"
-msgstr "DNS设置"
-
-msgid "CIHelper for SLOT CI0"
-msgstr ""
-
-msgid "CIHelper for SLOT CI1"
-msgstr ""
 
 msgid "CPU priority for script execution"
 msgstr ""
@@ -3742,12 +3729,6 @@ msgstr ""
 
 msgid "Enable 5V for active antenna"
 msgstr "为有源天线启用5V供电"
-
-msgid "Enable CIHelper for SLOT CI0"
-msgstr ""
-
-msgid "Enable CIHelper for SLOT CI1"
-msgstr ""
 
 msgid "Enable EIT EPG"
 msgstr "启用EIT EPG"
@@ -6828,6 +6809,14 @@ msgstr "挪威语"
 msgid "Not Defined"
 msgstr "未启动"
 
+#, fuzzy
+msgid "Not Installed"
+msgstr "安装"
+
+#, fuzzy
+msgid "Not Required"
+msgstr "未启动"
+
 msgid "Not associated"
 msgstr ""
 
@@ -9141,10 +9130,6 @@ msgid "Select interface"
 msgstr "选择接口"
 
 #, fuzzy
-msgid "Select locale"
-msgstr "选择位置"
-
-#, fuzzy
 msgid "Select location"
 msgstr "选择位置"
 
@@ -9253,6 +9238,9 @@ msgid "Select the virtual keyboard locale from a menu"
 msgstr ""
 
 msgid "Select the virtual keyboard shifted character set"
+msgstr ""
+
+msgid "Select the virtual keyboard shifted character set for the next character only"
 msgstr ""
 
 msgid "Select upgrade source"
@@ -9574,6 +9562,9 @@ msgstr "锐度"
 #, fuzzy
 msgid "Shellscript"
 msgstr "用户脚本"
+
+msgid "Shift"
+msgstr ""
 
 msgid "Short filenames"
 msgstr "短文件名"
@@ -10136,9 +10127,6 @@ msgstr ""
 
 msgid "Some plugins are not available:\n"
 msgstr "一些插件不可用:\n"
-
-msgid "Sorry CIHelper Config is Missing"
-msgstr ""
 
 msgid "Sorry feeds are down for maintenance"
 msgstr ""
