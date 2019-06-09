@@ -792,7 +792,7 @@ msgid "Add a mark"
 msgstr "Añadir marca"
 
 msgid "Add a nameserver entry"
-msgstr "Añadir entrada en el servidor de nombres"
+msgstr "Añadir entrada en el nombre de servidor"
 
 msgid "Add a new title"
 msgstr "Añadir un nuevo título"
@@ -3053,7 +3053,7 @@ msgstr "Editar la configuración"
 
 #, python-format
 msgid "Edit the Nameserver configuration of your %s %s.\n"
-msgstr "Edite la configuración del servidor de nombres de su %s %s.\n"
+msgstr "Edite la configuración del nombre de servidor de su %s %s.\n"
 
 #, python-format
 msgid "Edit the network configuration of your %s %s.\n"
@@ -3322,7 +3322,7 @@ msgid "Exit movie player?"
 msgstr "¿Salir del reproductor de películas?"
 
 msgid "Exit nameserver configuration"
-msgstr "Salir de la configuración servidor de nombres"
+msgstr "Salir de la configuración nombre de servidor"
 
 msgid "Exit network adapter configuration"
 msgstr "Salir de la configuración del adaptador de red"
@@ -4937,10 +4937,10 @@ msgstr "DNS"
 
 #, python-format
 msgid "Nameserver %d"
-msgstr "Servidor de nombres %d"
+msgstr "Nombre de servidor %d"
 
 msgid "Nameserver settings"
-msgstr "Configuración del servidor de nombres"
+msgstr "Configuración del Nombre de servidor"
 
 msgid "Namespace"
 msgstr "Espacio de nombres"
@@ -5366,7 +5366,7 @@ msgid "Open bouquet list"
 msgstr "Abrir lista bouquet"
 
 msgid "Open nameserver configuration"
-msgstr "Configuración abierta del servidor de nombres"
+msgstr "Configuración abierta del nombre de servidor"
 
 msgid "Open service list and select the next channel"
 msgstr "Abra la lista de canales y seleccione el siguiente canal"
@@ -6414,7 +6414,7 @@ msgid "Remove a mark"
 msgstr "Borrar marca"
 
 msgid "Remove a nameserver entry"
-msgstr "Borrar una entrada en el servidor de nombres"
+msgstr "Borrar una entrada en el nombre de servidor"
 
 msgid "Remove all alternatives"
 msgstr "Eliminar todas las alternativas"
@@ -8808,7 +8808,7 @@ msgstr ""
 "\n"
 "Si recibes un mensaje de \"no confirmado\":\n"
 "- Por favor, compruebe su servidor DHCP, el cableado y la configuración del adaptador.\n"
-"- Si configuró sus servidores de nombres manualmente, verifique sus entradas en la configuración Servidor de nombres."
+"- Si configuró sus servidores de nombres manualmente, verifique sus entradas en la configuración Nombre de servidor."
 
 msgid ""
 "DHCP\n"
