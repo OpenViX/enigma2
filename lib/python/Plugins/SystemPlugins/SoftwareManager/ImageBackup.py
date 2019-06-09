@@ -233,7 +233,7 @@ class ImageBackup(Screen):
 		if self.ROOTFSTYPE == "ubi":
 			self.message += _("Due to the used filesystem, the fullbackup\n")
 			self.message += _("will take about 3-12 minutes for this system.\n")
-		elif SystemInfo["HasMultiBoot"] and self.list[self.selection] == "Recovery":
+		elif SystemInfo["canMultiBoot"] and self.list[self.selection] == "Recovery":
 			self.message += _("because of the used filesystem the backup\n")
 			self.message += _("will take about 30 minutes for this system.\n")
 		elif "tar.bz2" in self.ROOTFSTYPE.split() or SystemInfo["canMultiBoot"]:
@@ -328,7 +328,7 @@ class ImageBackup(Screen):
 			cmdlist.append('echo "Check: kerneldump"')
 		cmdlist.append("sync")
 
-		if SystemInfo["HasMultiBoot"] and self.list[self.selection] == "Recovery":
+		if SystemInfo["canMultiBoot"] and self.list[self.selection] == "Recovery":
 			GPT_OFFSET=0
 			GPT_SIZE=1024
 			BOOT_PARTITION_OFFSET = int(GPT_OFFSET) + int(GPT_SIZE)
@@ -429,7 +429,7 @@ class ImageBackup(Screen):
 		else:
 			system('mv %s/vmlinux.gz %s/%s' %(self.WORKDIR, self.MAINDEST, self.KERNELBIN))
 
-		if SystemInfo["HasMultiBoot"] and self.list[self.selection] == "Recovery":
+		if SystemInfo["canMultiBoot"] and self.list[self.selection] == "Recovery":
 			system('mv %s/disk.img %s/disk.img' %(self.WORKDIR, self.MAINDEST))
 		else:
 			cmdlist.append('echo "rename this file to "force" to force an update without confirmation" > %s/noforce' %self.MAINDEST)
