@@ -172,9 +172,15 @@ class ServiceInfo(Converter, object):
 	def getText(self):
 		service = self.source.service
 		info = service and service.info()
-		if info:
-			if self.type == self.APID:
+		if info and info.getInfoString(iServiceInformation.sServiceref).split(':')[2] != "2":
+			if self.type == self.XRES:
+				return self.getServiceInfoString(info, iServiceInformation.sVideoWidth)
+			elif self.type == self.YRES:
+				return self.getServiceInfoString(info, iServiceInformation.sVideoHeight)
+			elif self.type == self.APID:
 				return self.getServiceInfoString(info, iServiceInformation.sAudioPID)
+			elif self.type == self.VPID:
+				return self.getServiceInfoString(info, iServiceInformation.sVideoPID)
 			elif self.type == self.PCRPID:
 				return self.getServiceInfoString(info, iServiceInformation.sPCRPID)
 			elif self.type == self.PMTPID:
@@ -187,19 +193,12 @@ class ServiceInfo(Converter, object):
 				return self.getServiceInfoString(info, iServiceInformation.sONID)
 			elif self.type == self.SID:
 				return self.getServiceInfoString(info, iServiceInformation.sSID)
+			elif self.type == self.FRAMERATE:
+				return self.getServiceInfoString(info, iServiceInformation.sFrameRate, lambda x: _("%d fps") % ((x+500)/1000))
 			elif self.type == self.TRANSFERBPS:
 				return self.getServiceInfoString(info, iServiceInformation.sTransferBPS, lambda x: _("%d kB/s") % (x/1024))
 			elif self.type == self.HAS_HBBTV:
 				return info.getInfoString(iServiceInformation.sHBBTVUrl)
-			elif info.getInfoString(iServiceInformation.sServiceref).split(':')[2] != "2":
-				if self.type == self.XRES:
-					return self.getServiceInfoString(info, iServiceInformation.sVideoWidth)
-				elif self.type == self.YRES:
-					return self.getServiceInfoString(info, iServiceInformation.sVideoHeight)
-				elif self.type == self.FRAMERATE:
-					return self.getServiceInfoString(info, iServiceInformation.sFrameRate, lambda x: _("%d fps") % ((x+500)/1000))
-				elif self.type == self.VPID:
-					return self.getServiceInfoString(info, iServiceInformation.sVideoPID)
 		return ""
 
 	text = property(getText)
