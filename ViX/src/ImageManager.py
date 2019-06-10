@@ -739,11 +739,13 @@ class ImageBackup(Screen):
 		self.KERNELBIN = getMachineKernelFile()
 		self.UBINIZE_ARGS = getMachineUBINIZE()
 		self.MKUBIFS_ARGS = getMachineMKUBIFS()
+		self.ROOTFSTYPE = getImageFileSystem().strip()
 		self.ROOTFSSUBDIR = "linuxrootfs1"
 		self.EMMCIMG = "none"
 		self.MTDBOOT = "none"
 		if SystemInfo["canBackupEMC"]:
 			(self.EMMCIMG, self.MTDBOOT) = SystemInfo["canBackupEMC"]
+		print '[ImageManager] canBackupEMC:',SystemInfo["canBackupEMC"]
 		self.KERN = "mmc"
 		self.rootdir = 0
 		if SystemInfo["canMultiBoot"]:
@@ -781,7 +783,7 @@ class ImageBackup(Screen):
 		print '[ImageManager] Root File:',self.ROOTFSFILE
 		print '[ImageManager] MTD Kernel:',self.MTDKERNEL
 		print '[ImageManager] MTD Root:',self.MTDROOTFS
-		print '[ImageManager] Type:',getImageFileSystem()
+		print '[ImageManager] ROOTFSTYPE:',self.ROOTFSTYPE
 		print '[ImageManager] MAINDESTROOT:',self.MAINDESTROOT
 		print '[ImageManager] MAINDEST:',self.MAINDEST
 		print '[ImageManager] MAINDEST2:',self.MAINDEST2
@@ -976,7 +978,7 @@ class ImageBackup(Screen):
 
 	def doBackup2(self):
 		print '[ImageManager] Stage2: Making Root Image.'
-		if "jffs2" in self.ROOTFSFILE:
+		if "jffs2" in self.ROOTFSTYPE.split():
 			print '[ImageManager] Stage2: JFFS2 Detected.'
 			self.ROOTFSTYPE = 'jffs2'
 			if getMachineBuild() == 'gb800solo':
@@ -985,24 +987,7 @@ class ImageBackup(Screen):
 				JFFS2OPTIONS = " --disable-compressor=lzo --eraseblock=0x20000 -n -l"
 			self.commands.append('mount --bind / %s/root' % self.TMPDIR)
 			self.commands.append('mkfs.jffs2 --root=%s/root --faketime --output=%s/rootfs.jffs2 %s' % (self.TMPDIR, self.WORKDIR, JFFS2OPTIONS))
-		elif "tar.bz2" in self.ROOTFSFILE:
-			print '[ImageManager] Stage2: TAR.BZIP Detected.'
-			self.ROOTFSTYPE = "tar.bz2"
-			if SystemInfo["canMultiBoot"]:
-				self.commands.append('mount /dev/%s %s/root' %(self.MTDROOTFS, self.TMPDIR))
-			else:
-				self.commands.append('mount --bind / %s/root' % self.TMPDIR)
-			if SystemInfo["HasRootSubdir"]:
-				self.commands.append("/bin/tar -cf %s/rootfs.tar -C %s/root/%s --exclude ./var/nmbd --exclude ./.resizerootfs --exclude ./.resize-rootfs --exclude ./.resize-linuxrootfs --exclude ./.resize-userdata --exclude ./var/lib/samba/private/msg.sock ." % (self.WORKDIR, self.TMPDIR, self.ROOTFSSUBDIR))
-			else:
-				self.commands.append("/bin/tar -cf %s/rootfs.tar -C %s/root --exclude ./var/nmbd --exclude ./.resizerootfs --exclude ./.resize-rootfs --exclude ./.resize-linuxrootfs --exclude ./.resize-userdata --exclude ./var/lib/samba/private/msg.sock ." % (self.WORKDIR, self.TMPDIR))
-			self.commands.append("/usr/bin/bzip2 %s/rootfs.tar" % self.WORKDIR)
-			if getMachineBuild() in ("gb7252"):
-				self.commands.append("dd if=/dev/mmcblk0p1 of=%s/boot.bin" % self.WORKDIR)
-				self.commands.append("dd if=/dev/mmcblk0p3 of=%s/rescue.bin" % self.WORKDIR)
-				print '[ImageManager] Stage2: Create: boot dump boot.bin:',self.MODEL
-				print '[ImageManager] Stage2: Create: rescue dump rescue.bin:',self.MODEL
-		else:
+		elif "ubi" in self.ROOTFSTYPE.split():
 			print '[ImageManager] Stage2: UBIFS Detected.'
 			self.ROOTFSTYPE = 'ubifs'
 			output = open('%s/ubinize.cfg' % self.WORKDIR, 'w')
@@ -1042,6 +1027,23 @@ class ImageBackup(Screen):
 				self.commands.append('touch %s/root.ubi' % self.WORKDIR)
 				self.commands.append('mkfs.ubifs -r %s/root -o %s/root.ubi %s' % (self.TMPDIR, self.WORKDIR, self.MKUBIFS_ARGS))
 				self.commands.append('ubinize -o %s/rootfs.ubifs %s %s/ubinize.cfg' % (self.WORKDIR, self.UBINIZE_ARGS, self.WORKDIR))
+		else:
+			print '[ImageManager] Stage2: TAR.BZIP Detected.'
+			self.ROOTFSTYPE = "tar.bz2"
+			if SystemInfo["canMultiBoot"]:
+				self.commands.append('mount /dev/%s %s/root' %(self.MTDROOTFS, self.TMPDIR))
+			else:
+				self.commands.append('mount --bind / %s/root' % self.TMPDIR)
+			if SystemInfo["HasRootSubdir"]:
+				self.commands.append("/bin/tar -cf %s/rootfs.tar -C %s/root/%s --exclude ./var/nmbd --exclude ./.resizerootfs --exclude ./.resize-rootfs --exclude ./.resize-linuxrootfs --exclude ./.resize-userdata --exclude ./var/lib/samba/private/msg.sock ." % (self.WORKDIR, self.TMPDIR, self.ROOTFSSUBDIR))
+			else:
+				self.commands.append("/bin/tar -cf %s/rootfs.tar -C %s/root --exclude ./var/nmbd --exclude ./.resizerootfs --exclude ./.resize-rootfs --exclude ./.resize-linuxrootfs --exclude ./.resize-userdata --exclude ./var/lib/samba/private/msg.sock ." % (self.WORKDIR, self.TMPDIR))
+			self.commands.append("/usr/bin/bzip2 %s/rootfs.tar" % self.WORKDIR)
+			if getMachineBuild() in ("gb7252"):
+				self.commands.append("dd if=/dev/mmcblk0p1 of=%s/boot.bin" % self.WORKDIR)
+				self.commands.append("dd if=/dev/mmcblk0p3 of=%s/rescue.bin" % self.WORKDIR)
+				print '[ImageManager] Stage2: Create: boot dump boot.bin:',self.MODEL
+				print '[ImageManager] Stage2: Create: rescue dump rescue.bin:',self.MODEL
 		print '[ImageManager] ROOTFSTYPE:',self.ROOTFSTYPE
 		self.Console.eBatch(self.commands, self.Stage2Complete, debug=False)
 
