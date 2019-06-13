@@ -175,6 +175,10 @@ def resolveFilename(scope, base="", path_prefix=None):
 			path = file
 			print "[Directories] DEBUG display resolveFilename: Found '%s'" % path
 
+	else:
+		path, flags = defaultPaths.get(scope, ("/", PATH_DONTCREATE))
+		path = os.path.normpath(os.path.join(path, base))
+
 	# fallbackPath = fallbackPaths.get(scope)
 	#
 	# if fallbackPath and not fileExists(path + base):
