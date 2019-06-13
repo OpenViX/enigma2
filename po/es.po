@@ -12617,6 +12617,51 @@ msgstr "Auto Diseqc"
 
 msgid "Multiboot ERROR! - invalid STARTUP in boot partition."
 msgstr "Multiboot ERROR! - STARTUP inválido en la partición de arranque."
+
+msgid "Turn on the power LED."
+msgstr "Encienda el LED de alimentación."
+
+msgid "Power LED can be turned on or off here."
+msgstr "El LED puede encenderse o apagarse aquí."
+
+msgid "Standby LED"
+msgstr "LED en espera"
+
+msgid "Deep Standby LED"
+msgstr "LED en reposo profundo"
+
+msgid "Turn on the power LED during deep standby."
+msgstr "Encienda el LED de encendido durante la espera profunda."
+
+msgid "Power LED State when Running."
+msgstr "Estado del LED durante la ejecución."
+
+msgid "Power LED State in Standby"
+msgstr "Estado del LED en modo de espera"
+
+msgid "Set LED Color or disable the LED."
+msgstr "Fije el color del LED o deshabilite el LED."
+
+msgid "Power LED State in Deep-Standby"
+msgstr "Estado del LED en modo de espera profunda"
+
+msgid "PowerControl FrontDisplay Normal Mode"
+msgstr "Control Panel Frontal Display Modo Normal"
+
+msgid "PowerControl FrontDisplay Standby Mode"
+msgstr "Control Panel Frontal Display Modo Reposo"
+
+msgid "PowerControl FrontDisplay Suspend Mode"
+msgstr "Control Panel Frontal Display Modo Suspensión"
+
+msgid "This option allows you to Power Off the display."
+msgstr "Esta opción le permite apagar la pantalla."
+
+msgid "Show in Standby"
+msgstr "Mostrar en modo de espera"
+
+msgid "This option allows you choose how to display the Time or nothing in Standby"
+msgstr "Esta opción le permite elegir cómo mostrar la hora o nada en modo de espera"
 																		   
 #~ msgid "3d mode"
 #~ msgstr "Modo 3D"
