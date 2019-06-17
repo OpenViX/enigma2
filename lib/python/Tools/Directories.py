@@ -123,6 +123,11 @@ def resolveFilename(scope, base="", path_prefix=None):
 			print "[Directories] Error %d: Couldn't create directory '%s' (%s)" % (e.errno, path, os.strerror(e.error))
 			return None
 
+	suffix = None
+	data = base.split(":", 1)
+	if len(data) > 1:
+		base = data[0]
+		suffix = data[1]
 	path = base
 	if scope in (SCOPE_CURRENT_SKIN, SCOPE_ACTIVE_SKIN):
 		from Components.config import config
@@ -213,6 +218,8 @@ def resolveFilename(scope, base="", path_prefix=None):
 
 	if os.path.isdir(path) and not path.endswith("/"):
 		path += "/"
+	if suffix is not None:
+		path = "%s:%s" % (path, suffix)
 	print "[Directories] DEBUG: resolveFilename scope=%s, base='%s', path_prefix='%s', path='%s'" % (scopeNames.get(scope), base, path_prefix, path)
 	return path
 
