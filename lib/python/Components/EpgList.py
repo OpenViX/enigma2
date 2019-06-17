@@ -578,7 +578,7 @@ class EPGList(GUIComponent):
 		height = esize.height()
 		if self.type == EPG_TYPE_MULTI:
 			fontSize = self.eventFontSizeMulti + config.epgselection.multi_eventfs.value
-			servScale, timeScale, durScale, wideScale = skin.parameters.get("EPGMultiColumnScales", (6.5, 6.0, 4.5, 1.5))
+			servScale, timeScale, durScale, wideScale = skin.parameters.get("EPGMultiColumnScales", (12.0, 6.0, 4.5, 1.5))
 			# servW = int((fontSize + 4) * servScale)  # Service font is 4 px larger
 			servW = int(fontSize * servScale)
 			timeW = int(fontSize * timeScale)
