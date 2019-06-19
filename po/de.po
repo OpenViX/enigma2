@@ -11007,7 +11007,7 @@ msgstr "Tunen und Fokusieren"
 msgid "Tune failed!"
 msgstr "Tunen fehlgeschlagen!"
 
-msgid "Tuner"
+msgid "Tuners &amp; scanning"
 msgstr "Empfang"
 
 msgid "Tuner Configuration"

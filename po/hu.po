@@ -11619,7 +11619,7 @@ msgstr "Hangolás és Fókusz"
 msgid "Tune failed!"
 msgstr "Hangolás sikertelen!"
 
-msgid "Tuner"
+msgid "Tuners &amp; scanning"
 msgstr "Tuner"
 
 #, fuzzy

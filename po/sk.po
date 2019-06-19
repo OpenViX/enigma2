@@ -11786,7 +11786,7 @@ msgstr "Stav tunera"
 msgid "Tune failed!"
 msgstr "Ladenie zlyhalo!"
 
-msgid "Tuner"
+msgid "Tuners &amp; scanning"
 msgstr "Tuner"
 
 #, fuzzy

@@ -11669,7 +11669,7 @@ msgstr "Налагодження та фокусування"
 msgid "Tune failed!"
 msgstr "Збій мовлення!"
 
-msgid "Tuner"
+msgid "Tuners &amp; scanning"
 msgstr "Тюнер"
 
 #, fuzzy

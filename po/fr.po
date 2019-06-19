@@ -11397,7 +11397,7 @@ msgstr "Accord et mise au point"
 msgid "Tune failed!"
 msgstr "Echec accord !"
 
-msgid "Tuner"
+msgid "Tuners &amp; scanning"
 msgstr "Tuner"
 
 msgid "Tuner Configuration"

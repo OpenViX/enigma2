@@ -11630,7 +11630,7 @@ msgstr "Настройка и фокусировка"
 msgid "Tune failed!"
 msgstr "Сбой вещания!"
 
-msgid "Tuner"
+msgid "Tuners &amp; scanning"
 msgstr "Тюнер"
 
 #, fuzzy

@@ -13394,7 +13394,7 @@ msgid "Tune failed!"
 msgstr "Dostrojenie nie powiodło się!"
 
 #
-msgid "Tuner"
+msgid "Tuners &amp; scanning"
 msgstr ""
 
 #

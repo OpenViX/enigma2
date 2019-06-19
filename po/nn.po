@@ -12377,7 +12377,7 @@ msgid "Tune failed!"
 msgstr "Søking feilet!"
 
 #
-msgid "Tuner"
+msgid "Tuners &amp; scanning"
 msgstr "Tuner"
 
 msgid "Tuner Configuration"

@@ -11336,7 +11336,7 @@ msgstr ""
 msgid "Tune failed!"
 msgstr ""
 
-msgid "Tuner"
+msgid "Tuners &amp; scanning"
 msgstr "Тунер"
 
 #, fuzzy

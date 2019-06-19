@@ -11066,7 +11066,7 @@ msgstr "Ayarlama ve odaklanma"
 msgid "Tune failed!"
 msgstr "Kanal geçişi başarısız!"
 
-msgid "Tuner"
+msgid "Tuners &amp; scanning"
 msgstr "Alıcı"
 
 msgid "Tuner Configuration"

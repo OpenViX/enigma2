@@ -11668,7 +11668,7 @@ msgstr "Stare tuner"
 msgid "Tune failed!"
 msgstr "Acordare esuata!"
 
-msgid "Tuner"
+msgid "Tuners &amp; scanning"
 msgstr "Tuner"
 
 #, fuzzy

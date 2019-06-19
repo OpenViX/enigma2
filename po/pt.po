@@ -13385,7 +13385,7 @@ msgid "Tune failed!"
 msgstr "Sintonização falhou!"
 
 #
-msgid "Tuner"
+msgid "Tuners &amp; scanning"
 msgstr "Sintonizador"
 
 #

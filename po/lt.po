@@ -11780,7 +11780,7 @@ msgstr "Imtuvo būsena  "
 msgid "Tune failed!"
 msgstr "Suderinimas nepavyko!"
 
-msgid "Tuner"
+msgid "Tuners &amp; scanning"
 msgstr "Imtuvas"
 
 #, fuzzy

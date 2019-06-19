@@ -11714,7 +11714,7 @@ msgstr "สถานะของ Tuner"
 msgid "Tune failed!"
 msgstr "ปรับค่าล้มเหลว!"
 
-msgid "Tuner"
+msgid "Tuners &amp; scanning"
 msgstr "Tuner"
 
 #, fuzzy

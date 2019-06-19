@@ -12469,7 +12469,7 @@ msgid "Tune failed!"
 msgstr "فشل التوليف"
 
 #
-msgid "Tuner"
+msgid "Tuners &amp; scanning"
 msgstr "الموالف"
 
 #, fuzzy

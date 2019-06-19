@@ -12939,7 +12939,7 @@ msgid "Tune failed!"
 msgstr "Greška tunera!"
 
 #
-msgid "Tuner"
+msgid "Tuners &amp; scanning"
 msgstr "Tuner"
 
 #

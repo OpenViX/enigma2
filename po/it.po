@@ -13073,7 +13073,7 @@ msgid "Tune failed!"
 msgstr "Sintonia fallita!"
 
 #
-msgid "Tuner"
+msgid "Tuners &amp; scanning"
 msgstr "Tuner"
 
 #
