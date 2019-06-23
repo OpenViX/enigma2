@@ -15,7 +15,7 @@ SCOPE_TRANSPONDERDATA = 0
 SCOPE_SYSETC = 1
 SCOPE_FONTS = 2
 SCOPE_SKIN = 3
-SCOPE_SKIN_IMAGE = 4  #  DEBUG: How is this different from SCOPE_SKIN?
+SCOPE_SKIN_IMAGE = 4  # DEBUG: How is this different from SCOPE_SKIN?
 SCOPE_USERETC = 5  # DEBUG: Not used in Enigma2.
 SCOPE_CONFIG = 6
 SCOPE_LANGUAGE = 7
@@ -331,7 +331,14 @@ def fileCheck(f, mode="r"):
 	return fileExists(f, mode) and f
 
 def fileHas(f, content, mode="r"):
-	return fileExists(f, mode) and content in open(f, mode).read()
+	result = False
+	if fileExists(f, mode):
+		file = open(f, mode)
+		text = file.read()
+		file.close()
+		if content in text:
+			result = True
+	return result
 
 def getRecordingFilename(basename, dirname=None):
 	# Filter out non-allowed characters.
@@ -460,7 +467,7 @@ def moveFiles(fileList):
 			print "[Directories] Moving files in background."
 		else:
 			print "[Directories] Error %d: Moving file '%s' to '%s'! (%s)" % (e.errno, item[0], item[1], os.strerror(e.error))
-			errorFlag = True 
+			errorFlag = True
 	if errorFlag:
 		print "[Directories] Reversing renamed files due to error."
 		for item in movedList:
@@ -508,4 +515,4 @@ def mediafilesInUse(session):
 	return set([file for file in files if not(filename and file.startswith(filename) and files.count(filename) < 2)])
 
 def shellquote(s):
-    return "'" + s.replace("'", "'\\''") + "'"
+	return "'" + s.replace("'", "'\\''") + "'"
