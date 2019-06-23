@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
+import traceback
 
 from enigma import eEnv, getDesktop
 from re import compile
@@ -252,6 +253,7 @@ def resolveFilename(scope, base="", path_prefix=None):
 			prefix = " (path_prefix='%s')" % path_prefix
 		print "[Directories] Warning: resolveFilename could not resolve '%s' for scope '%s'%s" % (path, scopeNames.get(scope), prefix)
 		print "[Directories]          Searched in:", resolveList
+		traceback.print_stack()
 	print "[Directories] DEBUG: resolveFilename scope=%s, base='%s', path_prefix='%s', path='%s'" % (scopeNames.get(scope), base, path_prefix, path)
 	return path
 
