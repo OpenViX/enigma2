@@ -37,6 +37,33 @@ SCOPE_DEFAULTPARTITIONMOUNTDIR = 25
 
 SCOPE_CURRENT_LCDSKIN = 30
 
+scopeNames = {
+	SCOPE_TRANSPONDERDATA: "SCOPE_TRANSPONDERDATA",
+	SCOPE_SYSETC: "SCOPE_SYSETC",
+	SCOPE_FONTS: "SCOPE_FONTS",
+	SCOPE_SKIN: "SCOPE_SKIN",
+	SCOPE_SKIN_IMAGE: "SCOPE_SKIN_IMAGE",
+	SCOPE_USERETC: "SCOPE_USERETC",
+	SCOPE_CONFIG: "SCOPE_CONFIG",
+	SCOPE_LANGUAGE: "SCOPE_LANGUAGE",
+	SCOPE_HDD: "SCOPE_HDD",
+	SCOPE_PLUGINS: "SCOPE_PLUGINS",
+	SCOPE_MEDIA: "SCOPE_MEDIA",
+	SCOPE_PLAYLIST: "SCOPE_PLAYLIST",
+	SCOPE_CURRENT_SKIN: "SCOPE_CURRENT_SKIN",
+	SCOPE_METADIR: "SCOPE_METADIR",
+	SCOPE_CURRENT_PLUGIN: "SCOPE_CURRENT_PLUGIN",
+	SCOPE_TIMESHIFT: "SCOPE_TIMESHIFT",
+	SCOPE_ACTIVE_SKIN: "SCOPE_ACTIVE_SKIN",
+	SCOPE_LCDSKIN: "SCOPE_LCDSKIN",
+	SCOPE_ACTIVE_LCDSKIN: "SCOPE_ACTIVE_LCDSKIN",
+	SCOPE_AUTORECORD: "SCOPE_AUTORECORD",
+	SCOPE_DEFAULTDIR: "SCOPE_DEFAULTDIR",
+	SCOPE_DEFAULTPARTITION: "SCOPE_DEFAULTPARTITION",
+	SCOPE_DEFAULTPARTITIONMOUNTDIR: "SCOPE_DEFAULTPARTITIONMOUNTDIR",
+	SCOPE_CURRENT_LCDSKIN: "SCOPE_CURRENT_LCDSKIN"
+}
+
 PATH_CREATE = 0
 PATH_DONTCREATE = 1
 
@@ -62,45 +89,19 @@ defaultPaths = {
 	SCOPE_METADIR: (eEnv.resolve("${datadir}/meta"), PATH_CREATE)
 }
 
-FILE_COPY = 0  # Copy files from fallback dir to the basedir.
-FILE_MOVE = 1  # Move files.
-PATH_COPY = 2  # Copy the complete fallback dir to the basedir.
-PATH_MOVE = 3  # Move the fallback dir to the basedir (can be used for changes in paths).
+# FILE_COPY = 0  # Copy files from fallback dir to the basedir.
+# FILE_MOVE = 1  # Move files.
+# PATH_COPY = 2  # Copy the complete fallback dir to the basedir.
+# PATH_MOVE = 3  # Move the fallback dir to the basedir (can be used for changes in paths).
 
-fallbackPaths = {
-	SCOPE_CONFIG: [("/home/root/", FILE_MOVE), (eEnv.resolve("${datadir}/enigma2/defaults/"), FILE_COPY)],
-	SCOPE_HDD: [("/media/hdd/movies", PATH_MOVE)],  # OpenATV uses "movie"!
-	SCOPE_AUTORECORD: [("/media/hdd/movie", PATH_MOVE)],
-	SCOPE_TIMESHIFT: [("/media/hdd/timeshift", PATH_MOVE)]
-}
+# fallbackPaths = {
+# 	SCOPE_CONFIG: [("/home/root/", FILE_MOVE), (eEnv.resolve("${datadir}/enigma2/defaults/"), FILE_COPY)],
+# 	SCOPE_HDD: [("/media/hdd/movies", PATH_MOVE)],  # OpenATV uses "movie"!
+# 	SCOPE_AUTORECORD: [("/media/hdd/movie", PATH_MOVE)],
+# 	SCOPE_TIMESHIFT: [("/media/hdd/timeshift", PATH_MOVE)]
+# }
 
 def resolveFilename(scope, base="", path_prefix=None):
-	scopeNames = {
-		0: "SCOPE_TRANSPONDERDATA",
-		1: "SCOPE_SYSETC",
-		2: "SCOPE_FONTS",
-		3: "SCOPE_SKIN",
-		4: "SCOPE_SKIN_IMAGE",
-		5: "SCOPE_USERETC",
-		6: "SCOPE_CONFIG",
-		7: "SCOPE_LANGUAGE",
-		8: "SCOPE_HDD",
-		9: "SCOPE_PLUGINS",
-		10: "SCOPE_MEDIA",
-		11: "SCOPE_PLAYLIST",
-		12: "SCOPE_CURRENT_SKIN",
-		16: "SCOPE_METADIR",
-		17: "SCOPE_CURRENT_PLUGIN",
-		18: "SCOPE_TIMESHIFT",
-		19: "SCOPE_ACTIVE_SKIN",
-		20: "SCOPE_LCDSKIN",
-		21: "SCOPE_ACTIVE_LCDSKIN",
-		22: "SCOPE_AUTORECORD",
-		23: "SCOPE_DEFAULTDIR",
-		24: "SCOPE_DEFAULTPARTITION",
-		25: "SCOPE_DEFAULTPARTITIONMOUNTDIR",
-		30: "SCOPE_CURRENT_LCDSKIN"
-	}
 	# You can only use the ~/ if we have a prefix directory.
 	if base.startswith("~/"):
 		assert path_prefix is not None  # Assert only works in debug mode!
@@ -108,12 +109,10 @@ def resolveFilename(scope, base="", path_prefix=None):
 			base = os.path.join(path_prefix, base[2:])
 		else:
 			print "[Directories] Warning: resolveFilename called with base starting with '~/' but 'path_prefix' is None!"
-
 	# Don't further resolve absolute paths.
 	if base.startswith("/"):
-		print "[Directories] DEBUG: resolveFilename absolute path scope=%s, base='%s', path_prefix='%s'" % (scopeNames.get(scope), base, path_prefix)
+		print "[Directories] DEBUG: resolveFilename (Absolute path) scope=%s, base='%s', path_prefix='%s'" % (scopeNames.get(scope), base, path_prefix)
 		return base
-
 	# Ensure that the defaultPaths directories that should exist do exist.
 	path, flag = defaultPaths.get(scope, ("/", PATH_DONTCREATE))
 	if flag == PATH_CREATE and not pathExists(path):
@@ -122,13 +121,14 @@ def resolveFilename(scope, base="", path_prefix=None):
 		except OSError, e:
 			print "[Directories] Error %d: Couldn't create directory '%s' (%s)" % (e.errno, path, os.strerror(e.error))
 			return None
-
+	# Remove any suffix data and restore it at the end.
 	suffix = None
 	data = base.split(":", 1)
 	if len(data) > 1:
 		base = data[0]
 		suffix = data[1]
 	path = base
+	# Use the scope provided to resolve the filename.
 	if scope in (SCOPE_CURRENT_SKIN, SCOPE_ACTIVE_SKIN):
 		from Components.config import config
 		pos = config.skin.primary_skin.value.rfind("/")
@@ -146,10 +146,8 @@ def resolveFilename(scope, base="", path_prefix=None):
 		]
 		for item in resolveList:
 			file = os.path.normpath(os.path.join(item, base))
-			print "[Directories] DEBUG skin resolveFilename: Testing '%s'" % file
 			if pathExists(file):
 				path = file
-				print "[Directories] DEBUG skin resolveFilename: Found '%s'" % path
 				break
 	elif scope in (SCOPE_CURRENT_LCDSKIN, SCOPE_ACTIVE_LCDSKIN):
 		from Components.config import config
@@ -168,20 +166,17 @@ def resolveFilename(scope, base="", path_prefix=None):
 		]
 		for item in resolveList:
 			file = os.path.normpath(os.path.join(item, base))
-			print "[Directories] DEBUG display resolveFilename: Testing '%s'" % file
 			if pathExists(file):
 				path = file
-				print "[Directories] DEBUG display resolveFilename: Found '%s'" % path
 				break
 	elif scope == SCOPE_CURRENT_PLUGIN:
+		resolveList = [defaultPaths[SCOPE_PLUGINS][0]]
 		file = os.path.normpath(os.path.join(defaultPaths[SCOPE_PLUGINS][0], base))
-		print "[Directories] DEBUG display resolveFilename: Testing '%s'" % file
 		if pathExists(file):
 			path = file
-			print "[Directories] DEBUG display resolveFilename: Found '%s'" % path
-
 	else:
 		path, flags = defaultPaths.get(scope, ("/", PATH_DONTCREATE))
+		resolveList = [path]
 		path = os.path.normpath(os.path.join(path, base))
 
 	# fallbackPath = fallbackPaths.get(scope)
@@ -216,10 +211,20 @@ def resolveFilename(scope, base="", path_prefix=None):
 	# 		except Exception, e:
 	# 			print "[D] Failed to recover %s:" % (path+base), e
 
+	# If the path is a directory then ensure that it ends with a "/".
 	if os.path.isdir(path) and not path.endswith("/"):
 		path += "/"
+	# If a suffix was supplier restore it.
 	if suffix is not None:
 		path = "%s:%s" % (path, suffix)
+	# Log a warning if resolveFilename can't resolve a path.
+	if not path.startswith("/"):
+		if path_prefix is None:
+			prefix = ""
+		else:
+			prefix = " (path_prefix='%s')" % path_prefix
+		print "[Directories] Warning: resolveFilename could not resolve '%s' for scope '%s'%s" % (path, scopeNames.get(scope), prefix)
+		print "[Directories]          Searched in:", resolveList
 	print "[Directories] DEBUG: resolveFilename scope=%s, base='%s', path_prefix='%s', path='%s'" % (scopeNames.get(scope), base, path_prefix, path)
 	return path
 
