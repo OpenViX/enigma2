@@ -129,8 +129,11 @@ def resolveFilename(scope, base="", path_prefix=None):
 		base = data[0]
 		suffix = data[1]
 	path = base
-	# Use the scope provided to resolve the filename.
-	if scope in (SCOPE_CURRENT_SKIN, SCOPE_ACTIVE_SKIN):
+	# If base is "" then set path to the scope.  Otherwise use the scope to resolve the base filename.
+	if base is "":
+		path, flags = defaultPaths.get(scope, ("/", PATH_DONTCREATE))
+		path = os.path.normpath(path)
+	elif scope in (SCOPE_CURRENT_SKIN, SCOPE_ACTIVE_SKIN):
 		from Components.config import config
 		pos = config.skin.primary_skin.value.rfind("/")
 		if pos == -1:
