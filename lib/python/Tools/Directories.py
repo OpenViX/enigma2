@@ -169,6 +169,33 @@ def resolveFilename(scope, base="", path_prefix=None):
 			if pathExists(file):
 				path = file
 				break
+	elif scope == SCOPE_FONTS:
+		from Components.config import config
+		pos = config.skin.primary_skin.value.rfind("/")
+		if pos == -1:
+			skin = ""
+		else:
+			skin = config.skin.primary_skin.value[:pos + 1]
+		pos = config.skin.display_skin.value.rfind("/")
+		if pos == -1:
+			display = ""
+		else:
+			display = config.skin.display_skin.value[:pos + 1]
+		resolveList = [
+			os.path.join(defaultPaths[SCOPE_CONFIG][0], "fonts"),
+			os.path.join(defaultPaths[SCOPE_CONFIG][0], skin),
+			os.path.join(defaultPaths[SCOPE_CONFIG][0], display),
+			os.path.join(defaultPaths[SCOPE_SKIN][0], skin),
+			os.path.join(defaultPaths[SCOPE_SKIN][0], "skin_default"),
+			os.path.join(defaultPaths[SCOPE_LCDSKIN][0], display),
+			os.path.join(defaultPaths[SCOPE_LCDSKIN][0], "skin_default"),
+			defaultPaths[SCOPE_FONTS][0]
+		]
+		for item in resolveList:
+			file = os.path.normpath(os.path.join(item, base))
+			if pathExists(file):
+				path = file
+				break
 	elif scope == SCOPE_CURRENT_PLUGIN:
 		resolveList = [defaultPaths[SCOPE_PLUGINS][0]]
 		file = os.path.normpath(os.path.join(defaultPaths[SCOPE_PLUGINS][0], base))
