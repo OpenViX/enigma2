@@ -72,22 +72,27 @@ defaultPaths = {
 	SCOPE_TRANSPONDERDATA: (eEnv.resolve("${sysconfdir}/"), PATH_DONTCREATE),
 	SCOPE_SYSETC: (eEnv.resolve("${sysconfdir}/"), PATH_DONTCREATE),
 	SCOPE_FONTS: (eEnv.resolve("${datadir}/fonts/"), PATH_DONTCREATE),
-	SCOPE_CONFIG: (eEnv.resolve("${sysconfdir}/enigma2/"), PATH_CREATE),
-	SCOPE_PLUGINS: (eEnv.resolve("${libdir}/enigma2/python/Plugins/"), PATH_CREATE),
-	SCOPE_LANGUAGE: (eEnv.resolve("${datadir}/enigma2/po/"), PATH_DONTCREATE),
 	SCOPE_SKIN: (eEnv.resolve("${datadir}/enigma2/"), PATH_DONTCREATE),
-	SCOPE_LCDSKIN: (eEnv.resolve("${datadir}/enigma2/display/"), PATH_DONTCREATE),
 	SCOPE_SKIN_IMAGE: (eEnv.resolve("${datadir}/enigma2/"), PATH_DONTCREATE),
+	SCOPE_USERETC: ("", PATH_DONTCREATE),  # User home directory
+	SCOPE_CONFIG: (eEnv.resolve("${sysconfdir}/enigma2/"), PATH_CREATE),
+	SCOPE_LANGUAGE: (eEnv.resolve("${datadir}/enigma2/po/"), PATH_DONTCREATE),
 	SCOPE_HDD: ("/media/hdd/movie/", PATH_DONTCREATE),
-	SCOPE_TIMESHIFT: ("/media/hdd/timeshift/", PATH_DONTCREATE),
-	SCOPE_AUTORECORD: ("/media/hdd/movie/", PATH_DONTCREATE),
+	SCOPE_PLUGINS: (eEnv.resolve("${libdir}/enigma2/python/Plugins/"), PATH_CREATE),
 	SCOPE_MEDIA: ("/media/", PATH_DONTCREATE),
 	SCOPE_PLAYLIST: (eEnv.resolve("${sysconfdir}/enigma2/playlist/"), PATH_CREATE),
-	SCOPE_USERETC: ("", PATH_DONTCREATE),  # User home directory
+	SCOPE_CURRENT_SKIN: (eEnv.resolve("${datadir}/enigma2/"), PATH_DONTCREATE),
+	SCOPE_METADIR: (eEnv.resolve("${datadir}/meta"), PATH_CREATE),
+	SCOPE_CURRENT_PLUGIN: (eEnv.resolve("${libdir}/enigma2/python/Plugins/"), PATH_CREATE),
+	SCOPE_TIMESHIFT: ("/media/hdd/timeshift/", PATH_DONTCREATE),
+	SCOPE_ACTIVE_SKIN: (eEnv.resolve("${datadir}/enigma2/"), PATH_DONTCREATE),
+	SCOPE_LCDSKIN: (eEnv.resolve("${datadir}/enigma2/display/"), PATH_DONTCREATE),
+	SCOPE_ACTIVE_LCDSKIN: ("${datadir}/enigma2/display/", PATH_DONTCREATE),
+	SCOPE_AUTORECORD: ("/media/hdd/movie/", PATH_DONTCREATE),
 	SCOPE_DEFAULTDIR: (eEnv.resolve("${datadir}/enigma2/defaults/"), PATH_CREATE),
 	SCOPE_DEFAULTPARTITION: ("/dev/mtdblock6", PATH_DONTCREATE),
 	SCOPE_DEFAULTPARTITIONMOUNTDIR: (eEnv.resolve("${datadir}/enigma2/dealer"), PATH_CREATE),
-	SCOPE_METADIR: (eEnv.resolve("${datadir}/meta"), PATH_CREATE)
+	SCOPE_CURRENT_LCDSKIN: ("${datadir}/enigma2/display/", PATH_DONTCREATE)
 }
 
 # FILE_COPY = 0  # Copy files from fallback dir to the basedir.
@@ -114,8 +119,12 @@ def resolveFilename(scope, base="", path_prefix=None):
 	if base.startswith("/"):
 		print "[Directories] DEBUG: resolveFilename (Absolute path) scope=%s, base='%s', path_prefix='%s'" % (scopeNames.get(scope), base, path_prefix)
 		return base
+	# If an invalid scope is specified log an error and return None.
+	if scope not in defaultPaths:
+		print "[Directories] Error: Invalid scope=%d provided to resolveFilename!" % scope
+		return None
 	# Ensure that the defaultPaths directories that should exist do exist.
-	path, flag = defaultPaths.get(scope, ("/", PATH_DONTCREATE))
+	path, flag = defaultPaths.get(scope)
 	if flag == PATH_CREATE and not pathExists(path):
 		try:
 			os.makedirs(path)
@@ -131,9 +140,10 @@ def resolveFilename(scope, base="", path_prefix=None):
 	path = base
 	# If base is "" then set path to the scope.  Otherwise use the scope to resolve the base filename.
 	if base is "":
-		path, flags = defaultPaths.get(scope, ("/", PATH_DONTCREATE))
+		path, flags = defaultPaths.get(scope)
 		path = os.path.normpath(path)
 	elif scope in (SCOPE_CURRENT_SKIN, SCOPE_ACTIVE_SKIN):
+		# This import must be here as this module finds the config file as part of the config initialisation.
 		from Components.config import config
 		pos = config.skin.primary_skin.value.rfind("/")
 		if pos == -1:
@@ -142,11 +152,11 @@ def resolveFilename(scope, base="", path_prefix=None):
 			skin = config.skin.primary_skin.value[:pos + 1]
 		resolveList = [
 			os.path.join(defaultPaths[SCOPE_CONFIG][0], skin),
-			defaultPaths[SCOPE_CONFIG][0],  # Deprecated top level of SCOPE_CONFIG directory.
 			os.path.join(defaultPaths[SCOPE_SKIN][0], skin),
-			defaultPaths[SCOPE_SKIN][0],  # Deprecated top level of SCOPE_SKIN directory.
 			os.path.join(defaultPaths[SCOPE_SKIN][0], "skin_%d" % screenResolution),
-			os.path.join(defaultPaths[SCOPE_SKIN][0], "skin_default")
+			os.path.join(defaultPaths[SCOPE_SKIN][0], "skin_default"),
+			defaultPaths[SCOPE_CONFIG][0],  # Deprecated top level of SCOPE_CONFIG directory.
+			defaultPaths[SCOPE_SKIN][0]  # Deprecated top level of SCOPE_SKIN directory.
 		]
 		for item in resolveList:
 			file = os.path.normpath(os.path.join(item, base))
@@ -154,6 +164,7 @@ def resolveFilename(scope, base="", path_prefix=None):
 				path = file
 				break
 	elif scope in (SCOPE_CURRENT_LCDSKIN, SCOPE_ACTIVE_LCDSKIN):
+		# This import must be here as this module finds the config file as part of the config initialisation.
 		from Components.config import config
 		pos = config.skin.display_skin.value.rfind("/")
 		if pos == -1:
@@ -162,11 +173,11 @@ def resolveFilename(scope, base="", path_prefix=None):
 			skin = config.skin.display_skin.value[:pos + 1]
 		resolveList = [
 			os.path.join(defaultPaths[SCOPE_CONFIG][0], "display", skin),
-			defaultPaths[SCOPE_CONFIG][0],  # Deprecated top level of SCOPE_CONFIG directory.
 			os.path.join(defaultPaths[SCOPE_LCDSKIN][0], skin),
-			defaultPaths[SCOPE_LCDSKIN][0],  # Deprecated top level of SCOPE_LCDSKIN directory.
 			os.path.join(defaultPaths[SCOPE_LCDSKIN][0], "skin_%s" % lcdResolution),
-			os.path.join(defaultPaths[SCOPE_LCDSKIN][0], "skin_default")
+			os.path.join(defaultPaths[SCOPE_LCDSKIN][0], "skin_default"),
+			defaultPaths[SCOPE_CONFIG][0],  # Deprecated top level of SCOPE_CONFIG directory.
+			defaultPaths[SCOPE_LCDSKIN][0]  # Deprecated top level of SCOPE_LCDSKIN directory.
 		]
 		for item in resolveList:
 			file = os.path.normpath(os.path.join(item, base))
@@ -174,6 +185,7 @@ def resolveFilename(scope, base="", path_prefix=None):
 				path = file
 				break
 	elif scope == SCOPE_FONTS:
+		# This import must be here as this module finds the config file as part of the config initialisation.
 		from Components.config import config
 		pos = config.skin.primary_skin.value.rfind("/")
 		if pos == -1:
@@ -187,13 +199,13 @@ def resolveFilename(scope, base="", path_prefix=None):
 			display = config.skin.display_skin.value[:pos + 1]
 		resolveList = [
 			os.path.join(defaultPaths[SCOPE_CONFIG][0], "fonts"),
-			os.path.join(defaultPaths[SCOPE_CONFIG][0], skin),
-			os.path.join(defaultPaths[SCOPE_CONFIG][0], display),
 			os.path.join(defaultPaths[SCOPE_SKIN][0], skin),
 			os.path.join(defaultPaths[SCOPE_SKIN][0], "skin_default"),
 			os.path.join(defaultPaths[SCOPE_LCDSKIN][0], display),
 			os.path.join(defaultPaths[SCOPE_LCDSKIN][0], "skin_default"),
-			defaultPaths[SCOPE_FONTS][0]
+			defaultPaths[SCOPE_FONTS][0],
+			os.path.join(defaultPaths[SCOPE_CONFIG][0], skin),  # Deprecated skin in SCOPE_CONFIG directory.
+			os.path.join(defaultPaths[SCOPE_CONFIG][0], display)  # Deprecated display in SCOPE_CONFIG directory.
 		]
 		for item in resolveList:
 			file = os.path.normpath(os.path.join(item, base))
@@ -206,7 +218,7 @@ def resolveFilename(scope, base="", path_prefix=None):
 		if pathExists(file):
 			path = file
 	else:
-		path, flags = defaultPaths.get(scope, ("/", PATH_DONTCREATE))
+		path, flags = defaultPaths.get(scope)
 		resolveList = [path]
 		path = os.path.normpath(os.path.join(path, base))
 
@@ -286,7 +298,6 @@ def defaultRecordingLocation(candidate=None):
 	except OSError:
 		path = "/media/hdd"
 	if not pathExists(path):
-		path = ""
 		# Find the largest local disk.
 		from Components import Harddisk
 		mounts = [m for m in Harddisk.getProcMounts() if m[1].startswith("/media/")]
@@ -294,7 +305,7 @@ def defaultRecordingLocation(candidate=None):
 		path = bestRecordingLocation([m for m in mounts if m[0].startswith("/dev/")])
 		# If we haven't found a viable candidate yet, try remote mounts.
 		if not path:
-			path = bestRecordingLocation(mounts)
+			path = bestRecordingLocation([m for m in mounts if not m[0].startswith("/dev/")])  # bestRecordingLocation(mounts)
 	if path:
 		# If there's a movie subdir, we'd probably want to use that.
 		movie = os.path.join(path, "movie")
