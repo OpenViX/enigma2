@@ -24,6 +24,10 @@
         <item level="2" text="Repeat how often" requires="config.imagemanager.schedule" description="Set the repeat interval of backup schedule.">config.imagemanager.repeattype</item>
         <item level="2" text="Query before image backup starts" requires="config.imagemanager.schedule" description="Query before starting image backup.">config.imagemanager.query</item>
         <item level="2" text="Max image backups to keep (0==all)" requires="config.imagemanager.schedule" description="Backups to keep">config.imagemanager.number_to_keep</item>
+        <item level="2" text="ImageLib_User" description="Http url for User Images">config.imagemanager.imagefeed_User</item>
+        <item level="2" text="ImageLib_ViX" description="Http url for OpenViX Images">config.imagemanager.imagefeed_ViX</item>
+        <item level="2" text="ImageLib_ATV" description="Http url for OpenATV Images">config.imagemanager.imagefeed_ATV</item>
+        <item level="2" text="ImageLib_Pli" description="Http url for OpenPli Images">config.imagemanager.imagefeed_Pli</item>
     </setup>
     <setup key="vixscriptrunner" title="Script runner settings" titleshort="Settings">
         <item level="2" text="Close window on success" description="Allows you to close the window automatically.">config.scriptrunner.close</item>
