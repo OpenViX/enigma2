@@ -27,8 +27,9 @@ from Tools.Notifications import AddPopupWithCallback
 from Tools.Directories import fileExists, fileCheck, pathExists, fileHas
 import Tools.CopyFiles
 from Tools.Multiboot import GetImagelist, GetCurrentImage, GetCurrentKern, GetCurrentRoot
-
-import urllib
+from Components.ChoiceList import ChoiceList, ChoiceEntryComponent
+from Tools.HardwareInfo import HardwareInfo
+import urllib, urllib2, json
 
 RAMCHEKFAILEDID = 'RamCheckFailedNotification'
 
@@ -53,6 +54,10 @@ config.imagemanager.autosettingsbackup = ConfigYesNo(default = True)
 config.imagemanager.query = ConfigYesNo(default=True)
 config.imagemanager.lastbackup = ConfigNumber(default=0)
 config.imagemanager.number_to_keep = ConfigNumber(default=0)
+config.imagemanager.imagefeed_User = ConfigText(default="http://192.168.0.171/openvix-builds/", fixed_size=False)
+config.imagemanager.imagefeed_ViX = ConfigText(default="http://www.openvix.co.uk/openvix-builds/", fixed_size=False)
+config.imagemanager.imagefeed_ATV = ConfigText(default="http://images.mynonpublic.com/openatv/", fixed_size=False)
+config.imagemanager.imagefeed_Pli = ConfigText(default="http://downloads.openpli.org/json", fixed_size=False)
 
 autoImageManagerTimer = None
 
@@ -288,7 +293,20 @@ class VIXImageManager(Screen):
 		self.session.openWithCallback(self.setupDone, Setup, 'viximagemanager', 'SystemPlugins/ViX', self.menu_path, PluginLanguageDomain)
 
 	def doDownload(self):
-		self.session.openWithCallback(self.populate_List, ImageManagerDownload, self.menu_path, self.BackupDirectory)
+		if SystemInfo["canMultiBoot"]:
+			self.choices = [("OpenViX", 1), ("OpenATV", 2), ("OpenPli",3), ("User Defined", 4), ]
+			self.urlchoices = [config.imagemanager.imagefeed_ViX.value, config.imagemanager.imagefeed_ATV.value, config.imagemanager.imagefeed_Pli.value, config.imagemanager.imagefeed_User.value]
+			self.message = _("Do you want to change download url")
+			self.session.openWithCallback(self.doDownload2, MessageBox, self.message, list=self.choices, default=1, simple=True)
+		else:
+			self.urli = config.imagemanager.imagefeed_ViX.value
+			self.session.openWithCallback(self.refreshList, ImageManagerDownload, self.menu_path, self.BackupDirectory, self.urli)
+
+	def doDownload2(self, retval):
+		if retval:
+			retval -= 1
+			self.urli = self.urlchoices[retval]
+			self.session.openWithCallback(self.refreshList, ImageManagerDownload, self.menu_path, self.BackupDirectory, self.urli)
 
 	def setupDone(self, test=None):
 		if config.imagemanager.folderprefix.value == '':
@@ -454,8 +472,8 @@ class VIXImageManager(Screen):
 
 
 	def keyRestore3(self, val = None):
-		if SystemInfo["HasRootSubdir"]:
-			self.restore_infobox = self.session.open(MessageBox, _("Please wait while the flash prepares, after the image is flashed, your %s will restart - to access the new image use Multiboot restart." %getMachineMake()), MessageBox.TYPE_INFO, timeout=180, enable_input=False)
+		if SystemInfo["RecoveryMode"]:
+			self.restore_infobox = self.session.open(MessageBox, _("Please wait while the flash prepares, after the image is flashed, your %s will restart - if error please use Recovery mode to restart." %getMachineMake()), MessageBox.TYPE_INFO, timeout=180, enable_input=False)
 		else:
 			self.restore_infobox = self.session.open(MessageBox, _("Please wait while the flash prepares."), MessageBox.TYPE_INFO, timeout=180, enable_input=False)
 		self.TEMPDESTROOT = self.BackupDirectory + 'imagerestore'
@@ -500,7 +518,9 @@ class VIXImageManager(Screen):
 			if SystemInfo["canMultiBoot"]:
  				if SystemInfo["HasSDmmc"]:
 					CMD = "/usr/bin/ofgwrite -r%s -k%s '%s'" % (self.MTDROOTFS, self.MTDKERNEL, MAINDEST)
-				elif SystemInfo["HasRootSubdir"] and not SystemInfo["canMode12"]:
+				elif SystemInfo["HasRootSubdir"] and not SystemInfo["canMode12"]:	#h9Combo, multibox
+					if fileExists("/boot/STARTUP") and fileExists("/boot/STARTUP_LINUX_4"):
+						copyfile("/boot/STARTUP_LINUX_%s" % self.multibootslot, "/boot/STARTUP")
 					CMD = "/usr/bin/ofgwrite -f -r -k -m%s '%s'" % (self.multibootslot, MAINDEST)
 				else:
 					CMD = "/usr/bin/ofgwrite -r -k -m%s '%s'" % (self.multibootslot, MAINDEST)
@@ -544,14 +564,13 @@ class VIXImageManager(Screen):
 
 	def ContainterFallback(self, data=None, retval=None, extra_args=None):
 		self.container.killAll()
-		slot = self.multibootslot
 		if pathExists("/tmp/startupmount/STARTUP"):
 			if  fileExists("/tmp/startupmount/STARTUP_1"):
-				copyfile("/tmp/startupmount/STARTUP_%s" % slot, "/tmp/startupmount/STARTUP")
+				copyfile("/tmp/startupmount/STARTUP_%s" % self.multibootslot, "/tmp/startupmount/STARTUP")
 			elif fileExists("/tmp/startupmount/STARTUP_LINUX_4_BOXMODE_12"):
-				copyfile("/tmp/startupmount/STARTUP_LINUX_%s_BOXMODE_1" % slot, "/tmp/startupmount/STARTUP")
+				copyfile("/tmp/startupmount/STARTUP_LINUX_%s_BOXMODE_1" % self.multibootslot, "/tmp/startupmount/STARTUP")
 			elif fileExists("/tmp/startupmount/STARTUP_LINUX_4"):
-				copyfile("/tmp/startupmount/STARTUP_LINUX_%s" % slot, "/tmp/startupmount/STARTUP")
+				copyfile("/tmp/startupmount/STARTUP_LINUX_%s" % self.multibootslot, "/tmp/startupmount/STARTUP")
 			self.session.open(TryQuitMainloop, 2)
 		else:
 			self.session.open(MessageBox, _("Multiboot ERROR! - no STARTUP in boot partition."), MessageBox.TYPE_INFO, timeout=20)
@@ -1384,7 +1403,7 @@ class ImageManagerDownload(Screen):
 		</applet>
 	</screen>"""
 
-	def __init__(self, session, menu_path, BackupDirectory):
+	def __init__(self, session, menu_path, BackupDirectory, url):
 		Screen.__init__(self, session)
 		screentitle = _("Downloads")
 		if config.usage.show_menupath.value == 'large':
@@ -1398,86 +1417,186 @@ class ImageManagerDownload(Screen):
 			title = screentitle
 			self["menu_path_compressed"] = StaticText("")
 		Screen.setTitle(self, title)
-
+		self.Pli = False
+		self.urli = url
 		self.BackupDirectory = BackupDirectory
-		self['lab1'] = Label(_("Select an image to download:"))
+		self['lab1'] = Label(_("Select an image to download for %s:" %getMachineMake()))
 		self["key_red"] = Button(_("Close"))
 		self["key_green"] = Button(_("Download"))
+		self.Downlist = []
+		self.imagesList = {}
+		self.setIndex = 0
+		self.expanded = []
+		if "pli" in self.urli:
+			self.Pli = True
+		self["list"] = ChoiceList(list=[ChoiceEntryComponent('',((_("No images found for selected download server...if password check validity")), "Waiter"))])
+		self.getImageDistro()
 
-		self.onChangedEntry = []
-		self.emlist = []
-		self['list'] = MenuList(self.emlist)
-		self.populate_List()
 
-		if not self.selectionChanged in self["list"].onSelectionChanged:
-			self["list"].onSelectionChanged.append(self.selectionChanged)
+	def getImageDistro(self):
+		self['ImageDown'] = ActionMap(["OkCancelActions", "ColorActions", "DirectionActions", "KeyboardInputActions", "MenuActions"],
+									  {
+										'cancel': self.close,
+										'red': self.close,
+										'green': self.keyDownload,
+										'ok': self.keyDownload,
+										"up": self.keyUp,
+										"down": self.keyDown,
+										"left": self.keyLeft,
+										"right": self.keyRight,
+										"upRepeated": self.keyUp,
+										"downRepeated": self.keyDown,
+										"leftRepeated": self.keyLeft,
+										"rightRepeated": self.keyRight,
+										"menu": self.close,
+									  }, -1)
 
-	def selectionChanged(self):
-		for x in self.onChangedEntry:
-			x()
+		if not path.exists(self.BackupDirectory):
+			mkdir(self.BackupDirectory, 0755)
+		from bs4 import BeautifulSoup
+		self.imagesList = {}
+		self.jsonlist = {}
+		list = []
+		self.boxtype = getMachineMake()
+		model = HardwareInfo().get_device_name()
+		if model == "dm8000":
+			model = getMachineMake()
+		imagecat = [6.0]
+		self.urlb = self.urli+self.boxtype+'/'
+		
+		if "atv" in self.urli:
+			imagecat = [6.2,6.3]
+		elif "www.openvix" in self.urli:
+			imagecat = [5.2]
 
-	def populate_List(self):
-		try:
-			self['myactions'] = ActionMap(['ColorActions', 'OkCancelActions', 'DirectionActions'],
-										  {
-										  'cancel': self.close,
-										  'red': self.close,
-										  'green': self.keyDownload,
-										  'ok': self.keyDownload,
-										  }, -1)
+		if not self.Pli and not self.imagesList:
+			for version in reversed(sorted(imagecat)):
+				newversion = _("Image Version %s") %version
+				countimage = []
+				if "atv" in self.urli:
+					self.urlb = '%s/%s/index.php?open=%s' % (self.urli,version,self.boxtype)
+				try:
+					conn = urllib2.urlopen(self.urlb)
+					html = conn.read()
+				except urllib2.HTTPError as e:
+					print "HTTP download ERROR: %s" % e.code
+					continue
 
-			if not path.exists(self.BackupDirectory):
-				mkdir(self.BackupDirectory, 0755)
+				soup = BeautifulSoup(html)
+				links = soup.find_all('a')
 
-			import urllib2
-			from bs4 import BeautifulSoup
+				for tag in links:
+					link = tag.get('href',None)
+					if link != None and link.endswith('zip') and link.find(getMachineMake()) != -1 and link.find('recovery') == -1:
+						countimage.append(str(link))
+				if len(countimage) >= 1:
+					self.imagesList[newversion] = {}
+					for image in countimage:
+						self.imagesList[newversion][image] = {}
+						self.imagesList[newversion][image]["name"] = image
+						if "atv" in self.urli:
+							self.imagesList[newversion][image]["link"] = '%s/%s/%s' % (self.urli,version,image)
+						elif "Dev" in self.urli:
+							self.imagesList[newversion][image]["link"] = '%s/%s' % (self.urlb,image)
+						else:
+							self.imagesList[newversion][image]["link"] = '%s/%s/%s' % (self.urli,self.boxtype,image)
 
-			self.boxtype = getMachineMake()
 
-			url = 'http://www.openvix.co.uk/openvix-builds/'+self.boxtype+'/'
-			conn = urllib2.urlopen(url)
-			html = conn.read()
+		if self.Pli and not self.imagesList:
+			if not self.jsonlist:
+				try:
+					urljson = '%s/%s' %(self.urli, model)
+					self.jsonlist = dict(json.load(urllib2.urlopen('%s' %urljson)))
+				except:
+					return
+			self.imagesList = self.jsonlist
 
-			soup = BeautifulSoup(html)
-			links = soup.find_all('a')
+		if self.Pli and not self.jsonlist and not self.imagesList:
+			return
 
-			del self.emlist[:]
-			for tag in links:
-				link = tag.get('href',None)
-				if link != None and link.endswith('zip') and link.find(getMachineMake()) != -1:
-					self.emlist.append(str(link))
+		for categorie in reversed(sorted(self.imagesList.keys())):
+			if categorie in self.expanded:
+				list.append(ChoiceEntryComponent('expanded',((str(categorie)), "Expander")))
+				for image in reversed(sorted(self.imagesList[categorie].keys())):
+					list.append(ChoiceEntryComponent('verticalline',((str(self.imagesList[categorie][image]['name'])), str(self.imagesList[categorie][image]['link']))))
+			else:
+				for image in self.imagesList[categorie].keys():
+					list.append(ChoiceEntryComponent('expandable',((str(categorie)), "Expander")))
+					break
+		if list:
+			self["list"].setList(list)
+			if self.setIndex:
+				self["list"].moveToIndex(self.setIndex if self.setIndex < len(list) else len(list) - 1)
+				if self["list"].l.getCurrentSelection()[0][1] == "Expander":
+					self.setIndex -= 1
+					if self.setIndex:
+						self["list"].moveToIndex(self.setIndex if self.setIndex < len(list) else len(list) - 1)
+				self.setIndex = 0
+			self.SelectionChanged()
+		else:
+			return 
 
-			self.emlist.sort()
-			self.emlist.reverse()
-		except:
-			self['myactions'] = ActionMap(['ColorActions', 'OkCancelActions', 'DirectionActions'],
-										  {
-										  'cancel': self.close,
-										  'red': self.close,
-										  }, -1)
-			self.emlist.append(" ")
-			self["list"].setList(self.emlist)
-			self["list"].show()
+	def SelectionChanged(self):
+		currentSelected = self["list"].l.getCurrentSelection()
+		if currentSelected[0][1] == "Waiter":
+			self["key_green"].setText("")
+		else:
+			if currentSelected[0][1] == "Expander":
+				self["key_green"].setText(_("Compress") if currentSelected[0][0] in self.expanded else _("Expand"))
+			else:
+				self["key_green"].setText(_("DownLoad"))
+
+	def keyLeft(self):
+		self["list"].instance.moveSelection(self["list"].instance.pageUp)
+		self.SelectionChanged()
+
+	def keyRight(self):
+		self["list"].instance.moveSelection(self["list"].instance.pageDown)
+		self.SelectionChanged()
+
+	def keyUp(self):
+		self["list"].instance.moveSelection(self["list"].instance.moveUp)
+		self.SelectionChanged()
+
+	def keyDown(self):
+		self["list"].instance.moveSelection(self["list"].instance.moveDown)
+		self.SelectionChanged()
 
 	def keyDownload(self):
-		self.sel = self['list'].getCurrent()
-		if self.sel:
-			message = _("Are you sure you want to download this image:\n ") + self.sel
-			ybox = self.session.openWithCallback(self.doDownload, MessageBox, message, MessageBox.TYPE_YESNO)
-			ybox.setTitle(_("Download confirmation"))
-		else:
-			self.session.open(MessageBox, _("There is no image to download."), MessageBox.TYPE_INFO, timeout=10)
+		currentSelected = self["list"].l.getCurrentSelection()
+		if currentSelected[0][1] == "Expander":
+			if currentSelected[0][0] in self.expanded:
+				self.expanded.remove(currentSelected[0][0])
+			else:
+				self.expanded.append(currentSelected[0][0])
+			self.getImageDistro()
 
-	def doDownload(self, answer):
+		elif currentSelected[0][1] != "Waiter":
+			self.sel = currentSelected[0][0]
+			if self.sel:
+				message = _("Are you sure you want to download this image:\n ") + self.sel
+				ybox = self.session.openWithCallback(self.doDownloadX, MessageBox, message, MessageBox.TYPE_YESNO)
+				ybox.setTitle(_("Download confirmation"))
+			else:
+				self.close()
+
+	def doDownloadX(self, answer):
 		if answer is True:
 			selectedimage = self['list'].getCurrent()
-			fileurl = 'http://www.openvix.co.uk/openvix-builds/%s/%s' % (self.boxtype, selectedimage)
-			fileloc = self.BackupDirectory + selectedimage
+			currentSelected = self["list"].l.getCurrentSelection()
+			selectedimage = currentSelected[0][0]
+			fileurl = currentSelected[0][1]
+			if "atv" in self.urli:
+				fileloc = self.BackupDirectory + selectedimage.split("/")[1]
+			else:
+				fileloc = self.BackupDirectory + selectedimage
+			print '[getImageDistro] self.urlb= %s, self.urli= %s fileurl= %s fileloc= %s' %(self.urlb, self.urli, fileurl, fileloc)
 			Tools.CopyFiles.downloadFile(fileurl, fileloc, selectedimage.replace('_usb',''))
 			for job in Components.Task.job_manager.getPendingJobs():
 				if job.name.startswith(_("Downloading")):
 					break
 			self.showJobView(job)
+			self.close()
 
 	def showJobView(self, job):
 		Components.Task.job_manager.in_background = False
@@ -1485,7 +1604,3 @@ class ImageManagerDownload(Screen):
 
 	def JobViewCB(self, in_background):
 		Components.Task.job_manager.in_background = in_background
-
-	def myclose(self, result, retval, extra_args):
-		remove(self.BackupDirectory + self.selectedimage)
-		self.close()
