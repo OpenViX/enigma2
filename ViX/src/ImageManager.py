@@ -293,14 +293,10 @@ class VIXImageManager(Screen):
 		self.session.openWithCallback(self.setupDone, Setup, 'viximagemanager', 'SystemPlugins/ViX', self.menu_path, PluginLanguageDomain)
 
 	def doDownload(self):
-		if SystemInfo["canMultiBoot"]:
-			self.choices = [("OpenViX", 1), ("OpenATV", 2), ("OpenPli",3), ("User Defined", 4), ]
-			self.urlchoices = [config.imagemanager.imagefeed_ViX.value, config.imagemanager.imagefeed_ATV.value, config.imagemanager.imagefeed_Pli.value, config.imagemanager.imagefeed_User.value]
-			self.message = _("Do you want to change download url")
-			self.session.openWithCallback(self.doDownload2, MessageBox, self.message, list=self.choices, default=1, simple=True)
-		else:
-			self.urli = config.imagemanager.imagefeed_ViX.value
-			self.session.openWithCallback(self.refreshList, ImageManagerDownload, self.menu_path, self.BackupDirectory, self.urli)
+		self.choices = [("OpenViX", 1), ("OpenATV", 2), ("OpenPli",3), ("User Defined", 4), ]
+		self.urlchoices = [config.imagemanager.imagefeed_ViX.value, config.imagemanager.imagefeed_ATV.value, config.imagemanager.imagefeed_Pli.value, config.imagemanager.imagefeed_User.value]
+		self.message = _("Do you want to change download url")
+		self.session.openWithCallback(self.doDownload2, MessageBox, self.message, list=self.choices, default=1, simple=True)
 
 	def doDownload2(self, retval):
 		if retval:
