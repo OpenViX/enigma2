@@ -54,7 +54,7 @@ config.imagemanager.autosettingsbackup = ConfigYesNo(default = True)
 config.imagemanager.query = ConfigYesNo(default=True)
 config.imagemanager.lastbackup = ConfigNumber(default=0)
 config.imagemanager.number_to_keep = ConfigNumber(default=0)
-config.imagemanager.imagefeed_User = ConfigText(default="http://192.168.0.171/openvix-builds/", fixed_size=False)
+config.imagemanager.imagefeed_User = ConfigText(default="http://url", fixed_size=False)
 config.imagemanager.imagefeed_ViX = ConfigText(default="http://www.openvix.co.uk/openvix-builds/", fixed_size=False)
 config.imagemanager.imagefeed_ATV = ConfigText(default="http://images.mynonpublic.com/openatv/", fixed_size=False)
 config.imagemanager.imagefeed_Pli = ConfigText(default="http://downloads.openpli.org/json", fixed_size=False)
@@ -302,7 +302,11 @@ class VIXImageManager(Screen):
 		if retval:
 			retval -= 1
 			self.urli = self.urlchoices[retval]
-			self.session.openWithCallback(self.refreshList, ImageManagerDownload, self.menu_path, self.BackupDirectory, self.urli)
+			if self.urli == "http://url":
+				self.restore_infobox = self.session.open(MessageBox, _("'User' url has not been specified, please use MENU button to initialise"), MessageBox.TYPE_INFO, timeout=10, enable_input=False)
+				self.refreshList()
+			else:
+				self.session.openWithCallback(self.refreshList, ImageManagerDownload, self.menu_path, self.BackupDirectory, self.urli)
 
 	def setupDone(self, test=None):
 		if config.imagemanager.folderprefix.value == '':
@@ -1474,9 +1478,8 @@ class ImageManagerDownload(Screen):
 				try:
 					conn = urllib2.urlopen(self.urlb)
 					html = conn.read()
-				except urllib2.HTTPError as e:
-					print "HTTP download ERROR: %s" % e.code
-					continue
+				except:
+					return
 
 				soup = BeautifulSoup(html)
 				links = soup.find_all('a')
