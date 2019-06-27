@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue (Apachi70)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-08 15:13+0200\n"
+"POT-Creation-Date: 2019-06-27 14:27+0200\n"
 "PO-Revision-Date: 2019-04-06 08:43+0200\n"
 "Last-Translator: Apachi70 <apachi70000@gmail.com>\n"
 "Language-Team: Turkish <apachi70000@gmail.com>\n"
@@ -431,6 +431,10 @@ msgstr "%s (%s)\n"
 #, fuzzy, python-format
 msgid "%s build date %s"
 msgstr "Son güncelleme:% s"
+
+#, fuzzy, python-format
+msgid "%s imported from fallback tuner"
+msgstr "Yedekleme ayarlayıcısından içe aktarma zamanlayıcısını etkinleştir"
 
 #. TRANSLATORS: The satellite with name '%s' is no longer used after a configuration change. The user is asked whether or not the satellite should be deleted.
 #, python-format
@@ -1938,15 +1942,12 @@ msgstr "Kanal numarası ve kanal ismi"
 msgid "Channelnumber, picon and servicename"
 msgstr "Kanal numarası, simge ve kanal ismi"
 
+#, fuzzy
+msgid "Channels"
+msgstr "Kanal"
+
 msgid "Channels and EPG"
 msgstr "Kanallar ve EPG"
-
-#, python-format
-msgid "Channels from fallback tuner failed %s"
-msgstr "Yedek tunerdeki kanallar% s başarısız oldu"
-
-msgid "Channels from fallback tuner imported"
-msgstr "Yedekleme tuneri içe aktarılan kanallar"
 
 msgid "Channels only"
 msgstr "Sadece kanallar"
@@ -5000,8 +5001,9 @@ msgstr "Alıcı önyüklendiğinde kanalları ve / veya EPG'yi uzak alıcı URL'
 msgid "Import channels and/or EPG from remote receiver URL when receiver or enigma2 is restarted"
 msgstr "Alıcı veya enigma2 yeniden başlatıldığında kanalları ve / veya EPG'yi uzak alıcı URL'sinden içe aktarın"
 
-msgid "Import channels from fallback tuner"
-msgstr "Kanalları yedek tunerden içe aktar"
+#, fuzzy, python-format
+msgid "Import from fallback tuner failed, %s"
+msgstr "Yedek tunerdeki kanallar% s başarısız oldu"
 
 msgid "Import from remote receiver URL"
 msgstr "Uzak alıcı URL'sinden içe aktar"
@@ -5758,6 +5760,10 @@ msgstr "Elle arama"
 
 msgid "Manual transponder"
 msgstr "Transponder bilgilerini elle gir"
+
+#, fuzzy
+msgid "Manually import from fallback tuner"
+msgstr "Yedekleme ayarlayıcısından içe aktarma zamanlayıcısını etkinleştir"
 
 msgid "Manufacturer"
 msgstr "Üretici"
@@ -11066,8 +11072,9 @@ msgstr "Ayarlama ve odaklanma"
 msgid "Tune failed!"
 msgstr "Kanal geçişi başarısız!"
 
-msgid "Tuners & scanning"
-msgstr "Alıcı"
+#, fuzzy
+msgid "Tuner"
+msgstr "Ayar"
 
 msgid "Tuner Configuration"
 msgstr "Tuner Yapılandırma"
@@ -11092,6 +11099,9 @@ msgstr "Tuner durumu:"
 
 msgid "Tuner type"
 msgstr "Tuner tipi"
+
+msgid "Tuners & scanning"
+msgstr "Alıcı"
 
 msgid "Tunisia"
 msgstr "Tunus"

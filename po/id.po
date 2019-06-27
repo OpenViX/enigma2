@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-08 15:13+0200\n"
+"POT-Creation-Date: 2019-06-27 14:27+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Budiarno\n"
 "Language-Team: \n"
@@ -434,6 +434,10 @@ msgstr "%s (%s)\n"
 #, fuzzy, python-format
 msgid "%s build date %s"
 msgstr "Last upgrade: "
+
+#, python-format
+msgid "%s imported from fallback tuner"
+msgstr ""
 
 #. TRANSLATORS: The satellite with name '%s' is no longer used after a configuration change. The user is asked whether or not the satellite should be deleted.
 #, python-format
@@ -1988,15 +1992,12 @@ msgid "Channelnumber, picon and servicename"
 msgstr "Nomor kanal, pikon dan nama layanan"
 
 #, fuzzy
+msgid "Channels"
+msgstr "Kanal"
+
+#, fuzzy
 msgid "Channels and EPG"
 msgstr "Info Kanal"
-
-#, python-format
-msgid "Channels from fallback tuner failed %s"
-msgstr ""
-
-msgid "Channels from fallback tuner imported"
-msgstr ""
 
 #, fuzzy
 msgid "Channels only"
@@ -5167,7 +5168,8 @@ msgstr ""
 msgid "Import channels and/or EPG from remote receiver URL when receiver or enigma2 is restarted"
 msgstr ""
 
-msgid "Import channels from fallback tuner"
+#, python-format
+msgid "Import from fallback tuner failed, %s"
 msgstr ""
 
 #, fuzzy
@@ -5958,6 +5960,9 @@ msgstr "Pelacakan Manual"
 
 msgid "Manual transponder"
 msgstr "Transponder manual"
+
+msgid "Manually import from fallback tuner"
+msgstr ""
 
 msgid "Manufacturer"
 msgstr "Manufacturer"
@@ -11394,8 +11399,9 @@ msgstr "Tune and focus"
 msgid "Tune failed!"
 msgstr "Tune failed!"
 
-msgid "Tuners & scanning"
-msgstr "Penala"
+#, fuzzy
+msgid "Tuner"
+msgstr "Tala"
 
 msgid "Tuner Configuration"
 msgstr ""
@@ -11421,6 +11427,9 @@ msgstr "Tuner status"
 
 msgid "Tuner type"
 msgstr "Tuner type"
+
+msgid "Tuners & scanning"
+msgstr "Penala"
 
 msgid "Tunisia"
 msgstr ""
