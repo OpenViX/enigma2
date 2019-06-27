@@ -13424,7 +13424,7 @@ msgid "Tune failed!"
 msgstr "Greška tjunera!"
 
 #
-msgid "Tuners &amp; scanning"
+msgid "Tuners & scanning"
 msgstr "Tjuner"
 
 #

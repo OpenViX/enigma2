@@ -13215,7 +13215,7 @@ msgid "Tune failed!"
 msgstr "Ofstimme mislearre !"
 
 #
-msgid "Tuners &amp; scanning"
+msgid "Tuners & scanning"
 msgstr "Tuner"
 
 #

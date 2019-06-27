@@ -13394,7 +13394,7 @@ msgid "Tune failed!"
 msgstr "Tuning fejlede!"
 
 #
-msgid "Tuners &amp; scanning"
+msgid "Tuners & scanning"
 msgstr "Tuner"
 
 #

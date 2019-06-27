@@ -11609,7 +11609,7 @@ msgstr "Συντονισμός και εστίαση"
 msgid "Tune failed!"
 msgstr "Αποτυχία συντονισμού!"
 
-msgid "Tuners &amp; scanning"
+msgid "Tuners & scanning"
 msgstr "Tuner"
 
 #, fuzzy

@@ -11636,7 +11636,7 @@ msgstr "Uztvērēja statuss"
 msgid "Tune failed!"
 msgstr "Uztveršana neizdevās!"
 
-msgid "Tuners &amp; scanning"
+msgid "Tuners & scanning"
 msgstr "Uztvērējs"
 
 #, fuzzy

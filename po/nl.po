@@ -11823,7 +11823,7 @@ msgstr "Afstemmen en focussen"
 msgid "Tune failed!"
 msgstr "Afstemmen mislukt!"
 
-msgid "Tuners &amp; scanning"
+msgid "Tuners & scanning"
 msgstr "Tuner"
 
 #, fuzzy

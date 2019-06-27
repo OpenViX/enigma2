@@ -11602,7 +11602,7 @@ msgstr "Sintonia e foco"
 msgid "Tune failed!"
 msgstr "Falhou!"
 
-msgid "Tuners &amp; scanning"
+msgid "Tuners & scanning"
 msgstr "Tuner"
 
 #, fuzzy

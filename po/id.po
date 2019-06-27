@@ -11394,7 +11394,7 @@ msgstr "Tune and focus"
 msgid "Tune failed!"
 msgstr "Tune failed!"
 
-msgid "Tuners &amp; scanning"
+msgid "Tuners & scanning"
 msgstr "Penala"
 
 msgid "Tuner Configuration"

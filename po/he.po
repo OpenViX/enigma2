@@ -12400,7 +12400,7 @@ msgid "Tune failed!"
 msgstr "Tune failed!"
 
 #
-msgid "Tuners &amp; scanning"
+msgid "Tuners & scanning"
 msgstr "Tuner"
 
 #, fuzzy

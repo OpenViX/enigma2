@@ -13247,7 +13247,7 @@ msgid "Tune failed!"
 msgstr "Ladění selhalo!"
 
 #
-msgid "Tuners &amp; scanning"
+msgid "Tuners & scanning"
 msgstr "Tuner"
 
 msgid "Tuner Configuration"

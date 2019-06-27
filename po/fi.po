@@ -13099,7 +13099,7 @@ msgid "Tune failed!"
 msgstr "Viritys epäonnistui!"
 
 #
-msgid "Tuners &amp; scanning"
+msgid "Tuners & scanning"
 msgstr "Viritin"
 
 #

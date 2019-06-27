@@ -13394,7 +13394,7 @@ msgid "Tune failed!"
 msgstr "Napaka v sprejemu!"
 
 #
-msgid "Tuners &amp; scanning"
+msgid "Tuners & scanning"
 msgstr "Kanalnik"
 
 #

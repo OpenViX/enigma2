@@ -11582,7 +11582,7 @@ msgstr ""
 msgid "Tune failed!"
 msgstr "Häälestus nurjus!"
 
-msgid "Tuners &amp; scanning"
+msgid "Tuners & scanning"
 msgstr "Tuuner"
 
 #, fuzzy

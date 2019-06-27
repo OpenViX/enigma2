@@ -13018,7 +13018,7 @@ msgid "Tune failed!"
 msgstr "Tókst ekki að stilla inn!"
 
 #
-msgid "Tuners &amp; scanning"
+msgid "Tuners & scanning"
 msgstr "Móttakari"
 
 #
