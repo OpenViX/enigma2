@@ -1,15 +1,11 @@
 # -*- coding: utf-8 -*-
 import os
-import traceback
 
 from enigma import eEnv, getDesktop
 from re import compile
 
 pathExists = os.path.exists
 isMount = os.path.ismount  # Only used in OpenATV /lib/python/Plugins/SystemPlugins/NFIFlash/downloader.py.
-
-screenResolution = getDesktop(0).size().height()
-lcdResolution = getDesktop(1).size().height()
 
 SCOPE_TRANSPONDERDATA = 0
 SCOPE_SYSETC = 1
@@ -28,42 +24,14 @@ SCOPE_CURRENT_SKIN = 12
 SCOPE_METADIR = 16
 SCOPE_CURRENT_PLUGIN = 17
 SCOPE_TIMESHIFT = 18
-SCOPE_ACTIVE_SKIN = 19
+SCOPE_ACTIVE_SKIN = 19  # DEBUG: Deprecated scope function - use SCOPE_CURRENT_SKIN instead.
 SCOPE_LCDSKIN = 20
-SCOPE_ACTIVE_LCDSKIN = 21
+SCOPE_CURRENT_LCDSKIN = 21
+SCOPE_ACTIVE_LCDSKIN = 21  # DEBUG: Deprecated scope function name - use SCOPE_CURRENT_LCDSKIN instead.
 SCOPE_AUTORECORD = 22
 SCOPE_DEFAULTDIR = 23
 SCOPE_DEFAULTPARTITION = 24
 SCOPE_DEFAULTPARTITIONMOUNTDIR = 25
-
-SCOPE_CURRENT_LCDSKIN = 30
-
-scopeNames = {
-	SCOPE_TRANSPONDERDATA: "SCOPE_TRANSPONDERDATA",
-	SCOPE_SYSETC: "SCOPE_SYSETC",
-	SCOPE_FONTS: "SCOPE_FONTS",
-	SCOPE_SKIN: "SCOPE_SKIN",
-	SCOPE_SKIN_IMAGE: "SCOPE_SKIN_IMAGE",
-	SCOPE_USERETC: "SCOPE_USERETC",
-	SCOPE_CONFIG: "SCOPE_CONFIG",
-	SCOPE_LANGUAGE: "SCOPE_LANGUAGE",
-	SCOPE_HDD: "SCOPE_HDD",
-	SCOPE_PLUGINS: "SCOPE_PLUGINS",
-	SCOPE_MEDIA: "SCOPE_MEDIA",
-	SCOPE_PLAYLIST: "SCOPE_PLAYLIST",
-	SCOPE_CURRENT_SKIN: "SCOPE_CURRENT_SKIN",
-	SCOPE_METADIR: "SCOPE_METADIR",
-	SCOPE_CURRENT_PLUGIN: "SCOPE_CURRENT_PLUGIN",
-	SCOPE_TIMESHIFT: "SCOPE_TIMESHIFT",
-	SCOPE_ACTIVE_SKIN: "SCOPE_ACTIVE_SKIN",
-	SCOPE_LCDSKIN: "SCOPE_LCDSKIN",
-	SCOPE_ACTIVE_LCDSKIN: "SCOPE_ACTIVE_LCDSKIN",
-	SCOPE_AUTORECORD: "SCOPE_AUTORECORD",
-	SCOPE_DEFAULTDIR: "SCOPE_DEFAULTDIR",
-	SCOPE_DEFAULTPARTITION: "SCOPE_DEFAULTPARTITION",
-	SCOPE_DEFAULTPARTITIONMOUNTDIR: "SCOPE_DEFAULTPARTITIONMOUNTDIR",
-	SCOPE_CURRENT_LCDSKIN: "SCOPE_CURRENT_LCDSKIN"
-}
 
 PATH_CREATE = 0
 PATH_DONTCREATE = 1
@@ -87,25 +55,12 @@ defaultPaths = {
 	SCOPE_TIMESHIFT: ("/media/hdd/timeshift/", PATH_DONTCREATE),
 	SCOPE_ACTIVE_SKIN: (eEnv.resolve("${datadir}/enigma2/"), PATH_DONTCREATE),
 	SCOPE_LCDSKIN: (eEnv.resolve("${datadir}/enigma2/display/"), PATH_DONTCREATE),
-	SCOPE_ACTIVE_LCDSKIN: ("${datadir}/enigma2/display/", PATH_DONTCREATE),
+	SCOPE_CURRENT_LCDSKIN: ("${datadir}/enigma2/display/", PATH_DONTCREATE),
 	SCOPE_AUTORECORD: ("/media/hdd/movie/", PATH_DONTCREATE),
 	SCOPE_DEFAULTDIR: (eEnv.resolve("${datadir}/enigma2/defaults/"), PATH_CREATE),
 	SCOPE_DEFAULTPARTITION: ("/dev/mtdblock6", PATH_DONTCREATE),
-	SCOPE_DEFAULTPARTITIONMOUNTDIR: (eEnv.resolve("${datadir}/enigma2/dealer"), PATH_CREATE),
-	SCOPE_CURRENT_LCDSKIN: ("${datadir}/enigma2/display/", PATH_DONTCREATE)
+	SCOPE_DEFAULTPARTITIONMOUNTDIR: (eEnv.resolve("${datadir}/enigma2/dealer"), PATH_CREATE)
 }
-
-# FILE_COPY = 0  # Copy files from fallback dir to the basedir.
-# FILE_MOVE = 1  # Move files.
-# PATH_COPY = 2  # Copy the complete fallback dir to the basedir.
-# PATH_MOVE = 3  # Move the fallback dir to the basedir (can be used for changes in paths).
-
-# fallbackPaths = {
-# 	SCOPE_CONFIG: [("/home/root/", FILE_MOVE), (eEnv.resolve("${datadir}/enigma2/defaults/"), FILE_COPY)],
-# 	SCOPE_HDD: [("/media/hdd/movies", PATH_MOVE)],  # OpenATV uses "movie"!
-# 	SCOPE_AUTORECORD: [("/media/hdd/movie", PATH_MOVE)],
-# 	SCOPE_TIMESHIFT: [("/media/hdd/timeshift", PATH_MOVE)]
-# }
 
 def resolveFilename(scope, base="", path_prefix=None):
 	# You can only use the ~/ if we have a prefix directory.
@@ -117,7 +72,6 @@ def resolveFilename(scope, base="", path_prefix=None):
 			print "[Directories] Warning: resolveFilename called with base starting with '~/' but 'path_prefix' is None!"
 	# Don't further resolve absolute paths.
 	if base.startswith("/"):
-		print "[Directories] DEBUG: resolveFilename (Absolute path) scope=%s, base='%s', path_prefix='%s'" % (scopeNames.get(scope), base, path_prefix)
 		return base
 	# If an invalid scope is specified log an error and return None.
 	if scope not in defaultPaths:
@@ -145,15 +99,15 @@ def resolveFilename(scope, base="", path_prefix=None):
 	elif scope in (SCOPE_CURRENT_SKIN, SCOPE_ACTIVE_SKIN):
 		# This import must be here as this module finds the config file as part of the config initialisation.
 		from Components.config import config
-		pos = config.skin.primary_skin.value.rfind("/")
-		if pos == -1:
-			skin = ""
-		else:
-			skin = config.skin.primary_skin.value[:pos + 1]
+		skin = ""
+		if hasattr(config.skin, "primary_skin"):
+			pos = config.skin.primary_skin.value.rfind("/")
+			if pos != -1:
+				skin = config.skin.primary_skin.value[:pos + 1]
 		resolveList = [
 			os.path.join(defaultPaths[SCOPE_CONFIG][0], skin),
 			os.path.join(defaultPaths[SCOPE_SKIN][0], skin),
-			os.path.join(defaultPaths[SCOPE_SKIN][0], "skin_%d" % screenResolution),
+			os.path.join(defaultPaths[SCOPE_SKIN][0], "skin_%d" % getDesktop(0).size().height()),
 			os.path.join(defaultPaths[SCOPE_SKIN][0], "skin_default"),
 			defaultPaths[SCOPE_CONFIG][0],  # Deprecated top level of SCOPE_CONFIG directory.
 			defaultPaths[SCOPE_SKIN][0]  # Deprecated top level of SCOPE_SKIN directory.
@@ -163,18 +117,18 @@ def resolveFilename(scope, base="", path_prefix=None):
 			if pathExists(file):
 				path = file
 				break
-	elif scope in (SCOPE_CURRENT_LCDSKIN, SCOPE_ACTIVE_LCDSKIN):
+	elif scope == SCOPE_CURRENT_LCDSKIN:
 		# This import must be here as this module finds the config file as part of the config initialisation.
 		from Components.config import config
-		pos = config.skin.display_skin.value.rfind("/")
-		if pos == -1:
-			skin = ""
-		else:
-			skin = config.skin.display_skin.value[:pos + 1]
+		skin = ""
+		if hasattr(config.skin, "display_skin"):
+			pos = config.skin.display_skin.value.rfind("/")
+			if pos != -1:
+				skin = config.skin.display_skin.value[:pos + 1]
 		resolveList = [
 			os.path.join(defaultPaths[SCOPE_CONFIG][0], "display", skin),
 			os.path.join(defaultPaths[SCOPE_LCDSKIN][0], skin),
-			os.path.join(defaultPaths[SCOPE_LCDSKIN][0], "skin_%s" % lcdResolution),
+			os.path.join(defaultPaths[SCOPE_LCDSKIN][0], "skin_%s" % getDesktop(1).size().height()),
 			os.path.join(defaultPaths[SCOPE_LCDSKIN][0], "skin_default"),
 			defaultPaths[SCOPE_CONFIG][0],  # Deprecated top level of SCOPE_CONFIG directory.
 			defaultPaths[SCOPE_LCDSKIN][0]  # Deprecated top level of SCOPE_LCDSKIN directory.
@@ -187,16 +141,16 @@ def resolveFilename(scope, base="", path_prefix=None):
 	elif scope == SCOPE_FONTS:
 		# This import must be here as this module finds the config file as part of the config initialisation.
 		from Components.config import config
-		pos = config.skin.primary_skin.value.rfind("/")
-		if pos == -1:
-			skin = ""
-		else:
-			skin = config.skin.primary_skin.value[:pos + 1]
-		pos = config.skin.display_skin.value.rfind("/")
-		if pos == -1:
-			display = ""
-		else:
-			display = config.skin.display_skin.value[:pos + 1]
+		skin = ""
+		display = ""
+		if hasattr(config.skin, "primary_skin"):
+			pos = config.skin.primary_skin.value.rfind("/")
+			if pos != -1:
+				skin = config.skin.primary_skin.value[:pos + 1]
+		if hasattr(config.skin, "display_skin"):
+			pos = config.skin.display_skin.value.rfind("/")
+			if pos != -1:
+				display = config.skin.display_skin.value[:pos + 1]
 		resolveList = [
 			os.path.join(defaultPaths[SCOPE_CONFIG][0], "fonts"),
 			os.path.join(defaultPaths[SCOPE_SKIN][0], skin),
@@ -213,63 +167,18 @@ def resolveFilename(scope, base="", path_prefix=None):
 				path = file
 				break
 	elif scope == SCOPE_CURRENT_PLUGIN:
-		resolveList = [defaultPaths[SCOPE_PLUGINS][0]]
 		file = os.path.normpath(os.path.join(defaultPaths[SCOPE_PLUGINS][0], base))
 		if pathExists(file):
 			path = file
 	else:
 		path, flags = defaultPaths.get(scope)
-		resolveList = [path]
 		path = os.path.normpath(os.path.join(path, base))
-
-	# fallbackPath = fallbackPaths.get(scope)
-	#
-	# if fallbackPath and not fileExists(path + base):
-	# 	for x in fallbackPath:
-	# 		try:
-	# 			if x[1] == FILE_COPY:
-	# 				if fileExists(x[0] + base):
-	# 					try:
-	# 						os.link(x[0] + base, path + base)
-	# 					except:
-	# 						os.system("cp " + x[0] + base + " " + path + base)
-	# 					break
-	# 			elif x[1] == FILE_MOVE:
-	# 				if fileExists(x[0] + base):
-	# 					try:
-	# 						os.rename(x[0] + base, path + base)
-	# 					except:
-	# 						os.system("mv " + x[0] + base + " " + path + base)
-	# 					break
-	# 			elif x[1] == PATH_COPY:
-	# 				if pathExists(x[0]):
-	# 					if not pathExists(defaultPaths[scope][0]):
-	# 						os.mkdir(path)
-	# 					os.system("cp -a " + x[0] + "* " + path)
-	# 					break
-	# 			elif x[1] == PATH_MOVE:
-	# 				if pathExists(x[0]):
-	# 					os.rename(x[0], path + base)
-	# 					break
-	# 		except Exception, e:
-	# 			print "[D] Failed to recover %s:" % (path+base), e
-
 	# If the path is a directory then ensure that it ends with a "/".
 	if os.path.isdir(path) and not path.endswith("/"):
 		path += "/"
 	# If a suffix was supplier restore it.
 	if suffix is not None:
 		path = "%s:%s" % (path, suffix)
-	# Log a warning if resolveFilename can't resolve a path.
-	if not path.startswith("/"):
-		if path_prefix is None:
-			prefix = ""
-		else:
-			prefix = " (path_prefix='%s')" % path_prefix
-		print "[Directories] Warning: resolveFilename could not resolve '%s' for scope '%s'%s" % (path, scopeNames.get(scope), prefix)
-		print "[Directories]          Searched in:", resolveList
-		traceback.print_stack()
-	print "[Directories] DEBUG: resolveFilename scope=%s, base='%s', path_prefix='%s', path='%s'" % (scopeNames.get(scope), base, path_prefix, path)
 	return path
 
 def bestRecordingLocation(candidates):
@@ -305,7 +214,7 @@ def defaultRecordingLocation(candidate=None):
 		path = bestRecordingLocation([m for m in mounts if m[0].startswith("/dev/")])
 		# If we haven't found a viable candidate yet, try remote mounts.
 		if not path:
-			path = bestRecordingLocation([m for m in mounts if not m[0].startswith("/dev/")])  # bestRecordingLocation(mounts)
+			path = bestRecordingLocation([m for m in mounts if not m[0].startswith("/dev/")])
 	if path:
 		# If there's a movie subdir, we'd probably want to use that.
 		movie = os.path.join(path, "movie")
@@ -528,5 +437,9 @@ def mediafilesInUse(session):
 		filename = None
 	return set([file for file in files if not(filename and file.startswith(filename) and files.count(filename) < 2)])
 
+# Prepare filenames for use in external shell processing. Filenames may
+# contain spaces or other special characters.  This method adjusts the
+# filename to be a safe and single entity for passing to a shell.
+#
 def shellquote(s):
-	return "'" + s.replace("'", "'\\''") + "'"
+	return "'%s'" % s.replace("'", "'\\''")
