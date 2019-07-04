@@ -24,7 +24,7 @@
 				<item level="1" entryID="autolanguage_setup"><setup id="autolanguagesetup"/></item>
 			</menu>
 			<!-- Menu / Setup / Tuners -->
-			<menu weight="2" level="0" text="Tuner config" entryID="service_searching_selection">
+			<menu weight="2" level="0" text="Tuners &amp; scanning" entryID="service_searching_selection">
 				<id val="scan"/>
 				<!-- Menu / Setup / Tuners / Settings -->
 				<item weight="1" text="Tuner settings" entryID="tuner_setup" requires="ClientModeDisabled"><screen module="Satconfig" screen="NimSelection"/></item>
