@@ -11857,7 +11857,7 @@ msgstr "Configuración contraseña"
 msgid "Recording and playback"
 msgstr "Grabaciones & reproductor"
 
-msgid "Tuners scanning"
+msgid "Tuners & scanning"
 msgstr "Sintonizadores & búsqueda"
 
 msgid "No updates found, Press OK to exit this screen."
