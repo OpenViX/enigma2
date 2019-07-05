@@ -9,7 +9,6 @@ from Components.PluginComponent import plugins
 from Components.NimManager import nimmanager
 from Components.config import config, ConfigDictionarySet, NoSave
 from Components.SystemInfo import SystemInfo
-from Components.Label import Label
 from Tools.BoundFunction import boundFunction
 from Plugins.Plugin import PluginDescriptor
 from Tools.Directories import resolveFilename, SCOPE_SKIN
@@ -325,7 +324,7 @@ class Menu(Screen, ProtectedScreen):
 				return True
 
 	def keyBlue(self):
-		if config.usage.menu_sort_mode.value == "user":
+		if "user" in config.usage.menu_sort_mode.value:
 			self.session.openWithCallback(self.menuSortCallBack, MenuSort, self.parentmenu)
 		else:
 			return 0
@@ -347,10 +346,10 @@ class Menu(Screen, ProtectedScreen):
 
 class MenuSort(Menu):
 	def __init__(self, session, parent):
-		self["key_red"] = Label(_("Exit"))
-		self["key_green"] = Label(_("Save"))
-		self["key_yellow"] = Label(_("Hide"))
-		self["key_blue"] = Label(_("Reset"))
+		self["key_red"] = StaticText(_("Exit"))
+		self["key_green"] = StaticText(_("Save changes"))
+		self["key_yellow"] = StaticText(_("Toggle show/hide"))
+		self["key_blue"] = StaticText(_("Reset order (All)"))
 		self.somethingChanged = False
 		Menu.__init__(self, session, parent)
 		self.skinName = "MenuSort"
