@@ -72,7 +72,7 @@ def resolveFilename(scope, base="", path_prefix=None):
 			print "[Directories] Warning: resolveFilename called with base starting with '~/' but 'path_prefix' is None!"
 	# Don't further resolve absolute paths.
 	if base.startswith("/"):
-		return base
+		return os.path.normpath(base)
 	# If an invalid scope is specified log an error and return None.
 	if scope not in defaultPaths:
 		print "[Directories] Error: Invalid scope=%d provided to resolveFilename!" % scope
@@ -95,15 +95,16 @@ def resolveFilename(scope, base="", path_prefix=None):
 	# If base is "" then set path to the scope.  Otherwise use the scope to resolve the base filename.
 	if base is "":
 		path, flags = defaultPaths.get(scope)
-		path = os.path.normpath(path)
+		# If the scope is SCOPE_CURRENT_SKIN or SCOPE_ACTIVE_SKIN append the current skin to the scope path.
+		if scope in (SCOPE_CURRENT_SKIN, SCOPE_ACTIVE_SKIN):
+			# This import must be here as this module finds the config file as part of the config initialisation.
+			from Components.config import config
+			skin = os.path.dirname(config.skin.primary_skin.value)
+			path = os.path.join(path, skin)
 	elif scope in (SCOPE_CURRENT_SKIN, SCOPE_ACTIVE_SKIN):
 		# This import must be here as this module finds the config file as part of the config initialisation.
 		from Components.config import config
-		skin = ""
-		if hasattr(config.skin, "primary_skin"):
-			pos = config.skin.primary_skin.value.rfind("/")
-			if pos != -1:
-				skin = config.skin.primary_skin.value[:pos + 1]
+		skin = os.path.dirname(config.skin.primary_skin.value)
 		resolveList = [
 			os.path.join(defaultPaths[SCOPE_CONFIG][0], skin),
 			os.path.join(defaultPaths[SCOPE_SKIN][0], skin),
@@ -113,18 +114,17 @@ def resolveFilename(scope, base="", path_prefix=None):
 			defaultPaths[SCOPE_SKIN][0]  # Deprecated top level of SCOPE_SKIN directory.
 		]
 		for item in resolveList:
-			file = os.path.normpath(os.path.join(item, base))
+			file = os.path.join(item, base)
 			if pathExists(file):
 				path = file
 				break
 	elif scope == SCOPE_CURRENT_LCDSKIN:
 		# This import must be here as this module finds the config file as part of the config initialisation.
 		from Components.config import config
-		skin = ""
 		if hasattr(config.skin, "display_skin"):
-			pos = config.skin.display_skin.value.rfind("/")
-			if pos != -1:
-				skin = config.skin.display_skin.value[:pos + 1]
+			skin = os.path.dirname(config.skin.display_skin.value)
+		else:
+			skin = ""
 		resolveList = [
 			os.path.join(defaultPaths[SCOPE_CONFIG][0], "display", skin),
 			os.path.join(defaultPaths[SCOPE_LCDSKIN][0], skin),
@@ -134,23 +134,18 @@ def resolveFilename(scope, base="", path_prefix=None):
 			defaultPaths[SCOPE_LCDSKIN][0]  # Deprecated top level of SCOPE_LCDSKIN directory.
 		]
 		for item in resolveList:
-			file = os.path.normpath(os.path.join(item, base))
+			file = os.path.join(item, base)
 			if pathExists(file):
 				path = file
 				break
 	elif scope == SCOPE_FONTS:
 		# This import must be here as this module finds the config file as part of the config initialisation.
 		from Components.config import config
-		skin = ""
-		display = ""
-		if hasattr(config.skin, "primary_skin"):
-			pos = config.skin.primary_skin.value.rfind("/")
-			if pos != -1:
-				skin = config.skin.primary_skin.value[:pos + 1]
+		skin = os.path.dirname(config.skin.primary_skin.value)
 		if hasattr(config.skin, "display_skin"):
-			pos = config.skin.display_skin.value.rfind("/")
-			if pos != -1:
-				display = config.skin.display_skin.value[:pos + 1]
+			display = os.path.dirname(config.skin.display_skin.value)
+		else:
+			display = ""
 		resolveList = [
 			os.path.join(defaultPaths[SCOPE_CONFIG][0], "fonts"),
 			os.path.join(defaultPaths[SCOPE_SKIN][0], skin),
@@ -162,17 +157,18 @@ def resolveFilename(scope, base="", path_prefix=None):
 			os.path.join(defaultPaths[SCOPE_CONFIG][0], display)  # Deprecated display in SCOPE_CONFIG directory.
 		]
 		for item in resolveList:
-			file = os.path.normpath(os.path.join(item, base))
+			file = os.path.join(item, base)
 			if pathExists(file):
 				path = file
 				break
 	elif scope == SCOPE_CURRENT_PLUGIN:
-		file = os.path.normpath(os.path.join(defaultPaths[SCOPE_PLUGINS][0], base))
+		file = os.path.join(defaultPaths[SCOPE_PLUGINS][0], base)
 		if pathExists(file):
 			path = file
 	else:
 		path, flags = defaultPaths.get(scope)
-		path = os.path.normpath(os.path.join(path, base))
+		path = os.path.join(path, base)
+	path = os.path.normpath(path)
 	# If the path is a directory then ensure that it ends with a "/".
 	if os.path.isdir(path) and not path.endswith("/"):
 		path += "/"
