@@ -390,6 +390,8 @@ data/lcd220/Makefile
 data/lcd400/Makefile
 data/lcd_skin220/Makefile
 data/lcd_skin400/Makefile
+data/skin_1080/Makefile
+data/skin_1080/buttons/Makefile
 data/skin_default/Makefile
 data/skin_default/menu/Makefile
 data/skin_default/icons/Makefile
