@@ -45,7 +45,7 @@ baseinclude_HEADERS = \
 	base/encoding.h \
 	base/eptrlist.h \
 	base/estring.h \
-	base/freesatv2.cpp \
+	base/freesatv2.h \
 	base/i18n.h \
 	base/itssource.h \
 	base/init.h \
