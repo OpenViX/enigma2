@@ -1,6 +1,6 @@
 ## Our buildserver is currently running on: ##
 
-> Ubuntu 16.04.5 LTS (GNU/Linux 4.9.58-xxxx-std-ipv6-64 x86_64)
+> Ubuntu 18.04.2 LTS (GNU/Linux 4.15.0-54-generic x86_64)
 
 ## teamBlue 6.3 (based on openPLi) is build using oe-alliance build-environment "4.3" and several git repositories: ##
 
@@ -19,7 +19,7 @@
 
 1 - Install packages on your buildserver
 
-    sudo apt-get install -y autoconf automake bison bzip2 chrpath coreutils curl cvs default-jre default-jre-headless diffstat flex g++ gawk gcc gettext git-core gzip help2man htop info java-common libc6-dev libglib2.0-dev libperl4-corelibs-perl libproc-processtable-perl libssl-dev libtool libxml2-utils make ncdu ncurses-bin ncurses-dev patch perl pkg-config po4a python-setuptools quilt sgmltools-lite sshpass subversion swig tar texi2html texinfo wget xsltproc zip zlib1g-dev
+    sudo apt-get install -y autoconf automake bison bzip2 chrpath coreutils curl cvs default-jre default-jre-headless diffstat flex g++ gawk gcc gettext git gzip help2man htop info java-common libc6-dev libglib2.0-dev libncurses5-dev libperl4-corelibs-perl libproc-processtable-perl libtool libxml2-utils make ncdu ncurses-bin patch perl pkg-config po4a python-setuptools quilt sgmltools-lite sshpass subversion swig tar texi2html texinfo wget xsltproc zip zlib1g-dev
 
 ----------
 2 - Set your shell to /bin/bash
