@@ -1,9 +1,10 @@
 # for localized messages
-from os import path, listdir
+from os import listdir, path, walk, stat
+from boxbranding import getBoxType, getImageDistro
 
 from . import _
 from Plugins.Plugin import PluginDescriptor
-from Components.config import config, ConfigBoolean
+from Components.config import config, ConfigBoolean, configfile
 from Components.Harddisk import harddiskmanager
 from BackupManager import BackupManagerautostart
 from ImageManager import ImageManagerautostart
@@ -14,11 +15,30 @@ from IPKInstaller import IpkgInstaller
 
 config.misc.restorewizardrun = ConfigBoolean(default=False)
 
+def setLanguageFromBackup(backupfile):
+	try:
+		print backupfile
+		import tarfile
+		tar = tarfile.open(backupfile)
+		for member in tar.getmembers():
+			if member.name == 'etc/enigma2/settings':
+				for line in tar.extractfile(member):
+					if line.startswith('config.osd.language'):
+						languageToSelect = line.strip().split('=')[1]
+						if languageToSelect:
+							from Components.Language import language
+							language.activateLanguage(languageToSelect)
+							break
+		tar.close()
+	except:
+		pass
+
 def checkConfigBackup():
 	try:
 		devices = [(r.description, r.mountpoint) for r in harddiskmanager.getMountedPartitions(onlyhotplug=False)]
 		list = []
 		files = []
+		defaultprefix = getImageDistro()[4:]
 		for x in devices:
 			if x[1] == '/':
 				devices.remove(x)
@@ -34,9 +54,13 @@ def checkConfigBackup():
 					files = []
 				if len(files):
 					for file in files:
-						if file.endswith('.tar.gz'):
-							list.append((path.join(devpath, file), devpath, file))
-		if len(list):
+						if file.endswith('.tar.gz') and file.startswith('%s' %defaultprefix):
+							list.append((path.join(devpath, file)))
+ 		if len(list):
+			print '[RestoreWizard] Backup Image:', list[0]
+			backupfile = list[0]
+			if path.isfile(backupfile):
+				setLanguageFromBackup(backupfile)
 			return True
 		else:
 			return None
@@ -44,11 +68,11 @@ def checkConfigBackup():
 		print "[ViX] unable to use device (%s)..." % str(e)
 		return None
 
-
-if checkConfigBackup() is None:
-	backupAvailable = 0
-else:
-	backupAvailable = 1
+if config.misc.firstrun.value and not config.misc.restorewizardrun.value:
+	if checkConfigBackup() is None:
+		backupAvailable = 0
+	else:
+		backupAvailable = 1
 
 
 def VIXMenu(session):
@@ -107,8 +131,6 @@ def H9SDmanager(session):
 def H9SDmanagerMenu(session, **kwargs):
 	session.open(H9SDmanager)
 
-H9SDmanager
-
 def MountManager(session):
 	from MountManager import VIXDevicesPanel
 	return VIXDevicesPanel(session)
@@ -160,7 +182,7 @@ def Plugins(**kwargs):
 	plist.append(PluginDescriptor(where=PluginDescriptor.WHERE_SESSIONSTART, fnc=ImageManagerautostart))
 	plist.append(PluginDescriptor(where=PluginDescriptor.WHERE_SESSIONSTART, fnc=BackupManagerautostart))
 	if config.misc.firstrun.value and not config.misc.restorewizardrun.value and backupAvailable == 1:
-		plist.append(PluginDescriptor(name=_("Restore wizard"), where=PluginDescriptor.WHERE_WIZARD, needsRestart=False, fnc=(3, RestoreWizard)))
+		plist.append(PluginDescriptor(name=_("Restore wizard"), where=PluginDescriptor.WHERE_WIZARD, needsRestart=False, fnc=(0, RestoreWizard)))
 	plist.append(PluginDescriptor(name=_("Ipkg"), where=PluginDescriptor.WHERE_FILESCAN, needsRestart=False, fnc=filescan))
 	plist.append(PluginDescriptor(name=_("ViX Backup manager"), where=PluginDescriptor.WHERE_VIXMENU, fnc=BackupManagerMenu))
 	plist.append(PluginDescriptor(name=_("ViX Image manager"), where=PluginDescriptor.WHERE_VIXMENU, fnc=ImageMangerMenu))
