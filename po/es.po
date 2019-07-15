@@ -12663,12 +12663,6 @@ msgstr "Mostrar en modo de espera"
 msgid "This option allows you choose how to display the Time or nothing in Standby"
 msgstr "Esta opción le permite elegir cómo mostrar la hora o nada en modo de espera"
 
-msgid "Move Menu Up/Down"
-msgstr "Mover Menu Arriba/Abajo"
-
-msgid "Cancel Changes"
-msgstr "Cancelar Cambios"
-
 #~ msgid "3d mode"
 #~ msgstr "Modo 3D"
 
