@@ -1988,7 +1988,6 @@ class Config(ConfigSubsection):
 
 	def saveToFile(self, filename):
 		text = self.pickle()
-		print "[config.py][saveToFile]\n", text, "\n"
 		try:
 			import os
 			f = open(filename + ".writing", "w")
