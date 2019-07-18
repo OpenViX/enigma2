@@ -7950,7 +7950,7 @@ msgid "StandbyLED"
 msgstr "StandbyLED"
 
 msgid "Start"
-msgstr "Bienvenido..Empecemos"
+msgstr "Iniciar"
 
 msgid "Start from the beginning"
 msgstr "Empezar desde el principio"
