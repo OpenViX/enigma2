@@ -8316,6 +8316,9 @@ msgstr "Standby"
 msgid "Start"
 msgstr "Start"
 
+msgid "start"
+msgstr "iniciar"
+
 msgid "Start from the beginning"
 msgstr "Start from the beginning"
 
