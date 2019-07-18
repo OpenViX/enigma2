@@ -8314,7 +8314,7 @@ msgid "StandbyLED"
 msgstr "Standby"
 
 msgid "Start"
-msgstr "Iniciar"
+msgstr "Start"
 
 msgid "Start from the beginning"
 msgstr "Start from the beginning"
