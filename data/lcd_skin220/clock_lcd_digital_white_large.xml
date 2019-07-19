@@ -5,7 +5,7 @@
 	<widget source="global.CurrentTime" render="Label" position="0,141" size="220,45" font="RegularLCD;35" halign="center" valign="center" zPosition="1" foregroundColor="#ffffff" transparent="1">
 		<convert type="ClockToText">ShortDate</convert>
 	</widget>
-	<widget source="session.RecordState" render="Pixmap" pixmap="skin_default/buttons/button_blue.png" position="16,2" size="15,16" zPosition="10" transparent="1" alphatest="on" >
+	<widget source="session.RecordState" render="Pixmap" pixmap="buttons/button_blue.png" position="16,2" size="15,16" zPosition="10" transparent="1" alphatest="on" >
 		<convert type="ConditionalShowHide">Blink</convert>
 	</widget>
 </screen>

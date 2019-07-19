@@ -20,7 +20,7 @@
 		<convert type="ClockToText">ShortDate</convert>
 	</widget>
 	<!--RECORD LED-->
-	<widget source="session.RecordState" render="Pixmap" pixmap="skin_default/buttons/button_red.png" position="356,198" size="15,16" zPosition="10" transparent="1" alphatest="on" >
+	<widget source="session.RecordState" render="Pixmap" pixmap="buttons/button_red.png" position="356,198" size="15,16" zPosition="10" transparent="1" alphatest="on" >
 		<convert type="ConditionalShowHide">Blink</convert>
 	</widget>
 <!--END-->

@@ -63,7 +63,7 @@ class Screensaver(Screen):
 		self.skin = """
 			<screen name="Screensaver" position="fill" flags="wfNoBorder">
 				<eLabel position="fill" backgroundColor="#54000000" zPosition="0"/>
-				<widget name="picture" pixmap="skin_default/gb-screensaver.png" position="0,0" size="256,243" alphatest="blend" transparent="1" zPosition="1"/>
+				<widget name="picture" pixmap="gb-screensaver.png" position="0,0" size="256,243" alphatest="blend" transparent="1" zPosition="1"/>
 			</screen>"""
 
 		Screen.__init__(self, session)

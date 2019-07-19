@@ -31,8 +31,8 @@ class SoftcamStartup(Screen, ConfigListScreen):
 	skin = """
 	<screen name="SoftcamStartup" position="center,center" size="560,350" >
 		<widget name="config" position="5,10" size="550,200"/>
-		<ePixmap name="red" position="5,310" zPosition="1" size="140,40" pixmap="skin_default/buttons/red.png" transparent="1" alphatest="on"/>
-		<ePixmap name="green" position="185,310" zPosition="1" size="140,40" pixmap="skin_default/buttons/green.png" transparent="1" alphatest="on"/>
+		<ePixmap name="red" position="5,310" zPosition="1" size="140,40" pixmap="buttons/red.png" transparent="1" alphatest="on"/>
+		<ePixmap name="green" position="185,310" zPosition="1" size="140,40" pixmap="buttons/green.png" transparent="1" alphatest="on"/>
 		<widget name="key_red" position="45,310" zPosition="2" size="140,40" valign="center" halign="left" font="Regular;21" transparent="1"/>
 		<widget name="key_green" position="225,310" zPosition="2" size="140,40" valign="center" halign="left" font="Regular;21" transparent="1"/>
 	</screen>"""
