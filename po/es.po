@@ -6550,8 +6550,8 @@ msgstr "¿Resetear la configuración del sistema de vídeo mejorado?"
 msgid "Reset video enhancement settings to your last configuration?"
 msgstr "¿Resetear la configuración de vídeo mejorado a la última configuración?"
 
-msgid "Reshare:"
-msgstr "Recompartir:"
+msgid "Reshare"
+msgstr "Recompartir"
 
 msgid "Resolution"
 msgstr "Resolución"
@@ -11866,9 +11866,6 @@ msgstr "No se encontraron actualizaciones, pulse OK para salir de esta pantalla.
 msgid "Generic"
 msgstr "Genérico"
 
-msgid "Select locale"
-msgstr "Seleccionar lugar"
-
 msgid "Lower case"
 msgstr "Minúsculas"
 
@@ -12662,6 +12659,15 @@ msgstr "Mostrar en modo de espera"
 
 msgid "This option allows you choose how to display the Time or nothing in Standby"
 msgstr "Esta opción le permite elegir cómo mostrar la hora o nada en modo de espera"
+
+msgid "Select the virtual keyboard shifted character set for the next character only"
+msgstr "Seleccione el juego de caracteres desplazados del teclado virtual para el siguiente carácter solamente"
+
+msgid "violet"
+msgstr "morado"
+
+#~ msgid "Select locale"
+#~ msgstr "Seleccionar lugar"
 
 #~ msgid "3d mode"
 #~ msgstr "Modo 3D"
