@@ -53,7 +53,7 @@ AC_CHECK_LIB([ungif], [DGifOpen], [LIBGIF_LIBS="-lungif"], [AC_CHECK_LIB([gif], 
 AC_SUBST(LIBGIF_LIBS)
 
 AC_ARG_WITH(boxtype,
-	[  --with-boxtype=NAME box type [[none,dm7025,dm800...]]],
+	[  --with-boxtype=NAME box type [[none,dm800...]]],
 	[BOXTYPE="$withval"],[BOXTYPE="dm800"])
 AC_SUBST(BOXTYPE)
 AC_DEFINE_UNQUOTED(BOXTYPE,"$BOXTYPE",[box type])
@@ -457,20 +457,11 @@ fi
 if test "$BOXTYPE" == "sf8008"; then
 	AC_DEFINE(HAVE_HISILICON, 1,[define add HISILICON chip])
 	AC_DEFINE(CONFIG_HISILICON_FB, 1,[define add HISILICON framebuffer blit])
-	AC_DEFINE(FORCE_NO_BLENDING_ACCELERATION, 1,[define when the framebuffer acceleration has alphablending support, but detection slow down all])	
 	AC_DEFINE(VMSG_TYPE2, 1,[define vtuner_message type 2])
 fi	
 
-if test "$BOXTYPE" == "h9"; then
-	AC_DEFINE(FORCE_NO_BLENDING_ACCELERATION, 1,[define when the framebuffer acceleration has alphablending support, but detection slow down all])	
-fi
-
-if test "$BOXTYPE" == "h9combo"; then
-	AC_DEFINE(FORCE_NO_BLENDING_ACCELERATION, 1,[define when the framebuffer acceleration has alphablending support, but detection slow down all])	
-fi
-
-if test "$BOXTYPE" == "u5" -o "$BOXTYPE" == "u5pvr" -o "$BOXTYPE" == "u51" -o "$BOXTYPE" == "u52" -o "$BOXTYPE" == "u53"; then
-	AC_DEFINE(HAVE_HISILICON, 1,[define add HISILICON chip])	
+if test "$BOXTYPE" == "u5" -o "$BOXTYPE" == "u5pvr" -o "$BOXTYPE" == "u51" -o "$BOXTYPE" == "u52" -o "$BOXTYPE" == "u53" -o "$BOXTYPE" == "u55"; then
+	AC_DEFINE(HAVE_HISILICON, 1,[define add HISILICON chip])
 fi
 
 if test "$BOXTYPE" == "u53"; then

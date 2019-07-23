@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-03 10:25+0000\n"
-"PO-Revision-Date: 2019-03-03 12:45+0100\n"
+"POT-Creation-Date: 2019-07-17 10:02+0100\n"
+"PO-Revision-Date: 2019-07-20 12:14+0200\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SourceCharset: iso-8859-15\n"
-"X-Generator: Poedit 2.2.1\n"
+"X-Generator: Poedit 2.2.3\n"
 
 msgid ""
 "\n"
@@ -1745,6 +1745,12 @@ msgstr "Ook na stand-by"
 msgid "Alternative"
 msgstr "Alternatief"
 
+msgid "Alternative 1"
+msgstr "Alternatief 1"
+
+msgid "Alternative 2"
+msgstr "Alternatief 2"
+
 msgid "Alternative numbering mode"
 msgstr "Alternatieve nummermethode"
 
@@ -2005,6 +2011,9 @@ msgstr "Uitschakelen"
 
 msgid "Auto Detect"
 msgstr "Automatisch detecteren"
+
+msgid "Auto Diseqc"
+msgstr "Auto Diseqc"
 
 msgid "Auto EXIF Orientation rotation/flipping"
 msgstr "Auto EXIF-orientatie: rotatie/spiegelen"
@@ -2899,6 +2908,9 @@ msgstr "Kleurformaat"
 msgid "Color space"
 msgstr "Kleurruimte"
 
+msgid "Combined"
+msgstr "Gecombineerd"
+
 msgid "Combo"
 msgstr "Combo"
 
@@ -3754,6 +3766,9 @@ msgstr "Debug logs"
 msgid "Deep Standby"
 msgstr "Uitschakelen"
 
+msgid "Deep Standby LED"
+msgstr "Deep stand-by LED"
+
 msgid "Deep standby"
 msgstr "Afsluiten"
 
@@ -4211,6 +4226,9 @@ msgstr "Niet zappen en de timer uitschakelen"
 msgid "Don't zap and remove timer"
 msgstr "Niet zappen en de timer verwijderen"
 
+msgid "Done"
+msgstr "Klaar"
+
 #, python-format
 msgid "Done - Installed, upgraded or removed %d package (%s)"
 msgid_plural "Done - Installed, upgraded or removed %d packages (%s)"
@@ -4568,9 +4586,6 @@ msgstr "Voer blijvende PIN in"
 
 msgid "Enter pin code"
 msgstr "Voer pincode in"
-
-msgid "Enter text and exit"
-msgstr "Geef tekst in en sluit af"
 
 msgid "Enter the FTP password of the host receiver (normally just leave empty)."
 msgstr "Geef het FTP-wachtwoord van de gast-ontvanger."
@@ -5597,13 +5612,6 @@ msgstr "Hostname:"
 
 msgid "Hostname: "
 msgstr "Hostname: "
-
-msgid "Hotswitchable"
-msgstr "Het-verwisselbaar"
-
-#
-msgid "Hotswitchable tuner"
-msgstr "Heet-verwisselbare tuner"
 
 msgid "Hour"
 msgstr "Uur"
@@ -6738,6 +6746,9 @@ msgstr "Diverse"
 msgid "Missing "
 msgstr "Ontbrekend "
 
+msgid "Mode"
+msgstr "Modus"
+
 msgctxt "Satellite configuration mode"
 msgid "Mode"
 msgstr "Modus"
@@ -6766,6 +6777,9 @@ msgstr "Model: "
 #, python-format
 msgid "Model: %s %s\n"
 msgstr "Model:\t%s %s\n"
+
+msgid "Modes"
+msgstr "Modi"
 
 msgid "Modulation"
 msgstr "Modulatie"
@@ -6944,8 +6958,14 @@ msgstr "Multi-EPG"
 msgid "MultiEPG"
 msgstr "Multi-EPG"
 
+msgid "MultiType"
+msgstr "Multitype"
+
 msgid "Multiboot"
 msgstr "Multiboot"
+
+msgid "Multiboot ERROR! - invalid STARTUP in boot partition."
+msgstr "Multiboot FOUT! - ongeldige STARTUP in bootpartitie."
 
 msgid "Multiboot ERROR! - no STARTUP in boot partition."
 msgstr "Multiboot FOUT! - geen STARTUP in bootpartitie."
@@ -7235,6 +7255,9 @@ msgstr "Geen vrije index beschikbaar"
 msgid "No free tuner!"
 msgstr "Geen vrije tuner!"
 
+msgid "No images found"
+msgstr "Geen image gevonden"
+
 msgid "No module found"
 msgstr "Geen module gevonden"
 
@@ -7267,9 +7290,6 @@ msgstr "Geen zender/provider gekozen"
 
 msgid "No standby"
 msgstr "Geen stand-by"
-
-msgid "No suitable sat tuner found!"
-msgstr "Geen geschikte satelliettuner gevonden!"
 
 msgid "No tags are set on these movies."
 msgstr "Geen markeringen geplaatst op deze opnames."
@@ -8239,6 +8259,18 @@ msgstr "Power"
 msgid "Power LCD Display"
 msgstr "Power LCD Display"
 
+msgid "Power LED State in Deep-Standby"
+msgstr "Power-LED status deep stand-by"
+
+msgid "Power LED State in Standby"
+msgstr "Power-LED status in stand-by"
+
+msgid "Power LED State when Running."
+msgstr "Power-LED status indien actief."
+
+msgid "Power LED can be turned on or off here."
+msgstr "Power-LED kan hier worden in- of uitgeschakeld."
+
 msgid "Power long"
 msgstr "Power lang"
 
@@ -8256,6 +8288,15 @@ msgstr "Power threshold. Consulteer de handleiding van uw ontvanger voor meer in
 
 msgid "Power timers"
 msgstr "Powertimers"
+
+msgid "PowerControl FrontDisplay Normal Mode"
+msgstr "PowerControl frontpaneel normale modus"
+
+msgid "PowerControl FrontDisplay Standby Mode"
+msgstr "PowerControl frontpaneel stand-by modus"
+
+msgid "PowerControl FrontDisplay Suspend Mode"
+msgstr "PowerControl frontpaneel inactieve modus"
 
 msgid "PowerManager entry"
 msgstr "Powermanager entry"
@@ -8616,6 +8657,9 @@ msgstr "Wilt u de afgewerkte timers echt verwijderen?"
 msgid "Really exit the subservices quickzap?"
 msgstr "Subkanalen snelzap verlaten?"
 
+msgid "Really reboot into Recovery Mode?"
+msgstr "Echt herstarten in herstelmodus?"
+
 msgid "Really reboot now?"
 msgstr "Nu herstarten?"
 
@@ -8691,6 +8735,9 @@ msgstr "Een opname heeft altijd voorrang"
 
 msgid "Recordings, playback & timeshift"
 msgstr "Opname, afspelen en timeshift"
+
+msgid "Recovery Mode"
+msgstr "Herstelmodus"
 
 msgid "Red"
 msgstr "Rood"
@@ -8934,7 +8981,7 @@ msgid "Reset video enhancement settings to your last configuration?"
 msgstr "Laatste videoverbeterings configuratie gebruiken?"
 
 msgid "Reshare"
-msgstr "Reshare:"
+msgstr "Reshare"
 
 msgid "Reshare:"
 msgstr "Reshare:"
@@ -9188,6 +9235,9 @@ msgstr "Saudi Arabia"
 
 msgid "Save"
 msgstr "Opslaan"
+
+msgid "Save / Enter text and exit"
+msgstr "Sla op/Geef tekst in en sluit af"
 
 msgid "Save EPG"
 msgstr "Sla EPG op"
@@ -9500,9 +9550,6 @@ msgstr "Selecteer invoerapparaat."
 msgid "Select interface"
 msgstr "Selecteer interface"
 
-msgid "Select locale"
-msgstr "Kies taal"
-
 msgid "Select location"
 msgstr "Kies lokatie"
 
@@ -9601,6 +9648,9 @@ msgstr "Selecteer taal uit menu"
 
 msgid "Select the virtual keyboard shifted character set"
 msgstr "Selecteer 'shifted' karakterset"
+
+msgid "Select the virtual keyboard shifted character set for the next character only"
+msgstr "Kies 'shifted' karakterset voor alleen het volgende karakter."
 
 msgid "Select upgrade source"
 msgstr "Kies de upgrade-bron"
@@ -9786,6 +9836,9 @@ msgstr "Stel CI toewijzing in voor de detectie van de beschikbare kanalen."
 msgid "Set Framerate for MiniTV"
 msgstr "Stel framerate in voor MiniTV"
 
+msgid "Set LED Color or disable the LED."
+msgstr "Stel de LED kleur in of schakel de LED uit."
+
 msgid "Set a temporary sort method for this directory"
 msgstr "Kies de sortering voor deze map"
 
@@ -9968,6 +10021,9 @@ msgstr "Shares"
 
 msgid "Sharpness"
 msgstr "Scherpte"
+
+msgid "Shift"
+msgstr "Shift"
 
 msgid "Short filenames"
 msgstr "Korte naam"
@@ -10695,11 +10751,11 @@ msgstr "Stand-by"
 msgid "Standby / restart"
 msgstr "Stand-by/afsluiten"
 
+msgid "Standby LED"
+msgstr "Stand-by LED"
+
 msgid "Standby and Restart"
 msgstr "Stand-by en Afsluiten"
-
-msgid "StandbyLED"
-msgstr "Stand-by LED"
 
 msgid "Start"
 msgstr "Start"
@@ -11023,10 +11079,6 @@ msgstr "Ga naar het vorige kanaal"
 msgid "Switch to the previous channel in history"
 msgstr "Ga naar de vorige zender uit de geschiedenis"
 
-#
-msgid "Switchable tuner types"
-msgstr "Verwisselbare tunertypes"
-
 msgid "Switzerland"
 msgstr "Switzerland"
 
@@ -11070,6 +11122,15 @@ msgstr "Systeemtemperatuur: %s"
 
 msgid "System: "
 msgstr "Systeem: "
+
+msgid "T2MI PID"
+msgstr "T2MI PID"
+
+msgid "T2MI PLP"
+msgstr "T2MI PLP"
+
+msgid "T2MI PLP ID"
+msgstr "T2MI PLP ID"
 
 msgid "T2MI RAW Mode"
 msgstr "T2MI RAW modus"
@@ -11236,10 +11297,10 @@ msgstr ""
 
 msgid ""
 "The Filesystem on your Timeshift-Device does not support hardlinks.\n"
-"Make sure it is formatted in EXT2 or EXT3!"
+"Make sure it is formatted in EXT2, EXT3 or EXT4!"
 msgstr ""
 "Het bestandssysteem van uw timeshift-medium ondersteunt geen hardlinks.\n"
-"Formatteer die in EXT3 or EXT4!"
+"Formatteer die in EXT2, EXT3 of EXT4!"
 
 msgid ""
 "The IMDb plugin is not installed!\n"
@@ -11468,6 +11529,9 @@ msgstr "Hiermee schakelt u het 'smoothing filter' in voor het 'dithering process
 
 msgid "This option allows you enable the vertical scaler dejagging."
 msgstr "Met deze optie schakelt u de 'vertical scaler dejagging' in/uit."
+
+msgid "This option allows you to Power Off the display."
+msgstr "Hiermee kunt u het display uitschakelen."
 
 msgid "This option allows you to boost the blue tones in the picture."
 msgstr "Met deze instelling kunt u de blauwe kleuren in het beeld versterken."
@@ -11940,9 +12004,6 @@ msgstr "Tuner"
 msgid "Tuner :"
 msgstr "Tuner:"
 
-msgid "Tuner config"
-msgstr "Tuner-gerelateerde instellingen"
-
 msgid "Tuner is not supported"
 msgstr "Tuner wordt niet ondersteund"
 
@@ -11976,6 +12037,9 @@ msgstr "Tunerstatus:"
 #
 msgid "Tuner type"
 msgstr "Tunertype"
+
+msgid "Tuners & scanning"
+msgstr "Tuners & scannen"
 
 #
 msgid "Tuning info: live values"
@@ -12011,8 +12075,14 @@ msgstr "Schakel HDMI-in PiP modus in"
 msgid "Turn on HDMI-IN full screen mode"
 msgstr "Schakel HDMI-in vol-sherm modus in"
 
+msgid "Turn on the power LED during deep standby."
+msgstr "Schakel de power-LED tijdens stand-by in."
+
 msgid "Turn on the power LED during standby."
 msgstr "Schakel de blauwe LED tijdens stand-by uit."
+
+msgid "Turn on the power LED."
+msgstr "Schakel de power-LED in."
 
 msgid "Turning step size"
 msgstr "Draai stapgrootte"
@@ -13244,6 +13314,10 @@ msgstr ""
 #, python-format
 msgid "Your %s %s is rebooting"
 msgstr "Uw %s %s wordt opnieuw gestart"
+
+#, python-format
+msgid "Your %s %s is rebooting into Recovery Mode"
+msgstr "Uw %s %s wordt opnieuw gestart in herstelmodus"
 
 #, python-format
 msgid "Your %s %s is shutting down"
@@ -14636,6 +14710,9 @@ msgstr "variété"
 msgid "vertical"
 msgstr "vertikaal"
 
+msgid "violet"
+msgstr "paars"
+
 msgid "wait for mmi..."
 msgstr "wacht op mmi..."
 
@@ -15518,6 +15595,13 @@ msgstr "zapte"
 #~ msgid "Hotkey"
 #~ msgstr "Hotkey"
 
+#~ msgid "Hotswitchable"
+#~ msgstr "Het-verwisselbaar"
+
+#
+#~ msgid "Hotswitchable tuner"
+#~ msgstr "Heet-verwisselbare tuner"
+
 #~ msgid "IP-Address"
 #~ msgstr "IP-adres"
 
@@ -15609,9 +15693,6 @@ msgstr "zapte"
 #~ msgid "Multiboot ERROR! - no STARTUP in /boot -Please check /etc/fstab for correct boot partition"
 #~ msgstr "Multiboot FOUT! - geen STARTUP in /boot - Check /etc/fstab op correcte bootpartitie."
 
-#~ msgid "Multiplex"
-#~ msgstr "Multiplex"
-
 #~ msgid "NFI image flashing"
 #~ msgstr "NFI image schrijven"
 
@@ -15653,6 +15734,9 @@ msgstr "zapte"
 
 #~ msgid "No stream clients"
 #~ msgstr "Geen stream-klanten"
+
+#~ msgid "No suitable sat tuner found!"
+#~ msgstr "Geen geschikte satelliettuner gevonden!"
 
 #~ msgid "No updates available. Please try again later."
 #~ msgstr "Geen updates beschikbaar. Probeer het later nog eens."
@@ -15873,6 +15957,9 @@ msgstr "zapte"
 #~ msgid "Select if you want to use the ViX colored buttons (set to 'no' if you want to use (Multi Quick Button)."
 #~ msgstr "Kies of u de ViX-functies aan de kleurtoetsen wilt toekennen. Kies 'nee' als un (Multi) QuickButton wilt gebruiken."
 
+#~ msgid "Select locale"
+#~ msgstr "Kies taal"
+
 #~ msgid "Select operation:"
 #~ msgstr "Kies bewerking:"
 
@@ -15991,6 +16078,10 @@ msgstr "zapte"
 
 #~ msgid "Switch channel up"
 #~ msgstr "Ga naar volgende kanaal"
+
+#
+#~ msgid "Switchable tuner types"
+#~ msgstr "Verwisselbare tunertypes"
 
 #~ msgid ""
 #~ "System temperature: %s%sC\n"
