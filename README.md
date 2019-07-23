@@ -1,6 +1,6 @@
 ## Our buildserver is currently running on: ##
 
-> Ubuntu 18.04.2 LTS (GNU/Linux 4.15.0-54-generic x86_64)
+> Ubuntu 18.04.2 LTS (GNU/Linux 4.15.0-55-generic x86_64)
 
 ## teamBlue 6.3 (based on openPLi) is build using oe-alliance build-environment "4.3" and several git repositories: ##
 
