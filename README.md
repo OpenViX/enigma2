@@ -28,56 +28,58 @@
     When asked: Install dash as /bin/sh?
     select "NO"
 
+3 - modify max_user_watches
+
+    echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf
+
+    sysctl -n -w fs.inotify.max_user_watches=524288
+
 ----------
-3 - Add user teambluebuilder
+4 - Add user teambluebuilder
 
     sudo adduser teambluebuilder
 
 ----------
-4 - Switch to user teambluebuilder
+5 - Switch to user teambluebuilder
 
     su teambluebuilder
 
 ----------
-5 - Switch to home of teambluebuilder
+6 - Switch to home of teambluebuilder
 
     cd ~
 
 ----------
-6 - Create folder teamblue
+7 - Create folder teamblue
 
     mkdir -p ~/teamblue
 
 ----------
-7 - Switch to folder teamblue
+8 - Switch to folder teamblue
 
     cd teamblue
 
 ----------
-8 - Clone oe-alliance git
+9 - Clone oe-alliance git
 
     git clone git://github.com/oe-alliance/build-enviroment.git -b 4.3
 
 ----------
-9 - Switch to folder build-enviroment
+10 - Switch to folder build-enviroment
 
     cd build-enviroment
 
 ----------
-10 - Update build-enviroment
+11 - Update build-enviroment
 
     make update
 
 ----------
-11 - Finally you can start building a image
+12 - Finally you can start building a image
 
     MACHINE=gbquad4k DISTRO=teamblue make image
 
 
 Build Status - branch master: [![Build Status](https://travis-ci.org/teamblue-e2/enigma2.svg?branch=master)](https://travis-ci.org/teamblue-e2/enigma2)
-
-Build Status - branch 6.1:    [![Build Status](https://travis-ci.org/teamblue-e2/enigma2.svg?branch=6.1)](https://travis-ci.org/teamblue-e2/enigma2)
-
-Build Status - branch 6.2:    [![Build Status](https://travis-ci.org/teamblue-e2/enigma2.svg?branch=6.2)](https://travis-ci.org/teamblue-e2/enigma2)
 
 Build Status - branch 6.3:    [![Build Status](https://travis-ci.org/teamblue-e2/enigma2.svg?branch=6.3)](https://travis-ci.org/teamblue-e2/enigma2)
