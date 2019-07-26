@@ -859,6 +859,10 @@ class NimManager:
 			if not ("name" in entry and "type" in entry):
 				entry["name"] =  _("N/A")
 				entry["type"] = None
+			print "[NIM] name:", entry["name"]
+			if entry["name"] == "DVB-S2 NIM(45308 FBC)":
+				entry["name"] = "DVB-S2X NIM(45308 FBC)"
+				entry["type"] = "DVB-S2X"
 			if "i2c" not in entry:
 				entry["i2c"] = None
 			if "has_outputs" not in entry:
