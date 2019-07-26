@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-07-02 07:50+0100\n"
-"PO-Revision-Date: 2019-07-08 20:25+0200\n"
+"PO-Revision-Date: 2019-07-23 22:10+0200\n"
 "Last-Translator: Kojo\n"
 "Language-Team: AndyBlac/timoj/Kojo/Samzam\n"
 "Language: fi\n"
@@ -1442,19 +1442,19 @@ msgstr ""
 "voidaan yrittää uudelleen?\n"
 
 msgid "AAC downmix"
-msgstr "AAC:n muunto stereoksi"
+msgstr "AAC stereoksi"
 
 msgid "AAC transcoding"
 msgstr "AAC-uudelleenpakkaus"
 
 msgid "AAC+ downmix"
-msgstr "AAC+:n muunto stereoksi"
+msgstr "AAC+ stereoksi"
 
 msgid "AC3"
 msgstr "AC3"
 
 msgid "AC3 downmix"
-msgstr "AAC:n muunto stereoksi"
+msgstr "AC3 stereoksi"
 
 msgid "AC3 transcoding"
 msgstr "AC3-uudelleenpakkaus"
@@ -2510,7 +2510,7 @@ msgid "Bulgaria"
 msgstr "Bulgaria"
 
 msgid "Bulgarian"
-msgstr "Bulgaria"
+msgstr "Bulgarialainen"
 
 msgid "Burkina Faso"
 msgstr "Burkina Faso"
@@ -2977,7 +2977,7 @@ msgid "Choose the front panel display formatting style for times. 'H' / 'HH' is 
 msgstr "Valitse näyttöpaneelin kellonaikojen näyttömuoto. Näyttömuoto perustuu omaan valintaasi mutta voi muuttua riippuen teemasta."
 
 msgid "Choose the layout view mode (Text / Graphics Multi channel EPG or Single channel EPG)."
-msgstr ""
+msgstr "Valitse näyttötapa: Teksti, Graafinen usean kanavan EPG, vai Yhden kanavan EPG."
 
 msgid "Choose the layout view mode (Text or Graphics)."
 msgstr "Tämä asetus määrittää näkymän asettelun (teksti tai graafinen)."
@@ -4617,7 +4617,7 @@ msgid "Downloading plugin information. Please wait..."
 msgstr "Ladataan tietoja lisäosista. Odota..."
 
 msgid "Downmix"
-msgstr "AAC:n muunto stereoksi"
+msgstr "Kyllä"
 
 msgid "Drama"
 msgstr "Elokuva/draama"
@@ -5985,7 +5985,7 @@ msgid "Height"
 msgstr "Korkeus"
 
 msgid "Help"
-msgstr "Apua"
+msgstr "Ohjeita"
 
 msgid "Help long"
 msgstr "Pitkä punainen"
@@ -6235,7 +6235,7 @@ msgid "If set to 'yes' the infobar will be displayed when changing channels."
 msgstr "'Kyllä' valinnalla tietopalkki näytetään kanavanvaihdossa."
 
 msgid "If set to 'yes' you can preview channels in the EPG list."
-msgstr "'Kyllä' valinnalla EPG-listassa voi esikatsella kanavia."
+msgstr "EPG-listauksessa kanavien esikatselu."
 
 msgid "If set to 'yes' you can preview channels in the channel list. Press 'OK' to preview the selected channel, press a 2nd 'OK' to exit and zap to that channel, pressing 'EXIT' to return to the channel you started at."
 msgstr "Jos valinta on 'kyllä' voit esikatsella kanavia kanavalistassa. Esikatsele valittua kanavaa painamalla 'OK', toinen 'OK' painallus vaihtaa kanavalle ja sulkee listan, EXIT palaa takaisin kanavalle jota aiemmin katselit."
@@ -13975,7 +13975,7 @@ msgid "WLAN connection"
 msgstr "WLAN-yhteys"
 
 msgid "WMA Pro downmix"
-msgstr "WMA Pro muunto stereoksi"
+msgstr "WMA Pro stereoksi"
 
 #
 msgid "WPA"
