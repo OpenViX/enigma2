@@ -825,6 +825,9 @@ class NimManager:
 			elif line.startswith("Name:"):
 				entries[current_slot]["name"] = str(line[6:])
 				entries[current_slot]["isempty"] = False
+				if entries[current_slot]["name"] == "DVB-S2 NIM(45308 FBC)":
+					entries[current_slot]["name"] = "DVB-S2X NIM(45308 FBC)"
+					entries[current_slot]["type"] = "DVB-S2X"
 			elif line.startswith("Has_Outputs:"):
 				input = str(line[len("Has_Outputs:") + 1:])
 				entries[current_slot]["has_outputs"] = (input == "yes")
@@ -859,10 +862,6 @@ class NimManager:
 			if not ("name" in entry and "type" in entry):
 				entry["name"] =  _("N/A")
 				entry["type"] = None
-			print "[NIM] name:", entry["name"]
-			if entry["name"] == "DVB-S2 NIM(45308 FBC)":
-				entry["name"] = "DVB-S2X NIM(45308 FBC)"
-				entry["type"] = "DVB-S2X"
 			if "i2c" not in entry:
 				entry["i2c"] = None
 			if "has_outputs" not in entry:
