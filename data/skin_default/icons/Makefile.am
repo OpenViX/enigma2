@@ -45,6 +45,7 @@ dist_install_DATA = \
 	input_info.png \
 	input_keyboard-configured.png \
 	input_keyboard.png \
+	input_message.png \
 	input_mouse-configured.png \
 	input_mouse.png \
 	input_question.png \
