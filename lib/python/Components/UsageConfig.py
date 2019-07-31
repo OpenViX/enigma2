@@ -451,6 +451,7 @@ def InitUsageConfig():
 	config.epg.netmed = ConfigYesNo(default = False)
 	config.epg.virgin = ConfigYesNo(default = False)
 	config.epg.saveepg = ConfigYesNo(default = True)
+	config.epg.opentv = ConfigYesNo(default = False)
 	config.misc.showradiopic = ConfigYesNo(default = True)
 	def EpgSettingsChanged(configElement):
 		from enigma import eEPGCache
@@ -467,6 +468,8 @@ def InitUsageConfig():
 			mask &= ~(eEPGCache.NETMED_SCHEDULE | eEPGCache.NETMED_SCHEDULE_OTHER)
 		if not config.epg.virgin.value:
 			mask &= ~(eEPGCache.VIRGIN_NOWNEXT | eEPGCache.VIRGIN_SCHEDULE)
+		if not config.epg.opentv.value:
+			mask &= ~eEPGCache.OPENTV
 		eEPGCache.getInstance().setEpgSources(mask)
 	config.epg.eit.addNotifier(EpgSettingsChanged)
 	config.epg.mhw.addNotifier(EpgSettingsChanged)
@@ -474,6 +477,7 @@ def InitUsageConfig():
 	config.epg.viasat.addNotifier(EpgSettingsChanged)
 	config.epg.netmed.addNotifier(EpgSettingsChanged)
 	config.epg.virgin.addNotifier(EpgSettingsChanged)
+	config.epg.opentv.addNotifier(EpgSettingsChanged)
 
 	config.epg.histminutes = ConfigSelectionNumber(min = 0, max = 120, stepwidth = 15, default = 0, wraparound = True)
 	def EpgHistorySecondsChanged(configElement):
