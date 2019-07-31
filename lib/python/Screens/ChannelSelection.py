@@ -46,10 +46,12 @@ from ServiceReference import ServiceReference
 from Tools.BoundFunction import boundFunction
 from Tools import Notifications
 from Tools.Alternatives import GetWithAlternative
+import Tools.Transponder
 from Plugins.Plugin import PluginDescriptor
 from Components.PluginComponent import plugins
 from Screens.ChoiceBox import ChoiceBox
 from time import localtime, time, strftime
+import re
 try:
 	from Plugins.SystemPlugins.PiPServiceRelation.plugin import getRelationDict
 	plugin_PiPServiceRelation_installed = True
@@ -1418,6 +1420,10 @@ service_types_tv = '1:7:1:0:0:0:0:0:0:0:(type == 1) || (type == 17) || (type == 
 service_types_radio = '1:7:2:0:0:0:0:0:0:0:(type == 2) || (type == 10)'
 
 class ChannelSelectionBase(Screen):
+
+	orbposReStr = "\(satellitePosition *== *(\d+)"
+	orbposRe = None  # Lazy compilation
+
 	def __init__(self, session):
 		Screen.__init__(self, session)
 
@@ -1701,33 +1707,13 @@ class ChannelSelectionBase(Screen):
 							service = servicelist.getNext()
 							if not service.valid(): #check if end of list
 								break
-							unsigned_orbpos = service.getUnsignedData(4) >> 16
-							orbpos = service.getData(4) >> 16
-							if orbpos < 0:
-								orbpos += 3600
-							if "FROM PROVIDER" in service.getPath():
-								service_type = self.showSatDetails and _("Providers")
-							elif ("flags == %d" %(FLAG_SERVICE_NEW_FOUND)) in service.getPath():
-								service_type = self.showSatDetails and _("New")
-							else:
-								service_type = _("Services")
+							service_type = self.getServiceType(service.getPath(), self.showSatDetails)
 							if service_type:
-								if unsigned_orbpos == 0xFFFF: #Cable
-									service_name = _("Cable")
-									addCableAndTerrestrialLater.append(("%s - %s" % (service_name, service_type), service.toString()))
-								elif unsigned_orbpos == 0xEEEE: #Terrestrial
-									service_name = _("Terrestrial")
+								orbpos = service.getUnsignedData(4) >> 16
+								service_name = self.getTransponderName(orbpos)
+								if service_name in (_("Cable"), _("Terrestrial")):
 									addCableAndTerrestrialLater.append(("%s - %s" % (service_name, service_type), service.toString()))
 								else:
-									try:
-										service_name = str(nimmanager.getSatDescription(orbpos))
-									except:
-										if orbpos > 1800: # west
-											orbpos = 3600 - orbpos
-											h = _("W")
-										else:
-											h = _("E")
-										service_name = ("%d.%d" + h) % (orbpos / 10, orbpos % 10)
 									service.setName("%s - %s" % (service_name, service_type))
 									self.servicelist.addService(service)
 						cur_ref = self.session.nav.getCurrentlyPlayingServiceReference()
@@ -1779,6 +1765,26 @@ class ChannelSelectionBase(Screen):
 								provider = info.getInfoString(iServiceInformation.sProvider)
 								refstr = '1:7:0:0:0:0:0:0:0:0:(provider == \"%s\") && %s ORDER BY name:%s' % (provider, self.service_types[self.service_types.rfind(':')+1:],provider)
 								self.setCurrentSelectionAlternative(eServiceReference(refstr))
+
+	@staticmethod
+	def getTransponderName(orbpos):
+		if orbpos == 0xFFFF: #Cable
+			return _("Cable")
+		elif orbpos == 0xEEEE: #Terrestrial
+			return _("Terrestrial")
+		else:
+			try:
+				return str(nimmanager.getSatDescription(orbpos))
+			except KeyError:
+				return Tools.Transponder.orbpos(orbpos)
+
+	@staticmethod
+	def getServiceType(path, detailed):
+		if "FROM PROVIDERS" in path:
+			return detailed and _("Providers")
+		elif ("flags == %d" %(FLAG_SERVICE_NEW_FOUND)) in path:
+			return detailed and _("New")
+		return _("Services")
 
 	def changeBouquet(self, direction):
 		if not self.pathChangeDisabled:
@@ -1948,6 +1954,67 @@ class ChannelSelectionBase(Screen):
 				bouquets.append((info.getName(self.bouquet_root), self.bouquet_root))
 			return bouquets
 		return None
+
+	def getEPGBouquetName(self, service):
+		service_name = service.getName()
+		if service_name and service_name.lower() != "<n/a>":
+			return service_name
+
+		service_name = ServiceReference(service).getServiceName()
+
+		service_path = service.getPath()
+		if (not service_name or service_name == "<n/a>") and "satellitePosition" in service_path:
+			if not self.orbposRe:
+				self.orbposRe = re.compile(self.orbposReStr)
+			orbpos_match = self.orbposRe.search(service_path)
+			if orbpos_match:
+				orbpos = int(orbpos_match.group(1))
+				name = self.getTransponderName(orbpos)
+				service_type = self.getServiceType(service_path, True)
+				service_name = "%s - %s" % (name, service_type)
+		return service_name
+
+	# Get bouquet list in a form suitable for passing to the EPG
+
+	def getEPGBouquetList(self):
+		servicePath = self.servicePath
+		if config.usage.multibouquet.value and len(servicePath) > 1 and "channelID ==" not in servicePath[-1].getPath():
+			bouquet_root = servicePath[-2]
+		elif servicePath:
+			bouquet_root = servicePath[-1]
+		else:
+			return []
+
+		if bouquet_root.type == eServiceReference.idDVB and bouquet_root.flags == eServiceReference.flagDirectory and bouquet_root.getData(0) in (1, 2):
+			bouquet_path = bouquet_root.getPath()
+			if not any(x in bouquet_path for x in ("FROM SATELLITES", "FROM PROVIDERS", "FROM BOUQUET")):
+				if "channelID ==" in bouquet_path:
+					default_name = _("Current transponder")
+				else:
+					default_name = _("All")
+				name = bouquet_root.getName() or ServiceReference(bouquet_root).getServiceName() or default_name
+				return [(name, bouquet_root)]
+
+		if config.usage.multibouquet.value:
+			serviceHandler = eServiceCenter.getInstance()
+			list = serviceHandler.list(bouquet_root)
+			if list:
+				bouquets = []
+				# Use getContent() instead of getNext() so
+				# That the list is sorted according to the "ORDER BY"
+				# mechanism
+				for name, service in ((n, s) for n, s in list.getContent("NR", True) if s.flags & eServiceReference.isDirectory and not s.flags & eServiceReference.isInvisible):
+					service_path = service.getPath()
+					if "FROM PROVIDERS" in service_path:
+						continue
+					if "FROM BOUQUET" in service_path:
+						bouquets.append((name, service))
+					else:
+						bouquets.append((self.getEPGBouquetName(service), service))
+				return bouquets
+		else:
+			return [(self.getEPGBouquetName(bouquet_root), bouquet_root)]
+		return []
 
 	def keyGoUp(self):
 		if len(self.servicePath) > 1:

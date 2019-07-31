@@ -451,17 +451,14 @@ class EPGSelection(Screen, HelpableScreen):
 		self['lab1'].hide()
 
 	def getBouquetServices(self, bouquet):
-		services = []
 		servicelist = eServiceCenter.getInstance().list(bouquet)
-		if not servicelist is None:
-			while True:
-				service = servicelist.getNext()
-				if not service.valid(): #check if end of list
-					break
-				if service.flags & (eServiceReference.isDirectory | eServiceReference.isMarker): #ignore non playable services
-					continue
-				services.append(ServiceReference(service))
-		return services
+		if servicelist:
+			# Use getContent() instead of getNext() so
+			# That the list is sorted according to the "ORDER BY"
+			# mechanism
+			return [ServiceReference(service) for service in servicelist.getContent("R", True) if not (service.flags & (eServiceReference.isDirectory | eServiceReference.isMarker))]
+		else:
+			return []
 
 	def LayoutFinish(self):
 		self['lab1'].show()
