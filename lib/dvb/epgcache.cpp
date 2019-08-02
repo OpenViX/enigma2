@@ -1624,6 +1624,7 @@ void eEPGCache::channel_data::startEPG()
 		cleanupFreeSat();
 #endif
 #ifdef ENABLE_OPENTV
+		huffman_dictionary_read = false;
 		cleanupOPENTV();
 #endif
 	eDVBSectionFilterMask mask;
@@ -1786,7 +1787,6 @@ void eEPGCache::channel_data::startEPG()
 	{
 		char dictionary[256];
 		memset(dictionary, '\0', 256);
-		huffman_dictionary_read = false;
 
 		//load correct EPG dictionary data "otv_namespace_onid_tsid.dict"
 		sprintf (dictionary, "/usr/share/enigma2/otv_%08x_%04x_%04x.dict",
