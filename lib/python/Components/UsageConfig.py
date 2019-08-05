@@ -297,6 +297,16 @@ def InitUsageConfig():
 	config.usage.show_event_progress_in_servicelist.addNotifier(refreshServiceList)
 	config.usage.show_channel_numbers_in_servicelist.addNotifier(refreshServiceList)
 
+	if SystemInfo["WakeOnLAN"]:
+		def wakeOnLANChanged(configElement):
+			if "fp" in SystemInfo["WakeOnLAN"]:
+				open(SystemInfo["WakeOnLAN"], "w").write(configElement.value and "enable" or "disable")
+			else:
+				open(SystemInfo["WakeOnLAN"], "w").write(configElement.value and "on" or "off")
+		config.usage.wakeOnLAN = ConfigYesNo(default = False)
+		config.usage.wakeOnLAN.addNotifier(wakeOnLANChanged)
+
+
 	#standby
 	if getDisplayType() in ('textlcd7segment'):
 		config.usage.blinking_display_clock_during_recording = ConfigSelection(default = "Rec", choices = [
@@ -768,14 +778,7 @@ def InitUsageConfig():
 	config.usage.keymap = ConfigText(default = eEnv.resolve("${datadir}/enigma2/keymap.xml"))
 
 	config.network = ConfigSubsection()
-	if SystemInfo["WakeOnLAN"]:
-		def wakeOnLANChanged(configElement):
-			if getBoxType() in ('et10000', 'gbquadplus', 'gbquad', 'gb800ueplus', 'gb800seplus', 'gbipbox'):
-				open(SystemInfo["WakeOnLAN"], "w").write(configElement.value and "on" or "off")
-			else:
-				open(SystemInfo["WakeOnLAN"], "w").write(configElement.value and "enable" or "disable")
-		config.network.wol = ConfigYesNo(default = False)
-		config.network.wol.addNotifier(wakeOnLANChanged)
+
 	config.network.AFP_autostart = ConfigYesNo(default = True)
 	config.network.NFS_autostart = ConfigYesNo(default = True)
 	config.network.OpenVPN_autostart = ConfigYesNo(default = True)
