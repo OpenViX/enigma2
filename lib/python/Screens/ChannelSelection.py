@@ -1566,46 +1566,52 @@ class ChannelSelectionBase(Screen):
 		return str
 
 	def getServiceName(self, ref):
-		str = self.removeModeStr(ServiceReference(ref).getServiceName())
+		str = ref.getName() or self.removeModeStr(ServiceReference(ref).getServiceName())
 		if 'User - bouquets' in str:
 			return _('User - bouquets')
+
+		if str and str.lower() != "<n/a>":
+			return str
+
+		pathstr = ref.getPath()
+		if "satellitePosition" in pathstr:
+			if not self.orbposRe:
+				self.orbposRe = re.compile(self.orbposReStr)
+			orbpos_match = self.orbposRe.search(pathstr)
+			if orbpos_match:
+				orbpos = int(orbpos_match.group(1))
+				name = self.getTransponderName(orbpos)
+				service_type = self.getServiceType(pathstr, True)
+				return "%s - %s" % (name, service_type)
+
+		if not pathstr.startswith("FROM ") and " FROM " not in pathstr:
+			return str or "channelID ==" in pathstr and _("Current transponder") or _('All')
+
 		if not str:
-			pathstr = ref.getPath()
 			if 'FROM PROVIDERS' in pathstr:
 				return _('Provider')
 			if 'FROM SATELLITES' in pathstr:
 				return _('Satellites')
-			if ') ORDER BY name' in pathstr:
-				return _('All')
 		return str
 
 	def buildTitleString(self):
 		titleStr = self.getTitle()
-		nameStr = ''
-		pos = titleStr.find(']')
-		if pos == -1:
-			pos = titleStr.find(' (')
-		if pos != -1:
-			if titleStr.find(' (TV)') != -1:
-				titleStr = titleStr[-5:]
-			elif titleStr.find(' (Radio)') != -1:
-				titleStr = titleStr[-8:]
-			Len = len(self.servicePath)
-			if Len > 0:
-				base_ref = self.servicePath[0]
-				if Len > 1:
-					end_ref = self.servicePath[Len - 1]
-				else:
-					end_ref = None
+		if ']' in titleStr or ' (' in titleStr:
+			if titleStr.endswith(_(' (TV)')):
+				titleStr = _(' (TV)')
+			elif titleStr.endswith(_(' (Radio)')):
+				titleStr = _(' (Radio)')
+			if self.servicePath:
+#				base_ref = self.servicePath[0]
+				end_ref = self.servicePath[-1]
 # 				nameStr = self.getServiceName(base_ref)
 # 				titleStr += ' - ' + nameStr
-				if end_ref is not None:
-# 					if Len > 2:
-# 						titleStr += '/../'
-# 					else:
-# 						titleStr += '/'
-					self.nameStr = self.getServiceName(end_ref)
-					titleStr = self.nameStr + titleStr
+# 				if len(self.servicePath) > 2:
+# 					titleStr += '/../'
+# 				else:
+# 					titleStr += '/'
+				self.nameStr = self.getServiceName(end_ref)
+				titleStr = self.nameStr + titleStr
 				self.setTitle(titleStr)
 
 	def moveUp(self):
@@ -1955,25 +1961,6 @@ class ChannelSelectionBase(Screen):
 			return bouquets
 		return None
 
-	def getEPGBouquetName(self, service):
-		service_name = service.getName()
-		if service_name and service_name.lower() != "<n/a>":
-			return service_name
-
-		service_name = ServiceReference(service).getServiceName()
-
-		service_path = service.getPath()
-		if (not service_name or service_name == "<n/a>") and "satellitePosition" in service_path:
-			if not self.orbposRe:
-				self.orbposRe = re.compile(self.orbposReStr)
-			orbpos_match = self.orbposRe.search(service_path)
-			if orbpos_match:
-				orbpos = int(orbpos_match.group(1))
-				name = self.getTransponderName(orbpos)
-				service_type = self.getServiceType(service_path, True)
-				service_name = "%s - %s" % (name, service_type)
-		return service_name
-
 	# Get bouquet list in a form suitable for passing to the EPG
 
 	def getEPGBouquetList(self):
@@ -1987,13 +1974,8 @@ class ChannelSelectionBase(Screen):
 
 		if bouquet_root.type == eServiceReference.idDVB and bouquet_root.flags == eServiceReference.flagDirectory and bouquet_root.getData(0) in (1, 2):
 			bouquet_path = bouquet_root.getPath()
-			if not any(x in bouquet_path for x in ("FROM SATELLITES", "FROM PROVIDERS", "FROM BOUQUET")):
-				if "channelID ==" in bouquet_path:
-					default_name = _("Current transponder")
-				else:
-					default_name = _("All")
-				name = bouquet_root.getName() or ServiceReference(bouquet_root).getServiceName() or default_name
-				return [(name, bouquet_root)]
+			if not bouquet_path.startswith("FROM ") and " FROM " not in bouquet_path:
+				return [(self.getServiceName(bouquet_root), bouquet_root)]
 
 		if config.usage.multibouquet.value:
 			serviceHandler = eServiceCenter.getInstance()
@@ -2010,10 +1992,10 @@ class ChannelSelectionBase(Screen):
 					if "FROM BOUQUET" in service_path:
 						bouquets.append((name, service))
 					else:
-						bouquets.append((self.getEPGBouquetName(service), service))
+						bouquets.append((self.getServiceName(service), service))
 				return bouquets
 		else:
-			return [(self.getEPGBouquetName(bouquet_root), bouquet_root)]
+			return [(self.getServiceName(bouquet_root), bouquet_root)]
 		return []
 
 	def keyGoUp(self):
