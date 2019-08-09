@@ -1554,12 +1554,19 @@ class ChannelSelectionBase(Screen):
 		self.buildTitleString()
 
 	def removeModeStr(self, str):
+		# The "(TV)" and "(Radio)" tags on bouquet names
+		# created by eDVBDB::reloadBouquets() are not translated,
+		# but the tags added by ChannelSelectioEdit.addBouquet()
+		# are translated, so remove either.
+
 		if self.mode == MODE_TV:
-			pos = str.find(' ' + _('(TV)'))
+			removes = (' ' + _('(TV)'), ' (TV)')
 		else:
-			pos = str.find(' ' + _('(Radio)'))
-		if pos != -1:
-			return str[:pos]
+			removes = (' ' + _('(Radio)'), ' (Radio)')
+
+		for r in removes:
+			if r in str:
+				return str.replace(r, '', 1)
 		return str
 
 	def getServiceName(self, ref):
