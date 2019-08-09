@@ -1115,10 +1115,7 @@ class ChannelSelectionEdit:
 		serviceHandler = eServiceCenter.getInstance()
 		mutableBouquetList = serviceHandler.list(self.bouquet_root).startEdit()
 		if mutableBouquetList:
-			if self.mode == MODE_TV:
-				bName += _(" (TV)")
-			else:
-				bName += _(" (Radio)")
+			bName += ' ' + (_("(TV)") if self.mode == MODE_TV else _("(Radio)"))
 			name = unicodedata.normalize('NFKD', unicode(bName, 'utf_8', errors='ignore')).encode('ASCII', 'ignore').translate(None, '<>:"/\\|?*() ')
 			while os.path.isfile((self.mode == MODE_TV and '/etc/enigma2/userbouquet.%s.tv' or '/etc/enigma2/userbouquet.%s.radio') % name):
 				name = name.rsplit('_', 1)
@@ -1247,18 +1244,8 @@ class ChannelSelectionEdit:
 		# add all services from the current list to internal marked set in listboxservicecontent
 		self.clearMarks() # this clears the internal marked set in the listboxservicecontent
 		self.saved_title = self.getTitle()
-		pos = self.saved_title.find(')')
-		new_title = self.saved_title[:pos+1]
-		if type == EDIT_ALTERNATIVES:
-			self.bouquet_mark_edit = EDIT_ALTERNATIVES
-			new_title += ' ' + _("[alternative edit]")
-		else:
-			self.bouquet_mark_edit = EDIT_BOUQUET
-			if config.usage.multibouquet.value:
-				new_title += ' ' + _("[bouquet edit]")
-			else:
-				new_title += ' ' + _("[favourite edit]")
-		self.setTitle(new_title)
+		self.bouquet_mark_edit = type
+		self.buildTitleString()
 		self.__marked = self.servicelist.getRootServices()
 		for x in self.__marked:
 			self.servicelist.addMarked(eServiceReference(x))
@@ -1285,8 +1272,8 @@ class ChannelSelectionEdit:
 		self.clearMarks()
 		self.bouquet_mark_edit = OFF
 		self.mutableList = None
-		self.setTitle(self.saved_title)
 		self.saved_title = None
+		self.buildTitleString()
 		# self.servicePath is just a reference to servicePathTv or Radio...
 		# so we never ever do use the asignment operator in self.servicePath
 		del self.servicePath[:] # remove all elements
@@ -1361,8 +1348,8 @@ class ChannelSelectionEdit:
 			self.movemode = False
 			self.mutableList.flushChanges() # FIXME add check if changes was made
 			self.mutableList = None
-			self.setTitle(self.saved_title)
 			self.saved_title = None
+			self.buildTitleString()
 			self.servicelist.resetRoot()
 			self.servicelist.setCurrent(self.servicelist.getCurrent())
 		else:
@@ -1370,8 +1357,7 @@ class ChannelSelectionEdit:
 			self.movemode = True
 			select and self.toggleMoveMarked()
 			self.saved_title = self.getTitle()
-			pos = self.saved_title.find(')')
-			self.setTitle(self.saved_title[:pos+1] + ' ' + _("[move mode]") + self.saved_title[pos+1:]);
+			self.buildTitleString()
 			self.servicelist.setCurrent(self.servicelist.getCurrent())
 		self["Service"].editmode = True
 
@@ -1390,6 +1376,17 @@ class ChannelSelectionEdit:
 			self.servicelist.setCurrentMarked(True)
 			self.entry_marked = True
 			self.pathChangeDisabled = True # no path change allowed in movemod
+
+	def titleStringDecoration(self):
+		modeStr, editStr = ChannelSelectionBase.titleStringDecoration(self)
+
+		if editStr is None:
+			if self.bouquet_mark_edit == EDIT_ALTERNATIVES:
+				editStr = _("[alternative edit]")
+			elif self.bouquet_mark_edit == EDIT_BOUQUET:
+				editStr = _("[bouquet edit]") if config.usage.multibouquet.value else _("[favourite edit]")
+
+		return modeStr, editStr
 
 	def doContext(self):
 		self.session.openWithCallback(self.exitContext, ChannelContextMenu, self)
@@ -1528,7 +1525,7 @@ class ChannelSelectionBase(Screen):
 #		pos = title.find(" (")
 #		if pos != -1:
 #			title = title[:pos]
-		title = _(' (TV)')
+		title = ' ' + _('(TV)')
 		self.setTitle(title)
 
 	def setRadioMode(self):
@@ -1539,7 +1536,7 @@ class ChannelSelectionBase(Screen):
 #		pos = title.find(" (")
 #		if pos != -1:
 #			title = title[:pos]
-		title = _(' (Radio)')
+		title = ' ' + _('(Radio)')
 		self.setTitle(title)
 
 	def setRoot(self, root, justSet=False):
@@ -1558,9 +1555,9 @@ class ChannelSelectionBase(Screen):
 
 	def removeModeStr(self, str):
 		if self.mode == MODE_TV:
-			pos = str.find(_(' (TV)'))
+			pos = str.find(' ' + _('(TV)'))
 		else:
-			pos = str.find(_(' (Radio)'))
+			pos = str.find(' ' + _('(Radio)'))
 		if pos != -1:
 			return str[:pos]
 		return str
@@ -1594,25 +1591,37 @@ class ChannelSelectionBase(Screen):
 				return _('Satellites')
 		return str
 
+	def titleStringDecoration(self):
+		if self.mode == MODE_TV:
+			modeStr = _('(PiP)') if self.dopipzap else _('(TV)')
+		elif self.mode == MODE_RADIO:
+			modeStr = _('(Radio)')
+		else:
+			modeStr = None
+
+		editStr = _("[move mode]") if self.movemode else None
+
+		return (modeStr, editStr)
+
 	def buildTitleString(self):
-		titleStr = self.getTitle()
-		if ']' in titleStr or ' (' in titleStr:
-			if titleStr.endswith(_(' (TV)')):
-				titleStr = _(' (TV)')
-			elif titleStr.endswith(_(' (Radio)')):
-				titleStr = _(' (Radio)')
-			if self.servicePath:
-#				base_ref = self.servicePath[0]
-				end_ref = self.servicePath[-1]
-# 				nameStr = self.getServiceName(base_ref)
-# 				titleStr += ' - ' + nameStr
-# 				if len(self.servicePath) > 2:
-# 					titleStr += '/../'
-# 				else:
-# 					titleStr += '/'
-				self.nameStr = self.getServiceName(end_ref)
-				titleStr = self.nameStr + titleStr
-				self.setTitle(titleStr)
+		if self.servicePath:
+			end_ref = self.servicePath[-1]
+			titleStr = ""
+
+# 			Show both the base and current bouquet if there
+# 			is more than one bouqiet in the service path
+# 			spLen = len(self.servicePath)
+# 			if spLen > 1:
+#  				base_ref = self.servicePath[0]
+# 				titleStr += self.getServiceName(base_ref)
+# 				titleStr += spLen > 2 and '/../' or '/'
+
+			self.nameStr = self.getServiceName(end_ref)
+			titleStr += self.nameStr
+			for decorStr in self.titleStringDecoration():
+				if decorStr:
+					titleStr += ' ' + decorStr
+			self.setTitle(titleStr)
 
 	def moveUp(self):
 		self.servicelist.moveUp()
@@ -2051,7 +2060,7 @@ config.servicelist.startupservice_onstandby = ConfigYesNo(default = False)
 config.servicelist.startuproot = ConfigText()
 config.servicelist.startupmode = ConfigText(default='tv')
 
-class ChannelSelection(ChannelSelectionBase, ChannelSelectionEdit, ChannelSelectionEPG, SelectionEventInfo):
+class ChannelSelection(ChannelSelectionEdit, ChannelSelectionBase, ChannelSelectionEPG, SelectionEventInfo):
 	instance = None
 
 	def __init__(self, session):
@@ -2277,10 +2286,6 @@ class ChannelSelection(ChannelSelectionBase, ChannelSelectionEdit, ChannelSelect
 
 	def togglePipzap(self):
 		assert self.session.pip
-		title = self.instance.getTitle()
-		pos = title.find(' (')
-		if pos != -1:
-			title = title[:pos]
 		if self.dopipzap:
 			# Mark PiP as inactive and effectively deactivate pipzap
 			self.hidePipzapMessage()
@@ -2296,7 +2301,6 @@ class ChannelSelection(ChannelSelectionBase, ChannelSelectionEdit, ChannelSelect
 			if lastservice.valid() and self.getCurrentSelection() != lastservice:
 				self.setCurrentSelection(lastservice)
 
-			title += _(' (TV)')
 		else:
 			# Mark PiP as active and effectively active pipzap
 			self.showPipzapMessage()
@@ -2305,8 +2309,6 @@ class ChannelSelection(ChannelSelectionBase, ChannelSelectionEdit, ChannelSelect
 			# Move to service playing in pip (will not work with subservices)
 			self.setCurrentSelection(self.session.pip.getCurrentService())
 
-			title += _(' (PiP)')
-		self.setTitle(title)
 		self.buildTitleString()
 
 	def showPipzapMessage(self):
@@ -2638,13 +2640,7 @@ class ChannelSelection(ChannelSelectionBase, ChannelSelectionEdit, ChannelSelect
 			elif tmp_mode == "radio":
 				self.setModeRadio()
 			self.enterUserbouquet(tmp_root)
-			title = self.instance.getTitle()
-			pos = title.find(" (")
-			if pos != -1:
-				title = title[:pos]
-				title += _(" (PiP)")
-				self.setTitle(title)
-				self.buildTitleString()
+			self.buildTitleString()
 			if tmp_ref and pip_ref and tmp_ref.getChannelNum() != pip_ref.getChannelNum():
 				self.session.pip.currentService = tmp_ref
 			self.setCurrentSelection(tmp_ref)
@@ -2757,7 +2753,7 @@ class RadioInfoBar(Screen):
 		self['RdsDecoder'] = RdsDecoder(self.session.nav)
 
 
-class ChannelSelectionRadio(ChannelSelectionBase, ChannelSelectionEdit, ChannelSelectionEPG, InfoBarBase, SelectionEventInfo):
+class ChannelSelectionRadio(ChannelSelectionEdit, ChannelSelectionBase, ChannelSelectionEPG, InfoBarBase, SelectionEventInfo):
 	ALLOW_SUSPEND = True
 
 	def __init__(self, session, infobar):
