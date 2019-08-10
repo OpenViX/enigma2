@@ -144,19 +144,19 @@ def readGithubCommitLogs():
 		cachedProjects[getScreenTitle()] = commitlog
 	except urllib2.HTTPError, err:
 		if err.code == 403:
-			print '[GitCommitLog] It seems you have hit your API limit - please try again later.'
+			print '[GitCommitLog] It seems you have hit your API limit - please try again later.', err
 			commitlog += _("It seems you have hit your API limit - please try again later.")
 		else:
-			print '[GitCommitLog] The commit log cannot be retrieved at the moment - please try again later.\n%s' % err
+			print '[GitCommitLog] The commit log cannot be retrieved at the moment - please try again later.', err
 			commitlog += _("The commit log cannot be retrieved at the moment - please try again later.")
 	except urllib2.URLError, err:
-		print '[GitCommitLog] The commit log cannot be retrieved at the moment - please try again later.'
-		commitlog += _("The commit log cannot be retrieved at the moment - please try again later.\n%s" % err.reason[0])
+		print '[GitCommitLog] The commit log cannot be retrieved at the moment - please try again later.', err.reason[0]
+		commitlog += _("The commit log cannot be retrieved at the moment - please try again later.\n")
 	except urllib2, err:
-		print '[GitCommitLog] The commit log cannot be retrieved at the moment - please try again later.'
-		commitlog += _("The commit log cannot be retrieved at the moment - please try again later.\n%s" % err)
-	except:
-		print '[GitCommitLog] The commit log cannot be retrieved at the moment - please try again later.'
+		print '[GitCommitLog] The commit log cannot be retrieved at the moment - please try again later.', err
+		commitlog += _("The commit log cannot be retrieved at the moment - please try again later.\n")
+	except Exception , err:
+		print '[GitCommitLog] The commit log cannot be retrieved at the moment - please try again later.', err
 		commitlog += _("The commit log cannot be retrieved at the moment - please try again later.")
 	return commitlog
 
