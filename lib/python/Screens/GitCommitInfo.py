@@ -28,7 +28,7 @@ E2Branches = {
 project = 0
 projects = [
 	("https://api.github.com/repos/oe-alliance/oe-alliance-core/commits?sha=4.3", "OE-A Core"),
-	("https://api.github.com/repos/OpenViX/enigma2/commits?sha=%s" % E2Branches[getImageType()], "Enigma2"),
+	("https://api.github.com/repos/OpenViX/enigma2/commits?sha=%s" % getattr(E2Branches, getImageType(), "Dev"), "Enigma2"),
 	("https://api.github.com/repos/OpenViX/vix-core/commits", "ViX Core"),
 	("https://api.github.com/repos/OpenViX/skins/commits", "ViX Skins"),
 	("https://api.github.com/repos/oe-alliance/oe-alliance-plugins/commits", "OE-A Plugins"),
@@ -56,7 +56,7 @@ def readGithubCommitLogsSoftwareUpdate():
 				if getImageType() == 'release' and c['commit']['message'].startswith('openvix: developer'):
 					print '[GitCommitLog] Skipping developer line'
 					continue
-				elif getImageType() == 'developer' and c['commit']['message'].startswith('openvix: release'):
+				elif getImageType() != 'release' and c['commit']['message'].startswith('openvix: release'):
 					print '[GitCommitLog] Skipping release line'
 					continue
 				tmp = c['commit']['message'].split(' ')[2].split('.')
