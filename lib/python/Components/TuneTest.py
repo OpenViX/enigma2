@@ -21,10 +21,20 @@ class Tuner:
 			parm.rolloff = transponder[8]
 			parm.pilot = transponder[9]
 			parm.is_id = transponder[10]
-			parm.pls_mode = transponder[11]
-			parm.pls_code = transponder[12]
-			parm.t2mi_plp_id = transponder[13]
-			parm.t2mi_pid = transponder[14]
+			if len(transponder) > 12:
+				parm.is_id = transponder[10]
+				parm.pls_mode = transponder[11]
+				parm.pls_code = transponder[12]
+			else:
+				parm.is_id = eDVBFrontendParametersSatellite.No_Stream_Id_Filter
+				parm.pls_mode = eDVBFrontendParametersSatellite.PLS_Gold
+				parm.pls_code = eDVBFrontendParametersSatellite.PLS_Default_Gold_Code
+			if len(transponder) > 14:
+				parm.t2mi_plp_id = transponder[13]
+				parm.t2mi_pid = transponder[14]
+			else:
+				parm.t2mi_plp_id = eDVBFrontendParametersSatellite.No_T2MI_PLP_Id
+				parm.t2mi_pid = eDVBFrontendParametersSatellite.T2MI_Default_Pid
 			self.tuneSatObj(parm)
 
 	def tuneSatObj(self, transponderObj):
