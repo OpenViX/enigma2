@@ -20,7 +20,6 @@ class Tuner:
 			parm.modulation = transponder[7]
 			parm.rolloff = transponder[8]
 			parm.pilot = transponder[9]
-			parm.is_id = transponder[10]
 			if len(transponder) > 12:
 				parm.is_id = transponder[10]
 				parm.pls_mode = transponder[11]
