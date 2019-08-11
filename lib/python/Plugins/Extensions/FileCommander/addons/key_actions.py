@@ -237,7 +237,7 @@ class key_actions(stat_info):
 		self.longname = sourceDir + filename
 		if not dirsource.canDescent():
 			askList = [(_("Set archive mode (644)"), "CHMOD644"), (_("Set executable mode (755)"), "CHMOD755"), (_("Cancel"), "NO")]
-			self.session.openWithCallback(self.do_change_mod, ChoiceBox, title=(_("Do you want change rights?\\n") + filename), list=askList)
+			self.session.openWithCallback(self.do_change_mod, ChoiceBox, title=(_("Do you want change rights?\n") + filename), list=askList)
 		else:
 			self.session.open(MessageBox, _("Not allowed with folders"), type=MessageBox.TYPE_INFO, close_on_any_key=True)
 
@@ -308,11 +308,11 @@ class key_actions(stat_info):
 			sizes = ("", "", "")
 		else:
 			bytesize = "%s" % "{:n}".format(st.st_size)
-			scaledsize = ' '.join(self.SIZESCALER.scale(st.st_size))
+			scaledsize = ' '.join(self.SIZESCALER.scale(st.st_size)) + 'B'
 			sizes = (
 				bytesize,  # 10
-				_("%sB") % scaledsize,  # 11
-				_("%s (%sB") % (bytesize, scaledsize)  # 12
+				_("%s") % scaledsize,  # 11
+				_("%s (%s") % (bytesize, scaledsize)  # 12
 			)
 
 		return [modes + (
@@ -407,7 +407,7 @@ class key_actions(stat_info):
 			if (yfile.st_size < 1000000):
 				self.session.open(vEditor, self.commando)
 
-		if answer and answer != "VIEW":
+		if answer and answer not in ("NO","VIEW"):
 			if answer.endswith('_BG'):
 				global task_Stout, task_Sterr
 				task_Stout = []

@@ -17,7 +17,7 @@ class UnzipMenuScreen(ArchiverMenuScreen):
 
 	def __init__(self, session, sourcelist, targetlist):
 		super(UnzipMenuScreen, self).__init__(session, sourcelist, targetlist)
-
+		self.skinName = "ArchiverMenuScreen"
 		self.list.append((_("Show contents of zip file"), 1))
 		self.list.append((_("Unpack to current folder"), 2))
 		self.list.append((_("Unpack to %s") % self.targetDir, 3))
@@ -46,6 +46,7 @@ class UnpackInfoScreen(ArchiverInfoScreen):
 
 	def __init__(self, session, list, sourceDir, filename):
 		super(UnpackInfoScreen, self).__init__(session, list, sourceDir, filename)
+		self.skinName = "ArchiverInfoScreen"
 		self.pname = pname
 		self.pdesc = pdesc
 		self.pversion = pversion

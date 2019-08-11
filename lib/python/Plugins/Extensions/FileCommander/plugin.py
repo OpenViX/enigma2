@@ -40,7 +40,7 @@ from Tools.BoundFunction import boundFunction
 from Tools import Notifications
 
 # Various
-from enigma import eConsoleAppContainer, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, eTimer
+from enigma import eConsoleAppContainer, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, eTimer, getDesktop
 
 import os
 import stat
@@ -67,6 +67,10 @@ def _make_filter(media_type):
 
 def _make_rec_filter():
 	return "(?i)^.*\.(" + '|'.join(sorted(["ts"] + [ext == "eit" and ext or "ts." + ext  for ext in MOVIEEXTENSIONS.iterkeys()])) + ")$"
+
+FULLHD = False
+if getDesktop(0).size().width() >= 1920:
+	FULLHD = True
 
 movie = _make_filter("movie")
 music = _make_filter("music")
@@ -130,15 +134,25 @@ config.plugins.filecommander.path_right_tmp = NoSave(ConfigText(default=config.p
 # ## Config Screen ###
 # ####################
 class FileCommanderSetup(ConfigListScreen, Screen):
-	
-	skin = """
-		<screen position="40,80" size="1200,600" title="" >
-			<widget name="config" position="10,10" size="1180,550" scrollbarMode="showOnDemand"/>
-			<widget name="key_red" position="64,570" size="260,25" transparent="1" font="Regular;20"/>
-			<widget name="key_green" position="359,570" size="260,25"  transparent="1" font="Regular;20"/>
-			<ePixmap position="30,570" size="260,25" zPosition="0" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/FileCommander/pic/button_red.png" transparent="1" alphatest="on"/>
-			<ePixmap position="325,570" size="260,25" zPosition="0" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/FileCommander/pic/button_green.png" transparent="1" alphatest="on"/>
-		</screen>"""
+	if FULLHD:
+		skin = """
+			<screen position="200,120" size="1520,900" title="" >
+				<widget name="config" position="10,10" size="1500,825" font="Regular;30" itemHeight="36" scrollbarMode="showOnDemand"/>
+				<widget name="key_red" position="96,855" size="390,38" itemHeight="36" transparent="1" font="Regular;32"/>
+				<widget name="key_green" position="539,855" size="390,38" itemHeight="36" transparent="1" font="Regular;32"/>
+				<ePixmap position="45,855" size="390,38" zPosition="0" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/FileCommander/pic/button_red.png" transparent="1" alphatest="on"/>
+				<ePixmap position="488,855" size="260,25" zPosition="0" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/FileCommander/pic/button_green.png" transparent="1" alphatest="on"/>
+			</screen>"""
+	else:
+		skin = """
+			<screen position="40,80" size="1200,600" title="" >
+				<widget name="config" position="10,10" size="1180,550" scrollbarMode="showOnDemand"/>
+				<widget name="key_red" position="64,570" size="260,25" transparent="1" font="Regular;20"/>
+				<widget name="key_green" position="359,570" size="260,25"  transparent="1" font="Regular;20"/>
+				<ePixmap position="30,575" size="260,25" zPosition="0" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/FileCommander/pic/button_red.png" transparent="1" alphatest="on"/>
+				<ePixmap position="325,575" size="260,25" zPosition="0" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/FileCommander/pic/button_green.png" transparent="1" alphatest="on"/>
+			</screen>"""
+
 
 	def __init__(self, session):
 		self.session = session
@@ -220,7 +234,52 @@ def formatSortingTyp(sortDirs, sortFiles):
 glob_running = False
 
 class FileCommanderScreen(Screen, HelpableScreen, key_actions):
-	skin = """
+	if FULLHD:
+		skin = """
+		<screen position="40,80" size="1840,920" title="" >
+			<widget name="list_left_head1" position="10,10" size="890,30" itemHeight="28" font="Regular;24" foregroundColor="#00fff000"/>
+			<widget source="list_left_head2" render="Listbox" position="10,43" size="890,30" foregroundColor="#00fff000" selectionDisabled="1" transparent="1" >
+				<convert type="TemplatedMultiContent">
+					{"template": [
+						MultiContentEntryText(pos = (30, 0), size = (173, 30), font = 0, flags = RT_HALIGN_LEFT, text = 1), # index 1 is a symbolic mode
+						MultiContentEntryText(pos = (250, 0), size = (135, 30), font = 0, flags = RT_HALIGN_RIGHT, text = 11), # index 11 is the scaled size
+						MultiContentEntryText(pos = (500, 0), size = (390, 30), font = 0, flags = RT_HALIGN_LEFT, text = 13), # index 13 is the modification time
+						],
+						"fonts": [gFont("Regular", 24)],
+						"itemHeight": 30,
+						"selectionEnabled": False
+					}
+				</convert>
+			</widget>
+			<widget name="list_right_head1" position="900,10" size="890,30" itemHeight="28" font="Regular;24" foregroundColor="#00fff000"/>
+			<widget source="list_right_head2" render="Listbox" position="900,43" size="890,30" foregroundColor="#00fff000" selectionDisabled="1" transparent="1" >
+				<convert type="TemplatedMultiContent">
+					{"template": [
+						MultiContentEntryText(pos = (30, 0), size = (173, 30), font = 0, flags = RT_HALIGN_LEFT, text = 1), # index 1 is a symbolic mode
+						MultiContentEntryText(pos = (250, 0), size = (135, 30), font = 0, flags = RT_HALIGN_RIGHT, text = 11), # index 11 is the scaled size
+						MultiContentEntryText(pos = (500, 0), size = (390, 30), font = 0, flags = RT_HALIGN_LEFT, text = 13), # index 13 is the modification time
+						],
+						"fonts": [gFont("Regular", 24)],
+						"itemHeight": 30,
+						"selectionEnabled": False
+					}
+				</convert>
+			</widget>
+			<widget name="list_left" position="10,85" size="890,699" itemHeight="46" scrollbarMode="showOnDemand"/>
+			<widget name="list_right" position="900,85" size="890,699" itemHeight="46" scrollbarMode="showOnDemand"/>
+			<widget name="sort_left" position="10,831" size="855,23" halign="center" font="Regular;23" foregroundColor="#00fff000"/>
+			<widget name="sort_right" position="900,831" size="855,23" halign="center" font="Regular;23" foregroundColor="#00fff000"/>
+			<widget name="key_red" position="150,855" size="390,38" transparent="1" font="Regular;30"/>
+			<widget name="key_green" position="593,855" size="390,38"  transparent="1" font="Regular;30"/>
+			<widget name="key_yellow" position="1035,855" size="390,38" transparent="1" font="Regular;30"/>
+			<widget name="key_blue" position="1488,855" size="390,38" transparent="1" font="Regular;30"/>
+			<ePixmap position="105,855" size="390,33" zPosition="0" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/FileCommander/pic/button_red.png" transparent="1" alphatest="on"/>
+			<ePixmap position="548,855" size="390,33" zPosition="0" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/FileCommander/pic/button_green.png" transparent="1" alphatest="on"/>
+			<ePixmap position="990,855" size="390,33" zPosition="0" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/FileCommander/pic/button_yellow.png" transparent="1" alphatest="on"/>
+			<ePixmap position="1433,855" size="390,33" zPosition="0" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/FileCommander/pic/button_blue.png" transparent="1" alphatest="on"/>
+		</screen>"""
+	else:
+		skin = """
 		<screen position="40,80" size="1200,600" title="" >
 			<widget name="list_left_head1" position="10,10" size="570,42" font="Regular;18" foregroundColor="#00fff000"/>
 			<widget source="list_left_head2" render="Listbox" position="10,56" size="570,20" foregroundColor="#00fff000" selectionDisabled="1" transparent="1" >
@@ -1134,7 +1193,13 @@ class FileCommanderScreen(Screen, HelpableScreen, key_actions):
 # 		self.onFileAction(self.SOURCELIST, self.TARGETLIST)
 
 class FileCommanderContextMenu(Screen):
-	skin = """
+	if FULLHD:
+		skin = """
+		<screen name="FileCommanderContextMenu" position="center,center" size="1200,900" title="File Commander context ">
+			<widget name="menu" position="fill" font="Regular;32" itemHeight="36" transparent="0" scrollbarMode="showOnDemand" />
+		</screen>"""
+	else:
+		skin = """
 		<screen name="FileCommanderContextMenu" position="center,center" size="560,570" title="File Commander context ">
 			<widget name="menu" position="fill" itemHeight="30" transparent="0" scrollbarMode="showOnDemand" />
 		</screen>"""

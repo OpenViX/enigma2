@@ -18,7 +18,7 @@ class RarMenuScreen(ArchiverMenuScreen):
 
 	def __init__(self, session, sourcelist, targetlist):
 		super(RarMenuScreen, self).__init__(session, sourcelist, targetlist)
-
+		self.skinName = "ArchiverMenuScreen"
 		self.unrar = "unrar"
 		self.defaultPW = self.DEFAULT_PW
 
@@ -118,6 +118,7 @@ class UnpackInfoScreen(ArchiverInfoScreen):
 
 	def __init__(self, session, list, sourceDir, filename):
 		super(UnpackInfoScreen, self).__init__(session, list, sourceDir, filename)
+		self.skinName = "ArchiverInfoScreen"
 		self.pname = pname
 		self.pdesc = pdesc
 		self.pversion = pversion
