@@ -3098,6 +3098,9 @@ msgstr "Activar MHW EPG"
 msgid "Enable Netmed EPG"
 msgstr "Activar Netmed EPG"
 
+msgid "Enable OpenTV EPG"
+msgstr "Activar OpenTV EPG"
+
 msgid "Enable ViaSat EPG"
 msgstr "Activar ViaSat EPG"
 
