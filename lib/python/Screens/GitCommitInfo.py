@@ -27,8 +27,8 @@ E2Branches = {
 
 project = 0
 projects = [
-	("https://api.github.com/repos/oe-alliance/oe-alliance-core/commits?sha=4.2", "OE-A Core"),
-	("https://api.github.com/repos/OpenViX/enigma2/commits?sha=%s" % E2Branches[getImageType()], "Enigma2"),
+	("https://api.github.com/repos/oe-alliance/oe-alliance-core/commits?sha=4.3", "OE-A Core"),
+	("https://api.github.com/repos/OpenViX/enigma2/commits?sha=%s" % getattr(E2Branches, getImageType(), "Dev"), "Enigma2"),
 	("https://api.github.com/repos/OpenViX/vix-core/commits", "ViX Core"),
 	("https://api.github.com/repos/OpenViX/skins/commits", "ViX Skins"),
 	("https://api.github.com/repos/oe-alliance/oe-alliance-plugins/commits", "OE-A Plugins"),
@@ -56,7 +56,7 @@ def readGithubCommitLogsSoftwareUpdate():
 				if getImageType() == 'release' and c['commit']['message'].startswith('openvix: developer'):
 					print '[GitCommitLog] Skipping developer line'
 					continue
-				elif getImageType() == 'developer' and c['commit']['message'].startswith('openvix: release'):
+				elif getImageType() != 'release' and c['commit']['message'].startswith('openvix: release'):
 					print '[GitCommitLog] Skipping release line'
 					continue
 				tmp = c['commit']['message'].split(' ')[2].split('.')
@@ -79,19 +79,19 @@ def readGithubCommitLogsSoftwareUpdate():
 		cachedProjects[getScreenTitle()] = commitlog
 	except urllib2.HTTPError, err:
 		if err.code == 403:
-			print '[GitCommitLog] It seems you have hit your API limit - please try again later.'
+			print '[GitCommitLog] It seems you have hit your API limit - please try again later.', err
 			commitlog += _("It seems you have hit your API limit - please try again later.")
 		else:
-			print '[GitCommitLog] The commit log cannot be retrieved at the moment - please try again later.\n%s' % err
+			print '[GitCommitLog] The commit log cannot be retrieved at the moment - please try again later.', err
 			commitlog += _("The commit log cannot be retrieved at the moment - please try again later.")
 	except urllib2.URLError, err:
-		print '[GitCommitLog] The commit log cannot be retrieved at the moment - please try again later.'
-		commitlog += _("The commit log cannot be retrieved at the moment - please try again later.\n%s" % err.reason[0])
+		print '[GitCommitLog] The commit log cannot be retrieved at the moment - please try again later.', err.reason[0]
+		commitlog += _("The commit log cannot be retrieved at the moment - please try again later.\n")
 	except urllib2, err:
-		print '[GitCommitLog] The commit log cannot be retrieved at the moment - please try again later.'
-		commitlog += _("The commit log cannot be retrieved at the moment - please try again later.\n%s" % err)
-	except:
-		print '[GitCommitLog] The commit log cannot be retrieved at the moment - please try again later.'
+		print '[GitCommitLog] The commit log cannot be retrieved at the moment - please try again later.', err
+		commitlog += _("The commit log cannot be retrieved at the moment - please try again later.\n")
+	except Exception , err:
+		print '[GitCommitLog] The commit log cannot be retrieved at the moment - please try again later.', err
 		commitlog += _("The commit log cannot be retrieved at the moment - please try again later.")
 	return commitlog
 
