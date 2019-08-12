@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-05-27 01:31+0100\n"
-"PO-Revision-Date: 2019-05-27 15:14+0200\n"
+"POT-Creation-Date: 2019-07-17 10:02+0100\n"
+"PO-Revision-Date: 2019-07-20 12:14+0200\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -3765,6 +3765,9 @@ msgstr "Debug logs"
 
 msgid "Deep Standby"
 msgstr "Uitschakelen"
+
+msgid "Deep Standby LED"
+msgstr "Deep stand-by LED"
 
 msgid "Deep standby"
 msgstr "Afsluiten"
@@ -8256,6 +8259,18 @@ msgstr "Power"
 msgid "Power LCD Display"
 msgstr "Power LCD Display"
 
+msgid "Power LED State in Deep-Standby"
+msgstr "Power-LED status deep stand-by"
+
+msgid "Power LED State in Standby"
+msgstr "Power-LED status in stand-by"
+
+msgid "Power LED State when Running."
+msgstr "Power-LED status indien actief."
+
+msgid "Power LED can be turned on or off here."
+msgstr "Power-LED kan hier worden in- of uitgeschakeld."
+
 msgid "Power long"
 msgstr "Power lang"
 
@@ -8273,6 +8288,15 @@ msgstr "Power threshold. Consulteer de handleiding van uw ontvanger voor meer in
 
 msgid "Power timers"
 msgstr "Powertimers"
+
+msgid "PowerControl FrontDisplay Normal Mode"
+msgstr "PowerControl frontpaneel normale modus"
+
+msgid "PowerControl FrontDisplay Standby Mode"
+msgstr "PowerControl frontpaneel stand-by modus"
+
+msgid "PowerControl FrontDisplay Suspend Mode"
+msgstr "PowerControl frontpaneel inactieve modus"
 
 msgid "PowerManager entry"
 msgstr "Powermanager entry"
@@ -8957,7 +8981,7 @@ msgid "Reset video enhancement settings to your last configuration?"
 msgstr "Laatste videoverbeterings configuratie gebruiken?"
 
 msgid "Reshare"
-msgstr "Reshare:"
+msgstr "Reshare"
 
 msgid "Reshare:"
 msgstr "Reshare:"
@@ -9526,9 +9550,6 @@ msgstr "Selecteer invoerapparaat."
 msgid "Select interface"
 msgstr "Selecteer interface"
 
-msgid "Select locale"
-msgstr "Kies taal"
-
 msgid "Select location"
 msgstr "Kies lokatie"
 
@@ -9627,6 +9648,9 @@ msgstr "Selecteer taal uit menu"
 
 msgid "Select the virtual keyboard shifted character set"
 msgstr "Selecteer 'shifted' karakterset"
+
+msgid "Select the virtual keyboard shifted character set for the next character only"
+msgstr "Kies 'shifted' karakterset voor alleen het volgende karakter."
 
 msgid "Select upgrade source"
 msgstr "Kies de upgrade-bron"
@@ -9812,6 +9836,9 @@ msgstr "Stel CI toewijzing in voor de detectie van de beschikbare kanalen."
 msgid "Set Framerate for MiniTV"
 msgstr "Stel framerate in voor MiniTV"
 
+msgid "Set LED Color or disable the LED."
+msgstr "Stel de LED kleur in of schakel de LED uit."
+
 msgid "Set a temporary sort method for this directory"
 msgstr "Kies de sortering voor deze map"
 
@@ -9994,6 +10021,9 @@ msgstr "Shares"
 
 msgid "Sharpness"
 msgstr "Scherpte"
+
+msgid "Shift"
+msgstr "Shift"
 
 msgid "Short filenames"
 msgstr "Korte naam"
@@ -10721,11 +10751,11 @@ msgstr "Stand-by"
 msgid "Standby / restart"
 msgstr "Stand-by/afsluiten"
 
+msgid "Standby LED"
+msgstr "Stand-by LED"
+
 msgid "Standby and Restart"
 msgstr "Stand-by en Afsluiten"
-
-msgid "StandbyLED"
-msgstr "Stand-by LED"
 
 msgid "Start"
 msgstr "Start"
@@ -11500,6 +11530,9 @@ msgstr "Hiermee schakelt u het 'smoothing filter' in voor het 'dithering process
 msgid "This option allows you enable the vertical scaler dejagging."
 msgstr "Met deze optie schakelt u de 'vertical scaler dejagging' in/uit."
 
+msgid "This option allows you to Power Off the display."
+msgstr "Hiermee kunt u het display uitschakelen."
+
 msgid "This option allows you to boost the blue tones in the picture."
 msgstr "Met deze instelling kunt u de blauwe kleuren in het beeld versterken."
 
@@ -11971,9 +12004,6 @@ msgstr "Tuner"
 msgid "Tuner :"
 msgstr "Tuner:"
 
-msgid "Tuner config"
-msgstr "Tuner-gerelateerde instellingen"
-
 msgid "Tuner is not supported"
 msgstr "Tuner wordt niet ondersteund"
 
@@ -12007,6 +12037,9 @@ msgstr "Tunerstatus:"
 #
 msgid "Tuner type"
 msgstr "Tunertype"
+
+msgid "Tuners & scanning"
+msgstr "Tuners & scannen"
 
 #
 msgid "Tuning info: live values"
@@ -12042,8 +12075,14 @@ msgstr "Schakel HDMI-in PiP modus in"
 msgid "Turn on HDMI-IN full screen mode"
 msgstr "Schakel HDMI-in vol-sherm modus in"
 
+msgid "Turn on the power LED during deep standby."
+msgstr "Schakel de power-LED tijdens stand-by in."
+
 msgid "Turn on the power LED during standby."
 msgstr "Schakel de blauwe LED tijdens stand-by uit."
+
+msgid "Turn on the power LED."
+msgstr "Schakel de power-LED in."
 
 msgid "Turning step size"
 msgstr "Draai stapgrootte"
@@ -14671,6 +14710,9 @@ msgstr "variété"
 msgid "vertical"
 msgstr "vertikaal"
 
+msgid "violet"
+msgstr "paars"
+
 msgid "wait for mmi..."
 msgstr "wacht op mmi..."
 
@@ -15914,6 +15956,9 @@ msgstr "zapte"
 
 #~ msgid "Select if you want to use the ViX colored buttons (set to 'no' if you want to use (Multi Quick Button)."
 #~ msgstr "Kies of u de ViX-functies aan de kleurtoetsen wilt toekennen. Kies 'nee' als un (Multi) QuickButton wilt gebruiken."
+
+#~ msgid "Select locale"
+#~ msgstr "Kies taal"
 
 #~ msgid "Select operation:"
 #~ msgstr "Kies bewerking:"

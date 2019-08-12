@@ -17,7 +17,8 @@ dist_pkgdata_DATA = \
 	hd-testcard.mvi \
 	iso-639-3.pck \
 	distro-logo.png \
-	groupedservices
+	groupedservices \
+	otv_011a0000_0002_07d4.dict
 
 if HAVE_TEXTLCD
 SUBDIRS += displaytext
