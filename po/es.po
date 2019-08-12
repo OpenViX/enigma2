@@ -12669,6 +12669,27 @@ msgstr "Seleccione el juego de caracteres desplazados del teclado virtual para e
 msgid "violet"
 msgstr "morado"
 
+msgid "Move down a line"
+msgstr "Mover hacia abajo una línea"
+
+msgid "Accept the current selection"
+msgstr "Aceptar la actual selección"
+
+msgid "Cancel the selection"
+msgstr "Cancelar la selección"
+
+msgid "Use OpenTV EPG information when it is available."
+msgstr "Utilice la información de EPG OpenTV cuando esté disponible."
+
+msgid "Wake On LAN"
+msgstr "Activación en LAN"
+
+msgid "When enabled the set top box is able to wakeup on LAN"
+msgstr "Cuando está habilitado, el receptor puede reactivarse en LAN"
+
+msgid "Android mode"
+msgstr "Modo Android"
+
 #~ msgid "Select locale"
 #~ msgstr "Seleccionar lugar"
 
