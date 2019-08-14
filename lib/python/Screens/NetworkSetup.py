@@ -2351,9 +2351,7 @@ class NetworkTelnet(NSCommon,Screen):
 		self['labstop'] = Label(_("Stopped"))
 		self['labrun'] = Label(_("Running"))
 		self['key_green'] = Label(_("Start"))
-		self['key_red'] = Label(_("Remove Service"))
 		self['key_yellow'] = Label(_("Autostart"))
-		self['key_blue'] = Label(_("Show Log"))
 		self.Console = Console()
 		self.my_telnet_active = False
 		self.my_telnet_run = False
