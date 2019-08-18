@@ -49,7 +49,7 @@ class MMIDialog(Screen):
 	def __init__(self, session, slotid, action, handler=eDVBCI_UI.getInstance(), wait_text="", screen_data=None):
 		Screen.__init__(self, session)
 
-		print "MMIDialog with action" + str(action)
+		print "[CI] MMIDialog with action" + str(action)
 
 		self.mmiclosed = False
 		self.tag = None
@@ -114,7 +114,7 @@ class MMIDialog(Screen):
 			x.addEndNotifier(self.pinEntered)
 			self["subtitle"].setText(entry[2])
 			list.append( getConfigListEntry("", x) )
-			self["bottom"].setText(_("please press OK when ready"))
+			self["bottom"].setText(_("Please press OK when ready"))
 
 	def pinEntered(self, value):
 		self.okbuttonClick()
@@ -124,9 +124,9 @@ class MMIDialog(Screen):
 		if not self.tag:
 			return
 		if self.tag == "WAIT":
-			print "do nothing - wait"
+			print "[CI] do nothing - wait"
 		elif self.tag == "MENU":
-			print "answer MENU"
+			print "[CI] answer MENU"
 			cur = self["entries"].getCurrent()
 			if cur:
 				self.handler.answerMenu(self.slotid, cur[2])
@@ -134,7 +134,7 @@ class MMIDialog(Screen):
 				self.handler.answerMenu(self.slotid, 0)
 			self.showWait()
 		elif self.tag == "LIST":
-			print "answer LIST"
+			print "[CI] answer LIST"
 			self.handler.answerMenu(self.slotid, 0)
 			self.showWait()
 		elif self.tag == "ENQ":
@@ -177,15 +177,15 @@ class MMIDialog(Screen):
 			self.handler.stopMMI(self.slotid)
 			self.closeMmi()
 		elif self.tag in ( "MENU", "LIST" ):
-			print "cancel list"
+			print "[CI] cancel list"
 			self.handler.answerMenu(self.slotid, 0)
 			self.showWait()
 		elif self.tag == "ENQ":
-			print "cancel enq"
+			print "[CI] cancel enq"
 			self.handler.cancelEnq(self.slotid)
 			self.showWait()
 		else:
-			print "give cancel action to ci"
+			print "[CI] give cancel action to ci"
 
 	def keyConfigEntry(self, key):
 		self.timer.stop()
@@ -358,8 +358,21 @@ class CiMessageHandler:
 CiHandler = CiMessageHandler()
 
 class CiSelection(Screen):
-	def __init__(self, session):
+	def __init__(self, session, menu_path=""):
 		Screen.__init__(self, session)
+		screentitle = _("Common interface")
+		if config.usage.show_menupath.value == 'large':
+			menu_path += screentitle
+			title = menu_path
+			self["menu_path_compressed"] = StaticText("")
+		elif config.usage.show_menupath.value == 'small':
+			title = screentitle
+			self["menu_path_compressed"] = StaticText(menu_path + " >" if not menu_path.endswith(' / ') else menu_path[:-3] + " >" or "")
+		else:
+			title = screentitle
+			self["menu_path_compressed"] = StaticText("")
+
+		Screen.setTitle(self, title)
 		self["actions"] = ActionMap(["OkCancelActions", "CiSelectionActions"],
 			{
 				"left": self.keyLeft,
@@ -517,7 +530,7 @@ class PermanentPinEntry(Screen, ConfigListScreen):
 		self.pin1.addEndNotifier(boundFunction(self.valueChanged, 1))
 		self.pin2.addEndNotifier(boundFunction(self.valueChanged, 2))
 		self.list.append(getConfigListEntry(_("Enter PIN"), NoSave(self.pin1)))
-		self.list.append(getConfigListEntry(_("Reenter PIN"), NoSave(self.pin2)))
+		self.list.append(getConfigListEntry(_("Re-enter PIN"), NoSave(self.pin2)))
 		ConfigListScreen.__init__(self, self.list)
 
 		self["actions"] = NumberActionMap(["DirectionActions", "ColorActions", "OkCancelActions"],
