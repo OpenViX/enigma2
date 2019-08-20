@@ -497,23 +497,20 @@ int eListboxServiceContent::cursorSet(int n)
 	return 0;
 }
 
-int eListboxServiceContent::cursorResolve(int cursor_position)
+int eListboxServiceContent::cursorResolve(int cursorPosition)
 {
-	int m_stripped_cursor = 0;
+	int strippedCursor = 0;
 	int count = 0;
 	for (list::iterator i(m_list.begin()); i != m_list.end(); ++i)
 	{
-		if (count == cursor_position)
+		if (count == cursorPosition)
 			break;
-
 		count++;
-
 		if ((m_hide_number_marker && (i->flags & eServiceReference::isNumberedMarker)) || (i->flags & eServiceReference::isInvisible))
 			continue;
-		m_stripped_cursor++;
+		strippedCursor++;
 	}
-
-	return m_stripped_cursor;
+	return strippedCursor;
 }
 
 int eListboxServiceContent::cursorGet()
