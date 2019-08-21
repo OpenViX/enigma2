@@ -1351,7 +1351,6 @@ class ChannelSelectionEdit:
 			self.saved_title = None
 			self.buildTitleString()
 			self.servicelist.resetRoot()
-			self.servicelist.l.setHideNumberMarker(config.usage.hide_number_markers.value)
 			self.servicelist.setCurrent(self.servicelist.getCurrent())
 		else:
 			self.mutableList = self.getMutableList()
@@ -1359,7 +1358,6 @@ class ChannelSelectionEdit:
 			select and self.toggleMoveMarked()
 			self.saved_title = self.getTitle()
 			self.buildTitleString()
-			self.servicelist.l.setHideNumberMarker(False)
 			self.servicelist.setCurrent(self.servicelist.getCurrent())
 		self["Service"].editmode = True
 
