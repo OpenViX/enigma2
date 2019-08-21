@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-18 07:44+0000\n"
-"PO-Revision-Date: 2019-03-19 09:19+0100\n"
+"POT-Creation-Date: 2019-08-20 08:19+0000\n"
+"PO-Revision-Date: 2019-08-21 10:45+0200\n"
 "Last-Translator: Ralf Biedermann <ralf.biedermann@rbsoft.de>\n"
 "Language-Team: AndyBlacburn, j-ot&Trial\n"
 "Language: de\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
-"X-Generator: Poedit 2.0.5\n"
+"X-Generator: Poedit 2.2.3\n"
 "X-Poedit-SourceCharset: iso-8859-15\n"
 
 msgid ""
@@ -151,15 +151,6 @@ msgstr " (Kanal %s)"
 #, python-format
 msgid " (Partition %d)"
 msgstr ""
-
-msgid " (PiP)"
-msgstr " (PiP)"
-
-msgid " (Radio)"
-msgstr " (Radio)"
-
-msgid " (TV)"
-msgstr " (TV)"
 
 msgid " (disabled)"
 msgstr " (deaktiviert)"
@@ -760,7 +751,7 @@ msgstr[1] "%d Mins"
 #, python-format
 msgid "%d channel found"
 msgid_plural "%d channels found"
-msgstr[0] "%d Sender gefunden"
+msgstr[0] "%d Sender gefunden "
 msgstr[1] "%d Sender gefunden!"
 
 #, python-format
@@ -975,8 +966,17 @@ msgstr "'Netwerk Peer' erkennt andere Enigma2 Receiver automatisch im lokalen Ne
 msgid "( All readers)"
 msgstr "( Alle Kartenleser )"
 
+msgid "(PiP)"
+msgstr "(PiP)"
+
+msgid "(Radio)"
+msgstr "(Radio)"
+
 msgid "(Show only reader:"
 msgstr "( Zeige nur Kartenleser:"
+
+msgid "(TV)"
+msgstr "(TV)"
 
 msgid "(You are currently using a temporary sort method)"
 msgstr "(Due benutzt z.Z. eine temporäre Sortiermethode)"
@@ -1423,6 +1423,9 @@ msgstr "Über"
 msgid "About..."
 msgstr "Über..."
 
+msgid "Accept the current selection"
+msgstr "Bestätige aktuelle Wahl"
+
 msgid "Accesspoint:"
 msgstr "Zugangspunkt:"
 
@@ -1667,7 +1670,10 @@ msgid "All satellites 4 (USALS)"
 msgstr "Alle Satelliten 4 (USALS)"
 
 msgid "All services provider"
-msgstr "Alle Anbieter:"
+msgstr "Alle Anbieter"
+
+msgid "All slots"
+msgstr "Alle Slots"
 
 msgid "Allocate"
 msgstr "Reservieren"
@@ -1744,6 +1750,12 @@ msgstr "Auch in Bereitschaft"
 msgid "Alternative"
 msgstr "Alternative"
 
+msgid "Alternative 1"
+msgstr "Alternative 1"
+
+msgid "Alternative 2"
+msgstr "Alternative 2"
+
 msgid "Alternative numbering mode"
 msgstr "Alternative Zählmethode"
 
@@ -1758,6 +1770,9 @@ msgstr "Immer nachfragen"
 
 msgid "Always hide infobar"
 msgstr "Infobar immer verstecken"
+
+msgid "Always select OK"
+msgstr "Immer OK auswählen"
 
 msgid "Always show bouquets"
 msgstr "Zeige Favoritenliste immer an"
@@ -1776,6 +1791,9 @@ msgstr "Es ist ein unbekannter Fehler aufgetreten!"
 
 msgid "Andorra"
 msgstr "Andorra"
+
+msgid "Android mode"
+msgstr "Android Modus"
 
 msgid "Angola"
 msgstr "Angola"
@@ -2005,6 +2023,9 @@ msgstr "Automatisch Ausschalten"
 msgid "Auto Detect"
 msgstr "Automatisch erkennen"
 
+msgid "Auto Diseqc"
+msgstr "Diseqc automatisch"
+
 msgid "Auto EXIF Orientation rotation/flipping"
 msgstr "Automatisch nach EXIF drehen/spiegeln"
 
@@ -2012,7 +2033,7 @@ msgid "Auto Standby"
 msgstr "Automatisch Bereitschaft"
 
 msgid "Auto Timers"
-msgstr "Autotimer "
+msgstr "Autotimer"
 
 msgid "Auto Volume Level"
 msgstr "Automatische Lautstärkeregelung"
@@ -2492,6 +2513,10 @@ msgstr "Textänderungen verwerfen und virtuelle Tastatur verlassen"
 msgid "Cancel save timeshift as movie"
 msgstr "Film speichern abbrechen"
 
+#, fuzzy
+msgid "Cancel the selection"
+msgstr "Senderliste"
+
 msgid "Cancelled upon user request"
 msgstr "Auf Benutzerwunsch abgebrochen"
 
@@ -2901,6 +2926,9 @@ msgstr "Farbformat"
 
 msgid "Color space"
 msgstr "Farbraum"
+
+msgid "Combined"
+msgstr "Kombiniert"
 
 msgid "Combo"
 msgstr ""
@@ -3566,7 +3594,7 @@ msgstr ""
 msgid "DUAL LAYER DVD"
 msgstr "DUAL LAYER DVD"
 
-msgid "DVB CI delay"
+msgid "DVB CI Delay"
 msgstr "DVB CI Verzögerung"
 
 msgid "DVB subtitle black transparency"
@@ -3755,6 +3783,9 @@ msgstr "Debug Logs"
 
 msgid "Deep Standby"
 msgstr "Ausschalten"
+
+msgid "Deep Standby LED"
+msgstr "LED wenn Aus"
 
 msgid "Deep standby"
 msgstr "Ausschalten"
@@ -4212,6 +4243,9 @@ msgstr "Nicht umschalten und Timer deaktivieren"
 msgid "Don't zap and remove timer"
 msgstr "Nicht umschalten und Timer löschen"
 
+msgid "Done"
+msgstr ""
+
 #, python-format
 msgid "Done - Installed, upgraded or removed %d package (%s)"
 msgid_plural "Done - Installed, upgraded or removed %d packages (%s)"
@@ -4422,14 +4456,14 @@ msgstr "MHW EPG aktivieren"
 msgid "Enable Netmed EPG"
 msgstr "Netmed EPG aktivieren"
 
+msgid "Enable OpenTV EPG"
+msgstr "OpenTV EPG aktivieren"
+
 msgid "Enable ViaSat EPG"
 msgstr "ViaSat EPG aktivieren"
 
 msgid "Enable Virgin EPG"
 msgstr "Virgin EPG aktivieren"
-
-msgid "Enable Wake On LAN"
-msgstr "Aktiviere WakeOnLan"
 
 msgid "Enable auto cable scan"
 msgstr "Automatische Schnellsuche aktivieren"
@@ -4511,7 +4545,7 @@ msgid "Enabled"
 msgstr "Eingeschaltet"
 
 msgid "Encrypted TV"
-msgstr "Verschlüsselt: "
+msgstr "Verschlüsselt TV"
 
 msgid "Encrypted: "
 msgstr "Verschlüsselt: "
@@ -4548,6 +4582,9 @@ msgstr "Englisch"
 
 msgid "Enigma2 skin selector"
 msgstr "Enigma2 Skinauswahl"
+
+msgid "Enter"
+msgstr "Eingabe"
 
 msgid "Enter PIN"
 msgstr "PIN-Code ändern"
@@ -5320,7 +5357,7 @@ msgid "Greek"
 msgstr "Griechisch"
 
 msgid "Greek (Modern)"
-msgstr ""
+msgstr "Griechisch (Modern)"
 
 msgid "Green"
 msgstr "Grün"
@@ -5592,12 +5629,6 @@ msgstr "Hostname:"
 msgid "Hostname: "
 msgstr "Hostname: "
 
-msgid "Hotswitchable"
-msgstr ""
-
-msgid "Hotswitchable tuner"
-msgstr "Umschaltbare Tuner-Typen:"
-
 msgid "Hour"
 msgstr "Stunde"
 
@@ -5788,6 +5819,9 @@ msgstr ""
 msgid "Immediate shutdown"
 msgstr "Direkt ausschalten"
 
+msgid "In live view wait this many seconds after a numeric key press before assuming the required channel number has been entered. Default: 5 seconds. Setting zero will require confirmation with 'OK'. "
+msgstr "Beim Fernsehen warte die eingestellte Zeit in Sekunden bevor die eingegebene Kanalnummer akzeptiert wird. Standard sind 5 Sekunden. Bei 0 wird ein 'OK' zur Bestätigung erwartet. "
+
 msgid "In order to record a timer, the TV was switched to the recording service!\n"
 msgstr "Um die Timeraufnahme durchführen zu können, wurde auf den aufzunehmenden Sender umgeschaltet!\n"
 
@@ -5885,9 +5919,6 @@ msgstr "Infotainment"
 
 msgid "Init"
 msgstr "Initialisieren"
-
-msgid "Init module"
-msgstr "Modul initialisieren"
 
 msgid "Init modules"
 msgstr "Module initialisieren"
@@ -6684,6 +6715,12 @@ msgstr "Menükonfiguration"
 msgid "Merging Timeshift files"
 msgstr "TimeShift-Dateien werden zusammengefügt"
 
+msgid "Message"
+msgstr ""
+
+msgid "MessageBox Functions"
+msgstr "Meldungsbox Funktionen"
+
 msgid "Mexico"
 msgstr "Mexico"
 
@@ -6727,6 +6764,9 @@ msgstr "Verschiedenes"
 msgid "Missing "
 msgstr "Fehlend "
 
+msgid "Mode"
+msgstr "Modus"
+
 msgctxt "Satellite configuration mode"
 msgid "Mode"
 msgstr "Modus [Satelliten Konfiguration]"
@@ -6755,6 +6795,9 @@ msgstr "Modell: "
 #, python-format
 msgid "Model: %s %s\n"
 msgstr "Modell:%s %s\n"
+
+msgid "Modes"
+msgstr "Modi"
 
 msgid "Modulation"
 msgstr "Modulation"
@@ -6825,6 +6868,9 @@ msgstr "Verschiebe Bild in Bild"
 msgid "Move Up/Down"
 msgstr "Oberer Rand"
 
+msgid "Move down a line"
+msgstr "Zeile runter"
+
 msgid "Move down a page"
 msgstr "Seite runter"
 
@@ -6866,6 +6912,9 @@ msgstr "An den Anfang"
 
 msgid "Move to position X"
 msgstr "Auf Position X drehen"
+
+msgid "Move up a line"
+msgstr "Zeile hoch"
 
 msgid "Move up a page"
 msgstr "Seite hoch"
@@ -6933,8 +6982,14 @@ msgstr "Multi-EPG"
 msgid "MultiEPG"
 msgstr "Multi-EPG"
 
+msgid "MultiType"
+msgstr ""
+
 msgid "Multiboot"
 msgstr "Multiboot"
+
+msgid "Multiboot ERROR! - invalid STARTUP in boot partition."
+msgstr "Multiboot Fehler! - ungültiges STARTUP in /boot."
 
 msgid "Multiboot ERROR! - no STARTUP in boot partition."
 msgstr "Multiboot Fehler! - kein STARTUP in /boot."
@@ -7222,6 +7277,9 @@ msgstr "Kein freier Index verfügbar"
 msgid "No free tuner!"
 msgstr "Kein freier Tuner!"
 
+msgid "No images found"
+msgstr "Keine Images gefunden"
+
 msgid "No module found"
 msgstr "Kein Modul gefunden"
 
@@ -7254,9 +7312,6 @@ msgstr "Keine Sender/Anbieter ausgewählt"
 
 msgid "No standby"
 msgstr "Keine Bereitschaft"
-
-msgid "No suitable sat tuner found!"
-msgstr "Kein verwendbarer Sat Tuner gefunden!"
 
 msgid "No tags are set on these movies."
 msgstr "Keine Tags für diese Filme gesetzt."
@@ -8219,7 +8274,20 @@ msgid "Power"
 msgstr "Aus-Taste"
 
 msgid "Power LCD Display"
-msgstr ""
+msgstr "Betrieb LCD Anzeige"
+
+#, fuzzy
+msgid "Power LED State in Deep-Standby"
+msgstr "LED wenn Aus"
+
+msgid "Power LED State in Standby"
+msgstr "LED in Bereitschaft"
+
+msgid "Power LED State when Running."
+msgstr "Betrieb LED Status wenn aktiv."
+
+msgid "Power LED can be turned on or off here."
+msgstr "Power LED kann hier an- und ausgeschaltet werden."
 
 msgid "Power long"
 msgstr "Aus-Taste lang"
@@ -8238,6 +8306,15 @@ msgstr "Stromgrenzwert. Schaue in das Handbuch deine Box für weitere Informatio
 
 msgid "Power timers"
 msgstr "PowerTimer"
+
+msgid "PowerControl FrontDisplay Normal Mode"
+msgstr "LCD Anzeige im Normalmodus"
+
+msgid "PowerControl FrontDisplay Standby Mode"
+msgstr "LCD Anzeige im Bereitschaftsmodus"
+
+msgid "PowerControl FrontDisplay Suspend Mode"
+msgstr "LCD Anzeige wenn ausgeschaltet"
 
 msgid "PowerManager entry"
 msgstr "PowerManager Eintrag"
@@ -8598,6 +8675,12 @@ msgstr "Vollendete Timer wirklich löschen?"
 msgid "Really exit the subservices quickzap?"
 msgstr "Den Unterkanal-Schnellumschalter wirklich beenden?"
 
+msgid "Really reboot into Android Mode?"
+msgstr "Wirklich in Android Modus booten?"
+
+msgid "Really reboot into Recovery Mode?"
+msgstr "Wirklich in Recovery Modus booten?"
+
 msgid "Really reboot now?"
 msgstr "Trotzdem neu booten?"
 
@@ -8673,6 +8756,9 @@ msgstr "Aufnahmen haben immer Vorrang"
 
 msgid "Recordings, playback & timeshift"
 msgstr "Aufnahme/Wiedergabe/TimeShift"
+
+msgid "Recovery mode"
+msgstr "Recovery Modus"
 
 msgid "Red"
 msgstr "Rot"
@@ -9071,7 +9157,7 @@ msgid "SCR Unicable"
 msgstr "SCR Unicable"
 
 msgid "SDcard is not initialised for multiboot - Exit and use ViX MultiBoot Manager to initialise"
-msgstr "SD-Karte ist nicht für Multiboot initialisiert. Benutze Multiboot Verwaltung zur Initialisierung."
+msgstr "SD-Karte ist nicht für Multiboot initialisiert. Benutze Multiboot Verwaltung zur Initialisierung"
 
 msgid "SINGLE LAYER DVD"
 msgstr "SINGLE LAYER DVD"
@@ -9482,9 +9568,6 @@ msgstr "Wähle Eingabegerät."
 msgid "Select interface"
 msgstr "Netzwerkkarte auswählen"
 
-msgid "Select locale"
-msgstr "Wähle Sprache"
-
 msgid "Select location"
 msgstr "Wähle Verzeichnis"
 
@@ -9583,6 +9666,9 @@ msgstr "Wähle Sprache von der virtuellen Tastatur"
 
 msgid "Select the virtual keyboard shifted character set"
 msgstr "Wähle den Zeichensatz mit SHift bei der virtuellen Tastatur"
+
+msgid "Select the virtual keyboard shifted character set for the next character only"
+msgstr "Wähle den Zeichensatz mit SHift für nächstes Zeichen bei der virtuellen Tastatur"
 
 msgid "Select upgrade source"
 msgstr "Wähle eine Update-Quelle"
@@ -9768,6 +9854,9 @@ msgstr "Setze CI Zuweisung für Erkennung verfügbarer Sender."
 msgid "Set Framerate for MiniTV"
 msgstr "Setze Bildrate für MiniTV"
 
+msgid "Set LED Color or disable the LED."
+msgstr "Wähle LED Farbe oder deaktiviere LED."
+
 msgid "Set a temporary sort method for this directory"
 msgstr "Wähle temporäre Sortiermethode für dieses Verzeichnis"
 
@@ -9842,7 +9931,7 @@ msgid "Set the desired primetime (minutes)."
 msgstr "Wähle die gewünschte Primetime (Minuten)."
 
 msgid "Set the global sort method"
-msgstr "Standardsortiermethode wählen."
+msgstr "Standardsortiermethode wählen"
 
 msgid "Set the jump-size of the seekbar."
 msgstr "Wähle die Sprungweite für die Seekbar."
@@ -9949,6 +10038,9 @@ msgstr "Freigaben"
 
 msgid "Sharpness"
 msgstr "Schärfe"
+
+msgid "Shift"
+msgstr ""
 
 msgid "Short filenames"
 msgstr "Kurze Dateinamen"
@@ -10674,11 +10766,12 @@ msgstr "Bereitschaft"
 msgid "Standby / restart"
 msgstr "Bereitschaft / Neustart"
 
+#, fuzzy
+msgid "Standby LED"
+msgstr "Bereitschaft-LED"
+
 msgid "Standby and Restart"
 msgstr "Bereitschaft / Neustart"
-
-msgid "StandbyLED"
-msgstr "Bereitschaft-LED"
 
 msgid "Start"
 msgstr ""
@@ -11002,9 +11095,6 @@ msgstr "Schalte zu vorherigen Sender"
 msgid "Switch to the previous channel in history"
 msgstr "Schalte zu vorherigen Sender in Vergangenheit"
 
-msgid "Switchable tuner types"
-msgstr "Umschaltbare Tuner-Typen:"
-
 msgid "Switzerland"
 msgstr "Switzerland"
 
@@ -11047,6 +11137,15 @@ msgid "System temperature: %s"
 msgstr "Systemtemperatur: %s"
 
 msgid "System: "
+msgstr ""
+
+msgid "T2MI PID"
+msgstr "T2MI PID"
+
+msgid "T2MI PLP"
+msgstr ""
+
+msgid "T2MI PLP ID"
 msgstr ""
 
 msgid "T2MI RAW Mode"
@@ -11214,7 +11313,7 @@ msgstr ""
 
 msgid ""
 "The Filesystem on your Timeshift-Device does not support hardlinks.\n"
-"Make sure it is formatted in EXT2 or EXT3!"
+"Make sure it is formatted in EXT2, EXT3 or EXT4!"
 msgstr ""
 "Das Dateisystem vom TimeShift Verzeichnis unterstützt keine Hardlinks.\n"
 "Stelle sicher das es mit EXT2/3/4 formatiert ist!"
@@ -11255,13 +11354,8 @@ msgstr "Die Sicherung ist fehlgeschlagen. Bitte einen anderes Sicherungs Verzeic
 msgid "The commit log cannot be retrieved at the moment - please try again later."
 msgstr "Die übertragene Log-Datei kann im Moment nicht ermittelt werden. Bitte später versuchen."
 
-#, python-format
-msgid ""
-"The commit log cannot be retrieved at the moment - please try again later.\n"
-"%s"
-msgstr ""
-"Die übertragene Log-Datei kann im Moment nicht ermittelt werden. Bitte später versuchen.\n"
-"%s"
+msgid "The commit log cannot be retrieved at the moment - please try again later.\n"
+msgstr "Die übertragene Log-Datei kann im Moment nicht ermittelt werden. Bitte später versuchen.\n"
 
 msgid "The current update may be unstable"
 msgstr "Das aktuelle Update könnte instabil sein"
@@ -11296,7 +11390,7 @@ msgstr ""
 "Bitte installiere es."
 
 msgid "The password can not be blank."
-msgstr "Das Passwort darf nicht leer sein"
+msgstr "Das Passwort darf nicht leer sein."
 
 #, python-format
 msgid "The path %s already exists."
@@ -11435,7 +11529,7 @@ msgid "This option allows you choose how to display remaining time, or elapsed t
 msgstr "Diese Option erlaubt dir zu wählen ob verbleibende/verstrichene Zeit oder beides bei Live-TV angezeigt wird."
 
 msgid "This option allows you choose how to display the Time or nothing in Standby"
-msgstr "Diese Option erlaubt dir zu wählen ob die Zeit oder nichts in Bereitschaft angezeigt wird."
+msgstr "Diese Option erlaubt dir zu wählen ob die Zeit oder nichts in Bereitschaft angezeigt wird"
 
 msgid "This option allows you choose how to display the remaining/elapsed time for live TV."
 msgstr "Diese Option erlaubt dir zu wählen ob verbleibende/verstrichene Zeit oder beides für Transponder angezeigt wird."
@@ -11448,6 +11542,9 @@ msgstr "Diese Option erlaubt dir einen Glättefilter für das Dithering einzusch
 
 msgid "This option allows you enable the vertical scaler dejagging."
 msgstr "Diese Option erlaubt es beim Scaler vertikales Antialiasing zu aktivieren."
+
+msgid "This option allows you to Power Off the display."
+msgstr "Diese Option erlaubt dir das Display ein- und auszuschalten."
 
 msgid "This option allows you to boost the blue tones in the picture."
 msgstr "Diese Option erlaubt es den Blauanteil des Bildes zu verstärken."
@@ -11919,9 +12016,6 @@ msgstr "Tuner"
 msgid "Tuner :"
 msgstr "Tuner:"
 
-msgid "Tuner config"
-msgstr "Tuner Konfiguration"
-
 msgid "Tuner is not supported"
 msgstr "Nicht unterstützter Tuner"
 
@@ -11951,6 +12045,9 @@ msgstr "Tuner-Status:"
 
 msgid "Tuner type"
 msgstr "Tuner Typ"
+
+msgid "Tuners & scanning"
+msgstr "Tuner & Suchen"
 
 msgid "Tuning info: live values"
 msgstr "Tuning Info: reale Werte"
@@ -11985,8 +12082,14 @@ msgstr "HDMI in PiP-Modus aktivieren"
 msgid "Turn on HDMI-IN full screen mode"
 msgstr "Aktiviere HDMI-In Vollbild"
 
+msgid "Turn on the power LED during deep standby."
+msgstr "Power-LED bei Aus einschalten."
+
 msgid "Turn on the power LED during standby."
 msgstr "Power-LED in Bereitschaft einschalten."
+
+msgid "Turn on the power LED."
+msgstr "Power-LED einschalten."
 
 msgid "Turning step size"
 msgstr "Rotot Schrittweite"
@@ -12190,6 +12293,9 @@ msgstr "Benutze MHW EPG-Informationen benutzen wenn sie vorhanden sind."
 
 msgid "Use Netmed EPG information when it is available."
 msgstr "Benutze NetMed EPG-Informationen benutzen wenn sie vorhanden sind."
+
+msgid "Use OpenTV EPG information when it is available."
+msgstr "Benutze OpenTV EPG-Informationen benutzen wenn sie vorhanden sind."
 
 msgid "Use TV remote control"
 msgstr "Fernbedienungsbefehle des Fernsehers weiterleiten"
@@ -12583,9 +12689,6 @@ msgstr "WPA2"
 msgid "WSS on 4:3"
 msgstr "WSS bei 4:3"
 
-msgid "Wait for ci..."
-msgstr "Warte auf CI..."
-
 msgid "Waiting"
 msgstr "Warte"
 
@@ -12597,6 +12700,9 @@ msgstr "Warte auf Partition"
 
 msgid "Wake Island"
 msgstr "Wake Island"
+
+msgid "Wake On LAN"
+msgstr "WakeOnLan"
 
 msgid "Wake Up"
 msgstr "Einschalten"
@@ -12743,6 +12849,9 @@ msgstr "Wenn aktiviert lädt Enigma2 nicht verbundene Favoritenlisten. Das heiß
 msgid "When enabled the online checker will also check for experimental versions"
 msgstr "Wenn aktiviert werden auch experimentelle Updates gesucht"
 
+msgid "When enabled the set top box is able to wakeup on LAN"
+msgstr "Wenn aktiviert kann die Box per WoL aufgeweckt werden"
+
 msgid "When enabled, AIT data will be included in http streams. This allows a client receiver to use HbbTV."
 msgstr "Wenn aktiviert werden AIT Daten in HTTP Stream eingebettet. Dies erlaubt es Klienten HBBTV zu benutzen."
 
@@ -12876,7 +12985,7 @@ msgid "When set, each directory will show the previous state used. When off, the
 msgstr "Wenn gesetzt merken sich die Verzeichnisse ihren Zustand. Wenn ausgeschaltet wird eine Standardansicht genommen."
 
 msgid "When set, sort changes via the sort key will be permanent."
-msgstr "Wenn aktiviert sind Änderungen der Sortierung permanent"
+msgstr "Wenn aktiviert sind Änderungen der Sortierung permanent."
 
 msgid "When the content has an aspect ratio of 16:9, choose whether to scale/stretch the picture."
 msgstr "Wenn der Bildinhalt ein Aspect/Ratio von 16:9 hat wähle ob das Bild skaliert/gestreckt werden soll."
@@ -12888,7 +12997,7 @@ msgid "When tuned to a service the system will normally scan the transponder for
 msgstr "Wenn ein Sender eingestellt ist durchsucht die Box den Transponder nach Änderungen und speichert sie. Nur 'Nein' einstellen wenn Du weißt was Du tust."
 
 msgid "When unset, sort changes will be temporary - just for this view of a directory."
-msgstr "Wenn nicht aktiviert sind Änderungen der Sortierung nur temporär - nur für diese Ansicht eines Verzeichnisses"
+msgstr "Wenn nicht aktiviert sind Änderungen der Sortierung nur temporär - nur für diese Ansicht eines Verzeichnisses."
 
 #, python-format
 msgid ""
@@ -12941,7 +13050,7 @@ msgid "Wireless network state"
 msgstr "Funk-Netzwerk Status"
 
 msgid "With T2MI RAW mode disabled (default) we can use single T2MI PLP de-encapsulation. With T2MI RAW mode enabled we can use astra-sm to analyze T2MI"
-msgstr ""
+msgstr "Mit T2MI RAW Modus deaktiviert (Standard) können wir T2MI PLP benutzen. Mit T2MI RAW Modus aktiviert können wir Astra-SM benutze um T2MI zu analysieren"
 
 msgid "With popup"
 msgstr "Mit Popup"
@@ -13215,6 +13324,14 @@ msgid "Your %s %s is rebooting"
 msgstr "Deine %s %s startet neu"
 
 #, python-format
+msgid "Your %s %s is rebooting into Android Mode"
+msgstr "Deine %s %s startet neu im Android Modus"
+
+#, python-format
+msgid "Your %s %s is rebooting into Recovery Mode"
+msgstr "Deine %s %s startet neu im Recovery Modus"
+
+#, python-format
 msgid "Your %s %s is shutting down"
 msgstr "Deine %s %s schaltet sich aus"
 
@@ -13376,6 +13493,9 @@ msgstr "Fokus auf Bild-in-Bild legen"
 
 msgid "Zap focus to main screen"
 msgstr "Fokus auf Hauptbild legen"
+
+msgid "Zap key delay for channel number input"
+msgstr "Wartezeit für Tasten bei Kanaleingabe"
 
 msgid "Zap mode"
 msgstr "Zap Modus"
@@ -13963,6 +14083,9 @@ msgstr "Information/Bildung/Schule"
 msgid "infotainment (general)"
 msgstr "Information (allgemein)"
 
+msgid "init module"
+msgstr "Modul initialisieren"
+
 msgid "insert mark here"
 msgstr "Markierung hier einfügen"
 
@@ -14130,6 +14253,9 @@ msgstr "Keine Senderliste"
 
 msgid "no delay"
 msgstr "Keine Verzögerung"
+
+msgid "no module found"
+msgstr "Kein Modul gefunden"
 
 msgid "no or unknown card inserted"
 msgstr "Keine oder unbekannte Karte"
@@ -14438,7 +14564,7 @@ msgstr "Slot%s - %s - %s (aktuelles Image)"
 
 #, python-format
 msgid "slot%s -%s- %s "
-msgstr "Slot%s - %s - %s"
+msgstr "Slot%s - %s - %s "
 
 msgid "slow"
 msgstr "langsam"
@@ -14604,6 +14730,12 @@ msgstr "Varieté"
 
 msgid "vertical"
 msgstr "vertikal"
+
+msgid "violet"
+msgstr ""
+
+msgid "wait for ci..."
+msgstr "Warte auf CI..."
 
 msgid "wait for mmi..."
 msgstr "Warte auf mmi..."
@@ -15141,9 +15273,6 @@ msgstr "umgeschaltet"
 #~ msgid "Enigma2 Changes"
 #~ msgstr "Enigma2 Änderungen"
 
-#~ msgid "Enter"
-#~ msgstr "Eingabe"
-
 #~ msgid "Enter your password here:"
 #~ msgstr "Passwort eingeben:"
 
@@ -15203,6 +15332,9 @@ msgstr "umgeschaltet"
 
 #~ msgid "Hierarchy information"
 #~ msgstr "Hierarchie..."
+
+#~ msgid "Hotswitchable tuner"
+#~ msgstr "Umschaltbare Tuner-Typen:"
 
 #~ msgid "IP-Address"
 #~ msgstr "IP-Adresse"
@@ -15289,9 +15421,6 @@ msgstr "umgeschaltet"
 #~ msgid "Multiboot ERROR! - no STARTUP in /boot -Please check /etc/fstab for correct boot partition"
 #~ msgstr "Multiboot Fehler! - kein STARTUP in /boot - Bitte /etc/fstab auf korrekte Boot Partition prüfen."
 
-#~ msgid "Multiplex"
-#~ msgstr "Multiplex"
-
 #~ msgid "NFI image flashing"
 #~ msgstr "NFI Image Flashing"
 
@@ -15335,6 +15464,9 @@ msgstr "umgeschaltet"
 
 #~ msgid "No stream clients"
 #~ msgstr "Keine Streaming Klienten"
+
+#~ msgid "No suitable sat tuner found!"
+#~ msgstr "Kein verwendbarer Sat Tuner gefunden!"
 
 #~ msgid "Not configured"
 #~ msgstr "Nicht Konfiguriert"
@@ -15484,6 +15616,9 @@ msgstr "umgeschaltet"
 #~ "Benutze 'Kanal +/-' um Dateien mit einer Tastatur aus-/abzuwählen.\n"
 #~ "Benutze 'Menü' für Einstellungen"
 
+#~ msgid "Select locale"
+#~ msgstr "Wähle Sprache"
+
 #~ msgid "Select operation:"
 #~ msgstr "Wähle Funktion:"
 
@@ -15556,6 +15691,9 @@ msgstr "umgeschaltet"
 #~ msgid "Sucessfully changed the password for the root user to "
 #~ msgstr "Änderung vom Passwort für root erfolgreich zu: "
 
+#~ msgid "Switchable tuner types"
+#~ msgstr "Umschaltbare Tuner-Typen:"
+
 #~ msgid ""
 #~ "System temperature: %s%sC\n"
 #~ "\n"
@@ -15572,6 +15710,13 @@ msgstr "umgeschaltet"
 #~ msgstr ""
 #~ "Der USB-Stick wurde bootfähig gemacht.\n"
 #~ "Du kannst jetzt eine NFI-Imagedatei herunterladen!"
+
+#~ msgid ""
+#~ "The commit log cannot be retrieved at the moment - please try again later.\n"
+#~ "%s"
+#~ msgstr ""
+#~ "Die übertragene Log-Datei kann im Moment nicht ermittelt werden. Bitte später versuchen.\n"
+#~ "%s"
 
 #~ msgid ""
 #~ "The following device was found:\n"
