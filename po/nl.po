@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-07-17 10:02+0100\n"
-"PO-Revision-Date: 2019-07-20 12:14+0200\n"
+"POT-Creation-Date: 2019-08-18 19:34+0000\n"
+"PO-Revision-Date: 2019-08-19 04:46+0200\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -152,15 +152,6 @@ msgstr " (Kanaal %s)"
 #, python-format
 msgid " (Partition %d)"
 msgstr " (Partitie %d)"
-
-msgid " (PiP)"
-msgstr " (PiP)"
-
-msgid " (Radio)"
-msgstr " (Radio)"
-
-msgid " (TV)"
-msgstr " (TV)"
 
 msgid " (disabled)"
 msgstr " (gedeactiveerd)"
@@ -976,8 +967,17 @@ msgstr "'Network peer' detecteert andere Enigma2-ontvangers op het lokale netwer
 msgid "( All readers)"
 msgstr "(Alle lezers)"
 
+msgid "(PiP)"
+msgstr "(PiP)"
+
+msgid "(Radio)"
+msgstr "(Radio)"
+
 msgid "(Show only reader:"
 msgstr "(Toon alleen lezer):"
+
+msgid "(TV)"
+msgstr "(Tv)"
 
 msgid "(You are currently using a temporary sort method)"
 msgstr "(U gebruikt momenteel een tijdelijke sortering)"
@@ -1424,6 +1424,9 @@ msgstr "Uw ontvanger"
 msgid "About..."
 msgstr "Info..."
 
+msgid "Accept the current selection"
+msgstr "Accepteer huidige selectie"
+
 msgid "Accesspoint:"
 msgstr "Toegangspunt:"
 
@@ -1670,6 +1673,9 @@ msgstr "Alle satellieten 4 (USALS)"
 msgid "All services provider"
 msgstr "Alle kanalen provider"
 
+msgid "All slots"
+msgstr "Alle slots"
+
 msgid "Allocate"
 msgstr "Wijs toe"
 
@@ -1766,6 +1772,9 @@ msgstr "Altijd vragen"
 msgid "Always hide infobar"
 msgstr "Informatiebalk altijd verbergen"
 
+msgid "Always select OK"
+msgstr "Selecteer altijd OK"
+
 msgid "Always show bouquets"
 msgstr "Toon altijd favorieten"
 
@@ -1783,6 +1792,9 @@ msgstr "Er is een onbekende fout opgetreden!"
 
 msgid "Andorra"
 msgstr "Andorra"
+
+msgid "Android mode"
+msgstr "Android mode"
 
 msgid "Angola"
 msgstr "Angola"
@@ -2501,6 +2513,9 @@ msgstr "Annuleer tekst en sluit af"
 
 msgid "Cancel save timeshift as movie"
 msgstr "Annuleer het opslaan van timeshift als opname"
+
+msgid "Cancel the selection"
+msgstr "Annuleer deze selectie"
 
 msgid "Cancelled upon user request"
 msgstr "Geannuleerd door de gebruiker"
@@ -3577,7 +3592,7 @@ msgstr "DTS-HD HR/DTS-HD MA/DTS"
 msgid "DUAL LAYER DVD"
 msgstr "Dubbellaags DVD"
 
-msgid "DVB CI delay"
+msgid "DVB CI Delay"
 msgstr "DVB CI vertraging"
 
 msgid "DVB subtitle black transparency"
@@ -4439,14 +4454,14 @@ msgstr "MHW EPG inschakelen"
 msgid "Enable Netmed EPG"
 msgstr "Netmed EPG inschakelen"
 
+msgid "Enable OpenTV EPG"
+msgstr "OpenTV EPG inschakelen"
+
 msgid "Enable ViaSat EPG"
 msgstr "Viasat EPG inschakelen"
 
 msgid "Enable Virgin EPG"
 msgstr "Virgin EPG inschakelen"
-
-msgid "Enable Wake On LAN"
-msgstr "Schakel WoL in"
 
 msgid "Enable auto cable scan"
 msgstr "Automatische kabelscan inschakelen"
@@ -5806,6 +5821,9 @@ msgstr "Image:\t%s.%s%s (%s)\n"
 msgid "Immediate shutdown"
 msgstr "Onmiddellijk uitschakelen"
 
+msgid "In live view wait this many seconds after a numeric key press before assuming the required channel number has been entered. Default: 5 seconds. Setting zero will require confirmation with 'OK'. "
+msgstr "Tijdens live-TV wacht het systeem dit aantal seconden na het ingeven van een cijfer tot er naar dat kanaalnummer gezapt wordt, De standaard waarde is 5 seconde. '0' betekent dat u met 'OK' moet bevestigen."
+
 msgid "In order to record a timer, the TV was switched to the recording service!\n"
 msgstr "Voor een geplande opname is nu de juiste zender ingeschakeld!\n"
 
@@ -5903,9 +5921,6 @@ msgstr "Infotainment"
 
 msgid "Init"
 msgstr "Initialiseren"
-
-msgid "Init module"
-msgstr "Module initialiseren"
 
 msgid "Init modules"
 msgstr "Modules initialiseren"
@@ -6703,6 +6718,12 @@ msgstr "Menu configuratie"
 msgid "Merging Timeshift files"
 msgstr "Samenvoegen timeshiftbestanden"
 
+msgid "Message"
+msgstr "Bericht"
+
+msgid "MessageBox Functions"
+msgstr "Messagebox functies"
+
 msgid "Mexico"
 msgstr "Mexico"
 
@@ -6850,6 +6871,9 @@ msgstr "Verplaats Picture In Picture"
 msgid "Move Up/Down"
 msgstr "Beweeg Op/Neer"
 
+msgid "Move down a line"
+msgstr "Ga een regel naar beneden"
+
 msgid "Move down a page"
 msgstr "Ga een pagina naar beneden"
 
@@ -6891,6 +6915,9 @@ msgstr "Ga naar begin van de lijst"
 
 msgid "Move to position X"
 msgstr "Naar positie X draaien"
+
+msgid "Move up a line"
+msgstr "Ga een regel omhoog"
 
 msgid "Move up a page"
 msgstr "Ga een pagina omhoog"
@@ -8657,6 +8684,9 @@ msgstr "Wilt u de afgewerkte timers echt verwijderen?"
 msgid "Really exit the subservices quickzap?"
 msgstr "Subkanalen snelzap verlaten?"
 
+msgid "Really reboot into Android Mode?"
+msgstr "Echt herstarten in Android modus?"
+
 msgid "Really reboot into Recovery Mode?"
 msgstr "Echt herstarten in herstelmodus?"
 
@@ -8736,7 +8766,7 @@ msgstr "Een opname heeft altijd voorrang"
 msgid "Recordings, playback & timeshift"
 msgstr "Opname, afspelen en timeshift"
 
-msgid "Recovery Mode"
+msgid "Recovery mode"
 msgstr "Herstelmodus"
 
 msgid "Red"
@@ -11338,13 +11368,8 @@ msgstr "Back-up is mislukt. Kies een andere back-up lokatie."
 msgid "The commit log cannot be retrieved at the moment - please try again later."
 msgstr "Het commitlog kan momenteel niet binnengehaald worden; probeer het later nog eens."
 
-#, python-format
-msgid ""
-"The commit log cannot be retrieved at the moment - please try again later.\n"
-"%s"
-msgstr ""
-"Het commitlog kan momenteel niet binnengehaald worden; probeer het later nog eens.\n"
-"%s"
+msgid "The commit log cannot be retrieved at the moment - please try again later.\n"
+msgstr "Het commitlog kan momenteel niet binnengehaald worden; probeer het later nog eens.\n"
 
 msgid "The current update may be unstable"
 msgstr "De huidige update kan onstabiel zijn"
@@ -12290,6 +12315,9 @@ msgstr "Gebruik MHW EPG informatie indien beschikbaar."
 msgid "Use Netmed EPG information when it is available."
 msgstr "Gebruik Netmed EPG informatie indien beschikbaar."
 
+msgid "Use OpenTV EPG information when it is available."
+msgstr "Gebruik OpenTV EPG informatie indien beschikbaar."
+
 msgid "Use TV remote control"
 msgstr "Gebruik de afstandsbediening van de TV"
 
@@ -12683,9 +12711,6 @@ msgstr "WPA2"
 msgid "WSS on 4:3"
 msgstr "WSS bij 4:3"
 
-msgid "Wait for ci..."
-msgstr "Wacht op CI..."
-
 msgid "Waiting"
 msgstr "Aan het wachten"
 
@@ -12697,6 +12722,9 @@ msgstr "Wacht op partitie"
 
 msgid "Wake Island"
 msgstr "Wake Island"
+
+msgid "Wake On LAN"
+msgstr "Schakel WoL in"
 
 msgid "Wake Up"
 msgstr "Inschakelen"
@@ -12842,6 +12870,9 @@ msgstr "Indien ingeschakeld zal enigma2 niet geregistreerde favorietenlijsten la
 
 msgid "When enabled the online checker will also check for experimental versions"
 msgstr "Indien geactiveerd zal ook worden gecontroleerd op experimentele versies."
+
+msgid "When enabled the set top box is able to wakeup on LAN"
+msgstr "Indien ingeschakeld is het mogelijk de STB via 'wakeup on LAN' vanuit deep stand-by te laten starten."
 
 msgid "When enabled, AIT data will be included in http streams. This allows a client receiver to use HbbTV."
 msgstr "Indien geactiveerd, zal AIT-data in HTTP-stream worden meegestuurd. Dit maakt het gebruik van HbbTV door een klant-box mogelijk."
@@ -13316,6 +13347,10 @@ msgid "Your %s %s is rebooting"
 msgstr "Uw %s %s wordt opnieuw gestart"
 
 #, python-format
+msgid "Your %s %s is rebooting into Android Mode"
+msgstr "Uw %s %s wordt opnieuw gestart in Android modus"
+
+#, python-format
 msgid "Your %s %s is rebooting into Recovery Mode"
 msgstr "Uw %s %s wordt opnieuw gestart in herstelmodus"
 
@@ -13480,6 +13515,9 @@ msgstr "Zappen in PiP-scherm"
 
 msgid "Zap focus to main screen"
 msgstr "Zappen in hoofdscherm"
+
+msgid "Zap key delay for channel number input"
+msgstr "Nummertoets vertraging voor kanaalnummer ingave"
 
 msgid "Zap mode"
 msgstr "Zapmodus"
@@ -14067,6 +14105,9 @@ msgstr "informatie/onderwijs/schoolprogramma"
 msgid "infotainment (general)"
 msgstr "infotainment (algemeen)"
 
+msgid "init module"
+msgstr "module initialiseren"
+
 msgid "insert mark here"
 msgstr "markeerpunt invoegen"
 
@@ -14234,6 +14275,9 @@ msgstr "geen kanaallijst"
 
 msgid "no delay"
 msgstr "Geen vertraging"
+
+msgid "no module found"
+msgstr "geen module gevonden"
 
 msgid "no or unknown card inserted"
 msgstr "geen of onbekende kaart geplaatst"
@@ -14713,6 +14757,9 @@ msgstr "vertikaal"
 msgid "violet"
 msgstr "paars"
 
+msgid "wait for ci..."
+msgstr "wacht op CI..."
+
 msgid "wait for mmi..."
 msgstr "wacht op mmi..."
 
@@ -14975,9 +15022,6 @@ msgstr "zapte"
 
 #~ msgid "3D setup"
 #~ msgstr "3D instellingen"
-
-#~ msgid "3d mode"
-#~ msgstr "3d mode"
 
 #~ msgid "64"
 #~ msgstr "64"
@@ -15629,9 +15673,6 @@ msgstr "zapte"
 #~ msgid "Memory Information"
 #~ msgstr "Geheugen informatie"
 
-#~ msgid "Message"
-#~ msgstr "Bericht"
-
 #~ msgid "MiniDLNA setup"
 #~ msgstr "MiniDLNA instellingen"
 
@@ -16102,6 +16143,13 @@ msgstr "zapte"
 #~ msgstr ""
 #~ "De USB-stick is voorbereid om op te starten.\n"
 #~ "Nu kunt nu een NFI-bestand downloaden!"
+
+#~ msgid ""
+#~ "The commit log cannot be retrieved at the moment - please try again later.\n"
+#~ "%s"
+#~ msgstr ""
+#~ "Het commitlog kan momenteel niet binnengehaald worden; probeer het later nog eens.\n"
+#~ "%s"
 
 #~ msgid ""
 #~ "The following device was found:\n"
