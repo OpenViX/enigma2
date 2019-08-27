@@ -189,14 +189,14 @@ int eListboxServiceContent::getPrevMarkerPos()
 	{
 		--i;
 		--index;
-		if (! ((i->flags & eServiceReference::isMarker) && !(i->flags & eServiceReference::isInvisible)))
+		if (!(i->flags & eServiceReference::isMarker && !(i->flags & eServiceReference::isInvisible)))
 			break;
 	}
 	while (index)
 	{
 		--i;
 		--index;
-		if ((i->flags & eServiceReference::isMarker) && !(i->flags & eServiceReference::isInvisible))
+		if (i->flags & eServiceReference::isMarker && !(i->flags & eServiceReference::isInvisible))
 			break;
 	}
 	return cursorResolve(index);
@@ -212,7 +212,7 @@ int eListboxServiceContent::getNextMarkerPos()
 	{
 		++i;
 		++index;
-		if ((i->flags & eServiceReference::isMarker) && !(i->flags & eServiceReference::isInvisible))
+		if (i->flags & eServiceReference::isMarker && !(i->flags & eServiceReference::isInvisible))
 			break;
 	}
 	return cursorResolve(index);
@@ -320,7 +320,7 @@ void eListboxServiceContent::sort()
 DEFINE_REF(eListboxServiceContent);
 
 eListboxServiceContent::eListboxServiceContent()
-	:m_visual_mode(visModeSimple), m_size(0), m_current_marked(false), m_itemheight(25), m_servicetype_icon_mode(0), m_crypto_icon_mode(0), m_record_indicator_mode(0), m_column_width(0), m_progressbar_height(6), m_progressbar_border_width(2), m_nonplayable_margins(10), m_items_distances(8)
+	:m_visual_mode(visModeSimple), m_size(0), m_current_marked(false), m_itemheight(25), m_hide_number_marker(false), m_servicetype_icon_mode(0), m_crypto_icon_mode(0), m_record_indicator_mode(0), m_column_width(0), m_progressbar_height(6), m_progressbar_border_width(2), m_nonplayable_margins(10), m_items_distances(8)
 {
 	memset(m_color_set, 0, sizeof(m_color_set));
 	cursorHome();
@@ -455,7 +455,7 @@ int eListboxServiceContent::cursorMove(int count)
 					m_listbox->entryChanged(cursorResolve(m_cursor_number));
 			}
 			++m_cursor_number;
-			if (!(m_cursor->flags & eServiceReference::isInvisible))
+			if (!(m_hide_number_marker && m_cursor->flags & eServiceReference::isNumberedMarker) && !(m_cursor->flags & eServiceReference::isInvisible))
 				--count;
 		}
 	}
@@ -471,7 +471,7 @@ int eListboxServiceContent::cursorMove(int count)
 					m_listbox->entryChanged(cursorResolve(m_cursor_number));
 			}
 			--m_cursor_number;
-			if (!(m_cursor->flags & eServiceReference::isInvisible))
+			if (!(m_hide_number_marker && m_cursor->flags & eServiceReference::isNumberedMarker) && !(m_cursor->flags & eServiceReference::isInvisible))
 				++count;
 		}
 		while (m_cursor != m_list.end())
@@ -497,23 +497,20 @@ int eListboxServiceContent::cursorSet(int n)
 	return 0;
 }
 
-int eListboxServiceContent::cursorResolve(int cursor_position)
+int eListboxServiceContent::cursorResolve(int cursorPosition)
 {
-	int m_stripped_cursor = 0;
+	int strippedCursor = 0;
 	int count = 0;
 	for (list::iterator i(m_list.begin()); i != m_list.end(); ++i)
 	{
-		if (count == cursor_position)
+		if (count == cursorPosition)
 			break;
-
 		count++;
-
-		if (i->flags & eServiceReference::isInvisible)
+		if ((m_hide_number_marker && (i->flags & eServiceReference::isNumberedMarker)) || (i->flags & eServiceReference::isInvisible))
 			continue;
-		m_stripped_cursor++;
+		strippedCursor++;
 	}
-
-	return m_stripped_cursor;
+	return strippedCursor;
 }
 
 int eListboxServiceContent::cursorGet()
@@ -552,7 +549,7 @@ int eListboxServiceContent::size()
 	int size = 0;
 	for (list::iterator i(m_list.begin()); i != m_list.end(); ++i)
 	{
-		if (i->flags & eServiceReference::isInvisible)
+		if ((m_hide_number_marker && (i->flags & eServiceReference::isNumberedMarker)) || (i->flags & eServiceReference::isInvisible))
 			continue;
 		size++;
 	}
