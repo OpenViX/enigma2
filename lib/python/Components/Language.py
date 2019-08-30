@@ -66,7 +66,7 @@ class Language:
 		except:
 			print "[Language] Language " + str(name) + " not found"
 
-	def activateLanguage(self, index):
+	def activateLanguage_TRY(self, index):
 		try:
 			lang = self.lang[index]
 			print "[Language] Activating language " + lang[0]
@@ -78,17 +78,20 @@ class Language:
 					x()
 		except:
 			print "[Language] Selected language does not exist!"
-		# NOTE: we do not use LC_ALL, because LC_ALL will not set any of the categories, when one of the categories fails.
-		# We'd rather try to set all available categories, and ignore the others
-		for category in [locale.LC_CTYPE, locale.LC_COLLATE, locale.LC_TIME, locale.LC_MONETARY, locale.LC_MESSAGES, locale.LC_NUMERIC]:
-			try:
-				locale.setlocale(category, (self.getLanguage(), 'UTF-8'))
-			except:
-				pass
+			return False
 		# HACK: sometimes python 2.7 reverts to the LC_TIME environment value, so make sure it has the correct value
 		os.environ["LC_TIME"] = self.getLanguage() + '.UTF-8'
 		os.environ["LANGUAGE"] = self.getLanguage() + '.UTF-8'
 		os.environ["GST_SUBTITLE_ENCODING"] = self.getGStreamerSubtitleEncoding()
+		return True
+
+	def activateLanguage(self, index):
+		from Tools import Notifications
+		from Screens.MessageBox import MessageBox
+		if not self.activateLanguage_TRY(index):
+			print "[Language] - retry with ", "en_US"
+			Notifications.AddNotification(MessageBox, _("The selected langugage is unavailable - using en_US"), MessageBox.TYPE_INFO, timeout=3)
+			self.activateLanguage_TRY("en_US")
 
 	def activateLanguageIndex(self, index):
 		if index < len(self.langlist):
