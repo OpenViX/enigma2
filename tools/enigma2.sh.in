@@ -27,6 +27,11 @@ if [ ! -d /etc/enigma2 ] ; then
 	mkdir -p /etc/enigma2
 fi
 
+# check for update-ca-certificates
+if [ -f /usr/sbin/update-ca-certificates ] ; then
+	update-ca-certificates
+fi
+
 # workaround for old libssl
 if [ -h @libdir@/libssl.so.0.9.8 ]; then
 	echo "Found symlink @libdir@/libssl.so.0.9.8"
