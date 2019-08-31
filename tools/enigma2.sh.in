@@ -154,26 +154,26 @@ if [ "$ret" -ne "1" ]; then
 fi
 case $ret in
 	1)
-		@base_sbindir@/halt
+		/sbin/halt
 		;;
 	2)
-		@base_sbindir@/reboot
+		/sbin/reboot
 		;;
 	3)
 		;;
 	4)
-		@base_sbindir@/rmmod lcd
+		/sbin/rmmod lcd
 		@sbindir@/fpupgrade --upgrade 2>&1 | tee /home/root/fpupgrade.log
 		sleep 1;
-		@base_sbindir@/rmmod fp
-		@base_sbindir@/modprobe fp
-		@base_sbindir@/reboot
+		/sbin/rmmod fp
+		/sbin/modprobe fp
+		/sbin/reboot
 		;;
 	42)
 		# bind the console (when available)
 		[ -f /sys/class/vtconsole/vtcon1/bind ] && echo 1 > /sys/class/vtconsole/vtcon1/bind
 		opkg upgrade 2>&1 | tee /home/root/ipkgupgrade.log
-		@base_sbindir@/reboot
+		/sbin/reboot
 		;;
 	44)
 		echo "    " > /dev/lcd0
