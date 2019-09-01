@@ -1474,7 +1474,6 @@ class ChannelSelectionBase(Screen):
 				"nextMarker": self.nextMarker,
 				"prevMarker": self.prevMarker,
 				"gotAsciiCode": self.keyAsciiCode,
-				"toggleTwoLines": self.toggleTwoLines,
 				"1": self.keyNumberGlobal,
 				"2": self.keyNumberGlobal,
 				"3": self.keyNumberGlobal,
@@ -1877,13 +1876,6 @@ class ChannelSelectionBase(Screen):
 				self.changeBouquet(-1)
 			else:
 				self.servicelist.moveDown()
-
-	def toggleTwoLines(self):
-		if self.servicelist.mode == self.servicelist.MODE_FAVOURITES:
-			config.usage.servicelist_twolines.value = not config.usage.servicelist_twolines.value
-			config.usage.servicelist_twolines.save()
-		else:
-			return 0
 
 	def showFavourites(self):
 		self["key_green"].setText(_("Satellites"))
