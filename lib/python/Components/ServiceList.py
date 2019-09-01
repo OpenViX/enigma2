@@ -262,11 +262,10 @@ class ServiceList(GUIComponent):
 	GUI_WIDGET = eListbox
 
 	def setItemsPerPage(self):
-		show_two_lines = config.usage.servicelist_twolines.value and self.mode == self.MODE_FAVOURITES
 		if self.listHeight > 0:
-			itemHeight = (self.listHeight / config.usage.serviceitems_per_page.value) * (2 if show_two_lines else 1)
+			itemHeight = self.listHeight / config.usage.serviceitems_per_page.value
 		else:
-			itemHeight = 28  * (2 if show_two_lines else 1)
+			itemHeight = 28
 		self.ItemHeight = itemHeight
 		self.l.setItemHeight(itemHeight)
 		if self.listHeight:
@@ -362,7 +361,6 @@ class ServiceList(GUIComponent):
 
 	def setMode(self, mode):
 		self.mode = mode
-		show_two_lines = config.usage.servicelist_twolines.value and self.mode == self.MODE_FAVOURITES
 		self.setItemsPerPage()
 		self.l.setItemHeight(self.ItemHeight)
 		self.l.setVisualMode(eListboxServiceContent.visModeComplex)
@@ -401,12 +399,11 @@ class ServiceList(GUIComponent):
 		self.l.setElementFont(self.l.celServiceInfo, self.ServiceInfoFont)
 		if "perc" in config.usage.show_event_progress_in_servicelist.value:
 			self.l.setElementFont(self.l.celServiceEventProgressbar, self.ServiceInfoFont)
-		self.l.setShowTwoLines(show_two_lines)
 		self.l.setHideNumberMarker(config.usage.hide_number_markers.value)
 		self.l.setServiceTypeIconMode(int(config.usage.servicetype_icon_mode.value))
 		self.l.setCryptoIconMode(int(config.usage.crypto_icon_mode.value))
 		self.l.setRecordIndicatorMode(int(config.usage.record_indicator_mode.value))
-		self.l.setColumnWidth(-1 if show_two_lines else int(config.usage.servicelist_column.value))
+		self.l.setColumnWidth(int(config.usage.servicelist_column.value))
 
 	def selectionEnabled(self, enabled):
 		if self.instance is not None:
