@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-18 19:34+0000\n"
-"PO-Revision-Date: 2019-08-19 04:46+0200\n"
+"POT-Creation-Date: 2019-08-30 16:55+0000\n"
+"PO-Revision-Date: 2019-09-01 09:03+0200\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -5537,6 +5537,9 @@ msgstr "Verberg foutmeldingen van de CAM."
 
 msgid "Hide known extensions"
 msgstr "Verberg bekende extensies"
+
+msgid "Hide number markers"
+msgstr "Verberg nummer markeringen"
 
 msgid "Hide parental locked services"
 msgstr "Verberg kanalen die achter kinderslot zitten"
@@ -11421,6 +11424,9 @@ msgstr "De resultaten zijn bewaard op %s."
 msgid "The saved PIN was cleared."
 msgstr "De opgeslagen PIN is verwijderd."
 
+msgid "The selected langugage is unavailable - using en_US"
+msgstr "De gekozen taal is niet beschikbaar; en_US zal worden gebruikt"
+
 msgid "The service has been added to the favourites."
 msgstr "De zender is toegevoegd aan de favorieten."
 
@@ -12315,8 +12321,8 @@ msgstr "Gebruik MHW EPG informatie indien beschikbaar."
 msgid "Use Netmed EPG information when it is available."
 msgstr "Gebruik Netmed EPG informatie indien beschikbaar."
 
-msgid "Use OpenTV EPG information when it is available."
-msgstr "Gebruik OpenTV EPG informatie indien beschikbaar."
+msgid "Use OpenTV EPG information when it is available. For reading OpenTV EPG data tuning to a dedicated transponder is required"
+msgstr "Gebruik OpenTV EPG-informatie indien beschikbaar. Voor het binnenhalen van die data is het afstemmen op een bepaalde transponder vereist."
 
 msgid "Use TV remote control"
 msgstr "Gebruik de afstandsbediening van de TV"
@@ -12933,6 +12939,9 @@ msgstr "Indien ingeschakeld zal de motor het stroomverbruik benutten om te bepal
 
 msgid "When enabled, network trash cans are probed for cleaning."
 msgstr "Indien ingeschakeld worden prullebakken in het netwerk ook gemonitord."
+
+msgid "When enabled, number markers will be hidden."
+msgstr "Indien ingeschakeld zullen nummer markeringen verborgen worden."
 
 msgid "When enabled, pressing '0' will zap you to the first channel in your first bouquet and delete your zap-history."
 msgstr "Indien ingeschakeld zapt '0' naar het eerste kanaal van het eerste bouquet en wordt de zap-historie verwijderd."
@@ -16265,6 +16274,9 @@ msgstr "zapte"
 #~ msgid "Unicable Matrix"
 #~ msgstr "Unicable matrix"
 
+#~ msgid "Use OpenTV EPG information when it is available."
+#~ msgstr "Gebruik OpenTV EPG informatie indien beschikbaar."
+
 #~ msgid "Use ViX colored Buttons*"
 #~ msgstr "Gebruik ViX kleurtoetsen*"
 
@@ -16294,9 +16306,6 @@ msgstr "zapte"
 
 #~ msgid "When enabled the LNB power will not be switched off in standby"
 #~ msgstr "Indien ingeschakeld zal de spanning van de LNB in stand-by niet worden uitgeschakeld."
-
-#~ msgid "When enabled the LNB toneburst will be forced"
-#~ msgstr "Indien ingeschakeld zal de LNB-toneburst worden geforceerd."
 
 #~ msgid "When enabled, Enigma2 will load unlinked bouquets. This means that bouquets that are available, but not included in the bouquets.tv or bouquets.radio files, will still be loaded. This allows you for example to keep your own user bouquet while installed settings are upgraded"
 #~ msgstr "Indien ingeschakeld zal enigma2 niet geregistreerde favorietenlijsten laden. Dat betekent dat de lijsten die beschikbaar zijn maar niet zijn opgenomen in de radio- en TV-lijsten toch geladen zullen worden. Dit stelt u b.v. in staat om eigen lijsten te bewaren, terwijl settings worden geupgrade."
