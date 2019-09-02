@@ -79,6 +79,15 @@ class Language:
 		except:
 			print "[Language] Selected language does not exist!"
 			return False
+
+		# NOTE: we do not use LC_ALL, because LC_ALL will not set any of the categories, when one of the categories fails.
+		# We'd rather try to set all available categories, and ignore the others
+		for category in [locale.LC_CTYPE, locale.LC_COLLATE, locale.LC_TIME, locale.LC_MONETARY, locale.LC_MESSAGES, locale.LC_NUMERIC]:
+			try:
+				locale.setlocale(category, (self.getLanguage(), 'UTF-8'))
+			except:
+				pass
+
 		# HACK: sometimes python 2.7 reverts to the LC_TIME environment value, so make sure it has the correct value
 		os.environ["LC_TIME"] = self.getLanguage() + '.UTF-8'
 		os.environ["LANGUAGE"] = self.getLanguage() + '.UTF-8'
