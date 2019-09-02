@@ -329,7 +329,7 @@ class descriptionList(choicesList):  # XXX: we might want a better name for this
 # all ids MUST be plain strings.
 #
 class ConfigSelection(ConfigElement):
-	def __init__(self, choices, default=None):
+	def __init__(self, choices, default=None, graphic=True):
 		ConfigElement.__init__(self)
 		self.choices = choicesList(choices)
 
@@ -338,6 +338,7 @@ class ConfigSelection(ConfigElement):
 
 		self._descr = None
 		self.default = self._value = self.last_value = default
+		self.graphic = True
 
 	def setChoices(self, choices, default=None):
 		self.choices = choicesList(choices)
@@ -408,6 +409,12 @@ class ConfigSelection(ConfigElement):
 			descr = self._descr
 		else:
 			descr = self._descr = self.description[self.value]
+		from config import config
+		from skin import switchPixmap
+		if self.graphic and config.usage.boolean_graphic.value and switchPixmap.get("menu_on", False) and switchPixmap.get("menu_off", False):
+			boolvalue = self._descr in (_('True'),_('true'),_('Yes'),_('yes'),_('Enable'),_('enable'),_('Enabled'),_('enabled'),_('On'),_('on')) or (False if self._descr in (_('False'),_('false'),_('No'),_('no'),_("Disable"),_('disable'),_('Disabled'),_('disabled'),_('Off'),_('off'),_('None'),_('none')) else None)
+			if boolvalue is not None:
+				return ('pixmap', switchPixmap["menu_on" if boolvalue else "menu_off"])
 		if descr:
 			return "text", _(descr)
 		return "text", descr
@@ -462,7 +469,7 @@ class ConfigBoolean(ConfigElement):
 		from config import config
 		from skin import switchPixmap
 		if self.graphic and config.usage.boolean_graphic.value and switchPixmap.get("menu_on", False) and switchPixmap.get("menu_off", False):
-			return ('pixmap', self.value and switchPixmap["menu_on"] or switchPixmap["menu_off"])
+			return ('pixmap', switchPixmap["menu_on" if self.value else "menu_off"])
 		else:
 			descr = self.descriptions[self.value]
 			if descr:
