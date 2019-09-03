@@ -21,6 +21,8 @@ class Language:
 		self.addLanguage("Bokmål", "nb", "NO", "ISO-8859-15")
 		self.addLanguage("Català", "ca", "AD", "ISO-8859-15")
 		self.addLanguage("Česky", "cs", "CZ", "ISO-8859-15")
+		self.addLanguage("SChinese", "zh", "CN", "UTF-8")
+		self.addLanguage("TChinese", "zh", "HK", "UTF-8")
 		self.addLanguage("Dansk", "da", "DK", "ISO-8859-15")
 		self.addLanguage("Deutsch", "de", "DE", "ISO-8859-15")
 		self.addLanguage("Ελληνικά", "el", "GR", "ISO-8859-7")
@@ -36,6 +38,7 @@ class Language:
 		self.addLanguage("Hebrew", "he", "IL", "ISO-8859-15")
 		self.addLanguage("Hrvatski", "hr", "HR", "ISO-8859-15")
 		self.addLanguage("Magyar", "hu", "HU", "ISO-8859-15")
+		self.addLanguage("Indonesian", "id", "ID", "ISO-8859-15")
 		self.addLanguage("Íslenska", "is", "IS", "ISO-8859-15")
 		self.addLanguage("Italiano", "it", "IT", "ISO-8859-15")
 		self.addLanguage("Kurdish", "ku", "KU", "ISO-8859-15")
@@ -56,6 +59,7 @@ class Language:
 		self.addLanguage("ภาษาไทย", "th", "TH", "ISO-8859-15")
 		self.addLanguage("Türkçe", "tr", "TR", "ISO-8859-15")
 		self.addLanguage("Українська", "uk", "UA", "ISO-8859-15")
+		self.addLanguage("Tiếng Việt", "vi", "VN", "UTF-8")
 
 		self.callbacks = []
 
