@@ -61,9 +61,9 @@ class LanguageSelection(Screen):
 
 		self["key_red"] = Label(_("Cancel"))
 		self["key_green"] = Label(_("Save"))
-		self["key_yellow"] = Label(_("Update Cache"))
+		self["key_yellow"] = Label(_("Add Language"))
 		self["key_blue"] = Label(_("Delete Language"))
-		self["description"] = Label(_("Press MENU to install additional language(s)."))
+		self["description"] = Label(_("Press Add Language or MENU to install additional language(s)."))
 
 		self["actions"] = ActionMap(["SetupActions", "ColorActions"],
 		{
@@ -71,7 +71,7 @@ class LanguageSelection(Screen):
 			"cancel": self.cancel,
 			"red": self.cancel,
 			"green": self.save,
-			"yellow": self.updateCache,
+			"yellow": self.installLanguage,
 			"blue": self.delLang,
 			"menu": self.installLanguage,
 		}, -1)
@@ -205,7 +205,7 @@ class LanguageSelection(Screen):
 	def update_after_installLanguage(self):
 		language.InitLang()
 		self.updateList()
-		self.selectActiveLanguage()
+		self.updateCache()
 
 	def changed(self):
 		self.run(justlocal = True)
