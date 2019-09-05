@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-30 16:55+0000\n"
-"PO-Revision-Date: 2019-09-01 09:03+0200\n"
+"POT-Creation-Date: 2019-09-04 07:58+0000\n"
+"PO-Revision-Date: 2019-09-05 14:53+0200\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -3885,6 +3885,9 @@ msgstr "Bevestig verwijderen"
 msgid "Delete EPG"
 msgstr "EPG verwijderen"
 
+msgid "Delete Language"
+msgstr "Verwijder taal"
+
 msgid "Delete entry"
 msgstr "Verwijder invoer"
 
@@ -4089,6 +4092,13 @@ msgstr "Wilt u %s echt verwijderen?"
 msgid "Do you really want to delete ?"
 msgstr "Echt verwijderen?"
 
+msgid ""
+"Do you really want to delete selected language:\n"
+"\n"
+msgstr ""
+"Wilt u de geselecteerde taal echt verwijderen:\n"
+"\n"
+
 msgid "Do you really want to delete this timer ?"
 msgstr "Wilt u echt deze timer echt verwijderen?"
 
@@ -4202,7 +4212,7 @@ msgid ""
 "(choose 'No' to only send the currently selected file.)"
 msgstr ""
 "Wilt u alle geselecteerde bestanden versturen:\n"
-"(kies 'Nee' om aleen het nu geselecteerde bestand te versturen.)"
+"(kies 'Nee' om alleen het nu geselecteerde bestand te versturen.)"
 
 #, python-format
 msgid "Do you want to update your %s %s ?"
@@ -4998,6 +5008,9 @@ msgstr "Fallback remote-ontvanger URL"
 msgid "Fallback tuner setup"
 msgstr "Fallback tuner-instellingen"
 
+msgid "False"
+msgstr "Niet waar"
+
 #
 #, python-format
 msgid "Fan %d"
@@ -5208,6 +5221,13 @@ msgstr "GB"
 #, python-format
 msgid "GStreamer:\t%s\n"
 msgstr "GStreamer:\t%s\n"
+
+msgid ""
+"GUI needs a restart to apply a new language\n"
+"Do you want to restart the GUI now?"
+msgstr ""
+"De gebruikersinterface moet herstart worden om de nieuwe taal te activeren\n"
+"Nu herstarten?"
 
 msgid ""
 "GUI needs a restart to apply a new skin\n"
@@ -5729,7 +5749,7 @@ msgid "If set to 'yes' it will show the 'PO' packages in browser."
 msgstr "Als u 'ja' kiest, zijn alle 'PO' (taal)-pakketten in de browser zichtbaar."
 
 msgid "If set to 'yes' it will show the 'SRC' packages in browser."
-msgstr "Als u 'ja' kiest, zijn alle 'SRC' (source)-pakketten in de browser zichtbaar."
+msgstr "Als u 'ja' kiest, zijn alle 'SRC' (source (= bron))-pakketten in de browser zichtbaar."
 
 msgid "If set to 'yes' shows a small TV-screen in the EPG."
 msgstr "Als u 'ja' kiest, zal het tv-beeld in een klein schermpje in de EPG worden getoond."
@@ -7297,9 +7317,6 @@ msgstr "Geen netwerkverbinding beschikbaar."
 msgid "No networks found"
 msgstr "Geen netwerken gevonden"
 
-msgid "No new plugins found"
-msgstr "Geen nieuwe plugins gevonden"
-
 msgid "No of items switch (increase or reduced)"
 msgstr "Aantal onderdelen (verklein of vergroot)"
 
@@ -8145,9 +8162,6 @@ msgstr ""
 "Configureer uw gebruikersinterface zo dat de hoeken van de gebruikersinterface precies de hoeken uw TV-beeld bedekken.\n"
 "Druk op OK om verder te gaan."
 
-msgid "Please use the UP/DOWN keys to select your language. Then press the OK button to select it."
-msgstr "Gebruik de omhoog/omlaag toetsen om de gewenste taal te selecteren. Druk daarna op OK."
-
 msgid ""
 "Please use the direction keys to move the PiP window.\n"
 "Press Bouquet +/- to resize the window.\n"
@@ -8402,6 +8416,9 @@ msgstr "Druk op INFO voor aanvullende informatie."
 
 msgid "Press MENU on your remote control for additional options."
 msgstr "Druk op MENU voor extra opties."
+
+msgid "Press MENU to install additional language(s)."
+msgstr "Druk op MENU om extra talen te installeren."
 
 msgid "Press OK on your remote control to continue."
 msgstr "Druk op de OK toets om door te gaan."
@@ -9493,7 +9510,7 @@ msgid "Select 'yes' if this tuner is connected to the SCR device through another
 msgstr "Kies 'ja' als deze tuner verbonden is met een SCR-apparaat, anders kiest u 'nee'."
 
 msgid "Select 'yes' to choose what bands or step sizes will be scanned."
-msgstr "Kies 'ja' om aan te geven welke band of stapgroote gescand zal worden."
+msgstr "Kies 'ja' om aan te geven welke band of stapgrootte gescand zal worden."
 
 #, python-format
 msgid "Select 'yes' to include %s multiplexes in your search."
@@ -11886,6 +11903,15 @@ msgstr "Titel instellingen"
 msgid "Titleset mode"
 msgstr "Titelset modus"
 
+msgid ""
+"To delete selected language , answer 'No'\n"
+" 'Yes', to delete all other languages,except English, French, German and your selection:\n"
+"\n"
+msgstr ""
+"Om de gekozen taal te verwijderen antwoord met 'Nee'\n"
+"'Ja' om alle andere talen te verwijderen behalve Engels, Frans, Duits en uw selectie:\n"
+"\n"
+
 msgid "Today"
 msgstr "Vandaag"
 
@@ -12003,6 +12029,9 @@ msgstr "Aantal resterende pogingen:"
 
 msgid "Trinidad and Tobago"
 msgstr "Trinidad and Tobago"
+
+msgid "True"
+msgstr "Waar"
 
 msgid "Try to find used transponders in cable network.. please wait..."
 msgstr "Probeert gebruikte transponders op het kabelnetwerk te vinden. Even wachten..."
@@ -12237,6 +12266,9 @@ msgstr "Omhoog"
 msgid "Update"
 msgstr "Update"
 
+msgid "Update Cache"
+msgstr "Update cache"
+
 msgid "Update channel list only"
 msgstr "Update alleen de kanaallijst"
 
@@ -12256,6 +12288,12 @@ msgstr "Updateinterval (in secondes)"
 #
 msgid "Updatefeed not available."
 msgstr "Updatefeed niet beschikbaar."
+
+msgid "Updating cache"
+msgstr "Bezig cache te updaten..."
+
+msgid "Updating cache, please wait..."
+msgstr "Bezig cache te updaten, even wachten..."
 
 msgid "Updating software catalog"
 msgstr "Softwarecatalogus wordt geupdate"
@@ -12395,6 +12433,10 @@ msgstr "Gebruik de Links/Rechts toetsen op uw AB om de interface naar links/rech
 
 msgid "Use the LEFT/RIGHT buttons on your remote to move the user interface up/down."
 msgstr "Gebruik de Links/Rechts toetsen op uw AB om de interface naar boven/beneden te verplaatsen."
+
+#, fuzzy
+msgid "Use the UP and DOWN keys to select language, Menu key to install new language. Afterwards press the OK button."
+msgstr "Gebruik de omhoog/omlaag toetsen om de gewenste taal te selecteren. Druk daarna op OK."
 
 msgid "Use the alternative or the conventional radio mode."
 msgstr "Gebruik de alternatieve of de conventionele radiomodus."
@@ -12799,9 +12841,9 @@ msgid ""
 "\n"
 "Select Yes to change these settings or No to skip this step."
 msgstr ""
-"Welkom bij OpenViX!\n"
+"uw Welkom bij OpenViX!\n"
 "\n"
-"Opmerking: Dit onderdeel van de wizard is alleen bedoeld indien 'overscan' van TV/beeldscherm niet kan worden uitgeschakeld. Probeer 'overscan' uit te schakelen alvorens deze optie te gebruiken.\n"
+"Opmerking: Dit onderdeel van de wizard is alleen bedoeld indien 'overscan' van uw TV/beeldscherm niet kan worden uitgeschakeld. Probeer 'overscan' uit te schakelen alvorens deze optie te gebruiken.\n"
 "\n"
 "Gebruik: Pas positie en maat zodanig aan dat het afgeschermde deel van het scherm precies het patroon op de achtergrond bedekt.\n"
 "\n"
@@ -15620,13 +15662,6 @@ msgstr "zapte"
 #~ msgid "Ftpd service type: Vsftpd server"
 #~ msgstr "Ftpd service type: Vsftpd server"
 
-#~ msgid ""
-#~ "GUI needs a restart to apply a new language\n"
-#~ "Do you want to restart the GUI now?"
-#~ msgstr ""
-#~ "De gebruikersinterface moet herstart worden om de nieuwe taal te activeren\n"
-#~ "Nu herstarten?"
-
 #~ msgid "Get latest experimental image"
 #~ msgstr "Ontvang het laatste experimentele image"
 
@@ -15781,6 +15816,9 @@ msgstr "zapte"
 
 #~ msgid "No httpuser defined in oscam.conf"
 #~ msgstr "Geen httpuser vastgelegd in oscam.conf"
+
+#~ msgid "No new plugins found"
+#~ msgstr "Geen nieuwe plugins gevonden"
 
 #~ msgid "No stream clients"
 #~ msgstr "Geen stream-klanten"
