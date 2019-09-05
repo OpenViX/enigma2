@@ -336,11 +336,7 @@ class SecConfigure:
 					sec.setLNBLOFL(21200000)
 					sec.setLNBLOFH(21200000)
 					sec.setLNBThreshold(21200000)
-				elif currLnb.lof.value == "reversed_spectrum":
-					sec.setLNBLOFL(currLnb.lofl.value * 1000)
-					sec.setLNBLOFH(currLnb.lofl.value * 1000)
-					sec.setLNBThreshold(currLnb.lofl.value * 1000)
-					sec.setLNBReversedSpectrum(True)
+
 				if currLnb.increased_voltage.value:
 					sec.setLNBIncreasedVoltage(True)
 				else:
@@ -1205,9 +1201,7 @@ def InitNimManager(nimmgr, update_slots=None):
 		"c_band": _("C-Band"),
 		"circular_lnb": _("Circular LNB"),
 		"ka_sat": _("KA-SAT"),
-		"user_defined": _("User defined"),
-		"reversed_spectrum": _("Reversed Spectrum"),
-	}
+		"user_defined": _("User defined")}
 
 	lnb_choices_default = "universal_lnb"
 
