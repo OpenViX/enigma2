@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-09-04 07:58+0000\n"
-"PO-Revision-Date: 2019-09-05 16:49+0200\n"
+"PO-Revision-Date: 2019-09-05 17:34+0200\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -1255,14 +1255,14 @@ msgid ""
 "A finished powertimer wants to reboot your %s %s.\n"
 "Do that now?"
 msgstr ""
-"Een afgewerkte timer wil uw %s %s\n"
-"in stand-by zetten. Wilt u dat nu doen?"
+"Een afgewerkte timer wil uw %s %s in stand-by zetten\n"
+"Wilt u dat nu doen?"
 
 msgid ""
 "A finished powertimer wants to restart the user interface.\n"
 "Do that now?"
 msgstr ""
-"Een timer wil de gebruikersinterface van uw %s %s herstarten.\n"
+"Een afgewerkte timer wil de gebruikersinterface herstarten.\n"
 "Wilt u dat nu doen?"
 
 #, python-format
@@ -1278,24 +1278,24 @@ msgid ""
 "A finished powertimer wants to shutdown your %s %s.\n"
 "Do that now?"
 msgstr ""
-"Een afgewerkte timer wil uw\n"
-"%s %s uitschakelen. Wilt u dat nu doen?"
+"Een afgewerkte timer wil uw %s %s uitschakelen.\n"
+"Wilt u dat nu doen?"
 
 #, python-format
 msgid ""
 "A finished record timer wants to set your\n"
 "%s %s to standby. Do that now?"
 msgstr ""
-"Een afgewerkte timer wil uw %s %s\n"
-"in stand-by zetten. Wilt u dat nu doen?"
+"Een afgewerkte timer wil uw %s %s in stand-by zetten.\n"
+"Wilt u dat nu doen?"
 
 #, python-format
 msgid ""
 "A finished record timer wants to shut down\n"
 "your %s %s. Shutdown now?"
 msgstr ""
-"Een afgewerkte timer wil uw\n"
-"%s %s uitschakelen. Wilt u dat nu doen?"
+"Een afgewerkte timer wil uw %s %s uitschakelen.\n"
+"Wilt u dat nu doen?"
 
 #, python-format
 msgid ""
@@ -1323,7 +1323,7 @@ msgstr "Een herhalende timer of eenmalig?"
 
 #, python-format
 msgid "A required tool (%s) was not found."
-msgstr "Het benodigde hulpmiddel (%s) is niet gevonden."
+msgstr "Een benodigd hulpmiddel (%s) is niet gevonden."
 
 msgid "A search for available updates is currently in progress."
 msgstr "Bezig met zoeken naar updates."
@@ -1342,16 +1342,16 @@ msgid ""
 "A sleep timer wants to set your\n"
 "%s %s to standby. Proceed?"
 msgstr ""
-"Een slaaptimer wil uw\n"
-"%s %s in stand-by zetten. Doorgaan?"
+"Een slaaptimer wil uw %s %s in stand-by zetten.\n"
+"Doorgaan?"
 
 #, python-format
 msgid ""
 "A sleep timer wants to shut down\n"
 "your %s %s. Proceed?"
 msgstr ""
-"Een slaaptimer wil uw\n"
-"%s %s uitschakelen. Doorgaan?"
+"Een slaaptimer wil uw %s %s uitschakelen.\n"
+"Doorgaan?"
 
 msgid "A small overview of the available icon states and actions."
 msgstr "Een klein overzicht van gebruikte icoon-statussen en acties."
@@ -4133,11 +4133,11 @@ msgstr "Weet u zeker dat u map %s van de harde schijf wilt verwijderen?"
 
 #, python-format
 msgid "Do you really want to remove the plugin \"%s\"?"
-msgstr "Wilt u echt deze applicatie \"%s\" verwijderen?"
+msgstr "Wilt u echt de applicatie \"%s\" verwijderen?"
 
 #, python-format
 msgid "Do you really want to remove the timer for %s?"
-msgstr "Wilt u de timer voor \"%s\" verwijderen?"
+msgstr "Wilt u de timer voor %s verwijderen?"
 
 #, python-format
 msgid "Do you really want to remove your bookmark of %s?"
@@ -4196,7 +4196,7 @@ msgid "Do you want to reboot your %s %s"
 msgstr "Wilt u uw %s %s opnieuw opstarten?"
 
 msgid "Do you want to reboot your receiver?"
-msgstr "Wilt u uw %s %s opnieuw opstarten?"
+msgstr "Wilt u uw ontvanger opnieuw opstarten?"
 
 msgid "Do you want to remove the package:\n"
 msgstr "Wilt u het volgende pakket verwijderen:\n"
@@ -4352,7 +4352,7 @@ msgstr "EPG instellingen"
 
 #, python-format
 msgid "ERROR - failed to scan (%s)!"
-msgstr "Fout - Zoeken mislukt (%s)!"
+msgstr "FOUT - zoeken mislukt (%s)!"
 
 msgid "ERROR: Check is already running in background, please wait a few minutes and try again"
 msgstr "FOUT: Op de achtergrond wordt al een controle uitgevoerd. Wacht een paar minuten en probeer het opnieuw."
@@ -4713,7 +4713,7 @@ msgid ""
 "Retry?"
 msgstr ""
 "Fout: %s\n"
-"Opnieuw?"
+"Opnieuw proberen?"
 
 msgid "Estonia"
 msgstr "Estonia"
@@ -5788,7 +5788,7 @@ msgid "If set to 'yes', the infobar will be displayed when Fast Forwarding or Re
 msgstr "Als u 'ja' kiest, wordt de informatiebalk getoond als u snel of langzaam achter- of vooruit spoelt of pauzeert."
 
 msgid "If the text is too long to be displayed on the front panel, it will be repeated (number of times):"
-msgstr "Als de tekst te lang is voor het schermpje van uw %s %s, zal die (aantal keren) worden herhaald:"
+msgstr "Als de tekst te lang is voor het scherm van uw ontvanger, zal die (aantal keren) worden herhaald:"
 
 msgid "If using multiple uncommitted switches the DiSEqC commands must be sent multiple times. Set to the number of uncommitted switches in the chain minus one."
 msgstr "Indien u meerdere uncommitted switches gebruikt, moeten DiSEqC meerdere amlen verzonden worden. Stel het aantal in op het aantal switches minus één."
@@ -6291,7 +6291,7 @@ msgid "LED brightness during deep standby."
 msgstr "LED helderheid tijdens deep sleep."
 
 msgid "LED brightness during normal operations."
-msgstr "LED helderheid tijdens gebruik van uw %s %s."
+msgstr "LED helderheid tijdens normaal gebruik."
 
 msgid "LED brightness during standby."
 msgstr "LED helderheid tijdens stand-by."
@@ -9982,7 +9982,7 @@ msgid "Set the scrolling speed of text on the front display, this uses a softwar
 msgstr "Stel de scroll-snelheid voor het schermpje in; sommige skins gebruiken een softwarerenderer."
 
 msgid "Set the scrolling speed of text on the front display."
-msgstr "Stel de scrollsnelheid op het schermpje van uw %s %s in."
+msgstr "Stel de scrollsnelheid voor de tekst op het scherm in."
 
 msgid "Set the sort method for this directory"
 msgstr "Kies de sortering voor deze map"
@@ -10046,7 +10046,7 @@ msgid "Setup network time synchronization interval."
 msgstr "Stel het netwerksynchronisatie-interval in."
 
 msgid "Setup the interval (in hours) to check for online updates."
-msgstr "Hier stelt u het tijdsinterval in waarmee uw %s %s naar updates zoekt (in uren; '0' betekent dat er niet gezocht wordt)."
+msgstr "Hier stelt u het tijdsinterval in waarmee naar updates gezocht wordt."
 
 msgid "Setup your positioner"
 msgstr "Positioner instellen"
@@ -11049,7 +11049,7 @@ msgstr "Ondersteuning op  "
 
 #, python-format
 msgid "Support at %s"
-msgstr "Support om %s"
+msgstr "Support op %s"
 
 msgid "Suriname"
 msgstr "Suriname"
@@ -11301,7 +11301,7 @@ msgstr ""
 "Druk op 'OK' om uw %s %s in gebruik te nemen."
 
 msgid "The %s %s reads the stored EPG data every (hours)."
-msgstr "Uw %s %s leest de opgelsagen EPG-data elke (aantal) uur."
+msgstr "Uw %s %s leest de opgeslagen EPG-data elke (aantal) uur."
 
 msgid "The %s %s stores the EPG data every (hours)."
 msgstr "Uw %s %s slaat de EPG-data elke (aantal) uur op."
@@ -11399,7 +11399,7 @@ msgid ""
 "The directory %s is not a EXT2, EXT3, EXT4 or NFS partition.\n"
 "Make sure you select a valid partition type."
 msgstr ""
-"De lokatie %s mag geen EXT2, EXT3, EXT4 of NFS partitie.\n"
+"De lokatie %s is geen EXT2, EXT3, EXT4 of NFS partitie.\n"
 "Zorg dat u een geldige partitietype kies."
 
 #
@@ -13016,10 +13016,10 @@ msgid "When enabled, the length of each recording will be shown in the movielist
 msgstr "Toon de lengte van opnames (dit kan een iets langere laadtijd van het scherm veroorxaken)."
 
 msgid "When enabled, the receiver will automatically use the audio track which you selected before."
-msgstr "Indien ingeschakeld zal uw %s %s automatisch eerder gemaakte audiokeuzes weer maken."
+msgstr "Indien ingeschakeld zal uw ontvanger automatisch eerder gemaakte audiokeuzes wederom maken."
 
 msgid "When enabled, the receiver will automatically use the subtitles which you selected before."
-msgstr "Indien ingeschakeld zal uw %s %s automatisch eerder gemaakte ondertitelkeuzes weer maken."
+msgstr "Indien ingeschakeld zal uw ontvanger automatisch eerder gemaakte ondertitelkeuzes wederom maken."
 
 msgid "When enabled, the receiver will select an AC3 track (when available)."
 msgstr "Indien 'Ja' is gekozen, zal AC3 geluid worden doorgegeven (indien beschikbaar)."
@@ -13067,7 +13067,7 @@ msgid "When the content has an aspect ratio of 4:3, choose whether to scale/stre
 msgstr "Als het beeld een verhouding heeft van 4:3 kan het beeld worden uitgerekt of geschaald."
 
 msgid "When tuned to a service the system will normally scan the transponder for any changes and save them. Only set to 'yes' if you're absolutely sure of what you're doing."
-msgstr "Als uw %s %s op een kanaal is afgestemd, wordt normaal gesproken de transponder gescand op veranderingen. Schakel dit alleen uit, als u zeker bent van wat u doet."
+msgstr "Als uw ontvanger op een kanaal is afgestemd, wordt normaal gesproken de transponder gescand op veranderingen. Schakel dit alleen uit, als u zeker bent van wat u doet."
 
 msgid "When unset, sort changes will be temporary - just for this view of a directory."
 msgstr "Indien uitgeschakeld, zullen de veranderingen tijdelijk zijn; alleen voor deze keer dat u deze map inziet."
@@ -13267,8 +13267,7 @@ msgid ""
 "\"%s\"?"
 msgstr ""
 "U heeft al een kanaallijst geïnstalleerd,\n"
-"wilt u verwijderen\n"
-"\"%s\"?"
+"wilt u \"%s\" verwijderen?"
 
 msgid "You can Display MiniTV with or without OSD Menu"
 msgstr "U kunt MiniTV met en zonder OSD-menu tonen."
@@ -13414,7 +13413,7 @@ msgstr "Uw %s %s wordt nu afgesloten. Even wachten..."
 
 #, python-format
 msgid "Your %s %s might be unusable now. Please consult the manual for further assistance before rebooting your %s %s."
-msgstr "Uw %s %s kan nu onbruikbaar zijn geworden. Raadpleeg voordat uw uw %s %s herstart de handleiding."
+msgstr "Uw  %s %s kan nu onbruikbaar zijn geworden. Raadpleeg voordat u uw %s %s herstart de handleiding."
 
 #, python-format
 msgid ""
