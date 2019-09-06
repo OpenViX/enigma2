@@ -52,13 +52,13 @@ LANG_TEXT = {
 	 "T4": "Αποθήκευση",
 },
 "en_GB": {
-	 "T1": "Please use the UP and DOWN keys to select your language. Afterwards press the OK button.",
+	 "T1": "Use UP and DOWN keys to select or Menu to install your language.. Afterwards press the OK button.",
 	 "T2": "Language selection",
 	 "T3": "Cancel",
 	 "T4": "Save",
 },
 "en_US": {
-	 "T1": "Please use the UP and DOWN keys to select your language. Afterwards press the OK button.",
+	 "T1": "Use UP and DOWN keys to select or Menu to install your language. Afterwards press the OK button.",
 	 "T2": "Language selection",
 	 "T3": "Cancel",
 	 "T4": "Save",
