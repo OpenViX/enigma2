@@ -236,12 +236,12 @@ class Harddisk:
 			return 0
 		cmd = 'umount ' + dev
 		print "[Harddisk]", cmd
-		res = os.system(cmd)
+		res = Console().ePopen(cmd)
 		return res >> 8
 
 	def createPartition(self):
 		cmd = 'printf "8,\n;0,0\n;0,0\n;0,0\ny\n" | sfdisk -f -uS ' + self.disk_path
-		res = os.system(cmd)
+		res = Console().ePopen(cmd)
 		return res >> 8
 
 	def mkfs(self):
@@ -267,7 +267,7 @@ class Harddisk:
 			if fspath == dev:
 				print "[Harddisk] mounting:", fspath
 				cmd = "mount -t auto " + fspath
-				res = os.system(cmd)
+				res = Console().ePopen(cmd)
 				return res >> 8
 		# device is not in fstab
 		res = -1
