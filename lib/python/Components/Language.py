@@ -70,9 +70,6 @@ class Language:
 		self.addLanguage("Українська", "uk", "UA", "ISO-8859-15")
 		self.addLanguage("Tiếng Việt", "vi", "VN", "UTF-8")
 
-		self.callbacks = []
-
-
 	def addLanguage(self, name, lang, country, encoding):
 		try:
 			if lang in self.ll or (lang + "_" + country) in self.ll:
@@ -214,7 +211,7 @@ class Language:
 						if x != lang:
 							os.system("opkg remove --autoremove --force-depends " + Lpackagename + x)
 			
-			os.system("touch /etc/enigma2/.removelang")
+		os.system("touch /etc/enigma2/.removelang")
 
 		self.InitLang()
 

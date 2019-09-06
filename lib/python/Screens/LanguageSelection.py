@@ -160,7 +160,10 @@ class LanguageSelection(Screen):
 			curlang = config.osd.language.value
 			lang = curlang
 			language.delLanguage(delLang=lang)
-		self.close()
+			language.activateLanguage(self.oldActiveLanguage)
+			self.updateList()
+			self.selectActiveLanguage()
+#		self.close()
 
 	def run(self, justlocal = False):
 #		print "[LanguageSelection] updating language..."

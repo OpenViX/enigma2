@@ -248,9 +248,11 @@ class PluginBrowser(Screen, ProtectedScreen):
 		self["list"].l.setList(self.list)
 
 	def delete(self):
+		config.misc.pluginbrowser.po.value = False
 		self.session.openWithCallback(self.PluginDownloadBrowserClosed, PluginDownloadBrowser, PluginDownloadBrowser.REMOVE, True, self.menu_path,)
 
 	def download(self):
+		config.misc.pluginbrowser.po.value = True
 		if not (feedsstatuscheck.adapterAvailable() and feedsstatuscheck.NetworkUp()):
 			self.session.openWithCallback(self.close, MessageBox,  _("Your %s %s has no %s access, please check your network settings and make sure you have network cable connected and try again.") % (getMachineBrand(), getMachineName(), feedsstatuscheck.adapterAvailable() and 'internet' or 'network'), type=MessageBox.TYPE_INFO, timeout=30, close_on_any_key=True)
 			return
@@ -292,6 +294,7 @@ class PluginDownloadBrowser(Screen):
 
 		self["menu_path_compressed"] = StaticText("")
 		if self.type == self.DOWNLOAD:
+			config.misc.pluginbrowser.po.value = True
 			screentitle = _("Install plugins")
 			if config.usage.show_menupath.value == 'large':
 				self.menu_path += screentitle
@@ -304,6 +307,7 @@ class PluginDownloadBrowser(Screen):
 				title = screentitle
 				self["menu_path_compressed"].setText("")
 		elif self.type == self.REMOVE:
+			config.misc.pluginbrowser.po.value = False
 			screentitle = _("Remove plugins")
 			if config.usage.show_menupath.value == 'large':
 				self.menu_path += screentitle
@@ -404,7 +408,8 @@ class PluginDownloadBrowser(Screen):
 			self.PLUGIN_PREFIX2.append(self.PLUGIN_PREFIX + 'weblinks')
 		if config.misc.pluginbrowser.kernel.value:
 			self.PLUGIN_PREFIX2.append('kernel-module-')
-		self.PLUGIN_PREFIX2.append('enigma2-locale-')
+		if config.misc.pluginbrowser.po.value:
+			self.PLUGIN_PREFIX2.append('enigma2-locale-')
 
 	def go(self):
 		sel = self["list"].l.getCurrentSelection()
@@ -652,7 +657,7 @@ class PluginDownloadBrowser(Screen):
 									plugin.append(plugin[0][15:])
 
 									self.pluginlist.append(plugin)
-#			self.pluginlist.sort()
+			self.pluginlist.sort()
 
 	def updateList(self):
 		list = []
