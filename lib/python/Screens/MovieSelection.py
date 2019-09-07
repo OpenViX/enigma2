@@ -1227,7 +1227,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			except IOError, e:
 				updates = {
 					"listtype": config.movielist.listtype.default,
-					"movie": config.movielist.moviesort.default,
+					"moviesort": config.movielist.moviesort.default,
 					"description": config.movielist.description.default,
 					"movieoff": config.usage.on_movie_eof.default
 				}
