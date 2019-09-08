@@ -8256,7 +8256,7 @@ msgid "Sync failure moving back to origin !"
 msgstr "Fallo de sincronización en la vuelta al origen !"
 
 msgid "Sync time using"
-msgstr "Sincronizar tiempo con"
+msgstr "Sincronizar hora usando"
 
 msgid "Synchronize system time using transponder or internet."
 msgstr "Sincronizar la hora del sistema mediante transpondedor o internet."
