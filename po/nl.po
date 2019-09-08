@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-04 07:58+0000\n"
-"PO-Revision-Date: 2019-09-05 17:34+0200\n"
+"POT-Creation-Date: 2019-09-07 08:33+0000\n"
+"PO-Revision-Date: 2019-09-07 16:21+0200\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -1480,6 +1480,9 @@ msgstr "Voeg AutoTimer toe"
 
 msgid "Add Autotimer"
 msgstr "Voeg AutoTimer toe"
+
+msgid "Add Language"
+msgstr "Voeg taal toe"
 
 msgid "Add Timer"
 msgstr "Voeg timer toe"
@@ -8411,14 +8414,14 @@ msgstr "Peuters"
 msgid "Press '0' to toggle PiP mode"
 msgstr "Druk op  '0' om te schakelen tussen de PiP-modi"
 
+msgid "Press Add Language or MENU to install additional language(s)."
+msgstr "Druk op MENU of 'Voeg taal toe' om extra talen te installeren."
+
 msgid "Press INFO on your remote control for additional information."
 msgstr "Druk op INFO voor aanvullende informatie."
 
 msgid "Press MENU on your remote control for additional options."
 msgstr "Druk op MENU voor extra opties."
-
-msgid "Press MENU to install additional language(s)."
-msgstr "Druk op MENU om extra talen te installeren."
 
 msgid "Press OK on your remote control to continue."
 msgstr "Druk op de OK toets om door te gaan."
@@ -12266,9 +12269,6 @@ msgstr "Omhoog"
 msgid "Update"
 msgstr "Update"
 
-msgid "Update Cache"
-msgstr "Update cache"
-
 msgid "Update channel list only"
 msgstr "Update alleen de kanaallijst"
 
@@ -12434,9 +12434,8 @@ msgstr "Gebruik de Links/Rechts toetsen op uw AB om de interface naar links/rech
 msgid "Use the LEFT/RIGHT buttons on your remote to move the user interface up/down."
 msgstr "Gebruik de Links/Rechts toetsen op uw AB om de interface naar boven/beneden te verplaatsen."
 
-#, fuzzy
 msgid "Use the UP and DOWN keys to select language, Menu key to install new language. Afterwards press the OK button."
-msgstr "Gebruik de omhoog/omlaag toetsen om de gewenste taal te selecteren. Druk daarna op OK."
+msgstr "Gebruik de omhoog/omlaag toetsen om de gewenste taal te selecteren. Menu-toets om de taal te installeren. Druk daarna op OK."
 
 msgid "Use the alternative or the conventional radio mode."
 msgstr "Gebruik de alternatieve of de conventionele radiomodus."
@@ -16310,6 +16309,9 @@ msgstr "zapte"
 
 #~ msgid "Unicable Matrix"
 #~ msgstr "Unicable matrix"
+
+#~ msgid "Update Cache"
+#~ msgstr "Update cache"
 
 #~ msgid "Use OpenTV EPG information when it is available."
 #~ msgstr "Gebruik OpenTV EPG informatie indien beschikbaar."
