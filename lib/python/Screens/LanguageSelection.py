@@ -63,7 +63,7 @@ class LanguageSelection(Screen):
 		self["key_green"] = Label(_("Save"))
 		self["key_yellow"] = Label(_("Add Language"))
 		self["key_blue"] = Label(_("Delete Language"))
-		self["description"] = Label(_("Press Add Language or MENU to install additional language(s)."))
+		self["description"] = Label(_("Press 'Add Language' or MENU to add additional language(s). English language can not be deleted"))
 
 		self["actions"] = ActionMap(["SetupActions", "ColorActions"],
 		{
