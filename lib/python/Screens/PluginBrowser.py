@@ -635,28 +635,25 @@ class PluginDownloadBrowser(Screen):
 			plugin = x.split(" - ", 2)
 			# 'opkg list_installed' only returns name + version, no description field
 			if len(plugin) >= 1:
-				if not plugin[0].endswith('-dev') and not plugin[0].endswith('-staticdev') and not plugin[0].endswith('-dbg') and not plugin[0].endswith('-doc') and not plugin[0].endswith('-src') and not plugin[0].endswith('-meta'):
+				if not plugin[0].endswith('-dev') and not plugin[0].endswith('-staticdev') and not plugin[0].endswith('-dbg') and not plugin[0].endswith('-doc') and not plugin[0].endswith('-common') and not plugin[0].endswith('-meta') and plugin[0] not in self.installedplugins and ((not config.pluginbrowser.po.value and not plugin[0].endswith('-po')) or config.pluginbrowser.po.value) and ((not config.pluginbrowser.src.value and not plugin[0].endswith('-src')) or config.pluginbrowser.src.value):
 					# Plugin filter
 					for s in self.PLUGIN_PREFIX2:
 						if plugin[0].startswith(s):
 							if self.run == 1 and self.type == self.DOWNLOAD:
-								if plugin[0] not in self.installedplugins:
-									self.installedplugins.append(plugin[0])
+								self.installedplugins.append(plugin[0])
 							else:
-								if plugin[0] not in self.installedplugins:
-									if len(plugin) == 2:
-										# 'opkg list_installed' does not return descriptions, append empty description
-										if plugin[0].startswith('enigma2-locale-'):
-											lang = plugin[0].split('-')
-											if len(lang) > 3:
-												plugin.append(lang[2] + '-' + lang[3])
-											else:
-												plugin.append(lang[2])
+								if len(plugin) == 2:
+									# 'opkg list_installed' does not return descriptions, append empty description
+									if plugin[0].startswith('enigma2-locale-'):
+										lang = plugin[0].split('-')
+										if len(lang) > 3:
+											plugin.append(lang[2] + '-' + lang[3])
 										else:
-											plugin.append('')
-									plugin.append(plugin[0][15:])
-
-									self.pluginlist.append(plugin)
+											plugin.append(lang[2])
+									else:
+										plugin.append('')
+								plugin.append(plugin[0][15:])
+								self.pluginlist.append(plugin)
 			self.pluginlist.sort()
 
 	def updateList(self):
