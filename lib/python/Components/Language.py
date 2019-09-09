@@ -186,7 +186,7 @@ class Language:
 
 		if delLang:
 			print "[Language] DELETE LANG", delLang
-			if delLang == "en_US" or delLang == "en_GB" or delLang == "de_DE" or delLang == "fr_FR":
+			if delLang[:2] == "en" or delLang == "de_DE" or delLang == "fr_FR":
 				print "[Language] Default Language can not be deleted !!"
 				return
 			elif delLang == "pt_BR":
