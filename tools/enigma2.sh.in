@@ -27,8 +27,16 @@ fi
 if [ -x @bindir@/showiframe ]; then
 	if [ -f @sysconfdir@/enigma2/backdrop.mvi ]; then
 		@bindir@/showiframe @sysconfdir@/enigma2/backdrop.mvi
-	elif [ -f @datadir@/backdrop.mvi ]; then
-		@bindir@/showiframe @datadir@/backdrop.mvi
+	else
+		skin=`sed -En 's|config\.skin\.primary_skin=(.+)/skin\.xml|\1|p' @sysconfdir@/enigma2/settings`
+		if [ -z $skin ]; then
+			skin=`strings -n 10 @prefix@/lib/enigma2/python/skin.pyo | egrep -o -m 1 ".+/skin.xml" | sed 's|/skin.xml.*||'`
+		fi
+		if [ -n $skin -a -f @datadir@/enigma2/$skin/backdrop.mvi ]; then
+			@bindir@/showiframe @datadir@/enigma2/$skin/backdrop.mvi
+		elif [ -f @datadir@/backdrop.mvi ]; then
+			@bindir@/showiframe @datadir@/backdrop.mvi
+		fi
 	fi
 fi
 
@@ -54,17 +62,16 @@ sync
 (sleep 2; echo "enigma2 is the main pvr application... adjust oom score!"; PID=$(pidof enigma2); \
 	[ -e /proc/$PID/oom_score_adj ] && echo "-999" > /proc/$PID/oom_score_adj || echo "-17" > /proc/$PID/oom_adj;) &
 
-if [ "$(grep config.crash.enabledebug /etc/enigma2/settings)" == "config.crash.enabledebug=True" ]; then
-	if [ "$(grep config.crash.debug_path= /etc/enigma2/settings | sed 's/config.crash.debug_path=//g')" != "" -a -d "$(grep config.crash.debug_path= /etc/enigma2/settings | sed 's/config.crash.debug_path=//g')" ]; then
-		LD_PRELOAD=$LIBS @bindir@/enigma2 &> $(grep config.crash.debug_path= /etc/enigma2/settings | sed 's/config.crash.debug_path=//g')Enigma2_debug_$(date +%Y-%m-%d_%H-%M-%S).log
-	else
-		LD_PRELOAD=$LIBS @bindir@/enigma2 &> /home/root/logs/Enigma2_debug_$(date +%Y-%m-%d_%H-%M-%S).log
-	fi
+
+if grep -q 'config\.crash\.enabledebug=True' @sysconfdir@/enigma2/settings; then
+	debug_dir=$(sed -n 's/config.crash.debug_path=//p' @sysconfdir@/enigma2/settings)
+	[ -n "${debug_dir}" -a -d "${debug_dir}" ] || debug_dir=/home/root/logs/
+	LD_PRELOAD=$LIBS @bindir@/enigma2 &> "${debug_dir}Enigma2_debug_$(date +%Y-%m-%d_%H-%M-%S).log"
 else
-	if [ ! "$(grep config.misc.firstrun=False /etc/enigma2/settings)" ]; then
-		LD_PRELOAD=$LIBS @bindir@/enigma2
+	if grep -q 'config\.misc\.firstrun=False' @sysconfdir@/enigma2/settings; then
+		LD_PRELOAD=$LIBS @bindir@/enigma2 &> /dev/null
 	else
-		LD_PRELOAD=$LIBS @bindir@/enigma2 2> /dev/null
+		LD_PRELOAD=$LIBS @bindir@/enigma2
 	fi
 fi
 

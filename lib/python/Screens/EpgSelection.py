@@ -46,6 +46,7 @@ class EPGSelection(Screen, HelpableScreen):
 	ZAP = 1
 
 	def __init__(self, session, service = None, zapFunc = None, eventid = None, bouquetChangeCB=None, serviceChangeCB = None, EPGtype = None, StartBouquet = None, StartRef = None, bouquets = None):
+		print "[EPGSelection]", {'single':'EPG_TYPE_SINGLE','infobar':'EPG_TYPE_INFOBAR','enhanced':'EPG_TYPE_ENHANCED','graph':'EPG_TYPE_GRAPH','infobargraph':'EPG_TYPE_INFOBARGRAPH','multi':'EPG_TYPE_MULTI', None: 'EPGtype == None'}.get(EPGtype, EPGtype)
 		Screen.__init__(self, session)
 		HelpableScreen.__init__(self)
 		self.zapFunc = zapFunc

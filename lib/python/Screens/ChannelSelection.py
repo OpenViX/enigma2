@@ -1351,6 +1351,7 @@ class ChannelSelectionEdit:
 			self.saved_title = None
 			self.buildTitleString()
 			self.servicelist.resetRoot()
+			self.servicelist.l.setHideNumberMarker(config.usage.hide_number_markers.value)
 			self.servicelist.setCurrent(self.servicelist.getCurrent())
 		else:
 			self.mutableList = self.getMutableList()
@@ -1396,8 +1397,19 @@ class ChannelSelectionEdit:
 		l.setFontsize()
 		l.setItemsPerPage()
 		l.setMode('MODE_TV')
+		
+		# l.setMode('MODE_TV') automatically sets "hide number marker" to 
+		# the config.usage.hide_number_markers.value so when we are in "movemode"
+		# we need to force display of the markers here after l.setMode('MODE_TV') 
+		# has run. If l.setMode('MODE_TV') were ever removed above, 
+		# "self.servicelist.l.setHideNumberMarker(False)" could be moved 
+		# directly to the "else" clause of "def toggleMoveMode".
+		if self.movemode: 
+			self.servicelist.l.setHideNumberMarker(False)
+
 		if close:
 			self.cancel()
+			
 
 MODE_TV = 0
 MODE_RADIO = 1
