@@ -1,16 +1,22 @@
+from enigma import eTimer
 from Screens.Screen import Screen
 from Components.ActionMap import ActionMap
-from Components.Language import language
 from Components.config import config
-from Components.Sources.List import List
 from Components.Label import Label
+from Components.Language import language
+from Components.Language_cache import LANG_TEXT
+from Components.Sources.List import List
 from Components.Sources.StaticText import StaticText
 from Components.Pixmap import Pixmap
 from Screens.InfoBar import InfoBar
+from Screens.MessageBox import MessageBox
 from Screens.Rc import Rc
+from Screens.Standby import TryQuitMainloop
 from Tools.Directories import resolveFilename, SCOPE_ACTIVE_SKIN
 from Tools.LoadPixmap import LoadPixmap
+import gettext
 
+inWizzard = False
 
 def LanguageEntryComponent(file, name, index):
 	png = LoadPixmap(resolveFilename(SCOPE_ACTIVE_SKIN, "countries/" + index + ".png"))
@@ -20,6 +26,9 @@ def LanguageEntryComponent(file, name, index):
 			png = LoadPixmap(resolveFilename(SCOPE_ACTIVE_SKIN, "countries/missing.png"))
 	res = (index, name, png)
 	return res
+
+def _cached(x):
+	return LANG_TEXT.get(config.osd.language.value, {}).get(x, "")
 
 class LanguageSelection(Screen):
 	def __init__(self, session, menu_path=""):
@@ -37,55 +46,147 @@ class LanguageSelection(Screen):
 			self["menu_path_compressed"] = StaticText("")
 		Screen.setTitle(self, title)
 
+		language.InitLang()
 		self.oldActiveLanguage = language.getActiveLanguage()
+		self.catalog = language.getActiveCatalog()
 
 		self.list = []
 		self["summarylangname"] = StaticText()
+		self["summarylangsel"] = StaticText()
 		self["languages"] = List(self.list)
+		self["languages"].onSelectionChanged.append(self.changed)
 
 		self.updateList()
 		self.onLayoutFinish.append(self.selectActiveLanguage)
 
 		self["key_red"] = Label(_("Cancel"))
 		self["key_green"] = Label(_("Save"))
+		self["key_yellow"] = Label(_("Add Language"))
+		self["key_blue"] = Label(_("Delete Language"))
+		self["description"] = Label(_("Press 'Add Language' or MENU to add additional language(s). English language can not be deleted"))
 
-		self["actions"] = ActionMap(["OkCancelActions", "ColorActions"],
+		self["actions"] = ActionMap(["SetupActions", "ColorActions"],
 		{
 			"ok": self.save,
 			"cancel": self.cancel,
 			"red": self.cancel,
 			"green": self.save,
+			"yellow": self.installLanguage,
+			"blue": self.delLang,
+			"menu": self.installLanguage,
 		}, -1)
 
+	def updateCache(self):
+#		print "[LanguageSelection] updateCache"
+		self["languages"].setList([('update cache',_('Updating cache, please wait...'),None)])
+		self.updateTimer = eTimer()
+		self.updateTimer.callback.append(self.startupdateCache)
+		self.updateTimer.start(100)
+
+	def startupdateCache(self):
+		self.updateTimer.stop()
+		language.updateLanguageCache()
+		self["languages"].setList(self.list)
+		self.selectActiveLanguage()
+		
 	def selectActiveLanguage(self):
 		self.setTitle(self.title)
+		activeLanguage = language.getActiveLanguage()
 		pos = 0
 		for pos, x in enumerate(self.list):
-			if x[0] == self.oldActiveLanguage:
+			if x[0] == activeLanguage:
 				self["languages"].index = pos
 				break
 
 	def save(self):
-		self.commit(self.run())
-		if InfoBar.instance and self.oldActiveLanguage != config.osd.language.value:
-			self.close(True)
+		self.run()
+		global inWizzard
+#		print "[LanguageSelection] save function inWizzard is %s", %inWizzard  
+		if inWizzard:
+			inWizzard = False
+			#self.session.openWithCallback(self.deletelanguagesCB, MessageBox, _("Do you want to delete all other languages?"), default = False)
+			if self.oldActiveLanguage != config.osd.language.value:
+				self.session.open(TryQuitMainloop, 3)
+			self.close()
+		else:
+			if self.oldActiveLanguage != config.osd.language.value:
+				self.session.openWithCallback(self.restartGUI, MessageBox,_("GUI needs a restart to apply a new language\nDo you want to restart the GUI now?"), MessageBox.TYPE_YESNO)
+			else:
+				self.close()
+
+	def restartGUI(self, answer=True):
+		if answer is True:
+			self.session.open(TryQuitMainloop, 3)
 		else:
 			self.close()
 
 	def cancel(self):
 		language.activateLanguage(self.oldActiveLanguage)
+		config.osd.language.setValue(self.oldActiveLanguage)
+		config.osd.language.save()
 		self.close()
 
-	def run(self):
-		print "[LanguageSelection] updating language..."
+	def delLang(self):
+#		print "[LanguageSelection] deleting language"
+		curlang = config.osd.language.value
+		lang = curlang
+		languageList = language.getLanguageListSelection()
+#		print "[LanguageSelection] deleting language  lang = %s, languagelist = %s", %(lang, languageList)
+		for t in languageList:
+			if curlang == t[0]:
+				lang = t[1]
+				break
+		self.session.openWithCallback(self.delLangCB, MessageBox, _("Select 'Yes' to delete all languages except English and your chosen language:\n\nSelect 'No' to delete only the chosen language:\n\n") + _("%s") %(lang), default = False)
+
+	def delLangCB(self, answer):
+		if answer:
+			language.delLanguage()
+			language.activateLanguage(self.oldActiveLanguage)
+			self.updateList()
+			self.selectActiveLanguage()
+		else:
+			curlang = config.osd.language.value
+			lang = curlang
+			languageList = language.getLanguageListSelection()
+	#		print "[LanguageSelection] deleting language  lang = %s, languagelist = %s", %(lang, languageList)
+			for t in languageList:
+				if curlang == t[0]:
+					lang = t[1]
+					break
+			self.session.openWithCallback(self.deletelanguagesCB, MessageBox, _("Do you really want to delete selected language:\n\n") + _("%s") %(lang), default = False)
+
+	def deletelanguagesCB(self, answer):
+		if answer:
+			curlang = config.osd.language.value
+			lang = curlang
+			language.delLanguage(delLang=lang)
+			language.activateLanguage(self.oldActiveLanguage)
+			self.updateList()
+			self.selectActiveLanguage()
+#		self.close()
+
+	def run(self, justlocal = False):
+#		print "[LanguageSelection] updating language..."
 		lang = self["languages"].getCurrent()[0]
+
+		if lang == 'update cache':
+			self.setTitle(_("Updating cache"))
+			self["summarylangname"].setText(_("Updating cache"))
+			return
+
 		if lang != config.osd.language.value:
 			config.osd.language.setValue(lang)
 			config.osd.language.save()
-		return lang
 
-	def commit(self, lang):
-		print "[LanguageSelection] commit language"
+		self.setTitle(_cached("T2"))
+		self["summarylangname"].setText(_cached("T2"))
+		self["summarylangsel"].setText(self["languages"].getCurrent()[1])
+		self["key_red"].setText(_cached("T3"))
+		self["key_green"].setText(_cached("T4"))
+
+		if justlocal:
+			return
+
 		language.activateLanguage(lang)
 		config.misc.languageselected.value = 0
 		config.misc.languageselected.save()
@@ -99,11 +200,27 @@ class LanguageSelection(Screen):
 		self.list = list
 		self["languages"].list = list
 
+	def installLanguage(self):
+		from Screens.PluginBrowser import PluginDownloadBrowser
+		self.session.openWithCallback(self.update_after_installLanguage, PluginDownloadBrowser, 0)
+
+
+	def update_after_installLanguage(self):
+		language.InitLang()
+		self.updateList()
+		self.updateCache()
+
+	def changed(self):
+		self.run(justlocal = True)
+
 class LanguageWizard(LanguageSelection, Rc):
 	def __init__(self, session):
 		LanguageSelection.__init__(self, session)
 		Rc.__init__(self)
+		global inWizzard
+		inWizzard = True
 		self.onLayoutFinish.append(self.selectKeys)
+
 		self["wizard"] = Pixmap()
 		self["summarytext"] = StaticText()
 		self["text"] = Label()
@@ -114,9 +231,13 @@ class LanguageWizard(LanguageSelection, Rc):
 		self.selectKey("UP")
 		self.selectKey("DOWN")
 
+	def changed(self):
+		self.run(justlocal = True)
+		self.setText()
+
 	def setText(self):
-		self["text"].setText(_("Please use the UP/DOWN keys to select your language. Then press the OK button to select it."))
-		self["summarytext"].setText(_("Please use the UP/DOWN keys to select your language. Then press the OK button to select it."))
+		self["text"].setText(_cached("T1"))
+		self["summarytext"].setText(_cached("T1"))
 
 	def createSummary(self):
 		return LanguageWizardSummary

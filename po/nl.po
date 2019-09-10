@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-18 19:34+0000\n"
-"PO-Revision-Date: 2019-08-19 04:46+0200\n"
+"POT-Creation-Date: 2019-09-09 16:39+0000\n"
+"PO-Revision-Date: 2019-09-10 05:25+0200\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -1255,14 +1255,14 @@ msgid ""
 "A finished powertimer wants to reboot your %s %s.\n"
 "Do that now?"
 msgstr ""
-"Een afgewerkte timer wil uw %s %s\n"
-"in stand-by zetten. Wilt u dat nu doen?"
+"Een afgewerkte timer wil uw %s %s in stand-by zetten\n"
+"Wilt u dat nu doen?"
 
 msgid ""
 "A finished powertimer wants to restart the user interface.\n"
 "Do that now?"
 msgstr ""
-"Een timer wil de gebruikersinterface van uw %s %s herstarten.\n"
+"Een afgewerkte timer wil de gebruikersinterface herstarten.\n"
 "Wilt u dat nu doen?"
 
 #, python-format
@@ -1278,24 +1278,24 @@ msgid ""
 "A finished powertimer wants to shutdown your %s %s.\n"
 "Do that now?"
 msgstr ""
-"Een afgewerkte timer wil uw\n"
-"%s %s uitschakelen. Wilt u dat nu doen?"
+"Een afgewerkte timer wil uw %s %s uitschakelen.\n"
+"Wilt u dat nu doen?"
 
 #, python-format
 msgid ""
 "A finished record timer wants to set your\n"
 "%s %s to standby. Do that now?"
 msgstr ""
-"Een afgewerkte timer wil uw %s %s\n"
-"in stand-by zetten. Wilt u dat nu doen?"
+"Een afgewerkte timer wil uw %s %s in stand-by zetten.\n"
+"Wilt u dat nu doen?"
 
 #, python-format
 msgid ""
 "A finished record timer wants to shut down\n"
 "your %s %s. Shutdown now?"
 msgstr ""
-"Een afgewerkte timer wil uw\n"
-"%s %s uitschakelen. Wilt u dat nu doen?"
+"Een afgewerkte timer wil uw %s %s uitschakelen.\n"
+"Wilt u dat nu doen?"
 
 #, python-format
 msgid ""
@@ -1323,7 +1323,7 @@ msgstr "Een herhalende timer of eenmalig?"
 
 #, python-format
 msgid "A required tool (%s) was not found."
-msgstr "Het benodigde hulpmiddel (%s) is niet gevonden."
+msgstr "Een benodigd hulpmiddel (%s) is niet gevonden."
 
 msgid "A search for available updates is currently in progress."
 msgstr "Bezig met zoeken naar updates."
@@ -1342,16 +1342,16 @@ msgid ""
 "A sleep timer wants to set your\n"
 "%s %s to standby. Proceed?"
 msgstr ""
-"Een slaaptimer wil uw\n"
-"%s %s in stand-by zetten. Doorgaan?"
+"Een slaaptimer wil uw %s %s in stand-by zetten.\n"
+"Doorgaan?"
 
 #, python-format
 msgid ""
 "A sleep timer wants to shut down\n"
 "your %s %s. Proceed?"
 msgstr ""
-"Een slaaptimer wil uw\n"
-"%s %s uitschakelen. Doorgaan?"
+"Een slaaptimer wil uw %s %s uitschakelen.\n"
+"Doorgaan?"
 
 msgid "A small overview of the available icon states and actions."
 msgstr "Een klein overzicht van gebruikte icoon-statussen en acties."
@@ -1480,6 +1480,9 @@ msgstr "Voeg AutoTimer toe"
 
 msgid "Add Autotimer"
 msgstr "Voeg AutoTimer toe"
+
+msgid "Add Language"
+msgstr "Voeg taal toe"
 
 msgid "Add Timer"
 msgstr "Voeg timer toe"
@@ -3885,6 +3888,9 @@ msgstr "Bevestig verwijderen"
 msgid "Delete EPG"
 msgstr "EPG verwijderen"
 
+msgid "Delete Language"
+msgstr "Verwijder taal"
+
 msgid "Delete entry"
 msgstr "Verwijder invoer"
 
@@ -4089,6 +4095,13 @@ msgstr "Wilt u %s echt verwijderen?"
 msgid "Do you really want to delete ?"
 msgstr "Echt verwijderen?"
 
+msgid ""
+"Do you really want to delete selected language:\n"
+"\n"
+msgstr ""
+"Wilt u de geselecteerde taal echt verwijderen:\n"
+"\n"
+
 msgid "Do you really want to delete this timer ?"
 msgstr "Wilt u echt deze timer echt verwijderen?"
 
@@ -4123,11 +4136,11 @@ msgstr "Weet u zeker dat u map %s van de harde schijf wilt verwijderen?"
 
 #, python-format
 msgid "Do you really want to remove the plugin \"%s\"?"
-msgstr "Wilt u echt deze applicatie \"%s\" verwijderen?"
+msgstr "Wilt u echt de applicatie \"%s\" verwijderen?"
 
 #, python-format
 msgid "Do you really want to remove the timer for %s?"
-msgstr "Wilt u de timer voor \"%s\" verwijderen?"
+msgstr "Wilt u de timer voor %s verwijderen?"
 
 #, python-format
 msgid "Do you really want to remove your bookmark of %s?"
@@ -4186,7 +4199,7 @@ msgid "Do you want to reboot your %s %s"
 msgstr "Wilt u uw %s %s opnieuw opstarten?"
 
 msgid "Do you want to reboot your receiver?"
-msgstr "Wilt u uw %s %s opnieuw opstarten?"
+msgstr "Wilt u uw ontvanger opnieuw opstarten?"
 
 msgid "Do you want to remove the package:\n"
 msgstr "Wilt u het volgende pakket verwijderen:\n"
@@ -4202,7 +4215,7 @@ msgid ""
 "(choose 'No' to only send the currently selected file.)"
 msgstr ""
 "Wilt u alle geselecteerde bestanden versturen:\n"
-"(kies 'Nee' om aleen het nu geselecteerde bestand te versturen.)"
+"(kies 'Nee' om alleen het nu geselecteerde bestand te versturen.)"
 
 #, python-format
 msgid "Do you want to update your %s %s ?"
@@ -4342,7 +4355,7 @@ msgstr "EPG instellingen"
 
 #, python-format
 msgid "ERROR - failed to scan (%s)!"
-msgstr "Fout - Zoeken mislukt (%s)!"
+msgstr "FOUT - zoeken mislukt (%s)!"
 
 msgid "ERROR: Check is already running in background, please wait a few minutes and try again"
 msgstr "FOUT: Op de achtergrond wordt al een controle uitgevoerd. Wacht een paar minuten en probeer het opnieuw."
@@ -4703,7 +4716,7 @@ msgid ""
 "Retry?"
 msgstr ""
 "Fout: %s\n"
-"Opnieuw?"
+"Opnieuw proberen?"
 
 msgid "Estonia"
 msgstr "Estonia"
@@ -4998,6 +5011,9 @@ msgstr "Fallback remote-ontvanger URL"
 msgid "Fallback tuner setup"
 msgstr "Fallback tuner-instellingen"
 
+msgid "False"
+msgstr "Niet waar"
+
 #
 #, python-format
 msgid "Fan %d"
@@ -5208,6 +5224,13 @@ msgstr "GB"
 #, python-format
 msgid "GStreamer:\t%s\n"
 msgstr "GStreamer:\t%s\n"
+
+msgid ""
+"GUI needs a restart to apply a new language\n"
+"Do you want to restart the GUI now?"
+msgstr ""
+"De gebruikersinterface moet herstart worden om de nieuwe taal te activeren\n"
+"Nu herstarten?"
 
 msgid ""
 "GUI needs a restart to apply a new skin\n"
@@ -5538,6 +5561,9 @@ msgstr "Verberg foutmeldingen van de CAM."
 msgid "Hide known extensions"
 msgstr "Verberg bekende extensies"
 
+msgid "Hide number markers"
+msgstr "Verberg nummer markeringen"
+
 msgid "Hide parental locked services"
 msgstr "Verberg kanalen die achter kinderslot zitten"
 
@@ -5726,7 +5752,7 @@ msgid "If set to 'yes' it will show the 'PO' packages in browser."
 msgstr "Als u 'ja' kiest, zijn alle 'PO' (taal)-pakketten in de browser zichtbaar."
 
 msgid "If set to 'yes' it will show the 'SRC' packages in browser."
-msgstr "Als u 'ja' kiest, zijn alle 'SRC' (source)-pakketten in de browser zichtbaar."
+msgstr "Als u 'ja' kiest, zijn alle 'SRC' (source (= bron))-pakketten in de browser zichtbaar."
 
 msgid "If set to 'yes' shows a small TV-screen in the EPG."
 msgstr "Als u 'ja' kiest, zal het tv-beeld in een klein schermpje in de EPG worden getoond."
@@ -5765,7 +5791,7 @@ msgid "If set to 'yes', the infobar will be displayed when Fast Forwarding or Re
 msgstr "Als u 'ja' kiest, wordt de informatiebalk getoond als u snel of langzaam achter- of vooruit spoelt of pauzeert."
 
 msgid "If the text is too long to be displayed on the front panel, it will be repeated (number of times):"
-msgstr "Als de tekst te lang is voor het schermpje van uw %s %s, zal die (aantal keren) worden herhaald:"
+msgstr "Als de tekst te lang is voor het scherm van uw ontvanger, zal die (aantal keren) worden herhaald:"
 
 msgid "If using multiple uncommitted switches the DiSEqC commands must be sent multiple times. Set to the number of uncommitted switches in the chain minus one."
 msgstr "Indien u meerdere uncommitted switches gebruikt, moeten DiSEqC meerdere amlen verzonden worden. Stel het aantal in op het aantal switches minus één."
@@ -6268,7 +6294,7 @@ msgid "LED brightness during deep standby."
 msgstr "LED helderheid tijdens deep sleep."
 
 msgid "LED brightness during normal operations."
-msgstr "LED helderheid tijdens gebruik van uw %s %s."
+msgstr "LED helderheid tijdens normaal gebruik."
 
 msgid "LED brightness during standby."
 msgstr "LED helderheid tijdens stand-by."
@@ -7294,9 +7320,6 @@ msgstr "Geen netwerkverbinding beschikbaar."
 msgid "No networks found"
 msgstr "Geen netwerken gevonden"
 
-msgid "No new plugins found"
-msgstr "Geen nieuwe plugins gevonden"
-
 msgid "No of items switch (increase or reduced)"
 msgstr "Aantal onderdelen (verklein of vergroot)"
 
@@ -8142,9 +8165,6 @@ msgstr ""
 "Configureer uw gebruikersinterface zo dat de hoeken van de gebruikersinterface precies de hoeken uw TV-beeld bedekken.\n"
 "Druk op OK om verder te gaan."
 
-msgid "Please use the UP/DOWN keys to select your language. Then press the OK button to select it."
-msgstr "Gebruik de omhoog/omlaag toetsen om de gewenste taal te selecteren. Druk daarna op OK."
-
 msgid ""
 "Please use the direction keys to move the PiP window.\n"
 "Press Bouquet +/- to resize the window.\n"
@@ -8393,6 +8413,9 @@ msgstr "Peuters"
 
 msgid "Press '0' to toggle PiP mode"
 msgstr "Druk op  '0' om te schakelen tussen de PiP-modi"
+
+msgid "Press 'Add Language' or MENU to add additional language(s). English language can not be deleted"
+msgstr "Druk op MENU of 'Voeg taal toe' om extra talen te installeren. Engels kan niet worden verwijderd."
 
 msgid "Press INFO on your remote control for additional information."
 msgstr "Druk op INFO voor aanvullende informatie."
@@ -9462,6 +9485,16 @@ msgstr "Kies 'A' of 'B' als uw antenne-installatie dat vereist, anders kiest u '
 msgid "Select 'FBC SCR' if this tuner will connect to a SCR (Unicable/JESS) device. For all other setups select 'FBC automatic'."
 msgstr "Kies 'FBC SCR' als deze tuner is aangesloten op een SCR-apparaat (Unicable/JESS). Voor alle andere situaties kiest u 'FBC automatisch'."
 
+msgid ""
+"Select 'Yes' to delete all languages except English and your chosen language:\n"
+"\n"
+"Select 'No' to delete only the chosen language:\n"
+"\n"
+msgstr ""
+"Kies 'Ja' om alle talen te verwijderen behalve Engels en de door u geselecteerde taal:\n"
+"\n"
+"Kies 'Nee' om alleen de door u geselecteerde taal te verwijderen.\n"
+
 msgid "Select 'Yes' when you want to configure this tuner for ATSC"
 msgstr "Kies 'Ja' als u deze tuner voor ATSC wilt configureren"
 
@@ -9490,7 +9523,7 @@ msgid "Select 'yes' if this tuner is connected to the SCR device through another
 msgstr "Kies 'ja' als deze tuner verbonden is met een SCR-apparaat, anders kiest u 'nee'."
 
 msgid "Select 'yes' to choose what bands or step sizes will be scanned."
-msgstr "Kies 'ja' om aan te geven welke band of stapgroote gescand zal worden."
+msgstr "Kies 'ja' om aan te geven welke band of stapgrootte gescand zal worden."
 
 #, python-format
 msgid "Select 'yes' to include %s multiplexes in your search."
@@ -9962,7 +9995,7 @@ msgid "Set the scrolling speed of text on the front display, this uses a softwar
 msgstr "Stel de scroll-snelheid voor het schermpje in; sommige skins gebruiken een softwarerenderer."
 
 msgid "Set the scrolling speed of text on the front display."
-msgstr "Stel de scrollsnelheid op het schermpje van uw %s %s in."
+msgstr "Stel de scrollsnelheid voor de tekst op het scherm in."
 
 msgid "Set the sort method for this directory"
 msgstr "Kies de sortering voor deze map"
@@ -10026,7 +10059,7 @@ msgid "Setup network time synchronization interval."
 msgstr "Stel het netwerksynchronisatie-interval in."
 
 msgid "Setup the interval (in hours) to check for online updates."
-msgstr "Hier stelt u het tijdsinterval in waarmee uw %s %s naar updates zoekt (in uren; '0' betekent dat er niet gezocht wordt)."
+msgstr "Hier stelt u het tijdsinterval in waarmee naar updates gezocht wordt."
 
 msgid "Setup your positioner"
 msgstr "Positioner instellen"
@@ -11029,7 +11062,7 @@ msgstr "Ondersteuning op  "
 
 #, python-format
 msgid "Support at %s"
-msgstr "Support om %s"
+msgstr "Support op %s"
 
 msgid "Suriname"
 msgstr "Suriname"
@@ -11281,7 +11314,7 @@ msgstr ""
 "Druk op 'OK' om uw %s %s in gebruik te nemen."
 
 msgid "The %s %s reads the stored EPG data every (hours)."
-msgstr "Uw %s %s leest de opgelsagen EPG-data elke (aantal) uur."
+msgstr "Uw %s %s leest de opgeslagen EPG-data elke (aantal) uur."
 
 msgid "The %s %s stores the EPG data every (hours)."
 msgstr "Uw %s %s slaat de EPG-data elke (aantal) uur op."
@@ -11379,7 +11412,7 @@ msgid ""
 "The directory %s is not a EXT2, EXT3, EXT4 or NFS partition.\n"
 "Make sure you select a valid partition type."
 msgstr ""
-"De lokatie %s mag geen EXT2, EXT3, EXT4 of NFS partitie.\n"
+"De lokatie %s is geen EXT2, EXT3, EXT4 of NFS partitie.\n"
 "Zorg dat u een geldige partitietype kies."
 
 #
@@ -11420,6 +11453,9 @@ msgstr "De resultaten zijn bewaard op %s."
 
 msgid "The saved PIN was cleared."
 msgstr "De opgeslagen PIN is verwijderd."
+
+msgid "The selected langugage is unavailable - using en_US"
+msgstr "De gekozen taal is niet beschikbaar; en_US zal worden gebruikt"
 
 msgid "The service has been added to the favourites."
 msgstr "De zender is toegevoegd aan de favorieten."
@@ -11998,6 +12034,9 @@ msgstr "Aantal resterende pogingen:"
 msgid "Trinidad and Tobago"
 msgstr "Trinidad and Tobago"
 
+msgid "True"
+msgstr "Waar"
+
 msgid "Try to find used transponders in cable network.. please wait..."
 msgstr "Probeert gebruikte transponders op het kabelnetwerk te vinden. Even wachten..."
 
@@ -12251,6 +12290,12 @@ msgstr "Updateinterval (in secondes)"
 msgid "Updatefeed not available."
 msgstr "Updatefeed niet beschikbaar."
 
+msgid "Updating cache"
+msgstr "Bezig cache te updaten..."
+
+msgid "Updating cache, please wait..."
+msgstr "Bezig cache te updaten, even wachten..."
+
 msgid "Updating software catalog"
 msgstr "Softwarecatalogus wordt geupdate"
 
@@ -12315,8 +12360,8 @@ msgstr "Gebruik MHW EPG informatie indien beschikbaar."
 msgid "Use Netmed EPG information when it is available."
 msgstr "Gebruik Netmed EPG informatie indien beschikbaar."
 
-msgid "Use OpenTV EPG information when it is available."
-msgstr "Gebruik OpenTV EPG informatie indien beschikbaar."
+msgid "Use OpenTV EPG information when it is available. For reading OpenTV EPG data tuning to a dedicated transponder is required"
+msgstr "Gebruik OpenTV EPG-informatie indien beschikbaar. Voor het binnenhalen van die data is het afstemmen op een bepaalde transponder vereist."
 
 msgid "Use TV remote control"
 msgstr "Gebruik de afstandsbediening van de TV"
@@ -12389,6 +12434,9 @@ msgstr "Gebruik de Links/Rechts toetsen op uw AB om de interface naar links/rech
 
 msgid "Use the LEFT/RIGHT buttons on your remote to move the user interface up/down."
 msgstr "Gebruik de Links/Rechts toetsen op uw AB om de interface naar boven/beneden te verplaatsen."
+
+msgid "Use the UP and DOWN keys to select language, Menu key to install new language. Afterwards press the OK button."
+msgstr "Gebruik de omhoog/omlaag toetsen om de gewenste taal te selecteren. Menu-toets om de taal te installeren. Druk daarna op OK."
 
 msgid "Use the alternative or the conventional radio mode."
 msgstr "Gebruik de alternatieve of de conventionele radiomodus."
@@ -12793,9 +12841,9 @@ msgid ""
 "\n"
 "Select Yes to change these settings or No to skip this step."
 msgstr ""
-"Welkom bij OpenViX!\n"
+"uw Welkom bij OpenViX!\n"
 "\n"
-"Opmerking: Dit onderdeel van de wizard is alleen bedoeld indien 'overscan' van TV/beeldscherm niet kan worden uitgeschakeld. Probeer 'overscan' uit te schakelen alvorens deze optie te gebruiken.\n"
+"Opmerking: Dit onderdeel van de wizard is alleen bedoeld indien 'overscan' van uw TV/beeldscherm niet kan worden uitgeschakeld. Probeer 'overscan' uit te schakelen alvorens deze optie te gebruiken.\n"
 "\n"
 "Gebruik: Pas positie en maat zodanig aan dat het afgeschermde deel van het scherm precies het patroon op de achtergrond bedekt.\n"
 "\n"
@@ -12934,6 +12982,9 @@ msgstr "Indien ingeschakeld zal de motor het stroomverbruik benutten om te bepal
 msgid "When enabled, network trash cans are probed for cleaning."
 msgstr "Indien ingeschakeld worden prullebakken in het netwerk ook gemonitord."
 
+msgid "When enabled, number markers will be hidden."
+msgstr "Indien ingeschakeld zullen nummer markeringen verborgen worden."
+
 msgid "When enabled, pressing '0' will zap you to the first channel in your first bouquet and delete your zap-history."
 msgstr "Indien ingeschakeld zapt '0' naar het eerste kanaal van het eerste bouquet en wordt de zap-historie verwijderd."
 
@@ -12965,10 +13016,10 @@ msgid "When enabled, the length of each recording will be shown in the movielist
 msgstr "Toon de lengte van opnames (dit kan een iets langere laadtijd van het scherm veroorxaken)."
 
 msgid "When enabled, the receiver will automatically use the audio track which you selected before."
-msgstr "Indien ingeschakeld zal uw %s %s automatisch eerder gemaakte audiokeuzes weer maken."
+msgstr "Indien ingeschakeld zal uw ontvanger automatisch eerder gemaakte audiokeuzes wederom maken."
 
 msgid "When enabled, the receiver will automatically use the subtitles which you selected before."
-msgstr "Indien ingeschakeld zal uw %s %s automatisch eerder gemaakte ondertitelkeuzes weer maken."
+msgstr "Indien ingeschakeld zal uw ontvanger automatisch eerder gemaakte ondertitelkeuzes wederom maken."
 
 msgid "When enabled, the receiver will select an AC3 track (when available)."
 msgstr "Indien 'Ja' is gekozen, zal AC3 geluid worden doorgegeven (indien beschikbaar)."
@@ -13016,7 +13067,7 @@ msgid "When the content has an aspect ratio of 4:3, choose whether to scale/stre
 msgstr "Als het beeld een verhouding heeft van 4:3 kan het beeld worden uitgerekt of geschaald."
 
 msgid "When tuned to a service the system will normally scan the transponder for any changes and save them. Only set to 'yes' if you're absolutely sure of what you're doing."
-msgstr "Als uw %s %s op een kanaal is afgestemd, wordt normaal gesproken de transponder gescand op veranderingen. Schakel dit alleen uit, als u zeker bent van wat u doet."
+msgstr "Als uw ontvanger op een kanaal is afgestemd, wordt normaal gesproken de transponder gescand op veranderingen. Schakel dit alleen uit, als u zeker bent van wat u doet."
 
 msgid "When unset, sort changes will be temporary - just for this view of a directory."
 msgstr "Indien uitgeschakeld, zullen de veranderingen tijdelijk zijn; alleen voor deze keer dat u deze map inziet."
@@ -13216,8 +13267,7 @@ msgid ""
 "\"%s\"?"
 msgstr ""
 "U heeft al een kanaallijst geïnstalleerd,\n"
-"wilt u verwijderen\n"
-"\"%s\"?"
+"wilt u \"%s\" verwijderen?"
 
 msgid "You can Display MiniTV with or without OSD Menu"
 msgstr "U kunt MiniTV met en zonder OSD-menu tonen."
@@ -13363,7 +13413,7 @@ msgstr "Uw %s %s wordt nu afgesloten. Even wachten..."
 
 #, python-format
 msgid "Your %s %s might be unusable now. Please consult the manual for further assistance before rebooting your %s %s."
-msgstr "Uw %s %s kan nu onbruikbaar zijn geworden. Raadpleeg voordat uw uw %s %s herstart de handleiding."
+msgstr "Uw  %s %s kan nu onbruikbaar zijn geworden. Raadpleeg voordat u uw %s %s herstart de handleiding."
 
 #, python-format
 msgid ""
@@ -13400,7 +13450,7 @@ msgstr ""
 "Wilt u de service nu verwijderen?"
 
 msgid "Your STB will restart after pressing OK on your remote control."
-msgstr "Als u op OK drukt zal uw %s %s opnieuw opstarten."
+msgstr "Als u op OK drukt zal uw ontvanger opnieuw opstarten."
 
 msgid "Your backup succeeded. We will now continue to explain the further upgrade process."
 msgstr "De back-up is geslaagd. U krijgt nu een korte uitleg over het vervolg van het updateproces."
@@ -13473,7 +13523,7 @@ msgid "Your receiver can use tone amplitude. Consult your receiver's manual for 
 msgstr "Uw ontvanger kan toon-amplitude benutten. Kijk in de handleiding voor meer informatie."
 
 msgid "Your receiver does not have an internet connection"
-msgstr "Uw %s %s heeft geen internetverbinding"
+msgstr "Uw ontvanger heeft geen internetverbinding"
 
 msgid "Your receiver is not connected to the internet"
 msgstr "Uw ontvanger heeft geen internet verbinding"
@@ -13488,7 +13538,7 @@ msgid ""
 "Please choose what you want to do next."
 msgstr ""
 "Uw draadloze LAN internetverbinding kan niet gestart worden!\n"
-"Heeft u de USB WLAN Stick in de %s %s geplaatst?\n"
+"Heeft u de USB WLAN Stick geplaatst?\n"
 "\n"
 "Kies wat u nu wilt doen."
 
@@ -15611,13 +15661,6 @@ msgstr "zapte"
 #~ msgid "Ftpd service type: Vsftpd server"
 #~ msgstr "Ftpd service type: Vsftpd server"
 
-#~ msgid ""
-#~ "GUI needs a restart to apply a new language\n"
-#~ "Do you want to restart the GUI now?"
-#~ msgstr ""
-#~ "De gebruikersinterface moet herstart worden om de nieuwe taal te activeren\n"
-#~ "Nu herstarten?"
-
 #~ msgid "Get latest experimental image"
 #~ msgstr "Ontvang het laatste experimentele image"
 
@@ -15772,6 +15815,9 @@ msgstr "zapte"
 
 #~ msgid "No httpuser defined in oscam.conf"
 #~ msgstr "Geen httpuser vastgelegd in oscam.conf"
+
+#~ msgid "No new plugins found"
+#~ msgstr "Geen nieuwe plugins gevonden"
 
 #~ msgid "No stream clients"
 #~ msgstr "Geen stream-klanten"
@@ -16213,6 +16259,15 @@ msgstr "zapte"
 #~ msgstr "Timeshift instellingen"
 
 #~ msgid ""
+#~ "To delete selected language , answer 'No'\n"
+#~ " 'Yes', to delete all other languages,except English, French, German and your selection:\n"
+#~ "\n"
+#~ msgstr ""
+#~ "Om de gekozen taal te verwijderen antwoord met 'Nee'\n"
+#~ "'Ja' om alle andere talen te verwijderen behalve Engels, Frans, Duits en uw selectie:\n"
+#~ "\n"
+
+#~ msgid ""
 #~ "To update your %s %s firmware, please follow these steps:\n"
 #~ "1) Turn off your box with the rear power switch and make sure the bootable USB stick is plugged in.\n"
 #~ "2) Turn mains back on and hold the DOWN button on the front panel pressed for 10 seconds.\n"
@@ -16265,6 +16320,12 @@ msgstr "zapte"
 #~ msgid "Unicable Matrix"
 #~ msgstr "Unicable matrix"
 
+#~ msgid "Update Cache"
+#~ msgstr "Update cache"
+
+#~ msgid "Use OpenTV EPG information when it is available."
+#~ msgstr "Gebruik OpenTV EPG informatie indien beschikbaar."
+
 #~ msgid "Use ViX colored Buttons*"
 #~ msgstr "Gebruik ViX kleurtoetsen*"
 
@@ -16294,9 +16355,6 @@ msgstr "zapte"
 
 #~ msgid "When enabled the LNB power will not be switched off in standby"
 #~ msgstr "Indien ingeschakeld zal de spanning van de LNB in stand-by niet worden uitgeschakeld."
-
-#~ msgid "When enabled the LNB toneburst will be forced"
-#~ msgstr "Indien ingeschakeld zal de LNB-toneburst worden geforceerd."
 
 #~ msgid "When enabled, Enigma2 will load unlinked bouquets. This means that bouquets that are available, but not included in the bouquets.tv or bouquets.radio files, will still be loaded. This allows you for example to keep your own user bouquet while installed settings are upgraded"
 #~ msgstr "Indien ingeschakeld zal enigma2 niet geregistreerde favorietenlijsten laden. Dat betekent dat de lijsten die beschikbaar zijn maar niet zijn opgenomen in de radio- en TV-lijsten toch geladen zullen worden. Dit stelt u b.v. in staat om eigen lijsten te bewaren, terwijl settings worden geupgrade."
