@@ -5817,9 +5817,6 @@ msgstr "Por favor, configure el sintonizador J"
 msgid "Please set up tuner K"
 msgstr "Por favor, configure el sintonizador K"
 
-msgid "Please use the UP/DOWN keys to select your language. Then press the OK button to select it."
-msgstr "Utilice las teclas ARRIBA / ABAJO para seleccionar su idioma. Luego Pulse el botón OK para seleccionarlo."
-
 msgid ""
 "Please use the direction keys to move the PiP window.\n"
 "Press Bouquet +/- to resize the window.\n"
@@ -10305,7 +10302,7 @@ msgstr ""
 "Quieres eliminar el servicio ahora ?"
 
 msgid "Your STB will restart after pressing OK on your remote control."
-msgstr "Su STB se reiniciará cuando pulses 'OK' en el mando a distancia."
+msgstr "Su receptor se reiniciará cuando pulses 'OK' en el mando a distancia."
 
 msgid "Your backup succeeded. We will now continue to explain the further upgrade process."
 msgstr "La copia se ha guardado con éxito. Ahora te seguiremos explicando el proceso de actualización."
@@ -12716,6 +12713,69 @@ msgstr "Retardo de tecla Zap para entrada de número de canal"
 
 msgid "no module found"
 msgstr "no se encontró módulo"
+
+msgid "Hide number markers"
+msgstr "Ocultar marcadores de números"
+
+msgid "The selected langugage is unavailable - using en_US"
+msgstr "El idioma seleccionado no está disponible - usando en_US"
+
+msgid "Use OpenTV EPG information when it is available. For reading OpenTV EPG data tuning to a dedicated transponder is required"
+msgstr "Utilice la información de OpenTV EPG cuando esté disponible. Para leer OpenTV EPG se requiere la sintonización de datos a un transpondedor dedicado"
+
+msgid "When enabled, number markers will be hidden."
+msgstr "Cuando está habilitado, los marcadores numéricos estarán ocultos."
+
+msgid "Delete Language"
+msgstr "Eliminar Lenguaje"
+
+msgid ""
+"Do you really want to delete selected language:\n"
+"\n"
+msgstr ""
+"Realmente quieres eliminar el idioma seleccionado:\n"
+"\n"
+
+msgid "False"
+msgstr "Falso"
+
+msgid ""
+"GUI needs a restart to apply a new language\n"
+"Do you want to restart the GUI now?"
+msgstr ""
+"La GUI necesita reiniciar para aplicar un nuevo idioma\n"
+"Desea reiniciar la GUI ahora?"
+
+msgid "Select 'yes' to choose what bands or step sizes will be scanned."
+msgstr "Seleccione 'sí' para elegir qué bandas o pasos se escanearán."
+
+msgid "Press 'Add Language' or MENU to add additional language(s). English language can not be deleted"
+msgstr "Presione 'Añadir idioma' o MENÚ para agregar idiomas adicionales. El idioma inglés no se puede eliminar"
+
+msgid "True"
+msgstr "Verdadero"
+
+msgid "Updating cache"
+msgstr "Actualizando cache"
+
+msgid "Updating cache, please wait..."
+msgstr "Actualizando cache espere por favor..."
+
+msgid "Use the UP and DOWN keys to select language, Menu key to install new language. Afterwards press the OK button."
+msgstr "Use las teclas ARRIBA y ABAJO para seleccionar el idioma, la tecla Menú para instalar un nuevo idioma. Luego presione el botón OK."
+
+msgid "Add Language"
+msgstr "Añadir Lenguaje"
+
+msgid ""
+"Select 'Yes' to delete all languages except English and your chosen language:\n"
+"\n"
+"Select 'No' to delete only the chosen language:\n"
+"\n"
+msgstr ""
+"Seleccione 'Sí' para eliminar todos los idiomas excepto el inglés y el idioma elegido:\n"
+"\n"
+"Seleccione 'No' para eliminar solo el idioma elegido:\n"
 
 #~ msgid "Select locale"
 #~ msgstr "Seleccionar lugar"
