@@ -431,13 +431,13 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 				self.list.append(getConfigListEntry(self.indent % _("Fast DiSEqC"), currLnb.fastDiseqc, _("Select Fast DiSEqC if your aerial system supports this. If you are unsure select 'no'.")))
 				self.toneburst = getConfigListEntry(self.indent % _("Toneburst"), currLnb.toneburst, _("Select 'A' or 'B' if your aerial system requires this, otherwise select 'none'. If you are unsure select 'none'."))
 				self.list.append(self.toneburst)
-				self.committedDiseqcCommand = getConfigListEntry(self.indent % _("DiSEqC 1.0 command"), currLnb.commitedDiseqcCommand, _("If you are using a DiSEqC committed switch enter the port letter required to access the LNB used for this satellite."))
+				self.committedDiseqcCommand = getConfigListEntry(self.indent % _("Comando DiSEqC 1.0"), currLnb.commitedDiseqcCommand, _("If you are using a DiSEqC committed switch enter the port letter required to access the LNB used for this satellite."))
 				self.list.append(self.committedDiseqcCommand)
 				if currLnb.diseqcMode.value == "1_0":
 					if currLnb.toneburst.index and currLnb.commitedDiseqcCommand.index:
 						self.list.append(getConfigListEntry(self.indent % _("Command order"), currLnb.commandOrder1_0, _("This is the order in which DiSEqC commands are sent to the aerial system. The order must correspond exactly with the order the physical devices are arranged along the signal cable (starting from the receiver end).")))
 				else:
-					self.uncommittedDiseqcCommand = getConfigListEntry(self.indent % _("DiSEqC 1.1 command"), currLnb.uncommittedDiseqcCommand, _("If you are using a DiSEqC uncommitted switch enter the port number required to access the LNB used for this satellite."))
+					self.uncommittedDiseqcCommand = getConfigListEntry(self.indent % _("Comando DiSEqC 1.1"), currLnb.uncommittedDiseqcCommand, _("If you are using a DiSEqC uncommitted switch enter the port number required to access the LNB used for this satellite."))
 					self.list.append(self.uncommittedDiseqcCommand)
 					if currLnb.uncommittedDiseqcCommand.index:
 						if currLnb.commandOrder.value == "ct":
