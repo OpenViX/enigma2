@@ -1234,8 +1234,8 @@ def InitNimManager(nimmgr, update_slots = []):
 
 	diseqc_satlist_choices = [(3600, _('automatic'), 1), (3601, _('nothing connected'), 1)] + nimmgr.satList
 
-	longitude_orientation_choices = [("east", _("East")), ("west", _("West"))]
-	latitude_orientation_choices = [("north", _("North")), ("south", _("South"))]
+	longitude_orientation_choices = [("east", _("Este")), ("west", _("Oeste"))]
+	latitude_orientation_choices = [("north", _("Norte")), ("south", _("Sur"))]
 	turning_speed_choices = [("fast", _("Fast")), ("slow", _("Slow")), ("fast epoch", _("Fast epoch"))]
 
 	advanced_satlist_choices = nimmgr.satList + [
