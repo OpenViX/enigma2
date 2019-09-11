@@ -12777,9 +12777,6 @@ msgstr ""
 "\n"
 "Seleccione 'No' para eliminar solo el idioma elegido:\n"
 
-msgid "Start Wizard - Screen Alignment"
-msgstr "Iniciar Asistente Alineación de Pantalla"
-
 #~ msgid "Select locale"
 #~ msgstr "Seleccionar lugar"
 
