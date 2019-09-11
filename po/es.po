@@ -8885,7 +8885,7 @@ msgid "TiVo support"
 msgstr "Soporte TiVo"
 
 msgid "Time"
-msgstr "Hora"
+msgstr "Horario"
 
 msgid "Time Update in Minutes:"
 msgstr "Actualización horaria en minutos:"
@@ -12776,6 +12776,21 @@ msgstr ""
 "Seleccione 'Sí' para eliminar todos los idiomas excepto el inglés y el idioma elegido:\n"
 "\n"
 "Seleccione 'No' para eliminar solo el idioma elegido:\n"
+
+msgid "Question"
+msgstr "Pregunta"
+
+msgid "West"
+msgstr "Oeste"
+
+msgid "North"
+msgstr "Norte"
+
+msgid "South"
+msgstr "Sur"
+
+msgid "East"
+msgstr "Este"
 
 #~ msgid "Select locale"
 #~ msgstr "Seleccionar lugar"

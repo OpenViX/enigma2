@@ -225,9 +225,9 @@ class Language:
 		for lang in self.langlist:
 			catalog = gettext.translation('enigma2', resolveFilename(SCOPE_LANGUAGE, ""), languages=[str(lang)], fallback=True)
 			T1 = catalog.gettext("Use the UP and DOWN keys to select language, Menu key to install new language. Afterwards press the OK button.")
-			T2 = catalog.gettext("Language selection")
-			T3 = catalog.gettext("Cancel")
-			T4 = catalog.gettext("Save")
+			T2 = catalog.gettext("Seleccion Lenguaje")
+			T3 = catalog.gettext("Cancelar")
+			T4 = catalog.gettext("Guardar")
 			f.write('"' + lang + '"' + ': {\n')
 			f.write('\t "T1"' + ': "' + T1 + '",\n')
 			f.write('\t "T2"' + ': "' + T2 + '",\n')
