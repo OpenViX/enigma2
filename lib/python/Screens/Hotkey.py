@@ -196,7 +196,7 @@ def getHotkeyFunctions():
 	hotkey.functions.append((_("Timer"), "Module/Screens.TimerEdit/TimerEditList", "Setup"))
 	for plugin in plugins.getPluginsForMenu("system"):
 		if plugin[2]:
-			hotkey.functions.ppend((plugin[0], "MenuPlugin/system/" + plugin[2], "Setup"))
+			hotkey.functions.append((plugin[0], "MenuPlugin/system/" + plugin[2], "Setup"))
 	hotkey.functions.append((_("PowerMenu"), "Menu/shutdown", "Power"))
 	hotkey.functions.append((_("Standby"), "Module/Screens.Standby/Standby", "Power"))
 	hotkey.functions.append((_("Restart"), "Module/Screens.Standby/TryQuitMainloop/2", "Power"))
