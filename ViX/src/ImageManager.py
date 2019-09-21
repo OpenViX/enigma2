@@ -513,27 +513,21 @@ class VIXImageManager(Screen):
 
 	def keyRestore6(self,ret):
 		MAINDEST = '%s/%s' % (self.TEMPDESTROOT,getImageFolder())
-		CMD = "/usr/bin/ofgwrite -r -k '%s'" % MAINDEST
 		if ret == 0:
+			CMD = "/usr/bin/ofgwrite -r -k '%s'" % MAINDEST
 			if SystemInfo["canMultiBoot"]:
+				CMD = "/usr/bin/ofgwrite -r -k -m%s '%s'" % (self.multibootslot, MAINDEST)
  				if SystemInfo["HasSDmmc"]:
 					CMD = "/usr/bin/ofgwrite -r%s -k%s '%s'" % (self.MTDROOTFS, self.MTDKERNEL, MAINDEST)
-				elif SystemInfo["HasRootSubdir"] and not SystemInfo["canMode12"]:	#h9Combo, multibox
-					if fileExists("/boot/STARTUP") and fileExists("/boot/STARTUP_LINUX_4"):
-						copyfile("/boot/STARTUP_LINUX_%s" % self.multibootslot, "/boot/STARTUP")
-					CMD = "/usr/bin/ofgwrite -f -r -k -m%s '%s'" % (self.multibootslot, MAINDEST)
-				else:
-					CMD = "/usr/bin/ofgwrite -r -k -m%s '%s'" % (self.multibootslot, MAINDEST)
  			elif SystemInfo["HasHiSi"]:
 				CMD = "/usr/bin/ofgwrite -r%s -k%s '%s'" % (self.MTDROOTFS, self.MTDKERNEL, MAINDEST)
 			elif SystemInfo["HasH9SD"]: 
 				if  fileHas("/proc/cmdline", "root=/dev/mmcblk0p1") is True and fileExists("%s/rootfs.tar.bz2" %MAINDEST):
 					CMD = "/usr/bin/ofgwrite -rmmcblk0p1 '%s'" % (MAINDEST)
-			elif fileExists("%s/rootfs.ubi" %MAINDEST) and fileExists("%s/rootfs.tar.bz2" %MAINDEST):
-				rename('%s/rootfs.tar.bz2' %MAINDEST, '%s/xx.txt' %MAINDEST)
+				elif fileExists("%s/rootfs.ubi" %MAINDEST) and fileExists("%s/rootfs.tar.bz2" %MAINDEST):
+					rename('%s/rootfs.tar.bz2' %MAINDEST, '%s/xx.txt' %MAINDEST)
 		else:
 			CMD = '/usr/bin/ofgwrite -rmtd4 -kmtd3  %s/' % (MAINDEST)
-		config.imagemanager.restoreimage.setValue(self.sel)
 		print '[ImageManager] running commnd:',CMD
 		self.Console.ePopen(CMD, self.ofgwriteResult)
 		fbClass.getInstance().lock()
