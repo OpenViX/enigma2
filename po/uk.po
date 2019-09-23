@@ -4636,8 +4636,8 @@ msgstr "Пт"
 msgid "Friday"
 msgstr "П'ятниця"
 
-msgid "From :"
-msgstr "Від :"
+msgid "From:"
+msgstr "Від:"
 
 msgid "Frontpanel"
 msgstr ""
@@ -4802,8 +4802,8 @@ msgstr "Перехід"
 msgid "Goto 0"
 msgstr "Перехід на позицію 0"
 
-msgid "Goto :"
-msgstr "Куди :"
+msgid "Goto:"
+msgstr "Куди:"
 
 msgid "Goto X"
 msgstr "Перехід на позицію  Х"

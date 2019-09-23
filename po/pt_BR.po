@@ -4592,7 +4592,7 @@ msgstr "Sex"
 msgid "Friday"
 msgstr "Sexta-feira"
 
-msgid "From :"
+msgid "From:"
 msgstr "De:"
 
 #, fuzzy
@@ -4757,7 +4757,7 @@ msgstr "Ir para"
 msgid "Goto 0"
 msgstr "Ir para 0"
 
-msgid "Goto :"
+msgid "Goto:"
 msgstr "Ir para:"
 
 msgid "Goto X"

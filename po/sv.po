@@ -5143,7 +5143,7 @@ msgstr "Fre"
 msgid "Friday"
 msgstr "Fredag"
 
-msgid "From :"
+msgid "From:"
 msgstr "Från :"
 
 msgid "Frontpanel"
@@ -5322,7 +5322,7 @@ msgstr "Gå till"
 msgid "Goto 0"
 msgstr "Gå till 0"
 
-msgid "Goto :"
+msgid "Goto:"
 msgstr "Gå till :"
 
 msgid "Goto X"

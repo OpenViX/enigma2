@@ -4601,8 +4601,8 @@ msgstr "Fri"
 msgid "Friday"
 msgstr "İn"
 
-msgid "From :"
-msgstr "From :"
+msgid "From:"
+msgstr "From:"
 
 #, fuzzy
 msgid "Frontpanel"
@@ -4767,8 +4767,8 @@ msgstr "Goto"
 msgid "Goto 0"
 msgstr "Goto 0"
 
-msgid "Goto :"
-msgstr "Goto :"
+msgid "Goto:"
+msgstr "Goto:"
 
 msgid "Goto X"
 msgstr "Goto X"

@@ -4661,8 +4661,8 @@ msgstr "جمعه"
 msgid "Friday"
 msgstr "جمعه"
 
-msgid "From :"
-msgstr "از :"
+msgid "From:"
+msgstr "از:"
 
 msgid "Frontpanel"
 msgstr ""
@@ -4836,8 +4836,8 @@ msgstr "مراجعه به"
 msgid "Goto 0"
 msgstr "مراجعه به 0"
 
-msgid "Goto :"
-msgstr "مراجعه به :"
+msgid "Goto:"
+msgstr "مراجعه به:"
 
 msgid "Goto X"
 msgstr "مراجعه به X"

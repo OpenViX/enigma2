@@ -5280,7 +5280,7 @@ msgstr "Pet"
 msgid "Friday"
 msgstr "Petek"
 
-msgid "From :"
+msgid "From:"
 msgstr "Od:"
 
 msgid "Frontpanel"
@@ -5466,7 +5466,7 @@ msgstr "Pojdi na"
 msgid "Goto 0"
 msgstr "Pojdi na 0"
 
-msgid "Goto :"
+msgid "Goto:"
 msgstr "Pojdi na:"
 
 msgid "Goto X"

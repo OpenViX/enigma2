@@ -4880,7 +4880,7 @@ msgstr "الجمعه"
 msgid "Friday"
 msgstr "الجمعه"
 
-msgid "From :"
+msgid "From:"
 msgstr ""
 
 msgid "Frontpanel"
@@ -5059,7 +5059,7 @@ msgstr ""
 msgid "Goto 0"
 msgstr "الذهاب الى 0"
 
-msgid "Goto :"
+msgid "Goto:"
 msgstr ""
 
 msgid "Goto X"

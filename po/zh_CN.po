@@ -4541,7 +4541,7 @@ msgstr "周五"
 msgid "Friday"
 msgstr "星期五"
 
-msgid "From :"
+msgid "From:"
 msgstr ""
 
 msgid "Frontpanel"
@@ -4702,7 +4702,7 @@ msgstr ""
 msgid "Goto 0"
 msgstr "转到 0"
 
-msgid "Goto :"
+msgid "Goto:"
 msgstr ""
 
 msgid "Goto X"

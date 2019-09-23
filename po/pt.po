@@ -5244,8 +5244,8 @@ msgstr "Sex"
 msgid "Friday"
 msgstr "Sexta-feira"
 
-msgid "From :"
-msgstr "De :"
+msgid "From:"
+msgstr "De:"
 
 msgid "Frontpanel"
 msgstr ""
@@ -5430,8 +5430,8 @@ msgstr "Ir para"
 msgid "Goto 0"
 msgstr "Ir para 0"
 
-msgid "Goto :"
-msgstr "Ir para: "
+msgid "Goto:"
+msgstr "Ir para:"
 
 msgid "Goto X"
 msgstr "Ir para X"
