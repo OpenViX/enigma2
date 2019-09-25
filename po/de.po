@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-20 08:19+0000\n"
-"PO-Revision-Date: 2019-08-21 10:45+0200\n"
+"POT-Creation-Date: 2019-09-14 07:41+0000\n"
+"PO-Revision-Date: 2019-09-14 18:07+0200\n"
 "Last-Translator: Ralf Biedermann <ralf.biedermann@rbsoft.de>\n"
 "Language-Team: AndyBlacburn, j-ot&Trial\n"
 "Language: de\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
-"X-Generator: Poedit 2.2.3\n"
+"X-Generator: Poedit 2.2.1\n"
 "X-Poedit-SourceCharset: iso-8859-15\n"
 
 msgid ""
@@ -1480,6 +1480,9 @@ msgstr "Autotimer hinzufügen"
 msgid "Add Autotimer"
 msgstr "Autotimer hinzufügen"
 
+msgid "Add Language"
+msgstr "Sprache hinzufügen"
+
 msgid "Add Timer"
 msgstr "Timer hinzufügen"
 
@@ -2513,9 +2516,8 @@ msgstr "Textänderungen verwerfen und virtuelle Tastatur verlassen"
 msgid "Cancel save timeshift as movie"
 msgstr "Film speichern abbrechen"
 
-#, fuzzy
 msgid "Cancel the selection"
-msgstr "Senderliste"
+msgstr "Auswahl abbrechen"
 
 msgid "Cancelled upon user request"
 msgstr "Auf Benutzerwunsch abgebrochen"
@@ -3888,6 +3890,9 @@ msgstr "Bestätige Löschvorgang"
 msgid "Delete EPG"
 msgstr "EPG löschen"
 
+msgid "Delete Language"
+msgstr "Sprache löschen"
+
 msgid "Delete entry"
 msgstr "Eintrag löschen"
 
@@ -4091,6 +4096,13 @@ msgstr "%s wirklich löschen?"
 
 msgid "Do you really want to delete ?"
 msgstr "Wirklich löschen?"
+
+msgid ""
+"Do you really want to delete selected language:\n"
+"\n"
+msgstr ""
+"Soll die gewählt Sprache wirklich gelöscht werden?\n"
+"\n"
 
 msgid "Do you really want to delete this timer ?"
 msgstr "Willst Du diesen Timer wirklich löschen?"
@@ -4998,6 +5010,9 @@ msgstr "Ausweichreceiver URL"
 msgid "Fallback tuner setup"
 msgstr "Fallback Tuner Einstellungen"
 
+msgid "False"
+msgstr "Falsch"
+
 #, python-format
 msgid "Fan %d"
 msgstr "Lüfter %d"
@@ -5207,6 +5222,13 @@ msgstr "GB"
 #, python-format
 msgid "GStreamer:\t%s\n"
 msgstr "GStreamer:\t%s\n"
+
+msgid ""
+"GUI needs a restart to apply a new language\n"
+"Do you want to restart the GUI now?"
+msgstr ""
+"Die Benutzeroberfläche muss neu gestartet werden, um die neue Sprache übernehmen zu können.\n"
+"Jetzt neu starten?"
 
 msgid ""
 "GUI needs a restart to apply a new skin\n"
@@ -5538,6 +5560,9 @@ msgstr "Unterdrücke Fehlermeldung von einem Common Interface Modul."
 
 msgid "Hide known extensions"
 msgstr "Bekannte Erweiterungen verstecken"
+
+msgid "Hide number markers"
+msgstr "Nummern Markierung verstecken"
 
 msgid "Hide parental locked services"
 msgstr "Geschützte Sender unsichtbar machen"
@@ -7289,9 +7314,6 @@ msgstr "Keine Netzwerkverbindung verfügbar."
 msgid "No networks found"
 msgstr "Keine Netzwerke gefunden"
 
-msgid "No new plugins found"
-msgstr "Keine neuen Plugins gefunden"
-
 msgid "No of items switch (increase or reduced)"
 msgstr "Anzahl von Elementen wechseln (erhöhen oder verringern)"
 
@@ -8132,9 +8154,6 @@ msgstr ""
 "Konfiguriere die Benutzeroberfläche durch ändern der Werte bis die blaue Box die Ränder des Fernsehers erreichen.\n"
 "Drücke OK zum Fortfahren."
 
-msgid "Please use the UP/DOWN keys to select your language. Then press the OK button to select it."
-msgstr "Bitte benutze die Hoch/Runter-Tasten, um die Sprache auszuwählen. Danach drücke bitte OK."
-
 msgid ""
 "Please use the direction keys to move the PiP window.\n"
 "Press Bouquet +/- to resize the window.\n"
@@ -8276,9 +8295,8 @@ msgstr "Aus-Taste"
 msgid "Power LCD Display"
 msgstr "Betrieb LCD Anzeige"
 
-#, fuzzy
 msgid "Power LED State in Deep-Standby"
-msgstr "LED wenn Aus"
+msgstr "LED wenn Bereitschaft"
 
 msgid "Power LED State in Standby"
 msgstr "LED in Bereitschaft"
@@ -8384,6 +8402,9 @@ msgstr "Vorschulalter"
 
 msgid "Press '0' to toggle PiP mode"
 msgstr "Drücke '0' um PiP-Modus zu wechseln"
+
+msgid "Press 'Add Language' or MENU to add additional language(s). English language can not be deleted"
+msgstr "Drücke 'Sprache hinzufügen' oder Menü um eine weitere Sprache hinzuzufügen. Englisch kann nicht gelöscht werden."
 
 msgid "Press INFO on your remote control for additional information."
 msgstr "INFO drücken für zusätzliche Informationen."
@@ -9449,6 +9470,17 @@ msgstr "W#hle 'A' oder 'B' wenn die Anlage es benötigt sonst wähle 'keine'. We
 
 msgid "Select 'FBC SCR' if this tuner will connect to a SCR (Unicable/JESS) device. For all other setups select 'FBC automatic'."
 msgstr "Wähle 'FBC SCR' wenn dieser Tuner ein Unicable Gerät verwendet. Für alle anderen Systeme wähle 'FBC automatisch'."
+
+msgid ""
+"Select 'Yes' to delete all languages except English and your chosen language:\n"
+"\n"
+"Select 'No' to delete only the chosen language:\n"
+"\n"
+msgstr ""
+"Wähle 'Ja' um alle Sprachen außer Englisch und der gewählten Sprache zu löschen:\n"
+"\n"
+"Wähle 'Nein' um nur die gewählte Sprache zu löschen:\n"
+"\n"
 
 msgid "Select 'Yes' when you want to configure this tuner for ATSC"
 msgstr "Wähle 'Ja' wenn dieser Tuner ATSC unterstützen soll"
@@ -10766,7 +10798,6 @@ msgstr "Bereitschaft"
 msgid "Standby / restart"
 msgstr "Bereitschaft / Neustart"
 
-#, fuzzy
 msgid "Standby LED"
 msgstr "Bereitschaft-LED"
 
@@ -11406,6 +11437,9 @@ msgstr "Die Ergebnisse des Tests wurden in der Datei %s gespeichert."
 msgid "The saved PIN was cleared."
 msgstr "Der gespeicherte Pin-Code wurde gelöscht."
 
+msgid "The selected langugage is unavailable - using en_US"
+msgstr "Die gewählte Sprache ist nicht verfügbar. Benutze en_US."
+
 msgid "The service has been added to the favourites."
 msgstr "Sender wurde zu Favoriten hinzugefügt."
 
@@ -11986,6 +12020,9 @@ msgstr "Übrige Versuche:"
 msgid "Trinidad and Tobago"
 msgstr "Trinidad und Tobago"
 
+msgid "True"
+msgstr ""
+
 msgid "Try to find used transponders in cable network.. please wait..."
 msgstr "Suche benutzte Transponder im Kabel Netzwerk.. bitte warten..."
 
@@ -12230,6 +12267,12 @@ msgstr "Update Zeitintervall x Sekunden"
 msgid "Updatefeed not available."
 msgstr "Updatefeed nicht verfügbar."
 
+msgid "Updating cache"
+msgstr "Cache Aktualisieren"
+
+msgid "Updating cache, please wait..."
+msgstr "Cache wird aktualisiert. Bitte warten..."
+
 msgid "Updating software catalog"
 msgstr "Softwarekatalog wird aktualisiert"
 
@@ -12294,8 +12337,8 @@ msgstr "Benutze MHW EPG-Informationen benutzen wenn sie vorhanden sind."
 msgid "Use Netmed EPG information when it is available."
 msgstr "Benutze NetMed EPG-Informationen benutzen wenn sie vorhanden sind."
 
-msgid "Use OpenTV EPG information when it is available."
-msgstr "Benutze OpenTV EPG-Informationen benutzen wenn sie vorhanden sind."
+msgid "Use OpenTV EPG information when it is available. For reading OpenTV EPG data tuning to a dedicated transponder is required"
+msgstr "Benutze OpenTV EPG wenn verfügbar. Um OpenTV EPG lesen zu können muss auf einen speziellen Transponder geschaltet werden."
 
 msgid "Use TV remote control"
 msgstr "Fernbedienungsbefehle des Fernsehers weiterleiten"
@@ -12368,6 +12411,9 @@ msgstr "Benutze die Tasten Links/Rechts um das OSD nach links/rechts zu verschie
 
 msgid "Use the LEFT/RIGHT buttons on your remote to move the user interface up/down."
 msgstr "Benutze die Tasten Links/Rechts um das OSD nach oben/unten zu verschieben."
+
+msgid "Use the UP and DOWN keys to select language, Menu key to install new language. Afterwards press the OK button."
+msgstr "Bitte benutze die Hoch/Runter-Tasten, um die Sprache auszuwählen, Menü um eine neue Sprache zu installieren. Danach drücke bitte OK."
 
 msgid "Use the alternative or the conventional radio mode."
 msgstr "Alternativen oder konventionellen Radio-Modus benutzen."
@@ -12911,6 +12957,9 @@ msgstr "Benutze Strommessung um zu erkennen wenn der Rotor gestoppt ist (wenn es
 
 msgid "When enabled, network trash cans are probed for cleaning."
 msgstr "Wenn aktiviert werden Mülleimer im Netzwerk überprüft ob sie aufgeräumt werden müssen."
+
+msgid "When enabled, number markers will be hidden."
+msgstr "Wenn aktiviert werden Nummer-Markierung versteckt"
 
 msgid "When enabled, pressing '0' will zap you to the first channel in your first bouquet and delete your zap-history."
 msgstr "Wenn aktiviert springt man mit '0' zum ersten Sender der ersten Favoritenliste und die Sendervergangenheit wird gelöscht."
@@ -14830,6 +14879,9 @@ msgstr "ja"
 msgid "yes (keep feeds)"
 msgstr "ja (Feeds behalten)"
 
+msgid "yes, but not in multi selections"
+msgstr "Ja, aber nicht bei Mehrfachauswahl"
+
 msgid "zap"
 msgstr "umschalten"
 
@@ -15462,6 +15514,9 @@ msgstr "umgeschaltet"
 #~ msgid "No httpuser defined in oscam.conf"
 #~ msgstr "Kein Benutzer für das Web Interface definiert. Dieser Wert wird benötigt"
 
+#~ msgid "No new plugins found"
+#~ msgstr "Keine neuen Plugins gefunden"
+
 #~ msgid "No stream clients"
 #~ msgstr "Keine Streaming Klienten"
 
@@ -15819,6 +15874,9 @@ msgstr "umgeschaltet"
 #~ msgid "Unicable Matrix"
 #~ msgstr "Unicable Matrix"
 
+#~ msgid "Use OpenTV EPG information when it is available."
+#~ msgstr "Benutze OpenTV EPG-Informationen benutzen wenn sie vorhanden sind."
+
 #~ msgid "Use first 'x' filename's chars for virtual keyboard"
 #~ msgstr "Benutze die ersten 'x' Buchstaben des Dateinamens für die virtuelle Tastatur"
 
@@ -15833,9 +15891,6 @@ msgstr "umgeschaltet"
 
 #~ msgid "When enabled the LNB power will not be switched off in standby"
 #~ msgstr "Wenn aktiviert wird die LNB-Spannung in Bereitschaft nicht ausgeschaltet"
-
-#~ msgid "When enabled the LNB toneburst will be forced"
-#~ msgstr "Wenn aktiviert wird immer LNB-ToneBurst erzwungen"
 
 #~ msgid "When enabled, Enigma2 will load unlinked bouquets. This means that bouquets that are available, but not included in the bouquets.tv or bouquets.radio files, will still be loaded. This allows you for example to keep your own user bouquet while installed settings are upgraded"
 #~ msgstr "Wenn aktiviert lädt Enigma2 nicht verbundene Favoritenlisten. Das heißt Favoritenlisten die vorhanden sind aber nicht in bouquets.tv oder bouquets.radio aufgeführt sind werden trotzdem geladen. Dies erlaubt es z.B. automatisch generierte oder installierte Favoritenlisten mit eigenen Erweiterungen zu versehen."
