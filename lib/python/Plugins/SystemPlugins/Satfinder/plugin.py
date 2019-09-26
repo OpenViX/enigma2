@@ -878,7 +878,7 @@ class ServicesFound(Screen):
 		<screen name="ServicesFound" position="center,center" size="600,570">
 			<widget name="legend" position="0,0" size="590,80" zPosition="10" font="Regular;21" transparent="1"/>
 			<widget name="servicesfound" position="0,85" size="590,425" zPosition="10" font="Regular;21" transparent="1"/>
-			<ePixmap pixmap="buttons/red.png" position="10,525" size="140,40" alphatest="on" />
+			<ePixmap pixmap="skin_default/buttons/red.png" position="10,525" size="140,40" alphatest="on" />
 			<widget render="Label" source="key_red" position="10,500" zPosition="1" size="140,25" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
 		</screen>"""
 
