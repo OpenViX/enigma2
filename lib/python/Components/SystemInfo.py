@@ -80,7 +80,7 @@ SystemInfo["CanNotDoSimultaneousTranscodeAndPIP"] = getBoxType() in ('vusolo4k',
 SystemInfo["hasXcoreVFD"] = getBoxType() in ('osmega','spycat4k','spycat4kmini','spycat4kcombo') and fileCheck("/sys/module/brcmstb_%s/parameters/pt6302_cgram" % getBoxType())
 SystemInfo["HasHDMIin"] = getHaveHDMIinHD() in ('True',) or getHaveHDMIinFHD() in ('True',)
 SystemInfo["HasHDMI-CEC"] = fileExists("/usr/lib/enigma2/python/Plugins/SystemPlugins/HdmiCEC/plugin.pyo")
-SystemInfo["HasInfoButton"] = getBrandOEM() in ('airdigital', 'broadmedia', 'ceryon', 'dags', 'edision', 'formuler', 'gfutures', 'gigablue', 'ini', 'maxytec', 'octagon', 'odin', 'skylake', 'tiviar', 'xcore', 'xp', 'xtrend')
+SystemInfo["HasInfoButton"] = getBrandOEM() in ('airdigital', 'broadmedia', 'ceryon', 'dags', 'dinobot', 'edision', 'formuler', 'gfutures', 'gigablue', 'ini', 'maxytec', 'octagon', 'odin', 'skylake', 'tiviar', 'xcore', 'xp', 'xtrend')
 SystemInfo["Has24hz"] = fileCheck("/proc/stb/video/videomode_24hz")
 SystemInfo["HasRootSubdir"] = fileHas("/proc/cmdline", "rootsubdir=")
 SystemInfo["RecoveryMode"] = SystemInfo["HasRootSubdir"] and getMachineBuild() not in ('hd51','h7') or fileCheck("/proc/stb/fp/boot_mode")

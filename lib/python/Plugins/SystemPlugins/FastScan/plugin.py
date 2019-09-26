@@ -25,7 +25,8 @@ config.misc.fastscan.drop = ConfigYesNo(default = True)
 providers = [
 	('Canal Digitaal', (1, 900, True)),
 	('TV Vlaanderen', (1, 910, True)),
-	('TéléSAT', (0, 920, True)),
+	('TéléSAT Belgium', (0, 920, False)),
+	('TéléSAT Luxembourg', (0, 921, False)),
 	('HD Austria', (0, 950, False)),
 	('Diveo', (0, 960, False)),
 	('Skylink Czech Republic', (1, 30, False)),
@@ -35,7 +36,8 @@ providers = [
 	('FocusSAT Thor', (2, 84, False)),
 	('UPC Direct Thor', (2, 81, False)),
 	('KabelKiosk', (0, 970, False)),
-	('TéléSAT Astra3', (1, 920, True)),
+	('TéléSAT Belgium Astra3', (1, 920, False)),
+	('TéléSAT Luxembourg Astra3', (1, 921, False)),
 	('HD Austria Astra3', (1, 950, False)),
 	('Diveo Astra3', (1, 960, False)),
 	('Canal Digitaal Astra 1', (0, 900, True)),
@@ -211,7 +213,10 @@ class FastScanScreen(ConfigListScreen, Screen):
 		self.list.append(self.scanProvider)
 		if self.scan_provider.value:
 			self.list.append(self.tunerEntry)
-			self.list.append(self.scanHD)
+			for index in providers:
+				if index[0] == self.scan_provider.value and index[1][2]:
+					self.list.append(self.scanHD)
+					break
 			self.list.append(getConfigListEntry(_("Use fastscan channel numbering"), self.scan_keepnumbering))
 			self.list.append(getConfigListEntry(_("Use fastscan channel names"), self.scan_keepsettings))
 			self.list.append(getConfigListEntry(_("Create separate radio userbouquet"), self.scan_create_radio_bouquet))
