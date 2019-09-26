@@ -234,11 +234,18 @@ class EventViewBase:
 		ext = event.getExtendedDescription()
 		if short == text:
 			short = ""
+		if short and text:
+			str = short
+			if str.find(text):
+				short = ""
 		if short and ext:
-			ext = short + "\n\n" + ext
+			str = short
+			if str.find(ext):
+				short =""
+			else:
+				ext = short + "\n\n" + ext
 		elif short:
 			ext = short
-
 		if text and ext:
 			text += "\n\n"
 		text += ext
