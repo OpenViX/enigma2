@@ -235,12 +235,10 @@ class EventViewBase:
 		if short == text:
 			short = ""
 		if short and text:
-			str = short
-			if str.find(text):
+			if short.find(text):
 				short = ""
 		if short and ext:
-			str = short
-			if str.find(ext):
+			if short.find(ext):
 				short =""
 			else:
 				ext = short + "\n\n" + ext

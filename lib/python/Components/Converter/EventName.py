@@ -117,8 +117,7 @@ class EventName(Converter, object):
 			if description and extended:
 				if description.replace('\n','') == extended.replace('\n',''):
 					return extended
-				str = description
-				if str.find(extended):
+				if description.find(extended):
 					return extended
 				description += '\n'
 			return description + extended
