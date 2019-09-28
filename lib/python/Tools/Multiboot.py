@@ -103,7 +103,6 @@ class GetImagelist():
 			print "Tools/Multiboot OsPath %s " %self.OsPath
 			if self.OsPath != "NoPath":
 				Creator = open("%s/etc/issue" %self.OsPath).readlines()[-2].capitalize().strip()[:-6].replace("-release", " rel")
-				print "Tools/Multiboot Creator %s" %Creator 
 				if Creator.startswith("Openvix"):
 					reader = boxbranding_reader(self.OsPath)
 					BuildType = reader.getImageType()
@@ -113,15 +112,12 @@ class GetImagelist():
 				else:
 					from datetime import datetime
 					Date = datetime.fromtimestamp(os.stat("%s/var/lib/opkg/status" %self.OsPath).st_mtime).strftime("%d-%m-%Y")
-					print "Tools/Multiboot Path %s" %self.OsPath
-					print "Tools/Multiboot Date1 %s" %Date
 					if Date.endswith("1970"):
 						try:
 							Date = datetime.fromtimestamp(os.stat("%s/usr/share/bootlogo.mvi" %self.OsPath).st_mtime).strftime("%d-%m-%Y")
 						except:
 							pass
 						Date = max(Date, datetime.fromtimestamp(os.stat("%s/usr/bin/enigma2" %self.OsPath).st_mtime).strftime("%d-%m-%Y"))
-						print "Tools/Multiboot Date2 %s" %Date
 					BuildVersion = "%s build date %s" % (Creator, Date)
 				self.imagelist[self.slot2] =  { 'imagename': '%s' %BuildVersion, 'part': '%s' %self.part2 }
 			self.phase = self.UNMOUNT
@@ -133,7 +129,7 @@ class GetImagelist():
 			self.run()
 		elif self.SDmmc == self.FirstRun:
 			self.phase = self.MOUNT
-			self.SDmmc = self.LastRun	# processed SDcard now process mmc slot
+			self.SDmmc = self.LastRun
 			self.run()
 		else:
 			self.container.killAll()
