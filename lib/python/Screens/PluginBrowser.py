@@ -24,6 +24,7 @@ from time import time
 
 
 config.misc.pluginbrowser = ConfigSubsection()
+config.misc.pluginbrowser.bootlogos = ConfigYesNo(default = True)
 config.misc.pluginbrowser.display = ConfigYesNo(default = True)
 config.misc.pluginbrowser.drivers = ConfigYesNo(default = True)
 config.misc.pluginbrowser.extensions = ConfigYesNo(default = True)
@@ -384,6 +385,8 @@ class PluginDownloadBrowser(Screen):
 	def createPluginFilter(self):
 		#Create Plugin Filter
 		self.PLUGIN_PREFIX2 = []
+		if config.misc.pluginbrowser.bootlogos.value:
+			self.PLUGIN_PREFIX2.append(self.PLUGIN_PREFIX + 'bootlogos')
 		if config.misc.pluginbrowser.drivers.value:
 			self.PLUGIN_PREFIX2.append(self.PLUGIN_PREFIX + 'drivers')
 		if config.misc.pluginbrowser.extensions.value:
