@@ -72,7 +72,7 @@ def resolveFilename(scope, base="", path_prefix=None):
 			print "[Directories] Warning: resolveFilename called with base starting with '~/' but 'path_prefix' is None!"
 	# Don't further resolve absolute paths.
 	if base.startswith("/"):
-		return os.path.normpath(base)
+		return base
 	# If an invalid scope is specified log an error and return None.
 	if scope not in defaultPaths:
 		print "[Directories] Error: Invalid scope=%d provided to resolveFilename!" % scope
@@ -95,12 +95,13 @@ def resolveFilename(scope, base="", path_prefix=None):
 	# If base is "" then set path to the scope.  Otherwise use the scope to resolve the base filename.
 	if base is "":
 		path, flags = defaultPaths.get(scope)
+		path = os.path.normpath(path)
 		# If the scope is SCOPE_CURRENT_SKIN or SCOPE_ACTIVE_SKIN append the current skin to the scope path.
 		if scope in (SCOPE_CURRENT_SKIN, SCOPE_ACTIVE_SKIN):
 			# This import must be here as this module finds the config file as part of the config initialisation.
 			from Components.config import config
 			skin = os.path.dirname(config.skin.primary_skin.value)
-			path = os.path.join(path, skin)
+			path = os.path.normpath(os.path.join(path, skin))
 	elif scope in (SCOPE_CURRENT_SKIN, SCOPE_ACTIVE_SKIN):
 		# This import must be here as this module finds the config file as part of the config initialisation.
 		from Components.config import config
@@ -114,7 +115,7 @@ def resolveFilename(scope, base="", path_prefix=None):
 			defaultPaths[SCOPE_SKIN][0]  # Deprecated top level of SCOPE_SKIN directory.
 		]
 		for item in resolveList:
-			file = os.path.join(item, base)
+			file = os.path.normpath(os.path.join(item, base))
 			if pathExists(file):
 				path = file
 				break
@@ -134,7 +135,7 @@ def resolveFilename(scope, base="", path_prefix=None):
 			defaultPaths[SCOPE_LCDSKIN][0]  # Deprecated top level of SCOPE_LCDSKIN directory.
 		]
 		for item in resolveList:
-			file = os.path.join(item, base)
+			file = os.path.normpath(os.path.join(item, base))
 			if pathExists(file):
 				path = file
 				break
@@ -157,18 +158,17 @@ def resolveFilename(scope, base="", path_prefix=None):
 			os.path.join(defaultPaths[SCOPE_CONFIG][0], display)  # Deprecated display in SCOPE_CONFIG directory.
 		]
 		for item in resolveList:
-			file = os.path.join(item, base)
+			file = os.path.normpath(os.path.join(item, base))
 			if pathExists(file):
 				path = file
 				break
 	elif scope == SCOPE_CURRENT_PLUGIN:
-		file = os.path.join(defaultPaths[SCOPE_PLUGINS][0], base)
+		file = os.path.normpath(os.path.join(defaultPaths[SCOPE_PLUGINS][0], base))
 		if pathExists(file):
 			path = file
 	else:
 		path, flags = defaultPaths.get(scope)
-		path = os.path.join(path, base)
-	path = os.path.normpath(path)
+		path = os.path.normpath(os.path.join(path, base))
 	# If the path is a directory then ensure that it ends with a "/".
 	if os.path.isdir(path) and not path.endswith("/"):
 		path += "/"
