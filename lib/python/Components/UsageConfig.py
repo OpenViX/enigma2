@@ -680,7 +680,7 @@ def InitUsageConfig():
 		config.usage.time.enabled_display.value = False
 		config.usage.time.display.value = config.usage.time.display.default
 
-	config.usage.boolean_graphic = ConfigSelection(default="false", choices={"false": _("no"), "true": _("yes"), "only_bool": _("yes, but not in multi selections")})
+	config.usage.boolean_graphic = ConfigSelection(default="no", choices={"no": _("no"), "yes": _("yes"), "only_bool": _("yes, but not in multi selections")})
 
 	if SystemInfo["hasXcoreVFD"]:
 		def set12to8characterVFD(configElement):
