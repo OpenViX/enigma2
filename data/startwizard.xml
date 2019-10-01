@@ -363,7 +363,8 @@ self.clearSelectedKeys()
 self.selectKey("OK")
 			</code>
 		</step>
-		<step id="skins">
+
+		<step id="skins" nextstep="timeoptions">
 			<condition>
 self.condition = config.misc.installwizard.hasnetwork.value and config.misc.installwizard.ipkgloaded.value
 			</condition>
@@ -374,6 +375,27 @@ self.clearSelectedKeys()
 self.selectKey("OK")
 			</code>
 		</step>
+
+		<step id="timeoptions" nextstep="wizardoptions">
+			<text value="Please set your time options" />
+			<displaytext value="Please set your time options" />
+			<config screen="Setup" module="Setup" args="time" type="ConfigList" />
+			<code>
+self.clearSelectedKeys()
+self.selectKey("LEFT")
+self.selectKey("RIGHT")
+			</code>
+		</step>
+
+		<step id="wizardoptions">
+			<text value="Please set up the following common options"/>
+			<config screen="Setup" module="Setup" args="wizardoptions" type="ConfigList" />
+			<code>
+self.clearSelectedKeys()
+self.selectKey("OK")
+			</code>
+		</step>
+
 		<step id="end" laststep="true">
 			<condition>
 self.condition = self.isLastWizard
