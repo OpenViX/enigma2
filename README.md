@@ -29,54 +29,60 @@
     select "NO"
 
 ----------
-3 - modify max_user_watches
+3 - Use update-alternatives for having gcc redirected automatically to gcc-8
+
+    sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 700 --slave /usr/bin/g++ g++ /usr/bin/g++-7
+    sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 800 --slave /usr/bin/g++ g++ /usr/bin/g++-8
+
+----------
+4 - modify max_user_watches
 
     echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf
 
     sysctl -n -w fs.inotify.max_user_watches=524288
 
 ----------
-4 - Add user teambluebuilder
+5 - Add user teambluebuilder
 
     sudo adduser teambluebuilder
 
 ----------
-5 - Switch to user teambluebuilder
+6 - Switch to user teambluebuilder
 
     su teambluebuilder
 
 ----------
-6 - Switch to home of teambluebuilder
+7 - Switch to home of teambluebuilder
 
     cd ~
 
 ----------
-7 - Create folder teamblue
+8 - Create folder teamblue
 
     mkdir -p ~/teamblue
 
 ----------
-8 - Switch to folder teamblue
+9 - Switch to folder teamblue
 
     cd teamblue
 
 ----------
-9 - Clone oe-alliance git
+10 - Clone oe-alliance git
 
     git clone git://github.com/oe-alliance/build-enviroment.git -b 4.4
 
 ----------
-10 - Switch to folder build-enviroment
+11 - Switch to folder build-enviroment
 
     cd build-enviroment
 
 ----------
-11 - Update build-enviroment
+12 - Update build-enviroment
 
     make update
 
 ----------
-12 - Finally you can start building a image
+13 - Finally you can start building a image
 
     MACHINE=gbquad4k DISTRO=teamblue make image
 
