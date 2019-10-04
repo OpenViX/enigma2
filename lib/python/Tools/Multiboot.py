@@ -2,7 +2,7 @@ from Components.SystemInfo import SystemInfo
 from Components.Console import Console
 from boxbranding import getMachineMtdRoot
 from Tools.Directories import pathExists
-import os, time
+import os
 import shutil
 import subprocess
 
@@ -103,23 +103,22 @@ class GetImagelist():
 			print "Tools/Multiboot OsPath %s " %self.OsPath
 			if self.OsPath != "NoPath":
 				Creator = open("%s/etc/issue" %self.OsPath).readlines()[-2].capitalize().strip()[:-6].replace("-release", " rel")
-				print "Tools/Multiboot Creator %s" %Creator 
-				if Creator.startswith("Openpli"):
-					build = [x.split("-")[-2:-1][0][-8:] for x in open("%s/var/lib/opkg/info/openpli-bootlogo.control" %self.OsPath).readlines() if x.startswith("Version:")]
-					Date = "%s-%s-%s" % (build[0][6:], build[0][4:6], build[0][2:4])
-					BuildVersion = "%s %s" % (Creator, Date)
-				elif Creator.startswith("Openvix"):
+				if Creator.startswith("Openvix"):
 					reader = boxbranding_reader(self.OsPath)
 					BuildType = reader.getImageType()
 					Build = reader.getImageBuild()
 					Dev = BuildType != "release" and " %s" % reader.getImageDevBuild() or ''
 					BuildVersion = "%s %s %s %s" % (Creator, BuildType[0:3], Build, Dev)
 				else:
-					st = os.stat('%s/var/lib/opkg/status' %self.OsPath)
-					tm = time.localtime(st.st_mtime)
-					if tm.tm_year >= 2011:
-						Date = time.strftime("%d-%m-%Y", tm).replace("-20", "-")
-					BuildVersion = "%s rel %s" % (Creator, Date)
+					from datetime import datetime
+					Date = datetime.fromtimestamp(os.stat("%s/var/lib/opkg/status" %self.OsPath).st_mtime).strftime("%d-%m-%Y")
+					if Date.endswith("1970"):
+						try:
+							Date = datetime.fromtimestamp(os.stat("%s/usr/share/bootlogo.mvi" %self.OsPath).st_mtime).strftime("%d-%m-%Y")
+						except:
+							pass
+						Date = max(Date, datetime.fromtimestamp(os.stat("%s/usr/bin/enigma2" %self.OsPath).st_mtime).strftime("%d-%m-%Y"))
+					BuildVersion = "%s build date %s" % (Creator, Date)
 				self.imagelist[self.slot2] =  { 'imagename': '%s' %BuildVersion, 'part': '%s' %self.part2 }
 			self.phase = self.UNMOUNT
 			self.run()
@@ -130,7 +129,7 @@ class GetImagelist():
 			self.run()
 		elif self.SDmmc == self.FirstRun:
 			self.phase = self.MOUNT
-			self.SDmmc = self.LastRun	# processed SDcard now process mmc slot
+			self.SDmmc = self.LastRun
 			self.run()
 		else:
 			self.container.killAll()
