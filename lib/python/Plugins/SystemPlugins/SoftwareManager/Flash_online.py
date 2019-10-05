@@ -28,9 +28,10 @@ from boxbranding import getBoxType, getMachineBrand, getMachineName, getMachineR
 images = []
 global imagesCounter
 imagesCounter = 0
+#images.append(["teamBlue 6.4", "http://images.teamblue.tech/6.4-release", "%s/index.php?open=%s"])
 images.append(["teamBlue 6.3", "http://images.teamblue.tech/6.3-release", "%s/index.php?open=%s"])
+images.append(["openATV 6.4", "http://images.mynonpublic.com/openatv/6.4", "%s/index.php?open=%s"])
 images.append(["openATV 6.3", "http://images.mynonpublic.com/openatv/6.3", "%s/index.php?open=%s"])
-images.append(["openATV 6.2", "http://images.mynonpublic.com/openatv/6.2", "%s/index.php?open=%s"])
 
 imagePath = '/media/hdd/images'
 flashPath = '/media/hdd/images/flash'
