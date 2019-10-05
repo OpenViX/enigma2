@@ -339,9 +339,9 @@ class CommitInfo(Screen):
 		self.project = 0
 		self.projects = [
 			#("organisation",  "repository",           "readable name",                "branch", "github/gitlab"),
-			("teamblue-e2",      "enigma2",               "teamBlue Enigma2",             "6.3", "github"),
+			("teamblue-e2",      "enigma2",               "teamBlue Enigma2",             "6.4", "github"),
 			("teamblue-e2",      "skin",             "teamBlue Skin GigaBlue Pax",   "master", "github"),
-			("oe-alliance",   "oe-alliance-core",     "OE Alliance Core",             "4.3", "github"),
+			("oe-alliance",   "oe-alliance-core",     "OE Alliance Core",             "4.4", "github"),
 			("oe-alliance",   "oe-alliance-plugins",  "OE Alliance Plugins",          "master", "github"),
 			("oe-alliance",   "enigma2-plugins",      "OE Alliance Enigma2 Plugins",  "master", "github")
 		]
