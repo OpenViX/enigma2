@@ -463,7 +463,9 @@ self.autoResize()
 	<screen name="HarddiskSelection" position="center,center" size="540,285" title="Select HDD">
 		<widget name="hddlist" position="10,10" size="520,275"/>
 		<ePixmap pixmap="buttons/button_red.png" position="120,110" zPosition="10" size="15,16" transparent="1" alphatest="on"/>
+		<ePixmap pixmap="buttons/button_green.png" position="260,110" zPosition="10" size="15,16" transparent="1" alphatest="on"/>
 		<widget name="key_red" position="140,110" size="140,40" zPosition="10" font="Regular;20" transparent="1"/>
+		<widget name="key_green" position="280,110" size="140,40" zPosition="10" font="Regular;20" transparent="1"/>
 	</screen>
 	<!-- Harddisk setup -->
 	<screen name="HarddiskSetup" position="center,center" size="420,160" title="Harddisk">
@@ -1246,10 +1248,10 @@ self.instance.move(ePoint(orgpos.x() + (orgwidth - newwidth)/2, orgpos.y() + (or
 	</screen>
 	<!-- Time & date input -->
 	<screen name="TimeDateInput" position="center,center" size="400,200" title="Date/time input">
-		<widget name="cancel" pixmap="buttons/red.png" position="10,0" size="140,40" alphatest="on"/>
-		<widget name="ok" pixmap="buttons/green.png" position="250,0" size="140,40" alphatest="on"/>
-		<widget name="canceltext" position="10,0" zPosition="1" size="140,40" font="Regular;19" halign="center" valign="center" transparent="1"/>
-		<widget name="oktext" position="250,0" zPosition="1" size="140,40" font="Regular;19" halign="center" valign="center" transparent="1"/>
+		<ePixmap pixmap="buttons/red.png" position="10,0" size="140,40" alphatest="on"/>
+		<ePixmap pixmap="buttons/green.png" position="250,0" size="140,40" alphatest="on"/>
+		<widget source="key_red" render="Label" position="10,0" zPosition="1" size="140,40" font="Regular;19" halign="center" valign="center" transparent="1"/>
+		<widget source="key_green" render="Label" position="250,0" zPosition="1" size="140,40" font="Regular;19" halign="center" valign="center" transparent="1"/>
 		<widget name="config" position="10,40" size="380,150"/>
 	</screen>
 	<!-- Timer edit -->
