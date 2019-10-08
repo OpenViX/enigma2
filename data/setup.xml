@@ -390,15 +390,7 @@
 		<item level="2" text="Show source packages" description="If set to 'yes' it will show the 'SRC' packages in browser.">config.pluginbrowser.src</item>
 	</setup>
 	<setup key="wizardoptions" title="Common options">
-		<item level="0" text="Switch icon: Show Yes/No as an icon" description="Enable to display all true/false, yes/no, on/off and enable/disable set up options as a graphical switch.">config.usage.boolean_graphic</item>
-		<item level="0" text="Alternative numbering mode" description="When enabled, channel numbering will start at '1' for every bouquet.">config.usage.alternative_number_mode</item>
 		<item level="0" text="Picons: Show in channel list" description="Configure if service picons will be shown in the channel selection list.">config.usage.service_icon_enable</item>
-		<item level="0" text="Channel list: Always show bouquets" description="With this option set to 'yes' the channel list will always show you the list of bouquets. If set to 'no' the current bouquet will be opened.">config.usage.show_bouquetalways</item>
-		<item level="0" text="Graphical EPG: Always show bouquets" description="If set to 'yes' the bouquets will be shown every time you open the G-EPG.">config.epgselection.graph_showbouquet</item>
-		<item level="0" text="Graphical EPG: Service Title mode" description="Configure to show the channel names, numbers, picons in G-EPG.">config.epgselection.graph_servicetitle_mode</item>
-		<item level="0" text="Infobar: Show channel number" description="If set to 'yes' the channel number will be displayed in the infobar.">config.usage.show_infobar_channel_number</item>
-		<item level="0" text="Show menu numbers" description="This option allows you to show menu number quick links.">config.usage.menu_show_numbers</item>
-		<item level="0" text="Recording filenames" description="Configure how recording filenames are constructed.">config.recording.filename_composition</item>
 	</setup>
 
 </setupxml>
