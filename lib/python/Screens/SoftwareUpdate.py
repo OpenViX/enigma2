@@ -171,7 +171,7 @@ If you discover 'bugs' please keep them reported on www.teamblue.tech.\n\nDo you
 			if param in self.sliderPackages:
 				self.slider.setValue(self.sliderPackages[param])
 			self.package.setText(param)
-			self.status.setText(_("Upgrading") + ": %s/%s" % (self.packages, self.total_packages))
+			self.status.setText(_("Updating") + ": %s/%s" % (self.packages, self.total_packages))
 			if not param in self.processed_packages:
 				self.processed_packages.append(param)
 				self.packages += 1
@@ -220,12 +220,12 @@ If you discover 'bugs' please keep them reported on www.teamblue.tech.\n\nDo you
 					choices = [(_("Update and reboot (recommended)"), "cold"),
 						(_("Update and ask to reboot"), "hot"),
 						#(_("Update channel list only"), "channels"),
-						(_("Show packages to be upgraded"), "showlist")]
+						(_("Show packages to be updated"), "showlist")]
 				else:
 					message = _("No updates available")
 					choices = []
 				if fileExists("/home/root/ipkgupgrade.log"):
-					choices.append((_("Show latest upgrade log"), "log"))
+					choices.append((_("Show latest update log"), "log"))
 				choices.append((_("Show latest commits"), "commits"))
 				if not config.usage.show_update_disclaimer.value:
 					choices.append((_("Show disclaimer"), "disclaimer"))
@@ -291,7 +291,7 @@ If you discover 'bugs' please keep them reported on www.teamblue.tech.\n\nDo you
 			self.session.openWithCallback(boundFunction(self.ipkgCallback, IpkgComponent.EVENT_DONE, None), TextBox, text, _("Packages to update"), True)
 		elif answer[1] == "log":
 			text = open("/home/root/ipkgupgrade.log", "r").read()
-			self.session.openWithCallback(boundFunction(self.ipkgCallback, IpkgComponent.EVENT_DONE, None), TextBox, text, _("Packages upgraded"), True)
+			self.session.openWithCallback(boundFunction(self.ipkgCallback, IpkgComponent.EVENT_DONE, None), TextBox, text, _("Latest update log"), True)
 		else:
 			self.ipkg.startCmd(IpkgComponent.CMD_UPGRADE, args = {'test_only': False})
 

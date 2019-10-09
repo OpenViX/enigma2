@@ -269,9 +269,9 @@ class QuitMainloopScreen(Screen):
 			QUIT_SHUTDOWN: _("Your %s %s is shutting down") % (MACHINEBRAND, MACHINENAME),
 			QUIT_REBOOT: _("Your %s %s is rebooting") % (MACHINEBRAND, MACHINENAME),
 			QUIT_RESTART: _("The user interface of your %s %s is restarting") % (MACHINEBRAND, MACHINENAME),
-			QUIT_UPGRADE_FP: _("Your frontprocessor will be upgraded\nPlease wait until your %s %s reboots\nThis may take a few minutes") % (MACHINEBRAND, MACHINENAME),
+			QUIT_UPGRADE_FP: _("Your frontprocessor will be updated\nPlease wait until your %s %s reboots\nThis may take a few minutes") % (MACHINEBRAND, MACHINENAME),
 			QUIT_ERROR_RESTART: _("The user interface of your %s %s is restarting\ndue to an error in mytest.py") % (MACHINEBRAND, MACHINENAME),
-			QUIT_UPGRADE_PROGRAM: _("Unattended upgrade in progress\nPlease wait until your %s %s reboots\nThis may take a few minutes") % (MACHINEBRAND, MACHINENAME),
+			QUIT_UPGRADE_PROGRAM: _("Unattended update in progress\nPlease wait until your %s %s reboots\nThis may take a few minutes") % (MACHINEBRAND, MACHINENAME),
 			GB_ENTER_WOL: _("Your %s %s goes to WOL") % (MACHINEBRAND, MACHINENAME)
 		}.get(retvalue)
 		self["text"] = Label(text)
@@ -309,8 +309,8 @@ class TryQuitMainloop(MessageBox):
 				QUIT_SHUTDOWN: _("Really shutdown your %s %s now?") % (MACHINEBRAND, MACHINENAME),
 				QUIT_REBOOT: _("Really reboot your %s %s now?") % (MACHINEBRAND, MACHINENAME),
 				QUIT_RESTART: _("Really restart your %s %s now?") % (MACHINEBRAND, MACHINENAME),
-				QUIT_UPGRADE_FP: _("Really upgrade the frontprocessor and reboot now?"),
-				QUIT_UPGRADE_PROGRAM: _("Really upgrade your %s %s and reboot now?") % (MACHINEBRAND, MACHINENAME),
+				QUIT_UPGRADE_FP: _("Really update the frontprocessor and reboot now?"),
+				QUIT_UPGRADE_PROGRAM: _("Really update your %s %s and reboot now?") % (MACHINEBRAND, MACHINENAME),
 				GB_ENTER_WOL: _("Really WOL now?")
 			}.get(retvalue, None)
 			if text:
