@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-27 14:27+0200\n"
+"POT-Creation-Date: 2019-10-13 22:33+0200\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -55,9 +55,10 @@ msgid ""
 "Conflict detection disabled!"
 msgstr ""
 
+#, fuzzy
 msgid ""
 "\n"
-"Edit the upgrade source address."
+"Edit the update source address."
 msgstr ""
 "\n"
 " Επεξεργασία διεύθυνσης πηγής αναβαθμίσεων"
@@ -221,6 +222,14 @@ msgstr ""
 
 #, python-format
 msgid "%.0f kB"
+msgstr ""
+
+#, python-format
+msgid "%.1f°E"
+msgstr ""
+
+#, python-format
+msgid "%.1f°W"
 msgstr ""
 
 #, python-format
@@ -1082,6 +1091,10 @@ msgstr "Όλοι οι δορυφόροι 4 (USALS)"
 msgid "All services provider"
 msgstr "Ορισμένες υπηρεσίες/πάροχοι:"
 
+#, fuzzy
+msgid "All slots"
+msgstr "Επιλογή τοποθεσίας"
+
 msgid "Allocate"
 msgstr "Κατανομή"
 
@@ -1140,6 +1153,9 @@ msgstr "Προσθήκη εναλλακτικών"
 #, fuzzy
 msgid "Alternative 2"
 msgstr "Προσθήκη εναλλακτικών"
+
+msgid "Alternative URLs for DVB-T/C or ATSC"
+msgstr ""
 
 msgid "Alternative numbering mode"
 msgstr "Εναλλακτική λειτουργία ραδιοφώνου"
@@ -2771,6 +2787,10 @@ msgid "Create ISO"
 msgstr "Δημιουργία DVD-ISO"
 
 #, fuzzy
+msgid "Create directory"
+msgstr "δημιουργία φακέλου"
+
+#, fuzzy
 msgid "Create directory/folder"
 msgstr "δημιουργία φακέλου"
 
@@ -3211,6 +3231,15 @@ msgstr "Αποεπιλογή"
 msgid "Destination of fallback remote receiver"
 msgstr ""
 
+msgid "Destination of fallback remote receiver for ATSC"
+msgstr ""
+
+msgid "Destination of fallback remote receiver for DVB-C"
+msgstr ""
+
+msgid "Destination of fallback remote receiver for DVB-T"
+msgstr ""
+
 msgid "Details for plugin: "
 msgstr "Λεπτομέρειες για το πρόσθετο: "
 
@@ -3552,14 +3581,15 @@ msgid "Do you want to select a different skin?"
 msgstr "Θέλετε να γίνει ανίχνευση υπηρεσιών;"
 
 #, fuzzy
+msgid "Do you want to update the package:\n"
+msgstr "Θέλετε να αναβαθμίσετε το πακέτο:\n"
+
+#, fuzzy
 msgid "Do you want to update your Receiver?"
 msgstr "Θέλετε να ενημερώσετε το δέκτη σας;"
 
 msgid "Do you want to update your receiver?"
 msgstr "Θέλετε να ενημερώσετε το δέκτη σας;"
-
-msgid "Do you want to upgrade the package:\n"
-msgstr "Θέλετε να αναβαθμίσετε το πακέτο:\n"
 
 msgid "Dolby"
 msgstr ""
@@ -3602,9 +3632,9 @@ msgstr ""
 msgid "Done - Installed or upgraded %d packages"
 msgstr "Τέλος - Εγκαταστάθηκε, αναβαθμίστηκε ή αφαιρέθηκε %d πακέτο με %s σφάλματα"
 
-#, python-format
-msgid "Done - Installed, upgraded or removed %d package (%s)"
-msgid_plural "Done - Installed, upgraded or removed %d packages (%s)"
+#, fuzzy, python-format
+msgid "Done - Installed, updated or removed %d package (%s)"
+msgid_plural "Done - Installed, updated or removed %d packages (%s)"
 msgstr[0] "Τέλος - Εγκαταστάθηκε, αναβαθμίστηκε ή αφαιρέθηκε %d πακέτο με %s σφάλματα"
 msgstr[1] "Τέλος - Εγκαταστάθηκαν, αναβαθμίστηκαν ή αφαιρέθηκαν %d πακέτα με %s σφάλματα"
 
@@ -3721,6 +3751,10 @@ msgid "Edit chapters of current title"
 msgstr "Επεξεργασία κεφαλαίων του τρέχοντα τίτλου"
 
 #, fuzzy
+msgid "Edit menu"
+msgstr "Επεξεργασία χρονοδιακόπτη"
+
+#, fuzzy
 msgid "Edit position is the line end"
 msgstr "Κίνηση στην αποθηκευμένη θέση"
 
@@ -3743,7 +3777,8 @@ msgstr "Επεξεργασία χρονοδιακόπτη"
 msgid "Edit title"
 msgstr "Επεξεργασία τίτλου"
 
-msgid "Edit upgrade source url."
+#, fuzzy
+msgid "Edit update source url."
 msgstr "Επιλέξτε πηγή αναβάθμισης για επεξεργασία"
 
 msgid "Education/Science/..."
@@ -3795,6 +3830,10 @@ msgstr "Ενεργοποίηση ΟΚ για επιλογή καναλιών"
 
 msgid "Enable OK for channel selection"
 msgstr "Ενεργοποίηση ΟΚ για επιλογή καναλιών"
+
+#, fuzzy
+msgid "Enable OpenTV EPG"
+msgstr "Ενεργοποίηση EIT EPG"
 
 #, fuzzy
 msgid "Enable Swap at startup"
@@ -4242,9 +4281,6 @@ msgstr "Έναρξη χρόνου αγνόησης της αδράνειας τ�
 msgid "Extrude from left"
 msgstr ""
 
-msgid "F"
-msgstr ""
-
 msgid "F1/F3/F4/F4-TURBO"
 msgstr ""
 
@@ -4328,11 +4364,24 @@ msgstr ""
 msgid "Fallback remote receiver URL"
 msgstr ""
 
+msgid "Fallback remote receiver for ATSC"
+msgstr ""
+
+msgid "Fallback remote receiver for DVB-C"
+msgstr ""
+
+msgid "Fallback remote receiver for DVB-T"
+msgstr ""
+
 msgid "Fallback remote receiver setup"
 msgstr ""
 
 msgid "Fallback tuner setup"
 msgstr ""
+
+#, fuzzy
+msgid "False"
+msgstr "ψευδές"
 
 #, python-format
 msgid "Fan %d"
@@ -4634,9 +4683,6 @@ msgstr "Περαιτέρω Επιλογές"
 msgid "Further options"
 msgstr "Περαιτέρω Επιλογές"
 
-msgid "G"
-msgstr ""
-
 msgid "GB800SOLO takes about 20 mins !!\n"
 msgstr ""
 
@@ -4754,9 +4800,6 @@ msgstr "Μετάβαση"
 msgid "Goto 0"
 msgstr "Μετάβαση στο 0"
 
-msgid "Goto:"
-msgstr "Προς:"
-
 msgid "Goto X"
 msgstr "Μετάβαση στη θέση Χ"
 
@@ -4784,6 +4827,9 @@ msgstr "Μετάβαση στη θέση"
 
 msgid "Goto specific date/time"
 msgstr "Μετάβαση σε καθορισμένη ημερομηνία/ώρα"
+
+msgid "Goto:"
+msgstr "Προς:"
 
 msgid "GotoX calibration"
 msgstr "Υπολογισμός GotoX"
@@ -4847,10 +4893,6 @@ msgstr ""
 
 msgid "Guyana"
 msgstr ""
-
-#, fuzzy
-msgid "H"
-msgstr "Κ. "
 
 msgid "HD list"
 msgstr "Λίστα HD"
@@ -5099,10 +5141,6 @@ msgstr "Ουγγρικά"
 #, fuzzy
 msgid "Hungary"
 msgstr "Ουγγρικά"
-
-#, fuzzy
-msgid "I"
-msgstr "C"
 
 msgid "I/O priority for script execution"
 msgstr ""
@@ -5549,9 +5587,6 @@ msgstr "Αντικείμενα ανά σελίδα για λίστα οθόνη�
 msgid "Itu_R_BT_709"
 msgstr ""
 
-msgid "J"
-msgstr ""
-
 msgid "Jamaica"
 msgstr ""
 
@@ -5696,6 +5731,10 @@ msgstr "Τελευταίες Αλλαγές"
 #, python-format
 msgid "Latest available teamBlue %s build is from: %s"
 msgstr ""
+
+#, fuzzy
+msgid "Latest update log"
+msgstr "Τελευταία αναβάθμιση: "
 
 msgid "Latitude"
 msgstr "Γεωγραφικό πλάτος"
@@ -6624,6 +6663,9 @@ msgstr ""
 msgid "New folder"
 msgstr ""
 
+msgid "New password"
+msgstr ""
+
 msgid "News Current Affairs"
 msgstr "Ειδήσεις & Επικαιρότητα"
 
@@ -6871,10 +6913,6 @@ msgid "Norwegian"
 msgstr "Νορβηγικά"
 
 #, fuzzy
-msgid "Not Defined"
-msgstr "Μη ρυθμισμένο"
-
-#, fuzzy
 msgid "Not Installed"
 msgstr "Εγκατάσταση"
 
@@ -6884,6 +6922,10 @@ msgstr "Μη ρυθμισμένο"
 
 msgid "Not associated"
 msgstr "Χωρίς συσχέτιση"
+
+#, fuzzy
+msgid "Not defined"
+msgstr "Μη ρυθμισμένο"
 
 #, python-format
 msgid "Not enough disk space. Please free up some disk space and try again. (%d MB required, %d MB available)"
@@ -7238,10 +7280,6 @@ msgstr "Διαχείριση πακέτων"
 msgid "Packages to update"
 msgstr "Ενημέρωση λίστας πακέτων"
 
-#, fuzzy
-msgid "Packages upgraded"
-msgstr "Ενημέρωση λίστας πακέτων"
-
 msgid "Packet manager"
 msgstr "Διαχείριση πακέτων"
 
@@ -7315,6 +7353,13 @@ msgstr ""
 
 msgid "Password"
 msgstr ""
+
+msgid "Password changed"
+msgstr ""
+
+#, fuzzy
+msgid "Password setup"
+msgstr "Ρυθμίσεις εικόνας"
 
 msgid "Path to save not exist: '/tmp/'"
 msgstr ""
@@ -7990,10 +8035,6 @@ msgstr "Πρωτεύον DNS"
 msgid "Prime time"
 msgstr "Διαγραφή χρονοδιακόπτη"
 
-#, fuzzy
-msgid "PrimeTime"
-msgstr "Χρόνος"
-
 msgid "Priority"
 msgstr "Προτεραιότητα"
 
@@ -8130,6 +8171,9 @@ msgstr "Ραδιόφωνο"
 msgid "Random"
 msgstr "Τυχαίο"
 
+msgid "Random password"
+msgstr ""
+
 #, python-format
 msgid "Rating defined by broadcaster - %d"
 msgstr "Βαθμολογία καθορισμένη από τον πάροχο - %d"
@@ -8184,11 +8228,12 @@ msgstr "Τερματισμός τώρα;"
 msgid "Really store at index %2d for current position?"
 msgstr "Εναλλαγή σημειωτή αποκοπής στην τρέχουσα θέση"
 
-msgid "Really upgrade the frontprocessor and reboot now?"
+#, fuzzy
+msgid "Really update the frontprocessor and reboot now?"
 msgstr "Να γίνει σίγουρα ενημέρωση του frontprocessor και επανεκκίνηση;"
 
 #, fuzzy, python-format
-msgid "Really upgrade your %s %s and reboot now?"
+msgid "Really update your %s %s and reboot now?"
 msgstr "Να γίνει σίγουρα ενημέρωση του δέκτη και επανεκκίνηση;"
 
 msgid "Reboot"
@@ -8370,6 +8415,10 @@ msgstr ""
 msgid "Remove currently selected title"
 msgstr "Διαγραφή επιλεγμένου τίτλου"
 
+#, fuzzy
+msgid "Remove directory"
+msgstr "διαγραφή φακέλου"
+
 msgid "Remove items from trash can after (days)"
 msgstr "Διαγραφή αντικειμένων από το καλάθι αχρήστων σε (μέρες)"
 
@@ -8423,6 +8472,10 @@ msgstr "Επανάληψη"
 msgid "Repeat leave standby messages"
 msgstr "Να θεωρείται ο τερματισμός ως αναμονή"
 
+#, fuzzy
+msgid "Repeat playlist"
+msgstr "επανάληψη λίστας αναπαραγωγής"
+
 msgid "Repeat type"
 msgstr "Τύπος επανάληψης"
 
@@ -8468,6 +8521,9 @@ msgstr "Μηδενισμός"
 
 msgid "Reset and renumerate title names"
 msgstr "Μηδενισμός και επαναρίθμηση των τίτλων"
+
+msgid "Reset order (All)"
+msgstr ""
 
 #, fuzzy
 msgid "Reset persistent PIN code"
@@ -8817,11 +8873,23 @@ msgid "Save and stop timeshift"
 msgstr "Διακοπή χρονομετατόπισης"
 
 #, fuzzy
+msgid "Save changes"
+msgstr "αποθήκευση λίστας αναπαραγωγής κατά την έξοδο"
+
+#, fuzzy
+msgid "Save last directory on exit"
+msgstr "αποθήκευση τελευταίου φακέλου κατά την έξοδο"
+
+#, fuzzy
 msgid "Save left folder on exit"
 msgstr "αποθήκευση τελευταίου φακέλου κατά την έξοδο"
 
 msgid "Save playlist"
 msgstr "Αποθήκευση λίστας αναπαραγωγής"
+
+#, fuzzy
+msgid "Save playlist on exit"
+msgstr "αποθήκευση λίστας αναπαραγωγής κατά την έξοδο"
 
 #, fuzzy
 msgid "Save right folder on exit"
@@ -9300,10 +9368,12 @@ msgstr ""
 msgid "Select the virtual keyboard shifted character set for the next character only"
 msgstr ""
 
-msgid "Select upgrade source"
+#, fuzzy
+msgid "Select update source"
 msgstr "Επιλογή πηγής αναβαθμίσεων"
 
-msgid "Select upgrade source to edit."
+#, fuzzy
+msgid "Select update source to edit."
 msgstr "Επιλογή πηγής αναβάθμισης για επεξεργασία."
 
 msgid "Select video input with up/down buttons"
@@ -9486,6 +9556,9 @@ msgid "Set action when movie playback is finished."
 msgstr "Συμπεριφορά όταν μια ταινία ξεκινήσει."
 
 msgid "Set all hotkey to default?"
+msgstr ""
+
+msgid "Set alternative fallback tuners for DVB-T/C or ATSC"
 msgstr ""
 
 msgid "Set blocktimes by weekday"
@@ -9791,8 +9864,12 @@ msgid "Show latest commits"
 msgstr "Τελευταίες Αλλαγές"
 
 #, fuzzy
-msgid "Show latest upgrade log"
+msgid "Show latest update log"
 msgstr "Τελευταία αναβάθμιση: "
+
+#, fuzzy
+msgid "Show media player on main menu"
+msgstr "εμφάνιση της αναπαραγωγής πολυμέσων στο κύριο μενού"
 
 #, fuzzy
 msgid "Show menu or plugin numbers"
@@ -9806,6 +9883,9 @@ msgid "Show message if File Commander is not running and all Task's are complete
 msgstr ""
 
 msgid "Show message if a background script ends successefully. Has 'stout', then this is displayed as additional info."
+msgstr ""
+
+msgid "Show message if a background script ends successfully. Has 'stout', then this is displayed as additional info."
 msgstr ""
 
 msgid "Show message when recording starts"
@@ -9840,7 +9920,7 @@ msgid "Show only found image and mtd partitions.\n"
 msgstr ""
 
 #, fuzzy
-msgid "Show packages to be upgraded"
+msgid "Show packages to be updated"
 msgstr "Ενημέρωση λίστας πακέτων"
 
 #, fuzzy
@@ -9879,6 +9959,9 @@ msgstr "Εμφάνιση της δεύτερης μπάρας πληροφορι
 #, fuzzy
 msgid "Show service list"
 msgstr "Άνοιγμα λίστας υπηρεσιών"
+
+msgid "Show service name and event description among each other instead of side by side."
+msgstr ""
 
 msgid "Show service type icons"
 msgstr "Εμφάνιση εικονιδίων τύπου υπηρεσίας"
@@ -9927,6 +10010,9 @@ msgstr "Εμφάνιση ραδιοφώνου..."
 #, fuzzy
 msgid "Show the plugin browser.."
 msgstr "Πλοηγός προσθέτων"
+
+msgid "Show two lines per entry"
+msgstr ""
 
 #, fuzzy
 msgid "Show unknown extension as text"
@@ -10270,6 +10356,10 @@ msgstr "Ταξινόμηση κατά χρόνο"
 msgid "Sorting left files by name, date or size"
 msgstr ""
 
+#, fuzzy
+msgid "Sorting of playlists"
+msgstr "ταξινόμηση λιστών αναπαραγωγής"
+
 msgid "Sorting right files by name, date or size"
 msgstr ""
 
@@ -10386,6 +10476,10 @@ msgstr "Αναμονή σε "
 #, fuzzy
 msgid "Start"
 msgstr "Έναρξη ελέγχου"
+
+#, fuzzy
+msgid "Start directory"
+msgstr "εκκίνηση φακέλου"
 
 msgid "Start from the beginning"
 msgstr "Έναρξη  από την αρχή"
@@ -10695,6 +10789,10 @@ msgstr "Επόμενο κανάλι"
 msgid "Switch to TV mode"
 msgstr "Αλλαγή σε HDMI σε λειτουργία"
 
+#, fuzzy
+msgid "Switch to bookmarks"
+msgstr "μετάβαση στους σελιδοδείκτες"
+
 msgid "Switch to filelist"
 msgstr "Μετάβαση στη λίστα αρχείων"
 
@@ -10999,6 +11097,9 @@ msgid ""
 "Test Pattern by TigerDave - www.tigerdave.com/ht_menu.htm"
 msgstr ""
 
+msgid "The password can not be blank."
+msgstr ""
+
 #, python-format
 msgid "The path %s already exists."
 msgstr "Η διαδρομή %s υπάρχει ήδη."
@@ -11228,7 +11329,7 @@ msgstr ""
 msgid "This option allows you to force the HLG modes for UHD"
 msgstr ""
 
-msgid "This option allows you to hide and sort menu entries. When selecting user you can change order and hide menu items via the blue button"
+msgid "This option allows you to hide and sort menu entries. When selecting user you can change order and hide menu items via the blue button. With the user defined hidden the blue button is not shown in the menus"
 msgstr ""
 
 msgid "This option allows you to power off the display."
@@ -11508,6 +11609,9 @@ msgstr ""
 msgid "Toggle new text inserts before or overwrites existing text"
 msgstr ""
 
+msgid "Toggle show/hide"
+msgstr ""
+
 msgid "Togo"
 msgstr ""
 
@@ -11583,6 +11687,9 @@ msgid "Trinidad and Tobago"
 msgstr ""
 
 msgid "Troubleshoot"
+msgstr ""
+
+msgid "True"
 msgstr ""
 
 msgid "Try to find used transponders in cable network.. please wait..."
@@ -11746,9 +11853,12 @@ msgstr ""
 msgid "Ukrainian"
 msgstr ""
 
+msgid "Unable to change password"
+msgstr ""
+
 #, fuzzy, python-format
 msgid ""
-"Unattended upgrade in progress\n"
+"Unattended update in progress\n"
 "Please wait until your %s %s reboots\n"
 "This may take a few minutes"
 msgstr ""
@@ -11846,6 +11956,10 @@ msgstr "Ενημέρωση και ερώτηση για επανεκκίνηση
 msgid "Update and reboot (recommended)"
 msgstr "Ενημέρωση και επανεκκίνηση (συνιστάται)"
 
+#, fuzzy
+msgid "Update bookmarks"
+msgstr "Αυτόματη ανίχνευση"
+
 #, python-format
 msgid "Update completed, %d package was installed."
 msgid_plural "Update completed, %d packages were installed."
@@ -11863,6 +11977,10 @@ msgstr "Η ενημέρωση έχει ολοκληρωθεί."
 
 msgid "Updatefeed not available."
 msgstr "Η πηγή αναβάθμισης δεν είναι διαθέσιμη."
+
+#, fuzzy
+msgid "Updating"
+msgstr "Ενημέρωση"
 
 msgid "Updating software catalog"
 msgstr "Ενημέρωση καταλόγου λογισμικού"
@@ -11914,6 +12032,10 @@ msgstr "Χρήση πληροφοριών MHW όταν είναι διαθέσι
 
 msgid "Use Netmed EPG information when it is available."
 msgstr "Χρήση πληροφοριών Netmed EPG όταν είναι διαθέσιμες."
+
+#, fuzzy
+msgid "Use OpenTV EPG information when it is available."
+msgstr "Χρήση πληροφοριών EIT EPG όταν είναι διαθέσιμες."
 
 msgid "Use TV remote control"
 msgstr "Χρήση τηλεχειριστηρίου TV"
@@ -12421,7 +12543,7 @@ msgstr ""
 msgid "What do you want to scan?"
 msgstr "Τι θέλετε να ανιχνεύσετε;"
 
-msgid "When enabled enigma2 will load unlinked userbouquets. This means that userbouquets that are available, but not included in the bouquets.tv or bouquets.radio files, will still be loaded. This allows you for example to keep your own user bouquet while installed settings are upgraded"
+msgid "When enabled enigma2 will load unlinked userbouquets. This means that userbouquets that are available, but not included in the bouquets.tv or bouquets.radio files, will still be loaded. This allows you for example to keep your own user bouquet while installed settings are updated"
 msgstr ""
 
 msgid "When enabled the PiP can be closed by the exit button."
@@ -12879,6 +13001,9 @@ msgstr ""
 msgid "You have to wait %s!"
 msgstr "Περιμένετε για το %s!"
 
+msgid "You must set a root password in order to be able to use network services, such as FTP, telnet or ssh."
+msgstr ""
+
 #, python-format
 msgid "You must switch to the service %s (%s - '%s')!\n"
 msgstr ""
@@ -12949,7 +13074,7 @@ msgstr "Η τρέχουσα συλλογή σας θα χαθεί!"
 
 #, fuzzy, python-format
 msgid ""
-"Your frontprocessor will be upgraded\n"
+"Your frontprocessor will be updated\n"
 "Please wait until your %s %s reboots\n"
 "This may take a few minutes"
 msgstr ""
@@ -13166,6 +13291,10 @@ msgstr "έτοιμο για εκκίνηση"
 msgid "activate network adapter configuration"
 msgstr "ενεργοποίηση ρύθμισης κάρτας δικτύου"
 
+#, fuzzy
+msgid "active"
+msgstr "Προσθήκη εναλλακτικών"
+
 msgid "active NFS Shares:"
 msgstr ""
 
@@ -13174,9 +13303,6 @@ msgstr ""
 
 msgid "add alternatives"
 msgstr "προσθήκη εναλλακτικών"
-
-msgid "add bookmark"
-msgstr "προσθήκη σελιδοδείκτη"
 
 msgid "add bouquet"
 msgstr "προσθήκη μπουκέτου"
@@ -13411,9 +13537,6 @@ msgstr ""
 msgid "copy to bouquets"
 msgstr "αντιγραφή στα μπουκέτα"
 
-msgid "create directory"
-msgstr "δημιουργία φακέλου"
-
 msgid "create symlink ..."
 msgstr ""
 
@@ -13434,6 +13557,10 @@ msgstr "αποκωδικοποίηση και εγγραφή ecm"
 
 msgid "detective/thriller"
 msgstr "αστυνομικά/θρίλερ"
+
+#, fuzzy
+msgid "disable"
+msgstr "απεργοποιημένο"
 
 #, fuzzy
 msgid "disable intro screen"
@@ -13486,6 +13613,10 @@ msgstr ""
 
 msgid "empty"
 msgstr "κενό"
+
+#, fuzzy
+msgid "enable"
+msgstr "ενεργοποιημένο"
 
 msgid "enable bouquet edit"
 msgstr "ενεργοποίηση επεξεργασίας μπουκέτων"
@@ -14078,9 +14209,6 @@ msgstr "διαγραφή όλων των νέων σημαιών"
 msgid "remove before this position"
 msgstr "διαγραφή πριν από αυτό το σημείο"
 
-msgid "remove bookmark"
-msgstr "διαγραφή σελιδοδείκτη"
-
 #, fuzzy
 msgid "remove bouquet from parental protection"
 msgstr "διαγραφή από γονικό έλεγχο"
@@ -14088,9 +14216,6 @@ msgstr "διαγραφή από γονικό έλεγχο"
 #, fuzzy
 msgid "remove cable services"
 msgstr "Προστασία υπηρεσιών"
-
-msgid "remove directory"
-msgstr "διαγραφή φακέλου"
 
 msgid "remove entry"
 msgstr "διαγραφή στοιχείου"
@@ -14113,9 +14238,6 @@ msgstr "διαγραφή αυτού του σημειωτή"
 
 msgid "rename entry"
 msgstr "μετονομασία στοιχείου"
-
-msgid "repeat playlist"
-msgstr "επανάληψη λίστας αναπαραγωγής"
 
 msgid "repeated"
 msgstr "επαναλαμβανόμενο"
@@ -14151,12 +14273,6 @@ msgstr ""
 msgid "running"
 msgstr "κηπουρική"
 
-msgid "save last directory on exit"
-msgstr "αποθήκευση τελευταίου φακέλου κατά την έξοδο"
-
-msgid "save playlist on exit"
-msgstr "αποθήκευση λίστας αναπαραγωγής κατά την έξοδο"
-
 msgid "scan state"
 msgstr "κατάσταση ανίχνευσης"
 
@@ -14168,9 +14284,6 @@ msgstr "δευτερόλεπτα"
 
 msgid "security"
 msgstr ""
-
-msgid "select"
-msgstr "επιλογή"
 
 msgid "select CAId's"
 msgstr "επιλογή CAId's"
@@ -14210,9 +14323,6 @@ msgstr "εμφάνιση εναλλακτικών"
 
 msgid "show event details"
 msgstr "εμφάνιση λεπτομερειών προγράμματος"
-
-msgid "show mediaplayer on mainmenu"
-msgstr "εμφάνιση της αναπαραγωγής πολυμέσων στο κύριο μενού"
 
 msgid "show softwaremanager in setup menu"
 msgstr "εμφάνιση της διαχείρισης λογισμικού στο μενού εγκατάστασης"
@@ -14285,9 +14395,6 @@ msgstr "κοινωνικά/διανόηση"
 msgid "softcams"
 msgstr "Εγκατάσταση softcam"
 
-msgid "sorting of playlists"
-msgstr "ταξινόμηση λιστών αναπαραγωγής"
-
 msgid "special events"
 msgstr "ειδικά προγράμματα"
 
@@ -14302,9 +14409,6 @@ msgstr "στάνταρ"
 
 msgid "start cut here"
 msgstr "εκκίνηση αποκοπής εδώ"
-
-msgid "start directory"
-msgstr "εκκίνηση φακέλου"
 
 #, fuzzy
 msgid "starts in a few seconds"
@@ -14321,12 +14425,6 @@ msgstr "τέλος χρήσης ως υπηρεσία εκκίνησης"
 
 msgid "successful"
 msgstr ""
-
-msgid "switch to bookmarks"
-msgstr "μετάβαση στους σελιδοδείκτες"
-
-msgid "switch to filelist"
-msgstr "μετάβαση στη λίστα αρχείων"
 
 msgid "switch to the next angle"
 msgstr "μετάβαση στην επόμενη γωνία"
@@ -14422,14 +14520,14 @@ msgstr "Ενεργοποίηση"
 msgid "until standby/restart"
 msgstr "μέχρι την αναμονή/επανεκκίνηση"
 
-#, fuzzy
-msgid "update bookmarks"
-msgstr "Αυτόματη ανίχνευση"
-
 msgid "use best, controlled by HDMI"
 msgstr ""
 
 msgid "user defined"
+msgstr "ορισμένο από το χρήστη"
+
+#, fuzzy
+msgid "user defined hidden"
 msgstr "ορισμένο από το χρήστη"
 
 msgid "variety show"
@@ -14522,6 +14620,9 @@ msgstr "ναι"
 
 msgid "yes (keep feeds)"
 msgstr "ναι (διατήρηση των feeds)"
+
+msgid "yes, but not in multi selections"
+msgstr ""
 
 #, fuzzy
 msgid "your Receiver might be unusable now. Please consult the manual for further assistance before rebooting your Receiver."
