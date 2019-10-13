@@ -147,6 +147,7 @@
 		<widget source="Statustext" render="Label" position="10,375" size="115,21" zPosition="10" font="Regular;20" halign="left" backgroundColor="#25062748" transparent="1"/>
 		<widget name="statuspic" pixmaps="buttons/button_green.png,buttons/button_green_off.png" position="130,380" zPosition="10" size="15,16" transparent="1" alphatest="on"/>
 	</screen>
+
 	<screen name="StreamingClientsInfo" position="center,center" size="600,500">
 		<eLabel position="center,117" zPosition="-2" size="600,500" backgroundColor="#25062748" />
 		<widget source="Title" render="Label" position="center,126" size="580,44" font="Regular; 35" valign="top" zPosition="0" backgroundColor="#25062748" halign="center" />
@@ -812,6 +813,26 @@ self.instance.move(ePoint(orgpos.x() + (orgwidth - newwidth)/2, orgpos.y() + (or
 	<screen name="NetworkSetup" position="center,center" size="460,330" title="Network setup">
 		<widget name="menu" position="10,10" size="440,310"/>
 	</screen>
+
+<!-- Password -->
+	<screen name="NetworkPassword" position="center,center" size="560,430">
+		<ePixmap pixmap="buttons/red.png" position="0,0" size="140,40" alphatest="on"/>
+		<ePixmap pixmap="buttons/green.png" position="140,0" size="140,40" alphatest="on"/>
+		<ePixmap pixmap="buttons/yellow.png" position="280,0" size="140,40" alphatest="on"/>
+		<ePixmap pixmap="buttons/blue.png" position="420,0" size="140,40" alphatest="on"/>
+		<widget source="key_red" render="Label" position="0,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
+		<widget source="key_green" render="Label" position="140,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1"/>
+		<widget source="key_yellow" render="Label" position="280,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" transparent="1"/>
+		<widget source="key_blue" render="Label" position="420,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#18188b" transparent="1"/>
+
+		<widget name="config" position="0,40" size="560,375" itemHeight="38" font="Regular;28" transparent="0" zPosition="10" scrollbarMode="showOnDemand"/>
+<!--
+		<widget name="HelpWindow" pixmap="buttons/vkey_icon.png" position="center,360" size="1,1" zPosition="1" transparent="1" alphatest="on"/>
+ -->
+		<widget name="description" position="10,615" size="560,30" font="Regular;19" halign="center" valign="center" backgroundColor="#25062748" transparent="1"/>
+		<widget name="footnote" position="10,615" size="560,30" font="Regular;19" halign="center" valign="center" backgroundColor="#25062748" transparent="1"/>
+	</screen>
+	
 	<!-- Inetd recovery -->
 	<screen name="InetdRecovery" position="center,center" size="560,412" title="Inetd recovery">
 		<ePixmap pixmap="buttons/red.png" position="0,0" size="140,40" alphatest="on" />
