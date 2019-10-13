@@ -35,54 +35,59 @@
     sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 800 --slave /usr/bin/g++ g++ /usr/bin/g++-8
 
 ----------
-4 - modify max_user_watches
+4 - Repair g++ after gcc8 installation
+
+    sudo apt-get remove -y  g++
+    sudo apt-get install -y  g++
+
+----------
+5 - modify max_user_watches
 
     echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf
-
     sysctl -n -w fs.inotify.max_user_watches=524288
 
 ----------
-5 - Add user teambluebuilder
+6 - Add user teambluebuilder
 
     sudo adduser teambluebuilder
 
 ----------
-6 - Switch to user teambluebuilder
+7 - Switch to user teambluebuilder
 
     su teambluebuilder
 
 ----------
-7 - Switch to home of teambluebuilder
+8 - Switch to home of teambluebuilder
 
     cd ~
 
 ----------
-8 - Create folder teamblue
+9 - Create folder teamblue
 
     mkdir -p ~/teamblue
 
 ----------
-9 - Switch to folder teamblue
+10 - Switch to folder teamblue
 
     cd teamblue
 
 ----------
-10 - Clone oe-alliance git
+11 - Clone oe-alliance git
 
     git clone git://github.com/oe-alliance/build-enviroment.git -b 4.4
 
 ----------
-11 - Switch to folder build-enviroment
+12 - Switch to folder build-enviroment
 
     cd build-enviroment
 
 ----------
-12 - Update build-enviroment
+13 - Update build-enviroment
 
     make update
 
 ----------
-13 - Finally you can start building a image
+14 - Finally you can start building a image
 
     MACHINE=gbquad4k DISTRO=teamblue make image
 
