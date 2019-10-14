@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-27 14:27+0200\n"
+"POT-Creation-Date: 2019-10-13 22:33+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Budiarno\n"
 "Language-Team: \n"
@@ -57,9 +57,10 @@ msgstr ""
 "\n"
 "Deteksi konflik dimatikan!"
 
+#, fuzzy
 msgid ""
 "\n"
-"Edit the upgrade source address."
+"Edit the update source address."
 msgstr ""
 "\n"
 "Ubah alamat sumber peningkatan."
@@ -222,6 +223,14 @@ msgstr ""
 
 #, python-format
 msgid "%.0f kB"
+msgstr ""
+
+#, python-format
+msgid "%.1f°E"
+msgstr ""
+
+#, python-format
+msgid "%.1f°W"
 msgstr ""
 
 #, python-format
@@ -1078,6 +1087,9 @@ msgstr "Semua satelit 4 (USALS)"
 msgid "All services provider"
 msgstr "Semua penyedia layanan"
 
+msgid "All slots"
+msgstr ""
+
 msgid "Allocate"
 msgstr "Alokasikan"
 
@@ -1137,6 +1149,9 @@ msgstr "Alternatif"
 #, fuzzy
 msgid "Alternative 2"
 msgstr "Alternatif"
+
+msgid "Alternative URLs for DVB-T/C or ATSC"
+msgstr ""
 
 msgid "Alternative numbering mode"
 msgstr "Mode penomoran alternatif"
@@ -2750,6 +2765,10 @@ msgid "Create ISO"
 msgstr "Membuat DVD-ISO"
 
 #, fuzzy
+msgid "Create directory"
+msgstr "buat direktori"
+
+#, fuzzy
 msgid "Create directory/folder"
 msgstr "buat direktori"
 
@@ -3186,6 +3205,18 @@ msgstr "Tidak dipilih"
 msgid "Destination of fallback remote receiver"
 msgstr "Alamat URL penggunaan rx dari jauh"
 
+#, fuzzy
+msgid "Destination of fallback remote receiver for ATSC"
+msgstr "Alamat URL penggunaan rx dari jauh"
+
+#, fuzzy
+msgid "Destination of fallback remote receiver for DVB-C"
+msgstr "Alamat URL penggunaan rx dari jauh"
+
+#, fuzzy
+msgid "Destination of fallback remote receiver for DVB-T"
+msgstr "Alamat URL penggunaan rx dari jauh"
+
 msgid "Details for plugin: "
 msgstr "Rincian plugin: "
 
@@ -3524,14 +3555,15 @@ msgid "Do you want to select a different skin?"
 msgstr "Anda ingin memilih tampilan lain?"
 
 #, fuzzy
+msgid "Do you want to update the package:\n"
+msgstr "Anda ingin menaiktingkatkan paket:\n"
+
+#, fuzzy
 msgid "Do you want to update your Receiver?"
 msgstr "Anda ingin memperbarui rx anda?"
 
 msgid "Do you want to update your receiver?"
 msgstr "Anda ingin memperbarui rx anda?"
-
-msgid "Do you want to upgrade the package:\n"
-msgstr "Anda ingin menaiktingkatkan paket:\n"
 
 msgid "Dolby"
 msgstr ""
@@ -3571,9 +3603,9 @@ msgstr ""
 msgid "Done - Installed or upgraded %d packages"
 msgstr "Selesai - Terpasang, dinaiktingkatkan atau dihapus %d paket (%s)"
 
-#, python-format
-msgid "Done - Installed, upgraded or removed %d package (%s)"
-msgid_plural "Done - Installed, upgraded or removed %d packages (%s)"
+#, fuzzy, python-format
+msgid "Done - Installed, updated or removed %d package (%s)"
+msgid_plural "Done - Installed, updated or removed %d packages (%s)"
 msgstr[0] "Selesai - Terpasang, dinaiktingkatkan atau dihapus %d paket (%s)"
 msgstr[1] "Selesai - Terpasang, dinaiktingkatkan atau dihapus %d paket (%s)"
 
@@ -3690,6 +3722,10 @@ msgid "Edit chapters of current title"
 msgstr "Ubah bab judul saat ini"
 
 #, fuzzy
+msgid "Edit menu"
+msgstr "Ubah pewaktu"
+
+#, fuzzy
 msgid "Edit position is the line end"
 msgstr "Moved to position at index"
 
@@ -3712,7 +3748,8 @@ msgstr "Ubah pewaktu"
 msgid "Edit title"
 msgstr "Ubah judul"
 
-msgid "Edit upgrade source url."
+#, fuzzy
+msgid "Edit update source url."
 msgstr "Ubah url sumber upgrade."
 
 msgid "Education/Science/..."
@@ -3763,6 +3800,10 @@ msgstr "Aktifkan OK sebagai pratinjau pada pemilihan kanal"
 
 msgid "Enable OK for channel selection"
 msgstr "Aktifkan OK pada pemilihan kanal"
+
+#, fuzzy
+msgid "Enable OpenTV EPG"
+msgstr "Aktifkan EPG EIT"
 
 #, fuzzy
 msgid "Enable Swap at startup"
@@ -4195,9 +4236,6 @@ msgstr ""
 msgid "Extrude from left"
 msgstr ""
 
-msgid "F"
-msgstr ""
-
 msgid "F1/F3/F4/F4-TURBO"
 msgstr ""
 
@@ -4281,12 +4319,28 @@ msgid "Fallback remote receiver URL"
 msgstr "URL penggunaan rx dari jauh"
 
 #, fuzzy
+msgid "Fallback remote receiver for ATSC"
+msgstr "URL penggunaan rx dari jauh"
+
+#, fuzzy
+msgid "Fallback remote receiver for DVB-C"
+msgstr "URL penggunaan rx dari jauh"
+
+#, fuzzy
+msgid "Fallback remote receiver for DVB-T"
+msgstr "URL penggunaan rx dari jauh"
+
+#, fuzzy
 msgid "Fallback remote receiver setup"
 msgstr "URL penggunaan rx dari jauh"
 
 #, fuzzy
 msgid "Fallback tuner setup"
 msgstr "URL penggunaan rx dari jauh"
+
+#, fuzzy
+msgid "False"
+msgstr "salah"
 
 #, python-format
 msgid "Fan %d"
@@ -4548,7 +4602,8 @@ msgstr "Jum"
 msgid "Friday"
 msgstr "Jum'at"
 
-msgid "From :"
+#, fuzzy
+msgid "From:"
 msgstr "From :"
 
 msgid "Frontpanel"
@@ -4585,9 +4640,6 @@ msgid "Further Options"
 msgstr ""
 
 msgid "Further options"
-msgstr ""
-
-msgid "G"
 msgstr ""
 
 msgid "GB800SOLO takes about 20 mins !!\n"
@@ -4711,9 +4763,6 @@ msgstr "Goto"
 msgid "Goto 0"
 msgstr "Goto 0"
 
-msgid "Goto :"
-msgstr "Goto :"
-
 msgid "Goto X"
 msgstr "Goto X"
 
@@ -4740,6 +4789,10 @@ msgstr ""
 
 msgid "Goto specific date/time"
 msgstr ""
+
+#, fuzzy
+msgid "Goto:"
+msgstr "Goto :"
 
 msgid "GotoX calibration"
 msgstr "GotoX calibration"
@@ -4800,9 +4853,6 @@ msgid "Guinea-Bissau"
 msgstr ""
 
 msgid "Guyana"
-msgstr ""
-
-msgid "H"
 msgstr ""
 
 msgid "HD list"
@@ -5042,9 +5092,6 @@ msgstr "Hungaria"
 #, fuzzy
 msgid "Hungary"
 msgstr "Hungaria"
-
-msgid "I"
-msgstr ""
 
 msgid "I/O priority for script execution"
 msgstr ""
@@ -5492,9 +5539,6 @@ msgstr "Items per page for list screen"
 msgid "Itu_R_BT_709"
 msgstr ""
 
-msgid "J"
-msgstr ""
-
 msgid "Jamaica"
 msgstr ""
 
@@ -5639,6 +5683,10 @@ msgstr ""
 #, python-format
 msgid "Latest available teamBlue %s build is from: %s"
 msgstr ""
+
+#, fuzzy
+msgid "Latest update log"
+msgstr "Last upgrade: "
 
 msgid "Latitude"
 msgstr "Latitude"
@@ -6556,6 +6604,9 @@ msgstr ""
 msgid "New folder"
 msgstr ""
 
+msgid "New password"
+msgstr ""
+
 msgid "News Current Affairs"
 msgstr "News Current Affairs"
 
@@ -6796,9 +6847,6 @@ msgstr "Norwegia"
 msgid "Norwegian"
 msgstr "Norwegia"
 
-msgid "Not Defined"
-msgstr ""
-
 #, fuzzy
 msgid "Not Installed"
 msgstr "Pasang"
@@ -6808,6 +6856,10 @@ msgstr ""
 
 msgid "Not associated"
 msgstr "Not associated"
+
+#, fuzzy
+msgid "Not defined"
+msgstr "undefined"
 
 #, python-format
 msgid "Not enough disk space. Please free up some disk space and try again. (%d MB required, %d MB available)"
@@ -7147,10 +7199,6 @@ msgstr "Pengelola Paket"
 msgid "Packages to update"
 msgstr ""
 
-#, fuzzy
-msgid "Packages upgraded"
-msgstr "Pembaruan daftar paket"
-
 msgid "Packet manager"
 msgstr "Pengelola Paket"
 
@@ -7224,6 +7272,13 @@ msgstr ""
 
 msgid "Password"
 msgstr ""
+
+msgid "Password changed"
+msgstr ""
+
+#, fuzzy
+msgid "Password setup"
+msgstr "Atur video"
 
 msgid "Path to save not exist: '/tmp/'"
 msgstr ""
@@ -7877,9 +7932,6 @@ msgstr "Primary DNS"
 msgid "Prime time"
 msgstr ""
 
-msgid "PrimeTime"
-msgstr ""
-
 msgid "Priority"
 msgstr "Prioritas"
 
@@ -8001,6 +8053,9 @@ msgstr "Radio"
 msgid "Random"
 msgstr "Random"
 
+msgid "Random password"
+msgstr ""
+
 #, python-format
 msgid "Rating defined by broadcaster - %d"
 msgstr "Rating defined by broadcaster - %d"
@@ -8055,11 +8110,12 @@ msgstr "Yakin ingin mematikan rx sekarang?"
 msgid "Really store at index %2d for current position?"
 msgstr ""
 
-msgid "Really upgrade the frontprocessor and reboot now?"
+#, fuzzy
+msgid "Really update the frontprocessor and reboot now?"
 msgstr "Really upgrade the frontprocessor and reboot now?"
 
 #, fuzzy, python-format
-msgid "Really upgrade your %s %s and reboot now?"
+msgid "Really update your %s %s and reboot now?"
 msgstr "Really upgrade your settop box and reboot now?"
 
 msgid "Reboot"
@@ -8232,6 +8288,10 @@ msgstr ""
 msgid "Remove currently selected title"
 msgstr "Remove currently selected title"
 
+#, fuzzy
+msgid "Remove directory"
+msgstr "remove directory"
+
 msgid "Remove items from trash can after (days)"
 msgstr "Hapus item dari tong sampah setelah (hari)"
 
@@ -8284,6 +8344,10 @@ msgstr "Ulang"
 msgid "Repeat leave standby messages"
 msgstr ""
 
+#, fuzzy
+msgid "Repeat playlist"
+msgstr "ulang daftar putar"
+
 msgid "Repeat type"
 msgstr "Tipe ulang"
 
@@ -8328,6 +8392,9 @@ msgstr "Reset"
 
 msgid "Reset and renumerate title names"
 msgstr "Reset and renumerate title names"
+
+msgid "Reset order (All)"
+msgstr ""
 
 msgid "Reset persistent PIN code"
 msgstr ""
@@ -8666,12 +8733,23 @@ msgstr ""
 msgid "Save and stop timeshift"
 msgstr ""
 
+msgid "Save changes"
+msgstr ""
+
+#, fuzzy
+msgid "Save last directory on exit"
+msgstr "save last directory on exit"
+
 #, fuzzy
 msgid "Save left folder on exit"
 msgstr "Buat folder baru lalu keluar"
 
 msgid "Save playlist"
 msgstr "Simpan daftar putar"
+
+#, fuzzy
+msgid "Save playlist on exit"
+msgstr "save playlist on exit"
 
 #, fuzzy
 msgid "Save right folder on exit"
@@ -9141,10 +9219,12 @@ msgstr ""
 msgid "Select the virtual keyboard shifted character set for the next character only"
 msgstr ""
 
-msgid "Select upgrade source"
+#, fuzzy
+msgid "Select update source"
 msgstr "Pilih sumber upgrade"
 
-msgid "Select upgrade source to edit."
+#, fuzzy
+msgid "Select update source to edit."
 msgstr "Pilih sumber upgrade untuk diubah."
 
 msgid "Select video input with up/down buttons"
@@ -9324,6 +9404,9 @@ msgid "Set action when movie playback is finished."
 msgstr "Atur apa yang akan dilakukan ketika pemutar film dimulai."
 
 msgid "Set all hotkey to default?"
+msgstr ""
+
+msgid "Set alternative fallback tuners for DVB-T/C or ATSC"
 msgstr ""
 
 msgid "Set blocktimes by weekday"
@@ -9616,8 +9699,13 @@ msgstr "Tampilkan infobar pada lewati ke depan/ke belakang "
 msgid "Show latest commits"
 msgstr ""
 
-msgid "Show latest upgrade log"
-msgstr ""
+#, fuzzy
+msgid "Show latest update log"
+msgstr "Pembaruan Perangkat Lunak"
+
+#, fuzzy
+msgid "Show media player on main menu"
+msgstr "show mediaplayer on mainmenu"
 
 #, fuzzy
 msgid "Show menu or plugin numbers"
@@ -9630,6 +9718,9 @@ msgid "Show message if File Commander is not running and all Task's are complete
 msgstr ""
 
 msgid "Show message if a background script ends successefully. Has 'stout', then this is displayed as additional info."
+msgstr ""
+
+msgid "Show message if a background script ends successfully. Has 'stout', then this is displayed as additional info."
 msgstr ""
 
 msgid "Show message when recording starts"
@@ -9662,8 +9753,9 @@ msgstr ""
 msgid "Show only found image and mtd partitions.\n"
 msgstr ""
 
-msgid "Show packages to be upgraded"
-msgstr ""
+#, fuzzy
+msgid "Show packages to be updated"
+msgstr "Pembaruan daftar paket"
 
 msgid "Show picons in channel selection list"
 msgstr ""
@@ -9693,6 +9785,9 @@ msgid "Show second infobar"
 msgstr "Tampilkan infobar kedua"
 
 msgid "Show service list"
+msgstr ""
+
+msgid "Show service name and event description among each other instead of side by side."
 msgstr ""
 
 msgid "Show service type icons"
@@ -9738,6 +9833,9 @@ msgstr "Tampilkan pemutar radio..."
 #, fuzzy
 msgid "Show the plugin browser.."
 msgstr "Plugin browser"
+
+msgid "Show two lines per entry"
+msgstr ""
 
 #, fuzzy
 msgid "Show unknown extension as text"
@@ -10079,6 +10177,10 @@ msgstr "Pilah waktu"
 msgid "Sorting left files by name, date or size"
 msgstr ""
 
+#, fuzzy
+msgid "Sorting of playlists"
+msgstr "sorting of playlists"
+
 msgid "Sorting right files by name, date or size"
 msgstr ""
 
@@ -10192,6 +10294,10 @@ msgstr ""
 #, fuzzy
 msgid "Start"
 msgstr "Mulai pengecekan"
+
+#, fuzzy
+msgid "Start directory"
+msgstr "start directory"
 
 msgid "Start from the beginning"
 msgstr "Mulai dari awal"
@@ -10489,6 +10595,10 @@ msgstr ""
 msgid "Switch to TV mode"
 msgstr ""
 
+#, fuzzy
+msgid "Switch to bookmarks"
+msgstr "switch to bookmarks"
+
 msgid "Switch to filelist"
 msgstr "Switch to filelist"
 
@@ -10785,6 +10895,9 @@ msgid ""
 "Test Pattern by TigerDave - www.tigerdave.com/ht_menu.htm"
 msgstr ""
 
+msgid "The password can not be blank."
+msgstr ""
+
 #, python-format
 msgid "The path %s already exists."
 msgstr "The path %s already exists."
@@ -11016,7 +11129,7 @@ msgstr ""
 msgid "This option allows you to force the HLG modes for UHD"
 msgstr ""
 
-msgid "This option allows you to hide and sort menu entries. When selecting user you can change order and hide menu items via the blue button"
+msgid "This option allows you to hide and sort menu entries. When selecting user you can change order and hide menu items via the blue button. With the user defined hidden the blue button is not shown in the menus"
 msgstr ""
 
 msgid "This option allows you to power off the display."
@@ -11296,6 +11409,9 @@ msgstr ""
 msgid "Toggle new text inserts before or overwrites existing text"
 msgstr ""
 
+msgid "Toggle show/hide"
+msgstr ""
+
 msgid "Togo"
 msgstr ""
 
@@ -11369,6 +11485,9 @@ msgid "Trinidad and Tobago"
 msgstr ""
 
 msgid "Troubleshoot"
+msgstr ""
+
+msgid "True"
 msgstr ""
 
 msgid "Try to find used transponders in cable network.. please wait..."
@@ -11526,9 +11645,12 @@ msgstr "Ukraina"
 msgid "Ukrainian"
 msgstr "Ukraina"
 
+msgid "Unable to change password"
+msgstr ""
+
 #, fuzzy, python-format
 msgid ""
-"Unattended upgrade in progress\n"
+"Unattended update in progress\n"
 "Please wait until your %s %s reboots\n"
 "This may take a few minutes"
 msgstr ""
@@ -11628,6 +11750,10 @@ msgstr "Update and ask to reboot"
 msgid "Update and reboot (recommended)"
 msgstr "Update and reboot (recommended)"
 
+#, fuzzy
+msgid "Update bookmarks"
+msgstr "Pelacakan Otomatis"
+
 #, python-format
 msgid "Update completed, %d package was installed."
 msgid_plural "Update completed, %d packages were installed."
@@ -11645,6 +11771,10 @@ msgstr "Update has completed."
 
 msgid "Updatefeed not available."
 msgstr "Updatefeed not available."
+
+#, fuzzy
+msgid "Updating"
+msgstr "Update"
 
 msgid "Updating software catalog"
 msgstr "Updating software catalog"
@@ -11695,6 +11825,10 @@ msgstr "Gunakan info EPG MHW ketika tersedia."
 
 msgid "Use Netmed EPG information when it is available."
 msgstr "Gunakan info EPG Netmed ketika tersedia."
+
+#, fuzzy
+msgid "Use OpenTV EPG information when it is available."
+msgstr "Gunakan info EPG EIT ketika tersedia."
 
 msgid "Use TV remote control"
 msgstr "Use TV remote control"
@@ -12194,7 +12328,8 @@ msgstr ""
 msgid "What do you want to scan?"
 msgstr "Anda menginginkan ini?"
 
-msgid "When enabled enigma2 will load unlinked userbouquets. This means that userbouquets that are available, but not included in the bouquets.tv or bouquets.radio files, will still be loaded. This allows you for example to keep your own user bouquet while installed settings are upgraded"
+#, fuzzy
+msgid "When enabled enigma2 will load unlinked userbouquets. This means that userbouquets that are available, but not included in the bouquets.tv or bouquets.radio files, will still be loaded. This allows you for example to keep your own user bouquet while installed settings are updated"
 msgstr "Ketika diaktifkan enigma2 akan memuat buket pengguna yg tak terhubung. Ini berarti bahwa buket pengguna yg tersedia, tapi tidak disertakan dalam file bouquets.tv atau bouquets.radio, akan tetap dimuat. Ini memungkinkan anda misalnya untuk menyimpan buket pengguna anda sendiri sementara pengaturan yg terpasang sedang ditingkatkan"
 
 msgid "When enabled the PiP can be closed by the exit button."
@@ -12664,6 +12799,9 @@ msgstr ""
 msgid "You have to wait %s!"
 msgstr "Anda harus menunggu %s!"
 
+msgid "You must set a root password in order to be able to use network services, such as FTP, telnet or ssh."
+msgstr ""
+
 #, python-format
 msgid "You must switch to the service %s (%s - '%s')!\n"
 msgstr "Anda harus beralih ke layanan %s (%s - '%s')!\n"
@@ -12735,7 +12873,7 @@ msgstr "Koleksi anda saat ini akan hilang!"
 
 #, fuzzy, python-format
 msgid ""
-"Your frontprocessor will be upgraded\n"
+"Your frontprocessor will be updated\n"
 "Please wait until your %s %s reboots\n"
 "This may take a few minutes"
 msgstr ""
@@ -12951,6 +13089,10 @@ msgstr "akan memulai"
 msgid "activate network adapter configuration"
 msgstr "aktifkan konfigurasi adapter jaringan"
 
+#, fuzzy
+msgid "active"
+msgstr "Alternatif"
+
 msgid "active NFS Shares:"
 msgstr ""
 
@@ -12959,9 +13101,6 @@ msgstr ""
 
 msgid "add alternatives"
 msgstr "tambahkan alternatif"
-
-msgid "add bookmark"
-msgstr "tambahkan bookmark"
 
 msgid "add bouquet"
 msgstr "tambahkan buket"
@@ -13192,9 +13331,6 @@ msgstr ""
 msgid "copy to bouquets"
 msgstr "salin ke buket"
 
-msgid "create directory"
-msgstr "buat direktori"
-
 msgid "create symlink ..."
 msgstr ""
 
@@ -13215,6 +13351,10 @@ msgstr "descramble and record ecm"
 
 msgid "detective/thriller"
 msgstr "detective/thriller"
+
+#, fuzzy
+msgid "disable"
+msgstr "dimatikan"
 
 msgid "disable intro screen"
 msgstr ""
@@ -13266,6 +13406,10 @@ msgstr ""
 
 msgid "empty"
 msgstr "empty"
+
+#, fuzzy
+msgid "enable"
+msgstr "aktifkan"
 
 msgid "enable bouquet edit"
 msgstr "enable bouquet edit"
@@ -13850,17 +13994,11 @@ msgstr "remove all new found flags"
 msgid "remove before this position"
 msgstr "remove before this position"
 
-msgid "remove bookmark"
-msgstr "remove bookmark"
-
 msgid "remove bouquet from parental protection"
 msgstr ""
 
 msgid "remove cable services"
 msgstr ""
-
-msgid "remove directory"
-msgstr "remove directory"
 
 msgid "remove entry"
 msgstr "remove entry"
@@ -13882,9 +14020,6 @@ msgstr "remove this mark"
 
 msgid "rename entry"
 msgstr ""
-
-msgid "repeat playlist"
-msgstr "ulang daftar putar"
 
 msgid "repeated"
 msgstr "diulang"
@@ -13920,12 +14055,6 @@ msgstr ""
 msgid "running"
 msgstr "Peringatan"
 
-msgid "save last directory on exit"
-msgstr "save last directory on exit"
-
-msgid "save playlist on exit"
-msgstr "save playlist on exit"
-
 msgid "scan state"
 msgstr "scan state"
 
@@ -13937,9 +14066,6 @@ msgstr "seconds"
 
 msgid "security"
 msgstr ""
-
-msgid "select"
-msgstr "pilih"
 
 msgid "select CAId's"
 msgstr "pilih CAId"
@@ -13978,9 +14104,6 @@ msgstr "show alternatives"
 
 msgid "show event details"
 msgstr "show event details"
-
-msgid "show mediaplayer on mainmenu"
-msgstr "show mediaplayer on mainmenu"
 
 msgid "show softwaremanager in setup menu"
 msgstr "show softwaremanager in setup menu"
@@ -14053,9 +14176,6 @@ msgstr "social/spiritual science"
 msgid "softcams"
 msgstr "Softcam type"
 
-msgid "sorting of playlists"
-msgstr "sorting of playlists"
-
 msgid "special events"
 msgstr "special events"
 
@@ -14070,9 +14190,6 @@ msgstr "standard"
 
 msgid "start cut here"
 msgstr "start cut here"
-
-msgid "start directory"
-msgstr "start directory"
 
 #, fuzzy
 msgid "starts in a few seconds"
@@ -14089,12 +14206,6 @@ msgstr "stop using as startup service"
 
 msgid "successful"
 msgstr ""
-
-msgid "switch to bookmarks"
-msgstr "switch to bookmarks"
-
-msgid "switch to filelist"
-msgstr "switch to filelist"
 
 msgid "switch to the next angle"
 msgstr "switch to the next angle"
@@ -14187,14 +14298,14 @@ msgstr ""
 msgid "until standby/restart"
 msgstr "until standby/restart"
 
-#, fuzzy
-msgid "update bookmarks"
-msgstr "Pelacakan Otomatis"
-
 msgid "use best, controlled by HDMI"
 msgstr ""
 
 msgid "user defined"
+msgstr "ditentukan pengguna"
+
+#, fuzzy
+msgid "user defined hidden"
 msgstr "ditentukan pengguna"
 
 msgid "variety show"
@@ -14284,6 +14395,9 @@ msgstr "ya"
 
 msgid "yes (keep feeds)"
 msgstr "ya (simpan feeds)"
+
+msgid "yes, but not in multi selections"
+msgstr ""
 
 #, fuzzy
 msgid "your Receiver might be unusable now. Please consult the manual for further assistance before rebooting your Receiver."

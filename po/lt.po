@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-27 14:27+0200\n"
+"POT-Creation-Date: 2019-10-13 22:33+0200\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -54,9 +54,10 @@ msgid ""
 "Conflict detection disabled!"
 msgstr ""
 
+#, fuzzy
 msgid ""
 "\n"
-"Edit the upgrade source address."
+"Edit the update source address."
 msgstr ""
 "\n"
 "Redaguoti atnaujinimo šaltinio adresus."
@@ -212,6 +213,14 @@ msgstr ""
 
 #, python-format
 msgid "%.0f kB"
+msgstr ""
+
+#, python-format
+msgid "%.1f°E"
+msgstr ""
+
+#, python-format
+msgid "%.1f°W"
 msgstr ""
 
 #, python-format
@@ -1084,6 +1093,10 @@ msgstr ""
 msgid "All services provider"
 msgstr "paskirtos Kanalai/Tiekėjai:"
 
+#, fuzzy
+msgid "All slots"
+msgstr "Išsirinkite vietą"
+
 msgid "Allocate"
 msgstr ""
 
@@ -1141,6 +1154,9 @@ msgstr "pridėti kitus"
 #, fuzzy
 msgid "Alternative 2"
 msgstr "pridėti kitus"
+
+msgid "Alternative URLs for DVB-T/C or ATSC"
+msgstr ""
 
 #, fuzzy
 msgid "Alternative numbering mode"
@@ -2796,6 +2812,10 @@ msgid "Create ISO"
 msgstr "Sukurkite DVD-ISO"
 
 #, fuzzy
+msgid "Create directory"
+msgstr "kurti direktoriją"
+
+#, fuzzy
 msgid "Create directory/folder"
 msgstr "kurti direktoriją"
 
@@ -3245,6 +3265,15 @@ msgstr "Nepasirinkti"
 msgid "Destination of fallback remote receiver"
 msgstr ""
 
+msgid "Destination of fallback remote receiver for ATSC"
+msgstr ""
+
+msgid "Destination of fallback remote receiver for DVB-C"
+msgstr ""
+
+msgid "Destination of fallback remote receiver for DVB-T"
+msgstr ""
+
 msgid "Details for plugin: "
 msgstr "Informacija apie priedą:"
 
@@ -3589,14 +3618,15 @@ msgid "Do you want to select a different skin?"
 msgstr "Jūs norite skanuoti palydovą?"
 
 #, fuzzy
+msgid "Do you want to update the package:\n"
+msgstr "Jūs norite atnaujinti paketą:\n"
+
+#, fuzzy
 msgid "Do you want to update your Receiver?"
 msgstr "Jūs norite parsisiųsti atvaizdą į %s ?"
 
 msgid "Do you want to update your receiver?"
 msgstr ""
-
-msgid "Do you want to upgrade the package:\n"
-msgstr "Jūs norite atnaujinti paketą:\n"
 
 msgid "Dolby"
 msgstr ""
@@ -3638,8 +3668,8 @@ msgid "Done - Installed or upgraded %d packages"
 msgstr "Baigta - Įdiegti, patobulinti ar pašalinti %d paketai su %d klaidomis"
 
 #, fuzzy, python-format
-msgid "Done - Installed, upgraded or removed %d package (%s)"
-msgid_plural "Done - Installed, upgraded or removed %d packages (%s)"
+msgid "Done - Installed, updated or removed %d package (%s)"
+msgid_plural "Done - Installed, updated or removed %d packages (%s)"
 msgstr[0] "Baigta - Įdiegti, patobulinti ar pašalinti %d paketai su %d klaidomis"
 msgstr[1] "Baigta - Įdiegti, patobulinti ar pašalinti %d paketai su %d klaidomis"
 
@@ -3754,6 +3784,10 @@ msgstr "Redaguoti"
 msgid "Edit chapters of current title"
 msgstr "Redaguokite dabartinio pavadinimo skyrius"
 
+#, fuzzy
+msgid "Edit menu"
+msgstr "Pagrindinis meniu"
+
 msgid "Edit position is the line end"
 msgstr ""
 
@@ -3777,7 +3811,8 @@ msgstr ""
 msgid "Edit title"
 msgstr "Redaguoti"
 
-msgid "Edit upgrade source url."
+#, fuzzy
+msgid "Edit update source url."
 msgstr "Suredaguokite atnaujinimo šaltinio url."
 
 msgid "Education/Science/..."
@@ -3829,6 +3864,10 @@ msgstr "Rodyti atvejo eigą kanalo pasirinkime"
 
 msgid "Enable OK for channel selection"
 msgstr ""
+
+#, fuzzy
+msgid "Enable OpenTV EPG"
+msgstr "Įjungti EIT EPG"
 
 msgid "Enable Swap at startup"
 msgstr ""
@@ -4281,9 +4320,6 @@ msgstr ""
 msgid "Extrude from left"
 msgstr ""
 
-msgid "F"
-msgstr ""
-
 msgid "F1/F3/F4/F4-TURBO"
 msgstr ""
 
@@ -4367,10 +4403,22 @@ msgstr ""
 msgid "Fallback remote receiver URL"
 msgstr ""
 
+msgid "Fallback remote receiver for ATSC"
+msgstr ""
+
+msgid "Fallback remote receiver for DVB-C"
+msgstr ""
+
+msgid "Fallback remote receiver for DVB-T"
+msgstr ""
+
 msgid "Fallback remote receiver setup"
 msgstr ""
 
 msgid "Fallback tuner setup"
+msgstr ""
+
+msgid "False"
 msgstr ""
 
 #, python-format
@@ -4635,7 +4683,7 @@ msgstr "Pen"
 msgid "Friday"
 msgstr "Penktadienis"
 
-msgid "From :"
+msgid "From:"
 msgstr ""
 
 msgid "Frontpanel"
@@ -4670,9 +4718,6 @@ msgid "Further Options"
 msgstr ""
 
 msgid "Further options"
-msgstr ""
-
-msgid "G"
 msgstr ""
 
 msgid "GB800SOLO takes about 20 mins !!\n"
@@ -4805,9 +4850,6 @@ msgstr ""
 msgid "Goto 0"
 msgstr "Eiti į 0"
 
-msgid "Goto :"
-msgstr ""
-
 msgid "Goto X"
 msgstr ""
 
@@ -4835,6 +4877,10 @@ msgstr "Eiti į poziciją"
 
 msgid "Goto specific date/time"
 msgstr ""
+
+#, fuzzy
+msgid "Goto:"
+msgstr "Eiti į 0"
 
 msgid "GotoX calibration"
 msgstr ""
@@ -4897,9 +4943,6 @@ msgid "Guinea-Bissau"
 msgstr ""
 
 msgid "Guyana"
-msgstr ""
-
-msgid "H"
 msgstr ""
 
 msgid "HD list"
@@ -5147,10 +5190,6 @@ msgstr "Vengrų"
 #, fuzzy
 msgid "Hungary"
 msgstr "Vengrų"
-
-#, fuzzy
-msgid "I"
-msgstr "C"
 
 msgid "I/O priority for script execution"
 msgstr ""
@@ -5610,9 +5649,6 @@ msgstr ""
 msgid "Itu_R_BT_709"
 msgstr ""
 
-msgid "J"
-msgstr ""
-
 msgid "Jamaica"
 msgstr ""
 
@@ -5765,6 +5801,10 @@ msgstr ""
 #, python-format
 msgid "Latest available teamBlue %s build is from: %s"
 msgstr ""
+
+#, fuzzy
+msgid "Latest update log"
+msgstr "Paketo sąrašo atnaujinimas"
 
 msgid "Latitude"
 msgstr "Platuma"
@@ -6710,6 +6750,9 @@ msgstr ""
 msgid "New folder"
 msgstr ""
 
+msgid "New password"
+msgstr ""
+
 msgid "News Current Affairs"
 msgstr ""
 
@@ -6958,10 +7001,6 @@ msgid "Norwegian"
 msgstr "Norvegų"
 
 #, fuzzy
-msgid "Not Defined"
-msgstr "Vartotojo pasirinktas"
-
-#, fuzzy
 msgid "Not Installed"
 msgstr "Įdiegti"
 
@@ -6972,6 +7011,10 @@ msgstr "Vartotojo pasirinktas"
 #, fuzzy
 msgid "Not associated"
 msgstr "Ne-Asocijuotas"
+
+#, fuzzy
+msgid "Not defined"
+msgstr "Vartotojo pasirinktas"
 
 #, fuzzy, python-format
 msgid "Not enough disk space. Please free up some disk space and try again. (%d MB required, %d MB available)"
@@ -7326,10 +7369,6 @@ msgstr "Paketo valdytojas"
 msgid "Packages to update"
 msgstr "Paketo sąrašo atnaujinimas"
 
-#, fuzzy
-msgid "Packages upgraded"
-msgstr "Paketo sąrašo atnaujinimas"
-
 msgid "Packet manager"
 msgstr "Paketo valdytojas"
 
@@ -7404,6 +7443,13 @@ msgstr ""
 
 msgid "Password"
 msgstr ""
+
+msgid "Password changed"
+msgstr ""
+
+#, fuzzy
+msgid "Password setup"
+msgstr "Vaizdo nustatymai"
 
 msgid "Path to save not exist: '/tmp/'"
 msgstr ""
@@ -8089,10 +8135,6 @@ msgstr "Pirminis DNS"
 msgid "Prime time"
 msgstr "Pašalinti laikmatį"
 
-#, fuzzy
-msgid "PrimeTime"
-msgstr "Laikas"
-
 msgid "Priority"
 msgstr "Pirmenybė"
 
@@ -8229,6 +8271,9 @@ msgstr "Radijas"
 msgid "Random"
 msgstr "Atsitiktinis"
 
+msgid "Random password"
+msgstr ""
+
 #, python-format
 msgid "Rating defined by broadcaster - %d"
 msgstr ""
@@ -8283,11 +8328,12 @@ msgstr "Tikrai išjungti dabar?"
 msgid "Really store at index %2d for current position?"
 msgstr "iškirpti žymeklį dabartinėje pozicijoje"
 
-msgid "Really upgrade the frontprocessor and reboot now?"
-msgstr ""
+#, fuzzy
+msgid "Really update the frontprocessor and reboot now?"
+msgstr "Tikrai perjungti dabar?"
 
 #, fuzzy, python-format
-msgid "Really upgrade your %s %s and reboot now?"
+msgid "Really update your %s %s and reboot now?"
 msgstr "Tikrai perjungti dabar?"
 
 msgid "Reboot"
@@ -8475,6 +8521,10 @@ msgid "Remove currently selected title"
 msgstr "Pašalinti dabartinį pasirinktą pavadinimą"
 
 #, fuzzy
+msgid "Remove directory"
+msgstr "pašalinti direktoriją"
+
+#, fuzzy
 msgid "Remove items from trash can after (days)"
 msgstr "Pašalinti elementus iš šiukšlinės po (dienų)"
 
@@ -8529,6 +8579,10 @@ msgid "Repeat leave standby messages"
 msgstr ""
 
 #, fuzzy
+msgid "Repeat playlist"
+msgstr "pakartoti grojaraštį"
+
+#, fuzzy
 msgid "Repeat type"
 msgstr "Pakartojimo būdas"
 
@@ -8573,6 +8627,9 @@ msgstr "Perjungti"
 
 msgid "Reset and renumerate title names"
 msgstr "Perjungti ir pernumeruoti antraštės pavadinimus"
+
+msgid "Reset order (All)"
+msgstr ""
 
 #, fuzzy
 msgid "Reset persistent PIN code"
@@ -8918,12 +8975,24 @@ msgid "Save and stop timeshift"
 msgstr "išjungti laiko poslinkį"
 
 #, fuzzy
+msgid "Save changes"
+msgstr "išsaugoti grojaraštį išeinant"
+
+#, fuzzy
+msgid "Save last directory on exit"
+msgstr "išsaugoti paskutinę direktoriją išeinant"
+
+#, fuzzy
 msgid "Save left folder on exit"
 msgstr "išsaugoti paskutinę direktoriją išeinant"
 
 #, fuzzy
 msgid "Save playlist"
 msgstr "išsaugoti grojaraštį"
+
+#, fuzzy
+msgid "Save playlist on exit"
+msgstr "išsaugoti grojaraštį išeinant"
 
 #, fuzzy
 msgid "Save right folder on exit"
@@ -9419,10 +9488,11 @@ msgid "Select the virtual keyboard shifted character set for the next character 
 msgstr ""
 
 #, fuzzy
-msgid "Select upgrade source"
+msgid "Select update source"
 msgstr "Išsirinkite atnaujinimo šaltinį dėl redagavimo."
 
-msgid "Select upgrade source to edit."
+#, fuzzy
+msgid "Select update source to edit."
 msgstr "Išsirinkite atnaujinimo šaltinį dėl redagavimo."
 
 msgid "Select video input with up/down buttons"
@@ -9608,6 +9678,9 @@ msgid "Set action when movie playback is finished."
 msgstr "Elgsena, kai filmas prasidėjęs"
 
 msgid "Set all hotkey to default?"
+msgstr ""
+
+msgid "Set alternative fallback tuners for DVB-T/C or ATSC"
 msgstr ""
 
 msgid "Set blocktimes by weekday"
@@ -9927,8 +10000,12 @@ msgid "Show latest commits"
 msgstr "nutraukti mėgstamiausių redagavimą"
 
 #, fuzzy
-msgid "Show latest upgrade log"
+msgid "Show latest update log"
 msgstr "Išsirinkite atnaujinimo šaltinį dėl redagavimo."
+
+#, fuzzy
+msgid "Show media player on main menu"
+msgstr "Rodyti radijo grotuvą..."
 
 #, fuzzy
 msgid "Show menu or plugin numbers"
@@ -9942,6 +10019,9 @@ msgid "Show message if File Commander is not running and all Task's are complete
 msgstr ""
 
 msgid "Show message if a background script ends successefully. Has 'stout', then this is displayed as additional info."
+msgstr ""
+
+msgid "Show message if a background script ends successfully. Has 'stout', then this is displayed as additional info."
 msgstr ""
 
 #, fuzzy
@@ -9978,7 +10058,7 @@ msgid "Show only found image and mtd partitions.\n"
 msgstr ""
 
 #, fuzzy
-msgid "Show packages to be upgraded"
+msgid "Show packages to be updated"
 msgstr "Paketo sąrašo atnaujinimas"
 
 #, fuzzy
@@ -10016,6 +10096,9 @@ msgstr ""
 #, fuzzy
 msgid "Show service list"
 msgstr "atidaryti kanalų sąrašą"
+
+msgid "Show service name and event description among each other instead of side by side."
+msgstr ""
 
 msgid "Show service type icons"
 msgstr ""
@@ -10065,6 +10148,9 @@ msgstr "Rodyti radijo grotuvą..."
 #, fuzzy
 msgid "Show the plugin browser.."
 msgstr "Papildomų programų naršyklė"
+
+msgid "Show two lines per entry"
+msgstr ""
 
 #, fuzzy
 msgid "Show unknown extension as text"
@@ -10419,6 +10505,10 @@ msgstr "Rūšiuoti laiką"
 msgid "Sorting left files by name, date or size"
 msgstr ""
 
+#, fuzzy
+msgid "Sorting of playlists"
+msgstr "perjungti į grojaraštį"
+
 msgid "Sorting right files by name, date or size"
 msgstr ""
 
@@ -10532,6 +10622,10 @@ msgstr ""
 #, fuzzy
 msgid "Start"
 msgstr "Pradėti testą"
+
+#, fuzzy
+msgid "Start directory"
+msgstr "pradėti direktoriją"
 
 msgid "Start from the beginning"
 msgstr "Pradžia nuo pradžios"
@@ -10852,6 +10946,10 @@ msgid "Switch to TV mode"
 msgstr "perjungti į failų sąrašą"
 
 #, fuzzy
+msgid "Switch to bookmarks"
+msgstr "perjungti į žymes"
+
+#, fuzzy
 msgid "Switch to filelist"
 msgstr "perjungti į failų sąrašą"
 
@@ -11160,6 +11258,9 @@ msgid ""
 "Test Pattern by TigerDave - www.tigerdave.com/ht_menu.htm"
 msgstr ""
 
+msgid "The password can not be blank."
+msgstr ""
+
 #, python-format
 msgid "The path %s already exists."
 msgstr "Kelias %s jau egzistuoja."
@@ -11390,7 +11491,7 @@ msgstr ""
 msgid "This option allows you to force the HLG modes for UHD"
 msgstr ""
 
-msgid "This option allows you to hide and sort menu entries. When selecting user you can change order and hide menu items via the blue button"
+msgid "This option allows you to hide and sort menu entries. When selecting user you can change order and hide menu items via the blue button. With the user defined hidden the blue button is not shown in the menus"
 msgstr ""
 
 msgid "This option allows you to power off the display."
@@ -11678,6 +11779,9 @@ msgstr ""
 msgid "Toggle new text inserts before or overwrites existing text"
 msgstr ""
 
+msgid "Toggle show/hide"
+msgstr ""
+
 msgid "Togo"
 msgstr ""
 
@@ -11753,6 +11857,9 @@ msgid "Trinidad and Tobago"
 msgstr ""
 
 msgid "Troubleshoot"
+msgstr ""
+
+msgid "True"
 msgstr ""
 
 msgid "Try to find used transponders in cable network.. please wait..."
@@ -11916,9 +12023,12 @@ msgstr ""
 msgid "Ukrainian"
 msgstr ""
 
+msgid "Unable to change password"
+msgstr ""
+
 #, python-format
 msgid ""
-"Unattended upgrade in progress\n"
+"Unattended update in progress\n"
 "Please wait until your %s %s reboots\n"
 "This may take a few minutes"
 msgstr ""
@@ -12013,6 +12123,10 @@ msgstr ""
 msgid "Update and reboot (recommended)"
 msgstr ""
 
+#, fuzzy
+msgid "Update bookmarks"
+msgstr "Automatinė paieška"
+
 #, python-format
 msgid "Update completed, %d package was installed."
 msgid_plural "Update completed, %d packages were installed."
@@ -12030,6 +12144,10 @@ msgstr ""
 
 msgid "Updatefeed not available."
 msgstr "Atnaujinimo perdavimas nepasiekiamas."
+
+#, fuzzy
+msgid "Updating"
+msgstr "Atnaujinimas"
 
 msgid "Updating software catalog"
 msgstr "Programinės įrangos katalogo atnaujinimas"
@@ -12079,6 +12197,9 @@ msgid "Use MHW EPG information when it is available."
 msgstr ""
 
 msgid "Use Netmed EPG information when it is available."
+msgstr ""
+
+msgid "Use OpenTV EPG information when it is available."
 msgstr ""
 
 msgid "Use TV remote control"
@@ -12590,7 +12711,7 @@ msgstr ""
 msgid "What do you want to scan?"
 msgstr "Ką Jūs norite skanuoti?"
 
-msgid "When enabled enigma2 will load unlinked userbouquets. This means that userbouquets that are available, but not included in the bouquets.tv or bouquets.radio files, will still be loaded. This allows you for example to keep your own user bouquet while installed settings are upgraded"
+msgid "When enabled enigma2 will load unlinked userbouquets. This means that userbouquets that are available, but not included in the bouquets.tv or bouquets.radio files, will still be loaded. This allows you for example to keep your own user bouquet while installed settings are updated"
 msgstr ""
 
 msgid "When enabled the PiP can be closed by the exit button."
@@ -13034,6 +13155,9 @@ msgstr ""
 msgid "You have to wait %s!"
 msgstr "Jūs turite laukti %s!"
 
+msgid "You must set a root password in order to be able to use network services, such as FTP, telnet or ssh."
+msgstr ""
+
 #, python-format
 msgid "You must switch to the service %s (%s - '%s')!\n"
 msgstr ""
@@ -13102,7 +13226,7 @@ msgstr "Jūsų dabartinė kolekcija bus prarasta!"
 
 #, python-format
 msgid ""
-"Your frontprocessor will be upgraded\n"
+"Your frontprocessor will be updated\n"
 "Please wait until your %s %s reboots\n"
 "This may take a few minutes"
 msgstr ""
@@ -13308,6 +13432,10 @@ msgstr "apie pradžią"
 msgid "activate network adapter configuration"
 msgstr "aktyvuokite tinklo plokštės konfigūraciją"
 
+#, fuzzy
+msgid "active"
+msgstr "pridėti kitus"
+
 msgid "active NFS Shares:"
 msgstr ""
 
@@ -13316,9 +13444,6 @@ msgstr ""
 
 msgid "add alternatives"
 msgstr "pridėti kitus"
-
-msgid "add bookmark"
-msgstr "pridėti žymę"
 
 msgid "add bouquet"
 msgstr "pridėti paketą"
@@ -13554,9 +13679,6 @@ msgstr ""
 msgid "copy to bouquets"
 msgstr "kopijuoti į paketus"
 
-msgid "create directory"
-msgstr "kurti direktoriją"
-
 msgid "create symlink ..."
 msgstr ""
 
@@ -13578,6 +13700,10 @@ msgstr ""
 
 msgid "detective/thriller"
 msgstr ""
+
+#, fuzzy
+msgid "disable"
+msgstr "išjungtas"
 
 #, fuzzy
 msgid "disable intro screen"
@@ -13630,6 +13756,10 @@ msgstr ""
 
 msgid "empty"
 msgstr "tuščias"
+
+#, fuzzy
+msgid "enable"
+msgstr "įjungtas"
 
 msgid "enable bouquet edit"
 msgstr "įjungti paketo redagavimą"
@@ -14222,9 +14352,6 @@ msgstr "šalinti visus žymeklius 'naujas'"
 msgid "remove before this position"
 msgstr "pašalinti po šios vietos"
 
-msgid "remove bookmark"
-msgstr "pašalinti žymę"
-
 #, fuzzy
 msgid "remove bouquet from parental protection"
 msgstr "panaikinti tėvų kontrolę"
@@ -14232,9 +14359,6 @@ msgstr "panaikinti tėvų kontrolę"
 #, fuzzy
 msgid "remove cable services"
 msgstr "Apsaugoti kanalus"
-
-msgid "remove directory"
-msgstr "pašalinti direktoriją"
 
 msgid "remove entry"
 msgstr "pašalinti"
@@ -14257,9 +14381,6 @@ msgstr "šalinti šį žymeklį"
 
 msgid "rename entry"
 msgstr ""
-
-msgid "repeat playlist"
-msgstr "pakartoti grojaraštį"
 
 msgid "repeated"
 msgstr "pakartotinis"
@@ -14294,12 +14415,6 @@ msgstr ""
 msgid "running"
 msgstr ""
 
-msgid "save last directory on exit"
-msgstr "išsaugoti paskutinę direktoriją išeinant"
-
-msgid "save playlist on exit"
-msgstr "išsaugoti grojaraštį išeinant"
-
 msgid "scan state"
 msgstr "paieškos eiga"
 
@@ -14311,9 +14426,6 @@ msgstr "sekundžių"
 
 msgid "security"
 msgstr ""
-
-msgid "select"
-msgstr "pasirinkti"
 
 msgid "select CAId's"
 msgstr "išsirinkite CAId's"
@@ -14353,9 +14465,6 @@ msgstr "rodyti kitus"
 
 msgid "show event details"
 msgstr "rodyti užduočių detales"
-
-msgid "show mediaplayer on mainmenu"
-msgstr ""
 
 msgid "show softwaremanager in setup menu"
 msgstr ""
@@ -14428,9 +14537,6 @@ msgstr ""
 msgid "softcams"
 msgstr "Įdiegiama programinė įranga..."
 
-msgid "sorting of playlists"
-msgstr ""
-
 msgid "special events"
 msgstr ""
 
@@ -14446,9 +14552,6 @@ msgstr "standartinis"
 msgid "start cut here"
 msgstr "pradėti iškirpimą čia"
 
-msgid "start directory"
-msgstr "pradėti direktoriją"
-
 msgid "starts in a few seconds"
 msgstr ""
 
@@ -14463,12 +14566,6 @@ msgstr ""
 
 msgid "successful"
 msgstr ""
-
-msgid "switch to bookmarks"
-msgstr "perjungti į žymes"
-
-msgid "switch to filelist"
-msgstr "perjungti į failų sąrašą"
 
 msgid "switch to the next angle"
 msgstr "perjunkite į kitą kampą"
@@ -14564,14 +14661,14 @@ msgstr "Įjungti"
 msgid "until standby/restart"
 msgstr "iki budėjimo/paleisti iš naujo"
 
-#, fuzzy
-msgid "update bookmarks"
-msgstr "Automatinė paieška"
-
 msgid "use best, controlled by HDMI"
 msgstr ""
 
 msgid "user defined"
+msgstr "vartotojo nustatytas"
+
+#, fuzzy
+msgid "user defined hidden"
 msgstr "vartotojo nustatytas"
 
 msgid "variety show"
@@ -14662,6 +14759,9 @@ msgstr "taip"
 
 msgid "yes (keep feeds)"
 msgstr "taip (saugoti feeds)"
+
+msgid "yes, but not in multi selections"
+msgstr ""
 
 msgid "your Receiver might be unusable now. Please consult the manual for further assistance before rebooting your Receiver."
 msgstr ""

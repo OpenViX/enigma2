@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-27 14:27+0200\n"
+"POT-Creation-Date: 2019-10-13 22:33+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -51,7 +51,7 @@ msgstr ""
 
 msgid ""
 "\n"
-"Edit the upgrade source address."
+"Edit the update source address."
 msgstr ""
 
 msgid ""
@@ -189,6 +189,14 @@ msgstr ""
 
 #, python-format
 msgid "%.0f kB"
+msgstr ""
+
+#, python-format
+msgid "%.1f°E"
+msgstr ""
+
+#, python-format
+msgid "%.1f°W"
 msgstr ""
 
 #, python-format
@@ -969,6 +977,9 @@ msgstr ""
 msgid "All services provider"
 msgstr ""
 
+msgid "All slots"
+msgstr ""
+
 msgid "Allocate"
 msgstr ""
 
@@ -1006,6 +1017,9 @@ msgid "Alternative 1"
 msgstr ""
 
 msgid "Alternative 2"
+msgstr ""
+
+msgid "Alternative URLs for DVB-T/C or ATSC"
 msgstr ""
 
 msgid "Always ask"
@@ -2122,6 +2136,9 @@ msgstr ""
 msgid "Create ISO"
 msgstr ""
 
+msgid "Create directory"
+msgstr ""
+
 msgid "Create directory/folder"
 msgstr ""
 
@@ -2464,6 +2481,15 @@ msgstr ""
 msgid "Destination of fallback remote receiver"
 msgstr ""
 
+msgid "Destination of fallback remote receiver for ATSC"
+msgstr ""
+
+msgid "Destination of fallback remote receiver for DVB-C"
+msgstr ""
+
+msgid "Destination of fallback remote receiver for DVB-T"
+msgstr ""
+
 msgid "Details for plugin: "
 msgstr ""
 
@@ -2745,13 +2771,13 @@ msgstr ""
 msgid "Do you want to select a different skin?"
 msgstr ""
 
+msgid "Do you want to update the package:\n"
+msgstr ""
+
 msgid "Do you want to update your Receiver?"
 msgstr ""
 
 msgid "Do you want to update your receiver?"
-msgstr ""
-
-msgid "Do you want to upgrade the package:\n"
 msgstr ""
 
 msgid "Dolby"
@@ -2792,8 +2818,8 @@ msgid "Done - Installed or upgraded %d packages"
 msgstr ""
 
 #, python-format
-msgid "Done - Installed, upgraded or removed %d package (%s)"
-msgid_plural "Done - Installed, upgraded or removed %d packages (%s)"
+msgid "Done - Installed, updated or removed %d package (%s)"
+msgid_plural "Done - Installed, updated or removed %d packages (%s)"
 msgstr[0] ""
 msgstr[1] ""
 
@@ -2888,6 +2914,9 @@ msgstr ""
 msgid "Edit chapters of current title"
 msgstr ""
 
+msgid "Edit menu"
+msgstr ""
+
 msgid "Edit position is the line end"
 msgstr ""
 
@@ -2909,7 +2938,7 @@ msgstr ""
 msgid "Edit title"
 msgstr ""
 
-msgid "Edit upgrade source url."
+msgid "Edit update source url."
 msgstr ""
 
 msgid "Education/Science/..."
@@ -3360,7 +3389,19 @@ msgstr ""
 msgid "Fallback remote receiver URL"
 msgstr ""
 
+msgid "Fallback remote receiver for ATSC"
+msgstr ""
+
+msgid "Fallback remote receiver for DVB-C"
+msgstr ""
+
+msgid "Fallback remote receiver for DVB-T"
+msgstr ""
+
 msgid "Fallback tuner setup"
+msgstr ""
+
+msgid "False"
 msgstr ""
 
 #, python-format
@@ -3576,7 +3617,7 @@ msgstr ""
 msgid "Friday"
 msgstr ""
 
-msgid "From :"
+msgid "From:"
 msgstr ""
 
 #, python-format
@@ -3721,9 +3762,6 @@ msgstr ""
 msgid "Goto 0"
 msgstr ""
 
-msgid "Goto :"
-msgstr ""
-
 msgid "Goto X"
 msgstr ""
 
@@ -3749,6 +3787,9 @@ msgid "Goto primetime / now"
 msgstr ""
 
 msgid "Goto specific date/time"
+msgstr ""
+
+msgid "Goto:"
 msgstr ""
 
 msgid "GotoX calibration"
@@ -4465,6 +4506,9 @@ msgstr ""
 
 #, python-format
 msgid "Latest available teamBlue %s build is from: %s"
+msgstr ""
+
+msgid "Latest update log"
 msgstr ""
 
 msgid "Latitude"
@@ -5223,6 +5267,9 @@ msgstr ""
 msgid "New folder"
 msgstr ""
 
+msgid "New password"
+msgstr ""
+
 msgid "News Current Affairs"
 msgstr ""
 
@@ -5437,9 +5484,6 @@ msgstr ""
 msgid "Norwegian"
 msgstr ""
 
-msgid "Not Defined"
-msgstr ""
-
 msgid "Not Installed"
 msgstr ""
 
@@ -5447,6 +5491,9 @@ msgid "Not Required"
 msgstr ""
 
 msgid "Not associated"
+msgstr ""
+
+msgid "Not defined"
 msgstr ""
 
 #, python-format
@@ -5732,9 +5779,6 @@ msgstr ""
 msgid "Packages to update"
 msgstr ""
 
-msgid "Packages upgraded"
-msgstr ""
-
 msgid "Packet manager"
 msgstr ""
 
@@ -5797,6 +5841,12 @@ msgid "Passthrough"
 msgstr ""
 
 msgid "Password"
+msgstr ""
+
+msgid "Password changed"
+msgstr ""
+
+msgid "Password setup"
 msgstr ""
 
 msgid "Path to save not exist: '/tmp/'"
@@ -6268,9 +6318,6 @@ msgstr ""
 msgid "Prime time"
 msgstr ""
 
-msgid "PrimeTime"
-msgstr ""
-
 msgid "Priority"
 msgstr ""
 
@@ -6382,6 +6429,9 @@ msgstr ""
 msgid "Random"
 msgstr ""
 
+msgid "Random password"
+msgstr ""
+
 #, python-format
 msgid "Rating defined by broadcaster - %d"
 msgstr ""
@@ -6435,11 +6485,11 @@ msgstr ""
 msgid "Really store at index %2d for current position?"
 msgstr ""
 
-msgid "Really upgrade the frontprocessor and reboot now?"
+msgid "Really update the frontprocessor and reboot now?"
 msgstr ""
 
 #, python-format
-msgid "Really upgrade your %s %s and reboot now?"
+msgid "Really update your %s %s and reboot now?"
 msgstr ""
 
 msgid "Reboot"
@@ -6584,6 +6634,9 @@ msgstr ""
 msgid "Remove currently selected title"
 msgstr ""
 
+msgid "Remove directory"
+msgstr ""
+
 msgid "Remove plugins"
 msgstr ""
 
@@ -6627,6 +6680,9 @@ msgstr ""
 msgid "Repeat leave standby messages"
 msgstr ""
 
+msgid "Repeat playlist"
+msgstr ""
+
 msgid "Repeat type"
 msgstr ""
 
@@ -6663,6 +6719,9 @@ msgid "Reset"
 msgstr ""
 
 msgid "Reset and renumerate title names"
+msgstr ""
+
+msgid "Reset order (All)"
 msgstr ""
 
 msgid "Reset persistent PIN code"
@@ -6962,10 +7021,19 @@ msgstr ""
 msgid "Save and stop timeshift"
 msgstr ""
 
+msgid "Save changes"
+msgstr ""
+
+msgid "Save last directory on exit"
+msgstr ""
+
 msgid "Save left folder on exit"
 msgstr ""
 
 msgid "Save playlist"
+msgstr ""
+
+msgid "Save playlist on exit"
 msgstr ""
 
 msgid "Save right folder on exit"
@@ -7378,10 +7446,10 @@ msgstr ""
 msgid "Select the virtual keyboard shifted character set for the next character only"
 msgstr ""
 
-msgid "Select upgrade source"
+msgid "Select update source"
 msgstr ""
 
-msgid "Select upgrade source to edit."
+msgid "Select update source to edit."
 msgstr ""
 
 msgid "Select your ATSC provider."
@@ -7527,6 +7595,9 @@ msgid "Set action when movie playback is finished."
 msgstr ""
 
 msgid "Set all hotkey to default?"
+msgstr ""
+
+msgid "Set alternative fallback tuners for DVB-T/C or ATSC"
 msgstr ""
 
 msgid "Set blocktimes by weekday"
@@ -7730,7 +7801,10 @@ msgstr ""
 msgid "Show latest commits"
 msgstr ""
 
-msgid "Show latest upgrade log"
+msgid "Show latest update log"
+msgstr ""
+
+msgid "Show media player on main menu"
 msgstr ""
 
 msgid "Show movies"
@@ -7757,7 +7831,7 @@ msgstr ""
 msgid "Show only found image and mtd partitions.\n"
 msgstr ""
 
-msgid "Show packages to be upgraded"
+msgid "Show packages to be updated"
 msgstr ""
 
 msgid "Show record clock icons"
@@ -8088,6 +8162,9 @@ msgstr ""
 msgid "Sorting left files by name, date or size"
 msgstr ""
 
+msgid "Sorting of playlists"
+msgstr ""
+
 msgid "Sorting right files by name, date or size"
 msgstr ""
 
@@ -8182,6 +8259,9 @@ msgid "Standby in "
 msgstr ""
 
 msgid "Start"
+msgstr ""
+
+msgid "Start directory"
 msgstr ""
 
 msgid "Start from the beginning"
@@ -8427,6 +8507,9 @@ msgstr ""
 msgid "Switch to TV mode"
 msgstr ""
 
+msgid "Switch to bookmarks"
+msgstr ""
+
 msgid "Switch to filelist"
 msgstr ""
 
@@ -8646,6 +8729,9 @@ msgid ""
 "If you see the tips of all eight arrowheads, then your TV has overscan disabled.\n"
 "\n"
 "Test Pattern by TigerDave - www.tigerdave.com/ht_menu.htm"
+msgstr ""
+
+msgid "The password can not be blank."
 msgstr ""
 
 #, python-format
@@ -9068,6 +9154,9 @@ msgstr ""
 msgid "Toggle new text inserts before or overwrites existing text"
 msgstr ""
 
+msgid "Toggle show/hide"
+msgstr ""
+
 msgid "Togo"
 msgstr ""
 
@@ -9136,6 +9225,9 @@ msgid "Trinidad and Tobago"
 msgstr ""
 
 msgid "Troubleshoot"
+msgstr ""
+
+msgid "True"
 msgstr ""
 
 msgid "Try to find used transponders in cable network.. please wait..."
@@ -9269,9 +9361,12 @@ msgstr ""
 msgid "Ukrainian"
 msgstr ""
 
+msgid "Unable to change password"
+msgstr ""
+
 #, python-format
 msgid ""
-"Unattended upgrade in progress\n"
+"Unattended update in progress\n"
 "Please wait until your %s %s reboots\n"
 "This may take a few minutes"
 msgstr ""
@@ -9360,6 +9455,9 @@ msgstr ""
 msgid "Update and reboot (recommended)"
 msgstr ""
 
+msgid "Update bookmarks"
+msgstr ""
+
 #, python-format
 msgid "Update completed, %d package was installed."
 msgid_plural "Update completed, %d packages were installed."
@@ -9376,6 +9474,9 @@ msgid "Update has completed."
 msgstr ""
 
 msgid "Updatefeed not available."
+msgstr ""
+
+msgid "Updating"
 msgstr ""
 
 msgid "Updating software catalog"
@@ -10000,6 +10101,9 @@ msgstr ""
 msgid "You have to wait %s!"
 msgstr ""
 
+msgid "You must set a root password in order to be able to use network services, such as FTP, telnet or ssh."
+msgstr ""
+
 #, python-format
 msgid "You must switch to the service %s (%s - '%s')!\n"
 msgstr ""
@@ -10052,7 +10156,7 @@ msgstr ""
 
 #, python-format
 msgid ""
-"Your frontprocessor will be upgraded\n"
+"Your frontprocessor will be updated\n"
 "Please wait until your %s %s reboots\n"
 "This may take a few minutes"
 msgstr ""
@@ -10222,6 +10326,9 @@ msgstr ""
 msgid "activate network adapter configuration"
 msgstr ""
 
+msgid "active"
+msgstr ""
+
 msgid "active NFS Shares:"
 msgstr ""
 
@@ -10229,9 +10336,6 @@ msgid "actual time only"
 msgstr ""
 
 msgid "add alternatives"
-msgstr ""
-
-msgid "add bookmark"
 msgstr ""
 
 msgid "add bouquet"
@@ -10449,9 +10553,6 @@ msgstr ""
 msgid "copy to bouquets"
 msgstr ""
 
-msgid "create directory"
-msgstr ""
-
 msgid "create symlink ..."
 msgstr ""
 
@@ -10471,6 +10572,9 @@ msgid "descramble and record ecm"
 msgstr ""
 
 msgid "detective/thriller"
+msgstr ""
+
+msgid "disable"
 msgstr ""
 
 msgid "disable intro screen"
@@ -10522,6 +10626,9 @@ msgid "embedded"
 msgstr ""
 
 msgid "empty"
+msgstr ""
+
+msgid "enable"
 msgstr ""
 
 msgid "enable bouquet edit"
@@ -11085,16 +11192,10 @@ msgstr ""
 msgid "remove before this position"
 msgstr ""
 
-msgid "remove bookmark"
-msgstr ""
-
 msgid "remove bouquet from parental protection"
 msgstr ""
 
 msgid "remove cable services"
-msgstr ""
-
-msgid "remove directory"
 msgstr ""
 
 msgid "remove entry"
@@ -11116,9 +11217,6 @@ msgid "remove this mark"
 msgstr ""
 
 msgid "rename entry"
-msgstr ""
-
-msgid "repeat playlist"
 msgstr ""
 
 msgid "repeated"
@@ -11154,12 +11252,6 @@ msgstr ""
 msgid "running"
 msgstr ""
 
-msgid "save last directory on exit"
-msgstr ""
-
-msgid "save playlist on exit"
-msgstr ""
-
 msgid "scan state"
 msgstr ""
 
@@ -11170,9 +11262,6 @@ msgid "seconds"
 msgstr ""
 
 msgid "security"
-msgstr ""
-
-msgid "select"
 msgstr ""
 
 msgid "select CAId's"
@@ -11209,9 +11298,6 @@ msgid "show alternatives"
 msgstr ""
 
 msgid "show event details"
-msgstr ""
-
-msgid "show mediaplayer on mainmenu"
 msgstr ""
 
 msgid "show softwaremanager in setup menu"
@@ -11283,9 +11369,6 @@ msgstr ""
 msgid "softcams"
 msgstr ""
 
-msgid "sorting of playlists"
-msgstr ""
-
 msgid "special events"
 msgstr ""
 
@@ -11301,9 +11384,6 @@ msgstr ""
 msgid "start cut here"
 msgstr ""
 
-msgid "start directory"
-msgstr ""
-
 msgid "starts in a few seconds"
 msgstr ""
 
@@ -11317,12 +11397,6 @@ msgid "stop using as startup service"
 msgstr ""
 
 msgid "successful"
-msgstr ""
-
-msgid "switch to bookmarks"
-msgstr ""
-
-msgid "switch to filelist"
 msgstr ""
 
 msgid "switch to the next angle"
@@ -11412,13 +11486,13 @@ msgstr ""
 msgid "until standby/restart"
 msgstr ""
 
-msgid "update bookmarks"
-msgstr ""
-
 msgid "use best, controlled by HDMI"
 msgstr ""
 
 msgid "user defined"
+msgstr ""
+
+msgid "user defined hidden"
 msgstr ""
 
 msgid "variety show"
@@ -11506,6 +11580,9 @@ msgid "yes"
 msgstr ""
 
 msgid "yes (keep feeds)"
+msgstr ""
+
+msgid "yes, but not in multi selections"
 msgstr ""
 
 msgid "your Receiver might be unusable now. Please consult the manual for further assistance before rebooting your Receiver."
@@ -12378,6 +12455,9 @@ msgstr ""
 msgid "Enable OK for channel selection"
 msgstr ""
 
+msgid "Enable OpenTV EPG"
+msgstr ""
+
 msgid "Enable ViaSat EPG"
 msgstr ""
 
@@ -12822,6 +12902,9 @@ msgstr ""
 msgid "Show second infobar"
 msgstr ""
 
+msgid "Show service name and event description among each other instead of side by side."
+msgstr ""
+
 msgid "Show service type icons"
 msgstr ""
 
@@ -12832,6 +12915,9 @@ msgid "Show status icons in movielist"
 msgstr ""
 
 msgid "Show symbols on display"
+msgstr ""
+
+msgid "Show two lines per entry"
 msgstr ""
 
 msgid "Show warning when timeshift is stopped"
@@ -12933,7 +13019,7 @@ msgstr ""
 msgid "This allows you to set the number of digits to 5, if you have more than 9999 channels."
 msgstr ""
 
-msgid "This option allows you to hide and sort menu entries. When selecting user you can change order and hide menu items via the blue button"
+msgid "This option allows you to hide and sort menu entries. When selecting user you can change order and hide menu items via the blue button. With the user defined hidden the blue button is not shown in the menus"
 msgstr ""
 
 msgid "This option allows you to power off the display."
@@ -12984,6 +13070,9 @@ msgstr ""
 msgid "Use Netmed EPG information when it is available."
 msgstr ""
 
+msgid "Use OpenTV EPG information when it is available."
+msgstr ""
+
 msgid "Use ViaSat EPG information when it is available."
 msgstr ""
 
@@ -13008,7 +13097,7 @@ msgstr ""
 msgid "Usually when the subtitle language is the same as the audio language, the subtitles will not be used. Enable this option to allow these subtitles to be used."
 msgstr ""
 
-msgid "When enabled enigma2 will load unlinked userbouquets. This means that userbouquets that are available, but not included in the bouquets.tv or bouquets.radio files, will still be loaded. This allows you for example to keep your own user bouquet while installed settings are upgraded"
+msgid "When enabled enigma2 will load unlinked userbouquets. This means that userbouquets that are available, but not included in the bouquets.tv or bouquets.radio files, will still be loaded. This allows you for example to keep your own user bouquet while installed settings are updated"
 msgstr ""
 
 msgid "When enabled the PiP can be closed by the exit button."
@@ -13198,21 +13287,6 @@ msgid "Zap mode"
 msgstr ""
 
 msgid "configure in which resolution pictures are displayed with the picture viewer and movieplayer"
-msgstr ""
-
-msgid "F"
-msgstr ""
-
-msgid "G"
-msgstr ""
-
-msgid "H"
-msgstr ""
-
-msgid "I"
-msgstr ""
-
-msgid "J"
 msgstr ""
 
 msgid "Refresh rate selection."
@@ -13447,4 +13521,7 @@ msgid "Swap buttons right/left with channel plus/minus or the channel button cha
 msgstr ""
 
 msgid "Time between slides in image viewer slideshow."
+msgstr ""
+
+msgid "Show message if a background script ends successfully. Has 'stout', then this is displayed as additional info."
 msgstr ""

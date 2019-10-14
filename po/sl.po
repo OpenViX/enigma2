@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-27 14:27+0200\n"
+"POT-Creation-Date: 2019-10-13 22:33+0200\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -64,9 +64,10 @@ msgid ""
 msgstr ""
 
 #
+#, fuzzy
 msgid ""
 "\n"
-"Edit the upgrade source address."
+"Edit the update source address."
 msgstr ""
 "\n"
 "Sprememba vira za nadgradnjo sprejemnika."
@@ -239,6 +240,14 @@ msgstr ""
 
 #, python-format
 msgid "%.0f kB"
+msgstr ""
+
+#, python-format
+msgid "%.1f°E"
+msgstr ""
+
+#, python-format
+msgid "%.1f°W"
 msgstr ""
 
 #, python-format
@@ -1259,6 +1268,11 @@ msgstr "Vsi sateliti 4 (USALS)"
 msgid "All services provider"
 msgstr "Dodeljeni kanali/ponudniki:"
 
+#
+#, fuzzy
+msgid "All slots"
+msgstr "Izberite lokacijo"
+
 msgid "Allocate"
 msgstr ""
 
@@ -1325,6 +1339,9 @@ msgstr "Dodajanje alternativ"
 #, fuzzy
 msgid "Alternative 2"
 msgstr "Dodajanje alternativ"
+
+msgid "Alternative URLs for DVB-T/C or ATSC"
+msgstr ""
 
 #
 msgid "Alternative numbering mode"
@@ -3173,6 +3190,11 @@ msgstr "Kreiraj DVD-ISO"
 
 #
 #, fuzzy
+msgid "Create directory"
+msgstr "Ustvarite novo mapo"
+
+#
+#, fuzzy
 msgid "Create directory/folder"
 msgstr "Ustvarite novo mapo"
 
@@ -3669,6 +3691,15 @@ msgstr "Preklic"
 msgid "Destination of fallback remote receiver"
 msgstr ""
 
+msgid "Destination of fallback remote receiver for ATSC"
+msgstr ""
+
+msgid "Destination of fallback remote receiver for DVB-C"
+msgstr ""
+
+msgid "Destination of fallback remote receiver for DVB-T"
+msgstr ""
+
 msgid "Details for plugin: "
 msgstr "Dodatne informacije:"
 
@@ -4075,16 +4106,17 @@ msgstr "Želite nadaljevati s predvajanjem?"
 msgid "Do you want to select a different skin?"
 msgstr "Želite iskati kanale?"
 
+#
+#, fuzzy
+msgid "Do you want to update the package:\n"
+msgstr "Želite nadgraditi paket:\n"
+
 #, fuzzy
 msgid "Do you want to update your Receiver?"
 msgstr "Želite posodobiti vaš sprejemnik na zadnjo verzijo OpenPLi slike?"
 
 msgid "Do you want to update your receiver?"
 msgstr "Želite posodobiti vaš sprejemnik na zadnjo verzijo OpenPLi slike?"
-
-#
-msgid "Do you want to upgrade the package:\n"
-msgstr "Želite nadgraditi paket:\n"
 
 msgid "Dolby"
 msgstr ""
@@ -4133,9 +4165,9 @@ msgid "Done - Installed or upgraded %d packages"
 msgstr "Končano - nameščen, nadgrajen ali izbrisan je bil %d paket (%s)."
 
 #
-#, python-format
-msgid "Done - Installed, upgraded or removed %d package (%s)"
-msgid_plural "Done - Installed, upgraded or removed %d packages (%s)"
+#, fuzzy, python-format
+msgid "Done - Installed, updated or removed %d package (%s)"
+msgid_plural "Done - Installed, updated or removed %d packages (%s)"
 msgstr[0] "Končano - nameščen, nadgrajen ali izbrisan je bil %d paket (%s)."
 msgstr[1] "Končano - nameščena, nadgrajena ali izbrisana sta bila %d paketa (%s)."
 msgstr[2] "Končano - nameščeni, nadgrajeni ali izbrisani so bili %d paketi (%s)."
@@ -4274,6 +4306,11 @@ msgstr "Spremenite naslov"
 msgid "Edit chapters of current title"
 msgstr "Urejanje poglavja trenutnega naslova"
 
+#
+#, fuzzy
+msgid "Edit menu"
+msgstr "Urejanje časovnika"
+
 msgid "Edit position is the line end"
 msgstr ""
 
@@ -4302,7 +4339,8 @@ msgid "Edit title"
 msgstr "Spremenite naslov"
 
 #
-msgid "Edit upgrade source url."
+#, fuzzy
+msgid "Edit update source url."
 msgstr "Uredite povezavo vira za nadgradnjo."
 
 msgid "Education/Science/..."
@@ -4364,6 +4402,11 @@ msgstr "Vklopi tipko OK za priklic izbirnika kanalov"
 #
 msgid "Enable OK for channel selection"
 msgstr "Vklopi tipko OK za priklic izbirnika kanalov"
+
+#
+#, fuzzy
+msgid "Enable OpenTV EPG"
+msgstr "EIT EPG sistem"
 
 #, fuzzy
 msgid "Enable Swap at startup"
@@ -4881,9 +4924,6 @@ msgstr "Začetni čas ignoriranja  časovnika neaktivnosti"
 msgid "Extrude from left"
 msgstr ""
 
-msgid "F"
-msgstr ""
-
 msgid "F1/F3/F4/F4-TURBO"
 msgstr ""
 
@@ -4974,11 +5014,24 @@ msgstr ""
 msgid "Fallback remote receiver URL"
 msgstr ""
 
+msgid "Fallback remote receiver for ATSC"
+msgstr ""
+
+msgid "Fallback remote receiver for DVB-C"
+msgstr ""
+
+msgid "Fallback remote receiver for DVB-T"
+msgstr ""
+
 msgid "Fallback remote receiver setup"
 msgstr ""
 
 msgid "Fallback tuner setup"
 msgstr ""
+
+#, fuzzy
+msgid "False"
+msgstr "napačno"
 
 #
 #, python-format
@@ -5321,9 +5374,6 @@ msgstr "Nadaljne možnosti"
 msgid "Further options"
 msgstr "Nadaljne možnosti"
 
-msgid "G"
-msgstr ""
-
 msgid "GB800SOLO takes about 20 mins !!\n"
 msgstr ""
 
@@ -5466,9 +5516,6 @@ msgstr "Pojdi na"
 msgid "Goto 0"
 msgstr "Pojdi na 0"
 
-msgid "Goto:"
-msgstr "Pojdi na:"
-
 msgid "Goto X"
 msgstr "Pojdi na X"
 
@@ -5498,6 +5545,9 @@ msgstr "Pojdi na"
 
 msgid "Goto specific date/time"
 msgstr "Pojdi na točen datum"
+
+msgid "Goto:"
+msgstr "Pojdi na:"
 
 msgid "GotoX calibration"
 msgstr "PojdiNaX kalibracija"
@@ -5565,9 +5615,6 @@ msgid "Guinea-Bissau"
 msgstr ""
 
 msgid "Guyana"
-msgstr ""
-
-msgid "H"
 msgstr ""
 
 msgid "HD list"
@@ -5847,11 +5894,6 @@ msgstr "Madžarščina"
 #, fuzzy
 msgid "Hungary"
 msgstr "Madžarščina"
-
-#
-#, fuzzy
-msgid "I"
-msgstr "C"
 
 msgid "I/O priority for script execution"
 msgstr ""
@@ -6360,9 +6402,6 @@ msgstr "Št. dogodkov na stran v polnem načinu"
 msgid "Itu_R_BT_709"
 msgstr ""
 
-msgid "J"
-msgstr ""
-
 msgid "Jamaica"
 msgstr ""
 
@@ -6527,6 +6566,10 @@ msgstr "Zadnje spremembe"
 #, python-format
 msgid "Latest available teamBlue %s build is from: %s"
 msgstr ""
+
+#, fuzzy
+msgid "Latest update log"
+msgstr "Zadnja nadgradnja: "
 
 #
 msgid "Latitude"
@@ -7597,6 +7640,9 @@ msgstr ""
 msgid "New folder"
 msgstr ""
 
+msgid "New password"
+msgstr ""
+
 msgid "News Current Affairs"
 msgstr ""
 
@@ -7879,11 +7925,6 @@ msgstr "Norveško"
 
 #
 #, fuzzy
-msgid "Not Defined"
-msgstr "Ni nastavljeno"
-
-#
-#, fuzzy
 msgid "Not Installed"
 msgstr "Namesti"
 
@@ -7894,6 +7935,11 @@ msgstr "Ni nastavljeno"
 
 msgid "Not associated"
 msgstr "Ni povezano"
+
+#
+#, fuzzy
+msgid "Not defined"
+msgstr "Ni nastavljeno"
 
 #
 #, python-format
@@ -8284,11 +8330,6 @@ msgid "Packages to update"
 msgstr "Iskanje posodobitev ..."
 
 #
-#, fuzzy
-msgid "Packages upgraded"
-msgstr "Iskanje posodobitev ..."
-
-#
 msgid "Packet manager"
 msgstr "Upravljanje paketkov"
 
@@ -8370,6 +8411,14 @@ msgstr ""
 
 msgid "Password"
 msgstr ""
+
+msgid "Password changed"
+msgstr ""
+
+#
+#, fuzzy
+msgid "Password setup"
+msgstr "Video nastavitve"
 
 msgid "Path to save not exist: '/tmp/'"
 msgstr ""
@@ -9189,11 +9238,6 @@ msgid "Prime time"
 msgstr "Odstranitev naslova"
 
 #
-#, fuzzy
-msgid "PrimeTime"
-msgstr "Čas"
-
-#
 msgid "Priority"
 msgstr "Prioriteta"
 
@@ -9358,6 +9402,9 @@ msgstr "Radio"
 msgid "Random"
 msgstr "Naključno"
 
+msgid "Random password"
+msgstr ""
+
 #, python-format
 msgid "Rating defined by broadcaster - %d"
 msgstr ""
@@ -9423,11 +9470,12 @@ msgstr "Res želite izklopiti sprejemnik?"
 msgid "Really store at index %2d for current position?"
 msgstr "Aktiviranje rezanja na trenutno označenem položaju"
 
-msgid "Really upgrade the frontprocessor and reboot now?"
+#, fuzzy
+msgid "Really update the frontprocessor and reboot now?"
 msgstr "Resnično želite nadgraditi frontprocessor in ponovno zagnati sprejemnik?"
 
 #, fuzzy, python-format
-msgid "Really upgrade your %s %s and reboot now?"
+msgid "Really update your %s %s and reboot now?"
 msgstr "Res želite nadgraditi sprejemnik in ga ponovno zagnati?"
 
 msgid "Reboot"
@@ -9643,6 +9691,11 @@ msgid "Remove currently selected title"
 msgstr "Odstranitev trenutno izbranega naslova"
 
 #
+#, fuzzy
+msgid "Remove directory"
+msgstr "odstranitev mape"
+
+#
 msgid "Remove items from trash can after (days)"
 msgstr "Odstranitev datotek iz smetnjaka po X dnevih"
 
@@ -9708,6 +9761,11 @@ msgid "Repeat leave standby messages"
 msgstr "Obravnavaj globoko spanje kot stanje pripravljenosti"
 
 #
+#, fuzzy
+msgid "Repeat playlist"
+msgstr "ponovitev seznama predvjanja"
+
+#
 msgid "Repeat type"
 msgstr "Vrsta ponavljanja"
 
@@ -9758,6 +9816,9 @@ msgstr "Ponovno zaženi"
 #
 msgid "Reset and renumerate title names"
 msgstr "Preuredi imena naslovov od začetka"
+
+msgid "Reset order (All)"
+msgstr ""
 
 #, fuzzy
 msgid "Reset persistent PIN code"
@@ -10166,12 +10227,27 @@ msgstr "Ustavitev časovnega zamika"
 
 #
 #, fuzzy
+msgid "Save changes"
+msgstr "ob izhodu se naj shrani seznam predvajanja"
+
+#
+#, fuzzy
+msgid "Save last directory on exit"
+msgstr "ob izhodu se naj shrani zadnja mapa"
+
+#
+#, fuzzy
 msgid "Save left folder on exit"
 msgstr "ob izhodu se naj shrani zadnja mapa"
 
 #
 msgid "Save playlist"
 msgstr "Shranitev seznama za predvajanje"
+
+#
+#, fuzzy
+msgid "Save playlist on exit"
+msgstr "ob izhodu se naj shrani seznam predvajanja"
 
 #
 #, fuzzy
@@ -10730,11 +10806,13 @@ msgid "Select the virtual keyboard shifted character set for the next character 
 msgstr ""
 
 #
-msgid "Select upgrade source"
+#, fuzzy
+msgid "Select update source"
 msgstr "Izberite vir nadgradnje"
 
 #
-msgid "Select upgrade source to edit."
+#, fuzzy
+msgid "Select update source to edit."
 msgstr "Izberite vir, ki ga boste urejali."
 
 #
@@ -10951,6 +11029,9 @@ msgid "Set action when movie playback is finished."
 msgstr "Nastavitev obnašanja, ko se prične predvajanje posnetka."
 
 msgid "Set all hotkey to default?"
+msgstr ""
+
+msgid "Set alternative fallback tuners for DVB-T/C or ATSC"
 msgstr ""
 
 msgid "Set blocktimes by weekday"
@@ -11307,8 +11388,12 @@ msgid "Show latest commits"
 msgstr "Zadnje spremembe"
 
 #, fuzzy
-msgid "Show latest upgrade log"
+msgid "Show latest update log"
 msgstr "Zadnja nadgradnja: "
+
+#, fuzzy
+msgid "Show media player on main menu"
+msgstr "prikaz multimedijskega predvajalnika v osnovnem meniju"
 
 #
 #, fuzzy
@@ -11324,6 +11409,9 @@ msgid "Show message if File Commander is not running and all Task's are complete
 msgstr ""
 
 msgid "Show message if a background script ends successefully. Has 'stout', then this is displayed as additional info."
+msgstr ""
+
+msgid "Show message if a background script ends successfully. Has 'stout', then this is displayed as additional info."
 msgstr ""
 
 #
@@ -11362,7 +11450,7 @@ msgstr ""
 
 #
 #, fuzzy
-msgid "Show packages to be upgraded"
+msgid "Show packages to be updated"
 msgstr "Iskanje posodobitev ..."
 
 #
@@ -11410,6 +11498,9 @@ msgstr "Prikaz razširjene informacijske vrstice"
 #, fuzzy
 msgid "Show service list"
 msgstr "Odprtje seznama kanalov"
+
+msgid "Show service name and event description among each other instead of side by side."
+msgstr ""
 
 #
 msgid "Show service type icons"
@@ -11470,6 +11561,9 @@ msgstr "Prikaz radio predvajalnika"
 #, fuzzy
 msgid "Show the plugin browser.."
 msgstr "Seznam vtičnikov"
+
+msgid "Show two lines per entry"
+msgstr ""
 
 #
 #, fuzzy
@@ -11866,6 +11960,10 @@ msgstr "Čas urejanja"
 msgid "Sorting left files by name, date or size"
 msgstr ""
 
+#, fuzzy
+msgid "Sorting of playlists"
+msgstr "razvrščanje seznamov"
+
 msgid "Sorting right files by name, date or size"
 msgstr ""
 
@@ -11997,6 +12095,11 @@ msgstr "Stanje pripravljenosti v"
 #, fuzzy
 msgid "Start"
 msgstr "Pričnite s preizkusom"
+
+#
+#, fuzzy
+msgid "Start directory"
+msgstr "začetna mapa"
 
 #
 msgid "Start from the beginning"
@@ -12364,6 +12467,11 @@ msgid "Switch to TV mode"
 msgstr "Preklop v način HDMI-in"
 
 #
+#, fuzzy
+msgid "Switch to bookmarks"
+msgstr "preklop na zaznamke"
+
+#
 msgid "Switch to filelist"
 msgstr "Preklop na seznam datotek"
 
@@ -12701,6 +12809,9 @@ msgid ""
 "Test Pattern by TigerDave - www.tigerdave.com/ht_menu.htm"
 msgstr ""
 
+msgid "The password can not be blank."
+msgstr ""
+
 #
 #, python-format
 msgid "The path %s already exists."
@@ -12951,7 +13062,7 @@ msgstr ""
 msgid "This option allows you to force the HLG modes for UHD"
 msgstr ""
 
-msgid "This option allows you to hide and sort menu entries. When selecting user you can change order and hide menu items via the blue button"
+msgid "This option allows you to hide and sort menu entries. When selecting user you can change order and hide menu items via the blue button. With the user defined hidden the blue button is not shown in the menus"
 msgstr ""
 
 msgid "This option allows you to power off the display."
@@ -13270,6 +13381,9 @@ msgstr ""
 msgid "Toggle new text inserts before or overwrites existing text"
 msgstr ""
 
+msgid "Toggle show/hide"
+msgstr ""
+
 msgid "Togo"
 msgstr ""
 
@@ -13359,6 +13473,9 @@ msgid "Trinidad and Tobago"
 msgstr ""
 
 msgid "Troubleshoot"
+msgstr ""
+
+msgid "True"
 msgstr ""
 
 #
@@ -13550,9 +13667,12 @@ msgstr ""
 msgid "Ukrainian"
 msgstr ""
 
+msgid "Unable to change password"
+msgstr ""
+
 #, fuzzy, python-format
 msgid ""
-"Unattended upgrade in progress\n"
+"Unattended update in progress\n"
 "Please wait until your %s %s reboots\n"
 "This may take a few minutes"
 msgstr ""
@@ -13659,6 +13779,11 @@ msgstr "Nadgradnja in vprašaj za ponovni zagon"
 msgid "Update and reboot (recommended)"
 msgstr "Nadgradnja in takojšnji ponovni zagon (priporočeno)"
 
+#
+#, fuzzy
+msgid "Update bookmarks"
+msgstr "Samodejno iskanje "
+
 #, python-format
 msgid "Update completed, %d package was installed."
 msgid_plural "Update completed, %d packages were installed."
@@ -13679,6 +13804,11 @@ msgstr "Posodobitev se je uspešno zaključila."
 #
 msgid "Updatefeed not available."
 msgstr "Server je trenutno nedosegljiv."
+
+#
+#, fuzzy
+msgid "Updating"
+msgstr "Posodobi"
 
 #
 msgid "Updating software catalog"
@@ -13736,6 +13866,10 @@ msgstr "MHW EPG se uporablja v primerih, ko TV postaje oddajajo tudi spored. MHW
 
 msgid "Use Netmed EPG information when it is available."
 msgstr "Netmed EPG se uporablja v primerih, ko TV postaje oddajajo tudi spored. Netmed sistem uporabljajo TV ponudniki iz Grčije."
+
+#, fuzzy
+msgid "Use OpenTV EPG information when it is available."
+msgstr "EIT EPG se uporablja v primerih, ko TV postaje oddajajo tudi spored. Primer so slovenski kanali v DVB-T."
 
 msgid "Use TV remote control"
 msgstr "Uporabite daljinski upravljalnik"
@@ -14326,7 +14460,7 @@ msgstr ""
 msgid "What do you want to scan?"
 msgstr "Kaj želite iskati?"
 
-msgid "When enabled enigma2 will load unlinked userbouquets. This means that userbouquets that are available, but not included in the bouquets.tv or bouquets.radio files, will still be loaded. This allows you for example to keep your own user bouquet while installed settings are upgraded"
+msgid "When enabled enigma2 will load unlinked userbouquets. This means that userbouquets that are available, but not included in the bouquets.tv or bouquets.radio files, will still be loaded. This allows you for example to keep your own user bouquet while installed settings are updated"
 msgstr ""
 
 msgid "When enabled the PiP can be closed by the exit button."
@@ -14818,6 +14952,9 @@ msgstr ""
 msgid "You have to wait %s!"
 msgstr "Počakati morate %s!"
 
+msgid "You must set a root password in order to be able to use network services, such as FTP, telnet or ssh."
+msgstr ""
+
 #, python-format
 msgid "You must switch to the service %s (%s - '%s')!\n"
 msgstr ""
@@ -14891,7 +15028,7 @@ msgstr ""
 
 #, fuzzy, python-format
 msgid ""
-"Your frontprocessor will be upgraded\n"
+"Your frontprocessor will be updated\n"
 "Please wait until your %s %s reboots\n"
 "This may take a few minutes"
 msgstr ""
@@ -15134,6 +15271,11 @@ msgstr "se bo zagnalo"
 msgid "activate network adapter configuration"
 msgstr "aktiviranje omrežnih nastavitev"
 
+#
+#, fuzzy
+msgid "active"
+msgstr "Dodajanje alternativ"
+
 msgid "active NFS Shares:"
 msgstr ""
 
@@ -15143,10 +15285,6 @@ msgstr ""
 #
 msgid "add alternatives"
 msgstr "Dodajanje alternativ"
-
-#
-msgid "add bookmark"
-msgstr "Nov zaznamek"
 
 #
 msgid "add bouquet"
@@ -15418,10 +15556,6 @@ msgstr ""
 msgid "copy to bouquets"
 msgstr "Prenos v seznam priljubljenih paketov"
 
-#
-msgid "create directory"
-msgstr "Ustvarite novo mapo"
-
 msgid "create symlink ..."
 msgstr ""
 
@@ -15446,6 +15580,11 @@ msgstr "odkodiraj in snemaj ECM paketke"
 
 msgid "detective/thriller"
 msgstr ""
+
+#
+#, fuzzy
+msgid "disable"
+msgstr "onemogočeno"
 
 #
 #, fuzzy
@@ -15506,6 +15645,11 @@ msgstr ""
 #
 msgid "empty"
 msgstr "prazno"
+
+#
+#, fuzzy
+msgid "enable"
+msgstr "vključeno"
 
 #
 msgid "enable bouquet edit"
@@ -16197,10 +16341,6 @@ msgid "remove before this position"
 msgstr "izbris pred tem položajem"
 
 #
-msgid "remove bookmark"
-msgstr "odstranitev zaznamka"
-
-#
 #, fuzzy
 msgid "remove bouquet from parental protection"
 msgstr "izbris iz starševske zaščite"
@@ -16209,10 +16349,6 @@ msgstr "izbris iz starševske zaščite"
 #, fuzzy
 msgid "remove cable services"
 msgstr "Zaščita kanalov"
-
-#
-msgid "remove directory"
-msgstr "odstranitev mape"
 
 #
 msgid "remove entry"
@@ -16242,10 +16378,6 @@ msgstr "izbris oznake"
 #
 msgid "rename entry"
 msgstr "Preimenovanje vnosa"
-
-#
-msgid "repeat playlist"
-msgstr "ponovitev seznama predvjanja"
 
 #
 msgid "repeated"
@@ -16284,14 +16416,6 @@ msgid "running"
 msgstr ""
 
 #
-msgid "save last directory on exit"
-msgstr "ob izhodu se naj shrani zadnja mapa"
-
-#
-msgid "save playlist on exit"
-msgstr "ob izhodu se naj shrani seznam predvajanja"
-
-#
 msgid "scan state"
 msgstr "stanje iskanja"
 
@@ -16303,10 +16427,6 @@ msgstr "sekund"
 
 msgid "security"
 msgstr ""
-
-#
-msgid "select"
-msgstr "izberite"
 
 #
 msgid "select CAId's"
@@ -16355,9 +16475,6 @@ msgstr "Prikaz alternativ"
 #
 msgid "show event details"
 msgstr "Prikaz informacij o dogodku"
-
-msgid "show mediaplayer on mainmenu"
-msgstr "prikaz multimedijskega predvajalnika v osnovnem meniju"
 
 msgid "show softwaremanager in setup menu"
 msgstr "Prikaz softwaremanager vtičnika v nastavitvenem meniju"
@@ -16437,9 +16554,6 @@ msgstr ""
 msgid "softcams"
 msgstr "Namestitev emulatorja"
 
-msgid "sorting of playlists"
-msgstr "razvrščanje seznamov"
-
 msgid "special events"
 msgstr "posebni dogodki"
 
@@ -16456,10 +16570,6 @@ msgstr "Standardno"
 #
 msgid "start cut here"
 msgstr "pričetek rezanja tukaj"
-
-#
-msgid "start directory"
-msgstr "začetna mapa"
 
 #, fuzzy
 msgid "starts in a few seconds"
@@ -16478,14 +16588,6 @@ msgstr "Sprememba nastavitve začetnega kanala"
 
 msgid "successful"
 msgstr ""
-
-#
-msgid "switch to bookmarks"
-msgstr "preklop na zaznamke"
-
-#
-msgid "switch to filelist"
-msgstr "preklop na seznam datotek"
 
 #
 msgid "switch to the next angle"
@@ -16598,16 +16700,16 @@ msgstr "omogoči"
 msgid "until standby/restart"
 msgstr "do stanja pripravljenosti/resetiranja"
 
-#
-#, fuzzy
-msgid "update bookmarks"
-msgstr "Samodejno iskanje "
-
 msgid "use best, controlled by HDMI"
 msgstr ""
 
 #
 msgid "user defined"
+msgstr "uporabniško določeno"
+
+#
+#, fuzzy
+msgid "user defined hidden"
 msgstr "uporabniško določeno"
 
 msgid "variety show"
@@ -16712,6 +16814,9 @@ msgstr "Da"
 #
 msgid "yes (keep feeds)"
 msgstr "Da (obdrži feed-e)"
+
+msgid "yes, but not in multi selections"
+msgstr ""
 
 #
 #, fuzzy
