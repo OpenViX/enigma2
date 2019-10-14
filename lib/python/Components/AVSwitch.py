@@ -176,14 +176,28 @@ class AVSwitch:
 		if mode_60 is None or force == 50:
 			mode_60 = mode_50
 
-		if os.path.exists('/proc/stb/video/videomode_50hz') and getBoxType() not in ('gbquadplus', 'gb800solo', 'gb800se', 'gb800ue', 'gb800ueplus'):
+		try:
 			f = open("/proc/stb/video/videomode_50hz", "w")
 			f.write(mode_50)
 			f.close()
-		if os.path.exists('/proc/stb/video/videomode_60hz') and getBoxType() not in ('gbquadplus', 'gb800solo', 'gb800se', 'gb800ue', 'gb800ueplus'):
+		except IOError:
+			print "[AVSwitch] cannot open /proc/stb/video/videomode_50hz"
+		try:
 			f = open("/proc/stb/video/videomode_60hz", "w")
 			f.write(mode_60)
 			f.close()
+		except IOError:
+			print "[AVSwitch] cannot open /proc/stb/video/videomode_60hz"
+
+		if getBrandOEM() in ('gigablue'):
+			try:
+				# use 50Hz mode (if available) for booting
+				f = open("/etc/videomode", "w")
+				f.write(mode_50)
+				f.close()
+			except IOError:
+				print "[AVSwitch] GigaBlue writing initial videomode to /etc/videomode failed."
+
 		try:
 			set_mode = modes.get(int(rate[:2]))
 		except: # not support 50Hz, 60Hz for 1080p
