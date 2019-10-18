@@ -50,6 +50,8 @@ class About(Screen):
 			BoxName = "GigaBlue Quad 4k"
 		elif boxtype == 'gbue4k':
 			BoxName = "GigaBlue UE 4k"
+		elif boxtype == 'gbx34k':
+			BoxName = "GigaBlue X3 4k"
 		elif boxtype == 'gbtrio4k':
 			BoxName = "GigaBlue TRIO 4k"
 		elif boxtype == 'gbip4k':
@@ -118,7 +120,7 @@ class About(Screen):
 		self["ChipsetInfo"] = StaticText(ChipsetInfo)
 		AboutText += ChipsetInfo + "\n"
 
-		if boxtype == 'gbquad4k' or boxtype == 'gbue4k':
+		if boxtype == 'gbquad4k' or boxtype == 'gbue4k'or boxtype == 'gbx34k':
 			def strip_non_ascii(boltversion):
 				''' Returns the string without non ASCII characters'''
 				stripped = (c for c in boltversion if 0 < ord(c) < 127)
@@ -144,7 +146,7 @@ class About(Screen):
 		self["KernelVersion"] = StaticText(KernelVersion)
 		AboutText += KernelVersion + "\n"
 
-		if getMachineBuild() == 'gb7252':
+		if getMachineBuild() in ('gb7252', 'gb72604'):
 			b = popen('cat /proc/stb/info/version').read().strip()
 			driverdate=str(b[0:4] + '-' + b[4:6] + '-' + b[6:8] + ' ' + b[8:10]  + ':' + b[10:12] + ':' + b[12:14])
 			AboutText += _("DVB drivers: ") + driverdate + "\n"

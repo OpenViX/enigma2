@@ -669,7 +669,7 @@ class HarddiskManager:
 		error = False
 		removable = False
 		BLACKLIST=[]
-		if getMachineBuild() in ('gbmv200', 'gb7252'):
+		if getMachineBuild() in ('gbmv200', 'gb7252', 'gb72604'):
 			BLACKLIST=["mmcblk0"]
 		elif getMachineBuild() in ('dummy',):
 			BLACKLIST=["mmcblk1"]
