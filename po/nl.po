@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-10-17 18:20+0000\n"
-"PO-Revision-Date: 2019-10-18 14:06+0200\n"
+"PO-Revision-Date: 2019-10-18 14:09+0200\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -3046,7 +3046,7 @@ msgid "Configure if picons will be shown in the service list."
 msgstr "Stel in of de servicetype-iconen worden getoond."
 
 msgid "Configure if service picons will be shown in the channel selection list."
-msgstr "Stel in of picons moeten worden getoond in de kanaallist.."
+msgstr "Stel in of picons moeten worden getoond in de kanaallijst.."
 
 msgid "Configure if the subtitle should switch between normal, italic, bold and bolditalic"
 msgstr "Stel in of de ondertitels kunnen wisselen tussen normaal, schuin en vet."
@@ -7657,7 +7657,7 @@ msgid "Open the satellites list"
 msgstr "Open de satellitenlijst"
 
 msgid "Open the service list"
-msgstr "Open de kanaallist"
+msgstr "Open de kanaallijst"
 
 msgid "OpenVPN"
 msgstr "Open-VPN"
@@ -9865,7 +9865,7 @@ msgstr ""
 "(Timeout reading PMT)"
 
 msgid "Service list"
-msgstr "Kanaallist"
+msgstr "Kanaallijst"
 
 msgid "Service name"
 msgstr "Kanaalnaam"
@@ -10375,10 +10375,10 @@ msgid "Show select audio track"
 msgstr "Toon 'Kies audiospoor'"
 
 msgid "Show service list"
-msgstr "Toon kanaallist"
+msgstr "Toon kanaallijst"
 
 msgid "Show service list or movies"
-msgstr "Toon kanaallist of opnames"
+msgstr "Toon kanaallijst of opnames"
 
 msgid "Show service type icons"
 msgstr "Toon iconen voor servicetype"
