@@ -56,7 +56,7 @@ def standbyCounterChanged(dummy):
 	config.lcd.standby.apply()
 
 def InitLcd():
-	if getBoxType() in ('gb800se', 'gb800solo', 'gb800seplus', 'gbipbox', 'gbultra', 'gbultrase', 'spycat', 'quadbox2400', 'gbx1', 'gbx2', 'gbx3', 'gbx3h'):
+	if getBoxType() in ('gb800se', 'gb800solo', 'gb800seplus', 'gbipbox', 'gbultra', 'gbultrase', 'spycat', 'quadbox2400', 'gbx1', 'gbx2', 'gbx3', 'gbx3h', 'gbx34k'):
 		detected = False
 	else:
 		detected = eDBoxLCD.getInstance() and eDBoxLCD.getInstance().detected()
