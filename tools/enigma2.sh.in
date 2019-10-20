@@ -12,7 +12,7 @@ else
 fi
 
 case "$BOXCHIPSET" in
-bcm7356|bcm7362|bcm73625|bcm7252s )
+bcm7356|bcm7362|bcm73625|bcm7252s|bcm72604 )
   TASKSETVALUE=2;;
 * )
   TASKSETVALUE=1;;
