@@ -384,7 +384,7 @@ static pthread_mutex_t channel_map_lock =
 DEFINE_REF(eEPGCache)
 
 eEPGCache::eEPGCache()
-	:messages(this,1), cleanTimer(eTimer::create(this)), m_running(false)
+	:messages(this,1), cleanTimer(eTimer::create(this)), m_running(false), m_channel_pending(false), m_load_pending(false)
 {
 	eDebug("[eEPGCache] Initialized EPGCache (wait for setCacheFile call now)");
 
@@ -1323,6 +1323,11 @@ static const char* EPGDAT_IN_FLASH = "/epg.dat";
 
 void eEPGCache::load()
 {
+	if (m_channel_pending)
+	{
+		m_load_pending = true;
+		return;
+	}
 	if (m_filename.empty())
 		m_filename = "/hdd/epg.dat";
 	std::vector<char> vEPGDAT(m_filename.begin(), m_filename.end());
@@ -1620,12 +1625,19 @@ void eEPGCache::channel_data::finishEPG()
 #endif
 		singleLock l(cache_lock);
 		cache->channelLastUpdated[channel->getChannelID()] = ::time(0);
+		eEPGCache::getInstance()->m_channel_pending = false;
+		if (eEPGCache::getInstance()->m_load_pending)
+		{
+			eEPGCache::getInstance()->m_load_pending = false;
+			eEPGCache::getInstance()->load();
+		}
 	}
 }
 
 void eEPGCache::channel_data::startEPG()
 {
 	eDebug("[eEPGCache] start caching events");
+	eEPGCache::getInstance()->m_channel_pending = true;
 	state=0;
 	haveData=0;
 	for (unsigned int i=0; i < sizeof(seenSections)/sizeof(tidMap); ++i)
