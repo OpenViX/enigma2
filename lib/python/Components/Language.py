@@ -178,9 +178,9 @@ class Language:
 	def delLanguage(self, delLang = None):
 		from Components.config import config, configfile
 		from shutil import rmtree
-		lang = config.osd.language.value
 
 		if delLang:
+			lang = config.osd.language.value
 			print "[Language] DELETE LANG", delLang
 			if delLang[:2] == "en":
 				print "[Language] Default Language can not be deleted !!"
@@ -192,6 +192,7 @@ class Language:
 			else:
 				os.system("opkg remove --autoremove --force-depends " + Lpackagename + delLang[:2])
 		else:
+			lang = self.activeLanguage
 			print "[Language] Delete all lang except ", lang
 			ll = os.listdir(LPATH)
 			for x in ll:
