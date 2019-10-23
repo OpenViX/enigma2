@@ -227,13 +227,13 @@
 		<item level="0" text="Show MiniTV in the Front Display" description="You can Display MiniTV with or without OSD Menu" requires="LCDMiniTV">config.lcd.minitvmode</item>
 		<item level="0" text="Show PIP in the Front Display" description="You can Display PIP with or without OSD Menu" requires="LCDMiniTVPiP">config.lcd.minitvpipmode</item>
 		<item level="0" text="Set Framerate for MiniTV" description="Lower Framerate save CPU Time" requires="LCDMiniTV">config.lcd.minitvfps</item>
-		<item level="0" text="Power LCD Display" description="This option allows you to power on or off the display.">config.lcd.power</item>
+		<item level="0" text="Power LCD Display" description="This option allows you to power on or off the display." requires="LcdPowerOn">config.lcd.power</item>
 		<item level="0" text="Clone TV screen to LCD" description="Shows live tv or informations on LCD." requires="LcdLiveTV">config.lcd.showTv</item>
 		<item level="0" text="Brightness (Normal)" description="Configure the brightness level of the front panel display for normal operation.">config.lcd.bright</item>
 		<item level="0" text="Brightness (Dimmed)" description="Configure the brightness level of the front panel display for dimmed operation.">config.lcd.dimbright</item>
 		<item level="0" text="Dim delay" description="Dim the LCD after specified time.">config.lcd.dimdelay</item>
 		<item level="0" text="Brightness (Standby)" description="Configure the brightness level of the front panel display for standby.">config.lcd.standby</item>
-		<item level="0" requires="ConfigDisplay" text="Contrast" description="Configure the contrast level of the front panel display.">config.lcd.contrast</item>
+		<item level="0" text="Contrast" description="Configure the contrast level of the front panel display." requires="ConfigDisplay">config.lcd.contrast</item>
 		<item level="0" text="LED Normal" description="LED brightness during normal operations." requires="LEDButtons">config.lcd.ledbrightness</item>
 		<item level="0" text="LED Standby" description="LED brightness during standby." requires="LEDButtons">config.lcd.ledbrightnessstandby</item>
 		<item level="0" text="LED Deep Standby" description="LED brightness during deep standby." requires="LEDButtons">config.lcd.ledbrightnessdeepstandby</item>
@@ -243,9 +243,9 @@
 		<item level="0" text="Power LED State when Running." description="Set LED Color or disable the LED." requires="LedPowerColor">config.lcd.ledpowercolor</item>
 		<item level="0" text="Power LED State in Standby" description="Set LED Color or disable the LED." requires="LedStandbyColor">config.lcd.ledstandbycolor</item>
 		<item level="0" text="Power LED State in Deep-Standby" description="Set LED Color or disable the LED." requires="LedSuspendColor">config.lcd.ledsuspendcolor</item>
-		<item level="0" text="PowerControl FrontDisplay Normal Mode" description="This option allows you to Power Off the display." requires="Power4x7On">config.lcd.power4x7on</item>
-		<item level="0" text="PowerControl FrontDisplay Standby Mode" description="This option allows you to Power Off the display." requires="Power4x7Standby">config.lcd.power4x7standby</item>
-		<item level="0" text="PowerControl FrontDisplay Suspend Mode" description="This option allows you to Power Off the display." requires="Power4x7Suspend">config.lcd.power4x7suspend</item>
+		<item level="0" text="PowerControl FrontDisplay Normal Mode" description="Power On/Off display Normal Mode." requires="Power24x7On">config.lcd.power24x7on</item>
+		<item level="0" text="PowerControl FrontDisplay Standby Mode" description="Power On/Off display Standby Mode." requires="Power24x7Standby">config.lcd.power24x7standby</item>
+		<item level="0" text="PowerControl FrontDisplay Suspend Mode" description="Power On/Off display Suspend Mode." requires="Power24x7Suspend">config.lcd.power24x7suspend</item>
 		<item level="0" text="Show in Standby" description="This option allows you choose how to display the Time or nothing in Standby" requires="7segment">config.usage.show_in_standby</item>
 		<item level="2" text="Initial scroll delay" description="Delay in milliseconds before start of scrolling text on display." requires="VFD_initial_scroll_delay">config.usage.vfd_initial_scroll_delay</item>
 		<item level="2" text="Final scroll delay" description="Delay in milliseconds after finish scrolling text on display." requires="VFD_final_scroll_delay">config.usage.vfd_final_scroll_delay</item>
@@ -256,12 +256,12 @@
 		<item level="0" text="Date style" description="Choose the front panel display formatting style for dates. 'D' / 'DD' is the date and 'M' / 'MM' is the month in digits.  ('DD' and 'MM' have leading zeros for single digit values.) The screen display will be based on your choice but can be influenced by the skin." requires="config.usage.date.enabled_display">config.usage.date.display</item>
 		<item level="0" text="Time style" description="Choose the front panel display formatting style for times. 'H' / 'HH' is the hour for a 24 hour clock, 'h' / 'hh' is the hour for a 12 hour clock, 'mm' is the minutes.  ('HH' and 'hh' have leading zeros for single digit values.) The front panel display will be based on your choice but can be influenced any applicable skin." requires="config.usage.time.enabled_display">config.usage.time.display</item>
 		<item level="1" text="Show Display Icons" description="Allows you to enable/disable displaying icons on the front panel.">config.lcd.mode</item>
-		<item level="1" requires="ConfigDisplay" text="Show Time Remaining/Elapsed" description="This option allows you choose how to display remaining time, or elapsed time, or both.">config.usage.swap_time_remaining_on_vfd</item>
-		<item level="1" requires="ConfigDisplay" text="Show Transponder Remaining/Elapsed as" description="This option allows you choose how to display the remaining/elapsed time for live TV.">config.usage.swap_time_display_on_vfd</item>
-		<item level="1" requires="ConfigDisplay" text="Show Media playback Remaining/Elapsed as" description="This option allows you to choose how to display the remaining/elapsed time for Media playback.">config.usage.swap_media_time_display_on_vfd</item>
-		<item level="0" requires="ConfigDisplay" text="Show time elapsed as positive" description="This option allows you to choose how to display elapsed time. As + or -">config.usage.elapsed_time_positive_vfd</item>
-		<item level="1" requires="ConfigDisplay" text="Scrolling Speed (software render)" description="Set the scrolling speed of text on the front display, this uses a software render in some skins.">config.lcd.scroll_speed</item>
-		<item level="1" requires="ConfigDisplay" text="Scrolling delay (software render)" description="Set the delay time between repeated loops, this uses a software render in some skins.">config.lcd.scroll_delay</item>
+		<item level="1" text="Show Time Remaining/Elapsed" description="This option allows you choose how to display remaining time, or elapsed time, or both." requires="ConfigDisplay">config.usage.swap_time_remaining_on_vfd</item>
+		<item level="1" text="Show Transponder Remaining/Elapsed as" description="This option allows you choose how to display the remaining/elapsed time for live TV." requires="ConfigDisplay">config.usage.swap_time_display_on_vfd</item>
+		<item level="1" text="Show Media playback Remaining/Elapsed as" description="This option allows you to choose how to display the remaining/elapsed time for Media playback." requires="ConfigDisplay">config.usage.swap_media_time_display_on_vfd</item>
+		<item level="0" text="Show time elapsed as positive" description="This option allows you to choose how to display elapsed time. As + or -" requires="ConfigDisplay">config.usage.elapsed_time_positive_vfd</item>
+		<item level="1" text="Scrolling Speed (software render)" description="Set the scrolling speed of text on the front display, this uses a software render in some skins." requires="ConfigDisplay">config.lcd.scroll_speed</item>
+		<item level="1" text="Scrolling delay (software render)" description="Set the delay time between repeated loops, this uses a software render in some skins." requires="ConfigDisplay">config.lcd.scroll_delay</item>
 		<item level="2" text="Use 12 characters display mode" description="If enabled, display shows 12 chars instead 8, but in latin-1/translit only." requires="hasXcoreVFD">config.usage.toggle12to8characterVFD</item>
 	</setup>
 	<setup key="satconfig" title="Satellite dish settings">
