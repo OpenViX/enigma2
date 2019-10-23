@@ -243,9 +243,9 @@
 		<item level="0" text="Power LED State when Running." description="Set LED Color or disable the LED." requires="LedPowerColor">config.lcd.ledpowercolor</item>
 		<item level="0" text="Power LED State in Standby" description="Set LED Color or disable the LED." requires="LedStandbyColor">config.lcd.ledstandbycolor</item>
 		<item level="0" text="Power LED State in Deep-Standby" description="Set LED Color or disable the LED." requires="LedSuspendColor">config.lcd.ledsuspendcolor</item>
-		<item level="0" text="PowerControl FrontDisplay Normal Mode" description="This option allows you to Power Off the display." requires="Power4x7On">config.lcd.power4x7on</item>
-		<item level="0" text="PowerControl FrontDisplay Standby Mode" description="This option allows you to Power Off the display." requires="Power4x7Standby">config.lcd.power4x7standby</item>
-		<item level="0" text="PowerControl FrontDisplay Suspend Mode" description="This option allows you to Power Off the display." requires="Power4x7Suspend">config.lcd.power4x7suspend</item>
+		<item level="0" text="PowerControl FrontDisplay Normal Mode" description="Power On/Off display Normal Mode." requires="Power24x7On">config.lcd.power24x7on</item>
+		<item level="0" text="PowerControl FrontDisplay Standby Mode" description="Power On/Off display Standby Mode." requires="Power24x7Standby">config.lcd.power24x7standby</item>
+		<item level="0" text="PowerControl FrontDisplay Suspend Mode" description="Power On/Off display Suspend Mode." requires="Power24x7Suspend">config.lcd.power24x7suspend</item>
 		<item level="0" text="Show in Standby" description="This option allows you choose how to display the Time or nothing in Standby" requires="7segment">config.usage.show_in_standby</item>
 		<item level="2" text="Initial scroll delay" description="Delay in milliseconds before start of scrolling text on display." requires="VFD_initial_scroll_delay">config.usage.vfd_initial_scroll_delay</item>
 		<item level="2" text="Final scroll delay" description="Delay in milliseconds after finish scrolling text on display." requires="VFD_final_scroll_delay">config.usage.vfd_final_scroll_delay</item>
