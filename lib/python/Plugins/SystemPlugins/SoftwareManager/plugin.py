@@ -2240,7 +2240,7 @@ def filescan(**kwargs):
 					ScanPath(path = "", with_subdirs = False),
 				],
 			name = "Ipkg",
-			description = _("Install extensions."),
+			description = _("Install extensions"),
 			openfnc = filescan_open, )
 
 class ShowUpdatePackages(Screen, NumericalTextInput):
