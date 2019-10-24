@@ -59,8 +59,8 @@ class LanguageSelection(Screen):
 		self.updateList()
 		self.onLayoutFinish.append(self.selectActiveLanguage)
 
-		self["key_red"] = Label(_(""))
-		self["key_green"] = Label(_(""))
+		self["key_red"] = Label("")
+		self["key_green"] = Label("")
 		self["key_yellow"] = Label(_("Add Language"))
 		self["key_blue"] = Label(_("Delete Language(s)"))
 		self["description"] = Label(_("'Save' changes active language.\n'Add Language' or MENU adds additional language(s).\n'Delete Language' allows either deletion of all but English and active language OR selected language"))
