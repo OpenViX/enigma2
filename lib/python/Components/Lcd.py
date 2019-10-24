@@ -258,89 +258,80 @@ def InitLcd():
 	else:
 		can_lcdmodechecking = False
 
-	def setPowerLEDstate(configElement):
-		if fileExists("/proc/stb/power/powerled"):
-			f = open("/proc/stb/power/powerled", "w")
-			f.write(configElement.value)
-			f.close()
-
-	def setPowerLEDstanbystate(configElement):
-		if fileExists("/proc/stb/power/standbyled"):
-			f = open("/proc/stb/power/standbyled", "w")
-			f.write(configElement.value)
-			f.close()
-
-	def setPowerLEDdeepstanbystate(configElement):
-		if fileExists("/proc/stb/power/suspendled"):
-			f = open("/proc/stb/power/suspendled", "w")
-			f.write(configElement.value)
-			f.close()
-
-	def setLedPowerColor(configElement):
-		f = open("/proc/stb/fp/ledpowercolor", "w")
-		f.write(configElement.value)
-		f.close()
-
-	def setLedStandbyColor(configElement):
-		f = open("/proc/stb/fp/ledstandbycolor", "w")
-		f.write(configElement.value)
-		f.close()
-
-	def setLedSuspendColor(configElement):
-		f = open("/proc/stb/fp/ledsuspendledcolor", "w")
-		f.write(configElement.value)
-		f.close()
-
-	def setPower4x7On(configElement):
-		f = open("/proc/stb/fp/power4x7on", "w")
-		f.write(configElement.value)
-		f.close()
-
-	def setPower4x7Standby(configElement):
-		f = open("/proc/stb/fp/power4x7standby", "w")
-		f.write(configElement.value)
-		f.close()
-
-	def setPower4x7Suspend(configElement):
-		f = open("/proc/stb/fp/power4x7suspend", "w")
-		f.write(configElement.value)
-		f.close()
-
 	if SystemInfo["PowerLed"]:
+		def setPowerLEDstate(configElement):
+			if fileExists("/proc/stb/power/powerled"):
+				f = open("/proc/stb/power/powerled", "w")
+				f.write(configElement.value)
+				f.close()
 		config.lcd.powerled = ConfigSelection(default = "on", choices = [("off", _("Off")), ("on", _("On"))])
 		config.lcd.powerled.addNotifier(setPowerLEDstate)
 
  	if SystemInfo["StandbyLED"]:
+		def setPowerLEDstanbystate(configElement):
+			if fileExists("/proc/stb/power/standbyled"):
+				f = open("/proc/stb/power/standbyled", "w")
+				f.write(configElement.value)
+				f.close()
 		config.lcd.standbyLED = ConfigSelection(default = "on", choices = [("off", _("Off")), ("on", _("On"))])
 		config.lcd.standbyLED.addNotifier(setPowerLEDstanbystate)
 
  	if SystemInfo["SuspendLED"]:
+		def setPowerLEDdeepstanbystate(configElement):
+			if fileExists("/proc/stb/power/suspendled"):
+				f = open("/proc/stb/power/suspendled", "w")
+				f.write(configElement.value)
+				f.close()
 		config.lcd.suspendLED = ConfigSelection(default = "on", choices = [("off", _("Off")), ("on", _("On"))])
 		config.lcd.suspendLED.addNotifier(setPowerLEDdeepstanbystate)
 
 	if SystemInfo["LedPowerColor"]:
+		def setLedPowerColor(configElement):
+			f = open("/proc/stb/fp/ledpowercolor", "w")
+			f.write(configElement.value)
+			f.close()
 		config.lcd.ledpowercolor = ConfigSelection(default = "1", choices = [("0", _("off")),("1", _("blue")), ("2", _("red")), ("3", _("violet"))])
 		config.lcd.ledpowercolor.addNotifier(setLedPowerColor)
 
 	if SystemInfo["LedStandbyColor"]:
+		def setLedStandbyColor(configElement):
+			f = open("/proc/stb/fp/ledstandbycolor", "w")
+			f.write(configElement.value)
+			f.close()
 		config.lcd.ledstandbycolor = ConfigSelection(default = "3", choices = [("0", _("off")),("1", _("blue")), ("2", _("red")), ("3", _("violet"))])
 		config.lcd.ledstandbycolor.addNotifier(setLedStandbyColor)
 
 	if SystemInfo["LedSuspendColor"]:
+		def setLedSuspendColor(configElement):
+			f = open("/proc/stb/fp/ledsuspendledcolor", "w")
+			f.write(configElement.value)
+			f.close()
 		config.lcd.ledsuspendcolor = ConfigSelection(default = "2", choices = [("0", _("off")),("1", _("blue")), ("2", _("red")), ("3", _("violet"))])
 		config.lcd.ledsuspendcolor.addNotifier(setLedSuspendColor)
 
-	if SystemInfo["Power4x7On"]:
-		config.lcd.power4x7on = ConfigSelection(default = "on", choices = [("off", _("Off")), ("on", _("On"))])
-		config.lcd.power4x7on.addNotifier(setPower4x7On)
+	if SystemInfo["Power24x7On"]:
+		def setPower24x7On(configElement):
+			f = open("/proc/stb/fp/power4x7on", "w")
+			f.write(configElement.value)
+			f.close()
+		config.lcd.power24x7on = ConfigSelection(default = "on", choices = [("off", _("Off")), ("on", _("On"))])
+		config.lcd.power24x7on.addNotifier(setPower24x7On)
 
-	if SystemInfo["Power4x7Standby"]:
-		config.lcd.power4x7standby = ConfigSelection(default = "off", choices = [("off", _("Off")), ("on", _("On"))])
-		config.lcd.power4x7standby.addNotifier(setPower4x7Standby)
+	if SystemInfo["Power24x7Standby"]:
+		def setPower24x7Standby(configElement):
+			f = open("/proc/stb/fp/power4x7standby", "w")
+			f.write(configElement.value)
+			f.close()
+		config.lcd.power24x7standby = ConfigSelection(default = "off", choices = [("off", _("Off")), ("on", _("On"))])
+		config.lcd.power24x7standby.addNotifier(setPower24x7Standby)
 
-	if SystemInfo["Power4x7Suspend"]:
-		config.lcd.power4x7suspend = ConfigSelection(default = "off", choices = [("off", _("Off")), ("on", _("On"))])
-		config.lcd.power4x7suspend.addNotifier(setPower4x7Suspend)
+	if SystemInfo["Power24x7Suspend"]:
+		def setPower24x7Suspend(configElement):
+			f = open("/proc/stb/fp/power4x7suspend", "w")
+			f.write(configElement.value)
+			f.close()
+		config.lcd.power24x7suspend = ConfigSelection(default = "off", choices = [("off", _("Off")), ("on", _("On"))])
+		config.lcd.power24x7suspend.addNotifier(setPower24x7Suspend)
 
 	if SystemInfo["LEDButtons"]:
 		def setLEDnormalstate(configElement):
@@ -547,11 +538,6 @@ def InitLcd():
 		else:
 			config.lcd.mode = ConfigNothing()
 
-		if fileExists("/proc/stb/power/vfd"):
-			config.lcd.power = ConfigSelection([("0", _("off")), ("1", _("on"))], "1")
-			config.lcd.power.addNotifier(setLCDpower);
-		else:
-			config.lcd.power = ConfigNothing()
 
 	else:
 		def doNothing():

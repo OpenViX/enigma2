@@ -80,7 +80,7 @@ class Language:
 			print "[Language] Language " + str(name) + " not found"
 		self.langlistselection.append((str(lang + "_" + country), name))
 
-	def activateLanguage(self, index):
+	def activateLanguage_TRY(self, index):
 		try:
 			if index not in self.lang:
 				print "[Language] Selected language %s is not installed, fallback to en_US!" % index
@@ -96,24 +96,11 @@ class Language:
 					x()
 		except:
 			print "[Language] Selected language does not exist!"
-
-		# These should always be C.UTF-8 (or POSIX if C.UTF-8 is unavaible) or program code might behave
-		# differently depending on language setting
-		try:
-			locale.setlocale(locale.LC_CTYPE, ('C', 'UTF-8'))
-		except:
-			pass
-		try:
-			locale.setlocale(locale.LC_COLLATE, ('C', 'UTF-8'))
-		except:
-			try:
-				locale.setlocale(locale.LC_COLLATE, ('POSIX', ''))
-			except:
-				pass
+			return False
 
 		# NOTE: we do not use LC_ALL, because LC_ALL will not set any of the categories, when one of the categories fails.
 		# We'd rather try to set all available categories, and ignore the others
-		for category in [locale.LC_TIME, locale.LC_MONETARY, locale.LC_MESSAGES, locale.LC_NUMERIC ]:
+		for category in [locale.LC_CTYPE, locale.LC_COLLATE, locale.LC_TIME, locale.LC_MONETARY, locale.LC_MESSAGES, locale.LC_NUMERIC]:
 			try:
 				locale.setlocale(category, (self.getLanguage(), 'UTF-8'))
 			except:
@@ -139,6 +126,15 @@ class Language:
 		os.environ["LC_TIME"] = self.getLanguage() + '.UTF-8'
 		os.environ["LANGUAGE"] = self.getLanguage() + '.UTF-8'
 		os.environ["GST_SUBTITLE_ENCODING"] = self.getGStreamerSubtitleEncoding()
+		return True
+
+	def activateLanguage(self, index):
+		from Tools import Notifications
+		from Screens.MessageBox import MessageBox
+		if not self.activateLanguage_TRY(index):
+			print "[Language] - retry with ", "en_US"
+			Notifications.AddNotification(MessageBox, _("The selected langugage is unavailable - using en_US"), MessageBox.TYPE_INFO, timeout=3)
+			self.activateLanguage_TRY("en_US")
 
 	def activateLanguageIndex(self, index):
 		if index < len(self.langlist):
@@ -182,9 +178,9 @@ class Language:
 	def delLanguage(self, delLang = None):
 		from Components.config import config, configfile
 		from shutil import rmtree
-		lang = config.osd.language.value
 
 		if delLang:
+			lang = config.osd.language.value
 			print "[Language] DELETE LANG", delLang
 			if delLang[:2] == "en":
 				print "[Language] Default Language can not be deleted !!"
@@ -196,6 +192,7 @@ class Language:
 			else:
 				os.system("opkg remove --autoremove --force-depends " + Lpackagename + delLang[:2])
 		else:
+			lang = self.activeLanguage
 			print "[Language] Delete all lang except ", lang
 			ll = os.listdir(LPATH)
 			for x in ll:
