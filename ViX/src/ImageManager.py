@@ -3,46 +3,49 @@ from boxbranding import getBoxType, getImageType, getImageDistro, getImageVersio
 from os import path, stat, system, mkdir, makedirs, listdir, remove, rename, statvfs, chmod, walk, symlink, unlink
 from shutil import rmtree, move, copy, copyfile
 from time import localtime, time, strftime, mktime
+import urllib, urllib2, json
 
 from enigma import eTimer, fbClass
 
 from . import _, PluginLanguageDomain
 import Components.Task
 from Components.ActionMap import ActionMap
-from Components.Label import Label
 from Components.Button import Button
-from Components.MenuList import MenuList
+from Components.ChoiceList import ChoiceList, ChoiceEntryComponent
 from Components.config import config, ConfigSubsection, ConfigYesNo, ConfigSelection, ConfigText, ConfigNumber, NoSave, ConfigClock
+from Components.Console import Console
 from Components.Harddisk import harddiskmanager, getProcMounts
+from Components.Label import Label
+from Components.MenuList import MenuList
 from Components.Sources.StaticText import StaticText
 from Components.SystemInfo import SystemInfo
+from Screens.Console import Console as ScreenConsole
+from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
 from Screens.Setup import Setup
-from Components.Console import Console
-from Screens.Console import Console as ScreenConsole
-from Screens.TaskView import JobView
-from Screens.MessageBox import MessageBox
 from Screens.Standby import TryQuitMainloop
-from Tools.Notifications import AddPopupWithCallback
+from Screens.TaskView import JobView
+from Tools.BoundFunction import boundFunction
 from Tools.Directories import fileExists, fileCheck, pathExists, fileHas
 import Tools.CopyFiles
-from Tools.Multiboot import GetImagelist, GetCurrentImage, GetCurrentKern, GetCurrentRoot
-from Components.ChoiceList import ChoiceList, ChoiceEntryComponent
 from Tools.HardwareInfo import HardwareInfo
-import urllib, urllib2, json
+from Tools.Multiboot import GetImagelist, GetCurrentImage, GetCurrentKern, GetCurrentRoot
+from Tools.Notifications import AddPopupWithCallback
 
 RAMCHEKFAILEDID = 'RamCheckFailedNotification'
 
-hddchoises = []
+hddchoices = []
 for p in harddiskmanager.getMountedPartitions():
 	if path.exists(p.mountpoint):
 		d = path.normpath(p.mountpoint)
-		if p.mountpoint != '/':
-			hddchoises.append((p.mountpoint, d))
+		if SystemInfo["canMultiBoot"] and SystemInfo["canMultiBoot"][2] in d:
+				continue
+		elif p.mountpoint != '/':
+			hddchoices.append((p.mountpoint, d))
 config.imagemanager = ConfigSubsection()
 defaultprefix = getImageDistro() + '-' + getBoxType()
 config.imagemanager.folderprefix = ConfigText(default=defaultprefix, fixed_size=False)
-config.imagemanager.backuplocation = ConfigSelection(choices=hddchoises)
+config.imagemanager.backuplocation = ConfigSelection(choices=hddchoices)
 config.imagemanager.schedule = ConfigYesNo(default=False)
 config.imagemanager.scheduletime = ConfigClock(default=0)  # 1:00
 config.imagemanager.repeattype = ConfigSelection(default="daily", choices=[("daily", _("Daily")), ("weekly", _("Weekly")), ("monthly", _("30 Days"))])
@@ -133,6 +136,7 @@ class VIXImageManager(Screen):
 		self["key_red"] = Button(_("Delete"))
 
 		self.BackupRunning = False
+		self.BackupDirectory = " "
 		if SystemInfo["canMultiBoot"]:
 			self.mtdboot = "%s1" % SystemInfo["canMultiBoot"][2]
 	 		if SystemInfo["canMultiBoot"][2] == "sda":
@@ -196,6 +200,8 @@ class VIXImageManager(Screen):
 			self["list"].instance.moveSelection(self["list"].instance.moveDown)
 
 	def refreshList(self):
+		if self.BackupDirectory == " ":
+			return
 		images = listdir(self.BackupDirectory)
 		self.oldlist = images
 		del self.emlist[:]
@@ -219,47 +225,18 @@ class VIXImageManager(Screen):
 		Components.Task.job_manager.in_background = in_background
 
 	def populate_List(self):
-		imparts = []
-		for p in harddiskmanager.getMountedPartitions():
-			if path.exists(p.mountpoint):
-				d = path.normpath(p.mountpoint)
-				if p.mountpoint != '/':
-					imparts.append((p.mountpoint, d))
-		config.imagemanager.backuplocation.setChoices(imparts)
-
 		if config.imagemanager.backuplocation.value.endswith('/'):
 			mount = config.imagemanager.backuplocation.value, config.imagemanager.backuplocation.value[:-1]
 		else:
 			mount = config.imagemanager.backuplocation.value + '/', config.imagemanager.backuplocation.value
 		hdd = '/media/hdd/', '/media/hdd'
-		if mount not in config.imagemanager.backuplocation.choices.choices:
-			if hdd in config.imagemanager.backuplocation.choices.choices:
-				self['myactions'] = ActionMap(['ColorActions', 'OkCancelActions', 'DirectionActions', "MenuActions", "HelpActions"],
-											  {
-											  'cancel': self.close,
-											  'red': self.keyDelete,
-											  'green': self.GreenPressed,
-											  'yellow': self.doDownload,
-											  'blue': self.keyRestore,
-											  "menu": self.createSetup,
-											  "up": self.refreshUp,
-											  "down": self.refreshDown,
-											  "displayHelp": self.doDownload,
-											  'ok': self.keyRestore,
-											  }, -1)
-
-				self.BackupDirectory = '/media/hdd/imagebackups/'
-				config.imagemanager.backuplocation.value = '/media/hdd/'
-				config.imagemanager.backuplocation.save()
-				self['lab1'].setText(_("The chosen location does not exist, using /media/hdd.") + "\n" + _("Select an image to flash:"))
-			else:
-				self['myactions'] = ActionMap(['ColorActions', 'OkCancelActions', 'DirectionActions', "MenuActions"],
+		if mount not in config.imagemanager.backuplocation.choices.choices and hdd not in config.imagemanager.backuplocation.choices.choices:
+			self['myactions'] = ActionMap(["OkCancelActions", "MenuActions"],
 											  {
 											  'cancel': self.close,
 											  "menu": self.createSetup,
 											  }, -1)
-
-				self['lab1'].setText(_("Device: None available") + "\n" + _("Select an image to flash:"))
+			self['lab1'].setText(_("Device: None available") + "\n" + _("Press 'Menu' to select a storage device"))
 		else:
 			self['myactions'] = ActionMap(['ColorActions', 'OkCancelActions', 'DirectionActions', "MenuActions", "HelpActions"],
 										  {
@@ -267,27 +244,32 @@ class VIXImageManager(Screen):
 										  'red': self.keyDelete,
 										  'green': self.GreenPressed,
 										  'yellow': self.doDownload,
-										  'blue': self.keyRestore,
 										  "menu": self.createSetup,
+										  "ok": self.keyRestore,
+										  'blue': self.keyRestore,
 										  "up": self.refreshUp,
 										  "down": self.refreshDown,
 										  "displayHelp": self.doDownload,
-										  'ok': self.keyRestore,
 										  }, -1)
-
-			self.BackupDirectory = config.imagemanager.backuplocation.value + 'imagebackups/'
-			s = statvfs(config.imagemanager.backuplocation.value)
-			free = (s.f_bsize * s.f_bavail) / (1024 * 1024)
-			self['lab1'].setText(_("Device: ") + config.imagemanager.backuplocation.value + ' ' + _('Free space:') + ' ' + str(free) + _('MB') + "\n" + _("Select an image to flash:"))
-		try:
-			if not path.exists(self.BackupDirectory):
-				mkdir(self.BackupDirectory, 0755)
-			if path.exists(self.BackupDirectory + config.imagemanager.folderprefix.value + '-' + getImageType() + '-swapfile_backup'):
-				system('swapoff ' + self.BackupDirectory + config.imagemanager.folderprefix.value + '-' + getImageType() + '-swapfile_backup')
-				remove(self.BackupDirectory + config.imagemanager.folderprefix.value + '-' + getImageType() + '-swapfile_backup')
-			self.refreshList()
-		except:
-			self['lab1'].setText(_("Device: ") + config.imagemanager.backuplocation.value + "\n" + _("There is a problem with this device. Please reformat it and try again."))
+			if mount not in config.imagemanager.backuplocation.choices.choices: 
+				self.BackupDirectory = '/media/hdd/imagebackups/'
+				config.imagemanager.backuplocation.value = '/media/hdd/'
+				config.imagemanager.backuplocation.save()
+				self['lab1'].setText(_("The chosen location does not exist, using /media/hdd.") + "\n" + _("Select an image to flash:"))
+			else:
+				self.BackupDirectory = config.imagemanager.backuplocation.value + 'imagebackups/'
+				s = statvfs(config.imagemanager.backuplocation.value)
+				free = (s.f_bsize * s.f_bavail) / (1024 * 1024)
+				self['lab1'].setText(_("Device: ") + config.imagemanager.backuplocation.value + ' ' + _('Free space:') + ' ' + str(free) + _('MB') + "\n" + _("Select an image to flash:"))
+			try:
+				if not path.exists(self.BackupDirectory):
+					mkdir(self.BackupDirectory, 0755)
+				if path.exists(self.BackupDirectory + config.imagemanager.folderprefix.value + '-' + getImageType() + '-swapfile_backup'):
+					system('swapoff ' + self.BackupDirectory + config.imagemanager.folderprefix.value + '-' + getImageType() + '-swapfile_backup')
+					remove(self.BackupDirectory + config.imagemanager.folderprefix.value + '-' + getImageType() + '-swapfile_backup')
+#				self.refreshList()
+			except:
+				self['lab1'].setText(_("Device: ") + config.imagemanager.backuplocation.value + "\n" + _("There is a problem with this device. Please reformat it and try again."))
 
 	def createSetup(self):
 		self.session.openWithCallback(self.setupDone, Setup, 'viximagemanager', 'SystemPlugins/ViX', self.menu_path, PluginLanguageDomain)
@@ -1459,7 +1441,7 @@ class ImageManagerDownload(Screen):
 		self.urlb = self.urli+self.boxtype+'/'
 		
 		if "atv" in self.urli:
-			imagecat = [6.2,6.3]
+			imagecat = [6.2,6.3, 6.4]
 		elif "www.openvix" in self.urli:
 			imagecat = [5.3]
 
