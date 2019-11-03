@@ -142,16 +142,16 @@ class UpdatePluginMenu(Screen):
 		self.backupdirs = ' '.join( config.plugins.configurationbackup.backupdirs.value )
 		if self.menu == 0:
 			# print "building menu entries"
-			# self.list.append(("install-extensions", _("Manage extensions"), _("\nManage extensions or plugins for your Receiver" ) + self.oktext, None))
+			# self.list.append(("install-extensions", _("Manage extensions"), _("Manage extensions or plugins for your Receiver." ) + self.oktext, None))
 			if SystemInfo["FlashOnlineBackup"]:
-				self.list.append(("flash-online", _("Flash Online"), _("\nFlash on the fly your your Receiver software.") + self.oktext, None))
-				self.list.append(("software-restore", _("Software restore"), _("\nRestore your Receiver with a new firmware." ) + self.oktext, None))
-				self.list.append(("backup-image", _("Backup Image"), _("\nBackup your running Receiver image to HDD or USB." ) + self.oktext, None))
-			self.list.append(("system-backup", _("Backup system settings"), _("\nBackup your Receiver settings." ) + self.oktext + "\n\n" + self.infotext, None))
-			self.list.append(("system-restore",_("Restore system settings"), _("\nRestore your Receiver settings." ) + self.oktext, None))
-			# self.list.append(("plugin-backup",_("Backup Plugins"), _("\nBackup your installed plugins." ) + self.oktext, None))
-			# self.list.append(("plugin-restore",_("Restore Plugins"), _("\nRestore your previously installed plugins." ) + self.oktext, None))
-			self.list.append(("ipkg-install", _("Install local extension"),  _("\nScan for local extensions and install them." ) + self.oktext, None))
+				self.list.append(("flash-online", _("Flash Online"), _("Flash on the fly your your Receiver software.") + self.oktext, None))
+				self.list.append(("software-restore", _("Software restore"), _("Restore your Receiver with a new firmware." ) + self.oktext, None))
+				self.list.append(("backup-image", _("Backup Image"), _("Backup your running Receiver image to HDD or USB." ) + self.oktext, None))
+			self.list.append(("system-backup", _("Backup system settings"), _("Backup your Receiver settings." ) + self.oktext + "\n\n" + self.infotext, None))
+			self.list.append(("system-restore",_("Restore system settings"), _("Restore your Receiver settings." ) + self.oktext, None))
+			# self.list.append(("plugin-backup",_("Backup Plugins"), _("Backup your installed plugins." ) + self.oktext, None))
+			# self.list.append(("plugin-restore",_("Restore Plugins"), _("Restore your previously installed plugins." ) + self.oktext, None))
+			self.list.append(("ipkg-install", _("Install local extension"),  _("Scan for local extensions and install them." ) + self.oktext, None))
 			for p in plugins.getPlugins(PluginDescriptor.WHERE_SOFTWAREMANAGER):
 				if "SoftwareSupported" in p.__call__:
 					callFnc = p.__call__["SoftwareSupported"](None)
