@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-17 18:20+0000\n"
-"PO-Revision-Date: 2019-10-18 14:09+0200\n"
+"POT-Creation-Date: 2019-11-08 09:10+0000\n"
+"PO-Revision-Date: 2019-11-08 16:46+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -963,6 +963,15 @@ msgstr "'%s' bevat  %d bestand(en) en %d sub-mappen.\n"
 
 msgid "'Network peer' automatically detects other Enigma2 receivers on the local network. You can also manually enter the URL or IP address."
 msgstr "'Network peer' detecteert andere Enigma2-ontvangers op het lokale netwerk automatisch. U kunt ook handmatig het IP-adres ingeven."
+
+msgid ""
+"'Save' changes active language.\n"
+"'Add Language' or MENU adds additional language(s).\n"
+"'Delete Language' allows either deletion of all but English and active language OR selected language"
+msgstr ""
+"'Opslaan' verandert de actieve taal.\n"
+"'Voeg taal toe' of 'MENU' voegt additionele taal toe.\n"
+"'Verwijder taal' verwijdert alle talen behalve Engels en de actieve taal OF de geselecteerde taal."
 
 msgid "( All readers)"
 msgstr "(Alle lezers)"
@@ -3894,8 +3903,8 @@ msgstr "Bevestig verwijderen"
 msgid "Delete EPG"
 msgstr "EPG verwijderen"
 
-msgid "Delete Language"
-msgstr "Verwijder taal"
+msgid "Delete Language(s)"
+msgstr "Verwijder talen"
 
 msgid "Delete entry"
 msgstr "Verwijder invoer"
@@ -5383,9 +5392,6 @@ msgstr "Greece"
 
 msgid "Greek"
 msgstr "Grieks"
-
-msgid "Greek (Modern)"
-msgstr "Grieks (modern)"
 
 msgid "Green"
 msgstr "Groen"
@@ -8333,6 +8339,15 @@ msgstr "Power-LED status indien actief."
 msgid "Power LED can be turned on or off here."
 msgstr "Power-LED kan hier worden in- of uitgeschakeld."
 
+msgid "Power On/Off display Normal Mode."
+msgstr "Power Aan/Uit vertoon normale modus."
+
+msgid "Power On/Off display Standby Mode."
+msgstr "Power Aan/Uit vertoon stand-by modus."
+
+msgid "Power On/Off display Suspend Mode."
+msgstr "Power Aan/Uit vertoon opgeschorte modus."
+
 msgid "Power long"
 msgstr "Power lang"
 
@@ -8428,9 +8443,6 @@ msgstr "Peuters"
 
 msgid "Press '0' to toggle PiP mode"
 msgstr "Druk op  '0' om te schakelen tussen de PiP-modi"
-
-msgid "Press 'Add Language' or MENU to add additional language(s). English language can not be deleted"
-msgstr "Druk op MENU of 'Voeg taal toe' om extra talen te installeren. Engels kan niet worden verwijderd."
 
 msgid "Press INFO on your remote control for additional information."
 msgstr "Druk op INFO voor aanvullende informatie."
@@ -9501,12 +9513,12 @@ msgid "Select 'FBC SCR' if this tuner will connect to a SCR (Unicable/JESS) devi
 msgstr "Kies 'FBC SCR' als deze tuner is aangesloten op een SCR-apparaat (Unicable/JESS). Voor alle andere situaties kiest u 'FBC automatisch'."
 
 msgid ""
-"Select 'Yes' to delete all languages except English and your chosen language:\n"
+"Select 'Yes' to delete all languages except English and current language:\n"
 "\n"
 "Select 'No' to delete only the chosen language:\n"
 "\n"
 msgstr ""
-"Kies 'Ja' om alle talen te verwijderen behalve Engels en de door u geselecteerde taal:\n"
+"Kies 'Ja' om alle talen te verwijderen behalve Engels en de huidige taal:\n"
 "\n"
 "Kies 'Nee' om alleen de door u geselecteerde taal te verwijderen.\n"
 
@@ -11605,9 +11617,6 @@ msgstr "Hiermee schakelt u het 'smoothing filter' in voor het 'dithering process
 
 msgid "This option allows you enable the vertical scaler dejagging."
 msgstr "Met deze optie schakelt u de 'vertical scaler dejagging' in/uit."
-
-msgid "This option allows you to Power Off the display."
-msgstr "Hiermee kunt u het display uitschakelen."
 
 msgid "This option allows you to boost the blue tones in the picture."
 msgstr "Met deze instelling kunt u de blauwe kleuren in het beeld versterken."
@@ -15688,6 +15697,9 @@ msgstr "zapte"
 #~ msgid "GraphicalEPG settings"
 #~ msgstr "Grafische EPG instellingen"
 
+#~ msgid "Greek (Modern)"
+#~ msgstr "Grieks (modern)"
+
 #~ msgid "Hard disk settings"
 #~ msgstr "Harde schijf instellingen"
 
@@ -15952,6 +15964,9 @@ msgstr "zapte"
 
 #~ msgid "Prepare another USB stick for image flashing"
 #~ msgstr "Maak een andere USB-stick klaar voor het flashen"
+
+#~ msgid "Press 'Add Language' or MENU to add additional language(s). English language can not be deleted"
+#~ msgstr "Druk op MENU of 'Voeg taal toe' om extra talen te installeren. Engels kan niet worden verwijderd."
 
 #~ msgid "Press OK to start the scan"
 #~ msgstr "Druk OK om te scannen."
@@ -16249,6 +16264,9 @@ msgstr "zapte"
 
 #~ msgid "This is a multitype tuner. Available options depend on the hardware. Cable and terrestrial cannot be configured at the same time. If you want to use as cable + satellite or terrestrial + satellite, configure cable/terrestrial first and then save. Re-open and configure again as satellite."
 #~ msgstr "Dit is een ontvanger met meerdere tunertypes. De beschikbare opties zijn afhankelijk van de hardware. Kabel en terrestrial kunnen niet tegelijkertijd worden geconfigureerd. Als u kabel + satelliet of terrestrial + satelliet wilt gebruiken, configureert eerst de enen en slaat dan op. Vervolgens configureert u de andere."
+
+#~ msgid "This option allows you to Power Off the display."
+#~ msgstr "Hiermee kunt u het display uitschakelen."
 
 #~ msgid ""
 #~ "This plugin creates a USB stick which can be used to update the firmware of your %s %s without the need for a network or WLAN connection.\n"
