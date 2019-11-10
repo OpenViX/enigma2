@@ -1298,6 +1298,8 @@ class BackupFiles(Screen):
 			output.close()
 		self.Stage4Completed = True
 
+# Filename for backup list
+	tar_flist = "/tmp/_backup-files.list"
 	def Stage5(self):
 		tmplist = config.backupmanager.backupdirs.value
 		tmplist.append('/tmp/ExtraInstalledPlugins')
@@ -1322,7 +1324,13 @@ class BackupFiles(Screen):
 		if config.backupmanager.showboxname.value:
 			boxname = '-' + getBoxType()
 		self.Backupfile = self.BackupDirectory + config.backupmanager.folderprefix.value + boxname + '-' + getImageType()[0:3] + backupType + getImageVersion() + '.' + getImageBuild() + imageSubBuild + '-' + backupdate.strftime("%Y%m%d-%H%M") + '.tar.gz'
-		self.Console.ePopen('tar -czvf ' + self.Backupfile + ' ' + self.backupdirs, self.Stage4Complete)
+# Need to create a list of what to backup, so that spaces and special
+# characters don't get lost on, or mangle, the command line
+#
+		with open(BackupFiles.tar_flist, "w") as tfl:
+			for fn in tmplist:
+				tfl.write(fn + "\n")
+		self.Console.ePopen("tar -T " + BackupFiles.tar_flist + " -czvf " + self.Backupfile, self.Stage4Complete)
 
 	def Stage4Complete(self, result, retval, extra_args):
 		if path.exists(self.Backupfile):
@@ -1334,6 +1342,12 @@ class BackupFiles(Screen):
 			self.session.openWithCallback(self.BackupComplete, MessageBox, _("Backup failed - e. g. wrong backup destination or no space left on backup device."), MessageBox.TYPE_INFO, timeout=10)
 			print '[BackupManager] Result.', result
 			print "{BackupManager] Backup failed - e. g. wrong backup destination or no space left on backup device"
+# Delete the list of backup files now that it's finished.
+# Ignore any failure here, as there's nothing useful we could do anyway...
+		try:
+			remove(BackupFiles.tar_flist)
+		except:
+			pass
 
 	def BackupComplete(self):
 		self.Stage1Completed = True
