@@ -23,8 +23,8 @@
 
 <!-- template -->
 	<screen name="SummaryClockPanel">
-		<widget source="global.CurrentTime" render="Label" position="78,0" size="50,15" font="FdLcD;16" halign="right" valign="bottom" >
-			<convert type="ClockToText"/>
+		<widget source="global.CurrentTime" render="Label" position="78,0" size="50,17" font="FdLcD;20" noWrap="1">
+			 <convert type="ClockToText">Format:%H:%M</convert>
 		</widget>
 	</screen>
 
@@ -108,15 +108,11 @@
 
 <!-- main-->
 	<screen name="InfoBarSummary" position="0,0" size="128,32" >
-		<widget source="session.CurrentService" render="Label" position="0,10" size="128,16" font="FdLcD;16" halign="center" valign="top" zPosition="1" noWrap="1" >
-			<convert type="ServiceName">NameOnly</convert>
+		<widget source="session.Event_Now" render="Label" position="0,22" size="128,15" font="FdLcD;12" halign="left" noWrap="1">
+			<convert type="EventName">Name</convert>
 		</widget>
-		<widget source="session.Event_Now" render="Progress" position="0,26" size="50,6" borderWidth="1" zPosition="1" >
-			<convert type="EventTime">Progress</convert>
-		</widget>
-		<widget source="session.Event_Now" render="Label" position="58,25" size="70,12" font="FdLcD;12" halign="right" valign="bottom" noWrap="1" zPosition="1" >
-			<convert type="EventTime">VFDRemaining</convert>
-			<convert type="RemainingToText">VFDNoSeconds</convert>
+		<widget source="session.Event_Now" render="Progress" position="0,13" size="50,6" borderWidth="1" zPosition="1" >
+			 <convert type="EventTime">Progress</convert>
 		</widget>
 		<panel name="SummaryIconsPanel" />
 		<!-- <panel name="SummaryTunerStatusPanel" /> -->
@@ -185,7 +181,7 @@
 
 <!-- setup-->
 	<screen name="SetupSummary" position="0,0" size="128,32">
-		<!-- <widget source="SetupTitle" render="Label" position="0,0" size="170,18" font="FdLcD;15" halign="left" valign="top" noWrap="1"  /> -->
+		<!-- <widget source="SetupTitle" render="Label" position="0,0" size="170,18" font="FdLcD;15" halign="left" valign="top" noWrap="1"	/> -->
 		<widget source="SetupEntry" render="Label" position="0,0" size="128,16" font="FdLcD;16" halign="center" valign="top" zPosition="1" noWrap="1" />
 		<widget source="SetupValue" render="Label" position="0,16" size="128,16" font="FdLcD;14" halign="center" valign="bottom" zPosition="1" noWrap="1" />
 	</screen>
@@ -198,10 +194,10 @@
 
 <!-- standby -->
 	<screen name="StandbySummary" position="0,0" size="128,32">
-		<widget source="global.CurrentTime" render="Label" position="0,0" size="128,22" font="FdLcD;18" halign="left" noWrap="1">
-			<convert type="ClockToText">ShortDate</convert>
+		<widget source="global.CurrentTime" render="Label" position="0,0" size="128,25" font="FdLcD;14" halign="left" noWrap="1">
+			<convert type="ClockToText">FullDate</convert>
 		</widget>
-		<widget source="global.CurrentTime" render="Label" position="0,15" size="120,22" font="FdLcD;22" halign="left" noWrap="1">
+		<widget source="global.CurrentTime" render="Label" position="0,12" size="120,25" font="FdLcD;25" halign="center" noWrap="1">
 			<convert type="ClockToText">Format:%H:%M</convert>
 		</widget>
 		<widget source="session.RecordState" render="Pixmap" pixmap="rec.png"  position="105,22" size="19,10">
@@ -326,7 +322,7 @@
 	</screen>
 	<screen name="LanguageWizardSummary" position="0,0" size="128,32">
 		<widget source="parent.summarytext" render="Label" position="0,0" size="128,32" font="FdLcD;12" halign="center" />
-		<widget source="parent.summarylangname" render="Label" position="0,50" size="128,14" font="FdLcD;12" halign="center" noWrap="1"  />
+		<widget source="parent.summarylangname" render="Label" position="0,50" size="128,14" font="FdLcD;12" halign="center" noWrap="1"	 />
 	</screen>
 	<screen name="VideoWizardSummary" position="0,0" size="128,32">
 		<widget source="text" render="Label" position="0,0" size="128,32" font="FdLcD;12" halign="center" />
