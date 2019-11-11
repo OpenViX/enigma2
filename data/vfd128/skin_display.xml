@@ -108,10 +108,10 @@
 
 <!-- main-->
 	<screen name="InfoBarSummary" position="0,0" size="128,32" >
-		<widget source="session.Event_Now" render="Label" position="0,22" size="128,15" font="FdLcD;12" halign="left" noWrap="1">
+		<widget source="session.Event_Now" render="Label" position="0,21" size="128,15" font="FdLcD;12" halign="left" noWrap="1">
 			<convert type="EventName">Name</convert>
 		</widget>
-		<widget source="session.Event_Now" render="Progress" position="0,13" size="50,6" borderWidth="1" zPosition="1" >
+		<widget source="session.Event_Now" render="Progress" position="0,14" size="50,6" borderWidth="1" zPosition="1" >
 			 <convert type="EventTime">Progress</convert>
 		</widget>
 		<panel name="SummaryIconsPanel" />
