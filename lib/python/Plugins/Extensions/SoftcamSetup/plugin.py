@@ -1,4 +1,3 @@
-# Embedded file name: /usr/lib/enigma2/python/Plugins/Extensions/SoftcamSetup/plugin.py
 from . import _
 from Plugins.Plugin import PluginDescriptor
 from Components.config import config, ConfigSubsection, ConfigYesNo
