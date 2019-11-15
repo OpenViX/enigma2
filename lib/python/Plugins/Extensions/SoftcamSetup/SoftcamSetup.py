@@ -1,3 +1,4 @@
+# Embedded file name: /usr/lib/enigma2/python/Plugins/Extensions/SoftcamSetup/SoftcamSetup.py
 from . import _
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox

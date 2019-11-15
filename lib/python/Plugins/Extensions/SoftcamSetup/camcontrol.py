@@ -1,3 +1,4 @@
+# Embedded file name: /usr/lib/enigma2/python/Plugins/Extensions/SoftcamSetup/camcontrol.py
 import os
 
 class CamControl:
