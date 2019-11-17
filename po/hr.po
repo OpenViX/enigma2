@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-13 22:33+0200\n"
+"POT-Creation-Date: 2019-11-17 17:48+0100\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -28,38 +28,12 @@ msgstr ""
 #
 msgid ""
 "\n"
-"Advanced options and settings."
-msgstr ""
-
-#
-msgid ""
-"\n"
 "After pressing OK, please wait!"
 msgstr ""
 
 msgid ""
 "\n"
-"Backup your Receiver settings."
-msgstr ""
-
-msgid ""
-"\n"
-"Backup your running Receiver image to HDD or USB."
-msgstr ""
-
-msgid ""
-"\n"
 "Conflict detection disabled!"
-msgstr ""
-
-msgid ""
-"\n"
-"Edit the update source address."
-msgstr ""
-
-msgid ""
-"\n"
-"Flash on the fly your your Receiver software."
 msgstr ""
 
 #
@@ -81,35 +55,6 @@ msgid ""
 "\n"
 "Recording in progress."
 msgstr "Tijek izvođenja:"
-
-msgid ""
-"\n"
-"Restore your Receiver settings."
-msgstr ""
-
-msgid ""
-"\n"
-"Restore your Receiver with a new firmware."
-msgstr ""
-
-#
-msgid ""
-"\n"
-"Restore your backups by date."
-msgstr ""
-
-#
-msgid ""
-"\n"
-"Scan for local extensions and install them."
-msgstr ""
-
-#
-msgid ""
-"\n"
-"Select your backup device.\n"
-"Current device: "
-msgstr ""
 
 #, python-format
 msgid ""
@@ -1122,6 +1067,11 @@ msgid "Advanced options"
 msgstr "Napredne video postavke"
 
 #
+#, fuzzy
+msgid "Advanced options and settings."
+msgstr "Napredne video postavke"
+
+#
 msgid "Advanced restore"
 msgstr ""
 
@@ -1719,6 +1669,14 @@ msgstr ""
 
 #
 msgid "Backup system settings"
+msgstr ""
+
+#
+#, fuzzy
+msgid "Backup your Receiver settings."
+msgstr "Lokacija sigurnosne kopije"
+
+msgid "Backup your running Receiver image to HDD or USB."
 msgstr ""
 
 msgid "Bahamas"
@@ -4156,6 +4114,11 @@ msgstr ""
 msgid "Edit the network configuration of your receiver.\n"
 msgstr ""
 
+#
+#, fuzzy
+msgid "Edit the update source address."
+msgstr "Odaberi film"
+
 msgid "Edit timer"
 msgstr ""
 
@@ -4163,8 +4126,10 @@ msgstr ""
 msgid "Edit title"
 msgstr ""
 
-msgid "Edit update source url."
-msgstr ""
+#
+#, fuzzy
+msgid "Edit update source url"
+msgstr "Odaberi film"
 
 msgid "Education/Science/..."
 msgstr ""
@@ -5000,6 +4965,9 @@ msgstr ""
 msgid "Flash Online"
 msgstr ""
 
+msgid "Flash on the fly your your Receiver software."
+msgstr ""
+
 msgid "Flashed: "
 msgstr ""
 
@@ -5345,9 +5313,6 @@ msgstr "Grčki"
 #
 msgid "Greek"
 msgstr "Grčki"
-
-msgid "Greek (Modern)"
-msgstr ""
 
 #
 #, fuzzy
@@ -5713,13 +5678,16 @@ msgstr ""
 msgid "Icons"
 msgstr ""
 
+msgid "If disabled, underline characters in file and directory names are not shown and are replaced with spaces."
+msgstr ""
+
 msgid "If editing a file, can you set the cursor start position at end or begin of the line."
 msgstr ""
 
 msgid "If enabled, AIT data is included in recordings."
 msgstr ""
 
-msgid "If enabled, bookmarks will be updated with the new location when you move or copy a recording.."
+msgid "If enabled, bookmarks will be updated with the new location when you move or copy a recording."
 msgstr ""
 
 msgid "If enabled, display shows 12 chars instead 8, but in latin-1/translit only."
@@ -5972,10 +5940,6 @@ msgid "Install channel list"
 msgstr "sljedeći kanal u povijesti"
 
 msgid "Install extensions"
-msgstr ""
-
-#
-msgid "Install extensions."
 msgstr ""
 
 msgid "Install lcd picons on"
@@ -9580,6 +9544,17 @@ msgstr ""
 
 #
 #, fuzzy
+msgid "Restore your Receiver settings."
+msgstr "Lokacija sigurnosne kopije"
+
+msgid "Restore your Receiver with a new firmware."
+msgstr ""
+
+msgid "Restore your backups by date."
+msgstr ""
+
+#
+#, fuzzy
 msgid "Restoring..."
 msgstr "snimanje..."
 
@@ -10005,6 +9980,9 @@ msgstr "Greška tunera!"
 #, fuzzy
 msgid "Scan files..."
 msgstr "Snimljene datoteke..."
+
+msgid "Scan for local extensions and install them."
+msgstr ""
 
 #
 #, fuzzy
@@ -10472,7 +10450,7 @@ msgstr "Odaberi film"
 
 #
 #, fuzzy
-msgid "Select update source to edit."
+msgid "Select update source to edit"
 msgstr "Odaberi film"
 
 #
@@ -10499,6 +10477,11 @@ msgstr ""
 #, fuzzy
 msgid "Select your Skin"
 msgstr "Odaberi film"
+
+msgid ""
+"Select your backup device.\n"
+"Current device: "
+msgstr ""
 
 msgid "Select your country. If not available select 'all'."
 msgstr ""
@@ -11189,6 +11172,9 @@ msgid "Show the plugin browser.."
 msgstr "Preglednik dodataka"
 
 msgid "Show two lines per entry"
+msgstr ""
+
+msgid "Show underline characters in filenames"
 msgstr ""
 
 #
@@ -14310,6 +14296,9 @@ msgstr ""
 msgid "Yesterday"
 msgstr ""
 
+msgid "You PIN code is 0000. This is the default PIN code and it disables parental control!\n"
+msgstr ""
+
 #, python-format
 msgid ""
 "You already have a bootlogo installed,\n"
@@ -14465,9 +14454,6 @@ msgid ""
 "You need to plug-in your USB-flash drive with your image to restore.\n"
 "Power on your GigaBlue and you can flash your backup image.\n"
 "After flashing you can restore your settings."
-msgstr ""
-
-msgid "Your PIN code is 0000. This is the default PIN code and it disable parental control!\n"
 msgstr ""
 
 msgid "Your Receiver isn't connected to the internet properly. Please check it and try again."

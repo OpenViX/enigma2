@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-13 22:33+0200\n"
+"POT-Creation-Date: 2019-11-17 17:48+0100\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -27,14 +27,6 @@ msgid ""
 "[User - bouquets (TV)]\n"
 msgstr ""
 
-#
-msgid ""
-"\n"
-"Advanced options and settings."
-msgstr ""
-"\n"
-"گزینه ها و تنظیمات پیشرفته"
-
 msgid ""
 "\n"
 "After pressing OK, please wait!"
@@ -42,36 +34,10 @@ msgstr ""
 "\n"
 "بعد از فشار دادن دکمه OK لطفا صبر کنید"
 
-#, fuzzy
-msgid ""
-"\n"
-"Backup your Receiver settings."
-msgstr "تهیه نسخه پشتیبان از تنظیمات"
-
-msgid ""
-"\n"
-"Backup your running Receiver image to HDD or USB."
-msgstr ""
-
 msgid ""
 "\n"
 "Conflict detection disabled!"
 msgstr ""
-
-#
-#, fuzzy
-msgid ""
-"\n"
-"Edit the update source address."
-msgstr ""
-"\n"
-"ویرایش آدرس منبع به روز رسانی"
-
-#, fuzzy
-msgid ""
-"\n"
-"Flash on the fly your your Receiver software."
-msgstr "مدیریت نرم افزار رسیور شما"
 
 msgid ""
 "\n"
@@ -91,43 +57,6 @@ msgid ""
 "\n"
 "Recording in progress."
 msgstr "ضبط در حال پیشرفت"
-
-#, fuzzy
-msgid ""
-"\n"
-"Restore your Receiver settings."
-msgstr "بازگردانی تنظیمات سیستم"
-
-msgid ""
-"\n"
-"Restore your Receiver with a new firmware."
-msgstr ""
-
-#
-msgid ""
-"\n"
-"Restore your backups by date."
-msgstr ""
-"\n"
-"بازگردانی نسخه های پشتیبان شما توسط تاریخ"
-
-#
-msgid ""
-"\n"
-"Scan for local extensions and install them."
-msgstr ""
-"\n"
-"اسکن برای بسته های محلی و نصب آنها"
-
-#
-msgid ""
-"\n"
-"Select your backup device.\n"
-"Current device: "
-msgstr ""
-"\n"
-"وسیله مورد نظر برای تهیه نسخه پشتیبان را انتخاب کنید\n"
-"وسیله فعلی: "
 
 #, python-format
 msgid ""
@@ -1028,6 +957,13 @@ msgstr "گزینه های پیشرفته"
 msgid "Advanced options"
 msgstr "گزینه های پیشرفته"
 
+#
+#, fuzzy
+msgid "Advanced options and settings."
+msgstr ""
+"\n"
+"گزینه ها و تنظیمات پیشرفته"
+
 msgid "Advanced restore"
 msgstr "بازگردانی پیشرفته"
 
@@ -1581,6 +1517,14 @@ msgid "Backup is running..."
 msgstr "نسخه پشتیبان در حال اجرا است"
 
 msgid "Backup system settings"
+msgstr "تهیه نسخه پشتیبان از تنظیمات"
+
+#, fuzzy
+msgid "Backup your Receiver settings."
+msgstr "تهیه نسخه پشتیبان از تنظیمات"
+
+#, fuzzy
+msgid "Backup your running Receiver image to HDD or USB."
 msgstr "تهیه نسخه پشتیبان از تنظیمات"
 
 msgid "Bahamas"
@@ -3826,6 +3770,13 @@ msgstr ""
 msgid "Edit the network configuration of your receiver.\n"
 msgstr ""
 
+#
+#, fuzzy
+msgid "Edit the update source address."
+msgstr ""
+"\n"
+"ویرایش آدرس منبع به روز رسانی"
+
 msgid "Edit timer"
 msgstr ""
 
@@ -3834,7 +3785,7 @@ msgstr "ویرایش عنوان"
 
 #
 #, fuzzy
-msgid "Edit update source url."
+msgid "Edit update source url"
 msgstr "ویرایش منبع به روز رسانی"
 
 msgid "Education/Science/..."
@@ -4611,6 +4562,10 @@ msgid "Flash Online"
 msgstr ""
 
 #, fuzzy
+msgid "Flash on the fly your your Receiver software."
+msgstr "مدیریت نرم افزار رسیور شما"
+
+#, fuzzy
 msgid "Flashed: "
 msgstr "فلش کردن ناموفق"
 
@@ -4927,9 +4882,6 @@ msgstr "یونانی"
 
 msgid "Greek"
 msgstr "یونانی"
-
-msgid "Greek (Modern)"
-msgstr ""
 
 #, fuzzy
 msgid "Green"
@@ -5265,13 +5217,16 @@ msgstr ""
 msgid "Icons"
 msgstr "آیکون"
 
+msgid "If disabled, underline characters in file and directory names are not shown and are replaced with spaces."
+msgstr ""
+
 msgid "If editing a file, can you set the cursor start position at end or begin of the line."
 msgstr ""
 
 msgid "If enabled, AIT data is included in recordings."
 msgstr ""
 
-msgid "If enabled, bookmarks will be updated with the new location when you move or copy a recording.."
+msgid "If enabled, bookmarks will be updated with the new location when you move or copy a recording."
 msgstr ""
 
 msgid "If enabled, display shows 12 chars instead 8, but in latin-1/translit only."
@@ -5507,9 +5462,6 @@ msgstr "نصب بسته محلی"
 
 msgid "Install extensions"
 msgstr ""
-
-msgid "Install extensions."
-msgstr "نصب بسته ها"
 
 #, fuzzy
 msgid "Install lcd picons on"
@@ -8754,6 +8706,21 @@ msgstr "راه اندازی دوباره شبکه"
 msgid "Restore system settings"
 msgstr "بازگردانی تنظیمات سیستم"
 
+#, fuzzy
+msgid "Restore your Receiver settings."
+msgstr "بازگردانی تنظیمات سیستم"
+
+#, fuzzy
+msgid "Restore your Receiver with a new firmware."
+msgstr "بازگردانی تنظیمات سیستم"
+
+#
+#, fuzzy
+msgid "Restore your backups by date."
+msgstr ""
+"\n"
+"بازگردانی نسخه های پشتیبان شما توسط تاریخ"
+
 #
 #, fuzzy
 msgid "Restoring..."
@@ -9134,6 +9101,13 @@ msgstr "اسکن ناموفق"
 #, fuzzy
 msgid "Scan files..."
 msgstr "اسکن فایل ها"
+
+#
+#, fuzzy
+msgid "Scan for local extensions and install them."
+msgstr ""
+"\n"
+"اسکن برای بسته های محلی و نصب آنها"
 
 #, fuzzy
 msgid "Scan options"
@@ -9547,7 +9521,7 @@ msgid "Select update source"
 msgstr "انتخاب منبع به روز رسانی برای ویرایش"
 
 #, fuzzy
-msgid "Select update source to edit."
+msgid "Select update source to edit"
 msgstr "انتخاب منبع به روز رسانی برای ویرایش"
 
 msgid "Select video input with up/down buttons"
@@ -9570,6 +9544,16 @@ msgstr "دکمه OK را برای فعال کردن پوسته انتخاب شد
 #, fuzzy
 msgid "Select your Skin"
 msgstr "انتخاب فیلم"
+
+#
+#, fuzzy
+msgid ""
+"Select your backup device.\n"
+"Current device: "
+msgstr ""
+"\n"
+"وسیله مورد نظر برای تهیه نسخه پشتیبان را انتخاب کنید\n"
+"وسیله فعلی: "
 
 msgid "Select your country. If not available select 'all'."
 msgstr ""
@@ -10210,6 +10194,10 @@ msgstr "مرورگر پلاگین"
 
 msgid "Show two lines per entry"
 msgstr ""
+
+#, fuzzy
+msgid "Show underline characters in filenames"
+msgstr "ترکیب نام های فایل های ضبط"
 
 #, fuzzy
 msgid "Show unknown extension as text"
@@ -13052,6 +13040,9 @@ msgstr ""
 msgid "Yesterday"
 msgstr ""
 
+msgid "You PIN code is 0000. This is the default PIN code and it disables parental control!\n"
+msgstr ""
+
 #, python-format
 msgid ""
 "You already have a bootlogo installed,\n"
@@ -13201,9 +13192,6 @@ msgid ""
 "You need to plug-in your USB-flash drive with your image to restore.\n"
 "Power on your GigaBlue and you can flash your backup image.\n"
 "After flashing you can restore your settings."
-msgstr ""
-
-msgid "Your PIN code is 0000. This is the default PIN code and it disable parental control!\n"
 msgstr ""
 
 msgid "Your Receiver isn't connected to the internet properly. Please check it and try again."

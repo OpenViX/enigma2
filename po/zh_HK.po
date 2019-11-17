@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-13 22:33+0200\n"
+"POT-Creation-Date: 2019-11-17 17:48+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: 王彪 <satfan@163.com>\n"
 "Language-Team: 中國\n"
@@ -21,49 +21,15 @@ msgstr "自定義組 (電視)"
 
 msgid ""
 "\n"
-"Advanced options and settings."
-msgstr ""
-"\n"
-"高級選項和設定."
-
-msgid ""
-"\n"
 "After pressing OK, please wait!"
 msgstr ""
 "\n"
 "按OK鍵確定後, 請稍等!"
 
-#, fuzzy
-msgid ""
-"\n"
-"Backup your Receiver settings."
-msgstr ""
-"\n"
-"備份您的Dreambox設定。"
-
-msgid ""
-"\n"
-"Backup your running Receiver image to HDD or USB."
-msgstr ""
-
 msgid ""
 "\n"
 "Conflict detection disabled!"
 msgstr ""
-
-#, fuzzy
-msgid ""
-"\n"
-"Edit the update source address."
-msgstr ""
-"\n"
-"編輯升級源地址。"
-
-#, fuzzy
-msgid ""
-"\n"
-"Flash on the fly your your Receiver software."
-msgstr "管理Dreambox軟體."
 
 msgid ""
 "\n"
@@ -83,45 +49,6 @@ msgid ""
 "\n"
 "Recording in progress."
 msgstr "錄製位置..."
-
-#, fuzzy
-msgid ""
-"\n"
-"Restore your Receiver settings."
-msgstr ""
-"\n"
-"重定您的Dreambox設定。"
-
-#, fuzzy
-msgid ""
-"\n"
-"Restore your Receiver with a new firmware."
-msgstr ""
-"\n"
-"用新的韧體來恢復您的Dreambox."
-
-msgid ""
-"\n"
-"Restore your backups by date."
-msgstr ""
-"\n"
-"按日期恢復您的備份"
-
-msgid ""
-"\n"
-"Scan for local extensions and install them."
-msgstr ""
-"\n"
-"掃描本地套裝軟體並安裝它們。"
-
-msgid ""
-"\n"
-"Select your backup device.\n"
-"Current device: "
-msgstr ""
-"\n"
-"選擇備份裝置.\n"
-"當前的裝置:"
 
 #, python-format
 msgid ""
@@ -1018,6 +945,12 @@ msgstr "高級選項"
 msgid "Advanced options"
 msgstr ""
 
+#, fuzzy
+msgid "Advanced options and settings."
+msgstr ""
+"\n"
+"高級選項和設定."
+
 msgid "Advanced restore"
 msgstr "高級恢復"
 
@@ -1548,6 +1481,18 @@ msgstr "備份正在運行..."
 
 msgid "Backup system settings"
 msgstr "備份系統設定"
+
+#, fuzzy
+msgid "Backup your Receiver settings."
+msgstr ""
+"\n"
+"備份您的Dreambox設定。"
+
+#, fuzzy
+msgid "Backup your running Receiver image to HDD or USB."
+msgstr ""
+"\n"
+"備份您的Dreambox設定。"
 
 msgid "Bahamas"
 msgstr ""
@@ -3728,6 +3673,12 @@ msgid "Edit the network configuration of your receiver.\n"
 msgstr ""
 
 #, fuzzy
+msgid "Edit the update source address."
+msgstr ""
+"\n"
+"編輯升級源地址。"
+
+#, fuzzy
 msgid "Edit timer"
 msgstr "編輯自動計時器"
 
@@ -3735,7 +3686,7 @@ msgid "Edit title"
 msgstr "修改標題"
 
 #, fuzzy
-msgid "Edit update source url."
+msgid "Edit update source url"
 msgstr "編輯升級源地址."
 
 msgid "Education/Science/..."
@@ -4499,6 +4450,10 @@ msgstr ""
 msgid "Flash Online"
 msgstr "顯示資訊"
 
+#, fuzzy
+msgid "Flash on the fly your your Receiver software."
+msgstr "管理Dreambox軟體."
+
 msgid "Flashed: "
 msgstr ""
 
@@ -4802,9 +4757,6 @@ msgstr "希臘語"
 
 msgid "Greek"
 msgstr "希臘語"
-
-msgid "Greek (Modern)"
-msgstr ""
 
 #, fuzzy
 msgid "Green"
@@ -5137,13 +5089,16 @@ msgstr "冰島"
 msgid "Icons"
 msgstr ""
 
+msgid "If disabled, underline characters in file and directory names are not shown and are replaced with spaces."
+msgstr ""
+
 msgid "If editing a file, can you set the cursor start position at end or begin of the line."
 msgstr ""
 
 msgid "If enabled, AIT data is included in recordings."
 msgstr ""
 
-msgid "If enabled, bookmarks will be updated with the new location when you move or copy a recording.."
+msgid "If enabled, bookmarks will be updated with the new location when you move or copy a recording."
 msgstr ""
 
 msgid "If enabled, display shows 12 chars instead 8, but in latin-1/translit only."
@@ -5369,9 +5324,6 @@ msgstr ""
 
 #, fuzzy
 msgid "Install extensions"
-msgstr "安裝附件."
-
-msgid "Install extensions."
 msgstr "安裝附件."
 
 #, fuzzy
@@ -8535,6 +8487,24 @@ msgstr "正在恢復..."
 msgid "Restore system settings"
 msgstr "恢復系統設定"
 
+#, fuzzy
+msgid "Restore your Receiver settings."
+msgstr ""
+"\n"
+"重定您的Dreambox設定。"
+
+#, fuzzy
+msgid "Restore your Receiver with a new firmware."
+msgstr ""
+"\n"
+"用新的韧體來恢復您的Dreambox."
+
+#, fuzzy
+msgid "Restore your backups by date."
+msgstr ""
+"\n"
+"按日期恢復您的備份"
+
 msgid "Restoring..."
 msgstr ""
 
@@ -8922,6 +8892,12 @@ msgstr "調製失敗!"
 
 msgid "Scan files..."
 msgstr ""
+
+#, fuzzy
+msgid "Scan for local extensions and install them."
+msgstr ""
+"\n"
+"掃描本地套裝軟體並安裝它們。"
 
 #, fuzzy
 msgid "Scan options"
@@ -9332,7 +9308,7 @@ msgid "Select update source"
 msgstr "選擇並編輯升級來源"
 
 #, fuzzy
-msgid "Select update source to edit."
+msgid "Select update source to edit"
 msgstr "選擇並編輯升級來源"
 
 msgid "Select video input with up/down buttons"
@@ -9354,6 +9330,15 @@ msgstr "按OK啟動所選皮膚."
 
 msgid "Select your Skin"
 msgstr ""
+
+#, fuzzy
+msgid ""
+"Select your backup device.\n"
+"Current device: "
+msgstr ""
+"\n"
+"選擇備份裝置.\n"
+"當前的裝置:"
 
 msgid "Select your country. If not available select 'all'."
 msgstr ""
@@ -9969,6 +9954,9 @@ msgid "Show the plugin browser.."
 msgstr "流覽插件"
 
 msgid "Show two lines per entry"
+msgstr ""
+
+msgid "Show underline characters in filenames"
 msgstr ""
 
 #, fuzzy
@@ -12800,6 +12788,9 @@ msgstr "是，返回電影列表"
 msgid "Yesterday"
 msgstr ""
 
+msgid "You PIN code is 0000. This is the default PIN code and it disables parental control!\n"
+msgstr ""
+
 #, python-format
 msgid ""
 "You already have a bootlogo installed,\n"
@@ -12950,9 +12941,6 @@ msgid ""
 "You need to plug-in your USB-flash drive with your image to restore.\n"
 "Power on your GigaBlue and you can flash your backup image.\n"
 "After flashing you can restore your settings."
-msgstr ""
-
-msgid "Your PIN code is 0000. This is the default PIN code and it disable parental control!\n"
 msgstr ""
 
 #, fuzzy

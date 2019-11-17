@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-13 22:33+0200\n"
+"POT-Creation-Date: 2019-11-17 17:48+0100\n"
 "PO-Revision-Date: 2015-08-25 18:31+0100\n"
 "Last-Translator: andy1 <dmmm8000pvr@gmail.com>\n"
 "Language-Team: none\n"
@@ -24,13 +24,6 @@ msgid ""
 "[User - bouquets (TV)]\n"
 msgstr "Kanallister"
 
-msgid ""
-"\n"
-"Advanced options and settings."
-msgstr ""
-"\n"
-"Avanserte innstillinger."
-
 #
 msgid ""
 "\n"
@@ -42,40 +35,8 @@ msgstr ""
 #, fuzzy
 msgid ""
 "\n"
-"Backup your Receiver settings."
-msgstr ""
-"\n"
-"Ta sikkerhetskopi av mottaker innstillingene."
-
-#, fuzzy
-msgid ""
-"\n"
-"Backup your running Receiver image to HDD or USB."
-msgstr ""
-"\n"
-"Ta sikkerhetskopi av mottaker innstillingene."
-
-#, fuzzy
-msgid ""
-"\n"
 "Conflict detection disabled!"
 msgstr "Konflikt ikke løst!"
-
-#, fuzzy
-msgid ""
-"\n"
-"Edit the update source address."
-msgstr ""
-"\n"
-"Endre oppdateringens kilde adresse."
-
-#, fuzzy
-msgid ""
-"\n"
-"Flash on the fly your your Receiver software."
-msgstr ""
-"\n"
-"Direkteoppdatering av mottakeren"
 
 #
 msgid ""
@@ -97,46 +58,6 @@ msgid ""
 msgstr ""
 "\n"
 "Opptak pågår"
-
-#, fuzzy
-msgid ""
-"\n"
-"Restore your Receiver settings."
-msgstr ""
-"\n"
-"Gjenopprett mottakeren."
-
-#, fuzzy
-msgid ""
-"\n"
-"Restore your Receiver with a new firmware."
-msgstr ""
-"\n"
-"Gjenopprett mottakeren med ny programvare."
-
-msgid ""
-"\n"
-"Restore your backups by date."
-msgstr ""
-"\n"
-"Gjenopprett sikkerhetskopiene etter dato."
-
-msgid ""
-"\n"
-"Scan for local extensions and install them."
-msgstr ""
-"\n"
-"Søk etter og installer lokale utvidelser."
-
-#
-msgid ""
-"\n"
-"Select your backup device.\n"
-"Current device: "
-msgstr ""
-"\n"
-"Velg din sikkerhetskopi.\n"
-"Nåværende kopi:"
 
 #, python-format
 msgid ""
@@ -1117,6 +1038,12 @@ msgstr "Avansert innstilling"
 msgid "Advanced options"
 msgstr "Avansert innstilling"
 
+#, fuzzy
+msgid "Advanced options and settings."
+msgstr ""
+"\n"
+"Avanserte innstillinger."
+
 msgid "Advanced restore"
 msgstr "Avansert gjenoppretting"
 
@@ -1714,6 +1641,18 @@ msgstr "Sikkerhetskopi kjører..."
 #
 msgid "Backup system settings"
 msgstr "Sikkerhetskopier system innstillinger"
+
+#, fuzzy
+msgid "Backup your Receiver settings."
+msgstr ""
+"\n"
+"Ta sikkerhetskopi av mottaker innstillingene."
+
+#, fuzzy
+msgid "Backup your running Receiver image to HDD or USB."
+msgstr ""
+"\n"
+"Ta sikkerhetskopi av mottaker innstillingene."
 
 msgid "Bahamas"
 msgstr ""
@@ -4131,6 +4070,12 @@ msgstr "Rediger mottakerens navneserverinnstilling.\n"
 msgid "Edit the network configuration of your receiver.\n"
 msgstr "Rediger mottakerens nettverksinnstilling.\n"
 
+#, fuzzy
+msgid "Edit the update source address."
+msgstr ""
+"\n"
+"Endre oppdateringens kilde adresse."
+
 msgid "Edit timer"
 msgstr "Rediger tidtaker"
 
@@ -4138,7 +4083,7 @@ msgid "Edit title"
 msgstr "Rediger overskrift"
 
 #, fuzzy
-msgid "Edit update source url."
+msgid "Edit update source url"
 msgstr "Rediger kilden til internettadresse."
 
 msgid "Education/Science/..."
@@ -4986,6 +4931,12 @@ msgid "Flash Online"
 msgstr ""
 
 #, fuzzy
+msgid "Flash on the fly your your Receiver software."
+msgstr ""
+"\n"
+"Direkteoppdatering av mottakeren"
+
+#, fuzzy
 msgid "Flashed: "
 msgstr "Flash"
 
@@ -5320,9 +5271,6 @@ msgstr "Gresk"
 #
 msgid "Greek"
 msgstr "Gresk"
-
-msgid "Greek (Modern)"
-msgstr ""
 
 #
 msgid "Green"
@@ -5684,13 +5632,16 @@ msgstr ""
 msgid "Icons"
 msgstr "Framdriftsirkel"
 
+msgid "If disabled, underline characters in file and directory names are not shown and are replaced with spaces."
+msgstr ""
+
 msgid "If editing a file, can you set the cursor start position at end or begin of the line."
 msgstr ""
 
 msgid "If enabled, AIT data is included in recordings."
 msgstr ""
 
-msgid "If enabled, bookmarks will be updated with the new location when you move or copy a recording.."
+msgid "If enabled, bookmarks will be updated with the new location when you move or copy a recording."
 msgstr ""
 
 msgid "If enabled, display shows 12 chars instead 8, but in latin-1/translit only."
@@ -5947,10 +5898,6 @@ msgstr "Installer kanalliste"
 #
 msgid "Install extensions"
 msgstr "Installer utvidelser"
-
-#
-msgid "Install extensions."
-msgstr "Installer utvidelser."
 
 #, fuzzy
 msgid "Install lcd picons on"
@@ -9450,6 +9397,24 @@ msgstr "Start nettverk på nytt"
 msgid "Restore system settings"
 msgstr "Gjenopprett systeminnstillinger"
 
+#, fuzzy
+msgid "Restore your Receiver settings."
+msgstr ""
+"\n"
+"Gjenopprett mottakeren."
+
+#, fuzzy
+msgid "Restore your Receiver with a new firmware."
+msgstr ""
+"\n"
+"Gjenopprett mottakeren med ny programvare."
+
+#, fuzzy
+msgid "Restore your backups by date."
+msgstr ""
+"\n"
+"Gjenopprett sikkerhetskopiene etter dato."
+
 #
 msgid "Restoring..."
 msgstr "Gjenoppretter..."
@@ -9856,6 +9821,12 @@ msgstr "Kanalsøket feilet!"
 
 msgid "Scan files..."
 msgstr "Søker filer..."
+
+#, fuzzy
+msgid "Scan for local extensions and install them."
+msgstr ""
+"\n"
+"Søk etter og installer lokale utvidelser."
 
 #
 msgid "Scan options"
@@ -10293,7 +10264,7 @@ msgid "Select update source"
 msgstr "Velg oppdateringssted"
 
 #, fuzzy
-msgid "Select update source to edit."
+msgid "Select update source to edit"
 msgstr "Velg og endre oppdateringssted."
 
 msgid "Select video input with up/down buttons"
@@ -10319,6 +10290,16 @@ msgstr "Velg distributør og trykk OK for å søke"
 #, fuzzy
 msgid "Select your Skin"
 msgstr "Velg et skin"
+
+#
+#, fuzzy
+msgid ""
+"Select your backup device.\n"
+"Current device: "
+msgstr ""
+"\n"
+"Velg din sikkerhetskopi.\n"
+"Nåværende kopi:"
 
 msgid "Select your country. If not available select 'all'."
 msgstr ""
@@ -10974,6 +10955,10 @@ msgstr "Beskytt programtillegg leser"
 
 msgid "Show two lines per entry"
 msgstr ""
+
+#, fuzzy
+msgid "Show underline characters in filenames"
+msgstr "Begrens antall tegn på opptaksnavn"
 
 #
 #, fuzzy
@@ -14100,6 +14085,9 @@ msgstr "Ja, returnerer til opptaksliste"
 msgid "Yesterday"
 msgstr "I går"
 
+msgid "You PIN code is 0000. This is the default PIN code and it disables parental control!\n"
+msgstr ""
+
 #, fuzzy, python-format
 msgid ""
 "You already have a bootlogo installed,\n"
@@ -14265,9 +14253,6 @@ msgid ""
 "You need to plug-in your USB-flash drive with your image to restore.\n"
 "Power on your GigaBlue and you can flash your backup image.\n"
 "After flashing you can restore your settings."
-msgstr ""
-
-msgid "Your PIN code is 0000. This is the default PIN code and it disable parental control!\n"
 msgstr ""
 
 msgid "Your Receiver isn't connected to the internet properly. Please check it and try again."

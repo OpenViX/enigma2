@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-13 22:33+0200\n"
+"POT-Creation-Date: 2019-11-17 17:48+0100\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -27,51 +27,15 @@ msgstr "Bruger kanallister"
 #
 msgid ""
 "\n"
-"Advanced options and settings."
-msgstr ""
-"\n"
-"Avancerede indstillinger og opsætning."
-
-#
-msgid ""
-"\n"
 "After pressing OK, please wait!"
 msgstr ""
 "\n"
 "Efter tryk på OK, vent venligst!"
 
-#
-#, fuzzy
-msgid ""
-"\n"
-"Backup your Receiver settings."
-msgstr "Lav backup af systemindstillinger"
-
-msgid ""
-"\n"
-"Backup your running Receiver image to HDD or USB."
-msgstr ""
-
 msgid ""
 "\n"
 "Conflict detection disabled!"
 msgstr ""
-
-#
-#, fuzzy
-msgid ""
-"\n"
-"Edit the update source address."
-msgstr ""
-"\n"
-"Rediger kildeadressen til opgradering."
-
-#
-#, fuzzy
-msgid ""
-"\n"
-"Flash on the fly your your Receiver software."
-msgstr "Styring af din modtagers software"
 
 #
 msgid ""
@@ -93,44 +57,6 @@ msgid ""
 "\n"
 "Recording in progress."
 msgstr "Igangværende optagelse"
-
-#
-#, fuzzy
-msgid ""
-"\n"
-"Restore your Receiver settings."
-msgstr "Gendan system opsætning"
-
-msgid ""
-"\n"
-"Restore your Receiver with a new firmware."
-msgstr ""
-
-#
-msgid ""
-"\n"
-"Restore your backups by date."
-msgstr ""
-"\n"
-"Gendan dine backups efter dato."
-
-#
-msgid ""
-"\n"
-"Scan for local extensions and install them."
-msgstr ""
-"\n"
-"Søg efter lokale udvidelser og installer dem."
-
-#
-msgid ""
-"\n"
-"Select your backup device.\n"
-"Current device: "
-msgstr ""
-"\n"
-"Vælg din backup enhed.\n"
-"Nuværende enhed: "
 
 #, python-format
 msgid ""
@@ -1139,6 +1065,13 @@ msgid "Advanced options"
 msgstr "Avancerede indstillinger"
 
 #
+#, fuzzy
+msgid "Advanced options and settings."
+msgstr ""
+"\n"
+"Avancerede indstillinger og opsætning."
+
+#
 msgid "Advanced restore"
 msgstr "Avanceret gendannelse"
 
@@ -1771,6 +1704,16 @@ msgstr "Backup afvikles..."
 
 #
 msgid "Backup system settings"
+msgstr "Lav backup af systemindstillinger"
+
+#
+#, fuzzy
+msgid "Backup your Receiver settings."
+msgstr "Lav backup af systemindstillinger"
+
+#
+#, fuzzy
+msgid "Backup your running Receiver image to HDD or USB."
 msgstr "Lav backup af systemindstillinger"
 
 msgid "Bahamas"
@@ -4294,6 +4237,13 @@ msgstr "luk navneserver opsætning"
 msgid "Edit the network configuration of your receiver.\n"
 msgstr ""
 
+#
+#, fuzzy
+msgid "Edit the update source address."
+msgstr ""
+"\n"
+"Rediger kildeadressen til opgradering."
+
 msgid "Edit timer"
 msgstr ""
 
@@ -4303,7 +4253,7 @@ msgstr "Rediger titel"
 
 #
 #, fuzzy
-msgid "Edit update source url."
+msgid "Edit update source url"
 msgstr "Rediger url for opgraderingskilde."
 
 msgid "Education/Science/..."
@@ -5173,6 +5123,11 @@ msgstr ""
 
 #
 #, fuzzy
+msgid "Flash on the fly your your Receiver software."
+msgstr "Styring af din modtagers software"
+
+#
+#, fuzzy
 msgid "Flashed: "
 msgstr "Flash mislykkedes"
 
@@ -5521,9 +5476,6 @@ msgstr "Græsk"
 #
 msgid "Greek"
 msgstr "Græsk"
-
-msgid "Greek (Modern)"
-msgstr ""
 
 #
 #, fuzzy
@@ -5893,13 +5845,16 @@ msgstr ""
 msgid "Icons"
 msgstr "Ikoner"
 
+msgid "If disabled, underline characters in file and directory names are not shown and are replaced with spaces."
+msgstr ""
+
 msgid "If editing a file, can you set the cursor start position at end or begin of the line."
 msgstr ""
 
 msgid "If enabled, AIT data is included in recordings."
 msgstr ""
 
-msgid "If enabled, bookmarks will be updated with the new location when you move or copy a recording.."
+msgid "If enabled, bookmarks will be updated with the new location when you move or copy a recording."
 msgstr ""
 
 msgid "If enabled, display shows 12 chars instead 8, but in latin-1/translit only."
@@ -6159,10 +6114,6 @@ msgstr "næste kanal i hukommelse"
 
 msgid "Install extensions"
 msgstr ""
-
-#
-msgid "Install extensions."
-msgstr "Installer udvidelser."
 
 #, fuzzy
 msgid "Install lcd picons on"
@@ -9899,6 +9850,23 @@ msgstr "Gendan system opsætning"
 
 #
 #, fuzzy
+msgid "Restore your Receiver settings."
+msgstr "Gendan system opsætning"
+
+#
+#, fuzzy
+msgid "Restore your Receiver with a new firmware."
+msgstr "Gendan system opsætning"
+
+#
+#, fuzzy
+msgid "Restore your backups by date."
+msgstr ""
+"\n"
+"Gendan dine backups efter dato."
+
+#
+#, fuzzy
 msgid "Restoring..."
 msgstr "optager..."
 
@@ -10328,6 +10296,13 @@ msgstr "Søgning fejlet"
 #, fuzzy
 msgid "Scan files..."
 msgstr "Skan filer..."
+
+#
+#, fuzzy
+msgid "Scan for local extensions and install them."
+msgstr ""
+"\n"
+"Søg efter lokale udvidelser og installer dem."
 
 #
 #, fuzzy
@@ -10799,7 +10774,7 @@ msgstr "Vælg opgraderingskilde til redigering."
 
 #
 #, fuzzy
-msgid "Select update source to edit."
+msgid "Select update source to edit"
 msgstr "Vælg opgraderingskilde til redigering."
 
 #
@@ -10827,6 +10802,16 @@ msgstr "Vælg din udebyder, og tryk OK for at starte søgningen"
 #, fuzzy
 msgid "Select your Skin"
 msgstr "Vælg en film"
+
+#
+#, fuzzy
+msgid ""
+"Select your backup device.\n"
+"Current device: "
+msgstr ""
+"\n"
+"Vælg din backup enhed.\n"
+"Nuværende enhed: "
 
 msgid "Select your country. If not available select 'all'."
 msgstr ""
@@ -11542,6 +11527,11 @@ msgstr "Plugin menu"
 
 msgid "Show two lines per entry"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Show underline characters in filenames"
+msgstr "Begrænset tegnsætning for optagelsesfilnavne"
 
 #
 #, fuzzy
@@ -14826,6 +14816,9 @@ msgstr "Ja, gå til filmliste"
 msgid "Yesterday"
 msgstr "I går"
 
+msgid "You PIN code is 0000. This is the default PIN code and it disables parental control!\n"
+msgstr ""
+
 #, python-format
 msgid ""
 "You already have a bootlogo installed,\n"
@@ -14986,9 +14979,6 @@ msgid ""
 "You need to plug-in your USB-flash drive with your image to restore.\n"
 "Power on your GigaBlue and you can flash your backup image.\n"
 "After flashing you can restore your settings."
-msgstr ""
-
-msgid "Your PIN code is 0000. This is the default PIN code and it disable parental control!\n"
 msgstr ""
 
 msgid "Your Receiver isn't connected to the internet properly. Please check it and try again."

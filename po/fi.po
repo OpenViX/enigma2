@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-13 22:33+0200\n"
+"POT-Creation-Date: 2019-11-17 17:48+0100\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -29,56 +29,15 @@ msgstr "Käyttäjä - suosikit"
 #
 msgid ""
 "\n"
-"Advanced options and settings."
-msgstr ""
-"\n"
-"Laajennetut valinnat ja asetukset."
-
-#
-msgid ""
-"\n"
 "After pressing OK, please wait!"
 msgstr ""
 "\n"
 "Kun olet painanut OK-näppäintä, odota!"
 
-#, fuzzy
-msgid ""
-"\n"
-"Backup your Receiver settings."
-msgstr ""
-"\n"
-"Varmuuskopioi vastaanottimesi asetukset."
-
-#, fuzzy
-msgid ""
-"\n"
-"Backup your running Receiver image to HDD or USB."
-msgstr ""
-"\n"
-"Varmuuskopioi vastaanottimesi asetukset."
-
 msgid ""
 "\n"
 "Conflict detection disabled!"
 msgstr ""
-
-#
-#, fuzzy
-msgid ""
-"\n"
-"Edit the update source address."
-msgstr ""
-"\n"
-"Muokkaa päivityslähteen osoitetta."
-
-#, fuzzy
-msgid ""
-"\n"
-"Flash on the fly your your Receiver software."
-msgstr ""
-"\n"
-"Päivitä verkosta vastaanottimesi ohjelmisto."
 
 #
 msgid ""
@@ -101,48 +60,6 @@ msgid ""
 "\n"
 "Recording in progress."
 msgstr "Tallennus käynnissä"
-
-#, fuzzy
-msgid ""
-"\n"
-"Restore your Receiver settings."
-msgstr ""
-"\n"
-"Palauta vastaanottimesi asetukset."
-
-#, fuzzy
-msgid ""
-"\n"
-"Restore your Receiver with a new firmware."
-msgstr ""
-"\n"
-"Palauta vastaanottimesi uudelle firmwarelle."
-
-#
-msgid ""
-"\n"
-"Restore your backups by date."
-msgstr ""
-"\n"
-"Palauta varmuuskopiot päivän mukaan."
-
-#
-msgid ""
-"\n"
-"Scan for local extensions and install them."
-msgstr ""
-"\n"
-"Etsi paikallisia lisäosia ja asenna ne."
-
-#
-msgid ""
-"\n"
-"Select your backup device.\n"
-"Current device: "
-msgstr ""
-"\n"
-"Valitse tallennuspaikka varmuuskopiolle.\n"
-"Nykyinen valinta: "
 
 #, python-format
 msgid ""
@@ -1147,6 +1064,13 @@ msgid "Advanced options"
 msgstr "Laajennetut valinnat"
 
 #
+#, fuzzy
+msgid "Advanced options and settings."
+msgstr ""
+"\n"
+"Laajennetut valinnat ja asetukset."
+
+#
 msgid "Advanced restore"
 msgstr "Laajennettu palautus"
 
@@ -1755,6 +1679,18 @@ msgstr "Varmuuskopiointi käynnissä"
 #
 msgid "Backup system settings"
 msgstr "Varmuuskopioi asetukset"
+
+#, fuzzy
+msgid "Backup your Receiver settings."
+msgstr ""
+"\n"
+"Varmuuskopioi vastaanottimesi asetukset."
+
+#, fuzzy
+msgid "Backup your running Receiver image to HDD or USB."
+msgstr ""
+"\n"
+"Varmuuskopioi vastaanottimesi asetukset."
 
 msgid "Bahamas"
 msgstr ""
@@ -4220,6 +4156,13 @@ msgstr "Muokkaa nimipalvelimen asetuksia vastaanottimessasi.\n"
 msgid "Edit the network configuration of your receiver.\n"
 msgstr "Muokkaa verkkoasetuksia vastaanottimessasi.\n"
 
+#
+#, fuzzy
+msgid "Edit the update source address."
+msgstr ""
+"\n"
+"Muokkaa päivityslähteen osoitetta."
+
 msgid "Edit timer"
 msgstr ""
 
@@ -4229,7 +4172,7 @@ msgstr "Editoi"
 
 #
 #, fuzzy
-msgid "Edit update source url."
+msgid "Edit update source url"
 msgstr "Muokkaa päivitys-URL:ia."
 
 msgid "Education/Science/..."
@@ -5065,6 +5008,12 @@ msgstr ""
 msgid "Flash Online"
 msgstr ""
 
+#, fuzzy
+msgid "Flash on the fly your your Receiver software."
+msgstr ""
+"\n"
+"Päivitä verkosta vastaanottimesi ohjelmisto."
+
 #
 #, fuzzy
 msgid "Flashed: "
@@ -5415,9 +5364,6 @@ msgstr "Kreikka"
 #
 msgid "Greek"
 msgstr "Kreikka"
-
-msgid "Greek (Modern)"
-msgstr ""
 
 #
 #, fuzzy
@@ -5785,13 +5731,16 @@ msgstr ""
 msgid "Icons"
 msgstr "Kuvakkeet"
 
+msgid "If disabled, underline characters in file and directory names are not shown and are replaced with spaces."
+msgstr ""
+
 msgid "If editing a file, can you set the cursor start position at end or begin of the line."
 msgstr ""
 
 msgid "If enabled, AIT data is included in recordings."
 msgstr ""
 
-msgid "If enabled, bookmarks will be updated with the new location when you move or copy a recording.."
+msgid "If enabled, bookmarks will be updated with the new location when you move or copy a recording."
 msgstr ""
 
 msgid "If enabled, display shows 12 chars instead 8, but in latin-1/translit only."
@@ -6051,10 +6000,6 @@ msgstr "Asenna kanavalista"
 
 msgid "Install extensions"
 msgstr ""
-
-#
-msgid "Install extensions."
-msgstr "Asenna laajennukset."
 
 #, fuzzy
 msgid "Install lcd picons on"
@@ -9689,6 +9634,25 @@ msgstr "Käynnistä verkko uudelleen"
 msgid "Restore system settings"
 msgstr "Palauta asetukset"
 
+#, fuzzy
+msgid "Restore your Receiver settings."
+msgstr ""
+"\n"
+"Palauta vastaanottimesi asetukset."
+
+#, fuzzy
+msgid "Restore your Receiver with a new firmware."
+msgstr ""
+"\n"
+"Palauta vastaanottimesi uudelle firmwarelle."
+
+#
+#, fuzzy
+msgid "Restore your backups by date."
+msgstr ""
+"\n"
+"Palauta varmuuskopiot päivän mukaan."
+
 #
 msgid "Restoring..."
 msgstr "Palautetaan..."
@@ -10123,6 +10087,13 @@ msgstr "Haku epäonnistui"
 #
 msgid "Scan files..."
 msgstr "Hae tiedostoja..."
+
+#
+#, fuzzy
+msgid "Scan for local extensions and install them."
+msgstr ""
+"\n"
+"Etsi paikallisia lisäosia ja asenna ne."
 
 #
 #, fuzzy
@@ -10578,7 +10549,7 @@ msgstr "Valitse päivityslähde"
 
 #
 #, fuzzy
-msgid "Select update source to edit."
+msgid "Select update source to edit"
 msgstr "Valitse muokattava päivityslähde."
 
 #
@@ -10606,6 +10577,16 @@ msgstr "Valitse palveluntarjoaja ja aloita haku painamalla OK"
 #, fuzzy
 msgid "Select your Skin"
 msgstr "Valitse teema"
+
+#
+#, fuzzy
+msgid ""
+"Select your backup device.\n"
+"Current device: "
+msgstr ""
+"\n"
+"Valitse tallennuspaikka varmuuskopiolle.\n"
+"Nykyinen valinta: "
 
 msgid "Select your country. If not available select 'all'."
 msgstr ""
@@ -11298,6 +11279,11 @@ msgstr "Asennetut Plugin-lisäosat"
 
 msgid "Show two lines per entry"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Show underline characters in filenames"
+msgstr "Rajoitettu merkistö tallenteiden nimissä"
 
 #
 #, fuzzy
@@ -14534,6 +14520,9 @@ msgstr "Kyllä, palataan tallenneluetteloon"
 msgid "Yesterday"
 msgstr "Eilen"
 
+msgid "You PIN code is 0000. This is the default PIN code and it disables parental control!\n"
+msgstr ""
+
 #, fuzzy, python-format
 msgid ""
 "You already have a bootlogo installed,\n"
@@ -14702,9 +14691,6 @@ msgid ""
 "You need to plug-in your USB-flash drive with your image to restore.\n"
 "Power on your GigaBlue and you can flash your backup image.\n"
 "After flashing you can restore your settings."
-msgstr ""
-
-msgid "Your PIN code is 0000. This is the default PIN code and it disable parental control!\n"
 msgstr ""
 
 msgid "Your Receiver isn't connected to the internet properly. Please check it and try again."

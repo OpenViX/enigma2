@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-13 22:33+0200\n"
+"POT-Creation-Date: 2019-11-17 17:48+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Budiarno\n"
 "Language-Team: \n"
@@ -22,33 +22,10 @@ msgstr "User - bouquets"
 
 msgid ""
 "\n"
-"Advanced options and settings."
-msgstr ""
-"\n"
-"Pilihan dan penyetelan tingkat lanjut"
-
-msgid ""
-"\n"
 "After pressing OK, please wait!"
 msgstr ""
 "\n"
 "Setelah tekan OK, silakan tunggu!"
-
-#, fuzzy
-msgid ""
-"\n"
-"Backup your Receiver settings."
-msgstr ""
-"\n"
-"Buat berkas cadangan penyetelan Rx anda"
-
-#, fuzzy
-msgid ""
-"\n"
-"Backup your running Receiver image to HDD or USB."
-msgstr ""
-"\n"
-"Buat berkas cadangan penyetelan Rx anda"
 
 msgid ""
 "\n"
@@ -56,22 +33,6 @@ msgid ""
 msgstr ""
 "\n"
 "Deteksi konflik dimatikan!"
-
-#, fuzzy
-msgid ""
-"\n"
-"Edit the update source address."
-msgstr ""
-"\n"
-"Ubah alamat sumber peningkatan."
-
-#, fuzzy
-msgid ""
-"\n"
-"Flash on the fly your your Receiver software."
-msgstr ""
-"\n"
-"Pembaruan daring perangkat lunak Rx anda."
 
 msgid ""
 "\n"
@@ -90,45 +51,6 @@ msgid ""
 "\n"
 "Recording in progress."
 msgstr ""
-
-#, fuzzy
-msgid ""
-"\n"
-"Restore your Receiver settings."
-msgstr ""
-"\n"
-"Pulihkan penyetelan Rx anda."
-
-#, fuzzy
-msgid ""
-"\n"
-"Restore your Receiver with a new firmware."
-msgstr ""
-"\n"
-"Pulihkan Rx anda dengan firmware yang baru."
-
-msgid ""
-"\n"
-"Restore your backups by date."
-msgstr ""
-"\n"
-"Pulihkan data cadangan anda berdasarkan tanggal."
-
-msgid ""
-"\n"
-"Scan for local extensions and install them."
-msgstr ""
-"\n"
-"Pindai ekstensi lokal kemudian pasang."
-
-msgid ""
-"\n"
-"Select your backup device.\n"
-"Current device: "
-msgstr ""
-"\n"
-"Pilih perangkat untuk berkas cadangan anda.\n"
-"Perangkat dipakai: "
 
 #, python-format
 msgid ""
@@ -1024,6 +946,12 @@ msgstr "Pilihan tingkat mahir"
 msgid "Advanced options"
 msgstr "Pilihan tingkat mahir"
 
+#, fuzzy
+msgid "Advanced options and settings."
+msgstr ""
+"\n"
+"Pilihan dan penyetelan tingkat lanjut"
+
 msgid "Advanced restore"
 msgstr "Pemulihan tingkat mahir"
 
@@ -1556,6 +1484,18 @@ msgstr "Sedang membuat berkas cadangan..."
 
 msgid "Backup system settings"
 msgstr "Buat berkas cadangan penyetelan sistem"
+
+#, fuzzy
+msgid "Backup your Receiver settings."
+msgstr ""
+"\n"
+"Buat berkas cadangan penyetelan Rx anda"
+
+#, fuzzy
+msgid "Backup your running Receiver image to HDD or USB."
+msgstr ""
+"\n"
+"Buat berkas cadangan penyetelan Rx anda"
 
 msgid "Bahamas"
 msgstr ""
@@ -3742,6 +3682,12 @@ msgstr "Ubah setelan namaserver pada Rx anda.\n"
 msgid "Edit the network configuration of your receiver.\n"
 msgstr "Ubah setelan jaringan pada Rx anda.\n"
 
+#, fuzzy
+msgid "Edit the update source address."
+msgstr ""
+"\n"
+"Ubah alamat sumber peningkatan."
+
 msgid "Edit timer"
 msgstr "Ubah pewaktu"
 
@@ -3749,7 +3695,7 @@ msgid "Edit title"
 msgstr "Ubah judul"
 
 #, fuzzy
-msgid "Edit update source url."
+msgid "Edit update source url"
 msgstr "Ubah url sumber upgrade."
 
 msgid "Education/Science/..."
@@ -4507,6 +4453,12 @@ msgid "Flash Online"
 msgstr "Flash"
 
 #, fuzzy
+msgid "Flash on the fly your your Receiver software."
+msgstr ""
+"\n"
+"Pembaruan daring perangkat lunak Rx anda."
+
+#, fuzzy
 msgid "Flashed: "
 msgstr "Flash"
 
@@ -4809,9 +4761,6 @@ msgstr "Yunani"
 
 msgid "Greek"
 msgstr "Yunani"
-
-msgid "Greek (Modern)"
-msgstr ""
 
 msgid "Green"
 msgstr ""
@@ -5138,6 +5087,9 @@ msgstr ""
 msgid "Icons"
 msgstr "Ikon"
 
+msgid "If disabled, underline characters in file and directory names are not shown and are replaced with spaces."
+msgstr ""
+
 msgid "If editing a file, can you set the cursor start position at end or begin of the line."
 msgstr ""
 
@@ -5145,7 +5097,7 @@ msgstr ""
 msgid "If enabled, AIT data is included in recordings."
 msgstr "Selalu sertakan ECM dalam merekam"
 
-msgid "If enabled, bookmarks will be updated with the new location when you move or copy a recording.."
+msgid "If enabled, bookmarks will be updated with the new location when you move or copy a recording."
 msgstr ""
 
 msgid "If enabled, display shows 12 chars instead 8, but in latin-1/translit only."
@@ -5377,9 +5329,6 @@ msgstr "Install channel list"
 
 msgid "Install extensions"
 msgstr ""
-
-msgid "Install extensions."
-msgstr "Pasang ekstensi."
 
 #, fuzzy
 msgid "Install lcd picons on"
@@ -8462,6 +8411,24 @@ msgstr "Restart network"
 msgid "Restore system settings"
 msgstr "Restore system settings"
 
+#, fuzzy
+msgid "Restore your Receiver settings."
+msgstr ""
+"\n"
+"Pulihkan penyetelan Rx anda."
+
+#, fuzzy
+msgid "Restore your Receiver with a new firmware."
+msgstr ""
+"\n"
+"Pulihkan Rx anda dengan firmware yang baru."
+
+#, fuzzy
+msgid "Restore your backups by date."
+msgstr ""
+"\n"
+"Pulihkan data cadangan anda berdasarkan tanggal."
+
 msgid "Restoring..."
 msgstr "Restoring..."
 
@@ -8828,6 +8795,12 @@ msgstr "Scanning failed!"
 
 msgid "Scan files..."
 msgstr "Pindai file..."
+
+#, fuzzy
+msgid "Scan for local extensions and install them."
+msgstr ""
+"\n"
+"Pindai ekstensi lokal kemudian pasang."
 
 msgid "Scan options"
 msgstr ""
@@ -9224,7 +9197,7 @@ msgid "Select update source"
 msgstr "Pilih sumber upgrade"
 
 #, fuzzy
-msgid "Select update source to edit."
+msgid "Select update source to edit"
 msgstr "Pilih sumber upgrade untuk diubah."
 
 msgid "Select video input with up/down buttons"
@@ -9246,6 +9219,15 @@ msgstr "Pilih provider anda, dan tekan OK untuk mulai pelacakan"
 
 msgid "Select your Skin"
 msgstr "Pilih tampilan anda"
+
+#, fuzzy
+msgid ""
+"Select your backup device.\n"
+"Current device: "
+msgstr ""
+"\n"
+"Pilih perangkat untuk berkas cadangan anda.\n"
+"Perangkat dipakai: "
 
 msgid "Select your country. If not available select 'all'."
 msgstr ""
@@ -9836,6 +9818,10 @@ msgstr "Plugin browser"
 
 msgid "Show two lines per entry"
 msgstr ""
+
+#, fuzzy
+msgid "Show underline characters in filenames"
+msgstr "Batasi karakter dalam penamaan file rekaman"
 
 #, fuzzy
 msgid "Show unknown extension as text"
@@ -12674,6 +12660,10 @@ msgstr "Ya, kembali ke daftar film"
 msgid "Yesterday"
 msgstr "Kemarin"
 
+#, fuzzy
+msgid "You PIN code is 0000. This is the default PIN code and it disables parental control!\n"
+msgstr "Kode PIN anda adalah 0000. Ini adalah kode PIN bawaan pabrik dan ia mematikan kontrol orang tua!\n"
+
 #, fuzzy, python-format
 msgid ""
 "You already have a bootlogo installed,\n"
@@ -12851,10 +12841,6 @@ msgid ""
 "Power on your GigaBlue and you can flash your backup image.\n"
 "After flashing you can restore your settings."
 msgstr ""
-
-#, fuzzy
-msgid "Your PIN code is 0000. This is the default PIN code and it disable parental control!\n"
-msgstr "Kode PIN anda adalah 0000. Ini adalah kode PIN bawaan pabrik dan ia mematikan kontrol orang tua!\n"
 
 msgid "Your Receiver isn't connected to the internet properly. Please check it and try again."
 msgstr ""

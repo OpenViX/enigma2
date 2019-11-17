@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-13 22:33+0200\n"
+"POT-Creation-Date: 2019-11-17 17:48+0100\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -30,49 +30,15 @@ msgstr ""
 
 msgid ""
 "\n"
-"Advanced options and settings."
-msgstr ""
-"\n"
-"אפשרויות מתקדמות והגדרות"
-
-msgid ""
-"\n"
 "After pressing OK, please wait!"
 msgstr ""
 "\n"
 "!אחרי לחיצה על אשר,נא המתן"
 
-#, fuzzy
-msgid ""
-"\n"
-"Backup your Receiver settings."
-msgstr "גיבוי הגדרות מערכת"
-
-msgid ""
-"\n"
-"Backup your running Receiver image to HDD or USB."
-msgstr ""
-
 msgid ""
 "\n"
 "Conflict detection disabled!"
 msgstr ""
-
-#
-#, fuzzy
-msgid ""
-"\n"
-"Edit the update source address."
-msgstr ""
-"\n"
-"ערוך את כתובת מקור העדכון"
-
-#
-#, fuzzy
-msgid ""
-"\n"
-"Flash on the fly your your Receiver software."
-msgstr "נהל את תוכנת הממיר שלך"
 
 #
 msgid ""
@@ -94,42 +60,6 @@ msgid ""
 "\n"
 "Recording in progress."
 msgstr "מיקומי הקלטה"
-
-#, fuzzy
-msgid ""
-"\n"
-"Restore your Receiver settings."
-msgstr "שחזור הגדרות מערכת"
-
-msgid ""
-"\n"
-"Restore your Receiver with a new firmware."
-msgstr ""
-
-#
-msgid ""
-"\n"
-"Restore your backups by date."
-msgstr ""
-"\n"
-"שיחזור גיבויים לפי תאריך"
-
-#
-msgid ""
-"\n"
-"Scan for local extensions and install them."
-msgstr ""
-"\n"
-"סרוק לתוספות מקומיות והתקן אותם"
-
-msgid ""
-"\n"
-"Select your backup device.\n"
-"Current device: "
-msgstr ""
-"\n"
-".בחר את התקן הגיבוי\n"
-":ההתקן הנוכחי "
 
 #, python-format
 msgid ""
@@ -1084,6 +1014,12 @@ msgstr "אפשרויות מתקדמות"
 msgid "Advanced options"
 msgstr "אפשרויות מתקדמות"
 
+#, fuzzy
+msgid "Advanced options and settings."
+msgstr ""
+"\n"
+"אפשרויות מתקדמות והגדרות"
+
 #
 msgid "Advanced restore"
 msgstr "שחזור מתקדם"
@@ -1659,6 +1595,14 @@ msgid "Backup is running..."
 msgstr "...........גיבוי מתבצע"
 
 msgid "Backup system settings"
+msgstr "גיבוי הגדרות מערכת"
+
+#, fuzzy
+msgid "Backup your Receiver settings."
+msgstr "גיבוי הגדרות מערכת"
+
+#, fuzzy
+msgid "Backup your running Receiver image to HDD or USB."
 msgstr "גיבוי הגדרות מערכת"
 
 msgid "Bahamas"
@@ -3964,6 +3908,13 @@ msgstr "exit nameserver configuration"
 msgid "Edit the network configuration of your receiver.\n"
 msgstr ""
 
+#
+#, fuzzy
+msgid "Edit the update source address."
+msgstr ""
+"\n"
+"ערוך את כתובת מקור העדכון"
+
 msgid "Edit timer"
 msgstr ""
 
@@ -3972,7 +3923,7 @@ msgstr "ערוך כותרת"
 
 #
 #, fuzzy
-msgid "Edit update source url."
+msgid "Edit update source url"
 msgstr "Edit upgrade source url."
 
 msgid "Education/Science/..."
@@ -4770,6 +4721,11 @@ msgstr ""
 msgid "Flash Online"
 msgstr ""
 
+#
+#, fuzzy
+msgid "Flash on the fly your your Receiver software."
+msgstr "נהל את תוכנת הממיר שלך"
+
 #, fuzzy
 msgid "Flashed: "
 msgstr "Flashing failed"
@@ -5101,9 +5057,6 @@ msgstr "יוונית"
 
 msgid "Greek"
 msgstr "יוונית"
-
-msgid "Greek (Modern)"
-msgstr ""
 
 #, fuzzy
 msgid "Green"
@@ -5446,13 +5399,16 @@ msgstr ""
 msgid "Icons"
 msgstr ""
 
+msgid "If disabled, underline characters in file and directory names are not shown and are replaced with spaces."
+msgstr ""
+
 msgid "If editing a file, can you set the cursor start position at end or begin of the line."
 msgstr ""
 
 msgid "If enabled, AIT data is included in recordings."
 msgstr ""
 
-msgid "If enabled, bookmarks will be updated with the new location when you move or copy a recording.."
+msgid "If enabled, bookmarks will be updated with the new location when you move or copy a recording."
 msgstr ""
 
 msgid "If enabled, display shows 12 chars instead 8, but in latin-1/translit only."
@@ -5698,9 +5654,6 @@ msgstr "next channel in history"
 
 msgid "Install extensions"
 msgstr ""
-
-msgid "Install extensions."
-msgstr ".התקן תוספות"
 
 #, fuzzy
 msgid "Install lcd picons on"
@@ -9109,6 +9062,21 @@ msgid "Restore system settings"
 msgstr "שחזור הגדרות מערכת"
 
 #, fuzzy
+msgid "Restore your Receiver settings."
+msgstr "שחזור הגדרות מערכת"
+
+#, fuzzy
+msgid "Restore your Receiver with a new firmware."
+msgstr "שחזור הגדרות מערכת"
+
+#
+#, fuzzy
+msgid "Restore your backups by date."
+msgstr ""
+"\n"
+"שיחזור גיבויים לפי תאריך"
+
+#, fuzzy
 msgid "Restoring..."
 msgstr "...מקליט"
 
@@ -9506,6 +9474,13 @@ msgstr "Tune failed!"
 #, fuzzy
 msgid "Scan files..."
 msgstr "...סרוק קבצים"
+
+#
+#, fuzzy
+msgid "Scan for local extensions and install them."
+msgstr ""
+"\n"
+"סרוק לתוספות מקומיות והתקן אותם"
 
 #
 #, fuzzy
@@ -9941,7 +9916,7 @@ msgid "Select update source"
 msgstr "Select upgrade source to edit."
 
 #, fuzzy
-msgid "Select update source to edit."
+msgid "Select update source to edit"
 msgstr "Select upgrade source to edit."
 
 #
@@ -9966,6 +9941,15 @@ msgstr "Press OK to activate the selected skin."
 #, fuzzy
 msgid "Select your Skin"
 msgstr "Select a movie"
+
+#, fuzzy
+msgid ""
+"Select your backup device.\n"
+"Current device: "
+msgstr ""
+"\n"
+".בחר את התקן הגיבוי\n"
+":ההתקן הנוכחי "
 
 msgid "Select your country. If not available select 'all'."
 msgstr ""
@@ -10640,6 +10624,10 @@ msgstr "סייר הפלאגינים"
 
 msgid "Show two lines per entry"
 msgstr ""
+
+#, fuzzy
+msgid "Show underline characters in filenames"
+msgstr "Limited character set for recording filenames"
 
 #, fuzzy
 msgid "Show unknown extension as text"
@@ -13725,6 +13713,9 @@ msgstr "Yes, returning to movie list"
 msgid "Yesterday"
 msgstr ""
 
+msgid "You PIN code is 0000. This is the default PIN code and it disables parental control!\n"
+msgstr ""
+
 #, python-format
 msgid ""
 "You already have a bootlogo installed,\n"
@@ -13877,9 +13868,6 @@ msgid ""
 "You need to plug-in your USB-flash drive with your image to restore.\n"
 "Power on your GigaBlue and you can flash your backup image.\n"
 "After flashing you can restore your settings."
-msgstr ""
-
-msgid "Your PIN code is 0000. This is the default PIN code and it disable parental control!\n"
 msgstr ""
 
 msgid "Your Receiver isn't connected to the internet properly. Please check it and try again."
