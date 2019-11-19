@@ -135,7 +135,7 @@ class Harddisk:
 		if self.type == DEVTYPE_UDEV:
 			self.dev_path = '/dev/' + self.device
 			self.disk_path = self.dev_path
-			self.card = "sdhci" in self.phys_path
+			self.card = "sdhci" in self.phys_path or "mmc" in self.device
 
 		elif self.type == DEVTYPE_DEVFS:
 			tmp = readFile(self.sysfsPath('dev')).split(':')
@@ -661,8 +661,23 @@ class HarddiskManager:
 		self.enumerateBlockDevices()
 		self.enumerateNetworkMounts()
 		# Find stuff not detected by the enumeration
-		p = [("/", _("Internal flash"))]
-		self.partitions.extend([ Partition(mountpoint = x[0], description = x[1]) for x in p ])
+		p = (
+			("/media/hdd", _("Hard disk")),
+			("/media/card", _("Card")),
+			("/media/cf", _("Compact flash")),
+			("/media/mmc", _("MMC card")),
+			("/media/net", _("Network mount")),
+			("/media/net1", _("Network mount %s") % ("1")),
+			("/media/net2", _("Network mount %s") % ("2")),
+			("/media/net3", _("Network mount %s") % ("3")),
+			("/media/ram", _("Ram disk")),
+			("/media/usb", _("USB stick")),
+			("/", _("Internal flash"))
+		)
+		known = set([os.path.normpath(a.mountpoint) for a in self.partitions if a.mountpoint])
+		for m,d in p:
+			if (m not in known) and os.path.ismount(m):
+				self.partitions.append(Partition(mountpoint=m, description=d))
 
 	def getBlockDevInfo(self, blockdev):
 		devpath = "/sys/block/" + blockdev
@@ -685,11 +700,16 @@ class HarddiskManager:
 			if os.path.exists(devpath + "/removable"):
 				removable = bool(int(readFile(devpath + "/removable")))
 			if os.path.exists(devpath + "/dev"):
-				dev = int(readFile(devpath + "/dev").split(':')[0])
+				dev = readFile(devpath + "/dev")
+				subdev = int(dev.split(':')[1])
+				dev = int(dev.split(':')[0])
 			else:
 				dev = None
-			devlist = [1, 7, 31, 253, 254] # ram, loop, mtdblock, romblock, ramzswap
-			if dev in devlist:
+				subdev = None
+			# blacklist ram, loop, mtdblock, romblock, ramzswap
+			blacklisted = dev in [1, 7, 31, 253, 254] 
+			# blacklist non-root eMMC devices
+			if not blacklisted and dev == 179 and subdev != 0:
 				blacklisted = True
 			if blockdev[0:2] == 'sr':
 				is_cdrom = True
