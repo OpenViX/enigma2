@@ -695,8 +695,11 @@ class HarddiskManager:
 		if blockdev.startswith("mmcblk") and (re.search(r"mmcblk\dboot", blockdev) or re.search(r"mmcblk\drpmb", blockdev)):
 			blacklisted = True
 		is_cdrom = False
+		bootdevice = None
 		partitions = []
 		try:
+			if os.path.exists('/dev/root'):
+				bootdevice = os.readlink('/dev/root')
 			if os.path.exists(devpath + "/removable"):
 				removable = bool(int(readFile(devpath + "/removable")))
 			if os.path.exists(devpath + "/dev"):
@@ -709,8 +712,11 @@ class HarddiskManager:
 			# blacklist ram, loop, mtdblock, romblock, ramzswap
 			blacklisted = dev in [1, 7, 31, 253, 254] 
 			# blacklist non-root eMMC devices
-			if not blacklisted and dev == 179 and subdev != 0:
-				blacklisted = True
+			if not blacklisted and dev == 179:
+				if  subdev != 0:
+					blacklisted = True
+				elif bootdevice.startswith(blockdev):
+					blacklisted = True
 			if blockdev[0:2] == 'sr':
 				is_cdrom = True
 			if blockdev[0:2] == 'hd':
