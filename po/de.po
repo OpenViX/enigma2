@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-14 07:41+0000\n"
-"PO-Revision-Date: 2019-09-14 18:07+0200\n"
+"POT-Creation-Date: 2019-11-11 09:46+0000\n"
+"PO-Revision-Date: 2019-11-12 18:33+0100\n"
 "Last-Translator: Ralf Biedermann <ralf.biedermann@rbsoft.de>\n"
 "Language-Team: AndyBlacburn, j-ot&Trial\n"
 "Language: de\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
-"X-Generator: Poedit 2.2.1\n"
+"X-Generator: Poedit 2.2.4\n"
 "X-Poedit-SourceCharset: iso-8859-15\n"
 
 msgid ""
@@ -751,7 +751,7 @@ msgstr[1] "%d Mins"
 #, python-format
 msgid "%d channel found"
 msgid_plural "%d channels found"
-msgstr[0] "%d Sender gefunden "
+msgstr[0] "%d Sender gefunden"
 msgstr[1] "%d Sender gefunden!"
 
 #, python-format
@@ -962,6 +962,15 @@ msgstr "'%s' enthält %d Datei(en) und %d Verzeichnis(se).\n"
 
 msgid "'Network peer' automatically detects other Enigma2 receivers on the local network. You can also manually enter the URL or IP address."
 msgstr "'Netwerk Peer' erkennt andere Enigma2 Receiver automatisch im lokalen Netzwerk. Du kannst natürlich auch manuell URL oder IP Adresse eingeben."
+
+msgid ""
+"'Save' changes active language.\n"
+"'Add Language' or MENU adds additional language(s).\n"
+"'Delete Language' allows either deletion of all but English and active language OR selected language"
+msgstr ""
+"'Speichern' ändert die aktive Sprache.\n"
+"'Sprache hinzufügen' oder MENÜ fügt Sprache(n) hinzu.\n"
+"'Lösche Sprache' erlaubt es alle Sprachen außer Englisch oder die gewählte Sprache zu löschen."
 
 msgid "( All readers)"
 msgstr "( Alle Kartenleser )"
@@ -2956,6 +2965,9 @@ msgstr "Common Interface"
 msgid "Common interface assignment"
 msgstr "Common Interface Zuweisung"
 
+msgid "Common options"
+msgstr "Allgemeine Einstellungen"
+
 msgid "Communication"
 msgstr "Kommunikation"
 
@@ -3044,6 +3056,9 @@ msgstr "Konfiguriere ob hinter Untertiteln  der Hintergrund gezeigt werden."
 
 msgid "Configure if picons will be shown in the service list."
 msgstr "Konfigurieren ob und wie PIcons in der Senderliste gezeigt werden."
+
+msgid "Configure if service picons will be shown in the channel selection list."
+msgstr "Konfigurieren ob Sender-Icons in der Senderliste gezeigt werden."
 
 msgid "Configure if the subtitle should switch between normal, italic, bold and bolditalic"
 msgstr "Konfiguriere ob Untertitel zwischen normal, italic, bold und bolditalic wechseln sollen"
@@ -3890,8 +3905,8 @@ msgstr "Bestätige Löschvorgang"
 msgid "Delete EPG"
 msgstr "EPG löschen"
 
-msgid "Delete Language"
-msgstr "Sprache löschen"
+msgid "Delete Language(s)"
+msgstr "Sprache(n) löschen"
 
 msgid "Delete entry"
 msgstr "Eintrag löschen"
@@ -5377,9 +5392,6 @@ msgstr "Griechenland"
 
 msgid "Greek"
 msgstr "Griechisch"
-
-msgid "Greek (Modern)"
-msgstr "Griechisch (Modern)"
 
 msgid "Green"
 msgstr "Grün"
@@ -7889,6 +7901,9 @@ msgstr "PIcon und Sendername"
 msgid "Picon width"
 msgstr "PIcon Breite"
 
+msgid "Picons: Show in channel list"
+msgstr "PIcons: Zeige in Senderliste"
+
 msgid "Picture in graphics"
 msgstr "Bild in Grafik"
 
@@ -8108,6 +8123,9 @@ msgstr ""
 "\n"
 "Drücke OK zum Fortfahren."
 
+msgid "Please set up the following common options"
+msgstr "Bitte konfiguriere die folgenden allgemeinen Einstellungen."
+
 msgid "Please set up tuner A"
 msgstr "Bitte Tuner A konfigurieren"
 
@@ -8146,6 +8164,9 @@ msgstr "Bitte Tuner Q konfigurieren"
 
 msgid "Please set up tuner R"
 msgstr "Bitte Tuner R konfigurieren"
+
+msgid "Please set your time options"
+msgstr "Bitte konfiguriere deine Zeit-Einstellungen"
 
 msgid ""
 "Please setup your user interface by adjusting the values till the edges of the user interface box are covering the test pattern and touching the edges of your TV.\n"
@@ -8307,6 +8328,15 @@ msgstr "Betrieb LED Status wenn aktiv."
 msgid "Power LED can be turned on or off here."
 msgstr "Power LED kann hier an- und ausgeschaltet werden."
 
+msgid "Power On/Off display Normal Mode."
+msgstr "LCD Anzeige im Normalmodus."
+
+msgid "Power On/Off display Standby Mode."
+msgstr "LCD Anzeige im Bereitschaftsmodus."
+
+msgid "Power On/Off display Suspend Mode."
+msgstr "LCD Anzeige wenn ausgeschaltet."
+
 msgid "Power long"
 msgstr "Aus-Taste lang"
 
@@ -8402,9 +8432,6 @@ msgstr "Vorschulalter"
 
 msgid "Press '0' to toggle PiP mode"
 msgstr "Drücke '0' um PiP-Modus zu wechseln"
-
-msgid "Press 'Add Language' or MENU to add additional language(s). English language can not be deleted"
-msgstr "Drücke 'Sprache hinzufügen' oder Menü um eine weitere Sprache hinzuzufügen. Englisch kann nicht gelöscht werden."
 
 msgid "Press INFO on your remote control for additional information."
 msgstr "INFO drücken für zusätzliche Informationen."
@@ -9471,8 +9498,9 @@ msgstr "W#hle 'A' oder 'B' wenn die Anlage es benötigt sonst wähle 'keine'. We
 msgid "Select 'FBC SCR' if this tuner will connect to a SCR (Unicable/JESS) device. For all other setups select 'FBC automatic'."
 msgstr "Wähle 'FBC SCR' wenn dieser Tuner ein Unicable Gerät verwendet. Für alle anderen Systeme wähle 'FBC automatisch'."
 
+#, fuzzy
 msgid ""
-"Select 'Yes' to delete all languages except English and your chosen language:\n"
+"Select 'Yes' to delete all languages except English and current language:\n"
 "\n"
 "Select 'No' to delete only the chosen language:\n"
 "\n"
@@ -11557,7 +11585,7 @@ msgid "This option allows to set the level of dynamic contrast of the picture."
 msgstr "Diese Option erlaubt es den Wert für den dynamischen Kontrast des Bildes zu setzen."
 
 msgid "This option allows you choose how to display elapsed time as + or -"
-msgstr "Diese Option erlaubt dir zu wählen ob die verstrichene Zeit mit + oder - angezeigt wird"
+msgstr "Diese Option erlaubt dir zu wählen ob die verstrichene Zeit mit + oder - angezeigt wird."
 
 msgid "This option allows you choose how to display remaining time, or elapsed time, or both."
 msgstr "Diese Option erlaubt dir zu wählen ob verbleibende/verstrichene Zeit oder beides bei Live-TV angezeigt wird."
@@ -11576,9 +11604,6 @@ msgstr "Diese Option erlaubt dir einen Glättefilter für das Dithering einzusch
 
 msgid "This option allows you enable the vertical scaler dejagging."
 msgstr "Diese Option erlaubt es beim Scaler vertikales Antialiasing zu aktivieren."
-
-msgid "This option allows you to Power Off the display."
-msgstr "Diese Option erlaubt dir das Display ein- und auszuschalten."
 
 msgid "This option allows you to boost the blue tones in the picture."
 msgstr "Diese Option erlaubt es den Blauanteil des Bildes zu verstärken."
@@ -11620,7 +11645,7 @@ msgid "This option allows you to choose how to display SD progressive 24Hz on yo
 msgstr "Diese Option erlaubt es einzustellen wie ein 480/576p 24Hz Video angezeigt wird. (Nicht alle Fernseher unterstützen alle Formate)"
 
 msgid "This option allows you to choose how to display elapsed time. As + or -"
-msgstr "Diese Option erlaubt dir zu wählen ob die verstrichene Zeit mit + oder - angezeigt wird"
+msgstr "Diese Option erlaubt dir zu wählen ob die verstrichene Zeit mit + oder - angezeigt wird."
 
 msgid "This option allows you to choose how to display standard defintion video on your TV."
 msgstr "Diese Option erlaubt es einzustellen wie ein SD Video angezeigt wird."
@@ -12959,7 +12984,7 @@ msgid "When enabled, network trash cans are probed for cleaning."
 msgstr "Wenn aktiviert werden Mülleimer im Netzwerk überprüft ob sie aufgeräumt werden müssen."
 
 msgid "When enabled, number markers will be hidden."
-msgstr "Wenn aktiviert werden Nummer-Markierung versteckt"
+msgstr "Wenn aktiviert werden Nummer-Markierung versteckt."
 
 msgid "When enabled, pressing '0' will zap you to the first channel in your first bouquet and delete your zap-history."
 msgstr "Wenn aktiviert springt man mit '0' zum ersten Sender der ersten Favoritenliste und die Sendervergangenheit wird gelöscht."
@@ -15379,6 +15404,9 @@ msgstr "umgeschaltet"
 #~ msgid "GraphicalEPG settings"
 #~ msgstr "Grafischer EPG Einstellungen"
 
+#~ msgid "Greek (Modern)"
+#~ msgstr "Griechisch (Modern)"
+
 #~ msgid "Hard disk settings"
 #~ msgstr "Festplatten Einstellungen"
 
@@ -15582,6 +15610,9 @@ msgstr "umgeschaltet"
 
 #~ msgid "Prepare another USB stick for image flashing"
 #~ msgstr "Weiteren USB-Stick zum Image-Flashen vorbereiten"
+
+#~ msgid "Press 'Add Language' or MENU to add additional language(s). English language can not be deleted"
+#~ msgstr "Drücke 'Sprache hinzufügen' oder Menü um eine weitere Sprache hinzuzufügen. Englisch kann nicht gelöscht werden."
 
 #~ msgid "Press OK to start the scan"
 #~ msgstr "Zum Starten der Suche OK drücken"
@@ -15807,6 +15838,9 @@ msgstr "umgeschaltet"
 
 #~ msgid "This is a multitype tuner. Available options depend on the hardware. Cable and terrestrial cannot be configured at the same time. If you want to use as cable + satellite or terrestrial + satellite, configure cable/terrestrial first and then save. Re-open and configure again as satellite."
 #~ msgstr "Dies ist ein Tuner für mehrere Empfangsarten. Mögliche Einstellungen hängen von der Hardware ab. Kabel und DVB-T können nicht gleichzeitig konfiguriert sein. Wenn Du Kabel+Sat oder DVB-T+Sat möchtest, konfiguriere zuerst Kabel/DVB-T und speichere. Öffne den Punkt erneut und konfiguriere Sat."
+
+#~ msgid "This option allows you to Power Off the display."
+#~ msgstr "Diese Option erlaubt dir das Display ein- und auszuschalten."
 
 #~ msgid ""
 #~ "This plugin creates a USB stick which can be used to update the firmware of your %s %s without the need for a network or WLAN connection.\n"
