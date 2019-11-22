@@ -7,7 +7,7 @@
     </setup>
     <setup key="vixbackupmanager" title="Backup manager settings" titleshort="Settings">
         <item level="2" text="Backup location" description="Location of where backup should be saved.">config.backupmanager.backuplocation</item>
-        <item level="2" text="Backup prefix" description="Allows you to tag your backups to a box.">config.backupmanager.folderprefix</item>
+        <item level="2" text="Backup prefix" description="Allows you to tag your backups to a box. If this doesn't start with &quot;vix&quot; then &quot;vix-&quot; will be prepended.">config.backupmanager.folderprefix</item>
         <item level="2" text="Include machine name in backup name" description="The name of the receiver can be included in the backup filename, but makes the filename lengthy.">config.backupmanager.showboxname</item>
         <item level="2" text="Schedule backups" description="Allows you to schedule your backups.">config.backupmanager.schedule</item>
         <item level="2" text="Time of backup to start" requires="config.backupmanager.schedule" description="Set the time of backup to start.">config.backupmanager.scheduletime</item>

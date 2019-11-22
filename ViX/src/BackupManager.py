@@ -255,8 +255,13 @@ class VIXBackupManager(Screen):
 				del self.emlist[:]
 				mtimes = []
 				for fil in images:
-					if fil.endswith('.tar.gz'): # prefix should only be used for naming files, not browsing them... # and fil.startswith(config.backupmanager.folderprefix.value):
-						mtimes.append((fil, stat(self.BackupDirectory + fil).st_mtime)) # (filname, mtime)
+					if fil.endswith('.tar.gz'): # prefix should only be used for naming files, not browsing them...
+						if fil.startswith(defaultprefix):   # Ensure the current image backup are sorted to the top
+							prefix="B"
+						else:
+							prefix="A"
+						key = "%s-%012u" % (prefix, stat(self.BackupDirectory + fil).st_mtime)
+						mtimes.append((fil, key)) # (filname, prefix-mtime)
 				for fil in [x[0] for x in sorted(mtimes, key=lambda x: x[1], reverse=True)]: # sort by mtime
 					self.emlist.append(fil)
 				self["list"].setList(self.emlist)
@@ -276,6 +281,11 @@ class VIXBackupManager(Screen):
 	def setupDone(self, test=None):
 		if config.backupmanager.folderprefix.value == '':
 			config.backupmanager.folderprefix.value = defaultprefix
+			config.backupmanager.folderprefix.save()
+# If the prefix doesn't start with the defaultprefix it is a tag...
+# 
+		if not config.backupmanager.folderprefix.value.startswith(defaultprefix):
+			config.backupmanager.folderprefix.value = defaultprefix + "-" + config.backupmanager.folderprefix.value
 			config.backupmanager.folderprefix.save()
 		self.populate_List()
 		self.doneConfiguring()
@@ -1362,12 +1372,10 @@ class BackupFiles(Screen):
 			if config.backupmanager.number_to_keep.value > 0 \
 			 and path.exists(self.BackupDirectory): # !?!
 				images = listdir(self.BackupDirectory)
-				# prefix should only be used for naming files, not browsing them
-				# patt = config.backupmanager.folderprefix.value + '-*.tar.gz'
-				patt = '*.tar.gz'
+# Only try to delete backups with the current user prefix
 				emlist = []
 				for fil in images:
-					if fnmatch.fnmatchcase(fil, patt):
+					if (fil.startswith(config.backupmanager.folderprefix.value) and fil.endswith(".tar.gz")):
 						emlist.append(fil)
 # sort by oldest first...
 				emlist.sort(key=lambda fil: path.getmtime(self.BackupDirectory + fil))
