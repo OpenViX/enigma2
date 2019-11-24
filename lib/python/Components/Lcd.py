@@ -42,51 +42,39 @@ class IconCheckPoller:
 		self.timer.stop()
 
 	def iconcheck(self):
-		threads.deferToThread(self.JobTask)
+		try:
+			threads.deferToThread(self.JobTask)
+		except:
+			pass
 		self.timer.startLongTimer(30)
 
-	def JobTask(self):
-		LinkState = 0
-		if fileExists('/sys/class/net/wlan0/operstate'):
+def JobTask(self):
+	LinkState = 0
+	if fileExists('/sys/class/net/wlan0/operstate'):
+		LinkState = open('/sys/class/net/wlan0/operstate').read()
+		if LinkState != 'down':
 			LinkState = open('/sys/class/net/wlan0/operstate').read()
-			if LinkState != 'down':
-				LinkState = open('/sys/class/net/wlan0/operstate').read()
-		elif fileExists('/sys/class/net/eth0/operstate'):
-			LinkState = open('/sys/class/net/eth0/operstate').read()
-			if LinkState != 'down':
-				LinkState = open('/sys/class/net/eth0/carrier').read()
-		LinkState = LinkState[:1]
-		if fileExists("/proc/stb/lcd/symbol_network") and config.lcd.mode.value == '1':
-			f = open("/proc/stb/lcd/symbol_network", "w")
-			f.write(str(LinkState))
-			f.close()
-		elif fileExists("/proc/stb/lcd/symbol_network") and config.lcd.mode.value == '0':
-			f = open("/proc/stb/lcd/symbol_network", "w")
-			f.write('0')
-			f.close()
+	elif fileExists('/sys/class/net/eth0/operstate'):
+		LinkState = open('/sys/class/net/eth0/operstate').read()
+		if LinkState != 'down':
+			LinkState = open('/sys/class/net/eth0/carrier').read()
+	LinkState = LinkState[:1]
+	if fileExists("/proc/stb/lcd/symbol_network") and config.lcd.mode.value == '1':
+		open("/proc/stb/lcd/symbol_network", "w").write(str(LinkState))
+	elif fileExists("/proc/stb/lcd/symbol_network") and config.lcd.mode.value == '0':
+		open("/proc/stb/lcd/symbol_network", "w").write("0")
 
-		USBState = 0
-		busses = usb.busses()
-		for bus in busses:
-			devices = bus.devices
-			for dev in devices:
-				if dev.deviceClass != 9 and dev.deviceClass != 2 and dev.idVendor > 0:
-					# print ' '
-					# print "Device:", dev.filename
-					# print "  Number:", dev.deviceClass
-					# print "  idVendor: %d (0x%04x)" % (dev.idVendor, dev.idVendor)
-					# print "  idProduct: %d (0x%04x)" % (dev.idProduct, dev.idProduct)
-					USBState = 1
-		if fileExists("/proc/stb/lcd/symbol_usb") and config.lcd.mode.value == '1':
-			f = open("/proc/stb/lcd/symbol_usb", "w")
-			f.write(str(USBState))
-			f.close()
-		elif fileExists("/proc/stb/lcd/symbol_usb") and config.lcd.mode.value == '0':
-			f = open("/proc/stb/lcd/symbol_usb", "w")
-			f.write('0')
-			f.close()
+	USBState = 0
+	busses = usb.busses()
+	for bus in busses:
+		devices = bus.devices
+		for dev in devices:
+			if dev.deviceClass != 9 and dev.deviceClass != 2 and dev.idVendor != 3034 and dev.idVendor > 0:
+				USBState = 1
+	if fileExists("/proc/stb/lcd/symbol_usb"):
+		open("/proc/stb/lcd/symbol_usb", "w").write(str(USBState))
 
-		self.timer.startLongTimer(30)
+	self.timer.startLongTimer(30)
 
 class LCD:
 	def __init__(self):
@@ -243,7 +231,7 @@ def InitLcd():
 	if getBoxType() in ('et4x00', 'et5x00', 'et6x00', 'gb800se', 'gb800solo', 'iqonios300hd', 'mbmicro', 'sf128', 'sf138', 'tmsingle', 'tmnano2super', 'tmnanose', 'tmnanoseplus', 'tmnanosem2', 'tmnanosem2plus', 'tmnanosecombo', 'vusolo'):
 		detected = False
 	elif getBoxType() in ('gbtrio4k',):
-		detected = True		
+		detected = True
 	else:
 		detected = eDBoxLCD.getInstance().detected()
 
