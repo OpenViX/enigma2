@@ -55,20 +55,25 @@ class MessageBox(Screen, HelpableScreen):
 				# "rightRepeated": (self.right, _("Move down a page repeatedly"))
 			}, prio=-1, description=_("MessageBox Functions"))
 		self.msgBoxID = msgBoxID
+		# These six lines can go with new skins that only use self["icon"]...
 		self["QuestionPixmap"] = Pixmap()
 		self["QuestionPixmap"].hide()
 		self["InfoPixmap"] = Pixmap()
 		self["InfoPixmap"].hide()
 		self["ErrorPixmap"] = Pixmap()
 		self["ErrorPixmap"].hide()
+		self["icon"] = MultiPixmap()
+		self["icon"].hide()
 		self.picon = picon
 		if picon:
+			# These five lines can go with new skins that only use self["icon"]...
 			if self.type == self.TYPE_YESNO:
 				self["QuestionPixmap"].show()
 			elif self.type == self.TYPE_INFO:
 				self["InfoPixmap"].show()
 			elif self.type == self.TYPE_ERROR:
 				self["ErrorPixmap"].show()
+			self["icon"].show()
 		self.skinName = ["MessageBox"]
 		if simple:
 			self.skinName = ["MessageBoxSimple"]
@@ -112,6 +117,7 @@ class MessageBox(Screen, HelpableScreen):
 			self.onLayoutFinish.append(self.layoutFinished)
 
 	def layoutFinished(self):
+		self["icon"].setPixmapNum(self.type)
 		prefix = self.TYPE_PREFIX.get(self.type, _("Unknown"))
 		if self.baseTitle is None:
 			title = self.getTitle()
