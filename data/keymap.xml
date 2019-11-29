@@ -33,10 +33,6 @@
 		<key id="KEY_PAGEDOWN" mapto="pageDown" flags="mr"/>
 		<key id="KEY_CHANNELUP" mapto="pageUp" flags="mr"/>
 		<key id="KEY_CHANNELDOWN" mapto="pageDown" flags="mr"/>
-		<key id="KEY_DOWN" mapto="downRepeated" flags="m"/>
-		<key id="KEY_UP" mapto="upRepeated" flags="m"/>
-		<key id="KEY_RIGHT" mapto="rightRepeated" flags="m"/>
-		<key id="KEY_LEFT" mapto="leftRepeated" flags="m"/>
 	</map>
 
 	<map context="SetupActions">
@@ -761,10 +757,6 @@
 		<key id="KEY_OK" mapto="OK" flags="b"/>
 		<key id="KEY_OK" mapto="OKLong" flags="l"/>
 		<key id="KEY_EXIT" mapto="cancel" flags="m"/>
-		<key id="KEY_DOWN" mapto="downRepeated" flags="m"/>
-		<key id="KEY_UP" mapto="upRepeated" flags="m"/>
-		<key id="KEY_RIGHT" mapto="rightRepeated" flags="m"/>
-		<key id="KEY_LEFT" mapto="leftRepeated" flags="m"/>
 
 		<key id="KEY_ENTER" mapto="ok" flags="m"/>
 		<key id="KEY_ESC" mapto="cancel" flags="m"/>
@@ -792,10 +784,6 @@
 		<key id="KEY_YELLOW" mapto="yellowlong" flags="l"/>
 		<key id="KEY_BLUE" mapto="blue" flags="b"/>
 		<key id="KEY_BLUE" mapto="bluelong" flags="l"/>
-		<key id="KEY_DOWN" mapto="downRepeated" flags="m"/>
-		<key id="KEY_UP" mapto="upRepeated" flags="m"/>
-		<key id="KEY_RIGHT" mapto="rightRepeated" flags="m"/>
-		<key id="KEY_LEFT" mapto="leftRepeated" flags="m"/>
 	</map>
 
 	<map context="FunctionKeyActions">
