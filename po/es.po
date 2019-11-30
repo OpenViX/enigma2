@@ -12767,10 +12767,12 @@ msgstr "Use las teclas ARRIBA y ABAJO para seleccionar el idioma, la tecla Menú
 msgid "Add Language"
 msgstr "Añadir Lenguaje"
 
-msgid "'Save' changes active language.\n"
+msgid ""
+"'Save' changes active language.\n"
 "'Add Language' or MENU adds additional language(s).\n"
 "Delete Language' allows either deletion of all but English and active language OR selected language"
-msgstr "'Guardar' cambia el idioma activo.\n"
+msgstr ""
+"'Guardar' cambia el idioma activo.\n"
 "'Agregar idioma' o MENU agrega idioma(s) adicional(s).\n"
 "'Eliminar idioma' permite eliminar todo menos el inglés y el idioma activo o el idioma seleccionado"
 
