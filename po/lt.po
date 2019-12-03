@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-13 22:33+0200\n"
+"POT-Creation-Date: 2019-11-17 17:48+0100\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -26,47 +26,15 @@ msgstr ""
 
 msgid ""
 "\n"
-"Advanced options and settings."
-msgstr ""
-"\n"
-"Išplėstiniai pasirinkimai ir nustatymai."
-
-msgid ""
-"\n"
 "After pressing OK, please wait!"
 msgstr ""
 "\n"
 "Paspaudus OK, prašome laukti!"
 
-#, fuzzy
-msgid ""
-"\n"
-"Backup your Receiver settings."
-msgstr "Atsarginė sisteminių nustatymų kopija"
-
-msgid ""
-"\n"
-"Backup your running Receiver image to HDD or USB."
-msgstr ""
-
 msgid ""
 "\n"
 "Conflict detection disabled!"
 msgstr ""
-
-#, fuzzy
-msgid ""
-"\n"
-"Edit the update source address."
-msgstr ""
-"\n"
-"Redaguoti atnaujinimo šaltinio adresus."
-
-#, fuzzy
-msgid ""
-"\n"
-"Flash on the fly your your Receiver software."
-msgstr "Valdykite savo imtuvo programinę įrangą"
 
 msgid ""
 "\n"
@@ -86,40 +54,6 @@ msgid ""
 "\n"
 "Recording in progress."
 msgstr "Įrašų keliai"
-
-#, fuzzy
-msgid ""
-"\n"
-"Restore your Receiver settings."
-msgstr "Atkurkite sisteminius nustatymus"
-
-msgid ""
-"\n"
-"Restore your Receiver with a new firmware."
-msgstr ""
-
-msgid ""
-"\n"
-"Restore your backups by date."
-msgstr ""
-"\n"
-"Atkurti jūsų atsarginę kopiją pagal datą."
-
-msgid ""
-"\n"
-"Scan for local extensions and install them."
-msgstr ""
-"\n"
-"Skanuoti vietinius paketus ir įdiegti juos."
-
-msgid ""
-"\n"
-"Select your backup device.\n"
-"Current device: "
-msgstr ""
-"\n"
-"Pasirinkite jūsų atsarginės kopijos įrenginį.\n"
-"Dabartinis įrenginys: "
 
 #, python-format
 msgid ""
@@ -1024,6 +958,12 @@ msgstr "Išplėstiniai nustatymai"
 msgid "Advanced options"
 msgstr "Išplėstiniai nustatymai"
 
+#, fuzzy
+msgid "Advanced options and settings."
+msgstr ""
+"\n"
+"Išplėstiniai pasirinkimai ir nustatymai."
+
 msgid "Advanced restore"
 msgstr "Išplėstinis atkūrimas"
 
@@ -1574,6 +1514,14 @@ msgid "Backup is running..."
 msgstr "Daroma atsarginė kopija..."
 
 msgid "Backup system settings"
+msgstr "Atsarginė sisteminių nustatymų kopija"
+
+#, fuzzy
+msgid "Backup your Receiver settings."
+msgstr "Atsarginė sisteminių nustatymų kopija"
+
+#, fuzzy
+msgid "Backup your running Receiver image to HDD or USB."
 msgstr "Atsarginė sisteminių nustatymų kopija"
 
 msgid "Bahamas"
@@ -3805,6 +3753,12 @@ msgstr "išeiti iš serverio pavadinimo konfigūracijos"
 msgid "Edit the network configuration of your receiver.\n"
 msgstr ""
 
+#, fuzzy
+msgid "Edit the update source address."
+msgstr ""
+"\n"
+"Redaguoti atnaujinimo šaltinio adresus."
+
 msgid "Edit timer"
 msgstr ""
 
@@ -3812,7 +3766,7 @@ msgid "Edit title"
 msgstr "Redaguoti"
 
 #, fuzzy
-msgid "Edit update source url."
+msgid "Edit update source url"
 msgstr "Suredaguokite atnaujinimo šaltinio url."
 
 msgid "Education/Science/..."
@@ -4586,6 +4540,10 @@ msgid "Flash Online"
 msgstr ""
 
 #, fuzzy
+msgid "Flash on the fly your your Receiver software."
+msgstr "Valdykite savo imtuvo programinę įrangą"
+
+#, fuzzy
 msgid "Flashed: "
 msgstr "Diegimas klaidingas"
 
@@ -4897,9 +4855,6 @@ msgstr "Graikų"
 
 msgid "Greek"
 msgstr "Graikų"
-
-msgid "Greek (Modern)"
-msgstr ""
 
 #, fuzzy
 msgid "Green"
@@ -5236,13 +5191,16 @@ msgstr ""
 msgid "Icons"
 msgstr ""
 
+msgid "If disabled, underline characters in file and directory names are not shown and are replaced with spaces."
+msgstr ""
+
 msgid "If editing a file, can you set the cursor start position at end or begin of the line."
 msgstr ""
 
 msgid "If enabled, AIT data is included in recordings."
 msgstr ""
 
-msgid "If enabled, bookmarks will be updated with the new location when you move or copy a recording.."
+msgid "If enabled, bookmarks will be updated with the new location when you move or copy a recording."
 msgstr ""
 
 msgid "If enabled, display shows 12 chars instead 8, but in latin-1/translit only."
@@ -5476,9 +5434,6 @@ msgstr "kitas kanalas į istoriją"
 
 msgid "Install extensions"
 msgstr ""
-
-msgid "Install extensions."
-msgstr "Įdiekite išplėtimus."
 
 #, fuzzy
 msgid "Install lcd picons on"
@@ -8697,6 +8652,20 @@ msgid "Restore system settings"
 msgstr "Atkurkite sisteminius nustatymus"
 
 #, fuzzy
+msgid "Restore your Receiver settings."
+msgstr "Atkurkite sisteminius nustatymus"
+
+#, fuzzy
+msgid "Restore your Receiver with a new firmware."
+msgstr "Atkurkite sisteminius nustatymus"
+
+#, fuzzy
+msgid "Restore your backups by date."
+msgstr ""
+"\n"
+"Atkurti jūsų atsarginę kopiją pagal datą."
+
+#, fuzzy
 msgid "Restoring..."
 msgstr "įrašoma..."
 
@@ -9075,6 +9044,12 @@ msgstr "Suderinimas nepavyko!"
 #, fuzzy
 msgid "Scan files..."
 msgstr "Skanuoti failus..."
+
+#, fuzzy
+msgid "Scan for local extensions and install them."
+msgstr ""
+"\n"
+"Skanuoti vietinius paketus ir įdiegti juos."
 
 #, fuzzy
 msgid "Scan options"
@@ -9492,7 +9467,7 @@ msgid "Select update source"
 msgstr "Išsirinkite atnaujinimo šaltinį dėl redagavimo."
 
 #, fuzzy
-msgid "Select update source to edit."
+msgid "Select update source to edit"
 msgstr "Išsirinkite atnaujinimo šaltinį dėl redagavimo."
 
 msgid "Select video input with up/down buttons"
@@ -9515,6 +9490,15 @@ msgstr "Spauskite OK, kad aktyvuoti pasirinktą temą."
 #, fuzzy
 msgid "Select your Skin"
 msgstr "Išsirinkite filmą"
+
+#, fuzzy
+msgid ""
+"Select your backup device.\n"
+"Current device: "
+msgstr ""
+"\n"
+"Pasirinkite jūsų atsarginės kopijos įrenginį.\n"
+"Dabartinis įrenginys: "
 
 msgid "Select your country. If not available select 'all'."
 msgstr ""
@@ -10151,6 +10135,10 @@ msgstr "Papildomų programų naršyklė"
 
 msgid "Show two lines per entry"
 msgstr ""
+
+#, fuzzy
+msgid "Show underline characters in filenames"
+msgstr "Ribotas simbolių pasirinkimas , dėl įrašytų failų pavadinimų"
 
 #, fuzzy
 msgid "Show unknown extension as text"
@@ -13054,6 +13042,9 @@ msgstr "Taip, grįžti į filmų sąrašą"
 msgid "Yesterday"
 msgstr ""
 
+msgid "You PIN code is 0000. This is the default PIN code and it disables parental control!\n"
+msgstr ""
+
 #, python-format
 msgid ""
 "You already have a bootlogo installed,\n"
@@ -13204,9 +13195,6 @@ msgid ""
 "You need to plug-in your USB-flash drive with your image to restore.\n"
 "Power on your GigaBlue and you can flash your backup image.\n"
 "After flashing you can restore your settings."
-msgstr ""
-
-msgid "Your PIN code is 0000. This is the default PIN code and it disable parental control!\n"
 msgstr ""
 
 msgid "Your Receiver isn't connected to the internet properly. Please check it and try again."

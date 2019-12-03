@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-13 22:33+0200\n"
+"POT-Creation-Date: 2019-11-17 17:48+0100\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -30,49 +30,15 @@ msgstr ""
 #
 msgid ""
 "\n"
-"Advanced options and settings."
-msgstr ""
-"\n"
-"Rozšírené voľby a nastavenia."
-
-#
-msgid ""
-"\n"
 "After pressing OK, please wait!"
 msgstr ""
 "\n"
 "Po stlačení tlačidla OK počkajte!"
 
-#, fuzzy
-msgid ""
-"\n"
-"Backup your Receiver settings."
-msgstr "Zálohovať nastavenia systému"
-
-msgid ""
-"\n"
-"Backup your running Receiver image to HDD or USB."
-msgstr ""
-
 msgid ""
 "\n"
 "Conflict detection disabled!"
 msgstr ""
-
-#
-#, fuzzy
-msgid ""
-"\n"
-"Edit the update source address."
-msgstr ""
-"\n"
-"Upraviť adresu zdroja aktualizácií."
-
-#, fuzzy
-msgid ""
-"\n"
-"Flash on the fly your your Receiver software."
-msgstr "Spravovať softvér ptijímača"
 
 #
 msgid ""
@@ -93,43 +59,6 @@ msgid ""
 "\n"
 "Recording in progress."
 msgstr "Záznamové cesty"
-
-#, fuzzy
-msgid ""
-"\n"
-"Restore your Receiver settings."
-msgstr "Obnoviť systémové nastavenia"
-
-msgid ""
-"\n"
-"Restore your Receiver with a new firmware."
-msgstr ""
-
-#
-msgid ""
-"\n"
-"Restore your backups by date."
-msgstr ""
-"\n"
-"Obnoviť zo zálohy podľa dátumu."
-
-#
-msgid ""
-"\n"
-"Scan for local extensions and install them."
-msgstr ""
-"\n"
-"Prehľadať miestne balíčky a nainštalovať ich."
-
-#
-msgid ""
-"\n"
-"Select your backup device.\n"
-"Current device: "
-msgstr ""
-"\n"
-"Zvoľte zariadenie pre zálohovanie.\n"
-"Aktuálne zariadenie: "
 
 #, python-format
 msgid ""
@@ -1043,6 +972,13 @@ msgstr "Rozšírené voľby"
 msgid "Advanced options"
 msgstr "Rozšírené voľby"
 
+#
+#, fuzzy
+msgid "Advanced options and settings."
+msgstr ""
+"\n"
+"Rozšírené voľby a nastavenia."
+
 msgid "Advanced restore"
 msgstr "Rozšírené obnovenie"
 
@@ -1593,6 +1529,14 @@ msgid "Backup is running..."
 msgstr "Zálohovanie beží..."
 
 msgid "Backup system settings"
+msgstr "Zálohovať nastavenia systému"
+
+#, fuzzy
+msgid "Backup your Receiver settings."
+msgstr "Zálohovať nastavenia systému"
+
+#, fuzzy
+msgid "Backup your running Receiver image to HDD or USB."
 msgstr "Zálohovať nastavenia systému"
 
 msgid "Bahamas"
@@ -3824,6 +3768,13 @@ msgstr "zatvoriť nastavovanie DNS"
 msgid "Edit the network configuration of your receiver.\n"
 msgstr ""
 
+#
+#, fuzzy
+msgid "Edit the update source address."
+msgstr ""
+"\n"
+"Upraviť adresu zdroja aktualizácií."
+
 msgid "Edit timer"
 msgstr ""
 
@@ -3831,7 +3782,7 @@ msgid "Edit title"
 msgstr "Upraviť titul"
 
 #, fuzzy
-msgid "Edit update source url."
+msgid "Edit update source url"
 msgstr "Upraviť URL zdroja aktualizácie."
 
 msgid "Education/Science/..."
@@ -4603,6 +4554,10 @@ msgid "Flash Online"
 msgstr ""
 
 #, fuzzy
+msgid "Flash on the fly your your Receiver software."
+msgstr "Spravovať softvér ptijímača"
+
+#, fuzzy
 msgid "Flashed: "
 msgstr "Flešovanie zlyhalo"
 
@@ -4914,9 +4869,6 @@ msgstr "Gréčtina"
 
 msgid "Greek"
 msgstr "Gréčtina"
-
-msgid "Greek (Modern)"
-msgstr ""
 
 #, fuzzy
 msgid "Green"
@@ -5253,13 +5205,16 @@ msgstr ""
 msgid "Icons"
 msgstr ""
 
+msgid "If disabled, underline characters in file and directory names are not shown and are replaced with spaces."
+msgstr ""
+
 msgid "If editing a file, can you set the cursor start position at end or begin of the line."
 msgstr ""
 
 msgid "If enabled, AIT data is included in recordings."
 msgstr ""
 
-msgid "If enabled, bookmarks will be updated with the new location when you move or copy a recording.."
+msgid "If enabled, bookmarks will be updated with the new location when you move or copy a recording."
 msgstr ""
 
 msgid "If enabled, display shows 12 chars instead 8, but in latin-1/translit only."
@@ -5493,9 +5448,6 @@ msgstr "Nasledujúca stanica v histórii"
 
 msgid "Install extensions"
 msgstr ""
-
-msgid "Install extensions."
-msgstr "Inštalovať rozšírenia."
 
 #, fuzzy
 msgid "Install lcd picons on"
@@ -8706,6 +8658,21 @@ msgid "Restore system settings"
 msgstr "Obnoviť systémové nastavenia"
 
 #, fuzzy
+msgid "Restore your Receiver settings."
+msgstr "Obnoviť systémové nastavenia"
+
+#, fuzzy
+msgid "Restore your Receiver with a new firmware."
+msgstr "Obnoviť systémové nastavenia"
+
+#
+#, fuzzy
+msgid "Restore your backups by date."
+msgstr ""
+"\n"
+"Obnoviť zo zálohy podľa dátumu."
+
+#, fuzzy
 msgid "Restoring..."
 msgstr "nahrávam..."
 
@@ -9085,6 +9052,13 @@ msgstr "Ladenie zlyhalo!"
 #, fuzzy
 msgid "Scan files..."
 msgstr "Vyhľadať súbory..."
+
+#
+#, fuzzy
+msgid "Scan for local extensions and install them."
+msgstr ""
+"\n"
+"Prehľadať miestne balíčky a nainštalovať ich."
 
 #, fuzzy
 msgid "Scan options"
@@ -9504,7 +9478,7 @@ msgid "Select update source"
 msgstr "Zvoľte zdroj aktualizácie, ktorý chcete upraviť."
 
 #, fuzzy
-msgid "Select update source to edit."
+msgid "Select update source to edit"
 msgstr "Zvoľte zdroj aktualizácie, ktorý chcete upraviť."
 
 msgid "Select video input with up/down buttons"
@@ -9527,6 +9501,16 @@ msgstr "Stlačením OK zapnete zvolený vzhľad."
 #, fuzzy
 msgid "Select your Skin"
 msgstr "Zvoľte film"
+
+#
+#, fuzzy
+msgid ""
+"Select your backup device.\n"
+"Current device: "
+msgstr ""
+"\n"
+"Zvoľte zariadenie pre zálohovanie.\n"
+"Aktuálne zariadenie: "
 
 msgid "Select your country. If not available select 'all'."
 msgstr ""
@@ -10158,6 +10142,10 @@ msgstr "Prehliadač modulov"
 
 msgid "Show two lines per entry"
 msgstr ""
+
+#, fuzzy
+msgid "Show underline characters in filenames"
+msgstr "Obmedzená znaková sada pre názvy záznamov"
 
 #, fuzzy
 msgid "Show unknown extension as text"
@@ -13060,6 +13048,9 @@ msgstr "Áno, vrátiť sa do zoznamu filmov"
 msgid "Yesterday"
 msgstr ""
 
+msgid "You PIN code is 0000. This is the default PIN code and it disables parental control!\n"
+msgstr ""
+
 #, python-format
 msgid ""
 "You already have a bootlogo installed,\n"
@@ -13210,9 +13201,6 @@ msgid ""
 "You need to plug-in your USB-flash drive with your image to restore.\n"
 "Power on your GigaBlue and you can flash your backup image.\n"
 "After flashing you can restore your settings."
-msgstr ""
-
-msgid "Your PIN code is 0000. This is the default PIN code and it disable parental control!\n"
 msgstr ""
 
 msgid "Your Receiver isn't connected to the internet properly. Please check it and try again."

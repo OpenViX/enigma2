@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-13 22:33+0200\n"
-"PO-Revision-Date: 2019-10-13 22:55+0200\n"
+"POT-Creation-Date: 2019-11-17 17:48+0100\n"
+"PO-Revision-Date: 2019-11-17 17:56+0100\n"
 "Last-Translator: -=niki=- <niki_msn@hotmail.de>\n"
 "Language-Team: none\n"
 "Language: de\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
-"X-Generator: Poedit 2.0.7\n"
+"X-Generator: Poedit 2.2.4\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
 msgid ""
@@ -30,13 +30,6 @@ msgstr ""
 
 msgid ""
 "\n"
-"Advanced options and settings."
-msgstr ""
-"\n"
-"Erweiterte Optionen und Einstellungen."
-
-msgid ""
-"\n"
 "After pressing OK, please wait!"
 msgstr ""
 "\n"
@@ -44,38 +37,10 @@ msgstr ""
 
 msgid ""
 "\n"
-"Backup your Receiver settings."
-msgstr ""
-"\n"
-"Sichern Ihrer Receiver-Einstellungen."
-
-msgid ""
-"\n"
-"Backup your running Receiver image to HDD or USB."
-msgstr ""
-"\n"
-"Sichern Ihrer Receivers auf HDD oder USB."
-
-msgid ""
-"\n"
 "Conflict detection disabled!"
 msgstr ""
 "\n"
 "Nicht gelöster Konflikt!"
-
-msgid ""
-"\n"
-"Edit the update source address."
-msgstr ""
-"\n"
-"Update Quell-Adresse bearbeiten."
-
-msgid ""
-"\n"
-"Flash on the fly your your Receiver software."
-msgstr ""
-"\n"
-"Online-Flash Ihrer Receiver-Software."
 
 msgid ""
 "\n"
@@ -97,43 +62,6 @@ msgid ""
 msgstr ""
 "\n"
 "Aufnahme aktiv."
-
-msgid ""
-"\n"
-"Restore your Receiver settings."
-msgstr ""
-"\n"
-"Wiederherstellen Ihrer Receiver-Einstellungen."
-
-msgid ""
-"\n"
-"Restore your Receiver with a new firmware."
-msgstr ""
-"\n"
-"Wiederherstellen Ihres Receivers mit einer neuen Firmware."
-
-msgid ""
-"\n"
-"Restore your backups by date."
-msgstr ""
-"\n"
-"Wiederherstellen Ihrer nach Datum sortierten Sicherungen."
-
-msgid ""
-"\n"
-"Scan for local extensions and install them."
-msgstr ""
-"\n"
-"Nach lokalen Erweiterungen suchen und diese installieren."
-
-msgid ""
-"\n"
-"Select your backup device.\n"
-"Current device: "
-msgstr ""
-"\n"
-"Wählen Sie Ihr Sicherungs-Laufwerk.\n"
-"Aktuelles Laufwerk: "
 
 #, python-format
 msgid ""
@@ -1009,6 +937,9 @@ msgstr "Erweiterte Optionen"
 msgid "Advanced options"
 msgstr "Erweiterte Optionen"
 
+msgid "Advanced options and settings."
+msgstr "Erweiterte Optionen und Einstellungen."
+
 msgid "Advanced restore"
 msgstr "Erweiterte Wiederherstellung"
 
@@ -1509,6 +1440,12 @@ msgstr "Sicherung wird ausgeführt..."
 
 msgid "Backup system settings"
 msgstr "Einstellungen sichern"
+
+msgid "Backup your Receiver settings."
+msgstr "Sichern Ihrer Receiver-Einstellungen."
+
+msgid "Backup your running Receiver image to HDD or USB."
+msgstr "Sichern Ihrer Receivers auf HDD oder USB."
 
 msgid "Bahamas"
 msgstr "Bahamas"
@@ -3596,14 +3533,17 @@ msgstr "Bearbeiten Sie die Nameserver-Einstellungen Ihres Receivers.\n"
 msgid "Edit the network configuration of your receiver.\n"
 msgstr "Bearbeiten Sie die Netzwerk-Konfiguration Ihres Receivers.\n"
 
+msgid "Edit the update source address."
+msgstr "Update Quell-Adresse bearbeiten."
+
 msgid "Edit timer"
 msgstr "Timer editieren"
 
 msgid "Edit title"
 msgstr "Titel ändern"
 
-msgid "Edit update source url."
-msgstr "Update Quell-URL bearbeiten."
+msgid "Edit update source url"
+msgstr "Update Quell-URL bearbeiten"
 
 msgid "Education/Science/..."
 msgstr "Bildung/Wissenschaft/..."
@@ -3618,7 +3558,7 @@ msgid "Electronic Program Guide"
 msgstr "Elektronischer Programmführer"
 
 msgid "Embedded"
-msgstr "eingebettet"
+msgstr "Eingebettet"
 
 msgid "Empty slot"
 msgstr "Leerer Steckplatz"
@@ -4288,7 +4228,7 @@ msgid "Fine movement"
 msgstr "Fein-Steuerung"
 
 msgid "Finetune"
-msgstr "Feineinst."
+msgstr "Feineinstellungen"
 
 msgid "Finished"
 msgstr "Beendet"
@@ -4337,6 +4277,9 @@ msgstr "Image zum Flashen auswählen"
 
 msgid "Flash Online"
 msgstr "Flashen Online"
+
+msgid "Flash on the fly your your Receiver software."
+msgstr "Online-Flash Ihrer Receiver-Software."
 
 msgid "Flashed: "
 msgstr "Flashed: "
@@ -4629,9 +4572,6 @@ msgstr "Greece"
 
 msgid "Greek"
 msgstr "Griechisch"
-
-msgid "Greek (Modern)"
-msgstr ""
 
 msgid "Green"
 msgstr "Grün"
@@ -4941,6 +4881,9 @@ msgstr "Iceland"
 msgid "Icons"
 msgstr "Symbole"
 
+msgid "If disabled, underline characters in file and directory names are not shown and are replaced with spaces."
+msgstr ""
+
 msgid "If editing a file, can you set the cursor start position at end or begin of the line."
 msgstr ""
 
@@ -4949,7 +4892,7 @@ msgstr ""
 "Wenn aktiviert,\n"
 "sind in den Aufzeichnungen AIT-Daten enthalten."
 
-msgid "If enabled, bookmarks will be updated with the new location when you move or copy a recording.."
+msgid "If enabled, bookmarks will be updated with the new location when you move or copy a recording."
 msgstr ""
 
 msgid "If enabled, display shows 12 chars instead 8, but in latin-1/translit only."
@@ -5172,9 +5115,6 @@ msgstr "Kanalliste hinzufügen"
 
 msgid "Install extensions"
 msgstr "Installiere Plugins (Erweiterungen)"
-
-msgid "Install extensions."
-msgstr "Erweiterungen installieren."
 
 msgid "Install lcd picons on"
 msgstr "LCD picons installieren auf"
@@ -5674,7 +5614,7 @@ msgid "Lower Framerate save CPU Time"
 msgstr "Geringe Framerate reduziert die CPU Belastung"
 
 msgid "Lower case"
-msgstr "kleinbuchstaben"
+msgstr "Kleinbuchstaben"
 
 msgid "Luxembourg"
 msgstr "Luxembourg"
@@ -7027,7 +6967,7 @@ msgid "Permanently remove all deleted items"
 msgstr "Gelöschte Filme endgültig entfernen"
 
 msgid "Permissions:"
-msgstr "P"
+msgstr "Berechtigungen:"
 
 msgid "Persian"
 msgstr "Persisch"
@@ -8134,6 +8074,15 @@ msgstr "Stelle inetd.conf wieder her"
 msgid "Restore system settings"
 msgstr "Einstellungen wiederherstellen"
 
+msgid "Restore your Receiver settings."
+msgstr "Wiederherstellen Ihrer Receiver-Einstellungen."
+
+msgid "Restore your Receiver with a new firmware."
+msgstr "Wiederherstellen Ihres Receivers mit einer neuen Firmware."
+
+msgid "Restore your backups by date."
+msgstr "Wiederherstellen Ihrer nach Datum sortierten Sicherungen."
+
 msgid "Restoring..."
 msgstr "Wiederherstellung..."
 
@@ -8490,6 +8439,9 @@ msgstr "Suche gescheitert!"
 
 msgid "Scan files..."
 msgstr "Dateien durchsuchen..."
+
+msgid "Scan for local extensions and install them."
+msgstr "Nach lokalen Erweiterungen suchen und diese installieren."
 
 msgid "Scan options"
 msgstr "Suchoptionen"
@@ -8870,8 +8822,8 @@ msgstr ""
 msgid "Select update source"
 msgstr "Wählen Sie eine Update Quelle"
 
-msgid "Select update source to edit."
-msgstr "Wählen Sie eine Update Quelle zum Bearbeiten."
+msgid "Select update source to edit"
+msgstr "Wählen Sie eine Update Quelle zum Bearbeiten"
 
 msgid "Select video input with up/down buttons"
 msgstr "Wählen Sie den Video-Eingang mit den Hoch/Runter-Tasten"
@@ -8890,6 +8842,13 @@ msgstr "Wählen Sie die LCD Uhr und drücken Sie OK um die ausgewählte Uhr zu a
 
 msgid "Select your Skin"
 msgstr "Stil der Benutzeroberfläche wählen"
+
+msgid ""
+"Select your backup device.\n"
+"Current device: "
+msgstr ""
+"Wählen Sie Ihr Sicherungs-Laufwerk.\n"
+"Aktuelles Laufwerk: "
 
 msgid "Select your country. If not available select 'all'."
 msgstr "Wähle dein Land. Wenn nicht verfügbar, wählen Sie \"Alle\"."
@@ -9127,7 +9086,7 @@ msgid "Settings can be different for each directory separately (for non removeab
 msgstr "Die Einstellungen können für jedes Verzeichnis anders sein (nur für nicht entfernbare Geräte)."
 
 msgid "Settings..."
-msgstr "Einstellungen"
+msgstr "Einstellungen..."
 
 msgid "Setup"
 msgstr "Einstellungen"
@@ -9449,6 +9408,9 @@ msgstr "Zeige Pluginliste."
 
 msgid "Show two lines per entry"
 msgstr ""
+
+msgid "Show underline characters in filenames"
+msgstr "Zeige Unterstrich Zeichen in Dateinamen"
 
 msgid "Show unknown extension as text"
 msgstr ""
@@ -12227,6 +12189,9 @@ msgstr "Ja, zurück zur Filmauswahl"
 msgid "Yesterday"
 msgstr "Gestern"
 
+msgid "You PIN code is 0000. This is the default PIN code and it disables parental control!\n"
+msgstr "Ihr Jugendschutz-PIN lautet: 0000. Dies ist der Standard-PIN und deaktiviert den Jugendschutz.\n"
+
 #, python-format
 msgid ""
 "You already have a bootlogo installed,\n"
@@ -12405,9 +12370,6 @@ msgstr ""
 "Der USB-Stick mit dem Image muss zum Wiederherstellen angesteckt werden.\n"
 "Starten Sie damit Ihre Gigablue, können Sie ihr Backup wiederherstellen.\n"
 "Nach dem Flashvorgang können Sie Ihre Einstellungen wiederherstellen."
-
-msgid "Your PIN code is 0000. This is the default PIN code and it disable parental control!\n"
-msgstr "Ihr Jugendschutz-PIN lautet: 0000. Dies ist der Standard-PIN und deaktiviert den Jugendschutz.\n"
 
 msgid "Your Receiver isn't connected to the internet properly. Please check it and try again."
 msgstr "Die Internetverbindung konnte nicht hergestellt werden. Kontrollieren Sie die Netzwerkeinstellung."

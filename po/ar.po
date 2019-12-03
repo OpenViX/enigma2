@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-13 22:33+0200\n"
+"POT-Creation-Date: 2019-11-17 17:48+0100\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -30,49 +30,15 @@ msgstr ""
 
 msgid ""
 "\n"
-"Advanced options and settings."
-msgstr ""
-"\n"
-"إعدادات و إختيارات متقدمه"
-
-msgid ""
-"\n"
 "After pressing OK, please wait!"
 msgstr ""
 "\n"
 "بعد الضغط على موافق ، رجاء الانتظار"
 
-#, fuzzy
-msgid ""
-"\n"
-"Backup your Receiver settings."
-msgstr "عمل نسخه إحتياطيه  لأعدادات النظام"
-
-msgid ""
-"\n"
-"Backup your running Receiver image to HDD or USB."
-msgstr ""
-
 msgid ""
 "\n"
 "Conflict detection disabled!"
 msgstr ""
-
-#
-#, fuzzy
-msgid ""
-"\n"
-"Edit the update source address."
-msgstr ""
-"\n"
-"تحرير عنوان مصدر الترقيه"
-
-#
-#, fuzzy
-msgid ""
-"\n"
-"Flash on the fly your your Receiver software."
-msgstr "تحكم فى البرنامج التشغيلى للرسيفر"
 
 #
 msgid ""
@@ -94,42 +60,6 @@ msgid ""
 "\n"
 "Recording in progress."
 msgstr "مسارات التسجيل"
-
-#, fuzzy
-msgid ""
-"\n"
-"Restore your Receiver settings."
-msgstr "إستعادة إعدادات النظام"
-
-msgid ""
-"\n"
-"Restore your Receiver with a new firmware."
-msgstr ""
-
-#
-msgid ""
-"\n"
-"Restore your backups by date."
-msgstr ""
-"\n"
-"إستعاده النسخه الاحتياطيه بالتاريخ"
-
-#
-msgid ""
-"\n"
-"Scan for local extensions and install them."
-msgstr ""
-"\n"
-"البحث عن إضافات موضعيه وتركيبها"
-
-msgid ""
-"\n"
-"Select your backup device.\n"
-"Current device: "
-msgstr ""
-"\n"
-"أختار جهاز النسخه الاحتياطيه.\n"
-"الجهاز الحالى: "
 
 #, python-format
 msgid ""
@@ -1128,6 +1058,12 @@ msgstr "إختيارات متقدمه"
 msgid "Advanced options"
 msgstr "إختيارات متقدمه"
 
+#, fuzzy
+msgid "Advanced options and settings."
+msgstr ""
+"\n"
+"إعدادات و إختيارات متقدمه"
+
 #
 msgid "Advanced restore"
 msgstr "إستعاده متقدمه"
@@ -1703,6 +1639,14 @@ msgid "Backup is running..."
 msgstr "جارى عمل نسخه إحتياطيه ........"
 
 msgid "Backup system settings"
+msgstr "عمل نسخه إحتياطيه  لأعدادات النظام"
+
+#, fuzzy
+msgid "Backup your Receiver settings."
+msgstr "عمل نسخه إحتياطيه  لأعدادات النظام"
+
+#, fuzzy
+msgid "Backup your running Receiver image to HDD or USB."
 msgstr "عمل نسخه إحتياطيه  لأعدادات النظام"
 
 msgid "Bahamas"
@@ -4013,6 +3957,13 @@ msgstr "الخروج من تكوين أسم الخادم"
 msgid "Edit the network configuration of your receiver.\n"
 msgstr ""
 
+#
+#, fuzzy
+msgid "Edit the update source address."
+msgstr ""
+"\n"
+"تحرير عنوان مصدر الترقيه"
+
 msgid "Edit timer"
 msgstr ""
 
@@ -4021,7 +3972,7 @@ msgstr "تحرير العنوان"
 
 #
 #, fuzzy
-msgid "Edit update source url."
+msgid "Edit update source url"
 msgstr "تحرير عنوان مصدر الترقيه"
 
 msgid "Education/Science/..."
@@ -4820,6 +4771,11 @@ msgstr ""
 msgid "Flash Online"
 msgstr ""
 
+#
+#, fuzzy
+msgid "Flash on the fly your your Receiver software."
+msgstr "تحكم فى البرنامج التشغيلى للرسيفر"
+
 #, fuzzy
 msgid "Flashed: "
 msgstr "فشل الشحن"
@@ -5151,9 +5107,6 @@ msgstr "اليونان"
 
 msgid "Greek"
 msgstr "اليونان"
-
-msgid "Greek (Modern)"
-msgstr ""
 
 #, fuzzy
 msgid "Green"
@@ -5496,13 +5449,16 @@ msgstr ""
 msgid "Icons"
 msgstr ""
 
+msgid "If disabled, underline characters in file and directory names are not shown and are replaced with spaces."
+msgstr ""
+
 msgid "If editing a file, can you set the cursor start position at end or begin of the line."
 msgstr ""
 
 msgid "If enabled, AIT data is included in recordings."
 msgstr ""
 
-msgid "If enabled, bookmarks will be updated with the new location when you move or copy a recording.."
+msgid "If enabled, bookmarks will be updated with the new location when you move or copy a recording."
 msgstr ""
 
 msgid "If enabled, display shows 12 chars instead 8, but in latin-1/translit only."
@@ -5748,9 +5704,6 @@ msgstr "القناه التاليه فى التاريخ"
 
 msgid "Install extensions"
 msgstr ""
-
-msgid "Install extensions."
-msgstr "تثبيت إضافات"
 
 #, fuzzy
 msgid "Install lcd picons on"
@@ -9166,6 +9119,21 @@ msgid "Restore system settings"
 msgstr "إستعادة إعدادات النظام"
 
 #, fuzzy
+msgid "Restore your Receiver settings."
+msgstr "إستعادة إعدادات النظام"
+
+#, fuzzy
+msgid "Restore your Receiver with a new firmware."
+msgstr "إستعادة إعدادات النظام"
+
+#
+#, fuzzy
+msgid "Restore your backups by date."
+msgstr ""
+"\n"
+"إستعاده النسخه الاحتياطيه بالتاريخ"
+
+#, fuzzy
 msgid "Restoring..."
 msgstr "جارى التسجيل....."
 
@@ -9567,6 +9535,13 @@ msgstr "فشل التوليف"
 #, fuzzy
 msgid "Scan files..."
 msgstr "فحص الملفات..."
+
+#
+#, fuzzy
+msgid "Scan for local extensions and install them."
+msgstr ""
+"\n"
+"البحث عن إضافات موضعيه وتركيبها"
 
 #
 #, fuzzy
@@ -10010,7 +9985,7 @@ msgid "Select update source"
 msgstr "أختار مصدر الترقيه المراد تحريره"
 
 #, fuzzy
-msgid "Select update source to edit."
+msgid "Select update source to edit"
 msgstr "أختار مصدر الترقيه المراد تحريره"
 
 #
@@ -10035,6 +10010,15 @@ msgstr "أضغط موافق لتفعيل الجلد المختار."
 #, fuzzy
 msgid "Select your Skin"
 msgstr "اختار الفيلم"
+
+#, fuzzy
+msgid ""
+"Select your backup device.\n"
+"Current device: "
+msgstr ""
+"\n"
+"أختار جهاز النسخه الاحتياطيه.\n"
+"الجهاز الحالى: "
 
 msgid "Select your country. If not available select 'all'."
 msgstr ""
@@ -10709,6 +10693,10 @@ msgstr "متصفح البلج إنز"
 
 msgid "Show two lines per entry"
 msgstr ""
+
+#, fuzzy
+msgid "Show underline characters in filenames"
+msgstr "حروف محدوده لاسماء ملفات التسجيل"
 
 #, fuzzy
 msgid "Show unknown extension as text"
@@ -13799,6 +13787,9 @@ msgstr "نعم، العوده الى قائمة الافلام"
 msgid "Yesterday"
 msgstr ""
 
+msgid "You PIN code is 0000. This is the default PIN code and it disables parental control!\n"
+msgstr ""
+
 #, python-format
 msgid ""
 "You already have a bootlogo installed,\n"
@@ -13951,9 +13942,6 @@ msgid ""
 "You need to plug-in your USB-flash drive with your image to restore.\n"
 "Power on your GigaBlue and you can flash your backup image.\n"
 "After flashing you can restore your settings."
-msgstr ""
-
-msgid "Your PIN code is 0000. This is the default PIN code and it disable parental control!\n"
 msgstr ""
 
 msgid "Your Receiver isn't connected to the internet properly. Please check it and try again."

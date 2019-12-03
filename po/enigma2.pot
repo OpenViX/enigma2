@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-13 22:33+0200\n"
+"POT-Creation-Date: 2019-11-17 17:48+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,37 +26,12 @@ msgstr ""
 
 msgid ""
 "\n"
-"Advanced options and settings."
-msgstr ""
-
-msgid ""
-"\n"
 "After pressing OK, please wait!"
 msgstr ""
 
 msgid ""
 "\n"
-"Backup your Receiver settings."
-msgstr ""
-
-msgid ""
-"\n"
-"Backup your running Receiver image to HDD or USB."
-msgstr ""
-
-msgid ""
-"\n"
 "Conflict detection disabled!"
-msgstr ""
-
-msgid ""
-"\n"
-"Edit the update source address."
-msgstr ""
-
-msgid ""
-"\n"
-"Flash on the fly your your Receiver software."
 msgstr ""
 
 msgid ""
@@ -72,32 +47,6 @@ msgstr ""
 msgid ""
 "\n"
 "Recording in progress."
-msgstr ""
-
-msgid ""
-"\n"
-"Restore your Receiver settings."
-msgstr ""
-
-msgid ""
-"\n"
-"Restore your Receiver with a new firmware."
-msgstr ""
-
-msgid ""
-"\n"
-"Restore your backups by date."
-msgstr ""
-
-msgid ""
-"\n"
-"Scan for local extensions and install them."
-msgstr ""
-
-msgid ""
-"\n"
-"Select your backup device.\n"
-"Current device: "
 msgstr ""
 
 #, python-format
@@ -914,6 +863,9 @@ msgstr ""
 msgid "Advanced options"
 msgstr ""
 
+msgid "Advanced options and settings."
+msgstr ""
+
 msgid "Advanced restore"
 msgstr ""
 
@@ -1335,6 +1287,12 @@ msgid "Backup is running..."
 msgstr ""
 
 msgid "Backup system settings"
+msgstr ""
+
+msgid "Backup your Receiver settings."
+msgstr ""
+
+msgid "Backup your running Receiver image to HDD or USB."
 msgstr ""
 
 msgid "Bahamas"
@@ -2932,13 +2890,16 @@ msgstr ""
 msgid "Edit the network configuration of your receiver.\n"
 msgstr ""
 
+msgid "Edit the update source address."
+msgstr ""
+
 msgid "Edit timer"
 msgstr ""
 
 msgid "Edit title"
 msgstr ""
 
-msgid "Edit update source url."
+msgid "Edit update source url"
 msgstr ""
 
 msgid "Education/Science/..."
@@ -3530,6 +3491,9 @@ msgstr ""
 msgid "Flash Online"
 msgstr ""
 
+msgid "Flash on the fly your your Receiver software."
+msgstr ""
+
 msgid "Flashed: "
 msgstr ""
 
@@ -3805,9 +3769,6 @@ msgid "Greece"
 msgstr ""
 
 msgid "Greek"
-msgstr ""
-
-msgid "Greek (Modern)"
 msgstr ""
 
 msgid "Green"
@@ -4086,7 +4047,10 @@ msgstr ""
 msgid "Icons"
 msgstr ""
 
-msgid "If enabled, bookmarks will be updated with the new location when you move or copy a recording.."
+msgid "If disabled, underline characters in file and directory names are not shown and are replaced with spaces."
+msgstr ""
+
+msgid "If enabled, bookmarks will be updated with the new location when you move or copy a recording."
 msgstr ""
 
 msgid "If enabled, then there will be displayed icons for new/unseen items too."
@@ -4236,9 +4200,6 @@ msgid "Install channel list"
 msgstr ""
 
 msgid "Install extensions"
-msgstr ""
-
-msgid "Install extensions."
 msgstr ""
 
 msgid "Install lcd picons on"
@@ -6785,6 +6746,15 @@ msgstr ""
 msgid "Restore system settings"
 msgstr ""
 
+msgid "Restore your Receiver settings."
+msgstr ""
+
+msgid "Restore your Receiver with a new firmware."
+msgstr ""
+
+msgid "Restore your backups by date."
+msgstr ""
+
 msgid "Restoring..."
 msgstr ""
 
@@ -7101,6 +7071,9 @@ msgid "Scan failed!"
 msgstr ""
 
 msgid "Scan files..."
+msgstr ""
+
+msgid "Scan for local extensions and install them."
 msgstr ""
 
 msgid "Scan options"
@@ -7449,7 +7422,7 @@ msgstr ""
 msgid "Select update source"
 msgstr ""
 
-msgid "Select update source to edit."
+msgid "Select update source to edit"
 msgstr ""
 
 msgid "Select your ATSC provider."
@@ -7459,6 +7432,11 @@ msgid "Select your LCD clock and press OK to activate the selected clock."
 msgstr ""
 
 msgid "Select your Skin"
+msgstr ""
+
+msgid ""
+"Select your backup device.\n"
+"Current device: "
 msgstr ""
 
 msgid "Select your country. If not available select 'all'."
@@ -7868,6 +7846,9 @@ msgid "Show the media player..."
 msgstr ""
 
 msgid "Show the plugin browser.."
+msgstr ""
+
+msgid "Show underline characters in filenames"
 msgstr ""
 
 msgid "Show unknown extension as text"
@@ -10014,6 +9995,9 @@ msgstr ""
 msgid "Yesterday"
 msgstr ""
 
+msgid "You PIN code is 0000. This is the default PIN code and it disables parental control!\n"
+msgstr ""
+
 #, python-format
 msgid ""
 "You already have a bootlogo installed,\n"
@@ -10137,9 +10121,6 @@ msgstr ""
 msgid ""
 "Your %s %s will be restarted after the removal of service.\n"
 "Do you want to remove now ?"
-msgstr ""
-
-msgid "Your PIN code is 0000. This is the default PIN code and it disable parental control!\n"
 msgstr ""
 
 msgid "Your Receiver isn't connected to the internet properly. Please check it and try again."

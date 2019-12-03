@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-13 22:33+0200\n"
+"POT-Creation-Date: 2019-11-17 17:48+0100\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -27,14 +27,6 @@ msgid ""
 "[User - bouquets (TV)]\n"
 msgstr "Användare - favoritlistor"
 
-#
-msgid ""
-"\n"
-"Advanced options and settings."
-msgstr ""
-"\n"
-"Avancerade val och inställningar."
-
 msgid ""
 "\n"
 "After pressing OK, please wait!"
@@ -42,43 +34,10 @@ msgstr ""
 "\n"
 "Efter tryckt OK, vänligen vänta!"
 
-#, fuzzy
-msgid ""
-"\n"
-"Backup your Receiver settings."
-msgstr ""
-"\n"
-"Backup av din mottagares inställningar."
-
-#, fuzzy
-msgid ""
-"\n"
-"Backup your running Receiver image to HDD or USB."
-msgstr ""
-"\n"
-"Backup av din mottagares inställningar."
-
 msgid ""
 "\n"
 "Conflict detection disabled!"
 msgstr ""
-
-#
-#, fuzzy
-msgid ""
-"\n"
-"Edit the update source address."
-msgstr ""
-"\n"
-"Ändra uppgraderingskällans adress."
-
-#, fuzzy
-msgid ""
-"\n"
-"Flash on the fly your your Receiver software."
-msgstr ""
-"\n"
-"Online uppdatering av din mottagares mjukvara."
 
 #
 msgid ""
@@ -100,48 +59,6 @@ msgid ""
 "\n"
 "Recording in progress."
 msgstr "Inspelning pågår"
-
-#, fuzzy
-msgid ""
-"\n"
-"Restore your Receiver settings."
-msgstr ""
-"\n"
-"Återställ din mottagares inställningar."
-
-#, fuzzy
-msgid ""
-"\n"
-"Restore your Receiver with a new firmware."
-msgstr ""
-"\n"
-"Återställ din mottagare med en ny firmware."
-
-#
-msgid ""
-"\n"
-"Restore your backups by date."
-msgstr ""
-"\n"
-"Återskapa med datum på backup."
-
-#
-msgid ""
-"\n"
-"Scan for local extensions and install them."
-msgstr ""
-"\n"
-"Sök efter lokala utökningar och installera dem."
-
-#
-msgid ""
-"\n"
-"Select your backup device.\n"
-"Current device: "
-msgstr ""
-"\n"
-"Välj din backupenhet.\n"
-"Nuvarande enhet: "
 
 #, python-format
 msgid ""
@@ -1147,6 +1064,13 @@ msgid "Advanced options"
 msgstr "Avancerade inställningar"
 
 #
+#, fuzzy
+msgid "Advanced options and settings."
+msgstr ""
+"\n"
+"Avancerade val och inställningar."
+
+#
 msgid "Advanced restore"
 msgstr "Avancerad återskapning"
 
@@ -1762,6 +1686,18 @@ msgstr "Backup pågår..."
 #
 msgid "Backup system settings"
 msgstr "Backup av systeminställningar"
+
+#, fuzzy
+msgid "Backup your Receiver settings."
+msgstr ""
+"\n"
+"Backup av din mottagares inställningar."
+
+#, fuzzy
+msgid "Backup your running Receiver image to HDD or USB."
+msgstr ""
+"\n"
+"Backup av din mottagares inställningar."
 
 msgid "Bahamas"
 msgstr ""
@@ -4225,6 +4161,13 @@ msgstr "Ändra namnserverkonfigurationen för din mottagare.\n"
 msgid "Edit the network configuration of your receiver.\n"
 msgstr "Ändra nätverkskonfigurationen för din mottagare.\n"
 
+#
+#, fuzzy
+msgid "Edit the update source address."
+msgstr ""
+"\n"
+"Ändra uppgraderingskällans adress."
+
 msgid "Edit timer"
 msgstr ""
 
@@ -4233,7 +4176,7 @@ msgid "Edit title"
 msgstr "Ändra titel"
 
 #, fuzzy
-msgid "Edit update source url."
+msgid "Edit update source url"
 msgstr "Ändra url till uppgraderingskälla."
 
 msgid "Education/Science/..."
@@ -5080,6 +5023,12 @@ msgstr ""
 msgid "Flash Online"
 msgstr ""
 
+#, fuzzy
+msgid "Flash on the fly your your Receiver software."
+msgstr ""
+"\n"
+"Online uppdatering av din mottagares mjukvara."
+
 #
 #, fuzzy
 msgid "Flashed: "
@@ -5422,9 +5371,6 @@ msgstr "Grekiska"
 #
 msgid "Greek"
 msgstr "Grekiska"
-
-msgid "Greek (Modern)"
-msgstr ""
 
 #
 #, fuzzy
@@ -5788,13 +5734,16 @@ msgstr ""
 msgid "Icons"
 msgstr "Ikoner"
 
+msgid "If disabled, underline characters in file and directory names are not shown and are replaced with spaces."
+msgstr ""
+
 msgid "If editing a file, can you set the cursor start position at end or begin of the line."
 msgstr ""
 
 msgid "If enabled, AIT data is included in recordings."
 msgstr ""
 
-msgid "If enabled, bookmarks will be updated with the new location when you move or copy a recording.."
+msgid "If enabled, bookmarks will be updated with the new location when you move or copy a recording."
 msgstr ""
 
 msgid "If enabled, display shows 12 chars instead 8, but in latin-1/translit only."
@@ -6048,10 +5997,6 @@ msgstr "Installera kanallistan"
 
 msgid "Install extensions"
 msgstr ""
-
-#
-msgid "Install extensions."
-msgstr "Installera utökningar."
 
 #, fuzzy
 msgid "Install lcd picons on"
@@ -9663,6 +9608,25 @@ msgstr "Omstart nätverk"
 msgid "Restore system settings"
 msgstr "Återskapa systeminställningar"
 
+#, fuzzy
+msgid "Restore your Receiver settings."
+msgstr ""
+"\n"
+"Återställ din mottagares inställningar."
+
+#, fuzzy
+msgid "Restore your Receiver with a new firmware."
+msgstr ""
+"\n"
+"Återställ din mottagare med en ny firmware."
+
+#
+#, fuzzy
+msgid "Restore your backups by date."
+msgstr ""
+"\n"
+"Återskapa med datum på backup."
+
 #
 msgid "Restoring..."
 msgstr "Återställer..."
@@ -10094,6 +10058,13 @@ msgstr "Sökning misslyckades!"
 #
 msgid "Scan files..."
 msgstr "Sök Filer..."
+
+#
+#, fuzzy
+msgid "Scan for local extensions and install them."
+msgstr ""
+"\n"
+"Sök efter lokala utökningar och installera dem."
 
 #
 #, fuzzy
@@ -10547,7 +10518,7 @@ msgstr "Ange uppgraderingskälla."
 
 #
 #, fuzzy
-msgid "Select update source to edit."
+msgid "Select update source to edit"
 msgstr "Ange uppgraderingskälla att ändra."
 
 #
@@ -10575,6 +10546,16 @@ msgstr "Välj din leverantör och tryck OK för att starta sökningen"
 #, fuzzy
 msgid "Select your Skin"
 msgstr "Välj ett utseende"
+
+#
+#, fuzzy
+msgid ""
+"Select your backup device.\n"
+"Current device: "
+msgstr ""
+"\n"
+"Välj din backupenhet.\n"
+"Nuvarande enhet: "
 
 msgid "Select your country. If not available select 'all'."
 msgstr ""
@@ -11261,6 +11242,11 @@ msgstr "Pluginhanterare"
 
 msgid "Show two lines per entry"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Show underline characters in filenames"
+msgstr "Begränsad teckenuppsättning för inspelningens filnamn"
 
 #, fuzzy
 msgid "Show unknown extension as text"
@@ -14476,6 +14462,9 @@ msgstr "Ja, återvänd till filmlistan"
 msgid "Yesterday"
 msgstr "Igår"
 
+msgid "You PIN code is 0000. This is the default PIN code and it disables parental control!\n"
+msgstr ""
+
 #, fuzzy, python-format
 msgid ""
 "You already have a bootlogo installed,\n"
@@ -14644,9 +14633,6 @@ msgid ""
 "You need to plug-in your USB-flash drive with your image to restore.\n"
 "Power on your GigaBlue and you can flash your backup image.\n"
 "After flashing you can restore your settings."
-msgstr ""
-
-msgid "Your PIN code is 0000. This is the default PIN code and it disable parental control!\n"
 msgstr ""
 
 msgid "Your Receiver isn't connected to the internet properly. Please check it and try again."

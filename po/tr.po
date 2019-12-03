@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue (Apachi70)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-13 22:33+0200\n"
+"POT-Creation-Date: 2019-11-17 17:48+0100\n"
 "PO-Revision-Date: 2019-07-18 01:10+0200\n"
 "Last-Translator: Apachi70 <apachi70000@gmail.com>\n"
 "Language-Team: Turkish <apachi70000@gmail.com>\n"
@@ -31,13 +31,6 @@ msgstr ""
 
 msgid ""
 "\n"
-"Advanced options and settings."
-msgstr ""
-"\n"
-"Gelişmiş seçenekler ve ayarlar."
-
-msgid ""
-"\n"
 "After pressing OK, please wait!"
 msgstr ""
 "\n"
@@ -45,39 +38,10 @@ msgstr ""
 
 msgid ""
 "\n"
-"Backup your Receiver settings."
-msgstr ""
-"\n"
-"Alıcı ayarlarını yedekle."
-
-msgid ""
-"\n"
-"Backup your running Receiver image to HDD or USB."
-msgstr ""
-"\n"
-"Alıcıdaki çalışan imajı  HDD veya USB aygıtlarına yedekle."
-
-msgid ""
-"\n"
 "Conflict detection disabled!"
 msgstr ""
 "\n"
 "Çatışma algılama devre dışı!"
-
-#, fuzzy
-msgid ""
-"\n"
-"Edit the update source address."
-msgstr ""
-"\n"
-"Güncelleme sunucusu adresini düzenle."
-
-msgid ""
-"\n"
-"Flash on the fly your your Receiver software."
-msgstr ""
-"\n"
-"Alıcı yazılımı yanıp söner."
 
 msgid ""
 "\n"
@@ -99,43 +63,6 @@ msgid ""
 msgstr ""
 "\n"
 "Kayıt devam ediyor."
-
-msgid ""
-"\n"
-"Restore your Receiver settings."
-msgstr ""
-"\n"
-"Alıcının ayarlarını geri yükle."
-
-msgid ""
-"\n"
-"Restore your Receiver with a new firmware."
-msgstr ""
-"\n"
-"Yeni bir yazılım ile alıcıyı onar."
-
-msgid ""
-"\n"
-"Restore your backups by date."
-msgstr ""
-"\n"
-"Yedeklerinizi tarihe göre geri yükleyin."
-
-msgid ""
-"\n"
-"Scan for local extensions and install them."
-msgstr ""
-"\n"
-"Yerel uzantıları tarayın ve yükleyin."
-
-msgid ""
-"\n"
-"Select your backup device.\n"
-"Current device: "
-msgstr ""
-"\n"
-"Yedekleme aygıtını seçin.\n"
-"Mevcut aygıt: "
 
 #, python-format
 msgid ""
@@ -1000,6 +927,12 @@ msgstr "Gelişmiş Seçenekler"
 msgid "Advanced options"
 msgstr "Gelişmiş seçenekler"
 
+#, fuzzy
+msgid "Advanced options and settings."
+msgstr ""
+"\n"
+"Gelişmiş seçenekler ve ayarlar."
+
 msgid "Advanced restore"
 msgstr "Gelişmiş geri yükleme"
 
@@ -1502,6 +1435,18 @@ msgstr "Yedekleme çalışıyor..."
 
 msgid "Backup system settings"
 msgstr "Sistem ayarlarını yedekle"
+
+#, fuzzy
+msgid "Backup your Receiver settings."
+msgstr ""
+"\n"
+"Alıcı ayarlarını yedekle."
+
+#, fuzzy
+msgid "Backup your running Receiver image to HDD or USB."
+msgstr ""
+"\n"
+"Alıcıdaki çalışan imajı  HDD veya USB aygıtlarına yedekle."
 
 msgid "Bahamas"
 msgstr "Bahamalar"
@@ -3609,6 +3554,12 @@ msgstr "Alıcınızın isim sunucusunu yapılandırın.\n"
 msgid "Edit the network configuration of your receiver.\n"
 msgstr "Uydu alıcınızın ağ yapılandırmasını düzenleyin.\n"
 
+#, fuzzy
+msgid "Edit the update source address."
+msgstr ""
+"\n"
+"Güncelleme sunucusu adresini düzenle."
+
 msgid "Edit timer"
 msgstr "Zamanlayıcı düzenle"
 
@@ -3616,7 +3567,7 @@ msgid "Edit title"
 msgstr "Başlığı düzenle"
 
 #, fuzzy
-msgid "Edit update source url."
+msgid "Edit update source url"
 msgstr "Güncelleme sunucusu adresini düzenle."
 
 msgid "Education/Science/..."
@@ -4363,6 +4314,12 @@ msgstr "Flaş (bir görüntü seçin)"
 msgid "Flash Online"
 msgstr "Çevrimiçi flaş"
 
+#, fuzzy
+msgid "Flash on the fly your your Receiver software."
+msgstr ""
+"\n"
+"Alıcı yazılımı yanıp söner."
+
 msgid "Flashed: "
 msgstr "Flaşlandı: "
 
@@ -4653,9 +4610,6 @@ msgstr "Yunanistan"
 
 msgid "Greek"
 msgstr "Yunan"
-
-msgid "Greek (Modern)"
-msgstr "Yunanca (Modern)"
 
 msgid "Green"
 msgstr "Yeşil"
@@ -4965,13 +4919,17 @@ msgstr "İzlanda"
 msgid "Icons"
 msgstr "Simgeler"
 
+msgid "If disabled, underline characters in file and directory names are not shown and are replaced with spaces."
+msgstr ""
+
 msgid "If editing a file, can you set the cursor start position at end or begin of the line."
 msgstr "Bir dosyayı düzenliyorsanız, imlecin başlangıç konumunu satırın sonunda veya başında ayarlayabilirsiniz."
 
 msgid "If enabled, AIT data is included in recordings."
 msgstr "Etkinse, AIT verileri kayıtlara dahil edilir."
 
-msgid "If enabled, bookmarks will be updated with the new location when you move or copy a recording.."
+#, fuzzy
+msgid "If enabled, bookmarks will be updated with the new location when you move or copy a recording."
 msgstr "Etkinleştirilirse, bir kaydı taşıdığınızda veya kopyaladığınızda yer imleri yeni konumlarla güncellenir.."
 
 msgid "If enabled, display shows 12 chars instead 8, but in latin-1/translit only."
@@ -5194,9 +5152,6 @@ msgstr "Kanal listesi yükle"
 
 msgid "Install extensions"
 msgstr "Uzantıları yükle"
-
-msgid "Install extensions."
-msgstr "Eklentileri yükle."
 
 msgid "Install lcd picons on"
 msgstr "Lcd Picons üzerinde yükleyin"
@@ -8161,6 +8116,24 @@ msgstr "İnetd.conf dosyasını geri yükle"
 msgid "Restore system settings"
 msgstr "Sistem ayarlarını geri yükle"
 
+#, fuzzy
+msgid "Restore your Receiver settings."
+msgstr ""
+"\n"
+"Alıcının ayarlarını geri yükle."
+
+#, fuzzy
+msgid "Restore your Receiver with a new firmware."
+msgstr ""
+"\n"
+"Yeni bir yazılım ile alıcıyı onar."
+
+#, fuzzy
+msgid "Restore your backups by date."
+msgstr ""
+"\n"
+"Yedeklerinizi tarihe göre geri yükleyin."
+
 msgid "Restoring..."
 msgstr "Geri yükleniyor ..."
 
@@ -8521,6 +8494,12 @@ msgstr "Tarama başarısız!"
 
 msgid "Scan files..."
 msgstr "Dosyaları tara..."
+
+#, fuzzy
+msgid "Scan for local extensions and install them."
+msgstr ""
+"\n"
+"Yerel uzantıları tarayın ve yükleyin."
 
 msgid "Scan options"
 msgstr "Tarama seçenekleri"
@@ -8901,7 +8880,7 @@ msgid "Select update source"
 msgstr "Güncelleme kaynağı seçin"
 
 #, fuzzy
-msgid "Select update source to edit."
+msgid "Select update source to edit"
 msgstr "Düzenlemek istediğiniz güncelleme kaynağını seçin."
 
 msgid "Select video input with up/down buttons"
@@ -8921,6 +8900,15 @@ msgstr "LCD saatinizi seçin ve seçilen saati aktif hale getirmek için OK tuş
 
 msgid "Select your Skin"
 msgstr "Arayüzünü seç"
+
+#, fuzzy
+msgid ""
+"Select your backup device.\n"
+"Current device: "
+msgstr ""
+"\n"
+"Yedekleme aygıtını seçin.\n"
+"Mevcut aygıt: "
 
 msgid "Select your country. If not available select 'all'."
 msgstr "Ülkeni seç. Mevcut değilse 'tümünü' seçin."
@@ -9484,6 +9472,10 @@ msgstr "Eklenti tarayıcısını göster .."
 
 msgid "Show two lines per entry"
 msgstr ""
+
+#, fuzzy
+msgid "Show underline characters in filenames"
+msgstr "Kayıt dosya adları için karakter kümesi sınırı"
 
 msgid "Show unknown extension as text"
 msgstr "Bilinmeyen uzantıları metin olarak göster"
@@ -12263,6 +12255,10 @@ msgstr "Evet, film listesine dön"
 msgid "Yesterday"
 msgstr "Dün"
 
+#, fuzzy
+msgid "You PIN code is 0000. This is the default PIN code and it disables parental control!\n"
+msgstr "PIN kodu Bu, varsayılan PIN kodu olduğunu ve ebeveyn kontrolü devre dışı 0000'dır!\n"
+
 #, python-format
 msgid ""
 "You already have a bootlogo installed,\n"
@@ -12442,9 +12438,6 @@ msgstr ""
 "Sen plug-in için USB-flash sürücü geri yüklemek için görüntü ile gerek.\n"
 "senin GigaBlue Güç ve yedek resminizi yanıp sönebilir.\n"
 "Eğer ayarlarınızı geri yükleyebilirsiniz yanıp söndükten sonra."
-
-msgid "Your PIN code is 0000. This is the default PIN code and it disable parental control!\n"
-msgstr "PIN kodu Bu, varsayılan PIN kodu olduğunu ve ebeveyn kontrolü devre dışı 0000'dır!\n"
 
 msgid "Your Receiver isn't connected to the internet properly. Please check it and try again."
 msgstr "Alıcı internete uygun şekilde bağlı değil.Lütfen kontrol edin ve tekrar deneyin."

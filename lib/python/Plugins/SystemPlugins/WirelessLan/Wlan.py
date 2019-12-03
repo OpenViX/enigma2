@@ -9,21 +9,14 @@ from string import maketrans, strip
 from pythonwifi.iwlibs import Wireless, getWNICnames
 from pythonwifi import flags as wififlags
 
-list = []
-list.append("Unencrypted")
-list.append("WEP")
-list.append("WPA")
-list.append("WPA/WPA2")
-list.append("WPA2")
+list = ["WPA/WPA2", "WPA2", "WPA", "WEP", "Unencrypted"]
 
-weplist = []
-weplist.append("ASCII")
-weplist.append("HEX")
+weplist = ["ASCII", "HEX"]
 
 config.plugins.wlan = ConfigSubsection()
 config.plugins.wlan.essid = NoSave(ConfigText(default = "", fixed_size = False))
 config.plugins.wlan.hiddenessid = NoSave(ConfigYesNo(default = False))
-config.plugins.wlan.encryption = NoSave(ConfigSelection(list, default = "WPA2"))
+config.plugins.wlan.encryption = NoSave(ConfigSelection(list, default = "WPA/WPA2"))
 config.plugins.wlan.wepkeytype = NoSave(ConfigSelection(weplist, default = "ASCII"))
 config.plugins.wlan.psk = NoSave(ConfigPassword(default = "", fixed_size = False))
 

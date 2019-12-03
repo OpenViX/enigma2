@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-13 22:33+0200\n"
+"POT-Creation-Date: 2019-11-17 17:48+0100\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -30,48 +30,15 @@ msgstr ""
 
 msgid ""
 "\n"
-"Advanced options and settings."
-msgstr ""
-"\n"
-"Auka sérfræði stillingar."
-
-msgid ""
-"\n"
 "After pressing OK, please wait!"
 msgstr ""
 "\n"
 "Bíðið eftir að hafa ýtt á OK!"
 
-#, fuzzy
-msgid ""
-"\n"
-"Backup your Receiver settings."
-msgstr "Afrita kerfis stillingar"
-
-msgid ""
-"\n"
-"Backup your running Receiver image to HDD or USB."
-msgstr ""
-
 msgid ""
 "\n"
 "Conflict detection disabled!"
 msgstr ""
-
-#, fuzzy
-msgid ""
-"\n"
-"Edit the update source address."
-msgstr ""
-"\n"
-"Breyta veffangi uppfærslu uppruna."
-
-#
-#, fuzzy
-msgid ""
-"\n"
-"Flash on the fly your your Receiver software."
-msgstr "Stjórna hugbúnaði móttakarans"
 
 #
 msgid ""
@@ -93,43 +60,6 @@ msgid ""
 "\n"
 "Recording in progress."
 msgstr "Upptöku slóð"
-
-#
-#, fuzzy
-msgid ""
-"\n"
-"Restore your Receiver settings."
-msgstr "Setja inn kerfis stillingar"
-
-msgid ""
-"\n"
-"Restore your Receiver with a new firmware."
-msgstr ""
-
-#
-msgid ""
-"\n"
-"Restore your backups by date."
-msgstr ""
-"\n"
-"Setja inn stilligar eftir dagsetningu."
-
-msgid ""
-"\n"
-"Scan for local extensions and install them."
-msgstr ""
-"\n"
-"Leita að viðbótum á móttakara og setja þær upp."
-
-#
-msgid ""
-"\n"
-"Select your backup device.\n"
-"Current device: "
-msgstr ""
-"\n"
-"Veldu afritunar tæki.\n"
-"Núverandi tæki:"
 
 #, python-format
 msgid ""
@@ -1132,6 +1062,12 @@ msgstr "Sérfræði stillingar"
 msgid "Advanced options"
 msgstr "Sérfræði stillingar"
 
+#, fuzzy
+msgid "Advanced options and settings."
+msgstr ""
+"\n"
+"Auka sérfræði stillingar."
+
 msgid "Advanced restore"
 msgstr "Sérfræði innsetning afrita"
 
@@ -1703,6 +1639,14 @@ msgid "Backup is running..."
 msgstr "Afritun í vinnslu..."
 
 msgid "Backup system settings"
+msgstr "Afrita kerfis stillingar"
+
+#, fuzzy
+msgid "Backup your Receiver settings."
+msgstr "Afrita kerfis stillingar"
+
+#, fuzzy
+msgid "Backup your running Receiver image to HDD or USB."
 msgstr "Afrita kerfis stillingar"
 
 msgid "Bahamas"
@@ -4068,6 +4012,12 @@ msgstr "fara úr nafnaþjóns stillingum"
 msgid "Edit the network configuration of your receiver.\n"
 msgstr ""
 
+#, fuzzy
+msgid "Edit the update source address."
+msgstr ""
+"\n"
+"Breyta veffangi uppfærslu uppruna."
+
 msgid "Edit timer"
 msgstr ""
 
@@ -4076,7 +4026,7 @@ msgid "Edit title"
 msgstr "Breyta titili"
 
 #, fuzzy
-msgid "Edit update source url."
+msgid "Edit update source url"
 msgstr "Breyta uppfærslu uppruna slóð."
 
 msgid "Education/Science/..."
@@ -4916,6 +4866,11 @@ msgstr ""
 
 #
 #, fuzzy
+msgid "Flash on the fly your your Receiver software."
+msgstr "Stjórna hugbúnaði móttakarans"
+
+#
+#, fuzzy
 msgid "Flashed: "
 msgstr "Forritun tókt ekki"
 
@@ -5264,9 +5219,6 @@ msgstr "Gríska"
 #
 msgid "Greek"
 msgstr "Gríska"
-
-msgid "Greek (Modern)"
-msgstr ""
 
 #
 #, fuzzy
@@ -5631,13 +5583,16 @@ msgstr ""
 msgid "Icons"
 msgstr ""
 
+msgid "If disabled, underline characters in file and directory names are not shown and are replaced with spaces."
+msgstr ""
+
 msgid "If editing a file, can you set the cursor start position at end or begin of the line."
 msgstr ""
 
 msgid "If enabled, AIT data is included in recordings."
 msgstr ""
 
-msgid "If enabled, bookmarks will be updated with the new location when you move or copy a recording.."
+msgid "If enabled, bookmarks will be updated with the new location when you move or copy a recording."
 msgstr ""
 
 msgid "If enabled, display shows 12 chars instead 8, but in latin-1/translit only."
@@ -5891,9 +5846,6 @@ msgstr "næsta rás í sögu"
 
 msgid "Install extensions"
 msgstr ""
-
-msgid "Install extensions."
-msgstr "Setja inn viðbót."
 
 #, fuzzy
 msgid "Install lcd picons on"
@@ -9556,6 +9508,23 @@ msgstr "Setja inn kerfis stillingar"
 
 #
 #, fuzzy
+msgid "Restore your Receiver settings."
+msgstr "Setja inn kerfis stillingar"
+
+#
+#, fuzzy
+msgid "Restore your Receiver with a new firmware."
+msgstr "Setja inn kerfis stillingar"
+
+#
+#, fuzzy
+msgid "Restore your backups by date."
+msgstr ""
+"\n"
+"Setja inn stilligar eftir dagsetningu."
+
+#
+#, fuzzy
 msgid "Restoring..."
 msgstr "tek upp...."
 
@@ -9984,6 +9953,12 @@ msgstr "Tókst ekki að stilla inn!"
 #, fuzzy
 msgid "Scan files..."
 msgstr "Leita að skrám..."
+
+#, fuzzy
+msgid "Scan for local extensions and install them."
+msgstr ""
+"\n"
+"Leita að viðbótum á móttakara og setja þær upp."
 
 #, fuzzy
 msgid "Scan options"
@@ -10443,7 +10418,7 @@ msgstr "Veldu upphafs slóð til að breyta."
 
 #
 #, fuzzy
-msgid "Select update source to edit."
+msgid "Select update source to edit"
 msgstr "Veldu upphafs slóð til að breyta."
 
 #
@@ -10472,6 +10447,16 @@ msgstr "Ýttu á OK til að velja valið skinn."
 #, fuzzy
 msgid "Select your Skin"
 msgstr "Veldu mynd"
+
+#
+#, fuzzy
+msgid ""
+"Select your backup device.\n"
+"Current device: "
+msgstr ""
+"\n"
+"Veldu afritunar tæki.\n"
+"Núverandi tæki:"
 
 msgid "Select your country. If not available select 'all'."
 msgstr ""
@@ -11178,6 +11163,11 @@ msgstr "Íforrita leit"
 
 msgid "Show two lines per entry"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Show underline characters in filenames"
+msgstr "Takmarkað stafa úrval fyrir skráar nöfn á upptökum"
 
 #, fuzzy
 msgid "Show unknown extension as text"
@@ -14425,6 +14415,9 @@ msgstr "Já, fara til baka á mynda lista"
 msgid "Yesterday"
 msgstr ""
 
+msgid "You PIN code is 0000. This is the default PIN code and it disables parental control!\n"
+msgstr ""
+
 #, python-format
 msgid ""
 "You already have a bootlogo installed,\n"
@@ -14581,9 +14574,6 @@ msgid ""
 "You need to plug-in your USB-flash drive with your image to restore.\n"
 "Power on your GigaBlue and you can flash your backup image.\n"
 "After flashing you can restore your settings."
-msgstr ""
-
-msgid "Your PIN code is 0000. This is the default PIN code and it disable parental control!\n"
 msgstr ""
 
 msgid "Your Receiver isn't connected to the internet properly. Please check it and try again."

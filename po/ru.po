@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-13 22:33+0200\n"
+"POT-Creation-Date: 2019-11-17 17:48+0100\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -29,54 +29,15 @@ msgstr "Список фаворитов"
 
 msgid ""
 "\n"
-"Advanced options and settings."
-msgstr ""
-"\n"
-"Дополнительные параметры и настройки."
-
-msgid ""
-"\n"
 "After pressing OK, please wait!"
 msgstr ""
 "\n"
 "После нажатия кнопки ОК, пожалуйста подождите!"
 
-#, fuzzy
-msgid ""
-"\n"
-"Backup your Receiver settings."
-msgstr ""
-"\n"
-"Бэкап настроек вашего ресивера."
-
-#, fuzzy
-msgid ""
-"\n"
-"Backup your running Receiver image to HDD or USB."
-msgstr ""
-"\n"
-"Бэкап настроек вашего ресивера."
-
 msgid ""
 "\n"
 "Conflict detection disabled!"
 msgstr ""
-
-#, fuzzy
-msgid ""
-"\n"
-"Edit the update source address."
-msgstr ""
-"\n"
-"Редактировать адрес источника обновления."
-
-#, fuzzy
-msgid ""
-"\n"
-"Flash on the fly your your Receiver software."
-msgstr ""
-"\n"
-"Онлайн обновление софта вашего ресивера."
 
 msgid ""
 "\n"
@@ -96,45 +57,6 @@ msgid ""
 "\n"
 "Recording in progress."
 msgstr "Идет запись"
-
-#, fuzzy
-msgid ""
-"\n"
-"Restore your Receiver settings."
-msgstr ""
-"\n"
-"Восстановить настройки вашего ресивера."
-
-#, fuzzy
-msgid ""
-"\n"
-"Restore your Receiver with a new firmware."
-msgstr ""
-"\n"
-"Восстановить ваш ресивер с новой прошивкой."
-
-msgid ""
-"\n"
-"Restore your backups by date."
-msgstr ""
-"\n"
-"Восстановить резервные копии по дате."
-
-msgid ""
-"\n"
-"Scan for local extensions and install them."
-msgstr ""
-"\n"
-"Сканирование и установка локальных дополнений."
-
-msgid ""
-"\n"
-"Select your backup device.\n"
-"Current device: "
-msgstr ""
-"\n"
-"Выберите устройство для резервного копирования.\n"
-"Текущее устройство: "
 
 #, python-format
 msgid ""
@@ -1052,6 +974,12 @@ msgstr "Расширенные опции"
 msgid "Advanced options"
 msgstr "Расширенные опции"
 
+#, fuzzy
+msgid "Advanced options and settings."
+msgstr ""
+"\n"
+"Дополнительные параметры и настройки."
+
 msgid "Advanced restore"
 msgstr "Расширенное восстановление"
 
@@ -1589,6 +1517,18 @@ msgstr "Выполняется сохранение настроек..."
 
 msgid "Backup system settings"
 msgstr "Бэкап системных настроек"
+
+#, fuzzy
+msgid "Backup your Receiver settings."
+msgstr ""
+"\n"
+"Бэкап настроек вашего ресивера."
+
+#, fuzzy
+msgid "Backup your running Receiver image to HDD or USB."
+msgstr ""
+"\n"
+"Бэкап настроек вашего ресивера."
 
 msgid "Bahamas"
 msgstr ""
@@ -3798,6 +3738,12 @@ msgstr "Редактировать сервер DNS вашего ресивер�
 msgid "Edit the network configuration of your receiver.\n"
 msgstr "Редактировать конфигурацию сети  вашего ресивера.\n"
 
+#, fuzzy
+msgid "Edit the update source address."
+msgstr ""
+"\n"
+"Редактировать адрес источника обновления."
+
 msgid "Edit timer"
 msgstr ""
 
@@ -3805,7 +3751,7 @@ msgid "Edit title"
 msgstr "Редактировать заголовок"
 
 #, fuzzy
-msgid "Edit update source url."
+msgid "Edit update source url"
 msgstr "Изменить URL-адрес источника обновления"
 
 msgid "Education/Science/..."
@@ -4571,6 +4517,12 @@ msgid "Flash Online"
 msgstr ""
 
 #, fuzzy
+msgid "Flash on the fly your your Receiver software."
+msgstr ""
+"\n"
+"Онлайн обновление софта вашего ресивера."
+
+#, fuzzy
 msgid "Flashed: "
 msgstr "Прошивка не удалась"
 
@@ -4876,9 +4828,6 @@ msgstr "Греческий"
 
 msgid "Greek"
 msgstr "Греческий"
-
-msgid "Greek (Modern)"
-msgstr ""
 
 #, fuzzy
 msgid "Green"
@@ -5212,13 +5161,16 @@ msgstr ""
 msgid "Icons"
 msgstr "Иконка"
 
+msgid "If disabled, underline characters in file and directory names are not shown and are replaced with spaces."
+msgstr ""
+
 msgid "If editing a file, can you set the cursor start position at end or begin of the line."
 msgstr ""
 
 msgid "If enabled, AIT data is included in recordings."
 msgstr ""
 
-msgid "If enabled, bookmarks will be updated with the new location when you move or copy a recording.."
+msgid "If enabled, bookmarks will be updated with the new location when you move or copy a recording."
 msgstr ""
 
 msgid "If enabled, display shows 12 chars instead 8, but in latin-1/translit only."
@@ -5451,9 +5403,6 @@ msgstr "Инсталлировать список каналов"
 
 msgid "Install extensions"
 msgstr ""
-
-msgid "Install extensions."
-msgstr "Установить дополнения."
 
 #, fuzzy
 msgid "Install lcd picons on"
@@ -8609,6 +8558,24 @@ msgstr "Перезапустить сеть"
 msgid "Restore system settings"
 msgstr "Восстановить системные настройки"
 
+#, fuzzy
+msgid "Restore your Receiver settings."
+msgstr ""
+"\n"
+"Восстановить настройки вашего ресивера."
+
+#, fuzzy
+msgid "Restore your Receiver with a new firmware."
+msgstr ""
+"\n"
+"Восстановить ваш ресивер с новой прошивкой."
+
+#, fuzzy
+msgid "Restore your backups by date."
+msgstr ""
+"\n"
+"Восстановить резервные копии по дате."
+
 msgid "Restoring..."
 msgstr "Востановление..."
 
@@ -8990,6 +8957,12 @@ msgstr "Ошибка сканирования!"
 
 msgid "Scan files..."
 msgstr "Сканировать файлы..."
+
+#, fuzzy
+msgid "Scan for local extensions and install them."
+msgstr ""
+"\n"
+"Сканирование и установка локальных дополнений."
 
 #, fuzzy
 msgid "Scan options"
@@ -9394,7 +9367,7 @@ msgid "Select update source"
 msgstr "Выбор источника обновления"
 
 #, fuzzy
-msgid "Select update source to edit."
+msgid "Select update source to edit"
 msgstr "Выбор источника обновления для редактирования."
 
 msgid "Select video input with up/down buttons"
@@ -9417,6 +9390,15 @@ msgstr "Выберите провайдера и нажмите ОК для ск
 #, fuzzy
 msgid "Select your Skin"
 msgstr "Выбрать скин"
+
+#, fuzzy
+msgid ""
+"Select your backup device.\n"
+"Current device: "
+msgstr ""
+"\n"
+"Выберите устройство для резервного копирования.\n"
+"Текущее устройство: "
 
 msgid "Select your country. If not available select 'all'."
 msgstr ""
@@ -10034,6 +10016,10 @@ msgstr "Браузер плагинов"
 
 msgid "Show two lines per entry"
 msgstr ""
+
+#, fuzzy
+msgid "Show underline characters in filenames"
+msgstr "Ограничить набор символов в именах записей"
 
 #, fuzzy
 msgid "Show unknown extension as text"
@@ -12915,6 +12901,9 @@ msgstr "Да, вернуться к списку записей"
 msgid "Yesterday"
 msgstr "Вчера"
 
+msgid "You PIN code is 0000. This is the default PIN code and it disables parental control!\n"
+msgstr ""
+
 #, fuzzy, python-format
 msgid ""
 "You already have a bootlogo installed,\n"
@@ -13074,9 +13063,6 @@ msgid ""
 "You need to plug-in your USB-flash drive with your image to restore.\n"
 "Power on your GigaBlue and you can flash your backup image.\n"
 "After flashing you can restore your settings."
-msgstr ""
-
-msgid "Your PIN code is 0000. This is the default PIN code and it disable parental control!\n"
 msgstr ""
 
 msgid "Your Receiver isn't connected to the internet properly. Please check it and try again."

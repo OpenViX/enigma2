@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-13 22:33+0200\n"
+"POT-Creation-Date: 2019-11-17 17:48+0100\n"
 "PO-Revision-Date: 2013-10-20 19:13-0300\n"
 "Last-Translator: Diogo <pingflood@gmail.com>\n"
 "Language-Team: Traduzido por Frank Viana <franksrviana@gmail.com>\n"
@@ -29,13 +29,6 @@ msgstr "Favoritos"
 
 msgid ""
 "\n"
-"Advanced options and settings."
-msgstr ""
-"\n"
-"Configurações e opções avançadas."
-
-msgid ""
-"\n"
 "After pressing OK, please wait!"
 msgstr ""
 "\n"
@@ -44,40 +37,8 @@ msgstr ""
 #, fuzzy
 msgid ""
 "\n"
-"Backup your Receiver settings."
-msgstr ""
-"\n"
-"Faça um backup das configurações."
-
-#, fuzzy
-msgid ""
-"\n"
-"Backup your running Receiver image to HDD or USB."
-msgstr ""
-"\n"
-"Faça um backup das configurações."
-
-#, fuzzy
-msgid ""
-"\n"
 "Conflict detection disabled!"
 msgstr "não foi possível remover"
-
-#, fuzzy
-msgid ""
-"\n"
-"Edit the update source address."
-msgstr ""
-"\n"
-"Editar o endereço do repositório de atualizações."
-
-#, fuzzy
-msgid ""
-"\n"
-"Flash on the fly your your Receiver software."
-msgstr ""
-"\n"
-"Atualização online do software do receptor."
 
 msgid ""
 "\n"
@@ -97,45 +58,6 @@ msgid ""
 "\n"
 "Recording in progress."
 msgstr "Gravação em andamento"
-
-#, fuzzy
-msgid ""
-"\n"
-"Restore your Receiver settings."
-msgstr ""
-"\n"
-"Restaurar as configurações do receptor."
-
-#, fuzzy
-msgid ""
-"\n"
-"Restore your Receiver with a new firmware."
-msgstr ""
-"\n"
-"Restaurar o receptor com um firmware novo."
-
-msgid ""
-"\n"
-"Restore your backups by date."
-msgstr ""
-"\n"
-"Restaurar os backups por data."
-
-msgid ""
-"\n"
-"Scan for local extensions and install them."
-msgstr ""
-"\n"
-"Buscar e instalar extensões locais."
-
-msgid ""
-"\n"
-"Select your backup device.\n"
-"Current device: "
-msgstr ""
-"\n"
-"Selecione o dispositivo para backup.\n"
-"Dispositivo atual: "
 
 #, python-format
 msgid ""
@@ -1039,6 +961,12 @@ msgstr "Opções avançadas"
 msgid "Advanced options"
 msgstr "Opções avançadas"
 
+#, fuzzy
+msgid "Advanced options and settings."
+msgstr ""
+"\n"
+"Configurações e opções avançadas."
+
 msgid "Advanced restore"
 msgstr "Restauração avançada"
 
@@ -1569,6 +1497,18 @@ msgstr "Backup em andamento..."
 
 msgid "Backup system settings"
 msgstr "Salvar configurações do sistema"
+
+#, fuzzy
+msgid "Backup your Receiver settings."
+msgstr ""
+"\n"
+"Faça um backup das configurações."
+
+#, fuzzy
+msgid "Backup your running Receiver image to HDD or USB."
+msgstr ""
+"\n"
+"Faça um backup das configurações."
 
 msgid "Bahamas"
 msgstr ""
@@ -3773,6 +3713,12 @@ msgstr "Edita a configuração do servidor DNS.\n"
 msgid "Edit the network configuration of your receiver.\n"
 msgstr "Edita a configuração de rede do receptor.\n"
 
+#, fuzzy
+msgid "Edit the update source address."
+msgstr ""
+"\n"
+"Editar o endereço do repositório de atualizações."
+
 msgid "Edit timer"
 msgstr ""
 
@@ -3780,7 +3726,7 @@ msgid "Edit title"
 msgstr "Editar título"
 
 #, fuzzy
-msgid "Edit update source url."
+msgid "Edit update source url"
 msgstr "Editar URL da fonte de atualização."
 
 msgid "Education/Science/..."
@@ -4544,6 +4490,12 @@ msgid "Flash Online"
 msgstr ""
 
 #, fuzzy
+msgid "Flash on the fly your your Receiver software."
+msgstr ""
+"\n"
+"Atualização online do software do receptor."
+
+#, fuzzy
 msgid "Flashed: "
 msgstr "A gravação falhou"
 
@@ -4849,9 +4801,6 @@ msgstr "Grego"
 
 msgid "Greek"
 msgstr "Grego"
-
-msgid "Greek (Modern)"
-msgstr ""
 
 #, fuzzy
 msgid "Green"
@@ -5186,13 +5135,16 @@ msgstr ""
 msgid "Icons"
 msgstr "Ícones"
 
+msgid "If disabled, underline characters in file and directory names are not shown and are replaced with spaces."
+msgstr ""
+
 msgid "If editing a file, can you set the cursor start position at end or begin of the line."
 msgstr ""
 
 msgid "If enabled, AIT data is included in recordings."
 msgstr ""
 
-msgid "If enabled, bookmarks will be updated with the new location when you move or copy a recording.."
+msgid "If enabled, bookmarks will be updated with the new location when you move or copy a recording."
 msgstr ""
 
 msgid "If enabled, display shows 12 chars instead 8, but in latin-1/translit only."
@@ -5423,9 +5375,6 @@ msgstr "Instalar lista de canais"
 
 msgid "Install extensions"
 msgstr ""
-
-msgid "Install extensions."
-msgstr "Instalar extensões."
 
 #, fuzzy
 msgid "Install lcd picons on"
@@ -8586,6 +8535,24 @@ msgstr "Restauração em progresso"
 msgid "Restore system settings"
 msgstr "Restaurar configurações do sistema"
 
+#, fuzzy
+msgid "Restore your Receiver settings."
+msgstr ""
+"\n"
+"Restaurar as configurações do receptor."
+
+#, fuzzy
+msgid "Restore your Receiver with a new firmware."
+msgstr ""
+"\n"
+"Restaurar o receptor com um firmware novo."
+
+#, fuzzy
+msgid "Restore your backups by date."
+msgstr ""
+"\n"
+"Restaurar os backups por data."
+
 msgid "Restoring..."
 msgstr "Restaurando..."
 
@@ -8964,6 +8931,12 @@ msgstr "A busca falhou!"
 
 msgid "Scan files..."
 msgstr "Buscar arquivos"
+
+#, fuzzy
+msgid "Scan for local extensions and install them."
+msgstr ""
+"\n"
+"Buscar e instalar extensões locais."
 
 #, fuzzy
 msgid "Scan options"
@@ -9366,7 +9339,7 @@ msgid "Select update source"
 msgstr "Servidores de atualizações"
 
 #, fuzzy
-msgid "Select update source to edit."
+msgid "Select update source to edit"
 msgstr "Selecione a fonte de atualizações para editar"
 
 msgid "Select video input with up/down buttons"
@@ -9389,6 +9362,15 @@ msgstr "Selecione a operadora e pressione OK para buscar."
 #, fuzzy
 msgid "Select your Skin"
 msgstr "Selecione um tema"
+
+#, fuzzy
+msgid ""
+"Select your backup device.\n"
+"Current device: "
+msgstr ""
+"\n"
+"Selecione o dispositivo para backup.\n"
+"Dispositivo atual: "
 
 msgid "Select your country. If not available select 'all'."
 msgstr ""
@@ -10007,6 +9989,10 @@ msgstr "Plugins"
 
 msgid "Show two lines per entry"
 msgstr ""
+
+#, fuzzy
+msgid "Show underline characters in filenames"
+msgstr "Limite de caracteres para o nome das gravações"
 
 #, fuzzy
 msgid "Show unknown extension as text"
@@ -12890,6 +12876,9 @@ msgstr "Sim, e voltar à lista de vídeos"
 msgid "Yesterday"
 msgstr "Ontem"
 
+msgid "You PIN code is 0000. This is the default PIN code and it disables parental control!\n"
+msgstr ""
+
 #, fuzzy, python-format
 msgid ""
 "You already have a bootlogo installed,\n"
@@ -13049,9 +13038,6 @@ msgid ""
 "You need to plug-in your USB-flash drive with your image to restore.\n"
 "Power on your GigaBlue and you can flash your backup image.\n"
 "After flashing you can restore your settings."
-msgstr ""
-
-msgid "Your PIN code is 0000. This is the default PIN code and it disable parental control!\n"
 msgstr ""
 
 msgid "Your Receiver isn't connected to the internet properly. Please check it and try again."

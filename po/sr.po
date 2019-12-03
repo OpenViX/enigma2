@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-13 22:33+0200\n"
+"POT-Creation-Date: 2019-11-17 17:48+0100\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -31,51 +31,15 @@ msgstr ""
 #
 msgid ""
 "\n"
-"Advanced options and settings."
-msgstr ""
-"\n"
-"Napredne opcije i podešavanja."
-
-#
-msgid ""
-"\n"
 "After pressing OK, please wait!"
 msgstr ""
 "\n"
 "Posle stiskanja OK,molim pričekajte"
 
-#
-#, fuzzy
-msgid ""
-"\n"
-"Backup your Receiver settings."
-msgstr "Snimanje sistemskih postavki"
-
-msgid ""
-"\n"
-"Backup your running Receiver image to HDD or USB."
-msgstr ""
-
 msgid ""
 "\n"
 "Conflict detection disabled!"
 msgstr ""
-
-#
-#, fuzzy
-msgid ""
-"\n"
-"Edit the update source address."
-msgstr ""
-"\n"
-"Uredi poboljšanu izvornu adresu"
-
-#
-#, fuzzy
-msgid ""
-"\n"
-"Flash on the fly your your Receiver software."
-msgstr "Upravljanje softverom vašeg prijemnika"
 
 #
 msgid ""
@@ -98,44 +62,6 @@ msgid ""
 "\n"
 "Recording in progress."
 msgstr "Putanje snimanja"
-
-#
-#, fuzzy
-msgid ""
-"\n"
-"Restore your Receiver settings."
-msgstr "Vratite sistemske postavke"
-
-msgid ""
-"\n"
-"Restore your Receiver with a new firmware."
-msgstr ""
-
-#
-msgid ""
-"\n"
-"Restore your backups by date."
-msgstr ""
-"\n"
-"Vrati svoje snimljene kopije po datumu"
-
-#
-msgid ""
-"\n"
-"Scan for local extensions and install them."
-msgstr ""
-"\n"
-"Traži lokalna proširenja i instaliraj ih. "
-
-#
-msgid ""
-"\n"
-"Select your backup device.\n"
-"Current device: "
-msgstr ""
-"\n"
-"Izaberi svoj rezervni uredjaj.\n"
-"Aktuelni uređaj:"
 
 #, python-format
 msgid ""
@@ -1170,6 +1096,13 @@ msgid "Advanced options"
 msgstr "Napredne opcije"
 
 #
+#, fuzzy
+msgid "Advanced options and settings."
+msgstr ""
+"\n"
+"Napredne opcije i podešavanja."
+
+#
 msgid "Advanced restore"
 msgstr "Napredno vraćanje"
 
@@ -1800,6 +1733,16 @@ msgstr "Bekap u toku..."
 
 #
 msgid "Backup system settings"
+msgstr "Snimanje sistemskih postavki"
+
+#
+#, fuzzy
+msgid "Backup your Receiver settings."
+msgstr "Snimanje sistemskih postavki"
+
+#
+#, fuzzy
+msgid "Backup your running Receiver image to HDD or USB."
 msgstr "Snimanje sistemskih postavki"
 
 msgid "Bahamas"
@@ -4319,6 +4262,13 @@ msgstr "Napustite konfiguraciju nejmservera"
 msgid "Edit the network configuration of your receiver.\n"
 msgstr ""
 
+#
+#, fuzzy
+msgid "Edit the update source address."
+msgstr ""
+"\n"
+"Uredi poboljšanu izvornu adresu"
+
 msgid "Edit timer"
 msgstr ""
 
@@ -4328,7 +4278,7 @@ msgstr "Urediti naslov"
 
 #
 #, fuzzy
-msgid "Edit update source url."
+msgid "Edit update source url"
 msgstr "Uredi url izvora nadogradnje."
 
 msgid "Education/Science/..."
@@ -5195,6 +5145,11 @@ msgstr ""
 
 #
 #, fuzzy
+msgid "Flash on the fly your your Receiver software."
+msgstr "Upravljanje softverom vašeg prijemnika"
+
+#
+#, fuzzy
 msgid "Flashed: "
 msgstr "Fleš nije uspeo"
 
@@ -5548,9 +5503,6 @@ msgstr "Grčki"
 #
 msgid "Greek"
 msgstr "Grčki"
-
-msgid "Greek (Modern)"
-msgstr ""
 
 #
 #, fuzzy
@@ -5921,13 +5873,16 @@ msgstr ""
 msgid "Icons"
 msgstr ""
 
+msgid "If disabled, underline characters in file and directory names are not shown and are replaced with spaces."
+msgstr ""
+
 msgid "If editing a file, can you set the cursor start position at end or begin of the line."
 msgstr ""
 
 msgid "If enabled, AIT data is included in recordings."
 msgstr ""
 
-msgid "If enabled, bookmarks will be updated with the new location when you move or copy a recording.."
+msgid "If enabled, bookmarks will be updated with the new location when you move or copy a recording."
 msgstr ""
 
 msgid "If enabled, display shows 12 chars instead 8, but in latin-1/translit only."
@@ -6185,10 +6140,6 @@ msgstr "sledeći kanal u istoriji"
 
 msgid "Install extensions"
 msgstr ""
-
-#
-msgid "Install extensions."
-msgstr "Instaliraj proširenja."
 
 #
 #, fuzzy
@@ -9910,6 +9861,23 @@ msgstr "Vratite sistemske postavke"
 
 #
 #, fuzzy
+msgid "Restore your Receiver settings."
+msgstr "Vratite sistemske postavke"
+
+#
+#, fuzzy
+msgid "Restore your Receiver with a new firmware."
+msgstr "Vratite sistemske postavke"
+
+#
+#, fuzzy
+msgid "Restore your backups by date."
+msgstr ""
+"\n"
+"Vrati svoje snimljene kopije po datumu"
+
+#
+#, fuzzy
 msgid "Restoring..."
 msgstr "snimanje..."
 
@@ -10344,6 +10312,13 @@ msgstr "Greška tjunera!"
 #, fuzzy
 msgid "Scan files..."
 msgstr "Pretraži datoteke"
+
+#
+#, fuzzy
+msgid "Scan for local extensions and install them."
+msgstr ""
+"\n"
+"Traži lokalna proširenja i instaliraj ih. "
 
 #
 #, fuzzy
@@ -10816,7 +10791,7 @@ msgstr "Izaberi izvor nadodradnje za uređivanje."
 
 #
 #, fuzzy
-msgid "Select update source to edit."
+msgid "Select update source to edit"
 msgstr "Izaberi izvor nadodradnje za uređivanje."
 
 #
@@ -10845,6 +10820,16 @@ msgstr "Pritisnite OK za aktiviranje izabrane maske."
 #, fuzzy
 msgid "Select your Skin"
 msgstr "Odaberi film"
+
+#
+#, fuzzy
+msgid ""
+"Select your backup device.\n"
+"Current device: "
+msgstr ""
+"\n"
+"Izaberi svoj rezervni uredjaj.\n"
+"Aktuelni uređaj:"
 
 msgid "Select your country. If not available select 'all'."
 msgstr ""
@@ -11569,6 +11554,11 @@ msgstr "Pretraživač dodataka"
 
 msgid "Show two lines per entry"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Show underline characters in filenames"
+msgstr "Ograničeni znakovi za  imena snimljenih datoteka"
 
 #
 #, fuzzy
@@ -14847,6 +14837,9 @@ msgstr "Da,vratiti se na listu filmova"
 msgid "Yesterday"
 msgstr ""
 
+msgid "You PIN code is 0000. This is the default PIN code and it disables parental control!\n"
+msgstr ""
+
 #, python-format
 msgid ""
 "You already have a bootlogo installed,\n"
@@ -15006,9 +14999,6 @@ msgid ""
 "You need to plug-in your USB-flash drive with your image to restore.\n"
 "Power on your GigaBlue and you can flash your backup image.\n"
 "After flashing you can restore your settings."
-msgstr ""
-
-msgid "Your PIN code is 0000. This is the default PIN code and it disable parental control!\n"
 msgstr ""
 
 msgid "Your Receiver isn't connected to the internet properly. Please check it and try again."
