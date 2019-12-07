@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-17 17:48+0100\n"
+"POT-Creation-Date: 2019-12-08 00:14+0100\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -851,6 +851,21 @@ msgid "Abort"
 msgstr ""
 
 #
+#, fuzzy
+msgid "Abort alternatives edit"
+msgstr "abortar l'edició d'alternatives"
+
+#
+#, fuzzy
+msgid "Abort bouquet edit"
+msgstr "cancel·lar l'edició de llistes"
+
+#
+#, fuzzy
+msgid "Abort favourites edit"
+msgstr "cancel·lar l'edició de preferits"
+
+#
 msgid "About"
 msgstr "Quant a"
 
@@ -951,8 +966,23 @@ msgstr "Afegir un nou títol"
 
 #
 #, fuzzy
+msgid "Add alternatives"
+msgstr "afegir alternatives"
+
+#
+#, fuzzy
 msgid "Add bookmark"
 msgstr "Afegir una marca"
+
+#
+#, fuzzy
+msgid "Add bouquet"
+msgstr "afegir llista"
+
+#
+#, fuzzy
+msgid "Add bouquet to parental protection"
+msgstr "afegir a la protecció parental"
 
 #
 #, fuzzy
@@ -973,6 +1003,11 @@ msgstr "afegir el fitxer a la llista"
 #, fuzzy
 msgid "Add files to playlist"
 msgstr "afegir fitxers a la llista"
+
+#
+#, fuzzy
+msgid "Add marker"
+msgstr "afegir marcador"
 
 #
 #, fuzzy
@@ -1016,6 +1051,21 @@ msgid "Add service"
 msgstr "Canal"
 
 #
+#, fuzzy
+msgid "Add service to bouquet"
+msgstr "afegir el canal a la llista"
+
+#
+#, fuzzy
+msgid "Add service to favourites"
+msgstr "afegir el canal als preferits"
+
+#
+#, fuzzy
+msgid "Add services to this bouquet?"
+msgstr "afegir el canal a la llista"
+
+#
 msgid "Add timer"
 msgstr "Gravar"
 
@@ -1030,6 +1080,11 @@ msgstr "Afegir a la llista"
 #
 msgid "Add to favourites"
 msgstr "Afegir als preferits"
+
+#
+#, fuzzy
+msgid "Add to parental protection"
+msgstr "afegir a la protecció parental"
 
 msgid "Add/remove change timer for current event"
 msgstr ""
@@ -1283,7 +1338,7 @@ msgstr ""
 msgid "Arabic"
 msgstr "Àrab"
 
-msgid "Are you sure to purge all deleted userbouquets?"
+msgid "Are you sure to purge all deleted user bouquets?"
 msgstr ""
 
 #, python-format
@@ -2031,6 +2086,9 @@ msgstr "Capacitat: "
 msgid "Capacity: "
 msgstr "Capacitat: "
 
+msgid "Card"
+msgstr ""
+
 msgid "Cascade PiP"
 msgstr ""
 
@@ -2402,6 +2460,9 @@ msgstr ""
 msgid "Comoros"
 msgstr ""
 
+msgid "Compact flash"
+msgstr ""
+
 #
 msgid "Complete"
 msgstr "Complet"
@@ -2423,17 +2484,17 @@ msgstr ""
 
 #
 #, fuzzy
+msgid "Configuration"
+msgstr "Mode configuració"
+
+#
+#, fuzzy
 msgid "Configuration mode"
 msgstr "Mode configuració"
 
 #
 #, fuzzy, python-format
 msgid "Configuration mode: %s"
-msgstr "Mode configuració"
-
-#
-#, fuzzy
-msgid "Configuration..."
 msgstr "Mode configuració"
 
 #
@@ -2931,6 +2992,11 @@ msgstr ""
 
 msgid "Copy folder"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Copy to bouquets"
+msgstr "copiar a les llistes"
 
 msgid "Costa Rica"
 msgstr ""
@@ -3630,6 +3696,11 @@ msgstr ""
 msgid "Disable current event but not coming events"
 msgstr "Aturar el programa actual però no els següents"
 
+#
+#, fuzzy
+msgid "Disable move mode"
+msgstr "desactivar mode moviment"
+
 msgid "Disable timer"
 msgstr ""
 
@@ -4066,6 +4137,11 @@ msgid "Edit Title"
 msgstr "Títol"
 
 #
+#, fuzzy
+msgid "Edit alternatives"
+msgstr "editar alternatives"
+
+#
 msgid "Edit chapters of current title"
 msgstr ""
 
@@ -4185,6 +4261,11 @@ msgstr "Activar control parental"
 
 #
 #, fuzzy
+msgid "Enable bouquet edit"
+msgstr "activar l'edició de la llista"
+
+#
+#, fuzzy
 msgid "Enable bouquet selection in multi-EPG"
 msgstr "activar l'edició de la llista"
 
@@ -4196,6 +4277,11 @@ msgstr "Activat"
 msgid "Enable fallback remote receiver"
 msgstr ""
 
+#
+#, fuzzy
+msgid "Enable favourites edit"
+msgstr "activar l'edició dels preferits"
+
 msgid "Enable freesat EPG"
 msgstr ""
 
@@ -4204,6 +4290,11 @@ msgstr ""
 
 msgid "Enable infobar fade-out"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Enable move mode"
+msgstr "activar mode moviment"
 
 #
 msgid "Enable multiple bouquets"
@@ -4283,6 +4374,21 @@ msgstr ""
 #
 msgid "Encryption:"
 msgstr ""
+
+#
+#, fuzzy
+msgid "End alternatives edit"
+msgstr "fi de l'edició d'alternatives"
+
+#
+#, fuzzy
+msgid "End bouquet edit"
+msgstr "fi de l'edició de llistes"
+
+#
+#, fuzzy
+msgid "End favourites edit"
+msgstr "fi de l'edició de preferits"
 
 #
 msgid "End time"
@@ -4574,9 +4680,6 @@ msgstr ""
 #
 msgid "Exit the wizard"
 msgstr "Sortir de l'assistent"
-
-msgid "Exit/OK"
-msgstr ""
 
 #
 msgid "Expert"
@@ -4885,6 +4988,11 @@ msgstr ""
 
 msgid "Final scroll delay"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Find currently playing service"
+msgstr "Protegir canals"
 
 msgid "Fine movement"
 msgstr ""
@@ -5430,6 +5538,11 @@ msgstr ""
 
 msgid "Handle wakeup from TV"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Hard disk"
+msgstr "Disc dur"
 
 #
 #, fuzzy
@@ -6542,6 +6655,9 @@ msgstr ""
 msgid "MIME Version"
 msgstr "Inversió"
 
+msgid "MMC card"
+msgstr ""
+
 #
 msgid "MORE"
 msgstr "MÉS"
@@ -7268,6 +7384,16 @@ msgstr "Configuració del sintonitzador"
 #, fuzzy
 msgid "Network configuration..."
 msgstr "Configuració del sintonitzador"
+
+#
+#, fuzzy
+msgid "Network mount"
+msgstr "Escanejar xarxa"
+
+#
+#, fuzzy, python-format
+msgid "Network mount %s"
+msgstr "Escanejar xarxa"
 
 msgid "Network name (SSID)"
 msgstr ""
@@ -8183,6 +8309,11 @@ msgstr ""
 msgid "Play DVDs"
 msgstr ""
 
+#
+#, fuzzy
+msgid "Play as Picture in Picture"
+msgstr "Activar PiP"
+
 msgid "Play audio-CD..."
 msgstr ""
 
@@ -8203,6 +8334,9 @@ msgid "Play from next mark or playlist entry"
 msgstr "esborrar entrada de la llista"
 
 msgid "Play from previous mark or playlist entry"
+msgstr ""
+
+msgid "Play in main window"
 msgstr ""
 
 msgid "Play music..."
@@ -8963,6 +9097,11 @@ msgstr "Proveïdors"
 msgid "Puerto Rico"
 msgstr ""
 
+#
+#, fuzzy
+msgid "Purge deleted user bouquets"
+msgstr "Activar llistes múltiples"
+
 msgid "Put TV in standby"
 msgstr ""
 
@@ -9020,6 +9159,11 @@ msgstr "RGB"
 #
 msgid "Radio"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Ram disk"
+msgstr "Disc dur"
 
 #
 msgid "Random"
@@ -9275,13 +9419,33 @@ msgstr ""
 
 #
 #, fuzzy
+msgid "Remove all alternatives"
+msgstr "esborrar totes les alternatives"
+
+#
+#, fuzzy
 msgid "Remove all logfiles"
 msgstr "esborrar totes les alternatives"
 
 #
 #, fuzzy
+msgid "Remove all new found flags"
+msgstr "esborrar totes les marques trobades"
+
+#
+#, fuzzy
 msgid "Remove bookmark"
 msgstr "Esborrar una marca"
+
+#
+#, fuzzy
+msgid "Remove bouquet from parental protection"
+msgstr "esborrar de la protecció parental"
+
+#
+#, fuzzy
+msgid "Remove cable services"
+msgstr "Protegir canals"
 
 msgid "Remove completed timers after (days)"
 msgstr ""
@@ -9298,8 +9462,23 @@ msgstr "Esborra el títol seleccionat"
 msgid "Remove directory"
 msgstr "Ha fallat la sintonització!"
 
+#
+#, fuzzy
+msgid "Remove entry"
+msgstr "eliminar entrada"
+
+#
+#, fuzzy
+msgid "Remove from parental protection"
+msgstr "esborrar de la protecció parental"
+
 msgid "Remove items from trash can after (days)"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Remove new found flag"
+msgstr "esborrar nova marca trobada"
 
 #
 msgid "Remove plugins"
@@ -9307,6 +9486,16 @@ msgstr "Esborrar plugins"
 
 msgid "Remove selected folder from bookmarks"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Remove selected satellite"
+msgstr "Esborra el títol seleccionat"
+
+#
+#, fuzzy
+msgid "Remove terrestrial services"
+msgstr "Protegir canals"
 
 msgid "Remove texts for the hearing impaired from external subtitles (instrumental music or environmental sounds, e.g., when a doorbell rings or a gun shot is heard)."
 msgstr ""
@@ -9347,6 +9536,11 @@ msgstr "Esborra títol"
 #
 msgid "Rename"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Rename entry"
+msgstr "eliminar entrada"
 
 #
 #, fuzzy
@@ -9489,6 +9683,11 @@ msgstr "Restaurar"
 #
 msgid "Restore backups"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Restore deleted user bouquets"
+msgstr "Activar llistes múltiples"
 
 #
 #, fuzzy
@@ -10528,6 +10727,11 @@ msgid "Service ID"
 msgstr "Canal"
 
 #
+#, fuzzy
+msgid "Service belongs to a parental protected bouquet"
+msgstr "S'ha afegit el canal a la llista seleccionada."
+
+#
 msgid "Service has been added to the favourites."
 msgstr "S'ha afegit el canal als preferits."
 
@@ -10628,6 +10832,11 @@ msgstr ""
 
 msgid "Set alternative fallback tuners for DVB-T/C or ATSC"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Set as startup service"
+msgstr "Intercanviar canals"
 
 msgid "Set blocktimes by weekday"
 msgstr ""
@@ -10852,6 +11061,11 @@ msgstr ""
 
 msgid "Show Weather Widget"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Show alternatives"
+msgstr "mostrar alternatives"
 
 msgid "Show animation while busy"
 msgstr ""
@@ -11128,6 +11342,11 @@ msgstr "Reproductor de ràdio..."
 #, fuzzy
 msgid "Show the plugin browser.."
 msgstr "Plugin navegador"
+
+#
+#, fuzzy
+msgid "Show transponder info"
+msgstr "mostrar info del transponedor"
 
 msgid "Show two lines per entry"
 msgstr ""
@@ -11818,6 +12037,11 @@ msgstr "cancel·lar pausa"
 msgid "Stop timeshift?"
 msgstr "Cancel·lar la pausa?"
 
+#
+#, fuzzy
+msgid "Stop using as startup service"
+msgstr "Intercanviar canals"
+
 msgid "Stopped"
 msgstr ""
 
@@ -12161,6 +12385,9 @@ msgstr ""
 
 #
 msgid "Tags"
+msgstr ""
+
+msgid "Taiwan"
 msgstr ""
 
 msgid "Tajikistan"
@@ -13136,6 +13363,11 @@ msgstr ""
 #
 #, fuzzy
 msgid "USB Stick"
+msgstr "Memòria USB"
+
+#
+#, fuzzy
+msgid "USB stick"
 msgstr "Memòria USB"
 
 msgid "Uganda"
@@ -14594,9 +14826,6 @@ msgstr ""
 msgid "[Image Info]\n"
 msgstr ""
 
-msgid "[a]"
-msgstr ""
-
 #
 msgid "[alternative edit]"
 msgstr "[edició alternatives]"
@@ -14622,18 +14851,6 @@ msgid "a gui to assign services/providers/caids to common interface modules"
 msgstr ""
 
 #
-msgid "abort alternatives edit"
-msgstr "abortar l'edició d'alternatives"
-
-#
-msgid "abort bouquet edit"
-msgstr "cancel·lar l'edició de llistes"
-
-#
-msgid "abort favourites edit"
-msgstr "cancel·lar l'edició de preferits"
-
-#
 msgid "about to start"
 msgstr "per a començar"
 
@@ -14651,35 +14868,6 @@ msgstr ""
 
 msgid "actual time only"
 msgstr ""
-
-#
-msgid "add alternatives"
-msgstr "afegir alternatives"
-
-#
-msgid "add bouquet"
-msgstr "afegir llista"
-
-#
-#, fuzzy
-msgid "add bouquet to parental protection"
-msgstr "afegir a la protecció parental"
-
-#
-msgid "add marker"
-msgstr "afegir marcador"
-
-#
-msgid "add service to bouquet"
-msgstr "afegir el canal a la llista"
-
-#
-msgid "add service to favourites"
-msgstr "afegir el canal als preferits"
-
-#
-msgid "add to parental protection"
-msgstr "afegir a la protecció parental"
 
 msgid "adult movie/drama"
 msgstr ""
@@ -14917,10 +15105,6 @@ msgstr ""
 msgid "copy folder"
 msgstr ""
 
-#
-msgid "copy to bouquets"
-msgstr "copiar a les llistes"
-
 msgid "create symlink ..."
 msgstr ""
 
@@ -14954,10 +15138,6 @@ msgstr "desactivat"
 #, fuzzy
 msgid "disable intro screen"
 msgstr "Desactivar PiP"
-
-#
-msgid "disable move mode"
-msgstr "desactivar mode moviment"
 
 #
 msgid "disabled"
@@ -14996,10 +15176,6 @@ msgstr ""
 msgid "economics/social advisory"
 msgstr ""
 
-#
-msgid "edit alternatives"
-msgstr "editar alternatives"
-
 msgid "education/science/factual topics (general)"
 msgstr ""
 
@@ -15015,40 +15191,16 @@ msgstr "buit"
 msgid "enable"
 msgstr "activat"
 
-#
-msgid "enable bouquet edit"
-msgstr "activar l'edició de la llista"
-
-#
-msgid "enable favourite edit"
-msgstr "activar l'edició dels preferits"
-
 msgid "enable intro screen"
 msgstr ""
-
-#
-msgid "enable move mode"
-msgstr "activar mode moviment"
 
 #
 msgid "enabled"
 msgstr "activat"
 
 #
-msgid "end alternatives edit"
-msgstr "fi de l'edició d'alternatives"
-
-#
-msgid "end bouquet edit"
-msgstr "fi de l'edició de llistes"
-
-#
 msgid "end cut here"
 msgstr "acabar el tall aquí"
-
-#
-msgid "end favourites edit"
-msgstr "fi de l'edició de preferits"
 
 msgid "enigma2 and network"
 msgstr ""
@@ -15135,9 +15287,6 @@ msgid "filename"
 msgstr ""
 
 msgid "film/cinema"
-msgstr ""
-
-msgid "find currently played service"
 msgstr ""
 
 msgid "fine arts"
@@ -15607,12 +15756,6 @@ msgstr ""
 msgid "picons"
 msgstr ""
 
-msgid "play as picture in picture"
-msgstr ""
-
-msgid "play in mainwindow"
-msgstr ""
-
 #
 msgid "please press OK when ready"
 msgstr "prem OK quan estiguis a punt"
@@ -15650,9 +15793,6 @@ msgstr ""
 msgid "pre-school children's program"
 msgstr ""
 
-msgid "purge deleted userbouquets"
-msgstr ""
-
 msgid "receiver software because updates are available."
 msgstr ""
 
@@ -15684,63 +15824,18 @@ msgid "remove after this position"
 msgstr "esborra després d'aquesta posició"
 
 #
-msgid "remove all alternatives"
-msgstr "esborrar totes les alternatives"
-
-#
-msgid "remove all new found flags"
-msgstr "esborrar totes les marques trobades"
-
-#
 msgid "remove before this position"
 msgstr "esborra abans d'aquesta posició"
 
 #
-#, fuzzy
-msgid "remove bouquet from parental protection"
-msgstr "esborrar de la protecció parental"
-
-#
-#, fuzzy
-msgid "remove cable services"
-msgstr "Protegir canals"
-
-#
-msgid "remove entry"
-msgstr "eliminar entrada"
-
-#
-msgid "remove from parental protection"
-msgstr "esborrar de la protecció parental"
-
-#
-msgid "remove new found flag"
-msgstr "esborrar nova marca trobada"
-
-#
-msgid "remove selected satellite"
-msgstr ""
-
-#
-#, fuzzy
-msgid "remove terrestrial services"
-msgstr "Protegir canals"
-
-#
 msgid "remove this mark"
 msgstr "esborrar aquesta marca"
-
-msgid "rename entry"
-msgstr ""
 
 #
 msgid "repeated"
 msgstr "repetit"
 
 msgid "reserved for future use"
-msgstr ""
-
-msgid "restore deleted userbouquets"
 msgstr ""
 
 msgid "reverse by date"
@@ -15799,16 +15894,8 @@ msgstr ""
 
 #
 #, fuzzy
-msgid "service is in bouquet parental protection"
-msgstr "esborrar de la protecció parental"
-
-#
-#, fuzzy
 msgid "service off-air"
 msgstr "Mostrar el moviment del motor"
-
-msgid "set as startup service"
-msgstr ""
 
 #
 #, fuzzy
@@ -15823,10 +15910,6 @@ msgid "show all tags"
 msgstr ""
 
 #
-msgid "show alternatives"
-msgstr "mostrar alternatives"
-
-#
 msgid "show event details"
 msgstr "mostrar detalls del programa"
 
@@ -15835,10 +15918,6 @@ msgstr ""
 
 msgid "show softwaremanager on blue button"
 msgstr ""
-
-#
-msgid "show transponder info"
-msgstr "mostrar info del transponedor"
 
 msgid "show/game show (general)"
 msgstr ""
@@ -15932,9 +16011,6 @@ msgstr ""
 #
 msgid "stereo"
 msgstr "stèreo"
-
-msgid "stop using as startup service"
-msgstr ""
 
 msgid "successful"
 msgstr ""

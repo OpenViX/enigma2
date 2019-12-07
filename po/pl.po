@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-17 17:48+0100\n"
+"POT-Creation-Date: 2019-12-08 00:14+0100\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -889,6 +889,21 @@ msgid "Abort"
 msgstr "Przerwij"
 
 #
+#, fuzzy
+msgid "Abort alternatives edit"
+msgstr "Przerwij edycję alternatywnych"
+
+#
+#, fuzzy
+msgid "Abort bouquet edit"
+msgstr "Przerwij edycję bukietów"
+
+#
+#, fuzzy
+msgid "Abort favourites edit"
+msgstr "Przerwij edycję ulubionych"
+
+#
 msgid "About"
 msgstr "O tunerze..."
 
@@ -987,8 +1002,23 @@ msgid "Add a new title"
 msgstr "Dodaj nowy tytuł"
 
 #
+#, fuzzy
+msgid "Add alternatives"
+msgstr "Dodaj alternatywne kanały"
+
+#
 msgid "Add bookmark"
 msgstr "Dodaj zakładkę"
+
+#
+#, fuzzy
+msgid "Add bouquet"
+msgstr "Dodaj bukiet"
+
+#
+#, fuzzy
+msgid "Add bouquet to parental protection"
+msgstr "Dodaj bukiet do kontroli rodzicielskiej"
 
 #
 #, fuzzy
@@ -1006,6 +1036,11 @@ msgstr "Dodaj plik do playlisty"
 #
 msgid "Add files to playlist"
 msgstr "Dodaj pliki do playlisty"
+
+#
+#, fuzzy
+msgid "Add marker"
+msgstr "Dodaj znacznik"
 
 #, fuzzy
 msgid "Add plugin to Extensions menu*"
@@ -1044,6 +1079,21 @@ msgid "Add service"
 msgstr "Dodaj kanał"
 
 #
+#, fuzzy
+msgid "Add service to bouquet"
+msgstr "Dodaj kanał do bukietu"
+
+#
+#, fuzzy
+msgid "Add service to favourites"
+msgstr "Dodaj kanał do ulubionych"
+
+#
+#, fuzzy
+msgid "Add services to this bouquet?"
+msgstr "Dodaj kanał do bukietu"
+
+#
 msgid "Add timer"
 msgstr "Dodaj timer"
 
@@ -1058,6 +1108,11 @@ msgstr "Dodaj do bukietu"
 #
 msgid "Add to favourites"
 msgstr "Dodaj do ulubionych"
+
+#
+#, fuzzy
+msgid "Add to parental protection"
+msgstr "Dodaj do kontroli rodzicielskiej"
 
 msgid "Add/remove change timer for current event"
 msgstr "Dodaj/usuń timer dla bieżącej audycji"
@@ -1329,7 +1384,7 @@ msgstr "Arabski"
 
 #
 #, fuzzy
-msgid "Are you sure to purge all deleted userbouquets?"
+msgid "Are you sure to purge all deleted user bouquets?"
 msgstr "Jesteś pewien, że chcesz usunąć wszystkie kanały tv kablowej?"
 
 #
@@ -2117,6 +2172,9 @@ msgstr "Pojemność:"
 msgid "Capacity: "
 msgstr "Pojemność:"
 
+msgid "Card"
+msgstr ""
+
 msgid "Cascade PiP"
 msgstr ""
 
@@ -2497,6 +2555,9 @@ msgstr "Komunikacja"
 msgid "Comoros"
 msgstr ""
 
+msgid "Compact flash"
+msgstr ""
+
 #
 msgid "Complete"
 msgstr "Zakończ"
@@ -2518,16 +2579,17 @@ msgstr "Pokaż szczegóły"
 msgid "Config resolution of pictures"
 msgstr "Rozdzielczość wyświetlanych zdjęć"
 
+#
+#, fuzzy
+msgid "Configuration"
+msgstr "Konfiguracja..."
+
 msgid "Configuration mode"
 msgstr "Tryb konfiguracji"
 
 #, python-format
 msgid "Configuration mode: %s"
 msgstr "Tryb konfiguracji: %s"
-
-#
-msgid "Configuration..."
-msgstr "Konfiguracja..."
 
 #
 #, fuzzy
@@ -3055,6 +3117,11 @@ msgstr ""
 
 msgid "Copy folder"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Copy to bouquets"
+msgstr "Kopiuj do bukietów"
 
 msgid "Costa Rica"
 msgstr ""
@@ -3768,6 +3835,11 @@ msgid "Disable current event but not coming events"
 msgstr "Zatrzymaj aktualne wydarzenie, ale nie nadchodzące"
 
 #
+#, fuzzy
+msgid "Disable move mode"
+msgstr "Wyłącz tryb przenoszenia"
+
+#
 msgid "Disable timer"
 msgstr "Wyłącz timer"
 
@@ -4224,6 +4296,11 @@ msgid "Edit Title"
 msgstr "Edytuj tytuł"
 
 #
+#, fuzzy
+msgid "Edit alternatives"
+msgstr "Edytuj alternatywne kanały"
+
+#
 msgid "Edit chapters of current title"
 msgstr "Edycja rozdziałów bieżącego tytułu"
 
@@ -4355,6 +4432,11 @@ msgstr "Włącz automatyczny fast scan"
 msgid "Enable auto fast scan for %s"
 msgstr "Włącz automatyczny fast scan"
 
+#
+#, fuzzy
+msgid "Enable bouquet edit"
+msgstr "Włącz edycję bukietu"
+
 msgid "Enable bouquet selection in multi-EPG"
 msgstr "Włącz wybór bukietów w multi-EPG"
 
@@ -4367,6 +4449,11 @@ msgid "Enable fallback remote receiver"
 msgstr ""
 
 #
+#, fuzzy
+msgid "Enable favourites edit"
+msgstr "Włącz edycję ulubionych"
+
+#
 msgid "Enable freesat EPG"
 msgstr "Włącz freesat EPG"
 
@@ -4375,6 +4462,11 @@ msgstr ""
 
 msgid "Enable infobar fade-out"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Enable move mode"
+msgstr "Włącz tryb przenoszenia"
 
 #
 msgid "Enable multiple bouquets"
@@ -4461,6 +4553,21 @@ msgstr "Typ klucza szyfrującego"
 #
 msgid "Encryption:"
 msgstr "Szyfrowanie:"
+
+#
+#, fuzzy
+msgid "End alternatives edit"
+msgstr "Koniec edycji alternatywnych"
+
+#
+#, fuzzy
+msgid "End bouquet edit"
+msgstr "Koniec edycji bukietów"
+
+#
+#, fuzzy
+msgid "End favourites edit"
+msgstr "Koniec edycji ulubionych"
 
 #
 msgid "End time"
@@ -4753,11 +4860,6 @@ msgstr "Opuść konfigurację sieci"
 #
 msgid "Exit the wizard"
 msgstr "Opuść kreatora"
-
-#
-#, fuzzy
-msgid "Exit/OK"
-msgstr "Wyjście"
 
 #
 msgid "Expert"
@@ -5077,6 +5179,10 @@ msgstr "Koncowa pozycja z indeksem"
 
 msgid "Final scroll delay"
 msgstr ""
+
+#, fuzzy
+msgid "Find currently playing service"
+msgstr "Znajdź aktualnie włączony kanał"
 
 msgid "Fine movement"
 msgstr "Precyzyjne ruchy"
@@ -5641,6 +5747,11 @@ msgstr "Obsługuj komendę 'standby' z TV"
 #
 msgid "Handle wakeup from TV"
 msgstr "Obsługuj komendę 'wakeup' z TV"
+
+#
+#, fuzzy
+msgid "Hard disk"
+msgstr "Dysk twardy"
 
 #
 msgid "Hard disk setup"
@@ -6784,6 +6895,9 @@ msgstr ""
 msgid "MIME Version"
 msgstr "Inwersja"
 
+msgid "MMC card"
+msgstr ""
+
 #
 msgid "MORE"
 msgstr "Więcej"
@@ -7511,6 +7625,16 @@ msgstr "Konfiguracja sieci..."
 #
 msgid "Network configuration..."
 msgstr "Konfiguracja sieci..."
+
+#
+#, fuzzy
+msgid "Network mount"
+msgstr "Nie znaleziono sieci"
+
+#
+#, fuzzy, python-format
+msgid "Network mount %s"
+msgstr "Test sieci"
 
 msgid "Network name (SSID)"
 msgstr "Nazwa sieci (SSID)"
@@ -8466,6 +8590,11 @@ msgid "Play DVDs"
 msgstr "Odtwórz DVD"
 
 #
+#, fuzzy
+msgid "Play as Picture in Picture"
+msgstr "Odtwórz w PiP"
+
+#
 msgid "Play audio-CD..."
 msgstr "Odtwórz CD-Audio..."
 
@@ -8488,6 +8617,11 @@ msgstr "Odtwórz od następnego zaznaczenia lub pozycji playlisty"
 #
 msgid "Play from previous mark or playlist entry"
 msgstr "Odtwórz od poprzedniego zaznaczenia lub pozycji playlisty"
+
+#
+#, fuzzy
+msgid "Play in main window"
+msgstr "Odtwórz w ekranie głównym"
 
 #
 msgid "Play music..."
@@ -9293,6 +9427,11 @@ msgid "Puerto Rico"
 msgstr ""
 
 #
+#, fuzzy
+msgid "Purge deleted user bouquets"
+msgstr "Jesteś pewien, że chcesz usunąć wszystkie kanały tv kablowej?"
+
+#
 msgid "Put TV in standby"
 msgstr "Przełączaj TV w stan czuwania"
 
@@ -9349,6 +9488,11 @@ msgstr ""
 #
 msgid "Radio"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Ram disk"
+msgstr "Dysk twardy"
 
 #
 msgid "Random"
@@ -9632,12 +9776,32 @@ msgstr "Usuń wpis DNS"
 
 #
 #, fuzzy
+msgid "Remove all alternatives"
+msgstr "Usuń wszystkie alternatywne"
+
+#
+#, fuzzy
 msgid "Remove all logfiles"
 msgstr "Usuń wszystkie alternatywne"
 
 #
+#, fuzzy
+msgid "Remove all new found flags"
+msgstr "Usuń wszystkie flagi 'nowo znalezione'"
+
+#
 msgid "Remove bookmark"
 msgstr "Usuń zakładkę"
+
+#
+#, fuzzy
+msgid "Remove bouquet from parental protection"
+msgstr "Usuń bukiet z kontroli rodzicielskiej"
+
+#
+#, fuzzy
+msgid "Remove cable services"
+msgstr "Usuń kanały tv kablowej"
 
 #
 msgid "Remove completed timers after (days)"
@@ -9656,8 +9820,23 @@ msgid "Remove directory"
 msgstr "Usuń katalog"
 
 #
+#, fuzzy
+msgid "Remove entry"
+msgstr "Usuń"
+
+#
+#, fuzzy
+msgid "Remove from parental protection"
+msgstr "Usuń z kontroli rodzicielskiej"
+
+#
 msgid "Remove items from trash can after (days)"
 msgstr "Usuń pliki z 'Kosza' po (dni)"
+
+#
+#, fuzzy
+msgid "Remove new found flag"
+msgstr "Usuń flagę 'nowo znaleziony'"
 
 #
 msgid "Remove plugins"
@@ -9665,6 +9844,16 @@ msgstr "Usuń pluginy"
 
 msgid "Remove selected folder from bookmarks"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Remove selected satellite"
+msgstr "Usuń wybranego satelitę"
+
+#
+#, fuzzy
+msgid "Remove terrestrial services"
+msgstr "Usuń kanały tv naziemnej"
 
 msgid "Remove texts for the hearing impaired from external subtitles (instrumental music or environmental sounds, e.g., when a doorbell rings or a gun shot is heard)."
 msgstr ""
@@ -9702,6 +9891,10 @@ msgstr "Usuwanie tablicy partycji"
 
 #
 msgid "Rename"
+msgstr "Zmień nazwę"
+
+#, fuzzy
+msgid "Rename entry"
 msgstr "Zmień nazwę"
 
 #
@@ -9849,6 +10042,11 @@ msgstr "Przywróć"
 #
 msgid "Restore backups"
 msgstr "Przywróć backup"
+
+#
+#, fuzzy
+msgid "Restore deleted user bouquets"
+msgstr "Jesteś pewien, że chcesz usunąć wszystkie kanały tv kablowej?"
 
 #
 #, fuzzy
@@ -10923,6 +11121,11 @@ msgid "Service ID"
 msgstr "O serwisie..."
 
 #
+#, fuzzy
+msgid "Service belongs to a parental protected bouquet"
+msgstr "Kanał został dodany do wybranego bukietu."
+
+#
 msgid "Service has been added to the favourites."
 msgstr "Kanał został dodany do ulubionych."
 
@@ -11022,6 +11225,11 @@ msgstr ""
 
 msgid "Set alternative fallback tuners for DVB-T/C or ATSC"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Set as startup service"
+msgstr "Ustaw jako kanał startowy"
 
 msgid "Set blocktimes by weekday"
 msgstr ""
@@ -11251,6 +11459,11 @@ msgstr "Pokaż status WLAN"
 
 msgid "Show Weather Widget"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Show alternatives"
+msgstr "Pokaż alternatywne kanały"
 
 #
 msgid "Show animation while busy"
@@ -11541,6 +11754,11 @@ msgstr "Przejdź w tryb radio..."
 #, fuzzy
 msgid "Show the plugin browser.."
 msgstr "Przeglądarka pluginów"
+
+#
+#, fuzzy
+msgid "Show transponder info"
+msgstr "Pokaż info transpondera"
 
 msgid "Show two lines per entry"
 msgstr ""
@@ -12242,6 +12460,10 @@ msgstr "Zatrzymaj timeshift"
 msgid "Stop timeshift?"
 msgstr "Zatrzymać timeshift?"
 
+#, fuzzy
+msgid "Stop using as startup service"
+msgstr "Przestań używać jako kanał startowy"
+
 msgid "Stopped"
 msgstr "Zatrzymany"
 
@@ -12596,6 +12818,9 @@ msgstr "Lista zawartości dla kolekcji"
 #
 msgid "Tags"
 msgstr "Tagi"
+
+msgid "Taiwan"
+msgstr ""
 
 msgid "Tajikistan"
 msgstr ""
@@ -13644,6 +13869,11 @@ msgstr ""
 #
 #, fuzzy
 msgid "USB Stick"
+msgstr "Pen USB"
+
+#
+#, fuzzy
+msgid "USB stick"
 msgstr "Pen USB"
 
 msgid "Uganda"
@@ -15214,9 +15444,6 @@ msgstr "Twój system nie wspiera ext4"
 msgid "[Image Info]\n"
 msgstr ""
 
-msgid "[a]"
-msgstr ""
-
 #
 msgid "[alternative edit]"
 msgstr "[edycja alternatywnych]"
@@ -15242,18 +15469,6 @@ msgid "a gui to assign services/providers/caids to common interface modules"
 msgstr "Menu do przyporządkowywania kanałów/nadawców/CAIDów dla modułów CI"
 
 #
-msgid "abort alternatives edit"
-msgstr "Przerwij edycję alternatywnych"
-
-#
-msgid "abort bouquet edit"
-msgstr "Przerwij edycję bukietów"
-
-#
-msgid "abort favourites edit"
-msgstr "Przerwij edycję ulubionych"
-
-#
 msgid "about to start"
 msgstr "zaraz się rozpocznie"
 
@@ -15271,34 +15486,6 @@ msgstr ""
 
 msgid "actual time only"
 msgstr ""
-
-#
-msgid "add alternatives"
-msgstr "Dodaj alternatywne kanały"
-
-#
-msgid "add bouquet"
-msgstr "Dodaj bukiet"
-
-#
-msgid "add bouquet to parental protection"
-msgstr "Dodaj bukiet do kontroli rodzicielskiej"
-
-#
-msgid "add marker"
-msgstr "Dodaj znacznik"
-
-#
-msgid "add service to bouquet"
-msgstr "Dodaj kanał do bukietu"
-
-#
-msgid "add service to favourites"
-msgstr "Dodaj kanał do ulubionych"
-
-#
-msgid "add to parental protection"
-msgstr "Dodaj do kontroli rodzicielskiej"
 
 msgid "adult movie/drama"
 msgstr "Film/Dramat dla dorosłych"
@@ -15541,10 +15728,6 @@ msgstr "%d plik"
 msgid "copy folder"
 msgstr ""
 
-#
-msgid "copy to bouquets"
-msgstr "Kopiuj do bukietów"
-
 msgid "create symlink ..."
 msgstr ""
 
@@ -15579,10 +15762,6 @@ msgstr "Wyłączony"
 #, fuzzy
 msgid "disable intro screen"
 msgstr "Wyłącz PiP"
-
-#
-msgid "disable move mode"
-msgstr "Wyłącz tryb przenoszenia"
 
 #
 msgid "disabled"
@@ -15621,10 +15800,6 @@ msgstr "wschód"
 msgid "economics/social advisory"
 msgstr "Porady ekonomiczne/społeczne"
 
-#
-msgid "edit alternatives"
-msgstr "Edytuj alternatywne kanały"
-
 msgid "education/science/factual topics (general)"
 msgstr "Edukacja/Nauka/Fakty"
 
@@ -15640,41 +15815,17 @@ msgstr "Pusty"
 msgid "enable"
 msgstr "Włączone"
 
-#
-msgid "enable bouquet edit"
-msgstr "Włącz edycję bukietu"
-
-#
-msgid "enable favourite edit"
-msgstr "Włącz edycję ulubionych"
-
 #, fuzzy
 msgid "enable intro screen"
 msgstr "Włącz automatyczny fast scan"
-
-#
-msgid "enable move mode"
-msgstr "Włącz tryb przenoszenia"
 
 #
 msgid "enabled"
 msgstr "Włączone"
 
 #
-msgid "end alternatives edit"
-msgstr "Koniec edycji alternatywnych"
-
-#
-msgid "end bouquet edit"
-msgstr "Koniec edycji bukietów"
-
-#
 msgid "end cut here"
 msgstr "Koniec cięcia tutaj"
-
-#
-msgid "end favourites edit"
-msgstr "Koniec edycji ulubionych"
 
 #
 #, fuzzy
@@ -15766,9 +15917,6 @@ msgstr "Nazwa pliku"
 
 msgid "film/cinema"
 msgstr "Film/Kino"
-
-msgid "find currently played service"
-msgstr "Znajdź aktualnie włączony kanał"
 
 msgid "fine arts"
 msgstr "Sztuki piękne"
@@ -16244,14 +16392,6 @@ msgid "picons"
 msgstr "Ikony"
 
 #
-msgid "play as picture in picture"
-msgstr "Odtwórz w PiP"
-
-#
-msgid "play in mainwindow"
-msgstr "Odtwórz w ekranie głównym"
-
-#
 msgid "please press OK when ready"
 msgstr "Wciśnij OK gdy gotowe"
 
@@ -16290,9 +16430,6 @@ msgstr "Popkultura/Sztuka tradycyjna"
 msgid "pre-school children's program"
 msgstr "Dla przedszkolaków"
 
-msgid "purge deleted userbouquets"
-msgstr ""
-
 msgid "receiver software because updates are available."
 msgstr "Oprogramowanie odbiornika ponieważ aktualizacje są dostępne."
 
@@ -16324,60 +16461,18 @@ msgid "remove after this position"
 msgstr "Usuń po tej pozycji"
 
 #
-msgid "remove all alternatives"
-msgstr "Usuń wszystkie alternatywne"
-
-#
-msgid "remove all new found flags"
-msgstr "Usuń wszystkie flagi 'nowo znalezione'"
-
-#
 msgid "remove before this position"
 msgstr "Usuń przed tą pozycją"
 
 #
-msgid "remove bouquet from parental protection"
-msgstr "Usuń bukiet z kontroli rodzicielskiej"
-
-#
-msgid "remove cable services"
-msgstr "Usuń kanały tv kablowej"
-
-#
-msgid "remove entry"
-msgstr "Usuń"
-
-#
-msgid "remove from parental protection"
-msgstr "Usuń z kontroli rodzicielskiej"
-
-#
-msgid "remove new found flag"
-msgstr "Usuń flagę 'nowo znaleziony'"
-
-#
-msgid "remove selected satellite"
-msgstr "Usuń wybranego satelitę"
-
-#
-msgid "remove terrestrial services"
-msgstr "Usuń kanały tv naziemnej"
-
-#
 msgid "remove this mark"
 msgstr "Usuń ten znacznik"
-
-msgid "rename entry"
-msgstr "Zmień nazwę"
 
 #
 msgid "repeated"
 msgstr "Powtórzone"
 
 msgid "reserved for future use"
-msgstr ""
-
-msgid "restore deleted userbouquets"
 msgstr ""
 
 msgid "reverse by date"
@@ -16437,17 +16532,8 @@ msgstr "Film klasyka/historia/religia"
 
 #
 #, fuzzy
-msgid "service is in bouquet parental protection"
-msgstr "Usuń bukiet z kontroli rodzicielskiej"
-
-#
-#, fuzzy
 msgid "service off-air"
 msgstr "PIN kanału"
-
-#
-msgid "set as startup service"
-msgstr "Ustaw jako kanał startowy"
 
 #
 #, fuzzy
@@ -16462,10 +16548,6 @@ msgid "show all tags"
 msgstr "Pokaż wszystkie tagi"
 
 #
-msgid "show alternatives"
-msgstr "Pokaż alternatywne kanały"
-
-#
 msgid "show event details"
 msgstr "Pokaż szczegóły wydarzenia"
 
@@ -16474,10 +16556,6 @@ msgstr "Software Manager w menu/ustawienia"
 
 msgid "show softwaremanager on blue button"
 msgstr "Software Manager pod niebieskim"
-
-#
-msgid "show transponder info"
-msgstr "Pokaż info transpondera"
 
 msgid "show/game show (general)"
 msgstr "Rozrywka"
@@ -16574,9 +16652,6 @@ msgstr "Rozmiar kroku"
 #
 msgid "stereo"
 msgstr "Stereo"
-
-msgid "stop using as startup service"
-msgstr "Przestań używać jako kanał startowy"
 
 msgid "successful"
 msgstr ""

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-17 17:48+0100\n"
+"POT-Creation-Date: 2019-12-08 00:14+0100\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -780,6 +780,18 @@ msgstr "Провайдър"
 msgid "Abort"
 msgstr "Отмени"
 
+#, fuzzy
+msgid "Abort alternatives edit"
+msgstr "прекъсни редактирането на алтернативи"
+
+#, fuzzy
+msgid "Abort bouquet edit"
+msgstr "прекъсни редактирането на букети"
+
+#, fuzzy
+msgid "Abort favourites edit"
+msgstr "прекъсни редактирането на предпочитани"
+
 msgid "About"
 msgstr "Относно"
 
@@ -858,8 +870,20 @@ msgstr ""
 msgid "Add a new title"
 msgstr "Добавяне ново име"
 
+#, fuzzy
+msgid "Add alternatives"
+msgstr "добави алтернативи"
+
 msgid "Add bookmark"
 msgstr "Добавяне отметка"
+
+#, fuzzy
+msgid "Add bouquet"
+msgstr "добави букет"
+
+#, fuzzy
+msgid "Add bouquet to parental protection"
+msgstr "добави към родителска защита"
 
 #, fuzzy
 msgid "Add current folder to bookmarks"
@@ -873,6 +897,10 @@ msgstr ""
 
 msgid "Add files to playlist"
 msgstr ""
+
+#, fuzzy
+msgid "Add marker"
+msgstr "добави маркер"
 
 #, fuzzy
 msgid "Add plugin to Extensions menu*"
@@ -902,6 +930,18 @@ msgstr ""
 msgid "Add service"
 msgstr ""
 
+#, fuzzy
+msgid "Add service to bouquet"
+msgstr "добави канала към букет"
+
+#, fuzzy
+msgid "Add service to favourites"
+msgstr "добави канал към предпочитани"
+
+#, fuzzy
+msgid "Add services to this bouquet?"
+msgstr "добави канала към букет"
+
 msgid "Add timer"
 msgstr "Добавяне таймер"
 
@@ -913,6 +953,10 @@ msgstr "Добави към букет"
 
 msgid "Add to favourites"
 msgstr "Добави към предпочитани"
+
+#, fuzzy
+msgid "Add to parental protection"
+msgstr "добави към родителска защита"
 
 msgid "Add/remove change timer for current event"
 msgstr ""
@@ -1144,7 +1188,7 @@ msgstr ""
 msgid "Arabic"
 msgstr "Арабски"
 
-msgid "Are you sure to purge all deleted userbouquets?"
+msgid "Are you sure to purge all deleted user bouquets?"
 msgstr ""
 
 #, python-format
@@ -1824,6 +1868,9 @@ msgstr "Капацитет: "
 msgid "Capacity: "
 msgstr "Капацитет: "
 
+msgid "Card"
+msgstr ""
+
 msgid "Cascade PiP"
 msgstr ""
 
@@ -2145,6 +2192,9 @@ msgstr "Комуникация"
 msgid "Comoros"
 msgstr ""
 
+msgid "Compact flash"
+msgstr ""
+
 msgid "Complete"
 msgstr "Завършен"
 
@@ -2161,15 +2211,16 @@ msgstr "Детайли..."
 msgid "Config resolution of pictures"
 msgstr ""
 
+#, fuzzy
+msgid "Configuration"
+msgstr "Конфигурация..."
+
 msgid "Configuration mode"
 msgstr "Режим Конфигурация"
 
 #, python-format
 msgid "Configuration mode: %s"
 msgstr "Режим Конфигурация: %s"
-
-msgid "Configuration..."
-msgstr "Конфигурация..."
 
 #, fuzzy
 msgid "Configure ATSC"
@@ -2638,6 +2689,10 @@ msgstr ""
 
 msgid "Copy folder"
 msgstr ""
+
+#, fuzzy
+msgid "Copy to bouquets"
+msgstr "копиране в букет"
 
 msgid "Costa Rica"
 msgstr ""
@@ -3243,6 +3298,10 @@ msgstr ""
 msgid "Disable current event but not coming events"
 msgstr "Спри текущото но не и следващите предавания"
 
+#, fuzzy
+msgid "Disable move mode"
+msgstr "спри режим преместване на канал"
+
 msgid "Disable timer"
 msgstr ""
 
@@ -3619,6 +3678,10 @@ msgstr "Редактирай DNS"
 msgid "Edit Title"
 msgstr "Редакт.заглавие"
 
+#, fuzzy
+msgid "Edit alternatives"
+msgstr "добави алтернативи"
+
 msgid "Edit chapters of current title"
 msgstr "Редакт. главите на текущото заглавие"
 
@@ -3730,6 +3793,10 @@ msgstr ""
 msgid "Enable auto fast scan for %s"
 msgstr "Включи родителски контрол"
 
+#, fuzzy
+msgid "Enable bouquet edit"
+msgstr "редактиране на букети"
+
 msgid "Enable bouquet selection in multi-EPG"
 msgstr ""
 
@@ -3740,6 +3807,10 @@ msgstr "Разрешен"
 msgid "Enable fallback remote receiver"
 msgstr ""
 
+#, fuzzy
+msgid "Enable favourites edit"
+msgstr "редактиране на предпочитани"
+
 msgid "Enable freesat EPG"
 msgstr ""
 
@@ -3748,6 +3819,10 @@ msgstr ""
 
 msgid "Enable infobar fade-out"
 msgstr ""
+
+#, fuzzy
+msgid "Enable move mode"
+msgstr "включи режим преместване на канал"
 
 msgid "Enable multiple bouquets"
 msgstr "Разреши много букети"
@@ -3819,6 +3894,18 @@ msgstr ""
 
 msgid "Encryption:"
 msgstr ""
+
+#, fuzzy
+msgid "End alternatives edit"
+msgstr "[редактиране алтернативи]"
+
+#, fuzzy
+msgid "End bouquet edit"
+msgstr "редактирането на букет завърши"
+
+#, fuzzy
+msgid "End favourites edit"
+msgstr "редактирането на предпочитани завърши"
 
 msgid "End time"
 msgstr "Край"
@@ -4068,10 +4155,6 @@ msgstr "Изход от мрежовия помощник"
 
 msgid "Exit the wizard"
 msgstr "Изход от помощника"
-
-#, fuzzy
-msgid "Exit/OK"
-msgstr "Изход"
 
 msgid "Expert"
 msgstr "Експерт"
@@ -4353,6 +4436,10 @@ msgstr ""
 
 msgid "Final scroll delay"
 msgstr ""
+
+#, fuzzy
+msgid "Find currently playing service"
+msgstr "Защита канали"
 
 msgid "Fine movement"
 msgstr ""
@@ -4838,6 +4925,10 @@ msgstr ""
 
 msgid "Handle wakeup from TV"
 msgstr ""
+
+#, fuzzy
+msgid "Hard disk"
+msgstr "Твърд диск"
 
 msgid "Hard disk setup"
 msgstr "Настройки HDD"
@@ -5813,6 +5904,9 @@ msgstr ""
 msgid "MIME Version"
 msgstr "Инверсия"
 
+msgid "MMC card"
+msgstr ""
+
 msgid "MORE"
 msgstr "ОЩЕ"
 
@@ -6442,6 +6536,14 @@ msgstr "Мрежова Конфигурация..."
 
 msgid "Network configuration..."
 msgstr "Мрежова Конфигурация..."
+
+#, fuzzy
+msgid "Network mount"
+msgstr "Не са открити мрежи!"
+
+#, fuzzy, python-format
+msgid "Network mount %s"
+msgstr "Тест на мрежата"
 
 msgid "Network name (SSID)"
 msgstr ""
@@ -7239,6 +7341,10 @@ msgstr "Пусни DVD"
 msgid "Play DVDs"
 msgstr "Пусни DVD"
 
+#, fuzzy
+msgid "Play as Picture in Picture"
+msgstr "Активиране картина в картината"
+
 msgid "Play audio-CD..."
 msgstr ""
 
@@ -7255,6 +7361,9 @@ msgid "Play from next mark or playlist entry"
 msgstr ""
 
 msgid "Play from previous mark or playlist entry"
+msgstr ""
+
+msgid "Play in main window"
 msgstr ""
 
 msgid "Play music..."
@@ -7898,6 +8007,10 @@ msgstr "Провайдъри"
 msgid "Puerto Rico"
 msgstr ""
 
+#, fuzzy
+msgid "Purge deleted user bouquets"
+msgstr "Разреши много букети"
+
 msgid "Put TV in standby"
 msgstr ""
 
@@ -7944,6 +8057,10 @@ msgstr ""
 
 msgid "Radio"
 msgstr "Радио"
+
+#, fuzzy
+msgid "Ram disk"
+msgstr "Твърд диск"
 
 msgid "Random"
 msgstr "Произволно"
@@ -8172,11 +8289,27 @@ msgid "Remove a nameserver entry"
 msgstr ""
 
 #, fuzzy
+msgid "Remove all alternatives"
+msgstr "премахни всички алтернативи"
+
+#, fuzzy
 msgid "Remove all logfiles"
 msgstr "премахни всички алтернативи"
 
+#, fuzzy
+msgid "Remove all new found flags"
+msgstr "премахни всички маркировки за 'нов канал'"
+
 msgid "Remove bookmark"
 msgstr ""
+
+#, fuzzy
+msgid "Remove bouquet from parental protection"
+msgstr "премахни от родителски контрол"
+
+#, fuzzy
+msgid "Remove cable services"
+msgstr "Защита канали"
 
 msgid "Remove completed timers after (days)"
 msgstr ""
@@ -8191,14 +8324,34 @@ msgstr "Премахни избраното заглавие"
 msgid "Remove directory"
 msgstr "премахни директория"
 
+#, fuzzy
+msgid "Remove entry"
+msgstr "премахни"
+
+#, fuzzy
+msgid "Remove from parental protection"
+msgstr "премахни от родителски контрол"
+
 msgid "Remove items from trash can after (days)"
 msgstr ""
+
+#, fuzzy
+msgid "Remove new found flag"
+msgstr "премахване на маркировката за 'нов канал'"
 
 msgid "Remove plugins"
 msgstr "Премахни Плъгини"
 
 msgid "Remove selected folder from bookmarks"
 msgstr ""
+
+#, fuzzy
+msgid "Remove selected satellite"
+msgstr "премахни избрания сателит"
+
+#, fuzzy
+msgid "Remove terrestrial services"
+msgstr "Защита канали"
 
 msgid "Remove texts for the hearing impaired from external subtitles (instrumental music or environmental sounds, e.g., when a doorbell rings or a gun shot is heard)."
 msgstr ""
@@ -8229,6 +8382,10 @@ msgstr ""
 
 msgid "Rename"
 msgstr "Преименувай"
+
+#, fuzzy
+msgid "Rename entry"
+msgstr "премахни"
 
 #, fuzzy
 msgid "Rename file/directory"
@@ -8348,6 +8505,10 @@ msgstr "Възстановаване"
 
 msgid "Restore backups"
 msgstr "Възстановяване backups"
+
+#, fuzzy
+msgid "Restore deleted user bouquets"
+msgstr "Разреши много букети"
 
 #, fuzzy
 msgid "Restore inetd"
@@ -9260,6 +9421,10 @@ msgstr "Канали"
 msgid "Service ID"
 msgstr "Канали"
 
+#, fuzzy
+msgid "Service belongs to a parental protected bouquet"
+msgstr "Каналът беше добавен към избрания букет."
+
 msgid "Service has been added to the favourites."
 msgstr "Каналът беше добавен към предпочитани."
 
@@ -9342,6 +9507,10 @@ msgstr ""
 
 msgid "Set alternative fallback tuners for DVB-T/C or ATSC"
 msgstr ""
+
+#, fuzzy
+msgid "Set as startup service"
+msgstr "задаване като стартиращ канал"
 
 msgid "Set blocktimes by weekday"
 msgstr ""
@@ -9541,6 +9710,10 @@ msgstr "Покажи WLAN Състояние"
 
 msgid "Show Weather Widget"
 msgstr ""
+
+#, fuzzy
+msgid "Show alternatives"
+msgstr "покажи алтернативи"
 
 msgid "Show animation while busy"
 msgstr ""
@@ -9783,6 +9956,10 @@ msgstr "Покажи радио плеъра..."
 #, fuzzy
 msgid "Show the plugin browser.."
 msgstr "Плъгин браузър"
+
+#, fuzzy
+msgid "Show transponder info"
+msgstr "покажи инфо за транспондер"
 
 msgid "Show two lines per entry"
 msgstr ""
@@ -10375,6 +10552,10 @@ msgstr ""
 msgid "Stop timeshift?"
 msgstr "Сиране Таймшифт?"
 
+#, fuzzy
+msgid "Stop using as startup service"
+msgstr "задаване като стартиращ канал"
+
 msgid "Stopped"
 msgstr ""
 
@@ -10664,6 +10845,9 @@ msgid "Table of content for collection"
 msgstr ""
 
 msgid "Tags"
+msgstr ""
+
+msgid "Taiwan"
 msgstr ""
 
 msgid "Tajikistan"
@@ -11555,6 +11739,10 @@ msgstr ""
 
 #, fuzzy
 msgid "USB Stick"
+msgstr "USB Стик помощник"
+
+#, fuzzy
+msgid "USB stick"
 msgstr "USB Стик помощник"
 
 msgid "Uganda"
@@ -12904,9 +13092,6 @@ msgstr ""
 msgid "[Image Info]\n"
 msgstr "Имидж: "
 
-msgid "[a]"
-msgstr ""
-
 msgid "[alternative edit]"
 msgstr "[редактиране алтернативи]"
 
@@ -12925,15 +13110,6 @@ msgstr ""
 msgid "a gui to assign services/providers/caids to common interface modules"
 msgstr ""
 
-msgid "abort alternatives edit"
-msgstr "прекъсни редактирането на алтернативи"
-
-msgid "abort bouquet edit"
-msgstr "прекъсни редактирането на букети"
-
-msgid "abort favourites edit"
-msgstr "прекъсни редактирането на предпочитани"
-
 msgid "about to start"
 msgstr "стартирам"
 
@@ -12948,28 +13124,6 @@ msgstr ""
 
 msgid "actual time only"
 msgstr ""
-
-msgid "add alternatives"
-msgstr "добави алтернативи"
-
-msgid "add bouquet"
-msgstr "добави букет"
-
-#, fuzzy
-msgid "add bouquet to parental protection"
-msgstr "добави към родителска защита"
-
-msgid "add marker"
-msgstr "добави маркер"
-
-msgid "add service to bouquet"
-msgstr "добави канала към букет"
-
-msgid "add service to favourites"
-msgstr "добави канал към предпочитани"
-
-msgid "add to parental protection"
-msgstr "добави към родителска защита"
 
 msgid "adult movie/drama"
 msgstr ""
@@ -13178,9 +13332,6 @@ msgstr ""
 msgid "copy folder"
 msgstr ""
 
-msgid "copy to bouquets"
-msgstr "копиране в букет"
-
 msgid "create symlink ..."
 msgstr ""
 
@@ -13209,9 +13360,6 @@ msgstr "спрян"
 #, fuzzy
 msgid "disable intro screen"
 msgstr "Спри Картина в Картината"
-
-msgid "disable move mode"
-msgstr "спри режим преместване на канал"
 
 msgid "disabled"
 msgstr "спрян"
@@ -13246,9 +13394,6 @@ msgstr ""
 msgid "economics/social advisory"
 msgstr ""
 
-msgid "edit alternatives"
-msgstr ""
-
 msgid "education/science/factual topics (general)"
 msgstr ""
 
@@ -13262,32 +13407,14 @@ msgstr "празен"
 msgid "enable"
 msgstr "разрешен"
 
-msgid "enable bouquet edit"
-msgstr "редактиране на букети"
-
-msgid "enable favourite edit"
-msgstr "редактиране на предпочитани"
-
 msgid "enable intro screen"
 msgstr ""
-
-msgid "enable move mode"
-msgstr "включи режим преместване на канал"
 
 msgid "enabled"
 msgstr "разрешен"
 
-msgid "end alternatives edit"
-msgstr ""
-
-msgid "end bouquet edit"
-msgstr "редактирането на букет завърши"
-
 msgid "end cut here"
 msgstr ""
-
-msgid "end favourites edit"
-msgstr "редактирането на предпочитани завърши"
 
 msgid "enigma2 and network"
 msgstr ""
@@ -13368,9 +13495,6 @@ msgid "filename"
 msgstr "Име на файл"
 
 msgid "film/cinema"
-msgstr ""
-
-msgid "find currently played service"
 msgstr ""
 
 msgid "fine arts"
@@ -13771,12 +13895,6 @@ msgstr ""
 msgid "picons"
 msgstr ""
 
-msgid "play as picture in picture"
-msgstr "Активиране картина в картината"
-
-msgid "play in mainwindow"
-msgstr ""
-
 msgid "please press OK when ready"
 msgstr "моля натиснете ОК когато е готово"
 
@@ -13811,9 +13929,6 @@ msgstr ""
 msgid "pre-school children's program"
 msgstr ""
 
-msgid "purge deleted userbouquets"
-msgstr ""
-
 msgid "receiver software because updates are available."
 msgstr ""
 
@@ -13839,52 +13954,16 @@ msgstr ""
 msgid "remove after this position"
 msgstr "премахни след тази позиция"
 
-msgid "remove all alternatives"
-msgstr "премахни всички алтернативи"
-
-msgid "remove all new found flags"
-msgstr "премахни всички маркировки за 'нов канал'"
-
 msgid "remove before this position"
 msgstr "премахни преди тази позиция"
 
-#, fuzzy
-msgid "remove bouquet from parental protection"
-msgstr "премахни от родителски контрол"
-
-#, fuzzy
-msgid "remove cable services"
-msgstr "Защита канали"
-
-msgid "remove entry"
-msgstr "премахни"
-
-msgid "remove from parental protection"
-msgstr "премахни от родителски контрол"
-
-msgid "remove new found flag"
-msgstr "премахване на маркировката за 'нов канал'"
-
-msgid "remove selected satellite"
-msgstr "премахни избрания сателит"
-
-#, fuzzy
-msgid "remove terrestrial services"
-msgstr "Защита канали"
-
 msgid "remove this mark"
 msgstr "премахни отметката"
-
-msgid "rename entry"
-msgstr ""
 
 msgid "repeated"
 msgstr "повторен"
 
 msgid "reserved for future use"
-msgstr ""
-
-msgid "restore deleted userbouquets"
 msgstr ""
 
 msgid "reverse by date"
@@ -13936,15 +14015,8 @@ msgid "serious/classical/religious/historical movie/drama"
 msgstr ""
 
 #, fuzzy
-msgid "service is in bouquet parental protection"
-msgstr "премахни от родителски контрол"
-
-#, fuzzy
 msgid "service off-air"
 msgstr "ПИН канали"
-
-msgid "set as startup service"
-msgstr "задаване като стартиращ канал"
 
 #, fuzzy
 msgid "settings"
@@ -13956,9 +14028,6 @@ msgstr "покажи главното DVD mеню"
 msgid "show all tags"
 msgstr ""
 
-msgid "show alternatives"
-msgstr "покажи алтернативи"
-
 msgid "show event details"
 msgstr "детайли на предаването"
 
@@ -13967,9 +14036,6 @@ msgstr ""
 
 msgid "show softwaremanager on blue button"
 msgstr ""
-
-msgid "show transponder info"
-msgstr "покажи инфо за транспондер"
 
 msgid "show/game show (general)"
 msgstr ""
@@ -14056,9 +14122,6 @@ msgstr ""
 
 msgid "stereo"
 msgstr "стерео"
-
-msgid "stop using as startup service"
-msgstr ""
 
 msgid "successful"
 msgstr ""

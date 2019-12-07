@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-17 17:48+0100\n"
+"POT-Creation-Date: 2019-12-08 00:14+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: 王彪 <satfan@163.com>\n"
 "Language-Team: 中國\n"
@@ -782,6 +782,18 @@ msgstr "供應商"
 msgid "Abort"
 msgstr "中止"
 
+#, fuzzy
+msgid "Abort alternatives edit"
+msgstr "取消專案編輯"
+
+#, fuzzy
+msgid "Abort bouquet edit"
+msgstr "取消自定義組編輯"
+
+#, fuzzy
+msgid "Abort favourites edit"
+msgstr "取消喜愛頻道編輯"
+
 msgid "About"
 msgstr "關於"
 
@@ -863,8 +875,20 @@ msgstr ""
 msgid "Add a new title"
 msgstr "增加一個新標題"
 
+#, fuzzy
+msgid "Add alternatives"
+msgstr "增加項目"
+
 msgid "Add bookmark"
 msgstr ""
+
+#, fuzzy
+msgid "Add bouquet"
+msgstr "增加自定義組"
+
+#, fuzzy
+msgid "Add bouquet to parental protection"
+msgstr "添加到家長控制"
 
 #, fuzzy
 msgid "Add current folder to bookmarks"
@@ -878,6 +902,10 @@ msgstr ""
 
 msgid "Add files to playlist"
 msgstr ""
+
+#, fuzzy
+msgid "Add marker"
+msgstr "添加標記"
 
 #, fuzzy
 msgid "Add plugin to Extensions menu*"
@@ -908,6 +936,18 @@ msgstr "選擇要備份的檔/目錄"
 msgid "Add service"
 msgstr ""
 
+#, fuzzy
+msgid "Add service to bouquet"
+msgstr "添加頻道到自定義組"
+
+#, fuzzy
+msgid "Add service to favourites"
+msgstr "添加頻道到喜愛頻道"
+
+#, fuzzy
+msgid "Add services to this bouquet?"
+msgstr "添加頻道到自定義組"
+
 msgid "Add timer"
 msgstr "添加到計時器"
 
@@ -919,6 +959,10 @@ msgstr "添加到自定義組"
 
 msgid "Add to favourites"
 msgstr "添加到喜歡頻道"
+
+#, fuzzy
+msgid "Add to parental protection"
+msgstr "添加到家長控制"
 
 #, fuzzy
 msgid "Add/remove change timer for current event"
@@ -1154,7 +1198,7 @@ msgid "Arabic"
 msgstr "阿拉伯語"
 
 #, fuzzy
-msgid "Are you sure to purge all deleted userbouquets?"
+msgid "Are you sure to purge all deleted user bouquets?"
 msgstr "確定刪除所有專案?"
 
 #, fuzzy, python-format
@@ -1834,6 +1878,9 @@ msgstr "容量: "
 msgid "Capacity: "
 msgstr "容量: "
 
+msgid "Card"
+msgstr ""
+
 msgid "Cascade PiP"
 msgstr ""
 
@@ -2163,6 +2210,9 @@ msgstr "通訊"
 msgid "Comoros"
 msgstr ""
 
+msgid "Compact flash"
+msgstr ""
+
 msgid "Complete"
 msgstr "完成"
 
@@ -2178,14 +2228,15 @@ msgstr ""
 msgid "Config resolution of pictures"
 msgstr ""
 
+#, fuzzy
+msgid "Configuration"
+msgstr "配置"
+
 msgid "Configuration mode"
 msgstr ""
 
 #, python-format
 msgid "Configuration mode: %s"
-msgstr ""
-
-msgid "Configuration..."
 msgstr ""
 
 #, fuzzy
@@ -2661,6 +2712,10 @@ msgstr ""
 
 msgid "Copy folder"
 msgstr ""
+
+#, fuzzy
+msgid "Copy to bouquets"
+msgstr "複製到自定義組"
 
 msgid "Costa Rica"
 msgstr ""
@@ -3271,6 +3326,10 @@ msgstr ""
 msgid "Disable current event but not coming events"
 msgstr "停止當前事件但不禁用下一個事件"
 
+#, fuzzy
+msgid "Disable move mode"
+msgstr "禁用移動模式"
+
 msgid "Disable timer"
 msgstr "禁用計時器"
 
@@ -3649,6 +3708,10 @@ msgstr "編輯 DNS"
 msgid "Edit Title"
 msgstr "編輯標題"
 
+#, fuzzy
+msgid "Edit alternatives"
+msgstr "編輯選項"
+
 msgid "Edit chapters of current title"
 msgstr "編輯章節當前標題"
 
@@ -3760,6 +3823,10 @@ msgstr "啟用解析度自動調整"
 msgid "Enable auto fast scan for %s"
 msgstr ""
 
+#, fuzzy
+msgid "Enable bouquet edit"
+msgstr "允許編輯自定義組"
+
 msgid "Enable bouquet selection in multi-EPG"
 msgstr ""
 
@@ -3770,6 +3837,10 @@ msgstr "啟用的"
 msgid "Enable fallback remote receiver"
 msgstr ""
 
+#, fuzzy
+msgid "Enable favourites edit"
+msgstr "允許編輯喜愛頻道"
+
 msgid "Enable freesat EPG"
 msgstr ""
 
@@ -3778,6 +3849,10 @@ msgstr ""
 
 msgid "Enable infobar fade-out"
 msgstr ""
+
+#, fuzzy
+msgid "Enable move mode"
+msgstr "允許移動模式"
 
 msgid "Enable multiple bouquets"
 msgstr "啟用自定義組"
@@ -3851,6 +3926,18 @@ msgstr ""
 
 msgid "Encryption:"
 msgstr "加密系統:"
+
+#, fuzzy
+msgid "End alternatives edit"
+msgstr "結速專案編輯"
+
+#, fuzzy
+msgid "End bouquet edit"
+msgstr "結束自定義組編輯"
+
+#, fuzzy
+msgid "End favourites edit"
+msgstr "結束喜愛頻道編輯"
 
 msgid "End time"
 msgstr "結束時間"
@@ -4102,10 +4189,6 @@ msgstr "退出網路設定嚮導"
 
 msgid "Exit the wizard"
 msgstr "退出嚮導"
-
-#, fuzzy
-msgid "Exit/OK"
-msgstr "退出"
 
 msgid "Expert"
 msgstr "高級"
@@ -4394,6 +4477,10 @@ msgstr ""
 #, fuzzy
 msgid "Final scroll delay"
 msgstr "全球延遲"
+
+#, fuzzy
+msgid "Find currently playing service"
+msgstr "當前服務已運行時間"
 
 msgid "Fine movement"
 msgstr ""
@@ -4889,6 +4976,10 @@ msgstr ""
 
 msgid "Handle wakeup from TV"
 msgstr ""
+
+#, fuzzy
+msgid "Hard disk"
+msgstr "硬碟"
 
 msgid "Hard disk setup"
 msgstr ""
@@ -5880,6 +5971,9 @@ msgstr ""
 msgid "MIME Version"
 msgstr "反向"
 
+msgid "MMC card"
+msgstr ""
+
 msgid "MORE"
 msgstr "更多"
 
@@ -6536,6 +6630,14 @@ msgstr "網路配置"
 
 msgid "Network configuration..."
 msgstr ""
+
+#, fuzzy
+msgid "Network mount"
+msgstr "找不到網路"
+
+#, fuzzy, python-format
+msgid "Network mount %s"
+msgstr "網路測驗"
 
 msgid "Network name (SSID)"
 msgstr ""
@@ -7350,6 +7452,10 @@ msgstr "播放DVD"
 msgid "Play DVDs"
 msgstr "播放DVD"
 
+#, fuzzy
+msgid "Play as Picture in Picture"
+msgstr "移動畫中畫"
+
 msgid "Play audio-CD..."
 msgstr ""
 
@@ -7366,6 +7472,9 @@ msgid "Play from next mark or playlist entry"
 msgstr ""
 
 msgid "Play from previous mark or playlist entry"
+msgstr ""
+
+msgid "Play in main window"
 msgstr ""
 
 msgid "Play music..."
@@ -8019,6 +8128,10 @@ msgstr "供應商"
 msgid "Puerto Rico"
 msgstr ""
 
+#, fuzzy
+msgid "Purge deleted user bouquets"
+msgstr "確定刪除所有專案?"
+
 msgid "Put TV in standby"
 msgstr ""
 
@@ -8065,6 +8178,10 @@ msgstr "RGB"
 
 msgid "Radio"
 msgstr ""
+
+#, fuzzy
+msgid "Ram disk"
+msgstr "硬碟"
 
 msgid "Random"
 msgstr "隨機"
@@ -8295,11 +8412,27 @@ msgid "Remove a nameserver entry"
 msgstr ""
 
 #, fuzzy
+msgid "Remove all alternatives"
+msgstr "移除所有項目"
+
+#, fuzzy
 msgid "Remove all logfiles"
 msgstr "移除所有項目"
 
+#, fuzzy
+msgid "Remove all new found flags"
+msgstr "移除所有新發現標記"
+
 msgid "Remove bookmark"
 msgstr ""
+
+#, fuzzy
+msgid "Remove bouquet from parental protection"
+msgstr "取消家長控制"
+
+#, fuzzy
+msgid "Remove cable services"
+msgstr "保護服務"
 
 msgid "Remove completed timers after (days)"
 msgstr ""
@@ -8314,14 +8447,34 @@ msgstr "移除當前選擇的標題"
 msgid "Remove directory"
 msgstr "移除目錄"
 
+#, fuzzy
+msgid "Remove entry"
+msgstr "移除項目"
+
+#, fuzzy
+msgid "Remove from parental protection"
+msgstr "取消家長控制"
+
 msgid "Remove items from trash can after (days)"
 msgstr ""
+
+#, fuzzy
+msgid "Remove new found flag"
+msgstr "移除新發現標記"
 
 msgid "Remove plugins"
 msgstr "移除插件"
 
 msgid "Remove selected folder from bookmarks"
 msgstr ""
+
+#, fuzzy
+msgid "Remove selected satellite"
+msgstr "移除選定的衛星"
+
+#, fuzzy
+msgid "Remove terrestrial services"
+msgstr "保護服務"
 
 msgid "Remove texts for the hearing impaired from external subtitles (instrumental music or environmental sounds, e.g., when a doorbell rings or a gun shot is heard)."
 msgstr ""
@@ -8352,6 +8505,10 @@ msgstr ""
 
 msgid "Rename"
 msgstr "重命"
+
+#, fuzzy
+msgid "Rename entry"
+msgstr "移除項目"
 
 #, fuzzy
 msgid "Rename file/directory"
@@ -8475,6 +8632,10 @@ msgstr "恢復"
 
 msgid "Restore backups"
 msgstr "恢復備份"
+
+#, fuzzy
+msgid "Restore deleted user bouquets"
+msgstr "確定刪除所有專案?"
 
 #, fuzzy
 msgid "Restore inetd"
@@ -9418,6 +9579,10 @@ msgstr "頻道"
 msgid "Service ID"
 msgstr "頻道"
 
+#, fuzzy
+msgid "Service belongs to a parental protected bouquet"
+msgstr "頻道已添加到選定的自定義組."
+
 msgid "Service has been added to the favourites."
 msgstr "頻道已添加到喜愛頻道"
 
@@ -9502,6 +9667,10 @@ msgstr ""
 
 msgid "Set alternative fallback tuners for DVB-T/C or ATSC"
 msgstr ""
+
+#, fuzzy
+msgid "Set as startup service"
+msgstr "在相似頻道"
 
 msgid "Set blocktimes by weekday"
 msgstr ""
@@ -9703,6 +9872,10 @@ msgstr ""
 #, fuzzy
 msgid "Show Weather Widget"
 msgstr "天氣預報"
+
+#, fuzzy
+msgid "Show alternatives"
+msgstr "顯示選項"
 
 msgid "Show animation while busy"
 msgstr ""
@@ -9952,6 +10125,10 @@ msgstr "廣播重播模式下..."
 #, fuzzy
 msgid "Show the plugin browser.."
 msgstr "流覽插件"
+
+#, fuzzy
+msgid "Show transponder info"
+msgstr "顯示轉發器資訊"
 
 msgid "Show two lines per entry"
 msgstr ""
@@ -10559,6 +10736,10 @@ msgstr ""
 msgid "Stop timeshift?"
 msgstr ""
 
+#, fuzzy
+msgid "Stop using as startup service"
+msgstr "在相似頻道"
+
 msgid "Stopped"
 msgstr "停止"
 
@@ -10860,6 +11041,9 @@ msgstr "內容彙編"
 
 msgid "Tags"
 msgstr "標籤"
+
+msgid "Taiwan"
+msgstr ""
 
 msgid "Tajikistan"
 msgstr ""
@@ -11768,6 +11952,10 @@ msgid ""
 msgstr ""
 
 msgid "USB Stick"
+msgstr "USB-Stick"
+
+#, fuzzy
+msgid "USB stick"
 msgstr "USB-Stick"
 
 msgid "Uganda"
@@ -13132,9 +13320,6 @@ msgstr ""
 msgid "[Image Info]\n"
 msgstr ""
 
-msgid "[a]"
-msgstr ""
-
 msgid "[alternative edit]"
 msgstr "[編輯專案]"
 
@@ -13153,15 +13338,6 @@ msgstr "a gui to assign services/providers to common interface modules"
 msgid "a gui to assign services/providers/caids to common interface modules"
 msgstr "a gui to assign services/providers/caids to common interface modules"
 
-msgid "abort alternatives edit"
-msgstr "取消專案編輯"
-
-msgid "abort bouquet edit"
-msgstr "取消自定義組編輯"
-
-msgid "abort favourites edit"
-msgstr "取消喜愛頻道編輯"
-
 msgid "about to start"
 msgstr "立即開始"
 
@@ -13177,28 +13353,6 @@ msgstr ""
 
 msgid "actual time only"
 msgstr ""
-
-msgid "add alternatives"
-msgstr "增加項目"
-
-msgid "add bouquet"
-msgstr "增加自定義組"
-
-#, fuzzy
-msgid "add bouquet to parental protection"
-msgstr "添加到家長控制"
-
-msgid "add marker"
-msgstr "添加標記"
-
-msgid "add service to bouquet"
-msgstr "添加頻道到自定義組"
-
-msgid "add service to favourites"
-msgstr "添加頻道到喜愛頻道"
-
-msgid "add to parental protection"
-msgstr "添加到家長控制"
 
 msgid "adult movie/drama"
 msgstr ""
@@ -13412,9 +13566,6 @@ msgstr "%d file"
 msgid "copy folder"
 msgstr ""
 
-msgid "copy to bouquets"
-msgstr "複製到自定義組"
-
 msgid "create symlink ..."
 msgstr ""
 
@@ -13443,9 +13594,6 @@ msgstr "不可用"
 #, fuzzy
 msgid "disable intro screen"
 msgstr "禁用畫中畫"
-
-msgid "disable move mode"
-msgstr "禁用移動模式"
 
 msgid "disabled"
 msgstr "不可用"
@@ -13480,9 +13628,6 @@ msgstr ""
 msgid "economics/social advisory"
 msgstr ""
 
-msgid "edit alternatives"
-msgstr "編輯選項"
-
 msgid "education/science/factual topics (general)"
 msgstr ""
 
@@ -13496,33 +13641,15 @@ msgstr "空的"
 msgid "enable"
 msgstr "允許"
 
-msgid "enable bouquet edit"
-msgstr "允許編輯自定義組"
-
-msgid "enable favourite edit"
-msgstr "允許編輯喜愛頻道"
-
 #, fuzzy
 msgid "enable intro screen"
 msgstr "不能創建symlink!"
 
-msgid "enable move mode"
-msgstr "允許移動模式"
-
 msgid "enabled"
 msgstr "允許"
 
-msgid "end alternatives edit"
-msgstr "結速專案編輯"
-
-msgid "end bouquet edit"
-msgstr "結束自定義組編輯"
-
 msgid "end cut here"
 msgstr "結束錄影剪輯"
-
-msgid "end favourites edit"
-msgstr "結束喜愛頻道編輯"
 
 msgid "enigma2 and network"
 msgstr "Enigma2 和 網路"
@@ -13605,10 +13732,6 @@ msgstr "檔案名"
 
 msgid "film/cinema"
 msgstr ""
-
-#, fuzzy
-msgid "find currently played service"
-msgstr "當前服務已運行時間"
 
 msgid "fine arts"
 msgstr ""
@@ -14011,12 +14134,6 @@ msgstr ""
 msgid "picons"
 msgstr ""
 
-msgid "play as picture in picture"
-msgstr ""
-
-msgid "play in mainwindow"
-msgstr ""
-
 msgid "please press OK when ready"
 msgstr "準備好後，按OK鍵"
 
@@ -14051,9 +14168,6 @@ msgstr ""
 msgid "pre-school children's program"
 msgstr ""
 
-msgid "purge deleted userbouquets"
-msgstr ""
-
 msgid "receiver software because updates are available."
 msgstr ""
 
@@ -14079,53 +14193,16 @@ msgstr ""
 msgid "remove after this position"
 msgstr "移除這個位置之後的"
 
-msgid "remove all alternatives"
-msgstr "移除所有項目"
-
-msgid "remove all new found flags"
-msgstr "移除所有新發現標記"
-
 msgid "remove before this position"
 msgstr "移除這個位置之前的"
 
-#, fuzzy
-msgid "remove bouquet from parental protection"
-msgstr "取消家長控制"
-
-#, fuzzy
-msgid "remove cable services"
-msgstr "保護服務"
-
-msgid "remove entry"
-msgstr "移除項目"
-
-msgid "remove from parental protection"
-msgstr "取消家長控制"
-
-msgid "remove new found flag"
-msgstr "移除新發現標記"
-
-msgid "remove selected satellite"
-msgstr "移除選定的衛星"
-
-#, fuzzy
-msgid "remove terrestrial services"
-msgstr "保護服務"
-
 msgid "remove this mark"
 msgstr "移除這個標記"
-
-#, fuzzy
-msgid "rename entry"
-msgstr "移除項目"
 
 msgid "repeated"
 msgstr "重複"
 
 msgid "reserved for future use"
-msgstr ""
-
-msgid "restore deleted userbouquets"
 msgstr ""
 
 msgid "reverse by date"
@@ -14178,15 +14255,8 @@ msgid "serious/classical/religious/historical movie/drama"
 msgstr ""
 
 #, fuzzy
-msgid "service is in bouquet parental protection"
-msgstr "取消家長控制"
-
-#, fuzzy
 msgid "service off-air"
 msgstr "頻道密碼"
-
-msgid "set as startup service"
-msgstr ""
 
 #, fuzzy
 msgid "settings"
@@ -14198,9 +14268,6 @@ msgstr "顯示DVD主功能表"
 msgid "show all tags"
 msgstr ""
 
-msgid "show alternatives"
-msgstr "顯示選項"
-
 msgid "show event details"
 msgstr "顯示事件詳細內容"
 
@@ -14209,9 +14276,6 @@ msgstr ""
 
 msgid "show softwaremanager on blue button"
 msgstr ""
-
-msgid "show transponder info"
-msgstr "顯示轉發器資訊"
 
 msgid "show/game show (general)"
 msgstr ""
@@ -14297,9 +14361,6 @@ msgstr ""
 
 msgid "stereo"
 msgstr "身歷聲"
-
-msgid "stop using as startup service"
-msgstr ""
 
 #, fuzzy
 msgid "successful"

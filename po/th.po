@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-17 17:48+0100\n"
+"POT-Creation-Date: 2019-12-08 00:14+0100\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -778,6 +778,18 @@ msgstr "เพิ่มผู้ให้บริการ"
 msgid "Abort"
 msgstr "ยกเลิก"
 
+#, fuzzy
+msgid "Abort alternatives edit"
+msgstr "ยกเลิกการแก้ไขอื่น"
+
+#, fuzzy
+msgid "Abort bouquet edit"
+msgstr "ยกเลิกการแก้ไขกลุ่มรายการ"
+
+#, fuzzy
+msgid "Abort favourites edit"
+msgstr "ยกเลิกการแก้ไขรายการโปรด"
+
 msgid "About"
 msgstr "เกี่ยวกับ"
 
@@ -863,8 +875,20 @@ msgid "Add a new title"
 msgstr "เพิ่มเรื่องใหม่"
 
 #, fuzzy
+msgid "Add alternatives"
+msgstr "เพิ่มทางเลือกอื่น"
+
+#, fuzzy
 msgid "Add bookmark"
 msgstr "เพิ่มบุ๊คมาร์ค"
+
+#, fuzzy
+msgid "Add bouquet"
+msgstr "เพิ่มกลุ่มรายการ"
+
+#, fuzzy
+msgid "Add bouquet to parental protection"
+msgstr "เพิ่มรายการเข้าสู่กลุ่มจำกัดอายุ"
 
 #, fuzzy
 msgid "Add current folder to bookmarks"
@@ -881,6 +905,10 @@ msgstr "เพิ่มไฟล์นี้ในสารบัญ"
 #, fuzzy
 msgid "Add files to playlist"
 msgstr "เพิ่มไฟล์ในสารบัญ"
+
+#, fuzzy
+msgid "Add marker"
+msgstr "เพิ่มจุดทำเครื่องหมาย"
 
 #, fuzzy
 msgid "Add plugin to Extensions menu*"
@@ -917,6 +945,18 @@ msgstr "เลือกไฟล์/โฟล์เดอร์ที่จะ�
 msgid "Add service"
 msgstr "เพิ่มบริการ"
 
+#, fuzzy
+msgid "Add service to bouquet"
+msgstr "เพิ่มบริการเข้าสู่กลุ่มรายการ"
+
+#, fuzzy
+msgid "Add service to favourites"
+msgstr "เพิ่มบริการเข้าสู่รายการโปรด"
+
+#, fuzzy
+msgid "Add services to this bouquet?"
+msgstr "เพิ่มบริการเข้าสู่กลุ่มรายการ"
+
 msgid "Add timer"
 msgstr "เพิ่มลงตารางเวลา"
 
@@ -928,6 +968,10 @@ msgstr "เพิ่มเข้ากลุ่ม (Bouquet)"
 
 msgid "Add to favourites"
 msgstr "เพิ่มเข้ารายการโปรด (Favourites)"
+
+#, fuzzy
+msgid "Add to parental protection"
+msgstr "เพิ่มรายการเข้าสู่กลุ่มจำกัดอายุ"
 
 msgid "Add/remove change timer for current event"
 msgstr ""
@@ -1168,7 +1212,7 @@ msgstr ""
 msgid "Arabic"
 msgstr "ภาษาอาหรับ"
 
-msgid "Are you sure to purge all deleted userbouquets?"
+msgid "Are you sure to purge all deleted user bouquets?"
 msgstr ""
 
 #, python-format
@@ -1859,6 +1903,9 @@ msgstr "ความจุ:"
 msgid "Capacity: "
 msgstr "ความจุ:"
 
+msgid "Card"
+msgstr ""
+
 msgid "Cascade PiP"
 msgstr ""
 
@@ -2191,6 +2238,9 @@ msgstr "ติดต่อสื่อสาร"
 msgid "Comoros"
 msgstr ""
 
+msgid "Compact flash"
+msgstr ""
+
 msgid "Complete"
 msgstr "สำเร็จ"
 
@@ -2208,16 +2258,16 @@ msgid "Config resolution of pictures"
 msgstr ""
 
 #, fuzzy
+msgid "Configuration"
+msgstr "ตั้งค่าเครือข่าย..."
+
+#, fuzzy
 msgid "Configuration mode"
 msgstr "โหมดการตั้งค่า"
 
 #, fuzzy, python-format
 msgid "Configuration mode: %s"
 msgstr "โหมดการตั้งค่า"
-
-#, fuzzy
-msgid "Configuration..."
-msgstr "ตั้งค่าเครือข่าย..."
 
 #, fuzzy
 msgid "Configure ATSC"
@@ -2704,6 +2754,10 @@ msgstr ""
 
 msgid "Copy folder"
 msgstr ""
+
+#, fuzzy
+msgid "Copy to bouquets"
+msgstr "คัดลอกเข้าสู่กลุ่มรายการ"
 
 msgid "Costa Rica"
 msgstr ""
@@ -3331,6 +3385,10 @@ msgstr ""
 msgid "Disable current event but not coming events"
 msgstr "หยุดรายการปัจจุบัน แต่ไม่หยุดกับรายการต่อไป"
 
+#, fuzzy
+msgid "Disable move mode"
+msgstr "เลิกโหมดเคลื่อนย้าย"
+
 msgid "Disable timer"
 msgstr ""
 
@@ -3717,6 +3775,10 @@ msgstr "แก้ไข DNS"
 msgid "Edit Title"
 msgstr "แก้ไขชื่อเรื่อง"
 
+#, fuzzy
+msgid "Edit alternatives"
+msgstr "แก้ไขแบบอื่น"
+
 msgid "Edit chapters of current title"
 msgstr "แก้ไขตอนที่ของเรื่องปัจจุบัน"
 
@@ -3828,6 +3890,10 @@ msgid "Enable auto fast scan for %s"
 msgstr "เปิดใช้ส่วนควบคุมอายุรับชม"
 
 #, fuzzy
+msgid "Enable bouquet edit"
+msgstr "แก้ไขกลุ่มรายการ"
+
+#, fuzzy
 msgid "Enable bouquet selection in multi-EPG"
 msgstr "แก้ไขกลุ่มรายการ"
 
@@ -3838,6 +3904,10 @@ msgstr "เปิดใช้งาน"
 msgid "Enable fallback remote receiver"
 msgstr ""
 
+#, fuzzy
+msgid "Enable favourites edit"
+msgstr "แก้ไขรายการโปรด"
+
 msgid "Enable freesat EPG"
 msgstr ""
 
@@ -3846,6 +3916,10 @@ msgstr ""
 
 msgid "Enable infobar fade-out"
 msgstr ""
+
+#, fuzzy
+msgid "Enable move mode"
+msgstr "ทำการเคลื่อนย้าย"
 
 msgid "Enable multiple bouquets"
 msgstr "เปิดใช้หลายกลุ่มรายการ"
@@ -3920,6 +3994,18 @@ msgstr "ชนิดคีย์"
 
 msgid "Encryption:"
 msgstr "การเข้ารหัส:"
+
+#, fuzzy
+msgid "End alternatives edit"
+msgstr "จบการแก้ไขแบบอื่น"
+
+#, fuzzy
+msgid "End bouquet edit"
+msgstr "จบการแก้ไขกลุ่มรายการ"
+
+#, fuzzy
+msgid "End favourites edit"
+msgstr "จบรายการโปรด"
 
 msgid "End time"
 msgstr "เวลาสิ้นสุด"
@@ -4180,10 +4266,6 @@ msgstr "ออกจากตัวช่วยเครือข่าย"
 
 msgid "Exit the wizard"
 msgstr "ออกจากตัวช่วย"
-
-#, fuzzy
-msgid "Exit/OK"
-msgstr "ออก"
 
 msgid "Expert"
 msgstr "ชำนาญ"
@@ -4469,6 +4551,10 @@ msgstr ""
 
 msgid "Final scroll delay"
 msgstr ""
+
+#, fuzzy
+msgid "Find currently playing service"
+msgstr "ป้องกันบริการ"
 
 msgid "Fine movement"
 msgstr ""
@@ -4972,6 +5058,10 @@ msgstr ""
 
 msgid "Handle wakeup from TV"
 msgstr ""
+
+#, fuzzy
+msgid "Hard disk"
+msgstr "ฮาร์ดดิสก์"
 
 #, fuzzy
 msgid "Hard disk setup"
@@ -5992,6 +6082,9 @@ msgstr ""
 msgid "MIME Version"
 msgstr "Inversion"
 
+msgid "MMC card"
+msgstr ""
+
 msgid "MORE"
 msgstr "เพิ่ม"
 
@@ -6635,6 +6728,14 @@ msgstr "ตั้งค่าเครือข่าย..."
 #, fuzzy
 msgid "Network configuration..."
 msgstr "ตั้งค่าเครือข่าย..."
+
+#, fuzzy
+msgid "Network mount"
+msgstr "ไม่พบเครือข่าย"
+
+#, fuzzy, python-format
+msgid "Network mount %s"
+msgstr "ทดสอบเครือข่าย"
 
 msgid "Network name (SSID)"
 msgstr ""
@@ -7467,6 +7568,10 @@ msgid "Play DVDs"
 msgstr "เล่นดีวีดี"
 
 #, fuzzy
+msgid "Play as Picture in Picture"
+msgstr "ภาพซ้อนภาพ"
+
+#, fuzzy
 msgid "Play audio-CD..."
 msgstr "เล่นซีดีเสียง..."
 
@@ -7487,6 +7592,9 @@ msgstr "เล่นไฟล์ต่อไป หรือจากสาร�
 #, fuzzy
 msgid "Play from previous mark or playlist entry"
 msgstr "เล่นไฟล์ก่อนหน้าหรือเล่นจากสารบัญรายการ"
+
+msgid "Play in main window"
+msgstr ""
 
 #, fuzzy
 msgid "Play music..."
@@ -8138,6 +8246,10 @@ msgstr "ผู้ให้บริการ"
 msgid "Puerto Rico"
 msgstr ""
 
+#, fuzzy
+msgid "Purge deleted user bouquets"
+msgstr "เปิดใช้หลายกลุ่มรายการ"
+
 msgid "Put TV in standby"
 msgstr ""
 
@@ -8186,6 +8298,10 @@ msgstr "RGB"
 
 msgid "Radio"
 msgstr "วิทยุ"
+
+#, fuzzy
+msgid "Ram disk"
+msgstr "ฮาร์ดดิสก์"
 
 msgid "Random"
 msgstr "แบบสุ่ม"
@@ -8421,12 +8537,28 @@ msgid "Remove a nameserver entry"
 msgstr "ลบ Nameserver นี้ออก"
 
 #, fuzzy
+msgid "Remove all alternatives"
+msgstr "ลบทางเลือกอื่นออกทั้งหมด"
+
+#, fuzzy
 msgid "Remove all logfiles"
 msgstr "ลบทางเลือกอื่นออกทั้งหมด"
 
 #, fuzzy
+msgid "Remove all new found flags"
+msgstr "ลบเครื่องหมาย\"ใหม่\" ออกทั้งหมด"
+
+#, fuzzy
 msgid "Remove bookmark"
 msgstr "ลบบุ๊คมาร์ค"
+
+#, fuzzy
+msgid "Remove bouquet from parental protection"
+msgstr "ยกเลิกข้อจำกัดอายุ"
+
+#, fuzzy
+msgid "Remove cable services"
+msgstr "ป้องกันบริการ"
 
 msgid "Remove completed timers after (days)"
 msgstr ""
@@ -8441,14 +8573,34 @@ msgstr "ลบเชื่อเรื่องที่เลือกออก
 msgid "Remove directory"
 msgstr "ลบโฟล์เดอร์ออก"
 
+#, fuzzy
+msgid "Remove entry"
+msgstr "ลบรายการนี้ออก"
+
+#, fuzzy
+msgid "Remove from parental protection"
+msgstr "ยกเลิกข้อจำกัดอายุ"
+
 msgid "Remove items from trash can after (days)"
 msgstr ""
+
+#, fuzzy
+msgid "Remove new found flag"
+msgstr "ลบเครื่องหมาย \"ใหม่\" ออก"
 
 msgid "Remove plugins"
 msgstr "ลบ Plugin ออก"
 
 msgid "Remove selected folder from bookmarks"
 msgstr ""
+
+#, fuzzy
+msgid "Remove selected satellite"
+msgstr "ลบดาวเทียมนี้ออก"
+
+#, fuzzy
+msgid "Remove terrestrial services"
+msgstr "ป้องกันบริการ"
 
 msgid "Remove texts for the hearing impaired from external subtitles (instrumental music or environmental sounds, e.g., when a doorbell rings or a gun shot is heard)."
 msgstr ""
@@ -8480,6 +8632,10 @@ msgstr "ลบเรื่อง"
 
 msgid "Rename"
 msgstr "เปลี่ยนชื่อ"
+
+#, fuzzy
+msgid "Rename entry"
+msgstr "ลบรายการนี้ออก"
 
 #, fuzzy
 msgid "Rename file/directory"
@@ -8600,6 +8756,10 @@ msgstr "นำกลับมาใช้"
 
 msgid "Restore backups"
 msgstr "นำสำรองกลับมาใช้"
+
+#, fuzzy
+msgid "Restore deleted user bouquets"
+msgstr "เปิดใช้หลายกลุ่มรายการ"
 
 #, fuzzy
 msgid "Restore inetd"
@@ -9535,6 +9695,10 @@ msgstr "บริการต่างๆ"
 msgid "Service ID"
 msgstr "บริการ"
 
+#, fuzzy
+msgid "Service belongs to a parental protected bouquet"
+msgstr "บริการนี้ถูกเพิ่มเข้ากลุ่มรายการแล้ว"
+
 msgid "Service has been added to the favourites."
 msgstr "บริการนี้ถูกเพิ่มเข้ารายการโปรดแล้ว"
 
@@ -9623,6 +9787,10 @@ msgstr ""
 
 msgid "Set alternative fallback tuners for DVB-T/C or ATSC"
 msgstr ""
+
+#, fuzzy
+msgid "Set as startup service"
+msgstr "สลับบริการ"
 
 msgid "Set blocktimes by weekday"
 msgstr ""
@@ -9830,6 +9998,10 @@ msgstr "แสดงสถานะของ WLAN"
 
 msgid "Show Weather Widget"
 msgstr ""
+
+#, fuzzy
+msgid "Show alternatives"
+msgstr "แสดงทางเลือกอื่น"
 
 msgid "Show animation while busy"
 msgstr ""
@@ -10083,6 +10255,10 @@ msgstr "แสดงเครื่องเล่นวิทยุ..."
 #, fuzzy
 msgid "Show the plugin browser.."
 msgstr "แสดงปลั๊กอิน"
+
+#, fuzzy
+msgid "Show transponder info"
+msgstr "แสดงข้อมูล Transponder"
 
 msgid "Show two lines per entry"
 msgstr ""
@@ -10703,6 +10879,10 @@ msgstr "หยุดควบคุมรายการสด"
 msgid "Stop timeshift?"
 msgstr "หยุดควบคุมรายการสด?"
 
+#, fuzzy
+msgid "Stop using as startup service"
+msgstr "สลับบริการ"
+
 msgid "Stopped"
 msgstr ""
 
@@ -11011,6 +11191,9 @@ msgstr "สารบัญของคอลเล็คชั่น"
 
 msgid "Tags"
 msgstr "ป้าย"
+
+msgid "Taiwan"
+msgstr ""
 
 msgid "Tajikistan"
 msgstr ""
@@ -11931,6 +12114,10 @@ msgstr ""
 
 #, fuzzy
 msgid "USB Stick"
+msgstr "USB เมมโมรี่"
+
+#, fuzzy
+msgid "USB stick"
 msgstr "USB เมมโมรี่"
 
 msgid "Uganda"
@@ -13309,9 +13496,6 @@ msgstr ""
 msgid "[Image Info]\n"
 msgstr ""
 
-msgid "[a]"
-msgstr ""
-
 msgid "[alternative edit]"
 msgstr "[แก้ไขอื่น]"
 
@@ -13330,15 +13514,6 @@ msgstr "ส่วนนี้จะกำหนดบริการ/ผู้�
 msgid "a gui to assign services/providers/caids to common interface modules"
 msgstr "ส่วนนี้จะกำหนดบริการ/ผู้ให้บริการ/caids ให้กับอินเตอร์เฟซพื้นฐาน"
 
-msgid "abort alternatives edit"
-msgstr "ยกเลิกการแก้ไขอื่น"
-
-msgid "abort bouquet edit"
-msgstr "ยกเลิกการแก้ไขกลุ่มรายการ"
-
-msgid "abort favourites edit"
-msgstr "ยกเลิกการแก้ไขรายการโปรด"
-
 msgid "about to start"
 msgstr "กำลังจะเริ่ม"
 
@@ -13354,28 +13529,6 @@ msgstr ""
 
 msgid "actual time only"
 msgstr ""
-
-msgid "add alternatives"
-msgstr "เพิ่มทางเลือกอื่น"
-
-msgid "add bouquet"
-msgstr "เพิ่มกลุ่มรายการ"
-
-#, fuzzy
-msgid "add bouquet to parental protection"
-msgstr "เพิ่มรายการเข้าสู่กลุ่มจำกัดอายุ"
-
-msgid "add marker"
-msgstr "เพิ่มจุดทำเครื่องหมาย"
-
-msgid "add service to bouquet"
-msgstr "เพิ่มบริการเข้าสู่กลุ่มรายการ"
-
-msgid "add service to favourites"
-msgstr "เพิ่มบริการเข้าสู่รายการโปรด"
-
-msgid "add to parental protection"
-msgstr "เพิ่มรายการเข้าสู่กลุ่มจำกัดอายุ"
 
 msgid "adult movie/drama"
 msgstr ""
@@ -13589,9 +13742,6 @@ msgstr ""
 msgid "copy folder"
 msgstr ""
 
-msgid "copy to bouquets"
-msgstr "คัดลอกเข้าสู่กลุ่มรายการ"
-
 msgid "create symlink ..."
 msgstr ""
 
@@ -13621,9 +13771,6 @@ msgstr "ไม่ใช้แล้ว"
 #, fuzzy
 msgid "disable intro screen"
 msgstr "ไม่ใช้งานภาพซ้อนภาพ"
-
-msgid "disable move mode"
-msgstr "เลิกโหมดเคลื่อนย้าย"
 
 msgid "disabled"
 msgstr "ไม่ใช้แล้ว"
@@ -13658,9 +13805,6 @@ msgstr ""
 msgid "economics/social advisory"
 msgstr ""
 
-msgid "edit alternatives"
-msgstr "แก้ไขแบบอื่น"
-
 msgid "education/science/factual topics (general)"
 msgstr ""
 
@@ -13674,32 +13818,14 @@ msgstr "ว่าง"
 msgid "enable"
 msgstr "ใช้งานแล้ว"
 
-msgid "enable bouquet edit"
-msgstr "แก้ไขกลุ่มรายการ"
-
-msgid "enable favourite edit"
-msgstr "แก้ไขรายการโปรด"
-
 msgid "enable intro screen"
 msgstr ""
-
-msgid "enable move mode"
-msgstr "ทำการเคลื่อนย้าย"
 
 msgid "enabled"
 msgstr "ใช้งานแล้ว"
 
-msgid "end alternatives edit"
-msgstr "จบการแก้ไขแบบอื่น"
-
-msgid "end bouquet edit"
-msgstr "จบการแก้ไขกลุ่มรายการ"
-
 msgid "end cut here"
 msgstr "สิ้นสุดการตัดตรงนี้"
-
-msgid "end favourites edit"
-msgstr "จบรายการโปรด"
 
 #, fuzzy
 msgid "enigma2 and network"
@@ -13781,9 +13907,6 @@ msgid "filename"
 msgstr "ชื่อไฟล์"
 
 msgid "film/cinema"
-msgstr ""
-
-msgid "find currently played service"
 msgstr ""
 
 msgid "fine arts"
@@ -14188,12 +14311,6 @@ msgstr ""
 msgid "picons"
 msgstr ""
 
-msgid "play as picture in picture"
-msgstr ""
-
-msgid "play in mainwindow"
-msgstr ""
-
 msgid "please press OK when ready"
 msgstr "กดปุ่ม OK เมื่อพร้อม"
 
@@ -14228,9 +14345,6 @@ msgstr ""
 msgid "pre-school children's program"
 msgstr ""
 
-msgid "purge deleted userbouquets"
-msgstr ""
-
 msgid "receiver software because updates are available."
 msgstr ""
 
@@ -14256,52 +14370,16 @@ msgstr ""
 msgid "remove after this position"
 msgstr "ลบหลังจากตำแหน่งนี้ออก"
 
-msgid "remove all alternatives"
-msgstr "ลบทางเลือกอื่นออกทั้งหมด"
-
-msgid "remove all new found flags"
-msgstr "ลบเครื่องหมาย\"ใหม่\" ออกทั้งหมด"
-
 msgid "remove before this position"
 msgstr "ลบก่อนหน้าตำแหน่งนี้ออก"
 
-#, fuzzy
-msgid "remove bouquet from parental protection"
-msgstr "ยกเลิกข้อจำกัดอายุ"
-
-#, fuzzy
-msgid "remove cable services"
-msgstr "ป้องกันบริการ"
-
-msgid "remove entry"
-msgstr "ลบรายการนี้ออก"
-
-msgid "remove from parental protection"
-msgstr "ยกเลิกข้อจำกัดอายุ"
-
-msgid "remove new found flag"
-msgstr "ลบเครื่องหมาย \"ใหม่\" ออก"
-
-msgid "remove selected satellite"
-msgstr "ลบดาวเทียมนี้ออก"
-
-#, fuzzy
-msgid "remove terrestrial services"
-msgstr "ป้องกันบริการ"
-
 msgid "remove this mark"
 msgstr "ลบรายการนี้ออก"
-
-msgid "rename entry"
-msgstr ""
 
 msgid "repeated"
 msgstr "เล่นซ้ำ"
 
 msgid "reserved for future use"
-msgstr ""
-
-msgid "restore deleted userbouquets"
 msgstr ""
 
 msgid "reverse by date"
@@ -14353,15 +14431,8 @@ msgid "serious/classical/religious/historical movie/drama"
 msgstr ""
 
 #, fuzzy
-msgid "service is in bouquet parental protection"
-msgstr "ยกเลิกข้อจำกัดอายุ"
-
-#, fuzzy
 msgid "service off-air"
 msgstr "กำหนดบริการ/ผู้ให้บริการr:"
-
-msgid "set as startup service"
-msgstr ""
 
 #, fuzzy
 msgid "settings"
@@ -14373,9 +14444,6 @@ msgstr "แสดงเมนูหลักของดีวีดี"
 msgid "show all tags"
 msgstr ""
 
-msgid "show alternatives"
-msgstr "แสดงทางเลือกอื่น"
-
 msgid "show event details"
 msgstr "แสดงรายละเอียดรายการ"
 
@@ -14384,9 +14452,6 @@ msgstr ""
 
 msgid "show softwaremanager on blue button"
 msgstr ""
-
-msgid "show transponder info"
-msgstr "แสดงข้อมูล Transponder"
 
 msgid "show/game show (general)"
 msgstr ""
@@ -14473,9 +14538,6 @@ msgstr ""
 
 msgid "stereo"
 msgstr "สเตอริโอ"
-
-msgid "stop using as startup service"
-msgstr ""
 
 msgid "successful"
 msgstr ""

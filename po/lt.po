@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-17 17:48+0100\n"
+"POT-Creation-Date: 2019-12-08 00:14+0100\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -780,6 +780,18 @@ msgstr "pridėti Tiekėją"
 msgid "Abort"
 msgstr "Nutraukti"
 
+#, fuzzy
+msgid "Abort alternatives edit"
+msgstr "nutraukti kitų redagavimą"
+
+#, fuzzy
+msgid "Abort bouquet edit"
+msgstr "nutraukti paketo redagavimą"
+
+#, fuzzy
+msgid "Abort favourites edit"
+msgstr "nutraukti mėgstamiausių redagavimą"
+
 msgid "About"
 msgstr "Apie"
 
@@ -865,8 +877,20 @@ msgid "Add a new title"
 msgstr "Pridėkite naują pavadinimą"
 
 #, fuzzy
+msgid "Add alternatives"
+msgstr "pridėti kitus"
+
+#, fuzzy
 msgid "Add bookmark"
 msgstr "pridėti žymę"
+
+#, fuzzy
+msgid "Add bouquet"
+msgstr "pridėti paketą"
+
+#, fuzzy
+msgid "Add bouquet to parental protection"
+msgstr "pridėti į tėvų kontrolę"
 
 #, fuzzy
 msgid "Add current folder to bookmarks"
@@ -883,6 +907,10 @@ msgstr "pridėti failą į grojaraštį"
 #, fuzzy
 msgid "Add files to playlist"
 msgstr "pridėti failus į grojaraštį"
+
+#, fuzzy
+msgid "Add marker"
+msgstr "pridėti žymeklį"
 
 #, fuzzy
 msgid "Add plugin to Extensions menu*"
@@ -919,6 +947,18 @@ msgstr "Išsirinkite failus/aplankus dėl atsarginės kopijos"
 msgid "Add service"
 msgstr "pridėti Kanalą"
 
+#, fuzzy
+msgid "Add service to bouquet"
+msgstr "pridėti kanalą į paketą"
+
+#, fuzzy
+msgid "Add service to favourites"
+msgstr "pridėti kanalą į mėgstamiausi"
+
+#, fuzzy
+msgid "Add services to this bouquet?"
+msgstr "pridėti kanalą į paketą"
+
 msgid "Add timer"
 msgstr "Laikmatis"
 
@@ -930,6 +970,10 @@ msgstr "Pridėti į paketą"
 
 msgid "Add to favourites"
 msgstr "Pridėti į mėgstamiausius"
+
+#, fuzzy
+msgid "Add to parental protection"
+msgstr "pridėti į tėvų kontrolę"
 
 msgid "Add/remove change timer for current event"
 msgstr ""
@@ -1170,7 +1214,7 @@ msgstr ""
 msgid "Arabic"
 msgstr "Arabų"
 
-msgid "Are you sure to purge all deleted userbouquets?"
+msgid "Are you sure to purge all deleted user bouquets?"
 msgstr ""
 
 #, python-format
@@ -1863,6 +1907,9 @@ msgstr "Talpa: "
 msgid "Capacity: "
 msgstr "Talpa: "
 
+msgid "Card"
+msgstr ""
+
 msgid "Cascade PiP"
 msgstr ""
 
@@ -2195,6 +2242,9 @@ msgstr "Komunikacija"
 msgid "Comoros"
 msgstr ""
 
+msgid "Compact flash"
+msgstr ""
+
 msgid "Complete"
 msgstr "Įvykdyta"
 
@@ -2212,16 +2262,16 @@ msgid "Config resolution of pictures"
 msgstr ""
 
 #, fuzzy
+msgid "Configuration"
+msgstr "Tinklo konfigūracija..."
+
+#, fuzzy
 msgid "Configuration mode"
 msgstr "Konfigūravimo būdas"
 
 #, fuzzy, python-format
 msgid "Configuration mode: %s"
 msgstr "Konfigūravimo būdas"
-
-#, fuzzy
-msgid "Configuration..."
-msgstr "Tinklo konfigūracija..."
 
 #, fuzzy
 msgid "Configure ATSC"
@@ -2714,6 +2764,10 @@ msgstr ""
 
 msgid "Copy folder"
 msgstr ""
+
+#, fuzzy
+msgid "Copy to bouquets"
+msgstr "kopijuoti į paketus"
 
 msgid "Costa Rica"
 msgstr ""
@@ -3341,6 +3395,10 @@ msgstr "Išjungti foninį skanavimą"
 msgid "Disable current event but not coming events"
 msgstr "Sustabdyti dabartinę užduotį, nevykdant sekančių užduočių"
 
+#, fuzzy
+msgid "Disable move mode"
+msgstr "išjungti perkėlimą"
+
 msgid "Disable timer"
 msgstr ""
 
@@ -3729,6 +3787,10 @@ msgstr "Redaguoti DNS"
 msgid "Edit Title"
 msgstr "Redaguoti"
 
+#, fuzzy
+msgid "Edit alternatives"
+msgstr "redaguoti kitus"
+
 msgid "Edit chapters of current title"
 msgstr "Redaguokite dabartinio pavadinimo skyrius"
 
@@ -3843,6 +3905,10 @@ msgid "Enable auto fast scan for %s"
 msgstr "Įjungti tėvų kontrolę"
 
 #, fuzzy
+msgid "Enable bouquet edit"
+msgstr "įjungti paketo redagavimą"
+
+#, fuzzy
 msgid "Enable bouquet selection in multi-EPG"
 msgstr "įjungti paketo redagavimą"
 
@@ -3853,6 +3919,10 @@ msgstr "Įjungta"
 msgid "Enable fallback remote receiver"
 msgstr ""
 
+#, fuzzy
+msgid "Enable favourites edit"
+msgstr "įjungti mėgstamiausių redagavimą"
+
 msgid "Enable freesat EPG"
 msgstr "Įjungti freesat EPG"
 
@@ -3861,6 +3931,10 @@ msgstr ""
 
 msgid "Enable infobar fade-out"
 msgstr ""
+
+#, fuzzy
+msgid "Enable move mode"
+msgstr "įjungti perkėlimą"
 
 msgid "Enable multiple bouquets"
 msgstr "Įjungti daugiau paketų"
@@ -3935,6 +4009,18 @@ msgstr "Mygtuko užšifravimo tipas"
 
 msgid "Encryption:"
 msgstr "Užšifravimas:"
+
+#, fuzzy
+msgid "End alternatives edit"
+msgstr "baigti kitų redagavimą"
+
+#, fuzzy
+msgid "End bouquet edit"
+msgstr "baigti paketo redagavimą"
+
+#, fuzzy
+msgid "End favourites edit"
+msgstr "baigti mėgstamiausių redagavimą"
 
 msgid "End time"
 msgstr "Pabaigos laikas"
@@ -4196,10 +4282,6 @@ msgstr "Išeiti iš tinklo vedlio"
 
 msgid "Exit the wizard"
 msgstr "Išeiti iš nustatymų vedlio"
-
-#, fuzzy
-msgid "Exit/OK"
-msgstr "Išeiti"
 
 msgid "Expert"
 msgstr "Išplėstinis"
@@ -4486,6 +4568,10 @@ msgstr ""
 
 msgid "Final scroll delay"
 msgstr ""
+
+#, fuzzy
+msgid "Find currently playing service"
+msgstr "Apsaugoti kanalus"
 
 msgid "Fine movement"
 msgstr ""
@@ -4990,6 +5076,10 @@ msgstr ""
 
 msgid "Handle wakeup from TV"
 msgstr ""
+
+#, fuzzy
+msgid "Hard disk"
+msgstr "Kietas diskas"
 
 #, fuzzy
 msgid "Hard disk setup"
@@ -6012,6 +6102,9 @@ msgstr ""
 msgid "MIME Version"
 msgstr "Pervertimas"
 
+msgid "MMC card"
+msgstr ""
+
 msgid "MORE"
 msgstr "DAUGIAU"
 
@@ -6656,6 +6749,14 @@ msgstr "Tinklo konfigūracija..."
 #, fuzzy
 msgid "Network configuration..."
 msgstr "Tinklo konfigūracija..."
+
+#, fuzzy
+msgid "Network mount"
+msgstr "Jokie tinklai nesurasti"
+
+#, fuzzy, python-format
+msgid "Network mount %s"
+msgstr "Tinklo testavimas"
 
 #, fuzzy
 msgid "Network name (SSID)"
@@ -7497,6 +7598,10 @@ msgid "Play DVDs"
 msgstr "Leisti DVD"
 
 #, fuzzy
+msgid "Play as Picture in Picture"
+msgstr "rodyti paveikslėlį paveikslėlyje"
+
+#, fuzzy
 msgid "Play audio-CD..."
 msgstr "Paleisti Garso-CD..."
 
@@ -7517,6 +7622,9 @@ msgstr "leisti nuo kito žymeklio arba grojaraščio užduoties"
 #, fuzzy
 msgid "Play from previous mark or playlist entry"
 msgstr "leisti nuo buvusio žymeklio arba grojaraščio užduoties"
+
+msgid "Play in main window"
+msgstr ""
 
 #, fuzzy
 msgid "Play music..."
@@ -8174,6 +8282,10 @@ msgstr "Tiekėjai"
 msgid "Puerto Rico"
 msgstr ""
 
+#, fuzzy
+msgid "Purge deleted user bouquets"
+msgstr "Įjungti daugiau paketų"
+
 msgid "Put TV in standby"
 msgstr ""
 
@@ -8222,6 +8334,10 @@ msgstr "RGB"
 
 msgid "Radio"
 msgstr "Radijas"
+
+#, fuzzy
+msgid "Ram disk"
+msgstr "Kietas diskas"
 
 msgid "Random"
 msgstr "Atsitiktinis"
@@ -8458,12 +8574,28 @@ msgid "Remove a nameserver entry"
 msgstr "pašalinkite serverio pavadinimo įėjimą"
 
 #, fuzzy
+msgid "Remove all alternatives"
+msgstr "pašalinti visus kitus"
+
+#, fuzzy
 msgid "Remove all logfiles"
 msgstr "pašalinti visus kitus"
 
 #, fuzzy
+msgid "Remove all new found flags"
+msgstr "šalinti visus žymeklius 'naujas'"
+
+#, fuzzy
 msgid "Remove bookmark"
 msgstr "pašalinti žymę"
+
+#, fuzzy
+msgid "Remove bouquet from parental protection"
+msgstr "panaikinti tėvų kontrolę"
+
+#, fuzzy
+msgid "Remove cable services"
+msgstr "Apsaugoti kanalus"
 
 #, fuzzy
 msgid "Remove completed timers after (days)"
@@ -8480,14 +8612,34 @@ msgid "Remove directory"
 msgstr "pašalinti direktoriją"
 
 #, fuzzy
+msgid "Remove entry"
+msgstr "pašalinti"
+
+#, fuzzy
+msgid "Remove from parental protection"
+msgstr "panaikinti tėvų kontrolę"
+
+#, fuzzy
 msgid "Remove items from trash can after (days)"
 msgstr "Pašalinti elementus iš šiukšlinės po (dienų)"
+
+#, fuzzy
+msgid "Remove new found flag"
+msgstr "šalinti žymeklį 'naujas'"
 
 msgid "Remove plugins"
 msgstr "Pašalinti papildomas programas"
 
 msgid "Remove selected folder from bookmarks"
 msgstr ""
+
+#, fuzzy
+msgid "Remove selected satellite"
+msgstr "pašalinti pasirinktą palydovą"
+
+#, fuzzy
+msgid "Remove terrestrial services"
+msgstr "Apsaugoti kanalus"
 
 msgid "Remove texts for the hearing impaired from external subtitles (instrumental music or environmental sounds, e.g., when a doorbell rings or a gun shot is heard)."
 msgstr ""
@@ -8519,6 +8671,10 @@ msgstr "Pašalinti "
 
 msgid "Rename"
 msgstr "Pervardinti"
+
+#, fuzzy
+msgid "Rename entry"
+msgstr "pašalinti"
 
 #, fuzzy
 msgid "Rename file/directory"
@@ -8639,6 +8795,10 @@ msgstr "Atkurti"
 
 msgid "Restore backups"
 msgstr "Atkurti atsargines kopijas"
+
+#, fuzzy
+msgid "Restore deleted user bouquets"
+msgstr "Įjungti daugiau paketų"
 
 #, fuzzy
 msgid "Restore inetd"
@@ -9577,6 +9737,10 @@ msgstr "Kanalai"
 msgid "Service ID"
 msgstr "Apie kanalą"
 
+#, fuzzy
+msgid "Service belongs to a parental protected bouquet"
+msgstr "Kanalas buvo įtrauktas į pasirinktą paketą."
+
 msgid "Service has been added to the favourites."
 msgstr "Kanalas buvo įtrauktas į mėgstamiausius."
 
@@ -9666,6 +9830,10 @@ msgstr ""
 
 msgid "Set alternative fallback tuners for DVB-T/C or ATSC"
 msgstr ""
+
+#, fuzzy
+msgid "Set as startup service"
+msgstr "nustatyti kaip paleidimo kanalą"
 
 msgid "Set blocktimes by weekday"
 msgstr ""
@@ -9875,6 +10043,10 @@ msgstr "Rodyti belaidžio tinklo būseną"
 
 msgid "Show Weather Widget"
 msgstr ""
+
+#, fuzzy
+msgid "Show alternatives"
+msgstr "rodyti kitus"
 
 msgid "Show animation while busy"
 msgstr "Rodyti animaciją tuo metu, kai užimta"
@@ -10132,6 +10304,10 @@ msgstr "Rodyti radijo grotuvą..."
 #, fuzzy
 msgid "Show the plugin browser.."
 msgstr "Papildomų programų naršyklė"
+
+#, fuzzy
+msgid "Show transponder info"
+msgstr "transponderio informacija"
 
 msgid "Show two lines per entry"
 msgstr ""
@@ -10753,6 +10929,10 @@ msgstr "išjungti laiko poslinkį"
 msgid "Stop timeshift?"
 msgstr "Sustabdyti laiko poslinkį?"
 
+#, fuzzy
+msgid "Stop using as startup service"
+msgstr "nustatyti kaip paleidimo kanalą"
+
 msgid "Stopped"
 msgstr ""
 
@@ -11063,6 +11243,9 @@ msgstr "Turinio lentelė dėl kolekcijos"
 
 msgid "Tags"
 msgstr "Kortelės"
+
+msgid "Taiwan"
+msgstr ""
 
 msgid "Tajikistan"
 msgstr ""
@@ -12000,6 +12183,10 @@ msgstr ""
 
 #, fuzzy
 msgid "USB Stick"
+msgstr "USB raktas"
+
+#, fuzzy
+msgid "USB stick"
 msgstr "USB raktas"
 
 msgid "Uganda"
@@ -13384,9 +13571,6 @@ msgstr ""
 msgid "[Image Info]\n"
 msgstr ""
 
-msgid "[a]"
-msgstr ""
-
 msgid "[alternative edit]"
 msgstr "[kitų redagavimas]"
 
@@ -13405,15 +13589,6 @@ msgstr "kad paskirtų kanalus/tiekėjus bendriems įstatomiems moduliams"
 msgid "a gui to assign services/providers/caids to common interface modules"
 msgstr "kad paskirtų kanalus/tiekėjus/caids bendriems įstatomiems moduliams"
 
-msgid "abort alternatives edit"
-msgstr "nutraukti kitų redagavimą"
-
-msgid "abort bouquet edit"
-msgstr "nutraukti paketo redagavimą"
-
-msgid "abort favourites edit"
-msgstr "nutraukti mėgstamiausių redagavimą"
-
 msgid "about to start"
 msgstr "apie pradžią"
 
@@ -13429,28 +13604,6 @@ msgstr ""
 
 msgid "actual time only"
 msgstr ""
-
-msgid "add alternatives"
-msgstr "pridėti kitus"
-
-msgid "add bouquet"
-msgstr "pridėti paketą"
-
-#, fuzzy
-msgid "add bouquet to parental protection"
-msgstr "pridėti į tėvų kontrolę"
-
-msgid "add marker"
-msgstr "pridėti žymeklį"
-
-msgid "add service to bouquet"
-msgstr "pridėti kanalą į paketą"
-
-msgid "add service to favourites"
-msgstr "pridėti kanalą į mėgstamiausi"
-
-msgid "add to parental protection"
-msgstr "pridėti į tėvų kontrolę"
 
 msgid "adult movie/drama"
 msgstr ""
@@ -13664,9 +13817,6 @@ msgstr ""
 msgid "copy folder"
 msgstr ""
 
-msgid "copy to bouquets"
-msgstr "kopijuoti į paketus"
-
 msgid "create symlink ..."
 msgstr ""
 
@@ -13696,9 +13846,6 @@ msgstr "išjungtas"
 #, fuzzy
 msgid "disable intro screen"
 msgstr "Išjungti paveikslėlį paveikslėlyje"
-
-msgid "disable move mode"
-msgstr "išjungti perkėlimą"
 
 msgid "disabled"
 msgstr "išjungtas"
@@ -13733,9 +13880,6 @@ msgstr ""
 msgid "economics/social advisory"
 msgstr ""
 
-msgid "edit alternatives"
-msgstr "redaguoti kitus"
-
 msgid "education/science/factual topics (general)"
 msgstr ""
 
@@ -13749,32 +13893,14 @@ msgstr "tuščias"
 msgid "enable"
 msgstr "įjungtas"
 
-msgid "enable bouquet edit"
-msgstr "įjungti paketo redagavimą"
-
-msgid "enable favourite edit"
-msgstr "įjungti mėgstamiausių redagavimą"
-
 msgid "enable intro screen"
 msgstr ""
-
-msgid "enable move mode"
-msgstr "įjungti perkėlimą"
 
 msgid "enabled"
 msgstr "įjungtas"
 
-msgid "end alternatives edit"
-msgstr "baigti kitų redagavimą"
-
-msgid "end bouquet edit"
-msgstr "baigti paketo redagavimą"
-
 msgid "end cut here"
 msgstr "kirpimo pabaiga čia"
-
-msgid "end favourites edit"
-msgstr "baigti mėgstamiausių redagavimą"
 
 #, fuzzy
 msgid "enigma2 and network"
@@ -13856,9 +13982,6 @@ msgid "filename"
 msgstr "failo pavadinimas"
 
 msgid "film/cinema"
-msgstr ""
-
-msgid "find currently played service"
 msgstr ""
 
 msgid "fine arts"
@@ -14263,12 +14386,6 @@ msgstr ""
 msgid "picons"
 msgstr ""
 
-msgid "play as picture in picture"
-msgstr "rodyti paveikslėlį paveikslėlyje"
-
-msgid "play in mainwindow"
-msgstr ""
-
 msgid "please press OK when ready"
 msgstr "prašome paspausti OK, kai būsite pasiruošę"
 
@@ -14303,9 +14420,6 @@ msgstr ""
 msgid "pre-school children's program"
 msgstr ""
 
-msgid "purge deleted userbouquets"
-msgstr ""
-
 msgid "receiver software because updates are available."
 msgstr ""
 
@@ -14331,52 +14445,16 @@ msgstr ""
 msgid "remove after this position"
 msgstr "pašalinti po šios vietos"
 
-msgid "remove all alternatives"
-msgstr "pašalinti visus kitus"
-
-msgid "remove all new found flags"
-msgstr "šalinti visus žymeklius 'naujas'"
-
 msgid "remove before this position"
 msgstr "pašalinti po šios vietos"
 
-#, fuzzy
-msgid "remove bouquet from parental protection"
-msgstr "panaikinti tėvų kontrolę"
-
-#, fuzzy
-msgid "remove cable services"
-msgstr "Apsaugoti kanalus"
-
-msgid "remove entry"
-msgstr "pašalinti"
-
-msgid "remove from parental protection"
-msgstr "panaikinti tėvų kontrolę"
-
-msgid "remove new found flag"
-msgstr "šalinti žymeklį 'naujas'"
-
-msgid "remove selected satellite"
-msgstr "pašalinti pasirinktą palydovą"
-
-#, fuzzy
-msgid "remove terrestrial services"
-msgstr "Apsaugoti kanalus"
-
 msgid "remove this mark"
 msgstr "šalinti šį žymeklį"
-
-msgid "rename entry"
-msgstr ""
 
 msgid "repeated"
 msgstr "pakartotinis"
 
 msgid "reserved for future use"
-msgstr ""
-
-msgid "restore deleted userbouquets"
 msgstr ""
 
 msgid "reverse by date"
@@ -14428,15 +14506,8 @@ msgid "serious/classical/religious/historical movie/drama"
 msgstr ""
 
 #, fuzzy
-msgid "service is in bouquet parental protection"
-msgstr "panaikinti tėvų kontrolę"
-
-#, fuzzy
 msgid "service off-air"
 msgstr "kanalo PIN"
-
-msgid "set as startup service"
-msgstr "nustatyti kaip paleidimo kanalą"
 
 #, fuzzy
 msgid "settings"
@@ -14448,9 +14519,6 @@ msgstr "rodyti DVD pagrindinį meniu"
 msgid "show all tags"
 msgstr ""
 
-msgid "show alternatives"
-msgstr "rodyti kitus"
-
 msgid "show event details"
 msgstr "rodyti užduočių detales"
 
@@ -14459,9 +14527,6 @@ msgstr ""
 
 msgid "show softwaremanager on blue button"
 msgstr ""
-
-msgid "show transponder info"
-msgstr "transponderio informacija"
 
 msgid "show/game show (general)"
 msgstr ""
@@ -14548,9 +14613,6 @@ msgstr ""
 
 msgid "stereo"
 msgstr "stereo"
-
-msgid "stop using as startup service"
-msgstr ""
 
 msgid "successful"
 msgstr ""

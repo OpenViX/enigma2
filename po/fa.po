@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-17 17:48+0100\n"
+"POT-Creation-Date: 2019-12-08 00:14+0100\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -780,6 +780,18 @@ msgstr "ارائه کننده"
 msgid "Abort"
 msgstr "لغو"
 
+#, fuzzy
+msgid "Abort alternatives edit"
+msgstr "حالت رادیو متناوب"
+
+#, fuzzy
+msgid "Abort bouquet edit"
+msgstr "ویرایش لیست های کانال"
+
+#, fuzzy
+msgid "Abort favourites edit"
+msgstr "اضافه کردن به مورد علاقه"
+
 msgid "About"
 msgstr "درباره"
 
@@ -867,8 +879,20 @@ msgid "Add a new title"
 msgstr "اضافه کردن عنوان جدید"
 
 #, fuzzy
+msgid "Add alternatives"
+msgstr "حالت رادیو متناوب"
+
+#, fuzzy
 msgid "Add bookmark"
 msgstr "اضافه کردن علامت"
+
+#, fuzzy
+msgid "Add bouquet"
+msgstr "اضافه کردن به لیست"
+
+#, fuzzy
+msgid "Add bouquet to parental protection"
+msgstr "فعال کردن کنترل والدین"
 
 #, fuzzy
 msgid "Add current folder to bookmarks"
@@ -882,6 +906,10 @@ msgstr ""
 
 msgid "Add files to playlist"
 msgstr ""
+
+#, fuzzy
+msgid "Add marker"
+msgstr "اضافه کردن علامت"
 
 #, fuzzy
 msgid "Add plugin to Extensions menu*"
@@ -919,6 +947,18 @@ msgstr "انتخاب فایل و پوشه ها برای تهیه نسخه پشت
 msgid "Add service"
 msgstr "کانال"
 
+#, fuzzy
+msgid "Add service to bouquet"
+msgstr "اضافه کردن به لیست"
+
+#, fuzzy
+msgid "Add service to favourites"
+msgstr "اضافه کردن به مورد علاقه"
+
+#, fuzzy
+msgid "Add services to this bouquet?"
+msgstr "اضافه کردن به لیست"
+
 msgid "Add timer"
 msgstr "اضافه کردن زمان"
 
@@ -930,6 +970,10 @@ msgstr "اضافه کردن به لیست"
 
 msgid "Add to favourites"
 msgstr "اضافه کردن به مورد علاقه"
+
+#, fuzzy
+msgid "Add to parental protection"
+msgstr "فعال کردن کنترل والدین"
 
 msgid "Add/remove change timer for current event"
 msgstr ""
@@ -1170,7 +1214,7 @@ msgstr "هر فعالیتی"
 msgid "Arabic"
 msgstr "عربی"
 
-msgid "Are you sure to purge all deleted userbouquets?"
+msgid "Are you sure to purge all deleted user bouquets?"
 msgstr ""
 
 #, python-format
@@ -1866,6 +1910,9 @@ msgstr "ظرفیت:"
 msgid "Capacity: "
 msgstr "ظرفیت:"
 
+msgid "Card"
+msgstr ""
+
 msgid "Cascade PiP"
 msgstr ""
 
@@ -2198,6 +2245,9 @@ msgstr "ارتباط"
 msgid "Comoros"
 msgstr ""
 
+msgid "Compact flash"
+msgstr ""
+
 msgid "Complete"
 msgstr "کامل"
 
@@ -2214,16 +2264,16 @@ msgid "Config resolution of pictures"
 msgstr ""
 
 #, fuzzy
+msgid "Configuration"
+msgstr "پیکربندی شبکه"
+
+#, fuzzy
 msgid "Configuration mode"
 msgstr "حالت پیکربندی: "
 
 #, fuzzy, python-format
 msgid "Configuration mode: %s"
 msgstr "حالت پیکربندی: "
-
-#, fuzzy
-msgid "Configuration..."
-msgstr "پیکربندی شبکه"
 
 #, fuzzy
 msgid "Configure ATSC"
@@ -2726,6 +2776,10 @@ msgstr ""
 
 msgid "Copy folder"
 msgstr ""
+
+#, fuzzy
+msgid "Copy to bouquets"
+msgstr "اضافه کردن به لیست"
 
 msgid "Costa Rica"
 msgstr ""
@@ -3361,6 +3415,10 @@ msgstr "غیر فعال کردن اسکن کردن در پس زمینه"
 msgid "Disable current event but not coming events"
 msgstr "توقف رخداد فعلی بدون توجه به رخداد های بعدی"
 
+#, fuzzy
+msgid "Disable move mode"
+msgstr "غیر فعال شد"
+
 msgid "Disable timer"
 msgstr ""
 
@@ -3747,6 +3805,10 @@ msgstr "ویرایش DNS"
 msgid "Edit Title"
 msgstr "ویرایش عنوان"
 
+#, fuzzy
+msgid "Edit alternatives"
+msgstr "حالت رادیو متناوب"
+
 msgid "Edit chapters of current title"
 msgstr "ویرایش فصل های عنوان فعلی"
 
@@ -3863,6 +3925,10 @@ msgid "Enable auto fast scan for %s"
 msgstr "فعال کردن کنترل والدین"
 
 #, fuzzy
+msgid "Enable bouquet edit"
+msgstr "فعال کردن چندین لیست"
+
+#, fuzzy
 msgid "Enable bouquet selection in multi-EPG"
 msgstr "نمایش منوی انتخاب لیست"
 
@@ -3873,6 +3939,10 @@ msgstr "فعال شد"
 msgid "Enable fallback remote receiver"
 msgstr ""
 
+#, fuzzy
+msgid "Enable favourites edit"
+msgstr "اضافه کردن به مورد علاقه"
+
 msgid "Enable freesat EPG"
 msgstr "فعال کردن freesat EPG"
 
@@ -3881,6 +3951,10 @@ msgstr ""
 
 msgid "Enable infobar fade-out"
 msgstr ""
+
+#, fuzzy
+msgid "Enable move mode"
+msgstr "فعال شد"
 
 msgid "Enable multiple bouquets"
 msgstr "فعال کردن چندین لیست"
@@ -3954,6 +4028,18 @@ msgstr "نوع کد رمزگذاری"
 
 msgid "Encryption:"
 msgstr "رمزگذاری"
+
+#, fuzzy
+msgid "End alternatives edit"
+msgstr "حالت رادیو متناوب"
+
+#, fuzzy
+msgid "End bouquet edit"
+msgstr "ویرایش لیست های کانال"
+
+#, fuzzy
+msgid "End favourites edit"
+msgstr "اضافه کردن به مورد علاقه"
 
 msgid "End time"
 msgstr "زمان پایان"
@@ -4217,10 +4303,6 @@ msgstr "خروج از هدایتگر شبکه"
 
 msgid "Exit the wizard"
 msgstr "خروج از هدایتگر"
-
-#, fuzzy
-msgid "Exit/OK"
-msgstr "خروج"
 
 msgid "Expert"
 msgstr "تخصصی"
@@ -4507,6 +4589,10 @@ msgstr ""
 
 msgid "Final scroll delay"
 msgstr ""
+
+#, fuzzy
+msgid "Find currently playing service"
+msgstr "محافظت از کانال ها"
 
 msgid "Fine movement"
 msgstr "حرکت ظریف"
@@ -5014,6 +5100,10 @@ msgstr ""
 
 msgid "Handle wakeup from TV"
 msgstr ""
+
+#, fuzzy
+msgid "Hard disk"
+msgstr "دیسک سخت"
 
 #, fuzzy
 msgid "Hard disk setup"
@@ -6048,6 +6138,9 @@ msgstr ""
 msgid "MIME Version"
 msgstr "وارونگی"
 
+msgid "MMC card"
+msgstr ""
+
 msgid "MORE"
 msgstr "بیشتر"
 
@@ -6697,6 +6790,14 @@ msgstr "پیکربندی شبکه"
 #, fuzzy
 msgid "Network configuration..."
 msgstr "پیکربندی شبکه"
+
+#, fuzzy
+msgid "Network mount"
+msgstr "هیچ شبکه ای یافت نشد"
+
+#, fuzzy, python-format
+msgid "Network mount %s"
+msgstr "تست شبکه"
 
 #, fuzzy
 msgid "Network name (SSID)"
@@ -7539,6 +7640,10 @@ msgid "Play DVDs"
 msgstr "پخش DVD"
 
 #, fuzzy
+msgid "Play as Picture in Picture"
+msgstr "فعال کردن تصویر در تصویر"
+
+#, fuzzy
 msgid "Play audio-CD..."
 msgstr "پخش CD صوتی"
 
@@ -7557,6 +7662,9 @@ msgid "Play from next mark or playlist entry"
 msgstr ""
 
 msgid "Play from previous mark or playlist entry"
+msgstr ""
+
+msgid "Play in main window"
 msgstr ""
 
 #, fuzzy
@@ -8221,6 +8329,10 @@ msgstr "ارائه کنندگان"
 msgid "Puerto Rico"
 msgstr ""
 
+#, fuzzy
+msgid "Purge deleted user bouquets"
+msgstr "فعال کردن چندین لیست"
+
 msgid "Put TV in standby"
 msgstr "قرار دادن تلوزیون در خاموشی موقت"
 
@@ -8269,6 +8381,10 @@ msgstr "RGB"
 
 msgid "Radio"
 msgstr "رادیو"
+
+#, fuzzy
+msgid "Ram disk"
+msgstr "دیسک سخت"
 
 msgid "Random"
 msgstr "تصادفی"
@@ -8507,12 +8623,28 @@ msgid "Remove a nameserver entry"
 msgstr ""
 
 #, fuzzy
+msgid "Remove all alternatives"
+msgstr "حذف پلاگین ها"
+
+#, fuzzy
 msgid "Remove all logfiles"
+msgstr "حذف پلاگین ها"
+
+#, fuzzy
+msgid "Remove all new found flags"
 msgstr "حذف پلاگین ها"
 
 #, fuzzy
 msgid "Remove bookmark"
 msgstr "حذف علامت"
+
+#, fuzzy
+msgid "Remove bouquet from parental protection"
+msgstr "فعال کردن کنترل والدین"
+
+#, fuzzy
+msgid "Remove cable services"
+msgstr "محافظت از کانال ها"
 
 #, fuzzy
 msgid "Remove completed timers after (days)"
@@ -8529,14 +8661,33 @@ msgid "Remove directory"
 msgstr "پوشه root"
 
 #, fuzzy
+msgid "Remove entry"
+msgstr "پوشه root"
+
+#, fuzzy
+msgid "Remove from parental protection"
+msgstr "فعال کردن کنترل والدین"
+
+#, fuzzy
 msgid "Remove items from trash can after (days)"
 msgstr "حذف موارد از سطل زباله بعد از (روز)"
+
+msgid "Remove new found flag"
+msgstr ""
 
 msgid "Remove plugins"
 msgstr "حذف پلاگین ها"
 
 msgid "Remove selected folder from bookmarks"
 msgstr ""
+
+#, fuzzy
+msgid "Remove selected satellite"
+msgstr "حذف عنوان انتخاب شده فعلی"
+
+#, fuzzy
+msgid "Remove terrestrial services"
+msgstr "محافظت از کانال ها"
 
 msgid "Remove texts for the hearing impaired from external subtitles (instrumental music or environmental sounds, e.g., when a doorbell rings or a gun shot is heard)."
 msgstr ""
@@ -8568,6 +8719,10 @@ msgstr "بازخوانی جدول پارتیشن"
 
 msgid "Rename"
 msgstr "تغییر نام"
+
+#, fuzzy
+msgid "Rename entry"
+msgstr "حذف مورد"
 
 #, fuzzy
 msgid "Rename file/directory"
@@ -8694,6 +8849,10 @@ msgstr "بازگردانی"
 
 msgid "Restore backups"
 msgstr "بازگردانی نسخه های پشتیبان"
+
+#, fuzzy
+msgid "Restore deleted user bouquets"
+msgstr "فعال کردن چندین لیست"
 
 #, fuzzy
 msgid "Restore inetd"
@@ -9633,6 +9792,10 @@ msgstr "کانال ها"
 msgid "Service ID"
 msgstr "کانال"
 
+#, fuzzy
+msgid "Service belongs to a parental protected bouquet"
+msgstr "کانال به لیست انتخاب شده اضافه شد"
+
 msgid "Service has been added to the favourites."
 msgstr "کانال به مورد علاقه اضافه شد"
 
@@ -9722,6 +9885,10 @@ msgstr ""
 
 msgid "Set alternative fallback tuners for DVB-T/C or ATSC"
 msgstr ""
+
+#, fuzzy
+msgid "Set as startup service"
+msgstr "جابجایی کانال ها"
 
 msgid "Set blocktimes by weekday"
 msgstr ""
@@ -9933,6 +10100,10 @@ msgstr "نمایش وضعیت شبکه بدون سیم"
 
 msgid "Show Weather Widget"
 msgstr ""
+
+#, fuzzy
+msgid "Show alternatives"
+msgstr "حالت رادیو متناوب"
 
 msgid "Show animation while busy"
 msgstr "نمایش انیمیشن هنگام کار"
@@ -10191,6 +10362,10 @@ msgstr "نمایش پخش کننده رادیو"
 #, fuzzy
 msgid "Show the plugin browser.."
 msgstr "مرورگر پلاگین"
+
+#, fuzzy
+msgid "Show transponder info"
+msgstr "نمایش نوار اطلاعات دوم"
 
 msgid "Show two lines per entry"
 msgstr ""
@@ -10827,6 +11002,10 @@ msgstr "توقف تغییر زمان ؟"
 msgid "Stop timeshift?"
 msgstr "توقف تغییر زمان ؟"
 
+#, fuzzy
+msgid "Stop using as startup service"
+msgstr "جابجایی کانال ها"
+
 msgid "Stopped"
 msgstr "متوقف شده"
 
@@ -11135,6 +11314,9 @@ msgstr ""
 #
 msgid "Tags"
 msgstr "برچسب ها"
+
+msgid "Taiwan"
+msgstr ""
 
 msgid "Tajikistan"
 msgstr ""
@@ -12031,6 +12213,9 @@ msgid ""
 msgstr ""
 
 msgid "USB Stick"
+msgstr ""
+
+msgid "USB stick"
 msgstr ""
 
 msgid "Uganda"
@@ -13371,9 +13556,6 @@ msgstr ""
 msgid "[Image Info]\n"
 msgstr "عکس: "
 
-msgid "[a]"
-msgstr ""
-
 msgid "[alternative edit]"
 msgstr ""
 
@@ -13392,15 +13574,6 @@ msgstr ""
 msgid "a gui to assign services/providers/caids to common interface modules"
 msgstr ""
 
-msgid "abort alternatives edit"
-msgstr ""
-
-msgid "abort bouquet edit"
-msgstr ""
-
-msgid "abort favourites edit"
-msgstr ""
-
 msgid "about to start"
 msgstr ""
 
@@ -13415,27 +13588,6 @@ msgid "active NFS Shares:"
 msgstr ""
 
 msgid "actual time only"
-msgstr ""
-
-msgid "add alternatives"
-msgstr ""
-
-msgid "add bouquet"
-msgstr ""
-
-msgid "add bouquet to parental protection"
-msgstr ""
-
-msgid "add marker"
-msgstr ""
-
-msgid "add service to bouquet"
-msgstr ""
-
-msgid "add service to favourites"
-msgstr ""
-
-msgid "add to parental protection"
 msgstr ""
 
 msgid "adult movie/drama"
@@ -13647,9 +13799,6 @@ msgstr ""
 msgid "copy folder"
 msgstr ""
 
-msgid "copy to bouquets"
-msgstr ""
-
 msgid "create symlink ..."
 msgstr ""
 
@@ -13679,9 +13828,6 @@ msgstr "غیر فعال"
 #, fuzzy
 msgid "disable intro screen"
 msgstr "غیر فعال کردن تصویر در تصویر"
-
-msgid "disable move mode"
-msgstr ""
 
 msgid "disabled"
 msgstr ""
@@ -13716,9 +13862,6 @@ msgstr ""
 msgid "economics/social advisory"
 msgstr ""
 
-msgid "edit alternatives"
-msgstr ""
-
 msgid "education/science/factual topics (general)"
 msgstr ""
 
@@ -13732,31 +13875,13 @@ msgstr ""
 msgid "enable"
 msgstr "فعال"
 
-msgid "enable bouquet edit"
-msgstr ""
-
-msgid "enable favourite edit"
-msgstr ""
-
 msgid "enable intro screen"
-msgstr ""
-
-msgid "enable move mode"
 msgstr ""
 
 msgid "enabled"
 msgstr ""
 
-msgid "end alternatives edit"
-msgstr ""
-
-msgid "end bouquet edit"
-msgstr ""
-
 msgid "end cut here"
-msgstr ""
-
-msgid "end favourites edit"
 msgstr ""
 
 #, fuzzy
@@ -13839,9 +13964,6 @@ msgid "filename"
 msgstr ""
 
 msgid "film/cinema"
-msgstr ""
-
-msgid "find currently played service"
 msgstr ""
 
 msgid "fine arts"
@@ -14245,12 +14367,6 @@ msgstr ""
 msgid "picons"
 msgstr "آیکون"
 
-msgid "play as picture in picture"
-msgstr ""
-
-msgid "play in mainwindow"
-msgstr ""
-
 msgid "please press OK when ready"
 msgstr ""
 
@@ -14285,9 +14401,6 @@ msgstr ""
 msgid "pre-school children's program"
 msgstr ""
 
-msgid "purge deleted userbouquets"
-msgstr ""
-
 msgid "receiver software because updates are available."
 msgstr ""
 
@@ -14313,51 +14426,16 @@ msgstr ""
 msgid "remove after this position"
 msgstr ""
 
-msgid "remove all alternatives"
-msgstr ""
-
-msgid "remove all new found flags"
-msgstr ""
-
 msgid "remove before this position"
 msgstr ""
 
-msgid "remove bouquet from parental protection"
-msgstr ""
-
-#, fuzzy
-msgid "remove cable services"
-msgstr "محافظت از کانال ها"
-
-msgid "remove entry"
-msgstr ""
-
-msgid "remove from parental protection"
-msgstr ""
-
-msgid "remove new found flag"
-msgstr ""
-
-msgid "remove selected satellite"
-msgstr ""
-
-#, fuzzy
-msgid "remove terrestrial services"
-msgstr "محافظت از کانال ها"
-
 msgid "remove this mark"
-msgstr ""
-
-msgid "rename entry"
 msgstr ""
 
 msgid "repeated"
 msgstr ""
 
 msgid "reserved for future use"
-msgstr ""
-
-msgid "restore deleted userbouquets"
 msgstr ""
 
 msgid "reverse by date"
@@ -14409,15 +14487,8 @@ msgid "serious/classical/religious/historical movie/drama"
 msgstr ""
 
 #, fuzzy
-msgid "service is in bouquet parental protection"
-msgstr "فعال کردن کنترل والدین"
-
-#, fuzzy
 msgid "service off-air"
 msgstr "آماده سازی طول فیلم ها در لیست فیلم"
-
-msgid "set as startup service"
-msgstr ""
 
 #, fuzzy
 msgid "settings"
@@ -14429,9 +14500,6 @@ msgstr ""
 msgid "show all tags"
 msgstr ""
 
-msgid "show alternatives"
-msgstr ""
-
 msgid "show event details"
 msgstr ""
 
@@ -14439,9 +14507,6 @@ msgid "show softwaremanager in setup menu"
 msgstr ""
 
 msgid "show softwaremanager on blue button"
-msgstr ""
-
-msgid "show transponder info"
 msgstr ""
 
 msgid "show/game show (general)"
@@ -14529,9 +14594,6 @@ msgid "stepsize"
 msgstr ""
 
 msgid "stereo"
-msgstr ""
-
-msgid "stop using as startup service"
 msgstr ""
 
 msgid "successful"

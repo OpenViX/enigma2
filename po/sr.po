@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-17 17:48+0100\n"
+"POT-Creation-Date: 2019-12-08 00:14+0100\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -878,6 +878,21 @@ msgid "Abort"
 msgstr "Prekini"
 
 #
+#, fuzzy
+msgid "Abort alternatives edit"
+msgstr "odustani od uređivanja alternative"
+
+#
+#, fuzzy
+msgid "Abort bouquet edit"
+msgstr "prekini uređivanje buketa"
+
+#
+#, fuzzy
+msgid "Abort favourites edit"
+msgstr "odustani od uređivanja favorita"
+
+#
 msgid "About"
 msgstr "O programu"
 
@@ -982,8 +997,23 @@ msgstr "Dodaj novi titl"
 
 #
 #, fuzzy
+msgid "Add alternatives"
+msgstr "dodaj alternative"
+
+#
+#, fuzzy
 msgid "Add bookmark"
 msgstr "Dodaj oznaku"
+
+#
+#, fuzzy
+msgid "Add bouquet"
+msgstr "dodaj buket"
+
+#
+#, fuzzy
+msgid "Add bouquet to parental protection"
+msgstr "dodaj u roditeljsku zaštitu"
 
 #
 #, fuzzy
@@ -1004,6 +1034,11 @@ msgstr "dodaj datoteku u plejlistu"
 #, fuzzy
 msgid "Add files to playlist"
 msgstr "dodaj datoteke u plejlistu"
+
+#
+#, fuzzy
+msgid "Add marker"
+msgstr "dodaj oznaku"
 
 #
 #, fuzzy
@@ -1049,6 +1084,21 @@ msgid "Add service"
 msgstr "Dodaj kanal"
 
 #
+#, fuzzy
+msgid "Add service to bouquet"
+msgstr "dodaj kanal u buket "
+
+#
+#, fuzzy
+msgid "Add service to favourites"
+msgstr "dodaj kanal u favorite"
+
+#
+#, fuzzy
+msgid "Add services to this bouquet?"
+msgstr "dodaj kanal u buket "
+
+#
 msgid "Add timer"
 msgstr "Dodaj Tajmer"
 
@@ -1063,6 +1113,11 @@ msgstr "Dodaj u buket"
 #
 msgid "Add to favourites"
 msgstr "Dodaj u favorite"
+
+#
+#, fuzzy
+msgid "Add to parental protection"
+msgstr "dodaj u roditeljsku zaštitu"
 
 msgid "Add/remove change timer for current event"
 msgstr ""
@@ -1334,7 +1389,7 @@ msgstr ""
 msgid "Arabic"
 msgstr "Arapski"
 
-msgid "Are you sure to purge all deleted userbouquets?"
+msgid "Are you sure to purge all deleted user bouquets?"
 msgstr ""
 
 #, python-format
@@ -2118,6 +2173,9 @@ msgstr "Kapacitet:"
 msgid "Capacity: "
 msgstr "Kapacitet:"
 
+msgid "Card"
+msgstr ""
+
 msgid "Cascade PiP"
 msgstr ""
 
@@ -2499,6 +2557,9 @@ msgstr "Komunikacija"
 msgid "Comoros"
 msgstr ""
 
+msgid "Compact flash"
+msgstr ""
+
 #
 msgid "Complete"
 msgstr "Kompletno"
@@ -2520,6 +2581,11 @@ msgstr ""
 
 #
 #, fuzzy
+msgid "Configuration"
+msgstr "Mrežna konfiguracija..."
+
+#
+#, fuzzy
 msgid "Configuration mode"
 msgstr "Mod konfiguracije"
 
@@ -2527,11 +2593,6 @@ msgstr "Mod konfiguracije"
 #, fuzzy, python-format
 msgid "Configuration mode: %s"
 msgstr "Mod konfiguracije"
-
-#
-#, fuzzy
-msgid "Configuration..."
-msgstr "Mrežna konfiguracija..."
 
 #
 #, fuzzy
@@ -3068,6 +3129,11 @@ msgstr ""
 
 msgid "Copy folder"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Copy to bouquets"
+msgstr "kopiraj u bukete"
 
 msgid "Costa Rica"
 msgstr ""
@@ -3783,6 +3849,11 @@ msgstr ""
 msgid "Disable current event but not coming events"
 msgstr "Zaustavi trenutni događaj ali ne i ostale dolazeće"
 
+#
+#, fuzzy
+msgid "Disable move mode"
+msgstr "onemoguće mod premeštanja"
+
 msgid "Disable timer"
 msgstr ""
 
@@ -4234,6 +4305,11 @@ msgid "Edit Title"
 msgstr "Urediti naslov"
 
 #
+#, fuzzy
+msgid "Edit alternatives"
+msgstr "Uredi alternative"
+
+#
 msgid "Edit chapters of current title"
 msgstr "Urediti poglavlja sadašnjeg naslova"
 
@@ -4359,6 +4435,11 @@ msgstr "Uključi roditeljsku zaštitu"
 
 #
 #, fuzzy
+msgid "Enable bouquet edit"
+msgstr "omogući uređivanje paketa"
+
+#
+#, fuzzy
 msgid "Enable bouquet selection in multi-EPG"
 msgstr "omogući uređivanje paketa"
 
@@ -4370,6 +4451,11 @@ msgstr "Omogućeno"
 msgid "Enable fallback remote receiver"
 msgstr ""
 
+#
+#, fuzzy
+msgid "Enable favourites edit"
+msgstr "omogući uređivanje favorita"
+
 msgid "Enable freesat EPG"
 msgstr ""
 
@@ -4378,6 +4464,11 @@ msgstr ""
 
 msgid "Enable infobar fade-out"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Enable move mode"
+msgstr "uključi mod za premeštanje"
 
 #
 msgid "Enable multiple bouquets"
@@ -4465,6 +4556,21 @@ msgstr "Tip ključa za  šifrovanje"
 #
 msgid "Encryption:"
 msgstr "Kodiranje:"
+
+#
+#, fuzzy
+msgid "End alternatives edit"
+msgstr "kraj uređivanja alternativa"
+
+#
+#, fuzzy
+msgid "End bouquet edit"
+msgstr "završi uređivanje buketa"
+
+#
+#, fuzzy
+msgid "End favourites edit"
+msgstr "završi uređivanje favorita"
 
 #
 msgid "End time"
@@ -4762,11 +4868,6 @@ msgstr "Napusti mrežnog čarobnjaka"
 #
 msgid "Exit the wizard"
 msgstr "Izađite iz čarobnjaka"
-
-#
-#, fuzzy
-msgid "Exit/OK"
-msgstr "Izaći"
 
 #
 msgid "Expert"
@@ -5084,6 +5185,11 @@ msgstr ""
 
 msgid "Final scroll delay"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Find currently playing service"
+msgstr "Zaštiti kanale"
 
 msgid "Fine movement"
 msgstr ""
@@ -5646,6 +5752,11 @@ msgstr ""
 
 msgid "Handle wakeup from TV"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Hard disk"
+msgstr "Hard disk"
 
 #
 #, fuzzy
@@ -6814,6 +6925,9 @@ msgstr ""
 msgid "MIME Version"
 msgstr "Inverzija"
 
+msgid "MMC card"
+msgstr ""
+
 #
 msgid "MORE"
 msgstr "VIŠE"
@@ -7547,6 +7661,16 @@ msgstr "Mrežna konfiguracija..."
 #, fuzzy
 msgid "Network configuration..."
 msgstr "Mrežna konfiguracija..."
+
+#
+#, fuzzy
+msgid "Network mount"
+msgstr "Nijedna mreža nije nađena"
+
+#
+#, fuzzy, python-format
+msgid "Network mount %s"
+msgstr "Test mreže"
 
 #, fuzzy
 msgid "Network name (SSID)"
@@ -8496,6 +8620,11 @@ msgstr "Reprodukuj DVD"
 
 #
 #, fuzzy
+msgid "Play as Picture in Picture"
+msgstr "Aktiviraj Sliku u Slici"
+
+#
+#, fuzzy
 msgid "Play audio-CD..."
 msgstr "Reprodukuj audio CD"
 
@@ -8519,6 +8648,9 @@ msgstr "Reprodukuj od sledeće oznake ili naslova sa liste za reprodukciju"
 #, fuzzy
 msgid "Play from previous mark or playlist entry"
 msgstr "Reprodukuj od prethodne oznake ili naslova sa liste za reprodukciju"
+
+msgid "Play in main window"
+msgstr ""
 
 #
 #, fuzzy
@@ -9295,6 +9427,11 @@ msgstr "Provajderi"
 msgid "Puerto Rico"
 msgstr ""
 
+#
+#, fuzzy
+msgid "Purge deleted user bouquets"
+msgstr "Uključi višestruke bukete"
+
 msgid "Put TV in standby"
 msgstr ""
 
@@ -9352,6 +9489,11 @@ msgstr "RGB"
 #
 msgid "Radio"
 msgstr "Radio"
+
+#
+#, fuzzy
+msgid "Ram disk"
+msgstr "Hard disk"
 
 #
 msgid "Random"
@@ -9632,13 +9774,33 @@ msgstr "Uklonite unos nejmservera"
 
 #
 #, fuzzy
+msgid "Remove all alternatives"
+msgstr "obriši sve alternative"
+
+#
+#, fuzzy
 msgid "Remove all logfiles"
 msgstr "obriši sve alternative"
 
 #
 #, fuzzy
+msgid "Remove all new found flags"
+msgstr "obriši sve novo nađene zastave"
+
+#
+#, fuzzy
 msgid "Remove bookmark"
 msgstr "uklonite oznaku"
+
+#
+#, fuzzy
+msgid "Remove bouquet from parental protection"
+msgstr "obriši iz roditeljske zaštite"
+
+#
+#, fuzzy
+msgid "Remove cable services"
+msgstr "Zaštiti kanale"
 
 msgid "Remove completed timers after (days)"
 msgstr ""
@@ -9655,8 +9817,23 @@ msgstr "Ukloni trenutno odabrani titl"
 msgid "Remove directory"
 msgstr "Uklonite direktorijum"
 
+#
+#, fuzzy
+msgid "Remove entry"
+msgstr "obriši unos"
+
+#
+#, fuzzy
+msgid "Remove from parental protection"
+msgstr "obriši iz roditeljske zaštite"
+
 msgid "Remove items from trash can after (days)"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Remove new found flag"
+msgstr "obriši novo nađenu zastavu"
 
 #
 msgid "Remove plugins"
@@ -9664,6 +9841,16 @@ msgstr "Obriši dodatke"
 
 msgid "Remove selected folder from bookmarks"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Remove selected satellite"
+msgstr "Uklonite izabrani satelit"
+
+#
+#, fuzzy
+msgid "Remove terrestrial services"
+msgstr "Zaštiti kanale"
 
 msgid "Remove texts for the hearing impaired from external subtitles (instrumental music or environmental sounds, e.g., when a doorbell rings or a gun shot is heard)."
 msgstr ""
@@ -9703,6 +9890,11 @@ msgstr "Ukloni titl"
 #
 msgid "Rename"
 msgstr "Preimenovati"
+
+#
+#, fuzzy
+msgid "Rename entry"
+msgstr "obriši unos"
 
 #
 #, fuzzy
@@ -9844,6 +10036,11 @@ msgstr "Vrati "
 #
 msgid "Restore backups"
 msgstr "Vrati bekape"
+
+#
+#, fuzzy
+msgid "Restore deleted user bouquets"
+msgstr "Uključi višestruke bukete"
 
 #
 #, fuzzy
@@ -10922,6 +11119,11 @@ msgid "Service ID"
 msgstr "Kanal"
 
 #
+#, fuzzy
+msgid "Service belongs to a parental protected bouquet"
+msgstr "Kanal je dodat u odabrani buket."
+
+#
 msgid "Service has been added to the favourites."
 msgstr "Kanal je dodat u listu favorita."
 
@@ -11025,6 +11227,11 @@ msgstr ""
 
 msgid "Set alternative fallback tuners for DVB-T/C or ATSC"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Set as startup service"
+msgstr "Zameni kanale"
 
 msgid "Set blocktimes by weekday"
 msgstr ""
@@ -11259,6 +11466,11 @@ msgstr "Prikaži status WLAN-a"
 
 msgid "Show Weather Widget"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Show alternatives"
+msgstr "prikaži alternative"
 
 msgid "Show animation while busy"
 msgstr ""
@@ -11551,6 +11763,11 @@ msgstr "Prikaži radio plejer ..."
 #, fuzzy
 msgid "Show the plugin browser.."
 msgstr "Pretraživač dodataka"
+
+#
+#, fuzzy
+msgid "Show transponder info"
+msgstr "prikaži info transpondera"
 
 msgid "Show two lines per entry"
 msgstr ""
@@ -12268,6 +12485,11 @@ msgstr "zaustavi vrem.pomak"
 msgid "Stop timeshift?"
 msgstr "Zaustaviti vrem. pomak?"
 
+#
+#, fuzzy
+msgid "Stop using as startup service"
+msgstr "Zameni kanale"
+
 msgid "Stopped"
 msgstr ""
 
@@ -12620,6 +12842,9 @@ msgstr "Tabela sadržaja za kolekciju"
 #
 msgid "Tags"
 msgstr "Oznake"
+
+msgid "Taiwan"
+msgstr ""
 
 msgid "Tajikistan"
 msgstr ""
@@ -13675,6 +13900,11 @@ msgstr ""
 #
 #, fuzzy
 msgid "USB Stick"
+msgstr "USB stik"
+
+#
+#, fuzzy
+msgid "USB stick"
 msgstr "USB stik"
 
 msgid "Uganda"
@@ -15200,9 +15430,6 @@ msgstr ""
 msgid "[Image Info]\n"
 msgstr ""
 
-msgid "[a]"
-msgstr ""
-
 #
 msgid "[alternative edit]"
 msgstr "[uređivanje alternative]"
@@ -15228,18 +15455,6 @@ msgid "a gui to assign services/providers/caids to common interface modules"
 msgstr "Gui da dodeli kanale/provajdere/kaide modulima opšteg interfejsa"
 
 #
-msgid "abort alternatives edit"
-msgstr "odustani od uređivanja alternative"
-
-#
-msgid "abort bouquet edit"
-msgstr "prekini uređivanje buketa"
-
-#
-msgid "abort favourites edit"
-msgstr "odustani od uređivanja favorita"
-
-#
 msgid "about to start"
 msgstr "spremni za početak"
 
@@ -15257,35 +15472,6 @@ msgstr ""
 
 msgid "actual time only"
 msgstr ""
-
-#
-msgid "add alternatives"
-msgstr "dodaj alternative"
-
-#
-msgid "add bouquet"
-msgstr "dodaj buket"
-
-#
-#, fuzzy
-msgid "add bouquet to parental protection"
-msgstr "dodaj u roditeljsku zaštitu"
-
-#
-msgid "add marker"
-msgstr "dodaj oznaku"
-
-#
-msgid "add service to bouquet"
-msgstr "dodaj kanal u buket "
-
-#
-msgid "add service to favourites"
-msgstr "dodaj kanal u favorite"
-
-#
-msgid "add to parental protection"
-msgstr "dodaj u roditeljsku zaštitu"
 
 msgid "adult movie/drama"
 msgstr ""
@@ -15527,10 +15713,6 @@ msgstr ""
 msgid "copy folder"
 msgstr ""
 
-#
-msgid "copy to bouquets"
-msgstr "kopiraj u bukete"
-
 msgid "create symlink ..."
 msgstr ""
 
@@ -15565,10 +15747,6 @@ msgstr "onemogućeno"
 #, fuzzy
 msgid "disable intro screen"
 msgstr "Isključi Sliku u Slici"
-
-#
-msgid "disable move mode"
-msgstr "onemoguće mod premeštanja"
 
 #
 msgid "disabled"
@@ -15607,10 +15785,6 @@ msgstr ""
 msgid "economics/social advisory"
 msgstr ""
 
-#
-msgid "edit alternatives"
-msgstr "Uredi alternative"
-
 msgid "education/science/factual topics (general)"
 msgstr ""
 
@@ -15626,40 +15800,16 @@ msgstr "prazno"
 msgid "enable"
 msgstr "omogućeno"
 
-#
-msgid "enable bouquet edit"
-msgstr "omogući uređivanje paketa"
-
-#
-msgid "enable favourite edit"
-msgstr "omogući uređivanje favorita"
-
 msgid "enable intro screen"
 msgstr ""
-
-#
-msgid "enable move mode"
-msgstr "uključi mod za premeštanje"
 
 #
 msgid "enabled"
 msgstr "omogućeno"
 
 #
-msgid "end alternatives edit"
-msgstr "kraj uređivanja alternativa"
-
-#
-msgid "end bouquet edit"
-msgstr "završi uređivanje buketa"
-
-#
 msgid "end cut here"
 msgstr "završi rez ovde"
-
-#
-msgid "end favourites edit"
-msgstr "završi uređivanje favorita"
 
 #
 #, fuzzy
@@ -15750,9 +15900,6 @@ msgid "filename"
 msgstr "Ime datoteke"
 
 msgid "film/cinema"
-msgstr ""
-
-msgid "find currently played service"
 msgstr ""
 
 msgid "fine arts"
@@ -16227,12 +16374,6 @@ msgstr ""
 msgid "picons"
 msgstr ""
 
-msgid "play as picture in picture"
-msgstr ""
-
-msgid "play in mainwindow"
-msgstr ""
-
 #
 msgid "please press OK when ready"
 msgstr "pritisni OK kada si spreman"
@@ -16272,9 +16413,6 @@ msgstr ""
 msgid "pre-school children's program"
 msgstr ""
 
-msgid "purge deleted userbouquets"
-msgstr ""
-
 msgid "receiver software because updates are available."
 msgstr ""
 
@@ -16306,63 +16444,18 @@ msgid "remove after this position"
 msgstr "obriši posle ove pozicije"
 
 #
-msgid "remove all alternatives"
-msgstr "obriši sve alternative"
-
-#
-msgid "remove all new found flags"
-msgstr "obriši sve novo nađene zastave"
-
-#
 msgid "remove before this position"
 msgstr "obriši pre ove pozicije"
 
 #
-#, fuzzy
-msgid "remove bouquet from parental protection"
-msgstr "obriši iz roditeljske zaštite"
-
-#
-#, fuzzy
-msgid "remove cable services"
-msgstr "Zaštiti kanale"
-
-#
-msgid "remove entry"
-msgstr "obriši unos"
-
-#
-msgid "remove from parental protection"
-msgstr "obriši iz roditeljske zaštite"
-
-#
-msgid "remove new found flag"
-msgstr "obriši novo nađenu zastavu"
-
-#
-msgid "remove selected satellite"
-msgstr "Uklonite izabrani satelit"
-
-#
-#, fuzzy
-msgid "remove terrestrial services"
-msgstr "Zaštiti kanale"
-
-#
 msgid "remove this mark"
 msgstr "obriši ovu oznaku"
-
-msgid "rename entry"
-msgstr ""
 
 #
 msgid "repeated"
 msgstr "ponavljam"
 
 msgid "reserved for future use"
-msgstr ""
-
-msgid "restore deleted userbouquets"
 msgstr ""
 
 msgid "reverse by date"
@@ -16419,17 +16512,9 @@ msgstr ""
 msgid "serious/classical/religious/historical movie/drama"
 msgstr ""
 
-#
-#, fuzzy
-msgid "service is in bouquet parental protection"
-msgstr "obriši iz roditeljske zaštite"
-
 #, fuzzy
 msgid "service off-air"
 msgstr "PIN kanala"
-
-msgid "set as startup service"
-msgstr ""
 
 #
 #, fuzzy
@@ -16444,10 +16529,6 @@ msgid "show all tags"
 msgstr ""
 
 #
-msgid "show alternatives"
-msgstr "prikaži alternative"
-
-#
 msgid "show event details"
 msgstr "prikaži proširene infor. "
 
@@ -16456,10 +16537,6 @@ msgstr ""
 
 msgid "show softwaremanager on blue button"
 msgstr ""
-
-#
-msgid "show transponder info"
-msgstr "prikaži info transpondera"
 
 msgid "show/game show (general)"
 msgstr ""
@@ -16554,9 +16631,6 @@ msgstr ""
 #
 msgid "stereo"
 msgstr "stereo"
-
-msgid "stop using as startup service"
-msgstr ""
 
 msgid "successful"
 msgstr ""
