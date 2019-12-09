@@ -1,16 +1,16 @@
 from Tools.Profile import profile
 profile("LOAD:ElementTree")
-import xml.etree.cElementTree
 import os
+import xml.etree.cElementTree
 
 profile("LOAD:enigma_skin")
-from enigma import eSize, ePoint, eRect, gFont, eWindow, eLabel, ePixmap, eWindowStyleManager, addFont, gRGB, eWindowStyleSkinned, getDesktop
+from enigma import addFont, eLabel, ePixmap, ePoint, eRect, eSize, eWindow, eWindowStyleManager, eWindowStyleSkinned, getDesktop, gFont, gRGB
 from Components.config import ConfigSubsection, ConfigText, config
+from Components.RcModel import rc_model
 from Components.Sources.Source import ObsoleteSource
-from Tools.Directories import SCOPE_CONFIG, SCOPE_SKIN, SCOPE_SKIN_IMAGE, SCOPE_CURRENT_SKIN, SCOPE_CURRENT_LCDSKIN, SCOPE_FONTS, fileExists, resolveFilename
+from Tools.Directories import SCOPE_CONFIG, SCOPE_CURRENT_LCDSKIN, SCOPE_CURRENT_SKIN, SCOPE_FONTS, SCOPE_SKIN, SCOPE_SKIN_IMAGE, fileExists, resolveFilename
 from Tools.Import import my_import
 from Tools.LoadPixmap import LoadPixmap
-from Components.RcModel import rc_model
 
 DEFAULT_SKIN = "ViX-Night-HD/skin.xml"
 DEFAULT_DISPLAY_SKIN = "skin_default/skin_display.xml"
