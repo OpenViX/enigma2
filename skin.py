@@ -79,10 +79,13 @@ def addSkin(name, scope=SCOPE_SKIN):
 	if fileExists(filename):
 		if os.path.isfile(filename):
 			try:
-				dom_skins.append(("%s/" % os.path.dirname(filename), xml.etree.cElementTree.parse(filename).getroot()))
+				file = open(filename, "r")  # This open gets around a possible file handle leak in Python's XML parser.
+				dom_skins.append(("%s/" % os.path.dirname(filename), xml.etree.cElementTree.parse(file).getroot()))
+				file.close()
 				print "[Skin] Skin '%s' added successfully." % filename
 				return True
 			except Exception:
+				file.close()
 				print "[Skin] Error: Unable to parse skin data in '%s'!" % filename
 		else:
 			print "[Skin] Error: Skin '%s' is not a file!" % filename
@@ -849,7 +852,7 @@ def loadSkin(name, scope=SCOPE_SKIN):
 	filename = resolveFilename(scope, name)
 	if fileExists(filename):
 		path = "%s/" % os.path.dirname(filename)
-		file = open(filename, "r")
+		file = open(filename, "r")  # This open gets around a possible file handle leak in Python's XML parser.
 		for elem in xml.etree.cElementTree.parse(file).getroot():
 			if elem.tag == "screen":
 				name = elem.attrib.get("name", None)
