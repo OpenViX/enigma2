@@ -176,17 +176,17 @@ def parseCoordinate(s, e, size=0, font=None):
 		try:
 			val = int(s)  # For speed try a simple number first.
 		except ValueError:
-			if 't' in s:
+			if "t" in s:
 				s = s.replace("center", str((e - size) / 2.0))
-			if 'e' in s:
+			if "e" in s:
 				s = s.replace("e", str(e))
-			if 'c' in s:
+			if "c" in s:
 				s = s.replace("c", str(e / 2.0))
-			if 'w' in s:
+			if "w" in s:
 				s = s.replace("w", "*%s" % str(fonts[font][3]))
-			if 'h' in s:
+			if "h" in s:
 				s = s.replace("h", "*%s" % str(fonts[font][2]))
-			if '%' in s:
+			if "%" in s:
 				s = s.replace("%", "*%s" % str(e / 100.0))
 			try:
 				val = int(s)  # For speed try a simple number first.
@@ -310,9 +310,9 @@ def collectAttributes(skinAttributes, node, context, skin_path_prefix=None, igno
 
 def morphRcImagePath(value):
 	if rc_model.rcIsDefault() is False:
-		if ('rc.png' or 'oldrc.png') in value:
+		if ("rc.png" or "oldrc.png") in value:
 			value = rc_model.getRcLocation() + "rc.png"
-		# if value == '/usr/share/enigma2/skin_default/rc.png' or value == '/usr/share/enigma2/skin_default/rcold.png':  # OpenPLi version.
+		# if value == "/usr/share/enigma2/skin_default/rc.png" or value == "/usr/share/enigma2/skin_default/rcold.png":  # OpenPLi version.
 		# 	value = rc_model.getRcImg()
 	return value
 
@@ -853,7 +853,7 @@ def loadSkin(name, scope=SCOPE_SKIN):
 	filename = resolveFilename(scope, name)
 	if fileExists(filename):
 		path = "%s/" % os.path.dirname(filename)
-		file = open(filename, 'r')
+		file = open(filename, "r")
 		for elem in xml.etree.cElementTree.parse(file).getroot():
 			if elem.tag == "screen":
 				name = elem.attrib.get("name", None)
@@ -918,10 +918,10 @@ class SizeTuple(tuple):
 		return str(self[0]), str(self[1])
 
 	def strip(self, *args):
-		return '%s,%s' % self
+		return "%s,%s" % self
 
 	def __str__(self):
-		return '%s,%s' % self
+		return "%s,%s" % self
 
 
 class SkinContext:
@@ -1062,7 +1062,7 @@ def readSkin(screen, skin, names, desktop):
 
 	def process_widget(widget, context):
 		get_attr = widget.attrib.get
-		# Okay, we either have 1:1-mapped widgets ('old style'), or 1:n-mapped
+		# Okay, we either have 1:1-mapped widgets ("old style"), or 1:n-mapped
 		# widgets (source->renderer).
 		wname = get_attr("name")
 		wsource = get_attr("source")
@@ -1072,7 +1072,7 @@ def readSkin(screen, skin, names, desktop):
 		if wname:
 			# print "[Skin] Widget name='%s'" % wname
 			visited_components.add(wname)
-			# Get corresponding 'gui' object.
+			# Get corresponding "gui" object.
 			try:
 				attributes = screen[wname].skinAttributes = []
 			except Exception:
@@ -1120,7 +1120,7 @@ def readSkin(screen, skin, names, desktop):
 				except Exception:
 					parms = ""
 				# print "[Skin] Params='%s'" % parms
-				converter_class = my_import('.'.join(("Components", "Converter", ctype))).__dict__.get(ctype)
+				converter_class = my_import(".".join(("Components", "Converter", ctype))).__dict__.get(ctype)
 				c = None
 				for i in source.downstream_elements:
 					if isinstance(i, converter_class) and i.converter_arguments == parms:
@@ -1129,7 +1129,7 @@ def readSkin(screen, skin, names, desktop):
 					c = converter_class(parms)
 					c.connect(source)
 				source = c
-			renderer_class = my_import('.'.join(("Components", "Renderer", wrender))).__dict__.get(wrender)
+			renderer_class = my_import(".".join(("Components", "Renderer", wrender))).__dict__.get(wrender)
 			renderer = renderer_class()  # Instantiate renderer.
 			renderer.connect(source)  # Connect to source.
 			attributes = renderer.skinAttributes = []
@@ -1216,8 +1216,8 @@ def readSkin(screen, skin, names, desktop):
 
 	from Components.GUIComponent import GUIComponent
 	nonvisited_components = [x for x in set(screen.keys()) - visited_components if isinstance(x, GUIComponent)]
-	assert not nonvisited_components, "[Skin] The following components in '%s' don't have a skin entry: %s" % (name, ', '.join(nonvisited_components))
-	# This may look pointless, but it unbinds 'screen' from the nested scope. A better
+	assert not nonvisited_components, "[Skin] The following components in '%s' don't have a skin entry: %s" % (name, ", ".join(nonvisited_components))
+	# This may look pointless, but it unbinds "screen" from the nested scope. A better
 	# solution is to avoid the nested scope above and use the context object to pass
 	# things around.
 	screen = None
