@@ -166,10 +166,7 @@ class SkinError(Exception):
 def parseCoordinate(s, e, size=0, font=None):
 	s = s.strip()
 	if s == "center":  # For speed as this can be common case.
-		if not size:
-			val = 0
-		else:
-			val = (e - size) / 2
+		val = 0 if not size else (e - size) / 2
 	elif s == "*":
 		return None
 	else:
@@ -541,7 +538,6 @@ class AttributeParser:
 		self.guiObject.setSliderForegroundColor(parseColor(value))
 
 	def scrollbarMode(self, value):
-		# self.guiObject.setScrollbarMode(getattr(self.guiObject, value))
 		try:
 			self.guiObject.setScrollbarMode({
 				"showOnDemand": self.guiObject.showOnDemand,
@@ -849,7 +845,7 @@ def loadSingleSkinData(desktop, skin, path_prefix):
 # Now a utility for plugins to add skin data to the screens.
 #
 def loadSkin(name, scope=SCOPE_SKIN):
-	global dom_screens
+	global dom_screens, display_skin_id
 	filename = resolveFilename(scope, name)
 	if fileExists(filename):
 		path = "%s/" % os.path.dirname(filename)
