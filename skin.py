@@ -84,6 +84,17 @@ def addSkin(name, scope=SCOPE_SKIN):
 				file.close()
 				print "[Skin] Skin '%s' added successfully." % filename
 				return True
+			except OSError, e:
+				print "[Skin] Error %d: Opening file '%s'! (%s)" % (e.errno, filename, os.strerror(e.errno))
+			except xml.etree.cElementTree.ParseError as e:
+				file.seek(0)
+				content = file.readlines()
+				file.close()
+				line, column = e.position
+				print "[Skin] XML Parse Error: '%s' in '%s'" % (e, filename)
+				data = content[line - 1].replace("\t", " ").rstrip()
+				print "[Skin] XML Parse Error: '%s'" % data
+				print "[Skin] XML Parse Error: '%s^%s'" % ("-" * column, " " * (len(data) - column - 1))
 			except Exception:
 				file.close()
 				print "[Skin] Error: Unable to parse skin data in '%s'!" % filename
