@@ -18,6 +18,7 @@ class TimerEntry(Screen, ConfigListScreen):
 	def __init__(self, session, timer, menu_path=""):
 		Screen.__init__(self, session)
 		screentitle = _("PowerManager entry")
+		self.skinName = "PowerTimerEntry"
 		menu_path += screentitle
 		if config.usage.show_menupath.value == 'large':
 			title = menu_path
