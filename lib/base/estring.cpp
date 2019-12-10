@@ -640,8 +640,7 @@ std::string convertDVBUTF8(const unsigned char *data, int len, int table, int ts
 		string_to_hex(std::string((char*)data, len < 15 ? len : 15)).c_str(),
 		output.c_str());
 
-// Remove any Start/End of Selected Area markers *now*...
-	return buildShortName(output);
+	return output;
 }
 
 std::string convertUTF8DVB(const std::string &string, int table)
