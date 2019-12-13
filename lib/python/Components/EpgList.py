@@ -114,7 +114,7 @@ class EPGList(GUIComponent):
 		pre = loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_selpre.png'))
 		prepost = loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_selprepost.png'))
 		post = loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_selpost.png'))
-		self.selclocks = [ 
+		self.selclocks = [
 			add, pre, clock, prepost, post,
 			add, pre, zap, prepost, post,
 			add, pre, zaprec, prepost, post]
@@ -1281,6 +1281,26 @@ class EPGList(GUIComponent):
 		epg_time = t - config.epg.histminutes.value*SECS_IN_MIN
 		test = [ 'RIBDT', (service.ref.toString(), 0, epg_time, -1) ]
 		self.list = self.queryEPG(test)
+
+		odds = chr(0xc2) + chr(0x86)
+		odde = chr(0xc2) + chr(0x87)
+# Assume that events *might* have leading 0xC2+0x86 chars and
+# trailing 0xC2+0x87 ones, which need to be removed...(probably from
+# now and next?).
+# Just step through the list until we don't modify one whose start
+# time is after "now".
+# NOTE: that the list is a list of tuples, so we can't modify just the
+#       Title, but have to replace it with a modified tuple.
+#
+		for i in range(0, len(self.list)):
+			if self.list[i][4][:2] == odds and self.list[i][4][-2:] == odde:
+				tlist = list(self.list[i])
+				tlist[4] = tlist[4][2:-2]
+#DEBUG				print "Stripped >%s< to >%s<" % (self.list[i][4], tlist[4])
+				self.list[i] = tuple(tlist)
+			else:
+				if self.list[i][2] > t:
+					break
 		# Add explicit gaps if data isn't available.
 		for i in range(len(self.list) - 1, 0, -1):
 			this_beg = self.list[i][2]
