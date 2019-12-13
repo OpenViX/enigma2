@@ -56,13 +56,14 @@ class NSCommon:
 		time.sleep(3)
 		self.updateService()
 
-	def removeComplete(self,result = None, retval = None, extra_args = None):
+	def removeComplete(self, result = None, retval = None, extra_args = None):
 		if self.reboot_at_end:
 			self.session.open(TryQuitMainloop, 2)
 		self.message.close()
 		self.close()
 
-	def installComplete(self,result = None, retval = None, extra_args = None):
+	def installComplete(self, result = None, retval = None, extra_args = None):
+		self.feedscheck.close()
 		if self.reboot_at_end:
 			self.session.open(TryQuitMainloop, 2)
 		else:
@@ -82,18 +83,26 @@ class NSCommon:
 
 	def checkNetworkState(self, str, retval, extra_args):
 		if 'Collected errors' in str:
-			self.session.openWithCallback(self.close, MessageBox, _("A background update check is in progress, please wait a few minutes and then try again."), type=MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
+			self.session.openWithCallback(self.close, MessageBox, _("Seems a background update check is in progress, please wait a few minutes and then try again."), type=MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 		elif not str:
-			if (getImageType() != 'release' and feedsstatuscheck.getFeedsBool() != 'unknown') or (getImageType() == 'release' and feedsstatuscheck.getFeedsBool() not in ('stable', 'unstable')):
-				self.session.openWithCallback(self.InstallPackageFailed, MessageBox, feedsstatuscheck.getFeedsErrorMessage(), type=MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
-			else:
-				if self.reboot_at_end:
-					mtext = _('Your %s %s will be restarted after the installation of the service\nAre you ready to install "%s" ?') % (getMachineBrand(), getMachineName(), self.service_name)
-				else:
-					mtext = _('Are you ready to install "%s" ?') % self.service_name
-				self.session.openWithCallback(self.InstallPackage, MessageBox, mtext, MessageBox.TYPE_YESNO)
+			self.feedscheck = self.session.open(MessageBox,_('Please wait while feeds state is being checked.'), MessageBox.TYPE_INFO, enable_input = False)
+			self.feedscheck.setTitle(_('Checking feeds'))
+			cmd1 = "opkg update"
+			self.CheckConsole = Console()
+			self.CheckConsole.ePopen(cmd1, self.checkNetworkStateFinished)
 		else:
 			self.updateService()
+
+	def checkNetworkStateFinished(self, result, retval, extra_args=None):
+		if 'bad address' in result:
+			self.session.openWithCallback(self.InstallPackageFailed, MessageBox, _("Your receiver is not connected to the internet, please check your network settings and try again."), type=MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
+		if self.reboot_at_end:
+			mtext = _('Your receiver will be restarted after the installation of the service\nAre you ready to install "%s" ?') % self.service_name
+		else:
+			mtext = _('Are you ready to install "%s" ?') % self.service_name
+		self.session.openWithCallback(self.InstallPackage, MessageBox, mtext, MessageBox.TYPE_YESNO)
+		if ('wget returned 1' or 'wget returned 255' or '404 Not Found') in result:
+			self.session.openWithCallback(self.InstallPackageFailed, MessageBox, _("Please wait while feeds state is being checked."), type=MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 
 	def UninstallCheck(self):
 		self.Console.ePopen('/usr/bin/opkg list_installed ' + self.service_name, self.RemovedataAvail)
@@ -101,7 +110,7 @@ class NSCommon:
 	def RemovedataAvail(self, str, retval, extra_args):
 		if str:
 			if self.reboot_at_end:
-				restartbox = self.session.openWithCallback(self.RemovePackage,MessageBox,_('Your %s %s will be restarted after the removal of the service\nDo you want to remove the service now ?') % (getMachineBrand(), getMachineName()), MessageBox.TYPE_YESNO)
+				restartbox = self.session.openWithCallback(self.RemovePackage,MessageBox,_('Your receiver will be restarted after the removal of the service\nDo you want to remove the service now ?'), MessageBox.TYPE_YESNO)
 				restartbox.setTitle(_('Are you ready to remove "%s" ?') % self.service_name)
 			else:
 				self.session.openWithCallback(self.RemovePackage, MessageBox, _('Ready to remove "%s" ?') % self.service_name, MessageBox.TYPE_YESNO)
@@ -116,16 +125,15 @@ class NSCommon:
 		if val:
 			self.doInstall(self.installComplete, self.service_name)
 		else:
+			self.feedscheck.close()
 			self.close()
 
 	def InstallPackageFailed(self, val):
+		self.feedscheck.close()
 		self.close()
 
 	def InstallCheck(self):
 		self.Console.ePopen('/usr/bin/opkg list_installed ' + self.service_name, self.checkNetworkState)
-
-	def createSummary(self):
-		return NetworkServicesSummary
 
 class NetworkAdapterSelection(Screen,HelpableScreen):
 	def __init__(self, session, menu_path = ""):
@@ -1833,7 +1841,6 @@ class NetworkAfp(NSCommon,Screen):
 		self['key_red'] = Label(_("Remove Service"))
 		self['key_green'] = Label(_("Start"))
 		self['key_yellow'] = Label(_("Autostart"))
-		self['key_blue'] = Label()
 		self['status_summary'] = StaticText()
 		self['autostartstatus_summary'] = StaticText()
 		self.Console = Console()
@@ -1847,7 +1854,7 @@ class NetworkAfp(NSCommon,Screen):
 			'green': self.AfpStartStop,
 			'yellow': self.activateAfp
 		})
-		self.service_name = 'packagegroup-base-appletalk netatalk'
+		self.service_name = 'netatalk kernel-module-appletalk kernel-module-llc kernel-module-psnap'
 		self.onLayoutFinish.append(self.InstallCheck)
 		self.reboot_at_end = True
 
@@ -1890,7 +1897,7 @@ class NetworkAfp(NSCommon,Screen):
 			self['labactive'].show()
 			self['key_green'].setText(_("Start"))
 			status_summary= self['lab2'].text + ' ' + self['labstop'].text
-		title = _("AFP Setup")
+		title = _("AFP setup")
 		autostartstatus_summary = self['lab1'].text + ' ' + self['labactive'].text
 
 		for cb in self.onChangedEntry:
@@ -1919,9 +1926,7 @@ class NetworkFtp(NSCommon,Screen):
 		self['labstop'] = Label(_("Stopped"))
 		self['labrun'] = Label(_("Running"))
 		self['key_green'] = Label(_("Start"))
-		self["key_red"] = Label()
 		self['key_yellow'] = Label(_("Autostart"))
-		self["key_blue"] =  Label()
 		self.Console = Console()
 		self.my_ftp_active = False
 		self.my_ftp_run = False
@@ -2011,7 +2016,6 @@ class NetworkNfs(NSCommon,Screen):
 		self['key_green'] = Label(_("Start"))
 		self['key_red'] = Label(_("Remove Service"))
 		self['key_yellow'] = Label(_("Autostart"))
-		self['key_blue'] = Label()
 		self.Console = Console()
 		self.my_nfs_active = False
 		self.my_nfs_run = False

@@ -551,7 +551,7 @@ msgstr ""
 "Una verificación de actualización de fondo está en progreso,\n"
 "Por favor, espere unos minutos e intente de nuevo."
 
-msgid "A background update check is in progress, please wait a few minutes and then try again."
+msgid "Seems a background update check is in progress, please wait a few minutes and then try again."
 msgstr "Se está realizando una verificación de actualización en segundo plano, espere unos minutos y vuelva a intentarlo."
 
 msgid "A background update check is in progress, please wait a few minutes and try again."
@@ -1042,10 +1042,6 @@ msgstr "Cualquier actividad"
 
 msgid "Arabic"
 msgstr "Árabe"
-
-#, python-format
-msgid "Are you ready to install \"%s\" ?"
-msgstr "¿Listo para instalar \"%s\" ?"
 
 #, python-format
 msgid "Are you ready to remove \"%s\" ?"
@@ -10279,27 +10275,11 @@ msgstr ""
 
 #, python-format
 msgid ""
-"Your %s %s will be restarted after the installation of the service\n"
-"Are you ready to install \"%s\" ?"
-msgstr ""
-"Su %s %s Se reiniciará después de la instalación del servicio\n"
-"Estás listo para instalar \"%s\" ?"
-
-#, python-format
-msgid ""
 "Your %s %s will be restarted after the removal of service\n"
 "Do you want to remove now ?"
 msgstr ""
 "Su %s %s se reiniciará después de la eliminación del servicio\n"
 "Quieres eliminar ahora ?"
-
-#, python-format
-msgid ""
-"Your %s %s will be restarted after the removal of the service\n"
-"Do you want to remove the service now ?"
-msgstr ""
-"Su %s %s Se reiniciará después de la eliminación del servicio\n"
-"Quieres eliminar el servicio ahora ?"
 
 msgid "Your STB will restart after pressing OK on your remote control."
 msgstr "Su receptor se reiniciará cuando pulses 'OK' en el mando a distancia."
@@ -12788,6 +12768,32 @@ msgstr ""
 "Seleccione 'Sí' para eliminar todos los idiomas excepto el inglés y el idioma elegido:\n"
 "\n"
 "Seleccione 'No' para eliminar solo el idioma elegido:\n"
+
+msgid ""
+"Your receiver will be restarted after the installation of the service\n"
+"Are you ready to install \"%s\" ?"
+msgstr ""
+"Su receptor se reiniciará después de la instalación del servicio.\n"
+"Estás listo para instalar \"%s\" ?"
+
+msgid "Are you ready to install \"%s\" ?"
+msgstr "Estás listo para instalar \"%s\" ?"
+
+msgid "Please wait while feeds state is being checked."
+msgstr "Espere mientras se verifica el estado de los feeds."
+
+msgid "Checking feeds"
+msgstr "Comprobando feeds"
+
+msgid "Your receiver is not connected to the internet, please check your network settings and try again."
+msgstr "Su receptor no está conectado a Internet, verifique la configuración de su red e intente nuevamente."
+
+msgid ""
+"Your receiver will be restarted after the removal of the service\n"
+"Do you want to remove the service now ?"
+msgstr ""
+"Su receptor se reiniciará después de la eliminación del servicio\n"
+"Quieres eliminar el servicio ahora?"
 
 #~ msgid "Select locale"
 #~ msgstr "Seleccionar lugar"
