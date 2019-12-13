@@ -397,7 +397,7 @@ class PliExtraInfo(Poll, Converter, object):
 		return str(video_width) + "x" + str(video_height) + video_pol + fps + addspace(gamma)
 
 	def createVideoCodec(self, info):
-		return codec_data.get(info.getInfo(iServiceInformation.sVideoType), "N/A")
+		return codec_data.get(info.getInfo(iServiceInformation.sVideoType), _("N/A"))
 
 	def createServiceRef(self, info):
 		return info.getInfoString(iServiceInformation.sServiceref)
