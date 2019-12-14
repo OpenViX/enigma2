@@ -132,6 +132,7 @@ self.session.openWithCallback(msgClosed, EpgDeleteMsg)
 				<item level="2" text="Inadyn" entryID="Inadyn_setup"><screen module="NetworkSetup" screen="NetworkInadyn"/></item>
 				<item level="2" text="MiniDLNA" entryID="netdlna_setup"><screen module="NetworkSetup" screen="NetworkMiniDLNA"/></item>
 				<item level="2" text="NFS" entryID="netnfs_setup"><screen module="NetworkSetup" screen="NetworkNfs"/></item>
+				<item level="2" text="ZeroTierVPN" entryID="netzerotier_setup"><screen module="NetworkSetup" screen="NetworkZeroTier"/></item>
 				<item level="2" text="OpenVPN" entryID="netvpn_setup"><screen module="NetworkSetup" screen="NetworkOpenvpn"/></item>
 				<item level="2" text="SABnzbd" entryID="netsabnzbd_setup" requires="SABSetup">
 <code>

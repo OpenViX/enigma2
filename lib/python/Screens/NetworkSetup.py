@@ -2199,6 +2199,115 @@ class NetworkVpnLog(Screen):
 			remove('/etc/openvpn/tmp.log')
 		self['infotext'].setText(strview)
 
+class NetworkZeroTier(NSCommon,Screen):
+	def __init__(self, session, menu_path=""):
+		Screen.__init__(self, session)
+		screentitle = _("OpenVpn")
+		if config.usage.show_menupath.value == 'large':
+			menu_path += screentitle
+			title = menu_path
+			self["menu_path_compressed"] = StaticText("")
+		elif config.usage.show_menupath.value == 'small':
+			title = screentitle
+			self["menu_path_compressed"] = StaticText(menu_path + " >" if not menu_path.endswith(' / ') else menu_path[:-3] + " >" or "")
+		else:
+			title = screentitle
+			self["menu_path_compressed"] = StaticText("")
+		Screen.setTitle(self, title)
+		self.skinName = "NetworkOpenvpn"
+		self.onChangedEntry = [ ]
+		self['lab1'] = Label(_("Autostart:"))
+		self['labactive'] = Label(_(_("Disabled")))
+		self['lab2'] = Label(_("Current status:"))
+		self['labstop'] = Label(_("Stopped"))
+		self['labrun'] = Label(_("Running"))
+		self['key_green'] = Label(_("Start"))
+		self['key_red'] = Label(_("Remove service"))
+		self['key_yellow'] = Label(_("Autostart"))
+		self['key_blue'] = Label(_("Show log"))
+		self.Console = Console()
+		self.my_zerotier_active = False
+		self.my_zerotier_run = False
+		self['actions'] = ActionMap(['WizardActions', 'ColorActions'], {'ok': self.close, 'back': self.close, 'red': self.UninstallCheck, 'green': self.ZeroTierStartStop, 'yellow': self.activateZeroTier, 'blue': self.ZeroTiershowlog})
+		self.service_name = 'zerotier'
+		self.onLayoutFinish.append(self.InstallCheck)
+		self.reboot_at_end = False
+
+	def createSummary(self):
+		return NetworkServicesSummary
+
+	def ZeroTiershowlog(self):
+		self.session.open(NetworkZeroTierLog)
+
+	def ZeroTierStartStop(self):
+		commands = []
+		if fileExists('/etc/init.d/zerotier'):
+			if self.my_zerotier_run:
+				commands.append('/etc/init.d/zerotier stop')
+			else:
+				commands.append('/etc/init.d/zerotier start')
+			self.Console.eBatch(commands, self.StartStopCallback, debug=True)
+
+	def activateZeroTier(self):
+		if ServiceIsEnabled('zerotier'):
+			self.Console.ePopen('update-rc.d -f zerotier remove', self.StartStopCallback)
+		else:
+			self.Console.ePopen('update-rc.d -f zerotier defaults', self.StartStopCallback)
+
+	def updateService(self):
+		import process
+		p = process.ProcessList()
+		zerotier_process = str(p.named('zerotier-one')).strip('[]')
+		self['labrun'].hide()
+		self['labstop'].hide()
+		self['labactive'].setText(_("Disabled"))
+		self.my_zerotier_active = False
+		if ServiceIsEnabled('zerotier'):
+			self['labactive'].setText(_("Enabled"))
+			self['labactive'].show()
+			self.my_zerotier_active = True
+
+		self.my_zerotier_run = False
+		if zerotier_process:
+			self.my_zerotier_run = True
+		if self.my_zerotier_run:
+			self['labstop'].hide()
+			self['labactive'].show()
+			self['labrun'].show()
+			self['key_green'].setText(_("Stop"))
+			status_summary = self['lab2'].text + ' ' + self['labrun'].text
+		else:
+			self['labrun'].hide()
+			self['labstop'].show()
+			self['labactive'].show()
+			self['key_green'].setText(_("Start"))
+			status_summary = self['lab2'].text + ' ' + self['labstop'].text
+		title = _("ZeroTier setup")
+		autostartstatus_summary = self['lab1'].text + ' ' + self['labactive'].text
+
+		for cb in self.onChangedEntry:
+			cb(title, status_summary, autostartstatus_summary)
+
+
+class NetworkZeroTierLog(Screen):
+	def __init__(self, session):
+		Screen.__init__(self, session)
+		Screen.setTitle(self, _("ZeroTier log"))
+		self.skinName = "NetworkServiceLog"
+		self['infotext'] = ScrollLabel('')
+		self.Console = Console()
+		self['actions'] = ActionMap(['WizardActions', 'ColorActions'], {'ok': self.close, 'back': self.close, 'up': self['infotext'].pageUp, 'down': self['infotext'].pageDown})
+		strview = ''
+		self.Console.ePopen('tail /var/log/messages > /var/log/zerotier.log')
+		time.sleep(1)
+		if fileExists('/var/log/zerotier.log'):
+			f = open('/var/log/zerotier.log', 'r')
+			for line in f.readlines():
+				strview += line
+			f.close()
+			remove('/var/log/zerotier.log')
+		self['infotext'].setText(strview)
+
 class NetworkSamba(NSCommon,Screen):
 	def __init__(self, session, menu_path=""):
 		Screen.__init__(self, session)
