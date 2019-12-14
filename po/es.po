@@ -6404,7 +6404,7 @@ msgid "Remove Confirmation"
 msgstr "Eliminar confirmación"
 
 msgid "Remove Service"
-msgstr "Canal remoto"
+msgstr "Eliminar Servicio"
 
 msgid "Remove a mark"
 msgstr "Borrar marca"
