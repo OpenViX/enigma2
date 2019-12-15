@@ -181,7 +181,10 @@ class SkinSelector(Screen, HelpableScreen):
 		self.picload.startDecode(preview)
 		resolution = self["skins"].getCurrent()[5]
 		msg = "" if resolution is None else " %s" % resolution
-		self["description"].setText(_("Press OK to activate the selected%s skin.") % msg)
+		if self["skins"].getCurrent()[4] == self.config.value:
+			self["description"].setText(_("Press OK to keep the currently selected%s skin.") % msg)
+		else:
+			self["description"].setText(_("Press OK to activate the selected%s skin.") % msg)
 
 	def cancel(self):
 		self.close()
