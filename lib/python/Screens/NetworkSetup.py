@@ -2224,7 +2224,7 @@ class NetworkZeroTier(NSCommon,Screen):
 		self['key_green'] = Label(_("Start"))
 		self['key_red'] = Label(_("Remove Service"))
 		self['key_yellow'] = Label(_("Autostart"))
-		self['key_blue'] = Label(_("Show log"))
+		self['key_blue'] = Label(_("Show Log"))
 		self.Console = Console()
 		self.my_zerotier_active = False
 		self.my_zerotier_run = False

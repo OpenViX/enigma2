@@ -7336,7 +7336,7 @@ msgid "Show Games show"
 msgstr "Ver un programa de juego"
 
 msgid "Show Log"
-msgstr "Ver historial"
+msgstr "Mostrar Log"
 
 msgid "Show Log Manager in extensions list ?"
 msgstr "Mostrar Administrador de historiales en la lista de extensiones ?"
