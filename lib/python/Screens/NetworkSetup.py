@@ -2441,7 +2441,7 @@ class NetworkSambaLog(Screen):
 			remove('/tmp/tmp.log')
 		self['infotext'].setText(strview)
 
-class NetworkTelnet(Screen):
+class NetworkTelnet(NSCommon,Screen):
 	def __init__(self, session, menu_path=""):
 		Screen.__init__(self, session)
 		screentitle = _("Telnet")
@@ -2481,10 +2481,6 @@ class NetworkTelnet(Screen):
 			else:
 				commands.append('/etc/init.d/telnetd.busybox start')
 		self.Console.eBatch(commands, self.StartStopCallback, debug=True)
-
-	def StartStopCallback(self, result = None, retval = None, extra_args = None):
-		time.sleep(3)
-		self.updateService()
 
 	def activateTelnet(self):
 		commands = []
