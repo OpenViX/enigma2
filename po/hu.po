@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-17 17:48+0100\n"
+"POT-Creation-Date: 2019-12-08 00:14+0100\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -799,6 +799,18 @@ msgstr "Szolgáltató hozzáadása"
 msgid "Abort"
 msgstr "Mégsem"
 
+#, fuzzy
+msgid "Abort alternatives edit"
+msgstr "alternatív módosítás megszakítása"
+
+#, fuzzy
+msgid "Abort bouquet edit"
+msgstr "bouquet módosítás megszakítása"
+
+#, fuzzy
+msgid "Abort favourites edit"
+msgstr "kedvencek módosításának megszakítása"
+
 msgid "About"
 msgstr "Névjegy"
 
@@ -880,8 +892,20 @@ msgstr "Névszerver hozzáadása"
 msgid "Add a new title"
 msgstr "Új cím hozzáadása"
 
+#, fuzzy
+msgid "Add alternatives"
+msgstr "alternatívák hozzáadása"
+
 msgid "Add bookmark"
 msgstr "bookmark hozzáadása"
+
+#, fuzzy
+msgid "Add bouquet"
+msgstr "bouquet hozzáadása"
+
+#, fuzzy
+msgid "Add bouquet to parental protection"
+msgstr "hozzáadás a gyermekzár védelemhez"
 
 #, fuzzy
 msgid "Add current folder to bookmarks"
@@ -895,6 +919,10 @@ msgstr "fájl hozzáadása a playlistához"
 
 msgid "Add files to playlist"
 msgstr "fájlok hozzáadása a playlistához"
+
+#, fuzzy
+msgid "Add marker"
+msgstr "marker hozzáadása"
 
 #, fuzzy
 msgid "Add plugin to Extensions menu*"
@@ -925,6 +953,18 @@ msgstr "Válasszon fájlokat/mappákat a biztonsági mentéshez"
 msgid "Add service"
 msgstr "Csatorna hozzáadása"
 
+#, fuzzy
+msgid "Add service to bouquet"
+msgstr "csatorna hozzáadása a bouquethez"
+
+#, fuzzy
+msgid "Add service to favourites"
+msgstr "csatorna hozzáadása a kedvencekhez"
+
+#, fuzzy
+msgid "Add services to this bouquet?"
+msgstr "csatorna hozzáadása a bouquethez"
+
 msgid "Add timer"
 msgstr "Időzítés"
 
@@ -936,6 +976,10 @@ msgstr "Hozzáadás a bouquet listához"
 
 msgid "Add to favourites"
 msgstr "Hozzáadás a kedvencekhez"
+
+#, fuzzy
+msgid "Add to parental protection"
+msgstr "hozzáadás a gyermekzár védelemhez"
 
 msgid "Add/remove change timer for current event"
 msgstr ""
@@ -1169,7 +1213,7 @@ msgstr "Bármilyen aktivitás"
 msgid "Arabic"
 msgstr "Arab"
 
-msgid "Are you sure to purge all deleted userbouquets?"
+msgid "Are you sure to purge all deleted user bouquets?"
 msgstr ""
 
 #, python-format
@@ -1857,6 +1901,9 @@ msgstr "Kapacitás:"
 msgid "Capacity: "
 msgstr "Kapacitás:"
 
+msgid "Card"
+msgstr ""
+
 msgid "Cascade PiP"
 msgstr ""
 
@@ -2186,6 +2233,9 @@ msgstr "Kommunikáció"
 msgid "Comoros"
 msgstr ""
 
+msgid "Compact flash"
+msgstr ""
+
 msgid "Complete"
 msgstr "Kész"
 
@@ -2202,15 +2252,16 @@ msgstr "Részletek megtekintése"
 msgid "Config resolution of pictures"
 msgstr ""
 
+#, fuzzy
+msgid "Configuration"
+msgstr "Beállítások..."
+
 msgid "Configuration mode"
 msgstr "Konfigurációs mód: "
 
 #, python-format
 msgid "Configuration mode: %s"
 msgstr "Konfigurációs mód: %s"
-
-msgid "Configuration..."
-msgstr "Beállítások..."
 
 #, fuzzy
 msgid "Configure ATSC"
@@ -2697,6 +2748,10 @@ msgstr ""
 
 msgid "Copy folder"
 msgstr ""
+
+#, fuzzy
+msgid "Copy to bouquets"
+msgstr "másolás a bouquetek-be"
 
 msgid "Costa Rica"
 msgstr ""
@@ -3315,6 +3370,10 @@ msgstr "Háttér-keresés tiltása"
 msgid "Disable current event but not coming events"
 msgstr "Futó időzítés leállítása de a soron következők futtatása"
 
+#, fuzzy
+msgid "Disable move mode"
+msgstr "mozgatási mód letiltása"
+
 msgid "Disable timer"
 msgstr ""
 
@@ -3701,6 +3760,10 @@ msgstr "DNS módosítása"
 msgid "Edit Title"
 msgstr "Cím módosítása"
 
+#, fuzzy
+msgid "Edit alternatives"
+msgstr "alternatívák módosítása"
+
 msgid "Edit chapters of current title"
 msgstr "Aktuális cím jeleneteinek módosítása"
 
@@ -3814,6 +3877,10 @@ msgstr ""
 msgid "Enable auto fast scan for %s"
 msgstr "Gyermekzár engedélyezése"
 
+#, fuzzy
+msgid "Enable bouquet edit"
+msgstr "bouquet módosítás engedélyezése"
+
 msgid "Enable bouquet selection in multi-EPG"
 msgstr "Bouquet-választás lehetősége a Multi-EPG-ben"
 
@@ -3824,6 +3891,10 @@ msgstr "Engedélyezve"
 msgid "Enable fallback remote receiver"
 msgstr ""
 
+#, fuzzy
+msgid "Enable favourites edit"
+msgstr "kedvencek módosításának engedélyezése"
+
 msgid "Enable freesat EPG"
 msgstr "Freesat EPG engedélyezése"
 
@@ -3832,6 +3903,10 @@ msgstr ""
 
 msgid "Enable infobar fade-out"
 msgstr ""
+
+#, fuzzy
+msgid "Enable move mode"
+msgstr "mozgatási mód engedélyezése"
 
 msgid "Enable multiple bouquets"
 msgstr "Többszörös bouquetek engedélyezése"
@@ -3904,6 +3979,18 @@ msgstr "Kódolási kulcstípus"
 
 msgid "Encryption:"
 msgstr "Kódolás:"
+
+#, fuzzy
+msgid "End alternatives edit"
+msgstr "alternatívák módosításának vége"
+
+#, fuzzy
+msgid "End bouquet edit"
+msgstr "bouquet módosítás vége"
+
+#, fuzzy
+msgid "End favourites edit"
+msgstr "kedvencek módosításának vége"
 
 msgid "End time"
 msgstr "Vége időpont"
@@ -4158,10 +4245,6 @@ msgstr "Kilépés a Hálózati Varázslóból"
 
 msgid "Exit the wizard"
 msgstr "Kilépés a Varázslóból"
-
-#, fuzzy
-msgid "Exit/OK"
-msgstr "Kilépés"
 
 msgid "Expert"
 msgstr "Haladó"
@@ -4449,6 +4532,10 @@ msgstr "Végleges pozíció indexe"
 
 msgid "Final scroll delay"
 msgstr ""
+
+#, fuzzy
+msgid "Find currently playing service"
+msgstr "Csatornák védelme"
 
 msgid "Fine movement"
 msgstr "Finom mozgatás"
@@ -4953,6 +5040,10 @@ msgstr "Készenlét fogadása a TV-től"
 
 msgid "Handle wakeup from TV"
 msgstr "Bekapcsolás fogadása a TV-től"
+
+#, fuzzy
+msgid "Hard disk"
+msgstr "Háttértár"
 
 msgid "Hard disk setup"
 msgstr "Háttértár beállítások"
@@ -5943,6 +6034,9 @@ msgstr ""
 msgid "MIME Version"
 msgstr "Invertálás"
 
+msgid "MMC card"
+msgstr ""
+
 msgid "MORE"
 msgstr "MÉG"
 
@@ -6580,6 +6674,14 @@ msgstr "Hálózati beállítások..."
 
 msgid "Network configuration..."
 msgstr "Hálózati beállítások..."
+
+#, fuzzy
+msgid "Network mount"
+msgstr "Nem észlelhető hálózat"
+
+#, fuzzy, python-format
+msgid "Network mount %s"
+msgstr "Hálózat ellenőrzése"
 
 msgid "Network name (SSID)"
 msgstr "Hálózatnév (SSID)"
@@ -7407,6 +7509,10 @@ msgstr "DVD lejátszás"
 msgid "Play DVDs"
 msgstr "DVD lejátszás"
 
+#, fuzzy
+msgid "Play as Picture in Picture"
+msgstr "megjelenítés Kép-a-Képben"
+
 msgid "Play audio-CD..."
 msgstr "Audio-CD lejátszás..."
 
@@ -7425,6 +7531,10 @@ msgstr "lejátszás a következő markertől vagy lépjen be a playlistába"
 
 msgid "Play from previous mark or playlist entry"
 msgstr "lejátszás az előző markertől vagy lépjen be a playlistába"
+
+#, fuzzy
+msgid "Play in main window"
+msgstr "lejátszás a főképernyőn"
 
 msgid "Play music..."
 msgstr "Zenelejátszás"
@@ -8076,6 +8186,10 @@ msgstr "Szolgáltatók"
 msgid "Puerto Rico"
 msgstr ""
 
+#, fuzzy
+msgid "Purge deleted user bouquets"
+msgstr "Többszörös bouquetek engedélyezése"
+
 msgid "Put TV in standby"
 msgstr "TV kikapcsolása"
 
@@ -8124,6 +8238,10 @@ msgstr "RGB"
 
 msgid "Radio"
 msgstr "Rádió"
+
+#, fuzzy
+msgid "Ram disk"
+msgstr "Háttértár"
 
 msgid "Random"
 msgstr "Véletlenszerű"
@@ -8357,11 +8475,27 @@ msgid "Remove a nameserver entry"
 msgstr "névszerver eltávolítása"
 
 #, fuzzy
+msgid "Remove all alternatives"
+msgstr "összes alternatíva törlése"
+
+#, fuzzy
 msgid "Remove all logfiles"
 msgstr "összes alternatíva törlése"
 
+#, fuzzy
+msgid "Remove all new found flags"
+msgstr "minden újtalálat jelzö törlése"
+
 msgid "Remove bookmark"
 msgstr "bookmark eltávolítása"
+
+#, fuzzy
+msgid "Remove bouquet from parental protection"
+msgstr "eltávolítás a gyermekzár védelem alól"
+
+#, fuzzy
+msgid "Remove cable services"
+msgstr "Csatornák védelme"
 
 msgid "Remove completed timers after (days)"
 msgstr "Lejárt időzítések törlése ennyi nap után"
@@ -8376,14 +8510,34 @@ msgstr "Kijelölt címek eltávolítása"
 msgid "Remove directory"
 msgstr "mappa eltávolítása"
 
+#, fuzzy
+msgid "Remove entry"
+msgstr "bejegyzés törlése"
+
+#, fuzzy
+msgid "Remove from parental protection"
+msgstr "eltávolítás a gyermekzár védelem alól"
+
 msgid "Remove items from trash can after (days)"
 msgstr "Kuka kiürítése ennyi nap után"
+
+#, fuzzy
+msgid "Remove new found flag"
+msgstr "'új' jelző eltávolítása"
 
 msgid "Remove plugins"
 msgstr "Pluginek eltávolítása"
 
 msgid "Remove selected folder from bookmarks"
 msgstr ""
+
+#, fuzzy
+msgid "Remove selected satellite"
+msgstr "kiválasztott műhold törlése"
+
+#, fuzzy
+msgid "Remove terrestrial services"
+msgstr "Csatornák védelme"
 
 msgid "Remove texts for the hearing impaired from external subtitles (instrumental music or environmental sounds, e.g., when a doorbell rings or a gun shot is heard)."
 msgstr ""
@@ -8414,6 +8568,10 @@ msgstr "Partíciótábla újraolvasása"
 
 msgid "Rename"
 msgstr "Átnevezés"
+
+#, fuzzy
+msgid "Rename entry"
+msgstr "átnevezés"
 
 #, fuzzy
 msgid "Rename file/directory"
@@ -8535,6 +8693,10 @@ msgstr "Visszaállítás"
 
 msgid "Restore backups"
 msgstr "Mentések visszaállítása"
+
+#, fuzzy
+msgid "Restore deleted user bouquets"
+msgstr "Többszörös bouquetek engedélyezése"
 
 #, fuzzy
 msgid "Restore inetd"
@@ -9463,6 +9625,10 @@ msgstr "Csatornák"
 msgid "Service ID"
 msgstr "Csatorna információ"
 
+#, fuzzy
+msgid "Service belongs to a parental protected bouquet"
+msgstr "A csatornát hozzáadtam a kiválasztott bouquethez."
+
 msgid "Service has been added to the favourites."
 msgstr "A csatornát hozzáadtam a kedvencekhez."
 
@@ -9549,6 +9715,10 @@ msgstr ""
 
 msgid "Set alternative fallback tuners for DVB-T/C or ATSC"
 msgstr ""
+
+#, fuzzy
+msgid "Set as startup service"
+msgstr "beállítás indítási csatornának"
 
 msgid "Set blocktimes by weekday"
 msgstr ""
@@ -9750,6 +9920,10 @@ msgstr "A vezeték nélküli hálózat állapotának megjelenítése"
 
 msgid "Show Weather Widget"
 msgstr ""
+
+#, fuzzy
+msgid "Show alternatives"
+msgstr "alternatívák megjelenítése"
 
 msgid "Show animation while busy"
 msgstr "Animáció megjelenítése amikor a szoftver foglalt"
@@ -9999,6 +10173,10 @@ msgstr "Rádió csatornalista..."
 #, fuzzy
 msgid "Show the plugin browser.."
 msgstr "Telepített Pluginek"
+
+#, fuzzy
+msgid "Show transponder info"
+msgstr "transzponder infó megjelenítése"
 
 msgid "Show two lines per entry"
 msgstr ""
@@ -10607,6 +10785,10 @@ msgstr "időcsúsztatás leállítása"
 msgid "Stop timeshift?"
 msgstr "Leállítsam az időcsúsztatást?"
 
+#, fuzzy
+msgid "Stop using as startup service"
+msgstr "beállítás indítási csatornának"
+
 msgid "Stopped"
 msgstr "Leállítva"
 
@@ -10911,6 +11093,9 @@ msgstr "Gyűjtemény tartalmának táblázata"
 
 msgid "Tags"
 msgstr "Metaadatok"
+
+msgid "Taiwan"
+msgstr ""
 
 msgid "Tajikistan"
 msgstr ""
@@ -11839,6 +12024,10 @@ msgstr ""
 
 #, fuzzy
 msgid "USB Stick"
+msgstr "USB Stick"
+
+#, fuzzy
+msgid "USB stick"
 msgstr "USB Stick"
 
 msgid "Uganda"
@@ -13254,9 +13443,6 @@ msgstr "Az ön rendszere nem támogatja az ext4-et."
 msgid "[Image Info]\n"
 msgstr "Image: "
 
-msgid "[a]"
-msgstr ""
-
 msgid "[alternative edit]"
 msgstr "[alternatív módosítás]"
 
@@ -13275,15 +13461,6 @@ msgstr "egy felhasználói felület, mely lehetővé teszi szolgáltatók/csator
 msgid "a gui to assign services/providers/caids to common interface modules"
 msgstr "egy felhasználói felület, mely lehetővé teszi szolgáltatók/csatornák/CAId-ek hozzárendelését CI modulokhoz"
 
-msgid "abort alternatives edit"
-msgstr "alternatív módosítás megszakítása"
-
-msgid "abort bouquet edit"
-msgstr "bouquet módosítás megszakítása"
-
-msgid "abort favourites edit"
-msgstr "kedvencek módosításának megszakítása"
-
 msgid "about to start"
 msgstr "az indításról"
 
@@ -13299,28 +13476,6 @@ msgstr ""
 
 msgid "actual time only"
 msgstr ""
-
-msgid "add alternatives"
-msgstr "alternatívák hozzáadása"
-
-msgid "add bouquet"
-msgstr "bouquet hozzáadása"
-
-#, fuzzy
-msgid "add bouquet to parental protection"
-msgstr "hozzáadás a gyermekzár védelemhez"
-
-msgid "add marker"
-msgstr "marker hozzáadása"
-
-msgid "add service to bouquet"
-msgstr "csatorna hozzáadása a bouquethez"
-
-msgid "add service to favourites"
-msgstr "csatorna hozzáadása a kedvencekhez"
-
-msgid "add to parental protection"
-msgstr "hozzáadás a gyermekzár védelemhez"
 
 msgid "adult movie/drama"
 msgstr "Felnőtt/Dráma"
@@ -13534,9 +13689,6 @@ msgstr "%d fájl"
 msgid "copy folder"
 msgstr ""
 
-msgid "copy to bouquets"
-msgstr "másolás a bouquetek-be"
-
 msgid "create symlink ..."
 msgstr ""
 
@@ -13565,9 +13717,6 @@ msgstr "kikapcsolva"
 #, fuzzy
 msgid "disable intro screen"
 msgstr "Kép-a-Képben kikapcsolása"
-
-msgid "disable move mode"
-msgstr "mozgatási mód letiltása"
 
 msgid "disabled"
 msgstr "kikapcsolva"
@@ -13602,9 +13751,6 @@ msgstr "kelet"
 msgid "economics/social advisory"
 msgstr "gazdaság/szocilális"
 
-msgid "edit alternatives"
-msgstr "alternatívák módosítása"
-
 msgid "education/science/factual topics (general)"
 msgstr "oktatás/tudomány/tényszerü általános"
 
@@ -13618,32 +13764,14 @@ msgstr "üres"
 msgid "enable"
 msgstr "engedélyezve"
 
-msgid "enable bouquet edit"
-msgstr "bouquet módosítás engedélyezése"
-
-msgid "enable favourite edit"
-msgstr "kedvencek módosításának engedélyezése"
-
 msgid "enable intro screen"
 msgstr ""
-
-msgid "enable move mode"
-msgstr "mozgatási mód engedélyezése"
 
 msgid "enabled"
 msgstr "engedélyezve"
 
-msgid "end alternatives edit"
-msgstr "alternatívák módosításának vége"
-
-msgid "end bouquet edit"
-msgstr "bouquet módosítás vége"
-
 msgid "end cut here"
 msgstr "vágás kilépő pontja"
-
-msgid "end favourites edit"
-msgstr "kedvencek módosításának vége"
 
 #, fuzzy
 msgid "enigma2 and network"
@@ -13726,9 +13854,6 @@ msgstr "fájlnév"
 
 msgid "film/cinema"
 msgstr "mozi"
-
-msgid "find currently played service"
-msgstr ""
 
 msgid "fine arts"
 msgstr "művészet"
@@ -14132,12 +14257,6 @@ msgstr "Előadóművészet"
 msgid "picons"
 msgstr "Ikonok"
 
-msgid "play as picture in picture"
-msgstr "megjelenítés Kép-a-Képben"
-
-msgid "play in mainwindow"
-msgstr "lejátszás a főképernyőn"
-
 msgid "please press OK when ready"
 msgstr "nyomja le az OK-t ha kész"
 
@@ -14172,9 +14291,6 @@ msgstr "néprajz"
 msgid "pre-school children's program"
 msgstr "óvodásoknak"
 
-msgid "purge deleted userbouquets"
-msgstr ""
-
 msgid "receiver software because updates are available."
 msgstr "készülék szoftvere, frisstések elérhetők"
 
@@ -14200,52 +14316,16 @@ msgstr "nevezetes emberek"
 msgid "remove after this position"
 msgstr "e pont után mindent töröljön"
 
-msgid "remove all alternatives"
-msgstr "összes alternatíva törlése"
-
-msgid "remove all new found flags"
-msgstr "minden újtalálat jelzö törlése"
-
 msgid "remove before this position"
 msgstr "e pont elött mindent töröljön"
 
-#, fuzzy
-msgid "remove bouquet from parental protection"
-msgstr "eltávolítás a gyermekzár védelem alól"
-
-#, fuzzy
-msgid "remove cable services"
-msgstr "Csatornák védelme"
-
-msgid "remove entry"
-msgstr "bejegyzés törlése"
-
-msgid "remove from parental protection"
-msgstr "eltávolítás a gyermekzár védelem alól"
-
-msgid "remove new found flag"
-msgstr "'új' jelző eltávolítása"
-
-msgid "remove selected satellite"
-msgstr "kiválasztott műhold törlése"
-
-#, fuzzy
-msgid "remove terrestrial services"
-msgstr "Csatornák védelme"
-
 msgid "remove this mark"
 msgstr "e jelzö eltávolítása"
-
-msgid "rename entry"
-msgstr "átnevezés"
 
 msgid "repeated"
 msgstr "többszöri"
 
 msgid "reserved for future use"
-msgstr ""
-
-msgid "restore deleted userbouquets"
 msgstr ""
 
 msgid "reverse by date"
@@ -14298,15 +14378,8 @@ msgid "serious/classical/religious/historical movie/drama"
 msgstr "komolyzene/klasszikus/vallási/történelmi/dráma"
 
 #, fuzzy
-msgid "service is in bouquet parental protection"
-msgstr "eltávolítás a gyermekzár védelem alól"
-
-#, fuzzy
 msgid "service off-air"
 msgstr "szerviz-PIN"
-
-msgid "set as startup service"
-msgstr "beállítás indítási csatornának"
 
 #, fuzzy
 msgid "settings"
@@ -14318,9 +14391,6 @@ msgstr "DVD főmenü megjelenítése"
 msgid "show all tags"
 msgstr "minden metaadat megjelenítése"
 
-msgid "show alternatives"
-msgstr "alternatívák megjelenítése"
-
 msgid "show event details"
 msgstr "részletes adatok megjelenítése"
 
@@ -14329,9 +14399,6 @@ msgstr "Szoftverkezelő megjelenítése a beállítások menüben"
 
 msgid "show softwaremanager on blue button"
 msgstr "Szoftverkezelő megjelenítése a kék-gombos menüben"
-
-msgid "show transponder info"
-msgstr "transzponder infó megjelenítése"
 
 msgid "show/game show (general)"
 msgstr "show/háték (általános)"
@@ -14419,9 +14486,6 @@ msgstr "lépték mérték"
 
 msgid "stereo"
 msgstr "sztereó"
-
-msgid "stop using as startup service"
-msgstr "beállítás indítási csatornának"
 
 msgid "successful"
 msgstr ""

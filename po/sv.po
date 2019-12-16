@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-17 17:48+0100\n"
+"POT-Creation-Date: 2019-12-08 00:14+0100\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -865,6 +865,21 @@ msgid "Abort"
 msgstr "Avbryt"
 
 #
+#, fuzzy
+msgid "Abort alternatives edit"
+msgstr "avbryt ändra alternativ"
+
+#
+#, fuzzy
+msgid "Abort bouquet edit"
+msgstr "avbryt editera favoritlista"
+
+#
+#, fuzzy
+msgid "Abort favourites edit"
+msgstr "avbryt editera favoriter"
+
+#
 msgid "About"
 msgstr "Om"
 
@@ -963,8 +978,23 @@ msgid "Add a new title"
 msgstr "Lägg till ny titel"
 
 #
+#, fuzzy
+msgid "Add alternatives"
+msgstr "lägg till alternativ"
+
+#
 msgid "Add bookmark"
 msgstr "Lägg till bokmärke"
+
+#
+#, fuzzy
+msgid "Add bouquet"
+msgstr "lägg till favoritlista"
+
+#
+#, fuzzy
+msgid "Add bouquet to parental protection"
+msgstr "lägg till föräldraskydd"
 
 #
 #, fuzzy
@@ -982,6 +1012,11 @@ msgstr "Lägg till fil i spellista"
 #
 msgid "Add files to playlist"
 msgstr "Lägg till fil i spellista"
+
+#
+#, fuzzy
+msgid "Add marker"
+msgstr "lägg till markör"
 
 #, fuzzy
 msgid "Add plugin to Extensions menu*"
@@ -1020,6 +1055,21 @@ msgid "Add service"
 msgstr "Lägg till service"
 
 #
+#, fuzzy
+msgid "Add service to bouquet"
+msgstr "lägg till kanal i favoritlista"
+
+#
+#, fuzzy
+msgid "Add service to favourites"
+msgstr "lägg till kanal i favoriter"
+
+#
+#, fuzzy
+msgid "Add services to this bouquet?"
+msgstr "lägg till kanal i favoritlista"
+
+#
 msgid "Add timer"
 msgstr "Lägg till timer"
 
@@ -1034,6 +1084,11 @@ msgstr "Lägg till i favoritlista"
 #
 msgid "Add to favourites"
 msgstr "Lägg till i favoriter"
+
+#
+#, fuzzy
+msgid "Add to parental protection"
+msgstr "lägg till föräldraskydd"
 
 msgid "Add/remove change timer for current event"
 msgstr ""
@@ -1295,7 +1350,7 @@ msgstr "Vilken aktivitet som helst"
 msgid "Arabic"
 msgstr "Arabiska"
 
-msgid "Are you sure to purge all deleted userbouquets?"
+msgid "Are you sure to purge all deleted user bouquets?"
 msgstr ""
 
 #, python-format
@@ -2067,6 +2122,9 @@ msgstr "Kapacitet: "
 msgid "Capacity: "
 msgstr "Kapacitet: "
 
+msgid "Card"
+msgstr ""
+
 msgid "Cascade PiP"
 msgstr ""
 
@@ -2443,6 +2501,9 @@ msgstr "Kommunikation"
 msgid "Comoros"
 msgstr ""
 
+msgid "Compact flash"
+msgstr ""
+
 #
 msgid "Complete"
 msgstr "Komplett"
@@ -2462,16 +2523,17 @@ msgstr "Visa detaljer"
 msgid "Config resolution of pictures"
 msgstr ""
 
+#
+#, fuzzy
+msgid "Configuration"
+msgstr "Konfiguration..."
+
 msgid "Configuration mode"
 msgstr "Konfigurationsläge"
 
 #, python-format
 msgid "Configuration mode: %s"
 msgstr "Konfigurationsläge: %s"
-
-#
-msgid "Configuration..."
-msgstr "Konfiguration..."
 
 #
 #, fuzzy
@@ -2992,6 +3054,11 @@ msgstr ""
 
 msgid "Copy folder"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Copy to bouquets"
+msgstr "kopiera till favoritlista"
 
 msgid "Costa Rica"
 msgstr ""
@@ -3688,6 +3755,11 @@ msgstr "Avaktivera skanning i bakgrunden"
 msgid "Disable current event but not coming events"
 msgstr "Avsluta nuvarande program men inte kommande"
 
+#
+#, fuzzy
+msgid "Disable move mode"
+msgstr "avaktivera flyttläge"
+
 msgid "Disable timer"
 msgstr ""
 
@@ -4134,6 +4206,11 @@ msgid "Edit Title"
 msgstr "Ändra titel"
 
 #
+#, fuzzy
+msgid "Edit alternatives"
+msgstr "ändra alternativ"
+
+#
 msgid "Edit chapters of current title"
 msgstr "Ändra kapitel i nuvarande titel"
 
@@ -4257,6 +4334,11 @@ msgstr ""
 msgid "Enable auto fast scan for %s"
 msgstr "Aktivera föräldrakontroll"
 
+#
+#, fuzzy
+msgid "Enable bouquet edit"
+msgstr "aktivera favoritlists editor"
+
 msgid "Enable bouquet selection in multi-EPG"
 msgstr "Aktivera multi-EPG favoritlisteval."
 
@@ -4268,6 +4350,11 @@ msgstr "Aktiverad"
 msgid "Enable fallback remote receiver"
 msgstr ""
 
+#
+#, fuzzy
+msgid "Enable favourites edit"
+msgstr "aktivera favoriter editor"
+
 msgid "Enable freesat EPG"
 msgstr "Aktivera freeSat EPG"
 
@@ -4276,6 +4363,11 @@ msgstr ""
 
 msgid "Enable infobar fade-out"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Enable move mode"
+msgstr "aktivera flyttläge"
 
 #
 msgid "Enable multiple bouquets"
@@ -4360,6 +4452,21 @@ msgstr "Krypterings Nyckelvariant"
 #
 msgid "Encryption:"
 msgstr "Kryptering:"
+
+#
+#, fuzzy
+msgid "End alternatives edit"
+msgstr "avsluta ändra alternativ"
+
+#
+#, fuzzy
+msgid "End bouquet edit"
+msgstr "avsluta favoritlists editor"
+
+#
+#, fuzzy
+msgid "End favourites edit"
+msgstr "avsluta favoriter editor"
 
 #
 msgid "End time"
@@ -4642,11 +4749,6 @@ msgstr "Avsluta nätverksguiden"
 #
 msgid "Exit the wizard"
 msgstr "Avsluta guiden"
-
-#
-#, fuzzy
-msgid "Exit/OK"
-msgstr "Avsluta"
 
 #
 msgid "Expert"
@@ -4964,6 +5066,11 @@ msgstr "Slutgiltig position vid index"
 
 msgid "Final scroll delay"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Find currently playing service"
+msgstr "Skydda kanaler"
 
 msgid "Fine movement"
 msgstr "Finjustering"
@@ -5515,6 +5622,11 @@ msgstr "Hantera standby från TV"
 
 msgid "Handle wakeup from TV"
 msgstr "Hantera wakeup från TV"
+
+#
+#, fuzzy
+msgid "Hard disk"
+msgstr "Hårddisk"
 
 #
 msgid "Hard disk setup"
@@ -6635,6 +6747,9 @@ msgstr ""
 msgid "MIME Version"
 msgstr "Inversion"
 
+msgid "MMC card"
+msgstr ""
+
 msgid "MORE"
 msgstr "MER"
 
@@ -7348,6 +7463,16 @@ msgstr "Nätverkskonfiguration..."
 #
 msgid "Network configuration..."
 msgstr "Nätverkskonfiguration..."
+
+#
+#, fuzzy
+msgid "Network mount"
+msgstr "Inget nätverk hittat"
+
+#
+#, fuzzy, python-format
+msgid "Network mount %s"
+msgstr "Nätverktest"
 
 msgid "Network name (SSID)"
 msgstr "Nätverksnamn (SSID)"
@@ -8267,6 +8392,10 @@ msgstr "Spela DVD"
 msgid "Play DVDs"
 msgstr "Spela DVD"
 
+#, fuzzy
+msgid "Play as Picture in Picture"
+msgstr "spela som bild i bild"
+
 #
 msgid "Play audio-CD..."
 msgstr "Spela Audio-CD..."
@@ -8287,6 +8416,10 @@ msgstr "Spela upp från nästa markering eller post i spellista"
 
 msgid "Play from previous mark or playlist entry"
 msgstr "Spela upp från föregående markering eller post i spellista"
+
+#, fuzzy
+msgid "Play in main window"
+msgstr "spela i huvudfönster"
 
 #
 msgid "Play music..."
@@ -9052,6 +9185,11 @@ msgstr "Leverantörer"
 msgid "Puerto Rico"
 msgstr ""
 
+#
+#, fuzzy
+msgid "Purge deleted user bouquets"
+msgstr "Aktivera flera favoritlistor"
+
 msgid "Put TV in standby"
 msgstr "Sätt TV:n i viloläge"
 
@@ -9108,6 +9246,11 @@ msgstr "RGB"
 #
 msgid "Radio"
 msgstr "Radio"
+
+#
+#, fuzzy
+msgid "Ram disk"
+msgstr "Hårddisk"
 
 #
 msgid "Random"
@@ -9383,12 +9526,31 @@ msgstr "Ta bort en namnserver post"
 
 #
 #, fuzzy
+msgid "Remove all alternatives"
+msgstr "ta bort alla alternativ"
+
+#
+#, fuzzy
 msgid "Remove all logfiles"
 msgstr "ta bort alla alternativ"
+
+#, fuzzy
+msgid "Remove all new found flags"
+msgstr "ta bort alla ny funnen flaggor"
 
 #
 msgid "Remove bookmark"
 msgstr "Ta bort bokmärke"
+
+#
+#, fuzzy
+msgid "Remove bouquet from parental protection"
+msgstr "ta bort från föräldraskydd"
+
+#
+#, fuzzy
+msgid "Remove cable services"
+msgstr "Skydda kanaler"
 
 msgid "Remove completed timers after (days)"
 msgstr "Ta bort färdiga timers efter (dagar)"
@@ -9405,8 +9567,22 @@ msgstr "Ta bort vald titel"
 msgid "Remove directory"
 msgstr "ta bort bibliotek"
 
+#
+#, fuzzy
+msgid "Remove entry"
+msgstr "ta bort post"
+
+#
+#, fuzzy
+msgid "Remove from parental protection"
+msgstr "ta bort från föräldraskydd"
+
 msgid "Remove items from trash can after (days)"
 msgstr "Ta bort objekt från papperskorgen efter (dagar)"
+
+#, fuzzy
+msgid "Remove new found flag"
+msgstr "ta bort ny funnen flagga"
 
 #
 msgid "Remove plugins"
@@ -9414,6 +9590,16 @@ msgstr "Ta bort plugins"
 
 msgid "Remove selected folder from bookmarks"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Remove selected satellite"
+msgstr "ta bort vald satellit"
+
+#
+#, fuzzy
+msgid "Remove terrestrial services"
+msgstr "Skydda kanaler"
 
 msgid "Remove texts for the hearing impaired from external subtitles (instrumental music or environmental sounds, e.g., when a doorbell rings or a gun shot is heard)."
 msgstr ""
@@ -9451,6 +9637,10 @@ msgstr "Ta bort partitionstabellen"
 #
 msgid "Rename"
 msgstr "Byt namn"
+
+#, fuzzy
+msgid "Rename entry"
+msgstr "döp om post"
 
 #
 #, fuzzy
@@ -9593,6 +9783,11 @@ msgstr "Återställ"
 #
 msgid "Restore backups"
 msgstr "Återställ backuper"
+
+#
+#, fuzzy
+msgid "Restore deleted user bouquets"
+msgstr "Aktivera flera favoritlistor"
 
 #
 #, fuzzy
@@ -10647,6 +10842,11 @@ msgid "Service ID"
 msgstr "Kanal"
 
 #
+#, fuzzy
+msgid "Service belongs to a parental protected bouquet"
+msgstr "Kanalen har lagts till i vald favoritlista."
+
+#
 msgid "Service has been added to the favourites."
 msgstr "Kanalen har lagts till i favoriter."
 
@@ -10743,6 +10943,10 @@ msgstr ""
 
 msgid "Set alternative fallback tuners for DVB-T/C or ATSC"
 msgstr ""
+
+#, fuzzy
+msgid "Set as startup service"
+msgstr "använd som startkanal"
 
 msgid "Set blocktimes by weekday"
 msgstr ""
@@ -10965,6 +11169,11 @@ msgstr "Visa WLAN Status"
 
 msgid "Show Weather Widget"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Show alternatives"
+msgstr "visa alternativ"
 
 msgid "Show animation while busy"
 msgstr "Visa ikon när mottagaren är upptagen"
@@ -11239,6 +11448,11 @@ msgstr "Visa radiospelaren..."
 #, fuzzy
 msgid "Show the plugin browser.."
 msgstr "Pluginhanterare"
+
+#
+#, fuzzy
+msgid "Show transponder info"
+msgstr "visa transponder info"
 
 msgid "Show two lines per entry"
 msgstr ""
@@ -11929,6 +12143,10 @@ msgstr "Avsluta timeshift"
 msgid "Stop timeshift?"
 msgstr "Avsluta timeshift?"
 
+#, fuzzy
+msgid "Stop using as startup service"
+msgstr "sluta använd som startkanal"
+
 msgid "Stopped"
 msgstr "Stoppad"
 
@@ -12265,6 +12483,9 @@ msgstr "Index över innehållet av samligen"
 #
 msgid "Tags"
 msgstr "Märken"
+
+msgid "Taiwan"
+msgstr ""
 
 msgid "Tajikistan"
 msgstr ""
@@ -13299,6 +13520,11 @@ msgstr ""
 #
 #, fuzzy
 msgid "USB Stick"
+msgstr "USB sticka"
+
+#
+#, fuzzy
+msgid "USB stick"
 msgstr "USB sticka"
 
 msgid "Uganda"
@@ -14845,9 +15071,6 @@ msgstr "Ditt system stödjer inte ext4"
 msgid "[Image Info]\n"
 msgstr "Image: "
 
-msgid "[a]"
-msgstr ""
-
 #
 msgid "[alternative edit]"
 msgstr "[ändra alternativ]"
@@ -14873,18 +15096,6 @@ msgid "a gui to assign services/providers/caids to common interface modules"
 msgstr "ett gränssnitt för att tilldela kanaler/providers/caids till ett Common Interface modul"
 
 #
-msgid "abort alternatives edit"
-msgstr "avbryt ändra alternativ"
-
-#
-msgid "abort bouquet edit"
-msgstr "avbryt editera favoritlista"
-
-#
-msgid "abort favourites edit"
-msgstr "avbryt editera favoriter"
-
-#
 msgid "about to start"
 msgstr "håller på att starta"
 
@@ -14902,35 +15113,6 @@ msgstr ""
 
 msgid "actual time only"
 msgstr ""
-
-#
-msgid "add alternatives"
-msgstr "lägg till alternativ"
-
-#
-msgid "add bouquet"
-msgstr "lägg till favoritlista"
-
-#
-#, fuzzy
-msgid "add bouquet to parental protection"
-msgstr "lägg till föräldraskydd"
-
-#
-msgid "add marker"
-msgstr "lägg till markör"
-
-#
-msgid "add service to bouquet"
-msgstr "lägg till kanal i favoritlista"
-
-#
-msgid "add service to favourites"
-msgstr "lägg till kanal i favoriter"
-
-#
-msgid "add to parental protection"
-msgstr "lägg till föräldraskydd"
 
 msgid "adult movie/drama"
 msgstr "vuxenfilm/drama"
@@ -15171,10 +15353,6 @@ msgstr "%d fil"
 msgid "copy folder"
 msgstr ""
 
-#
-msgid "copy to bouquets"
-msgstr "kopiera till favoritlista"
-
 msgid "create symlink ..."
 msgstr ""
 
@@ -15209,10 +15387,6 @@ msgstr "avaktiverad"
 #, fuzzy
 msgid "disable intro screen"
 msgstr "Avaktivera Bild i Bild"
-
-#
-msgid "disable move mode"
-msgstr "avaktivera flyttläge"
 
 #
 msgid "disabled"
@@ -15251,10 +15425,6 @@ msgstr "öst"
 msgid "economics/social advisory"
 msgstr "ekonomi/social rådgivning"
 
-#
-msgid "edit alternatives"
-msgstr "ändra alternativ"
-
 msgid "education/science/factual topics (general)"
 msgstr "utbildning/forskning/faktaämnen (allmänt)"
 
@@ -15270,40 +15440,16 @@ msgstr "tom"
 msgid "enable"
 msgstr "aktiverad"
 
-#
-msgid "enable bouquet edit"
-msgstr "aktivera favoritlists editor"
-
-#
-msgid "enable favourite edit"
-msgstr "aktivera favoriter editor"
-
 msgid "enable intro screen"
 msgstr ""
-
-#
-msgid "enable move mode"
-msgstr "aktivera flyttläge"
 
 #
 msgid "enabled"
 msgstr "aktiverad"
 
 #
-msgid "end alternatives edit"
-msgstr "avsluta ändra alternativ"
-
-#
-msgid "end bouquet edit"
-msgstr "avsluta favoritlists editor"
-
-#
 msgid "end cut here"
 msgstr "slutklipp här"
-
-#
-msgid "end favourites edit"
-msgstr "avsluta favoriter editor"
 
 #, fuzzy
 msgid "enigma2 and network"
@@ -15394,9 +15540,6 @@ msgstr "filnamn"
 
 msgid "film/cinema"
 msgstr "film/bio"
-
-msgid "find currently played service"
-msgstr ""
 
 msgid "fine arts"
 msgstr "konst"
@@ -15869,12 +16012,6 @@ msgstr "scenkonst"
 msgid "picons"
 msgstr "Ikoner"
 
-msgid "play as picture in picture"
-msgstr "spela som bild i bild"
-
-msgid "play in mainwindow"
-msgstr "spela i huvudfönster"
-
 #
 msgid "please press OK when ready"
 msgstr "tryck OK när du är klar"
@@ -15914,9 +16051,6 @@ msgstr "populärkultur/traditionell konst"
 msgid "pre-school children's program"
 msgstr "barnprogram förskola"
 
-msgid "purge deleted userbouquets"
-msgstr ""
-
 msgid "receiver software because updates are available."
 msgstr "mottagarens programvara för att uppdateringar finns tillgängliga."
 
@@ -15948,61 +16082,18 @@ msgid "remove after this position"
 msgstr "ta bort efter denna position"
 
 #
-msgid "remove all alternatives"
-msgstr "ta bort alla alternativ"
-
-msgid "remove all new found flags"
-msgstr "ta bort alla ny funnen flaggor"
-
-#
 msgid "remove before this position"
 msgstr "ta bort före denna position"
 
 #
-#, fuzzy
-msgid "remove bouquet from parental protection"
-msgstr "ta bort från föräldraskydd"
-
-#
-#, fuzzy
-msgid "remove cable services"
-msgstr "Skydda kanaler"
-
-#
-msgid "remove entry"
-msgstr "ta bort post"
-
-#
-msgid "remove from parental protection"
-msgstr "ta bort från föräldraskydd"
-
-msgid "remove new found flag"
-msgstr "ta bort ny funnen flagga"
-
-#
-msgid "remove selected satellite"
-msgstr "ta bort vald satellit"
-
-#
-#, fuzzy
-msgid "remove terrestrial services"
-msgstr "Skydda kanaler"
-
-#
 msgid "remove this mark"
 msgstr "ta bort denna markör"
-
-msgid "rename entry"
-msgstr "döp om post"
 
 #
 msgid "repeated"
 msgstr "repeterande"
 
 msgid "reserved for future use"
-msgstr ""
-
-msgid "restore deleted userbouquets"
 msgstr ""
 
 msgid "reverse by date"
@@ -16060,17 +16151,9 @@ msgstr "seriös musik/klassisk musik"
 msgid "serious/classical/religious/historical movie/drama"
 msgstr "seriös/klassisk/religiös/historisk film/drama"
 
-#
-#, fuzzy
-msgid "service is in bouquet parental protection"
-msgstr "ta bort från föräldraskydd"
-
 #, fuzzy
 msgid "service off-air"
 msgstr "kanal PIN"
-
-msgid "set as startup service"
-msgstr "använd som startkanal"
 
 #
 #, fuzzy
@@ -16085,10 +16168,6 @@ msgid "show all tags"
 msgstr "visa alla taggar"
 
 #
-msgid "show alternatives"
-msgstr "visa alternativ"
-
-#
 msgid "show event details"
 msgstr "visa programdetaljer"
 
@@ -16097,10 +16176,6 @@ msgstr "visar mjukvaruhanterare i inställningsmenyn"
 
 msgid "show softwaremanager on blue button"
 msgstr "visar mjukvaruhanterare vid blå knapp"
-
-#
-msgid "show transponder info"
-msgstr "visa transponder info"
 
 msgid "show/game show (general)"
 msgstr "show/spelunderhållning (allmänt)"
@@ -16197,9 +16272,6 @@ msgstr "stegstorlek"
 #
 msgid "stereo"
 msgstr "stereo"
-
-msgid "stop using as startup service"
-msgstr "sluta använd som startkanal"
 
 msgid "successful"
 msgstr ""

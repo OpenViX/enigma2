@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-17 17:48+0100\n"
+"POT-Creation-Date: 2019-12-08 00:14+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Budiarno\n"
 "Language-Team: \n"
@@ -785,6 +785,18 @@ msgstr "Penyedia ATSC"
 msgid "Abort"
 msgstr "Batal"
 
+#, fuzzy
+msgid "Abort alternatives edit"
+msgstr "batalkan ubah alternatif"
+
+#, fuzzy
+msgid "Abort bouquet edit"
+msgstr "batalkan ubah buket"
+
+#, fuzzy
+msgid "Abort favourites edit"
+msgstr "batalkan ubah favorit"
+
 msgid "About"
 msgstr "Tentang"
 
@@ -865,8 +877,20 @@ msgstr "Tambah entri namaserver"
 msgid "Add a new title"
 msgstr "Tambah judul baru"
 
+#, fuzzy
+msgid "Add alternatives"
+msgstr "tambahkan alternatif"
+
 msgid "Add bookmark"
 msgstr "Tambah penandabuku"
+
+#, fuzzy
+msgid "Add bouquet"
+msgstr "tambahkan buket"
+
+#, fuzzy
+msgid "Add bouquet to parental protection"
+msgstr "tambahkan ke perlindungan orangtua"
 
 #, fuzzy
 msgid "Add current folder to bookmarks"
@@ -880,6 +904,10 @@ msgstr "Tambah berkas ke daftarputar"
 
 msgid "Add files to playlist"
 msgstr "Tambah berkas ke daftarputar"
+
+#, fuzzy
+msgid "Add marker"
+msgstr "tambahkan penanda"
 
 msgid "Add plugin to Extensions menu*"
 msgstr ""
@@ -909,6 +937,18 @@ msgstr "Select files/folders to backup"
 msgid "Add service"
 msgstr "Tambah layanan"
 
+#, fuzzy
+msgid "Add service to bouquet"
+msgstr "tambahkan layanan ke buket"
+
+#, fuzzy
+msgid "Add service to favourites"
+msgstr "tambahkan layanan ke favorit"
+
+#, fuzzy
+msgid "Add services to this bouquet?"
+msgstr "tambahkan layanan ke buket"
+
 msgid "Add timer"
 msgstr "Tambah pewaktu"
 
@@ -920,6 +960,10 @@ msgstr "Tambahkan ke buket"
 
 msgid "Add to favourites"
 msgstr "Tambahkan ke kesukaan"
+
+#, fuzzy
+msgid "Add to parental protection"
+msgstr "tambahkan ke perlindungan orangtua"
 
 msgid "Add/remove change timer for current event"
 msgstr "Tambah/hapus pewaktu ganti pada acara saat ini"
@@ -1151,7 +1195,8 @@ msgstr "Aktifitas apapun"
 msgid "Arabic"
 msgstr "Arab"
 
-msgid "Are you sure to purge all deleted userbouquets?"
+#, fuzzy
+msgid "Are you sure to purge all deleted user bouquets?"
 msgstr "Anda yakin ingin membersihkan semua buket pengguna yg dihapus?"
 
 #, python-format
@@ -1832,6 +1877,9 @@ msgstr "Kemampuan:"
 msgid "Capacity: "
 msgstr "Kapasitas: "
 
+msgid "Card"
+msgstr ""
+
 msgid "Cascade PiP"
 msgstr "Pencarkan PiP"
 
@@ -2154,6 +2202,9 @@ msgstr "Komunikasi"
 msgid "Comoros"
 msgstr ""
 
+msgid "Compact flash"
+msgstr ""
+
 msgid "Complete"
 msgstr "Selesai"
 
@@ -2169,15 +2220,16 @@ msgstr "Detil Setelan Pelacakan"
 msgid "Config resolution of pictures"
 msgstr "Atur resolusi gambar"
 
+#, fuzzy
+msgid "Configuration"
+msgstr "Penyetelan..."
+
 msgid "Configuration mode"
 msgstr "Mode penyetelan"
 
 #, python-format
 msgid "Configuration mode: %s"
 msgstr "Mode penyetelan: %s"
-
-msgid "Configuration..."
-msgstr "Penyetelan..."
 
 #, fuzzy
 msgid "Configure ATSC"
@@ -2658,6 +2710,10 @@ msgstr ""
 
 msgid "Copy folder"
 msgstr ""
+
+#, fuzzy
+msgid "Copy to bouquets"
+msgstr "salin ke buket"
 
 msgid "Costa Rica"
 msgstr ""
@@ -3274,6 +3330,10 @@ msgstr "Matikan pelacakan di latar"
 msgid "Disable current event but not coming events"
 msgstr "Matikan acara saat ini tapi tidak acara mendatang"
 
+#, fuzzy
+msgid "Disable move mode"
+msgstr "matikan mode pindahkan"
+
 msgid "Disable timer"
 msgstr "Matikan pewaktu"
 
@@ -3658,6 +3718,10 @@ msgstr "Ubah DNS"
 msgid "Edit Title"
 msgstr "Ubah judul"
 
+#, fuzzy
+msgid "Edit alternatives"
+msgstr "edit alternatives"
+
 msgid "Edit chapters of current title"
 msgstr "Ubah bab judul saat ini"
 
@@ -3771,6 +3835,10 @@ msgstr "Aktifkan pelacakan cepat otomatis"
 msgid "Enable auto fast scan for %s"
 msgstr "Aktifkan pelacakan cepat otomatis pada %s"
 
+#, fuzzy
+msgid "Enable bouquet edit"
+msgstr "enable bouquet edit"
+
 msgid "Enable bouquet selection in multi-EPG"
 msgstr "Aktifkan pemilihan buket pada Multi-EPG"
 
@@ -3781,6 +3849,10 @@ msgstr "Diaktifkan"
 msgid "Enable fallback remote receiver"
 msgstr "Aktifkan penggunaan rx dari jauh"
 
+#, fuzzy
+msgid "Enable favourites edit"
+msgstr "enable favourite edit"
+
 msgid "Enable freesat EPG"
 msgstr "Aktifkan EPG freesat"
 
@@ -3789,6 +3861,10 @@ msgstr ""
 
 msgid "Enable infobar fade-out"
 msgstr ""
+
+#, fuzzy
+msgid "Enable move mode"
+msgstr "aktifkan mode pindahkan"
 
 msgid "Enable multiple bouquets"
 msgstr "Aktifkan buket multi"
@@ -3860,6 +3936,18 @@ msgstr "Tipe kunci enkripsi"
 
 msgid "Encryption:"
 msgstr "Enkripsi:"
+
+#, fuzzy
+msgid "End alternatives edit"
+msgstr "akhiri ubah alternatif"
+
+#, fuzzy
+msgid "End bouquet edit"
+msgstr "akhiri ubah buket"
+
+#, fuzzy
+msgid "End favourites edit"
+msgstr "akhiri ubah favorit"
 
 msgid "End time"
 msgstr "Batas akhir"
@@ -4109,9 +4197,6 @@ msgstr "Keluar dari wizard jaringan"
 
 msgid "Exit the wizard"
 msgstr "Keluar dari wizard jaringan"
-
-msgid "Exit/OK"
-msgstr "Keluar/OK"
 
 msgid "Expert"
 msgstr "Ahli"
@@ -4395,6 +4480,9 @@ msgid "Final position at index"
 msgstr "Final position at index"
 
 msgid "Final scroll delay"
+msgstr ""
+
+msgid "Find currently playing service"
 msgstr ""
 
 msgid "Fine movement"
@@ -4895,6 +4983,10 @@ msgstr "Handle standby from TV"
 
 msgid "Handle wakeup from TV"
 msgstr "Handle wakeup from TV"
+
+#, fuzzy
+msgid "Hard disk"
+msgstr "Harddisk"
 
 msgid "Hard disk setup"
 msgstr "Hard disk setup"
@@ -5877,6 +5969,9 @@ msgstr ""
 msgid "MIME Version"
 msgstr "Inversi"
 
+msgid "MMC card"
+msgstr ""
+
 msgid "MORE"
 msgstr "MORE"
 
@@ -6507,6 +6602,14 @@ msgstr ""
 
 msgid "Network configuration..."
 msgstr "Konfigurasi Jaringan"
+
+#, fuzzy
+msgid "Network mount"
+msgstr "Jaringan tidak ditemukan"
+
+#, fuzzy, python-format
+msgid "Network mount %s"
+msgstr "Periksa Jaringan"
 
 msgid "Network name (SSID)"
 msgstr "Nama jaringan (SSID)"
@@ -7313,6 +7416,10 @@ msgstr "Play DVD"
 msgid "Play DVDs"
 msgstr "Play DVD"
 
+#, fuzzy
+msgid "Play as Picture in Picture"
+msgstr "play as picture in picture"
+
 msgid "Play audio-CD..."
 msgstr "Play audio-CD..."
 
@@ -7331,6 +7438,10 @@ msgstr "Play from next mark or playlist entry"
 
 msgid "Play from previous mark or playlist entry"
 msgstr "Play from previous mark or playlist entry"
+
+#, fuzzy
+msgid "Play in main window"
+msgstr "putar pada jendela utama"
 
 msgid "Play music..."
 msgstr "Mainkan musik..."
@@ -7953,6 +8064,10 @@ msgstr "Penyedia"
 msgid "Puerto Rico"
 msgstr ""
 
+#, fuzzy
+msgid "Purge deleted user bouquets"
+msgstr "Anda yakin ingin membersihkan semua buket pengguna yg dihapus?"
+
 msgid "Put TV in standby"
 msgstr "Put TV in standby"
 
@@ -7998,6 +8113,10 @@ msgstr "RGB"
 
 msgid "Radio"
 msgstr "Radio"
+
+#, fuzzy
+msgid "Ram disk"
+msgstr "Harddisk"
 
 msgid "Random"
 msgstr "Random"
@@ -8222,11 +8341,27 @@ msgstr "Remove a mark"
 msgid "Remove a nameserver entry"
 msgstr "Remove a nameserver entry"
 
+#, fuzzy
+msgid "Remove all alternatives"
+msgstr "remove all alternatives"
+
 msgid "Remove all logfiles"
 msgstr ""
 
+#, fuzzy
+msgid "Remove all new found flags"
+msgstr "remove all new found flags"
+
 msgid "Remove bookmark"
 msgstr "Remove bookmark"
+
+#, fuzzy
+msgid "Remove bouquet from parental protection"
+msgstr "remove from parental protection"
+
+#, fuzzy
+msgid "Remove cable services"
+msgstr "Remove title"
 
 msgid "Remove completed timers after (days)"
 msgstr "Hapus pewaktu yg sudah selesai setelah (hari)"
@@ -8241,14 +8376,34 @@ msgstr "Remove currently selected title"
 msgid "Remove directory"
 msgstr "remove directory"
 
+#, fuzzy
+msgid "Remove entry"
+msgstr "remove entry"
+
+#, fuzzy
+msgid "Remove from parental protection"
+msgstr "remove from parental protection"
+
 msgid "Remove items from trash can after (days)"
 msgstr "Hapus item dari tong sampah setelah (hari)"
+
+#, fuzzy
+msgid "Remove new found flag"
+msgstr "remove new found flag"
 
 msgid "Remove plugins"
 msgstr "Hapus plugin"
 
 msgid "Remove selected folder from bookmarks"
 msgstr ""
+
+#, fuzzy
+msgid "Remove selected satellite"
+msgstr "remove selected satellite"
+
+#, fuzzy
+msgid "Remove terrestrial services"
+msgstr "Anda yakin ingin menghapus semua layanan teresterial?"
 
 msgid "Remove texts for the hearing impaired from external subtitles (instrumental music or environmental sounds, e.g., when a doorbell rings or a gun shot is heard)."
 msgstr ""
@@ -8279,6 +8434,10 @@ msgstr "Removing partition table"
 
 msgid "Rename"
 msgstr "Rename"
+
+#, fuzzy
+msgid "Rename entry"
+msgstr "remove entry"
 
 #, fuzzy
 msgid "Rename file/directory"
@@ -8399,6 +8558,10 @@ msgstr "Restore"
 
 msgid "Restore backups"
 msgstr "Restore backups"
+
+#, fuzzy
+msgid "Restore deleted user bouquets"
+msgstr "Anda yakin ingin membersihkan semua buket pengguna yg dihapus?"
 
 #, fuzzy
 msgid "Restore inetd"
@@ -9306,6 +9469,10 @@ msgstr ""
 msgid "Service ID"
 msgstr ""
 
+#, fuzzy
+msgid "Service belongs to a parental protected bouquet"
+msgstr "Kanal telah ditambahkan ke buket."
+
 msgid "Service has been added to the favourites."
 msgstr "Kanal telah ditambahkan ke favorit."
 
@@ -9390,6 +9557,10 @@ msgstr ""
 
 msgid "Set alternative fallback tuners for DVB-T/C or ATSC"
 msgstr ""
+
+#, fuzzy
+msgid "Set as startup service"
+msgstr "set as startup service"
 
 msgid "Set blocktimes by weekday"
 msgstr ""
@@ -9584,6 +9755,10 @@ msgstr "Tampilkan status WLAN"
 
 msgid "Show Weather Widget"
 msgstr ""
+
+#, fuzzy
+msgid "Show alternatives"
+msgstr "show alternatives"
 
 msgid "Show animation while busy"
 msgstr "Tampilkan animasi saat sibuk"
@@ -9815,6 +9990,10 @@ msgstr "Tampilkan pemutar radio..."
 #, fuzzy
 msgid "Show the plugin browser.."
 msgstr "Plugin browser"
+
+#, fuzzy
+msgid "Show transponder info"
+msgstr "show transponder info"
 
 msgid "Show two lines per entry"
 msgstr ""
@@ -10409,6 +10588,10 @@ msgstr "Stop timeshift"
 msgid "Stop timeshift?"
 msgstr "Stop timeshift?"
 
+#, fuzzy
+msgid "Stop using as startup service"
+msgstr "stop using as startup service"
+
 msgid "Stopped"
 msgstr "Terhenti"
 
@@ -10699,6 +10882,9 @@ msgstr "Table of contents for collection"
 
 msgid "Tags"
 msgstr "Tags"
+
+msgid "Taiwan"
+msgstr ""
 
 msgid "Tajikistan"
 msgstr ""
@@ -11619,6 +11805,10 @@ msgstr ""
 
 #, fuzzy
 msgid "USB Stick"
+msgstr "USB stick"
+
+#, fuzzy
+msgid "USB stick"
 msgstr "USB stick"
 
 msgid "Uganda"
@@ -13039,9 +13229,6 @@ msgstr ""
 msgid "[Image Info]\n"
 msgstr "Image: "
 
-msgid "[a]"
-msgstr ""
-
 msgid "[alternative edit]"
 msgstr "[ubah alternatif]"
 
@@ -13060,15 +13247,6 @@ msgstr "a gui to assign services/providers to common interface modules"
 msgid "a gui to assign services/providers/caids to common interface modules"
 msgstr "a gui to assign services/providers/caids to common interface modules"
 
-msgid "abort alternatives edit"
-msgstr "batalkan ubah alternatif"
-
-msgid "abort bouquet edit"
-msgstr "batalkan ubah buket"
-
-msgid "abort favourites edit"
-msgstr "batalkan ubah favorit"
-
 msgid "about to start"
 msgstr "akan memulai"
 
@@ -13084,27 +13262,6 @@ msgstr ""
 
 msgid "actual time only"
 msgstr ""
-
-msgid "add alternatives"
-msgstr "tambahkan alternatif"
-
-msgid "add bouquet"
-msgstr "tambahkan buket"
-
-msgid "add bouquet to parental protection"
-msgstr ""
-
-msgid "add marker"
-msgstr "tambahkan penanda"
-
-msgid "add service to bouquet"
-msgstr "tambahkan layanan ke buket"
-
-msgid "add service to favourites"
-msgstr "tambahkan layanan ke favorit"
-
-msgid "add to parental protection"
-msgstr "tambahkan ke perlindungan orangtua"
 
 msgid "adult movie/drama"
 msgstr "film dewasa/drama"
@@ -13314,9 +13471,6 @@ msgstr "%d berkas"
 msgid "copy folder"
 msgstr ""
 
-msgid "copy to bouquets"
-msgstr "salin ke buket"
-
 msgid "create symlink ..."
 msgstr ""
 
@@ -13344,9 +13498,6 @@ msgstr "dimatikan"
 
 msgid "disable intro screen"
 msgstr ""
-
-msgid "disable move mode"
-msgstr "matikan mode pindahkan"
 
 msgid "disabled"
 msgstr "dimatikan"
@@ -13381,9 +13532,6 @@ msgstr "east"
 msgid "economics/social advisory"
 msgstr "economics/social advisory"
 
-msgid "edit alternatives"
-msgstr "edit alternatives"
-
 msgid "education/science/factual topics (general)"
 msgstr "education/science/factual topics (general)"
 
@@ -13397,32 +13545,14 @@ msgstr "empty"
 msgid "enable"
 msgstr "aktifkan"
 
-msgid "enable bouquet edit"
-msgstr "enable bouquet edit"
-
-msgid "enable favourite edit"
-msgstr "enable favourite edit"
-
 msgid "enable intro screen"
 msgstr ""
-
-msgid "enable move mode"
-msgstr "aktifkan mode pindahkan"
 
 msgid "enabled"
 msgstr "aktifkan"
 
-msgid "end alternatives edit"
-msgstr "akhiri ubah alternatif"
-
-msgid "end bouquet edit"
-msgstr "akhiri ubah buket"
-
 msgid "end cut here"
 msgstr "akhiri potong di sini"
-
-msgid "end favourites edit"
-msgstr "akhiri ubah favorit"
 
 #, fuzzy
 msgid "enigma2 and network"
@@ -13503,9 +13633,6 @@ msgstr "nama file"
 
 msgid "film/cinema"
 msgstr "film/sinema"
-
-msgid "find currently played service"
-msgstr ""
 
 msgid "fine arts"
 msgstr "seni rupa"
@@ -13903,12 +14030,6 @@ msgstr "seni pertunjukan"
 msgid "picons"
 msgstr "Ikon"
 
-msgid "play as picture in picture"
-msgstr "play as picture in picture"
-
-msgid "play in mainwindow"
-msgstr "putar pada jendela utama"
-
 msgid "please press OK when ready"
 msgstr "silakan tekan OK ketika siap"
 
@@ -13943,9 +14064,6 @@ msgstr "budaya populer/seni tradisional"
 msgid "pre-school children's program"
 msgstr "acara anak prasekolah"
 
-msgid "purge deleted userbouquets"
-msgstr ""
-
 msgid "receiver software because updates are available."
 msgstr "perangkat lunak rx karena update tersedia."
 
@@ -13971,49 +14089,16 @@ msgstr "remarkable people"
 msgid "remove after this position"
 msgstr "remove after this position"
 
-msgid "remove all alternatives"
-msgstr "remove all alternatives"
-
-msgid "remove all new found flags"
-msgstr "remove all new found flags"
-
 msgid "remove before this position"
 msgstr "remove before this position"
 
-msgid "remove bouquet from parental protection"
-msgstr ""
-
-msgid "remove cable services"
-msgstr ""
-
-msgid "remove entry"
-msgstr "remove entry"
-
-msgid "remove from parental protection"
-msgstr "remove from parental protection"
-
-msgid "remove new found flag"
-msgstr "remove new found flag"
-
-msgid "remove selected satellite"
-msgstr "remove selected satellite"
-
-msgid "remove terrestrial services"
-msgstr ""
-
 msgid "remove this mark"
 msgstr "remove this mark"
-
-msgid "rename entry"
-msgstr ""
 
 msgid "repeated"
 msgstr "diulang"
 
 msgid "reserved for future use"
-msgstr ""
-
-msgid "restore deleted userbouquets"
 msgstr ""
 
 msgid "reverse by date"
@@ -14065,15 +14150,9 @@ msgstr "serious music/classic music"
 msgid "serious/classical/religious/historical movie/drama"
 msgstr "serious/classical/religious/historical movie/drama"
 
-msgid "service is in bouquet parental protection"
-msgstr ""
-
 #, fuzzy
 msgid "service off-air"
 msgstr "Semua penyedia layanan"
-
-msgid "set as startup service"
-msgstr "set as startup service"
 
 #, fuzzy
 msgid "settings"
@@ -14085,9 +14164,6 @@ msgstr "show DVD main menu"
 msgid "show all tags"
 msgstr "show all tags"
 
-msgid "show alternatives"
-msgstr "show alternatives"
-
 msgid "show event details"
 msgstr "show event details"
 
@@ -14096,9 +14172,6 @@ msgstr "show softwaremanager in setup menu"
 
 msgid "show softwaremanager on blue button"
 msgstr "show softwaremanager on blue button"
-
-msgid "show transponder info"
-msgstr "show transponder info"
 
 msgid "show/game show (general)"
 msgstr "show/game show (general)"
@@ -14186,9 +14259,6 @@ msgstr "stepsize"
 
 msgid "stereo"
 msgstr "stereo"
-
-msgid "stop using as startup service"
-msgstr "stop using as startup service"
 
 msgid "successful"
 msgstr ""

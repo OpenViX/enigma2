@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-17 17:48+0100\n"
+"POT-Creation-Date: 2019-12-08 00:14+0100\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -891,6 +891,21 @@ msgid "Abort"
 msgstr "Zrušit"
 
 #
+#, fuzzy
+msgid "Abort alternatives edit"
+msgstr "zrušit úpravu alternativ"
+
+#
+#, fuzzy
+msgid "Abort bouquet edit"
+msgstr "zrušit úpravu přehledu"
+
+#
+#, fuzzy
+msgid "Abort favourites edit"
+msgstr "zrušit úpravu oblíbených"
+
+#
 msgid "About"
 msgstr "O přijímači"
 
@@ -987,8 +1002,23 @@ msgid "Add a new title"
 msgstr "Přidat nový titul"
 
 #
+#, fuzzy
+msgid "Add alternatives"
+msgstr "přidat alternativy"
+
+#
 msgid "Add bookmark"
 msgstr "Přidat záložku"
+
+#
+#, fuzzy
+msgid "Add bouquet"
+msgstr "přidat přehled"
+
+#
+#, fuzzy
+msgid "Add bouquet to parental protection"
+msgstr "přidat přehled do rodičovské ochrany"
 
 #, fuzzy
 msgid "Add current folder to bookmarks"
@@ -1005,6 +1035,11 @@ msgstr "Přidat soubor do playlistu"
 #
 msgid "Add files to playlist"
 msgstr "Přidat soubory do playlistu"
+
+#
+#, fuzzy
+msgid "Add marker"
+msgstr "přidat značku"
 
 #, fuzzy
 msgid "Add plugin to Extensions menu*"
@@ -1043,6 +1078,21 @@ msgid "Add service"
 msgstr "Přidat program"
 
 #
+#, fuzzy
+msgid "Add service to bouquet"
+msgstr "přidat program do přehledu"
+
+#
+#, fuzzy
+msgid "Add service to favourites"
+msgstr "přidat program do oblíbených"
+
+#
+#, fuzzy
+msgid "Add services to this bouquet?"
+msgstr "přidat program do přehledu"
+
+#
 msgid "Add timer"
 msgstr "Přidat časovač"
 
@@ -1057,6 +1107,11 @@ msgstr "Přidat do přehledu"
 #
 msgid "Add to favourites"
 msgstr "Přidat do oblíbených"
+
+#
+#, fuzzy
+msgid "Add to parental protection"
+msgstr "přidat do rodičovské ochrany"
 
 msgid "Add/remove change timer for current event"
 msgstr "Přidat/odstranit časovač pro aktuální událost"
@@ -1326,7 +1381,7 @@ msgid "Arabic"
 msgstr "Arabsky"
 
 #, fuzzy
-msgid "Are you sure to purge all deleted userbouquets?"
+msgid "Are you sure to purge all deleted user bouquets?"
 msgstr "Opravdu smazat všechny programy kabelové televize?"
 
 #, python-format
@@ -2103,6 +2158,9 @@ msgstr "Kapacita:"
 msgid "Capacity: "
 msgstr "Kapacita:"
 
+msgid "Card"
+msgstr ""
+
 msgid "Cascade PiP"
 msgstr "Kaskádový PiP"
 
@@ -2476,6 +2534,9 @@ msgstr "Komunikace"
 msgid "Comoros"
 msgstr ""
 
+msgid "Compact flash"
+msgstr ""
+
 #
 msgid "Complete"
 msgstr "Kompletní"
@@ -2496,16 +2557,17 @@ msgstr "Detaily"
 msgid "Config resolution of pictures"
 msgstr "Nastavení rozlišení obrázků"
 
+#
+#, fuzzy
+msgid "Configuration"
+msgstr "nastavení..."
+
 msgid "Configuration mode"
 msgstr "Konfigurační mód"
 
 #, python-format
 msgid "Configuration mode: %s"
 msgstr "Konfigurační mód:  %s"
-
-#
-msgid "Configuration..."
-msgstr "nastavení..."
 
 #
 #, fuzzy
@@ -3038,6 +3100,11 @@ msgstr ""
 
 msgid "Copy folder"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Copy to bouquets"
+msgstr "zkopírovat do přehledů"
 
 msgid "Costa Rica"
 msgstr ""
@@ -3757,6 +3824,11 @@ msgid "Disable current event but not coming events"
 msgstr "Zakázat aktuální událost, nikoliv blížící se událost"
 
 #
+#, fuzzy
+msgid "Disable move mode"
+msgstr "zakázat přesun"
+
+#
 msgid "Disable timer"
 msgstr "Zakázat časovač"
 
@@ -4213,6 +4285,11 @@ msgid "Edit Title"
 msgstr "Upravit titul"
 
 #
+#, fuzzy
+msgid "Edit alternatives"
+msgstr "upravit alternativy"
+
+#
 msgid "Edit chapters of current title"
 msgstr "Upravit kapitoly zvoleného titulu"
 
@@ -4343,6 +4420,11 @@ msgstr "Povolit automatický Fast scan"
 msgid "Enable auto fast scan for %s"
 msgstr "Povolit automatický Fast scan"
 
+#
+#, fuzzy
+msgid "Enable bouquet edit"
+msgstr "povolit úpravu přehledu"
+
 msgid "Enable bouquet selection in multi-EPG"
 msgstr "Povolit výběr přehledu při spuštění multi-EPG"
 
@@ -4354,6 +4436,11 @@ msgstr "Povolen"
 msgid "Enable fallback remote receiver"
 msgstr "Povolit záložní přijímač"
 
+#
+#, fuzzy
+msgid "Enable favourites edit"
+msgstr "Povolit úpravu oblíbených"
+
 msgid "Enable freesat EPG"
 msgstr "Povolit freesat EPG"
 
@@ -4362,6 +4449,11 @@ msgstr ""
 
 msgid "Enable infobar fade-out"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Enable move mode"
+msgstr "povolit přesun"
 
 #
 msgid "Enable multiple bouquets"
@@ -4446,6 +4538,21 @@ msgstr "Klíč:"
 #
 msgid "Encryption:"
 msgstr "Zabezpečení:"
+
+#
+#, fuzzy
+msgid "End alternatives edit"
+msgstr "ukončit úpravu alternativ"
+
+#
+#, fuzzy
+msgid "End bouquet edit"
+msgstr "ukončit úpravu přehledu"
+
+#
+#, fuzzy
+msgid "End favourites edit"
+msgstr "ukončit úpravu oblíbených"
 
 #
 msgid "End time"
@@ -4738,11 +4845,6 @@ msgstr "Ukončit síťového průvodce"
 #
 msgid "Exit the wizard"
 msgstr "Ukončit průvodce"
-
-#
-#, fuzzy
-msgid "Exit/OK"
-msgstr "Ukončit"
 
 msgid "Expert"
 msgstr "expertní"
@@ -5068,6 +5170,11 @@ msgstr "Konečná pozice na indexu"
 
 msgid "Final scroll delay"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Find currently playing service"
+msgstr "najít právě přehrávaný program"
 
 msgid "Fine movement"
 msgstr "Jemné natáčení"
@@ -5630,6 +5737,11 @@ msgstr "Zachytávat standby z TV"
 
 msgid "Handle wakeup from TV"
 msgstr "Zachytávat probouzení z TV"
+
+#
+#, fuzzy
+msgid "Hard disk"
+msgstr "Pevný disk"
 
 #
 msgid "Hard disk setup"
@@ -6770,6 +6882,9 @@ msgstr ""
 msgid "MIME Version"
 msgstr "Inverze"
 
+msgid "MMC card"
+msgstr ""
+
 #
 msgid "MORE"
 msgstr "VÍCE"
@@ -7500,6 +7615,16 @@ msgstr "Nastavení sítě..."
 #
 msgid "Network configuration..."
 msgstr "Nastavení sítě..."
+
+#
+#, fuzzy
+msgid "Network mount"
+msgstr "Žádné sítě nenalezeny"
+
+#
+#, fuzzy, python-format
+msgid "Network mount %s"
+msgstr "Test sítě"
 
 msgid "Network name (SSID)"
 msgstr "Název sítě (SSID)"
@@ -8431,6 +8556,11 @@ msgid "Play DVDs"
 msgstr "přehrát DVD"
 
 #
+#, fuzzy
+msgid "Play as Picture in Picture"
+msgstr "přehrát jako obraz v obraze"
+
+#
 msgid "Play audio-CD..."
 msgstr "Přehrát audio-CD..."
 
@@ -8453,6 +8583,10 @@ msgstr "Přehrát od další značky/položky v playlistu"
 #
 msgid "Play from previous mark or playlist entry"
 msgstr "Přehrát od předchozí značky/položky v playlistu"
+
+#, fuzzy
+msgid "Play in main window"
+msgstr "přehrát v hlavním okně"
 
 #
 msgid "Play music..."
@@ -9243,6 +9377,10 @@ msgstr "Poskytovatelé"
 msgid "Puerto Rico"
 msgstr ""
 
+#, fuzzy
+msgid "Purge deleted user bouquets"
+msgstr "Opravdu smazat všechny programy kabelové televize?"
+
 msgid "Put TV in standby"
 msgstr "Přepínat TV do standby"
 
@@ -9299,6 +9437,11 @@ msgstr "RGB"
 #
 msgid "Radio"
 msgstr "Rádio"
+
+#
+#, fuzzy
+msgid "Ram disk"
+msgstr "Pevný disk"
 
 #
 msgid "Random"
@@ -9569,12 +9712,30 @@ msgstr "Odstranit DNS položku"
 
 #
 #, fuzzy
+msgid "Remove all alternatives"
+msgstr "odebrat všechny alternativy"
+
+#
+#, fuzzy
 msgid "Remove all logfiles"
 msgstr "odebrat všechny alternativy"
 
 #
+#, fuzzy
+msgid "Remove all new found flags"
+msgstr "odstranit příznak \"nově nalezeno\""
+
+#
 msgid "Remove bookmark"
 msgstr "Smazat záložku"
+
+#, fuzzy
+msgid "Remove bouquet from parental protection"
+msgstr "odstranit přehled z rodičovské ochrany"
+
+#, fuzzy
+msgid "Remove cable services"
+msgstr "odstranit programy kabelové televize"
 
 msgid "Remove completed timers after (days)"
 msgstr "Dokončené časovače odstraňovat po (dnech)"
@@ -9591,8 +9752,23 @@ msgstr "Odstranit vybraný titul"
 msgid "Remove directory"
 msgstr "smazat adresář"
 
+#
+#, fuzzy
+msgid "Remove entry"
+msgstr "odstranit položku"
+
+#
+#, fuzzy
+msgid "Remove from parental protection"
+msgstr "odebrat z rodičovské ochrany"
+
 msgid "Remove items from trash can after (days)"
 msgstr "Položky z koše odstraňovat po (dnech)"
+
+#
+#, fuzzy
+msgid "Remove new found flag"
+msgstr "odebrat z \"nově nalezeno\""
 
 #
 msgid "Remove plugins"
@@ -9600,6 +9776,15 @@ msgstr "Odstranit pluginy"
 
 msgid "Remove selected folder from bookmarks"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Remove selected satellite"
+msgstr "odstranit vybraný satelit"
+
+#, fuzzy
+msgid "Remove terrestrial services"
+msgstr "odstranit programy pozemního vysílání"
 
 msgid "Remove texts for the hearing impaired from external subtitles (instrumental music or environmental sounds, e.g., when a doorbell rings or a gun shot is heard)."
 msgstr ""
@@ -9638,6 +9823,10 @@ msgstr "Odstraňuje se tabulka rozdělení disku"
 #
 msgid "Rename"
 msgstr "Přejmenovat"
+
+#, fuzzy
+msgid "Rename entry"
+msgstr "přejmenovat"
 
 #
 #, fuzzy
@@ -9783,6 +9972,10 @@ msgstr "Obnovit"
 #
 msgid "Restore backups"
 msgstr "Obnovit zálohu"
+
+#, fuzzy
+msgid "Restore deleted user bouquets"
+msgstr "Opravdu smazat všechny programy kabelové televize?"
 
 #
 #, fuzzy
@@ -10854,6 +11047,11 @@ msgid "Service ID"
 msgstr "O programu"
 
 #
+#, fuzzy
+msgid "Service belongs to a parental protected bouquet"
+msgstr "Program byl přidán do vybraného přehledu."
+
+#
 msgid "Service has been added to the favourites."
 msgstr "Program byl přidán do oblíbených."
 
@@ -10951,6 +11149,10 @@ msgstr ""
 
 msgid "Set alternative fallback tuners for DVB-T/C or ATSC"
 msgstr ""
+
+#, fuzzy
+msgid "Set as startup service"
+msgstr "nastavit jako program po spuštění"
 
 msgid "Set blocktimes by weekday"
 msgstr ""
@@ -11167,6 +11369,11 @@ msgstr "Zobrazit stav WLAN"
 
 msgid "Show Weather Widget"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Show alternatives"
+msgstr "zobrazit alternativy"
 
 msgid "Show animation while busy"
 msgstr "Zobrazovat animaci při zaneprázdnění"
@@ -11434,6 +11641,11 @@ msgstr "Zobrazit přehrávač rádií"
 #, fuzzy
 msgid "Show the plugin browser.."
 msgstr "Prohlížeč pluginů"
+
+#
+#, fuzzy
+msgid "Show transponder info"
+msgstr "zobrazit info o transponderu"
 
 msgid "Show two lines per entry"
 msgstr ""
@@ -12137,6 +12349,10 @@ msgstr "Ukončit timeshift"
 msgid "Stop timeshift?"
 msgstr "Ukončit timeshift?"
 
+#, fuzzy
+msgid "Stop using as startup service"
+msgstr "zrušit nastavení po spuštění"
+
 msgid "Stopped"
 msgstr "Zastaveno"
 
@@ -12467,6 +12683,9 @@ msgstr "Obsah kompilace"
 
 msgid "Tags"
 msgstr "Tagy"
+
+msgid "Taiwan"
+msgstr ""
 
 msgid "Tajikistan"
 msgstr ""
@@ -13503,6 +13722,11 @@ msgstr ""
 #
 #, fuzzy
 msgid "USB Stick"
+msgstr "USB zařízení"
+
+#
+#, fuzzy
+msgid "USB stick"
 msgstr "USB zařízení"
 
 msgid "Uganda"
@@ -15063,9 +15287,6 @@ msgstr "Váš systém nepodporuje ext4"
 msgid "[Image Info]\n"
 msgstr ""
 
-msgid "[a]"
-msgstr ""
-
 #
 msgid "[alternative edit]"
 msgstr "[úprava alternativ]"
@@ -15091,18 +15312,6 @@ msgid "a gui to assign services/providers/caids to common interface modules"
 msgstr "Menu přiřazení kanálů/poskytovatelů/caids CI modulu"
 
 #
-msgid "abort alternatives edit"
-msgstr "zrušit úpravu alternativ"
-
-#
-msgid "abort bouquet edit"
-msgstr "zrušit úpravu přehledu"
-
-#
-msgid "abort favourites edit"
-msgstr "zrušit úpravu oblíbených"
-
-#
 msgid "about to start"
 msgstr "právě začne"
 
@@ -15120,34 +15329,6 @@ msgstr ""
 
 msgid "actual time only"
 msgstr ""
-
-#
-msgid "add alternatives"
-msgstr "přidat alternativy"
-
-#
-msgid "add bouquet"
-msgstr "přidat přehled"
-
-#
-msgid "add bouquet to parental protection"
-msgstr "přidat přehled do rodičovské ochrany"
-
-#
-msgid "add marker"
-msgstr "přidat značku"
-
-#
-msgid "add service to bouquet"
-msgstr "přidat program do přehledu"
-
-#
-msgid "add service to favourites"
-msgstr "přidat program do oblíbených"
-
-#
-msgid "add to parental protection"
-msgstr "přidat do rodičovské ochrany"
 
 msgid "adult movie/drama"
 msgstr "pro dospělé/drama"
@@ -15392,10 +15573,6 @@ msgstr "%d soubor"
 msgid "copy folder"
 msgstr ""
 
-#
-msgid "copy to bouquets"
-msgstr "zkopírovat do přehledů"
-
 msgid "create symlink ..."
 msgstr ""
 
@@ -15430,10 +15607,6 @@ msgstr "zakázáno"
 #, fuzzy
 msgid "disable intro screen"
 msgstr "Vypnout obraz v obraze"
-
-#
-msgid "disable move mode"
-msgstr "zakázat přesun"
 
 #
 msgid "disabled"
@@ -15473,10 +15646,6 @@ msgstr "východ"
 msgid "economics/social advisory"
 msgstr "ekonomika/sociální poradenství "
 
-#
-msgid "edit alternatives"
-msgstr "upravit alternativy"
-
 msgid "education/science/factual topics (general)"
 msgstr "vzdělávání/věda/věcná témata (obecně)"
 
@@ -15492,41 +15661,17 @@ msgstr "prázdné"
 msgid "enable"
 msgstr "povoleno"
 
-#
-msgid "enable bouquet edit"
-msgstr "povolit úpravu přehledu"
-
-#
-msgid "enable favourite edit"
-msgstr "Povolit úpravu oblíbených"
-
 #, fuzzy
 msgid "enable intro screen"
 msgstr "Povolit automatický Fast scan"
-
-#
-msgid "enable move mode"
-msgstr "povolit přesun"
 
 #
 msgid "enabled"
 msgstr "povoleno"
 
 #
-msgid "end alternatives edit"
-msgstr "ukončit úpravu alternativ"
-
-#
-msgid "end bouquet edit"
-msgstr "ukončit úpravu přehledu"
-
-#
 msgid "end cut here"
 msgstr "konec střihu zde"
-
-#
-msgid "end favourites edit"
-msgstr "ukončit úpravu oblíbených"
 
 #, fuzzy
 msgid "enigma2 and network"
@@ -15618,10 +15763,6 @@ msgstr "Název souboru"
 
 msgid "film/cinema"
 msgstr "film/kino"
-
-#
-msgid "find currently played service"
-msgstr "najít právě přehrávaný program"
 
 msgid "fine arts"
 msgstr "výtvarné umění "
@@ -16097,13 +16238,6 @@ msgid "picons"
 msgstr "ikony"
 
 #
-msgid "play as picture in picture"
-msgstr "přehrát jako obraz v obraze"
-
-msgid "play in mainwindow"
-msgstr "přehrát v hlavním okně"
-
-#
 msgid "please press OK when ready"
 msgstr "stiskněte OK až budete připraveni"
 
@@ -16142,9 +16276,6 @@ msgstr "lidová kultura/tradiční umění"
 msgid "pre-school children's program"
 msgstr "program pro předškolní děti"
 
-msgid "purge deleted userbouquets"
-msgstr ""
-
 msgid "receiver software because updates are available."
 msgstr "software přijímače, jelikož aktualizace jsou dostupné."
 
@@ -16176,57 +16307,18 @@ msgid "remove after this position"
 msgstr "odebrat po této pozici"
 
 #
-msgid "remove all alternatives"
-msgstr "odebrat všechny alternativy"
-
-#
-msgid "remove all new found flags"
-msgstr "odstranit příznak \"nově nalezeno\""
-
-#
 msgid "remove before this position"
 msgstr "odebrat před touto pozicí"
-
-msgid "remove bouquet from parental protection"
-msgstr "odstranit přehled z rodičovské ochrany"
-
-msgid "remove cable services"
-msgstr "odstranit programy kabelové televize"
-
-#
-msgid "remove entry"
-msgstr "odstranit položku"
-
-#
-msgid "remove from parental protection"
-msgstr "odebrat z rodičovské ochrany"
-
-#
-msgid "remove new found flag"
-msgstr "odebrat z \"nově nalezeno\""
-
-#
-msgid "remove selected satellite"
-msgstr "odstranit vybraný satelit"
-
-msgid "remove terrestrial services"
-msgstr "odstranit programy pozemního vysílání"
 
 #
 msgid "remove this mark"
 msgstr "odebrat tuto značku"
-
-msgid "rename entry"
-msgstr "přejmenovat"
 
 #
 msgid "repeated"
 msgstr "opakování"
 
 msgid "reserved for future use"
-msgstr ""
-
-msgid "restore deleted userbouquets"
 msgstr ""
 
 #
@@ -16286,15 +16378,8 @@ msgid "serious/classical/religious/historical movie/drama"
 msgstr "závažný/klasický/náboženský/historický film/drama"
 
 #, fuzzy
-msgid "service is in bouquet parental protection"
-msgstr "odstranit přehled z rodičovské ochrany"
-
-#, fuzzy
 msgid "service off-air"
 msgstr "programový PIN"
-
-msgid "set as startup service"
-msgstr "nastavit jako program po spuštění"
 
 #
 #, fuzzy
@@ -16310,10 +16395,6 @@ msgid "show all tags"
 msgstr "zobrazit všechny tagy"
 
 #
-msgid "show alternatives"
-msgstr "zobrazit alternativy"
-
-#
 msgid "show event details"
 msgstr "zobrazit podrobnosti"
 
@@ -16322,10 +16403,6 @@ msgstr "Správa software v menu Nastavení"
 
 msgid "show softwaremanager on blue button"
 msgstr "Správa software v Extended menu"
-
-#
-msgid "show transponder info"
-msgstr "zobrazit info o transponderu"
 
 msgid "show/game show (general)"
 msgstr "show/game show (obecně)"
@@ -16424,9 +16501,6 @@ msgstr "krok"
 #
 msgid "stereo"
 msgstr "stereo"
-
-msgid "stop using as startup service"
-msgstr "zrušit nastavení po spuštění"
 
 msgid "successful"
 msgstr ""

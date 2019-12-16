@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-17 17:48+0100\n"
+"POT-Creation-Date: 2019-12-08 00:14+0100\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -860,6 +860,21 @@ msgid "Abort"
 msgstr ""
 
 #
+#, fuzzy
+msgid "Abort alternatives edit"
+msgstr "alternatieven bewurkjen ôfbrekke"
+
+#
+#, fuzzy
+msgid "Abort bouquet edit"
+msgstr "boeket bewurkjen ôfbrekke"
+
+#
+#, fuzzy
+msgid "Abort favourites edit"
+msgstr "favoriet bewurkje ôfbrekke"
+
+#
 msgid "About"
 msgstr "Oer"
 
@@ -962,8 +977,23 @@ msgstr "In nije titel tafoegje"
 
 #
 #, fuzzy
+msgid "Add alternatives"
+msgstr "alernatief tafoegje"
+
+#
+#, fuzzy
 msgid "Add bookmark"
 msgstr "boekmerk tafoegje"
+
+#
+#, fuzzy
+msgid "Add bouquet"
+msgstr "boeket tafoegje"
+
+#
+#, fuzzy
+msgid "Add bouquet to parental protection"
+msgstr "âlderlik tasjoch tafoegje "
 
 #
 #, fuzzy
@@ -984,6 +1014,11 @@ msgstr "triem oan ofspiellyst tafoegje"
 #, fuzzy
 msgid "Add files to playlist"
 msgstr "triemen tafoegje an ôfspiellyst"
+
+#
+#, fuzzy
+msgid "Add marker"
+msgstr "marker tafoegje"
 
 #
 #, fuzzy
@@ -1027,6 +1062,21 @@ msgid "Add service"
 msgstr "Kanaal ynfo"
 
 #
+#, fuzzy
+msgid "Add service to bouquet"
+msgstr "kanaal tafoegje oan bouquet"
+
+#
+#, fuzzy
+msgid "Add service to favourites"
+msgstr "kanaal tafoegje oan favorieten"
+
+#
+#, fuzzy
+msgid "Add services to this bouquet?"
+msgstr "kanaal tafoegje oan bouquet"
+
+#
 msgid "Add timer"
 msgstr "In tiidsbarren tafoegje"
 
@@ -1041,6 +1091,11 @@ msgstr "Oan in boeket tafoegje"
 #
 msgid "Add to favourites"
 msgstr "Oan favorieten tafoegje"
+
+#
+#, fuzzy
+msgid "Add to parental protection"
+msgstr "âlderlik tasjoch tafoegje "
 
 msgid "Add/remove change timer for current event"
 msgstr ""
@@ -1304,7 +1359,7 @@ msgstr ""
 msgid "Arabic"
 msgstr "Arabysk"
 
-msgid "Are you sure to purge all deleted userbouquets?"
+msgid "Are you sure to purge all deleted user bouquets?"
 msgstr ""
 
 #, python-format
@@ -2074,6 +2129,9 @@ msgstr "Skiif-grutte:"
 msgid "Capacity: "
 msgstr "Skiif-grutte:"
 
+msgid "Card"
+msgstr ""
+
 msgid "Cascade PiP"
 msgstr ""
 
@@ -2454,6 +2512,9 @@ msgstr ""
 msgid "Comoros"
 msgstr ""
 
+msgid "Compact flash"
+msgstr ""
+
 #
 msgid "Complete"
 msgstr "Kompleet"
@@ -2475,6 +2536,11 @@ msgstr ""
 
 #
 #, fuzzy
+msgid "Configuration"
+msgstr "Netwurk configuraasje"
+
+#
+#, fuzzy
 msgid "Configuration mode"
 msgstr "Ynstellingen modus"
 
@@ -2482,11 +2548,6 @@ msgstr "Ynstellingen modus"
 #, fuzzy, python-format
 msgid "Configuration mode: %s"
 msgstr "Ynstellingen modus"
-
-#
-#, fuzzy
-msgid "Configuration..."
-msgstr "Netwurk configuraasje"
 
 #
 #, fuzzy
@@ -3001,6 +3062,11 @@ msgstr ""
 
 msgid "Copy folder"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Copy to bouquets"
+msgstr "kopieer nei boeketten"
 
 msgid "Costa Rica"
 msgstr ""
@@ -3718,6 +3784,11 @@ msgstr ""
 msgid "Disable current event but not coming events"
 msgstr "Stopje hjoeddeiske mar net ankommend barren"
 
+#
+#, fuzzy
+msgid "Disable move mode"
+msgstr "ferpleats modus útskeakelje"
+
 msgid "Disable timer"
 msgstr ""
 
@@ -4156,6 +4227,11 @@ msgid "Edit Title"
 msgstr "Bewukje titel"
 
 #
+#, fuzzy
+msgid "Edit alternatives"
+msgstr "bewurkje alternatief"
+
+#
 msgid "Edit chapters of current title"
 msgstr "Bewurkje haadstik fan dizze titel"
 
@@ -4277,6 +4353,11 @@ msgstr "Alderlik tasjoch ynskeakelje"
 
 #
 #, fuzzy
+msgid "Enable bouquet edit"
+msgstr "bewurkjen boeket oan"
+
+#
+#, fuzzy
 msgid "Enable bouquet selection in multi-EPG"
 msgstr "bewurkjen boeket oan"
 
@@ -4288,6 +4369,11 @@ msgstr "Ynskeakele"
 msgid "Enable fallback remote receiver"
 msgstr ""
 
+#
+#, fuzzy
+msgid "Enable favourites edit"
+msgstr "bewurkjen favorieten oan"
+
 msgid "Enable freesat EPG"
 msgstr ""
 
@@ -4296,6 +4382,11 @@ msgstr ""
 
 msgid "Enable infobar fade-out"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Enable move mode"
+msgstr "ferpleatsen mode oan"
 
 #
 msgid "Enable multiple bouquets"
@@ -4381,6 +4472,21 @@ msgstr "Encryption Kaai Type"
 #
 msgid "Encryption:"
 msgstr ""
+
+#
+#, fuzzy
+msgid "End alternatives edit"
+msgstr "bewurkjen alternatief út"
+
+#
+#, fuzzy
+msgid "End bouquet edit"
+msgstr "bewurkjen boeket út"
+
+#
+#, fuzzy
+msgid "End favourites edit"
+msgstr "bewurkjen favoriet út"
 
 #
 msgid "End time"
@@ -4678,11 +4784,6 @@ msgstr ""
 #
 msgid "Exit the wizard"
 msgstr "De gucheler ofslúte"
-
-#
-#, fuzzy
-msgid "Exit/OK"
-msgstr "ofslúte"
 
 #
 msgid "Expert"
@@ -4996,6 +5097,11 @@ msgstr ""
 
 msgid "Final scroll delay"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Find currently playing service"
+msgstr "Befeilich kanalen"
 
 msgid "Fine movement"
 msgstr ""
@@ -5550,6 +5656,11 @@ msgstr ""
 
 msgid "Handle wakeup from TV"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Hard disk"
+msgstr "Hurde skiif"
 
 #
 #, fuzzy
@@ -6692,6 +6803,9 @@ msgstr ""
 msgid "MIME Version"
 msgstr "Infertearring"
 
+msgid "MMC card"
+msgstr ""
+
 #
 msgid "MORE"
 msgstr "MEER"
@@ -7422,6 +7536,16 @@ msgstr "Netwurk configuraasje"
 #, fuzzy
 msgid "Network configuration..."
 msgstr "Netwurk configuraasje"
+
+#
+#, fuzzy
+msgid "Network mount"
+msgstr "Netwurk ôfsykje"
+
+#
+#, fuzzy, python-format
+msgid "Network mount %s"
+msgstr "Netwurk test"
 
 msgid "Network name (SSID)"
 msgstr ""
@@ -8361,6 +8485,11 @@ msgstr "Ofspylje"
 
 #
 #, fuzzy
+msgid "Play as Picture in Picture"
+msgstr "PIP ynskeakelje"
+
+#
+#, fuzzy
 msgid "Play audio-CD..."
 msgstr "Ofspylje fan Audio-CD..."
 
@@ -8384,6 +8513,9 @@ msgstr "Spielje fanôf it folgende punt of ôfspiellyst rigele"
 #, fuzzy
 msgid "Play from previous mark or playlist entry"
 msgstr "Spielje fanôf it foarige punt of ôfspiellyst rigele"
+
+msgid "Play in main window"
+msgstr ""
 
 #
 #, fuzzy
@@ -9150,6 +9282,11 @@ msgstr "Providers"
 msgid "Puerto Rico"
 msgstr ""
 
+#
+#, fuzzy
+msgid "Purge deleted user bouquets"
+msgstr "Mear boeketten sjen litte"
+
 msgid "Put TV in standby"
 msgstr ""
 
@@ -9207,6 +9344,11 @@ msgstr "RGB"
 #
 msgid "Radio"
 msgstr "Radio"
+
+#
+#, fuzzy
+msgid "Ram disk"
+msgstr "Hurde skiif"
 
 #
 msgid "Random"
@@ -9487,13 +9629,33 @@ msgstr "Ferwiderje in nammeserver"
 
 #
 #, fuzzy
+msgid "Remove all alternatives"
+msgstr "ferwiderje alle alternatieven"
+
+#
+#, fuzzy
 msgid "Remove all logfiles"
 msgstr "ferwiderje alle alternatieven"
 
 #
 #, fuzzy
+msgid "Remove all new found flags"
+msgstr "ferwiderje nij fûn flaggen"
+
+#
+#, fuzzy
 msgid "Remove bookmark"
 msgstr "boekmerk ferwiderje"
+
+#
+#, fuzzy
+msgid "Remove bouquet from parental protection"
+msgstr "ferwiderje út alderlik tasjoch"
+
+#
+#, fuzzy
+msgid "Remove cable services"
+msgstr "Befeilich kanalen"
 
 msgid "Remove completed timers after (days)"
 msgstr ""
@@ -9510,8 +9672,23 @@ msgstr "Ferwiderje it selektearre bestan"
 msgid "Remove directory"
 msgstr "map ferwiderje"
 
+#
+#, fuzzy
+msgid "Remove entry"
+msgstr "ferwiderje yngong"
+
+#
+#, fuzzy
+msgid "Remove from parental protection"
+msgstr "ferwiderje út alderlik tasjoch"
+
 msgid "Remove items from trash can after (days)"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Remove new found flag"
+msgstr "ferwiderje nij fun flagge"
 
 #
 msgid "Remove plugins"
@@ -9519,6 +9696,16 @@ msgstr "Ferwiderje ynstekker"
 
 msgid "Remove selected folder from bookmarks"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Remove selected satellite"
+msgstr "selektearre sat ferwiderje"
+
+#
+#, fuzzy
+msgid "Remove terrestrial services"
+msgstr "Befeilich kanalen"
 
 msgid "Remove texts for the hearing impaired from external subtitles (instrumental music or environmental sounds, e.g., when a doorbell rings or a gun shot is heard)."
 msgstr ""
@@ -9559,6 +9746,11 @@ msgstr "Ferwiderje de titel"
 #
 msgid "Rename"
 msgstr "Omneame"
+
+#
+#, fuzzy
+msgid "Rename entry"
+msgstr "ferwiderje yngong"
 
 #
 #, fuzzy
@@ -9701,6 +9893,11 @@ msgstr "Werom sette"
 #
 msgid "Restore backups"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Restore deleted user bouquets"
+msgstr "Mear boeketten sjen litte"
 
 #
 #, fuzzy
@@ -10749,6 +10946,11 @@ msgid "Service ID"
 msgstr "Kanaal ynfo"
 
 #
+#, fuzzy
+msgid "Service belongs to a parental protected bouquet"
+msgstr "Kanaal is tafoege oan selektearre bouquet."
+
+#
 msgid "Service has been added to the favourites."
 msgstr "Kanaal is tafoege oan favorieten."
 
@@ -10849,6 +11051,11 @@ msgstr ""
 
 msgid "Set alternative fallback tuners for DVB-T/C or ATSC"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Set as startup service"
+msgstr "Kanalen wikselje"
 
 msgid "Set blocktimes by weekday"
 msgstr ""
@@ -11081,6 +11288,11 @@ msgstr "WLAN status sjen litte"
 
 msgid "Show Weather Widget"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Show alternatives"
+msgstr "alternatieven sjen litte"
 
 msgid "Show animation while busy"
 msgstr ""
@@ -11371,6 +11583,11 @@ msgstr "Radio spieler sjen litte..."
 #, fuzzy
 msgid "Show the plugin browser.."
 msgstr "Ynstekker browser"
+
+#
+#, fuzzy
+msgid "Show transponder info"
+msgstr "transponder ynfo sjen litte"
 
 msgid "Show two lines per entry"
 msgstr ""
@@ -12072,6 +12289,11 @@ msgstr "tiidskowen stopje"
 msgid "Stop timeshift?"
 msgstr "Tiidsskowen stopje?"
 
+#
+#, fuzzy
+msgid "Stop using as startup service"
+msgstr "Kanalen wikselje"
+
 msgid "Stopped"
 msgstr ""
 
@@ -12420,6 +12642,9 @@ msgstr "Ynhalds tabel foar kolleksje"
 #
 msgid "Tags"
 msgstr "Merkers"
+
+msgid "Taiwan"
+msgstr ""
 
 msgid "Tajikistan"
 msgstr ""
@@ -13456,6 +13681,11 @@ msgstr ""
 #
 #, fuzzy
 msgid "USB Stick"
+msgstr "USB Stick"
+
+#
+#, fuzzy
+msgid "USB stick"
 msgstr "USB Stick"
 
 msgid "Uganda"
@@ -14960,9 +15190,6 @@ msgstr ""
 msgid "[Image Info]\n"
 msgstr ""
 
-msgid "[a]"
-msgstr ""
-
 #
 msgid "[alternative edit]"
 msgstr "[alternatief bewurkje]"
@@ -14988,18 +15215,6 @@ msgid "a gui to assign services/providers/caids to common interface modules"
 msgstr ""
 
 #
-msgid "abort alternatives edit"
-msgstr "alternatieven bewurkjen ôfbrekke"
-
-#
-msgid "abort bouquet edit"
-msgstr "boeket bewurkjen ôfbrekke"
-
-#
-msgid "abort favourites edit"
-msgstr "favoriet bewurkje ôfbrekke"
-
-#
 msgid "about to start"
 msgstr "op it punt om te starten"
 
@@ -15017,35 +15232,6 @@ msgstr ""
 
 msgid "actual time only"
 msgstr ""
-
-#
-msgid "add alternatives"
-msgstr "alernatief tafoegje"
-
-#
-msgid "add bouquet"
-msgstr "boeket tafoegje"
-
-#
-#, fuzzy
-msgid "add bouquet to parental protection"
-msgstr "âlderlik tasjoch tafoegje "
-
-#
-msgid "add marker"
-msgstr "marker tafoegje"
-
-#
-msgid "add service to bouquet"
-msgstr "kanaal tafoegje oan bouquet"
-
-#
-msgid "add service to favourites"
-msgstr "kanaal tafoegje oan favorieten"
-
-#
-msgid "add to parental protection"
-msgstr "âlderlik tasjoch tafoegje "
 
 msgid "adult movie/drama"
 msgstr ""
@@ -15287,10 +15473,6 @@ msgstr ""
 msgid "copy folder"
 msgstr ""
 
-#
-msgid "copy to bouquets"
-msgstr "kopieer nei boeketten"
-
 msgid "create symlink ..."
 msgstr ""
 
@@ -15324,10 +15506,6 @@ msgstr "útskeakele"
 #, fuzzy
 msgid "disable intro screen"
 msgstr "PIP utskeakelje"
-
-#
-msgid "disable move mode"
-msgstr "ferpleats modus útskeakelje"
 
 #
 msgid "disabled"
@@ -15366,10 +15544,6 @@ msgstr ""
 msgid "economics/social advisory"
 msgstr ""
 
-#
-msgid "edit alternatives"
-msgstr "bewurkje alternatief"
-
 msgid "education/science/factual topics (general)"
 msgstr ""
 
@@ -15385,40 +15559,16 @@ msgstr "leeg"
 msgid "enable"
 msgstr "ynskeakele"
 
-#
-msgid "enable bouquet edit"
-msgstr "bewurkjen boeket oan"
-
-#
-msgid "enable favourite edit"
-msgstr "bewurkjen favorieten oan"
-
 msgid "enable intro screen"
 msgstr ""
-
-#
-msgid "enable move mode"
-msgstr "ferpleatsen mode oan"
 
 #
 msgid "enabled"
 msgstr "ynskeakele"
 
 #
-msgid "end alternatives edit"
-msgstr "bewurkjen alternatief út"
-
-#
-msgid "end bouquet edit"
-msgstr "bewurkjen boeket út"
-
-#
 msgid "end cut here"
 msgstr "stop stik hjirre"
-
-#
-msgid "end favourites edit"
-msgstr "bewurkjen favoriet út"
 
 #
 #, fuzzy
@@ -15507,9 +15657,6 @@ msgid "filename"
 msgstr "triemnamme"
 
 msgid "film/cinema"
-msgstr ""
-
-msgid "find currently played service"
 msgstr ""
 
 msgid "fine arts"
@@ -15982,12 +16129,6 @@ msgstr ""
 msgid "picons"
 msgstr ""
 
-msgid "play as picture in picture"
-msgstr ""
-
-msgid "play in mainwindow"
-msgstr ""
-
 #
 msgid "please press OK when ready"
 msgstr "druk Ok wanneer klear"
@@ -16027,9 +16168,6 @@ msgstr ""
 msgid "pre-school children's program"
 msgstr ""
 
-msgid "purge deleted userbouquets"
-msgstr ""
-
 msgid "receiver software because updates are available."
 msgstr ""
 
@@ -16061,63 +16199,18 @@ msgid "remove after this position"
 msgstr "nei dizze posysje alles ferwiderje"
 
 #
-msgid "remove all alternatives"
-msgstr "ferwiderje alle alternatieven"
-
-#
-msgid "remove all new found flags"
-msgstr "ferwiderje nij fûn flaggen"
-
-#
 msgid "remove before this position"
 msgstr "foar dizze posysje alles ferwiderje"
 
 #
-#, fuzzy
-msgid "remove bouquet from parental protection"
-msgstr "ferwiderje út alderlik tasjoch"
-
-#
-#, fuzzy
-msgid "remove cable services"
-msgstr "Befeilich kanalen"
-
-#
-msgid "remove entry"
-msgstr "ferwiderje yngong"
-
-#
-msgid "remove from parental protection"
-msgstr "ferwiderje út alderlik tasjoch"
-
-#
-msgid "remove new found flag"
-msgstr "ferwiderje nij fun flagge"
-
-#
-msgid "remove selected satellite"
-msgstr "selektearre sat ferwiderje"
-
-#
-#, fuzzy
-msgid "remove terrestrial services"
-msgstr "Befeilich kanalen"
-
-#
 msgid "remove this mark"
 msgstr "ferwiderje punt"
-
-msgid "rename entry"
-msgstr ""
 
 #
 msgid "repeated"
 msgstr "herhelle"
 
 msgid "reserved for future use"
-msgstr ""
-
-msgid "restore deleted userbouquets"
 msgstr ""
 
 msgid "reverse by date"
@@ -16176,16 +16269,8 @@ msgstr ""
 
 #
 #, fuzzy
-msgid "service is in bouquet parental protection"
-msgstr "ferwiderje út alderlik tasjoch"
-
-#
-#, fuzzy
 msgid "service off-air"
 msgstr "Laad lengte fan films yn filmlyst"
-
-msgid "set as startup service"
-msgstr ""
 
 #
 #, fuzzy
@@ -16200,10 +16285,6 @@ msgid "show all tags"
 msgstr ""
 
 #
-msgid "show alternatives"
-msgstr "alternatieven sjen litte"
-
-#
 msgid "show event details"
 msgstr "EPG details sjen litte"
 
@@ -16212,10 +16293,6 @@ msgstr ""
 
 msgid "show softwaremanager on blue button"
 msgstr ""
-
-#
-msgid "show transponder info"
-msgstr "transponder ynfo sjen litte"
 
 msgid "show/game show (general)"
 msgstr ""
@@ -16309,9 +16386,6 @@ msgstr ""
 #
 msgid "stereo"
 msgstr "stereo"
-
-msgid "stop using as startup service"
-msgstr ""
 
 msgid "successful"
 msgstr ""

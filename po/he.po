@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-17 17:48+0100\n"
+"POT-Creation-Date: 2019-12-08 00:14+0100\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -815,6 +815,20 @@ msgstr "add Provider"
 msgid "Abort"
 msgstr "חדל"
 
+#, fuzzy
+msgid "Abort alternatives edit"
+msgstr "abort alternatives edit"
+
+#
+#, fuzzy
+msgid "Abort bouquet edit"
+msgstr "abort bouquet edit"
+
+#
+#, fuzzy
+msgid "Abort favourites edit"
+msgstr "abort favourites edit"
+
 #
 msgid "About"
 msgstr "אודות"
@@ -914,8 +928,20 @@ msgid "Add a new title"
 msgstr "הוסף כותרת חדשה"
 
 #, fuzzy
+msgid "Add alternatives"
+msgstr "add alternatives"
+
+#, fuzzy
 msgid "Add bookmark"
 msgstr "add bookmark"
+
+#, fuzzy
+msgid "Add bouquet"
+msgstr "add bouquet"
+
+#, fuzzy
+msgid "Add bouquet to parental protection"
+msgstr "הוסף לבקרת הורים"
 
 #
 #, fuzzy
@@ -933,6 +959,10 @@ msgstr "add file to playlist"
 #, fuzzy
 msgid "Add files to playlist"
 msgstr "add files to playlist"
+
+#, fuzzy
+msgid "Add marker"
+msgstr "הוסף סמן"
 
 #, fuzzy
 msgid "Add plugin to Extensions menu*"
@@ -970,6 +1000,21 @@ msgid "Add service"
 msgstr "add Service"
 
 #
+#, fuzzy
+msgid "Add service to bouquet"
+msgstr "הוסף את הערוץ לתיקית הערוצים"
+
+#
+#, fuzzy
+msgid "Add service to favourites"
+msgstr "הוסף את הערוץ למועדפים"
+
+#
+#, fuzzy
+msgid "Add services to this bouquet?"
+msgstr "הוסף את הערוץ לתיקית הערוצים"
+
+#
 msgid "Add timer"
 msgstr "הוסף טיימר"
 
@@ -983,6 +1028,10 @@ msgstr "הוסף תיקיית ערוצים"
 #
 msgid "Add to favourites"
 msgstr "הוסף למועדפים"
+
+#, fuzzy
+msgid "Add to parental protection"
+msgstr "הוסף לבקרת הורים"
 
 msgid "Add/remove change timer for current event"
 msgstr ""
@@ -1241,7 +1290,7 @@ msgstr ""
 msgid "Arabic"
 msgstr "ערבית"
 
-msgid "Are you sure to purge all deleted userbouquets?"
+msgid "Are you sure to purge all deleted user bouquets?"
 msgstr ""
 
 #, python-format
@@ -1962,6 +2011,9 @@ msgstr ":נפח"
 msgid "Capacity: "
 msgstr ":נפח"
 
+msgid "Card"
+msgstr ""
+
 msgid "Cascade PiP"
 msgstr ""
 
@@ -2309,6 +2361,9 @@ msgstr "תקשורת"
 msgid "Comoros"
 msgstr ""
 
+msgid "Compact flash"
+msgstr ""
+
 msgid "Complete"
 msgstr "שלם"
 
@@ -2327,16 +2382,16 @@ msgid "Config resolution of pictures"
 msgstr ""
 
 #, fuzzy
+msgid "Configuration"
+msgstr "...הגדרת רשת"
+
+#, fuzzy
 msgid "Configuration mode"
 msgstr "תצורת הגדרה"
 
 #, fuzzy, python-format
 msgid "Configuration mode: %s"
 msgstr "תצורת הגדרה"
-
-#, fuzzy
-msgid "Configuration..."
-msgstr "...הגדרת רשת"
 
 #, fuzzy
 msgid "Configure ATSC"
@@ -2826,6 +2881,10 @@ msgstr ""
 
 msgid "Copy folder"
 msgstr ""
+
+#, fuzzy
+msgid "Copy to bouquets"
+msgstr "העתק לתיקית ערוצים"
 
 msgid "Costa Rica"
 msgstr ""
@@ -3479,6 +3538,10 @@ msgstr ""
 msgid "Disable current event but not coming events"
 msgstr "Stop current event but not coming events"
 
+#, fuzzy
+msgid "Disable move mode"
+msgstr "disable move mode"
+
 msgid "Disable timer"
 msgstr ""
 
@@ -3881,6 +3944,10 @@ msgstr "DNS ערוך"
 msgid "Edit Title"
 msgstr "ערוך כותרת"
 
+#, fuzzy
+msgid "Edit alternatives"
+msgstr "edit alternatives"
+
 msgid "Edit chapters of current title"
 msgstr "ערוך פרקים של הכותרת הנוכחית"
 
@@ -4000,6 +4067,11 @@ msgstr "אפשר בקרת הורים"
 
 #
 #, fuzzy
+msgid "Enable bouquet edit"
+msgstr "enable bouquet edit"
+
+#
+#, fuzzy
 msgid "Enable bouquet selection in multi-EPG"
 msgstr "enable bouquet edit"
 
@@ -4011,6 +4083,11 @@ msgstr "אפשר"
 msgid "Enable fallback remote receiver"
 msgstr ""
 
+#
+#, fuzzy
+msgid "Enable favourites edit"
+msgstr "enable favourite edit"
+
 msgid "Enable freesat EPG"
 msgstr ""
 
@@ -4019,6 +4096,11 @@ msgstr ""
 
 msgid "Enable infobar fade-out"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Enable move mode"
+msgstr "enable move mode"
 
 #
 msgid "Enable multiple bouquets"
@@ -4098,6 +4180,20 @@ msgstr "שיטת מפתח קידוד"
 
 msgid "Encryption:"
 msgstr ":קידוד"
+
+#, fuzzy
+msgid "End alternatives edit"
+msgstr "end alternatives edit"
+
+#
+#, fuzzy
+msgid "End bouquet edit"
+msgstr "end bouquet edit"
+
+#
+#, fuzzy
+msgid "End favourites edit"
+msgstr "end favourites edit"
 
 #
 msgid "End time"
@@ -4371,10 +4467,6 @@ msgstr "צא מאשף הרשת"
 
 msgid "Exit the wizard"
 msgstr "צא מהאשף"
-
-#, fuzzy
-msgid "Exit/OK"
-msgstr "יציאה"
 
 msgid "Expert"
 msgstr "הגדרות מומחים"
@@ -4667,6 +4759,10 @@ msgstr ""
 
 msgid "Final scroll delay"
 msgstr ""
+
+#, fuzzy
+msgid "Find currently playing service"
+msgstr "Protect services"
 
 msgid "Fine movement"
 msgstr ""
@@ -5194,6 +5290,11 @@ msgstr ""
 
 msgid "Handle wakeup from TV"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Hard disk"
+msgstr "כונן קשיח"
 
 #, fuzzy
 msgid "Hard disk setup"
@@ -6277,6 +6378,9 @@ msgstr ""
 msgid "MIME Version"
 msgstr "Inversion"
 
+msgid "MMC card"
+msgstr ""
+
 msgid "MORE"
 msgstr "עוד"
 
@@ -6969,6 +7073,15 @@ msgstr "...הגדרת רשת"
 #, fuzzy
 msgid "Network configuration..."
 msgstr "...הגדרת רשת"
+
+#
+#, fuzzy
+msgid "Network mount"
+msgstr "לא נמצאו רשתות"
+
+#, fuzzy, python-format
+msgid "Network mount %s"
+msgstr "Network test"
 
 #, fuzzy
 msgid "Network name (SSID)"
@@ -7855,6 +7968,11 @@ msgstr "Play DVD"
 
 #
 #, fuzzy
+msgid "Play as Picture in Picture"
+msgstr "הפעל תמונה בתוך תמונה"
+
+#
+#, fuzzy
 msgid "Play audio-CD..."
 msgstr "Play Audio-CD..."
 
@@ -7877,6 +7995,9 @@ msgstr "play from next mark or playlist entry"
 #, fuzzy
 msgid "Play from previous mark or playlist entry"
 msgstr "play from previous mark or playlist entry"
+
+msgid "Play in main window"
+msgstr ""
 
 #
 #, fuzzy
@@ -8560,6 +8681,11 @@ msgstr "Providers"
 msgid "Puerto Rico"
 msgstr ""
 
+#
+#, fuzzy
+msgid "Purge deleted user bouquets"
+msgstr "אפשר תיקיות ערוצים מרובות"
+
 msgid "Put TV in standby"
 msgstr ""
 
@@ -8611,6 +8737,11 @@ msgstr "RGB"
 
 msgid "Radio"
 msgstr "רדיו"
+
+#
+#, fuzzy
+msgid "Ram disk"
+msgstr "כונן קשיח"
 
 msgid "Random"
 msgstr "רנדומלי"
@@ -8862,13 +8993,29 @@ msgid "Remove a nameserver entry"
 msgstr "remove a nameserver entry"
 
 #, fuzzy
+msgid "Remove all alternatives"
+msgstr "remove all alternatives"
+
+#, fuzzy
 msgid "Remove all logfiles"
 msgstr "remove all alternatives"
+
+#, fuzzy
+msgid "Remove all new found flags"
+msgstr "remove all new found flags"
 
 #
 #, fuzzy
 msgid "Remove bookmark"
 msgstr "remove bookmark"
+
+#, fuzzy
+msgid "Remove bouquet from parental protection"
+msgstr "remove from parental protection"
+
+#, fuzzy
+msgid "Remove cable services"
+msgstr "Protect services"
 
 msgid "Remove completed timers after (days)"
 msgstr ""
@@ -8883,14 +9030,35 @@ msgstr "Remove currently selected title"
 msgid "Remove directory"
 msgstr "remove directory"
 
+#, fuzzy
+msgid "Remove entry"
+msgstr "remove entry"
+
+#, fuzzy
+msgid "Remove from parental protection"
+msgstr "remove from parental protection"
+
 msgid "Remove items from trash can after (days)"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Remove new found flag"
+msgstr "remove new found flag"
 
 msgid "Remove plugins"
 msgstr "הסר פלאגינים"
 
 msgid "Remove selected folder from bookmarks"
 msgstr ""
+
+#, fuzzy
+msgid "Remove selected satellite"
+msgstr "remove selected satellite"
+
+#, fuzzy
+msgid "Remove terrestrial services"
+msgstr "Protect services"
 
 msgid "Remove texts for the hearing impaired from external subtitles (instrumental music or environmental sounds, e.g., when a doorbell rings or a gun shot is heard)."
 msgstr ""
@@ -8922,6 +9090,10 @@ msgstr "הסר כותרת"
 
 msgid "Rename"
 msgstr "שנה שם"
+
+#, fuzzy
+msgid "Rename entry"
+msgstr "remove entry"
 
 #, fuzzy
 msgid "Rename file/directory"
@@ -9049,6 +9221,11 @@ msgstr "שחזור"
 
 msgid "Restore backups"
 msgstr "שחזור גיבויים"
+
+#
+#, fuzzy
+msgid "Restore deleted user bouquets"
+msgstr "אפשר תיקיות ערוצים מרובות"
 
 #, fuzzy
 msgid "Restore inetd"
@@ -10034,6 +10211,10 @@ msgstr "שירותים"
 msgid "Service ID"
 msgstr "שירות"
 
+#, fuzzy
+msgid "Service belongs to a parental protected bouquet"
+msgstr "Service has been added to the selected bouquet."
+
 #
 msgid "Service has been added to the favourites."
 msgstr "Service has been added to the favourites."
@@ -10130,6 +10311,11 @@ msgstr ""
 
 msgid "Set alternative fallback tuners for DVB-T/C or ATSC"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Set as startup service"
+msgstr "שירותים"
 
 msgid "Set blocktimes by weekday"
 msgstr ""
@@ -10352,6 +10538,10 @@ msgstr "הצג סטטוס רשת אלחוטית"
 
 msgid "Show Weather Widget"
 msgstr ""
+
+#, fuzzy
+msgid "Show alternatives"
+msgstr "הראה אלטרנטיבות"
 
 msgid "Show animation while busy"
 msgstr ""
@@ -10621,6 +10811,10 @@ msgstr "...הצג את נגן הרדיו"
 #, fuzzy
 msgid "Show the plugin browser.."
 msgstr "סייר הפלאגינים"
+
+#, fuzzy
+msgid "Show transponder info"
+msgstr "transponder  הראה מידע על ה"
 
 msgid "Show two lines per entry"
 msgstr ""
@@ -11301,6 +11495,11 @@ msgstr "timeshift עצור"
 msgid "Stop timeshift?"
 msgstr "? Timeshift עצור"
 
+#
+#, fuzzy
+msgid "Stop using as startup service"
+msgstr "שירותים"
+
 msgid "Stopped"
 msgstr ""
 
@@ -11641,6 +11840,9 @@ msgstr ""
 
 msgid "Tags"
 msgstr "Tags"
+
+msgid "Taiwan"
+msgstr ""
 
 msgid "Tajikistan"
 msgstr ""
@@ -12628,6 +12830,9 @@ msgid ""
 msgstr ""
 
 msgid "USB Stick"
+msgstr ""
+
+msgid "USB stick"
 msgstr ""
 
 msgid "Uganda"
@@ -14058,9 +14263,6 @@ msgstr ""
 msgid "[Image Info]\n"
 msgstr ""
 
-msgid "[a]"
-msgstr ""
-
 msgid "[alternative edit]"
 msgstr "[alternative edit]"
 
@@ -14082,17 +14284,6 @@ msgstr ""
 msgid "a gui to assign services/providers/caids to common interface modules"
 msgstr ""
 
-msgid "abort alternatives edit"
-msgstr "abort alternatives edit"
-
-#
-msgid "abort bouquet edit"
-msgstr "abort bouquet edit"
-
-#
-msgid "abort favourites edit"
-msgstr "abort favourites edit"
-
 msgid "about to start"
 msgstr "about to start"
 
@@ -14108,30 +14299,6 @@ msgstr ""
 
 msgid "actual time only"
 msgstr ""
-
-msgid "add alternatives"
-msgstr "add alternatives"
-
-msgid "add bouquet"
-msgstr "add bouquet"
-
-#, fuzzy
-msgid "add bouquet to parental protection"
-msgstr "הוסף לבקרת הורים"
-
-msgid "add marker"
-msgstr "הוסף סמן"
-
-#
-msgid "add service to bouquet"
-msgstr "הוסף את הערוץ לתיקית הערוצים"
-
-#
-msgid "add service to favourites"
-msgstr "הוסף את הערוץ למועדפים"
-
-msgid "add to parental protection"
-msgstr "הוסף לבקרת הורים"
 
 msgid "adult movie/drama"
 msgstr ""
@@ -14357,9 +14524,6 @@ msgstr ""
 msgid "copy folder"
 msgstr ""
 
-msgid "copy to bouquets"
-msgstr "העתק לתיקית ערוצים"
-
 msgid "create symlink ..."
 msgstr ""
 
@@ -14392,9 +14556,6 @@ msgstr "disabled"
 #, fuzzy
 msgid "disable intro screen"
 msgstr "השבת תמונה בתוך תמונה"
-
-msgid "disable move mode"
-msgstr "disable move mode"
 
 msgid "disabled"
 msgstr "disabled"
@@ -14429,9 +14590,6 @@ msgstr ""
 msgid "economics/social advisory"
 msgstr ""
 
-msgid "edit alternatives"
-msgstr "edit alternatives"
-
 msgid "education/science/factual topics (general)"
 msgstr ""
 
@@ -14445,37 +14603,14 @@ msgstr "ריק"
 msgid "enable"
 msgstr "אופשר"
 
-#
-msgid "enable bouquet edit"
-msgstr "enable bouquet edit"
-
-#
-msgid "enable favourite edit"
-msgstr "enable favourite edit"
-
 msgid "enable intro screen"
 msgstr ""
-
-#
-msgid "enable move mode"
-msgstr "enable move mode"
 
 msgid "enabled"
 msgstr "אופשר"
 
-msgid "end alternatives edit"
-msgstr "end alternatives edit"
-
-#
-msgid "end bouquet edit"
-msgstr "end bouquet edit"
-
 msgid "end cut here"
 msgstr "end cut here"
-
-#
-msgid "end favourites edit"
-msgstr "end favourites edit"
 
 msgid "enigma2 and network"
 msgstr ""
@@ -14558,9 +14693,6 @@ msgid "filename"
 msgstr "filename"
 
 msgid "film/cinema"
-msgstr ""
-
-msgid "find currently played service"
 msgstr ""
 
 msgid "fine arts"
@@ -14993,12 +15125,6 @@ msgstr ""
 msgid "picons"
 msgstr ""
 
-msgid "play as picture in picture"
-msgstr ""
-
-msgid "play in mainwindow"
-msgstr ""
-
 msgid "please press OK when ready"
 msgstr "please press OK when ready"
 
@@ -15033,9 +15159,6 @@ msgstr ""
 msgid "pre-school children's program"
 msgstr ""
 
-msgid "purge deleted userbouquets"
-msgstr ""
-
 msgid "receiver software because updates are available."
 msgstr ""
 
@@ -15062,55 +15185,18 @@ msgstr ""
 msgid "remove after this position"
 msgstr "remove after this position"
 
-msgid "remove all alternatives"
-msgstr "remove all alternatives"
-
-msgid "remove all new found flags"
-msgstr "remove all new found flags"
-
 #
 msgid "remove before this position"
 msgstr "remove before this position"
 
-#, fuzzy
-msgid "remove bouquet from parental protection"
-msgstr "remove from parental protection"
-
-#, fuzzy
-msgid "remove cable services"
-msgstr "Protect services"
-
-msgid "remove entry"
-msgstr "remove entry"
-
-msgid "remove from parental protection"
-msgstr "remove from parental protection"
-
-#
-msgid "remove new found flag"
-msgstr "remove new found flag"
-
-msgid "remove selected satellite"
-msgstr "remove selected satellite"
-
-#, fuzzy
-msgid "remove terrestrial services"
-msgstr "Protect services"
-
 msgid "remove this mark"
 msgstr "remove this mark"
-
-msgid "rename entry"
-msgstr ""
 
 #
 msgid "repeated"
 msgstr "repeated"
 
 msgid "reserved for future use"
-msgstr ""
-
-msgid "restore deleted userbouquets"
 msgstr ""
 
 msgid "reverse by date"
@@ -15164,17 +15250,10 @@ msgstr ""
 msgid "serious/classical/religious/historical movie/drama"
 msgstr ""
 
-#, fuzzy
-msgid "service is in bouquet parental protection"
-msgstr "remove from parental protection"
-
 #
 #, fuzzy
 msgid "service off-air"
 msgstr "טען אורך הסרט ברשימת הסרטים"
-
-msgid "set as startup service"
-msgstr ""
 
 #, fuzzy
 msgid "settings"
@@ -15187,9 +15266,6 @@ msgstr "show DVD main menu"
 msgid "show all tags"
 msgstr ""
 
-msgid "show alternatives"
-msgstr "הראה אלטרנטיבות"
-
 msgid "show event details"
 msgstr "הצג מידע על האירוע"
 
@@ -15198,9 +15274,6 @@ msgstr ""
 
 msgid "show softwaremanager on blue button"
 msgstr ""
-
-msgid "show transponder info"
-msgstr "transponder  הראה מידע על ה"
 
 msgid "show/game show (general)"
 msgstr ""
@@ -15288,9 +15361,6 @@ msgstr ""
 
 msgid "stereo"
 msgstr "סטריאו"
-
-msgid "stop using as startup service"
-msgstr ""
 
 msgid "successful"
 msgstr ""

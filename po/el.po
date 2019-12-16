@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-17 17:48+0100\n"
+"POT-Creation-Date: 2019-12-08 00:14+0100\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -785,6 +785,18 @@ msgstr "Προσθήκη παρόχου"
 msgid "Abort"
 msgstr "Ακύρωση"
 
+#, fuzzy
+msgid "Abort alternatives edit"
+msgstr "ακύρωση εναλλακτικής επεξεργασίας"
+
+#, fuzzy
+msgid "Abort bouquet edit"
+msgstr "ακύρωση επεξεργασίας μπουκέτου"
+
+#, fuzzy
+msgid "Abort favourites edit"
+msgstr "ακύρωση επεξεργασίας αγαπημένων"
+
 msgid "About"
 msgstr "Περί"
 
@@ -866,8 +878,20 @@ msgstr "Προσθήκη nameserver"
 msgid "Add a new title"
 msgstr "Προσθήκη νέου τίτλου"
 
+#, fuzzy
+msgid "Add alternatives"
+msgstr "προσθήκη εναλλακτικών"
+
 msgid "Add bookmark"
 msgstr "Προσθήκη σελιδοδείκτη"
+
+#, fuzzy
+msgid "Add bouquet"
+msgstr "προσθήκη μπουκέτου"
+
+#, fuzzy
+msgid "Add bouquet to parental protection"
+msgstr "προσθήκη στο γονικό έλεγχο"
 
 #, fuzzy
 msgid "Add current folder to bookmarks"
@@ -881,6 +905,10 @@ msgstr "Προσθήκη αρχείου στη λίστα αναπαραγωγή
 
 msgid "Add files to playlist"
 msgstr "Προσθήκη αρχείων στη λίστα αναπαραγωγής"
+
+#, fuzzy
+msgid "Add marker"
+msgstr "προσθήκη σημειωτή"
 
 #, fuzzy
 msgid "Add plugin to Extensions menu*"
@@ -911,6 +939,18 @@ msgstr "Επιλογή αρχείων/φακέλων για αντίγραφα �
 msgid "Add service"
 msgstr "Προσθήκη υπηρεσίας"
 
+#, fuzzy
+msgid "Add service to bouquet"
+msgstr "προσθήκη υπηρεσίας σε μπουκέτο"
+
+#, fuzzy
+msgid "Add service to favourites"
+msgstr "προσθήκη υπηρεσίας στα αγαπημένα"
+
+#, fuzzy
+msgid "Add services to this bouquet?"
+msgstr "προσθήκη υπηρεσίας σε μπουκέτο"
+
 msgid "Add timer"
 msgstr "Προσθήκη χρονοδιακόπτη"
 
@@ -922,6 +962,10 @@ msgstr "Προσθήκη σε μπουκέτο"
 
 msgid "Add to favourites"
 msgstr "Προσθήκη στα αγαπημένα"
+
+#, fuzzy
+msgid "Add to parental protection"
+msgstr "προσθήκη στο γονικό έλεγχο"
 
 msgid "Add/remove change timer for current event"
 msgstr "Προσθήκη/αφαίρεση αλλαγής χρονοδιακόπτη για το τρέχον πρόγραμμα"
@@ -1155,8 +1199,9 @@ msgstr "Οποιαδήποτε δραστηριότητα"
 msgid "Arabic"
 msgstr "Αραβικά"
 
-msgid "Are you sure to purge all deleted userbouquets?"
-msgstr ""
+#, fuzzy
+msgid "Are you sure to purge all deleted user bouquets?"
+msgstr "Σίγουρα θέλετε να αφαιρεθεί αυτό το στοιχείο;"
 
 #, fuzzy, python-format
 msgid "Are you sure to remove all %d.%d%s%s services?"
@@ -1840,6 +1885,9 @@ msgstr "Χωρητικότητα: "
 msgid "Capacity: "
 msgstr "Χωρητικότητα: "
 
+msgid "Card"
+msgstr ""
+
 msgid "Cascade PiP"
 msgstr "Διαδοχικό PiP"
 
@@ -2169,6 +2217,9 @@ msgstr "Επικοινωνία"
 msgid "Comoros"
 msgstr ""
 
+msgid "Compact flash"
+msgstr ""
+
 msgid "Complete"
 msgstr "Πλήρης"
 
@@ -2185,15 +2236,16 @@ msgstr "Εμφάνιση λεπτομερειών"
 msgid "Config resolution of pictures"
 msgstr ""
 
+#, fuzzy
+msgid "Configuration"
+msgstr "Παραμετροποίηση..."
+
 msgid "Configuration mode"
 msgstr "Τύπος ρύθμισης"
 
 #, python-format
 msgid "Configuration mode: %s"
 msgstr "Τύπος ρύθμισης: %s"
-
-msgid "Configuration..."
-msgstr "Παραμετροποίηση..."
 
 #, fuzzy
 msgid "Configure ATSC"
@@ -2680,6 +2732,10 @@ msgstr ""
 
 msgid "Copy folder"
 msgstr ""
+
+#, fuzzy
+msgid "Copy to bouquets"
+msgstr "αντιγραφή στα μπουκέτα"
 
 msgid "Costa Rica"
 msgstr ""
@@ -3299,6 +3355,10 @@ msgstr "Απενεργοποίηση αναζήτησης στο παρασκή�
 msgid "Disable current event but not coming events"
 msgstr "Τερματισμός τρέχοντος προγράμματος αλλά όχι των επερχόμενων"
 
+#, fuzzy
+msgid "Disable move mode"
+msgstr "απενεργοποίηση κατάστασης μεταφοράς"
+
 msgid "Disable timer"
 msgstr "Απενεργοποίηση χρονοδιακόπτη"
 
@@ -3687,6 +3747,10 @@ msgstr "Επεξεργασία DNS"
 msgid "Edit Title"
 msgstr "Επεξεργασία τίτλου"
 
+#, fuzzy
+msgid "Edit alternatives"
+msgstr "επεξεργασία εναλλακτικών"
+
 msgid "Edit chapters of current title"
 msgstr "Επεξεργασία κεφαλαίων του τρέχοντα τίτλου"
 
@@ -3801,6 +3865,10 @@ msgstr "Ενεργοποίηση της αυτόματης γρήγορης αν
 msgid "Enable auto fast scan for %s"
 msgstr "Ενεργοποίηση της αυτόματης γρήγορης ανίχνευσης"
 
+#, fuzzy
+msgid "Enable bouquet edit"
+msgstr "ενεργοποίηση επεξεργασίας μπουκέτων"
+
 msgid "Enable bouquet selection in multi-EPG"
 msgstr "Ενεργοποίηση της επιλογής μπουκέτων στον πολλαπλό EPG"
 
@@ -3811,6 +3879,10 @@ msgstr "Ενεργοποιήθηκε"
 msgid "Enable fallback remote receiver"
 msgstr ""
 
+#, fuzzy
+msgid "Enable favourites edit"
+msgstr "ενεργοποίηση επεξεργασίας αγαπημένων"
+
 msgid "Enable freesat EPG"
 msgstr "Ενεργοποίηση freesat EPG"
 
@@ -3819,6 +3891,10 @@ msgstr ""
 
 msgid "Enable infobar fade-out"
 msgstr ""
+
+#, fuzzy
+msgid "Enable move mode"
+msgstr "ενεργοποίηση κατάστασης μεταφοράς"
 
 msgid "Enable multiple bouquets"
 msgstr "Ενεργοποίηση πολλαπλών μπουκέτων"
@@ -3892,6 +3968,18 @@ msgstr "Τύπος κλειδιού ασφαλείας"
 
 msgid "Encryption:"
 msgstr "Κωδικοποίηση:"
+
+#, fuzzy
+msgid "End alternatives edit"
+msgstr "τέλος επεξεργασίας εναλλακτικών"
+
+#, fuzzy
+msgid "End bouquet edit"
+msgstr "τέλος επεξεργασίας μπουκέτου"
+
+#, fuzzy
+msgid "End favourites edit"
+msgstr "τέλος επεξεργασίας αγαπημένων"
 
 msgid "End time"
 msgstr "Ώρα τερματισμού"
@@ -4146,10 +4234,6 @@ msgstr "Έξοδος από τον οδηγό δικτύου"
 
 msgid "Exit the wizard"
 msgstr "Έξοδος από το οδηγό"
-
-#, fuzzy
-msgid "Exit/OK"
-msgstr "Έξοδος"
 
 msgid "Expert"
 msgstr "Προχωρημένο"
@@ -4438,6 +4522,10 @@ msgstr "Τελευταία αποθηκευμένη θέση"
 
 msgid "Final scroll delay"
 msgstr ""
+
+#, fuzzy
+msgid "Find currently playing service"
+msgstr "Προστασία υπηρεσιών"
 
 msgid "Fine movement"
 msgstr "Μικροκίνηση"
@@ -4937,6 +5025,10 @@ msgstr "Χειρισμός αναμονής από TV"
 
 msgid "Handle wakeup from TV"
 msgstr "Χειρισμός εκκίνησης από TV"
+
+#, fuzzy
+msgid "Hard disk"
+msgstr "Σκληρός δίσκος"
 
 msgid "Hard disk setup"
 msgstr "Ρύθμιση σκληρού δίσκου"
@@ -5928,6 +6020,9 @@ msgstr ""
 msgid "MIME Version"
 msgstr "Αναστροφή"
 
+msgid "MMC card"
+msgstr ""
+
 msgid "MORE"
 msgstr "ΠΕΡΙΣΣΟΤΕΡΑ"
 
@@ -6565,6 +6660,14 @@ msgstr "Διαμόρφωση δικτύου..."
 
 msgid "Network configuration..."
 msgstr "Διαμόρφωση δικτύου..."
+
+#, fuzzy
+msgid "Network mount"
+msgstr "Δεν βρέθηκαν δίκτυα"
+
+#, fuzzy, python-format
+msgid "Network mount %s"
+msgstr "Έλεγχος δικτύου"
 
 msgid "Network name (SSID)"
 msgstr "Όνομα δικτύου (SSID)"
@@ -7395,6 +7498,10 @@ msgstr "Αναπαραγωγή DVD"
 msgid "Play DVDs"
 msgstr "Αναπαραγωγή DVD"
 
+#, fuzzy
+msgid "Play as Picture in Picture"
+msgstr "αναπαραγωγή ως PiP"
+
 msgid "Play audio-CD..."
 msgstr "Αναπαραγωγή CD ήχου..."
 
@@ -7413,6 +7520,10 @@ msgstr "Αναπαραγωγή από επόμενο σημείο ή λίστα"
 
 msgid "Play from previous mark or playlist entry"
 msgstr "Αναπαραγωγή από προηγούμενο σημείο ή λίστα"
+
+#, fuzzy
+msgid "Play in main window"
+msgstr "αναπαραγωγή στο κεντρικό παράθυρο"
 
 msgid "Play music..."
 msgstr "Αναπαραγωγή μουσικής..."
@@ -8068,6 +8179,10 @@ msgstr "Πάροχοι"
 msgid "Puerto Rico"
 msgstr ""
 
+#, fuzzy
+msgid "Purge deleted user bouquets"
+msgstr "Ενεργοποίηση πολλαπλών μπουκέτων"
+
 msgid "Put TV in standby"
 msgstr "Θέστε την TV σε αναμονή"
 
@@ -8116,6 +8231,10 @@ msgstr "RGB"
 
 msgid "Radio"
 msgstr "Ραδιόφωνο"
+
+#, fuzzy
+msgid "Ram disk"
+msgstr "Σκληρός δίσκος"
 
 msgid "Random"
 msgstr "Τυχαίο"
@@ -8349,11 +8468,27 @@ msgid "Remove a nameserver entry"
 msgstr "Διαγραφή nameserver"
 
 #, fuzzy
+msgid "Remove all alternatives"
+msgstr "διαγραφή όλων των εναλλακτικών"
+
+#, fuzzy
 msgid "Remove all logfiles"
 msgstr "διαγραφή όλων των εναλλακτικών"
 
+#, fuzzy
+msgid "Remove all new found flags"
+msgstr "διαγραφή όλων των νέων σημαιών"
+
 msgid "Remove bookmark"
 msgstr "Διαγραφή σελιδοδείκτη"
+
+#, fuzzy
+msgid "Remove bouquet from parental protection"
+msgstr "διαγραφή από γονικό έλεγχο"
+
+#, fuzzy
+msgid "Remove cable services"
+msgstr "Προστασία υπηρεσιών"
 
 msgid "Remove completed timers after (days)"
 msgstr "Διαγραφή ολοκληρωμένων χρονοδιακοπτών μετά από (μέρες)"
@@ -8368,14 +8503,34 @@ msgstr "Διαγραφή επιλεγμένου τίτλου"
 msgid "Remove directory"
 msgstr "διαγραφή φακέλου"
 
+#, fuzzy
+msgid "Remove entry"
+msgstr "διαγραφή στοιχείου"
+
+#, fuzzy
+msgid "Remove from parental protection"
+msgstr "διαγραφή από γονικό έλεγχο"
+
 msgid "Remove items from trash can after (days)"
 msgstr "Διαγραφή αντικειμένων από το καλάθι αχρήστων σε (μέρες)"
+
+#, fuzzy
+msgid "Remove new found flag"
+msgstr "διαγραφή σημαίας \"νέο\""
 
 msgid "Remove plugins"
 msgstr "Απεγκατάσταση προσθέτων"
 
 msgid "Remove selected folder from bookmarks"
 msgstr ""
+
+#, fuzzy
+msgid "Remove selected satellite"
+msgstr "διαγραφή επιλεγμένου δορυφόρου"
+
+#, fuzzy
+msgid "Remove terrestrial services"
+msgstr "Προστασία υπηρεσιών"
 
 msgid "Remove texts for the hearing impaired from external subtitles (instrumental music or environmental sounds, e.g., when a doorbell rings or a gun shot is heard)."
 msgstr ""
@@ -8406,6 +8561,10 @@ msgstr "Αφαίρεση πίνακα διαμερισμάτων"
 
 msgid "Rename"
 msgstr "Μετονομασία"
+
+#, fuzzy
+msgid "Rename entry"
+msgstr "μετονομασία στοιχείου"
 
 #, fuzzy
 msgid "Rename file/directory"
@@ -8527,6 +8686,10 @@ msgstr "Επαναφορά"
 
 msgid "Restore backups"
 msgstr "Επαναφορά αντιγράφων ασφαλείας"
+
+#, fuzzy
+msgid "Restore deleted user bouquets"
+msgstr "Ενεργοποίηση πολλαπλών μπουκέτων"
 
 #, fuzzy
 msgid "Restore inetd"
@@ -9456,6 +9619,10 @@ msgstr "Υπηρεσίες"
 msgid "Service ID"
 msgstr "Υπηρεσία"
 
+#, fuzzy
+msgid "Service belongs to a parental protected bouquet"
+msgstr "Η υπηρεσία προστέθηκε στo επιλεγμένο μπουκέτο"
+
 msgid "Service has been added to the favourites."
 msgstr "Η υπηρεσία προστέθηκε στα αγαπημένα."
 
@@ -9542,6 +9709,10 @@ msgstr ""
 
 msgid "Set alternative fallback tuners for DVB-T/C or ATSC"
 msgstr ""
+
+#, fuzzy
+msgid "Set as startup service"
+msgstr "ορισμός ως υπηρεσία εκκίνησης"
 
 msgid "Set blocktimes by weekday"
 msgstr ""
@@ -9743,6 +9914,10 @@ msgstr "Εμφάνιση κατάστασης ασύρματου δικτύου"
 
 msgid "Show Weather Widget"
 msgstr ""
+
+#, fuzzy
+msgid "Show alternatives"
+msgstr "εμφάνιση εναλλακτικών"
 
 msgid "Show animation while busy"
 msgstr "Εμφάνιση κινούμενου σχεδίου όταν είναι απασχολημένο"
@@ -9992,6 +10167,10 @@ msgstr "Εμφάνιση ραδιοφώνου..."
 #, fuzzy
 msgid "Show the plugin browser.."
 msgstr "Πλοηγός προσθέτων"
+
+#, fuzzy
+msgid "Show transponder info"
+msgstr "εμφάνιση πληροφοριών αναμεταδότη"
 
 msgid "Show two lines per entry"
 msgstr ""
@@ -10599,6 +10778,10 @@ msgstr "Διακοπή χρονομετατόπισης"
 msgid "Stop timeshift?"
 msgstr "Διακοπή της χρονομετατόπισης;"
 
+#, fuzzy
+msgid "Stop using as startup service"
+msgstr "τέλος χρήσης ως υπηρεσία εκκίνησης"
+
 msgid "Stopped"
 msgstr "Σταματημένο"
 
@@ -10899,6 +11082,9 @@ msgstr "Πίνακας περιεχομένων για συλλογή"
 
 msgid "Tags"
 msgstr "Ετικέτες"
+
+msgid "Taiwan"
+msgstr ""
 
 msgid "Tajikistan"
 msgstr ""
@@ -11828,6 +12014,10 @@ msgstr ""
 
 #, fuzzy
 msgid "USB Stick"
+msgstr "USB στικ"
+
+#, fuzzy
+msgid "USB stick"
 msgstr "USB στικ"
 
 msgid "Uganda"
@@ -13241,9 +13431,6 @@ msgstr "Το σύστημά σας δεν υποστηρίζει ext4"
 msgid "[Image Info]\n"
 msgstr "Λογισμικό δέκτη: "
 
-msgid "[a]"
-msgstr ""
-
 msgid "[alternative edit]"
 msgstr "[επεξεργασία εναλλακτικών]"
 
@@ -13262,15 +13449,6 @@ msgstr "γραφικό περιβάλλον για ορισμό υπηρεσιώ
 msgid "a gui to assign services/providers/caids to common interface modules"
 msgstr "γραφικό περιβάλλον για ανάθεση υπηρεσιών/παρόχων/caids σε κοινή διεπαφή"
 
-msgid "abort alternatives edit"
-msgstr "ακύρωση εναλλακτικής επεξεργασίας"
-
-msgid "abort bouquet edit"
-msgstr "ακύρωση επεξεργασίας μπουκέτου"
-
-msgid "abort favourites edit"
-msgstr "ακύρωση επεξεργασίας αγαπημένων"
-
 msgid "about to start"
 msgstr "έτοιμο για εκκίνηση"
 
@@ -13286,28 +13464,6 @@ msgstr ""
 
 msgid "actual time only"
 msgstr ""
-
-msgid "add alternatives"
-msgstr "προσθήκη εναλλακτικών"
-
-msgid "add bouquet"
-msgstr "προσθήκη μπουκέτου"
-
-#, fuzzy
-msgid "add bouquet to parental protection"
-msgstr "προσθήκη στο γονικό έλεγχο"
-
-msgid "add marker"
-msgstr "προσθήκη σημειωτή"
-
-msgid "add service to bouquet"
-msgstr "προσθήκη υπηρεσίας σε μπουκέτο"
-
-msgid "add service to favourites"
-msgstr "προσθήκη υπηρεσίας στα αγαπημένα"
-
-msgid "add to parental protection"
-msgstr "προσθήκη στο γονικό έλεγχο"
 
 msgid "adult movie/drama"
 msgstr "ταινία ενηλίκων/δράμα"
@@ -13520,9 +13676,6 @@ msgstr "%d αρχείο"
 msgid "copy folder"
 msgstr ""
 
-msgid "copy to bouquets"
-msgstr "αντιγραφή στα μπουκέτα"
-
 msgid "create symlink ..."
 msgstr ""
 
@@ -13551,9 +13704,6 @@ msgstr "απεργοποιημένο"
 #, fuzzy
 msgid "disable intro screen"
 msgstr "Απενεργοποίηση Εικόνας σε Εικόνα"
-
-msgid "disable move mode"
-msgstr "απενεργοποίηση κατάστασης μεταφοράς"
 
 msgid "disabled"
 msgstr "απεργοποιημένο"
@@ -13588,9 +13738,6 @@ msgstr "ανατολικά"
 msgid "economics/social advisory"
 msgstr "οικονομία/κοινωνική συμβουλευτική"
 
-msgid "edit alternatives"
-msgstr "επεξεργασία εναλλακτικών"
-
 msgid "education/science/factual topics (general)"
 msgstr "εκπαίδευση/επιστήμη/πραγματικά θέματα (γενικά)"
 
@@ -13604,33 +13751,15 @@ msgstr "κενό"
 msgid "enable"
 msgstr "ενεργοποιημένο"
 
-msgid "enable bouquet edit"
-msgstr "ενεργοποίηση επεξεργασίας μπουκέτων"
-
-msgid "enable favourite edit"
-msgstr "ενεργοποίηση επεξεργασίας αγαπημένων"
-
 #, fuzzy
 msgid "enable intro screen"
 msgstr "Ενεργοποίηση της αυτόματης γρήγορης ανίχνευσης"
 
-msgid "enable move mode"
-msgstr "ενεργοποίηση κατάστασης μεταφοράς"
-
 msgid "enabled"
 msgstr "ενεργοποιημένο"
 
-msgid "end alternatives edit"
-msgstr "τέλος επεξεργασίας εναλλακτικών"
-
-msgid "end bouquet edit"
-msgstr "τέλος επεξεργασίας μπουκέτου"
-
 msgid "end cut here"
 msgstr "τέλος αποκοπής εδώ"
-
-msgid "end favourites edit"
-msgstr "τέλος επεξεργασίας αγαπημένων"
 
 #, fuzzy
 msgid "enigma2 and network"
@@ -13713,9 +13842,6 @@ msgstr "όνομα αρχείου"
 
 msgid "film/cinema"
 msgstr "φιλμ/κινηματογράφος"
-
-msgid "find currently played service"
-msgstr ""
 
 msgid "fine arts"
 msgstr "καλές τέχνες"
@@ -14118,12 +14244,6 @@ msgstr "τέχνες και θεάματα"
 msgid "picons"
 msgstr "Εικονίδια"
 
-msgid "play as picture in picture"
-msgstr "αναπαραγωγή ως PiP"
-
-msgid "play in mainwindow"
-msgstr "αναπαραγωγή στο κεντρικό παράθυρο"
-
 msgid "please press OK when ready"
 msgstr "πιέστε OK όταν είστε έτοιμοι"
 
@@ -14158,9 +14278,6 @@ msgstr "λαϊκή κουλτούρα/παραδοσιακές τέχνες"
 msgid "pre-school children's program"
 msgstr "πρόγραμμα για παιδιά προσχολικής ηλικίας"
 
-msgid "purge deleted userbouquets"
-msgstr ""
-
 msgid "receiver software because updates are available."
 msgstr "λογισμικού του δέκτη, διότι υπάρχουν διαθέσιμες ενημερώσεις."
 
@@ -14186,52 +14303,16 @@ msgstr "σημαίνοντα πρόσωπα"
 msgid "remove after this position"
 msgstr "διαγραφή μετά από αυτό το σημείο"
 
-msgid "remove all alternatives"
-msgstr "διαγραφή όλων των εναλλακτικών"
-
-msgid "remove all new found flags"
-msgstr "διαγραφή όλων των νέων σημαιών"
-
 msgid "remove before this position"
 msgstr "διαγραφή πριν από αυτό το σημείο"
 
-#, fuzzy
-msgid "remove bouquet from parental protection"
-msgstr "διαγραφή από γονικό έλεγχο"
-
-#, fuzzy
-msgid "remove cable services"
-msgstr "Προστασία υπηρεσιών"
-
-msgid "remove entry"
-msgstr "διαγραφή στοιχείου"
-
-msgid "remove from parental protection"
-msgstr "διαγραφή από γονικό έλεγχο"
-
-msgid "remove new found flag"
-msgstr "διαγραφή σημαίας \"νέο\""
-
-msgid "remove selected satellite"
-msgstr "διαγραφή επιλεγμένου δορυφόρου"
-
-#, fuzzy
-msgid "remove terrestrial services"
-msgstr "Προστασία υπηρεσιών"
-
 msgid "remove this mark"
 msgstr "διαγραφή αυτού του σημειωτή"
-
-msgid "rename entry"
-msgstr "μετονομασία στοιχείου"
 
 msgid "repeated"
 msgstr "επαναλαμβανόμενο"
 
 msgid "reserved for future use"
-msgstr ""
-
-msgid "restore deleted userbouquets"
 msgstr ""
 
 msgid "reverse by date"
@@ -14284,15 +14365,8 @@ msgid "serious/classical/religious/historical movie/drama"
 msgstr "σοβαρή/κλασική/θρησκευτική/ιστορική ταινία/δράμα"
 
 #, fuzzy
-msgid "service is in bouquet parental protection"
-msgstr "διαγραφή από γονικό έλεγχο"
-
-#, fuzzy
 msgid "service off-air"
 msgstr "PIN υπηρεσίας"
-
-msgid "set as startup service"
-msgstr "ορισμός ως υπηρεσία εκκίνησης"
 
 #, fuzzy
 msgid "settings"
@@ -14304,9 +14378,6 @@ msgstr "εμφάνιση κύριου μενού DVD"
 msgid "show all tags"
 msgstr "εμφάνιση όλων των ετικετών"
 
-msgid "show alternatives"
-msgstr "εμφάνιση εναλλακτικών"
-
 msgid "show event details"
 msgstr "εμφάνιση λεπτομερειών προγράμματος"
 
@@ -14315,9 +14386,6 @@ msgstr "εμφάνιση της διαχείρισης λογισμικού στ
 
 msgid "show softwaremanager on blue button"
 msgstr "εμφάνιση του softwaremanager στο μπλε κουμπί"
-
-msgid "show transponder info"
-msgstr "εμφάνιση πληροφοριών αναμεταδότη"
 
 msgid "show/game show (general)"
 msgstr "σόου/τηλεπαιχνίδι (γενικά)"
@@ -14405,9 +14473,6 @@ msgstr "μέγεθος βήματος"
 
 msgid "stereo"
 msgstr "στερεοφωνικό"
-
-msgid "stop using as startup service"
-msgstr "τέλος χρήσης ως υπηρεσία εκκίνησης"
 
 msgid "successful"
 msgstr ""

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-17 17:48+0100\n"
+"POT-Creation-Date: 2019-12-08 00:14+0100\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -799,6 +799,18 @@ msgstr "Add provider"
 msgid "Abort"
 msgstr "Bettal Bike"
 
+#, fuzzy
+msgid "Abort alternatives edit"
+msgstr "abort alternatives edit"
+
+#, fuzzy
+msgid "Abort bouquet edit"
+msgstr "abort bouquet edit"
+
+#, fuzzy
+msgid "Abort favourites edit"
+msgstr "abort favourites edit"
+
 msgid "About"
 msgstr "Heqé wi"
 
@@ -880,8 +892,20 @@ msgstr "Yek Navé nu léke"
 msgid "Add a new title"
 msgstr "Navé Seroki"
 
+#, fuzzy
+msgid "Add alternatives"
+msgstr "add alternatives"
+
 msgid "Add bookmark"
 msgstr "Léke bookmark"
+
+#, fuzzy
+msgid "Add bouquet"
+msgstr "add bouquet"
+
+#, fuzzy
+msgid "Add bouquet to parental protection"
+msgstr "add to parental protection"
 
 #, fuzzy
 msgid "Add current folder to bookmarks"
@@ -895,6 +919,10 @@ msgstr "Listeya Xebatéra dosya léke"
 
 msgid "Add files to playlist"
 msgstr "Listeya Xebatéra dosya léke"
+
+#, fuzzy
+msgid "Add marker"
+msgstr "add marker"
 
 #, fuzzy
 msgid "Add plugin to Extensions menu*"
@@ -925,6 +953,18 @@ msgstr "Select files/folders to backup"
 msgid "Add service"
 msgstr "Hizmeté Nu girédi"
 
+#, fuzzy
+msgid "Add service to bouquet"
+msgstr "add service to bouquet"
+
+#, fuzzy
+msgid "Add service to favourites"
+msgstr "add service to favourites"
+
+#, fuzzy
+msgid "Add services to this bouquet?"
+msgstr "add service to bouquet"
+
 msgid "Add timer"
 msgstr "Add timer"
 
@@ -936,6 +976,10 @@ msgstr "bouqueta nu girédi"
 
 msgid "Add to favourites"
 msgstr "Favoriye Nu Girédi"
+
+#, fuzzy
+msgid "Add to parental protection"
+msgstr "add to parental protection"
 
 msgid "Add/remove change timer for current event"
 msgstr ""
@@ -1167,7 +1211,7 @@ msgstr "Any activity"
 msgid "Arabic"
 msgstr "Arabi"
 
-msgid "Are you sure to purge all deleted userbouquets?"
+msgid "Are you sure to purge all deleted user bouquets?"
 msgstr ""
 
 #, python-format
@@ -1855,6 +1899,9 @@ msgstr "Capacity: "
 msgid "Capacity: "
 msgstr "Capacity: "
 
+msgid "Card"
+msgstr ""
+
 msgid "Cascade PiP"
 msgstr ""
 
@@ -2184,6 +2231,9 @@ msgstr "Hevra Girédayi"
 msgid "Comoros"
 msgstr ""
 
+msgid "Compact flash"
+msgstr ""
+
 msgid "Complete"
 msgstr "Temami"
 
@@ -2200,15 +2250,16 @@ msgstr "View details"
 msgid "Config resolution of pictures"
 msgstr ""
 
+#, fuzzy
+msgid "Configuration"
+msgstr "Çékirin..."
+
 msgid "Configuration mode"
 msgstr "Çékirina Ru"
 
 #, python-format
 msgid "Configuration mode: %s"
 msgstr "Configuration mode: %s"
-
-msgid "Configuration..."
-msgstr "Çékirin..."
 
 #, fuzzy
 msgid "Configure ATSC"
@@ -2695,6 +2746,10 @@ msgstr ""
 
 msgid "Copy folder"
 msgstr ""
+
+#, fuzzy
+msgid "Copy to bouquets"
+msgstr "copy to bouquets"
 
 msgid "Costa Rica"
 msgstr ""
@@ -3313,6 +3368,10 @@ msgstr "Disable background scanning"
 msgid "Disable current event but not coming events"
 msgstr "Stop current event but not coming events"
 
+#, fuzzy
+msgid "Disable move mode"
+msgstr "disable move mode"
+
 msgid "Disable timer"
 msgstr "Disable timer"
 
@@ -3699,6 +3758,10 @@ msgstr "Edit DNS"
 msgid "Edit Title"
 msgstr "Edit title"
 
+#, fuzzy
+msgid "Edit alternatives"
+msgstr "edit alternatives"
+
 msgid "Edit chapters of current title"
 msgstr "Edit chapters of current title"
 
@@ -3812,6 +3875,10 @@ msgstr ""
 msgid "Enable auto fast scan for %s"
 msgstr "Enable parental control"
 
+#, fuzzy
+msgid "Enable bouquet edit"
+msgstr "enable bouquet edit"
+
 msgid "Enable bouquet selection in multi-EPG"
 msgstr "Enable bouquet selection in multi-EPG"
 
@@ -3822,6 +3889,10 @@ msgstr "Enabled"
 msgid "Enable fallback remote receiver"
 msgstr ""
 
+#, fuzzy
+msgid "Enable favourites edit"
+msgstr "enable favourite edit"
+
 msgid "Enable freesat EPG"
 msgstr "Enable freesat EPG"
 
@@ -3830,6 +3901,10 @@ msgstr ""
 
 msgid "Enable infobar fade-out"
 msgstr ""
+
+#, fuzzy
+msgid "Enable move mode"
+msgstr "enable move mode"
 
 msgid "Enable multiple bouquets"
 msgstr "Enable multiple bouquets"
@@ -3902,6 +3977,18 @@ msgstr "Encryption key type"
 
 msgid "Encryption:"
 msgstr "Encryption:"
+
+#, fuzzy
+msgid "End alternatives edit"
+msgstr "end alternatives edit"
+
+#, fuzzy
+msgid "End bouquet edit"
+msgstr "end bouquet edit"
+
+#, fuzzy
+msgid "End favourites edit"
+msgstr "end favourites edit"
 
 msgid "End time"
 msgstr "Vext derbas bu"
@@ -4156,10 +4243,6 @@ msgstr "Exit network wizard"
 
 msgid "Exit the wizard"
 msgstr "Exit the wizard"
-
-#, fuzzy
-msgid "Exit/OK"
-msgstr "Exit"
 
 msgid "Expert"
 msgstr "Expert"
@@ -4444,6 +4527,10 @@ msgstr "Final position at index"
 
 msgid "Final scroll delay"
 msgstr ""
+
+#, fuzzy
+msgid "Find currently playing service"
+msgstr "Use time of currently running service"
 
 msgid "Fine movement"
 msgstr "Fine movement"
@@ -4947,6 +5034,10 @@ msgstr "Handle standby from TV"
 
 msgid "Handle wakeup from TV"
 msgstr "Handle wakeup from TV"
+
+#, fuzzy
+msgid "Hard disk"
+msgstr "Harddisk"
 
 msgid "Hard disk setup"
 msgstr "Hard disk setup"
@@ -5936,6 +6027,9 @@ msgstr ""
 msgid "MIME Version"
 msgstr "Inversion"
 
+msgid "MMC card"
+msgstr ""
+
 msgid "MORE"
 msgstr "MORE"
 
@@ -6574,6 +6668,14 @@ msgstr "Network configuration..."
 
 msgid "Network configuration..."
 msgstr "Network configuration..."
+
+#, fuzzy
+msgid "Network mount"
+msgstr "No networks found"
+
+#, fuzzy, python-format
+msgid "Network mount %s"
+msgstr "Network test"
 
 msgid "Network name (SSID)"
 msgstr "Network name (SSID)"
@@ -7400,6 +7502,10 @@ msgstr "Play DVD"
 msgid "Play DVDs"
 msgstr "Play DVD"
 
+#, fuzzy
+msgid "Play as Picture in Picture"
+msgstr "play as picture in picture"
+
 msgid "Play audio-CD..."
 msgstr "Play audio-CD..."
 
@@ -7418,6 +7524,10 @@ msgstr "Play from next mark or playlist entry"
 
 msgid "Play from previous mark or playlist entry"
 msgstr "Play from previous mark or playlist entry"
+
+#, fuzzy
+msgid "Play in main window"
+msgstr "play in mainwindow"
 
 msgid "Play music..."
 msgstr "Play music..."
@@ -8069,6 +8179,10 @@ msgstr "Providers"
 msgid "Puerto Rico"
 msgstr ""
 
+#, fuzzy
+msgid "Purge deleted user bouquets"
+msgstr "Enable multiple bouquets"
+
 msgid "Put TV in standby"
 msgstr "Put TV in standby"
 
@@ -8117,6 +8231,10 @@ msgstr "RGB"
 
 msgid "Radio"
 msgstr "Radio"
+
+#, fuzzy
+msgid "Ram disk"
+msgstr "Harddisk"
 
 msgid "Random"
 msgstr "Random"
@@ -8350,11 +8468,27 @@ msgid "Remove a nameserver entry"
 msgstr "Remove a nameserver entry"
 
 #, fuzzy
+msgid "Remove all alternatives"
+msgstr "remove all alternatives"
+
+#, fuzzy
 msgid "Remove all logfiles"
 msgstr "remove all alternatives"
 
+#, fuzzy
+msgid "Remove all new found flags"
+msgstr "remove all new found flags"
+
 msgid "Remove bookmark"
 msgstr "Remove bookmark"
+
+#, fuzzy
+msgid "Remove bouquet from parental protection"
+msgstr "remove from parental protection"
+
+#, fuzzy
+msgid "Remove cable services"
+msgstr "Protect services"
 
 msgid "Remove completed timers after (days)"
 msgstr "Remove completed timers after (days)"
@@ -8369,14 +8503,34 @@ msgstr "Remove currently selected title"
 msgid "Remove directory"
 msgstr "remove directory"
 
+#, fuzzy
+msgid "Remove entry"
+msgstr "remove entry"
+
+#, fuzzy
+msgid "Remove from parental protection"
+msgstr "remove from parental protection"
+
 msgid "Remove items from trash can after (days)"
 msgstr "Remove items from trash can after (days)"
+
+#, fuzzy
+msgid "Remove new found flag"
+msgstr "remove new found flag"
 
 msgid "Remove plugins"
 msgstr "Remove plugins"
 
 msgid "Remove selected folder from bookmarks"
 msgstr ""
+
+#, fuzzy
+msgid "Remove selected satellite"
+msgstr "remove selected satellite"
+
+#, fuzzy
+msgid "Remove terrestrial services"
+msgstr "Protect services"
 
 msgid "Remove texts for the hearing impaired from external subtitles (instrumental music or environmental sounds, e.g., when a doorbell rings or a gun shot is heard)."
 msgstr ""
@@ -8407,6 +8561,10 @@ msgstr "Removing partition table"
 
 msgid "Rename"
 msgstr "Rename"
+
+#, fuzzy
+msgid "Rename entry"
+msgstr "remove entry"
 
 #, fuzzy
 msgid "Rename file/directory"
@@ -8528,6 +8686,10 @@ msgstr "Restore"
 
 msgid "Restore backups"
 msgstr "Restore backups"
+
+#, fuzzy
+msgid "Restore deleted user bouquets"
+msgstr "Enable multiple bouquets"
 
 #, fuzzy
 msgid "Restore inetd"
@@ -9451,6 +9613,10 @@ msgstr "Services"
 msgid "Service ID"
 msgstr "Hizmeti"
 
+#, fuzzy
+msgid "Service belongs to a parental protected bouquet"
+msgstr "Service has been added to the selected bouquet."
+
 msgid "Service has been added to the favourites."
 msgstr "Service has been added to the favourites."
 
@@ -9537,6 +9703,10 @@ msgstr ""
 
 msgid "Set alternative fallback tuners for DVB-T/C or ATSC"
 msgstr ""
+
+#, fuzzy
+msgid "Set as startup service"
+msgstr "set as startup service"
 
 msgid "Set blocktimes by weekday"
 msgstr ""
@@ -9738,6 +9908,10 @@ msgstr "Show WLAN status"
 
 msgid "Show Weather Widget"
 msgstr ""
+
+#, fuzzy
+msgid "Show alternatives"
+msgstr "show alternatives"
 
 msgid "Show animation while busy"
 msgstr "Show animation while busy"
@@ -9987,6 +10161,10 @@ msgstr "Show the radio player..."
 #, fuzzy
 msgid "Show the plugin browser.."
 msgstr "Plugin browser"
+
+#, fuzzy
+msgid "Show transponder info"
+msgstr "show transponder info"
 
 msgid "Show two lines per entry"
 msgstr ""
@@ -10592,6 +10770,10 @@ msgstr "Stop timeshift"
 msgid "Stop timeshift?"
 msgstr "Stop timeshift?"
 
+#, fuzzy
+msgid "Stop using as startup service"
+msgstr "stop using as startup service"
+
 msgid "Stopped"
 msgstr "Stopped"
 
@@ -10891,6 +11073,9 @@ msgstr "Table of contents for collection"
 
 msgid "Tags"
 msgstr "Tags"
+
+msgid "Taiwan"
+msgstr ""
 
 msgid "Tajikistan"
 msgstr ""
@@ -11819,6 +12004,10 @@ msgstr ""
 
 #, fuzzy
 msgid "USB Stick"
+msgstr "USB stick"
+
+#, fuzzy
+msgid "USB stick"
 msgstr "USB stick"
 
 msgid "Uganda"
@@ -13231,9 +13420,6 @@ msgstr "You system does not support ext4"
 msgid "[Image Info]\n"
 msgstr "Image: "
 
-msgid "[a]"
-msgstr ""
-
 msgid "[alternative edit]"
 msgstr "[alternative edit]"
 
@@ -13252,15 +13438,6 @@ msgstr "a gui to assign services/providers to common interface modules"
 msgid "a gui to assign services/providers/caids to common interface modules"
 msgstr "a gui to assign services/providers/caids to common interface modules"
 
-msgid "abort alternatives edit"
-msgstr "abort alternatives edit"
-
-msgid "abort bouquet edit"
-msgstr "abort bouquet edit"
-
-msgid "abort favourites edit"
-msgstr "abort favourites edit"
-
 msgid "about to start"
 msgstr "about to start"
 
@@ -13276,28 +13453,6 @@ msgstr ""
 
 msgid "actual time only"
 msgstr ""
-
-msgid "add alternatives"
-msgstr "add alternatives"
-
-msgid "add bouquet"
-msgstr "add bouquet"
-
-#, fuzzy
-msgid "add bouquet to parental protection"
-msgstr "add to parental protection"
-
-msgid "add marker"
-msgstr "add marker"
-
-msgid "add service to bouquet"
-msgstr "add service to bouquet"
-
-msgid "add service to favourites"
-msgstr "add service to favourites"
-
-msgid "add to parental protection"
-msgstr "add to parental protection"
 
 msgid "adult movie/drama"
 msgstr "adult movie/drama"
@@ -13510,9 +13665,6 @@ msgstr ""
 msgid "copy folder"
 msgstr ""
 
-msgid "copy to bouquets"
-msgstr "copy to bouquets"
-
 msgid "create symlink ..."
 msgstr ""
 
@@ -13541,9 +13693,6 @@ msgstr "disabled"
 #, fuzzy
 msgid "disable intro screen"
 msgstr "Disable Picture in Picture"
-
-msgid "disable move mode"
-msgstr "disable move mode"
 
 msgid "disabled"
 msgstr "disabled"
@@ -13578,9 +13727,6 @@ msgstr "east"
 msgid "economics/social advisory"
 msgstr "economics/social advisory"
 
-msgid "edit alternatives"
-msgstr "edit alternatives"
-
 msgid "education/science/factual topics (general)"
 msgstr "education/science/factual topics (general)"
 
@@ -13594,32 +13740,14 @@ msgstr "empty"
 msgid "enable"
 msgstr "enabled"
 
-msgid "enable bouquet edit"
-msgstr "enable bouquet edit"
-
-msgid "enable favourite edit"
-msgstr "enable favourite edit"
-
 msgid "enable intro screen"
 msgstr ""
-
-msgid "enable move mode"
-msgstr "enable move mode"
 
 msgid "enabled"
 msgstr "enabled"
 
-msgid "end alternatives edit"
-msgstr "end alternatives edit"
-
-msgid "end bouquet edit"
-msgstr "end bouquet edit"
-
 msgid "end cut here"
 msgstr "end cut here"
-
-msgid "end favourites edit"
-msgstr "end favourites edit"
 
 #, fuzzy
 msgid "enigma2 and network"
@@ -13702,10 +13830,6 @@ msgstr "filename"
 
 msgid "film/cinema"
 msgstr "film/cinema"
-
-#, fuzzy
-msgid "find currently played service"
-msgstr "Use time of currently running service"
 
 msgid "fine arts"
 msgstr "fine arts"
@@ -14108,12 +14232,6 @@ msgstr "performing arts"
 msgid "picons"
 msgstr "Icons"
 
-msgid "play as picture in picture"
-msgstr "play as picture in picture"
-
-msgid "play in mainwindow"
-msgstr "play in mainwindow"
-
 msgid "please press OK when ready"
 msgstr "please press OK when ready"
 
@@ -14148,9 +14266,6 @@ msgstr "popular culture/traditional arts"
 msgid "pre-school children's program"
 msgstr "pre-school children's program"
 
-msgid "purge deleted userbouquets"
-msgstr ""
-
 msgid "receiver software because updates are available."
 msgstr "receiver software because updates are available."
 
@@ -14176,52 +14291,16 @@ msgstr "remarkable people"
 msgid "remove after this position"
 msgstr "remove after this position"
 
-msgid "remove all alternatives"
-msgstr "remove all alternatives"
-
-msgid "remove all new found flags"
-msgstr "remove all new found flags"
-
 msgid "remove before this position"
 msgstr "remove before this position"
 
-#, fuzzy
-msgid "remove bouquet from parental protection"
-msgstr "remove from parental protection"
-
-#, fuzzy
-msgid "remove cable services"
-msgstr "Protect services"
-
-msgid "remove entry"
-msgstr "remove entry"
-
-msgid "remove from parental protection"
-msgstr "remove from parental protection"
-
-msgid "remove new found flag"
-msgstr "remove new found flag"
-
-msgid "remove selected satellite"
-msgstr "remove selected satellite"
-
-#, fuzzy
-msgid "remove terrestrial services"
-msgstr "Protect services"
-
 msgid "remove this mark"
 msgstr "remove this mark"
-
-msgid "rename entry"
-msgstr ""
 
 msgid "repeated"
 msgstr "repeated"
 
 msgid "reserved for future use"
-msgstr ""
-
-msgid "restore deleted userbouquets"
 msgstr ""
 
 msgid "reverse by date"
@@ -14274,15 +14353,8 @@ msgid "serious/classical/religious/historical movie/drama"
 msgstr "serious/classical/religious/historical movie/drama"
 
 #, fuzzy
-msgid "service is in bouquet parental protection"
-msgstr "remove from parental protection"
-
-#, fuzzy
 msgid "service off-air"
 msgstr "service PIN"
-
-msgid "set as startup service"
-msgstr "set as startup service"
 
 #, fuzzy
 msgid "settings"
@@ -14294,9 +14366,6 @@ msgstr "show DVD main menu"
 msgid "show all tags"
 msgstr "show all tags"
 
-msgid "show alternatives"
-msgstr "show alternatives"
-
 msgid "show event details"
 msgstr "show event details"
 
@@ -14305,9 +14374,6 @@ msgstr "show softwaremanager in setup menu"
 
 msgid "show softwaremanager on blue button"
 msgstr "show softwaremanager on blue button"
-
-msgid "show transponder info"
-msgstr "show transponder info"
 
 msgid "show/game show (general)"
 msgstr "show/game show (general)"
@@ -14395,9 +14461,6 @@ msgstr "stepsize"
 
 msgid "stereo"
 msgstr "stereo"
-
-msgid "stop using as startup service"
-msgstr "stop using as startup service"
 
 msgid "successful"
 msgstr ""

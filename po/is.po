@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-17 17:48+0100\n"
+"POT-Creation-Date: 2019-12-08 00:14+0100\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -854,6 +854,20 @@ msgstr "bæta við sendanda"
 msgid "Abort"
 msgstr "Hætta við"
 
+#
+#, fuzzy
+msgid "Abort alternatives edit"
+msgstr "hætta við að breyta valkostum"
+
+#
+#, fuzzy
+msgid "Abort bouquet edit"
+msgstr "hætta við að breyta fléttu"
+
+#, fuzzy
+msgid "Abort favourites edit"
+msgstr "hætta við að breyta eftirlætis lista"
+
 msgid "About"
 msgstr "Um"
 
@@ -957,8 +971,23 @@ msgstr "Bæta við nýjum titli"
 
 #
 #, fuzzy
+msgid "Add alternatives"
+msgstr "bæta við valkosti"
+
+#
+#, fuzzy
 msgid "Add bookmark"
 msgstr "bæta við bókamerki"
+
+#
+#, fuzzy
+msgid "Add bouquet"
+msgstr "bæta rásavendi við"
+
+#
+#, fuzzy
+msgid "Add bouquet to parental protection"
+msgstr "bæta við foreldra lás"
 
 #, fuzzy
 msgid "Add current folder to bookmarks"
@@ -978,6 +1007,11 @@ msgstr "bæta skrá við spilunarlista"
 #, fuzzy
 msgid "Add files to playlist"
 msgstr "bæta rásum við spilunarlista"
+
+#
+#, fuzzy
+msgid "Add marker"
+msgstr "bæta við merki"
 
 #
 #, fuzzy
@@ -1022,6 +1056,20 @@ msgstr "Veldu skrár/möppur til afritunar"
 msgid "Add service"
 msgstr "bæta við rás"
 
+#
+#, fuzzy
+msgid "Add service to bouquet"
+msgstr "bæta rás við fléttu"
+
+#, fuzzy
+msgid "Add service to favourites"
+msgstr "bæta rás við eftirlætis lista"
+
+#
+#, fuzzy
+msgid "Add services to this bouquet?"
+msgstr "bæta rás við fléttu"
+
 msgid "Add timer"
 msgstr "Taka upp"
 
@@ -1033,6 +1081,11 @@ msgstr "Bæta við rásavönd"
 
 msgid "Add to favourites"
 msgstr "Bæta við eftirlætisrásir"
+
+#
+#, fuzzy
+msgid "Add to parental protection"
+msgstr "bæta við foreldra lás"
 
 msgid "Add/remove change timer for current event"
 msgstr ""
@@ -1285,7 +1338,7 @@ msgstr ""
 msgid "Arabic"
 msgstr "Arabíska"
 
-msgid "Are you sure to purge all deleted userbouquets?"
+msgid "Are you sure to purge all deleted user bouquets?"
 msgstr ""
 
 #, python-format
@@ -1995,6 +2048,9 @@ msgstr "Stærð:"
 msgid "Capacity: "
 msgstr "Stærð:"
 
+msgid "Card"
+msgstr ""
+
 msgid "Cascade PiP"
 msgstr ""
 
@@ -2334,6 +2390,9 @@ msgstr "Samskipti"
 msgid "Comoros"
 msgstr ""
 
+msgid "Compact flash"
+msgstr ""
+
 msgid "Complete"
 msgstr "Allt"
 
@@ -2351,6 +2410,11 @@ msgstr "Skoða nánar"
 msgid "Config resolution of pictures"
 msgstr ""
 
+#
+#, fuzzy
+msgid "Configuration"
+msgstr "Stilling nettengingar..."
+
 #, fuzzy
 msgid "Configuration mode"
 msgstr "Stillinga hamur"
@@ -2358,11 +2422,6 @@ msgstr "Stillinga hamur"
 #, fuzzy, python-format
 msgid "Configuration mode: %s"
 msgstr "Stillinga hamur"
-
-#
-#, fuzzy
-msgid "Configuration..."
-msgstr "Stilling nettengingar..."
 
 #, fuzzy
 msgid "Configure ATSC"
@@ -2864,6 +2923,11 @@ msgstr ""
 
 msgid "Copy folder"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Copy to bouquets"
+msgstr "afrita til rásavanda"
 
 msgid "Costa Rica"
 msgstr ""
@@ -3551,6 +3615,11 @@ msgstr ""
 msgid "Disable current event but not coming events"
 msgstr "Stoppa núverandi atriði en halda komandi atriðum"
 
+#
+#, fuzzy
+msgid "Disable move mode"
+msgstr "hætta í færslu stöðu"
+
 msgid "Disable timer"
 msgstr ""
 
@@ -3984,6 +4053,11 @@ msgstr "Breyta DNS"
 msgid "Edit Title"
 msgstr "Breyta titili"
 
+#
+#, fuzzy
+msgid "Edit alternatives"
+msgstr "breyta valkosti"
+
 msgid "Edit chapters of current title"
 msgstr "Breyta köflum núverandi titils"
 
@@ -4106,6 +4180,11 @@ msgstr "Virkja foreldra stýringu"
 
 #
 #, fuzzy
+msgid "Enable bouquet edit"
+msgstr "byrja féttu breytingu"
+
+#
+#, fuzzy
 msgid "Enable bouquet selection in multi-EPG"
 msgstr "byrja féttu breytingu"
 
@@ -4117,6 +4196,10 @@ msgstr "Virkt"
 msgid "Enable fallback remote receiver"
 msgstr ""
 
+#, fuzzy
+msgid "Enable favourites edit"
+msgstr "virkja breytingu eftirlætis lista"
+
 msgid "Enable freesat EPG"
 msgstr ""
 
@@ -4125,6 +4208,11 @@ msgstr ""
 
 msgid "Enable infobar fade-out"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Enable move mode"
+msgstr "virkja færlsu stöðu"
 
 #
 msgid "Enable multiple bouquets"
@@ -4210,6 +4298,20 @@ msgstr "Kóðunar lykilgerð"
 
 msgid "Encryption:"
 msgstr "Kóðun:"
+
+#
+#, fuzzy
+msgid "End alternatives edit"
+msgstr "hætta breytingum valkosta"
+
+#
+#, fuzzy
+msgid "End bouquet edit"
+msgstr "hætta að breyta fléttu"
+
+#, fuzzy
+msgid "End favourites edit"
+msgstr "hætta breytingum eftirlætis lista"
 
 #
 msgid "End time"
@@ -4496,11 +4598,6 @@ msgstr "Hætta í netkerfis ráðgjafa"
 
 msgid "Exit the wizard"
 msgstr "Hætta í ráðgjafa"
-
-#
-#, fuzzy
-msgid "Exit/OK"
-msgstr "Hætta"
 
 #
 msgid "Expert"
@@ -4805,6 +4902,11 @@ msgstr ""
 
 msgid "Final scroll delay"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Find currently playing service"
+msgstr "Læsa rásum"
 
 msgid "Fine movement"
 msgstr ""
@@ -5358,6 +5460,11 @@ msgstr ""
 
 msgid "Handle wakeup from TV"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Hard disk"
+msgstr "Harður diskur"
 
 #
 #, fuzzy
@@ -6503,6 +6610,9 @@ msgstr ""
 msgid "MIME Version"
 msgstr "Umbreyting"
 
+msgid "MMC card"
+msgstr ""
+
 #
 msgid "MORE"
 msgstr "MEIRA"
@@ -7229,6 +7339,16 @@ msgstr "Stilling nettengingar..."
 #, fuzzy
 msgid "Network configuration..."
 msgstr "Stilling nettengingar..."
+
+#
+#, fuzzy
+msgid "Network mount"
+msgstr "Ekkert netkerfi fannst"
+
+#
+#, fuzzy, python-format
+msgid "Network mount %s"
+msgstr "Prufa nettengingu"
 
 #, fuzzy
 msgid "Network name (SSID)"
@@ -8167,6 +8287,11 @@ msgstr "Spila DVD"
 
 #
 #, fuzzy
+msgid "Play as Picture in Picture"
+msgstr "Virkja Mynd í Mynd"
+
+#
+#, fuzzy
 msgid "Play audio-CD..."
 msgstr "Spila hljóð disk..."
 
@@ -8190,6 +8315,9 @@ msgstr "spila frá næsta merki eða atriði úr spilunarlista"
 #, fuzzy
 msgid "Play from previous mark or playlist entry"
 msgstr "spila frá fyrra merki eða atriði úr spilunarlista"
+
+msgid "Play in main window"
+msgstr ""
 
 #
 #, fuzzy
@@ -8943,6 +9071,11 @@ msgstr "Sendendur"
 msgid "Puerto Rico"
 msgstr ""
 
+#
+#, fuzzy
+msgid "Purge deleted user bouquets"
+msgstr "Virkja marga rásavendi"
+
 msgid "Put TV in standby"
 msgstr ""
 
@@ -9000,6 +9133,11 @@ msgstr "RGB"
 #
 msgid "Radio"
 msgstr "Útvarp"
+
+#
+#, fuzzy
+msgid "Ram disk"
+msgstr "Harður diskur"
 
 #
 msgid "Random"
@@ -9281,13 +9419,33 @@ msgstr "taka út nafnaþjón"
 
 #
 #, fuzzy
+msgid "Remove all alternatives"
+msgstr "taka út alla valkosti"
+
+#
+#, fuzzy
 msgid "Remove all logfiles"
 msgstr "taka út alla valkosti"
 
 #
 #, fuzzy
+msgid "Remove all new found flags"
+msgstr "eyða öllum merkingum um nýfundna rás"
+
+#
+#, fuzzy
 msgid "Remove bookmark"
 msgstr "eyða bókamerki"
+
+#
+#, fuzzy
+msgid "Remove bouquet from parental protection"
+msgstr "taka foreldralæsingu af"
+
+#
+#, fuzzy
+msgid "Remove cable services"
+msgstr "Læsa rásum"
 
 msgid "Remove completed timers after (days)"
 msgstr ""
@@ -9304,14 +9462,39 @@ msgstr "Taka út þegar valinn titil"
 msgid "Remove directory"
 msgstr "eyða möppu"
 
+#
+#, fuzzy
+msgid "Remove entry"
+msgstr "taka út"
+
+#
+#, fuzzy
+msgid "Remove from parental protection"
+msgstr "taka foreldralæsingu af"
+
 msgid "Remove items from trash can after (days)"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Remove new found flag"
+msgstr "eyða merkingu um nýfundna rás"
 
 msgid "Remove plugins"
 msgstr "Taka út íforrit"
 
 msgid "Remove selected folder from bookmarks"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Remove selected satellite"
+msgstr "eyða völdum gervihnetti"
+
+#
+#, fuzzy
+msgid "Remove terrestrial services"
+msgstr "Læsa rásum"
 
 msgid "Remove texts for the hearing impaired from external subtitles (instrumental music or environmental sounds, e.g., when a doorbell rings or a gun shot is heard)."
 msgstr ""
@@ -9351,6 +9534,11 @@ msgstr "Taka út titil"
 #
 msgid "Rename"
 msgstr "Endurnefna"
+
+#
+#, fuzzy
+msgid "Rename entry"
+msgstr "taka út"
 
 #
 #, fuzzy
@@ -9491,6 +9679,11 @@ msgstr "Setja inn"
 #
 msgid "Restore backups"
 msgstr "Setja inn afrit"
+
+#
+#, fuzzy
+msgid "Restore deleted user bouquets"
+msgstr "Virkja marga rásavendi"
 
 #
 #, fuzzy
@@ -10547,6 +10740,11 @@ msgstr "Rásir"
 msgid "Service ID"
 msgstr "Rás"
 
+#
+#, fuzzy
+msgid "Service belongs to a parental protected bouquet"
+msgstr "Rás hefur verið bætt við valinn rásavöndul."
+
 msgid "Service has been added to the favourites."
 msgstr "Rás hefur verið bætt við eftirlætis lista."
 
@@ -10649,6 +10847,11 @@ msgstr ""
 
 msgid "Set alternative fallback tuners for DVB-T/C or ATSC"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Set as startup service"
+msgstr "Skipta á rásum"
 
 msgid "Set blocktimes by weekday"
 msgstr ""
@@ -10879,6 +11082,11 @@ msgstr "Sýna WLAN stöðu"
 
 msgid "Show Weather Widget"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Show alternatives"
+msgstr "súna valkosti"
 
 msgid "Show animation while busy"
 msgstr ""
@@ -11160,6 +11368,11 @@ msgstr "Sýna útvarpsspilara..."
 #, fuzzy
 msgid "Show the plugin browser.."
 msgstr "Íforrita leit"
+
+#
+#, fuzzy
+msgid "Show transponder info"
+msgstr "sýna upplýsingar um sendi"
 
 msgid "Show two lines per entry"
 msgstr ""
@@ -11873,6 +12086,11 @@ msgstr "stoppa lifandi pásu"
 msgid "Stop timeshift?"
 msgstr "Stoppa tímafærslu?"
 
+#
+#, fuzzy
+msgid "Stop using as startup service"
+msgstr "Skipta á rásum"
+
 msgid "Stopped"
 msgstr ""
 
@@ -12230,6 +12448,9 @@ msgstr "Efnisyfirlit yfir safn"
 #
 msgid "Tags"
 msgstr "Merki"
+
+msgid "Taiwan"
+msgstr ""
 
 msgid "Tajikistan"
 msgstr ""
@@ -13267,6 +13488,11 @@ msgstr ""
 #
 #, fuzzy
 msgid "USB Stick"
+msgstr "USB stautur"
+
+#
+#, fuzzy
+msgid "USB stick"
 msgstr "USB stautur"
 
 msgid "Uganda"
@@ -14772,9 +14998,6 @@ msgstr ""
 msgid "[Image Info]\n"
 msgstr ""
 
-msgid "[a]"
-msgstr ""
-
 #
 msgid "[alternative edit]"
 msgstr "[breyta valkostum]"
@@ -14799,17 +15022,6 @@ msgid "a gui to assign services/providers/caids to common interface modules"
 msgstr "viðmót til að tengja rásir/sendendur/caid við afruglara í tengi fyrir afruglara"
 
 #
-msgid "abort alternatives edit"
-msgstr "hætta við að breyta valkostum"
-
-#
-msgid "abort bouquet edit"
-msgstr "hætta við að breyta fléttu"
-
-msgid "abort favourites edit"
-msgstr "hætta við að breyta eftirlætis lista"
-
-#
 msgid "about to start"
 msgstr "er að byrja"
 
@@ -14826,34 +15038,6 @@ msgstr ""
 
 msgid "actual time only"
 msgstr ""
-
-#
-msgid "add alternatives"
-msgstr "bæta við valkosti"
-
-#
-msgid "add bouquet"
-msgstr "bæta rásavendi við"
-
-#
-#, fuzzy
-msgid "add bouquet to parental protection"
-msgstr "bæta við foreldra lás"
-
-#
-msgid "add marker"
-msgstr "bæta við merki"
-
-#
-msgid "add service to bouquet"
-msgstr "bæta rás við fléttu"
-
-msgid "add service to favourites"
-msgstr "bæta rás við eftirlætis lista"
-
-#
-msgid "add to parental protection"
-msgstr "bæta við foreldra lás"
 
 msgid "adult movie/drama"
 msgstr ""
@@ -15089,10 +15273,6 @@ msgstr ""
 msgid "copy folder"
 msgstr ""
 
-#
-msgid "copy to bouquets"
-msgstr "afrita til rásavanda"
-
 msgid "create symlink ..."
 msgstr ""
 
@@ -15128,10 +15308,6 @@ msgstr "óvirkt"
 #, fuzzy
 msgid "disable intro screen"
 msgstr "Gera Mynd í Mynd óvirka"
-
-#
-msgid "disable move mode"
-msgstr "hætta í færslu stöðu"
 
 #
 msgid "disabled"
@@ -15170,10 +15346,6 @@ msgstr ""
 msgid "economics/social advisory"
 msgstr ""
 
-#
-msgid "edit alternatives"
-msgstr "breyta valkosti"
-
 msgid "education/science/factual topics (general)"
 msgstr ""
 
@@ -15189,38 +15361,16 @@ msgstr "tómt"
 msgid "enable"
 msgstr "virkt"
 
-#
-msgid "enable bouquet edit"
-msgstr "byrja féttu breytingu"
-
-msgid "enable favourite edit"
-msgstr "virkja breytingu eftirlætis lista"
-
 msgid "enable intro screen"
 msgstr ""
-
-#
-msgid "enable move mode"
-msgstr "virkja færlsu stöðu"
 
 #
 msgid "enabled"
 msgstr "virkt"
 
 #
-msgid "end alternatives edit"
-msgstr "hætta breytingum valkosta"
-
-#
-msgid "end bouquet edit"
-msgstr "hætta að breyta fléttu"
-
-#
 msgid "end cut here"
 msgstr "enda klippingu hér"
-
-msgid "end favourites edit"
-msgstr "hætta breytingum eftirlætis lista"
 
 #
 #, fuzzy
@@ -15310,9 +15460,6 @@ msgid "filename"
 msgstr "skráarnafn"
 
 msgid "film/cinema"
-msgstr ""
-
-msgid "find currently played service"
 msgstr ""
 
 msgid "fine arts"
@@ -15784,12 +15931,6 @@ msgstr ""
 msgid "picons"
 msgstr ""
 
-msgid "play as picture in picture"
-msgstr ""
-
-msgid "play in mainwindow"
-msgstr ""
-
 #
 msgid "please press OK when ready"
 msgstr "vinsamlega ýtið á OK þegar tilbúið"
@@ -15829,9 +15970,6 @@ msgstr ""
 msgid "pre-school children's program"
 msgstr ""
 
-msgid "purge deleted userbouquets"
-msgstr ""
-
 msgid "receiver software because updates are available."
 msgstr ""
 
@@ -15863,63 +16001,18 @@ msgid "remove after this position"
 msgstr "eyða fyrir aftan þetta"
 
 #
-msgid "remove all alternatives"
-msgstr "taka út alla valkosti"
-
-#
-msgid "remove all new found flags"
-msgstr "eyða öllum merkingum um nýfundna rás"
-
-#
 msgid "remove before this position"
 msgstr "eyða fyrir framan þetta"
 
 #
-#, fuzzy
-msgid "remove bouquet from parental protection"
-msgstr "taka foreldralæsingu af"
-
-#
-#, fuzzy
-msgid "remove cable services"
-msgstr "Læsa rásum"
-
-#
-msgid "remove entry"
-msgstr "taka út"
-
-#
-msgid "remove from parental protection"
-msgstr "taka foreldralæsingu af"
-
-#
-msgid "remove new found flag"
-msgstr "eyða merkingu um nýfundna rás"
-
-#
-msgid "remove selected satellite"
-msgstr "eyða völdum gervihnetti"
-
-#
-#, fuzzy
-msgid "remove terrestrial services"
-msgstr "Læsa rásum"
-
-#
 msgid "remove this mark"
 msgstr "taka út þetta merki"
-
-msgid "rename entry"
-msgstr ""
 
 #
 msgid "repeated"
 msgstr "endurtekinn"
 
 msgid "reserved for future use"
-msgstr ""
-
-msgid "restore deleted userbouquets"
 msgstr ""
 
 msgid "reverse by date"
@@ -15976,17 +16069,9 @@ msgstr ""
 msgid "serious/classical/religious/historical movie/drama"
 msgstr ""
 
-#
-#, fuzzy
-msgid "service is in bouquet parental protection"
-msgstr "taka foreldralæsingu af"
-
 #, fuzzy
 msgid "service off-air"
 msgstr "rása PIN"
-
-msgid "set as startup service"
-msgstr ""
 
 #
 #, fuzzy
@@ -16001,10 +16086,6 @@ msgid "show all tags"
 msgstr ""
 
 #
-msgid "show alternatives"
-msgstr "súna valkosti"
-
-#
 msgid "show event details"
 msgstr "sýna atriði nánar"
 
@@ -16013,10 +16094,6 @@ msgstr ""
 
 msgid "show softwaremanager on blue button"
 msgstr ""
-
-#
-msgid "show transponder info"
-msgstr "sýna upplýsingar um sendi"
 
 msgid "show/game show (general)"
 msgstr ""
@@ -16109,9 +16186,6 @@ msgstr ""
 #
 msgid "stereo"
 msgstr "víðóma"
-
-msgid "stop using as startup service"
-msgstr ""
 
 msgid "successful"
 msgstr ""

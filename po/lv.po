@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-17 17:48+0100\n"
+"POT-Creation-Date: 2019-12-08 00:14+0100\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -811,6 +811,18 @@ msgstr "Pievienot operatoru"
 msgid "Abort"
 msgstr "Atcelt"
 
+#, fuzzy
+msgid "Abort alternatives edit"
+msgstr "pārtraukt alternatīvu rediģēšanu"
+
+#, fuzzy
+msgid "Abort bouquet edit"
+msgstr "pārtraukt buķešu rediģēšanu"
+
+#, fuzzy
+msgid "Abort favourites edit"
+msgstr "pārtraukt favorītu rediģēšanu"
+
 msgid "About"
 msgstr "Par"
 
@@ -892,8 +904,20 @@ msgstr "Pievienot DNS ierakstu"
 msgid "Add a new title"
 msgstr "Pievienot jaunu nosaukumu"
 
+#, fuzzy
+msgid "Add alternatives"
+msgstr "pievienot alternatīvas"
+
 msgid "Add bookmark"
 msgstr "Pievienot grāmatzīmi"
+
+#, fuzzy
+msgid "Add bouquet"
+msgstr "pievienot buķeti"
+
+#, fuzzy
+msgid "Add bouquet to parental protection"
+msgstr "pievienot vecāku kontrolei"
 
 #, fuzzy
 msgid "Add current folder to bookmarks"
@@ -907,6 +931,10 @@ msgstr "Pievienot failu repertuāram"
 
 msgid "Add files to playlist"
 msgstr "Pievienot failus repertuāram"
+
+#, fuzzy
+msgid "Add marker"
+msgstr "pievienot marķieri"
 
 #, fuzzy
 msgid "Add plugin to Extensions menu*"
@@ -937,6 +965,18 @@ msgstr "Izvēlieties failus/mapes dublējumkopijai"
 msgid "Add service"
 msgstr "Pievienot kanālo"
 
+#, fuzzy
+msgid "Add service to bouquet"
+msgstr "pievienot kanālu buķetei"
+
+#, fuzzy
+msgid "Add service to favourites"
+msgstr "pievienot kanālu favorītiem"
+
+#, fuzzy
+msgid "Add services to this bouquet?"
+msgstr "pievienot kanālu buķetei"
+
 msgid "Add timer"
 msgstr "Pievienot taimeri"
 
@@ -948,6 +988,10 @@ msgstr "Pievienot buķetei"
 
 msgid "Add to favourites"
 msgstr "Pievienot favorītiem"
+
+#, fuzzy
+msgid "Add to parental protection"
+msgstr "pievienot vecāku kontrolei"
 
 msgid "Add/remove change timer for current event"
 msgstr ""
@@ -1181,8 +1225,9 @@ msgstr "Jebkura aktivitāte"
 msgid "Arabic"
 msgstr "Arābu"
 
-msgid "Are you sure to purge all deleted userbouquets?"
-msgstr ""
+#, fuzzy
+msgid "Are you sure to purge all deleted user bouquets?"
+msgstr "Vai tiešām vēlaties dzēst šo ierakstu?"
 
 #, fuzzy, python-format
 msgid "Are you sure to remove all %d.%d%s%s services?"
@@ -1871,6 +1916,9 @@ msgstr "Ietilpība: "
 msgid "Capacity: "
 msgstr "Ietilpība: "
 
+msgid "Card"
+msgstr ""
+
 msgid "Cascade PiP"
 msgstr ""
 
@@ -2200,6 +2248,9 @@ msgstr "Komunikācija"
 msgid "Comoros"
 msgstr ""
 
+msgid "Compact flash"
+msgstr ""
+
 msgid "Complete"
 msgstr "Gatavs"
 
@@ -2216,15 +2267,16 @@ msgstr "Skatīt detaļas"
 msgid "Config resolution of pictures"
 msgstr ""
 
+#, fuzzy
+msgid "Configuration"
+msgstr "Konfigurācija..."
+
 msgid "Configuration mode"
 msgstr "Konfigurēšanas režīms"
 
 #, python-format
 msgid "Configuration mode: %s"
 msgstr "Konfigurēšanas režīms: %s"
-
-msgid "Configuration..."
-msgstr "Konfigurācija..."
 
 #, fuzzy
 msgid "Configure ATSC"
@@ -2711,6 +2763,10 @@ msgstr ""
 
 msgid "Copy folder"
 msgstr ""
+
+#, fuzzy
+msgid "Copy to bouquets"
+msgstr "kopēt uz buķetēm"
 
 msgid "Costa Rica"
 msgstr ""
@@ -3329,6 +3385,10 @@ msgstr "Atslēgt skenēšanu fonā"
 msgid "Disable current event but not coming events"
 msgstr "Apturēt pašreizējo notikumu, bet ne nākamos notikumus"
 
+#, fuzzy
+msgid "Disable move mode"
+msgstr "izslēgt pārvietošanas režīmu"
+
 msgid "Disable timer"
 msgstr ""
 
@@ -3717,6 +3777,10 @@ msgstr "Rediģēt DNS"
 msgid "Edit Title"
 msgstr "Rediģēt nosaukumu"
 
+#, fuzzy
+msgid "Edit alternatives"
+msgstr "rediģēt alternatīvas"
+
 msgid "Edit chapters of current title"
 msgstr "Rediģēt pašreizējā nosaukuma nodaļas"
 
@@ -3830,6 +3894,10 @@ msgstr ""
 msgid "Enable auto fast scan for %s"
 msgstr "Aktivizēt vecāku kontroli"
 
+#, fuzzy
+msgid "Enable bouquet edit"
+msgstr "aktivizēt buķešu rediģēšanu"
+
 msgid "Enable bouquet selection in multi-EPG"
 msgstr "Aktivizēt buķešu izvēli multi-EPG"
 
@@ -3840,6 +3908,10 @@ msgstr "Aktivizēts"
 msgid "Enable fallback remote receiver"
 msgstr ""
 
+#, fuzzy
+msgid "Enable favourites edit"
+msgstr "aktivizēt favorītu rediģēšanu"
+
 msgid "Enable freesat EPG"
 msgstr "Aktivizēt freesat EPG"
 
@@ -3848,6 +3920,10 @@ msgstr ""
 
 msgid "Enable infobar fade-out"
 msgstr ""
+
+#, fuzzy
+msgid "Enable move mode"
+msgstr "aktivizēt pārvietošanas režīmu"
 
 msgid "Enable multiple bouquets"
 msgstr "Aktivizēt vairāk-buķešu režīmu"
@@ -3920,6 +3996,18 @@ msgstr "Šifrēšanas atslēgas veids"
 
 msgid "Encryption:"
 msgstr "Šifrēšana:"
+
+#, fuzzy
+msgid "End alternatives edit"
+msgstr "beigt alternatīvu rediģēšanu"
+
+#, fuzzy
+msgid "End bouquet edit"
+msgstr "beigt buķešu rediģēšanu"
+
+#, fuzzy
+msgid "End favourites edit"
+msgstr "beigt favorītu rediģēšanu"
 
 msgid "End time"
 msgstr "Beigu laiks"
@@ -4174,10 +4262,6 @@ msgstr "Iziet no tīkla iestatīšanas vedņa"
 
 msgid "Exit the wizard"
 msgstr "Iziet no vedņa"
-
-#, fuzzy
-msgid "Exit/OK"
-msgstr "Iziet"
 
 msgid "Expert"
 msgstr "Lietpratēja"
@@ -4465,6 +4549,10 @@ msgstr "Beigu pozīcija indeksā"
 
 msgid "Final scroll delay"
 msgstr ""
+
+#, fuzzy
+msgid "Find currently playing service"
+msgstr "Aizsargāt kanālus"
 
 msgid "Fine movement"
 msgstr "Precīzā pārvietošana"
@@ -4967,6 +5055,10 @@ msgstr "Ieslēgt gaidstāvi no TV"
 
 msgid "Handle wakeup from TV"
 msgstr "Ieslēgt pamošanos no TV"
+
+#, fuzzy
+msgid "Hard disk"
+msgstr "Cietais disks"
 
 msgid "Hard disk setup"
 msgstr "Cietā diska iestatījumi"
@@ -5959,6 +6051,9 @@ msgstr ""
 msgid "MIME Version"
 msgstr "Inversija"
 
+msgid "MMC card"
+msgstr ""
+
 msgid "MORE"
 msgstr "VAIRĀK"
 
@@ -6596,6 +6691,14 @@ msgstr "Tīkla konfigurācija..."
 
 msgid "Network configuration..."
 msgstr "Tīkla konfigurācija..."
+
+#, fuzzy
+msgid "Network mount"
+msgstr "Tīkli nav atrasti"
+
+#, fuzzy, python-format
+msgid "Network mount %s"
+msgstr "Tīkla pārbaude"
 
 msgid "Network name (SSID)"
 msgstr "Tīkla vārds (SSID)"
@@ -7423,6 +7526,10 @@ msgstr "Atskaņot DVD"
 msgid "Play DVDs"
 msgstr "Atskaņot DVD"
 
+#, fuzzy
+msgid "Play as Picture in Picture"
+msgstr "atskaņot kā attēlu attēlā"
+
 msgid "Play audio-CD..."
 msgstr "Atskaņot mūzikas CD..."
 
@@ -7441,6 +7548,10 @@ msgstr "Atskaņot no nākamās iezīmes vai repertuāra ieraksta"
 
 msgid "Play from previous mark or playlist entry"
 msgstr "Atskaņot no iepriekšējās iezīmes vai repertuāra ieraksta"
+
+#, fuzzy
+msgid "Play in main window"
+msgstr "atskaņot pamatlogā"
 
 msgid "Play music..."
 msgstr "Atskaņot mūziku..."
@@ -8092,6 +8203,10 @@ msgstr "Operatori"
 msgid "Puerto Rico"
 msgstr ""
 
+#, fuzzy
+msgid "Purge deleted user bouquets"
+msgstr "Aktivizēt vairāk-buķešu režīmu"
+
 msgid "Put TV in standby"
 msgstr "Iestatīt TV gaidstāvē"
 
@@ -8140,6 +8255,10 @@ msgstr "RGB"
 
 msgid "Radio"
 msgstr "Radio"
+
+#, fuzzy
+msgid "Ram disk"
+msgstr "Cietais disks"
 
 msgid "Random"
 msgstr "Nejauša"
@@ -8373,11 +8492,27 @@ msgid "Remove a nameserver entry"
 msgstr "Dzēst DNS ierakstu"
 
 #, fuzzy
+msgid "Remove all alternatives"
+msgstr "dzēst visas alternatīvas"
+
+#, fuzzy
 msgid "Remove all logfiles"
 msgstr "dzēst visas alternatīvas"
 
+#, fuzzy
+msgid "Remove all new found flags"
+msgstr "dzēst visus 'jaunatrasts' marķējumus"
+
 msgid "Remove bookmark"
 msgstr "Dzēst grāmatzīmi"
+
+#, fuzzy
+msgid "Remove bouquet from parental protection"
+msgstr "dzēst no vecāku kontroles"
+
+#, fuzzy
+msgid "Remove cable services"
+msgstr "Aizsargāt kanālus"
 
 msgid "Remove completed timers after (days)"
 msgstr "Dzēst pabeigtos taimerus pēc (dienām)"
@@ -8392,14 +8527,34 @@ msgstr "Dzēst pašreiz atlasīto virsrakstu"
 msgid "Remove directory"
 msgstr "dzēst mapi"
 
+#, fuzzy
+msgid "Remove entry"
+msgstr "dzēst ierakstu"
+
+#, fuzzy
+msgid "Remove from parental protection"
+msgstr "dzēst no vecāku kontroles"
+
 msgid "Remove items from trash can after (days)"
 msgstr "Dzēst no miskastes pēc (dienām)"
+
+#, fuzzy
+msgid "Remove new found flag"
+msgstr "dzēst 'jaunatrasts' marķējumu"
 
 msgid "Remove plugins"
 msgstr "Dzēst spraudņus"
 
 msgid "Remove selected folder from bookmarks"
 msgstr ""
+
+#, fuzzy
+msgid "Remove selected satellite"
+msgstr "dzēst izvēlēto pavadoni"
+
+#, fuzzy
+msgid "Remove terrestrial services"
+msgstr "Aizsargāt kanālus"
 
 msgid "Remove texts for the hearing impaired from external subtitles (instrumental music or environmental sounds, e.g., when a doorbell rings or a gun shot is heard)."
 msgstr ""
@@ -8430,6 +8585,10 @@ msgstr "Dzēst partīciju tabulu"
 
 msgid "Rename"
 msgstr "Pārsaukt"
+
+#, fuzzy
+msgid "Rename entry"
+msgstr "pārsaukt ierakstu"
 
 #, fuzzy
 msgid "Rename file/directory"
@@ -8551,6 +8710,10 @@ msgstr "Atjaunot"
 
 msgid "Restore backups"
 msgstr "Atjaunot dublējumkopiju"
+
+#, fuzzy
+msgid "Restore deleted user bouquets"
+msgstr "Aktivizēt vairāk-buķešu režīmu"
 
 #, fuzzy
 msgid "Restore inetd"
@@ -9482,6 +9645,10 @@ msgstr "Kanāli"
 msgid "Service ID"
 msgstr "Kanāls"
 
+#, fuzzy
+msgid "Service belongs to a parental protected bouquet"
+msgstr "Kanāls tika pievienots izvēlētajai buķetei."
+
 msgid "Service has been added to the favourites."
 msgstr "Kanāls tika pievienots favorītiem."
 
@@ -9568,6 +9735,10 @@ msgstr ""
 
 msgid "Set alternative fallback tuners for DVB-T/C or ATSC"
 msgstr ""
+
+#, fuzzy
+msgid "Set as startup service"
+msgstr "uzstādīt kā starta kanālu"
 
 msgid "Set blocktimes by weekday"
 msgstr ""
@@ -9769,6 +9940,10 @@ msgstr "Rādīt bezvadu tīkla statusu"
 
 msgid "Show Weather Widget"
 msgstr ""
+
+#, fuzzy
+msgid "Show alternatives"
+msgstr "rādīt alternatīvas"
 
 msgid "Show animation while busy"
 msgstr "Rādīt animāciju kad aizņemts"
@@ -10018,6 +10193,10 @@ msgstr "Klausīties radio..."
 #, fuzzy
 msgid "Show the plugin browser.."
 msgstr "Spraudņu pārlūks"
+
+#, fuzzy
+msgid "Show transponder info"
+msgstr "rādīt transpondera informāciju"
 
 msgid "Show two lines per entry"
 msgstr ""
@@ -10626,6 +10805,10 @@ msgstr "Apturēt laika aizturi"
 msgid "Stop timeshift?"
 msgstr "Apturēt laika aizturi?"
 
+#, fuzzy
+msgid "Stop using as startup service"
+msgstr "pārtraukt lietot kā ieslēgšanas kanālu"
+
 msgid "Stopped"
 msgstr "Apturēt"
 
@@ -10926,6 +11109,9 @@ msgstr "Satura rādītājs kolekcijai"
 
 msgid "Tags"
 msgstr "Etiķetes"
+
+msgid "Taiwan"
+msgstr ""
 
 msgid "Tajikistan"
 msgstr ""
@@ -11854,6 +12040,10 @@ msgstr ""
 
 #, fuzzy
 msgid "USB Stick"
+msgstr "USB zibatmiņa"
+
+#, fuzzy
+msgid "USB stick"
 msgstr "USB zibatmiņa"
 
 msgid "Uganda"
@@ -13271,9 +13461,6 @@ msgstr "Jūsu sistēma neatbalsta ext4"
 msgid "[Image Info]\n"
 msgstr "Imidžs:"
 
-msgid "[a]"
-msgstr ""
-
 msgid "[alternative edit]"
 msgstr "[alternatīvu rediģēšana]"
 
@@ -13292,15 +13479,6 @@ msgstr "gui ko piešķirt kanāliem/operatoriem common interfeisa moduļos"
 msgid "a gui to assign services/providers/caids to common interface modules"
 msgstr "gui ko piešķirt kanāliem/operatoriem/caidiem common interfeisa moduļos"
 
-msgid "abort alternatives edit"
-msgstr "pārtraukt alternatīvu rediģēšanu"
-
-msgid "abort bouquet edit"
-msgstr "pārtraukt buķešu rediģēšanu"
-
-msgid "abort favourites edit"
-msgstr "pārtraukt favorītu rediģēšanu"
-
 msgid "about to start"
 msgstr "gatavojas sākt"
 
@@ -13316,28 +13494,6 @@ msgstr ""
 
 msgid "actual time only"
 msgstr ""
-
-msgid "add alternatives"
-msgstr "pievienot alternatīvas"
-
-msgid "add bouquet"
-msgstr "pievienot buķeti"
-
-#, fuzzy
-msgid "add bouquet to parental protection"
-msgstr "pievienot vecāku kontrolei"
-
-msgid "add marker"
-msgstr "pievienot marķieri"
-
-msgid "add service to bouquet"
-msgstr "pievienot kanālu buķetei"
-
-msgid "add service to favourites"
-msgstr "pievienot kanālu favorītiem"
-
-msgid "add to parental protection"
-msgstr "pievienot vecāku kontrolei"
 
 msgid "adult movie/drama"
 msgstr "pieaugušo filma/drāma"
@@ -13551,9 +13707,6 @@ msgstr "%d fails"
 msgid "copy folder"
 msgstr ""
 
-msgid "copy to bouquets"
-msgstr "kopēt uz buķetēm"
-
 msgid "create symlink ..."
 msgstr ""
 
@@ -13582,9 +13735,6 @@ msgstr "izslēgts"
 #, fuzzy
 msgid "disable intro screen"
 msgstr "Izslēgt Atēls Atēlā"
-
-msgid "disable move mode"
-msgstr "izslēgt pārvietošanas režīmu"
 
 msgid "disabled"
 msgstr "izslēgts"
@@ -13619,9 +13769,6 @@ msgstr "austrumi"
 msgid "economics/social advisory"
 msgstr "ekonomika/sociālā konsultatīvā"
 
-msgid "edit alternatives"
-msgstr "rediģēt alternatīvas"
-
 msgid "education/science/factual topics (general)"
 msgstr "izglītība/zinātne/faktiskās tēmas (vispārīgi)"
 
@@ -13635,32 +13782,14 @@ msgstr "tukšs"
 msgid "enable"
 msgstr "aktivizēts"
 
-msgid "enable bouquet edit"
-msgstr "aktivizēt buķešu rediģēšanu"
-
-msgid "enable favourite edit"
-msgstr "aktivizēt favorītu rediģēšanu"
-
 msgid "enable intro screen"
 msgstr ""
-
-msgid "enable move mode"
-msgstr "aktivizēt pārvietošanas režīmu"
 
 msgid "enabled"
 msgstr "aktivizēts"
 
-msgid "end alternatives edit"
-msgstr "beigt alternatīvu rediģēšanu"
-
-msgid "end bouquet edit"
-msgstr "beigt buķešu rediģēšanu"
-
 msgid "end cut here"
 msgstr "beigt griešanu šeit"
-
-msgid "end favourites edit"
-msgstr "beigt favorītu rediģēšanu"
 
 #, fuzzy
 msgid "enigma2 and network"
@@ -13743,9 +13872,6 @@ msgstr "faila nosaukums"
 
 msgid "film/cinema"
 msgstr "filmas/kino"
-
-msgid "find currently played service"
-msgstr ""
 
 msgid "fine arts"
 msgstr "tēlotājmāksla"
@@ -14149,12 +14275,6 @@ msgstr "skatuves māksla"
 msgid "picons"
 msgstr "Ikona"
 
-msgid "play as picture in picture"
-msgstr "atskaņot kā attēlu attēlā"
-
-msgid "play in mainwindow"
-msgstr "atskaņot pamatlogā"
-
 msgid "please press OK when ready"
 msgstr "kad gatavs, lūdzu spiediet OK"
 
@@ -14189,9 +14309,6 @@ msgstr "tautas kultūra/tradicionālā māksla"
 msgid "pre-school children's program"
 msgstr "pirmskolas bērnu programma"
 
-msgid "purge deleted userbouquets"
-msgstr ""
-
 msgid "receiver software because updates are available."
 msgstr "uztvērēja programmatūru jo atjaunojumi pieejami."
 
@@ -14217,52 +14334,16 @@ msgstr "ievērojami cilvēki"
 msgid "remove after this position"
 msgstr "dzēst pēc šīs pozīcijas"
 
-msgid "remove all alternatives"
-msgstr "dzēst visas alternatīvas"
-
-msgid "remove all new found flags"
-msgstr "dzēst visus 'jaunatrasts' marķējumus"
-
 msgid "remove before this position"
 msgstr "dzēst pirms šīs pozīcijas"
 
-#, fuzzy
-msgid "remove bouquet from parental protection"
-msgstr "dzēst no vecāku kontroles"
-
-#, fuzzy
-msgid "remove cable services"
-msgstr "Aizsargāt kanālus"
-
-msgid "remove entry"
-msgstr "dzēst ierakstu"
-
-msgid "remove from parental protection"
-msgstr "dzēst no vecāku kontroles"
-
-msgid "remove new found flag"
-msgstr "dzēst 'jaunatrasts' marķējumu"
-
-msgid "remove selected satellite"
-msgstr "dzēst izvēlēto pavadoni"
-
-#, fuzzy
-msgid "remove terrestrial services"
-msgstr "Aizsargāt kanālus"
-
 msgid "remove this mark"
 msgstr "dzēst iezīmi"
-
-msgid "rename entry"
-msgstr "pārsaukt ierakstu"
 
 msgid "repeated"
 msgstr "atkārtots"
 
 msgid "reserved for future use"
-msgstr ""
-
-msgid "restore deleted userbouquets"
 msgstr ""
 
 msgid "reverse by date"
@@ -14315,15 +14396,8 @@ msgid "serious/classical/religious/historical movie/drama"
 msgstr "nopietnā/klasiskā/reliģiskā/vēsturiskā filma/drāma"
 
 #, fuzzy
-msgid "service is in bouquet parental protection"
-msgstr "dzēst no vecāku kontroles"
-
-#, fuzzy
 msgid "service off-air"
 msgstr "kanāla PIN"
-
-msgid "set as startup service"
-msgstr "uzstādīt kā starta kanālu"
 
 #, fuzzy
 msgid "settings"
@@ -14335,9 +14409,6 @@ msgstr "rādīt DVD galveno izvēlni"
 msgid "show all tags"
 msgstr "rādīt visas etiķetes"
 
-msgid "show alternatives"
-msgstr "rādīt alternatīvas"
-
 msgid "show event details"
 msgstr "rādīt notikuma detaļas"
 
@@ -14346,9 +14417,6 @@ msgstr "parādīt programmatūras pārvaldnieku iestatījumu izvēlnē"
 
 msgid "show softwaremanager on blue button"
 msgstr "parādīt programmatūras pārvaldnieku ar zilo pogu"
-
-msgid "show transponder info"
-msgstr "rādīt transpondera informāciju"
 
 msgid "show/game show (general)"
 msgstr "šovi/spēļu šovi (vispārīgi)"
@@ -14436,9 +14504,6 @@ msgstr "soļa lielums"
 
 msgid "stereo"
 msgstr "stereo"
-
-msgid "stop using as startup service"
-msgstr "pārtraukt lietot kā ieslēgšanas kanālu"
 
 msgid "successful"
 msgstr ""
