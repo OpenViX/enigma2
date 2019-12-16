@@ -2460,7 +2460,7 @@ class NetworkTelnet(NSCommon,Screen):
 		self.onChangedEntry = [ ]
 		self['lab1'] = Label(_("Autostart:"))
 		self['labactive'] = Label(_(_("Disabled")))
-		self['lab2'] = Label(_("Current Status:"))
+		self['lab2'] = Label(_("Current status:"))
 		self['labstop'] = Label(_("Stopped"))
 		self['labrun'] = Label(_("Running"))
 		self['key_green'] = Label(_("Start"))
@@ -2468,31 +2468,27 @@ class NetworkTelnet(NSCommon,Screen):
 		self.Console = Console()
 		self.my_telnet_active = False
 		self.my_telnet_run = False
-		self['actions'] = ActionMap(['WizardActions', 'ColorActions'],
-		{
-			'ok': self.close,
-			'back': self.close,
-			'green': self.TelnetStartStop,
-			'yellow': self.activateTelnet
-		})
+		self['actions'] = ActionMap(['WizardActions', 'ColorActions'], {'ok': self.close, 'back': self.close, 'green': self.TelnetStartStop, 'yellow': self.activateTelnet})
 		self.reboot_at_end = False
+
+	def createSummary(self):
+		return NetworkServicesSummary
 
 	def TelnetStartStop(self):
 		commands = []
-		if fileExists('/etc/init.d/telnetd.busybox'):
+		if fileExists('/bin/busybox.nosuid'):
 			if self.my_telnet_run:
-				commands.append('/etc/init.d/telnetd.busybox stop')
+				commands.append('killall telnetd ; rm -f /usr/sbin/telnetd')
 			else:
-				commands.append('/bin/su -l -c "/etc/init.d/telnetd.busybox start"')
+				commands.append('ln -s /bin/busybox.nosuid /usr/sbin/telnetd')
 			self.Console.eBatch(commands, self.StartStopCallback, debug=True)
 
 	def activateTelnet(self):
 		commands = []
-		if fileExists('/etc/init.d/telnetd.busybox'):
-			if ServiceIsEnabled('telnetd.busybox'):
-				commands.append('update-rc.d -f telnetd.busybox remove')
-			else:
-				commands.append('update-rc.d -f telnetd.busybox defaults')
+		if fileExists('/usr/sbin/telnetd'):
+			commands.append('rm -f /usr/sbin/telnetd')
+		else:
+			commands.append('ln -s /bin/busybox.nosuid /usr/sbin/telnetd')
 		self.Console.eBatch(commands, self.StartStopCallback, debug=True)
 
 	def updateService(self):
@@ -2504,26 +2500,26 @@ class NetworkTelnet(NSCommon,Screen):
 		self['labactive'].setText(_("Disabled"))
 		self.my_telnet_active = False
 		self.my_telnet_run = False
-		if ServiceIsEnabled('telnetd.busybox'):
+		if fileExists('/usr/sbin/telnetd'):
 			self['labactive'].setText(_("Enabled"))
 			self['labactive'].show()
 			self.my_telnet_active = True
 
-		if telnet_process:
-			self.my_telnet_run = True
-		if self.my_telnet_run:
+		if fileExists('/usr/sbin/telnetd'):
 			self['labstop'].hide()
 			self['labactive'].show()
 			self['labrun'].show()
 			self['key_green'].setText(_("Stop"))
+			self.my_telnet_run = True
 			status_summary = self['lab2'].text + ' ' + self['labrun'].text
 		else:
 			self['labrun'].hide()
 			self['labstop'].show()
 			self['labactive'].show()
 			self['key_green'].setText(_("Start"))
+			self.my_telnet_run = False
 			status_summary = self['lab2'].text + ' ' + self['labstop'].text
-		title = _("Telnet Setup")
+		title = _("Telnet setup")
 		autostartstatus_summary = self['lab1'].text + ' ' + self['labactive'].text
 
 		for cb in self.onChangedEntry:
