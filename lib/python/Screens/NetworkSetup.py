@@ -2441,7 +2441,7 @@ class NetworkSambaLog(Screen):
 			remove('/tmp/tmp.log')
 		self['infotext'].setText(strview)
 
-class NetworkTelnet(NSCommon,Screen):
+class NetworkTelnet(Screen):
 	def __init__(self, session, menu_path=""):
 		Screen.__init__(self, session)
 		screentitle = _("Telnet")
@@ -2468,29 +2468,31 @@ class NetworkTelnet(NSCommon,Screen):
 		self.Console = Console()
 		self.my_telnet_active = False
 		self.my_telnet_run = False
-		self['actions'] = ActionMap(['WizardActions', 'ColorActions'],
-		{
-			'ok': self.close,
-			'back': self.close,
-			'green': self.TelnetStartStop,
-			'yellow': self.activateTelnet
-		})
-		self.reboot_at_end = False
+		self['actions'] = ActionMap(['WizardActions', 'ColorActions'], {'ok': self.close, 'back': self.close, 'green': self.TelnetStartStop, 'yellow': self.activateTelnet})
+
+	def createSummary(self):
+		return NetworkServicesSummary
 
 	def TelnetStartStop(self):
 		commands = []
-		if self.my_telnet_run:
-			commands.append("/etc/init.d/telnetd.busybox stop")
-		else:
-			commands.append("/etc/init.d/telnetd.busybox start")
+		if fileExists('/etc/init.d/telnetd.busybox'):
+			if self.my_telnet_run:
+				commands.append('/etc/init.d/telnetd.busybox stop')
+			else:
+				commands.append('/etc/init.d/telnetd.busybox start')
 		self.Console.eBatch(commands, self.StartStopCallback, debug=True)
+
+	def StartStopCallback(self, result = None, retval = None, extra_args = None):
+		time.sleep(3)
+		self.updateService()
 
 	def activateTelnet(self):
 		commands = []
-		if ServiceIsEnabled('telnetd.busybox'):
-			commands.append("update-rc.d -f telnetd.busybox remove")
-		else:
-			commands.append("update-rc.d -f telnetd.busybox defaults")
+		if fileExists('/etc/init.d/telnetd.busybox'):
+			if fileExists('/etc/rc2.d/S20telnetd.busybox'):
+				commands.append('update-rc.d -f telnetd.busybox remove')
+			else:
+				commands.append('update-rc.d -f telnetd.busybox defaults')
 		self.Console.eBatch(commands, self.StartStopCallback, debug=True)
 
 	def updateService(self):
@@ -2501,12 +2503,12 @@ class NetworkTelnet(NSCommon,Screen):
 		self['labstop'].hide()
 		self['labactive'].setText(_("Disabled"))
 		self.my_telnet_active = False
-		if ServiceIsEnabled('telnetd.busybox'):
+		self.my_telnet_run = False
+		if fileExists('/etc/rc2.d/S20telnetd.busybox'):
 			self['labactive'].setText(_("Enabled"))
 			self['labactive'].show()
 			self.my_telnet_active = True
 
-		self.my_telnet_run = False
 		if telnet_process:
 			self.my_telnet_run = True
 		if self.my_telnet_run:
