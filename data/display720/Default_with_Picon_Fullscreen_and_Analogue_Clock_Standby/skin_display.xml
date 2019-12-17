@@ -67,5 +67,5 @@
 		<panel name="AnalogueClock" />
 	</screen>
 		
-	<include filename="/usr/share/enigma2/display/skin_display_templates.xml"/>
+	<include filename="/usr/share/enigma2/display/skin_default/skin_display_templates.xml"/>
 </skin>
