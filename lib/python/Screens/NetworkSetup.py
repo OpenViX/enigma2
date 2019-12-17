@@ -2485,7 +2485,7 @@ class NetworkTelnet(NSCommon,Screen):
 	def activateTelnet(self):
 		commands = []
 		if fileExists('/etc/init.d/telnetd.busybox'):
-			if fileExists('/etc/rc2.d/S20telnetd.busybox'):
+			if ServiceIsEnabled('telnetd.busybox'):
 				commands.append('update-rc.d -f telnetd.busybox remove')
 			else:
 				commands.append('update-rc.d -f telnetd.busybox defaults')
@@ -2500,7 +2500,7 @@ class NetworkTelnet(NSCommon,Screen):
 		self['labactive'].setText(_("Disabled"))
 		self.my_telnet_active = False
 		self.my_telnet_run = False
-		if fileExists('/etc/rc2.d/S20telnetd.busybox'):
+		if ServiceIsEnabled('telnetd.busybox'):
 			self['labactive'].setText(_("Enabled"))
 			self['labactive'].show()
 			self.my_telnet_active = True
