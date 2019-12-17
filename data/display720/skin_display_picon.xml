@@ -100,5 +100,5 @@
 		</widget>
 	</screen>
 		
-	<include filename="/usr/share/enigma2/display/skin_display_templates.xml"/>
+	<include filename="skin_display_templates.xml"/>
 </skin>
