@@ -1,6 +1,6 @@
 # for localized messages
 from boxbranding import getBoxType, getImageType, getImageDistro, getImageVersion, getImageBuild, getImageDevBuild, getMachineBrand, getMachineName
-from os import path, stat, mkdir, listdir, remove, statvfs, chmod, walk
+from os import path, stat, mkdir, listdir, remove, statvfs, chmod
 from time import localtime, time, strftime, mktime
 from datetime import date, datetime
 import tarfile, glob
@@ -597,16 +597,18 @@ class VIXBackupManager(Screen):
 
 		if path.exists('/tmp/3rdPartyPlugins') and self.kernelcheck:
 			self.pluginslist2 = []
+			self.plugfiles = []
+			self.thirdpartyPluginsLocation = " "
 			if config.backupmanager.xtraplugindir.value:
 				self.thirdpartyPluginsLocation = config.backupmanager.xtraplugindir.value
 				self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace(' ', '%20')
+				self.plugfiles = self.thirdpartyPluginsLocation.split('/',3)
 			elif path.exists('/tmp/3rdPartyPluginsLocation'):
 				self.thirdpartyPluginsLocation = open('/tmp/3rdPartyPluginsLocation', 'r').readlines()
 				self.thirdpartyPluginsLocation = "".join(self.thirdpartyPluginsLocation)
 				self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace('\n', '')
 				self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace(' ', '%20')
-			else:
-				self.thirdpartyPluginsLocation = " "
+				self.plugfiles = self.thirdpartyPluginsLocation.split('/',3)
 			tmppluginslist2 = open('/tmp/3rdPartyPlugins', 'r').readlines()
 			available = None
 			for line in tmppluginslist2:
@@ -617,15 +619,21 @@ class VIXBackupManager(Screen):
 						if path.exists(self.thirdpartyPluginsLocation):
 							available = listdir(self.thirdpartyPluginsLocation)
 						else:
-							for root, subFolders, files in walk('/media'):
-								for folder in subFolders:
-									# 									print "%s has subdirectory %s" % (root, folder)
-									if folder and folder == path.split(self.thirdpartyPluginsLocation[:-1])[-1]:
-										self.thirdpartyPluginsLocation = path.join(root, folder)
-										self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace(' ', '%20')
-										available = listdir(self.thirdpartyPluginsLocation)
-										# 										print 'TRUE',self.thirdpartyPluginsLocation
-										break
+							devmounts = []
+							files = []
+							self.plugfile = self.plugfiles[3]
+							for dir in ["/media/%s/%s" %(media, self.plugfile)  for media in listdir("/media/") if path.isdir(path.join("/media/", media))]:
+								if media != "autofs" or "net":
+									devmounts.append(dir)
+							if len(devmounts):
+								for x in devmounts:
+									if path.exists(x):
+										self.thirdpartyPluginsLocation = x
+										try:
+											available = listdir(self.thirdpartyPluginsLocation)
+											break
+										except:
+											continue
 						if available:
 							for file in available:
 								if file:

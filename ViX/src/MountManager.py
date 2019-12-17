@@ -1,6 +1,6 @@
 # for localized messages
 from boxbranding import getMachineBrand, getMachineName, getMachineBuild
-from os import system, rename, path, mkdir, remove
+from os import system, rename, path, mkdir, remove, statvfs
 from time import sleep
 import re
 
@@ -17,7 +17,6 @@ from Components.config import config, getConfigListEntry, ConfigSelection, NoSav
 from Components.Console import Console
 from Components.Sources.List import List
 from Components.Sources.StaticText import StaticText
-from Components.Harddisk import Harddisk
 from Components.SystemInfo import SystemInfo
 from Tools.LoadPixmap import LoadPixmap
 from Tools.Directories import SCOPE_ACTIVE_SKIN, resolveFilename, pathExists
@@ -213,7 +212,9 @@ class VIXDevicesPanel(Screen):
 			# 		rw = _("None")
 			# 		break
 		f.close()
-		size = Harddisk(device).diskSize()
+		stat = statvfs(d1)
+		cap = int(stat.f_blocks * stat.f_bsize)
+		size = cap / 1000 / 1000
 
 		if ((float(size) / 1024) / 1024) >= 1:
 			des = _("Size: ") + str(round(((float(size) / 1024) / 1024), 2)) + _("TB")
@@ -445,8 +446,9 @@ class VIXDevicePanelConf(Screen, ConfigListScreen):
 				dtype = parts[2]
 				break
 		f.close()
-
-		size = Harddisk(device).diskSize()
+		stat = statvfs(d1)
+		cap = int(stat.f_blocks * stat.f_bsize)
+		size = cap / 1000 / 1000
 		if ((float(size) / 1024) / 1024) >= 1:
 			des = _("Size: ") + str(round(((float(size) / 1024) / 1024), 2)) + _("TB")
 		elif (size / 1024) >= 1:

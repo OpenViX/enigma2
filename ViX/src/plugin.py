@@ -5,7 +5,6 @@ from boxbranding import getBoxType, getImageDistro
 from . import _
 from Plugins.Plugin import PluginDescriptor
 from Components.config import config, ConfigBoolean, configfile
-from Components.Harddisk import harddiskmanager
 from BackupManager import BackupManagerautostart
 from ImageManager import ImageManagerautostart
 from SwapManager import SwapAutostart
@@ -35,16 +34,13 @@ def setLanguageFromBackup(backupfile):
 
 def checkConfigBackup():
 	try:
-		devices = [(r.description, r.mountpoint) for r in harddiskmanager.getMountedPartitions(onlyhotplug=False)]
+		devmounts = []
 		list = []
 		files = []
-		defaultprefix = getImageDistro()[4:]
-		for x in devices:
-			if x[1] == '/':
-				devices.remove(x)
-		if len(devices):
-			for x in devices:
-				devpath = path.join(x[1], 'backup')
+		for dir in ["/media/%s/backup" % media for media in listdir("/media/") if path.isdir(path.join("/media/", media))]:
+			devmounts.append(dir)
+		if len(devmounts):
+			for devpath in devmounts:
 				if path.exists(devpath):
 					try:
 						files = listdir(devpath)
