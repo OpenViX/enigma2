@@ -182,13 +182,13 @@ class PositionerSetup(Screen):
 		self.isMoving = False
 		self.stopOnLock = False
 
-		self.red = Button("")
+		self.red = StaticText("")
 		self["key_red"] = self.red
-		self.green = Button("")
+		self.green = StaticText("")
 		self["key_green"] = self.green
-		self.yellow = Button("")
+		self.yellow = StaticText("")
 		self["key_yellow"] = self.yellow
-		self.blue = Button("")
+		self.blue = StaticText("")
 		self["key_blue"] = self.blue
 
 		self.list = []
