@@ -5781,37 +5781,37 @@ msgstr ""
 "Pulsa OK para continuar."
 
 msgid "Please set up tuner A"
-msgstr "Configura el sintonizador A"
+msgstr "Configura el sintonizador A pulsa 'OK' cuando hayas acabado"
 
 msgid "Please set up tuner B"
-msgstr "Configura el sintonizador B"
+msgstr "Configura el sintonizador B pulsa 'OK' cuando hayas acabado"
 
 msgid "Please set up tuner C"
-msgstr "Configura el sintonizador C"
+msgstr "Configura el sintonizador C pulsa 'OK' cuando hayas acabado"
 
 msgid "Please set up tuner D"
-msgstr "Configura el sintonizador D"
+msgstr "Configura el sintonizador D pulsa 'OK' cuando hayas acabado"
 
 msgid "Please set up tuner E"
-msgstr "Por favor, configure el sintonizador E"
+msgstr "Por favor, configure el sintonizador E pulsa 'OK' cuando hayas acabado"
 
 msgid "Please set up tuner F"
-msgstr "Por favor, configure el sintonizador F"
+msgstr "Por favor, configure el sintonizador F pulsa 'OK' cuando hayas acabado"
 
 msgid "Please set up tuner G"
-msgstr "Por favor, configure el sintonizador G"
+msgstr "Por favor, configure el sintonizador G pulsa 'OK' cuando hayas acabado"
 
 msgid "Please set up tuner H"
-msgstr "Por favor, configure el sintonizador H"
+msgstr "Por favor, configure el sintonizador H pulsa 'OK' cuando hayas acabado"
 
 msgid "Please set up tuner I"
-msgstr "Por favor, configure el sintonizador I"
+msgstr "Por favor, configure el sintonizador I pulsa 'OK' cuando hayas acabado"
 
 msgid "Please set up tuner J"
-msgstr "Por favor, configure el sintonizador J"
+msgstr "Por favor, configure el sintonizador J pulsa 'OK' cuando hayas acabado"
 
 msgid "Please set up tuner K"
-msgstr "Por favor, configure el sintonizador K"
+msgstr "Por favor, configure el sintonizador K pulsa 'OK' cuando hayas acabado"
 
 msgid ""
 "Please use the direction keys to move the PiP window.\n"
