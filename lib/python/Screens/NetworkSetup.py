@@ -243,9 +243,9 @@ class NetworkAdapterSelection(Screen,HelpableScreen):
 		num_configured_if = len(iNetwork.getConfiguredAdapters())
 		if num_configured_if >= 2:
 			if default is True:
-				defaultpng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/button_blue.png"))
+				defaultpng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/button_green.png"))
 			elif default is False:
-				defaultpng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/button_blue_off.png"))
+				defaultpng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/button_green_off.png"))
 		if active is True:
 			activepng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, "icons/lock_on.png"))
 		elif active is False:
