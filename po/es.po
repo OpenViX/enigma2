@@ -12795,6 +12795,15 @@ msgstr ""
 "Su receptor se reiniciará después de la eliminación del servicio\n"
 "Quieres eliminar el servicio ahora?"
 
+msgid "Please set your time options"
+msgstr "Por favor configure sus opciones de horario"
+
+msgid "Picons: Show in channel list"
+msgstr "Picons: Mostrarlos en lista de Canales"
+
+msgid "Please set up the following common options"
+msgstr "Configura las siguientes opciones"
+
 #~ msgid "Select locale"
 #~ msgstr "Seleccionar lugar"
 
