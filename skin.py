@@ -117,10 +117,10 @@ if not name or not res:
 	addSkin(USER_SKIN, scope=SCOPE_CONFIG)
 
 # Add an optional adjustment skin as some boxes lie about their dimensions.
-addSkin(BOX_SKIN)
+addSkin(BOX_SKIN, scope=SCOPE_SKIN)
 
 # Add an optional discrete second infobar skin.
-addSkin(SECOND_INFOBAR_SKIN)
+addSkin(SECOND_INFOBAR_SKIN, scope=SCOPE_SKIN)
 
 # Add the front panel / display / lcd skin.
 if not addSkin(config.skin.display_skin.value, scope=SCOPE_CURRENT_LCDSKIN):
@@ -131,20 +131,20 @@ if not addSkin(config.skin.display_skin.value, scope=SCOPE_CURRENT_LCDSKIN):
 		addSkin(DEFAULT_DISPLAY_SKIN, scope=SCOPE_CURRENT_LCDSKIN)
 
 # Add the subtitle skin.
-addSkin(SUBTITLE_SKIN)
+addSkin(SUBTITLE_SKIN, scope=SCOPE_SKIN)
 
 # Add the main GUI skin.
-if not addSkin(config.skin.primary_skin.value):
+if not addSkin(config.skin.primary_skin.value, scope=SCOPE_CURRENT_SKIN):
 	print "[Skin] Error: Adding current GUI skin has failed!"
 	if config.skin.primary_skin.value != DEFAULT_SKIN:
 		print "[Skin] Current GUI skin reset to default GUI skin '%s'!" % DEFAULT_SKIN
 		config.skin.primary_skin.value = DEFAULT_SKIN
-		addSkin(DEFAULT_SKIN)
+		addSkin(DEFAULT_SKIN, scope=SCOPE_CURRENT_SKIN)
 
 # Add the emergency skin.  This skin should provide enough functionality
 # to enable basic GUI functions to work.
 if config.skin.primary_skin.value != EMERGENCY_SKIN:
-	addSkin(EMERGENCY_SKIN)
+	addSkin(EMERGENCY_SKIN, scope=SCOPE_CURRENT_SKIN)
 
 profile("LoadSkinDefaultDone")
 
@@ -690,11 +690,11 @@ def loadSingleSkinData(desktop, domSkin, pathSkin):
 	for skininclude in domSkin.findall("include"):
 		filename = skininclude.attrib.get("filename")
 		if filename:
-			skinfile = resolveFilename(SCOPE_CURRENT_SKIN, filename, path_prefix=pathSkin)
-			if not fileExists(skinfile):
-				skinfile = resolveFilename(SCOPE_SKIN_IMAGE, filename, path_prefix=pathSkin)
-			if fileExists(skinfile):
-				print "[Skin] Loading included file '%s'." % skinfile
+			file = resolveFilename(SCOPE_CURRENT_SKIN, filename, path_prefix=pathSkin)
+			if not fileExists(file):
+				file = resolveFilename(SCOPE_SKIN_IMAGE, filename, path_prefix=pathSkin)
+			if fileExists(file):
+				print "[Skin] Loading included file '%s'." % file
 				loadSkin(skinfile)
 	for c in domSkin.findall("switchpixmap"):
 		for pixmap in c.findall("pixmap"):
