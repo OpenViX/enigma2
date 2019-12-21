@@ -91,7 +91,7 @@ def addSkin(name, scope=SCOPE_SKIN):
 				content = file.readlines()
 				file.close()
 				line, column = e.position
-				print "[Skin] XML Parse Error: '%s' in '%s'" % (e, filename)
+				print "[Skin] XML Parse Error: '%s' in '%s'!" % (e, filename)
 				data = content[line - 1].replace("\t", " ").rstrip()
 				print "[Skin] XML Parse Error: '%s'" % data
 				print "[Skin] XML Parse Error: '%s^%s'" % ("-" * column, " " * (len(data) - column - 1))
@@ -258,7 +258,7 @@ def parseFont(s, scale=((1, 1), (1, 1))):
 	except KeyError:
 		if name not in fontNames:
 			f = fonts["Body"]
-			print "[Skin] Error: Font '%s' (in '%s') is not defined.  Using 'Body' font ('%s') instead" % (name, s, f[0])
+			print "[Skin] Error: Font '%s' (in '%s') is not defined!  Using 'Body' font ('%s') instead." % (name, s, f[0])
 			name = f[0]
 			size = f[1] if size is None else size
 	return gFont(name, int(size) * scale[0][0] / scale[0][1])
@@ -697,6 +697,8 @@ def loadSingleSkinData(desktop, domSkin, pathSkin, scope=SCOPE_CURRENT_SKIN):
 			if fileExists(filename):
 				print "[Skin] Loading included file '%s'." % filename
 				loadSkin(filename)
+			else:
+				print "[Skin] Error: Included file '%s' not found!" % filename
 	for c in domSkin.findall("switchpixmap"):
 		for pixmap in c.findall("pixmap"):
 			name = pixmap.attrib.get("name")
