@@ -80,7 +80,7 @@ def addSkin(name, scope=SCOPE_SKIN):
 		if os.path.isfile(filename):
 			try:
 				file = open(filename, "r")  # This open gets around a possible file handle leak in Python's XML parser.
-				domSkins.append(("%s/" % os.path.dirname(filename), xml.etree.cElementTree.parse(file).getroot()))
+				domSkins.append((scope, "%s/" % os.path.dirname(filename), xml.etree.cElementTree.parse(file).getroot()))
 				file.close()
 				print "[Skin] Skin '%s' added successfully." % filename
 				return True
@@ -593,7 +593,7 @@ def applySingleAttribute(guiObject, desktop, attrib, value, scale=((1, 1), (1, 1
 def applyAllAttributes(guiObject, desktop, attributes, scale):
 	AttributeParser(guiObject, desktop, scale).applyAll(attributes)
 
-def loadSingleSkinData(desktop, domSkin, pathSkin):
+def loadSingleSkinData(desktop, domSkin, pathSkin, scope=SCOPE_CURRENT_SKIN):
 	"""Loads skin data like colors, windowstyle etc."""
 	assert domSkin.tag == "skin", "root element in skin must be 'skin'!"
 	global colorNames, fontNames, fonts, menus, parameters, setups, switchPixmap
@@ -690,12 +690,13 @@ def loadSingleSkinData(desktop, domSkin, pathSkin):
 	for skininclude in domSkin.findall("include"):
 		filename = skininclude.attrib.get("filename")
 		if filename:
-			file = resolveFilename(SCOPE_CURRENT_SKIN, filename, path_prefix=pathSkin)
-			if not fileExists(file):
-				file = resolveFilename(SCOPE_SKIN_IMAGE, filename, path_prefix=pathSkin)
-			if fileExists(file):
-				print "[Skin] Loading included file '%s'." % file
-				loadSkin(skinfile)
+			# filename = resolveFilename(SCOPE_CURRENT_SKIN, filename, path_prefix=pathSkin)
+			# if not fileExists(filename):
+			# 	filename = resolveFilename(SCOPE_SKIN_IMAGE, filename, path_prefix=pathSkin)
+			filename = resolveFilename(scope, filename, path_prefix=pathSkin)
+			if fileExists(filename):
+				print "[Skin] Loading included file '%s'." % filename
+				loadSkin(filename)
 	for c in domSkin.findall("switchpixmap"):
 		for pixmap in c.findall("pixmap"):
 			name = pixmap.attrib.get("name")
@@ -704,7 +705,8 @@ def loadSingleSkinData(desktop, domSkin, pathSkin):
 			filename = pixmap.attrib.get("filename")
 			if not filename:
 				raise SkinError("Pixmap needs filename attribute")
-			resolved = resolveFilename(SCOPE_CURRENT_SKIN, filename, path_prefix=pathSkin)
+			# resolved = resolveFilename(SCOPE_CURRENT_SKIN, filename, path_prefix=pathSkin)
+			resolved = resolveFilename(scope, filename, path_prefix=pathSkin)
 			if fileExists(resolved):
 				switchPixmap[name] = LoadPixmap(resolved, cached=True)
 			else:
@@ -733,10 +735,10 @@ def loadSingleSkinData(desktop, domSkin, pathSkin):
 				render = int(render)
 			else:
 				render = 0
-			resolved = resolveFilename(SCOPE_FONTS, filename, path_prefix=pathSkin)
-			addFont(resolved, name, scale, isReplacement, render)
+			filename = resolveFilename(SCOPE_FONTS, filename, path_prefix=pathSkin)
+			addFont(filename, name, scale, isReplacement, render)
 			fontNames.append(name)
-			# print "[Skin] Add font: Font path='%s', name='%s', scale=%d, isReplacement=%s, render=%d." % (resolved, name, scale, isReplacement, render)
+			# print "[Skin] Add font: Font path='%s', name='%s', scale=%d, isReplacement=%s, render=%d." % (filename, name, scale, isReplacement, render)
 		fallbackFont = resolveFilename(SCOPE_FONTS, "fallback.font", path_prefix=pathSkin)
 		if fileExists(fallbackFont):
 			addFont(fallbackFont, "Fallback", 100, -1, 0)
@@ -806,10 +808,11 @@ def loadSingleSkinData(desktop, domSkin, pathSkin):
 				filename = pixmap.attrib.get("filename")
 				if filename and bpName:
 					# DEBUG: Why does a SCOPE_SKIN_IMAGE image replace the GUI image?!?!?!
-					pngfile = resolveFilename(SCOPE_CURRENT_SKIN, filename, path_prefix=pathSkin)
-					if fileExists(resolveFilename(SCOPE_SKIN_IMAGE, filename, path_prefix=pathSkin)):
-						pngfile = resolveFilename(SCOPE_SKIN_IMAGE, filename, path_prefix=pathSkin)
-					png = loadPixmap(pngfile, desktop)
+					# pngfile = resolveFilename(SCOPE_CURRENT_SKIN, filename, path_prefix=pathSkin)
+					# if fileExists(resolveFilename(SCOPE_SKIN_IMAGE, filename, path_prefix=pathSkin)):
+					# 	pngfile = resolveFilename(SCOPE_SKIN_IMAGE, filename, path_prefix=pathSkin)
+					filename = resolveFilename(scope, filename, path_prefix=pathSkin)
+					png = loadPixmap(filename, desktop)
 					style.setPixmap(eWindowStyleSkinned.__dict__[bsName], eWindowStyleSkinned.__dict__[bpName], png)
 				# print "[Skin] WindowStyle borderset name, filename:", bpName, filename
 		for color in windowstyle.findall("color"):
@@ -848,9 +851,9 @@ def loadSingleSkinData(desktop, domSkin, pathSkin):
 
 # Now a utility for plugins to add skin data to the screens.
 #
-def loadSkin(name, scope=SCOPE_SKIN):
+def loadSkin(filename, scope=SCOPE_SKIN):
 	global domScreens, DISPLAY_SKIN_ID
-	filename = resolveFilename(scope, name)
+	filename = resolveFilename(scope, filename)
 	if fileExists(filename):
 		path = "%s/" % os.path.dirname(filename)
 		file = open(filename, "r")  # This open gets around a possible file handle leak in Python's XML parser.
@@ -881,8 +884,8 @@ def loadSkinData(desktop):
 	global domSkins
 	skins = domSkins[:]
 	skins.reverse()
-	for (pathSkin, domSkin) in skins:
-		loadSingleSkinData(desktop, domSkin, pathSkin)
+	for (scope, pathSkin, domSkin) in skins:
+		loadSingleSkinData(desktop, domSkin, pathSkin, scope=scope)
 		for elem in domSkin:
 			if elem.tag == "screen":
 				name = elem.attrib.get("name", None)
