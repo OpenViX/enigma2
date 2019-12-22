@@ -5,7 +5,7 @@ from enigma import ePicLoad, getDesktop
 from os import listdir
 from os.path import dirname, exists, isdir, join as pathjoin
 
-from skin import DEFAULT_SKIN, DEFAULT_DISPLAY_SKIN, EMERGENCY_SKIN, dom_screens as domScreens
+from skin import DEFAULT_SKIN, DEFAULT_DISPLAY_SKIN, EMERGENCY_SKIN, domScreens
 from Components.ActionMap import HelpableNumberActionMap
 from Components.config import config
 from Components.Pixmap import Pixmap
