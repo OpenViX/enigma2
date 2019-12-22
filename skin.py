@@ -321,10 +321,10 @@ def collectAttributes(skinAttributes, node, context, skin_path_prefix=None, igno
 
 def morphRcImagePath(value):
 	if rc_model.rcIsDefault() is False:
-		if ("rc.png" or "oldrc.png") in value:
-			value = rc_model.getRcLocation() + "rc.png"
 		# if value == "/usr/share/enigma2/skin_default/rc.png" or value == "/usr/share/enigma2/skin_default/rcold.png":  # OpenPLi version.
 		# 	value = rc_model.getRcImg()
+		if ("rc.png" or "oldrc.png") in value:
+			value = rc_model.getRcLocation() + "rc.png"
 	return value
 
 def loadPixmap(path, desktop):
@@ -596,7 +596,7 @@ def applyAllAttributes(guiObject, desktop, attributes, scale):
 def loadSingleSkinData(desktop, domSkin, pathSkin, scope=SCOPE_CURRENT_SKIN):
 	"""Loads skin data like colors, windowstyle etc."""
 	assert domSkin.tag == "skin", "root element in skin must be 'skin'!"
-	global colorNames, fontNames, fonts, menus, parameters, setups, switchPixmap
+	global colorNames, fontNames, fonts, parameters, switchPixmap
 	for c in domSkin.findall("output"):
 		id = c.attrib.get("id")
 		if id:
@@ -763,7 +763,7 @@ def loadSingleSkinData(desktop, domSkin, pathSkin, scope=SCOPE_CURRENT_SKIN):
 				parameters[name] = "," in value and map(parseParameter, value.split(",")) or parseParameter(value)
 			except Exception, ex:
 				print "[Skin] Bad parameter:", ex
-	for c in skin.findall("subtitles"):
+	for c in domSkin.findall("subtitles"):
 		from enigma import eSubtitleWidget
 		scale = ((1, 1), (1, 1))
 		for substyle in c.findall("sub"):
@@ -813,8 +813,7 @@ def loadSingleSkinData(desktop, domSkin, pathSkin, scope=SCOPE_CURRENT_SKIN):
 					# pngfile = resolveFilename(SCOPE_CURRENT_SKIN, filename, path_prefix=pathSkin)
 					# if fileExists(resolveFilename(SCOPE_SKIN_IMAGE, filename, path_prefix=pathSkin)):
 					# 	pngfile = resolveFilename(SCOPE_SKIN_IMAGE, filename, path_prefix=pathSkin)
-					filename = resolveFilename(scope, filename, path_prefix=pathSkin)
-					png = loadPixmap(filename, desktop)
+					png = loadPixmap(resolveFilename(scope, filename, path_prefix=pathSkin), desktop)
 					style.setPixmap(eWindowStyleSkinned.__dict__[bsName], eWindowStyleSkinned.__dict__[bpName], png)
 				# print "[Skin] WindowStyle borderset name, filename:", bpName, filename
 		for color in windowstyle.findall("color"):
