@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-08 09:10+0000\n"
-"PO-Revision-Date: 2019-11-08 16:46+0100\n"
+"POT-Creation-Date: 2019-12-21 11:00+0000\n"
+"PO-Revision-Date: 2019-12-23 14:31+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -1567,6 +1567,9 @@ msgstr "Zender toevoegen aan favorietenlijst"
 
 msgid "Add service to favourites"
 msgstr "Zender toevoegen aan favorieten"
+
+msgid "Add services to this bouquet?"
+msgstr "Zenders toevoegen aan deze favorietenlijst?"
 
 msgid "Add timer"
 msgstr "Timer"
@@ -4847,9 +4850,6 @@ msgstr "Verlaat netwerkadapterinstellingen menu"
 msgid "Exit the wizard"
 msgstr "Wizard afsluiten"
 
-msgid "Exit/OK"
-msgstr "Exit/OK"
-
 msgid "Expert"
 msgstr "Expert"
 
@@ -7477,9 +7477,6 @@ msgstr ""
 "Bestandsgrootte: %sMB\n"
 "Vrije ruimte: %sMB\n"
 "Pad: %s"
-
-msgid "Not mounted"
-msgstr "Niet gemount"
 
 msgid "Not running"
 msgstr "Niet actief"
@@ -10550,9 +10547,6 @@ msgstr "Breedtegraad"
 
 msgid "Site longitude"
 msgstr "Lengtegraad"
-
-msgid "Size: "
-msgstr "Grootte: "
 
 msgid "Skin"
 msgstr "Skin"
@@ -15649,6 +15643,9 @@ msgstr "zapte"
 #~ msgid "Execute"
 #~ msgstr "Uitvoeren"
 
+#~ msgid "Exit/OK"
+#~ msgstr "Exit/OK"
+
 #~ msgid "External (CF)"
 #~ msgstr "Extern (CF)"
 
@@ -15879,6 +15876,9 @@ msgstr "zapte"
 #
 #~ msgid "Not configured"
 #~ msgstr "Niet geconfigureerd"
+
+#~ msgid "Not mounted"
+#~ msgstr "Niet gemount"
 
 #~ msgid "Nothing connected"
 #~ msgstr "Niets aangesloten"
@@ -16162,6 +16162,9 @@ msgstr "zapte"
 
 #~ msgid "SingleEPG settings"
 #~ msgstr "Single EPG instellingen"
+
+#~ msgid "Size: "
+#~ msgstr "Grootte: "
 
 #~ msgid "Skin name:\t%s\n"
 #~ msgstr "Skin naam:\t%s\n"
