@@ -19,7 +19,7 @@ DEFAULT_SKIN = "GigabluePax/skin.xml"
 # DEFAULT_SKIN = SystemInfo["HasFullHDSkinSupport"] and "PLi-FullNightHD/skin.xml" or "PLi-HD/skin.xml"  # On SD hardware PLi-HD will not be available.
 DEFAULT_SD_SKIN = "Magic/skin.xml"
 EMERGENCY_SKIN = "skin.xml"
-DEFAULT_DISPLAY_SKIN = "skin_default/skin_display.xml"
+DEFAULT_DISPLAY_SKIN = "skin_display.xml"
 USER_SKIN = "skin_user.xml"
 USER_SKIN_TEMPLATE = "skin_user_%s.xml"
 BOX_SKIN = "skin_box.xml"  # DEBUG: Is this actually used?
@@ -151,7 +151,7 @@ addSkin(SUBTITLE_SKIN, scope=SCOPE_CURRENT_SKIN)
 
 # Add the front panel / display / lcd skin.
 result = []
-for skin, name in [(config.skin.display_skin.value, "current"), (DEFAULT_SKIN, "default")]:
+for skin, name in [(config.skin.display_skin.value, "current"), (DEFAULT_DISPLAY_SKIN, "default")]:
 	if skin in result:  # Don't try to add a skin that has already failed.
 		continue
 	config.skin.display_skin.value = skin
@@ -329,10 +329,7 @@ def collectAttributes(skinAttributes, node, context, skinPath=None, ignore=(), f
 	for attrib, value in node.items():
 		if attrib not in ignore:
 			if attrib in filenames:
-				if "pointer" in attrib:
-					value = "%s%s%s" % (resolveFilename(SCOPE_CURRENT_SKIN, value.split(":")[0], path_prefix=skinPath), ":", value.split(":")[1])
-				else:
-					value = resolveFilename(SCOPE_CURRENT_SKIN, value, path_prefix=skinPath)
+				value = resolveFilename(SCOPE_CURRENT_SKIN, value, path_prefix=skinPath)
 			# Bit of a hack this, really.  When a window has a flag (e.g. wfNoBorder)
 			# it needs to be set at least before the size is set, in order for the
 			# window dimensions to be calculated correctly in all situations.
@@ -357,8 +354,10 @@ def collectAttributes(skinAttributes, node, context, skinPath=None, ignore=(), f
 
 def morphRcImagePath(value):
 	if rc_model.rcIsDefault() is False:
-		if value == "/usr/share/enigma2/skin_default/rc.png" or value == "/usr/share/enigma2/skin_default/rcold.png":
+		if value in ("/usr/share/enigma2/skin_default/rc.png", "/usr/share/enigma2/skin_default/rcold.png"):  # OpenPLi version.
 			value = rc_model.getRcLocation() + "rc.png"
+		# if ("rc.png" or "oldrc.png") in value:  # OpenViX version.
+		# 	value = "%src.png" % rc_model.getRcLocation()
 	return value
 
 def loadPixmap(path, desktop):
@@ -533,6 +532,24 @@ class AttributeParser:
 
 	def foregroundColorSelected(self, value):
 		self.guiObject.setForegroundColorSelected(parseColor(value))
+
+	def foregroundNotCrypted(self, value):
+		self.guiObject.setForegroundColor(parseColor(value))
+
+	def backgroundNotCrypted(self, value):
+		self.guiObject.setBackgroundColor(parseColor(value))
+
+	def foregroundCrypted(self, value):
+		self.guiObject.setForegroundColor(parseColor(value))
+
+	def backgroundCrypted(self, value):
+		self.guiObject.setBackgroundColor(parseColor(value))
+
+	def foregroundEncrypted(self, value):
+		self.guiObject.setForegroundColor(parseColor(value))
+
+	def backgroundEncrypted(self, value):
+		self.guiObject.setBackgroundColor(parseColor(value))
 
 	def shadowColor(self, value):
 		self.guiObject.setShadowColor(parseColor(value))
