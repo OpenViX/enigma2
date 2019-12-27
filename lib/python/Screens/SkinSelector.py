@@ -143,7 +143,10 @@ class SkinSelector(Screen, HelpableScreen):
 					if skinFile == "skin.xml":
 						with open(skinPath) as chan:
 							resolution = chan.read(65536)
-						resolution = re.search("\<resolution.*?\syres\s*=\s*\"(\d+)\"", resolution).group(1)
+						try:
+							resolution = re.search("\<resolution.*?\syres\s*=\s*\"(\d+)\"", resolution).group(1)
+						except Exception:
+							resolution = ""
 						resolution = resolutions.get(resolution, None)
 						msg = "an unknown" if resolution is None else "a %s" % resolution
 						print "[SkinSelector] Skin '%s' is %s resolution skin." % (skinPath, msg)
