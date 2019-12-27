@@ -126,7 +126,7 @@ addSkin(SUBTITLE_SKIN, scope=SCOPE_CURRENT_SKIN)
 
 # Add the front panel / display / lcd skin.
 result = []
-for skin, name in [(config.skin.display_skin.value, "current"), (DEFAULT_SKIN, "default")]:
+for skin, name in [(config.skin.display_skin.value, "current"), (DEFAULT_DISPLAY_SKIN, "default")]:
 	if skin in result:  # Don't try to add a skin that has already failed.
 		continue
 	config.skin.display_skin.value = skin
@@ -333,10 +333,10 @@ def collectAttributes(skinAttributes, node, context, skinPath=None, ignore=(), f
 
 def morphRcImagePath(value):
 	if rc_model.rcIsDefault() is False:
-		# if value == "/usr/share/enigma2/skin_default/rc.png" or value == "/usr/share/enigma2/skin_default/rcold.png":  # OpenPLi version.
+		# if value in ("/usr/share/enigma2/skin_default/rc.png", "/usr/share/enigma2/skin_default/rcold.png"):  # OpenPLi version.
 		# 	value = rc_model.getRcImg()
-		if ("rc.png" or "oldrc.png") in value:
-			value = rc_model.getRcLocation() + "rc.png"
+		if ("rc.png" or "oldrc.png") in value:  # OpenViX version.
+			value = "%src.png" % rc_model.getRcLocation()
 	return value
 
 def loadPixmap(path, desktop):
@@ -874,9 +874,10 @@ def loadSkin(filename, scope=SCOPE_SKIN):
 								elem.clear()
 								continue
 							if name in domScreens:
-								# Clear old versions, save memory.
-								domScreens[name][0].clear()
-							domScreens[name] = (elem, path)
+								print "[Skin] Warning: Screen '%s' already defined!  Using first definition." % name
+								elem.clear()
+							else:
+								domScreens[name] = (elem, path)
 						else:
 							# Without a name, it's useless!
 							elem.clear()
