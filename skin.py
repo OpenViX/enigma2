@@ -115,14 +115,16 @@ if name:
 if not name or not result:
 	addSkin(USER_SKIN, scope=SCOPE_CURRENT_SKIN)
 
-# Add an optional adjustment skin as some boxes lie about their dimensions.
-addSkin(BOX_SKIN, scope=SCOPE_CURRENT_SKIN)
-
-# Add an optional discrete second infobar skin.
-addSkin(SECOND_INFOBAR_SKIN, scope=SCOPE_CURRENT_SKIN)
-
-# Add the subtitle skin.
-addSkin(SUBTITLE_SKIN, scope=SCOPE_CURRENT_SKIN)
+# Add the main GUI skin.
+result = []
+for skin, name in [(config.skin.primary_skin.value, "current"), (DEFAULT_SKIN, "default"), (EMERGENCY_SKIN, "emergency")]:
+	if skin in result:  # Don't try to add a skin that has already failed.
+		continue
+	config.skin.primary_skin.value = skin
+	if addSkin(config.skin.primary_skin.value, scope=SCOPE_CURRENT_SKIN):
+		break
+	print "[Skin] Error: Adding %s GUI skin '%s' has failed!" % (name, config.skin.primary_skin.value)
+	result.append(skin)
 
 # Add the front panel / display / lcd skin.
 result = []
@@ -135,16 +137,14 @@ for skin, name in [(config.skin.display_skin.value, "current"), (DEFAULT_DISPLAY
 	print "[Skin] Error: Adding %s display skin '%s' has failed!" % (name, config.skin.display_skin.value)
 	result.append(skin)
 
-# Add the main GUI skin.
-result = []
-for skin, name in [(config.skin.primary_skin.value, "current"), (DEFAULT_SKIN, "default"), (EMERGENCY_SKIN, "emergency")]:
-	if skin in result:  # Don't try to add a skin that has already failed.
-		continue
-	config.skin.primary_skin.value = skin
-	if addSkin(config.skin.primary_skin.value, scope=SCOPE_CURRENT_SKIN):
-		break
-	print "[Skin] Error: Adding %s GUI skin '%s' has failed!" % (name, config.skin.primary_skin.value)
-	result.append(skin)
+# Add an optional adjustment skin as some boxes lie about their dimensions.
+# addSkin(BOX_SKIN, scope=SCOPE_CURRENT_SKIN)
+
+# Add an optional discrete second infobar skin.
+# addSkin(SECOND_INFOBAR_SKIN, scope=SCOPE_CURRENT_SKIN)
+
+# Add the subtitle skin.
+addSkin(SUBTITLE_SKIN, scope=SCOPE_CURRENT_SKIN)
 
 # Add the emergency skin.  This skin should provide enough functionality
 # to enable basic GUI functions to work.
@@ -864,26 +864,12 @@ def loadSkin(filename, scope=SCOPE_SKIN):
 			try:
 				path = "%s/" % os.path.dirname(filename)
 				file = open(filename, "r")  # This open gets around a possible file handle leak in Python's XML parser.
-				for elem in xml.etree.cElementTree.parse(file).getroot():
-					if elem.tag == "screen":
-						name = elem.attrib.get("name", None)
-						if name:
-							sid = elem.attrib.get("id", None)
-							if sid and (sid != DISPLAY_SKIN_ID):
-								# Not for this display
-								elem.clear()
-								continue
-							if name in domScreens:
-								print "[Skin] Warning: Screen '%s' already defined!  Using first definition." % name
-								elem.clear()
-							else:
-								domScreens[name] = (elem, path)
-						else:
-							# Without a name, it's useless!
-							elem.clear()
+				for element in xml.etree.cElementTree.parse(file).getroot():
+					name = evaluateElement(element, DISPLAY_SKIN_ID)
+					if name is None:
+						element.clear()
 					else:
-						# Non-screen element, no need for it any longer.
-						elem.clear()
+						domScreens[name] = (element, path)
 				file.close()
 			except OSError, e:
 				print "[Skin] Error %d: Opening file '%s'! (%s)" % (e.errno, filename, os.strerror(e.errno))
@@ -912,28 +898,23 @@ def loadSkinData(desktop):
 	skins.reverse()
 	for (scope, pathSkin, domSkin) in skins:
 		loadSingleSkinData(desktop, domSkin, pathSkin, scope=scope)
-		for elem in domSkin:
-			if elem.tag == "screen":
-				name = elem.attrib.get("name", None)
-				if name:
-					sid = elem.attrib.get("id", None)
-					if sid and (sid != DISPLAY_SKIN_ID):
-						# Not for this display.
-						elem.clear()
-						continue
-					if name in domScreens:
-						# Kill old versions, save memory.
-						domScreens[name][0].clear()
-					domScreens[name] = (elem, pathSkin)
-				else:
-					# Without a name, it's useless!
-					elem.clear()
+		for element in domSkin:
+			name = evaluateElement(element, DISPLAY_SKIN_ID)
+			if name is None:
+				element.clear()
 			else:
-				# Non-screen element, no need for it any longer.
-				elem.clear()
+				domScreens[name] = (element, pathSkin)
 	# No longer needed, we know where the screens are now.
 	del domSkins
 
+def evaluateElement(element, screenID):
+	if element.tag == "screen":  # If non-screen element, no need for it any longer.
+		name = element.attrib.get("name", None)
+		if name:  # Without a name, it's useless!
+			sid = element.attrib.get("id", None)
+			if not sid or (sid == screenID):  # If for this display.
+				return name
+	return None
 
 class additionalWidget:
 	def __init__(self):
