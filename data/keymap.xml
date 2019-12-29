@@ -269,10 +269,10 @@
 		<key id="KEY_OPTION" mapto="showNetworkSetup" flags="mr"/>
 		<key id="KEY_F5" mapto="showRFmod" flags="b"/>
 		<key id="KEY_F5" mapto="toggleAspectRatio" flags="l"/>
-		<key id="KEY_DOWN" mapto="downRepeated" flags="m"/>
-		<key id="KEY_UP" mapto="upRepeated" flags="m"/>
-		<key id="KEY_RIGHT" mapto="rightRepeated" flags="m"/>
-		<key id="KEY_LEFT" mapto="leftRepeated" flags="m"/>
+		<!--key id="KEY_DOWN" mapto="downRepeated" flags="m"/-->
+		<!--key id="KEY_UP" mapto="upRepeated" flags="m"/-->
+		<!--key id="KEY_RIGHT" mapto="rightRepeated" flags="m"/-->
+		<!--key id="KEY_LEFT" mapto="leftRepeated" flags="m"/-->
 	</map>
 
 	<map context="MenuActions">
