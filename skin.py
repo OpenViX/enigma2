@@ -705,7 +705,7 @@ def loadSingleSkinData(desktop, domSkin, pathSkin, scope=SCOPE_CURRENT_SKIN):
 			filename = resolveFilename(scope, filename, path_prefix=pathSkin)
 			if fileExists(filename):
 				print "[Skin] Loading included file '%s'." % filename
-				loadSkin(filename)
+				loadSkin(filename, desktop=desktop, scope=scope)
 			else:
 				print "[Skin] Error: Included file '%s' not found!" % filename
 	for c in domSkin.findall("switchpixmap"):
@@ -856,7 +856,7 @@ def loadSingleSkinData(desktop, domSkin, pathSkin, scope=SCOPE_CURRENT_SKIN):
 
 # Now a utility for plugins to add skin data to the screens.
 #
-def loadSkin(filename, scope=SCOPE_SKIN):
+def loadSkin(filename, desktop=None, scope=SCOPE_SKIN):
 	global domScreens
 	filename = resolveFilename(scope, filename)
 	if fileExists(filename):
@@ -864,7 +864,10 @@ def loadSkin(filename, scope=SCOPE_SKIN):
 			try:
 				path = "%s/" % os.path.dirname(filename)
 				file = open(filename, "r")  # This open gets around a possible file handle leak in Python's XML parser.
-				for element in xml.etree.cElementTree.parse(file).getroot():
+				domSkin = xml.etree.cElementTree.parse(file).getroot()
+				if desktop is not None:
+					loadSingleSkinData(desktop, domSkin, filename, scope=scope)
+				for element in domSkin:
 					name = evaluateElement(element, DISPLAY_SKIN_ID)
 					if name is None:
 						element.clear()
