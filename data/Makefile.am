@@ -19,7 +19,7 @@ dist_pkgdata_DATA = \
 	skin_default.xml \
 	skin_subtitles.xml \
 	skin.xml \
-	skin_$(DISPLAYTYPE).xml \
+	skin_display.xml \
 	freesat.t1 \
 	freesat.t2 \
 	iso-639-3.pck \
@@ -54,8 +54,10 @@ SUBDIRS += displaytext
 endif
 
 # Use box-specific XML if it exists, otherwise get the default
-skin_$(DISPLAYTYPE).xml: $(srcdir)/skin_$(DISPLAYTYPE)_default.xml
-	cp $(srcdir)/skin_$(DISPLAYTYPE)_$(MACHINEBUILD).xml $@ 2>/dev/null || cp $(srcdir)/skin_$(DISPLAYTYPE)_default.xml $@
+# TEXTSKIN is either "default" or "7segment"
+# TODO: Missing dependency on optional "skin_$(DISPLAYTYPE)_$(BOXTYPE).xml"
+skin_display.xml: $(srcdir)/skin_$(DISPLAYTYPE)_$(TEXTSKIN).xml
+	cp $(srcdir)/skin_$(DISPLAYTYPE)_$(MACHINEBUILD).xml $@ 2>/dev/null || cp $(srcdir)/skin_$(DISPLAYTYPE)_$(TEXTSKIN).xml $@
 
 iso-639-3.pck: $(srcdir)/iso-639-3.tab
 	python $(srcdir)/convert-iso-639-3.py $< $@
