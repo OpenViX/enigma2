@@ -2,8 +2,10 @@ SUBDIRS = countries fonts extensions keymaps skin_default skin_fallback_1080
 
 if HAVE_TEXTLCD
 DISPLAYTYPE = text
+TEXTSKIN = 7segment
 else
 DISPLAYTYPE = display
+TEXTSKIN = default
 endif
 
 dist_pkgdata_DATA = \
@@ -55,7 +57,7 @@ endif
 
 # Use box-specific XML if it exists, otherwise get the default
 # TEXTSKIN is either "default" or "7segment"
-# TODO: Missing dependency on optional "skin_$(DISPLAYTYPE)_$(BOXTYPE).xml"
+# TODO: Missing dependency on optional "skin_$(DISPLAYTYPE)_$(MACHINEBUILD).xml"
 skin_display.xml: $(srcdir)/skin_$(DISPLAYTYPE)_$(TEXTSKIN).xml
 	cp $(srcdir)/skin_$(DISPLAYTYPE)_$(MACHINEBUILD).xml $@ 2>/dev/null || cp $(srcdir)/skin_$(DISPLAYTYPE)_$(TEXTSKIN).xml $@
 
