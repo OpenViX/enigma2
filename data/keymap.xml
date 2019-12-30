@@ -323,7 +323,19 @@
 	</map>
 
 	<map context="InfobarSubtitleSelectionActions">
-		<key id="KEY_SUBTITLE" mapto="subtitleSelection" flags="m"/>
+		<key id="KEY_SUBTITLE" mapto="subtitleSelection" flags="mr"/>
+		<key id="KEY_MUTE" mapto="volumeMute" flags="m"/>
+		<key id="KEY_VOLUMEUP" mapto="volumeUp" flags="m"/>
+		<key id="KEY_VOLUMEDOWN" mapto="volumeDown" flags="m"/>
+		<key id="KEY_1" mapto="1" flags="m"/>
+		<key id="KEY_2" mapto="2" flags="m"/>
+		<key id="KEY_3" mapto="3" flags="m"/>
+		<key id="KEY_4" mapto="4" flags="m"/>
+		<key id="KEY_5" mapto="5" flags="m"/>
+		<key id="KEY_6" mapto="6" flags="m"/>
+		<key id="KEY_7" mapto="7" flags="m"/>
+		<key id="KEY_8" mapto="8" flags="m"/>
+		<key id="KEY_9" mapto="9" flags="m"/>
 	</map>
 
 	<map context="InfobarSubserviceSelectionActions">
@@ -774,6 +786,10 @@
 		<key id="KEY_UP" mapto="upRepeated" flags="m"/>
 		<key id="KEY_RIGHT" mapto="rightRepeated" flags="m"/>
 		<key id="KEY_LEFT" mapto="leftRepeated" flags="m"/>
+		<key id="KEY_LEFT" mapto="leftUp" flags="b"/>
+		<key id="KEY_RIGHT" mapto="rightUp" flags="b"/>
+		<key id="KEY_UP" mapto="upUp" flags="b"/>
+		<key id="KEY_DOWN" mapto="downUp" flags="b"/>
 	</map>
 
 	<map context="ColorActions">
@@ -785,6 +801,7 @@
 		<key id="KEY_YELLOW" mapto="yellowlong" flags="l"/>
 		<key id="KEY_BLUE" mapto="blue" flags="b"/>
 		<key id="KEY_BLUE" mapto="bluelong" flags="l"/>
+		<key id="KEY_BACK" mapto="back" flags="b"/>
 	</map>
 
 	<map context="FunctionKeyActions">
