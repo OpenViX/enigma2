@@ -2,10 +2,8 @@ SUBDIRS = countries fonts extensions keymaps skin_default skin_fallback_1080
 
 if HAVE_TEXTLCD
 DISPLAYTYPE = text
-TEXTSKIN = 7segment
 else
 DISPLAYTYPE = display
-TEXTSKIN = default
 endif
 
 dist_pkgdata_DATA = \
