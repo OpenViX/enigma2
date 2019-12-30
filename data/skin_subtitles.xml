@@ -1,4 +1,5 @@
 <skin>
+	<!--  File: /data/skin_subtitles.xml -->
 	<fonts>
 		<font filename="LiberationSans-Regular.ttf" name="Subs" scale="100" />
 		<font filename="LiberationSans-Italic.ttf" name="Subsi" scale="100" />
