@@ -2023,7 +2023,7 @@ class ConfigFile:
 		if len(names) > 1:
 			if names[0] == "config":
 				ret = self.__resolveValue(names[1:], config.content.items)
-				if ret and len(ret):
+				if ret and len(ret) or ret == "":
 					return ret
 		print "[Config] getResolvedKey", key, "empty variable."
 		return ""
