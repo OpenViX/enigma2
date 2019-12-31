@@ -59,8 +59,7 @@ def autostart(reason, **kwargs):
 		from twisted.internet import reactor
 		import os
 		try:
-			if os.path.exists("/tmp/hotplug.socket"):
-			 os.remove("/tmp/hotplug.socket")
+			os.remove("/tmp/hotplug.socket")
 		except OSError:
 			pass
 		factory = Factory()
