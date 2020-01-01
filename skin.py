@@ -138,6 +138,13 @@ for skin, name in [(config.skin.primary_skin.value, "current"), (DEFAULT_SKIN, "
 	result.append(skin)
 
 # Add the front panel / display / lcd skin.
+
+if fileExists("/usr/share/enigma2/lcd_skin/skin_lcd_default.xml"):
+	if fileExists(resolveFilename(SCOPE_CONFIG, config.skin.lcdskin.value)):
+		addSkin(config.skin.lcdskin.value, SCOPE_CONFIG)
+	else:
+		addSkin("lcd_skin/" + config.skin.lcdskin.value)
+
 result = []
 for skin, name in [(config.skin.display_skin.value, "current"), (DEFAULT_DISPLAY_SKIN, "default")]:
 	if skin in result:  # Don't try to add a skin that has already failed.
@@ -147,12 +154,6 @@ for skin, name in [(config.skin.display_skin.value, "current"), (DEFAULT_DISPLAY
 		break
 	print "[Skin] Error: Adding %s display skin '%s' has failed!" % (name, config.skin.display_skin.value)
 	result.append(skin)
-
-if fileExists("/usr/share/enigma2/lcd_skin/skin_lcd_default.xml"):
-	if fileExists(resolveFilename(SCOPE_CONFIG, config.skin.lcdskin.value)):
-		addSkin(config.skin.lcdskin.value, SCOPE_CONFIG)
-	else:
-		addSkin("lcd_skin/" + config.skin.lcdskin.value)
 
 # Add an optional adjustment skin as some boxes lie about their dimensions.
 # addSkin(BOX_SKIN, scope=SCOPE_CURRENT_SKIN)
