@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-21 11:00+0000\n"
-"PO-Revision-Date: 2019-12-23 14:31+0100\n"
+"POT-Creation-Date: 2020-01-02 06:25+0000\n"
+"PO-Revision-Date: 2020-01-02 17:02+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -9090,6 +9090,9 @@ msgstr "Flash"
 msgid "Restore backups"
 msgstr "Back-ups terugzetten"
 
+msgid "Restore defaults"
+msgstr "Herstel standaard waardes"
+
 msgid "Restore deleted user bouquets"
 msgstr "Herstel verwijderde favorietenlijsten"
 
@@ -9286,9 +9289,6 @@ msgstr "Schotelinstellingen"
 msgid "Satellite equipment"
 msgstr "Satelliet apparatuur"
 
-msgid "Satellite equipment control"
-msgstr "Satelliet apparatuur controle"
-
 msgid "Satellite equipment setup"
 msgstr "Apparatuurinstellingen"
 
@@ -9318,9 +9318,6 @@ msgstr "Sla op/Geef tekst in en sluit af"
 
 msgid "Save EPG"
 msgstr "Sla EPG op"
-
-msgid "Save and exit"
-msgstr "Bewaar en sla op"
 
 msgid "Save and record"
 msgstr "Bewaar en sla op"
@@ -16040,6 +16037,12 @@ msgstr "zapte"
 
 #~ msgid "Same behavior as current animation"
 #~ msgstr "Zelfde gedrag als huidige animatie"
+
+#~ msgid "Satellite equipment control"
+#~ msgstr "Satelliet apparatuur controle"
+
+#~ msgid "Save and exit"
+#~ msgstr "Bewaar en sla op"
 
 #~ msgid "Save timeshift in movie dir and zap"
 #~ msgstr "Bewaar timeshift als opname en zap"
