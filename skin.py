@@ -30,7 +30,6 @@ domScreens = {}  # Dictionary of skin based screens.
 colorNames = {}  # Dictionary of skin color names.
 switchPixmap = {}  # Dictionary of switch images.
 parameters = {}  # Dictionary of skin parameters used to modify code behavior.
-
 fonts = {  # Dictionary of predefined and skin defined font aliases.
 	"Body": ("Regular", 18, 22, 16),
 	"ChoiceList": ("Regular", 20, 24, 18),
