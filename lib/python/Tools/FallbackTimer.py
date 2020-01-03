@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from ServiceReference import ServiceReference
 from Components.config import config
 from Screens.MessageBox import MessageBox
