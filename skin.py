@@ -1,10 +1,11 @@
 from Tools.Profile import profile
 profile("LOAD:ElementTree")
+import errno
 import os
 import xml.etree.cElementTree
 
 profile("LOAD:enigma_skin")
-from enigma import addFont, eLabel, ePixmap, ePoint, eRect, eSize, eWindow, eWindowStyleManager, eWindowStyleSkinned, getDesktop, getFontFaces, gFont, gRGB
+from enigma import addFont, eLabel, ePixmap, ePoint, eRect, eSize, eWindow, eWindowStyleManager, eWindowStyleSkinned, getDesktop, gFont, getFontFaces, gRGB
 from Components.config import ConfigSubsection, ConfigText, config
 from Components.RcModel import rc_model
 from Components.Sources.Source import ObsoleteSource
@@ -29,7 +30,7 @@ domScreens = {}  # Dictionary of skin based screens.
 colorNames = {}  # Dictionary of skin color names.
 switchPixmap = {}  # Dictionary of switch images.
 parameters = {}  # Dictionary of skin parameters used to modify code behavior.
-fontNames = []  # List of fonts added but not aliased.
+
 fonts = {  # Dictionary of predefined and skin defined font aliases.
 	"Body": ("Regular", 18, 22, 16),
 	"ChoiceList": ("Regular", 20, 24, 18),
@@ -90,8 +91,13 @@ def addSkin(name, scope=SCOPE_CURRENT_SKIN):
 				data = content[line - 1].replace("\t", " ").rstrip()
 				print "[Skin] XML Parse Error: '%s'" % data
 				print "[Skin] XML Parse Error: '%s^%s'" % ("-" * column, " " * (len(data) - column - 1))
-	except Exception, e:
-		print "[Skin] Error in '%s': %s" % (filename, e)
+			except Exception:
+				print "[Skin] Error: Unable to parse skin data in '%s'!" % filename
+	except IOError, e:
+		if e.errno == errno.ENOENT:  #  No such file or directory
+			print "[Skin] Warning: Skin '%s' does not exist!" % filename
+		else:
+			print "[Skin] Error %d: Opening file '%s'! (%s)" % (e.errno, filename, os.strerror(e.errno))
 	return False
 
 
@@ -596,7 +602,7 @@ def applyAllAttributes(guiObject, desktop, attributes, scale):
 def loadSingleSkinData(desktop, domSkin, pathSkin, scope=SCOPE_CURRENT_SKIN):
 	"""Loads skin data like colors, windowstyle etc."""
 	assert domSkin.tag == "skin", "root element in skin must be 'skin'!"
-	global colorNames, fontNames, fonts, parameters, switchPixmap
+	global colorNames, fonts, parameters, switchPixmap
 	for tag in domSkin.findall("output"):
 		id = tag.attrib.get("id")
 		if id:
@@ -735,7 +741,6 @@ def loadSingleSkinData(desktop, domSkin, pathSkin, scope=SCOPE_CURRENT_SKIN):
 				render = 0
 			filename = resolveFilename(SCOPE_FONTS, filename, path_prefix=pathSkin)
 			addFont(filename, name, scale, isReplacement, render)
-			fontNames.append(name)
 			# print "[Skin] Add font: Font path='%s', name='%s', scale=%d, isReplacement=%s, render=%d." % (filename, name, scale, isReplacement, render)
 		fallbackFont = resolveFilename(SCOPE_FONTS, "fallback.font", path_prefix=pathSkin)
 		if fileExists(fallbackFont):
@@ -847,34 +852,34 @@ def loadSingleSkinData(desktop, domSkin, pathSkin, scope=SCOPE_CURRENT_SKIN):
 def loadSkin(filename, desktop=None, scope=SCOPE_SKIN):
 	global domScreens
 	filename = resolveFilename(scope, filename)
-	if fileExists(filename):
-		try:
-			# This open gets around a possible file handle leak in Python's XML parser.
-			with open(filename, "r") as fd:
-				try:
-					domSkin = xml.etree.cElementTree.parse(fd).getroot()
-					if desktop is not None:
-						loadSingleSkinData(desktop, domSkin, filename, scope=scope)
-					for element in domSkin:
-						name = evaluateElement(element, DISPLAY_SKIN_ID)
-						if name is None:
-							element.clear()
-						else:
-							domScreens[name] = (element, "%s/" % os.path.dirname(filename))
-				except xml.etree.cElementTree.ParseError as e:
-					fd.seek(0)
-					content = fd.readlines()
-					line, column = e.position
-					print "[Skin] XML Parse Error: '%s' in '%s'!" % (e, filename)
-					data = content[line - 1].replace("\t", " ").rstrip()
-					print "[Skin] XML Parse Error: '%s'" % data
-					print "[Skin] XML Parse Error: '%s^%s'" % ("-" * column, " " * (len(data) - column - 1))
-				except Exception:
-					print "[Skin] Error: Unable to parse skin data in '%s'!" % filename
-		except OSError, e:
+	try:
+		# This open gets around a possible file handle leak in Python's XML parser.
+		with open(filename, "r") as fd:
+			try:
+				domSkin = xml.etree.cElementTree.parse(fd).getroot()
+				if desktop is not None:
+					loadSingleSkinData(desktop, domSkin, filename, scope=scope)
+				for element in domSkin:
+					name = evaluateElement(element, DISPLAY_SKIN_ID)
+					if name is None:
+						element.clear()
+					else:
+						domScreens[name] = (element, "%s/" % os.path.dirname(filename))
+			except xml.etree.cElementTree.ParseError as e:
+				fd.seek(0)
+				content = fd.readlines()
+				line, column = e.position
+				print "[Skin] XML Parse Error: '%s' in '%s'!" % (e, filename)
+				data = content[line - 1].replace("\t", " ").rstrip()
+				print "[Skin] XML Parse Error: '%s'" % data
+				print "[Skin] XML Parse Error: '%s^%s'" % ("-" * column, " " * (len(data) - column - 1))
+			except Exception:
+				print "[Skin] Error: Unable to parse skin data in '%s'!" % filename
+	except IOError, e:
+		if e.errno == errno.ENOENT:  #  No such file or directory
+			print "[Skin] Warning: Skin '%s' does not exist!" % filename
+		else:
 			print "[Skin] Error %d: Opening file '%s'! (%s)" % (e.errno, filename, os.strerror(e.errno))
-	else:
-		print "[Skin] Warning: Skin '%s' does not exist!" % filename
 
 # Kinda hackish, but this is called once by mytest.py.
 #
