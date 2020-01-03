@@ -58,10 +58,9 @@ def autostart(reason, **kwargs):
 		print "[Hotplug] starting hotplug handler"
 		from twisted.internet import reactor
 		import os
-		try:
-			os.remove("/tmp/hotplug.socket")
-		except OSError:
-			pass
+		if not os.path.exists("/tmp/hotplug.socket"):
+		      return
+		os.remove("/tmp/hotplug.socket")
 		factory = Factory()
 		factory.protocol = Hotplug
 		reactor.listenUNIX("/tmp/hotplug.socket", factory)
