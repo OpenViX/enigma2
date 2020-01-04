@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from twisted.web import client
 from twisted.internet import reactor, defer, ssl
 # from urlparse import urlparse

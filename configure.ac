@@ -132,6 +132,13 @@ if test x"$withtextlcd" != xno ; then
 fi
 AM_CONDITIONAL(HAVE_TEXTLCD, test x"$withtextlcd" != xno)
 
+AC_ARG_WITH(7segment,
+	AC_HELP_STRING([--with-7segment], [use 7 segment lcd, yes or no]),
+	[[TEXTSKIN="7segment"]],
+	[[TEXTSKIN="default"]]
+)
+AC_SUBST(TEXTSKIN)
+
 AC_ARG_WITH(colorlcd220,
 	AC_HELP_STRING([--with-colorlcd220], [use 220x176 16bpp color display, yes or no]),
 	[[withcolorlcd220=$withval]],
@@ -383,7 +390,7 @@ AC_SUBST(ENIGMA2_CFLAGS)
 
 CPPFLAGS="$CPPFLAGS $PYTHON_CPPFLAGS -std=c++11"
 CFLAGS="$CFLAGS -Wall"
-CXXFLAGS="$CXXFLAGS -Wall -std=c++11 $BASE_CFLAGS $ENIGMA2_CFLAGS $PTHREAD_CFLAGS $OPENMP_CFLAGS $ALSA_CFLAGS"
+CXXFLAGS="$CXXFLAGS -Wall -std=c++11 -flto $BASE_CFLAGS $ENIGMA2_CFLAGS $PTHREAD_CFLAGS $OPENMP_CFLAGS $ALSA_CFLAGS"
 
 AX_SWIG_PYTHON_OPT="$AX_SWIG_PYTHON_OPT -DSWIG_PYTHON_LEGACY_BOOL"
 
