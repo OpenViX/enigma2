@@ -212,18 +212,21 @@ class VIXDevicesPanel(Screen):
 			# 		rw = _("None")
 			# 		break
 		f.close()
-		stat = statvfs(d1)
-		cap = int(stat.f_blocks * stat.f_bsize)
-		size = cap / 1000 / 1000
-
-		if ((float(size) / 1024) / 1024) >= 1:
-			des = _("Size: ") + str(round(((float(size) / 1024) / 1024), 2)) + _("TB")
-		elif (size / 1024) >= 1:
-			des = _("Size: ") + str(round((float(size) / 1024), 2)) + _("GB")
-		elif size >= 1:
-			des = _("Size: ") + str(size) + _("MB")
-		else:
+		if d1 == _("None") or d1 == None:
 			des = _("Size: ") + _("unavailable")
+		else:
+			stat = statvfs(d1)
+			cap = int(stat.f_blocks * stat.f_bsize)
+			size = cap / 1000 / 1000
+
+			if ((float(size) / 1024) / 1024) >= 1:
+				des = _("Size: ") + str(round(((float(size) / 1024) / 1024), 2)) + _("TB")
+			elif (size / 1024) >= 1:
+				des = _("Size: ") + str(round((float(size) / 1024), 2)) + _("GB")
+			elif size >= 1:
+				des = _("Size: ") + str(size) + _("MB")
+			else:
+				des = _("Size: ") + _("unavailable")
 
 		if des != '':
 			if rw.startswith('rw'):
@@ -446,17 +449,20 @@ class VIXDevicePanelConf(Screen, ConfigListScreen):
 				dtype = parts[2]
 				break
 		f.close()
-		stat = statvfs(d1)
-		cap = int(stat.f_blocks * stat.f_bsize)
-		size = cap / 1000 / 1000
-		if ((float(size) / 1024) / 1024) >= 1:
-			des = _("Size: ") + str(round(((float(size) / 1024) / 1024), 2)) + _("TB")
-		elif (size / 1024) >= 1:
-			des = _("Size: ") + str(round((float(size) / 1024), 2)) + _("GB")
-		elif size >= 1:
-			des = _("Size: ") + str(size) + _("MB")
-		else:
+		if d1 == _("None") or d1 == None:
 			des = _("Size: ") + _("unavailable")
+		else:
+			stat = statvfs(d1)
+			cap = int(stat.f_blocks * stat.f_bsize)
+			size = cap / 1000 / 1000
+			if ((float(size) / 1024) / 1024) >= 1:
+				des = _("Size: ") + str(round(((float(size) / 1024) / 1024), 2)) + _("TB")
+			elif (size / 1024) >= 1:
+				des = _("Size: ") + str(round((float(size) / 1024), 2)) + _("GB")
+			elif size >= 1:
+				des = _("Size: ") + str(size) + _("MB")
+			else:
+				des = _("Size: ") + _("unavailable")
 
 		item = NoSave(ConfigSelection(default='/media/' + device, choices=[('/media/' + device, '/media/' + device),
 																		   ('/media/hdd', '/media/hdd'),
