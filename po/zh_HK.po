@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-08 00:14+0100\n"
+"POT-Creation-Date: 2020-01-05 14:04+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: 王彪 <satfan@163.com>\n"
 "Language-Team: 中國\n"
@@ -146,11 +146,11 @@ msgid "%.0f kB"
 msgstr ""
 
 #, python-format
-msgid "%.1f°E"
+msgid "%.1f° E"
 msgstr ""
 
 #, python-format
-msgid "%.1f°W"
+msgid "%.1f° W"
 msgstr ""
 
 #, python-format
@@ -3680,6 +3680,9 @@ msgid "EPG selection"
 msgstr ""
 
 msgid "EPG settings"
+msgstr ""
+
+msgid "EPG:"
 msgstr ""
 
 #, python-format
@@ -8634,6 +8637,10 @@ msgid "Restore backups"
 msgstr "恢復備份"
 
 #, fuzzy
+msgid "Restore defaults"
+msgstr "預設"
+
+#, fuzzy
 msgid "Restore deleted user bouquets"
 msgstr "確定刪除所有專案?"
 
@@ -9678,10 +9685,6 @@ msgstr ""
 #, fuzzy
 msgid "Set default"
 msgstr "預設"
-
-#, fuzzy
-msgid "Set default settings?"
-msgstr "預設設定"
 
 msgid "Set end time"
 msgstr ""
@@ -11655,6 +11658,10 @@ msgstr "計時器選擇"
 
 msgid "Timer type"
 msgstr "定時類型"
+
+#, fuzzy
+msgid "Timer:"
+msgstr "計時器"
 
 msgid "Timeshift"
 msgstr "時光平移"
@@ -14395,6 +14402,10 @@ msgid "tennis/squash"
 msgstr ""
 
 #, fuzzy
+msgid "testing"
+msgstr "設定"
+
+#, fuzzy
 msgid "this bouquet is protected by a parental control pin"
 msgstr "此頻道受家長控制."
 
@@ -14540,9 +14551,6 @@ msgid "with_errors"
 msgstr "with %d error"
 
 msgid "without"
-msgstr ""
-
-msgid "working"
 msgstr ""
 
 msgid "xp1000"

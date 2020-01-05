@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-08 00:14+0100\n"
+"POT-Creation-Date: 2020-01-05 14:04+0100\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -161,11 +161,11 @@ msgid "%.0f kB"
 msgstr ""
 
 #, python-format
-msgid "%.1f°E"
+msgid "%.1f° E"
 msgstr ""
 
 #, python-format
-msgid "%.1f°W"
+msgid "%.1f° W"
 msgstr ""
 
 #, python-format
@@ -4020,6 +4020,9 @@ msgid "EPG selection"
 msgstr "EPG val"
 
 msgid "EPG settings"
+msgstr ""
+
+msgid "EPG:"
 msgstr ""
 
 #, python-format
@@ -9682,6 +9685,11 @@ msgstr "Setja inn afrit"
 
 #
 #, fuzzy
+msgid "Restore defaults"
+msgstr "Setja inn afrit"
+
+#
+#, fuzzy
 msgid "Restore deleted user bouquets"
 msgstr "Virkja marga rásavendi"
 
@@ -10858,11 +10866,6 @@ msgstr ""
 
 msgid "Set default"
 msgstr ""
-
-#
-#, fuzzy
-msgid "Set default settings?"
-msgstr "Upphafs stillingar"
 
 #, fuzzy
 msgid "Set end time"
@@ -13144,6 +13147,11 @@ msgstr ""
 #, fuzzy
 msgid "Timer type"
 msgstr "Gerð Tímastillngar"
+
+#
+#, fuzzy
+msgid "Timer:"
+msgstr "Tímastilling"
 
 #
 msgid "Timeshift"
@@ -16224,6 +16232,11 @@ msgstr ""
 
 #
 #, fuzzy
+msgid "testing"
+msgstr "Upplausn"
+
+#
+#, fuzzy
 msgid "this bouquet is protected by a parental control pin"
 msgstr "þessi rás er læst með kóða"
 
@@ -16389,10 +16402,6 @@ msgstr ""
 
 msgid "without"
 msgstr ""
-
-#
-msgid "working"
-msgstr "er að vinna"
 
 msgid "xp1000"
 msgstr ""

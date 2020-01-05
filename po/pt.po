@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-08 00:14+0100\n"
+"POT-Creation-Date: 2020-01-05 14:04+0100\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -163,11 +163,11 @@ msgid "%.0f kB"
 msgstr ""
 
 #, python-format
-msgid "%.1f°E"
+msgid "%.1f° E"
 msgstr ""
 
 #, python-format
-msgid "%.1f°W"
+msgid "%.1f° W"
 msgstr ""
 
 #, python-format
@@ -4251,6 +4251,9 @@ msgstr "Selecção do Guia de Programação"
 
 msgid "EPG settings"
 msgstr "Definições de Guia de Programação"
+
+msgid "EPG:"
+msgstr ""
 
 #
 #, python-format
@@ -10018,6 +10021,10 @@ msgstr "Restaurar"
 msgid "Restore backups"
 msgstr "Restauro de Backups"
 
+#, fuzzy
+msgid "Restore defaults"
+msgstr "Definir como padrão"
+
 #
 #, fuzzy
 msgid "Restore deleted user bouquets"
@@ -11211,11 +11218,6 @@ msgstr ""
 
 msgid "Set default"
 msgstr "Definir como padrão"
-
-#
-#, fuzzy
-msgid "Set default settings?"
-msgstr "Configurações padrão"
 
 #
 #, fuzzy
@@ -13504,6 +13506,11 @@ msgstr "Selecção do agendamento..."
 #, fuzzy
 msgid "Timer type"
 msgstr "Tipo de agendamento"
+
+#
+#, fuzzy
+msgid "Timer:"
+msgstr "Agendamentos"
 
 #
 msgid "Timeshift"
@@ -16680,6 +16687,11 @@ msgstr "tennis/squash"
 
 #
 #, fuzzy
+msgid "testing"
+msgstr "Resolução"
+
+#
+#, fuzzy
 msgid "this bouquet is protected by a parental control pin"
 msgstr "este canal está protegido pelo PIN de controlo parental"
 
@@ -16848,10 +16860,6 @@ msgstr "com %d erro"
 #, fuzzy
 msgid "without"
 msgstr "Sem janela"
-
-#
-msgid "working"
-msgstr "em curso"
 
 msgid "xp1000"
 msgstr ""

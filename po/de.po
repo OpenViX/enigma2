@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-08 00:14+0100\n"
-"PO-Revision-Date: 2019-12-08 00:32+0100\n"
+"POT-Creation-Date: 2020-01-05 14:04+0100\n"
+"PO-Revision-Date: 2020-01-05 14:14+0100\n"
 "Last-Translator: -=niki=- <niki_msn@hotmail.de>\n"
 "Language-Team: none\n"
 "Language: de\n"
@@ -161,11 +161,11 @@ msgid "%.0f kB"
 msgstr "%.0f kB"
 
 #, python-format
-msgid "%.1f°E"
+msgid "%.1f° E"
 msgstr ""
 
 #, python-format
-msgid "%.1f°W"
+msgid "%.1f° W"
 msgstr ""
 
 #, python-format
@@ -784,17 +784,14 @@ msgstr "ATSC Anbieter"
 msgid "Abort"
 msgstr "Abbrechen"
 
-#, fuzzy
 msgid "Abort alternatives edit"
-msgstr "Alternativen-Bearbeitung abbrechen"
+msgstr "Alternativen Bearbeitung abbrechen"
 
-#, fuzzy
 msgid "Abort bouquet edit"
-msgstr "Bouqueteditieren abbrechen"
+msgstr "Bouquet Bearbeitung abbrechen"
 
-#, fuzzy
 msgid "Abort favourites edit"
-msgstr "Favoriteneditor abbrechen"
+msgstr "Favoriten Bearbeitung abbrechen"
 
 msgid "About"
 msgstr "Über"
@@ -871,20 +868,17 @@ msgstr "DNS Servereintrag hinzufügen"
 msgid "Add a new title"
 msgstr "Füge neuen Titel hinzu"
 
-#, fuzzy
 msgid "Add alternatives"
 msgstr "Alternativen hinzufügen"
 
 msgid "Add bookmark"
 msgstr "Lesezeichen hinzufügen"
 
-#, fuzzy
 msgid "Add bouquet"
-msgstr "Bouquet einfügen"
+msgstr "Bouquet hinzufügen"
 
-#, fuzzy
 msgid "Add bouquet to parental protection"
-msgstr "Jugendschutz für Bouquet anschalten"
+msgstr "Jugendschutz zu Bouquet hinzufügen"
 
 msgid "Add current folder to bookmarks"
 msgstr ""
@@ -949,9 +943,8 @@ msgstr "Zum Bouquet hinzufügen"
 msgid "Add to favourites"
 msgstr "Zu Favoriten hinzufügen"
 
-#, fuzzy
 msgid "Add to parental protection"
-msgstr "Jugendschutz anschalten"
+msgstr "Zum Jugendschutz hinzufügen"
 
 msgid "Add/remove change timer for current event"
 msgstr "Setze/Entferne Timer für aktuelle Sendung"
@@ -3540,6 +3533,9 @@ msgstr "EPG-Auswahl"
 
 msgid "EPG settings"
 msgstr "EPG-Einstellungen"
+
+msgid "EPG:"
+msgstr ""
 
 #, python-format
 msgid "ERROR - failed to scan (%s)!"
@@ -8217,6 +8213,10 @@ msgid "Restore backups"
 msgstr "Einstellungen wiederherstellen"
 
 #, fuzzy
+msgid "Restore defaults"
+msgstr "Als Standard setzen"
+
+#, fuzzy
 msgid "Restore deleted user bouquets"
 msgstr "Gelöschte Bouquets wiederherstellen"
 
@@ -9168,9 +9168,6 @@ msgstr "Ausnahmen auf Basis von Wochentagen"
 
 msgid "Set default"
 msgstr "Als Standard setzen"
-
-msgid "Set default settings?"
-msgstr "Auf Voreinstellungen zurücksetzen?"
 
 msgid "Set end time"
 msgstr "End-Zeit eingeben"
@@ -11069,6 +11066,9 @@ msgstr "Timer-Auswahl..."
 
 msgid "Timer type"
 msgstr "Timertyp"
+
+msgid "Timer:"
+msgstr ""
 
 msgid "Timeshift"
 msgstr "Timeshift"
@@ -13795,6 +13795,10 @@ msgstr "Dateivorlage"
 msgid "tennis/squash"
 msgstr "Tennis/Squash"
 
+#, fuzzy
+msgid "testing"
+msgstr "Frage"
+
 msgid "this bouquet is protected by a parental control pin"
 msgstr "Diese Kanalliste ist durch einen Jugendschutz-PIN-Code geschützt"
 
@@ -13935,9 +13939,6 @@ msgstr "mit Fehlern"
 
 msgid "without"
 msgstr "ohne"
-
-msgid "working"
-msgstr "Arbeite"
 
 msgid "xp1000"
 msgstr "xp1000"

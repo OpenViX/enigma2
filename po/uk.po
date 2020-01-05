@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-08 00:14+0100\n"
+"POT-Creation-Date: 2020-01-05 14:04+0100\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -154,11 +154,11 @@ msgid "%.0f kB"
 msgstr ""
 
 #, python-format
-msgid "%.1f°E"
+msgid "%.1f° E"
 msgstr ""
 
 #, python-format
-msgid "%.1f°W"
+msgid "%.1f° W"
 msgstr ""
 
 #, python-format
@@ -3756,6 +3756,9 @@ msgstr "Вибір EPG"
 
 msgid "EPG settings"
 msgstr "Налаштування EPG"
+
+msgid "EPG:"
+msgstr ""
 
 #, python-format
 msgid "ERROR - failed to scan (%s)!"
@@ -8738,6 +8741,10 @@ msgid "Restore backups"
 msgstr "Відновлення резрвних копій"
 
 #, fuzzy
+msgid "Restore defaults"
+msgstr "Відновлення резрвних копій"
+
+#, fuzzy
 msgid "Restore deleted user bouquets"
 msgstr "Дозволити мульти-букети"
 
@@ -9776,10 +9783,6 @@ msgstr ""
 
 msgid "Set default"
 msgstr ""
-
-#, fuzzy
-msgid "Set default settings?"
-msgstr "Налаштування за замовчуванням"
 
 msgid "Set end time"
 msgstr "Встановити час закінчення"
@@ -11773,6 +11776,10 @@ msgstr "Вибір таймера..."
 
 msgid "Timer type"
 msgstr "Тип таймера"
+
+#, fuzzy
+msgid "Timer:"
+msgstr "Таймер"
 
 msgid "Timeshift"
 msgstr "Таймшифт"
@@ -14584,6 +14591,10 @@ msgid "tennis/squash"
 msgstr "теніс/сквош"
 
 #, fuzzy
+msgid "testing"
+msgstr "Роздільна здатність"
+
+#, fuzzy
 msgid "this bouquet is protected by a parental control pin"
 msgstr "цей сервіс захищений PIN-кодом батьківського контролю"
 
@@ -14735,9 +14746,6 @@ msgstr "с %d помилкою"
 #, fuzzy
 msgid "without"
 msgstr "Без повідомлення"
-
-msgid "working"
-msgstr "працюючий"
 
 msgid "xp1000"
 msgstr ""

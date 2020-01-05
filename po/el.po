@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-08 00:14+0100\n"
+"POT-Creation-Date: 2020-01-05 14:04+0100\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -147,11 +147,11 @@ msgid "%.0f kB"
 msgstr ""
 
 #, python-format
-msgid "%.1f°E"
+msgid "%.1f° E"
 msgstr ""
 
 #, python-format
-msgid "%.1f°W"
+msgid "%.1f° W"
 msgstr ""
 
 #, python-format
@@ -3719,6 +3719,9 @@ msgstr "Επιλογή EPG"
 
 msgid "EPG settings"
 msgstr "Ρυθμίσεις EPG"
+
+msgid "EPG:"
+msgstr ""
 
 #, python-format
 msgid "ERROR - failed to scan (%s)!"
@@ -8688,6 +8691,10 @@ msgid "Restore backups"
 msgstr "Επαναφορά αντιγράφων ασφαλείας"
 
 #, fuzzy
+msgid "Restore defaults"
+msgstr "Ορισμός προεπιλογής"
+
+#, fuzzy
 msgid "Restore deleted user bouquets"
 msgstr "Ενεργοποίηση πολλαπλών μπουκέτων"
 
@@ -9719,10 +9726,6 @@ msgstr ""
 
 msgid "Set default"
 msgstr "Ορισμός προεπιλογής"
-
-#, fuzzy
-msgid "Set default settings?"
-msgstr "Αρχικές ρυθμίσεις"
 
 msgid "Set end time"
 msgstr "Ρύθμιση χρόνου τερματισμού"
@@ -11717,6 +11720,10 @@ msgstr "Επιλογή χρονοδιακόπτη..."
 
 msgid "Timer type"
 msgstr "Τύπος χρονοδιακόπτη"
+
+#, fuzzy
+msgid "Timer:"
+msgstr "Χρονοδιακόπτης"
 
 msgid "Timeshift"
 msgstr "Χρονομετατόπιση"
@@ -14506,6 +14513,10 @@ msgid "tennis/squash"
 msgstr "τένις/σκουώς"
 
 #, fuzzy
+msgid "testing"
+msgstr "Ανάλυση"
+
+#, fuzzy
 msgid "this bouquet is protected by a parental control pin"
 msgstr "η εγγραφή είναι προστατευμένη από τον γονικό έλεγχο"
 
@@ -14656,9 +14667,6 @@ msgstr "με %d σφάλμα"
 #, fuzzy
 msgid "without"
 msgstr "Χωρίς αναδυόμενο παράθυρο"
-
-msgid "working"
-msgstr "σε λειτουργία"
 
 msgid "xp1000"
 msgstr ""
