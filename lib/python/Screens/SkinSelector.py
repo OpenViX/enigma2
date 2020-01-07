@@ -102,10 +102,6 @@ class SkinSelector(Screen, HelpableScreen):
 			rescueData = [int(x * scale) for x in rescueData]
 			element = xml.etree.cElementTree.fromstring(rescueSkin % tuple(rescueData))
 			domScreens["SkinSelector"] = (element, path)
-		else:
-			height = getDesktop(0).size().height()
-			scale = 0.0
-		print "[SkinSelector] DEBUG: Height=%d, Scale=%.2f\n" % (getDesktop(0).size().height(), scale), xml.etree.cElementTree.tostring(element)
 
 	def showPic(self, picInfo=""):
 		ptr = self.picload.getData()
