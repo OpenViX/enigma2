@@ -23,7 +23,7 @@ SCOPE_PLUGINS = 9
 SCOPE_MEDIA = 10
 SCOPE_PLAYLIST = 11
 SCOPE_CURRENT_SKIN = 12
-SCOPE_CURRENT_PLUGIN_FULL = 13
+SCOPE_CURRENT_PLUGIN_ABSOLUTE = 13
 SCOPE_CURRENT_PLUGIN_RELATIVE = 14
 
 SCOPE_METADIR = 16
@@ -65,7 +65,7 @@ defaultPaths = {
 	SCOPE_DEFAULTDIR: (eEnv.resolve("${datadir}/enigma2/defaults/"), PATH_CREATE),
 	SCOPE_DEFAULTPARTITION: ("/dev/mtdblock6", PATH_DONTCREATE),
 	SCOPE_DEFAULTPARTITIONMOUNTDIR: (eEnv.resolve("${datadir}/enigma2/dealer"), PATH_CREATE),
-	SCOPE_CURRENT_PLUGIN_FULL: (eEnv.resolve("${libdir}/enigma2/python/Plugins/"), PATH_DONTCREATE),
+	SCOPE_CURRENT_PLUGIN_ABSOLUTE: (eEnv.resolve("${libdir}/enigma2/python/Plugins/"), PATH_DONTCREATE),
 	SCOPE_CURRENT_PLUGIN_RELATIVE: (eEnv.resolve("${libdir}/enigma2/python/Plugins/"), PATH_DONTCREATE)
 }
 
@@ -108,7 +108,7 @@ def resolveFilename(scope, base="", path_prefix=None):
 			from Components.config import config
 			skin = os.path.dirname(config.skin.primary_skin.value)
 			path = os.path.join(path, skin)
-		elif scope in (SCOPE_CURRENT_PLUGIN_FULL, SCOPE_CURRENT_PLUGIN_RELATIVE):
+		elif scope in (SCOPE_CURRENT_PLUGIN_ABSOLUTE, SCOPE_CURRENT_PLUGIN_RELATIVE):
 			callingCode = os.path.normpath(inspect.stack()[1][1])
 			plugins = os.path.normpath(defaultPaths[SCOPE_PLUGINS][0])
 			path = None
@@ -184,7 +184,7 @@ def resolveFilename(scope, base="", path_prefix=None):
 		file = os.path.join(defaultPaths[SCOPE_PLUGINS][0], base)
 		if pathExists(file):
 			path = file
-	elif scope in (SCOPE_CURRENT_PLUGIN_FULL, SCOPE_CURRENT_PLUGIN_RELATIVE):
+	elif scope in (SCOPE_CURRENT_PLUGIN_ABSOLUTE, SCOPE_CURRENT_PLUGIN_RELATIVE):
 		callingCode = os.path.normpath(inspect.stack()[1][1])
 		plugins = os.path.normpath(defaultPaths[SCOPE_PLUGINS][0])
 		path = None
