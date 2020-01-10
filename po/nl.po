@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-01-05 13:59+0000\n"
-"PO-Revision-Date: 2020-01-06 12:53+0100\n"
+"PO-Revision-Date: 2020-01-10 14:12+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -1473,7 +1473,7 @@ msgid "Activate network settings"
 msgstr "Activeer netwerkinstellingen"
 
 msgid "Activate the configured network settings."
-msgstr "Aktiveer de gekozen netwerk instellingen."
+msgstr "Activeer de gekozen netwerk instellingen."
 
 msgid "Activate the currently selected skin"
 msgstr "Activeer de momenteel geselecteerde skin"
@@ -8495,7 +8495,7 @@ msgstr "Druk op OK voor meer details van: %s"
 
 #, python-format
 msgid "Press OK to keep the currently selected%s skin."
-msgstr "Druk op OK om de momenteel geselecteerde%s skin te activeren."
+msgstr "Druk op OK om de momenteel actieve %s skin te behouden."
 
 msgid "Press OK to scan"
 msgstr "Druk OK om te scannen"
@@ -11976,7 +11976,7 @@ msgstr "Titelset modus"
 
 #, python-format
 msgid "To save and apply the selected '%s' skin the GUI needs to restart.  Would you like to save the selection and restart the GUI?"
-msgstr ""
+msgstr "Om de geselecteerde '%s' skin toe te passen, moet de GUI herstart worden. Wilt u dat nu doen?"
 
 msgid "Today"
 msgstr "Vandaag"
