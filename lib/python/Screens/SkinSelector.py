@@ -61,7 +61,7 @@ class SkinSelector(Screen, HelpableScreen):
 	def hackSkin(self):  # This is a hack to ensure the SkinConverter screen works with the new code.
 		rescueSkin = """
 	<screen name="SkinSelector" position="center,center" size="%d,%d">
-		<widget name="preview" position="center,0" size="%d,%d" alphatest="blend" zPosition="0" />
+		<widget name="preview" position="center,%d" size="%d,%d" alphatest="blend" zPosition="0" />
 		<widget source="skins" render="Listbox" position="center,%d" size="%d,%d" backgroundColor="window-bg" enableWrapAround="1" foregroundColor="window-fg" scrollbarMode="showOnDemand" transparent="0">
 			<convert type="TemplatedMultiContent">
 				{
@@ -75,12 +75,10 @@ class SkinSelector(Screen, HelpableScreen):
 			</convert>
 		</widget>
 		<widget source="description" render="Label" position="center,%d" size="%d,%d" backgroundColor="window-bg" font="Regular;%d" transparent="1" valign="center" />
-		<ePixmap pixmap="buttons/red.png" position="%d,e-%d" size="%d,%d" alphatest="blend" />
-		<widget source="key_red" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="#9f1313" font="Regular;%d" halign="center" transparent="1" valign="center" zPosition="1" />
-		<ePixmap pixmap="buttons/green.png" position="%d,e-%d" size="%d,%d" alphatest="blend" />
-		<widget source="key_green" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="#1f771f" font="Regular;%d" halign="center" transparent="1" valign="center" zPosition="1" />
+		<widget source="key_red" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="#9f1313" font="Regular;%d" halign="center" transparent="0" valign="center" zPosition="1" />
+		<widget source="key_green" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="#1f771f" font="Regular;%d" halign="center" transparent="0" valign="center" zPosition="1" />
 	</screen>"""
-		rescueData = [630, 550, 356, 200, 220, 610, 240, 10, 290, 30, 310, 280, 30, 25, 30, 480, 610, 25, 20, 10, 40, 140, 40, 10, 40, 140, 40, 20, 150, 40, 140, 40, 150, 40, 140, 40, 20]
+		rescueData = [630, 570, 10, 356, 200, 230, 610, 240, 10, 290, 30, 310, 280, 30, 25, 30, 490, 610, 25, 20, 10, 50, 140, 40, 20, 160, 50, 140, 40, 20]
 		replaceSkin = False
 		element, path = domScreens.get("SkinSelector", (None, None))
 		if element is not None:
