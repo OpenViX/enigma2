@@ -474,7 +474,8 @@ class AttributeParser:
 			print "[Skin] Error: Invalid alphatest '%s'!  Must be one of 'on', 'off' or 'blend'." % value
 
 	def scale(self, value):
-		self.guiObject.setScale(1)
+		value = 1 if value.lower() in ("1", "enabled", "on", "scale", "true", "yes") else 0
+		self.guiObject.setScale(value)
 
 	def orientation(self, value):  # used by eSlider
 		try:
@@ -592,7 +593,8 @@ class AttributeParser:
 			print "[Skin] Error: Invalid scrollbarMode '%s'!  Must be one of 'showOnDemand', 'showAlways', 'showNever' or 'showLeft'." % value
 
 	def enableWrapAround(self, value):
-		self.guiObject.setWrapAround(True)
+		value = True if value.lower() in ("1", "enabled", "enablewraparound", "on", "true", "yes") else False
+		self.guiObject.setWrapAround(value)
 
 	def itemHeight(self, value):
 		self.guiObject.setItemHeight(int(value))
@@ -613,9 +615,12 @@ class AttributeParser:
 		self.guiObject.setShadowOffset(parsePosition(value, self.scaleTuple))
 
 	def noWrap(self, value):
-		self.guiObject.setNoWrap(int(value))
+		value = 1 if value.lower() in ("1", "enabled", "nowrap", "on", "true", "yes") else 0
+		self.guiObject.setNoWrap(value)
+
 	def linelength(self, value):
 		pass
+
 	def OverScan(self, value):
 		self.guiObject.setOverscan(value)
 
