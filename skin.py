@@ -399,15 +399,23 @@ class AttributeParser:
 		else:
 			self.guiObject.resize(parseSize(value, self.scaleTuple, self.guiObject, self.desktop))
 
-	def animationMode(self, value):
-		self.guiObject.setAnimationMode(
-			{ "disable": 0x00,
-				"off": 0x00,
-				"offshow": 0x10,
-				"offhide": 0x01,
-				"onshow": 0x01,
-				"onhide": 0x10,
-			}[value])
+	def animationPaused(self, value):
+		pass
+
+# OpenPLi is missing the C++ code to support this animation method.
+#
+# 	def animationMode(self, value):
+# 		try:
+# 			self.guiObject.setAnimationMode({
+# 				"disable": 0x00,
+# 				"off": 0x00,
+# 				"offshow": 0x10,
+# 				"offhide": 0x01,
+# 				"onshow": 0x01,
+# 				"onhide": 0x10,
+# 			}[value])
+# 		except KeyError:
+#			print "[Skin] Error: Invalid animationMode '%s'!  Must be one of 'disable', 'off', 'offshow', 'offhide', 'onshow' or 'onhide'." % value
 
 	def title(self, value):
 		self.guiObject.setTitle(_(value))
