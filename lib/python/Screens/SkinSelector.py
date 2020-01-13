@@ -102,10 +102,10 @@ class SkinSelector(Screen, HelpableScreen):
 		if replaceSkin:
 			height = getDesktop(0).size().height()
 			height = 720 if height < 720 else height
-			scale = float(height) / 720.0
-			rescueData = [int(x * scale) for x in rescueData]
+			rescueData = [x * height / 720 for x in rescueData]
 			element = xml.etree.cElementTree.fromstring(rescueSkin % tuple(rescueData))
 			domScreens["SkinSelector"] = (element, path)
+		# print "[SkinSelector] DEBUG: Height=%d\n" % getDesktop(0).size().height(), xml.etree.cElementTree.tostring(element)
 
 	def showPic(self, picInfo=""):
 		ptr = self.picload.getData()
