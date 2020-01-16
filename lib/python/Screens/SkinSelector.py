@@ -75,14 +75,14 @@ class SkinSelector(Screen, HelpableScreen):
 			</convert>
 		</widget>
 		<widget source="description" render="Label" position="center,%d" size="%d,%d" font="Regular;%d" transparent="1" valign="center" />
-		<widget source="key_red" render="Pixmap" pixmap="buttons/fill_key_red.png" position="%d,e-%d" size="%d,%d" alphatest="blend" objectTypes="key_red,StaticText" scale="1">
+		<widget source="key_red" render="Pixmap" pixmap="buttons/key_red_fill.png" position="%d,e-%d" size="%d,%d" alphatest="blend" objectTypes="key_red,StaticText" scale="1">
  			<convert type="ConditionalShowHide" />
  		</widget>
-		<widget source="key_red" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="#9f1313" font="Regular;%d" foregroundColor="#ffffff" halign="center" transparent="1" valign="center" zPosition="+1" />
-		<widget source="key_green" render="Pixmap" pixmap="buttons/fill_key_green.png" position="%d,e-%d" size="%d,%d" alphatest="blend" objectTypes="key_green,StaticText" scale="1">
+		<widget source="key_red" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="key_red" font="Regular;%d" foregroundColor="key_text" halign="center" transparent="1" valign="center" zPosition="+1" />
+		<widget source="key_green" render="Pixmap" pixmap="buttons/key_green_fill.png" position="%d,e-%d" size="%d,%d" alphatest="blend" objectTypes="key_green,StaticText" scale="1">
  			<convert type="ConditionalShowHide" />
  		</widget>
-		<widget source="key_green" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="#1f771f" font="Regular;%d" foregroundColor="#ffffff" halign="center" transparent="1" valign="center" zPosition="+1" />
+		<widget source="key_green" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="key_green" font="Regular;%d" foregroundColor="key_text" halign="center" transparent="1" valign="center" zPosition="+1" />
 	</screen>"""
 		rescueData = [630, 570, 10, 356, 200, 230, 610, 240, 10, 290, 30, 310, 280, 30, 25, 30, 490, 610, 25, 20, 10, 50, 140, 40, 10, 50, 140, 40, 20, 160, 50, 140, 40, 160, 50, 140, 40, 20]
 		replaceSkin = False
