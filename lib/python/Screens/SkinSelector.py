@@ -60,7 +60,7 @@ class SkinSelector(Screen, HelpableScreen):
 
 	def hackSkin(self):  # This is a hack to ensure the SkinConverter screen works with the new code.
 		rescueSkin = """
-	<screen name="SkinSelector" position="center,center" size="%d,%d" backgroundColor="window-bg">
+	<screen name="SkinSelector" position="center,center" size="%d,%d">
 		<widget name="preview" position="center,%d" size="%d,%d" alphatest="blend" />
 		<widget source="skins" render="Listbox" position="center,%d" size="%d,%d" enableWrapAround="1" scrollbarMode="showOnDemand" transparent="1">
 			<convert type="TemplatedMultiContent">
@@ -78,11 +78,11 @@ class SkinSelector(Screen, HelpableScreen):
 		<widget source="key_red" render="Pixmap" pixmap="buttons/fill_key_red.png" position="%d,e-%d" size="%d,%d" alphatest="blend" objectTypes="key_red,StaticText" scale="1">
  			<convert type="ConditionalShowHide" />
  		</widget>
-		<widget source="key_red" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="#9f1313" font="Regular;%d" halign="center" transparent="1" valign="center" zPosition="+1" />
+		<widget source="key_red" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="#9f1313" font="Regular;%d" foregroundColor="#ffffff" halign="center" transparent="1" valign="center" zPosition="+1" />
 		<widget source="key_green" render="Pixmap" pixmap="buttons/fill_key_green.png" position="%d,e-%d" size="%d,%d" alphatest="blend" objectTypes="key_green,StaticText" scale="1">
  			<convert type="ConditionalShowHide" />
  		</widget>
-		<widget source="key_green" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="#1f771f" font="Regular;%d" halign="center" transparent="1" valign="center" zPosition="+1" />
+		<widget source="key_green" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="#1f771f" font="Regular;%d" foregroundColor="#ffffff" halign="center" transparent="1" valign="center" zPosition="+1" />
 	</screen>"""
 		rescueData = [630, 570, 10, 356, 200, 230, 610, 240, 10, 290, 30, 310, 280, 30, 25, 30, 490, 610, 25, 20, 10, 50, 140, 40, 10, 50, 140, 40, 20, 160, 50, 140, 40, 160, 50, 140, 40, 20]
 		replaceSkin = False
@@ -99,8 +99,8 @@ class SkinSelector(Screen, HelpableScreen):
 					source = widget.get("source", None)
 					if source == "introduction":
 						replaceSkin = True
+		height = getDesktop(0).size().height()
 		if replaceSkin:
-			height = getDesktop(0).size().height()
 			height = 720 if height < 720 else height
 			rescueData = [x * height / 720 for x in rescueData]
 			element = xml.etree.cElementTree.fromstring(rescueSkin % tuple(rescueData))
