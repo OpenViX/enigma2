@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue (Apachi70)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-08 00:14+0100\n"
+"POT-Creation-Date: 2020-01-05 14:04+0100\n"
 "PO-Revision-Date: 2019-07-18 01:10+0200\n"
 "Last-Translator: Apachi70 <apachi70000@gmail.com>\n"
 "Language-Team: Turkish <apachi70000@gmail.com>\n"
@@ -162,11 +162,11 @@ msgid "%.0f kB"
 msgstr "%.0f kB"
 
 #, python-format
-msgid "%.1f°E"
+msgid "%.1f° E"
 msgstr ""
 
 #, python-format
-msgid "%.1f°W"
+msgid "%.1f° W"
 msgstr ""
 
 #, python-format
@@ -3565,6 +3565,9 @@ msgstr "EPG Dil seçimi"
 
 msgid "EPG settings"
 msgstr "EPG ayarları"
+
+msgid "EPG:"
+msgstr ""
 
 #, python-format
 msgid "ERROR - failed to scan (%s)!"
@@ -8268,6 +8271,10 @@ msgid "Restore backups"
 msgstr "Yedekten geri yükle"
 
 #, fuzzy
+msgid "Restore defaults"
+msgstr "Varsayılanları ayarla"
+
+#, fuzzy
 msgid "Restore deleted user bouquets"
 msgstr "silinen userbouquets'i geri yükle"
 
@@ -9238,9 +9245,6 @@ msgstr "Hafta içi günlerine blok zamanlarını ayarla"
 
 msgid "Set default"
 msgstr "Varsayılanları ayarla"
-
-msgid "Set default settings?"
-msgstr "Set varsayılan ayarlar?"
 
 msgid "Set end time"
 msgstr "Bitiş zamanını ayarla"
@@ -11145,6 +11149,10 @@ msgstr "Zamanlayıcı seçimi..."
 
 msgid "Timer type"
 msgstr "Zamanlayıcı tipi"
+
+#, fuzzy
+msgid "Timer:"
+msgstr "Zamanlayıcı"
 
 msgid "Timeshift"
 msgstr "Zaman kaydırıcı"
@@ -13875,6 +13883,10 @@ msgstr "taslak dosya"
 msgid "tennis/squash"
 msgstr "tenis/squash"
 
+#, fuzzy
+msgid "testing"
+msgstr "Soru"
+
 msgid "this bouquet is protected by a parental control pin"
 msgstr "bu buket bir ebeveyn kontrol pimi tarafından korunmaktadır"
 
@@ -14015,9 +14027,6 @@ msgstr "hatalarla"
 
 msgid "without"
 msgstr "olmadan"
-
-msgid "working"
-msgstr "çalışıyor"
 
 msgid "xp1000"
 msgstr "xp1000"

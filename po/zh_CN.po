@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tuxbox-enigma 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-08 00:14+0100\n"
+"POT-Creation-Date: 2020-01-05 14:04+0100\n"
 "PO-Revision-Date: 2016-06-17 12:13+0800\n"
 "Last-Translator: nx111 <gdzdz@163.com>\n"
 "Language-Team: NEWBOLT\n"
@@ -150,11 +150,11 @@ msgid "%.0f kB"
 msgstr ""
 
 #, python-format
-msgid "%.1f°E"
+msgid "%.1f° E"
 msgstr ""
 
 #, python-format
-msgid "%.1f°W"
+msgid "%.1f° W"
 msgstr ""
 
 #, python-format
@@ -3676,6 +3676,9 @@ msgid "EPG selection"
 msgstr ""
 
 msgid "EPG settings"
+msgstr ""
+
+msgid "EPG:"
 msgstr ""
 
 #, python-format
@@ -8625,6 +8628,10 @@ msgid "Restore backups"
 msgstr "恢复备份"
 
 #, fuzzy
+msgid "Restore defaults"
+msgstr "默认"
+
+#, fuzzy
 msgid "Restore deleted user bouquets"
 msgstr "您确定要删除?"
 
@@ -9668,10 +9675,6 @@ msgstr ""
 #, fuzzy
 msgid "Set default"
 msgstr "默认"
-
-#, fuzzy
-msgid "Set default settings?"
-msgstr "默认设置"
 
 msgid "Set end time"
 msgstr ""
@@ -11638,6 +11641,10 @@ msgstr "定时器选择"
 
 msgid "Timer type"
 msgstr ""
+
+#, fuzzy
+msgid "Timer:"
+msgstr "定时器"
 
 msgid "Timeshift"
 msgstr "时光平移"
@@ -14387,6 +14394,10 @@ msgid "tennis/squash"
 msgstr ""
 
 #, fuzzy
+msgid "testing"
+msgstr "设置"
+
+#, fuzzy
 msgid "this bouquet is protected by a parental control pin"
 msgstr "此频道受家长控制."
 
@@ -14533,9 +14544,6 @@ msgid "with_errors"
 msgstr "with %d error"
 
 msgid "without"
-msgstr ""
-
-msgid "working"
 msgstr ""
 
 msgid "xp1000"

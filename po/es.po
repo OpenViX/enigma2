@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-08 00:14+0100\n"
+"POT-Creation-Date: 2020-01-05 14:04+0100\n"
 "PO-Revision-Date: 2015-02-09 16:12+0100\n"
 "Last-Translator: jrodzar <jrodzar@gmail.com>\n"
 "Language-Team: none\n"
@@ -164,11 +164,11 @@ msgid "%.0f kB"
 msgstr ""
 
 #, python-format
-msgid "%.1f°E"
+msgid "%.1f° E"
 msgstr ""
 
 #, python-format
-msgid "%.1f°W"
+msgid "%.1f° W"
 msgstr ""
 
 #, python-format
@@ -4273,6 +4273,9 @@ msgstr "Selección EPG"
 
 msgid "EPG settings"
 msgstr "Configuración de EPG"
+
+msgid "EPG:"
+msgstr ""
 
 #
 #, python-format
@@ -10012,6 +10015,10 @@ msgid "Restore backups"
 msgstr "Restaurar backups"
 
 #, fuzzy
+msgid "Restore defaults"
+msgstr "Predeterminar"
+
+#, fuzzy
 msgid "Restore deleted user bouquets"
 msgstr "restaurar userbouquets eliminados"
 
@@ -11182,12 +11189,6 @@ msgstr ""
 
 msgid "Set default"
 msgstr "Predeterminar"
-
-#
-#
-#, fuzzy
-msgid "Set default settings?"
-msgstr "Parámetros por Defecto"
 
 msgid "Set end time"
 msgstr "Establecer la hora final"
@@ -13462,6 +13463,11 @@ msgstr "Selección de grabación..."
 #
 msgid "Timer type"
 msgstr "Tipo de grabación"
+
+#
+#, fuzzy
+msgid "Timer:"
+msgstr "Grabación"
 
 #
 msgid "Timeshift"
@@ -16637,6 +16643,11 @@ msgid "tennis/squash"
 msgstr "tenis / squash"
 
 #
+#, fuzzy
+msgid "testing"
+msgstr "Resolución"
+
+#
 #
 msgid "this bouquet is protected by a parental control pin"
 msgstr "este canal está protegido por el pin de control de adultos"
@@ -16804,10 +16815,6 @@ msgstr "con %d error"
 #, fuzzy
 msgid "without"
 msgstr "Sin ventana emergente"
-
-#
-msgid "working"
-msgstr "trabajando"
 
 msgid "xp1000"
 msgstr ""

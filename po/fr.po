@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-08 00:14+0100\n"
+"POT-Creation-Date: 2020-01-05 14:04+0100\n"
 "PO-Revision-Date: 2015-10-31 16:41+0100\n"
 "Last-Translator: Pr2 <dummy@dummy.com>\n"
 "Language-Team: none\n"
@@ -160,11 +160,11 @@ msgid "%.0f kB"
 msgstr "%.0f GB"
 
 #, python-format
-msgid "%.1f°E"
+msgid "%.1f° E"
 msgstr ""
 
 #, python-format
-msgid "%.1f°W"
+msgid "%.1f° W"
 msgstr ""
 
 #, fuzzy, python-format
@@ -3688,6 +3688,9 @@ msgstr "Sélection EPG"
 
 msgid "EPG settings"
 msgstr "Paramètres EPG"
+
+msgid "EPG:"
+msgstr ""
 
 #, python-format
 msgid "ERROR - failed to scan (%s)!"
@@ -8552,6 +8555,10 @@ msgid "Restore backups"
 msgstr "Restaurer sauvegardes"
 
 #, fuzzy
+msgid "Restore defaults"
+msgstr "Définir par défaut"
+
+#, fuzzy
 msgid "Restore deleted user bouquets"
 msgstr "restaurer les userbouquets effacé"
 
@@ -9562,10 +9569,6 @@ msgstr ""
 
 msgid "Set default"
 msgstr "Définir par défaut"
-
-#, fuzzy
-msgid "Set default settings?"
-msgstr "Paramètres par défaut"
 
 msgid "Set end time"
 msgstr "Régler l'heure de fin"
@@ -11527,6 +11530,10 @@ msgstr "Sélection de programmation..."
 
 msgid "Timer type"
 msgstr "Type programmation"
+
+#, fuzzy
+msgid "Timer:"
+msgstr "Programmation"
 
 msgid "Timeshift"
 msgstr "PauseDirect"
@@ -14302,6 +14309,10 @@ msgstr "Fichier modèle"
 msgid "tennis/squash"
 msgstr "Tennis/Squash"
 
+#, fuzzy
+msgid "testing"
+msgstr "Question"
+
 msgid "this bouquet is protected by a parental control pin"
 msgstr "ce service est protégé par un pin contrôle parental"
 
@@ -14452,9 +14463,6 @@ msgstr "Avec %d erreur"
 #, fuzzy
 msgid "without"
 msgstr "avec texte"
-
-msgid "working"
-msgstr "Travail en cours..."
 
 msgid "xp1000"
 msgstr "xp1000"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-08 00:14+0100\n"
+"POT-Creation-Date: 2020-01-05 14:04+0100\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -151,11 +151,11 @@ msgid "%.0f kB"
 msgstr ""
 
 #, python-format
-msgid "%.1f°E"
+msgid "%.1f° E"
 msgstr ""
 
 #, python-format
-msgid "%.1f°W"
+msgid "%.1f° W"
 msgstr ""
 
 #, python-format
@@ -3649,6 +3649,9 @@ msgid "EPG selection"
 msgstr ""
 
 msgid "EPG settings"
+msgstr ""
+
+msgid "EPG:"
 msgstr ""
 
 #, python-format
@@ -8507,6 +8510,10 @@ msgid "Restore backups"
 msgstr "Възстановяване backups"
 
 #, fuzzy
+msgid "Restore defaults"
+msgstr "Възстановяване backups"
+
+#, fuzzy
 msgid "Restore deleted user bouquets"
 msgstr "Разреши много букети"
 
@@ -9517,10 +9524,6 @@ msgstr ""
 
 msgid "Set default"
 msgstr ""
-
-#, fuzzy
-msgid "Set default settings?"
-msgstr "Стандартни Настройки"
 
 msgid "Set end time"
 msgstr ""
@@ -11446,6 +11449,10 @@ msgstr ""
 
 msgid "Timer type"
 msgstr "Вид Таймер"
+
+#, fuzzy
+msgid "Timer:"
+msgstr "Таймер"
 
 msgid "Timeshift"
 msgstr "Таймшифт"
@@ -14155,6 +14162,10 @@ msgid "tennis/squash"
 msgstr ""
 
 #, fuzzy
+msgid "testing"
+msgstr "Резолюция"
+
+#, fuzzy
 msgid "this bouquet is protected by a parental control pin"
 msgstr "този канал е заключен с ПИН за родителски контрол"
 
@@ -14299,9 +14310,6 @@ msgstr ""
 
 msgid "without"
 msgstr ""
-
-msgid "working"
-msgstr "работи"
 
 msgid "xp1000"
 msgstr ""

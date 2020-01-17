@@ -17,14 +17,13 @@ from Tools.Import import my_import
 from Tools.LoadPixmap import LoadPixmap
 
 DEFAULT_SKIN = "GigabluePax/skin.xml"
-# DEFAULT_SKIN = SystemInfo["HasFullHDSkinSupport"] and "PLi-FullNightHD/skin.xml" or "PLi-HD/skin.xml"  # On SD hardware PLi-HD will not be available.
-DEFAULT_SD_SKIN = "Magic/skin.xml"
+# DEFAULT_SKIN = SystemInfo["HasFullHDSkinSupport"] and "PLi-FullNightHD/skin.xml" or "PLi-HD/skin.xml"  # SD hardware is no longer supported by the default skin.
 EMERGENCY_SKIN = "skin_default.xml"
 DEFAULT_DISPLAY_SKIN = "skin_display.xml"
 USER_SKIN = "skin_user.xml"
 USER_SKIN_TEMPLATE = "skin_user_%s.xml"
-BOX_SKIN = "skin_box.xml"  # DEBUG: Is this actually used?
-SECOND_INFOBAR_SKIN = "skin_second_infobar.xml"  # DEBUG: Is this actually used?
+# BOX_SKIN = "skin_box.xml"  # DEBUG: Is this actually used?
+# SECOND_INFOBAR_SKIN = "skin_second_infobar.xml"  # DEBUG: Is this actually used?
 SUBTITLE_SKIN = "skin_subtitles.xml"
 
 GUI_SKIN_ID = 0  # Main frame-buffer.
@@ -35,6 +34,8 @@ domScreens = {}  # Dictionary of skin based screens.
 colorNames = {}  # Dictionary of skin color names.
 switchPixmap = {}  # Dictionary of switch images.
 parameters = {}  # Dictionary of skin parameters used to modify code behavior.
+menus = {}  # Dictionary of images associated with menu entries.
+setups = {}  # Dictionary of images associated with setup menus.
 fonts = {  # Dictionary of predefined and skin defined font aliases.
 	"Body": ("Regular", 18, 22, 16),
 	"ChoiceList": ("Regular", 20, 24, 18),
@@ -56,16 +57,10 @@ fonts = {  # Dictionary of predefined and skin defined font aliases.
 # E.g. "MySkin/skin_display.xml"
 #
 config.skin = ConfigSubsection()
-# On SD hardware, DEFAULT_SKIN will not be available.
 skin = resolveFilename(SCOPE_SKIN, DEFAULT_SKIN)
 if not fileExists(skin) or not os.path.isfile(skin):
-	# In that case, fallback to the DEFAULT_SD_SKIN.
-	DEFAULT_SKIN = DEFAULT_SD_SKIN
-	print "[Skin] Error: Default HD skin '%s' is not readable or is not a file!  Using default SD skin." % skin
-	skin = resolveFilename(SCOPE_SKIN, DEFAULT_SKIN)
-	if not fileExists(skin) or not os.path.isfile(skin):
-		DEFAULT_SKIN = "skin.xml"
-		print "[Skin] Error: Default SD skin '%s' is not also readable or is not a file!  Using emergency skin." % skin
+	print "[Skin] Error: Default skin '%s' is not readable or is not a file!  Using emergency skin." % skin
+	DEFAULT_SKIN = EMERGENCY_SKIN
 config.skin.primary_skin = ConfigText(default=DEFAULT_SKIN)
 config.skin.display_skin = ConfigText(default=DEFAULT_DISPLAY_SKIN)
 
@@ -106,13 +101,15 @@ def addSkin(name, scope=SCOPE_CURRENT_SKIN):
 				data = content[line - 1].replace("\t", " ").rstrip()
 				print "[Skin] XML Parse Error: '%s'" % data
 				print "[Skin] XML Parse Error: '%s^%s'" % ("-" * column, " " * (len(data) - column - 1))
-			except Exception:
-				print "[Skin] Error: Unable to parse skin data in '%s'!" % filename
-	except IOError, e:
+			except Exception as e:
+				print "[Skin] Error: Unable to parse skin data in '%s' - '%s'!" % (filename, e)
+	except IOError as e:
 		if e.errno == errno.ENOENT:  #  No such file or directory
-			print "[Skin] Warning: Skin '%s' does not exist!" % filename
+			print "[Skin] Warning: Skin file '%s' does not exist!" % filename
 		else:
-			print "[Skin] Error %d: Opening file '%s'! (%s)" % (e.errno, filename, os.strerror(e.errno))
+			print "[Skin] Error %d: Opening skin file '%s'! (%s)" % (e.errno, filename, os.strerror(e.errno))
+	except Exception as e:
+		print "[Skin] Error: Unexpected error opening skin file '%s'! (%s)" % (filename, e)
 	return False
 
 profile("LoadSkin")
@@ -395,15 +392,23 @@ class AttributeParser:
 		else:
 			self.guiObject.resize(parseSize(value, self.scaleTuple, self.guiObject, self.desktop))
 
-	def animationMode(self, value):
-		self.guiObject.setAnimationMode(
-			{ "disable": 0x00,
-				"off": 0x00,
-				"offshow": 0x10,
-				"offhide": 0x01,
-				"onshow": 0x01,
-				"onhide": 0x10,
-			}[value])
+	def animationPaused(self, value):
+		pass
+
+# OpenPLi is missing the C++ code to support this animation method.
+#
+# 	def animationMode(self, value):
+# 		try:
+# 			self.guiObject.setAnimationMode({
+# 				"disable": 0x00,
+# 				"off": 0x00,
+# 				"offshow": 0x10,
+# 				"offhide": 0x01,
+# 				"onshow": 0x01,
+# 				"onhide": 0x10,
+# 			}[value])
+# 		except KeyError:
+#			print "[Skin] Error: Invalid animationMode '%s'!  Must be one of 'disable', 'off', 'offshow', 'offhide', 'onshow' or 'onhide'." % value
 
 	def title(self, value):
 		self.guiObject.setTitle(_(value))
@@ -459,10 +464,11 @@ class AttributeParser:
 				"blend": 2,
 			}[value])
 		except KeyError:
-			print "[Skin] Error: Invalid alphatest '%s'!  Must be one of 'on', 'off', 'off' or 'blend'." % value
+			print "[Skin] Error: Invalid alphatest '%s'!  Must be one of 'on', 'off' or 'blend'." % value
 
 	def scale(self, value):
-		self.guiObject.setScale(1)
+		value = 1 if value.lower() in ("1", "enabled", "on", "scale", "true", "yes") else 0
+		self.guiObject.setScale(value)
 
 	def orientation(self, value):  # used by eSlider
 		try:
@@ -580,7 +586,8 @@ class AttributeParser:
 			print "[Skin] Error: Invalid scrollbarMode '%s'!  Must be one of 'showOnDemand', 'showAlways', 'showNever' or 'showLeft'." % value
 
 	def enableWrapAround(self, value):
-		self.guiObject.setWrapAround(True)
+		value = True if value.lower() in ("1", "enabled", "enablewraparound", "on", "true", "yes") else False
+		self.guiObject.setWrapAround(value)
 
 	def itemHeight(self, value):
 		self.guiObject.setItemHeight(int(value))
@@ -601,9 +608,12 @@ class AttributeParser:
 		self.guiObject.setShadowOffset(parsePosition(value, self.scaleTuple))
 
 	def noWrap(self, value):
-		self.guiObject.setNoWrap(int(value))
+		value = 1 if value.lower() in ("1", "enabled", "nowrap", "on", "true", "yes") else 0
+		self.guiObject.setNoWrap(value)
+
 	def linelength(self, value):
 		pass
+
 	def OverScan(self, value):
 		self.guiObject.setOverscan(value)
 
@@ -617,7 +627,7 @@ def applyAllAttributes(guiObject, desktop, attributes, scale):
 def loadSingleSkinData(desktop, domSkin, pathSkin, scope=SCOPE_CURRENT_SKIN):
 	"""Loads skin data like colors, windowstyle etc."""
 	assert domSkin.tag == "skin", "root element in skin must be 'skin'!"
-	global colorNames, fonts, parameters, switchPixmap
+	global colorNames, fonts, menus, parameters, setups, switchPixmap
 	for tag in domSkin.findall("output"):
 		id = tag.attrib.get("id")
 		if id:
@@ -627,20 +637,11 @@ def loadSingleSkinData(desktop, domSkin, pathSkin, scope=SCOPE_CURRENT_SKIN):
 		if id == GUI_SKIN_ID:
 			for res in tag.findall("resolution"):
 				xres = res.attrib.get("xres")
-				if xres:
-					xres = int(xres)
-				else:
-					xres = 720
+				xres = int(xres) if xres else 720
 				yres = res.attrib.get("yres")
-				if yres:
-					yres = int(yres)
-				else:
-					yres = 576
+				yres = int(yres) if yres else 576
 				bpp = res.attrib.get("bpp")
-				if bpp:
-					bpp = int(bpp)
-				else:
-					bpp = 32
+				bpp = int(bpp) if bpp else 32
 				# print "[Skin] Resolution xres=%d, yres=%d, bpp=%d." % (xres, yres, bpp)
 				from enigma import gMainDC
 				gMainDC.getInstance().setResolution(xres, yres)
@@ -777,6 +778,24 @@ def loadSingleSkinData(desktop, domSkin, pathSkin, scope=SCOPE_CURRENT_SKIN):
 				parameters[name] = "," in value and map(parseParameter, value.split(",")) or parseParameter(value)
 			except Exception, ex:
 				print "[Skin] Bad parameter:", ex
+	for tag in domSkin.findall("menus"):
+		for setup in tag.findall("menu"):
+			key = setup.attrib.get("key")
+			image = setup.attrib.get("image")
+			if key and image:
+				menus[key] = image
+				# print "[Skin] Menu key='%s', image='%s'." % (key, image)
+			else:
+				raise SkinError("Tag menu needs key and image, got key='%s' and image='%s'" % (key, image))
+	for tag in domSkin.findall("setups"):
+		for setup in tag.findall("setup"):
+			key = setup.attrib.get("key")
+			image = setup.attrib.get("image")
+			if key and image:
+				setups[key] = image
+				# print "[Skin] Setup: '%s' -> '%s'" % (key, image)
+			else:
+				raise SkinError("Tag setup needs key and image, got key='%s' and image='%s'" % (key, image))
 	for tag in domSkin.findall("subtitles"):
 		from enigma import eSubtitleWidget
 		scale = ((1, 1), (1, 1))
@@ -886,13 +905,15 @@ def loadSkin(filename, desktop=None, scope=SCOPE_SKIN):
 				data = content[line - 1].replace("\t", " ").rstrip()
 				print "[Skin] XML Parse Error: '%s'" % data
 				print "[Skin] XML Parse Error: '%s^%s'" % ("-" * column, " " * (len(data) - column - 1))
-			except Exception:
-				print "[Skin] Error: Unable to parse skin data in '%s'!" % filename
-	except IOError, e:
+			except Exception as e:
+				print "[Skin] Error: Unable to parse skin data in '%s' - '%s'!" % (filename, e)
+	except IOError as e:
 		if e.errno == errno.ENOENT:  #  No such file or directory
-			print "[Skin] Warning: Skin '%s' does not exist!" % filename
+			print "[Skin] Warning: Skin file '%s' does not exist!" % filename
 		else:
-			print "[Skin] Error %d: Opening file '%s'! (%s)" % (e.errno, filename, os.strerror(e.errno))
+			print "[Skin] Error %d: Opening skin file '%s'! (%s)" % (e.errno, filename, os.strerror(e.errno))
+	except Exception as e:
+		print "[Skin] Error: Unexpected error opening skin file '%s'! (%s)" % (filename, e)
 
 # Kinda hackish, but this is called once by mytest.py.
 #
@@ -1239,6 +1260,21 @@ def readSkin(screen, skin, names, desktop):
 	# things around.
 	screen = None
 	usedComponents = None
+
+# Search the domScreens dictionary to see if any of the screen names provided
+# have a skin based screen.  This will allow coders to know if the named
+# screen will be skinned by the skin code.  A return of None implies that the
+# code must provide its own skin for the screen to be displayed to the user.
+#
+def findSkinScreen(names):
+	if not isinstance(names, list):
+		names = [names]
+	# Try all names given, the first one found is the one that will be used by the skin engine.
+	for name in names:
+		screen, path = domScreens.get(name, (None, None))
+		if screen is not None:
+			return name
+	return None
 
 def dump(x, i=0):
 	print " " * i + str(x)

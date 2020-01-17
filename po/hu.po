@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-08 00:14+0100\n"
+"POT-Creation-Date: 2020-01-05 14:04+0100\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -153,11 +153,11 @@ msgid "%.0f kB"
 msgstr ""
 
 #, python-format
-msgid "%.1f°E"
+msgid "%.1f° E"
 msgstr ""
 
 #, python-format
-msgid "%.1f°W"
+msgid "%.1f° W"
 msgstr ""
 
 #, python-format
@@ -3732,6 +3732,9 @@ msgstr "Elektronikus műsorújság"
 
 msgid "EPG settings"
 msgstr "EPG beállítások"
+
+msgid "EPG:"
+msgstr ""
 
 #, python-format
 msgid "ERROR - failed to scan (%s)!"
@@ -8695,6 +8698,10 @@ msgid "Restore backups"
 msgstr "Mentések visszaállítása"
 
 #, fuzzy
+msgid "Restore defaults"
+msgstr "Mentések visszaállítása"
+
+#, fuzzy
 msgid "Restore deleted user bouquets"
 msgstr "Többszörös bouquetek engedélyezése"
 
@@ -9725,10 +9732,6 @@ msgstr ""
 
 msgid "Set default"
 msgstr ""
-
-#, fuzzy
-msgid "Set default settings?"
-msgstr "Alapértelmezett beállítások"
 
 msgid "Set end time"
 msgstr "Befejezési idő"
@@ -11729,6 +11732,10 @@ msgstr "Időzítés kiválasztása..."
 
 msgid "Timer type"
 msgstr "Időzítés típusa"
+
+#, fuzzy
+msgid "Timer:"
+msgstr "Időzítő"
 
 msgid "Timeshift"
 msgstr "Időcsúsztatás"
@@ -14519,6 +14526,10 @@ msgid "tennis/squash"
 msgstr "tenisz/fallabda"
 
 #, fuzzy
+msgid "testing"
+msgstr "Felbontás"
+
+#, fuzzy
 msgid "this bouquet is protected by a parental control pin"
 msgstr "a csatorna gyermekzárral védve van"
 
@@ -14669,9 +14680,6 @@ msgstr "%d hibával"
 #, fuzzy
 msgid "without"
 msgstr "Figyelmeztetés nélkül"
-
-msgid "working"
-msgstr "működőképes"
 
 msgid "xp1000"
 msgstr ""

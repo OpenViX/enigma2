@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-08 00:14+0100\n"
+"POT-Creation-Date: 2020-01-05 14:04+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Budiarno\n"
 "Language-Team: \n"
@@ -148,11 +148,11 @@ msgid "%.0f kB"
 msgstr ""
 
 #, python-format
-msgid "%.1f°E"
+msgid "%.1f° E"
 msgstr ""
 
 #, python-format
-msgid "%.1f°W"
+msgid "%.1f° W"
 msgstr ""
 
 #, python-format
@@ -3690,6 +3690,9 @@ msgstr "Pemilihan EPG"
 
 msgid "EPG settings"
 msgstr "Pengaturan EPG"
+
+msgid "EPG:"
+msgstr ""
 
 #, python-format
 msgid "ERROR - failed to scan (%s)!"
@@ -8560,6 +8563,10 @@ msgid "Restore backups"
 msgstr "Restore backups"
 
 #, fuzzy
+msgid "Restore defaults"
+msgstr "Restore backups"
+
+#, fuzzy
 msgid "Restore deleted user bouquets"
 msgstr "Anda yakin ingin membersihkan semua buket pengguna yg dihapus?"
 
@@ -9566,9 +9573,6 @@ msgid "Set blocktimes by weekday"
 msgstr ""
 
 msgid "Set default"
-msgstr ""
-
-msgid "Set default settings?"
 msgstr ""
 
 msgid "Set end time"
@@ -11517,6 +11521,10 @@ msgstr ""
 
 msgid "Timer type"
 msgstr "Timer type"
+
+#, fuzzy
+msgid "Timer:"
+msgstr "Pewaktu"
 
 msgid "Timeshift"
 msgstr "Timeshift"
@@ -14291,6 +14299,10 @@ msgstr "template file"
 msgid "tennis/squash"
 msgstr "tennis/squash"
 
+#, fuzzy
+msgid "testing"
+msgstr "Pertanyaan"
+
 msgid "this bouquet is protected by a parental control pin"
 msgstr ""
 
@@ -14436,9 +14448,6 @@ msgstr ""
 #, fuzzy
 msgid "without"
 msgstr "Tanpa popup"
-
-msgid "working"
-msgstr "berfungsi"
 
 msgid "xp1000"
 msgstr ""

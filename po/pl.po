@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-08 00:14+0100\n"
+"POT-Creation-Date: 2020-01-05 14:04+0100\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -162,11 +162,11 @@ msgid "%.0f kB"
 msgstr ""
 
 #, python-format
-msgid "%.1f°E"
+msgid "%.1f° E"
 msgstr ""
 
 #, python-format
-msgid "%.1f°W"
+msgid "%.1f° W"
 msgstr ""
 
 #, python-format
@@ -4261,6 +4261,9 @@ msgstr "Wybór EPG"
 
 msgid "EPG settings"
 msgstr "EPG"
+
+msgid "EPG:"
+msgstr ""
 
 #
 #, python-format
@@ -10045,6 +10048,11 @@ msgstr "Przywróć backup"
 
 #
 #, fuzzy
+msgid "Restore defaults"
+msgstr "Ustaw domyślny"
+
+#
+#, fuzzy
 msgid "Restore deleted user bouquets"
 msgstr "Jesteś pewien, że chcesz usunąć wszystkie kanały tv kablowej?"
 
@@ -11237,11 +11245,6 @@ msgstr ""
 #
 msgid "Set default"
 msgstr "Ustaw domyślny"
-
-#
-#, fuzzy
-msgid "Set default settings?"
-msgstr "Ustawienia domyślne"
 
 #
 msgid "Set end time"
@@ -13522,6 +13525,11 @@ msgstr "Wybór timera..."
 #
 msgid "Timer type"
 msgstr "Typ timera"
+
+#
+#, fuzzy
+msgid "Timer:"
+msgstr "Timery"
 
 #
 msgid "Timeshift"
@@ -16690,6 +16698,11 @@ msgid "tennis/squash"
 msgstr "Tennis/Squash"
 
 #
+#, fuzzy
+msgid "testing"
+msgstr "Rozdzielczość"
+
+#
 msgid "this bouquet is protected by a parental control pin"
 msgstr "Ten bukiet jest chroniony kodem PIN"
 
@@ -16864,10 +16877,6 @@ msgstr "z %d błędem"
 #, fuzzy
 msgid "without"
 msgstr "Bez ostrzeżenia"
-
-#
-msgid "working"
-msgstr "Pracuje"
 
 msgid "xp1000"
 msgstr ""
