@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-08 09:10+0000\n"
-"PO-Revision-Date: 2019-11-08 16:46+0100\n"
+"POT-Creation-Date: 2020-01-05 13:59+0000\n"
+"PO-Revision-Date: 2020-01-10 14:12+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -1098,6 +1098,9 @@ msgstr "16:9 Letterbox"
 msgid "16:9 always"
 msgstr "Altijd 16:9"
 
+msgid "16K"
+msgstr "16K"
+
 msgid "18 V"
 msgstr "18 V"
 
@@ -1185,6 +1188,9 @@ msgstr "4:3 letterbox"
 msgid "4:3 PanScan"
 msgstr "4:3 pan & scan"
 
+msgid "4K"
+msgstr "4K"
+
 msgid "4X"
 msgstr "4X"
 
@@ -1197,14 +1203,23 @@ msgstr "720p"
 msgid "720p 24Hz"
 msgstr "720p 24Hz"
 
+msgid "8K"
+msgstr "8K"
+
 msgid "8bit"
 msgstr "8bit"
+
+msgid "< Current >"
+msgstr "< Huidig >"
+
+msgid "< Default + Picon >"
+msgstr "< Standaard + Picon >"
 
 msgid "< Default >"
 msgstr "< Standaard >"
 
-msgid "< Default with Picon >"
-msgstr "<Standaard met picon >"
+msgid "< Emergency >"
+msgstr "< Nood >"
 
 msgid "<Current movielist location>"
 msgstr "<Huidige lokatie opnamelijst>"
@@ -1430,9 +1445,6 @@ msgstr "Favorieten bewerken afsluiten"
 msgid "About"
 msgstr "Uw ontvanger"
 
-msgid "About..."
-msgstr "Info..."
-
 msgid "Accept the current selection"
 msgstr "Accepteer huidige selectie"
 
@@ -1461,7 +1473,10 @@ msgid "Activate network settings"
 msgstr "Activeer netwerkinstellingen"
 
 msgid "Activate the configured network settings."
-msgstr "Aktiveer de gekozen netwerk instellingen."
+msgstr "Activeer de gekozen netwerk instellingen."
+
+msgid "Activate the currently selected skin"
+msgstr "Activeer de momenteel geselecteerde skin"
 
 msgid "Activate timeshift end"
 msgstr "Activeer timeshift einde"
@@ -1567,6 +1582,9 @@ msgstr "Zender toevoegen aan favorietenlijst"
 
 msgid "Add service to favourites"
 msgstr "Zender toevoegen aan favorieten"
+
+msgid "Add services to this bouquet?"
+msgstr "Zenders toevoegen aan deze favorietenlijst?"
 
 msgid "Add timer"
 msgstr "Timer"
@@ -4068,6 +4086,9 @@ msgstr "Toon 4:3 materiaal als"
 msgid "Display >16:9 content as"
 msgstr "Toon >16:9 materiaal als"
 
+msgid "Display Skin"
+msgstr "Display Skin"
+
 msgid "Display and user interface"
 msgstr "Scherm- en gebruikersinterface"
 
@@ -4606,9 +4627,6 @@ msgstr "Eindtijd"
 msgid "English"
 msgstr "Engels"
 
-msgid "Enigma2 skin selector"
-msgstr "Enigma2 skinselectie"
-
 msgid "Enter"
 msgstr "Enter"
 
@@ -4847,9 +4865,6 @@ msgstr "Verlaat netwerkadapterinstellingen menu"
 msgid "Exit the wizard"
 msgstr "Wizard afsluiten"
 
-msgid "Exit/OK"
-msgstr "Exit/OK"
-
 msgid "Expert"
 msgstr "Expert"
 
@@ -4970,6 +4985,9 @@ msgstr "FEC"
 
 msgid "FEC:"
 msgstr "FEC:"
+
+msgid "FHD"
+msgstr "FHD"
 
 msgid "FLASH"
 msgstr "FLASH"
@@ -5240,19 +5258,15 @@ msgstr "GB"
 msgid "GStreamer:\t%s\n"
 msgstr "GStreamer:\t%s\n"
 
+msgid "GUI Skin"
+msgstr "GUI Skin"
+
 msgid ""
 "GUI needs a restart to apply a new language\n"
 "Do you want to restart the GUI now?"
 msgstr ""
 "De gebruikersinterface moet herstart worden om de nieuwe taal te activeren\n"
 "Nu herstarten?"
-
-msgid ""
-"GUI needs a restart to apply a new skin\n"
-"Do you want to restart the GUI now?"
-msgstr ""
-"De gebruikersinterface moet herstart worden om\n"
-"de nieuwe skin te activeren. Nu herstarten?"
 
 msgid ""
 "GUI needs a restart to switch modes\n"
@@ -5467,6 +5481,9 @@ msgstr "H:mm"
 
 msgid "H:mm:ss"
 msgstr "H:mm:ss"
+
+msgid "HD"
+msgstr "HD"
 
 msgid "HD list"
 msgstr "HD lijst"
@@ -6954,6 +6971,18 @@ msgstr "Ga naar begin van de lijst"
 msgid "Move to position X"
 msgstr "Naar positie X draaien"
 
+msgid "Move to the next page"
+msgstr "Verplaats naar de volgende pagina"
+
+msgid "Move to the next skin"
+msgstr "Verplaats naar de volgende skin"
+
+msgid "Move to the previous page"
+msgstr "Verplaats naar de vorige pagina"
+
+msgid "Move to the previous skin"
+msgstr "Verplaats naar de vorige pagina"
+
 msgid "Move up a line"
 msgstr "Ga een regel omhoog"
 
@@ -7477,9 +7506,6 @@ msgstr ""
 "Bestandsgrootte: %sMB\n"
 "Vrije ruimte: %sMB\n"
 "Pad: %s"
-
-msgid "Not mounted"
-msgstr "Niet gemount"
 
 msgid "Not running"
 msgstr "Niet actief"
@@ -8453,8 +8479,9 @@ msgstr "Druk op MENU voor extra opties."
 msgid "Press OK on your remote control to continue."
 msgstr "Druk op de OK toets om door te gaan."
 
-msgid "Press OK to activate the selected skin."
-msgstr "Druk op OK om de geselecteerde skin te activeren."
+#, python-format
+msgid "Press OK to activate the selected%s skin."
+msgstr "Druk op OK om de geselecteerde%s skin te activeren."
 
 msgid "Press OK to activate the settings."
 msgstr "Druk op OK om instellingen te activeren."
@@ -8465,6 +8492,10 @@ msgstr "Druk op OK om instellingen te wijzigen."
 #, python-format
 msgid "Press OK to get further details for %s"
 msgstr "Druk op OK voor meer details van: %s"
+
+#, python-format
+msgid "Press OK to keep the currently selected%s skin."
+msgstr "Druk op OK om de momenteel actieve %s skin te behouden."
 
 msgid "Press OK to scan"
 msgstr "Druk OK om te scannen"
@@ -9093,6 +9124,9 @@ msgstr "Flash"
 msgid "Restore backups"
 msgstr "Back-ups terugzetten"
 
+msgid "Restore defaults"
+msgstr "Herstel standaard waardes"
+
 msgid "Restore deleted user bouquets"
 msgstr "Herstel verwijderde favorietenlijsten"
 
@@ -9134,6 +9168,9 @@ msgstr "Omgekeerde favorietenknoppen"
 
 msgid "Reverse list"
 msgstr "Keer lijst om"
+
+msgid "Revert to the currently active skin"
+msgstr "Keer terug naar de momenteel actieve skin"
 
 msgid "Rewind"
 msgstr "Terug spoelen"
@@ -9289,9 +9326,6 @@ msgstr "Schotelinstellingen"
 msgid "Satellite equipment"
 msgstr "Satelliet apparatuur"
 
-msgid "Satellite equipment control"
-msgstr "Satelliet apparatuur controle"
-
 msgid "Satellite equipment setup"
 msgstr "Apparatuurinstellingen"
 
@@ -9321,9 +9355,6 @@ msgstr "Sla op/Geef tekst in en sluit af"
 
 msgid "Save EPG"
 msgstr "Sla EPG op"
-
-msgid "Save and exit"
-msgstr "Bewaar en sla op"
 
 msgid "Save and record"
 msgstr "Bewaar en sla op"
@@ -10551,11 +10582,11 @@ msgstr "Breedtegraad"
 msgid "Site longitude"
 msgstr "Lengtegraad"
 
-msgid "Size: "
-msgstr "Grootte: "
-
 msgid "Skin"
 msgstr "Skin"
+
+msgid "Skin Selection Actions"
+msgstr "Skinkeuze"
 
 msgid "Skin Setting"
 msgstr "Skin instellen"
@@ -10569,6 +10600,9 @@ msgstr "Skin instellingen"
 #, python-format
 msgid "Skin:\t%s"
 msgstr "Skin:\t%s"
+
+msgid "SkinSelector: Restart GUI"
+msgstr "SkinSelector: Herstart GUI"
 
 msgid "Skins"
 msgstr "Skins"
@@ -11939,6 +11973,10 @@ msgstr "Titel instellingen"
 
 msgid "Titleset mode"
 msgstr "Titelset modus"
+
+#, python-format
+msgid "To save and apply the selected '%s' skin the GUI needs to restart.  Would you like to save the selection and restart the GUI?"
+msgstr "Om de geselecteerde '%s' skin toe te passen, moet de GUI herstart worden. Wilt u dat nu doen?"
 
 msgid "Today"
 msgstr "Vandaag"
@@ -15088,9 +15126,6 @@ msgstr "zapte"
 #~ msgid "128"
 #~ msgstr "128"
 
-#~ msgid "16"
-#~ msgstr "16"
-
 #~ msgid "256"
 #~ msgstr "256"
 
@@ -15241,6 +15276,9 @@ msgstr "zapte"
 
 #~ msgid "AV settings"
 #~ msgstr "AV instellingen"
+
+#~ msgid "About..."
+#~ msgstr "Info..."
 
 #~ msgid "Action on long power button press"
 #~ msgstr "Actie bij lang  indrukken van de aan-uit toets"
@@ -15566,9 +15604,6 @@ msgstr "zapte"
 #~ msgid "Disconnect"
 #~ msgstr "Verbreken"
 
-#~ msgid "Display"
-#~ msgstr "Display"
-
 #~ msgid "Do"
 #~ msgstr "Voer uit"
 
@@ -15634,6 +15669,9 @@ msgstr "zapte"
 #~ msgid "Enigma2 Changes"
 #~ msgstr "Enimga2 veranderingen"
 
+#~ msgid "Enigma2 skin selector"
+#~ msgstr "Enigma2 skinselectie"
+
 #~ msgid "Enimga2 Changes"
 #~ msgstr "Enimga2 veranderingen"
 
@@ -15648,6 +15686,9 @@ msgstr "zapte"
 
 #~ msgid "Execute"
 #~ msgstr "Uitvoeren"
+
+#~ msgid "Exit/OK"
+#~ msgstr "Exit/OK"
 
 #~ msgid "External (CF)"
 #~ msgstr "Extern (CF)"
@@ -15687,6 +15728,13 @@ msgstr "zapte"
 
 #~ msgid "Ftpd service type: Vsftpd server"
 #~ msgstr "Ftpd service type: Vsftpd server"
+
+#~ msgid ""
+#~ "GUI needs a restart to apply a new skin\n"
+#~ "Do you want to restart the GUI now?"
+#~ msgstr ""
+#~ "De gebruikersinterface moet herstart worden om\n"
+#~ "de nieuwe skin te activeren. Nu herstarten?"
 
 #~ msgid "Get latest experimental image"
 #~ msgstr "Ontvang het laatste experimentele image"
@@ -15880,6 +15928,9 @@ msgstr "zapte"
 #~ msgid "Not configured"
 #~ msgstr "Niet geconfigureerd"
 
+#~ msgid "Not mounted"
+#~ msgstr "Niet gemount"
+
 #~ msgid "Nothing connected"
 #~ msgstr "Niets aangesloten"
 
@@ -16041,6 +16092,12 @@ msgstr "zapte"
 #~ msgid "Same behavior as current animation"
 #~ msgstr "Zelfde gedrag als huidige animatie"
 
+#~ msgid "Satellite equipment control"
+#~ msgstr "Satelliet apparatuur controle"
+
+#~ msgid "Save and exit"
+#~ msgstr "Bewaar en sla op"
+
 #~ msgid "Save timeshift in movie dir and zap"
 #~ msgstr "Bewaar timeshift als opname en zap"
 
@@ -16162,6 +16219,9 @@ msgstr "zapte"
 
 #~ msgid "SingleEPG settings"
 #~ msgstr "Single EPG instellingen"
+
+#~ msgid "Size: "
+#~ msgstr "Grootte: "
 
 #~ msgid "Skin name:\t%s\n"
 #~ msgstr "Skin naam:\t%s\n"
