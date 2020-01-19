@@ -129,6 +129,7 @@ class SecConfigure:
 	def update(self):
 		sec = secClass.getInstance()
 		self.configuredSatellites = set()
+		self.maxLnbNum = sec.getMaxLnbNum()
 		for slotid in self.NimManager.getNimListOfType("DVB-S"):
 			if self.NimManager.nimInternallyConnectableTo(slotid) is not None:
 				self.NimManager.nimRemoveInternalLink(slotid)
@@ -300,7 +301,7 @@ class SecConfigure:
 				currLnb = config.Nims[slotid].advanced.lnb[x]
 				sec.addLNB()
 
-				if x < 65:
+				if x <= self.maxLnbNum:
 					sec.setLNBNum(x)
 
 				tunermask = 1 << slotid
