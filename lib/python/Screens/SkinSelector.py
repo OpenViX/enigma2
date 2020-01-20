@@ -62,7 +62,7 @@ class SkinSelector(Screen, HelpableScreen):
 		rescueSkin = """
 	<screen name="SkinSelector" position="center,center" size="%d,%d">
 		<widget name="preview" position="center,%d" size="%d,%d" alphatest="blend" />
-		<widget source="skins" render="Listbox" position="center,%d" size="%d,%d" enableWrapAround="1" scrollbarMode="showOnDemand" transparent="1">
+		<widget source="skins" render="Listbox" position="center,%d" size="%d,%d" enableWrapAround="1" scrollbarMode="showOnDemand">
 			<convert type="TemplatedMultiContent">
 				{
 				"template": [
@@ -74,17 +74,11 @@ class SkinSelector(Screen, HelpableScreen):
 				}
 			</convert>
 		</widget>
-		<widget source="description" render="Label" position="center,%d" size="%d,%d" font="Regular;%d" transparent="1" valign="center" />
-		<widget source="key_red" render="Pixmap" pixmap="buttons/key_red_fill.png" position="%d,e-%d" size="%d,%d" alphatest="blend" objectTypes="key_red,StaticText" scale="1">
- 			<convert type="ConditionalShowHide" />
- 		</widget>
-		<widget source="key_red" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="key_red" font="Regular;%d" foregroundColor="key_text" halign="center" transparent="1" valign="center" zPosition="+1" />
-		<widget source="key_green" render="Pixmap" pixmap="buttons/key_green_fill.png" position="%d,e-%d" size="%d,%d" alphatest="blend" objectTypes="key_green,StaticText" scale="1">
- 			<convert type="ConditionalShowHide" />
- 		</widget>
-		<widget source="key_green" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="key_green" font="Regular;%d" foregroundColor="key_text" halign="center" transparent="1" valign="center" zPosition="+1" />
+		<widget source="description" render="Label" position="center,%d" size="%d,%d" font="Regular;%d" valign="center" />
+		<widget source="key_red" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="key_red" font="Regular;%d" foregroundColor="key_text" halign="center" valign="center" />
+		<widget source="key_green" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="key_green" font="Regular;%d" foregroundColor="key_text" halign="center" valign="center" />
 	</screen>"""
-		rescueData = [630, 570, 10, 356, 200, 230, 610, 240, 10, 290, 30, 310, 280, 30, 25, 30, 490, 610, 25, 20, 10, 50, 140, 40, 10, 50, 140, 40, 20, 160, 50, 140, 40, 160, 50, 140, 40, 20]
+		rescueData = [630, 570, 10, 356, 200, 230, 610, 240, 10, 290, 30, 310, 280, 30, 25, 30, 490, 610, 25, 20, 10, 50, 140, 40, 20, 160, 50, 140, 40, 20]
 		replaceSkin = False
 		element, path = domScreens.get("SkinSelector", (None, None))
 		if element is not None:
