@@ -5,7 +5,7 @@ from enigma import ePicLoad, getDesktop
 from os import listdir
 from os.path import dirname, exists, isdir, join as pathjoin
 
-from skin import DEFAULT_SKIN, DEFAULT_DISPLAY_SKIN, EMERGENCY_SKIN, domScreens
+from skin import DEFAULT_SKIN, DEFAULT_DISPLAY_SKIN, EMERGENCY_SKIN, currentDisplaySkin, currentPrimarySkin, domScreens
 from Components.ActionMap import HelpableNumberActionMap
 from Components.config import config
 from Components.Pixmap import Pixmap
@@ -20,7 +20,7 @@ from Tools.Directories import resolveFilename, SCOPE_CURRENT_SKIN, SCOPE_LCDSKIN
 
 class SkinSelector(Screen, HelpableScreen):
 	def __init__(self, session, menu_path="", screenTitle=_("GUI Skin")):
-		self.hackSkin()  # This is a hack to ensure the SkinConverter screen works with the new code.
+		self.hackSkin()  # This is a hack to ensure the skin's SkinConverter screen works with the new code.
 		Screen.__init__(self, session)
 		HelpableScreen.__init__(self)
 		if config.usage.show_menupath.value == 'large':
@@ -37,6 +37,7 @@ class SkinSelector(Screen, HelpableScreen):
 		self.skinName = ["SkinSelector"]
 		self.rootDir = resolveFilename(SCOPE_SKIN)
 		self.config = config.skin.primary_skin
+		self.current = currentPrimarySkin
 		self.xmlList = ["skin.xml"]
 		self.onChangedEntry = []
 		self["skins"] = List(enableWrapAround=True)
@@ -58,7 +59,7 @@ class SkinSelector(Screen, HelpableScreen):
 		self.picload.PictureData.get().append(self.showPic)
 		self.onLayoutFinish.append(self.layoutFinished)
 
-	def hackSkin(self):  # This is a hack to ensure the SkinConverter screen works with the new code.
+	def hackSkin(self):  # This is a hack to ensure the skin's SkinConverter screen works with the new code.
 		rescueSkin = """
 	<screen name="SkinSelector" position="center,center" size="%d,%d">
 		<widget name="preview" position="center,%d" size="%d,%d" alphatest="blend" />
@@ -78,7 +79,18 @@ class SkinSelector(Screen, HelpableScreen):
 		<widget source="key_red" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="key_red" font="Regular;%d" foregroundColor="key_text" halign="center" valign="center" />
 		<widget source="key_green" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="key_green" font="Regular;%d" foregroundColor="key_text" halign="center" valign="center" />
 	</screen>"""
-		rescueData = [630, 570, 10, 356, 200, 230, 610, 240, 10, 290, 30, 310, 280, 30, 25, 30, 490, 610, 25, 20, 10, 50, 140, 40, 20, 160, 50, 140, 40, 20]
+		rescueData = [
+			670, 570,
+			10, 356, 200,
+			230, 650, 240,
+			10, 350, 30,
+			370, 260, 30,
+			25,
+			30,
+			490, 650, 25, 20,
+			10, 50, 140, 40, 20,
+			160, 50, 140, 40, 20
+		]
 		replaceSkin = False
 		element, path = domScreens.get("SkinSelector", (None, None))
 		if element is not None:
@@ -124,6 +136,7 @@ class SkinSelector(Screen, HelpableScreen):
 		default = _("< Default >")
 		defaultPicon = _("< Default + Picon >")
 		current = _("< Current >")
+		pending = _("< Pending restart >")
 		displayPicon = pathjoin(dirname(DEFAULT_DISPLAY_SKIN), "skin_display_picon.xml")
 		skinList = []
 		# Find and list the available skins...
@@ -158,6 +171,8 @@ class SkinSelector(Screen, HelpableScreen):
 					else:
 						list = [dir, "", dir, skin, resolution, preview]
 					if skin == self.config.value:
+						list[1] = pending
+					if skin == self.current:
 						list[1] = current
 					# 0=SortKey, 1=Label, 2=Flag, 3=Directory, 4=Skin, 5=Resolution, 6=Preview
 					skinList.append(tuple([list[0].upper()] + list))
@@ -201,6 +216,7 @@ class SkinSelector(Screen, HelpableScreen):
 			self.config.value = self["skins"].getCurrent()[4]
 			self.config.save()
 			self.session.open(TryQuitMainloop, QUIT_RESTART)
+		self.refreshList()
 
 	def up(self):
 		self["skins"].up()
@@ -238,6 +254,7 @@ class LcdSkinSelector(SkinSelector):
 		SkinSelector.__init__(self, session, menu_path=menu_path, screenTitle=screenTitle)
 		self.rootDir = resolveFilename(SCOPE_LCDSKIN)
 		self.config = config.skin.display_skin
+		self.current = currentDisplaySkin
 		self.xmlList = ["skin_display.xml", "skin_display_picon.xml"]
 
 
