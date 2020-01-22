@@ -27,15 +27,22 @@ DISPLAY_SKIN_ID = 1  # Front panel / display / LCD.
 
 domSkins = []  # List of skins to be processed into the domScreens dictionary.
 domScreens = {}  # Dictionary of skin based screens.
-colorNames = {}  # Dictionary of skin color names.
-switchPixmap = {}  # Dictionary of switch images.
-parameters = {}  # Dictionary of skin parameters used to modify code behavior.
-menus = {}  # Dictionary of images associated with menu entries.
-setups = {}  # Dictionary of images associated with setup menus.
+colorNames = {  # Dictionary of skin color names.
+	"key_back": gRGB(0x00313131),
+	"key_blue": gRGB(0x0018188b),
+	"key_green": gRGB(0x001f771f),
+	"key_red": gRGB(0x009f1313),
+	"key_text": gRGB(0x00ffffff),
+	"key_yellow": gRGB(0x00a08500)
+}
 fonts = {  # Dictionary of predefined and skin defined font aliases.
 	"Body": ("Regular", 18, 22, 16),
-	"ChoiceList": ("Regular", 20, 24, 18),
+	"ChoiceList": ("Regular", 20, 24, 18)
 }
+menus = {}  # Dictionary of images associated with menu entries.
+parameters = {}  # Dictionary of skin parameters used to modify code behavior.
+setups = {}  # Dictionary of images associated with setup menus.
+switchPixmap = {}  # Dictionary of switch images.
 
 # Skins are loaded in order of priority.  Skin with highest priority is
 # loaded first.  This is usually the user-specified skin.
