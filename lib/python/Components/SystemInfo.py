@@ -1,5 +1,5 @@
 from enigma import eDVBResourceManager, Misc_Options, eDVBCIInterfaces
-from Tools.Directories import fileExists, fileCheck, fileHas, pathExists, resolveFilename, SCOPE_SKIN
+from Tools.Directories import fileExists, fileCheck, pathExists, fileHas, resolveFilename, SCOPE_PLUGINS
 from Tools.HardwareInfo import HardwareInfo
 from boxbranding import getBoxType, getMachineBuild, getBrandOEM
 
@@ -58,7 +58,7 @@ SystemInfo["HasExternalPIP"] = getMachineBuild() not in ('et9x00', 'et6x00', 'et
 SystemInfo["VideoDestinationConfigurable"] = fileExists("/proc/stb/vmpeg/0/dst_left")
 SystemInfo["hasPIPVisibleProc"] = fileCheck("/proc/stb/vmpeg/1/visible")
 SystemInfo["hasTuners"] = getHasTuners() or fileCheck("/usr/lib/enigma2/python/Plugins/SystemPlugins/SatipClient/plugin.pyo")
-SystemInfo["hasGBIpboxClient"] = fileCheck("/usr/lib/enigma2/python/Plugins/Extensions/GBIpboxClient/plugin.pyo")
+SystemInfo["hasGBIpboxClient"] = fileExists(resolveFilename(SCOPE_PLUGINS, "Extensions/GBIpboxClient/plugin.pyo"))
 
 #if getBoxType() in ('gbquadplus', ):
 #	SystemInfo["WakeOnLAN"] = False
@@ -94,7 +94,7 @@ SystemInfo["Has24hz"] = fileCheck("/proc/stb/video/videomode_24hz")
 SystemInfo["Has2160p"] = fileHas("/proc/stb/video/videomode_preferred", "2160p50")
 SystemInfo["HasHDMIpreemphasis"] = fileCheck("/proc/stb/hdmi/preemphasis")
 SystemInfo["HasColorimetry"] = fileCheck("/proc/stb/video/hdmi_colorimetry")
-SystemInfo["HasHDMI-CEC"] = HardwareInfo().has_hdmi() and fileExists("/usr/lib/enigma2/python/Plugins/SystemPlugins/HdmiCEC/plugin.pyo") and pathExists("/dev/hdmi_cec") or pathExists("/dev/misc/hdmi_cec0")
+SystemInfo["HasHDMI-CEC"] = HardwareInfo().has_hdmi() and fileExists(resolveFilename(SCOPE_PLUGINS, "SystemPlugins/HdmiCEC/plugin.pyo")) and (fileExists("/dev/cec0") or fileExists("/dev/hdmi_cec") or fileExists("/dev/misc/hdmi_cec0"))
 SystemInfo["HasHdrType"] = fileCheck("/proc/stb/video/hdmi_hdrtype")
 SystemInfo["HasYPbPr"] = getMachineBuild() in ('gb7356', 'gb7325') or getBoxType() in ('gbultraue', 'gbultraueh', 'gb800ueplus', 'gb800seplus')
 SystemInfo["HasScart"] = getMachineBuild() in ('gb7325', )
