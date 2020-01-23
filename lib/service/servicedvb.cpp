@@ -3495,11 +3495,11 @@ void eDVBServicePlay::checkSubtitleTiming()
 		else
 			return;
 
+		// keep popping off the stack until we get to a subtitle that's within 20ms of video timing
 		int diff = show_time - pos;
-//		eDebug("[eDVBServicePlay] Subtitle show %d page.pts=%lld pts=%lld diff=%d", type, show_time, pos, diff);
-
-		if (diff < 20*90 || diff > 1800000)
+		if (diff < 20*90)
 		{
+			//eDebug("[eDVBServicePlay] Showing subtitle with pts:%lld Video pts:%lld diff:%.03fs. Page stack size %d", show_time, pos, diff / 90000.0f, m_dvb_subtitle_pages.size());
 			if (type == TELETEXT)
 			{
 				m_subtitle_widget->setPage(page);
@@ -3512,6 +3512,7 @@ void eDVBServicePlay::checkSubtitleTiming()
 			}
 		} else
 		{
+			//eDebug("[eDVBServicePlay] Delay early subtitle by %.03fs. Page stack size %d", diff / 90000.0f, m_dvb_subtitle_pages.size());
 			m_subtitle_sync_timer->start(diff / 90, 1);
 			break;
 		}
@@ -3525,9 +3526,16 @@ void eDVBServicePlay::newDVBSubtitlePage(const eDVBSubtitlePage &p)
 		pts_t pos = 0;
 		if (m_decoder)
 			m_decoder->getPTS(0, pos);
-		if ( abs(pos-p.m_show_time)>1800000 && (m_is_pvr || m_timeshift_enabled))
+
+		// Xtrend ET8500 has buggy drivers that deliver subtitles packets out of sync
+		// with video, sometimes many tens of seconds in advance of their show time. 
+		// Only treat subtitles in the past as having bad timing.
+		// This typically results in a number of pages being cached in advance,
+		// on BBC Four, 10-20 pages have been observed being cached; on Dave, 80-90 pages.
+		if (pos-p.m_show_time > 1800000 && (m_is_pvr || m_timeshift_enabled))
 		{
-			eDebug("[eDVBServicePlay] Subtitle without PTS and recording");
+			// More than 20 seconds between pos and show_time
+			eDebug("[eDVBServicePlay] Video pts:%lld, subtitle show_time:%lld, diff:%.02fs BAD TIMING", pos, p.m_show_time, (p.m_show_time - pos) / 90000.0f);
 			int subtitledelay = eConfigManager::getConfigIntValue("config.subtitles.subtitle_noPTSrecordingdelay", 315000);
 
 			eDVBSubtitlePage tmppage;
