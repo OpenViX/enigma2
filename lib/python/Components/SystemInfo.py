@@ -1,5 +1,5 @@
 from enigma import eDVBResourceManager, Misc_Options, eDVBCIInterfaces
-from Tools.Directories import fileExists, fileCheck, pathExists, fileHas, resolveFilename, SCOPE_PLUGINS
+from Tools.Directories import fileExists, fileCheck, pathExists, fileHas, resolveFilename, SCOPE_PLUGINS, SCOPE_SKIN
 from Tools.HardwareInfo import HardwareInfo
 from boxbranding import getBoxType, getMachineBuild, getBrandOEM
 
