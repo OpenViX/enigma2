@@ -5,7 +5,6 @@ from enigma import eConsoleAppContainer, eDVBDB, eTimer
 from boxbranding import getImageVersion
 
 from Components.ActionMap import ActionMap, NumberActionMap
-from Components.config import config, ConfigSubsection, ConfigText
 from Components.PluginComponent import plugins
 from Components.PluginList import *
 from Components.Label import Label
@@ -13,7 +12,7 @@ from Components.Pixmap import Pixmap
 from Components.ServiceList import refreshServiceList
 from Components.Harddisk import harddiskmanager
 from Components.Sources.StaticText import StaticText
-from Components import Ipkg
+from Components import Opkg
 from Components.config import config, ConfigSubsection, ConfigYesNo, getConfigListEntry, configfile, ConfigText
 from Components.ConfigList import ConfigListScreen
 from Screens.MessageBox import MessageBox
@@ -59,7 +58,7 @@ def CreateFeedConfig():
 	f = open(fileconf, "w")
 	f.write(feedurl)
 	f.close()
-	os.system("ipkg update")
+	os.system("opkg update")
 
 config.misc.pluginbrowser = ConfigSubsection()
 config.misc.pluginbrowser.plugin_order = ConfigText(default="")
@@ -345,15 +344,15 @@ class PluginDownloadBrowser(Screen):
 			"back": self.requestClose,
 		})
 		if os.path.isfile('/usr/bin/opkg'):
-			self.ipkg = '/usr/bin/opkg'
-			self.ipkg_install = self.ipkg + ' install --force-overwrite'
-			self.ipkg_remove =  self.ipkg + ' remove --autoremove --force-depends'
-			self.ipkg_toogle =  self.ipkg + ' flag hold'
+			self.opkg = '/usr/bin/opkg'
+			self.opkg_install = self.opkg + ' install --force-overwrite'
+			self.opkg_remove =  self.opkg + ' remove --autoremove --force-depends'
+			self.opkg_toogle =  self.opkg + ' flag hold'
 		else:
-			self.ipkg = 'ipkg'
-			self.ipkg_install = 'ipkg install --force-overwrite -force-defaults'
-			self.ipkg_remove =  self.ipkg + ' remove'
-			self.ipkg_toogle =  self.ipkg + ' flag hold'
+			self.opkg = 'opkg'
+			self.opkg_install = 'opkg install --force-overwrite -force-defaults'
+			self.opkg_remove =  self.opkg + ' remove'
+			self.opkg_toogle =  self.opkg + ' flag hold'
 
 	def createPluginFilter(self):
 		#Create Plugin Filter
@@ -408,7 +407,7 @@ class PluginDownloadBrowser(Screen):
 				mbox=self.session.openWithCallback(self.runInstall, MessageBox, _("Do you really want to remove the plugin \"%s\"?") % sel.name, default = False)
 				mbox.setTitle(_("Remove plugins"))
 			elif self.type == self.TOOGLE:
-				if 'hold' in os.popen("opkg status " + Ipkg.opkgExtraDestinations() + " " + self.PLUGIN_PREFIX + sel.name).read():
+				if 'hold' in os.popen("opkg status " + Opkg.opkgExtraDestinations() + " " + self.PLUGIN_PREFIX + sel.name).read():
 					mbox=self.session.openWithCallback(self.runInstall, MessageBox, _("Do you really want to unhold the plugin \"%s\"?") % sel.name, default = False)
 				else:
 					mbox=self.session.openWithCallback(self.runInstall, MessageBox, _("Do you really want to hold the plugin \"%s\"?") % sel.name, default = False)
@@ -442,7 +441,7 @@ class PluginDownloadBrowser(Screen):
 				# Custom install path, add it to the list too
 				dest = os.path.normpath(dest)
 				extra = '--add-dest %s:%s -d %s' % (dest,dest,dest)
-				Ipkg.opkgAddDestination(dest)
+				Opkg.opkgAddDestination(dest)
 			else:
 				extra = '-d ' + dest
 			self.doInstall(self.installFinished, self["list"].l.getCurrentSelection()[0].name + ' ' + extra)
@@ -482,10 +481,10 @@ class PluginDownloadBrowser(Screen):
 				self.install_bootlogo_name = self["list"].l.getCurrentSelection()[0].name
 				if self["list"].l.getCurrentSelection()[0].name.startswith('settings-'):
 					self.check_settings = True
-					self.startIpkgListInstalled(self.PLUGIN_PREFIX + 'settings-*')
+					self.startOpkgListInstalled(self.PLUGIN_PREFIX + 'settings-*')
 				elif self["list"].l.getCurrentSelection()[0].name.startswith('bootlogo-'):
 					self.check_bootlogo = True
-					self.startIpkgListInstalled(self.PLUGIN_PREFIX + 'bootlogo-*')
+					self.startOpkgListInstalled(self.PLUGIN_PREFIX + 'bootlogo-*')
 				else:
 					self.runSettingsInstall()
 			elif self.type == self.REMOVE:
@@ -498,23 +497,23 @@ class PluginDownloadBrowser(Screen):
 
 	def doRemove(self, callback, pkgname):
 		if pkgname.startswith('kernel-module-') or pkgname.startswith('enigma2-locale-'):
-			self.session.openWithCallback(callback, Console, cmdlist = [self.ipkg_remove + Ipkg.opkgExtraDestinations() + " " + pkgname, "sync"], skin="Console_Pig")
+			self.session.openWithCallback(callback, Console, cmdlist = [self.opkg_remove + Opkg.opkgExtraDestinations() + " " + pkgname, "sync"], skin="Console_Pig")
 		else:
-			self.session.openWithCallback(callback, Console, cmdlist = [self.ipkg_remove + Ipkg.opkgExtraDestinations() + " " + self.PLUGIN_PREFIX + pkgname, "sync"], skin="Console_Pig")
+			self.session.openWithCallback(callback, Console, cmdlist = [self.opkg_remove + Opkg.opkgExtraDestinations() + " " + self.PLUGIN_PREFIX + pkgname, "sync"], skin="Console_Pig")
 
 	def doToogle(self, callback, pkgname):
-		if 'hold' in os.popen("opkg status " + Ipkg.opkgExtraDestinations() + " " + self.PLUGIN_PREFIX + pkgname).read():
-			self.ipkg_toogle = self.ipkg + ' flag user'
-			self.session.openWithCallback(callback, Console, cmdlist = [self.ipkg_toogle + " " + self.PLUGIN_PREFIX + pkgname, "sync"], skin="Console_Pig")
+		if 'hold' in os.popen("opkg status " + Opkg.opkgExtraDestinations() + " " + self.PLUGIN_PREFIX + pkgname).read():
+			self.opkg_toogle = self.opkg + ' flag user'
+			self.session.openWithCallback(callback, Console, cmdlist = [self.opkg_toogle + " " + self.PLUGIN_PREFIX + pkgname, "sync"], skin="Console_Pig")
 		else:
-			self.ipkg_toogle = self.ipkg + ' flag hold'
-			self.session.openWithCallback(callback, Console, cmdlist = [self.ipkg_toogle + " " + self.PLUGIN_PREFIX + pkgname, "sync"], skin="Console_Pig")
+			self.opkg_toogle = self.opkg + ' flag hold'
+			self.session.openWithCallback(callback, Console, cmdlist = [self.opkg_toogle + " " + self.PLUGIN_PREFIX + pkgname, "sync"], skin="Console_Pig")
 
 	def doInstall(self, callback, pkgname):
 		if pkgname.startswith('kernel-module-') or pkgname.startswith('enigma2-locale-'):
-			self.session.openWithCallback(callback, Console, cmdlist = [self.ipkg_install + " " + pkgname, "sync"], skin="Console_Pig")
+			self.session.openWithCallback(callback, Console, cmdlist = [self.opkg_install + " " + pkgname, "sync"], skin="Console_Pig")
 		else:
-			self.session.openWithCallback(callback, Console, cmdlist = [self.ipkg_install + " " + self.PLUGIN_PREFIX + pkgname, "sync"], skin="Console_Pig")
+			self.session.openWithCallback(callback, Console, cmdlist = [self.opkg_install + " " + self.PLUGIN_PREFIX + pkgname, "sync"], skin="Console_Pig")
 
 	def runSettingsRemove(self, val):
 		if val:
@@ -535,11 +534,11 @@ class PluginDownloadBrowser(Screen):
 		elif self.type == self.TOOGLE:
 			self.setTitle(_("Hold plugins"))
 
-	def startIpkgListInstalled(self, pkgname = PLUGIN_PREFIX + '*'):
-		self.container.execute(self.ipkg + Ipkg.opkgExtraDestinations() + " list_installed")
+	def startOpkgListInstalled(self, pkgname = PLUGIN_PREFIX + '*'):
+		self.container.execute(self.opkg + Opkg.opkgExtraDestinations() + " list_installed")
 
-	def startIpkgListAvailable(self):
-		self.container.execute(self.ipkg + Ipkg.opkgExtraDestinations() + " list")
+	def startOpkgListAvailable(self):
+		self.container.execute(self.opkg + Opkg.opkgExtraDestinations() + " list")
 
 	def startRun(self):
 		listsize = self["list"].instance.size()
@@ -548,13 +547,13 @@ class PluginDownloadBrowser(Screen):
 		self.listHeight = listsize.height()
 		if self.type == self.DOWNLOAD:
 			self.type = self.UPDATE
-			self.container.execute(self.ipkg + " update")
+			self.container.execute(self.opkg + " update")
 		elif self.type == self.REMOVE:
 			self.run = 1
-			self.startIpkgListInstalled()
+			self.startOpkgListInstalled()
 		elif self.type == self.TOOGLE:
 			self.run =1
-			self.startIpkgListInstalled()
+			self.startOpkgListInstalled()
 
 	def installFinished(self):
 		if hasattr(self, 'postInstallCall'):
@@ -593,10 +592,10 @@ class PluginDownloadBrowser(Screen):
 			self.run = 1
 			if self.type == self.UPDATE:
 				self.type = self.DOWNLOAD
-				self.startIpkgListInstalled()
+				self.startOpkgListInstalled()
 		elif self.run == 1 and self.type == self.DOWNLOAD:
 			self.run = 2
-			self.startIpkgListAvailable()
+			self.startOpkgListAvailable()
 		else:
 			if len(self.pluginlist) > 0:
 				self.updateList()
