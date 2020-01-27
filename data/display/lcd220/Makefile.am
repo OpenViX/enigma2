@@ -1,4 +1,4 @@
-installdir = $(pkgdatadir)/lcd
+installdir = $(pkgdatadir)/display/lcd
 
 dist_install_DATA = \
 	update_unstable.png \

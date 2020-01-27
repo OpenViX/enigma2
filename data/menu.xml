@@ -89,6 +89,7 @@
 					<item weight="5" level="0" text="Language" entryID="language_setup"><screen module="LanguageSelection" /></item>
 				<!-- <item weight="10" level="0" text="Weather GigaBlue Pax" entryID="ommetrixweather_setup"><screen module="OMMetrixWeatherSetup" /></item> -->
 					<item weight="15" level="0" text="HotKey" entryID="hotkey_setup"><screen module="Hotkey" screen="HotkeySetup" /></item>
+					<item weight="15" level="0" text="GUI Skin" entryID="primary_skin_selector"><screen module="SkinSelector" screen="SkinSelector"/></item>
 				</menu>
 
 				<!-- Menu / Settings / System / Frontpanel Menu -->
@@ -96,6 +97,7 @@
 					<id val="frontpanel_menu" />
 					<item weight="0" level="0" text="Basic settings" requires="Display"><setup level="1" id="lcd" /></item>
 					<item weight="5" level="0" text="Skin" requires="OledDisplay"><screen module="LcdSkinSelector" screen="LCDSkinSelector"/></item>
+					<item weight="5" level="0" text="Display Skin" entryID="display_skin_selector"><screen module="SkinSelector" screen="LcdSkinSelector"/></item>
 					<item weight="10" level="0" text="Clock" requires="OledDisplay"><screen module="LcdClockSelector" screen="LCDClockSelector"/></item> 
 				</menu>
 
