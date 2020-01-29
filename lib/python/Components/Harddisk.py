@@ -62,7 +62,7 @@ class Harddisk:
 			self.devtype = DEVTYPE_DEVFS
 		else:
 			print "[Harddisk] Unable to determine structure of /dev"
-			self.devtype = -1
+			self.devtype = DEVTYPE_UDEV
 			self.sdmmc = False
 		self.max_idle_time = 0
 		self.idle_running = False
@@ -914,7 +914,7 @@ class MountTask(Task.LoggingTask):
 				self.postconditions.append(Task.ReturncodePostcondition())
 				return
 		# device is not in fstab
-		if self.hdd.type == DEVTYPE_UDEV:
+		if os.access("/dev/.udev", 0):
 			# we can let udev do the job, re-read the partition table
 			# Sorry for the sleep 2 hack...
 			self.setCmdline('sleep 2; hdparm -z ' + self.hdd.disk_path)
