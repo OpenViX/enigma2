@@ -1,12 +1,12 @@
 import os
-import time
-from Tools.CList import CList
-from SystemInfo import SystemInfo
-from Components.Console import Console
-from Tools.HardwareInfo import HardwareInfo
-from boxbranding import getMachineBuild, getMachineMtdRoot
-import Task
 import re
+import Task
+import time
+from boxbranding import getMachineBuild, getMachineMtdRoot
+from Components.Console import Console
+from SystemInfo import SystemInfo
+from Tools.CList import CList
+from Tools.HardwareInfo import HardwareInfo
 
 def readFile(filename):
 	file = open(filename)
