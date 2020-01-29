@@ -31,18 +31,15 @@ def getProcMounts():
 
 def isFileSystemSupported(filesystem):
 	try:
-		file = open('/proc/filesystems', 'r')
-		for fs in file:
+		for fs in open('/proc/filesystems', 'r'):
 			if fs.strip().endswith(filesystem):
-				file.close()
 				return True
-		file.close()
 		return False
 	except Exception, ex:
 		print "[Harddisk] Failed to read /proc/filesystems:", ex
 
 def findMountPoint(path):
-	"""Example: findMountPoint("/media/hdd/some/file") returns "/media/hdd\""""
+	'Example: findMountPoint("/media/hdd/some/file") returns "/media/hdd"'
 	path = os.path.abspath(path)
 	while not os.path.ismount(path):
 		path = os.path.dirname(path)
@@ -624,11 +621,10 @@ class HarddiskManager:
 		devpath = "/sys/block/" + blockdev
 		error = False
 		removable = False
-		z = open('/proc/cmdline', 'r').read()
 		BLACKLIST=[]
 		if SystemInfo["HasMMC"]:
 			BLACKLIST=["%s" %(getMachineMtdRoot()[0:7])]
-		if SystemInfo["HasMMC"] and "root=/dev/mmcblk0p1" in z:
+		if SystemInfo["HasMMC"] and "root=/dev/mmcblk0p1" in open('/proc/cmdline', 'r').read():			# Zgemma H9
 			BLACKLIST=["mmcblk0p1"]
 		blacklisted = False
 		if blockdev[:7] in BLACKLIST:
@@ -651,8 +647,7 @@ class HarddiskManager:
 				is_cdrom = True
 			if blockdev[0:2] == 'hd':
 				try:
-					media = readFile("/proc/ide/%s/media" % blockdev)
-					if "cdrom" in media:
+					if "cdrom" in readFile("/proc/ide/%s/media" % blockdev):
 						is_cdrom = True
 				except IOError:
 					error = True
