@@ -4027,7 +4027,6 @@ class InfoBarSubtitleSupport(object):
 		self["SubtitleSelectionAction"] = HelpableActionMap(self, "InfobarSubtitleSelectionActions",
 			{
 				"subtitleSelection": (self.subtitleSelection, _("Subtitle selection...")),
-				"toggleDefaultSubtitles": (self.toggleDefaultSubtitles, _("Toggle the default subtitles"))
 			})
 
 		self.selected_subtitle = None
@@ -4088,31 +4087,17 @@ class InfoBarSubtitleSupport(object):
 				self.enableSubtitle(cachedsubtitle)
 				self.doCenterDVBSubs()
 
-	def toggleDefaultSubtitles(self):
+	def enableSubtitle(self, selectedSubtitle):
 		subtitle = self.getCurrentServiceSubtitle()
-		subtitlelist = subtitle and subtitle.getSubtitleList()
-		if subtitlelist is None or len(subtitlelist) == 0:
-			self.subtitle_window.showMessage(_("No subtitles available"), True)
-		elif self.selected_subtitle:
-			self.enableSubtitle(None)
-			self.subtitle_window.showMessage(_("Subtitles off"), True)
-			self.selected_subtitle = None
+		self.selected_subtitle = selectedSubtitle
+		if subtitle and self.selected_subtitle:
+			subtitle.enableSubtitles(self.subtitle_window.instance, self.selected_subtitle)
+			self.subtitle_window.show()
+			self.doCenterDVBSubs()
 		else:
-			self.enableSubtitle(subtitlelist[0])
-			self.subtitle_window.showMessage(_("Subtitles on"), False)
-
-	def enableSubtitle(self, newSubtitle):
-		if self.selected_subtitle != newSubtitle:
-			subtitle = self.getCurrentServiceSubtitle()
-			self.selected_subtitle = newSubtitle
-			if subtitle and newSubtitle:
-				subtitle.enableSubtitles(self.subtitle_window.instance, newSubtitle)
-				self.subtitle_window.show()
-				self.doCenterDVBSubs()
-			else:
-				if subtitle:
-					subtitle.disableSubtitles(self.subtitle_window.instance)
-				self.subtitle_window.hide()
+			if subtitle:
+				subtitle.disableSubtitles(self.subtitle_window.instance)
+			self.subtitle_window.hide()
 
 	def restartSubtitle(self):
 		if self.selected_subtitle:
