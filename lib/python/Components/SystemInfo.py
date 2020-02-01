@@ -29,6 +29,7 @@ for cislot in range (0, SystemInfo["CommonInterface"]):
 	SystemInfo["CI%dRelevantPidsRoutingSupport" % cislot] = fileCheck("/proc/stb/tsmux/ci%d_relevant_pids_routing"  % cislot)
 
 SystemInfo["NumVideoDecoders"] = getNumVideoDecoders()
+SystemInfo["Udev"] = not fileExists("/dev/.devfsd")
 SystemInfo["PIPAvailable"] = getMachineBuild() not in ("i55plus") and SystemInfo["NumVideoDecoders"] > 1
 SystemInfo["CanMeasureFrontendInputPower"] = eDVBResourceManager.getInstance().canMeasureFrontendInputPower()
 SystemInfo["12V_Output"] = Misc_Options.getInstance().detected_12V_output()
@@ -85,8 +86,8 @@ SystemInfo["Has24hz"] = fileCheck("/proc/stb/video/videomode_24hz")
 SystemInfo["HasRootSubdir"] = fileHas("/proc/cmdline", "rootsubdir=")
 SystemInfo["RecoveryMode"] = SystemInfo["HasRootSubdir"] and getMachineBuild() not in ('hd51','h7') or fileCheck("/proc/stb/fp/boot_mode")
 SystemInfo["AndroidMode"] = SystemInfo["RecoveryMode"] and getMachineBuild() in ('multibox',)
-SystemInfo["canMultiBoot"] = getMachineBuild() in ('hd51', 'h7', 'h9combo', 'multibox') and (1, 4, 'mmcblk0p') or getBoxType() in ('gbue4k', 'gbquad4k') and (3, 3, 'mmcblk0p') or getMachineBuild() in ('viper4k', 'gbmv200', 'sf8008', 'beyonwizv2') and fileCheck("/dev/sda") and (0, 2, 'sda') or getMachineBuild() in ('osmio4k', 'osmio4kplus') and (1, 4, 'mmcblk1p')
-SystemInfo["canBackupEMC"] = getMachineBuild() in ('hd51','h7') and ('disk.img', 'mmcblk0p1') or getMachineBuild() in ('osmio4k', 'osmio4kplus') and ('emmc.img', 'mmcblk1p1') or getMachineBuild() in ('viper4k', 'gbmv200','sf8008','beyonwizv2') and ('usb_update.bin','none')
+SystemInfo["canMultiBoot"] = getMachineBuild() in ('hd51', 'h7', 'h9combo', 'multibox') and (1, 4, 'mmcblk0p') or getBoxType() in ('gbue4k', 'gbquad4k') and (3, 3, 'mmcblk0p') or getMachineBuild() in ('viper4k', 'gbmv200', 'sf8008', 'beyonwizv2') and fileCheck("/dev/sda") and (0, 2, 'sda') or getMachineBuild() in ('osmio4k', 'osmio4kplus', 'osmini4k') and (1, 4, 'mmcblk1p')
+SystemInfo["canBackupEMC"] = getMachineBuild() in ('hd51','h7') and ('disk.img', 'mmcblk0p1') or getMachineBuild() in ('osmio4k', 'osmio4kplus', 'osmini4k') and ('emmc.img', 'mmcblk1p1') or getMachineBuild() in ('viper4k', 'gbmv200','sf8008','beyonwizv2') and ('usb_update.bin','none')
 SystemInfo["HasHiSi"] = pathExists('/proc/hisi')
 SystemInfo["canMode12"] = getMachineBuild() in ('hd51', 'h7') and ('brcm_cma=440M@328M brcm_cma=192M@768M', 'brcm_cma=520M@248M brcm_cma=200M@768M')
 SystemInfo["HasMMC"] = fileHas("/proc/cmdline", "root=/dev/mmcblk") or SystemInfo["canMultiBoot"] and fileHas("/proc/cmdline", "root=/dev/sda")

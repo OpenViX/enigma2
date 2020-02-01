@@ -315,7 +315,7 @@ class Devices(Screen):
 				if "ATA" in hddp:
 					hddp = hddp.replace('ATA', '')
 					hddp = hddp.replace('Internal', 'ATA Bus ')
-				free = hdd.free()
+				free = hdd.Totalfree()
 				if ((float(free) / 1024) / 1024) >= 1:
 					freeline = _("Free: ") + str(round(((float(free) / 1024) / 1024), 2)) + _("TB")
 				elif (free / 1024) >= 1:

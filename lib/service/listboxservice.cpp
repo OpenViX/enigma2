@@ -1019,7 +1019,7 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 						area = m_element_position[celServiceName];
 						if (m_element_position[celServiceEventProgressbar].left() == 0)
 							area.setLeft(0);
-						xoffset = pixmap_size.width() + m_items_distances;			
+						xoffset = pixmap_size.width() + m_items_distances;
 					}
 					else
 						area = m_element_position[celServiceNumber];
