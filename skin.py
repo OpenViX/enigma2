@@ -136,13 +136,14 @@ for skin, name in [(config.skin.primary_skin.value, "current"), (DEFAULT_SKIN, "
 	result.append(skin)
 
 # Add the front panel / display / lcd skin.
-if fileExists("/usr/share/enigma2/lcd_skin/skin_lcd_default.xml"):
+currentDisplaySkin = None
+
+if fileExists("/usr/share/enigma2/display/lcd_skin/skin_lcd_default.xml"):
 	if fileExists(resolveFilename(SCOPE_CONFIG, config.skin.lcdskin.value)):
 		addSkin(config.skin.lcdskin.value, SCOPE_CONFIG)
 	else:
 		addSkin("lcd_skin/" + config.skin.lcdskin.value)
 
-currentDisplaySkin = None
 result = []
 for skin, name in [(config.skin.display_skin.value, "current"), (DEFAULT_DISPLAY_SKIN, "default")]:
 	if skin in result:  # Don't try to add a skin that has already failed.
