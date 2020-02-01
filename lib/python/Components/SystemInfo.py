@@ -1,9 +1,11 @@
+<<<<<<< HEAD
 from enigma import eDVBResourceManager, Misc_Options, eDVBCIInterfaces
 from Tools.Directories import fileExists, fileCheck, pathExists, fileHas
 from Tools.HardwareInfo import HardwareInfo
 from Components.About import getChipSetString
 
 from boxbranding import getMachineBuild, getBoxType, getBrandOEM, getDisplayType, getHaveRCA, getHaveYUV, getHaveSCART, getHaveAVJACK, getHaveHDMIinHD, getHaveHDMIinFHD, getMachineMtdRoot
+import os, re, glob
 
 SystemInfo = { }
 
@@ -21,6 +23,56 @@ def countFrontpanelLEDs():
 	while fileExists("/proc/stb/fp/led%d_pattern" % leds):
 		leds += 1
 	return leds
+
+def hassoftcaminstalled():
+	from Tools.camcontrol import CamControl
+	return len(CamControl('softcam').getList()) > 1
+
+def getBootdevice():
+	dev = ("root" in cmdline and cmdline['root'].startswith('/dev/')) and cmdline['root'][5:]
+	while dev and not fileExists('/sys/block/' + dev):
+	    dev = dev[:-1]
+	return dev
+
+def getMultibootStartupDevice():
+	for device in ('/dev/block/by-name/bootoptions', '/dev/block/by-name/bootoptions', "mmcblk1sp1" if model in ('osmio4k', 'osmio4kplus', 'osmini4k') else "mmcblk0sp1"):
+		if os.path.islink(device):
+			return device
+
+def getparam(line, param):
+	return line.rsplit('%s=' % param, 1)[1].split(' ', 1)[0]
+
+def getMultibootslots():
+	TMP_MOUNT = '/tmp/bootcheck'
+	bootslots = {}
+	if not os.path.isdir(TMP_MOUNT):
+		os.mkdir(TMP_MOUNT)
+	if SystemInfo["MultibootStartupDevice"]:
+		Console().ePopen('mount %s %s' % (SystemInfo["MultibootStartupDevice"], TMP_MOUNT))
+		for file in glob.glob('%s/STARTUP_*' % TMP_MOUNT):
+			slotnumber = file.rsplit('_', 3 if 'BOXMODE' in file else 1)[1]
+			if slotnumber.isdigit() and slotnumber not in bootslots:
+				slot = {}
+				for line in open(file).readlines():
+					if 'root=' in line:
+						device = getparam(line, 'root')
+						if os.path.exists(device):
+							slot['device'] = device
+							slot['startupfile'] = os.path.basename(file).split('_BOXMODE')[0]
+							if 'rootsubdir' in line:
+								slot['rootsubdir'] = getparam(line, 'rootsubdir')
+						break
+				if slot:
+					bootslots[int(slotnumber)] = slot
+		Console().ePopen('umount %s' % TMP_MOUNT)
+		if not os.path.ismount(TMP_MOUNT):
+			os.rmdir(TMP_MOUNT)
+	return bootslots
+
+# parse the boot commandline
+cmdline = open("/proc/cmdline", "r").read()
+cmdline = {k:v.strip('"') for k,v in re.findall(r'(\S+)=(".*?"|\S+)', cmdline)}
+model = HardwareInfo().get_device_model()
 
 SystemInfo["CommonInterface"] = eDVBCIInterfaces.getInstance().getNumOfSlots()
 SystemInfo["CommonInterfaceCIDelay"] = fileCheck("/proc/stb/tsmux/rmx_delay")
@@ -86,7 +138,8 @@ SystemInfo["Has24hz"] = fileCheck("/proc/stb/video/videomode_24hz")
 SystemInfo["HasRootSubdir"] = fileHas("/proc/cmdline", "rootsubdir=")
 SystemInfo["RecoveryMode"] = SystemInfo["HasRootSubdir"] and getMachineBuild() not in ('hd51','h7') or fileCheck("/proc/stb/fp/boot_mode")
 SystemInfo["AndroidMode"] = SystemInfo["RecoveryMode"] and getMachineBuild() in ('multibox',)
-SystemInfo["canMultiBoot"] = getMachineBuild() in ('hd51', 'h7', 'h9combo', 'multibox') and (1, 4, 'mmcblk0p') or getBoxType() in ('gbue4k', 'gbquad4k') and (3, 3, 'mmcblk0p') or getMachineBuild() in ('viper4k', 'gbmv200', 'sf8008', 'beyonwizv2') and fileCheck("/dev/sda") and (0, 2, 'sda') or getMachineBuild() in ('osmio4k', 'osmio4kplus', 'osmini4k') and (1, 4, 'mmcblk1p')
+SystemInfo["MultibootStartupDevice"] = getMultibootStartupDevice()
+SystemInfo["canMultiBoot"] = getMultibootslots()
 SystemInfo["canBackupEMC"] = getMachineBuild() in ('hd51','h7') and ('disk.img', 'mmcblk0p1') or getMachineBuild() in ('osmio4k', 'osmio4kplus', 'osmini4k') and ('emmc.img', 'mmcblk1p1') or getMachineBuild() in ('viper4k', 'gbmv200','sf8008','beyonwizv2') and ('usb_update.bin','none')
 SystemInfo["HasHiSi"] = pathExists('/proc/hisi')
 SystemInfo["canMode12"] = getMachineBuild() in ('hd51', 'h7') and ('brcm_cma=440M@328M brcm_cma=192M@768M', 'brcm_cma=520M@248M brcm_cma=200M@768M')
