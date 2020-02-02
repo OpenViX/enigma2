@@ -1,10 +1,13 @@
 from Components.SystemInfo import SystemInfo
+<<<<<<< HEAD
 from Components.Console import Console
 from boxbranding import getMachineMtdRoot
 from Tools.Directories import pathExists
 import os
 import shutil
 import subprocess
+from Components.Console import Console, PosixSpawn
+import os, glob
 
 #		#default layout for 				Zgemma H7/Mut@nt HD51						 Giga4K						SF8008/trio4K
 # boot								/dev/mmcblk0p1						/dev/mmcblk0p1				/dev/mmcblk0p3
@@ -14,6 +17,41 @@ import subprocess
 # STARTUP_4		        Image 4: boot emmcflash0.kernel4 'root=/dev/mmcblk0p9 rw rootwait'	NOT IN USE due to Rescue mode in mmcblk0p3		NOT IN USE due to only 4 partitions on SDcard
 
 TMP_MOUNT = '/tmp/multibootcheck'
+
+def getMultibootStartupDevice(model):
+	for device in ('/dev/block/by-name/bootoptions', '/dev/block/by-name/bootoptions', "/dev/mmcblk1p1" if model in ('osmio4k', 'osmio4kplus', 'osmini4k') else "/dev/mmcblk0p1"):
+		if os.path.exists(device):
+			return device
+
+def getparam(line, param):
+	return line.rsplit('%s=' % param, 1)[1].split(' ', 1)[0]
+
+def getMultibootslots():
+	bootslots = {}
+	if SystemInfo["MultibootStartupDevice"]:
+		if not os.path.isdir(TMP_MOUNT):
+			os.mkdir(TMP_MOUNT)
+		postix = PosixSpawn()
+		postix.execute('mount %s %s' % (SystemInfo["MultibootStartupDevice"], TMP_MOUNT))
+		for file in glob.glob('%s/STARTUP_*' % TMP_MOUNT):
+			slotnumber = file.rsplit('_', 3 if 'BOXMODE' in file else 1)[1]
+			if slotnumber.isdigit() and slotnumber not in bootslots:
+				slot = {}
+				for line in open(file).readlines():
+					if 'root=' in line:
+						device = getparam(line, 'root')
+						if os.path.exists(device):
+							slot['device'] = device
+							slot['startupfile'] = os.path.basename(file).split('_BOXMODE')[0]
+							if 'rootsubdir' in line:
+								slot['rootsubdir'] = getparam(line, 'rootsubdir')
+						break
+				if slot:
+					bootslots[int(slotnumber)] = slot
+		postix.execute('umount %s' % TMP_MOUNT)
+		if not os.path.ismount(TMP_MOUNT):
+			os.rmdir(TMP_MOUNT)
+	return bootslots
 
 def GetCurrentImage():
 	device = getparam(open('/sys/firmware/devicetree/base/chosen/bootargs', 'r').read(), 'root')
