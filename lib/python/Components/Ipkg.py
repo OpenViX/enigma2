@@ -1,6 +1,7 @@
 import os
 from enigma import eConsoleAppContainer
 from Components.Harddisk import harddiskmanager
+from Tools.Directories import resolveFilename, SCOPE_LIBDIR
 from boxbranding import getImageDistro
 
 opkgDestinations = []
@@ -27,7 +28,7 @@ def onPartitionChange(why, part):
 				opkgStatusPath = 'var/lib/opkg/status'
 				if not os.path.exists(os.path.join('/', opkgStatusPath)):
 					# older opkg versions
-					opkgStatusPath = 'usr/lib/opkg/status'
+					opkgStatusPath = resolveFilename(SCOPE_LIBDIR, 'opkg/status')
 			if os.path.exists(os.path.join(mountpoint, opkgStatusPath)):
 				opkgAddDestination(mountpoint)
 		elif why == 'remove':

@@ -90,7 +90,7 @@ class About(Screen):
 		if SystemInfo["HasH9SD"]:
 			f = open('/sys/firmware/devicetree/base/chosen/bootargs', 'r').read()
 			if "rootfstype=ext4" in f:
-				part = "        - SD card in use for Image root \n" 
+				part = "        - SD card in use for Image root \n"
 			else:
 				part = "        - eMMC slot in use for Image root \n"
 			AboutText += _("%s") % part
@@ -315,7 +315,7 @@ class Devices(Screen):
 				if "ATA" in hddp:
 					hddp = hddp.replace('ATA', '')
 					hddp = hddp.replace('Internal', 'ATA Bus ')
-				free = hdd.free()
+				free = hdd.Totalfree()
 				if ((float(free) / 1024) / 1024) >= 1:
 					freeline = _("Free: ") + str(round(((float(free) / 1024) / 1024), 2)) + _("TB")
 				elif (free / 1024) >= 1:
@@ -326,7 +326,7 @@ class Devices(Screen):
 					continue
 				else:
 					freeline = _("Free: ") + _("full")
-				line = "%s      %s" %(hddp, freeline)  
+				line = "%s      %s" %(hddp, freeline)
 				self.list.append(line)
 		self.list = '\n'.join(self.list)
 		self["hdd"].setText(self.list)
