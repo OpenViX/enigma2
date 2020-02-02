@@ -5,7 +5,10 @@ dist_pkgdata_DATA = \
 	keymap.xml \
 	keytranslation.xml \
 	menu.xml \
-	prev.png \
+	otv_00820000_fbff_16a8.dict \
+	otv_011a0000_0002_07d4.dict \
+	otv_06180000_1000_0011.dict \
+	otv_06400000_00a9_0003.dict \
 	radio.mvi \
 	black.mvi \
 	rcpositions.xml \
@@ -16,11 +19,7 @@ dist_pkgdata_DATA = \
 	iso-639-3.pck \
 	timezone.xml \
 	unicable.xml \
-	groupedservices \
-	otv_011a0000_0002_07d4.dict \
-	otv_00820000_fbff_16a8.dict \
-	otv_06180000_1000_0011.dict \
-	otv_06400000_00a9_0003.dict
+	groupedservices
 
 if GBIPBOX
 SUBDIRS += gbipbox
