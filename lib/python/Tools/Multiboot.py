@@ -2,11 +2,9 @@ from Components.SystemInfo import SystemInfo
 from Components.Console import Console
 from boxbranding import getMachineMtdRoot
 from Tools.Directories import pathExists
-import os
+import os, glob
 import shutil
 import subprocess
-from Components.Console import Console, PosixSpawn
-import os, glob
 
 #		#default layout for 				Zgemma H7/Mut@nt HD51						 Giga4K						SF8008/trio4K
 # boot								/dev/mmcblk0p1						/dev/mmcblk0p1				/dev/mmcblk0p3
@@ -30,8 +28,7 @@ def getMultibootslots():
 	if SystemInfo["MultibootStartupDevice"]:
 		if not os.path.isdir(TMP_MOUNT):
 			os.mkdir(TMP_MOUNT)
-		postix = PosixSpawn()
-		postix.execute('mount %s %s' % (SystemInfo["MultibootStartupDevice"], TMP_MOUNT))
+		Console().ePopen('/bin/mount %s %s' % (SystemInfo["MultibootStartupDevice"], TMP_MOUNT))
 		for file in glob.glob('%s/STARTUP_*' % TMP_MOUNT):
 			slotnumber = file.rsplit('_', 3 if 'BOXMODE' in file else 1)[1]
 			if slotnumber.isdigit() and slotnumber not in bootslots:
@@ -47,7 +44,7 @@ def getMultibootslots():
 						break
 				if slot:
 					bootslots[int(slotnumber)] = slot
-		postix.execute('umount %s' % TMP_MOUNT)
+		Console().ePopen('/bin/umount %s' % TMP_MOUNT)
 		if not os.path.ismount(TMP_MOUNT):
 			os.rmdir(TMP_MOUNT)
 	return bootslots
