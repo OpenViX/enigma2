@@ -23,6 +23,8 @@ class ConsoleItem:
 		retval = self.container.execute(*cmd)
 		if retval:
 			self.finishedCB(retval)
+		if callback is None:
+			os.waitpid(self.container.getPID(), 0)
 	def dataAvailCB(self, data):
 		self.appResults.append(data)
 	def finishedCB(self, retval):
