@@ -8,19 +8,19 @@ import skin
 class SubtitleDisplay(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
-		eActionMap.getInstance().bindAction('', -maxint - 1, self.keypress)
+		eActionMap.getInstance().bindAction('', -maxint - 1, self.__keypress)
 
 		self.messageShown = False
 		self['message'] = Label()
 		self['message'].hide()
 
-		if self.layoutFinished not in self.onLayoutFinish:
-			self.onLayoutFinish.append(self.layoutFinished)
+		self.onClose.append(self.__close)
+		self.onLayoutFinish.append(self.__layoutFinished)
 
-	def __removeAction(self):
-		eActionMap.getInstance().unbindAction('', self.keypress)
+	def __close(self):
+		eActionMap.getInstance().unbindAction('', self.__keypress)
 
-	def layoutFinished(self):
+	def __layoutFinished(self):
 		# Not expecting skins to contain this element
 		label = self['message']
 		label.instance.setFont(gFont("Regular", 50))
@@ -28,6 +28,16 @@ class SubtitleDisplay(Screen):
 		label.instance.setNoWrap(1)
 		label.instance.setHAlign(1)
 		label.instance.setVAlign(1)
+
+	def __keypress(self, key, flag):
+		# Releasing the subtitle button after a long press unintentionally pops up the subtitle dialog,
+		# This blocks it without causing issues for anyone that sets the buttons up the other way round
+		if self.messageShown:
+			# whilst the notification is shown any keydown event dismisses the notification
+			if flag == 0:
+				self.hideMessage()
+			else: # any key repeat or keyup event is discarded
+				return 1
 
 	def showMessage(self, message, hideScreen):
 		padding = (40,10)
@@ -42,16 +52,6 @@ class SubtitleDisplay(Screen):
 		self.hideTimer = eTimer()
 		self.hideTimer.callback.append(self.hideScreen if hideScreen else self.hideMessage)
 		self.hideTimer.start(2000, True)
-
-	def keypress(self, key, flag):
-		# Releasing the subtitle button after a long press unintentionally pops up the subtitle dialog,
-		# This blocks it without causing issues for anyone that sets the buttons up the other way round
-		if self.messageShown:
-			# whilst the notification is shown any keydown event dismisses the notification
-			if flag == 0:
-				self.hideMessage()
-			else: # any key repeat or keyup event is discarded
-				return 1
 
 	def hideMessage(self):
 		self.messageShown = False
