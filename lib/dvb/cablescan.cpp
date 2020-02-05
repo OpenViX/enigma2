@@ -3,6 +3,8 @@
 #include <dvbsi++/cable_delivery_system_descriptor.h>
 #include <dvbsi++/ca_identifier_descriptor.h>
 #include <dvbsi++/logical_channel_descriptor.h>
+#include <dvbsi++/service_list_descriptor.h>
+#include <dvbsi++/network_name_descriptor.h>
 
 #include <lib/dvb/db.h>
 #include <lib/dvb/dvb.h>
@@ -34,6 +36,9 @@ void eCableScan::start(int frontendid)
 	ePtr<eDVBResourceManager> res;
 	eDVBResourceManager::getInstance(res);
 	ePtr<iDVBFrontend> fe;
+
+	serviceIdToTsid.clear();
+	providerName = "";
 
 	if (res->allocateRawChannel(m_channel, frontendid))
 	{
@@ -94,6 +99,7 @@ void eCableScan::SDTReady(int error)
 int eCableScan::nextChannel()
 {
 	ePtr<iDVBFrontend> fe;
+	int tsid;
 
 	m_SDT = NULL;
 
@@ -106,7 +112,8 @@ int eCableScan::nextChannel()
 
 	scanProgress(100 - (scanChannels.size() * 90) / totalChannels);
 
-	currentScanChannel = scanChannels.front();
+	currentScanChannel = scanChannels.front().feparm;
+	tsid = scanChannels.front().tsid;
 	scanChannels.pop_front();
 
 	if (m_channel->getFrontend(fe))
@@ -121,16 +128,7 @@ int eCableScan::nextChannel()
 
 	m_SDT = new eTable<ServiceDescriptionSection>;
 	CONNECT(m_SDT->tableReady, eCableScan::SDTReady);
-	eDVBTableSpec spec = eDVBSDTSpec();
-	/*
-	 * limit the SDT timeout to 5s (e2 defaults to 60s),
-	 * so we do not have to wait for too long when channels
-	 * from the NIT are not available.
-	 * We should actually implement a channel statechange handler
-	 * (to receive tune failed status) but limiting the SDT reader
-	 * timeout has the same effect, and is a lot simpler
-	 */
-	spec.timeout = 5000;
+	eDVBTableSpec spec = eDVBSDTSpec(tsid);
 	m_SDT->start(m_demux, spec);
 	return 0;
 }
@@ -140,6 +138,22 @@ void eCableScan::parseNIT()
 	std::vector<NetworkInformationSection*>::const_iterator i;
 	for (i = m_NIT->getSections().begin(); i != m_NIT->getSections().end(); ++i)
 	{
+		if (providerName == "")
+		{
+			for (DescriptorConstIterator desc = (*i)->getDescriptors()->begin();
+					desc != (*i)->getDescriptors()->end(); ++desc)
+			{
+				switch ((*desc)->getTag())
+				{
+				case NETWORK_NAME_DESCRIPTOR:
+				{
+					NetworkNameDescriptor &d = (NetworkNameDescriptor&)**desc;
+					providerName = d.getNetworkName();
+					break;
+				}
+				}
+			}
+		}
 		const TransportStreamInfoList &tsinfovec = *(*i)->getTsInfo();
 
 		for (TransportStreamInfoConstIterator tsinfo(tsinfovec.begin());
@@ -152,12 +166,14 @@ void eCableScan::parseNIT()
 				{
 				case CABLE_DELIVERY_SYSTEM_DESCRIPTOR:
 				{
+					TransponderInfo transponderinfo;
 					CableDeliverySystemDescriptor &d = (CableDeliverySystemDescriptor&)**desc;
-					ePtr<eDVBFrontendParameters> feparm = new eDVBFrontendParameters;
+					transponderinfo.feparm = new eDVBFrontendParameters;
+					transponderinfo.tsid = (*tsinfo)->getTransportStreamId();
 					eDVBFrontendParametersCable cable;
 					cable.set(d);
-					feparm->setDVBC(cable);
-					scanChannels.push_back(feparm);
+					transponderinfo.feparm->setDVBC(cable);
+					scanChannels.push_back(transponderinfo);
 					break;
 				}
 				case LOGICAL_CHANNEL_DESCRIPTOR:
@@ -181,6 +197,18 @@ void eCableScan::parseNIT()
 					for (LogicalChannelListConstIterator c(channels.begin()); c != channels.end(); ++c)
 					{
 						serviceIdToHDChannelId[(*c)->getServiceId()] = (*c)->getLogicalChannelNumber();
+					}
+					break;
+				}
+				case SERVICE_LIST_DESCRIPTOR:
+				{
+					unsigned char buf[(*desc)->getLength() + 2];
+					(*desc)->writeToBuffer(buf);
+					ServiceListDescriptor d(buf);
+					const ServiceListItemList &services = *d.getServiceList();
+					for (ServiceListItemConstIterator s(services.begin()); s != services.end(); ++s)
+					{
+						serviceIdToTsid[(*s)->getServiceId()] = (*tsinfo)->getTransportStreamId();
 					}
 					break;
 				}
@@ -219,6 +247,18 @@ void eCableScan::parseSDT()
 		for (ServiceDescriptionConstIterator s(services.begin()); s != services.end(); ++s)
 		{
 			unsigned short service_id = (*s)->getServiceId();
+			if (!serviceIdToTsid.empty()
+				&& serviceIdToTsid.find(service_id) != serviceIdToTsid.end()
+				&& serviceIdToTsid[service_id] != (**m_SDT->getSections().begin()).getTransportStreamId())
+			{
+				/*
+				 * This SID does not belong to the current TSID, according to the ServiceListDescriptor in the NIT.
+				 * This probably means the SDT contains data from the original network, which is not valid on the
+				 * selected Network_Id
+				 */
+				eDebug("[eCableScan] skip SID %x on TSID %x (not in the linked services list in the NIT)", service_id, (**m_SDT->getSections().begin()).getTransportStreamId());
+				break;
+			}
 			eServiceReferenceDVB ref;
 			ePtr<eDVBService> service = new eDVBService;
 
@@ -352,13 +392,16 @@ void eCableScan::createBouquets()
 	res->getChannelList(db);
 	eDVBDB *dvbdb = eDVBDB::getInstance();
 
-	int most = 0;
-	for (std::map<std::string, int>::iterator it = providerNames.begin(); it != providerNames.end(); ++it)
+	if (providerName == "")
 	{
-		if (it->second > most)
+		int most = 0;
+		for (std::map<std::string, int>::iterator it = providerNames.begin(); it != providerNames.end(); ++it)
 		{
-			most = it->second;
-			providerName = it->first;
+			if (it->second > most)
+			{
+				most = it->second;
+				providerName = it->first;
+			}
 		}
 	}
 	bouquetFilename = replace_all(providerName, " ", "");
