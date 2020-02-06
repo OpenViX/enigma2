@@ -62,7 +62,7 @@ class Harddisk:
 		self.mount_path = None
 		self.mount_device = None
 		self.phys_path = os.path.realpath(self.sysfsPath('device'))
-		self.internal = "pci" in self.phys_path or "ahci" in self.phys_path or "sata" in self.phys_path 			
+		self.internal = "pci" in self.phys_path or "ahci" in self.phys_path or "sata" in self.phys_path
 
 		try:
 			data = open("/sys/block/%s/queue/rotational" % device, "r").read().strip()
@@ -191,7 +191,7 @@ class Harddisk:
 
 	def Totalfree(self):
 		mediapath = [ ]
-		freetot = 0 
+		freetot = 0
 		for parts in getProcMounts():
 			if os.path.realpath(parts[0]).startswith(self.dev_path):
 				mediapath.append(parts[1])
@@ -201,7 +201,7 @@ class Harddisk:
 				freetot += (stat.f_bfree/1000) * (stat.f_bsize/1000)
 			except:
 				pass
-		return	freetot 
+		return	freetot
 
 	def numPartitions(self):
 		numPart = -1
