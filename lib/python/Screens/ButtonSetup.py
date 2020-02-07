@@ -486,7 +486,7 @@ class InfoBarButtonSetup():
 				pluginlist = plugins.getPlugins(PluginDescriptor.WHERE_EVENTINFO)
 				pluginlist.sort(key=lambda p: p.name)
 				for plugin in pluginlist:
-					if plugin.name not in twinPlugins and plugin.path and 'selectedevent' not in plugin.__call__.func_code.co_varnames:	
+					if plugin.name not in twinPlugins and plugin.path and 'selectedevent' not in plugin.__call__.func_code.co_varnames:
 						if twinPaths.has_key(plugin.path[plugin.path.rfind("Plugins"):]):
 							twinPaths[plugin.path[plugin.path.rfind("Plugins"):]] += 1
 						else:

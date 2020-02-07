@@ -656,7 +656,7 @@
 		<key id="KEY_GREEN" mapto="showSatellites" flags="m"/>
 		<key id="KEY_YELLOW" mapto="showProviders" flags="m"/>
 		<key id="KEY_BLUE" mapto="showFavourites" flags="m"/>
-		<key id="KEY_FAVORITES" mapto="showFavourites" flags="m"/>		
+		<key id="KEY_FAVORITES" mapto="showFavourites" flags="m"/>
 		<key id="KEY_CHANNELUP" mapto="nextBouquet" flags="m"/>
 		<key id="KEY_CHANNELDOWN" mapto="prevBouquet" flags="m"/>
 		<key id="KEY_NEXT" mapto="nextMarker" flags="m"/>
@@ -948,7 +948,7 @@
 			<key id="KEY_NEXTSONG" mapto="next" flags="m"/>
 		</device-->
 	</map>
-	
+
 	<map context="ButtonSetupActions">
 		<key id="KEY_RED" mapto="red" flags="b"/>
 		<key id="KEY_RED" mapto="red_long" flags="l"/>
