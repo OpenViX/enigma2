@@ -68,10 +68,15 @@ def getMultibootslots():
 	return bootslots
 
 def GetCurrentImage():
-	device = getparam(open('/sys/firmware/devicetree/base/chosen/bootargs', 'r').read(), 'root')
-	for slot in SystemInfo["canMultiBoot"].keys():
-		if SystemInfo["canMultiBoot"][slot]['device'] == device:
-			return slot
+	if SystemInfo["canMultiBoot"]:
+		slot = [x[-1] for x in open('/sys/firmware/devicetree/base/chosen/bootargs', 'r').read().split() if x.startswith('rootsubdir')]
+		if slot:
+			return int(slot[0])
+		else:
+			device = getparam(open('/sys/firmware/devicetree/base/chosen/bootargs', 'r').read(), 'root')
+			for slot in SystemInfo["canMultiBoot"].keys():
+				if SystemInfo["canMultiBoot"][slot]['device'] == device:
+					return slot
 def GetCurrentKern():
 	if SystemInfo["HasRootSubdir"]:
 		return SystemInfo["HasRootSubdir"] and (int(open('/sys/firmware/devicetree/base/chosen/bootargs', 'r').read()[:-1].split("kernel=/dev/mmcblk0p")[1].split(' ')[0]))
@@ -96,7 +101,7 @@ class GetImagelist():
 				os.mkdir(TMP_MOUNT)
 			self.container = Console()
 			self.phase = self.MOUNT
-			self.part = SystemInfo["canMultiBoot"][2]	# pick up slot type
+
 			self.run()
 		else:
 			callback({})
@@ -108,72 +113,40 @@ class GetImagelist():
 			self.slot = self.slots.pop(0)
 			self.container.ePopen('mount %s %s' % (SystemInfo["canMultiBoot"][self.slot]['device'], TMP_MOUNT), self.appClosed)
 
-
 	def appClosed(self, data="", retval=0, extra_args=None):
+		BuildVersion = "  "	
+		Build = " "	#ViX Build No.#
+		Dev = " "	#ViX Dev No.#
+		Creator = " " 	#Openpli Openvix Openatv etc #
+		Date = " "	
+		BuildType = " "	#release etc #
 		if retval:
 			self.imagelist[self.slot] = { 'imagename': _("Empty slot") }
 		if retval == 0 and self.phase == self.MOUNT:
-			BuildVersion = "  "	
-			Build = " "	#ViX Build No.#
-			Dev = " "	#ViX Dev No.#
-			Creator = " " 	#Openpli Openvix Openatv etc #
-			Date = " "	
-			BuildType = " "	#release etc #
-			self.OsPath = "NoPath"
-			if SystemInfo["HasRootSubdir"]:
-				if self.slot == 1 and os.path.isfile("/tmp/testmount/linuxrootfs1/usr/bin/enigma2"):
-					self.OsPath = "/tmp/testmount/linuxrootfs1"
-				elif os.path.isfile("/tmp/testmount/linuxrootfs%s/usr/bin/enigma2" % self.slot):
-					self.OsPath = "/tmp/testmount/linuxrootfs%s" % self.slot
-					print "multiboot tools 1 slots", self.slot, self.slot2
+			imagedir = os.sep.join(filter(None, [TMP_MOUNT, SystemInfo["canMultiBoot"][self.slot].get('rootsubdir', '')]))
+			if not fileExists("/tmp/multibootcheck/usr/bin/enigma2"):
+				self.imagelist[self.slot] = { 'imagename': _("Empty slot") }
 			else:
-				if os.path.isfile("/tmp/testmount/usr/bin/enigma2"):
-					self.OsPath = '/tmp/testmount'
-			print "Tools/Multiboot OsPath %s " %self.OsPath
-			if self.OsPath != "NoPath":
-				Creator = open("%s/etc/issue" %self.OsPath).readlines()[-2].capitalize().strip()[:-6].replace("-release", " rel")
+				Creator = open("%s/etc/issue" %imagedir).readlines()[-2].capitalize().strip()[:-6].replace("-release", " rel")
 				if Creator.startswith("Openvix"):
-					reader = boxbranding_reader(self.OsPath)
+					reader = boxbranding_reader(imagedir)
 					BuildType = reader.getImageType()
 					Build = reader.getImageBuild()
 					Dev = BuildType != "release" and " %s" % reader.getImageDevBuild() or ''
 					BuildVersion = "%s %s %s %s" % (Creator, BuildType[0:3], Build, Dev)
-			def getImagename(target):
-				from datetime import datetime
-				date = datetime.fromtimestamp(os.stat(os.path.join(target, "var/lib/opkg/status")).st_mtime).strftime('%Y-%m-%d')
-				if date.startswith("1970"):
-					try:
-						date = datetime.fromtimestamp(os.stat(os.path.join(target, "usr/share/bootlogo.mvi")).st_mtime).strftime('%Y-%m-%d')
-					except:
-						pass
-					date = max(date, datetime.fromtimestamp(os.stat(os.path.join(target, "usr/bin/enigma2")).st_mtime).strftime('%Y-%m-%d'))
-				return "%s (%s)" % (open(os.path.join(target, "etc/issue")).readlines()[-2].capitalize().strip()[:-6], date)
-			imagedir = os.sep.join(filter(None, [TMP_MOUNT, SystemInfo["canMultiBoot"][self.slot].get('rootsubdir', '')]))
-			if os.path.isfile('%s/usr/bin/enigma2' % imagedir):
-				try:
-					from datetime import datetime
-					date = datetime.fromtimestamp(os.stat(os.path.join(imagedir, "var/lib/opkg/status")).st_mtime).strftime('%Y-%m-%d')
-					if date.startswith("1970"):
-						date = datetime.fromtimestamp(os.stat(os.path.join(imagedir, "usr/share/bootlogo.mvi")).st_mtime).strftime('%Y-%m-%d')
-					date = max(date, datetime.fromtimestamp(os.stat(os.path.join(imagedir, "usr/bin/enigma2")).st_mtime).strftime('%Y-%m-%d'))
-				except:
-					date = _("Unknown")
-				self.imagelist[self.slot] = { 'imagename': "%s (%s)" % (open(os.path.join(imagedir, "etc/issue")).readlines()[-2].capitalize().strip()[:-6], date) }
-			else:
-				if os.path.isfile("%s/usr/bin/enigma2" % TMP_MOUNT):
-					self.imagelist[self.slot] = { 'imagename': getImagename(TMP_MOUNT) }
 				else:
-					from datetime import datetime
-					Date = datetime.fromtimestamp(os.stat("%s/var/lib/opkg/status" %self.OsPath).st_mtime).strftime("%d-%m-%Y")
-					if Date.endswith("1970"):
-						try:
-							Date = datetime.fromtimestamp(os.stat("%s/usr/share/bootlogo.mvi" %self.OsPath).st_mtime).strftime("%d-%m-%Y")
-						except:
-							pass
-						Date = max(Date, datetime.fromtimestamp(os.stat("%s/usr/bin/enigma2" %self.OsPath).st_mtime).strftime("%d-%m-%Y"))
-					BuildVersion = "%s build date %s" % (Creator, Date)
-				self.imagelist[self.slot2] =  { 'imagename': '%s' %BuildVersion, 'part': '%s' %self.part2 }
-				self.imagelist[self.slot] = { 'imagename': _("Empty slot") }
+					def getImagename(target):
+						from datetime import datetime
+						date = datetime.fromtimestamp(os.stat(os.path.join(target, "var/lib/opkg/status")).st_mtime).strftime('%Y-%m-%d')
+						if date.startswith("1970"):
+							try:
+								date = datetime.fromtimestamp(os.stat(os.path.join(target, "usr/share/bootlogo.mvi")).st_mtime).strftime('%Y-%m-%d')
+							except:
+								pass
+							date = max(date, datetime.fromtimestamp(os.stat(os.path.join(target, "usr/bin/enigma2")).st_mtime).strftime('%Y-%m-%d'))
+						return "%s (%s)" % (open(os.path.join(target, "etc/issue")).readlines()[-2].capitalize().strip()[:-6], date)
+					BuildVersion = getImagename(imagedir)
+				self.imagelist[self.slot] =  { 'imagename': '%s' %BuildVersion }
 			if self.slots and SystemInfo["canMultiBoot"][self.slot]['device'] == SystemInfo["canMultiBoot"][self.slots[0]]['device']:
 				self.slot = self.slots.pop(0)
 				self.appClosed()
@@ -182,10 +155,6 @@ class GetImagelist():
 				self.run()
 		elif self.slots:
 			self.phase = self.MOUNT
-			self.run()
-		elif self.SDmmc == self.FirstRun:
-			self.phase = self.MOUNT
-			self.SDmmc = self.LastRun
 			self.run()
 		else:
 			self.container.killAll()
