@@ -16,7 +16,7 @@ import subprocess
 
 TMP_MOUNT = '/tmp/multibootcheck'
 
-def getMultibootStartupDevice():
+def getMBbootdevice():
 	if not os.path.isdir(TMP_MOUNT):
 		os.mkdir(TMP_MOUNT)
 	for device in ('/dev/block/by-name/bootoptions', '/dev/mmcblk0p1', '/dev/mmcblk1p1', '/dev/mmcblk0p3', '/dev/mmcblk0p4'):
@@ -33,8 +33,12 @@ def getparam(line, param):
 
 def getMultibootslots():
 	bootslots = {}
-	if SystemInfo["MultibootStartupDevice"]:
-		for file in glob.glob('%s/STARTUP_*' % TMP_MOUNT):
+	if SystemInfo["MBbootdevice"]:
+		if not os.path.isdir(TMP_MOUNT):
+			os.mkdir(TMP_MOUNT)
+		Console().ePopen('/bin/mount %s %s' % (SystemInfo["MBbootdevice"], TMP_MOUNT))
+		for file in glob.glob(os.path.join(TMP_MOUNT, 'STARTUP_*')):
+			print "Multiboot getMultibootslots file = %s " %file
 			slotnumber = file.rsplit('_', 3 if 'BOXMODE' in file else 1)[1]
 			if slotnumber.isdigit() and slotnumber not in bootslots:
 				slot = {}
