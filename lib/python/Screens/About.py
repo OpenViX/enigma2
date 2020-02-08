@@ -1,25 +1,25 @@
-from Screen import Screen
-from Screens.SoftwareUpdate import UpdatePlugin
-from Screens.GitCommitInfo import CommitInfo
-from Components.ActionMap import ActionMap
-from Components.Button import Button
-from Components.Sources.StaticText import StaticText
-from Components.Harddisk import harddiskmanager
-from Components.NimManager import nimmanager
-from Components.About import about
-from Components.ScrollLabel import ScrollLabel
-from Components.Console import Console
-from Components.config import config
-from enigma import eTimer, getEnigmaVersionString, getDesktop
-from boxbranding import getMachineBrand, getMachineBuild, getMachineName, getImageVersion, getImageType, getImageBuild, getDriverDate, getImageDevBuild
-from Components.Pixmap import MultiPixmap
-from Components.Network import iNetwork
-from Components.SystemInfo import SystemInfo
-from Tools.StbHardware import getFPVersion
-from Tools.Multiboot import GetCurrentImage, GetCurrentImageMode
-from Tools.Directories import fileExists, fileCheck, pathExists
 from os import path
 from re import search
+from enigma import eTimer, getEnigmaVersionString, getDesktop
+from boxbranding import getMachineBrand, getMachineBuild, getMachineName, getImageVersion, getImageType, getImageBuild, getDriverDate, getImageDevBuild
+from Components.About import about
+from Components.ActionMap import ActionMap
+from Components.Button import Button
+from Components.config import config
+from Components.Console import Console
+from Components.Harddisk import harddiskmanager
+from Components.Network import iNetwork
+from Components.NimManager import nimmanager
+from Components.Pixmap import MultiPixmap
+from Components.ScrollLabel import ScrollLabel
+from Components.Sources.StaticText import StaticText
+from Components.SystemInfo import SystemInfo
+from Screen import Screen
+from Screens.GitCommitInfo import CommitInfo
+from Screens.SoftwareUpdate import UpdatePlugin
+from Tools.Directories import fileExists, fileCheck, pathExists
+from Tools.Multiboot import GetCurrentImage, GetCurrentImageMode
+from Tools.StbHardware import getFPVersion
 import skin
 
 class About(Screen):
