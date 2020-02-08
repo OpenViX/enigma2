@@ -47,12 +47,20 @@ def getMultibootslots():
 						device = getparam(line, 'root')
 						if os.path.exists(device):
 							slot['device'] = device
-							slot['startupfile'] = os.path.basename(file).split('_BOXMODE')[0]
+							slot['startupfile'] = os.path.basename(file)
 							if 'rootsubdir' in line:
 								slot['rootsubdir'] = getparam(line, 'rootsubdir')
+								slot['kernel'] = getparam(line, 'kernel')
+							if "sda" in line:
+								slot['kernel'] = "/dev/sda%s" %line.split('sda', 1)[1].split(' ', 1)[0]
+							else:
+								slot['kernel'] = "%sp%s" %(device.split("p")[0], int(device.split("p")[1])-1)
+								
 						break
 				if slot:
 					bootslots[int(slotnumber)] = slot
+					print "Multiboot getMultibootslots slot = %s" %slot
+		print "Multiboot getMultibootslots bootslots = %s" %bootslots
 		Console().ePopen('umount %s' % TMP_MOUNT)
 		if not os.path.ismount(TMP_MOUNT):
 			os.rmdir(TMP_MOUNT)
