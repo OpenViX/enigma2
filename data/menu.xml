@@ -96,7 +96,7 @@
 				<menu weight="15" level="0" text="Frontpanel" entryID="frontpanel_menu">
 					<id val="frontpanel_menu" />
 					<item weight="0" level="0" text="Basic settings" requires="Display"><setup level="1" id="lcd" /></item>
-					<item weight="5" level="0" text="Skin" requires="OledDisplay"><screen module="LcdSkinSelector" screen="LCDSkinSelector"/></item>
+					<item weight="5" level="0" text="Skin" requires="OledDisplay"><screen module="LcdSkinSelectorOLD" screen="LCDSkinSelectorOLD"/></item>
 					<item weight="5" level="0" text="Display Skin" entryID="display_skin_selector"><screen module="SkinSelector" screen="LcdSkinSelector"/></item>
 					<item weight="10" level="0" text="Clock" requires="OledDisplay"><screen module="LcdClockSelector" screen="LCDClockSelector"/></item> 
 				</menu>
