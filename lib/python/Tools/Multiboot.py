@@ -134,7 +134,7 @@ class GetImagelist():
 					Dev = BuildType != "release" and " %s" % reader.getImageDevBuild() or ''
 					BuildVersion = "%s %s %s %s" % (Creator, BuildType[0:3], Build, Dev)
 				else:
-					def getImagename(target):
+					try:
 						from datetime import datetime
 						date = datetime.fromtimestamp(os.stat(os.path.join(target, "var/lib/opkg/status")).st_mtime).strftime('%Y-%m-%d')
 						if date.startswith("1970"):
@@ -143,8 +143,9 @@ class GetImagelist():
 							except:
 								pass
 							date = max(date, datetime.fromtimestamp(os.stat(os.path.join(target, "usr/bin/enigma2")).st_mtime).strftime('%Y-%m-%d'))
-						return "%s (%s)" % (open(os.path.join(target, "etc/issue")).readlines()[-2].capitalize().strip()[:-6], date)
-					BuildVersion = getImagename(imagedir)
+					except:
+						date = _("Unknown")
+					BuildVersion = "%s (%s)" % (open(os.path.join(target, "etc/issue")).readlines()[-2].capitalize().strip()[:-6], date)
 				self.imagelist[self.slot] =  { 'imagename': '%s' %BuildVersion }
 			if self.slots and SystemInfo["canMultiBoot"][self.slot]['device'] == SystemInfo["canMultiBoot"][self.slots[0]]['device']:
 				self.slot = self.slots.pop(0)
