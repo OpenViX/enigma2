@@ -44,6 +44,7 @@ def getMultibootslots():
 				slot = {}
 				for line in open(file).readlines():
 					if 'root=' in line:
+						line = line.rstrip('\n')
 						device = getparam(line, 'root')
 						if os.path.exists(device):
 							slot['device'] = device
