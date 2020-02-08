@@ -1,8 +1,9 @@
-from Components.SystemInfo import SystemInfo
+from boxbranding import getMachineMtdRoot, getMachineBuild
 from Components.Console import Console
-from boxbranding import getMachineMtdRoot
-from Tools.Directories import pathExists
-import os, glob
+from Components.SystemInfo import SystemInfo
+from Tools.Directories import fileExists, fileCheck, pathExists, fileHas
+import os
+import glob
 import shutil
 import subprocess
 
@@ -134,9 +135,17 @@ class GetImagelist():
 						pass
 					date = max(date, datetime.fromtimestamp(os.stat(os.path.join(target, "usr/bin/enigma2")).st_mtime).strftime('%Y-%m-%d'))
 				return "%s (%s)" % (open(os.path.join(target, "etc/issue")).readlines()[-2].capitalize().strip()[:-6], date)
-			imagedir = "/".join(filter(None, [TMP_MOUNT, SystemInfo["canMultiBoot"][self.slot].get('rootsubdir', '')]))
+			imagedir = os.sep.join(filter(None, [TMP_MOUNT, SystemInfo["canMultiBoot"][self.slot].get('rootsubdir', '')]))
 			if os.path.isfile('%s/usr/bin/enigma2' % imagedir):
-				self.imagelist[self.slot] = { 'imagename': getImagename(imagedir) }
+				try:
+					from datetime import datetime
+					date = datetime.fromtimestamp(os.stat(os.path.join(imagedir, "var/lib/opkg/status")).st_mtime).strftime('%Y-%m-%d')
+					if date.startswith("1970"):
+						date = datetime.fromtimestamp(os.stat(os.path.join(imagedir, "usr/share/bootlogo.mvi")).st_mtime).strftime('%Y-%m-%d')
+					date = max(date, datetime.fromtimestamp(os.stat(os.path.join(imagedir, "usr/bin/enigma2")).st_mtime).strftime('%Y-%m-%d'))
+				except:
+					date = _("Unknown")
+				self.imagelist[self.slot] = { 'imagename': "%s (%s)" % (open(os.path.join(imagedir, "etc/issue")).readlines()[-2].capitalize().strip()[:-6], date) }
 			else:
 				if os.path.isfile("%s/usr/bin/enigma2" % TMP_MOUNT):
 					self.imagelist[self.slot] = { 'imagename': getImagename(TMP_MOUNT) }
