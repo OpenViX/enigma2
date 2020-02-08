@@ -7,19 +7,19 @@ DISPLAYTYPE = display
 endif
 
 if HAVE_COLORLCD220
-SUBDIRS += lcd220 lcd_skin220
+SUBDIRS = lcd220 lcd_skin220
 endif
 
 if HAVE_COLORLCD400
-SUBDIRS += lcd400 lcd_skin400
+SUBDIRS = lcd400 lcd_skin400
 endif
 
 if HAVE_BWLCD255
-SUBDIRS += vfd255
+SUBDIRS = vfd255
 endif
 
 if HAVE_TEXTLCD
-SUBDIRS += displaytext
+SUBDIRS = displaytext
 endif
 
 dist_install_DATA = skin_display.xml
