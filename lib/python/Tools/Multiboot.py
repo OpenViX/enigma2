@@ -101,7 +101,6 @@ class GetImagelist():
 				os.mkdir(TMP_MOUNT)
 			self.container = Console()
 			self.phase = self.MOUNT
-
 			self.run()
 		else:
 			callback({})
@@ -258,39 +257,27 @@ class EmptySlot():
 	def __init__(self, Contents, callback):
 		self.callback = callback
 		self.container = Console()
-		(self.firstslot, self.numberofslots, self.mtdboot) = SystemInfo["canMultiBoot"]
 		self.slot = Contents
 		if not os.path.isdir('/tmp/testmount'):
 			os.mkdir('/tmp/testmount')
-		if SystemInfo["HasRootSubdir"]:
-			self.part = "%s%s" %(self.mtdboot, GetCurrentRoot())
-		else:
-			if SystemInfo["HasSDmmc"]:			# allow for mmc & SDcard in passed slot number, so SDcard slot -1
-				self.slot -= 1
-			self.part = "%s%s" %(self.mtdboot, str(self.slot * 2 + self.firstslot))
-			if SystemInfo["HasSDmmc"] and self.slot == 0:	# this is the mmc slot, so pick up from MtdRoot
-				self.part = getMachineMtdRoot()
 		self.phase = self.MOUNT
 		self.run()
 
 	def run(self):
-		if SystemInfo["HasRootSubdir"]:
-			if self.slot == 1 and os.path.islink("/dev/block/by-name/linuxrootfs"):
-				self.container.ePopen('mount /dev/block/by-name/linuxrootfs /tmp/testmount' if self.phase == self.MOUNT else 'umount /tmp/testmount', self.appClosed)
-			else:
-				self.container.ePopen('mount /dev/block/by-name/userdata /tmp/testmount' if self.phase == self.MOUNT else 'umount /tmp/testmount', self.appClosed)
+		if self.phase == self.UNMOUNT:
+			self.container.ePopen('umount %s' % '/tmp/testmount', self.appClosed)
 		else:
-			self.container.ePopen('mount /dev/%s /tmp/testmount' %self.part if self.phase == self.MOUNT else 'umount /tmp/testmount', self.appClosed)
-
+			self.container.ePopen('mount %s %s' % (SystemInfo["canMultiBoot"][self.slot]['device'], '/tmp/testmount'), self.appClosed)
 	
 	def appClosed(self, data, retval, extra_args):
 		if retval == 0 and self.phase == self.MOUNT:
-			if SystemInfo["HasRootSubdir"]:
-				if os.path.isfile("/tmp/testmount/linuxrootfs%s/usr/bin/enigma2" %self.slot):
-					os.rename('/tmp/testmount/linuxrootfs%s/usr/bin/enigma2' %self.slot, '/tmp/testmount/linuxrootfs%s/usr/bin/enigmax.bin' %self.slot)
+			imagedir = os.sep.join(filter(None, ['/tmp/testmount', SystemInfo["canMultiBoot"][self.slot].get('rootsubdir', '')]))
+			if fileExists("/tmp/testmount/usr/bin/enigma2"):
+				file = '%s/usr/bin/enigma2' %imagedir
+				print "[multiboot] file = %s" %(file) 
+				os.rename('/tmp/testmount/usr/bin/enigma2', '/tmp/testmount/usr/bin/enigmax.bin')
 			else:
-				if os.path.isfile("/tmp/testmount/usr/bin/enigma2"):
-					os.rename('/tmp/testmount/usr/bin/enigma2', '/tmp/testmount/usr/bin/enigmax.bin')
+				print "[multiboot] NO /tmp/testmount/usr/bin/enigma2"
 			self.phase = self.UNMOUNT
 			self.run()
 		else:
