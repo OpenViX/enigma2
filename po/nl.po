@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-05 13:59+0000\n"
-"PO-Revision-Date: 2020-01-10 14:12+0100\n"
+"POT-Creation-Date: 2020-02-06 22:34+0000\n"
+"PO-Revision-Date: 2020-02-08 10:15+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SourceCharset: iso-8859-15\n"
-"X-Generator: Poedit 2.2.4\n"
+"X-Generator: Poedit 2.3\n"
 
 msgid ""
 "\n"
@@ -1221,6 +1221,9 @@ msgstr "< Standaard >"
 msgid "< Emergency >"
 msgstr "< Nood >"
 
+msgid "< Pending restart >"
+msgstr "< Wacht op herstart >"
+
 msgid "<Current movielist location>"
 msgstr "<Huidige lokatie opnamelijst>"
 
@@ -1474,9 +1477,6 @@ msgstr "Activeer netwerkinstellingen"
 
 msgid "Activate the configured network settings."
 msgstr "Activeer de gekozen netwerk instellingen."
-
-msgid "Activate the currently selected skin"
-msgstr "Activeer de momenteel geselecteerde skin"
 
 msgid "Activate timeshift end"
 msgstr "Activeer timeshift einde"
@@ -2537,6 +2537,12 @@ msgstr "Canada"
 
 msgid "Cancel"
 msgstr "Annuleer"
+
+msgid "Cancel any changes to the currently active skin"
+msgstr "Annuleer aanpassingen aan de actieve skin"
+
+msgid "Cancel any changes to the currently active skin and exit all menus"
+msgstr "Annuleer aanpassingen en verlaat alle menu's"
 
 msgid "Cancel any text changes and exit"
 msgstr "Annuleer tekst en sluit af"
@@ -7382,6 +7388,9 @@ msgstr "Geen zender/provider gekozen"
 msgid "No standby"
 msgstr "Geen stand-by"
 
+msgid "No subtitles available"
+msgstr "Geen updates beschikbaar."
+
 msgid "No tags are set on these movies."
 msgstr "Geen markeringen geplaatst op deze opnames."
 
@@ -9169,9 +9178,6 @@ msgstr "Omgekeerde favorietenknoppen"
 msgid "Reverse list"
 msgstr "Keer lijst om"
 
-msgid "Revert to the currently active skin"
-msgstr "Keer terug naar de momenteel actieve skin"
-
 msgid "Rewind"
 msgstr "Terug spoelen"
 
@@ -9355,6 +9361,9 @@ msgstr "Sla op/Geef tekst in en sluit af"
 
 msgid "Save EPG"
 msgstr "Sla EPG op"
+
+msgid "Save and activate the currently selected skin"
+msgstr "Activeer de momenteel geselecteerde skin"
 
 msgid "Save and record"
 msgstr "Bewaar en sla op"
@@ -11064,6 +11073,9 @@ msgstr "Subkanalen"
 msgid "Subtitle"
 msgstr "Ondertitels"
 
+msgid "Subtitle Long"
+msgstr "Lange ondertitels"
+
 msgid "Subtitle alignment"
 msgstr "Ondertitel uitlijning"
 
@@ -11105,6 +11117,12 @@ msgstr "Ondertitel-selectie..."
 
 msgid "Subtitles"
 msgstr "Ondertitels"
+
+msgid "Subtitles off"
+msgstr "Ondertitels uit"
+
+msgid "Subtitles on"
+msgstr "Ondertitels aan"
 
 msgid "Subtitles settings"
 msgstr "Ondertitel instellingen"
@@ -11975,7 +11993,11 @@ msgid "Titleset mode"
 msgstr "Titelset modus"
 
 #, python-format
-msgid "To save and apply the selected '%s' skin the GUI needs to restart.  Would you like to save the selection and restart the GUI?"
+msgid "To apply the selected '%s' skin the GUI needs to restart. Would you like to restart the GUI now?"
+msgstr "Om de geselecteerde '%s' skin toe te passen, moet de GUI herstart worden. Wilt u dat nu doen?"
+
+#, python-format
+msgid "To save and apply the selected '%s' skin the GUI needs to restart. Would you like to save the selection and restart the GUI now?"
 msgstr "Om de geselecteerde '%s' skin toe te passen, moet de GUI herstart worden. Wilt u dat nu doen?"
 
 msgid "Today"
@@ -12005,11 +12027,17 @@ msgstr "Wissel aspectverhouding..."
 msgid "Toggle between bouquet/epg lists"
 msgstr "Schakel tussen favorieten- en EPG-lijst"
 
+msgid "Toggle default subtitles"
+msgstr "Kies de standaard sorteermethode"
+
 msgid "Toggle new text inserts before or overwrites existing text"
 msgstr "Schakel tussen nieuwe tekst ingeven voor of overschrijven bestaande tekst"
 
 msgid "Toggle picture In graphics"
 msgstr "Wissel Picture In Graphics"
+
+msgid "Toggle the default subtitles"
+msgstr "Kies de standaard sorteermethode"
 
 msgid "Togo"
 msgstr "Togo"
@@ -13701,6 +13729,9 @@ msgstr "start direct"
 
 msgid "activatePiP"
 msgstr "activeer PiP"
+
+msgid "activatePiP long"
+msgstr "activeer PiP lang"
 
 msgid "add bookmark"
 msgstr "Markeerpunt toevoegen."
