@@ -88,26 +88,24 @@ class About(Screen):
 		AboutText += _("Image:\t%s.%s%s (%s)\n") % (getImageVersion(), getImageBuild(), imageSubBuild, getImageType().title())
 
 		if SystemInfo["HasH9SD"]:
-			f = open('/sys/firmware/devicetree/base/chosen/bootargs', 'r').read()
-			if "rootfstype=ext4" in f:
-				part = "        - SD card in use for Image root \n"
+			if "rootfstype=ext4" in open('/sys/firmware/devicetree/base/chosen/bootargs', 'r').read():
+				part = "        - SD card in use for Image root \n" 
 			else:
 				part = "        - eMMC slot in use for Image root \n"
 			AboutText += _("%s") % part
 
 
 		if SystemInfo["canMultiBoot"]:
-			slot = image = GetCurrentImage()
+			slot = image= GetCurrentImage()
 			part = "eMMC slot %s" %slot
 			bootmode = ""
 			if SystemInfo["canMode12"]:
-				bootmode = "bootmode = %s" %GetCurrentImageMode()
-			if SystemInfo["HasSDmmc"]:
-				slot += 1
-				if image != 0:
-					part = "SDC slot %s (%s%s) " %(image, SystemInfo["canMultiBoot"][2], image*2)
-				else:
-					part = "eMMC slot %s" %slot
+				bootmode = "bootmode = %s" %GetCurrentImageMode()		
+			print "[About] HasHiSi = %s, slot = %s" %(SystemInfo["HasHiSi"], slot)
+			if SystemInfo["HasHiSi"]:
+				if slot != 1:
+					image =-1
+					part = "SDcard slot %s (%s) " %(image, SystemInfo["canMultiBoot"][slot]['device'])
 			AboutText += _("Image Slot:\t%s") % "STARTUP_" + str(slot) + "  " + part + " " + bootmode + "\n"
 
 		if getMachineName() in ('ET8500') and path.exists('/proc/mtd'):
