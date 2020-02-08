@@ -142,7 +142,7 @@ if fileExists("/usr/share/enigma2/display/lcd_skin/skin_lcd_default.xml"):
 	if fileExists(resolveFilename(SCOPE_CONFIG, config.skin.lcdskin.value)):
 		addSkin(config.skin.lcdskin.value, SCOPE_CONFIG)
 	else:
-		addSkin("lcd_skin/" + config.skin.lcdskin.value)
+		addSkin("display/lcd_skin/" + config.skin.lcdskin.value)
 
 result = []
 for skin, name in [(config.skin.display_skin.value, "current"), (DEFAULT_DISPLAY_SKIN, "default")]:

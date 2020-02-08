@@ -48,5 +48,5 @@
 		</widget>
 		<panel name="SummaryClockPanel" />
 	</screen>
-	<include filename="/usr/share/enigma2/lcd_skin/common.xml" />
+	<include filename="/usr/share/enigma2/display/lcd_skin/common.xml" />
 </skin>
