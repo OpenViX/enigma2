@@ -1369,25 +1369,25 @@ msgstr ""
 msgid "8bit"
 msgstr ""
 
-#, fuzzy
+
 msgid "< Current >"
-msgstr "Hora actual:"
+msgstr "< Actual >"
 
 #
 #, fuzzy
 msgid "< Default + Picon >"
-msgstr "<Ubicación de películas por defecto>"
+msgstr "< Defecto + Picon>"
 
 #
 #, fuzzy
 msgid "< Default >"
-msgstr "Por defecto"
+msgstr "< Defecto >"
 
 msgid "< Emergency >"
-msgstr ""
+msgstr "< Emergencia >"
 
 msgid "< Pending restart >"
-msgstr ""
+msgstr "< Reinicio pendiente >"
 
 #
 msgid "<Current movielist location>"
@@ -3457,10 +3457,8 @@ msgstr "Interfaz común"
 msgid "Common interface assignment"
 msgstr "Asignación de interfaz común"
 
-#
-#, fuzzy
 msgid "Common options"
-msgstr "Opciones avanzadas"
+msgstr "Opciones basicas"
 
 #
 msgid "Communication"
@@ -6145,22 +6143,18 @@ msgstr "\"Stream\""
 msgid "GUI Skin"
 msgstr "Skin"
 
-#
-#, fuzzy
 msgid ""
 "GUI needs a restart to apply a new language\n"
 "Do you want to restart the GUI now?"
 msgstr ""
-"GUI necesita reiniciarse para aplicar el nuevo Skin.\n"
+"GUI necesita reiniciarse para aplicar el nuevo idioma.\n"
 "¿Quieres reiniciar GUI ahora?"
 
-#
-#, fuzzy
 msgid ""
 "GUI needs a restart to switch modes\n"
 "Do you want to restart the GUI now?"
 msgstr ""
-"GUI necesita reiniciarse para aplicar el nuevo Skin.\n"
+"GUI necesita reiniciarse para aplicar el nuevo modo.\n"
 "¿Quieres reiniciar GUI ahora?"
 
 #, fuzzy
@@ -6322,22 +6316,17 @@ msgstr "Griego"
 msgid "Greek"
 msgstr "Griego"
 
-#
-#, fuzzy
 msgid "Green"
-msgstr "Griego"
+msgstr "Verde"
 
 msgid "Green long"
-msgstr ""
+msgstr "Verde largo"
 
-#
-#, fuzzy
 msgid "Greenland"
-msgstr "Griego"
+msgstr "Groenlandia"
 
-#, fuzzy
 msgid "Grenada"
-msgstr "Renombrar"
+msgstr "Grenada"
 
 msgid "Grey"
 msgstr "Gris"
@@ -6402,9 +6391,8 @@ msgstr ""
 msgid "H:mm:ss"
 msgstr ""
 
-#, fuzzy
 msgid "HD"
-msgstr "HDMI CEC"
+msgstr "HD"
 
 msgid "HD list"
 msgstr "Lista HD"
@@ -6415,13 +6403,11 @@ msgstr ""
 msgid "HD2400"
 msgstr ""
 
-#, fuzzy
 msgid "HDD settings"
-msgstr "Ajustes OSD"
+msgstr "Ajustes HDD"
 
-#, fuzzy
 msgid "HDMI"
-msgstr "HDMI CEC"
+msgstr "HDMI"
 
 msgid "HDMI CEC"
 msgstr "HDMI CEC"
@@ -6429,37 +6415,29 @@ msgstr "HDMI CEC"
 msgid "HDMI CEC Setup"
 msgstr "Configurar HDMI CEC"
 
-#
-#, fuzzy
 msgid "HDMI Colordepth"
-msgstr "Espacio de color"
+msgstr "Profunidad de color de HDMI"
 
-#
-#, fuzzy
 msgid "HDMI Colorimetry"
-msgstr "Espacio de color"
+msgstr "Colormetría de HDMI"
 
-#
-#, fuzzy
 msgid "HDMI Colorspace"
-msgstr "Espacio de color"
+msgstr "Espacio de color de HDMI"
 
 msgid "HDMI HDR Type"
-msgstr ""
+msgstr "HDMI HDR"
 
-#, fuzzy
 msgid "HDMIin"
-msgstr "HDMI CEC"
+msgstr "Entrada HDMI"
 
 msgid "HDR, 12bit 4:2:0/4:2:2, no PIP"
 msgstr ""
 
-#, fuzzy
 msgid "HDR10 Support"
-msgstr "Soporte DLNA"
+msgstr "Soporte HDR10"
 
 msgid "HELP"
-msgstr ""
+msgstr "AYUDA"
 
 msgid "HH:mm"
 msgstr ""
@@ -6467,14 +6445,11 @@ msgstr ""
 msgid "HH:mm:ss"
 msgstr ""
 
-#, fuzzy
 msgid "HLG Support"
-msgstr "Soporte DLNA"
+msgstr "Soporte HLG"
 
-#
-#, fuzzy
 msgid "Haiti"
-msgstr "Esperando"
+msgstr "Haiti"
 
 msgid "Handle standby from TV"
 msgstr "Gestionar el modo de espera desde la TV"
@@ -6486,8 +6461,6 @@ msgstr "Gestionar la reactivación desde la TV"
 msgid "Hard disk standby after"
 msgstr "Disco duro en modo de espera después"
 
-#
-#, fuzzy
 msgid "Harddisk setup"
 msgstr "Configuración del disco duro"
 
@@ -6509,9 +6482,8 @@ msgstr ""
 msgid "Helps setting up your antenna"
 msgstr ""
 
-#, fuzzy
 msgid "Hidden / Blank"
-msgstr "Red oculta"
+msgstr "Ocultado"
 
 msgid "Hidden network"
 msgstr "Red oculta"
