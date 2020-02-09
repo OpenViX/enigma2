@@ -14,7 +14,7 @@ from Tools.BoundFunction import boundFunction
 from Tools.Directories import fileExists, fileCheck, pathExists, fileHas
 from Tools.Multiboot import GetImagelist, GetCurrentImage, GetCurrentImageMode
 
-class MultiBootSelector(Screen):
+class MultiBoot(Screen):
 
 	skin = """
 	<screen name="Multiboot Image Selector" position="center,center" size="750,900" flags="wfNoBorder" backgroundColor="transparent">
