@@ -23,6 +23,7 @@ def getMBbootdevice():
 		if os.path.exists(device):
 			Console().ePopen('mount %s %s' % (device, TMP_MOUNT))
 			if os.path.isfile(os.path.join(TMP_MOUNT, "STARTUP")):
+				print '[Multiboot] Startupdevice found:', device
 				return device
 			Console().ePopen('umount %s' % TMP_MOUNT)
 	if not os.path.ismount(TMP_MOUNT):
@@ -40,9 +41,11 @@ def getMultibootslots():
 		for file in glob.glob(os.path.join(TMP_MOUNT, 'STARTUP_*')):
 			print "Multiboot getMultibootslots file = %s " %file
 			slotnumber = file.rsplit('_', 3 if 'BOXMODE' in file else 1)[1]
+			print "Multiboot getMultibootslots slotnumber = %s " %slotnumber
 			if slotnumber.isdigit() and slotnumber not in bootslots:
 				slot = {}
 				for line in open(file).readlines():
+					print "Multiboot getMultibootslots readlines = %s " %line
 					if 'root=' in line:
 						line = line.rstrip('\n')
 						device = getparam(line, 'root')
@@ -123,9 +126,7 @@ class GetImagelist():
 			self.imagelist[self.slot] = { 'imagename': _("Empty slot") }
 		if retval == 0 and self.phase == self.MOUNT:
 			imagedir = os.sep.join(filter(None, [TMP_MOUNT, SystemInfo["canMultiBoot"][self.slot].get('rootsubdir', '')]))
-			if not fileExists("/tmp/multibootcheck/usr/bin/enigma2"):
-				self.imagelist[self.slot] = { 'imagename': _("Empty slot") }
-			else:
+			if fileExists("/tmp/multibootcheck/usr/bin/enigma2"):
 				Creator = open("%s/etc/issue" %imagedir).readlines()[-2].capitalize().strip()[:-6].replace("-release", " rel")
 				if Creator.startswith("Openvix"):
 					reader = boxbranding_reader(imagedir)
@@ -147,6 +148,8 @@ class GetImagelist():
 						date = _("Unknown")
 					BuildVersion = "%s (%s)" % (open(os.path.join(target, "etc/issue")).readlines()[-2].capitalize().strip()[:-6], date)
 				self.imagelist[self.slot] =  { 'imagename': '%s' %BuildVersion }
+			else:
+				self.imagelist[self.slot] = { 'imagename': _("Empty slot") }
 			if self.slots and SystemInfo["canMultiBoot"][self.slot]['device'] == SystemInfo["canMultiBoot"][self.slots[0]]['device']:
 				self.slot = self.slots.pop(0)
 				self.appClosed()
