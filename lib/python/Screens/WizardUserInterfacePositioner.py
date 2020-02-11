@@ -35,7 +35,7 @@ class UserInterfacePositionerWizard(WizardLanguage, Rc):
 			"USAGE: If you continue adjust the screen size and position settings so that the shaded user interface layer *just* "
 			"covers the test pattern in the background.\n\n"
 			"Select Yes to change these settings or No to skip this step."), type=MessageBox.TYPE_YESNO, timeout=-1, default=False)
-		popup.setTitle("Start Wizard - Screen Alignment")
+		popup.setTitle(_("Start Wizard - Screen Alignment"))
 
 	def welcomeAction(self, answer):
 		if answer:

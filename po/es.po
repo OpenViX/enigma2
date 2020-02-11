@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-15 18:52+0000\n"
+"POT-Creation-Date: 2020-02-06 15:03+0000\n"
 "PO-Revision-Date: 2014-01-22 23:31+0100\n"
 "Last-Translator: Andy Blackburn <andyblac@icloud.com>\n"
 "Language-Team: www.CostaBlancaTranslations.com <maria@CostaBlancaTranslations.com>\n"
@@ -1093,6 +1093,12 @@ msgstr "'%s' contiene %d archivo(s) y %d sub-directorios.\n"
 msgid "'Network peer' automatically detects other Enigma2 receivers on the local network. You can also manually enter the URL or IP address."
 msgstr ""
 
+msgid ""
+"'Save' changes active language.\n"
+"'Add Language' or MENU adds additional language(s).\n"
+"'Delete Language' allows either deletion of all but English and active language OR selected language"
+msgstr ""
+
 msgid "( All readers)"
 msgstr "(Todos los lectores)"
 
@@ -1241,6 +1247,9 @@ msgstr "16:9 Buzón"
 msgid "16:9 always"
 msgstr "Siempre 16:9"
 
+msgid "16K"
+msgstr ""
+
 #
 msgid "18 V"
 msgstr "18 V"
@@ -1339,6 +1348,9 @@ msgstr "4:3 Buzón"
 msgid "4:3 PanScan"
 msgstr "4:3 PanScan"
 
+msgid "4K"
+msgstr ""
+
 msgid "4X"
 msgstr "4X"
 
@@ -1351,18 +1363,31 @@ msgstr ""
 msgid "720p 24Hz"
 msgstr ""
 
+msgid "8K"
+msgstr ""
+
 msgid "8bit"
 msgstr ""
+
+
+msgid "< Current >"
+msgstr "< Actual >"
+
+#
+#, fuzzy
+msgid "< Default + Picon >"
+msgstr "< Defecto + Picon>"
 
 #
 #, fuzzy
 msgid "< Default >"
-msgstr "Por defecto"
+msgstr "< Defecto >"
 
-#
-#, fuzzy
-msgid "< Default with Picon >"
-msgstr "<Ubicación de películas por defecto>"
+msgid "< Emergency >"
+msgstr "< Emergencia >"
+
+msgid "< Pending restart >"
+msgstr "< Reinicio pendiente >"
 
 #
 msgid "<Current movielist location>"
@@ -1626,10 +1651,6 @@ msgid "About"
 msgstr "Acerca de"
 
 #
-msgid "About..."
-msgstr "Acerca de..."
-
-#
 #, fuzzy
 msgid "Accept the current selection"
 msgstr "Activar configuración actual."
@@ -1803,6 +1824,11 @@ msgstr "Añadir canal al grupo"
 #, fuzzy
 msgid "Add service to favourites"
 msgstr "Añadir canal a favoritos"
+
+#
+#, fuzzy
+msgid "Add services to this bouquet?"
+msgstr "Añadir canal al grupo"
 
 #
 msgid "Add timer"
@@ -2900,6 +2926,12 @@ msgstr ""
 msgid "Cancel"
 msgstr "Cancelar"
 
+msgid "Cancel any changes to the currently active skin"
+msgstr ""
+
+msgid "Cancel any changes to the currently active skin and exit all menus"
+msgstr ""
+
 msgid "Cancel any text changes and exit"
 msgstr ""
 
@@ -3425,6 +3457,9 @@ msgstr "Interfaz común"
 msgid "Common interface assignment"
 msgstr "Asignación de interfaz común"
 
+msgid "Common options"
+msgstr "Opciones basicas"
+
 #
 msgid "Communication"
 msgstr "Comunicación"
@@ -3535,6 +3570,10 @@ msgstr "Configurar el número de filas mostradas."
 
 #, fuzzy
 msgid "Configure if picons will be shown in the service list."
+msgstr "Configura el conector de salida de vídeo que se va a utilizar."
+
+#, fuzzy
+msgid "Configure if service picons will be shown in the channel selection list."
 msgstr "Configura el conector de salida de vídeo que se va a utilizar."
 
 msgid "Configure if the subtitle should switch between normal, italic, bold and bolditalic"
@@ -4478,7 +4517,7 @@ msgstr "Borrar"
 
 #
 #, fuzzy
-msgid "Delete Language"
+msgid "Delete Language(s)"
 msgstr "Idioma"
 
 #
@@ -4685,6 +4724,10 @@ msgstr "Visualizar los contenidos 4:3 como"
 #
 msgid "Display >16:9 content as"
 msgstr "Visualizar los contenido >16:9 como"
+
+#, fuzzy
+msgid "Display Skin"
+msgstr "Ajustes de visualización"
 
 #
 msgid "Display and user interface"
@@ -5350,9 +5393,6 @@ msgstr "Hora de finalización"
 msgid "English"
 msgstr "Inglés"
 
-msgid "Enigma2 skin selector"
-msgstr "Selector de Skin Enigma2"
-
 #, fuzzy
 msgid "Enter"
 msgstr "Centrar"
@@ -5643,11 +5683,6 @@ msgid "Exit the wizard"
 msgstr "Salir del asistente"
 
 #
-#, fuzzy
-msgid "Exit/OK"
-msgstr "Salir"
-
-#
 msgid "Expert"
 msgstr "Experto"
 
@@ -5779,6 +5814,9 @@ msgid "FEC"
 msgstr "FEC"
 
 msgid "FEC:"
+msgstr ""
+
+msgid "FHD"
 msgstr ""
 
 msgid "FLASH"
@@ -6102,28 +6140,21 @@ msgstr "\"Stream\""
 
 #
 #, fuzzy
+msgid "GUI Skin"
+msgstr "Skin"
+
 msgid ""
 "GUI needs a restart to apply a new language\n"
 "Do you want to restart the GUI now?"
 msgstr ""
-"GUI necesita reiniciarse para aplicar el nuevo Skin.\n"
+"GUI necesita reiniciarse para aplicar el nuevo idioma.\n"
 "¿Quieres reiniciar GUI ahora?"
 
-#
-msgid ""
-"GUI needs a restart to apply a new skin\n"
-"Do you want to restart the GUI now?"
-msgstr ""
-"GUI necesita reiniciarse para aplicar el nuevo Skin.\n"
-"¿Quieres reiniciar GUI ahora?"
-
-#
-#, fuzzy
 msgid ""
 "GUI needs a restart to switch modes\n"
 "Do you want to restart the GUI now?"
 msgstr ""
-"GUI necesita reiniciarse para aplicar el nuevo Skin.\n"
+"GUI necesita reiniciarse para aplicar el nuevo modo.\n"
 "¿Quieres reiniciar GUI ahora?"
 
 #, fuzzy
@@ -6285,25 +6316,17 @@ msgstr "Griego"
 msgid "Greek"
 msgstr "Griego"
 
-msgid "Greek (Modern)"
-msgstr ""
-
-#
-#, fuzzy
 msgid "Green"
-msgstr "Griego"
+msgstr "Verde"
 
 msgid "Green long"
-msgstr ""
+msgstr "Verde largo"
 
-#
-#, fuzzy
 msgid "Greenland"
-msgstr "Griego"
+msgstr "Groenlandia"
 
-#, fuzzy
 msgid "Grenada"
-msgstr "Renombrar"
+msgstr "Grenada"
 
 msgid "Grey"
 msgstr "Gris"
@@ -6368,6 +6391,9 @@ msgstr ""
 msgid "H:mm:ss"
 msgstr ""
 
+msgid "HD"
+msgstr "HD"
+
 msgid "HD list"
 msgstr "Lista HD"
 
@@ -6377,13 +6403,11 @@ msgstr ""
 msgid "HD2400"
 msgstr ""
 
-#, fuzzy
 msgid "HDD settings"
-msgstr "Ajustes OSD"
+msgstr "Ajustes HDD"
 
-#, fuzzy
 msgid "HDMI"
-msgstr "HDMI CEC"
+msgstr "HDMI"
 
 msgid "HDMI CEC"
 msgstr "HDMI CEC"
@@ -6391,37 +6415,29 @@ msgstr "HDMI CEC"
 msgid "HDMI CEC Setup"
 msgstr "Configurar HDMI CEC"
 
-#
-#, fuzzy
 msgid "HDMI Colordepth"
-msgstr "Espacio de color"
+msgstr "Profunidad de color de HDMI"
 
-#
-#, fuzzy
 msgid "HDMI Colorimetry"
-msgstr "Espacio de color"
+msgstr "Colormetría de HDMI"
 
-#
-#, fuzzy
 msgid "HDMI Colorspace"
-msgstr "Espacio de color"
+msgstr "Espacio de color de HDMI"
 
 msgid "HDMI HDR Type"
-msgstr ""
+msgstr "HDMI HDR"
 
-#, fuzzy
 msgid "HDMIin"
-msgstr "HDMI CEC"
+msgstr "Entrada HDMI"
 
 msgid "HDR, 12bit 4:2:0/4:2:2, no PIP"
 msgstr ""
 
-#, fuzzy
 msgid "HDR10 Support"
-msgstr "Soporte DLNA"
+msgstr "Soporte HDR10"
 
 msgid "HELP"
-msgstr ""
+msgstr "AYUDA"
 
 msgid "HH:mm"
 msgstr ""
@@ -6429,14 +6445,11 @@ msgstr ""
 msgid "HH:mm:ss"
 msgstr ""
 
-#, fuzzy
 msgid "HLG Support"
-msgstr "Soporte DLNA"
+msgstr "Soporte HLG"
 
-#
-#, fuzzy
 msgid "Haiti"
-msgstr "Esperando"
+msgstr "Haiti"
 
 msgid "Handle standby from TV"
 msgstr "Gestionar el modo de espera desde la TV"
@@ -6448,8 +6461,6 @@ msgstr "Gestionar la reactivación desde la TV"
 msgid "Hard disk standby after"
 msgstr "Disco duro en modo de espera después"
 
-#
-#, fuzzy
 msgid "Harddisk setup"
 msgstr "Configuración del disco duro"
 
@@ -6471,9 +6482,8 @@ msgstr ""
 msgid "Helps setting up your antenna"
 msgstr ""
 
-#, fuzzy
 msgid "Hidden / Blank"
-msgstr "Red oculta"
+msgstr "Ocultado"
 
 msgid "Hidden network"
 msgstr "Red oculta"
@@ -8094,6 +8104,26 @@ msgstr "Ir al inicio de la lista"
 msgid "Move to position X"
 msgstr "Ir a la posición X"
 
+#
+#, fuzzy
+msgid "Move to the next page"
+msgstr "Cambiar al siguiente ángulo"
+
+#
+#, fuzzy
+msgid "Move to the next skin"
+msgstr "Bajar a la entrada siguiente."
+
+#
+#, fuzzy
+msgid "Move to the previous page"
+msgstr "Rebobinar al capítulo anterior"
+
+#
+#, fuzzy
+msgid "Move to the previous skin"
+msgstr "Subir a la entrada anterior."
+
 #, fuzzy
 msgid "Move up a line"
 msgstr "Subir una página"
@@ -8578,6 +8608,10 @@ msgstr "No se ha seleccionado ningún canal/proveedor."
 msgid "No standby"
 msgstr "Sin modo en espera."
 
+#, fuzzy
+msgid "No subtitles available"
+msgstr "Hay actualizaciones disponibles."
+
 #
 msgid "No tags are set on these movies."
 msgstr "No hay etiquetas en estas películas."
@@ -8723,9 +8757,6 @@ msgstr ""
 "Tamaño de archivo: %sMB\n"
 "Espacio libre: %sMB\n"
 "Recorrido: %s"
-
-msgid "Not mounted"
-msgstr "No montado"
 
 #
 #, fuzzy
@@ -9218,6 +9249,10 @@ msgstr "Picon y nombre de canal"
 msgid "Picon width"
 msgstr "Anchura de Picon"
 
+#, fuzzy
+msgid "Picons: Show in channel list"
+msgstr "Instalar lista de canales"
+
 #
 msgid "Picture in graphics"
 msgstr "Imagen en gráficos"
@@ -9494,6 +9529,9 @@ msgstr ""
 "\n"
 "Pulsa OK para continuar."
 
+msgid "Please set up the following common options"
+msgstr ""
+
 msgid "Please set up tuner A"
 msgstr "Configura el sintonizador A"
 
@@ -9543,6 +9581,10 @@ msgstr "Configura el sintonizador A"
 
 #, fuzzy
 msgid "Please set up tuner R"
+msgstr "Configura el sintonizador A"
+
+#, fuzzy
+msgid "Please set your time options"
 msgstr "Configura el sintonizador A"
 
 #
@@ -9752,6 +9794,15 @@ msgstr ""
 msgid "Power LED can be turned on or off here."
 msgstr ""
 
+msgid "Power On/Off display Normal Mode."
+msgstr ""
+
+msgid "Power On/Off display Standby Mode."
+msgstr ""
+
+msgid "Power On/Off display Suspend Mode."
+msgstr ""
+
 #, fuzzy
 msgid "Power long"
 msgstr "Historial del administrador de alimentación"
@@ -9866,9 +9917,6 @@ msgstr ""
 msgid "Press '0' to toggle PiP mode"
 msgstr "Pulsa '0' para alternar PiP interna/externa."
 
-msgid "Press 'Add Language' or MENU to add additional language(s). English language can not be deleted"
-msgstr ""
-
 msgid "Press INFO on your remote control for additional information."
 msgstr "Pulsa INFO en el mando para obtener información adicional."
 
@@ -9880,7 +9928,8 @@ msgid "Press OK on your remote control to continue."
 msgstr "Pulsa OK en el mando para continuar."
 
 #
-msgid "Press OK to activate the selected skin."
+#, fuzzy, python-format
+msgid "Press OK to activate the selected%s skin."
 msgstr "Pulsa OK para activar el Skin seleccionado."
 
 #
@@ -9895,6 +9944,11 @@ msgstr "Pulsa OK para editar la configuración."
 #, python-format
 msgid "Press OK to get further details for %s"
 msgstr "Pulsa OK para obtener más detalles de %s."
+
+#
+#, fuzzy, python-format
+msgid "Press OK to keep the currently selected%s skin."
+msgstr "Pulsa OK para activar el Skin seleccionado."
 
 #
 msgid "Press OK to scan"
@@ -10675,6 +10729,11 @@ msgstr "Restaurar"
 msgid "Restore backups"
 msgstr "Restaurar copias de seguridad"
 
+#
+#, fuzzy
+msgid "Restore defaults"
+msgstr "Por defecto"
+
 msgid "Restore deleted user bouquets"
 msgstr ""
 
@@ -10902,10 +10961,6 @@ msgstr "Configuración de la antena."
 msgid "Satellite equipment"
 msgstr "Equipo satélite"
 
-#, fuzzy
-msgid "Satellite equipment control"
-msgstr "Equipo satélite"
-
 #
 msgid "Satellite equipment setup"
 msgstr "Configuración del equipo satélite."
@@ -10943,9 +10998,10 @@ msgstr ""
 msgid "Save EPG"
 msgstr "Guardar EPG"
 
+#
 #, fuzzy
-msgid "Save and exit"
-msgstr "Guardar y parar"
+msgid "Save and activate the currently selected skin"
+msgstr "Pulsa OK para activar el Skin seleccionado."
 
 msgid "Save and record"
 msgstr "Guardar y grabar"
@@ -11164,7 +11220,7 @@ msgid "Select 'FBC SCR' if this tuner will connect to a SCR (Unicable/JESS) devi
 msgstr ""
 
 msgid ""
-"Select 'Yes' to delete all languages except English and your chosen language:\n"
+"Select 'Yes' to delete all languages except English and current language:\n"
 "\n"
 "Select 'No' to delete only the chosen language:\n"
 "\n"
@@ -12402,13 +12458,15 @@ msgstr "Latitud"
 msgid "Site longitude"
 msgstr "Longitud"
 
-msgid "Size: "
-msgstr "Tamaño:"
-
 #
 #, fuzzy
 msgid "Skin"
 msgstr "Skin"
+
+#
+#, fuzzy
+msgid "Skin Selection Actions"
+msgstr "Seleccionar ubicación"
 
 msgid "Skin Setting"
 msgstr "Ajustes de Skin"
@@ -12425,6 +12483,11 @@ msgstr "Ajustes de Skin"
 #, fuzzy, python-format
 msgid "Skin:\t%s"
 msgstr "Skin"
+
+#
+#, fuzzy
+msgid "SkinSelector: Restart GUI"
+msgstr "Reiniciar GUI"
 
 #
 msgid "Skins"
@@ -12998,6 +13061,11 @@ msgstr "Subcanales"
 msgid "Subtitle"
 msgstr "Subtítulos"
 
+#
+#, fuzzy
+msgid "Subtitle Long"
+msgstr "Subtítulos"
+
 msgid "Subtitle alignment"
 msgstr "Alineación de subtítulos"
 
@@ -13041,6 +13109,16 @@ msgstr "Selección de subtítulos..."
 
 #
 msgid "Subtitles"
+msgstr "Subtítulos"
+
+#
+#, fuzzy
+msgid "Subtitles off"
+msgstr "Subtítulos"
+
+#
+#, fuzzy
+msgid "Subtitles on"
 msgstr "Subtítulos"
 
 #, fuzzy
@@ -13678,10 +13756,6 @@ msgstr "Esta opción te permite desactivar el orden de opciones en las pantallas
 msgid "This option allows you enable the vertical scaler dejagging."
 msgstr "Esta opción configura la resolucíón de pantalla en modo salida PC."
 
-#, fuzzy
-msgid "This option allows you to Power Off the display."
-msgstr "Esta opción te permite desactivar el orden de los menús."
-
 msgid "This option allows you to boost the blue tones in the picture."
 msgstr "Esta opción te permite reforzar los tonos azules de la imagen."
 
@@ -14069,6 +14143,14 @@ msgstr "Propiedades de título"
 msgid "Titleset mode"
 msgstr "Modo título"
 
+#, python-format
+msgid "To apply the selected '%s' skin the GUI needs to restart. Would you like to restart the GUI now?"
+msgstr ""
+
+#, python-format
+msgid "To save and apply the selected '%s' skin the GUI needs to restart. Would you like to save the selection and restart the GUI now?"
+msgstr ""
+
 #
 msgid "Today"
 msgstr "Hoy"
@@ -14099,12 +14181,20 @@ msgstr "Alternar relación de aspecto..."
 msgid "Toggle between bouquet/epg lists"
 msgstr "Abrir lista de grupos"
 
+#, fuzzy
+msgid "Toggle default subtitles"
+msgstr "Ajustar líneas de subtítulos del teletexto"
+
 msgid "Toggle new text inserts before or overwrites existing text"
 msgstr ""
 
 #, fuzzy
 msgid "Toggle picture In graphics"
 msgstr "Alternar imagen en gráficos."
+
+#, fuzzy
+msgid "Toggle the default subtitles"
+msgstr "Configura el método de clasificación por defecto."
 
 msgid "Togo"
 msgstr ""
@@ -16038,6 +16128,10 @@ msgstr "A punto de comenzar."
 msgid "activatePiP"
 msgstr "Activar PiP"
 
+#, fuzzy
+msgid "activatePiP long"
+msgstr "Activar PiP"
+
 #
 msgid "add bookmark"
 msgstr "Añadir marcador"
@@ -17563,6 +17657,10 @@ msgstr "Zapping"
 #~ msgid "AV settings"
 #~ msgstr "Ajustes A/V"
 
+#
+#~ msgid "About..."
+#~ msgstr "Acerca de..."
+
 #, fuzzy
 #~ msgid "Action on long power button press"
 #~ msgstr "Acción con pulsación larga de la tecla de encendido."
@@ -17702,10 +17800,6 @@ msgstr "Zapping"
 #~ msgid "Disconnect"
 #~ msgstr "Desconectar"
 
-#, fuzzy
-#~ msgid "Display"
-#~ msgstr "Ajustes de visualización"
-
 #~ msgid ""
 #~ "Do you really want to convert the filesystem?\n"
 #~ "You cannot go back!"
@@ -17754,6 +17848,14 @@ msgstr "Zapping"
 #~ msgid "Enigma2 Changes"
 #~ msgstr "Cambios Enigma 2"
 
+#~ msgid "Enigma2 skin selector"
+#~ msgstr "Selector de Skin Enigma2"
+
+#
+#, fuzzy
+#~ msgid "Exit/OK"
+#~ msgstr "Salir"
+
 #~ msgid "External (CF)"
 #~ msgstr "Externo (CF)"
 
@@ -17786,6 +17888,14 @@ msgstr "Zapping"
 
 #~ msgid "Ftpd service type: Vsftpd server"
 #~ msgstr "Tipo de servicio Ftpd: servidor Vsftpd"
+
+#
+#~ msgid ""
+#~ "GUI needs a restart to apply a new skin\n"
+#~ "Do you want to restart the GUI now?"
+#~ msgstr ""
+#~ "GUI necesita reiniciarse para aplicar el nuevo Skin.\n"
+#~ "¿Quieres reiniciar GUI ahora?"
 
 #~ msgid "Get latest experimental image"
 #~ msgstr "Obtener la última imagen experimental"
@@ -17924,6 +18034,9 @@ msgstr "Zapping"
 #~ msgid "Not configured"
 #~ msgstr "No configurado."
 
+#~ msgid "Not mounted"
+#~ msgstr "No montado"
+
 #
 #, fuzzy
 #~ msgid "Nothing connected"
@@ -18019,6 +18132,14 @@ msgstr "Zapping"
 #~ msgstr "Configuración Samba"
 
 #, fuzzy
+#~ msgid "Satellite equipment control"
+#~ msgstr "Equipo satélite"
+
+#, fuzzy
+#~ msgid "Save and exit"
+#~ msgstr "Guardar y parar"
+
+#, fuzzy
 #~ msgid "Save timeshift in movie dir and zap"
 #~ msgstr "Guardar Timeshift como película y detener la grabación."
 
@@ -18096,6 +18217,9 @@ msgstr "Zapping"
 #~ msgid "SingleEPG settings"
 #~ msgstr "Ajustes de EPG única."
 
+#~ msgid "Size: "
+#~ msgstr "Tamaño:"
+
 #, fuzzy
 #~ msgid "SoftCam and CI"
 #~ msgstr "SoftCam / CI"
@@ -18157,6 +18281,10 @@ msgstr "Zapping"
 
 #~ msgid "There is no [webif] section in oscam.conf"
 #~ msgstr "No hay apartado [webif] en oscam.conf."
+
+#, fuzzy
+#~ msgid "This option allows you to Power Off the display."
+#~ msgstr "Esta opción te permite desactivar el orden de los menús."
 
 #, fuzzy
 #~ msgid ""
