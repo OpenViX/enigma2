@@ -92,7 +92,7 @@ SystemInfo["RecoveryMode"] = SystemInfo["HasRootSubdir"] and getMachineBuild() n
 SystemInfo["AndroidMode"] = SystemInfo["RecoveryMode"] and getMachineBuild() in ('multibox',)
 SystemInfo["MBbootdevice"] = getMBbootdevice()
 SystemInfo["canMultiBoot"] = getMultibootslots()
-SystemInfo["canBackupEMC"] = getMachineBuild() in ('hd51','h7') and ('disk.img', 'mmcblk0p1') or getMachineBuild() in ('osmio4k', 'osmio4kplus', 'osmini4k') and ('emmc.img', 'mmcblk1p1') or getMachineBuild() in ('viper4k', 'gbmv200','sf8008','beyonwizv2') and ('usb_update.bin','none')
+SystemInfo["canBackupEMC"] = getMachineBuild() in ('hd51','h7') and ('disk.img', '%s' %SystemInfo["MBbootdevice"]) or getMachineBuild() in ('osmio4k', 'osmio4kplus', 'osmini4k') and ('emmc.img', '%s' %SystemInfo["MBbootdevice"]) or getMachineBuild() in ('viper4k', 'gbmv200','sf8008','beyonwizv2') and ('usb_update.bin','none')
 SystemInfo["HasHiSi"] = pathExists('/proc/hisi')
 SystemInfo["canMode12"] = getMachineBuild() in ('hd51', 'h7') and ('brcm_cma=440M@328M brcm_cma=192M@768M', 'brcm_cma=520M@248M brcm_cma=200M@768M')
 SystemInfo["HasMMC"] = fileHas("/proc/cmdline", "root=/dev/mmcblk") or SystemInfo["canMultiBoot"] and fileHas("/proc/cmdline", "root=/dev/sda")
