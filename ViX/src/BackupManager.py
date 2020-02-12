@@ -4,28 +4,25 @@ from os import path, stat, mkdir, listdir, remove, statvfs, chmod
 from time import localtime, time, strftime, mktime
 from datetime import date, datetime
 import tarfile, glob
-
 from enigma import eTimer, eEnv, eDVBDB, quitMainloop
-
 from . import _, PluginLanguageDomain
-import Components.Task
 from Components.About import about
 from Components.ActionMap import ActionMap
-from Components.Label import Label
 from Components.Button import Button
-from Components.MenuList import MenuList
 from Components.config import configfile, config, ConfigSubsection, ConfigYesNo, ConfigSelection, ConfigText, ConfigNumber, ConfigLocations, NoSave, ConfigClock, ConfigDirectory
-from Components.Harddisk import harddiskmanager
-from Components.Sources.StaticText import StaticText
-from Components.FileList import MultiFileSelectList, FileList
-from Components.ScrollLabel import ScrollLabel
-from Components.SystemInfo import SystemInfo
-from Screens.Screen import Screen
 from Components.Console import Console
+from Components.FileList import MultiFileSelectList, FileList
+from Components.Harddisk import harddiskmanager
+from Components.Label import Label
+from Components.MenuList import MenuList
+from Components.ScrollLabel import ScrollLabel
+from Components.Sources.StaticText import StaticText
+from Components.SystemInfo import SystemInfo
+import Components.Task
 from Screens.MessageBox import MessageBox
+from Screens.Screen import Screen
 from Screens.Setup import Setup
 from Tools.Notifications import AddPopupWithCallback
-import fnmatch
 
 autoBackupManagerTimer = None
 SETTINGSRESTOREQUESTIONID = 'RestoreSettingsNotification'
@@ -36,9 +33,10 @@ hddchoices = []
 for p in harddiskmanager.getMountedPartitions():
 	if path.exists(p.mountpoint):
 		d = path.normpath(p.mountpoint)
-		if SystemInfo["canMultiBoot"] and SystemInfo["canMultiBoot"][2] in d:
+		if SystemInfo["canMultiBoot"]:
+			if "mmcblk0p" in d or "mmcblk1p" in d:
 				continue
-		elif p.mountpoint != '/':
+		if p.mountpoint != '/':
 			hddchoices.append((p.mountpoint, d))
 
 config.backupmanager = ConfigSubsection()
