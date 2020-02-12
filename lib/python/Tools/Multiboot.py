@@ -23,7 +23,6 @@ def getMBbootdevice():
 		if path.exists(device):
 			Console().ePopen('mount %s %s' % (device, Imagemount))
 			if path.isfile(path.join(Imagemount, "STARTUP")):
-				print '[Multiboot] Startupdevice found:', device
 				return device
 			Console().ePopen('umount %s' % Imagemount)
 	if not path.ismount(Imagemount):
@@ -43,7 +42,6 @@ def getMultibootslots():
 			if slotnumber.isdigit() and slotnumber not in bootslots:
 				slot = {}
 				for line in open(file).readlines():
-					print "Multiboot getMultibootslots readlines = %s " %line
 					if 'root=' in line:
 						line = line.rstrip('\n')
 						device = getparam(line, 'root')
@@ -61,7 +59,6 @@ def getMultibootslots():
 						break
 				if slot:
 					bootslots[int(slotnumber)] = slot
-		print "[multiboot1] getMultibootslots bootslots = %s" %bootslots
 		Console().ePopen('umount %s' % Imagemount)
 		if not path.ismount(Imagemount):
 			rmdir(Imagemount)
