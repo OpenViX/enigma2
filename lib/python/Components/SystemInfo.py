@@ -1,32 +1,32 @@
+from boxbranding import getMachineBuild, getBoxType, getBrandOEM, getDisplayType, getHaveRCA, getHaveYUV, getHaveSCART, getHaveAVJACK, getHaveHDMIinHD, getHaveHDMIinFHD, getMachineMtdRoot
 from enigma import eDVBResourceManager, Misc_Options, eDVBCIInterfaces
+
 from Components.About import getChipSetString
 from Tools.Directories import fileExists, fileCheck, pathExists, fileHas
 from Tools.HardwareInfo import HardwareInfo
 
-from boxbranding import getMachineBuild, getBoxType, getBrandOEM, getDisplayType, getHaveRCA, getHaveYUV, getHaveSCART, getHaveAVJACK, getHaveHDMIinHD, getHaveHDMIinFHD, getMachineMtdRoot
-
 SystemInfo = {}
 
-from Tools.Multiboot import getMBbootdevice, getMultibootslots
+from Tools.Multiboot import getMBbootdevice, getMultibootslots  # This import needs to be here to avoid a SystemInfo load loop!
 
 def getNumVideoDecoders():
-	number_of_video_decoders = 0
-	while fileExists("/dev/dvb/adapter0/video%d" % (number_of_video_decoders), 'f'):
-		number_of_video_decoders += 1
-	return number_of_video_decoders
+	numVideoDecoders = 0
+	while fileExists("/dev/dvb/adapter0/video%d" % numVideoDecoders, "f"):
+		numVideoDecoders += 1
+	return numVideoDecoders
 
 def countFrontpanelLEDs():
-	number_of_leds = fileExists("/proc/stb/fp/led_set_pattern") and 1 or 0
-	while fileExists("/proc/stb/fp/led%d_pattern" % number_of_leds):
-		number_of_leds += 1
-	return number_of_leds
+	numLeds = fileExists("/proc/stb/fp/led_set_pattern") and 1 or 0
+	while fileExists("/proc/stb/fp/led%d_pattern" % numLeds):
+		numLeds += 1
+	return numLeds
+
 
 SystemInfo["CommonInterface"] = eDVBCIInterfaces.getInstance().getNumOfSlots()
 SystemInfo["CommonInterfaceCIDelay"] = fileCheck("/proc/stb/tsmux/rmx_delay")
-for cislot in range (0, SystemInfo["CommonInterface"]):
-	SystemInfo["CI%dSupportsHighBitrates" % cislot] = fileCheck("/proc/stb/tsmux/ci%d_tsclk"  % cislot)
-	SystemInfo["CI%dRelevantPidsRoutingSupport" % cislot] = fileCheck("/proc/stb/tsmux/ci%d_relevant_pids_routing"  % cislot)
-
+for cislot in range(0, SystemInfo["CommonInterface"]):
+	SystemInfo["CI%dSupportsHighBitrates" % cislot] = fileCheck("/proc/stb/tsmux/ci%d_tsclk" % cislot)
+	SystemInfo["CI%dRelevantPidsRoutingSupport" % cislot] = fileCheck("/proc/stb/tsmux/ci%d_relevant_pids_routing" % cislot)
 SystemInfo["NumVideoDecoders"] = getNumVideoDecoders()
 SystemInfo["Udev"] = not fileExists("/dev/.devfsd")
 SystemInfo["PIPAvailable"] = getMachineBuild() not in ("i55plus") and SystemInfo["NumVideoDecoders"] > 1
@@ -65,7 +65,7 @@ SystemInfo["VFD_initial_scroll_delay"] = not SystemInfo["7segment"] and getBoxTy
 SystemInfo["VFD_final_scroll_delay"] = not SystemInfo["7segment"] and getBoxType() not in ("et8500",) and fileCheck("/proc/stb/lcd/final_scroll_delay")
 SystemInfo["LcdLiveTV"] = fileCheck("/proc/stb/fb/sd_detach") or fileCheck("/proc/stb/lcd/live_enable")
 SystemInfo["LCDMiniTV"] = fileExists("/proc/stb/lcd/mode")
-SystemInfo["LCDMiniTVPiP"] = SystemInfo["LCDMiniTV"] and getBoxType() != 'gb800ueplus'
+SystemInfo["LCDMiniTVPiP"] = SystemInfo["LCDMiniTV"] and getBoxType() != "gb800ueplus"
 SystemInfo["LcdPowerOn"] = fileExists("/proc/stb/power/vfd")
 SystemInfo["FastChannelChange"] = False
 SystemInfo["3DMode"] = fileCheck("/proc/stb/fb/3dmode") or fileCheck("/proc/stb/fb/primary/3d")
@@ -74,14 +74,14 @@ SystemInfo["Blindscan_t2_available"] = fileCheck("/proc/stb/info/vumodel")
 SystemInfo["HasTranscoding"] = pathExists("/proc/stb/encoder/0") or fileCheck("/dev/bcm_enc0")
 SystemInfo["HasH265Encoder"] = fileHas("/proc/stb/encoder/0/vcodec_choices", "h265")
 SystemInfo["CanNotDoSimultaneousTranscodeAndPIP"] = getBoxType() in ("vusolo4k", "gbquad4k")
-SystemInfo["hasXcoreVFD"] = getBoxType() in ("osmega", "spycat4k", "spycat4kmini", "spycat4kcomb"') and fileCheck("/sys/module/brcmstb_%s/parameters/pt6302_cgram" % getBoxType())
+SystemInfo["hasXcoreVFD"] = getBoxType() in ("osmega", "spycat4k", "spycat4kmini", "spycat4kcomb") and fileCheck("/sys/module/brcmstb_%s/parameters/pt6302_cgram" % getBoxType())
 SystemInfo["HasHDMIin"] = getHaveHDMIinHD() in ("True",) or getHaveHDMIinFHD() in ("True",)
 SystemInfo["HasHDMI-CEC"] = fileExists("/usr/lib/enigma2/python/Plugins/SystemPlugins/HdmiCEC/plugin.pyo")
 SystemInfo["HasInfoButton"] = getBrandOEM() in ("airdigital", "broadmedia", "ceryon", "dags", "dinobot", "edision", "formuler", "gfutures", "gigablue", "ini", "maxytec", "octagon", "odin", "skylake", "tiviar", "xcore", "xp", "xtrend")
 SystemInfo["Has24hz"] = fileCheck("/proc/stb/video/videomode_24hz")
 SystemInfo["HasRootSubdir"] = fileHas("/proc/cmdline", "rootsubdir=")
-SystemInfo["RecoveryMode"] = SystemInfo["HasRootSubdir"] and getMachineBuild() not in ('hd51','h7') or fileCheck("/proc/stb/fp/boot_mode")
-SystemInfo["AndroidMode"] = SystemInfo["RecoveryMode"] and getMachineBuild() in ('multibox',)
+SystemInfo["RecoveryMode"] = SystemInfo["HasRootSubdir"] and getMachineBuild() not in ("hd51", "h7") or fileCheck("/proc/stb/fp/boot_mode")
+SystemInfo["AndroidMode"] = SystemInfo["RecoveryMode"] and getMachineBuild() in ("multibox",)
 SystemInfo["MBbootdevice"] = getMBbootdevice()
 SystemInfo["canMultiBoot"] = getMultibootslots()
 SystemInfo["canBackupEMC"] = getMachineBuild() in ("hd51", "h7") and ("disk.img", "%s" % SystemInfo["MBbootdevice"]) or getMachineBuild() in ("osmio4k", "osmio4kplus", "osmini4k") and ("emmc.img", "%s" % SystemInfo["MBbootdevice"]) or getMachineBuild() in ("viper4k", "gbmv200", "sf8008", "beyonwizv2") and ("usb_update.bin", "none")
