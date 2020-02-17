@@ -16,7 +16,7 @@ class PiconBg(Renderer):
 	def changed(self, what):
 		if self.instance:
 			pngname = ""
-			if what[0] == 1 or what[0] == 3:
+			if what[0] in (self.CHANGED_ALL, self.CHANGED_SPECIFIC):
 				pngname = resolveFilename(SCOPE_ACTIVE_SKIN, "piconbg/"+config.usage.show_picon_bkgrn.value + ".png")
 				if self.pngname != pngname:
 					if pngname:

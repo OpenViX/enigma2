@@ -155,12 +155,11 @@ class LcdPicon(Renderer):
 			elif attrib == "size":
 				self.piconsize = value
 		self.skinAttributes = attribs
-		return Renderer.applySkin(self, desktop, parent)
+		rc = Renderer.applySkin(self, desktop, parent)
+		self.changed((self.CHANGED_DEFAULT,))
+		return rc
 
 	GUI_WIDGET = ePixmap
-
-	def postWidgetCreate(self, instance):
-		self.changed((self.CHANGED_DEFAULT,))
 
 	def updatePicon(self, picInfo=None):
 		ptr = self.PicLoad.getData()
@@ -171,7 +170,7 @@ class LcdPicon(Renderer):
 	def changed(self, what):
 		if self.instance:
 			pngname = ""
-			if what[0] == 1 or what[0] == 3:
+			if what[0] in (self.CHANGED_DEFAULT, self.CHANGED_ALL, self.CHANGED_SPECIFIC):
 				pngname = getLcdPiconName(self.source.text)
 				if not pathExists(pngname): # no picon for service found
 					pngname = self.defaultpngname
@@ -182,6 +181,9 @@ class LcdPicon(Renderer):
 					else:
 						self.instance.hide()
 					self.pngname = pngname
+			elif what[0] == self.CHANGED_CLEAR:
+				self.pngname = None
+				self.instance.hide()
 
 harddiskmanager.on_partition_list_change.append(onPartitionChange)
 initLcdPiconPaths()
