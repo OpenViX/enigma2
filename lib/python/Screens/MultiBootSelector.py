@@ -1,89 +1,90 @@
+from enigma import getDesktop
 from os import mkdir, path
-from shutil import copyfile
-from boxbranding import getMachineBuild, getMachineMtdRoot
-from Components.ActionMap import ActionMap
-from Components.ChoiceList import ChoiceList, ChoiceEntryComponent
+
+from Components.ActionMap import HelpableActionMap
+from Components.ChoiceList import ChoiceEntryComponent, ChoiceList
 from Components.Console import Console
-from Components.Label import Label
 from Components.Sources.StaticText import StaticText
 from Components.SystemInfo import SystemInfo
-from Screens.MessageBox import MessageBox
+from Screens.HelpMenu import HelpableScreen
 from Screens.Screen import Screen
-from Screens.Standby import TryQuitMainloop
+from Screens.Standby import QUIT_REBOOT, TryQuitMainloop
 from Tools.BoundFunction import boundFunction
-from Tools.Directories import fileExists, fileCheck, pathExists, fileHas
-from Tools.Multiboot import GetImagelist, GetCurrentImage, GetCurrentImageMode
+from Tools.Directories import copyfile, pathExists
+from Tools.Multiboot import GetCurrentImage, GetCurrentImageMode, GetImagelist
 
-class MultiBoot(Screen):
 
-	skin = """
-	<screen name="Multiboot Image Selector" position="center,center" size="750,900" flags="wfNoBorder" backgroundColor="transparent">
-		<eLabel name="b" position="0,0" size="750,700" backgroundColor="#00ffffff" zPosition="-2" />
-		<eLabel name="a" position="1,1" size="748,698" backgroundColor="#00000000" zPosition="-1" />
-		<widget source="Title" render="Label" position="60,10" foregroundColor="#00ffffff" size="480,50" halign="left" font="Regular; 28" backgroundColor="#00000000" />
-		<eLabel name="line" position="1,60" size="748,1" backgroundColor="#00ffffff" zPosition="1" />
-		<eLabel name="line2" position="1,250" size="748,4" backgroundColor="#00ffffff" zPosition="1" />
-		<widget name="config" position="2,280" size="730,380" halign="center" font="Regular; 22" backgroundColor="#00000000" foregroundColor="#00e5b243" />
-		<widget source="labe14" render="Label" position="2,80" size="730,30" halign="center" font="Regular; 22" backgroundColor="#00000000" foregroundColor="#00ffffff" />
-		<widget source="labe15" render="Label" position="2,130" size="730,60" halign="center" font="Regular; 22" backgroundColor="#00000000" foregroundColor="#00ffffff" />
-		<widget source="key_red" render="Label" position="30,200" size="150,30" noWrap="1" zPosition="1" valign="center" font="Regular; 20" halign="left" backgroundColor="#00000000" foregroundColor="#00ffffff" />
-		<widget source="key_green" render="Label" position="200,200" size="150,30" noWrap="1" zPosition="1" valign="center" font="Regular; 20" halign="left" backgroundColor="#00000000" foregroundColor="#00ffffff" />
-		<eLabel position="20,200" size="6,40" backgroundColor="#00e61700" /> <!-- Should be a pixmap -->
-		<eLabel position="190,200" size="6,40" backgroundColor="#0061e500" /> <!-- Should be a pixmap -->
-	</screen>
-	"""
+class MultiBootSelector(Screen, HelpableScreen):
+	skinTemplate = """
+	<screen title="MultiBoot Image Selector" position="center,center" size="%d,%d">
+		<widget name="config" position="%d,%d" size="%d,%d" font="Regular;%d" itemHeight="%d" scrollbarMode="showOnDemand" />
+		<widget source="options" render="Label" position="%d,e-180" size="%d,%d" font="Regular;%d" halign="center" valign="center" />
+		<widget source="description" render="Label" position="%d,e-90" size="%d,%d" font="Regular;%d" />
+		<widget source="key_red" render="Label" position="%d,e-50" size="%d,%d" backgroundColor="key_red" font="Regular;%d" foregroundColor="key_text" halign="center" noWrap="1" valign="center" />
+		<widget source="key_green" render="Label" position="%d,e-50" size="%d,%d" backgroundColor="key_green" font="Regular;%d" foregroundColor="key_text" halign="center" noWrap="1" valign="center" />
+	</screen>"""
+	scaleData = [
+		800, 450,
+		10, 10, 780, 272, 24, 34,
+		10, 780, 60, 20,
+		10, 780, 30, 22,
+		10, 140, 40, 20,
+		160, 140, 40, 20
+	]
+	skin = None
 
 	def __init__(self, session, *args):
 		Screen.__init__(self, session)
-		screentitle = _("Multiboot Image Selector")
-		self["key_red"] = StaticText(_("Cancel"))
-		if not SystemInfo["HasHiSi"] or SystemInfo["HasHiSi"] and pathExists('/dev/sda4'):
-			self["labe14"] = StaticText(_("Use the cursor keys to select an installed image and then Reboot button."))
+		HelpableScreen.__init__(self)
+		if MultiBootSelector.skin is None:
+			# The skin template is designed for a HD screen so the scaling factor is 720.
+			MultiBootSelector.skin = MultiBootSelector.skinTemplate % tuple([x * getDesktop(0).size().height() / 720 for x in MultiBootSelector.scaleData])
+		Screen.setTitle(self, _("MultiBoot Image Selector"))
+		self["config"] = ChoiceList(list=[ChoiceEntryComponent("", ((_("Retrieving image slots - Please wait...")), "Queued"))])
+		self["options"] = StaticText(_("Mode 1 suppports Kodi, PiP may not work.\nMode 12 supports PiP, Kodi may not work.") if SystemInfo["canMode12"] else "")
+		if not SystemInfo["HasHiSi"] or SystemInfo["HasHiSi"] and pathExists("/dev/sda4"):
+			self["description"] = StaticText(_("Use the cursor keys to select an installed image and then Reboot button."))
 		else:
-			self["labe14"] = StaticText(_("SDcard is not initialised for multiboot - Exit and use ViX MultiBoot Manager to initialise"))			
-		self["labe15"] = StaticText(_(" "))
+			self["description"] = StaticText(_("SDcard is not initialised for MultiBootSelector. Exit and use ViX MultiBoot Manager to initialise."))
+		self["key_red"] = StaticText(_("Cancel"))
 		self["key_green"] = StaticText(_("Reboot"))
-		if SystemInfo["canMode12"]:
-			self["labe15"] = StaticText(_("Mode 1 suppports Kodi, PiP may not work.\nMode 12 supports PiP, Kodi may not work."))
-		self["config"] = ChoiceList(list=[ChoiceEntryComponent('',((_("Retrieving image slots - Please wait...")), "Queued"))])
+		self["actions"] = HelpableActionMap(self, ["OkCancelActions", "ColorActions", "DirectionActions", "KeyboardInputActions", "MenuActions"], {
+			"red": (boundFunction(self.close, None), _("Cancel the image selection and exit")),
+			"green": (self.reboot, _("Select the highlighted image and reboot")),
+			"ok": (self.reboot, _("Select the highlighted image and reboot")),
+			"cancel": (boundFunction(self.close, None), _("Cancel the image selection and exit")),
+			"up": (self.keyUp, _("Move up a line")),
+			"down": (self.keyDown, _("Move down a line")),
+			"left": (self.keyLeft, _("Move up a line")),
+			"right": (self.keyRight, _("Move down a line")),
+			"upRepeated": (self.keyUp, _("Move up a line")),
+			"downRepeated": (self.keyDown, _("Move down a line")),
+			"leftRepeated": (self.keyLeft, _("Move up a line")),
+			"rightRepeated": (self.keyRight, _("Move down a line")),
+			"menu": (boundFunction(self.close, True), _("Cancel the image selection and exit all menus"))
+		}, -1, description=_("MultiBootSelector Actions"))
 		imagedict = []
 		self.getImageList = None
-		self.title = screentitle
-		self["actions"] = ActionMap(["OkCancelActions", "ColorActions", "DirectionActions", "KeyboardInputActions", "MenuActions"],
-		{
-			"red": boundFunction(self.close, None),
-			"green": self.reboot,
-			"ok": self.reboot,
-			"cancel": boundFunction(self.close, None),
-			"up": self.keyUp,
-			"down": self.keyDown,
-			"left": self.keyLeft,
-			"right": self.keyRight,
-			"upRepeated": self.keyUp,
-			"downRepeated": self.keyDown,
-			"leftRepeated": self.keyLeft,
-			"rightRepeated": self.keyRight,
-			"menu": boundFunction(self.close, True),
-		}, -1)
 		self.callLater(self.getBootOptions)
 
 	def cancel(self, value=None):
 		self.container = Console()
-		self.container.ePopen('umount /tmp/startupmount', boundFunction(self.unmountCallback, value))
+		self.container.ePopen("umount /tmp/startupmount", boundFunction(self.unmountCallback, value))
 
 	def unmountCallback(self, value, data=None, retval=None, extra_args=None):
 		self.container.killAll()
-		if not path.ismount('/tmp/startupmount'):
-			rmdir('/tmp/startupmount')
+		if not path.ismount("/tmp/startupmount"):
+			rmdir("/tmp/startupmount")
 		self.close(value)
 
 	def getBootOptions(self, value=None):
 		self.container = Console()
-		if path.isdir('/tmp/startupmount'):
+		if path.isdir("/tmp/startupmount") and path.ismount("/tmp/startupmount"):
 			self.getImagesList()
 		else:
-			mkdir('/tmp/startupmount')
-			self.container.ePopen('mount %s /tmp/startupmount' % SystemInfo["MBbootdevice"], self.getImagesList)
+			if not path.isdir("/tmp/startupmount"):
+				mkdir("/tmp/startupmount")
+			self.container.ePopen("mount %s /tmp/startupmount" % SystemInfo["MBbootdevice"], self.getImagesList)
 
 	def getImagesList(self, data=None, retval=None, extra_args=None):
 		self.container.killAll()
@@ -93,43 +94,45 @@ class MultiBoot(Screen):
 		list = []
 		mode = GetCurrentImageMode() or 0
 		currentimageslot = GetCurrentImage()
-		print "[MultiBoot Restart] reboot1 slot:\n", currentimageslot 
+		current = "  %s" % _("(Current image)")
+		slotSingle = _("Slot %s: %s%s")
+		slotMulti = _("Slot %s: %s - Mode %d%s")
 		if imagedict:
 			indextot = 0
 			for index, x in enumerate(sorted(imagedict.keys())):
 				if imagedict[x]["imagename"] != _("Empty slot"):
-					if not SystemInfo["canMode12"]:
-						list.append(ChoiceEntryComponent('',((_("slot%s -%s (current image)") if x == currentimageslot else _("slot%s -%s")) % (x, imagedict[x]['imagename']), x)))
-					else:
-						list.insert(index, ChoiceEntryComponent('',((_("slot%s - %s mode 1 (current image)") if x == currentimageslot and mode != 12 else _("slot%s - %s mode 1")) % (x, imagedict[x]['imagename']), x)))
-						list.append(ChoiceEntryComponent('',((_("slot%s - %s mode 12 (current image)") if x == currentimageslot and mode == 12 else _("slot%s - %s mode 12")) % (x, imagedict[x]['imagename']), x + 12)))
+					if SystemInfo["canMode12"]:
+						list.insert(index, ChoiceEntryComponent("", (slotMulti % (x, imagedict[x]["imagename"], 1, current if x == currentimageslot and mode != 12 else ""), x)))
+						list.append(ChoiceEntryComponent("", (slotMulti % (x, imagedict[x]["imagename"], 12, current if x == currentimageslot and mode == 12 else ""), x + 12)))
 						indextot = index+1
+					else:
+						list.append(ChoiceEntryComponent("", (slotSingle % (x, imagedict[x]["imagename"], current if x == currentimageslot else ""), x)))
 			if SystemInfo["canMode12"]:
 					list.insert(indextot, "                                 ")
 		else:
-			list.append(ChoiceEntryComponent('',((_("No images found")), "Waiter")))
+			list.append(ChoiceEntryComponent("", ((_("No images found")), "Waiter")))
 		self["config"].setList(list)
 
 	def reboot(self):
 		self.currentSelected = self["config"].l.getCurrentSelection()
 		self.slot = self.currentSelected[0][1]
 		if self.currentSelected[0][1] != "Queued":
-			print "[MultiBoot Restart] reboot2 rebootslot = %s, " %self.slot
-			print "[MultiBoot Restart] reboot3 slotinfo = %s" %SystemInfo["canMultiBoot"]
+			print "[MultiBootSelector] reboot2 rebootslot = %s, " % self.slot
+			print "[MultiBootSelector] reboot3 slotinfo = %s" % SystemInfo["canMultiBoot"]
 			if self.slot < 12:
-				startupfile = "/tmp/startupmount/%s" % SystemInfo["canMultiBoot"][self.slot]['startupfile']
+				startupfile = "/tmp/startupmount/%s" % SystemInfo["canMultiBoot"][self.slot]["startupfile"]
 				copyfile(startupfile, "/tmp/startupmount/STARTUP")
 			else:
-				self.slot -=12
-				startupfile = "/tmp/startupmount/%s" % SystemInfo["canMultiBoot"][self.slot]['startupfile'].replace("BOXMODE_1", "BOXMODE_12")
-				if "BOXMODE" not in startupfile:
-					f = open('%s' %startupfile, 'r').read().replace("boxmode=1'", "boxmode=12'").replace("%s" %SystemInfo["canMode12"][0], "%s" %SystemInfo["canMode12"][1])
-					open('/tmp/startupmount/STARTUP', 'w').write(f)
-					self.session.open(TryQuitMainloop, 2)
-				else:
+				self.slot -= 12
+				startupfile = "/tmp/startupmount/%s" % SystemInfo["canMultiBoot"][self.slot]["startupfile"].replace("BOXMODE_1", "BOXMODE_12")
+				print "[MultiBootSelector] reboot5 startupfile = %s" % startupfile
+				if "BOXMODE" in startupfile:
 					copyfile(startupfile, "/tmp/startupmount/STARTUP")
-			self.session.open(TryQuitMainloop, 2)
-
+				else:
+					f = open(startupfile, "r").read().replace("boxmode=1'", "boxmode=12'").replace("%s" % SystemInfo["canMode12"][0], "%s" % SystemInfo["canMode12"][1])
+					open("/tmp/startupmount/STARTUP", "w").write(f)
+					self.session.open(TryQuitMainloop, QUIT_REBOOT)
+			self.session.open(TryQuitMainloop, QUIT_REBOOT)
 
 	def selectionChanged(self):
 		currentSelected = self["config"].l.getCurrentSelection()
