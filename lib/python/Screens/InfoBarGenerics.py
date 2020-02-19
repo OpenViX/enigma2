@@ -942,6 +942,8 @@ class NumberZap(Screen):
 		self["Service"] = ServiceEvent()
 
 		self.onLayoutFinish.append(self.handleServiceName)
+		if config.misc.numzap_picon.value:
+			self.skinName = ["NumberZapPicon", "NumberZap"]
 
 		self["actions"] = NumberActionMap( [ "SetupActions", "ShortcutActions" ],
 			{
