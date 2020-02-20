@@ -24,8 +24,8 @@ class MultiBootSelector(Screen, HelpableScreen):
 		<widget source="key_green" render="Label" position="%d,e-50" size="%d,%d" backgroundColor="key_green" font="Regular;%d" foregroundColor="key_text" halign="center" noWrap="1" valign="center" />
 	</screen>"""
 	scaleData = [
-		800, 450,
-		10, 10, 780, 272, 24, 34,
+		800, 485,
+		10, 10, 780, 306, 24, 34,
 		10, 780, 60, 20,
 		10, 780, 30, 22,
 		10, 140, 40, 20,
@@ -65,26 +65,27 @@ class MultiBootSelector(Screen, HelpableScreen):
 		}, -1, description=_("MultiBootSelector Actions"))
 		imagedict = []
 		self.getImageList = None
+		self.mountDir = "/tmp/startupmount"
 		self.callLater(self.getBootOptions)
 
 	def cancel(self, value=None):
 		self.container = Console()
-		self.container.ePopen("umount /tmp/startupmount", boundFunction(self.unmountCallback, value))
+		self.container.ePopen("umount %s" % self.mountDir, boundFunction(self.unmountCallback, value))
 
 	def unmountCallback(self, value, data=None, retval=None, extra_args=None):
 		self.container.killAll()
-		if not path.ismount("/tmp/startupmount"):
-			rmdir("/tmp/startupmount")
+		if not path.ismount(self.mountDir):
+			rmdir(self.mountDir)
 		self.close(value)
 
 	def getBootOptions(self, value=None):
 		self.container = Console()
-		if path.isdir("/tmp/startupmount") and path.ismount("/tmp/startupmount"):
+		if path.isdir(self.mountDir) and path.ismount(self.mountDir):
 			self.getImagesList()
 		else:
-			if not path.isdir("/tmp/startupmount"):
-				mkdir("/tmp/startupmount")
-			self.container.ePopen("mount %s /tmp/startupmount" % SystemInfo["MBbootdevice"], self.getImagesList)
+			if not path.isdir(self.mountDir):
+				mkdir(self.mountDir)
+			self.container.ePopen("mount %s %s" % (SystemInfo["MBbootdevice"], self.mountDir), self.getImagesList)
 
 	def getImagesList(self, data=None, retval=None, extra_args=None):
 		self.container.killAll()
@@ -104,11 +105,11 @@ class MultiBootSelector(Screen, HelpableScreen):
 					if SystemInfo["canMode12"]:
 						list.insert(index, ChoiceEntryComponent("", (slotMulti % (x, imagedict[x]["imagename"], 1, current if x == currentimageslot and mode != 12 else ""), x)))
 						list.append(ChoiceEntryComponent("", (slotMulti % (x, imagedict[x]["imagename"], 12, current if x == currentimageslot and mode == 12 else ""), x + 12)))
-						indextot = index+1
+						indextot = index + 1
 					else:
 						list.append(ChoiceEntryComponent("", (slotSingle % (x, imagedict[x]["imagename"], current if x == currentimageslot else ""), x)))
 			if SystemInfo["canMode12"]:
-					list.insert(indextot, "                                 ")
+				list.insert(indextot, " ")
 		else:
 			list.append(ChoiceEntryComponent("", ((_("No images found")), "Waiter")))
 		self["config"].setList(list)
@@ -120,17 +121,16 @@ class MultiBootSelector(Screen, HelpableScreen):
 			print "[MultiBootSelector] reboot2 rebootslot = %s, " % self.slot
 			print "[MultiBootSelector] reboot3 slotinfo = %s" % SystemInfo["canMultiBoot"]
 			if self.slot < 12:
-				startupfile = "/tmp/startupmount/%s" % SystemInfo["canMultiBoot"][self.slot]["startupfile"]
-				copyfile(startupfile, "/tmp/startupmount/STARTUP")
+				copyfile(path.join(self.mountDir, SystemInfo["canMultiBoot"][self.slot]["startupfile"]), path.join(self.mountDir, "STARTUP"))
 			else:
 				self.slot -= 12
-				startupfile = "/tmp/startupmount/%s" % SystemInfo["canMultiBoot"][self.slot]["startupfile"].replace("BOXMODE_1", "BOXMODE_12")
+				startupfile = path.join(self.mountDir, SystemInfo["canMultiBoot"][self.slot]["startupfile"].replace("BOXMODE_1", "BOXMODE_12"))
 				print "[MultiBootSelector] reboot5 startupfile = %s" % startupfile
 				if "BOXMODE" in startupfile:
-					copyfile(startupfile, "/tmp/startupmount/STARTUP")
+					copyfile(startupfile, path.join(self.mountDir, "STARTUP"))
 				else:
 					f = open(startupfile, "r").read().replace("boxmode=1'", "boxmode=12'").replace("%s" % SystemInfo["canMode12"][0], "%s" % SystemInfo["canMode12"][1])
-					open("/tmp/startupmount/STARTUP", "w").write(f)
+					open(path.join(self.mountDir, "STARTUP"), "w").write(f)
 					self.session.open(TryQuitMainloop, QUIT_REBOOT)
 			self.session.open(TryQuitMainloop, QUIT_REBOOT)
 
