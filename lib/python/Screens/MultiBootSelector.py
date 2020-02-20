@@ -18,7 +18,7 @@ class MultiBootSelector(Screen, HelpableScreen):
 	skinTemplate = """
 	<screen title="MultiBoot Image Selector" position="center,center" size="%d,%d">
 		<widget name="config" position="%d,%d" size="%d,%d" font="Regular;%d" itemHeight="%d" scrollbarMode="showOnDemand" />
-		<widget source="options" render="Label" position="%d,e-180" size="%d,%d" font="Regular;%d" halign="center" valign="center" />
+		<widget source="options" render="Label" position="%d,e-160" size="%d,%d" font="Regular;%d" halign="center" valign="center" />
 		<widget source="description" render="Label" position="%d,e-90" size="%d,%d" font="Regular;%d" />
 		<widget source="key_red" render="Label" position="%d,e-50" size="%d,%d" backgroundColor="key_red" font="Regular;%d" foregroundColor="key_text" halign="center" noWrap="1" valign="center" />
 		<widget source="key_green" render="Label" position="%d,e-50" size="%d,%d" backgroundColor="key_green" font="Regular;%d" foregroundColor="key_text" halign="center" noWrap="1" valign="center" />
