@@ -6,6 +6,7 @@ from Components.Label import Label
 from Components.MovieList import AUDIO_EXTENSIONS, MOVIE_EXTENSIONS, DVD_EXTENSIONS
 from Components.PluginComponent import plugins
 from Components.ServiceEventTracker import ServiceEventTracker
+from Components.Sources.ServiceEvent import ServiceEvent
 from Components.Sources.Boolean import Boolean
 from Components.config import config, configfile, ConfigBoolean, ConfigClock
 from Components.SystemInfo import SystemInfo
@@ -898,17 +899,20 @@ class NumberZap(Screen):
 		if self.searchNumber:
 			self.service, self.bouquet = self.searchNumber(int(self["number"].getText()))
 			self["servicename"].setText(ServiceReference(self.service).getServiceName())
+			self["Service"].newService(self.service)
 			if not self.startBouquet:
 				self.startBouquet = self.bouquet
 
 	def keyBlue(self):
-		self.Timer.start(5000, True)
+		if config.misc.zapkey_delay.value > 0:
+			self.Timer.start(1000*config.misc.zapkey_delay.value, True)
 		if self.searchNumber:
 			if self.startBouquet == self.bouquet:
 				self.service, self.bouquet = self.searchNumber(int(self["number"].getText()), firstBouquetOnly = True)
 			else:
 				self.service, self.bouquet = self.searchNumber(int(self["number"].getText()))
 			self["servicename"].setText(ServiceReference(self.service).getServiceName())
+			self["Service"].newService(self.service)
 
 	def keyNumberGlobal(self, number):
 		if config.misc.zapkey_delay.value > 0:
@@ -935,8 +939,11 @@ class NumberZap(Screen):
 		self["number"] = Label(self.numberString)
 		self["number_summary"] = StaticText(self.numberString)
 		self["servicename"] = Label()
+		self["Service"] = ServiceEvent()
 
-		self.handleServiceName()
+		self.onLayoutFinish.append(self.handleServiceName)
+		if config.misc.numzap_picon.value:
+			self.skinName = ["NumberZapPicon", "NumberZap"]
 
 		self["actions"] = NumberActionMap( [ "SetupActions", "ShortcutActions" ],
 			{
@@ -1563,7 +1570,7 @@ class InfoBarEPG:
 	def RedPressed(self):
 		if isStandardInfoBar(self) or isMoviePlayerInfoBar(self):
 			if config.usage.defaultEPGType.value != _("Graphical EPG") and config.usage.defaultEPGType.value != _("None"):
-					self.openGraphEPG()
+				self.openGraphEPG()
 			else:
 				self.openSingleServiceEPG()
 
