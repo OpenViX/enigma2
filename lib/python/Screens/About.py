@@ -1,25 +1,25 @@
-from Screen import Screen
-from Screens.SoftwareUpdate import UpdatePlugin
-from Screens.GitCommitInfo import CommitInfo
-from Components.ActionMap import ActionMap
-from Components.Button import Button
-from Components.Sources.StaticText import StaticText
-from Components.Harddisk import harddiskmanager
-from Components.NimManager import nimmanager
-from Components.About import about
-from Components.ScrollLabel import ScrollLabel
-from Components.Console import Console
-from Components.config import config
-from enigma import eTimer, getEnigmaVersionString, getDesktop
-from boxbranding import getMachineBrand, getMachineBuild, getMachineName, getImageVersion, getImageType, getImageBuild, getDriverDate, getImageDevBuild
-from Components.Pixmap import MultiPixmap
-from Components.Network import iNetwork
-from Components.SystemInfo import SystemInfo
-from Tools.StbHardware import getFPVersion
-from Tools.Multiboot import GetCurrentImage, GetCurrentImageMode
-from Tools.Directories import fileExists, fileCheck, pathExists
 from os import path
 from re import search
+from enigma import eTimer, getEnigmaVersionString, getDesktop
+from boxbranding import getMachineBrand, getMachineBuild, getMachineName, getImageVersion, getImageType, getImageBuild, getDriverDate, getImageDevBuild
+from Components.About import about
+from Components.ActionMap import ActionMap
+from Components.Button import Button
+from Components.config import config
+from Components.Console import Console
+from Components.Harddisk import harddiskmanager
+from Components.Network import iNetwork
+from Components.NimManager import nimmanager
+from Components.Pixmap import MultiPixmap
+from Components.ScrollLabel import ScrollLabel
+from Components.Sources.StaticText import StaticText
+from Components.SystemInfo import SystemInfo
+from Screen import Screen
+from Screens.GitCommitInfo import CommitInfo
+from Screens.SoftwareUpdate import UpdatePlugin
+from Tools.Directories import fileExists, fileCheck, pathExists
+from Tools.Multiboot import GetCurrentImage, GetCurrentImageMode
+from Tools.StbHardware import getFPVersion
 import skin
 
 class About(Screen):
@@ -88,26 +88,24 @@ class About(Screen):
 		AboutText += _("Image:\t%s.%s%s (%s)\n") % (getImageVersion(), getImageBuild(), imageSubBuild, getImageType().title())
 
 		if SystemInfo["HasH9SD"]:
-			f = open('/sys/firmware/devicetree/base/chosen/bootargs', 'r').read()
-			if "rootfstype=ext4" in f:
-				part = "        - SD card in use for Image root \n"
+			if "rootfstype=ext4" in open('/sys/firmware/devicetree/base/chosen/bootargs', 'r').read():
+				part = "        - SD card in use for Image root \n" 
 			else:
 				part = "        - eMMC slot in use for Image root \n"
 			AboutText += _("%s") % part
 
 
 		if SystemInfo["canMultiBoot"]:
-			slot = image = GetCurrentImage()
+			slot = image= GetCurrentImage()
 			part = "eMMC slot %s" %slot
 			bootmode = ""
 			if SystemInfo["canMode12"]:
-				bootmode = "bootmode = %s" %GetCurrentImageMode()
-			if SystemInfo["HasSDmmc"]:
-				slot += 1
-				if image != 0:
-					part = "SDC slot %s (%s%s) " %(image, SystemInfo["canMultiBoot"][2], image*2)
-				else:
-					part = "eMMC slot %s" %slot
+				bootmode = "bootmode = %s" %GetCurrentImageMode()		
+			print "[About] HasHiSi = %s, slot = %s" %(SystemInfo["HasHiSi"], slot)
+			if SystemInfo["HasHiSi"]:
+				if slot != 1:
+					image =-1
+					part = "SDcard slot %s (%s) " %(image, SystemInfo["canMultiBoot"][slot]['device'])
 			AboutText += _("Image Slot:\t%s") % "STARTUP_" + str(slot) + "  " + part + " " + bootmode + "\n"
 
 		if getMachineName() in ('ET8500') and path.exists('/proc/mtd'):

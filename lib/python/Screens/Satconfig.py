@@ -372,7 +372,7 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 			if currLnb.lof.value == "unicable":
 				self.advancedUnicable = getConfigListEntry(self.indent % ("%s%s" % ("SCR (Unicable/JESS) ", _("type"))), currLnb.unicable, _("Select the type of Single Cable Reception device you are using."))
 				self.list.append(self.advancedUnicable)
-				self.externallyPowered = getConfigListEntry(self.indent % _("Externally powered"), currLnb.powerinserter, _("Is your SCR device externally powered"))
+				self.externallyPowered = getConfigListEntry(self.indent % _("Externally powered"), currLnb.powerinserter, _("Select whether your SCR device is externally powered."))
 				if currLnb.unicable.value == "unicable_user":
 					self.advancedFormat = getConfigListEntry(self.indent % _("Format"), currLnb.format, _("Select the protocol used by your SCR device. Choices are 'SCR Unicable' (Unicable), or 'SCR JESS' (JESS, also known as Unicable II)."))
 					self.advancedPosition = getConfigListEntry(self.indent % _("Position"), currLnb.positionNumber, _("Only change this setting if you are using a SCR device that has been reprogrammed with a custom programmer. For further information check with the person that reprogrammed the device."))
@@ -384,7 +384,8 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 					self.list.append(getConfigListEntry(self.indent % "LOF/L", currLnb.lofl, _("Consult your SCR device spec sheet for this information.")))
 					self.list.append(getConfigListEntry(self.indent % "LOF/H", currLnb.lofh, _("Consult your SCR device spec sheet for this information.")))
 					self.list.append(getConfigListEntry(self.indent % _("Threshold"), currLnb.threshold, _("Consult your SCR device spec sheet for this information.")))
-					self.list.append(self.externallyPowered)
+					if not SystemInfo["LnbPowerAlwaysOn"]:
+						self.list.append(self.externallyPowered)
 					if not currLnb.powerinserter.value:
 						self.list.append(getConfigListEntry(self.indent % _("Bootup time"), currLnb.bootuptime, _("Consult your SCR device spec sheet for this information.")))
 				else:
@@ -397,7 +398,8 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 					if currLnb.positions.value > 1:
 						self.list.append(self.advancedPosition)
 					self.list.append(self.advancedSCR)
-					self.list.append(self.externallyPowered)
+					if not SystemInfo["LnbPowerAlwaysOn"]:
+						self.list.append(self.externallyPowered)
 				choices = []
 				connectable = nimmanager.canConnectTo(self.slotid)
 				for id in connectable:
@@ -629,7 +631,7 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 		self.nimConfig = self.nim.config
 		self.createSetup()
 		self.setTitle(_("Setup") + " " + self.nim.friendly_full_description)
-		
+
 		if not self.selectionChanged in self["config"].onSelectionChanged:
 			self["config"].onSelectionChanged.append(self.selectionChanged)
 		self.selectionChanged()

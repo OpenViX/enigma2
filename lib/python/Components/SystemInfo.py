@@ -4,10 +4,14 @@ from Tools.HardwareInfo import HardwareInfo
 from Components.About import getChipSetString
 
 from boxbranding import getMachineBuild, getBoxType, getBrandOEM, getDisplayType, getHaveRCA, getHaveYUV, getHaveSCART, getHaveAVJACK, getHaveHDMIinHD, getHaveHDMIinFHD, getMachineMtdRoot
+import os, re
 
 SystemInfo = { }
 
 #FIXMEE...
+
+from Tools.Multiboot import getMBbootdevice, getMultibootslots
+
 def getNumVideoDecoders():
 	idx = 0
 	while fileExists("/dev/dvb/adapter0/video%d"% idx, 'f'):
@@ -86,8 +90,9 @@ SystemInfo["Has24hz"] = fileCheck("/proc/stb/video/videomode_24hz")
 SystemInfo["HasRootSubdir"] = fileHas("/proc/cmdline", "rootsubdir=")
 SystemInfo["RecoveryMode"] = SystemInfo["HasRootSubdir"] and getMachineBuild() not in ('hd51','h7') or fileCheck("/proc/stb/fp/boot_mode")
 SystemInfo["AndroidMode"] = SystemInfo["RecoveryMode"] and getMachineBuild() in ('multibox',)
-SystemInfo["canMultiBoot"] = getMachineBuild() in ('hd51', 'h7', 'h9combo', 'multibox') and (1, 4, 'mmcblk0p') or getBoxType() in ('gbue4k', 'gbquad4k') and (3, 3, 'mmcblk0p') or getMachineBuild() in ('viper4k', 'gbmv200', 'sf8008', 'beyonwizv2') and fileCheck("/dev/sda") and (0, 2, 'sda') or getMachineBuild() in ('osmio4k', 'osmio4kplus', 'osmini4k') and (1, 4, 'mmcblk1p')
-SystemInfo["canBackupEMC"] = getMachineBuild() in ('hd51','h7') and ('disk.img', 'mmcblk0p1') or getMachineBuild() in ('osmio4k', 'osmio4kplus', 'osmini4k') and ('emmc.img', 'mmcblk1p1') or getMachineBuild() in ('viper4k', 'gbmv200','sf8008','beyonwizv2') and ('usb_update.bin','none')
+SystemInfo["MBbootdevice"] = getMBbootdevice()
+SystemInfo["canMultiBoot"] = getMultibootslots()
+SystemInfo["canBackupEMC"] = getMachineBuild() in ('hd51','h7') and ('disk.img', '%s' %SystemInfo["MBbootdevice"]) or getMachineBuild() in ('osmio4k', 'osmio4kplus', 'osmini4k') and ('emmc.img', '%s' %SystemInfo["MBbootdevice"]) or getMachineBuild() in ('viper4k', 'gbmv200','sf8008','beyonwizv2') and ('usb_update.bin','none')
 SystemInfo["HasHiSi"] = pathExists('/proc/hisi')
 SystemInfo["canMode12"] = getMachineBuild() in ('hd51', 'h7') and ('brcm_cma=440M@328M brcm_cma=192M@768M', 'brcm_cma=520M@248M brcm_cma=200M@768M')
 SystemInfo["HasMMC"] = fileHas("/proc/cmdline", "root=/dev/mmcblk") or SystemInfo["canMultiBoot"] and fileHas("/proc/cmdline", "root=/dev/sda")
@@ -141,3 +146,4 @@ SystemInfo["VideoModes"] = getChipSetString() in ( # 2160p and 1080p capable har
 		["720p", "1080i", "576p", "576i", "480p", "480i"], # normal modes
 		{"720p", "1080i"} # widescreen modes
 	)
+SystemInfo["LnbPowerAlwaysOn"] = getBoxType() in ('vusolo4k', 'vuduo4k', 'vuultimo4k', 'vuuno4k')
