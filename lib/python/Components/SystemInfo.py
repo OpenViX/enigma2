@@ -96,7 +96,6 @@ SystemInfo["canBackupEMC"] = getMachineBuild() in ('hd51','h7') and ('disk.img',
 SystemInfo["HasHiSi"] = pathExists('/proc/hisi')
 SystemInfo["canMode12"] = getMachineBuild() in ('hd51', 'h7') and ('brcm_cma=440M@328M brcm_cma=192M@768M', 'brcm_cma=520M@248M brcm_cma=200M@768M')
 SystemInfo["HasMMC"] = fileHas("/proc/cmdline", "root=/dev/mmcblk") or SystemInfo["canMultiBoot"] and fileHas("/proc/cmdline", "root=/dev/sda")
-SystemInfo["HasSDmmc"] = SystemInfo["canMultiBoot"] and "sd" in SystemInfo["canMultiBoot"][2] and "mmcblk" in getMachineMtdRoot() 
 SystemInfo["HasH9SD"] = getMachineBuild() in ("h9", "i55plus") and pathExists("/dev/mmcblk0p1")
 SystemInfo["HasSDnomount"] = getMachineBuild() in ('h9', 'i55plus') and ('No', 'none') or getMachineBuild() in ('multibox', 'h9combo') and ('Yes', 'mmcblk0')
 SystemInfo["CanProc"] = SystemInfo["HasMMC"] and getBrandOEM() != "vuplus"
