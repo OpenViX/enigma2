@@ -145,4 +145,4 @@ SystemInfo["VideoModes"] = getChipSetString() in ( # 2160p and 1080p capable har
 		["720p", "1080i", "576p", "576i", "480p", "480i"], # normal modes
 		{"720p", "1080i"} # widescreen modes
 	)
-SystemInfo["LnbPowerAlwaysOn"] = getBoxType() in ('vusolo4k', 'vuduo4k', 'vuultimo4k', 'vuuno4k')
+SystemInfo["LnbPowerAlwaysOn"] = getBoxType() in ('vusolo4k', 'vuduo4k', 'vuultimo4k', 'vuuno4k', 'vuuno4kse')
