@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-05 14:04+0100\n"
+"POT-Creation-Date: 2020-02-29 20:00+0100\n"
 "PO-Revision-Date: 2013-10-23 19:15+0100\n"
 "Last-Translator: andy1 <dmmm8000pvr@gmail.com>\n"
 "Language-Team: none\n"
@@ -469,14 +469,6 @@ msgid "/var directory"
 msgstr "start katalog"
 
 #
-msgid "0"
-msgstr ""
-
-#
-msgid "1"
-msgstr ""
-
-#
 msgid "1.0"
 msgstr ""
 
@@ -536,12 +528,11 @@ msgstr ""
 msgid "16:9 always"
 msgstr "16:9 alltid"
 
-#
-msgid "18 V"
+msgid "16K"
 msgstr ""
 
 #
-msgid "2"
+msgid "18 V"
 msgstr ""
 
 msgid "2048 MB (maximum)"
@@ -565,10 +556,6 @@ msgid "256 MB (recommended for this chipset)"
 msgstr ""
 
 msgid "29.97"
-msgstr ""
-
-#
-msgid "3"
 msgstr ""
 
 #
@@ -608,6 +595,9 @@ msgstr ""
 msgid "4:3 PanScan"
 msgstr ""
 
+msgid "4K"
+msgstr ""
+
 #
 msgid "5"
 msgstr ""
@@ -618,29 +608,37 @@ msgstr ""
 msgid "512 MB (recommended for this chipset)"
 msgstr ""
 
-#
-msgid "6"
-msgstr ""
-
 msgid "64 MB"
 msgstr ""
 
-#
-msgid "7"
-msgstr ""
-
-#
-msgid "8"
+msgid "8K"
 msgstr ""
 
 msgid "8bit"
 msgstr ""
 
-#
-msgid "9"
+msgid ": 0000 - default (disabled)"
 msgstr ""
 
-msgid ": 0000 - default (disabled)"
+#
+#, fuzzy
+msgid "< Current >"
+msgstr "Nåværende innstilling:"
+
+#
+#, fuzzy
+msgid "< Default + Picon >"
+msgstr "Standardinnstilling"
+
+#
+#, fuzzy
+msgid "< Default >"
+msgstr "Standardinnstilling"
+
+msgid "< Emergency >"
+msgstr ""
+
+msgid "< Pending restart >"
 msgstr ""
 
 msgid "<Current movielist location>"
@@ -1576,10 +1574,6 @@ msgid "BDMV Compatible Bludisc (HDTV only)"
 msgstr ""
 
 #
-msgid "BER"
-msgstr ""
-
-#
 msgid "BER:"
 msgstr ""
 
@@ -1699,12 +1693,13 @@ msgstr "Baskisk"
 msgid "Begin time"
 msgstr "Starttid"
 
+#
+#, fuzzy
+msgid "Behavior of '0' button in PiP mode"
+msgstr "Innstilling for 0 knapp i PiP (bilde i bilde modus)"
+
 msgid "Behavior of 'pause and ok' when paused"
 msgstr ""
-
-#
-msgid "Behavior of 0 key in PiP-mode"
-msgstr "Innstilling for 0 knapp i PiP (bilde i bilde modus)"
 
 msgid "Behavior when a movie is started"
 msgstr "Innstilling når en film startes"
@@ -1784,6 +1779,11 @@ msgstr ""
 msgid "Boost green"
 msgstr "grønn"
 
+#
+#, fuzzy
+msgid "Bootup time"
+msgstr "Sortere tid"
+
 msgid "Bosnia and Herzegovina"
 msgstr ""
 
@@ -1852,10 +1852,6 @@ msgid "By default, SNR will be shown in dB (when supported by the tuner). This s
 msgstr "Som standard vil SNR (signalstyrke) vises i dB (desibel) hvis tuneren støtter dette. Med denne innstillingen vises SNR i prosent."
 
 msgid "By teamBlue Image Team"
-msgstr ""
-
-#
-msgid "C"
 msgstr ""
 
 #
@@ -1964,6 +1960,12 @@ msgstr ""
 #
 msgid "Cancel"
 msgstr "Avbryt"
+
+msgid "Cancel any changes to the currently active skin"
+msgstr ""
+
+msgid "Cancel any changes to the currently active skin and exit all menus"
+msgstr ""
 
 msgid "Cancel any text changes and exit"
 msgstr ""
@@ -2122,9 +2124,6 @@ msgstr ""
 msgid "Channel not in services list"
 msgstr "Kanalen er ikke i listen"
 
-msgid "Channel selection"
-msgstr "Kanalvalg"
-
 msgid "Channel zap delay another button"
 msgstr ""
 
@@ -2137,10 +2136,6 @@ msgstr ""
 #
 msgid "Channel:"
 msgstr "Kanal:"
-
-#
-msgid "Channellist menu"
-msgstr "Kanalliste-meny"
 
 msgid "Channelnumber and picon"
 msgstr ""
@@ -2309,7 +2304,8 @@ msgstr ""
 msgid "Close"
 msgstr "Lukke"
 
-msgid "Close PiP on exit"
+#, fuzzy
+msgid "Close PiP with 'exit' button"
 msgstr "Slå av PiP (bilde i bilde) med exit knapp"
 
 #
@@ -2364,15 +2360,8 @@ msgid "Combo"
 msgstr ""
 
 #
-msgid "Command execution..."
-msgstr "Kommando utføres..."
-
-#
 msgid "Command order"
 msgstr "Kommando rekkefølge"
-
-msgid "Commit info"
-msgstr ""
 
 #
 msgid "Common Interface"
@@ -2444,6 +2433,10 @@ msgstr "Still inn ekstra forsinkelse for å forbedre tekst-TV undertekst synkron
 msgid "Configure an additional delay to improve subtitle synchronisation."
 msgstr "Still inn ekstra forsinkelse for å forbedre undertekst synkronisering."
 
+#, fuzzy
+msgid "Configure default type for new timers."
+msgstr "Still inn nettmaske."
+
 msgid "Configure for how long the infobar will remain visible after activation."
 msgstr "Still inn hvor lenge informasjonslinjen skal være synlig etter aktivering."
 
@@ -2462,7 +2455,7 @@ msgstr ""
 msgid "Configure if and how crypto icons will be shown in the channel selection list."
 msgstr ""
 
-msgid "Configure if and how long the latest service in the PiP will be remembered."
+msgid "Configure if and how long the latest service in Picture in Picture mode will be remembered."
 msgstr ""
 
 msgid "Configure if and how service type icons will be shown in the channel selection list."
@@ -2576,7 +2569,8 @@ msgstr "Still inn fjerdevalg på lyd språk."
 msgid "Configure the fourth subtitle language."
 msgstr "Still inn fjerdevalg på undertekst språk."
 
-msgid "Configure the function of the '0' button do when PIP is active."
+#, fuzzy
+msgid "Configure the function of the '0' button when Picture in Picture is active."
 msgstr "Still inn funksjonen for '0' knappen når PiP (bilde i bilde) er aktiv."
 
 msgid "Configure the gateway."
@@ -2938,6 +2932,9 @@ msgstr "Kunne ikke finne kanallisten."
 msgid "Could not load Medium! No disc inserted?"
 msgstr "Kunne ikke laste medium! Ingen plate er satt inn?"
 
+msgid "Could not locate epg file on fallback tuner"
+msgstr ""
+
 msgid "Could not open Picture in Picture"
 msgstr "Kunne ikke åpne bilde i bilde"
 
@@ -3109,10 +3106,6 @@ msgstr "Tjekkisk"
 msgid "Czechia"
 msgstr "Tjekkisk"
 
-#
-msgid "D"
-msgstr ""
-
 msgid "DAC"
 msgstr ""
 
@@ -3207,10 +3200,6 @@ msgid "DVD Titlelist"
 msgstr "DVD navneliste"
 
 #
-msgid "DVD file browser"
-msgstr "DVD fil leser"
-
-#
 msgid "DVD player"
 msgstr "DVD spiller"
 
@@ -3302,6 +3291,10 @@ msgstr ""
 
 msgid "Default sorting method for files on the right side."
 msgstr ""
+
+#, fuzzy
+msgid "Default timer type"
+msgstr "Opptakstype"
 
 msgid "Delay after change voltage before switch command"
 msgstr ""
@@ -3632,6 +3625,10 @@ msgstr "Slå av etter nåværende program"
 #, fuzzy
 msgid "Display EPG list for current channel"
 msgstr "Vis EPG for nåværende kanal..."
+
+#, fuzzy
+msgid "Display Skin"
+msgstr "Frontpanel"
 
 msgid "Display and userinterface"
 msgstr "Skjerm og oppsett"
@@ -3984,10 +3981,6 @@ msgstr "EPG språkvalg 2"
 msgid "EPG only"
 msgstr ""
 
-#
-msgid "EPG selection"
-msgstr "EPG valg"
-
 msgid "EPG settings"
 msgstr "EPG innstilling"
 
@@ -3997,10 +3990,6 @@ msgstr ""
 #, python-format
 msgid "ERROR - failed to scan (%s)!"
 msgstr "FEIL - kunne ikke søke (%s)!"
-
-#, python-format
-msgid "ERROR downloading file %s"
-msgstr ""
 
 #
 msgid "East"
@@ -4378,11 +4367,6 @@ msgstr "Datastrøm"
 msgid "Error"
 msgstr "Feil"
 
-#
-#, fuzzy, python-format
-msgid "Error %s"
-msgstr "Feil"
-
 msgid "Error checking disk. The disk may be damaged"
 msgstr ""
 
@@ -4394,10 +4378,6 @@ msgid ""
 "Error creating directory %s:\n"
 "%s"
 msgstr "Oppretter katalog %s mislyktes."
-
-#
-msgid "Error executing plugin"
-msgstr "Feil under kjøring av programtillegg"
 
 msgid "Error formatting disk. The disk may be damaged"
 msgstr ""
@@ -4414,19 +4394,10 @@ msgid ""
 "%s"
 msgstr ""
 
-msgid "Error when writing epg.dat on server"
-msgstr ""
-
-msgid "Error while retreiving epg.dat from server"
-msgstr ""
-
 #, python-format
 msgid ""
 "Error while retreiving fallback timer information\n"
 "%s"
-msgstr ""
-
-msgid "Error while retreiving location of epg.dat on server"
 msgstr ""
 
 #
@@ -4459,16 +4430,8 @@ msgstr "Program- skriftstørrelse (i forhold til skin størrelse)"
 msgid "Event name first"
 msgstr ""
 
-#
-msgid "Event view"
-msgstr "Programoversikt"
-
 msgid "Event view context menu"
 msgstr ""
-
-#
-msgid "Event view menu"
-msgstr "Meny programoversikt"
 
 msgid "Events info menu"
 msgstr ""
@@ -4589,10 +4552,6 @@ msgid "Extended setup..."
 msgstr "Utvidet oppsett..."
 
 #
-msgid "Extensions"
-msgstr "Utvidelser"
-
-#
 msgid "Extensions management"
 msgstr "Utvidelsessenter"
 
@@ -4616,6 +4575,9 @@ msgid "External subtitle dialog colorisation"
 msgstr ""
 
 msgid "External subtitle switch fonts"
+msgstr ""
+
+msgid "Externally powered"
 msgstr ""
 
 msgid "Extra end time to ignore inactivity sleeptimer"
@@ -4663,6 +4625,9 @@ msgid "FEC"
 msgstr ""
 
 msgid "FEC:"
+msgstr ""
+
+msgid "FHD"
 msgstr ""
 
 msgid "FTA"
@@ -5072,6 +5037,9 @@ msgstr "Linuxkjerne versjon: "
 msgid "GUI Build: "
 msgstr "Bithastighet:"
 
+msgid "GUI Skin"
+msgstr ""
+
 msgid ""
 "GUI needs a restart to apply a new language\n"
 "Do you want to restart the GUI now?"
@@ -5284,6 +5252,9 @@ msgid "Guinea-Bissau"
 msgstr ""
 
 msgid "Guyana"
+msgstr ""
+
+msgid "HD"
 msgstr ""
 
 msgid "HD list"
@@ -5564,11 +5535,6 @@ msgstr ""
 msgid "IPv6"
 msgstr ""
 
-#
-#, fuzzy
-msgid "IPv6 setup"
-msgstr "PiP-bilde i bilde oppsett"
-
 #, fuzzy
 msgid "IPv6 support"
 msgstr "ikke støttet"
@@ -5717,16 +5683,14 @@ msgstr "Inkludere ECM i http dataprotokoll"
 msgid "Include EIT in http streams"
 msgstr "Inkludere EIT i http dataprotokoll"
 
-msgid "Incorrect type service for PiP!"
-msgstr ""
+#
+#, fuzzy
+msgid "Incorrect service type for Picture in Picture!"
+msgstr "Aktivere bilde i bilde"
 
 #
 msgid "Increased voltage"
 msgstr "Økt spenning"
-
-#
-msgid "Index"
-msgstr "Innholdsfortegnelse"
 
 msgid "Index allocated:"
 msgstr "Innholdsfortegnelse tildelt:"
@@ -5743,10 +5707,6 @@ msgstr ""
 #
 msgid "Info"
 msgstr "Info"
-
-#
-msgid "Info bar"
-msgstr "Informasjonslinje"
 
 #
 msgid "Info bar timeout"
@@ -5887,10 +5847,6 @@ msgstr "Installerer"
 msgid "Installing Service"
 msgstr "Installerer"
 
-#
-msgid "Installing software..."
-msgstr "Installerer programvare..."
-
 msgid "Instant record"
 msgstr ""
 
@@ -5961,10 +5917,6 @@ msgstr ""
 msgid "Invert"
 msgstr "Vend"
 
-#
-msgid "Ipkg"
-msgstr ""
-
 msgid "Iran (Islamic Republic of)"
 msgstr ""
 
@@ -5983,6 +5935,9 @@ msgstr "Er denne innstilling OK?"
 #
 msgid "Is this video mode ok?"
 msgstr "Er denne videoinnstilling OK?"
+
+msgid "Is your SCR device externally powered"
+msgstr ""
 
 #, fuzzy
 msgid "Isle of Man"
@@ -6133,12 +6088,6 @@ msgstr "LAN adapter"
 
 msgid "LAN connection"
 msgstr "LAN oppkobling"
-
-msgid "LCD Clock-Selector"
-msgstr ""
-
-msgid "LCD Skin-Selector"
-msgstr ""
 
 #
 msgid "LNB"
@@ -6457,9 +6406,6 @@ msgstr "IP adresse"
 msgid "MAC-adress settings"
 msgstr "Nettverksinstillinger"
 
-msgid "MAC-adress setup"
-msgstr ""
-
 msgid "MAC:"
 msgstr ""
 
@@ -6468,10 +6414,6 @@ msgid "MIME Version"
 msgstr "Krenging"
 
 msgid "MMC card"
-msgstr ""
-
-#
-msgid "MORE"
 msgstr ""
 
 msgid "MSN Weather City Name"
@@ -6644,9 +6586,6 @@ msgstr ""
 
 msgid "Message"
 msgstr "Beskjed"
-
-msgid "Message..."
-msgstr "Beskjed..."
 
 #, fuzzy
 msgid "Messages"
@@ -6847,8 +6786,10 @@ msgstr "Bevegelse"
 msgid "Move 1 element"
 msgstr "Bevegelse"
 
-msgid "Move PIP"
-msgstr ""
+#
+#, fuzzy
+msgid "Move PiP"
+msgstr "Kjør østover"
 
 #
 msgid "Move PiP to main picture"
@@ -6909,6 +6850,25 @@ msgstr ""
 
 msgid "Move to position X"
 msgstr "Flyttet til posisjon X"
+
+#, fuzzy
+msgid "Move to the next page"
+msgstr "gå til neste posisjon"
+
+#
+#, fuzzy
+msgid "Move to the next skin"
+msgstr "gå til til neste oppføring"
+
+#
+#, fuzzy
+msgid "Move to the previous page"
+msgstr "spol tilbake til forrige kapittel"
+
+#
+#, fuzzy
+msgid "Move to the previous skin"
+msgstr "gå til til forrige oppføring"
 
 #, fuzzy
 msgid "Move up list"
@@ -7023,10 +6983,6 @@ msgid "Music/Ballet/Dance"
 msgstr "musikk/ballett/dans"
 
 #
-msgid "Mute"
-msgstr "Demp"
-
-#
 #, fuzzy
 msgid "My Extension"
 msgstr "Utvidelser"
@@ -7041,10 +6997,6 @@ msgstr ""
 
 msgid "N/A"
 msgstr "N/A"
-
-#
-msgid "NEXT"
-msgstr "NESTE"
 
 #
 #, fuzzy
@@ -7067,10 +7019,6 @@ msgstr ""
 
 msgid "NO"
 msgstr ""
-
-#
-msgid "NOW"
-msgstr "NÅ"
 
 msgid "NTP"
 msgstr ""
@@ -7105,10 +7053,6 @@ msgstr "Navneserver %d"
 #
 msgid "Nameserver settings"
 msgstr "Navneserver innstillinger"
-
-#
-msgid "Nameserver setup"
-msgstr "Oppsett for navneserver"
 
 msgid "Namespace & Orbital pos."
 msgstr ""
@@ -7163,10 +7107,6 @@ msgid "Network configuration"
 msgstr ""
 
 #
-msgid "Network configuration..."
-msgstr "Nettverksinnstilling..."
-
-#
 #, fuzzy
 msgid "Network mount"
 msgstr "Ingen nettverk ble funnet"
@@ -7189,10 +7129,6 @@ msgstr "Nettverksinstillinger"
 #
 msgid "Network test"
 msgstr "Nettverkstest"
-
-#
-msgid "Network test..."
-msgstr "Nettverkstest..."
 
 msgid "Network test: "
 msgstr "Nettverkstest:"
@@ -7330,9 +7266,6 @@ msgstr "Ingen forklaring er tilgjengelig."
 msgid "No displayable files on this medium found!"
 msgstr "Ingen visbare filer på dette mediet funnet!"
 
-msgid "No epg.dat file found server"
-msgstr ""
-
 #
 msgid "No event info found, recording indefinitely."
 msgstr "Ingen kanalinfo er funnet, innspiller på ubestemt tid."
@@ -7382,6 +7315,9 @@ msgstr "Ingen service"
 
 msgid "No services/providers selected"
 msgstr "Ingen kanaler/leverandører er valgt"
+
+msgid "No settings files to download on fallback tuner"
+msgstr ""
 
 #
 msgid "No standby"
@@ -7566,10 +7502,6 @@ msgctxt "now/next: 'now' event label"
 msgid "Now"
 msgstr "Nå"
 
-#
-msgid "Now playing"
-msgstr "Nå spilles"
-
 msgid "Now, use the contrast setting to turn up the brightness of the background as much as possible, but make sure that you can still see the difference between the two brightest levels of shades.If you have done that, press OK."
 msgstr "Bruk kontrastinstillningen på din TV for å justere opp lysstyrken så mye som mulig. Pass på at du fortsatt kan skille mellom de to lyseste skyggenivåene. Trykk OK når du er ferdig."
 
@@ -7717,6 +7649,9 @@ msgstr "Åpne spillisten"
 msgid "Open with File Commander"
 msgstr ""
 
+msgid "Opkg"
+msgstr ""
+
 msgid "Options disable timer"
 msgstr ""
 
@@ -7827,10 +7762,6 @@ msgstr ""
 msgid "PGS file"
 msgstr ""
 
-#
-msgid "PIN code needed"
-msgstr "PIN-kode er nødvendig"
-
 msgid "PIP"
 msgstr ""
 
@@ -7919,10 +7850,6 @@ msgid "Parental control"
 msgstr "Foreldrekontroll"
 
 #
-msgid "Parental control services editor"
-msgstr "Foreldrekontroll og kanalinnstillinger"
-
-#
 msgid "Parental control setup"
 msgstr "Foreldrekontroll oppsett"
 
@@ -8001,10 +7928,6 @@ msgstr ""
 
 msgid "Philippines"
 msgstr ""
-
-#
-msgid "PiP setup"
-msgstr "PiP-bilde i bilde oppsett"
 
 msgid "Picon"
 msgstr ""
@@ -8401,10 +8324,6 @@ msgid "Plugin Filter..."
 msgstr "Oversikt over programtillegg"
 
 #
-msgid "Plugin browser"
-msgstr "Oversikt over programtillegg"
-
-#
 #, fuzzy
 msgid "Plugin install"
 msgstr "Avinstallere"
@@ -8606,6 +8525,10 @@ msgstr "Trykk OK for å fortsette."
 msgid "Press OK to activate the selected skin."
 msgstr "Trykk OK for å ta i bruk det valgte skin."
 
+#, fuzzy, python-format
+msgid "Press OK to activate the selected%s skin."
+msgstr "Trykk OK for å ta i bruk det valgte skin."
+
 msgid "Press OK to activate the settings."
 msgstr "Trykk OK for å aktivere instillingene"
 
@@ -8615,6 +8538,10 @@ msgstr "Trykk OK for å endre innstillinger."
 #, python-format
 msgid "Press OK to get further details for %s"
 msgstr "Trykk OK for å få ytterligere detaljer for %s"
+
+#, fuzzy, python-format
+msgid "Press OK to keep the currently selected%s skin."
+msgstr "Trykk OK for å ta i bruk det valgte skin."
 
 msgid "Press OK to scan"
 msgstr "Trykk OK for å søke."
@@ -8803,9 +8730,6 @@ msgstr "Bruk fjernkontroll tilhørende TV"
 msgid "Quick zap"
 msgstr "Hurtig bytte"
 
-msgid "REC"
-msgstr ""
-
 #
 msgid "RF output"
 msgstr "RF utgang"
@@ -8813,10 +8737,6 @@ msgstr "RF utgang"
 #
 msgid "RGB"
 msgstr "RGB"
-
-#
-msgid "Radio"
-msgstr "Radio"
 
 #, fuzzy
 msgid "Ram disk"
@@ -8901,19 +8821,12 @@ msgstr "Vil du oppdatere mottakeren og starte på nytt nå?"
 msgid "Reboot"
 msgstr ""
 
-msgid "Rec"
-msgstr "Opptak"
-
 msgid "Recall to previous service"
 msgstr ""
 
 #
 #, fuzzy
 msgid "Reception lists"
-msgstr "Mottakerfohold"
-
-#
-msgid "Reception settings"
 msgstr "Mottakerfohold"
 
 msgid "Record"
@@ -9485,10 +9398,6 @@ msgid "SINGLE LAYER DVD"
 msgstr "ETTLAGS DVD"
 
 #
-msgid "SNR"
-msgstr ""
-
-#
 msgid "SNR:"
 msgstr ""
 
@@ -9624,6 +9533,10 @@ msgstr ""
 
 msgid "Save EPG every (in hours)"
 msgstr ""
+
+#, fuzzy
+msgid "Save and activate the currently selected skin"
+msgstr "Trykk OK for å ta i bruk det valgte skin."
 
 msgid "Save and exit"
 msgstr ""
@@ -9928,9 +9841,6 @@ msgstr ""
 msgid "Select Fast DiSEqC if your aerial system supports this. If you are unsure select 'no'."
 msgstr ""
 
-msgid "Select HDD"
-msgstr "Velg hdd/ssd"
-
 #, fuzzy
 msgid "Select LCD clock:"
 msgstr "Velg en film"
@@ -9940,27 +9850,12 @@ msgid "Select Software Update"
 msgstr "Programvareoppdatering"
 
 #
-msgid "Select a bouquet"
-msgstr "Velg en kanalliste"
-
-msgid "Select a movie"
-msgstr "Velg en film"
-
-#
 msgid "Select a network adapter"
 msgstr "Velg et nettverkskort"
 
 #
 #, fuzzy
 msgid "Select a path"
-msgstr "Velg tuner"
-
-#
-msgid "Select a skin"
-msgstr "Velg et skin"
-
-#
-msgid "Select a tuner"
 msgstr "Velg tuner"
 
 #
@@ -10553,8 +10448,10 @@ msgstr ""
 msgid "Show Log"
 msgstr "Vis info"
 
-msgid "Show PIP"
-msgstr ""
+#
+#, fuzzy
+msgid "Show PiP"
+msgstr "Stoppe PiP (bilde i bilde)"
 
 msgid "Show SNR percentage instead of dB value"
 msgstr "Vis SNR i prosent i stedenfor dB i verdi"
@@ -10896,10 +10793,6 @@ msgstr "Signal OK, fortsetter"
 msgid "Signal Strength:"
 msgstr "Signalstyrke:"
 
-#, fuzzy
-msgid "Signal finder"
-msgstr "Satellittsøker"
-
 msgid "Signal quality"
 msgstr "Signalkvalitet"
 
@@ -10993,8 +10886,16 @@ msgstr ""
 
 #
 #, fuzzy
+msgid "Skin Selection Actions"
+msgstr "EPG valg"
+
+#
+#, fuzzy
 msgid "Skin setup"
 msgstr "PiP-bilde i bilde oppsett"
+
+msgid "SkinSelector: Restart GUI"
+msgstr ""
 
 #
 msgid "Skins"
@@ -11622,8 +11523,10 @@ msgstr ""
 msgid "Swap Manager"
 msgstr "Pakkeforvalter"
 
-msgid "Swap PIP"
-msgstr ""
+#
+#, fuzzy
+msgid "Swap PiP"
+msgstr "Stoppe PiP (bilde i bilde)"
 
 #
 msgid "Swap PiP and main picture"
@@ -11781,9 +11684,6 @@ msgstr "TS filen er for stor for ISO9660 nivå 1!"
 
 msgid "TSID"
 msgstr "TSID"
-
-msgid "TUNER:"
-msgstr ""
 
 msgid "TUNING"
 msgstr ""
@@ -12449,10 +12349,6 @@ msgid "Timer Overview"
 msgstr ""
 
 #
-msgid "Timer edit"
-msgstr "Tidtaker innstilling"
-
-#
 msgid "Timer entry"
 msgstr "Tidtaker innstilling"
 
@@ -12496,13 +12392,6 @@ msgstr "Tidtaker type"
 msgid "Timer:"
 msgstr "Tidtaker"
 
-#
-msgid "Timeshift"
-msgstr ""
-
-msgid "Timeshift Live"
-msgstr ""
-
 msgid "Timeshift is running. Select an action.\n"
 msgstr ""
 
@@ -12533,10 +12422,18 @@ msgstr "Egenskaper"
 msgid "Titleset mode"
 msgstr "Navnevalg"
 
+#, python-format
+msgid "To apply the selected '%s' skin the GUI needs to restart. Would you like to restart the GUI now?"
+msgstr ""
+
 msgid "To audio selection"
 msgstr "Til lyd utvalg"
 
 msgid "To back-up directly to the USB-stick, the USB-stick MUST\n"
+msgstr ""
+
+#, python-format
+msgid "To save and apply the selected '%s' skin the GUI needs to restart. Would you like to save the selection and restart the GUI now?"
 msgstr ""
 
 msgid "To subtitle selection"
@@ -12552,7 +12449,7 @@ msgstr ""
 msgid "Toggle LCD LiveTV"
 msgstr ""
 
-msgid "Toggle PIPzap"
+msgid "Toggle PiPzap"
 msgstr ""
 
 #
@@ -12618,10 +12515,6 @@ msgstr ""
 #
 msgid "Translation"
 msgstr "Oversetting"
-
-#
-msgid "Translation:"
-msgstr "Oversetting:"
 
 #
 msgid "Translations"
@@ -12878,10 +12771,6 @@ msgstr "Ukryptert"
 
 msgid "Unexpected error while retreiving fallback tuner's timer information"
 msgstr ""
-
-#
-msgid "UnhandledKey"
-msgstr "Ubrukt tast"
 
 msgid "Unhide parental control services"
 msgstr ""
@@ -13265,9 +13154,6 @@ msgstr "Video veiviser"
 msgid "Video: %s fps"
 msgstr "Bilde: %s fps"
 
-msgid "VideoMode"
-msgstr "Bildevisning"
-
 msgid "Videocodec, size & format"
 msgstr ""
 
@@ -13357,10 +13243,6 @@ msgstr ""
 #
 msgid "Voltage mode"
 msgstr "Volt modus"
-
-#
-msgid "Volume"
-msgstr "Volum"
 
 msgid "Volume down"
 msgstr ""
@@ -13572,7 +13454,8 @@ msgstr "Ønsker du dette?"
 msgid "When enabled enigma2 will load unlinked userbouquets. This means that userbouquets that are available, but not included in the bouquets.tv or bouquets.radio files, will still be loaded. This allows you for example to keep your own user bouquet while installed settings are updated"
 msgstr ""
 
-msgid "When enabled the PiP can be closed by the exit button."
+#, fuzzy
+msgid "When enabled the Picture in Picture window can be closed with 'exit' button."
 msgstr "Når dette er valgt, kan PiP (bilde i bilde) bli avsluttet med exit knappen."
 
 msgid "When enabled the arrow buttons around the OK button will follow the 'neutrino' style zap controls instead of the enigma2 style."
@@ -14264,9 +14147,10 @@ msgstr ""
 msgid "Zap-History Browser"
 msgstr "Søk i kataloger"
 
-#, python-format
-msgid "Zapped to timer service %s as PiP!"
-msgstr ""
+#
+#, fuzzy, python-format
+msgid "Zapped to timer service %s as Picture in Picture!"
+msgstr "Gå til første kanal"
 
 #
 #, fuzzy, python-format
@@ -14534,10 +14418,6 @@ msgstr ""
 
 msgid "comedy"
 msgstr "komedie"
-
-#
-msgid "config menu"
-msgstr "innstillingsmeny"
 
 msgid "configure in which resolution pictures are displayed with the picture viewer and movieplayer"
 msgstr ""

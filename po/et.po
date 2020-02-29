@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-05 14:04+0100\n"
+"POT-Creation-Date: 2020-02-29 20:00+0100\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -466,12 +466,6 @@ msgstr "Ülemkataloog"
 msgid "/var directory"
 msgstr "juur kaust"
 
-msgid "0"
-msgstr "0"
-
-msgid "1"
-msgstr "1"
-
 msgid "1.0"
 msgstr "1.0"
 
@@ -523,11 +517,11 @@ msgstr "16:9 letterbox"
 msgid "16:9 always"
 msgstr "16:9 alati"
 
+msgid "16K"
+msgstr ""
+
 msgid "18 V"
 msgstr "18 V"
-
-msgid "2"
-msgstr "2"
 
 msgid "2048 MB (maximum)"
 msgstr ""
@@ -549,9 +543,6 @@ msgstr ""
 
 msgid "29.97"
 msgstr "29.97"
-
-msgid "3"
-msgstr "3"
 
 msgid "30"
 msgstr "30"
@@ -588,6 +579,10 @@ msgstr "4:3 letterbox"
 msgid "4:3 PanScan"
 msgstr "4:3 PanScan"
 
+#, fuzzy
+msgid "4K"
+msgstr "4"
+
 msgid "5"
 msgstr "5"
 
@@ -597,25 +592,35 @@ msgstr ""
 msgid "512 MB (recommended for this chipset)"
 msgstr ""
 
-msgid "6"
-msgstr "6"
-
 msgid "64 MB"
 msgstr ""
 
-msgid "7"
-msgstr "7"
-
-msgid "8"
+#, fuzzy
+msgid "8K"
 msgstr "8"
 
 msgid "8bit"
 msgstr ""
 
-msgid "9"
-msgstr "9"
-
 msgid ": 0000 - default (disabled)"
+msgstr ""
+
+#, fuzzy
+msgid "< Current >"
+msgstr "Hetke seaded:"
+
+#, fuzzy
+msgid "< Default + Picon >"
+msgstr "Vaikeväärtused"
+
+#, fuzzy
+msgid "< Default >"
+msgstr "Vaikeväärtused"
+
+msgid "< Emergency >"
+msgstr ""
+
+msgid "< Pending restart >"
 msgstr ""
 
 msgid "<Current movielist location>"
@@ -1483,9 +1488,6 @@ msgstr ""
 msgid "BDMV Compatible Bludisc (HDTV only)"
 msgstr ""
 
-msgid "BER"
-msgstr "BER"
-
 msgid "BER:"
 msgstr "BER:"
 
@@ -1591,11 +1593,12 @@ msgstr "Baski"
 msgid "Begin time"
 msgstr "Algusaeg"
 
+#, fuzzy
+msgid "Behavior of '0' button in PiP mode"
+msgstr "0-nupu funktsioon PiP-režiimis"
+
 msgid "Behavior of 'pause and ok' when paused"
 msgstr ""
-
-msgid "Behavior of 0 key in PiP-mode"
-msgstr "0-nupu funktsioon PiP-režiimis"
 
 msgid "Behavior when a movie is started"
 msgstr "Tegevus taasesituse algamisel"
@@ -1670,6 +1673,10 @@ msgid "Boost green"
 msgstr "roheline"
 
 #, fuzzy
+msgid "Bootup time"
+msgstr "Aja järgi"
+
+#, fuzzy
 msgid "Bosnia and Herzegovina"
 msgstr "Kanalilogo ja nimi"
 
@@ -1734,9 +1741,6 @@ msgstr "Vaikimisi näidatakse SNR väärtust dB-s (kui tuuner seda toetab). Siin
 
 msgid "By teamBlue Image Team"
 msgstr ""
-
-msgid "C"
-msgstr "C"
 
 msgid "C-Band"
 msgstr "C-sagedusala"
@@ -1841,6 +1845,12 @@ msgstr ""
 
 msgid "Cancel"
 msgstr "Tühista"
+
+msgid "Cancel any changes to the currently active skin"
+msgstr ""
+
+msgid "Cancel any changes to the currently active skin and exit all menus"
+msgstr ""
 
 msgid "Cancel any text changes and exit"
 msgstr ""
@@ -1991,9 +2001,6 @@ msgstr ""
 msgid "Channel not in services list"
 msgstr "Kanal pole teenuste nimekirjas"
 
-msgid "Channel selection"
-msgstr "Kanalid"
-
 msgid "Channel zap delay another button"
 msgstr ""
 
@@ -2005,9 +2012,6 @@ msgstr ""
 
 msgid "Channel:"
 msgstr "Kanal:"
-
-msgid "Channellist menu"
-msgstr "Kanalinimekirja menüü"
 
 msgid "Channelnumber and picon"
 msgstr ""
@@ -2163,7 +2167,8 @@ msgstr ""
 msgid "Close"
 msgstr "Sulge"
 
-msgid "Close PiP on exit"
+#, fuzzy
+msgid "Close PiP with 'exit' button"
 msgstr "Sulge PiP väljumisel"
 
 msgid "Close title selection"
@@ -2209,15 +2214,8 @@ msgstr "Värvi vorming"
 msgid "Combo"
 msgstr ""
 
-msgid "Command execution..."
-msgstr "Käskude täitmine"
-
 msgid "Command order"
 msgstr "Käskude järjekord"
-
-#, fuzzy
-msgid "Commit info"
-msgstr "Suhtlus"
 
 msgid "Common Interface"
 msgstr "CI liides"
@@ -2280,6 +2278,10 @@ msgstr ""
 msgid "Configure an additional delay to improve subtitle synchronisation."
 msgstr ""
 
+#, fuzzy
+msgid "Configure default type for new timers."
+msgstr "Seadista võrgumask."
+
 msgid "Configure for how long the infobar will remain visible after activation."
 msgstr "Määra inforiba kuvamise aeg."
 
@@ -2299,7 +2301,7 @@ msgstr ""
 msgid "Configure if and how crypto icons will be shown in the channel selection list."
 msgstr ""
 
-msgid "Configure if and how long the latest service in the PiP will be remembered."
+msgid "Configure if and how long the latest service in Picture in Picture mode will be remembered."
 msgstr ""
 
 msgid "Configure if and how service type icons will be shown in the channel selection list."
@@ -2414,7 +2416,8 @@ msgstr "Määra heli keele neljas eelistus."
 msgid "Configure the fourth subtitle language."
 msgstr "Määra subtiitrite keele neljas eelistus."
 
-msgid "Configure the function of the '0' button do when PIP is active."
+#, fuzzy
+msgid "Configure the function of the '0' button when Picture in Picture is active."
 msgstr "Määra, mida '0' nupp PIP- režiimis teeb."
 
 msgid "Configure the gateway."
@@ -2761,6 +2764,9 @@ msgstr "Paigaldatud kanalinimekirja ei leitud."
 msgid "Could not load Medium! No disc inserted?"
 msgstr "Ei saa plaati avada! Plaati pole sisestatud?"
 
+msgid "Could not locate epg file on fallback tuner"
+msgstr ""
+
 msgid "Could not open Picture in Picture"
 msgstr "PiP avamine ei õnnestunud"
 
@@ -2919,9 +2925,6 @@ msgstr "Tšehhi"
 msgid "Czechia"
 msgstr "Tšehhi"
 
-msgid "D"
-msgstr "D"
-
 msgid "DAC"
 msgstr ""
 
@@ -3008,9 +3011,6 @@ msgstr "DVD mängija"
 msgid "DVD Titlelist"
 msgstr "DVD nimekiri"
 
-msgid "DVD file browser"
-msgstr "DVD failibrauser"
-
 msgid "DVD player"
 msgstr "DVD mängija"
 
@@ -3096,6 +3096,10 @@ msgstr ""
 
 msgid "Default sorting method for files on the right side."
 msgstr ""
+
+#, fuzzy
+msgid "Default timer type"
+msgstr "Salvestuse liik"
 
 msgid "Delay after change voltage before switch command"
 msgstr ""
@@ -3409,6 +3413,10 @@ msgstr "Lisa/eemalda taimer käesolevale saatele"
 msgid "Display EPG list for current channel"
 msgstr "Näita käesoleva saate kava..."
 
+#, fuzzy
+msgid "Display Skin"
+msgstr "Esipaneeli seaded"
+
 msgid "Display and userinterface"
 msgstr "Esipaneel ja kasutajaliides"
 
@@ -3721,9 +3729,6 @@ msgstr "EPG keele valik 2"
 msgid "EPG only"
 msgstr ""
 
-msgid "EPG selection"
-msgstr "Saatekava"
-
 msgid "EPG settings"
 msgstr "Saatekava seaded"
 
@@ -3733,10 +3738,6 @@ msgstr ""
 #, python-format
 msgid "ERROR - failed to scan (%s)!"
 msgstr "VIGA - otsing nurjus (%s)!"
-
-#, fuzzy, python-format
-msgid "ERROR downloading file %s"
-msgstr "Laetakse alla"
 
 msgid "East"
 msgstr "Ida"
@@ -4084,10 +4085,6 @@ msgstr ""
 msgid "Error"
 msgstr "Viga"
 
-#, fuzzy, python-format
-msgid "Error %s"
-msgstr "Viga"
-
 msgid "Error checking disk. The disk may be damaged"
 msgstr ""
 
@@ -4099,9 +4096,6 @@ msgid ""
 "Error creating directory %s:\n"
 "%s"
 msgstr "Kausta loomine %s nurjus."
-
-msgid "Error executing plugin"
-msgstr "Viga laienduse käivitamisel"
 
 msgid "Error formatting disk. The disk may be damaged"
 msgstr ""
@@ -4118,19 +4112,10 @@ msgid ""
 "%s"
 msgstr ""
 
-msgid "Error when writing epg.dat on server"
-msgstr ""
-
-msgid "Error while retreiving epg.dat from server"
-msgstr ""
-
 #, python-format
 msgid ""
 "Error while retreiving fallback timer information\n"
 "%s"
-msgstr ""
-
-msgid "Error while retreiving location of epg.dat on server"
 msgstr ""
 
 #, python-format
@@ -4160,14 +4145,8 @@ msgstr "Saate tähesuurus"
 msgid "Event name first"
 msgstr ""
 
-msgid "Event view"
-msgstr "Saateinfo"
-
 #, fuzzy
 msgid "Event view context menu"
-msgstr "Saateinfo menüü"
-
-msgid "Event view menu"
 msgstr "Saateinfo menüü"
 
 #, fuzzy
@@ -4271,9 +4250,6 @@ msgstr "Muuda seadeid"
 msgid "Extended setup..."
 msgstr "Täpsemad seaded..."
 
-msgid "Extensions"
-msgstr "Laiendused"
-
 msgid "Extensions management"
 msgstr "Laienduste haldamine"
 
@@ -4301,6 +4277,9 @@ msgstr "Välise subtiitri värv"
 #, fuzzy
 msgid "External subtitle switch fonts"
 msgstr "Välise subtiitri värv"
+
+msgid "Externally powered"
+msgstr ""
 
 msgid "Extra end time to ignore inactivity sleeptimer"
 msgstr ""
@@ -4349,6 +4328,9 @@ msgid "FEC"
 msgstr "FEC"
 
 msgid "FEC:"
+msgstr ""
+
+msgid "FHD"
 msgstr ""
 
 msgid "FTA"
@@ -4735,6 +4717,10 @@ msgid "GUI Build: "
 msgstr ""
 
 #, fuzzy
+msgid "GUI Skin"
+msgstr "Välimus"
+
+#, fuzzy
 msgid ""
 "GUI needs a restart to apply a new language\n"
 "Do you want to restart the GUI now?"
@@ -4938,6 +4924,10 @@ msgstr ""
 
 msgid "Guyana"
 msgstr ""
+
+#, fuzzy
+msgid "HD"
+msgstr "D"
 
 msgid "HD list"
 msgstr "HD kanalid"
@@ -5212,10 +5202,6 @@ msgid "IPv6"
 msgstr ""
 
 #, fuzzy
-msgid "IPv6 setup"
-msgstr "PiP seaded"
-
-#, fuzzy
 msgid "IPv6 support"
 msgstr "pole toetatud"
 
@@ -5357,14 +5343,12 @@ msgstr "Kaasa ECM http voogudesse"
 msgid "Include EIT in http streams"
 msgstr "Kaasa EIT http voogudesse"
 
-msgid "Incorrect type service for PiP!"
-msgstr ""
+#, fuzzy
+msgid "Incorrect service type for Picture in Picture!"
+msgstr "Ava pilt-pildis"
 
 msgid "Increased voltage"
 msgstr "Suurendatud pinge"
-
-msgid "Index"
-msgstr "Indeks"
 
 msgid "Index allocated:"
 msgstr ""
@@ -5380,9 +5364,6 @@ msgstr ""
 
 msgid "Info"
 msgstr "Info"
-
-msgid "Info bar"
-msgstr "Inforiba"
 
 msgid "Info bar timeout"
 msgstr "Inforiba kuvamise aeg"
@@ -5504,9 +5485,6 @@ msgstr "Paigaldamine"
 msgid "Installing Service"
 msgstr "Paigaldamine"
 
-msgid "Installing software..."
-msgstr "Tarkvara paigaldamine..."
-
 #, fuzzy
 msgid "Instant record"
 msgstr "Kohene salvestus..."
@@ -5571,9 +5549,6 @@ msgstr ""
 msgid "Invert"
 msgstr "Vastupidi"
 
-msgid "Ipkg"
-msgstr "Ipkg"
-
 msgid "Iran (Islamic Republic of)"
 msgstr ""
 
@@ -5591,6 +5566,9 @@ msgstr "Kasutad neid seadeid?"
 
 msgid "Is this video mode ok?"
 msgstr "Kas see videoseadistus sobib?"
+
+msgid "Is your SCR device externally powered"
+msgstr ""
 
 #, fuzzy
 msgid "Isle of Man"
@@ -5725,12 +5703,6 @@ msgstr "Kohtvõrgu adapter"
 
 msgid "LAN connection"
 msgstr "LAN ühendus"
-
-msgid "LCD Clock-Selector"
-msgstr ""
-
-msgid "LCD Skin-Selector"
-msgstr ""
 
 msgid "LNB"
 msgstr "LNB"
@@ -6012,9 +5984,6 @@ msgstr "IP aadress"
 msgid "MAC-adress settings"
 msgstr "Võrgukaardi seaded"
 
-msgid "MAC-adress setup"
-msgstr ""
-
 msgid "MAC:"
 msgstr ""
 
@@ -6024,9 +5993,6 @@ msgstr "Inversioon"
 
 msgid "MMC card"
 msgstr ""
-
-msgid "MORE"
-msgstr "VEEL"
 
 msgid "MSN Weather City Name"
 msgstr ""
@@ -6183,9 +6149,6 @@ msgid "Menusort (%s)"
 msgstr ""
 
 msgid "Message"
-msgstr "Teade"
-
-msgid "Message..."
 msgstr "Teade"
 
 #, fuzzy
@@ -6374,7 +6337,7 @@ msgid "Move 1 element"
 msgstr "Liikumine"
 
 #, fuzzy
-msgid "Move PIP"
+msgid "Move PiP"
 msgstr "Liiguta"
 
 msgid "Move PiP to main picture"
@@ -6432,6 +6395,22 @@ msgstr ""
 
 msgid "Move to position X"
 msgstr "Liigu asukohta X"
+
+#, fuzzy
+msgid "Move to the next page"
+msgstr "vali järgmine vaatenurk"
+
+#, fuzzy
+msgid "Move to the next skin"
+msgstr "liigu järgmisele reale"
+
+#, fuzzy
+msgid "Move to the previous page"
+msgstr "tagasi eelmisele peatükile"
+
+#, fuzzy
+msgid "Move to the previous skin"
+msgstr "liigu eelmisele reale"
 
 #, fuzzy
 msgid "Move up list"
@@ -6538,9 +6517,6 @@ msgstr ""
 msgid "Music/Ballet/Dance"
 msgstr ""
 
-msgid "Mute"
-msgstr "Vaikus"
-
 #, fuzzy
 msgid "My Extension"
 msgstr "Laiendused"
@@ -6554,9 +6530,6 @@ msgstr ""
 
 msgid "N/A"
 msgstr "Ei ole kasutusel"
-
-msgid "NEXT"
-msgstr "JÄRGMINE"
 
 #, fuzzy
 msgid "NFS Setup"
@@ -6577,9 +6550,6 @@ msgstr ""
 
 #, fuzzy
 msgid "NO"
-msgstr "PRAEGU"
-
-msgid "NOW"
 msgstr "PRAEGU"
 
 msgid "NTP"
@@ -6607,9 +6577,6 @@ msgid "Nameserver %d"
 msgstr "Nimeserver %d"
 
 msgid "Nameserver settings"
-msgstr "Nimeserveri seaded"
-
-msgid "Nameserver setup"
 msgstr "Nimeserveri seaded"
 
 msgid "Namespace & Orbital pos."
@@ -6659,9 +6626,6 @@ msgstr "Võrk:"
 msgid "Network configuration"
 msgstr "Võrgu seadistamine..."
 
-msgid "Network configuration..."
-msgstr "Võrgu seadistamine..."
-
 #, fuzzy
 msgid "Network mount"
 msgstr "Võrke ei leidnud"
@@ -6680,9 +6644,6 @@ msgid "Network setup"
 msgstr "Võrgu häälestamine"
 
 msgid "Network test"
-msgstr "Võrgu ühenduse test"
-
-msgid "Network test..."
 msgstr "Võrgu ühenduse test"
 
 msgid "Network test: "
@@ -6810,9 +6771,6 @@ msgstr "Saatetutvustust ei ole."
 msgid "No displayable files on this medium found!"
 msgstr "Sellel andmekandjal pole kuvatavaid faile!"
 
-msgid "No epg.dat file found server"
-msgstr ""
-
 msgid "No event info found, recording indefinitely."
 msgstr "Saatel pole teada lõppaeg. Salvestatakse pidevalt."
 
@@ -6857,6 +6815,9 @@ msgstr ""
 
 msgid "No services/providers selected"
 msgstr "Kanalit/levitajat pole valitud"
+
+msgid "No settings files to download on fallback tuner"
+msgstr ""
 
 msgid "No standby"
 msgstr "Ooterežiimita"
@@ -7034,9 +6995,6 @@ msgctxt "now/next: 'now' event label"
 msgid "Now"
 msgstr "Hetkel"
 
-msgid "Now playing"
-msgstr "Praegu mängib"
-
 msgid "Now, use the contrast setting to turn up the brightness of the background as much as possible, but make sure that you can still see the difference between the two brightest levels of shades.If you have done that, press OK."
 msgstr "Nüüd suurenda kontrastsuse seadmise abil pildi tausta heledust nii palju kui võimalik, aga veendu, et sa näed siiski erinevust kahe kõige heledama varjundi vahel. Kui see on tehtud, vajuta OK."
 
@@ -7180,6 +7138,9 @@ msgstr "Ava filmilist"
 msgid "Open with File Commander"
 msgstr ""
 
+msgid "Opkg"
+msgstr ""
+
 msgid "Options disable timer"
 msgstr ""
 
@@ -7285,9 +7246,6 @@ msgstr ""
 msgid "PGS file"
 msgstr ""
 
-msgid "PIN code needed"
-msgstr "Vajalik on pin-kood"
-
 msgid "PIP"
 msgstr ""
 
@@ -7373,9 +7331,6 @@ msgstr "Ülemkataloog"
 msgid "Parental control"
 msgstr "Lapselukk"
 
-msgid "Parental control services editor"
-msgstr "Lapseluku kanali muutmine"
-
 msgid "Parental control setup"
 msgstr "Lapseluku seaded"
 
@@ -7448,9 +7403,6 @@ msgstr ""
 
 msgid "Philippines"
 msgstr ""
-
-msgid "PiP setup"
-msgstr "PiP seaded"
 
 msgid "Picon"
 msgstr "Kanalilogo"
@@ -7814,9 +7766,6 @@ msgstr "Laienduste sirvija"
 msgid "Plugin Filter..."
 msgstr "Laienduste sirvija"
 
-msgid "Plugin browser"
-msgstr "Laienduste sirvija"
-
 #, fuzzy
 msgid "Plugin install"
 msgstr "Eemalda"
@@ -8011,6 +7960,10 @@ msgstr "Jätkamiseks vajuta OK."
 msgid "Press OK to activate the selected skin."
 msgstr "Vajuta OK uue välimuse aktiveerimiseks."
 
+#, fuzzy, python-format
+msgid "Press OK to activate the selected%s skin."
+msgstr "Vajuta OK uue välimuse aktiveerimiseks."
+
 msgid "Press OK to activate the settings."
 msgstr "Seadete aktiveerimiseks vajuta OK."
 
@@ -8020,6 +7973,10 @@ msgstr "Sätete muutmiseks vajuta OK."
 #, python-format
 msgid "Press OK to get further details for %s"
 msgstr "Vajuta OK %s üksikasjade nägemiseks"
+
+#, fuzzy, python-format
+msgid "Press OK to keep the currently selected%s skin."
+msgstr "Vajuta OK uue välimuse aktiveerimiseks."
 
 msgid "Press OK to scan"
 msgstr "Otsingu alustamiseks vajuta OK"
@@ -8210,18 +8167,11 @@ msgstr "Kasuta teleri pulti"
 msgid "Quick zap"
 msgstr "Kiire kanalivalik"
 
-#, fuzzy
-msgid "REC"
-msgstr "FEC"
-
 msgid "RF output"
 msgstr "RF-väljund"
 
 msgid "RGB"
 msgstr "RGB"
-
-msgid "Radio"
-msgstr "Raadio"
 
 #, fuzzy
 msgid "Ram disk"
@@ -8298,18 +8248,12 @@ msgstr "Uuendad ja taaskäivitad vastuvõtja?"
 msgid "Reboot"
 msgstr ""
 
-msgid "Rec"
-msgstr "Salvesta"
-
 #, fuzzy
 msgid "Recall to previous service"
 msgstr "Tagasi eelmisele kanalile"
 
 #, fuzzy
 msgid "Reception lists"
-msgstr "Vastuvõtu seaded"
-
-msgid "Reception settings"
 msgstr "Vastuvõtu seaded"
 
 msgid "Record"
@@ -8849,9 +8793,6 @@ msgstr ""
 msgid "SINGLE LAYER DVD"
 msgstr "ÜHEKIHILINE DVD"
 
-msgid "SNR"
-msgstr "SNR"
-
 msgid "SNR:"
 msgstr "SNR:"
 
@@ -8978,6 +8919,10 @@ msgstr ""
 
 msgid "Save EPG every (in hours)"
 msgstr ""
+
+#, fuzzy
+msgid "Save and activate the currently selected skin"
+msgstr "Vajuta OK uue välimuse aktiveerimiseks."
 
 #, fuzzy
 msgid "Save and exit"
@@ -9277,9 +9222,6 @@ msgstr "Vali tuuner"
 msgid "Select Fast DiSEqC if your aerial system supports this. If you are unsure select 'no'."
 msgstr ""
 
-msgid "Select HDD"
-msgstr "Vali kõvaketas"
-
 #, fuzzy
 msgid "Select LCD clock:"
 msgstr "Vali asukoht"
@@ -9288,23 +9230,11 @@ msgstr "Vali asukoht"
 msgid "Select Software Update"
 msgstr "Tarkvara uuendamine"
 
-msgid "Select a bouquet"
-msgstr "Vali lemmiknimekiri"
-
-msgid "Select a movie"
-msgstr "Vali salvestis"
-
 msgid "Select a network adapter"
 msgstr "Vali võrgukaart"
 
 #, fuzzy
 msgid "Select a path"
-msgstr "Vali tuuner"
-
-msgid "Select a skin"
-msgstr "Vali välimus"
-
-msgid "Select a tuner"
 msgstr "Vali tuuner"
 
 msgid "Select a wireless network"
@@ -9875,7 +9805,7 @@ msgid "Show Log"
 msgstr "Näita infot"
 
 #, fuzzy
-msgid "Show PIP"
+msgid "Show PiP"
 msgstr "näita saatekava..."
 
 msgid "Show SNR percentage instead of dB value"
@@ -10216,10 +10146,6 @@ msgstr "Signaal OK, jätkame"
 msgid "Signal Strength:"
 msgstr "Signaali tugevus:"
 
-#, fuzzy
-msgid "Signal finder"
-msgstr "Signaal: "
-
 msgid "Signal quality"
 msgstr "Signaali kvaliteet"
 
@@ -10300,8 +10226,15 @@ msgid "Skin & Resolution: %s (%sx%s)"
 msgstr ""
 
 #, fuzzy
+msgid "Skin Selection Actions"
+msgstr "Saatekava"
+
+#, fuzzy
 msgid "Skin setup"
 msgstr "Seadistamine"
+
+msgid "SkinSelector: Restart GUI"
+msgstr ""
 
 msgid "Skins"
 msgstr "Välimus"
@@ -10884,8 +10817,9 @@ msgstr ""
 msgid "Swap Manager"
 msgstr "Paketi haldur"
 
-msgid "Swap PIP"
-msgstr ""
+#, fuzzy
+msgid "Swap PiP"
+msgstr "Sulge PiP"
 
 msgid "Swap PiP and main picture"
 msgstr "Vaheta PiP- ja peapilt"
@@ -11037,9 +10971,6 @@ msgstr "TS fail on liiga suur ISO9660/1-le!"
 
 msgid "TSID"
 msgstr "TSID"
-
-msgid "TUNER:"
-msgstr ""
 
 msgid "TUNING"
 msgstr ""
@@ -11661,9 +11592,6 @@ msgstr "Taimer"
 msgid "Timer Overview"
 msgstr ""
 
-msgid "Timer edit"
-msgstr "Taimeri muutmine"
-
 msgid "Timer entry"
 msgstr "Taimeri sisestus"
 
@@ -11699,12 +11627,6 @@ msgstr "Taimeri liik"
 msgid "Timer:"
 msgstr "Taimer"
 
-msgid "Timeshift"
-msgstr "Ajanihe"
-
-msgid "Timeshift Live"
-msgstr ""
-
 msgid "Timeshift is running. Select an action.\n"
 msgstr ""
 
@@ -11729,10 +11651,18 @@ msgstr "Pealkirja omadused"
 msgid "Titleset mode"
 msgstr "Testpilt"
 
+#, python-format
+msgid "To apply the selected '%s' skin the GUI needs to restart. Would you like to restart the GUI now?"
+msgstr ""
+
 msgid "To audio selection"
 msgstr "Heli valik"
 
 msgid "To back-up directly to the USB-stick, the USB-stick MUST\n"
+msgstr ""
+
+#, python-format
+msgid "To save and apply the selected '%s' skin the GUI needs to restart. Would you like to save the selection and restart the GUI now?"
 msgstr ""
 
 msgid "To subtitle selection"
@@ -11747,7 +11677,7 @@ msgstr ""
 msgid "Toggle LCD LiveTV"
 msgstr ""
 
-msgid "Toggle PIPzap"
+msgid "Toggle PiPzap"
 msgstr ""
 
 msgid "Toggle a cut mark at the current position"
@@ -11810,9 +11740,6 @@ msgstr "Tõlge:"
 
 msgid "Translation"
 msgstr "Tõlge"
-
-msgid "Translation:"
-msgstr "Tõlge:"
 
 msgid "Translations"
 msgstr "Tõlked"
@@ -12045,9 +11972,6 @@ msgstr "Koodivaba"
 
 msgid "Unexpected error while retreiving fallback tuner's timer information"
 msgstr ""
-
-msgid "UnhandledKey"
-msgstr "Käsitlematu võti"
 
 #, fuzzy
 msgid "Unhide parental control services"
@@ -12407,9 +12331,6 @@ msgstr "Video juhend"
 msgid "Video: %s fps"
 msgstr ""
 
-msgid "VideoMode"
-msgstr ""
-
 #, fuzzy
 msgid "Videocodec, size & format"
 msgstr "Videoformaat"
@@ -12496,9 +12417,6 @@ msgstr ""
 
 msgid "Voltage mode"
 msgstr "Pinge tüüp"
-
-msgid "Volume"
-msgstr "Helitugevus"
 
 #, fuzzy
 msgid "Volume down"
@@ -12700,7 +12618,7 @@ msgstr "Mida soovid otsida?"
 msgid "When enabled enigma2 will load unlinked userbouquets. This means that userbouquets that are available, but not included in the bouquets.tv or bouquets.radio files, will still be loaded. This allows you for example to keep your own user bouquet while installed settings are updated"
 msgstr ""
 
-msgid "When enabled the PiP can be closed by the exit button."
+msgid "When enabled the Picture in Picture window can be closed with 'exit' button."
 msgstr ""
 
 msgid "When enabled the arrow buttons around the OK button will follow the 'neutrino' style zap controls instead of the enigma2 style."
@@ -13369,9 +13287,9 @@ msgstr ""
 msgid "Zap-History Browser"
 msgstr "Kataloogi brauser"
 
-#, python-format
-msgid "Zapped to timer service %s as PiP!"
-msgstr ""
+#, fuzzy, python-format
+msgid "Zapped to timer service %s as Picture in Picture!"
+msgstr "Mine esimesele kanalile"
 
 #, fuzzy, python-format
 msgid "Zapped to timer service %s!"
@@ -13618,9 +13536,6 @@ msgstr "Videokoodek"
 
 msgid "comedy"
 msgstr "komöödia"
-
-msgid "config menu"
-msgstr "seadete menüü"
 
 msgid "configure in which resolution pictures are displayed with the picture viewer and movieplayer"
 msgstr ""

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-05 14:04+0100\n"
+"POT-Creation-Date: 2020-02-29 20:00+0100\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -512,14 +512,6 @@ msgid "/var directory"
 msgstr "Katalog początkowy"
 
 #
-msgid "0"
-msgstr "0"
-
-#
-msgid "1"
-msgstr "1"
-
-#
 msgid "1.0"
 msgstr "1.0"
 
@@ -581,13 +573,12 @@ msgstr "16:9 Letterbox"
 msgid "16:9 always"
 msgstr "16:9 zawsze"
 
+msgid "16K"
+msgstr ""
+
 #
 msgid "18 V"
 msgstr "18 V"
-
-#
-msgid "2"
-msgstr "2"
 
 msgid "2048 MB (maximum)"
 msgstr ""
@@ -609,10 +600,6 @@ msgstr ""
 
 msgid "29.97"
 msgstr ""
-
-#
-msgid "3"
-msgstr "3"
 
 msgid "30"
 msgstr ""
@@ -656,6 +643,11 @@ msgid "4:3 PanScan"
 msgstr "4:3 PanScan"
 
 #
+#, fuzzy
+msgid "4K"
+msgstr "4"
+
+#
 msgid "5"
 msgstr "5"
 
@@ -665,29 +657,39 @@ msgstr ""
 msgid "512 MB (recommended for this chipset)"
 msgstr ""
 
-#
-msgid "6"
-msgstr "6"
-
 msgid "64 MB"
 msgstr ""
 
 #
-msgid "7"
-msgstr "7"
-
-#
-msgid "8"
+#, fuzzy
+msgid "8K"
 msgstr "8"
 
 msgid "8bit"
 msgstr ""
 
-#
-msgid "9"
-msgstr "9"
-
 msgid ": 0000 - default (disabled)"
+msgstr ""
+
+#
+#, fuzzy
+msgid "< Current >"
+msgstr "Aktualne ustawienia:"
+
+#
+#, fuzzy
+msgid "< Default + Picon >"
+msgstr "Ustawienia domyślne"
+
+#
+#, fuzzy
+msgid "< Default >"
+msgstr "Ustawienia domyślne"
+
+msgid "< Emergency >"
+msgstr ""
+
+msgid "< Pending restart >"
 msgstr ""
 
 #
@@ -1709,10 +1711,6 @@ msgid "BDMV Compatible Bludisc (HDTV only)"
 msgstr ""
 
 #
-msgid "BER"
-msgstr "BER"
-
-#
 msgid "BER:"
 msgstr "BER:"
 
@@ -1836,12 +1834,13 @@ msgstr "Baskijski"
 msgid "Begin time"
 msgstr "Czas rozpoczęcia"
 
+#
+#, fuzzy
+msgid "Behavior of '0' button in PiP mode"
+msgstr "Zachowanie przycisku 0 w trybie PiP"
+
 msgid "Behavior of 'pause and ok' when paused"
 msgstr "Zachowanie 'pauzy' i 'OK' gdy spauzowane"
-
-#
-msgid "Behavior of 0 key in PiP-mode"
-msgstr "Zachowanie przycisku 0 w trybie PiP"
 
 #
 msgid "Behavior when a movie is started"
@@ -1923,6 +1922,11 @@ msgstr ""
 msgid "Boost green"
 msgstr "Zielony"
 
+#
+#, fuzzy
+msgid "Bootup time"
+msgstr "Sortuj wg czasu"
+
 #, fuzzy
 msgid "Bosnia and Herzegovina"
 msgstr "Picon i nazwa"
@@ -1992,10 +1996,6 @@ msgstr "Domyślnie SNR jest wyświetlana w dB (jeśli wspierane przez tuner). To
 
 msgid "By teamBlue Image Team"
 msgstr ""
-
-#
-msgid "C"
-msgstr "C"
 
 #
 msgid "C-Band"
@@ -2111,6 +2111,12 @@ msgstr ""
 #
 msgid "Cancel"
 msgstr "Anuluj"
+
+msgid "Cancel any changes to the currently active skin"
+msgstr ""
+
+msgid "Cancel any changes to the currently active skin and exit all menus"
+msgstr ""
 
 msgid "Cancel any text changes and exit"
 msgstr ""
@@ -2279,10 +2285,6 @@ msgstr ""
 msgid "Channel not in services list"
 msgstr "Kanału nie ma na liście serwisów"
 
-#
-msgid "Channel selection"
-msgstr "Wybór kanałów"
-
 msgid "Channel zap delay another button"
 msgstr ""
 
@@ -2295,10 +2297,6 @@ msgstr ""
 #
 msgid "Channel:"
 msgstr "Kanał:"
-
-#
-msgid "Channellist menu"
-msgstr "Menu listy kanałów"
 
 msgid "Channelnumber and picon"
 msgstr ""
@@ -2477,7 +2475,8 @@ msgstr ""
 msgid "Close"
 msgstr "Zamknij"
 
-msgid "Close PiP on exit"
+#, fuzzy
+msgid "Close PiP with 'exit' button"
 msgstr "Wyłączaj PiP klawiszem exit"
 
 #
@@ -2532,17 +2531,8 @@ msgid "Combo"
 msgstr ""
 
 #
-msgid "Command execution..."
-msgstr "Wykonywanie polecenia..."
-
-#
 msgid "Command order"
 msgstr "Kolejność poleceń"
-
-#
-#, fuzzy
-msgid "Commit info"
-msgstr "Komunikacja"
 
 #
 msgid "Common Interface"
@@ -2617,6 +2607,11 @@ msgstr "Ustaw dodatkowe opóźnienie, aby polepszyć synchronizację napisów ze
 msgid "Configure an additional delay to improve subtitle synchronisation."
 msgstr "Ustaw dodatkowe opóźnienie, aby polepszyć synchronizację napisów"
 
+#
+#, fuzzy
+msgid "Configure default type for new timers."
+msgstr "Skonfiguruj maskę sieci."
+
 msgid "Configure for how long the infobar will remain visible after activation."
 msgstr "Skonfiguruj czas wyświetlania paska info"
 
@@ -2636,7 +2631,8 @@ msgstr "Skonfiguruj tryb pracy wentylatora"
 msgid "Configure if and how crypto icons will be shown in the channel selection list."
 msgstr "Skonfiguruj czy i jak wyświetlać w liście ikony informujące o tym, że kanał jest kodowany."
 
-msgid "Configure if and how long the latest service in the PiP will be remembered."
+#, fuzzy
+msgid "Configure if and how long the latest service in Picture in Picture mode will be remembered."
 msgstr "Skonfiguruj czy, i jak długo, ma być pamiętany ostatni kanał wyświetlony w PiP."
 
 msgid "Configure if and how service type icons will be shown in the channel selection list."
@@ -2758,7 +2754,8 @@ msgstr "Skonfiguruj język czwartej ścieżki audio,"
 msgid "Configure the fourth subtitle language."
 msgstr "Skonfiguruj czwarty język napisów"
 
-msgid "Configure the function of the '0' button do when PIP is active."
+#, fuzzy
+msgid "Configure the function of the '0' button when Picture in Picture is active."
 msgstr "Skonfiguruj zachowanie przycisku '0' gdy PiP jest aktywny. "
 
 #
@@ -3137,6 +3134,9 @@ msgstr "Nie znaleziono zainstalowanej listy kanałów. "
 msgid "Could not load Medium! No disc inserted?"
 msgstr "Nie można odczytać nośnika. Czy płyta jest w napędzie?"
 
+msgid "Could not locate epg file on fallback tuner"
+msgstr ""
+
 #
 msgid "Could not open Picture in Picture"
 msgstr "Nie mozna otworzyć PiP"
@@ -3323,10 +3323,6 @@ msgstr "Czeski"
 msgid "Czechia"
 msgstr "Czeski"
 
-#
-msgid "D"
-msgstr "D"
-
 msgid "DAC"
 msgstr ""
 
@@ -3419,10 +3415,6 @@ msgstr "Odtwarzacz DVD"
 #, fuzzy
 msgid "DVD Titlelist"
 msgstr "Tytuły DVD"
-
-#
-msgid "DVD file browser"
-msgstr "Przeglądarka DVD"
 
 #
 msgid "DVD player"
@@ -3523,6 +3515,10 @@ msgstr ""
 
 msgid "Default sorting method for files on the right side."
 msgstr ""
+
+#, fuzzy
+msgid "Default timer type"
+msgstr "Typ nagrania"
 
 msgid "Delay after change voltage before switch command"
 msgstr ""
@@ -3885,6 +3881,11 @@ msgstr "Przejdź w tryb czuwania po bieżącym wydarzeniu"
 #, fuzzy
 msgid "Display EPG list for current channel"
 msgstr "Pokaż EPG dla aktualnego kanału..."
+
+#
+#, fuzzy
+msgid "Display Skin"
+msgstr "Wyświetlacz"
 
 #
 msgid "Display and userinterface"
@@ -4255,10 +4256,6 @@ msgstr "Preferowany język EPG 2"
 msgid "EPG only"
 msgstr ""
 
-#
-msgid "EPG selection"
-msgstr "Wybór EPG"
-
 msgid "EPG settings"
 msgstr "EPG"
 
@@ -4269,11 +4266,6 @@ msgstr ""
 #, python-format
 msgid "ERROR - failed to scan (%s)!"
 msgstr "BŁĄD - skanowanie (%s) nie powiodło się!"
-
-#
-#, fuzzy, python-format
-msgid "ERROR downloading file %s"
-msgstr "Pobieranie"
 
 #
 msgid "East"
@@ -4683,11 +4675,6 @@ msgstr "Strumień"
 msgid "Error"
 msgstr "Błąd"
 
-#
-#, fuzzy, python-format
-msgid "Error %s"
-msgstr "Błąd"
-
 msgid "Error checking disk. The disk may be damaged"
 msgstr ""
 
@@ -4700,10 +4687,6 @@ msgid ""
 "Error creating directory %s:\n"
 "%s"
 msgstr "Tworzenie katalogu %s nie powiodło się."
-
-#
-msgid "Error executing plugin"
-msgstr "Błąd podczas uruchamiania pluginu"
 
 msgid "Error formatting disk. The disk may be damaged"
 msgstr ""
@@ -4720,19 +4703,10 @@ msgid ""
 "%s"
 msgstr ""
 
-msgid "Error when writing epg.dat on server"
-msgstr ""
-
-msgid "Error while retreiving epg.dat from server"
-msgstr ""
-
 #, python-format
 msgid ""
 "Error while retreiving fallback timer information\n"
 "%s"
-msgstr ""
-
-msgid "Error while retreiving location of epg.dat on server"
 msgstr ""
 
 #
@@ -4765,15 +4739,8 @@ msgstr "Wielkość czcionki (w stos. do czcionki w skinie)"
 msgid "Event name first"
 msgstr ""
 
-#
-msgid "Event view"
-msgstr "Opis wydarzenia"
-
 #, fuzzy
 msgid "Event view context menu"
-msgstr "Menu opisu wydarzenia"
-
-msgid "Event view menu"
 msgstr "Menu opisu wydarzenia"
 
 #, fuzzy
@@ -4903,10 +4870,6 @@ msgid "Extended setup..."
 msgstr "Ustawienia zaawansowane..."
 
 #
-msgid "Extensions"
-msgstr "Rozszerzenia"
-
-#
 msgid "Extensions management"
 msgstr "Zarządzanie dodatkami"
 
@@ -4935,6 +4898,9 @@ msgstr "Kolor napisów zewnętrznych"
 #, fuzzy
 msgid "External subtitle switch fonts"
 msgstr "Kolor napisów zewnętrznych"
+
+msgid "Externally powered"
+msgstr ""
 
 #, fuzzy
 msgid "Extra end time to ignore inactivity sleeptimer"
@@ -4987,6 +4953,9 @@ msgid "FEC"
 msgstr ""
 
 msgid "FEC:"
+msgstr ""
+
+msgid "FHD"
 msgstr ""
 
 msgid "FTA"
@@ -5424,6 +5393,11 @@ msgstr ""
 
 #
 #, fuzzy
+msgid "GUI Skin"
+msgstr "Skiny"
+
+#
+#, fuzzy
 msgid ""
 "GUI needs a restart to apply a new language\n"
 "Do you want to restart the GUI now?"
@@ -5646,6 +5620,11 @@ msgstr ""
 
 msgid "Guyana"
 msgstr ""
+
+#
+#, fuzzy
+msgid "HD"
+msgstr "D"
 
 #
 msgid "HD list"
@@ -5956,11 +5935,6 @@ msgstr ""
 msgid "IPv6"
 msgstr ""
 
-#
-#, fuzzy
-msgid "IPv6 setup"
-msgstr "Ustawienia PiP"
-
 #, fuzzy
 msgid "IPv6 support"
 msgstr "Nieobsługiwany"
@@ -6116,16 +6090,13 @@ msgstr "ECMy w streamie http"
 msgid "Include EIT in http streams"
 msgstr "EIT w streamie http"
 
-msgid "Incorrect type service for PiP!"
+#, fuzzy
+msgid "Incorrect service type for Picture in Picture!"
 msgstr "Typ serwisu nieobsługiwany w PiP!"
 
 #
 msgid "Increased voltage"
 msgstr "Zwiększone napięcie"
-
-#
-msgid "Index"
-msgstr "Indeks"
 
 msgid "Index allocated:"
 msgstr "Indeks przypisany:"
@@ -6142,10 +6113,6 @@ msgstr ""
 #
 msgid "Info"
 msgstr "Info"
-
-#
-msgid "Info bar"
-msgstr "Pasek info"
 
 #
 msgid "Info bar timeout"
@@ -6293,10 +6260,6 @@ msgid "Installing Service"
 msgstr "Instalowanie"
 
 #
-msgid "Installing software..."
-msgstr "Instalowanie oprogramowania..."
-
-#
 #, fuzzy
 msgid "Instant record"
 msgstr "Natychmiastowe nagranie..."
@@ -6376,10 +6339,6 @@ msgstr ""
 msgid "Invert"
 msgstr "Odwróć"
 
-#
-msgid "Ipkg"
-msgstr "Ipkg"
-
 msgid "Iran (Islamic Republic of)"
 msgstr ""
 
@@ -6398,6 +6357,9 @@ msgstr "Użyć tych ustawień?"
 #
 msgid "Is this video mode ok?"
 msgstr "Czy ten tryb video jest ok?"
+
+msgid "Is your SCR device externally powered"
+msgstr ""
 
 #
 #, fuzzy
@@ -6549,12 +6511,6 @@ msgstr "Adapter LAN"
 
 msgid "LAN connection"
 msgstr "Połączenie LAN"
-
-msgid "LCD Clock-Selector"
-msgstr ""
-
-msgid "LCD Skin-Selector"
-msgstr ""
 
 #
 msgid "LNB"
@@ -6887,9 +6843,6 @@ msgstr "Adres IP"
 msgid "MAC-adress settings"
 msgstr "Ustawienia adaptera"
 
-msgid "MAC-adress setup"
-msgstr ""
-
 msgid "MAC:"
 msgstr ""
 
@@ -6900,10 +6853,6 @@ msgstr "Inwersja"
 
 msgid "MMC card"
 msgstr ""
-
-#
-msgid "MORE"
-msgstr "Więcej"
 
 msgid "MSN Weather City Name"
 msgstr ""
@@ -7086,10 +7035,6 @@ msgstr ""
 #
 msgid "Message"
 msgstr "Wiadomość"
-
-#
-msgid "Message..."
-msgstr "Wiadomość..."
 
 #
 #, fuzzy
@@ -7297,7 +7242,7 @@ msgstr "Ruch"
 
 #
 #, fuzzy
-msgid "Move PIP"
+msgid "Move PiP"
 msgstr "Przenieś"
 
 #
@@ -7361,6 +7306,26 @@ msgstr ""
 
 msgid "Move to position X"
 msgstr "Idź do pozycji X"
+
+#
+#, fuzzy
+msgid "Move to the next page"
+msgstr "Przejdź do następnego rogu"
+
+#
+#, fuzzy
+msgid "Move to the next skin"
+msgstr "Przejdź w do następnej pozycji"
+
+#
+#, fuzzy
+msgid "Move to the previous page"
+msgstr "Cofnij do poprzedniego rozdziału"
+
+#
+#, fuzzy
+msgid "Move to the previous skin"
+msgstr "Przejdź w górę do poprzedniej pozycji"
 
 #, fuzzy
 msgid "Move up list"
@@ -7481,10 +7446,6 @@ msgid "Music/Ballet/Dance"
 msgstr "Muzyka/Balet/Taniec"
 
 #
-msgid "Mute"
-msgstr "Wycisz"
-
-#
 #, fuzzy
 msgid "My Extension"
 msgstr "Rozszerzenia"
@@ -7499,10 +7460,6 @@ msgstr ""
 #
 msgid "N/A"
 msgstr "N/A"
-
-#
-msgid "NEXT"
-msgstr "Następny"
 
 #
 #, fuzzy
@@ -7526,10 +7483,6 @@ msgstr ""
 #
 #, fuzzy
 msgid "NO"
-msgstr "Teraz"
-
-#
-msgid "NOW"
 msgstr "Teraz"
 
 msgid "NTP"
@@ -7564,10 +7517,6 @@ msgstr "Nameserver %d"
 
 #
 msgid "Nameserver settings"
-msgstr "Ustawienia DNS"
-
-#
-msgid "Nameserver setup"
 msgstr "Ustawienia DNS"
 
 msgid "Namespace & Orbital pos."
@@ -7626,10 +7575,6 @@ msgid "Network configuration"
 msgstr "Konfiguracja sieci..."
 
 #
-msgid "Network configuration..."
-msgstr "Konfiguracja sieci..."
-
-#
 #, fuzzy
 msgid "Network mount"
 msgstr "Nie znaleziono sieci"
@@ -7653,10 +7598,6 @@ msgstr "Ustawienia sieci"
 #
 msgid "Network test"
 msgstr "Test sieci"
-
-#
-msgid "Network test..."
-msgstr "Test połączenia sieciowego..."
 
 msgid "Network test: "
 msgstr "Test sieci:"
@@ -7797,9 +7738,6 @@ msgstr "Brak dostępnego opisu."
 msgid "No displayable files on this medium found!"
 msgstr "Brak plików do wyświetlenia na tym nośniku!"
 
-msgid "No epg.dat file found server"
-msgstr ""
-
 #
 msgid "No event info found, recording indefinitely."
 msgstr "Nie znaleziono informacji o wydarzeniu, nagrywanie na czas nieokreślony."
@@ -7855,6 +7793,9 @@ msgstr "Brak kanału"
 #
 msgid "No services/providers selected"
 msgstr "Brak wybranych kanałów/nadawców"
+
+msgid "No settings files to download on fallback tuner"
+msgstr ""
 
 #
 msgid "No standby"
@@ -8057,10 +7998,6 @@ msgid "Now"
 msgstr "Teraz"
 
 #
-msgid "Now playing"
-msgstr "Teraz odtwarzane"
-
-#
 msgid "Now, use the contrast setting to turn up the brightness of the background as much as possible, but make sure that you can still see the difference between the two brightest levels of shades.If you have done that, press OK."
 msgstr "Teraz użyj ustawień kontrastu aby ustawić jak nawiększą jasność tła, ale tak, żeby nadal widać było różnicę pomiędzy dwoma najjaśniejszymi odcieniami, Jeśli skończyłeś, wciśnij OK."
 
@@ -8225,6 +8162,9 @@ msgstr "Powrót do listy filmów"
 msgid "Open with File Commander"
 msgstr ""
 
+msgid "Opkg"
+msgstr ""
+
 #
 #, fuzzy
 msgid "Options disable timer"
@@ -8353,10 +8293,6 @@ msgstr "%d plik"
 msgid "PGS file"
 msgstr "%d plik"
 
-#
-msgid "PIN code needed"
-msgstr "Wymagany kod PIN"
-
 msgid "PIP"
 msgstr ""
 
@@ -8451,10 +8387,6 @@ msgid "Parental control"
 msgstr "Kontrola rodzicielska"
 
 #
-msgid "Parental control services editor"
-msgstr "Edytor kanałów objętych kontrolę rodzicielską"
-
-#
 msgid "Parental control setup"
 msgstr "Ustawienia kontroli rodzicielskiej"
 
@@ -8538,10 +8470,6 @@ msgstr ""
 
 msgid "Philippines"
 msgstr ""
-
-#
-msgid "PiP setup"
-msgstr "Ustawienia PiP"
 
 msgid "Picon"
 msgstr ""
@@ -8986,10 +8914,6 @@ msgid "Plugin Filter..."
 msgstr "Przeglądarka pluginów"
 
 #
-msgid "Plugin browser"
-msgstr "Przeglądarka pluginów"
-
-#
 #, fuzzy
 msgid "Plugin install"
 msgstr "Odinstaluj"
@@ -9232,6 +9156,11 @@ msgid "Press OK to activate the selected skin."
 msgstr "Wciśnij OK, aby aktywować wybrany skin."
 
 #
+#, fuzzy, python-format
+msgid "Press OK to activate the selected%s skin."
+msgstr "Wciśnij OK, aby aktywować wybrany skin."
+
+#
 msgid "Press OK to activate the settings."
 msgstr "Wciśnij OK, aby aktywować ustawienia"
 
@@ -9243,6 +9172,11 @@ msgstr "Aby edytować ustawienia, wciśnij OK."
 #, python-format
 msgid "Press OK to get further details for %s"
 msgstr "Wciśnij OK, aby uzyskać więcej info o %s"
+
+#
+#, fuzzy, python-format
+msgid "Press OK to keep the currently selected%s skin."
+msgstr "Wciśnij OK, aby aktywować wybrany skin."
 
 #
 msgid "Press OK to scan"
@@ -9477,19 +9411,12 @@ msgstr "Użyj pilota od TV"
 msgid "Quick zap"
 msgstr "Szybkie przełączanie"
 
-msgid "REC"
-msgstr ""
-
 #
 msgid "RF output"
 msgstr "Wyjście RF"
 
 #
 msgid "RGB"
-msgstr ""
-
-#
-msgid "Radio"
 msgstr ""
 
 #
@@ -9580,9 +9507,6 @@ msgstr "Wykonać upgrade odbiornika i zrestartować?"
 msgid "Reboot"
 msgstr ""
 
-msgid "Rec"
-msgstr ""
-
 #
 #, fuzzy
 msgid "Recall to previous service"
@@ -9591,10 +9515,6 @@ msgstr "Powrót do poprzedniego kanału"
 #
 #, fuzzy
 msgid "Reception lists"
-msgstr "Ustawienia odbioru"
-
-#
-msgid "Reception settings"
 msgstr "Ustawienia odbioru"
 
 #
@@ -10242,10 +10162,6 @@ msgid "SINGLE LAYER DVD"
 msgstr "Jednowarstwowe DVD"
 
 #
-msgid "SNR"
-msgstr ""
-
-#
 msgid "SNR:"
 msgstr ""
 
@@ -10392,6 +10308,11 @@ msgstr ""
 
 msgid "Save EPG every (in hours)"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Save and activate the currently selected skin"
+msgstr "Wciśnij OK, aby aktywować wybrany skin."
 
 #
 #, fuzzy
@@ -10736,10 +10657,6 @@ msgid "Select Fast DiSEqC if your aerial system supports this. If you are unsure
 msgstr ""
 
 #
-msgid "Select HDD"
-msgstr "Wybierz HDD"
-
-#
 #, fuzzy
 msgid "Select LCD clock:"
 msgstr "Wybierz lokalizację"
@@ -10750,28 +10667,12 @@ msgid "Select Software Update"
 msgstr "Aktualizacja oprogramowania"
 
 #
-msgid "Select a bouquet"
-msgstr "Wybierz bukiet"
-
-#
-msgid "Select a movie"
-msgstr "Wybierz film"
-
-#
 msgid "Select a network adapter"
 msgstr "Wybierz adapter sieciowy"
 
 #
 #, fuzzy
 msgid "Select a path"
-msgstr "Wybierz tuner"
-
-#
-msgid "Select a skin"
-msgstr "Wybierz skin"
-
-#
-msgid "Select a tuner"
 msgstr "Wybierz tuner"
 
 #
@@ -11438,7 +11339,7 @@ msgstr "Pokaż info"
 
 #
 #, fuzzy
-msgid "Show PIP"
+msgid "Show PiP"
 msgstr "Pokaż EPG..."
 
 msgid "Show SNR percentage instead of dB value"
@@ -11830,11 +11731,6 @@ msgstr "Sygnał OK, wykonuję"
 msgid "Signal Strength:"
 msgstr "Siła sygnału:"
 
-#
-#, fuzzy
-msgid "Signal finder"
-msgstr "Sygnał:"
-
 msgid "Signal quality"
 msgstr "Jakość sygnału"
 
@@ -11932,8 +11828,16 @@ msgstr ""
 
 #
 #, fuzzy
+msgid "Skin Selection Actions"
+msgstr "Wybierz działanie"
+
+#
+#, fuzzy
 msgid "Skin setup"
 msgstr "Ustawienia"
+
+msgid "SkinSelector: Restart GUI"
+msgstr ""
 
 #
 msgid "Skins"
@@ -12615,8 +12519,10 @@ msgstr ""
 msgid "Swap Manager"
 msgstr "Menadżer pakietów"
 
-msgid "Swap PIP"
-msgstr ""
+#
+#, fuzzy
+msgid "Swap PiP"
+msgstr "Zatrzymaj PiP"
 
 #
 msgid "Swap PiP and main picture"
@@ -12794,9 +12700,6 @@ msgid "TS file is too large for ISO9660 level 1!"
 msgstr "Plik TS jest za duży dla ISO9660 level 1!"
 
 msgid "TSID"
-msgstr ""
-
-msgid "TUNER:"
 msgstr ""
 
 msgid "TUNING"
@@ -13485,10 +13388,6 @@ msgid "Timer Overview"
 msgstr "Lista timerów"
 
 #
-msgid "Timer edit"
-msgstr "Edycja timera"
-
-#
 msgid "Timer entry"
 msgstr "Szczegóły timera"
 
@@ -13531,13 +13430,6 @@ msgstr "Typ timera"
 msgid "Timer:"
 msgstr "Timery"
 
-#
-msgid "Timeshift"
-msgstr ""
-
-msgid "Timeshift Live"
-msgstr ""
-
 msgid "Timeshift is running. Select an action.\n"
 msgstr ""
 
@@ -13568,11 +13460,19 @@ msgstr "Właściwości tytułu"
 msgid "Titleset mode"
 msgstr "Tryb tytułów"
 
+#, python-format
+msgid "To apply the selected '%s' skin the GUI needs to restart. Would you like to restart the GUI now?"
+msgstr ""
+
 #
 msgid "To audio selection"
 msgstr "Przejdź do wyboru ścieżki audio"
 
 msgid "To back-up directly to the USB-stick, the USB-stick MUST\n"
+msgstr ""
+
+#, python-format
+msgid "To save and apply the selected '%s' skin the GUI needs to restart. Would you like to save the selection and restart the GUI now?"
 msgstr ""
 
 #
@@ -13589,7 +13489,7 @@ msgstr ""
 msgid "Toggle LCD LiveTV"
 msgstr ""
 
-msgid "Toggle PIPzap"
+msgid "Toggle PiPzap"
 msgstr ""
 
 #
@@ -13660,10 +13560,6 @@ msgstr "Tłumaczenie:"
 #
 msgid "Translation"
 msgstr "Tłumaczenie"
-
-#
-msgid "Translation:"
-msgstr "Tłumaczenie:"
 
 msgid "Translations"
 msgstr "Tłumaczenie"
@@ -13933,10 +13829,6 @@ msgstr "Nieszyfrowane"
 
 msgid "Unexpected error while retreiving fallback tuner's timer information"
 msgstr ""
-
-#
-msgid "UnhandledKey"
-msgstr "Klawisz nieobsługiwany"
 
 #
 #, fuzzy
@@ -14351,9 +14243,6 @@ msgstr ""
 msgid "Video: %s fps"
 msgstr ""
 
-msgid "VideoMode"
-msgstr ""
-
 msgid "Videocodec, size & format"
 msgstr ""
 
@@ -14460,10 +14349,6 @@ msgstr ""
 #
 msgid "Voltage mode"
 msgstr "Tryb napięcia"
-
-#
-msgid "Volume"
-msgstr "Głośność"
 
 #
 msgid "Volume down"
@@ -14690,7 +14575,8 @@ msgstr "Co chcesz skanować?"
 msgid "When enabled enigma2 will load unlinked userbouquets. This means that userbouquets that are available, but not included in the bouquets.tv or bouquets.radio files, will still be loaded. This allows you for example to keep your own user bouquet while installed settings are updated"
 msgstr ""
 
-msgid "When enabled the PiP can be closed by the exit button."
+#, fuzzy
+msgid "When enabled the Picture in Picture window can be closed with 'exit' button."
 msgstr "Gdy włączone, PiP może być wyłączony klawiszem exit"
 
 msgid "When enabled the arrow buttons around the OK button will follow the 'neutrino' style zap controls instead of the enigma2 style."
@@ -15414,9 +15300,9 @@ msgstr ""
 msgid "Zap-History Browser"
 msgstr "Przeglądarka katalogów"
 
-#, python-format
-msgid "Zapped to timer service %s as PiP!"
-msgstr ""
+#, fuzzy, python-format
+msgid "Zapped to timer service %s as Picture in Picture!"
+msgstr "Idż do pierwszego kanału"
 
 #, fuzzy, python-format
 msgid "Zapped to timer service %s!"
@@ -15698,10 +15584,6 @@ msgstr ""
 
 msgid "comedy"
 msgstr "Komedia"
-
-#
-msgid "config menu"
-msgstr "Menu konfiguracji"
 
 msgid "configure in which resolution pictures are displayed with the picture viewer and movieplayer"
 msgstr "Skonfiguruj w jakiej rozdzielczości wyświetlane są zdjęcia w przeglądarce zdjęć i odtwarzaczu filmów"
