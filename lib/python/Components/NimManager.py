@@ -1,5 +1,6 @@
 import os
 
+from SystemInfo import SystemInfo
 from Tools.HardwareInfo import HardwareInfo
 from Tools.BoundFunction import boundFunction
 
@@ -321,6 +322,7 @@ class SecConfigure:
 					sec.setLNBSatCRvco(currLnb.scrfrequency.value * 1000)
 					sec.setLNBSatCRPositionNumber(int(currLnb.positionNumber.value) + int(currLnb.positionsOffset.value))
 					sec.setLNBSatCRformat(currLnb.format.value == "jess" and 2 or 1)
+					sec.setLNBBootupTime(currLnb.bootuptime.value)
 				elif currLnb.lof.value == "c_band":
 					sec.setLNBLOFL(5150000)
 					sec.setLNBLOFH(5150000)
@@ -1259,6 +1261,8 @@ def InitNimManager(nimmgr, update_slots=None):
 			lnbs = nim.advanced.lnb
 			section = lnbs[lnb]
 			if isinstance(section.unicable, ConfigNothing):
+				def setPowerInserter(configEntry):
+					section.bootuptime.value = 0 if configEntry.value else section.bootuptime.default
 				def getformat(value, index):
 					return ("jess" if index >= int(value.split(",")[1] if "," in value else 4) else "unicable") if value.startswith("dSCR") else value
 				def positionsChanged(configEntry):
@@ -1276,6 +1280,11 @@ def InitNimManager(nimmgr, update_slots=None):
 					config.unicable.unicableProduct.value = configEntry.value
 					config.unicable.unicableProduct.save()
 					productparameters = [p for p in [m.getchildren() for m in unicable_xml.find(lnb_or_matrix) if m.get("name") == manufacturer][0] if p.get("name") == configEntry.value][0]
+					section.bootuptime = ConfigInteger(default=int(productparameters.get("bootuptime", 1000)), limits = (0, 9999))
+					section.bootuptime.save_forced = True
+					section.powerinserter = ConfigYesNo(default=SystemInfo["LnbPowerAlwaysOn"])
+					section.powerinserter.save_forced = True
+					section.powerinserter.addNotifier(setPowerInserter)
 					srcfrequencylist = productparameters.get("scrs").split(",")
 					section.scrList = ConfigSelection([("%d" % (x + 1), "User Band %d (%s)" % ((x + 1), srcfrequencylist[x])) for x in range(len(srcfrequencylist))])
 					section.scrList.save_forced = True
@@ -1304,6 +1313,11 @@ def InitNimManager(nimmgr, update_slots=None):
 					srcfrequencyList = configEntry.value=="jess" and (1210, 1420, 1680, 2040, 984, 1020, 1056, 1092, 1128, 1164, 1256, 1292, 1328, 1364, 1458, 1494, 1530, 1566, 1602,\
 						1638, 1716, 1752, 1788, 1824, 1860, 1896, 1932, 1968, 2004, 2076, 2112, 2148) or (1284, 1400, 1516, 1632, 1748, 1864, 1980, 2096)
 					section.scrList.addNotifier(boundFunction(userScrListChanged, srcfrequencyList))
+					section.bootuptime = ConfigInteger(default=1000, limits = (0, 9999))
+					section.bootuptime.save_forced = True
+					section.powerinserter = ConfigYesNo(default=SystemInfo["LnbPowerAlwaysOn"])
+					section.powerinserter.save_forced = True
+					section.powerinserter.addNotifier(setPowerInserter)
 				def unicableChanged(configEntry):
 					config.unicable.unicable.value = configEntry.value
 					config.unicable.unicable.save()

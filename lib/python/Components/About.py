@@ -2,7 +2,6 @@
 import struct, socket, fcntl, re, sys, os, time
 from sys import modules
 from Tools.HardwareInfo import HardwareInfo
-from Tools.Directories import resolveFilename, SCOPE_LIBDIR
 
 from boxbranding import getBoxType, getMachineBuild
 
@@ -13,8 +12,6 @@ def getImageVersionString():
 	try:
 		if os.path.isfile('/var/lib/opkg/status'):
 			st = os.stat('/var/lib/opkg/status')
-		else:
-			st = os.stat(resolveFilename(SCOPE_LIBDIR, 'ipkg/status'))
 		tm = time.localtime(st.st_mtime)
 		if tm.tm_year >= 2011:
 			return time.strftime("%Y-%m-%d %H:%M:%S", tm)

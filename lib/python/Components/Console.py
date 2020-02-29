@@ -1,4 +1,4 @@
-import enigma
+import enigma, ctypes, os
 
 class ConsoleItem:
 	def __init__(self, containers, cmd, callback, extra_args):
@@ -23,6 +23,11 @@ class ConsoleItem:
 		retval = self.container.execute(*cmd)
 		if retval:
 			self.finishedCB(retval)
+		if callback is None:
+			try:
+				os.waitpid(self.container.getPID(), 0)
+			except:
+				pass
 	def dataAvailCB(self, data):
 		self.appResults.append(data)
 	def finishedCB(self, retval):

@@ -45,7 +45,7 @@ SystemInfo["LCDsymbol_hdd"] = getBoxType() in ("hd51", "vs1500") and fileCheck("
 SystemInfo["FrontpanelDisplayGrayscale"] = fileExists("/dev/dbox/oled0")
 SystemInfo["LcdDisplay"] = fileExists("/dev/dbox/lcd0")
 SystemInfo["DeepstandbySupport"] = getBoxType() != "dm800"
-SystemInfo["OledDisplay"] = fileExists(resolveFilename(SCOPE_SKIN, 'lcd_skin/skin_lcd_default.xml'))
+SystemInfo["OledDisplay"] = fileExists(resolveFilename(SCOPE_SKIN, 'display/lcd_skin/skin_lcd_default.xml'))
 SystemInfo["GraphicLCD"] = getBoxType() in ('quadbox2400', )
 SystemInfo["GBWOL"] = fileExists("/usr/bin/gigablue_wol")
 SystemInfo["Fan"] = fileCheck("/proc/stb/fp/fan")
@@ -130,3 +130,4 @@ SystemInfo["HasSDswap"] = getMachineBuild() in ("h9", "i55plus") and pathExists(
 SystemInfo["CanProc"] = SystemInfo["HasMMC"] and getBrandOEM() != "vuplus"
 SystemInfo["canRecovery"] = getMachineBuild() in ('gbmv200',) and ('usb_update.bin','none')
 SystemInfo["FlashOnlineBackup"] = getMachineBuild() not in ('gbmv200', )
+SystemInfo["LnbPowerAlwaysOn"] = getBoxType() in ('vusolo4k', 'vuduo4k', 'vuultimo4k')
