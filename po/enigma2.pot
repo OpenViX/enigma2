@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-05 14:04+0100\n"
+"POT-Creation-Date: 2020-02-29 20:00+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -493,6 +493,9 @@ msgstr ""
 msgid "16:9 always"
 msgstr ""
 
+msgid "16K"
+msgstr ""
+
 msgid "18 V"
 msgstr ""
 
@@ -550,6 +553,9 @@ msgstr ""
 msgid "4:3 PanScan"
 msgstr ""
 
+msgid "4K"
+msgstr ""
+
 msgid "5"
 msgstr ""
 
@@ -562,10 +568,28 @@ msgstr ""
 msgid "64 MB"
 msgstr ""
 
+msgid "8K"
+msgstr ""
+
 msgid "8bit"
 msgstr ""
 
 msgid ": 0000 - default (disabled)"
+msgstr ""
+
+msgid "< Current >"
+msgstr ""
+
+msgid "< Default + Picon >"
+msgstr ""
+
+msgid "< Default >"
+msgstr ""
+
+msgid "< Emergency >"
+msgstr ""
+
+msgid "< Pending restart >"
 msgstr ""
 
 msgid "<Current movielist location>"
@@ -1418,6 +1442,9 @@ msgstr ""
 msgid "Boost green"
 msgstr ""
 
+msgid "Bootup time"
+msgstr ""
+
 msgid "Bosnia and Herzegovina"
 msgstr ""
 
@@ -1566,6 +1593,12 @@ msgid "Canada"
 msgstr ""
 
 msgid "Cancel"
+msgstr ""
+
+msgid "Cancel any changes to the currently active skin"
+msgstr ""
+
+msgid "Cancel any changes to the currently active skin and exit all menus"
 msgstr ""
 
 msgid "Cancel any text changes and exit"
@@ -2107,6 +2140,9 @@ msgstr ""
 msgid "Could not load Medium! No disc inserted?"
 msgstr ""
 
+msgid "Could not locate epg file on fallback tuner"
+msgstr ""
+
 msgid "Could not open Picture in Picture"
 msgstr ""
 
@@ -2632,6 +2668,9 @@ msgstr ""
 msgid "Display EPG list for current channel"
 msgstr ""
 
+msgid "Display Skin"
+msgstr ""
+
 msgid "Display and userinterface"
 msgstr ""
 
@@ -2895,10 +2934,6 @@ msgstr ""
 msgid "ERROR - failed to scan (%s)!"
 msgstr ""
 
-#, python-format
-msgid "ERROR downloading file %s"
-msgstr ""
-
 msgid "East"
 msgstr ""
 
@@ -3149,10 +3184,6 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
-#, python-format
-msgid "Error %s"
-msgstr ""
-
 msgid "Error checking disk. The disk may be damaged"
 msgstr ""
 
@@ -3163,9 +3194,6 @@ msgstr ""
 msgid ""
 "Error creating directory %s:\n"
 "%s"
-msgstr ""
-
-msgid "Error executing plugin"
 msgstr ""
 
 msgid "Error formatting disk. The disk may be damaged"
@@ -3183,19 +3211,10 @@ msgid ""
 "%s"
 msgstr ""
 
-msgid "Error when writing epg.dat on server"
-msgstr ""
-
-msgid "Error while retreiving epg.dat from server"
-msgstr ""
-
 #, python-format
 msgid ""
 "Error while retreiving fallback timer information\n"
 "%s"
-msgstr ""
-
-msgid "Error while retreiving location of epg.dat on server"
 msgstr ""
 
 #, python-format
@@ -3331,6 +3350,9 @@ msgstr ""
 msgid "External Storage %s"
 msgstr ""
 
+msgid "Externally powered"
+msgstr ""
+
 msgid "Extra end time to ignore inactivity sleeptimer"
 msgstr ""
 
@@ -3375,6 +3397,9 @@ msgid "FEC"
 msgstr ""
 
 msgid "FEC:"
+msgstr ""
+
+msgid "FHD"
 msgstr ""
 
 msgid "FTA"
@@ -3693,6 +3718,9 @@ msgstr ""
 msgid "GUI Build: "
 msgstr ""
 
+msgid "GUI Skin"
+msgstr ""
+
 msgid ""
 "GUI needs a restart to apply a new language\n"
 "Do you want to restart the GUI now?"
@@ -3880,6 +3908,9 @@ msgid "Guinea-Bissau"
 msgstr ""
 
 msgid "Guyana"
+msgstr ""
+
+msgid "HD"
 msgstr ""
 
 msgid "HD list"
@@ -4199,7 +4230,7 @@ msgstr ""
 msgid "Include %s"
 msgstr ""
 
-msgid "Incorrect type service for PiP!"
+msgid "Incorrect service type for Picture in Picture!"
 msgstr ""
 
 msgid "Increased voltage"
@@ -4359,9 +4390,6 @@ msgstr ""
 msgid "Invert"
 msgstr ""
 
-msgid "Ipkg"
-msgstr ""
-
 msgid "Iran (Islamic Republic of)"
 msgstr ""
 
@@ -4378,6 +4406,9 @@ msgid "Is this setting ok?"
 msgstr ""
 
 msgid "Is this video mode ok?"
+msgstr ""
+
+msgid "Is your SCR device externally powered"
 msgstr ""
 
 msgid "Isle of Man"
@@ -5031,7 +5062,7 @@ msgstr ""
 msgid "Move 1 element"
 msgstr ""
 
-msgid "Move PIP"
+msgid "Move PiP"
 msgstr ""
 
 msgid "Move PiP to main picture"
@@ -5083,6 +5114,18 @@ msgid "Move the virtual keyboard cursor up"
 msgstr ""
 
 msgid "Move to position X"
+msgstr ""
+
+msgid "Move to the next page"
+msgstr ""
+
+msgid "Move to the next skin"
+msgstr ""
+
+msgid "Move to the previous page"
+msgstr ""
+
+msgid "Move to the previous skin"
 msgstr ""
 
 msgid "Move up list"
@@ -5398,9 +5441,6 @@ msgstr ""
 msgid "No displayable files on this medium found!"
 msgstr ""
 
-msgid "No epg.dat file found server"
-msgstr ""
-
 msgid "No event info found, recording indefinitely."
 msgstr ""
 
@@ -5441,6 +5481,9 @@ msgid "No service"
 msgstr ""
 
 msgid "No services/providers selected"
+msgstr ""
+
+msgid "No settings files to download on fallback tuner"
 msgstr ""
 
 msgid "No standby"
@@ -5697,6 +5740,9 @@ msgid "Open the movie list"
 msgstr ""
 
 msgid "Open with File Commander"
+msgstr ""
+
+msgid "Opkg"
 msgstr ""
 
 msgid "Options disable timer"
@@ -6296,6 +6342,10 @@ msgstr ""
 msgid "Press OK to activate the selected skin."
 msgstr ""
 
+#, python-format
+msgid "Press OK to activate the selected%s skin."
+msgstr ""
+
 msgid "Press OK to activate the settings."
 msgstr ""
 
@@ -6304,6 +6354,10 @@ msgstr ""
 
 #, python-format
 msgid "Press OK to get further details for %s"
+msgstr ""
+
+#, python-format
+msgid "Press OK to keep the currently selected%s skin."
 msgstr ""
 
 msgid "Press OK to scan"
@@ -7112,6 +7166,9 @@ msgstr ""
 msgid "Save / Enter text and exit"
 msgstr ""
 
+msgid "Save and activate the currently selected skin"
+msgstr ""
+
 msgid "Save and exit"
 msgstr ""
 
@@ -7846,7 +7903,7 @@ msgstr ""
 msgid "Show Log"
 msgstr ""
 
-msgid "Show PIP"
+msgid "Show PiP"
 msgstr ""
 
 msgid "Show Script completed message"
@@ -8099,7 +8156,13 @@ msgstr ""
 msgid "Skin & Resolution: %s (%sx%s)"
 msgstr ""
 
+msgid "Skin Selection Actions"
+msgstr ""
+
 msgid "Skin setup"
+msgstr ""
+
+msgid "SkinSelector: Restart GUI"
 msgstr ""
 
 msgid "Skins"
@@ -8585,7 +8648,7 @@ msgstr ""
 msgid "Swap Manager"
 msgstr ""
 
-msgid "Swap PIP"
+msgid "Swap PiP"
 msgstr ""
 
 msgid "Swap PiP and main picture"
@@ -9250,10 +9313,18 @@ msgstr ""
 msgid "Titleset mode"
 msgstr ""
 
+#, python-format
+msgid "To apply the selected '%s' skin the GUI needs to restart. Would you like to restart the GUI now?"
+msgstr ""
+
 msgid "To audio selection"
 msgstr ""
 
 msgid "To back-up directly to the USB-stick, the USB-stick MUST\n"
+msgstr ""
+
+#, python-format
+msgid "To save and apply the selected '%s' skin the GUI needs to restart. Would you like to save the selection and restart the GUI now?"
 msgstr ""
 
 msgid "To subtitle selection"
@@ -9268,7 +9339,7 @@ msgstr ""
 msgid "Toggle LCD LiveTV"
 msgstr ""
 
-msgid "Toggle PIPzap"
+msgid "Toggle PiPzap"
 msgstr ""
 
 msgid "Toggle a cut mark at the current position"
@@ -10388,7 +10459,7 @@ msgid "Zap-History Browser"
 msgstr ""
 
 #, python-format
-msgid "Zapped to timer service %s as PiP!"
+msgid "Zapped to timer service %s as Picture in Picture!"
 msgstr ""
 
 #, python-format
@@ -11609,31 +11680,7 @@ msgstr ""
 msgid "zapped"
 msgstr ""
 
-msgid "REC"
-msgstr ""
-
 msgid "Audio"
-msgstr ""
-
-msgid "BER"
-msgstr ""
-
-msgid "C"
-msgstr ""
-
-msgid "D"
-msgstr ""
-
-msgid "Extensions"
-msgstr ""
-
-msgid "Info bar"
-msgstr ""
-
-msgid "SNR"
-msgstr ""
-
-msgid "Timeshift"
 msgstr ""
 
 msgid "Automatic scan"
@@ -11727,159 +11774,6 @@ msgid "Video Settings"
 msgstr ""
 
 msgid "WOL standby"
-msgstr ""
-
-msgid "0"
-msgstr ""
-
-msgid "1"
-msgstr ""
-
-msgid "2"
-msgstr ""
-
-msgid "3"
-msgstr ""
-
-msgid "6"
-msgstr ""
-
-msgid "7"
-msgstr ""
-
-msgid "8"
-msgstr ""
-
-msgid "9"
-msgstr ""
-
-msgid "Channel selection"
-msgstr ""
-
-msgid "Channellist menu"
-msgstr ""
-
-msgid "Command execution..."
-msgstr ""
-
-msgid "Commit info"
-msgstr ""
-
-msgid "DVD file browser"
-msgstr ""
-
-msgid "EPG selection"
-msgstr ""
-
-msgid "Event view"
-msgstr ""
-
-msgid "Event view menu"
-msgstr ""
-
-msgid "IPv6 setup"
-msgstr ""
-
-msgid "Index"
-msgstr ""
-
-msgid "Installing software..."
-msgstr ""
-
-msgid "LCD Clock-Selector"
-msgstr ""
-
-msgid "LCD Skin-Selector"
-msgstr ""
-
-msgid "MAC-adress setup"
-msgstr ""
-
-msgid "MORE"
-msgstr ""
-
-msgid "Message..."
-msgstr ""
-
-msgid "Mute"
-msgstr ""
-
-msgid "NEXT"
-msgstr ""
-
-msgid "NOW"
-msgstr ""
-
-msgid "Nameserver setup"
-msgstr ""
-
-msgid "Network configuration..."
-msgstr ""
-
-msgid "Network test..."
-msgstr ""
-
-msgid "Now playing"
-msgstr ""
-
-msgid "OSD settings"
-msgstr ""
-
-msgid "PIN code needed"
-msgstr ""
-
-msgid "Parental control services editor"
-msgstr ""
-
-msgid "PiP setup"
-msgstr ""
-
-msgid "Plugin browser"
-msgstr ""
-
-msgid "Radio"
-msgstr ""
-
-msgid "Reception settings"
-msgstr ""
-
-msgid "Select HDD"
-msgstr ""
-
-msgid "Select a bouquet"
-msgstr ""
-
-msgid "Select a movie"
-msgstr ""
-
-msgid "Select a skin"
-msgstr ""
-
-msgid "Select a tuner"
-msgstr ""
-
-msgid "Signal finder"
-msgstr ""
-
-msgid "Timer edit"
-msgstr ""
-
-msgid "Timeshift Live"
-msgstr ""
-
-msgid "Translation:"
-msgstr ""
-
-msgid "UnhandledKey"
-msgstr ""
-
-msgid "VideoMode"
-msgstr ""
-
-msgid "Volume"
-msgstr ""
-
-msgid "config menu"
 msgstr ""
 
 msgid "Check the internet connection"
@@ -11990,12 +11884,6 @@ msgstr ""
 msgid "Your %s %s does not have an internet connection"
 msgstr ""
 
-msgid "TUNER:"
-msgstr ""
-
-msgid "Rec"
-msgstr ""
-
 msgid "12V output"
 msgstr ""
 
@@ -12059,10 +11947,10 @@ msgstr ""
 msgid "Background delete speed"
 msgstr ""
 
-msgid "Behavior of 'pause and ok' when paused"
+msgid "Behavior of '0' button in PiP mode"
 msgstr ""
 
-msgid "Behavior of 0 key in PiP-mode"
+msgid "Behavior of 'pause and ok' when paused"
 msgstr ""
 
 msgid "Behavior when a movie is started"
@@ -12107,7 +11995,7 @@ msgstr ""
 msgid "Clone TV screen to LCD"
 msgstr ""
 
-msgid "Close PiP on exit"
+msgid "Close PiP with 'exit' button"
 msgstr ""
 
 msgid "Composition of the recording filenames"
@@ -12120,6 +12008,9 @@ msgid "Configure an additional delay to improve external subtitle synchronisatio
 msgstr ""
 
 msgid "Configure an additional delay to improve subtitle synchronisation."
+msgstr ""
+
+msgid "Configure default type for new timers."
 msgstr ""
 
 msgid "Configure for how long the infobar will remain visible after activation."
@@ -12140,7 +12031,7 @@ msgstr ""
 msgid "Configure if and how crypto icons will be shown in the channel selection list."
 msgstr ""
 
-msgid "Configure if and how long the latest service in the PiP will be remembered."
+msgid "Configure if and how long the latest service in Picture in Picture mode will be remembered."
 msgstr ""
 
 msgid "Configure if and how service type icons will be shown in the channel selection list."
@@ -12227,7 +12118,7 @@ msgstr ""
 msgid "Configure the fourth subtitle language."
 msgstr ""
 
-msgid "Configure the function of the '0' button do when PIP is active."
+msgid "Configure the function of the '0' button when Picture in Picture is active."
 msgstr ""
 
 msgid "Configure the gateway."
@@ -12393,6 +12284,9 @@ msgid "Deep Standby LED"
 msgstr ""
 
 msgid "Default recording type"
+msgstr ""
+
+msgid "Default timer type"
 msgstr ""
 
 msgid "Delay for external subtitles"
@@ -12684,6 +12578,9 @@ msgid "Number of channels shown in channel selection list"
 msgstr ""
 
 msgid "Number of repeating text on display."
+msgstr ""
+
+msgid "OSD settings"
 msgstr ""
 
 msgid "Offline decode delay (ms)"
@@ -13112,7 +13009,7 @@ msgstr ""
 msgid "When enabled enigma2 will load unlinked userbouquets. This means that userbouquets that are available, but not included in the bouquets.tv or bouquets.radio files, will still be loaded. This allows you for example to keep your own user bouquet while installed settings are updated"
 msgstr ""
 
-msgid "When enabled the PiP can be closed by the exit button."
+msgid "When enabled the Picture in Picture window can be closed with 'exit' button."
 msgstr ""
 
 msgid "When enabled the arrow buttons around the OK button will follow the 'neutrino' style zap controls instead of the enigma2 style."

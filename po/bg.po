@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-05 14:04+0100\n"
+"POT-Creation-Date: 2020-02-29 20:00+0100\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -459,12 +459,6 @@ msgstr "Главна Директория"
 msgid "/var directory"
 msgstr "стартова директория"
 
-msgid "0"
-msgstr ""
-
-msgid "1"
-msgstr ""
-
 msgid "1.0"
 msgstr ""
 
@@ -516,10 +510,10 @@ msgstr ""
 msgid "16:9 always"
 msgstr ""
 
-msgid "18 V"
+msgid "16K"
 msgstr ""
 
-msgid "2"
+msgid "18 V"
 msgstr ""
 
 msgid "2048 MB (maximum)"
@@ -541,9 +535,6 @@ msgid "256 MB (recommended for this chipset)"
 msgstr ""
 
 msgid "29.97"
-msgstr ""
-
-msgid "3"
 msgstr ""
 
 msgid "30"
@@ -580,6 +571,9 @@ msgstr ""
 msgid "4:3 PanScan"
 msgstr ""
 
+msgid "4K"
+msgstr ""
+
 msgid "5"
 msgstr ""
 
@@ -589,25 +583,34 @@ msgstr ""
 msgid "512 MB (recommended for this chipset)"
 msgstr ""
 
-msgid "6"
-msgstr ""
-
 msgid "64 MB"
 msgstr ""
 
-msgid "7"
-msgstr ""
-
-msgid "8"
+msgid "8K"
 msgstr ""
 
 msgid "8bit"
 msgstr ""
 
-msgid "9"
+msgid ": 0000 - default (disabled)"
 msgstr ""
 
-msgid ": 0000 - default (disabled)"
+#, fuzzy
+msgid "< Current >"
+msgstr "Текущи настройки:"
+
+#, fuzzy
+msgid "< Default + Picon >"
+msgstr "Стандартни Настройки"
+
+#, fuzzy
+msgid "< Default >"
+msgstr "Стандартни Настройки"
+
+msgid "< Emergency >"
+msgstr ""
+
+msgid "< Pending restart >"
 msgstr ""
 
 msgid "<Current movielist location>"
@@ -1457,9 +1460,6 @@ msgstr ""
 msgid "BDMV Compatible Bludisc (HDTV only)"
 msgstr ""
 
-msgid "BER"
-msgstr ""
-
 msgid "BER:"
 msgstr ""
 
@@ -1565,11 +1565,12 @@ msgstr ""
 msgid "Begin time"
 msgstr "Начало време"
 
+#, fuzzy
+msgid "Behavior of '0' button in PiP mode"
+msgstr "Действие на бутон 0 в режим PiP"
+
 msgid "Behavior of 'pause and ok' when paused"
 msgstr ""
-
-msgid "Behavior of 0 key in PiP-mode"
-msgstr "Действие на бутон 0 в режим PiP"
 
 msgid "Behavior when a movie is started"
 msgstr "Действие при старт на филм"
@@ -1643,6 +1644,10 @@ msgid "Boost green"
 msgstr "зелен"
 
 #, fuzzy
+msgid "Bootup time"
+msgstr "Tаймер за Сън"
+
+#, fuzzy
 msgid "Bosnia and Herzegovina"
 msgstr "Позиционер"
 
@@ -1705,9 +1710,6 @@ msgid "By default, SNR will be shown in dB (when supported by the tuner). This s
 msgstr ""
 
 msgid "By teamBlue Image Team"
-msgstr ""
-
-msgid "C"
 msgstr ""
 
 msgid "C-Band"
@@ -1811,6 +1813,12 @@ msgstr ""
 
 msgid "Cancel"
 msgstr "Отказ"
+
+msgid "Cancel any changes to the currently active skin"
+msgstr ""
+
+msgid "Cancel any changes to the currently active skin and exit all menus"
+msgstr ""
 
 msgid "Cancel any text changes and exit"
 msgstr ""
@@ -1961,9 +1969,6 @@ msgstr ""
 msgid "Channel not in services list"
 msgstr "Каналът не е в списъка"
 
-msgid "Channel selection"
-msgstr ""
-
 msgid "Channel zap delay another button"
 msgstr ""
 
@@ -1975,9 +1980,6 @@ msgstr ""
 
 msgid "Channel:"
 msgstr "Канал:"
-
-msgid "Channellist menu"
-msgstr "Меню списък с канали"
 
 msgid "Channelnumber and picon"
 msgstr ""
@@ -2131,7 +2133,7 @@ msgstr ""
 msgid "Close"
 msgstr "Затваряне"
 
-msgid "Close PiP on exit"
+msgid "Close PiP with 'exit' button"
 msgstr ""
 
 msgid "Close title selection"
@@ -2173,15 +2175,8 @@ msgstr ""
 msgid "Combo"
 msgstr ""
 
-msgid "Command execution..."
-msgstr "Изпълнение на команда..."
-
 msgid "Command order"
 msgstr "Ред на команди"
-
-#, fuzzy
-msgid "Commit info"
-msgstr "Комуникация"
 
 msgid "Common Interface"
 msgstr ""
@@ -2244,6 +2239,9 @@ msgstr ""
 msgid "Configure an additional delay to improve subtitle synchronisation."
 msgstr ""
 
+msgid "Configure default type for new timers."
+msgstr ""
+
 msgid "Configure for how long the infobar will remain visible after activation."
 msgstr ""
 
@@ -2262,7 +2260,7 @@ msgstr ""
 msgid "Configure if and how crypto icons will be shown in the channel selection list."
 msgstr ""
 
-msgid "Configure if and how long the latest service in the PiP will be remembered."
+msgid "Configure if and how long the latest service in Picture in Picture mode will be remembered."
 msgstr ""
 
 msgid "Configure if and how service type icons will be shown in the channel selection list."
@@ -2373,7 +2371,7 @@ msgstr ""
 msgid "Configure the fourth subtitle language."
 msgstr ""
 
-msgid "Configure the function of the '0' button do when PIP is active."
+msgid "Configure the function of the '0' button when Picture in Picture is active."
 msgstr ""
 
 msgid "Configure the gateway."
@@ -2706,6 +2704,9 @@ msgstr ""
 msgid "Could not load Medium! No disc inserted?"
 msgstr ""
 
+msgid "Could not locate epg file on fallback tuner"
+msgstr ""
+
 msgid "Could not open Picture in Picture"
 msgstr ""
 
@@ -2863,9 +2864,6 @@ msgstr "Чешки"
 msgid "Czechia"
 msgstr "Чешки"
 
-msgid "D"
-msgstr ""
-
 msgid "DAC"
 msgstr ""
 
@@ -2945,9 +2943,6 @@ msgstr ""
 #, fuzzy
 msgid "DVD Titlelist"
 msgstr "бял лист"
-
-msgid "DVD file browser"
-msgstr ""
 
 msgid "DVD player"
 msgstr ""
@@ -3031,6 +3026,10 @@ msgstr ""
 
 msgid "Default sorting method for files on the right side."
 msgstr ""
+
+#, fuzzy
+msgid "Default timer type"
+msgstr "Старт запис?"
 
 msgid "Delay after change voltage before switch command"
 msgstr ""
@@ -3340,6 +3339,10 @@ msgstr "Добави/Премахнитаймер за текущото пред
 msgid "Display EPG list for current channel"
 msgstr ""
 
+#, fuzzy
+msgid "Display Skin"
+msgstr "Настройки Дисплей"
+
 msgid "Display and userinterface"
 msgstr ""
 
@@ -3645,9 +3648,6 @@ msgstr ""
 msgid "EPG only"
 msgstr ""
 
-msgid "EPG selection"
-msgstr ""
-
 msgid "EPG settings"
 msgstr ""
 
@@ -3657,10 +3657,6 @@ msgstr ""
 #, python-format
 msgid "ERROR - failed to scan (%s)!"
 msgstr "Грешка при сканиране (%s)!"
-
-#, fuzzy, python-format
-msgid "ERROR downloading file %s"
-msgstr "Изтегляне"
 
 msgid "East"
 msgstr "Изток"
@@ -4005,10 +4001,6 @@ msgstr ""
 msgid "Error"
 msgstr "Грешка"
 
-#, fuzzy, python-format
-msgid "Error %s"
-msgstr "Грешка"
-
 msgid "Error checking disk. The disk may be damaged"
 msgstr ""
 
@@ -4020,9 +4012,6 @@ msgid ""
 "Error creating directory %s:\n"
 "%s"
 msgstr "Грешка при създаване директория %s."
-
-msgid "Error executing plugin"
-msgstr "Грешка при стартиране на плъгина"
 
 msgid "Error formatting disk. The disk may be damaged"
 msgstr ""
@@ -4039,19 +4028,10 @@ msgid ""
 "%s"
 msgstr ""
 
-msgid "Error when writing epg.dat on server"
-msgstr ""
-
-msgid "Error while retreiving epg.dat from server"
-msgstr ""
-
 #, python-format
 msgid ""
 "Error while retreiving fallback timer information\n"
 "%s"
-msgstr ""
-
-msgid "Error while retreiving location of epg.dat on server"
 msgstr ""
 
 #, python-format
@@ -4080,13 +4060,7 @@ msgstr ""
 msgid "Event name first"
 msgstr ""
 
-msgid "Event view"
-msgstr ""
-
 msgid "Event view context menu"
-msgstr ""
-
-msgid "Event view menu"
 msgstr ""
 
 #, fuzzy
@@ -4189,9 +4163,6 @@ msgstr "Редакт.настройки"
 msgid "Extended setup..."
 msgstr "Разширени Настройки..."
 
-msgid "Extensions"
-msgstr ""
-
 msgid "Extensions management"
 msgstr ""
 
@@ -4216,6 +4187,9 @@ msgid "External subtitle dialog colorisation"
 msgstr ""
 
 msgid "External subtitle switch fonts"
+msgstr ""
+
+msgid "Externally powered"
 msgstr ""
 
 msgid "Extra end time to ignore inactivity sleeptimer"
@@ -4264,6 +4238,9 @@ msgid "FEC"
 msgstr ""
 
 msgid "FEC:"
+msgstr ""
+
+msgid "FHD"
 msgstr ""
 
 msgid "FTA"
@@ -4645,6 +4622,10 @@ msgstr ""
 msgid "GUI Build: "
 msgstr ""
 
+#, fuzzy
+msgid "GUI Skin"
+msgstr "Кожа..."
+
 msgid ""
 "GUI needs a restart to apply a new language\n"
 "Do you want to restart the GUI now?"
@@ -4840,6 +4821,9 @@ msgid "Guinea-Bissau"
 msgstr ""
 
 msgid "Guyana"
+msgstr ""
+
+msgid "HD"
 msgstr ""
 
 msgid "HD list"
@@ -5110,10 +5094,6 @@ msgid "IPv6"
 msgstr ""
 
 #, fuzzy
-msgid "IPv6 setup"
-msgstr "Защита настройки"
-
-#, fuzzy
 msgid "IPv6 support"
 msgstr "Не се поддържа"
 
@@ -5251,14 +5231,12 @@ msgstr ""
 msgid "Include EIT in http streams"
 msgstr ""
 
-msgid "Incorrect type service for PiP!"
-msgstr ""
+#, fuzzy
+msgid "Incorrect service type for Picture in Picture!"
+msgstr "Активиране Картина в Картината"
 
 msgid "Increased voltage"
 msgstr "Увеличен волтаж"
-
-msgid "Index"
-msgstr "Индекс"
 
 msgid "Index allocated:"
 msgstr ""
@@ -5274,9 +5252,6 @@ msgstr ""
 
 msgid "Info"
 msgstr "Инфо"
-
-msgid "Info bar"
-msgstr "Инфо Лента"
 
 msgid "Info bar timeout"
 msgstr "Времетраене ИнфоЛента"
@@ -5398,9 +5373,6 @@ msgstr "Инсталиране"
 msgid "Installing Service"
 msgstr "Инсталиране"
 
-msgid "Installing software..."
-msgstr ""
-
 #, fuzzy
 msgid "Instant record"
 msgstr "Не записвай"
@@ -5463,9 +5435,6 @@ msgstr ""
 msgid "Invert"
 msgstr ""
 
-msgid "Ipkg"
-msgstr ""
-
 msgid "Iran (Islamic Republic of)"
 msgstr ""
 
@@ -5482,6 +5451,9 @@ msgid "Is this setting ok?"
 msgstr ""
 
 msgid "Is this video mode ok?"
+msgstr ""
+
+msgid "Is your SCR device externally powered"
 msgstr ""
 
 #, fuzzy
@@ -5615,12 +5587,6 @@ msgid "LAN adapter"
 msgstr "LAN Адаптер"
 
 msgid "LAN connection"
-msgstr ""
-
-msgid "LCD Clock-Selector"
-msgstr ""
-
-msgid "LCD Skin-Selector"
 msgstr ""
 
 msgid "LNB"
@@ -5897,9 +5863,6 @@ msgstr ""
 msgid "MAC-adress settings"
 msgstr "Настройки на адаптера"
 
-msgid "MAC-adress setup"
-msgstr ""
-
 msgid "MAC:"
 msgstr ""
 
@@ -5909,9 +5872,6 @@ msgstr "Инверсия"
 
 msgid "MMC card"
 msgstr ""
-
-msgid "MORE"
-msgstr "ОЩЕ"
 
 msgid "MSN Weather City Name"
 msgstr ""
@@ -6067,9 +6027,6 @@ msgstr ""
 
 msgid "Message"
 msgstr "Съобщение"
-
-msgid "Message..."
-msgstr "Съобщение..."
 
 #, fuzzy
 msgid "Messages"
@@ -6254,8 +6211,9 @@ msgstr ""
 msgid "Move 1 element"
 msgstr "Завърти на изток"
 
-msgid "Move PIP"
-msgstr ""
+#, fuzzy
+msgid "Move PiP"
+msgstr "Завърти на изток"
 
 msgid "Move PiP to main picture"
 msgstr ""
@@ -6312,6 +6270,22 @@ msgstr ""
 
 msgid "Move to position X"
 msgstr ""
+
+#, fuzzy
+msgid "Move to the next page"
+msgstr "превкл. на следващ ъгъл"
+
+#, fuzzy
+msgid "Move to the next skin"
+msgstr "премести надолу към следващия запис"
+
+#, fuzzy
+msgid "Move to the previous page"
+msgstr "превърти до предишната глава"
+
+#, fuzzy
+msgid "Move to the previous skin"
+msgstr "премести нагоре към предишен запис"
 
 #, fuzzy
 msgid "Move up list"
@@ -6416,9 +6390,6 @@ msgstr ""
 msgid "Music/Ballet/Dance"
 msgstr ""
 
-msgid "Mute"
-msgstr "Без звук"
-
 #, fuzzy
 msgid "My Extension"
 msgstr "Управление на пакети"
@@ -6432,9 +6403,6 @@ msgstr ""
 
 msgid "N/A"
 msgstr ""
-
-msgid "NEXT"
-msgstr "Следващ"
 
 #, fuzzy
 msgid "NFS Setup"
@@ -6455,9 +6423,6 @@ msgstr ""
 
 #, fuzzy
 msgid "NO"
-msgstr "Сега"
-
-msgid "NOW"
 msgstr "Сега"
 
 msgid "NTP"
@@ -6485,9 +6450,6 @@ msgid "Nameserver %d"
 msgstr "DNS %d"
 
 msgid "Nameserver settings"
-msgstr "Настройки DNS"
-
-msgid "Nameserver setup"
 msgstr "Настройки DNS"
 
 msgid "Namespace & Orbital pos."
@@ -6537,9 +6499,6 @@ msgstr "Мрежа:"
 msgid "Network configuration"
 msgstr "Мрежова Конфигурация..."
 
-msgid "Network configuration..."
-msgstr "Мрежова Конфигурация..."
-
 #, fuzzy
 msgid "Network mount"
 msgstr "Не са открити мрежи!"
@@ -6559,9 +6518,6 @@ msgstr "Настройки на Мрежа"
 
 msgid "Network test"
 msgstr "Тест на мрежата"
-
-msgid "Network test..."
-msgstr "Тест на мрежата..."
 
 msgid "Network test: "
 msgstr ""
@@ -6688,9 +6644,6 @@ msgstr "Няма налично описание."
 msgid "No displayable files on this medium found!"
 msgstr ""
 
-msgid "No epg.dat file found server"
-msgstr ""
-
 msgid "No event info found, recording indefinitely."
 msgstr "Няма инфо за предаването, незабавен запис."
 
@@ -6734,6 +6687,9 @@ msgid "No service"
 msgstr ""
 
 msgid "No services/providers selected"
+msgstr ""
+
+msgid "No settings files to download on fallback tuner"
 msgstr ""
 
 msgid "No standby"
@@ -6910,9 +6866,6 @@ msgctxt "now/next: 'now' event label"
 msgid "Now"
 msgstr "Сега"
 
-msgid "Now playing"
-msgstr ""
-
 msgid "Now, use the contrast setting to turn up the brightness of the background as much as possible, but make sure that you can still see the difference between the two brightest levels of shades.If you have done that, press OK."
 msgstr "Сега използвайте настройките за контраста за да увеличите яркостта на фона колкото се може повече, но така, че да виждате разликите между двете най-ярки нива на сенките. Ако сте го направили, натиснете OK."
 
@@ -7049,6 +7002,9 @@ msgstr ""
 msgid "Open with File Commander"
 msgstr ""
 
+msgid "Opkg"
+msgstr ""
+
 msgid "Options disable timer"
 msgstr ""
 
@@ -7141,9 +7097,6 @@ msgstr ""
 msgid "PGS file"
 msgstr ""
 
-msgid "PIN code needed"
-msgstr "Нужен е ПИН код"
-
 msgid "PIP"
 msgstr ""
 
@@ -7226,9 +7179,6 @@ msgstr "Главна Директория"
 msgid "Parental control"
 msgstr "Родителски контрол"
 
-msgid "Parental control services editor"
-msgstr ""
-
 msgid "Parental control setup"
 msgstr "Настройки Родителски контрол"
 
@@ -7299,9 +7249,6 @@ msgid "Peru"
 msgstr ""
 
 msgid "Philippines"
-msgstr ""
-
-msgid "PiP setup"
 msgstr ""
 
 msgid "Picon"
@@ -7660,9 +7607,6 @@ msgstr "Плъгин браузър"
 msgid "Plugin Filter..."
 msgstr "Плъгин браузър"
 
-msgid "Plugin browser"
-msgstr "Плъгин браузър"
-
 #, fuzzy
 msgid "Plugin install"
 msgstr "Този плъгин е инсталиран."
@@ -7852,6 +7796,10 @@ msgstr "Натиснете ОК на дистанционното за да пр
 msgid "Press OK to activate the selected skin."
 msgstr ""
 
+#, fuzzy, python-format
+msgid "Press OK to activate the selected%s skin."
+msgstr "Натиснете ОК за да активирате настройките."
+
 msgid "Press OK to activate the settings."
 msgstr "Натиснете ОК за да активирате настройките."
 
@@ -7861,6 +7809,10 @@ msgstr "Натиснете ОК за да редактирате настрой�
 #, python-format
 msgid "Press OK to get further details for %s"
 msgstr "Натиснете ОК за повече детайли относно %s"
+
+#, fuzzy, python-format
+msgid "Press OK to keep the currently selected%s skin."
+msgstr "Натиснете ОК за да редактирате настройките."
 
 msgid "Press OK to scan"
 msgstr "Натиснете ОК за търсене"
@@ -8049,17 +8001,11 @@ msgstr ""
 msgid "Quick zap"
 msgstr ""
 
-msgid "REC"
-msgstr ""
-
 msgid "RF output"
 msgstr "RF изход"
 
 msgid "RGB"
 msgstr ""
-
-msgid "Radio"
-msgstr "Радио"
 
 #, fuzzy
 msgid "Ram disk"
@@ -8136,9 +8082,6 @@ msgstr "Да рестартирам ли сега?"
 msgid "Reboot"
 msgstr ""
 
-msgid "Rec"
-msgstr ""
-
 #, fuzzy
 msgid "Recall to previous service"
 msgstr "Връщане към предишен канал"
@@ -8146,9 +8089,6 @@ msgstr "Връщане към предишен канал"
 #, fuzzy
 msgid "Reception lists"
 msgstr "Настройки на Колекция"
-
-msgid "Reception settings"
-msgstr ""
 
 msgid "Record"
 msgstr "Запис"
@@ -8676,9 +8616,6 @@ msgstr ""
 msgid "SINGLE LAYER DVD"
 msgstr ""
 
-msgid "SNR"
-msgstr ""
-
 msgid "SNR:"
 msgstr ""
 
@@ -8805,6 +8742,10 @@ msgstr ""
 
 msgid "Save EPG every (in hours)"
 msgstr ""
+
+#, fuzzy
+msgid "Save and activate the currently selected skin"
+msgstr "Премахни избраното заглавие"
 
 #, fuzzy
 msgid "Save and exit"
@@ -9101,9 +9042,6 @@ msgstr "Канал"
 msgid "Select Fast DiSEqC if your aerial system supports this. If you are unsure select 'no'."
 msgstr ""
 
-msgid "Select HDD"
-msgstr "Избери HDD"
-
 msgid "Select LCD clock:"
 msgstr ""
 
@@ -9111,24 +9049,12 @@ msgstr ""
 msgid "Select Software Update"
 msgstr "Актуализация на Софтуера"
 
-msgid "Select a bouquet"
-msgstr ""
-
-msgid "Select a movie"
-msgstr "Изберете филм"
-
 msgid "Select a network adapter"
 msgstr "Изберете Мрежов Адаптер"
 
 #, fuzzy
 msgid "Select a path"
 msgstr "Актуализация на Софтуера"
-
-msgid "Select a skin"
-msgstr ""
-
-msgid "Select a tuner"
-msgstr ""
 
 msgid "Select a wireless network"
 msgstr ""
@@ -9690,8 +9616,9 @@ msgstr "Покажи Инфо"
 msgid "Show Log"
 msgstr "Покажи Инфо"
 
-msgid "Show PIP"
-msgstr ""
+#, fuzzy
+msgid "Show PiP"
+msgstr "Покажи Инфо"
 
 msgid "Show SNR percentage instead of dB value"
 msgstr ""
@@ -10023,10 +9950,6 @@ msgstr ""
 msgid "Signal Strength:"
 msgstr "Сила на сигнала:"
 
-#, fuzzy
-msgid "Signal finder"
-msgstr "Сигнал: "
-
 msgid "Signal quality"
 msgstr ""
 
@@ -10106,8 +10029,15 @@ msgid "Skin & Resolution: %s (%sx%s)"
 msgstr ""
 
 #, fuzzy
+msgid "Skin Selection Actions"
+msgstr "Избор на таймер"
+
+#, fuzzy
 msgid "Skin setup"
 msgstr "Настройки"
+
+msgid "SkinSelector: Restart GUI"
+msgstr ""
 
 msgid "Skins"
 msgstr "Кожи"
@@ -10680,8 +10610,9 @@ msgstr ""
 msgid "Swap Manager"
 msgstr "Управление на пакети"
 
-msgid "Swap PIP"
-msgstr ""
+#, fuzzy
+msgid "Swap PiP"
+msgstr "Размени Канали"
 
 msgid "Swap PiP and main picture"
 msgstr ""
@@ -10826,9 +10757,6 @@ msgid "TS file is too large for ISO9660 level 1!"
 msgstr ""
 
 msgid "TSID"
-msgstr ""
-
-msgid "TUNER:"
 msgstr ""
 
 msgid "TUNING"
@@ -11418,9 +11346,6 @@ msgstr "Таймер"
 msgid "Timer Overview"
 msgstr ""
 
-msgid "Timer edit"
-msgstr "Редактирай Таймер"
-
 msgid "Timer entry"
 msgstr "Въведи Таймер"
 
@@ -11454,12 +11379,6 @@ msgstr "Вид Таймер"
 msgid "Timer:"
 msgstr "Таймер"
 
-msgid "Timeshift"
-msgstr "Таймшифт"
-
-msgid "Timeshift Live"
-msgstr ""
-
 msgid "Timeshift is running. Select an action.\n"
 msgstr ""
 
@@ -11484,10 +11403,18 @@ msgstr "Заглавие свойства"
 msgid "Titleset mode"
 msgstr ""
 
+#, python-format
+msgid "To apply the selected '%s' skin the GUI needs to restart. Would you like to restart the GUI now?"
+msgstr ""
+
 msgid "To audio selection"
 msgstr ""
 
 msgid "To back-up directly to the USB-stick, the USB-stick MUST\n"
+msgstr ""
+
+#, python-format
+msgid "To save and apply the selected '%s' skin the GUI needs to restart. Would you like to save the selection and restart the GUI now?"
 msgstr ""
 
 msgid "To subtitle selection"
@@ -11502,7 +11429,7 @@ msgstr ""
 msgid "Toggle LCD LiveTV"
 msgstr ""
 
-msgid "Toggle PIPzap"
+msgid "Toggle PiPzap"
 msgstr ""
 
 msgid "Toggle a cut mark at the current position"
@@ -11564,9 +11491,6 @@ msgstr "Превод:"
 
 msgid "Translation"
 msgstr "Превод"
-
-msgid "Translation:"
-msgstr "Превод:"
 
 msgid "Translations"
 msgstr ""
@@ -11797,9 +11721,6 @@ msgid "Unencrypted"
 msgstr ""
 
 msgid "Unexpected error while retreiving fallback tuner's timer information"
-msgstr ""
-
-msgid "UnhandledKey"
 msgstr ""
 
 #, fuzzy
@@ -12152,9 +12073,6 @@ msgstr "Видео Помощник"
 msgid "Video: %s fps"
 msgstr ""
 
-msgid "VideoMode"
-msgstr ""
-
 msgid "Videocodec, size & format"
 msgstr ""
 
@@ -12238,9 +12156,6 @@ msgstr ""
 
 msgid "Voltage mode"
 msgstr "Режим волтаж"
-
-msgid "Volume"
-msgstr "Усилване"
 
 #, fuzzy
 msgid "Volume down"
@@ -12422,7 +12337,7 @@ msgstr "Какво искате да търся?"
 msgid "When enabled enigma2 will load unlinked userbouquets. This means that userbouquets that are available, but not included in the bouquets.tv or bouquets.radio files, will still be loaded. This allows you for example to keep your own user bouquet while installed settings are updated"
 msgstr ""
 
-msgid "When enabled the PiP can be closed by the exit button."
+msgid "When enabled the Picture in Picture window can be closed with 'exit' button."
 msgstr ""
 
 msgid "When enabled the arrow buttons around the OK button will follow the 'neutrino' style zap controls instead of the enigma2 style."
@@ -13062,9 +12977,9 @@ msgstr ""
 msgid "Zap-History Browser"
 msgstr ""
 
-#, python-format
-msgid "Zapped to timer service %s as PiP!"
-msgstr ""
+#, fuzzy, python-format
+msgid "Zapped to timer service %s as Picture in Picture!"
+msgstr "Активиране картина в картината"
 
 #, python-format
 msgid "Zapped to timer service %s!"
@@ -13305,9 +13220,6 @@ msgstr ""
 
 msgid "comedy"
 msgstr ""
-
-msgid "config menu"
-msgstr "конфиг меню"
 
 msgid "configure in which resolution pictures are displayed with the picture viewer and movieplayer"
 msgstr ""

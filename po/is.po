@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-05 14:04+0100\n"
+"POT-Creation-Date: 2020-02-29 20:00+0100\n"
 "PO-Revision-Date: 2015-01-29 17:40+0200\n"
 "Last-Translator: none <none@none.com>\n"
 "Language-Team: none\n"
@@ -496,14 +496,6 @@ msgid "/var directory"
 msgstr "byrjunar mappa"
 
 #
-msgid "0"
-msgstr "0"
-
-#
-msgid "1"
-msgstr "1"
-
-#
 msgid "1.0"
 msgstr "1.0"
 
@@ -565,13 +557,12 @@ msgstr "16:9 Letterbox"
 msgid "16:9 always"
 msgstr "16:9 alltaf"
 
+msgid "16K"
+msgstr ""
+
 #
 msgid "18 V"
 msgstr "18 V"
-
-#
-msgid "2"
-msgstr "2"
 
 msgid "2048 MB (maximum)"
 msgstr ""
@@ -593,10 +584,6 @@ msgstr ""
 
 msgid "29.97"
 msgstr ""
-
-#
-msgid "3"
-msgstr "3"
 
 msgid "30"
 msgstr ""
@@ -640,6 +627,11 @@ msgid "4:3 PanScan"
 msgstr "4:3 PanScan"
 
 #
+#, fuzzy
+msgid "4K"
+msgstr "4"
+
+#
 msgid "5"
 msgstr "5"
 
@@ -649,29 +641,38 @@ msgstr ""
 msgid "512 MB (recommended for this chipset)"
 msgstr ""
 
-#
-msgid "6"
-msgstr "6"
-
 msgid "64 MB"
 msgstr ""
 
 #
-msgid "7"
-msgstr "7"
-
-#
-msgid "8"
+#, fuzzy
+msgid "8K"
 msgstr "8"
 
 msgid "8bit"
 msgstr ""
 
-#
-msgid "9"
-msgstr "9"
-
 msgid ": 0000 - default (disabled)"
+msgstr ""
+
+#, fuzzy
+msgid "< Current >"
+msgstr "Núverandi stilling:"
+
+#
+#, fuzzy
+msgid "< Default + Picon >"
+msgstr "Upphafs stillingar"
+
+#
+#, fuzzy
+msgid "< Default >"
+msgstr "Upphafs stillingar"
+
+msgid "< Emergency >"
+msgstr ""
+
+msgid "< Pending restart >"
 msgstr ""
 
 msgid "<Current movielist location>"
@@ -1626,9 +1627,6 @@ msgstr ""
 msgid "BDMV Compatible Bludisc (HDTV only)"
 msgstr ""
 
-msgid "BER"
-msgstr "BER"
-
 msgid "BER:"
 msgstr "BER:"
 
@@ -1734,11 +1732,12 @@ msgstr ""
 msgid "Begin time"
 msgstr "Byrjunar tími"
 
+#, fuzzy
+msgid "Behavior of '0' button in PiP mode"
+msgstr "Virkun 0 hnapps í PiP-ham"
+
 msgid "Behavior of 'pause and ok' when paused"
 msgstr ""
-
-msgid "Behavior of 0 key in PiP-mode"
-msgstr "Virkun 0 hnapps í PiP-ham"
 
 msgid "Behavior when a movie is started"
 msgstr "Aðgerð þegar mynd byrjar"
@@ -1816,6 +1815,11 @@ msgstr "grænn"
 
 #
 #, fuzzy
+msgid "Bootup time"
+msgstr "Raða Tíma"
+
+#
+#, fuzzy
 msgid "Bosnia and Herzegovina"
 msgstr "Mótorstýring"
 
@@ -1882,9 +1886,6 @@ msgstr ""
 
 msgid "By teamBlue Image Team"
 msgstr ""
-
-msgid "C"
-msgstr "C"
 
 msgid "C-Band"
 msgstr "C-Band"
@@ -1991,6 +1992,12 @@ msgstr ""
 
 msgid "Cancel"
 msgstr "Hætta við"
+
+msgid "Cancel any changes to the currently active skin"
+msgstr ""
+
+msgid "Cancel any changes to the currently active skin and exit all menus"
+msgstr ""
 
 msgid "Cancel any text changes and exit"
 msgstr ""
@@ -2148,10 +2155,6 @@ msgstr ""
 msgid "Channel not in services list"
 msgstr "Rás ekki á rásalista"
 
-#, fuzzy
-msgid "Channel selection"
-msgstr "Rása val"
-
 msgid "Channel zap delay another button"
 msgstr ""
 
@@ -2163,9 +2166,6 @@ msgstr ""
 
 msgid "Channel:"
 msgstr "Rás:"
-
-msgid "Channellist menu"
-msgstr "Valmynd rásalista"
 
 msgid "Channelnumber and picon"
 msgstr ""
@@ -2324,7 +2324,7 @@ msgstr ""
 msgid "Close"
 msgstr "Loka"
 
-msgid "Close PiP on exit"
+msgid "Close PiP with 'exit' button"
 msgstr ""
 
 msgid "Close title selection"
@@ -2371,15 +2371,8 @@ msgstr "Lita kerfi"
 msgid "Combo"
 msgstr ""
 
-msgid "Command execution..."
-msgstr "Keyrsla skipunar..."
-
 msgid "Command order"
 msgstr "Röðun skipana"
-
-#, fuzzy
-msgid "Commit info"
-msgstr "Samskipti"
 
 msgid "Common Interface"
 msgstr "Afruglara tengi"
@@ -2445,6 +2438,10 @@ msgstr ""
 msgid "Configure an additional delay to improve subtitle synchronisation."
 msgstr ""
 
+#, fuzzy
+msgid "Configure default type for new timers."
+msgstr "Stilla netkort"
+
 msgid "Configure for how long the infobar will remain visible after activation."
 msgstr ""
 
@@ -2464,7 +2461,7 @@ msgstr ""
 msgid "Configure if and how crypto icons will be shown in the channel selection list."
 msgstr ""
 
-msgid "Configure if and how long the latest service in the PiP will be remembered."
+msgid "Configure if and how long the latest service in Picture in Picture mode will be remembered."
 msgstr ""
 
 msgid "Configure if and how service type icons will be shown in the channel selection list."
@@ -2585,7 +2582,7 @@ msgstr ""
 msgid "Configure the fourth subtitle language."
 msgstr "skipta á næsta undirtexta"
 
-msgid "Configure the function of the '0' button do when PIP is active."
+msgid "Configure the function of the '0' button when Picture in Picture is active."
 msgstr ""
 
 #, fuzzy
@@ -2942,6 +2939,9 @@ msgstr ""
 msgid "Could not load Medium! No disc inserted?"
 msgstr "Gat ekki lesið disk! Er enginn diskur í drifi?"
 
+msgid "Could not locate epg file on fallback tuner"
+msgstr ""
+
 msgid "Could not open Picture in Picture"
 msgstr "Gat ekki opnað mynd í mynd"
 
@@ -3107,9 +3107,6 @@ msgstr "Tékkneska"
 msgid "Czechia"
 msgstr "Tékkneska"
 
-msgid "D"
-msgstr "D"
-
 msgid "DAC"
 msgstr ""
 
@@ -3199,10 +3196,6 @@ msgstr "DVD spilari"
 #, fuzzy
 msgid "DVD Titlelist"
 msgstr "DVD titlaskrá"
-
-#, fuzzy
-msgid "DVD file browser"
-msgstr "DVD skráar stjóri"
 
 #
 #, fuzzy
@@ -3310,6 +3303,11 @@ msgstr ""
 
 msgid "Default sorting method for files on the right side."
 msgstr ""
+
+#
+#, fuzzy
+msgid "Default timer type"
+msgstr "Byrja upptöku?"
 
 msgid "Delay after change voltage before switch command"
 msgstr ""
@@ -3669,6 +3667,11 @@ msgstr "Sýna upplýsinga borða við breytingu á atriði"
 
 #
 #, fuzzy
+msgid "Display Skin"
+msgstr "Uppsetning skjás"
+
+#
+#, fuzzy
 msgid "Display and userinterface"
 msgstr "Skjár og notenda viðmót"
 
@@ -4014,11 +4017,6 @@ msgstr ""
 msgid "EPG only"
 msgstr ""
 
-#
-#, fuzzy
-msgid "EPG selection"
-msgstr "EPG val"
-
 msgid "EPG settings"
 msgstr ""
 
@@ -4028,10 +4026,6 @@ msgstr ""
 #, python-format
 msgid "ERROR - failed to scan (%s)!"
 msgstr "VILLA - gat ekki leitað (%s)!"
-
-#, fuzzy, python-format
-msgid "ERROR downloading file %s"
-msgstr "Hleð niður"
 
 #
 msgid "East"
@@ -4417,11 +4411,6 @@ msgstr ""
 msgid "Error"
 msgstr "Villa"
 
-#
-#, fuzzy, python-format
-msgid "Error %s"
-msgstr "Villa"
-
 msgid "Error checking disk. The disk may be damaged"
 msgstr ""
 
@@ -4433,9 +4422,6 @@ msgid ""
 "Error creating directory %s:\n"
 "%s"
 msgstr "Tókst ekki að búa möppuna %s."
-
-msgid "Error executing plugin"
-msgstr "Villa við keyrslu íforrits"
 
 msgid "Error formatting disk. The disk may be damaged"
 msgstr ""
@@ -4452,19 +4438,10 @@ msgid ""
 "%s"
 msgstr ""
 
-msgid "Error when writing epg.dat on server"
-msgstr ""
-
-msgid "Error while retreiving epg.dat from server"
-msgstr ""
-
 #, python-format
 msgid ""
 "Error while retreiving fallback timer information\n"
 "%s"
-msgstr ""
-
-msgid "Error while retreiving location of epg.dat on server"
 msgstr ""
 
 #
@@ -4499,17 +4476,7 @@ msgstr ""
 
 #
 #, fuzzy
-msgid "Event view"
-msgstr "Skoða atriði"
-
-#
-#, fuzzy
 msgid "Event view context menu"
-msgstr "Skoða atriði"
-
-#
-#, fuzzy
-msgid "Event view menu"
 msgstr "Skoða atriði"
 
 #
@@ -4637,10 +4604,6 @@ msgstr "Breyta stillingum"
 msgid "Extended setup..."
 msgstr "Viðbótar stillingar..."
 
-#
-msgid "Extensions"
-msgstr "Viðbætur"
-
 msgid "Extensions management"
 msgstr "Viðbóta umsýsla"
 
@@ -4666,6 +4629,9 @@ msgid "External subtitle dialog colorisation"
 msgstr ""
 
 msgid "External subtitle switch fonts"
+msgstr ""
+
+msgid "Externally powered"
 msgstr ""
 
 msgid "Extra end time to ignore inactivity sleeptimer"
@@ -4717,6 +4683,9 @@ msgid "FEC"
 msgstr "FEC"
 
 msgid "FEC:"
+msgstr ""
+
+msgid "FHD"
 msgstr ""
 
 msgid "FTA"
@@ -5138,6 +5107,11 @@ msgstr ""
 
 #
 #, fuzzy
+msgid "GUI Skin"
+msgstr "Skinn"
+
+#
+#, fuzzy
 msgid ""
 "GUI needs a restart to apply a new language\n"
 "Do you want to restart the GUI now?"
@@ -5370,6 +5344,10 @@ msgstr ""
 
 msgid "Guyana"
 msgstr ""
+
+#, fuzzy
+msgid "HD"
+msgstr "D"
 
 msgid "HD list"
 msgstr ""
@@ -5670,11 +5648,6 @@ msgstr ""
 msgid "IPv6"
 msgstr ""
 
-#
-#, fuzzy
-msgid "IPv6 setup"
-msgstr "Uppsetning Mynd í Mynd"
-
 #, fuzzy
 msgid "IPv6 support"
 msgstr "ekki stutt"
@@ -5822,16 +5795,14 @@ msgstr ""
 msgid "Include EIT in http streams"
 msgstr ""
 
-msgid "Incorrect type service for PiP!"
-msgstr ""
+#
+#, fuzzy
+msgid "Incorrect service type for Picture in Picture!"
+msgstr "Virkja Mynd í Mynd"
 
 #
 msgid "Increased voltage"
 msgstr "Aukin spenna"
-
-#
-msgid "Index"
-msgstr "Yfirlit"
 
 msgid "Index allocated:"
 msgstr ""
@@ -5847,11 +5818,6 @@ msgstr ""
 
 #
 msgid "Info"
-msgstr "Upplýsingar"
-
-#
-#, fuzzy
-msgid "Info bar"
 msgstr "Upplýsingar"
 
 #
@@ -5997,10 +5963,6 @@ msgstr "Set inn"
 msgid "Installing Service"
 msgstr "Set inn"
 
-#, fuzzy
-msgid "Installing software..."
-msgstr "Set inn hugbúnað..."
-
 #
 #, fuzzy
 msgid "Instant record"
@@ -6078,10 +6040,6 @@ msgstr ""
 msgid "Invert"
 msgstr "Snúa við"
 
-#
-msgid "Ipkg"
-msgstr "Ipkg"
-
 msgid "Iran (Islamic Republic of)"
 msgstr ""
 
@@ -6102,6 +6060,9 @@ msgstr "Nota þessar stillingar?"
 #, fuzzy
 msgid "Is this video mode ok?"
 msgstr "Er þessi stilling í lagi?"
+
+msgid "Is your SCR device externally powered"
+msgstr ""
 
 #
 #, fuzzy
@@ -6262,12 +6223,6 @@ msgstr "Netkort"
 
 msgid "LAN connection"
 msgstr "LAN tenging"
-
-msgid "LCD Clock-Selector"
-msgstr ""
-
-msgid "LCD Skin-Selector"
-msgstr ""
 
 #
 msgid "LNB"
@@ -6602,9 +6557,6 @@ msgstr "IP Netfang"
 msgid "MAC-adress settings"
 msgstr "Stilling tækis"
 
-msgid "MAC-adress setup"
-msgstr ""
-
 msgid "MAC:"
 msgstr ""
 
@@ -6615,10 +6567,6 @@ msgstr "Umbreyting"
 
 msgid "MMC card"
 msgstr ""
-
-#
-msgid "MORE"
-msgstr "MEIRA"
 
 msgid "MSN Weather City Name"
 msgstr ""
@@ -6801,10 +6749,6 @@ msgstr ""
 #
 msgid "Message"
 msgstr "Skilaboð"
-
-#
-msgid "Message..."
-msgstr "Skilaboð..."
 
 #
 #, fuzzy
@@ -7010,8 +6954,10 @@ msgstr ""
 msgid "Move 1 element"
 msgstr "Færa austur"
 
-msgid "Move PIP"
-msgstr ""
+#
+#, fuzzy
+msgid "Move PiP"
+msgstr "Færa austur"
 
 #
 #, fuzzy
@@ -7076,6 +7022,26 @@ msgstr ""
 
 msgid "Move to position X"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Move to the next page"
+msgstr "skipta í næstu sýn"
+
+#
+#, fuzzy
+msgid "Move to the next skin"
+msgstr "fara niður í næsta atriði"
+
+#
+#, fuzzy
+msgid "Move to the previous page"
+msgstr "fara til baka á fyrri kafla"
+
+#
+#, fuzzy
+msgid "Move to the previous skin"
+msgstr "fara upp í næsta atriði"
 
 #
 #, fuzzy
@@ -7194,10 +7160,6 @@ msgid "Music/Ballet/Dance"
 msgstr ""
 
 #
-msgid "Mute"
-msgstr "Hljóð Af"
-
-#
 #, fuzzy
 msgid "My Extension"
 msgstr "Viðbætur"
@@ -7212,10 +7174,6 @@ msgstr ""
 #
 msgid "N/A"
 msgstr "Ekki til"
-
-#
-msgid "NEXT"
-msgstr "NÆST"
 
 #
 #, fuzzy
@@ -7239,10 +7197,6 @@ msgstr ""
 #
 #, fuzzy
 msgid "NO"
-msgstr "NÚNA"
-
-#
-msgid "NOW"
 msgstr "NÚNA"
 
 msgid "NTP"
@@ -7277,11 +7231,6 @@ msgstr "Nafnaþjónn %d"
 
 #
 msgid "Nameserver settings"
-msgstr "Uppsetning nafnaþjóns"
-
-#
-#, fuzzy
-msgid "Nameserver setup"
 msgstr "Uppsetning nafnaþjóns"
 
 msgid "Namespace & Orbital pos."
@@ -7340,11 +7289,6 @@ msgstr "Stilling nettengingar..."
 
 #
 #, fuzzy
-msgid "Network configuration..."
-msgstr "Stilling nettengingar..."
-
-#
-#, fuzzy
 msgid "Network mount"
 msgstr "Ekkert netkerfi fannst"
 
@@ -7368,10 +7312,6 @@ msgstr "Stillingar netkerfis"
 #
 msgid "Network test"
 msgstr "Prufa nettengingu"
-
-#
-msgid "Network test..."
-msgstr "Prufa nettengingu..."
 
 msgid "Network test: "
 msgstr "Prufa nettengingu:"
@@ -7511,9 +7451,6 @@ msgstr "Engin lýsing tiltæk."
 msgid "No displayable files on this medium found!"
 msgstr "Engar skrár fundust á þessu tæki!"
 
-msgid "No epg.dat file found server"
-msgstr ""
-
 #
 msgid "No event info found, recording indefinitely."
 msgstr "Engar upplýsingar um atriði fundust, tek upp endalaust."
@@ -7567,6 +7504,9 @@ msgstr ""
 #, fuzzy
 msgid "No services/providers selected"
 msgstr "engar rásir/sendar valdir"
+
+msgid "No settings files to download on fallback tuner"
+msgstr ""
 
 #
 #, fuzzy
@@ -7773,11 +7713,6 @@ msgid "Now"
 msgstr ""
 
 #
-#, fuzzy
-msgid "Now playing"
-msgstr "Spila núna"
-
-#
 msgid "Now, use the contrast setting to turn up the brightness of the background as much as possible, but make sure that you can still see the difference between the two brightest levels of shades.If you have done that, press OK."
 msgstr "Notaðu núna skerpu (contrast) stillingar til að auka birtu bakgrunns eins mikið og hægt er en vertu samt viss um að sjá mun á björtustu tveim hlutum myndarinnar. Þegar þú hefur gert það ýttu þá á OK."
 
@@ -7935,6 +7870,9 @@ msgstr "Til baka til mynda lista"
 msgid "Open with File Commander"
 msgstr ""
 
+msgid "Opkg"
+msgstr ""
+
 msgid "Options disable timer"
 msgstr ""
 
@@ -8044,11 +7982,6 @@ msgstr ""
 msgid "PGS file"
 msgstr ""
 
-#
-#, fuzzy
-msgid "PIN code needed"
-msgstr "Kóða vantar"
-
 msgid "PIP"
 msgstr ""
 
@@ -8144,11 +8077,6 @@ msgid "Parental control"
 msgstr "Foreldrastýring"
 
 #
-#, fuzzy
-msgid "Parental control services editor"
-msgstr "Forritun foreldrakóða á rásir"
-
-#
 msgid "Parental control setup"
 msgstr "Uppsetning á foreldrastýringu"
 
@@ -8231,11 +8159,6 @@ msgstr ""
 
 msgid "Philippines"
 msgstr ""
-
-#
-#, fuzzy
-msgid "PiP setup"
-msgstr "Uppsetning Mynd í Mynd"
 
 msgid "Picon"
 msgstr ""
@@ -8671,9 +8594,6 @@ msgstr "Íforrita leit"
 msgid "Plugin Filter..."
 msgstr "Íforrita leit"
 
-msgid "Plugin browser"
-msgstr "Íforrita leit"
-
 #, fuzzy
 msgid "Plugin install"
 msgstr "Taka út"
@@ -8886,6 +8806,11 @@ msgid "Press OK to activate the selected skin."
 msgstr "Ýttu á OK til að velja valið skinn."
 
 #
+#, fuzzy, python-format
+msgid "Press OK to activate the selected%s skin."
+msgstr "Ýttu á OK til að velja valið skinn."
+
+#
 msgid "Press OK to activate the settings."
 msgstr "Ýtið á OK til að virkja stillingar."
 
@@ -8897,6 +8822,11 @@ msgstr "Ýttu á OK til að breyta stillingum."
 #, python-format
 msgid "Press OK to get further details for %s"
 msgstr "Ýttu á OK til að fá nánari upplýsingar um %s"
+
+#
+#, fuzzy, python-format
+msgid "Press OK to keep the currently selected%s skin."
+msgstr "Ýttu á OK til að velja valið skinn."
 
 #
 msgid "Press OK to scan"
@@ -9121,21 +9051,12 @@ msgid "Quick zap"
 msgstr "Hraðstökk"
 
 #
-#, fuzzy
-msgid "REC"
-msgstr "FEC"
-
-#
 msgid "RF output"
 msgstr "Loftnetsrás"
 
 #
 msgid "RGB"
 msgstr "RGB"
-
-#
-msgid "Radio"
-msgstr "Útvarp"
 
 #
 #, fuzzy
@@ -9227,9 +9148,6 @@ msgstr "Viltu örugglega endurræsa núna?"
 msgid "Reboot"
 msgstr ""
 
-msgid "Rec"
-msgstr ""
-
 #
 #, fuzzy
 msgid "Recall to previous service"
@@ -9238,11 +9156,6 @@ msgstr "Til  baka á síðustu rás"
 #
 #, fuzzy
 msgid "Reception lists"
-msgstr "Stilling móttöku"
-
-#
-#, fuzzy
-msgid "Reception settings"
 msgstr "Stilling móttöku"
 
 #
@@ -9876,10 +9789,6 @@ msgid "SINGLE LAYER DVD"
 msgstr "SINGLE LAYER DVD"
 
 #
-msgid "SNR"
-msgstr "SNR"
-
-#
 msgid "SNR:"
 msgstr "SNR:"
 
@@ -10020,6 +9929,11 @@ msgstr ""
 
 msgid "Save EPG every (in hours)"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Save and activate the currently selected skin"
+msgstr "Ýttu á OK til að velja valið skinn."
 
 #
 #, fuzzy
@@ -10365,10 +10279,6 @@ msgid "Select Fast DiSEqC if your aerial system supports this. If you are unsure
 msgstr ""
 
 #
-msgid "Select HDD"
-msgstr "Veldu harðadisk"
-
-#
 #, fuzzy
 msgid "Select LCD clock:"
 msgstr "Velja staðsetningu"
@@ -10380,31 +10290,12 @@ msgstr "Hugbúnaðar uppfærsla"
 
 #
 #, fuzzy
-msgid "Select a bouquet"
-msgstr "Veldu mynd"
-
-#
-msgid "Select a movie"
-msgstr "Veldu mynd"
-
-#
-#, fuzzy
 msgid "Select a network adapter"
 msgstr "Veldu Netkort"
 
 #
 #, fuzzy
 msgid "Select a path"
-msgstr "Veldu mynd"
-
-#
-#, fuzzy
-msgid "Select a skin"
-msgstr "Veldu mynd"
-
-#
-#, fuzzy
-msgid "Select a tuner"
 msgstr "Veldu mynd"
 
 #
@@ -11060,7 +10951,7 @@ msgstr "Sýna upplýsingar"
 
 #
 #, fuzzy
-msgid "Show PIP"
+msgid "Show PiP"
 msgstr "sýna EPG"
 
 msgid "Show SNR percentage instead of dB value"
@@ -11445,11 +11336,6 @@ msgstr ""
 msgid "Signal Strength:"
 msgstr "Styrkur merkis:"
 
-#
-#, fuzzy
-msgid "Signal finder"
-msgstr "Merki:"
-
 msgid "Signal quality"
 msgstr ""
 
@@ -11549,8 +11435,16 @@ msgstr ""
 
 #
 #, fuzzy
+msgid "Skin Selection Actions"
+msgstr "EPG val"
+
+#
+#, fuzzy
 msgid "Skin setup"
 msgstr "Uppsetning"
+
+msgid "SkinSelector: Restart GUI"
+msgstr ""
 
 #
 msgid "Skins"
@@ -12234,8 +12128,10 @@ msgstr ""
 msgid "Swap Manager"
 msgstr "Hugbúnaðarpakka stjóri"
 
-msgid "Swap PIP"
-msgstr ""
+#
+#, fuzzy
+msgid "Swap PiP"
+msgstr "hætta með PiP"
 
 #
 #, fuzzy
@@ -12425,9 +12321,6 @@ msgstr "TS skrá er of stór fyrir ISO9660 level 1!"
 
 msgid "TSID"
 msgstr "TSID"
-
-msgid "TUNER:"
-msgstr ""
 
 msgid "TUNING"
 msgstr ""
@@ -13103,11 +12996,6 @@ msgid "Timer Overview"
 msgstr ""
 
 #
-#, fuzzy
-msgid "Timer edit"
-msgstr "Breyta Tímastillingu"
-
-#
 msgid "Timer entry"
 msgstr "Innsláttur tímastilltra atriða"
 
@@ -13153,13 +13041,6 @@ msgstr "Gerð Tímastillngar"
 msgid "Timer:"
 msgstr "Tímastilling"
 
-#
-msgid "Timeshift"
-msgstr "Lifandi pása"
-
-msgid "Timeshift Live"
-msgstr ""
-
 msgid "Timeshift is running. Select an action.\n"
 msgstr ""
 
@@ -13189,10 +13070,18 @@ msgstr "Upplýsingar titils"
 msgid "Titleset mode"
 msgstr "Titla stillingar"
 
+#, python-format
+msgid "To apply the selected '%s' skin the GUI needs to restart. Would you like to restart the GUI now?"
+msgstr ""
+
 msgid "To audio selection"
 msgstr ""
 
 msgid "To back-up directly to the USB-stick, the USB-stick MUST\n"
+msgstr ""
+
+#, python-format
+msgid "To save and apply the selected '%s' skin the GUI needs to restart. Would you like to save the selection and restart the GUI now?"
 msgstr ""
 
 msgid "To subtitle selection"
@@ -13208,7 +13097,7 @@ msgstr ""
 msgid "Toggle LCD LiveTV"
 msgstr ""
 
-msgid "Toggle PIPzap"
+msgid "Toggle PiPzap"
 msgstr ""
 
 #
@@ -13280,10 +13169,6 @@ msgstr "Þýðing:"
 #
 msgid "Translation"
 msgstr "Þýðing"
-
-#
-msgid "Translation:"
-msgstr "Þýðing:"
 
 msgid "Translations"
 msgstr ""
@@ -13547,9 +13432,6 @@ msgstr "Opin rás"
 
 msgid "Unexpected error while retreiving fallback tuner's timer information"
 msgstr ""
-
-msgid "UnhandledKey"
-msgstr "Ónotaður"
 
 #
 #, fuzzy
@@ -13958,9 +13840,6 @@ msgstr "Mynd ráðgjafi"
 msgid "Video: %s fps"
 msgstr ""
 
-msgid "VideoMode"
-msgstr ""
-
 msgid "Videocodec, size & format"
 msgstr ""
 
@@ -14071,10 +13950,6 @@ msgstr ""
 #
 msgid "Voltage mode"
 msgstr "Spennu stýring"
-
-#
-msgid "Volume"
-msgstr "Styrkur"
 
 #
 #, fuzzy
@@ -14288,7 +14163,7 @@ msgstr "Að hverju viltu leita?"
 msgid "When enabled enigma2 will load unlinked userbouquets. This means that userbouquets that are available, but not included in the bouquets.tv or bouquets.radio files, will still be loaded. This allows you for example to keep your own user bouquet while installed settings are updated"
 msgstr ""
 
-msgid "When enabled the PiP can be closed by the exit button."
+msgid "When enabled the Picture in Picture window can be closed with 'exit' button."
 msgstr ""
 
 msgid "When enabled the arrow buttons around the OK button will follow the 'neutrino' style zap controls instead of the enigma2 style."
@@ -14968,9 +14843,10 @@ msgstr ""
 msgid "Zap-History Browser"
 msgstr "Möppu vafri"
 
-#, python-format
-msgid "Zapped to timer service %s as PiP!"
-msgstr ""
+#
+#, fuzzy, python-format
+msgid "Zapped to timer service %s as Picture in Picture!"
+msgstr "fara upp í fyrsta atriði"
 
 #
 #, fuzzy, python-format
@@ -15244,10 +15120,6 @@ msgstr ""
 
 msgid "comedy"
 msgstr ""
-
-#
-msgid "config menu"
-msgstr "stillinga valmynd"
 
 msgid "configure in which resolution pictures are displayed with the picture viewer and movieplayer"
 msgstr ""
