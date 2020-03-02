@@ -1,4 +1,5 @@
 from boxbranding import getMachineBuild, getBoxType, getBrandOEM, getDisplayType, getHaveRCA, getHaveYUV, getHaveSCART, getHaveAVJACK, getHaveHDMIinHD, getHaveHDMIinFHD, getMachineMtdRoot
+import os, re
 from enigma import eDVBResourceManager, Misc_Options, eDVBCIInterfaces
 
 from Components.About import getChipSetString
@@ -88,7 +89,6 @@ SystemInfo["canBackupEMC"] = getMachineBuild() in ("hd51", "h7") and ("disk.img"
 SystemInfo["HasHiSi"] = pathExists("/proc/hisi")
 SystemInfo["canMode12"] = getMachineBuild() in ("hd51", "h7") and ("brcm_cma=440M@328M brcm_cma=192M@768M", "brcm_cma=520M@248M brcm_cma=200M@768M")
 SystemInfo["HasMMC"] = fileHas("/proc/cmdline", "root=/dev/mmcblk") or SystemInfo["canMultiBoot"] and fileHas("/proc/cmdline", "root=/dev/sda")
-SystemInfo["HasSDmmc"] = SystemInfo["canMultiBoot"] and "sd" in SystemInfo["canMultiBoot"][2] and "mmcblk" in getMachineMtdRoot()
 SystemInfo["HasH9SD"] = getMachineBuild() in ("h9", "i55plus") and pathExists("/dev/mmcblk0p1")
 SystemInfo["HasSDnomount"] = getMachineBuild() in ("h9", "i55plus") and ("No", "none") or getMachineBuild() in ("multibox", "h9combo") and ("Yes", "mmcblk0")
 SystemInfo["CanProc"] = SystemInfo["HasMMC"] and getBrandOEM() != "vuplus"
@@ -138,4 +138,4 @@ SystemInfo["VideoModes"] = getChipSetString() in (  # 2160p and 1080p capable ha
 	["720p", "1080i", "576p", "576i", "480p", "480i"],  # Normal modes.
 	{"720p", "1080i"}  # Widescreen modes.
 )
-SystemInfo["LnbPowerAlwaysOn"] = getBoxType() in ("vusolo4k", "vuduo4k", "vuultimo4k", "vuuno4k")
+SystemInfo["LnbPowerAlwaysOn"] = getBoxType() in ("vusolo4k", "vuduo4k", "vuultimo4k", "vuuno4k", "vuuno4kse")
