@@ -1,5 +1,4 @@
 from boxbranding import getMachineBuild, getBoxType, getBrandOEM, getDisplayType, getHaveRCA, getHaveYUV, getHaveSCART, getHaveAVJACK, getHaveHDMIinHD, getHaveHDMIinFHD, getMachineMtdRoot
-import os, re
 from enigma import eDVBResourceManager, Misc_Options, eDVBCIInterfaces
 
 from Components.About import getChipSetString
