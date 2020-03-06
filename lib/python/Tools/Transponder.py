@@ -219,7 +219,8 @@ def ConvertToHumanReadable(tp, type = None):
 			eDVBFrontendParametersTerrestrial.System_DVB_T_T2 : "DVB-T/T2",
 			eDVBFrontendParametersTerrestrial.System_DVB_T : "DVB-T",
 			eDVBFrontendParametersTerrestrial.System_DVB_T2 : "DVB-T2"}.get(tp.get("system"))
-		ret["channel"] = "CH%s" % getChannelNumber(tp.get("frequency"), "DVB-T")
+		channel = getChannelNumber(tp.get("frequency"), "DVB-T")
+		ret["channel"] = _("CH%s") % channel if channel else ""
 	elif type == "ATSC":
 		ret["tuner_type"] = "ATSC"
 		ret["modulation"] = {
