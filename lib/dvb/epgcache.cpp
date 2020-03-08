@@ -2066,7 +2066,7 @@ void eEPGCache::channel_data::OPENTV_checkCompletion(uint32_t data_crc)
 		
 		eDebug("[eEPGCache] OpenTV summaries, before m_OPENTV_descriptors_map.clear()");
 		m_OPENTV_descriptors_map.clear();
-		eDebug("[eEPGCache] OpenTV summaries, before m_OPENTV_descriptors_map.clear()");
+		eDebug("[eEPGCache] OpenTV summaries, after m_OPENTV_descriptors_map.clear()");
 
 		if (++m_OPENTV_pid < 0x38)
 		{
