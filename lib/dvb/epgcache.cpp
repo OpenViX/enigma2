@@ -2058,9 +2058,9 @@ void eEPGCache::channel_data::OPENTV_checkCompletion(uint32_t data_crc)
 				eDebug("[eEPGCache] OpenTV summaries, summary data for channelid %d cached", channelid);
 				
 				
-				eDebug("[eEPGCache] OpenTV summaries, before m_OPENTV_EIT_map.erase(it)");
-				m_OPENTV_EIT_map.erase(it);
-				eDebug("[eEPGCache] OpenTV summaries, after m_OPENTV_EIT_map.erase(it)");
+				//eDebug("[eEPGCache] OpenTV summaries, before m_OPENTV_EIT_map.erase(it)");
+				//m_OPENTV_EIT_map.erase(it);
+				//eDebug("[eEPGCache] OpenTV summaries, after m_OPENTV_EIT_map.erase(it)");
 			}
 		}
 		
