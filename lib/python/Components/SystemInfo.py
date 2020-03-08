@@ -1,8 +1,8 @@
-from boxbranding import getMachineBuild, getBoxType, getBrandOEM, getDisplayType, getHaveRCA, getHaveYUV, getHaveSCART, getHaveAVJACK, getHaveHDMIinHD, getHaveHDMIinFHD, getMachineMtdRoot
-from enigma import eDVBResourceManager, Misc_Options, eDVBCIInterfaces
+from boxbranding import getBoxType, getBrandOEM, getDisplayType, getHaveAVJACK, getHaveHDMIinFHD, getHaveHDMIinHD, getHaveRCA, getHaveSCART, getHaveYUV, getMachineBuild
+from enigma import eDVBCIInterfaces, eDVBResourceManager, Misc_Options
 
 from Components.About import getChipSetString
-from Tools.Directories import fileExists, fileCheck, pathExists, fileHas
+from Tools.Directories import fileCheck, fileExists, fileHas, pathExists
 from Tools.HardwareInfo import HardwareInfo
 
 SystemInfo = {}
