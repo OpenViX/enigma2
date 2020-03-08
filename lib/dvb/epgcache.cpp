@@ -2056,10 +2056,12 @@ void eEPGCache::channel_data::OPENTV_checkCompletion(uint32_t data_crc)
 				eDebug("[eEPGCache] OpenTV summaries, channelid: %d", channelid);
 				cache->submitEventData(sids, chids, it->second.startTime, it->second.duration, m_OPENTV_descriptors_map[it->second.title_crc].c_str(), "", "", 0, eEPGCache::OPENTV);
 				eDebug("[eEPGCache] OpenTV summaries, summary data for channelid %d cached", channelid);
+				
+				
+				eDebug("[eEPGCache] OpenTV summaries, before m_OPENTV_EIT_map.erase(it)");
+				m_OPENTV_EIT_map.erase(it);
+				eDebug("[eEPGCache] OpenTV summaries, after m_OPENTV_EIT_map.erase(it)");
 			}
-			eDebug("[eEPGCache] OpenTV summaries, before m_OPENTV_EIT_map.erase(it)");
-			m_OPENTV_EIT_map.erase(it);
-			eDebug("[eEPGCache] OpenTV summaries, after m_OPENTV_EIT_map.erase(it)");
 		}
 		
 		eDebug("[eEPGCache] OpenTV summaries, before m_OPENTV_descriptors_map.clear()");
