@@ -38,10 +38,7 @@ def setRTCoffset():
 
 	t_local = time.localtime(int(time.time()))
 
-	try:
-		print "[StbHardware] Set RTC to %s (rtc_offset = %s sec.)" % (time.strftime(config.usage.date.daylong.value + "  " + config.usage.time.short.value, t_local), forsleep)
-	except AttributeError as e:
-		print "[StbHardware] temp fix for config.usage not yet set on boot.", e
+	print "[StbHardware] Set RTC to %s (rtc_offset = %s sec.)" % (time.strftime(config.usage.date.daylong.value + "  " + config.usage.time.short.value, t_local), forsleep)
 
 	# Set RTC OFFSET (diff. between UTC and Local Time)
 	try:
