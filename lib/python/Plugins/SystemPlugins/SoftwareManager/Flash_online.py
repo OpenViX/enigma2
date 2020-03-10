@@ -20,7 +20,13 @@ import urllib2
 import os
 import shutil
 import math
-from boxbranding import getBoxType, getMachineBrand, getMachineName, getMachineRootFile, getMachineKernelFile
+from boxbranding import getBoxType, getImageDistro, getMachineBrand, getImageVersion, getMachineBuild, getMachineName, getMachineRootFile, getMachineKernelFile, getMachineMtdKernel, getMachineMtdRoot
+distro =  getImageDistro()
+ImageVersion = getImageVersion()
+ROOTFSBIN = getMachineRootFile()
+KERNELBIN = getMachineKernelFile()
+MTDKERNEL = getMachineMtdKernel()
+MTDROOTFS = getMachineMtdRoot()
 
 #############################################################################################################
 # Create a List of imagetypes
@@ -37,8 +43,6 @@ imagePath = '/media/hdd/images'
 flashPath = '/media/hdd/images/flash'
 flashTmp = '/media/hdd/images/tmp'
 ofgwritePath = '/usr/bin/ofgwrite'
-ROOTFSBIN = getMachineRootFile()
-KERNELBIN = getMachineKernelFile()
 #############################################################################################################
 
 def Freespace(dev):
@@ -66,9 +70,14 @@ class FlashOnline(Screen):
 		Screen.__init__(self, session)
 		self.session = session
 		self.selection = 0
-		self.devrootfs = "/dev/mmcblk0p4"
+		if getMachineBuild() in ("gb7252"):
+			self.devrootfs = "/dev/mmcblk0p4"
+		else:
+			self.devrootfs = "/dev/mmcblk1p3"
 		self.multi = 1
 		self.list = self.list_files("/boot")
+		self.MTDKERNEL = getMachineMtdKernel()
+		self.MTDROOTFS = getMachineMtdRoot()
 
 		Screen.setTitle(self, _("Flash On the Fly"))
 		if SystemInfo["canMultiBoot"]:
@@ -127,13 +136,13 @@ class FlashOnline(Screen):
 
 	def blue(self):
 		if self.check_hdd():
-			self.session.open(doFlashImage, online = False, list=self.list[self.selection], multi=self.multi, devrootfs=self.devrootfs)
+			self.session.open(doFlashImage, online = False, list=self.list[self.selection], multi=self.multi, devrootfs=self.devrootfs, mtdkernel=self.MTDKERNEL, mtdrootfs=self.MTDROOTFS)
 		else:
 			self.close()
 
 	def green(self):
 		if self.check_hdd():
-			self.session.open(doFlashImage, online = True, list=self.list[self.selection], multi=self.multi, devrootfs=self.devrootfs)
+			self.session.open(doFlashImage, online = True, list=self.list[self.selection], multi=self.multi, devrootfs=self.devrootfs, mtdkernel=self.MTDKERNEL, mtdrootfs=self.MTDROOTFS)
 		else:
 			self.close()
 
@@ -147,8 +156,27 @@ class FlashOnline(Screen):
 			self.multi = self.multi[-1:]
 			print "[Flash Online] MULTI:",self.multi
 			cmdline = self.read_startup("/boot/" + self.list[self.selection]).split("=",3)[3].split(" ",1)[0]
-			self.devrootfs = cmdline
+			self.devrootfs = self.find_rootfs_dev(self.list[self.selection])
 			print "[Flash Online] MULTI rootfs ", self.devrootfs
+
+			self.read_current_multiboot()
+
+	def read_current_multiboot(self):
+		if getMachineBuild() in ("gbmv200"):
+			if self.list[self.selection] == "Recovery":
+				cmdline = self.read_startup("/boot/STARTUP").split("=",1)[1].split(" ",1)[0]
+			else:
+				cmdline = self.read_startup("/boot/" + self.list[self.selection]).split("=",1)[1].split(" ",1)[0]
+		else:
+			if self.list[self.selection] == "Recovery":
+				cmdline = self.read_startup("/boot/cmdline.txt").split("=",1)[1].split(" ",1)[0]
+			else:
+				cmdline = self.read_startup("/boot/" + self.list[self.selection]).split("=",1)[1].split(" ",1)[0]
+		cmdline = cmdline.lstrip("/dev/")
+		self.MTDROOTFS = cmdline
+		self.MTDKERNEL = cmdline[:-1] + str(int(cmdline[-1:]) -1)
+		print "[Flash Online] kernel device: ",self.MTDKERNEL
+		print "[Flash Online] rootfsdevice: ",self.MTDROOTFS
 
 	def read_startup(self, FILE):
 		file = FILE
@@ -157,20 +185,36 @@ class FlashOnline(Screen):
 		myfile.close()
 		return data
 
+	def find_rootfs_dev(self, file):
+		startup_content = self.read_startup("/boot/" + file)
+		return startup_content[startup_content.find("root=")+5:].split()[0]
+
 	def list_files(self, PATH):
 		files = []
 		if SystemInfo["canMultiBoot"]:
 			path = PATH
-			for name in os.listdir(path):
-				if name != 'bootname' and os.path.isfile(os.path.join(path, name)):
-					try:
-						cmdline = self.read_startup("/boot/" + name).split("=",1)[1].split(" ",1)[0]
-					except IndexError:
-						continue
-					cmdline_startup = self.read_startup("/boot/STARTUP").split("=",1)[1].split(" ",1)[0]
-					if (cmdline != cmdline_startup) and (name != "STARTUP"):
-						files.append(name)
-			files.insert(0,"STARTUP")
+			if getMachineBuild() in ("gbmv200"):
+				for name in os.listdir(path):
+					if name != 'bootname' and os.path.isfile(os.path.join(path, name)):
+						try:
+							cmdline = self.find_rootfs_dev(name)
+						except IndexError:
+							continue
+						cmdline_startup = self.find_rootfs_dev("STARTUP")
+						if (cmdline != cmdline_startup) and (name != "STARTUP"):
+							files.append(name)
+				files.insert(0,"STARTUP")
+			else:
+				for name in os.listdir(path):
+					if name != 'bootname' and os.path.isfile(os.path.join(path, name)):
+						try:
+							cmdline = self.read_startup("/boot/" + name).split("=",1)[1].split(" ",1)[0]
+						except IndexError:
+							continue
+						cmdline_startup = self.read_startup("/boot/cmdline.txt").split("=",1)[1].split(" ",1)[0]
+						if (cmdline != cmdline_startup) and (name != "cmdline.txt"):
+							files.append(name)
+				files.insert(0,"cmdline.txt")
 		else:
 			files = "None"
 
@@ -189,8 +233,8 @@ class doFlashImage(Screen):
 		<widget name="key_blue" position="420,460" zPosition="2" size="140,40" valign="center" halign="center" font="Regular;21" transparent="1" shadowColor="black" shadowOffset="-1,-1" />
 		<widget name="imageList" position="10,10" zPosition="1" size="680,450" font="Regular;20" scrollbarMode="showOnDemand" transparent="1" />
 	</screen>"""
-		
-	def __init__(self, session, online, list=None, multi=None, devrootfs=None ):
+
+	def __init__(self, session, online, list=None, multi=None, devrootfs=None, mtdkernel=None, mtdrootfs=None ):
 		Screen.__init__(self, session)
 		self.session = session
 
@@ -207,6 +251,8 @@ class doFlashImage(Screen):
 		self.List = list
 		self.multi=multi
 		self.devrootfs=devrootfs
+		self.MTDKERNEL = mtdkernel
+		self.MTDROOTFS = mtdrootfs
 		self.imagePath = imagePath
 		self.feedurl = images[self.imagesCounter][1]
 		self["imageList"] = MenuList(self.imagelist)
@@ -317,7 +363,12 @@ class doFlashImage(Screen):
 			if self.simulate:
 				text += _("Simulate (no write)")
 				if SystemInfo["canMultiBoot"]:
-					cmdlist.append("%s -n -r -k -m%s %s > /dev/null 2>&1" % (ofgwritePath, self.multi, flashTmp))
+					if getMachineBuild() in ("gbmv200"):
+						cmdlist.append("%s -r%s -k%s %s > /dev/null 2>&1" % (ofgwritePath, self.MTDROOTFS, self.MTDKERNEL, flashTmp))
+					else:
+						cmdlist.append("%s -n -r -k -m%s %s > /dev/null 2>&1" % (ofgwritePath, self.multi, flashTmp))
+				elif getMachineBuild() in ("gbmv200"):
+					cmdlist.append("%s -n -r%s -k%s %s > /dev/null 2>&1" % (ofgwritePath, MTDROOTFS, MTDKERNEL, flashTmp))
 				else:
 					cmdlist.append("%s -n -r -k %s > /dev/null 2>&1" % (ofgwritePath, flashTmp))
 				self.close()
@@ -329,10 +380,12 @@ class doFlashImage(Screen):
 				if SystemInfo["canMultiBoot"]:
 					if not self.List == "STARTUP":
 						os.system('mkfs.ext4 -F ' + self.devrootfs)
-					cmdlist.append("%s -r -k -m%s %s > /dev/null 2>&1" % (ofgwritePath, self.multi, flashTmp))
-					if not self.List == "STARTUP":
-						cmdlist.append("umount -fl /oldroot_bind > /dev/null 2>&1")
-						cmdlist.append("umount -fl /newroot > /dev/null 2>&1")
+					if getMachineBuild() in ("gbmv200"):
+						cmdlist.append("%s -r%s -k%s %s > /dev/null 2>&1" % (ofgwritePath, self.MTDROOTFS, self.MTDKERNEL, flashTmp))
+					else:
+						cmdlist.append("%s -r -k -m%s %s > /dev/null 2>&1" % (ofgwritePath, self.multi, flashTmp))
+				elif getMachineBuild() in ("gbmv200"):
+					cmdlist.append("%s -r%s -k%s %s > /dev/null 2>&1" % (ofgwritePath, MTDROOTFS, MTDKERNEL, flashTmp))
 				else:
 					cmdlist.append("%s -r -k %s > /dev/null 2>&1" % (ofgwritePath, flashTmp))
 				message = "echo -e '\n"
