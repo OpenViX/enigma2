@@ -341,6 +341,7 @@ class ConfigSelection(ConfigElement):
 		self.graphic = graphic
 
 	def setChoices(self, choices, default=None):
+		value = self.value
 		self.choices = choicesList(choices)
 
 		if default is None:
@@ -349,6 +350,8 @@ class ConfigSelection(ConfigElement):
 
 		if self.value not in self.choices:
 			self.value = default
+		if self.value != value:
+			self.changed()
 
 	def setValue(self, value):
 		if value in self.choices:

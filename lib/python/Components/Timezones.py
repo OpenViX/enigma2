@@ -1,214 +1,315 @@
-from enigma import eTimer
-
-from config import config, ConfigSelection, ConfigSubsection
-from os import environ, unlink, symlink, walk, path
+import errno
 import time
+import xml.etree.cElementTree
+
+from enigma import eTimer
+from os import environ, path, symlink, unlink, walk
+
+from Components.config import ConfigSelection, ConfigSubsection, config
+from Tools.Geolocation import geolocation
+from Tools.StbHardware import setRTCoffset
+
+# The DEFAULT_AREA setting is usable by the image maintainers to select the
+# default UI mode and location settings used by their image.  If the value
+# of "Classic" is used then images that use the "Timezone area" and 
+# "Timezone" settings will have the "Timezone area" set to "Classic" and the
+# "Timezone" field will be an expanded version of the classic list of GMT
+# related offsets.  Images that only use the "Timezone" setting should use
+# "Classic" to maintain their chosen UI for timezone selection.  That is,
+# users will only be presented with the list of GMT related offsets.
+#
+# The DEFAULT_ZONE is used to select the default timezone if the "Timezone
+# area" is selected to be "Europe".  This allows OpenViX to have the
+# European default of "London" while OpenATV and OpenPLi can select "Berlin",
+# etc. (These are only examples.)  Images can select any defaults they deem
+# appropriate.
+#
+# NOTE: Even if the DEFAULT_AREA of "Classic" is selected a DEFAULT_ZONE
+# must still be selected.
+#
+# For images that use both the "Timezone area" and "Timezone" configuration
+# options then the DEFAULT_AREA can be set to an area most appropriate for
+# the image.  For example, Beyonwiz would use "Australia", OpenATV, OpenViX
+# and OpenPLi would use "Europe".  If the "Europe" option is selected then
+# the DEFAULT_ZONE can be used to select a more appropriate timezone 
+# selection for the image.  For example, OpenATV and OpenPLi may prefer
+# "Berlin" while OpenViX may prefer "London".
+#
+# Please ensure that any defaults selected are valid, unique and available
+# in the "/usr/share/zoneinfo/" directory tree.
+#
+# This version of Timezones.py now incorporates access to a new Geolocation
+# feature that will try and determine the appropriate timezone for the user
+# based on their WAN IP address.  If the receiver is not connected to the
+# Internet the defaults described above and listed below will be used.
+#
+# DEFAULT_AREA = "Classic"  # Use the classic timezone based list of timezones.
+# DEFAULT_AREA = "Australia"  # Beyonwiz
+DEFAULT_AREA = "Europe"  # OpenATV, OpenPLi, OpenViX
+# DEFAULT_ZONE = "Berlin"  # OpenATV, OpenPLi
+DEFAULT_ZONE = "London"  # OpenViX
+TIMEZONE_FILE = "/etc/timezone.xml"  # This should be SCOPE_TIMEZONES_FILE!  This file moves arond the filesystem!!!  :(
+TIMEZONE_DATA = "/usr/share/zoneinfo/"  # This should be SCOPE_TIMEZONES_DATA!
+AT_POLL_DELAY = 3  # Minutes
 
 def InitTimeZones():
+	tz = geolocation.get("timezone", None)
+	if tz is None:
+		area = DEFAULT_AREA
+		zone = timezones.getTimezoneDefault(area=area)
+		print "[Timezones] Geolocation not available!  (area='%s', zone='%s')" % (area, zone)
+	elif DEFAULT_AREA == "Classic":
+		area = "Classic"
+		zone = tz
+		print "[Timezones] Classic mode with geolocation tz='%s', area='%s', zone='%s'." % (tz, area, zone)
+	else:
+		area, zone = tz.split("/", 1)
+		print "[Timezones] Modern mode with geolocation tz='%s', area='%s', zone='%s'." % (tz, area, zone)
 	config.timezone = ConfigSubsection()
-	config.timezone.area = ConfigSelection(default = "Europe", choices = timezones.getTimezoneAreaList())
-	def timezoneAreaChoices(configElement):
-		timezones.updateTimezoneChoices(configElement.getValue(), config.timezone.val)
-	config.timezone.area.addNotifier(timezoneAreaChoices, initial_call = False, immediate_feedback = True)
+	config.timezone.area = ConfigSelection(default=area, choices=timezones.getTimezoneAreaList())
+	config.timezone.val = ConfigSelection(default=timezones.getTimezoneDefault(), choices=timezones.getTimezoneList())
+	if not config.timezone.area.saved_value:
+		config.timezone.area.value = area
+	if not config.timezone.val.saved_value:
+		config.timezone.val.value = zone
+	config.timezone.save()
 
-	config.timezone.val = ConfigSelection(default = timezones.getTimezoneDefault(), choices = timezones.getTimezoneList())
+	def timezoneAreaChoices(configElement):
+		choices = timezones.getTimezoneList(area=configElement.value)
+		config.timezone.val.setChoices(choices=choices, default=timezones.getTimezoneDefault(area=configElement.value, choices=choices))
+		if config.timezone.val.saved_value and config.timezone.val.saved_value in [x[0] for x in choices]:
+			config.timezone.val.value = config.timezone.val.saved_value
+
 	def timezoneNotifier(configElement):
-		timezones.activateTimezone(configElement.getValue(), config.timezone.area.getValue())
-	config.timezone.val.addNotifier(timezoneNotifier, initial_call = True, immediate_feedback = True)
+		timezones.activateTimezone(configElement.value, config.timezone.area.value)
+
+	config.timezone.area.addNotifier(timezoneAreaChoices, initial_call=False, immediate_feedback=True)
+	config.timezone.val.addNotifier(timezoneNotifier, initial_call=True, immediate_feedback=True)
 	config.timezone.val.callNotifiersOnSaveAndCancel = True
 
-def sorttzChoices(tzchoices):
-	sort_list = []
-	for tzitem in tzchoices:
-		if tzitem[0].startswith("GMT"):
-			if len(tzitem[0][3:]) > 1 and (tzitem[0][3:4] == "-" or tzitem[0][3:4] == "+") and tzitem[0][4:].isdigit():
-				sortkey = int(tzitem[0][3:])
-			else:
-				sortkey = 0
-		else:
-			sortkey = tzitem[1]
-		sort_list.append((tzitem, sortkey))
-	sort_list.sort(key=lambda listItem: listItem[1])
-	return [i[0] for i in sort_list]
-
-def sorttz(tzlist):
-	return [i[0] for i in sorttzChoices(zip(tzlist, tzlist))]
 
 class Timezones:
-	tzbase = "/usr/share/zoneinfo"
-	gen_label = "Generic"
-	at_poll_delay = 3  # Minutes
-
 	def __init__(self):
 		self.timezones = {}
-		self.readTimezonesFromSystem()
-		try:
-			from Plugins.Extensions.AutoTimer.plugin import autotimer, autopoller
-			# Create attributes autotimer & autopoller for backwards compatibility.
-			# Their use is deprecated.
-			self.autopoller = autopoller
-			self.autotimer = autotimer
-			self.at_poll_delay = config.plugins.autotimer.delay.value
-		except ImportError:
-			self.autopoller = None
-			self.autotimer = None
-			self.at_poll_delay = None
+		self.loadTimezones()
+		self.readTimezones()
+		self.autotimerCheck()
+		if self.autotimerPollDelay is None:
+			self.autotimerPollDelay = AT_POLL_DELAY
 		self.timer = eTimer()
-		self.ATupdate = None
-		if self.at_poll_delay is None:
-			self.at_poll_delay = 3
+		self.autotimerUpdate = False
 
-	def startATupdate(self):
-		if self.ATupdate:
-			self.timer.stop()
-		if self.query not in self.timer.callback:
-			self.timer.callback.append(self.query)
-		print "[Timezones] AutoTimer poll will be run in", self.at_poll_delay, "minutes"
-		self.timer.startLongTimer(self.at_poll_delay * 60)
+	# Scan the zoneinfo directory tree and all load all timezones found.
+	#
+	def loadTimezones(self):
+		commonTimezoneNames = {
+			"Antarctica/DumontDUrville": "Dumont d'Urville",
+			"Asia/Ho_Chi_Minh": "Ho Chi Minh City",
+			"Australia/LHI": None,  # Exclude
+			"Australia/Lord_Howe": "Lord Howe Island",
+			"Australia/North": "Northern Territory",
+			"Australia/South": "South Australia",
+			"Australia/West": "Western Australia",
+			"Brazil/DeNoronha": "Fernando de Noronha",
+			"Pacific/Chatham": "Chatham Islands",
+			"Pacific/Easter": "Easter Island",
+			"Pacific/Galapagos": "Galapagos Islands",
+			"Pacific/Gambier": "Gambier Islands",
+			"Pacific/Johnston": "Johnston Atoll",
+			"Pacific/Marquesas": "Marquesas Islands",
+			"Pacific/Midway": "Midway Islands",
+			"Pacific/Norfolk": "Norfolk Island",
+			"Pacific/Pitcairn": "Pitcairn Islands",
+			"Pacific/Wake": "Wake Island",
+		}
+		for (root, dirs, files) in walk(TIMEZONE_DATA):
+			base = root[len(TIMEZONE_DATA):]
+			if base in ("posix", "right"):  # Skip these alternate copies of the timezone data if they exist.
+				continue
+			if base == "":
+				base = "Generic"
+			area = None
+			zones = []
+			for file in files:
+				if file[-4:] == ".tab" or file[-2:] == "-0" or file[-1:] == "0" or file[-2:] == "+0":  # No need for ".tab", "-0", "0", "+0" files.
+					continue
+				tz = "%s/%s" % (base, file)
+				area, zone = tz.split("/", 1)
+				name = commonTimezoneNames.get(tz, zone)  # Use the more common name if one is defined.
+				if name is None:
+					continue
+				zones.append((zone, name.replace("_", " ")))
+			if area:
+				if area in self.timezones:
+					zones = self.timezones[area] + zones
+				self.timezones[area] = self.gmtSort(zones)
+		if len(self.timezones) == 0:
+			print "[Timezones] Warning: No areas or zones found in '%s'!" % TIMEZONE_DATA
+			self.timezones["Generic"] = [("UTC", "UTC")]
 
-	def stopATupdate(self):
-		self.ATupdate = None
-		if self.query in self.timer.callback:
-			self.timer.callback.remove(self.query)
-		self.timer.stop()
+	# Return the list of Zones sorted alphabetically.  If the Zone
+	# starts with "GMT" then those Zones will be sorted in GMT order
+	# with GMT-14 first and GMT+12 last.
+	#
+	def gmtSort(self, zones):
+		data = {}
+		for (zone, name) in zones:
+			if name.startswith("GMT"):
+				try:
+					key = int(name[4:])
+					key = (key * -1) + 15 if name[3:4] == "-" else key + 15
+					key = "GMT%02d" % key
+				except ValueError:
+					key = "GMT15"
+			else:
+				key = name
+			data[key] = (zone, name)
+		return [data[x] for x in sorted(data.keys())]
 
-	def query(self):
-		print "[Timezones] AutoTimer poll running"
-		self.stopATupdate()
+	# Read the timezones.xml file and load all timezones found.
+	#
+	def readTimezones(self, filename=TIMEZONE_FILE):
+		root = None
 		try:
-			from Plugins.Extensions.AutoTimer.plugin import autotimer, autopoller
-			self.autopoller = autopoller
-			self.autotimer = autotimer
-			if autotimer is not None:
-				print "[Timezones] AutoTimer parseEPG"
-				autotimer.parseEPG(autoPoll=True)
-			if autopoller is not None:
-				autopoller.start()
-		except ImportError, KeyError:
-			pass
+			# This open gets around a possible file handle leak in Python's XML parser.
+			with open(filename, "r") as fd:
+				try:
+					root = xml.etree.cElementTree.parse(fd).getroot()
+				except xml.etree.cElementTree.ParseError as err:
+					root = None
+					fd.seek(0)
+					content = fd.readlines()
+					line, column = err.position
+					print "[Timezones] XML Parse Error: '%s' in '%s'!" % (err, filename)
+					data = content[line - 1].replace("\t", " ").rstrip()
+					print "[Timezones] XML Parse Error: '%s'" % data
+					print "[Timezones] XML Parse Error: '%s^%s'" % ("-" * column, " " * (len(data) - column - 1))
+				except Exception as err:
+					root = None
+					print "[Timezones] Error: Unable to parse timezone data in '%s' - '%s'!" % (filename, err)
+		except (IOError, OSError) as err:
+			if err.errno == errno.ENOENT:  # No such file or directory
+				print "[Timezones] Note: Classic timezones in '%s' are not available." % filename
+			else:
+				print "[Timezones] Error %d: Opening timezone file '%s'! (%s)" % (err.errno, filename, err.strerror)
+		except Exception as err:
+			print "[Timezones] Error: Unexpected error opening timezone file '%s'! (%s)" % (filename, err)
+		zones = []
+		if root is not None:
+			for zone in root.findall("zone"):
+				name = zone.get("name", "")
+				zonePath = zone.get("zone", "")
+				if path.exists(path.join(TIMEZONE_DATA, zonePath)):
+					zones.append((zonePath, name))
+				else:
+					print "[Timezones] Warning: Classic timezone '%s' (%s) is not available in '%s'!" % (name, zonePath, TIMEZONE_DATA)
+				# print "[Timezones] DEBUG: Count=%2d, Name='%-50s', Zone='%s'%s" % (len(zones), name, zonePath)
+			self.timezones["Classic"] = zones
+		if len(zones) == 0:
+			self.timezones["Classic"] = [("UTC", "UTC")]
 
-	def readTimezonesFromSystem(self):
-		tzfiles = [];
-		for (root, dirs, files) in walk(Timezones.tzbase):
-			root = root[len(Timezones.tzbase):]
-			if root == "":
-				root = "/" + Timezones.gen_label
-			for f in files:
-				if f[-4:] == '.tab' or f[-2:] == '-0' or f[-2:] == '+0': # no need for '.tab', -0, +0
-					files.remove(f)
-
-			for f in files:
-				fp = "%s/%s" % (root, f)
-				fp = fp[1:]	# Remove leading "/"
-				(section, zone) = fp.split("/", 1)
-				if not section in self.timezones:
-					self.timezones[section] = []
-				self.timezones[section].append(zone)
-
-			if len(self.timezones) == 0:
-				self.timezones[Timezones.gen_label] = ['UTC']
-
-	# Return all Area options
+	# Return a sorted list of all Area entries.
+	#
 	def getTimezoneAreaList(self):
 		return sorted(self.timezones.keys())
 
-	userFriendlyTZNames = {
-		"Asia/Ho_Chi_Minh": _("Ho Chi Minh City"),
-		"Australia/LHI": None, # Exclude
-		"Australia/Lord_Howe": _("Lord Howe Island"),
-		"Australia/North": _("Northern Territory"),
-		"Australia/South": _("South Australia"),
-		"Australia/West": _("Western Australia"),
-		"Brazil/DeNoronha": _("Fernando de Noronha"),
-		"Pacific/Chatham": _("Chatham Islands"),
-		"Pacific/Easter": _("Easter Island"),
-		"Pacific/Galapagos": _("Galapagos Islands"),
-		"Pacific/Gambier": _("Gambier Islands"),
-		"Pacific/Johnston": _("Johnston Atoll"),
-		"Pacific/Marquesas": _("Marquesas Islands"),
-		"Pacific/Midway": _("Midway Islands"),
-		"Pacific/Norfolk": _("Norfolk Island"),
-		"Pacific/Pitcairn": _("Pitcairn Islands"),
-		"Pacific/Wake": _("Wake Island"),
-	}
-
-	@staticmethod
-	def getUserFriendlyTZName(area, tzname):
-		return Timezones.userFriendlyTZNames.get(area + '/' + tzname, tzname.replace('_', ' '))
-
-	# Return all zone entries for an Area, sorted.
+	# Return a sorted list of all Zone entries for an Area.
+	#
 	def getTimezoneList(self, area=None):
-		if area == None:
-			area = config.timezone.area.getValue()
-		return sorttzChoices((tzname, self.getUserFriendlyTZName(area, tzname)) for tzname in self.timezones[area] if self.getUserFriendlyTZName(area, tzname))
+		if area is None:
+			area = config.timezone.area.value
+		return self.timezones.get(area, [("UTC", "UTC")])
 
-	default_for_area = {
-		'Europe': 'London',
-		'Generic': 'UTC',
-	}
+	# Return a default Zone for any given Area.  If there is no specific
+	# default then the first Zone in the Area will be returned.
+	#
 	def getTimezoneDefault(self, area=None, choices=None):
-		if area == None:
-			try:
-				area = config.timezone.area.getValue()
-			except:
-				print "[Timezones] getTimezoneDefault, no area found, using Europe"
-				area = "Europe"
-		if choices == None:
+		areaDefaultZone = {
+			"Australia": "Sydney",
+			"Classic": "Europe/%s" % DEFAULT_ZONE,
+			"Etc": "GMT",
+			"Europe": DEFAULT_ZONE,
+			"Generic": "UTC",
+			"Pacific": "Auckland"
+		}
+		if area is None:
+			area = config.timezone.area.value
+		if choices is None:
 			choices = self.getTimezoneList(area=area)
-		return Timezones.default_for_area.setdefault(area, choices[0][0])
+		return areaDefaultZone.setdefault(area, choices[0][0])
 
-	def updateTimezoneChoices(self, area, zone_field):
-		choices = self.getTimezoneList(area=area)
-		default = self.getTimezoneDefault(area=area, choices=choices)
-		zone_field.setChoices(choices = choices, default = default)
-		return
-
-	def activateTimezone(self, tz, tzarea):
-		try:
-			from Plugins.Extensions.AutoTimer.plugin import autotimer, autopoller
-			self.autopoller = autopoller
-			self.autotimer = autotimer
-			if config.plugins.autotimer.autopoll.value:
-				print "[Timezones] trying to stop main AutoTimer poller"
-				if autopoller is not None:
-					autopoller.stop()
-				self.ATupdate = True
-		except ImportError, KeyError:
-			pass
-
-		if tzarea == Timezones.gen_label:
-			fulltz = tz
-		else:
-			fulltz = "%s/%s" % (tzarea, tz)
-
-		tzneed = "%s/%s" % (Timezones.tzbase, fulltz)
-		if not path.isfile(tzneed):
-			print "[Timezones] Attempt to set timezone", fulltz, "ignored. UTC used"
-			fulltz = "UTC"
-			tzneed = "%s/%s" % (Timezones.tzbase, fulltz)
-
-		print "[Timezones] setting timezone to", fulltz
-		environ['TZ'] = fulltz
+	def activateTimezone(self, zone, area):
+		# print "[Timezones] activateTimezone DEBUG: Area='%s', Zone='%s'" % (area, zone)
+		self.autotimerCheck()
+		if self.autotimerAvailable and config.plugins.autotimer.autopoll.value:
+			print "[Timezones] Trying to stop main AutoTimer poller."
+			if self.autotimerPoller is not None:
+				self.autotimerPoller.stop()
+			self.autotimerUpdate = True
+		tz = zone if area in ("Classic", "Generic") else path.join(area, zone)
+		file = path.join(TIMEZONE_DATA, tz)
+		if not path.isfile(file):
+			print "[Timezones] Error: The timezone '%s' is not available!  Using 'UTC' instead." % tz
+			tz = "UTC"
+			file = path.join(TIMEZONE_DATA, tz)
+		print "[Timezones] Setting timezone to '%s'." % tz
+		environ["TZ"] = tz
 		try:
 			unlink("/etc/localtime")
-		except OSError:
+		except (IOError, OSError) as err:
+			if err.errno != errno.ENOENT:  # No such file or directory
+				print "[Directories] Error %d: Unlinking '/etc/localtime'! (%s)" % (err.errno, err.strerror)
 			pass
 		try:
-			symlink(tzneed, "/etc/localtime")
-		except OSError:
+			symlink(file, "/etc/localtime")
+		except (IOError, OSError) as err:
+			print "[Directories] Error %d: Linking '%s' to '/etc/localtime'! (%s)" % (err.errno, file, err.strerror)
 			pass
 		try:
 			time.tzset()
-		except:
+		except Exception:
 			from enigma import e_tzset
 			e_tzset()
+		if path.exists("/proc/stb/fp/rtc_offset"):
+			setRTCoffset()
+		if self.autotimerAvailable and config.plugins.autotimer.autopoll.value:
+			if self.autotimerUpdate:
+				self.timer.stop()
+			if self.autotimeQuery not in self.timer.callback:
+				self.timer.callback.append(self.autotimeQuery)
+			print "[Timezones] AutoTimer poller will be run in %d minutes." % AT_POLL_DELAY
+			self.timer.startLongTimer(AT_POLL_DELAY * 60)
+
+	def autotimerCheck(self):
 		try:
+			# Create attributes autotimer & autopoller for backwards compatibility.
+			# Their use is deprecated.
 			from Plugins.Extensions.AutoTimer.plugin import autotimer, autopoller
-			self.autopoller = autopoller
-			self.autotimer = autotimer
-			if config.plugins.autotimer.autopoll.value:
-				self.startATupdate()
-		except ImportError, KeyError:
-			pass
+			self.autotimerPoller = autopoller
+			self.autotimerTimer = autotimer
+			self.autotimerAvailable = True
+		except ImportError:
+			self.autotimerPoller = None
+			self.autotimerTimer = None
+			self.autotimerAvailable = False
+		try:
+			self.autotimerPollDelay = config.plugins.autotimer.delay.value
+		except AttributeError:
+			self.autotimerPollDelay = None
+
+	def autotimeQuery(self):
+		print "[Timezones] AutoTimer poll is running."
+		self.autotimerUpdate = False
+		if self.autotimeQuery in self.timer.callback:
+			self.timer.callback.remove(self.autotimeQuery)
+		self.timer.stop()
+		self.autotimerCheck()
+		if self.autotimerAvailable:
+			if self.autotimerTimer is not None:
+				print "[Timezones] AutoTimer is parseing the EPG."
+				self.autotimerTimer.parseEPG(autoPoll=True)
+			if self.autotimerPoller is not None:
+				self.autotimerPoller.start()
+
 
 timezones = Timezones()

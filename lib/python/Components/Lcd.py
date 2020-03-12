@@ -260,12 +260,11 @@ def InitLcd():
 	else:
 		can_lcdmodechecking = False
 
-	if SystemInfo["PowerLed"]:
+	if SystemInfo["PowerLED"]:
 		def setPowerLEDstate(configElement):
-			if fileExists("/proc/stb/power/powerled"):
-				f = open("/proc/stb/power/powerled", "w")
-				f.write(configElement.value)
-				f.close()
+			f = open(SystemInfo["PowerLED"], "w")
+			f.write(configElement.value)
+			f.close()
 		config.lcd.powerled = ConfigSelection(default = "on", choices = [("off", _("Off")), ("on", _("On"))])
 		config.lcd.powerled.addNotifier(setPowerLEDstate)
 
