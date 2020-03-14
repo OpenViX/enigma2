@@ -20,6 +20,10 @@ profile("SetupDevices")
 import Components.SetupDevices
 Components.SetupDevices.InitSetupDevices()
 
+profile("Geolocation")
+import Tools.Geolocation
+Tools.Geolocation.InitGeolocation()
+
 profile("SimpleSummary")
 from Screens import InfoBar
 from Screens.SimpleSummary import SimpleSummary
@@ -625,6 +629,10 @@ Components.UsageConfig.InitUsageConfig()
 profile("Init:NTPSync")
 import Components.NetworkTime
 Components.NetworkTime.AutoNTPSync()
+
+profile("Timezones")
+import Components.Timezones
+Components.Timezones.InitTimeZones()
 
 profile("keymapparser")
 import keymapparser
