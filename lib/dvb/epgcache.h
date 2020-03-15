@@ -335,7 +335,7 @@ private:
 #endif
 	void sectionRead(const uint8_t *data, int source, channel_data *channel);
 	void gotMessage(const Message &message);
-//	void cleanLoop();
+	void cleanLoop();
 	void submitEventData(const std::vector<int>& sids, const std::vector<eDVBChannelID>& chids, long start, long duration, const char* title, const char* short_summary, const char* long_description, char event_type, int source);
 
 // called from main thread
@@ -355,7 +355,6 @@ public:
 	void crossepgImportEPGv21(std::string dbroot);
 	void save();
 	void load();
-	void cleanLoop();
 	void timeUpdated();
 	void flushEPG(const uniqueEPGKey & s=uniqueEPGKey());
 #ifndef SWIG
