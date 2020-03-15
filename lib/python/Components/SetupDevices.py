@@ -3,12 +3,13 @@ from Components.Keyboard import keyboard
 from Components.Language import language
 
 def InitSetupDevices():
-	#def languageNotifier(configElement):
-	#	language.activateLanguage(configElement.value)
 
-	#config.osd = ConfigSubsection()
-	#config.osd.language = ConfigText(default="en_EN")
-	#config.osd.language.addNotifier(languageNotifier)
+	def languageNotifier(configElement):
+		language.activateLanguage(configElement.value)
+
+	config.osd = ConfigSubsection()
+	config.osd.language = ConfigText(default="en_EN")
+	config.osd.language.addNotifier(languageNotifier)
 
 	def keyboardNotifier(configElement):
 		keyboard.activateKeyboardMap(configElement.index)
