@@ -146,7 +146,7 @@ class ImageBackup(Screen):
 			self.read_current_multiboot()
 
 	def read_current_multiboot(self):
-		if self.MACHINEBUILD in ("gbmv200"):
+		if self.MACHINEBUILD in ("gbmv200","gb72604"):
 			if self.list[self.selection] == "Recovery":
 				cmdline = self.read_startup("/boot/STARTUP").split("=",1)[1].split(" ",1)[0]
 			else:
