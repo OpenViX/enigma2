@@ -2573,7 +2573,7 @@ msgid "Control the Infobar fading speed"
 msgstr "Beeinflusse die Geschwindigkeit der Infobar Ausblendung"
 
 msgid "Convert ext3 filesystem to ext4"
-msgstr "Ext3 Dateisystem nach ext4 umwandeln"
+msgstr "Ext3 nach ext4 umwandeln"
 
 msgid "Convert ext3 to ext4"
 msgstr "Ext3 nach ext4 umwandeln"
