@@ -24,8 +24,6 @@ class HddInfo(ConfigListScreen, Screen):
 	<screen name="HddInfo" position="center,center" size="560,430" title="Hard Drive Info">
 		<ePixmap pixmap="buttons/red.png" position="0,0" size="140,40" alphatest="on" />
 		<ePixmap pixmap="buttons/green.png" position="140,0" size="140,40" alphatest="on" />
-		<ePixmap pixmap="buttons/yellow.png" position="280,0" size="140,40" alphatest="on" />
-		<ePixmap pixmap="buttons/blue.png" position="420,0" size="140,40" alphatest="on" />
 		<widget name="key_red" position="0,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" />
 		<widget name="key_green" position="140,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1" />
 		<widget name="key_yellow" position="280,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" transparent="1" />
@@ -50,10 +48,8 @@ class HddInfo(ConfigListScreen, Screen):
 
 		ConfigListScreen.__init__(self, self.list)
 
-		self["key_green"] = Button("")
-		self["key_red"] = Button(_("Ok"))
-		self["key_blue"] = Button(_("Exit"))
-		self["key_yellow"] = Button("")
+		self["key_red"] = Button(_("Exit"))
+		self["key_green"] = Button(_("OK"))
 		self["model"] = Label(_("Model: unknown"))
 		self["serial"] = Label(_("Serial: unknown"))
 		self["firmware"] = Label(_("Firmware: unknown"))
@@ -65,9 +61,8 @@ class HddInfo(ConfigListScreen, Screen):
 		self["temp"] = Label(_("Disk temperature: unknown"))
 		self["actions"] = ActionMap(["OkCancelActions", "ColorActions"],
 		{
-			"blue": self.keyCancel,
-			#"yellow": self.yellow,
-			"red": self.keySave,
+			"green": self.keySave,
+			"red": self.keyCancel,
 			"cancel": self.keyCancel,
 		}, -2)
 
