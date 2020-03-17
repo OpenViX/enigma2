@@ -1321,6 +1321,22 @@ void eEPGCache::thread()
 
 static const char* EPGDAT_IN_FLASH = "/epg.dat";
 
+void eEPGCache::restartAllChannelsEPG()
+{
+	eDebug("[eEPGCache] restart All Channels EPG");
+	singleLock m(channel_map_lock);
+	for (ChannelMap::const_iterator it(m_knownChannels.begin()); it != m_knownChannels.end(); ++it)
+		it->second->startEPG();
+}
+
+void eEPGCache::abortAllChannelsEPG()
+{
+	eDebug("[eEPGCache] abort All Channels EPG");
+	singleLock m(channel_map_lock);
+	for (ChannelMap::const_iterator it(m_knownChannels.begin()); it != m_knownChannels.end(); ++it)
+		it->second->abortEPG();
+}
+
 void eEPGCache::load()
 {
 	if (m_filename.empty())
@@ -1366,6 +1382,7 @@ void eEPGCache::load()
 		}
 		char text1[13];
 		ret = fread( text1, 13, 1, f);
+		abortAllChannelsEPG();
 		if ( !memcmp( text1, "ENIGMA_EPG_V7", 13) )
 		{
 			singleLock s(cache_lock);
@@ -1444,6 +1461,7 @@ void eEPGCache::load()
 		posix_fadvise(fileno(f), 0, 0, POSIX_FADV_DONTNEED);
 		fclose(f);
 		// We got this far, so the EPG file is okay.
+		restartAllChannelsEPG();
 		if (renameResult == 0)
 		{
 			renameResult = rename(EPGDATX, EPGDAT);
@@ -1485,23 +1503,54 @@ void eEPGCache::save()
 			eDebug("[eEPGCache] realpath to %s failed in save: %m", EPGDAT);
 			fclose(f);
 			return;
-		}
-	
-		eDebug("[eEPGCache] store epg to realpath '%s'", buf);
-	
-		struct statfs s;
-		off64_t tmp;
-		if (statfs(buf, &s) < 0) {
-			eDebug("[eEPGCache] statfs %s failed in save: %m", buf);
-			fclose(f);
-			free(buf);
-			return;
-		}
-	
-		// check for enough free space on storage
-		tmp=s.f_bfree;
-		tmp*=s.f_bsize;
-		if ( tmp < (eventData::CacheSize*12)/10 ) // 20% overhead
+	}
+
+	char* buf = realpath(EPGDAT, NULL);
+	if (!buf)
+	{
+		eDebug("[eEPGCache] realpath to %s failed in save: %m", EPGDAT);
+		fclose(f);
+		return;
+	}
+
+	eDebug("[eEPGCache] store epg to realpath '%s'", buf);
+
+	struct statfs s;
+	off64_t tmp;
+	if (statfs(buf, &s) < 0) {
+		eDebug("[eEPGCache] statfs %s failed in save: %m", buf);
+		fclose(f);
+		free(buf);
+		return;
+	}
+
+	// check for enough free space on storage
+	tmp=s.f_bfree;
+	tmp*=s.f_bsize;
+	if ( tmp < (eventData::CacheSize*12)/10 ) // 20% overhead
+	{
+		eDebug("[eEPGCache] not enough free space at '%s' %zu bytes available but %u needed", buf, tmp, (eventData::CacheSize*12)/10);
+		free(buf);
+		fclose(f);
+		return;
+	}
+	abortAllChannelsEPG();
+	free(buf);
+
+	int cnt=0;
+	unsigned int magic = 0x98765432;
+	fwrite( &magic, sizeof(int), 1, f);
+	const char *text = "UNFINISHED_V7";
+	fwrite( text, 13, 1, f );
+	int size = eventDB.size();
+	fwrite( &size, sizeof(int), 1, f );
+	for (eventCache::iterator service_it(eventDB.begin()); service_it != eventDB.end(); ++service_it)
+	{
+		timeMap &timemap = service_it->second.byTime;
+		fwrite( &service_it->first, sizeof(uniqueEPGKey), 1, f);
+		size = timemap.size();
+		fwrite( &size, sizeof(int), 1, f);
+		for (timeMap::iterator time_it(timemap.begin()); time_it != timemap.end(); ++time_it)
 		{
 			eDebug("[eEPGCache] not enough free space at '%s' %zu bytes available but %u needed", buf, tmp, (eventData::CacheSize*12)/10);
 			free(buf);
@@ -1560,13 +1609,13 @@ void eEPGCache::save()
 			}
 		}
 #endif
-		// write version string after binary data
-		// has been written to disk.
-		fsync(fileno(f));
-		fseek(f, sizeof(int), SEEK_SET);
-		fwrite("ENIGMA_EPG_V7", 13, 1, f);
-		fclose(f);
-	}
+	// write version string after binary data
+	// has been written to disk.
+	fsync(fileno(f));
+	fseek(f, sizeof(int), SEEK_SET);
+	fwrite("ENIGMA_EPG_V7", 13, 1, f);
+	fclose(f);
+	restartAllChannelsEPG();
 }
 
 eEPGCache::channel_data::channel_data(eEPGCache *ml)
@@ -2418,6 +2467,7 @@ void eEPGCache::channel_data::startChannel()
 
 void eEPGCache::channel_data::abortEPG()
 {
+	eDebug("[eEPGCache] stop caching events(%ld)", ::time(0));
 	for (unsigned int i=0; i < sizeof(seenSections)/sizeof(tidMap); ++i)
 	{
 		seenSections[i].clear();
