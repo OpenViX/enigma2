@@ -21,6 +21,16 @@ from Screens.Standby import TryQuitMainloop
 from Tools.LoadPixmap import LoadPixmap
 from Tools.Directories import SCOPE_ACTIVE_SKIN, resolveFilename
 
+blacklistedDisks = [
+	1,  	# RAM disk (/dev/ram0=0, /dev/initrd=250 [250=Initial RAM disk for old systems, new systems use 0])
+	7,  	# Loopback devices (/dev/loop0=0)
+	31,  	# ROM/flash memory card (/dev/rom0=0, /dev/rrom0=8, /dev/flash0=16, /dev/rflash0=24 [r=Read Only])
+	240,  	# ROM/flash memory card (/dev/rom0=0, /dev/rrom0=8, /dev/flash0=16, /dev/rflash0=24 [r=Read Only])
+	253,  	# LOCAL/EXPERIMENTAL USE
+	254,  	# LOCAL/EXPERIMENTAL USE
+	259  	# MMC block devices (/dev/mmcblk0=0, /dev/mmcblk0p1=1, /dev/mmcblk1=8)
+]
+
 def getProcPartitions(List):
 	list2 = []
 	with open('/proc/partitions', 'r') as f:
@@ -29,12 +39,15 @@ def getProcPartitions(List):
 			if not parts:
 				continue
 			(devmajor, devminor, blocks, device) = parts
-			# print '[MountManager1] device = %s devmajor = %s devminor = %s' %(device, devmajor, devminor)
+			# print '[MountManager] device = %s devmajor = %s devminor = %s' %(device, devmajor, devminor)
 			if devmajor == "major":
 				continue
-			if not re.search('8', devmajor) and not re.search('179', devmajor):					# look at disk & mmc(179)
+			devMajor = int(devmajor)
+			# print '[MountManager1] parts = %s DevMajor = %s' %(parts[0], devMajor,)
+			if devMajor in blacklistedDisks:									# look at disk & mmc(179)
 				continue
-			if  re.search('179', devmajor):  
+			if devMajor == 179:
+				# print '[MountManager]'
 				if not SystemInfo["HasSDnomount"]:								# only interested in h9/i55/h9combo(+dups) mmc partitions
 					continue										# h9combo(+dups) uses mmcblk1p[0-3] include
 				if SystemInfo["HasH9SD"]:
@@ -42,9 +55,9 @@ def getProcPartitions(List):
 						continue	
 					if SystemInfo["HasMMC"]:								# h9/i55 reject mmcblk0p1 mmc partition if root device
 						continue
-				if SystemInfo["HasSDnomount"][0] == 'Yes' and not re.search('mmcblk1p[0-3]', device):		# h9combo(+dups) uses mmcblk1p[0-3] include
+				if SystemInfo["HasSDnomount"][0] and not re.search('mmcblk1p[0-3]', device):			# h9combo(+dups) uses mmcblk1p[0-3] include
 					continue
-			if re.search('8', devmajor):
+			if devMajor == 8:
 				if not re.search('sd[a-z][1-9]', device):							# if storage use partitions only
 					continue
 				if SystemInfo["HasHiSi"] and path.exists("/dev/sda4") and re.search('sd[a][1-4]', device):	# sf8008 using SDcard for slots ---> exclude
@@ -53,6 +66,7 @@ def getProcPartitions(List):
 				continue
 			buildDeviceList(device, List)
 			list2.append(device)
+			# print '[MountManager] list2 = %s' %list2
 
 def buildDeviceList(device, List):
 	if re.search('mmcblk[0-1]p[0-3]', device):
