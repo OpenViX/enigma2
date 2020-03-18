@@ -314,7 +314,7 @@ class TranslationInfo(Screen):
 		if infomap.get("Report-Msgid-Bugs-To", "") != "":
 			linfo += _("Report Msgid Bugs To")	+ ":" + infomap.get("Report-Msgid-Bugs-To", "") + "\n"
 		else:
-			linfo += _("Report Msgid Bugs To")	+ ":" + "teamblue@email.de" + "\n"
+			linfo += _("Report Msgid Bugs To")	+ ":" + "teamblue@online.de" + "\n"
 		self["AboutScrollLabel"] = ScrollLabel(linfo)
 
 
