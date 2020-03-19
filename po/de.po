@@ -11090,7 +11090,7 @@ msgid "Trinidad and Tobago"
 msgstr "Trinidad and Tobago"
 
 msgid "Troubleshoot"
-msgstr "Problembehandlung"
+msgstr "Fehlerbehebung"
 
 msgid "True"
 msgstr ""
