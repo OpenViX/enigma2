@@ -1485,7 +1485,7 @@ void eEPGCache::save()
 			return;
 		std::vector<char> vEPGDAT(m_filename.begin(), m_filename.end());
 		vEPGDAT.push_back('\0');
-		const char* EPGDAT = &vEPGDAT[0];
+		const char* EPGDAT = &vEPGDAT[0];	
 		/* create empty file */
 		FILE *f = fopen(EPGDAT, "wb");
 		if (!f)
@@ -1496,14 +1496,13 @@ void eEPGCache::save()
 			if (!f)
 				return;
 		}
-
+	
 		char* buf = realpath(EPGDAT, NULL);
 		if (!buf)
 		{
 			eDebug("[eEPGCache] realpath to %s failed in save: %m", EPGDAT);
 			fclose(f);
 			return;
-		}
 	}
 
 	char* buf = realpath(EPGDAT, NULL);
@@ -1558,7 +1557,7 @@ void eEPGCache::save()
 			fclose(f);
 			return;
 		}
-
+	
 		int cnt=0;
 		unsigned int magic = 0x98765432;
 		fwrite( &magic, sizeof(int), 1, f);
@@ -3896,7 +3895,7 @@ PyObject *eEPGCache::search(ePyObject arg)
 					int textlen = PyString_GET_SIZE(obj);
 #else
 					int textlen = PyString_Size(obj);
-#endif
+#endif              
 					const char *ctype = casetypestr(casetype);
 					switch (querytype)
 					{
@@ -4015,7 +4014,7 @@ PyObject *eEPGCache::search(ePyObject arg)
 							it != eventData::descriptors.end(); ++it)
 						{
 							uint8_t *data = it->second.data;
-
+							
 							eit_extended_descriptor_struct *extended_event_descriptor = (eit_extended_descriptor_struct *) ((u_char *) data);
 							if ( (u_char)extended_event_descriptor->descriptor_tag == (u_char)EXTENDED_EVENT_DESCRIPTOR ) // extended event descriptor
 							{
