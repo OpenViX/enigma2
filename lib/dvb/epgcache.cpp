@@ -1506,6 +1506,8 @@ void eEPGCache::save()
 		}
 	}
 
+	eDebug("[eEPGCache] store epg to realpath '%s'", buf);
+
 	struct statfs s;
 	off64_t tmp;
 	if (statfs(buf, &s) < 0) {
