@@ -1506,14 +1506,6 @@ void eEPGCache::save()
 		}
 	}
 
-	char* buf = realpath(EPGDAT, NULL);
-	if (!buf)
-	{
-		eDebug("[eEPGCache] realpath to %s failed in save: %m", EPGDAT);
-		fclose(f);
-		return;
-	}
-
 	eDebug("[eEPGCache] store epg to realpath '%s'", buf);
 
 	struct statfs s;
