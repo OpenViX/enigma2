@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-11 09:46+0000\n"
-"PO-Revision-Date: 2019-11-12 18:33+0100\n"
+"POT-Creation-Date: 2020-03-18 17:41+0000\n"
+"PO-Revision-Date: 2020-03-20 11:26+0100\n"
 "Last-Translator: Ralf Biedermann <ralf.biedermann@rbsoft.de>\n"
 "Language-Team: AndyBlacburn, j-ot&Trial\n"
 "Language: de\n"
@@ -11,8 +11,16 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
-"X-Generator: Poedit 2.2.4\n"
+"X-Generator: Poedit 2.2.3\n"
 "X-Poedit-SourceCharset: iso-8859-15\n"
+
+#, python-format
+msgid ""
+"\n"
+" %s is also enabled for autofs network mount"
+msgstr ""
+"\n"
+"%s ist auch für autofs Verbindungen aktiviert"
 
 msgid ""
 "\n"
@@ -133,9 +141,6 @@ msgid ""
 msgstr ""
 "\n"
 "Anzeigen, installieren und entfernen verfügbarer oder installierter Pakete."
-
-msgid " "
-msgstr ""
 
 #, python-format
 msgid "  (%s x %s)"
@@ -975,6 +980,9 @@ msgstr ""
 msgid "( All readers)"
 msgstr "( Alle Kartenleser )"
 
+msgid "(Current image)"
+msgstr "(aktuelles Image)"
+
 msgid "(PiP)"
 msgstr "(PiP)"
 
@@ -1097,6 +1105,10 @@ msgstr "16:9 Letterbox"
 msgid "16:9 always"
 msgstr "immer 16:9"
 
+#, fuzzy
+msgid "16K"
+msgstr "16"
+
 msgid "18 V"
 msgstr "18 V"
 
@@ -1184,6 +1196,9 @@ msgstr "4:3 Letterbox"
 msgid "4:3 PanScan"
 msgstr "4:3 PanScan"
 
+msgid "4K"
+msgstr ""
+
 msgid "4X"
 msgstr "4X"
 
@@ -1196,14 +1211,26 @@ msgstr "720p"
 msgid "720p 24Hz"
 msgstr "720p 24Hz"
 
+msgid "8K"
+msgstr ""
+
 msgid "8bit"
 msgstr "8bit"
+
+msgid "< Current >"
+msgstr "< aktuell >"
+
+msgid "< Default + Picon >"
+msgstr "<Standard mit PIcon>"
 
 msgid "< Default >"
 msgstr "<Standard>"
 
-msgid "< Default with Picon >"
-msgstr "<Standard mit PIcon>"
+msgid "< Emergency >"
+msgstr "< Notfall >"
+
+msgid "< Pending restart >"
+msgstr "< Neustart demnächst >"
 
 msgid "<Current movielist location>"
 msgstr "<Aktuelles Filmverzeichnis>"
@@ -1429,9 +1456,6 @@ msgstr "Favoriten bearbeiten abbrechen"
 msgid "About"
 msgstr "Über"
 
-msgid "About..."
-msgstr "Über..."
-
 msgid "Accept the current selection"
 msgstr "Bestätige aktuelle Wahl"
 
@@ -1566,6 +1590,9 @@ msgstr "Zu Favoritenliste hinzufügen"
 
 msgid "Add service to favourites"
 msgstr "Sender zu Favoriten hinzufügen"
+
+msgid "Add services to this bouquet?"
+msgstr "Zu dieser Favoritenliste hinzufügen?"
 
 msgid "Add timer"
 msgstr "Timer hinzufügen"
@@ -2298,6 +2325,9 @@ msgstr "Verstärke Grün"
 msgid "Bootloader:\t%s\n"
 msgstr "Bootloader:\t\t%s\n"
 
+msgid "Bootup time"
+msgstr "Startzeit"
+
 msgid "Bosnia and Herzegovina"
 msgstr "Bosnia und Herzegovina"
 
@@ -2519,11 +2549,23 @@ msgstr "Canada"
 msgid "Cancel"
 msgstr "Abbrechen"
 
+msgid "Cancel any changes to the currently active skin"
+msgstr "Alle Änderungen am aktiven Skin verwerfen"
+
+msgid "Cancel any changes to the currently active skin and exit all menus"
+msgstr "Alle Änderungen am aktiven Skin verwerfen und verlasse alle Menüs"
+
 msgid "Cancel any text changes and exit"
 msgstr "Textänderungen verwerfen und virtuelle Tastatur verlassen"
 
 msgid "Cancel save timeshift as movie"
 msgstr "Film speichern abbrechen"
+
+msgid "Cancel the image selection and exit"
+msgstr "Auswahl von Image abbrechen und verlasse"
+
+msgid "Cancel the image selection and exit all menus"
+msgstr "Auswahl von Image abbrechen und alle Menüs verlassen"
 
 msgid "Cancel the selection"
 msgstr "Auswahl abbrechen"
@@ -2689,9 +2731,6 @@ msgstr "Kapitel"
 
 msgid "Chapter:"
 msgstr "Kapitel:"
-
-msgid "Chatham Islands"
-msgstr "Chatham Islands"
 
 msgid "Check"
 msgstr "Test"
@@ -3267,6 +3306,9 @@ msgstr "Stelle ein ob (und wie lange) die SecondInfoBar angezeigt werden soll we
 
 msgid "Configure whether or not an rotor position will be displayed on infobar"
 msgstr "Einstellen ob die Rotorposition in InfoBar angezeigt werden soll"
+
+msgid "Configure whether service picons will be shown in number zap."
+msgstr "Konfigurieren ob PIcons bei Senderwahl mit Ziffern gezeigt werden sollen."
 
 msgid "Configure which color format should be used on the SCART output."
 msgstr "Stell ein welches Farbformat an SCART ausgegeben werden soll (CVBS, RGB, YUV, RGB)."
@@ -4070,6 +4112,9 @@ msgstr "4:3-Inhalt anzeigen als"
 msgid "Display >16:9 content as"
 msgstr ">16:9-Inhalt anzeigen als"
 
+msgid "Display Skin"
+msgstr ""
+
 msgid "Display and user interface"
 msgstr "Anzeige und Benutzeroberfläche"
 
@@ -4397,9 +4442,6 @@ msgstr "Ost"
 msgid "East limit set"
 msgstr "Ost Grenzwert setzen"
 
-msgid "Easter Island"
-msgstr "Easter Island"
-
 msgid "Ecm:"
 msgstr "ECM:"
 
@@ -4606,9 +4648,6 @@ msgstr "Endzeit"
 
 msgid "English"
 msgstr "Englisch"
-
-msgid "Enigma2 skin selector"
-msgstr "Enigma2 Skinauswahl"
 
 msgid "Enter"
 msgstr "Eingabe"
@@ -4848,9 +4887,6 @@ msgstr "Netzwerkadaptermenü verlassen"
 msgid "Exit the wizard"
 msgstr "Assistent beenden"
 
-msgid "Exit/OK"
-msgstr "Verlassen/OK"
-
 msgid "Expert"
 msgstr "Experte"
 
@@ -4902,6 +4938,9 @@ msgstr "Externe Untertitel Dialogeinfärbung"
 
 msgid "External subtitle switch fonts"
 msgstr "Externe Untertitel wechsel Zeichensatz"
+
+msgid "Externally powered"
+msgstr "Externe Stromversorgung"
 
 msgid "Extra motor options"
 msgstr "Extra Rotoroptionen"
@@ -4968,6 +5007,9 @@ msgid "FEC"
 msgstr "FEC"
 
 msgid "FEC:"
+msgstr ""
+
+msgid "FHD"
 msgstr ""
 
 msgid "FLASH"
@@ -5070,9 +5112,6 @@ msgstr "Feed Status: instabil"
 
 msgid "Feeds status: Updating"
 msgstr "Feed Status: aktualisieren"
-
-msgid "Fernando de Noronha"
-msgstr "Fernando de Noronha"
 
 msgid "Fiji"
 msgstr "Fiji"
@@ -5238,19 +5277,14 @@ msgstr "GB"
 msgid "GStreamer:\t%s\n"
 msgstr "GStreamer:\t%s\n"
 
+msgid "GUI Skin"
+msgstr "Skin Benutzeroberfläche"
+
 msgid ""
 "GUI needs a restart to apply a new language\n"
 "Do you want to restart the GUI now?"
 msgstr ""
 "Die Benutzeroberfläche muss neu gestartet werden, um die neue Sprache übernehmen zu können.\n"
-"Jetzt neu starten?"
-
-msgid ""
-"GUI needs a restart to apply a new skin\n"
-"Do you want to restart the GUI now?"
-msgstr ""
-"Die Benutzeroberfläche muss neu gestartet werden,\n"
-"um das neue Aussehen übernehmen zu können.\n"
 "Jetzt neu starten?"
 
 msgid ""
@@ -5267,14 +5301,8 @@ msgstr "Benutzeroberfläche Einstellungen"
 msgid "Gabon"
 msgstr "Gabon"
 
-msgid "Galapagos Islands"
-msgstr "Galapagos Islands"
-
 msgid "Gambia"
 msgstr "Gambia"
-
-msgid "Gambier Islands"
-msgstr "Gambier Islands"
 
 msgid "Gateway"
 msgstr "Gateway"
@@ -5468,6 +5496,9 @@ msgstr ""
 msgid "H:mm:ss"
 msgstr ""
 
+msgid "HD"
+msgstr ""
+
 msgid "HD list"
 msgstr "HD Liste"
 
@@ -5481,7 +5512,7 @@ msgid "HDD settings"
 msgstr "HDD Einstellungen"
 
 msgid "HDMI"
-msgstr "HDMI"
+msgstr ""
 
 msgid "HDMI CEC"
 msgstr "HDMI CEC"
@@ -5605,9 +5636,6 @@ msgstr "Vergangenheit nächster"
 
 msgid "History zap..."
 msgstr "Vergangenheit zappen..."
-
-msgid "Ho Chi Minh City"
-msgstr "Ho Chi Minh City"
 
 msgid "Hold screen"
 msgstr "Bild halten"
@@ -6175,9 +6203,6 @@ msgstr "Jersey"
 msgid "Job View"
 msgstr "Jobansicht"
 
-msgid "Johnston Atoll"
-msgstr "Johnston Atoll"
-
 msgid "Jordan"
 msgstr "Jordan"
 
@@ -6565,9 +6590,6 @@ msgstr "Längengrad"
 msgid "Loop through from"
 msgstr "Verbunden mit"
 
-msgid "Lord Howe Island"
-msgstr "Lord Howe Island"
-
 msgid "Lower Framerate save CPU Time"
 msgstr "Niedrigere Bildraten sparen CPU Zeit"
 
@@ -6671,9 +6693,6 @@ msgstr "3D Flag für diesen Sender setzen"
 msgid "Mark/Portal/Playlist"
 msgstr ""
 
-msgid "Marquesas Islands"
-msgstr "Marquesas Islands"
-
 msgid "Marshall Islands"
 msgstr "Marshall Islands"
 
@@ -6763,9 +6782,6 @@ msgstr "Mexico"
 
 msgid "Micronesia (Federated States of)"
 msgstr "Micronesia (Federated States of)"
-
-msgid "Midway Islands"
-msgstr "Midway Islands"
 
 msgid "MiniDLNA"
 msgstr "MiniDLNA"
@@ -6950,6 +6966,18 @@ msgstr "An den Anfang"
 msgid "Move to position X"
 msgstr "Auf Position X drehen"
 
+msgid "Move to the next page"
+msgstr "Zur nächsten Seite"
+
+msgid "Move to the next skin"
+msgstr "Zum nächsten Skin gehen"
+
+msgid "Move to the previous page"
+msgstr "Zur vorherigen Seite"
+
+msgid "Move to the previous skin"
+msgstr "Zum vorherigen Skin gehen"
+
 msgid "Move up a line"
 msgstr "Zeile hoch"
 
@@ -7016,23 +7044,20 @@ msgstr "Mozambique"
 msgid "Multi EPG"
 msgstr "Multi-EPG"
 
+msgid "MultiBoot Image Selector"
+msgstr "Multiboot Image Auswahl"
+
+msgid "MultiBootSelector Actions"
+msgstr "Multibootauswahl Aktion"
+
 msgid "MultiEPG"
 msgstr "Multi-EPG"
 
 msgid "MultiType"
 msgstr ""
 
-msgid "Multiboot"
-msgstr "Multiboot"
-
-msgid "Multiboot ERROR! - invalid STARTUP in boot partition."
-msgstr "Multiboot Fehler! - ungültiges STARTUP in /boot."
-
-msgid "Multiboot ERROR! - no STARTUP in boot partition."
-msgstr "Multiboot Fehler! - kein STARTUP in /boot."
-
-msgid "Multiboot Image Restart"
-msgstr "Multiboot Image Neustart"
+msgid "Multiboot Image Selector"
+msgstr "Multiboot Image Auswahl"
 
 msgid "Multimedia"
 msgstr "Multimedia"
@@ -7347,6 +7372,9 @@ msgstr "Keine Sender/Anbieter ausgewählt"
 msgid "No standby"
 msgstr "Keine Bereitschaft"
 
+msgid "No subtitles available"
+msgstr "Keine Untertitel vorhanden"
+
 msgid "No tags are set on these movies."
 msgstr "Keine Tags für diese Filme gesetzt."
 
@@ -7429,9 +7457,6 @@ msgstr "Nord"
 msgid "Northern Mariana Islands"
 msgstr "Northern Mariana Islands"
 
-msgid "Northern Territory"
-msgstr "Northern Territory"
-
 msgid "Norway"
 msgstr "Norwegen"
 
@@ -7470,9 +7495,6 @@ msgstr ""
 "Dateigröße: %s MB\n"
 "Freier Speicher: %s MB\n"
 "Pfad: %s"
-
-msgid "Not mounted"
-msgstr "Nicht verbunden"
 
 msgid "Not running"
 msgstr "Läuft nicht"
@@ -7919,9 +7941,6 @@ msgstr "Pilot"
 
 msgid "Pitcairn"
 msgstr "Pitcairn"
-
-msgid "Pitcairn Islands"
-msgstr "Pitcairn Islands"
 
 msgid "Play"
 msgstr "Abspielen"
@@ -8442,8 +8461,9 @@ msgstr "Menu drücken für zusätzliche Optionen."
 msgid "Press OK on your remote control to continue."
 msgstr "OK drücken zum Fortfahren."
 
-msgid "Press OK to activate the selected skin."
-msgstr "Drücke OK um den gewählten Skin zu aktivieren."
+#, python-format
+msgid "Press OK to activate the selected%s skin."
+msgstr "Drücke OK um den gewählten Skin %s zu aktivieren."
 
 msgid "Press OK to activate the settings."
 msgstr "OK drücken zum Aktivieren."
@@ -8454,6 +8474,10 @@ msgstr "OK drücken zum Editieren."
 #, python-format
 msgid "Press OK to get further details for %s"
 msgstr "Drücke OK, um weitere Details zu %s zu erhalten"
+
+#, python-format
+msgid "Press OK to keep the currently selected%s skin."
+msgstr "Drücke OK um den gewählten Skin %s zu aktivieren."
 
 msgid "Press OK to scan"
 msgstr "Zum Starten der Suche OK drücken"
@@ -9083,6 +9107,9 @@ msgstr "Wiederherstellung"
 msgid "Restore backups"
 msgstr "Einstellungen wiederherstellen"
 
+msgid "Restore defaults"
+msgstr "Stelle Standards wieder her"
+
 msgid "Restore deleted user bouquets"
 msgstr "Gelöschte Favoritenlisten wieder herstellen"
 
@@ -9204,7 +9231,7 @@ msgstr ""
 msgid "SCR Unicable"
 msgstr "SCR Unicable"
 
-msgid "SDcard is not initialised for multiboot - Exit and use ViX MultiBoot Manager to initialise"
+msgid "SDcard is not initialised for MultiBootSelector. Exit and use ViX MultiBoot Manager to initialise."
 msgstr "SD-Karte ist nicht für Multiboot initialisiert. Benutze Multiboot Verwaltung zur Initialisierung"
 
 msgid "SINGLE LAYER DVD"
@@ -9276,9 +9303,6 @@ msgstr "Satellitenschüssel Einstellungen"
 msgid "Satellite equipment"
 msgstr "Satellitenausrüstung"
 
-msgid "Satellite equipment control"
-msgstr "Kontrolle Satellitenausrüstung"
-
 msgid "Satellite equipment setup"
 msgstr "Satellitenausrüstung Einstellungen"
 
@@ -9309,8 +9333,8 @@ msgstr "Text eingeben und beenden"
 msgid "Save EPG"
 msgstr "EPG speichern"
 
-msgid "Save and exit"
-msgstr "Speichern und beenden"
+msgid "Save and activate the currently selected skin"
+msgstr "Drücke OK um den gewählten Skin zu sichern und zu aktivieren."
 
 msgid "Save and record"
 msgstr "Speichern und aufnehmen"
@@ -9498,7 +9522,6 @@ msgstr "W#hle 'A' oder 'B' wenn die Anlage es benötigt sonst wähle 'keine'. We
 msgid "Select 'FBC SCR' if this tuner will connect to a SCR (Unicable/JESS) device. For all other setups select 'FBC automatic'."
 msgstr "Wähle 'FBC SCR' wenn dieser Tuner ein Unicable Gerät verwendet. Für alle anderen Systeme wähle 'FBC automatisch'."
 
-#, fuzzy
 msgid ""
 "Select 'Yes' to delete all languages except English and current language:\n"
 "\n"
@@ -9676,6 +9699,9 @@ msgstr "Wähle Zeichen oder Aktion beim Cursor der virtuellen Tastatur"
 msgid "Select the desired function and click on \"OK\" to assign it. Use \"CH+/-\" to toggle between the lists. Select an assigned function and click on \"OK\" to de-assign it. Use \"Next/Previous\" to change the order of the assigned functions."
 msgstr "Gewünschte Funktion auswählen und \"OK\" drücken um sie zu belegen. Benutze  \"CH+/-\" um zwischen den Listen umzuschalten. Wähle zugeordnete Funktion aus und drücke  \"OK\" um die Belegung zu entfernen."
 
+msgid "Select the highlighted image and reboot"
+msgstr "Benutze das gewählte Image und starte neu"
+
 msgid "Select the manufacturer of your SCR device. If the manufacturer is not listed, set 'SCR' to 'user defined' and enter the device parameters manually according to its spec sheet."
 msgstr "Wähle den Hersteller von deinem Unicable Gerät. Wenn der Hersteller nicht aufgeführt ist setze 'SCR' auf 'Benutzerbefiniert' und gebe die Werte an Hand der Spezifikationen des Gerätes ein."
 
@@ -9741,6 +9767,9 @@ msgstr "Wähle den Video-Eingang mit den Hoch/Runter-Tasten"
 
 msgid "Select video mode"
 msgstr "Wähle den Video-Modus"
+
+msgid "Select whether your SCR device is externally powered."
+msgstr "Wähle ob das Unicable Gerät ein Netzteil hat."
 
 msgid "Select wireless network"
 msgstr "Wähle Funk-Netzwerk"
@@ -10345,6 +10374,9 @@ msgstr "Zeige oder verstecke erweiterte Beschreibung (skinabhängig)."
 msgid "Show picon background color"
 msgstr "Zeige Hintergrundfarbe von PIcon"
 
+msgid "Show picons during channel number input"
+msgstr "Zeige PIcon während der Eingabe der Sendernummer"
+
 msgid "Show picons in service list"
 msgstr "Zeige PIcon in der Senderliste"
 
@@ -10537,11 +10569,11 @@ msgstr "Breitengrad"
 msgid "Site longitude"
 msgstr "Längengrad"
 
-msgid "Size: "
-msgstr "Größe: "
-
 msgid "Skin"
 msgstr "Skin"
+
+msgid "Skin Selection Actions"
+msgstr "Skinauswahl Aktion"
 
 msgid "Skin Setting"
 msgstr "Skinauswahl"
@@ -10555,6 +10587,9 @@ msgstr "Skinauswahl"
 #, python-format
 msgid "Skin:\t%s"
 msgstr "Skins:\t%s"
+
+msgid "SkinSelector: Restart GUI"
+msgstr "Skinauswahl: Benutzeroberfläche neu starten"
 
 msgid "Skins"
 msgstr "Skins"
@@ -10604,6 +10639,14 @@ msgstr ""
 #, python-format
 msgid "Slot %d"
 msgstr "Steckplatz %d"
+
+#, python-format
+msgid "Slot %s: %s - Mode %d%s"
+msgstr ""
+
+#, python-format
+msgid "Slot %s: %s%s"
+msgstr ""
 
 msgid "Slovak"
 msgstr "Slovakisch"
@@ -10769,9 +10812,6 @@ msgstr "Süd"
 msgid "South Africa"
 msgstr "South Africa"
 
-msgid "South Australia"
-msgstr "Süd-Australien"
-
 msgid "South Georgia and the South Sandwich Islands"
 msgstr "South Georgia und the South Sandwich Inseln"
 
@@ -10834,6 +10874,9 @@ msgstr "Bereitschaft / Neustart"
 
 msgid "Start"
 msgstr ""
+
+msgid "Start Wizard - Screen Alignment"
+msgstr "Start Assistent - Bildschirmausrichtung"
 
 msgid "Start from the beginning"
 msgstr "Am Anfang starten"
@@ -11015,6 +11058,9 @@ msgstr "Unterkanäle"
 msgid "Subtitle"
 msgstr "Untertitel"
 
+msgid "Subtitle Long"
+msgstr "Untertitel lang"
+
 msgid "Subtitle alignment"
 msgstr "Untertitel Ausrichtung"
 
@@ -11056,6 +11102,12 @@ msgstr "Untertitel Auswahl..."
 
 msgid "Subtitles"
 msgstr "Untertitel"
+
+msgid "Subtitles off"
+msgstr "Untertitel aus"
+
+msgid "Subtitles on"
+msgstr "Untertitel ein"
 
 msgid "Subtitles settings"
 msgstr "Untertitel Einstellungen"
@@ -11927,6 +11979,14 @@ msgstr "Titeldetails"
 msgid "Titleset mode"
 msgstr "Titleset"
 
+#, python-format
+msgid "To apply the selected '%s' skin the GUI needs to restart. Would you like to restart the GUI now?"
+msgstr "Damit der gewählte Skin '%s' benutzt wird muss die Benutzeroberfläche neu gestartet werden. Benutzeroberfläche neu starten?"
+
+#, python-format
+msgid "To save and apply the selected '%s' skin the GUI needs to restart. Would you like to save the selection and restart the GUI now?"
+msgstr "Um den gewählten Skin '%s' zu sichern und zu benutzen muss die Benutzeroberfläche neu gestartet werden. Benutzeroberfläche neu starten?"
+
 msgid "Today"
 msgstr "Heute"
 
@@ -11954,11 +12014,17 @@ msgstr "Aspect/Ratio umschalten..."
 msgid "Toggle between bouquet/epg lists"
 msgstr "Wechseln zwischen Favoriten-/EPG-Liste"
 
+msgid "Toggle default subtitles"
+msgstr "Ändere Standarduntertitel"
+
 msgid "Toggle new text inserts before or overwrites existing text"
 msgstr "Schalte um zwischen neuen Text vor bestehendem Text über überschreiben"
 
 msgid "Toggle picture In graphics"
 msgstr "Bild in Grafik umschalten"
+
+msgid "Toggle the default subtitles"
+msgstr "Untertitel umschalten"
 
 msgid "Togo"
 msgstr "Togo"
@@ -12769,9 +12835,6 @@ msgstr "Warte auf einhängen"
 msgid "Waiting for partition"
 msgstr "Warte auf Partition"
 
-msgid "Wake Island"
-msgstr "Wake Island"
-
 msgid "Wake On LAN"
 msgstr "WakeOnLan"
 
@@ -12895,9 +12958,6 @@ msgstr "West"
 
 msgid "West limit set"
 msgstr "Westen Grenzwert setzen"
-
-msgid "Western Australia"
-msgstr "West-Australien"
 
 msgid "Western Sahara"
 msgstr "Western Sahara"
@@ -13641,6 +13701,9 @@ msgstr "startet gleich"
 
 msgid "activatePiP"
 msgstr "aktiviere PiP"
+
+msgid "activatePiP long"
+msgstr "aktiviere PiP lang"
 
 msgid "add bookmark"
 msgstr "Lesezeichen hinzufügen"
@@ -14616,30 +14679,6 @@ msgstr "Vorwärts spulen"
 msgid "skip forward (enter time)"
 msgstr "Vorwärts springen (Zeit eingeben)"
 
-#, python-format
-msgid "slot%s - %s mode 1"
-msgstr "Slot%s - %s Mode 1"
-
-#, python-format
-msgid "slot%s - %s mode 1 (current image)"
-msgstr "Slot%s - %s Mode 1 (aktuelles Image)"
-
-#, python-format
-msgid "slot%s - %s mode 12"
-msgstr "Slot%s - %s Mode 12"
-
-#, python-format
-msgid "slot%s - %s mode 12 (current image)"
-msgstr "Slot%s - %s Mode 12 (aktuelles Image)"
-
-#, python-format
-msgid "slot%s -%s - %s (current image)"
-msgstr "Slot%s - %s - %s (aktuelles Image)"
-
-#, python-format
-msgid "slot%s -%s- %s "
-msgstr "Slot%s - %s - %s "
-
 msgid "slow"
 msgstr "langsam"
 
@@ -14788,7 +14827,7 @@ msgid "updates available."
 msgstr "Updates verfügbar."
 
 msgid "use best / controlled by HDMI"
-msgstr ""
+msgstr "Am besten 'Kontrolliert über HDMI' benutzen"
 
 msgid "use_hdmi_cacenter"
 msgstr ""
@@ -14956,9 +14995,6 @@ msgstr "umgeschaltet"
 #~ msgid "128"
 #~ msgstr "128"
 
-#~ msgid "16"
-#~ msgstr "16"
-
 #~ msgid "256"
 #~ msgstr "256"
 
@@ -15020,6 +15056,9 @@ msgstr "umgeschaltet"
 #~ msgid "AV settings"
 #~ msgstr "A/V Einstellungen"
 
+#~ msgid "About..."
+#~ msgstr "Über..."
+
 #~ msgid "Add New Quad Channel Entry"
 #~ msgstr "Füge neuen Quad-Kanal Eintrag hinzu"
 
@@ -15043,6 +15082,9 @@ msgstr "umgeschaltet"
 
 #~ msgid "ChannelEPG settings"
 #~ msgstr "Sender-EPG Einstellungen"
+
+#~ msgid "Chatham Islands"
+#~ msgstr "Chatham Islands"
 
 #~ msgid "Chipset:\tBCM%s\n"
 #~ msgstr "Chipsatz:\tBCM%s\n"
@@ -15326,6 +15368,9 @@ msgstr "umgeschaltet"
 #~ msgid "ERROR: Check is already running in background"
 #~ msgstr "Fehler: Prüfung läuft schon im Hintergrund"
 
+#~ msgid "Easter Island"
+#~ msgstr "Easter Island"
+
 #~ msgid "Edit Quad Channel Entry"
 #~ msgstr "Bearbeite Quad PiP Kanaleintrag"
 
@@ -15350,6 +15395,9 @@ msgstr "umgeschaltet"
 #~ msgid "Enigma2 Changes"
 #~ msgstr "Enigma2 Änderungen"
 
+#~ msgid "Enigma2 skin selector"
+#~ msgstr "Enigma2 Skinauswahl"
+
 #~ msgid "Enter your password here:"
 #~ msgstr "Passwort eingeben:"
 
@@ -15362,8 +15410,14 @@ msgstr "umgeschaltet"
 #~ msgid "Exit quad PiP"
 #~ msgstr "Verlasse Qud PiP"
 
+#~ msgid "Exit/OK"
+#~ msgstr "Verlassen/OK"
+
 #~ msgid "FTP setup"
 #~ msgstr "FTP Einstellungen"
+
+#~ msgid "Fernando de Noronha"
+#~ msgstr "Fernando de Noronha"
 
 #~ msgid "Find currently played service"
 #~ msgstr "suche gerade aktiven Sender"
@@ -15395,6 +15449,20 @@ msgstr "umgeschaltet"
 #~ msgid "Ftpd service type: Vsftpd server"
 #~ msgstr "FTPD Service: VSFTP Server"
 
+#~ msgid ""
+#~ "GUI needs a restart to apply a new skin\n"
+#~ "Do you want to restart the GUI now?"
+#~ msgstr ""
+#~ "Die Benutzeroberfläche muss neu gestartet werden,\n"
+#~ "um das neue Aussehen übernehmen zu können.\n"
+#~ "Jetzt neu starten?"
+
+#~ msgid "Galapagos Islands"
+#~ msgstr "Galapagos Islands"
+
+#~ msgid "Gambier Islands"
+#~ msgstr "Gambier Islands"
+
 #~ msgid "Get latest experimental image"
 #~ msgstr "Neuestes Experimental-Image"
 
@@ -15412,6 +15480,9 @@ msgstr "umgeschaltet"
 
 #~ msgid "Hierarchy information"
 #~ msgstr "Hierarchie..."
+
+#~ msgid "Ho Chi Minh City"
+#~ msgstr "Ho Chi Minh City"
 
 #~ msgid "Hotswitchable tuner"
 #~ msgstr "Umschaltbare Tuner-Typen:"
@@ -15434,14 +15505,26 @@ msgstr "umgeschaltet"
 #~ msgid "Input channel name."
 #~ msgstr "Kanalname eingeben."
 
+#~ msgid "Johnston Atoll"
+#~ msgstr "Johnston Atoll"
+
 #~ msgid "Link Quality:"
 #~ msgstr "Qualität vom Link:"
 
 #~ msgid "List of files"
 #~ msgstr "Dateiliste"
 
+#~ msgid "Lord Howe Island"
+#~ msgstr "Lord Howe Island"
+
+#~ msgid "Marquesas Islands"
+#~ msgstr "Marquesas Islands"
+
 #~ msgid "Memory Information"
 #~ msgstr "Speicherinformationen"
+
+#~ msgid "Midway Islands"
+#~ msgstr "Midway Islands"
 
 #~ msgid "MiniDLNA setup"
 #~ msgstr "MiniDLNA Einstellungen"
@@ -15498,8 +15581,17 @@ msgstr "umgeschaltet"
 #~ msgid "MultiEPG settings"
 #~ msgstr "MultiEPG Einstellungen"
 
+#~ msgid "Multiboot"
+#~ msgstr "Multiboot"
+
+#~ msgid "Multiboot ERROR! - invalid STARTUP in boot partition."
+#~ msgstr "Multiboot Fehler! - ungültiges STARTUP in /boot."
+
 #~ msgid "Multiboot ERROR! - no STARTUP in /boot -Please check /etc/fstab for correct boot partition"
 #~ msgstr "Multiboot Fehler! - kein STARTUP in /boot - Bitte /etc/fstab auf korrekte Boot Partition prüfen."
+
+#~ msgid "Multiboot ERROR! - no STARTUP in boot partition."
+#~ msgstr "Multiboot Fehler! - kein STARTUP in /boot."
 
 #~ msgid "NFI image flashing"
 #~ msgstr "NFI Image Flashing"
@@ -15551,8 +15643,14 @@ msgstr "umgeschaltet"
 #~ msgid "No suitable sat tuner found!"
 #~ msgstr "Kein verwendbarer Sat Tuner gefunden!"
 
+#~ msgid "Northern Territory"
+#~ msgstr "Northern Territory"
+
 #~ msgid "Not configured"
 #~ msgstr "Nicht Konfiguriert"
+
+#~ msgid "Not mounted"
+#~ msgstr "Nicht verbunden"
 
 #~ msgid "Nothing connected"
 #~ msgstr "Nichts angeschlossen"
@@ -15580,6 +15678,9 @@ msgstr "umgeschaltet"
 
 #~ msgid "Password deleted sucessfully for the root user"
 #~ msgstr "Passowrt vom root Benutzer erfolgreich gelöscht"
+
+#~ msgid "Pitcairn Islands"
+#~ msgstr "Pitcairn Islands"
 
 #~ msgid "Play in main window"
 #~ msgstr "Als Hauptbild wiedergeben"
@@ -15669,6 +15770,12 @@ msgstr "umgeschaltet"
 #~ msgid "Samba setup"
 #~ msgstr "Samba/CIFS Einstellungen"
 
+#~ msgid "Satellite equipment control"
+#~ msgstr "Kontrolle Satellitenausrüstung"
+
+#~ msgid "Save and exit"
+#~ msgstr "Speichern und beenden"
+
 #~ msgid "Save timeshift in movie dir and zap"
 #~ msgstr "TimeShift als Film im Filmverzeichnis speichern und Aufnahme beenden"
 
@@ -15756,6 +15863,9 @@ msgstr "umgeschaltet"
 #~ msgid "SingleEPG settings"
 #~ msgstr "Sender-EPG Einstellungen"
 
+#~ msgid "Size: "
+#~ msgstr "Größe: "
+
 #~ msgid "Skin name:\t%s\n"
 #~ msgstr "Skinname:\t%s\n"
 
@@ -15767,6 +15877,9 @@ msgstr "umgeschaltet"
 
 #~ msgid "Software Update"
 #~ msgstr "Software Update"
+
+#~ msgid "South Australia"
+#~ msgstr "Süd-Australien"
 
 #~ msgid "Specify the complete URL of the fallback remote receiver including the port number (:8001 by default), e.g. 'http://IP_second_box:8001'."
 #~ msgstr "Komplette URL des Notfallreceivers mit der Portnummer angeben (z.B. IP-Notfallreceiver:8001), z.B. 'http://IP-der-zweiten-Box:8001'."
@@ -15923,6 +16036,12 @@ msgstr "umgeschaltet"
 #~ msgid "Videosize"
 #~ msgstr "Bildgröße"
 
+#~ msgid "Wake Island"
+#~ msgstr "Wake Island"
+
+#~ msgid "Western Australia"
+#~ msgstr "West-Australien"
+
 #~ msgid "When enabled the LNB power will not be switched off in standby"
 #~ msgstr "Wenn aktiviert wird die LNB-Spannung in Bereitschaft nicht ausgeschaltet"
 
@@ -15998,6 +16117,21 @@ msgstr "umgeschaltet"
 
 #~ msgid "second cable of motorized LNB"
 #~ msgstr "Zweites Kabel vom Rotor"
+
+#~ msgid "slot%s - %s mode 1 (current image)"
+#~ msgstr "Slot%s - %s Mode 1 (aktuelles Image)"
+
+#~ msgid "slot%s - %s mode 12"
+#~ msgstr "Slot%s - %s Mode 12"
+
+#~ msgid "slot%s - %s mode 12 (current image)"
+#~ msgstr "Slot%s - %s Mode 12 (aktuelles Image)"
+
+#~ msgid "slot%s -%s - %s (current image)"
+#~ msgstr "Slot%s - %s - %s (aktuelles Image)"
+
+#~ msgid "slot%s -%s- %s "
+#~ msgstr "Slot%s - %s - %s "
 
 #~ msgid "standard"
 #~ msgstr "Standard"
