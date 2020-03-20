@@ -7,9 +7,9 @@ from Components.Harddisk import harddiskmanager
 from ServiceReference import ServiceReference
 
 class PiconLocator:
-	def __init__(self, piconDirectory):
+	def __init__(self, piconDirectories = ['picon']):
 		harddiskmanager.on_partition_list_change.append(self.__onPartitionChange)
-		self.piconDirectory = piconDirectory
+		self.piconDirectories = piconDirectories
 		self.activePiconPath = None
 		self.searchPaths = []
 		for mp in ('/usr/share/enigma2/', '/'):
@@ -18,24 +18,26 @@ class PiconLocator:
 			self.__onMountpointAdded(part.mountpoint)
 
 	def __onMountpointAdded(self, mountpoint):
-		try:
-			path = os.path.join(mountpoint, self.piconDirectory) + '/'
-			if os.path.isdir(path) and path not in self.searchPaths:
-				for fn in os.listdir(path):
-					if fn.endswith('.png'):
-						print "[PiconLocator] adding path:", path
-						self.searchPaths.append(path)
-						break
-		except:
-			pass
+		for piconDirectory in self.piconDirectories:
+			try:
+				path = os.path.join(mountpoint, piconDirectory) + '/'
+				if os.path.isdir(path) and path not in self.searchPaths:
+					for fn in os.listdir(path):
+						if fn.endswith('.png'):
+							print "[PiconLocator] adding path:", path
+							self.searchPaths.append(path)
+							break
+			except:
+				pass
 
 	def __onMountpointRemoved(self, mountpoint):
-		path = os.path.join(mountpoint, self.piconDirectory) + '/'
-		try:
-			self.searchPaths.remove(path)
-			print "[PiconLocator] removed path:", path
-		except:
-			pass
+		for piconDirectory in self.piconDirectories:
+			path = os.path.join(mountpoint, self.piconDirectories) + '/'
+			try:
+				self.searchPaths.remove(path)
+				print "[PiconLocator] removed path:", path
+			except:
+				pass
 
 	def __onPartitionChange(self, why, part):
 		if why == 'add':
@@ -94,7 +96,7 @@ class PiconLocator:
 					pngname = self.findPicon(series)
 		return pngname
 
-piconLocator = PiconLocator('picon')
+piconLocator = PiconLocator()
 
 def getPiconName(serviceName):
 	return piconLocator.getPiconName(serviceName)
