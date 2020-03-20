@@ -15,7 +15,7 @@ def useLcdPicons():
 lcdPiconLocator = None
 def createLcdPiconLocator(_):
 	global lcdPiconLocator
-	lcdPiconLocator = PiconLocator('lcd_picon' if useLcdPicons() else 'picon')
+	lcdPiconLocator = PiconLocator(['lcd_picon', 'piconlcd']) if useLcdPicons() else PiconLocator()
 config.lcd.picon_pack.addNotifier(createLcdPiconLocator)
 
 class LcdPicon(Renderer):
