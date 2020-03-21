@@ -8,10 +8,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-29 20:00+0100\n"
-"PO-Revision-Date: 2015-01-29 17:40+0200\n"
-"Last-Translator: none <none@none.com>\n"
-"Language-Team: none\n"
+"POT-Creation-Date: 2020-03-21 09:07+0100\n"
+"PO-Revision-Date: 2015-08-30 09:00+0200\n"
+"Last-Translator: Taykun345 <support@satnigmo.com>\n"
+"Language-Team: Satnigmo <support@satnigmo.com>\n"
 "Language: sl_SI\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -3153,9 +3153,6 @@ msgstr "Ni možno najti nameščenega seznama kanalov."
 msgid "Could not load Medium! No disc inserted?"
 msgstr "Medija ni mogoče prebrati! Je v pogon vstavljen ustrezen medij?"
 
-msgid "Could not locate epg file on fallback tuner"
-msgstr ""
-
 #
 msgid "Could not open Picture in Picture"
 msgstr "Ne morem odpreti Slike v Sliki"
@@ -4284,6 +4281,10 @@ msgstr ""
 msgid "ERROR - failed to scan (%s)!"
 msgstr "NAPAKA - neuspešno iskanje (%s)!"
 
+#, python-format
+msgid "ERROR downloading file %s"
+msgstr ""
+
 #
 msgid "East"
 msgstr "Vzhod"
@@ -4696,6 +4697,11 @@ msgstr "Napaka"
 msgid "Error checking disk. The disk may be damaged"
 msgstr ""
 
+#
+#, fuzzy, python-format
+msgid "Error %s"
+msgstr "Napaka"
+
 msgid "Error code"
 msgstr "Koda napake"
 
@@ -4721,10 +4727,22 @@ msgid ""
 "%s"
 msgstr ""
 
+msgid "Error stop stream!"
+msgstr ""
+
+msgid "Error when writing epg.dat on server"
+msgstr ""
+
+msgid "Error while retreiving epg.dat from server"
+msgstr ""
+
 #, python-format
 msgid ""
 "Error while retreiving fallback timer information\n"
 "%s"
+msgstr ""
+
+msgid "Error while retreiving location of epg.dat on server"
 msgstr ""
 
 #
@@ -7758,6 +7776,9 @@ msgstr "Opis ni na voljo."
 msgid "No displayable files on this medium found!"
 msgstr "Na pogonu ni datotek, ki jih lahko prikažem!"
 
+msgid "No epg.dat file found server"
+msgstr ""
+
 #
 msgid "No event info found, recording indefinitely."
 msgstr "Ne najdem informacij o trenutnem dogodku. Trajanje snemanja bo neomejeno!"
@@ -7814,9 +7835,6 @@ msgstr "Napaka ..."
 #
 msgid "No services/providers selected"
 msgstr "Ni izbranih kanalov ali ponudnikov"
-
-msgid "No settings files to download on fallback tuner"
-msgstr ""
 
 #
 msgid "No standby"
@@ -10886,6 +10904,13 @@ msgstr ""
 
 #
 #, fuzzy
+msgid "Select timezone area or region."
+msgstr "Izbor načina razvrščanja:"
+
+msgid "Select timezone in the area or region."
+msgstr ""
+
+#
 msgid "Select update source"
 msgstr "Izberite vir nadgradnje"
 
@@ -13439,6 +13464,11 @@ msgstr "Časovni zamik ni možen!"
 
 #
 msgid "Timezone"
+msgstr "Časovni pas"
+
+#
+#, fuzzy
+msgid "Timezone area"
 msgstr "Časovni pas"
 
 msgid "Timor-Leste"

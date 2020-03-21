@@ -8,10 +8,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-29 20:00+0100\n"
-"PO-Revision-Date: 2015-01-29 17:40+0200\n"
-"Last-Translator: none <none@none.com>\n"
-"Language-Team: none\n"
+"POT-Creation-Date: 2020-03-21 09:07+0100\n"
+"PO-Revision-Date: 2016-11-17 12:51+0200\n"
+"Last-Translator: vovan43<vovan43@ex.ua>, sety <tim1065@mail.ru>, Irkoff <irkoff@gmail.com>\n"
+"Language-Team: gisclub.tv <http://gisclub.tv/>\n"
 "Language: uk_UA\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2787,9 +2787,6 @@ msgstr "Неможливо відкрити список каналів."
 msgid "Could not load Medium! No disc inserted?"
 msgstr "Не вдалося завантажити носій! Перевірте, чи вставлений диск?"
 
-msgid "Could not locate epg file on fallback tuner"
-msgstr ""
-
 msgid "Could not open Picture in Picture"
 msgstr "Неможливо відкрити картинку в картинці"
 
@@ -3769,6 +3766,10 @@ msgstr ""
 msgid "ERROR - failed to scan (%s)!"
 msgstr "Помилка - неможливе сканування (%s)!"
 
+#, python-format
+msgid "ERROR downloading file %s"
+msgstr ""
+
 msgid "East"
 msgstr "Схід"
 
@@ -4120,6 +4121,10 @@ msgstr "Помилка"
 msgid "Error checking disk. The disk may be damaged"
 msgstr ""
 
+#, fuzzy, python-format
+msgid "Error %s"
+msgstr "Помилка"
+
 msgid "Error code"
 msgstr "Код помилки"
 
@@ -4144,10 +4149,22 @@ msgid ""
 "%s"
 msgstr ""
 
+msgid "Error stop stream!"
+msgstr ""
+
+msgid "Error when writing epg.dat on server"
+msgstr ""
+
+msgid "Error while retreiving epg.dat from server"
+msgstr ""
+
 #, python-format
 msgid ""
 "Error while retreiving fallback timer information\n"
 "%s"
+msgstr ""
+
+msgid "Error while retreiving location of epg.dat on server"
 msgstr ""
 
 #, python-format
@@ -6820,6 +6837,9 @@ msgstr "Оновлень поки немає."
 msgid "No displayable files on this medium found!"
 msgstr "Немає відображуваних файлів на цьому носії!"
 
+msgid "No epg.dat file found server"
+msgstr ""
+
 msgid "No event info found, recording indefinitely."
 msgstr "Информація про подію не знайдена, запис на невизначений час."
 
@@ -6864,9 +6884,6 @@ msgstr ""
 
 msgid "No services/providers selected"
 msgstr "Не вибрані канали/провайдери"
-
-msgid "No settings files to download on fallback tuner"
-msgstr ""
 
 msgid "No standby"
 msgstr "Не переходить в Режим очікування"
@@ -9498,6 +9515,12 @@ msgid "Select the virtual keyboard shifted character set for the next character 
 msgstr ""
 
 #, fuzzy
+msgid "Select timezone area or region."
+msgstr "Впорядкувати по:"
+
+msgid "Select timezone in the area or region."
+msgstr ""
+
 msgid "Select update source"
 msgstr "Вибір джерела оновлення"
 
@@ -11717,6 +11740,10 @@ msgid "Timeshift not possible!"
 msgstr "Таймшифт не можливий!"
 
 msgid "Timezone"
+msgstr "Часовий пояс"
+
+#, fuzzy
+msgid "Timezone area"
 msgstr "Часовий пояс"
 
 msgid "Timor-Leste"

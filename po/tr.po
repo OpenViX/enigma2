@@ -8,11 +8,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue (Apachi70)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-29 20:00+0100\n"
-"PO-Revision-Date: 2019-07-18 01:10+0200\n"
-"Last-Translator: Apachi70 <apachi70000@gmail.com>\n"
-"Language-Team: Turkish <apachi70000@gmail.com>\n"
-"Language: tr\n"
+"POT-Creation-Date: 2020-03-21 09:07+0100\n"
+"PO-Revision-Date: 2015-12-18 21:05+0200\n"
+"Last-Translator: Yetkin AYDIN <yetkina@gmail.com>\n"
+"Language-Team: http://www.hurforum.com <yetkina@gmail.com>\n"
+"Language: tr_TR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2661,10 +2661,6 @@ msgstr "Yüklü kanal listesi bulunamadı."
 msgid "Could not load Medium! No disc inserted?"
 msgstr "Ortam yüklenemedi! Takılı disk yok?"
 
-#, fuzzy
-msgid "Could not locate epg file on fallback tuner"
-msgstr "Yedekleme ayarlayıcısından içe aktarma zamanlayıcısını etkinleştir"
-
 msgid "Could not open Picture in Picture"
 msgstr "Resim içinde resim açılamıyor"
 
@@ -3581,6 +3577,10 @@ msgstr ""
 msgid "ERROR - failed to scan (%s)!"
 msgstr "HATA - arama başarısız (%s)!"
 
+#, python-format
+msgid "ERROR downloading file %s"
+msgstr ""
+
 msgid "East"
 msgstr "Doğu"
 
@@ -3913,6 +3913,10 @@ msgstr "Hata"
 msgid "Error checking disk. The disk may be damaged"
 msgstr "Disk denetlenirken hata. Disk bozulmuş olabilir"
 
+#, fuzzy, python-format
+msgid "Error %s"
+msgstr "Hata"
+
 msgid "Error code"
 msgstr "Hata kodu"
 
@@ -3943,6 +3947,12 @@ msgstr ""
 "%s ile % s olarak yeniden adlandırma hatası:\n"
 "%s"
 
+msgid "Error when writing epg.dat on server"
+msgstr ""
+
+msgid "Error while retreiving epg.dat from server"
+msgstr ""
+
 #, python-format
 msgid ""
 "Error while retreiving fallback timer information\n"
@@ -3950,6 +3960,9 @@ msgid ""
 msgstr ""
 "Geri dönüş zamanlayıcı bilgisi geri verilirken hata oluştu\n"
 "% s"
+
+msgid "Error while retreiving location of epg.dat on server"
+msgstr ""
 
 #, python-format
 msgid ""
@@ -6496,6 +6509,9 @@ msgstr "Açıklayıcı bilgi yok."
 msgid "No displayable files on this medium found!"
 msgstr "Bu medyada gösterilecek dosya bulunamadı!"
 
+msgid "No epg.dat file found server"
+msgstr ""
+
 msgid "No event info found, recording indefinitely."
 msgstr "EPG bilgisi bulunamadı, süresiz kaydediliyor."
 
@@ -6537,9 +6553,6 @@ msgstr "Kanal yok"
 
 msgid "No services/providers selected"
 msgstr "Kanal/sağlayıcı seçilmedi"
-
-msgid "No settings files to download on fallback tuner"
-msgstr ""
 
 msgid "No standby"
 msgstr "Beklemede değil"
@@ -8984,6 +8997,12 @@ msgid "Select the virtual keyboard shifted character set for the next character 
 msgstr "Yalnızca bir sonraki karakter için ayarlanan sanal klavye karakterini seçin"
 
 #, fuzzy
+msgid "Select timezone area or region."
+msgstr "Seçileni sıralama yöntemi:"
+
+msgid "Select timezone in the area or region."
+msgstr ""
+
 msgid "Select update source"
 msgstr "Güncelleme kaynağı seçin"
 
@@ -11101,6 +11120,10 @@ msgid "Timeshift not possible!"
 msgstr "Zaman kaydırıcı kullanılamaz!"
 
 msgid "Timezone"
+msgstr "Zaman dilimi"
+
+#, fuzzy
+msgid "Timezone area"
 msgstr "Zaman dilimi"
 
 msgid "Timor-Leste"

@@ -8,10 +8,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-29 20:00+0100\n"
-"PO-Revision-Date: 2015-01-29 17:40+0200\n"
-"Last-Translator: none <none@none.com>\n"
-"Language-Team: none\n"
+"POT-Creation-Date: 2020-03-21 09:07+0100\n"
+"PO-Revision-Date: 2011-04-14 00:02+0200\n"
+"Last-Translator: majevica <jovanovic@gmx.ch>\n"
+"Language-Team: veselin & majevica CRNABERZA <jovanovic@gmx.ch>\n"
 "Language: sr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -3141,9 +3141,6 @@ msgstr ""
 msgid "Could not load Medium! No disc inserted?"
 msgstr "Ne može se ubaciti medij.Disk nije ubačen?"
 
-msgid "Could not locate epg file on fallback tuner"
-msgstr ""
-
 #
 msgid "Could not open Picture in Picture"
 msgstr "Ne mogu otvoriti sliku u slici"
@@ -4270,6 +4267,10 @@ msgstr ""
 msgid "ERROR - failed to scan (%s)!"
 msgstr "GREŠKA - neuspešno skeniranje (%s)!"
 
+#, python-format
+msgid "ERROR downloading file %s"
+msgstr ""
+
 #
 msgid "East"
 msgstr "Istok"
@@ -4669,6 +4670,11 @@ msgstr "Greška"
 msgid "Error checking disk. The disk may be damaged"
 msgstr ""
 
+#
+#, fuzzy, python-format
+msgid "Error %s"
+msgstr "Greška"
+
 msgid "Error code"
 msgstr ""
 
@@ -4694,10 +4700,22 @@ msgid ""
 "%s"
 msgstr ""
 
+msgid "Error stop stream!"
+msgstr ""
+
+msgid "Error when writing epg.dat on server"
+msgstr ""
+
+msgid "Error while retreiving epg.dat from server"
+msgstr ""
+
 #, python-format
 msgid ""
 "Error while retreiving fallback timer information\n"
 "%s"
+msgstr ""
+
+msgid "Error while retreiving location of epg.dat on server"
 msgstr ""
 
 #
@@ -7765,6 +7783,9 @@ msgstr "Opis nije dostupan."
 msgid "No displayable files on this medium found!"
 msgstr "Nisu pronađene vidljive datoteke na ovom mediju!"
 
+msgid "No epg.dat file found server"
+msgstr ""
+
 #
 msgid "No event info found, recording indefinitely."
 msgstr "Informacije o događaju nisu pronađene, snimanje beskrajno."
@@ -7820,9 +7841,6 @@ msgstr ""
 #, fuzzy
 msgid "No services/providers selected"
 msgstr "nijedni kanali/provajderi nisu izabrani"
-
-msgid "No settings files to download on fallback tuner"
-msgstr ""
 
 #
 #, fuzzy
@@ -10870,6 +10888,12 @@ msgstr ""
 msgid "Select the virtual keyboard shifted character set for the next character only"
 msgstr ""
 
+msgid "Select timezone area or region."
+msgstr ""
+
+msgid "Select timezone in the area or region."
+msgstr ""
+
 #
 #, fuzzy
 msgid "Select update source"
@@ -13452,6 +13476,11 @@ msgstr "Vrem.i pomak nije moguć!"
 
 #
 msgid "Timezone"
+msgstr "Vremenska zona"
+
+#
+#, fuzzy
+msgid "Timezone area"
 msgstr "Vremenska zona"
 
 msgid "Timor-Leste"

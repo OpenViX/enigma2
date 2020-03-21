@@ -3,10 +3,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-29 20:00+0100\n"
-"PO-Revision-Date: 2015-01-29 17:40+0200\n"
-"Last-Translator: none <none@none.com>\n"
-"Language-Team: none\n"
+"POT-Creation-Date: 2020-03-21 09:07+0100\n"
+"PO-Revision-Date: 2017-01-18 16:38+0100\n"
+"Last-Translator: lupine <a_ecklon@hotmail.com>\n"
+"Language-Team: \n"
 "Language: da\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -3114,9 +3114,6 @@ msgstr ""
 msgid "Could not load Medium! No disc inserted?"
 msgstr "Kunne ikke indlæse media! Ingen disk isat?"
 
-msgid "Could not locate epg file on fallback tuner"
-msgstr ""
-
 #
 msgid "Could not open Picture in Picture"
 msgstr "Kunne ikke åbne billede i billede"
@@ -4244,6 +4241,10 @@ msgstr ""
 msgid "ERROR - failed to scan (%s)!"
 msgstr "FEJL - kan ikke søge (%s)!"
 
+#, python-format
+msgid "ERROR downloading file %s"
+msgstr ""
+
 #
 msgid "East"
 msgstr "Øst"
@@ -4645,6 +4646,11 @@ msgstr "Fejl"
 msgid "Error checking disk. The disk may be damaged"
 msgstr ""
 
+#
+#, fuzzy, python-format
+msgid "Error %s"
+msgstr "Fejl"
+
 msgid "Error code"
 msgstr "Fejlkode"
 
@@ -4670,10 +4676,22 @@ msgid ""
 "%s"
 msgstr ""
 
+msgid "Error stop stream!"
+msgstr ""
+
+msgid "Error when writing epg.dat on server"
+msgstr ""
+
+msgid "Error while retreiving epg.dat from server"
+msgstr ""
+
 #, python-format
 msgid ""
 "Error while retreiving fallback timer information\n"
 "%s"
+msgstr ""
+
+msgid "Error while retreiving location of epg.dat on server"
 msgstr ""
 
 #
@@ -7734,6 +7752,9 @@ msgstr "Ingen tilgængelig beskrivelse."
 msgid "No displayable files on this medium found!"
 msgstr "Der findes ingen visbare filer på dette medie!"
 
+msgid "No epg.dat file found server"
+msgstr ""
+
 #
 msgid "No event info found, recording indefinitely."
 msgstr "Ingen program-data fundet, optagelse startet."
@@ -7789,9 +7810,6 @@ msgstr ""
 #, fuzzy
 msgid "No services/providers selected"
 msgstr "ingen kanaler/udbydere er valgt"
-
-msgid "No settings files to download on fallback tuner"
-msgstr ""
 
 #
 #, fuzzy
@@ -10852,6 +10870,13 @@ msgstr ""
 msgid "Select the virtual keyboard shifted character set for the next character only"
 msgstr ""
 
+#, fuzzy
+msgid "Select timezone area or region."
+msgstr "Vælg sorteringsmetode:"
+
+msgid "Select timezone in the area or region."
+msgstr ""
+
 #
 #, fuzzy
 msgid "Select update source"
@@ -13417,6 +13442,11 @@ msgstr "Tidsforskydning ikke mulig!."
 
 #
 msgid "Timezone"
+msgstr "Tidszone"
+
+#
+#, fuzzy
+msgid "Timezone area"
 msgstr "Tidszone"
 
 msgid "Timor-Leste"

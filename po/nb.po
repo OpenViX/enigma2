@@ -4,11 +4,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-29 20:00+0100\n"
-"PO-Revision-Date: 2015-08-25 18:31+0100\n"
-"Last-Translator: andy1 <dmmm8000pvr@gmail.com>\n"
-"Language-Team: none\n"
-"Language: \n"
+"POT-Creation-Date: 2020-03-21 09:07+0100\n"
+"PO-Revision-Date: 2019-12-06 15:54+0100\n"
+"Last-Translator: GeirJ <dummy@dummy.com>\n"
+"Language-Team: GeirJ\n"
+"Language: nb\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2994,12 +2994,11 @@ msgstr ""
 msgid "Could not find installed channel list."
 msgstr "Kunne ikke finne kanallisten."
 
-#, fuzzy
-msgid "Could not load Medium! No disc inserted?"
-msgstr "Kunne ikke laste medium! Ingen plate er satt inn?"
+msgid "Could not find suitable media - Please remove some downloaded images or insert a media (e.g. USB stick) with sufficiant free space and try again!"
+msgstr "Finner ikke passende Media - Vennligst frigjør diskplass eller sett inn f. eks en USB plugg med tilstrekkelig ledig plass og prøv igjen!"
 
-msgid "Could not locate epg file on fallback tuner"
-msgstr ""
+msgid "Could not load medium! No disc inserted?"
+msgstr "Kunne ikke laste data! Ingen disk er satt inn?"
 
 msgid "Could not open Picture in Picture"
 msgstr "Kunne ikke åpne bilde i bilde"
@@ -4083,6 +4082,10 @@ msgstr ""
 msgid "ERROR - failed to scan (%s)!"
 msgstr "FEIL - kunne ikke søke (%s)!"
 
+#, python-format
+msgid "ERROR downloading file %s"
+msgstr ""
+
 #
 msgid "East"
 msgstr "Øst"
@@ -4471,6 +4474,11 @@ msgstr "Feil"
 msgid "Error checking disk. The disk may be damaged"
 msgstr ""
 
+#
+#, fuzzy, python-format
+msgid "Error %s"
+msgstr "Feil"
+
 msgid "Error code"
 msgstr "Feil kode"
 
@@ -4495,11 +4503,26 @@ msgid ""
 "%s"
 msgstr ""
 
+msgid "Error when writing epg.dat on server"
+msgstr ""
+
+#, fuzzy
+msgid "Error while retreiving epg.dat from server"
+msgstr ""
+"Feil ved henting av reserve timer informasjon\n"
+"%s"
+
 #, python-format
 msgid ""
 "Error while retreiving fallback timer information\n"
 "%s"
 msgstr ""
+
+#, fuzzy
+msgid "Error while retreiving location of epg.dat on server"
+msgstr ""
+"Feil ved henting av reserve timer informasjon\n"
+"%s"
 
 #
 #, python-format
@@ -7442,6 +7465,9 @@ msgstr "Ingen forklaring er tilgjengelig."
 msgid "No displayable files on this medium found!"
 msgstr "Ingen visbare filer på dette mediet funnet!"
 
+msgid "No epg.dat file found server"
+msgstr ""
+
 #
 msgid "No event info found, recording indefinitely."
 msgstr "Ingen kanalinfo er funnet, tar opp på ubestemt tid."
@@ -7494,9 +7520,6 @@ msgstr "Ingen kanal"
 
 msgid "No services/providers selected"
 msgstr "Ingen kanaler/distributører er valgt"
-
-msgid "No settings files to download on fallback tuner"
-msgstr ""
 
 #
 msgid "No standby"
@@ -10341,7 +10364,14 @@ msgstr ""
 msgid "Select the virtual keyboard shifted character set for the next character only"
 msgstr ""
 
+#
 #, fuzzy
+msgid "Select timezone area or region."
+msgstr "Velg horisontal oppløsning:"
+
+msgid "Select timezone in the area or region."
+msgstr ""
+
 msgid "Select update source"
 msgstr "Velg oppdateringssted"
 
@@ -12745,6 +12775,11 @@ msgstr "Tidsskift ikke mulig!"
 
 #
 msgid "Timezone"
+msgstr "Tidssone"
+
+#
+#, fuzzy
+msgid "Timezone area"
 msgstr "Tidssone"
 
 msgid "Timor-Leste"
