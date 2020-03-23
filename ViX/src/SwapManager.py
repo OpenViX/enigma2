@@ -56,7 +56,9 @@ class StartSwap:
 			devicelist = []
 			for p in harddiskmanager.getMountedPartitions():
 				d = path.normpath(p.mountpoint)
-				if path.exists(p.mountpoint) and p.mountpoint != "/" and not p.mountpoint.startswith('/media/net'):
+				if (path.exists(p.mountpoint) and p.mountpoint != "/"
+					 and not p.mountpoint.startswith('/media/net/')
+					 and not p.mountpoint.startswith('/media/autofs/')):
 					devicelist.append((p.description, d))
 			if len(devicelist):
 				for device in devicelist:
