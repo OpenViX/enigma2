@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX-Enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-11 08:33+0000\n"
-"PO-Revision-Date: 2019-10-12 12:41+0300\n"
+"POT-Creation-Date: 2020-03-12 10:43+0000\n"
+"PO-Revision-Date: 2020-03-22 14:16+0200\n"
 "Last-Translator: rimas <rimas@domeen.ee>\n"
 "Language-Team: Digi-tv.ee\n"
 "Language: et\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
-"X-Generator: Poedit 2.2.1\n"
+"X-Generator: Poedit 2.3\n"
 
 msgid ""
 "\n"
@@ -132,9 +132,6 @@ msgid ""
 msgstr ""
 "\n"
 "Tarkvara paigaldamine ja eemaldamine."
-
-msgid " "
-msgstr " "
 
 #, python-format
 msgid "  (%s x %s)"
@@ -755,7 +752,7 @@ msgstr[1] "%d kanalit leitud"
 
 #, python-format
 msgid "%d cores"
-msgstr "%d-tuumaline"
+msgstr "%d tuuma"
 
 #, python-format
 msgid "%d hour"
@@ -962,8 +959,20 @@ msgstr "'%s' sisaldab %d faili ja %d alamkataloogi.\n"
 msgid "'Network peer' automatically detects other Enigma2 receivers on the local network. You can also manually enter the URL or IP address."
 msgstr "'Võrguserver' tuvastab automaatselt teised Enigma2 vastuvõtjad kohtvõrgus. Valides 'URL' või 'IP', tuleb need sisestada käsitsi."
 
+msgid ""
+"'Save' changes active language.\n"
+"'Add Language' or MENU adds additional language(s).\n"
+"'Delete Language' allows either deletion of all but English and active language OR selected language"
+msgstr ""
+"'Salvesta' muudab aktiivse keele.\n"
+"'Lisa keel' või nupp 'MENU' lisab keele\n"
+"'Kustuta keel' lubab kustutada kõik keeled peale aktiivse ja inglise keele või valitud keele."
+
 msgid "( All readers)"
 msgstr "( Kõik kaardipesad)"
+
+msgid "(Current image)"
+msgstr "(Aktiivne püsivara)"
 
 msgid "(PiP)"
 msgstr "(PiP)"
@@ -1087,6 +1096,9 @@ msgstr "16:9 letterbox"
 msgid "16:9 always"
 msgstr "alati 16:9"
 
+msgid "16K"
+msgstr "16K"
+
 msgid "18 V"
 msgstr "18 V"
 
@@ -1174,6 +1186,9 @@ msgstr "4:3 letterbox"
 msgid "4:3 PanScan"
 msgstr "4:3 panscan"
 
+msgid "4K"
+msgstr "4K"
+
 msgid "4X"
 msgstr "4X"
 
@@ -1186,14 +1201,26 @@ msgstr "720p"
 msgid "720p 24Hz"
 msgstr "720p 24Hz"
 
+msgid "8K"
+msgstr "8K"
+
 msgid "8bit"
 msgstr "8bit"
+
+msgid "< Current >"
+msgstr "< Praegune >"
+
+msgid "< Default + Picon >"
+msgstr "< Vaikimisi + pikon >"
 
 msgid "< Default >"
 msgstr "< Vaikimisi >"
 
-msgid "< Default with Picon >"
-msgstr "< Vaikimisi koos pikoniga >"
+msgid "< Emergency >"
+msgstr "< Hädajuhtum >"
+
+msgid "< Pending restart >"
+msgstr "< Taaskäivituse ootel >"
 
 msgid "<Current movielist location>"
 msgstr "<Filmilisti praegune asukoht >"
@@ -1419,9 +1446,6 @@ msgstr "Tühista muudatused"
 msgid "About"
 msgstr "Süsteemist"
 
-msgid "About..."
-msgstr "Süsteemist..."
-
 msgid "Accept the current selection"
 msgstr "Nõustu praeguse valikuga"
 
@@ -1556,6 +1580,9 @@ msgstr "Lisa kanal lemmiknimekirja"
 
 msgid "Add service to favourites"
 msgstr "Lisa kanal lemmikutesse"
+
+msgid "Add services to this bouquet?"
+msgstr "Kas lisada kanalid sellesse lemmiknimekirja?"
 
 msgid "Add timer"
 msgstr "Lisa taimer"
@@ -2017,7 +2044,7 @@ msgstr "DVD loomine"
 
 #. TRANSLATORS: (aspect ratio policy: always try to display as fullscreen, when there is no content (black bars) on left/right, even if this breaks the aspect.
 msgid "Auto"
-msgstr "Auto."
+msgstr "Auto"
 
 msgid "Auto Deep Standby"
 msgstr "Automaatne puhkeseisund"
@@ -2290,6 +2317,9 @@ msgstr ""
 "Alglaadur:\t%s\n"
 "\n"
 
+msgid "Bootup time"
+msgstr "Alglaadimise aeg"
+
 msgid "Bosnia and Herzegovina"
 msgstr "Bosnia ja Hertsegoviina"
 
@@ -2511,11 +2541,23 @@ msgstr "Kanada"
 msgid "Cancel"
 msgstr "Tühista"
 
+msgid "Cancel any changes to the currently active skin"
+msgstr "Tühista kõik aktiivse kujunduse muudatused"
+
+msgid "Cancel any changes to the currently active skin and exit all menus"
+msgstr "Tühista kõik aktiivse kujunduse muudatused ja sulge kõik menüüd"
+
 msgid "Cancel any text changes and exit"
 msgstr "Tühista kõik teksti muudatused ja välju"
 
 msgid "Cancel save timeshift as movie"
 msgstr "Tühista ajanihke salvestuseks muutmine"
+
+msgid "Cancel the image selection and exit"
+msgstr "Tühista püsivara valik ja välju"
+
+msgid "Cancel the image selection and exit all menus"
+msgstr "Tühista püsivara valik ja sulge kõik menüüd"
 
 msgid "Cancel the selection"
 msgstr "Tühista valik"
@@ -2681,9 +2723,6 @@ msgstr "Peatükk"
 
 msgid "Chapter:"
 msgstr "Peatükk:"
-
-msgid "Chatham Islands"
-msgstr "Chathami saared"
 
 msgid "Check"
 msgstr "Kontroll"
@@ -3259,6 +3298,9 @@ msgstr "Määra, kas ja kui kaua teist inforiba näidatakse, kui vajutada kaks k
 
 msgid "Configure whether or not an rotor position will be displayed on infobar"
 msgstr "Määra, kas ajami positsiooni näidatakse inforibal"
+
+msgid "Configure whether service picons will be shown in number zap."
+msgstr "Määra, kas numbriga kanalivahetusel kuvatakse pikonid."
 
 msgid "Configure which color format should be used on the SCART output."
 msgstr "Määra SCART väljundi poolt kasutatav värvisüsteem."
@@ -3897,8 +3939,8 @@ msgstr "Kustutamise kinnitus"
 msgid "Delete EPG"
 msgstr "Kustuta EPG"
 
-msgid "Delete Language"
-msgstr "Kustuta keel"
+msgid "Delete Language(s)"
+msgstr "Kustuta keeli"
 
 msgid "Delete entry"
 msgstr "Kustuta valik"
@@ -4061,6 +4103,9 @@ msgstr "Kuva 4:3 sisu"
 
 msgid "Display >16:9 content as"
 msgstr "Kuva >16:9 sisu"
+
+msgid "Display Skin"
+msgstr "Esipaneeli kujundus"
 
 msgid "Display and user interface"
 msgstr "Esipaneel ja kasutajaliides"
@@ -4301,7 +4346,7 @@ msgid "Drop unconfigured satellites"
 msgstr "Peida seadistamata satelliidid"
 
 msgid "Dual core"
-msgstr "Kahetuumaline"
+msgstr "2 tuuma"
 
 msgid "Dutch"
 msgstr "Hollandi"
@@ -4388,9 +4433,6 @@ msgstr "Ida"
 
 msgid "East limit set"
 msgstr "Ida piir on määratud"
-
-msgid "Easter Island"
-msgstr "Lihavõttesaar"
 
 msgid "Ecm:"
 msgstr "Ecm:"
@@ -4598,9 +4640,6 @@ msgstr "Lõpuaeg"
 
 msgid "English"
 msgstr "Inglise"
-
-msgid "Enigma2 skin selector"
-msgstr "Enigma2 kujunduse valik"
 
 msgid "Enter"
 msgstr "Enter"
@@ -4840,9 +4879,6 @@ msgstr "Välju võrgukaardi seadistusmenüüst"
 msgid "Exit the wizard"
 msgstr "Välju juhendatud seadistusabist"
 
-msgid "Exit/OK"
-msgstr "Exit/OK"
-
 msgid "Expert"
 msgstr "Ekspert"
 
@@ -4894,6 +4930,9 @@ msgstr "Väliste subtiitrite dialoogi värvimine"
 
 msgid "External subtitle switch fonts"
 msgstr "Väliste subtiitrite kirjatüübi vahetamine"
+
+msgid "Externally powered"
+msgstr "Välise toitega"
 
 msgid "Extra motor options"
 msgstr "Ajami lisavalikud"
@@ -4961,6 +5000,9 @@ msgstr "FEC"
 
 msgid "FEC:"
 msgstr "FEC:"
+
+msgid "FHD"
+msgstr "FHD"
 
 msgid "FLASH"
 msgstr "SISEMÄLU"
@@ -5062,9 +5104,6 @@ msgstr "Hoidlate olek: Ebastabiilne"
 
 msgid "Feeds status: Updating"
 msgstr "Hoidlate olek: Värskendamisel"
-
-msgid "Fernando de Noronha"
-msgstr "Fernando de Noronha"
 
 msgid "Fiji"
 msgstr "Fidži"
@@ -5230,18 +5269,14 @@ msgstr "GB"
 msgid "GStreamer:\t%s\n"
 msgstr "GStreamer:\t%s\n"
 
+msgid "GUI Skin"
+msgstr "Kasutajaliidese kujundus"
+
 msgid ""
 "GUI needs a restart to apply a new language\n"
 "Do you want to restart the GUI now?"
 msgstr ""
 "Uue keele jõustamiseks tuleb kasutajaliides taaskäivitada\n"
-"Kas teha seda kohe?"
-
-msgid ""
-"GUI needs a restart to apply a new skin\n"
-"Do you want to restart the GUI now?"
-msgstr ""
-"Kujunduse jõustamiseks tuleb kasutajaliides taaskäivitada\n"
 "Kas teha seda kohe?"
 
 msgid ""
@@ -5257,14 +5292,8 @@ msgstr "Ekraanigraafika seaded"
 msgid "Gabon"
 msgstr "Gabon"
 
-msgid "Galapagos Islands"
-msgstr "Galapagose saared"
-
 msgid "Gambia"
 msgstr "Gambia"
-
-msgid "Gambier Islands"
-msgstr "Gambieri saared"
 
 msgid "Gateway"
 msgstr "Lüüs"
@@ -5383,9 +5412,6 @@ msgstr "Kreeka"
 msgid "Greek"
 msgstr "Kreeka"
 
-msgid "Greek (Modern)"
-msgstr "Kreeka (Tänapäev)"
-
 msgid "Green"
 msgstr "Roheline"
 
@@ -5461,6 +5487,9 @@ msgstr "H:mm"
 msgid "H:mm:ss"
 msgstr "H:mm:ss"
 
+msgid "HD"
+msgstr "HD"
+
 msgid "HD list"
 msgstr "HD nimekiri"
 
@@ -5504,7 +5533,7 @@ msgid "HDR10 Support"
 msgstr "HDR10 tugi"
 
 msgid "HELP"
-msgstr ""
+msgstr "HELP"
 
 msgid "HH:mm"
 msgstr "HH:mm"
@@ -5598,9 +5627,6 @@ msgstr "Kanaliajaloos edasi"
 
 msgid "History zap..."
 msgstr "Kanaliajalugu"
-
-msgid "Ho Chi Minh City"
-msgstr "Hô` Chí Minh"
 
 msgid "Hold screen"
 msgstr "Hoia pilti"
@@ -6168,9 +6194,6 @@ msgstr "Jersey"
 msgid "Job View"
 msgstr "Töövaade"
 
-msgid "Johnston Atoll"
-msgstr "Johnstoni atoll"
-
 msgid "Jordan"
 msgstr "Jordaania"
 
@@ -6558,9 +6581,6 @@ msgstr "Pikkuskraad"
 msgid "Loop through from"
 msgstr "Läbiviik >"
 
-msgid "Lord Howe Island"
-msgstr "Lord Howe saar"
-
 msgid "Lower Framerate save CPU Time"
 msgstr "Madalam kaadrisagedus säästab protsessoriaega"
 
@@ -6664,9 +6684,6 @@ msgstr "Märgista 3D kanalina"
 msgid "Mark/Portal/Playlist"
 msgstr "Märge/portaal/pleilist"
 
-msgid "Marquesas Islands"
-msgstr "Markiisaared"
-
 msgid "Marshall Islands"
 msgstr "Marshalli saared"
 
@@ -6756,9 +6773,6 @@ msgstr "Mehhiko"
 
 msgid "Micronesia (Federated States of)"
 msgstr "Mikroneesia Liiduriigid"
-
-msgid "Midway Islands"
-msgstr "Midway saared"
 
 msgid "MiniDLNA"
 msgstr "MiniDLNA"
@@ -6943,6 +6957,18 @@ msgstr "Liigu nimekirja kodukataloogi"
 msgid "Move to position X"
 msgstr "Liigu positsioonile X"
 
+msgid "Move to the next page"
+msgstr "Järgmine leht"
+
+msgid "Move to the next skin"
+msgstr "Järgmine kujundus"
+
+msgid "Move to the previous page"
+msgstr "Eelmine lehekülg"
+
+msgid "Move to the previous skin"
+msgstr "Eelmine kujundus"
+
 msgid "Move up a line"
 msgstr "Valik üks rida üles"
 
@@ -7009,23 +7035,20 @@ msgstr "Mosambiik"
 msgid "Multi EPG"
 msgstr "Multi EPG"
 
+msgid "MultiBoot Image Selector"
+msgstr "Multibuut püsivara valik"
+
+msgid "MultiBootSelector Actions"
+msgstr "Multibuudi valiku tegevused"
+
 msgid "MultiEPG"
 msgstr "Multi EPG"
 
 msgid "MultiType"
 msgstr "Mitmetüübiline"
 
-msgid "Multiboot"
-msgstr "Multibuut"
-
-msgid "Multiboot ERROR! - invalid STARTUP in boot partition."
-msgstr "Multibuudi VIGA! - vigane STARTUP alglaadimispartitsioonil."
-
-msgid "Multiboot ERROR! - no STARTUP in boot partition."
-msgstr "Multibuudi VIGA! - STARTUP puudub alglaadimispartitsioonilt."
-
-msgid "Multiboot Image Restart"
-msgstr "Multibuut püsivara taaskäivitus"
+msgid "Multiboot Image Selector"
+msgstr "Multibuut püsivara valik"
 
 msgid "Multimedia"
 msgstr "Multimeedia"
@@ -7341,6 +7364,9 @@ msgstr "Kanalit/levitajat pole valitud"
 msgid "No standby"
 msgstr "Ooteseisundita"
 
+msgid "No subtitles available"
+msgstr "Subtiitreid ei ole"
+
 msgid "No tags are set on these movies."
 msgstr "Salvestistele pole märksõnu määratud."
 
@@ -7423,9 +7449,6 @@ msgstr "Põhi"
 msgid "Northern Mariana Islands"
 msgstr "Põhja-Mariaanid"
 
-msgid "Northern Territory"
-msgstr "Põhjaterritoorium"
-
 msgid "Norway"
 msgstr "Norra"
 
@@ -7464,9 +7487,6 @@ msgstr ""
 "Faili suurus: %sMB\n"
 "Vaba ruumi: %sMB\n"
 "Asukoht: %s"
-
-msgid "Not mounted"
-msgstr "Haakimata"
 
 msgid "Not running"
 msgstr "Ei tööta"
@@ -7549,7 +7569,7 @@ msgid "OVR"
 msgstr "OVR"
 
 msgid "Octo core"
-msgstr "8-tuumaline"
+msgstr "8 tuuma"
 
 msgid "Off"
 msgstr "Väljas"
@@ -7914,9 +7934,6 @@ msgstr "Pilot"
 msgid "Pitcairn"
 msgstr "Pitcairn"
 
-msgid "Pitcairn Islands"
-msgstr "Pitcairn saared"
-
 msgid "Play"
 msgstr "Esita"
 
@@ -8118,7 +8135,7 @@ msgstr ""
 "Jätkamiseks vajuta OK."
 
 msgid "Please set up the following common options"
-msgstr "Seadista järgnvad üldvalikud"
+msgstr "Seadista järgnevad üldvalikud"
 
 msgid "Please set up tuner A"
 msgstr "Seadista tuuner A"
@@ -8322,6 +8339,15 @@ msgstr "Toitenäidiku olek vastuvõtja töötamisel"
 msgid "Power LED can be turned on or off here."
 msgstr "Toitenäidiku saab siin sisse/välja lülitada."
 
+msgid "Power On/Off display Normal Mode."
+msgstr "Toitenäidik tavakasutuses"
+
+msgid "Power On/Off display Standby Mode."
+msgstr "Toitenäidik ooteseisundis"
+
+msgid "Power On/Off display Suspend Mode."
+msgstr "Toitenäidik puhkeseisundis"
+
 msgid "Power long"
 msgstr "Toitenupp - pikk"
 
@@ -8418,9 +8444,6 @@ msgstr "Koolieelikuile"
 msgid "Press '0' to toggle PiP mode"
 msgstr "PiP-režiimi vahetamiseks vajuta '0'"
 
-msgid "Press 'Add Language' or MENU to add additional language(s). English language can not be deleted"
-msgstr "Keele lisamiseks vajuta 'Keele lisamine' või MENU. Inglise keelt kustutada ei saa"
-
 msgid "Press INFO on your remote control for additional information."
 msgstr "Lisainfo saamiseks vajuta 'INFO'."
 
@@ -8430,8 +8453,9 @@ msgstr "Lisavõimaluste nägemiseks vajuta 'MENU'."
 msgid "Press OK on your remote control to continue."
 msgstr "Jätkamiseks vajuta OK."
 
-msgid "Press OK to activate the selected skin."
-msgstr "Uue kujunduse jõustamiseks vajuta OK."
+#, python-format
+msgid "Press OK to activate the selected%s skin."
+msgstr "Uue kujunduse%s jõustamiseks vajuta OK."
 
 msgid "Press OK to activate the settings."
 msgstr "Seadistuste jõustamiseks vajuta OK."
@@ -8442,6 +8466,10 @@ msgstr "Seadistuste muutmiseks vajuta OK."
 #, python-format
 msgid "Press OK to get further details for %s"
 msgstr "%s üksikasjade nägemiseks vajuta OK"
+
+#, python-format
+msgid "Press OK to keep the currently selected%s skin."
+msgstr "Praeguse kujunduse%s säilitamiseks vajuta OK"
 
 msgid "Press OK to scan"
 msgstr "Otsingu alustamiseks vajuta OK"
@@ -8625,7 +8653,7 @@ msgid "Qatar"
 msgstr "Katar"
 
 msgid "Quad core"
-msgstr "4-tuumaline"
+msgstr "4 tuuma"
 
 msgid "Question"
 msgstr "Küsimus"
@@ -9069,6 +9097,9 @@ msgstr "Taasta"
 msgid "Restore backups"
 msgstr "Taasta varukoopiaid"
 
+msgid "Restore defaults"
+msgstr "Taasta vaikeväärtused"
+
 msgid "Restore deleted user bouquets"
 msgstr "Taasta kustutatud lemmiknimekirjad"
 
@@ -9190,7 +9221,7 @@ msgstr "SCR JESS"
 msgid "SCR Unicable"
 msgstr "SCR Unicable"
 
-msgid "SDcard is not initialised for multiboot - Exit and use ViX MultiBoot Manager to initialise"
+msgid "SDcard is not initialised for MultiBootSelector. Exit and use ViX MultiBoot Manager to initialise."
 msgstr "SD kaart tuleb multibuudi jaoks vormindada. Välju ja kasuta vormindamiseks Vixi multibuudi haldurit"
 
 msgid "SINGLE LAYER DVD"
@@ -9262,9 +9293,6 @@ msgstr "Antenni seaded"
 msgid "Satellite equipment"
 msgstr "Satelliidiseadmed"
 
-msgid "Satellite equipment control"
-msgstr "Satelliidiseadmed"
-
 msgid "Satellite equipment setup"
 msgstr "Satelliidiseadmete seaded"
 
@@ -9295,8 +9323,8 @@ msgstr "Salvesta/sisesta tekst ja välju"
 msgid "Save EPG"
 msgstr "Talleta EPG"
 
-msgid "Save and exit"
-msgstr "Salvesta ja välju"
+msgid "Save and activate the currently selected skin"
+msgstr "Salvesta ja jõusta hetkel valitud kujundus"
 
 msgid "Save and record"
 msgstr "Talleta ja salvesta"
@@ -9485,7 +9513,7 @@ msgid "Select 'FBC SCR' if this tuner will connect to a SCR (Unicable/JESS) devi
 msgstr "Vali 'FBC SCR', kui see tuuner kasutab unicable seadet. Kõigil ülejäänud juhtudel vali 'FBC automaatne'."
 
 msgid ""
-"Select 'Yes' to delete all languages except English and your chosen language:\n"
+"Select 'Yes' to delete all languages except English and current language:\n"
 "\n"
 "Select 'No' to delete only the chosen language:\n"
 "\n"
@@ -9661,6 +9689,9 @@ msgstr "Vali kursori alla jääv tähemärk või tegevus"
 msgid "Select the desired function and click on \"OK\" to assign it. Use \"CH+/-\" to toggle between the lists. Select an assigned function and click on \"OK\" to de-assign it. Use \"Next/Previous\" to change the order of the assigned functions."
 msgstr "Nupule soovitud toimingu määramiseks vajuta puldil seda nuppu. Nimekirjade vahetamiseks kasuta 'CH+/-' nuppe. Toimingu eemaldamiseks vali määratud toiming ja vajuta 'OK'. Toimingute järjekorra muutmiseks kasuta 'Eelmine/Järgmine' nuppe."
 
+msgid "Select the highlighted image and reboot"
+msgstr "Vali esiletõstetud püsivara ja taaskäivita"
+
 msgid "Select the manufacturer of your SCR device. If the manufacturer is not listed, set 'SCR' to 'user defined' and enter the device parameters manually according to its spec sheet."
 msgstr "Vali SCR seadme tootja. Kui tootjat nimekirjas ei ole, määra 'SCR' väärtuseks 'kasutaja määratud' ja sisesta seadme parameetrid käsitsi vastavalt selle spetsifikatsioonile."
 
@@ -9726,6 +9757,9 @@ msgstr "Vali video sisend ÜLES/ALLA nuppudega"
 
 msgid "Select video mode"
 msgstr "Vali videorežiim"
+
+msgid "Select whether your SCR device is externally powered."
+msgstr "Vali, kas SCR seade on välise toitega"
 
 msgid "Select wireless network"
 msgstr "Vali traadita võrk"
@@ -10085,7 +10119,7 @@ msgid "Sharpness"
 msgstr "Teravus"
 
 msgid "Shift"
-msgstr ""
+msgstr "Shift"
 
 msgid "Short filenames"
 msgstr "Lühikesed failinimed"
@@ -10330,6 +10364,9 @@ msgstr "Kuva või varja täpsem saatetutvustus (sõltub kujundusest)."
 msgid "Show picon background color"
 msgstr "Pikoni tausta värv"
 
+msgid "Show picons during channel number input"
+msgstr "Pikonid numbritega kanalivahetusel"
+
 msgid "Show picons in service list"
 msgstr "Pikonid kanalinimekirjas"
 
@@ -10502,7 +10539,7 @@ msgid "Single EPG"
 msgstr "Kanali EPG"
 
 msgid "Single core"
-msgstr "Ühetuumaline"
+msgstr "1 tuum"
 
 msgid "Single satellite"
 msgstr "Üksik satelliit"
@@ -10522,11 +10559,11 @@ msgstr "Koha laiuskraad"
 msgid "Site longitude"
 msgstr "Koha pikkuskraad"
 
-msgid "Size: "
-msgstr "Maht: "
-
 msgid "Skin"
 msgstr "Kujundus"
+
+msgid "Skin Selection Actions"
+msgstr "Kujunduse valiku tegevused"
 
 msgid "Skin Setting"
 msgstr "Kujunduse seaded"
@@ -10540,6 +10577,9 @@ msgstr "Kujunduse valik"
 #, python-format
 msgid "Skin:\t%s"
 msgstr "Kujundus:\t%s"
+
+msgid "SkinSelector: Restart GUI"
+msgstr "Kujunduse valik: E2 taaskäivitus"
 
 msgid "Skins"
 msgstr "Kujundused"
@@ -10589,6 +10629,14 @@ msgstr "Kitsas"
 #, python-format
 msgid "Slot %d"
 msgstr "Pesa %d"
+
+#, python-format
+msgid "Slot %s: %s - Mode %d%s"
+msgstr "Pesa %s: %s - režiim %d%s"
+
+#, python-format
+msgid "Slot %s: %s%s"
+msgstr "Pesa %s: %s%s"
 
 msgid "Slovak"
 msgstr "Slovaki"
@@ -10754,9 +10802,6 @@ msgstr "Lõuna"
 msgid "South Africa"
 msgstr "Lõuna-Aafrika"
 
-msgid "South Australia"
-msgstr "Austraalia"
-
 msgid "South Georgia and the South Sandwich Islands"
 msgstr "Lõuna-Georgia ja Lõuna-Sandwichi saared"
 
@@ -10819,6 +10864,9 @@ msgstr "Seiskamine"
 
 msgid "Start"
 msgstr "Käivita"
+
+msgid "Start Wizard - Screen Alignment"
+msgstr "Käivitusvabi - ekraani joondus"
 
 msgid "Start from the beginning"
 msgstr "Alusta algusest"
@@ -11000,6 +11048,9 @@ msgstr "Alamkanalid"
 msgid "Subtitle"
 msgstr "Subtiitrid"
 
+msgid "Subtitle Long"
+msgstr "Subtiitrid - pikk"
+
 msgid "Subtitle alignment"
 msgstr "Subtiitrite joondus"
 
@@ -11041,6 +11092,12 @@ msgstr "Subtiitrite valik"
 
 msgid "Subtitles"
 msgstr "Subtiitrid"
+
+msgid "Subtitles off"
+msgstr "Subtiitrid väljas"
+
+msgid "Subtitles on"
+msgstr "Subtiitrid sees"
 
 msgid "Subtitles settings"
 msgstr "Subtiitrite seaded"
@@ -11589,9 +11646,6 @@ msgstr "See valik võtab kasutusse pehmendusfiltri värvitoonide segamisel."
 msgid "This option allows you enable the vertical scaler dejagging."
 msgstr "See valik võtab kasutusse skaleerija püstloodse sakiservade eemaldamise."
 
-msgid "This option allows you to Power Off the display."
-msgstr "See valik lubab näidiku välja lülitada."
-
 msgid "This option allows you to boost the blue tones in the picture."
 msgstr "Siin saab võimendada pildi siniseid toone."
 
@@ -11914,6 +11968,14 @@ msgstr "Omadused"
 msgid "Titleset mode"
 msgstr "Pealkirja seadmine"
 
+#, python-format
+msgid "To apply the selected '%s' skin the GUI needs to restart. Would you like to restart the GUI now?"
+msgstr "Valitud kujunduse '%s' jõustamiseks tuleb kasutajaliides taaskäivitada. Kas teha seda kohe?"
+
+#, python-format
+msgid "To save and apply the selected '%s' skin the GUI needs to restart. Would you like to save the selection and restart the GUI now?"
+msgstr "Valitud kujunduse '%s' jõustamiseks tuleb kasutajaliides taaskäivitada. Kas salvestada valik ja taaskäivitada kohe?"
+
 msgid "Today"
 msgstr "Täna"
 
@@ -11941,11 +12003,17 @@ msgstr "Muuda kuvasuhet"
 msgid "Toggle between bouquet/epg lists"
 msgstr "Lemmiknimekirja ja epg vahel vahetamine"
 
+msgid "Toggle default subtitles"
+msgstr "Vaikimisi subtiitrite lülitamine"
+
 msgid "Toggle new text inserts before or overwrites existing text"
 msgstr "Vaheta uue teksti sisestamine või olemasoleva teksti ülekirjutamine"
 
 msgid "Toggle picture In graphics"
 msgstr "PiG lüliti"
+
+msgid "Toggle the default subtitles"
+msgstr "Vaikimisi subtiitrite lülitamine"
 
 msgid "Togo"
 msgstr "Togo"
@@ -12350,7 +12418,7 @@ msgid "Use Netmed EPG information when it is available."
 msgstr "Kasuta saadavusel Netmed EPG andmeid."
 
 msgid "Use OpenTV EPG information when it is available. For reading OpenTV EPG data tuning to a dedicated transponder is required"
-msgstr ""
+msgstr "Kasuta saadavusel OpenTV EPG andmeid. OpenTV EPG andmete lugemiseks peab tuuner olema häälestatud selleks mõeldud transponderile"
 
 msgid "Use TV remote control"
 msgstr "Kasuta teleri pulti"
@@ -12756,9 +12824,6 @@ msgstr "Haakimise ootel"
 msgid "Waiting for partition"
 msgstr "Partitsiooni ootel"
 
-msgid "Wake Island"
-msgstr "Wake'i saar"
-
 msgid "Wake On LAN"
 msgstr "Kohtvõrgus äratamine WOL"
 
@@ -12882,9 +12947,6 @@ msgstr "Lääs"
 
 msgid "West limit set"
 msgstr "Lääne piir on määratud"
-
-msgid "Western Australia"
-msgstr "Lääne-Austraalia"
 
 msgid "Western Sahara"
 msgstr "Lääne-Sahaara"
@@ -13628,6 +13690,9 @@ msgstr "algamas"
 msgid "activatePiP"
 msgstr "PiP käivitamine"
 
+msgid "activatePiP long"
+msgstr ""
+
 msgid "add bookmark"
 msgstr "lisa järjehoidja"
 
@@ -13662,7 +13727,7 @@ msgid "alternative"
 msgstr "Alternatiivne"
 
 msgid "am"
-msgstr "a.m."
+msgstr "a.m"
 
 msgid "and never ask again this session"
 msgstr "ja selle seansi jooksul enam ei küsita"
@@ -13695,7 +13760,7 @@ msgid "audio tracks"
 msgstr "heliribad"
 
 msgid "auto"
-msgstr "auto."
+msgstr "auto"
 
 msgid "auto deepstandby"
 msgstr "Automaatne puhkeseisund"
@@ -14016,13 +14081,11 @@ msgstr "folk/rahvamuusika"
 msgid "football/soccer"
 msgstr "jalgpall"
 
-#, fuzzy
 msgid "force disabled"
-msgstr "keelatud"
+msgstr "jõuga keelatud"
 
-#, fuzzy
 msgid "force enabled"
-msgstr "lubatud"
+msgstr "jõuga lubatud"
 
 msgid "foreign countries/expeditions"
 msgstr "välisriigid/uurimisreisid"
@@ -14604,30 +14667,6 @@ msgstr "Hüpe edasi"
 msgid "skip forward (enter time)"
 msgstr "Hüpe edasi (sisesta aeg)"
 
-#, python-format
-msgid "slot%s - %s mode 1"
-msgstr "pesa%s - %s mood 1"
-
-#, python-format
-msgid "slot%s - %s mode 1 (current image)"
-msgstr "pesa%s - %s mood 1 (aktiivne püsivara)"
-
-#, python-format
-msgid "slot%s - %s mode 12"
-msgstr "pesa%s - %s mood 12"
-
-#, python-format
-msgid "slot%s - %s mode 12 (current image)"
-msgstr "pesa%s - %s mood 12 (aktiivne püsivara)"
-
-#, python-format
-msgid "slot%s -%s - %s (current image)"
-msgstr "pesa%s -%s - %s (aktiivne püsivara)"
-
-#, python-format
-msgid "slot%s -%s- %s "
-msgstr "pesa%s -%s- %s "
-
 msgid "slow"
 msgstr "Aeglane"
 
@@ -14904,14 +14943,14 @@ msgstr "Kanalivahetus ja salvestamine"
 msgid "zapped"
 msgstr "vahetatud"
 
+#~ msgid " "
+#~ msgstr " "
+
 #~ msgid " Stream %s"
 #~ msgstr " %s voogesitus"
 
 #~ msgid "128"
 #~ msgstr "128"
-
-#~ msgid "16"
-#~ msgstr "16"
 
 #~ msgid "256"
 #~ msgstr "256"
@@ -14931,6 +14970,9 @@ msgstr "vahetatud"
 #~ msgid "AV settings"
 #~ msgstr "Heli ja pildi seaded"
 
+#~ msgid "About..."
+#~ msgstr "Süsteemist..."
+
 #~ msgid "Add to selection (starts with...)"
 #~ msgstr "Lisa valikusse (algab ...)"
 
@@ -14946,6 +14988,9 @@ msgstr "vahetatud"
 #~ msgid "ChannelEPG settings"
 #~ msgstr "Kanali EPG seaded"
 
+#~ msgid "Chatham Islands"
+#~ msgstr "Chathami saared"
+
 #~ msgid "Chipset:\tBCM%s\n"
 #~ msgstr "Kiibistik:\tBCM%s\n"
 
@@ -14954,9 +14999,6 @@ msgstr "vahetatud"
 
 #~ msgid "Compare case sensitive"
 #~ msgstr "Tõusutundlik võrdlus"
-
-#~ msgid "Configure if service picons will be shown in quickzap."
-#~ msgstr "Määra, kas kanalivahetusel kuvatakse pikonid."
 
 #~ msgid "Configure the type of status indication icons shown in the movie list."
 #~ msgstr "Määra, kuidas tähistatakse salvestuste olek filmilistis."
@@ -14992,14 +15034,26 @@ msgstr "vahetatud"
 #~ msgid "EPG Settings"
 #~ msgstr "EPG seaded"
 
+#~ msgid "Easter Island"
+#~ msgstr "Lihavõttesaar"
+
+#~ msgid "Enigma2 skin selector"
+#~ msgstr "Enigma2 kujunduse valik"
+
 #~ msgid "Enter your password here:"
 #~ msgstr "Sisesta uus parool:"
 
 #~ msgid "Execute"
 #~ msgstr "Teosta"
 
+#~ msgid "Exit/OK"
+#~ msgstr "Exit/OK"
+
 #~ msgid "FTP setup"
 #~ msgstr "FTP seaded"
+
+#~ msgid "Fernando de Noronha"
+#~ msgstr "Fernando de Noronha"
 
 #~ msgid "File manager"
 #~ msgstr "Failihaldur"
@@ -15013,11 +15067,30 @@ msgstr "vahetatud"
 #~ msgid "Front Display Panel"
 #~ msgstr "Esipaneeli näidik"
 
+#~ msgid ""
+#~ "GUI needs a restart to apply a new skin\n"
+#~ "Do you want to restart the GUI now?"
+#~ msgstr ""
+#~ "Kujunduse jõustamiseks tuleb kasutajaliides taaskäivitada\n"
+#~ "Kas teha seda kohe?"
+
+#~ msgid "Galapagos Islands"
+#~ msgstr "Galapagose saared"
+
+#~ msgid "Gambier Islands"
+#~ msgstr "Gambieri saared"
+
 #~ msgid "GraphicalEPG settings"
 #~ msgstr "Graafilise EPG seaded"
 
+#~ msgid "Greek (Modern)"
+#~ msgstr "Kreeka (Tänapäev)"
+
 #~ msgid "Hard disk settings"
 #~ msgstr "Kõvaketta seaded"
+
+#~ msgid "Ho Chi Minh City"
+#~ msgstr "Hô` Chí Minh"
 
 #~ msgid "IP-Address"
 #~ msgstr "IP aadress"
@@ -15031,6 +15104,9 @@ msgstr "vahetatud"
 #~ msgid "Initialization"
 #~ msgstr "Vormindamine"
 
+#~ msgid "Johnston Atoll"
+#~ msgstr "Johnstoni atoll"
+
 #~ msgid "Link Quality:"
 #~ msgstr "Lingi kvaliteet:"
 
@@ -15039,6 +15115,15 @@ msgstr "vahetatud"
 
 #~ msgid "Logs Settings"
 #~ msgstr "Logimise seaded"
+
+#~ msgid "Lord Howe Island"
+#~ msgstr "Lord Howe saar"
+
+#~ msgid "Marquesas Islands"
+#~ msgstr "Markiisaared"
+
+#~ msgid "Midway Islands"
+#~ msgstr "Midway saared"
 
 #~ msgid "MiniDLNA setup"
 #~ msgstr "MiniDLNA seaded"
@@ -15054,6 +15139,15 @@ msgstr "vahetatud"
 
 #~ msgid "MultiEPG settings"
 #~ msgstr "MultiEPG seaded"
+
+#~ msgid "Multiboot"
+#~ msgstr "Multibuut"
+
+#~ msgid "Multiboot ERROR! - invalid STARTUP in boot partition."
+#~ msgstr "Multibuudi VIGA! - vigane STARTUP alglaadimispartitsioonil."
+
+#~ msgid "Multiboot ERROR! - no STARTUP in boot partition."
+#~ msgstr "Multibuudi VIGA! - STARTUP puudub alglaadimispartitsioonilt."
 
 #~ msgid "NFS setup"
 #~ msgstr "NFS seaded"
@@ -15079,8 +15173,14 @@ msgstr "vahetatud"
 #~ msgid "No suitable sat tuner found!"
 #~ msgstr "Sat-tv tuunerit ei leitud!"
 
+#~ msgid "Northern Territory"
+#~ msgstr "Põhjaterritoorium"
+
 #~ msgid "Not configured"
 #~ msgstr "Seadistamata"
+
+#~ msgid "Not mounted"
+#~ msgstr "Haakimata"
 
 #~ msgid "Nothing connected"
 #~ msgstr "Midagi pole ühendatud"
@@ -15106,6 +15206,9 @@ msgstr "vahetatud"
 #~ msgid "Password deleted sucessfully for the root user"
 #~ msgstr "Juurkasutaja parool kustutati"
 
+#~ msgid "Pitcairn Islands"
+#~ msgstr "Pitcairn saared"
+
 #~ msgid "Position Setup"
 #~ msgstr "Asukoha määramine"
 
@@ -15114,6 +15217,9 @@ msgstr "vahetatud"
 
 #~ msgid "Power down"
 #~ msgstr "Puhkeseisund"
+
+#~ msgid "Press 'Add Language' or MENU to add additional language(s). English language can not be deleted"
+#~ msgstr "Keele lisamiseks vajuta 'Keele lisamine' või MENU. Inglise keelt kustutada ei saa"
 
 #~ msgid "Press OK to start the scan"
 #~ msgstr "Otsingu alustamiseks vajuta OK"
@@ -15132,6 +15238,12 @@ msgstr "vahetatud"
 
 #~ msgid "Samba setup"
 #~ msgstr "Samba seaded"
+
+#~ msgid "Satellite equipment control"
+#~ msgstr "Satelliidiseadmed"
+
+#~ msgid "Save and exit"
+#~ msgstr "Salvesta ja välju"
 
 #~ msgid "Save timeshift in movie dir and zap"
 #~ msgstr "Talleta ajanihe salvestuskataloogi ja vaheta kanalit"
@@ -15184,6 +15296,9 @@ msgstr "vahetatud"
 #~ msgid "SingleEPG settings"
 #~ msgstr "Kanali EPG seaded"
 
+#~ msgid "Size: "
+#~ msgstr "Maht: "
+
 #~ msgid "SoftCam and CI"
 #~ msgstr "EMU / CI"
 
@@ -15195,6 +15310,9 @@ msgstr "vahetatud"
 
 #~ msgid "Software Update"
 #~ msgstr "Tarkvara uuendused"
+
+#~ msgid "South Australia"
+#~ msgstr "Austraalia"
 
 #~ msgid "Specify the complete URL of the fallback remote receiver including the port number (:8001 by default), e.g. 'http://IP_second_box:8001'."
 #~ msgstr "Määra kaugvastuvõtja täielik URL koos pordi numbriga (vaikimisi :8001). Näiteks '192.168.x.x:8001'."
@@ -15224,6 +15342,9 @@ msgstr "vahetatud"
 #~ msgid "This is a multitype tuner. Available options depend on the hardware. Cable and terrestrial cannot be configured at the same time. If you want to use as cable + satellite or terrestrial + satellite, configure cable/terrestrial first and then save. Re-open and configure again as satellite."
 #~ msgstr "See on mitmetüübiline tuuner. Võimalikud valikud sõltuvad vastuvõtjast. Kaabel ja maapealne ei saa olla kasutuses korraga. Kui tahad vastuvõtjat kasutada 'kaabel + satelliit' või 'maapealne + satelliit', seadista esmalt kaabel/maapealne ja salvesta. Ava uuesti ja seadista satelliit."
 
+#~ msgid "This option allows you to Power Off the display."
+#~ msgstr "See valik lubab näidiku välja lülitada."
+
 #~ msgid "Time settings"
 #~ msgstr "Aja seaded"
 
@@ -15250,6 +15371,12 @@ msgstr "vahetatud"
 
 #~ msgid "Video Enhancement Settings"
 #~ msgstr "Pildi paranduste sätted"
+
+#~ msgid "Wake Island"
+#~ msgstr "Wake'i saar"
+
+#~ msgid "Western Australia"
+#~ msgstr "Lääne-Austraalia"
 
 #~ msgid "When enabled the LNB power will not be switched off in standby"
 #~ msgstr "Kui lubatud, ei lülitata ooteseisundis LNB toidet välja"
@@ -15287,6 +15414,21 @@ msgstr "vahetatud"
 
 #~ msgid "second cable of motorized LNB"
 #~ msgstr "Ajamiga LNB teine kaabel"
+
+#~ msgid "slot%s - %s mode 1 (current image)"
+#~ msgstr "pesa%s - %s mood 1 (aktiivne püsivara)"
+
+#~ msgid "slot%s - %s mode 12"
+#~ msgstr "pesa%s - %s mood 12"
+
+#~ msgid "slot%s - %s mode 12 (current image)"
+#~ msgstr "pesa%s - %s mood 12 (aktiivne püsivara)"
+
+#~ msgid "slot%s -%s - %s (current image)"
+#~ msgstr "pesa%s -%s - %s (aktiivne püsivara)"
+
+#~ msgid "slot%s -%s- %s "
+#~ msgstr "pesa%s -%s- %s "
 
 #~ msgid "standard"
 #~ msgstr "tavaline"
