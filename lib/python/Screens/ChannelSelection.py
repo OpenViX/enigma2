@@ -45,6 +45,7 @@ from Components.SystemInfo import SystemInfo
 from Screens.ChoiceBox import ChoiceBox
 from Screens.EventView import EventViewEPGSelect
 import os, unicodedata
+from time import time
 profile("ChannelSelection.py after imports")
 
 FLAG_SERVICE_NEW_FOUND = 64
@@ -670,7 +671,9 @@ class SelectionEventInfo:
 		self.onShown.append(self.__selectionChanged)
 
 	def __selectionChanged(self):
+		self.timer.stop()
 		if self.execing:
+			self.update_root = False
 			self.timer.start(int(config.usage.servicelist_eventinfo_delay.value), True)
 
 	def updateEventInfo(self):
@@ -679,6 +682,22 @@ class SelectionEventInfo:
 		try:
 			service.newService(cur)
 			self["Event"].newEvent(service.event)
+			if cur and service.event:
+				if self.update_root and self.shown:
+					root = self.getRoot()
+					if root:
+						self.clearPath()
+						if self.bouquet_root:
+							self.enterPath(self.bouquet_root)
+						self.enterPath(root)
+						self.setCurrentSelection(cur)
+						self.update_root = False
+				if not self.update_root:
+					now = int(time())
+					end_time = service.event.getBeginTime() + service.event.getDuration()
+					if end_time > now:
+						self.update_root = True
+						self.timer.start((end_time - now) * 1000, True)
 		except:
 			pass
 
