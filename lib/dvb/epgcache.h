@@ -352,7 +352,8 @@ private:
 #endif // SWIG
 public:
 	static eEPGCache *getInstance() { return instance; }
-
+	void restartAllChannelsEPG();
+	void abortAllChannelsEPG();
 	void save();
 	void load();
 	void timeUpdated();
@@ -394,17 +395,15 @@ public:
 		SIMILAR_BROADCASTINGS_SEARCH,
 		EXAKT_TITLE_SEARCH,
 		PARTIAL_TITLE_SEARCH,
-		PARTIAL_DESCRIPTION_SEARCH,
-		START_TITLE_SEARCH
+		START_TITLE_SEARCH,
+		END_TITLE_SEARCH,
+		PARTIAL_DESCRIPTION_SEARCH
 	};
 	enum {
 		CASE_CHECK,
-		NO_CASE_CHECK,
-		REGEX_CHECK 
+		NO_CASE_CHECK
 	};
-
 	PyObject *lookupEvent(SWIG_PYOBJECT(ePyObject) list, SWIG_PYOBJECT(ePyObject) convertFunc=(PyObject*)0);
-	const char* casetypestr(int value);
 	PyObject *search(SWIG_PYOBJECT(ePyObject));
 
 	// eServiceEvent are parsed epg events.. it's safe to use them after cache unlock
