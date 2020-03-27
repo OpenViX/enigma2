@@ -8,10 +8,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-29 20:00+0100\n"
-"PO-Revision-Date: 2015-01-29 17:40+0200\n"
-"Last-Translator: none <none@none.com>\n"
-"Language-Team: none\n"
+"POT-Creation-Date: 2020-03-21 09:07+0100\n"
+"PO-Revision-Date: 2013-04-22 04:29+0330\n"
+"Last-Translator: dimili21\n"
+"Language-Team: \n"
 "Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2766,9 +2766,6 @@ msgstr "Could not find installed channel list."
 msgid "Could not load Medium! No disc inserted?"
 msgstr "Could not load medium! No disc inserted?"
 
-msgid "Could not locate epg file on fallback tuner"
-msgstr ""
-
 msgid "Could not open Picture in Picture"
 msgstr "Could not open Picture in Picture"
 
@@ -3742,6 +3739,10 @@ msgstr ""
 msgid "ERROR - failed to scan (%s)!"
 msgstr "ERROR - failed to scan (%s)!"
 
+#, python-format
+msgid "ERROR downloading file %s"
+msgstr ""
+
 msgid "East"
 msgstr "East"
 
@@ -4093,6 +4094,10 @@ msgstr "Error"
 msgid "Error checking disk. The disk may be damaged"
 msgstr ""
 
+#, fuzzy, python-format
+msgid "Error %s"
+msgstr "Error"
+
 msgid "Error code"
 msgstr "Error code"
 
@@ -4117,10 +4122,22 @@ msgid ""
 "%s"
 msgstr ""
 
+msgid "Error stop stream!"
+msgstr ""
+
+msgid "Error when writing epg.dat on server"
+msgstr ""
+
+msgid "Error while retreiving epg.dat from server"
+msgstr ""
+
 #, python-format
 msgid ""
 "Error while retreiving fallback timer information\n"
 "%s"
+msgstr ""
+
+msgid "Error while retreiving location of epg.dat on server"
 msgstr ""
 
 #, python-format
@@ -6780,6 +6797,9 @@ msgstr "No description available."
 msgid "No displayable files on this medium found!"
 msgstr "No displayable files on this medium found!"
 
+msgid "No epg.dat file found server"
+msgstr ""
+
 msgid "No event info found, recording indefinitely."
 msgstr "No event info found, recording indefinitely."
 
@@ -6824,9 +6844,6 @@ msgstr ""
 
 msgid "No services/providers selected"
 msgstr "No services/providers selected"
-
-msgid "No settings files to download on fallback tuner"
-msgstr ""
 
 msgid "No standby"
 msgstr "No standby"
@@ -9434,7 +9451,12 @@ msgstr ""
 msgid "Select the virtual keyboard shifted character set for the next character only"
 msgstr ""
 
-#, fuzzy
+msgid "Select timezone area or region."
+msgstr ""
+
+msgid "Select timezone in the area or region."
+msgstr ""
+
 msgid "Select update source"
 msgstr "Select upgrade source"
 
@@ -11654,6 +11676,10 @@ msgid "Timeshift not possible!"
 msgstr "Timeshift not possible!"
 
 msgid "Timezone"
+msgstr "Wextu Zeman"
+
+#, fuzzy
+msgid "Timezone area"
 msgstr "Wextu Zeman"
 
 msgid "Timor-Leste"

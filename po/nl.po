@@ -8,10 +8,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-29 20:00+0100\n"
-"PO-Revision-Date: 2015-01-29 17:40+0200\n"
-"Last-Translator: none <none@none.com>\n"
-"Language-Team: none\n"
+"POT-Creation-Date: 2020-03-21 09:07+0100\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Frenske <voorzitter@openpli.org>\n"
+"Language-Team: PLiteam <translators@openpli.org>\n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2938,9 +2938,6 @@ msgstr "Ik kon geen geïnstalleerde zenderlijst vinden."
 msgid "Could not load Medium! No disc inserted?"
 msgstr "Kon het medium niet laden! Is er geen schijf geplaatst?"
 
-msgid "Could not locate epg file on fallback tuner"
-msgstr ""
-
 msgid "Could not open Picture in Picture"
 msgstr "Kan Picture In Picture niet openen"
 
@@ -3917,6 +3914,10 @@ msgstr ""
 msgid "ERROR - failed to scan (%s)!"
 msgstr "Fout - zoeken mislukt (%s)!"
 
+#, python-format
+msgid "ERROR downloading file %s"
+msgstr ""
+
 msgid "East"
 msgstr "Oost"
 
@@ -4276,6 +4277,10 @@ msgstr "Fout"
 msgid "Error checking disk. The disk may be damaged"
 msgstr ""
 
+#, fuzzy, python-format
+msgid "Error %s"
+msgstr "Fout"
+
 msgid "Error code"
 msgstr "Foutcode"
 
@@ -4300,11 +4305,26 @@ msgid ""
 "%s"
 msgstr ""
 
+msgid "Error when writing epg.dat on server"
+msgstr ""
+
+#, fuzzy
+msgid "Error while retreiving epg.dat from server"
+msgstr ""
+"Fout tijdens het ophalen van de Fallback timer informatie\n"
+"%s"
+
 #, python-format
 msgid ""
 "Error while retreiving fallback timer information\n"
 "%s"
 msgstr ""
+
+#, fuzzy
+msgid "Error while retreiving location of epg.dat on server"
+msgstr ""
+"Fout tijdens het ophalen van de Fallback timer informatie\n"
+"%s"
 
 #, python-format
 msgid ""
@@ -6976,6 +6996,9 @@ msgstr "Geen beschrijving beschikbaar."
 msgid "No displayable files on this medium found!"
 msgstr "Geen weer te geven bestanden op dit medium gevonden!"
 
+msgid "No epg.dat file found server"
+msgstr ""
+
 msgid "No event info found, recording indefinitely."
 msgstr "Geen EPG gegevens gevonden. Opname voor onbepaalde tijd."
 
@@ -7021,9 +7044,6 @@ msgstr "Geen uitzending"
 
 msgid "No services/providers selected"
 msgstr "Geen zender / provider gekozen"
-
-msgid "No settings files to download on fallback tuner"
-msgstr ""
 
 msgid "No standby"
 msgstr "Geen standby"
@@ -9647,6 +9667,12 @@ msgid "Select the virtual keyboard shifted character set for the next character 
 msgstr ""
 
 #, fuzzy
+msgid "Select timezone area or region."
+msgstr "Kies de horizontale resolutie:"
+
+msgid "Select timezone in the area or region."
+msgstr ""
+
 msgid "Select update source"
 msgstr "Kies de bron om te upgraden"
 
@@ -11877,6 +11903,10 @@ msgid "Timeshift not possible!"
 msgstr "Timeshift is niet mogelijk!"
 
 msgid "Timezone"
+msgstr "Tijdzone"
+
+#, fuzzy
+msgid "Timezone area"
 msgstr "Tijdzone"
 
 msgid "Timor-Leste"

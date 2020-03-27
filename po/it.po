@@ -8,10 +8,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-29 20:00+0100\n"
-"PO-Revision-Date: 2015-01-29 17:40+0200\n"
-"Last-Translator: none <none@none.com>\n"
-"Language-Team: none\n"
+"POT-Creation-Date: 2020-03-21 09:07+0100\n"
+"PO-Revision-Date: 2018-05-22 13:54+0200\n"
+"Last-Translator: Gringo <openpli@tiscali.it>\n"
+"Language-Team: www.linsat.net <spaeleus@croci.org>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -3081,15 +3081,12 @@ msgstr ""
 msgid "Could not find installed channel list."
 msgstr "Impossibile trovare l'elenco dei canali installati."
 
-#
-#, fuzzy
-msgid "Could not load Medium! No disc inserted?"
-msgstr "Impossibile caricare supporto. Disco non inserito?"
+msgid "Could not find suitable media - Please remove some downloaded images or insert a media (e.g. USB stick) with sufficiant free space and try again!"
+msgstr "Impossibile trovare dei supporti adatti. Inserire un supporto (ad. es una chiavetta USB) e riprovare!"
 
-msgid "Could not locate epg file on fallback tuner"
-msgstr ""
+msgid "Could not load medium! No disc inserted?"
+msgstr "Impossibile caricare il supporto. Nessun disco inserito?"
 
-#
 msgid "Could not open Picture in Picture"
 msgstr "Impossibile attivare PiP"
 
@@ -4189,7 +4186,10 @@ msgstr ""
 msgid "ERROR - failed to scan (%s)!"
 msgstr "ERRORE - Ricerca fallita (%s)!"
 
-#
+#, python-format
+msgid "ERROR downloading file %s"
+msgstr ""
+
 msgid "East"
 msgstr "Est"
 
@@ -4582,6 +4582,10 @@ msgstr "Errore"
 msgid "Error checking disk. The disk may be damaged"
 msgstr ""
 
+#, fuzzy, python-format
+msgid "Error %s"
+msgstr "Errore"
+
 msgid "Error code"
 msgstr "Codice errore"
 
@@ -4607,13 +4611,27 @@ msgid ""
 "%s"
 msgstr ""
 
+msgid "Error when writing epg.dat on server"
+msgstr ""
+
+#, fuzzy
+msgid "Error while retreiving epg.dat from server"
+msgstr ""
+"Errore durante il recupero delle informazioni del timer di fallback\n"
+"%s"
+
 #, python-format
 msgid ""
 "Error while retreiving fallback timer information\n"
 "%s"
 msgstr ""
 
-#
+#, fuzzy
+msgid "Error while retreiving location of epg.dat on server"
+msgstr ""
+"Errore durante il recupero delle informazioni del timer di fallback\n"
+"%s"
+
 #, python-format
 msgid ""
 "Error: %s\n"
@@ -7593,7 +7611,9 @@ msgstr "Descrizione non disponibile."
 msgid "No displayable files on this medium found!"
 msgstr "Il supporto non contiene file riproducibili."
 
-#
+msgid "No epg.dat file found server"
+msgstr ""
+
 msgid "No event info found, recording indefinitely."
 msgstr "Informazioni evento non disponibili, registrazione illimitata."
 
@@ -7648,10 +7668,6 @@ msgstr ""
 msgid "No services/providers selected"
 msgstr "Nessun canale/provider selezionato"
 
-msgid "No settings files to download on fallback tuner"
-msgstr ""
-
-#
 msgid "No standby"
 msgstr "Nessuno standby"
 
@@ -10632,8 +10648,13 @@ msgstr ""
 msgid "Select the virtual keyboard shifted character set for the next character only"
 msgstr ""
 
-#
 #, fuzzy
+msgid "Select timezone area or region."
+msgstr "Selezionare la risoluzione orizzontale:"
+
+msgid "Select timezone in the area or region."
+msgstr ""
+
 msgid "Select update source"
 msgstr "Selezionare la sorgente aggiornamento"
 
@@ -13112,6 +13133,10 @@ msgstr "Timeshift impossibile!"
 
 #
 msgid "Timezone"
+msgstr "Fuso orario"
+
+#, fuzzy
+msgid "Timezone area"
 msgstr "Fuso orario"
 
 msgid "Timor-Leste"

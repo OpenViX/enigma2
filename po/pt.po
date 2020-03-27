@@ -8,10 +8,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-29 20:00+0100\n"
-"PO-Revision-Date: 2015-01-29 17:40+0200\n"
-"Last-Translator: none <none@none.com>\n"
-"Language-Team: none\n"
+"POT-Creation-Date: 2020-03-21 09:07+0100\n"
+"PO-Revision-Date: 2014-12-15 19:38-0000\n"
+"Last-Translator: Phenom <phenomxy@gmail.com>\n"
+"Language-Team: Muaitai <muaitai@gmail.com>\n"
 "Language: pt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -3136,9 +3136,6 @@ msgstr "Não foi possível encontrar a Lista de Canais instalada."
 msgid "Could not load Medium! No disc inserted?"
 msgstr "Foi impossível carregar a media! Disco não inserido?"
 
-msgid "Could not locate epg file on fallback tuner"
-msgstr ""
-
 #
 msgid "Could not open Picture in Picture"
 msgstr "Não foi possível abrir o Picture in Picture"
@@ -4263,6 +4260,10 @@ msgstr ""
 msgid "ERROR - failed to scan (%s)!"
 msgstr "ERRO - falha na pesquisa (%s)!"
 
+#, python-format
+msgid "ERROR downloading file %s"
+msgstr ""
+
 #
 msgid "East"
 msgstr "Este"
@@ -4663,6 +4664,11 @@ msgstr "Erro"
 msgid "Error checking disk. The disk may be damaged"
 msgstr ""
 
+#
+#, fuzzy, python-format
+msgid "Error %s"
+msgstr "Erro"
+
 msgid "Error code"
 msgstr "Código de erro"
 
@@ -4688,10 +4694,22 @@ msgid ""
 "%s"
 msgstr ""
 
+msgid "Error stop stream!"
+msgstr ""
+
+msgid "Error when writing epg.dat on server"
+msgstr ""
+
+msgid "Error while retreiving epg.dat from server"
+msgstr ""
+
 #, python-format
 msgid ""
 "Error while retreiving fallback timer information\n"
 "%s"
+msgstr ""
+
+msgid "Error while retreiving location of epg.dat on server"
 msgstr ""
 
 #
@@ -7743,6 +7761,9 @@ msgstr "Descrição não disponível."
 msgid "No displayable files on this medium found!"
 msgstr "Não foram encontrados ficheiros reproduzíveis!"
 
+msgid "No epg.dat file found server"
+msgstr ""
+
 #
 msgid "No event info found, recording indefinitely."
 msgstr "Não foi encontrada informação do programa, a gravar indefinidamente."
@@ -7799,9 +7820,6 @@ msgstr "Nenhum canal."
 #, fuzzy
 msgid "No services/providers selected"
 msgstr "Nenhum Serviço/Operador seleccionado"
-
-msgid "No settings files to download on fallback tuner"
-msgstr ""
 
 #
 #, fuzzy
@@ -10860,6 +10878,13 @@ msgstr ""
 msgid "Select the virtual keyboard shifted character set for the next character only"
 msgstr ""
 
+#, fuzzy
+msgid "Select timezone area or region."
+msgstr "Seleccione método de ordenação:"
+
+msgid "Select timezone in the area or region."
+msgstr ""
+
 #
 #, fuzzy
 msgid "Select update source"
@@ -13416,6 +13441,11 @@ msgstr "Timeshift não permitido!"
 
 #
 msgid "Timezone"
+msgstr "Zona horária"
+
+#
+#, fuzzy
+msgid "Timezone area"
 msgstr "Zona horária"
 
 msgid "Timor-Leste"

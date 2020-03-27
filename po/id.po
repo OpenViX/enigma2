@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-29 20:00+0100\n"
+"POT-Creation-Date: 2020-03-21 09:07+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Budiarno\n"
 "Language-Team: \n"
@@ -2733,9 +2733,6 @@ msgstr "Daftar kanal terpasang tidak ditemukan."
 msgid "Could not load Medium! No disc inserted?"
 msgstr "Tidak bisa memuat media! Tidak ada piringan dimasukkan?"
 
-msgid "Could not locate epg file on fallback tuner"
-msgstr ""
-
 msgid "Could not open Picture in Picture"
 msgstr "Tidak bisa membuka PiP"
 
@@ -3705,6 +3702,10 @@ msgstr ""
 msgid "ERROR - failed to scan (%s)!"
 msgstr "Kesalahan - gagal melacak (%s)!"
 
+#, python-format
+msgid "ERROR downloading file %s"
+msgstr ""
+
 msgid "East"
 msgstr "Timur"
 
@@ -4053,6 +4054,10 @@ msgstr "Kesalahan"
 msgid "Error checking disk. The disk may be damaged"
 msgstr ""
 
+#, fuzzy, python-format
+msgid "Error %s"
+msgstr "Kesalahan"
+
 msgid "Error code"
 msgstr "Kode kesalahan"
 
@@ -4077,11 +4082,26 @@ msgid ""
 "%s"
 msgstr ""
 
+msgid "Error when writing epg.dat on server"
+msgstr ""
+
+#, fuzzy
+msgid "Error while retreiving epg.dat from server"
+msgstr ""
+"Kesalahan ketika mengambil informasi pewaktu mundur\n"
+"%s"
+
 #, python-format
 msgid ""
 "Error while retreiving fallback timer information\n"
 "%s"
 msgstr ""
+
+#, fuzzy
+msgid "Error while retreiving location of epg.dat on server"
+msgstr ""
+"Kesalahan ketika mengambil informasi pewaktu mundur\n"
+"%s"
 
 #, python-format
 msgid ""
@@ -6717,6 +6737,9 @@ msgstr "Deskripsi tidak tersedia."
 msgid "No displayable files on this medium found!"
 msgstr "Tidak ditemukan file yang bisa dilihat pada medium ini!"
 
+msgid "No epg.dat file found server"
+msgstr ""
+
 msgid "No event info found, recording indefinitely."
 msgstr "Info acara tidak ditemukan, merekam tanpa batas waktu."
 
@@ -6759,9 +6782,6 @@ msgstr ""
 
 msgid "No services/providers selected"
 msgstr "Tidak ada kanal/penyedia yang dipilih"
-
-msgid "No settings files to download on fallback tuner"
-msgstr ""
 
 msgid "No standby"
 msgstr "No standby"
@@ -9297,6 +9317,12 @@ msgid "Select the virtual keyboard shifted character set for the next character 
 msgstr ""
 
 #, fuzzy
+msgid "Select timezone area or region."
+msgstr "Pilih resolusi horizontal:"
+
+msgid "Select timezone in the area or region."
+msgstr ""
+
 msgid "Select update source"
 msgstr "Pilih sumber upgrade"
 
@@ -11469,6 +11495,10 @@ msgid "Timeshift not possible!"
 msgstr "Timeshift not possible!"
 
 msgid "Timezone"
+msgstr "Zona Waktu"
+
+#, fuzzy
+msgid "Timezone area"
 msgstr "Zona Waktu"
 
 msgid "Timor-Leste"

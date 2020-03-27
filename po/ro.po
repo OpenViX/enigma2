@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-29 20:00+0100\n"
+"POT-Creation-Date: 2020-03-21 09:07+0100\n"
 "PO-Revision-Date: 2010-03-09 21:03+0100\n"
 "Last-Translator: \n"
 "Language-Team: HDTV ROMANIA(superonic,costel_mbc,neutrin,otheitis,cipy_1982,neutrin,runcanion)\n"
@@ -2759,9 +2759,6 @@ msgstr ""
 msgid "Could not load Medium! No disc inserted?"
 msgstr "Nu s-a putut incarca! E vreun disc introdus?"
 
-msgid "Could not locate epg file on fallback tuner"
-msgstr ""
-
 msgid "Could not open Picture in Picture"
 msgstr ""
 
@@ -3742,6 +3739,10 @@ msgstr ""
 msgid "ERROR - failed to scan (%s)!"
 msgstr "EROARE - scanare esuata (%s)!"
 
+#, python-format
+msgid "ERROR downloading file %s"
+msgstr ""
+
 msgid "East"
 msgstr "Est"
 
@@ -4094,6 +4095,10 @@ msgstr "Eroare"
 msgid "Error checking disk. The disk may be damaged"
 msgstr ""
 
+#, fuzzy, python-format
+msgid "Error %s"
+msgstr "Eroare"
+
 msgid "Error code"
 msgstr ""
 
@@ -4118,10 +4123,22 @@ msgid ""
 "%s"
 msgstr ""
 
+msgid "Error stop stream!"
+msgstr ""
+
+msgid "Error when writing epg.dat on server"
+msgstr ""
+
+msgid "Error while retreiving epg.dat from server"
+msgstr ""
+
 #, python-format
 msgid ""
 "Error while retreiving fallback timer information\n"
 "%s"
+msgstr ""
+
+msgid "Error while retreiving location of epg.dat on server"
 msgstr ""
 
 #, python-format
@@ -6800,6 +6817,9 @@ msgstr "Descrierea nu este disponibila"
 msgid "No displayable files on this medium found!"
 msgstr "Nu au fost gasite fisiere pe acest mediu de stocare!"
 
+msgid "No epg.dat file found server"
+msgstr ""
+
 msgid "No event info found, recording indefinitely."
 msgstr "Nu s-au gasit informatii despre eveniment, inregistrare nesfarsita."
 
@@ -6843,9 +6863,6 @@ msgid "No service"
 msgstr ""
 
 msgid "No services/providers selected"
-msgstr ""
-
-msgid "No settings files to download on fallback tuner"
 msgstr ""
 
 #, fuzzy
@@ -9455,6 +9472,12 @@ msgstr ""
 msgid "Select the virtual keyboard shifted character set for the next character only"
 msgstr ""
 
+msgid "Select timezone area or region."
+msgstr ""
+
+msgid "Select timezone in the area or region."
+msgstr ""
+
 #, fuzzy
 msgid "Select update source"
 msgstr "Alege sursa de actualizare"
@@ -11697,6 +11720,10 @@ msgid "Timeshift not possible!"
 msgstr "Timeshift nu este posibil!"
 
 msgid "Timezone"
+msgstr "Zona de fus orar"
+
+#, fuzzy
+msgid "Timezone area"
 msgstr "Zona de fus orar"
 
 msgid "Timor-Leste"

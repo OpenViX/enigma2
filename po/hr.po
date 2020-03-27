@@ -8,11 +8,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-29 20:00+0100\n"
-"PO-Revision-Date: 2015-01-29 17:40+0200\n"
-"Last-Translator: none <none@none.com>\n"
-"Language-Team: none\n"
-"Language: \n"
+"POT-Creation-Date: 2020-03-21 09:07+0100\n"
+"PO-Revision-Date: 2020-03-03 08:50+0100\n"
+"Last-Translator: Željko <zeljko2@hi.ht.hr>\n"
+"Language-Team: Željko\n"
+"Language: hr_HR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -3017,10 +3017,6 @@ msgstr ""
 msgid "Could not load Medium! No disc inserted?"
 msgstr ""
 
-msgid "Could not locate epg file on fallback tuner"
-msgstr ""
-
-#
 msgid "Could not open Picture in Picture"
 msgstr ""
 
@@ -4127,7 +4123,10 @@ msgstr ""
 msgid "ERROR - failed to scan (%s)!"
 msgstr "GREAŠKA - neuspjelo skeniranje (%s)!"
 
-#
+#, python-format
+msgid "ERROR downloading file %s"
+msgstr ""
+
 msgid "East"
 msgstr "Istok"
 
@@ -4515,6 +4514,10 @@ msgstr "Greška"
 msgid "Error checking disk. The disk may be damaged"
 msgstr ""
 
+#, fuzzy, python-format
+msgid "Error %s"
+msgstr "Greška"
+
 msgid "Error code"
 msgstr ""
 
@@ -4539,13 +4542,27 @@ msgid ""
 "%s"
 msgstr ""
 
+msgid "Error when writing epg.dat on server"
+msgstr ""
+
+#, fuzzy
+msgid "Error while retreiving epg.dat from server"
+msgstr ""
+"Pogreška tijekom preuzimanja podataka o rezervnom tajmeru\n"
+"%s"
+
 #, python-format
 msgid ""
 "Error while retreiving fallback timer information\n"
 "%s"
 msgstr ""
 
-#
+#, fuzzy
+msgid "Error while retreiving location of epg.dat on server"
+msgstr ""
+"Pogreška tijekom preuzimanja podataka o rezervnom tajmeru\n"
+"%s"
+
 #, python-format
 msgid ""
 "Error: %s\n"
@@ -7511,7 +7528,9 @@ msgstr ""
 msgid "No displayable files on this medium found!"
 msgstr ""
 
-#
+msgid "No epg.dat file found server"
+msgstr ""
+
 msgid "No event info found, recording indefinitely."
 msgstr "Informacije o događaju nisu pronađene, snimanje nedefinirano."
 
@@ -7563,11 +7582,6 @@ msgstr ""
 msgid "No services/providers selected"
 msgstr ""
 
-msgid "No settings files to download on fallback tuner"
-msgstr ""
-
-#
-#, fuzzy
 msgid "No standby"
 msgstr "ne stanje pripravnosti"
 
@@ -10526,8 +10540,13 @@ msgstr ""
 msgid "Select the virtual keyboard shifted character set for the next character only"
 msgstr ""
 
-#
 #, fuzzy
+msgid "Select timezone area or region."
+msgstr "Odaberite horizontalnu rezoluciju:"
+
+msgid "Select timezone in the area or region."
+msgstr ""
+
 msgid "Select update source"
 msgstr "Odaberi film"
 
@@ -12960,6 +12979,10 @@ msgstr "Vremenski pomak nije moguć!"
 
 #
 msgid "Timezone"
+msgstr "Vremenska zona"
+
+#, fuzzy
+msgid "Timezone area"
 msgstr "Vremenska zona"
 
 msgid "Timor-Leste"

@@ -8,10 +8,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-29 20:00+0100\n"
-"PO-Revision-Date: 2015-01-29 17:40+0200\n"
-"Last-Translator: none <none@none.com>\n"
-"Language-Team: none\n"
+"POT-Creation-Date: 2020-03-21 09:07+0100\n"
+"PO-Revision-Date: 2014-11-12 00:49+0200\n"
+"Last-Translator: Taapat <taapat@gmail.com>\n"
+"Language-Team: Taapat <taapat@gmail.com>\n"
 "Language: lv_LV\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2784,9 +2784,6 @@ msgstr "Nevar atrast uzstādīto kanālu sarakstu."
 msgid "Could not load Medium! No disc inserted?"
 msgstr "Nevar ielādēt datu nesēju! Disks nav ievietots?"
 
-msgid "Could not locate epg file on fallback tuner"
-msgstr ""
-
 msgid "Could not open Picture in Picture"
 msgstr "Nevar atvērt attēlu attēlā"
 
@@ -3763,6 +3760,10 @@ msgstr ""
 msgid "ERROR - failed to scan (%s)!"
 msgstr "KĻŪDA - meklēšana neizdevās (%s)!"
 
+#, python-format
+msgid "ERROR downloading file %s"
+msgstr ""
+
 msgid "East"
 msgstr "Austrumi"
 
@@ -4114,6 +4115,10 @@ msgstr "Kļūda"
 msgid "Error checking disk. The disk may be damaged"
 msgstr ""
 
+#, fuzzy, python-format
+msgid "Error %s"
+msgstr "Kļūda"
+
 msgid "Error code"
 msgstr "Kļūdas kods"
 
@@ -4138,11 +4143,26 @@ msgid ""
 "%s"
 msgstr ""
 
+msgid "Error when writing epg.dat on server"
+msgstr ""
+
+#, fuzzy
+msgid "Error while retreiving epg.dat from server"
+msgstr ""
+"Kļūda iegūstot taimerus no attālinātā uztvērēja\n"
+"%s"
+
 #, python-format
 msgid ""
 "Error while retreiving fallback timer information\n"
 "%s"
 msgstr ""
+
+#, fuzzy
+msgid "Error while retreiving location of epg.dat on server"
+msgstr ""
+"Kļūda iegūstot taimerus no attālinātā uztvērēja\n"
+"%s"
 
 #, python-format
 msgid ""
@@ -6805,6 +6825,9 @@ msgstr "Apraksts nav pieejams."
 msgid "No displayable files on this medium found!"
 msgstr "Šinī datu nesējā nav atrasti attēlojami faili!"
 
+msgid "No epg.dat file found server"
+msgstr ""
+
 msgid "No event info found, recording indefinitely."
 msgstr "Nav atrasta informācija par notikumiem, ieraksts uz nenoteiktu laiku."
 
@@ -6850,9 +6873,6 @@ msgstr "Nav kanāla"
 
 msgid "No services/providers selected"
 msgstr "Nav izvēlēti kanāli/operatori"
-
-msgid "No settings files to download on fallback tuner"
-msgstr ""
 
 msgid "No standby"
 msgstr "Nav gaidstāves"
@@ -9469,6 +9489,12 @@ msgid "Select the virtual keyboard shifted character set for the next character 
 msgstr ""
 
 #, fuzzy
+msgid "Select timezone area or region."
+msgstr "Izvēlieties izšķirtspēju:"
+
+msgid "Select timezone in the area or region."
+msgstr ""
+
 msgid "Select update source"
 msgstr "Izvēlieties atjaunināšanas avotu"
 
@@ -11692,6 +11718,10 @@ msgid "Timeshift not possible!"
 msgstr "Laika aizture nav iespējama!"
 
 msgid "Timezone"
+msgstr "Laika josla"
+
+#, fuzzy
+msgid "Timezone area"
 msgstr "Laika josla"
 
 msgid "Timor-Leste"

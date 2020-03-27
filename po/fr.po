@@ -7,10 +7,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-29 20:00+0100\n"
-"PO-Revision-Date: 2015-10-31 16:41+0100\n"
-"Last-Translator: Pr2 <dummy@dummy.com>\n"
-"Language-Team: none\n"
+"POT-Creation-Date: 2020-03-21 09:07+0100\n"
+"PO-Revision-Date: 2020-03-21 09:12+0100\n"
+"Last-Translator: Pr2\n"
+"Language-Team: french\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2743,9 +2743,6 @@ msgstr "Impossible de trouver la liste des chaînes installées."
 msgid "Could not load Medium! No disc inserted?"
 msgstr "Ne peux charger le support! Aucun disque inséré?"
 
-msgid "Could not locate epg file on fallback tuner"
-msgstr ""
-
 msgid "Could not open Picture in Picture"
 msgstr "N'a pu ouvrir l'incrusation d'image"
 
@@ -3702,6 +3699,10 @@ msgstr ""
 msgid "ERROR - failed to scan (%s)!"
 msgstr "ERREUR - échec lors de l'analyse (%s) !"
 
+#, python-format
+msgid "ERROR downloading file %s"
+msgstr "ERREUR lors du téléchargement du fichier %s"
+
 msgid "East"
 msgstr "Est"
 
@@ -4047,6 +4048,10 @@ msgstr "Erreur"
 msgid "Error checking disk. The disk may be damaged"
 msgstr "Erreur lors de la vérification du disque. Le disque pourrait être endommagé."
 
+#, python-format
+msgid "Error %s"
+msgstr "Erreur %s"
+
 msgid "Error code"
 msgstr "Code d'erreur"
 
@@ -4071,11 +4076,20 @@ msgid ""
 "%s"
 msgstr ""
 
+msgid "Error when writing epg.dat on server"
+msgstr "Erreur lors de l’écriture du epg.dat sur le serveur"
+
+msgid "Error while retreiving epg.dat from server"
+msgstr "Erreur lors de la récupération du epg.dat sur le serveur"
+
 #, python-format
 msgid ""
 "Error while retreiving fallback timer information\n"
 "%s"
 msgstr ""
+
+msgid "Error while retreiving location of epg.dat on server"
+msgstr "Erreur lors de la localisation du epg.dat sur le serveur"
 
 #, python-format
 msgid ""
@@ -6711,6 +6725,9 @@ msgstr "Description non disponible."
 msgid "No displayable files on this medium found!"
 msgstr "Aucun fichiers affichables trouvés sur ce support !"
 
+msgid "No epg.dat file found server"
+msgstr "Pas de epg.dat trouvé sur le serveur"
+
 msgid "No event info found, recording indefinitely."
 msgstr "Aucune information trouvée sur l'émission, enregistrement indéfini."
 
@@ -6754,9 +6771,6 @@ msgstr "Pas de service"
 
 msgid "No services/providers selected"
 msgstr "Aucun Services/Opérateurs sélectionnés"
-
-msgid "No settings files to download on fallback tuner"
-msgstr ""
 
 msgid "No standby"
 msgstr "Pas de veille"
@@ -9293,7 +9307,12 @@ msgstr ""
 msgid "Select the virtual keyboard shifted character set for the next character only"
 msgstr ""
 
-#, fuzzy
+msgid "Select timezone area or region."
+msgstr "Sélectionner votre fuseau horaire ou votre région."
+
+msgid "Select timezone in the area or region."
+msgstr "Sélectionnez la fuseau horaire ou la région."
+
 msgid "Select update source"
 msgstr "Sélectionnez la source de mise à jour"
 
@@ -11479,6 +11498,9 @@ msgid "Timeshift not possible!"
 msgstr "PauseDirect impossible !"
 
 msgid "Timezone"
+msgstr "Fuseau horaire"
+
+msgid "Timezone area"
 msgstr "Fuseau horaire"
 
 msgid "Timor-Leste"
