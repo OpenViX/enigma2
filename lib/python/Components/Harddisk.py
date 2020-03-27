@@ -713,6 +713,7 @@ class HarddiskManager:
 				if SystemInfo["HasHiSi"] and devMajor == 8 and len(partitions) >= 4:
 					partitions = partitions[4:]
 				self.hdd.append(Harddisk(device, removable))
+				SystemInfo["Harddisk"] = True
 				# print "[Harddisk] DEBUG: Harddisk(%s, %s)" % (device, removable)
 				self.partitions.append(Partition(mountpoint=self.getMountpoint(device), description=description, forceMounted=True, device=device))
 				# print "[Harddisk] DEBUG: Partition(mountpoint=%s, description=%s, forceMounted=True, device=%s)" % (self.getMountpoint(device), description, device)
@@ -795,6 +796,7 @@ class HarddiskManager:
 					hdd.stop()
 					self.hdd.remove(hdd)
 					break
+			SystemInfo["Harddisk"] = len(self.hdd) > 0
 
 	def HDDCount(self):
 		return len(self.hdd)
