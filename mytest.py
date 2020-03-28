@@ -605,8 +605,10 @@ def runScreenTest():
 	return 0
 
 profile("Init:skin")
+print "[Enigma2] Initialising Skins."
 import skin
-skin.loadSkinData(enigma.getDesktop(0))
+skin.InitSkins()
+print "[Enigma2] Initialisation of Skins complete."
 
 profile("InputDevice")
 import Components.InputDevice
