@@ -1,11 +1,9 @@
-from Tools.Profile import profile
-profile("LOAD:ElementTree")
 import errno
 import os
 import xml.etree.cElementTree
 
-profile("LOAD:enigma_skin")
 from enigma import addFont, eLabel, ePixmap, ePoint, eRect, eSize, eWindow, eWindowStyleManager, eWindowStyleSkinned, getDesktop, gFont, getFontFaces, gRGB
+
 from Components.config import ConfigSubsection, ConfigText, config
 from Components.RcModel import rc_model
 from Components.Sources.Source import ObsoleteSource
@@ -18,16 +16,13 @@ EMERGENCY_SKIN = "skin_default/skin.xml"
 DEFAULT_DISPLAY_SKIN = "skin_default/skin_display.xml"
 USER_SKIN = "skin_user.xml"
 USER_SKIN_TEMPLATE = "skin_user_%s.xml"
-# BOX_SKIN = "skin_box.xml"  # DEBUG: Is this actually used?
-# SECOND_INFOBAR_SKIN = "skin_second_infobar.xml"  # DEBUG: Is this actually used?
 SUBTITLE_SKIN = "skin_subtitles.xml"
 
 GUI_SKIN_ID = 0  # Main frame-buffer.
 DISPLAY_SKIN_ID = 1  # Front panel / display / LCD.
 
-domSkins = []  # List of skins to be processed into the domScreens dictionary.
 domScreens = {}  # Dictionary of skin based screens.
-colorNames = {  # Dictionary of skin color names.
+colors = {  # Dictionary of skin color names.
 	"key_back": gRGB(0x00313131),
 	"key_blue": gRGB(0x0018188b),
 	"key_green": gRGB(0x001f771f),
@@ -35,6 +30,7 @@ colorNames = {  # Dictionary of skin color names.
 	"key_text": gRGB(0x00ffffff),
 	"key_yellow": gRGB(0x00a08500)
 }
+colorNames = colors  # Temporary until OverlayHD is updated.
 fonts = {  # Dictionary of predefined and skin defined font aliases.
 	"Body": ("Regular", 18, 22, 16),
 	"ChoiceList": ("Regular", 20, 24, 18)
@@ -44,21 +40,6 @@ parameters = {}  # Dictionary of skin parameters used to modify code behavior.
 setups = {}  # Dictionary of images associated with setup menus.
 switchPixmap = {}  # Dictionary of switch images.
 
-# Skins are loaded in order of priority.  Skin with highest priority is
-# loaded first.  This is usually the user-specified skin.
-#
-# Currently, loadSingleSkinData (colors, bordersets etc.) are applied
-# one-after-each, in order of ascending priority.  The domSkin will keep
-# all screens in descending priority, so the first screen found will be
-# used.
-#
-# GUI skins are saved in the settings file as the path relative to
-# SCOPE_SKIN.  The full path is NOT saved.  E.g. "MySkin/skin.xml"
-#
-# Display skins are saved in the settings file as the path relative to
-# SCOPE_CURRENT_LCDSKIN.  The full path is NOT saved.
-# E.g. "MySkin/skin_display.xml"
-#
 config.skin = ConfigSubsection()
 skin = resolveFilename(SCOPE_SKIN, DEFAULT_SKIN)
 if not fileExists(skin) or not os.path.isfile(skin):
@@ -67,29 +48,81 @@ if not fileExists(skin) or not os.path.isfile(skin):
 config.skin.primary_skin = ConfigText(default=DEFAULT_SKIN)
 config.skin.display_skin = ConfigText(default=DEFAULT_DISPLAY_SKIN)
 
-# Look for a skin related user skin "skin_user_<SkinName>.xml" file,
-# if one exists.  If a skin related user skin does not exist then a
-# generic user skin "skin_user.xml" will be used, if one exists.
+currentPrimarySkin = None
+currentDisplaySkin = None
+
+# Skins are loaded in order of priority.  Skin with highest priority is
+# loaded last.  This is usually the user-specified skin.  In this way
+# any duplicated screens will be replaced by a screen of the same name
+# with a higher priority.
 #
-# ...but first check that the relevant base dir exists, otherwise
-# we may well get into a start-up loop with skin failures
+# GUI skins are saved in the settings file as the path relative to
+# SCOPE_SKIN.  The full path is NOT saved.  E.g. "MySkin/skin.xml"
 #
-def findUserRelatedSkin():
+# Display skins are saved in the settings file as the path relative to
+# SCOPE_CURRENT_LCDSKIN.  The full path is NOT saved.
+# E.g. "MySkin/skin_display.xml"
+#
+def InitSkins():
+	# Add the emergency skin.  This skin should provide enough functionality
+	# to enable basic GUI functions to work.
+	loadSkin(EMERGENCY_SKIN, scope=SCOPE_CURRENT_SKIN, desktop=getDesktop(GUI_SKIN_ID), screenID=GUI_SKIN_ID)
+	# Add the subtitle skin.
+	loadSkin(SUBTITLE_SKIN, scope=SCOPE_CURRENT_SKIN, desktop=getDesktop(GUI_SKIN_ID), screenID=GUI_SKIN_ID)
+	# Add the front panel / display / lcd skin.
+	result = []
+	for skin, name in [(config.skin.display_skin.value, "current"), (DEFAULT_DISPLAY_SKIN, "default")]:
+		if skin in result:  # Don't try to add a skin that has already failed.
+			continue
+		config.skin.display_skin.value = skin
+		if loadSkin(config.skin.display_skin.value, scope=SCOPE_CURRENT_LCDSKIN, desktop=getDesktop(DISPLAY_SKIN_ID), screenID=DISPLAY_SKIN_ID):
+			currentDisplaySkin = config.skin.display_skin.value
+			break
+		print "[Skin] Error: Adding %s display skin '%s' has failed!" % (name, config.skin.display_skin.value)
+		result.append(skin)
+	# Add the main GUI skin.
+	result = []
+	for skin, name in [(config.skin.primary_skin.value, "current"), (DEFAULT_SKIN, "default")]:
+		if skin in result:  # Don't try to add a skin that has already failed.
+			continue
+		config.skin.primary_skin.value = skin
+		if loadSkin(config.skin.primary_skin.value, scope=SCOPE_CURRENT_SKIN, desktop=getDesktop(GUI_SKIN_ID), screenID=GUI_SKIN_ID):
+			currentPrimarySkin = config.skin.primary_skin.value
+			break
+		print "[Skin] Error: Adding %s GUI skin '%s' has failed!" % (name, config.skin.primary_skin.value)
+		result.append(skin)
+	# Add an optional skin related user skin "user_skin_<SkinName>.xml".  If there is
+	# not a skin related user skin then try to add am optional generic user skin.
+	result = None
 	if os.path.isfile(resolveFilename(SCOPE_SKIN, config.skin.primary_skin.value)):
 		name = USER_SKIN_TEMPLATE % os.path.dirname(config.skin.primary_skin.value)
 		if fileExists(resolveFilename(SCOPE_CURRENT_SKIN, name)):
-			return name
-	return None
+			result = loadSkin(name, scope=SCOPE_CURRENT_SKIN, desktop=getDesktop(GUI_SKIN_ID), screenID=GUI_SKIN_ID)
+	if result is None:
+		loadSkin(USER_SKIN, scope=SCOPE_CURRENT_SKIN, desktop=getDesktop(GUI_SKIN_ID), screenID=GUI_SKIN_ID)
 
-def addSkin(name, scope=SCOPE_CURRENT_SKIN):
-	global domSkins
-	filename = resolveFilename(scope, name)
+# Now a utility for plugins to add skin data to the screens.
+#
+def loadSkin(filename, scope=SCOPE_SKIN, desktop=getDesktop(GUI_SKIN_ID), screenID=GUI_SKIN_ID):
+	filename = resolveFilename(scope, filename)
+	print "[Skin] Loading skin file '%s'..." % filename
 	try:
-		# This open gets around a possible file handle leak in Python's XML parser.
-		with open(filename, "r") as fd:
+		with open(filename, "r") as fd:  # This open gets around a possible file handle leak in Python's XML parser.
 			try:
-				domSkins.append((scope, "%s/" % os.path.dirname(filename), xml.etree.cElementTree.parse(fd).getroot()))
-				print "[Skin] Skin '%s' added successfully." % filename
+				domSkin = xml.etree.cElementTree.parse(fd).getroot()
+				# print "[Skin] DEBUG: Extracting non screen blocks from '%s'.  (scope='%s')" % (filename, scope)
+				# For loadSingleSkinData colors, bordersets etc. are applied one after
+				# the other in order of ascending priority.
+				loadSingleSkinData(desktop, domSkin, filename, scope=scope)
+				for element in domSkin:
+					if element.tag == "screen":  # If non-screen element, no need for it any longer.
+						name = element.attrib.get("name", None)
+						if name:  # Without a name, it's useless!
+							sid = element.attrib.get("id", None)
+							if sid is None or sid == screenID:  # If there is a screen ID is it for this display.
+								# print "[Skin] DEBUG: Extracting screen '%s' from '%s'.  (scope='%s')" % (name, filename, scope)
+								domScreens[name] = (element, "%s/" % os.path.dirname(filename))
+				print "[Skin] Loading skin file '%s' complete." % filename
 				return True
 			except xml.etree.cElementTree.ParseError as err:
 				fd.seek(0)
@@ -109,65 +142,6 @@ def addSkin(name, scope=SCOPE_CURRENT_SKIN):
 	except Exception as err:
 		print "[Skin] Error: Unexpected error opening skin file '%s'! (%s)" % (filename, err)
 	return False
-
-
-profile("LoadSkin")
-
-# Add an optional skin related user skin "user_skin_<SkinName>.xml".  If there is
-# not a skin related user skin then try to add am optional generic user skin.
-result = None
-name = findUserRelatedSkin()
-if name:
-	result = addSkin(name, scope=SCOPE_CURRENT_SKIN)
-if not name or not result:
-	addSkin(USER_SKIN, scope=SCOPE_CURRENT_SKIN)
-
-# Add the main GUI skin.
-currentPrimarySkin = None
-result = []
-for skin, name in [(config.skin.primary_skin.value, "current"), (DEFAULT_SKIN, "default"), (EMERGENCY_SKIN, "emergency")]:
-	if skin in result:  # Don't try to add a skin that has already failed.
-		continue
-	config.skin.primary_skin.value = skin
-	if addSkin(config.skin.primary_skin.value, scope=SCOPE_CURRENT_SKIN):
-		currentPrimarySkin = config.skin.primary_skin.value
-		break
-	print "[Skin] Error: Adding %s GUI skin '%s' has failed!" % (name, config.skin.primary_skin.value)
-	result.append(skin)
-
-# Add the front panel / display / lcd skin.
-currentDisplaySkin = None
-result = []
-for skin, name in [(config.skin.display_skin.value, "current"), (DEFAULT_DISPLAY_SKIN, "default")]:
-	if skin in result:  # Don't try to add a skin that has already failed.
-		continue
-	config.skin.display_skin.value = skin
-	if addSkin(config.skin.display_skin.value, scope=SCOPE_CURRENT_LCDSKIN):
-		currentDisplaySkin = config.skin.display_skin.value
-		break
-	print "[Skin] Error: Adding %s display skin '%s' has failed!" % (name, config.skin.display_skin.value)
-	result.append(skin)
-
-# Add an optional adjustment skin as some boxes lie about their dimensions.
-# addSkin(BOX_SKIN, scope=SCOPE_CURRENT_SKIN)
-
-# Add an optional discrete second infobar skin.
-# addSkin(SECOND_INFOBAR_SKIN, scope=SCOPE_CURRENT_SKIN)
-
-# Add the subtitle skin.
-addSkin(SUBTITLE_SKIN, scope=SCOPE_CURRENT_SKIN)
-
-# Add the emergency skin.  This skin should provide enough functionality
-# to enable basic GUI functions to work.
-if config.skin.primary_skin.value != EMERGENCY_SKIN:
-	addSkin(EMERGENCY_SKIN, scope=SCOPE_CURRENT_SKIN)
-
-# Remove global working variables.
-del skin
-del name
-del result
-
-profile("LoadSkinDefaultDone")
 
 
 class SkinError(Exception):
@@ -284,7 +258,7 @@ def parseFont(s, scale=((1, 1), (1, 1))):
 def parseColor(s):
 	if s[0] != "#":
 		try:
-			return colorNames[s]
+			return colors[s]
 		except KeyError:
 			raise SkinError("Color '%s' must be #aarrggbb or valid named color" % s)
 	return gRGB(int(s[1:], 0x10))
@@ -299,8 +273,8 @@ def parseParameter(s):
 		return int(s, 16)
 	elif "." in s:
 		return float(s)
-	elif s in colorNames:
-		return colorNames[s].argb()
+	elif s in colors:
+		return colors[s].argb()
 	else:
 		return int(s)
 
@@ -619,7 +593,7 @@ def applyAllAttributes(guiObject, desktop, attributes, scale):
 def loadSingleSkinData(desktop, domSkin, pathSkin, scope=SCOPE_CURRENT_SKIN):
 	"""Loads skin data like colors, windowstyle etc."""
 	assert domSkin.tag == "skin", "root element in skin must be 'skin'!"
-	global colorNames, fonts, menus, parameters, setups, switchPixmap
+	global colors, fonts, menus, parameters, setups, switchPixmap
 	for tag in domSkin.findall("output"):
 		id = tag.attrib.get("id")
 		if id:
@@ -706,7 +680,6 @@ def loadSingleSkinData(desktop, domSkin, pathSkin, scope=SCOPE_CURRENT_SKIN):
 		if filename:
 			filename = resolveFilename(scope, filename, path_prefix=pathSkin)
 			if fileExists(filename):
-				print "[Skin] Loading included file '%s'." % filename
 				loadSkin(filename, desktop=desktop, scope=scope)
 			else:
 				print "[Skin] Error: Included file '%s' not found!" % filename
@@ -728,7 +701,7 @@ def loadSingleSkinData(desktop, domSkin, pathSkin, scope=SCOPE_CURRENT_SKIN):
 			name = color.attrib.get("name")
 			color = color.attrib.get("value")
 			if name and color:
-				colorNames[name] = parseColor(color)
+				colors[name] = parseColor(color)
 				# print "[Skin] Color name='%s', color='%s'." % (name, color)
 			else:
 				raise SkinError("Tag 'color' needs a name and color, got name='%s' and color='%s'" % (name, color))
@@ -872,74 +845,6 @@ def loadSingleSkinData(desktop, domSkin, pathSkin, scope=SCOPE_CURRENT_SKIN):
 		# The "desktop" parameter is hard-coded to the GUI screen, so we must ask
 		# for the one that this actually applies to.
 		getDesktop(styleId).setMargins(r)
-
-# Now a utility for plugins to add skin data to the screens.
-#
-def loadSkin(filename, desktop=None, scope=SCOPE_SKIN, override=False):
-	global domScreens
-	filename = resolveFilename(scope, filename)
-	try:
-		# This open gets around a possible file handle leak in Python's XML parser.
-		with open(filename, "r") as fd:
-			try:
-				domSkin = xml.etree.cElementTree.parse(fd).getroot()
-				if desktop is not None:
-					loadSingleSkinData(desktop, domSkin, filename, scope=scope)
-				for element in domSkin:
-					name = evaluateElement(element, DISPLAY_SKIN_ID)
-					if name is None:
-						element.clear()
-					elif name not in domScreens:
-						domScreens[name] = (element, "%s/" % os.path.dirname(filename))
-						print "[Skin] Load skin screen name '%s' added to the skin." % name
-					elif override:
-						domScreens[name] = (element, "%s/" % os.path.dirname(filename))
-						print "[Skin] Load skin screen name '%s' replacing existing screen in the skin." % name
-					else:
-						print "[Skin] Load skin screen name '%s' already exists in the skin and has been skipped." % name
-			except xml.etree.cElementTree.ParseError as err:
-				fd.seek(0)
-				content = fd.readlines()
-				line, column = err.position
-				print "[Skin] XML Parse Error: '%s' in '%s'!" % (err, filename)
-				data = content[line - 1].replace("\t", " ").rstrip()
-				print "[Skin] XML Parse Error: '%s'" % data
-				print "[Skin] XML Parse Error: '%s^%s'" % ("-" * column, " " * (len(data) - column - 1))
-			except Exception as err:
-				print "[Skin] Error: Unable to parse skin data in '%s' - '%s'!" % (filename, err)
-	except (IOError, OSError) as err:
-		if err.errno == errno.ENOENT:  #  No such file or directory
-			print "[Skin] Warning: Skin file '%s' does not exist!" % filename
-		else:
-			print "[Skin] Error %d: Opening skin file '%s'! (%s)" % (err.errno, filename, err.strerror)
-	except Exception as err:
-		print "[Skin] Error: Unexpected error opening skin file '%s'! (%s)" % (filename, err)
-
-# Kinda hackish, but this is called once by mytest.py.
-#
-def loadSkinData(desktop):
-	global domSkins
-	skins = domSkins[:]
-	skins.reverse()
-	for (scope, pathSkin, domSkin) in skins:
-		loadSingleSkinData(desktop, domSkin, pathSkin, scope=scope)
-		for element in domSkin:
-			name = evaluateElement(element, DISPLAY_SKIN_ID)
-			if name is None:
-				element.clear()
-			else:
-				domScreens[name] = (element, pathSkin)
-	# No longer needed, we know where the screens are now.
-	del domSkins
-
-def evaluateElement(element, screenID):
-	if element.tag == "screen":  # If non-screen element, no need for it any longer.
-		name = element.attrib.get("name", None)
-		if name:  # Without a name, it's useless!
-			sid = element.attrib.get("id", None)
-			if not sid or (sid == screenID):  # If for this display.
-				return name
-	return None
 
 class additionalWidget:
 	def __init__(self):
