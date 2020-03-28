@@ -135,7 +135,7 @@ def loadSkin(filename, scope=SCOPE_SKIN, desktop=getDesktop(GUI_SKIN_ID), screen
 			except Exception as err:
 				print "[Skin] Error: Unable to parse skin data in '%s' - '%s'!" % (filename, err)
 	except (IOError, OSError) as err:
-		if err.errno == errno.ENOENT:  #  No such file or directory
+		if err.errno == errno.ENOENT:  # No such file or directory
 			print "[Skin] Warning: Skin file '%s' does not exist!" % filename
 		else:
 			print "[Skin] Error %d: Opening skin file '%s'! (%s)" % (err.errno, filename, err.strerror)
@@ -288,7 +288,7 @@ def collectAttributes(skinAttributes, node, context, skinPath=None, ignore=(), f
 			if attrib in filenames:
 				# DEBUG: Why does a SCOPE_CURRENT_LCDSKIN image replace the GUI image?!?!?!
 				pngfile = resolveFilename(SCOPE_CURRENT_SKIN, value, path_prefix=skinPath)
-				if fileExists(resolveFilename(SCOPE_CURRENT_LCDSKIN, value, path_prefix=skinPath)):
+				if not fileExists(pngfile) and fileExists(resolveFilename(SCOPE_CURRENT_LCDSKIN, value, path_prefix=skinPath)):
 					pngfile = resolveFilename(SCOPE_CURRENT_LCDSKIN, value, path_prefix=skinPath)
 				value = pngfile
 			# Bit of a hack this, really.  When a window has a flag (e.g. wfNoBorder)
@@ -329,6 +329,7 @@ def loadPixmap(path, desktop):
 	if ptr is None:
 		raise SkinError("Pixmap file '%s' not found" % path)
 	return ptr
+
 
 class AttributeParser:
 	def __init__(self, guiObject, desktop, scale=((1, 1), (1, 1))):
@@ -377,7 +378,7 @@ class AttributeParser:
 				"offshow": 0x10,
 				"offhide": 0x01,
 				"onshow": 0x01,
-				"onhide": 0x10,
+				"onhide": 0x10
 			}[value])
 		except KeyError:
 			print "[Skin] Error: Invalid animationMode '%s'!  Must be one of 'disable', 'off', 'offshow', 'offhide', 'onshow' or 'onhide'." % value
@@ -433,7 +434,7 @@ class AttributeParser:
 			self.guiObject.setAlphatest({
 				"on": 1,
 				"off": 0,
-				"blend": 2,
+				"blend": 2
 			}[value])
 		except KeyError:
 			print "[Skin] Error: Invalid alphatest '%s'!  Must be one of 'on', 'off' or 'blend'." % value
@@ -450,7 +451,7 @@ class AttributeParser:
 				"orBottomToTop": (self.guiObject.orVertical, True),
 				"orHorizontal": (self.guiObject.orHorizontal, False),
 				"orLeftToRight": (self.guiObject.orHorizontal, False),
-				"orRightToLeft": (self.guiObject.orHorizontal, True),
+				"orRightToLeft": (self.guiObject.orHorizontal, True)
 			}[value])
 		except KeyError:
 			print "[Skin] Error: Invalid orientation '%s'!  Must be one of 'orVertical', 'orTopToBottom', 'orBottomToTop', 'orHorizontal', 'orLeftToRight' or 'orRightToLeft'." % value
@@ -710,10 +711,7 @@ def loadSingleSkinData(desktop, domSkin, pathSkin, scope=SCOPE_CURRENT_SKIN):
 			filename = font.attrib.get("filename", "<NONAME>")
 			name = font.attrib.get("name", "Regular")
 			scale = font.attrib.get("scale")
-			if scale:
-				scale = int(scale)
-			else:
-				scale = 100
+			scale = int(scale) if scale else 100
 			isReplacement = font.attrib.get("replacement") and True or False
 			render = font.attrib.get("render")
 			if render:
