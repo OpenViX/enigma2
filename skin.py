@@ -18,7 +18,7 @@ from Tools.LoadPixmap import LoadPixmap
 
 DEFAULT_SKIN = "GigabluePax/skin.xml"
 # DEFAULT_SKIN = SystemInfo["HasFullHDSkinSupport"] and "PLi-FullNightHD/skin.xml" or "PLi-HD/skin.xml"  # SD hardware is no longer supported by the default skin.
-EMERGENCY_SKIN = "skin_default.xml"
+EMERGENCY_SKIN = "skin_default/skin.xml"
 DEFAULT_DISPLAY_SKIN = "skin_display.xml"
 USER_SKIN = "skin_user.xml"
 USER_SKIN_TEMPLATE = "skin_user_%s.xml"
