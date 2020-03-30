@@ -162,38 +162,71 @@ class FlashOnline(Screen):
 			self.read_current_multiboot()
 
 	def read_current_multiboot(self):
-		if getMachineBuild() in ("gbmv200","gb72604"):
-			if self.list[self.selection] == "Recovery":
-				cmdline = self.read_startup("/boot/STARTUP").split("=",1)[1].split(" ",1)[0]
-			else:
-				cmdline = self.read_startup("/boot/" + self.list[self.selection]).split("=",1)[1].split(" ",1)[0]
+		if SystemInfo["HasRootSubdir"]:
+			self.MTDROOTFS = self.find_rootfs_dev(self.list[self.selection])
+			self.MTDKERNEL = self.find_kernel_dev(self.list[self.selection])
+			self.ROOTFSSUBDIR = self.find_rootfssubdir(self.list[self.selection])
 		else:
-			if self.list[self.selection] == "Recovery":
-				cmdline = self.read_startup("/boot/cmdline.txt").split("=",1)[1].split(" ",1)[0]
+			if getMachineBuild() in ("gbmv200","gb72604"):
+				if self.list[self.selection] == "Recovery":
+					cmdline = self.read_startup("/boot/STARTUP").split("=",1)[1].split(" ",1)[0]
+				else:
+					cmdline = self.read_startup("/boot/" + self.list[self.selection]).split("=",1)[1].split(" ",1)[0]
 			else:
-				cmdline = self.read_startup("/boot/" + self.list[self.selection]).split("=",1)[1].split(" ",1)[0]
-		cmdline = cmdline.lstrip("/dev/")
-		self.MTDROOTFS = cmdline
-		self.MTDKERNEL = cmdline[:-1] + str(int(cmdline[-1:]) -1)
+				if self.list[self.selection] == "Recovery":
+					cmdline = self.read_startup("/boot/cmdline.txt").split("=",1)[1].split(" ",1)[0]
+				else:
+					cmdline = self.read_startup("/boot/" + self.list[self.selection]).split("=",1)[1].split(" ",1)[0]
+			cmdline = cmdline.lstrip("/dev/")
+			self.MTDROOTFS = cmdline
+			self.MTDKERNEL = cmdline[:-1] + str(int(cmdline[-1:]) -1)
 		print "[Flash Online] kernel device: ",self.MTDKERNEL
 		print "[Flash Online] rootfsdevice: ",self.MTDROOTFS
 
 	def read_startup(self, FILE):
 		file = FILE
-		with open(file, 'r') as myfile:
-			data=myfile.read().replace('\n', '')
-		myfile.close()
+		try:
+			with open(file, 'r') as myfile:
+				data=myfile.read().replace('\n', '')
+			myfile.close()
+		except IOError:
+			print "[ERROR] failed to open file %s" % file
+			data = " "
 		return data
 
 	def find_rootfs_dev(self, file):
 		startup_content = self.read_startup("/boot/" + file)
 		return startup_content[startup_content.find("root=")+5:].split()[0]
 
+	def find_kernel_dev(self, file):
+		startup_content = self.read_startup("/boot/" + file)
+		return startup_content[startup_content.find("kernel=")+7:].split()[0]
+
+	def find_rootfssubdir(self, file):
+		startup_content = self.read_startup("/boot/" + file)
+		rootsubdir = startup_content[startup_content.find("rootsubdir=")+11:].split()[0]
+		if rootsubdir.startswith("linuxrootfs"):
+			return rootsubdir
+		return
+
 	def list_files(self, PATH):
 		files = []
 		if SystemInfo["canMultiBoot"]:
 			path = PATH
-			if getMachineBuild() in ("gbmv200","gb72604"):
+			if SystemInfo["HasRootSubdir"]:
+				for name in os.listdir(path):
+					if os.path.isfile(os.path.join(path, name)):
+						try:
+							cmdline = self.find_rootfssubdir(name)
+							if cmdline == None:
+								continue
+						except IndexError:
+							continue
+						cmdline_startup = self.find_rootfssubdir("STARTUP")
+						if (cmdline != cmdline_startup) and (name != "STARTUP"):
+							files.append(name)
+				files.insert(0,"STARTUP")
+			elif getMachineBuild() in ("gb72604","gbmv200","ustym4kpro","hd51","vs1500","h7","8100s","gb7252","cc1","sf8008","osmio4k","osmio4kplus","osmini4k","beyonwizv2","viper4k"):
 				for name in os.listdir(path):
 					if name != 'bootname' and os.path.isfile(os.path.join(path, name)):
 						try:
