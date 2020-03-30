@@ -284,6 +284,8 @@ class ChannelContextMenu(Screen):
 					_append_when_current_valid(current, menu, actions, (_("Disable move mode"), self.toggleMoveMode), level=0, key="red")
 				else:
 					_append_when_current_valid(current, menu, actions, (_("Enable move mode"), self.toggleMoveMode), level=1, key="red")
+				_append_when_current_valid(current, menu, (_("Remove entry"), self.removeEntry), level=0, key="4")
+				self.removeFunction = self.removeCurrentService
 				if not csel.entry_marked and not inBouquetRootList and current_root and not (current_root.flags & eServiceReference.isGroup):
 					_append_when_current_valid(current, menu, actions, (_("Add marker"), self.showMarkerInputBox), level=0, key="green")
 					if not csel.movemode:
@@ -1248,6 +1250,8 @@ class ChannelSelectionEdit:
 				self.removeCurrentService()
 
 	def removeCurrentService(self, bouquet=False):
+		if self.movemode and self.entry_marked:
+			self.toggleMoveMarked() # unmark current entry
 		self.editMode = True
 		ref = self.servicelist.getCurrent()
 		mutableList = self.getMutableList()
