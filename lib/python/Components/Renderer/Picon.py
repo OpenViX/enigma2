@@ -96,7 +96,12 @@ class PiconLocator:
 					pngname = self.findPicon(series)
 		return pngname
 
-piconLocator = PiconLocator()
+piconLocator = None
+
+def initPiconPaths():
+	global piconLocator
+	piconLocator = PiconLocator()
+initPiconPaths()
 
 def getPiconName(serviceName):
 	return piconLocator.getPiconName(serviceName)

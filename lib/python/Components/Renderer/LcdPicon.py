@@ -10,13 +10,14 @@ from Components.config import config
 from Picon import PiconLocator
 
 def useLcdPicons():
-	return getDisplayType() in ('bwlcd255','bwlcd140','bwlcd128') or config.lcd.picon_pack.value
+	return getDisplayType() in ('bwlcd255', 'bwlcd140', 'bwlcd128') or config.lcd.picon_pack.value
 
 lcdPiconLocator = None
-def createLcdPiconLocator(_):
+
+def initPiconPaths(_ = None):
 	global lcdPiconLocator
 	lcdPiconLocator = PiconLocator(['lcd_picon', 'piconlcd']) if useLcdPicons() else PiconLocator()
-config.lcd.picon_pack.addNotifier(createLcdPiconLocator)
+config.lcd.picon_pack.addNotifier(initPiconPaths)
 
 class LcdPicon(Renderer):
 	def __init__(self):
