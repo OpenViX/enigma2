@@ -11,7 +11,8 @@ install_PYTHON =	\
 	ImageBackup.py \
 	PluginBackup.py \
 	PluginRestore.py \
-	Flash_online.py
+	Flash_online.py \
+	Multibootmgr.py
 
 dist_install_DATA = \
 	restorewizard.xml \
@@ -25,7 +26,7 @@ dist_install_DATA = \
 	upgrade.png \
 	PluginBackup.sh \
 	PluginRestore.sh
-	
+
 install-data-hook:
 	chmod +x $(DESTDIR)$(installdir)/PluginBackup.sh; \
 	chmod +x $(DESTDIR)$(installdir)/PluginRestore.sh;

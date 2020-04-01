@@ -3845,6 +3845,9 @@ msgstr "Gleich wie"
 msgid "Equatorial Guinea"
 msgstr "Equatorial Guinea"
 
+msgid "Erase"
+msgstr "Löschen"
+
 msgid "Eritrea"
 msgstr "Eritrea"
 
@@ -5109,6 +5112,9 @@ msgstr "Informationen"
 msgid "Init"
 msgstr "Initialisieren"
 
+msgid "Init SDcard"
+msgstr "Init SDcard"
+
 msgid "Initial fast forward speed"
 msgstr "Initiale Schnellvorlauf-Geschwindigkeit"
 
@@ -5708,6 +5714,13 @@ msgstr "Hauptmenü"
 msgid "Maintain old EPG data for"
 msgstr "Behalte abgelaufene EPG-Daten (in Minuten)"
 
+msgid ""
+"\n"
+"Maintain your multiboot device."
+msgstr ""
+"\n"
+"Verwalten Sie Ihr Multiboot-Gerät."
+
 msgid "Make File Commander accessible from the Extensions menu."
 msgstr ""
 
@@ -6148,6 +6161,10 @@ msgstr "Multi-Boot auswählen"
 
 msgid "MultiType"
 msgstr "MultiType"
+
+#
+msgid "MultiBoot Image Manager"
+msgstr "Multiboot-Image-Manager"
 
 #, python-format
 msgid "Multiboot ERROR! - no %s in boot partition."
@@ -6626,6 +6643,9 @@ msgstr "Nicht geprüft:"
 
 msgid "Not-Associated"
 msgstr "Nicht verbunden"
+
+msgid "Note: slot list does not show current image or empty slots."
+msgstr "Hinweis: Die Slotliste zeigt kein aktuelles Image oder leere Slots an."
 
 msgid "Note: when enabled, and you do want standby mode after wake up, set option 'Startup to Standby' as 'No, except Wakeup timer'."
 msgstr "Hinweis: wenn aktiviert und Sie möchten nach dem Einschalten direkt in den Standby, dann setzen Sie die Option 'Einschalten in den Standby' als 'Nein, ausser Einschalt Timer'."
@@ -11502,6 +11522,9 @@ msgstr "Benutze originale Teletext Position"
 
 msgid "Use power measurement"
 msgstr "Stromaufnahme messen"
+
+msgid "Use the cursor keys to select an installed image and then Erase button."
+msgstr "Ein installiertes Image auswählen und danach die Taste GRÜN drücken, um es zu löschen."
 
 msgid "Use the cursor keys to select an installed image and then Reboot button."
 msgstr ""
