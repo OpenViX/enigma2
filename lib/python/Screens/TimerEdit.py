@@ -78,7 +78,9 @@ class TimerEditList(Screen, ProtectedScreen):
 				"left": self.left,
 				"right": self.right,
 				"up": self.up,
-				"down": self.down
+				"down": self.down,
+				"moveTop": self.moveTop,
+				"moveEnd": self.moveEnd
 			}, -1)
 		self.session.nav.RecordTimer.on_state_change.append(self.onStateChange)
 		self.onShown.append(self.updateState)
@@ -105,12 +107,19 @@ class TimerEditList(Screen, ProtectedScreen):
 		self["timerlist"].instance.moveSelection(self["timerlist"].instance.pageDown)
 		self.updateState()
 
+	def moveTop(self):
+		self["timerlist"].instance.moveSelection(self["timerlist"].instance.moveTop)
+		self.updateState()
+
+	def moveEnd(self):
+		self["timerlist"].instance.moveSelection(self["timerlist"].instance.moveEnd)
+		self.updateState()
+
 	def toggleDisabledState(self):
 		cur = self["timerlist"].getCurrent()
 		if cur:
 			t = cur
 			if t.disabled:
-# 				print "[TimerEdit] try to ENABLE timer"
 				t.enable()
 				timersanitycheck = TimerSanityCheck(self.session.nav.RecordTimer.timer_list, cur)
 				if not timersanitycheck.check():
@@ -254,8 +263,10 @@ class TimerEditList(Screen, ProtectedScreen):
 		list = self.list
 		del list[:]
 		list.extend([(timer, False) for timer in self.session.nav.RecordTimer.timer_list])
-		list.extend([(timer, True) for timer in self.session.nav.RecordTimer.processed_timers])
-		if config.usage.timerlist_finished_timer_position.index: #end of list
+		if config.usage.timerlist_finished_timer_position.index != 2:
+			# only add finished timers if the "hide" option is not set
+			list.extend([(timer, True) for timer in self.session.nav.RecordTimer.processed_timers])
+		if config.usage.timerlist_finished_timer_position.index == 1: #end of list
 			list.sort(cmp = eol_compare)
 		else:
 			list.sort(key = lambda x: x[0].begin)
@@ -336,10 +347,7 @@ class TimerEditList(Screen, ProtectedScreen):
 
 
 	def finishedEdit(self, answer):
-# 		print "[TimerEdit] finished edit"
-
 		if answer[0]:
-# 			print "[TimerEdit] Edited timer"
 			entry = answer[1]
 			timersanitycheck = TimerSanityCheck(self.session.nav.RecordTimer.timer_list, entry)
 			success = False
@@ -363,11 +371,8 @@ class TimerEditList(Screen, ProtectedScreen):
 
 			self.fillTimerList()
 			self.updateState()
-# 		else:
-# 			print "[TimerEdit] Timeredit aborted"
 
 	def finishedAdd(self, answer):
-# 		print "[TimerEdit] finished add"
 		if answer[0]:
 			entry = answer[1]
 			simulTimerList = self.session.nav.RecordTimer.record(entry)
@@ -380,8 +385,6 @@ class TimerEditList(Screen, ProtectedScreen):
 					self.session.openWithCallback(self.finishSanityCorrection, TimerSanityConflict, simulTimerList, self.menu_path)
 			self.fillTimerList()
 			self.updateState()
-# 		else:
-# 			print "[TimerEdit] Timeredit aborted"
 
 	def finishSanityCorrection(self, answer):
 		self.finishedAdd(answer)
