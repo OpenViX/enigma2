@@ -2200,7 +2200,7 @@ class OpkgInstaller(Screen):
 		if len(list):
 			p = list[0].rfind("/")
 			title = list[0][:p]
-			self.title = ("%s %s %s") % (_("Install extensions"), _("from"), title)
+			self.title = ("Install extensions")
 
 		for listindex in range(len(list)):
 			self.list.addSelection(list[listindex][p+1:], list[listindex], listindex, False)
