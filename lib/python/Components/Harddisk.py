@@ -796,20 +796,78 @@ class HarddiskManager:
 				return os.path.join(item[1], "")
 		return None
 
-	def removeHotplugPartition(self, device):
-		for x in self.partitions[:]:
-			if x.device == device:
-				self.partitions.remove(x)
-				if x.mountpoint:  # Plugins won't expect unmounted devices.
-					self.on_partition_list_change("remove", x)
-		devLen = len(device)
-		if devLen and (not device[devLen - 1].isdigit() or (device.startswith("mmcblk") and not re.search(r"mmcblk\dp\d+", device))):
-			for hdd in self.hdd:
-				if hdd.device == device:
-					hdd.stop()
-					self.hdd.remove(hdd)
+	def addHotplugPartition(self, device, physDevice = None):
+		# device - Hotplug passed partition name, without /dev e.g. mmcblk1p1
+		# physDevice - Hotplug passed incorrect device path e.g. /block/mmcblk1/device - not much use!
+		# physicalDevice is the physical device path e.g. sys/block/mmcblk1/device
+		# devicePath in def is e.g. /sys/block/mmcblk1
+		# hddDev is the hdd device name e.g. mmcblk1
+		HDDin = error = removable = isCdrom = blacklisted = False
+		medium_found = True
+		hddDev, part = self.splitDeviceName(device)
+		devicePath = "/sys/block/%s" %hddDev
+		try:
+			physicalDevice = os.path.realpath('/sys/block/' + hddDev + '/device')
+		except OSError:
+			physicalDevice = hddDev
+			print "[Harddisk] couldn't determine blockdev physdev for device", hddDev
+		description = self.getUserfriendlyDeviceName(device, physicalDevice)
+		# print "[Harddisk] Hotplug DEBUG: description = %s devicePath= %s hddDev = %s" %(description, devicePath, hddDev)
+		data = readFile(os.path.join(devicePath, "dev"))  	# This is the device's major and minor device numbers.
+		if data is None:
+			return error, blacklisted, removable, isCdrom, self.partitions, medium_found		# return for hotplug legacy code
+		devMajor = int(data.split(":")[0])
+		isCdrom = devMajor in opticalDisks or device.startswith("sr")
+		if isCdrom:
+			self.cd = devicePath
+			self.partitions.append(Partition(mountpoint=self.getMountpoint(hddDev), description=description, forceMounted=True, device=hddDev))
+			return error, blacklisted, removable, isCdrom, self.partitions, medium_found		# return for hotplug legacy code
+		else:							# Lets get to work on real HDD
+			data = readFile(os.path.join(devicePath, "removable"))
+			removable = False if data is None else bool(int(data))
+			for hdd in self.hdd:				# perhaps the disk has not been removed - because of crap code, so don't add it again?
+				# print "[Harddisk] DEBUG hddDev in hddlist: hdd = %s device = %s hddDev = %s" %(hdd, hdd.device, hddDev)
+				if hdd.device == hddDev:
+					HDDin = True
 					break
-			SystemInfo["Harddisk"] = len(self.hdd) > 0
+			if HDDin == False:
+				self.hdd.append(Harddisk(hddDev, removable))
+				# print "[Harddisk] DEBUG add hotplug HDD device in hddlist: hdd.device = %s device = %s hddDev = %s" %(hdd.device, device, hddDev)
+				self.hdd.sort()
+				SystemInfo["Harddisk"] = True
+			partitions = [partition for partition in sorted(os.listdir(devicePath)) if partition.startswith(hddDev)]
+			if SystemInfo["HasHiSi"] and devMajor == 8 and len(partitions) >= 4:
+				partitions = partitions[4:]
+#			self.partitions.append(Partition(mountpoint=self.getMountpoint(hddDev), description=description, forceMounted=True, device=hddDev)) 	# add in disk i.e. hdd
+			# print "[Harddisk] DEBUG add hddDev: Partition(mountpoint=%s, description=%s, forceMounted=True, hddDev=%s)" % (self.getMountpoint(device), description, hddDev)
+			for partition in partitions:
+				description = self.getUserfriendlyDeviceName(partition, physicalDevice)
+				part = Partition(mountpoint=self.getMountpoint(partition), description=description, forceMounted=True, device=partition)	# add in partition 
+				# print "[Harddisk] DEBUG add partition: Part(mountpoint=%s, description=%s, forceMounted=True, device=%s)" % (self.getMountpoint(partition), description, partition)
+				self.partitions.append(part)
+				if part.mountpoint:  			# Plugins won't expect unmounted devices.
+					self.on_partition_list_change("add", part)
+					# print "[Harddisk] DEBUG: on_partition_list_change('add', Partition(mountpoint=%s, description=%s, force_mounted=True, device=%s))" % (self.getMountpoint(partition), description, partition)
+			return error, blacklisted, removable, isCdrom, self.partitions, medium_found		# return for hotplug legacy code
+
+	def removeHotplugPartition(self, device):
+		hddDev, part = self.splitDeviceName(device)			# device == partition, find disk hddDev
+		for partition in self.partitions:
+			if partition.device is None:
+				continue
+			pDevice = partition.device				# this is the disk or partition
+			# print "[Harddisk] DEBUG partition in self.partitions: partition.device = %s device = %s" %(pDevice, device)
+			if pDevice.startswith("%s" %hddDev):			# Is this the disk or partition we are looking for? 
+				self.partitions.remove(partition)		# remove partitions
+				if partition.mountpoint:  			# Plugins won't expect unmounted devices.
+					self.on_partition_list_change("remove", partition)
+		for hdd in self.hdd:
+			if hdd.device == hddDev:				# ths is the disk we are looking for:
+				# print "[Harddisk] DEBUG stop HDD device in hddlist: hdd.device = %s device = %s hddDev = %s" %(hdd.device, device, hddDev)
+				hdd.stop()					# stop it
+				self.hdd.remove(hdd)				# remove disk
+				break
+		SystemInfo["Harddisk"] = len(self.hdd) > 0
 
 	def HDDCount(self):
 		return len(self.hdd)
