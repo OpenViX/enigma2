@@ -193,12 +193,12 @@ class Harddisk:
 
 	def partitionPath(self, n):
 		if SystemInfo["Udev"]:
-			if self.dev_path.startswith("/dev/mmcblk"):
-				return os.path.join(self.dev_path, "p", n)
+			if self.dev_path.startswith('/dev/mmcblk'):
+				return "%sp%s" %(self.dev_path, n)
 			else:
-				return os.path.join(self.dev_path, n)
+				return "%s%s" %(self.dev_path, n)
 		else:
-			return os.path.join(self.dev_path, "part", n)
+			return "%s/part%s" %(self.dev_path, n)
 
 	def stop(self):
 		if self.timer:
