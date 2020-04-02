@@ -464,8 +464,12 @@ class Harddisk:
 			dev = self.mount_device
 		else:
 			dev = self.partitionPath("1")  # Otherwise, assume there is one partition.
+		for parts in getProcMounts():
+			if os.path.realpath(parts[0]).startswith(dev):
+				filetype = parts[2]
+		print "[Harddisk] finding file type = %s" %(filetype)
 		task = Task.LoggingTask(job, _("Checking disk."))  # "fsck"
-		task.setTool("fsck.ext3")
+		task.setTool("fsck.%s" %filetype)
 		task.args.append("-f")
 		task.args.append("-p")
 		task.args.append(dev)
