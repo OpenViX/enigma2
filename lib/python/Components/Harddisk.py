@@ -146,9 +146,11 @@ class Harddisk:
 		self.mount_path = None
 		self.mount_device = None
 		self.phys_path = os.path.realpath(self.sysfsPath("device"))
-		self.internal = "pci" in self.phys_path or "ahci" in self.phys_path or "sata" in self.phys_path
 		data = readFile(os.path.join("/sys/block", device, "queue/rotational"))
-		self.rotational = True if data is None else int(data)
+		self.rotational = True if data is None else int(data)			# rotational if 0 --> (SSD or MMC  1) ----> HDD
+		(self.internal, self.busType) = self.device_state(device)
+		# print "[Harddisk] 2 device = %s internal = %s bus = %s" % (device, self.internal, self.busType)
+
 		if SystemInfo["Udev"]:
 			self.dev_path = os.path.join("/dev", self.device)
 			self.disk_path = self.dev_path
@@ -573,6 +575,24 @@ class Harddisk:
 
 	def isSleeping(self):
 		return self.is_sleeping
+
+	def device_state(self, device):
+		hotplugBuses = ("usb", "ieee1394", "mmc", "pcmcia", "firewire")
+		physical = os.readlink("/sys/block/%s" % device)
+		if not physical.startswith("../devices/platform/"):
+			return (False, "ERROR")
+		match = False
+		for bus in hotplugBuses:
+			if "/%s" % bus in physical:
+				match = True
+				busmatch = bus
+		if match:
+			# print "[Harddisk] device_state Device removable device %s busmatch %s" %(device, busmatch)
+			return (False, busmatch)
+		else:
+			# print "[Harddisk] device_state Device not removable device %s no bus" %(device)
+			return (True, "ATA")
+
 
 
 class Partition:
