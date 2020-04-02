@@ -15,7 +15,7 @@ from Tools.HardwareInfo import HardwareInfo
 # DEBUG: REMINDER: This comment needs to be expanded for the benefit of readers.
 # removable if 1 --> with motor
 # internal if 1 --> SATA disk
-# rotational if 0 --> SSD or MMC
+# rotational if 0 --> (SSD or MMC  1) ----> HDD
 # sdmmc if True -->  MMC/CF
 
 # List of Linux major device numbers for devices that will not be handled
@@ -147,7 +147,7 @@ class Harddisk:
 		self.mount_device = None
 		self.phys_path = os.path.realpath(self.sysfsPath("device"))
 		self.internal = "pci" in self.phys_path or "ahci" in self.phys_path or "sata" in self.phys_path
-		data = readFile(os.path.join("/sys/block", device, "rotational"))
+		data = readFile(os.path.join("/sys/block", device, "queue/rotational"))
 		self.rotational = True if data is None else int(data)
 		if SystemInfo["Udev"]:
 			self.dev_path = os.path.join("/dev", self.device)
