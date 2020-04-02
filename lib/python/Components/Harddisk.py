@@ -750,7 +750,7 @@ class HarddiskManager:
 				for mount in mounts:
 					mountDir = os.path.join(mountEntry, mount, "")
 					# print "[Harddisk] enumerateNetworkMountsNew DEBUG: mountDir='%s', isMount='%s'" % (mountDir, os.path.ismount(mountDir))
-					if os.path.ismount(mountDir) and mountDir not in [x.mountpoint for x in self.partitions]:
+					if os.path.ismount(mountDir) and mountDir not in [partition.mountpoint for partition in self.partitions]:
 						# print "[Harddisk] Network mount (%s) '%s' -> '%s'." % (entry, mount, mountDir)
 						self.partitions.append(Partition(mountpoint=mountDir, description=mount))
 						# print "[Harddisk] DEBUG: Partition(mountpoint=%s, description=%s)" % (mountDir, mount)
@@ -888,8 +888,8 @@ class HarddiskManager:
 	def getMountedPartitions(self, onlyhotplug=False, mounts=None):
 		if mounts is None:
 			mounts = getProcMounts()
-		parts = [x for x in self.partitions if (x.is_hotplug or not onlyhotplug) and x.mounted(mounts)]
-		devs = set([x.device for x in parts])
+		parts = [partition for partition in self.partitions if (partition.is_hotplug or not onlyhotplug) and partition.mounted(mounts)]
+		devs = set([partition.device for partition in parts])
 		for devname in devs.copy():
 			if not devname:
 				continue
@@ -897,19 +897,19 @@ class HarddiskManager:
 			if part and dev in devs:  # If this is a partition and we still have the wholedisk, remove wholedisk.
 				devs.remove(dev)
 		# Return all devices which are not removed due to being a wholedisk when a partition exists.
-		return [x for x in parts if not x.device or x.device in devs]
+		return [partition for partition in parts if not partition.device or partition.device in devs]
 
 	def addMountedPartition(self, device, desc):
-		for x in self.partitions:
-			if x.mountpoint == device:
+		for partition in self.partitions:
+			if partition.mountpoint == device:
 				return  # Already_mounted.
 		self.partitions.append(Partition(mountpoint=device, description=desc))
 
 	def removeMountedPartition(self, mountpoint):
-		for x in self.partitions[:]:
-			if x.mountpoint == mountpoint:
-				self.partitions.remove(x)
-				self.on_partition_list_change("remove", x)
+		for partition in self.partitions[:]:
+			if partition.mountpoint == mountpoint:
+				self.partitions.remove(partition)
+				self.on_partition_list_change("remove", partition)
 
 	def setDVDSpeed(self, device, speed=0):
 		if not device.startswith(os.sep):
