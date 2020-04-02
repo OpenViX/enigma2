@@ -206,21 +206,15 @@ class Harddisk:
 			self.timer.callback.remove(self.runIdle)
 
 	def bus(self):
-		busName = _("External")
-		if SystemInfo["Udev"]:  # SD/MMC (F1 specific)
-			if "usb" in self.phys_path:
-				typeName = " (USB)"
-			else:
-				typeName = " (SD/MMC)"
-		else:  # CF (7025 specific)
-			typeName = " (CF)"
-		if self.sdmmc:
-			busName = "%s%s" % (busName, typeName)
-		else:
-			if self.internal:
-				busName = _("Internal")
-			if not self.rotational:
+		if self.internal:
+			busName = _("Internal")
+			if self.rotational == 0:
 				busName = "%s%s" % (busName, " (SSD)")
+			else:
+				busName = "%s%s" % (busName, " (HDD)")
+		else:
+			busName = _("External")
+			busName = "%s (%s)" % (busName, self.busType)	
 		return busName
 
 	def diskSize(self):
