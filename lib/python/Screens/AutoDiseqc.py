@@ -15,7 +15,7 @@ class AutoDiseqc(Screen, ConfigListScreen):
 
 	sat_frequencies = [
 		# astra 282 EPG Background Radio
-		( 
+		(
 			11778,
 			27500,
 			eDVBFrontendParametersSatellite.Polarisation_Vertical,
@@ -27,7 +27,7 @@ class AutoDiseqc(Screen, ConfigListScreen):
 			eDVBFrontendParametersSatellite.RollOff_auto,
 			eDVBFrontendParametersSatellite.Pilot_Unknown,
 			eDVBFrontendParametersSatellite.No_Stream_Id_Filter,
-			eDVBFrontendParametersSatellite.PLS_Gold, 
+			eDVBFrontendParametersSatellite.PLS_Gold,
 			eDVBFrontendParametersSatellite.PLS_Default_Gold_Code,
 			eDVBFrontendParametersSatellite.No_T2MI_PLP_Id,
 			eDVBFrontendParametersSatellite.T2MI_Default_Pid,
@@ -36,7 +36,7 @@ class AutoDiseqc(Screen, ConfigListScreen):
 			"Astra 2 28.2e"),
 
 		# astra 235 astra ses
-		( 
+		(
 			12168,
 			27500,
 			eDVBFrontendParametersSatellite.Polarisation_Vertical,
@@ -48,7 +48,7 @@ class AutoDiseqc(Screen, ConfigListScreen):
 			eDVBFrontendParametersSatellite.RollOff_auto,
 			eDVBFrontendParametersSatellite.Pilot_Unknown,
 			eDVBFrontendParametersSatellite.No_Stream_Id_Filter,
-			eDVBFrontendParametersSatellite.PLS_Gold, 
+			eDVBFrontendParametersSatellite.PLS_Gold,
 			eDVBFrontendParametersSatellite.PLS_Default_Gold_Code,
 			eDVBFrontendParametersSatellite.No_T2MI_PLP_Id,
 			eDVBFrontendParametersSatellite.T2MI_Default_Pid,
@@ -57,7 +57,7 @@ class AutoDiseqc(Screen, ConfigListScreen):
 			"Astra 3 23.5e"),
 
 		# astra 192 zdf
-		( 
+		(
 			11953,
 			27500,
 			eDVBFrontendParametersSatellite.Polarisation_Horizontal,
@@ -69,7 +69,7 @@ class AutoDiseqc(Screen, ConfigListScreen):
 			eDVBFrontendParametersSatellite.RollOff_auto,
 			eDVBFrontendParametersSatellite.Pilot_Unknown,
 			eDVBFrontendParametersSatellite.No_Stream_Id_Filter,
-			eDVBFrontendParametersSatellite.PLS_Gold, 
+			eDVBFrontendParametersSatellite.PLS_Gold,
 			eDVBFrontendParametersSatellite.PLS_Default_Gold_Code,
 			eDVBFrontendParametersSatellite.No_T2MI_PLP_Id,
 			eDVBFrontendParametersSatellite.T2MI_Default_Pid,
@@ -90,7 +90,7 @@ class AutoDiseqc(Screen, ConfigListScreen):
 			eDVBFrontendParametersSatellite.RollOff_auto,
 			eDVBFrontendParametersSatellite.Pilot_Unknown,
 			eDVBFrontendParametersSatellite.No_Stream_Id_Filter,
-			eDVBFrontendParametersSatellite.PLS_Gold, 
+			eDVBFrontendParametersSatellite.PLS_Gold,
 			eDVBFrontendParametersSatellite.PLS_Default_Gold_Code,
 			eDVBFrontendParametersSatellite.No_T2MI_PLP_Id,
 			eDVBFrontendParametersSatellite.T2MI_Default_Pid,
@@ -111,7 +111,7 @@ class AutoDiseqc(Screen, ConfigListScreen):
 			eDVBFrontendParametersSatellite.RollOff_auto,
 			eDVBFrontendParametersSatellite.Pilot_Unknown,
 			eDVBFrontendParametersSatellite.No_Stream_Id_Filter,
-			eDVBFrontendParametersSatellite.PLS_Gold, 
+			eDVBFrontendParametersSatellite.PLS_Gold,
 			eDVBFrontendParametersSatellite.PLS_Default_Gold_Code,
 			eDVBFrontendParametersSatellite.No_T2MI_PLP_Id,
 			eDVBFrontendParametersSatellite.T2MI_Default_Pid,
