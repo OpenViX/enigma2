@@ -528,11 +528,9 @@ class Harddisk:
 		if self.internal:
 			runCommand("hdparm -S0 %s" % self.disk_path)
 		else:
-			ret = self.bus()
-			if "(SD/MMC)" not in ret:
-				exitCode = runCommand("sdparm --set=SCT=0 %s" % self.disk_path)
-				if exitCode:
-					runCommand("hdparm -S0 %s" % self.disk_path)
+			exitCode = runCommand("sdparm --set=SCT=0 %s" % self.disk_path)
+			if exitCode:
+				runCommand("hdparm -S0 %s" % self.disk_path)
 		self.timer = eTimer()
 		self.timer.callback.append(self.runIdle)
 		self.idle_running = True
@@ -557,11 +555,9 @@ class Harddisk:
 		if self.internal:
 			runCommand("hdparm -y %s" % self.disk_path)
 		else:
-			ret = self.bus()
-			if "(SD/MMC)" not in ret:
-				exitCode = runCommand("sdparm --flexible --readonly --command=stop %s" % self.disk_path)
-				if exitCode:
-					runCommand("hdparm -y %s" % self.disk_path)
+			exitCode = runCommand("sdparm --flexible --readonly --command=stop %s" % self.disk_path)
+			if exitCode:
+				runCommand("hdparm -y %s" % self.disk_path)
 
 	def setIdleTime(self, idle):
 		self.max_idle_time = idle
