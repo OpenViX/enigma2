@@ -776,10 +776,7 @@ def loadSingleSkinData(desktop, screenID, domSkin, pathSkin, scope=SCOPE_CURRENT
 			try:
 				name = parameter.attrib.get("name")
 				value = parameter.attrib.get("value")
-				result = map(parseParameter, [x.strip() for x in value.split(",")])
-				if isinstance(result[0], list):
-					result = result[0]
-				parameters[name] = result
+				parameters[name] = map(parseParameter, value.split(",")) if "," in value else parseParameter(value)
 			except Exception as err:
 				raise SkinError("Bad parameter: '%s'" % str(err))
 	for tag in domSkin.findall("menus"):
