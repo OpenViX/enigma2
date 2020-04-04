@@ -37,6 +37,7 @@ class hotkey:
 		(_("Yellow"), "yellow", ""),
 		(_("Blue"), "blue", ""),
 		("Rec", "rec", ""),
+		("Rec" + " " + _("long"), "rec_long", ""),
 		("Radio", "radio", ""),
 		("Radio" + " " + _("long"), "radio_long", ""),
 		("TV", "showTv", ""),
