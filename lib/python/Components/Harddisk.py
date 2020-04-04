@@ -589,13 +589,13 @@ class Harddisk:
 
 
 class Partition:
-	# For backward compatibility, forceMounted actually means "hotplug".
-	def __init__(self, mountpoint, device=None, description="", forceMounted=False):
+	# For backward compatibility, force_mounted actually means "hotplug".
+	def __init__(self, mountpoint, device=None, description="", force_mounted=False):
 		self.mountpoint = mountpoint
 		self.device = device
 		self.description = description
-		self.forceMounted = mountpoint and forceMounted
-		self.is_hotplug = forceMounted  # So far; this might change.
+		self.force_mounted = mountpoint and force_mounted
+		self.is_hotplug = force_mounted  # So far; this might change.
 
 	def __str__(self):
 		return "Partition(mountpoint=%s, description=%s, device=%s)" % (self.mountpoint, self.description, self.device)
@@ -628,7 +628,7 @@ class Partition:
 	def mounted(self, mounts=None):
 		# THANK YOU PYTHON FOR STRIPPING AWAY f_fsid.
 		# TODO: Can os.path.ismount be used?
-		if self.forceMounted:
+		if self.force_mounted:
 			return True
 		if self.mountpoint:
 			if mounts is None:
@@ -701,8 +701,8 @@ class HarddiskManager:
 			isCdrom = devMajor in opticalDisks or device.startswith("sr")
 			if isCdrom:
 				self.cd = devicePath
-				self.partitions.append(Partition(mountpoint=self.getMountpoint(device), description=description, forceMounted=True, device=device))
-				# print "[Harddisk] DEBUG: Partition(mountpoint=%s, description=%s, forceMounted=True, device=%s)" % (self.getMountpoint(device), description, device)
+				self.partitions.append(Partition(mountpoint=self.getMountpoint(device), description=description, force_mounted=True, device=device))
+				# print "[Harddisk] DEBUG: Partition(mountpoint=%s, description=%s, force_mounted=True, device=%s)" % (self.getMountpoint(device), description, device)
 				print "[Harddisk] Found optical disk '%s' (%s)." % (device, physicalDevice)
 			data = readFile(os.path.join(devicePath, "removable"))
 			removable = False if data is None else bool(int(data))
@@ -727,14 +727,14 @@ class HarddiskManager:
 				partitions = [partition for partition in sorted(os.listdir(devicePath)) if partition.startswith(device)]
 				if SystemInfo["HasHiSi"] and devMajor == 8 and len(partitions) >= 4:
 					partitions = partitions[4:]
-				# self.partitions.append(Partition(mountpoint=self.getMountpoint(device), description=description, forceMounted=True, device=device))
-				# print "[Harddisk] DEBUG: Partition(mountpoint=%s, description=%s, forceMounted=True, device=%s)" % (self.getMountpoint(device), description, device)
+				# self.partitions.append(Partition(mountpoint=self.getMountpoint(device), description=description, force_mounted, device=device))
+				# print "[Harddisk] DEBUG: Partition(mountpoint=%s, description=%s, force_mounted=True, device=%s)" % (self.getMountpoint(device), description, device)
 				for partition in partitions:
 					description = self.getUserfriendlyDeviceName(partition, physicalDevice)
 					print "[Harddisk] Found partition '%s', description='%s', device='%s'." % (partition, description, physicalDevice)
-					part = Partition(mountpoint=self.getMountpoint(partition), description=description, forceMounted=True, device=partition)
+					part = Partition(mountpoint=self.getMountpoint(partition), description=description, force_mounted=True, device=partition)
 					self.partitions.append(part)
-					# print "[Harddisk] DEBUG: Partition(mountpoint=%s, description=%s, forceMounted=True, device=%s)" % (self.getMountpoint(partition), description, partition)
+					# print "[Harddisk] DEBUG: Partition(mountpoint=%s, description=%s, force_mounted=True, device=%s)" % (self.getMountpoint(partition), description, partition)
 					self.on_partition_list_change("add", part)
 					# print "[Harddisk] DEBUG: on_partition_list_change('add', Partition(mountpoint=%s, description=%s, force_mounted=True, device=%s))" % (self.getMountpoint(partition), description, partition)
 		self.hdd.sort()
@@ -804,6 +804,7 @@ class HarddiskManager:
 	#
 	def addHotplugPartition(self, device, physDevice=None):
 		print "[Harddisk] Evaluating hotplug connected device..."
+		print "[Harddisk] DEBUG: device='%s', physDevice='%s'" % (device, physDevice)
 		HDDin = error = removable = isCdrom = blacklisted = False
 		mediumFound = True
 		hddDev, part = self.splitDeviceName(device)
@@ -822,7 +823,7 @@ class HarddiskManager:
 			if isCdrom:
 				print "[Harddisk] Found optical disk '%s' (%s)." % (device, physicalDevice)
 				self.cd = devicePath
-				self.partitions.append(Partition(mountpoint=self.getMountpoint(hddDev), description=description, forceMounted=True, device=hddDev))
+				self.partitions.append(Partition(mountpoint=self.getMountpoint(hddDev), description=description, force_mounted=True, device=hddDev))
 			else:  # Lets get to work on real HDD.
 				data = readFile(os.path.join(devicePath, "removable"))
 				removable = False if data is None else bool(int(data))
@@ -840,13 +841,13 @@ class HarddiskManager:
 				partitions = [partition for partition in sorted(os.listdir(devicePath)) if partition.startswith(hddDev)]
 				if SystemInfo["HasHiSi"] and devMajor == 8 and len(partitions) >= 4:
 					partitions = partitions[4:]
-				# self.partitions.append(Partition(mountpoint=self.getMountpoint(hddDev), description=description, forceMounted=True, device=hddDev))
-				# print "[Harddisk] DEBUG add hddDev: Partition(mountpoint=%s, description=%s, forceMounted=True, hddDev=%s)" % (self.getMountpoint(device), description, hddDev)
+				# self.partitions.append(Partition(mountpoint=self.getMountpoint(hddDev), description=description, force_mounted=True, device=hddDev))
+				# print "[Harddisk] DEBUG add hddDev: Partition(mountpoint=%s, description=%s, force_mounted=True, hddDev=%s)" % (self.getMountpoint(device), description, hddDev)
 				for partition in partitions:
 					description = self.getUserfriendlyDeviceName(partition, physicalDevice)
 					print "[Harddisk] Found partition '%s', description='%s', device='%s'." % (partition, description, physicalDevice)
-					part = Partition(mountpoint=self.getMountpoint(partition), description=description, forceMounted=True, device=partition)  # add in partition
-					# print "[Harddisk] DEBUG add partition: Part(mountpoint=%s, description=%s, forceMounted=True, device=%s)" % (self.getMountpoint(partition), description, partition)
+					part = Partition(mountpoint=self.getMountpoint(partition), description=description, force_mounted=True, device=partition)  # add in partition
+					# print "[Harddisk] DEBUG add partition: Part(mountpoint=%s, description=%s, force_mounted=True, device=%s)" % (self.getMountpoint(partition), description, partition)
 					self.partitions.append(part)
 					if part.mountpoint:  # Plugins won't expect unmounted devices.
 						self.on_partition_list_change("add", part)
