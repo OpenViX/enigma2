@@ -819,6 +819,9 @@ class PliExtraInfo(Poll, Converter, object):
 		if self.type == "TerrestrialChannelNumber":
 			return self.createChannelNumber(fedata, feraw)
 
+		if self.type == "TransponderInfoMisPls":
+			return self.createMisPls(fedata)
+
 		return _("invalid type")
 
 	text = property(getText)
