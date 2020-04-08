@@ -1,3 +1,4 @@
+import os
 from Tools.Profile import profile
 
 # workaround for required config entry dependencies.
@@ -188,11 +189,19 @@ class InfoBar(InfoBarBase, InfoBarShowHide,
 		self.rds_display.show()  # in InfoBarRdsDecoder
 		self.servicelist.correctChannelNumber()
 
+	def restartLastMovie(self):
+		service = enigma.eServiceReference(config.usage.last_movie_played.value)
+		if service:
+			if os.path.exists(service.getPath()):
+				from Components.ParentalControl import parentalControl
+				if parentalControl.isServicePlayable(service, self.openMoviePlayer):
+					self.openMoviePlayer(service)
+
 	def showMovies(self, defaultRef=None):
 		self.lastservice = self.session.nav.getCurrentlyPlayingServiceOrGroup()
 		if self.lastservice and ':0:/' in self.lastservice.toString():
 			self.lastservice = enigma.eServiceReference(config.movielist.curentlyplayingservice.value)
-		self.session.openWithCallback(self.movieSelected, Screens.MovieSelection.MovieSelection, defaultRef, timeshiftEnabled = self.timeshiftEnabled())
+		self.session.openWithCallback(self.movieSelected, Screens.MovieSelection.MovieSelection, defaultRef or enigma.eServiceReference(config.usage.last_movie_played.value), timeshiftEnabled = self.timeshiftEnabled())
 
 	def movieSelected(self, service):
 		ref = self.lastservice
