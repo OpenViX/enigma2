@@ -1404,7 +1404,7 @@ class ImageManagerDownload(Screen):
 		if "atv" in self.urli:
 			imagecat = [6.2,6.3, 6.4]
 		elif "www.openvix" in self.urli:
-			imagecat = [5.3]
+			imagecat = [5]
 
 		if not self.Pli and not self.imagesList:
 			for version in reversed(sorted(imagecat)):
