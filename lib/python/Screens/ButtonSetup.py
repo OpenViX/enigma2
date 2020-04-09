@@ -46,6 +46,8 @@ ButtonSetupKeys = [	(_("Red"), "red", "Infobar/openSingleServiceEPG/1"),
 	(_("Menu"), "mainMenu", ""),
 	(_("List/Fav/PVR"), "list", ""),
 	(_("List/Fav/PVR") + " " + _("long"), "list_long", ""),
+	(_("List/File"), "file", ""),
+	(_("List/File") + " " + _("long"), "file_long", ""),
 	(_("Back/Recall"), "back", ""),
 	(_("Back/Recall") + " " + _("long"), "back_long", ""),
 	(_("Home"), "home", ""),
@@ -120,6 +122,7 @@ def getButtonSetupFunctions():
 	ButtonSetupFunctions.append((_("Show service list"), "Infobar/openServiceList", "InfoBar"))
 	ButtonSetupFunctions.append((_("Show service list or movies"), "Infobar/showServiceListOrMovies", "InfoBar"))
 	ButtonSetupFunctions.append((_("Show movies"), "Infobar/showMovies", "InfoBar"))
+	ButtonSetupFunctions.append((_("Restart last movie"), "Infobar/restartLastMovie", "InfoBar"))
 	ButtonSetupFunctions.append((_("Show favourites list"), "Infobar/openFavouritesList", "InfoBar"))
 	ButtonSetupFunctions.append((_("History back"), "Infobar/historyBack", "InfoBar"))
 	ButtonSetupFunctions.append((_("History next"), "Infobar/historyNext", "InfoBar"))
