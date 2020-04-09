@@ -7,7 +7,7 @@ from os.path import basename, dirname, isfile
 from Components.config import ConfigSubsection, ConfigText, config
 from Components.RcModel import rc_model
 from Components.Sources.Source import ObsoleteSource
-from Tools.Directories import SCOPE_CONFIG, SCOPE_CURRENT_LCDSKIN, SCOPE_CURRENT_SKIN, SCOPE_FONTS, SCOPE_SKIN, SCOPE_SKIN_IMAGE, fileExists, resolveFilename
+from Tools.Directories import SCOPE_CONFIG, SCOPE_CURRENT_LCDSKIN, SCOPE_CURRENT_SKIN, SCOPE_FONTS, SCOPE_SKIN, SCOPE_SKIN_IMAGE, resolveFilename
 from Tools.Import import my_import
 from Tools.LoadPixmap import LoadPixmap
 
@@ -43,7 +43,7 @@ skinfactor = 0
 
 config.skin = ConfigSubsection()
 skin = resolveFilename(SCOPE_SKIN, DEFAULT_SKIN)
-if not fileExists(skin) or not isfile(skin):
+if not isfile(skin):
 	print "[Skin] Error: Default skin '%s' is not readable or is not a file!  Using emergency skin." % skin
 	DEFAULT_SKIN = EMERGENCY_SKIN
 config.skin.primary_skin = ConfigText(default=DEFAULT_SKIN)
@@ -101,7 +101,7 @@ def InitSkins():
 	result = None
 	if isfile(resolveFilename(SCOPE_SKIN, config.skin.primary_skin.value)):
 		name = USER_SKIN_TEMPLATE % dirname(config.skin.primary_skin.value)
-		if fileExists(resolveFilename(SCOPE_CURRENT_SKIN, name)):
+		if isfile(resolveFilename(SCOPE_CURRENT_SKIN, name)):
 			result = loadSkin(name, scope=SCOPE_CURRENT_SKIN, desktop=getDesktop(GUI_SKIN_ID), screenID=GUI_SKIN_ID)
 	if result is None:
 		loadSkin(USER_SKIN, scope=SCOPE_CURRENT_SKIN, desktop=getDesktop(GUI_SKIN_ID), screenID=GUI_SKIN_ID)
@@ -345,7 +345,7 @@ def collectAttributes(skinAttributes, node, context, skinPath=None, ignore=(), f
 			if attrib in filenames:
 				# DEBUG: Why does a SCOPE_CURRENT_LCDSKIN image replace the GUI image?!?!?!
 				pngfile = resolveFilename(SCOPE_CURRENT_SKIN, value, path_prefix=skinPath)
-				if not fileExists(pngfile) and fileExists(resolveFilename(SCOPE_CURRENT_LCDSKIN, value, path_prefix=skinPath)):
+				if not isfile(pngfile) and isfile(resolveFilename(SCOPE_CURRENT_LCDSKIN, value, path_prefix=skinPath)):
 					pngfile = resolveFilename(SCOPE_CURRENT_LCDSKIN, value, path_prefix=skinPath)
 				value = pngfile
 			# Bit of a hack this, really.  When a window has a flag (e.g. wfNoBorder)
@@ -716,7 +716,7 @@ def loadSingleSkinData(desktop, screenID, domSkin, pathSkin, scope=SCOPE_CURRENT
 		filename = tag.attrib.get("filename")
 		if filename:
 			filename = resolveFilename(scope, filename, path_prefix=pathSkin)
-			if fileExists(filename):
+			if isfile(filename):
 				loadSkin(filename, scope=scope, desktop=desktop, screenID=screenID)
 			else:
 				raise SkinError("Included file '%s' not found" % filename)
@@ -729,7 +729,7 @@ def loadSingleSkinData(desktop, screenID, domSkin, pathSkin, scope=SCOPE_CURRENT
 			if not filename:
 				raise SkinError("Pixmap needs filename attribute")
 			resolved = resolveFilename(scope, filename, path_prefix=pathSkin)
-			if fileExists(resolved):
+			if isfile(resolved):
 				switchPixmap[name] = LoadPixmap(resolved, cached=True)
 			else:
 				raise SkinError("The switchpixmap pixmap filename='%s' (%s) not found" % (filename, resolved))
@@ -759,7 +759,7 @@ def loadSingleSkinData(desktop, screenID, domSkin, pathSkin, scope=SCOPE_CURRENT
 			# Log provided by C++ addFont code.
 			# print "[Skin] Add font: Font path='%s', name='%s', scale=%d, isReplacement=%s, render=%d." % (filename, name, scale, isReplacement, render)
 		fallbackFont = resolveFilename(SCOPE_FONTS, "fallback.font", path_prefix=pathSkin)
-		if fileExists(fallbackFont):
+		if isfile(fallbackFont):
 			addFont(fallbackFont, "Fallback", 100, -1, 0)
 		for alias in tag.findall("alias"):
 			try:
@@ -777,7 +777,7 @@ def loadSingleSkinData(desktop, screenID, domSkin, pathSkin, scope=SCOPE_CURRENT
 			try:
 				name = parameter.attrib.get("name")
 				value = parameter.attrib.get("value")
-				parameters[name] = map(parseParameter, value.split(",")) if "," in value else parseParameter(value)
+				parameters[name] = map(parseParameter, [x.strip() for x in value.split(",")]) if "," in value else parseParameter(value)
 			except Exception as err:
 				raise SkinError("Bad parameter: '%s'" % str(err))
 	for tag in domSkin.findall("menus"):
@@ -1144,7 +1144,7 @@ def readSkin(screen, skin, names, desktop):
 			try:
 				p(w, context)
 			except SkinError as err:
-				print "[Skin] Error in screen '%s' widget '%s':" % (name, w.tag), err
+				print "[Skin] Error in screen '%s' widget '%s' %s!" % (name, w.tag, str(err))
 
 	def processPanel(widget, context):
 		n = widget.attrib.get("name")
@@ -1186,7 +1186,7 @@ def readSkin(screen, skin, names, desktop):
 		context.y = 0
 		processScreen(myScreen, context)
 	except Exception as err:
-		print "[Skin] Error in screen '%s':" % name, err
+		print "[Skin] Error in screen '%s' %s!" % (name, str(err))
 
 	from Components.GUIComponent import GUIComponent
 	unusedComponents = [x for x in set(screen.keys()) - usedComponents if isinstance(x, GUIComponent)]
