@@ -138,3 +138,4 @@ SystemInfo["VideoModes"] = getChipSetString() in (  # 2160p and 1080p capable ha
 	{"720p", "1080i"}  # Widescreen modes.
 )
 SystemInfo["LnbPowerAlwaysOn"] = getBoxType() in ("vusolo4k", "vuduo4k", "vuultimo4k", "vuuno4k", "vuuno4kse")
+SystemInfo["RcTypeChangable"] = fileExists("/proc/stb/ir/rc/type") and getBoxType() not in ("et7000", "et7500", "et8500")
