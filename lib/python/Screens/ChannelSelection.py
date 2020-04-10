@@ -16,7 +16,7 @@ from Components.UsageConfig import preferredTimerPath
 from Components.Renderer.Picon import getPiconName
 from Screens.TimerEdit import TimerSanityConflict
 profile("ChannelSelection.py 1")
-from EpgSelection import EPGSelection
+from Epg.EpgSelectionSingle import EPGSelectionSingle
 from enigma import eActionMap, eServiceReference, eEPGCache, eServiceCenter, eRCInput, eTimer, ePoint, eDVBDB, iPlayableService, iServiceInformation, getPrevAsciiCode, eEnv, loadPNG, eDVBLocalTimeHandler
 from Components.config import config, configfile, ConfigSubsection, ConfigText, ConfigYesNo
 from Tools.NumericalTextInput import NumericalTextInput
@@ -943,7 +943,7 @@ class ChannelSelectionEPG(InfoBarButtonSetup):
 		ref=self.getCurrentSelection()
 		if ref:
 			self.savedService = ref
-			self.session.openWithCallback(self.SingleServiceEPGClosed, EPGSelection, ref, serviceChangeCB=self.changeServiceCB, EPGtype="single")
+			self.session.openWithCallback(self.SingleServiceEPGClosed, EPGSelectionSingle, ref, serviceChangeCB=self.changeServiceCB)
 
 	def SingleServiceEPGClosed(self, ret=False):
 		if ret:
@@ -966,24 +966,6 @@ class ChannelSelectionEPG(InfoBarButtonSetup):
 			if cur == beg or not (cur.flags & eServiceReference.isMarker):
 				break
 		epg.setService(ServiceReference(self.getCurrentSelection()))
-
-	def zapToService(self, service, preview=False, zapback=False):
-		if self.startServiceRef is None:
-			self.startServiceRef = self.session.nav.getCurrentlyPlayingServiceOrGroup()
-		if service is not None:
-			if self.servicelist.getRoot() != self.epg_bouquet:
-				self.servicelist.clearPath()
-				if self.servicelist.bouquet_root != self.epg_bouquet:
-					self.servicelist.enterPath(self.servicelist.bouquet_root)
-				self.servicelist.enterPath(self.epg_bouquet)
-			self.servicelist.setCurrent(service)
-		if not zapback or preview:
-			self.zap(enable_pipzap=True)
-		if (self.dopipzap or zapback) and not preview:
-			self.zapBack()
-		if not preview:
-			self.startServiceRef = None
-			self.startRoot = None
 
 class ChannelSelectionEdit:
 	def __init__(self):
