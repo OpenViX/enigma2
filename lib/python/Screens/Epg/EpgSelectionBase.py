@@ -478,7 +478,7 @@ class EPGServiceZap:
 		# when exiting, restore the previous service/playback if a channel has been previewed
 		closeParam = True
 		if self.originalPlayingServiceOrGroup and self.session.nav.getCurrentlyPlayingServiceOrGroup() and self.session.nav.getCurrentlyPlayingServiceOrGroup().toString() != self.originalPlayingServiceOrGroup.toString():
-			if self.epgConfig.previewmode.value:
+			if self.epgConfig.preview_mode.value:
 				if '0:0:0:0:0:0:0:0:0' in self.originalPlayingServiceOrGroup.toString():
 					# restart movie playback. MoviePlayer screen is still active
 					from Screens.InfoBar import MoviePlayer
@@ -503,35 +503,35 @@ class EPGServiceZap:
 			self.prevch = self.session.pip.getCurrentService() and str(self.session.pip.getCurrentService().toString()) or None
 		else:
 			self.prevch = self.session.nav.getCurrentlyPlayingServiceReference() and str(self.session.nav.getCurrentlyPlayingServiceReference().toString()) or None
-		ref = self["list"].getCurrent()[1]
-		if ref is not None:
+		service = self["list"].getCurrent()[1]
+		if service is not None:
 			if self.epgConfig.preview_mode.value == '2':
 				if not prev:
 					if self.session.pipshown:
 						self.session.pipshown = False
 						del self.session.pip
-					self.zapFunc(ref.ref, bouquet = self.getCurrentBouquet(), preview = False)
+					self.zapFunc(service.ref, bouquet = self.getCurrentBouquet(), preview = False)
 					return
 				if not self.session.pipshown:
 					self.session.pip = self.session.instantiateDialog(PictureInPicture)
 					self.session.pip.show()
 					self.session.pipshown = True
-				n_service = self.pipServiceRelation.get(str(ref.ref), None)
+				n_service = self.pipServiceRelation.get(str(service.ref), None)
 				if n_service is not None:
 					service = eServiceReference(n_service)
 				else:
-					service = ref.ref
+					service = service.ref
 				if self.currch == service.toString():
 					if self.session.pipshown:
 						self.session.pipshown = False
 						del self.session.pip
-					self.zapFunc(ref.ref, bouquet = self.getCurrentBouquet(), preview = False)
+					self.zapFunc(service.ref, bouquet = self.getCurrentBouquet(), preview = False)
 					return
 				if self.prevch != service.toString() and currservice != service.toString():
 					self.session.pip.playService(service)
 					self.currch = self.session.pip.getCurrentService() and str(self.session.pip.getCurrentService().toString())
 			else:
-				self.zapFunc(ref.ref, bouquet = self.getCurrentBouquet(), preview = prev)
+				self.zapFunc(service.ref, bouquet = self.getCurrentBouquet(), preview = prev)
 				self.currch = self.session.nav.getCurrentlyPlayingServiceReference() and str(self.session.nav.getCurrentlyPlayingServiceReference().toString())
 
 class EPGServiceNumberSelection:
