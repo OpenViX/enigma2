@@ -38,6 +38,9 @@ class EPGList(EPGListSingle):
 			print "          attempting to continue in single EPG mode"
 		EPGListSingle.__init__(self, config.epgselection.enhanced_itemsperpage, config.epgselection.enhanced_eventfs, selChangedCB, timer)
 
+		# attributes for backwards compatibility
+		self.eventFontSizeSingle = self.eventFontSize
+
 	# for backwards compatibility
 	def buildSingleEntry(self, service, eventId, beginTime, duration, eventName):
 		return EPGListSingle.buildEntry(self, service, eventId, beginTime, duration, eventName)

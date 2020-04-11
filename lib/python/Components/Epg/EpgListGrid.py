@@ -21,13 +21,13 @@ MAX_TIMELINES = 6
 #
 SECS_IN_MIN = 60
 
-class EPGListGraph(EPGListBase):
+class EPGListGrid(EPGListBase):
 	# InfobarGraph and Graph EPGs use the same shape config, just with the root of the name distingushing them
 	def __config(self, name):
 		return config.epgselection.dict()[('graph' if self.type == EPG_TYPE_GRAPH else 'infobar') + '_' + name]
 
 	def __init__(self, type, session, selChangedCB = None, timer = None, graphic=True):
-		print "[EPGListGraph] Init"
+		print "[EPGListGrid] Init"
 		EPGListBase.__init__(self, selChangedCB, timer)
 
 		self.type = type
@@ -467,53 +467,53 @@ class EPGListGraph(EPGListBase):
 				color = serviceForeColor, color_sel = serviceForeColor,
 				backcolor = serviceBackColor, backcolor_sel = serviceBackColor))
 
-		# Service Borders
-		if self.borderTopPix is not None and self.graphic:
-			res.append(MultiContentEntryPixmapAlphaTest(
-					pos = (r1.left(), r1.top()),
-					size = (r1.width(), self.serviceBorderWidth),
-					png = self.borderTopPix,
-					flags = BT_SCALE))
-			res.append(MultiContentEntryPixmapAlphaTest(
-					pos = (left, top),
-					size = (width, self.eventBorderWidth),
-					png = self.borderTopPix,
-					flags = BT_SCALE))
-		if self.borderBottomPix is not None and self.graphic:
-			res.append(MultiContentEntryPixmapAlphaTest(
-					pos = (r1.left(), r1.height()-self.serviceBorderWidth),
-					size = (r1.width(), self.serviceBorderWidth),
-					png = self.borderBottomPix,
-					flags = BT_SCALE))
-			res.append(MultiContentEntryPixmapAlphaTest(
-					pos = (left, height-self.eventBorderWidth),
-					size = (width, self.eventBorderWidth),
-					png = self.borderBottomPix,
-					flags = BT_SCALE))
-		if self.borderLeftPix is not None and self.graphic:
-			res.append(MultiContentEntryPixmapAlphaTest(
-					pos = (r1.left(), r1.top()),
-					size = (self.serviceBorderWidth, r1.height()),
-					png = self.borderLeftPix,
-					flags = BT_SCALE))
-			res.append(MultiContentEntryPixmapAlphaTest(
-					pos = (left, top),
-					size = (self.eventBorderWidth, height),
-					png = self.borderLeftPix,
-					flags = BT_SCALE))
-		if self.borderRightPix is not None and self.graphic:
-			res.append(MultiContentEntryPixmapAlphaTest(
-					pos = (r1.width()-self.serviceBorderWidth, r1.left()),
-					size = (self.serviceBorderWidth, r1.height()),
-					png = self.borderRightPix,
-					flags = BT_SCALE))
-			res.append(MultiContentEntryPixmapAlphaTest(
-					pos = (left + width-self.eventBorderWidth, top),
-					size = (self.eventBorderWidth, height),
-					png = self.borderRightPix,
-					flags = BT_SCALE))
-
 		if self.graphic:
+			# Service Borders
+			if self.borderTopPix is not None:
+				res.append(MultiContentEntryPixmapAlphaTest(
+						pos = (r1.left(), r1.top()),
+						size = (r1.width(), self.serviceBorderWidth),
+						png = self.borderTopPix,
+						flags = BT_SCALE))
+				res.append(MultiContentEntryPixmapAlphaTest(
+						pos = (left, top),
+						size = (width, self.eventBorderWidth),
+						png = self.borderTopPix,
+						flags = BT_SCALE))
+			if self.borderBottomPix is not None:
+				res.append(MultiContentEntryPixmapAlphaTest(
+						pos = (r1.left(), r1.height()-self.serviceBorderWidth),
+						size = (r1.width(), self.serviceBorderWidth),
+						png = self.borderBottomPix,
+						flags = BT_SCALE))
+				res.append(MultiContentEntryPixmapAlphaTest(
+						pos = (left, height-self.eventBorderWidth),
+						size = (width, self.eventBorderWidth),
+						png = self.borderBottomPix,
+						flags = BT_SCALE))
+			if self.borderLeftPix is not None:
+				res.append(MultiContentEntryPixmapAlphaTest(
+						pos = (r1.left(), r1.top()),
+						size = (self.serviceBorderWidth, r1.height()),
+						png = self.borderLeftPix,
+						flags = BT_SCALE))
+				res.append(MultiContentEntryPixmapAlphaTest(
+						pos = (left, top),
+						size = (self.eventBorderWidth, height),
+						png = self.borderLeftPix,
+						flags = BT_SCALE))
+			if self.borderRightPix is not None:
+				res.append(MultiContentEntryPixmapAlphaTest(
+						pos = (r1.width()-self.serviceBorderWidth, r1.left()),
+						size = (self.serviceBorderWidth, r1.height()),
+						png = self.borderRightPix,
+						flags = BT_SCALE))
+				res.append(MultiContentEntryPixmapAlphaTest(
+						pos = (left + width-self.eventBorderWidth, top),
+						size = (self.eventBorderWidth, height),
+						png = self.borderRightPix,
+						flags = BT_SCALE))
+
 			# only draw the selected graphic if there are no events to fill
 			# the prevents issues with lingering selection highlights
 			png = (selected and events is None and self.selEvPix) or self.othEvPix
@@ -628,30 +628,31 @@ class EPGListGraph(EPGListBase):
 						backcolor = backColor, backcolor_sel = backColorSel))
 
 				# event box borders
-				if borderTopPix is not None and self.graphic:
-					res.append(MultiContentEntryPixmapAlphaTest(
-							pos = (left + xpos, top),
-							size = (ewidth, self.eventBorderWidth),
-							png = borderTopPix,
-							flags = BT_SCALE))
-				if borderBottomPix is not None and self.graphic:
-					res.append(MultiContentEntryPixmapAlphaTest(
-							pos = (left + xpos, height-self.eventBorderWidth),
-							size = (ewidth, self.eventBorderWidth),
-							png = borderBottomPix,
-							flags = BT_SCALE))
-				if borderLeftPix is not None and self.graphic:
-					res.append(MultiContentEntryPixmapAlphaTest(
-							pos = (left + xpos, top),
-							size = (self.eventBorderWidth, height),
-							png = borderLeftPix,
-							flags = BT_SCALE))
-				if borderRightPix is not None and self.graphic:
-					res.append(MultiContentEntryPixmapAlphaTest(
-							pos = (left + xpos + ewidth-self.eventBorderWidth, top),
-							size = (self.eventBorderWidth, height),
-							png = borderRightPix,
-							flags = BT_SCALE))
+				if self.graphic:
+					if borderTopPix is not None:
+						res.append(MultiContentEntryPixmapAlphaTest(
+								pos = (left + xpos, top),
+								size = (ewidth, self.eventBorderWidth),
+								png = borderTopPix,
+								flags = BT_SCALE))
+					if borderBottomPix is not None:
+						res.append(MultiContentEntryPixmapAlphaTest(
+								pos = (left + xpos, height-self.eventBorderWidth),
+								size = (ewidth, self.eventBorderWidth),
+								png = borderBottomPix,
+								flags = BT_SCALE))
+					if borderLeftPix is not None:
+						res.append(MultiContentEntryPixmapAlphaTest(
+								pos = (left + xpos, top),
+								size = (self.eventBorderWidth, height),
+								png = borderLeftPix,
+								flags = BT_SCALE))
+					if borderRightPix is not None:
+						res.append(MultiContentEntryPixmapAlphaTest(
+								pos = (left + xpos + ewidth-self.eventBorderWidth, top),
+								size = (self.eventBorderWidth, height),
+								png = borderRightPix,
+								flags = BT_SCALE))
 
 				# recording icons
 				if clock_types is not None and ewidth > 23:

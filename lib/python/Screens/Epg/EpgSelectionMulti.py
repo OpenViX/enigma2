@@ -21,7 +21,7 @@ class EPGSelectionMulti(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 		EPGBouquetSelection.__init__(self, False)
 		EPGServiceZap.__init__(self, config.epgselection.multi_preview_mode, config.epgselection.multi_ok, config.epgselection.multi_oklong)
 
-		self.skinName = 'EPGSelectionMulti'
+		self.skinName = ['MultiEPG', 'EPGSelectionMulti']
 		self.ask_time = -1
 
 		self['now_button'] = Pixmap()

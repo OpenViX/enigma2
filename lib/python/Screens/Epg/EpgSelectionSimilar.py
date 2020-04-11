@@ -9,7 +9,7 @@ class EPGSelectionSimilar(EPGSelectionBase):
 		print "[EPGSelectionSimilar] ------- NEW VERSION -------"
 		EPGSelectionBase.__init__(self, EPG_TYPE_SIMILAR, session)
 
-		self.skinName = 'EPGSelection'
+		self.skinName = ['SingleEPG', 'EPGSelection']
 		self.currentService = service
 		self.eventid = eventid
 

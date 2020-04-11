@@ -25,12 +25,12 @@ from Screens.ChannelSelection import ChannelSelection, PiPZapSelection, BouquetS
 from Screens.ChoiceBox import ChoiceBox
 from Screens.Dish import Dish
 from Screens.EventView import EventViewEPGSelect, EventViewSimple
-from Screens.Epg.EpgSelectionGraph import EPGSelectionGraph
-from Screens.Epg.EpgSelectionEnhanced import EPGSelectionEnhanced
+from Screens.Epg.EpgSelectionGrid import EPGSelectionGrid
 from Screens.Epg.EpgSelectionSingle import EPGSelectionSingle
+from Screens.Epg.EpgSelectionChannel import EPGSelectionChannel
 from Screens.Epg.EpgSelectionSimilar import EPGSelectionSimilar
 from Screens.Epg.EpgSelectionMulti import EPGSelectionMulti
-from Screens.Epg.EpgSelectionInfobar import EPGSelectionInfobar
+from Screens.Epg.EpgSelectionInfobarSingle import EPGSelectionInfobarSingle
 from Screens.InputBox import InputBox
 from Screens.MessageBox import MessageBox
 from Screens.MinuteInput import MinuteInput
@@ -1672,7 +1672,7 @@ class InfoBarEPG:
 			return
 		startBouquet = self.servicelist.getRoot()
 		startRef = self.lastservice if isMoviePlayerInfoBar(self) else self.session.nav.getCurrentlyPlayingServiceOrGroup()
-		self.multiServiceEPG(EPGSelectionGraph, config.epgselection.graph_showbouquet.value, startBouquet, startRef)
+		self.multiServiceEPG(EPGSelectionGrid, config.epgselection.graph_showbouquet.value, startBouquet, startRef)
 
 	def openSingleServiceEPG(self, reopen=False):
 		if self.servicelist is None:
@@ -1683,7 +1683,7 @@ class InfoBarEPG:
 			bouquets = self.servicelist.getEPGBouquetList()
 			services = self.getBouquetServices(startBouquet)
 			self.serviceSel = SimpleServicelist(services)
-			self.session.openWithCallback(self.SingleServiceEPGClosed, EPGSelectionEnhanced, self.servicelist, self.zapToService,
+			self.session.openWithCallback(self.SingleServiceEPGClosed, EPGSelectionSingle, self.servicelist, self.zapToService,
 				startBouquet, startRef, bouquets)
 
 	def openInfoBarEPG(self, reopen=False):
@@ -1692,10 +1692,10 @@ class InfoBarEPG:
 		startBouquet = self.servicelist.getRoot()
 		startRef = self.session.nav.getCurrentlyPlayingServiceOrGroup()
 		if config.epgselection.infobar_type_mode.value == 'single':
-			self.session.openWithCallback(self.SingleServiceEPGClosed, EPGSelectionInfobar, self.servicelist, self.zapToService)
+			self.session.openWithCallback(self.SingleServiceEPGClosed, EPGSelectionInfobarSingle, self.servicelist, self.zapToService)
 		else:
 			bouquets = self.servicelist.getEPGBouquetList()
-			self.dlg_stack.append(self.session.openWithCallback(self.closed, EPGSelectionGraph, EPGtype='infobargraph', 
+			self.dlg_stack.append(self.session.openWithCallback(self.closed, EPGSelectionGrid, EPGtype='infobargraph', 
 				zapFunc=self.zapToService, startBouquet=startBouquet, startRef=startRef, bouquets=bouquets))
 
 	def changeServiceCB(self, direction, epg):

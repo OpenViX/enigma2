@@ -167,10 +167,10 @@ class EPGSelectionBase(Screen, HelpableScreen):
 		self.session.openWithCallback(self.onDateTimeInputClosed, TimeDateInput, EPGSelectionBase.lastEnteredTime, EPGSelectionBase.lastEnteredDate)
 
 	def openSingleEPG(self):
-		from Screens.Epg.EpgSelectionSingle import EPGSelectionSingle
+		from Screens.Epg.EpgSelectionChannel import EPGSelectionChannel
 		event, service = self['list'].getCurrent()[:2]
 		if service is not None and service.ref is not None:
-			self.session.open(EPGSelectionSingle, service.ref, time() if event is None else event.getBeginTime())
+			self.session.open(EPGSelectionChannel, service.ref, time() if event is None else event.getBeginTime())
 
 	def openIMDb(self):
 		self.closeEventViewDialog()

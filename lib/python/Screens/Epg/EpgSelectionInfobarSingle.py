@@ -9,13 +9,13 @@ from Components.Sources.Event import Event
 from Screens.Setup import Setup
 from ServiceReference import ServiceReference
 
-class EPGSelectionInfobar(EPGSelectionBase, EPGServiceZap):
+class EPGSelectionInfobarSingle(EPGSelectionBase, EPGServiceZap):
 	def __init__(self, session, servicelist, zapFunc):
-		print "[EPGSelectionInfobar] ------- NEW VERSION -------"
+		print "[EPGSelectionInfobarSingle] ------- NEW VERSION -------"
 		EPGSelectionBase.__init__(self, EPG_TYPE_INFOBAR, session, zapFunc)
 		EPGServiceZap.__init__(self, config.epgselection.infobar_preview_mode, config.epgselection.infobar_ok, config.epgselection.infobar_oklong)
 
-		self.skinName = 'QuickEPG'
+		self.skinName = ['InfobarSingleEPG', 'QuickEPG']
 		self['epgactions'] = HelpableActionMap(self, 'EPGSelectActions',
 			{
 				'nextBouquet': (self.nextBouquet, _('Go to next bouquet')),

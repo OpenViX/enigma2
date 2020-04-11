@@ -4,7 +4,7 @@ from enigma import eTimer
 
 from Components.ActionMap import HelpableActionMap
 from Components.config import config, configfile
-from Components.Epg.EpgListGraph import EPGListGraph, TimelineText, EPG_TYPE_INFOBARGRAPH, EPG_TYPE_GRAPH, MAX_TIMELINES
+from Components.Epg.EpgListGrid import EPGListGrid, TimelineText, EPG_TYPE_INFOBARGRAPH, EPG_TYPE_GRAPH, MAX_TIMELINES
 from EpgSelectionBase import EPGSelectionBase, EPGBouquetSelection, EPGServiceZap
 from Components.Label import Label
 from Components.Pixmap import Pixmap
@@ -16,13 +16,13 @@ from Screens.Setup import Setup
 # Use this to remind us what is going on...
 SECS_IN_MIN = 60
 
-class EPGSelectionGraph(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
+class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 	# InfobarGraph and Graph EPGs are use separately named but otherwise identical configuration
 	def __config(self, name):
 		return config.epgselection.dict()[('graph' if self.type == EPG_TYPE_GRAPH else 'infobar') + '_' + name]
 
 	def __init__(self, session, EPGtype = 'graph', zapFunc = None, bouquetChangeCB = None, serviceChangeCB = None, startBouquet = None, startRef = None, bouquets = None):
-		print "[EPGSelectionGraph] ------- NEW VERSION -------"
+		print "[EPGSelectionGrid] ------- NEW VERSION -------"
 
 		type = EPG_TYPE_GRAPH if EPGtype == 'graph' else EPG_TYPE_INFOBARGRAPH
 		EPGSelectionBase.__init__(self, type, session, zapFunc, bouquetChangeCB, serviceChangeCB, startBouquet, startRef, bouquets)
@@ -31,11 +31,11 @@ class EPGSelectionGraph(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 		graphic = self.__config('type_mode').value == "graphics"
 		if self.type == EPG_TYPE_GRAPH:
 			if not config.epgselection.graph_pig.value:
-				self.skinName = 'GraphicalEPG'
+				self.skinName = ['GridEPG', 'GraphicalEPG']
 			else:
-				self.skinName = 'GraphicalEPGPIG'
+				self.skinName = ['GridEPGPIG', 'GraphicalEPGPIG']
 		else:
-			self.skinName = 'GraphicalInfoBarEPG'
+			self.skinName = ['InfoBarGridEPG', 'GraphicalInfoBarEPG']
 		self.closeRecursive = False
 		EPGBouquetSelection.__init__(self, graphic)
 
@@ -93,7 +93,7 @@ class EPGSelectionGraph(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 				'0': (self.goToCurrentTimeAndTop, _('Move to home of list'))
 			}, -1)
 
-		self['list'] = EPGListGraph(type=self.type, session=self.session, selChangedCB=self.onSelectionChanged, timer=session.nav.RecordTimer, graphic=graphic)
+		self['list'] = EPGListGrid(type=self.type, session=self.session, selChangedCB=self.onSelectionChanged, timer=session.nav.RecordTimer, graphic=graphic)
 		self['list'].setTimeFocus(time())
 
 	def createSetup(self):

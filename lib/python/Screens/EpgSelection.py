@@ -1,14 +1,14 @@
 from Components.ActionMap import HelpableActionMap
 from Components.EpgList import EPG_TYPE_SINGLE
-from Screens.Epg.EpgSelectionSingle import EPGSelectionSingle
+from Screens.Epg.EpgSelectionChannel import EPGSelectionChannel
 
 # We're going to assume that EPGSelection is only used in the SingleEPG sense
-class EPGSelection(EPGSelectionSingle):
+class EPGSelection(EPGSelectionChannel):
 	def __init__(self, session, service = None, zapFunc = None, eventid = None, bouquetChangeCB = None, serviceChangeCB = None, EPGtype = 'similar', StartBouquet = None, StartRef = None, bouquets = None):
 		if EPGtype not in ('similar', 'single'):
 			print "[EPGSelection] Warning: EPGSelection does not support type", EPGtype
 			print "               Attempting to continue in single EPG mode"
-		EPGSelectionSingle.__init__(self, session, service)
+		EPGSelectionChannel.__init__(self, session, service)
 
 		# rewrite the EPG actions to invoke the compatibility functions
 		self['epgactions'] = HelpableActionMap(self, 'EPGSelectActions',
@@ -85,4 +85,4 @@ class EPGSelection(EPGSelectionSingle):
 			# allow plugins to override using the old all lowercase method name
 			self.refreshlist()
 		except AttributeError:
-			EPGSelectionSingle.refreshList(self)
+			EPGSelectionChannel.refreshList(self)
