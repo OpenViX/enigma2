@@ -12,14 +12,11 @@ from Components.Sources.Event import Event
 from Screens.EventView import EventViewSimple
 from Screens.Setup import Setup
 
-# Various value are in minutes, while others are in seconds.
-# Use this to remind us what is going on...
-SECS_IN_MIN = 60
-
 class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
-	def __init__(self, session, epgConfig = None, isInfobar = False, zapFunc = None, startBouquet = None, startRef = None, bouquets = None):
+	def __init__(self, session, epgConfig = None, isInfobar = False, zapFunc = None, startBouquet = None, startRef = None, bouquets = None, timeFocus = None):
 		self.isInfobar = isInfobar
 		self.epgConfig = epgConfig or config.epgselection.grid
+		self.bouquetRoot = False
 		EPGSelectionBase.__init__(self, session, startBouquet, startRef, bouquets)
 		EPGServiceZap.__init__(self, self.epgConfig, zapFunc)
 
@@ -68,6 +65,8 @@ class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 				'infolong': (self.infoLongPressed, _('Show single epg for current channel')),
 				'tv': (self.bouquetList, _('Toggle between bouquet/epg lists')),
 				'tvlong': (self.togglePIG, _('Toggle picture In graphics')),
+				'timer': (self.openTimerList, _('Show timer list')),
+				'timerlong': (self.openAutoTimerList, _('Show autotimer list')),
 				'menu': (self.createSetup, _('Setup menu'))
 			}, -1)
 
@@ -86,7 +85,7 @@ class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 			}, -1)
 
 		self['list'] = EPGListGrid(isInfobar=self.isInfobar, session=self.session, selChangedCB=self.onSelectionChanged, timer=session.nav.RecordTimer, graphic=graphic)
-		self['list'].setTimeFocus(time())
+		self['list'].setTimeFocus(timeFocus or time())
 
 	def createSetup(self):
 		def onSetupClose(test = None):
@@ -117,6 +116,9 @@ class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 		self.refreshTimer.stop()
 		self['list'].fillEPG()
 		self.moveTimeLines()
+
+	def getCurrentBouquet(self):
+		return self.startBouquet if self.bouquetRoot else EPGBouquetSelection.getCurrentBouquet(self)
 
 	def togglePIG(self):
 		if not config.epgselection.grid.pig.value:
@@ -231,7 +233,7 @@ class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 
 	def goToPrimeTime(self):
 		basetime = localtime(self['list'].getTimeBase())
-		basetime = (basetime[0], basetime[1], basetime[2], int(self.epgConfig.primetimehour.value), int(self.epgConfig.primetimemins.value), 0, basetime[6], basetime[7], basetime[8])
+		basetime = (basetime[0], basetime[1], basetime[2], self.epgConfig.primetime.value[0], self.epgConfig.primetime.value[1], 0, basetime[6], basetime[7], basetime[8])
 		primetime = mktime(basetime)
 		if primetime + 3600 < time():
 			primetime += 86400

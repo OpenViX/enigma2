@@ -23,6 +23,8 @@ class EPGSelectionInfobarSingle(EPGSelectionBase, EPGServiceZap):
 				'epg': (self.openSingleEPG, _('Show single epg for current channel')),
 				'info': (self.openEventView, _('Show detailed event info')),
 				'infolong': (self.openSingleEPG, _('Show single epg for current channel')),
+				'timer': (self.openTimerList, _('Show timer list')),
+				'timerlong': (self.openAutoTimerList, _('Show autotimer list')),
 				'menu': (self.createSetup, _('Setup menu'))
 			}, -1)
 		self['epgcursoractions'] = HelpableActionMap(self, 'DirectionActions',
@@ -67,9 +69,10 @@ class EPGSelectionInfobarSingle(EPGSelectionBase, EPGServiceZap):
 		self['list'].sortEPG(int(config.epgselection.sort.value))
 		self['list'].setCurrentIndex(index)
 
+	def getCurrentBouquet(self):
+		return self.servicelist.getRoot()
+
 	def bouquetChanged(self):
-		self.bouquetRoot = False
-		now = time() - int(config.epg.histminutes.value) * SECS_IN_MIN
 		self.services = self.getBouquetServices(self.getCurrentBouquet())
 		self['list'].instance.moveSelectionTo(0)
 		self.setTitle(self['bouquetlist'].getCurrentBouquet())

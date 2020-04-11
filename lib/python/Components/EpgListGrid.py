@@ -18,7 +18,6 @@ MAX_TIMELINES = 6
 
 # Various value are in minutes, while others are in seconds.
 # Use this to remind us what is going on...
-#
 SECS_IN_MIN = 60
 
 class EPGListGrid(EPGListBase):
@@ -35,7 +34,7 @@ class EPGListGrid(EPGListBase):
 		self.eventRect = None
 		self.serviceRect = None
 		self.showPicon = False
-		self.showServiceTitle = True
+		self.showServiceName = True
 		self.showServiceNumber = False
 		self.graphic = graphic
 
@@ -105,6 +104,7 @@ class EPGListGrid(EPGListBase):
 			self.eventFontSize = 20
 
 		self.l.setBuildFunc(self.buildEntry)
+		self.epgHistorySecs = int(config.epg.histminutes.value) * SECS_IN_MIN
 		self.roundBySecs = int(self.epgConfig.roundto.value) * SECS_IN_MIN
 		self.timeEpoch = int(self.epgConfig.prevtimeperiod.value)
 		self.timeEpochSecs = self.timeEpoch * SECS_IN_MIN
@@ -199,10 +199,16 @@ class EPGListGrid(EPGListBase):
 
 	def __setTimeBase(self, timeCenter):
 		# prefer time being aligned in the middle of the EPG, but clip to the maximum EPG data history
-		self.timeBase = int(max(timeCenter - self.timeEpochSecs // 2, 
-			time() - (int(config.epg.histminutes.value) + self.timeEpochSecs // 4) * SECS_IN_MIN))
-		# round up so that we favour a bit more info to the right of the timeline
-		self.timeBase += -self.timeBase % self.roundBySecs
+		self.timeBase = int(timeCenter) - self.timeEpochSecs // 2
+		abs0 = int(time()) - self.epgHistorySecs
+		if self.timeBase < abs0:
+			# we're viewing close to the start of EPG data
+			# round down so that the if the timeline is being shown, it's not right next to the left hand edge of the grid
+			self.timeBase = abs0 - abs0 % self.roundBySecs
+		else:
+			# otherwise we're trying to place the desired time in the centre of the EPG
+			# round up, so that slightly more of the future things are shown
+			self.timeBase += -self.timeBase % self.roundBySecs
 
 	def setTimeFocus(self, timeFocus):
 		self.__setTimeBase(timeFocus)
@@ -436,35 +442,36 @@ class EPGListGrid(EPGListBase):
 						backcolor = serviceBackColor, backcolor_sel = serviceBackColor))
 				colX += piconWidth
 
-		if self.showServiceNumber:
-			if not isinstance(channel, int):
-				channel = self.getChannelNumber(channel)
-
-			if channel:
+			if titleItem == 'servicenumber':
+				if not isinstance(channel, int):
+					channel = self.getChannelNumber(channel)
 				namefont = 0
 				namefontflag = int(config.epgselection.grid.servicenumber_alignment.value)
 				font = gFont(self.serviceFontName, self.serviceFontSize + self.epgConfig.servfs.value)
-				channelWidth = getTextBoundarySize(self.instance, font, self.instance.size(), (channel < 10000) and "0000" or str(channel)).width()
+				channelWidth = getTextBoundarySize(self.instance, font, self.instance.size(), 
+					"0000" if channel < 10000 else str(channel)).width()
+				if channel:
+					res.append(MultiContentEntryText(
+						pos = (colX + self.serviceNumberPadding, r1.top() + self.serviceBorderWidth),
+						size = (channelWidth, r1.height() - 2 * self.serviceBorderWidth),
+						font = namefont, flags = namefontflag,
+						text = str(channel),
+						color = serviceForeColor, color_sel = serviceForeColor,
+						backcolor = serviceBackColor, backcolor_sel = serviceBackColor))
+				colX += channelWidth + 2 * self.serviceNumberPadding
+
+			if titleItem == 'servicename':
+				namefont = 0
+				namefontflag = int(config.epgselection.grid.servicename_alignment.value)
+				namewidth = r1.width() - colX - 2 * self.serviceNamePadding - self.serviceBorderWidth
 				res.append(MultiContentEntryText(
-					pos = (colX + self.serviceNumberPadding, r1.top() + self.serviceBorderWidth),
-					size = (channelWidth, r1.height() - 2 * self.serviceBorderWidth),
+					pos = (colX + self.serviceNamePadding, r1.top() + self.serviceBorderWidth),
+					size = (namewidth, r1.height() - 2 * self.serviceBorderWidth),
 					font = namefont, flags = namefontflag,
 					text = serviceName,
 					color = serviceForeColor, color_sel = serviceForeColor,
 					backcolor = serviceBackColor, backcolor_sel = serviceBackColor))
-				colX += channelWidth + 2 * self.serviceNumberPadding
-
-		if self.showServiceTitle: # we have more space so reset parms
-			namefont = 0
-			namefontflag = int(config.epgselection.grid.servicename_alignment.value)
-			namewidth = r1.width() - colX - 2 * self.serviceNamePadding - self.serviceBorderWidth
-			res.append(MultiContentEntryText(
-				pos = (colX + self.serviceNamePadding, r1.top() + self.serviceBorderWidth),
-				size = (namewidth, r1.height() - 2 * self.serviceBorderWidth),
-				font = namefont, flags = namefontflag,
-				text = service_name,
-				color = serviceForeColor, color_sel = serviceForeColor,
-				backcolor = serviceBackColor, backcolor_sel = serviceBackColor))
+				colX += namewidth + 2 * self.serviceNamePadding
 
 		if self.graphic:
 			# Service Borders
@@ -614,7 +621,7 @@ class EPGListGrid(EPGListBase):
 				evW = ewidth - 2 * (self.eventBorderWidth + self.eventNamePadding)
 				evH = height - 2 * self.eventBorderWidth
 				infowidth = self.epgConfig.infowidth.value
-				if evW < infowidth and infoPix is not None:
+				if infowidth > 0 and evW < infowidth and infoPix is not None:
 					res.append(MultiContentEntryPixmapAlphaBlend(
 						pos = (left + xpos + self.eventBorderWidth, evY), size = (ewidth - 2 * self.eventBorderWidth, evH),
 						png = infoPix, flags = BT_ALIGN_CENTER))
@@ -736,21 +743,20 @@ class EPGListGrid(EPGListBase):
 			timeBase -= self.timeEpochSecs
 			timeFocus -= self.timeEpochSecs
 		elif dir == -24: # Prevous day
-			# keep the time base within the bounds of EPG data, rounded to a whole page
-			abs0 = int(time() - (int(config.epg.histminutes.value) + self.timeEpochSecs // 4) * SECS_IN_MIN)
-			abs0 += -abs0 % self.roundBySecs
-			timeBase = max(abs0, timeBase - 86400)
-			timeFocus = max(abs0, timeFocus - 86400)
+			timeBase -= 86400
+			timeFocus -= 86400
 
 		if timeBase < self.timeBase:
-			# Prevent scrolling if it'll go past the EPG history limit
-			# Work out the earliest we can go back to
-			abs0 = int(time() - int(config.epg.histminutes.value) * SECS_IN_MIN)
-			if timeBase < abs0 - 3 * self.timeEpochSecs // 4:
-				return False
+			# keep the time base within the bounds of EPG data, rounded to a whole page
+			abs0 = int(time()) - self.epgHistorySecs
+			abs0 -= abs0 % self.roundBySecs
+			timeBase = max(abs0, timeBase)
+			timeFocus = max(abs0, timeFocus)
 
-		# If we are still here and moving - do the move now and return True to
-		# indicate we've changed pages
+		if self.timeBase == timeBase:
+			return False
+
+		# If we are still here and moving - do the move now and return True to indicate we've changed pages
 		self.timeBase = timeBase
 		self.timeFocus = timeFocus
 		self.fillEPGNoRefresh()
