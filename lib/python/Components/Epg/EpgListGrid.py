@@ -18,7 +18,6 @@ MAX_TIMELINES = 6
 
 # Various value are in minutes, while others are in seconds.
 # Use this to remind us what is going on...
-#
 SECS_IN_MIN = 60
 
 class EPGListGrid(EPGListBase):
@@ -422,12 +421,10 @@ class EPGListGrid(EPGListBase):
 						size = (piconWidth, piconHeight),
 						png = displayPicon,
 						backcolor = None, backcolor_sel = None, flags = BT_SCALE | BT_KEEP_ASPECT_RATIO | BT_ALIGN_CENTER))
-					colX += piconWidth
 				elif not self.showServiceName:
 					# no picon so show servicename anyway in picon space
 					namefont = 1
 					namefontflag = int(config.epgselection.grid.servicename_alignment.value)
-					namewidth = piconWidth
 					res.append(MultiContentEntryText(
 						pos = (colX, r1.top() + self.serviceBorderWidth),
 						size = (piconWidth, r1.height() - 2 * self.serviceBorderWidth),
@@ -435,17 +432,17 @@ class EPGListGrid(EPGListBase):
 						text = service_name,
 						color = serviceForeColor, color_sel = serviceForeColor,
 						backcolor = serviceBackColor, backcolor_sel = serviceBackColor))
-					colX += piconWidth
+				colX += piconWidth
 
 			if titleItem == 'servicenumber':
 				if not isinstance(channel, int):
 					channel = self.getChannelNumber(channel)
-
+				namefont = 0
+				namefontflag = int(config.epgselection.grid.servicenumber_alignment.value)
+				font = gFont(self.serviceFontName, self.serviceFontSize + self.epgConfig.servfs.value)
+				channelWidth = getTextBoundarySize(self.instance, font, self.instance.size(), 
+					"0000" if channel < 10000 else str(channel)).width()
 				if channel:
-					namefont = 0
-					namefontflag = int(config.epgselection.grid.servicenumber_alignment.value)
-					font = gFont(self.serviceFontName, self.serviceFontSize + self.epgConfig.servfs.value)
-					channelWidth = getTextBoundarySize(self.instance, font, self.instance.size(), (channel < 10000) and "0000" or str(channel)).width()
 					res.append(MultiContentEntryText(
 						pos = (colX + self.serviceNumberPadding, r1.top() + self.serviceBorderWidth),
 						size = (channelWidth, r1.height() - 2 * self.serviceBorderWidth),
@@ -453,7 +450,7 @@ class EPGListGrid(EPGListBase):
 						text = str(channel),
 						color = serviceForeColor, color_sel = serviceForeColor,
 						backcolor = serviceBackColor, backcolor_sel = serviceBackColor))
-					colX += channelWidth + 2 * self.serviceNumberPadding
+				colX += channelWidth + 2 * self.serviceNumberPadding
 
 			if titleItem == 'servicename':
 				namefont = 0
@@ -466,6 +463,7 @@ class EPGListGrid(EPGListBase):
 					text = service_name,
 					color = serviceForeColor, color_sel = serviceForeColor,
 					backcolor = serviceBackColor, backcolor_sel = serviceBackColor))
+				colX += namewidth + 2 * self.serviceNamePadding
 
 		if self.graphic:
 			# Service Borders
