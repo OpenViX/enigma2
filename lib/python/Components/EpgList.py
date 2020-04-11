@@ -2,7 +2,7 @@ from config import config
 from enigma import eRect
 from Epg.EpgListSingle import EPGListSingle
 
-# keep const value for backward compatibility
+# keep const values for backward compatibility with plugins
 EPG_TYPE_SINGLE = 0
 EPG_TYPE_MULTI = 1
 EPG_TYPE_SIMILAR = 2
@@ -34,9 +34,9 @@ class Rect:
 class EPGList(EPGListSingle):
 	def __init__(self, type = EPG_TYPE_SINGLE, selChangedCB = None, timer = None, time_epoch = 120, overjump_empty = False, graphic = False):
 		if type != EPG_TYPE_SINGLE:
-			print "[EPGList] Warning: EPGList does not support", {'infobar':'EPG_TYPE_INFOBAR','enhanced':'EPG_TYPE_ENHANCED','graph':'EPG_TYPE_GRAPH','infobargraph':'EPG_TYPE_INFOBARGRAPH','multi':'EPG_TYPE_MULTI', None: 'EPGtype == None'}.get(type, type)
+			print "[EPGList] Warning: EPGList no longer supports", {'infobar':'EPG_TYPE_INFOBAR','enhanced':'EPG_TYPE_ENHANCED','graph':'EPG_TYPE_GRAPH','infobargraph':'EPG_TYPE_INFOBARGRAPH','multi':'EPG_TYPE_MULTI', None: 'EPGtype == None'}.get(type, type)
 			print "          attempting to continue in single EPG mode"
-		EPGListSingle.__init__(self, config.epgselection.enhanced_itemsperpage, config.epgselection.enhanced_eventfs, selChangedCB, timer)
+		EPGListSingle.__init__(self, config.epgselection.single, selChangedCB, timer)
 
 		# attributes for backwards compatibility
 		self.eventFontSizeSingle = self.eventFontSize
@@ -56,7 +56,7 @@ class EPGList(EPGListSingle):
 
 	@weekday_rect.setter
 	def weekday_rect(self, r):
-		_weekday_rect = eRect(r.x, r.y, r.w, r.h)
+		self._weekday_rect = eRect(r.x, r.y, r.w, r.h)
 
 	@property
 	def descr_rect(self):
@@ -65,7 +65,7 @@ class EPGList(EPGListSingle):
 
 	@descr_rect.setter
 	def descr_rect(self, r):
-		_descr_rect = eRect(r.x, r.y, r.w, r.h)
+		self._descr_rect = eRect(r.x, r.y, r.w, r.h)
 
 	@property
 	def datetime_rect(self):
@@ -74,4 +74,4 @@ class EPGList(EPGListSingle):
 
 	@datetime_rect.setter
 	def datetime_rect(self, r):
-		_datetime_rect = eRect(r.x, r.y, r.w, r.h)
+		self._datetime_rect = eRect(r.x, r.y, r.w, r.h)
