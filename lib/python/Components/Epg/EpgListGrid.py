@@ -35,7 +35,7 @@ class EPGListGrid(EPGListBase):
 		self.event_rect = None
 		self.service_rect = None
 		self.showPicon = False
-		self.showServiceTitle = True
+		self.showServiceName = True
 		self.showServiceNumber = False
 		self.graphic = graphic
 
@@ -108,10 +108,10 @@ class EPGListGrid(EPGListBase):
 		self.round_by_secs = int(self.epgConfig.roundto.value) * SECS_IN_MIN
 		self.time_epoch = int(self.epgConfig.prevtimeperiod.value)
 		self.time_epoch_secs = self.time_epoch * SECS_IN_MIN
-		serviceTitleMode = self.epgConfig.servicetitle_mode.value
-		self.showServiceNumber = "servicenumber" in serviceTitleMode
-		self.showServiceTitle = "servicename" in serviceTitleMode
-		self.showPicon = "picon" in serviceTitleMode
+		self.serviceTitleMode = self.epgConfig.servicetitle_mode.value.split("+")
+		self.showServiceNumber = "servicenumber" in self.serviceTitleMode
+		self.showServiceName = "servicename" in self.serviceTitleMode
+		self.showPicon = "picon" in self.serviceTitleMode
 
 	def applySkin(self, desktop, screen):
 		if self.skinAttributes is not None:
@@ -337,17 +337,20 @@ class EPGListGrid(EPGListBase):
 		width = esize.width()
 		height = esize.height()
 
-		servicew = self.epgConfig.servicewidth.value + 2*self.serviceNamePadding if self.showServiceTitle else 0
-		piconw = self.epgConfig.piconwidth.value if self.showPicon else 0
-		channelw = self.serviceNumberWidth + 2*self.serviceNumberPadding if self.showServiceNumber else 0
-		w = (channelw + piconw + servicew)
+		w = 0
+		if self.showServiceName:
+			w += self.epgConfig.servicewidth.value + 2*self.serviceNamePadding
+		if self.showServiceNumber:
+			w += self.serviceNumberWidth + 2*self.serviceNumberPadding 
+		if self.showPicon:
+			piconWidth = self.epgConfig.piconwidth.value
+			w += piconWidth
+			if piconWidth > w - 2 * self.serviceBorderWidth:
+				piconWidth = w - 2 * self.serviceBorderWidth
+			piconHeight = height - 2 * self.serviceBorderWidth
+			self.picon_size = eSize(piconWidth, piconHeight)
 		self.service_rect = eRect(0, 0, w, height)
 		self.event_rect = eRect(w, 0, width - w, height)
-		piconHeight = height - 2 * self.serviceBorderWidth
-		piconWidth = piconw
-		if piconWidth > w - 2 * self.serviceBorderWidth:
-			piconWidth = w - 2 * self.serviceBorderWidth
-		self.picon_size = eSize(piconWidth, piconHeight)
 
 	def calcEventPosAndWidthHelper(self, stime, duration, start, end, width):
 		xpos = (stime - start) * width / (end - start)
@@ -402,66 +405,67 @@ class EPGListGrid(EPGListBase):
 					border_width = self.serviceBorderWidth, border_color = self.borderColorService))
 
 		colX = r1.left() + self.serviceBorderWidth
-		if self.showPicon:
-			if picon is None: # go find picon and cache its location
-				picon = getPiconName(service)
-				curIdx = self.l.getCurrentSelectionIndex()
-				self.list[curIdx] = (service, service_name, events, picon, channel)
-			piconWidth = self.picon_size.width()
-			piconHeight = self.picon_size.height()
-			displayPicon = None
-			if picon != "":
-				displayPicon = loadPNG(picon)
-			if displayPicon is not None:
-				res.append(MultiContentEntryPixmapAlphaBlend(
-					pos = (colX, r1.top() + self.serviceBorderWidth),
-					size = (piconWidth, piconHeight),
-					png = displayPicon,
-					backcolor = None, backcolor_sel = None, flags = BT_SCALE | BT_KEEP_ASPECT_RATIO | BT_ALIGN_CENTER))
-				colX += piconWidth
-			elif not self.showServiceTitle:
-				# no picon so show servicename anyway in picon space
-				namefont = 1
+		for titleItem in self.serviceTitleMode:
+			if titleItem == 'picon':
+				if picon is None: # go find picon and cache its location
+					picon = getPiconName(service)
+					curIdx = self.l.getCurrentSelectionIndex()
+					self.list[curIdx] = (service, service_name, events, picon, channel)
+				piconWidth = self.picon_size.width()
+				piconHeight = self.picon_size.height()
+				displayPicon = None
+				if picon != "":
+					displayPicon = loadPNG(picon)
+				if displayPicon is not None:
+					res.append(MultiContentEntryPixmapAlphaBlend(
+						pos = (colX, r1.top() + self.serviceBorderWidth),
+						size = (piconWidth, piconHeight),
+						png = displayPicon,
+						backcolor = None, backcolor_sel = None, flags = BT_SCALE | BT_KEEP_ASPECT_RATIO | BT_ALIGN_CENTER))
+					colX += piconWidth
+				elif not self.showServiceName:
+					# no picon so show servicename anyway in picon space
+					namefont = 1
+					namefontflag = int(config.epgselection.grid.servicename_alignment.value)
+					namewidth = piconWidth
+					res.append(MultiContentEntryText(
+						pos = (colX, r1.top() + self.serviceBorderWidth),
+						size = (piconWidth, r1.height() - 2 * self.serviceBorderWidth),
+						font = namefont, flags = namefontflag,
+						text = service_name,
+						color = serviceForeColor, color_sel = serviceForeColor,
+						backcolor = serviceBackColor, backcolor_sel = serviceBackColor))
+					colX += piconWidth
+
+			if titleItem == 'servicenumber':
+				if not isinstance(channel, int):
+					channel = self.getChannelNumber(channel)
+
+				if channel:
+					namefont = 0
+					namefontflag = int(config.epgselection.grid.servicenumber_alignment.value)
+					font = gFont(self.serviceFontName, self.serviceFontSize + self.epgConfig.servfs.value)
+					channelWidth = getTextBoundarySize(self.instance, font, self.instance.size(), (channel < 10000) and "0000" or str(channel)).width()
+					res.append(MultiContentEntryText(
+						pos = (colX + self.serviceNumberPadding, r1.top() + self.serviceBorderWidth),
+						size = (channelWidth, r1.height() - 2 * self.serviceBorderWidth),
+						font = namefont, flags = namefontflag,
+						text = str(channel),
+						color = serviceForeColor, color_sel = serviceForeColor,
+						backcolor = serviceBackColor, backcolor_sel = serviceBackColor))
+					colX += channelWidth + 2 * self.serviceNumberPadding
+
+			if titleItem == 'servicename':
+				namefont = 0
 				namefontflag = int(config.epgselection.grid.servicename_alignment.value)
-				namewidth = piconWidth
+				namewidth = r1.width() - colX - 2 * self.serviceNamePadding - self.serviceBorderWidth
 				res.append(MultiContentEntryText(
-					pos = (colX, r1.top() + self.serviceBorderWidth),
-					size = (piconWidth, r1.height() - 2 * self.serviceBorderWidth),
+					pos = (colX + self.serviceNamePadding, r1.top() + self.serviceBorderWidth),
+					size = (namewidth, r1.height() - 2 * self.serviceBorderWidth),
 					font = namefont, flags = namefontflag,
 					text = service_name,
 					color = serviceForeColor, color_sel = serviceForeColor,
 					backcolor = serviceBackColor, backcolor_sel = serviceBackColor))
-				colX += piconWidth
-
-		if self.showServiceNumber:
-			if not isinstance(channel, int):
-				channel = self.getChannelNumber(channel)
-
-			if channel:
-				namefont = 0
-				namefontflag = int(config.epgselection.grid.servicenumber_alignment.value)
-				font = gFont(self.serviceFontName, self.serviceFontSize + self.epgConfig.servfs.value)
-				channelWidth = getTextBoundarySize(self.instance, font, self.instance.size(), (channel < 10000) and "0000" or str(channel)).width()
-				res.append(MultiContentEntryText(
-					pos = (colX + self.serviceNumberPadding, r1.top() + self.serviceBorderWidth),
-					size = (channelWidth, r1.height() - 2 * self.serviceBorderWidth),
-					font = namefont, flags = namefontflag,
-					text = str(channel),
-					color = serviceForeColor, color_sel = serviceForeColor,
-					backcolor = serviceBackColor, backcolor_sel = serviceBackColor))
-				colX += channelWidth + 2 * self.serviceNumberPadding
-
-		if self.showServiceTitle: # we have more space so reset parms
-			namefont = 0
-			namefontflag = int(config.epgselection.grid.servicename_alignment.value)
-			namewidth = r1.width() - colX - 2 * self.serviceNamePadding - self.serviceBorderWidth
-			res.append(MultiContentEntryText(
-				pos = (colX + self.serviceNamePadding, r1.top() + self.serviceBorderWidth),
-				size = (namewidth, r1.height() - 2 * self.serviceBorderWidth),
-				font = namefont, flags = namefontflag,
-				text = service_name,
-				color = serviceForeColor, color_sel = serviceForeColor,
-				backcolor = serviceBackColor, backcolor_sel = serviceBackColor))
 
 		if self.graphic:
 			# Service Borders
