@@ -4,7 +4,6 @@ from enigma import eTimer
 from Components.ActionMap import HelpableActionMap
 from Components.config import config
 from Components.Epg.EpgListMulti import EPGListMulti
-from Components.Epg.EpgListBase import EPG_TYPE_MULTI
 from EpgSelectionBase import EPGSelectionBase, EPGBouquetSelection, EPGServiceZap
 from Components.Label import Label
 from Components.Pixmap import Pixmap
@@ -16,10 +15,9 @@ SECS_IN_MIN = 60
 
 class EPGSelectionMulti(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 	def __init__(self, session, zapFunc, startBouquet, startRef, bouquets):
-		print "[EPGSelectionMulti] ------- NEW VERSION -------"
-		EPGSelectionBase.__init__(self, EPG_TYPE_MULTI, session, zapFunc, None, None, startBouquet, startRef, bouquets)
+		EPGSelectionBase.__init__(self, session, startBouquet, startRef, bouquets)
 		EPGBouquetSelection.__init__(self, False)
-		EPGServiceZap.__init__(self, config.epgselection.multi_preview_mode, config.epgselection.multi_ok, config.epgselection.multi_oklong)
+		EPGServiceZap.__init__(self, config.epgselection.multi, zapFunc)
 
 		self.skinName = ['MultiEPG', 'EPGSelectionMulti']
 		self.ask_time = -1
@@ -107,14 +105,6 @@ class EPGSelectionMulti(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 	def prevBouquet(self):
 		self.moveBouquetUp()
 		self.bouquetChanged()
-
-	def nextService(self):
-		if self.serviceChangeCB:
-			self.serviceChangeCB(1, self)
-
-	def prevService(self):
-		if self.serviceChangeCB:
-			self.serviceChangeCB(-1, self)
 
 	def onDateTimeInputClosed(self, ret):
 		if len(ret) > 1 and ret[0]:

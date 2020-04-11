@@ -44,14 +44,11 @@ class EPGSelectionBase(Screen, HelpableScreen):
 	REMOVE_TIMER = 2
 	ZAP = 1
 
-	def __init__(self, type, session, zapFunc = None, bouquetChangeCB=None, serviceChangeCB = None, startBouquet = None, startRef = None, bouquets = None):
-		print "[EPGSelectionBase]", type
+	def __init__(self, session, startBouquet = None, startRef = None, bouquets = None):
 		Screen.__init__(self, session)
 		HelpableScreen.__init__(self)
 
 		self.type = type
-		self.zapFunc = zapFunc
-		self.serviceChangeCB = serviceChangeCB
 		self.bouquets = bouquets
 		self.originalPlayingServiceOrGroup = self.session.nav.getCurrentlyPlayingServiceOrGroup()
 		self.startBouquet = startBouquet
@@ -313,8 +310,7 @@ class EPGSelectionBase(Screen, HelpableScreen):
 				self.session.openWithCallback(self.finishedAdd, TimerEntry, newEntry)
 		if title:
 			self.ChoiceBoxDialog = self.session.instantiateDialog(ChoiceBox, title=title, list=menu, keys=['green', 'blue'], skin_name="RecordTimerQuestion")
-			serviceref = eServiceReference(str(self['list'].getCurrent()[1]))
-			posy = self['list'].getSelectionPosition(serviceref)
+			posy = self['list'].getSelectionPosition()
 			self.ChoiceBoxDialog.instance.move(ePoint(posy[0]-self.ChoiceBoxDialog.instance.size().width(),self.instance.position().y()+posy[1]))
 			self.showChoiceBoxDialog()
 
@@ -444,31 +440,30 @@ class EPGSelectionBase(Screen, HelpableScreen):
 			self.eventviewDialog = None
 
 class EPGServiceZap:
-	def __init__(self, configPreviewMode, configOK, configOKLong):
+	def __init__(self, epgConfig, zapFunc):
 		self.prevch = None
 		self.currch = None
-		self.configPreviewMode = configPreviewMode
-		self.configOK = configOK
-		self.configOKLong = configOKLong
+		self.epgConfig = epgConfig
+		self.zapFunc = zapFunc
 
 	def OK(self):
-		if self.configOK.value == 'Zap':
-			self.zapTo()
-		else:
+		if self.epgConfig.btn_ok.value == 'zap':
 			self.zap()
+		else:
+			self.zapExit()
 
 	def OKLong(self):
-		if config.configOKLong.value == 'Zap':
-			self.zapTo()
+		if self.epgConfig.btn_oklong.value == 'zap':
+			self.zap()
 		else:
-			self.zap()		
+			self.zapExit()
 
-	def zap(self):
+	def zapExit(self):
 		self.zapSelectedService()
 		self.closeEventViewDialog()
 		self.close('close')
 
-	def zapTo(self):
+	def zap(self):
 		if self.session.nav.getCurrentlyPlayingServiceOrGroup() and '0:0:0:0:0:0:0:0:0' in self.session.nav.getCurrentlyPlayingServiceOrGroup().toString():
 			from Screens.InfoBarGenerics import setResumePoint
 			setResumePoint(self.session)
@@ -483,7 +478,7 @@ class EPGServiceZap:
 		# when exiting, restore the previous service/playback if a channel has been previewed
 		closeParam = True
 		if self.originalPlayingServiceOrGroup and self.session.nav.getCurrentlyPlayingServiceOrGroup() and self.session.nav.getCurrentlyPlayingServiceOrGroup().toString() != self.originalPlayingServiceOrGroup.toString():
-			if self.configPreviewMode.value:
+			if self.epgConfig.previewmode.value:
 				if '0:0:0:0:0:0:0:0:0' in self.originalPlayingServiceOrGroup.toString():
 					# restart movie playback. MoviePlayer screen is still active
 					from Screens.InfoBar import MoviePlayer
@@ -510,7 +505,7 @@ class EPGServiceZap:
 			self.prevch = self.session.nav.getCurrentlyPlayingServiceReference() and str(self.session.nav.getCurrentlyPlayingServiceReference().toString()) or None
 		ref = self["list"].getCurrent()[1]
 		if ref is not None:
-			if self.configPreviewMode.value == '2':
+			if self.epgConfig.preview_mode.value == '2':
 				if not prev:
 					if self.session.pipshown:
 						self.session.pipshown = False

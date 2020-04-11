@@ -1,21 +1,18 @@
 from Components.ActionMap import HelpableActionMap
 from Components.config import config
 from Components.Epg.EpgListSingle import EPGListSingle
-from Components.Epg.EpgListBase import EPG_TYPE_SIMILAR
 from EpgSelectionBase import EPGSelectionBase
 
 class EPGSelectionSimilar(EPGSelectionBase):
 	def __init__(self, session, service, eventid):
-		print "[EPGSelectionSimilar] ------- NEW VERSION -------"
-		EPGSelectionBase.__init__(self, EPG_TYPE_SIMILAR, session)
+		EPGSelectionBase.__init__(self, session)
 
 		self.skinName = ['SingleEPG', 'EPGSelection']
 		self.currentService = service
 		self.eventid = eventid
 
 		self['list'] = EPGListSingle(selChangedCB=self.onSelectionChanged, timer=session.nav.RecordTimer,
-			itemsPerPageConfig = config.epgselection.enhanced_itemsperpage,
-			eventfsConfig = config.epgselection.enhanced_eventfs)
+			epgConfig = config.epgselection.single)
 
 	def onCreate(self):
 		self['list'].recalcEntrySize()

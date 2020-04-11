@@ -3,7 +3,6 @@ from enigma import eServiceReference
 from Components.ActionMap import HelpableActionMap
 from Components.config import config, configfile
 from Components.Epg.EpgListSingle import EPGListSingle
-from Components.Epg.EpgListBase import EPG_TYPE_INFOBAR
 from EpgSelectionBase import EPGSelectionBase, EPGServiceZap
 from Components.Sources.Event import Event
 from Screens.Setup import Setup
@@ -11,9 +10,8 @@ from ServiceReference import ServiceReference
 
 class EPGSelectionInfobarSingle(EPGSelectionBase, EPGServiceZap):
 	def __init__(self, session, servicelist, zapFunc):
-		print "[EPGSelectionInfobarSingle] ------- NEW VERSION -------"
-		EPGSelectionBase.__init__(self, EPG_TYPE_INFOBAR, session, zapFunc)
-		EPGServiceZap.__init__(self, config.epgselection.infobar_preview_mode, config.epgselection.infobar_ok, config.epgselection.infobar_oklong)
+		EPGSelectionBase.__init__(self, session)
+		EPGServiceZap.__init__(self, config.epgselection.infobar, zapFunc)
 
 		self.skinName = ['InfobarSingleEPG', 'QuickEPG']
 		self['epgactions'] = HelpableActionMap(self, 'EPGSelectActions',
@@ -36,16 +34,15 @@ class EPGSelectionInfobarSingle(EPGSelectionBase, EPGServiceZap):
 			}, -1)
 		self.servicelist = servicelist
 
-		self['list'] = EPGListSingle(selChangedCB=self.onSelectionChanged, timer=session.nav.RecordTimer,
-			itemsPerPageConfig = config.epgselection.infobar_itemsperpage,
-			eventfsConfig = config.epgselection.infobar_eventfs)
+		self['list'] = EPGListSingle(selChangedCB=self.onSelectionChanged, timer=session.nav.RecordTimer, 
+			epgConfig=config.epgselection.infobar)
 
 	def createSetup(self):
 		self.closeEventViewDialog()
-		self.session.openWithCallback(self.onSetupClose, Setup, 'epginfobar')
+		self.session.openWithCallback(self.onSetupClose, Setup, 'epginfobarsingle')
 
 	def onSetupClose(self, test = None):
-		self.close('reopeninfobar')
+		self.close('reopeninfobarsingle')
 
 	def onCreate(self):
 		self['list'].recalcEntrySize()

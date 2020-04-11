@@ -14,13 +14,11 @@ from EpgListBase import EPGListBase
 SECS_IN_MIN = 60
 
 class EPGListSingle(EPGListBase):
-	def __init__(self, itemsPerPageConfig, eventfsConfig, selChangedCB = None, timer = None, time_focus = None):
-		print "[EPGListSingle] Init"
+	def __init__(self, epgConfig, selChangedCB = None, timer = None, time_focus = None):
 		EPGListBase.__init__(self, selChangedCB, timer)
 
+		self.epgConfig = epgConfig
 		self.time_focus = time_focus or time()
-		self.itemsPerPageConfig = itemsPerPageConfig
-		self.eventfsConfig =  eventfsConfig
 		self.eventFontName = "Regular"
 		if self.screenwidth == 1920:
 			self.eventFontSize = 28
@@ -46,9 +44,9 @@ class EPGListSingle(EPGListBase):
 
 	def setItemsPerPage(self):
 		if self.numberOfRows:
-			self.itemsPerPageConfig.default = self.numberOfRows
+			self.epgConfig.itemsperpage.default = self.numberOfRows
 		if self.listHeight > 0:
-			itemHeight = self.listHeight / self.itemsPerPageConfig.value
+			itemHeight = self.listHeight / self.epgConfig.itemsperpage.value
 		else:
 			itemHeight = 32
 		if itemHeight < 20:
@@ -60,7 +58,7 @@ class EPGListSingle(EPGListBase):
 		self.itemHeight = itemHeight
 
 	def setFontsize(self):
-		self.l.setFont(0, gFont(self.eventFontName, self.eventFontSize + self.eventfsConfig.value))
+		self.l.setFont(0, gFont(self.eventFontName, self.eventFontSize + self.epgConfig.eventfs.value))
 
 	def postWidgetCreate(self, instance):
 		instance.setWrapAround(False)
@@ -75,7 +73,7 @@ class EPGListSingle(EPGListBase):
 		esize = self.l.getItemSize()
 		width = esize.width()
 		height = esize.height()
-		fontSize = self.eventFontSize + config.epgselection.enhanced_eventfs.value
+		fontSize = self.eventFontSize + self.epgConfig.eventfs.value
 		dateScale, timesScale, wideScale = skin.parameters.get("EPGSingleColumnScales", (5.7, 6.0, 1.5))
 		dateW = int(fontSize * dateScale)
 		timesW = int(fontSize * timesScale)
@@ -132,20 +130,13 @@ class EPGListSingle(EPGListBase):
 			res.append((eListboxPythonMultiContent.TYPE_TEXT, r3.left(), r3.top(), r3.width(), r3.height(), 0, RT_HALIGN_LEFT|RT_VALIGN_CENTER, eventName))
 		return res
 
-	def getSelectionPosition(self,serviceref):
-		selx = self.listWidth
-		itemsperpage = self.itemsPerPageConfig.value
-
+	def getSelectionPosition(self):
 		# Adjust absolute indx to indx in displayed view
-		indx = int(self.l.getCurrentSelectionIndex())
-		while indx+1 > itemsperpage:
-			indx = indx - itemsperpage
-		pos = self.instance.position().y()
-		sely = int(pos)+(int(self.itemHeight)*int(indx))
-		temp = int(self.instance.position().y())+int(self.listHeight)
-		if int(sely) >= temp:
-			sely = int(sely) - int(self.listHeight)
-		return int(selx), int(sely)
+		indx = self.l.getCurrentSelectionIndex() % self.epgConfig.itemsperpage.value
+		sely = self.instance.position().y() + self.itemHeight * indx
+		if sely >= self.instance.position().y() + self.listHeight:
+			sely -= self.listHeight
+		return self.listWidth, sely
 
 	def fillSimilarList(self, refstr, event_id):
 		# search similar broadcastings

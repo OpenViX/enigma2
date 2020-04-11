@@ -8,17 +8,15 @@ from Components.ActionMap import HelpableActionMap, HelpableNumberActionMap
 from Components.Button import Button
 from Components.config import config, configfile, ConfigClock
 from Components.Epg.EpgListSingle import EPGListSingle
-from Components.Epg.EpgListBase import EPG_TYPE_ENHANCED
 from EpgSelectionBase import EPGSelectionBase, EPGServiceNumberSelection, EPGServiceZap
 from Screens.Setup import Setup
 from ServiceReference import ServiceReference
 
 class EPGSelectionSingle(EPGSelectionBase, EPGServiceNumberSelection, EPGServiceZap):
 	def __init__(self, session, servicelist, zapFunc, startBouquet, startRef, bouquets):
-		print "[EPGSelectionSingle] ------- NEW VERSION -------"
-		EPGSelectionBase.__init__(self, EPG_TYPE_ENHANCED, session, zapFunc, None, None, startBouquet, startRef, bouquets)
+		EPGSelectionBase.__init__(self, session, startBouquet, startRef, bouquets)
 		EPGServiceNumberSelection.__init__(self)
-		EPGServiceZap.__init__(self, config.epgselection.enhanced_preview_mode, config.epgselection.enhanced_ok, config.epgselection.enhanced_oklong)
+		EPGServiceZap.__init__(self, config.epgselection.single, zapFunc)
 
 		self.skinName = ['SingleEPG', 'EPGSelection']
 
@@ -44,12 +42,11 @@ class EPGSelectionSingle(EPGSelectionBase, EPGServiceNumberSelection, EPGService
 		self.servicelist = servicelist
 
 		self['list'] = EPGListSingle(selChangedCB=self.onSelectionChanged, timer=session.nav.RecordTimer,
-			itemsPerPageConfig = config.epgselection.enhanced_itemsperpage,
-			eventfsConfig = config.epgselection.enhanced_eventfs)
+			epgConfig = config.epgselection.single)
 
 	def createSetup(self):
 		self.closeEventViewDialog()
-		self.session.openWithCallback(self.onSetupClose, Setup, 'epgenhanced')
+		self.session.openWithCallback(self.onSetupClose, Setup, 'epgsingle')
 
 	def onSetupClose(self, test = None):
 		self['list'].sortEPG(int(config.epgselection.sort.value))

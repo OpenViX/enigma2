@@ -15,7 +15,6 @@ SECS_IN_MIN = 60
 
 class EPGListMulti(EPGListBase):
 	def __init__(self, selChangedCB = None, timer = None):
-		print "[EPGListMulti] Init"
 		EPGListBase.__init__(self, selChangedCB, timer)
 
 		self.eventFontName = "Regular"
@@ -36,9 +35,9 @@ class EPGListMulti(EPGListBase):
 
 	def setItemsPerPage(self):
 		if self.numberOfRows:
-			config.epgselection.multi_itemsperpage.default = self.numberOfRows
+			config.epgselection.multi.itemsperpage.default = self.numberOfRows
 		if self.listHeight > 0:
-			itemHeight = self.listHeight / config.epgselection.multi_itemsperpage.value
+			itemHeight = self.listHeight / config.epgselection.multi.itemsperpage.value
 		else:
 			itemHeight = 32
 		if itemHeight < 20:
@@ -50,8 +49,8 @@ class EPGListMulti(EPGListBase):
 		self.itemHeight = itemHeight
 
 	def setFontsize(self):
-		self.l.setFont(0, gFont(self.eventFontName, self.eventFontSize + config.epgselection.multi_eventfs.value))
-		self.l.setFont(1, gFont(self.eventFontName, self.eventFontSize - 4 + config.epgselection.multi_eventfs.value))
+		self.l.setFont(0, gFont(self.eventFontName, self.eventFontSize + config.epgselection.multi.eventfs.value))
+		self.l.setFont(1, gFont(self.eventFontName, self.eventFontSize - 4 + config.epgselection.multi.eventfs.value))
 
 	def postWidgetCreate(self, instance):
 		instance.setWrapAround(False)
@@ -66,7 +65,7 @@ class EPGListMulti(EPGListBase):
 		esize = self.l.getItemSize()
 		width = esize.width()
 		height = esize.height()
-		fontSize = self.eventFontSize + config.epgselection.multi_eventfs.value
+		fontSize = self.eventFontSize + config.epgselection.multi.eventfs.value
 		servScale, timeScale, durScale, wideScale = skin.parameters.get("EPGMultiColumnScales", (6.5, 6.0, 4.5, 1.5))
 		servW = int(fontSize * servScale)
 		timeW = int(fontSize * timeScale)
@@ -95,7 +94,7 @@ class EPGListMulti(EPGListBase):
 			(eListboxPythonMultiContent.TYPE_TEXT, r1.left(), r1.top(), r1.width(), r1.height(), 0, RT_HALIGN_LEFT | RT_VALIGN_CENTER, service_name)
 		]
 		if beginTime is not None:
-			fontSize = self.eventFontSize + config.epgselection.multi_eventfs.value
+			fontSize = self.eventFontSize + config.epgselection.multi.eventfs.value
 			if nowTime < beginTime:
 				begin = localtime(beginTime)
 				end = localtime(beginTime + duration)
@@ -128,20 +127,13 @@ class EPGListMulti(EPGListBase):
 			res.append((eListboxPythonMultiContent.TYPE_TEXT, r5.left(), r5.top(), width, r5.height(), 0, RT_HALIGN_LEFT | RT_VALIGN_CENTER, EventName))
 		return res
 
-	def getSelectionPosition(self,serviceref):
-		selx = self.listWidth
-		itemsperpage = config.epgselection.multi_itemsperpage.value
-
+	def getSelectionPosition(self):
 		# Adjust absolute indx to indx in displayed view
-		indx = int(self.l.getCurrentSelectionIndex())
-		while indx+1 > itemsperpage:
-			indx = indx - itemsperpage
-		pos = self.instance.position().y()
-		sely = int(pos)+(int(self.itemHeight)*int(indx))
-		temp = int(self.instance.position().y())+int(self.listHeight)
-		if int(sely) >= temp:
-			sely = int(sely) - int(self.listHeight)
-		return int(selx), int(sely)
+		indx = self.l.getCurrentSelectionIndex() % config.epgselection.multi.itemsperpage.value
+		sely = self.instance.position().y() + self.itemHeight * indx
+		if sely >= self.instance.position().y() + self.listHeight:
+			sely -= self.listHeight
+		return self.listWidth, sely
 
 	def fillEPG(self, services, stime=None):
 		test = [ (service.ref.toString(), 0, stime) for service in services ]

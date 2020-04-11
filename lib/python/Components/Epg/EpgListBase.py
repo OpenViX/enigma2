@@ -8,22 +8,12 @@ from Components.MultiContent import MultiContentEntryText, MultiContentEntryPixm
 from Components.Renderer.Picon import getPiconName
 from skin import parseColor, parseFont
 from Tools.Alternatives import CompareWithAlternatives
-from Components.config import config
 from ServiceReference import ServiceReference
 from Tools.Directories import resolveFilename, SCOPE_ACTIVE_SKIN
 from Tools.TextBoundary import getTextBoundarySize
 
-EPG_TYPE_SINGLE = 0
-EPG_TYPE_MULTI = 1
-EPG_TYPE_SIMILAR = 2
-EPG_TYPE_ENHANCED = 3
-EPG_TYPE_INFOBAR = 4
-EPG_TYPE_GRAPH = 5
-EPG_TYPE_INFOBARGRAPH = 7
-
 class EPGListBase(GUIComponent):
 	def __init__(self, selChangedCB = None, timer = None):
-		print "[EPGListBase] Init"
 		GUIComponent.__init__(self)
 
 		self.timer = timer

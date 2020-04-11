@@ -4,7 +4,7 @@ from enigma import eTimer
 
 from Components.ActionMap import HelpableActionMap
 from Components.config import config, configfile
-from Components.Epg.EpgListGrid import EPGListGrid, TimelineText, EPG_TYPE_INFOBARGRAPH, EPG_TYPE_GRAPH, MAX_TIMELINES
+from Components.Epg.EpgListGrid import EPGListGrid, TimelineText, MAX_TIMELINES
 from EpgSelectionBase import EPGSelectionBase, EPGBouquetSelection, EPGServiceZap
 from Components.Label import Label
 from Components.Pixmap import Pixmap
@@ -17,29 +17,21 @@ from Screens.Setup import Setup
 SECS_IN_MIN = 60
 
 class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
-	# InfobarGraph and Graph EPGs are use separately named but otherwise identical configuration
-	def __config(self, name):
-		return config.epgselection.dict()[('graph' if self.type == EPG_TYPE_GRAPH else 'infobar') + '_' + name]
+	def __init__(self, session, epgConfig = None, isInfobar = False, zapFunc = None, startBouquet = None, startRef = None, bouquets = None):
+		self.isInfobar = isInfobar
+		self.epgConfig = epgConfig or config.epgselection.grid
+		EPGSelectionBase.__init__(self, session, startBouquet, startRef, bouquets)
+		EPGServiceZap.__init__(self, self.epgConfig, zapFunc)
 
-	def __init__(self, session, EPGtype = 'graph', zapFunc = None, bouquetChangeCB = None, serviceChangeCB = None, startBouquet = None, startRef = None, bouquets = None):
-		print "[EPGSelectionGrid] ------- NEW VERSION -------"
-
-		type = EPG_TYPE_GRAPH if EPGtype == 'graph' else EPG_TYPE_INFOBARGRAPH
-		EPGSelectionBase.__init__(self, type, session, zapFunc, bouquetChangeCB, serviceChangeCB, startBouquet, startRef, bouquets)
-		EPGServiceZap.__init__(self, self.__config('preview_mode'), self.__config('ok'), self.__config('oklong'))
-
-		graphic = self.__config('type_mode').value == "graphics"
-		if self.type == EPG_TYPE_GRAPH:
-			if not config.epgselection.graph_pig.value:
-				self.skinName = ['GridEPG', 'GraphicalEPG']
-			else:
-				self.skinName = ['GridEPGPIG', 'GraphicalEPGPIG']
+		graphic = self.epgConfig.type_mode.value == "graphics"
+		if not config.epgselection.grid.pig.value:
+			self.skinName = ['GridEPG', 'GraphicalEPG']
 		else:
-			self.skinName = ['InfoBarGridEPG', 'GraphicalInfoBarEPG']
+			self.skinName = ['GridEPGPIG', 'GraphicalEPGPIG']
 		self.closeRecursive = False
 		EPGBouquetSelection.__init__(self, graphic)
 
-		self['timeline_text'] = TimelineText(self.type, graphic)
+		self['timeline_text'] = TimelineText(self.epgConfig, graphic)
 		self['Event'] = Event()
 		self['primetime'] = Label(_('PRIMETIME'))
 		self['change_bouquet'] = Label(_('CHANGE BOUQUET'))
@@ -93,22 +85,15 @@ class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 				'0': (self.goToCurrentTimeAndTop, _('Move to home of list'))
 			}, -1)
 
-		self['list'] = EPGListGrid(type=self.type, session=self.session, selChangedCB=self.onSelectionChanged, timer=session.nav.RecordTimer, graphic=graphic)
+		self['list'] = EPGListGrid(isInfobar=self.isInfobar, session=self.session, selChangedCB=self.onSelectionChanged, timer=session.nav.RecordTimer, graphic=graphic)
 		self['list'].setTimeFocus(time())
 
 	def createSetup(self):
-		self.closeEventViewDialog()
-		if self.type == EPG_TYPE_GRAPH:
-			key = 'epggraphical'
-		else:
-			key = 'epginfobargraphical'
-		self.session.openWithCallback(self.onSetupClose, Setup, key)
+		def onSetupClose(test = None):
+			self.close('reopengrid')
 
-	def onSetupClose(self, test = None):
-		if self.type == EPG_TYPE_GRAPH:
-			self.close('reopengraph')
-		else:
-			self.close('reopeninfobargraph')
+		self.closeEventViewDialog()
+		self.session.openWithCallback(onSetupClose, Setup, 'epggrid')
 
 	def onCreate(self):
 		self['list'].recalcEventSize()
@@ -123,7 +108,7 @@ class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 	def loadEPGData(self):
 		self._populateBouquetList()
 		self['list'].fillEPGNoRefresh(self.services)
-		if self.type == EPG_TYPE_INFOBARGRAPH or not config.epgselection.graph_channel1.value:
+		if self.isInfobar or not config.epgselection.grid.channel1.value:
 			self['list'].moveToService(self.startRef)
 		self.moveTimeLines()
 		self['lab1'].hide()
@@ -134,13 +119,13 @@ class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 		self.moveTimeLines()
 
 	def togglePIG(self):
-		if not config.epgselection.graph_pig.value:
-			config.epgselection.graph_pig.setValue(True)
+		if not config.epgselection.grid.pig.value:
+			config.epgselection.grid.pig.setValue(True)
 		else:
-			config.epgselection.graph_pig.setValue(False)
-		config.epgselection.graph_pig.save()
+			config.epgselection.grid.pig.setValue(False)
+		config.epgselection.grid.pig.save()
 		configfile.save()
-		self.close('reopengraph')
+		self.close('reopengrid')
 
 	def updEvent(self, dir, visible = True):
 		if self['list'].selEvent(dir, visible):
@@ -158,13 +143,13 @@ class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 		self.updEvent(+1)
 
 	def infoPressed(self):
-		if self.type == EPG_TYPE_GRAPH and config.epgselection.graph_info.value == 'Single EPG':
+		if config.epgselection.grid.btn_info.value == 'openSingleEPG':
 			self.openSingleEPG()
 		else:
 			self.openEventView()
 
 	def infoLongPressed(self):
-		if self.type == EPG_TYPE_GRAPH and config.epgselection.graph_infolong.value == 'Channel Info':
+		if config.epgselection.grid.btn_infolong.value == 'openEventView':
 			self.openEventView()
 		else:
 			self.openSingleEPG()
@@ -196,17 +181,6 @@ class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 		if len(ret) > 1 and ret[0]:
 			self.goToTime(ret[1])
 
-	def openEventView(self):
-		if self.type == EPG_TYPE_GRAPH:
-			EPGSelectionBase.openEventView(self)
-		else: # EPG_TYPE_INFOBARGRAPH
-			if self.eventviewDialog:
-				self.eventviewDialog.hide()
-				del self.eventviewDialog
-				self.eventviewDialog = None
-			else:
-				self.openEventViewDialog()
-
 	def onSelectionChanged(self):
 		EPGSelectionBase.onSelectionChanged(self)
 		if self.eventviewDialog:
@@ -231,21 +205,19 @@ class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 			setEvent(cur[0])
 
 	def reduceTimeScale(self):
-		tp_var = self.__config('prevtimeperiod')
-		timeperiod = int(tp_var.value)
+		timeperiod = int(self.epgConfig.prevtimeperiod.value)
 		if timeperiod > 60:
 			timeperiod -= 30
 			self['list'].setTimeEpoch(timeperiod)
-			tp_var.setValue(str(timeperiod))
+			self.epgConfig.prevtimeperiod.setValue(str(timeperiod))
 			self.moveTimeLines()
 	
 	def increaseTimeScale(self):
-		tp_var = self.__config('prevtimeperiod')
-		timeperiod = int(tp_var.value)
+		timeperiod = int(self.epgConfig.prevtimeperiod.value)
 		if timeperiod < 300:
 			timeperiod += 30
 			self['list'].setTimeEpoch(timeperiod)
-			tp_var.setValue(str(timeperiod))
+			self.epgConfig.prevtimeperiod.setValue(str(timeperiod))
 			self.moveTimeLines()
 
 	def pageLeft(self):
@@ -259,7 +231,7 @@ class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 
 	def goToPrimeTime(self):
 		basetime = localtime(self['list'].getTimeBase())
-		basetime = (basetime[0], basetime[1], basetime[2], int(self.__config('primetimehour').value), int(self.__config('primetimemins').value), 0, basetime[6], basetime[7], basetime[8])
+		basetime = (basetime[0], basetime[1], basetime[2], int(self.epgConfig.primetimehour.value), int(self.epgConfig.primetimemins.value), 0, basetime[6], basetime[7], basetime[8])
 		primetime = mktime(basetime)
 		if primetime + 3600 < time():
 			primetime += 86400
@@ -277,12 +249,10 @@ class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 		self.moveTimeLines(True)
 
 	def toggleNumberOfRows(self):
-		if self.type == EPG_TYPE_GRAPH:
-			if config.epgselection.graph_heightswitch.value:
-				config.epgselection.graph_heightswitch.setValue(False)
-			else:
-				config.epgselection.graph_heightswitch.setValue(True)
-			self['list'].setItemsPerPage()
-			self['list'].fillEPG()
-			self.moveTimeLines()
-
+		if config.epgselection.grid.heightswitch.value:
+			config.epgselection.grid.heightswitch.setValue(False)
+		else:
+			config.epgselection.grid.heightswitch.setValue(True)
+		self['list'].setItemsPerPage()
+		self['list'].fillEPG()
+		self.moveTimeLines()

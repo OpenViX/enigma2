@@ -1,15 +1,13 @@
 from Components.ActionMap import HelpableActionMap
 from Components.config import config, configfile
 from Components.Epg.EpgListSingle import EPGListSingle
-from Components.Epg.EpgListBase import EPG_TYPE_SINGLE
 from EpgSelectionBase import EPGSelectionBase
 from Screens.Setup import Setup
 from ServiceReference import ServiceReference
 
 class EPGSelectionChannel(EPGSelectionBase):
 	def __init__(self, session, service, time_focus = None):
-		print "[EPGSelectionChannel] ------- NEW VERSION -------"
-		EPGSelectionBase.__init__(self, EPG_TYPE_SINGLE, session, startRef = service)
+		EPGSelectionBase.__init__(self, session, startRef = service)
 
 		self.skinName = ['SingleEPG', 'EPGSelection']
 		self['epgactions'] = HelpableActionMap(self, 'EPGSelectActions',
@@ -27,9 +25,7 @@ class EPGSelectionChannel(EPGSelectionBase):
 			}, -1)
 
 		self['list'] = EPGListSingle(selChangedCB = self.onSelectionChanged, timer = session.nav.RecordTimer,
-			itemsPerPageConfig = config.epgselection.enhanced_itemsperpage,
-			eventfsConfig = config.epgselection.enhanced_eventfs,
-			time_focus = time_focus)
+			epgConfig = config.epgselection.single, time_focus = time_focus)
 
 	def createSetup(self):
 		self.closeEventViewDialog()
