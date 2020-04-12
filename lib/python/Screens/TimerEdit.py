@@ -14,6 +14,7 @@ from Screens.ParentalControlSetup import ProtectedScreen
 from Screens.InputBox import PinInput
 from ServiceReference import ServiceReference
 from Screens.TimerEntry import TimerEntry, TimerLog
+from Screens.Setup import Setup
 from Tools.BoundFunction import boundFunction
 from Tools.FuzzyDate import FuzzyTime
 from time import time
@@ -56,7 +57,6 @@ class TimerEditList(Screen, ProtectedScreen):
 		list = [ ]
 		self.list = list
 		self.fillTimerList()
-
 		self["timerlist"] = TimerList(list)
 
 		self.key_red_choice = self.EMPTY
@@ -81,10 +81,36 @@ class TimerEditList(Screen, ProtectedScreen):
 				"up": self.up,
 				"down": self.down,
 				"moveTop": self.moveTop,
-				"moveEnd": self.moveEnd
+				"moveEnd": self.moveEnd,
+				"menu": self.createSetup
 			}, -1)
 		self.session.nav.RecordTimer.on_state_change.append(self.onStateChange)
-		self.onShown.append(self.updateState)
+		self.onLayoutFinish.append(self.onCreate)
+
+	def onCreate(self):
+		self.list = []
+		self.fillTimerList()
+		self["timerlist"].l.setList(self.list)
+
+		if self.selectItem is not None:
+			(event, service) = self.selectItem
+			if event is not None:
+				eventid = event.getEventId()
+				refstr = ':'.join(service.ref.toString().split(':')[:11])
+				idx = 0
+				for (timer, processed) in self.list:
+					if timer.eit == eventid and ':'.join(timer.service_ref.ref.toString().split(':')[:11]) == refstr:
+						self["timerlist"].moveToIndex(idx)
+						break
+					idx += 1
+		self.updateState()
+
+	def createSetup(self):
+		def onSetupClose(test = None):
+			self.refill()
+			pass
+
+		self.session.openWithCallback(onSetupClose, Setup, 'recording')
 
 	def isProtected(self):
 		return config.ParentalControl.setuppinactive.value and (not config.ParentalControl.config_sections.main_menu.value or hasattr(self.session, 'infobar') and self.session.infobar is None) and config.ParentalControl.config_sections.timer_menu.value and config.ParentalControl.servicepin[0].value
