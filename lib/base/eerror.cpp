@@ -142,7 +142,7 @@ int formatTime(char *buf, int bufferSize, int flags)
 	struct timespec tp;
 
 	if (!(flags & _DBGFLG_NOTIME)) {
-		if (debugTime & 1)) {
+		if (debugTime & 1) {
 			clock_gettime(CLOCK_MONOTONIC, &tp);
 			pos += snprintf(buf, bufferSize, "<%6lu.%03lu> ", tp.tv_sec, tp.tv_nsec/1000000);
 		}
