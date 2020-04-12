@@ -17,6 +17,7 @@ from Tools.HardwareInfo import HardwareInfo
 
 
 def InitUsageConfig():
+	config.version = ConfigNumber(default = 0)
 	config.misc.useNTPminutes = ConfigSelection(default = "30", choices = [("30", "30" + " " +_("minutes")), ("60", _("Hour")), ("1440", _("Once per day"))])
 	if getBrandOEM() in ('vuplus', 'ini'):
 		config.misc.remotecontrol_text_support = ConfigYesNo(default = True)
@@ -1190,6 +1191,8 @@ def InitUsageConfig():
 	config.mediaplayer.useAlternateUserAgent = ConfigYesNo(default=False)
 	config.mediaplayer.alternateUserAgent = ConfigText(default="")
 
+	upgradeConfig()
+
 def updateChoices(sel, choices):
 	if choices:
 		defval = None
@@ -1221,3 +1224,91 @@ def preferredInstantRecordPath():
 
 def defaultMoviePath():
 	return defaultRecordingLocation(config.usage.default_path.value)
+
+def upgradeConfig():
+	if config.version.value < 53023:
+		def upgrade(configItem, name, valuemap = None):
+			value = config.content.stored_values
+			found = True
+			for n in name.split("."):
+				value = value.get(n, None)
+				if value is None:
+					found = False
+					break
+			if found:
+				newvalue = valuemap.get(value, None) if valuemap is not None else None
+				if newvalue is not None:
+					print "[UsageConfig] upgrading %s, mapping value %s to %s" % (name, value, newvalue)
+				else:
+					print "[UsageConfig] upgrading %s, value %s" % (name, value)
+					newvalue = value
+				if newvalue is not None:
+					configItem.value = newvalue
+					configItem.save()
+
+		print "[UsageConfig] Upgrading EPG settings"
+
+		okMap = {"Zap + Exit": "zapExit", "Zap": "zap"}
+		infoMap = {"Channel Info": "openEventView", "Single EPG": "openSingleEPG"}
+
+		upgrade(config.epgselection.infobar.type_mode, "epgselection.infobar_type_mode")
+		upgrade(config.epgselection.infobar.preview_mode, "epgselection.infobar_preview_mode")
+		upgrade(config.epgselection.infobar.btn_ok, "epgselection.infobar_ok", okMap)
+		upgrade(config.epgselection.infobar.btn_oklong, "epgselection.infobar_oklong", okMap)
+		upgrade(config.epgselection.infobar.itemsperpage, "epgselection.infobar_itemsperpage")
+		upgrade(config.epgselection.infobar.roundto, "epgselection.infobar_roundto")
+		upgrade(config.epgselection.infobar.prevtimeperiod, "epgselection.infobar_prevtimeperiod")
+		upgrade(config.epgselection.infobar.primetimehour, "epgselection.infobar_primetimehour")
+		upgrade(config.epgselection.infobar.primetimemins, "epgselection.infobar_primetimemins")
+		upgrade(config.epgselection.infobar.servicetitle_mode, "epgselection.infobar_servicetitle_mode", {"servicenumber+picon":"picon+servicenumber", "servicenumber+picon+servicename": "picon+servicenumber+servicename"})
+		upgrade(config.epgselection.infobar.servfs, "epgselection.infobar_servfs")
+		upgrade(config.epgselection.infobar.eventfs, "epgselection.infobar_eventfs")
+		upgrade(config.epgselection.infobar.timelinefs, "epgselection.infobar_timelinefs")
+		upgrade(config.epgselection.infobar.timeline24h, "epgselection.infobar_timeline24h")
+		upgrade(config.epgselection.infobar.servicewidth, "epgselection.infobar_servicewidth")
+		upgrade(config.epgselection.infobar.piconwidth, "epgselection.infobar_piconwidth")
+		upgrade(config.epgselection.infobar.infowidth, "epgselection.infobar_infowidth")
+		upgrade(config.epgselection.single.preview_mode, "epgselection.enhanced_preview_mode")
+		upgrade(config.epgselection.single.btn_ok, "epgselection.enhanced_ok", okMap)
+		upgrade(config.epgselection.single.btn_oklong, "epgselection.enhanced_oklong", okMap)
+		upgrade(config.epgselection.single.eventfs, "epgselection.enhanced_eventfs")
+		upgrade(config.epgselection.single.itemsperpage, "epgselection.enhanced_itemsperpage")
+
+		upgrade(config.epgselection.multi.showbouquet, "epgselection.multi.showbouquet")
+		upgrade(config.epgselection.multi.preview_mode, "epgselection.multi.preview_mode")
+		upgrade(config.epgselection.multi.btn_ok, "epgselection.multi.ok", okMap)
+		upgrade(config.epgselection.multi.btn_oklong, "epgselection.multi.oklong", okMap)
+		upgrade(config.epgselection.multi.eventfs, "epgselection.multi.eventfs")
+		upgrade(config.epgselection.multi.itemsperpage, "epgselection.multi.itemsperpage")
+
+		upgrade(config.epgselection.grid.showbouquet, "epgselection.graph_showbouquet")
+		upgrade(config.epgselection.grid.preview_mode, "epgselection.graph_preview_mode")
+		upgrade(config.epgselection.grid.type_mode, "epgselection.graph_type_mode")
+		upgrade(config.epgselection.grid.highlight_current_events, "epgselection.graph_highlight_current_events")
+		upgrade(config.epgselection.grid.btn_ok, "epgselection.graph_ok", okMap)
+		upgrade(config.epgselection.grid.btn_oklong, "epgselection.graph_oklong", okMap)
+		upgrade(config.epgselection.grid.btn_info, "epgselection.graph_info", infoMap)
+		upgrade(config.epgselection.grid.btn_infolong, "epgselection.graph_infolong", infoMap)
+		upgrade(config.epgselection.grid.roundto, "epgselection.graph_roundto")
+		upgrade(config.epgselection.grid.prevtimeperiod, "epgselection.graph_prevtimeperiod")
+		upgrade(config.epgselection.grid.primetimehour, "epgselection.graph_primetimehour")
+		upgrade(config.epgselection.grid.primetimemins, "epgselection.graph_primetimemins")
+		upgrade(config.epgselection.grid.servicetitle_mode, "epgselection.graph_servicetitle_mode", {"servicenumber+picon":"picon+servicenumber", "servicenumber+picon+servicename": "picon+servicenumber+servicename"})
+		upgrade(config.epgselection.grid.channel1, "epgselection.graph_channel1")
+		upgrade(config.epgselection.grid.servicename_alignment, "epgselection.graph_servicename_alignment")
+		upgrade(config.epgselection.grid.servicenumber_alignment, "epgselection.graph_servicenumber_alignment")
+		upgrade(config.epgselection.grid.event_alignment, "epgselection.graph_event_alignment")
+		upgrade(config.epgselection.grid.timelinedate_alignment, "epgselection.graph_timelinedate_alignment")
+		upgrade(config.epgselection.grid.servfs, "epgselection.graph_servfs")
+		upgrade(config.epgselection.grid.eventfs, "epgselection.graph_eventfs")
+		upgrade(config.epgselection.grid.timelinefs, "epgselection.graph_timelinefs")
+		upgrade(config.epgselection.grid.timeline24h, "epgselection.graph_timeline24h")
+		upgrade(config.epgselection.grid.itemsperpage, "epgselection.graph_itemsperpage")
+		upgrade(config.epgselection.grid.pig, "epgselection.graph_pig")
+		upgrade(config.epgselection.grid.servicewidth, "epgselection.graph_servicewidth")
+		upgrade(config.epgselection.grid.piconwidth, "epgselection.graph_piconwidth")
+		upgrade(config.epgselection.grid.infowidth, "epgselection.graph_infowidth")
+		upgrade(config.epgselection.grid.rec_icon_height, "epgselection.graph_rec_icon_height")
+
+		config.version.value = "53023"
+		config.version.save()
