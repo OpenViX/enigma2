@@ -136,15 +136,28 @@ extern void bsodFatal(const char *component);
 
 #define eDEBUG_BUFLEN    1024
 
+char *printtime(char buffer[], int size)
+{
+	struct tm loctime ;
+	struct timeval tim;
+	gettimeofday(&tim, NULL);
+	localtime_r(&tim.tv_sec, &loctime);
+	snprintf(buffer, size, "%02d:%02d:%02d.%04ld", loctime.tm_hour, loctime.tm_min, loctime.tm_sec, tim.tv_usec / 100L);
+	return buffer;
+}
+
 void eDebugImpl(int flags, const char* fmt, ...)
 {
 	char * buf = new char[eDEBUG_BUFLEN];
 	int pos = 0;
-	struct timespec tp;
+//	struct timespec tp;
+	char timebuffer[32];
 
 	if (debugTime && !(flags & _DBGFLG_NOTIME)) {
-		clock_gettime(CLOCK_MONOTONIC, &tp);
-		pos = snprintf(buf, eDEBUG_BUFLEN, "<%6lu.%03lu> ", tp.tv_sec, tp.tv_nsec/1000000);
+//		clock_gettime(CLOCK_MONOTONIC, &tp);
+//		pos = snprintf(buf, eDEBUG_BUFLEN, "<%6lu.%03lu> ", tp.tv_sec, tp.tv_nsec/1000000);
+		printtime(timebuffer, sizeof(timebuffer));
+		pos = snprintf(buf, eDEBUG_BUFLEN, "<%s> ", timebuffer);
 	}
 
 	va_list ap;
@@ -163,7 +176,8 @@ void eDebugImpl(int flags, const char* fmt, ...)
 		// +2 for \0 and optional newline
 		buf = new char[pos + vsize + 2];
 		if (debugTime && !(flags & _DBGFLG_NOTIME))
-			pos = snprintf(buf, pos + vsize, "<%6lu.%03lu> ", tp.tv_sec, tp.tv_nsec/1000000);
+//			pos = snprintf(buf, pos + vsize, "<%6lu.%03lu> ", tp.tv_sec, tp.tv_nsec/1000000);
+			pos = snprintf(buf, pos + vsize, "<%s> ", timebuffer);
 		va_start(ap, fmt);
 		vsize = vsnprintf(buf + pos, vsize + 1, fmt, ap);
 		va_end(ap);
