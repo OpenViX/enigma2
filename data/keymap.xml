@@ -780,7 +780,6 @@
 	</map>
 
 	<map context="WindowActions">
-
 	</map>
 
 	<map context="HelpActions">
@@ -1022,5 +1021,5 @@
 		<key id="KEY_AUX" mapto="HDMIin_long" flags="l"/>
 		<key id="KEY_FILE" mapto="file" flags="b"/>
 		<key id="KEY_FILE" mapto="file_long" flags="l"/>
-</map>
+	</map>
 </keymap>
