@@ -152,7 +152,7 @@ int formatTime(char *buf, int bufferSize, int flags)
 			struct timeval tim;
 			gettimeofday(&tim, NULL);
 			localtime_r(&tim.tv_sec, &loctime);
-			pos += snprintf(buffer + pos, bufferSize - pos, "%02d:%02d:%02d.%03lu ", 
+			pos += snprintf(buf + pos, bufferSize - pos, "%02d:%02d:%02d.%03lu ", 
 				loctime.tm_hour, loctime.tm_min, loctime.tm_sec, tim.tv_usec / 100L);
 		}
 	}
