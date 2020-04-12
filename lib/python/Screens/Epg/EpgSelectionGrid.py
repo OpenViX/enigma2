@@ -12,10 +12,6 @@ from Components.Sources.Event import Event
 from Screens.EventView import EventViewSimple
 from Screens.Setup import Setup
 
-# Various value are in minutes, while others are in seconds.
-# Use this to remind us what is going on...
-SECS_IN_MIN = 60
-
 class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 	def __init__(self, session, epgConfig = None, isInfobar = False, zapFunc = None, startBouquet = None, startRef = None, bouquets = None):
 		self.isInfobar = isInfobar

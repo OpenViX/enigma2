@@ -69,7 +69,6 @@ class EPGSelectionInfobarSingle(EPGSelectionBase, EPGServiceZap):
 
 	def bouquetChanged(self):
 		self.bouquetRoot = False
-		now = time() - int(config.epg.histminutes.value) * SECS_IN_MIN
 		self.services = self.getBouquetServices(self.getCurrentBouquet())
 		self['list'].instance.moveSelectionTo(0)
 		self.setTitle(self['bouquetlist'].getCurrentBouquet())

@@ -13,7 +13,7 @@ from Screens.Setup import Setup
 from ServiceReference import ServiceReference
 
 class EPGSelectionSingle(EPGSelectionBase, EPGServiceNumberSelection, EPGServiceZap):
-	def __init__(self, session, servicelist, zapFunc, startBouquet, startRef, bouquets):
+	def __init__(self, session, servicelist, zapFunc, startBouquet, startRef, bouquets, time_focus = None):
 		EPGSelectionBase.__init__(self, session, startBouquet, startRef, bouquets)
 		EPGServiceNumberSelection.__init__(self)
 		EPGServiceZap.__init__(self, config.epgselection.single, zapFunc)
@@ -41,8 +41,8 @@ class EPGSelectionSingle(EPGSelectionBase, EPGServiceNumberSelection, EPGService
 		self.list = []
 		self.servicelist = servicelist
 
-		self['list'] = EPGListSingle(selChangedCB=self.onSelectionChanged, timer=session.nav.RecordTimer,
-			epgConfig = config.epgselection.single)
+		self['list'] = EPGListSingle(selChangedCB = self.onSelectionChanged, timer = session.nav.RecordTimer,
+			epgConfig = config.epgselection.single, time_focus = time_focus)
 
 	def createSetup(self):
 		self.closeEventViewDialog()

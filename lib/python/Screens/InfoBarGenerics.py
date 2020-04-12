@@ -1645,9 +1645,10 @@ class InfoBarEPG:
 				self.dlg_stack[dlgs-1].close(dlgs > 1)
 		self.reopen(ret)
 
-	def multiServiceEPG(self, type, showBouquet, startBouquet, startRef):
+	def multiServiceEPG(self, type, showBouquet):
 		def openEPG(bouquet, bouquets):
-			bouquet = bouquet or startBouquet
+			bouquet = bouquet or self.servicelist.getRoot()
+			startRef = self.lastservice if isMoviePlayerInfoBar(self) else self.session.nav.getCurrentlyPlayingServiceOrGroup()
 			self.dlg_stack.append(self.session.openWithCallback(self.closed, type, zapFunc=self.zapToService,
 				startBouquet=bouquet, startRef=startRef, bouquets=bouquets))
 
@@ -1661,22 +1662,14 @@ class InfoBarEPG:
 			openEPG(None, bouquets)
 
 	def openMultiServiceEPG(self):
-		if self.servicelist is None:
-			return
-		startBouquet = self.servicelist.getRoot()
-		startRef = self.lastservice if isMoviePlayerInfoBar(self) else self.session.nav.getCurrentlyPlayingServiceOrGroup()
-		self.multiServiceEPG(EPGSelectionMulti, config.epgselection.multi.showbouquet.value, startBouquet, startRef)
+		self.multiServiceEPG(EPGSelectionMulti, config.epgselection.multi.showbouquet.value)
 
 	# keeping this for compatibility with old ButtonSetup config
 	def openGraphEPG(self, reopen=False):
 		self.openGridEPG(reopen)
 
 	def openGridEPG(self, reopen=False):
-		if self.servicelist is None:
-			return
-		startBouquet = self.servicelist.getRoot()
-		startRef = self.lastservice if isMoviePlayerInfoBar(self) else self.session.nav.getCurrentlyPlayingServiceOrGroup()
-		self.multiServiceEPG(EPGSelectionGrid, config.epgselection.grid.showbouquet.value, startBouquet, startRef)
+		self.multiServiceEPG(EPGSelectionGrid, config.epgselection.grid.showbouquet.value)
 
 	def openSingleServiceEPG(self, reopen=False):
 		if self.servicelist is None:

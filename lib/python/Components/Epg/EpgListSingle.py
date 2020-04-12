@@ -10,7 +10,6 @@ from EpgListBase import EPGListBase
 
 # Various value are in minutes, while others are in seconds.
 # Use this to remind us what is going on...
-#
 SECS_IN_MIN = 60
 
 class EPGListSingle(EPGListBase):
