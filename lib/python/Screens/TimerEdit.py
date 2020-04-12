@@ -27,10 +27,11 @@ class TimerEditList(Screen, ProtectedScreen):
 	DELETE = 4
 	STOP = 5
 
-	def __init__(self, session, menu_path = ""):
+	def __init__(self, session, menu_path = "", selectItem = None):
 		Screen.__init__(self, session)
 		screentitle = _("Timer List")
 		self.menu_path = menu_path
+		self.selectItem = selectItem
 		ProtectedScreen.__init__(self)
 		if config.usage.show_menupath.value == 'large':
 			self.menu_path += screentitle
@@ -54,8 +55,6 @@ class TimerEditList(Screen, ProtectedScreen):
 		self.onChangedEntry = [ ]
 		list = [ ]
 		self.list = list
-		self.fillTimerList()
-
 		self["timerlist"] = TimerList(list)
 
 		self.key_red_choice = self.EMPTY

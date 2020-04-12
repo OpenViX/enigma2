@@ -23,6 +23,8 @@ class EPGSelectionInfobarSingle(EPGSelectionBase, EPGServiceZap):
 				'epg': (self.openSingleEPG, _('Show single epg for current channel')),
 				'info': (self.openEventView, _('Show detailed event info')),
 				'infolong': (self.openSingleEPG, _('Show single epg for current channel')),
+				'timer': (self.openTimerList, _('Show timer list')),
+				'timerlong': (self.openAutoTimerList, _('Show autotimer list')),
 				'menu': (self.createSetup, _('Setup menu'))
 			}, -1)
 		self['epgcursoractions'] = HelpableActionMap(self, 'DirectionActions',

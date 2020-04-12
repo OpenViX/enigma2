@@ -64,6 +64,8 @@ class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 				'infolong': (self.infoLongPressed, _('Show single epg for current channel')),
 				'tv': (self.bouquetList, _('Toggle between bouquet/epg lists')),
 				'tvlong': (self.togglePIG, _('Toggle picture In graphics')),
+				'timer': (self.openTimerList, _('Show timer list')),
+				'timerlong': (self.openAutoTimerList, _('Show autotimer list')),
 				'menu': (self.createSetup, _('Setup menu'))
 			}, -1)
 

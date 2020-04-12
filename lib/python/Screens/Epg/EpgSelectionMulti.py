@@ -52,6 +52,8 @@ class EPGSelectionMulti(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 				'info': (self.openEventView, _('Show detailed event info')),
 				'infolong': (self.openSingleEPG, _('Show single epg for current channel')),
 				'tv': (self.bouquetList, _('Toggle between bouquet/epg lists')),
+				'timer': (self.openTimerList, _('Show timer list')),
+				'timerlong': (self.openAutoTimerList, _('Show autotimer list')),
 				'menu': (self.createSetup, _('Setup menu'))
 			}, -1)
 
