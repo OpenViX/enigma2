@@ -198,7 +198,8 @@ class EPGListGrid(EPGListBase):
 
 	def __setTimeBase(self, time_center):
 		# prefer time being aligned in the middle of the EPG, but clip to the maximum EPG data history
-		self.time_base = int(max(time_center - self.time_epoch_secs // 2, time() - int(config.epg.histminutes.value) * SECS_IN_MIN))
+		self.time_base = int(max(time_center - self.time_epoch_secs // 2, 
+			time() - (int(config.epg.histminutes.value) + self.time_epoch_secs // 4) * SECS_IN_MIN))
 		# round up so that we favour a bit more info to the right of the timeline
 		self.time_base += -self.time_base % self.round_by_secs
 
@@ -207,7 +208,7 @@ class EPGListGrid(EPGListBase):
 		self.time_focus = time_focus
 
 	def setTimeEpoch(self, epoch):
-		center = self.time_base + self.time_epoch_secs // 2
+		center = epoch * SECS_IN_MIN * (self.time_focus - self.time_base) // self.time_epoch_secs
 		self.time_epoch = epoch
 		self.time_epoch_secs = epoch * SECS_IN_MIN
 		self.__setTimeBase(center)
@@ -253,7 +254,7 @@ class EPGListGrid(EPGListBase):
 					self.time_focus = time()
 				else:
 					# user is looking at things roughly around the middle of the selected event
-					self.time_focus = ev_time + (ev_end_time - ev_time) / 2
+					self.time_focus = ev_time + (ev_end_time - ev_time) // 2
 		else:
 			self.selectedEventIndex = None
 
@@ -757,7 +758,7 @@ class EPGListGrid(EPGListBase):
 			time_focus -= self.time_epoch_secs
 		elif dir == -24: # Prevous day
 			# keep the time base within the bounds of EPG data, rounded to a whole page
-			abs0 = int(time() - int(config.epg.histminutes.value) * SECS_IN_MIN)
+			abs0 = int(time() - (int(config.epg.histminutes.value) + self.time_epoch_secs // 4) * SECS_IN_MIN)
 			abs0 += -abs0 % self.round_by_secs
 			time_base = max(abs0, time_base - 86400)
 			time_focus = max(abs0, time_focus - 86400)
