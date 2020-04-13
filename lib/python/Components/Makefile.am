@@ -1,5 +1,5 @@
 installdir = $(pkglibdir)/python/Components
 
-SUBDIRS = Sources Converter Epg Renderer
+SUBDIRS = Sources Converter Renderer
 
 install_PYTHON = *.py

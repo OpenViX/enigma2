@@ -589,11 +589,9 @@ lib/base/eenv.cpp
 lib/python/Makefile
 lib/python/Components/Makefile
 lib/python/Components/Converter/Makefile
-lib/python/Components/Epg/Makefile
 lib/python/Components/Renderer/Makefile
 lib/python/Components/Sources/Makefile
 lib/python/Screens/Makefile
-lib/python/Screens/Epg/Makefile
 lib/python/Plugins/Makefile
 lib/python/Plugins/Extensions/Makefile
 lib/python/Plugins/Extensions/CutListEditor/Makefile
