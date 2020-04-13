@@ -1078,11 +1078,6 @@ def InitUsageConfig():
 	config.epgselection.single.btn_oklong = ConfigSelection(choices = [("zap",_("Zap")), ("zapExit", _("Zap + Exit"))], default = "zapExit")
 	config.epgselection.single.eventfs = ConfigSelectionNumber(default = 0, stepwidth = 1, min = -8, max = 10, wraparound = True)
 	config.epgselection.single.itemsperpage = ConfigSelectionNumber(default = 18, stepwidth = 1, min = 1, max = 40, wraparound = True)
-	
-	# for backwards compatibility with plugins, mirror the new settings into these
-	config.epgselection.enhanced_eventfs = config.epgselection.single.eventfs
-	config.epgselection.enhanced_itemsperpage = config.epgselection.single.itemsperpage
-
 	config.epgselection.multi = ConfigSubsection()
 	config.epgselection.multi.showbouquet = ConfigYesNo(default = False)
 	config.epgselection.multi.preview_mode = ConfigYesNo(default = True)
@@ -1193,6 +1188,12 @@ def InitUsageConfig():
 
 	upgradeConfig()
 
+	# now that the config upgrade has been processed, it's safe to reintroduce any settings
+	# required for backwards compatibility with plugins. The will mirror the new settings
+	config.epgselection.enhanced_eventfs = NoSave(config.epgselection.single.eventfs)
+	config.epgselection.enhanced_itemsperpage = NoSave(config.epgselection.single.itemsperpage)
+
+
 def updateChoices(sel, choices):
 	if choices:
 		defval = None
@@ -1236,6 +1237,7 @@ def upgradeConfig():
 					found = False
 					break
 			if found:
+				# this value is a string, not the actual type required by the config item
 				newvalue = valuemap.get(value, None) if valuemap is not None else None
 				if newvalue is not None:
 					print "[UsageConfig] upgrading %s, mapping value %s to %s" % (name, value, newvalue)
@@ -1243,8 +1245,9 @@ def upgradeConfig():
 					print "[UsageConfig] upgrading %s, value %s" % (name, value)
 					newvalue = value
 				if newvalue is not None:
-					configItem.value = newvalue
-					configItem.save()
+					# load the string value to convert it to the config item's type
+					configItem.saved_value = newvalue
+					configItem.load()
 
 		print "[UsageConfig] Upgrading EPG settings"
 
@@ -1274,12 +1277,12 @@ def upgradeConfig():
 		upgrade(config.epgselection.single.eventfs, "epgselection.enhanced_eventfs")
 		upgrade(config.epgselection.single.itemsperpage, "epgselection.enhanced_itemsperpage")
 
-		upgrade(config.epgselection.multi.showbouquet, "epgselection.multi.showbouquet")
-		upgrade(config.epgselection.multi.preview_mode, "epgselection.multi.preview_mode")
-		upgrade(config.epgselection.multi.btn_ok, "epgselection.multi.ok", okMap)
-		upgrade(config.epgselection.multi.btn_oklong, "epgselection.multi.oklong", okMap)
-		upgrade(config.epgselection.multi.eventfs, "epgselection.multi.eventfs")
-		upgrade(config.epgselection.multi.itemsperpage, "epgselection.multi.itemsperpage")
+		upgrade(config.epgselection.multi.showbouquet, "epgselection.multi_showbouquet")
+		upgrade(config.epgselection.multi.preview_mode, "epgselection.multi_preview_mode")
+		upgrade(config.epgselection.multi.btn_ok, "epgselection.multi_ok", okMap)
+		upgrade(config.epgselection.multi.btn_oklong, "epgselection.multi_oklong", okMap)
+		upgrade(config.epgselection.multi.eventfs, "epgselection.multi_eventfs")
+		upgrade(config.epgselection.multi.itemsperpage, "epgselection.multi_itemsperpage")
 
 		upgrade(config.epgselection.grid.showbouquet, "epgselection.graph_showbouquet")
 		upgrade(config.epgselection.grid.preview_mode, "epgselection.graph_preview_mode")
