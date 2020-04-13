@@ -74,6 +74,9 @@ class EPGSelectionSingle(EPGSelectionBase, EPGServiceNumberSelection, EPGService
 		self['list'].sortEPG(int(config.epgselection.sort.value))
 		self['list'].setCurrentIndex(index)
 
+	def getCurrentBouquet(self):
+		return self.servicelist.getRoot()
+
 	def nextBouquet(self):
 		self.servicelist.nextBouquet()
 		self.onCreate()

@@ -69,8 +69,10 @@ class EPGSelectionInfobarSingle(EPGSelectionBase, EPGServiceZap):
 		self['list'].sortEPG(int(config.epgselection.sort.value))
 		self['list'].setCurrentIndex(index)
 
+	def getCurrentBouquet(self):
+		return self.servicelist.getRoot()
+
 	def bouquetChanged(self):
-		self.bouquetRoot = False
 		self.services = self.getBouquetServices(self.getCurrentBouquet())
 		self['list'].instance.moveSelectionTo(0)
 		self.setTitle(self['bouquetlist'].getCurrentBouquet())

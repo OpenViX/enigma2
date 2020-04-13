@@ -16,6 +16,7 @@ class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 	def __init__(self, session, epgConfig = None, isInfobar = False, zapFunc = None, startBouquet = None, startRef = None, bouquets = None):
 		self.isInfobar = isInfobar
 		self.epgConfig = epgConfig or config.epgselection.grid
+		self.bouquetRoot = False
 		EPGSelectionBase.__init__(self, session, startBouquet, startRef, bouquets)
 		EPGServiceZap.__init__(self, self.epgConfig, zapFunc)
 
@@ -115,6 +116,9 @@ class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 		self.refreshTimer.stop()
 		self['list'].fillEPG()
 		self.moveTimeLines()
+
+	def getCurrentBouquet(self):
+		return self.startBouquet if self.bouquetRoot else EPGBouquetSelection.getCurrentBouquet(self)
 
 	def togglePIG(self):
 		if not config.epgselection.grid.pig.value:

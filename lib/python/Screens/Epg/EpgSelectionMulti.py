@@ -9,10 +9,6 @@ from Components.Label import Label
 from Components.Pixmap import Pixmap
 from Screens.Setup import Setup
 
-# Various value are in minutes, while others are in seconds.
-# Use this to remind us what is going on...
-SECS_IN_MIN = 60
-
 class EPGSelectionMulti(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 	def __init__(self, session, zapFunc, startBouquet, startRef, bouquets):
 		EPGSelectionBase.__init__(self, session, startBouquet, startRef, bouquets)
@@ -93,8 +89,6 @@ class EPGSelectionMulti(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 		self['list'].updateEPG(1)
 
 	def bouquetChanged(self):
-		self.bouquetRoot = False
-		now = time() - int(config.epg.histminutes.value) * SECS_IN_MIN
 		self.services = self.getBouquetServices(self.getCurrentBouquet())
 		self['list'].fillEPG(self.services, self.ask_time)
 		self['list'].instance.moveSelectionTo(0)

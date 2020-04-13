@@ -60,7 +60,6 @@ class EPGSelectionBase(Screen, HelpableScreen):
 		self.eventviewWasShown = False
 		self.session.pipshown = False
 		self.pipServiceRelation = getRelationDict() if plugin_PiPServiceRelation_installed else {}
-		self.bouquetRoot = False
 		self["number"] = Label()
 		self["number"].hide()
 		self['Service'] = ServiceEvent()
@@ -131,15 +130,6 @@ class EPGSelectionBase(Screen, HelpableScreen):
 
 	def toEnd(self):
 		self['list'].moveTo(self['list'].instance.moveEnd)
-
-	def getCurrentBouquet(self):
-		if self.bouquetRoot:
-			return self.startBouquet
-		elif self.has_key('bouquetlist'):
-			cur = self['bouquetlist'].l.getCurrentSelection()
-			return cur and cur[1]
-		else:
-			return self.servicelist.getRoot()
 
 	def openEventView(self):
 		def openSimilarList(eventid, refstr):
@@ -518,17 +508,17 @@ class EPGServiceZap:
 					self.session.pipshown = True
 				n_service = self.pipServiceRelation.get(str(service.ref), None)
 				if n_service is not None:
-					service = eServiceReference(n_service)
+					serviceRef = eServiceReference(n_service)
 				else:
-					service = service.ref
-				if self.currch == service.toString():
+					serviceRef = service.ref
+				if self.currch == serviceRef.toString():
 					if self.session.pipshown:
 						self.session.pipshown = False
 						del self.session.pip
 					self.zapFunc(service.ref, bouquet = self.getCurrentBouquet(), preview = False)
 					return
-				if self.prevch != service.toString() and currservice != service.toString():
-					self.session.pip.playService(service)
+				if self.prevch != serviceRef.toString() and currservice != serviceRef.toString():
+					self.session.pip.playService(serviceRef)
 					self.currch = self.session.pip.getCurrentService() and str(self.session.pip.getCurrentService().toString())
 			else:
 				self.zapFunc(service.ref, bouquet = self.getCurrentBouquet(), preview = prev)
@@ -671,6 +661,10 @@ class EPGBouquetSelection:
 		self['bouquetlist'].setCurrentBouquet(self.startBouquet)
 		self.setTitle(self['bouquetlist'].getCurrentBouquet())
 		self.services = self.getBouquetServices(self.startBouquet)
+
+	def getCurrentBouquet(self):
+		cur = self['bouquetlist'].l.getCurrentSelection()
+		return cur and cur[1]
 
 	def bouquetList(self):
 		if not self.bouquetlist_active:
