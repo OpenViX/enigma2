@@ -1062,8 +1062,7 @@ def InitUsageConfig():
 	config.epgselection.infobar.itemsperpage = ConfigSelectionNumber(default = 2, stepwidth = 1, min = 1, max = 4, wraparound = True)
 	config.epgselection.infobar.roundto = ConfigSelection(default = "15", choices = [("15", _("%d minutes") % 15), ("30", _("%d minutes") % 30), ("60", _("%d minutes") % 60)])
 	config.epgselection.infobar.prevtimeperiod = ConfigSelection(default = "180", choices = [("60", _("%d minutes") % 60), ("90", _("%d minutes") % 90), ("120", _("%d minutes") % 120), ("150", _("%d minutes") % 150), ("180", _("%d minutes") % 180), ("210", _("%d minutes") % 210), ("240", _("%d minutes") % 240), ("270", _("%d minutes") % 270), ("300", _("%d minutes") % 300)])
-	config.epgselection.infobar.primetimehour = ConfigSelectionNumber(default = 20, stepwidth = 1, min = 00, max = 23, wraparound = True)
-	config.epgselection.infobar.primetimemins = ConfigSelectionNumber(default = 00, stepwidth = 1, min = 00, max = 59, wraparound = True)
+	config.epgselection.infobar.primetime = ConfigClock(default = 20 * 60)
 	config.epgselection.infobar.servicetitle_mode = ConfigSelection(default = "servicename", choices = [("servicename", _("Service Name")),("picon", _("Picon")),("picon+servicename", _("Picon and Service Name")) ])
 	config.epgselection.infobar.servfs = ConfigSelectionNumber(default = 0, stepwidth = 1, min = -8, max = 10, wraparound = True)
 	config.epgselection.infobar.eventfs = ConfigSelectionNumber(default = 0, stepwidth = 1, min = -8, max = 10, wraparound = True)
@@ -1096,8 +1095,7 @@ def InitUsageConfig():
 	config.epgselection.grid.btn_infolong = ConfigSelection(choices = [("openEventView", _("Channel Info")), ("openSingleEPG", _("Single EPG"))], default = "Single EPG")
 	config.epgselection.grid.roundto = ConfigSelection(default = "15", choices = [("15", _("%d minutes") % 15), ("30", _("%d minutes") % 30), ("60", _("%d minutes") % 60)])
 	config.epgselection.grid.prevtimeperiod = ConfigSelection(default = "180", choices = [("60", _("%d minutes") % 60), ("90", _("%d minutes") % 90), ("120", _("%d minutes") % 120), ("150", _("%d minutes") % 150), ("180", _("%d minutes") % 180), ("210", _("%d minutes") % 210), ("240", _("%d minutes") % 240), ("270", _("%d minutes") % 270), ("300", _("%d minutes") % 300)])
-	config.epgselection.grid.primetimehour = ConfigSelectionNumber(default = 20, stepwidth = 1, min = 00, max = 23, wraparound = True)
-	config.epgselection.grid.primetimemins = ConfigSelectionNumber(default = 00, stepwidth = 1, min = 00, max = 59, wraparound = True)
+	config.epgselection.grid.primetime = ConfigClock(default = 20 * 60)
 	config.epgselection.grid.servicetitle_mode = ConfigSelection(default = "servicename", choices = [
 		("servicename", _("Service Name")), 
 		("picon", _("Picon")),
@@ -1189,9 +1187,9 @@ def InitUsageConfig():
 	upgradeConfig()
 
 	# now that the config upgrade has been processed, it's safe to reintroduce any settings
-	# required for backwards compatibility with plugins. The will mirror the new settings
-	config.epgselection.enhanced_eventfs = NoSave(config.epgselection.single.eventfs)
-	config.epgselection.enhanced_itemsperpage = NoSave(config.epgselection.single.itemsperpage)
+	# required for backwards compatibility with plugins. These will mirror the new settings
+	config.epgselection.enhanced_eventfs = config.epgselection.single.eventfs
+	config.epgselection.enhanced_itemsperpage = config.epgselection.single.itemsperpage
 
 
 def updateChoices(sel, choices):
@@ -1228,7 +1226,7 @@ def defaultMoviePath():
 
 def upgradeConfig():
 	if config.version.value < 53023:
-		def upgrade(configItem, name, valuemap = None):
+		def upgrade(configItem, name, valuemap = None, mapper = None):
 			value = config.content.stored_values
 			found = True
 			for n in name.split("."):
@@ -1238,7 +1236,11 @@ def upgradeConfig():
 					break
 			if found:
 				# this value is a string, not the actual type required by the config item
-				newvalue = valuemap.get(value, None) if valuemap is not None else None
+				newvalue = None
+				if valuemap is not None:
+					newvalue = valuemap.get(value, None)
+				if newvalue is None and mapper is not None:
+					newvalue = mapper(value)
 				if newvalue is not None:
 					print "[UsageConfig] upgrading %s, mapping value %s to %s" % (name, value, newvalue)
 				else:
@@ -1261,8 +1263,7 @@ def upgradeConfig():
 		upgrade(config.epgselection.infobar.itemsperpage, "epgselection.infobar_itemsperpage")
 		upgrade(config.epgselection.infobar.roundto, "epgselection.infobar_roundto")
 		upgrade(config.epgselection.infobar.prevtimeperiod, "epgselection.infobar_prevtimeperiod")
-		upgrade(config.epgselection.infobar.primetimehour, "epgselection.infobar_primetimehour")
-		upgrade(config.epgselection.infobar.primetimemins, "epgselection.infobar_primetimemins")
+		upgrade(config.epgselection.infobar.primetime, "epgselection.infobar_primetimehour", mapper = lambda v: v + ":00")
 		upgrade(config.epgselection.infobar.servicetitle_mode, "epgselection.infobar_servicetitle_mode", {"servicenumber+picon":"picon+servicenumber", "servicenumber+picon+servicename": "picon+servicenumber+servicename"})
 		upgrade(config.epgselection.infobar.servfs, "epgselection.infobar_servfs")
 		upgrade(config.epgselection.infobar.eventfs, "epgselection.infobar_eventfs")
@@ -1294,8 +1295,7 @@ def upgradeConfig():
 		upgrade(config.epgselection.grid.btn_infolong, "epgselection.graph_infolong", infoMap)
 		upgrade(config.epgselection.grid.roundto, "epgselection.graph_roundto")
 		upgrade(config.epgselection.grid.prevtimeperiod, "epgselection.graph_prevtimeperiod")
-		upgrade(config.epgselection.grid.primetimehour, "epgselection.graph_primetimehour")
-		upgrade(config.epgselection.grid.primetimemins, "epgselection.graph_primetimemins")
+		upgrade(config.epgselection.grid.primetime, "epgselection.graph_primetimehour", mapper = lambda v: v + ":00")
 		upgrade(config.epgselection.grid.servicetitle_mode, "epgselection.graph_servicetitle_mode", {"servicenumber+picon":"picon+servicenumber", "servicenumber+picon+servicename": "picon+servicenumber+servicename"})
 		upgrade(config.epgselection.grid.channel1, "epgselection.graph_channel1")
 		upgrade(config.epgselection.grid.servicename_alignment, "epgselection.graph_servicename_alignment")

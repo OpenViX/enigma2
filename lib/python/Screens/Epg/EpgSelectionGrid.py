@@ -13,7 +13,7 @@ from Screens.EventView import EventViewSimple
 from Screens.Setup import Setup
 
 class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
-	def __init__(self, session, epgConfig = None, isInfobar = False, zapFunc = None, startBouquet = None, startRef = None, bouquets = None):
+	def __init__(self, session, epgConfig = None, isInfobar = False, zapFunc = None, startBouquet = None, startRef = None, bouquets = None, timeFocus = None):
 		self.isInfobar = isInfobar
 		self.epgConfig = epgConfig or config.epgselection.grid
 		self.bouquetRoot = False
@@ -85,7 +85,7 @@ class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 			}, -1)
 
 		self['list'] = EPGListGrid(isInfobar=self.isInfobar, session=self.session, selChangedCB=self.onSelectionChanged, timer=session.nav.RecordTimer, graphic=graphic)
-		self['list'].setTimeFocus(time())
+		self['list'].setTimeFocus(timeFocus or time())
 
 	def createSetup(self):
 		def onSetupClose(test = None):
@@ -233,7 +233,7 @@ class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 
 	def goToPrimeTime(self):
 		basetime = localtime(self['list'].getTimeBase())
-		basetime = (basetime[0], basetime[1], basetime[2], int(self.epgConfig.primetimehour.value), int(self.epgConfig.primetimemins.value), 0, basetime[6], basetime[7], basetime[8])
+		basetime = (basetime[0], basetime[1], basetime[2], self.epgConfig.primetime.value[0], self.epgConfig.primetime.value[1], 0, basetime[6], basetime[7], basetime[8])
 		primetime = mktime(basetime)
 		if primetime + 3600 < time():
 			primetime += 86400
