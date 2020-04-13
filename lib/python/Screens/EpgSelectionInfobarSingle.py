@@ -2,7 +2,7 @@ from enigma import eServiceReference
 
 from Components.ActionMap import HelpableActionMap
 from Components.config import config, configfile
-from Components.Epg.EpgListSingle import EPGListSingle
+from Components.EpgListSingle import EPGListSingle
 from EpgSelectionBase import EPGSelectionBase, EPGServiceZap
 from Components.Sources.Event import Event
 from Screens.Setup import Setup

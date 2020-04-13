@@ -3,7 +3,7 @@ from enigma import eTimer
 
 from Components.ActionMap import HelpableActionMap
 from Components.config import config
-from Components.Epg.EpgListMulti import EPGListMulti
+from Components.EpgListMulti import EPGListMulti
 from EpgSelectionBase import EPGSelectionBase, EPGBouquetSelection, EPGServiceZap
 from Components.Label import Label
 from Components.Pixmap import Pixmap

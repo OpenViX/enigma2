@@ -1,6 +1,6 @@
 from Components.ActionMap import HelpableActionMap
 from Components.EpgList import EPG_TYPE_SINGLE
-from Screens.Epg.EpgSelectionChannel import EPGSelectionChannel
+from Screens.EpgSelectionChannel import EPGSelectionChannel
 
 # We're going to assume that EPGSelection is only used in the SingleEPG sense
 class EPGSelection(EPGSelectionChannel):

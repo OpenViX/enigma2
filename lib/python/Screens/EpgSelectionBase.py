@@ -6,7 +6,7 @@ from Screens.HelpMenu import HelpableScreen
 from Components.ActionMap import ActionMap, HelpableActionMap, HelpableNumberActionMap
 from Components.Button import Button
 from Components.config import config, configfile, ConfigClock, ConfigDateTime
-from Components.Epg.EpgBouquetList import EPGBouquetList
+from Components.EpgBouquetList import EPGBouquetList
 from Components.Label import Label
 from Components.Sources.ServiceEvent import ServiceEvent
 from Components.Sources.Event import Event
@@ -133,7 +133,7 @@ class EPGSelectionBase(Screen, HelpableScreen):
 
 	def openEventView(self):
 		def openSimilarList(eventid, refstr):
-			from Screens.Epg.EpgSelectionSimilar import EPGSelectionSimilar
+			from Screens.EpgSelectionSimilar import EPGSelectionSimilar
 			self.session.open(EPGSelectionSimilar, refstr, eventid)
 		event, service = self['list'].getCurrent()[:2]
 		if event is not None:
@@ -154,7 +154,7 @@ class EPGSelectionBase(Screen, HelpableScreen):
 		self.session.openWithCallback(self.onDateTimeInputClosed, TimeDateInput, EPGSelectionBase.lastEnteredTime, EPGSelectionBase.lastEnteredDate)
 
 	def openSingleEPG(self):
-		from Screens.Epg.EpgSelectionChannel import EPGSelectionChannel
+		from Screens.EpgSelectionChannel import EPGSelectionChannel
 		event, service = self['list'].getCurrent()[:2]
 		if service is not None and service.ref is not None:
 			self.session.open(EPGSelectionChannel, service.ref, time() if event is None else event.getBeginTime())

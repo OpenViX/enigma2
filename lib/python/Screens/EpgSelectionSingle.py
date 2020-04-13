@@ -7,7 +7,7 @@ from Components.About import about
 from Components.ActionMap import HelpableActionMap, HelpableNumberActionMap
 from Components.Button import Button
 from Components.config import config, configfile, ConfigClock
-from Components.Epg.EpgListSingle import EPGListSingle
+from Components.EpgListSingle import EPGListSingle
 from EpgSelectionBase import EPGSelectionBase, EPGServiceNumberSelection, EPGServiceZap
 from Screens.Setup import Setup
 from ServiceReference import ServiceReference

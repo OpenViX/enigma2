@@ -25,12 +25,12 @@ from Screens.ChannelSelection import ChannelSelection, PiPZapSelection, BouquetS
 from Screens.ChoiceBox import ChoiceBox
 from Screens.Dish import Dish
 from Screens.EventView import EventViewEPGSelect, EventViewSimple
-from Screens.Epg.EpgSelectionGrid import EPGSelectionGrid
-from Screens.Epg.EpgSelectionInfobarGrid import EPGSelectionInfobarGrid
-from Screens.Epg.EpgSelectionInfobarSingle import EPGSelectionInfobarSingle
-from Screens.Epg.EpgSelectionMulti import EPGSelectionMulti
-from Screens.Epg.EpgSelectionSimilar import EPGSelectionSimilar
-from Screens.Epg.EpgSelectionSingle import EPGSelectionSingle
+from Screens.EpgSelectionGrid import EPGSelectionGrid
+from Screens.EpgSelectionInfobarGrid import EPGSelectionInfobarGrid
+from Screens.EpgSelectionInfobarSingle import EPGSelectionInfobarSingle
+from Screens.EpgSelectionMulti import EPGSelectionMulti
+from Screens.EpgSelectionSimilar import EPGSelectionSimilar
+from Screens.EpgSelectionSingle import EPGSelectionSingle
 from Screens.InputBox import InputBox
 from Screens.MessageBox import MessageBox
 from Screens.MinuteInput import MinuteInput

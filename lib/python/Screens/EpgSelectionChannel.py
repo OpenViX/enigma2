@@ -1,6 +1,6 @@
 from Components.ActionMap import HelpableActionMap
 from Components.config import config, configfile
-from Components.Epg.EpgListSingle import EPGListSingle
+from Components.EpgListSingle import EPGListSingle
 from EpgSelectionBase import EPGSelectionBase
 from Screens.Setup import Setup
 from ServiceReference import ServiceReference

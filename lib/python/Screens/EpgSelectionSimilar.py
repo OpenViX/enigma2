@@ -1,6 +1,6 @@
 from Components.ActionMap import HelpableActionMap
 from Components.config import config
-from Components.Epg.EpgListSingle import EPGListSingle
+from Components.EpgListSingle import EPGListSingle
 from EpgSelectionBase import EPGSelectionBase
 
 class EPGSelectionSimilar(EPGSelectionBase):

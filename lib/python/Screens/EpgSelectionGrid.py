@@ -4,7 +4,7 @@ from enigma import eTimer
 
 from Components.ActionMap import HelpableActionMap
 from Components.config import config, configfile
-from Components.Epg.EpgListGrid import EPGListGrid, TimelineText, MAX_TIMELINES
+from Components.EpgListGrid import EPGListGrid, TimelineText, MAX_TIMELINES
 from EpgSelectionBase import EPGSelectionBase, EPGBouquetSelection, EPGServiceZap
 from Components.Label import Label
 from Components.Pixmap import Pixmap

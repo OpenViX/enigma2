@@ -1,6 +1,6 @@
 from config import config
 from enigma import eRect
-from Epg.EpgListSingle import EPGListSingle
+from EpgListSingle import EPGListSingle
 
 # keep const values for backward compatibility with plugins
 EPG_TYPE_SINGLE = 0
