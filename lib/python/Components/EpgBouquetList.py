@@ -134,14 +134,14 @@ class EPGBouquetList(GUIComponent):
 		esize = self.l.getItemSize()
 		width = esize.width()
 		height = esize.height()
-		self.bouquet_rect = eRect(0, 0, width, height)
+		self.bouquetRect = eRect(0, 0, width, height)
 
 	def getBouquetRect(self):
-		rc = self.bouquet_rect
+		rc = self.bouquetRect
 		return eRect( rc.left() + (self.instance and self.instance.position().x() or 0), rc.top(), rc.width(), rc.height() )
 
 	def buildEntry(self, name, func):
-		r1 = self.bouquet_rect
+		r1 = self.bouquetRect
 		left = r1.left()
 		top = r1.top()
 		# width = (len(name)+5)*8

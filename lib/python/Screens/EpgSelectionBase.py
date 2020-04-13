@@ -132,9 +132,9 @@ class EPGSelectionBase(Screen, HelpableScreen):
 		self['list'].moveTo(self['list'].instance.moveEnd)
 
 	def openEventView(self):
-		def openSimilarList(eventid, refstr):
+		def openSimilarList(eventId, refstr):
 			from Screens.EpgSelectionSimilar import EPGSelectionSimilar
-			self.session.open(EPGSelectionSimilar, refstr, eventid)
+			self.session.open(EPGSelectionSimilar, refstr, eventId)
 		event, service = self['list'].getCurrent()[:2]
 		if event is not None:
 			self.session.open(EventViewEPGSelect, event, service, callback=self.eventViewCallback, similarEPGCB=openSimilarList)
@@ -280,15 +280,15 @@ class EPGSelectionBase(Screen, HelpableScreen):
 		event, serviceref = self['list'].getCurrent()[:2]
 		if event is None:
 			return
-		eventid = event.getEventId()
+		eventId = event.getEventId()
 		refstr = ':'.join(serviceref.ref.toString().split(':')[:11])
 		title = None
 		for timer in self.session.nav.RecordTimer.timer_list:
-			if timer.eit == eventid and ':'.join(timer.service_ref.ref.toString().split(':')[:11]) == refstr:
-				cb_func1 = lambda ret: self.removeTimer(timer)
-				cb_func2 = lambda ret: self.editTimer(timer)
-				cb_func3 = lambda ret: self.disableTimer(timer)
-				menu = [(_("Delete Timer"), 'CALLFUNC', self.RemoveChoiceBoxCB, cb_func1), (_("Edit Timer"), 'CALLFUNC', self.RemoveChoiceBoxCB, cb_func2), (_("Disable Timer"), 'CALLFUNC', self.RemoveChoiceBoxCB, cb_func3)]
+			if timer.eit == eventId and ':'.join(timer.service_ref.ref.toString().split(':')[:11]) == refstr:
+				cbFunc1 = lambda ret: self.removeTimer(timer)
+				cbFunc2 = lambda ret: self.editTimer(timer)
+				cbFunc3 = lambda ret: self.disableTimer(timer)
+				menu = [(_("Delete Timer"), 'CALLFUNC', self.RemoveChoiceBoxCB, cbFunc1), (_("Edit Timer"), 'CALLFUNC', self.RemoveChoiceBoxCB, cbFunc2), (_("Disable Timer"), 'CALLFUNC', self.RemoveChoiceBoxCB, cbFunc3)]
 				title = _("Select action for timer %s:") % event.getEventName()
 				break
 		else:
@@ -354,7 +354,7 @@ class EPGSelectionBase(Screen, HelpableScreen):
 		event, service = self['list'].getCurrent()[:2]
 		if event is None:
 			return
-		eventid = event.getEventId()
+		eventId = event.getEventId()
 		refstr = service.ref.toString()
 		newEntry = RecordTimerEntry(service, checkOldTimers=True, *parseEvent(event))
 		self.InstantRecordDialog = self.session.instantiateDialog(InstantRecordTimerEntry, newEntry, zap)
@@ -372,16 +372,16 @@ class EPGSelectionBase(Screen, HelpableScreen):
 				simulTimerList = self.session.nav.RecordTimer.record(entry)
 				if simulTimerList is not None:
 					if not entry.repeated and not config.recording.margin_before.value and not config.recording.margin_after.value and len(simulTimerList) > 1:
-						change_time = False
-						conflict_begin = simulTimerList[1].begin
-						conflict_end = simulTimerList[1].end
-						if conflict_begin == entry.end:
+						changeTime = False
+						conflictBegin = simulTimerList[1].begin
+						conflictEnd = simulTimerList[1].end
+						if conflictBegin == entry.end:
 							entry.end -= 30
-							change_time = True
-						elif entry.begin == conflict_end:
+							changeTime = True
+						elif entry.begin == conflictEnd:
 							entry.begin += 30
-							change_time = True
-						if change_time:
+							changeTime = True
+						if changeTime:
 							simulTimerList = self.session.nav.RecordTimer.record(entry)
 					if simulTimerList is not None:
 						self.session.openWithCallback(self.finishSanityCorrection, TimerSanityConflict, simulTimerList)
@@ -406,11 +406,11 @@ class EPGSelectionBase(Screen, HelpableScreen):
 		if event is None:
 			self['key_green'].setText('')
 			return
-		eventid = event.getEventId()
+		eventId = event.getEventId()
 		refstr = ':'.join(service.ref.toString().split(':')[:11])
 		isRecordEvent = False
 		for timer in self.session.nav.RecordTimer.timer_list:
-			if timer.eit == eventid and ':'.join(timer.service_ref.ref.toString().split(':')[:11]) == refstr:
+			if timer.eit == eventId and ':'.join(timer.service_ref.ref.toString().split(':')[:11]) == refstr:
 				isRecordEvent = True
 				break
 		self["key_green"].setText(_("Change Timer") if isRecordEvent else _('Add Timer'))
@@ -506,9 +506,9 @@ class EPGServiceZap:
 					self.session.pip = self.session.instantiateDialog(PictureInPicture)
 					self.session.pip.show()
 					self.session.pipshown = True
-				n_service = self.pipServiceRelation.get(str(service.ref), None)
-				if n_service is not None:
-					serviceRef = eServiceReference(n_service)
+				pipPluginService = self.pipServiceRelation.get(str(service.ref), None)
+				if pipPluginService is not None:
+					serviceRef = eServiceReference(pipPluginService)
 				else:
 					serviceRef = service.ref
 				if self.currch == serviceRef.toString():
@@ -636,7 +636,7 @@ class EPGBouquetSelection:
 	def __init__(self, graphic):
 		self['bouquetlist'] = EPGBouquetList(graphic)
 		self['bouquetlist'].hide()
-		self.bouquetlist_active = False
+		self.bouquetlistActive = False
 
 		self['bouquetokactions'] = ActionMap(['OkCancelActions'],
 			{
@@ -667,7 +667,7 @@ class EPGBouquetSelection:
 		return cur and cur[1]
 
 	def bouquetList(self):
-		if not self.bouquetlist_active:
+		if not self.bouquetlistActive:
 			self.bouquetListShow()
 		else:
 			self.bouquetListHide()
@@ -684,7 +684,7 @@ class EPGBouquetSelection:
 		self['bouquetlist'].show()
 		self['bouquetokactions'].setEnabled(True)
 		self['bouquetcursoractions'].setEnabled(True)
-		self.bouquetlist_active = True
+		self.bouquetlistActive = True
 
 	def bouquetListHide(self):
 		self['bouquetokactions'].setEnabled(False)
@@ -692,7 +692,7 @@ class EPGBouquetSelection:
 		self['bouquetlist'].hide()
 		self['okactions'].setEnabled(True)
 		self['epgcursoractions'].setEnabled(True)
-		self.bouquetlist_active = False
+		self.bouquetlistActive = False
 
 	def moveBouquetUp(self):
 		self['bouquetlist'].moveTo(self['bouquetlist'].instance.moveUp)

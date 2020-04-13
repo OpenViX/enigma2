@@ -34,10 +34,10 @@ class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 		self['change_bouquet'] = Label(_('CHANGE BOUQUET'))
 		self['jump'] = Label(_('JUMP 24 HOURS'))
 		self['page'] = Label(_('PAGE UP/DOWN'))
-		self.time_lines = []
+		self.timeLines = []
 		for x in range(0, MAX_TIMELINES):
 			pm = Pixmap()
-			self.time_lines.append(pm)
+			self.timeLines.append(pm)
 			self['timeline%d' % x] = pm
 
 		self['timeline_now'] = Pixmap()
@@ -97,7 +97,7 @@ class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 	def onCreate(self):
 		self['list'].recalcEventSize()
 		self.bouquetRoot = self.startBouquet.toString().startswith('1:7:0')
-		self['timeline_text'].setEntries(self['list'], self['timeline_now'], self.time_lines, False)
+		self['timeline_text'].setEntries(self['list'], self['timeline_now'], self.timeLines, False)
 		self['lab1'].show()
 		self.show()
 		self.listTimer = eTimer()
@@ -135,7 +135,7 @@ class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 
 	def moveTimeLines(self, force = False):
 		self.updateTimelineTimer.start((60 - int(time()) % 60) * 1000)
-		self['timeline_text'].setEntries(self['list'], self['timeline_now'], self.time_lines, force)
+		self['timeline_text'].setEntries(self['list'], self['timeline_now'], self.timeLines, force)
 		self['list'].l.invalidate()
 
 	def leftPressed(self):

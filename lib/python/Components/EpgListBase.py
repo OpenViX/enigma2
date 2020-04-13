@@ -71,10 +71,10 @@ class EPGListBase(GUIComponent):
 
 		return rc
 
-	def getEventFromId(self, service, eventid):
+	def getEventFromId(self, service, eventId):
 		event = None
-		if self.epgcache is not None and eventid is not None:
-			event = self.epgcache.lookupEventId(service.ref, eventid)
+		if self.epgcache is not None and eventId is not None:
+			event = self.epgcache.lookupEventId(service.ref, eventId)
 		return event
 
 	def getIndexFromService(self, serviceref):
@@ -110,8 +110,8 @@ class EPGListBase(GUIComponent):
 		if tmp is None:
 			return None, None
 		service = ServiceReference(tmp[0])
-		eventid = tmp[1]
-		event = self.getEventFromId(service, eventid)
+		eventId = tmp[1]
+		event = self.getEventFromId(service, eventId)
 		return event, service
 
 	def connectSelectionChanged(func):

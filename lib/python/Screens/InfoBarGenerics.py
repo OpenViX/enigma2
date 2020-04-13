@@ -1708,8 +1708,8 @@ class InfoBarEPG:
 			self.lastservice = self.session.nav.getCurrentlyPlayingServiceOrGroup()
 			self.close()
 
-	def openSimilarList(self, eventid, refstr):
-		self.session.open(EPGSelectionSimilar, refstr, eventid=eventid)
+	def openSimilarList(self, eventId, refstr):
+		self.session.open(EPGSelectionSimilar, refstr, eventId=eventId)
 
 	def getNowNext(self):
 		epglist = [ ]

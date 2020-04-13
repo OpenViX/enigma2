@@ -13,11 +13,11 @@ from EpgListBase import EPGListBase
 SECS_IN_MIN = 60
 
 class EPGListSingle(EPGListBase):
-	def __init__(self, epgConfig, selChangedCB = None, timer = None, time_focus = None):
+	def __init__(self, epgConfig, selChangedCB = None, timer = None, timeFocus = None):
 		EPGListBase.__init__(self, selChangedCB, timer)
 
 		self.epgConfig = epgConfig
-		self.time_focus = time_focus or time()
+		self.timeFocus = timeFocus or time()
 		self.eventFontName = "Regular"
 		if self.screenwidth == 1920:
 			self.eventFontSize = 28
@@ -79,18 +79,18 @@ class EPGListSingle(EPGListBase):
 		left, dateWidth, sepWidth, timesWidth, breakWidth = skin.parameters.get("EPGSingleColumnSpecs", (0, dateW, 5, timesW, 20))
 		if config.usage.time.wide.value:
 			timesWidth = int(timesWidth * wideScale)
-		self._weekday_rect = eRect(left, 0, dateWidth, height)
+		self._weekdayRect = eRect(left, 0, dateWidth, height)
 		left += dateWidth + sepWidth
-		self._datetime_rect = eRect(left, 0, timesWidth, height)
+		self._datetimeRect = eRect(left, 0, timesWidth, height)
 		left += timesWidth + breakWidth
-		self._descr_rect = eRect(left, 0, width - left, height)
+		self._descrRect = eRect(left, 0, width - left, height)
 		self.showend = True  # This is not an unused variable. It is a flag used by EPGSearch plugin
 
 	def buildEntry(self, service, eventId, beginTime, duration, eventName):
-		clock_types = self.getPixmapForEntry(service, eventId, beginTime, duration)
-		r1 = self._weekday_rect
-		r2 = self._datetime_rect
-		r3 = self._descr_rect
+		clockTypes = self.getPixmapForEntry(service, eventId, beginTime, duration)
+		r1 = self._weekdayRect
+		r2 = self._datetimeRect
+		r3 = self._descrRect
 		split = int(r2.width() * 0.55)
 		t = localtime(beginTime)
 		et = localtime(beginTime + duration)
@@ -100,29 +100,29 @@ class EPGListSingle(EPGListBase):
 			(eListboxPythonMultiContent.TYPE_TEXT, r2.left(), r2.top(), split, r2.height(), 0, RT_HALIGN_RIGHT | RT_VALIGN_CENTER, strftime(config.usage.time.short.value + " -", t)),
 			(eListboxPythonMultiContent.TYPE_TEXT, r2.left() + split, r2.top(), r2.width() - split, r2.height(), 0, RT_HALIGN_RIGHT | RT_VALIGN_CENTER, strftime(config.usage.time.short.value, et))
 		]
-		if clock_types:
-			if self.wasEntryAutoTimer and clock_types in (2,7,12):
+		if clockTypes:
+			if self.wasEntryAutoTimer and clockTypes in (2,7,12):
 				if self.screenwidth == 1920:
 					res.extend((
-						(eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, r3.left()+r3.width()-25, (r3.height()/2-13), 25, 25, self.clocks[clock_types]),
+						(eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, r3.left()+r3.width()-25, (r3.height()/2-13), 25, 25, self.clocks[clockTypes]),
 						(eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, r3.left()+r3.width()-52, (r3.height()/2-13), 25, 25, self.autotimericon),
 						(eListboxPythonMultiContent.TYPE_TEXT, r3.left(), r3.top(), r3.width()-52, r3.height(), 0, RT_HALIGN_LEFT|RT_VALIGN_CENTER, eventName)
 						))
 				else:
 					res.extend((
-						(eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, r3.left()+r3.width()-21, (r3.height()/2-11), 21, 21, self.clocks[clock_types]),
+						(eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, r3.left()+r3.width()-21, (r3.height()/2-11), 21, 21, self.clocks[clockTypes]),
 						(eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, r3.left()+r3.width()-42, (r3.height()/2-11), 21, 21, self.autotimericon),
 						(eListboxPythonMultiContent.TYPE_TEXT, r3.left(), r3.top(), r3.width()-42, r3.height(), 0, RT_HALIGN_LEFT|RT_VALIGN_CENTER, eventName)
 						))
 			else:
 				if self.screenwidth == 1920:
 					res.extend((
-						(eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, r3.left()+r3.width()-25, (r3.height()/2-13), 25, 25, self.clocks[clock_types]),
+						(eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, r3.left()+r3.width()-25, (r3.height()/2-13), 25, 25, self.clocks[clockTypes]),
 						(eListboxPythonMultiContent.TYPE_TEXT, r3.left(), r3.top(), r3.width()-25, r3.height(), 0, RT_HALIGN_LEFT|RT_VALIGN_CENTER, eventName)
 						))
 				else:
 					res.extend((
-						(eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, r3.left()+r3.width()-21, (r3.height()/2-11), 21, 21, self.clocks[clock_types]),
+						(eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, r3.left()+r3.width()-21, (r3.height()/2-11), 21, 21, self.clocks[clockTypes]),
 						(eListboxPythonMultiContent.TYPE_TEXT, r3.left(), r3.top(), r3.width()-21, r3.height(), 0, RT_HALIGN_LEFT|RT_VALIGN_CENTER, eventName)
 						))
 		else:
@@ -137,12 +137,12 @@ class EPGListSingle(EPGListBase):
 			sely -= self.listHeight
 		return self.listWidth, sely
 
-	def fillSimilarList(self, refstr, event_id):
+	def fillSimilarList(self, refstr, eventId):
 		# search similar broadcastings
 		t = time()
-		if event_id is None:
+		if eventId is None:
 			return
-		self.list = self.epgcache.search(('RIBDN', 1024, eEPGCache.SIMILAR_BROADCASTINGS_SEARCH, refstr, event_id))
+		self.list = self.epgcache.search(('RIBDN', 1024, eEPGCache.SIMILAR_BROADCASTINGS_SEARCH, refstr, eventId))
 		if self.list and len(self.list):
 			self.list.sort(key=lambda x: x[2])
 		self.l.setList(self.list)
@@ -151,8 +151,8 @@ class EPGListSingle(EPGListBase):
 
 	def fillEPG(self, service):
 		t = time()
-		epg_time = t - config.epg.histminutes.value*SECS_IN_MIN
-		test = [ 'RIBDT', (service.ref.toString(), 0, epg_time, -1) ]
+		epgTime = t - config.epg.histminutes.value*SECS_IN_MIN
+		test = [ 'RIBDT', (service.ref.toString(), 0, epgTime, -1) ]
 		self.list = self.queryEPG(test)
 
 		odds = chr(0xc2) + chr(0x86)
@@ -176,16 +176,16 @@ class EPGListSingle(EPGListBase):
 					break
 		# Add explicit gaps if data isn't available.
 		for i in range(len(self.list) - 1, 0, -1):
-			this_beg = self.list[i][2]
-			prev_end = self.list[i-1][2] + self.list[i-1][3]
-			if prev_end + 5 * SECS_IN_MIN < this_beg:
-				self.list.insert(i, (self.list[i][0], None, prev_end, this_beg - prev_end, None))
+			thisBeg = self.list[i][2]
+			prevEnd = self.list[i-1][2] + self.list[i-1][3]
+			if prevEnd + 5 * SECS_IN_MIN < thisBeg:
+				self.list.insert(i, (self.list[i][0], None, prevEnd, thisBeg - prevEnd, None))
 		self.l.setList(self.list)
 		self.recalcEntrySize()
 		# select the event that contains the requested 
 		idx = 0
 		for x in self.list:
-			if self.time_focus < x[2]+x[3]:
+			if self.timeFocus < x[2]+x[3]:
 				self.instance.moveSelectionTo(idx)
 				break
 			idx += 1
@@ -193,14 +193,14 @@ class EPGListSingle(EPGListBase):
 	def sortEPG(self, type):
 		list = self.list
 		if list:
-			event_id = self.getSelectedEventId()
+			eventId = self.getSelectedEventId()
 			if type == 1:
 				list.sort(key=lambda x: (x[4] and x[4].lower(), x[2]))
 			else:
 				assert(type == 0)
 				list.sort(key=lambda x: x[2])
 			self.l.invalidate()
-			self.moveToEventId(event_id)
+			self.moveToEventId(eventId)
 
 	def getSelectedEventId(self):
 		x = self.l.getCurrentSelection()

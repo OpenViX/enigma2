@@ -16,7 +16,7 @@ class EPGSelectionMulti(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 		EPGServiceZap.__init__(self, config.epgselection.multi, zapFunc)
 
 		self.skinName = ['MultiEPG', 'EPGSelectionMulti']
-		self.ask_time = -1
+		self.askTime = -1
 
 		self['now_button'] = Pixmap()
 		self['next_button'] = Pixmap()
@@ -74,7 +74,7 @@ class EPGSelectionMulti(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 
 	def loadEPGData(self):
 		self._populateBouquetList()
-		self['list'].fillEPG(self.services, self.ask_time)
+		self['list'].fillEPG(self.services, self.askTime)
 		self['list'].moveToService(self.startRef)
 		self['lab1'].hide()
 
@@ -90,7 +90,7 @@ class EPGSelectionMulti(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 
 	def bouquetChanged(self):
 		self.services = self.getBouquetServices(self.getCurrentBouquet())
-		self['list'].fillEPG(self.services, self.ask_time)
+		self['list'].fillEPG(self.services, self.askTime)
 		self['list'].instance.moveSelectionTo(0)
 		self.setTitle(self['bouquetlist'].getCurrentBouquet())
 
@@ -104,8 +104,8 @@ class EPGSelectionMulti(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 
 	def onDateTimeInputClosed(self, ret):
 		if len(ret) > 1 and ret[0]:
-			self.ask_time = ret[1]
-			self['list'].fillEPG(self.services, self.ask_time)
+			self.askTime = ret[1]
+			self['list'].fillEPG(self.services, self.askTime)
 
 	def eventViewCallback(self, setEvent, setService, val):
 		l = self['list']
@@ -155,7 +155,7 @@ class EPGSelectionMulti(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 
 	def onSelectionChanged(self):
 		count = self['list'].getCurrentChangeCount()
-		if self.ask_time != -1:
+		if self.askTime != -1:
 			self.applyButtonState(0)
 		elif count > 1:
 			self.applyButtonState(3)

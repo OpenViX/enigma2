@@ -31,6 +31,7 @@ class Rect:
 	def width(self):
 		return self.w
 
+# keep for backwards compatibility with plugins, including the parameter naming
 class EPGList(EPGListSingle):
 	def __init__(self, type = EPG_TYPE_SINGLE, selChangedCB = None, timer = None, time_epoch = 120, overjump_empty = False, graphic = False):
 		if type != EPG_TYPE_SINGLE:
@@ -54,27 +55,27 @@ class EPGList(EPGListSingle):
 	# these properties are expected to be Rect not eRect
 	@property
 	def weekday_rect(self):
-		r = self._weekday_rect
+		r = self._weekdayRect
 		return Rect(r.left(), r.top(), r.width(), r.height())
 
 	@weekday_rect.setter
 	def weekday_rect(self, r):
-		self._weekday_rect = eRect(r.x, r.y, r.w, r.h)
+		self._weekdayRect = eRect(r.x, r.y, r.w, r.h)
 
 	@property
 	def descr_rect(self):
-		r = self._descr_rect
+		r = self._descrRect
 		return Rect(r.left(), r.top(), r.width(), r.height())
 
 	@descr_rect.setter
 	def descr_rect(self, r):
-		self._descr_rect = eRect(r.x, r.y, r.w, r.h)
+		self._descrRect = eRect(r.x, r.y, r.w, r.h)
 
 	@property
 	def datetime_rect(self):
-		r = self._datetime_rect
+		r = self._datetimeRect
 		return Rect(r.left(), r.top(), r.width(), r.height())
 
 	@datetime_rect.setter
 	def datetime_rect(self, r):
-		self._datetime_rect = eRect(r.x, r.y, r.w, r.h)
+		self._datetimeRect = eRect(r.x, r.y, r.w, r.h)

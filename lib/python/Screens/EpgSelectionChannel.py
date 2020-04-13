@@ -6,7 +6,7 @@ from Screens.Setup import Setup
 from ServiceReference import ServiceReference
 
 class EPGSelectionChannel(EPGSelectionBase):
-	def __init__(self, session, service, time_focus = None):
+	def __init__(self, session, service, timeFocus = None):
 		EPGSelectionBase.__init__(self, session, startRef = service)
 
 		self.skinName = ['SingleEPG', 'EPGSelection']
@@ -25,7 +25,7 @@ class EPGSelectionChannel(EPGSelectionBase):
 			}, -1)
 
 		self['list'] = EPGListSingle(selChangedCB = self.onSelectionChanged, timer = session.nav.RecordTimer,
-			epgConfig = config.epgselection.single, time_focus = time_focus)
+			epgConfig = config.epgselection.single, timeFocus = timeFocus)
 
 	def createSetup(self):
 		self.closeEventViewDialog()

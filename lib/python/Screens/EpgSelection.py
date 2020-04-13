@@ -2,7 +2,8 @@ from Components.ActionMap import HelpableActionMap
 from Components.EpgList import EPG_TYPE_SINGLE
 from Screens.EpgSelectionChannel import EPGSelectionChannel
 
-# We're going to assume that EPGSelection is only used in the SingleEPG sense
+# Keep for backwards compatibility with plugins, including the parameter naming
+# This class assumes that EPGSelection is only used in the SingleEPG sense
 class EPGSelection(EPGSelectionChannel):
 	def __init__(self, session, service = None, zapFunc = None, eventid = None, bouquetChangeCB = None, serviceChangeCB = None, EPGtype = 'similar', StartBouquet = None, StartRef = None, bouquets = None):
 		if EPGtype not in ('similar', 'single'):

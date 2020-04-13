@@ -27,12 +27,12 @@ class EPGListGrid(EPGListBase):
 		self.isInfobar = isInfobar
 		self.epgConfig = config.epgselection.infobar if isInfobar else config.epgselection.grid
 		self.session = session
-		self.time_focus = time() # default to now
+		self.timeFocus = time() # default to now
 		self.selectedEventIndex = None
 		self.selectedService = None
-		self.selection_rect = None
-		self.event_rect = None
-		self.service_rect = None
+		self.selectionRect = None
+		self.eventRect = None
+		self.serviceRect = None
 		self.showPicon = False
 		self.showServiceName = True
 		self.showServiceNumber = False
@@ -104,9 +104,9 @@ class EPGListGrid(EPGListBase):
 			self.eventFontSize = 20
 
 		self.l.setBuildFunc(self.buildEntry)
-		self.round_by_secs = int(self.epgConfig.roundto.value) * SECS_IN_MIN
-		self.time_epoch = int(self.epgConfig.prevtimeperiod.value)
-		self.time_epoch_secs = self.time_epoch * SECS_IN_MIN
+		self.roundBySecs = int(self.epgConfig.roundto.value) * SECS_IN_MIN
+		self.timeEpoch = int(self.epgConfig.prevtimeperiod.value)
+		self.timeEpochSecs = self.timeEpoch * SECS_IN_MIN
 		self.serviceTitleMode = self.epgConfig.servicetitle_mode.value.split("+")
 		self.showServiceNumber = "servicenumber" in self.serviceTitleMode
 		self.showServiceName = "servicename" in self.serviceTitleMode
@@ -190,32 +190,32 @@ class EPGListGrid(EPGListBase):
 
 		# cache service number width
 		if self.showServiceNumber:
-			font_conf = self.epgConfig.servfs.value
-			if font_conf != None:
-				font = gFont(self.serviceFontName, self.serviceFontSize + font_conf)
+			fontConf = self.epgConfig.servfs.value
+			if fontConf != None:
+				font = gFont(self.serviceFontName, self.serviceFontSize + fontConf)
 				self.serviceNumberWidth = getTextBoundarySize(self.instance, font, self.instance.size(), "0000").width()
 		return rc
 
-	def __setTimeBase(self, time_center):
+	def __setTimeBase(self, timeCenter):
 		# prefer time being aligned in the middle of the EPG, but clip to the maximum EPG data history
-		self.time_base = int(max(time_center - self.time_epoch_secs // 2, 
-			time() - (int(config.epg.histminutes.value) + self.time_epoch_secs // 4) * SECS_IN_MIN))
+		self.timeBase = int(max(timeCenter - self.timeEpochSecs // 2, 
+			time() - (int(config.epg.histminutes.value) + self.timeEpochSecs // 4) * SECS_IN_MIN))
 		# round up so that we favour a bit more info to the right of the timeline
-		self.time_base += -self.time_base % self.round_by_secs
+		self.timeBase += -self.timeBase % self.roundBySecs
 
-	def setTimeFocus(self, time_focus):
-		self.__setTimeBase(time_focus)
-		self.time_focus = time_focus
+	def setTimeFocus(self, timeFocus):
+		self.__setTimeBase(timeFocus)
+		self.timeFocus = timeFocus
 
 	def setTimeEpoch(self, epoch):
-		center = epoch * SECS_IN_MIN * (self.time_focus - self.time_base) // self.time_epoch_secs
-		self.time_epoch = epoch
-		self.time_epoch_secs = epoch * SECS_IN_MIN
+		center = epoch * SECS_IN_MIN * (self.timeFocus - self.timeBase) // self.timeEpochSecs
+		self.timeEpoch = epoch
+		self.timeEpochSecs = epoch * SECS_IN_MIN
 		self.__setTimeBase(center)
 		self.fillEPG()
 
 	def getTimeEpoch(self):
-		return self.time_epoch
+		return self.timeEpoch
 
 	def getIndexFromService(self, serviceref):
 		if serviceref is not None:
@@ -233,10 +233,10 @@ class EPGListGrid(EPGListBase):
 		refstr = self.selectedService[0]
 		if self.selectedEventIndex is None or not events or (self.selectedEventIndex and events and self.selectedEventIndex > len(events)-1):
 			return None, ServiceReference(refstr)
-		event = events[self.selectedEventIndex] #(event_id, event_title, begin_time, duration)
-		eventid = event[0]
+		event = events[self.selectedEventIndex] #(eventId, eventTitle, beginTime, duration)
+		eventId = event[0]
 		service = ServiceReference(refstr)
-		event = self.getEventFromId(service, eventid) # get full event info
+		event = self.getEventFromId(service, eventId) # get full event info
 		return event, service
 
 	def setTimeFocusFromEvent(self, selectedEventIndex):
@@ -247,14 +247,14 @@ class EPGListGrid(EPGListBase):
 				event = events[self.selectedEventIndex]
 
 				# clip the selected event times to the current screen
-				ev_time = max(self.time_base, event[2])
-				ev_end_time = min(event[2] + event[3], self.time_base + self.time_epoch_secs)
-				if ev_time <= time() < ev_end_time:
+				evTime = max(self.timeBase, event[2])
+				evEndTime = min(event[2] + event[3], self.timeBase + self.timeEpochSecs)
+				if evTime <= time() < evEndTime:
 					# selected event contains the current time, user is interested in current things
-					self.time_focus = time()
+					self.timeFocus = time()
 				else:
 					# user is looking at things roughly around the middle of the selected event
-					self.time_focus = ev_time + (ev_end_time - ev_time) // 2
+					self.timeFocus = evTime + (evEndTime - evTime) // 2
 		else:
 			self.selectedEventIndex = None
 
@@ -270,13 +270,13 @@ class EPGListGrid(EPGListBase):
 
 		if not self.isInfobar and config.epgselection.grid.heightswitch.value:
 			if ((self.listHeight / config.epgselection.grid.itemsperpage.value) / 3) >= 27:
-				tmp_itemHeight = ((self.listHeight / config.epgselection.grid.itemsperpage.value) / 3)
+				tmpItemHeight = ((self.listHeight / config.epgselection.grid.itemsperpage.value) / 3)
 			elif ((self.listHeight / config.epgselection.grid.itemsperpage.value) / 2) >= 27:
-				tmp_itemHeight = ((self.listHeight / config.epgselection.grid.itemsperpage.value) / 2)
+				tmpItemHeight = ((self.listHeight / config.epgselection.grid.itemsperpage.value) / 2)
 			else:
-				tmp_itemHeight = 27
-			if tmp_itemHeight < itemHeight:
-				itemHeight = tmp_itemHeight
+				tmpItemHeight = 27
+			if tmpItemHeight < itemHeight:
+				itemHeight = tmpItemHeight
 			else:
 				if ((self.listHeight / config.epgselection.grid.itemsperpage.value) * 3) <= 45:
 					itemHeight = ((self.listHeight / config.epgselection.grid.itemsperpage.value) * 3)
@@ -295,7 +295,7 @@ class EPGListGrid(EPGListBase):
 		self.l.setFont(0, gFont(self.serviceFontName, self.serviceFontSize + self.epgConfig.servfs.value))
 		self.l.setFont(1, gFont(self.eventFontName, self.eventFontSize + self.epgConfig.eventfs.value))
 
-	def isSelectable(self, service, service_name, events, picon, channel):
+	def isSelectable(self, service, serviceName, events, picon, channel):
 		return (events and len(events) and True) or False
 
 	def postWidgetCreate(self, instance):
@@ -323,12 +323,12 @@ class EPGListGrid(EPGListBase):
 			events = self.selectedService[2]
 			if events and len(events):
 				self.selectedEventIndex = 0
-				if self.time_focus >= events[0][2]:
+				if self.timeFocus >= events[0][2]:
 					for event in events: #iterate all events
-						ev_time = event[2]
-						ev_end_time = ev_time + event[3]
+						evTime = event[2]
+						evEndTime = evTime + event[3]
 						self.selectedEventIndex += 1
-						if ev_time <= self.time_focus < ev_end_time:
+						if evTime <= self.timeFocus < evEndTime:
 							break
 					self.selectedEventIndex -= 1
 
@@ -348,9 +348,9 @@ class EPGListGrid(EPGListBase):
 			if piconWidth > w - 2 * self.serviceBorderWidth:
 				piconWidth = w - 2 * self.serviceBorderWidth
 			piconHeight = height - 2 * self.serviceBorderWidth
-			self.picon_size = eSize(piconWidth, piconHeight)
-		self.service_rect = eRect(0, 0, w, height)
-		self.event_rect = eRect(w, 0, width - w, height)
+			self.piconSize = eSize(piconWidth, piconHeight)
+		self.serviceRect = eRect(0, 0, w, height)
+		self.eventRect = eRect(w, 0, width - w, height)
 
 	def calcEventPosAndWidthHelper(self, stime, duration, start, end, width):
 		xpos = (stime - start) * width / (end - start)
@@ -363,9 +363,9 @@ class EPGListGrid(EPGListBase):
 			ewidth = width - xpos
 		return xpos, ewidth
 
-	def buildEntry(self, service, service_name, events, picon, channel):
-		r1 = self.service_rect
-		r2 = self.event_rect
+	def buildEntry(self, service, serviceName, events, picon, channel):
+		r1 = self.serviceRect
+		r2 = self.eventRect
 		left = r2.left()
 		top = r2.top()
 		width = r2.width()
@@ -410,9 +410,9 @@ class EPGListGrid(EPGListBase):
 				if picon is None: # go find picon and cache its location
 					picon = getPiconName(service)
 					curIdx = self.l.getCurrentSelectionIndex()
-					self.list[curIdx] = (service, service_name, events, picon, channel)
-				piconWidth = self.picon_size.width()
-				piconHeight = self.picon_size.height()
+					self.list[curIdx] = (service, serviceName, events, picon, channel)
+				piconWidth = self.piconSize.width()
+				piconHeight = self.piconSize.height()
 				displayPicon = None
 				if picon != "":
 					displayPicon = loadPNG(picon)
@@ -430,7 +430,7 @@ class EPGListGrid(EPGListBase):
 						pos = (colX, r1.top() + self.serviceBorderWidth),
 						size = (piconWidth, r1.height() - 2 * self.serviceBorderWidth),
 						font = namefont, flags = namefontflag,
-						text = service_name,
+						text = serviceName,
 						color = serviceForeColor, color_sel = serviceForeColor,
 						backcolor = serviceBackColor, backcolor_sel = serviceBackColor))
 				colX += piconWidth
@@ -461,7 +461,7 @@ class EPGListGrid(EPGListBase):
 					pos = (colX + self.serviceNamePadding, r1.top() + self.serviceBorderWidth),
 					size = (namewidth, r1.height() - 2 * self.serviceBorderWidth),
 					font = namefont, flags = namefontflag,
-					text = service_name,
+					text = serviceName,
 					color = serviceForeColor, color_sel = serviceForeColor,
 					backcolor = serviceBackColor, backcolor_sel = serviceBackColor))
 				colX += namewidth + 2 * self.serviceNamePadding
@@ -532,27 +532,27 @@ class EPGListGrid(EPGListBase):
 
 		# Events for service
 		if events:
-			start = self.time_base
-			end = start + self.time_epoch_secs
+			start = self.timeBase
+			end = start + self.timeEpochSecs
 
 			now = time()
-			for ev in events:  #(event_id, event_title, begin_time, duration)
+			for ev in events:  #(eventId, eventTitle, beginTime, duration)
 				stime = ev[2]
 				duration = ev[3]
 
 				xpos, ewidth = self.calcEventPosAndWidthHelper(stime, duration, start, end, width)
-				clock_types = self.getPixmapForEntry(service, ev[0], stime, duration)
+				clockTypes = self.getPixmapForEntry(service, ev[0], stime, duration)
 
 				foreColor = self.foreColor
 				backColor = self.backColor
 				foreColorSel = self.foreColorSelected
 				backColorSel = self.backColorSelected
-				if clock_types is not None and clock_types == 2:
+				if clockTypes is not None and clockTypes == 2:
 					foreColor = self.foreColorRecord
 					backColor = self.backColorRecord
 					foreColorSel = self.foreColorRecordSelected
 					backColorSel = self.backColorRecordSelected
-				elif clock_types is not None and clock_types == 7:
+				elif clockTypes is not None and clockTypes == 7:
 					foreColor = self.foreColorZap
 					backColor = self.backColorZap
 					foreColorSel = self.foreColorZapSelected
@@ -563,9 +563,9 @@ class EPGListGrid(EPGListBase):
 					foreColorSel = self.foreColorNowSelected
 					backColorSel = self.backColorNowSelected
 
-				if selected and self.selection_rect.left() == xpos + left:
-					if clock_types is not None:
-						clocks = self.selclocks[clock_types]
+				if selected and self.selectionRect.left() == xpos + left:
+					if clockTypes is not None:
+						clocks = self.selclocks[clockTypes]
 					borderTopPix = self.borderSelectedTopPix
 					borderLeftPix = self.borderSelectedLeftPix
 					borderBottomPix = self.borderSelectedBottomPix
@@ -576,17 +576,17 @@ class EPGListGrid(EPGListBase):
 					else:
 						bgpng = self.selEvPix
 				else:
-					if clock_types is not None:
-						clocks = self.clocks[clock_types]
+					if clockTypes is not None:
+						clocks = self.clocks[clockTypes]
 					borderTopPix = self.borderTopPix
 					borderLeftPix = self.borderLeftPix
 					borderBottomPix = self.borderBottomPix
 					borderRightPix = self.borderRightPix
 					infoPix = self.InfoPix
 					bgpng = self.othEvPix
-					if clock_types is not None and clock_types == 2:
+					if clockTypes is not None and clockTypes == 2:
 						bgpng = self.recEvPix
-					elif clock_types is not None and clock_types == 7:
+					elif clockTypes is not None and clockTypes == 7:
 						bgpng = self.zapEvPix
 					elif stime <= now < (stime + duration) and config.epgselection.grid.highlight_current_events.value:
 						bgpng = self.nowEvPix
@@ -654,7 +654,7 @@ class EPGListGrid(EPGListBase):
 								flags = BT_SCALE))
 
 				# recording icons
-				if clock_types is not None and ewidth > 23:
+				if clockTypes is not None and ewidth > 23:
 					if config.epgselection.grid.rec_icon_height.value != "hide":
 						if config.epgselection.grid.rec_icon_height.value == "middle":
 							RecIconHDheight = top+(height/2)-11
@@ -665,12 +665,12 @@ class EPGListGrid(EPGListBase):
 						else:
 							RecIconHDheight = top+height-22
 							RecIconFHDheight = top+height-26
-						if clock_types in (1,6,11):
+						if clockTypes in (1,6,11):
 							if self.screenwidth == 1920:
 								pos = (left+xpos+ewidth-15, RecIconFHDheight)
 							else:
 								pos = (left+xpos+ewidth-13, RecIconHDheight)
-						elif clock_types in (5,10,15):
+						elif clockTypes in (5,10,15):
 							if self.screenwidth == 1920:
 								pos = (left+xpos-26, RecIconFHDheight)
 							else:
@@ -688,7 +688,7 @@ class EPGListGrid(EPGListBase):
 							res.append(MultiContentEntryPixmapAlphaBlend(
 								pos = pos, size = (21, 21),
 								png = clocks))
-						if self.wasEntryAutoTimer and clock_types in (2,7,12):
+						if self.wasEntryAutoTimer and clockTypes in (2,7,12):
 							if self.screenwidth == 1920:
 								res.append(MultiContentEntryPixmapAlphaBlend(
 									pos = (pos[0]-25,pos[1]), size = (25, 25),
@@ -708,75 +708,75 @@ class EPGListGrid(EPGListBase):
 		return self.listWidth, sely
 
 	def refreshSelection(self):
-		events = self.selectedService and self.selectedService[2] #(service, service_name, events, picon)
+		events = self.selectedService and self.selectedService[2] #(service, serviceName, events, picon)
 		if events and self.selectedEventIndex is not None and self.selectedEventIndex < len(events):
-			event = events[self.selectedEventIndex] #(event_id, event_title, begin_time, duration)
+			event = events[self.selectedEventIndex] #(eventId, eventTitle, beginTime, duration)
 			xpos, width = self.calcEventPosAndWidthHelper(event[2], event[3], 
-				self.time_base, self.time_base + self.time_epoch_secs, self.event_rect.width())
-			self.selection_rect = eRect(xpos + self.event_rect.left(), 0, width, self.event_rect.height())
+				self.timeBase, self.timeBase + self.timeEpochSecs, self.eventRect.width())
+			self.selectionRect = eRect(xpos + self.eventRect.left(), 0, width, self.eventRect.height())
 		else:
-			self.selection_rect = eRect(self.event_rect.left(), self.event_rect.top(), self.event_rect.width(), self.event_rect.height())
+			self.selectionRect = eRect(self.eventRect.left(), self.eventRect.top(), self.eventRect.width(), self.eventRect.height())
 		# have to copy construct the parameter for this native function or odd selection behaviour results
-		self.l.setSelectionClip(eRect(self.selection_rect.left(), self.selection_rect.top(), self.selection_rect.width(), self.selection_rect.height()), False)
+		self.l.setSelectionClip(eRect(self.selectionRect.left(), self.selectionRect.top(), self.selectionRect.width(), self.selectionRect.height()), False)
 		self.selectionChanged()
 
 	def selEvent(self, dir, visible = True):
 		if not self.selectedService:
 			return False
 
-		valid_event = self.selectedEventIndex is not None
-		focus_event = None
-		time_base = self.time_base
-		time_focus = self.time_focus
+		validEvent = self.selectedEventIndex is not None
+		focusEvent = None
+		timeBase = self.timeBase
+		timeFocus = self.timeFocus
 		if dir == +1:   # Next event
-			events = self.selectedService[2] #(service, service_name, events, picon)
-			if valid_event and self.selectedEventIndex + 1 < len(events):
+			events = self.selectedService[2] #(service, serviceName, events, picon)
+			if validEvent and self.selectedEventIndex + 1 < len(events):
 				self.setTimeFocusFromEvent(self.selectedEventIndex + 1)
 				self.refreshSelection()
 				self.l.invalidateEntry(self.l.getCurrentSelectionIndex())
 				return False    # Same page
 			# Next event is the first item on the next page
-			time_base += self.time_epoch_secs
-			focus_event = 0
+			timeBase += self.timeEpochSecs
+			focusEvent = 0
 		elif dir == -1:   # Prev event
-			if valid_event and self.selectedEventIndex > 0:
+			if validEvent and self.selectedEventIndex > 0:
 				self.setTimeFocusFromEvent(self.selectedEventIndex - 1)
 				self.refreshSelection()
 				self.l.invalidateEntry(self.l.getCurrentSelectionIndex())
 				return False    # Same page
 			# Prev event is the last item on the previous page
-			time_base -= self.time_epoch_secs
-			focus_event = 65535
+			timeBase -= self.timeEpochSecs
+			focusEvent = 65535
 		elif dir == +2: # Next page
-			time_base += self.time_epoch_secs
-			time_focus += self.time_epoch_secs
+			timeBase += self.timeEpochSecs
+			timeFocus += self.timeEpochSecs
 		elif dir == +24: # Next day
-			time_base += 86400
-			time_focus += 86400
+			timeBase += 86400
+			timeFocus += 86400
 		elif dir == -2:
-			time_base -= self.time_epoch_secs
-			time_focus -= self.time_epoch_secs
+			timeBase -= self.timeEpochSecs
+			timeFocus -= self.timeEpochSecs
 		elif dir == -24: # Prevous day
 			# keep the time base within the bounds of EPG data, rounded to a whole page
-			abs0 = int(time() - (int(config.epg.histminutes.value) + self.time_epoch_secs // 4) * SECS_IN_MIN)
-			abs0 += -abs0 % self.round_by_secs
-			time_base = max(abs0, time_base - 86400)
-			time_focus = max(abs0, time_focus - 86400)
+			abs0 = int(time() - (int(config.epg.histminutes.value) + self.timeEpochSecs // 4) * SECS_IN_MIN)
+			abs0 += -abs0 % self.roundBySecs
+			timeBase = max(abs0, timeBase - 86400)
+			timeFocus = max(abs0, timeFocus - 86400)
 
-		if time_base < self.time_base:
+		if timeBase < self.timeBase:
 			# Prevent scrolling if it'll go past the EPG history limit
 			# Work out the earliest we can go back to
 			abs0 = int(time() - int(config.epg.histminutes.value) * SECS_IN_MIN)
-			if time_base < abs0 - 3 * self.time_epoch_secs // 4:
+			if timeBase < abs0 - 3 * self.timeEpochSecs // 4:
 				return False
 
 		# If we are still here and moving - do the move now and return True to
 		# indicate we've changed pages
-		self.time_base = time_base
-		self.time_focus = time_focus
+		self.timeBase = timeBase
+		self.timeFocus = timeFocus
 		self.fillEPGNoRefresh()
-		if focus_event is not None:
-			self.setTimeFocusFromEvent(focus_event)
+		if focusEvent is not None:
+			self.setTimeFocusFromEvent(focusEvent)
 		self.refreshSelection()
 		return True
 
@@ -813,22 +813,22 @@ class EPGListGrid(EPGListBase):
 			self.graphicsloaded = True
 
 		if services is None:
-			test = [ (service[0], 0, self.time_base, self.time_epoch) for service in self.list ]
+			test = [ (service[0], 0, self.timeBase, self.timeEpoch) for service in self.list ]
 			serviceList = self.list
 			piconIdx = 3
 			channelIdx = 4
 		else:
 			self.selectedEventIndex = None
 			self.selectedService = None
-			test = [ (service.ref.toString(), 0, self.time_base, self.time_epoch) for service in services ]
+			test = [ (service.ref.toString(), 0, self.timeBase, self.timeEpoch) for service in services ]
 			serviceList = services
 			piconIdx = 0
 			channelIdx = 0
 
 		test.insert(0, 'XRnITBD') #return record, service ref, service name, event id, event title, begin time, duration
-		epg_data = self.queryEPG(test)
+		epgData = self.queryEPG(test)
 		self.list = [ ]
-		event_list = None
+		eventList = None
 		serviceRef = ""
 		serviceName = ""
 
@@ -836,19 +836,19 @@ class EPGListGrid(EPGListBase):
 			picon = None if piconIdx == 0 else serviceList[serviceIdx][piconIdx]
 			# We pass the serviceref if we don't have the channel number yet, so it can be grabbed
 			channel = serviceList[serviceIdx] if channelIdx == 0 else serviceList[serviceIdx][channelIdx]
-			self.list.append((serviceRef, serviceName, event_list[0][0] is not None and event_list or None, picon, channel))
+			self.list.append((serviceRef, serviceName, eventList[0][0] is not None and eventList or None, picon, channel))
 
 		serviceIdx = 0
-		for x in epg_data:
+		for x in epgData:
 			if serviceRef != x[0]:
-				if event_list:
+				if eventList:
 					appendService()
 					serviceIdx += 1
 				serviceRef = x[0]
 				serviceName = x[1]
-				event_list = [ ]
-			event_list.append((x[2], x[3], x[4], x[5])) #(event_id, event_title, begin_time, duration)
-		if event_list and len(event_list) > 0:
+				eventList = [ ]
+			eventList.append((x[2], x[3], x[4], x[5])) #(eventId, eventTitle, beginTime, duration)
+		if eventList and len(eventList) > 0:
 			appendService()
 
 		self.l.setList(self.list)
@@ -863,15 +863,15 @@ class EPGListGrid(EPGListBase):
 		return None
 
 	def getEventRect(self):
-		rc = self.event_rect
+		rc = self.eventRect
 		return eRect(rc.left() + (self.instance and self.instance.position().x() or 0), rc.top(), rc.width(), rc.height())
 
 	def getServiceRect(self):
-		rc = self.service_rect
+		rc = self.serviceRect
 		return eRect(rc.left() + (self.instance and self.instance.position().x() or 0), rc.top(), rc.width(), rc.height())
 
 	def getTimeBase(self):
-		return self.time_base
+		return self.timeBase
 
 
 class TimelineText(GUIComponent):
@@ -888,8 +888,8 @@ class TimelineText(GUIComponent):
 		self.borderColor = 0x000000
 		self.backColor = 0x000000
 		self.borderWidth = 1
-		self.time_base = 0
-		self.time_epoch = 0
+		self.timeBase = 0
+		self.timeEpoch = 0
 		self.timelineFontName = "Regular"
 		self.timelineFontSize = 20
 		self.datefmt = ""
@@ -928,50 +928,50 @@ class TimelineText(GUIComponent):
 		return rc
 
 	def setTimeLineFontsize(self):
-		font_conf = self.epgConfig.timelinefs.value
-		if font_conf != None:
-			self.l.setFont(0, gFont(self.timelineFontName, self.timelineFontSize + font_conf))
+		fontConf = self.epgConfig.timelinefs.value
+		if fontConf != None:
+			self.l.setFont(0, gFont(self.timelineFontName, self.timelineFontSize + fontConf))
 
 	def postWidgetCreate(self, instance):
 		self.setTimeLineFontsize()
 		instance.setContent(self.l)
 
-	def setEntries(self, l, timeline_now, time_lines, force):
-		event_rect = l.getEventRect()
-		time_epoch = l.getTimeEpoch()
-		time_base = l.getTimeBase()
+	def setEntries(self, l, timelineNow, timeLines, force):
+		eventRect = l.getEventRect()
+		timeEpoch = l.getTimeEpoch()
+		timeBase = l.getTimeBase()
 
-		if event_rect is None or time_epoch is None or time_base is None:
+		if eventRect is None or timeEpoch is None or timeBase is None:
 			return
 
-		eventLeft = event_rect.left()
+		eventLeft = eventRect.left()
 
 		res = [ None ]
 
-		# Note: event_rect and service_rect are relative to the timeline_text position
+		# Note: eventRect and serviceRect are relative to the timeline text position
 		# while the time lines are relative to the GraphEPG screen position!
-		if self.time_base != time_base or self.time_epoch != time_epoch or force:
-			service_rect = l.getServiceRect()
-			time_steps = 60 if time_epoch > 180 else 30
-			num_lines = time_epoch / time_steps
-			incWidth = event_rect.width() / num_lines
-			timeStepsCalc = time_steps * SECS_IN_MIN
+		if self.timeBase != timeBase or self.timeEpoch != timeEpoch or force:
+			serviceRect = l.getServiceRect()
+			timeSteps = 60 if timeEpoch > 180 else 30
+			numLines = timeEpoch / timeSteps
+			incWidth = eventRect.width() / numLines
+			timeStepsCalc = timeSteps * SECS_IN_MIN
 
 			nowTime = localtime(time())
-			begTime = localtime(time_base)
-			serviceWidth = service_rect.width()
+			begTime = localtime(timeBase)
+			serviceWidth = serviceRect.width()
 			if nowTime.tm_year == begTime.tm_year and nowTime.tm_yday == begTime.tm_yday:
 				datestr = _("Today")
 			else:
 				if serviceWidth > 179:
-					date_fmt = config.usage.date.daylong.value
+					dateFormat = config.usage.date.daylong.value
 				elif serviceWidth > 129:
-					date_fmt = config.usage.date.dayshort.value
+					dateFormat = config.usage.date.dayshort.value
 				elif serviceWidth > 79:
-					date_fmt = config.usage.date.daysmall.value
+					dateFormat = config.usage.date.daysmall.value
 				else:
-					date_fmt = "%a"
-				datestr = strftime(date_fmt, begTime)
+					dateFormat = "%a"
+				datestr = strftime(dateFormat, begTime)
 
 			foreColor = self.foreColor
 			backColor = self.backColor
@@ -981,20 +981,20 @@ class TimelineText(GUIComponent):
 				backColorSel = None
 				res.append(MultiContentEntryPixmapAlphaTest(
 					pos = (0, 0),
-					size = (service_rect.width(), self.listHeight),
+					size = (serviceRect.width(), self.listHeight),
 					png = bgpng,
 					flags = BT_SCALE))
 			else:
 				res.append( MultiContentEntryText(
 					pos = (0, 0),
-					size = (service_rect.width(), self.listHeight),
+					size = (serviceRect.width(), self.listHeight),
 					color = foreColor,
 					backcolor = backColor,
 					border_width = self.borderWidth, border_color = self.borderColor))
 
 			res.append(MultiContentEntryText(
 				pos = (5, 0),
-				size = (service_rect.width()-15, self.listHeight),
+				size = (serviceRect.width()-15, self.listHeight),
 				font = 0, flags = int(config.epgselection.grid.timelinedate_alignment.value),
 				text = _(datestr),
 				color = foreColor,
@@ -1006,20 +1006,20 @@ class TimelineText(GUIComponent):
 				backColor = None
 				backColorSel = None
 				res.append(MultiContentEntryPixmapAlphaTest(
-					pos = (service_rect.width(), 0),
-					size = (event_rect.width(), self.listHeight),
+					pos = (serviceRect.width(), 0),
+					size = (eventRect.width(), self.listHeight),
 					png = bgpng,
 					flags = BT_SCALE))
 			else:
 				res.append( MultiContentEntryText(
-					pos = (service_rect.width(), 0),
-					size = (event_rect.width(), self.listHeight),
+					pos = (serviceRect.width(), 0),
+					size = (eventRect.width(), self.listHeight),
 					color = foreColor,
 					backcolor = backColor,
 					border_width = self.borderWidth, border_color = self.borderColor))
 
-			for x in range(0, num_lines):
-				ttime = localtime(time_base + (x * timeStepsCalc))
+			for x in range(0, numLines):
+				ttime = localtime(timeBase + (x * timeStepsCalc))
 				if config.usage.time.enabled.value:
 					timetext = strftime(config.usage.time.short.value, ttime)
 				else:
@@ -1031,30 +1031,30 @@ class TimelineText(GUIComponent):
 						else:
 							timetext = strftime("%-I:%M", ttime) + _('am')
 				res.append(MultiContentEntryText(
-					pos = (service_rect.width() + xpos, 0),
+					pos = (serviceRect.width() + xpos, 0),
 					size = (incWidth, self.listHeight),
 					font = 0, flags = RT_HALIGN_LEFT | RT_VALIGN_CENTER,
 					text = timetext,
 					color = foreColor,
 					backcolor = backColor))
-				line = time_lines[x]
-				old_pos = line.position
-				line.setPosition(xpos + eventLeft, old_pos[1])
+				line = timeLines[x]
+				oldPos = line.position
+				line.setPosition(xpos + eventLeft, oldPos[1])
 				line.visible = True
 				xpos += incWidth
-			for x in range(num_lines, MAX_TIMELINES):
-				time_lines[x].visible = False
+			for x in range(numLines, MAX_TIMELINES):
+				timeLines[x].visible = False
 			self.l.setList([res])
-			self.time_base = time_base
-			self.time_epoch = time_epoch
+			self.timeBase = timeBase
+			self.timeEpoch = timeEpoch
 
 		now = time()
-		if time_base <= now < (time_base + time_epoch * SECS_IN_MIN):
-			xpos = int((((now - time_base) * event_rect.width()) / (time_epoch * SECS_IN_MIN)) - (timeline_now.instance.size().width() / 2))
-			old_pos = timeline_now.position
-			new_pos = (xpos + eventLeft, old_pos[1])
-			if old_pos != new_pos:
-				timeline_now.setPosition(new_pos[0], new_pos[1])
-			timeline_now.visible = True
+		if timeBase <= now < (timeBase + timeEpoch * SECS_IN_MIN):
+			xpos = int((((now - timeBase) * eventRect.width()) / (timeEpoch * SECS_IN_MIN)) - (timelineNow.instance.size().width() / 2))
+			oldPos = timelineNow.position
+			newPos = (xpos + eventLeft, oldPos[1])
+			if oldPos != newPos:
+				timelineNow.setPosition(newPos[0], newPos[1])
+			timelineNow.visible = True
 		else:
-			timeline_now.visible = False
+			timelineNow.visible = False
