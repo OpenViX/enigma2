@@ -160,11 +160,11 @@
 	</map>
 
 	<map context="InfobarInstantRecord">
-		<key id="KEY_RECORD" mapto="instantRecord" flags="m"/>
+		<key id="KEY_RECORD" mapto="instantRecord" flags="b"/>
 		<device name="gigablue remote control">
 			<key id="KEY_RED" mapto="instantRecord" flags="b"/>
 		</device>
-	</map>
+		</map>
 
 	<map context="InfobarExtensions">
 		<key id="KEY_BLUE" mapto="extensions" flags="b"/>
@@ -854,7 +854,8 @@
 		<key id="KEY_YELLOW" mapto="yellow_long" flags="l"/>
 		<key id="KEY_BLUE" mapto="blue" flags="b"/>
 		<key id="KEY_BLUE" mapto="blue_long" flags="l"/>
-		<key id="KEY_RECORD" mapto="rec" flags="m"/>
+		<key id="KEY_RECORD" mapto="rec" flags="b"/>
+		<key id="KEY_RECORD" mapto="rec_long" flags="l"/>
 		<key id="KEY_RADIO" mapto="radio" flags="b"/>
 		<key id="KEY_RADIO" mapto="radio_long" flags="l"/>
 		<key id="KEY_TV" mapto="showTv" flags="b"/>
