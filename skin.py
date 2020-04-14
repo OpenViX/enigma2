@@ -776,6 +776,8 @@ def loadSingleSkinData(desktop, screenID, domSkin, pathSkin, scope=SCOPE_CURRENT
 		fallbackFont = resolveFilename(SCOPE_FONTS, "fallback.font", path_prefix=pathSkin)
 		if isfile(fallbackFont):
 			addFont(fallbackFont, "Fallback", 100, -1, 0)
+		# else:  # As this is optional don't raise an error.
+		# 	raise SkinError("Fallback font '%s' not found" % fallbackFont)
 		for alias in tag.findall("alias"):
 			try:
 				name = alias.attrib.get("name")
