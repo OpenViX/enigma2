@@ -10,16 +10,6 @@
 
 #include <string>
 
-#include <lib/python/swig.h> // for eLogTimeFormat
-class eLogTimeFormat
-{
-public:
-	enum {
-		none, boottime, localtime
-	};
-}
-SWIG_ALLOW_OUTPUT_SIMPLE(eLogTimeFormat);
-
 #ifdef MEMLEAK_CHECK
 AllocList *allocList;
 pthread_mutex_t memLock =
@@ -87,8 +77,7 @@ void DumpUnfreed()
 #endif
 
 int debugLvl = lvlDebug;
-
-static int debugTime = eLogTimeFormat::boottime|eLogTimeFormat::localtime;
+static int debugTime = 3;
 
 static pthread_mutex_t DebugLock = PTHREAD_ADAPTIVE_MUTEX_INITIALIZER_NP;
 #define RINGBUFFER_SIZE 16384
@@ -153,12 +142,12 @@ int formatTime(char *buf, int bufferSize, int flags)
 	struct timespec tp;
 
 	if (!(flags & _DBGFLG_NOTIME)) {
-		if (debugTime & eLogTimeFormat::boottime) {
+		if (debugTime & 1) {
 			clock_gettime(CLOCK_MONOTONIC, &tp);
 			pos += snprintf(buf, bufferSize, "<%6lu.%03lu> ", tp.tv_sec, tp.tv_nsec/1000000);
 		}
 
-		if (debugTime & eLogTimeFormat::localtime) {
+		if (debugTime & 2) {
 			struct tm loctime;
 			struct timeval tim;
 			gettimeofday(&tim, NULL);
