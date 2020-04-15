@@ -7,7 +7,6 @@ from os.path import basename, dirname, isfile
 from Components.config import ConfigSubsection, ConfigText, config
 from Components.RcModel import rc_model
 from Components.Sources.Source import ObsoleteSource
-from boxbranding import getBoxType
 from Components.SystemInfo import SystemInfo
 from Tools.Directories import SCOPE_CONFIG, SCOPE_CURRENT_LCDSKIN, SCOPE_CURRENT_SKIN, SCOPE_FONTS, SCOPE_SKIN, SCOPE_SKIN_IMAGE, resolveFilename
 from Tools.Import import my_import
@@ -35,7 +34,7 @@ colors = {  # Dictionary of skin color names.
 }
 fonts = {  # Dictionary of predefined and skin defined font aliases.
 	"Body": ("Regular", 18, 22, 16),
-	"ChoiceList": ("Regular", 20, 24, 18),
+	"ChoiceList": ("Regular", 20, 24, 18)
 }
 menus = {}  # Dictionary of images associated with menu entries.
 parameters = {}  # Dictionary of skin parameters used to modify code behavior.
@@ -631,12 +630,6 @@ class AttributeParser:
 		value = 1 if value.lower() in ("1", "enabled", "nowrap", "on", "true", "yes") else 0
 		self.guiObject.setNoWrap(value)
 
-	def linelength(self, value):
-		pass
-
-	def OverScan(self, value):
-		self.guiObject.setOverscan(value)
-
 def applySingleAttribute(guiObject, desktop, attrib, value, scale=((1, 1), (1, 1))):
 	# Is anyone still using applySingleAttribute?
 	AttributeParser(guiObject, desktop, scale).applyOne(attrib, value)
@@ -774,9 +767,12 @@ def loadSingleSkinData(desktop, screenID, domSkin, pathSkin, scope=SCOPE_CURRENT
 			else:
 				render = 0
 			filename = resolveFilename(SCOPE_FONTS, filename, path_prefix=pathSkin)
-			addFont(filename, name, scale, isReplacement, render)
-			# Log provided by C++ addFont code.
-			# print "[Skin] Add font: Font path='%s', name='%s', scale=%d, isReplacement=%s, render=%d." % (filename, name, scale, isReplacement, render)
+			if isfile(filename):
+				addFont(filename, name, scale, isReplacement, render)
+				# Log provided by C++ addFont code.
+				# print "[Skin] Add font: Font path='%s', name='%s', scale=%d, isReplacement=%s, render=%d." % (filename, name, scale, isReplacement, render)
+			else:
+				raise SkinError("Font file '%s' not found" % filename)
 		fallbackFont = resolveFilename(SCOPE_FONTS, "fallback.font", path_prefix=pathSkin)
 		if isfile(fallbackFont):
 			addFont(fallbackFont, "Fallback", 100, -1, 0)
