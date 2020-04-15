@@ -77,7 +77,7 @@ void DumpUnfreed()
 #endif
 
 int debugLvl = lvlDebug;
-static int debugTime = 3;
+static int debugTime = 3; // 0 = none, 1 = secs since boot, 2 = local time
 
 static pthread_mutex_t DebugLock = PTHREAD_ADAPTIVE_MUTEX_INITIALIZER_NP;
 #define RINGBUFFER_SIZE 16384
