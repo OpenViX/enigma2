@@ -104,6 +104,7 @@ class EPGListGrid(EPGListBase):
 			self.eventFontSize = 20
 
 		self.l.setBuildFunc(self.buildEntry)
+		self.epgHistorySecs = int(config.epg.histminutes.value) * SECS_IN_MIN
 		self.roundBySecs = int(self.epgConfig.roundto.value) * SECS_IN_MIN
 		self.timeEpoch = int(self.epgConfig.prevtimeperiod.value)
 		self.timeEpochSecs = self.timeEpoch * SECS_IN_MIN
@@ -198,10 +199,8 @@ class EPGListGrid(EPGListBase):
 
 	def __setTimeBase(self, timeCenter):
 		# prefer time being aligned in the middle of the EPG, but clip to the maximum EPG data history
-		self.timeBase = int(max(timeCenter - self.timeEpochSecs // 2, 
-			time() - (int(config.epg.histminutes.value) + self.timeEpochSecs // 4) * SECS_IN_MIN))
-		# round up so that we favour a bit more info to the right of the timeline
-		self.timeBase += -self.timeBase % self.roundBySecs
+		self.timeBase = int(max(timeCenter - self.timeEpochSecs // 2, time() - self.epgHistorySecs))
+		self.timeBase -= self.timeBase % self.roundBySecs
 
 	def setTimeFocus(self, timeFocus):
 		self.__setTimeBase(timeFocus)
@@ -758,16 +757,16 @@ class EPGListGrid(EPGListBase):
 			timeFocus -= self.timeEpochSecs
 		elif dir == -24: # Prevous day
 			# keep the time base within the bounds of EPG data, rounded to a whole page
-			abs0 = int(time() - (int(config.epg.histminutes.value) + self.timeEpochSecs // 4) * SECS_IN_MIN)
-			abs0 += -abs0 % self.roundBySecs
+			abs0 = int(time()) - self.epgHistorySecs
+			abs0 -= abs0 % self.roundBySecs
 			timeBase = max(abs0, timeBase - 86400)
 			timeFocus = max(abs0, timeFocus - 86400)
 
 		if timeBase < self.timeBase:
 			# Prevent scrolling if it'll go past the EPG history limit
 			# Work out the earliest we can go back to
-			abs0 = int(time() - int(config.epg.histminutes.value) * SECS_IN_MIN)
-			if timeBase < abs0 - 3 * self.timeEpochSecs // 4:
+			abs0 = int(time()) - self.epgHistorySecs
+			if timeBase < abs0:
 				return False
 
 		# If we are still here and moving - do the move now and return True to
