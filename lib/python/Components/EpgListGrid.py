@@ -199,8 +199,16 @@ class EPGListGrid(EPGListBase):
 
 	def __setTimeBase(self, timeCenter):
 		# prefer time being aligned in the middle of the EPG, but clip to the maximum EPG data history
-		self.timeBase = int(max(timeCenter - self.timeEpochSecs // 2, time() - self.epgHistorySecs))
-		self.timeBase -= self.timeBase % self.roundBySecs
+		self.timeBase = int(timeCenter) - self.timeEpochSecs // 2
+		abs0 = int(time()) - self.epgHistorySecs
+		if self.timeBase < abs0:
+			# we're viewing close to the start of EPG data
+			# round down so that the if the timeline is being shown, it's not right next to the left hand edge of the grid
+			self.timeBase = abs0 - abs0 % self.roundBySecs
+		else:
+			# otherwise we're trying to place the desired time in the centre of the EPG
+			# round up, so that slightly more of the future things are shown
+			self.timeBase += -self.timeBase % self.roundBySecs
 
 	def setTimeFocus(self, timeFocus):
 		self.__setTimeBase(timeFocus)
@@ -756,21 +764,20 @@ class EPGListGrid(EPGListBase):
 			timeBase -= self.timeEpochSecs
 			timeFocus -= self.timeEpochSecs
 		elif dir == -24: # Prevous day
+			timeBase -= 86400
+			timeFocus -= 86400
+
+		if timeBase < self.timeBase:
 			# keep the time base within the bounds of EPG data, rounded to a whole page
 			abs0 = int(time()) - self.epgHistorySecs
 			abs0 -= abs0 % self.roundBySecs
-			timeBase = max(abs0, timeBase - 86400)
-			timeFocus = max(abs0, timeFocus - 86400)
+			timeBase = max(abs0, timeBase)
+			timeFocus = max(abs0, timeFocus)
 
-		if timeBase < self.timeBase:
-			# Prevent scrolling if it'll go past the EPG history limit
-			# Work out the earliest we can go back to
-			abs0 = int(time()) - self.epgHistorySecs
-			if timeBase < abs0:
-				return False
+		if self.timeBase == timeBase:
+			return False
 
-		# If we are still here and moving - do the move now and return True to
-		# indicate we've changed pages
+		# If we are still here and moving - do the move now and return True to indicate we've changed pages
 		self.timeBase = timeBase
 		self.timeFocus = timeFocus
 		self.fillEPGNoRefresh()
