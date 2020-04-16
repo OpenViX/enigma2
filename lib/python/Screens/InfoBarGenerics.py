@@ -828,7 +828,7 @@ class InfoBarChannelSelection:
 		if config.usage.oldstyle_zap_controls.value:
 			self.zapDown()
 		elif config.usage.volume_instead_of_channelselection.value:
-			VolumeControl.instance and VolumeControl.instance.volUp()
+			self.volumeUp()
 		else:
 			self.switchChannelUp()
 
@@ -836,14 +836,14 @@ class InfoBarChannelSelection:
 		if config.usage.oldstyle_zap_controls.value:
 			self.zapUp()
 		elif config.usage.volume_instead_of_channelselection.value:
-			VolumeControl.instance and VolumeControl.instance.volDown()
+			self.volumeDown()
 		else:
 			self.switchChannelDown()
 
 	def keyLeftCheck(self):
 		if config.usage.oldstyle_zap_controls.value:
 			if config.usage.volume_instead_of_channelselection.value:
-				VolumeControl.instance and VolumeControl.instance.volDown()
+				self.volumeDown()
 			else:
 				self.switchChannelUp()
 		else:
@@ -852,7 +852,7 @@ class InfoBarChannelSelection:
 	def keyRightCheck(self):
 		if config.usage.oldstyle_zap_controls.value:
 			if config.usage.volume_instead_of_channelselection.value:
-				VolumeControl.instance and VolumeControl.instance.volUp()
+				self.volumeUp()
 			else:
 				self.switchChannelDown()
 		else:
@@ -984,6 +984,12 @@ class InfoBarChannelSelection:
 
 	def openServiceList(self):
 		self.session.execDialog(self.servicelist)
+
+	def volumeUp(self):
+		VolumeControl.instance and VolumeControl.instance.volUp()
+
+	def volumeDown(self):
+		VolumeControl.instance and VolumeControl.instance.volDown()
 
 class InfoBarMenu:
 	""" Handles a menu action, to open the (main) menu """
