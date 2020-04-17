@@ -1,41 +1,37 @@
-import skin
 from time import localtime, time, strftime
 
 from enigma import eEPGCache, eListbox, eListboxPythonMultiContent, loadPNG, gFont, getDesktop, eRect, eSize, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_HALIGN_CENTER, RT_VALIGN_CENTER, RT_VALIGN_TOP, RT_WRAP, BT_SCALE, BT_KEEP_ASPECT_RATIO, BT_ALIGN_CENTER
-from skin import parseColor, parseFont
+from skin import parameters, parseFont
 
-from Components.MultiContent import MultiContentEntryText, MultiContentEntryPixmapAlphaBlend, MultiContentEntryPixmapAlphaTest
 from Components.config import config
-from EpgListBase import EPGListBase
+from Components.EpgListBase import EPGListBase
+from Components.MultiContent import MultiContentEntryText, MultiContentEntryPixmapAlphaBlend, MultiContentEntryPixmapAlphaTest
 
 # Various value are in minutes, while others are in seconds.
 # Use this to remind us what is going on...
 SECS_IN_MIN = 60
 
+
 class EPGListSingle(EPGListBase):
-	def __init__(self, epgConfig, selChangedCB = None, timer = None, timeFocus = None):
+	def __init__(self, epgConfig, selChangedCB=None, timer=None, timeFocus=None):
 		EPGListBase.__init__(self, selChangedCB, timer)
 
 		self.epgConfig = epgConfig
 		self.timeFocus = timeFocus or time()
 		self.eventFontName = "Regular"
-		if self.screenwidth == 1920:
-			self.eventFontSize = 28
-		else:
-			self.eventFontSize = 20
-
+		self.eventFontSize = 28 if self.isFullHd else 20
 		self.l.setBuildFunc(self.buildEntry)
 
 	def applySkin(self, desktop, screen):
 		if self.skinAttributes is not None:
-			attribs = [ ]
+			attribs = []
 			for (attrib, value) in self.skinAttributes:
 				if attrib in ('EventFontSingle', 'EventFontMulti', 'EventFont'):
-					font = parseFont(value, ((1,1),(1,1)) )
+					font = parseFont(value, ((1, 1), (1, 1)))
 					self.eventFontName = font.family
 					self.eventFontSize = font.pointSize
 				else:
-					attribs.append((attrib,value))
+					attribs.append((attrib, value))
 			self.skinAttributes = attribs
 		rc = EPGListBase.applySkin(self, desktop, screen)
 		self.setItemsPerPage()
@@ -44,12 +40,7 @@ class EPGListSingle(EPGListBase):
 	def setItemsPerPage(self):
 		if self.numberOfRows:
 			self.epgConfig.itemsperpage.default = self.numberOfRows
-		if self.listHeight > 0:
-			itemHeight = self.listHeight / self.epgConfig.itemsperpage.value
-		else:
-			itemHeight = 32
-		if itemHeight < 20:
-			itemHeight = 20
+		itemHeight = max(self.listHeight / self.epgConfig.itemsperpage.value, 20) if self.listHeight > 0 else 32
 		self.l.setItemHeight(itemHeight)
 		self.instance.resize(eSize(self.listWidth, self.listHeight / itemHeight * itemHeight))
 		self.listHeight = self.instance.size().height()
@@ -73,10 +64,10 @@ class EPGListSingle(EPGListBase):
 		width = esize.width()
 		height = esize.height()
 		fontSize = self.eventFontSize + self.epgConfig.eventfs.value
-		dateScale, timesScale, wideScale = skin.parameters.get("EPGSingleColumnScales", (5.7, 6.0, 1.5))
+		dateScale, timesScale, wideScale = parameters.get("EPGSingleColumnScales", (5.7, 6.0, 1.5))
 		dateW = int(fontSize * dateScale)
 		timesW = int(fontSize * timesScale)
-		left, dateWidth, sepWidth, timesWidth, breakWidth = skin.parameters.get("EPGSingleColumnSpecs", (0, dateW, 5, timesW, 20))
+		left, dateWidth, sepWidth, timesWidth, breakWidth = parameters.get("EPGSingleColumnSpecs", (0, dateW, 5, timesW, 20))
 		if config.usage.time.wide.value:
 			timesWidth = int(timesWidth * wideScale)
 		self._weekdayRect = eRect(left, 0, dateWidth, height)
@@ -95,7 +86,7 @@ class EPGListSingle(EPGListBase):
 		t = localtime(beginTime)
 		et = localtime(beginTime + duration)
 		res = [
-			None, # no private data needed
+			None,  # No private data needed.
 			(eListboxPythonMultiContent.TYPE_TEXT, r1.left(), r1.top(), r1.width(), r1.height(), 0, RT_HALIGN_LEFT | RT_VALIGN_CENTER, strftime(config.usage.date.dayshort.value, t)),
 			(eListboxPythonMultiContent.TYPE_TEXT, r2.left(), r2.top(), split, r2.height(), 0, RT_HALIGN_RIGHT | RT_VALIGN_CENTER, strftime(config.usage.time.short.value + " -", t)),
 			(eListboxPythonMultiContent.TYPE_TEXT, r2.left() + split, r2.top(), r2.width() - split, r2.height(), 0, RT_HALIGN_RIGHT | RT_VALIGN_CENTER, strftime(config.usage.time.short.value, et))
@@ -112,18 +103,17 @@ class EPGListSingle(EPGListBase):
 		return res
 
 	def getSelectionPosition(self):
-		# Adjust absolute indx to indx in displayed view
-		indx = self.l.getCurrentSelectionIndex() % self.epgConfig.itemsperpage.value
-		sely = self.instance.position().y() + self.itemHeight * indx
+		# Adjust absolute index to index in displayed view
+		index = self.l.getCurrentSelectionIndex() % self.epgConfig.itemsperpage.value
+		sely = self.instance.position().y() + self.itemHeight * index
 		if sely >= self.instance.position().y() + self.listHeight:
 			sely -= self.listHeight
 		return self.listWidth, sely
 
 	def fillSimilarList(self, refstr, eventId):
-		# search similar broadcastings
-		t = time()
-		if eventId is None:
-			return
+  		# Search similar broadcastings.
+  		if eventId is None:
+  			return
 		self.list = self.epgcache.search(('RIBDN', 1024, eEPGCache.SIMILAR_BROADCASTINGS_SEARCH, refstr, eventId))
 		if self.list and len(self.list):
 			self.list.sort(key=lambda x: x[2])
@@ -132,9 +122,9 @@ class EPGListSingle(EPGListBase):
 		self.selectionChanged()
 
 	def fillEPG(self, service):
-		t = time()
-		epgTime = t - config.epg.histminutes.value*SECS_IN_MIN
-		test = [ 'RIBDT', (service.ref.toString(), 0, epgTime, -1) ]
+		now = time()
+		epgTime = now - config.epg.histminutes.value * SECS_IN_MIN
+		test = ['RIBDT', (service.ref.toString(), 0, epgTime, -1)]
 		self.list = self.queryEPG(test)
 
 		odds = chr(0xc2) + chr(0x86)
@@ -146,31 +136,29 @@ class EPGListSingle(EPGListBase):
 		# time is after "now".
 		# NOTE: that the list is a list of tuples, so we can't modify just the
 		#       Title, but have to replace it with a modified tuple.
-		#
 		for i in range(0, len(self.list)):
 			if self.list[i][4][:2] == odds and self.list[i][4][-2:] == odde:
 				tlist = list(self.list[i])
 				tlist[4] = tlist[4][2:-2]
-				#DEBUG print "Stripped >%s< to >%s<" % (self.list[i][4], tlist[4])
 				self.list[i] = tuple(tlist)
 			else:
-				if self.list[i][2] > t:
+				if self.list[i][2] > now:
 					break
 		# Add explicit gaps if data isn't available.
 		for i in range(len(self.list) - 1, 0, -1):
 			thisBeg = self.list[i][2]
-			prevEnd = self.list[i-1][2] + self.list[i-1][3]
+			prevEnd = self.list[i - 1][2] + self.list[i - 1][3]
 			if prevEnd + 5 * SECS_IN_MIN < thisBeg:
 				self.list.insert(i, (self.list[i][0], None, prevEnd, thisBeg - prevEnd, None))
 		self.l.setList(self.list)
 		self.recalcEntrySize()
-		# select the event that contains the requested 
-		idx = 0
+		# Select the event that contains the requested ???.
+		index = 0
 		for x in self.list:
-			if self.timeFocus < x[2]+x[3]:
-				self.instance.moveSelectionTo(idx)
+			if self.timeFocus < x[2] + x[3]:
+				self.instance.moveSelectionTo(index)
 				break
-			idx += 1
+			index += 1
 
 	def sortEPG(self, type):
 		list = self.list

@@ -1,74 +1,71 @@
-import skin
 from time import localtime, time, strftime
 
 from enigma import eEPGCache, eListbox, eListboxPythonMultiContent, loadPNG, gFont, getDesktop, eRect, eSize, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_HALIGN_CENTER, RT_VALIGN_CENTER, RT_VALIGN_TOP, RT_WRAP, BT_SCALE, BT_KEEP_ASPECT_RATIO, BT_ALIGN_CENTER
 
+from ServiceReference import ServiceReference
 from Components.GUIComponent import GUIComponent
 from Components.MultiContent import MultiContentEntryText, MultiContentEntryPixmapAlphaBlend, MultiContentEntryPixmapAlphaTest
 from Components.Renderer.Picon import getPiconName
-from skin import parseColor, parseFont
 from Tools.Alternatives import CompareWithAlternatives
-from ServiceReference import ServiceReference
-from Tools.Directories import resolveFilename, SCOPE_ACTIVE_SKIN
+from Tools.Directories import SCOPE_CURRENT_SKIN, resolveFilename
 from Tools.TextBoundary import getTextBoundarySize
 
+
 class EPGListBase(GUIComponent):
-	def __init__(self, selChangedCB = None, timer = None):
+	def __init__(self, selChangedCB=None, timer=None):
 		GUIComponent.__init__(self)
 
 		self.timer = timer
-		self.onSelChanged = [ ]
+		self.onSelChanged = []
 		if selChangedCB is not None:
 			self.onSelChanged.append(selChangedCB)
 		self.l = eListboxPythonMultiContent()
-
 		self.epgcache = eEPGCache.getInstance()
 
-		# Common clock icons
-		add = loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_add.png'))
-		pre = loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_pre.png'))
-		clock = loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock.png'))
-		zap = loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_zap.png'))
-		zaprec = loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_zaprec.png'))
-		prepost = loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_prepost.png'))
-		post = loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_post.png'))
+		# Load the common clock icons.
+		add = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock_add.png"))
+		pre = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock_pre.png"))
+		clock = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock.png"))
+		zap = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock_zap.png"))
+		zaprec = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock_zaprec.png"))
+		prepost = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock_prepost.png"))
+		post = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock_post.png"))
 		self.clocks = [
 			add, pre, clock, prepost, post,
 			add, pre, zap, prepost, post,
 			add, pre, zaprec, prepost, post,
-			add, pre, clock, prepost, post]
+			add, pre, clock, prepost, post
+		]
 
-		# Common selected clock icons
-		pre = loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_selpre.png'))
-		prepost = loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_selprepost.png'))
-		post = loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_selpost.png'))
+		# Load the common selected clock icons.
+		pre = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock_selpre.png"))
+		prepost = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock_selprepost.png"))
+		post = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock_selpost.png"))
 		self.selclocks = [
 			add, pre, clock, prepost, post,
 			add, pre, zap, prepost, post,
-			add, pre, zaprec, prepost, post]
+			add, pre, zaprec, prepost, post
+		]
+		self.autotimericon = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock_autotimer.png"))
 
-		self.autotimericon = loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, 'icons/epgclock_autotimer.png'))
-
-		self.screenwidth = getDesktop(0).size().width()
-
+		self.isFullHd = getDesktop(0).size().width() == 1920
 		self.listHeight = None
 		self.listWidth = None
 		self.numberOfRows = None
 
 	def applySkin(self, desktop, screen):
 		if self.skinAttributes is not None:
-			attribs = [ ]
+			attribs = []
 			for (attrib, value) in self.skinAttributes:
 				if attrib == "NumberOfRows":
 					self.numberOfRows = int(value)
 				else:
-					attribs.append((attrib,value))
+					attribs.append((attrib, value))
 			self.skinAttributes = attribs
 		rc = GUIComponent.applySkin(self, desktop, screen)
 		self.listHeight = self.instance.size().height()
 		self.listWidth = self.instance.size().width()
 		self.setFontsize()
-
 		return rc
 
 	def getEventFromId(self, service, eventId):

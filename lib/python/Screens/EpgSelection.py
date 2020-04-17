@@ -2,34 +2,34 @@ from Components.ActionMap import HelpableActionMap
 from Components.EpgList import EPG_TYPE_SINGLE
 from Screens.EpgSelectionChannel import EPGSelectionChannel
 
-# Keep for backwards compatibility with plugins, including the parameter naming
-# This class assumes that EPGSelection is only used in the SingleEPG sense
+
+# Keep for backwards compatibility with plugins, including the parameter naming.
+# This class assumes that EPGSelection is only used in the SingleEPG sense.
 class EPGSelection(EPGSelectionChannel):
-	def __init__(self, session, service = None, zapFunc = None, eventid = None, bouquetChangeCB = None, serviceChangeCB = None, EPGtype = 'similar', StartBouquet = None, StartRef = None, bouquets = None):
-		if EPGtype not in ('similar', 'single'):
-			print "[EPGSelection] Warning: EPGSelection does not support type", EPGtype
+	def __init__(self, session, service=None, zapFunc=None, eventid=None, bouquetChangeCB=None, serviceChangeCB=None, EPGtype="similar", StartBouquet=None, StartRef=None, bouquets=None):
+		if EPGtype not in ("similar", "single"):
+			print "[EPGSelection] Warning: EPGSelection does not support type '%s'!" % EPGtype
 			print "               Attempting to continue in single EPG mode"
 		EPGSelectionChannel.__init__(self, session, service)
 
-		# rewrite the EPG actions to invoke the compatibility functions
-		self['epgactions'] = HelpableActionMap(self, 'EPGSelectActions',
-			{
-				'info': (self.Info, _('Show detailed event info')),
-				'epg': (self.epgButtonPressed, _('Show detailed event info')),
-				'menu': (self.createSetup, _('Setup menu'))
-			}, -1)
-		self['colouractions'] = HelpableActionMap(self, 'ColorActions',
-			{
-				'red': (self.redButtonPressed, _('IMDB search for current event')),
-				'redlong': (self.redButtonPressedLong, _('Sort EPG list')),
-				'green': (self.greenButtonPressed, _('Add/Remove timer for current event')),
-				'greenlong': (self.greenButtonPressedLong, _('Show timer list')),
-				'yellow': (self.yellowButtonPressed, _('Search for similar events')),
-				'blue': (self.blueButtonPressed, _('Add an autotimer for current event')),
-				'bluelong': (self.blueButtonPressedLong, _('Show autotimer list'))
-			}, -1)
+		# Rewrite the EPG actions to invoke the compatibility functions.
+		helpDescription = _("EPG Commands")
+		self["epgactions"] = HelpableActionMap(self, "EPGSelectActions", {
+			"info": (self.Info, _("Show detailed event info")),
+			"epg": (self.epgButtonPressed, _("Show detailed event info")),
+			"menu": (self.createSetup, _("Setup menu"))
+		}, prio=-1, description=helpDescription)
+		self["colouractions"] = HelpableActionMap(self, "ColorActions", {
+			"red": (self.redButtonPressed, _("IMDB search for current event")),
+			"redlong": (self.redButtonPressedLong, _("Sort EPG list")),
+			"green": (self.greenButtonPressed, _("Add/Remove timer for current event")),
+			"greenlong": (self.greenButtonPressedLong, _("Show timer list")),
+			"yellow": (self.yellowButtonPressed, _("Search for similar events")),
+			"blue": (self.blueButtonPressed, _("Add an autotimer for current event")),
+			"bluelong": (self.blueButtonPressedLong, _("Show autotimer list"))
+		}, prio=-1, description=helpDescription)
 
-	# Backwards compatibility properties for plugins
+	# Backwards compatibility properties for plugins.
 	@property
 	def ChoiceBoxDialog(self):
 		return self.choiceBoxDialog
@@ -38,8 +38,8 @@ class EPGSelection(EPGSelectionChannel):
 	def ChoiceBoxDialog(self, value):
 		self.choiceBoxDialog = value
 
-	# backwards compatibility functions for plugins
-	# Button names
+	# Backwards compatibility functions for plugins.
+	# Button names.
 	def redButtonPressed(self):
 		self.openIMDb()
 
@@ -60,7 +60,7 @@ class EPGSelection(EPGSelectionChannel):
 
 	def blueButtonPressedLong(self):
 		self.showAutoTimerList()
-	
+
 	def Info(self):
 		self.infoKeyPressed()
 
@@ -73,7 +73,7 @@ class EPGSelection(EPGSelectionChannel):
 	def epgButtonPressed(self):
 		self.openEventView()
 
-	# actions
+	# Actions
 	def showTimerList(self):
 		self.openTimerList()
 
@@ -86,13 +86,13 @@ class EPGSelection(EPGSelectionChannel):
 	def sortEpg(self):
 		self.sortEPG(self)
 
-	def RecordTimerQuestion(self, manual = False):
+	def RecordTimerQuestion(self, manual=False):
 		self.recordTimerQuestion(manual)
 
-	# things that need to be able to be overridden
+	# Things that need to be able to be overridden.
 	def refreshList(self):
 		try:
-			# allow plugins to override using the old all lowercase method name
+			# Allow plugins to override using the old all lowercase method name.
 			self.refreshlist()
 		except AttributeError:
 			EPGSelectionChannel.refreshList(self)

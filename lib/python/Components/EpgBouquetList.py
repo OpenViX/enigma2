@@ -1,14 +1,13 @@
-import skin
 from time import localtime, time, strftime
 
 from enigma import eEPGCache, eListbox, eListboxPythonMultiContent, loadPNG, gFont, getDesktop, eRect, eSize, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_HALIGN_CENTER, RT_VALIGN_CENTER, RT_VALIGN_TOP, RT_WRAP, BT_SCALE, BT_KEEP_ASPECT_RATIO, BT_ALIGN_CENTER
 
+from skin import parseColor, parseFont
 from Components.GUIComponent import GUIComponent
 from Components.MultiContent import MultiContentEntryText, MultiContentEntryPixmapAlphaBlend, MultiContentEntryPixmapAlphaTest
-from skin import parseColor, parseFont
 from Tools.Alternatives import CompareWithAlternatives
-from Components.config import config
-from Tools.Directories import resolveFilename, SCOPE_ACTIVE_SKIN
+from Tools.Directories import SCOPE_CURRENT_SKIN, resolveFilename
+
 
 class EPGBouquetList(GUIComponent):
 	def __init__(self, graphic=False):
@@ -16,8 +15,7 @@ class EPGBouquetList(GUIComponent):
 		self.graphic = graphic
 		self.l = eListboxPythonMultiContent()
 		self.l.setBuildFunc(self.buildEntry)
-
-		self.onSelChanged = [ ]
+		self.onSelChanged = []
 
 		self.foreColor = 0xffffff
 		self.foreColorSelected = 0xffffff
@@ -25,7 +23,7 @@ class EPGBouquetList(GUIComponent):
 		self.backColorSelected = 0xd69600
 
 		self.borderColor = 0xC0C0C0
-		self.BorderWidth = 1
+		self.borderWidth = 1
 
 		self.othPix = None
 		self.selPix = None
@@ -39,15 +37,15 @@ class EPGBouquetList(GUIComponent):
 		self.listWidth = None
 
 		self.bouquetNamePadding = 3
-		self.bouquetNameAlign = 'left'
-		self.bouquetNameWrap = 'no'
+		self.bouquetNameAlign = "left"
+		self.bouquetNameWrap = "no"
 
 	def applySkin(self, desktop, screen):
 		if self.skinAttributes is not None:
-			attribs = [ ]
+			attribs = []
 			for (attrib, value) in self.skinAttributes:
 				if attrib == "font":
-					font = parseFont(value, ((1,1),(1,1)) )
+					font = parseFont(value, ((1, 1), (1, 1)))
 					self.bouquetFontName = font.family
 					self.bouquetFontSize = font.pointSize
 				elif attrib == "foregroundColor":
@@ -61,11 +59,11 @@ class EPGBouquetList(GUIComponent):
 				elif attrib == "borderColor":
 					self.borderColor = parseColor(value).argb()
 				elif attrib == "borderWidth":
-					self.BorderWidth = int(value)
+					self.borderWidth = int(value)
 				elif attrib == "itemHeight":
 					self.itemHeight = int(value)
 				else:
-					attribs.append((attrib,value))
+					attribs.append((attrib, value))
 			self.skinAttributes = attribs
 		rc = GUIComponent.applySkin(self, desktop, screen)
 		self.setBouquetFontsize()
@@ -82,8 +80,8 @@ class EPGBouquetList(GUIComponent):
 	def getCurrentBouquetService(self):
 		return self.l.getCurrentSelection()[1]
 
-	def setCurrentBouquet(self, CurrentBouquetService):
-		self.CurrentBouquetService = CurrentBouquetService
+	def setCurrentBouquet(self, currentBouquetService):
+		self.currentBouquetService = currentBouquetService
 
 	def selectionChanged(self):
 		for x in self.onSelChanged:
@@ -119,7 +117,6 @@ class EPGBouquetList(GUIComponent):
 		instance.setWrapAround(True)
 		instance.selectionChanged.get().append(self.selectionChanged)
 		instance.setContent(self.l)
-		# self.l.setSelectionClip(eRect(0,0,0,0), False)
 		self.setBouquetFontsize()
 
 	def preWidgetRemove(self, instance):
@@ -138,29 +135,28 @@ class EPGBouquetList(GUIComponent):
 
 	def getBouquetRect(self):
 		rc = self.bouquetRect
-		return eRect( rc.left() + (self.instance and self.instance.position().x() or 0), rc.top(), rc.width(), rc.height() )
+		return eRect(rc.left() + (self.instance and self.instance.position().x() or 0), rc.top(), rc.width(), rc.height())
 
 	def buildEntry(self, name, func):
 		r1 = self.bouquetRect
 		left = r1.left()
 		top = r1.top()
-		# width = (len(name)+5)*8
 		width = r1.width()
 		height = r1.height()
-		selected = self.CurrentBouquetService == func
+		selected = self.currentBouquetService == func
 
-		if self.bouquetNameAlign.lower() == 'left':
-			if self.bouquetNameWrap.lower() == 'yes':
+		if self.bouquetNameAlign.lower() == "left":
+			if self.bouquetNameWrap.lower() == "yes":
 				alignnment = RT_HALIGN_LEFT | RT_VALIGN_CENTER | RT_WRAP
 			else:
 				alignnment = RT_HALIGN_LEFT | RT_VALIGN_CENTER
 		else:
-			if self.bouquetNameWrap.lower() == 'yes':
+			if self.bouquetNameWrap.lower() == "yes":
 				alignnment = RT_HALIGN_CENTER | RT_VALIGN_CENTER | RT_WRAP
 			else:
 				alignnment = RT_HALIGN_CENTER | RT_VALIGN_CENTER
 
-		res = [ None ]
+		res = [None]
 
 		if selected:
 			if self.graphic:
@@ -194,8 +190,8 @@ class EPGBouquetList(GUIComponent):
 		# box background
 		if bgpng is not None and self.graphic:
 			res.append(MultiContentEntryPixmapAlphaTest(
-				pos = (left + self.BorderWidth, top + self.BorderWidth),
-				size = (width - 2 * self.BorderWidth, height - 2 * self.BorderWidth),
+				pos = (left + self.borderWidth, top + self.borderWidth),
+				size = (width - 2 * self.borderWidth, height - 2 * self.borderWidth),
 				png = bgpng,
 				flags = BT_SCALE))
 		else:
@@ -204,12 +200,12 @@ class EPGBouquetList(GUIComponent):
 				font = 0, flags = RT_HALIGN_LEFT | RT_VALIGN_CENTER,
 				text = "", color = None, color_sel = None,
 				backcolor = backColor, backcolor_sel = backColorSel,
-				border_width = self.BorderWidth, border_color = self.borderColor))
+				border_width = self.borderWidth, border_color = self.borderColor))
 
-		evX = left + self.BorderWidth + self.bouquetNamePadding
-		evY = top + self.BorderWidth
-		evW = width - 2 * (self.BorderWidth + self.bouquetNamePadding)
-		evH = height - 2 * self.BorderWidth
+		evX = left + self.borderWidth + self.bouquetNamePadding
+		evY = top + self.borderWidth
+		evW = width - 2 * (self.borderWidth + self.bouquetNamePadding)
+		evH = height - 2 * self.borderWidth
 
 		res.append(MultiContentEntryText(
 			pos = (evX, evY), size = (evW, evH),
@@ -223,25 +219,25 @@ class EPGBouquetList(GUIComponent):
 			if borderTopPix is not None:
 				res.append(MultiContentEntryPixmapAlphaTest(
 						pos = (left, r1.top()),
-						size = (r1.width(), self.BorderWidth),
+						size = (r1.width(), self.borderWidth),
 						png = borderTopPix,
 						flags = BT_SCALE))
 			if borderBottomPix is not None:
 				res.append(MultiContentEntryPixmapAlphaTest(
-						pos = (left, r1.height()-self.BorderWidth),
-						size = (r1.width(), self.BorderWidth),
+						pos = (left, r1.height()-self.borderWidth),
+						size = (r1.width(), self.borderWidth),
 						png = borderBottomPix,
 						flags = BT_SCALE))
 			if borderLeftPix is not None:
 				res.append(MultiContentEntryPixmapAlphaTest(
 						pos = (left, r1.top()),
-						size = (self.BorderWidth, r1.height()),
+						size = (self.borderWidth, r1.height()),
 						png = borderLeftPix,
 						flags = BT_SCALE))
 			if borderRightPix is not None:
 				res.append(MultiContentEntryPixmapAlphaTest(
-						pos = (r1.width()-self.BorderWidth, left),
-						size = (self.BorderWidth, r1.height()),
+						pos = (r1.width()-self.borderWidth, left),
+						size = (self.borderWidth, r1.height()),
 						png = borderRightPix,
 						flags = BT_SCALE))
 
@@ -249,21 +245,19 @@ class EPGBouquetList(GUIComponent):
 
 	def fillBouquetList(self, bouquets):
 		if self.graphic and not self.graphicsloaded:
-			self.othPix = loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, 'epg/OtherEvent.png'))
-			self.selPix = loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, 'epg/SelectedCurrentEvent.png'))
-
-			self.borderTopPix = loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, 'epg/BorderTop.png'))
-			self.borderBottomPix = loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, 'epg/BorderLeft.png'))
-			self.borderLeftPix = loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, 'epg/BorderBottom.png'))
-			self.borderRightPix = loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, 'epg/BorderRight.png'))
-			self.borderSelectedTopPix = loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, 'epg/SelectedBorderTop.png'))
-			self.borderSelectedLeftPix = loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, 'epg/SelectedBorderLeft.png'))
-			self.borderSelectedBottomPix = loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, 'epg/SelectedBorderBottom.png'))
-			self.borderSelectedRightPix = loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, 'epg/SelectedBorderRight.png'))
-
+			self.othPix = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "epg/OtherEvent.png"))
+			self.selPix = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "epg/SelectedCurrentEvent.png"))
+			self.borderTopPix = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "epg/BorderTop.png"))
+			self.borderBottomPix = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "epg/BorderLeft.png"))
+			self.borderLeftPix = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "epg/BorderBottom.png"))
+			self.borderRightPix = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "epg/BorderRight.png"))
+			self.borderSelectedTopPix = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "epg/SelectedBorderTop.png"))
+			self.borderSelectedLeftPix = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "epg/SelectedBorderLeft.png"))
+			self.borderSelectedBottomPix = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "epg/SelectedBorderBottom.png"))
+			self.borderSelectedRightPix = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "epg/SelectedBorderRight.png"))
 			self.graphicsloaded = True
 		self.bouquetslist = bouquets
 		self.l.setList(self.bouquetslist)
 		self.recalcEntrySize()
 		self.selectionChanged()
-		self.CurrentBouquetService = self.getCurrentBouquetService()
+		self.currentBouquetService = self.getCurrentBouquetService()

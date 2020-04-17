@@ -1,8 +1,9 @@
-from config import config
 from enigma import eRect
+
+from config import config
 from EpgListSingle import EPGListSingle
 
-# keep const values for backward compatibility with plugins
+# Keep const values for backward compatibility with plugins.
 EPG_TYPE_SINGLE = 0
 EPG_TYPE_MULTI = 1
 EPG_TYPE_SIMILAR = 2
@@ -11,7 +12,8 @@ EPG_TYPE_INFOBAR = 4
 EPG_TYPE_GRAPH = 5
 EPG_TYPE_INFOBARGRAPH = 7
 
-# keep for backward compatibility, some plugins import this
+
+# Keep for backward compatibility, some plugins import this.
 class Rect:
 	def __init__(self, x, y, width, height):
 		self.x = x
@@ -31,25 +33,33 @@ class Rect:
 	def width(self):
 		return self.w
 
-# keep for backwards compatibility with plugins, including the parameter naming
+
+# Keep for backwards compatibility with plugins, including the parameter naming.
 class EPGList(EPGListSingle):
-	def __init__(self, type = EPG_TYPE_SINGLE, selChangedCB = None, timer = None, time_epoch = 120, overjump_empty = False, graphic = False):
+	def __init__(self, type=EPG_TYPE_SINGLE, selChangedCB=None, timer=None, time_epoch=120, overjump_empty=False, graphic=False):
 		if type != EPG_TYPE_SINGLE:
-			print "[EPGList] Warning: EPGList no longer supports", {'infobar':'EPG_TYPE_INFOBAR','enhanced':'EPG_TYPE_ENHANCED','graph':'EPG_TYPE_GRAPH','infobargraph':'EPG_TYPE_INFOBARGRAPH','multi':'EPG_TYPE_MULTI', None: 'EPGtype == None'}.get(type, type)
+			print "[EPGList] Warning: EPGList no longer supports", {
+				"infobar": "EPG_TYPE_INFOBAR",
+				"enhanced": "EPG_TYPE_ENHANCED",
+				"graph": "EPG_TYPE_GRAPH",
+				"infobargraph": "EPG_TYPE_INFOBARGRAPH",
+				"multi": "EPG_TYPE_MULTI",
+				None: "EPGtype == None"
+			}.get(type, type)
 			print "          attempting to continue in single EPG mode"
 		EPGListSingle.__init__(self, config.epgselection.single, selChangedCB, timer)
 
-		# attributes for backwards compatibility
+		# Attributes for backwards compatibility.
 		self.eventFontSizeSingle = self.eventFontSize
 
-	# for backwards compatibility
+	# For backwards compatibility.
 	def buildSingleEntry(self, service, eventId, beginTime, duration, eventName):
 		return EPGListSingle.buildEntry(self, service, eventId, beginTime, duration, eventName)
 
 	def recalcEntrySize(self):
 		EPGListSingle.recalcEntrySize(self)
 
-	# these properties are expected to be Rect not eRect
+	# These properties are expected to be Rect not eRect.
 	@property
 	def weekday_rect(self):
 		r = self._weekdayRect
