@@ -1652,10 +1652,6 @@ class InfoBarEPG:
 	def openMultiServiceEPG(self):
 		self.multiServiceEPG(EPGSelectionMulti, config.epgselection.multi.showbouquet.value)
 
-	# keeping this for compatibility with old ButtonSetup config
-	def openGraphEPG(self, reopen=False):
-		self.openGridEPG(reopen)
-
 	def openGridEPG(self, reopen=False):
 		self.multiServiceEPG(EPGSelectionGrid, config.epgselection.grid.showbouquet.value)
 
