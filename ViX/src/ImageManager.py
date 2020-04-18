@@ -386,11 +386,7 @@ class VIXImageManager(Screen):
 				if SystemInfo["HasHiSi"]:
 	 				if pathExists("/dev/sda4"):
 						self.HasSDmmc = True
-						self.getImageList = GetImagelist(self.keyRestore1)
-					elif config.imagemanager.autosettingsbackup.value:
-						self.doSettingsBackup()
-					else:
-						self.keyRestore3()
+					self.getImageList = GetImagelist(self.keyRestore1)
 				else:
 					self.getImageList = GetImagelist(self.keyRestore1)
 			elif config.imagemanager.autosettingsbackup.value:
