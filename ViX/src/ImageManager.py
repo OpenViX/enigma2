@@ -470,6 +470,8 @@ class VIXImageManager(Screen):
 					CMD = "/usr/bin/ofgwrite -r%s -k%s '%s'" % (self.MTDROOTFS, self.MTDKERNEL, MAINDEST)
 				elif (SystemInfo["canMultiBoot"][self.multibootslot]["rootsubdir"]) is None:	# sf8008 type receiver using SD card in multiboot
 					CMD = "/usr/bin/ofgwrite -r%s -k%s -m0 '%s'" % (self.MTDROOTFS, self.MTDKERNEL, MAINDEST)
+					if fileExists("/boot/STARTUP") and fileExists("/boot/STARTUP_6"):
+						copyfile("/boot/STARTUP_%s" % self.multibootslot, "/boot/STARTUP")
 				else:
 					CMD = "/usr/bin/ofgwrite -r -k -m%s '%s'" % (self.multibootslot, MAINDEST)	# Normal multiboot
 			elif SystemInfo["HasH9SD"]:
