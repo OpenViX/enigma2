@@ -55,6 +55,8 @@ class TimerEditList(Screen, ProtectedScreen):
 		self.onChangedEntry = [ ]
 		list = [ ]
 		self.list = list
+		self.fillTimerList()
+
 		self["timerlist"] = TimerList(list)
 
 		self.key_red_choice = self.EMPTY
