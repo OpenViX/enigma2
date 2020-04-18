@@ -330,11 +330,11 @@
 	</map>
 
 	<map context="InfobarTimerButtonActions">
-			<key id="KEY_PROGRAM" mapto="timerSelection" flags="m"/>
+		<key id="KEY_PROGRAM" mapto="timerSelection" flags="m"/>
 	</map>
 
 	<map context="InfobarVmodeButtonActions">
-			<key id="KEY_VMODE" mapto="vmodeSelection" flags="m"/>
+		<key id="KEY_VMODE" mapto="vmodeSelection" flags="m"/>
 	</map>
 
 	<map context="InfobarPiPActions">
@@ -780,7 +780,6 @@
 	</map>
 
 	<map context="WindowActions">
-
 	</map>
 
 	<map context="HelpActions">
@@ -1022,5 +1021,5 @@
 		<key id="KEY_AUX" mapto="HDMIin_long" flags="l"/>
 		<key id="KEY_FILE" mapto="file" flags="b"/>
 		<key id="KEY_FILE" mapto="file_long" flags="l"/>
-</map>
+	</map>
 </keymap>

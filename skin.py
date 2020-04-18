@@ -7,7 +7,7 @@ from os.path import basename, dirname, isfile
 from Components.config import ConfigSubsection, ConfigText, config
 from Components.RcModel import rc_model
 from Components.Sources.Source import ObsoleteSource
-from Tools.Directories import SCOPE_CONFIG, SCOPE_CURRENT_LCDSKIN, SCOPE_CURRENT_SKIN, SCOPE_FONTS, SCOPE_SKIN, SCOPE_SKIN_IMAGE, fileExists, resolveFilename
+from Tools.Directories import SCOPE_CONFIG, SCOPE_CURRENT_LCDSKIN, SCOPE_CURRENT_SKIN, SCOPE_FONTS, SCOPE_SKIN, SCOPE_SKIN_IMAGE, resolveFilename
 from Tools.Import import my_import
 from Tools.LoadPixmap import LoadPixmap
 
@@ -30,7 +30,6 @@ colors = {  # Dictionary of skin color names.
 	"key_text": gRGB(0x00ffffff),
 	"key_yellow": gRGB(0x00a08500)
 }
-colorNames = colors  # Temporary until OverlayHD is updated.
 fonts = {  # Dictionary of predefined and skin defined font aliases.
 	"Body": ("Regular", 18, 22, 16),
 	"ChoiceList": ("Regular", 20, 24, 18)
@@ -39,11 +38,11 @@ menus = {}  # Dictionary of images associated with menu entries.
 parameters = {}  # Dictionary of skin parameters used to modify code behavior.
 setups = {}  # Dictionary of images associated with setup menus.
 switchPixmap = {}  # Dictionary of switch images.
-skinfactor = 0
+windowStyles = {}  # Dictionary of window styles for each screen ID.
 
 config.skin = ConfigSubsection()
 skin = resolveFilename(SCOPE_SKIN, DEFAULT_SKIN)
-if not fileExists(skin) or not isfile(skin):
+if not isfile(skin):
 	print "[Skin] Error: Default skin '%s' is not readable or is not a file!  Using emergency skin." % skin
 	DEFAULT_SKIN = EMERGENCY_SKIN
 config.skin.primary_skin = ConfigText(default=DEFAULT_SKIN)
@@ -101,7 +100,7 @@ def InitSkins():
 	result = None
 	if isfile(resolveFilename(SCOPE_SKIN, config.skin.primary_skin.value)):
 		name = USER_SKIN_TEMPLATE % dirname(config.skin.primary_skin.value)
-		if fileExists(resolveFilename(SCOPE_CURRENT_SKIN, name)):
+		if isfile(resolveFilename(SCOPE_CURRENT_SKIN, name)):
 			result = loadSkin(name, scope=SCOPE_CURRENT_SKIN, desktop=getDesktop(GUI_SKIN_ID), screenID=GUI_SKIN_ID)
 	if result is None:
 		loadSkin(USER_SKIN, scope=SCOPE_CURRENT_SKIN, desktop=getDesktop(GUI_SKIN_ID), screenID=GUI_SKIN_ID)
@@ -112,9 +111,10 @@ def InitSkins():
 def loadSkinData(desktop):
 	InitSkins()
 
-# Now a utility for plugins to add skin data to the screens.
+# Method to load a skin XML file into the skin data structures.
 #
 def loadSkin(filename, scope=SCOPE_SKIN, desktop=getDesktop(GUI_SKIN_ID), screenID=GUI_SKIN_ID):
+	global windowStyles
 	filename = resolveFilename(scope, filename)
 	print "[Skin] Loading skin file '%s'." % filename
 	try:
@@ -126,13 +126,23 @@ def loadSkin(filename, scope=SCOPE_SKIN, desktop=getDesktop(GUI_SKIN_ID), screen
 				# the other in order of ascending priority.
 				loadSingleSkinData(desktop, screenID, domSkin, filename, scope=scope)
 				for element in domSkin:
-					if element.tag == "screen":  # If non-screen element, no need for it any longer.
+					if element.tag == "screen":  # Process all screen elements.
 						name = element.attrib.get("name", None)
 						if name:  # Without a name, it's useless!
 							sid = element.attrib.get("id", None)
 							if sid is None or sid == screenID:  # If there is a screen ID is it for this display.
 								# print "[Skin] DEBUG: Extracting screen '%s' from '%s'.  (scope='%s')" % (name, filename, scope)
 								domScreens[name] = (element, "%s/" % dirname(filename))
+					elif element.tag == "windowstyle":  # Process the windowstyle element.
+						id = element.attrib.get("id", None)
+						if id is not None:  # Without an id, it is useless!
+							id = int(id)
+							# print "[Skin] DEBUG: Processing a windowstyle ID='%s'." % id
+							domStyle = xml.etree.cElementTree.ElementTree(xml.etree.cElementTree.Element("skin"))
+							domStyle.getroot().append(element)
+							windowStyles[id] = (desktop, screenID, domStyle, filename, scope)
+					# Element is not a screen or windowstyle element so no need for it any longer.
+				reloadWindowStyles()  # Reload the window style to ensure all skin changes are taken into account.
 				print "[Skin] Loading skin file '%s' complete." % filename
 				if runCallbacks:
 					for method in self.callbacks:
@@ -345,7 +355,7 @@ def collectAttributes(skinAttributes, node, context, skinPath=None, ignore=(), f
 			if attrib in filenames:
 				# DEBUG: Why does a SCOPE_CURRENT_LCDSKIN image replace the GUI image?!?!?!
 				pngfile = resolveFilename(SCOPE_CURRENT_SKIN, value, path_prefix=skinPath)
-				if not fileExists(pngfile) and fileExists(resolveFilename(SCOPE_CURRENT_LCDSKIN, value, path_prefix=skinPath)):
+				if not isfile(pngfile) and isfile(resolveFilename(SCOPE_CURRENT_LCDSKIN, value, path_prefix=skinPath)):
 					pngfile = resolveFilename(SCOPE_CURRENT_LCDSKIN, value, path_prefix=skinPath)
 				value = pngfile
 			# Bit of a hack this, really.  When a window has a flag (e.g. wfNoBorder)
@@ -628,6 +638,11 @@ def applySingleAttribute(guiObject, desktop, attrib, value, scale=((1, 1), (1, 1
 def applyAllAttributes(guiObject, desktop, attributes, scale):
 	AttributeParser(guiObject, desktop, scale).applyAll(attributes)
 
+def reloadWindowStyles():
+	for id in windowStyles:
+		desktop, screenID, domSkin, pathSkin, scope = windowStyles[id]
+		loadSingleSkinData(desktop, screenID, domSkin, pathSkin, scope)
+
 def loadSingleSkinData(desktop, screenID, domSkin, pathSkin, scope=SCOPE_CURRENT_SKIN):
 	"""Loads skin data like colors, windowstyle etc."""
 	assert domSkin.tag == "skin", "root element in skin must be 'skin'!"
@@ -716,7 +731,7 @@ def loadSingleSkinData(desktop, screenID, domSkin, pathSkin, scope=SCOPE_CURRENT
 		filename = tag.attrib.get("filename")
 		if filename:
 			filename = resolveFilename(scope, filename, path_prefix=pathSkin)
-			if fileExists(filename):
+			if isfile(filename):
 				loadSkin(filename, scope=scope, desktop=desktop, screenID=screenID)
 			else:
 				raise SkinError("Included file '%s' not found" % filename)
@@ -729,7 +744,7 @@ def loadSingleSkinData(desktop, screenID, domSkin, pathSkin, scope=SCOPE_CURRENT
 			if not filename:
 				raise SkinError("Pixmap needs filename attribute")
 			resolved = resolveFilename(scope, filename, path_prefix=pathSkin)
-			if fileExists(resolved):
+			if isfile(resolved):
 				switchPixmap[name] = LoadPixmap(resolved, cached=True)
 			else:
 				raise SkinError("The switchpixmap pixmap filename='%s' (%s) not found" % (filename, resolved))
@@ -755,12 +770,17 @@ def loadSingleSkinData(desktop, screenID, domSkin, pathSkin, scope=SCOPE_CURRENT
 			else:
 				render = 0
 			filename = resolveFilename(SCOPE_FONTS, filename, path_prefix=pathSkin)
-			addFont(filename, name, scale, isReplacement, render)
-			# Log provided by C++ addFont code.
-			# print "[Skin] Add font: Font path='%s', name='%s', scale=%d, isReplacement=%s, render=%d." % (filename, name, scale, isReplacement, render)
+			if isfile(filename):
+				addFont(filename, name, scale, isReplacement, render)
+				# Log provided by C++ addFont code.
+				# print "[Skin] Add font: Font path='%s', name='%s', scale=%d, isReplacement=%s, render=%d." % (filename, name, scale, isReplacement, render)
+			else:
+				raise SkinError("Font file '%s' not found" % filename)
 		fallbackFont = resolveFilename(SCOPE_FONTS, "fallback.font", path_prefix=pathSkin)
-		if fileExists(fallbackFont):
+		if isfile(fallbackFont):
 			addFont(fallbackFont, "Fallback", 100, -1, 0)
+		# else:  # As this is optional don't raise an error.
+		# 	raise SkinError("Fallback font '%s' not found" % fallbackFont)
 		for alias in tag.findall("alias"):
 			try:
 				name = alias.attrib.get("name")
@@ -777,7 +797,7 @@ def loadSingleSkinData(desktop, screenID, domSkin, pathSkin, scope=SCOPE_CURRENT
 			try:
 				name = parameter.attrib.get("name")
 				value = parameter.attrib.get("value")
-				parameters[name] = map(parseParameter, value.split(",")) if "," in value else parseParameter(value)
+				parameters[name] = map(parseParameter, [x.strip() for x in value.split(",")]) if "," in value else parseParameter(value)
 			except Exception as err:
 				raise SkinError("Bad parameter: '%s'" % str(err))
 	for tag in domSkin.findall("menus"):
@@ -881,6 +901,7 @@ def loadSingleSkinData(desktop, screenID, domSkin, pathSkin, scope=SCOPE_CURRENT
 		# The "desktop" parameter is hard-coded to the GUI screen, so we must ask
 		# for the one that this actually applies to.
 		getDesktop(styleId).setMargins(r)
+
 
 class additionalWidget:
 	def __init__(self):
@@ -1144,7 +1165,7 @@ def readSkin(screen, skin, names, desktop):
 			try:
 				p(w, context)
 			except SkinError as err:
-				print "[Skin] Error in screen '%s' widget '%s':" % (name, w.tag), err
+				print "[Skin] Error in screen '%s' widget '%s' %s!" % (name, w.tag, str(err))
 
 	def processPanel(widget, context):
 		n = widget.attrib.get("name")
@@ -1186,7 +1207,7 @@ def readSkin(screen, skin, names, desktop):
 		context.y = 0
 		processScreen(myScreen, context)
 	except Exception as err:
-		print "[Skin] Error in screen '%s':" % name, err
+		print "[Skin] Error in screen '%s' %s!" % (name, str(err))
 
 	from Components.GUIComponent import GUIComponent
 	unusedComponents = [x for x in set(screen.keys()) - usedComponents if isinstance(x, GUIComponent)]
@@ -1197,17 +1218,15 @@ def readSkin(screen, skin, names, desktop):
 	screen = None
 	usedComponents = None
 
-def getSkinFactor(refresh=False):  # This only works for screen resolution greater than HD!
-	global skinfactor
-	if refresh or not skinfactor:
-		try:
-			skinfactor = getDesktop(GUI_SKIN_ID).size().height() / 720.0
-			if skinfactor not in [1, 1.5, 3, 6]:
-				skinfactor = 1
-				print "[Skin] Unknown result for getSkinFactor '%s' -> SkinFactor set to 1!" % skinfactor
-		except Exception as err:
-			skinfactor = 1
-			print "[Skin] Error: getSkinFactor failed!  (%s)" % str(err)
+# Return a scaling factor (float) that can be used to rescale screen displays
+# to suit the current resolution of the screen.  The scales are based on a
+# default screen resolution of HD (720p).  That is the scale factor for a HD
+# screen will be 1.
+#
+def getSkinFactor():
+	skinfactor = getDesktop(GUI_SKIN_ID).size().height() / 720.0
+	# if skinfactor not in [0.8, 1, 1.5, 3, 6]:
+	# 	print "[Skin] Warning: Unexpected result for getSkinFactor '%0.4f'!" % skinfactor
 	return skinfactor
 
 # Search the domScreens dictionary to see if any of the screen names provided

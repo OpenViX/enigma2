@@ -63,6 +63,11 @@ sync
 	[ -e /proc/$PID/oom_score_adj ] && echo "-999" > /proc/$PID/oom_score_adj || echo "-17" > /proc/$PID/oom_adj;) &
 
 
+# set time format used to prefix each line in the debug logs
+if grep -q 'config\.crash\.logtimeformat' @sysconfdir@/enigma2/settings; then
+	export ENIGMA_DEBUG_TIME=`grep "config\.crash\.logtimeformat" @sysconfdir@/enigma2/settings | sed -E "s/^.*=(.*)$/\1/" -`
+fi
+
 if grep -q 'config\.crash\.enabledebug=True' @sysconfdir@/enigma2/settings; then
 	debug_dir=$(sed -n 's/config.crash.debug_path=//p' @sysconfdir@/enigma2/settings)
 	[ -n "${debug_dir}" -a -d "${debug_dir}" ] || debug_dir=/home/root/logs/
