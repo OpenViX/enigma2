@@ -327,7 +327,7 @@
 		<item level="2" text="Event font size" description="Configure the font size relative to skin size, so 1 increases by 1 point size, and -1 decreases by 1 point size.">config.epgselection.single.eventfs</item>
 	</setup>
 	<setup key="epginfobarsingle" title="Infobar Single EPG">
-		<item level="2" text="View mode" description="Choose the layout view mode (Text or Graphics).">config.epgselection.infobar.type_mode</item>
+		<item level="2" text="View mode" description="Choose the layout. Single channel, Graphics Grid EPG or Text Grid EPG.">config.epgselection.infobar.type_mode</item>
 		<item level="2" text="Infobar EPG activation" description="Select how to activate the Infobar Single EPG. This will affect Infobar behaviour" requires="InfoBarEpg">config.vixsettings.InfoBarEpg_mode</item>		
 		<item level="2" text="Channel preview mode" description="If set to 'yes' you can preview channels in the EPG list.">config.epgselection.infobar.preview_mode</item>
 		<item level="2" text="Skip empty services" description="If set to 'yes' channels without EPG will not be shown.">config.epgselection.overjump</item>
@@ -338,8 +338,8 @@
 		<item level="2" text="Event font size" description="Configure the font size relative to skin size, so 1 increases by 1 point size, and -1 decreases by 1 point size.">config.epgselection.infobar.eventfs</item>
 	</setup>
 	<setup key="epginfobargrid" title="Infobar Grid EPG">
-		<item level="2" text="View mode" description="Choose the layout view mode (Text / Graphics Multi channel EPG or Single channel EPG).">config.epgselection.infobar.type_mode</item>
-		<item level="2" text="InfoBar EPG activation" description="Select how to activate the Infobar Grid EPG. This will affect Infobar behaviour" requires="InfoBarEpg">config.vixsettings.InfoBarEpg_mode</item>
+		<item level="2" text="View mode" description="Choose the layout. Single channel, Graphics Grid EPG or Text Grid EPG.">config.epgselection.infobar.type_mode</item>
+		<item level="2" text="Infobar EPG activation" description="Select how to activate the Infobar Grid EPG. This will affect Infobar behaviour" requires="InfoBarEpg">config.vixsettings.InfoBarEpg_mode</item>
 		<item level="2" text="Channel preview mode" description="If set to 'yes' you can preview channels in the EPG list.">config.epgselection.infobar.preview_mode</item>
 		<item level="2" text="Service Title mode" description="Configure to show the channel names, picons, or both in the EPG.">config.epgselection.infobar.servicetitle_mode</item>
 		<item level="2" text="OK button (short)" description="Set to what you want the button to do.">config.epgselection.infobar.btn_ok</item>
