@@ -1,3 +1,4 @@
+from time import time
 from ServiceReference import ServiceReference
 from Components.ActionMap import HelpableActionMap
 from Components.config import config, configfile
@@ -25,14 +26,15 @@ class EPGSelectionChannel(EPGSelectionBase):
 			"down": (self.moveDown, _("Go to next channel"))
 		}, prio=-1, description=helpDescription)
 
-		self["list"] = EPGListSingle(selChangedCB=self.onSelectionChanged, timer=session.nav.RecordTimer, epgConfig=config.epgselection.single, timeFocus=timeFocus)
+		self.timeFocus = timeFocus or time()
+		self["list"] = EPGListSingle(selChangedCB=self.onSelectionChanged, timer=session.nav.RecordTimer, epgConfig=config.epgselection.single)
 
 	def createSetup(self):
 		self.closeEventViewDialog()
 		self.session.openWithCallback(self.onSetupClose, Setup, "epgsingle")
 
 	def onSetupClose(self, test=None):
-		self["list"].sortEPG(int(config.epgselection.sort.value))
+		self["list"].sortEPG()
 		self["list"].setFontsize()
 		self["list"].setItemsPerPage()
 		self["list"].recalcEntrySize()
@@ -44,14 +46,13 @@ class EPGSelectionChannel(EPGSelectionBase):
 		title = service.getServiceName()
 		self.setTitle(title)
 		self["list"].fillEPG(service)
-		self["list"].sortEPG(int(config.epgselection.sort.value))
+		self["list"].selectEventAtTime(self.timeFocus)
 		self.show()
 
 	def refreshList(self):
 		self.refreshTimer.stop()
 		index = self["list"].getCurrentIndex()
 		self["list"].fillEPG(ServiceReference(self.startRef))
-		self["list"].sortEPG(int(config.epgselection.sort.value))
 		self["list"].setCurrentIndex(index)
 
 	def eventViewCallback(self, setEvent, setService, val):
@@ -76,7 +77,7 @@ class EPGSelectionChannel(EPGSelectionBase):
 			config.epgselection.sort.setValue("0")
 		config.epgselection.sort.save()
 		configfile.save()
-		self["list"].sortEPG(int(config.epgselection.sort.value))
+		self["list"].sortEPG()
 
 	def closeScreen(self):
 		self.closeEventViewDialog()

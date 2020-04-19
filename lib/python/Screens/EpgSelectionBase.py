@@ -647,8 +647,8 @@ class EPGBouquetSelection:
 		self.bouquetlistActive = False
 
 		self["bouquetokactions"] = ActionMap(["OkCancelActions"], {
-			"cancel": self.bouquetListHide,
-			"OK": self.bouquetListOK,
+			"cancel": self.__cancel,
+			"OK": self.__OK,
 		}, -1)
 		self["bouquetokactions"].setEnabled(False)
 
@@ -665,23 +665,28 @@ class EPGBouquetSelection:
 		self["bouquetlist"].fillBouquetList(self.bouquets)
 		self["bouquetlist"].moveToService(self.startBouquet)
 		self["bouquetlist"].setCurrentBouquet(self.startBouquet)
-		self.setTitle(self["bouquetlist"].getCurrentBouquet())
 		self.services = self.getBouquetServices(self.startBouquet)
 
 	def getCurrentBouquet(self):
 		cur = self["bouquetlist"].eList.getCurrentSelection()
 		return cur and cur[1]
 
-	def bouquetList(self):
+	def toggleBouquetList(self):
+		# Do nothing if the skin doesn't contain a bouquetlist
+		if not self["bouquetlist"].skinAttributes:
+			return
 		if not self.bouquetlistActive:
 			self.bouquetListShow()
 		else:
-			self.bouquetListHide()
-			self["bouquetlist"].setCurrentIndex(self.curindex)
+			self.__cancel()
 
-	def bouquetListOK(self):
+	def __OK(self):
 		self.bouquetChanged()
 		self.bouquetListHide()
+
+	def __cancel(self):
+		self.bouquetListHide()
+		self["bouquetlist"].setCurrentIndex(self.curindex)
 
 	def bouquetListShow(self):
 		self.curindex = self["bouquetlist"].eList.getCurrentSelectionIndex()
@@ -702,16 +707,20 @@ class EPGBouquetSelection:
 
 	def moveBouquetUp(self):
 		self["bouquetlist"].moveTo(self["bouquetlist"].instance.moveUp)
-		self["bouquetlist"].fillBouquetList(self.bouquets)
 
 	def moveBouquetDown(self):
 		self["bouquetlist"].moveTo(self["bouquetlist"].instance.moveDown)
-		self["bouquetlist"].fillBouquetList(self.bouquets)
 
 	def moveBouquetPageUp(self):
 		self["bouquetlist"].moveTo(self["bouquetlist"].instance.pageUp)
-		self["bouquetlist"].fillBouquetList(self.bouquets)
 
 	def moveBouquetPageDown(self):
 		self["bouquetlist"].moveTo(self["bouquetlist"].instance.pageDown)
-		self["bouquetlist"].fillBouquetList(self.bouquets)
+
+	def nextBouquet(self):
+		self.moveBouquetDown()
+		self.bouquetChanged()
+
+	def prevBouquet(self):
+		self.moveBouquetUp()
+		self.bouquetChanged()

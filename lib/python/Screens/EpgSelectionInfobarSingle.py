@@ -1,4 +1,5 @@
 from enigma import eServiceReference
+from time import time
 
 from ServiceReference import ServiceReference
 from Components.ActionMap import HelpableActionMap
@@ -57,7 +58,7 @@ class EPGSelectionInfobarSingle(EPGSelectionBase, EPGServiceZap):
 			title = service.getServiceName()
 		self.setTitle(title)
 		self["list"].fillEPG(service)
-		self["list"].sortEPG(int(config.epgselection.sort.value))
+		self["list"].selectEventAtTime(time())
 		self["lab1"].show()
 		self.show()
 
@@ -66,17 +67,10 @@ class EPGSelectionInfobarSingle(EPGSelectionBase, EPGServiceZap):
 		service = ServiceReference(self.servicelist.getCurrentSelection())
 		index = self["list"].getCurrentIndex()
 		self["list"].fillEPG(service)
-		self["list"].sortEPG(int(config.epgselection.sort.value))
 		self["list"].setCurrentIndex(index)
 
 	def getCurrentBouquet(self):
 		return self.servicelist.getRoot()
-
-	def bouquetChanged(self):
-		self.services = self.getBouquetServices(self.getCurrentBouquet())
-		self["list"].instance.moveSelectionTo(0)
-		self.setTitle(self["bouquetlist"].getCurrentBouquet())
-		self.bouquetListHide()
 
 	def nextBouquet(self):
 		if config.usage.multibouquet.value:
@@ -154,4 +148,4 @@ class EPGSelectionInfobarSingle(EPGSelectionBase, EPGServiceZap):
 			config.epgselection.sort.setValue("0")
 		config.epgselection.sort.save()
 		configfile.save()
-		self["list"].sortEPG(int(config.epgselection.sort.value))
+		self["list"].sortEPG()

@@ -46,7 +46,7 @@ class EPGSelectionMulti(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 			"epg": (self.openSingleEPG, _("Show single epg for current channel")),
 			"info": (self.openEventView, _("Show detailed event info")),
 			"infolong": (self.openSingleEPG, _("Show single epg for current channel")),
-			"tv": (self.bouquetList, _("Toggle between bouquet/epg lists")),
+			"tv": (self.toggleBouquetList, _("Toggle between bouquet/epg lists")),
 			"timer": (self.openTimerList, _("Show timer list")),
 			"timerlong": (self.openAutoTimerList, _("Show autotimer list")),
 			"menu": (self.createSetup, _("Setup menu"))
@@ -89,17 +89,9 @@ class EPGSelectionMulti(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 
 	def bouquetChanged(self):
 		self.services = self.getBouquetServices(self.getCurrentBouquet())
+		self.setTitle(self["bouquetlist"].getCurrentBouquet())
 		self["list"].fillEPG(self.services, self.askTime)
 		self["list"].instance.moveSelectionTo(0)
-		self.setTitle(self["bouquetlist"].getCurrentBouquet())
-
-	def nextBouquet(self):
-		self.moveBouquetDown()
-		self.bouquetChanged()
-
-	def prevBouquet(self):
-		self.moveBouquetUp()
-		self.bouquetChanged()
 
 	def onDateTimeInputClosed(self, ret):
 		if len(ret) > 1 and ret[0]:

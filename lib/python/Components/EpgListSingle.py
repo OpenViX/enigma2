@@ -13,11 +13,10 @@ SECS_IN_MIN = 60
 
 
 class EPGListSingle(EPGListBase):
-	def __init__(self, epgConfig, selChangedCB=None, timer=None, timeFocus=None):
+	def __init__(self, epgConfig, selChangedCB=None, timer=None):
 		EPGListBase.__init__(self, selChangedCB, timer)
 
 		self.epgConfig = epgConfig
-		self.timeFocus = timeFocus or time()
 		self.eventFontName = "Regular"
 		self.eventFontSize = 28 if self.isFullHd else 20
 		self.eList.setBuildFunc(self.buildEntry)
@@ -168,25 +167,22 @@ class EPGListSingle(EPGListBase):
 			prevEnd = self.list[i - 1][2] + self.list[i - 1][3]
 			if prevEnd + 5 * SECS_IN_MIN < thisBeg:
 				self.list.insert(i, (self.list[i][0], None, prevEnd, thisBeg - prevEnd, None))
+		self.__sortList()
 		self.eList.setList(self.list)
 		self.recalcEntrySize()
-		# Select the event that contains the requested ???.
-		index = 0
-		for x in self.list:
-			if self.timeFocus < x[2] + x[3]:
-				self.instance.moveSelectionTo(index)
-				break
-			index += 1
 
-	def sortEPG(self, type):
-		list = self.list
-		if list:
+	def __sortList(self):
+		sortType = int(config.epgselection.sort.value)
+		if sortType == 1:
+			self.list.sort(key=lambda x: (x[4] and x[4].lower(), x[2]))
+		else:
+			assert(sortType == 0)
+			self.list.sort(key=lambda x: x[2])
+
+	def sortEPG(self):
+		if self.list:
 			eventId = self.getSelectedEventId()
-			if type == 1:
-				list.sort(key=lambda x: (x[4] and x[4].lower(), x[2]))
-			else:
-				assert(type == 0)
-				list.sort(key=lambda x: x[2])
+			self.__sortList()
 			self.eList.invalidate()
 			self.moveToEventId(eventId)
 
@@ -200,6 +196,14 @@ class EPGListSingle(EPGListBase):
 		index = 0
 		for x in self.list:
 			if x[1] == eventId:
+				self.instance.moveSelectionTo(index)
+				break
+			index += 1
+
+	def selectEventAtTime(self, selectTime):
+		index = 0
+		for x in self.list:
+			if x[2] <= selectTime < x[2] + x[3]:
 				self.instance.moveSelectionTo(index)
 				break
 			index += 1

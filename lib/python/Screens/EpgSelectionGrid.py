@@ -61,7 +61,7 @@ class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 			"epg": (self.openSingleEPG, _("Show single epg for current channel")),
 			"info": (self.infoPressed, _("Show detailed event info")),
 			"infolong": (self.infoLongPressed, _("Show single epg for current channel")),
-			"tv": (self.bouquetList, _("Toggle between bouquet/epg lists")),
+			"tv": (self.toggleBouquetList, _("Toggle between bouquet/epg lists")),
 			"tvlong": (self.togglePIG, _("Toggle picture In graphics")),
 			"timer": (self.openTimerList, _("Show timer list")),
 			"timerlong": (self.openAutoTimerList, _("Show autotimer list")),
@@ -90,17 +90,18 @@ class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 		self.session.openWithCallback(onSetupClose, Setup, "epggrid")
 
 	def onCreate(self):
+		self._populateBouquetList()
 		self["list"].recalcEventSize()
 		self.bouquetRoot = self.startBouquet.toString().startswith("1:7:0")
 		self["timeline_text"].setEntries(self["list"], self["timeline_now"], self.timeLines, False)
 		self["lab1"].show()
+		self.setTitle(self["bouquetlist"].getCurrentBouquet())
 		self.show()
 		self.listTimer = eTimer()
 		self.listTimer.callback.append(self.loadEPGData)
 		self.listTimer.start(1, True)
 
 	def loadEPGData(self):
-		self._populateBouquetList()
 		self["list"].fillEPGNoRefresh(self.services)
 		if self.isInfobar or not config.epgselection.grid.channel1.value:
 			self["list"].moveToService(self.startRef)
@@ -152,21 +153,14 @@ class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 			self.openSingleEPG()
 
 	def bouquetChanged(self):
+		bouquet = self.getCurrentBouquet()
 		self.bouquetRoot = False
-		self.services = self.getBouquetServices(self.getCurrentBouquet())
+		self.services = self.getBouquetServices(bouquet)
+		self.setTitle(self["bouquetlist"].getCurrentBouquet())
 		list = self["list"]
 		list.fillEPG(self.services)
 		self.moveTimeLines(True)
 		list.setCurrentIndex(0)
-		self.setTitle(self["bouquetlist"].getCurrentBouquet())
-
-	def nextBouquet(self):
-		self.moveBouquetDown()
-		self.bouquetChanged()
-
-	def prevBouquet(self):
-		self.moveBouquetUp()
-		self.bouquetChanged()
 
 	def forward24Hours(self):
 		self.updEvent(+24)

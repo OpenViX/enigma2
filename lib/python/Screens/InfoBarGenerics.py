@@ -540,7 +540,7 @@ class SecondInfoBar(Screen):
 		if id is not None:
 			self.hide()
 			self.secondInfoBarWasShown = False
-			self.session.open(EPGSelectionSimilar, refstr, None, id)
+			self.session.open(EPGSelectionSimilar, refstr, id)
 
 class InfoBarShowHide(InfoBarScreenSaver):
 	""" InfoBar show/hide control, accepts toggleShow and hide actions, might start
