@@ -13,9 +13,9 @@ from Screens.Setup import Setup
 
 class EPGSelectionMulti(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 	def __init__(self, session, zapFunc, startBouquet, startRef, bouquets):
-		EPGSelectionBase.__init__(self, session, startBouquet, startRef, bouquets)
+		EPGSelectionBase.__init__(self, session, config.epgselection.multi, startBouquet, startRef, bouquets)
 		EPGBouquetSelection.__init__(self, False)
-		EPGServiceZap.__init__(self, config.epgselection.multi, zapFunc)
+		EPGServiceZap.__init__(self, zapFunc)
 		self.skinName = ["MultiEPG", "EPGSelectionMulti"]
 		self.askTime = -1
 
@@ -46,7 +46,7 @@ class EPGSelectionMulti(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 			"epg": (self.openSingleEPG, _("Show single epg for current channel")),
 			"info": (self.openEventView, _("Show detailed event info")),
 			"infolong": (self.openSingleEPG, _("Show single epg for current channel")),
-			"tv": (self.bouquetList, _("Toggle between bouquet/epg lists")),
+			"tv": (self.toggleBouquetList, _("Toggle between bouquet/epg lists")),
 			"timer": (self.openTimerList, _("Show timer list")),
 			"timerlong": (self.openAutoTimerList, _("Show autotimer list")),
 			"menu": (self.createSetup, _("Setup menu"))
@@ -73,9 +73,10 @@ class EPGSelectionMulti(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 
 	def loadEPGData(self):
 		self._populateBouquetList()
-		self.setTitle(self["bouquetlist"].getCurrentBouquet())
+		self.setTitle(self.getCurrentBouquetName())
 		self["list"].fillEPG(self.services, self.askTime)
-		self["list"].moveToService(self.startRef)
+		if self.epgConfig.browse_mode.value != "firstservice":
+			self["list"].moveToService(self.startRef)
 		self["lab1"].hide()
 
 	def refreshList(self):
@@ -89,18 +90,13 @@ class EPGSelectionMulti(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 		self["list"].updateEPG(1)
 
 	def bouquetChanged(self):
-		self.services = self.getBouquetServices(self.getCurrentBouquet())
+		self.setTitle(self.getCurrentBouquetName())
 		self["list"].fillEPG(self.services, self.askTime)
 		self["list"].instance.moveSelectionTo(0)
-		self.setTitle(self["bouquetlist"].getCurrentBouquet())
 
-	def nextBouquet(self):
-		self.moveBouquetDown()
-		self.bouquetChanged()
-
-	def prevBouquet(self):
-		self.moveBouquetUp()
-		self.bouquetChanged()
+	def getCurrentService(self):
+		service = self["list"].getCurrent()[1]
+		return service
 
 	def onDateTimeInputClosed(self, ret):
 		if len(ret) > 1 and ret[0]:

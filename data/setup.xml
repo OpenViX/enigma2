@@ -311,8 +311,9 @@
 		<item level="2" text="Event font size" description="Configure the font size relative to skin size, so 1 increases by 1 point size, and -1 decreases by 1 point size.">config.epgselection.single.eventfs</item>
 	</setup>
 	<setup key="epgmulti" title="Multi EPG">
-		<item level="2" text="Channel preview mode" description="If set to 'yes' you can preview channels in the EPG list.">config.epgselection.multi.preview_mode</item>
 		<item level="2" text="Show bouquet on launch" description="If set to 'yes' the bouquets will be shown each time you open the EPG.">config.epgselection.multi.showbouquet</item>
+		<item level="2" text="Channel selection" description="Choose what channel to select when the EPG opens.">config.epgselection.multi.browse_mode</item>
+		<item level="2" text="Channel preview mode" description="If set to 'yes' you can preview channels in the EPG list.">config.epgselection.multi.preview_mode</item>
 		<item level="2" text="Skip empty services" description="If set to 'yes' channels without EPG will not be shown.">config.epgselection.overjump</item>
 		<item level="2" text="OK button (short)" description="Set to what you want the button to do.">config.epgselection.multi.btn_ok</item>
 		<item level="2" text="OK button (long)" description="Set to what you want the button to do.">config.epgselection.multi.btn_oklong</item>
@@ -320,6 +321,7 @@
 		<item level="2" text="Event font size" description="Configure the font size relative to skin size, so 1 increases by 1 point size, and -1 decreases by 1 point size.">config.epgselection.multi.eventfs</item>
 	</setup>
 	<setup key="epgsingle" title="Single EPG">
+		<item level="2" text="Channel selection" description="Choose what channel to select when the EPG opens.">config.epgselection.single.browse_mode</item>
 		<item level="2" text="Channel preview mode" description="If set to 'yes' you can preview channels in the EPG list.">config.epgselection.single.preview_mode</item>
 		<item level="2" text="Skip empty services" description="If set to 'yes' channels without EPG will not be shown.">config.epgselection.overjump</item>
 		<item level="2" text="Sort list by" description="You can have the list sorted by time or alphanumerical.">config.epgselection.sort</item>
@@ -330,6 +332,7 @@
 	</setup>
 	<setup key="epginfobarsingle" title="Infobar Single EPG">
 		<item level="2" text="View mode" description="Choose the layout. Single channel, Graphics Grid EPG or Text Grid EPG.">config.epgselection.infobar.type_mode</item>
+		<item level="2" text="Channel selection" description="Choose what channel to select when the EPG opens.">config.epgselection.infobar.browse_mode</item>
 		<item level="2" text="Infobar EPG activation" description="Select how to activate the Infobar Single EPG. This will affect Infobar behaviour" requires="InfoBarEpg">config.vixsettings.InfoBarEpg_mode</item>		
 		<item level="2" text="Channel preview mode" description="If set to 'yes' you can preview channels in the EPG list.">config.epgselection.infobar.preview_mode</item>
 		<item level="2" text="Skip empty services" description="If set to 'yes' channels without EPG will not be shown.">config.epgselection.overjump</item>
@@ -341,6 +344,7 @@
 	</setup>
 	<setup key="epginfobargrid" title="Infobar Grid EPG">
 		<item level="2" text="View mode" description="Choose the layout. Single channel, Graphics Grid EPG or Text Grid EPG.">config.epgselection.infobar.type_mode</item>
+		<item level="2" text="Channel selection" description="Choose what channel to select when the EPG opens.">config.epgselection.infobar.browse_mode</item>
 		<item level="2" text="Infobar EPG activation" description="Select how to activate the Infobar Grid EPG. This will affect Infobar behaviour" requires="InfoBarEpg">config.vixsettings.InfoBarEpg_mode</item>
 		<item level="2" text="Channel preview mode" description="If set to 'yes' you can preview channels in the EPG list.">config.epgselection.infobar.preview_mode</item>
 		<item level="2" text="Service Title mode" description="Configure to show the channel names, picons, or both in the EPG.">config.epgselection.infobar.servicetitle_mode</item>
@@ -361,8 +365,9 @@
 	</setup>
 	<setup key="epggrid" title="Grid EPG">
 		<item level="2" text="View mode" description="This option allows you to set the layout view (Text or Graphics).">config.epgselection.grid.type_mode</item>
-		<item level="2" text="Channel preview mode" description="If set to 'yes' you can preview channels in the EPG list.">config.epgselection.grid.preview_mode</item>
 		<item level="2" text="Show bouquet on launch" description="If set to 'yes' the bouquets will be shown each time you open the EPG.">config.epgselection.grid.showbouquet</item>
+		<item level="2" text="Channel selection" description="Choose what channel to select when the EPG opens.">config.epgselection.grid.browse_mode</item>
+		<item level="2" text="Channel preview mode" description="If set to 'yes' you can preview channels in the EPG list.">config.epgselection.grid.preview_mode</item>
 		<item level="2" text="Picture in graphics" description="If set to 'yes' shows a small TV-screen in the EPG.">config.epgselection.grid.pig</item>
 		<item level="1" text="Highlight current events" description="Enable to highlight events that are currently in progress.">config.epgselection.grid.highlight_current_events</item>
 		<item level="2" text="Service Title mode" description="Configure to show the channel names, picons, or both in the EPG.">config.epgselection.grid.servicetitle_mode</item>
@@ -370,7 +375,6 @@
 		<item level="2" text="Info button (long)" description="Set to what you want the button to do.">config.epgselection.grid.btn_infolong</item>
 		<item level="2" text="OK button (short)" description="Set to what you want the button to do.">config.epgselection.grid.btn_ok</item>
 		<item level="2" text="OK button (long)" description="Set to what you want the button to do.">config.epgselection.grid.btn_oklong</item>
-		<item level="2" text="Channel 1 at start" description="If set to 'yes' the EPG will always open at the first channel of bouquet. If set to 'no' the EPG will open on the current channel.">config.epgselection.grid.channel1</item>
 		<item level="2" text="Skip empty services" description="If set to 'yes' channels without EPG will not be shown.">config.epgselection.overjump</item>
 		<item level="2" text="Base time" description="Choose time interval to which the graphics will be rounded off.">config.epgselection.grid.roundto</item>
 		<item level="2" text="Primetime" description="Set the desired primetime.">config.epgselection.grid.primetime</item>

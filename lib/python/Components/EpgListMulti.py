@@ -136,17 +136,3 @@ class EPGListMulti(EPGListBase):
 			cnt += 1
 		self.l.setList(self.list)
 		self.recalcEntrySize()
-
-	def getSelectedEventId(self):
-		x = self.l.getCurrentSelection()
-		return x and x[0]
-
-	def moveToEventId(self, eventId):
-		if not eventId:
-			return
-		index = 0
-		for x in self.list:
-			if x[0] == eventId:
-				self.instance.moveSelectionTo(index)
-				break
-			index += 1

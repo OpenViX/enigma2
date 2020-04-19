@@ -8,18 +8,19 @@ from Components.ActionMap import HelpableActionMap, HelpableNumberActionMap
 from Components.Button import Button
 from Components.config import ConfigClock, config, configfile
 from Components.EpgListSingle import EPGListSingle
-from Screens.EpgSelectionBase import EPGSelectionBase, EPGServiceNumberSelection, EPGServiceZap
+from Screens.EpgSelectionBase import EPGSelectionBase, EPGServiceNumberSelection, EPGServiceBrowse, EPGServiceZap
 from Screens.HelpMenu import HelpableScreen
 from Screens.Setup import Setup
 
 
-class EPGSelectionSingle(EPGSelectionBase, EPGServiceNumberSelection, EPGServiceZap):
-	def __init__(self, session, servicelist, zapFunc, startBouquet, startRef, bouquets, timeFocus=None):
-		EPGSelectionBase.__init__(self, session, startBouquet, startRef, bouquets)
+class EPGSelectionSingle(EPGSelectionBase, EPGServiceNumberSelection, EPGServiceBrowse, EPGServiceZap):
+	def __init__(self, session, zapFunc, startBouquet, startRef, bouquets, timeFocus=None):
+		EPGSelectionBase.__init__(self, session, config.epgselection.single, startBouquet, startRef, bouquets)
 		EPGServiceNumberSelection.__init__(self)
-		EPGServiceZap.__init__(self, config.epgselection.single, zapFunc)
+		EPGServiceZap.__init__(self, zapFunc)
 
 		self.skinName = ["SingleEPG", "EPGSelection"]
+		EPGServiceBrowse.__init__(self)
 
 		helpDescription = _("EPG Commands")
 		self["epgactions"] = HelpableActionMap(self, "EPGSelectActions", {
@@ -29,6 +30,7 @@ class EPGSelectionSingle(EPGSelectionBase, EPGServiceNumberSelection, EPGService
 			"prevService": (self.prevService, _("Go to previous channel")),
 			"info": (self.openEventView, _("Show detailed event info")),
 			"infolong": (self.openSingleEPG, _("Show single epg for current channel")),
+			"tv": (self.toggleBouquetList, _("Toggle between bouquet/epg lists")),
 			"timer": (self.openTimerList, _("Show timer list")),
 			"timerlong": (self.openAutoTimerList, _("Show autotimer list")),
 			"menu": (self.createSetup, _("Setup menu"))
@@ -40,14 +42,13 @@ class EPGSelectionSingle(EPGSelectionBase, EPGServiceNumberSelection, EPGService
 			"down": (self.moveDown, _("Go to next channel"))
 		}, prio=-1, description=helpDescription)
 
-		self.list = []
-		self.servicelist = servicelist
+		self.timeFocus = timeFocus or time()
 
-		self["list"] = EPGListSingle(selChangedCB=self.onSelectionChanged, timer=session.nav.RecordTimer, epgConfig=config.epgselection.single, timeFocus=timeFocus)
+		self["list"] = EPGListSingle(selChangedCB=self.onSelectionChanged, timer=session.nav.RecordTimer, epgConfig=config.epgselection.single)
 
 	def createSetup(self):
 		def onClose(test=None):
-			self["list"].sortEPG(int(config.epgselection.sort.value))
+			self["list"].sortEPG()
 			self["list"].setFontsize()
 			self["list"].setItemsPerPage()
 			self["list"].recalcEntrySize()
@@ -56,82 +57,28 @@ class EPGSelectionSingle(EPGSelectionBase, EPGServiceNumberSelection, EPGService
 		self.session.openWithCallback(onClose, Setup, "epgsingle")
 
 	def onCreate(self):
+		self._populateBouquetList()
 		self["list"].recalcEntrySize()
-		service = ServiceReference(self.servicelist.getCurrentSelection())
-		self["Service"].newService(service.ref)
-		title = "%s - %s" % (ServiceReference(self.servicelist.getRoot()).getServiceName(), service.getServiceName())
-		self.setTitle(title)
-		self["list"].fillEPG(service)
-		self["list"].sortEPG(int(config.epgselection.sort.value))
+		self.refreshList(self.timeFocus)
 		self.show()
 
-	def refreshList(self):
+	def refreshList(self, selectTime=None):
 		self.refreshTimer.stop()
-		service = ServiceReference(self.servicelist.getCurrentSelection())
+		service = self.getCurrentService()
+		self["Service"].newService(service.ref)
+		self.setTitle("%s - %s" % (self.getCurrentBouquetName(), service.getServiceName()))
 		index = self["list"].getCurrentIndex()
 		self["list"].fillEPG(service)
-		self["list"].sortEPG(int(config.epgselection.sort.value))
-		self["list"].setCurrentIndex(index)
-
-	def getCurrentBouquet(self):
-		return self.servicelist.getRoot()
-
-	def nextBouquet(self):
-		self.servicelist.nextBouquet()
-		self.onCreate()
-
-	def prevBouquet(self):
-		self.servicelist.prevBouquet()
-		self.onCreate()
-
-	def nextService(self):
-		self["list"].instance.moveSelectionTo(0)
-		if self.servicelist.inBouquet():
-			prev = self.servicelist.getCurrentSelection()
-			if prev:
-				prev = prev.toString()
-				while True:
-					if config.usage.quickzap_bouquet_change.value and self.servicelist.atEnd():
-						self.servicelist.nextBouquet()
-					else:
-						self.servicelist.moveDown()
-					cur = self.servicelist.getCurrentSelection()
-					if not cur or (not (cur.flags & 64)) or cur.toString() == prev:
-						break
+		if selectTime is not None:
+			self["list"].selectEventAtTime(selectTime)
 		else:
-			self.servicelist.moveDown()
-		if self.isPlayable():
-			self.onCreate()
-			if not self["list"].getCurrent()[1] and config.epgselection.overjump.value:
-				self.nextService()
-		else:
-			self.nextService()
+			self["list"].setCurrentIndex(index)
 
-	def isPlayable(self):
-		current = ServiceReference(self.servicelist.getCurrentSelection())
-		return not current.ref.flags & (eServiceReference.isMarker | eServiceReference.isDirectory)
+	def bouquetChanged(self):
+		self.refreshList(time())
 
-	def prevService(self):
-		self["list"].instance.moveSelectionTo(0)
-		if self.servicelist.inBouquet():
-			prev = self.servicelist.getCurrentSelection()
-			if prev:
-				prev = prev.toString()
-				while True:
-					if config.usage.quickzap_bouquet_change.value and self.servicelist.atBegin():
-						self.servicelist.prevBouquet()
-					self.servicelist.moveUp()
-					cur = self.servicelist.getCurrentSelection()
-					if not cur or (not (cur.flags & 64)) or cur.toString() == prev:
-						break
-		else:
-			self.servicelist.moveUp()
-		if self.isPlayable():
-			self.onCreate()
-			if not self["list"].getCurrent()[1] and config.epgselection.overjump.value:
-				self.prevService()
-		else:
-			self.prevService()
+	def serviceChanged(self):
+		self.refreshList(time())
 
 	def eventViewCallback(self, setEvent, setService, val):
 		if val == -1:
@@ -149,4 +96,4 @@ class EPGSelectionSingle(EPGSelectionBase, EPGServiceNumberSelection, EPGService
 			config.epgselection.sort.setValue("0")
 		config.epgselection.sort.save()
 		configfile.save()
-		self["list"].sortEPG(int(config.epgselection.sort.value))
+		self["list"].sortEPG()

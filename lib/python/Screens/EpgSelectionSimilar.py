@@ -6,7 +6,7 @@ from Screens.EpgSelectionBase import EPGSelectionBase
 
 class EPGSelectionSimilar(EPGSelectionBase):
 	def __init__(self, session, service, eventId):
-		EPGSelectionBase.__init__(self, session)
+		EPGSelectionBase.__init__(self, session, config.epgselection.single)
 
 		self.skinName = ["SingleEPG", "EPGSelection"]
 		self.currentService = service

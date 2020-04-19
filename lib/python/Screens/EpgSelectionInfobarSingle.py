@@ -1,20 +1,23 @@
 from enigma import eServiceReference
+from time import time
 
 from ServiceReference import ServiceReference
 from Components.ActionMap import HelpableActionMap
 from Components.config import config, configfile
 from Components.EpgListSingle import EPGListSingle
 from Components.Sources.Event import Event
-from Screens.EpgSelectionBase import EPGSelectionBase, EPGServiceZap
+from Screens.EpgSelectionBase import EPGSelectionBase, EPGServiceZap, EPGServiceBrowse
 from Screens.Setup import Setup
 
 
-class EPGSelectionInfobarSingle(EPGSelectionBase, EPGServiceZap):
-	def __init__(self, session, servicelist, zapFunc):
-		EPGSelectionBase.__init__(self, session)
-		EPGServiceZap.__init__(self, config.epgselection.infobar, zapFunc)
+class EPGSelectionInfobarSingle(EPGSelectionBase, EPGServiceZap, EPGServiceBrowse):
+	def __init__(self, session, zapFunc, startBouquet, startRef, bouquets):
+		EPGSelectionBase.__init__(self, session, config.epgselection.infobar, startBouquet, startRef, bouquets)
+		EPGServiceZap.__init__(self, zapFunc)
 
 		self.skinName = ["InfobarSingleEPG", "QuickEPG"]
+
+		EPGServiceBrowse.__init__(self)
 
 		helpDescription = _("EPG Commands")
 		self["epgactions"] = HelpableActionMap(self, "EPGSelectActions", {
@@ -36,7 +39,6 @@ class EPGSelectionInfobarSingle(EPGSelectionBase, EPGServiceZap):
 			"down": (self.moveDown, _("Go to next channel"))
 		}, prio=-1, description=helpDescription)
 
-		self.servicelist = servicelist
 		self["list"] = EPGListSingle(selChangedCB=self.onSelectionChanged, timer=session.nav.RecordTimer, epgConfig=config.epgselection.infobar)
 
 	def createSetup(self):
@@ -54,96 +56,26 @@ class EPGSelectionInfobarSingle(EPGSelectionBase, EPGServiceZap):
 		self.session.openWithCallback(onClose, Setup, "epginfobarsingle")
 
 	def onCreate(self):
+		self._populateBouquetList()
 		self["list"].recalcEntrySize()
-		service = ServiceReference(self.servicelist.getCurrentSelection())
-		title = ServiceReference(self.servicelist.getRoot()).getServiceName()
-		self["Service"].newService(service.ref)
-		if title:
-			title = "%s - %s" % (title, service.getServiceName())
-		else:
-			title = service.getServiceName()
-		self.setTitle(title)
-		self["list"].fillEPG(service)
-		self["list"].sortEPG(int(config.epgselection.sort.value))
-		self["lab1"].show()
+		self.refreshList()
+		self["list"].selectEventAtTime(time())
 		self.show()
 
 	def refreshList(self):
 		self.refreshTimer.stop()
-		service = ServiceReference(self.servicelist.getCurrentSelection())
+		service = self.getCurrentService()
+		self["Service"].newService(service.ref)
+		self.setTitle("%s - %s" % (self.getCurrentBouquetName(), service.getServiceName()))
 		index = self["list"].getCurrentIndex()
 		self["list"].fillEPG(service)
-		self["list"].sortEPG(int(config.epgselection.sort.value))
 		self["list"].setCurrentIndex(index)
 
-	def getCurrentBouquet(self):
-		return self.servicelist.getRoot()
-
 	def bouquetChanged(self):
-		self.services = self.getBouquetServices(self.getCurrentBouquet())
-		self["list"].instance.moveSelectionTo(0)
-		self.setTitle(self["bouquetlist"].getCurrentBouquet())
-		self.bouquetListHide()
+		self.refreshList()
 
-	def nextBouquet(self):
-		if config.usage.multibouquet.value:
-			self.servicelist.nextBouquet()
-			self.onCreate()
-
-	def prevBouquet(self):
-		if config.usage.multibouquet.value:
-			self.servicelist.prevBouquet()
-			self.onCreate()
-
-	def nextService(self):
-		self["list"].instance.moveSelectionTo(0)
-		if self.servicelist.inBouquet():
-			prev = self.servicelist.getCurrentSelection()
-			if prev:
-				prev = prev.toString()
-				while True:
-					if config.usage.quickzap_bouquet_change.value and self.servicelist.atEnd():
-						self.servicelist.nextBouquet()
-					else:
-						self.servicelist.moveDown()
-					cur = self.servicelist.getCurrentSelection()
-					if not cur or (not (cur.flags & 64)) or cur.toString() == prev:
-						break
-		else:
-			self.servicelist.moveDown()
-		if self.isPlayable():
-			self.onCreate()
-			if not self["list"].getCurrent()[1] and config.epgselection.overjump.value:
-				self.nextService()
-		else:
-			self.nextService()
-
-	def isPlayable(self):
-		current = ServiceReference(self.servicelist.getCurrentSelection())
-		return not current.ref.flags & (eServiceReference.isMarker | eServiceReference.isDirectory)
-
-	def prevService(self):
-		self["list"].instance.moveSelectionTo(0)
-		if self.servicelist.inBouquet():
-			prev = self.servicelist.getCurrentSelection()
-			if prev:
-				prev = prev.toString()
-				while True:
-					if config.usage.quickzap_bouquet_change.value:
-						if self.servicelist.atBegin():
-							self.servicelist.prevBouquet()
-					self.servicelist.moveUp()
-					cur = self.servicelist.getCurrentSelection()
-					if not cur or (not (cur.flags & 64)) or cur.toString() == prev:
-						break
-		else:
-			self.servicelist.moveUp()
-		if self.isPlayable():
-			self.onCreate()
-			if not self["list"].getCurrent()[1] and config.epgselection.overjump.value:
-				self.prevService()
-		else:
-			self.prevService()
+	def serviceChanged(self):
+		self.refreshList()
 
 	def eventViewCallback(self, setEvent, setService, val):
 		if val == -1:
@@ -161,4 +93,4 @@ class EPGSelectionInfobarSingle(EPGSelectionBase, EPGServiceZap):
 			config.epgselection.sort.setValue("0")
 		config.epgselection.sort.save()
 		configfile.save()
-		self["list"].sortEPG(int(config.epgselection.sort.value))
+		self["list"].sortEPG()

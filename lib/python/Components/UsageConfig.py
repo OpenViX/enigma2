@@ -1064,6 +1064,9 @@ def InitUsageConfig():
 		("servicenumber+picon+servicename", _("Service Number, Picon and Service Name"))]
 
 	config.epgselection.infobar = ConfigSubsection()
+	config.epgselection.infobar.browse_mode = ConfigSelection(default = "currentservice", choices = [
+		("currentservice", _("Select current service")), 
+		("lastepgservice", _("Select last browsed service"))])
 	config.epgselection.infobar.type_mode = ConfigSelection(default="graphics", choices=[("text", _("Text Grid EPG")), ("graphics", _("Graphics Grid EPG")), ("single", _("Single EPG"))])
 	if SystemInfo.get("NumVideoDecoders", 1) > 1:
 		config.epgselection.infobar.preview_mode = ConfigSelection(choices = [("0",_("Disabled")), ("1", _("Full screen")), ("2", _("PiP"))], default = "1")
@@ -1084,6 +1087,9 @@ def InitUsageConfig():
 	config.epgselection.infobar.piconwidth = ConfigSelectionNumber(default = 100, stepwidth = 1, min = 50, max = 500, wraparound = True)
 	config.epgselection.infobar.infowidth = ConfigSelectionNumber(default = 50, stepwidth = 25, min = 0, max = 150, wraparound = True)
 	config.epgselection.single = ConfigSubsection()
+	config.epgselection.single.browse_mode = ConfigSelection(default = "lastepgservice", choices = [
+		("currentservice", _("Select current service")), 
+		("lastepgservice", _("Select last browsed service"))])
 	config.epgselection.single.preview_mode = ConfigYesNo(default = True)
 	config.epgselection.single.btn_ok = ConfigSelection(choices = [("zap",_("Zap")), ("zapExit", _("Zap + Exit"))], default = "zap")
 	config.epgselection.single.btn_oklong = ConfigSelection(choices = [("zap",_("Zap")), ("zapExit", _("Zap + Exit"))], default = "zapExit")
@@ -1091,6 +1097,9 @@ def InitUsageConfig():
 	config.epgselection.single.itemsperpage = ConfigSelectionNumber(default = 18, stepwidth = 1, min = 1, max = 40, wraparound = True)
 	config.epgselection.multi = ConfigSubsection()
 	config.epgselection.multi.showbouquet = ConfigYesNo(default = False)
+	config.epgselection.multi.browse_mode = ConfigSelection(default = "currentservice", choices = [
+		("currentservice", _("Select current service")),
+		("firstservice", _("Select first service in bouquet"))])
 	config.epgselection.multi.preview_mode = ConfigYesNo(default = True)
 	config.epgselection.multi.btn_ok = ConfigSelection(choices = [("zap",_("Zap")), ("zapExit", _("Zap + Exit"))], default = "zap")
 	config.epgselection.multi.btn_oklong = ConfigSelection(choices = [("zap",_("Zap")), ("zapExit", _("Zap + Exit"))], default = "zapExit")
@@ -1098,6 +1107,9 @@ def InitUsageConfig():
 	config.epgselection.multi.itemsperpage = ConfigSelectionNumber(default = 18, stepwidth = 1, min = 12, max = 40, wraparound = True)
 	config.epgselection.grid = ConfigSubsection()
 	config.epgselection.grid.showbouquet = ConfigYesNo(default = False)
+	config.epgselection.grid.browse_mode = ConfigSelection(default = "currentservice", choices = [
+		("currentservice", _("Select current service")), 
+		("firstservice", _("Select first service in bouquet"))])
 	config.epgselection.grid.preview_mode = ConfigYesNo(default = True)
 	config.epgselection.grid.type_mode = ConfigSelection(choices = [("graphics",_("Graphics")), ("text", _("Text"))], default = "graphics")
 	config.epgselection.grid.highlight_current_events = ConfigYesNo(default=True)
@@ -1109,7 +1121,6 @@ def InitUsageConfig():
 	config.epgselection.grid.prevtimeperiod = ConfigSelection(default = "180", choices = [("60", _("%d minutes") % 60), ("90", _("%d minutes") % 90), ("120", _("%d minutes") % 120), ("150", _("%d minutes") % 150), ("180", _("%d minutes") % 180), ("210", _("%d minutes") % 210), ("240", _("%d minutes") % 240), ("270", _("%d minutes") % 270), ("300", _("%d minutes") % 300)])
 	config.epgselection.grid.primetime = ConfigClock(default = 20 * 60)
 	config.epgselection.grid.servicetitle_mode = ConfigSelection(default = "servicename", choices = serviceTitleChoices)
-	config.epgselection.grid.channel1 = ConfigYesNo(default = False)
 	possibleAlignmentChoices = [
 			( str(RT_HALIGN_LEFT   | RT_VALIGN_CENTER          ) , _("left")),
 			( str(RT_HALIGN_CENTER | RT_VALIGN_CENTER          ) , _("centered")),
@@ -1230,7 +1241,7 @@ def defaultMoviePath():
 
 def upgradeConfig():
 	if config.version.value < 53023:
-		def upgrade(configItem, name, valuemap = None, mapper = None):
+		def getOldValue(name):
 			value = config.content.stored_values
 			found = True
 			for n in name.split("."):
@@ -1238,7 +1249,12 @@ def upgradeConfig():
 				if value is None:
 					found = False
 					break
-			if found:
+			# this value is a string, not the actual type required by the config item
+			return value if found else None
+
+		def upgrade(configItem, name, valuemap = None, mapper = None):
+			value = getOldValue(name)
+			if value is not None:
 				# this value is a string, not the actual type required by the config item
 				newvalue = None
 				if valuemap is not None:
@@ -1276,6 +1292,7 @@ def upgradeConfig():
 		upgrade(config.epgselection.infobar.servicewidth, "epgselection.infobar_servicewidth")
 		upgrade(config.epgselection.infobar.piconwidth, "epgselection.infobar_piconwidth")
 		upgrade(config.epgselection.infobar.infowidth, "epgselection.infobar_infowidth")
+		
 		upgrade(config.epgselection.single.preview_mode, "epgselection.enhanced_preview_mode")
 		upgrade(config.epgselection.single.btn_ok, "epgselection.enhanced_ok", okMap)
 		upgrade(config.epgselection.single.btn_oklong, "epgselection.enhanced_oklong", okMap)
@@ -1290,6 +1307,7 @@ def upgradeConfig():
 		upgrade(config.epgselection.multi.itemsperpage, "epgselection.multi_itemsperpage")
 
 		upgrade(config.epgselection.grid.showbouquet, "epgselection.graph_showbouquet")
+		upgrade(config.epgselection.grid.browse_mode, "epgselection.graph_channel1", {"True":"firstservice", "False":"currentservice"})
 		upgrade(config.epgselection.grid.preview_mode, "epgselection.graph_preview_mode")
 		upgrade(config.epgselection.grid.type_mode, "epgselection.graph_type_mode")
 		upgrade(config.epgselection.grid.highlight_current_events, "epgselection.graph_highlight_current_events")
@@ -1301,7 +1319,6 @@ def upgradeConfig():
 		upgrade(config.epgselection.grid.prevtimeperiod, "epgselection.graph_prevtimeperiod")
 		upgrade(config.epgselection.grid.primetime, "epgselection.graph_primetimehour", mapper = lambda v: v + ":00")
 		upgrade(config.epgselection.grid.servicetitle_mode, "epgselection.graph_servicetitle_mode", {"servicenumber+picon":"picon+servicenumber", "servicenumber+picon+servicename": "picon+servicenumber+servicename"})
-		upgrade(config.epgselection.grid.channel1, "epgselection.graph_channel1")
 		upgrade(config.epgselection.grid.servicename_alignment, "epgselection.graph_servicename_alignment")
 		upgrade(config.epgselection.grid.servicenumber_alignment, "epgselection.graph_servicenumber_alignment")
 		upgrade(config.epgselection.grid.event_alignment, "epgselection.graph_event_alignment")

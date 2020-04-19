@@ -14,12 +14,10 @@ from Screens.Setup import Setup
 
 
 class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
-	def __init__(self, session, epgConfig=None, isInfobar=False, zapFunc=None, startBouquet=None, startRef=None, bouquets=None, timeFocus=None):
-		self.isInfobar = isInfobar
-		self.epgConfig = epgConfig or config.epgselection.grid
-		self.bouquetRoot = False
-		EPGSelectionBase.__init__(self, session, startBouquet, startRef, bouquets)
-		EPGServiceZap.__init__(self, self.epgConfig, zapFunc)
+	def __init__(self, session, zapFunc, startBouquet, startRef, bouquets, timeFocus=None, isInfobar=False):
+		self.epgConfig = config.epgselection.infobar if isInfobar else config.epgselection.grid
+		EPGSelectionBase.__init__(self, session, self.epgConfig, startBouquet, startRef, bouquets)
+		EPGServiceZap.__init__(self, zapFunc)
 
 		graphic = self.epgConfig.type_mode.value == "graphics"
 		if not config.epgselection.grid.pig.value:
@@ -61,7 +59,7 @@ class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 			"epg": (self.openSingleEPG, _("Show single epg for current channel")),
 			"info": (self.infoPressed, _("Show detailed event info")),
 			"infolong": (self.infoLongPressed, _("Show single epg for current channel")),
-			"tv": (self.bouquetList, _("Toggle between bouquet/epg lists")),
+			"tv": (self.toggleBouquetList, _("Toggle between bouquet/epg lists")),
 			"tvlong": (self.togglePIG, _("Toggle picture In graphics")),
 			"timer": (self.openTimerList, _("Show timer list")),
 			"timerlong": (self.openAutoTimerList, _("Show autotimer list")),
@@ -79,7 +77,7 @@ class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 			"9": (self.goToPrimeTime, _("Jump to prime time")),
 			"0": (self.goToCurrentTimeAndTop, _("Move to home of list"))
 		}, prio=-1, description=helpDescription)
-		self["list"] = EPGListGrid(isInfobar=self.isInfobar, session=self.session, selChangedCB=self.onSelectionChanged, timer=session.nav.RecordTimer)
+		self["list"] = EPGListGrid(isInfobar=isInfobar, session=self.session, selChangedCB=self.onSelectionChanged, timer=session.nav.RecordTimer)
 		self["list"].setTimeFocus(timeFocus or time())
 
 	def createSetup(self):
@@ -108,19 +106,19 @@ class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 		self["timeline_text"].setEntries(self["list"], self["timeline_now"], self.timeLines, True)
 
 	def onCreate(self):
+		self._populateBouquetList()
 		self["list"].recalcEventSize()
-		self.bouquetRoot = self.startBouquet.toString().startswith("1:7:0")
 		self["timeline_text"].setEntries(self["list"], self["timeline_now"], self.timeLines, False)
 		self["lab1"].show()
+		self.setTitle(self.getCurrentBouquetName())
 		self.show()
 		self.listTimer = eTimer()
 		self.listTimer.callback.append(self.loadEPGData)
 		self.listTimer.start(1, True)
 
 	def loadEPGData(self):
-		self._populateBouquetList()
 		self["list"].fillEPGNoRefresh(self.services)
-		if self.isInfobar or not config.epgselection.grid.channel1.value:
+		if self.epgConfig.browse_mode.value != "firstservice":
 			self["list"].moveToService(self.startRef)
 		self.moveTimeLines()
 		self["lab1"].hide()
@@ -130,8 +128,9 @@ class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 		self["list"].fillEPG()
 		self.moveTimeLines()
 
-	def getCurrentBouquet(self):
-		return self.startBouquet if self.bouquetRoot else EPGBouquetSelection.getCurrentBouquet(self)
+	def getCurrentService(self):
+		service = self["list"].getCurrent()[1]
+		return service
 
 	def togglePIG(self):
 		config.epgselection.grid.pig.setValue(not config.epgselection.grid.pig.value)
@@ -167,21 +166,11 @@ class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 			self.openSingleEPG()
 
 	def bouquetChanged(self):
-		self.bouquetRoot = False
-		self.services = self.getBouquetServices(self.getCurrentBouquet())
+		self.setTitle(self.getCurrentBouquetName())
 		list = self["list"]
 		list.fillEPG(self.services)
 		self.moveTimeLines(True)
 		list.setCurrentIndex(0)
-		self.setTitle(self["bouquetlist"].getCurrentBouquet())
-
-	def nextBouquet(self):
-		self.moveBouquetDown()
-		self.bouquetChanged()
-
-	def prevBouquet(self):
-		self.moveBouquetUp()
-		self.bouquetChanged()
 
 	def forward24Hours(self):
 		self.updEvent(+24)
