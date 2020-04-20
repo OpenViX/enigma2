@@ -945,8 +945,8 @@ class ImageBackup(Screen):
 
 			self.commands.append("mount --bind / %s/root" % self.TMPDIR)
 			if getMachineBuild() in ("h9", "i55plus"):
-				with open("/proc/cmdline", "r").read() as z:
-					if SystemInfo["HasMMC"] and "root=/dev/mmcblk0p1" in z:
+				with open("/proc/cmdline", "r") as z:
+					if SystemInfo["HasMMC"] and "root=/dev/mmcblk0p1" in z.read():
 						self.ROOTFSTYPE = "tar.bz2"
 						self.commands.append("/bin/tar -cf %s/rootfs.tar -C %s/root --exclude ./var/nmbd --exclude ./.resizerootfs --exclude ./.resize-rootfs --exclude ./.resize-linuxrootfs --exclude ./.resize-userdata --exclude ./var/lib/samba/private/msg.sock ." % (self.WORKDIR, self.TMPDIR))
 						self.commands.append("/usr/bin/bzip2 %s/rootfs.tar" % self.WORKDIR)
@@ -1031,8 +1031,8 @@ class ImageBackup(Screen):
 			PARTED_END_KERNEL4 = int(FOURTH_KERNEL_PARTITION_OFFSET) + int(KERNEL_PARTITION_SIZE)
 			self.commandMB.append("parted -s %s unit KiB mkpart linuxkernel4 %s %s" % (EMMC_IMAGE, FOURTH_KERNEL_PARTITION_OFFSET, PARTED_END_KERNEL4))
 			try:
-				with open("/proc/swaps", "r").read() as rd:
-					if "mmcblk0p7" in rd:
+				with open("/proc/swaps", "r") as rd:
+					if "mmcblk0p7" in rd.read():
 						SWAP_PARTITION_OFFSET = int(FOURTH_KERNEL_PARTITION_OFFSET) + int(KERNEL_PARTITION_SIZE)
 						SWAP_PARTITION_SIZE = int(262144)
 						MULTI_ROOTFS_PARTITION_OFFSET = int(SWAP_PARTITION_OFFSET) + int(SWAP_PARTITION_SIZE)
@@ -1190,8 +1190,8 @@ class ImageBackup(Screen):
 			system("mv %s/logo.bin %s/logo.bin" % (self.WORKDIR, self.MAINDEST))
 			system("cp -f /usr/share/fastboot.bin %s/fastboot.bin" % self.MAINDEST2)
 			system("cp -f /usr/share/bootargs.bin %s/bootargs.bin" % self.MAINDEST2)
-			with open("/proc/cmdline", "r").read() as z:
-				if SystemInfo["HasMMC"] and "root=/dev/mmcblk0p1" in z:
+			with open("/proc/cmdline", "r") as z:
+				if SystemInfo["HasMMC"] and "root=/dev/mmcblk0p1" in z.read():
 					move("%s/rootfs.tar.bz2" % self.WORKDIR, "%s/rootfs.tar.bz2" % self.MAINDEST)
 				else:
 					move("%s/rootfs.%s" % (self.WORKDIR, self.ROOTFSTYPE), "%s/%s" % (self.MAINDEST, self.ROOTFSFILE))
