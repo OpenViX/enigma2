@@ -198,5 +198,6 @@ self.session.openWithCallback(msgClosed, FactoryReset)
 			<item weight="23" level="0" text="MultiBoot" requires="canMultiBoot" entryID="deep_standby"><screen module="MultiBootSelector" screen="MultiBootSelector" /></item>
 			<item weight="25" level="0" text="Restart" entryID="restart"><screen module="Standby" screen="TryQuitMainloop">2</screen></item>
 			<item weight="30" level="0" text="Shutdown" requires="!DeepstandbySupport" entryID="deep_standby"><screen module="Standby" screen="TryQuitMainloop">1</screen></item>
+			<item weight="24" level="0" text="Recovery Mode" requires="RecoveryMode" entryID="maintenance_mode"><screen module="Standby" screen="TryQuitMainloop">16</screen></item>
 		</menu>
 </menu>
