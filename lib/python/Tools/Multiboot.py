@@ -3,13 +3,12 @@ import shutil
 import subprocess
 
 from os import mkdir, path, rmdir, rename, remove, stat
-from time import time, sleep
+# from time import time, sleep
 
 from boxbranding import getMachineBuild, getMachineMtdRoot
 from Components.Console import Console
 from Components.SystemInfo import SystemInfo
 from Tools.Directories import pathExists
-
 
 Imagemount = "/tmp/multibootcheck"
 
@@ -47,26 +46,23 @@ def getMultibootslots():
 					# print "Multiboot getMultibootslots readlines = %s " %line
 					if "root=" in line:
 						line = line.rstrip("\n")
-						device = getparam(line, "root")
-						if path.exists(device):
-							slot["device"] = device
+						root = getparam(line, "root")
+						if path.exists(root):
+							slot["root"] = root
 							slot["startupfile"] = path.basename(file)
 							if "rootsubdir" in line:
 								SystemInfo["HasRootSubdir"] = True
 								print "[multiboot] [getMultibootslots] HasRootSubdir is set to:%s" % SystemInfo["HasRootSubdir"]
 								slot["rootsubdir"] = getparam(line, "rootsubdir")
 								slot["kernel"] = getparam(line, "kernel")
-							if "sda" in line:
-								slot["kernel"] = "/dev/sda%s" % line.split("sda", 1)[1].split(" ", 1)[0]
+							elif "sda" in line:
+								slot["kernel"] = getparam(line, "kernel")	# sf8008 SD card slot pairs same as oldsystle MB
 								slot["rootsubdir"] = None
 							else:
-								slot["kernel"] = "%sp%s" % (device.split("p")[0], int(device.split("p")[1]) - 1)
-
+								slot["kernel"] = "%sp%s" % (root.split("p")[0], int(root.split("p")[1]) - 1)	# oldstyle MB kernel = root-1
 						break
 				if slot:
 					bootslots[int(slotnumber)] = slot
-
-				
 		print "[multiboot] [getMultibootslots] Finished bootslots = %s" %bootslots
 		Console().ePopen("umount %s" % Imagemount)
 		if not path.ismount(Imagemount):
@@ -79,9 +75,9 @@ def GetCurrentImage():
 		if slot:
 			return int(slot[0])
 		else:
-			device = getparam(open("/sys/firmware/devicetree/base/chosen/bootargs", "r").read(), "root")
+			root = getparam(open("/sys/firmware/devicetree/base/chosen/bootargs", "r").read(), "root")
 			for slot in SystemInfo["canMultiBoot"].keys():
-				if SystemInfo["canMultiBoot"][slot]["device"] == device:
+				if SystemInfo["canMultiBoot"][slot]["root"] == root:
 					return slot
 def GetCurrentKern():
 	if SystemInfo["HasRootSubdir"]:
@@ -116,7 +112,7 @@ class GetImagelist():
 			self.container.ePopen("umount %s" % Imagemount, self.appClosed)
 		else:
 			self.slot = self.slots.pop(0)
-			self.container.ePopen("mount %s %s" % (SystemInfo["canMultiBoot"][self.slot]["device"], Imagemount), self.appClosed)
+			self.container.ePopen("mount %s %s" % (SystemInfo["canMultiBoot"][self.slot]["root"], Imagemount), self.appClosed)
 
 	def appClosed(self, data="", retval=0, extra_args=None):
 		BuildVersion = "  "
@@ -154,7 +150,7 @@ class GetImagelist():
 				self.imagelist[self.slot] = {"imagename": "%s" % BuildVersion}
 			else:
 				self.imagelist[self.slot] = {"imagename": _("Empty slot")}
-			if self.slots and SystemInfo["canMultiBoot"][self.slot]["device"] == SystemInfo["canMultiBoot"][self.slots[0]]["device"]:
+			if self.slots and SystemInfo["canMultiBoot"][self.slot]["root"] == SystemInfo["canMultiBoot"][self.slots[0]]["root"]:
 				self.slot = self.slots.pop(0)
 				self.appClosed()
 			else:
@@ -276,7 +272,7 @@ class EmptySlot():
 		if SystemInfo["HasRootSubdir"] and SystemInfo["canMultiBoot"][self.slot]["rootsubdir"] != None:
 			self.container.ePopen("mount /dev/block/by-name/userdata /tmp/testmount" if self.phase == self.MOUNT else "umount /tmp/testmount", self.appClosed)
 		else:
-			self.container.ePopen("mount %s /tmp/testmount" % (SystemInfo["canMultiBoot"][self.slot]["device"]) if self.phase == self.MOUNT else "umount /tmp/testmount", self.appClosed)
+			self.container.ePopen("mount %s /tmp/testmount" % (SystemInfo["canMultiBoot"][self.slot]["root"]) if self.phase == self.MOUNT else "umount /tmp/testmount", self.appClosed)
 
 	def appClosed(self, data, retval, extra_args):
 		if retval == 0 and self.phase == self.MOUNT:
