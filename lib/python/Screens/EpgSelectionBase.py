@@ -109,14 +109,6 @@ class EPGSelectionBase(Screen, HelpableScreen):
 		self.refreshTimer.timeout.get().append(self.refreshList)
 		self.onLayoutFinish.append(self.onCreate)
 
-	def getBouquetServices(self, bouquet):
-		servicelist = eServiceCenter.getInstance().list(bouquet)
-		if servicelist:
-			# Use getContent() instead of getNext() so that the list
-			# is sorted according to the "ORDER BY" mechanism.
-			return [ServiceReference(service) for service in servicelist.getContent("R", True) if not (service.flags & (eServiceReference.isDirectory | eServiceReference.isMarker))]
-		return []
-
 	def moveUp(self):
 		self["list"].moveTo(self["list"].instance.moveUp)
 
@@ -535,9 +527,8 @@ class EPGServiceZap:
 
 class EPGServiceNumberSelection:
 	def __init__(self):
-		self.zapNumberStarted = False
 		self.numberZapTimer = eTimer()
-		self.numberZapTimer.callback.append(self.doNumberZap)
+		self.numberZapTimer.callback.append(self.__OK)
 		self.numberZapField = None
 
 		self["numberzapokactions"] = HelpableActionMap(self, "OkCancelActions", {
@@ -546,102 +537,51 @@ class EPGServiceNumberSelection:
 		}, prio=-1, description=_("Service/Channel number zap commands"))
 		self["numberzapokactions"].setEnabled(False)
 		helpMsg = _("Enter a number to jump to a service/channel")
-		self["input_actions"] = HelpableNumberActionMap(self, "NumberActions", {
-			"0": (self.keyNumberGlobal, helpMsg),
-			"1": (self.keyNumberGlobal, helpMsg),
-			"2": (self.keyNumberGlobal, helpMsg),
-			"3": (self.keyNumberGlobal, helpMsg),
-			"4": (self.keyNumberGlobal, helpMsg),
-			"5": (self.keyNumberGlobal, helpMsg),
-			"6": (self.keyNumberGlobal, helpMsg),
-			"7": (self.keyNumberGlobal, helpMsg),
-			"8": (self.keyNumberGlobal, helpMsg),
-			"9": (self.keyNumberGlobal, helpMsg)
-		}, prio=-1, description=_("Service/Channel number zap commands"))
+		self["input_actions"] = HelpableNumberActionMap(self, "NumberActions", 
+			dict([(str(i), (self.keyNumberGlobal, helpMsg)) for i in range(0,9)]),
+			prio=-1, description=_("Service/Channel number zap commands"))
 
 	def keyNumberGlobal(self, number):
-		self.zapNumberStarted = True
 		self["epgcursoractions"].setEnabled(False)
 		self["okactions"].setEnabled(False)
 		self["numberzapokactions"].setEnabled(True)
 		self.numberZapTimer.start(5000, True)
-		if not self.numberZapField:
+		if self.numberZapField is None:
 			self.numberZapField = str(number)
 		else:
 			self.numberZapField += str(number)
-		self.handleServiceName()
-		self["number"].setText("%s\n%s" % (self.zaptoservicename, self.numberZapField))
+		from Screens.InfoBar import InfoBar
+		service, bouquet = InfoBar.instance.searchNumber(int(self.numberZapField))
+		serviceName = ServiceReference(service).getServiceName()
+		self["number"].setText("%s\n%s" % (serviceName, self.numberZapField))
 		self["number"].show()
 		if len(self.numberZapField) >= 4:
-			self.doNumberZap()
+			self.__OK()
 
 	def __OK(self):
-		from Screens.InfoBar import InfoBar
-		InfoBarInstance = InfoBar.instance
-		if not InfoBarInstance.LongButtonPressed:
-			if self.zapNumberStarted:
-				self.doNumberZap()
-				return True
+		if self.numberZapField is not None:
+			# It's preferable to reuse the InfoBar searchNumber over copying the implementation
+			from Screens.InfoBar import InfoBar
+			service, bouquet = InfoBar.instance.searchNumber(int(self.numberZapField))
+			if service is not None:
+				self.startRef = service
+				self.startBouquet = bouquet
+				self.onCreate()
+		self.__cancel()
 
 	def __cancel(self):
-		self.zapNumberStarted = False
 		self.numberZapField = None
+		self.numberZapTimer.stop()
 		self["epgcursoractions"].setEnabled(True)
 		self["okactions"].setEnabled(True)
 		self["numberzapokactions"].setEnabled(False)
 		self["number"].hide()
 
-	def doNumberZap(self):
-		if self.service is not None:
-			self.zapToNumber(self.service, self.bouquet)
-		self.__cancel()
-
-	def handleServiceName(self):
-		self.service, self.bouquet = self.searchNumber(int(self.numberZapField))
-		self.zaptoservicename = ServiceReference(self.service).getServiceName()
-
-	def zapToNumber(self, service, bouquet):
-		if service is not None:
-			self.setServicelistSelection(bouquet, service)
-		self.onCreate()
-
-	def searchNumberHelper(self, serviceHandler, num, bouquet):
-		servicelist = serviceHandler.list(bouquet)
-		if servicelist is not None:
-			serviceIterator = servicelist.getNext()
-			while serviceIterator.valid():
-				if num == serviceIterator.getChannelNum():
-					return serviceIterator
-				serviceIterator = servicelist.getNext()
-		return None
-
-	def searchNumber(self, number):
-		bouquet = self.servicelist.getRoot()
-		serviceHandler = eServiceCenter.getInstance()
-		service = self.searchNumberHelper(serviceHandler, number, bouquet)
-		if config.usage.multibouquet.value:
-			service = self.searchNumberHelper(serviceHandler, number, bouquet)
-			if service is None:
-				bouquet = self.servicelist.bouquet_root
-				bouquetlist = serviceHandler.list(bouquet)
-				if bouquetlist is not None:
-					bouquet = bouquetlist.getNext()
-					while bouquet.valid():
-						if bouquet.flags & eServiceReference.isDirectory:
-							service = self.searchNumberHelper(serviceHandler, number, bouquet)
-							if service is not None:
-								playable = not service.flags & (eServiceReference.isMarker | eServiceReference.isDirectory) or service.flags & eServiceReference.isNumberedMarker
-								if not playable:
-									service = None
-								break
-							if config.usage.alternative_number_mode.value:
-								break
-						bouquet = bouquetlist.getNext()
-		return service, bouquet
-
 
 class EPGBouquetSelection:
 	def __init__(self, graphic):
+		self.services = []
+
 		self["bouquetlist"] = EPGBouquetList(graphic)
 		self["bouquetlist"].hide()
 		self.bouquetlistActive = False
@@ -659,6 +599,14 @@ class EPGBouquetSelection:
 			"down": self.moveBouquetDown
 		}, -1)
 		self["bouquetcursoractions"].setEnabled(False)
+
+	def getBouquetServices(self, bouquet):
+		servicelist = eServiceCenter.getInstance().list(bouquet)
+		if servicelist:
+			# Use getContent() instead of getNext() so that the list
+			# is sorted according to the "ORDER BY" mechanism.
+			return [ServiceReference(service) for service in servicelist.getContent("R", True) if not (service.flags & (eServiceReference.isDirectory | eServiceReference.isMarker))]
+		return []
 
 	def _populateBouquetList(self):
 		self["bouquetlist"].recalcEntrySize()
