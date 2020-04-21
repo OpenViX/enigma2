@@ -73,6 +73,7 @@ class EPGSelectionMulti(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 
 	def loadEPGData(self):
 		self._populateBouquetList()
+		self.setTitle(self["bouquetlist"].getCurrentBouquet())
 		self["list"].fillEPG(self.services, self.askTime)
 		self["list"].moveToService(self.startRef)
 		self["lab1"].hide()
