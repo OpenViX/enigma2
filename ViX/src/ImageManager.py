@@ -1395,7 +1395,7 @@ class ImageManagerDownload(Screen):
 				except urllib2.HTTPError as e:
 					print "[ImageManager] HTTP download ERROR: %s" % e.code
 					continue
-				soup = BeautifulSoup(html, features="lxml")
+				soup = BeautifulSoup(html)
 				links = soup.find_all("a")
 
 				for tag in links:
