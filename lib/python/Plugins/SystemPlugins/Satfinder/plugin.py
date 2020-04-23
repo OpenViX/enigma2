@@ -616,7 +616,7 @@ class SatfinderExtra(Satfinder):
 		self.currentProcess = currentProcess = datetime.datetime.now()
 		self["tsid"].setText("")
 		self["onid"].setText("")
-		self["pos"].setText(self.DVB_type.value)
+		self["pos"].setText("") #(self.DVB_type.value)
 		self["key_yellow"].setText("")
 		self["actions2"].setEnabled(False)
 		self.serviceList = []
