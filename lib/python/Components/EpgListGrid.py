@@ -612,7 +612,7 @@ class EPGListGrid(EPGListBase):
 				evW = ewidth - 2 * (self.eventBorderWidth + self.eventNamePadding)
 				evH = height - 2 * self.eventBorderWidth
 				infowidth = self.epgConfig.infowidth.value
-				if evW < infowidth and infoPix is not None:
+				if infowidth > 0 and evW < infowidth and infoPix is not None:
 					res.append(MultiContentEntryPixmapAlphaBlend(
 						pos=(left + xpos + self.eventBorderWidth, evY), size=(ewidth - 2 * self.eventBorderWidth, evH),
 						png=infoPix, flags=BT_ALIGN_CENTER))
