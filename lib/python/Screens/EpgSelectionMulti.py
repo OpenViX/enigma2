@@ -73,7 +73,7 @@ class EPGSelectionMulti(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 
 	def loadEPGData(self):
 		self._populateBouquetList()
-		self.setTitle(self["bouquetlist"].getCurrentBouquet())
+		self.setTitle(self.getCurrentBouquetName())
 		self["list"].fillEPG(self.services, self.askTime)
 		self["list"].moveToService(self.startRef)
 		self["lab1"].hide()
@@ -89,10 +89,13 @@ class EPGSelectionMulti(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 		self["list"].updateEPG(1)
 
 	def bouquetChanged(self):
-		self.services = self.getBouquetServices(self.getCurrentBouquet())
-		self.setTitle(self["bouquetlist"].getCurrentBouquet())
+		self.setTitle(self.getCurrentBouquetName())
 		self["list"].fillEPG(self.services, self.askTime)
 		self["list"].instance.moveSelectionTo(0)
+
+	def getCurrentService(self):
+		service = self["list"].getCurrent()[1]
+		return service.ref
 
 	def onDateTimeInputClosed(self, ret):
 		if len(ret) > 1 and ret[0]:

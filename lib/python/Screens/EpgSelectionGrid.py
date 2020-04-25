@@ -17,7 +17,6 @@ class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 	def __init__(self, session, epgConfig=None, isInfobar=False, zapFunc=None, startBouquet=None, startRef=None, bouquets=None, timeFocus=None):
 		self.isInfobar = isInfobar
 		self.epgConfig = epgConfig or config.epgselection.grid
-		self.bouquetRoot = False
 		EPGSelectionBase.__init__(self, session, startBouquet, startRef, bouquets)
 		EPGServiceZap.__init__(self, self.epgConfig, zapFunc)
 
@@ -92,10 +91,9 @@ class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 	def onCreate(self):
 		self._populateBouquetList()
 		self["list"].recalcEventSize()
-		self.bouquetRoot = self.startBouquet.toString().startswith("1:7:0")
 		self["timeline_text"].setEntries(self["list"], self["timeline_now"], self.timeLines, False)
 		self["lab1"].show()
-		self.setTitle(self["bouquetlist"].getCurrentBouquet())
+		self.setTitle(self.getCurrentBouquetName())
 		self.show()
 		self.listTimer = eTimer()
 		self.listTimer.callback.append(self.loadEPGData)
@@ -113,8 +111,9 @@ class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 		self["list"].fillEPG()
 		self.moveTimeLines()
 
-	def getCurrentBouquet(self):
-		return self.startBouquet if self.bouquetRoot else EPGBouquetSelection.getCurrentBouquet(self)
+	def getCurrentService(self):
+		service = self["list"].getCurrent()[1]
+		return service.ref
 
 	def togglePIG(self):
 		if not config.epgselection.grid.pig.value:
@@ -153,10 +152,7 @@ class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 			self.openSingleEPG()
 
 	def bouquetChanged(self):
-		bouquet = self.getCurrentBouquet()
-		self.bouquetRoot = False
-		self.services = self.getBouquetServices(bouquet)
-		self.setTitle(self["bouquetlist"].getCurrentBouquet())
+		self.setTitle(self.getCurrentBouquetName())
 		list = self["list"]
 		list.fillEPG(self.services)
 		self.moveTimeLines(True)

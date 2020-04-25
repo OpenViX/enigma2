@@ -320,6 +320,7 @@
 	<setup key="epgsingle" title="Single EPG">
 		<item level="2" text="Channel preview mode" description="If set to 'yes' you can preview channels in the EPG list.">config.epgselection.single.preview_mode</item>
 		<item level="2" text="Skip empty services" description="If set to 'yes' channels without EPG will not be shown.">config.epgselection.overjump</item>
+		<item level="2" text="Open on current service and bouquet" description="If set to 'no' the EPG will remember the selected channel and bouquet.">config.epgselection.open_selected_channel</item>
 		<item level="2" text="Sort list by" description="You can have the list sorted by time or alphanumerical.">config.epgselection.sort</item>
 		<item level="2" text="OK button (short)" description="Set to what you want the button to do.">config.epgselection.single.btn_ok</item>
 		<item level="2" text="OK button (long)" description="Set to what you want the button to do.">config.epgselection.single.btn_oklong</item>
@@ -330,6 +331,7 @@
 		<item level="2" text="View mode" description="Choose the layout. Single channel, Graphics Grid EPG or Text Grid EPG.">config.epgselection.infobar.type_mode</item>
 		<item level="2" text="Infobar EPG activation" description="Select how to activate the Infobar Single EPG. This will affect Infobar behaviour" requires="InfoBarEpg">config.vixsettings.InfoBarEpg_mode</item>		
 		<item level="2" text="Channel preview mode" description="If set to 'yes' you can preview channels in the EPG list.">config.epgselection.infobar.preview_mode</item>
+		<item level="2" text="Open on current service and bouquet" description="If set to 'no' the EPG will remember the selected channel and bouquet.">config.epgselection.open_selected_channel</item>
 		<item level="2" text="Skip empty services" description="If set to 'yes' channels without EPG will not be shown.">config.epgselection.overjump</item>
 		<item level="2" text="Sort list by" description="You can have the list sorted by time or alphanumerical.">config.epgselection.sort</item>
 		<item level="2" text="OK button (short)" description="Set to what you want the button to do.">config.epgselection.infobar.btn_ok</item>

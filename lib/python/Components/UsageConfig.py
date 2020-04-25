@@ -1051,6 +1051,7 @@ def InitUsageConfig():
 	config.epgselection = ConfigSubsection()
 	config.epgselection.sort = ConfigSelection(default="0", choices = [("0", _("Time")),("1", _("Alphanumeric"))])
 	config.epgselection.overjump = ConfigYesNo(default = False)
+	config.epgselection.open_selected_channel = ConfigYesNo(default = True)
 	config.epgselection.infobar = ConfigSubsection()
 	config.epgselection.infobar.type_mode = ConfigSelection(default="graphics", choices=[("text", _("Text Grid EPG")), ("graphics", _("Graphics Grid EPG")), ("single", _("Single EPG"))])
 	if SystemInfo.get("NumVideoDecoders", 1) > 1:

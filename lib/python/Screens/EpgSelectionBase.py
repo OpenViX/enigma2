@@ -581,6 +581,7 @@ class EPGServiceNumberSelection:
 class EPGBouquetSelection:
 	def __init__(self, graphic):
 		self.services = []
+		self.selectedBouquetIndex = -1
 
 		self["bouquetlist"] = EPGBouquetList(graphic)
 		self["bouquetlist"].hide()
@@ -611,13 +612,18 @@ class EPGBouquetSelection:
 	def _populateBouquetList(self):
 		self["bouquetlist"].recalcEntrySize()
 		self["bouquetlist"].fillBouquetList(self.bouquets)
-		self["bouquetlist"].moveToService(self.startBouquet)
-		self["bouquetlist"].setCurrentBouquet(self.startBouquet)
-		self.services = self.getBouquetServices(self.startBouquet)
 
-	def getCurrentBouquet(self):
-		cur = self["bouquetlist"].eList.getCurrentSelection()
-		return cur and cur[1]
+		if self.startBouquet is None:
+			self.selectedBouquetIndex = 0
+		else:
+			index = 0
+			for bouquet in self.bouquets:
+				if bouquet[1] == self.startBouquet:
+					self.selectedBouquetIndex = index
+					break
+				index += 1
+		self["bouquetlist"].setCurrentIndex(self.selectedBouquetIndex)
+		self.services = self.getBouquetServices(self.startBouquet)
 
 	def toggleBouquetList(self):
 		# Do nothing if the skin doesn't contain a bouquetlist
@@ -629,17 +635,18 @@ class EPGBouquetSelection:
 			self.__cancel()
 
 	def __OK(self):
+		self.setBouquetIndex(self["bouquetlist"].instance.getCurrentIndex())
 		self.bouquetChanged()
 		self.bouquetListHide()
 
 	def __cancel(self):
 		self.bouquetListHide()
-		self["bouquetlist"].setCurrentIndex(self.curindex)
+		self["bouquetlist"].setCurrentIndex(self.selectedBouquetIndex)
 
 	def bouquetListShow(self):
-		self.curindex = self["bouquetlist"].eList.getCurrentSelectionIndex()
 		self["epgcursoractions"].setEnabled(False)
 		self["okactions"].setEnabled(False)
+		self["bouquetlist"].setCurrentIndex(self.selectedBouquetIndex)
 		self["bouquetlist"].show()
 		self["bouquetokactions"].setEnabled(True)
 		self["bouquetcursoractions"].setEnabled(True)
@@ -665,10 +672,78 @@ class EPGBouquetSelection:
 	def moveBouquetPageDown(self):
 		self["bouquetlist"].moveTo(self["bouquetlist"].instance.pageDown)
 
+	def getCurrentBouquet(self):
+		return self.bouquets[self.selectedBouquetIndex][1] if self.selectedBouquetIndex >= 0 else None
+
+	def getCurrentBouquetName(self):
+		return self.bouquets[self.selectedBouquetIndex][0] if self.selectedBouquetIndex >= 0 else None
+
 	def nextBouquet(self):
-		self.moveBouquetDown()
-		self.bouquetChanged()
+		self.setBouquetIndex(self.selectedBouquetIndex + 1)
 
 	def prevBouquet(self):
-		self.moveBouquetUp()
+		self.setBouquetIndex(self.selectedBouquetIndex - 1)
+
+	def setBouquetIndex(self, index):
+		self.selectedBouquetIndex = index % len(self.bouquets)
+		self.services = self.getBouquetServices(self.getCurrentBouquet())
+		# TODO move to the subclass
+		self.selectedServiceIndex = 0 if len(self.services) > 0 else -1
 		self.bouquetChanged()
+
+
+class EPGServiceBrowse(EPGBouquetSelection):
+	lastBouquet = None
+	lastService = None
+	lastPlaying = None
+
+	def __init__(self):
+		EPGBouquetSelection.__init__(self, False)
+		self.onClose.append(self.__onClose)
+		self.selectedServiceIndex = -1
+		if not config.epgselection.open_selected_channel.value:
+			if EPGServiceBrowse.lastPlaying and self.startRef and EPGServiceBrowse.lastBouquet and EPGServiceBrowse.lastPlaying == self.startRef:
+				self.startBouquet = EPGServiceBrowse.lastBouquet
+				self.startRef = EPGServiceBrowse.lastService
+			EPGServiceBrowse.lastPlaying = self.session.nav.getCurrentlyPlayingServiceOrGroup()
+
+	def _populateBouquetList(self):
+		EPGBouquetSelection._populateBouquetList(self)
+		if len(self.services) == 0:
+			return
+		if self.startRef is None:
+			self.selectedServiceIndex = 0
+		else:
+			index = 0
+			for service in self.services:
+				if service.ref == self.startRef:
+					self.selectedServiceIndex = index
+					break
+				index += 1
+
+	def __onClose(self):
+		EPGSelectionBase.onSelectionChanged(self)
+		if not config.epgselection.open_selected_channel.value:
+			EPGServiceBrowse.lastBouquet = self.getCurrentBouquet()
+			EPGServiceBrowse.lastService = self.getCurrentService().ref
+
+	def getCurrentService(self):
+		return self.services[self.selectedServiceIndex] if self.selectedServiceIndex >= 0 else ServiceReference("0:0:0:0:0:0:0:0:0")
+
+	def nextService(self):
+		self.selectedServiceIndex += 1
+		if self.selectedServiceIndex >= len(self.services):
+			if config.usage.quickzap_bouquet_change.value:
+				self.selectedBouquetIndex = (self.selectedBouquetIndex + 1) % len(self.bouquets)
+				self.services = self.getBouquetServices(self.getCurrentBouquet())
+			self.selectedServiceIndex = 0 if len(self.services) > 0 else -1
+		self.serviceChanged()
+
+	def prevService(self):
+		self.selectedServiceIndex -= 1
+		if self.selectedServiceIndex < 0:
+			if config.usage.quickzap_bouquet_change.value:
+				self.selectedBouquetIndex = (self.selectedBouquetIndex - 1) % len(self.bouquets)
+				self.services = self.getBouquetServices(self.getCurrentBouquet())
+			self.selectedServiceIndex = len(self.services) - 1 if len(self.services) > 0 else -1
+		self.serviceChanged()

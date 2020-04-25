@@ -8,19 +8,19 @@ from Components.ActionMap import HelpableActionMap, HelpableNumberActionMap
 from Components.Button import Button
 from Components.config import ConfigClock, config, configfile
 from Components.EpgListSingle import EPGListSingle
-from Screens.EpgSelectionBase import EPGSelectionBase, EPGServiceNumberSelection, EPGBouquetSelection, EPGServiceZap
+from Screens.EpgSelectionBase import EPGSelectionBase, EPGServiceNumberSelection, EPGServiceBrowse, EPGServiceZap
 from Screens.HelpMenu import HelpableScreen
 from Screens.Setup import Setup
 
 
-class EPGSelectionSingle(EPGSelectionBase, EPGServiceNumberSelection, EPGBouquetSelection, EPGServiceZap):
-	def __init__(self, session, servicelist, zapFunc, startBouquet, startRef, bouquets, timeFocus=None):
+class EPGSelectionSingle(EPGSelectionBase, EPGServiceNumberSelection, EPGServiceBrowse, EPGServiceZap):
+	def __init__(self, session, zapFunc, startBouquet, startRef, bouquets, timeFocus=None):
 		EPGSelectionBase.__init__(self, session, startBouquet, startRef, bouquets)
 		EPGServiceNumberSelection.__init__(self)
 		EPGServiceZap.__init__(self, config.epgselection.single, zapFunc)
 
 		self.skinName = ["SingleEPG", "EPGSelection"]
-		EPGBouquetSelection.__init__(self, False)
+		EPGServiceBrowse.__init__(self)
 
 		helpDescription = _("EPG Commands")
 		self["epgactions"] = HelpableActionMap(self, "EPGSelectActions", {
@@ -42,7 +42,6 @@ class EPGSelectionSingle(EPGSelectionBase, EPGServiceNumberSelection, EPGBouquet
 			"down": (self.moveDown, _("Go to next channel"))
 		}, prio=-1, description=helpDescription)
 
-		self.servicelist = servicelist
 		self.timeFocus = timeFocus or time()
 
 		self["list"] = EPGListSingle(selChangedCB=self.onSelectionChanged, timer=session.nav.RecordTimer, epgConfig=config.epgselection.single)
@@ -65,9 +64,9 @@ class EPGSelectionSingle(EPGSelectionBase, EPGServiceNumberSelection, EPGBouquet
 
 	def refreshList(self, selectTime=None):
 		self.refreshTimer.stop()
-		service = ServiceReference(self.servicelist.getCurrentSelection())
+		service = self.getCurrentService()
 		self["Service"].newService(service.ref)
-		self.setTitle("%s - %s" % (self["bouquetlist"].getCurrentBouquet(), service.getServiceName()))
+		self.setTitle("%s - %s" % (self.getCurrentBouquetName(), service.getServiceName()))
 		index = self["list"].getCurrentIndex()
 		self["list"].fillEPG(service)
 		if selectTime is not None:
@@ -76,66 +75,10 @@ class EPGSelectionSingle(EPGSelectionBase, EPGServiceNumberSelection, EPGBouquet
 			self["list"].setCurrentIndex(index)
 
 	def bouquetChanged(self):
-		bouquet = self.getCurrentBouquet()
-		self.servicelist.setRoot(bouquet)
 		self.refreshList(time())
 
-	def nextBouquet(self):
-		self.servicelist.nextBouquet()
+	def serviceChanged(self):
 		self.refreshList(time())
-
-	def prevBouquet(self):
-		self.servicelist.prevBouquet()
-		self.refreshList(time())
-
-	def nextService(self):
-		self["list"].instance.moveSelectionTo(0)
-		if self.servicelist.inBouquet():
-			prev = self.servicelist.getCurrentSelection()
-			if prev:
-				prev = prev.toString()
-				while True:
-					if config.usage.quickzap_bouquet_change.value and self.servicelist.atEnd():
-						self.servicelist.nextBouquet()
-					else:
-						self.servicelist.moveDown()
-					cur = self.servicelist.getCurrentSelection()
-					if not cur or (not (cur.flags & 64)) or cur.toString() == prev:
-						break
-		else:
-			self.servicelist.moveDown()
-		if self.isPlayable():
-			self.refreshList()
-			if not self["list"].getCurrent()[1] and config.epgselection.overjump.value:
-				self.nextService()
-		else:
-			self.nextService()
-
-	def isPlayable(self):
-		current = ServiceReference(self.servicelist.getCurrentSelection())
-		return not current.ref.flags & (eServiceReference.isMarker | eServiceReference.isDirectory)
-
-	def prevService(self):
-		self["list"].instance.moveSelectionTo(0)
-		if self.servicelist.inBouquet():
-			prev = self.servicelist.getCurrentSelection()
-			if prev:
-				prev = prev.toString()
-				while True:
-					if config.usage.quickzap_bouquet_change.value and self.servicelist.atBegin():
-						self.servicelist.prevBouquet()
-					self.servicelist.moveUp()
-					cur = self.servicelist.getCurrentSelection()
-					if not cur or (not (cur.flags & 64)) or cur.toString() == prev:
-						break
-		else:
-			self.servicelist.moveUp()
-		if self.isPlayable():
-			self.refreshList()
-			if not self["list"].getCurrent()[1] and config.epgselection.overjump.value:
-				self.prevService()
-		else:
-			self.prevService()
 
 	def eventViewCallback(self, setEvent, setService, val):
 		if val == -1:

@@ -1664,7 +1664,7 @@ class InfoBarEPG:
 			bouquets = self.servicelist.getEPGBouquetList()
 			services = self.getBouquetServices(startBouquet)
 			self.serviceSel = SimpleServicelist(services)
-			self.session.openWithCallback(self.singleServiceEPGClosed, EPGSelectionSingle, self.servicelist, self.zapToService,
+			self.session.openWithCallback(self.singleServiceEPGClosed, EPGSelectionSingle, self.zapToService,
 				startBouquet, startRef, bouquets)
 
 	def openInfoBarEPG(self, reopen=False):
@@ -1672,10 +1672,11 @@ class InfoBarEPG:
 			return
 		startBouquet = self.servicelist.getRoot()
 		startRef = self.session.nav.getCurrentlyPlayingServiceOrGroup()
+		bouquets = self.servicelist.getEPGBouquetList()
 		if config.epgselection.infobar.type_mode.value == 'single':
-			self.session.openWithCallback(self.singleServiceEPGClosed, EPGSelectionInfobarSingle, self.servicelist, self.zapToService)
+			self.session.openWithCallback(self.singleServiceEPGClosed, EPGSelectionInfobarSingle, self.zapToService, 
+				startBouquet=startBouquet, startRef=startRef, bouquets=bouquets)
 		else:
-			bouquets = self.servicelist.getEPGBouquetList()
 			self.dlg_stack.append(self.session.openWithCallback(self.closed, EPGSelectionInfobarGrid,
 				zapFunc=self.zapToService, startBouquet=startBouquet, startRef=startRef, bouquets=bouquets))
 

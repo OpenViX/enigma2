@@ -948,7 +948,7 @@ class ChannelSelectionEPG(InfoBarButtonSetup):
 
 		startRef = self.getCurrentSelection()
 		if startRef:
-			self.session.openWithCallback(epgClosed, EPGSelectionSingle, self, zapToService,
+			self.session.openWithCallback(epgClosed, EPGSelectionSingle, zapToService,
 				self.getRoot(), startRef, self.getEPGBouquetList())
 
 class ChannelSelectionEdit:

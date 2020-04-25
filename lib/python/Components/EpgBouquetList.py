@@ -80,9 +80,6 @@ class EPGBouquetList(GUIComponent):
 	def getCurrentBouquetService(self):
 		return self.eList.getCurrentSelection()[1]
 
-	def setCurrentBouquet(self, currentBouquetService):
-		self.currentBouquetService = currentBouquetService
-
 	def selectionChanged(self):
 		for x in self.onSelChanged:
 			if x is not None:
@@ -95,15 +92,17 @@ class EPGBouquetList(GUIComponent):
 					return x
 		return None
 
-	def moveToService(self, serviceref):
+	def moveToBouquet(self, serviceref):
 		newIdx = self.getIndexFromService(serviceref)
 		if newIdx is None:
 			newIdx = 0
 		self.setCurrentIndex(newIdx)
+		self.currentBouquetService = serviceref
 
 	def setCurrentIndex(self, index):
 		if self.instance is not None:
 			self.instance.moveSelectionTo(index)
+			self.currentBouquetService = self.bouquetslist[index][1]
 
 	def moveTo(self, dir):
 		if self.instance is not None:
