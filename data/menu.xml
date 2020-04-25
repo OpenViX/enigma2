@@ -52,11 +52,11 @@
 			</menu>
 
 			<!-- Menu / Settings / Scan Menu -->
-			<menu weight="20" level="0" text="Tuners &amp; scanning" entryID="service_searching_selection" requires="hasTuners">
+			<menu weight="20" level="0" text="Tuners &amp; scanning" entryID="service_searching_selection">
 				<id val="scan" />
-				<item weight="0" level="0" text="Basic settings" entryID="tuner_setup"><screen module="Satconfig" screen="NimSelection" /></item>
-				<item weight="5" level="0" text="Automatic scan" entryID="auto_scan" conditional="nimmanager.somethingConnected()"><screen module="ScanSetup" screen="ScanSimple" /></item>
-				<item weight="10" level="0" text="Manual scan" entryID="manual_scan" conditional="nimmanager.somethingConnected()"><screen module="ScanSetup" /></item>
+				<item weight="0" level="0" text="Basic settings" entryID="tuner_setup" requires="hasTuners"><screen module="Satconfig" screen="NimSelection" /></item>
+				<item weight="5" level="0" text="Automatic scan" entryID="auto_scan" conditional="nimmanager.somethingConnected()" requires="hasTuners"><screen module="ScanSetup" screen="ScanSimple" /></item>
+				<item weight="10" level="0" text="Manual scan" entryID="manual_scan" conditional="nimmanager.somethingConnected()" requires="hasTuners"><screen module="ScanSetup" /></item>
 				<item weight="20" level="0" text="Fallback remote receiver setup" entryID="fallbacktuner_settings"><screen module="SetupFallbacktuner"/></item>
 			</menu>
 
