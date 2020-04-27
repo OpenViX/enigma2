@@ -10,7 +10,6 @@ from Components.Console import Console
 from Components.SystemInfo import SystemInfo
 from Tools.Directories import pathExists
 
-
 class tmp:
 	dir = None
 
@@ -23,7 +22,8 @@ def getMBbootdevice():
 				print '[Multiboot] [getMBbootdevices] Bootdevice found: %s' % device
 				return device
 			Console().ePopen('umount %s' % tmp.dir)
-	shutil.rmtree(tmp.dir, True)
+	if not path.ismount(tmp.dir):
+		rmdir(tmp.dir)
 
 def getparam(line, param):
 	return line.rsplit("%s=" % param, 1)[1].split(" ", 1)[0]
@@ -61,7 +61,8 @@ def getMultibootslots():
 					bootslots[int(slotnumber)] = slot
 		print "[multiboot] [getMultibootslots] Finished bootslots = %s" %bootslots
 		Console().ePopen("umount %s" %  tmp.dir)
-		shutil.rmtree(tmp.dir, True)
+		if not path.ismount(tmp.dir):
+			rmdir(tmp.dir)
 	print '[Multiboot] Bootslots found:', bootslots
 	return bootslots
 
@@ -153,7 +154,8 @@ class GetImagelist():
 			self.run()
 		else:
 			self.container.killAll()
-			shutil.rmtree(self.tmp_mount, True)
+			if not path.ismount(self.tmp_mount):
+				rmdir(self.tmp_mount)
 			self.callback(self.imagelist)
 
 
