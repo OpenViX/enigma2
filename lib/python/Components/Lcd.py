@@ -262,27 +262,37 @@ def InitLcd():
 
 	if SystemInfo["PowerLED"]:
 		def setPowerLEDstate(configElement):
-			f = open(SystemInfo["PowerLED"], "w")
+			print "[LCD]PowerLED = %s" %SystemInfo["PowerLED"]
+			f = open("/proc/stb/power/powerled", "w")
 			f.write(configElement.value)
 			f.close()
 		config.lcd.powerled = ConfigSelection(default = "on", choices = [("off", _("Off")), ("on", _("On"))])
 		config.lcd.powerled.addNotifier(setPowerLEDstate)
 
+	if SystemInfo["PowerLED2"]:
+		def setPowerLEDstate2(configElement):
+			print "[LCD]PowerLED2 = %s" %SystemInfo["PowerLED2"]
+			f = open("/proc/stb/power/powerled2", "w")
+			f.write(configElement.value)
+			f.close()
+		config.lcd.powerled2 = ConfigSelection(default = "on", choices = [("off", _("Off")), ("on", _("On"))])
+		config.lcd.powerled2.addNotifier(setPowerLEDstate2)
+
  	if SystemInfo["StandbyLED"]:
 		def setPowerLEDstanbystate(configElement):
-			if fileExists("/proc/stb/power/standbyled"):
-				f = open("/proc/stb/power/standbyled", "w")
-				f.write(configElement.value)
-				f.close()
+			print "[LCD]StandbyLED = %s configElement = %s" % (SystemInfo["StandbyLED"], configElement.value)
+			f = open("/proc/stb/power/standbyled", "w")
+			f.write(configElement.value)
+			f.close()
 		config.lcd.standbyLED = ConfigSelection(default = "on", choices = [("off", _("Off")), ("on", _("On"))])
 		config.lcd.standbyLED.addNotifier(setPowerLEDstanbystate)
 
  	if SystemInfo["SuspendLED"]:
 		def setPowerLEDdeepstanbystate(configElement):
-			if fileExists("/proc/stb/power/suspendled"):
-				f = open("/proc/stb/power/suspendled", "w")
-				f.write(configElement.value)
-				f.close()
+			print "[LCD]SuspendLED = %s configElement = %s" % (SystemInfo["SuspendLED"], configElement.value)
+			f = open("/proc/stb/power/suspendled", "w")
+			f.write(configElement.value)
+			f.close()
 		config.lcd.suspendLED = ConfigSelection(default = "on", choices = [("off", _("Off")), ("on", _("On"))])
 		config.lcd.suspendLED.addNotifier(setPowerLEDdeepstanbystate)
 
