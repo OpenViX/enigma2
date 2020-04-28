@@ -33,9 +33,7 @@ class EPGListSingle(EPGListBase):
 				else:
 					attribs.append((attrib, value))
 			self.skinAttributes = attribs
-		rc = EPGListBase.applySkin(self, desktop, screen)
-		self.setItemsPerPage()
-		return rc
+		return EPGListBase.applySkin(self, desktop, screen)
 
 	def setItemsPerPage(self):
 		if self.numberOfRows:

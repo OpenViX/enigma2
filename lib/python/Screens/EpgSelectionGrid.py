@@ -79,15 +79,33 @@ class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 			"9": (self.goToPrimeTime, _("Jump to prime time")),
 			"0": (self.goToCurrentTimeAndTop, _("Move to home of list"))
 		}, prio=-1, description=helpDescription)
-		self["list"] = EPGListGrid(isInfobar=self.isInfobar, session=self.session, selChangedCB=self.onSelectionChanged, timer=session.nav.RecordTimer, graphic=graphic)
+		self["list"] = EPGListGrid(isInfobar=self.isInfobar, session=self.session, selChangedCB=self.onSelectionChanged, timer=session.nav.RecordTimer)
 		self["list"].setTimeFocus(timeFocus or time())
 
 	def createSetup(self):
-		def onSetupClose(test=None):
-			self.close("reopengrid")
+		oldPIG = config.epgselection.grid.pig.value
+		def onClose(test=None):
+			if config.epgselection.grid.pig.value != oldPIG:
+				# skin needs changing - we have to reopen
+				self.close("reopengrid")
+			else:
+				self.reloadConfig()
 
 		self.closeEventViewDialog()
-		self.session.openWithCallback(onSetupClose, Setup, "epggrid")
+		self.session.openWithCallback(onClose, Setup, "epggrid")
+
+	def reloadConfig(self):
+		graphic = self.epgConfig.type_mode.value == "graphics"
+		self["list"].loadConfig()
+		self["list"].setFontsize()
+		self["list"].setItemsPerPage()
+		self["list"].fillEPG()
+		self["bouquetlist"].graphic = graphic
+		self["bouquetlist"].setFontsize()
+		self._populateBouquetList()
+		self["timeline_text"].graphic = graphic
+		self["timeline_text"].setFontsize()
+		self["timeline_text"].setEntries(self["list"], self["timeline_now"], self.timeLines, True)
 
 	def onCreate(self):
 		self["list"].recalcEventSize()
@@ -116,10 +134,7 @@ class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 		return self.startBouquet if self.bouquetRoot else EPGBouquetSelection.getCurrentBouquet(self)
 
 	def togglePIG(self):
-		if not config.epgselection.grid.pig.value:
-			config.epgselection.grid.pig.setValue(True)
-		else:
-			config.epgselection.grid.pig.setValue(False)
+		config.epgselection.grid.pig.setValue(not config.epgselection.grid.pig.value)
 		config.epgselection.grid.pig.save()
 		configfile.save()
 		self.close("reopengrid")
@@ -246,10 +261,7 @@ class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 		self.moveTimeLines(True)
 
 	def toggleNumberOfRows(self):
-		if config.epgselection.grid.heightswitch.value:
-			config.epgselection.grid.heightswitch.setValue(False)
-		else:
-			config.epgselection.grid.heightswitch.setValue(True)
+		config.epgselection.grid.heightswitch.setValue(not config.epgselection.grid.heightswitch.value)
 		self["list"].setItemsPerPage()
 		self["list"].fillEPG()
 		self.moveTimeLines()

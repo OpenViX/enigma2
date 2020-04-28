@@ -66,6 +66,7 @@ class EPGListBase(GUIComponent):
 		self.listHeight = self.instance.size().height()
 		self.listWidth = self.instance.size().width()
 		self.setFontsize()
+		self.setItemsPerPage()
 		return rc
 
 	def getEventFromId(self, service, eventId):

@@ -20,7 +20,7 @@ MAX_TIMELINES = 6
 SECS_IN_MIN = 60
 
 class EPGListGrid(EPGListBase):
-	def __init__(self, isInfobar, session, selChangedCB=None, timer=None, graphic=True):
+	def __init__(self, isInfobar, session, selChangedCB=None, timer=None):
 		EPGListBase.__init__(self, selChangedCB, timer)
 
 		self.isInfobar = isInfobar
@@ -32,10 +32,6 @@ class EPGListGrid(EPGListBase):
 		self.selectionRect = None
 		self.eventRect = None
 		self.serviceRect = None
-		self.showPicon = False
-		self.showServiceName = True
-		self.showServiceNumber = False
-		self.graphic = graphic
 
 		self.nowEvPix = None
 		self.nowSelEvPix = None
@@ -58,7 +54,6 @@ class EPGListGrid(EPGListBase):
 		self.borderSelectedRightPix = None
 		self.infoPix = None
 		self.selInfoPix = None
-		self.graphicsloaded = False
 
 		self.borderColor = 0xC0C0C0
 		self.borderColorService = 0xC0C0C0
@@ -97,6 +92,11 @@ class EPGListGrid(EPGListBase):
 		self.serviceNumberWidth = 0
 
 		self.l.setBuildFunc(self.buildEntry)
+		self.loadConfig()
+
+	def loadConfig(self):
+ 		self.graphic = self.epgConfig.type_mode.value == "graphics"
+		self.graphicsloaded = False
 		self.epgHistorySecs = int(config.epg.histminutes.value) * SECS_IN_MIN
 		self.roundBySecs = int(self.epgConfig.roundto.value) * SECS_IN_MIN
 		self.timeEpoch = int(self.epgConfig.prevtimeperiod.value)
@@ -179,20 +179,11 @@ class EPGListGrid(EPGListBase):
 				else:
 					attribs.append((attrib, value))
 			self.skinAttributes = attribs
-		rc = EPGListBase.applySkin(self, desktop, screen)
-		self.setItemsPerPage()
+		return EPGListBase.applySkin(self, desktop, screen)
 
-		# Cache service number width.
-		if self.showServiceNumber:
-			fontConf = self.epgConfig.servfs.value
-			if fontConf is not None:
-				font = gFont(self.serviceFontName, self.serviceFontSize + fontConf)
-				self.serviceNumberWidth = getTextBoundarySize(self.instance, font, self.instance.size(), "0000").width()
-		return rc
-
-	def __setTimeBase(self, timeCenter):
+	def setTimeFocus(self, timeFocus):
 		# prefer time being aligned in the middle of the EPG, but clip to the maximum EPG data history
-		self.timeBase = int(timeCenter) - self.timeEpochSecs // 2
+		self.timeBase = int(timeFocus) - self.timeEpochSecs // 2
 		abs0 = int(time()) - self.epgHistorySecs
 		if self.timeBase < abs0:
 			# we're viewing close to the start of EPG data
@@ -202,16 +193,11 @@ class EPGListGrid(EPGListBase):
 			# otherwise we're trying to place the desired time in the centre of the EPG
 			# round up, so that slightly more of the future things are shown
 			self.timeBase += -self.timeBase % self.roundBySecs
-
-	def setTimeFocus(self, timeFocus):
-		self.__setTimeBase(timeFocus)
 		self.timeFocus = timeFocus
 
 	def setTimeEpoch(self, epoch):
-		center = epoch * SECS_IN_MIN * (self.timeFocus - self.timeBase) // self.timeEpochSecs
 		self.timeEpoch = epoch
 		self.timeEpochSecs = epoch * SECS_IN_MIN
-		self.__setTimeBase(center)
 		self.fillEPG()
 
 	def getTimeEpoch(self):
@@ -291,6 +277,12 @@ class EPGListGrid(EPGListBase):
 	def setFontsize(self):
 		self.l.setFont(0, gFont(self.serviceFontName, self.serviceFontSize + self.epgConfig.servfs.value))
 		self.l.setFont(1, gFont(self.eventFontName, self.eventFontSize + self.epgConfig.eventfs.value))
+		# Cache service number width.
+		if self.showServiceNumber:
+			fontConf = self.epgConfig.servfs.value
+			if fontConf is not None:
+				font = gFont(self.serviceFontName, self.serviceFontSize + fontConf)
+				self.serviceNumberWidth = getTextBoundarySize(self.instance, font, self.instance.size(), "0000").width()
 
 	def isSelectable(self, service, serviceName, events, picon, channel):
 		return (events and len(events) and True) or False
@@ -892,20 +884,19 @@ class TimelineText(GUIComponent):
 		rc = GUIComponent.applySkin(self, desktop, screen)
 		self.listHeight = self.instance.size().height()
 		self.listWidth = self.instance.size().width()
-		self.setTimeLineFontsize()
+		self.setFontsize()
 		self.l.setItemHeight(self.itemHeight)
 		if self.graphic:
 			self.timelineDate = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "epg/TimeLineDate.png"))
 			self.timelineTime = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "epg/TimeLineTime.png"))
 		return rc
 
-	def setTimeLineFontsize(self):
+	def setFontsize(self):
 		fontConf = self.epgConfig.timelinefs.value
 		if fontConf is not None:
 			self.l.setFont(0, gFont(self.timelineFontName, self.timelineFontSize + fontConf))
 
 	def postWidgetCreate(self, instance):
-		self.setTimeLineFontsize()
 		instance.setContent(self.l)
 
 	def setEntries(self, list, timelineNow, timeLines, force):

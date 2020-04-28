@@ -18,7 +18,6 @@ from Screens.HelpMenu import HelpableScreen
 from Screens.MessageBox import MessageBox
 from Screens.PictureInPicture import PictureInPicture
 from Screens.Screen import Screen
-from Screens.Setup import Setup
 from Screens.TimeDateInput import TimeDateInput
 from Screens.TimerEdit import TimerSanityConflict
 from Screens.TimerEntry import InstantRecordTimerEntry, TimerEntry
@@ -66,8 +65,6 @@ class EPGSelectionBase(Screen, HelpableScreen):
 		self.eventviewWasShown = False
 		self.session.pipshown = False
 		self.pipServiceRelation = getRelationDict() if plugin_PiPServiceRelation_installed else {}
-		self["number"] = Label()
-		self["number"].hide()
 		self["Service"] = ServiceEvent()
 		self["Event"] = Event()
 		self["lab1"] = Label(_("Please wait while gathering EPG data..."))
@@ -541,20 +538,36 @@ class EPGServiceNumberSelection:
 			dict([(str(i), (self.keyNumberGlobal, helpMsg)) for i in range(0,9)]),
 			prio=-1, description=_("Service/Channel number zap commands"))
 
+		self["zapbackground"] = Label()
+		self["zapbackground"].hide()
+		self["zapnumber"] = Label()
+		self["zapnumber"].hide()
+		self["zapservice"] = ServiceEvent()
+		self["zapservice"].newService(None)
+		self["number"] = Label()
+		self["number"].hide()
+
 	def keyNumberGlobal(self, number):
 		self["epgcursoractions"].setEnabled(False)
 		self["okactions"].setEnabled(False)
 		self["numberzapokactions"].setEnabled(True)
-		self.numberZapTimer.start(5000, True)
+		if config.misc.zapkey_delay.value > 0:
+			self.numberZapTimer.start(1000*config.misc.zapkey_delay.value, True)
 		if self.numberZapField is None:
 			self.numberZapField = str(number)
 		else:
 			self.numberZapField += str(number)
 		from Screens.InfoBar import InfoBar
 		service, bouquet = InfoBar.instance.searchNumber(int(self.numberZapField))
-		serviceName = ServiceReference(service).getServiceName()
-		self["number"].setText("%s\n%s" % (serviceName, self.numberZapField))
-		self["number"].show()
+		self["zapbackground"].show()
+		self["zapnumber"].setText(self.numberZapField)
+		self["zapnumber"].show()
+		self["zapservice"].newService(service)
+		if self["number"].skinAttributes:
+		 	serviceName = ServiceReference(service).getServiceName()
+		 	self["number"].setText("%s\n%s" % (serviceName, self.numberZapField))
+			self["number"].show()
+
 		if len(self.numberZapField) >= 4:
 			self.__OK()
 
@@ -575,6 +588,9 @@ class EPGServiceNumberSelection:
 		self["epgcursoractions"].setEnabled(True)
 		self["okactions"].setEnabled(True)
 		self["numberzapokactions"].setEnabled(False)
+		self["zapbackground"].hide()
+		self["zapnumber"].hide()
+		self["zapservice"].newService(None)
 		self["number"].hide()
 
 

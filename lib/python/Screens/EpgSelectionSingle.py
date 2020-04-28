@@ -46,14 +46,14 @@ class EPGSelectionSingle(EPGSelectionBase, EPGServiceNumberSelection, EPGService
 		self["list"] = EPGListSingle(selChangedCB=self.onSelectionChanged, timer=session.nav.RecordTimer, epgConfig=config.epgselection.single, timeFocus=timeFocus)
 
 	def createSetup(self):
-		self.closeEventViewDialog()
-		self.session.openWithCallback(self.onSetupClose, Setup, "epgsingle")
+		def onClose(test=None):
+			self["list"].sortEPG(int(config.epgselection.sort.value))
+			self["list"].setFontsize()
+			self["list"].setItemsPerPage()
+			self["list"].recalcEntrySize()
 
-	def onSetupClose(self, test=None):
-		self["list"].sortEPG(int(config.epgselection.sort.value))
-		self["list"].setFontsize()
-		self["list"].setItemsPerPage()
-		self["list"].recalcEntrySize()
+		self.closeEventViewDialog()
+		self.session.openWithCallback(onClose, Setup, "epgsingle")
 
 	def onCreate(self):
 		self["list"].recalcEntrySize()

@@ -40,11 +40,18 @@ class EPGSelectionInfobarSingle(EPGSelectionBase, EPGServiceZap):
 		self["list"] = EPGListSingle(selChangedCB=self.onSelectionChanged, timer=session.nav.RecordTimer, epgConfig=config.epgselection.infobar)
 
 	def createSetup(self):
-		self.closeEventViewDialog()
-		self.session.openWithCallback(self.onSetupClose, Setup, "epginfobarsingle")
+		def onClose(test=None):
+			if config.epgselection.infobar.type_mode.value != "single":
+				# switching to other infobar EPG type
+				self.close("reopeninfobar")
+			else:
+				self["list"].sortEPG()
+				self["list"].setFontsize()
+				self["list"].setItemsPerPage()
+				self["list"].recalcEntrySize()
 
-	def onSetupClose(self, test=None):
-		self.close("reopeninfobarsingle")
+		self.closeEventViewDialog()
+		self.session.openWithCallback(onClose, Setup, "epginfobarsingle")
 
 	def onCreate(self):
 		self["list"].recalcEntrySize()

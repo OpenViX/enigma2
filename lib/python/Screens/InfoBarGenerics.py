@@ -1686,7 +1686,7 @@ class InfoBarEPG:
 	def reopen(self, answer):
 		if answer == 'reopengrid':
 			self.openGridEPG(True)
-		elif answer == 'reopeninfobargrid' or answer == 'reopeninfobarsingle':
+		elif answer == 'reopeninfobar':
 			self.openInfoBarEPG(True)
 		elif answer == 'close' and isMoviePlayerInfoBar(self):
 			self.lastservice = self.session.nav.getCurrentlyPlayingServiceOrGroup()

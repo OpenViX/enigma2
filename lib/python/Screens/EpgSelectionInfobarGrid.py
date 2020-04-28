@@ -9,11 +9,15 @@ class EPGSelectionInfobarGrid(EPGSelectionGrid):
 		self.skinName = ["InfoBarGridEPG", "GraphicalInfoBarEPG"]
 
 	def createSetup(self):
-		def onSetupClose(test=None):
-			self.close("reopeninfobargrid")
+		def onClose(test=None):
+			if config.epgselection.infobar.type_mode.value == "single":
+				# switching to other infobar EPG type
+				self.close("reopeninfobar")
+			else:
+				self.reloadConfig()
 
 		self.closeEventViewDialog()
-		self.session.openWithCallback(onSetupClose, Setup, "epginfobargrid")
+		self.session.openWithCallback(onClose, Setup, "epginfobargrid")
 
 	def infoPressed(self):
 		self.openEventView()

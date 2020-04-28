@@ -21,11 +21,6 @@ class EPGListMulti(EPGListBase):
 		self.eventFontSize = 28 if self.isFullHd else 20
 		self.l.setBuildFunc(self.buildEntry)
 
-	def applySkin(self, desktop, screen):
-		rc = EPGListBase.applySkin(self, desktop, screen)
-		self.setItemsPerPage()
-		return rc
-
 	def getCurrentChangeCount(self):
 		return self.l.getCurrentSelection()[7] if self.l.getCurrentSelection() is not None else 0
 

@@ -55,13 +55,13 @@ class EPGSelectionMulti(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 		self["list"] = EPGListMulti(selChangedCB=self.onSelectionChanged, timer=session.nav.RecordTimer)
 
 	def createSetup(self):
-		self.closeEventViewDialog()
-		self.session.openWithCallback(self.onSetupClose, Setup, "epgmulti")
+		def onClose(test=None):
+			self["list"].setFontsize()
+			self["list"].setItemsPerPage()
+			self["list"].recalcEntrySize()
 
-	def onSetupClose(self, test=None):
-		self["list"].setFontsize()
-		self["list"].setItemsPerPage()
-		self["list"].recalcEntrySize()
+		self.closeEventViewDialog()
+		self.session.openWithCallback(onClose, Setup, "epgmulti")
 
 	def onCreate(self):
 		self["list"].recalcEntrySize()

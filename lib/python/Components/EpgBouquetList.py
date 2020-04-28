@@ -66,7 +66,7 @@ class EPGBouquetList(GUIComponent):
 					attribs.append((attrib, value))
 			self.skinAttributes = attribs
 		rc = GUIComponent.applySkin(self, desktop, screen)
-		self.setBouquetFontsize()
+		self.setFontsize()
 		self.listHeight = self.instance.size().height()
 		self.listWidth = self.instance.size().width()
 		self.l.setItemHeight(self.itemHeight)
@@ -109,7 +109,7 @@ class EPGBouquetList(GUIComponent):
 		if self.instance is not None:
 			self.instance.moveSelection(dir)
 
-	def setBouquetFontsize(self):
+	def setFontsize(self):
 		self.l.setFont(0, gFont(self.bouquetFontName, self.bouquetFontSize))
 
 	def postWidgetCreate(self, instance):
@@ -117,7 +117,6 @@ class EPGBouquetList(GUIComponent):
 		instance.setWrapAround(True)
 		instance.selectionChanged.get().append(self.selectionChanged)
 		instance.setContent(self.l)
-		self.setBouquetFontsize()
 
 	def preWidgetRemove(self, instance):
 		instance.selectionChanged.get().append(self.selectionChanged)
