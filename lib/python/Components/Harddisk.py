@@ -464,6 +464,7 @@ class Harddisk:
 			dev = self.mount_device
 		else:
 			dev = self.partitionPath("1")  # Otherwise, assume there is one partition.
+		partType = "ext4"
 		for parts in getProcMounts():
 			if os.path.realpath(parts[0]).startswith(dev):
 				partType = parts[2]
