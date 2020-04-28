@@ -923,7 +923,7 @@ class NumberZap(Screen):
 
 		self.handleServiceName()
 
-		if len(self.numberString) >= 4:
+		if len(self.numberString) >= int(config.usage.maxchannelnumlen.value):
 			self.keyOK()
 
 	def __init__(self, session, number, searchNumberFunction = None):
