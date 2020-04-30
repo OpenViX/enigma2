@@ -147,7 +147,11 @@ class Satfinder(ScanSetup, ServiceScan):
 		indent = "  "
 		self.satfinderTunerEntry = getConfigListEntry(_("Tuner"), self.satfinder_scan_nims)
 		self.list.append(self.satfinderTunerEntry)
-		if nimmanager.nim_slots[int(self.satfinder_scan_nims.value)].isCompatible("DVB-S"):
+		self.DVB_type = self.nim_type_dict[int(self.satfinder_scan_nims.value)]["selection"]
+		self.DVB_TypeEntry = getConfigListEntry(_("DVB type"), self.DVB_type) # multitype?
+		if len(self.nim_type_dict[int(self.satfinder_scan_nims.value)]["modes"]) > 1:
+			self.list.append(self.DVB_TypeEntry)
+		if self.DVB_type.value == "DVB-S":
 			self.tuning_sat = self.scan_satselection[self.getSelectedSatIndex(self.feid)]
 			if self.tuning_sat.value:
 				self.satEntry = getConfigListEntry(_('Satellite'), self.tuning_sat)
