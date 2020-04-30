@@ -110,6 +110,7 @@
 		<item level="1" text="Zap key delay for channel number input" description="In live view wait this many seconds after a numeric key press before assuming the required channel number has been entered. Default: 5 seconds. Setting zero will require confirmation with 'OK'. ">config.misc.zapkey_delay</item>
 		<item level="2" text="Show picons during channel number input" description="Configure whether service picons will be shown in number zap.">config.misc.numzap_picon</item>
 		<item level="1" text="Zap mode" requires="ZapMode" description="Setup how to control the channel changing.">config.misc.zapmode</item>
+		<item level="2" text="Number of digits in channel number" description="This allows you to set the number of digits you can input when selecting channels using number input.">config.usage.maxchannelnumlen</item>
 	</setup>
 	<setup key="epgsettings" title="EPG settings" titleshort="Settings">
 		<item level="2" text="EPG location" description="Choose the location where the EPG data will be stored when the %s %s is shut down. The location must be available at boot time.">config.misc.epgcachepath</item>
@@ -239,11 +240,12 @@
 		<item level="0" text="LED Standby" description="LED brightness during standby." requires="LEDButtons">config.lcd.ledbrightnessstandby</item>
 		<item level="0" text="LED Deep Standby" description="LED brightness during deep standby." requires="LEDButtons">config.lcd.ledbrightnessdeepstandby</item>
 		<item level="0" text="Turn on the power LED." description="Power LED can be turned on or off here." requires="PowerLED">config.lcd.powerled</item>
+		<item level="0" text="Turn on the control LED." description="Control LED can be turned on or off here." requires="PowerLED2">config.lcd.powerled2</item>
 		<item level="0" text="Standby LED" description="Turn on the power LED during standby." requires="StandbyLED">config.lcd.standbyLED</item>
 		<item level="0" text="Deep Standby LED" description="Turn on the power LED during deep standby." requires="SuspendLED">config.lcd.suspendLED</item>
-		<item level="0" text="Power LED State when Running." description="Set LED Color or disable the LED." requires="LedPowerColor">config.lcd.ledpowercolor</item>
-		<item level="0" text="Power LED State in Standby" description="Set LED Color or disable the LED." requires="LedStandbyColor">config.lcd.ledstandbycolor</item>
-		<item level="0" text="Power LED State in Deep-Standby" description="Set LED Color or disable the LED." requires="LedSuspendColor">config.lcd.ledsuspendcolor</item>
+		<item level="0" text="Power LED Colour State when Running." description="Set LED Color or disable the LED." requires="LedPowerColor">config.lcd.ledpowercolor</item>
+		<item level="0" text="Power LED Colour State in Standby" description="Set LED Color or disable the LED." requires="LedStandbyColor">config.lcd.ledstandbycolor</item>
+		<item level="0" text="Power LED Colour State in Deep-Standby" description="Set LED Color or disable the LED." requires="LedSuspendColor">config.lcd.ledsuspendcolor</item>
 		<item level="0" text="PowerControl FrontDisplay Normal Mode" description="Power On/Off display Normal Mode." requires="Power24x7On">config.lcd.power24x7on</item>
 		<item level="0" text="PowerControl FrontDisplay Standby Mode" description="Power On/Off display Standby Mode." requires="Power24x7Standby">config.lcd.power24x7standby</item>
 		<item level="0" text="PowerControl FrontDisplay Suspend Mode" description="Power On/Off display Suspend Mode." requires="Power24x7Suspend">config.lcd.power24x7suspend</item>
@@ -291,7 +293,7 @@
 		<item level="2" text="Show Log Manager in extensions list ?" description="Allows you to show/hide Log Manager in extensions (blue button).">config.logmanager.showinextensions</item>
 		<item level="2" text="Maximum number of days" description="Logs older than the specified number of days will be deleted.">config.crash.daysloglimit</item>
 		<item level="2" text="Maximum total space used (MB)" description="When maximum space for all logs is reached, the oldest logs will be deleted.">config.crash.sizeloglimit</item>
-		<item level="2" text="Debug log time format *" description="This is the prefix of each entry in the debug log. 'boot time' is the number of seconds slnce the receiver was last booted.">config.crash.logtimeformat</item>
+		<item level="2" text="Debug log time format *" description="This is the prefix of each entry in the debug log. 'boot time' is the number of seconds since the receiver was last booted.">config.crash.logtimeformat</item>
 		<item level="2" text="Vix forum user name" description="Enter your forum user name, to make it easier to trace logs.">config.logmanager.user</item>
 		<item level="2" text="e-mail address" description="Enter your e-mail address to send a copy of the log to.">config.logmanager.useremail</item>
 		<item level="2" text="Send yourself a copy" description="Allows you to send a copy of the log to yourself.">config.logmanager.usersendcopy</item>
