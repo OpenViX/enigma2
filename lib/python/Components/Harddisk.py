@@ -464,6 +464,7 @@ class Harddisk:
 			dev = self.mount_device
 		else:
 			dev = self.partitionPath("1")  # Otherwise, assume there is one partition.
+		partType = "ext4"
 		for parts in getProcMounts():
 			if os.path.realpath(parts[0]).startswith(dev):
 				partType = parts[2]
@@ -720,25 +721,30 @@ class HarddiskManager:
 			# if mediumFound:
 			# 	print "[Harddisk] DEBUG: Device '%s' (%s) has media." % (device, physicalDevice)
 			# print "[Harddisk] DEBUG: device='%s', physicalDevice='%s', devMajor='%s', description='%s'" % (device, physicalDevice, devMajor, description)
-			if not isCdrom and os.path.exists(devicePath):  # Add HDD check for partitions.
-				partitions = [partition for partition in sorted(os.listdir(devicePath)) if partition.startswith(device)]
-				if SystemInfo["HasHiSi"] and devMajor == 8 and len(partitions) >= 4:
-					partitions = partitions[4:]
-				print "[Harddisk] len partitions = %s, device = %s" % (len(partitions), device)
-				if len(partitions) != 0:
+			if not isCdrom and os.path.exists(devicePath):
+				partitions = [partition for partition in sorted(os.listdir(devicePath)) if partition.startswith(device)]  # Add HDD check for partitions.
+				if len(partitions) == 0:  # Add HDD check for HDD with no partitions (unformatted).
 					print "[Harddisk] Found storage device '%s' (Removable=%s) NoPartitions = %s." % (device, removable, len(partitions))
 					self.hdd.append(Harddisk(device, removable))
 					SystemInfo["Harddisk"] = True
-					# self.partitions.append(Partition(mountpoint=self.getMountpoint(device), description=description, force_mounted, device=device))
-					# print "[Harddisk] DEBUG: Partition(mountpoint=%s, description=%s, force_mounted=True, device=%s)" % (self.getMountpoint(device), description, device)
-					for partition in partitions:
-						description = self.getUserfriendlyDeviceName(partition, physicalDevice)
-						print "[Harddisk] Found partition '%s', description='%s', device='%s'." % (partition, description, physicalDevice)
-						part = Partition(mountpoint=self.getMountpoint(partition), description=description, force_mounted=True, device=partition)
-						self.partitions.append(part)
-						# print "[Harddisk] DEBUG: Partition(mountpoint=%s, description=%s, force_mounted=True, device=%s)" % (self.getMountpoint(partition), description, partition)
-						self.on_partition_list_change("add", part)
-						# print "[Harddisk] DEBUG: on_partition_list_change('add', Partition(mountpoint=%s, description=%s, force_mounted=True, device=%s))" % (self.getMountpoint(partition), description, partition)
+				else:
+					if SystemInfo["HasHiSi"] and devMajor == 8 and len(partitions) >= 4:
+						partitions = partitions[4:]
+					print "[Harddisk] len partitions = %s, device = %s" % (len(partitions), device)
+					if len(partitions) != 0:
+						print "[Harddisk] Found storage device '%s' (Removable=%s) NoPartitions = %s." % (device, removable, len(partitions))
+						self.hdd.append(Harddisk(device, removable))
+						SystemInfo["Harddisk"] = True
+						# self.partitions.append(Partition(mountpoint=self.getMountpoint(device), description=description, force_mounted, device=device))
+						# print "[Harddisk] DEBUG: Partition(mountpoint=%s, description=%s, force_mounted=True, device=%s)" % (self.getMountpoint(device), description, device)
+						for partition in partitions:
+							description = self.getUserfriendlyDeviceName(partition, physicalDevice)
+							print "[Harddisk] Found partition '%s', description='%s', device='%s'." % (partition, description, physicalDevice)
+							part = Partition(mountpoint=self.getMountpoint(partition), description=description, force_mounted=True, device=partition)
+							self.partitions.append(part)
+							# print "[Harddisk] DEBUG: Partition(mountpoint=%s, description=%s, force_mounted=True, device=%s)" % (self.getMountpoint(partition), description, partition)
+							self.on_partition_list_change("add", part)
+							# print "[Harddisk] DEBUG: on_partition_list_change('add', Partition(mountpoint=%s, description=%s, force_mounted=True, device=%s))" % (self.getMountpoint(partition), description, partition)
 		self.hdd.sort()
 		print "[Harddisk] Enumerating block devices complete."
 
