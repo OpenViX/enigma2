@@ -334,7 +334,8 @@
 	</map>
 
 	<map context="InfobarTimerButtonActions">
-		<key id="KEY_PROGRAM" mapto="timerSelection" flags="m"/>
+		<key id="KEY_PROGRAM" mapto="timerSelection" flags="b"/>
+		<key id="KEY_EDIT" mapto="timerSelection" flags="b"/>
 	</map>
 
 	<map context="InfobarVmodeButtonActions">
@@ -708,6 +709,7 @@
 		<key id="KEY_INFO" mapto="info" flags="b"/>
 		<key id="KEY_INFO" mapto="infolong" flags="l"/>
 		<key id="KEY_EPG" mapto="epg" flags="b"/>
+		<key id="KEY_EDIT" mapto="timerAdd" flags="m"/>
 		<key id="KEY_TV" mapto="tv" flags="b"/>
 		<key id="KEY_TV" mapto="tvlong" flags="l"/>
 		<key id="KEY_TV2" mapto="tv" flags="b"/>
@@ -726,6 +728,7 @@
 		<key id="KEY_INFO" mapto="contextMenu" flags="m"/>
 		<key id="KEY_MENU" mapto="contextMenu" flags="m"/>
 		<key id="KEY_PROGRAM" mapto="timerAdd" flags="m"/>
+		<key id="KEY_EDIT" mapto="timerAdd" flags="m"/>
 	</map>
 
 	<map context="EventViewEPGActions">
@@ -1004,6 +1007,8 @@
 		<key id="KEY_SCREEN" mapto="activatePiP" flags="b"/>
 		<key id="KEY_SCREEN" mapto="activatePiP_long" flags="l"/>
 		<key id="KEY_PROGRAM" mapto="timer" flags="b"/>
+		<key id="KEY_EDIT" mapto="timer" flags="b"/>
+		<key id="KEY_EDIT" mapto="timer_long" flags="l"/>
 		<key id="KEY_PLAYPAUSE" mapto="playpause" flags="m"/>
 		<key id="KEY_LIST" mapto="playlist" flags="b"/>
 		<key id="KEY_TIME" mapto="timeshift" flags="b"/>
