@@ -8,7 +8,6 @@ from os import mkdir, path, rmdir, rename, remove, sep, stat
 from boxbranding import getMachineBuild, getMachineMtdRoot
 from Components.Console import Console
 from Components.SystemInfo import SystemInfo
-from Tools.Directories import pathExists
 
 class tmp:
 	dir = None
@@ -18,8 +17,8 @@ def getMBbootdevice():
 	for device in ('/dev/block/by-name/bootoptions', '/dev/mmcblk0p1', '/dev/mmcblk1p1', '/dev/mmcblk0p3', '/dev/mmcblk0p4'):
 		if path.exists(device):
 			Console().ePopen("mount %s %s" % (device, tmp.dir))
-			if path.isfile(path.join(Imagemount, "STARTUP")):
-				print '[Multiboot] [getMBbootdevices] Bootdevice found: %s' % device
+			if path.isfile(path.join(tmp.dir, "STARTUP")):
+				print "[Multiboot] [getMBbootdevices] Bootdevice found: %s" % device
 				return device
 			Console().ePopen('umount %s' % tmp.dir)
 	if not path.ismount(tmp.dir):
@@ -31,7 +30,7 @@ def getparam(line, param):
 def getMultibootslots():
 	bootslots = {}
 	if SystemInfo["MBbootdevice"]:
-		for file in glob.glob(path.join(Imagemount, "STARTUP_*")):
+		for file in glob.glob(path.join(tmp.dir, "STARTUP_*")):
 			if "STARTUP_RECOVERY" in file:
 				SystemInfo["RecoveryMode"] = True
 				print "[multiboot] [getMultibootslots] RecoveryMode is set to:%s" % SystemInfo["RecoveryMode"]
@@ -60,7 +59,7 @@ def getMultibootslots():
 				if slot:
 					bootslots[int(slotnumber)] = slot
 		print "[multiboot] [getMultibootslots] Finished bootslots = %s" %bootslots
-		Console().ePopen("umount %s" %  tmp.dir)
+		Console().ePopen("umount %s" % tmp.dir)
 		if not path.ismount(tmp.dir):
 			rmdir(tmp.dir)
 	print '[Multiboot] Bootslots found:', bootslots
@@ -120,9 +119,9 @@ class GetImagelist():
 		if retval:
 			self.imagelist[self.slot] = {"imagename": _("Empty slot")}
 		if retval == 0 and self.phase == self.MOUNT:
-			imagedir = os.sep.join(filter(None, [self.tmp_mount, SystemInfo["canMultiBoot"][self.slot].get('rootsubdir', '')]))
+			imagedir = sep.join(filter(None, [self.tmp_mount, SystemInfo["canMultiBoot"][self.slot].get('rootsubdir', '')]))
+			if path.isfile(path.join(imagedir, 'usr/bin/enigma2')):
 			# print "[multiboot] [GetImagelist] 2 self.slot = %s imagedir = %s" % (self.slot, imagedir)
-			if path.isfile(os.path.join(imagedir, 'usr/bin/enigma2')):
 				Creator = open("%s/etc/issue" % imagedir).readlines()[-2].capitalize().strip()[:-6].replace("-release", " rel")
 				if Creator.startswith("Openvix"):
 					reader = boxbranding_reader(imagedir)
@@ -161,7 +160,7 @@ class GetImagelist():
 
 class boxbranding_reader:  # Many thanks to Huevos for creating this reader - well beyond my skill levels!
 	def __init__(self, OsPath):
-		if pathExists("%s/usr/lib64" % OsPath):
+		if path.exists("%s/usr/lib64" % OsPath):
 			self.branding_path = "%s/usr/lib64/enigma2/python/" % OsPath
 		else:
 			self.branding_path = "%s/usr/lib/enigma2/python/" % OsPath
