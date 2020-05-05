@@ -255,31 +255,26 @@ class EmptySlot():
 		self.callback = callback
 		self.container = Console()
 		self.slot = Contents
-		if not path.isdir("/tmp/testmount"):
-			mkdir("/tmp/testmount")
+		self.tmp_mount = tempfile.mkdtemp(prefix="Multiboot")
 		self.phase = self.MOUNT
 		self.run()
 
 	def run(self):
-		if SystemInfo["HasRootSubdir"] and SystemInfo["canMultiBoot"][self.slot]["rootsubdir"] != None:
-			self.container.ePopen("mount /dev/block/by-name/userdata /tmp/testmount" if self.phase == self.MOUNT else "umount /tmp/testmount", self.appClosed)
-		else:
-			self.container.ePopen("mount %s /tmp/testmount" % (SystemInfo["canMultiBoot"][self.slot]["root"]) if self.phase == self.MOUNT else "umount /tmp/testmount", self.appClosed)
+		self.container.ePopen("mount %s %s" % (SystemInfo["canMultiBoot"][self.slot]["root"], self.tmp_mount), self.appClosed)
 
 	def appClosed(self, data, retval, extra_args):
-		if retval == 0 and self.phase == self.MOUNT:
-			if SystemInfo["HasRootSubdir"] and SystemInfo["canMultiBoot"][self.slot]["rootsubdir"] != None:
-				rootsub = SystemInfo["canMultiBoot"][self.slot]["rootsubdir"]
-				if path.isfile("/tmp/testmount/%s/usr/bin/enigma2" % rootsub):
-					rename("/tmp/testmount/%s/usr/bin/enigma2" % rootsub, "/tmp/testmount/%s/usr/bin/enigmax.bin" % rootsub)
-			elif path.isfile("/tmp/testmount/usr/bin/enigma2"):
-				rename("/tmp/testmount/usr/bin/enigma2", "/tmp/testmount/usr/bin/enigmax.bin")
+		if retval == 0:
+			imagedir = sep.join(filter(None, [self.tmp_mount, SystemInfo["canMultiBoot"][self.slot].get('rootsubdir', '')]))
+			if path.isfile(path.join(imagedir, 'usr/bin/enigma2')):
+				rename((path.join(imagedir, 'usr/bin/enigma2')), (path.join(imagedir, 'usr/bin/enigmax')))
 			else:
 				print "[multiboot2] NO enigma2 found to rename"
-			self.phase = self.UNMOUNT
-			self.run()
+			self.kill()
 		else:
+			self.kill()
+
+	def kill(self):
 			self.container.killAll()
-			if not path.ismount("/tmp/testmount"):
-				rmdir("/tmp/testmount")
+			if not path.ismount(self.tmp_mount):
+				rmdir(self.tmp_mount)
 			self.callback()
