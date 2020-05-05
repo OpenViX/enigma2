@@ -65,9 +65,9 @@ config.plugins.softwaremanager.overwriteBootlogoFiles = ConfigYesNo(default=True
 config.plugins.softwaremanager.overwriteSpinnerFiles = ConfigYesNo(default=True)
 config.plugins.softwaremanager.overwriteConfigFiles = ConfigSelection(
 				[
-				 ("Y", _("Yes, always")),
-				 ("N", _("No, never")),
-				 ("ask", _("Always ask"))
+					("Y", _("Yes, always")),
+					("N", _("No, never")),
+					("ask", _("Always ask"))
 				], "Y")
 config.plugins.softwaremanager.onSetupMenu = ConfigYesNo(default=True)
 config.plugins.softwaremanager.onBlueButton = ConfigYesNo(default=False)
