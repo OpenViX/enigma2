@@ -53,7 +53,6 @@
 		<item level="1" text="Show positioner position" description="Configure whether or not an rotor position will be displayed on infobar">config.misc.showrotorposition</item>
 		<item level="0" text="Include CI assignment" description="Set CI assignment for detection of available services." >config.misc.use_ci_assignment</item>
 		<item level="1" text="Alternative radio mode" description="Use the alternative or the conventional radio mode.">config.usage.e1like_radio_mode</item>
-		<item level="1" text="Position of finished Timers in the Timer list" description="Control of the position how finished timers are shown in the Timer List.">config.usage.timerlist_finished_timer_position</item>
 		<item level="2" text="Show infobar on channel change" description="If set to 'yes' the infobar will be displayed when changing channels.">config.usage.show_infobar_on_zap</item>
 		<item level="1" text="Show infobar on skip forward/backward" description="If set to 'yes', the infobar will be displayed when Fast Forwarding or Rewinding during media playback.">config.usage.show_infobar_on_skip</item>
 		<item level="1" text="Show infobar on event change" description="If set to 'yes' the infobar will be displayed when a new event starts.">config.usage.show_infobar_on_event_change</item>
@@ -198,7 +197,9 @@
 		<item level="2" text="Initial rewind speed" description="Configure the initial rewind speed. When you press the rewind button, rewinding will start at this speed.">config.seek.enter_backward</item>
 		<item level="2" text="Limit character set for recording filenames" description="Limit the characters that can be used in recording filenames to (7 bit) ascii. This ensures compatibility with operating systems or file systems with limited character sets.">config.recording.ascii_filenames</item>
 		<item level="2" text="Composition of the recording filenames" description="Configure how recording filenames are constructed.">config.recording.filename_composition</item>
-		<item level="2" text="Remove completed timers after (days)" description="Configure the number of days old timers are kept before they are automatically removed from the timer list.">config.recording.keep_timers</item>
+		<item level="1" text="Show picons in timer list" description="Configure if picons will be shown in the timer list.">config.usage.timerlist_showpicons</item>
+		<item level="1" text="Position of finished timers in timer list" description="Control how finished timers are shown in the timer list. If set to hide, disabled timers will still be shown">config.usage.timerlist_finished_timer_position</item>
+		<item level="2" text="Remove finished timers after (days)" description="Configure the number of days old timers are kept before they are automatically removed from the timer list.">config.recording.keep_timers</item>
 		<item level="2" text="Offline decode delay (ms)" description="Configure the offline decoding delay (in milliseconds). The configured delay is observed at each control word parity change.">config.recording.offline_decode_delay</item>
 		<item level="2" text="Default recording type" description="Descramble &amp; record ECM' gives the option to descramble afterwards if descrambling on recording failed. 'Don't descramble, record ECM' save a scramble recording that can be descrambled on playback. 'Normal' means descramble the recording and don't record ECM.">config.recording.ecm_data</item>
 	</setup>
