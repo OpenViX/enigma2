@@ -54,10 +54,8 @@ class TimerEditList(Screen, ProtectedScreen):
 		Screen.setTitle(self, title)
 		
 		self.onChangedEntry = [ ]
-		list = [ ]
-		self.list = list
-		self.fillTimerList()
-		self["timerlist"] = TimerList(list)
+		self.list = []
+		self["timerlist"] = TimerList(self.list)
 
 		self.key_red_choice = self.EMPTY
 		self.key_yellow_choice = self.EMPTY
@@ -88,7 +86,6 @@ class TimerEditList(Screen, ProtectedScreen):
 		self.onLayoutFinish.append(self.onCreate)
 
 	def onCreate(self):
-		self.list = []
 		self.fillTimerList()
 		self["timerlist"].l.setList(self.list)
 
@@ -290,8 +287,12 @@ class TimerEditList(Screen, ProtectedScreen):
 		list = self.list
 		del list[:]
 		list.extend([(timer, False) for timer in self.session.nav.RecordTimer.timer_list])
-		if config.usage.timerlist_finished_timer_position.index != 2:
-			# only add finished timers if the "hide" option is not set
+		now = time()
+		if config.usage.timerlist_finished_timer_position.index == 2:
+			# if the "hide" option is set, continue to add disabled timers so
+			# timer conflicts remain visible
+			list.extend([(timer, True) for timer in self.session.nav.RecordTimer.processed_timers if timer.disabled and timer.end > now])
+		else:
 			list.extend([(timer, True) for timer in self.session.nav.RecordTimer.processed_timers])
 		if config.usage.timerlist_finished_timer_position.index == 1: #end of list
 			list.sort(cmp = eol_compare)
