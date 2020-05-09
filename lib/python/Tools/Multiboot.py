@@ -101,8 +101,9 @@ def GetImagelist():
 		imagedir = sep.join(filter(None, [tmp.dir, SystemInfo["canMultiBoot"][slot].get('rootsubdir', '')]))
 		if path.isfile(path.join(imagedir, 'usr/bin/enigma2')):
 		# print "[multiboot] [GetImagelist] 2 slot = %s imagedir = %s" % (slot, imagedir)
-			Creator = open("%s/etc/issue" % imagedir).readlines()[-2].capitalize().strip()[:-6].replace("-release", " rel")
+			Creator = open("%s/etc/issue" % imagedir).readlines()[-2].capitalize().strip()[:-6]
 			if Creator.startswith("Openvix"):
+				Creator = Creator.replace("-release", " rel")
 				reader = boxbranding_reader(imagedir)
 				BuildType = reader.getImageType()
 				Build = reader.getImageBuild()
@@ -117,8 +118,11 @@ def GetImagelist():
 					date = max(date, datetime.fromtimestamp(stat(path.join(imagedir, "usr/bin/enigma2")).st_mtime).strftime("%Y-%m-%d"))
 				except Exception:
 					date = _("Unknown")
+				Creator = Creator.replace("-release", " ")
 				BuildVersion = "%s Image Date: %s" % (Creator, date)
 			Imagelist[slot] = {"imagename": "%s" % BuildVersion}
+		elif path.isfile(path.join(imagedir, 'usr/bin/enigmax')):
+			Imagelist[slot] = { 'imagename': _("Deleted image") }
 		Console().ePopen('umount %s' % tmp.dir)
 	if not path.ismount(tmp.dir):
 		rmdir(tmp.dir)
