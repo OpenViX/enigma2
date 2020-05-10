@@ -1,20 +1,21 @@
-from Screens.Screen import Screen
+from os import path
+from gettext import dgettext
+from time import localtime, time
+from enigma import eDVBVolumecontrol, eTimer, eDVBLocalTimeHandler, eServiceReference, eStreamServer
+from boxbranding import getMachineBrand, getMachineName, getBoxType, getBrandOEM, getMachineBuild
+from GlobalActions import globalActionMap
+
 from Components.ActionMap import ActionMap
-from Components.config import config
 from Components.AVSwitch import AVSwitch
+from Components.config import config
 from Components.Console import Console
 import Components.ParentalControl
 from Components.SystemInfo import SystemInfo
 from Components.Sources.StaticText import StaticText
-from GlobalActions import globalActionMap
-from enigma import eDVBVolumecontrol, eTimer, eDVBLocalTimeHandler, eServiceReference, eStreamServer
 from Components.Sources.StreamService import StreamServiceList
-from boxbranding import getMachineBrand, getMachineName, getBoxType, getBrandOEM, getMachineBuild
-from Tools import Notifications
-from time import localtime, time
 import Screens.InfoBar
-from gettext import dgettext
-import os
+from Screens.Screen import Screen
+from Tools import Notifications
 
 inStandby = None
 
@@ -38,7 +39,7 @@ def setLCDMiniTVMode(value):
 
 class Standby2(Screen):
 	def Power(self):
-		if (getBrandOEM() in ('dinobot') or getMachineBuild() in ('viper4k', 'gbmv200', 'sf8008', 'beyonwizv2')):
+		if getBrandOEM() in ('dinobot') or SystemInfo["HasHiSi"]:
 			try:
 				open("/proc/stb/hdmi/output", "w").write("on")
 			except:
@@ -62,7 +63,7 @@ class Standby2(Screen):
 
 		print "[Standby] enter standby"
 
-		if os.path.exists("/usr/scripts/standby_enter.sh"):
+		if path.exists("/usr/scripts/standby_enter.sh"):
 			Console().ePopen("/usr/scripts/standby_enter.sh")
 
 		self["actions"] = ActionMap( [ "StandbyActions" ],
@@ -114,7 +115,7 @@ class Standby2(Screen):
 			self.avswitch.setInput("SCART")
 		else:
 			self.avswitch.setInput("AUX")
-		if (getBrandOEM() in ('dinobot') or getMachineBuild() in ('viper4k', 'gbmv200', 'sf8008', 'beyonwizv2')):
+		if getBrandOEM() in ('dinobot') or SystemInfo["HasHiSi"]:
 			try:
 				open("/proc/stb/hdmi/output", "w").write("off")
 			except:
@@ -142,7 +143,7 @@ class Standby2(Screen):
 		globalActionMap.setEnabled(True)
 		self.avswitch.setInput("ENCODER")
 		self.leaveMute()
-		if os.path.exists("/usr/scripts/standby_leave.sh"):
+		if path.exists("/usr/scripts/standby_leave.sh"):
 			Console().ePopen("/usr/scripts/standby_leave.sh")
 
 	def __onFirstExecBegin(self):
@@ -313,7 +314,7 @@ class TryQuitMainloop(MessageBox):
 			self.hide()
 			if self.retval == 1:
 				config.misc.DeepStandby.value = True
-				if os.path.exists("/usr/scripts/standby_enter.sh"):
+				if path.exists("/usr/scripts/standby_enter.sh"):
 					Console().ePopen("/usr/scripts/standby_enter.sh")
 			self.session.nav.stopService()
 			self.quitScreen = self.session.instantiateDialog(QuitMainloopScreen,retvalue=self.retval)
