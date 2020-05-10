@@ -50,7 +50,6 @@ class EPGList(EPGListSingle):
 		EPGListSingle.__init__(self, config.epgselection.single, selChangedCB, timer)
 
 		# Attributes for backwards compatibility.
-		self.l = self.eList
 		self.eventFontSizeSingle = self.eventFontSize
 
 	# For backwards compatibility.

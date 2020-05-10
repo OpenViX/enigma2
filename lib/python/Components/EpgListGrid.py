@@ -20,7 +20,7 @@ MAX_TIMELINES = 6
 SECS_IN_MIN = 60
 
 class EPGListGrid(EPGListBase):
-	def __init__(self, isInfobar, session, selChangedCB=None, timer=None, graphic=True):
+	def __init__(self, isInfobar, session, selChangedCB=None, timer=None):
 		EPGListBase.__init__(self, selChangedCB, timer)
 
 		self.isInfobar = isInfobar
@@ -32,10 +32,6 @@ class EPGListGrid(EPGListBase):
 		self.selectionRect = None
 		self.eventRect = None
 		self.serviceRect = None
-		self.showPicon = False
-		self.showServiceName = True
-		self.showServiceNumber = False
-		self.graphic = graphic
 
 		self.nowEvPix = None
 		self.nowSelEvPix = None
@@ -58,7 +54,6 @@ class EPGListGrid(EPGListBase):
 		self.borderSelectedRightPix = None
 		self.infoPix = None
 		self.selInfoPix = None
-		self.graphicsloaded = False
 
 		self.borderColor = 0xC0C0C0
 		self.borderColorService = 0xC0C0C0
@@ -96,7 +91,12 @@ class EPGListGrid(EPGListBase):
 		self.eventNamePadding = 3
 		self.serviceNumberWidth = 0
 
-		self.eList.setBuildFunc(self.buildEntry)
+		self.l.setBuildFunc(self.buildEntry)
+		self.loadConfig()
+
+	def loadConfig(self):
+ 		self.graphic = self.epgConfig.type_mode.value == "graphics"
+		self.graphicsloaded = False
 		self.epgHistorySecs = int(config.epg.histminutes.value) * SECS_IN_MIN
 		self.roundBySecs = int(self.epgConfig.roundto.value) * SECS_IN_MIN
 		self.timeEpoch = int(self.epgConfig.prevtimeperiod.value)
@@ -179,20 +179,11 @@ class EPGListGrid(EPGListBase):
 				else:
 					attribs.append((attrib, value))
 			self.skinAttributes = attribs
-		rc = EPGListBase.applySkin(self, desktop, screen)
-		self.setItemsPerPage()
+		return EPGListBase.applySkin(self, desktop, screen)
 
-		# Cache service number width.
-		if self.showServiceNumber:
-			fontConf = self.epgConfig.servfs.value
-			if fontConf is not None:
-				font = gFont(self.serviceFontName, self.serviceFontSize + fontConf)
-				self.serviceNumberWidth = getTextBoundarySize(self.instance, font, self.instance.size(), "0000").width()
-		return rc
-
-	def __setTimeBase(self, timeCenter):
+	def setTimeFocus(self, timeFocus):
 		# prefer time being aligned in the middle of the EPG, but clip to the maximum EPG data history
-		self.timeBase = int(timeCenter) - self.timeEpochSecs // 2
+		self.timeBase = int(timeFocus) - self.timeEpochSecs // 2
 		abs0 = int(time()) - self.epgHistorySecs
 		if self.timeBase < abs0:
 			# we're viewing close to the start of EPG data
@@ -202,16 +193,11 @@ class EPGListGrid(EPGListBase):
 			# otherwise we're trying to place the desired time in the centre of the EPG
 			# round up, so that slightly more of the future things are shown
 			self.timeBase += -self.timeBase % self.roundBySecs
-
-	def setTimeFocus(self, timeFocus):
-		self.__setTimeBase(timeFocus)
 		self.timeFocus = timeFocus
 
 	def setTimeEpoch(self, epoch):
-		center = epoch * SECS_IN_MIN * (self.timeFocus - self.timeBase) // self.timeEpochSecs
 		self.timeEpoch = epoch
 		self.timeEpochSecs = epoch * SECS_IN_MIN
-		self.__setTimeBase(center)
 		self.fillEPG()
 
 	def getTimeEpoch(self):
@@ -282,28 +268,34 @@ class EPGListGrid(EPGListBase):
 				else:
 					itemHeight = 45
 
-		self.eList.setItemHeight(itemHeight)
+		self.l.setItemHeight(itemHeight)
 		self.instance.resize(eSize(self.listWidth, self.listHeight / itemHeight * itemHeight))
 		self.listHeight = self.instance.size().height()
 		self.listWidth = self.instance.size().width()
 		self.itemHeight = itemHeight
 
 	def setFontsize(self):
-		self.eList.setFont(0, gFont(self.serviceFontName, self.serviceFontSize + self.epgConfig.servfs.value))
-		self.eList.setFont(1, gFont(self.eventFontName, self.eventFontSize + self.epgConfig.eventfs.value))
+		self.l.setFont(0, gFont(self.serviceFontName, self.serviceFontSize + self.epgConfig.servfs.value))
+		self.l.setFont(1, gFont(self.eventFontName, self.eventFontSize + self.epgConfig.eventfs.value))
+		# Cache service number width.
+		if self.showServiceNumber:
+			fontConf = self.epgConfig.servfs.value
+			if fontConf is not None:
+				font = gFont(self.serviceFontName, self.serviceFontSize + fontConf)
+				self.serviceNumberWidth = getTextBoundarySize(self.instance, font, self.instance.size(), "0000").width()
 
 	def isSelectable(self, service, serviceName, events, picon, channel):
 		return (events and len(events) and True) or False
 
 	def postWidgetCreate(self, instance):
 		if config.epgselection.overjump.value:
-			self.eList.setSelectableFunc(self.isSelectable)
+			self.l.setSelectableFunc(self.isSelectable)
 		else:
-			self.eList.setSelectableFunc(None)
+			self.l.setSelectableFunc(None)
 		instance.setWrapAround(True)
-		instance.setContent(self.eList)
+		instance.setContent(self.l)
 		instance.selectionChanged.get().append(self.serviceChanged)
-		self.eList.setSelectionClip(eRect(0, 0, 0, 0), False)
+		self.l.setSelectionClip(eRect(0, 0, 0, 0), False)
 
 	def preWidgetRemove(self, instance):
 		instance.selectionChanged.get().remove(self.serviceChanged)
@@ -314,7 +306,7 @@ class EPGListGrid(EPGListBase):
 		self.refreshSelection()
 
 	def selectEventFromTime(self):
-		self.selectedService = self.eList.getCurrentSelection()
+		self.selectedService = self.l.getCurrentSelection()
 		if self.selectedService:
 			self.selectedEventIndex = None
 			events = self.selectedService[2]
@@ -330,7 +322,7 @@ class EPGListGrid(EPGListBase):
 					self.selectedEventIndex -= 1
 
 	def recalcEventSize(self):
-		esize = self.eList.getItemSize()
+		esize = self.l.getItemSize()
 		width = esize.width()
 		height = esize.height()
 
@@ -407,7 +399,7 @@ class EPGListGrid(EPGListBase):
 				if picon is None:
 					# Go find picon and cache its location.
 					picon = getPiconName(service)
-					curIdx = self.eList.getCurrentSelectionIndex()
+					curIdx = self.l.getCurrentSelectionIndex()
 					self.list[curIdx] = (service, serviceName, events, picon, channel)
 				piconWidth = self.piconSize.width()
 				piconHeight = self.piconSize.height()
@@ -654,52 +646,31 @@ class EPGListGrid(EPGListBase):
 				# Recording icons.
 				if clockTypes is not None and ewidth > 23:
 					if config.epgselection.grid.rec_icon_height.value != "hide":
+						clockSize = 26 if self.isFullHd else 21
 						if config.epgselection.grid.rec_icon_height.value == "middle":
-							recIconHDheight = top + (height / 2) - 11
-							recIconFHDheight = top + (height / 2) - 13
+							recIconHeight = top + (height - clockSize) / 2
 						elif config.epgselection.grid.rec_icon_height.value == "top":
-							recIconHDheight = top + 3
-							recIconFHDheight = top + 3
+							recIconHeight = top + 3
 						else:
-							recIconHDheight = top + height - 22
-							recIconFHDheight = top + height - 26
+							recIconHeight = top + height - clockSize
 						if clockTypes in (1, 6, 11):
-							if self.isFullHd:
-								pos = (left + xpos + ewidth - 15, recIconFHDheight)
-							else:
-								pos = (left + xpos + ewidth - 13, recIconHDheight)
+							pos = (left + xpos + ewidth - (15 if self.isFullHd else 13), recIconHeight)
 						elif clockTypes in (5, 10, 15):
-							if self.isFullHd:
-								pos = (left + xpos - 26, recIconFHDheight)
-							else:
-								pos = (left + xpos - 22, recIconHDheight)
+							pos = (left + xpos - clockSize, recIconHeight)
 						else:
-							if self.isFullHd:
-								pos = (left + xpos + ewidth - 26, recIconFHDheight)
-							else:
-								pos = (left + xpos + ewidth - 22, recIconHDheight)
-						if self.isFullHd:
-							res.append(MultiContentEntryPixmapAlphaBlend(
-								pos=pos, size=(25, 25),
-								png=clocks))
-						else:
-							res.append(MultiContentEntryPixmapAlphaBlend(
-								pos=pos, size=(21, 21),
-								png=clocks))
+							pos = (left + xpos + ewidth - clockSize, recIconHeight)
+						res.append(MultiContentEntryPixmapAlphaBlend(
+							pos=pos, size=(clockSize, clockSize),
+							png=clocks))
 						if self.wasEntryAutoTimer and clockTypes in (2,7,12):
-							if self.isFullHd:
-								res.append(MultiContentEntryPixmapAlphaBlend(
-									pos=(pos[0]-25,pos[1]), size=(25, 25),
-									png=self.autotimericon))
-							else:
-								res.append(MultiContentEntryPixmapAlphaBlend(
-									pos=(pos[0]-21,pos[1]), size=(21, 21),
-									png=self.autotimericon))
+							res.append(MultiContentEntryPixmapAlphaBlend(
+								pos=(pos[0]-clockSize,pos[1]), size=(clockSize, clockSize),
+								png=self.autotimericon))
 		return res
 
 	def getSelectionPosition(self):
 		# Adjust absolute index to index in displayed view.
-		index = self.eList.getCurrentSelectionIndex() % self.epgConfig.itemsperpage.value
+		index = self.l.getCurrentSelectionIndex() % self.epgConfig.itemsperpage.value
 		sely = self.instance.position().y() + self.itemHeight * index
 		if sely >= self.instance.position().y() + self.listHeight:
 			sely -= self.listHeight
@@ -715,7 +686,7 @@ class EPGListGrid(EPGListBase):
 		else:
 			self.selectionRect = eRect(self.eventRect.left(), self.eventRect.top(), self.eventRect.width(), self.eventRect.height())
 		# Have to copy construct the parameter for this native function or odd selection behaviour results.
-		self.eList.setSelectionClip(eRect(self.selectionRect.left(), self.selectionRect.top(), self.selectionRect.width(), self.selectionRect.height()), False)
+		self.l.setSelectionClip(eRect(self.selectionRect.left(), self.selectionRect.top(), self.selectionRect.width(), self.selectionRect.height()), False)
 		self.selectionChanged()
 
 	def selEvent(self, dir, visible=True):
@@ -731,7 +702,7 @@ class EPGListGrid(EPGListBase):
 			if validEvent and self.selectedEventIndex + 1 < len(events):
 				self.setTimeFocusFromEvent(self.selectedEventIndex + 1)
 				self.refreshSelection()
-				self.eList.invalidateEntry(self.eList.getCurrentSelectionIndex())
+				self.l.invalidateEntry(self.l.getCurrentSelectionIndex())
 				return False  # Same page.
 			# Next event is the first item on the next page.
 			timeBase += self.timeEpochSecs
@@ -740,7 +711,7 @@ class EPGListGrid(EPGListBase):
 			if validEvent and self.selectedEventIndex > 0:
 				self.setTimeFocusFromEvent(self.selectedEventIndex - 1)
 				self.refreshSelection()
-				self.eList.invalidateEntry(self.eList.getCurrentSelectionIndex())
+				self.l.invalidateEntry(self.l.getCurrentSelectionIndex())
 				return False  # Same page.
 			# Prev event is the last item on the previous page.
 			timeBase -= self.timeEpochSecs
@@ -846,7 +817,7 @@ class EPGListGrid(EPGListBase):
 		if eventList and len(eventList) > 0:
 			appendService()
 
-		self.eList.setList(self.list)
+		self.l.setList(self.list)
 		self.recalcEventSize()
 
 	def getChannelNumber(self, service):
@@ -872,8 +843,8 @@ class TimelineText(GUIComponent):
 		GUIComponent.__init__(self)
 		self.epgConfig = epgConfig
 		self.graphic = graphic
-		self.eList = eListboxPythonMultiContent()
-		self.eList.setSelectionClip(eRect(0, 0, 0, 0))
+		self.l = eListboxPythonMultiContent()
+		self.l.setSelectionClip(eRect(0, 0, 0, 0))
 		self.itemHeight = 30
 		self.timelineDate = None
 		self.timelineTime = None
@@ -913,21 +884,20 @@ class TimelineText(GUIComponent):
 		rc = GUIComponent.applySkin(self, desktop, screen)
 		self.listHeight = self.instance.size().height()
 		self.listWidth = self.instance.size().width()
-		self.setTimeLineFontsize()
-		self.eList.setItemHeight(self.itemHeight)
+		self.setFontsize()
+		self.l.setItemHeight(self.itemHeight)
 		if self.graphic:
 			self.timelineDate = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "epg/TimeLineDate.png"))
 			self.timelineTime = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "epg/TimeLineTime.png"))
 		return rc
 
-	def setTimeLineFontsize(self):
+	def setFontsize(self):
 		fontConf = self.epgConfig.timelinefs.value
 		if fontConf is not None:
-			self.eList.setFont(0, gFont(self.timelineFontName, self.timelineFontSize + fontConf))
+			self.l.setFont(0, gFont(self.timelineFontName, self.timelineFontSize + fontConf))
 
 	def postWidgetCreate(self, instance):
-		self.setTimeLineFontsize()
-		instance.setContent(self.eList)
+		instance.setContent(self.l)
 
 	def setEntries(self, list, timelineNow, timeLines, force):
 		eventRect = list.getEventRect()
@@ -1036,7 +1006,7 @@ class TimelineText(GUIComponent):
 				xpos += incWidth
 			for x in range(numLines, MAX_TIMELINES):
 				timeLines[x].visible = False
-			self.eList.setList([res])
+			self.l.setList([res])
 			self.timeBase = timeBase
 			self.timeEpoch = timeEpoch
 

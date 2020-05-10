@@ -128,7 +128,7 @@ def getButtonSetupFunctions():
 	ButtonSetupFunctions.append((_("History next"), "Infobar/historyNext", "InfoBar"))
 	ButtonSetupFunctions.append((_("Show event info plugins"), "Infobar/showEventInfoPlugins", "EPG"))
 	ButtonSetupFunctions.append((_("Show event details"), "Infobar/openEventView", "EPG"))
-	ButtonSetupFunctions.append((_("Show Single EPG for current service"), "Infobar/openSingleServiceEPG", "EPG"))
+	ButtonSetupFunctions.append((_("Show Single EPG"), "Infobar/openSingleServiceEPG", "EPG"))
 	ButtonSetupFunctions.append((_("Show Multi EPG"), "Infobar/openMultiServiceEPG", "EPG"))
 	ButtonSetupFunctions.append((_("Show select audio track"), "Infobar/audioSelection", "InfoBar"))
 	ButtonSetupFunctions.append((_("Show subtitle selection"), "Infobar/subtitleSelection", "InfoBar"))

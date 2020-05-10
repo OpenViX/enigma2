@@ -19,41 +19,36 @@ class EPGListMulti(EPGListBase):
 
 		self.eventFontName = "Regular"
 		self.eventFontSize = 28 if self.isFullHd else 20
-		self.eList.setBuildFunc(self.buildEntry)
-
-	def applySkin(self, desktop, screen):
-		rc = EPGListBase.applySkin(self, desktop, screen)
-		self.setItemsPerPage()
-		return rc
+		self.l.setBuildFunc(self.buildEntry)
 
 	def getCurrentChangeCount(self):
-		return self.eList.getCurrentSelection()[7] if self.eList.getCurrentSelection() is not None else 0
+		return self.l.getCurrentSelection()[7] if self.l.getCurrentSelection() is not None else 0
 
 	def setItemsPerPage(self):
 		if self.numberOfRows:
 			config.epgselection.multi.itemsperpage.default = self.numberOfRows
 		itemHeight = max(self.listHeight / config.epgselection.multi.itemsperpage.value, 20) if self.listHeight > 0 else 32
-		self.eList.setItemHeight(itemHeight)
+		self.l.setItemHeight(itemHeight)
 		self.instance.resize(eSize(self.listWidth, self.listHeight / itemHeight * itemHeight))
 		self.listHeight = self.instance.size().height()
 		self.listWidth = self.instance.size().width()
 		self.itemHeight = itemHeight
 
 	def setFontsize(self):
-		self.eList.setFont(0, gFont(self.eventFontName, self.eventFontSize + config.epgselection.multi.eventfs.value))
-		self.eList.setFont(1, gFont(self.eventFontName, self.eventFontSize - 4 + config.epgselection.multi.eventfs.value))
+		self.l.setFont(0, gFont(self.eventFontName, self.eventFontSize + config.epgselection.multi.eventfs.value))
+		self.l.setFont(1, gFont(self.eventFontName, self.eventFontSize - 4 + config.epgselection.multi.eventfs.value))
 
 	def postWidgetCreate(self, instance):
 		instance.setWrapAround(False)
 		instance.selectionChanged.get().append(self.selectionChanged)
-		instance.setContent(self.eList)
+		instance.setContent(self.l)
 
 	def preWidgetRemove(self, instance):
 		instance.selectionChanged.get().remove(self.selectionChanged)
 		instance.setContent(None)
 
 	def recalcEntrySize(self):
-		esize = self.eList.getItemSize()
+		esize = self.l.getItemSize()
 		width = esize.width()
 		height = esize.height()
 		fontSize = self.eventFontSize + config.epgselection.multi.eventfs.value
@@ -85,7 +80,6 @@ class EPGListMulti(EPGListBase):
 			(eListboxPythonMultiContent.TYPE_TEXT, r1.left(), r1.top(), r1.width(), r1.height(), 0, RT_HALIGN_LEFT | RT_VALIGN_CENTER, serviceName)
 		]
 		if beginTime is not None:
-			fontSize = self.eventFontSize + config.epgselection.multi.eventfs.value
 			if nowTime < beginTime:
 				begin = localtime(beginTime)
 				end = localtime(beginTime + duration)
@@ -117,7 +111,7 @@ class EPGListMulti(EPGListBase):
 
 	def getSelectionPosition(self):
 		# Adjust absolute indx to indx in displayed view
-		indx = self.eList.getCurrentSelectionIndex() % config.epgselection.multi.itemsperpage.value
+		indx = self.l.getCurrentSelectionIndex() % config.epgselection.multi.itemsperpage.value
 		sely = self.instance.position().y() + self.itemHeight * indx
 		if sely >= self.instance.position().y() + self.listHeight:
 			sely -= self.listHeight
@@ -127,7 +121,7 @@ class EPGListMulti(EPGListBase):
 		test = [(service.ref.toString(), 0, stime) for service in services]
 		test.insert(0, 'XRIBDTCn0')
 		self.list = self.queryEPG(test)
-		self.eList.setList(self.list)
+		self.l.setList(self.list)
 		self.recalcEntrySize()
 
 	def updateEPG(self, direction):
@@ -140,5 +134,5 @@ class EPGListMulti(EPGListBase):
 			if changeCount >= 0 and x[2] is not None:
 				self.list[cnt] = (x[0], x[1], x[2], x[3], x[4], x[5], x[6], changeCount)
 			cnt += 1
-		self.eList.setList(self.list)
+		self.l.setList(self.list)
 		self.recalcEntrySize()

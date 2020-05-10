@@ -14,6 +14,7 @@ from Screens.ParentalControlSetup import ProtectedScreen
 from Screens.InputBox import PinInput
 from ServiceReference import ServiceReference
 from Screens.TimerEntry import TimerEntry, TimerLog
+from Screens.Setup import Setup
 from Tools.BoundFunction import boundFunction
 from Tools.FuzzyDate import FuzzyTime
 from time import time
@@ -53,11 +54,8 @@ class TimerEditList(Screen, ProtectedScreen):
 		Screen.setTitle(self, title)
 		
 		self.onChangedEntry = [ ]
-		list = [ ]
-		self.list = list
-		self.fillTimerList()
-
-		self["timerlist"] = TimerList(list)
+		self.list = []
+		self["timerlist"] = TimerList(self.list)
 
 		self.key_red_choice = self.EMPTY
 		self.key_yellow_choice = self.EMPTY
@@ -81,10 +79,35 @@ class TimerEditList(Screen, ProtectedScreen):
 				"up": self.up,
 				"down": self.down,
 				"moveTop": self.moveTop,
-				"moveEnd": self.moveEnd
+				"moveEnd": self.moveEnd,
+				"menu": self.createSetup
 			}, -1)
 		self.session.nav.RecordTimer.on_state_change.append(self.onStateChange)
-		self.onShown.append(self.updateState)
+		self.onLayoutFinish.append(self.onCreate)
+
+	def onCreate(self):
+		self.fillTimerList()
+		self["timerlist"].l.setList(self.list)
+
+		if self.selectItem is not None:
+			(event, service) = self.selectItem
+			if event is not None:
+				eventid = event.getEventId()
+				refstr = ':'.join(service.ref.toString().split(':')[:11])
+				idx = 0
+				for (timer, processed) in self.list:
+					if timer.eit == eventid and ':'.join(timer.service_ref.ref.toString().split(':')[:11]) == refstr:
+						self["timerlist"].moveToIndex(idx)
+						break
+					idx += 1
+		self.updateState()
+
+	def createSetup(self):
+		def onSetupClose(test = None):
+			self.refill()
+			pass
+
+		self.session.openWithCallback(onSetupClose, Setup, 'recording')
 
 	def isProtected(self):
 		return config.ParentalControl.setuppinactive.value and (not config.ParentalControl.config_sections.main_menu.value or hasattr(self.session, 'infobar') and self.session.infobar is None) and config.ParentalControl.config_sections.timer_menu.value and config.ParentalControl.servicepin[0].value
@@ -264,8 +287,12 @@ class TimerEditList(Screen, ProtectedScreen):
 		list = self.list
 		del list[:]
 		list.extend([(timer, False) for timer in self.session.nav.RecordTimer.timer_list])
-		if config.usage.timerlist_finished_timer_position.index != 2:
-			# only add finished timers if the "hide" option is not set
+		now = time()
+		if config.usage.timerlist_finished_timer_position.index == 2:
+			# if the "hide" option is set, continue to add disabled timers so
+			# timer conflicts remain visible
+			list.extend([(timer, True) for timer in self.session.nav.RecordTimer.processed_timers if timer.disabled and timer.end > now])
+		else:
 			list.extend([(timer, True) for timer in self.session.nav.RecordTimer.processed_timers])
 		if config.usage.timerlist_finished_timer_position.index == 1: #end of list
 			list.sort(cmp = eol_compare)

@@ -19,7 +19,7 @@ class EPGListSingle(EPGListBase):
 		self.epgConfig = epgConfig
 		self.eventFontName = "Regular"
 		self.eventFontSize = 28 if self.isFullHd else 20
-		self.eList.setBuildFunc(self.buildEntry)
+		self.l.setBuildFunc(self.buildEntry)
 
 	def applySkin(self, desktop, screen):
 		if self.skinAttributes is not None:
@@ -32,34 +32,32 @@ class EPGListSingle(EPGListBase):
 				else:
 					attribs.append((attrib, value))
 			self.skinAttributes = attribs
-		rc = EPGListBase.applySkin(self, desktop, screen)
-		self.setItemsPerPage()
-		return rc
+		return EPGListBase.applySkin(self, desktop, screen)
 
 	def setItemsPerPage(self):
 		if self.numberOfRows:
 			self.epgConfig.itemsperpage.default = self.numberOfRows
 		itemHeight = max(self.listHeight / self.epgConfig.itemsperpage.value, 20) if self.listHeight > 0 else 32
-		self.eList.setItemHeight(itemHeight)
+		self.l.setItemHeight(itemHeight)
 		self.instance.resize(eSize(self.listWidth, self.listHeight / itemHeight * itemHeight))
 		self.listHeight = self.instance.size().height()
 		self.listWidth = self.instance.size().width()
 		self.itemHeight = itemHeight
 
 	def setFontsize(self):
-		self.eList.setFont(0, gFont(self.eventFontName, self.eventFontSize + self.epgConfig.eventfs.value))
+		self.l.setFont(0, gFont(self.eventFontName, self.eventFontSize + self.epgConfig.eventfs.value))
 
 	def postWidgetCreate(self, instance):
 		instance.setWrapAround(False)
 		instance.selectionChanged.get().append(self.selectionChanged)
-		instance.setContent(self.eList)
+		instance.setContent(self.l)
 
 	def preWidgetRemove(self, instance):
 		instance.selectionChanged.get().remove(self.selectionChanged)
 		instance.setContent(None)
 
 	def recalcEntrySize(self):
-		esize = self.eList.getItemSize()
+		esize = self.l.getItemSize()
 		width = esize.width()
 		height = esize.height()
 		fontSize = self.eventFontSize + self.epgConfig.eventfs.value
@@ -90,38 +88,20 @@ class EPGListSingle(EPGListBase):
 			(eListboxPythonMultiContent.TYPE_TEXT, r2.left(), r2.top(), split, r2.height(), 0, RT_HALIGN_RIGHT | RT_VALIGN_CENTER, strftime(config.usage.time.short.value + " -", t)),
 			(eListboxPythonMultiContent.TYPE_TEXT, r2.left() + split, r2.top(), r2.width() - split, r2.height(), 0, RT_HALIGN_RIGHT | RT_VALIGN_CENTER, strftime(config.usage.time.short.value, et))
 		]
+		eventW = r3.width()
 		if clockTypes:
+			clockSize = 26 if self.isFullHd else 21
+			eventW -= clockSize
+			res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, r3.left()+r3.width()-clockSize, (r3.height()-clockSize)/2, clockSize, clockSize, self.clocks[clockTypes]))
 			if self.wasEntryAutoTimer and clockTypes in (2, 7, 12):
-				if self.isFullHd:
-					res.extend((
-						(eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, r3.left()+r3.width()-25, (r3.height()/2-13), 25, 25, self.clocks[clockTypes]),
-						(eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, r3.left()+r3.width()-52, (r3.height()/2-13), 25, 25, self.autotimericon),
-						(eListboxPythonMultiContent.TYPE_TEXT, r3.left(), r3.top(), r3.width()-52, r3.height(), 0, RT_HALIGN_LEFT|RT_VALIGN_CENTER, eventName)
-						))
-				else:
-					res.extend((
-						(eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, r3.left()+r3.width()-21, (r3.height()/2-11), 21, 21, self.clocks[clockTypes]),
-						(eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, r3.left()+r3.width()-42, (r3.height()/2-11), 21, 21, self.autotimericon),
-						(eListboxPythonMultiContent.TYPE_TEXT, r3.left(), r3.top(), r3.width()-42, r3.height(), 0, RT_HALIGN_LEFT|RT_VALIGN_CENTER, eventName)
-						))
-			else:
-				if self.isFullHd:
-					res.extend((
-						(eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, r3.left()+r3.width()-25, (r3.height()/2-13), 25, 25, self.clocks[clockTypes]),
-						(eListboxPythonMultiContent.TYPE_TEXT, r3.left(), r3.top(), r3.width()-25, r3.height(), 0, RT_HALIGN_LEFT|RT_VALIGN_CENTER, eventName)
-						))
-				else:
-					res.extend((
-						(eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, r3.left()+r3.width()-21, (r3.height()/2-11), 21, 21, self.clocks[clockTypes]),
-						(eListboxPythonMultiContent.TYPE_TEXT, r3.left(), r3.top(), r3.width()-21, r3.height(), 0, RT_HALIGN_LEFT|RT_VALIGN_CENTER, eventName)
-						))
-		else:
-			res.append((eListboxPythonMultiContent.TYPE_TEXT, r3.left(), r3.top(), r3.width(), r3.height(), 0, RT_HALIGN_LEFT | RT_VALIGN_CENTER, eventName))
+				eventW -= clockSize
+				res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, r3.left()+r3.width()-clockSize*2, (r3.height()-clockSize)/2, clockSize, clockSize, self.autotimericon))
+		res.append((eListboxPythonMultiContent.TYPE_TEXT, r3.left(), r3.top(), eventW, r3.height(), 0, RT_HALIGN_LEFT | RT_VALIGN_CENTER, eventName))
 		return res
 
 	def getSelectionPosition(self):
 		# Adjust absolute index to index in displayed view
-		index = self.eList.getCurrentSelectionIndex() % self.epgConfig.itemsperpage.value
+		index = self.l.getCurrentSelectionIndex() % self.epgConfig.itemsperpage.value
 		sely = self.instance.position().y() + self.itemHeight * index
 		if sely >= self.instance.position().y() + self.listHeight:
 			sely -= self.listHeight
@@ -134,7 +114,7 @@ class EPGListSingle(EPGListBase):
 		self.list = self.epgcache.search(('RIBDN', 1024, eEPGCache.SIMILAR_BROADCASTINGS_SEARCH, refstr, eventId))
 		if self.list and len(self.list):
 			self.list.sort(key=lambda x: x[2])
-		self.eList.setList(self.list)
+		self.l.setList(self.list)
 		self.recalcEntrySize()
 		self.selectionChanged()
 
@@ -168,7 +148,7 @@ class EPGListSingle(EPGListBase):
 			if prevEnd + 5 * SECS_IN_MIN < thisBeg:
 				self.list.insert(i, (self.list[i][0], None, prevEnd, thisBeg - prevEnd, None))
 		self.__sortList()
-		self.eList.setList(self.list)
+		self.l.setList(self.list)
 		self.recalcEntrySize()
 
 	def __sortList(self):
@@ -183,11 +163,11 @@ class EPGListSingle(EPGListBase):
 		if self.list:
 			eventId = self.getSelectedEventId()
 			self.__sortList()
-			self.eList.invalidate()
+			self.l.invalidate()
 			self.moveToEventId(eventId)
 
 	def getSelectedEventId(self):
-		x = self.eList.getCurrentSelection()
+		x = self.l.getCurrentSelection()
 		return x and x[1]
 
 	def moveToEventId(self, eventId):

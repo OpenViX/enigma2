@@ -18,7 +18,6 @@ from Screens.HelpMenu import HelpableScreen
 from Screens.MessageBox import MessageBox
 from Screens.PictureInPicture import PictureInPicture
 from Screens.Screen import Screen
-from Screens.Setup import Setup
 from Screens.TimeDateInput import TimeDateInput
 from Screens.TimerEdit import TimerSanityConflict
 from Screens.TimerEntry import InstantRecordTimerEntry, TimerEntry
@@ -50,24 +49,21 @@ class EPGSelectionBase(Screen, HelpableScreen):
 	REMOVE_TIMER = 2
 	ZAP = 1
 
-	def __init__(self, session, startBouquet=None, startRef=None, bouquets=None):
+	def __init__(self, session, epgConfig, startBouquet=None, startRef=None, bouquets=None):
 		Screen.__init__(self, session)
 		HelpableScreen.__init__(self)
 
-		self.type = type
+		self.epgConfig = epgConfig
 		self.bouquets = bouquets
 		self.originalPlayingServiceOrGroup = self.session.nav.getCurrentlyPlayingServiceOrGroup()
 		self.startBouquet = startBouquet
 		self.startRef = startRef
-		self.servicelist = None
 		self.choiceBoxDialog = None
 		self.closeRecursive = False
 		self.eventviewDialog = None
 		self.eventviewWasShown = False
 		self.session.pipshown = False
 		self.pipServiceRelation = getRelationDict() if plugin_PiPServiceRelation_installed else {}
-		self["number"] = Label()
-		self["number"].hide()
 		self["Service"] = ServiceEvent()
 		self["Event"] = Event()
 		self["lab1"] = Label(_("Please wait while gathering EPG data..."))
@@ -213,7 +209,7 @@ class EPGSelectionBase(Screen, HelpableScreen):
 	def openTimerList(self):
 		self.closeEventViewDialog()
 		from Screens.TimerEdit import TimerEditList
-		self.session.open(TimerEditList)
+		self.session.open(TimerEditList, selectItem=self["list"].getCurrent()[:2])
 
 	def openAutoTimerList(self):
 		self.closeEventViewDialog()
@@ -414,14 +410,6 @@ class EPGSelectionBase(Screen, HelpableScreen):
 				break
 		self["key_green"].setText(_("Change Timer") if isRecordEvent else _("Add Timer"))
 
-	def setServicelistSelection(self, bouquet, service):
-		if self.servicelist:
-			if self.servicelist.getRoot() != bouquet:
-				self.servicelist.clearPath()
-				self.servicelist.enterPath(self.servicelist.bouquet_root)
-				self.servicelist.enterPath(bouquet)
-			self.servicelist.setCurrentSelection(service)
-
 	def closeEventViewDialog(self):
 		if self.eventviewDialog:
 			self.eventviewDialog.hide()
@@ -430,10 +418,9 @@ class EPGSelectionBase(Screen, HelpableScreen):
 
 
 class EPGServiceZap:
-	def __init__(self, epgConfig, zapFunc):
+	def __init__(self, zapFunc):
 		self.prevch = None
 		self.currch = None
-		self.epgConfig = epgConfig
 		self.zapFunc = zapFunc
 
 	def OK(self):
@@ -465,8 +452,9 @@ class EPGServiceZap:
 			self.close("close")
 
 	def closeScreen(self):
-		closeParam = True  # When exiting, restore the previous service/playback if a channel has been previewed.
+		closeParam = True
 
+		# When exiting, restore the previous service/playback if a channel has been previewed.
 		if self.originalPlayingServiceOrGroup and self.session.nav.getCurrentlyPlayingServiceOrGroup() and self.session.nav.getCurrentlyPlayingServiceOrGroup().toString() != self.originalPlayingServiceOrGroup.toString():
 			if self.epgConfig.preview_mode.value:
 				if "0:0:0:0:0:0:0:0:0" in self.originalPlayingServiceOrGroup.toString():
@@ -478,7 +466,7 @@ class EPGServiceZap:
 			else:
 				if "0:0:0:0:0:0:0:0:0" in self.originalPlayingServiceOrGroup.toString():
 					# Previously we were in playback, so we'll need to close the movie player
-					closeParam = 'close'
+					closeParam = 'closemovieplayer'
 				# Not preview mode and service has been changed before exiting, record it with the zap history
 				self.zapFunc(None, False)
 		if self.session.pipshown:
@@ -541,20 +529,36 @@ class EPGServiceNumberSelection:
 			dict([(str(i), (self.keyNumberGlobal, helpMsg)) for i in range(0,9)]),
 			prio=-1, description=_("Service/Channel number zap commands"))
 
+		self["zapbackground"] = Label()
+		self["zapbackground"].hide()
+		self["zapnumber"] = Label()
+		self["zapnumber"].hide()
+		self["zapservice"] = ServiceEvent()
+		self["zapservice"].newService(None)
+		self["number"] = Label()
+		self["number"].hide()
+
 	def keyNumberGlobal(self, number):
 		self["epgcursoractions"].setEnabled(False)
 		self["okactions"].setEnabled(False)
 		self["numberzapokactions"].setEnabled(True)
-		self.numberZapTimer.start(5000, True)
+		if config.misc.zapkey_delay.value > 0:
+			self.numberZapTimer.start(1000*config.misc.zapkey_delay.value, True)
 		if self.numberZapField is None:
 			self.numberZapField = str(number)
 		else:
 			self.numberZapField += str(number)
 		from Screens.InfoBar import InfoBar
 		service, bouquet = InfoBar.instance.searchNumber(int(self.numberZapField))
-		serviceName = ServiceReference(service).getServiceName()
-		self["number"].setText("%s\n%s" % (serviceName, self.numberZapField))
-		self["number"].show()
+		self["zapbackground"].show()
+		self["zapnumber"].setText(self.numberZapField)
+		self["zapnumber"].show()
+		self["zapservice"].newService(service)
+		if self["number"].skinAttributes:
+		 	serviceName = ServiceReference(service).getServiceName()
+		 	self["number"].setText("%s\n%s" % (serviceName, self.numberZapField))
+			self["number"].show()
+
 		if len(self.numberZapField) >= 4:
 			self.__OK()
 
@@ -575,10 +579,17 @@ class EPGServiceNumberSelection:
 		self["epgcursoractions"].setEnabled(True)
 		self["okactions"].setEnabled(True)
 		self["numberzapokactions"].setEnabled(False)
+		self["zapbackground"].hide()
+		self["zapnumber"].hide()
+		self["zapservice"].newService(None)
 		self["number"].hide()
 
 
 class EPGBouquetSelection:
+	lastBouquet = None
+	lastService = None
+	lastPlaying = None
+
 	def __init__(self, graphic):
 		self.services = []
 		self.selectedBouquetIndex = -1
@@ -601,6 +612,19 @@ class EPGBouquetSelection:
 		}, -1)
 		self["bouquetcursoractions"].setEnabled(False)
 
+		self.onClose.append(self.__onClose)
+		if self.epgConfig.browse_mode.value == "lastepgservice":
+			if EPGBouquetSelection.lastPlaying and self.startRef and EPGBouquetSelection.lastBouquet and EPGBouquetSelection.lastPlaying == self.startRef:
+				self.startBouquet = EPGBouquetSelection.lastBouquet
+				self.startRef = EPGBouquetSelection.lastService and EPGBouquetSelection.lastService.ref
+			EPGBouquetSelection.lastPlaying = self.session.nav.getCurrentlyPlayingServiceOrGroup()
+
+	def __onClose(self):
+		EPGSelectionBase.onSelectionChanged(self)
+		if self.epgConfig.browse_mode.value == "lastepgservice":
+			EPGBouquetSelection.lastBouquet = self.getCurrentBouquet()
+			EPGBouquetSelection.lastService = self.getCurrentService()
+
 	def getBouquetServices(self, bouquet):
 		servicelist = eServiceCenter.getInstance().list(bouquet)
 		if servicelist:
@@ -613,9 +637,8 @@ class EPGBouquetSelection:
 		self["bouquetlist"].recalcEntrySize()
 		self["bouquetlist"].fillBouquetList(self.bouquets)
 
-		if self.startBouquet is None:
-			self.selectedBouquetIndex = 0
-		else:
+		self.selectedBouquetIndex = 0
+		if self.startBouquet is not None:
 			index = 0
 			for bouquet in self.bouquets:
 				if bouquet[1] == self.startBouquet:
@@ -636,7 +659,6 @@ class EPGBouquetSelection:
 
 	def __OK(self):
 		self.setBouquetIndex(self["bouquetlist"].instance.getCurrentIndex())
-		self.bouquetChanged()
 		self.bouquetListHide()
 
 	def __cancel(self):
@@ -687,25 +709,14 @@ class EPGBouquetSelection:
 	def setBouquetIndex(self, index):
 		self.selectedBouquetIndex = index % len(self.bouquets)
 		self.services = self.getBouquetServices(self.getCurrentBouquet())
-		# TODO move to the subclass
 		self.selectedServiceIndex = 0 if len(self.services) > 0 else -1
 		self.bouquetChanged()
 
 
 class EPGServiceBrowse(EPGBouquetSelection):
-	lastBouquet = None
-	lastService = None
-	lastPlaying = None
-
 	def __init__(self):
 		EPGBouquetSelection.__init__(self, False)
-		self.onClose.append(self.__onClose)
 		self.selectedServiceIndex = -1
-		if not config.epgselection.open_selected_channel.value:
-			if EPGServiceBrowse.lastPlaying and self.startRef and EPGServiceBrowse.lastBouquet and EPGServiceBrowse.lastPlaying == self.startRef:
-				self.startBouquet = EPGServiceBrowse.lastBouquet
-				self.startRef = EPGServiceBrowse.lastService
-			EPGServiceBrowse.lastPlaying = self.session.nav.getCurrentlyPlayingServiceOrGroup()
 
 	def _populateBouquetList(self):
 		EPGBouquetSelection._populateBouquetList(self)
@@ -720,12 +731,6 @@ class EPGServiceBrowse(EPGBouquetSelection):
 					self.selectedServiceIndex = index
 					break
 				index += 1
-
-	def __onClose(self):
-		EPGSelectionBase.onSelectionChanged(self)
-		if not config.epgselection.open_selected_channel.value:
-			EPGServiceBrowse.lastBouquet = self.getCurrentBouquet()
-			EPGServiceBrowse.lastService = self.getCurrentService().ref
 
 	def getCurrentService(self):
 		return self.services[self.selectedServiceIndex] if self.selectedServiceIndex >= 0 else ServiceReference("0:0:0:0:0:0:0:0:0")

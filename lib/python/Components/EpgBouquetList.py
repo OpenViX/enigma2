@@ -13,8 +13,8 @@ class EPGBouquetList(GUIComponent):
 	def __init__(self, graphic=False):
 		GUIComponent.__init__(self)
 		self.graphic = graphic
-		self.eList = eListboxPythonMultiContent()
-		self.eList.setBuildFunc(self.buildEntry)
+		self.l = eListboxPythonMultiContent()
+		self.l.setBuildFunc(self.buildEntry)
 		self.onSelChanged = []
 
 		self.foreColor = 0xffffff
@@ -66,57 +66,43 @@ class EPGBouquetList(GUIComponent):
 					attribs.append((attrib, value))
 			self.skinAttributes = attribs
 		rc = GUIComponent.applySkin(self, desktop, screen)
-		self.setBouquetFontsize()
+		self.setFontsize()
 		self.listHeight = self.instance.size().height()
 		self.listWidth = self.instance.size().width()
-		self.eList.setItemHeight(self.itemHeight)
+		self.l.setItemHeight(self.itemHeight)
 		return rc
 
 	GUI_WIDGET = eListbox
 
 	def getCurrentBouquet(self):
-		return self.eList.getCurrentSelection()[0]
+		return self.l.getCurrentSelection()[0]
 
 	def getCurrentBouquetService(self):
-		return self.eList.getCurrentSelection()[1]
+		return self.l.getCurrentSelection()[1]
 
 	def selectionChanged(self):
 		for x in self.onSelChanged:
 			if x is not None:
 				x()
 
-	def getIndexFromService(self, serviceref):
-		if serviceref is not None:
-			for x in range(len(self.bouquetslist)):
-				if CompareWithAlternatives(self.bouquetslist[x][1], serviceref):
-					return x
-		return None
-
-	def moveToBouquet(self, serviceref):
-		newIdx = self.getIndexFromService(serviceref)
-		if newIdx is None:
-			newIdx = 0
-		self.setCurrentIndex(newIdx)
-		self.currentBouquetService = serviceref
-
 	def setCurrentIndex(self, index):
 		if self.instance is not None:
 			self.instance.moveSelectionTo(index)
-			self.currentBouquetService = self.bouquetslist[index][1]
+			self.currentBouquetService = self.getCurrentBouquetService()
 
 	def moveTo(self, dir):
 		if self.instance is not None:
 			self.instance.moveSelection(dir)
+			self.currentBouquetService = self.getCurrentBouquetService()
 
-	def setBouquetFontsize(self):
-		self.eList.setFont(0, gFont(self.bouquetFontName, self.bouquetFontSize))
+	def setFontsize(self):
+		self.l.setFont(0, gFont(self.bouquetFontName, self.bouquetFontSize))
 
 	def postWidgetCreate(self, instance):
-		self.eList.setSelectableFunc(True)
+		self.l.setSelectableFunc(True)
 		instance.setWrapAround(True)
 		instance.selectionChanged.get().append(self.selectionChanged)
-		instance.setContent(self.eList)
-		self.setBouquetFontsize()
+		instance.setContent(self.l)
 
 	def preWidgetRemove(self, instance):
 		instance.selectionChanged.get().append(self.selectionChanged)
@@ -127,7 +113,7 @@ class EPGBouquetList(GUIComponent):
 			self.instance.setSelectionEnable(enabled)
 
 	def recalcEntrySize(self):
-		esize = self.eList.getItemSize()
+		esize = self.l.getItemSize()
 		width = esize.width()
 		height = esize.height()
 		self.bouquetRect = eRect(0, 0, width, height)
@@ -136,58 +122,44 @@ class EPGBouquetList(GUIComponent):
 		rc = self.bouquetRect
 		return eRect(rc.left() + (self.instance and self.instance.position().x() or 0), rc.top(), rc.width(), rc.height())
 
-	def buildEntry(self, name, func):
+	def buildEntry(self, name, service):
 		r1 = self.bouquetRect
 		left = r1.left()
 		top = r1.top()
 		width = r1.width()
 		height = r1.height()
-		selected = self.currentBouquetService == func
+		selected = self.currentBouquetService == service
 
-		if self.bouquetNameAlign.lower() == "left":
-			if self.bouquetNameWrap.lower() == "yes":
-				alignnment = RT_HALIGN_LEFT | RT_VALIGN_CENTER | RT_WRAP
-			else:
-				alignnment = RT_HALIGN_LEFT | RT_VALIGN_CENTER
-		else:
-			if self.bouquetNameWrap.lower() == "yes":
-				alignnment = RT_HALIGN_CENTER | RT_VALIGN_CENTER | RT_WRAP
-			else:
-				alignnment = RT_HALIGN_CENTER | RT_VALIGN_CENTER
+		alignment = RT_VALIGN_CENTER | RT_HALIGN_LEFT if self.bouquetNameAlign == "left" else RT_HALIGN_CENTER
+		if self.bouquetNameWrap == "yes":
+			alignment |= RT_WRAP
 
 		res = [None]
 
-		if selected:
-			if self.graphic:
+		foreColor = self.foreColor
+		backColor = self.backColor
+		foreColorSel = self.foreColorSelected
+		backColorSel = self.backColorSelected
+		if self.graphic:
+			if selected:
 				borderTopPix = self.borderSelectedTopPix
 				borderLeftPix = self.borderSelectedLeftPix
 				borderBottomPix = self.borderSelectedBottomPix
 				borderRightPix = self.borderSelectedRightPix
-			foreColor = self.foreColor
-			backColor = self.backColor
-			foreColorSel = self.foreColorSelected
-			backColorSel = self.backColorSelected
-			bgpng = self.selPix
-			if bgpng is not None and self.graphic:
-				backColor = None
-				backColorSel = None
-		else:
-			if self.graphic:
+				bgpng = self.selPix
+			else:
 				borderTopPix = self.borderTopPix
 				borderLeftPix = self.borderLeftPix
 				borderBottomPix = self.borderBottomPix
 				borderRightPix = self.borderRightPix
-			backColor = self.backColor
-			foreColor = self.foreColor
-			foreColorSel = self.foreColorSelected
-			backColorSel = self.backColorSelected
-			bgpng = self.othPix
-			if bgpng is not None and self.graphic:
+				bgpng = self.othPix
+			
+			if bgpng is not None:
 				backColor = None
 				backColorSel = None
 
 		# box background
-		if bgpng is not None and self.graphic:
+		if self.graphic and bgpng is not None:
 			res.append(MultiContentEntryPixmapAlphaTest(
 				pos = (left + self.borderWidth, top + self.borderWidth),
 				size = (width - 2 * self.borderWidth, height - 2 * self.borderWidth),
@@ -208,7 +180,7 @@ class EPGBouquetList(GUIComponent):
 
 		res.append(MultiContentEntryText(
 			pos = (evX, evY), size = (evW, evH),
-			font = 0, flags = alignnment,
+			font = 0, flags = alignment,
 			text = name,
 			color = foreColor, color_sel = foreColorSel,
 			backcolor = backColor, backcolor_sel = backColorSel))
@@ -256,7 +228,7 @@ class EPGBouquetList(GUIComponent):
 			self.borderSelectedRightPix = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "epg/SelectedBorderRight.png"))
 			self.graphicsloaded = True
 		self.bouquetslist = bouquets
-		self.eList.setList(self.bouquetslist)
+		self.l.setList(self.bouquetslist)
 		self.recalcEntrySize()
 		self.selectionChanged()
 		self.currentBouquetService = self.getCurrentBouquetService()

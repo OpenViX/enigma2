@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-06 22:34+0000\n"
-"PO-Revision-Date: 2020-02-08 10:15+0100\n"
+"POT-Creation-Date: 2020-04-22 17:36+0000\n"
+"PO-Revision-Date: 2020-04-23 16:31+0200\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -14,6 +14,14 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SourceCharset: iso-8859-15\n"
 "X-Generator: Poedit 2.3\n"
+
+#, python-format
+msgid ""
+"\n"
+" %s is also enabled for autofs network mount"
+msgstr ""
+"\n"
+" %s is ook werkzaam voor autofs netwerk-mount"
 
 msgid ""
 "\n"
@@ -135,9 +143,6 @@ msgstr ""
 "\n"
 "Bekijk, installeer en verwijder beschikbare of geïnstalleerde pakketten."
 
-msgid " "
-msgstr " "
-
 #, python-format
 msgid "  (%s x %s)"
 msgstr "  (%s x %s)"
@@ -148,10 +153,6 @@ msgstr " (0 - alle netwerken)"
 #, python-format
 msgid " (Channel %s)"
 msgstr " (Kanaal %s)"
-
-#, python-format
-msgid " (Partition %d)"
-msgstr " (Partitie %d)"
 
 msgid " (disabled)"
 msgstr " (gedeactiveerd)"
@@ -976,6 +977,13 @@ msgstr ""
 msgid "( All readers)"
 msgstr "(Alle lezers)"
 
+msgid "(Current image)"
+msgstr "(Huidig image)"
+
+#, python-format
+msgid "(Partition %d)"
+msgstr " (Partitie %d)"
+
 msgid "(PiP)"
 msgstr "(PiP)"
 
@@ -1754,8 +1762,8 @@ msgstr "Maakt het mogelijk een kopie van de logs naar uzelf te sturen."
 msgid "Allows you to set a schedule to import the EPG and channels list. The EPG and channels list will always be imported on reboot or GUI restart."
 msgstr "Maakt het mogelijk de kanaallijt en EPG import te plannen. Deze zullen altijd worden geïmporteerd bij een reboot of GUI-herstart."
 
-msgid "Allows you to set the maximum size (MB) of the individual debug logs. When that size is reached, a new file will be created."
-msgstr "Hier geeft u aan hoeveel ruimte de debug logs mogen gebruiken. Als die hoeveelheid bereikt wordt, worden de oudste logs het eerste verwijderd."
+msgid "Allows you to set the maximum size (MB) of the individual debug logs. When that size is reached, the log file will be truncated to the maximum size every 60 minutes."
+msgstr "Hier geeft u aan hoe groot (MB) elk individueel debug logs mag worden. Als die hoeveelheid bereikt is, wordt elke 60 minuten elk log op die waarde begrensd."
 
 msgid "Allows you to setup the button to do what you choose."
 msgstr "Geeft u de mogelijkheid in te stellen wat de functie van een toets is."
@@ -2317,6 +2325,9 @@ msgstr "Versterk groen"
 msgid "Bootloader:\t%s\n"
 msgstr "Bootloader:\t%s\n"
 
+msgid "Bootup time"
+msgstr "Bootup-tijd"
+
 msgid "Bosnia and Herzegovina"
 msgstr "Bosnia and Herzegovina"
 
@@ -2550,6 +2561,12 @@ msgstr "Annuleer tekst en sluit af"
 msgid "Cancel save timeshift as movie"
 msgstr "Annuleer het opslaan van timeshift als opname"
 
+msgid "Cancel the image selection and exit"
+msgstr "Annuleer image keuze en sluit af"
+
+msgid "Cancel the image selection and exit all menus"
+msgstr "Annuleer image keuze en verlaat alle menu's"
+
 msgid "Cancel the selection"
 msgstr "Annuleer deze selectie"
 
@@ -2715,9 +2732,6 @@ msgstr "Hoofdstuk"
 msgid "Chapter:"
 msgstr "Hoofdstuk:"
 
-msgid "Chatham Islands"
-msgstr "Chatham Islands"
-
 msgid "Check"
 msgstr "Controleer"
 
@@ -2732,6 +2746,9 @@ msgstr "Controleer uw internetverbinding"
 
 msgid "Checking Logs..."
 msgstr "Controleert logs..."
+
+msgid "Checking disk."
+msgstr "Controleert schijven."
 
 msgid "Checking filesystem..."
 msgstr "Controleert bestandssysteem..."
@@ -3289,6 +3306,9 @@ msgstr "Stel in of (en hoe lang) de tweede informatiebalk wordt vertoond als 'OK
 msgid "Configure whether or not an rotor position will be displayed on infobar"
 msgstr "Stel in of de rotorpositie getoond moet worden in de infobar"
 
+msgid "Configure whether service picons will be shown in number zap."
+msgstr "Stel in of en hoe de servicetype-iconen worden getoond in nummerzap."
+
 msgid "Configure which color format should be used on the SCART output."
 msgstr "Bepaal welk kleurformaat voor de scart-aansluiting wordt benut."
 
@@ -3480,11 +3500,11 @@ msgstr "Creëren hardlink naar timeshiftbestand mislukt!"
 msgid "Creating directory %s failed."
 msgstr "Het aanmaken van de map %s is mislukt."
 
-msgid "Creating filesystem"
-msgstr "Creëert bestandssyeteem"
+msgid "Creating filesystem."
+msgstr "Creëert bestandssysteem."
 
-msgid "Creating partition"
-msgstr "Creëert partitie"
+msgid "Creating partition."
+msgstr "Creëert partitie."
 
 msgid "Croatia"
 msgstr "Croatia"
@@ -3820,6 +3840,9 @@ msgstr "Deselecteer"
 msgid "Debug Logs"
 msgstr "Debug logs"
 
+msgid "Debug log time format *"
+msgstr "Debuglog tijdformaat *"
+
 msgid "Deep Standby"
 msgstr "Uitschakelen"
 
@@ -3999,6 +4022,10 @@ msgstr "Gedetecteerde tuners:"
 
 msgid "Device"
 msgstr "Adapter"
+
+#, python-format
+msgid "Device %s"
+msgstr "Apparaat %s"
 
 msgid "Device mounts"
 msgstr "Lokale mounts"
@@ -4422,9 +4449,6 @@ msgstr "Oost"
 
 msgid "East limit set"
 msgstr "Oostelijke limiet instellen"
-
-msgid "Easter Island"
-msgstr "Easter Island"
 
 msgid "Ecm:"
 msgstr "Ecm:"
@@ -4912,10 +4936,6 @@ msgstr "Extern"
 msgid "External PiP"
 msgstr "Externe PiP"
 
-#, python-format
-msgid "External Storage %s"
-msgstr "Externe opslag %s"
-
 msgid "External subtitle color"
 msgstr "Kleur externe ondertitels"
 
@@ -4924,6 +4944,9 @@ msgstr "Kleur externe ondertitels"
 
 msgid "External subtitle switch fonts"
 msgstr "Externe ondertitels wissel lettertype"
+
+msgid "Externally powered"
+msgstr "Externe van stroom voorzien"
 
 msgid "Extra motor options"
 msgstr "Extra motor opties"
@@ -5096,9 +5119,6 @@ msgstr "Feeds status: Onstabiel"
 
 msgid "Feeds status: Updating"
 msgstr "Feeds status: bezig met updaten"
-
-msgid "Fernando de Noronha"
-msgstr "Fernando de Noronha"
 
 msgid "Fiji"
 msgstr "Fiji"
@@ -5287,14 +5307,8 @@ msgstr "GUI instellingen"
 msgid "Gabon"
 msgstr "Gabon"
 
-msgid "Galapagos Islands"
-msgstr "Galapagos ijlanden"
-
 msgid "Gambia"
 msgstr "Gambia"
-
-msgid "Gambier Islands"
-msgstr "Gambier Islands"
 
 msgid "Gateway"
 msgstr "Gateway"
@@ -5629,9 +5643,6 @@ msgstr "Historie volgende"
 msgid "History zap..."
 msgstr "Geschiedenis-zap..."
 
-msgid "Ho Chi Minh City"
-msgstr "Ho Chi Minh City"
-
 msgid "Hold screen"
 msgstr "Hold screen"
 
@@ -5689,6 +5700,9 @@ msgstr "Hostname:"
 msgid "Hostname: "
 msgstr "Hostname: "
 
+msgid "Hotplug"
+msgstr "Hotplug"
+
 msgid "Hour"
 msgstr "Uur"
 
@@ -5715,6 +5729,9 @@ msgstr "Hongaars"
 
 msgid "Hungary"
 msgstr "Hungary"
+
+msgid "IDLE"
+msgstr "IDLE"
 
 msgid "IMDB search for current event"
 msgstr "IMDB zoekslag naar huidig programma"
@@ -6040,6 +6057,10 @@ msgstr "Invoerapparaten"
 msgid "Install"
 msgstr "Installeer"
 
+#, python-format
+msgid "Install '%s'"
+msgstr "Installeer '%s'"
+
 msgid "Install a new image with a USB stick"
 msgstr "Installeer een nieuwe image met een USB-stick"
 
@@ -6201,9 +6222,6 @@ msgstr "Jersey"
 
 msgid "Job View"
 msgstr "Taken"
-
-msgid "Johnston Atoll"
-msgstr "Johnston Atoll"
 
 msgid "Jordan"
 msgstr "Jordan"
@@ -6485,8 +6503,14 @@ msgstr[1] "Toon verise%d, gevonden %d kanalen"
 msgid "List/Fav/PVR"
 msgstr "List/Fav/PVR"
 
+msgid "List/File"
+msgstr "Lijst met bestanden"
+
 msgid "Listen to the radio..."
 msgstr "Luister naar radio..."
+
+msgid "Listener for hotplug events."
+msgstr "Luistert naar hotplug gebeurtenissen."
 
 msgid "Lists reloaded!"
 msgstr "Links zijn herladen!"
@@ -6592,9 +6616,6 @@ msgstr "Lengtegraad"
 msgid "Loop through from"
 msgstr "Doorlus van"
 
-msgid "Lord Howe Island"
-msgstr "Lord Howe Island"
-
 msgid "Lower Framerate save CPU Time"
 msgstr "Lagere framerate gebruikt minder processortijd"
 
@@ -6698,9 +6719,6 @@ msgstr "Markeer kanaal als 3D"
 msgid "Mark/Portal/Playlist"
 msgstr "Mark/Portal/Playlist"
 
-msgid "Marquesas Islands"
-msgstr "Marquesas Islands"
-
 msgid "Marshall Islands"
 msgstr "Marshall Islands"
 
@@ -6790,9 +6808,6 @@ msgstr "Mexico"
 
 msgid "Micronesia (Federated States of)"
 msgstr "Micronesia (Federated States of)"
-
-msgid "Midway Islands"
-msgstr "Midway Islands"
 
 msgid "MiniDLNA"
 msgstr "MiniDLNA"
@@ -6908,8 +6923,8 @@ msgstr "Herhalingen motoropdrachten"
 msgid "Motor running timeout"
 msgstr "Rotor time-out"
 
-msgid "Mount"
-msgstr "Mount"
+msgid "Mount."
+msgstr "Mount."
 
 msgid "Mounts"
 msgstr "Mounts"
@@ -7055,23 +7070,20 @@ msgstr "Mozambique"
 msgid "Multi EPG"
 msgstr "Multi-EPG"
 
+msgid "MultiBoot Image Selector"
+msgstr "Multibootimage kiezen"
+
+msgid "MultiBootSelector Actions"
+msgstr "MultiBootselectie akties"
+
 msgid "MultiEPG"
 msgstr "Multi-EPG"
 
 msgid "MultiType"
 msgstr "Multitype"
 
-msgid "Multiboot"
-msgstr "Multiboot"
-
-msgid "Multiboot ERROR! - invalid STARTUP in boot partition."
-msgstr "Multiboot FOUT! - ongeldige STARTUP in bootpartitie."
-
-msgid "Multiboot ERROR! - no STARTUP in boot partition."
-msgstr "Multiboot FOUT! - geen STARTUP in bootpartitie."
-
-msgid "Multiboot Image Restart"
-msgstr "Multibootimage herstarten"
+msgid "Multiboot Image Selector"
+msgstr "Multibootimage kiezen"
 
 msgid "Multimedia"
 msgstr "Multimedia"
@@ -7472,9 +7484,6 @@ msgstr "Noord"
 
 msgid "Northern Mariana Islands"
 msgstr "Northern Mariana Islands"
-
-msgid "Northern Territory"
-msgstr "Northern Territory"
 
 msgid "Norway"
 msgstr "Norway"
@@ -7964,9 +7973,6 @@ msgstr "Navigatie"
 
 msgid "Pitcairn"
 msgstr "Pitcairn"
-
-msgid "Pitcairn Islands"
-msgstr "Pitcairn Islands"
 
 msgid "Play"
 msgstr "Afspelen"
@@ -9017,8 +9023,8 @@ msgstr "Verwijdert kanaal"
 msgid "Removing directory %s failed. (Maybe not empty.)"
 msgstr "Verwijderen van map %s mislukt (map niet leeg?)"
 
-msgid "Removing partition table"
-msgstr "Verwijdert partitietabel"
+msgid "Removing partition table."
+msgstr "Verwijdert partitietabel."
 
 msgid "Removing service"
 msgstr "Verwijdert kanaal"
@@ -9073,8 +9079,8 @@ msgstr "Vereist authenticatie voor http streams"
 msgid "Required medium type:"
 msgstr "Benodigd mediumtype:"
 
-msgid "Rereading partition table"
-msgstr "Leest partitietabel opnieuw"
+msgid "Rereading partition table."
+msgstr "Leest partitietabel opnieuw."
 
 msgid "Reserved"
 msgstr "Gereserveerd"
@@ -9117,6 +9123,9 @@ msgstr "Gebruikersinterface herstarten"
 
 msgid "Restart GUI now?"
 msgstr "De gebruikersinterface nu opnieuw starten?"
+
+msgid "Restart last movie"
+msgstr "Laatste opname opnieuw starten"
 
 msgid "Restart network"
 msgstr "Netwerk herstarten"
@@ -9258,9 +9267,6 @@ msgstr "SCR JESS"
 
 msgid "SCR Unicable"
 msgstr "SCR Unicable"
-
-msgid "SDcard is not initialised for multiboot - Exit and use ViX MultiBoot Manager to initialise"
-msgstr "SD-kaart is niet geïnitialiseerd voor multiboot - Sluit af en gebruik VIX Multibootmanager om te initialiseren"
 
 #
 msgid "SINGLE LAYER DVD"
@@ -9728,6 +9734,9 @@ msgstr "Selecteer karakter of actie onder de cursor"
 msgid "Select the desired function and click on \"OK\" to assign it. Use \"CH+/-\" to toggle between the lists. Select an assigned function and click on \"OK\" to de-assign it. Use \"Next/Previous\" to change the order of the assigned functions."
 msgstr "Kies de gewenste functie en klik dan op \"OK\" om deze toe te wijzen. Gebruik \"CH+/-\" om te wisselen tussen de kolommen in de lijst. Kies de toegewezen functie en klik op \"OK\" om de toewijzing te verwijderen. Gebruik \"Volgende/Vorige\" om de volgorde van de toegewezen functies te veranderen."
 
+msgid "Select the highlighted image and reboot"
+msgstr "Kies het  image en reboot"
+
 msgid "Select the manufacturer of your SCR device. If the manufacturer is not listed, set 'SCR' to 'user defined' and enter the device parameters manually according to its spec sheet."
 msgstr "Kies de fabrikant van uw SCR-apparaat. Als deze niet in de lijst voorkomt, stelt u 'SCR' in op 'door gebruiker gedefinieerd' en geeft u vervolgens de parameters handmatig in c.f. de specs van het apparaat."
 
@@ -9757,6 +9766,9 @@ msgstr "Kies de satelliet die u wilt configureren. Als deze eenmaal is geconfigu
 
 msgid "Select the satellite your dish receives from. If you are unsure select 'automatic' and the receiver will attempt to determine this for you."
 msgstr "Kies de satelliet die ontvangen wordt. Als u niet zeker bent, kiest u 'automatisch' waarna de ontvanger zelf zal proberen dit te bepalen."
+
+msgid "Select the time zone within the area or region."
+msgstr "Tijdzone instellen."
 
 msgid "Select the tuner that controls the motorised dish."
 msgstr "Kies de tuner die de gemotoriseerde schotel bestuurt."
@@ -9794,6 +9806,9 @@ msgstr "Selecteer video-ingang met de omhoog/omlaag toetsen"
 msgid "Select video mode"
 msgstr "Selecteer videomodus"
 
+msgid "Select whether your SCR device is externally powered."
+msgstr "Geef aan of uw SCR-apparaat een externe voeding heeft"
+
 msgid "Select wireless network"
 msgstr "Secteer draadloos netwerk"
 
@@ -9811,6 +9826,9 @@ msgstr "Kies uw provider en druk OK om de scan te starten"
 
 msgid "Select your region. If not available change 'Country' to 'all' and select one of the default alternatives."
 msgstr "Selecteer uw regio. Indien deze niet beschikbaar is verandert u 'land' en selecteert u één van de default alternatieven."
+
+msgid "Select your time zone area or region."
+msgstr "Tijdzone instellen."
 
 msgid "Selecting satellites 1 (USALS)"
 msgstr "Alle satellieten 1 (USALS)"
@@ -10134,9 +10152,6 @@ msgstr "Positioner instellen"
 msgid "Setup your satellite equipment"
 msgstr "Satellietapparatuur instellen"
 
-msgid "Setup your timezone area."
-msgstr "Tijdzone instellen."
-
 msgid "Seychelles"
 msgstr "Seychelles"
 
@@ -10398,6 +10413,9 @@ msgstr "Toon of verberg de uitgebreide beschrijving (skin afhankelijk)."
 
 msgid "Show picon background color"
 msgstr "Toon picon-achtergrondkleur"
+
+msgid "Show picons during channel number input"
+msgstr "Toon picons tijdens ingave kanaalnummer"
 
 msgid "Show picons in service list"
 msgstr "Toon picons in opnamelijst"
@@ -10662,6 +10680,14 @@ msgstr "Slank"
 msgid "Slot %d"
 msgstr "Slot %d"
 
+#, python-format
+msgid "Slot %s: %s - Mode %d%s"
+msgstr "Slot %s: %s - Modus %d%s"
+
+#, python-format
+msgid "Slot %s: %s%s"
+msgstr "Slot %s: %s%s"
+
 msgid "Slovak"
 msgstr "Slowaaks"
 
@@ -10827,9 +10853,6 @@ msgstr "Zuid"
 msgid "South Africa"
 msgstr "South Africa"
 
-msgid "South Australia"
-msgstr "South Australia"
-
 msgid "South Georgia and the South Sandwich Islands"
 msgstr "South Georgia and the South Sandwich Islands"
 
@@ -10892,6 +10915,9 @@ msgstr "Stand-by en Afsluiten"
 
 msgid "Start"
 msgstr "Start"
+
+msgid "Start Wizard - Screen Alignment"
+msgstr "Startwizard - Schermuitlijning"
 
 msgid "Start from the beginning"
 msgstr "Start vanaf het begin"
@@ -11643,6 +11669,9 @@ msgstr "Dit is een multi-type tuner. De beschikbare opties hangen van de hardwar
 msgid "This is the order in which DiSEqC commands are sent to the aerial system. The order must correspond exactly with the order the physical devices are arranged along the signal cable (starting from the receiver end)."
 msgstr "Dit is de volgorde waarin DiSEqC commando's worden verstuurd naar het antennesysteem. De volgorde moet precies overeenkomen met dat systeem in de volgorde gerekend vanaf de ontvanger.."
 
+msgid "This is the prefix of each entry in the debug log. 'boot time' is the number of seconds slnce the receiver was last booted."
+msgstr "Dit is het voorvoegsel van elke ingang in het debuglog. 'boottijd' is het aantal secondes sinds de ontvanger voor het laatst geboot is."
+
 msgid "This option allows to reduce the block-noise in the picture. Obviously this is at the cost of the picture's sharpness."
 msgstr "Met deze optie bepaalt u de mate van onderdrukking van 'blokruis' ('blokruis' is blokvorming als resultaat van sterke compressie). Uiteraard gaat dit ten koste van de beeldscherpte."
 
@@ -11894,6 +11923,12 @@ msgstr "Tijdstip van uitvoeren opdracht of script"
 msgid "Time update in minutes"
 msgstr "Updatetijd in minuten"
 
+msgid "Time zone"
+msgstr "Tijdzone"
+
+msgid "Time zone area"
+msgstr "Tijdzone gebied"
+
 msgid "Timeline 24 Hour"
 msgstr "Tijdlijn 24 uur"
 
@@ -11973,12 +12008,6 @@ msgstr "Timeshift zal na afloop van het programma worden opgeslagen!"
 
 msgid "Timeshift-save action on zap"
 msgstr "Timeshift-save actie bij zappen"
-
-msgid "Timezone"
-msgstr "Tijdzone"
-
-msgid "Timezone area"
-msgstr "Tijdzone"
 
 msgid "Timor-Leste"
 msgstr "Timor-Leste"
@@ -12262,6 +12291,9 @@ msgstr "Zoekmodus"
 msgid "Type: "
 msgstr "Type: "
 
+msgid "UNKNOWN"
+msgstr "ONBEKEND"
+
 msgid "URL"
 msgstr "URL"
 
@@ -12348,8 +12380,8 @@ msgstr "Onbekende fout"
 msgid "Unmark service as a dedicated 3D service"
 msgstr "Verwijder de markering als 3D-kanaal"
 
-msgid "Unmount"
-msgstr "Unmount"
+msgid "Unmount."
+msgstr "Unmount."
 
 msgid "Unsupported"
 msgstr "Niet ondersteund"
@@ -12375,6 +12407,9 @@ msgstr "Update is mislukt. Uw %s %s heeft geen werkende internetverbinding."
 
 msgid "Update interval (in seconds)"
 msgstr "Updateinterval (in secondes)"
+
+msgid "Update packages..."
+msgstr "Bezig met update pakketten..."
 
 #
 msgid "Updatefeed not available."
@@ -12501,14 +12536,14 @@ msgstr "Gebruik originele DVB-ondertitel posities"
 msgid "Use original teletext position"
 msgstr "Gebruik de originele teletekst positie"
 
-msgid "Use picon_lcd directory for picons on color LCD"
+msgid "Use piconlcd directory for picons on color LCD"
 msgstr "Gebruik picon_LCD map voor picons op kleuren-LCD."
 
 msgid "Use power measurement"
 msgstr "Meet stroomopname"
 
-msgid "Use separate Picon pack for Front Display *"
-msgstr "Gebruik apart picon-pakket voor het paneeldisplay *"
+msgid "Use separate Picon pack for Front Display"
+msgstr "Gebruik apart picon-pakket voor het paneeldisplay"
 
 msgid "Use slim screen"
 msgstr "Gebruik slim screen"
@@ -12852,14 +12887,11 @@ msgstr "WSS bij 4:3"
 msgid "Waiting"
 msgstr "Aan het wachten"
 
-msgid "Waiting for mount"
-msgstr "Wacht op mount"
+msgid "Waiting for mount."
+msgstr "Wacht op mount."
 
-msgid "Waiting for partition"
-msgstr "Wacht op partitie"
-
-msgid "Wake Island"
-msgstr "Wake Island"
+msgid "Waiting for partition."
+msgstr "Wacht op partitie."
 
 msgid "Wake On LAN"
 msgstr "Schakel WoL in"
@@ -12984,9 +13016,6 @@ msgstr "West"
 
 msgid "West limit set"
 msgstr "Westelijke limiet instellen"
-
-msgid "Western Australia"
-msgstr "Western Australia"
 
 msgid "Western Sahara"
 msgstr "Western Sahara"
@@ -13618,9 +13647,6 @@ msgstr "Uw ontvanger heeft geen internetverbinding"
 msgid "Your receiver is not connected to the internet"
 msgstr "Uw ontvanger heeft geen internet verbinding"
 
-msgid "Your timezone in the area."
-msgstr "Uw tijdzone."
-
 msgid ""
 "Your wireless LAN internet connection could not be started!\n"
 "Have you attached your USB WLAN Stick?\n"
@@ -13838,6 +13864,12 @@ msgstr "zwarte lijst"
 
 msgid "blue"
 msgstr "blauw"
+
+msgid "boot time"
+msgstr "boottijd"
+
+msgid "boot time and local time"
+msgstr "boottijd en lokale tijd"
 
 msgid "bottom"
 msgstr "onderin"
@@ -14293,6 +14325,9 @@ msgstr "literatuur"
 msgid "live broadcast"
 msgstr "live omroep"
 
+msgid "local time"
+msgstr "lokale tijd"
+
 msgid "locked"
 msgstr "locked"
 
@@ -14708,30 +14743,6 @@ msgstr "vooruit spoelen"
 msgid "skip forward (enter time)"
 msgstr "spring vooruit (tijd invoeren)"
 
-#, python-format
-msgid "slot%s - %s mode 1"
-msgstr "slot%s - %s mode 1"
-
-#, python-format
-msgid "slot%s - %s mode 1 (current image)"
-msgstr "slot%s - %s mode 1 (huidige image)"
-
-#, python-format
-msgid "slot%s - %s mode 12"
-msgstr "slot%s - %s mode 12"
-
-#, python-format
-msgid "slot%s - %s mode 12 (current image)"
-msgstr "slot%s - %s mode 12 (huidige image)"
-
-#, python-format
-msgid "slot%s -%s - %s (current image)"
-msgstr "slot%s -%s - %s (huidige image)"
-
-#, python-format
-msgid "slot%s -%s- %s "
-msgstr "slot%s -%s- %s "
-
 msgid "slow"
 msgstr "langzaam"
 
@@ -15029,6 +15040,9 @@ msgstr "zapte"
 #~ msgstr ""
 #~ "\n"
 #~ "Er loopt een opname."
+
+#~ msgid " "
+#~ msgstr " "
 
 #~ msgid " Stream %s"
 #~ msgstr " Stream %s"
@@ -15383,8 +15397,8 @@ msgstr "zapte"
 #~ msgid "ChannelEPG settings"
 #~ msgstr "Zender EPG instellingen"
 
-#~ msgid "Checking Feeds"
-#~ msgstr "Controleert feeds"
+#~ msgid "Chatham Islands"
+#~ msgstr "Chatham Islands"
 
 #~ msgid "Chipset:\tBCM%s\n"
 #~ msgstr "Chipset:\tBCM%s\n"
@@ -15673,6 +15687,9 @@ msgstr "zapte"
 #~ msgid "ERROR: Check is already running in background"
 #~ msgstr "FOUT: Op de achtergrond wordt al een controle uitgevoerd. "
 
+#~ msgid "Easter Island"
+#~ msgstr "Easter Island"
+
 #~ msgid "Edit bouquets list"
 #~ msgstr "favorietenlijst aanpassen"
 
@@ -15730,6 +15747,9 @@ msgstr "zapte"
 #~ msgid "FTP setup"
 #~ msgstr "FTP instellingen"
 
+#~ msgid "Fernando de Noronha"
+#~ msgstr "Fernando de Noronha"
+
 #~ msgid "Find currently played service"
 #~ msgstr "Vind het nu spelende kanaal"
 
@@ -15767,6 +15787,12 @@ msgstr "zapte"
 #~ "De gebruikersinterface moet herstart worden om\n"
 #~ "de nieuwe skin te activeren. Nu herstarten?"
 
+#~ msgid "Galapagos Islands"
+#~ msgstr "Galapagos ijlanden"
+
+#~ msgid "Gambier Islands"
+#~ msgstr "Gambier Islands"
+
 #~ msgid "Get latest experimental image"
 #~ msgstr "Ontvang het laatste experimentele image"
 
@@ -15787,6 +15813,9 @@ msgstr "zapte"
 
 #~ msgid "Hierarchy information"
 #~ msgstr "Hiërarchie informatie"
+
+#~ msgid "Ho Chi Minh City"
+#~ msgstr "Ho Chi Minh City"
 
 #~ msgid "Hotkey"
 #~ msgstr "Hotkey"
@@ -15813,17 +15842,26 @@ msgstr "zapte"
 #~ msgid "Initialization"
 #~ msgstr "Initialiseren"
 
+#~ msgid "Johnston Atoll"
+#~ msgstr "Johnston Atoll"
+
 #~ msgid "Lamedb"
 #~ msgstr "Lamedb"
 
 #~ msgid "Link Quality:"
 #~ msgstr "Kwaliteit verbinding:"
 
-#~ msgid "List of files"
-#~ msgstr "Lijst met bestanden"
+#~ msgid "Lord Howe Island"
+#~ msgstr "Lord Howe Island"
+
+#~ msgid "Marquesas Islands"
+#~ msgstr "Marquesas Islands"
 
 #~ msgid "Memory Information"
 #~ msgstr "Geheugen informatie"
+
+#~ msgid "Midway Islands"
+#~ msgstr "Midway Islands"
 
 #~ msgid "MiniDLNA setup"
 #~ msgstr "MiniDLNA instellingen"
@@ -15883,8 +15921,17 @@ msgstr "zapte"
 #~ msgid "MultiEPG settings"
 #~ msgstr "Multi-EPG instellingen"
 
+#~ msgid "Multiboot"
+#~ msgstr "Multiboot"
+
+#~ msgid "Multiboot ERROR! - invalid STARTUP in boot partition."
+#~ msgstr "Multiboot FOUT! - ongeldige STARTUP in bootpartitie."
+
 #~ msgid "Multiboot ERROR! - no STARTUP in /boot -Please check /etc/fstab for correct boot partition"
 #~ msgstr "Multiboot FOUT! - geen STARTUP in /boot - Check /etc/fstab op correcte bootpartitie."
+
+#~ msgid "Multiboot ERROR! - no STARTUP in boot partition."
+#~ msgstr "Multiboot FOUT! - geen STARTUP in bootpartitie."
 
 #~ msgid "NFI image flashing"
 #~ msgstr "NFI image schrijven"
@@ -15955,6 +16002,9 @@ msgstr "zapte"
 #~ "Wilt u de menu-pinNcode nu wijzigen?\n"
 #~ "Indien u 'nee' kiest, blijft het menu onbeveiligd!"
 
+#~ msgid "Northern Territory"
+#~ msgstr "Northern Territory"
+
 #
 #~ msgid "Not configured"
 #~ msgstr "Niet geconfigureerd"
@@ -16006,6 +16056,9 @@ msgstr "zapte"
 
 #~ msgid "Phone number"
 #~ msgstr "Telefoonnummer"
+
+#~ msgid "Pitcairn Islands"
+#~ msgstr "Pitcairn Islands"
 
 #~ msgid "Play in main window"
 #~ msgstr "Afspelen in hoofdscherm"
@@ -16107,6 +16160,9 @@ msgstr "zapte"
 
 #~ msgid "SABnzbd setup"
 #~ msgstr "SABnzbd instellingen"
+
+#~ msgid "SDcard is not initialised for multiboot - Exit and use ViX MultiBoot Manager to initialise"
+#~ msgstr "SD-kaart is niet geïnitialiseerd voor multiboot - Sluit af en gebruik VIX Multibootmanager om te initialiseren"
 
 #~ msgid "SET FAILED!\n"
 #~ msgstr "INSTELLEN MISLUKT!\n"
@@ -16268,6 +16324,9 @@ msgstr "zapte"
 
 #~ msgid "Solo4K Misc. Control"
 #~ msgstr "Solo4K diverse instellingen"
+
+#~ msgid "South Australia"
+#~ msgstr "South Australia"
 
 #~ msgid "Specify the complete URL of the fallback remote receiver including the port number (:8001 by default), e.g. 'http://IP_second_box:8001'."
 #~ msgstr "Geef de complete URL van de fallback-ontvanger inclusief het poortnummer (:8001 is default), b.v. 'http://IP_tweede_box:8001'."
@@ -16447,9 +16506,6 @@ msgstr "zapte"
 #~ msgid "Unicable Matrix"
 #~ msgstr "Unicable matrix"
 
-#~ msgid "Update Cache"
-#~ msgstr "Update cache"
-
 #~ msgid "Use OpenTV EPG information when it is available."
 #~ msgstr "Gebruik OpenTV EPG informatie indien beschikbaar."
 
@@ -16480,6 +16536,12 @@ msgstr "zapte"
 #~ msgid "Videosize"
 #~ msgstr "Video-afmetingen"
 
+#~ msgid "Wake Island"
+#~ msgstr "Wake Island"
+
+#~ msgid "Western Australia"
+#~ msgstr "Western Australia"
+
 #~ msgid "When enabled the LNB power will not be switched off in standby"
 #~ msgstr "Indien ingeschakeld zal de spanning van de LNB in stand-by niet worden uitgeschakeld."
 
@@ -16509,6 +16571,9 @@ msgstr "zapte"
 
 #~ msgid "Your %s %s is not connected to the internet, please check your network settings and try again."
 #~ msgstr "Uw %s %s is niet met het internet verbonden. Controleer uw netwerkinstellingen en probeer het opnieuw."
+
+#~ msgid "Your timezone in the area."
+#~ msgstr "Uw tijdzone."
 
 #~ msgid "Zap back to service before tuner setup?"
 #~ msgstr "Wilt u terug naar het vorige kanaal"
@@ -16567,6 +16632,21 @@ msgstr "zapte"
 
 #~ msgid "setup PIN"
 #~ msgstr "menu pincode"
+
+#~ msgid "slot%s - %s mode 1 (current image)"
+#~ msgstr "slot%s - %s mode 1 (huidige image)"
+
+#~ msgid "slot%s - %s mode 12"
+#~ msgstr "slot%s - %s mode 12"
+
+#~ msgid "slot%s - %s mode 12 (current image)"
+#~ msgstr "slot%s - %s mode 12 (huidige image)"
+
+#~ msgid "slot%s -%s - %s (current image)"
+#~ msgstr "slot%s -%s - %s (huidige image)"
+
+#~ msgid "slot%s -%s- %s "
+#~ msgstr "slot%s -%s- %s "
 
 #~ msgid "special characters"
 #~ msgstr "speciale tekens"

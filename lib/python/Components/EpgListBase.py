@@ -19,7 +19,7 @@ class EPGListBase(GUIComponent):
 		self.onSelChanged = []
 		if selChangedCB is not None:
 			self.onSelChanged.append(selChangedCB)
-		self.eList = eListboxPythonMultiContent()
+		self.l = eListboxPythonMultiContent()
 		self.epgcache = eEPGCache.getInstance()
 
 		# Load the common clock icons.
@@ -66,6 +66,7 @@ class EPGListBase(GUIComponent):
 		self.listHeight = self.instance.size().height()
 		self.listWidth = self.instance.size().width()
 		self.setFontsize()
+		self.setItemsPerPage()
 		return rc
 
 	def getEventFromId(self, service, eventId):
@@ -103,7 +104,7 @@ class EPGListBase(GUIComponent):
 			self.instance.moveSelection(dir)
 
 	def getCurrent(self):
-		tmp = self.eList.getCurrentSelection()
+		tmp = self.l.getCurrentSelection()
 		if tmp is None:
 			return None, None
 		service = ServiceReference(tmp[0])

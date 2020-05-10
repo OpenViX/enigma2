@@ -29,7 +29,17 @@ class EPGSelection(EPGSelectionChannel):
 			"bluelong": (self.blueButtonPressedLong, _("Show autotimer list"))
 		}, prio=-1, description=helpDescription)
 
-	# Backwards compatibility functions for plugins button names.
+	# Backwards compatibility properties for plugins.
+	@property
+	def ChoiceBoxDialog(self):
+		return self.choiceBoxDialog
+
+	@ChoiceBoxDialog.setter
+	def ChoiceBoxDialog(self, value):
+		self.choiceBoxDialog = value
+
+	# Backwards compatibility functions for plugins.
+	# Button names.
 	def redButtonPressed(self):
 		self.openIMDb()
 

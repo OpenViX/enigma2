@@ -15,9 +15,9 @@ from Screens.Setup import Setup
 
 class EPGSelectionSingle(EPGSelectionBase, EPGServiceNumberSelection, EPGServiceBrowse, EPGServiceZap):
 	def __init__(self, session, zapFunc, startBouquet, startRef, bouquets, timeFocus=None):
-		EPGSelectionBase.__init__(self, session, startBouquet, startRef, bouquets)
+		EPGSelectionBase.__init__(self, session, config.epgselection.single, startBouquet, startRef, bouquets)
 		EPGServiceNumberSelection.__init__(self)
-		EPGServiceZap.__init__(self, config.epgselection.single, zapFunc)
+		EPGServiceZap.__init__(self, zapFunc)
 
 		self.skinName = ["SingleEPG", "EPGSelection"]
 		EPGServiceBrowse.__init__(self)
@@ -47,14 +47,14 @@ class EPGSelectionSingle(EPGSelectionBase, EPGServiceNumberSelection, EPGService
 		self["list"] = EPGListSingle(selChangedCB=self.onSelectionChanged, timer=session.nav.RecordTimer, epgConfig=config.epgselection.single)
 
 	def createSetup(self):
-		self.closeEventViewDialog()
-		self.session.openWithCallback(self.onSetupClose, Setup, "epgsingle")
+		def onClose(test=None):
+			self["list"].sortEPG()
+			self["list"].setFontsize()
+			self["list"].setItemsPerPage()
+			self["list"].recalcEntrySize()
 
-	def onSetupClose(self, test=None):
-		self["list"].sortEPG()
-		self["list"].setFontsize()
-		self["list"].setItemsPerPage()
-		self["list"].recalcEntrySize()
+		self.closeEventViewDialog()
+		self.session.openWithCallback(onClose, Setup, "epgsingle")
 
 	def onCreate(self):
 		self._populateBouquetList()

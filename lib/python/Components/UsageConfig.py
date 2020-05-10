@@ -31,6 +31,7 @@ def InitUsageConfig():
 	config.usage.showdish = ConfigSelection(default = "flashing", choices = [("flashing", _("Flashing")), ("normal", _("Not Flashing")), ("off", _("Off"))])
 	config.misc.showrotorposition = ConfigSelection(default = "no", choices = [("no", _("no")), ("yes", _("yes")), ("withtext", _("with text")), ("tunername", _("with tuner name"))])
 	config.usage.multibouquet = ConfigYesNo(default = True)
+	config.usage.maxchannelnumlen = ConfigSelection(default = "4", choices = [("3", _("3")),("4", _("4")), ("5", _("5")), ("6", _("6"))])
 
 	config.usage.alternative_number_mode = ConfigYesNo(default = False)
 	def alternativeNumberModeChange(configElement):
@@ -398,19 +399,13 @@ def InitUsageConfig():
 	# TRANSLATORS: full date representation dayname daynum monthname year in strftime() format! See 'man strftime'
 	config.usage.date.dayfull = ConfigSelection(default=_("%A %-d %B %Y"), choices=[
 		(_("%A %d %B %Y"), _("Dayname DD Month Year")),
-		(_("%A %d. %B %Y"), _("Dayname DD. Month Year")),
 		(_("%A %-d %B %Y"), _("Dayname D Month Year")),
-		(_("%A %-d. %B %Y"), _("Dayname D. Month Year")),
 		(_("%A %d-%B-%Y"), _("Dayname DD-Month-Year")),
 		(_("%A %-d-%B-%Y"), _("Dayname D-Month-Year")),
 		(_("%A %d/%m/%Y"), _("Dayname DD/MM/Year")),
-		(_("%A %d.%m.%Y"), _("Dayname DD.MM.Year")),
 		(_("%A %-d/%m/%Y"), _("Dayname D/MM/Year")),
-		(_("%A %-d.%m.%Y"), _("Dayname D.MM.Year")),
 		(_("%A %d/%-m/%Y"), _("Dayname DD/M/Year")),
-		(_("%A %d.%-m.%Y"), _("Dayname DD.M.Year")),
 		(_("%A %-d/%-m/%Y"), _("Dayname D/M/Year")),
-		(_("%A %-d.%-m.%Y"), _("Dayname D.M.Year")),
 		(_("%A %B %d %Y"), _("Dayname Month DD Year")),
 		(_("%A %B %-d %Y"), _("Dayname Month D Year")),
 		(_("%A %B-%d-%Y"), _("Dayname Month-DD-Year")),
@@ -457,19 +452,13 @@ def InitUsageConfig():
 		dateStyles = {
 			# dayfull            shortdayfull      daylong           dayshortfull   dayshort       daysmall    full           long           short
 			_("%A %d %B %Y"): (_("%a %d %B %Y"), _("%a %d %b %Y"), _("%A %d %B"), _("%a %d %b"), _("%a %d"), _("%d %B %Y"), _("%d %b %Y"), _("%d %b")),
-			_("%A %d. %B %Y"): (_("%a %d. %B %Y"), _("%a %d. %b %Y"), _("%A %d. %B"), _("%a %d. %b"), _("%a %d"), _("%d. %B %Y"), _("%d. %b %Y"), _("%d. %b")),
 			_("%A %-d %B %Y"): (_("%a %-d %B %Y"), _("%a %-d %b %Y"), _("%A %-d %B"), _("%a %-d %b"), _("%a %-d"), _("%-d %B %Y"), _("%-d %b %Y"), _("%-d %b")),
-			_("%A %-d. %B %Y"): (_("%a %-d. %B %Y"), _("%a %-d. %b %Y"), _("%A %-d. %B"), _("%a %-d. %b"), _("%a %-d"), _("%-d. %B %Y"), _("%-d. %b %Y"), _("%-d. %b")),
 			_("%A %d-%B-%Y"): (_("%a %d-%B-%Y"), _("%a %d-%b-%Y"), _("%A %d-%B"), _("%a %d-%b"), _("%a %d"), _("%d-%B-%Y"), _("%d-%b-%Y"), _("%d-%b")),
 			_("%A %-d-%B-%Y"): (_("%a %-d-%B-%Y"), _("%a %-d-%b-%Y"), _("%A %-d-%B"), _("%a %-d-%b"), _("%a %-d"), _("%-d-%B-%Y"), _("%-d-%b-%Y"), _("%-d-%b")),
 			_("%A %d/%m/%Y"): (_("%a %d/%m/%Y"), _("%a %d/%m/%Y"), _("%A %d/%m"), _("%a %d/%m"), _("%a %d"), _("%d/%m/%Y"), _("%d/%m/%Y"), _("%d/%m")),
-			_("%A %d.%m.%Y"): (_("%a %d.%m.%Y"), _("%a %d.%m.%Y"), _("%A %d.%m"), _("%a %d.%m"), _("%a %d"), _("%d.%m.%Y"), _("%d.%m.%Y"), _("%d.%m")),
 			_("%A %-d/%m/%Y"): (_("%a %-d/%m/%Y"), _("%a %-d/%m/%Y"), _("%A %-d/%m"), _("%a %-d/%m"), _("%a %-d"), _("%-d/%m/%Y"), _("%-d/%m/%Y"), _("%-d/%m")),
-			_("%A %-d.%m.%Y"): (_("%a %-d.%m.%Y"), _("%a %-d.%m.%Y"), _("%A %-d.%m"), _("%a %-d.%m"), _("%a %-d"), _("%-d.%m.%Y"), _("%-d.%m.%Y"), _("%-d.%m")),
 			_("%A %d/%-m/%Y"): (_("%a %d/%-m/%Y"), _("%a %d/%-m/%Y"), _("%A %d/%-m"), _("%a %d/%-m"), _("%a %d"), _("%d/%-m/%Y"), _("%d/%-m/%Y"), _("%d/%-m")),
-			_("%A %d.%-m.%Y"): (_("%a %d.%-m.%Y"), _("%a %d.%-m.%Y"), _("%A %d.%-m"), _("%a %d.%-m"), _("%a %d"), _("%d.%-m.%Y"), _("%d.%-m.%Y"), _("%d.%-m")),
 			_("%A %-d/%-m/%Y"): (_("%a %-d/%-m/%Y"), _("%a %-d/%-m/%Y"), _("%A %-d/%-m"), _("%a %-d/%-m"), _("%a %-d"), _("%-d/%-m/%Y"), _("%-d/%-m/%Y"), _("%-d/%-m")),
-			_("%A %-d.%-m.%Y"): (_("%a %-d.%-m.%Y"), _("%a %-d.%-m.%Y"), _("%A %-d.%-m"), _("%a %-d.%-m"), _("%a %-d"), _("%-d.%-m.%Y"), _("%-d.%-m.%Y"), _("%-d.%-m")),
 			_("%A %B %d %Y"): (_("%a %B %d %Y"), _("%a %b %d %Y"), _("%A %B %d"), _("%a %b %d"), _("%a %d"), _("%B %d %Y"), _("%b %d %Y"), _("%b %d")),
 			_("%A %B %-d %Y"): (_("%a %B %-d %Y"), _("%a %b %-d %Y"), _("%A %B %-d"), _("%a %b %-d"), _("%a %-d"), _("%B %-d %Y"), _("%b %-d %Y"), _("%b %-d")),
 			_("%A %B-%d-%Y"): (_("%a %B-%d-%Y"), _("%a %b-%d-%Y"), _("%A %B-%d"), _("%a %b-%d"), _("%a %d"), _("%B-%d-%Y"), _("%b-%d-%Y"), _("%b-%d")),
@@ -871,6 +860,7 @@ def InitUsageConfig():
 			os.mkdir(config.crash.debug_path.value,0755)
 	config.crash.debug_path.addNotifier(updatedebug_path, immediate_feedback = False)
 
+	config.usage.timerlist_showpicons = ConfigYesNo(default = True)
 	config.usage.timerlist_finished_timer_position = ConfigSelection(default = "end", choices = [("beginning", _("at beginning")), ("end", _("at end")), ("hide", _("hide"))])
 
 	def updateEnterForward(configElement):
@@ -1063,8 +1053,21 @@ def InitUsageConfig():
 	config.epgselection = ConfigSubsection()
 	config.epgselection.sort = ConfigSelection(default="0", choices = [("0", _("Time")),("1", _("Alphanumeric"))])
 	config.epgselection.overjump = ConfigYesNo(default = False)
-	config.epgselection.open_selected_channel = ConfigYesNo(default = True)
+
+	serviceTitleChoices = [
+		("servicename", _("Service Name")), 
+		("picon", _("Picon")),
+		("picon+servicename", _("Picon and Service Name")), 
+		("servicenumber+picon", _("Service Number and Picon")), 
+		("picon+servicenumber", _("Picon and Service Number")), 
+		("servicenumber+servicename", _("Service Number and Service Name")), 
+		("picon+servicenumber+servicename", _("Picon, Service Number and Service Name")),
+		("servicenumber+picon+servicename", _("Service Number, Picon and Service Name"))]
+
 	config.epgselection.infobar = ConfigSubsection()
+	config.epgselection.infobar.browse_mode = ConfigSelection(default = "currentservice", choices = [
+		("currentservice", _("Select current service")), 
+		("lastepgservice", _("Select last browsed service"))])
 	config.epgselection.infobar.type_mode = ConfigSelection(default="graphics", choices=[("text", _("Text Grid EPG")), ("graphics", _("Graphics Grid EPG")), ("single", _("Single EPG"))])
 	if SystemInfo.get("NumVideoDecoders", 1) > 1:
 		config.epgselection.infobar.preview_mode = ConfigSelection(choices = [("0",_("Disabled")), ("1", _("Full screen")), ("2", _("PiP"))], default = "1")
@@ -1076,7 +1079,7 @@ def InitUsageConfig():
 	config.epgselection.infobar.roundto = ConfigSelection(default = "15", choices = [("15", _("%d minutes") % 15), ("30", _("%d minutes") % 30), ("60", _("%d minutes") % 60)])
 	config.epgselection.infobar.prevtimeperiod = ConfigSelection(default = "180", choices = [("60", _("%d minutes") % 60), ("90", _("%d minutes") % 90), ("120", _("%d minutes") % 120), ("150", _("%d minutes") % 150), ("180", _("%d minutes") % 180), ("210", _("%d minutes") % 210), ("240", _("%d minutes") % 240), ("270", _("%d minutes") % 270), ("300", _("%d minutes") % 300)])
 	config.epgselection.infobar.primetime = ConfigClock(default = 20 * 60)
-	config.epgselection.infobar.servicetitle_mode = ConfigSelection(default = "servicename", choices = [("servicename", _("Service Name")),("picon", _("Picon")),("picon+servicename", _("Picon and Service Name")) ])
+	config.epgselection.infobar.servicetitle_mode = ConfigSelection(default = "servicename", choices = serviceTitleChoices)
 	config.epgselection.infobar.servfs = ConfigSelectionNumber(default = 0, stepwidth = 1, min = -8, max = 10, wraparound = True)
 	config.epgselection.infobar.eventfs = ConfigSelectionNumber(default = 0, stepwidth = 1, min = -8, max = 10, wraparound = True)
 	config.epgselection.infobar.timelinefs = ConfigSelectionNumber(default = 0, stepwidth = 1, min = -8, max = 10, wraparound = True)
@@ -1085,6 +1088,9 @@ def InitUsageConfig():
 	config.epgselection.infobar.piconwidth = ConfigSelectionNumber(default = 100, stepwidth = 1, min = 50, max = 500, wraparound = True)
 	config.epgselection.infobar.infowidth = ConfigSelectionNumber(default = 50, stepwidth = 25, min = 0, max = 150, wraparound = True)
 	config.epgselection.single = ConfigSubsection()
+	config.epgselection.single.browse_mode = ConfigSelection(default = "lastepgservice", choices = [
+		("currentservice", _("Select current service")), 
+		("lastepgservice", _("Select last browsed service"))])
 	config.epgselection.single.preview_mode = ConfigYesNo(default = True)
 	config.epgselection.single.btn_ok = ConfigSelection(choices = [("zap",_("Zap")), ("zapExit", _("Zap + Exit"))], default = "zap")
 	config.epgselection.single.btn_oklong = ConfigSelection(choices = [("zap",_("Zap")), ("zapExit", _("Zap + Exit"))], default = "zapExit")
@@ -1092,6 +1098,9 @@ def InitUsageConfig():
 	config.epgselection.single.itemsperpage = ConfigSelectionNumber(default = 18, stepwidth = 1, min = 1, max = 40, wraparound = True)
 	config.epgselection.multi = ConfigSubsection()
 	config.epgselection.multi.showbouquet = ConfigYesNo(default = False)
+	config.epgselection.multi.browse_mode = ConfigSelection(default = "currentservice", choices = [
+		("currentservice", _("Select current service")),
+		("firstservice", _("Select first service in bouquet"))])
 	config.epgselection.multi.preview_mode = ConfigYesNo(default = True)
 	config.epgselection.multi.btn_ok = ConfigSelection(choices = [("zap",_("Zap")), ("zapExit", _("Zap + Exit"))], default = "zap")
 	config.epgselection.multi.btn_oklong = ConfigSelection(choices = [("zap",_("Zap")), ("zapExit", _("Zap + Exit"))], default = "zapExit")
@@ -1099,26 +1108,20 @@ def InitUsageConfig():
 	config.epgselection.multi.itemsperpage = ConfigSelectionNumber(default = 18, stepwidth = 1, min = 12, max = 40, wraparound = True)
 	config.epgselection.grid = ConfigSubsection()
 	config.epgselection.grid.showbouquet = ConfigYesNo(default = False)
+	config.epgselection.grid.browse_mode = ConfigSelection(default = "currentservice", choices = [
+		("currentservice", _("Select current service")), 
+		("firstservice", _("Select first service in bouquet"))])
 	config.epgselection.grid.preview_mode = ConfigYesNo(default = True)
 	config.epgselection.grid.type_mode = ConfigSelection(choices = [("graphics",_("Graphics")), ("text", _("Text"))], default = "graphics")
 	config.epgselection.grid.highlight_current_events = ConfigYesNo(default=True)
 	config.epgselection.grid.btn_ok = ConfigSelection(choices = [("zap",_("Zap")), ("zapExit", _("Zap + Exit"))], default = "zap")
 	config.epgselection.grid.btn_oklong = ConfigSelection(choices = [("zap",_("Zap")), ("zapExit", _("Zap + Exit"))], default = "zapExit")
-	config.epgselection.grid.btn_info = ConfigSelection(choices = [("openEventView", _("Channel Info")), ("openSingleEPG", _("Single EPG"))], default = "Channel Info")
-	config.epgselection.grid.btn_infolong = ConfigSelection(choices = [("openEventView", _("Channel Info")), ("openSingleEPG", _("Single EPG"))], default = "Single EPG")
+	config.epgselection.grid.btn_info = ConfigSelection(choices = [("openEventView", _("Event Info")), ("openSingleEPG", _("Single EPG"))], default = "Event Info")
+	config.epgselection.grid.btn_infolong = ConfigSelection(choices = [("openEventView", _("Event Info")), ("openSingleEPG", _("Single EPG"))], default = "Single EPG")
 	config.epgselection.grid.roundto = ConfigSelection(default = "15", choices = [("15", _("%d minutes") % 15), ("30", _("%d minutes") % 30), ("60", _("%d minutes") % 60)])
 	config.epgselection.grid.prevtimeperiod = ConfigSelection(default = "180", choices = [("60", _("%d minutes") % 60), ("90", _("%d minutes") % 90), ("120", _("%d minutes") % 120), ("150", _("%d minutes") % 150), ("180", _("%d minutes") % 180), ("210", _("%d minutes") % 210), ("240", _("%d minutes") % 240), ("270", _("%d minutes") % 270), ("300", _("%d minutes") % 300)])
 	config.epgselection.grid.primetime = ConfigClock(default = 20 * 60)
-	config.epgselection.grid.servicetitle_mode = ConfigSelection(default = "servicename", choices = [
-		("servicename", _("Service Name")), 
-		("picon", _("Picon")),
-		("picon+servicename", _("Picon and Service Name")), 
-		("servicenumber+picon", _("Service Number and Picon")), 
-		("picon+servicenumber", _("Picon and Service Number")), 
-		("servicenumber+servicename", _("Service Number and Service Name")), 
-		("picon+servicenumber+servicename", _("Picon, Service Number and Service Name")),
-		("servicenumber+picon+servicename", _("Service Number, Picon and Service Name"))])
-	config.epgselection.grid.channel1 = ConfigYesNo(default = False)
+	config.epgselection.grid.servicetitle_mode = ConfigSelection(default = "servicename", choices = serviceTitleChoices)
 	possibleAlignmentChoices = [
 			( str(RT_HALIGN_LEFT   | RT_VALIGN_CENTER          ) , _("left")),
 			( str(RT_HALIGN_CENTER | RT_VALIGN_CENTER          ) , _("centered")),
@@ -1239,7 +1242,7 @@ def defaultMoviePath():
 
 def upgradeConfig():
 	if config.version.value < 53023:
-		def upgrade(configItem, name, valuemap = None, mapper = None):
+		def getOldValue(name):
 			value = config.content.stored_values
 			found = True
 			for n in name.split("."):
@@ -1247,7 +1250,12 @@ def upgradeConfig():
 				if value is None:
 					found = False
 					break
-			if found:
+			# this value is a string, not the actual type required by the config item
+			return value if found else None
+
+		def upgrade(configItem, name, valuemap = None, mapper = None):
+			value = getOldValue(name)
+			if value is not None:
 				# this value is a string, not the actual type required by the config item
 				newvalue = None
 				if valuemap is not None:
@@ -1285,6 +1293,7 @@ def upgradeConfig():
 		upgrade(config.epgselection.infobar.servicewidth, "epgselection.infobar_servicewidth")
 		upgrade(config.epgselection.infobar.piconwidth, "epgselection.infobar_piconwidth")
 		upgrade(config.epgselection.infobar.infowidth, "epgselection.infobar_infowidth")
+		
 		upgrade(config.epgselection.single.preview_mode, "epgselection.enhanced_preview_mode")
 		upgrade(config.epgselection.single.btn_ok, "epgselection.enhanced_ok", okMap)
 		upgrade(config.epgselection.single.btn_oklong, "epgselection.enhanced_oklong", okMap)
@@ -1299,6 +1308,7 @@ def upgradeConfig():
 		upgrade(config.epgselection.multi.itemsperpage, "epgselection.multi_itemsperpage")
 
 		upgrade(config.epgselection.grid.showbouquet, "epgselection.graph_showbouquet")
+		upgrade(config.epgselection.grid.browse_mode, "epgselection.graph_channel1", {"True":"firstservice", "False":"currentservice"})
 		upgrade(config.epgselection.grid.preview_mode, "epgselection.graph_preview_mode")
 		upgrade(config.epgselection.grid.type_mode, "epgselection.graph_type_mode")
 		upgrade(config.epgselection.grid.highlight_current_events, "epgselection.graph_highlight_current_events")
@@ -1310,7 +1320,6 @@ def upgradeConfig():
 		upgrade(config.epgselection.grid.prevtimeperiod, "epgselection.graph_prevtimeperiod")
 		upgrade(config.epgselection.grid.primetime, "epgselection.graph_primetimehour", mapper = lambda v: v + ":00")
 		upgrade(config.epgselection.grid.servicetitle_mode, "epgselection.graph_servicetitle_mode", {"servicenumber+picon":"picon+servicenumber", "servicenumber+picon+servicename": "picon+servicenumber+servicename"})
-		upgrade(config.epgselection.grid.channel1, "epgselection.graph_channel1")
 		upgrade(config.epgselection.grid.servicename_alignment, "epgselection.graph_servicename_alignment")
 		upgrade(config.epgselection.grid.servicenumber_alignment, "epgselection.graph_servicenumber_alignment")
 		upgrade(config.epgselection.grid.event_alignment, "epgselection.graph_event_alignment")

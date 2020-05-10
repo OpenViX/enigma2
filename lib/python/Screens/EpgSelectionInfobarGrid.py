@@ -4,16 +4,20 @@ from Screens.Setup import Setup
 
 
 class EPGSelectionInfobarGrid(EPGSelectionGrid):
-	def __init__(self, session, zapFunc=None, startBouquet=None, startRef=None, bouquets=None):
-		EPGSelectionGrid.__init__(self, session, config.epgselection.infobar, True, zapFunc, startBouquet, startRef, bouquets)
+	def __init__(self, session, zapFunc, startBouquet, startRef, bouquets):
+		EPGSelectionGrid.__init__(self, session, zapFunc, startBouquet, startRef, bouquets, isInfobar=True)
 		self.skinName = ["InfoBarGridEPG", "GraphicalInfoBarEPG"]
 
 	def createSetup(self):
-		def onSetupClose(test=None):
-			self.close("reopeninfobargrid")
+		def onClose(test=None):
+			if config.epgselection.infobar.type_mode.value == "single":
+				# switching to other infobar EPG type
+				self.close("reopeninfobar")
+			else:
+				self.reloadConfig()
 
 		self.closeEventViewDialog()
-		self.session.openWithCallback(onSetupClose, Setup, "epginfobargrid")
+		self.session.openWithCallback(onClose, Setup, "epginfobargrid")
 
 	def infoPressed(self):
 		self.openEventView()

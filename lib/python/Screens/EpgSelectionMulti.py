@@ -13,9 +13,9 @@ from Screens.Setup import Setup
 
 class EPGSelectionMulti(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 	def __init__(self, session, zapFunc, startBouquet, startRef, bouquets):
-		EPGSelectionBase.__init__(self, session, startBouquet, startRef, bouquets)
+		EPGSelectionBase.__init__(self, session, config.epgselection.multi, startBouquet, startRef, bouquets)
 		EPGBouquetSelection.__init__(self, False)
-		EPGServiceZap.__init__(self, config.epgselection.multi, zapFunc)
+		EPGServiceZap.__init__(self, zapFunc)
 		self.skinName = ["MultiEPG", "EPGSelectionMulti"]
 		self.askTime = -1
 
@@ -55,13 +55,13 @@ class EPGSelectionMulti(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 		self["list"] = EPGListMulti(selChangedCB=self.onSelectionChanged, timer=session.nav.RecordTimer)
 
 	def createSetup(self):
-		self.closeEventViewDialog()
-		self.session.openWithCallback(self.onSetupClose, Setup, "epgmulti")
+		def onClose(test=None):
+			self["list"].setFontsize()
+			self["list"].setItemsPerPage()
+			self["list"].recalcEntrySize()
 
-	def onSetupClose(self, test=None):
-		self["list"].setFontsize()
-		self["list"].setItemsPerPage()
-		self["list"].recalcEntrySize()
+		self.closeEventViewDialog()
+		self.session.openWithCallback(onClose, Setup, "epgmulti")
 
 	def onCreate(self):
 		self["list"].recalcEntrySize()
@@ -75,7 +75,8 @@ class EPGSelectionMulti(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 		self._populateBouquetList()
 		self.setTitle(self.getCurrentBouquetName())
 		self["list"].fillEPG(self.services, self.askTime)
-		self["list"].moveToService(self.startRef)
+		if self.epgConfig.browse_mode.value != "firstservice":
+			self["list"].moveToService(self.startRef)
 		self["lab1"].hide()
 
 	def refreshList(self):
@@ -95,7 +96,7 @@ class EPGSelectionMulti(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 
 	def getCurrentService(self):
 		service = self["list"].getCurrent()[1]
-		return service.ref
+		return service
 
 	def onDateTimeInputClosed(self, ret):
 		if len(ret) > 1 and ret[0]:
