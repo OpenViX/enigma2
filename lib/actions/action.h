@@ -2,12 +2,12 @@
 #define __lib_driver_action_h
 
 #include <lib/base/object.h>
-#include <lib/gui/ewidget.h>
 
 #include <lib/python/python.h>
 #include <string>
 #include <map>
-#include <vector>
+
+class eWidget;
 
 SWIG_IGNORE(eActionMap);
 class eActionMap: public iObject
@@ -29,8 +29,7 @@ public:
 	void unbindAction(const std::string &context, SWIG_PYOBJECT(ePyObject) function);
 
 	void bindKey(const std::string &domain, const std::string &device, int key, int flags, const std::string &context, const std::string &action);
-	void bindTranslation(const std::string &domain, const std::string &device, int keyin, int keyout, int toggle);
-	void bindToggle(const std::string &domain, const std::string &device, int togglekey);
+	void unbindNativeKey(const std::string &context, int action);
 	void unbindKeyDomain(const std::string &domain);
 
 	void keyPressed(const std::string &device, int key, int flags);
@@ -42,7 +41,7 @@ private:
 	struct eActionBinding
 	{
 		eActionBinding()
-			:m_prev_seen_make_key(-1), m_long_key_pressed(false)
+			:m_prev_seen_make_key(-1)
 		{}
 //		eActionContext *m_context;
 		std::string m_context; // FIXME
@@ -53,25 +52,9 @@ private:
 		eWidget *m_widget;
 		int m_id;
 		int m_prev_seen_make_key;
-		bool m_long_key_pressed;
 	};
 
 	std::multimap<int64_t, eActionBinding> m_bindings;
-
-	struct eTranslationBinding
-	{
-		int m_keyin;
-		int m_keyout;
-		int m_toggle;
-		std::string m_domain;
-	};
-	struct eDeviceBinding
-	{
-		int m_togglekey;
-		int m_toggle;
-		std::vector<eTranslationBinding> m_translations;
-	};
-	std::map <std::string, eDeviceBinding> m_rcDevices;
 
 	friend struct compare_string_keybind_native;
 	struct eNativeKeyBinding
