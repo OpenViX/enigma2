@@ -1,4 +1,11 @@
 <!--suppress XmlUnboundNsPrefix -->
+	<!-- Flag meanings in <key/> elements:
+		"m": action active on key "make"
+		"b": action active on key "break"
+		"r": action active on key repeats
+		"l": action on long keypress
+	-->
+
 <keymap>
 	<map context="ListboxActions">
 		<device name="keyboard">
