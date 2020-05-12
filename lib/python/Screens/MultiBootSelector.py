@@ -148,8 +148,8 @@ class MultiBootSelector(Screen, HelpableScreen):
 
 	def cancel(self, value=None):
 		Console().ePopen('umount %s' % self.tmp_dir)
-		if not os.path.ismount(self.tmp_dir):
-			os.rmdir(self.tmp_dir)
+		if not path.ismount(self.tmp_dir):
+			rmdir(self.tmp_dir)
 		if value == QUIT_REBOOT:
 			self.session.open(TryQuitMainloop, QUIT_REBOOT)
 		else:
