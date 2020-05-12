@@ -1106,6 +1106,7 @@ def InitUsageConfig():
 	config.epgselection.multi.btn_oklong = ConfigSelection(choices = [("zap",_("Zap")), ("zapExit", _("Zap + Exit"))], default = "zapExit")
 	config.epgselection.multi.eventfs = ConfigSelectionNumber(default = 0, stepwidth = 1, min = -8, max = 10, wraparound = True)
 	config.epgselection.multi.itemsperpage = ConfigSelectionNumber(default = 18, stepwidth = 1, min = 12, max = 40, wraparound = True)
+	config.epgselection.multi.servicename_length = ConfigSelectionNumber(min = 5, max = 20, stepwidth = 1, default = 7, wraparound = True)
 	config.epgselection.grid = ConfigSubsection()
 	config.epgselection.grid.showbouquet = ConfigYesNo(default = False)
 	config.epgselection.grid.browse_mode = ConfigSelection(default = "currentservice", choices = [

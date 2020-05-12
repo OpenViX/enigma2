@@ -320,6 +320,7 @@
 		<item level="2" text="OK button (long)" description="Set to what you want the button to do.">config.epgselection.multi.btn_oklong</item>
 		<item level="2" text="Number of rows" description="Configure the number of rows shown.">config.epgselection.multi.itemsperpage</item>
 		<item level="2" text="Event font size" description="Configure the font size relative to skin size, so 1 increases by 1 point size, and -1 decreases by 1 point size.">config.epgselection.multi.eventfs</item>
+		<item level="2" text="Service Name Length" description="Configure the length of ServiceName">config.epgselection.multi.servicename_length</item>
 	</setup>
 	<setup key="epgsingle" title="Single EPG">
 		<item level="2" text="Channel selection" description="Choose what channel to select when the EPG opens.">config.epgselection.single.browse_mode</item>
