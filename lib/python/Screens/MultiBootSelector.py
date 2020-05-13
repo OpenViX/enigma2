@@ -1,5 +1,5 @@
 from enigma import getDesktop
-from os import mkdir, path
+from os import mkdir, path, rmdir
 import tempfile
 
 from Components.ActionMap import HelpableActionMap
@@ -21,7 +21,7 @@ class MultiBootSelector(Screen, HelpableScreen):
 	<screen title="MultiBoot Image Selector" position="center,center" size="%d,%d">
 		<widget name="config" position="%d,%d" size="%d,%d" font="Regular;%d" itemHeight="%d" scrollbarMode="showOnDemand" />
 		<widget source="options" render="Label" position="%d,e-160" size="%d,%d" font="Regular;%d" halign="center" valign="center" />
-		<widget source="description" render="Label" position="%d,e-90" size="%d,%d" font="Regular;%d" />
+		<widget source="description" render="Label" position="%d,e-120" size="%d,%d" font="Regular;%d" />
 		<widget source="key_red" render="Label" position="%d,e-50" size="%d,%d" backgroundColor="key_red" font="Regular;%d" foregroundColor="key_text" halign="center" noWrap="1" valign="center" />
 		<widget source="key_green" render="Label" position="%d,e-50" size="%d,%d" backgroundColor="key_green" font="Regular;%d" foregroundColor="key_text" halign="center" noWrap="1" valign="center" />
 		<widget source="key_yellow" render="Label" position="%d,e-50" size="%d,%d" backgroundColor="key_yellow" font="Regular;%d" foregroundColor="key_text" halign="center" noWrap="1" valign="center" />
@@ -46,9 +46,10 @@ class MultiBootSelector(Screen, HelpableScreen):
 			# The skin template is designed for a HD screen so the scaling factor is 720.
 			MultiBootSelector.skin = MultiBootSelector.skinTemplate % tuple([x * getDesktop(0).size().height() / 720 for x in MultiBootSelector.scaleData])
 		Screen.setTitle(self, _("MultiBoot Image Selector"))
+		self.tmp_dir = None
 		self["config"] = ChoiceList(list=[ChoiceEntryComponent("", ((_("Retrieving image slots - Please wait...")), "Queued"))])
 		self["options"] = StaticText(_("Mode 1 suppports Kodi, PiP may not work.\nMode 12 supports PiP, Kodi may not work.") if SystemInfo["canMode12"] else "")
-		self["description"] = StaticText(_("Use the cursor keys to select an installed image and then Reboot button."))
+		self["description"] = StaticText(_("Press Reboot to switch, Delete to erase, Restore - restore all deleted."))
 		self["key_red"] = StaticText(_("Cancel"))
 		self["key_green"] = StaticText(_("Reboot"))
 		self["key_yellow"] = StaticText(_("Delete"))
