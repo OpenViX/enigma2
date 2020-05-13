@@ -3568,9 +3568,8 @@ msgstr "Θέλετε να επανεκκινήσετε τον δέκτη σας;
 msgid "Do you want to reboot your receiver?"
 msgstr "Θέλετε να επανεκκινήσετε τον δέκτη σας;"
 
-#, fuzzy
-msgid "Do you want to remove all the crahs logfiles"
-msgstr "Θέλετε να αφαιρέσετε το πακέτο:\n"
+msgid "Do you want to remove all the crash logfiles"
+msgstr "Θέλετε να διαγραφούν όλες οι καταγραφές κρασαρίσματος"
 
 msgid "Do you want to remove the package:\n"
 msgstr "Θέλετε να αφαιρέσετε το πακέτο:\n"

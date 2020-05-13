@@ -3545,9 +3545,8 @@ msgstr "Voulez-vous redémarrer votre récepteur ?"
 msgid "Do you want to reboot your receiver?"
 msgstr "Voulez-vous redémarrer votre récepteur ?"
 
-#, fuzzy
-msgid "Do you want to remove all the crahs logfiles"
-msgstr "Voulez-vous retirer le paquet :\n"
+msgid "Do you want to remove all the crash logfiles"
+msgstr "Voulez-vous effacer tous les fichier logs de crash"
 
 msgid "Do you want to remove the package:\n"
 msgstr "Voulez-vous retirer le paquet :\n"

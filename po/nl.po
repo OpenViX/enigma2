@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-21 09:07+0100\n"
+"POT-Creation-Date: 2020-05-13 08:35+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Frenske <voorzitter@openpli.org>\n"
 "Language-Team: PLiteam <translators@openpli.org>\n"
@@ -17,14 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.6.7\n"
-
-#, fuzzy
-msgid ""
-"\n"
-"\n"
-"[User - bouquets (TV)]\n"
-msgstr "Gebruiker - bouquets"
+"X-Generator: Poedit 2.3.1\n"
 
 msgid ""
 "\n"
@@ -1694,7 +1687,7 @@ msgid "Brazil"
 msgstr ""
 
 msgid "Brightness"
-msgstr "Helderheid"
+msgstr "Helderheid display indien actief"
 
 msgid "British Indian Ocean Territory"
 msgstr ""
@@ -2167,12 +2160,8 @@ msgstr ""
 msgid "ClientIP"
 msgstr ""
 
-#, fuzzy
-msgid "Clock"
-msgstr "locked"
-
 msgid "Clone TV screen to LCD"
-msgstr ""
+msgstr "Geef het TV beeld op het LCD display weer"
 
 msgid "Close"
 msgstr "Sluiten"
@@ -2438,10 +2427,10 @@ msgstr ""
 "U kunt hier een waarde kiezen van 1- 5 mm. De standaardwaarde is 3 mm."
 
 msgid "Configure the brightness level of the front panel display during standby."
-msgstr "Met deze optie stelt u traploos de helderheid van het display in tijdens standby."
+msgstr "Met deze optie stelt u traploos de helderheid van het display in tijdens stand-by."
 
 msgid "Configure the brightness level of the front panel display."
-msgstr "Met deze optie stelt u traploos de helderheid van het display in."
+msgstr "Met deze optie stelt u traploos de helderheid van het display in indien de box actief is."
 
 msgid "Configure the color of the external subtitles, alternative (normal in white, italic in yellow, bold in cyan, underscore in green), white or yellow."
 msgstr ""
@@ -3753,9 +3742,8 @@ msgstr "Wilt u de ontvanger opnieuw opstarten?"
 msgid "Do you want to reboot your receiver?"
 msgstr "Wilt u de ontvanger opnieuw opstarten?"
 
-#, fuzzy
-msgid "Do you want to remove all the crahs logfiles"
-msgstr "Wilt u dit pakket verwijderen:\n"
+msgid "Do you want to remove all the crash logfiles"
+msgstr "Wilt u alle crashlogs verwijderen?"
 
 msgid "Do you want to remove the package:\n"
 msgstr "Wilt u dit pakket verwijderen:\n"
@@ -10797,7 +10785,7 @@ msgid "Standart list"
 msgstr "Standaard lijst"
 
 msgid "Standby"
-msgstr "Standby"
+msgstr "Helderheid display in stand-by"
 
 msgid "Standby / restart"
 msgstr "Standby / herstart"
@@ -11127,7 +11115,16 @@ msgstr "Ga naar het volgende kanaal"
 
 #, fuzzy
 msgid "Switch channel up"
-msgstr "Ga naar het volgende kanaal"
+msgstr "Schakel een zender verder"
+
+msgid "Switch on the display during Standby Mode"
+msgstr "Schakel het display in tijdens stand-by"
+
+msgid "Switch on the display during Suspend Mode"
+msgstr "Schakel het display in tijdens de deep stand-by"
+
+msgid "Switch on the display during operation."
+msgstr "Schakel het display in tijdens normaal bedrijf"
 
 #, fuzzy
 msgid "Switch to TV mode"
@@ -11228,11 +11225,9 @@ msgstr ""
 #. TRANSLATORS: Add here whatever should be shown in the "translator" about screen, up to 6 lines (use \n for newline)
 msgid "TRANSLATOR_INFO"
 msgstr ""
-"Deze vertaling wordt u aangeboden door :\n"
-"- het OpenPLi team\n"
-"\n"
-"- Voor aanvullingen en opmerkingen stuurt u een mail naar:\n"
-"  translators@openpli.org"
+"Deze vertaling wordt u aangeboden door het OpenPLi team.\n"
+"De laatste aanpassingen in de vertaling zijn gedaan op 13 mei 2020.\n"
+"Voor aanvullingen of opmerkingen stuurt u een mail naar translators@openpli.org."
 
 msgid "TS file is too large for ISO9660 level 1!"
 msgstr "TS bestand is te groot voor ISO9660 level1!"
@@ -11682,7 +11677,7 @@ msgid "This option allows you to power off the display."
 msgstr ""
 
 msgid "This option allows you to show all symbols on the display."
-msgstr ""
+msgstr "Met deze optie kunnen alle symbolen op het display getoond worden."
 
 msgid "This option allows you to show menu and/or plugin number quick links."
 msgstr ""
@@ -13165,6 +13160,18 @@ msgid ""
 "\n"
 "Do you understand this?"
 msgstr ""
+
+msgid "With this option you can switch on the display during operation."
+msgstr "Indien geactiveerd, dan is het display geactiveerd tijdens normaal bedrijf. "
+
+msgid "With this option you can switch on the display in Deep Standby Mode."
+msgstr "Indien geactiveerd, dan is het display geactiveerd terwijl de box in deep stand-by staat."
+
+msgid "With this option you can switch on the display in Standby Mode."
+msgstr "Indien geactiveerd, dan is het display geactiveerd terwijl de in box stand-by staat."
+
+msgid "With this option you can switch the LED color or deactivate the LED."
+msgstr "Met deze optie kunt u de kleur van de LED wijzigen of deactiveren."
 
 msgid "Without popup"
 msgstr "Zonder popup"

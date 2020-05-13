@@ -4061,10 +4061,8 @@ msgstr "Vil du downloade imaget til %s ?"
 msgid "Do you want to reboot your receiver?"
 msgstr ""
 
-#
-#, fuzzy
-msgid "Do you want to remove all the crahs logfiles"
-msgstr "Vil du fjerne pakken:\n"
+msgid "Do you want to remove all the crash logfiles"
+msgstr ""
 
 #
 msgid "Do you want to remove the package:\n"
