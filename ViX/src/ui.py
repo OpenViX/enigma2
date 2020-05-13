@@ -70,8 +70,6 @@ class VIXMenu(Screen, ProtectedScreen):
 			self.list.append(("mount-manager", _("Mount manager"), _("Manage your devices mount points."), None))
 			self.list.append(("script-runner", _("Script runner"), _("Run your shell scripts."), None))
 			self.list.append(("swap-manager", _("SWAP manager"), _("Create and Manage your SWAP files."), None))
-			if SystemInfo["canMultiBoot"]:
-				self.list.append(("multiboot manager", _("MultiBoot manager"), _("Create empty slot."), None))
  			if SystemInfo["HasH9SD"]:
 				self.list.append(("H9SDcard manager", _("H9SDcard Manager"), _("Move Nand root to SD card"), None))
 		self["menu"] = List(self.list)
@@ -136,9 +134,6 @@ class VIXMenu(Screen, ProtectedScreen):
 				elif currentEntry == "image-manager":
 					from ImageManager import VIXImageManager
 					self.session.open(VIXImageManager, self.menu_path)
-				elif currentEntry == "multiboot manager":
-					from Multibootmgr import MultiBoot
-					self.session.open(MultiBoot, self.menu_path)
 				elif currentEntry == "H9SDcard manager":
 					from H9SDmanager import H9SDmanager
 					self.session.open(H9SDmanager, self.menu_path)

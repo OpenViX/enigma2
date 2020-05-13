@@ -113,13 +113,6 @@ def ImageManager(session):
 def ImageMangerMenu(session, **kwargs):
 	session.open(ImageManager)
 
-def Multibootmgr(session):
-	from Multibootmgr import MultiBoot
-	return Multibootmgr(session)
-
-def MultibootmgrMenu(session, **kwargs):
-	session.open(Multibootmgr)
-
 def H9SDmanager(session):
 	from H9SDmanager import H9SDmanager
 	return H9SDmanager(session)

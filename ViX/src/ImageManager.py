@@ -382,29 +382,22 @@ class VIXImageManager(Screen):
 
 	def keyResstore0(self, answer):
 		if answer:
-			if SystemInfo["canMultiBoot"]:
-				if SystemInfo["HasHiSi"]:
-	 				if pathExists("/dev/sda4"):
-						self.HasSDmmc = True
-					self.getImageList = GetImagelist(self.keyRestore1)
+			if SystemInfo["canMultiBoot"] is False:
+				if config.imagemanager.autosettingsbackup.value:
+					self.doSettingsBackup()
 				else:
-					self.getImageList = GetImagelist(self.keyRestore1)
-			elif config.imagemanager.autosettingsbackup.value:
-				self.doSettingsBackup()
-			else:
-				self.keyRestore3()
-
-
-	def keyRestore1(self, imagedict):
-		self.imagelist = imagedict
-		self.getImageList = None
-		choices = []
-		HIslot = len(imagedict) + 1
-		currentimageslot = GetCurrentImage()
-		print "ImageManager", currentimageslot, self.imagelist
-		for x in range(1, HIslot):
-			choices.append(((_("slot%s - %s (current image)") if x == currentimageslot else _("slot%s - %s")) % (x, imagedict[x]["imagename"]), (x)))
-		self.session.openWithCallback(self.keyRestore2, MessageBox, self.message, list=choices, default=currentimageslot, simple=True)
+					self.keyRestore3()
+			if SystemInfo["HasHiSi"]:
+				if pathExists("/dev/sda4"):
+					self.HasSDmmc = True
+			imagedict = GetImagelist()
+			choices = []
+			HIslot = len(imagedict) + 1
+			currentimageslot = GetCurrentImage()
+			print "ImageManager", currentimageslot, self.imagelist
+			for x in range(1, HIslot):
+				choices.append(((_("slot%s - %s (current image)") if x == currentimageslot else _("slot%s - %s")) % (x, imagedict[x]["imagename"]), (x)))
+			self.session.openWithCallback(self.keyRestore2, MessageBox, self.message, list=choices, default=currentimageslot, simple=True)
 
 	def keyRestore2(self, retval):
 		if retval:
