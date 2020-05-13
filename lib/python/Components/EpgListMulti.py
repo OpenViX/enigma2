@@ -52,7 +52,7 @@ class EPGListMulti(EPGListBase):
 		width = esize.width()
 		height = esize.height()
 		fontSize = self.eventFontSize + config.epgselection.multi.eventfs.value
-		servScale, timeScale, durScale, wideScale = parameters.get("EPGMultiColumnScales", (6.5, 6.0, 4.5, 1.5))
+		servScale, timeScale, durScale, wideScale = parameters.get("EPGMultiColumnScales", (config.epgselection.multi.servicewidth.value, 6.0, 4.5, 1.5))
 		servW = int(fontSize * servScale)
 		timeW = int(fontSize * timeScale)
 		durW = int(fontSize * durScale)

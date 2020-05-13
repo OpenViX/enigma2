@@ -313,29 +313,29 @@ def InitUsageConfig():
 	#standby
 	if getDisplayType() in ('textlcd7segment'):
 		config.usage.blinking_display_clock_during_recording = ConfigSelection(default = "Rec", choices = [
-						("Rec", _("REC")), 
-						("RecBlink", _("Blinking REC")), 
+						("Rec", _("REC")),
+						("RecBlink", _("Blinking REC")),
 						("Nothing", _("Nothing"))])
 	else:
 		config.usage.blinking_display_clock_during_recording = ConfigYesNo(default = False)
-		
+
 	#in use
 	if getDisplayType() in ('textlcd'):
 		config.usage.blinking_rec_symbol_during_recording = ConfigSelection(default = "Channel", choices = [
-						("Rec", _("REC Symbol")), 
-						("RecBlink", _("Blinking REC Symbol")), 
+						("Rec", _("REC Symbol")),
+						("RecBlink", _("Blinking REC Symbol")),
 						("Channel", _("Channelname"))])
 	if getDisplayType() in ('textlcd7segment'):
 		config.usage.blinking_rec_symbol_during_recording = ConfigSelection(default = "Rec", choices = [
-						("Rec", _("REC")), 
-						("RecBlink", _("Blinking REC")), 
+						("Rec", _("REC")),
+						("RecBlink", _("Blinking REC")),
 						("Time", _("Time"))])
 	else:
 		config.usage.blinking_rec_symbol_during_recording = ConfigYesNo(default = True)
-		
+
 	if getDisplayType() in ('textlcd7segment'):
 		config.usage.show_in_standby = ConfigSelection(default = "time", choices = [
-						("time", _("Time")), 
+						("time", _("Time")),
 						("nothing", _("Nothing"))])
 
 	config.usage.show_message_when_recording_starts = ConfigYesNo(default = True)
@@ -349,7 +349,7 @@ def InitUsageConfig():
 	])
 	config.usage.movielist_unseen = ConfigYesNo(default = True)
 	config.usage.movielist_servicename_mode = ConfigSelection(default = "", choices = [
-		("", _("None")), 
+		("", _("None")),
 		("picon", _("Picon"))
 	])
 	config.usage.movielist_piconwidth = ConfigSelectionNumber(default = 100, stepwidth = 1, min = 50, max = 500, wraparound = True)
@@ -1067,18 +1067,18 @@ def InitUsageConfig():
 	config.epgselection.overjump = ConfigYesNo(default = False)
 
 	serviceTitleChoices = [
-		("servicename", _("Service Name")), 
+		("servicename", _("Service Name")),
 		("picon", _("Picon")),
-		("picon+servicename", _("Picon and Service Name")), 
-		("servicenumber+picon", _("Service Number and Picon")), 
-		("picon+servicenumber", _("Picon and Service Number")), 
-		("servicenumber+servicename", _("Service Number and Service Name")), 
+		("picon+servicename", _("Picon and Service Name")),
+		("servicenumber+picon", _("Service Number and Picon")),
+		("picon+servicenumber", _("Picon and Service Number")),
+		("servicenumber+servicename", _("Service Number and Service Name")),
 		("picon+servicenumber+servicename", _("Picon, Service Number and Service Name")),
 		("servicenumber+picon+servicename", _("Service Number, Picon and Service Name"))]
 
 	config.epgselection.infobar = ConfigSubsection()
 	config.epgselection.infobar.browse_mode = ConfigSelection(default = "currentservice", choices = [
-		("currentservice", _("Select current service")), 
+		("currentservice", _("Select current service")),
 		("lastepgservice", _("Select last browsed service"))])
 	config.epgselection.infobar.type_mode = ConfigSelection(default="graphics", choices=[("text", _("Text Grid EPG")), ("graphics", _("Graphics Grid EPG")), ("single", _("Single EPG"))])
 	if SystemInfo.get("NumVideoDecoders", 1) > 1:
@@ -1101,7 +1101,7 @@ def InitUsageConfig():
 	config.epgselection.infobar.infowidth = ConfigSelectionNumber(default = 50, stepwidth = 25, min = 0, max = 150, wraparound = True)
 	config.epgselection.single = ConfigSubsection()
 	config.epgselection.single.browse_mode = ConfigSelection(default = "lastepgservice", choices = [
-		("currentservice", _("Select current service")), 
+		("currentservice", _("Select current service")),
 		("lastepgservice", _("Select last browsed service"))])
 	config.epgselection.single.preview_mode = ConfigYesNo(default = True)
 	config.epgselection.single.btn_ok = ConfigSelection(choices = [("zap",_("Zap")), ("zapExit", _("Zap + Exit"))], default = "zap")
@@ -1118,10 +1118,11 @@ def InitUsageConfig():
 	config.epgselection.multi.btn_oklong = ConfigSelection(choices = [("zap",_("Zap")), ("zapExit", _("Zap + Exit"))], default = "zapExit")
 	config.epgselection.multi.eventfs = ConfigSelectionNumber(default = 0, stepwidth = 1, min = -8, max = 10, wraparound = True)
 	config.epgselection.multi.itemsperpage = ConfigSelectionNumber(default = 18, stepwidth = 1, min = 12, max = 40, wraparound = True)
+	config.epgselection.multi.servicewidth = ConfigSelectionNumber(default = 7, stepwidth = 1, min = 5, max = 20, wraparound = True)
 	config.epgselection.grid = ConfigSubsection()
 	config.epgselection.grid.showbouquet = ConfigYesNo(default = False)
 	config.epgselection.grid.browse_mode = ConfigSelection(default = "currentservice", choices = [
-		("currentservice", _("Select current service")), 
+		("currentservice", _("Select current service")),
 		("firstservice", _("Select first service in bouquet"))])
 	config.epgselection.grid.preview_mode = ConfigYesNo(default = True)
 	config.epgselection.grid.type_mode = ConfigSelection(choices = [("graphics",_("Graphics")), ("text", _("Text"))], default = "graphics")
@@ -1305,7 +1306,7 @@ def upgradeConfig():
 		upgrade(config.epgselection.infobar.servicewidth, "epgselection.infobar_servicewidth")
 		upgrade(config.epgselection.infobar.piconwidth, "epgselection.infobar_piconwidth")
 		upgrade(config.epgselection.infobar.infowidth, "epgselection.infobar_infowidth")
-		
+
 		upgrade(config.epgselection.single.preview_mode, "epgselection.enhanced_preview_mode")
 		upgrade(config.epgselection.single.btn_ok, "epgselection.enhanced_ok", okMap)
 		upgrade(config.epgselection.single.btn_oklong, "epgselection.enhanced_oklong", okMap)
