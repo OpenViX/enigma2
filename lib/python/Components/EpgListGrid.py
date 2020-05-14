@@ -3,15 +3,16 @@ from time import localtime, time, strftime
 from enigma import eEPGCache, eListbox, eListboxPythonMultiContent, loadPNG, gFont, getDesktop, eRect, eSize, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_HALIGN_CENTER, RT_VALIGN_CENTER, RT_VALIGN_TOP, RT_WRAP, BT_SCALE, BT_KEEP_ASPECT_RATIO, BT_ALIGN_CENTER
 
 from skin import parseColor, parseFont
+from Components.EpgListBase import EPGListBase
 from Components.GUIComponent import GUIComponent
 from Components.MultiContent import MultiContentEntryText, MultiContentEntryPixmapAlphaBlend, MultiContentEntryPixmapAlphaTest
 from Components.Renderer.Picon import getPiconName
-from Tools.Alternatives import CompareWithAlternatives
 from Components.config import config
+from RecordTimer import RecordTimer
 from ServiceReference import ServiceReference
+from Tools.Alternatives import CompareWithAlternatives
 from Tools.Directories import resolveFilename, SCOPE_CURRENT_SKIN
 from Tools.TextBoundary import getTextBoundarySize
-from EpgListBase import EPGListBase
 
 MAX_TIMELINES = 6
 
@@ -20,12 +21,11 @@ MAX_TIMELINES = 6
 SECS_IN_MIN = 60
 
 class EPGListGrid(EPGListBase):
-	def __init__(self, isInfobar, session, selChangedCB=None, timer=None):
-		EPGListBase.__init__(self, selChangedCB, timer)
+	def __init__(self, session, isInfobar, selChangedCB=None):
+		EPGListBase.__init__(self, session, selChangedCB)
 
 		self.isInfobar = isInfobar
 		self.epgConfig = config.epgselection.infobar if isInfobar else config.epgselection.grid
-		self.session = session
 		self.timeFocus = time()  # Default to now.
 		self.selectedEventIndex = None
 		self.selectedService = None
@@ -531,54 +531,55 @@ class EPGListGrid(EPGListBase):
 				duration = ev[3]
 
 				xpos, ewidth = self.calcEventPosAndWidthHelper(stime, duration, start, end, width)
-				clockTypes = self.getPixmapForEntry(service, ev[0], stime, duration)
+				serviceTimers = self.filteredTimerList.get(service)
+				if serviceTimers is not None:
+					timer, matchType = RecordTimer.isInTimerOnService(serviceTimers, stime, duration)
+					if matchType not in (2,3):
+						timer = None
+					timerIcon, autoTimerIcon = self.getPixmapsForTimer(timer, matchType, selected)
+				else:
+					timer = matchType = timerIcon = None
 
-				foreColor = self.foreColor
-				backColor = self.backColor
-				foreColorSel = self.foreColorSelected
-				backColorSel = self.backColorSelected
-				if clockTypes is not None and clockTypes == 2:
-					foreColor = self.foreColorRecord
-					backColor = self.backColorRecord
-					foreColorSel = self.foreColorRecordSelected
-					backColorSel = self.backColorRecordSelected
-				elif clockTypes is not None and clockTypes == 7:
-					foreColor = self.foreColorZap
-					backColor = self.backColorZap
-					foreColorSel = self.foreColorZapSelected
-					backColorSel = self.backColorZapSelected
-				elif stime <= now < (stime + duration) and config.epgselection.grid.highlight_current_events.value:
+				isNow = stime <= now < (stime + duration) and config.epgselection.grid.highlight_current_events.value
+				if timer:
+					if timer.justplay == 0 and timer.always_zap == 0:
+						foreColor = self.foreColorRecord
+						backColor = self.backColorRecord
+						foreColorSel = self.foreColorRecordSelected
+						backColorSel = self.backColorRecordSelected
+					else:
+						foreColor = self.foreColorZap
+						backColor = self.backColorZap
+						foreColorSel = self.foreColorZapSelected
+						backColorSel = self.backColorZapSelected
+				elif isNow:
 					foreColor = self.foreColorNow
 					backColor = self.backColorNow
 					foreColorSel = self.foreColorNowSelected
 					backColorSel = self.backColorNowSelected
+				else:
+					foreColor = self.foreColor
+					backColor = self.backColor
+					foreColorSel = self.foreColorSelected
+					backColorSel = self.backColorSelected
 
 				if selected and self.selectionRect.left() == xpos + left:
-					if clockTypes is not None:
-						clocks = self.selclocks[clockTypes]
 					borderTopPix = self.borderSelectedTopPix
 					borderLeftPix = self.borderSelectedLeftPix
 					borderBottomPix = self.borderSelectedBottomPix
 					borderRightPix = self.borderSelectedRightPix
 					infoPix = self.selInfoPix
-					if stime <= now < (stime + duration) and config.epgselection.grid.highlight_current_events.value:
-						bgpng = self.nowSelEvPix
-					else:
-						bgpng = self.selEvPix
+					bgpng = self.nowSelEvPix if isNow else self.selEvPix
 				else:
-					if clockTypes is not None:
-						clocks = self.clocks[clockTypes]
 					borderTopPix = self.borderTopPix
 					borderLeftPix = self.borderLeftPix
 					borderBottomPix = self.borderBottomPix
 					borderRightPix = self.borderRightPix
 					infoPix = self.infoPix
 					bgpng = self.othEvPix
-					if clockTypes is not None and clockTypes == 2:
-						bgpng = self.recEvPix
-					elif clockTypes is not None and clockTypes == 7:
-						bgpng = self.zapEvPix
-					elif stime <= now < (stime + duration) and config.epgselection.grid.highlight_current_events.value:
+					if timer:
+						bgpng = self.recEvPix if timer.justplay == 0 and timer.always_zap == 0 else self.zapEvPix
+					elif isNow:
 						bgpng = self.nowEvPix
 
 				# Event box background.
@@ -644,7 +645,7 @@ class EPGListGrid(EPGListBase):
 								flags=BT_SCALE))
 
 				# Recording icons.
-				if clockTypes is not None and ewidth > 23:
+				if timerIcon is not None and ewidth > 23:
 					if config.epgselection.grid.rec_icon_height.value != "hide":
 						clockSize = 26 if self.isFullHd else 21
 						if config.epgselection.grid.rec_icon_height.value == "middle":
@@ -653,19 +654,17 @@ class EPGListGrid(EPGListBase):
 							recIconHeight = top + 3
 						else:
 							recIconHeight = top + height - clockSize
-						if clockTypes in (1, 6, 11):
+						if matchType == 0:
 							pos = (left + xpos + ewidth - (15 if self.isFullHd else 13), recIconHeight)
-						elif clockTypes in (5, 10, 15):
-							pos = (left + xpos - clockSize, recIconHeight)
 						else:
 							pos = (left + xpos + ewidth - clockSize, recIconHeight)
 						res.append(MultiContentEntryPixmapAlphaBlend(
 							pos=pos, size=(clockSize, clockSize),
-							png=clocks))
-						if self.wasEntryAutoTimer and clockTypes in (2,7,12):
+							png=timerIcon))
+						if autoTimerIcon:
 							res.append(MultiContentEntryPixmapAlphaBlend(
 								pos=(pos[0]-clockSize,pos[1]), size=(clockSize, clockSize),
-								png=self.autotimericon))
+								png=autoTimerIcon))
 		return res
 
 	def getSelectionPosition(self):
@@ -797,6 +796,7 @@ class EPGListGrid(EPGListBase):
 		eventList = None
 		serviceRef = ""
 		serviceName = ""
+		self.snapshotTimers(self.timeBase, self.timeBase + self.timeEpochSecs)
 
 		def appendService():
 			picon = None if piconIdx == 0 else serviceList[serviceIdx][piconIdx]
@@ -820,12 +820,25 @@ class EPGListGrid(EPGListBase):
 		self.l.setList(self.list)
 		self.recalcEventSize()
 
+	def snapshotTimers(self, startTime, endTime):
+		# take a snapshot of the timers relevant to the span of the 
+		# plus any repeat timers
+		# index them by serviceref string
+		self.filteredTimerList = {}
+		for timer in self.session.nav.RecordTimer.timer_list:
+			if timer.repeated or timer.end >= startTime:
+				serviceref = timer.service_ref.ref.toString()
+				l = self.filteredTimerList.get(serviceref)
+				if l is None:
+					self.filteredTimerList[serviceref] = l = [timer]
+				else:
+					l.append(timer)
+				if timer.begin > endTime:
+					break
+
 	def getChannelNumber(self, service):
-		if hasattr(service, "ref") and service.ref and "0:0:0:0:0:0:0:0:0" not in service.ref.toString():
-			numservice = service.ref
-			num = numservice and numservice.getChannelNum() or None
-			if num is not None:
-				return num
+		if service.ref and "0:0:0:0:0:0:0:0:0" not in service.ref.toString():
+			return service.ref.getChannelNum() or None
 		return None
 
 	def getEventRect(self):

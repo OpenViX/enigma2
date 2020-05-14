@@ -12,7 +12,7 @@ class EPGSelectionSimilar(EPGSelectionBase):
 		self.currentService = service
 		self.eventId = eventId
 
-		self["list"] = EPGListSingle(selChangedCB=self.onSelectionChanged, timer=session.nav.RecordTimer, epgConfig=config.epgselection.single)
+		self["list"] = EPGListSingle(session, selChangedCB=self.onSelectionChanged, epgConfig=config.epgselection.single)
 
 	def onCreate(self):
 		self["list"].recalcEntrySize()
