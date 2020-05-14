@@ -1221,145 +1221,119 @@ class RecordTimer(timer.Timer):
 			self.saveTimer()
 		return answer
 
-	def isInTimer(self, eventid, begin, duration, service):
-		returnValue = None
-		type = 0
-		time_match = 0
+	@staticmethod
+	def __checkTimer(x, check_offset_time, begin, end, duration):
+		timer_end = x.end
+		timer_begin = x.begin
+		if not x.repeated and check_offset_time:
+			if 0 < end - timer_end <= 59:
+				timer_end = end
+			elif 0 < timer_begin - begin <= 59:
+				timer_begin = begin
+		if x.justplay and (timer_end - x.begin) <= 1:
+			timer_end += 60
 
-		isAutoTimer = False
-		bt = None
+		if x.repeated == 0:
+			if begin < timer_begin <= end:
+				# recording within / last part of event
+				return 2 if timer_end < end else 0
+			elif timer_begin <= begin <= timer_end:
+				if timer_end < end:
+					# recording first part of event
+					return 3 if x.justplay else 1
+				else: # recording whole event
+					return 3
+		else:
+			bt = localtime(begin)
+			bday = bt.tm_wday
+			begin2 = 1440 + bt.tm_hour * 60 + bt.tm_min
+			end2 = begin2 + duration / 60
+			xbt = localtime(x.begin)
+			xet = localtime(timer_end)
+			offset_day = False
+			checking_time = x.begin < begin or begin <= x.begin <= end
+			if xbt.tm_yday != xet.tm_yday:
+				oday = bday - 1
+				if oday == -1: oday = 6
+				offset_day = x.repeated & (1 << oday)
+			xbegin = 1440 + xbt.tm_hour * 60 + xbt.tm_min
+			xend = xbegin + ((timer_end - x.begin) / 60)
+			if xend < xbegin:
+				xend += 1440
+			if x.repeated & (1 << bday) and checking_time:
+				if begin2 < xbegin <= end2:
+					# recording within / last part of event
+					return 2 if xend < end2 else 0
+				elif xbegin <= begin2 <= xend:
+					# recording first part / whole event
+					return 1 if xend < end2 else 3
+				elif offset_day:
+					xbegin -= 1440
+					xend -= 1440
+					if begin2 < xbegin <= end2:
+						# recording within / last part of event
+						return 2 if xend < end2 else 0
+					elif xbegin <= begin2 <= xend:
+						# recording first part / whole event
+						return 1 if xend < end2 else 3
+			elif offset_day and checking_time:
+				xbegin -= 1440
+				xend -= 1440
+				if begin2 < xbegin <= end2:
+					# recording within / last part of event
+					return 2 if xend < end2 else 0
+				elif xbegin <= begin2 <= xend:
+					# recording first part / whole event
+					return 1 if xend < end2 else 3
+		return None
+
+	# matchType values can be:
+	# 0 last part of event
+	# 1 first part of event
+	# 2 within event
+	# 3 exact event match
+	def isInTimer(self, service, begin, duration):
+		returnValue = None
 		check_offset_time = not config.recording.margin_before.value and not config.recording.margin_after.value
 		end = begin + duration
-		refstr = ':'.join(service.split(':')[:11])
-		for x in self.timer_list:
-			if x.isAutoTimer == 1:
-				isAutoTimer = True
-			else:
-				isAutoTimer = False
-			check = ':'.join(x.service_ref.ref.toString().split(':')[:11]) == refstr
+		startAt = begin - config.recording.margin_before.value * 60
+		bailAt = end + config.recording.margin_after.value * 60
+		if isinstance(service, ServiceReference):
+			refstr = service.ref.toCompareString()
+		else:
+			refstr = ':'.join(service.split(':')[:11])
+
+		# iterating is faster than using bisect+indexing to find the first relevant timer
+		for timer in self.timer_list:
+			if not timer.repeated and timer.end < startAt:
+				# skip timers that aren't in the requested range
+				# we need to try all repeat timers though
+				continue
+			if timer.begin > bailAt:
+				# exit when we hit timers that are after the requested range
+				break
+			check = timer.service_ref.ref.toCompareString() == refstr
 			if check:
-				timer_end = x.end
-				timer_begin = x.begin
-				type_offset = 0
-				if not x.repeated and check_offset_time:
-					if 0 < end - timer_end <= 59:
-						timer_end = end
-					elif 0 < timer_begin - begin <= 59:
-						timer_begin = begin
-				if x.justplay:
-					type_offset = 5
-					if (timer_end - x.begin) <= 1:
-						timer_end += 60
-					if x.pipzap:
-						type_offset = 30
-				if x.always_zap:
-					type_offset = 10
-
-				if x.repeated != 0:
-					if bt is None:
-						bt = localtime(begin)
-						bday = bt.tm_wday
-						begin2 = 1440 + bt.tm_hour * 60 + bt.tm_min
-						end2 = begin2 + duration / 60
-					xbt = localtime(x.begin)
-					xet = localtime(timer_end)
-					offset_day = False
-					checking_time = x.begin < begin or begin <= x.begin <= end
-					if xbt.tm_yday != xet.tm_yday:
-						oday = bday - 1
-						if oday == -1: oday = 6
-						offset_day = x.repeated & (1 << oday)
-					xbegin = 1440 + xbt.tm_hour * 60 + xbt.tm_min
-					xend = xbegin + ((timer_end - x.begin) / 60)
-					if xend < xbegin:
-						xend += 1440
-					if x.repeated & (1 << bday) and checking_time:
-						if begin2 < xbegin <= end2:
-							if xend < end2:
-								# recording within event
-								time_match = (xend - xbegin) * 60
-								type = type_offset + 3
-							else:
-								# recording last part of event
-								time_match = (end2 - xbegin) * 60
-								type = type_offset + 1
-						elif xbegin <= begin2 <= xend:
-							if xend < end2:
-								# recording first part of event
-								time_match = (xend - begin2) * 60
-								type = type_offset + 4
-							else:
-								# recording whole event
-								time_match = (end2 - begin2) * 60
-								type = type_offset + 2
-						elif offset_day:
-							xbegin -= 1440
-							xend -= 1440
-							if begin2 < xbegin <= end2:
-								if xend < end2:
-									# recording within event
-									time_match = (xend - xbegin) * 60
-									type = type_offset + 3
-								else:
-									# recording last part of event
-									time_match = (end2 - xbegin) * 60
-									type = type_offset + 1
-							elif xbegin <= begin2 <= xend:
-								if xend < end2:
-									# recording first part of event
-									time_match = (xend - begin2) * 60
-									type = type_offset + 4
-								else:
-									# recording whole event
-									time_match = (end2 - begin2) * 60
-									type = type_offset + 2
-					elif offset_day and checking_time:
-						xbegin -= 1440
-						xend -= 1440
-						if begin2 < xbegin <= end2:
-							if xend < end2:
-								# recording within event
-								time_match = (xend - xbegin) * 60
-								type = type_offset + 3
-							else:
-								# recording last part of event
-								time_match = (end2 - xbegin) * 60
-								type = type_offset + 1
-						elif xbegin <= begin2 <= xend:
-							if xend < end2:
-								# recording first part of event
-								time_match = (xend - begin2) * 60
-								type = type_offset + 4
-							else:
-								# recording whole event
-								time_match = (end2 - begin2) * 60
-								type = type_offset + 2
-				else:
-					if begin < timer_begin <= end:
-						if timer_end < end:
-							# recording within event
-							time_match = timer_end - timer_begin
-							type = type_offset + 3
-						else:
-							# recording last part of event
-							time_match = end - timer_begin
-							type = type_offset + 1
-					elif timer_begin <= begin <= timer_end:
-						if timer_end < end:
-							# recording first part of event
-							time_match = timer_end - begin
-							type = type_offset + 4
-							if x.justplay:
-								type = type_offset + 2
-						else: # recording whole event
-							time_match = end - begin
-							type = type_offset + 2
-
-				if time_match:
-					returnValue = (time_match, type, isAutoTimer)
-					if type in (2,7,12,32): # When full recording do not look further
+				matchType = RecordTimer.__checkTimer(timer, check_offset_time, begin, end, duration)
+				if matchType is not None:
+					returnValue = (timer, matchType)
+					if matchType in (2, 3): # When full recording or within an event do not look further
 						break
-		return returnValue
+		return returnValue or (None, None)
+
+	@staticmethod
+	def isInTimerOnService(serviceTimerList, begin, duration):
+		returnValue = None
+		check_offset_time = not config.recording.margin_before.value and not config.recording.margin_after.value
+		end = begin + duration
+	
+		for timer in serviceTimerList:
+			matchType = RecordTimer.__checkTimer(timer, check_offset_time, begin, end, duration)
+			if matchType is not None:
+				returnValue = (timer, matchType)
+				if matchType in (2, 3): # When full recording or within an event do not look further
+					break
+		return returnValue or (None, None)
 
 	def removeEntry(self, entry):
 		print "[RecordTimer] Remove " + str(entry)
@@ -1375,9 +1349,9 @@ class RecordTimer(timer.Timer):
 		if entry.state != entry.StateEnded:
 			self.timeChanged(entry)
 
-#		print "[RecordTimer]state: ", entry.state
-#		print "[RecordTimer]in processed: ", entry in self.processed_timers
-#		print "[RecordTimer]in running: ", entry in self.timer_list
+		# print "[RecordTimer]state: ", entry.state
+		# print "[RecordTimer]in processed: ", entry in self.processed_timers
+		# print "[RecordTimer]in running: ", entry in self.timer_list
 		# autoincrease instanttimer if possible
 		if not entry.dontSave:
 			for x in self.timer_list:

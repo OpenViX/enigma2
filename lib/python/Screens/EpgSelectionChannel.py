@@ -27,7 +27,7 @@ class EPGSelectionChannel(EPGSelectionBase):
 		}, prio=-1, description=helpDescription)
 
 		self.timeFocus = timeFocus or time()
-		self["list"] = EPGListSingle(selChangedCB=self.onSelectionChanged, timer=session.nav.RecordTimer, epgConfig=config.epgselection.single)
+		self["list"] = EPGListSingle(session, config.epgselection.single, self.onSelectionChanged)
 
 	def createSetup(self):
 		def onClose(test=None):

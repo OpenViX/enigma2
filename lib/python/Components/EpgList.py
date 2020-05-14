@@ -1,7 +1,8 @@
 from enigma import eRect
 
 from config import config
-from EpgListSingle import EPGListSingle
+from Components.EpgListSingle import EPGListSingle
+import Screens.InfoBar
 
 # Keep const values for backward compatibility with plugins.
 EPG_TYPE_SINGLE = 0
@@ -47,7 +48,7 @@ class EPGList(EPGListSingle):
 				None: "EPGtype == None"
 			}.get(type, type)
 			print "          attempting to continue in single EPG mode"
-		EPGListSingle.__init__(self, config.epgselection.single, selChangedCB, timer)
+		EPGListSingle.__init__(self, Screens.InfoBar.InfoBar.instance.session, config.epgselection.single, selChangedCB)
 
 		# Attributes for backwards compatibility.
 		self.eventFontSizeSingle = self.eventFontSize
@@ -58,6 +59,19 @@ class EPGList(EPGListSingle):
 
 	def recalcEntrySize(self):
 		EPGListSingle.recalcEntrySize(self)
+
+	def getPixmapForEntry(self, service, eventId, beginTime, duration):
+		timer, matchType = self.session.nav.RecordTimer.isInTimer(service, beginTime, duration)
+		if timer is not None:
+			if matchType == 3:
+				# recording whole event
+				timerType = 2 if timer.always_zap else 1 if timer.justplay else 0
+				return matchType + timerType
+			self.wasEntryAutoTimer = timer.isAutoTimer
+			return matchType
+		else:
+			self.wasEntryAutoTimer = False
+			return None
 
 	# These properties are expected to be Rect not eRect.
 	@property

@@ -39,7 +39,7 @@ class EPGSelectionInfobarSingle(EPGSelectionBase, EPGServiceZap, EPGServiceBrows
 			"down": (self.moveDown, _("Go to next channel"))
 		}, prio=-1, description=helpDescription)
 
-		self["list"] = EPGListSingle(selChangedCB=self.onSelectionChanged, timer=session.nav.RecordTimer, epgConfig=config.epgselection.infobar)
+		self["list"] = EPGListSingle(session, epgConfig=config.epgselection.infobar, selChangedCB=self.onSelectionChanged)
 
 	def createSetup(self):
 		def onClose(test=None):
