@@ -43,9 +43,8 @@ class LCDSkinSelectorOLD(Screen):
 		self.onLayoutFinish.append(self.layoutFinished)
 
 	def layoutFinished(self):
-		tmp = config.skin.lcdskin.value
+		tmp = config.skin.display_skin.value.split("/")[1]
 		if tmp in self.skinlist:
-			tmp = config.skin.lcdskin.value
 			idx = 0
 			for skin in self.skinlist:
 				if skin == tmp:
@@ -89,8 +88,8 @@ class LCDSkinSelectorOLD(Screen):
 	def ok(self):
 		skinfile = self["SkinList"].getCurrent()
 		print "LCDSkinSelectorOLD: Selected Skin: ", skinfile
-		config.skin.lcdskin.value = skinfile
-		config.skin.lcdskin.save()
+		config.skin.display_skin.value = "lcd_skin/" + skinfile
+		config.skin.display_skin.save()
 		restartbox = self.session.openWithCallback(self.restartGUI,MessageBox,_("GUI needs a restart to apply a new skin\nDo you want to Restart the GUI now?"), MessageBox.TYPE_YESNO)
 		restartbox.setTitle(_("Restart GUI now?"))
 

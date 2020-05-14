@@ -15,7 +15,7 @@ from Tools.LoadPixmap import LoadPixmap
 DEFAULT_SKIN = "GigabluePax/skin.xml"
 # DEFAULT_SKIN = SystemInfo["HasFullHDSkinSupport"] and "PLi-FullNightHD/skin.xml" or "PLi-HD/skin.xml"  # SD hardware is no longer supported by the default skin.
 EMERGENCY_SKIN = "skin_default/skin.xml"
-DEFAULT_DISPLAY_SKIN = "skin_lcd_default.xml"
+DEFAULT_DISPLAY_SKIN = "lcd_skin/skin_lcd_default.xml"
 USER_SKIN = "skin_user.xml"
 USER_SKIN_TEMPLATE = "skin_user_%s.xml"
 SUBTITLE_SKIN = "skin_subtitles.xml"
@@ -49,7 +49,6 @@ if not isfile(skin):
 	DEFAULT_SKIN = EMERGENCY_SKIN
 config.skin.primary_skin = ConfigText(default=DEFAULT_SKIN)
 config.skin.display_skin = ConfigText(default=DEFAULT_DISPLAY_SKIN)
-config.skin.lcdskin = config.skin.display_skin 
 
 currentPrimarySkin = None
 currentDisplaySkin = None
