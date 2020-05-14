@@ -12,10 +12,10 @@ from Tools.TextBoundary import getTextBoundarySize
 
 
 class EPGListBase(GUIComponent):
-	def __init__(self, selChangedCB=None, timer=None):
+	def __init__(self, session, selChangedCB=None):
 		GUIComponent.__init__(self)
 
-		self.timer = timer
+		self.session = session
 		self.onSelChanged = []
 		if selChangedCB is not None:
 			self.onSelChanged.append(selChangedCB)
@@ -23,29 +23,20 @@ class EPGListBase(GUIComponent):
 		self.epgcache = eEPGCache.getInstance()
 
 		# Load the common clock icons.
-		add = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock_add.png"))
-		pre = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock_pre.png"))
-		clock = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock.png"))
-		zap = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock_zap.png"))
-		zaprec = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock_zaprec.png"))
-		prepost = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock_prepost.png"))
-		post = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock_post.png"))
 		self.clocks = [
-			add, pre, clock, prepost, post,
-			add, pre, zap, prepost, post,
-			add, pre, zaprec, prepost, post,
-			add, pre, clock, prepost, post
+			loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock_pre.png")),
+			loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock_post.png")),
+			loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock_prepost.png")),
+			loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock.png")),
+			loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock_zap.png")),
+			loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock_zaprec.png"))
+		]
+		self.selclocks = [
+			loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock_selpre.png")),
+			loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock_selpost.png")),
+			loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock_selprepost.png"))
 		]
 
-		# Load the common selected clock icons.
-		pre = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock_selpre.png"))
-		prepost = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock_selprepost.png"))
-		post = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock_selpost.png"))
-		self.selclocks = [
-			add, pre, clock, prepost, post,
-			add, pre, zap, prepost, post,
-			add, pre, zaprec, prepost, post
-		]
 		self.autotimericon = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock_autotimer.png"))
 
 		self.isFullHd = getDesktop(0).size().width() == 1920
@@ -130,16 +121,14 @@ class EPGListBase(GUIComponent):
 		if self.instance is not None:
 			self.instance.setSelectionEnable(enabled)
 
-	def getPixmapForEntry(self, service, eventId, beginTime, duration):
-		if not beginTime:
-			return None
-		rec = self.timer.isInTimer(eventId, beginTime, duration, service)
-		if rec is not None:
-			self.wasEntryAutoTimer = rec[2]
-			return rec[1]
-		else:
-			self.wasEntryAutoTimer = False
-			return None
+	def getPixmapsForTimer(self, timer, matchType, selected=False):
+		if timer is None:
+			return (None, None)
+		if matchType == 3:
+			# recording whole event
+			timerType = 2 if timer.always_zap else 1 if timer.justplay else 0
+			return self.clocks[matchType + timerType], self.autotimericon if timer.isAutoTimer else None
+		return self.selclocks[matchType] if selected else self.clocks[matchType], None
 
 	def queryEPG(self, list):
 		return self.epgcache.lookupEvent(list)

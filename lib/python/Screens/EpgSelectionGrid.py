@@ -77,7 +77,7 @@ class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 			"9": (self.goToPrimeTime, _("Jump to prime time")),
 			"0": (self.goToCurrentTimeAndTop, _("Move to home of list"))
 		}, prio=-1, description=helpDescription)
-		self["list"] = EPGListGrid(isInfobar=isInfobar, session=self.session, selChangedCB=self.onSelectionChanged, timer=session.nav.RecordTimer)
+		self["list"] = EPGListGrid(session, isInfobar=isInfobar, selChangedCB=self.onSelectionChanged)
 		self["list"].setTimeFocus(timeFocus or time())
 
 	def createSetup(self):

@@ -6,6 +6,7 @@ from skin import parameters, parseFont
 from Components.config import config
 from Components.EpgListBase import EPGListBase
 from Components.MultiContent import MultiContentEntryText, MultiContentEntryPixmapAlphaBlend, MultiContentEntryPixmapAlphaTest
+import NavigationInstance
 
 # Various value are in minutes, while others are in seconds.
 # Use this to remind us what is going on...
@@ -13,8 +14,8 @@ SECS_IN_MIN = 60
 
 
 class EPGListSingle(EPGListBase):
-	def __init__(self, epgConfig, selChangedCB=None, timer=None):
-		EPGListBase.__init__(self, selChangedCB, timer)
+	def __init__(self, session, epgConfig, selChangedCB=None):
+		EPGListBase.__init__(self, session, selChangedCB)
 
 		self.epgConfig = epgConfig
 		self.eventFontName = "Regular"
@@ -75,7 +76,8 @@ class EPGListSingle(EPGListBase):
 		self.showend = True  # This is not an unused variable. It is a flag used by EPGSearch plugin
 
 	def buildEntry(self, service, eventId, beginTime, duration, eventName):
-		clockTypes = self.getPixmapForEntry(service, eventId, beginTime, duration)
+		timer, matchType = self.session.nav.RecordTimer.isInTimer(service, beginTime, duration)
+		timerIcon, autoTimerIcon = self.getPixmapsForTimer(timer, matchType)
 		r1 = self._weekdayRect
 		r2 = self._datetimeRect
 		r3 = self._descrRect
@@ -89,13 +91,13 @@ class EPGListSingle(EPGListBase):
 			(eListboxPythonMultiContent.TYPE_TEXT, r2.left() + split, r2.top(), r2.width() - split, r2.height(), 0, RT_HALIGN_RIGHT | RT_VALIGN_CENTER, strftime(config.usage.time.short.value, et))
 		]
 		eventW = r3.width()
-		if clockTypes:
+		if timerIcon:
 			clockSize = 26 if self.isFullHd else 21
 			eventW -= clockSize
-			res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, r3.left()+r3.width()-clockSize, (r3.height()-clockSize)/2, clockSize, clockSize, self.clocks[clockTypes]))
-			if self.wasEntryAutoTimer and clockTypes in (2, 7, 12):
+			res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, r3.left()+r3.width()-clockSize, (r3.height()-clockSize)/2, clockSize, clockSize, timerIcon))
+			if autoTimerIcon:
 				eventW -= clockSize
-				res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, r3.left()+r3.width()-clockSize*2, (r3.height()-clockSize)/2, clockSize, clockSize, self.autotimericon))
+				res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, r3.left()+r3.width()-clockSize*2, (r3.height()-clockSize)/2, clockSize, clockSize, autoTimerIcon))
 		res.append((eListboxPythonMultiContent.TYPE_TEXT, r3.left(), r3.top(), eventW, r3.height(), 0, RT_HALIGN_LEFT | RT_VALIGN_CENTER, eventName))
 		return res
 
