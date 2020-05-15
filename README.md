@@ -2,11 +2,11 @@
 
 > Ubuntu 18.04.3 LTS (GNU/Linux 4.15.0-65-generic x86_64)
 
-## teamBlue 6.4 (based on openPLi) is build using oe-alliance build-environment "4.4" and several git repositories: ##
+## teamBlue 6.5 (based on openPLi) is build using oe-alliance build-environment "4.5" and several git repositories: ##
 
-> [https://github.com/oe-alliance/oe-alliance-core/tree/4.4](https://github.com/oe-alliance/oe-alliance-core/tree/4.4 "OE-Alliance")
+> [https://github.com/oe-alliance/oe-alliance-core/tree/4.5](https://github.com/oe-alliance/oe-alliance-core/tree/4.5 "OE-Alliance")
 > 
-> [https://github.com/teamblue-e2/enigma2/tree/6.4](https://github.com/teamblue-e2/enigma2/tree/6.4 "teamBlue E2")
+> [https://github.com/teamblue-e2/enigma2/tree/6.5](https://github.com/teamblue-e2/enigma2/tree/6.5 "teamBlue E2")
 > 
 > [https://github.com/teamblue-e2/skin/tree/master](https://github.com/teamblue-e2/skin/tree/master "teamBlue Skin")
 
@@ -94,4 +94,4 @@
 
 Build Status - branch master: [![Build Status](https://travis-ci.org/teamblue-e2/enigma2.svg?branch=master)](https://travis-ci.org/teamblue-e2/enigma2)
 
-Build Status - branch 6.4:    [![Build Status](https://travis-ci.org/teamblue-e2/enigma2.svg?branch=6.4)](https://travis-ci.org/teamblue-e2/enigma2)
+Build Status - branch 6.5:    [![Build Status](https://travis-ci.org/teamblue-e2/enigma2.svg?branch=6.5)](https://travis-ci.org/teamblue-e2/enigma2)
