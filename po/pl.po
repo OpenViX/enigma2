@@ -4076,10 +4076,8 @@ msgstr "Chcesz uruchomić ponownie odbiornik?"
 msgid "Do you want to reboot your receiver?"
 msgstr "Chcesz uruchomić ponownie odbiornik?"
 
-#
-#, fuzzy
-msgid "Do you want to remove all the crahs logfiles"
-msgstr "Chcesz usunąć pakiet:\n"
+msgid "Do you want to remove all the crash logfiles"
+msgstr "Czy chcesz usunąć wszystkie crash logi?"
 
 #
 msgid "Do you want to remove the package:\n"

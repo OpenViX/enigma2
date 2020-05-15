@@ -3607,9 +3607,8 @@ msgstr "Jūs norite parsisiųsti atvaizdą į %s ?"
 msgid "Do you want to reboot your receiver?"
 msgstr ""
 
-#, fuzzy
-msgid "Do you want to remove all the crahs logfiles"
-msgstr "Jūs norite pašalinti paketą:\n"
+msgid "Do you want to remove all the crash logfiles"
+msgstr "Ar norite pašalinti visus \"lūžimo\" žurnalų failus"
 
 msgid "Do you want to remove the package:\n"
 msgstr "Jūs norite pašalinti paketą:\n"

@@ -3383,8 +3383,8 @@ msgstr "Wollen Sie Ihren Receiver neu starten?"
 msgid "Do you want to reboot your receiver?"
 msgstr "Wollen Sie Ihren Receiver neu starten?"
 
-msgid "Do you want to remove all the crahs logfiles"
-msgstr "Wollen Sie alle Absturz Logdateien löschen"
+msgid "Do you want to remove all the crash logfiles"
+msgstr "Wollen Sie alle Crash-Logs entfernen?"
 
 msgid "Do you want to remove the package:\n"
 msgstr "Wollen Sie das Paket entfernen:\n"

@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-21 09:07+0100\n"
-"PO-Revision-Date: 2020-02-19 11:12+0100\n"
+"POT-Creation-Date: 2020-05-10 20:18+0200\n"
+"PO-Revision-Date: 2020-05-13 21:36+0200\n"
 "Last-Translator: mcfly82\n"
 "Language-Team: mcfly82 & wysless\n"
 "Language: hu_HU\n"
@@ -17,14 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.6.4\n"
-
-#, fuzzy
-msgid ""
-"\n"
-"\n"
-"[User - bouquets (TV)]\n"
-msgstr "Felhasználói bouquet-ek"
+"X-Generator: Poedit 2.3.1\n"
 
 msgid ""
 "\n"
@@ -1218,6 +1211,9 @@ msgstr "Bármilyen aktivitás"
 msgid "Arabic"
 msgstr "Arab"
 
+msgid "Are you sure to delete image:"
+msgstr "Biztos benne, hogy törli ezt az image-t?"
+
 msgid "Are you sure to purge all deleted user bouquets?"
 msgstr ""
 
@@ -1232,7 +1228,10 @@ msgid "Are you sure to remove all terrestrial services?"
 msgstr ""
 
 msgid "Are you sure to remove this entry?"
-msgstr ""
+msgstr "Biztos benne, hogy eltávolítja ezt a bejegyzést?"
+
+msgid "Are you sure to restore all deleted images"
+msgstr "Biztos benne, hogy visszaállítja az összes törölt image-t?"
 
 msgid ""
 "Are you sure you want to activate this network configuration?\n"
@@ -2201,9 +2200,8 @@ msgstr "Gyűjtemény beállítások"
 msgid "Colombia"
 msgstr "Színformátum"
 
-#, fuzzy
 msgid "Color"
-msgstr "Színformátum"
+msgstr "Szín"
 
 msgid "Color format"
 msgstr "Színformátum"
@@ -3170,13 +3168,8 @@ msgstr ""
 msgid "Delete"
 msgstr "Törlés"
 
-#, fuzzy, python-format
-msgid "Delete %d elements"
-msgstr "Kuka"
-
-#, fuzzy
-msgid "Delete 1 element"
-msgstr "Adat törlése"
+msgid "Delete Image"
+msgstr "Image törlése"
 
 msgid "Delete entry"
 msgstr "Adat törlése"
@@ -3200,20 +3193,23 @@ msgstr "playlista bejegyzés törlése"
 msgid "Delete saved playlist"
 msgstr "mentett playlista törlése"
 
-msgid "Delete the character to the left of text buffer cursor"
-msgstr ""
+msgid "Delete the all the text"
+msgstr "Minden szöveg törlése"
 
-msgid "Delete the character under the text buffer cursor"
-msgstr ""
+msgid "Delete the character to the left of text cursor"
+msgstr "A kurzortól balra lévő karakter törlése"
 
-msgid "Delete the selected files or directories"
-msgstr ""
+msgid "Delete the character under the text cursor"
+msgstr "A kurzor alatti karakter törlése"
 
 msgid "Delete timer"
 msgstr ""
 
 msgid "Deleted"
 msgstr "Törölve"
+
+msgid "Deleted image"
+msgstr "Törölt image"
 
 msgid "Deleted items"
 msgstr "Kuka"
@@ -3583,9 +3579,8 @@ msgstr "Szeretné újraindítani a készüléket?"
 msgid "Do you want to reboot your receiver?"
 msgstr "Szeretné újraindítani a készüléket?"
 
-#, fuzzy
-msgid "Do you want to remove all the crahs logfiles"
-msgstr "Biztos benne, hogy eltávolítja ezt a csomagot:\n"
+msgid "Do you want to remove all the crash logfiles"
+msgstr "Szeretne eltávolítani minden crash logfile-t?"
 
 msgid "Do you want to remove the package:\n"
 msgstr "Biztos benne, hogy eltávolítja ezt a csomagot:\n"
@@ -3744,7 +3739,7 @@ msgstr "HIBA - nem sikerült a keresés (%s)!"
 
 #, python-format
 msgid "ERROR downloading file %s"
-msgstr ""
+msgstr "HIBA a %s fájl letöltése során"
 
 msgid "East"
 msgstr "Kelet"
@@ -4094,12 +4089,9 @@ msgstr "Adatfolyam"
 msgid "Error"
 msgstr "Hiba"
 
-msgid "Error checking disk. The disk may be damaged"
-msgstr ""
-
-#, fuzzy, python-format
+#, python-format
 msgid "Error %s"
-msgstr "Hiba"
+msgstr "Hiba %s"
 
 msgid "Error code"
 msgstr "Hibakód"
@@ -4126,13 +4118,10 @@ msgid ""
 msgstr ""
 
 msgid "Error when writing epg.dat on server"
-msgstr ""
+msgstr "Hiba az epg.dat fájl szerverre írása során"
 
-#, fuzzy
 msgid "Error while retreiving epg.dat from server"
-msgstr ""
-"Hiba történt a tartalék tuner időzítők letöltésekor\n"
-"%s"
+msgstr "Hiba történt az epg.dat fájl letöltésekor a szerverről"
 
 #, python-format
 msgid ""
@@ -4140,11 +4129,8 @@ msgid ""
 "%s"
 msgstr ""
 
-#, fuzzy
 msgid "Error while retreiving location of epg.dat on server"
-msgstr ""
-"Hiba történt a tartalék tuner időzítők letöltésekor\n"
-"%s"
+msgstr "Hiba történt az epg.dat fájl helyének meghatározásakor a szerveren"
 
 #, python-format
 msgid ""
@@ -6389,44 +6375,29 @@ msgstr "A listán lefelé"
 msgid "Move east"
 msgstr "Kelet felé"
 
-#, fuzzy
-msgid "Move file"
-msgstr "Kelet felé"
+msgid "Move the keyboard cursor down"
+msgstr "A virtuális billentyűzet kurzor mozgatása lefelé"
 
-msgid "Move file/directory to target directory"
-msgstr ""
+msgid "Move the keyboard cursor left"
+msgstr "A virtuális billentyűzet kurzor mozgatása balra"
 
-#, fuzzy
-msgid "Move files/directories to target directory"
-msgstr "Kérem, adja meg az új mappa nevét"
+msgid "Move the keyboard cursor right"
+msgstr "A virtuális billentyűzet kurzor mozgatása jobbra"
 
-#, fuzzy
-msgid "Move folder"
-msgstr "[mozgatás mód]"
+msgid "Move the keyboard cursor up"
+msgstr "A virtuális billentyűzet kurzor mozgatása felfelé"
 
-msgid "Move the text buffer cursor left"
-msgstr ""
+msgid "Move the text cursor left"
+msgstr "A szövegkurzor balra mozgatása"
 
-msgid "Move the text buffer cursor right"
-msgstr ""
+msgid "Move the text cursor right"
+msgstr "A szövegkurzor jobbra mozgatása"
 
-msgid "Move the text buffer cursor to the first character"
-msgstr ""
+msgid "Move the text cursor to the first character"
+msgstr "A szövegkurzor mozgatása az első karakterhez"
 
-msgid "Move the text buffer cursor to the last character"
-msgstr ""
-
-msgid "Move the virtual keyboard cursor down"
-msgstr ""
-
-msgid "Move the virtual keyboard cursor left"
-msgstr ""
-
-msgid "Move the virtual keyboard cursor right"
-msgstr ""
-
-msgid "Move the virtual keyboard cursor up"
-msgstr ""
+msgid "Move the text cursor to the last character"
+msgstr "A szövegkurzor mozgatása az utolsó karakterhez"
 
 msgid "Move to position X"
 msgstr "Mozgatás az X pozícióra"
@@ -6808,7 +6779,7 @@ msgid "No displayable files on this medium found!"
 msgstr "A hordozón nem található lejátszható fájl!"
 
 msgid "No epg.dat file found server"
-msgstr ""
+msgstr "Nem található az epg.dat fájl a szerveren"
 
 msgid "No event info found, recording indefinitely."
 msgstr "Nincs esemény infó, felvétel korlátlanul."
@@ -7206,6 +7177,15 @@ msgstr ""
 #, fuzzy
 msgid "Overscan wizard"
 msgstr "Hálózati Varázsló"
+
+msgid "Operating LED status in deep standby mode"
+msgstr "A működési LED állapota mély készenlét módban"
+
+msgid "Operating LED status in standby mode"
+msgstr "A működési LED állapota készenlét módban"
+
+msgid "Operating LED status while running."
+msgstr "A működési LED állapota bekapcsolt módban"
 
 #, fuzzy
 msgid "Overwrite Bootlogo Files ?"
@@ -8665,7 +8645,9 @@ msgstr "Mentések visszaállítása"
 msgid "Restore defaults"
 msgstr "Mentések visszaállítása"
 
-#, fuzzy
+msgid "Restore deleted images"
+msgstr "Törölt image-k visszaállítása"
+
 msgid "Restore deleted user bouquets"
 msgstr "Többszörös bouquetek engedélyezése"
 
@@ -9408,10 +9390,16 @@ msgid "Select the User Band channel to be assigned to this tuner. This is an ind
 msgstr ""
 
 msgid "Select the User Band frequency to be assigned to this tuner. This is the frequency the SCR switch or SCR LNB uses to pass the requested transponder to the tuner."
-msgstr ""
+msgstr "Válassza ki a tunerhez rendelt felhasználói sáv frekvenciáját. Ez az a frekvencia, amelyet az Unicable switch vagy az Unicable LNB használ a tuner és a kívánt transzponder között."
 
-msgid "Select the character or action under the virtual keyboard cursor"
-msgstr ""
+msgid "Select the User Band to be assigned to this tuner. This is an index into the table of frequencies the SCR switch or SCR LNB uses to pass the requested transponder to the tuner."
+msgstr "Válassza ki a tunerhez rendelt felhasználói sávot. Ez egy olyan index a frekvenciatáblázatban, amelyet az Unicable switch vagy az Unicable LNB használ a tuner és a kívánt transzponder között."
+
+msgid "Select the character or action under the keyboard cursor"
+msgstr "Váltás karakter vagy művelet mód között a virtuális billentyűzeten"
+
+msgid "Select the locale from a menu"
+msgstr "A hely kiválasztása a menüből"
 
 msgid "Select the manufacturer of your SCR device. If the manufacturer is not listed, set 'SCR' to 'user defined' and enter the device parameters manually according to its spec sheet."
 msgstr ""
@@ -9441,7 +9429,16 @@ msgid "Select the satellite you want to configure. Once that satellite is config
 msgstr ""
 
 msgid "Select the satellite your dish receives from. If you are unsure select 'automatic' and the receiver will attempt to determine this for you."
-msgstr ""
+msgstr "Válassza ki, hogy mely műholdra van állítva az antennája. Ha nem tudja, válassza az 'Automatikus'-t, ekkor a készüléke megpróbálja azonosítani."
+
+msgid "Select the shifted character set"
+msgstr "Váltás a virtuális billentyűzeten a 'shift' karakterkiosztásra"
+
+msgid "Select the shifted character set for the next character only"
+msgstr "Váltás a virtuális billentyűzeten a 'shift' karakterkiosztásra csak a következő karakterre vonatkozóan"
+
+msgid "Select the time zone within the area or region."
+msgstr "Válassza ki az időzónáját a megadott területen vagy régióban."
 
 msgid "Select the tuner that controls the motorised dish."
 msgstr ""
@@ -9527,12 +9524,8 @@ msgstr "Válassza ki a szolgáltatóját, nyomja le az OK-t"
 msgid "Select your region. If not available change 'Country' to 'all' and select one of the default alternatives."
 msgstr ""
 
-#, fuzzy
-msgid "Select your skin and press OK to activate the selected skin."
-msgstr "Nyomja le az OK gombot az új skin aktiválásához."
-
-msgid "Selected mount point is already used by another drive."
-msgstr ""
+msgid "Select your time zone area or region."
+msgstr "Válassza ki az időzóna területét vagy régióját."
 
 msgid "Selecting satellites 1 (USALS)"
 msgstr ""
@@ -10922,9 +10915,17 @@ msgstr "Következő csatorna"
 
 #, fuzzy
 msgid "Switch channel up"
-msgstr "Következő csatorna"
+msgstr "Csatorna léptetés felfelé"
 
-#, fuzzy
+msgid "Switch off the display during Standby Mode"
+msgstr "A kijelző kikapcsolása Készenlét módban"
+
+msgid "Switch off the display during Suspend Mode"
+msgstr "A kijelző kikapcsolása Felfüggesztett módban"
+
+msgid "Switch off the display during operation."
+msgstr "A kijelző kikapcsolása működés közben."
+
 msgid "Switch to TV mode"
 msgstr "Váltás fájllistára"
 
@@ -11018,15 +11019,20 @@ msgid "T2MI PLP ID"
 msgstr "PLP ID"
 
 msgid "T2MI RAW Mode"
-msgstr ""
+msgstr "T2MI RAW mód"
+
+msgid "TEXT"
+msgstr "SZÖVEG"
 
 #. TRANSLATORS: Add here whatever should be shown in the "translator" about screen, up to 6 lines (use \n for newline)
 msgid "TRANSLATOR_INFO"
 msgstr ""
-"Fordította: MediaVox-Team\n"
-"Kiegészítette, véglegesítette: robertut\n"
-"A magyar nyelvű fájl kiegészítése az OpenPLI projekt-hez készült.\n"
-"Bővebb információ: http://openpli.org"
+"A fordítást készítette:\n"
+"mcfly82 & wysless\n"
+"Utolsó fordítás időpontja: 2020.05.13.\n"
+"Eredeti fordítás: MediaVox-Team, Robertut\n"
+"A magyar fordítás az OpenPLi projekthez készült.\n"
+"További információ: http://openpli.org"
 
 msgid "TS file is too large for ISO9660 level 1!"
 msgstr "A TS fájl túl nagy az 'ISO9660 level 1' szabvány szerint!"
@@ -11639,16 +11645,11 @@ msgstr "Idő"
 msgid "Time between slides in image viewer slideshow."
 msgstr ""
 
-#, fuzzy
-msgid "Time for Slideshow"
-msgstr "Időzítések áttekintése"
+msgid "Time zone"
+msgstr "Időzóna"
 
-msgid "Time scale"
-msgstr "Időskála"
-
-#, fuzzy
-msgid "Time zone settings"
-msgstr "A/V beállítások"
+msgid "Time zone area"
+msgstr "Időzóna területe"
 
 msgid "Timer"
 msgstr "Időzítő"
@@ -11761,7 +11762,13 @@ msgid "Toggle new text inserts before or overwrites existing text"
 msgstr ""
 
 msgid "Toggle show/hide"
-msgstr ""
+msgstr "Mutatás/elrejtés be/ki"
+
+msgid "Toggle the tv and the radio player..."
+msgstr "Váltás a TV és rádió lejátszó között..."
+
+msgid "Toggle videomode"
+msgstr "Video mód kapcsoló"
 
 msgid "Togo"
 msgstr ""
@@ -12934,6 +12941,18 @@ msgid ""
 "Do you understand this?"
 msgstr ""
 
+msgid "With this option you can switch off the display during operation."
+msgstr "Ezzel kikapcsolhatja a kijelzőt működés közben."
+
+msgid "With this option you can switch off the display in Deep Standby Mode."
+msgstr "Ezzel kikapcsolhatja a kijelzőt mély készenlét módban."
+
+msgid "With this option you can switch off the display in Standby Mode."
+msgstr "Ezzel kikapcsolhatja a kijelzőt készenléti állapotban."
+
+msgid "With this option you can switch the LED color or deactivate the LED."
+msgstr "Ezzel megváltoztathatja a LED színét vagy kikapcsolhatja a LED-et."
+
 msgid "Without popup"
 msgstr "Figyelmeztetés nélkül"
 
@@ -13204,6 +13223,9 @@ msgstr ""
 
 msgid "Your STB will freeze during the flashing process.\n"
 msgstr ""
+
+msgid "You seem to be in timeshift!"
+msgstr "Úgy tűnik, folyamatban van időcsúsztatás!"
 
 msgid "Your backup succeeded. We will now continue to explain the further upgrade process."
 msgstr "A mentés sikerült. Most folytatjuk és elmagyarázom Önnek a további frissítési folyamatot."
@@ -14556,6 +14578,12 @@ msgstr "varieté"
 
 msgid "vertical"
 msgstr "vertikális"
+
+msgid "violet"
+msgstr "ibolya"
+
+msgid "wait for ci..."
+msgstr "várakozás modulra..."
 
 msgid "wait for mmi..."
 msgstr "várakozás mmi-re..."

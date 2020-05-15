@@ -4079,10 +4079,8 @@ msgstr "¿Quiere reiniciar su receptor?"
 msgid "Do you want to reboot your receiver?"
 msgstr "¿Quiere reiniciar su receptor?"
 
-#
-#, fuzzy
-msgid "Do you want to remove all the crahs logfiles"
-msgstr "Quiere eliminar el paquete:\n"
+msgid "Do you want to remove all the crash logfiles"
+msgstr "¿Desea eliminar todos los archivos de registro de fallos?"
 
 #
 msgid "Do you want to remove the package:\n"

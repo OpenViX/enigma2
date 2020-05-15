@@ -4066,10 +4066,8 @@ msgstr "Chcete přijímač restartovat?"
 msgid "Do you want to reboot your receiver?"
 msgstr "Chcete přijímač restartovat?"
 
-#
-#, fuzzy
-msgid "Do you want to remove all the crahs logfiles"
-msgstr "Chcete odstranit balíček:\n"
+msgid "Do you want to remove all the crash logfiles"
+msgstr "Chcete odstranit všechny protokoly pádu systému"
 
 #
 msgid "Do you want to remove the package:\n"

@@ -3539,14 +3539,7 @@ msgstr "Anda ingin keluar dari wizar overscan?"
 msgid "Do you want to reboot now the image in slot %s?"
 msgstr "Anda ingin mereboot rx anda?"
 
-#, fuzzy
-msgid "Do you want to reboot your Receiver?"
-msgstr "Anda ingin mereboot rx anda?"
-
-msgid "Do you want to reboot your receiver?"
-msgstr "Anda ingin mereboot rx anda?"
-
-msgid "Do you want to remove all the crahs logfiles"
+msgid "Do you want to remove all the crash logfiles"
 msgstr "Anda ingin menghapus semua berkas log crash"
 
 msgid "Do you want to remove the package:\n"
