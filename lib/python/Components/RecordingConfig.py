@@ -6,6 +6,7 @@ def InitRecordingConfig():
 	config.recording.asktozap = ConfigYesNo(default=True)
 	config.recording.margin_before = ConfigSelectionNumber(min = 0, max = 120, stepwidth = 1, default = 3, wraparound = True)
 	config.recording.margin_after = ConfigSelectionNumber(min = 0, max = 120, stepwidth = 1, default = 5, wraparound = True)
+	config.recording.split_programme_minutes = ConfigSelectionNumber(min = 0, max = 30, stepwidth = 1, default = 15, wraparound = True)
 	config.recording.ascii_filenames = ConfigYesNo(default = False)
 	config.recording.keep_timers = ConfigSelectionNumber(min = 1, max = 120, stepwidth = 1, default = 7, wraparound = True)
 	config.recording.filename_composition = ConfigSelection(default = "standard", choices = [

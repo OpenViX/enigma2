@@ -253,7 +253,9 @@ class EPGSelectionBase(Screen, HelpableScreen):
 		self.recordTimerQuestion(True)
 
 	def editTimer(self, timer):
-		self.session.open(TimerEntry, timer)
+		def callback(ret):
+			self.refreshList()
+		self.session.openWithCallback(callback, TimerEntry, timer)
 
 	def removeTimer(self, timer):
 		self.closeChoiceBoxDialog()
@@ -270,22 +272,19 @@ class EPGSelectionBase(Screen, HelpableScreen):
 		self.refreshList()
 
 	def recordTimerQuestion(self, manual=False):
-		event, serviceref = self["list"].getCurrent()[:2]
+		event, service = self["list"].getCurrent()[:2]
 		if event is None:
 			return
-		eventId = event.getEventId()
-		refstr = getServiceRefStr(serviceref)
-		title = None
-		for timer in self.session.nav.RecordTimer.timer_list:
-			if timer.eit == eventId and refstr == getServiceRefStr(timer.service_ref):
-				menu = [
-					(_("Delete Timer"), "CALLFUNC", self.removeChoiceBoxCB, lambda ret: self.removeTimer(timer)),
-					(_("Edit Timer"), "CALLFUNC", self.removeChoiceBoxCB, lambda ret: self.editTimer(timer)),
-					(_("Disable Timer"), "CALLFUNC", self.removeChoiceBoxCB, lambda ret: self.disableTimer(timer))
-				]
-				title = _("Select action for timer %s:") % event.getEventName()
-				break
-		else:
+		menu = None
+		timer = self.session.nav.RecordTimer.getTimerForEvent(service, event)
+		if timer is not None:
+			menu = [
+				(_("Delete Timer"), "CALLFUNC", self.removeChoiceBoxCB, lambda ret: self.removeTimer(timer)),
+				(_("Edit Timer"), "CALLFUNC", self.removeChoiceBoxCB, lambda ret: self.editTimer(timer)),
+				(_("Disable Timer"), "CALLFUNC", self.removeChoiceBoxCB, lambda ret: self.disableTimer(timer))
+			]
+			title = _("Select action for timer %s:") % event.getEventName()
+		elif event.getBeginTime() + event.getDuration() > time():
 			if not manual:
 				menu = [
 					(_("Add Timer"), "CALLFUNC", self.choiceBoxCB, self.doRecordTimer),
@@ -293,9 +292,9 @@ class EPGSelectionBase(Screen, HelpableScreen):
 				]
 				title = "%s?" % event.getEventName()
 			else:
-				newEntry = RecordTimerEntry(serviceref, checkOldTimers=True, dirname=preferredTimerPath(), *parseEvent(event))
+				newEntry = RecordTimerEntry(service, checkOldTimers=True, dirname=preferredTimerPath(), *parseEvent(event, service=service))
 				self.session.openWithCallback(self.finishedAdd, TimerEntry, newEntry)
-		if title:
+		if menu:
 			self.choiceBoxDialog = self.session.instantiateDialog(ChoiceBox, title=title, list=menu, keys=["green", "blue"], skin_name="RecordTimerQuestion")
 			posy = self["list"].getSelectionPosition()
 			self.choiceBoxDialog.instance.move(ePoint(posy[0] - self.choiceBoxDialog.instance.size().width(), self.instance.position().y() + posy[1]))
@@ -309,10 +308,7 @@ class EPGSelectionBase(Screen, HelpableScreen):
 	def choiceBoxCB(self, choice):
 		self.closeChoiceBoxDialog()
 		if choice:
-			try:
-				choice()
-			except Exception:
-				choice
+			choice()
 
 	def showChoiceBoxDialog(self):
 		self["okactions"].setEnabled(False)
@@ -349,9 +345,9 @@ class EPGSelectionBase(Screen, HelpableScreen):
 
 	def doInstantTimer(self, zap):
 		event, service = self["list"].getCurrent()[:2]
-		if event is None:
+		if event is None or event.getBeginTime() + event.getDuration() < time():
 			return
-		newEntry = RecordTimerEntry(service, checkOldTimers=True, *parseEvent(event))
+		newEntry = RecordTimerEntry(service, checkOldTimers=True, *parseEvent(event, service=service))
 		self.instantRecordDialog = self.session.instantiateDialog(InstantRecordTimerEntry, newEntry, zap)
 		retval = [True, self.instantRecordDialog.retval()]
 		self.session.deleteDialogWithCallback(self.finishedAdd, self.instantRecordDialog, retval)
@@ -398,17 +394,11 @@ class EPGSelectionBase(Screen, HelpableScreen):
 		if service is None or service.getServiceName() == "":
 			self["key_green"].setText("")
 			return
-		if event is None:
+		if event is None or event.getBeginTime() + event.getDuration() < time():
 			self["key_green"].setText("")
 			return
-		eventId = event.getEventId()
-		refstr = getServiceRefStr(service)
-		isRecordEvent = False
-		for timer in self.session.nav.RecordTimer.timer_list:
-			if timer.eit == eventId and refstr == getServiceRefStr(timer.service_ref):
-				isRecordEvent = True
-				break
-		self["key_green"].setText(_("Change Timer") if isRecordEvent else _("Add Timer"))
+		self["key_green"].setText(_("Change Timer") if self.session.nav.RecordTimer.getTimerForEvent(service, event) 
+			else _("Add Timer"))
 
 	def closeEventViewDialog(self):
 		if self.eventviewDialog:
