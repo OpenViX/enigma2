@@ -20,6 +20,7 @@ MAX_TIMELINES = 6
 # Use this to remind us what is going on...
 SECS_IN_MIN = 60
 
+
 class EPGListGrid(EPGListBase):
 	def __init__(self, session, isInfobar, selChangedCB=None):
 		EPGListBase.__init__(self, session, selChangedCB)
@@ -534,14 +535,15 @@ class EPGListGrid(EPGListBase):
 				serviceTimers = self.filteredTimerList.get(service)
 				if serviceTimers is not None:
 					timer, matchType = RecordTimer.isInTimerOnService(serviceTimers, stime, duration)
+					timerIcon, autoTimerIcon = self.getPixmapsForTimer(timer, matchType, selected)
 					if matchType not in (2,3):
 						timer = None
-					timerIcon, autoTimerIcon = self.getPixmapsForTimer(timer, matchType, selected)
 				else:
 					timer = matchType = timerIcon = None
 
 				isNow = stime <= now < (stime + duration) and config.epgselection.grid.highlight_current_events.value
-				if timer:
+				# Only highlight timers that span an entire event
+				if timer and matchType == 3:
 					if timer.justplay == 0 and timer.always_zap == 0:
 						foreColor = self.foreColorRecord
 						backColor = self.backColorRecord
@@ -821,20 +823,18 @@ class EPGListGrid(EPGListBase):
 		self.recalcEventSize()
 
 	def snapshotTimers(self, startTime, endTime):
-		# take a snapshot of the timers relevant to the span of the 
-		# plus any repeat timers
-		# index them by serviceref string
+		# take a snapshot of the timers relevant to the span of the grid and index them by service
+		# We scan the entire timerlist as pending timers and in progress timers are sorted differently
 		self.filteredTimerList = {}
 		for timer in self.session.nav.RecordTimer.timer_list:
-			if timer.repeated or timer.end >= startTime:
+			# repeat timers represent all their future repetitions, so always include them
+			if (startTime <= timer.end or timer.repeated) and timer.begin < endTime:
 				serviceref = timer.service_ref.ref.toString()
 				l = self.filteredTimerList.get(serviceref)
 				if l is None:
 					self.filteredTimerList[serviceref] = l = [timer]
 				else:
 					l.append(timer)
-				if timer.begin > endTime:
-					break
 
 	def getChannelNumber(self, service):
 		if service.ref and "0:0:0:0:0:0:0:0:0" not in service.ref.toString():
