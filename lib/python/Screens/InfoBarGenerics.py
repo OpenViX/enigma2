@@ -3708,7 +3708,7 @@ class InfoBarCueSheetSupport:
 		# This can occasionally get called with an empty (new?) self!?!
 		# So avoid the inevitable crash that will follow if we don't check.
 		#
-		if answer == True and not hasattr(self, "resume_point"):
+		if not hasattr(self, "resume_point"):
 			Notifications.AddPopup(text = _("Playback information missing\nPlayback aborted to avoid crash\nPlease retry"), type = MessageBox.TYPE_WARNING, timeout = 8)
 			return
 		if answer == True and self.resume_point:

@@ -1297,28 +1297,25 @@ class RecordTimer(timer.Timer):
 		check_offset_time = not config.recording.margin_before.value and not config.recording.margin_after.value
 		end = begin + duration
 		startAt = begin - config.recording.margin_before.value * 60
-		bailAt = end + config.recording.margin_after.value * 60
-		if isinstance(service, ServiceReference):
+		endAt = end + config.recording.margin_after.value * 60
+		if isinstance(service, eServiceReference):
+			refstr = service.toCompareString()
+		elif isinstance(service, ServiceReference):
 			refstr = service.ref.toCompareString()
 		else:
 			refstr = ':'.join(service.split(':')[:11])
 
 		# iterating is faster than using bisect+indexing to find the first relevant timer
 		for timer in self.timer_list:
-			if not timer.repeated and timer.end < startAt:
-				# skip timers that aren't in the requested range
-				# we need to try all repeat timers though
-				continue
-			if timer.begin > bailAt:
-				# exit when we hit timers that are after the requested range
-				break
-			check = timer.service_ref.ref.toCompareString() == refstr
-			if check:
-				matchType = RecordTimer.__checkTimer(timer, check_offset_time, begin, end, duration)
-				if matchType is not None:
-					returnValue = (timer, matchType)
-					if matchType in (2, 3): # When full recording or within an event do not look further
-						break
+			# repeat timers represent all their future repetitions, so always include them
+			if (startAt <= timer.end or timer.repeated) and timer.begin < endAt:
+				check = timer.service_ref.ref.toCompareString() == refstr
+				if check:
+					matchType = RecordTimer.__checkTimer(timer, check_offset_time, begin, end, duration)
+					if matchType is not None:
+						returnValue = (timer, matchType)
+						if matchType in (2, 3): # When full recording or within an event do not look further
+							break
 		return returnValue or (None, None)
 
 	@staticmethod
