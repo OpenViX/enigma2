@@ -101,15 +101,15 @@ class EventViewBase:
 		self.updateButtons()
 
 	def updateButtons(self):
-		event = self.event
-		if self.isRecording or event is None:
-			self["key_green"].setText("")
-			return
-		timer = self.session.nav.RecordTimer.getTimerForEvent(self.currentService, event)
-		if timer is not None:
-			self["key_green"].setText(_("Change Timer"))
-		else:
-			self["key_green"].setText(_("Add Timer"))
+		if hasattr(self, "key_green"):
+			if self.isRecording or self.event is None:
+				self["key_green"].setText("")
+				return
+			timer = self.session.nav.RecordTimer.getTimerForEvent(self.currentService, self.event)
+			if timer is not None:
+				self["key_green"].setText(_("Change Timer"))
+			else:
+				self["key_green"].setText(_("Add Timer"))
 
 	def editTimer(self, timer):
 		def callback(choice):
