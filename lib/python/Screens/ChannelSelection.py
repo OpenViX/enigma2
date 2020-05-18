@@ -31,7 +31,7 @@ profile("ChannelSelection.py 2.3")
 from Components.Input import Input
 profile("ChannelSelection.py 3")
 from Components.ChoiceList import ChoiceList, ChoiceEntryComponent
-from RecordTimer import RecordTimerEntry, AFTEREVENT
+from RecordTimer import RecordTimerEntry, AFTEREVENT, parseEvent
 from TimerEntry import TimerEntry, InstantRecordTimerEntry
 from Screens.InputBox import InputBox, PinInput
 from Screens.VirtualKeyBoard import VirtualKeyBoard
@@ -720,27 +720,6 @@ class SelectionEventInfo:
 		except:
 			pass
 
-def parseCurentEvent(list):
-	if len(list) >= 0:
-		list = list[0]
-		begin = list[2] - (config.recording.margin_before.value * 60)
-		end = list[2] + list[3] + (config.recording.margin_after.value * 60)
-		name = list[1]
-		description = list[5]
-		eit = list[0]
-		return begin, end, name, description, eit
-	return False
-
-def parseNextEvent(list):
-	if len(list) > 0:
-		list = list[1]
-		begin = list[2] - (config.recording.margin_before.value * 60)
-		end = list[2] + list[3] + (config.recording.margin_after.value * 60)
-		name = list[1]
-		description = list[5]
-		eit = list[0]
-		return begin, end, name, description, eit
-	return False
 
 class ChannelSelectionEPG(InfoBarButtonSetup):
 	def __init__(self):
@@ -781,14 +760,12 @@ class ChannelSelectionEPG(InfoBarButtonSetup):
 	def RecordTimerQuestion(self):
 		serviceref = ServiceReference(self.getCurrentSelection())
 		refstr = ':'.join(serviceref.ref.toString().split(':')[:11])
-		self.epgcache = eEPGCache.getInstance()
-		test = [ 'ITBDSECX', (refstr, 1, -1, 60) ] # search next 24 hours
-		self.list = [] if self.epgcache is None else self.epgcache.lookupEvent(test)
-		if len(self.list) < 2:
+		test = ["ITX", (refstr, 1, -1, 1440) ] # search next 24 hours
+		list = eEPGCache.getInstance().lookupEvent(test)
+		if list is None or len(list) < 2:
 			return
-		eventid = self.list[0][0]
-		eventidnext = self.list[1][0]
-		eventname = str(self.list[0][1])
+		eventid = list[0][0]
+		eventidnext = list[1][0]
 		if eventid is None:
 			return
 		indx = int(self.servicelist.getCurrentIndex())
@@ -815,10 +792,7 @@ class ChannelSelectionEPG(InfoBarButtonSetup):
 	def ChoiceBoxCB(self, choice):
 		self.closeChoiceBoxDialog()
 		if choice:
-			try:
-				choice()
-			except:
-				choice
+			choice()
 
 	def RemoveTimerDialogCB(self, choice):
 		self.closeChoiceBoxDialog()
@@ -845,33 +819,26 @@ class ChannelSelectionEPG(InfoBarButtonSetup):
 		self["ChannelSelectBaseActions"].setEnabled(True)
 
 	def doRecordCurrentTimer(self):
-		self.doInstantTimer(0, parseCurentEvent)
+		self.doInstantTimer(0)
 
 	def doRecordNextTimer(self):
-		self.doInstantTimer(0, parseNextEvent, True)
+		self.doInstantTimer(0, 1)
 
 	def doZapTimer(self):
-		self.doInstantTimer(1, parseNextEvent)
+		self.doInstantTimer(1)
 
 	def editTimer(self, timer):
 		self.session.open(TimerEntry, timer)
 
-	def doInstantTimer(self, zap, parseEvent, next=False):
+	def doInstantTimer(self, zap, eventIndex=0):
 		serviceref = ServiceReference(self.getCurrentSelection())
 		refstr = ':'.join(serviceref.ref.toString().split(':')[:11])
-		self.epgcache = eEPGCache.getInstance()
-		test = [ 'ITBDSECX', (refstr, 1, -1, 60) ] # search next 24 hours
-		self.list = [] if self.epgcache is None else self.epgcache.lookupEvent(test)
-		if self.list is None:
+		epgCache = eEPGCache.getInstance()
+		test = ["ITX", (refstr, 1, -1, 1440)] # search next 24 hours
+		list = epgCache.lookupEvent(test)
+		if list is None or eventIndex >= len(list):
 			return
-		if not next:
-			eventid = self.list[0][0]
-			eventname = str(self.list[0][1])
-		else:
-			if len(self.list) < 2:
-				return
-			eventid = self.list[1][0]
-			eventname = str(self.list[1][1])
+		eventid, eventname = list[eventIndex]
 		if eventid is None:
 			return
 		indx = int(self.servicelist.getCurrentIndex())
@@ -883,22 +850,26 @@ class ChannelSelectionEPG(InfoBarButtonSetup):
 		temp = int(self.servicelist.instance.position().y())+int(self.servicelist.instance.size().height())
 		if int(sely) >= temp:
 			sely = int(sely) - int(self.listHeight)
+
 		for timer in self.session.nav.RecordTimer.timer_list:
 			if timer.eit == eventid and ':'.join(timer.service_ref.ref.toString().split(':')[:11]) == refstr:
-				if not next:
+				if eventIndex == 0:
+					# Now
 					cb_func = lambda ret: self.removeTimer(timer)
 					menu = [(_("Yes"), 'CALLFUNC', cb_func), (_("No"), 'CALLFUNC', self.ChoiceBoxCB)]
 					self.ChoiceBoxDialog = self.session.instantiateDialog(MessageBox, text=_('Do you really want to remove the timer for %s?') % eventname, list=menu, skin_name="RemoveTimerQuestion", picon=False)
 				else:
+					# Next
 					cb_func1 = lambda ret: self.removeTimer(timer)
 					cb_func2 = lambda ret: self.editTimer(timer)
-					menu = [(_("Delete timer"), 'CALLFUNC', self.RemoveTimerDialogCB, cb_func1), (_("Edit timer"), 'CALLFUNC', self.RemoveTimerDialogCB, cb_func2)]
+					menu = [(_("Delete Timer"), 'CALLFUNC', self.RemoveTimerDialogCB, cb_func1), (_("Edit Timer"), 'CALLFUNC', self.RemoveTimerDialogCB, cb_func2)]
 					self.ChoiceBoxDialog = self.session.instantiateDialog(ChoiceBox, title=_("Select action for timer %s:") % eventname, list=menu, keys=['green', 'blue'], skin_name="RecordTimerQuestion")
 					self.ChoiceBoxDialog.instance.move(ePoint(selx-self.ChoiceBoxDialog.instance.size().width(),self.instance.position().y()+sely))
 				self.showChoiceBoxDialog()
 				break
 		else:
-			newEntry = RecordTimerEntry(serviceref, checkOldTimers = True, dirname = preferredTimerPath(), *parseEvent(self.list))
+			event = epgCache.lookupEventId(serviceref.ref, eventid)
+			newEntry = RecordTimerEntry(serviceref, checkOldTimers = True, dirname = preferredTimerPath(), *parseEvent(event, service=serviceref))
 			if not newEntry:
 				return
 			self.InstantRecordDialog = self.session.instantiateDialog(InstantRecordTimerEntry, newEntry, zap)

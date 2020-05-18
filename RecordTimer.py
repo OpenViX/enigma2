@@ -36,21 +36,35 @@ from sys import maxint
 import threading
 write_lock = threading.Lock()
 
-# parses an event, and gives out a (begin, end, name, duration, eit)-tuple.
-# begin and end will be corrected
-def parseEvent(ev, description = True):
+# Parses an event, and returns a (begin, end, name, duration, eit)-tuple.
+# begin and end include padding (if set in config)
+# If service is supplied, end will also include any split program spanning adjustment (if set in config)
+def parseEvent(event, description=True, service=None):
 	if description:
-		name = ev.getEventName()
-		description = ev.getShortDescription()
+		name = event.getEventName()
+		description = event.getShortDescription()
 		if description == "":
-			description = ev.getExtendedDescription()
+			description = event.getExtendedDescription()
 	else:
 		name = ""
 		description = ""
-	begin = ev.getBeginTime()
-	end = begin + ev.getDuration()
-	eit = ev.getEventId()
+	begin = event.getBeginTime()
+	end = begin + event.getDuration()
+	eit = event.getEventId()
 	begin -= config.recording.margin_before.value * 60
+
+	if service is not None and config.recording.split_programme_minutes.value > 0:
+		# check for events split by, for example, silly 5 minute entertainment news
+		test = ['IX', (service.ref.toString(), 0, event.getBeginTime(), 300)]
+		epgCache =  eEPGCache.getInstance()
+		query = epgCache.lookupEvent(test)
+		additionalEvents = [epgCache.lookupEventId(service.ref, item[0]) for item in query[1:3]]
+		if (len(additionalEvents) == 2 and
+			event.getEventName() == additionalEvents[1].getEventName() and
+			event.getShortDescription() == additionalEvents[1].getShortDescription() and
+			additionalEvents[0].getDuration() <= config.recording.split_programme_minutes.value * 60):
+			end = additionalEvents[1].getBeginTime() + additionalEvents[1].getDuration()
+
 	end += config.recording.margin_after.value * 60
 	return (begin, end, name, description, eit)
 
@@ -1287,6 +1301,16 @@ class RecordTimer(timer.Timer):
 					return 1 if xend < end2 else 3
 		return None
 
+	# given a service and event, returns a timer matching the timespan or 
+	def getTimerForEvent(self, service, event):
+		timer, matchType = self.isInTimer(service, event.getBeginTime(), event.getDuration())
+		if matchType in (2, 3):
+			return timer
+		# found a timer and it's on the same service
+		if timer is not None and timer.eit == event.getEventId():
+			return timer
+		return None
+
 	# matchType values can be:
 	# 0 last part of event
 	# 1 first part of event
@@ -1298,9 +1322,7 @@ class RecordTimer(timer.Timer):
 		end = begin + duration
 		startAt = begin - config.recording.margin_before.value * 60
 		endAt = end + config.recording.margin_after.value * 60
-		if isinstance(service, eServiceReference):
-			refstr = service.toCompareString()
-		elif isinstance(service, ServiceReference):
+		if isinstance(service, ServiceReference):
 			refstr = service.ref.toCompareString()
 		else:
 			refstr = ':'.join(service.split(':')[:11])

@@ -446,7 +446,7 @@ class SecondInfoBar(Screen):
 				self.session.openWithCallback(cb_func, MessageBox, _("Do you really want to delete %s?") % event.getEventName())
 				break
 		else:
-			newEntry = RecordTimerEntry(self.currentService, checkOldTimers = True, dirname = preferredTimerPath(), *parseEvent(self.event))
+			newEntry = RecordTimerEntry(self.currentService, checkOldTimers = True, dirname = preferredTimerPath(), *parseEvent(self.event, service=serviceref))
 			self.session.openWithCallback(self.finishedAdd, TimerEntry, newEntry)
 
 	def finishedAdd(self, answer):
@@ -2990,13 +2990,13 @@ class InfoBarInstantRecord:
 		self.session.openWithCallback(confirm, MessageBox, msg, MessageBox.TYPE_YESNO)
 
 	def getProgramInfoAndEvent(self, info, name):
-		info["serviceref"] = hasattr(self, "SelectedInstantServiceRef") and self.SelectedInstantServiceRef or self.session.nav.getCurrentlyPlayingServiceOrGroup()
+		service = hasattr(self, "SelectedInstantServiceRef") and self.SelectedInstantServiceRef or self.session.nav.getCurrentlyPlayingServiceOrGroup()
 
 		# try to get event info
 		event = None
 		try:
 			epg = eEPGCache.getInstance()
-			event = epg.lookupEventTime(info["serviceref"], -1, 0)
+			event = epg.lookupEventTime(service, -1, 0)
 			if event is None:
 				if hasattr(self, "SelectedInstantServiceRef") and self.SelectedInstantServiceRef:
 					service_info = eServiceCenter.getInstance().info(self.SelectedInstantServiceRef)
@@ -3007,13 +3007,14 @@ class InfoBarInstantRecord:
 		except:
 			pass
 
+		info["serviceref"] = service
 		info["event"] = event
 		info["name"]  = name
 		info["description"] = ""
 		info["eventid"] = None
 
 		if event is not None:
-			curEvent = parseEvent(event)
+			curEvent = parseEvent(event, service=service)
 			info["name"] = curEvent[2]
 			info["description"] = curEvent[3]
 			info["eventid"] = curEvent[4]
