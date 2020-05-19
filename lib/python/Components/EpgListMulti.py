@@ -3,10 +3,11 @@ from time import localtime, time, strftime
 from enigma import eEPGCache, eListbox, eListboxPythonMultiContent, loadPNG, gFont, getDesktop, eRect, eSize, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_HALIGN_CENTER, RT_VALIGN_CENTER, RT_VALIGN_TOP, RT_WRAP, BT_SCALE, BT_KEEP_ASPECT_RATIO, BT_ALIGN_CENTER
 from skin import parameters
 
+from Components.EpgListBase import EPGListBase
 from Components.GUIComponent import GUIComponent
 from Components.MultiContent import MultiContentEntryText, MultiContentEntryPixmapAlphaBlend, MultiContentEntryPixmapAlphaTest
 from Components.config import config
-from EpgListBase import EPGListBase
+import NavigationInstance
 
 # Various value are in minutes, while others are in seconds.
 # Use this to remind us what is going on...
@@ -14,8 +15,8 @@ SECS_IN_MIN = 60
 
 
 class EPGListMulti(EPGListBase):
-	def __init__(self, selChangedCB=None, timer=None):
-		EPGListBase.__init__(self, selChangedCB, timer)
+	def __init__(self, session, selChangedCB=None):
+		EPGListBase.__init__(self, session, selChangedCB)
 
 		self.eventFontName = "Regular"
 		self.eventFontSize = 28 if self.isFullHd else 20
@@ -52,7 +53,7 @@ class EPGListMulti(EPGListBase):
 		width = esize.width()
 		height = esize.height()
 		fontSize = self.eventFontSize + config.epgselection.multi.eventfs.value
-		servScale, timeScale, durScale, wideScale = parameters.get("EPGMultiColumnScales", (6.5, 6.0, 4.5, 1.5))
+		servScale, timeScale, durScale, wideScale = parameters.get("EPGMultiColumnScales", (config.epgselection.multi.servicewidth.value, 6.0, 4.5, 1.5))
 		servW = int(fontSize * servScale)
 		timeW = int(fontSize * timeScale)
 		durW = int(fontSize * durScale)
@@ -97,14 +98,15 @@ class EPGListMulti(EPGListBase):
 				res.append((eListboxPythonMultiContent.TYPE_PROGRESS, r3.left(), r3.top(), r3.width(), r3.height(), percent))
 			res.append((eListboxPythonMultiContent.TYPE_TEXT, r4.left(), r4.top(), r4.width(), r4.height(), 0, RT_HALIGN_RIGHT | RT_VALIGN_CENTER, _("%s%d Min") % (prefix, remaining)))
 			width = r5.width()
-			clockTypes = self.getPixmapForEntry(service, eventId, beginTime, duration)
-			if clockTypes:
+			timer, matchType = self.session.nav.RecordTimer.isInTimer(service, beginTime, duration)
+			if timer:
 				clockSize = 25 if self.isFullHd else 21
-				width -= clockSize / 2 if clockTypes in (1, 6, 11) else clockSize
-				res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, r5.left() + width, (r5.height() - clockSize) / 2, clockSize, clockSize, self.clocks[clockTypes]))
-				if self.wasEntryAutoTimer and clockTypes in (2, 7, 12):
+				width -= clockSize / 2 if matchType == 0 else clockSize
+				timerIcon, autoTimerIcon = self.getPixmapsForTimer(timer, matchType)
+				res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, r5.left() + width, (r5.height() - clockSize) / 2, clockSize, clockSize, timerIcon))
+				if autoTimerIcon:
 					width -= clockSize + 1
-					res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, r5.left() + width, (r5.height() - clockSize) / 2, clockSize, clockSize, self.autotimericon))
+					res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, r5.left() + width, (r5.height() - clockSize) / 2, clockSize, clockSize, autoTimerIcon))
 				width -= 5
 			res.append((eListboxPythonMultiContent.TYPE_TEXT, r5.left(), r5.top(), width, r5.height(), 0, RT_HALIGN_LEFT | RT_VALIGN_CENTER, EventName))
 		return res
@@ -123,6 +125,23 @@ class EPGListMulti(EPGListBase):
 		self.list = self.queryEPG(test)
 		self.l.setList(self.list)
 		self.recalcEntrySize()
+		self.snapshotTimers(stime or time())
+
+	def snapshotTimers(self, startTime):
+		# take a snapshot of the timers relevant to the span of the grid
+		timerList = self.session.nav.RecordTimer.timer_list
+
+		self.filteredTimerList = {}
+		for x in timerList:
+			if x.end >= startTime:
+				service = ":".join(x.service_ref.ref.toString().split(':')[:11])
+				l = self.filteredTimerList.get(service)
+				if l is None:
+					self.filteredTimerList[service] = l = [x]
+				else:
+					l.append(x)
+				if x.begin > startTime + 6 * 3600:
+					break
 
 	def updateEPG(self, direction):
 		test = [x[2] and (x[0], direction, x[2]) or (x[0], direction, 0) for x in self.list]

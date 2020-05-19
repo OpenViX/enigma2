@@ -10240,7 +10240,7 @@ msgid "Show EPG..."
 msgstr "Zeige EPG..."
 
 msgid "Show Grid EPG"
-msgstr "Zeige Multi-EPG"
+msgstr "Zeige graphischen Multi-EPG"
 
 msgid "Show Log"
 msgstr "Zeige Log"

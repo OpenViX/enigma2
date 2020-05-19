@@ -123,7 +123,7 @@ class TimerList(GUIComponent, object):
 		orbpos = self.getOrbitalPos(timer.service_ref)
 		orbposWidth = getTextBoundarySize(self.instance, self.font, self.l.getItemSize(), orbpos).width()
 		res.append((eListboxPythonMultiContent.TYPE_TEXT, colX + self.satPosLeft, self.rowSplit, orbposWidth, self.itemHeight - self.rowSplit, 1, RT_HALIGN_LEFT|RT_VALIGN_TOP, orbpos))
-		res.append((eListboxPythonMultiContent.TYPE_TEXT, colX + self.iconWidth + self.iconMargin, self.rowSplit, self.satPosLeft - self.iconWidth - self.iconMargin - colX, self.itemHeight - self.rowSplit, 1, RT_HALIGN_LEFT|RT_VALIGN_TOP, state))
+		res.append((eListboxPythonMultiContent.TYPE_TEXT, colX + self.iconWidth + self.iconMargin, self.rowSplit, self.satPosLeft - self.iconWidth - self.iconMargin, self.itemHeight - self.rowSplit, 1, RT_HALIGN_LEFT|RT_VALIGN_TOP, state))
 		res.append((eListboxPythonMultiContent.TYPE_TEXT, colX + self.satPosLeft + orbposWidth, self.rowSplit, width - self.satPosLeft - orbposWidth - colX, self.itemHeight - self.rowSplit, 1, RT_HALIGN_RIGHT|RT_VALIGN_TOP, text))
 
 		line = LoadPixmap(resolveFilename(SCOPE_ACTIVE_SKIN, "div-h.png"))

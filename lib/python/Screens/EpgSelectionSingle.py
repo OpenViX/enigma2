@@ -44,7 +44,7 @@ class EPGSelectionSingle(EPGSelectionBase, EPGServiceNumberSelection, EPGService
 
 		self.timeFocus = timeFocus or time()
 
-		self["list"] = EPGListSingle(selChangedCB=self.onSelectionChanged, timer=session.nav.RecordTimer, epgConfig=config.epgselection.single)
+		self["list"] = EPGListSingle(session, selChangedCB=self.onSelectionChanged, epgConfig=config.epgselection.single)
 
 	def createSetup(self):
 		def onClose(test=None):
