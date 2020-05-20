@@ -40,7 +40,7 @@ class FeedsStatusCheck:
 				return True
 		print "[OnlineUpdateCheck][adapterAvailable] FAILED"
 		return False
-			
+
 	def NetworkUp(self, host="8.8.8.8", port=53, timeout=2): # Box can access outside the local network
 		# Avoids DNS resolution
 		# Avoids application layer (HTTP/FTP/IMAP)
@@ -49,18 +49,24 @@ class FeedsStatusCheck:
 		# Host: 8.8.8.8 (google-public-dns-a.google.com)
 		# OpenPort: 53/tcp
 		# Service: domain (DNS/TCP)
-		original_timeout = socket.getdefaulttimeout()
+		previousTimeout = socket.getdefaulttimeout()
+		socket.setdefaulttimeout(timeout)
 		try:
-			socket.setdefaulttimeout(timeout)
-			socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect((host, port))
-			socket.setdefaulttimeout(original_timeout) # reset to previous
+			sd = None
+			sd = socket.socket(socket.AF_INET, socket.SOCK_STREAM, 0)
+			sd.connect((host, port))
 			print "[OnlineUpdateCheck][NetworkUp] PASSED"
-			return True
-		except Exception as ex:
-			print "[OnlineUpdateCheck][NetworkUp] FAILED", ex.message
-			socket.setdefaulttimeout(original_timeout) # reset to previous
-			return False
-	
+			result = True
+		except Exception as err:
+			print "[OnlineUpdateCheck][NetworkUp] FAILED", err.message
+			result = False
+		finally:
+			if sd:
+				sd.shutdown(socket.SHUT_RDWR)
+				sd.close()
+		socket.setdefaulttimeout(previousTimeout)  # Reset to previous value.
+		return result
+
 	def getFeedStatus(self):
 		status = '1'
 		trafficLight = 'unknown'
