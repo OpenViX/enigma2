@@ -3497,6 +3497,7 @@ class InfoBarSubtitleSupport(object):
 		self["SubtitleSelectionAction"] = HelpableActionMap(self, "InfobarSubtitleSelectionActions",
 			{
 				"subtitleSelection": (self.subtitleSelection, _("Subtitle selection...")),
+				"subtitleShowHide": (self.toggleSubtitleShown, _("Subtitle show/hide...")),
 			})
 
 		self.selected_subtitle = None
@@ -3510,6 +3511,7 @@ class InfoBarSubtitleSupport(object):
 			self.subtitle_window = InfoBar.instance.subtitle_window
 
 		self.subtitle_window.hide()
+		self.VideoMode_window = self.session.instantiateDialog(VideoMode)
 
 		self.__event_tracker = ServiceEventTracker(screen=self, eventmap=
 			{
@@ -3562,7 +3564,7 @@ class InfoBarSubtitleSupport(object):
 		self.selected_subtitle = selectedSubtitle
 		if subtitle and self.selected_subtitle:
 			subtitle.enableSubtitles(self.subtitle_window.instance, self.selected_subtitle)
-			self.subtitle_window.show()
+			self.showSubtitles()
 			self.doCenterDVBSubs()
 		else:
 			if subtitle:
@@ -3572,6 +3574,17 @@ class InfoBarSubtitleSupport(object):
 	def restartSubtitle(self):
 		if self.selected_subtitle:
 			self.enableSubtitle(self.selected_subtitle)
+
+	def toggleSubtitleShown(self):
+		config.subtitles.show.value = not config.subtitles.show.value
+		self.VideoMode_window.setText(_("Subtitles enabled") if config.subtitles.show.value else _("Subtitles disabled"))
+		self.showSubtitles()
+
+	def showSubtitles(self):
+		if config.subtitles.show.value:
+			self.subtitle_window.show()
+		else:
+			self.subtitle_window.hide()
 
 class InfoBarServiceErrorPopupSupport:
 	def __init__(self):
