@@ -54,11 +54,14 @@ def parseEvent(event, description=True, service=None):
 	begin -= config.recording.margin_before.value * 60
 
 	if service is not None and config.recording.split_programme_minutes.value > 0:
+		# yes, we have to deal with this being a ServiceReference or an eServiceReference
+		if isinstance(service, ServiceReference):
+			service = service.ref
 		# check for events split by, for example, silly 5 minute entertainment news
-		test = ['IX', (service.ref.toString(), 0, event.getBeginTime(), 300)]
+		test = ['IX', (service.toString(), 0, event.getBeginTime(), 300)]
 		epgCache =  eEPGCache.getInstance()
 		query = epgCache.lookupEvent(test)
-		additionalEvents = [epgCache.lookupEventId(service.ref, item[0]) for item in query[1:3]]
+		additionalEvents = [epgCache.lookupEventId(service, item[0]) for item in query[1:3]]
 		if (len(additionalEvents) == 2 and
 			event.getEventName() == additionalEvents[1].getEventName() and
 			event.getShortDescription() == additionalEvents[1].getShortDescription() and
