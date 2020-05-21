@@ -1649,4 +1649,11 @@ self.instance.move(ePoint(orgpos.x() + (orgwidth - newwidth)/2, orgpos.y() + (or
 		<ePixmap pixmap="div-h.png" position="20,360" zPosition="1" size="600,2"/>
 		<widget source="lab3" render="Label" position="0,370" size="560,30" zPosition="10" font="Regular;21" halign="center" valign="center" backgroundColor="#25062748" transparent="1"/>
 	</screen>
+	<screen name="LCDClockSelector" position="center,center" size="600,430" title="Select aLCD clock">
+		<ePixmap pixmap="border_menu_300.png" position="5,50" zPosition="1" size="300,300" transparent="1" alphatest="on"/>
+		<widget name="ClockList" position="10,60" size="290,260" scrollbarMode="showOnDemand"/>
+		<widget name="Preview" position="310,50" size="280,210" alphatest="on"/>
+		<ePixmap pixmap="div-h.png" position="20,360" zPosition="1" size="600,2"/>
+		<widget source="lab3" render="Label" position="0,370" size="560,60" zPosition="10" font="Regular;21" halign="center" valign="center" backgroundColor="#25062748" transparent="1"/>
+	</screen>
 </skin>
