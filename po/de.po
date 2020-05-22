@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-06 23:32+0000\n"
-"PO-Revision-Date: 2020-05-07 09:04+0200\n"
+"POT-Creation-Date: 2020-05-19 22:22+0000\n"
+"PO-Revision-Date: 2020-05-21 20:53+0200\n"
 "Last-Translator: Ralf Biedermann <ralf.biedermann@rbsoft.de>\n"
 "Language-Team: AndyBlacburn, j-ot&Trial\n"
 "Language: de\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
-"X-Generator: Poedit 2.2.3\n"
+"X-Generator: Poedit 2.3\n"
 "X-Poedit-SourceCharset: iso-8859-15\n"
 
 #, python-format
@@ -226,6 +226,29 @@ msgstr "%-d-%b"
 msgid "%-d-%b-%Y"
 msgstr "%-d-%b-%Y"
 
+#, fuzzy
+msgid "%-d. %B %Y"
+msgstr "%-d %B %Y"
+
+msgid "%-d. %b"
+msgstr ""
+
+#, fuzzy
+msgid "%-d. %b %Y"
+msgstr "%-d %b %Y"
+
+msgid "%-d.%-m"
+msgstr ""
+
+msgid "%-d.%-m.%Y"
+msgstr ""
+
+msgid "%-d.%m"
+msgstr ""
+
+msgid "%-d.%m.%Y"
+msgstr ""
+
 msgid "%-d/%-m"
 msgstr "%-d/%-m"
 
@@ -306,6 +329,30 @@ msgstr "%A %-d-%B"
 
 msgid "%A %-d-%B-%Y"
 msgstr "%A %-d-%B-%Y"
+
+#, fuzzy
+msgid "%A %-d. %B"
+msgstr "%A %-d %B"
+
+#, fuzzy
+msgid "%A %-d. %B %Y"
+msgstr "%A %-d %B %Y"
+
+#, fuzzy
+msgid "%A %-d.%-m"
+msgstr "%A %-d/%-m"
+
+#, fuzzy
+msgid "%A %-d.%-m.%Y"
+msgstr "%A %-d/%-m/%Y"
+
+#, fuzzy
+msgid "%A %-d.%m"
+msgstr "%A %-d/%m"
+
+#, fuzzy
+msgid "%A %-d.%m.%Y"
+msgstr "%A %-d/%m/%Y"
 
 msgid "%A %-d/%-m"
 msgstr "%A %-d/%-m"
@@ -390,6 +437,30 @@ msgstr "%A %d-%B"
 
 msgid "%A %d-%B-%Y"
 msgstr "%A %d-%B-%Y"
+
+#, fuzzy
+msgid "%A %d. %B"
+msgstr "%A %d %B"
+
+#, fuzzy
+msgid "%A %d. %B %Y"
+msgstr "%A %d %B %Y"
+
+#, fuzzy
+msgid "%A %d.%-m"
+msgstr "%A %d/%-m"
+
+#, fuzzy
+msgid "%A %d.%-m.%Y"
+msgstr "%A %d/%-m/%Y"
+
+#, fuzzy
+msgid "%A %d.%m"
+msgstr "%A %d/%m"
+
+#, fuzzy
+msgid "%A %d.%m.%Y"
+msgstr "%A %d/%m/%Y"
 
 msgid "%A %d/%-m"
 msgstr "%A %d/%-m"
@@ -520,6 +591,34 @@ msgstr "%a %-d-%b"
 msgid "%a %-d-%b-%Y"
 msgstr "%a %-d-%b-%Y"
 
+#, fuzzy
+msgid "%a %-d. %B %Y"
+msgstr "%a %-d %B %Y"
+
+#, fuzzy
+msgid "%a %-d. %b"
+msgstr "%a %-d %b"
+
+#, fuzzy
+msgid "%a %-d. %b %Y"
+msgstr "%a %-d %b %Y"
+
+#, fuzzy
+msgid "%a %-d.%-m"
+msgstr "%a %-d/%-m"
+
+#, fuzzy
+msgid "%a %-d.%-m.%Y"
+msgstr "%a %-d/%-m/%Y"
+
+#, fuzzy
+msgid "%a %-d.%m"
+msgstr "%a %-d/%m"
+
+#, fuzzy
+msgid "%a %-d.%m.%Y"
+msgstr "%a %-d/%m/%Y"
+
 msgid "%a %-d/%-m"
 msgstr "%a %-d/%-m"
 
@@ -636,6 +735,34 @@ msgstr "%a %d-%b"
 
 msgid "%a %d-%b-%Y"
 msgstr "%a %d-%b-%Y"
+
+#, fuzzy
+msgid "%a %d. %B %Y"
+msgstr "%a %d %B %Y"
+
+#, fuzzy
+msgid "%a %d. %b"
+msgstr "%a %d %b"
+
+#, fuzzy
+msgid "%a %d. %b %Y"
+msgstr "%a %d %b %Y"
+
+#, fuzzy
+msgid "%a %d.%-m"
+msgstr "%a %d/%-m"
+
+#, fuzzy
+msgid "%a %d.%-m.%Y"
+msgstr "%a %d/%-m/%Y"
+
+#, fuzzy
+msgid "%a %d.%m"
+msgstr "%a %d/%m"
+
+#, fuzzy
+msgid "%a %d.%m.%Y"
+msgstr "%a %d/%m/%Y"
 
 msgid "%a %d/%-m"
 msgstr "%a %d/%-m"
@@ -835,9 +962,35 @@ msgstr "%d-%b"
 msgid "%d-%b-%Y"
 msgstr "%d-%b-%Y"
 
+#, fuzzy
+msgid "%d. %B %Y"
+msgstr "%d %B %Y"
+
+msgid "%d. %b"
+msgstr ""
+
+#, fuzzy
+msgid "%d. %b %Y"
+msgstr "%d %b %y"
+
+msgid "%d.%-m"
+msgstr ""
+
+#, fuzzy
+msgid "%d.%-m.%Y"
+msgstr "%d.%B %Y"
+
 #, python-format
 msgid "%d.%03d GB"
 msgstr "%d.%03d GB"
+
+#, fuzzy
+msgid "%d.%m"
+msgstr "%d.%B %Y"
+
+#, fuzzy
+msgid "%d.%m.%Y"
+msgstr "%d.%B %Y"
 
 msgid "%d/%-m"
 msgstr "%d/%-m"
@@ -1897,6 +2050,11 @@ msgstr ""
 msgid "Are you sure you want to delete all the selected logs:\n"
 msgstr "Bist Du sicher das alle gewählten Log-Dateien gelöscht werden sollen:\n"
 
+msgid "Are you sure you want to delete image:"
+msgstr ""
+"Bist Du sicher das dieses gelöscht werden soll:\n"
+" "
+
 msgid "Are you sure you want to delete the EPG data from:\n"
 msgstr "Bist Du sicher das die EPG Daten von diesem Ort gelöscht werden sollen:\n"
 
@@ -2581,6 +2739,9 @@ msgstr "Auswahl abbrechen"
 msgid "Cancelled upon user request"
 msgstr "Auf Benutzerwunsch abgebrochen"
 
+msgid "Cannot delete current image"
+msgstr "Kann aktuelles Image nicht löschen"
+
 msgid "Cannot delete file"
 msgstr "Kann Datei nicht löschen"
 
@@ -2592,6 +2753,9 @@ msgstr "Kann kein Signal finden..., Abbruch!"
 
 msgid "Cannot move to the trash can"
 msgstr "Die Datei konnte nicht in den Mülleimer verschoben werden"
+
+msgid "Cannot reboot to deleted image"
+msgstr "Kann nicht neu starten um Image zu löschen"
 
 msgid "Capabilities: "
 msgstr "Fähigkeiten: "
@@ -2667,9 +2831,6 @@ msgstr "Diese Option erlaubt die Konfiguration der Farbmetrik für HDR"
 
 msgid "Change the Colorspace from Auto to RGB"
 msgstr "Diese Option erlaubt es den Farbraum von Auto auf RGB zu stellen"
-
-msgid "Change timer"
-msgstr "Timer ändern"
 
 msgid "Change to service"
 msgstr "Zu Kanal wechseln"
@@ -3104,6 +3265,9 @@ msgstr "Konfiguriere ob hinter Untertiteln  der Hintergrund gezeigt werden."
 msgid "Configure if picons will be shown in the service list."
 msgstr "Konfigurieren ob und wie PIcons in der Senderliste gezeigt werden."
 
+msgid "Configure if picons will be shown in the timer list."
+msgstr "Konfigurieren ob und wie PIcons in der Senderliste gezeigt werden."
+
 msgid "Configure if service picons will be shown in the channel selection list."
 msgstr "Konfigurieren ob Sender-Icons in der Senderliste gezeigt werden."
 
@@ -3426,8 +3590,8 @@ msgstr "Kontrast"
 msgid "Control LED can be turned on or off here."
 msgstr "Kontroll-LED kann hier an- und ausgeschaltet werden."
 
-msgid "Control of the position how finished timers are shown in the Timer List."
-msgstr "Wie sollen abgeschlossene Timer in der Liste angezeigt werden."
+msgid "Control how finished timers are shown in the timer list. If set to hide, disabled timers will still be shown"
+msgstr "Wie sollen abgeschlossene Timer in der Liste angezeigt werden. Wenn versteckt werden deaktivierte Timer trotzdem angezeigt."
 
 msgid "Converting ext3 to ext4..."
 msgstr "Wandle Dateisystem ext3 in ext4 um..."
@@ -3510,10 +3674,10 @@ msgid "Creating directory %s failed."
 msgstr "Erzeugen des Verzeichnisses %s fehlgeschlagen."
 
 msgid "Creating filesystem."
-msgstr "Dateisystem erstellen"
+msgstr "Dateisystem erstellen."
 
 msgid "Creating partition."
-msgstr "Partition erstellen"
+msgstr "Partition erstellen."
 
 msgid "Croatia"
 msgstr "Kroatien"
@@ -3579,7 +3743,7 @@ msgstr "Derzeitige Version:"
 msgid "Custom"
 msgstr "Benutzerdefiniert"
 
-msgid "Custom skip time for '1''3' buttons"
+msgid "Custom skip time for '1'/'3' buttons"
 msgstr "Gewünschte Sprungzeit für '1'/'3'-Tasten"
 
 msgid "Custom skip time for '4'/'6' buttons"
@@ -3776,6 +3940,15 @@ msgstr "Tagesname T Monat Jahr"
 msgid "Dayname D-Month-Year"
 msgstr "Tagesname T-Monat-Jahr"
 
+msgid "Dayname D. Month Year"
+msgstr "Tagesname T Monat Jahr"
+
+msgid "Dayname D.M.Year"
+msgstr "Tagesname T/M/Jahr"
+
+msgid "Dayname D.MM.Year"
+msgstr "Tagesname T/MM/Jahr"
+
 msgid "Dayname D/M/Year"
 msgstr "Tagesname T/M/Jahr"
 
@@ -3787,6 +3960,15 @@ msgstr "Tagesname TT Monat Jahr"
 
 msgid "Dayname DD-Month-Year"
 msgstr "Tagesname TT-Monat-Jahr"
+
+msgid "Dayname DD. Month Year"
+msgstr "Tagesname TT Monat Jahr"
+
+msgid "Dayname DD.M.Year"
+msgstr "Tagesname TT/M/Jahr"
+
+msgid "Dayname DD.MM.Year"
+msgstr "Tagesname TT/MM/Jahr"
 
 msgid "Dayname DD/M/Year"
 msgstr "Tagesname TT/M/Jahr"
@@ -3988,15 +4170,15 @@ msgstr "Lösche das Zeichen links vom Cursor"
 msgid "Delete the character under the text cursor"
 msgstr "Lösche das Zeichen unter dem Cursor"
 
-msgid "Delete timer"
-msgstr "Timer löschen"
-
 msgid "Deleted"
 msgstr "Gelöscht"
 
 #, python-format
 msgid "Deleted %s!"
 msgstr "%s gelöscht!"
+
+msgid "Deleted image"
+msgstr "Image löschen"
 
 msgid "Deleted items"
 msgstr "Gelöschte Objekte"
@@ -4027,6 +4209,9 @@ msgstr "Markierung aufheben"
 
 msgid "Details for plugin: "
 msgstr "Details für Plugin: "
+
+msgid "Detect programs split by news bulletins. Choose the maximum duration in minutes to consider as a bulletin, or 0 to disable."
+msgstr "Erkennene Programmteilungen durch Nachrichten. Wähle die maximale Unterbrechungszeit in Minuten oder 0 zum Deaktiviere."
 
 msgid "Detected devices:"
 msgstr "Erkannte Geräte:"
@@ -4500,9 +4685,6 @@ msgstr "Bearbeite die DNS Einstellungen der %s %s.\n"
 #, python-format
 msgid "Edit the network configuration of your %s %s.\n"
 msgstr "Bearbeite die Netzwerk-Konfiguration der %s %s.\n"
-
-msgid "Edit timer"
-msgstr "Timer bearbeiten"
 
 msgid "Edit title"
 msgstr "Titel schneiden"
@@ -8353,7 +8535,7 @@ msgstr "Portugiesisch"
 msgid "Position"
 msgstr "Position"
 
-msgid "Position of finished Timers in the Timer list"
+msgid "Position of finished timers in timer list"
 msgstr "Position beendeter Timer in der Timerliste"
 
 msgid "Position of recording icons"
@@ -8553,6 +8735,9 @@ msgstr "Drücke OK um die Auswahl umzuschalten."
 
 msgid "Press OK, save and exit..."
 msgstr "Dürcke OK für Speichern und Verlassen..."
+
+msgid "Press Reboot to switch, Delete to erase, Restore - restore all deleted."
+msgstr "Drücke Reboot zum Wechseln, Löschen zum Löschen, Wiederherstellen - alle Gelöschten wieder herstellen"
 
 msgid ""
 "Press up/down to scroll through the selected log\n"
@@ -8986,14 +9171,14 @@ msgstr "Jugendschutz beim Bouquet ausschalten"
 msgid "Remove cable services"
 msgstr "Kabelsender löschen"
 
-msgid "Remove completed timers after (days)"
-msgstr "Lösche vollendete Timer nach (Tagen)"
-
 msgid "Remove currently selected title"
 msgstr "Aktuell ausgewählten Titel löschen"
 
 msgid "Remove entry"
 msgstr "Eintrag löschen"
+
+msgid "Remove finished timers after (days)"
+msgstr "Lösche vollendete Timer nach (Tagen)"
 
 msgid "Remove finished."
 msgstr "Löschen beendet."
@@ -9756,6 +9941,9 @@ msgstr "Wähle Zeichen oder Aktion beim Cursor der virtuellen Tastatur"
 msgid "Select the desired function and click on \"OK\" to assign it. Use \"CH+/-\" to toggle between the lists. Select an assigned function and click on \"OK\" to de-assign it. Use \"Next/Previous\" to change the order of the assigned functions."
 msgstr "Gewünschte Funktion auswählen und \"OK\" drücken um sie zu belegen. Benutze  \"CH+/-\" um zwischen den Listen umzuschalten. Wähle zugeordnete Funktion aus und drücke  \"OK\" um die Belegung zu entfernen."
 
+msgid "Select the highlighted image and delete"
+msgstr "Benutze das gewählte Image und lösche"
+
 msgid "Select the highlighted image and reboot"
 msgstr "Benutze das gewählte Image und starte neu"
 
@@ -9815,6 +10003,9 @@ msgstr "Wähle den Typ von LNB/Gerät das benutzt wird (normalerweise 'Universal
 
 msgid "Select the type of Single Cable Reception device you are using."
 msgstr "Wähle den Unicable Type den Du benutzt."
+
+msgid "Select to restore all deleted images"
+msgstr "Wähle Wiederherstellen um alle gelöschten Images wieder herzustellen."
 
 msgid "Select upgrade source"
 msgstr "Wähle eine Update-Quelle"
@@ -10437,6 +10628,9 @@ msgstr "Zeige PIcon in der Senderliste"
 msgid "Show picons in the movie list."
 msgstr "Zeige PIcon in der Filmliste."
 
+msgid "Show picons in timer list"
+msgstr "Zeige PIcon in der Senderliste"
+
 msgid "Show positioner movement"
 msgstr "Zeige Rotorbewegung"
 
@@ -10892,6 +11086,9 @@ msgstr "Spezial 2"
 
 msgid "Speed:"
 msgstr "Geschwindigkeit:"
+
+msgid "Split event detection (minutes)"
+msgstr "Erkennung von Unterbrechungen in Minuten"
 
 msgid "Split preview mode"
 msgstr "Splitscreen für Vorschau-Modus"
@@ -12570,9 +12767,6 @@ msgstr "Alternativen oder konventionellen Radio-Modus benutzen."
 msgid "Use the alternative screen"
 msgstr "Eine kleine, einfachere Darstellung benutzen"
 
-msgid "Use the cursor keys to select an installed image and then Reboot button."
-msgstr "Benutze Cursortasten um ein installiertes Image zu wählen und dann den Neustart Button."
-
 msgid ""
 "Use the deletion time to sort Trash directories.\n"
 "Most recently deleted at the top."
@@ -12888,10 +13082,10 @@ msgid "Waiting"
 msgstr "Warte"
 
 msgid "Waiting for mount."
-msgstr "Warte auf einhängen"
+msgstr "Warte auf einhängen."
 
 msgid "Waiting for partition."
-msgstr "Warte auf Partition"
+msgstr "Warte auf Partition."
 
 msgid "Wake On LAN"
 msgstr "WakeOnLan"
@@ -13870,7 +14064,7 @@ msgid "boot time"
 msgstr "Startzeit"
 
 msgid "boot time and local time"
-msgstr ""
+msgstr "Startzeit und lokale Zeit"
 
 msgid "bottom"
 msgstr "Unten"
@@ -15047,9 +15241,6 @@ msgstr "umgeschaltet"
 #~ msgid "%d.%02d. %02d:%02d"
 #~ msgstr "%d.%02d. %02d:%02d"
 
-#~ msgid "%d.%B %Y"
-#~ msgstr "%d.%B %Y"
-
 #~ msgid "%k:%M %e/%m"
 #~ msgstr "%k:%M %e/%m"
 
@@ -15134,6 +15325,9 @@ msgstr "umgeschaltet"
 
 #~ msgid "Box or driver is not support Quad PiP."
 #~ msgstr "Receiver oder Treiber unterstützt Quad PiP nicht."
+
+#~ msgid "Change timer"
+#~ msgstr "Timer ändern"
 
 #~ msgid "Change to bouquet"
 #~ msgstr "Zu Favoritenliste wechseln"
@@ -15369,6 +15563,9 @@ msgstr "umgeschaltet"
 #~ msgid "Delete Password"
 #~ msgstr "Lösche Passwort"
 
+#~ msgid "Delete timer"
+#~ msgstr "Timer löschen"
+
 #~ msgid "Device Information"
 #~ msgstr "Geräteinformation"
 
@@ -15452,6 +15649,9 @@ msgstr "umgeschaltet"
 
 #~ msgid "Edit Quad Channel Entry"
 #~ msgstr "Bearbeite Quad PiP Kanaleintrag"
+
+#~ msgid "Edit timer"
+#~ msgstr "Timer bearbeiten"
 
 #~ msgid "Enable FastZapping"
 #~ msgstr "Aktiviere schnelles Umschalten"
@@ -16164,6 +16364,9 @@ msgstr "umgeschaltet"
 
 #~ msgid "Use first 'x' filename's chars for virtual keyboard"
 #~ msgstr "Benutze die ersten 'x' Buchstaben des Dateinamens für die virtuelle Tastatur"
+
+#~ msgid "Use the cursor keys to select an installed image and then Reboot button."
+#~ msgstr "Benutze Cursortasten um ein installiertes Image zu wählen und dann den Neustart Button."
 
 #~ msgid "Video Enhancement Settings"
 #~ msgstr "Bildoptimierung Einstellungen"
