@@ -14,6 +14,7 @@ from Tools.BoundFunction import boundFunction
 from ServiceReference import ServiceReference
 from enigma import eServiceReference, eActionMap
 from Components.Label import Label
+import os
 
 ButtonSetupKeys = [	(_("Red"), "red", "Infobar/openSingleServiceEPG/1"),
 	(_("Red long"), "red_long", "Infobar/activateRedButton"),
@@ -157,6 +158,10 @@ def getButtonSetupFunctions():
 	if SystemInfo["LcdLiveTV"]:
 		ButtonSetupFunctions.append((_("Toggle LCD LiveTV"), "Infobar/ToggleLCDLiveTV", "InfoBar"))
 	ButtonSetupFunctions.append((_("Do nothing"), "Void", "InfoBar"))
+	if os.path.isdir("/usr/script"):
+		for x in [x for x in os.listdir("/usr/script") if x.endswith(".sh")]:
+			x = x[:-3]
+			ButtonSetupFunctions.append((_("Script") + " " + x, "Script/" + x, "Scripts"))
 	ButtonSetupFunctions.append((_("Button setup"), "Module/Screens.ButtonSetup/ButtonSetup", "Setup"))
 	ButtonSetupFunctions.append((_("Software update"), "Module/Screens.SoftwareUpdate/UpdatePlugin", "Setup"))
 	ButtonSetupFunctions.append((_("CI (Common Interface) Setup"), "Module/Screens.Ci/CiSelection", "Setup"))
@@ -546,6 +551,10 @@ class InfoBarButtonSetup():
 				moviepath = defaultMoviePath()
 				if moviepath:
 					config.movielist.last_videodir.value = moviepath
+			elif selected[0] == "Script":
+				command = '/usr/script/' + selected[1] + ".sh"
+				from Screens.Console import Console
+				exec "self.session.open(Console,_(selected[1]),[command])"
 			elif selected[0] == "Menu":
 				from Screens.Menu import MainMenu, mdom
 				root = mdom.getroot()
