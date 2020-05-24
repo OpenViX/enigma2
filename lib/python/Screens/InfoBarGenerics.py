@@ -3002,8 +3002,9 @@ class InfoBarInstantRecord:
 					service_info = eServiceCenter.getInstance().info(self.SelectedInstantServiceRef)
 					event = service_info and service_info.getEvent(self.SelectedInstantServiceRef)
 				else:
-					service = self.session.nav.getCurrentService()
-					event = service and service.info().getEvent(0)
+					# note that this is not an eServiceReference object
+					iService = self.session.nav.getCurrentService()
+					event = iService and iService.info().getEvent(0)
 		except:
 			pass
 
