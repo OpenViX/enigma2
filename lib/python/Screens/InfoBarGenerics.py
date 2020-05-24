@@ -1661,7 +1661,18 @@ class InfoBarEPG:
 		self.session.openWithCallback(self.epgClosed, epgType, self.zapToService, startBouquet, startRef, bouquets)
 
 	def epgClosed(self, *args):
-		if len(args) == 1:
+		if len(args) == 2 and args[0] == "Infobar":
+			# execute one of the infobar actions
+			action = getattr(self, args[1], None)
+			if action:
+				action()
+			else:
+				print "[UserDefinedButtons] Missing action method", actionName
+		if len(args) == 6 and args[0] == "open":
+			# open another EPG screen
+			self.session.openWithCallback(self.epgClosed, args[1], self.zapToService, 
+				args[2], args[3], args[4], args[5])
+		elif len(args) == 1:
 			if args[0] == 'reopengrid':
 				self.openGridEPG()
 			elif args[0] == 'reopeninfobar':

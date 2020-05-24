@@ -66,7 +66,10 @@ okActions = [
 infoActions = [
 	("", _("Do nothing")),
 	("openEventView", _("Event Info"), _("Show detailed event info")),
-	("openSingleEPG", _("Single EPG"), _("Show Single EPG"))
+	("openSingleEPG", _("Single EPG"), _("Show Single EPG")),
+	("switchToSingleEPG", _("Switch to Single EPG")),
+	("switchToGridEPG", _("Switch to Grid EPG")),
+	("switchToMultiEPG", _("Switch to Multi EPG"))
 ]
 
 channelUpActions = [
@@ -199,6 +202,24 @@ class EPGSelectionBase(Screen, HelpableScreen):
 		event, service = self["list"].getCurrent()[:2]
 		if service is not None and service.ref is not None:
 			self.session.open(EPGSelectionChannel, service.ref, time() if event is None else event.getBeginTime())
+
+	def switchToSingleEPG(self):
+		from Screens.EpgSelectionSingle import EPGSelectionSingle
+		event, service = self["list"].getCurrent()[:2]
+		if service is not None and service.ref is not None:
+			self.close("open", EPGSelectionSingle, self.getCurrentBouquet(), service.ref, self.bouquets, time() if event is None else event.getBeginTime())
+
+	def switchToGridEPG(self):
+		from Screens.EpgSelectionGrid import EPGSelectionGrid
+		event, service = self["list"].getCurrent()[:2]
+		if service is not None and service.ref is not None:
+			self.close("open", EPGSelectionGrid, self.getCurrentBouquet(), service.ref, self.bouquets, time() if event is None else event.getBeginTime())
+
+	def switchToMultiEPG(self):
+		from Screens.EpgSelectionMulti import EPGSelectionMulti
+		event, service = self["list"].getCurrent()[:2]
+		if service is not None and service.ref is not None:
+			self.close("open", EPGSelectionMulti, self.getCurrentBouquet(), service.ref, self.bouquets, time() if event is None else event.getBeginTime())
 
 	def openIMDb(self):
 		self.closeEventViewDialog()
