@@ -97,32 +97,14 @@ class BouquetSelector(Screen):
 
 
 class EpgBouquetSelector(BouquetSelector):
-	def __init__(self, session, bouquets, selectedFunc, enableWrapAround=False):
-		BouquetSelector.__init__(self, session, bouquets, selectedFunc, enableWrapAround=False)
+	def __init__(self, session, bouquets, enableWrapAround=False):
+		BouquetSelector.__init__(self, session, bouquets, None, enableWrapAround=False)
 		self.skinName = "BouquetSelector"
 		self.bouquets=bouquets
 
 	def okbuttonClick(self):
-		self.selectedFunc(self.getCurrent(),self.bouquets)
+		self.close(True, self.getCurrent(), self.bouquets)
 
-
-class SilentBouquetSelector:
-	def __init__(self, bouquets, enableWrapAround=False, current=0):
-		self.bouquets = [b[1] for b in bouquets]
-		self.pos = current
-		self.count = len(bouquets)
-		self.enableWrapAround = enableWrapAround
-
-	def up(self):
-		if self.pos > 0 or self.enableWrapAround:
-			self.pos = (self.pos - 1) % self.count
-
-	def down(self):
-		if self.pos < (self.count - 1) or self.enableWrapAround:
-			self.pos = (self.pos + 1) % self.count
-
-	def getCurrent(self):
-		return self.bouquets[self.pos]
 
 # csel.bouquet_mark_edit values
 OFF = 0
