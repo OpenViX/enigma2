@@ -7,6 +7,7 @@ from Components.PluginComponent import plugins
 from Plugins.Plugin import PluginDescriptor
 from Tools.BoundFunction import boundFunction
 from Tools.StbHardware import getFPWasTimerWakeup
+from Tools.Alternatives import ResolveCiAlternative
 from Tools import Notifications
 from time import time
 import RecordTimer
@@ -171,17 +172,11 @@ class Navigation:
 		if not checkParentalControl or parentalControl.isServicePlayable(ref, boundFunction(self.playService, checkParentalControl=False, forceRestart=forceRestart, adjust=adjust)):
 			if ref.flags & eServiceReference.isGroup:
 				oldref = self.currentlyPlayingServiceReference or eServiceReference()
-				if config.misc.use_ci_assignment.value:
-					def ResolveCiAlternative(ref):
-						serviceList = self.ServiceHandler and self.ServiceHandler.list(ref)
-						if serviceList:
-							for service in serviceList.getContent("R"):
-								if isPlayableForCur(service):
-									return service
-						return None
-					playref = ResolveCiAlternative(ref)
-				else:
-					playref = getBestPlayableServiceReference(ref, oldref)
+				playref = getBestPlayableServiceReference(ref, oldref)
+				if playref and config.misc.use_ci_assignment.value and not isPlayableForCur(playref):
+					alternative_ci_ref = ResolveCiAlternative(ref, playref)
+					if alternative_ci_ref:
+						playref = alternative_ci_ref
 				print "[Navigation] alternative ref: ", playref and playref.toString()
 				if playref and oldref and playref == oldref and not forceRestart:
 					print "[Navigation] ignore request to play already running service(2)"
