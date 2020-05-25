@@ -32,9 +32,12 @@ class EPGListBase(GUIComponent):
 			loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock_zaprec.png"))
 		]
 		self.selclocks = [
-			loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock_selpre.png")),
-			loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock_selpost.png")),
-			loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock_selprepost.png"))
+			loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock_selpre.png")) or self.clocks[0],
+			loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock_selpost.png")) or self.clocks[1],
+			loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock_selprepost.png")) or self.clocks[2],
+			self.clocks[3],
+			self.clocks[4],
+			self.clocks[5]
 		]
 
 		self.autotimericon = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock_autotimer.png"))
@@ -124,11 +127,12 @@ class EPGListBase(GUIComponent):
 	def getPixmapsForTimer(self, timer, matchType, selected=False):
 		if timer is None:
 			return (None, None)
+		autoTimerIcon = None
 		if matchType == 3:
-			# recording whole event
-			timerType = 2 if timer.always_zap else 1 if timer.justplay else 0
-			return self.clocks[matchType + timerType], self.autotimericon if timer.isAutoTimer else None
-		return self.selclocks[matchType] if selected else self.clocks[matchType], None
+			# recording whole event, add timer type onto pixmap lookup index
+			matchType += 2 if timer.always_zap else 1 if timer.justplay else 0
+			autoTimerIcon = self.autotimericon if timer.isAutoTimer else None
+		return self.selclocks[matchType] if selected else self.clocks[matchType], autoTimerIcon
 
 	def queryEPG(self, list):
 		return self.epgcache.lookupEvent(list)
