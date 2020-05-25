@@ -180,8 +180,6 @@ class TimerSanityCheck:
 		newTimerTunerType = None
 		cnt = 0
 		idx = 0
-		is_ci_use = 0
-		is_ci_timer_conflict = 0
 		overlaplist = []
 		is_ci_timer_conflict = False
 		ci_timer = False
