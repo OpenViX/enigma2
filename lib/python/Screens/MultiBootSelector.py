@@ -20,8 +20,7 @@ class MultiBootSelector(Screen, HelpableScreen):
 	skinTemplate = """
 	<screen title="MultiBoot Image Selector" position="center,center" size="%d,%d">
 		<widget name="config" position="%d,%d" size="%d,%d" font="Regular;%d" itemHeight="%d" scrollbarMode="showOnDemand" />
-		<widget source="options" render="Label" position="%d,e-160" size="%d,%d" font="Regular;%d" halign="center" valign="center" />
-		<widget source="description" render="Label" position="%d,e-120" size="%d,%d" font="Regular;%d" />
+		<widget source="description" render="Label" position="%d,e-100" size="%d,%d" font="Regular;%d" />
 		<widget source="key_red" render="Label" position="%d,e-50" size="%d,%d" backgroundColor="key_red" font="Regular;%d" foregroundColor="key_text" halign="center" noWrap="1" valign="center" />
 		<widget source="key_green" render="Label" position="%d,e-50" size="%d,%d" backgroundColor="key_green" font="Regular;%d" foregroundColor="key_text" halign="center" noWrap="1" valign="center" />
 		<widget source="key_yellow" render="Label" position="%d,e-50" size="%d,%d" backgroundColor="key_yellow" font="Regular;%d" foregroundColor="key_text" halign="center" noWrap="1" valign="center" />
@@ -30,7 +29,6 @@ class MultiBootSelector(Screen, HelpableScreen):
 	scaleData = [
 		800, 485,
 		10, 10, 780, 306, 24, 34,
-		10, 780, 60, 20,
 		10, 780, 30, 22,
 		10, 140, 40, 20,
 		160, 140, 40, 20,
@@ -42,14 +40,14 @@ class MultiBootSelector(Screen, HelpableScreen):
 	def __init__(self, session, *args):
 		Screen.__init__(self, session)
 		HelpableScreen.__init__(self)
+		mode12 =  _("- Mode 1 suppports Kodi, Mode 12 supports PiP.") if SystemInfo["canMode12"] else ""
 		if MultiBootSelector.skin is None:
 			# The skin template is designed for a HD screen so the scaling factor is 720.
 			MultiBootSelector.skin = MultiBootSelector.skinTemplate % tuple([x * getDesktop(0).size().height() / 720 for x in MultiBootSelector.scaleData])
-		Screen.setTitle(self, _("MultiBoot Image Selector"))
+		Screen.setTitle(self, _("MultiBoot Image Selector%s" % mode12))
 		self.tmp_dir = None
 		self["config"] = ChoiceList(list=[ChoiceEntryComponent("", ((_("Retrieving image slots - Please wait...")), "Queued"))])
-		self["options"] = StaticText(_("Mode 1 suppports Kodi, PiP may not work.\nMode 12 supports PiP, Kodi may not work.") if SystemInfo["canMode12"] else "")
-		self["description"] = StaticText(_("Press Reboot to switch, Delete to erase, Restore - restore all deleted."))
+		self["description"] = StaticText(_("Press Reboot to switch, Delete to erase, Restore - restore all deleted images."))
 		self["key_red"] = StaticText(_("Cancel"))
 		self["key_green"] = StaticText(_("Reboot"))
 		self["key_yellow"] = StaticText(_("Delete"))
@@ -73,7 +71,7 @@ class MultiBootSelector(Screen, HelpableScreen):
 		}, -1, description=_("MultiBootSelector Actions"))
 		self.imagedict = []
 		self.tmp_dir = tempfile.mkdtemp(prefix="MultibootSelector")
-		Console().ePopen('mount %s %s' % (SystemInfo["MBbootdevice"], self.tmp_dir))
+		Console().ePopen("mount %s %s" % (SystemInfo["MBbootdevice"], self.tmp_dir))
 		self.callLater(self.getImagelist)
 
 
@@ -148,7 +146,7 @@ class MultiBootSelector(Screen, HelpableScreen):
 		self.getImagelist()
 
 	def cancel(self, value=None):
-		Console().ePopen('umount %s' % self.tmp_dir)
+		Console().ePopen("umount %s" % self.tmp_dir)
 		if not path.ismount(self.tmp_dir):
 			rmdir(self.tmp_dir)
 		if value == QUIT_REBOOT:
