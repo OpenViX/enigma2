@@ -28,7 +28,7 @@ from Components.config import ConfigYesNo, config
 # 	isp		ISP name				Google			string
 # 	org		Organization name			Google			string
 # 	as		AS number and organization, separated
-# 			by space (RIR). Empty for IP blocks 
+# 			by space (RIR). Empty for IP blocks
 # 			not being announced in BGP tables.	AS15169 Google Inc.	string
 # 	asname		AS name (RIR). Empty for IP blocks not
 # 			being announced in BGP tables.		GOOGLE			string
@@ -47,7 +47,7 @@ def InitGeolocation():
 	if config.misc.enableGeolocation.value:
 		if len(geolocation) == 0:
 			try:
-				response = urlopen("http://ip-api.com/json/?fields=33288191", data=None, timeout=10).read()
+				response = urlopen("http://ip-api.com/json/?fields=3326223", data=None, timeout=10).read()
 				# print "[Geolocation] DEBUG:", response
 				if response:
 					geolocation = loads(response)

@@ -628,6 +628,10 @@ import Components.AVSwitch
 Components.AVSwitch.InitAVSwitch()
 Components.AVSwitch.InitiVideomodeHotplug()
 
+profile("EpgConfig")
+import Components.EpgConfig
+Components.EpgConfig.InitEPGConfig()
+
 profile("RecordingConfig")
 import Components.RecordingConfig
 Components.RecordingConfig.InitRecordingConfig()
