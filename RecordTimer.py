@@ -73,6 +73,14 @@ def findSafeRecordPath(dirname):
 			return None
 	return dirname
 
+def checkForRecordings():
+	if NavigationInstance.instance.getRecordings():
+		return True
+	rec_time = NavigationInstance.instance.RecordTimer.getNextTimerTime(isWakeup=True)
+	if rec_time > 0 and (rec_time - time()) < 360:
+		print "another recording starts in", rec_time - time(), "seconds... do not shutdown yet"
+	return rec_time > 0 and (rec_time - time()) < 360
+
 wasRecTimerWakeup = False
 
 def createRecordTimerEntry(timer):
@@ -95,14 +103,9 @@ class RecordTimerEntry(timer.TimerEntry, object):
 	def staticGotRecordEvent(recservice, event):
 		if event == iRecordableService.evEnd:
 			print "RecordTimer.staticGotRecordEvent(iRecordableService.evEnd)"
-			recordings = NavigationInstance.instance.getRecordings()
-			if not recordings: # no more recordings exist
-				rec_time = NavigationInstance.instance.RecordTimer.getNextRecordingTime()
-				if rec_time > 0 and (rec_time - time()) < 360:
-					print "another recording starts in", rec_time - time(), "seconds... do not shutdown yet"
-				else:
-					print "no starting records in the next 360 seconds... immediate shutdown"
-					RecordTimerEntry.shutdown() # immediate shutdown
+			if not checkForRecordings():
+				print "no starting recordings in the next 360 seconds... immediate shutdown"
+				RecordTimerEntry.shutdown() # immediate shutdown
 		elif event == iRecordableService.evStart:
 			print "RecordTimer.staticGotRecordEvent(iRecordableService.evStart)"
 
