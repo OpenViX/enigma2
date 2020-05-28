@@ -20,34 +20,33 @@ class MultiBootSelector(Screen, HelpableScreen):
 	skinTemplate = """
 	<screen title="MultiBoot Image Selector" position="center,center" size="%d,%d">
 		<widget name="config" position="%d,%d" size="%d,%d" font="Regular;%d" itemHeight="%d" scrollbarMode="showOnDemand" />
-		<widget source="description" render="Label" position="%d,e-100" size="%d,%d" font="Regular;%d" />
-		<widget source="key_red" render="Label" position="%d,e-50" size="%d,%d" backgroundColor="key_red" font="Regular;%d" foregroundColor="key_text" halign="center" noWrap="1" valign="center" />
-		<widget source="key_green" render="Label" position="%d,e-50" size="%d,%d" backgroundColor="key_green" font="Regular;%d" foregroundColor="key_text" halign="center" noWrap="1" valign="center" />
-		<widget source="key_yellow" render="Label" position="%d,e-50" size="%d,%d" backgroundColor="key_yellow" font="Regular;%d" foregroundColor="key_text" halign="center" noWrap="1" valign="center" />
-		<widget source="key_blue" render="Label" position="%d,e-50" size="%d,%d" backgroundColor="key_blue" font="Regular;%d" foregroundColor="key_text" halign="center" noWrap="1" valign="center" />
+		<widget source="description" render="Label" position="%d,e-%d" size="%d,%d" font="Regular;%d" />
+		<widget source="key_red" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="key_red" font="Regular;%d" foregroundColor="key_text" halign="center" noWrap="1" valign="center" />
+		<widget source="key_green" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="key_green" font="Regular;%d" foregroundColor="key_text" halign="center" noWrap="1" valign="center" />
+		<widget source="key_yellow" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="key_yellow" font="Regular;%d" foregroundColor="key_text" halign="center" noWrap="1" valign="center" />
+		<widget source="key_blue" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="key_blue" font="Regular;%d" foregroundColor="key_text" halign="center" noWrap="1" valign="center" />
 	</screen>"""
 	scaleData = [
-		800, 485,
-		10, 10, 780, 306, 24, 34,
-		10, 780, 30, 22,
-		10, 140, 40, 20,
-		160, 140, 40, 20,
-		310, 140, 40, 20,
-		460, 140, 40, 20
+		900, 460,
+		10, 10, 880, 306, 24, 34,
+		10, 125, 880, 60, 22,
+		10, 50, 140, 40, 20,
+		160, 50, 140, 40, 20,
+		310, 50, 140, 40, 20,
+		460, 50, 140, 40, 20
 	]
 	skin = None
 
 	def __init__(self, session, *args):
 		Screen.__init__(self, session)
 		HelpableScreen.__init__(self)
-		mode12 =  _("- Mode 1 suppports Kodi, Mode 12 supports PiP.") if SystemInfo["canMode12"] else ""
 		if MultiBootSelector.skin is None:
 			# The skin template is designed for a HD screen so the scaling factor is 720.
 			MultiBootSelector.skin = MultiBootSelector.skinTemplate % tuple([x * getDesktop(0).size().height() / 720 for x in MultiBootSelector.scaleData])
-		Screen.setTitle(self, _("MultiBoot Image Selector%s" % mode12))
+		Screen.setTitle(self, _("MultiBoot Image Selector"))
 		self.tmp_dir = None
 		self["config"] = ChoiceList(list=[ChoiceEntryComponent("", ((_("Retrieving image slots - Please wait...")), "Queued"))])
-		self["description"] = StaticText(_("Press Reboot to switch, Delete to erase, Restore - restore all deleted images."))
+		self["description"] = StaticText(_("Press GREEN (Reboot) to switch images, YELLOW (Delete) to erase an image or BLUE (Restore) to restore all deleted images."))
 		self["key_red"] = StaticText(_("Cancel"))
 		self["key_green"] = StaticText(_("Reboot"))
 		self["key_yellow"] = StaticText(_("Delete"))
@@ -82,9 +81,9 @@ class MultiBootSelector(Screen, HelpableScreen):
 		currentimageslot = GetCurrentImage()
 		mode = GetCurrentImageMode() or 0
 		print "[MultiBootSelector] reboot1 slot:", currentimageslot
-		current = "  %s" % _("(Current image)")
+		current = "  %s" % _("(Current)")
 		slotSingle = _("Slot %s: %s%s")
-		slotMulti = _("Slot %s: %s - Mode %d%s")
+		slotMulti = _("Slot %s: %s - %s mode%s")
 		if self.imagedict:
 			indextot = 0
 			for index, x in enumerate(sorted(self.imagedict.keys())):
@@ -92,8 +91,8 @@ class MultiBootSelector(Screen, HelpableScreen):
 					self.deletedImagesExists = True
 				if self.imagedict[x]["imagename"] != _("Empty slot"):
 					if SystemInfo["canMode12"]:
-						list.insert(index, ChoiceEntryComponent("", (slotMulti % (x, self.imagedict[x]["imagename"], 1, current if x == currentimageslot and mode != 12 else ""), x)))
-						list.append(ChoiceEntryComponent("", (slotMulti % (x, self.imagedict[x]["imagename"], 12, current if x == currentimageslot and mode == 12 else ""), x + 12)))
+						list.insert(index, ChoiceEntryComponent("", (slotMulti % (x, self.imagedict[x]["imagename"], "Kodi", current if x == currentimageslot and mode != 12 else ""), x)))
+						list.append(ChoiceEntryComponent("", (slotMulti % (x, self.imagedict[x]["imagename"], "PiP", current if x == currentimageslot and mode == 12 else ""), x + 12)))
 						indextot = index + 1
 					else:
 						list.append(ChoiceEntryComponent("", (slotSingle % (x, self.imagedict[x]["imagename"], current if x == currentimageslot else ""), x)))
