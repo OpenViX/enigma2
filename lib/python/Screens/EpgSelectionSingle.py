@@ -6,15 +6,17 @@ from ServiceReference import ServiceReference
 from Components.About import about
 from Components.ActionMap import HelpableActionMap, HelpableNumberActionMap
 from Components.Button import Button
-from Components.config import ConfigClock, config, configfile
+from Components.config import config, configfile, ConfigSelection, ConfigSubsection
 from Components.EpgListSingle import EPGListSingle
-from Screens.EpgSelectionBase import EPGSelectionBase, EPGServiceNumberSelection, EPGServiceBrowse, EPGServiceZap
+from Screens.EpgSelectionBase import EPGSelectionBase, EPGServiceNumberSelection, EPGServiceBrowse, EPGServiceZap, epgActions, infoActions, okActions
 from Screens.HelpMenu import HelpableScreen
 from Screens.Setup import Setup
+from Screens.UserDefinedButtons import UserDefinedButtons
 
 
-class EPGSelectionSingle(EPGSelectionBase, EPGServiceNumberSelection, EPGServiceBrowse, EPGServiceZap):
+class EPGSelectionSingle(EPGSelectionBase, EPGServiceNumberSelection, EPGServiceBrowse, EPGServiceZap, UserDefinedButtons):
 	def __init__(self, session, zapFunc, startBouquet, startRef, bouquets, timeFocus=None):
+		UserDefinedButtons.__init__(self, config.epgselection.single, epgActions, okActions)
 		EPGSelectionBase.__init__(self, session, config.epgselection.single, startBouquet, startRef, bouquets)
 		EPGServiceNumberSelection.__init__(self)
 		EPGServiceZap.__init__(self, zapFunc)
@@ -28,8 +30,10 @@ class EPGSelectionSingle(EPGSelectionBase, EPGServiceNumberSelection, EPGService
 			"prevBouquet": (self.prevBouquet, _("Go to previous bouquet")),
 			"nextService": (self.nextService, _("Go to next channel")),
 			"prevService": (self.prevService, _("Go to previous channel")),
-			"info": (self.openEventView, _("Show detailed event info")),
-			"infolong": (self.openSingleEPG, _("Show single epg for current channel")),
+			"epg": self.helpKeyAction("epg"),
+			"epglong": self.helpKeyAction("epglong"),
+			"info": self.helpKeyAction("info"),
+			"infolong": self.helpKeyAction("infolong"),
 			"tv": (self.toggleBouquetList, _("Toggle between bouquet/epg lists")),
 			"timer": (self.openTimerList, _("Show timer list")),
 			"timerlong": (self.openAutoTimerList, _("Show autotimer list")),
@@ -52,6 +56,7 @@ class EPGSelectionSingle(EPGSelectionBase, EPGServiceNumberSelection, EPGService
 			self["list"].setFontsize()
 			self["list"].setItemsPerPage()
 			self["list"].recalcEntrySize()
+			self._updateButtonText()
 
 		self.closeEventViewDialog()
 		self.session.openWithCallback(onClose, Setup, "epgsingle")
@@ -97,3 +102,9 @@ class EPGSelectionSingle(EPGSelectionBase, EPGServiceNumberSelection, EPGService
 		config.epgselection.sort.save()
 		configfile.save()
 		self["list"].sortEPG()
+
+	def forward24Hours(self):
+		self.refreshList(self["list"].getSelectedEventStartTime() + 86400)
+
+	def back24Hours(self):
+		self.refreshList(self["list"].getSelectedEventStartTime() - 86400)

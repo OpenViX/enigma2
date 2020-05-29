@@ -105,6 +105,9 @@ class EpgBouquetSelector(BouquetSelector):
 	def okbuttonClick(self):
 		self.close(True, self.getCurrent(), self.bouquets)
 
+	def cancelClick(self):
+		self.close(False, None, None)
+
 
 # csel.bouquet_mark_edit values
 OFF = 0

@@ -1,10 +1,10 @@
 from Components.ActionMap import HelpableActionMap
 from Components.config import config
 from Components.EpgListSingle import EPGListSingle
-from Screens.EpgSelectionBase import EPGSelectionBase
+from Screens.EpgSelectionBase import EPGSelectionBase, EPGStandardButtons
 
 
-class EPGSelectionSimilar(EPGSelectionBase):
+class EPGSelectionSimilar(EPGSelectionBase, EPGStandardButtons):
 	def __init__(self, session, service, eventId):
 		EPGSelectionBase.__init__(self, session, config.epgselection.single)
 

@@ -1,11 +1,12 @@
 from Components.config import config
+from Screens.EpgSelectionBase import epgActions, infoActions, okActions
 from Screens.EpgSelectionGrid import EPGSelectionGrid
 from Screens.Setup import Setup
 
 
 class EPGSelectionInfobarGrid(EPGSelectionGrid):
 	def __init__(self, session, zapFunc, startBouquet, startRef, bouquets):
-		EPGSelectionGrid.__init__(self, session, zapFunc, startBouquet, startRef, bouquets, isInfobar=True)
+		EPGSelectionGrid.__init__(self, session, zapFunc, startBouquet, startRef, bouquets, None, True)
 		self.skinName = ["InfoBarGridEPG", "GraphicalInfoBarEPG"]
 
 	def createSetup(self):

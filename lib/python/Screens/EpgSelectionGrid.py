@@ -8,14 +8,16 @@ from Components.EpgListGrid import EPGListGrid, MAX_TIMELINES, TimelineText
 from Components.Label import Label
 from Components.Pixmap import Pixmap
 from Components.Sources.Event import Event
-from Screens.EpgSelectionBase import EPGSelectionBase, EPGBouquetSelection, EPGServiceZap
+from Screens.EpgSelectionBase import EPGSelectionBase, EPGBouquetSelection, EPGServiceZap, epgActions, infoActions, okActions
 from Screens.EventView import EventViewSimple
 from Screens.Setup import Setup
+from Screens.UserDefinedButtons import UserDefinedButtons
 
 
-class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
+class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap, UserDefinedButtons):
 	def __init__(self, session, zapFunc, startBouquet, startRef, bouquets, timeFocus=None, isInfobar=False):
-		self.epgConfig = config.epgselection.infobar if isInfobar else config.epgselection.grid
+		self.epgConfig = config.epgselection.infobar if isInfobar else config.epgselection.grid 
+		UserDefinedButtons.__init__(self, self.epgConfig, epgActions, okActions, infoActions)
 		EPGSelectionBase.__init__(self, session, self.epgConfig, startBouquet, startRef, bouquets)
 		EPGServiceZap.__init__(self, zapFunc)
 
@@ -43,6 +45,7 @@ class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 		self.updateTimelineTimer = eTimer()
 		self.updateTimelineTimer.callback.append(self.moveTimeLines)
 		self.updateTimelineTimer.start(60000)
+		
 		helpDescription = _("EPG Commands")
 		self["epgcursoractions"] = HelpableActionMap(self, "DirectionActions", {
 			"left": (self.leftPressed, _("Go to previous event")),
@@ -50,21 +53,24 @@ class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 			"up": (self.moveUp, _("Go to previous channel")),
 			"down": (self.moveDown, _("Go to next channel"))
 		}, prio=-1, description=helpDescription)
+		
 		self["epgactions"] = HelpableActionMap(self, "EPGSelectActions", {
-			"nextService": (self.forward24Hours, _("Jump forward 24 hours")),
-			"prevService": (self.back24Hours, _("Jump back 24 hours")),
+			"nextService": self.helpKeyAction("channelup"),
+			"prevService": self.helpKeyAction("channeldown"),
 			"nextBouquet": (self.nextBouquet, _("Go to next bouquet")),
 			"prevBouquet": (self.prevBouquet, _("Go to previous bouquet")),
 			"input_date_time": (self.enterDateTime, _("Go to specific date/time")),
-			"epg": (self.openSingleEPG, _("Show single epg for current channel")),
-			"info": (self.infoPressed, _("Show detailed event info")),
-			"infolong": (self.infoLongPressed, _("Show single epg for current channel")),
+			"epg": self.helpKeyAction("epg"),
+			"epglong": self.helpKeyAction("epglong"),
+			"info": self.helpKeyAction("info"),
+			"infolong": self.helpKeyAction("infolong"),
 			"tv": (self.toggleBouquetList, _("Toggle between bouquet/epg lists")),
 			"tvlong": (self.togglePIG, _("Toggle picture In graphics")),
 			"timer": (self.openTimerList, _("Show timer list")),
 			"timerlong": (self.openAutoTimerList, _("Show autotimer list")),
 			"menu": (self.createSetup, _("Setup menu"))
 		}, prio=-1, description=helpDescription)
+
 		self["input_actions"] = HelpableActionMap(self, "NumberActions", {
 			"1": (self.reduceTimeScale, _("Reduce time scale")),
 			"2": (self.prevPage, _("Page up")),
@@ -88,6 +94,7 @@ class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 				self.close("reopengrid")
 			else:
 				self.reloadConfig()
+				self._updateButtonText()
 
 		self.closeEventViewDialog()
 		self.session.openWithCallback(onClose, Setup, "epggrid")
@@ -152,18 +159,6 @@ class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 
 	def rightPressed(self):
 		self.updEvent(+1)
-
-	def infoPressed(self):
-		if config.epgselection.grid.btn_info.value == "openSingleEPG":
-			self.openSingleEPG()
-		else:
-			self.openEventView()
-
-	def infoLongPressed(self):
-		if config.epgselection.grid.btn_infolong.value == "openEventView":
-			self.openEventView()
-		else:
-			self.openSingleEPG()
 
 	def bouquetChanged(self):
 		self.setTitle(self.getCurrentBouquetName())

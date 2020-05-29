@@ -168,6 +168,10 @@ class EPGListSingle(EPGListBase):
 			self.l.invalidate()
 			self.moveToEventId(eventId)
 
+	def getSelectedEventStartTime(self):
+		x = self.l.getCurrentSelection()
+		return x and x[2]
+
 	def getSelectedEventId(self):
 		x = self.l.getCurrentSelection()
 		return x and x[1]

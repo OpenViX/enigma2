@@ -318,21 +318,45 @@
 		<item level="2" text="Channel selection" description="Choose what channel to select when the EPG opens.">config.epgselection.multi.browse_mode</item>
 		<item level="2" text="Channel preview mode" description="If set to 'yes' you can preview channels in the EPG list.">config.epgselection.multi.preview_mode</item>
 		<item level="2" text="Skip empty services" description="If set to 'yes' channels without EPG will not be shown.">config.epgselection.overjump</item>
-		<item level="2" text="OK button (short)" description="Set to what you want the button to do.">config.epgselection.multi.btn_ok</item>
-		<item level="2" text="OK button (long)" description="Set to what you want the button to do.">config.epgselection.multi.btn_oklong</item>
 		<item level="2" text="Number of rows" description="Configure the number of rows shown.">config.epgselection.multi.itemsperpage</item>
 		<item level="2" text="Event font size" description="Configure the font size relative to skin size, so 1 increases by 1 point size, and -1 decreases by 1 point size.">config.epgselection.multi.eventfs</item>
 		<item level="2" text="Service width" description="Configure the width allocated to the service name.">config.epgselection.multi.servicewidth</item>
+		<item level="2" text="Info button (short)" description="Set to what you want the button to do.">config.epgselection.multi.btn_info</item>
+		<item level="2" text="Info button (long)" description="Set to what you want the button to do.">config.epgselection.multi.btn_infolong</item>
+		<item level="2" text="EPG button (short)" description="Set to what you want the button to do.">config.epgselection.multi.btn_epg</item>
+		<item level="2" text="EPG button (long)" description="Set to what you want the button to do.">config.epgselection.multi.btn_epglong</item>
+		<item level="2" text="OK button (short)" description="Set to what you want the button to do.">config.epgselection.multi.btn_ok</item>
+		<item level="2" text="OK button (long)" description="Set to what you want the button to do.">config.epgselection.multi.btn_oklong</item>
+		<item level="2" text="Red button (short)" description="Set to what you want the button to do.">config.epgselection.multi.btn_red</item>
+		<item level="2" text="Red button (long)" description="Set to what you want the button to do.">config.epgselection.multi.btn_redlong</item>
+		<item level="2" text="Green button (short)" description="Set to what you want the button to do.">config.epgselection.multi.btn_green</item>
+		<item level="2" text="Green button (long)" description="Set to what you want the button to do.">config.epgselection.multi.btn_greenlong</item>
+		<item level="2" text="Yellow button (short)" description="Set to what you want the button to do.">config.epgselection.multi.btn_yellow</item>
+		<item level="2" text="Yellow button (long)" description="Set to what you want the button to do.">config.epgselection.multi.btn_yellowlong</item>
+		<item level="2" text="Blue button (short)" description="Set to what you want the button to do.">config.epgselection.multi.btn_blue</item>
+		<item level="2" text="Blue button (long)" description="Set to what you want the button to do.">config.epgselection.multi.btn_bluelong</item>
 	</setup>
 	<setup key="epgsingle" title="Single EPG">
 		<item level="2" text="Channel selection" description="Choose what channel to select when the EPG opens.">config.epgselection.single.browse_mode</item>
 		<item level="2" text="Channel preview mode" description="If set to 'yes' you can preview channels in the EPG list.">config.epgselection.single.preview_mode</item>
 		<item level="2" text="Skip empty services" description="If set to 'yes' channels without EPG will not be shown.">config.epgselection.overjump</item>
 		<item level="2" text="Sort list by" description="You can have the list sorted by time or alphanumerical.">config.epgselection.sort</item>
-		<item level="2" text="OK button (short)" description="Set to what you want the button to do.">config.epgselection.single.btn_ok</item>
-		<item level="2" text="OK button (long)" description="Set to what you want the button to do.">config.epgselection.single.btn_oklong</item>
 		<item level="2" text="Number of rows" description="Configure the number of rows shown.">config.epgselection.single.itemsperpage</item>
 		<item level="2" text="Event font size" description="Configure the font size relative to skin size, so 1 increases by 1 point size, and -1 decreases by 1 point size.">config.epgselection.single.eventfs</item>
+		<item level="2" text="Info button (short)" description="Set to what you want the button to do.">config.epgselection.single.btn_info</item>
+		<item level="2" text="Info button (long)" description="Set to what you want the button to do.">config.epgselection.single.btn_infolong</item>
+		<item level="2" text="EPG button (short)" description="Set to what you want the button to do.">config.epgselection.single.btn_epg</item>
+		<item level="2" text="EPG button (long)" description="Set to what you want the button to do.">config.epgselection.single.btn_epglong</item>
+		<item level="2" text="OK button (short)" description="Set to what you want the button to do.">config.epgselection.single.btn_ok</item>
+		<item level="2" text="OK button (long)" description="Set to what you want the button to do.">config.epgselection.single.btn_oklong</item>
+		<item level="2" text="Red button (short)" description="Set to what you want the button to do.">config.epgselection.single.btn_red</item>
+		<item level="2" text="Red button (long)" description="Set to what you want the button to do.">config.epgselection.single.btn_redlong</item>
+		<item level="2" text="Green button (short)" description="Set to what you want the button to do.">config.epgselection.single.btn_green</item>
+		<item level="2" text="Green button (long)" description="Set to what you want the button to do.">config.epgselection.single.btn_greenlong</item>
+		<item level="2" text="Yellow button (short)" description="Set to what you want the button to do.">config.epgselection.single.btn_yellow</item>
+		<item level="2" text="Yellow button (long)" description="Set to what you want the button to do.">config.epgselection.single.btn_yellowlong</item>
+		<item level="2" text="Blue button (short)" description="Set to what you want the button to do.">config.epgselection.single.btn_blue</item>
+		<item level="2" text="Blue button (long)" description="Set to what you want the button to do.">config.epgselection.single.btn_bluelong</item>
 	</setup>
 	<setup key="epginfobarsingle" title="Infobar Single EPG">
 		<item level="2" text="View mode" description="Choose the layout. Single channel, Graphics Grid EPG or Text Grid EPG.">config.epgselection.infobar.type_mode</item>
@@ -341,10 +365,18 @@
 		<item level="2" text="Channel preview mode" description="If set to 'yes' you can preview channels in the EPG list.">config.epgselection.infobar.preview_mode</item>
 		<item level="2" text="Skip empty services" description="If set to 'yes' channels without EPG will not be shown.">config.epgselection.overjump</item>
 		<item level="2" text="Sort list by" description="You can have the list sorted by time or alphanumerical.">config.epgselection.sort</item>
-		<item level="2" text="OK button (short)" description="Set to what you want the button to do.">config.epgselection.infobar.btn_ok</item>
-		<item level="2" text="OK button (long)" description="Set to what you want the button to do.">config.epgselection.infobar.btn_oklong</item>
 		<item level="2" text="Number of rows" description="Configure the number of rows shown.">config.epgselection.infobar.itemsperpage</item>
 		<item level="2" text="Event font size" description="Configure the font size relative to skin size, so 1 increases by 1 point size, and -1 decreases by 1 point size.">config.epgselection.infobar.eventfs</item>
+		<item level="2" text="OK button (short)" description="Set to what you want the button to do.">config.epgselection.infobar.btn_ok</item>
+		<item level="2" text="OK button (long)" description="Set to what you want the button to do.">config.epgselection.infobar.btn_oklong</item>
+		<item level="2" text="Red button (short)" description="Set to what you want the button to do.">config.epgselection.infobar.btn_red</item>
+		<item level="2" text="Red button (long)" description="Set to what you want the button to do.">config.epgselection.infobar.btn_redlong</item>
+		<item level="2" text="Green button (short)" description="Set to what you want the button to do.">config.epgselection.infobar.btn_green</item>
+		<item level="2" text="Green button (long)" description="Set to what you want the button to do.">config.epgselection.infobar.btn_greenlong</item>
+		<item level="2" text="Yellow button (short)" description="Set to what you want the button to do.">config.epgselection.infobar.btn_yellow</item>
+		<item level="2" text="Yellow button (long)" description="Set to what you want the button to do.">config.epgselection.infobar.btn_yellowlong</item>
+		<item level="2" text="Blue button (short)" description="Set to what you want the button to do.">config.epgselection.infobar.btn_blue</item>
+		<item level="2" text="Blue button (long)" description="Set to what you want the button to do.">config.epgselection.infobar.btn_bluelong</item>
 	</setup>
 	<setup key="epginfobargrid" title="Infobar Grid EPG">
 		<item level="2" text="View mode" description="Choose the layout. Single channel, Graphics Grid EPG or Text Grid EPG.">config.epgselection.infobar.type_mode</item>
@@ -352,8 +384,6 @@
 		<item level="2" text="Infobar EPG activation" description="Select how to activate the Infobar Grid EPG. This will affect Infobar behaviour" requires="InfoBarEpg">config.vixsettings.InfoBarEpg_mode</item>
 		<item level="2" text="Channel preview mode" description="If set to 'yes' you can preview channels in the EPG list.">config.epgselection.infobar.preview_mode</item>
 		<item level="2" text="Service Title mode" description="Configure to show the channel names, picons, or both in the EPG.">config.epgselection.infobar.servicetitle_mode</item>
-		<item level="2" text="OK button (short)" description="Set to what you want the button to do.">config.epgselection.infobar.btn_ok</item>
-		<item level="2" text="OK button (long)" description="Set to what you want the button to do.">config.epgselection.infobar.btn_oklong</item>
 		<item level="2" text="Skip empty services" description="If set to 'yes' channels without EPG will not be shown.">config.epgselection.overjump</item>
 		<item level="2" text="Base time" description="Choose time interval to which the graphics will be rounded off.">config.epgselection.infobar.roundto</item>
 		<item level="2" text="Primetime" description="Set to the desired primetime.">config.epgselection.infobar.primetime</item>
@@ -366,6 +396,16 @@
 		<item level="2" text="Timeline font size" description="Configure the font size relative to skin size, so 1 increases by 1 point size, and -1 decreases by 1 point size.">config.epgselection.infobar.timelinefs</item>
 		<item level="2" text="Timeline 24 Hour" description="Show time in 24 hour clock format." requires="config.usage.time.disabled">config.epgselection.infobar.timeline24h</item>
 		<item level="2" text="Time scale" description="Configure the amount of time that will be presented.">config.epgselection.infobar.prevtimeperiod</item>
+		<item level="2" text="OK button (short)" description="Set to what you want the button to do.">config.epgselection.infobar.btn_ok</item>
+		<item level="2" text="OK button (long)" description="Set to what you want the button to do.">config.epgselection.infobar.btn_oklong</item>
+		<item level="2" text="Red button (short)" description="Set to what you want the button to do.">config.epgselection.infobar.btn_red</item>
+		<item level="2" text="Red button (long)" description="Set to what you want the button to do.">config.epgselection.infobar.btn_redlong</item>
+		<item level="2" text="Green button (short)" description="Set to what you want the button to do.">config.epgselection.infobar.btn_green</item>
+		<item level="2" text="Green button (long)" description="Set to what you want the button to do.">config.epgselection.infobar.btn_greenlong</item>
+		<item level="2" text="Yellow button (short)" description="Set to what you want the button to do.">config.epgselection.infobar.btn_yellow</item>
+		<item level="2" text="Yellow button (long)" description="Set to what you want the button to do.">config.epgselection.infobar.btn_yellowlong</item>
+		<item level="2" text="Blue button (short)" description="Set to what you want the button to do.">config.epgselection.infobar.btn_blue</item>
+		<item level="2" text="Blue button (long)" description="Set to what you want the button to do.">config.epgselection.infobar.btn_bluelong</item>
 	</setup>
 	<setup key="epggrid" title="Grid EPG">
 		<item level="2" text="View mode" description="This option allows you to set the layout view (Text or Graphics).">config.epgselection.grid.type_mode</item>
@@ -375,10 +415,6 @@
 		<item level="2" text="Picture in graphics" description="If set to 'yes' shows a small TV-screen in the EPG.">config.epgselection.grid.pig</item>
 		<item level="1" text="Highlight current events" description="Enable to highlight events that are currently in progress.">config.epgselection.grid.highlight_current_events</item>
 		<item level="2" text="Service Title mode" description="Configure to show the channel names, picons, or both in the EPG.">config.epgselection.grid.servicetitle_mode</item>
-		<item level="2" text="Info button (short)" description="Set to what you want the button to do.">config.epgselection.grid.btn_info</item>
-		<item level="2" text="Info button (long)" description="Set to what you want the button to do.">config.epgselection.grid.btn_infolong</item>
-		<item level="2" text="OK button (short)" description="Set to what you want the button to do.">config.epgselection.grid.btn_ok</item>
-		<item level="2" text="OK button (long)" description="Set to what you want the button to do.">config.epgselection.grid.btn_oklong</item>
 		<item level="2" text="Skip empty services" description="If set to 'yes' channels without EPG will not be shown.">config.epgselection.overjump</item>
 		<item level="2" text="Base time" description="Choose time interval to which the graphics will be rounded off.">config.epgselection.grid.roundto</item>
 		<item level="2" text="Primetime" description="Set the desired primetime.">config.epgselection.grid.primetime</item>
@@ -396,6 +432,22 @@
 		<item level="2" text="Timeline font size" description="Configure the font size relative to skin size, so 1 increases by 1 point size, and -1 decreases by 1 point size.">config.epgselection.grid.timelinefs</item>
 		<item level="2" text="Timeline 24 Hour" description="Show time in 24 hour clock format." requires="config.usage.time.disabled">config.epgselection.grid.timeline24h</item>
 		<item level="2" text="Time scale" description="Configure the amount of time that will be presented.">config.epgselection.grid.prevtimeperiod</item>
+		<item level="2" text="Info button (short)" description="Set to what you want the button to do.">config.epgselection.grid.btn_info</item>
+		<item level="2" text="Info button (long)" description="Set to what you want the button to do.">config.epgselection.grid.btn_infolong</item>
+		<item level="2" text="EPG button (short)" description="Set to what you want the button to do.">config.epgselection.grid.btn_epg</item>
+		<item level="2" text="EPG button (long)" description="Set to what you want the button to do.">config.epgselection.grid.btn_epglong</item>
+		<item level="2" text="OK button (short)" description="Set to what you want the button to do.">config.epgselection.grid.btn_ok</item>
+		<item level="2" text="OK button (long)" description="Set to what you want the button to do.">config.epgselection.grid.btn_oklong</item>
+		<item level="2" text="Ch+ button" description="Set to what you want the button to do.">config.epgselection.grid.btn_channelup</item>
+		<item level="2" text="Ch- button" description="Set to what you want the button to do.">config.epgselection.grid.btn_channeldown</item>
+		<item level="2" text="Red button (short)" description="Set to what you want the button to do.">config.epgselection.grid.btn_red</item>
+		<item level="2" text="Red button (long)" description="Set to what you want the button to do.">config.epgselection.grid.btn_redlong</item>
+		<item level="2" text="Green button (short)" description="Set to what you want the button to do.">config.epgselection.grid.btn_green</item>
+		<item level="2" text="Green button (long)" description="Set to what you want the button to do.">config.epgselection.grid.btn_greenlong</item>
+		<item level="2" text="Yellow button (short)" description="Set to what you want the button to do.">config.epgselection.grid.btn_yellow</item>
+		<item level="2" text="Yellow button (long)" description="Set to what you want the button to do.">config.epgselection.grid.btn_yellowlong</item>
+		<item level="2" text="Blue button (short)" description="Set to what you want the button to do.">config.epgselection.grid.btn_blue</item>
+		<item level="2" text="Blue button (long)" description="Set to what you want the button to do.">config.epgselection.grid.btn_bluelong</item>
 	</setup>
 	<setup key="pluginbrowsersetup" title="Plugin browser settings" menuTitle="Settings">
 		<item level="2" text="Show translation packages" description="If set to 'yes' it will show the 'PO' packages in browser.">config.pluginbrowser.po</item>

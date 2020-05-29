@@ -41,6 +41,44 @@ def getServiceRefStr(service):
 	return ":".join(service.ref.toString().split(":")[:11])
 
 
+epgActions = [
+	# function name, button label, help text
+	("", _("Do nothing")),
+	("openIMDb", _("IMDb Search"), _("IMDB search for current event")),
+	("sortEPG", _("Sort"), _("Sort the EPG list")),
+	("addEditTimer", _("Add Timer"), _("Add/Remove timer for current event")),
+	("openTimerList", _("Show Timer List")),
+	("openEPGSearch", _("EPG Search"), _("Search for similar events")),
+	("addAutoTimer", _("Add AutoTimer"), _("Add an autotimer for current event")),
+	("openAutoTimerList", _("AutoTimer List"), _("Show autotimer list")),
+	("forward24Hours", _("+24 hours"), _("Go forward 24 hours")),
+	("back24Hours", _("-24 hours"), _("Go back 24 hours")),
+	("openEventView", _("Event Info"), _("Show detailed event info")),
+	("openSingleEPG", _("Single EPG"), _("Show Single EPG")),
+	("showMovies", _("Recordings"), _("Show recorded movies"))
+]
+
+okActions = [
+	("zap",_("Zap")),
+	("zapExit", _("Zap + Exit"))
+]
+
+infoActions = [
+	("", _("Do nothing")),
+	("openEventView", _("Event Info"), _("Show detailed event info")),
+	("openSingleEPG", _("Single EPG"), _("Show Single EPG"))
+]
+
+channelUpActions = [
+	("forward24Hours", _("+24 hours"), _("Go forward 24 hours")),
+	("prevPage", _("Page up"))
+]
+
+channelDownActions = [
+	("back24Hours", _("-24 hours"), _("Go back 24 hours")),
+	("nextPage", _("Page down"))
+]
+
 class EPGSelectionBase(Screen, HelpableScreen):
 	lastEnteredTime = None
 	lastEnteredDate = None
@@ -74,24 +112,30 @@ class EPGSelectionBase(Screen, HelpableScreen):
 		self["key_blue"] = Button(_("Add AutoTimer"))
 
 		helpDescription = _("EPG Commands")
+
 		self["dialogactions"] = HelpableActionMap(self, "WizardActions", {
 			"back": (self.closeChoiceBoxDialog, _("Close dialog box")),
 		}, prio=-1, description=helpDescription)
 		self["dialogactions"].setEnabled(False)
+
 		self["okactions"] = HelpableActionMap(self, "OkCancelActions", {
 			"cancel": (self.closeScreen, _("Exit EPG")),
-			"OK": (ignoreLongKeyPress(self.OK), _("Zap to channel/service")),
-			"OKLong": (self.OKLong, _("Zap to channel/service and close"))
+			"OK": (self.helpKeyAction("ok")),
+			"OKLong": (self.helpKeyAction("oklong"))
 		}, prio=-1, description=helpDescription)
+
 		self["colouractions"] = HelpableActionMap(self, "ColorActions", {
-			"red": (ignoreLongKeyPress(self.openIMDb), _("IMDB search for current event")),
-			"redlong": (self.sortEPG, _("Sort the EPG list")),
-			"green": (ignoreLongKeyPress(self.addEditTimer), _("Add/Remove timer for current event")),
-			"greenlong": (self.openTimerList, _("Show timer list")),
-			"yellow": (ignoreLongKeyPress(self.openEPGSearch), _("Search for similar events")),
-			"blue": (ignoreLongKeyPress(self.addAutoTimer), _("Add an autotimer for current event")),
-			"bluelong": (self.openAutoTimerList, _("Show autotimer list"))
-		}, prio=-1, description=helpDescription)
+			"red": self.helpKeyAction("red"),
+			"redlong": self.helpKeyAction("redlong"),
+			"green": self.helpKeyAction("green"),
+			"greenlong": self.helpKeyAction("greenlong"),
+			"yellow": self.helpKeyAction("yellow"),
+			"yellowlong": self.helpKeyAction("yellowlong"),
+			"blue": self.helpKeyAction("blue"),
+			"bluelong": self.helpKeyAction("bluelong")
+		}, prio=-1, description="EPG Commands")
+		self._updateButtonText()
+
 		self["recordingactions"] = HelpableActionMap(self, "InfobarInstantRecord", {
 			"ShortRecord": (self.recordTimerQuestion, _("Add a record timer for current event")),
 			"LongRecord": (self.doZapTimer, _("Add a zap timer for current event"))
@@ -145,6 +189,10 @@ class EPGSelectionBase(Screen, HelpableScreen):
 			EPGSelectionBase.lastEnteredTime = ConfigClock(default=time())
 			EPGSelectionBase.lastEnteredDate = ConfigDateTime(default=time(), formatstring=config.usage.date.full.value, increment=86400)
 		self.session.openWithCallback(self.onDateTimeInputClosed, TimeDateInput, EPGSelectionBase.lastEnteredTime, EPGSelectionBase.lastEnteredDate)
+
+	def showMovies(self):
+		from Screens.InfoBar import InfoBar
+		InfoBar.instance.showMovies() 
 
 	def openSingleEPG(self):
 		from Screens.EpgSelectionChannel import EPGSelectionChannel
@@ -261,14 +309,14 @@ class EPGSelectionBase(Screen, HelpableScreen):
 		self.closeChoiceBoxDialog()
 		timer.afterEvent = AFTEREVENT.NONE
 		self.session.nav.RecordTimer.removeEntry(timer)
-		self["key_green"].setText(_("Add Timer"))
+		self.setActionButtonText("addEditTimer", _("Add Timer"))
 		self.refreshList()
 
 	def disableTimer(self, timer):
 		self.closeChoiceBoxDialog()
 		timer.disable()
 		self.session.nav.RecordTimer.timeChanged(timer)
-		self["key_green"].setText(_("Add Timer"))
+		self.setActionButtonText("addEditTimer", _("Add Timer"))
 		self.refreshList()
 
 	def recordTimerQuestion(self, manual=False):
@@ -376,9 +424,9 @@ class EPGSelectionBase(Screen, HelpableScreen):
 							simulTimerList = self.session.nav.RecordTimer.record(entry)
 					if simulTimerList is not None:
 						self.session.openWithCallback(self.finishSanityCorrection, TimerSanityConflict, simulTimerList)
-			self["key_green"].setText(_("Change Timer"))
+			self.setActionButtonText("addEditTimer", _("Change Timer"))
 		else:
-			self["key_green"].setText(_("Add Timer"))
+			self.setActionButtonText("addEditTimer", _("Add Timer"))
 		self.refreshList()
 
 	def finishSanityCorrection(self, answer):
@@ -392,13 +440,13 @@ class EPGSelectionBase(Screen, HelpableScreen):
 		else:
 			self["Service"].newService(service.ref)
 		if service is None or service.getServiceName() == "":
-			self["key_green"].setText("")
+			self.setActionButtonText("addEditTimer", "")
 			return
 		if event is None or event.getBeginTime() + event.getDuration() < time():
-			self["key_green"].setText("")
+			self.setActionButtonText("addEditTimer", "")
 			return
-		self["key_green"].setText(_("Change Timer") if self.session.nav.RecordTimer.getTimerForEvent(service, event) 
-			else _("Add Timer"))
+		timer = self.session.nav.RecordTimer.getTimerForEvent(service, event)
+		self.setActionButtonText("addEditTimer", _("Change Timer") if timer else _("Add Timer"))
 
 	def closeEventViewDialog(self):
 		if self.eventviewDialog:
@@ -412,18 +460,6 @@ class EPGServiceZap:
 		self.prevch = None
 		self.currch = None
 		self.zapFunc = zapFunc
-
-	def OK(self):
-		if self.epgConfig.btn_ok.value == "zap":
-			self.zap()
-		else:
-			self.zapExit()
-
-	def OKLong(self):
-		if self.epgConfig.btn_oklong.value == "zap":
-			self.zap()
-		else:
-			self.zapExit()
 
 	def zapExit(self):
 		self.zapSelectedService()
@@ -742,3 +778,29 @@ class EPGServiceBrowse(EPGBouquetSelection):
 				self.services = self.getBouquetServices(self.getCurrentBouquet())
 			self.selectedServiceIndex = len(self.services) - 1 if len(self.services) > 0 else -1
 		self.serviceChanged()
+
+
+class EPGStandardButtons:
+	def setActionButtonText(self, actionName, buttonText):
+		# only need to cater for green button
+		if actionName == "addEditTimer":
+			self["key_green"].setText(buttonText)
+
+	# build a tuple suitable for using in a helpable action
+	def helpKeyAction(self, actionName):
+		actions = {
+			"red": (ignoreLongKeyPress(self.openIMDb), _("IMDB search for current event")),
+			"redlong": (self.sortEPG, _("Sort the EPG list")),
+			"green": (ignoreLongKeyPress(self.addEditTimer), _("Add/Remove timer for current event")),
+			"greenlong": (self.openTimerList, _("Show timer list")),
+			"yellow": (ignoreLongKeyPress(self.openEPGSearch), _("Search for similar events")),
+			"yellowlong": (lambda _ : None, _("Search for similar events")),
+			"blue": (ignoreLongKeyPress(self.addAutoTimer), _("Add an autotimer for current event")),
+			"bluelong": (self.openAutoTimerList, _("Show autotimer list")),
+			"ok": (ignoreLongKeyPress(self.OK), _("Zap to channel/service")),
+			"oklong": (self.OKLong, _("Zap to channel/service and close"))
+		}
+		return actions[actionName]
+
+	def _updateButtonText(self):
+		pass
