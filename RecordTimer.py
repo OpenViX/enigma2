@@ -565,13 +565,13 @@ class RecordTimerEntry(timer.TimerEntry, object):
 				self.record_service = None
 				self.rec_ref = None
 			if not checkForRecordings():
-				if self.afterEvent == AFTEREVENT.DEEPSTANDBY or self.afterEvent == AFTEREVENT.AUTO and (Screens.Standby.inStandby or RecordTimerEntry.wasInStandby) and not config.misc.standbyCounter.value:
+				if self.afterEvent == AFTEREVENT.DEEPSTANDBY or self.afterEvent == AFTEREVENT.AUTO and (Screens.Standby.inStandby or self.wasInStandby) and not config.misc.standbyCounter.value:
 					if not Screens.Standby.inTryQuitMainloop:
 						if Screens.Standby.inStandby:
 							RecordTimerEntry.TryQuitMainloop()
 						else:
 							Notifications.AddNotificationWithCallback(self.sendTryQuitMainloopNotification, MessageBox, _("A finished record timer wants to shut down\nyour receiver. Shutdown now?"), timeout=20, default=True)
-				elif self.afterEvent == AFTEREVENT.STANDBY or self.afterEvent == AFTEREVENT.AUTO and RecordTimerEntry.wasInStandby:
+				elif self.afterEvent == AFTEREVENT.STANDBY or self.afterEvent == AFTEREVENT.AUTO and self.wasInStandby:
 					if not Screens.Standby.inStandby:
 						Notifications.AddNotificationWithCallback(self.sendStandbyNotification, MessageBox, _("A finished record timer wants to set your\nreceiver to standby. Do that now?"), timeout=20, default=True)
 				else:
