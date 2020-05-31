@@ -2,7 +2,7 @@ from enigma import RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_HALIGN_CENTER, RT_VALIGN_
 
 from config import config, ConfigClock, ConfigSelection, ConfigSelectionNumber, ConfigSubsection, ConfigYesNo, NoSave
 from Components.SystemInfo import SystemInfo
-from Screens.EpgSelectionBase import channelUpActions, channelDownActions, epgActions, infoActions, okActions
+from Screens.EpgSelectionBase import channelDownActions, channelUpActions, epgActions, infoActions, okActions
 
 
 def InitEPGConfig():
@@ -137,6 +137,7 @@ def InitEPGConfig():
 	config.epgselection.grid.piconwidth = ConfigSelectionNumber(default = 100, stepwidth = 1, min = 50, max = 500, wraparound = True)
 	config.epgselection.grid.infowidth = ConfigSelectionNumber(default = 50, stepwidth = 25, min = 0, max = 150, wraparound = True)
 	config.epgselection.grid.rec_icon_height = ConfigSelection(choices = [("bottom",_("bottom")),("top", _("top")), ("middle", _("middle")),  ("hide", _("hide"))], default = "bottom")
+	config.epgselection.grid.number_buttons_mode = ConfigSelection(choices = [("paging",_("Standard")), ("service", _("Enter service number"))], default="paging")
 	config.epgselection.grid.btn_ok = ConfigSelection(choices=okActions, default="zap")
 	config.epgselection.grid.btn_oklong = ConfigSelection(choices=okActions, default="zapExit")
 	config.epgselection.grid.btn_epg = ConfigSelection(choices=infoActions, default="openSingleEPG")
@@ -144,7 +145,7 @@ def InitEPGConfig():
 	config.epgselection.grid.btn_info = ConfigSelection(choices=infoActions, default="openEventView")
 	config.epgselection.grid.btn_infolong = ConfigSelection(choices=infoActions, default="openSingleEPG")
 	config.epgselection.grid.btn_channelup = ConfigSelection(choices=channelUpActions, default="forward24Hours")
-	config.epgselection.grid.btn_channeldown = ConfigSelection(choices=default, default="back24Hours")
+	config.epgselection.grid.btn_channeldown = ConfigSelection(choices=channelDownActions, default="back24Hours")
 	config.epgselection.grid.btn_red = ConfigSelection(choices=epgActions, default="openIMDb")
 	config.epgselection.grid.btn_redlong = ConfigSelection(choices=epgActions, default="sortEPG")
 	config.epgselection.grid.btn_green = ConfigSelection(choices=epgActions, default="addEditTimer")

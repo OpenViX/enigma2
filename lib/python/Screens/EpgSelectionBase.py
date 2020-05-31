@@ -389,8 +389,8 @@ class EPGSelectionBase(Screen, HelpableScreen):
 		self["dialogactions"].setEnabled(True)
 		self.choiceBoxDialog["actions"].execBegin()
 		self.choiceBoxDialog.show()
-		if "input_actions" in self:
-			self["input_actions"].setEnabled(False)
+		if "numberactions" in self:
+			self["numberactions"].setEnabled(False)
 
 	def closeChoiceBoxDialog(self):
 		self["dialogactions"].setEnabled(False)
@@ -403,8 +403,8 @@ class EPGSelectionBase(Screen, HelpableScreen):
 		self["colouractions"].setEnabled(True)
 		self["recordingactions"].setEnabled(True)
 		self["epgactions"].setEnabled(True)
-		if "input_actions" in self:
-			self["input_actions"].setEnabled(True)
+		if "numberactions" in self:
+			self["numberactions"].setEnabled(True)
 
 	def doRecordTimer(self):
 		self.doInstantTimer(0)
@@ -572,8 +572,8 @@ class EPGServiceNumberSelection:
 		}, prio=-1, description=_("Service/Channel number zap commands"))
 		self["numberzapokactions"].setEnabled(False)
 		helpMsg = _("Enter a number to jump to a service/channel")
-		self["input_actions"] = HelpableNumberActionMap(self, "NumberActions", 
-			dict([(str(i), (self.keyNumberGlobal, helpMsg)) for i in range(0,9)]),
+		self["numberactions"] = HelpableNumberActionMap(self, "NumberActions", 
+			dict([(str(i), (self.keyNumberGlobal, helpMsg)) for i in range(0,10)]),
 			prio=-1, description=_("Service/Channel number zap commands"))
 
 		self["zapbackground"] = Label()
@@ -595,8 +595,7 @@ class EPGServiceNumberSelection:
 			self.numberZapField = str(number)
 		else:
 			self.numberZapField += str(number)
-		from Screens.InfoBar import InfoBar
-		service, bouquet = InfoBar.instance.searchNumber(int(self.numberZapField))
+		service = self.getServiceByNumber(int(self.numberZapField))
 		self["zapbackground"].show()
 		self["zapnumber"].setText(self.numberZapField)
 		self["zapnumber"].show()
@@ -611,13 +610,11 @@ class EPGServiceNumberSelection:
 
 	def __OK(self):
 		if self.numberZapField is not None:
-			# It's preferable to reuse the InfoBar searchNumber over copying the implementation
-			from Screens.InfoBar import InfoBar
-			service, bouquet = InfoBar.instance.searchNumber(int(self.numberZapField))
+			service = self.getServiceByNumber(int(self.numberZapField))
 			if service is not None:
 				self.startRef = service
-				self.startBouquet = bouquet
-				self.onCreate()
+				self.startBouquet = self.getCurrentBouquet()
+				self.moveToService(service)
 		self.__cancel()
 
 	def __cancel(self):
@@ -759,6 +756,11 @@ class EPGBouquetSelection:
 		self.selectedServiceIndex = 0 if len(self.services) > 0 else -1
 		self.bouquetChanged()
 
+	def getServiceByNumber(self, number):
+		for service in self.services:
+			if service.ref.getChannelNum() == number:
+				return service
+		return None
 
 class EPGServiceBrowse(EPGBouquetSelection):
 	def __init__(self):
@@ -769,12 +771,15 @@ class EPGServiceBrowse(EPGBouquetSelection):
 		EPGBouquetSelection._populateBouquetList(self)
 		if len(self.services) == 0:
 			return
-		if self.startRef is None:
+		self.setCurrentService(self.startRef)
+
+	def setCurrentService(self, serviceRef):
+		if serviceRef is None:
 			self.selectedServiceIndex = 0
 		else:
 			index = 0
 			for service in self.services:
-				if service.ref == self.startRef:
+				if service.ref == serviceRef:
 					self.selectedServiceIndex = index
 					break
 				index += 1

@@ -79,6 +79,10 @@ class EPGSelectionSingle(EPGSelectionBase, EPGServiceNumberSelection, EPGService
 		else:
 			self["list"].setCurrentIndex(index)
 
+	def moveToService(self, serviceRef):
+		self.setCurrentService(serviceRef)
+		self.refreshList(self.timeFocus)
+
 	def bouquetChanged(self):
 		self.refreshList(time())
 

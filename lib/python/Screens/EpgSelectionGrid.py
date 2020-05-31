@@ -8,17 +8,18 @@ from Components.EpgListGrid import EPGListGrid, MAX_TIMELINES, TimelineText
 from Components.Label import Label
 from Components.Pixmap import Pixmap
 from Components.Sources.Event import Event
-from Screens.EpgSelectionBase import EPGSelectionBase, EPGBouquetSelection, EPGServiceZap, epgActions, infoActions, okActions
+from Screens.EpgSelectionBase import EPGSelectionBase, EPGBouquetSelection, EPGServiceNumberSelection, EPGServiceZap, epgActions, infoActions, okActions
 from Screens.EventView import EventViewSimple
 from Screens.Setup import Setup
 from Screens.UserDefinedButtons import UserDefinedButtons
 
 
-class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap, UserDefinedButtons):
+class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceNumberSelection, EPGServiceZap, UserDefinedButtons):
 	def __init__(self, session, zapFunc, startBouquet, startRef, bouquets, timeFocus=None, isInfobar=False):
 		self.epgConfig = config.epgselection.infobar if isInfobar else config.epgselection.grid 
 		UserDefinedButtons.__init__(self, self.epgConfig, epgActions, okActions, infoActions)
 		EPGSelectionBase.__init__(self, session, self.epgConfig, startBouquet, startRef, bouquets)
+		EPGServiceNumberSelection.__init__(self)
 		EPGServiceZap.__init__(self, zapFunc)
 
 		graphic = self.epgConfig.type_mode.value == "graphics"
@@ -71,25 +72,27 @@ class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap, Use
 			"menu": (self.createSetup, _("Setup menu"))
 		}, prio=-1, description=helpDescription)
 
-		self["input_actions"] = HelpableActionMap(self, "NumberActions", {
-			"1": (self.reduceTimeScale, _("Reduce time scale")),
-			"2": (self.prevPage, _("Page up")),
-			"3": (self.increaseTimeScale, _("Increase time scale")),
-			"4": (self.pageLeft, _("page left")),
-			"5": (self.goToCurrentTime, _("Jump to current time")),
-			"6": (self.pageRight, _("Page right")),
-			"7": (self.toggleNumberOfRows, _("No of items switch (increase or reduced)")),
-			"8": (self.nextPage, _("Page down")),
-			"9": (self.goToPrimeTime, _("Jump to prime time")),
-			"0": (self.goToCurrentTimeAndTop, _("Move to home of list"))
-		}, prio=-1, description=helpDescription)
+		if config.epgselection.grid.number_buttons_mode == 'paging':
+			self["numberactions"] = HelpableActionMap(self, "NumberActions", {
+				"1": (self.reduceTimeScale, _("Reduce time scale")),
+				"2": (self.prevPage, _("Page up")),
+				"3": (self.increaseTimeScale, _("Increase time scale")),
+				"4": (self.pageLeft, _("page left")),
+				"5": (self.goToCurrentTime, _("Jump to current time")),
+				"6": (self.pageRight, _("Page right")),
+				"7": (self.toggleNumberOfRows, _("No of items switch (increase or reduced)")),
+				"8": (self.nextPage, _("Page down")),
+				"9": (self.goToPrimeTime, _("Jump to prime time")),
+				"0": (self.goToCurrentTimeAndTop, _("Move to home of list"))
+			}, prio=-1, description=helpDescription)
 		self["list"] = EPGListGrid(session, isInfobar=isInfobar, selChangedCB=self.onSelectionChanged)
 		self["list"].setTimeFocus(timeFocus or time())
 
 	def createSetup(self):
 		oldPIG = config.epgselection.grid.pig.value
+		oldNumberButtonsMode = config.epgselection.grid.number_buttons_mode
 		def onClose(test=None):
-			if config.epgselection.grid.pig.value != oldPIG:
+			if oldPIG != config.epgselection.grid.pig.value or oldNumberButtonsMode != config.epgselection.grid.number_buttons_mode:
 				# skin needs changing - we have to reopen
 				self.close("reopengrid")
 			else:
@@ -134,6 +137,9 @@ class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap, Use
 		self.refreshTimer.stop()
 		self["list"].fillEPG()
 		self.moveTimeLines()
+
+	def moveToService(self, serviceRef):
+		self["list"].moveToService(serviceRef)
 
 	def getCurrentService(self):
 		service = self["list"].getCurrent()[1]
