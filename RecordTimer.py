@@ -575,7 +575,7 @@ class RecordTimerEntry(timer.TimerEntry, object):
 					if not Screens.Standby.inStandby:
 						Notifications.AddNotificationWithCallback(self.sendStandbyNotification, MessageBox, _("A finished record timer wants to set your\nreceiver to standby. Do that now?"), timeout=20, default=True)
 				else:
-					RecordTimerEntry.keypress()
+					self.keypress()
 			return True
 
 	def keypress(self, key=None, flag=1):
