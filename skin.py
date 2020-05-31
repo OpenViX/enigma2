@@ -22,6 +22,7 @@ GUI_SKIN_ID = 0  # Main frame-buffer.
 DISPLAY_SKIN_ID = 1  # Front panel / display / LCD.
 
 domScreens = {}  # Dictionary of skin based screens.
+domTemplates = {}
 colors = {  # Dictionary of skin color names.
 	"key_back": gRGB(0x00313131),
 	"key_blue": gRGB(0x0018188b),
@@ -133,6 +134,13 @@ def loadSkin(filename, scope=SCOPE_SKIN, desktop=getDesktop(GUI_SKIN_ID), screen
 							if sid is None or sid == screenID:  # If there is a screen ID is it for this display.
 								# print "[Skin] DEBUG: Extracting screen '%s' from '%s'.  (scope='%s')" % (name, filename, scope)
 								domScreens[name] = (element, "%s/" % dirname(filename))
+					elif element.tag == "template":
+						name = element.attrib.get("name", None)
+						if name:  # Without a name, it's useless!
+							sid = element.attrib.get("id", None)
+							if sid is None or sid == screenID:  # If there is a screen ID is it for this display.
+								# print "[Skin] DEBUG: Extracting screen '%s' from '%s'.  (scope='%s')" % (name, filename, scope)
+								domTemplates[name] = (element, "%s/" % dirname(filename))
 					elif element.tag == "windowstyle":  # Process the windowstyle element.
 						id = element.attrib.get("id", None)
 						if id is not None:  # Without an id, it is useless!
@@ -170,6 +178,7 @@ def loadSkin(filename, scope=SCOPE_SKIN, desktop=getDesktop(GUI_SKIN_ID), screen
 
 def reloadSkins():
 	domScreens.clear()
+	domTemplates.clear()
 	colors.clear()
 	colors = {
 		"key_back": gRGB(0x00313131),
@@ -1169,13 +1178,6 @@ def readSkin(screen, skin, names, desktop):
 
 	def processPanel(widget, context):
 		n = widget.attrib.get("name")
-		if n:
-			try:
-				s = domScreens[n]
-			except KeyError:
-				print "[Skin] Error: Unable to find screen '%s' referred in screen '%s'!" % (n, name)
-			else:
-				processScreen(s[0], context)
 		layout = widget.attrib.get("layout")
 		if layout == "stack":
 			cc = SkinContextStack
@@ -1185,7 +1187,22 @@ def readSkin(screen, skin, names, desktop):
 			c = cc(context, widget.attrib.get("position"), widget.attrib.get("size"), widget.attrib.get("font"))
 		except Exception as err:
 			raise SkinError("Failed to create skin context (position='%s', size='%s', font='%s') in context '%s': %s" % (widget.attrib.get("position"), widget.attrib.get("size"), widget.attrib.get("font"), context, err))
-		processScreen(widget, c)
+
+		if n:
+			s = domTemplates.get(n, None)
+			if s is not None:
+				# templates are loaded as if they're nested markup. Don't process any further markup
+				processScreen(s[0], c)
+			else:
+				# screens are loaded as absolutely positioned items
+				# nested markup can also be included
+				try:
+					s = domTemplates.get(n, None) or domScreens[n]
+				except KeyError:
+					print "[Skin] Error: Unable to find screen or template '%s' referred in screen '%s'!" % (n, name)
+				else:
+					processScreen(s[0], context)
+				processScreen(widget, c)
 
 	processors = {
 		None: processNone,
