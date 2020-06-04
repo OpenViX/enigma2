@@ -432,6 +432,7 @@
 		<item level="2" text="Timeline font size" description="Configure the font size relative to skin size, so 1 increases by 1 point size, and -1 decreases by 1 point size.">config.epgselection.grid.timelinefs</item>
 		<item level="2" text="Timeline 24 Hour" description="Show time in 24 hour clock format." requires="config.usage.time.disabled">config.epgselection.grid.timeline24h</item>
 		<item level="2" text="Time scale" description="Configure the amount of time that will be presented.">config.epgselection.grid.prevtimeperiod</item>
+		<item level="2" text="Number buttons mode" description="If set to 'Standard' number buttons page up/down/left/right.">config.epgselection.grid.number_buttons_mode</item>
 		<item level="2" text="Info button (short)" description="Set to what you want the button to do.">config.epgselection.grid.btn_info</item>
 		<item level="2" text="Info button (long)" description="Set to what you want the button to do.">config.epgselection.grid.btn_infolong</item>
 		<item level="2" text="EPG button (short)" description="Set to what you want the button to do.">config.epgselection.grid.btn_epg</item>
