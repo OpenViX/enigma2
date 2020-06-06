@@ -1,15 +1,12 @@
-from config import config, ConfigSlider, ConfigSubsection, ConfigYesNo, ConfigText, ConfigInteger
-from SystemInfo import SystemInfo
-from fcntl import ioctl
 import os
+from fcntl import ioctl
+import platform
 import struct
 from boxbranding import getBrandOEM
-import platform
+from config import config, ConfigInteger, ConfigSlider, ConfigSubsection, ConfigText, ConfigYesNo
+from SystemInfo import SystemInfo
 
-from Tools.Directories import pathExists
-
-
-# asm-generic/ioctl.h
+# include/uapi/asm-generic/ioctl.h
 IOC_NRBITS = 8L
 IOC_TYPEBITS = 8L
 IOC_SIZEBITS = 13L if "mips" in platform.machine() else 14L
