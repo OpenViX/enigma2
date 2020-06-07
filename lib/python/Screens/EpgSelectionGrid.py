@@ -69,6 +69,7 @@ class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceNumberSe
 			"tvlong": (self.togglePIG, _("Toggle picture In graphics")),
 			"timer": (self.openTimerList, _("Show timer list")),
 			"timerlong": (self.openAutoTimerList, _("Show autotimer list")),
+			"back": (self.goToCurrentTimeOrServiceOrTop, _("Go to current time, then the start service, then home of list")),
 			"menu": (self.createSetup, _("Setup menu"))
 		}, prio=-1, description=helpDescription)
 
@@ -227,6 +228,17 @@ class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceNumberSe
 
 	def pageRight(self):
 		self.updEvent(+2)
+
+	def goToCurrentTimeOrServiceOrTop(self):
+		list = self["list"]
+		oldEvent, service = list.getCurrent()
+		self.goToTime(time())
+		newEvent, service = list.getCurrent()
+		if oldEvent and newEvent and oldEvent.getEventId() == newEvent.getEventId():
+			if self.startRef and service and service.ref.toString() != self.startRef.toString():
+				self.moveToService(self.startRef)
+			else:
+				self.toTop()
 
 	def goToCurrentTime(self):
 		self.goToTime(time())

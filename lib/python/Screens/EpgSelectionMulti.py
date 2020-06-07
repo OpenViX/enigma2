@@ -54,6 +54,7 @@ class EPGSelectionMulti(EPGSelectionBase, EPGBouquetSelection, EPGServiceNumberS
 			"tv": (self.toggleBouquetList, _("Toggle between bouquet/epg lists")),
 			"timer": (self.openTimerList, _("Show timer list")),
 			"timerlong": (self.openAutoTimerList, _("Show autotimer list")),
+			"back": (self.goToCurrentTimeOrServiceOrTop, _("Go to current time, then the start service")),
 			"menu": (self.createSetup, _("Setup menu"))
 		}, prio=-1, description=helpDescription)
 
@@ -106,6 +107,17 @@ class EPGSelectionMulti(EPGSelectionBase, EPGBouquetSelection, EPGServiceNumberS
 	def getCurrentService(self):
 		service = self["list"].getCurrent()[1]
 		return service
+
+	def goToCurrentTimeOrServiceOrTop(self):
+		list = self["list"]
+		oldEvent, service = list.getCurrent()
+		self["list"].fillEPG(self.services, time())
+		newEvent, service = list.getCurrent()
+		if oldEvent and newEvent and oldEvent.getEventId() == newEvent.getEventId():
+			if self.startRef and service and service.ref.toString() != self.startRef.toString():
+				self.moveToService(self.startRef)
+			else:
+				self.toTop()
 
 	def onDateTimeInputClosed(self, ret):
 		if len(ret) > 1 and ret[0]:

@@ -37,6 +37,7 @@ class EPGSelectionSingle(EPGSelectionBase, EPGServiceNumberSelection, EPGService
 			"tv": (self.toggleBouquetList, _("Toggle between bouquet/epg lists")),
 			"timer": (self.openTimerList, _("Show timer list")),
 			"timerlong": (self.openAutoTimerList, _("Show autotimer list")),
+			"back": (self.goToCurrentTimeOrService, _("Go to current time, then the start service")),
 			"menu": (self.createSetup, _("Setup menu"))
 		}, prio=-1, description=helpDescription)
 		self["epgcursoractions"] = HelpableActionMap(self, "DirectionActions", {
@@ -106,6 +107,16 @@ class EPGSelectionSingle(EPGSelectionBase, EPGServiceNumberSelection, EPGService
 		config.epgselection.sort.save()
 		configfile.save()
 		self["list"].sortEPG()
+
+	def goToCurrentTimeOrService(self):
+		list = self["list"]
+		oldEvent, service = list.getCurrent()
+		self.timeFocus = time()
+		self.refreshList(self.timeFocus)
+		newEvent, service = list.getCurrent()
+		if oldEvent and newEvent and oldEvent.getEventId() == newEvent.getEventId():
+			if self.startRef and service and service.ref.toString() != self.startRef.toString():
+				self.moveToService(self.startRef)
 
 	def forward24Hours(self):
 		self.refreshList(self["list"].getSelectedEventStartTime() + 86400)
