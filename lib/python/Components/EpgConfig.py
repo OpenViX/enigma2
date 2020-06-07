@@ -137,7 +137,7 @@ def InitEPGConfig():
 	config.epgselection.grid.piconwidth = ConfigSelectionNumber(default = 100, stepwidth = 1, min = 50, max = 500, wraparound = True)
 	config.epgselection.grid.infowidth = ConfigSelectionNumber(default = 50, stepwidth = 25, min = 0, max = 150, wraparound = True)
 	config.epgselection.grid.rec_icon_height = ConfigSelection(choices = [("bottom",_("bottom")),("top", _("top")), ("middle", _("middle")),  ("hide", _("hide"))], default = "bottom")
-	config.epgselection.grid.number_buttons_mode = ConfigSelection(choices = [("paging",_("Standard")), ("service", _("Enter service number"))], default="paging")
+	config.epgselection.grid.number_buttons_mode = ConfigSelection(choices = [("paging", _("Standard")), ("service", _("Enter service number"))], default="paging")
 	config.epgselection.grid.btn_ok = ConfigSelection(choices=okActions, default="zap")
 	config.epgselection.grid.btn_oklong = ConfigSelection(choices=okActions, default="zapExit")
 	config.epgselection.grid.btn_epg = ConfigSelection(choices=infoActions, default="openSingleEPG")

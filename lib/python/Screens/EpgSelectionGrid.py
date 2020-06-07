@@ -72,7 +72,7 @@ class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceNumberSe
 			"menu": (self.createSetup, _("Setup menu"))
 		}, prio=-1, description=helpDescription)
 
-		if config.epgselection.grid.number_buttons_mode == 'paging':
+		if config.epgselection.grid.number_buttons_mode.value == "paging":
 			self["numberactions"] = HelpableActionMap(self, "NumberActions", {
 				"1": (self.reduceTimeScale, _("Reduce time scale")),
 				"2": (self.prevPage, _("Page up")),
@@ -90,9 +90,9 @@ class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceNumberSe
 
 	def createSetup(self):
 		oldPIG = config.epgselection.grid.pig.value
-		oldNumberButtonsMode = config.epgselection.grid.number_buttons_mode
+		oldNumberButtonsMode = config.epgselection.grid.number_buttons_mode.value
 		def onClose(test=None):
-			if oldPIG != config.epgselection.grid.pig.value or oldNumberButtonsMode != config.epgselection.grid.number_buttons_mode:
+			if oldPIG != config.epgselection.grid.pig.value or oldNumberButtonsMode != config.epgselection.grid.number_buttons_mode.value:
 				# skin needs changing - we have to reopen
 				self.close("reopengrid")
 			else:
