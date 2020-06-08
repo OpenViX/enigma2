@@ -85,10 +85,34 @@ class EPGSelectionSingle(EPGSelectionBase, EPGServiceNumberSelection, EPGService
 		self.refreshList(self.timeFocus)
 
 	def bouquetChanged(self):
-		self.refreshList(time())
+		self.refreshList(self.timeFocus)
 
 	def serviceChanged(self):
-		self.refreshList(time())
+		self.refreshList(self.timeFocus)
+
+	def moveUp(self):
+		EPGSelectionBase.moveUp(self)
+		self.timeFocus = self["list"].getSelectedEventStartTime() or time()
+
+	def moveDown(self):
+		EPGSelectionBase.moveDown(self)
+		self.timeFocus = self["list"].getSelectedEventStartTime() or time()
+
+	def nextPage(self):
+		EPGSelectionBase.nextPage(self)
+		self.timeFocus = self["list"].getSelectedEventStartTime() or time()
+
+	def prevPage(self):
+		EPGSelectionBase.prevPage(self)
+		self.timeFocus = self["list"].getSelectedEventStartTime() or time()
+
+	def toTop(self):
+		EPGSelectionBase.toTop(self)
+		self.timeFocus = self["list"].getSelectedEventStartTime() or time()
+
+	def toEnd(self):
+		EPGSelectionBase.toEnd(self)
+		self.timeFocus = self["list"].getSelectedEventStartTime() or time()
 
 	def eventViewCallback(self, setEvent, setService, val):
 		if val == -1:
@@ -119,7 +143,9 @@ class EPGSelectionSingle(EPGSelectionBase, EPGServiceNumberSelection, EPGService
 				self.moveToService(self.startRef)
 
 	def forward24Hours(self):
-		self.refreshList(self["list"].getSelectedEventStartTime() + 86400)
+		self.timeFocus = (self["list"].getSelectedEventStartTime() or time()) + 86400
+		self.refreshList(self.timeFocus)
 
 	def back24Hours(self):
-		self.refreshList(self["list"].getSelectedEventStartTime() - 86400)
+		self.timeFocus = (self["list"].getSelectedEventStartTime() or time()) - 86400
+		self.refreshList(self.timeFocus)
