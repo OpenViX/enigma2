@@ -1145,7 +1145,7 @@ void eDVBFrontend::calculateSignalQuality(int snr, int &signalquality, int &sign
 		!strcmp(m_description, "DVB-S2X NIM(45308X FBC)")
 		)
 	{
-		ret = (int)((((double(snr) / (65535.0 / 100.0)) * 0.1950) - 1.0000) * 100);
+		ret = (int)((((double(snr) / (65535.0 / 100.0)) * 0.1850) - 1.0000) * 100);
 	}
 	else if (!strcmp(m_description, "DVB-C NIM(3128 FBC)"))
 	{
