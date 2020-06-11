@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-19 22:22+0000\n"
-"PO-Revision-Date: 2020-05-21 20:53+0200\n"
+"POT-Creation-Date: 2020-06-04 17:59+0000\n"
+"PO-Revision-Date: 2020-06-11 08:52+0200\n"
 "Last-Translator: Ralf Biedermann <ralf.biedermann@rbsoft.de>\n"
 "Language-Team: AndyBlacburn, j-ot&Trial\n"
 "Language: de\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
-"X-Generator: Poedit 2.3\n"
+"X-Generator: Poedit 2.2.3\n"
 "X-Poedit-SourceCharset: iso-8859-15\n"
 
 #, python-format
@@ -1129,7 +1129,8 @@ msgstr ""
 msgid "( All readers)"
 msgstr "( Alle Kartenleser )"
 
-msgid "(Current image)"
+#, fuzzy
+msgid "(Current)"
 msgstr "(aktuelles Image)"
 
 #, python-format
@@ -7052,13 +7053,6 @@ msgctxt "Video output mode"
 msgid "Mode"
 msgstr "Modus [Video Ausgang]"
 
-msgid ""
-"Mode 1 suppports Kodi, PiP may not work.\n"
-"Mode 12 supports PiP, Kodi may not work."
-msgstr ""
-"Mode 1 unterstützt Kodi, PiP könnte nicht funktionieren.\n"
-"Mode 12 unterstützt Pip, Kodi könnte nicht funktionieren."
-
 msgid "Model"
 msgstr "Modell"
 
@@ -8679,6 +8673,9 @@ msgstr "Vorschulalter"
 msgid "Press '0' to toggle PiP mode"
 msgstr "Drücke '0' um PiP-Modus zu wechseln"
 
+msgid "Press GREEN (Reboot) to switch images, YELLOW (Delete) to erase an image or BLUE (Restore) to restore all deleted images."
+msgstr "Drücke (Grün) Reboot zum Wechseln, Löschen (Gelb zum Löschen, Wiederherstellen (Blau) - alle Gelöschten wieder herstellen"
+
 msgid "Press INFO on your remote control for additional information."
 msgstr "INFO drücken für zusätzliche Informationen."
 
@@ -8735,9 +8732,6 @@ msgstr "Drücke OK um die Auswahl umzuschalten."
 
 msgid "Press OK, save and exit..."
 msgstr "Dürcke OK für Speichern und Verlassen..."
-
-msgid "Press Reboot to switch, Delete to erase, Restore - restore all deleted."
-msgstr "Drücke Reboot zum Wechseln, Löschen zum Löschen, Wiederherstellen - alle Gelöschten wieder herstellen"
 
 msgid ""
 "Press up/down to scroll through the selected log\n"
@@ -10886,8 +10880,8 @@ msgid "Slot %d"
 msgstr "Steckplatz %d"
 
 #, python-format
-msgid "Slot %s: %s - Mode %d%s"
-msgstr ""
+msgid "Slot %s: %s - %s mode%s"
+msgstr "Slot %s: %s - %s Mode%s"
 
 #, python-format
 msgid "Slot %s: %s%s"
@@ -15827,6 +15821,13 @@ msgstr "umgeschaltet"
 #~ "Falsche Konfiguration Unicable-Verbindung von Tuner %s nach Tuner %s!\n"
 #~ "Tuner %s Einstellung \"verbunden mit\" ist jetzt deaktiviert."
 
+#~ msgid ""
+#~ "Mode 1 suppports Kodi, PiP may not work.\n"
+#~ "Mode 12 supports PiP, Kodi may not work."
+#~ msgstr ""
+#~ "Mode 1 unterstützt Kodi, PiP könnte nicht funktionieren.\n"
+#~ "Mode 12 unterstützt Pip, Kodi könnte nicht funktionieren."
+
 #~ msgid "Mon 9"
 #~ msgstr "Mon 9"
 
@@ -16464,9 +16465,6 @@ msgstr "umgeschaltet"
 
 #~ msgid "slot%s - %s mode 1 (current image)"
 #~ msgstr "Slot%s - %s Mode 1 (aktuelles Image)"
-
-#~ msgid "slot%s - %s mode 12"
-#~ msgstr "Slot%s - %s Mode 12"
 
 #~ msgid "slot%s - %s mode 12 (current image)"
 #~ msgstr "Slot%s - %s Mode 12 (aktuelles Image)"
