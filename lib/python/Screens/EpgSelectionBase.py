@@ -60,7 +60,8 @@ epgActions = [
 
 okActions = [
 	("zap",_("Zap")),
-	("zapExit", _("Zap + Exit"))
+	("zapExit", _("Zap + Exit")),
+	("openEventView", _("Event Info"), _("Show detailed event info"))
 ]
 
 infoActions = [
