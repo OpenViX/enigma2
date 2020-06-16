@@ -149,34 +149,38 @@ class SkinSelector(Screen, HelpableScreen):
 				skin = pathjoin(dir, skinFile)
 				skinPath = pathjoin(self.rootDir, skin)
 				if exists(skinPath):
+					skinSize = None
 					resolution = None
 					if skinFile == "skin.xml":
 						with open(skinPath, "r") as fd:
 							mm = mmap.mmap(fd.fileno(), 0, prot=mmap.PROT_READ)
-							resolution = re.search("\<?resolution.*?\syres\s*=\s*\"(\d+)\"", mm)
-							resolution = resolution and resolutions.get(resolution.group(1), None)
+							skinWidth = re.search("\<?resolution.*?\sxres\s*=\s*\"(\d+)\"", mm)
+							skinHeight = re.search("\<?resolution.*?\syres\s*=\s*\"(\d+)\"", mm)
+							if skinWidth and skinHeight:
+								skinSize = "%sx%s" % (skinWidth.group(1), skinHeight.group(1))
+							resolution = skinHeight and resolutions.get(skinHeight.group(1), None)
 							mm.close()
-						print("[SkinSelector] Resolution of skin '%s': '%s'." % (skinPath, "Unknown" if resolution is None else resolution))
+						print("[SkinSelector] Resolution of skin '%s': '%s' (%s)." % (skinPath, "Unknown" if resolution is None else resolution, skinSize))
 						# Code can be added here to reject unsupported resolutions.
 					# The "piconprev.png" image should be "prevpicon.png" to keep it with its partner preview image.
 					preview = pathjoin(previewPath, "piconprev.png" if skinFile == "skin_display_picon.xml" else "prev.png")
 					if skin == EMERGENCY_SKIN:
-						list = [EMERGENCY_NAME, emergency, dir, skin, resolution, preview]
+						skinEntry = [EMERGENCY_NAME, emergency, dir, skin, resolution, skinSize, preview]
 					elif skin == DEFAULT_SKIN:
-						list = [dir, default, dir, skin, resolution, preview]
+						skinEntry = [dir, default, dir, skin, resolution, skinSize, preview]
 					elif skin == DEFAULT_DISPLAY_SKIN:
-						list = [default, default, dir, skin, resolution, preview]
+						skinEntry = [default, default, dir, skin, resolution, skinSize, preview]
 					elif skin == displayPicon:
-						list = [dir, defaultPicon, dir, skin, resolution, preview]
+						skinEntry = [dir, defaultPicon, dir, skin, resolution, skinSize, preview]
 					else:
-						list = [dir, "", dir, skin, resolution, preview]
+						skinEntry = [dir, "", dir, skin, resolution, skinSize, preview]
 					if skin == self.current:
-						list[1] = current
+						skinEntry[1] = current
 					elif skin == self.config.value:
-						list[1] = pending
-					list.append("%s  %s" % (list[0], list[1]))
-					# 0=SortKey, 1=Label, 2=Flag, 3=Directory, 4=Skin, 5=Resolution, 6=Preview, 7=Label + Flag
-					skinList.append(tuple([list[0].upper()] + list))
+						skinEntry[1] = pending
+					skinEntry.append("%s  %s" % (skinEntry[0], skinEntry[1]))
+					# 0=SortKey, 1=Label, 2=Flag, 3=Directory, 4=Skin, 5=Resolution, 6=SkinSize, 7=Preview, 8=Label + Flag
+					skinList.append(tuple([skinEntry[0].upper()] + skinEntry))
 		skinList.sort()
 		self["skins"].setList(skinList)
 		# Set the list pointer to the current skin...
@@ -188,7 +192,7 @@ class SkinSelector(Screen, HelpableScreen):
 
 	def loadPreview(self):
 		self.changedEntry()
-		preview = self["skins"].getCurrent()[6]
+		preview = self["skins"].getCurrent()[7]
 		if not exists(preview):
 			preview = resolveFilename(SCOPE_CURRENT_SKIN, "noprev.png")
 		self.picload.startDecode(preview)
