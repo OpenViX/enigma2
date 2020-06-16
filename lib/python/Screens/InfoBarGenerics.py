@@ -21,7 +21,7 @@ from Components.Timeshift import InfoBarTimeshift
 
 from Screens.Screen import Screen
 from Screens import ScreenSaver
-from Screens.ChannelSelection import ChannelSelection, PiPZapSelection, BouquetSelector, EpgBouquetSelector
+from Screens.ChannelSelection import ChannelSelection, PiPZapSelection, BouquetSelector, EpgBouquetSelector, service_types_tv
 from Screens.ChoiceBox import ChoiceBox
 from Screens.Dish import Dish
 from Screens.EventView import EventViewEPGSelect, EventViewSimple
@@ -1035,11 +1035,13 @@ class InfoBarNumberZap:
 				if config.usage.multibouquet.value:
 					bqrootstr = '1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "bouquets.tv" ORDER BY bouquet'
 				else:
-					bqrootstr = '%s FROM BOUQUET "userbouquet.favourites.tv" ORDER BY bouquet'% self.service_types
+					bqrootstr = '%s FROM BOUQUET "userbouquet.favourites.tv" ORDER BY bouquet'% service_types_tv
+					
 				serviceHandler = eServiceCenter.getInstance()
 				rootbouquet = eServiceReference(bqrootstr)
 				bouquet = eServiceReference(bqrootstr)
 				bouquetlist = serviceHandler.list(bouquet)
+				service = None
 				if not bouquetlist is None:
 					while True:
 						bouquet = bouquetlist.getNext()
@@ -1061,7 +1063,8 @@ class InfoBarNumberZap:
 					self.servicelist2.enterPath(rootbouquet)
 					self.servicelist2.enterPath(bouquet)
 					self.servicelist2.saveRoot()
-				self.selectAndStartService(service, bouquet)
+				if service is not None:
+					self.selectAndStartService(service, bouquet)
 			else:
 				self.servicelist.recallPrevService()
 
