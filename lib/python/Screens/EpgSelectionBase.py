@@ -596,7 +596,7 @@ class EPGServiceNumberSelection:
 			self.numberZapField = str(number)
 		else:
 			self.numberZapField += str(number)
-		service = self.getServiceByNumber(int(self.numberZapField))
+		service, bouquet = self.getServiceByNumber(int(self.numberZapField))
 		self["zapbackground"].show()
 		self["zapnumber"].setText(self.numberZapField)
 		self["zapnumber"].show()
@@ -611,10 +611,12 @@ class EPGServiceNumberSelection:
 
 	def __OK(self):
 		if self.numberZapField is not None:
-			service = self.getServiceByNumber(int(self.numberZapField))
+			service, bouquet = self.getServiceByNumber(int(self.numberZapField))
 			if service is not None:
 				self.startRef = service
-				self.startBouquet = self.getCurrentBouquet()
+				self.startBouquet = bouquet
+				self.setBouquet(bouquet)
+				self.bouquetChanged()
 				self.moveToService(service)
 		self.__cancel()
 
@@ -681,17 +683,7 @@ class EPGBouquetSelection:
 	def _populateBouquetList(self):
 		self["bouquetlist"].recalcEntrySize()
 		self["bouquetlist"].fillBouquetList(self.bouquets)
-
-		self.selectedBouquetIndex = 0
-		if self.startBouquet is not None:
-			index = 0
-			for bouquet in self.bouquets:
-				if bouquet[1] == self.startBouquet:
-					self.selectedBouquetIndex = index
-					break
-				index += 1
-		self["bouquetlist"].setCurrentIndex(self.selectedBouquetIndex)
-		self.services = self.getBouquetServices(self.startBouquet)
+		self.setBouquet(self.startBouquet)
 
 	def toggleBouquetList(self):
 		# Do nothing if the skin doesn't contain a bouquetlist
@@ -703,8 +695,9 @@ class EPGBouquetSelection:
 			self.__cancel()
 
 	def __OK(self):
-		self.setBouquetIndex(self["bouquetlist"].instance.getCurrentIndex())
 		self.bouquetListHide()
+		self.setBouquetIndex(self["bouquetlist"].instance.getCurrentIndex())
+		self.bouquetChanged()
 
 	def __cancel(self):
 		self.bouquetListHide()
@@ -747,21 +740,42 @@ class EPGBouquetSelection:
 
 	def nextBouquet(self):
 		self.setBouquetIndex(self.selectedBouquetIndex + 1)
+		self.bouquetChanged()
 
 	def prevBouquet(self):
 		self.setBouquetIndex(self.selectedBouquetIndex - 1)
+		self.bouquetChanged()
 
 	def setBouquetIndex(self, index):
 		self.selectedBouquetIndex = index % len(self.bouquets)
 		self.services = self.getBouquetServices(self.getCurrentBouquet())
 		self.selectedServiceIndex = 0 if len(self.services) > 0 else -1
-		self.bouquetChanged()
+
+	def setBouquet(self, bouquetRef):
+		self.selectedBouquetIndex = 0
+		if bouquetRef is not None:
+			index = 0
+			for bouquet in self.bouquets:
+				if bouquet[1] == bouquetRef:
+					self.selectedBouquetIndex = index
+					break
+				index += 1
+		self["bouquetlist"].setCurrentIndex(self.selectedBouquetIndex)
+		self.services = self.getBouquetServices(bouquetRef)
+		self.selectedServiceIndex = 0 if len(self.services) > 0 else -1
 
 	def getServiceByNumber(self, number):
-		for service in self.services:
-			if service.ref.getChannelNum() == number:
-				return service
-		return None
+		if config.usage.alternative_number_mode.value:
+			for service in self.services:
+				if service.ref.getChannelNum() == number:
+					return service, self.getCurrentBouquet()
+		else:
+			for bouquet in self.bouquets:
+				services = self.getBouquetServices(bouquet[1])
+				for service in services:
+					if service.ref.getChannelNum() == number:
+						return service, bouquet[1]
+		return None, None
 
 class EPGServiceBrowse(EPGBouquetSelection):
 	def __init__(self):
