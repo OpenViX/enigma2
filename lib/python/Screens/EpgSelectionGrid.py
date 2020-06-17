@@ -236,7 +236,9 @@ class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 		primetime = mktime(basetime)
 		if primetime + 3600 < time():
 			primetime += 86400
-		self.goToTime(primetime)
+		self["list"].setTimeFocus(primetime, False)
+		self["list"].fillEPG()
+		self.moveTimeLines(True)
 
 	def goToCurrentTimeAndTop(self):
 		self.toTop()
