@@ -217,6 +217,7 @@ class About(Screen):
 		#AboutText += "\n\n" + _("Network Info") 
 		#for x in about.GetIPsFromNetworkInterfaces():
 		#	AboutText += "\n" + iNetwork.getFriendlyAdapterDescription(x[0]) + " :" + "/dev/" + x[0] + " " + x[1]
+		AboutText += '\n\n' + uptime[0] + ": " + uptime[1]
 
 		self["AboutScrollLabel"] = ScrollLabel(AboutText)
 		self["key_green"] = Button(_("Translations"))
