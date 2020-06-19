@@ -49,7 +49,7 @@ epgActions = [
 	("addEditTimer", _("Add Timer"), _("Add/Remove timer for current event")),
 	("openTimerList", _("Show Timer List")),
 	("openEPGSearch", _("EPG Search"), _("Search for similar events")),
-	("addAutoTimer", _("Add AutoTimer"), _("Add an autotimer for current event")),
+	("addEditAutoTimer", _("Add AutoTimer"), _("Add/Edit an autotimer for current event")),
 	("openAutoTimerList", _("AutoTimer List"), _("Show autotimer list")),
 	("forward24Hours", _("+24 hours"), _("Go forward 24 hours")),
 	("back24Hours", _("-24 hours"), _("Go back 24 hours")),
@@ -253,6 +253,17 @@ class EPGSelectionBase(Screen, HelpableScreen):
 		except ImportError:
 			self.session.open(MessageBox, self.noEPGSearch, type=MessageBox.TYPE_INFO, timeout=10)
 
+	def addEditAutoTimer(self):
+		self.closeEventViewDialog()
+		event, service = self["list"].getCurrent()[:2]
+		if event is None:
+			return
+		timer = self.session.nav.RecordTimer.getTimerForEvent(service, event)
+		if timer is not None and timer.autoTimerId:
+			self.editAutoTimer(timer)
+		else:
+			self.addAutoTimer()
+
 	def addAutoTimer(self):
 		self.closeEventViewDialog()
 		try:
@@ -261,6 +272,14 @@ class EPGSelectionBase(Screen, HelpableScreen):
 			if event is None:
 				return
 			addAutotimerFromEvent(self.session, evt=event, service=service)
+			self.refreshTimer.start(3000)
+		except ImportError:
+			self.session.open(MessageBox, self.noAutotimer, type=MessageBox.TYPE_INFO, timeout=10)
+
+	def editAutoTimer(self, timer):
+		try:
+			from Plugins.Extensions.AutoTimer.AutoTimerEditor import editAutotimerFromTimer
+			editAutotimerFromTimer(self.session, timer)
 			self.refreshTimer.start(3000)
 		except ImportError:
 			self.session.open(MessageBox, self.noAutotimer, type=MessageBox.TYPE_INFO, timeout=10)
@@ -468,7 +487,8 @@ class EPGSelectionBase(Screen, HelpableScreen):
 			self.setActionButtonText("addEditTimer", "")
 			return
 		timer = self.session.nav.RecordTimer.getTimerForEvent(service, event)
-		self.setActionButtonText("addEditTimer", _("Change Timer") if timer else _("Add Timer"))
+		self.setActionButtonText("addEditTimer", _("Change Timer") if timer is not None else _("Add Timer"))
+		self.setActionButtonText("addEditAutoTimer", _("Edit AutoTimer") if timer is not None and timer.autoTimerId else _("Add AutoTimer"))
 
 	def closeEventViewDialog(self):
 		if self.eventviewDialog:
@@ -826,6 +846,8 @@ class EPGStandardButtons:
 		# only need to cater for green button
 		if actionName == "addEditTimer":
 			self["key_green"].setText(buttonText)
+		elif actionName == "addEditAutoTimer":
+			self["key_blue"].setText(buttonText)
 
 	# build a tuple suitable for using in a helpable action
 	def helpKeyAction(self, actionName):

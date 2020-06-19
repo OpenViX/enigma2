@@ -177,7 +177,7 @@ wasRecTimerWakeup = False
 
 # please do not translate log messages
 class RecordTimerEntry(timer.TimerEntry, object):
-	def __init__(self, serviceref, begin, end, name, description, eit, disabled = False, justplay = False, afterEvent = AFTEREVENT.AUTO, checkOldTimers = False, dirname = None, tags = None, descramble = 'notset', record_ecm = 'notset', isAutoTimer = False, always_zap = False, rename_repeat = True, conflict_detection = True, pipzap = False):
+	def __init__(self, serviceref, begin, end, name, description, eit, disabled=False, justplay=False, afterEvent=AFTEREVENT.AUTO, checkOldTimers=False, dirname=None, tags=None, descramble='notset', record_ecm='notset', isAutoTimer=False, always_zap=False, rename_repeat=True, conflict_detection=True, pipzap=False, autoTimerId=None):
 		timer.TimerEntry.__init__(self, int(begin), int(end))
 		if checkOldTimers:
 			if self.begin < time() - 1209600:
@@ -255,7 +255,8 @@ class RecordTimerEntry(timer.TimerEntry, object):
 		self.change_frontend = False
 		self.InfoBarInstance = Screens.InfoBar.InfoBar.instance
 		self.ts_dialog = None
-		self.isAutoTimer = isAutoTimer
+		self.isAutoTimer = isAutoTimer or autoTimerId is not None
+		self.autoTimerId = autoTimerId
 		self.wasInStandby = False
 
 		self.log_entries = []
@@ -264,9 +265,9 @@ class RecordTimerEntry(timer.TimerEntry, object):
 
 	def __repr__(self):
 		if not self.disabled:
-			return "RecordTimerEntry(name=%s, begin=%s, serviceref=%s, justplay=%s, isAutoTimer=%s)" % (self.name, ctime(self.begin), self.service_ref, self.justplay, self.isAutoTimer)
+			return "RecordTimerEntry(name=%s, begin=%s, serviceref=%s, justplay=%s, isAutoTimer=%s, autoTimerId=%s)" % (self.name, ctime(self.begin), self.service_ref, self.justplay, self.isAutoTimer, self.autoTimerId)
 		else:
-			return "RecordTimerEntry(name=%s, begin=%s, serviceref=%s, justplay=%s, isAutoTimer=%s, Disabled)" % (self.name, ctime(self.begin), self.service_ref, self.justplay, self.isAutoTimer)
+			return "RecordTimerEntry(name=%s, begin=%s, serviceref=%s, justplay=%s, isAutoTimer=%s, autoTimerId=%s, Disabled)" % (self.name, ctime(self.begin), self.service_ref, self.justplay, self.isAutoTimer, self.autoTimerId)
 
 	def log(self, code, msg):
 		self.log_entries.append((int(time()), code, msg))
@@ -934,10 +935,13 @@ def createTimer(xml):
 	descramble = int(xml.get("descramble") or "1")
 	record_ecm = int(xml.get("record_ecm") or "0")
 	isAutoTimer = int(xml.get("isAutoTimer") or "0")
+	autoTimerId = xml.get("autoTimerId")
+	if autoTimerId is not None:
+		autoTimerId = int(autoTimerId)
 
 	name = xml.get("name").encode("utf-8")
 	#filename = xml.get("filename").encode("utf-8")
-	entry = RecordTimerEntry(serviceref, begin, end, name, description, eit, disabled, justplay, afterevent, dirname = location, tags = tags, descramble = descramble, record_ecm = record_ecm, isAutoTimer = isAutoTimer, always_zap = always_zap, rename_repeat = rename_repeat, conflict_detection = conflict_detection, pipzap = pipzap)
+	entry = RecordTimerEntry(serviceref, begin, end, name, description, eit, disabled, justplay, afterevent, dirname = location, tags = tags, descramble = descramble, record_ecm = record_ecm, isAutoTimer = isAutoTimer, always_zap = always_zap, rename_repeat = rename_repeat, conflict_detection = conflict_detection, pipzap = pipzap, autoTimerId = autoTimerId)
 	entry.repeated = int(repeated)
 	flags = xml.get("flags")
 	if flags:
@@ -1095,6 +1099,8 @@ class RecordTimer(timer.Timer):
 			list.append(' descramble="' + str(int(timer.descramble)) + '"')
 			list.append(' record_ecm="' + str(int(timer.record_ecm)) + '"')
 			list.append(' isAutoTimer="' + str(int(timer.isAutoTimer)) + '"')
+			if timer.autoTimerId:
+				list.append(' autoTimerId="' + str(timer.autoTimerId) + '"')
 			if timer.flags:
 				list.append(' flags="' + ' '.join([stringToXML(x) for x in timer.flags]) + '"')
 			list.append('>\n')
