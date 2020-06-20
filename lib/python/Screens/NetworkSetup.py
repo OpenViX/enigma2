@@ -3,6 +3,7 @@ from os import path as os_path, remove, unlink, rename, chmod, access, X_OK
 import netifaces as ni
 from shutil import move
 import time
+import six
 
 from Components.ActionMap import ActionMap, NumberActionMap, HelpableActionMap
 from Components.config import config, ConfigSubsection, ConfigYesNo, ConfigIP, ConfigText, ConfigPassword, ConfigSelection, getConfigListEntry, ConfigNumber, ConfigLocations, NoSave, ConfigMacText
@@ -104,6 +105,7 @@ class NSCommon:
 		self.Console.ePopen('/usr/bin/opkg list_installed ' + self.service_name, self.RemovedataAvail)
 
 	def RemovedataAvail(self, str, retval, extra_args):
+		str = six.ensure_str(str)
 		if str:
 			self.session.openWithCallback(self.RemovePackage, MessageBox, _('Are you ready to remove %s ?') % self.getTitle(), MessageBox.TYPE_YESNO)
 		else:
@@ -1816,6 +1818,7 @@ class NetworkFtp(NSCommon,Screen):
 		self.onLayoutFinish.append(self.updateService)
 		self.reboot_at_end = False
 
+
 	def FtpStartStop(self):
 		commands = []
 		if not self.my_ftp_run:
@@ -2072,6 +2075,7 @@ class NetworkSamba(NSCommon,Screen):
 		self.service_name = 'packagegroup-base-smbfs-server'
 		self.onLayoutFinish.append(self.InstallCheck)
 		self.reboot_at_end = True
+
 
 	def Sambashowlog(self):
 		self.session.open(NetworkSambaLog)
@@ -2571,6 +2575,7 @@ class NetworkuShare(NSCommon,Screen):
 		self.service_name = 'ushare'
 		self.onLayoutFinish.append(self.InstallCheck)
 		self.reboot_at_end = False
+
 
 	def uShareStartStop(self):
 		if not self.my_ushare_run:

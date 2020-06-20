@@ -2,6 +2,7 @@
 # A task is the run of an external tool, with proper methods for failure handling
 
 from Tools.CList import CList
+import six
 
 class Job(object):
 	NOT_STARTED, IN_PROGRESS, FINISHED, FAILED = range(4)
@@ -205,6 +206,7 @@ class Task(object):
 		self.processOutput(data)
 
 	def processOutput(self, data):
+		data = six.ensure_str(data)
 		self.output_line += data
 		while True:
 			i = self.output_line.find('\n')

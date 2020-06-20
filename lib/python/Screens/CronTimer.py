@@ -1,3 +1,10 @@
+from __future__ import absolute_import
+import six
+
+from os import system, listdir, rename, path, mkdir
+from time import sleep
+
+from boxbranding import getMachineBrand, getMachineName, getImageType
 from Components.ActionMap import ActionMap
 from Components.config import getConfigListEntry, config, ConfigSubsection, ConfigText, ConfigSelection, ConfigInteger, ConfigClock, NoSave
 from Components.ConfigList import ConfigListScreen
@@ -11,9 +18,6 @@ from Components.Sources.StaticText import StaticText
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
 from Tools.Directories import fileExists
-from os import system, listdir, rename, path, mkdir
-from time import sleep
-from boxbranding import getMachineBrand, getMachineName, getImageType
 
 class CronTimers(Screen):
 	def __init__(self, session):
@@ -21,7 +25,7 @@ class CronTimers(Screen):
 		if path.exists('/usr/scripts') and not path.exists('/usr/script'):
 			rename('/usr/scripts', '/usr/script')
 		if not path.exists('/usr/script'):
-			mkdir('/usr/script', 0755)
+			mkdir('/usr/script', 0o755)
 		self.setTitle(_("Cron Manager"))
 		self.onChangedEntry = [ ]
 		self['lab1'] = Label(_("Autostart:"))
@@ -54,8 +58,8 @@ class CronTimers(Screen):
 
 	def InstallCheck(self):
 		self.Console.ePopen('/usr/bin/opkg list_installed ' + self.service_name, self.checkNetworkState)
-
 	def checkNetworkState(self, str, retval, extra_args):
+		str = six.ensure_str(str)
 		if 'Collected errors' in str:
 			self.session.openWithCallback(self.close, MessageBox, _("A background update check is in progress, please wait a few minutes and try again."), type=MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 		elif not str:
@@ -91,6 +95,7 @@ class CronTimers(Screen):
 			self.close()
 
 	def RemovedataAvail(self, str, retval, extra_args):
+		str = six.ensure_str(str)
 		if str:
 			self.session.openWithCallback(self.RemovePackage, MessageBox, _('Ready to remove "%s" ?') % self.service_name)
 		else:
@@ -285,8 +290,8 @@ class CronTimers(Screen):
 			mysel = self['list'].getCurrent()
 			if mysel:
 				myline = mysel[1]
-				file('/etc/cron/crontabs/root.tmp', 'w').writelines([l for l in file('/etc/cron/crontabs/root').readlines() if myline not in l])
-				rename('/etc/cron/crontabs/root.tmp','/etc/cron/crontabs/root')
+				open('/etc/cron/crontabs/root.tmp', 'w').writelines([l for l in open('/etc/cron/crontabs/root').readlines() if myline not in l])
+				rename('/etc/cron/crontabs/root.tmp', '/etc/cron/crontabs/root')
 				rc = system('crontab /etc/cron/crontabs/root -c /etc/cron/crontabs')
 				self.updateList()
 

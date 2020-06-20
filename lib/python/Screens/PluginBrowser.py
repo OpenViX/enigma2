@@ -1,6 +1,11 @@
-from boxbranding import getImageVersion, getImageType, getMachineBrand, getMachineName
+from __future__ import print_function
+from __future__ import absolute_import
+import six
+
 import os
 from enigma import eConsoleAppContainer, eDVBDB, eTimer
+from boxbranding import getImageVersion, getImageType, getMachineBrand, getMachineName
+
 from Components.ActionMap import ActionMap, NumberActionMap
 from Components.Button import Button
 from Components.config import config, ConfigSubsection, ConfigYesNo, ConfigText
@@ -521,8 +526,8 @@ class PluginDownloadBrowser(Screen):
 		if hasattr(self, 'postInstallCall'):
 			try:
 				self.postInstallCall()
-			except Exception, ex:
-				print "[PluginBrowser] postInstallCall failed:", ex
+			except Exception as ex:
+				print("[PluginBrowser] postInstallCall failed:", ex)
 			self.resetPostInstall()
 		try:
 			os.unlink('/tmp/opkg.conf')
@@ -566,6 +571,7 @@ class PluginDownloadBrowser(Screen):
 					self["text"].setText(_("Sorry the feeds are down for maintenance"))
 
 	def dataAvail(self, str):
+		str = six.ensure_str(str)
 		if self.type == self.DOWNLOAD and ('wget returned 1' or 'wget returned 255' or '404 Not Found') in str:
 			self.run = 3
 			return
@@ -619,7 +625,7 @@ class PluginDownloadBrowser(Screen):
 			self.pluginlist.sort()
 
 	def updateList(self):
-		list = []
+		xlist = []
 		expandableIcon = LoadPixmap(resolveFilename(SCOPE_ACTIVE_SKIN, "icons/expandable-plugins.png"))
 		expandedIcon = LoadPixmap(resolveFilename(SCOPE_ACTIVE_SKIN, "icons/expanded-plugins.png"))
 		verticallineIcon = LoadPixmap(resolveFilename(SCOPE_ACTIVE_SKIN, "icons/verticalline-plugins.png"))
@@ -627,8 +633,8 @@ class PluginDownloadBrowser(Screen):
 		self.plugins = {}
 
 		if self.type == self.UPDATE:
-			self.list = list
-			self["list"].l.setList(list)
+			self.list = xlist
+			self["list"].l.setList(xlist)
 			return
 
 		for x in self.pluginlist:
@@ -638,7 +644,7 @@ class PluginDownloadBrowser(Screen):
 			elif x[0][0:15] == 'enigma2-locale-':
 				split[0] = "languages"
 
-			if not self.plugins.has_key(split[0]):
+			if split[0] not in self.plugins:
 				self.plugins[split[0]] = []
 
 			if split[0] == "kernel modules":
@@ -667,16 +673,16 @@ class PluginDownloadBrowser(Screen):
 					continue
 				self.plugins[split[0]].append((PluginDescriptor(name = x[3], description = x[2], icon = verticallineIcon), split[1], x[1]))
 
-		temp = self.plugins.keys()
+		temp = list(self.plugins.keys())
 		if config.usage.sort_pluginlist.value:
 			temp.sort()
 		for x in temp:
 			if x in self.expanded:
-				list.append(PluginCategoryComponent(x, expandedIcon, self.listWidth))
-				list.extend([PluginDownloadComponent(plugin[0], plugin[1], plugin[2], self.listWidth) for plugin in self.plugins[x]])
+				xlist.append(PluginCategoryComponent(x, expandedIcon, self.listWidth))
+				xlist.extend([PluginDownloadComponent(plugin[0], plugin[1], plugin[2], self.listWidth) for plugin in self.plugins[x]])
 			else:
-				list.append(PluginCategoryComponent(x, expandableIcon, self.listWidth))
-		self.list = list
-		self["list"].l.setList(list)
+				xlist.append(PluginCategoryComponent(x, expandableIcon, self.listWidth))
+		self.list = xlist
+		self["list"].l.setList(xlist)
 
 language.addCallback(languageChanged)

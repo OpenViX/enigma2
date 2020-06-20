@@ -1,3 +1,6 @@
+from __future__ import absolute_import
+import six
+
 from enigma import eConsoleAppContainer
 from Screens.Screen import Screen
 from Components.ActionMap import ActionMap
@@ -36,7 +39,7 @@ class Console(Screen):
 
 	def startRun(self):
 		self["text"].setText(_("Execution progress:") + "\n\n")
-		print "[Console] executing in run", self.run, " the command:", self.cmdlist[self.run]
+		print("[Console] executing in run", self.run, " the command:", self.cmdlist[self.run])
 		if self.container.execute(self.cmdlist[self.run]): #start of container application failed...
 			self.runFinished(-1) # so we must call runFinished manual
 
@@ -62,4 +65,5 @@ class Console(Screen):
 			self.container.dataAvail.remove(self.dataAvail)
 
 	def dataAvail(self, str):
+		str = six.ensure_str(str)
 		self["text"].appendText(str)
