@@ -9,7 +9,7 @@ from Components.ConfigList import ConfigListScreen
 from Components.ActionMap import ActionMap, HelpableActionMap
 from Tools.Directories import resolveFilename, SCOPE_ACTIVE_SKIN
 from Tools.LoadPixmap import LoadPixmap
-from boxbranding import getBoxType, getMachineBrand, getMachineName
+from boxbranding import getBoxType, getMachineBrand, getMachineName, getMachineBuild
 
 class InputDeviceSelection(Screen, HelpableScreen):
 	def __init__(self, session, menu_path=""):
@@ -37,7 +37,7 @@ class InputDeviceSelection(Screen, HelpableScreen):
 		self["introduction"] = StaticText(self.edittext)
 
 		self.devices = [(iInputDevices.getDeviceName(x),x) for x in iInputDevices.getDeviceList()]
-		print "[InputDeviceSetup] found devices :->", len(self.devices),self.devices
+		print("[InputDeviceSetup] found devices :->", len(self.devices),self.devices)
 
 		self["OkCancelActions"] = HelpableActionMap(self, "OkCancelActions",
 			{
@@ -65,8 +65,10 @@ class InputDeviceSelection(Screen, HelpableScreen):
 		activepng = None
 		devicepng = None
 		enabled = iInputDevices.getDeviceAttribute(device, 'enabled')
-
-		if type == 'remote':
+		# print("[InputDevice] device = %s, description = %s, type = %s, isinputdevice = %s, enabled = %s" % (device, description, type, isinputdevice, enabled))
+		if type == None:
+			devicepng = LoadPixmap(resolveFilename(SCOPE_ACTIVE_SKIN, "icons/input_rcold-configured.png"))
+		elif type == 'remote':
 			if config.misc.rcused.value == 0:
 				if enabled:
 					devicepng = LoadPixmap(resolveFilename(SCOPE_ACTIVE_SKIN, "icons/input_rcnew-configured.png"))
@@ -93,14 +95,12 @@ class InputDeviceSelection(Screen, HelpableScreen):
 
 	def updateList(self):
 		self.list = []
-
 		if iRcTypeControl.multipleRcSupported():
-			self.list.append(self.buildInterfaceList('rctype', _('Configure remote control type'), None, False))
+			self.list.append(self.buildInterfaceList('rctype', _('Select to configure remote control type'), None, False))
 
 		for x in self.devices:
 			dev_type = iInputDevices.getDeviceAttribute(x[1], 'type')
 			self.list.append(self.buildInterfaceList(x[1],_(x[0]), dev_type))
-
 		self["list"].setList(self.list)
 		self["list"].setIndex(self.currentIndex)
 
@@ -176,17 +176,17 @@ class InputDeviceSetup(Screen, ConfigListScreen):
 	def createSetup(self):
 		self.list = [ ]
 		label = _("Change repeat and delay settings?")
-		cmd = "self.enableEntry = getConfigListEntry(label, config.inputDevices." + self.inputDevice + ".enabled)"
-		exec cmd
+		cmd = "self.enableEntry = getConfigListEntry(label, config.inputDevices.%s.enabled)" % self.inputDevice
+		exec(cmd)
 		label = _("Interval between keys when repeating:")
-		cmd = "self.repeatEntry = getConfigListEntry(label, config.inputDevices." + self.inputDevice + ".repeat)"
-		exec cmd
+		cmd = "self.repeatEntry = getConfigListEntry(label, config.inputDevices.%s.repeat)" % self.inputDevice
+		exec(cmd)
 		label = _("Delay before key repeat starts:")
-		cmd = "self.delayEntry = getConfigListEntry(label, config.inputDevices." + self.inputDevice + ".delay)"
-		exec cmd
+		cmd = "self.delayEntry = getConfigListEntry(label, config.inputDevices.%s.delay)" % self.inputDevice
+		exec(cmd)
 		label = _("Devicename:")
-		cmd = "self.nameEntry = getConfigListEntry(label, config.inputDevices." + self.inputDevice + ".name)"
-		exec cmd
+		cmd = "self.nameEntry = getConfigListEntry(label, config.inputDevices.%s.name)" % self.inputDevice
+		exec(cmd)
 		if self.enableEntry:
 			if isinstance(self.enableEntry[1], ConfigYesNo):
 				self.enableConfigEntry = self.enableEntry[1]
@@ -232,12 +232,12 @@ class InputDeviceSetup(Screen, ConfigListScreen):
 
 	def confirm(self, confirmed):
 		if not confirmed:
-			print "[InputDeviceSetup] not confirmed"
+			print("[InputDeviceSetup] not confirmed")
 			return
 		else:
 			self.nameEntry[1].setValue(iInputDevices.getDeviceAttribute(self.inputDevice, 'name'))
-			cmd = "config.inputDevices." + self.inputDevice + ".name.save()"
-			exec cmd
+			cmd = "config.inputDevices.%s.name.save()" % self.inputDevice
+			exec(cmd)
 			self.keySave()
 
 	def apply(self):
@@ -289,17 +289,30 @@ class RemoteControlType(Screen, ConfigListScreen):
 			("11", _("et9200/9500/6500")),
 			("13", _("et4000")),
 			("14", _("XP1000")),
-			("16", _("HD1100/et7x00/et8500")),
-			("18", _("F1/F3")),
+			("16", _("HD11/HD51/HD1100/HD1200/HD1265/HD1500/HD500C/HD530C/et7x00/et8500")),
+			("17", _("XP3000")),
+			("18", _("F1/F3/F4/F4-TURBO/TRIPLEX")),
 			("19", _("HD2400")),
+			("20", _("Zgemma Star S/2S/H1/H2")),
+			("21", _("Zgemma H.S/H.2S/H.2H/H5")),
+			("22", _("Zgemma i55")),
+			("23", _("WWIO 4K")),
+			("24", _("Axas E4HD Ultra")),
+			("25", _("Zgemma H9/I55Plus old Model")),
+			("26", _("Protek 4K UHD/HD61")),
+			("27", _("HD60")),
+			("28", _("H7/H9/H9COMBO/H10 new Model"))
 			]
 
 	defaultRcList = [
+			("default", 0),
 			("et4000", 13),
 			("et5000", 7),
 			("et6000", 7),
 			("et6500", 11),
+			("et7x00",16),
 			("et8000", 9),
+			("et8500", 16),
 			("et9000", 5),
 			("et9100", 5),
 			("et9200", 11),
@@ -307,13 +320,30 @@ class RemoteControlType(Screen, ConfigListScreen):
 			("et10000", 9),
 			("formuler1", 18),
 			("formuler3", 18),
-			("xp1000", 14),
-			("hd1100", 16),
+			("hd11",16),
+			("hd51",16),
+			("hd52",16),
+			("hd1100",16),
+			("hd1200",16),
+			("hd1265",16),
+			("hd500c",16),
+			("hd530c",16),
 			("hd2400", 19),
-			("et7000", 16),
-			("et7500", 16),
-			("et8500", 16),
-			("hd51", 16),
+			("h3", 21),
+			("h5", 21),
+			#("h7", 21),# old model
+			("i55", 22),
+			("bre2ze4k", 23),
+			("e4hd", 24),
+			#("h9", 25),# old model
+			("i55plus", 25),
+			("protek4k", 26),
+			("hd61", 26),
+			("hd60", 27),
+			("h7", 28), # new model
+			("h9", 28), # new model
+			("h9combo", 28),
+			("h10", 28)
 		]
 
 	def __init__(self, session, menu_path=""):
@@ -341,9 +371,11 @@ class RemoteControlType(Screen, ConfigListScreen):
 		self.getDefaultRcType()
 
 	def getDefaultRcType(self):
-		data = iRcTypeControl.getBoxType()
+		boxtype = getMachineBuild()
+		procBoxtype = iRcTypeControl.getBoxType()
+		print("[InputDevice] procBoxtype = %s, self.boxType = %s" % (procBoxtype, boxtype))
 		for x in self.defaultRcList:
-			if x[0] in data:
+			if x[0] in boxtype or x[0] in procBoxtype:
 				self.defaultRcType = x[1]
 				break
 # If there is none in the list, use the current value...
