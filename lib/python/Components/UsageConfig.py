@@ -37,8 +37,10 @@ def InitUsageConfig():
 		eDVBDB.getInstance().setNumberingMode(configElement.value)
 		refreshServiceList()
 	config.usage.alternative_number_mode.addNotifier(alternativeNumberModeChange)
+
 	config.usage.servicelist_twolines = ConfigYesNo(default = False)
 	config.usage.servicelist_twolines.addNotifier(refreshServiceList)
+
 	config.usage.hide_number_markers = ConfigYesNo(default = True)
 	config.usage.hide_number_markers.addNotifier(refreshServiceList)
 
