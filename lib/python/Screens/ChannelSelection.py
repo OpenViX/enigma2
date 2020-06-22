@@ -1819,7 +1819,7 @@ class ChannelSelectionBase(Screen):
 				self.servicelist.moveDown()
 
 	def toggleTwoLines(self):
-		if self.servicelist.mode == self.servicelist.MODE_FAVOURITES:
+		if config.usage.setup_level.index > 1 and not self.pathChangeDisabled and self.servicelist.mode == self.servicelist.MODE_FAVOURITES:
 			config.usage.servicelist_twolines.value = not config.usage.servicelist_twolines.value
 			config.usage.servicelist_twolines.save()
 		else:
