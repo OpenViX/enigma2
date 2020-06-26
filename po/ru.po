@@ -1116,13 +1116,13 @@ msgid "(PiP)"
 msgstr "(PiP)"
 
 msgid "(Radio)"
-msgstr "(Радио)"
+msgstr "(Radio)"
 
 msgid "(Show only reader:"
 msgstr "(Показать только ридер:"
 
 msgid "(TV)"
-msgstr "(ТВ)"
+msgstr "(TV)"
 
 msgid "(You are currently using a temporary sort method)"
 msgstr "(Вы используете метод временной сортировки)"
