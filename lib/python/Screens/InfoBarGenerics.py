@@ -2660,6 +2660,9 @@ class InfoBarExtensions:
 			self.session.open(MessageBox, _("The AutoTimer plugin is not installed!\nPlease install it."), type = MessageBox.TYPE_INFO,timeout = 10 )
 
 	def showEPGSearch(self):
+		if not os.path.exists("/usr/lib/enigma2/python/Plugins/Extensions/EPGSearch/plugin.pyo"):
+			self.session.open(MessageBox, _("The EPGSearch plugin is not installed!\nPlease install it."), type = MessageBox.TYPE_INFO,timeout = 10 )
+			return
 		from Plugins.Extensions.EPGSearch.EPGSearch import EPGSearch
 		s = self.session.nav.getCurrentService()
 		if s:
