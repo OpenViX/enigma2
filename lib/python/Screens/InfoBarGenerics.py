@@ -111,6 +111,7 @@ def saveResumePoints():
 	try:
 		f = open('/etc/enigma2/resumepoints.pkl', 'wb')
 		cPickle.dump(resumePointCache, f, cPickle.HIGHEST_PROTOCOL)
+		f.close()
 	except Exception, ex:
 		print "[InfoBar] Failed to write resumepoints:", ex
 	resumePointCacheLast = int(time())

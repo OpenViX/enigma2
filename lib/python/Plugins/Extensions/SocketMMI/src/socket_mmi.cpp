@@ -239,7 +239,7 @@ void eSocketMMIHandler::connDataAvail(int what)
 			eDebugNoNewLineStart("Put to buffer:");
 			for (int i=0; i < len; ++i)
 				eDebugNoNewLine("%02x ", data[i]);
-			eDebugEOL();
+			eDebugNoNewLine("\n--------\n");
 #endif
 			buffer.write( data, len );
 
@@ -272,7 +272,7 @@ void eSocketMMIHandler::connDataAvail(int what)
 					eDebugNoNewLineStart("dump mmi:");
 					for (int i=0; i < messageLength; ++i)
 						eDebugNoNewLine("%02x ", dest[i]);
-					eDebugEOL();
+					eDebugNoNewLine("\n--------\n");
 #endif
 					/*emit*/ mmi_progress(0, dest, (const void*)(dest+3+LengthBytes), messageLength-3-LengthBytes);
 				}

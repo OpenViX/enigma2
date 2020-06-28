@@ -97,14 +97,8 @@ static bool bsodhandled = false;
 void bsodFatal(const char *component)
 {
 	/* show no more than one bsod while shutting down/crashing */
-	if (bsodhandled) {
-		if (component) {
-			eSyncLog();
-			sleep(1);
-			raise(SIGKILL);
-		}
+	if (bsodhandled)
 		return;
-	}
 	bsodhandled = true;
 
 	if (!component)
@@ -120,7 +114,6 @@ void bsodFatal(const char *component)
 	FILE *f;
 	std::string crashlog_name;
 	std::ostringstream os;
-	std::ostringstream os_text;
 	os << "/media/hdd/enigma2_crash_";
 	os << time(0);
 	os << ".log";
@@ -191,7 +184,6 @@ void bsodFatal(const char *component)
 		/* dump the kernel log */
 		getKlog(f);
 
-		fsync(fileno(f));
 		fclose(f);
 	}
 
@@ -203,7 +195,6 @@ void bsodFatal(const char *component)
 	p.resetClip(eRect(ePoint(0, 0), my_dc->size()));
 	p.setBackgroundColor(gRGB(0x27408B));
 	p.setForegroundColor(gRGB(0xFFFFFF));
-
 	int hd =  my_dc->size().width() == 1920;
 	ePtr<gFont> font = new gFont("Regular", hd ? 30 : 20);
 	p.setFont(font);
@@ -213,15 +204,11 @@ void bsodFatal(const char *component)
 
 	os.str("");
 	os.clear();
-	os_text.clear();
-
-	os_text << "We are really sorry. Your STB encountered "
+	os << "We are really sorry. Your STB encountered "
 		"a software problem, and needs to be restarted.\n"
 		"Please send the logfile " << crashlog_name << " to " << crash_emailaddr << ".\n"
-		"Your receiver restarts in 10 seconds!\n"
+		"Your STB restarts in 10 seconds!\n"
 		"Component: " << component;
-	
-	os << getConfigString("config.crash.debug_text", os_text.str());
 
 	p.renderText(usable_area, os.str().c_str(), gPainter::RT_WRAP|gPainter::RT_HALIGN_LEFT);
 
@@ -275,7 +262,6 @@ void bsodFatal(const char *component)
 		usable_area = eRect(hd ? 30 : 100, hd ? 180 : 170, my_dc->size().width() - (hd ? 60 : 180), my_dc->size().height() - (hd ? 30 : 20));
 		p.renderText(usable_area, logtail, gPainter::RT_HALIGN_LEFT);
 	}
-	eSyncLog();
 	sleep(10);
 
 	/*
@@ -298,7 +284,7 @@ void oops(const mcontext_t &context)
 	int i;
 	for (i=0; i<32; i += 4)
 	{
-		eDebug("    %08x %08x %08x %08x",
+		eLog(lvlFatal, "    %08x %08x %08x %08x",
 			(int)context.gregs[i+0], (int)context.gregs[i+1],
 			(int)context.gregs[i+2], (int)context.gregs[i+3]);
 	}
@@ -323,7 +309,7 @@ void print_backtrace()
 	size_t cnt;
 
 	size = backtrace(array, 15);
-	eDebug("Backtrace:");
+	eLog(lvlFatal, "Backtrace:");
 	for (cnt = 1; cnt < size; ++cnt)
 	{
 		Dl_info info;
@@ -331,7 +317,7 @@ void print_backtrace()
 		if (dladdr(array[cnt], &info)
 			&& info.dli_fname != NULL && info.dli_fname[0] != '\0')
 		{
-			eDebug("%s(%s) [0x%lX]", info.dli_fname, info.dli_sname != NULL ? info.dli_sname : "n/a", (unsigned long int) array[cnt]);
+			eLog(lvlFatal, "%s(%s) [0x%lX]", info.dli_fname, info.dli_sname != NULL ? info.dli_sname : "n/a", (unsigned long int) array[cnt]);
 		}
 	}
 }
@@ -341,7 +327,7 @@ void handleFatalSignal(int signum, siginfo_t *si, void *ctx)
 	ucontext_t *uc = (ucontext_t*)ctx;
 	oops(uc->uc_mcontext);
 	print_backtrace();
-	eDebug("-------FATAL SIGNAL");
+	eLog(lvlFatal, "-------FATAL SIGNAL");
 	bsodFatal("enigma2, signal");
 }
 

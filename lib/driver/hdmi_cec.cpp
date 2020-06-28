@@ -378,7 +378,7 @@ void eHdmiCEC::hdmiEvent(int what)
 			{
 				eDebugNoNewLine(" %02X", rxmessage.data[i]);
 			}
-			eDebugEOL();
+			eDebugNoNewLine("\n");
 			bool hdmicec_report_active_menu = eConfigManager::getConfigBoolValue("config.hdmicec.report_active_menu", false);
 			if (hdmicec_report_active_menu)
 			{
@@ -532,7 +532,7 @@ void eHdmiCEC::sendMessage(struct cec_message &message)
 		{
 			eDebugNoNewLine(" %02X", message.data[i]);
 		}
-		eDebugEOL();
+		eDebugNoNewLine("\n");
 		if (linuxCEC)
 		{
 			struct cec_msg msg;

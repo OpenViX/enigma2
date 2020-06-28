@@ -9,6 +9,7 @@ from Components.About import about
 from Components.ScrollLabel import ScrollLabel
 from Components.Button import Button
 from Components.config import config
+from enigma import eGetEnigmaDebugLvl
 
 from Components.Pixmap import MultiPixmap
 from Components.Network import iNetwork
@@ -173,6 +174,7 @@ class About(Screen):
 		AboutText += EnigmaSkin + "\n"
 
 		AboutText += _("Python version: ") + about.getPythonVersionString() + "\n"
+		AboutText += _("Enigma2 debug level:\t%d") % eGetEnigmaDebugLvl() + "\n"
 
 		GStreamerVersion = _("GStreamer: ") + about.getGStreamerVersionString(cpu).replace("GStreamer","")
 		self["GStreamerVersion"] = StaticText(GStreamerVersion)

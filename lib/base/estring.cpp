@@ -694,13 +694,7 @@ std::string convertDVBUTF8(const unsigned char *data, int len, int table, int ts
 	if (pconvertedLen)
 		*pconvertedLen = convertedLen;
 
-	//if (convertedLen < len)
-	//	eDebug("[convertDVBUTF8] %d chars converted, and %d chars left..", convertedLen, len-convertedLen);
-
-	//eDebug("[convertDVBUTF8] table=0x%02X twochar=%d output:%s\n", table, useTwoCharMapping, output.c_str());
-
-// Remove any Start/End of Selected Area markers *now*...
-	return buildShortName(output);
+	return output;
 }
 
 std::string convertUTF8DVB(const std::string &string, int table)

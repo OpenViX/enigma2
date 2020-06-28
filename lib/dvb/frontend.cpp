@@ -19,6 +19,25 @@
 #define I2C_SLAVE_FORCE	0x0706
 #endif
 
+#define ioctlMeasureStart \
+	struct timeval start, end; \
+	int duration; \
+	gettimeofday(&start, NULL);
+
+#define ioctlMeasureEval(x) \
+	do { \
+		gettimeofday(&end, NULL); \
+		duration = (((end.tv_usec - start.tv_usec)/1000) + 1000 ) % 1000; \
+		if (duration>35) \
+			eWarning("[eDVBFrontend] Slow ioctl '%s', potential driver issue, %dms",x,duration); \
+	} while(0)
+
+#define eDebugNoSimulateNoNewLineEnd(x...) \
+	do { \
+		if (!m_simulate) \
+			eDebugNoNewLine(x); \
+	} while(0)
+
 #define eDebugNoSimulate(x...) \
 	do { \
 		if (!m_simulate) \
