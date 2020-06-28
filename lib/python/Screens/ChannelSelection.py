@@ -284,7 +284,6 @@ class ChannelContextMenu(Screen):
 					_append_when_current_valid(current, menu, actions, (_("Disable move mode"), self.toggleMoveMode), level=0, key="red")
 				else:
 					_append_when_current_valid(current, menu, actions, (_("Enable move mode"), self.toggleMoveMode), level=1, key="red")
-				_append_when_current_valid(current, menu, actions, (_("Remove entry"), self.removeEntry), level=0, key="4")
 				self.removeFunction = self.removeCurrentService
 				if not csel.entry_marked and not inBouquetRootList and current_root and not (current_root.flags & eServiceReference.isGroup):
 					_append_when_current_valid(current, menu, actions, (_("Add marker"), self.showMarkerInputBox), level=0, key="green")
@@ -1338,19 +1337,19 @@ class ChannelSelectionEdit:
 		l.setFontsize()
 		l.setItemsPerPage()
 		l.setMode('MODE_TV')
-
-		# l.setMode('MODE_TV') automatically sets "hide number marker" to
+		
+		# l.setMode('MODE_TV') automatically sets "hide number marker" to 
 		# the config.usage.hide_number_markers.value so when we are in "movemode"
-		# we need to force display of the markers here after l.setMode('MODE_TV')
-		# has run. If l.setMode('MODE_TV') were ever removed above,
-		# "self.servicelist.l.setHideNumberMarker(False)" could be moved
+		# we need to force display of the markers here after l.setMode('MODE_TV') 
+		# has run. If l.setMode('MODE_TV') were ever removed above, 
+		# "self.servicelist.l.setHideNumberMarker(False)" could be moved 
 		# directly to the "else" clause of "def toggleMoveMode".
-		if self.movemode:
+		if self.movemode: 
 			self.servicelist.l.setHideNumberMarker(False)
 
 		if close:
 			self.cancel()
-
+			
 
 MODE_TV = 0
 MODE_RADIO = 1
