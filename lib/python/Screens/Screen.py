@@ -14,7 +14,7 @@ from Components.Sources.Source import Source
 class Screen(dict, GUISkin):
 	NO_SUSPEND, SUSPEND_STOPS, SUSPEND_PAUSES = range(3)
 	ALLOW_SUSPEND = NO_SUSPEND
-	global_screen = None
+	globalScreen = None
 
 	def __init__(self, session, parent=None):
 		dict.__init__(self)
@@ -155,7 +155,7 @@ class Screen(dict, GUISkin):
 		elif name == "parent":
 			return self.parent
 		elif name == "global":
-			return self.global_screen
+			return self.globalScreen
 		return None
 
 	def callLater(self, function):
