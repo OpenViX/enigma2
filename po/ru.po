@@ -6261,7 +6261,7 @@ msgstr "Установка завершена."
 
 #, python-format
 msgid "Installed:\t%s\n"
-msgstr "Установлено:\t%s\n"
+msgstr "Установлен:\t%s\n"
 
 msgid "Installing"
 msgstr "Установка"
@@ -6545,7 +6545,7 @@ msgstr "Последняя скорость"
 
 #, python-format
 msgid "Last update:\t%s\n"
-msgstr "Обновлено:\t%s\n"
+msgstr "Обновлен:\t%s\n"
 
 #, python-format
 msgid "Last update: %s"
