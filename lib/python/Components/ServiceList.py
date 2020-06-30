@@ -360,11 +360,11 @@ class ServiceList(GUIComponent):
 		self.l.setCurrentMarked(state)
 
 	def setMode(self, mode):
-		show_two_lines = config.usage.servicelist_twolines.value and mode == self.MODE_FAVOURITES
-		ItemHeight = self.ItemHeight * (2 if show_two_lines else 1)
 		self.mode = mode
 		self.setItemsPerPage()
-		self.l.setItemHeight(ItemHeight)
+		show_two_lines = config.usage.servicelist_twolines.value and mode == self.MODE_FAVOURITES
+		self.ItemHeight *= (2 if show_two_lines else 1)
+		self.l.setItemHeight(self.ItemHeight)
 		self.l.setVisualMode(eListboxServiceContent.visModeComplex)
 
 		if config.usage.service_icon_enable.value:
