@@ -182,11 +182,9 @@ class EPGListGrid(EPGListBase):
 			self.skinAttributes = attribs
 		return EPGListBase.applySkin(self, desktop, screen)
 
-	def setTimeFocus(self, timeFocus, center=True):
+	def setTimeFocus(self, timeFocus):
 		# prefer time being aligned in the middle of the EPG, but clip to the maximum EPG data history
-		self.timeBase = int(timeFocus)
-		if center:
-			self.timeBase -= self.timeEpochSecs // 2
+		self.timeBase = int(timeFocus) - self.timeEpochSecs // 2
 		abs0 = int(time()) - self.epgHistorySecs
 		if self.timeBase < abs0:
 			# we're viewing close to the start of EPG data
