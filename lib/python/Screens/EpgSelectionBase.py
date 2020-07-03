@@ -12,7 +12,7 @@ from Components.Sources.Event import Event
 from Components.Sources.ServiceEvent import ServiceEvent
 from Components.UsageConfig import preferredTimerPath
 from Components.config import ConfigClock, ConfigDateTime, config, configfile
-from Screens.ChoiceBox import ChoiceBox
+from Screens.ChoiceBox import PopupChoiceBox
 from Screens.EventView import EventViewEPGSelect
 from Screens.HelpMenu import HelpableScreen
 from Screens.MessageBox import MessageBox
@@ -64,6 +64,14 @@ okActions = [
 	("openEventView", _("Event Info"), _("Show detailed event info"))
 ]
 
+recActions = [
+	("addEditTimerMenu", _("Timer Menu"), _("Add a record timer or an autotimer for current event")),
+	("addEditTimer", _("Add Timer"), _("Add and edit a record timer for current event")),
+	("addEditTimerSilent", _("Create Timer"), _("Add a record timer for current event")),
+	("addEditZapTimerSilent", _("Create Zap Timer"), _("Add a zap timer for current event")),
+	("addEditAutoTimer", _("Add AutoTimer"), _("Add an autotimer for current event"))
+]
+
 infoActions = [
 	("", _("Do nothing")),
 	("openEventView", _("Event Info"), _("Show detailed event info")),
@@ -100,7 +108,7 @@ class EPGSelectionBase(Screen, HelpableScreen):
 		self.originalPlayingServiceOrGroup = self.session.nav.getCurrentlyPlayingServiceOrGroup()
 		self.startBouquet = startBouquet
 		self.startRef = startRef
-		self.choiceBoxDialog = None
+		self.popupDialog = None
 		self.closeRecursive = False
 		self.eventviewDialog = None
 		self.eventviewWasShown = False
@@ -116,11 +124,6 @@ class EPGSelectionBase(Screen, HelpableScreen):
 		self["key_blue"] = Button(_("Add AutoTimer"))
 
 		helpDescription = _("EPG Commands")
-
-		self["dialogactions"] = HelpableActionMap(self, "WizardActions", {
-			"back": (self.closeChoiceBoxDialog, _("Close dialog box")),
-		}, prio=-1, description=helpDescription)
-		self["dialogactions"].setEnabled(False)
 
 		self["okactions"] = HelpableActionMap(self, "OkCancelActions", {
 			"cancel": (self.closeScreen, _("Exit EPG")),
@@ -141,8 +144,8 @@ class EPGSelectionBase(Screen, HelpableScreen):
 		self._updateButtonText()
 
 		self["recordingactions"] = HelpableActionMap(self, "InfobarInstantRecord", {
-			"ShortRecord": (self.recordTimerQuestion, _("Add a record timer for current event")),
-			"LongRecord": (self.doZapTimer, _("Add a zap timer for current event"))
+			"ShortRecord": self.helpKeyAction("rec"),
+			"LongRecord": self.helpKeyAction("reclong")
 		}, prio=-1, description=helpDescription)
 		self["epgactions"] = HelpableActionMap(self, "EPGSelectActions", {}, -1)
 
@@ -182,10 +185,6 @@ class EPGSelectionBase(Screen, HelpableScreen):
 
 	def sortEPG(self):
 		self.closeEventViewDialog()
-
-	def addEditTimer(self):
-		self.closeEventViewDialog()
-		self.recordTimerQuestion(True)
 
 	def enterDateTime(self):
 		if not EPGSelectionBase.lastEnteredTime:
@@ -338,85 +337,100 @@ class EPGSelectionBase(Screen, HelpableScreen):
 			autopoller = None
 			autotimer = None
 
-	def timerAdd(self):
-		self.recordTimerQuestion(True)
-
 	def editTimer(self, timer):
 		def callback(ret):
 			self.refreshList()
 		self.session.openWithCallback(callback, TimerEntry, timer)
 
 	def removeTimer(self, timer):
-		self.closeChoiceBoxDialog()
+		self.closePopupDialog()
 		timer.afterEvent = AFTEREVENT.NONE
 		self.session.nav.RecordTimer.removeEntry(timer)
 		self.setActionButtonText("addEditTimer", _("Add Timer"))
 		self.refreshList()
 
 	def disableTimer(self, timer):
-		self.closeChoiceBoxDialog()
+		self.closePopupDialog()
 		timer.disable()
 		self.session.nav.RecordTimer.timeChanged(timer)
 		self.setActionButtonText("addEditTimer", _("Add Timer"))
 		self.refreshList()
 
-	def recordTimerQuestion(self, manual=False):
+	def addEditTimerMenu(self):
+		def callback(choice):
+			self.closePopupDialog()
+			if choice:
+				choice()
+
+		self.closeEventViewDialog()
+		event, service = self.__timerEditPopupMenu()
+		if event is not None:
+			if event.getBeginTime() + event.getDuration() <= time():
+				return
+			self.__popupMenu(
+					"%s?" % event.getEventName(),
+					[(_("Add Timer"), "CALLFUNC", callback, self.doInstantTimer),
+					(_("Add AutoTimer"), "CALLFUNC", callback, self.addAutoTimerSilent)])
+
+	def addEditTimer(self):
+		self.closeEventViewDialog()
+		event, service = self.__timerEditPopupMenu()
+		if event is not None:
+			newEntry = RecordTimerEntry(service, checkOldTimers=True, dirname=preferredTimerPath(), *parseEvent(event, service=service))
+			self.session.openWithCallback(self.finishedAdd, TimerEntry, newEntry)
+
+	def addEditTimerSilent(self):
+		self.closeEventViewDialog()
+		event, service = self.__timerEditPopupMenu()
+		if event is not None:
+			self.doInstantTimer(0)
+
+	def addEditZapTimerSilent(self):
+		self.closeEventViewDialog()
+		event, service = self.__timerEditPopupMenu()
+		if event is not None:
+			self.doInstantTimer(1)
+
+	def __timerEditPopupMenu(self):
+		def callback(choice):
+			self.closePopupDialog()
+			if choice:
+				choice(self)
+
 		event, service = self["list"].getCurrent()[:2]
 		if event is None:
-			return
-		menu = None
+			return None, None
 		timer = self.session.nav.RecordTimer.getTimerForEvent(service, event)
 		if timer is not None:
-			menu = [
-				(_("Delete Timer"), "CALLFUNC", self.removeChoiceBoxCB, lambda ret: self.removeTimer(timer)),
-				(_("Edit Timer"), "CALLFUNC", self.removeChoiceBoxCB, lambda ret: self.editTimer(timer)),
-				(_("Disable Timer"), "CALLFUNC", self.removeChoiceBoxCB, lambda ret: self.disableTimer(timer))
-			]
-			title = _("Select action for timer %s:") % event.getEventName()
-		elif event.getBeginTime() + event.getDuration() > time():
-			if not manual:
-				menu = [
-					(_("Add Timer"), "CALLFUNC", self.choiceBoxCB, self.doRecordTimer),
-					(_("Add AutoTimer"), "CALLFUNC", self.choiceBoxCB, self.addAutoTimerSilent)
-				]
-				title = "%s?" % event.getEventName()
-			else:
-				newEntry = RecordTimerEntry(service, checkOldTimers=True, dirname=preferredTimerPath(), *parseEvent(event, service=service))
-				self.session.openWithCallback(self.finishedAdd, TimerEntry, newEntry)
-		if menu:
-			self.choiceBoxDialog = self.session.instantiateDialog(ChoiceBox, title=title, list=menu, keys=["green", "blue"], skin_name="RecordTimerQuestion")
-			posy = self["list"].getSelectionPosition()
-			self.choiceBoxDialog.instance.move(ePoint(posy[0] - self.choiceBoxDialog.instance.size().width(), self.instance.position().y() + posy[1]))
-			self.showChoiceBoxDialog()
+			self.__popupMenu(
+				_("Select action for timer %s:") % event.getEventName(),
+				[(_("Delete Timer"), "CALLFUNC", callback, lambda ret: self.removeTimer(timer)),
+				(_("Edit Timer"), "CALLFUNC", callback, lambda ret: self.editTimer(timer)),
+				(_("Disable Timer"), "CALLFUNC", callback, lambda ret: self.disableTimer(timer))])
+			return None, None
+		return event, service
 
-	def removeChoiceBoxCB(self, choice):
-		self.closeChoiceBoxDialog()
-		if choice:
-			choice(self)
+	def __popupMenu(self, title, menu):
+		self.popupDialog = self.session.instantiateDialog(PopupChoiceBox, title=title, list=menu, keys=["green", "blue"], skin_name="RecordTimerQuestion", closeCB=self.closePopupDialog)
+		pos = self["list"].getSelectionPosition()
+		self.popupDialog.instance.move(ePoint(pos[0] - self.popupDialog.instance.size().width(), self.instance.position().y() + pos[1]))
+		self.showPopupDialog()
 
-	def choiceBoxCB(self, choice):
-		self.closeChoiceBoxDialog()
-		if choice:
-			choice()
-
-	def showChoiceBoxDialog(self):
+	def showPopupDialog(self):
 		self["okactions"].setEnabled(False)
 		if "epgcursoractions" in self:
 			self["epgcursoractions"].setEnabled(False)
 		self["colouractions"].setEnabled(False)
 		self["recordingactions"].setEnabled(False)
 		self["epgactions"].setEnabled(False)
-		self["dialogactions"].setEnabled(True)
-		self.choiceBoxDialog["actions"].execBegin()
-		self.choiceBoxDialog.show()
 		if "numberactions" in self:
 			self["numberactions"].setEnabled(False)
+		self.popupDialog.show()
 
-	def closeChoiceBoxDialog(self):
-		self["dialogactions"].setEnabled(False)
-		if self.choiceBoxDialog:
-			self.choiceBoxDialog["actions"].execEnd()
-			self.session.deleteDialog(self.choiceBoxDialog)
+	def closePopupDialog(self):
+		if self.popupDialog is not None:
+			self.popupDialog.doClose()
+			self.popupDialog = None
 		self["okactions"].setEnabled(True)
 		if "epgcursoractions" in self:
 			self["epgcursoractions"].setEnabled(True)
@@ -426,13 +440,7 @@ class EPGSelectionBase(Screen, HelpableScreen):
 		if "numberactions" in self:
 			self["numberactions"].setEnabled(True)
 
-	def doRecordTimer(self):
-		self.doInstantTimer(0)
-
-	def doZapTimer(self):
-		self.doInstantTimer(1)
-
-	def doInstantTimer(self, zap):
+	def doInstantTimer(self, zap=0):
 		event, service = self["list"].getCurrent()[:2]
 		if event is None or event.getBeginTime() + event.getDuration() < time():
 			return
@@ -861,7 +869,9 @@ class EPGStandardButtons:
 			"blue": (ignoreLongKeyPress(self.addAutoTimer), _("Add an autotimer for current event")),
 			"bluelong": (self.openAutoTimerList, _("Show autotimer list")),
 			"ok": (ignoreLongKeyPress(self.OK), _("Zap to channel/service")),
-			"oklong": (self.OKLong, _("Zap to channel/service and close"))
+			"oklong": (self.OKLong, _("Zap to channel/service and close")),
+			"rec": (ignoreLongKeyPress(self.addEditTimerMenu), _("Add a record timer for current event")),
+			"reclong": (self.addEditZapTimerSilent, _("Add a zap timer for current event"))
 		}
 		return actions[actionName]
 
