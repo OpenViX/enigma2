@@ -588,76 +588,81 @@ class EPGServiceZap:
 				self.zapFunc(service.ref, bouquet=self.getCurrentBouquet(), preview=prev)
 				self.currch = self.session.nav.getCurrentlyPlayingServiceReference() and str(self.session.nav.getCurrentlyPlayingServiceReference().toString())
 
+class EPGServiceNumberSelectionPopup(Screen):
+	def __init__(self, session, getServiceByNumber, callback, number):
+		Screen.__init__(self, session)
+		self.skinName = "EPGServiceNumberSelection"
+		self.getServiceByNumber = getServiceByNumber
+		self.callback = callback
+
+		helpDescription = _("EPG Commands")
+		helpMsg = _("Enter a number to jump to a service/channel")
+		self["actions"] = HelpableNumberActionMap(self, "NumberActions", 
+			dict([(str(i), (self.keyNumber, helpMsg)) for i in range(0,10)]),
+			prio=-1, description=helpDescription)
+		self["cancelaction"] = HelpableActionMap(self, "OkCancelActions", {
+			"cancel": (self.__cancel, _("Exit channel selection")),
+			"OK": (self.__OK, _("Select EPG channel"))
+		}, prio=-1, description=helpDescription)
+
+		self["number"] = Label()
+		self["service"] = ServiceEvent()
+		self["service"].newService(None)
+
+		self.timer = eTimer()
+		self.timer.callback.append(self.__OK)
+		self.number = ""
+		self.keyNumber(number)
+
+	def show(self):
+		self["actions"].execBegin()
+		self["cancelaction"].execBegin()
+		Screen.show(self)
+
+	def hide(self):
+		self["actions"].execEnd()
+		self["cancelaction"].execEnd()
+		Screen.hide(self)
+
+	def keyNumber(self, number):
+		if config.misc.zapkey_delay.value > 0:
+			self.timer.start(1000*config.misc.zapkey_delay.value, True)
+		self.number += str(number)
+		service, bouquet = self.getServiceByNumber(int(self.number))
+		self["number"].setText(self.number)
+		self["service"].newService(service)
+
+		if len(self.number) >= 4:
+			self.__OK()
+
+	def __OK(self):
+		self.callback(int(self.number))
+
+	def __cancel(self):
+		self.callback(None)
+
 
 class EPGServiceNumberSelection:
 	def __init__(self):
-		self.numberZapTimer = eTimer()
-		self.numberZapTimer.callback.append(self.__OK)
-		self.numberZapField = None
-
-		self["numberzapokactions"] = HelpableActionMap(self, "OkCancelActions", {
-			"cancel": (self.__cancel, _("Close number zap.")),
-			"OK": (self.__OK, _("Change to service")),
-		}, prio=-1, description=_("Service/Channel number zap commands"))
-		self["numberzapokactions"].setEnabled(False)
 		helpMsg = _("Enter a number to jump to a service/channel")
 		self["numberactions"] = HelpableNumberActionMap(self, "NumberActions", 
 			dict([(str(i), (self.keyNumberGlobal, helpMsg)) for i in range(0,10)]),
 			prio=-1, description=_("Service/Channel number zap commands"))
 
-		self["zapbackground"] = Label()
-		self["zapbackground"].hide()
-		self["zapnumber"] = Label()
-		self["zapnumber"].hide()
-		self["zapservice"] = ServiceEvent()
-		self["zapservice"].newService(None)
-		self["number"] = Label()
-		self["number"].hide()
-
 	def keyNumberGlobal(self, number):
-		self["epgcursoractions"].setEnabled(False)
-		self["okactions"].setEnabled(False)
-		self["numberzapokactions"].setEnabled(True)
-		if config.misc.zapkey_delay.value > 0:
-			self.numberZapTimer.start(1000*config.misc.zapkey_delay.value, True)
-		if self.numberZapField is None:
-			self.numberZapField = str(number)
-		else:
-			self.numberZapField += str(number)
-		service, bouquet = self.getServiceByNumber(int(self.numberZapField))
-		self["zapbackground"].show()
-		self["zapnumber"].setText(self.numberZapField)
-		self["zapnumber"].show()
-		self["zapservice"].newService(service)
-		if self["number"].skinAttributes:
-		 	serviceName = ServiceReference(service).getServiceName()
-		 	self["number"].setText("%s\n%s" % (serviceName, self.numberZapField))
-			self["number"].show()
+		def closed(number):
+			self.closePopupDialog()
+			if number is not None:
+				service, bouquet = self.getServiceByNumber(number)
+				if service is not None:
+					self.startRef = service
+					self.startBouquet = bouquet
+					self.setBouquet(bouquet)
+					self.bouquetChanged()
+					self.moveToService(service)
 
-		if len(self.numberZapField) >= 4:
-			self.__OK()
-
-	def __OK(self):
-		if self.numberZapField is not None:
-			service, bouquet = self.getServiceByNumber(int(self.numberZapField))
-			if service is not None:
-				self.startRef = service
-				self.startBouquet = bouquet
-				self.setBouquet(bouquet)
-				self.bouquetChanged()
-				self.moveToService(service)
-		self.__cancel()
-
-	def __cancel(self):
-		self.numberZapField = None
-		self.numberZapTimer.stop()
-		self["epgcursoractions"].setEnabled(True)
-		self["okactions"].setEnabled(True)
-		self["numberzapokactions"].setEnabled(False)
-		self["zapbackground"].hide()
-		self["zapnumber"].hide()
-		self["zapservice"].newService(None)
-		self["number"].hide()
+		self.popupDialog = self.session.instantiateDialog(EPGServiceNumberSelectionPopup, self.getServiceByNumber, closed, number)
+		self.showPopupDialog()
 
 
 class EPGBouquetSelection:
