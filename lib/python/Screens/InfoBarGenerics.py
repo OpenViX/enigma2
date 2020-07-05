@@ -297,7 +297,6 @@ class InfoBarShowHide(InfoBarScreenSaver):
 		self.onExecBegin.append(self.__onExecBegin)
 
 	def __onExecBegin(self):
-		self.clearScreenPath()
 		self.showHideVBI()
 
 	def __layoutFinished(self):
