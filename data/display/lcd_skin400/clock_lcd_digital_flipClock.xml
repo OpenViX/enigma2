@@ -1,13 +1,13 @@
 <screen position="0,0" size="400,240">
 	<!--clock background-->
-	<ePixmap pixmap="lcd_skin/clock_lcd_digital_flipClock_bg.png" position="0,0" size="400,240" zPosition="0" />
+	<ePixmap pixmap="display/lcd_skin/clock_lcd_digital_flipClock_bg.png" position="0,0" size="400,240" zPosition="0" />
 	<!--time line-->
-	<ePixmap pixmap="lcd_skin/clock_lcd_digital_flipClock_split.png" position="40,92" size="139,5" zPosition="10" transparent="1" alphatest="on" />
-	<ePixmap pixmap="lcd_skin/clock_lcd_digital_flipClock_split.png" position="223,92" size="139,5" zPosition="10" transparent="1" alphatest="on" />
+	<ePixmap pixmap="display/lcd_skin/clock_lcd_digital_flipClock_split.png" position="40,92" size="139,5" zPosition="10" transparent="1" alphatest="on" />
+	<ePixmap pixmap="display/lcd_skin/clock_lcd_digital_flipClock_split.png" position="223,92" size="139,5" zPosition="10" transparent="1" alphatest="on" />
 	<!--date line-->
-	<ePixmap pixmap="lcd_skin/clock_lcd_digital_flipClock_split.png" position="85,199" size="233,2" zPosition="11" transparent="1" alphatest="on" />
+	<ePixmap pixmap="display/lcd_skin/clock_lcd_digital_flipClock_split.png" position="85,199" size="233,2" zPosition="11" transparent="1" alphatest="on" />
 	<!--rad center-->
-	<ePixmap pixmap="lcd_skin/clock_lcd_digital_flipClock_rad.png" position="190,46" size="21,100" zPosition="12" transparent="1" alphatest="on" />
+	<ePixmap pixmap="display/lcd_skin/clock_lcd_digital_flipClock_rad.png" position="190,46" size="21,100" zPosition="12" transparent="1" alphatest="on" />
 	<!--TIME-->
 	<widget source="global.CurrentTime" render="Label" position="39,5" size="139,185" font="RegularLCD;134" halign="center" valign="top" noWrap="1" zPosition="1" transparent="1" foregroundColor="#ffffff">
 		<convert type="ClockToText">Format:%H</convert>
