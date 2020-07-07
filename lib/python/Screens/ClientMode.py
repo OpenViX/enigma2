@@ -15,24 +15,9 @@ from Components.Pixmap import Pixmap
 from enigma import ePoint
 
 class ClientModeScreen(ConfigListScreen, Screen):
-	def __init__(self, session, menu_path=""):
+	def __init__(self, session):
 		Screen.__init__(self, session)
-		self.setup_title = screentitle = _("Client mode")
-		try:
-			if config.usage.show_menupath.value == 'large':
-				menu_path += screentitle
-				title = menu_path
-				self["menu_path_compressed"] = StaticText("")
-			elif config.usage.show_menupath.value == 'small':
-				title = screentitle
-				self["menu_path_compressed"] = StaticText(menu_path + " >" if not menu_path.endswith(' / ') else menu_path[:-3] + " >" or "")
-			else:
-				title = screentitle
-				self["menu_path_compressed"] = StaticText("")
-		except: # for start wizard
-			title = screentitle
-			self["menu_path_compressed"] = StaticText("")
-		Screen.setTitle(self, title)
+		self.setTitle(_("Client Mode"))
 		self.skinName = "Setup"
 		self.initial_state = config.clientmode.enabled.value
 		self.onChangedEntry = []

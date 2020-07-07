@@ -28,31 +28,12 @@ class TimerEditList(Screen, ProtectedScreen):
 	DELETE = 4
 	STOP = 5
 
-	def __init__(self, session, menu_path = "", selectItem = None):
+	def __init__(self, session, selectItem=None):
 		Screen.__init__(self, session)
-		screentitle = _("Timer List")
-		self.menu_path = menu_path
 		self.selectItem = selectItem
 		ProtectedScreen.__init__(self)
-		if config.usage.show_menupath.value == 'large':
-			self.menu_path += screentitle
-			title = self.menu_path
-			self["menu_path_compressed"] = StaticText("")
-			self.menu_path += ' / '
-		elif config.usage.show_menupath.value == 'small':
-			title = screentitle
-			condtext = ""
-			if self.menu_path and not self.menu_path.endswith(' / '):
-				condtext = self.menu_path + " >"
-			elif self.menu_path:
-				condtext = self.menu_path[:-3] + " >"
-			self["menu_path_compressed"] = StaticText(condtext)
-			self.menu_path += screentitle + ' / '
-		else:
-			title = screentitle
-			self["menu_path_compressed"] = StaticText("")
-		Screen.setTitle(self, title)
-		
+		self.setTitle(_("Timer List"))
+
 		self.onChangedEntry = [ ]
 		self.list = []
 		self["timerlist"] = TimerList(self.list)
@@ -151,7 +132,7 @@ class TimerEditList(Screen, ProtectedScreen):
 					print "[TimerEdit] Sanity check failed"
 					simulTimerList = timersanitycheck.getSimulTimerList()
 					if simulTimerList is not None:
-						self.session.openWithCallback(self.finishedEdit, TimerSanityConflict, simulTimerList, self.menu_path)
+						self.session.openWithCallback(self.finishedEdit, TimerSanityConflict, simulTimerList)
 				else:
 					print "[TimerEdit] Sanity check passed"
 					if timersanitycheck.doubleCheck():
@@ -302,12 +283,12 @@ class TimerEditList(Screen, ProtectedScreen):
 	def showLog(self):
 		cur = self["timerlist"].getCurrent()
 		if cur:
-			self.session.openWithCallback(self.finishedEdit, TimerLog, cur, self.menu_path)
+			self.session.openWithCallback(self.finishedEdit, TimerLog, cur)
 
 	def openEdit(self):
 		cur = self["timerlist"].getCurrent()
 		if cur:
-			self.session.openWithCallback(self.finishedEdit, TimerEntry, cur, self.menu_path)
+			self.session.openWithCallback(self.finishedEdit, TimerEntry, cur)
 
 	def cleanupQuestion(self):
 		self.session.openWithCallback(self.cleanupTimer, MessageBox, _("Really delete completed timers?"))
@@ -371,7 +352,7 @@ class TimerEditList(Screen, ProtectedScreen):
 		self.addTimer(RecordTimerEntry(serviceref, checkOldTimers = True, dirname = preferredTimerPath(), *data))
 
 	def addTimer(self, timer):
-		self.session.openWithCallback(self.finishedAdd, TimerEntry, timer, self.menu_path)
+		self.session.openWithCallback(self.finishedAdd, TimerEntry, timer)
 
 
 	def finishedEdit(self, answer):
@@ -388,7 +369,7 @@ class TimerEditList(Screen, ProtectedScreen):
 					if not timersanitycheck.check():
 						simulTimerList = timersanitycheck.getSimulTimerList()
 						if simulTimerList is not None:
-							self.session.openWithCallback(self.finishedEdit, TimerSanityConflict, timersanitycheck.getSimulTimerList(), self.menu_path)
+							self.session.openWithCallback(self.finishedEdit, TimerSanityConflict, timersanitycheck.getSimulTimerList())
 					else:
 						success = True
 			else:
@@ -410,7 +391,7 @@ class TimerEditList(Screen, ProtectedScreen):
 						self.session.nav.RecordTimer.timeChanged(x)
 				simulTimerList = self.session.nav.RecordTimer.record(entry)
 				if simulTimerList is not None:
-					self.session.openWithCallback(self.finishSanityCorrection, TimerSanityConflict, simulTimerList, self.menu_path)
+					self.session.openWithCallback(self.finishSanityCorrection, TimerSanityConflict, simulTimerList)
 			self.fillTimerList()
 			self.updateState()
 
@@ -431,28 +412,9 @@ class TimerSanityConflict(Screen):
 	DISABLE = 2
 	EDIT = 3
 
-	def __init__(self, session, timer, menu_path=""):
+	def __init__(self, session, timer):
 		Screen.__init__(self, session)
-		screentitle = _("Timer sanity error")
-		self.menu_path = menu_path
-		if config.usage.show_menupath.value == 'large':
-			self.menu_path += screentitle
-			title = self.menu_path
-			self["menu_path_compressed"] = StaticText("")
-			self.menu_path += ' / '
-		elif config.usage.show_menupath.value == 'small':
-			title = screentitle
-			condtext = ""
-			if self.menu_path and not self.menu_path.endswith(' / '):
-				condtext = self.menu_path + " >"
-			elif self.menu_path:
-				condtext = self.menu_path[:-3] + " >"
-			self["menu_path_compressed"] = StaticText(condtext)
-			self.menu_path += screentitle + ' / '
-		else:
-			title = screentitle
-			self["menu_path_compressed"] = StaticText("")
-		Screen.setTitle(self, title)
+		self.setTitle(_("Timer Sanity Error"))
 
 		self.timer = timer
 		print "[TimerEdit] TimerSanityConflict"
@@ -495,10 +457,10 @@ class TimerSanityConflict(Screen):
 		return [(timer, False)]
 
 	def editTimer1(self):
-		self.session.openWithCallback(self.finishedEdit, TimerEntry, self["timer1"].getCurrent(), self.menu_path)
+		self.session.openWithCallback(self.finishedEdit, TimerEntry, self["timer1"].getCurrent())
 
 	def editTimer2(self):
-		self.session.openWithCallback(self.finishedEdit, TimerEntry, self["timer2"].getCurrent(), self.menu_path)
+		self.session.openWithCallback(self.finishedEdit, TimerEntry, self["timer2"].getCurrent())
 
 	def toggleTimer(self):
 		x = self["list"].getSelectedIndex() + 1 # the first is the new timer so we do +1 here

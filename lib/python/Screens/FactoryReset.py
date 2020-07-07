@@ -13,7 +13,7 @@ from Tools.Directories import SCOPE_CONFIG, SCOPE_SKIN, resolveFilename
 
 
 class FactoryReset(Setup, ProtectedScreen):
-	def __init__(self, session, menu_path=""):
+	def __init__(self, session):
 		self.resetFull = ConfigYesNo(default=True)
 		self.resetBouquets = ConfigYesNo(default=True)
 		self.resetKeymaps = ConfigYesNo(default=True)
@@ -28,18 +28,7 @@ class FactoryReset(Setup, ProtectedScreen):
 		Setup.__init__(self, session=session, setup="FactoryReset")
 		self["key_green"].text = _("Reset")
 		ProtectedScreen.__init__(self)
-		screentitle = _("Factory Reset")
-		if config.usage.show_menupath.value == 'large':
-			menu_path += screentitle
-			title = menu_path
-			self["menu_path_compressed"] = StaticText("")
-		elif config.usage.show_menupath.value == 'small':
-			title = screentitle
-			self["menu_path_compressed"] = StaticText(menu_path + " >" if not menu_path.endswith(' / ') else menu_path[:-3] + " >" or "")
-		else:
-			title = screentitle
-			self["menu_path_compressed"] = StaticText("")
-		self.setup_title = title
+		self.setTitle(_("Factory Reset"))
 
 	def isProtected(self):
 		return config.ParentalControl.setuppinactive.value and (

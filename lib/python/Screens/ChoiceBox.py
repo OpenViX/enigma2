@@ -13,7 +13,7 @@ config.misc.pluginlist.eventinfo_order = ConfigText(default="")
 config.misc.pluginlist.extension_order = ConfigText(default="")
 
 class ChoiceBox(Screen):
-	def __init__(self, session, title="", list=None, keys=None, selection=0, skin_name=None, text="", reorderConfig="", windowTitle=None, var="", menu_path=""):
+	def __init__(self, session, title="", list=None, keys=None, selection=0, skin_name=None, text="", reorderConfig="", windowTitle=None, var=""):
 		if not list: list = []
 		if not skin_name: skin_name = []
 		Screen.__init__(self, session)
@@ -29,11 +29,11 @@ class ChoiceBox(Screen):
 		if title:
 			title = _(title)
 			if len(title) < 55 and title.find('\n') == -1:
-				Screen.setTitle(self, title)
+				self.setTitle(title)
 			elif title.find('\n') != -1:
 				temptext = title.split('\n')
 				if len(temptext[0]) < 55:
-					Screen.setTitle(self, temptext[0])
+					self.setTitle(temptext[0])
 					count = 2
 					labeltext = ""
 					while len(temptext) >= count:

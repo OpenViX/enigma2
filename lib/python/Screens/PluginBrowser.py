@@ -65,28 +65,9 @@ class PluginBrowserSummary(Screen):
 
 
 class PluginBrowser(Screen, ProtectedScreen):
-	def __init__(self, session, menu_path = ""):
+	def __init__(self, session):
 		Screen.__init__(self, session)
-		self.menu_path = menu_path
-		screentitle = _("Plugin Browser")
-		if config.usage.show_menupath.value == 'large':
-			self.menu_path += screentitle
-			title = self.menu_path
-			self["menu_path_compressed"] = StaticText("")
-			self.menu_path += ' / '
-		elif config.usage.show_menupath.value == 'small':
-			title = screentitle
-			condtext = ""
-			if self.menu_path and not self.menu_path.endswith(' / '):
-				condtext = self.menu_path + " >"
-			elif self.menu_path:
-				condtext = self.menu_path[:-3] + " >"
-			self["menu_path_compressed"] = StaticText(condtext)
-			self.menu_path += screentitle + ' / '
-		else:
-			title = screentitle
-			self["menu_path_compressed"] = StaticText("")
-		Screen.setTitle(self, title)
+		self.setTitle(_("Plugin Browser"))
 		ProtectedScreen.__init__(self)
 
 		self.firsttime = True
@@ -141,7 +122,7 @@ class PluginBrowser(Screen, ProtectedScreen):
 
 	def openSetup(self):
 		from Screens.Setup import Setup
-		self.session.open(Setup, "pluginbrowsersetup", None, self.menu_path)
+		self.session.open(Setup, "pluginbrowsersetup")
 
 	def isProtected(self):
 		return config.ParentalControl.setuppinactive.value and (not config.ParentalControl.config_sections.main_menu.value or hasattr(self.session, 'infobar') and self.session.infobar is None) and config.ParentalControl.config_sections.plugin_browser.value
@@ -250,7 +231,7 @@ class PluginBrowser(Screen, ProtectedScreen):
 
 	def delete(self):
 		config.misc.pluginbrowser.po.value = False
-		self.session.openWithCallback(self.PluginDownloadBrowserClosed, PluginDownloadBrowser, PluginDownloadBrowser.REMOVE, True, self.menu_path,)
+		self.session.openWithCallback(self.PluginDownloadBrowserClosed, PluginDownloadBrowser, PluginDownloadBrowser.REMOVE, True)
 
 	def download(self):
 		config.misc.pluginbrowser.po.value = True
@@ -260,7 +241,7 @@ class PluginBrowser(Screen, ProtectedScreen):
 		if kernelMismatch():
 			self.session.openWithCallback(self.close, MessageBox, _("The Linux kernel has changed, plugins are not compatible. \nInstall latest image using USB stick or Image Manager."), type=MessageBox.TYPE_INFO, timeout=30, close_on_any_key=True)
 			return
-		self.session.openWithCallback(self.PluginDownloadBrowserClosed, PluginDownloadBrowser, PluginDownloadBrowser.DOWNLOAD, self.firsttime, self.menu_path,)
+		self.session.openWithCallback(self.PluginDownloadBrowserClosed, PluginDownloadBrowser, PluginDownloadBrowser.DOWNLOAD, self.firsttime)
 		self.firsttime = False
 
 	def PluginDownloadBrowserClosed(self):
@@ -284,43 +265,20 @@ class PluginDownloadBrowser(Screen):
 	PLUGIN_PREFIX2 = []
 	lastDownloadDate = None
 
-	def __init__(self, session, type = 0, needupdate = True, menu_path="", skin_name=None):
+	def __init__(self, session, type=0, needupdate=True, skin_name=None):
 		Screen.__init__(self, session)
-		self.menu_path = menu_path
 		self.type = type
 		self.needupdate = needupdate
 		self.skinName = ["PluginDownloadBrowser"]
 		if isinstance(skin_name, str):
 			self.skinName.insert(0,skin_name)
 
-		self["menu_path_compressed"] = StaticText("")
 		if self.type == self.DOWNLOAD:
 			config.misc.pluginbrowser.po.value = True
-			screentitle = _("Install plugins")
-			if config.usage.show_menupath.value == 'large':
-				self.menu_path += screentitle
-				title = self.menu_path
-				self["menu_path_compressed"].setText("")
-			elif config.usage.show_menupath.value == 'small':
-				title = screentitle
-				self["menu_path_compressed"].setText(self.menu_path + " >" if not self.menu_path.endswith(' / ') else self.menu_path[:-3] + " >" or "")
-			else:
-				title = screentitle
-				self["menu_path_compressed"].setText("")
+			self.setTitle(_("Install Plugins"))
 		elif self.type == self.REMOVE:
 			config.misc.pluginbrowser.po.value = False
-			screentitle = _("Remove plugins")
-			if config.usage.show_menupath.value == 'large':
-				self.menu_path += screentitle
-				title = self.menu_path
-				self["menu_path_compressed"].setText("")
-			elif config.usage.show_menupath.value == 'small':
-				title = screentitle
-				self["menu_path_compressed"].setText(self.menu_path + " >" if not self.menu_path.endswith(' / ') else self.menu_path[:-3] + " >" or "")
-			else:
-				title = screentitle
-				self["menu_path_compressed"].setText("")
-		self.setTitle(title)
+			self.setTitle(_("Remove Plugins"))
 		self.createPluginFilter()
 		self.LanguageList = language.getLanguageListSelection()
 		self.container = eConsoleAppContainer()
@@ -537,7 +495,7 @@ class PluginDownloadBrowser(Screen):
 
 	def startIpkgListAvailable(self):
 		self.container.execute(self.ipkg + Ipkg.opkgExtraDestinations() + " list")
-		
+
 	def startRun(self):
 		listsize = self["list"].instance.size()
 		self["list"].instance.hide()
@@ -702,7 +660,7 @@ class PluginDownloadBrowser(Screen):
 								countryIcon = LoadPixmap(resolveFilename(SCOPE_ACTIVE_SKIN, "countries/missing.png"))
 							self.plugins[split[0]].append((PluginDescriptor(name = x[0], description = x[2], icon = countryIcon), t[1], x[1]))
 							break
-							
+
 			else:
 				if len(split) < 2:
 					continue
