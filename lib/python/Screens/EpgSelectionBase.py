@@ -871,7 +871,7 @@ class EPGStandardButtons:
 			"greenlong": (self.openTimerList, _("Show timer list")),
 			"yellow": (ignoreLongKeyPress(self.openEPGSearch), _("Search for similar events")),
 			"yellowlong": (lambda _ : None, _("Search for similar events")),
-			"blue": (ignoreLongKeyPress(self.addAutoTimer), _("Add an autotimer for current event")),
+			"blue": (ignoreLongKeyPress(self.addEditAutoTimer), _("Add an autotimer for current event")),
 			"bluelong": (self.openAutoTimerList, _("Show autotimer list")),
 			"ok": (ignoreLongKeyPress(self.OK), _("Zap to channel/service")),
 			"oklong": (self.OKLong, _("Zap to channel/service and close")),
