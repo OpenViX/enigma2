@@ -15,22 +15,9 @@ from time import localtime, mktime, time, strftime
 from datetime import datetime
 
 class TimerEntry(Screen, ConfigListScreen):
-	def __init__(self, session, timer, menu_path=""):
+	def __init__(self, session, timer):
 		Screen.__init__(self, session)
-		screentitle = _("PowerManager entry")
-		menu_path += screentitle
-		if config.usage.show_menupath.value == 'large':
-			title = menu_path
-			self["menu_path_compressed"] = StaticText("")
-		elif config.usage.show_menupath.value == 'small':
-			title = screentitle
-			print 'menu_path:',menu_path
-			self["menu_path_compressed"] = StaticText(menu_path + " >" if not menu_path.endswith(' / ') else menu_path[:-3] + " >" or "")
-		else:
-			title = screentitle
-			self["menu_path_compressed"] = StaticText("")
-		self.setup_title = title
-		Screen.setTitle(self, title)
+		self.setTitle(_("Power Timer Edit"))
 
 		self.timer = timer
 
@@ -352,20 +339,9 @@ class TimerEntry(Screen, ConfigListScreen):
 		self.close((False,))
 
 class TimerLog(Screen):
-	def __init__(self, session, timer, menu_path=""):
+	def __init__(self, session, timer):
 		Screen.__init__(self, session)
-		screentitle = _("Log")
-		if config.usage.show_menupath.value == 'large':
-			menu_path += screentitle
-			title = menu_path
-			self["menu_path_compressed"] = StaticText("")
-		elif config.usage.show_menupath.value == 'small':
-			title = screentitle
-			self["menu_path_compressed"] = StaticText(menu_path + " >" if not menu_path.endswith(' / ') else menu_path[:-3] + " >" or "")
-		else:
-			title = screentitle
-			self["menu_path_compressed"] = StaticText("")
-		Screen.setTitle(self, title)
+		self.setTitle(_("Log"))
 
 		self.skinName = "TimerLog"
 		self.timer = timer

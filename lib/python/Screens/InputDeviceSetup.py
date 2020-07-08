@@ -12,23 +12,10 @@ from Tools.LoadPixmap import LoadPixmap
 from boxbranding import getBoxType, getMachineBrand, getMachineName, getMachineBuild
 
 class InputDeviceSelection(Screen, HelpableScreen):
-	def __init__(self, session, menu_path=""):
+	def __init__(self, session):
 		Screen.__init__(self, session)
 		HelpableScreen.__init__(self)
-		menu_path += _("Input devices") + " / "
-		screentitle = _("Select input device")
-		menu_path += screentitle
-		self.menu_path = menu_path + " / "
-		if config.usage.show_menupath.value == 'large':
-			title = menu_path
-			self["menu_path_compressed"] = StaticText("")
-		elif config.usage.show_menupath.value == 'small':
-			title = screentitle
-			self["menu_path_compressed"] = StaticText(menu_path + " >" if not menu_path.endswith(' / ') else menu_path[:-3] + " >" or "")
-		else:
-			title = screentitle
-			self["menu_path_compressed"] = StaticText("")
-		Screen.setTitle(self, title)
+		self.setTitle(_("Input Devices"))
 
 		self.edittext = _("Press OK to edit the settings.")
 
@@ -111,28 +98,16 @@ class InputDeviceSelection(Screen, HelpableScreen):
 			if selection[0] == 'rctype':
 				self.session.open(RemoteControlType)
 			else:
-				self.session.openWithCallback(self.DeviceSetupClosed, InputDeviceSetup, self.menu_path, selection[0])
+				self.session.openWithCallback(self.DeviceSetupClosed, InputDeviceSetup, selection[0])
 
 	def DeviceSetupClosed(self, *ret):
 		self.updateList()
 
 
 class InputDeviceSetup(Screen, ConfigListScreen):
-	def __init__(self, session, menu_path="", device=None):
+	def __init__(self, session, device=None):
 		Screen.__init__(self, session)
-		screentitle = _("Input device setup")
-		if config.usage.show_menupath.value == 'large':
-			menu_path += screentitle
-			title = menu_path
-			self["menu_path_compressed"] = StaticText("")
-		elif config.usage.show_menupath.value == 'small':
-			title = screentitle
-			self["menu_path_compressed"] = StaticText(menu_path + " >" if not menu_path.endswith(' / ') else menu_path[:-3] + " >" or "")
-		else:
-			title = screentitle
-			self["menu_path_compressed"] = StaticText("")
-		Screen.setTitle(self, title)
-		self.setup_title = title
+		self.setTitle(_("Input Device Setup"))
 
 		self.inputDevice = device
 		iInputDevices.currentDevice = self.inputDevice
@@ -276,7 +251,7 @@ class RemoteControlType(Screen, ConfigListScreen):
 	odinRemote = "OdinM9"
 	if getBoxType() == "maram9":
 		odinRemote = "MaraM9"
-	
+
 	rcList = [
 			("0", _("Default")),
 			("3", _(odinRemote)),
@@ -346,7 +321,7 @@ class RemoteControlType(Screen, ConfigListScreen):
 			("h10", 28)
 		]
 
-	def __init__(self, session, menu_path=""):
+	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.skinName = ["RemoteControlType", "Setup" ]
 

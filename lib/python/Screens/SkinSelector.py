@@ -52,22 +52,12 @@ class SkinSelector(Screen, HelpableScreen):
 	]
 	skin = None
 
-	def __init__(self, session, menu_path="", screenTitle=_("GUI Skin")):
+	def __init__(self, session, screenTitle=_("GUI Skin")):
 		Screen.__init__(self, session)
 		HelpableScreen.__init__(self)
 		if SkinSelector.skin is None:
 			self.initialiseSkin()
-		if config.usage.show_menupath.value == 'large':
-			menu_path += screenTitle
-			title = menu_path
-			self["menu_path_compressed"] = StaticText("")
-		elif config.usage.show_menupath.value == 'small':
-			title = screenTitle
-			self["menu_path_compressed"] = StaticText(menu_path + " >" if not menu_path.endswith(" / ") else menu_path[:-3] + " >" or "")
-		else:
-			title = screenTitle
-			self["menu_path_compressed"] = StaticText("")
-		Screen.setTitle(self, title)
+		self.setTitle(screenTitle)
 		self.rootDir = resolveFilename(SCOPE_SKIN)
 		self.config = config.skin.primary_skin
 		self.current = currentPrimarySkin
@@ -271,8 +261,8 @@ class SkinSelector(Screen, HelpableScreen):
 
 
 class LcdSkinSelector(SkinSelector):
-	def __init__(self, session, menu_path="", screenTitle=_("Display Skin")):
-		SkinSelector.__init__(self, session, menu_path=menu_path, screenTitle=screenTitle)
+	def __init__(self, session, screenTitle=_("Display Skin")):
+		SkinSelector.__init__(self, session, screenTitle=screenTitle)
 		self.skinName = ["LcdSkinSelector", "SkinSelector"]
 		self.rootDir = resolveFilename(SCOPE_LCDSKIN)
 		self.config = config.skin.display_skin

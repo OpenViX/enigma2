@@ -174,11 +174,9 @@ def right():
 gitcommitinfo = modules[__name__]
 
 class CommitInfo(Screen):
-	def __init__(self, session, menu_path = ""):
+	def __init__(self, session):
 		Screen.__init__(self, session)
-		self.menu_path = menu_path
 		self.skinName = ["CommitInfo", "AboutOE"]
-		self["menu_path_compressed"] = StaticText("")
 		self["AboutScrollLabel"] = ScrollLabel(_("Please wait"))
 		self["HintText"] = Label(_("Press up/down to scroll through the selected log\n\nPress left/right to see different log types"))
 
@@ -198,25 +196,13 @@ class CommitInfo(Screen):
 		self.Timer.callback.append(self.readGithubCommitLogs)
 		self.Timer.start(50, True)
 
-	def updateScreenTitle(self, screentitle):
-		if config.usage.show_menupath.value == 'large':
-			title = self.menu_path + screentitle
-			self["menu_path_compressed"].setText("")
-		elif config.usage.show_menupath.value == 'small':
-			title = screentitle
-			self["menu_path_compressed"].setText(self.menu_path + " >" if not self.menu_path.endswith(' / ') else self.menu_path[:-3] + " >" or "")
-		else:
-			title = screentitle
-			self["menu_path_compressed"].setText("")
-		self.setTitle(title)
-
 	def readGithubCommitLogs(self):
-		self.updateScreenTitle(gitcommitinfo.getScreenTitle())
+		self.setTitle(gitcommitinfo.getScreenTitle())
 		self["AboutScrollLabel"].setText(gitcommitinfo.readGithubCommitLogs().encode("utf8", errors="ignore"))
 
 	def updateCommitLogs(self):
 		if gitcommitinfo.cachedProjects.has_key(gitcommitinfo.getScreenTitle()):
-			self.updateScreenTitle(gitcommitinfo.getScreenTitle())
+			self.setTitle(gitcommitinfo.getScreenTitle())
 			self["AboutScrollLabel"].setText(gitcommitinfo.cachedProjects[gitcommitinfo.getScreenTitle()])
 		else:
 			self["AboutScrollLabel"].setText(_("Please wait"))

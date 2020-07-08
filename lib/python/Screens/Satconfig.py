@@ -590,20 +590,9 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 		else:
 			self.restartPrevService()
 
-	def __init__(self, session, slotid, menu_path=""):
+	def __init__(self, session, slotid):
 		Screen.__init__(self, session)
-		screentitle = _("Tuner settings")
-		if config.usage.show_menupath.value == 'large':
-			menu_path += screentitle
-			title = menu_path
-			self["menu_path_compressed"] = StaticText("")
-		elif config.usage.show_menupath.value == 'small':
-			title = screentitle
-			self["menu_path_compressed"] = StaticText(menu_path + " >" if not menu_path.endswith(' / ') else menu_path[:-3] + " >" or "")
-		else:
-			title = screentitle
-			self["menu_path_compressed"] = StaticText("")
-		Screen.setTitle(self, title)
+		self.setTitle(_("Tuner Settings"))
 
 		self.list = [ ]
 		ServiceStopScreen.__init__(self)
@@ -630,7 +619,7 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 		self.nim = nimmanager.nim_slots[slotid]
 		self.nimConfig = self.nim.config
 		self.createSetup()
-		self.setTitle(_("Setup") + " " + self.nim.friendly_full_description)
+		self.setTitle("%s %s" % (_("Setup"), self.nim.friendly_full_description))
 
 		if not self.selectionChanged in self["config"].onSelectionChanged:
 			self["config"].onSelectionChanged.append(self.selectionChanged)
@@ -738,28 +727,9 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 		return cc
 
 class NimSelection(Screen):
-	def __init__(self, session, menu_path=""):
+	def __init__(self, session):
 		Screen.__init__(self, session)
-		screentitle = _("Tuner setup")
-		self.menu_path = menu_path
-		if config.usage.show_menupath.value == 'large':
-			self.menu_path += screentitle
-			title = self.menu_path
-			self["menu_path_compressed"] = StaticText("")
-			self.menu_path += ' / '
-		elif config.usage.show_menupath.value == 'small':
-			title = screentitle
-			condtext = ""
-			if self.menu_path and not self.menu_path.endswith(' / '):
-				condtext = self.menu_path + " >"
-			elif self.menu_path:
-				condtext = self.menu_path[:-3] + " >"
-			self["menu_path_compressed"] = StaticText(condtext)
-			self.menu_path += screentitle + ' / '
-		else:
-			title = screentitle
-			self["menu_path_compressed"] = StaticText("")
-		Screen.setTitle(self, title)
+		self.setTitle(_("Tuner Setup"))
 
 		self.list = [None] * nimmanager.getSlotCount()
 		self["nimlist"] = List(self.list)
@@ -785,7 +755,7 @@ class NimSelection(Screen):
 
 	def clientmode(self):
 		from Screens.ClientMode import ClientModeScreen
-		self.session.open(ClientModeScreen, self.menu_path)
+		self.session.open(ClientModeScreen)
 
 	def exit(self):
 		self.close(True)
@@ -925,20 +895,9 @@ class SelectSatsEntryScreen(Screen):
 			<ePixmap pixmap="skin_default/div-h.png" position="0,375" zPosition="1" size="540,2" transparent="1" alphatest="on" />
 			<widget name="hint" position="10,380" size="540,25" font="Regular;19" halign="center" transparent="1" />
 		</screen>"""
-	def __init__(self, session, menu_path="", userSatlist=""):
+	def __init__(self, session, userSatlist=""):
 		Screen.__init__(self, session)
-		screentitle = _("Select satellites")
-		if config.usage.show_menupath.value == 'large':
-			menu_path += screentitle
-			title = menu_path
-			self["menu_path_compressed"] = StaticText("")
-		elif config.usage.show_menupath.value == 'small':
-			title = screentitle
-			self["menu_path_compressed"] = StaticText(menu_path + " >" if not menu_path.endswith(' / ') else menu_path[:-3] + " >" or "")
-		else:
-			title = screentitle
-			self["menu_path_compressed"] = StaticText("")
-		Screen.setTitle(self, title)
+		self.setTitle(_("Select Satellites"))
 
 		self["key_red"] = Button(_("Cancel"))
 		self["key_green"] = Button(_("Save"))
