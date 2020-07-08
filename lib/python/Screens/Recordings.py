@@ -17,7 +17,7 @@ from Components.SystemInfo import SystemInfo
 class SetupSummary(Screen):
 	def __init__(self, session, parent):
 		Screen.__init__(self, session, parent = parent)
-		self["SetupTitle"] = StaticText(parent.getTitle()))
+		self["SetupTitle"] = StaticText(parent.getTitle())
 		self["SetupEntry"] = StaticText("")
 		self["SetupValue"] = StaticText("")
 		self.onShow.append(self.addWatcher)
