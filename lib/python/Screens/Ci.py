@@ -358,21 +358,9 @@ class CiMessageHandler:
 CiHandler = CiMessageHandler()
 
 class CiSelection(Screen):
-	def __init__(self, session, menu_path=""):
+	def __init__(self, session):
 		Screen.__init__(self, session)
-		screentitle = _("Common interface")
-		if config.usage.show_menupath.value == 'large':
-			menu_path += screentitle
-			title = menu_path
-			self["menu_path_compressed"] = StaticText("")
-		elif config.usage.show_menupath.value == 'small':
-			title = screentitle
-			self["menu_path_compressed"] = StaticText(menu_path + " >" if not menu_path.endswith(' / ') else menu_path[:-3] + " >" or "")
-		else:
-			title = screentitle
-			self["menu_path_compressed"] = StaticText("")
-
-		Screen.setTitle(self, title)
+		self.setTitle(_("Common Interface"))
 		self["actions"] = ActionMap(["OkCancelActions", "CiSelectionActions"],
 			{
 				"left": self.keyLeft,
@@ -403,7 +391,6 @@ class CiSelection(Screen):
 	def layoutFinished(self):
 		global forceNotShowCiMessages
 		forceNotShowCiMessages = False
-		self.setTitle(_("Common Interface"))
 
 	def selectionChanged(self):
 		if self.slot > 1:
@@ -519,7 +506,6 @@ class PermanentPinEntry(Screen, ConfigListScreen):
 	def __init__(self, session, pin, pin_slot):
 		Screen.__init__(self, session)
 		self.skinName = ["ParentalControlChangePin", "Setup" ]
-		self.setup_title = _("Enter pin code")
 		self.onChangedEntry = [ ]
 
 		self.slot = pin_slot
@@ -540,12 +526,9 @@ class PermanentPinEntry(Screen, ConfigListScreen):
 			"save": self.keyOK,
 		}, -1)
 
+		self.setTitle(_("Enter PIN Code"))
 		self["key_red"] = StaticText(_("Cancel"))
 		self["key_green"] = StaticText(_("OK"))
-		self.onLayoutFinish.append(self.layoutFinished)
-
-	def layoutFinished(self):
-		self.setTitle(self.setup_title)
 
 	def valueChanged(self, pin, value):
 		if pin == 1:

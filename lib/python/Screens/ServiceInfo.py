@@ -104,9 +104,8 @@ TYPE_SERVICE_INFO = 1
 TYPE_TRANSPONDER_INFO = 2
 
 class ServiceInfo(Screen):
-	def __init__(self, session, menu_path="", serviceref=None):
+	def __init__(self, session, serviceref=None):
 		Screen.__init__(self, session)
-		self.menu_path = menu_path
 
 		self["actions"] = ActionMap(["OkCancelActions", "ColorActions"],
 		{
@@ -125,13 +124,13 @@ class ServiceInfo(Screen):
 		self.transponder_info = self.info = self.feinfo = None
 		play_service = session.nav.getCurrentlyPlayingServiceReference()
 		if serviceref and not play_service and play_service != serviceref:
-			screentitle = _("Transponder Information")
+			self.setTitle(_("Transponder Information"))
 			self.type = TYPE_TRANSPONDER_INFO
 			self.skinName="ServiceInfoSimple"
 			self.transponder_info = eServiceCenter.getInstance().info(serviceref).getInfoObject(serviceref, iServiceInformation.sTransponderData)
 			# info is a iStaticServiceInformation, not a iServiceInformation
 		else:
-			screentitle = _("Service")
+			self.setTitle(_("Service"))
 			self.type = TYPE_SERVICE_INFO
 			service = session.nav.getCurrentService()
 			if service:
@@ -153,43 +152,12 @@ class ServiceInfo(Screen):
 			else:
 				self.skinName="ServiceInfoSimple"
 
-		if config.usage.show_menupath.value == 'large':
-			self.menu_path += screentitle
-			title = self.menu_path
-			self["menu_path_compressed"] = StaticText("")
-			self.menu_path += ' / '
-		elif config.usage.show_menupath.value == 'small':
-			title = screentitle
-			condtext = ""
-			if self.menu_path and not self.menu_path.endswith(' / '):
-				condtext = self.menu_path + " >"
-			elif self.menu_path:
-				condtext = self.menu_path[:-3] + " >"
-			self["menu_path_compressed"] = StaticText(condtext)
-			self.menu_path += screentitle + ' / '
-		else:
-			title = screentitle
-			self["menu_path_compressed"] = StaticText("")
-		Screen.setTitle(self, title)
-
 		tlist = [ ]
 		self.onShown.append(self.ShowServiceInformation)
 
 	def ShowServiceInformation(self):
-		menu_path = self.menu_path
 		if self.type == TYPE_SERVICE_INFO:
-			screentitle = _("Service & PIDs")
-			if config.usage.show_menupath.value == 'large':
-				menu_path += screentitle
-				title = menu_path
-				self["menu_path_compressed"] = StaticText("")
-			elif config.usage.show_menupath.value == 'small':
-				title = screentitle
-				self["menu_path_compressed"] = StaticText(menu_path + " >" if not menu_path.endswith(' / ') else menu_path[:-3] + " >" or "")
-			else:
-				title = screentitle
-				self["menu_path_compressed"] = StaticText("")
-			Screen.setTitle(self, title)
+			self.setTitle(_("Service & PIDs"))
 
 			if self.feinfo or self.transponder_info:
 				self["key_blue"].text = self["blue"].text = _("Tuner settings values")
@@ -254,36 +222,21 @@ class ServiceInfo(Screen):
 			self.fillList(self.getFEData(self.transponder_info))
 
 	def ShowTransponderInformation(self):
-		menu_path = self.menu_path
-		screentitle = ""
 		if self.type == TYPE_SERVICE_INFO:
 			if self.feinfo and self.feinfo.getAll(True):
 				if self["key_blue"].text == _("Tuner settings values"):
-					screentitle = _("Tuning info: settings values")
+					self.setTitle(_("Tuning Info: Settings Values"))
 					self["key_blue"].text = self["blue"].text = _("Tuner live values")
 					frontendData = self.feinfo and self.feinfo.getAll(True)
 				else:
-					screentitle = _("Tuning info: live values")
+					self.setTitle(_("Tuning Info: Live Values"))
 					self["key_blue"].text = self["blue"].text = _("Tuner settings values")
 					frontendData = self.feinfo and self.feinfo.getAll(False)
 				self.fillList(self.getFEData(frontendData))
 			elif self.transponder_info:
-				screentitle = _("Tuning info: settings values")
+				self.setTitle(_("Tuning Info: Settings Values"))
 				self["key_blue"].text = self["blue"].text = _("Tuner settings values")
 				self.fillList(self.getFEData(self.transponder_info))
-				
-
-			if config.usage.show_menupath.value == 'large':
-				menu_path += screentitle
-				title = menu_path
-				self["menu_path_compressed"] = StaticText("")
-			elif config.usage.show_menupath.value == 'small':
-				title = screentitle
-				self["menu_path_compressed"] = StaticText(menu_path + " >" if not menu_path.endswith(' / ') else menu_path[:-3] + " >" or "")
-			else:
-				title = screentitle
-				self["menu_path_compressed"] = StaticText("")
-			Screen.setTitle(self, title)
 
 	def getFEData(self, frontendDataOrg):
 		if frontendDataOrg and len(frontendDataOrg):
@@ -357,7 +310,7 @@ class ServiceInfo(Screen):
 
 	def ShowECMInformation(self):
 		from Components.Converter.PliExtraInfo import caid_data
-		self["Title"].text = _("Service info - ECM Info")
+		self.setTitle(_("Service Info: ECM Info"))
 		tlist = []
 		provid = ""
 		for caid in sorted(set(self.info.getInfoObject(iServiceInformation.sCAIDPIDs)), key=lambda x: (x[0], x[1])):

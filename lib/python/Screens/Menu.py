@@ -22,8 +22,6 @@ file = open(resolveFilename(SCOPE_SKIN, 'menu.xml'), 'r')
 mdom = xml.etree.cElementTree.parse(file)
 file.close()
 
-menu_path = ""
-full_menu_path = ""
 
 class MenuUpdater:
 	def __init__(self):
@@ -45,8 +43,25 @@ class MenuUpdater:
 
 menuupdater = MenuUpdater()
 
+
 class MenuSummary(Screen):
-	pass
+	def __init__(self, session, parent):
+		Screen.__init__(self, session, parent=parent)
+		self["MenuTitle"] = StaticText(parent.getTitle())
+		self["MenuEntry"] = StaticText("")
+		self.onShow.append(self.addWatcher)
+		self.onHide.append(self.removeWatcher)
+
+	def addWatcher(self):
+		self.parent["menu"].onSelectionChanged.append(self.selectionChanged)
+	 	self.selectionChanged()
+
+	def removeWatcher(self):
+		self.parent["menu"].onSelectionChanged.remove(self.selectionChanged)
+
+	def selectionChanged(self):
+		self["MenuEntry"].text = self.parent["menu"].getCurrent()[0]
+
 
 class Menu(Screen, ProtectedScreen):
 	ALLOW_SUSPEND = True
@@ -80,7 +95,7 @@ class Menu(Screen, ProtectedScreen):
 		self.session.openWithCallback(self.menuClosed, *dialog)
 
 	def openSetup(self, dialog):
-		self.session.openWithCallback(self.menuClosed, Setup, dialog, None, full_menu_path)
+		self.session.openWithCallback(self.menuClosed, Setup, dialog)
 
 	def addMenu(self, destList, node):
 		requires = node.get("requires")
@@ -102,10 +117,6 @@ class Menu(Screen, ProtectedScreen):
 		destList.append((MenuTitle, a, entryID, weight))
 
 	def menuClosedWithConfigFlush(self, *res):
-		global menu_path
-		menu_path = ""
-		global full_menu_path
-		full_menu_path = ""
 		configfile.save()
 		self.menuClosed(*res)
 
@@ -129,10 +140,9 @@ class Menu(Screen, ProtectedScreen):
 		weight = node.get("weight", 50)
 		for x in node:
 			if x.tag == 'screen':
-				args = 'full_menu_path'
 				module = x.get("module")
 				screen = x.get("screen")
-				
+
 				if screen is None:
 					screen = module
 
@@ -141,11 +151,12 @@ class Menu(Screen, ProtectedScreen):
 					module = "Screens." + module
 				else:
 					module = ""
+
 				# check for arguments. they will be appended to the
 				# openDialog call
-				if x.text:
-					args = x.text or ""
+				args = x.text or ""
 				screen += ", " + args
+
 				destList.append((_(item_text or "??"), boundFunction(self.runScreen, (module, screen)), entryID, weight))
 				return
 			elif x.tag == 'plugin':
@@ -269,27 +280,7 @@ class Menu(Screen, ProtectedScreen):
 
 		a = parent.get("title", "").encode("UTF-8") or None
 		a = a and _(a) or _(parent.get("text", "").encode("UTF-8"))
-		self.menu_title = a
-		global menu_path
-		self.menu_path_compressed = menu_path
-		if menu_path == "":
-			menu_path += a
-		elif not menu_path.endswith(a):
-			menu_path += " / " + a
-		global full_menu_path
-		full_menu_path = menu_path + ' / '
-		if config.usage.show_menupath.value == 'large':
-			Screen.setTitle(self, menu_path)
-			self["title"] = StaticText(menu_path)
-			self["menu_path_compressed"] = StaticText("")
-		elif config.usage.show_menupath.value == 'small':
-			Screen.setTitle(self, a)
-			self["title"] = StaticText(a)
-			self["menu_path_compressed"] = StaticText(self.menu_path_compressed and self.menu_path_compressed + " >" or "")
-		else:
-			Screen.setTitle(self, a)
-			self["title"] = StaticText(a)
-			self["menu_path_compressed"] = StaticText("")
+		self.setTitle(a)
 
 		self.number = 0
 		self.nextNumberTimer = eTimer()
@@ -310,18 +301,10 @@ class Menu(Screen, ProtectedScreen):
 		self.number = 0
 
 	def closeNonRecursive(self):
-		global menu_path
-		menu_path = self.menu_path_compressed
-		global full_menu_path
-		full_menu_path = menu_path + ' / '
 		self.resetNumberKey()
 		self.close(False)
 
 	def closeRecursive(self):
-		global menu_path
-		menu_path = ""
-		global full_menu_path
-		full_menu_path = ""
 		self.resetNumberKey()
 		self.close(True)
 

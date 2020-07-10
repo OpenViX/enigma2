@@ -16,7 +16,7 @@ from Components.SystemInfo import SystemInfo
 class SetupSummary(Screen):
 	def __init__(self, session, parent):
 		Screen.__init__(self, session, parent = parent)
-		self["SetupTitle"] = StaticText(_(parent.setup_title))
+		self["SetupTitle"] = StaticText(parent.getTitle())
 		self["SetupEntry"] = StaticText("")
 		self["SetupValue"] = StaticText("")
 		self.onShow.append(self.addWatcher)
@@ -57,14 +57,12 @@ class TimeshiftSettings(Screen,ConfigListScreen):
 			if x.get("key") != self.setup:
 				continue
 			self.addItems(list, x)
-			self.setup_title = x.get("title", "").encode("UTF-8")
+			self.setTitle(_(x.get("title", "Setup").encode("UTF-8")))
 			self.seperation = int(x.get('separation', '0'))
 
-	def __init__(self, session, menu_path=""):
+	def __init__(self, session):
 		Screen.__init__(self, session)
-		self.menu_path = menu_path
 		self.skinName = "Setup"
-		self["menu_path_compressed"] = StaticText()
 		self['footnote'] = Label()
 		self["HelpWindow"] = Pixmap()
 		self["HelpWindow"].hide()
@@ -88,7 +86,6 @@ class TimeshiftSettings(Screen,ConfigListScreen):
 			"ok": self.ok,
 			"menu": self.closeRecursive,
 		}, -2)
-		self.onLayoutFinish.append(self.layoutFinished)
 
 	# for summary:
 	def changedEntry(self):
@@ -165,19 +162,6 @@ class TimeshiftSettings(Screen,ConfigListScreen):
 		self["config"].setList(list)
 		if config.usage.sort_settings.value:
 			self["config"].list.sort()
-
-	def layoutFinished(self):
-		if config.usage.show_menupath.value == 'large' and self.menu_path:
-			title = self.menu_path + _(self.setup_title)
-			self["menu_path_compressed"].setText("")
-		elif config.usage.show_menupath.value == 'small':
-			title = _(self.setup_title)
-			self["menu_path_compressed"].setText(self.menu_path + " >" if not self.menu_path.endswith(' / ') else self.menu_path[:-3] + " >" or "")
-		else:
-			title = _(self.setup_title)
-			self["menu_path_compressed"].setText("")
-		self.setup_title = title
-		self.setTitle(title)
 
 	def ok(self):
 		currentry = self["config"].getCurrent()

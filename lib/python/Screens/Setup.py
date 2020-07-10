@@ -43,7 +43,7 @@ class SetupError(Exception):
 class SetupSummary(Screen):
 	def __init__(self, session, parent):
 		Screen.__init__(self, session, parent = parent)
-		self["SetupTitle"] = StaticText(_(parent.setup_title))
+		self["SetupTitle"] = StaticText(parent.getTitle())
 		self["SetupEntry"] = StaticText("")
 		self["SetupValue"] = StaticText("")
 		if hasattr(self.parent,"onChangedEntry"):
@@ -76,12 +76,11 @@ class Setup(ConfigListScreen, Screen):
 
 	ALLOW_SUSPEND = True
 
-	def __init__(self, session, setup, plugin=None, menu_path=None, PluginLanguageDomain=None):
+	def __init__(self, session, setup, plugin=None, PluginLanguageDomain=None):
 		Screen.__init__(self, session)
 		# for the skin: first try a setup_<setupID>, then Setup
 		self.skinName = ["setup_" + setup, "Setup" ]
 
-		self["menu_path_compressed"] = StaticText()
 		self['footnote'] = Label()
 		self["HelpWindow"] = Pixmap()
 		self["HelpWindow"].hide()
@@ -92,7 +91,7 @@ class Setup(ConfigListScreen, Screen):
 		self.force_update_list = False
 		self.plugin = plugin
 		self.PluginLanguageDomain = PluginLanguageDomain
-		self.menu_path = menu_path
+		self.setup = {}
 
 		xmldata = setupdom(self.plugin).getroot()
 		for x in xmldata.findall("setup"):
@@ -101,11 +100,12 @@ class Setup(ConfigListScreen, Screen):
 				break
 
 		if config.usage.show_menupath.value in ('large', 'small') and x.get("titleshort", "").encode("UTF-8") != "":
-			self.setup_title = x.get("titleshort", "").encode("UTF-8")
+			title = x.get("titleshort", "").encode("UTF-8")
 		else:
-			self.setup_title = x.get("title", "").encode("UTF-8")
+			title = x.get("title", "").encode("UTF-8")
+		title = _("Setup" if title == "" else title)
+		self.setTitle(title)
 		self.seperation = int(self.setup.get('separation', '0'))
-
 
 		ConfigListScreen.__init__(self, self.list, session = session, on_change = self.changedEntry)
 		self.createSetupList()
@@ -126,19 +126,6 @@ class Setup(ConfigListScreen, Screen):
 		if not self.handleInputHelpers in self["config"].onSelectionChanged:
 			self["config"].onSelectionChanged.append(self.handleInputHelpers)
 		self.changedEntry()
-		self.onLayoutFinish.append(self.layoutFinished)
-
-	def layoutFinished(self):
-		if config.usage.show_menupath.value == 'large' and self.menu_path:
-			title = self.menu_path + _(self.setup_title)
-			self["menu_path_compressed"].setText("")
-		elif config.usage.show_menupath.value == 'small' and self.menu_path:
-			title = _(self.setup_title)
-			self["menu_path_compressed"].setText(self.menu_path + " >" if not self.menu_path.endswith(' / ') else self.menu_path[:-3] + " >" or "")
-		else:
-			title = _(self.setup_title)
-			self["menu_path_compressed"].setText("")
-		self.setTitle(title)
 
 	def createSetupList(self):
 		currentItem = self["config"].getCurrent()
