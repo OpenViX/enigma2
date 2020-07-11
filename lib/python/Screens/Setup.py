@@ -5,14 +5,13 @@ from gettext import dgettext
 from os.path import getmtime, join as pathJoin
 from skin import setups
 
-from Components.ActionMap import NumberActionMap
 from Components.config import ConfigBoolean, ConfigNothing, ConfigSelection, config
 from Components.ConfigList import ConfigListScreen
 from Components.Label import Label
 from Components.Pixmap import Pixmap
 from Components.SystemInfo import SystemInfo
-from Components.Sources.Boolean import Boolean
 from Components.Sources.StaticText import StaticText
+from Screens.HelpMenu import HelpableScreen
 from Screens.Screen import Screen
 from Tools.Directories import SCOPE_CURRENT_SKIN, SCOPE_PLUGINS, SCOPE_SKIN, resolveFilename
 from Tools.LoadPixmap import LoadPixmap
@@ -22,11 +21,12 @@ setupModTimes = {}
 setupTitles = {}
 
 
-class Setup(ConfigListScreen, Screen):
+class Setup(ConfigListScreen, Screen, HelpableScreen):
 	ALLOW_SUSPEND = True
 
 	def __init__(self, session, setup, plugin=None, PluginLanguageDomain=None):
 		Screen.__init__(self, session)
+		HelpableScreen.__init__(self)
 		# for the skin: first try a setup_<setupID>, then Setup
 		self.skinName = ["setup_" + setup, "Setup"]
 		self.onChangedEntry = []
@@ -52,9 +52,7 @@ class Setup(ConfigListScreen, Screen):
 		ConfigListScreen.__init__(self, self.list, session=session, on_change=self.changedEntry)
 		self["footnote"] = Label()
 		self["footnote"].hide()
-		self["HelpWindow"] = Pixmap()
-		self["HelpWindow"].hide()
-		self["VKeyIcon"] = Boolean(False)
+		self["description"] = Label()
 		defaultmenuimage = setups.get("default", "")
 		menuimage = setups.get(setup, defaultmenuimage)
 		if menuimage:
@@ -71,14 +69,6 @@ class Setup(ConfigListScreen, Screen):
 		if self.layoutFinished not in self.onLayoutFinish:
 			self.onLayoutFinish.append(self.layoutFinished)
 		self["config"].onSelectionChanged.append(self.__onSelectionChanged)
-		self["key_red"] = StaticText(_("Cancel"))
-		self["key_green"] = StaticText(_("Save"))
-		self["description"] = Label("")
-		self["actions"] = NumberActionMap(["SetupActions", "MenuActions"], {
-			"cancel": self.keyCancel,
-			"save": self.keySave,
-			"menu": self.closeRecursive,
-		}, -2)
 		if self.handleInputHelpers not in self["config"].onSelectionChanged:
 			self["config"].onSelectionChanged.append(self.handleInputHelpers)
 		self.changedEntry()
