@@ -1,8 +1,8 @@
 import xml.etree.cElementTree
 
 from boxbranding import getMachineBrand, getMachineName
-from enigma import eEnv
 from gettext import dgettext
+from os.path import getmtime, join as pathJoin
 
 from Components.ActionMap import NumberActionMap
 from Components.config import ConfigBoolean, ConfigNothing, ConfigSelection, config
@@ -13,15 +13,11 @@ from Components.SystemInfo import SystemInfo
 from Components.Sources.Boolean import Boolean
 from Components.Sources.StaticText import StaticText
 from Screens.Screen import Screen
-from Tools.Directories import SCOPE_CURRENT_PLUGIN, resolveFilename
+from Tools.Directories import SCOPE_PLUGINS, SCOPE_SKIN, resolveFilename
 
-
-class SetupError(Exception):
-	def __init__(self, message):
-		self.msg = message
-
-	def __str__(self):
-		return self.msg
+domSetups = {}
+setupModTimes = {}
+setupTitles = {}
 
 
 class Setup(ConfigListScreen, Screen):
@@ -42,7 +38,7 @@ class Setup(ConfigListScreen, Screen):
 		self.plugin = plugin
 		self.PluginLanguageDomain = PluginLanguageDomain
 		self.setup = {}
-		xmldata = setupdom(self.plugin).getroot()
+		xmldata = setupDom(setup, self.plugin).getroot()
 		for x in xmldata.findall("setup"):
 			if x.get("key") == setup:
 				self.setup = x
@@ -175,14 +171,77 @@ class SetupSummary(Screen):
 
 # Read the setup menu XML file.
 #
-def setupdom(plugin=None):
-	# read the setupmenu
+def setupDom(setup=None, plugin=None):
 	if plugin:
-		# first we search in the current path
-		setupfile = file(resolveFilename(SCOPE_CURRENT_PLUGIN, plugin + "/setup.xml"), "r")
+		setupFile = resolveFilename(SCOPE_PLUGINS, pathJoin(plugin, "setup.xml"))
+		msg = " from plugin '%s'" % plugin
 	else:
-		# if not found in the current path, we use the global datadir-path
-		setupfile = file(eEnv.resolve("${datadir}/enigma2/setup.xml"), "r")
+		setupFile = resolveFilename(SCOPE_SKIN, "setup.xml")
+		msg = ""
+	try:
+		modTime = getmtime(setupFile)
+	except (IOError, OSError) as err:
+		print("[Setup] Error: Unable to get '%s' modified time - Error (%d): %s!" % (setupFile, err.errno, err.strerror))
+		return xml.etree.cElementTree.fromstring("<setupxml></setupxml>")
+	cached = setupFile in domSetups and setupFile in setupModTimes and setupModTimes[setupFile] == modTime
+	print("[Setup] XML%s source file '%s'." % (" cached" if cached else "", setupFile))
+	if setup is not None:
+		print("[Setup] XML Setup menu '%s'%s." % (setup, msg))
+	if cached:
+		return domSetups[setupFile]
+	gotFile = False
+	try:
+		with open(setupFile, "r") as fd:  # This open gets around a possible file handle leak in Python's XML parser.
+			try:
+				setupfiledom = xml.etree.cElementTree.parse(fd).getroot()
+				gotFile = True
+			except xml.etree.cElementTree.ParseError as err:
+				fd.seek(0)
+				content = fd.readlines()
+				line, column = err.position
+				print("[Setup] XML Parse Error: '%s' in '%s'!" % (err, setupFile))
+				data = content[line - 1].replace("\t", " ").rstrip()
+				print("[Setup] XML Parse Error: '%s'" % data)
+				print("[Setup] XML Parse Error: '%s^%s'" % ("-" * column, " " * (len(data) - column - 1)))
+			except Exception as err:
+				print("[Setup] Error: Unable to parse setup data in '%s' - '%s'!" % (setupFile, err))
+	except (IOError, OSError) as err:
+		if err.errno == errno.ENOENT:  # No such file or directory
+			print("[Skin] Warning: Setup file '%s' does not exist!" % setupFile)
+		else:
+			print("[Skin] Error %d: Opening setup file '%s'! (%s)" % (err.errno, setupFile, err.strerror))
+	except Exception as err:
+		print("[Setup] Error %d: Unexpected error opening setup file '%s'! (%s)" % (err.errno, setupFile, err.strerror))
+	if gotFile:
+		domSetups[setupFile] = setupfiledom
+		setupModTimes[setupFile] = modTime
+		xmldata = setupfiledom
+		for setup in xmldata.findall("setup"):
+			key = setup.get("key", "")
+			if key in setupTitles:
+				print("[Setup] Warning: Setup key '%s' has been redefined!" % key)
+			title = setup.get("menuTitle", "").encode("UTF-8")
+			if title == "":
+				title = setup.get("title", "").encode("UTF-8")
+				if title == "":
+					print("[Setup] Error: Setup key '%s' title is missing or blank!" % key)
+					setupTitles[key] = _("** Setup error: '%s' title is missing or blank!") % key
+				else:
+					setupTitles[key] = _(title)
+			else:
+				setupTitles[key] = _(title)
+			# print("[Setup] DEBUG XML Setup menu load: key='%s', title='%s', menuTitle='%s', translated title='%s'" % (key, setup.get("title", "").encode("UTF-8"), setup.get("menuTitle", "").encode("UTF-8"), setupTitles[key]))
+	else:
+		setupfiledom = xml.etree.cElementTree.fromstring("<setupxml></setupxml>")
+	return setupfiledom
+
+# Temporary legacy interface.
+#
+def setupdom(plugin=None):
+	if plugin:
+		setupfile = file(resolveFilename(SCOPE_PLUGINS, pathJoin(plugin, "setup.xml")), "r")
+	else:
+		setupfile = file(resolveFilename(SCOPE_SKIN, "setup.xml"), "r")
 	setupfiledom = xml.etree.cElementTree.parse(setupfile)
 	setupfile.close()
 	return setupfiledom
@@ -190,19 +249,18 @@ def setupdom(plugin=None):
 # Only used in AudioSelection screen...
 #
 def getConfigMenuItem(configElement):
-	for item in setupdom().getroot().findall("./setup/item/."):
+	for item in setupDom().findall("./setup/item/."):
 		if item.text == configElement:
 			return _(item.attrib["text"]), eval(configElement)
 	return "", None
 
 # Only used in Menu screen...
 #
-def getSetupTitle(id):
-	xmldata = setupdom().getroot()
-	for x in xmldata.findall("setup"):
-		if x.get("key") == id:
-			if x.get("titleshort", "").encode("UTF-8") != "":
-				return _(x.get("titleshort", "").encode("UTF-8"))
-			else:
-				return _(x.get("title", "").encode("UTF-8"))
-	raise SetupError("unknown setup id '%s'!" % repr(id))
+def getSetupTitle(key):
+	setupDom()  # Load or check for an updated setup.xml file.
+	key = str(key)
+	title = setupTitles.get(key, None)
+	if title is None:
+		print("[Setup] Error: Setup key '%s' not found in setup file!" % key)
+		title = _("** Setup error: '%s' section not found! **") % key
+	return title
