@@ -27,10 +27,6 @@ class Setup(ConfigListScreen, Screen):
 		Screen.__init__(self, session)
 		# for the skin: first try a setup_<setupID>, then Setup
 		self.skinName = ["setup_" + setup, "Setup"]
-		self["footnote"] = Label()
-		self["HelpWindow"] = Pixmap()
-		self["HelpWindow"].hide()
-		self["VKeyIcon"] = Boolean(False)
 		self.onChangedEntry = []
 		self.item = None
 		self.list = []
@@ -50,7 +46,13 @@ class Setup(ConfigListScreen, Screen):
 		title = _("Setup" if title == "" else title)
 		self.setTitle(title)
 		self.seperation = int(self.setup.get("separation", "0"))
+		self.footnote = ""
 		ConfigListScreen.__init__(self, self.list, session=session, on_change=self.changedEntry)
+		self["footnote"] = Label()
+		self["footnote"].hide()
+		self["HelpWindow"] = Pixmap()
+		self["HelpWindow"].hide()
+		self["VKeyIcon"] = Boolean(False)
 		self.createSetupList()
 		self["config"].onSelectionChanged.append(self.__onSelectionChanged)
 		self["key_red"] = StaticText(_("Cancel"))
@@ -112,6 +114,25 @@ class Setup(ConfigListScreen, Screen):
 			self["config"].list.sort()
 		self.moveToItem(currentItem)
 
+	def selectionChanged(self):
+		if self["config"]:
+			self.updateFootnote()
+			self["description"].text = self.getCurrentDescription()
+		else:
+			self["description"].text = _("There are no items currently available for this menu.")
+
+	def updateFootnote(self):
+		if self.footnote:
+			self["footnote"].text = _(self.footnote)
+			self["footnote"].show()
+		else:
+			if self.getCurrentEntry().endswith("*"):
+				self["footnote"].text = _("* = Restart Required")
+				self["footnote"].show()
+			else:
+				self["footnote"].text = ""
+				self["footnote"].hide()
+
 	def moveToItem(self, item):
 		if item != self["config"].getCurrent():
 			self["config"].setCurrentIndex(self.getIndexFromItem(item))
@@ -143,30 +164,27 @@ class SetupSummary(Screen):
 		self["SetupEntry"] = StaticText("")
 		self["SetupValue"] = StaticText("")
 		if hasattr(self.parent, "onChangedEntry"):
-			self.onShow.append(self.addWatcher)
-			self.onHide.append(self.removeWatcher)
+			if self.addWatcher not in self.onShow:
+				self.onShow.append(self.addWatcher)
+			if self.removeWatcher not in self.onHide:
+				self.onHide.append(self.removeWatcher)
 
 	def addWatcher(self):
-		if hasattr(self.parent, "onChangedEntry"):
+		if self.selectionChanged not in self.parent.onChangedEntry:
 			self.parent.onChangedEntry.append(self.selectionChanged)
+		if self.selectionChanged not in self.parent["config"].onSelectionChanged:
 			self.parent["config"].onSelectionChanged.append(self.selectionChanged)
-			self.selectionChanged()
+		self.selectionChanged()
 
 	def removeWatcher(self):
-		if hasattr(self.parent, "onChangedEntry"):
+		if self.selectionChanged in self.parent.onChangedEntry:
 			self.parent.onChangedEntry.remove(self.selectionChanged)
+		if self.selectionChanged in self.parent["config"].onSelectionChanged:
 			self.parent["config"].onSelectionChanged.remove(self.selectionChanged)
 
 	def selectionChanged(self):
 		self["SetupEntry"].text = self.parent.getCurrentEntry()
 		self["SetupValue"].text = self.parent.getCurrentValue()
-		if hasattr(self.parent, "getCurrentDescription") and "description" in self.parent:
-			self.parent["description"].text = self.parent.getCurrentDescription()
-		if "footnote" in self.parent:
-			if self.parent.getCurrentEntry().endswith("*"):
-				self.parent["footnote"].text = (_("* = Restart Required"))
-			else:
-				self.parent["footnote"].text = ("")
 
 
 # Read the setup menu XML file.
