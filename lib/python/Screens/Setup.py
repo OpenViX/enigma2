@@ -27,28 +27,26 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 	def __init__(self, session, setup, plugin=None, PluginLanguageDomain=None):
 		Screen.__init__(self, session)
 		HelpableScreen.__init__(self)
-		# for the skin: first try a setup_<setupID>, then Setup
-		self.skinName = ["setup_" + setup, "Setup"]
-		self.onChangedEntry = []
-		self.item = None
-		self.list = []
-		self.force_update_list = False
+		self.setup = setup
 		self.plugin = plugin
 		self.PluginLanguageDomain = PluginLanguageDomain
-		self.setup = {}
-		xmldata = setupDom(setup, self.plugin).getroot()
-		for x in xmldata.findall("setup"):
-			if x.get("key") == setup:
-				self.setup = x
-				break
+		self.onChangedEntry = []
+		if hasattr(self, "skinName"):
+			if not isinstance(self.skinName, list):
+				self.skinName = [self.skinName]
+		else:
+			self.skinName = []
+		if setup:
+			self.skinName.append("Setup_%s" % setup)
+		self.skinName.append("Setup")
 		if config.usage.show_menupath.value in ("large", "small") and x.get("titleshort", "").encode("UTF-8") != "":
 			title = x.get("titleshort", "").encode("UTF-8")
 		else:
 			title = x.get("title", "").encode("UTF-8")
 		title = _("Setup" if title == "" else title)
 		self.setTitle(title)
-		self.seperation = int(self.setup.get("separation", "0"))
 		self.footnote = ""
+		self.list = []
 		ConfigListScreen.__init__(self, self.list, session=session, on_change=self.changedEntry)
 		self["footnote"] = Label()
 		self["footnote"].hide()
