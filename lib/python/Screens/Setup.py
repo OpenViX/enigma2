@@ -3,6 +3,7 @@ import xml.etree.cElementTree
 from boxbranding import getMachineBrand, getMachineName
 from gettext import dgettext
 from os.path import getmtime, join as pathJoin
+from skin import setups
 
 from Components.ActionMap import NumberActionMap
 from Components.config import ConfigBoolean, ConfigNothing, ConfigSelection, config
@@ -13,7 +14,8 @@ from Components.SystemInfo import SystemInfo
 from Components.Sources.Boolean import Boolean
 from Components.Sources.StaticText import StaticText
 from Screens.Screen import Screen
-from Tools.Directories import SCOPE_PLUGINS, SCOPE_SKIN, resolveFilename
+from Tools.Directories import SCOPE_CURRENT_SKIN, SCOPE_PLUGINS, SCOPE_SKIN, resolveFilename
+from Tools.LoadPixmap import LoadPixmap
 
 domSetups = {}
 setupModTimes = {}
@@ -53,7 +55,21 @@ class Setup(ConfigListScreen, Screen):
 		self["HelpWindow"] = Pixmap()
 		self["HelpWindow"].hide()
 		self["VKeyIcon"] = Boolean(False)
+		defaultmenuimage = setups.get("default", "")
+		menuimage = setups.get(setup, defaultmenuimage)
+		if menuimage:
+			print("[Setup] %s image '%s'." % ("Default" if menuimage is defaultmenuimage else "Menu", menuimage))
+			menuimage = resolveFilename(SCOPE_CURRENT_SKIN, menuimage)
+			self.menuimage = LoadPixmap(menuimage)
+			if self.menuimage:
+				self["menuimage"] = Pixmap()
+			else:
+				print("[Setup] Error: Unable to load menu image '%s'!" % menuimage)
+		else:
+			self.menuimage = None
 		self.createSetupList()
+		if self.layoutFinished not in self.onLayoutFinish:
+			self.onLayoutFinish.append(self.layoutFinished)
 		self["config"].onSelectionChanged.append(self.__onSelectionChanged)
 		self["key_red"] = StaticText(_("Cancel"))
 		self["key_green"] = StaticText(_("Save"))
@@ -113,6 +129,10 @@ class Setup(ConfigListScreen, Screen):
 		if config.usage.sort_settings.value:
 			self["config"].list.sort()
 		self.moveToItem(currentItem)
+
+	def layoutFinished(self):
+		if self.menuimage:
+			self["menuimage"].instance.setPixmap(self.menuimage)
 
 	def selectionChanged(self):
 		if self["config"]:
