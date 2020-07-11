@@ -129,6 +129,9 @@ class ConfigElement(object):
 	def tostring(self, value):
 		return str(value)
 
+	def toDisplayString(self, value):
+		return str(value)
+
 	# you need to override this if str(self.value) doesn't work
 	def save(self):
 		if self.save_disabled or (self.value == self.default and not self.save_forced):
@@ -394,6 +397,9 @@ class ConfigSelection(ConfigElement):
 	def tostring(self, val):
 		return str(val)
 
+	def toDisplayString(self, val):
+		return self.description[val]
+
 	def getValue(self):
 		return self._value
 
@@ -499,6 +505,9 @@ class ConfigBoolean(ConfigElement):
 			return "False"
 		else:
 			return "True"
+
+	def toDisplayString(self, value):
+		return self.descriptions[True] if value or str(value).lower() in ["true", self.descriptions[True].lower()] else self.descriptions[False]
 
 	def fromstring(self, val):
 		if str(val).lower() == "true":
