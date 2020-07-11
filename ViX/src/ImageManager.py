@@ -238,7 +238,7 @@ class VIXImageManager(Screen):
 				self["lab1"].setText(_("Device: ") + config.imagemanager.backuplocation.value + "\n" + _("There is a problem with this device. Please reformat it and try again."))
 
 	def createSetup(self):
-		self.session.openWithCallback(self.setupDone, Setup, "viximagemanager", "SystemPlugins/ViX" PluginLanguageDomain)
+		self.session.openWithCallback(self.setupDone, Setup, "viximagemanager", "SystemPlugins/ViX", PluginLanguageDomain)
 
 	def doDownload(self):
 		self.choices = [("OpenViX", 1), ("OpenATV", 2), ("OpenPli",3)]
