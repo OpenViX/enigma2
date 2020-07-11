@@ -15,24 +15,6 @@ from Components.Sources.StaticText import StaticText
 from Screens.Screen import Screen
 from Tools.Directories import SCOPE_CURRENT_PLUGIN, resolveFilename
 
-def setupdom(plugin=None):
-	# read the setupmenu
-	if plugin:
-		# first we search in the current path
-		setupfile = file(resolveFilename(SCOPE_CURRENT_PLUGIN, plugin + "/setup.xml"), "r")
-	else:
-		# if not found in the current path, we use the global datadir-path
-		setupfile = file(eEnv.resolve("${datadir}/enigma2/setup.xml"), "r")
-	setupfiledom = xml.etree.cElementTree.parse(setupfile)
-	setupfile.close()
-	return setupfiledom
-
-def getConfigMenuItem(configElement):
-	for item in setupdom().getroot().findall("./setup/item/."):
-		if item.text == configElement:
-			return _(item.attrib["text"]), eval(configElement)
-	return "", None
-
 
 class SetupError(Exception):
 	def __init__(self, message):
@@ -40,39 +22,6 @@ class SetupError(Exception):
 
 	def __str__(self):
 		return self.msg
-
-
-class SetupSummary(Screen):
-	def __init__(self, session, parent):
-		Screen.__init__(self, session, parent=parent)
-		self["SetupTitle"] = StaticText(parent.getTitle())
-		self["SetupEntry"] = StaticText("")
-		self["SetupValue"] = StaticText("")
-		if hasattr(self.parent, "onChangedEntry"):
-			self.onShow.append(self.addWatcher)
-			self.onHide.append(self.removeWatcher)
-
-	def addWatcher(self):
-		if hasattr(self.parent, "onChangedEntry"):
-			self.parent.onChangedEntry.append(self.selectionChanged)
-			self.parent["config"].onSelectionChanged.append(self.selectionChanged)
-			self.selectionChanged()
-
-	def removeWatcher(self):
-		if hasattr(self.parent, "onChangedEntry"):
-			self.parent.onChangedEntry.remove(self.selectionChanged)
-			self.parent["config"].onSelectionChanged.remove(self.selectionChanged)
-
-	def selectionChanged(self):
-		self["SetupEntry"].text = self.parent.getCurrentEntry()
-		self["SetupValue"].text = self.parent.getCurrentValue()
-		if hasattr(self.parent, "getCurrentDescription") and "description" in self.parent:
-			self.parent["description"].text = self.parent.getCurrentDescription()
-		if "footnote" in self.parent:
-			if self.parent.getCurrentEntry().endswith("*"):
-				self.parent["footnote"].text = (_("* = Restart Required"))
-			else:
-				self.parent["footnote"].text = ("")
 
 
 class Setup(ConfigListScreen, Screen):
@@ -190,6 +139,64 @@ class Setup(ConfigListScreen, Screen):
 	def run(self):
 		self.keySave()
 
+
+class SetupSummary(Screen):
+	def __init__(self, session, parent):
+		Screen.__init__(self, session, parent=parent)
+		self["SetupTitle"] = StaticText(parent.getTitle())
+		self["SetupEntry"] = StaticText("")
+		self["SetupValue"] = StaticText("")
+		if hasattr(self.parent, "onChangedEntry"):
+			self.onShow.append(self.addWatcher)
+			self.onHide.append(self.removeWatcher)
+
+	def addWatcher(self):
+		if hasattr(self.parent, "onChangedEntry"):
+			self.parent.onChangedEntry.append(self.selectionChanged)
+			self.parent["config"].onSelectionChanged.append(self.selectionChanged)
+			self.selectionChanged()
+
+	def removeWatcher(self):
+		if hasattr(self.parent, "onChangedEntry"):
+			self.parent.onChangedEntry.remove(self.selectionChanged)
+			self.parent["config"].onSelectionChanged.remove(self.selectionChanged)
+
+	def selectionChanged(self):
+		self["SetupEntry"].text = self.parent.getCurrentEntry()
+		self["SetupValue"].text = self.parent.getCurrentValue()
+		if hasattr(self.parent, "getCurrentDescription") and "description" in self.parent:
+			self.parent["description"].text = self.parent.getCurrentDescription()
+		if "footnote" in self.parent:
+			if self.parent.getCurrentEntry().endswith("*"):
+				self.parent["footnote"].text = (_("* = Restart Required"))
+			else:
+				self.parent["footnote"].text = ("")
+
+
+# Read the setup menu XML file.
+#
+def setupdom(plugin=None):
+	# read the setupmenu
+	if plugin:
+		# first we search in the current path
+		setupfile = file(resolveFilename(SCOPE_CURRENT_PLUGIN, plugin + "/setup.xml"), "r")
+	else:
+		# if not found in the current path, we use the global datadir-path
+		setupfile = file(eEnv.resolve("${datadir}/enigma2/setup.xml"), "r")
+	setupfiledom = xml.etree.cElementTree.parse(setupfile)
+	setupfile.close()
+	return setupfiledom
+
+# Only used in AudioSelection screen...
+#
+def getConfigMenuItem(configElement):
+	for item in setupdom().getroot().findall("./setup/item/."):
+		if item.text == configElement:
+			return _(item.attrib["text"]), eval(configElement)
+	return "", None
+
+# Only used in Menu screen...
+#
 def getSetupTitle(id):
 	xmldata = setupdom().getroot()
 	for x in xmldata.findall("setup"):
