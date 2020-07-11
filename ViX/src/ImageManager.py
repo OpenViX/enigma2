@@ -1,4 +1,4 @@
-import urllib2
+from urllib2 import urlopen, HTTPError
 import json
 
 from boxbranding import getBoxType, getImageType, getImageDistro, getImageVersion, getImageBuild, getImageDevBuild, getImageFolder, getImageFileSystem, getBrandOEM, getMachineBrand, getMachineName, getMachineBuild, getMachineMake, getMachineMtdRoot, getMachineRootFile, getMachineMtdKernel, getMachineKernelFile, getMachineMKUBIFS, getMachineUBINIZE
@@ -1352,9 +1352,9 @@ class ImageManagerDownload(Screen):
 				newversion = _("Image Version %s") % version
 				countimage = []
 				try:
-					conn = urllib2.urlopen(self.urlBox)
+					conn = urlopen(self.urlBox)
 					html = conn.read()
-				except urllib2.HTTPError as e:
+				except HTTPError as e:
 					print "[ImageManager] HTTP download ERROR: %s" % e.code
 					continue
 				soup = BeautifulSoup(html)
@@ -1376,7 +1376,7 @@ class ImageManagerDownload(Screen):
 			if not self.jsonlist:
 				try:
 					urljson = path.join(self.urlDistro, model)
-					self.jsonlist = dict(json.load(urllib2.urlopen("%s" % urljson)))
+					self.jsonlist = dict(json.load(urlopen("%s" % urljson)))
 				except Exception:
 					print "[ImageManager] OpenPli/OpenATV no model: %s in downloads" % model
 					return
