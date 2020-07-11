@@ -105,28 +105,9 @@ class VIXImageManager(Screen):
 		</applet>
 	</screen>"""
 
-	def __init__(self, session, menu_path=""):
+	def __init__(self, session):
 		Screen.__init__(self, session)
-		screentitle = _("Image manager")
-		self.menu_path = menu_path
-		if config.usage.show_menupath.value == "large":
-			self.menu_path += screentitle
-			title = self.menu_path
-			self["menu_path_compressed"] = StaticText("")
-			self.menu_path += " / "
-		elif config.usage.show_menupath.value == "small":
-			title = screentitle
-			condtext = ""
-			if self.menu_path and not self.menu_path.endswith(" / "):
-				condtext = self.menu_path + " >"
-			elif self.menu_path:
-				condtext = self.menu_path[:-3] + " >"
-			self["menu_path_compressed"] = StaticText(condtext)
-			self.menu_path += screentitle + " / "
-		else:
-			title = screentitle
-			self["menu_path_compressed"] = StaticText("")
-		Screen.setTitle(self, title)
+		self.setTitle(_("Image manager"))
 
 		self["lab1"] = Label()
 		self["backupstatus"] = Label()
@@ -257,7 +238,7 @@ class VIXImageManager(Screen):
 				self["lab1"].setText(_("Device: ") + config.imagemanager.backuplocation.value + "\n" + _("There is a problem with this device. Please reformat it and try again."))
 
 	def createSetup(self):
-		self.session.openWithCallback(self.setupDone, Setup, "viximagemanager", "SystemPlugins/ViX", self.menu_path, PluginLanguageDomain)
+		self.session.openWithCallback(self.setupDone, Setup, "viximagemanager", "SystemPlugins/ViX" PluginLanguageDomain)
 
 	def doDownload(self):
 		self.choices = [("OpenViX", 1), ("OpenATV", 2), ("OpenPli",3)]
@@ -269,7 +250,7 @@ class VIXImageManager(Screen):
 		if retval:
 			retval -= 1
 			self.urlDistro = self.urlchoices[retval]
-			self.session.openWithCallback(self.refreshList, ImageManagerDownload, self.menu_path, self.BackupDirectory, self.urlDistro)
+			self.session.openWithCallback(self.refreshList, ImageManagerDownload, self.BackupDirectory, self.urlDistro)
 
 	def setupDone(self, test=None):
 		if config.imagemanager.folderprefix.value == "":
@@ -1314,20 +1295,9 @@ class ImageManagerDownload(Screen):
 		</applet>
 	</screen>"""
 
-	def __init__(self, session, menu_path, BackupDirectory, urlDistro):
+	def __init__(self, session, BackupDirectory, urlDistro):
 		Screen.__init__(self, session)
-		screentitle = _("Downloads")
-		if config.usage.show_menupath.value == "large":
-			menu_path += screentitle
-			title = menu_path
-			self["menu_path_compressed"] = StaticText("")
-		elif config.usage.show_menupath.value == "small":
-			title = screentitle
-			self["menu_path_compressed"] = StaticText(menu_path + " >" if not menu_path.endswith(" / ") else menu_path[:-3] + " >" or "")
-		else:
-			title = screentitle
-			self["menu_path_compressed"] = StaticText("")
-		Screen.setTitle(self, title)
+		self.setTitle(_("Downloads"))
 		self.Pli = False
 		self.urlDistro = urlDistro
 		self.BackupDirectory = BackupDirectory

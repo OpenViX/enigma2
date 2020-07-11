@@ -76,21 +76,7 @@ class VIXSoftcamManager(Screen):
 
 	def __init__(self, session):
 		Screen.__init__(self, session)
-		screentitle =  _("Softcam manager")
-		self.menu_path = _('Main menu')+' / '+_('Setup')+' / '+_('Softcam')+' / '
-		if config.usage.show_menupath.value == 'large':
-			self.menu_path += screentitle
-			title = self.menu_path
-			self["menu_path_compressed"] = StaticText("")
-			self.menu_path += ' / '
-		elif config.usage.show_menupath.value == 'small':
-			title = screentitle
-			self["menu_path_compressed"] = StaticText(self.menu_path + " >" if not self.menu_path.endswith(' / ') else self.menu_path[:-3] + " >" or "")
-			self.menu_path += " / " + screentitle
-		else:
-			title = screentitle
-			self["menu_path_compressed"] = StaticText("")
-		Screen.setTitle(self, title)
+		self.setTitle(_("Softcam manager"))
 
 		self['lab1'] = Label(_('Select:'))
 		self['lab2'] = Label(_('Active:'))
@@ -134,7 +120,7 @@ class VIXSoftcamManager(Screen):
 
 	def createSetup(self):
 		from Screens.Setup import Setup
-		self.session.open(Setup, 'vixsoftcammanager', 'SystemPlugins/ViX', self.menu_path, PluginLanguageDomain)
+		self.session.open(Setup, 'vixsoftcammanager', 'SystemPlugins/ViX', PluginLanguageDomain)
 
 	def selectionChanged(self):
 		cams = []
@@ -315,7 +301,7 @@ class VIXSoftcamManager(Screen):
 				self.session.openWithCallback(self.showActivecam, VIXStartCam, self.sel[0])
 
 	def showLog(self):
-		self.session.open(VIXSoftcamLog, self.menu_path)
+		self.session.open(VIXSoftcamLog)
 
 	def myclose(self):
 		self.close()
@@ -539,21 +525,10 @@ class VIXSoftcamLog(Screen):
 	<widget name="list" position="0,0" size="560,400" font="Regular;14"/>
 </screen>"""
 
-	def __init__(self, session, menu_path):
+	def __init__(self, session):
 		self.session = session
 		Screen.__init__(self, session)
-		screentitle =  _("Logs")
-		if config.usage.show_menupath.value == 'large':
-			menu_path += screentitle
-			title = menu_path
-			self["menu_path_compressed"] = StaticText("")
-		elif config.usage.show_menupath.value == 'small':
-			title = screentitle
-			self["menu_path_compressed"] = StaticText(menu_path + " >" if not menu_path.endswith(' / ') else menu_path[:-3] + " >" or "")
-		else:
-			title = screentitle
-			self["menu_path_compressed"] = StaticText("")
-		Screen.setTitle(self, title)
+		self.setTitle(_("Logs"))
 
 		if path.exists('/var/volatile/tmp/cam.check.log'):
 			file = open('/var/volatile/tmp/cam.check.log')
