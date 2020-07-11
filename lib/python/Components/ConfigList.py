@@ -6,6 +6,7 @@ from Screens.MessageBox import MessageBox
 from Screens.ChoiceBox import ChoiceBox
 import skin
 
+
 class ConfigList(GUIComponent, object):
 	def __init__(self, list, session=None):
 		GUIComponent.__init__(self)
@@ -57,22 +58,21 @@ class ConfigList(GUIComponent, object):
 		self.l.invalidateEntry(self.l.getCurrentSelectionIndex())
 
 	def invalidate(self, entry):
-		# when the entry to invalidate does not exist, just ignore the request.
-		# this eases up conditional setup screens a lot.
+		# When the entry to invalidate does not exist, just ignore the request.
+		# This eases up conditional setup screens a lot.
 		if entry in self.__list:
 			self.l.invalidateEntry(self.__list.index(entry))
 
 	GUI_WIDGET = eListbox
 
 	def selectionChanged(self):
-		if isinstance(self.current,tuple) and len(self.current) >= 2:
+		if isinstance(self.current, tuple) and len(self.current) >= 2:
 			self.current[1].onDeselect(self.session)
 		self.current = self.getCurrent()
-		if isinstance(self.current,tuple) and len(self.current) >= 2:
+		if isinstance(self.current, tuple) and len(self.current) >= 2:
 			self.current[1].onSelect(self.session)
 		else:
 			return
-
 		for x in self.onSelectionChanged:
 			x()
 
@@ -99,7 +99,6 @@ class ConfigList(GUIComponent, object):
 		self.timer.stop()
 		self.__list = l
 		self.l.setList(self.__list)
-
 		if l is not None:
 			for x in l:
 				assert len(x) < 2 or isinstance(x[1], ConfigElement), "entry in ConfigList " + str(x[1]) + " must be a ConfigElement"
@@ -126,6 +125,7 @@ class ConfigList(GUIComponent, object):
 		if self.instance is not None:
 			self.instance.moveSelection(self.instance.pageDown)
 
+
 class ConfigListScreen:
 	def __init__(self, list, session=None, on_change=None):
 		self["config_actions"] = NumberActionMap(["SetupActions", "InputAsciiActions", "KeyboardInputActions"], {
@@ -151,30 +151,24 @@ class ConfigListScreen:
 			"9": self.keyNumberGlobal,
 			"0": self.keyNumberGlobal,
 			"file": self.keyFile
-		}, -1)  # to prevent left/right overriding the listbox
-
+		}, -1)  # To prevent left/right overriding the listbox.
 		self.onChangedEntry = []
-
 		self["VirtualKB"] = ActionMap(["VirtualKeyboardActions"], {
 			"showVirtualKeyboard": self.KeyText,
 		}, -2)
 		self["VirtualKB"].setEnabled(False)
-
 		self["config"] = ConfigList(list, session=session)
-
 		if on_change is not None:
 			self.__changed = on_change
 		else:
 			self.__changed = lambda: None
-
 		if self.handleInputHelpers not in self["config"].onSelectionChanged:
 			self["config"].onSelectionChanged.append(self.handleInputHelpers)
+		# self.onClose.append(self.__onClose)
 
-#		self.onClose.append(self.__onClose)
-
-#	def __onClose(self):
-#		if "config" in self:
-#			self["config"].hideHelp()
+	# def __onClose(self):
+	# 	if "config" in self:
+	# 		self["config"].hideHelp()
 
 	def createSummary(self):
 		self.setup_title = self.getTitle()
@@ -285,7 +279,8 @@ class ConfigListScreen:
 		configfile.save()
 
 	# keySave and keyCancel are just provided in case you need them.
-	# you have to call them by yourself.
+	# You have to call them by yourself.
+	#
 	def keySave(self):
 		self.saveAll()
 		self.close()
@@ -294,7 +289,6 @@ class ConfigListScreen:
 		if not result:
 			self["config"].showHelp()
 			return
-
 		for x in self["config"].list:
 			x[1].cancel()
 		self.close()
@@ -302,7 +296,7 @@ class ConfigListScreen:
 	def closeMenuList(self, recursive=False):
 		if self["config"].isChanged():
 			self["config"].hideHelp()
-			self.session.openWithCallback(self.cancelConfirm, MessageBox, _("Really close without saving settings?"), default = False)
+			self.session.openWithCallback(self.cancelConfirm, MessageBox, _("Really close without saving settings?"), default=False)
 		else:
 			self.close(recursive)
 
