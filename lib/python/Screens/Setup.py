@@ -1,6 +1,5 @@
 import xml.etree.cElementTree
 
-from boxbranding import getMachineBrand, getMachineName
 from gettext import dgettext
 from os.path import getmtime, join as pathJoin
 from skin import setups
@@ -39,12 +38,6 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 		if setup:
 			self.skinName.append("Setup_%s" % setup)
 		self.skinName.append("Setup")
-		if config.usage.show_menupath.value in ("large", "small") and x.get("titleshort", "").encode("UTF-8") != "":
-			title = x.get("titleshort", "").encode("UTF-8")
-		else:
-			title = x.get("title", "").encode("UTF-8")
-		title = _("Setup" if title == "" else title)
-		self.setTitle(title)
 		self.footnote = ""
 		self.list = []
 		ConfigListScreen.__init__(self, self.list, session=session, on_change=self.changedEntry)
@@ -63,64 +56,95 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 				print("[Setup] Error: Unable to load menu image '%s'!" % menuimage)
 		else:
 			self.menuimage = None
-		self.createSetupList()
+		self.createSetup()
 		if self.layoutFinished not in self.onLayoutFinish:
 			self.onLayoutFinish.append(self.layoutFinished)
-		self["config"].onSelectionChanged.append(self.__onSelectionChanged)
-		if self.handleInputHelpers not in self["config"].onSelectionChanged:
-			self["config"].onSelectionChanged.append(self.handleInputHelpers)
-		self.changedEntry()
+		if self.selectionChanged not in self["config"].onSelectionChanged:
+			self["config"].onSelectionChanged.append(self.selectionChanged)
 
-	def createSetupList(self):
-		currentItem = self["config"].getCurrent()
+	def changedEntry(self):
+		if isinstance(self["config"].getCurrent()[1], (ConfigBoolean, ConfigSelection)):
+			self.createSetup()
+		if self["config"]:
+			self.updateFootnote()
+
+	def createSetup(self):
+		oldList = self.list
+		self.switch = False
 		self.list = []
-		for x in self.setup:
-			if not x.tag:
-				continue
-			if x.tag == "item":
-				item_level = int(x.get("level", 0))
-				if item_level > config.usage.setup_level.index:
-					continue
-				requires = x.get("requires")
-				if requires and not requires.startswith("config."):
-					if requires.startswith("!"):
-						if SystemInfo.get(requires[1:], False):
-							continue
-					elif not SystemInfo.get(requires, False):
-						continue
-				conditional = x.get("conditional")
-				if conditional and not eval(conditional):
-					continue
-				# this block is just for backwards compatibility
-				if requires and requires.startswith("config."):
-					item = eval(requires)
-					if not (item.value and not item.value == "0"):
-						continue
-				if self.PluginLanguageDomain:
-					item_text = dgettext(self.PluginLanguageDomain, x.get("text", "??").encode("UTF-8"))
-					item_description = dgettext(self.PluginLanguageDomain, x.get("description", " ").encode("UTF-8"))
+		title = ""
+		xmldata = setupDom(self.setup, self.plugin)
+		for setup in xmldata.findall("setup"):
+			if setup.get("key") == self.setup:
+				self.addItems(setup)
+				skin = setup.get("skin", "")
+				if skin != "":
+					self.skinName.insert(0, skin)
+				if config.usage.show_menupath.value in ("large", "small") and "menuTitle" in setup:
+					title = setup.get("menuTitle", "").encode("UTF-8")
 				else:
-					item_text = _(x.get("text", "??").encode("UTF-8"))
-					item_description = _(x.get("description", " ").encode("UTF-8"))
-				item_text = item_text.replace("%s %s", "%s %s" % (getMachineBrand(), getMachineName()))
-				item_description = item_description.replace("%s %s", "%s %s" % (getMachineBrand(), getMachineName()))
-				b = eval(x.text or "")
-				if b == "":
+					title = setup.get("title", "").encode("UTF-8")
+				# If this break is executed then there can only be one setup tag with this key.
+				# This may not be appropriate if conditional setup blocks become available.
+				break
+		title = _("Setup") if title == "" else _(title)
+		self.setTitle(title)
+		if self.list != oldList or self.switch:
+			print("[Setup] DEBUG: Config list has changed!")
+			currentItem = self["config"].getCurrent()
+			self["config"].setList(self.list)
+			if config.usage.sort_settings.value:
+				self["config"].list.sort()
+			self.moveToItem(currentItem)
+		else:
+			print("[Setup] DEBUG: Config list is unchanged!")
+
+	def addItems(self, parentNode):
+		for element in parentNode:
+			if element.tag and element.tag == "item":
+				itemLevel = int(element.get("level", 0))
+				if itemLevel > config.usage.setup_level.index:  # The item is higher than the current setup level.
 					continue
-				# add to configlist
-				item = b
-				# the first b is the item itself, ignored by the configList.
-				# the second one is converted to string.
-				if not isinstance(item, ConfigNothing):
-					self.list.append((item_text, item, item_description))
-		self["config"].setList(self.list)
-		if config.usage.sort_settings.value:
-			self["config"].list.sort()
-		self.moveToItem(currentItem)
+				requires = element.get("requires")
+				if requires:
+					negate = requires.startswith("!")
+					if negate:
+						requires = requires[1:]
+					if requires.startswith("config."):
+						item = eval(requires)
+						SystemInfo[requires] = True if item.value and item.value not in ("0", "False", "false") else False
+						clean = True
+					else:
+						clean = False
+					result = bool(SystemInfo.get(requires, False))
+					if clean:
+						SystemInfo.pop(requires, None)
+					if requires and negate == result:  # The item requirements are not met.
+						continue
+				conditional = element.get("conditional")
+				if conditional and not eval(conditional):  # The item conditions are not met.
+					continue
+				if self.PluginLanguageDomain:
+					itemText = dgettext(self.PluginLanguageDomain, element.get("text", "??").encode("UTF-8"))
+					itemDescription = dgettext(self.PluginLanguageDomain, element.get("description", " ").encode("UTF-8"))
+				else:
+					itemText = _(element.get("text", "??").encode("UTF-8"))
+					itemDescription = _(element.get("description", " ").encode("UTF-8"))
+				itemText = itemText.replace("%s %s", "%s %s" % (SystemInfo["MachineBrand"], SystemInfo["MachineName"]))
+				itemDescription = itemDescription.replace("%s %s", "%s %s" % (SystemInfo["MachineBrand"], SystemInfo["MachineName"]))
+				item = eval(element.text or "")
+				if item != "" and not isinstance(item, ConfigNothing):
+					itemDefault = "(Default: %s)" % item.toDisplayString(item.default)
+					itemDescription = "%s  %s" % (itemDescription, itemDefault) if itemDescription and itemDescription != " " else itemDefault
+					self.list.append((itemText, item, itemDescription))  # Add the item to the config list.
+				if item is config.usage.boolean_graphic:
+					self.switch = True
 
 	def layoutFinished(self):
 		if self.menuimage:
 			self["menuimage"].instance.setPixmap(self.menuimage)
+		if not self["config"]:
+			print("[Setup] No menu items available!")
 
 	def selectionChanged(self):
 		if self["config"]:
@@ -147,19 +171,6 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 
 	def getIndexFromItem(self, item):
 		return self["config"].list.index(item) if item in self["config"].list else 0
-
-	def changedEntry(self):
-		if self["config"].getCurrent() and (isinstance(self["config"].getCurrent()[1], ConfigBoolean) or isinstance(self["config"].getCurrent()[1], ConfigSelection)):
-			self.createSetupList()
-
-	def __onSelectionChanged(self):
-		if self.force_update_list:
-			self["config"].onSelectionChanged.remove(self.__onSelectionChanged)
-			self.createSetupList()
-			self["config"].onSelectionChanged.append(self.__onSelectionChanged)
-			self.force_update_list = False
-		if not (isinstance(self["config"].getCurrent()[1], ConfigBoolean) or isinstance(self["config"].getCurrent()[1], ConfigSelection)):
-			self.force_update_list = True
 
 	def run(self):
 		self.keySave()
