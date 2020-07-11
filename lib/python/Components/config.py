@@ -7,8 +7,53 @@ from copy import copy as copy_copy
 from os import path as os_path
 from time import localtime, strftime
 
-# ConfigElement, the base class of all ConfigElements.
+KEYA_LEFT = 0
+KEYA_RIGHT = 1
+KEYA_SELECT = 2
+KEYA_DELETE = 3
+KEYA_BACKSPACE = 4
+KEYA_HOME = 5
+KEYA_END = 6
+KEYA_TOGGLEOW = 7
+KEYA_ASCII = 8
+KEYA_TIMEOUT = 9
+KEYA_NUMBERS = range(12, 12 + 10)
+KEYA_0 = 12
+KEYA_1 = 13
+KEYA_2 = 14
+KEYA_3 = 15
+KEYA_4 = 16
+KEYA_5 = 17
+KEYA_6 = 18
+KEYA_7 = 19
+KEYA_8 = 20
+KEYA_9 = 21
+KEYA_PAGEUP = 22
+KEYA_PAGEDOWN = 23
+KEYA_PREV = 24
+KEYA_NEXT = 25
 
+# Deprecated / Legacy action key names...
+#
+# (These should be removed when all Enigma2 uses the new and less confusing names.)
+#
+KEY_LEFT = KEYA_LEFT
+KEY_RIGHT = KEYA_RIGHT
+KEY_OK = KEYA_SELECT
+KEY_DELETE = KEYA_DELETE
+KEY_BACKSPACE = KEYA_BACKSPACE
+KEY_HOME = KEYA_HOME
+KEY_END = KEYA_END
+KEY_TOGGLEOW = KEYA_TOGGLEOW
+KEY_ASCII = KEYA_ASCII
+KEY_TIMEOUT = KEYA_TIMEOUT
+KEY_NUMBERS = KEYA_NUMBERS
+KEY_0 = KEYA_0
+KEY_9 = KEYA_9
+
+
+# ConfigElement, the base class of all ConfigElements.
+#
 # it stores:
 #   value    the current value, usefully encoded.
 #            usually a property which retrieves _value,
@@ -193,21 +238,6 @@ class ConfigElement(object):
 		for extra_arg in self.extra_args:
 			if extra_arg[0] == notifier:
 				return extra_arg[1]
-
-
-KEY_LEFT = 0
-KEY_RIGHT = 1
-KEY_OK = 2
-KEY_DELETE = 3
-KEY_BACKSPACE = 4
-KEY_HOME = 5
-KEY_END = 6
-KEY_TOGGLEOW = 7
-KEY_ASCII = 8
-KEY_TIMEOUT = 9
-KEY_NUMBERS = range(12, 12 + 10)
-KEY_0 = 12
-KEY_9 = 12 + 9
 
 def getKeyNumber(key):
 	assert key in KEY_NUMBERS
