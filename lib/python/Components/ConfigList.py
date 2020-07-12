@@ -303,7 +303,7 @@ class ConfigListScreen:
 			self.session.openWithCallback(
 				self.handleKeyMenuCallback, ChoiceBox, title=currConfig[0],
 				list=zip(currConfig[1].description, currConfig[1].choices),
-				selection=currConfig[1].getIndex()),
+				selection=currConfig[1].getIndex(),
 				keys=[]
 			)
 
