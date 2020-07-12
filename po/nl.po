@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-04 17:19+0000\n"
-"PO-Revision-Date: 2020-06-19 15:12+0200\n"
+"POT-Creation-Date: 2020-07-09 18:53+0000\n"
+"PO-Revision-Date: 2020-07-10 14:40+0200\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -1349,29 +1349,29 @@ msgstr "8K"
 msgid "8bit"
 msgstr "8bit"
 
-msgid "< Current >"
-msgstr "< Huidig >"
-
-msgid "< Default + Picon >"
-msgstr "< Standaard + Picon >"
-
-msgid "< Default >"
-msgstr "< Standaard >"
-
-msgid "< Emergency >"
-msgstr "< Nood >"
-
-msgid "< Pending restart >"
-msgstr "< Wacht op herstart >"
-
 msgid "<Current movielist location>"
 msgstr "<Huidige lokatie opnamelijst>"
+
+msgid "<Current>"
+msgstr "<Huidig>"
 
 msgid "<Default movie location>"
 msgstr "<Standaard lokatie voor opnames>"
 
+msgid "<Default+Picon>"
+msgstr "<Standaard + Picon>"
+
+msgid "<Default>"
+msgstr "<Standaard>"
+
+msgid "<Emergency>"
+msgstr "<Noodgeval>"
+
 msgid "<Last timer location>"
 msgstr "<Laatste timer lokatie>"
+
+msgid "<Pending restart>"
+msgstr "<Wacht op herstart>"
 
 msgid "<unknown>"
 msgstr "<onbekend>"
@@ -1629,6 +1629,9 @@ msgstr "Actief"
 
 msgid "Active clients"
 msgstr "Actieve klanten"
+
+msgid "Adapter Settings"
+msgstr "Adapter instellingen"
 
 msgid "Adapter settings"
 msgstr "Adapter instellingen"
@@ -2289,6 +2292,9 @@ msgstr "Australische talen zijn:"
 msgid "Available shares:"
 msgstr "Beschikbare shares:"
 
+msgid "Axas E4HD Ultra"
+msgstr "Axas E4HD Ultra"
+
 msgid "Azerbaijan"
 msgstr "Azerbaijan"
 
@@ -2536,6 +2542,9 @@ msgstr "Bus: "
 
 msgid "Button"
 msgstr "Toets"
+
+msgid "Button Setup"
+msgstr "Toetsinstellingen"
 
 msgid "Button setup"
 msgstr "Toetsinstellingen"
@@ -2812,14 +2821,14 @@ msgstr "Kanaal-EPG"
 msgid "Channel List"
 msgstr "Kanaallijst"
 
+msgid "Channel List Context Menu"
+msgstr "Kanaallijst contextmenu"
+
 msgid "Channel down"
 msgstr "Kanaal omlaag"
 
 msgid "Channel info"
 msgstr "Kanaalinfo"
-
-msgid "Channel list context menu"
-msgstr "Kanaallijst contextmenu"
 
 msgid "Channel list cursor behavior"
 msgstr "Gedrag van cursor in kanaallijst"
@@ -3056,6 +3065,9 @@ msgstr "Afspeellijst leegmaken"
 msgid "Client Info ( Oscam-Version: %s )"
 msgstr "KlantInfo ( Oscam-Versie: %s )"
 
+msgid "Client Mode"
+msgstr "Client-modus"
+
 msgid "Client mode"
 msgstr "Client-modus"
 
@@ -3246,9 +3258,6 @@ msgstr "Configureer nameservers"
 
 msgid "Configure on which devices the background delete option should be used."
 msgstr "Geef aan op welk apparaat op de achtergrond bestanden mogen worden verwijderd."
-
-msgid "Configure remote control type"
-msgstr "Configureer type afstandsbediening"
 
 msgid "Configure the DiSEqC mode for this LNB."
 msgstr "Stel hier de juiste DiSEqC modus voor uw LNB in."
@@ -3651,9 +3660,6 @@ msgstr "Croatisch"
 
 msgid "Cron Manager"
 msgstr "Cronmanager"
-
-msgid "Cron manager"
-msgstr "Cron manager"
 
 msgid "Cron timers"
 msgstr "Cron timers"
@@ -4111,6 +4117,9 @@ msgstr "Verwijder talen"
 msgid "Delete Timer"
 msgstr "Verwijder timer"
 
+msgid "Delete all the text"
+msgstr "Verwijder alle tekst"
+
 msgid "Delete entry"
 msgstr "Verwijder invoer"
 
@@ -4125,9 +4134,6 @@ msgstr "Wis item in de afspeellijst"
 
 msgid "Delete saved playlist"
 msgstr "Opgeslagen afspeellijst verwijderen"
-
-msgid "Delete the all the text"
-msgstr "Verwijder alle tekst"
 
 msgid "Delete the character to the left of text cursor"
 msgstr "Verwijder karakter links van de cursor"
@@ -4830,6 +4836,9 @@ msgstr "Enter"
 msgid "Enter PIN"
 msgstr "Voer PIN in"
 
+msgid "Enter PIN Code"
+msgstr "Voer PIN in"
+
 msgid "Enter a number to jump to a service/channel"
 msgstr "Geef kanaalnummer in om naar te springen."
 
@@ -5127,8 +5136,8 @@ msgstr "Groei vanaf links"
 msgid "F1"
 msgstr "F1"
 
-msgid "F1/F3"
-msgstr "F1/F3"
+msgid "F1/F3/F4/F4-TURBO/TRIPLEX"
+msgstr "F1/F3/F4/F4-TURBO/TRIPLEX"
 
 msgid "F1/LAN"
 msgstr "F1/LAN"
@@ -5210,6 +5219,9 @@ msgstr "Geen FTP-verbinding"
 msgid "FTP passive mode"
 msgstr "FTP passieve modus"
 
+msgid "Factory Reset"
+msgstr "Fabrieksinstellingen"
+
 msgid "Factory reset"
 msgstr "Fabrieksinstellingen"
 
@@ -5225,6 +5237,9 @@ msgstr "Mislukt te schrijven naar /tmp/positionersetup.log: "
 msgid "Falkland Islands (Malvinas)"
 msgstr "Falkland Islands (Malvinas)"
 
+msgid "Fallback Tuner Setup"
+msgstr "Fallback tuner-instellingen"
+
 msgid "Fallback address type"
 msgstr "Fallback adres-type"
 
@@ -5239,9 +5254,6 @@ msgstr "Fallback ontvanger stream-poort"
 
 msgid "Fallback remote receiver URL"
 msgstr "Fallback remote-ontvanger URL"
-
-msgid "Fallback tuner setup"
-msgstr "Fallback tuner-instellingen"
 
 msgid "False"
 msgstr "Niet waar"
@@ -5437,6 +5449,9 @@ msgstr "Paneeldisplay"
 
 msgid "Front panel settings"
 msgstr "Paneeldisplay"
+
+msgid "Full factory reset"
+msgstr "Fabrieksinstellingen"
 
 msgid "Full screen"
 msgstr "Volledig scherm"
@@ -5642,6 +5657,9 @@ msgstr "Guinea-Bissau"
 msgid "Guyana"
 msgstr "Guyana"
 
+msgid "H7/H9/H9COMBO/H10 new Model"
+msgstr "H7/H9/H9COMBO/H10 nieuw model"
+
 msgid "H9 SDcard switch ERROR! - H9 root files not transferred to SD card"
 msgstr "H9 SDcard switch ERROR! - H9 root files not transferred to SD card"
 
@@ -5678,11 +5696,14 @@ msgstr "HD"
 msgid "HD list"
 msgstr "HD lijst"
 
-msgid "HD1100/et7x00/et8500"
-msgstr "HD1100/et7x00/et8500"
+msgid "HD11/HD51/HD1100/HD1200/HD1265/HD1500/HD500C/HD530C/et7x00/et8500"
+msgstr "HD11/HD51/HD1100/HD1200/HD1265/HD1500/HD500C/HD530C/et7x00/et8500"
 
 msgid "HD2400"
 msgstr "HD2400"
+
+msgid "HD60"
+msgstr "HD60"
 
 msgid "HDD settings"
 msgstr "HDD instellingen"
@@ -5801,6 +5822,9 @@ msgstr "Hoge bitrate ondersteuning"
 msgid "Highlight current events"
 msgstr "Markeer actuele programma's"
 
+msgid "History Zap"
+msgstr "Geschiedenis-zap"
+
 msgid "History back"
 msgstr "Historie terug"
 
@@ -5809,9 +5833,6 @@ msgstr "Geschiedenis toetsfunctie"
 
 msgid "History next"
 msgstr "Historie volgende"
-
-msgid "History zap..."
-msgstr "Geschiedenis-zap..."
 
 msgid "Hold screen"
 msgstr "Hold screen"
@@ -6215,11 +6236,14 @@ msgstr "Invoer"
 msgid "Input "
 msgstr "Invoer "
 
+msgid "Input Device Setup"
+msgstr "Invoerapparaat instellingen"
+
+msgid "Input Devices"
+msgstr "Invoerapparaten"
+
 msgid "Input Stream ID"
 msgstr "Inputstream-ID"
-
-msgid "Input device setup"
-msgstr "Invoerapparaat instellingen"
 
 msgid "Input devices"
 msgstr "Invoerapparaten"
@@ -6230,6 +6254,9 @@ msgstr "Installeer"
 #, python-format
 msgid "Install '%s'"
 msgstr "Installeer '%s'"
+
+msgid "Install Plugins"
+msgstr "Installeer plugins"
 
 msgid "Install a new image with a USB stick"
 msgstr "Installeer een nieuwe image met een USB-stick"
@@ -6257,9 +6284,6 @@ msgstr "Installeren of verwijderen voltooid."
 
 msgid "Install picons on"
 msgstr "Installeer picons op"
-
-msgid "Install plugins"
-msgstr "Installeer plugins"
 
 msgid "Installation finished."
 msgstr "Installatie mislukt."
@@ -6798,11 +6822,11 @@ msgstr "Luxembourg"
 msgid "Luxembourgish"
 msgstr "Luxumburgs"
 
+msgid "MAC Address Settings"
+msgstr "MAC-adresinstellingen"
+
 msgid "MAC address"
 msgstr "MAC-adres"
-
-msgid "MAC address settings"
-msgstr "MAC-adresinstellingen"
 
 msgid "MAC:"
 msgstr "MAC:"
@@ -7339,6 +7363,9 @@ msgstr ""
 msgid "Nameserver %d"
 msgstr "Nameserver %d"
 
+msgid "Nameserver Settings"
+msgstr "Nameserver instellingen"
+
 msgid "Nameserver settings"
 msgstr "Nameserver instellingen"
 
@@ -7378,6 +7405,9 @@ msgstr "Netwerkinstellingen"
 msgid "Network Test"
 msgstr "Netwerktest"
 
+msgid "Network Test:"
+msgstr "Netwerktest:"
+
 msgid "Network menu"
 msgstr "Netwerkmenu"
 
@@ -7404,9 +7434,6 @@ msgstr "Netwerk instellingen"
 
 msgid "Network test"
 msgstr "Netwerktest"
-
-msgid "Network test: "
-msgstr "Netwerktest: "
 
 msgid "Network wizard"
 msgstr "Netwerk-wizard"
@@ -7875,9 +7902,6 @@ msgstr "Open de kanaallijst"
 msgid "OpenVPN"
 msgstr "Open-VPN"
 
-msgid "OpenVpn"
-msgstr "Open-VPN"
-
 msgid "OpenVpn Setup"
 msgstr "Open-VPN instellingen"
 
@@ -8016,6 +8040,9 @@ msgstr "Paraguay"
 msgid "Parent directory"
 msgstr "Bovengelegen map"
 
+msgid "Parental Control"
+msgstr "Kinderslot"
+
 msgid "Parental Guidance Recommended"
 msgstr "Ouderlijk toezicht aanbevolen"
 
@@ -8031,11 +8058,11 @@ msgstr "Wachtwoord"
 msgid "Password (httpwd)"
 msgstr "Wachtwoord (httpwd)"
 
+msgid "Password Setup"
+msgstr "Wachtwoord instellen"
+
 msgid "Password changed"
 msgstr "Wachtwoord is veranderd"
-
-msgid "Password setup"
-msgstr "Wachtwoord instellen"
 
 msgid "Password:"
 msgstr "Wachtwoord:"
@@ -8555,6 +8582,12 @@ msgstr "Power Aan/Uit vertoon stand-by modus."
 msgid "Power On/Off display Suspend Mode."
 msgstr "Power Aan/Uit vertoon opgeschorte modus."
 
+msgid "Power Timer Edit"
+msgstr "Powertimer bewerken"
+
+msgid "Power Timer List"
+msgstr "Powertimer Lijst"
+
 msgid "Power long"
 msgstr "Power lang"
 
@@ -8581,12 +8614,6 @@ msgstr "PowerControl frontpaneel stand-by modus"
 
 msgid "PowerControl FrontDisplay Suspend Mode"
 msgstr "PowerControl frontpaneel inactieve modus"
-
-msgid "PowerManager entry"
-msgstr "Powermanager entry"
-
-msgid "PowerTimer List"
-msgstr "Powertimer Lijst"
 
 msgid "Predefined"
 msgstr "Vooringesteld"
@@ -8811,6 +8838,9 @@ msgstr "Beveilig timers"
 
 msgid "Protect vix menu"
 msgstr "Beveilig ViX-menu"
+
+msgid "Protek 4K UHD/HD61"
+msgstr "Protek 4K UHD/HD61"
 
 msgid "Protocol"
 msgstr "Protocol"
@@ -9119,6 +9149,9 @@ msgstr "Verwijder"
 msgid "Remove Confirmation"
 msgstr "Verwijderen bevestiging"
 
+msgid "Remove Plugins"
+msgstr "Verwijder plugins"
+
 msgid "Remove Service"
 msgstr "Verwijder dienst"
 
@@ -9131,8 +9164,35 @@ msgstr "Verwijder een nameserver"
 msgid "Remove all alternatives"
 msgstr "Verwijder alle alternatieven"
 
+msgid "Remove all bouquet/tuning data"
+msgstr "Verwijder alle favorieten/tuner gegevens"
+
+msgid "Remove all keymap data"
+msgstr "Verwijder alle keymap data"
+
+msgid "Remove all network data"
+msgstr "Verwijder alle netwerk gegevens"
+
 msgid "Remove all new found flags"
 msgstr "Verwijder alle 'nieuw gevonden'-vlaggen"
+
+msgid "Remove all other data"
+msgstr "Verwijder alle andere gegevens"
+
+msgid "Remove all plugin setting data"
+msgstr "Verwijder alle plugininstellingen"
+
+msgid "Remove all resume point data"
+msgstr "Verwijder alle markeerpunten"
+
+msgid "Remove all settings data"
+msgstr "Verwijder alle instellingen"
+
+msgid "Remove all skin data"
+msgstr "Verwijder alle skin gegevens"
+
+msgid "Remove all timer data"
+msgstr "Verwijder alle timergegevens"
 
 msgid "Remove bookmark"
 msgstr "Verwijder bladwijzer"
@@ -9734,6 +9794,36 @@ msgstr ""
 "\n"
 "Kies 'Nee' om alleen de door u geselecteerde taal te verwijderen.\n"
 
+msgid "Select 'Yes' to remove all keymap data. Selecting this option will remove all keymap override data and restore the default keymap definitions."
+msgstr "Kies 'Ja' om alle keymap gegevens te verwijderen. Dit zal alle persoonlijke keymapinstellingen verwijderen en de standaard waardes herstellen."
+
+msgid "Select 'Yes' to remove all main settings configuration data. Selecting this option will set all Enigma2 settings back to their default values.  This will also cause Enigma2 to run the Welcome Wizard on restart."
+msgstr "Kies 'Ja' om alle instelgegevens te verwijderen. Dit zal alle persoonlijke instellingen verwijderen en de standaard waardes herstellen. Hierdoor zal de volgende herstart begonnen worden met de eerste installatie wizard."
+
+msgid "Select 'Yes' to remove all media player resume data. Selecting this option will remove the data used to allow playback of media files to resume from the position where playback was last stopped. Playback position of recordings is not affected."
+msgstr "Kies 'Ja' om alle markeerpunten te verwijderen. Dit zal de data verwijderen die werd gebruikt om het afspelen van mediabestanden te laten starten op het punt waar de weergave werd beëindigd."
+
+msgid "Select 'Yes' to remove all network data. Selecting this option will remove all network data including automounts and network connection data including connection accounts and passwords. This could cause some Enigma2 functions to fail if they are configured to use these network resources."
+msgstr "Kies 'Ja' om alle netwerkgegevens te verwijderen. Dit zal alle netwerkinstellingen, inclusief mounts en netwerkverbindingen en wachtwoorden verwijderen. Dit kan problemen veroorzaken als bepaalde Enigma2 functies netwerk afhankelijk zijn. "
+
+msgid "Select 'Yes' to remove all other files and directories not covered by the options above."
+msgstr "Kies 'Ja' om alle andere bestanden en mappen te verwijderen die niet in bovengenoemde opties staan."
+
+msgid "Select 'Yes' to remove all plugin configuration data. Selecting this option will remove all plugin configuration data that is stored in the Enigma2 configuration folder. This will cause all affected plugins to return to their default settings. This could cause some plugins to not function until configured."
+msgstr "Kies 'Ja' om alle plugingegevens te verwijderen. Dit zal alle plugininstellingen verwijderen die in de Enigma2 configuratiemap staan. Daardoor zullen de betreffende plugins weer op de standaard waardes worden ingesteld. Dat kan tot gevolg hebben dat sommige plugins niet werken totdat deze zijn geconfigureerd."
+
+msgid "Select 'Yes' to remove all settings, tuning data, timers, resume pointers etc. Selecting this option will restore the configuration to the initial settings before any configuration settings were applied. This is the most reliable form of Factory Reset."
+msgstr "Kies 'Ja' om alle instellingen, tunergegevens, markeerpunten etc. te verwijderen. Dit zal alle persoonlijke instellingen verwijderen en de standaard waardes herstellen. Dit is de meest betrouwbare vorm van het herstellen van de fabrieksinstellingen."
+
+msgid "Select 'Yes' to remove all timer configuration data. Selecting this option will clear all timers, autotimers and power timers."
+msgstr "Kies 'Ja' om alle timerinstelgegevens te verwijderen. Dit zal alle timers, autotimers en powertimers verwijderen. "
+
+msgid "Select 'Yes' to remove all tuning data. Selecting this option will remove all tuning and bouquet data and will make timers non functional until the receiver is retuned."
+msgstr "Kies 'Ja' om alle tunergegevens te verwijderen. Dit zal alle tunerinstellingen en favorieten verwijderen en de timers uitschakelen totdat er nieuwe instellingen zijn gemaakt."
+
+msgid "Select 'Yes' to remove all user customisations of skin data. Selecting this option will remove all user based skin customisations. All affected skins will return to their standard settings. This will also clear any customied boot logos and backdrops."
+msgstr "Kies 'Ja' om alle gebruikersaanpassingen van skins te verwijderen. Dit zal alle persoonlijke skinaanpassingen verwijderen en de standaard waardes van de betreffende skins herstellen. Ook zullen aangepaste bootlogo's en achtergronden worden verwijderd."
+
 msgid "Select 'Yes' when you want to configure this tuner for ATSC"
 msgstr "Kies 'Ja' als u deze tuner voor ATSC wilt configureren"
 
@@ -9785,6 +9875,12 @@ msgstr "Selecteer CAId"
 msgid "Select Fast DiSEqC if your aerial system supports this. If you are unsure select 'no'."
 msgstr "Kies 'snelle DiSEqC' als uw antennesysteem dat ondersteunt. Als u er niet zeker va bent, kiest u 'nee'."
 
+msgid "Select Folders"
+msgstr "Kies mappen"
+
+msgid "Select Satellites"
+msgstr "Kies satellieten"
+
 msgid "Select a receiver to use for fallback tuners. If the host receiver is not listed, manually enter the URL or IP address"
 msgstr "Kies een ontvanger om te gebruiken als fallback-tuner. Als de gast-ontvanger niet getoond wordt, kunt u de URL of IP-adres handmatig ingeven."
 
@@ -9834,9 +9930,6 @@ msgstr "Kies bestanden/mappen voor de back-up"
 msgid "Select first service in bouquet"
 msgstr "Selecteer eerste kanaal in boeket"
 
-msgid "Select folders"
-msgstr "Kies mappen"
-
 msgid "Select how quickly the dish should move between satellites."
 msgstr "Kies hoe snel de schotel beweegt."
 
@@ -9854,9 +9947,6 @@ msgstr "Kies hoe de informatiebalk zender EPG moet worden geactiveerd. Dit beïn
 
 msgid "Select if timeshift should continue when set to record."
 msgstr "Stel hier in of timeshift moet doorlopen als er een opname wordt gemaakt."
-
-msgid "Select input device"
-msgstr "Selecteer invoerapparaat"
 
 msgid "Select input device."
 msgstr "Selecteer invoerapparaat."
@@ -9881,9 +9971,6 @@ msgstr "Selecteer provider om toe te voegen..."
 
 msgid "Select refresh rate"
 msgstr "Selecteer herhalingsfrequentie"
-
-msgid "Select satellites"
-msgstr "Kie satellieten"
 
 msgid "Select seekbar to be activated by arrow L/R (long) or << >> (long)."
 msgstr "Hier geeft u aan of de zoekbalk wordt geactiveerd met pijl-L/R (lang) of met << - >> (lang)."
@@ -9977,6 +10064,9 @@ msgstr "Kies het type LNB/apparaat dat gebruikt wordt (meestal 'universeel'). Al
 
 msgid "Select the type of Single Cable Reception device you are using."
 msgstr "Kies het type Single Cable Reception apparaat dat u gebruikt."
+
+msgid "Select to configure remote control type"
+msgstr "Configureer type afstandsbediening"
 
 msgid "Select to restore all deleted images"
 msgstr "Kies alle verwijderde images te herstellen"
@@ -10090,6 +10180,9 @@ msgstr "Kanaal & PID"
 msgid "Service ID"
 msgstr "Kanaal-ID"
 
+msgid "Service Info: ECM Info"
+msgstr "Kanaal info: ECM Info"
+
 msgid "Service Name"
 msgstr "Kanaalnaam"
 
@@ -10107,9 +10200,6 @@ msgstr "Kanaal titel modus"
 
 msgid "Service font size"
 msgstr "Kanaalnaam lettergrootte"
-
-msgid "Service info - ECM Info"
-msgstr "Kanaal info - ECM Info"
 
 msgid "Service info font size"
 msgstr "Kanaalinfo lettergrootte"
@@ -10634,6 +10724,9 @@ msgstr "Toon kanaallijst"
 msgid "Show service list or movies"
 msgstr "Toon kanaallijst of opnames"
 
+msgid "Show service name and event description above and below each other instead of side by side."
+msgstr "Toon de kanaalnaam en programmabeschrijving boven elkaar in plaats van naast elkaar."
+
 msgid "Show service type icons"
 msgstr "Toon iconen voor servicetype"
 
@@ -10696,6 +10789,9 @@ msgstr "Toon de transponderinformatie"
 
 msgid "Show transponder remaining/elapsed as"
 msgstr "Toon de resterende/verstreken programmatijd als"
+
+msgid "Show two lines per entry"
+msgstr "Toon twee regels per ingang"
 
 msgid "Show warning when timeshift is stopped"
 msgstr "Toon waarschuwing als timeshift gestopt wordt"
@@ -11262,10 +11358,10 @@ msgstr "Stream-tv"
 msgid "Streaming"
 msgstr "Streaming"
 
-msgid "Streaming clients"
-msgstr "Stream-klanten"
+msgid "Streaming Clients Info"
+msgstr "Stream-klanten info"
 
-msgid "Streaming clients info"
+msgid "Streaming clients"
 msgstr "Stream-klanten"
 
 msgid "Strict DLNA"
@@ -12117,11 +12213,14 @@ msgstr "Tijdlijn lettergrootte"
 msgid "Timer"
 msgstr "Timer"
 
+msgid "Timer Edit"
+msgstr "Timer bewerken"
+
 msgid "Timer List"
 msgstr "Timers"
 
-msgid "Timer entry"
-msgstr "Timer invoer"
+msgid "Timer Sanity Error"
+msgstr "Timer conflict"
 
 msgid ""
 "Timer overlap in pm_timers.xml detected!\n"
@@ -12142,9 +12241,6 @@ msgstr "Timer opnamelokatie"
 
 msgid "Timer recording location"
 msgstr "Timer opnamelokatie"
-
-msgid "Timer sanity error"
-msgstr "Timer conflict"
 
 msgid "Timer selection"
 msgstr "Timer selectie"
@@ -12366,6 +12462,12 @@ msgstr "Tuner"
 msgid "Tuner :"
 msgstr "Tuner:"
 
+msgid "Tuner Settings"
+msgstr "Tunerinstellingen"
+
+msgid "Tuner Setup"
+msgstr "Tunerinstellingen"
+
 msgid "Tuner is not supported"
 msgstr "Tuner wordt niet ondersteund"
 
@@ -12379,9 +12481,6 @@ msgstr "Tuner diverse"
 
 msgid "Tuner not available."
 msgstr "Tuner is niet beschikbaar."
-
-msgid "Tuner settings"
-msgstr "Tunerinstellingen"
 
 msgid "Tuner settings values"
 msgstr "Tunerinstellingen"
@@ -12404,11 +12503,11 @@ msgid "Tuners & scanning"
 msgstr "Tuners & scannen"
 
 #
-msgid "Tuning info: live values"
-msgstr "Tuner info: terugmeldingen"
+msgid "Tuning Info: Live Values"
+msgstr "Tunerinfo: terugmeldingen"
 
-msgid "Tuning info: settings values"
-msgstr "Tuner info: tunerinstellingen"
+msgid "Tuning Info: Settings Values"
+msgstr "Tunerinfo: tunerinstellingen"
 
 msgid "Tunisia"
 msgstr "Tunisia"
@@ -12596,6 +12695,9 @@ msgstr "Bezig met update pakketten..."
 #
 msgid "Updatefeed not available."
 msgstr "Updatefeed niet beschikbaar."
+
+msgid "Updating Cache"
+msgstr "Bezig cache te updaten"
 
 msgid "Updating cache"
 msgstr "Bezig cache te updaten..."
@@ -12881,6 +12983,9 @@ msgstr "Verticale draaisnelheid"
 msgid "ViX EPG"
 msgstr "ViX EPG"
 
+msgid "Video & Audio Settings"
+msgstr "Video- en audio-instellingen"
+
 msgid "Video Chip Mode*"
 msgstr "Videomodus*"
 
@@ -13062,6 +13167,9 @@ msgstr "WPA2"
 
 msgid "WSS on 4:3"
 msgstr "WSS bij 4:3"
+
+msgid "WWIO 4K"
+msgstr "WWIO 4K"
 
 msgid "Waiting"
 msgstr "Aan het wachten"
@@ -13370,20 +13478,6 @@ msgstr "Als uw ontvanger op een kanaal is afgestemd, wordt normaal gesproken de 
 msgid "When unset, sort changes will be temporary - just for this view of a directory."
 msgstr "Indien uitgeschakeld, zullen de veranderingen tijdelijk zijn; alleen voor deze keer dat u deze map inziet."
 
-#, python-format
-msgid ""
-"When you perform a factory reset, you will lose ALL of your configuration data\n"
-"(including bouquets, services, satellite data ...)\n"
-"After completion of the factory reset, your %s %s will restart automatically!\n"
-"\n"
-"Do you really want to do a factory reset?"
-msgstr ""
-"Wanneer u terug gaat naar de fabrieksinstellingen, verliest u alle gegevens van uw configuratie.\n"
-"(inclusief favorietenlijsten, zenders, satelliet data ...)\n"
-"Na voltooiing van de fabrieksinstellingen, zal uw %s %s automatisch herstarten!\n"
-"\n"
-"Werkelijk uitvoeren?"
-
 msgid "Where do you want to backup your settings?"
 msgstr "Waar wilt u de instellingen opslaan?"
 
@@ -13461,6 +13555,9 @@ msgstr "XBox 360 support"
 
 msgid "XP1000"
 msgstr "XP1000"
+
+msgid "XP3000"
+msgstr "XP3000"
 
 msgid "YCbCr420"
 msgstr "YCbCr420"
@@ -13886,6 +13983,18 @@ msgstr "Gezapt naar timer-kanaal %s als PiP!"
 #, python-format
 msgid "Zapped to timer service %s!"
 msgstr "Gezapt naar het timerkanaal %s!"
+
+msgid "Zgemma H.S/H.2S/H.2H/H5"
+msgstr "Zgemma H.S/H.2S/H.2H/H5"
+
+msgid "Zgemma H9/I55Plus old Model"
+msgstr "Zgemma H9/I55Plus oud model"
+
+msgid "Zgemma Star S/2S/H1/H2"
+msgstr "Zgemma Star S/2S/H1/H2"
+
+msgid "Zgemma i55"
+msgstr "Zgemma i55"
 
 msgid "Zimbabwe"
 msgstr "Zimbabwe"
@@ -15648,6 +15757,9 @@ msgstr "zapte"
 #~ msgid "Create more detailed crash log"
 #~ msgstr "Crash logs met extra informatie"
 
+#~ msgid "Cron manager"
+#~ msgstr "Cron manager"
+
 #~ msgid "Currently installed image"
 #~ msgstr "Huidig geïnstalleerd image"
 
@@ -15929,6 +16041,9 @@ msgstr "zapte"
 #~ msgid "External (CF)"
 #~ msgstr "Extern (CF)"
 
+#~ msgid "F1/F3"
+#~ msgstr "F1/F3"
+
 #~ msgid "FBC SCR (Unicable or JESS)"
 #~ msgstr "FBC SCR (Unicable of JESS)"
 
@@ -15998,6 +16113,9 @@ msgstr "zapte"
 
 #~ msgid "Greek (Modern)"
 #~ msgstr "Grieks (modern)"
+
+#~ msgid "HD1100/et7x00/et8500"
+#~ msgstr "HD1100/et7x00/et8500"
 
 #~ msgid "Hard disk settings"
 #~ msgstr "Harde schijf instellingen"
@@ -16161,6 +16279,9 @@ msgstr "zapte"
 #~ msgid "Network setup"
 #~ msgstr "Netwerkinstellingen"
 
+#~ msgid "Network test: "
+#~ msgstr "Netwerktest: "
+
 #~ msgid "New PIN"
 #~ msgstr "Nieuwe pincode"
 
@@ -16246,6 +16367,9 @@ msgstr "zapte"
 #~ msgid "Open subtitle selection"
 #~ msgstr "Open ondertitel selectie"
 
+#~ msgid "OpenVpn"
+#~ msgstr "Open-VPN"
+
 #~ msgid "Options..."
 #~ msgstr "Opties..."
 
@@ -16293,6 +16417,9 @@ msgstr "zapte"
 
 #~ msgid "Power down"
 #~ msgstr "Afsluiten"
+
+#~ msgid "PowerManager entry"
+#~ msgstr "Powermanager entry"
 
 #~ msgid "PowerManager log"
 #~ msgstr "Powermanager log"
@@ -16436,6 +16563,9 @@ msgstr "zapte"
 
 #~ msgid "Select if you want to use the ViX colored buttons (set to 'no' if you want to use (Multi Quick Button)."
 #~ msgstr "Kies of u de ViX-functies aan de kleurtoetsen wilt toekennen. Kies 'nee' als un (Multi) QuickButton wilt gebruiken."
+
+#~ msgid "Select input device"
+#~ msgstr "Selecteer invoerapparaat"
 
 #~ msgid "Select locale"
 #~ msgstr "Kies taal"
@@ -16680,6 +16810,9 @@ msgstr "zapte"
 #~ msgid "Time settings"
 #~ msgstr "Tijd instellingen"
 
+#~ msgid "Timer entry"
+#~ msgstr "Timer invoer"
+
 #~ msgid "Timer log"
 #~ msgstr "Timer-log"
 
@@ -16769,9 +16902,6 @@ msgstr "zapte"
 #~ msgid "Use the cursor keys to select an installed image and then Reboot button."
 #~ msgstr "Gebruik de pijltjestoetsen om een geïnstalleerd image te kiezen en druk dan op de reboot toets."
 
-#~ msgid "Video Enhancement Settings"
-#~ msgstr "Videoverbeteringsinstellingen"
-
 #~ msgid "Video fine-tuning"
 #~ msgstr "Video fijninstellingen."
 
@@ -16807,6 +16937,19 @@ msgstr "zapte"
 
 #~ msgid "When enabled, the original line breaks will be removed from the teletext subtitles."
 #~ msgstr "Indien geactiveerd worden de regeleindes van de teletekst ondertitels verwijderd."
+
+#~ msgid ""
+#~ "When you perform a factory reset, you will lose ALL of your configuration data\n"
+#~ "(including bouquets, services, satellite data ...)\n"
+#~ "After completion of the factory reset, your %s %s will restart automatically!\n"
+#~ "\n"
+#~ "Do you really want to do a factory reset?"
+#~ msgstr ""
+#~ "Wanneer u terug gaat naar de fabrieksinstellingen, verliest u alle gegevens van uw configuratie.\n"
+#~ "(inclusief favorietenlijsten, zenders, satelliet data ...)\n"
+#~ "Na voltooiing van de fabrieksinstellingen, zal uw %s %s automatisch herstarten!\n"
+#~ "\n"
+#~ "Werkelijk uitvoeren?"
 
 #~ msgid "When you use the remote fallback tuner for recording, the timer conflict detection can't properly detect conflicts. This option allows you to turn off the timer confict detection. This setting is only for advanced users; the default is 'yes'."
 #~ msgstr "Wanneer u de 'remote fallback tuner' gebruikt voor opnames, kan de timer conflict manager niet goed functioneren. Daarom kunt u die in dat geval uitschakelen. Deze optie is alleen voor gevorderde gebruikers; de default waarde is 'Ja'."
