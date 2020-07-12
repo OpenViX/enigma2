@@ -301,9 +301,9 @@ class ConfigListScreen:
 		currConfig = self["config"].getCurrent()
 		if currConfig and currConfig[1].enabled and hasattr(currConfig[1], "description"):
 			self.session.openWithCallback(
-				self.handleKeyMenuCallback, ChoiceBox, currConfig[0],
+				self.handleKeyMenuCallback, ChoiceBox, title=currConfig[0],
 				list=zip(currConfig[1].description, currConfig[1].choices),
-				selection=currConfig[1].choices.index(currConfig[1].value),
+				selection=currConfig[1].getIndex()),
 				keys=[]
 			)
 
