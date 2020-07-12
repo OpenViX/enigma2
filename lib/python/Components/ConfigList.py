@@ -153,8 +153,6 @@ class ConfigListScreen:
 			self["key_red"] = StaticText(_("Cancel"))
 		if "key_green" not in self:
 			self["key_green"] = StaticText(_("Save"))
-		if "key_help" not in self:
-			self["key_help"] = StaticText(_("HELP"))
 		if "HelpWindow" not in self:
 			self["HelpWindow"] = Pixmap()
 			self["HelpWindow"].hide()
