@@ -5,7 +5,7 @@ msgstr ""
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
 "Last-Translator: litvcom\n"
-"Language-Team: Russian localization by litvcom\n"
+"Language-Team: \n"
 "Language: ru_RU\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -288,11 +288,11 @@ msgstr "%-m/%d/%Y"
 
 #, python-format
 msgid "%.0f GB"
-msgstr "%.0f ГБ"
+msgstr "%.0f Гб"
 
 #, python-format
 msgid "%.0f MB"
-msgstr "%.0f МБ"
+msgstr "%.0f Мб"
 
 #, python-format
 msgid "%.0f kB"
@@ -300,11 +300,11 @@ msgstr "%.0f КБ"
 
 #, python-format
 msgid "%.2f GB"
-msgstr "%.2f ГБ"
+msgstr "%.2f Гб"
 
 #, python-format
 msgid "%03d MB"
-msgstr "%03d МБ"
+msgstr "%03d Мб"
 
 #, python-format
 msgid "%2.1f sec"
@@ -814,7 +814,7 @@ msgstr "%d Б"
 
 #, python-format
 msgid "%d GB"
-msgstr "%d ГБ"
+msgstr "%d Гб"
 
 #, python-format
 msgid "%d KB"
@@ -822,7 +822,7 @@ msgstr "%d КБ"
 
 #, python-format
 msgid "%d MB"
-msgstr "%d МБ"
+msgstr "%d Мб"
 
 #. TRANSLATORS: full date representation dayname daynum monthname year in strftime() format! See 'man strftime'
 #. _("%A %e %B %Y")
@@ -959,7 +959,7 @@ msgstr "%d.%-m.%Y"
 
 #, python-format
 msgid "%d.%03d GB"
-msgstr "%d.%03d ГБ"
+msgstr "%d.%03d Гб"
 
 msgid "%d.%m"
 msgstr "%d.%m"
@@ -1057,11 +1057,11 @@ msgstr "%s больше не используется. Удалить данны
 
 #, python-format
 msgid "%s of %s GB"
-msgstr "%s of %s ГБ"
+msgstr "%s of %s Гб"
 
 #, python-format
 msgid "%s of %s MB"
-msgstr "%s of %s МБ"
+msgstr "%s of %s Мб"
 
 #, python-format
 msgid "%s updated package available"
@@ -1903,7 +1903,7 @@ msgid "Allows you to set a schedule to import the EPG and channels list. The EPG
 msgstr "Позволяет установить расписание для импорта EPG и списка каналов. EPG и список каналов всегда будут импортироваться при перезагрузке или перезагрузке графического интерфейса."
 
 msgid "Allows you to set the maximum size (MB) of the individual debug logs. When that size is reached, the log file will be truncated to the maximum size every 60 minutes."
-msgstr "Позволяет установить максимальный размер (МБ) отдельных журналов отладки. При достижении этого размера файл журнала будет обрезаться до максимального размера каждые 60 минут."
+msgstr "Позволяет установить максимальный размер (Мб) отдельных журналов отладки. При достижении этого размера файл журнала будет обрезаться до максимального размера каждые 60 минут."
 
 msgid "Allows you to setup the button to do what you choose."
 msgstr "Позволяет настроить кнопку по Вашему усмотрению."
@@ -1927,7 +1927,7 @@ msgid "Also on standby"
 msgstr "Также из режима ожидания"
 
 msgid "Alternative"
-msgstr "Альтернативы"
+msgstr "Альтернативный"
 
 msgid "Alternative 1"
 msgstr "Вариант 1"
@@ -2669,7 +2669,7 @@ msgid "Cabo Verde"
 msgstr "Кабо-Верде"
 
 msgid "Cache thumbnails"
-msgstr "Кешировать эскизы"
+msgstr "Кэшировать эскизы"
 
 msgid "Cached:"
 msgstr "Кэширование:"
@@ -3637,7 +3637,7 @@ msgid "Cover dashed flickering line for this service"
 msgstr "Скрыть служебную информацию для данного сервиса"
 
 msgid "Crash Logs"
-msgstr "Отчёт об ошибках"
+msgstr "Журнал ошибок"
 
 msgid "Create DVD-ISO"
 msgstr "Создать DVD-ISO"
@@ -4291,7 +4291,7 @@ msgid "Disabled"
 msgstr "Отключен"
 
 msgid "Disk space to reserve for recordings (in GB)"
-msgstr "Резервировать место на диске для записей (ГБ)"
+msgstr "Резервировать место на диске для записей (Гб)"
 
 msgid "Display 16:9 content as"
 msgstr "Показывать 16:9 контент как"
@@ -4408,7 +4408,7 @@ msgid ""
 "Do you want to attach a text file to explain the log ?\n"
 "(choose 'No' to type message using virtual keyboard.)"
 msgstr ""
-"Вы желаете прикрепить текстовый файл к отчёту?\n"
+"Вы желаете прикрепить текстовый файл к журналу?\n"
 "(выберите 'Нет', чтобы ввести сообщение, используя виртуальную клавиатуру)"
 
 msgid "Do you want to burn this collection to DVD medium?"
@@ -5470,7 +5470,7 @@ msgid "Full view resolution"
 msgstr "Полное разрешение экрана"
 
 msgid "GB"
-msgstr "ГБ"
+msgstr "Гб"
 
 #, python-format
 msgid "GStreamer:\t%s\n"
@@ -6601,7 +6601,7 @@ msgid "Leave DVD player?"
 msgstr "Выйти из DVD плеера?"
 
 msgid "Leave this set to 'yes' unless you fully understand why you are adjusting it."
-msgstr "Оставьте этот параметр 'Да\", если Вы не полностью понимаете, почему его меняете."
+msgstr "Оставьте этот параметр 'Да', если Вы не полностью понимаете, почему его меняете."
 
 msgid "Lebanon"
 msgstr "Ливан"
@@ -6623,10 +6623,10 @@ msgstr "Лесото"
 
 #. TRANSLATORS: (aspect ratio policy: black bars on top/bottom) in doubt, keep english term.
 msgid "Letterbox"
-msgstr "Режим ящика"
+msgstr "Letterbox"
 
 msgid "Letterbox zoom"
-msgstr "Масштаб режима ящика"
+msgstr "Масштаб Letterbox"
 
 msgid "Liberia"
 msgstr "Либерия"
@@ -6644,7 +6644,7 @@ msgid "Limit character set for recording filenames"
 msgstr "Ограничить набор символов в именах записей"
 
 msgid "Limit debug log size (MB)"
-msgstr "Ограничить журнал отладки размером (МБ)"
+msgstr "Ограничить журнал отладки размером (Мб)"
 
 msgid "Limit east"
 msgstr "Ограничение на восток"
@@ -6762,7 +6762,7 @@ msgid "Lock:"
 msgstr "Захват:"
 
 msgid "Log"
-msgstr "Отчёт"
+msgstr "Журнал"
 
 msgid "Log Manager"
 msgstr "Управление журналами"
@@ -6771,13 +6771,13 @@ msgid "Log manager"
 msgstr "Управление журналами"
 
 msgid "Log results to harddisk"
-msgstr "Записать отчёт на HDD"
+msgstr "Записать журнал на HDD"
 
 msgid "LogManager"
 msgstr "Управление журналами"
 
 msgid "Logs"
-msgstr "Отчёты"
+msgstr "Журналы"
 
 msgid "Logs folder location"
 msgstr "Расположение каталога журналов"
@@ -6828,7 +6828,7 @@ msgid "MAC:"
 msgstr "MAC-адрес:"
 
 msgid "MB"
-msgstr "МБ"
+msgstr "Мб"
 
 msgid "Macao"
 msgstr "Макао"
@@ -6946,7 +6946,7 @@ msgid "Maximum number of days"
 msgstr "Максимальное количество дней"
 
 msgid "Maximum total space used (MB)"
-msgstr "Макс. пространства диска (МБ)"
+msgstr "Макс. пространства диска (Мб)"
 
 msgid "Maybe the reason that recording is currently running. Please stop the recording before trying to configure the positioner."
 msgstr "Причина этого возможно в том, что сейчас идет запись. Остановите пожалуйста запись, перед попыткой настройки позиционера."
@@ -7336,7 +7336,7 @@ msgid "Name:"
 msgstr "Имя:"
 
 msgid "Nameserver"
-msgstr "DNS сервер"
+msgstr "DNS-сервер"
 
 msgid ""
 "Nameserver\n"
@@ -7689,7 +7689,7 @@ msgstr "Не ассоциировано"
 
 #, python-format
 msgid "Not enough disk space. Please free up some disk space and try again. (%d MB required, %d MB available)"
-msgstr "На диске нет свободного места. Пожалуйста освободите немного места и попробуйте снова. (%d МБ требуется, %d МБ свободно)"
+msgstr "На диске нет свободного места. Пожалуйста освободите немного места и попробуйте снова. (%d Мб требуется, %d Мб свободно)"
 
 #, python-format
 msgid ""
@@ -7701,8 +7701,8 @@ msgid ""
 msgstr ""
 "Недостаточно места на диске!\n"
 "\n"
-"Размер файла: %sМБ\n"
-"Свободное место: %sМБ\n"
+"Размер файла: %sМб\n"
+"Свободное место: %sМб\n"
 "Путь: %s"
 
 msgid "Not running"
@@ -8013,7 +8013,7 @@ msgstr "Палестина"
 
 #. TRANSLATORS: (aspect ratio policy: cropped content on left/right) in doubt, keep english term
 msgid "Pan&scan"
-msgstr "Панорама"
+msgstr "Pan&Scan"
 
 msgid "Panama"
 msgstr "Панама"
@@ -8152,7 +8152,7 @@ msgstr "Просмотр изображений"
 
 #. TRANSLATORS: (aspect ratio policy: black bars on left/right) in doubt, keep english term.
 msgid "Pillarbox"
-msgstr "Черные полосы слева и справа"
+msgstr "Pillarbox"
 
 msgid "Pilot"
 msgstr "Пилот"
@@ -8252,7 +8252,7 @@ msgid ""
 "Please configure your internet connection by filling out the required values.\n"
 "When you are ready press OK to continue."
 msgstr ""
-"Пожалуйста, настройте интернет соединение заполнив нужные данные\n"
+"Пожалуйста, настройте интернет-соединение заполнив нужные данные\n"
 "Когда будете готовы - нажмите ОК для продолжения."
 
 msgid "Please connect your receiver to the internet"
@@ -9139,7 +9139,7 @@ msgid "Remove Confirmation"
 msgstr "Удаление с подтверждением"
 
 msgid "Remove Plugins"
-msgstr "Удалить плагин"
+msgstr "Удаление плагинов"
 
 msgid "Remove Service"
 msgstr "Удалить канал"
@@ -10485,7 +10485,7 @@ msgid "Show Grid EPG"
 msgstr "Показать таблицу EPG"
 
 msgid "Show Log"
-msgstr "Показать отчёт"
+msgstr "Показать журнал"
 
 msgid "Show Log Manager in extensions list ?"
 msgstr "Показывать управление журналами в меню дополнений"
@@ -11579,6 +11579,10 @@ msgstr "TEXT"
 #. TRANSLATORS: Add here whatever should be shown in the "translator" about screen, up to 6 lines (use \n for newline)
 msgid "TRANSLATOR_INFO"
 msgstr ""
+"Перевод OpenViX 5.3 enigma2\n"
+"@litvcom\n"
+"Июль 2020\n"
+"Поддержка: world-of-satellite.com"
 
 msgid "TS file is too large for ISO9660 level 1!"
 msgstr "TS файл слишком большой для ISO9660 уровень 1!"
@@ -12417,7 +12421,7 @@ msgid "True"
 msgstr "Да"
 
 msgid "Try to find used transponders in cable network.. please wait..."
-msgstr "Пытаемся найти транспондеры, используемые в кабельной сети .. Пожалуйста, подождите ..."
+msgstr "Поиск транспондеров, используемые в кабельной сети. Пожалуйста, подождите..."
 
 msgid "Try to find used transponders in terrestrial network... please wait..."
 msgstr "Поиск транспондеров, используемые в наземной сети. Пожалуйста, подождите..."
@@ -12958,7 +12962,7 @@ msgid "Vertical turning speed"
 msgstr "Скорость вертикального поворота"
 
 msgid "ViX EPG"
-msgstr "Телегид ViX "
+msgstr "Телегид ViX"
 
 msgid "Video & Audio Settings"
 msgstr "Аудио и Видео"
@@ -13775,7 +13779,7 @@ msgid ""
 msgstr ""
 "Ваш %s %s готов к работе\n"
 "\n"
-"Интернет соединение уже работает\n"
+"Интернет-соединение уже работает\n"
 "\n"
 
 #, python-format
@@ -13799,7 +13803,7 @@ msgstr "Ваш %s %s выключается. Пожалуйста, подожд�
 
 #, python-format
 msgid "Your %s %s might be unusable now. Please consult the manual for further assistance before rebooting your %s %s."
-msgstr "Ваш %s %s может стать непригодным к использованию. Пожалуйста, почитайте руководство по использованию, прежде чем перезагрузить %s %s"
+msgstr "Ваш %s %s может стать непригодным к использованию. Пожалуйста, почитайте руководство по эксплуатации, прежде чем перезагрузить %s %s"
 
 #, python-format
 msgid ""
@@ -13876,12 +13880,12 @@ msgid ""
 "Your internet connection is not working!\n"
 "Please choose what you want to do next."
 msgstr ""
-"Ваше интернет соединение не работает.\n"
+"Ваше интернет-соединение не работает.\n"
 "Выберите, что будете делать дальше."
 
 #, python-format
 msgid "Your internet connection is working (ip: %s)"
-msgstr "Ваше интернет соединение работает (ip: %s)"
+msgstr "Ваше интернет-соединение работает (ip: %s)"
 
 msgid ""
 "Your internet connection is working now.\n"
@@ -13902,10 +13906,10 @@ msgid "Your network is restarting, Please wait..."
 msgstr "Ваша сеть перезапускается, Пожалуйста, подождите..."
 
 msgid "Your receiver can use SCPC optimized search range. Consult your receiver's manual for more information."
-msgstr "Ваш ресивер может использовать оптимизированный диапазон поиска SCPC. Для получения дополнительной информации обратитесь к руководству ресивера."
+msgstr "Ваш ресивер может использовать оптимизированный диапазон поиска SCPC. Для получения дополнительной информации см. руководство ресивера."
 
 msgid "Your receiver can use tone amplitude. Consult your receiver's manual for more information."
-msgstr "Ваш ресивер может использовать тональную амплитуду. Для получения дополнительной информации обратитесь к руководству ресивера."
+msgstr "Ваш ресивер может использовать тональную амплитуду. Для получения дополнительной информации см. руководство ресивера."
 
 msgid "Your receiver does not have an internet connection"
 msgstr "Ваш ресивер не имеет подключения к Интернету"
