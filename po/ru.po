@@ -11427,7 +11427,7 @@ msgid "Sun"
 msgstr "Вс"
 
 msgid "Sunday"
-msgstr "Воскресение"
+msgstr "Воскресенье"
 
 msgid "Support at"
 msgstr "Поддержка"
