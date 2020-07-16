@@ -128,7 +128,6 @@ class VIXBackupManager(Screen):
 
 	def __init__(self, session):
 		Screen.__init__(self, session)
-		screentitle =  _("Backup manager")
 		self.setTitle(_("Backup manager"))
 
 		self['lab1'] = Label()
