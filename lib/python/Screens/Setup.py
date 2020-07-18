@@ -64,8 +64,6 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 	def changedEntry(self):
 		if isinstance(self["config"].getCurrent()[1], (ConfigBoolean, ConfigSelection)):
 			self.createSetup()
-		if self["config"]:
-			self.setFootnote(None)
 
 	def createSetup(self):
 		oldList = self.list
