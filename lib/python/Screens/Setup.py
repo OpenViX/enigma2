@@ -38,7 +38,6 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 		if setup:
 			self.skinName.append("Setup_%s" % setup)
 		self.skinName.append("Setup")
-		self.footnote = ""
 		self.list = []
 		ConfigListScreen.__init__(self, self.list, session=session, on_change=self.changedEntry)
 		self["footnote"] = Label()
@@ -66,7 +65,7 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 		if isinstance(self["config"].getCurrent()[1], (ConfigBoolean, ConfigSelection)):
 			self.createSetup()
 		if self["config"]:
-			self.updateFootnote()
+			self.setFootnote(None)
 
 	def createSetup(self):
 		oldList = self.list
@@ -148,22 +147,22 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 
 	def selectionChanged(self):
 		if self["config"]:
-			self.updateFootnote()
+			self.setFootnote(None)
 			self["description"].text = self.getCurrentDescription()
 		else:
 			self["description"].text = _("There are no items currently available for this menu.")
 
-	def updateFootnote(self):
-		if self.footnote:
-			self["footnote"].text = _(self.footnote)
-			self["footnote"].show()
-		else:
+	def setFootnote(self, footnote):
+		if footnote is None:
 			if self.getCurrentEntry().endswith("*"):
 				self["footnote"].text = _("* = Restart Required")
 				self["footnote"].show()
 			else:
 				self["footnote"].text = ""
 				self["footnote"].hide()
+		else:
+			self["footnote"].text = footnote
+			self["footnote"].show()
 
 	def moveToItem(self, item):
 		if item != self["config"].getCurrent():
