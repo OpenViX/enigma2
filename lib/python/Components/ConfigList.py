@@ -9,6 +9,7 @@ from Components.Sources.Boolean import Boolean
 from Components.Sources.StaticText import StaticText
 from Screens.ChoiceBox import ChoiceBox
 from Screens.MessageBox import MessageBox
+from Screens.Standby import QUIT_RESTART, TryQuitMainloop
 from Screens.VirtualKeyBoard import VirtualKeyBoard
 
 
@@ -49,8 +50,7 @@ class ConfigList(GUIComponent, object):
 				self.timer.start(1000, 1)
 
 	def toggle(self):
-		selection = self.getCurrent()
-		selection[1].toggle()
+		self.getCurrent()[1].toggle()
 		self.invalidateCurrent()
 
 	def getCurrent(self):
@@ -107,7 +107,6 @@ class ConfigList(GUIComponent, object):
 		instance.setContent(None)
 
 	def setList(self, l):
-		# self.timer.stop()
 		self.__list = l
 		self.l.setList(self.__list)
 		if l is not None:
@@ -200,7 +199,8 @@ class ConfigListScreen:
 		}, prio=-2, description=_("Common Setup Functions"))
 		self["VirtualKB"].setEnabled(False)
 		self["config"] = ConfigList(list, session=session)
-		self.cancelMsg = _("Really close without saving settings?")
+		self.setCancelMessage(None)
+		self.setRestartMessage(None)
 		self.onChangedEntry = []
 		if self.handleInputHelpers not in self["config"].onSelectionChanged:
 			self["config"].onSelectionChanged.append(self.handleInputHelpers)
@@ -209,12 +209,18 @@ class ConfigListScreen:
 		if self.hideHelpWindow not in self.onExecEnd:
 			self.onExecEnd.append(self.hideHelpWindow)
 
-	# This should not be required if ConfigList is invoked via Setup (as it should).
-	#
-	def createSummary(self):
-		# self.setup_title = self.getTitle()
+	def createSummary(self):  # This should not be required if ConfigList is invoked via Setup (as it should).
 		from Screens.Setup import SetupSummary
 		return SetupSummary
+
+	def setCancelMessage(self, msg):
+		self.cancelMsg = _("Really close without saving settings?") if msg is None else msg
+
+	def setRestartMessage(self, msg):
+		self.restartMsg = _("Restart GUI now?") if msg is None else msg
+
+	def getCurrentItem(self):
+		return self["config"].getCurrent() and self["config"].getCurrent()[1] or None
 
 	def getCurrentEntry(self):
 		return self["config"].getCurrent() and self["config"].getCurrent()[0] or ""
@@ -224,12 +230,6 @@ class ConfigListScreen:
 
 	def getCurrentDescription(self):
 		return self["config"].getCurrent() and len(self["config"].getCurrent()) > 2 and self["config"].getCurrent()[2] or ""
-
-	def getCurrentItem(self):
-		return self["config"].getCurrent() and self["config"].getCurrent()[1] or None
-
-	def getCurrentSetting(self):
-		return self["config"].getCurrent() and str(self["config"].getCurrent()[1].value) or ""
 
 	def changedEntry(self):
 		for x in self.onChangedEntry:
@@ -275,21 +275,18 @@ class ConfigListScreen:
 					currConf.help_window.hide()
 
 	def keyText(self):
-		self.session.openWithCallback(self.VirtualKeyBoardCallback, VirtualKeyBoard, title=self["config"].getCurrent()[0], text=str(self["config"].getCurrent()[1].value))
+		self.session.openWithCallback(self.VirtualKeyBoardCallback, VirtualKeyBoard, title=self.getCurrentEntry(), text=str(self.getCurrentValue()))
 
 	def VirtualKeyBoardCallback(self, callback=None):
 		if callback is not None:
-			currConfig = self["config"].getCurrent()
-			prev = str(currConfig[1].value)
-			currConfig[1].setValue(callback)
-			self["config"].invalidate(currConfig)
+			prev = str(self.getCurrentValue())
+			self["config"].getCurrent()[1].setValue(callback)
+			self["config"].invalidateCurrent()
 			if callback != prev:
-				# self["config"].changed()
 				self.entryChanged()
 
 	def keySelect(self):
-		currConfig = self["config"].getCurrent()
-		if isinstance(currConfig[1], ConfigSelection):
+		if isinstance(self.getCurrentItem(), ConfigSelection):
 			self.keyMenu()
 		else:
 			self["config"].handleKey(KEYA_SELECT)
@@ -380,9 +377,18 @@ class ConfigListScreen:
 		self.close()
 
 	def saveAll(self):
+		restart = False
 		for x in self["config"].list:
+			if x[0].endswith("*") and x[1].isChanged():
+				restart = True
 			x[1].save()
 		configfile.save()
+		if restart:
+			self.session.openWithCallback(self.restartConfirm, MessageBox, self.restartMsg, default=True, type=MessageBox.TYPE_YESNO)
+
+	def restartConfirm(self, result):
+		if result:
+			self.session.open(TryQuitMainloop, retvalue=QUIT_RESTART)
 
 	def keyCancel(self):
 		self.closeConfigList(False)
@@ -393,7 +399,7 @@ class ConfigListScreen:
 	def closeConfigList(self, recursiveClose=False):
 		if self["config"].isChanged():
 			self.recursiveClose = recursiveClose
-			self.session.openWithCallback(self.cancelConfirm, MessageBox, self.cancelMsg, default=False)
+			self.session.openWithCallback(self.cancelConfirm, MessageBox, self.cancelMsg, default=False, type=MessageBox.TYPE_YESNO)
 		else:
 			self.close(recursiveClose)
 
@@ -403,3 +409,6 @@ class ConfigListScreen:
 		for x in self["config"].list:
 			x[1].cancel()
 		self.close(self.recursiveClose)
+
+	def run(self):  # Allow ConfigList based screens to be processed from the Wizard.
+		self.keySave()
