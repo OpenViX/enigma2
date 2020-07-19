@@ -162,15 +162,15 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 			self["footnote"].text = footnote
 			self["footnote"].show()
 
+	def getFootnote(self):
+		return self["footnote"].text
+
 	def moveToItem(self, item):
 		if item != self["config"].getCurrent():
 			self["config"].setCurrentIndex(self.getIndexFromItem(item))
 
 	def getIndexFromItem(self, item):
 		return self["config"].list.index(item) if item in self["config"].list else 0
-
-	def run(self):
-		self.keySave()
 
 
 class SetupSummary(Screen):
