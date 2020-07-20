@@ -380,15 +380,15 @@ class VIXStartCam(Screen):
 			output.write(now.strftime("%Y-%m-%d %H:%M") + ": Starting " + startselectedcam + "\n")
 			output.close()
 			if startselectedcam.lower().startswith('hypercam'):
-				self.Console.ePopen('ulimit -s 512;/usr/softcams/' + startselectedcam + ' -c /etc/hypercam.cfg')
+				self.Console.ePopen('ulimit -s 1024;/usr/softcams/' + startselectedcam + ' -c /etc/hypercam.cfg')
 			elif startselectedcam.lower().startswith('oscam'):
-				self.Console.ePopen('ulimit -s 512;/usr/softcams/' + startselectedcam + ' -b')
+				self.Console.ePopen('ulimit -s 1024;/usr/softcams/' + startselectedcam + ' -b')
 			elif startselectedcam.lower().startswith('gbox'):
-				self.Console.ePopen('ulimit -s 512;/usr/softcams/' + startselectedcam)
+				self.Console.ePopen('ulimit -s 1024;/usr/softcams/' + startselectedcam)
 				sleep(3)
 				self.Console.ePopen('start-stop-daemon --start --quiet --background --exec /usr/bin/gbox')
 			else:
-				self.Console.ePopen('ulimit -s 512;/usr/softcams/' + startselectedcam)
+				self.Console.ePopen('ulimit -s 1024;/usr/softcams/' + startselectedcam)
 		self.activityTimer.start(1)
 
 	def updatepix(self):
@@ -762,7 +762,7 @@ class SoftcamAutoPoller:
 								now = datetime.now()
 								output.write(now.strftime("%Y-%m-%d %H:%M") + ": AutoStarting: " + softcamcheck + "\n")
 								output.close()
-								self.Console.ePopen('ulimit -s 512;/usr/softcams/' + softcamcheck + ' -b')
+								self.Console.ePopen('ulimit -s 1024;/usr/softcams/' + softcamcheck + ' -b')
 								sleep(10)
 
 						elif softcamcheck.lower().startswith('cccam'):
@@ -808,7 +808,7 @@ class SoftcamAutoPoller:
 									self.Console.ePopen("killall -9 " + softcamcheck)
 									sleep(1)
 									print '[SoftcamManager] Starting ' + softcamcheck
-									self.Console.ePopen('ulimit -s 512;/usr/softcams/' + softcamcheck)
+									self.Console.ePopen('ulimit -s 1024;/usr/softcams/' + softcamcheck)
 							elif allow.lower().find('no') != -1:
 								print '[SoftcamManager] Telnet info not allowed, can not check if frozen'
 								output = open('/tmp/cam.check.log', 'a')
@@ -845,15 +845,15 @@ class SoftcamAutoPoller:
 									self.Console.ePopen("killall -9 /usr/softcams/" + str(cccamcheck_process))
 								except:
 									pass
-							self.Console.ePopen('ulimit -s 512;/usr/softcams/' + softcamcheck + " -b")
+							self.Console.ePopen('ulimit -s 1024;/usr/softcams/' + softcamcheck + " -b")
 							sleep(10)
 							remove('/tmp/softcamRuningCheck.tmp')
 						elif softcamcheck.lower().startswith('sbox'):
-							self.Console.ePopen('ulimit -s 512;/usr/softcams/' + softcamcheck)
+							self.Console.ePopen('ulimit -s 1024;/usr/softcams/' + softcamcheck)
 							sleep(7)
 						elif softcamcheck.lower().startswith('gbox'):
-							self.Console.ePopen('ulimit -s 512;/usr/softcams/' + softcamcheck)
+							self.Console.ePopen('ulimit -s 1024;/usr/softcams/' + softcamcheck)
 							sleep(3)
 							self.Console.ePopen('start-stop-daemon --start --quiet --background --exec /usr/bin/gbox')
 						else:
-							self.Console.ePopen('ulimit -s 512;/usr/softcams/' + softcamcheck)
+							self.Console.ePopen('ulimit -s 1024;/usr/softcams/' + softcamcheck)
