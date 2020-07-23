@@ -27,7 +27,7 @@ E2Branches = {
 
 project = 0
 projects = [
-	("https://api.github.com/repos/oe-alliance/oe-alliance-core/commits?sha=4.3", "OE-A Core"),
+	("https://api.github.com/repos/oe-alliance/oe-alliance-core/commits?sha=4.4", "OE-A Core"),
 	("https://api.github.com/repos/OpenViX/enigma2/commits?sha=%s" % getattr(E2Branches, getImageType(), "Dev"), "Enigma2"),
 	("https://api.github.com/repos/OpenViX/vix-core/commits", "ViX Core"),
 	("https://api.github.com/repos/OpenViX/skins/commits", "ViX Skins"),
