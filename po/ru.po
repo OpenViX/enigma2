@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: OpenViX 5.3 enigma2 Russian translation\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: \n"
+"POT-Creation-Date: 2020-07-21 07:33+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: litvcom\n"
 "Language-Team: \n"
@@ -1151,6 +1151,14 @@ msgstr "* Доступно только если активно более од�
 msgid "* current animation"
 msgstr "* Текущая анимация"
 
+#, python-format
+msgid "** Setup error: '%s' section not found! **"
+msgstr ""
+
+#, python-format
+msgid "** Setup error: '%s' title is missing or blank!"
+msgstr ""
+
 msgid "-NO SERVICE\n"
 msgstr "-НЕТ СЕРВИСА\n"
 
@@ -1366,7 +1374,8 @@ msgstr "<Текущий>"
 msgid "<Default movie location>"
 msgstr "<Расположение записей по умолчанию>"
 
-msgid "<Default + Picon>"
+#, fuzzy
+msgid "<Default+Picon>"
 msgstr "<По умолчанию+Пикон>"
 
 msgid "<Default>"
@@ -1537,6 +1546,10 @@ msgid ""
 msgstr ""
 "Запись по таймеру прерван!\n"
 "Отключить ТВ и попробовать вновь?\n"
+
+#, fuzzy
+msgid "A/V settings"
+msgstr "Настройки телегида"
 
 msgid "AAC downmix"
 msgstr "AAC микширование"
@@ -2148,9 +2161,6 @@ msgstr "Данный таймер уже установлен ранее!\n"
 msgid "Audio"
 msgstr "Аудио"
 
-msgid "Audio & Video Setting"
-msgstr "Аудио и Видео"
-
 msgid "Audio & video"
 msgstr "Аудио и Видео"
 
@@ -2701,6 +2711,14 @@ msgstr "Канада"
 msgid "Cancel"
 msgstr "Отменить"
 
+#, fuzzy
+msgid "Cancel any changed settings and exit"
+msgstr "Отменить изменения и выйти"
+
+#, fuzzy
+msgid "Cancel any changed settings and exit all menus"
+msgstr "Отменить выбор и выйти из всех меню"
+
 msgid "Cancel any changes to the currently active skin"
 msgstr "Отмените изменения в текущем активном скине"
 
@@ -2827,11 +2845,11 @@ msgstr "Канал"
 msgid "Channel EPG"
 msgstr "Телегид"
 
-msgid "Channel List Context Menu"
-msgstr "Меню списка каналов"
-
 msgid "Channel List"
 msgstr "Список каналов"
+
+msgid "Channel List Context Menu"
+msgstr "Меню списка каналов"
 
 msgid "Channel down"
 msgstr "Канал '-'"
@@ -3152,6 +3170,10 @@ msgstr "Тип команды"
 msgid "Common Interface"
 msgstr "Модуль доступа"
 
+#, fuzzy
+msgid "Common Setup Functions"
+msgstr "Параметры"
+
 msgid "Common interface"
 msgstr "Модуль доступа"
 
@@ -3267,9 +3289,6 @@ msgstr "Настройка DNS"
 
 msgid "Configure on which devices the background delete option should be used."
 msgstr "Укажите, на каких устройствах следует использовать опцию фонового удаления."
-
-msgid "Configure remote control type"
-msgstr "Укажите тип пульта управления"
 
 msgid "Configure the DiSEqC mode for this LNB."
 msgstr "Укажите правильный DiSEqC режим для этого LNB."
@@ -3673,9 +3692,6 @@ msgstr "Хорватский"
 msgid "Cron Manager"
 msgstr "Планировщик"
 
-msgid "Cron manager"
-msgstr "Планировщик"
-
 msgid "Cron timers"
 msgstr "Планировщик"
 
@@ -3736,9 +3752,6 @@ msgstr "Время пропуска для кнопок '4'/'6'"
 
 msgid "Custom skip time for '7'/'9' buttons"
 msgstr "Время пропуска для кнопок '7'/'9'"
-
-msgid "Customize"
-msgstr "Опции"
 
 msgid "Customize settings"
 msgstr "Настройки параметров"
@@ -4148,8 +4161,16 @@ msgstr "Удалить запись из списка воспроизведен
 msgid "Delete saved playlist"
 msgstr "Удалить сохраненный список воспроизведения"
 
+#, fuzzy
+msgid "Delete the character to the left of cursor"
+msgstr "Удалить символ слева от курсора"
+
 msgid "Delete the character to the left of text cursor"
 msgstr "Удалить символ слева от курсора"
+
+#, fuzzy
+msgid "Delete the character under the cursor"
+msgstr "Удалить символ под курсором"
 
 msgid "Delete the character under the text cursor"
 msgstr "Удалить символ под курсором"
@@ -4311,8 +4332,14 @@ msgstr "Дисплей и пользовательский интерфейс"
 msgid "Display message before playing next movie"
 msgstr "Сообщение перед воспр. следующей записи"
 
+msgid "Display selection list as a selection menu"
+msgstr ""
+
 msgid "Display the EIT now/next eventdata in infobar."
 msgstr "Позволяет показывать EIT-данные (сейчас/следующее) о событиях в информационной панели."
+
+msgid "Display the virtual keyboard for data entry"
+msgstr ""
 
 msgid "Djibouti"
 msgstr "Джибути"
@@ -4865,6 +4892,10 @@ msgid "Enter main menu..."
 msgstr "Войти в главное меню"
 
 msgid "Enter persistent PIN code"
+msgstr "Введите PIN-код"
+
+#, fuzzy
+msgid "Enter pin code"
 msgstr "Введите PIN-код"
 
 msgid "Enter the FTP password of the host receiver (normally just leave empty)."
@@ -6438,6 +6469,12 @@ msgstr "Перейти на текущее время"
 msgid "Jump to end of list"
 msgstr "Перейти на конец списка"
 
+msgid "Jump to first item in list or the start of text"
+msgstr ""
+
+msgid "Jump to last item in list or the end of text"
+msgstr ""
+
 msgid "Jump to prime time"
 msgstr "Перейти в начальное время"
 
@@ -6830,6 +6867,9 @@ msgstr "MAC-адрес:"
 msgid "MB"
 msgstr "Мб"
 
+msgid "MENU"
+msgstr ""
+
 msgid "Macao"
 msgstr "Макао"
 
@@ -7027,9 +7067,6 @@ msgstr "Минуты Секунды"
 msgid "Mipsel"
 msgstr "Mipsel"
 
-msgid "Miscellaneous"
-msgstr "Разное"
-
 msgid "Missing "
 msgstr "Минуты "
 
@@ -7136,6 +7173,10 @@ msgstr "Перейти к нижней строке"
 msgid "Move down a page"
 msgstr "Переместить вниз страницы"
 
+#, fuzzy
+msgid "Move down a screen"
+msgstr "Перейти к нижней строке"
+
 msgid "Move down to last entry"
 msgstr "Переместить вниз к последней записи"
 
@@ -7169,8 +7210,16 @@ msgstr "Переместить текстовый курсор в начало"
 msgid "Move the text cursor to the last character"
 msgstr "Переместить текстовый курсор в конец"
 
+#, fuzzy
+msgid "Move to first line"
+msgstr "Переместить вверх к первой записи"
+
 msgid "Move to home of list"
 msgstr "Переместиться на домашнюю страницу"
+
+#, fuzzy
+msgid "Move to last line"
+msgstr "Перейти к нижней строке"
 
 msgid "Move to position X"
 msgstr "Перемещение к позиции X"
@@ -7192,6 +7241,10 @@ msgstr "Перейти к верхней строке"
 
 msgid "Move up a page"
 msgstr "Переместиться вверх страници"
+
+#, fuzzy
+msgid "Move up a screen"
+msgstr "Перейти к верхней строке"
 
 msgid "Move up to first entry"
 msgstr "Переместить вверх к первой записи"
@@ -9579,6 +9632,10 @@ msgstr "Сохранить/Ввести текст и выйти"
 msgid "Save EPG"
 msgstr "Сохранить EPG"
 
+#, fuzzy
+msgid "Save all changed settings and exit"
+msgstr "Сохранить/Ввести текст и выйти"
+
 msgid "Save and activate the currently selected skin"
 msgstr "Сохранить и активировать выбранный скин"
 
@@ -10007,6 +10064,13 @@ msgstr "Выберите модель устройства SCR. Если мод�
 msgid "Select the movie path"
 msgstr "Выбрать папку для видеозаписей"
 
+#, fuzzy
+msgid "Select the next item in list or move cursor right"
+msgstr "Выберите часовой пояс в пределах области или региона."
+
+msgid "Select the previous item in list or move cursor left"
+msgstr ""
+
 msgid "Select the protocol used by your SCR device. Choices are 'SCR Unicable' (Unicable), or 'SCR JESS' (JESS, also known as Unicable II)."
 msgstr "Выберите протокол, используемый Вашим устройством SCR."
 
@@ -10093,6 +10157,10 @@ msgstr "Выберите свой регион. Если недоступно, �
 
 msgid "Select your time zone area or region."
 msgstr "Выберите часовой пояс или регион."
+
+#, fuzzy
+msgid "Select, toggle, process or edit the current entry"
+msgstr "Поиск телегида для текущей передачи."
 
 msgid "Selecting satellites 1 (USALS)"
 msgstr "Выбор спутников 1 (USALS)"
@@ -11882,6 +11950,10 @@ msgstr "Как минимум %s обновлений доступно"
 msgid "There are currently no outstanding actions."
 msgstr "В данное время нет невыполненных действий."
 
+#, fuzzy
+msgid "There are no items currently available for this menu."
+msgstr "Нет доступных обновлений."
+
 msgid "There are no saved playlists to delete!"
 msgstr "Нет сохраненных плейлистов для удаления!"
 
@@ -13457,20 +13529,6 @@ msgstr "При отрицательном значении, система бу�
 
 msgid "When unset, sort changes will be temporary - just for this view of a directory."
 msgstr "Если не задано, изменения сортировки будут временными - только для этого каталога."
-
-#, python-format
-msgid ""
-"When you perform a factory reset, you will lose ALL of your configuration data\n"
-"(including bouquets, services, satellite data ...)\n"
-"After completion of the factory reset, your %s %s will restart automatically!\n"
-"\n"
-"Do you really want to do a factory reset?"
-msgstr ""
-"При сбросе на заводские установки будут удалены все конфигурационные данные\n"
-"(Включая пакеты, каналы, данные спутников)\n"
-"После завершения сброса, Ваш %s %s будет автоматически перезагружен!\n"
-"\n"
-"Действительно выполнить сброс на заводские установки?"
 
 msgid "Where do you want to backup your settings?"
 msgstr "Где вы хотите сохранить установки?"
@@ -15297,3 +15355,31 @@ msgstr "Переключить и записать"
 
 msgid "zapped"
 msgstr "Переключено"
+
+#~ msgid "Audio & Video Setting"
+#~ msgstr "Аудио и Видео"
+
+#~ msgid "Configure remote control type"
+#~ msgstr "Укажите тип пульта управления"
+
+#~ msgid "Cron manager"
+#~ msgstr "Планировщик"
+
+#~ msgid "Customize"
+#~ msgstr "Опции"
+
+#~ msgid "Miscellaneous"
+#~ msgstr "Разное"
+
+#~ msgid ""
+#~ "When you perform a factory reset, you will lose ALL of your configuration data\n"
+#~ "(including bouquets, services, satellite data ...)\n"
+#~ "After completion of the factory reset, your %s %s will restart automatically!\n"
+#~ "\n"
+#~ "Do you really want to do a factory reset?"
+#~ msgstr ""
+#~ "При сбросе на заводские установки будут удалены все конфигурационные данные\n"
+#~ "(Включая пакеты, каналы, данные спутников)\n"
+#~ "После завершения сброса, Ваш %s %s будет автоматически перезагружен!\n"
+#~ "\n"
+#~ "Действительно выполнить сброс на заводские установки?"

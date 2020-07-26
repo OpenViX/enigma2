@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-09 18:53+0000\n"
+"POT-Creation-Date: 2020-07-21 07:33+0000\n"
 "PO-Revision-Date: 2020-07-10 14:40+0200\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
@@ -1143,6 +1143,14 @@ msgstr "* Alleen beschikbaar indien meer dan één interface actief is."
 msgid "* current animation"
 msgstr "* huidige animatie"
 
+#, python-format
+msgid "** Setup error: '%s' section not found! **"
+msgstr ""
+
+#, python-format
+msgid "** Setup error: '%s' title is missing or blank!"
+msgstr ""
+
 msgid "-NO SERVICE\n"
 msgstr "-GEEN SERVICE\n"
 
@@ -1529,6 +1537,10 @@ msgid ""
 msgstr ""
 "Timer opname mislukt!\n"
 "Verander van zender en probeer het opnieuw.\n"
+
+#, fuzzy
+msgid "A/V settings"
+msgstr "AV instellingen"
 
 msgid "AAC downmix"
 msgstr "AAC downmix"
@@ -2692,6 +2704,14 @@ msgstr "Canada"
 msgid "Cancel"
 msgstr "Annuleer"
 
+#, fuzzy
+msgid "Cancel any changed settings and exit"
+msgstr "Annuleer tekst en sluit af"
+
+#, fuzzy
+msgid "Cancel any changed settings and exit all menus"
+msgstr "Annuleer image keuze en verlaat alle menu's"
+
 msgid "Cancel any changes to the currently active skin"
 msgstr "Annuleer aanpassingen aan de actieve skin"
 
@@ -3142,6 +3162,10 @@ msgstr "Type opdracht"
 
 msgid "Common Interface"
 msgstr "Common interface"
+
+#, fuzzy
+msgid "Common Setup Functions"
+msgstr "Algemene instellingen"
 
 msgid "Common interface"
 msgstr "Common interface"
@@ -3722,9 +3746,6 @@ msgstr "Aangepaste springtijd voor de '4'/'6'-toetsen"
 msgid "Custom skip time for '7'/'9' buttons"
 msgstr "Aangepaste springtijd voor de '7'/'9'-toetsen"
 
-msgid "Customize"
-msgstr "Aanpassen"
-
 msgid "Customize settings"
 msgstr "Instellingen aanpassen"
 
@@ -4135,8 +4156,16 @@ msgstr "Wis item in de afspeellijst"
 msgid "Delete saved playlist"
 msgstr "Opgeslagen afspeellijst verwijderen"
 
+#, fuzzy
+msgid "Delete the character to the left of cursor"
+msgstr "Verwijder karakter links van de cursor"
+
 msgid "Delete the character to the left of text cursor"
 msgstr "Verwijder karakter links van de cursor"
+
+#, fuzzy
+msgid "Delete the character under the cursor"
+msgstr "Verwijder karakter onder de cursor"
 
 msgid "Delete the character under the text cursor"
 msgstr "Verwijder karakter onder de cursor"
@@ -4298,8 +4327,14 @@ msgstr "Scherm- en gebruikersinterface"
 msgid "Display message before playing next movie"
 msgstr "Toon een bericht alvorens de volgende film te spelen"
 
+msgid "Display selection list as a selection menu"
+msgstr ""
+
 msgid "Display the EIT now/next eventdata in infobar."
 msgstr "Toon EIT nu/straks programmagegevens in de infobar."
+
+msgid "Display the virtual keyboard for data entry"
+msgstr ""
 
 msgid "Djibouti"
 msgstr "Djibouti"
@@ -6438,6 +6473,12 @@ msgstr "Spring naar actuele tijd"
 msgid "Jump to end of list"
 msgstr "Ga naar einde van de lijst"
 
+msgid "Jump to first item in list or the start of text"
+msgstr ""
+
+msgid "Jump to last item in list or the end of text"
+msgstr ""
+
 msgid "Jump to prime time"
 msgstr "Spring naar prime time"
 
@@ -6834,6 +6875,9 @@ msgstr "MAC:"
 msgid "MB"
 msgstr "MB"
 
+msgid "MENU"
+msgstr ""
+
 msgid "Macao"
 msgstr "Macao"
 
@@ -7031,9 +7075,6 @@ msgstr "Minuten seconden"
 msgid "Mipsel"
 msgstr "Mipsel"
 
-msgid "Miscellaneous"
-msgstr "Diverse"
-
 msgid "Missing "
 msgstr "Ontbrekend "
 
@@ -7140,6 +7181,10 @@ msgstr "Ga een regel naar beneden"
 msgid "Move down a page"
 msgstr "Ga een pagina naar beneden"
 
+#, fuzzy
+msgid "Move down a screen"
+msgstr "Ga een regel naar beneden"
+
 msgid "Move down to last entry"
 msgstr "Verplaats omlaag naar laaste ingave"
 
@@ -7173,8 +7218,16 @@ msgstr "Verplaats de cursor naar het eerste karakter"
 msgid "Move the text cursor to the last character"
 msgstr "Verplaats de cursor naar het laatste karakter"
 
+#, fuzzy
+msgid "Move to first line"
+msgstr "Verplaats omhoog naar eerste ingave"
+
 msgid "Move to home of list"
 msgstr "Ga naar begin van de lijst"
+
+#, fuzzy
+msgid "Move to last line"
+msgstr "Ga een regel naar beneden"
 
 msgid "Move to position X"
 msgstr "Naar positie X draaien"
@@ -7196,6 +7249,10 @@ msgstr "Ga een regel omhoog"
 
 msgid "Move up a page"
 msgstr "Ga een pagina omhoog"
+
+#, fuzzy
+msgid "Move up a screen"
+msgstr "Ga een regel omhoog"
 
 msgid "Move up to first entry"
 msgstr "Verplaats omhoog naar eerste ingave"
@@ -9594,6 +9651,10 @@ msgstr "Sla op/Geef tekst in en sluit af"
 msgid "Save EPG"
 msgstr "Sla EPG op"
 
+#, fuzzy
+msgid "Save all changed settings and exit"
+msgstr "Sla op/Geef tekst in en sluit af"
+
 msgid "Save and activate the currently selected skin"
 msgstr "Activeer de momenteel geselecteerde skin"
 
@@ -10020,6 +10081,13 @@ msgstr "Kies het typenummer van uw SCR-apparaat. Als deze niet in de lijst voork
 msgid "Select the movie path"
 msgstr "Bepaal het opnamepad"
 
+#, fuzzy
+msgid "Select the next item in list or move cursor right"
+msgstr "Tijdzone instellen."
+
+msgid "Select the previous item in list or move cursor left"
+msgstr ""
+
 msgid "Select the protocol used by your SCR device. Choices are 'SCR Unicable' (Unicable), or 'SCR JESS' (JESS, also known as Unicable II)."
 msgstr "Kies het format van uw SCR-apparaat. keuzes zijn 'SCR Unicable' (Unicable) en 'SCR JESS' (JESS, ook bekend als Unicable 2)."
 
@@ -10106,6 +10174,10 @@ msgstr "Selecteer uw regio. Indien deze niet beschikbaar is verandert u 'land' e
 
 msgid "Select your time zone area or region."
 msgstr "Tijdzone instellen."
+
+#, fuzzy
+msgid "Select, toggle, process or edit the current entry"
+msgstr "Doorzoek de EPG naar het huidige programma."
 
 msgid "Selecting satellites 1 (USALS)"
 msgstr "Alle satellieten 1 (USALS)"
@@ -11892,6 +11964,10 @@ msgstr "Er zijn minstens %s updates beschikbaar."
 
 msgid "There are currently no outstanding actions."
 msgstr "Er zijn geen uitstaande acties."
+
+#, fuzzy
+msgid "There are no items currently available for this menu."
+msgstr "Er zijn momenteel geen updates beschikbaar."
 
 msgid "There are no saved playlists to delete!"
 msgstr "Er zijn geen playlists om te verwijderen!"
@@ -15598,9 +15674,6 @@ msgstr "zapte"
 #~ msgid "AFP setup"
 #~ msgstr "AFP instellingen"
 
-#~ msgid "AV settings"
-#~ msgstr "AV instellingen"
-
 #~ msgid "About..."
 #~ msgstr "Info..."
 
@@ -15762,6 +15835,9 @@ msgstr "zapte"
 
 #~ msgid "Currently installed image"
 #~ msgstr "Huidig geïnstalleerd image"
+
+#~ msgid "Customize"
+#~ msgstr "Aanpassen"
 
 #~ msgid "DVB_C"
 #~ msgstr "DVB_C"
@@ -16183,6 +16259,9 @@ msgstr "zapte"
 
 #~ msgid "MiniDLNA setup"
 #~ msgstr "MiniDLNA instellingen"
+
+#~ msgid "Miscellaneous"
+#~ msgstr "Diverse"
 
 #~ msgid ""
 #~ "Misconfigured unicable connection from tuner %s to tuner %s!\n"
