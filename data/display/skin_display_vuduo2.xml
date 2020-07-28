@@ -85,7 +85,7 @@
 
 <!-- menus-->
 	<screen name="MenuSummary" position="fill">
-		<widget source="parent.title" render="Label" position="top" size="*,16" font="Big"  valign="top" noWrap="1"/>
+		<widget source="parent.SummaryTitle" render="Label" position="top" size="*,16" font="Big"  valign="top" noWrap="1"/>
 		<widget source="parent.menu" render="Label" position="fill" font="Big">
 			<convert type="StringListSelection" />
 			<convert type="TextCase">ToUpper</convert>
@@ -127,7 +127,7 @@
 	</screen>
 
 	<screen name="MovieContextMenuSummary" position="fill">
-		<widget source="parent.Title" render="Label" position="top" size="*,16" font="Big" noWrap="1"/>
+		<widget source="parent.SummaryTitle" render="Label" position="top" size="*,16" font="Big" noWrap="1"/>
 		<widget source="selected" render="Label" position="top" size="*,16" font="Big" noWrap="1"/>
 	</screen>
 
@@ -155,7 +155,7 @@
 
 <!-- misc-->
 	<screen name="SimpleSummary" position="fill">
-		<widget source="parent.Title" render="Label" position="top" size="*,18" font="Big" noWrap="1"/>
+		<widget source="parent.SummaryTitle" render="Label" position="top" size="*,18" font="Big" noWrap="1"/>
 		<panel position="fill" name="SummaryClockPanel" />
 	</screen>
 
@@ -174,7 +174,7 @@
 	</screen>
 
 	<screen name="ServiceScanSummary" position="fill">
-		<widget source="parent.Title" render="Label" position="top" size="*,16" font="Big" noWrap="1"/>
+		<widget source="parent.SummaryTitle" render="Label" position="top" size="*,16" font="Big" noWrap="1"/>
 		<widget source="Service" render="Label" position="fill" font="Big" noWrap="1"/>
 	</screen>
 
@@ -192,7 +192,7 @@
 
 <!-- Plugin browser -->
 	<screen name="PluginBrowserSummary" position="fill">
-		<widget source="parent.Title" render="Label" position="top" size="*,16" font="Big" noWrap="1" />
+		<widget source="parent.SummaryTitle" render="Label" position="top" size="*,16" font="Big" noWrap="1" />
 		<widget source="entry" render="Label" position="fill" font="Big" noWrap="1" />
 	</screen>
 

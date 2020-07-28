@@ -12,7 +12,7 @@
 	</screen>
 
 	<screen name="MovieContextMenuSummary" position="fill">
-		<widget source="parent.Title" render="Label" position="top" size="*,14" font="RegularLCD;12" halign="left" valign="top" noWrap="1" />
+		<widget source="parent.SummaryTitle" render="Label" position="top" size="*,14" font="RegularLCD;12" halign="left" valign="top" noWrap="1" />
 		<widget source="selected" render="Label" position="top" size="*,32" font="RegularLCD;16" />
 		<panel position="bottom" size="*,18">
 			<widget source="global.CurrentTime" render="Label" position="right" size="60,*" halign="right" font="RegularLCD;16" >
@@ -22,7 +22,7 @@
 	</screen>
 
 	<screen name="MovieSelectionSummary" position="fill">
-		<widget source="parent.Title" render="Label" position="top" size="*,54" font="RegularLCD;24" halign="left" valign="top" />
+		<widget source="parent.SummaryTitle" render="Label" position="top" size="*,54" font="RegularLCD;24" halign="left" valign="top" />
 		<widget source="name" render="Label" position="top" size="*,150" font="RegularLCD;40" halign="center" valign="center" />
 		<panel position="bottom" size="*,36">
 			<widget source="parent.Service" render="Label" position="right" size="120,*" font="RegularLCD;28" halign="left" noWrap="1">
@@ -52,7 +52,7 @@
 
 <!-- menus-->
 	<screen name="MenuSummary" position="fill">
-		<widget source="parent.title" render="Label" position="top" size="*,35" font="RegularLCD;30" halign="left" valign="center" />
+		<widget source="parent.SummaryTitle" render="Label" position="top" size="*,35" font="RegularLCD;30" halign="left" valign="center" />
 		<widget source="parent.menu" render="Label" position="top" size="*,205" font="RegularLCD;40" halign="center" valign="center">
 			<convert type="StringListSelection" />
 		</widget>
@@ -67,12 +67,12 @@
 
 <!-- misc-->
 	<screen name="SimpleSummary" position="fill">
-		<widget source="parent.Title" render="Label" position="center,center" size="400,240" font="RegularLCD;50" halign="center" valign="center" />
+		<widget source="parent.SummaryTitle" render="Label" position="center,center" size="400,240" font="RegularLCD;50" halign="center" valign="center" />
 	</screen>
 
 <!-- Plugin browser -->
 	<screen name="PluginBrowserSummary" position="fill">
-		<widget source="parent.Title" render="Label" position="top" size="*,36" font="RegularLCD;30" noWrap="1" />
+		<widget source="parent.SummaryTitle" render="Label" position="top" size="*,36" font="RegularLCD;30" noWrap="1" />
 		<widget source="entry" render="Label" position="top" size="*,150" font="RegularLCD;40" halign="center" valign="center" />
 		<widget source="desc" render="Label" position="fill" font="RegularLCD;22" halign="center" valign="center" />
 	</screen>
@@ -88,12 +88,12 @@
 	</screen>
 
 	<screen name="EventView_summary" position="0,0" size="400,240">
-		<widget source="parent.Title" render="Label" position="0,0" size="160,22" font="RegularLCD;20" halign="left" noWrap="1" />
+		<widget source="parent.SummaryTitle" render="Label" position="0,0" size="160,22" font="RegularLCD;20" halign="left" noWrap="1" />
 		<widget source="parent.summary_description" render="Label" position="0,22" size="400,140" font="RegularLCD;17" />
 	</screen>
 
 	<screen name="EventViewSimple_summary" position="0,0" size="400,240">
-		<widget source="parent.Title" render="Label" position="0,0" size="160,22" font="RegularLCD;20" halign="left" noWrap="1" />
+		<widget source="parent.SummaryTitle" render="Label" position="0,0" size="160,22" font="RegularLCD;20" halign="left" noWrap="1" />
 		<widget source="parent.summary_description" render="Label" position="0,22" size="400,140" font="RegularLCD;17" />
 	</screen>
 
@@ -160,13 +160,13 @@
 	</screen>
 
 	<screen name="UpdatePlugin_summary" position="0,0" size="400,240">
-		<widget source="parent.Title" render="Label" position="0,38" size="400,26" font="RegularLCD;24" halign="left" noWrap="1" />
+		<widget source="parent.SummaryTitle" render="Label" position="0,38" size="400,26" font="RegularLCD;24" halign="left" noWrap="1" />
 		<widget source="parent.package" render="Label" position="0,66" size="400,20" font="RegularLCD;19" halign="left" noWrap="1" />
 		<widget source="parent.status" render="Label" position="0,93" size="400,16" font="RegularLCD;14" halign="left" transparent="1" />
 	</screen>
 
 	<screen name="SoftwareUpdateChanges_summary" position="0,0" size="400,240">
-		<widget source="parent.title_summary" render="Label" position="0,0" size="160,15" font="RegularLCD;15" halign="left" noWrap="1" />
+		<widget source="parent.SummaryTitle_summary" render="Label" position="0,0" size="160,15" font="RegularLCD;15" halign="left" noWrap="1" />
 		<widget source="parent.text_summary" render="Label" position="0,16" size="400,54" font="RegularLCD;12" halign="left" transparent="1" />
 	</screen>
 

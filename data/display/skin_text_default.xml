@@ -58,7 +58,7 @@
 
 <!-- misc-->
 	<screen name="SimpleSummary" position="0,0" size="132,64">
-		<widget source="parent.Title" render="Label" position="0,0" size="124,40" font="Regular;16" halign="center" valign="center" />
+		<widget source="parent.SummaryTitle" render="Label" position="0,0" size="124,40" font="Regular;16" halign="center" valign="center" />
 	</screen>
 
 	<screen name="WizardSummary" position="fill">

@@ -89,7 +89,7 @@
 
 <!-- misc-->
 	<screen name="SimpleSummary" position="0,0" size="132,64">
-		<widget source="parent.Title" render="RollerCharLCD" position="0,0" size="124,40" font="Regular;16" valign="center" />
+		<widget source="parent.SummaryTitle" render="RollerCharLCD" position="0,0" size="124,40" font="Regular;16" valign="center" />
 	</screen>
 	<screen name="ChoiceBox_summary" position="0,0" size="132,64">
 		<widget source="parent.summary_selection" render="Label" position="0,0" size="126,64" font="Regular;11" noWrap="1" />
@@ -190,7 +190,7 @@
 	</screen>
 <!-- Console -->
 	<screen name="Console_summary" position="0,0" size="132,64">
-		<widget source="parent.Title" render="Label" position="fill" size="120,20" font="Regular;18" />
+		<widget source="parent.SummaryTitle" render="Label" position="fill" size="120,20" font="Regular;18" />
 	</screen>
 <!-- Timer -->
 	<screen name="TimerLog_summary" position="0,0" size="132,64">
