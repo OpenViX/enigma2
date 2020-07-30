@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-21 07:33+0000\n"
-"PO-Revision-Date: 2020-06-11 08:52+0200\n"
+"POT-Creation-Date: 2020-07-27 00:45+0000\n"
+"PO-Revision-Date: 2020-07-28 09:38+0200\n"
 "Last-Translator: Ralf Biedermann <ralf.biedermann@rbsoft.de>\n"
 "Language-Team: AndyBlacburn, j-ot&Trial\n"
 "Language: de\n"
@@ -226,16 +226,14 @@ msgstr "%-d-%b"
 msgid "%-d-%b-%Y"
 msgstr "%-d-%b-%Y"
 
-#, fuzzy
 msgid "%-d. %B %Y"
-msgstr "%-d %B %Y"
+msgstr ""
 
 msgid "%-d. %b"
 msgstr ""
 
-#, fuzzy
 msgid "%-d. %b %Y"
-msgstr "%-d %b %Y"
+msgstr ""
 
 msgid "%-d.%-m"
 msgstr ""
@@ -330,29 +328,23 @@ msgstr "%A %-d-%B"
 msgid "%A %-d-%B-%Y"
 msgstr "%A %-d-%B-%Y"
 
-#, fuzzy
 msgid "%A %-d. %B"
-msgstr "%A %-d %B"
+msgstr ""
 
-#, fuzzy
 msgid "%A %-d. %B %Y"
-msgstr "%A %-d %B %Y"
+msgstr ""
 
-#, fuzzy
 msgid "%A %-d.%-m"
-msgstr "%A %-d/%-m"
+msgstr ""
 
-#, fuzzy
 msgid "%A %-d.%-m.%Y"
-msgstr "%A %-d/%-m/%Y"
+msgstr ""
 
-#, fuzzy
 msgid "%A %-d.%m"
-msgstr "%A %-d/%m"
+msgstr ""
 
-#, fuzzy
 msgid "%A %-d.%m.%Y"
-msgstr "%A %-d/%m/%Y"
+msgstr ""
 
 msgid "%A %-d/%-m"
 msgstr "%A %-d/%-m"
@@ -438,29 +430,23 @@ msgstr "%A %d-%B"
 msgid "%A %d-%B-%Y"
 msgstr "%A %d-%B-%Y"
 
-#, fuzzy
 msgid "%A %d. %B"
-msgstr "%A %d %B"
+msgstr ""
 
-#, fuzzy
 msgid "%A %d. %B %Y"
-msgstr "%A %d %B %Y"
+msgstr ""
 
-#, fuzzy
 msgid "%A %d.%-m"
-msgstr "%A %d/%-m"
+msgstr ""
 
-#, fuzzy
 msgid "%A %d.%-m.%Y"
-msgstr "%A %d/%-m/%Y"
+msgstr ""
 
-#, fuzzy
 msgid "%A %d.%m"
-msgstr "%A %d/%m"
+msgstr ""
 
-#, fuzzy
 msgid "%A %d.%m.%Y"
-msgstr "%A %d/%m/%Y"
+msgstr ""
 
 msgid "%A %d/%-m"
 msgstr "%A %d/%-m"
@@ -591,33 +577,26 @@ msgstr "%a %-d-%b"
 msgid "%a %-d-%b-%Y"
 msgstr "%a %-d-%b-%Y"
 
-#, fuzzy
 msgid "%a %-d. %B %Y"
-msgstr "%a %-d %B %Y"
+msgstr ""
 
-#, fuzzy
 msgid "%a %-d. %b"
-msgstr "%a %-d %b"
+msgstr ""
 
-#, fuzzy
 msgid "%a %-d. %b %Y"
-msgstr "%a %-d %b %Y"
+msgstr ""
 
-#, fuzzy
 msgid "%a %-d.%-m"
-msgstr "%a %-d/%-m"
+msgstr ""
 
-#, fuzzy
 msgid "%a %-d.%-m.%Y"
-msgstr "%a %-d/%-m/%Y"
+msgstr ""
 
-#, fuzzy
 msgid "%a %-d.%m"
-msgstr "%a %-d/%m"
+msgstr ""
 
-#, fuzzy
 msgid "%a %-d.%m.%Y"
-msgstr "%a %-d/%m/%Y"
+msgstr ""
 
 msgid "%a %-d/%-m"
 msgstr "%a %-d/%-m"
@@ -736,33 +715,26 @@ msgstr "%a %d-%b"
 msgid "%a %d-%b-%Y"
 msgstr "%a %d-%b-%Y"
 
-#, fuzzy
 msgid "%a %d. %B %Y"
-msgstr "%a %d %B %Y"
+msgstr ""
 
-#, fuzzy
 msgid "%a %d. %b"
-msgstr "%a %d %b"
+msgstr ""
 
-#, fuzzy
 msgid "%a %d. %b %Y"
-msgstr "%a %d %b %Y"
+msgstr ""
 
-#, fuzzy
 msgid "%a %d.%-m"
-msgstr "%a %d/%-m"
+msgstr ""
 
-#, fuzzy
 msgid "%a %d.%-m.%Y"
-msgstr "%a %d/%-m/%Y"
+msgstr ""
 
-#, fuzzy
 msgid "%a %d.%m"
-msgstr "%a %d/%m"
+msgstr ""
 
-#, fuzzy
 msgid "%a %d.%m.%Y"
-msgstr "%a %d/%m/%Y"
+msgstr ""
 
 msgid "%a %d/%-m"
 msgstr "%a %d/%-m"
@@ -962,35 +934,30 @@ msgstr "%d-%b"
 msgid "%d-%b-%Y"
 msgstr "%d-%b-%Y"
 
-#, fuzzy
 msgid "%d. %B %Y"
-msgstr "%d %B %Y"
+msgstr ""
 
 msgid "%d. %b"
 msgstr ""
 
-#, fuzzy
 msgid "%d. %b %Y"
-msgstr "%d %b %y"
+msgstr ""
 
 msgid "%d.%-m"
 msgstr ""
 
-#, fuzzy
 msgid "%d.%-m.%Y"
-msgstr "%d.%B %Y"
+msgstr ""
 
 #, python-format
 msgid "%d.%03d GB"
 msgstr "%d.%03d GB"
 
-#, fuzzy
 msgid "%d.%m"
-msgstr "%d.%B %Y"
+msgstr ""
 
-#, fuzzy
 msgid "%d.%m.%Y"
-msgstr "%d.%B %Y"
+msgstr ""
 
 msgid "%d/%-m"
 msgstr "%d/%-m"
@@ -1129,7 +1096,6 @@ msgstr ""
 msgid "( All readers)"
 msgstr "( Alle Kartenleser )"
 
-#, fuzzy
 msgid "(Current)"
 msgstr "(aktuelles Image)"
 
@@ -1175,14 +1141,6 @@ msgstr "* Nur verfügbar wenn mehr als ein Netzwerkadapter aktiv ist."
 
 msgid "* current animation"
 msgstr "* aktuelle Animation"
-
-#, python-format
-msgid "** Setup error: '%s' section not found! **"
-msgstr ""
-
-#, python-format
-msgid "** Setup error: '%s' title is missing or blank!"
-msgstr ""
 
 msgid "-NO SERVICE\n"
 msgstr "-KEINE SENDUNG\n"
@@ -1393,29 +1351,24 @@ msgstr "8bit"
 msgid "<Current movielist location>"
 msgstr "<Aktuelles Filmverzeichnis>"
 
-#, fuzzy
 msgid "<Current>"
 msgstr "< aktuell >"
 
 msgid "<Default movie location>"
 msgstr "<Standard Filmverzeichnis>"
 
-#, fuzzy
 msgid "<Default+Picon>"
 msgstr "<Standard mit PIcon>"
 
-#, fuzzy
 msgid "<Default>"
 msgstr "<Standard>"
 
-#, fuzzy
 msgid "<Emergency>"
 msgstr "< Notfall >"
 
 msgid "<Last timer location>"
 msgstr "<Letzter Timer Ort>"
 
-#, fuzzy
 msgid "<Pending restart>"
 msgstr "< Neustart demnächst >"
 
@@ -1576,10 +1529,6 @@ msgstr ""
 "Timeraufnahme fehlgeschlagen.\n"
 "Programm beenden und erneut versuchen?\n"
 
-#, fuzzy
-msgid "A/V settings"
-msgstr "A/V Einstellungen"
-
 msgid "AAC downmix"
 msgstr "AAC Downmix"
 
@@ -1680,7 +1629,6 @@ msgstr "Aktiv"
 msgid "Active clients"
 msgstr "Aktive Klienten"
 
-#, fuzzy
 msgid "Adapter Settings"
 msgstr "Adapter Einstellungen"
 
@@ -2594,7 +2542,6 @@ msgstr "Bus: "
 msgid "Button"
 msgstr "Taste"
 
-#, fuzzy
 msgid "Button Setup"
 msgstr "Tasten-Einstellungen"
 
@@ -2744,14 +2691,6 @@ msgstr "Canada"
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#, fuzzy
-msgid "Cancel any changed settings and exit"
-msgstr "Textänderungen verwerfen und virtuelle Tastatur verlassen"
-
-#, fuzzy
-msgid "Cancel any changed settings and exit all menus"
-msgstr "Auswahl von Image abbrechen und alle Menüs verlassen"
-
 msgid "Cancel any changes to the currently active skin"
 msgstr "Alle Änderungen am aktiven Skin verwerfen"
 
@@ -2881,7 +2820,6 @@ msgstr "Kanal EPG"
 msgid "Channel List"
 msgstr "Senderliste"
 
-#, fuzzy
 msgid "Channel List Context Menu"
 msgstr "Senderliste Kontextmenü"
 
@@ -3130,7 +3068,6 @@ msgstr "Wiedergabeliste leeren"
 msgid "Client Info ( Oscam-Version: %s )"
 msgstr ""
 
-#, fuzzy
 msgid "Client Mode"
 msgstr "Client Modus"
 
@@ -3208,10 +3145,6 @@ msgstr "Kommando Typ"
 
 msgid "Common Interface"
 msgstr "Common Interface"
-
-#, fuzzy
-msgid "Common Setup Functions"
-msgstr "Allgemeine Einstellungen"
 
 msgid "Common interface"
 msgstr "Common Interface"
@@ -3792,6 +3725,9 @@ msgstr "Gewünschte Sprungzeit für '4'/'6'-Tasten"
 msgid "Custom skip time for '7'/'9' buttons"
 msgstr "Gewünschte Sprungzeit für '7'/'9'-Tasten"
 
+msgid "Customize"
+msgstr "Anpassen"
+
 msgid "Customize settings"
 msgstr "Ändere Einstellungen"
 
@@ -4183,7 +4119,6 @@ msgstr "Sprache(n) löschen"
 msgid "Delete Timer"
 msgstr "Timer löschen"
 
-#, fuzzy
 msgid "Delete all the text"
 msgstr "Ganzen Text löschen"
 
@@ -4202,16 +4137,8 @@ msgstr "Wiedergabelisteneintrag löschen"
 msgid "Delete saved playlist"
 msgstr "Gespeicherte Wiedergabeliste löschen"
 
-#, fuzzy
-msgid "Delete the character to the left of cursor"
-msgstr "Lösche das Zeichen links vom Cursor"
-
 msgid "Delete the character to the left of text cursor"
 msgstr "Lösche das Zeichen links vom Cursor"
-
-#, fuzzy
-msgid "Delete the character under the cursor"
-msgstr "Lösche das Zeichen unter dem Cursor"
 
 msgid "Delete the character under the text cursor"
 msgstr "Lösche das Zeichen unter dem Cursor"
@@ -4373,14 +4300,8 @@ msgstr "Anzeige und Benutzeroberfläche"
 msgid "Display message before playing next movie"
 msgstr "Nachricht vor Wiedergabe des nächsten Films"
 
-msgid "Display selection list as a selection menu"
-msgstr ""
-
 msgid "Display the EIT now/next eventdata in infobar."
 msgstr "EIT jetzt/demnächst in Infobar anzeigen."
-
-msgid "Display the virtual keyboard for data entry"
-msgstr ""
 
 msgid "Djibouti"
 msgstr "Djibouti"
@@ -4916,9 +4837,8 @@ msgstr "Eingabe"
 msgid "Enter PIN"
 msgstr "PIN-Code ändern"
 
-#, fuzzy
 msgid "Enter PIN Code"
-msgstr "PIN-Code ändern"
+msgstr "PIN-Code eingeben"
 
 msgid "Enter a number to jump to a service/channel"
 msgstr "Gebe Zahl ein um zum Sender zu springen."
@@ -5298,7 +5218,6 @@ msgstr "FTP Verbindungsfehler"
 msgid "FTP passive mode"
 msgstr "FTP passiver Modus"
 
-#, fuzzy
 msgid "Factory Reset"
 msgstr "Werkseinstellungen"
 
@@ -5317,7 +5236,6 @@ msgstr "Kann /tmp/positionersetup.log nicht schreiben: "
 msgid "Falkland Islands (Malvinas)"
 msgstr "Falkland Islands (Malvinas)"
 
-#, fuzzy
 msgid "Fallback Tuner Setup"
 msgstr "Fallback Tuner Einstellungen"
 
@@ -5530,9 +5448,8 @@ msgstr "VFD/LCD"
 msgid "Front panel settings"
 msgstr "VFD/LCD Einstellungen"
 
-#, fuzzy
 msgid "Full factory reset"
-msgstr "Werkseinstellungen"
+msgstr "Vollständige Werkseinstellungen"
 
 msgid "Full screen"
 msgstr "Vollbild"
@@ -6316,11 +6233,9 @@ msgstr "Eingabe"
 msgid "Input "
 msgstr "Eingabe "
 
-#, fuzzy
 msgid "Input Device Setup"
 msgstr "Eingabegeräte Einstellungen"
 
-#, fuzzy
 msgid "Input Devices"
 msgstr "Eingabegeräte"
 
@@ -6337,7 +6252,6 @@ msgstr "Installiere"
 msgid "Install '%s'"
 msgstr "Installiere '%s'"
 
-#, fuzzy
 msgid "Install Plugins"
 msgstr "Installiere Plugins"
 
@@ -6519,12 +6433,6 @@ msgstr "Zur aktuellen Zeit springen"
 
 msgid "Jump to end of list"
 msgstr "An das Ende der Liste springen"
-
-msgid "Jump to first item in list or the start of text"
-msgstr ""
-
-msgid "Jump to last item in list or the end of text"
-msgstr ""
 
 msgid "Jump to prime time"
 msgstr "Zur PrimeTime springen"
@@ -6910,7 +6818,6 @@ msgstr "Luxemburg"
 msgid "Luxembourgish"
 msgstr "Luxemburgisch"
 
-#, fuzzy
 msgid "MAC Address Settings"
 msgstr "MAC-Adresse Einstellungen"
 
@@ -6922,9 +6829,6 @@ msgstr "MAC:"
 
 msgid "MB"
 msgstr "MB"
-
-msgid "MENU"
-msgstr ""
 
 msgid "Macao"
 msgstr "Macao"
@@ -7123,6 +7027,9 @@ msgstr "Minuten Sekunden"
 msgid "Mipsel"
 msgstr ""
 
+msgid "Miscellaneous"
+msgstr "Verschiedenes"
+
 msgid "Missing "
 msgstr "Fehlend "
 
@@ -7229,10 +7136,6 @@ msgstr "Zeile runter"
 msgid "Move down a page"
 msgstr "Seite runter"
 
-#, fuzzy
-msgid "Move down a screen"
-msgstr "Zeile runter"
-
 msgid "Move down to last entry"
 msgstr "Zum letzten Eintrag gehen"
 
@@ -7266,16 +7169,8 @@ msgstr "Bewege den Cursor zum Anfang"
 msgid "Move the text cursor to the last character"
 msgstr "Bewege den Cursor zum Ende"
 
-#, fuzzy
-msgid "Move to first line"
-msgstr "Zum ersten Eintrag gehen"
-
 msgid "Move to home of list"
 msgstr "An den Anfang"
-
-#, fuzzy
-msgid "Move to last line"
-msgstr "Zeile runter"
 
 msgid "Move to position X"
 msgstr "Auf Position X drehen"
@@ -7297,10 +7192,6 @@ msgstr "Zeile hoch"
 
 msgid "Move up a page"
 msgstr "Seite hoch"
-
-#, fuzzy
-msgid "Move up a screen"
-msgstr "Zeile hoch"
 
 msgid "Move up to first entry"
 msgstr "Zum ersten Eintrag gehen"
@@ -7466,7 +7357,6 @@ msgstr ""
 msgid "Nameserver %d"
 msgstr "DNS %d"
 
-#, fuzzy
 msgid "Nameserver Settings"
 msgstr "DNS Einstellungen"
 
@@ -8141,7 +8031,6 @@ msgstr "Paraguay"
 msgid "Parent directory"
 msgstr "Übergeordnetes Verzeichnis"
 
-#, fuzzy
 msgid "Parental Control"
 msgstr "Jugendschutz"
 
@@ -8160,7 +8049,6 @@ msgstr "Passwort"
 msgid "Password (httpwd)"
 msgstr "Passwort (HTTPWD)"
 
-#, fuzzy
 msgid "Password Setup"
 msgstr "Passwort Einstellungen"
 
@@ -8684,11 +8572,9 @@ msgstr "LCD Anzeige im Bereitschaftsmodus."
 msgid "Power On/Off display Suspend Mode."
 msgstr "LCD Anzeige wenn ausgeschaltet."
 
-#, fuzzy
 msgid "Power Timer Edit"
-msgstr "Powertimer Liste"
+msgstr "Powertimer bearbeiten"
 
-#, fuzzy
 msgid "Power Timer List"
 msgstr "Powertimer Liste"
 
@@ -9253,7 +9139,6 @@ msgstr "Entfernen"
 msgid "Remove Confirmation"
 msgstr "Bestätige Löschvorgang"
 
-#, fuzzy
 msgid "Remove Plugins"
 msgstr "Plugins löschen"
 
@@ -9270,42 +9155,34 @@ msgid "Remove all alternatives"
 msgstr "Entferne alle Alternativen"
 
 msgid "Remove all bouquet/tuning data"
-msgstr ""
+msgstr "Alle Programmlisten und Sender löschen"
 
-#, fuzzy
 msgid "Remove all keymap data"
-msgstr "Markierung entfernen"
+msgstr "Alle Tasteneinstellungen löschen"
 
-#, fuzzy
 msgid "Remove all network data"
-msgstr "Entfernen aller 'neu gefunden'-Kennzeichnungen"
+msgstr "Alle Netzwerkeinstellungen löschen"
 
 msgid "Remove all new found flags"
 msgstr "Entfernen aller 'neu gefunden'-Kennzeichnungen"
 
-#, fuzzy
 msgid "Remove all other data"
-msgstr "Entferne alle Alternativen"
+msgstr "Entferne alle anderen Daten"
 
-#, fuzzy
 msgid "Remove all plugin setting data"
-msgstr "Plugins löschen"
+msgstr "Entferne alle Plugin-Einstellungen"
 
-#, fuzzy
 msgid "Remove all resume point data"
-msgstr "Entfernen aller 'neu gefunden'-Kennzeichnungen"
+msgstr "Entferne all gespeicherten Medienpositionen"
 
-#, fuzzy
 msgid "Remove all settings data"
-msgstr "Entferne alle Alternativen"
+msgstr "Entferne alle Einstellungen"
 
-#, fuzzy
 msgid "Remove all skin data"
-msgstr "Entfernen aller 'neu gefunden'-Kennzeichnungen"
+msgstr "Entferne alle Skinänderungen"
 
-#, fuzzy
 msgid "Remove all timer data"
-msgstr "Entferne alle Alternativen"
+msgstr "Entferne alle Timer"
 
 msgid "Remove bookmark"
 msgstr "Lesezeichen löschen"
@@ -9705,10 +9582,6 @@ msgstr "Text eingeben und beenden"
 msgid "Save EPG"
 msgstr "EPG speichern"
 
-#, fuzzy
-msgid "Save all changed settings and exit"
-msgstr "Text eingeben und beenden"
-
 msgid "Save and activate the currently selected skin"
 msgstr "Drücke OK um den gewählten Skin zu sichern und zu aktivieren."
 
@@ -9910,34 +9783,34 @@ msgstr ""
 "\n"
 
 msgid "Select 'Yes' to remove all keymap data. Selecting this option will remove all keymap override data and restore the default keymap definitions."
-msgstr ""
+msgstr "Wähle 'Ja' um alle Tastaturbelegungen wieder auf Standard zu setzen."
 
 msgid "Select 'Yes' to remove all main settings configuration data. Selecting this option will set all Enigma2 settings back to their default values.  This will also cause Enigma2 to run the Welcome Wizard on restart."
-msgstr ""
+msgstr "Wähle 'Ja' um alle Einstellungen von Enigma auf Standardwerte zu setzen. Enigma startet danach mit dem Einrichtungsassistenten."
 
 msgid "Select 'Yes' to remove all media player resume data. Selecting this option will remove the data used to allow playback of media files to resume from the position where playback was last stopped. Playback position of recordings is not affected."
-msgstr ""
+msgstr "Wähle 'Ja' um alle gespeicherten Informationen des Medienspielers zu löschen. Man kann eine unterbrochene Wiedergabe danach nicht fortsetzen und muss von vorne anfangen."
 
 msgid "Select 'Yes' to remove all network data. Selecting this option will remove all network data including automounts and network connection data including connection accounts and passwords. This could cause some Enigma2 functions to fail if they are configured to use these network resources."
-msgstr ""
+msgstr "Wähle 'Ja' um alle Netzwerkeinstellungen zu löschen. Diese Option löscht u.a. auch die Automounts und Zugangsdaten zu Netzwerkgeräten. "
 
 msgid "Select 'Yes' to remove all other files and directories not covered by the options above."
-msgstr ""
+msgstr "Wähle 'Ja' um alle Dateien und Verzeichnisse zu löschen die nicht zu einer der oben genannten Optionen gehört."
 
 msgid "Select 'Yes' to remove all plugin configuration data. Selecting this option will remove all plugin configuration data that is stored in the Enigma2 configuration folder. This will cause all affected plugins to return to their default settings. This could cause some plugins to not function until configured."
-msgstr ""
+msgstr "Wähle 'Ja' um alle Plugin-Einstellungen zu löschen die sich im Einstellungsordner von Enigma (/etc/enigma2) befinden. Alle betroffenen Plugins kehren zu ihren Standardeinstellungen zurück. Einige Plugins können auch die Arbeit verweigern."
 
 msgid "Select 'Yes' to remove all settings, tuning data, timers, resume pointers etc. Selecting this option will restore the configuration to the initial settings before any configuration settings were applied. This is the most reliable form of Factory Reset."
-msgstr ""
+msgstr "W#hle 'Ja' um alle Einstellungen, Senderlisten, Timer, Wiederaufnahmepunkte usw. zu löschen. Dies ist die beste Möglichkeit Werkseinstellungen wiederzuerlangen."
 
 msgid "Select 'Yes' to remove all timer configuration data. Selecting this option will clear all timers, autotimers and power timers."
-msgstr ""
+msgstr "Wähle 'Ja' um alle Timer, AutoTimer und PowerTimer zu löschen."
 
 msgid "Select 'Yes' to remove all tuning data. Selecting this option will remove all tuning and bouquet data and will make timers non functional until the receiver is retuned."
-msgstr ""
+msgstr "Wähle 'Ja' um alle Sender und Senderlisten zu löschen."
 
 msgid "Select 'Yes' to remove all user customisations of skin data. Selecting this option will remove all user based skin customisations. All affected skins will return to their standard settings. This will also clear any customied boot logos and backdrops."
-msgstr ""
+msgstr "Wähle 'Ja' um alle Benutzerveränderungen von Skins zu löschen. Diese Option löscht auch das Bootlogo und Hintergrundbild."
 
 msgid "Select 'Yes' when you want to configure this tuner for ATSC"
 msgstr "Wähle 'Ja' wenn dieser Tuner ATSC unterstützen soll"
@@ -9990,11 +9863,9 @@ msgstr "CAID auswählen"
 msgid "Select Fast DiSEqC if your aerial system supports this. If you are unsure select 'no'."
 msgstr "Wähle schnelles DiSEqC wen es dein System unterstützt. Wenn Du unsicher bis wähle 'nein'."
 
-#, fuzzy
 msgid "Select Folders"
 msgstr "Wähle Verzeichnisse"
 
-#, fuzzy
 msgid "Select Satellites"
 msgstr "Wähle Satelliten"
 
@@ -10137,13 +10008,6 @@ msgstr "Wähle die Modellnummer deines Unicable Gerätes. Wenn die Nummer nicht 
 msgid "Select the movie path"
 msgstr "Wähle Filmpfad"
 
-#, fuzzy
-msgid "Select the next item in list or move cursor right"
-msgstr "Setze die Zeitzone der Region."
-
-msgid "Select the previous item in list or move cursor left"
-msgstr ""
-
 msgid "Select the protocol used by your SCR device. Choices are 'SCR Unicable' (Unicable), or 'SCR JESS' (JESS, also known as Unicable II)."
 msgstr "Wähle das Unicable Format von deinem Gerät. Zur Wahl stehen 'SCR Unicable' (Unicable I Format) oder 'SCR JESS' (Unicable II Format)."
 
@@ -10189,7 +10053,6 @@ msgstr "Wähle den Typ von LNB/Gerät das benutzt wird (normalerweise 'Universal
 msgid "Select the type of Single Cable Reception device you are using."
 msgstr "Wähle den Unicable Type den Du benutzt."
 
-#, fuzzy
 msgid "Select to configure remote control type"
 msgstr "Fernbedienungstyp einstellen"
 
@@ -10231,10 +10094,6 @@ msgstr "Wähle deine Region. Wenn nciht aufgeführt wehcsel das Land auf 'alle' 
 
 msgid "Select your time zone area or region."
 msgstr "Zeitzone oder Region konfigurieren."
-
-#, fuzzy
-msgid "Select, toggle, process or edit the current entry"
-msgstr "Suche mit EPG nach laufendem Programm."
 
 msgid "Selecting satellites 1 (USALS)"
 msgstr "Wähle Satelliten 1 (USALS)"
@@ -10309,7 +10168,6 @@ msgstr "Sender & PIDs"
 msgid "Service ID"
 msgstr "Sender ID"
 
-#, fuzzy
 msgid "Service Info: ECM Info"
 msgstr "Service info - ECM Info"
 
@@ -10853,7 +10711,7 @@ msgid "Show service list or movies"
 msgstr "Zeige Sender- oder Filmliste"
 
 msgid "Show service name and event description above and below each other instead of side by side."
-msgstr ""
+msgstr "Zeige Sendernamen und Beschreibung über und unter anstatt links und rechts."
 
 msgid "Show service type icons"
 msgstr "Zeige Sendertype Icon"
@@ -10919,7 +10777,7 @@ msgid "Show transponder remaining/elapsed as"
 msgstr "Zeige Transponder verbleibend/verstrichen"
 
 msgid "Show two lines per entry"
-msgstr ""
+msgstr "Zeige 2 Zeilen pro Eintrag"
 
 msgid "Show warning when timeshift is stopped"
 msgstr "Zeige Warnung wenn TimeShift beendet wird"
@@ -11485,7 +11343,6 @@ msgstr "Stream-TV"
 msgid "Streaming"
 msgstr "Streaming"
 
-#, fuzzy
 msgid "Streaming Clients Info"
 msgstr "Streaming Klienten Info"
 
@@ -12022,10 +11879,6 @@ msgstr "Es sind mindestens %s Updates verfügbar."
 msgid "There are currently no outstanding actions."
 msgstr "Es sind keine Aktivitäten geplant."
 
-#, fuzzy
-msgid "There are no items currently available for this menu."
-msgstr "Es sind keine Updates verfügbar."
-
 msgid "There are no saved playlists to delete!"
 msgstr "Es gibt keine gespeicherten Wiedergabeliste zum Löschen!"
 
@@ -12347,14 +12200,12 @@ msgstr "Zeitachse Schriftgröße"
 msgid "Timer"
 msgstr "Timer"
 
-#, fuzzy
 msgid "Timer Edit"
-msgstr "Timerliste"
+msgstr "Timerliste bearbeiten"
 
 msgid "Timer List"
 msgstr "Timerliste"
 
-#, fuzzy
 msgid "Timer Sanity Error"
 msgstr "Fehler bei Timerprüfung"
 
@@ -12597,13 +12448,11 @@ msgstr "Tuner"
 msgid "Tuner :"
 msgstr "Tuner:"
 
-#, fuzzy
 msgid "Tuner Settings"
 msgstr "Tuner Einstellungen"
 
-#, fuzzy
 msgid "Tuner Setup"
-msgstr "Tuner Einstellungen"
+msgstr "Tuner Konfiguration"
 
 msgid "Tuner is not supported"
 msgstr "Nicht unterstützter Tuner"
@@ -12635,11 +12484,9 @@ msgstr "Tuner Typ"
 msgid "Tuners & scanning"
 msgstr "Tuner & Suchen"
 
-#, fuzzy
 msgid "Tuning Info: Live Values"
 msgstr "Tuning Info: reale Werte"
 
-#, fuzzy
 msgid "Tuning Info: Settings Values"
 msgstr "Tuning Info: gesetzte Werte"
 
@@ -12827,7 +12674,6 @@ msgstr ""
 msgid "Updatefeed not available."
 msgstr "Updatefeed nicht verfügbar."
 
-#, fuzzy
 msgid "Updating Cache"
 msgstr "Cache Aktualisieren"
 
@@ -13115,9 +12961,8 @@ msgstr "Vertikale Geschwindigkeit"
 msgid "ViX EPG"
 msgstr "ViX EPG"
 
-#, fuzzy
 msgid "Video & Audio Settings"
-msgstr "Bildoptimierung Einstellungen"
+msgstr "Bild&Ton Einstellungen"
 
 msgid "Video Chip Mode*"
 msgstr "Videochipmodus*"
@@ -15525,6 +15370,10 @@ msgstr "umgeschaltet"
 #~ "Ein Powertimer will die %s %s ausschalten.\n"
 #~ "Jetzt ausschalten?"
 
+#, fuzzy
+#~ msgid "A/V settings"
+#~ msgstr "A/V Einstellungen"
+
 #~ msgid "AFP setup"
 #~ msgstr "AFP Einstellungen"
 
@@ -15548,6 +15397,14 @@ msgstr "umgeschaltet"
 
 #~ msgid "Box or driver is not support Quad PiP."
 #~ msgstr "Receiver oder Treiber unterstützt Quad PiP nicht."
+
+#, fuzzy
+#~ msgid "Cancel any changed settings and exit"
+#~ msgstr "Textänderungen verwerfen und virtuelle Tastatur verlassen"
+
+#, fuzzy
+#~ msgid "Cancel any changed settings and exit all menus"
+#~ msgstr "Auswahl von Image abbrechen und alle Menüs verlassen"
 
 #~ msgid "Change timer"
 #~ msgstr "Timer ändern"
@@ -15600,6 +15457,10 @@ msgstr "umgeschaltet"
 #~ msgid "Common Interface Assignment"
 #~ msgstr "Common Interface Zuweisung"
 
+#, fuzzy
+#~ msgid "Common Setup Functions"
+#~ msgstr "Allgemeine Einstellungen"
+
 #~ msgid "Compare case sensitive"
 #~ msgstr "Vergleiche unter Beachtung der Groß-/Kleinschreibung"
 
@@ -15638,9 +15499,6 @@ msgstr "umgeschaltet"
 
 #~ msgid "Currently installed image"
 #~ msgstr "Aktuell installiertes Image"
-
-#~ msgid "Customize"
-#~ msgstr "Anpassen"
 
 #~ msgid "Day 9"
 #~ msgstr "Tag 9"
@@ -15791,6 +15649,14 @@ msgstr "umgeschaltet"
 
 #~ msgid "Delete Password"
 #~ msgstr "Lösche Passwort"
+
+#, fuzzy
+#~ msgid "Delete the character to the left of cursor"
+#~ msgstr "Lösche das Zeichen links vom Cursor"
+
+#, fuzzy
+#~ msgid "Delete the character under the cursor"
+#~ msgstr "Lösche das Zeichen unter dem Cursor"
 
 #~ msgid "Delete timer"
 #~ msgstr "Timer löschen"
@@ -16052,9 +15918,6 @@ msgstr "umgeschaltet"
 #~ msgid "MiniDLNA setup"
 #~ msgstr "MiniDLNA Einstellungen"
 
-#~ msgid "Miscellaneous"
-#~ msgstr "Verschiedenes"
-
 #~ msgid ""
 #~ "Misconfigured unicable connection from tuner %s to tuner %s!\n"
 #~ "Tuner %s option \"connected to\" are disabled now"
@@ -16105,8 +15968,24 @@ msgstr "umgeschaltet"
 #~ msgid "Mounts setup"
 #~ msgstr "Mounts Einstellungen"
 
+#, fuzzy
+#~ msgid "Move down a screen"
+#~ msgstr "Zeile runter"
+
+#, fuzzy
+#~ msgid "Move to first line"
+#~ msgstr "Zum ersten Eintrag gehen"
+
+#, fuzzy
+#~ msgid "Move to last line"
+#~ msgstr "Zeile runter"
+
 #~ msgid "Move to..."
 #~ msgstr "Verschieben nach..."
+
+#, fuzzy
+#~ msgid "Move up a screen"
+#~ msgstr "Zeile hoch"
 
 #~ msgid "Movie manager"
 #~ msgstr "Film Verwaltung"
@@ -16327,6 +16206,10 @@ msgstr "umgeschaltet"
 #~ msgid "Satellite equipment control"
 #~ msgstr "Kontrolle Satellitenausrüstung"
 
+#, fuzzy
+#~ msgid "Save all changed settings and exit"
+#~ msgstr "Text eingeben und beenden"
+
 #~ msgid "Save and exit"
 #~ msgstr "Speichern und beenden"
 
@@ -16377,6 +16260,14 @@ msgstr "umgeschaltet"
 
 #~ msgid "Select the Unicable channel to be assigned to this tuner. This is a unique value. Be certain that no other device connected to this same Unicable system is allocated to the same Unicable channel."
 #~ msgstr "Wähle den Unicable Kanal der diesem Tuner zugeordnet werden soll. Das ist eine eindeutige Nummer. Stelle sicher das kein anderes Gerät in deinem System den selben Kanal zugerodnet wurde."
+
+#, fuzzy
+#~ msgid "Select the next item in list or move cursor right"
+#~ msgstr "Setze die Zeitzone der Region."
+
+#, fuzzy
+#~ msgid "Select, toggle, process or edit the current entry"
+#~ msgstr "Suche mit EPG nach laufendem Programm."
 
 #~ msgid "Selected: %s"
 #~ msgstr "Ausgewählt: %s"
@@ -16534,6 +16425,10 @@ msgstr "umgeschaltet"
 
 #~ msgid "The wizard found a configuration backup. Do you want to restore your old settings from %s?"
 #~ msgstr "Der Assistent hat eine Konfigurations-Sicherungsdatei entdeckt. Die Einstellungen von %s wiederherstellen?"
+
+#, fuzzy
+#~ msgid "There are no items currently available for this menu."
+#~ msgstr "Es sind keine Updates verfügbar."
 
 #~ msgid "There is no [webif] section in oscam.conf"
 #~ msgstr "Es gibt keine [webif} Sektion in oscam.conf"
