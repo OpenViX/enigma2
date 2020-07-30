@@ -32,10 +32,6 @@ if getImageArch() in ("aarch64"):
 
 from traceback import print_exc
 
-profile("Geolocation")
-import Tools.Geolocation
-Tools.Geolocation.InitGeolocation()
-
 profile("ClientMode")
 import Components.ClientMode
 Components.ClientMode.InitClientMode()
