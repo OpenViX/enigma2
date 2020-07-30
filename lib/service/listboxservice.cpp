@@ -745,7 +745,7 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 		}
 
 		if (selected && local_style && local_style->m_selection)
-			painter.blit(local_style->m_selection, offset, eRect(), gPainter::BT_ALPHATEST|gPainter::BT_SCALE);
+			painter.blit(local_style->m_selection, offset, eRect(), gPainter::BT_ALPHABLEND);
 
 		int xoffset=0;  // used as offset when painting the folder/marker symbol or the serviceevent progress
 		int nameLeft=0, nameWidth=0, nameYoffs=0; // used as temporary values for 'show two lines' option
