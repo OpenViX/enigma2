@@ -2,7 +2,7 @@ from enigma import eListbox, eListboxPythonConfigContent, ePoint, eRCInput, eTim
 from skin import parameters
 
 from Components.ActionMap import HelpableActionMap, HelpableNumberActionMap
-from Components.config import KEYA_LEFT, KEYA_RIGHT, KEYA_HOME, KEYA_END, KEYA_0, KEYA_DELETE, KEYA_BACKSPACE, KEYA_SELECT, KEYA_TOGGLEOW, KEYA_ASCII, KEYA_NUMBERS, KEYA_TIMEOUT, config, configfile, ConfigElement, ConfigText, ConfigBoolean, ConfigSelection
+from Components.config import ConfigBoolean, ConfigElement, ConfigInteger, ConfigMacText, ConfigSelection, ConfigSequence, ConfigText, KEYA_LEFT, KEYA_RIGHT, KEYA_HOME, KEYA_END, KEYA_0, KEYA_DELETE, KEYA_BACKSPACE, KEYA_SELECT, KEYA_TOGGLEOW, KEYA_ASCII, KEYA_NUMBERS, KEYA_TIMEOUT, config, configfile
 from Components.GUIComponent import GUIComponent
 from Components.Pixmap import Pixmap
 from Components.Sources.Boolean import Boolean
@@ -177,7 +177,7 @@ class ConfigListScreen:
 			"menu": (self.keyMenu, _("Display selection list as a selection menu")),
 		}, prio=-1, description=_("Common Setup Functions"))
 		self["menuConfigActions"].setEnabled(False)
-		self["textConfigActions"] = HelpableNumberActionMap(self, "ConfigListActions", {
+		self["digitConfigActions"] = HelpableNumberActionMap(self, "ConfigListActions", {
 			"toggleOverwrite": (self.keyToggleOW, _("Toggle new text inserts before or overwrites existing text")),
 			"backspace": (self.keyBackspace, _("Delete the character to the left of cursor")),
 			"delete": (self.keyDelete, _("Delete the character under the cursor")),
@@ -193,7 +193,7 @@ class ConfigListScreen:
 			"0": (self.keyNumberGlobal, _("Number or SMS style data entry")),
 			"gotAsciiCode": (self.keyGotAscii, _("Keyboard data entry"))
 		}, prio=-1, description=_("Common Setup Functions"))
-		self["textConfigActions"].setEnabled(False)
+		self["digitConfigActions"].setEnabled(False)
 		self["VirtualKB"] = HelpableActionMap(self, "VirtualKeyboardActions", {
 			"showVirtualKeyboard": (self.keyText, _("Display the virtual keyboard for data entry"))
 		}, prio=-2, description=_("Common Setup Functions"))
@@ -238,6 +238,10 @@ class ConfigListScreen:
 	def handleInputHelpers(self):
 		currConfig = self["config"].getCurrent()
 		if currConfig is not None:
+			if isinstance(currConfig[1], (ConfigInteger, ConfigMacText, ConfigSequence, ConfigText)):
+				self["digitConfigActions"].setEnabled(True)
+			else:
+				self["digitConfigActions"].setEnabled(False)
 			if isinstance(currConfig[1], ConfigSelection):
 				self["menuConfigActions"].setEnabled(True)
 				self["key_menu"].setText(_("MENU"))
@@ -245,13 +249,11 @@ class ConfigListScreen:
 				self["menuConfigActions"].setEnabled(False)
 				self["key_menu"].setText("")
 			if isinstance(currConfig[1], ConfigText):
-				self["textConfigActions"].setEnabled(True)
 				self.showVKeyboard(True)
 				if "HelpWindow" in self and currConfig[1].help_window and currConfig[1].help_window.instance is not None:
 					helpwindowpos = self["HelpWindow"].getPosition()
 					currConfig[1].help_window.instance.move(ePoint(helpwindowpos[0], helpwindowpos[1]))
 			else:
-				self["textConfigActions"].setEnabled(False)
 				self.showVKeyboard(False)
 
 	def showVKeyboard(self, state):
