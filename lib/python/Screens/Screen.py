@@ -148,6 +148,8 @@ class Screen(dict):
 		try:  # This protects against calls to setTitle() before being fully initialised like self.session is accessed *before* being defined.
 			if self.session and len(self.session.dialog_stack) > 1:
 				self.screenPath = " > ".join(ds[0].getTitle() for ds in self.session.dialog_stack[1:])
+			else:
+				self.screenPath = ""
 			if self.instance:
 				self.instance.setTitle(title)
 			self.summaries.setTitle(title)
@@ -248,7 +250,7 @@ class Screen(dict):
 				if not updateonly:
 					val.GUIcreate(parent)
 				if not val.applySkin(desktop, self):
-					print("[GUISkin] Warning: Skin is missing renderer '%s' in %s." % (val, str(self)))
+					print("[Screen] Warning: Skin is missing renderer '%s' in %s." % (val, str(self)))
 		for key in self:
 			val = self[key]
 			if isinstance(val, GUIComponent):
@@ -257,20 +259,19 @@ class Screen(dict):
 				depr = val.deprecationInfo
 				if val.applySkin(desktop, self):
 					if depr:
-						print("[GUISkin] WARNING: OBSOLETE COMPONENT '%s' USED IN SKIN. USE '%s' INSTEAD!" % (key, depr[0]))
-						print("[GUISkin] OBSOLETE COMPONENT WILL BE REMOVED %s, PLEASE UPDATE!" % depr[1])
+						print("[Screen] WARNING: OBSOLETE COMPONENT '%s' USED IN SKIN. USE '%s' INSTEAD!" % (key, depr[0]))
+						print("[Screen] OBSOLETE COMPONENT WILL BE REMOVED %s, PLEASE UPDATE!" % depr[1])
 				elif not depr:
-					print("[GUISkin] Warning: Skin is missing element '%s' in %s." % (key, str(self)))
+					print("[Screen] Warning: Skin is missing element '%s' in %s." % (key, str(self)))
 		for w in self.additionalWidgets:
 			if not updateonly:
 				w.instance = w.widget(parent)
 				# w.instance.thisown = 0
 			applyAllAttributes(w.instance, desktop, w.skinAttributes, self.scale)
 		for f in self.onLayoutFinish:
-			# DEBUG: if type(f) is not type(self.close):  # Is this the best way to do this?
-			# DEBUG: Is the following an acceptable fix?
 			if not isinstance(f, type(self.close)):
-				exec f in globals(), locals()
+				exec f in globals(), locals()  # Python 2
+				# exec(f, globals(), locals())  # Python 3
 			else:
 				f()
 
