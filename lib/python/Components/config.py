@@ -32,6 +32,7 @@ KEYA_PAGEUP = 22
 KEYA_PAGEDOWN = 23
 KEYA_PREV = 24
 KEYA_NEXT = 25
+KEYA_ERASE = 26
 
 # Deprecated / Legacy action key names...
 #
@@ -1132,12 +1133,12 @@ class ConfigFloat(ConfigSequence):
 
 	floatint = property(getFloatInt, setFloatInt)
 
-# an editable text...
+# An editable text item.
+#
 class ConfigText(ConfigElement, NumericalTextInput):
 	def __init__(self, default="", fixed_size=True, visible_width=False):
 		ConfigElement.__init__(self)
 		NumericalTextInput.__init__(self, nextFunc=self.nextFunc, handleTimeout=False)
-
 		self.marked_pos = 0
 		self.allmarked = (default != "")
 		self.fixed_size = fixed_size
@@ -1192,27 +1193,12 @@ class ConfigText(ConfigElement, NumericalTextInput):
 		self.marked_pos = 0
 
 	def handleKey(self, key):
-		# this will no change anything on the value itself
-		# so we can handle it here in gui element
-		if key == KEY_DELETE:
+		# This will no change anything on the value itself
+		# so we can handle it here in gui element.
+		if key == KEY_HOME:
 			self.timeout()
-			if self.allmarked:
-				self.deleteAllChars()
-				self.allmarked = False
-			else:
-				self.deleteChar(self.marked_pos)
-				if self.fixed_size and self.overwrite:
-					self.marked_pos += 1
-		elif key == KEY_BACKSPACE:
-			self.timeout()
-			if self.allmarked:
-				self.deleteAllChars()
-				self.allmarked = False
-			elif self.marked_pos > 0:
-				self.deleteChar(self.marked_pos - 1)
-				if not self.fixed_size and self.offset > 0:
-					self.offset -= 1
-				self.marked_pos -= 1
+			self.allmarked = False
+			self.marked_pos = 0
 		elif key == KEY_LEFT:
 			self.timeout()
 			if self.allmarked:
@@ -1227,14 +1213,32 @@ class ConfigText(ConfigElement, NumericalTextInput):
 				self.allmarked = False
 			else:
 				self.marked_pos += 1
-		elif key == KEY_HOME:
-			self.timeout()
-			self.allmarked = False
-			self.marked_pos = 0
 		elif key == KEY_END:
 			self.timeout()
 			self.allmarked = False
 			self.marked_pos = len(self.text)
+		elif key == KEY_BACKSPACE:
+			self.timeout()
+			if self.allmarked:
+				self.deleteAllChars()
+				self.allmarked = False
+			elif self.marked_pos > 0:
+				self.deleteChar(self.marked_pos - 1)
+				if not self.fixed_size and self.offset > 0:
+					self.offset -= 1
+				self.marked_pos -= 1
+		elif key == KEY_DELETE:
+			self.timeout()
+			if self.allmarked:
+				self.deleteAllChars()
+				self.allmarked = False
+			else:
+				self.deleteChar(self.marked_pos)
+				if self.fixed_size and self.overwrite:
+					self.marked_pos += 1
+		elif key == KEY_ERASE:
+			self.timeout()
+			self.deleteAllChars()
 		elif key == KEY_TOGGLEOW:
 			self.timeout()
 			self.overwrite = not self.overwrite
@@ -1335,6 +1339,7 @@ class ConfigText(ConfigElement, NumericalTextInput):
 
 	def unsafeAssign(self, value):
 		self.value = str(value)
+
 
 class ConfigPassword(ConfigText):
 	def __init__(self, default="", fixed_size=False, visible_width=False, censor="*"):
