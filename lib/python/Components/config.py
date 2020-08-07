@@ -1195,29 +1195,29 @@ class ConfigText(ConfigElement, NumericalTextInput):
 	def handleKey(self, key):
 		# This will no change anything on the value itself
 		# so we can handle it here in gui element.
-		if key == KEY_HOME:
+		if key == KEYA_HOME:
 			self.timeout()
 			self.allmarked = False
 			self.marked_pos = 0
-		elif key == KEY_LEFT:
+		elif key == KEYA_LEFT:
 			self.timeout()
 			if self.allmarked:
 				self.marked_pos = len(self.text)
 				self.allmarked = False
 			else:
 				self.marked_pos -= 1
-		elif key == KEY_RIGHT:
+		elif key == KEYA_RIGHT:
 			self.timeout()
 			if self.allmarked:
 				self.marked_pos = 0
 				self.allmarked = False
 			else:
 				self.marked_pos += 1
-		elif key == KEY_END:
+		elif key == KEYA_END:
 			self.timeout()
 			self.allmarked = False
 			self.marked_pos = len(self.text)
-		elif key == KEY_BACKSPACE:
+		elif key == KEYA_BACKSPACE:
 			self.timeout()
 			if self.allmarked:
 				self.deleteAllChars()
@@ -1227,7 +1227,7 @@ class ConfigText(ConfigElement, NumericalTextInput):
 				if not self.fixed_size and self.offset > 0:
 					self.offset -= 1
 				self.marked_pos -= 1
-		elif key == KEY_DELETE:
+		elif key == KEYA_DELETE:
 			self.timeout()
 			if self.allmarked:
 				self.deleteAllChars()
@@ -1236,13 +1236,13 @@ class ConfigText(ConfigElement, NumericalTextInput):
 				self.deleteChar(self.marked_pos)
 				if self.fixed_size and self.overwrite:
 					self.marked_pos += 1
-		elif key == KEY_ERASE:
+		elif key == KEYA_ERASE:
 			self.timeout()
 			self.deleteAllChars()
-		elif key == KEY_TOGGLEOW:
+		elif key == KEYA_TOGGLEOW:
 			self.timeout()
 			self.overwrite = not self.overwrite
-		elif key == KEY_ASCII:
+		elif key == KEYA_ASCII:
 			self.timeout()
 			newChar = unichr(getPrevAsciiCode())
 			if not self.useableChars or newChar in self.useableChars:
@@ -1251,14 +1251,14 @@ class ConfigText(ConfigElement, NumericalTextInput):
 					self.allmarked = False
 				self.insertChar(newChar, self.marked_pos, False)
 				self.marked_pos += 1
-		elif key in KEY_NUMBERS:
+		elif key in KEYA_NUMBERS:
 			owr = self.lastKey == getKeyNumber(key)
 			newChar = self.getKey(getKeyNumber(key))
 			if self.allmarked:
 				self.deleteAllChars()
 				self.allmarked = False
 			self.insertChar(newChar, self.marked_pos, owr)
-		elif key == KEY_TIMEOUT:
+		elif key == KEYA_TIMEOUT:
 			self.timeout()
 			if self.help_window:
 				self.help_window.update(self)
