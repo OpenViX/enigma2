@@ -356,7 +356,7 @@ class ConfigListScreen:
 		self.entryChanged()
 
 	def keyErase(self):
-		self["config"].handleKey(KEYA_DELETE)
+		self["config"].handleKey(KEYA_ERASE)
 		self.entryChanged()
 
 	def keyToggleOW(self):
