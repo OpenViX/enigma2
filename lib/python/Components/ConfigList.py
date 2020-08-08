@@ -265,7 +265,7 @@ class ConfigListScreen:
 		self.displayHelp(False)
 
 	def displayHelp(self, state):
-		if "config" in self and "HelpWindow" in self and self["config"].getCurrent() is not None:
+		if "config" in self and "HelpWindow" in self and self["config"].getCurrent() is not None and len(self["config"].getCurrent()) > 1:
 			currConf = self["config"].getCurrent()[1]
 			if isinstance(currConf, ConfigText) and currConf.help_window is not None and currConf.help_window.instance is not None:
 				if state:
