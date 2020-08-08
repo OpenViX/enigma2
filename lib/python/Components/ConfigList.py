@@ -122,17 +122,9 @@ class ConfigList(GUIComponent, object):
 		if self.instance is not None:
 			self.instance.moveSelection(self.instance.moveTop)
 
-	def moveBottom(self):
-		if self.instance is not None:
-			self.instance.moveSelection(self.instance.moveEnd)
-
 	def pageUp(self):
 		if self.instance is not None:
 			self.instance.moveSelection(self.instance.pageUp)
-
-	def pageDown(self):
-		if self.instance is not None:
-			self.instance.moveSelection(self.instance.pageDown)
 
 	def moveUp(self):
 		if self.instance is not None:
@@ -141,6 +133,14 @@ class ConfigList(GUIComponent, object):
 	def moveDown(self):
 		if self.instance is not None:
 			self.instance.moveSelection(self.instance.moveDown)
+
+	def pageDown(self):
+		if self.instance is not None:
+			self.instance.moveSelection(self.instance.pageDown)
+
+	def moveBottom(self):
+		if self.instance is not None:
+			self.instance.moveSelection(self.instance.moveEnd)
 
 
 class ConfigListScreen:
