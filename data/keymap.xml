@@ -131,8 +131,8 @@
 		<key id="KEY_PVR" mapto="menu" flags="m" />
 		<key id="KEY_VIDEO" mapto="menu" flags="m" />
 		<!-- Keyboard specific buttons -->
-		<key id="KEY_F1" mapto="cancel" flags="m" />
-		<key id="KEY_F2" mapto="save" flags="m" />
+		<key id="KEY_F5" mapto="cancel" flags="m" />
+		<key id="KEY_F6" mapto="save" flags="m" />
 		<key id="KEY_ESC" mapto="cancel" flags="b" />
 		<key id="KEY_ESC" mapto="close" flags="l" />
 		<key id="KEY_ENTER" mapto="select" flags="m" />
@@ -165,10 +165,10 @@
 		<key id="KEY_PVR" mapto="swap" flags="m" />
 		<key id="KEY_VIDEO" mapto="swap" flags="m" />
 		<!-- Keyboard specific buttons -->
-		<key id="KEY_F1" mapto="cancel" flags="m" />
-		<key id="KEY_F2" mapto="select" flags="m" />
-		<key id="KEY_F3" mapto="bookmark" flags="m" />
-		<key id="KEY_F4" mapto="rename" flags="m" />
+		<key id="KEY_F5" mapto="cancel" flags="m" />
+		<key id="KEY_F6" mapto="select" flags="m" />
+		<key id="KEY_F7" mapto="bookmark" flags="m" />
+		<key id="KEY_F8" mapto="rename" flags="m" />
 		<key id="KEY_ESC" mapto="cancel" flags="m" />
 		<key id="KEY_ENTER" mapto="select" flags="mr" />
 		<key id="KEY_PREVIOUSSONG" mapto="first" flags="m" />
