@@ -2674,7 +2674,7 @@ bool eDVBServicePlay::startTapToFD(int fd, const std::vector<int> &pids, int pac
 
 	demux->createTSRecorder(m_tap_recorder, packetsize, false);
 
-	if(m_tap_recorder == nullptr)
+	if (!m_tap_recorder)
 	{
 		eWarning("[eServiceTap] tap create recorder failed");
 		return(false);
@@ -2693,11 +2693,8 @@ bool eDVBServicePlay::startTapToFD(int fd, const std::vector<int> &pids, int pac
 
 void eDVBServicePlay::stopTapToFD()
 {
-	if(m_tap_recorder != nullptr)
-	{
-		m_tap_recorder->stop();
-		m_tap_recorder = nullptr;
-	}
+	m_tap_recorder->stop();
+	m_tap_recorder = 0;
 }
 
 PyObject *eDVBServicePlay::getCutList()
