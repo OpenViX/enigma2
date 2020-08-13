@@ -24,17 +24,17 @@ class eEncoder
 			IOCTL_BROADCOM_STOP_TRANSCODING = 200,
 		};
 
-		class EncoderContext : public eThread
+		class encoder_t : public eThread
 		{
 			public:
 
-				EncoderContext(int encoder_index_in, int decoder_index_in, eNavigation *navigation_instance_in)
+				encoder_t(int encoder_in, int decoder_in, eNavigation *navigation_instance_in) :
+						encoder(encoder_in),
+						decoder(decoder_in),
+						fd(-1),
+						state(state_idle),
+						navigation_instance(navigation_instance_in)
 				{
-					encoder = encoder_in;
-					decoder = decoder_in;
-					fd = -1;
-					state = state_idle;
-					navigation_instance = navigation_instance_in;
 				}
 
 				int encoder;
@@ -55,7 +55,7 @@ class eEncoder
 				void thread(void);
 		};
 
-		std::vector<EncoderContext> encoder;
+		std::vector<encoder_t> encoder;
 		bool bcm_encoder;
 		ePtr<eConnection> m_nav_event_connection_0;
 		ePtr<eConnection> m_nav_event_connection_1;
