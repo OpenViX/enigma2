@@ -2661,7 +2661,7 @@ bool eDVBServicePlay::startTapToFD(int fd, const std::vector<int> &pids, int pac
 {
 	ePtr<iDVBDemux> demux;
 
-	eDebug("[eServiceTap] start tap");
+	eDebug("[eServiceTap] Start tap");
 
 	if(m_tap_recorder)
 	{

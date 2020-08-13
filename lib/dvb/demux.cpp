@@ -486,7 +486,7 @@ int eDVBRecordFileThread::AsyncIO::wait()
 			int r = aio_suspend(&paio, 1, NULL);
 			if (r < 0)
 			{
-				eWarning("[eDVBRecordFileThread] aio_suspend failed: %m");
+				eDebug("[eDVBRecordFileThread] aio_suspend failed: %m");
 				return -1;
 			}
 		}
@@ -494,7 +494,7 @@ int eDVBRecordFileThread::AsyncIO::wait()
 		aio.aio_buf = NULL;
 		if (r < 0)
 		{
-			eWarning("[eDVBRecordFileThread] wait: aio_return returned failure: %m");
+			eDebug("[eDVBRecordFileThread] wait: aio_return returned failure: %m");
 			return -1;
 		}
 	}
@@ -522,7 +522,7 @@ int eDVBRecordFileThread::AsyncIO::poll()
 	aio.aio_buf = NULL;
 	if (r < 0)
 	{
-		eWarning("[eDVBRecordFileThread] poll: aio_return returned failure: %d %m", r);
+		eDebug("[eDVBRecordFileThread] poll: aio_return returned failure: %m");
 		return -1;
 	}
 	return 0;
@@ -559,7 +559,7 @@ int eDVBRecordFileThread::asyncWrite(int len)
 	int r = m_current_buffer->start(m_fd_dest, m_current_offset, len, m_buffer);
 	if (r < 0)
 	{
-		eWarning("[eDVBRecordFileThread] aio_write failed: %m");
+		eDebug("[eDVBRecordFileThread] aio_write failed: %m");
 		return r;
 	}
 	m_current_offset += len;
@@ -582,15 +582,12 @@ int eDVBRecordFileThread::asyncWrite(int len)
 		--i;
 		if (i == m_current_buffer)
 		{
-			eWarning("[eFilePushThreadRecorder] Warning: All write buffers busy");
+			eDebug("[eFilePushThreadRecorder] Warning: All write buffers busy");
 			break;
 		}
 		r = i->poll();
 		if (r < 0)
-		{
-			eWarning("[eDVBRecordFileThread] poll failed: %d", r);
 			return r;
-		}
 	}
 	++m_buffer_use_histogram[busy_count];
 
