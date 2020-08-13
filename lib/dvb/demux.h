@@ -50,6 +50,7 @@ private:
 	friend class eDVBCAService;
 	friend class eTSMPEGDecoder;
 	sigc::signal1<void, int> m_event;
+
 	int openDemux(void);
 };
 
@@ -93,7 +94,7 @@ public:
 class eDVBRecordFileThread: public eFilePushThreadRecorder
 {
 public:
-	eDVBRecordFileThread(int packetsize, int bufferCount, int buffersize = -1);
+	eDVBRecordFileThread(int packetsize, int bufferCount);
 	~eDVBRecordFileThread();
 	void setTimingPID(int pid, iDVBTSRecorder::timing_pid_type pidtype, int streamtype);
 	void startSaveMetaInformation(const std::string &filename);
@@ -134,8 +135,7 @@ protected:
 class eDVBRecordStreamThread: public eDVBRecordFileThread
 {
 public:
-	eDVBRecordStreamThread(int packetsize, int buffersize = -1);
-
+	eDVBRecordStreamThread(int packetsize);
 protected:
 	int writeData(int len);
 	void flush();
