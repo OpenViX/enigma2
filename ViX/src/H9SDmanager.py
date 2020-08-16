@@ -32,7 +32,6 @@ class H9SDmanager(Screen):
 		Screen.__init__(self, session)
 		self.skinName = "H9SDmanager"
 		self.setTitle(_("H9 SDcard manager"))
-		self.title = screentitle
 		self["labe14"] = StaticText(_("Press appropiate Init to move Nand root to SDcard."))
 		self["key_red"] = StaticText(_("Reboot"))
 		self["key_green"] = StaticText(_("Init SDcard"))
@@ -46,7 +45,7 @@ class H9SDmanager(Screen):
 		self.onLayoutFinish.append(self.layoutFinished)
 
 	def layoutFinished(self):
-		self.setTitle(self.title)
+		self.setTitle(_("H9 SDcard manager"))
 
 	def SDInit(self):
 		if SystemInfo["HasH9SD"]:
