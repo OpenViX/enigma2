@@ -1354,7 +1354,7 @@ class ImageManagerDownload(Screen):
 				try:
 					conn = urlopen(self.urlBox)
 					html = conn.read()
-				except HTTPError as e:
+				except:
 					print "[ImageManager] HTTP download ERROR: %s" % e.code
 					continue
 				soup = BeautifulSoup(html)
