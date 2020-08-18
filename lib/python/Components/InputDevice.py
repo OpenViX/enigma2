@@ -5,6 +5,11 @@ import struct
 from boxbranding import getBrandOEM
 from .config import config, ConfigInteger, ConfigSlider, ConfigSubsection, ConfigText, ConfigYesNo
 from .SystemInfo import SystemInfo
+import errno
+import xml.etree.cElementTree
+from enigma import eRCInput
+from keyids import KEYIDS
+from RcModel import rc_model
 
 # include/uapi/asm-generic/ioctl.h
 IOC_NRBITS = 8L
@@ -138,6 +143,7 @@ class InitInputDevices:
 			self.currentDevice = device
 			#print "[InputDevice] creating config entry for device: %s -> %s  " % (self.currentDevice, iInputDevices.Devices[device]["name"])
 			self.setupConfigEntries(self.currentDevice)
+			self.remapRemoteControl(self.currentDevice)
 			self.currentDevice = ""
 
 	def inputDevicesEnabledChanged(self,configElement):
@@ -191,6 +197,59 @@ class InitInputDevices:
 		cmd = "config.inputDevices.%s.delay.addNotifier(self.inputDevicesDelayChanged,config.inputDevices.%s.delay)" % (device, device)
 		exec(cmd)
 
+	def remapRemoteControl(self, device):
+		filename = rc_model.getRcPositions()
+		domRemote = self.loadRemoteControl(filename)
+		logRemaps = []
+		remapButtons = {}
+		if domRemote is not None:
+			rc = domRemote.find("rc")
+			if rc is not None:
+				for button in rc.findall("button"):
+					keyid = KEYIDS.get(button.attrib.get("keyid"))
+					remap = KEYIDS.get(button.attrib.get("remap"))
+					if keyid is not None and remap is not None:
+						logRemaps.append((button.attrib.get("keyid"), button.attrib.get("remap")))
+						remapButtons[keyid] = remap
+		if len(logRemaps):
+			print("[InputDevice] Remapping remote control buttons for '%s':" % filename)
+			for remap in logRemaps:
+				print("[InputDevice] Remapping '%s' to '%s'." % (remap[0], remap[1]))
+			for evdev, evdevinfo in iInputDevices.Devices.items():
+				if evdevinfo["type"] == "remote":
+					res = eRCInput.getInstance().setKeyMapping(evdevinfo["name"], remapButtons)
+					resStr = {
+						eRCInput.remapOk: "Remap completed okay.",
+						eRCInput.remapUnsupported: "Error: Remapping not supported on device!",
+						eRCInput.remapFormatErr: "Error: Remap map in incorrect format!",
+						eRCInput.remapNoSuchDevice: "Error: Unknown device!",
+					}.get(res, "Error: Unknown error!")
+					print("[InputDevice] Remote remap evdev='%s', name='%s': %s" % (evdev, evdevinfo["name"], resStr))
+
+	def loadRemoteControl(self, filename):
+		domRemote = None
+		try:
+			with open(filename, "r") as fd:  # This open gets around a possible file handle leak in Python's XML parser.
+				try:
+					domRemote = xml.etree.cElementTree.parse(fd).getroot()
+				except xml.etree.cElementTree.ParseError as err:
+					fd.seek(0)
+					content = fd.readlines()
+					line, column = err.position
+					print("[RCRemap] XML Parse Error: '%s' in '%s'!" % (err, filename))
+					data = content[line - 1].replace("\t", " ").rstrip()
+					print("[RCRemap] XML Parse Error: '%s'" % data)
+					print("[RCRemap] XML Parse Error: '%s^%s'" % ("-" * column, " " * (len(data) - column - 1)))
+				except Exception as err:
+					print("[Skin] Error: Unable to parse remote control data in '%s' - '%s'!" % (filename, err))
+		except (IOError, OSError) as err:
+			if err.errno == errno.ENOENT:  # No such file or directory
+				print("[RCRemap] Warning: Remote control file '%s' does not exist!" % filename)
+			else:
+				print("[RCRemap] Error %d: Opening remote control file '%s'! (%s)" % (err.errno, filename, err.strerror))
+		except Exception as err:
+			print("[RCRemap] Error: Unexpected error opening remote control file '%s'! (%s)" % (filename, err))
+		return domRemote
 
 iInputDevices = inputDevices()
 
