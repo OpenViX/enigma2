@@ -147,9 +147,9 @@ self.session.open(SABnzbdSetupScreen)
 				<item level="2" text="Password" entryID="password_setup"><screen module="NetworkSetup" screen="NetworkPassword"/></item>
 			</menu>
 			<!-- Menu / Setup / Common Interface -->
-			<menu weight="7" text="Common interface" entryID="cicam_setup">
+			<menu weight="7" text="Common interface" entryID="cicam_setup" requires="CommonInterface">
 				<id val="cicam"/>
-				<item weight="10" level="1" text="Common interface" entryID="ci_setup" requires="CommonInterface"><screen module="Ci" screen="CiSelection"/></item>
+				<item weight="10" level="1" text="Common interface" entryID="ci_setup"><screen module="Ci" screen="CiSelection"/></item>
 			</menu>
 			<!-- Menu / Setup / Softcam -->
 			<menu weight="8" text="Softcam" entryID="cam_setup">
