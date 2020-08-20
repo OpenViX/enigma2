@@ -420,7 +420,7 @@
 		<item level="2" text="Show bouquet on launch" description="If set to 'yes' the bouquets will be shown each time you open the EPG.">config.epgselection.grid.showbouquet</item>
 		<item level="2" text="Channel selection" description="Choose what channel to select when the EPG opens.">config.epgselection.grid.browse_mode</item>
 		<item level="2" text="Channel preview mode" description="If set to 'yes' you can preview channels in the EPG list.">config.epgselection.grid.preview_mode</item>
-		<item level="2" text="Show small TV window" description="If set to 'yes' shows a small TV screen in the EPG.">config.epgselection.grid.pig</item>
+		<item level="2" text="Picture in graphic" description="If set to 'yes' shows a small TV screen in the EPG.">config.epgselection.grid.pig</item>
 		<item level="1" text="Highlight current events" description="Enable to highlight events that are currently in progress.">config.epgselection.grid.highlight_current_events</item>
 		<item level="2" text="Service Title mode" description="Configure to show the channel names, picons, or both in the EPG.">config.epgselection.grid.servicetitle_mode</item>
 		<item level="2" text="Skip empty services" description="If set to 'yes' channels without EPG will not be shown.">config.epgselection.overjump</item>
