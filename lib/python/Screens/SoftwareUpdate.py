@@ -60,31 +60,10 @@ class UpdateChoices(ChoiceBox):
 			self['tl_yellow'] = Pixmap()
 			self['tl_green'] = Pixmap()
 
-		self["actions"] = NumberActionMap(["WizardActions", "InputActions", "ColorActions", "DirectionActions", "MenuActions"],
+		self["menuActions"] = NumberActionMap(["MenuActions"],
 		{
-			"ok": self.go,
-			"1": self.keyNumberGlobal,
-			"2": self.keyNumberGlobal,
-			"3": self.keyNumberGlobal,
-			"4": self.keyNumberGlobal,
-			"5": self.keyNumberGlobal,
-			"6": self.keyNumberGlobal,
-			"7": self.keyNumberGlobal,
-			"8": self.keyNumberGlobal,
-			"9": self.keyNumberGlobal,
-			"0": self.keyNumberGlobal,
-			"red": self.keyRed,
-			"green": self.keyGreen,
-			"yellow": self.keyYellow,
-			"blue": self.keyBlue,
-			"up": self.up,
-			"down": self.down,
-			"left": self.left,
-			"right": self.right,
-			"shiftUp": self.additionalMoveUp,
-			"shiftDown": self.additionalMoveDown,
 			"menu": self.opensettings
-		}, prio=-2)
+		}, prio=-3) # Override ChoiceBox "menu" action
 		self.onShown.append(self.onshow)
 
 	def onshow(self):
