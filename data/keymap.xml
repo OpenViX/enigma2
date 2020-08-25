@@ -44,10 +44,10 @@
 		<key id="KEY_REWIND" mapto="top" flags="m" />
 		<key id="KEY_CHANNELUP" mapto="pageUp" flags="mr" />
 		<key id="KEY_UP" mapto="up" flags="mr" />
-		<key id="KEY_PREVIOUS" mapto="first" flags="m" />
+		<!-- <key id="KEY_PREVIOUS" mapto="first" flags="m" /> -->
 		<key id="KEY_LEFT" mapto="left" flags="mr" />
 		<key id="KEY_RIGHT" mapto="right" flags="mr" />
-		<key id="KEY_NEXT" mapto="last" flags="m" />
+		<!-- <key id="KEY_NEXT" mapto="last" flags="m" /> -->
 		<key id="KEY_DOWN" mapto="down" flags="mr" />
 		<key id="KEY_CHANNELDOWN" mapto="pageDown" flags="mr" />
 		<key id="KEY_FASTFORWARD" mapto="bottom" flags="m" />
@@ -90,15 +90,18 @@
 		<key id="KEY_BACK" mapto="backspace" flags="mr" />
 		<key id="KEY_LAST" mapto="backspace" flags="mr" />
 		<key id="KEY_STOP" mapto="backspace" flags="mr" />
+		<key id="KEY_PREVIOUS" mapto="backspace" flags="mr" /><!-- Was for navigation. -->
 		<key id="KEY_PLAYPAUSE" mapto="delete" flags="mr" />
 		<key id="KEY_PLAY" mapto="delete" flags="mr" />
 		<key id="KEY_PAUSE" mapto="delete" flags="mr" />
+		<key id="KEY_NEXT" mapto="delete" flags="mr" /><!-- Was for navigation. -->
 		<key id="KEY_FILE" mapto="erase" flags="m" />
 		<key id="KEY_LIST" mapto="erase" flags="m" />
 		<key id="KEY_MEDIA" mapto="erase" flags="m" />
 		<key id="KEY_PVR" mapto="erase" flags="m" />
 		<key id="KEY_VIDEO" mapto="erase" flags="m" />
 		<key id="KEY_INFO" mapto="toggleOverwrite" flags="m" />
+		<key id="KEY_SUBTITLE" mapto="toggleOverwrite" flags="m" />
 		<!-- Keyboard specific buttons -->
 		<key id="KEY_BACKSPACE" mapto="backspace" flags="mr" />
 		<key id="KEY_DELETE" mapto="delete" flags="mr" />
@@ -191,12 +194,12 @@
 		<key id="KEY_OK" mapto="select" flags="mr" />
 		<key id="KEY_TEXT" mapto="locale" flags="m" />
 		<key id="KEY_UP" mapto="up" flags="mr" />
-		<key id="KEY_PREVIOUS" mapto="first" flags="m" />
+		<!-- <key id="KEY_PREVIOUS" mapto="first" flags="m" /> -->
 		<key id="KEY_REWIND" mapto="prev" flags="mr" />
 		<key id="KEY_LEFT" mapto="left" flags="mr" />
 		<key id="KEY_RIGHT" mapto="right" flags="mr" />
 		<key id="KEY_FASTFORWARD" mapto="next" flags="mr" />
-		<key id="KEY_NEXT" mapto="last" flags="m" />
+		<!-- <key id="KEY_NEXT" mapto="last" flags="m" /> -->
 		<key id="KEY_DOWN" mapto="down" flags="mr" />
 		<!-- Keyboard specific buttons -->
 		<key id="KEY_F5" mapto="cancel" flags="m" />
@@ -222,14 +225,19 @@
 			<key id="a" mapto="up" flags="mr" />
 			<key id="b" mapto="down" flags="mr" />
 		</device>
+		<key id="KEY_REWIND" mapto="moveTop" flags="m" />
+		<key id="KEY_LEFT" mapto="pageUp" flags="mr" /><!-- DEBUG: This creates an inconsistent UI and should be deprecated! -->
+		<key id="KEY_CHANNELUP" mapto="pageUp" flags="mr" />
 		<key id="KEY_UP" mapto="moveUp" flags="mr" />
 		<key id="KEY_DOWN" mapto="moveDown" flags="mr" />
-		<key id="KEY_HOME" mapto="moveTop" flags="mr" />
-		<key id="KEY_END" mapto="moveEnd" flags="mr" />
+		<key id="KEY_RIGHT" mapto="pageDown" flags="mr" /><!-- DEBUG: This creates an inconsistent UI and should be deprecated! -->
+		<key id="KEY_CHANNELDOWN" mapto="pageDown" flags="mr" />
+		<key id="KEY_FASTFORWARD" mapto="moveEnd" flags="m" />
+		<!-- Keyboard specific buttons -->
+		<key id="KEY_HOME" mapto="moveTop" flags="m" />
 		<key id="KEY_PAGEUP" mapto="pageUp" flags="mr" />
 		<key id="KEY_PAGEDOWN" mapto="pageDown" flags="mr" />
-		<key id="KEY_LEFT" mapto="pageUp" flags="mr" />
-		<key id="KEY_RIGHT" mapto="pageDown" flags="mr" />
+		<key id="KEY_END" mapto="moveEnd" flags="m" />
 		<key id="1" mapto="moveUp" flags="mr" />
 		<key id="2" mapto="moveDown" flags="mr" />
 	</map>
@@ -632,7 +640,6 @@
 		<key id="KEY_9" mapto="seekdef:9" flags="m" />
 	</map>
 
-
 	<map context="MediaPlayerSeekActions">
 		<device name="dreambox advanced remote control (native)">
 			<key id="KEY_PREVIOUSSONG" mapto="seekBack" flags="b" />
@@ -869,15 +876,21 @@
 	</map>
 
 	<map context="OkCancelActions">
-		<key id="\x0a" mapto="ok" flags="m" />
-		<key id="\x1b" mapto="cancel" flags="m" />
-		<!-- use this on rcu, ok? -->
 		<key id="KEY_OK" mapto="ok" flags="m" />
 		<key id="KEY_OK" mapto="OK" flags="b" />
 		<key id="KEY_OK" mapto="OKLong" flags="l" />
 		<key id="KEY_EXIT" mapto="cancel" flags="m" />
+		<!-- <key id="KEY_EXIT" mapto="CANCEL" flags="b" /> -->
+		<!-- <key id="KEY_EXIT" mapto="close" flags="l" /> -->
+		<!-- Keyboard specific buttons -->
 		<key id="KEY_ENTER" mapto="ok" flags="m" />
+		<key id="KEY_ENTER" mapto="OK" flags="b" />
+		<key id="KEY_ENTER" mapto="OKLong" flags="l" />
 		<key id="KEY_ESC" mapto="cancel" flags="m" />
+		<key id="KEY_ESC" mapto="CANCEL" flags="b" />
+		<key id="KEY_ESC" mapto="close" flags="l" />
+		<key id="\x0a" mapto="ok" flags="m" />
+		<key id="\x1b" mapto="cancel" flags="m" />
 	</map>
 
 	<map context="DirectionActions">
