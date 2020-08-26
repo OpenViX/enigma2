@@ -238,7 +238,7 @@ class CableTransponderSearchSupport:
 				self.cable_search_session["text"].setText(tmpstr)
 
 	def startCableTransponderSearch(self, nim_idx):
-		def GetCommand(nimIdx):
+		def GetCommand(nim_idx):
 			_supportNimType   = { 'SSH108':'ssh108' }
 			_nimSocket = {}
 			fp = file('/proc/bus/nim_sockets')
