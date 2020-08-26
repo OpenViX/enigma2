@@ -7,7 +7,6 @@ from Components.SystemInfo import SystemInfo
 from Components.ConfigList import ConfigListScreen
 from Components.NimManager import nimmanager, getConfigSatlist
 from Components.Label import Label
-from Components.Sources.StaticText import StaticText
 from Tools.HardwareInfo import HardwareInfo
 from Tools.Transponder import getChannelNumber, supportedChannels, channel2frequency
 from Screens.InfoBar import InfoBar
