@@ -105,52 +105,52 @@ class FactoryReset(Setup, ProtectedScreen):
 			elif file.endswith(".mvi"):
 				self.skins.append(file)
 			else:
-				# print "[FactoryReset] DEBUG: Unclassified file='%s'." % file
+				# print("[FactoryReset] DEBUG: Unclassified file='%s'." % file)
 				self.others.append(file)
 
 	def keySave(self):
 		configDir = resolveFilename(SCOPE_CONFIG)
 		if self.resetFull.value:
-			print "[FactoryReset] Performing a full factory reset."
+			print("[FactoryReset] Performing a full factory reset.")
 			self.wipeFiles(configDir, [""])
 			defaultFiles = pathjoin(resolveFilename(SCOPE_SKIN), "defaults", ".")
 			if isdir(defaultFiles):
-				print "[FactoryReset] Copying default configuration from '%s'." % defaultFiles
+				print("[FactoryReset] Copying default configuration from '%s'." % defaultFiles)
 				system("cp -a %s %s" % (defaultFiles, configDir))
 			else:
-				print "[FactoryReset] Warning: No default configuration is available!"
+				print("[FactoryReset] Warning: No default configuration is available!")
 		else:
 			if len(self.bouquets) and self.resetBouquets.value:
-				print "[FactoryReset] Performing a bouquets reset."
+				print("[FactoryReset] Performing a bouquets reset.")
 				self.wipeFiles(configDir, self.bouquets)
 			if len(self.keymaps) and self.resetKeymaps.value:
-				print "[FactoryReset] Performing a keymap reset."
+				print("[FactoryReset] Performing a keymap reset.")
 				self.wipeFiles(configDir, self.keymaps)
 			if len(self.networks) and self.resetNetworks.value:
-				print "[FactoryReset] Performing a networks reset."
+				print("[FactoryReset] Performing a networks reset.")
 				self.wipeFiles(configDir, self.networks)
 			if len(self.plugins) and self.resetPlugins.value:
-				print "[FactoryReset] Performing a plugins reset."
+				print("[FactoryReset] Performing a plugins reset.")
 				self.wipeFiles(configDir, self.plugins)
 			if len(self.resumePoints) and self.resetResumePoints.value:
-				print "[FactoryReset] Performing a resume points reset."
+				print("[FactoryReset] Performing a resume points reset.")
 				self.wipeFiles(configDir, self.resumePoints)
 			if len(self.settings) and self.resetSettings.value:
-				print "[FactoryReset] Performing a settings reset."
+				print("[FactoryReset] Performing a settings reset.")
 				self.wipeFiles(configDir, self.settings)
 			if len(self.skins) and self.resetSkins.value:
-				print "[FactoryReset] Performing a skins reset."
+				print("[FactoryReset] Performing a skins reset.")
 				self.wipeFiles(configDir, self.skins)
 			if len(self.timers) and self.resetTimers.value:
-				print "[FactoryReset] Performing a timers reset."
+				print("[FactoryReset] Performing a timers reset.")
 				self.wipeFiles(configDir, self.timers)
 			if len(self.others) and self.resetOthers.value:
-				print "[FactoryReset] Performing an other files reset."
+				print("[FactoryReset] Performing an other files reset.")
 				self.wipeFiles(configDir, self.others)
-		print "[FactoryReset] Stopping the active service to display the backdrop."
+		print("[FactoryReset] Stopping the active service to display the backdrop.")
 		self.session.nav.stopService()
 		system("/usr/bin/showiframe /usr/share/backdrop.mvi")
-		print "[FactoryReset] Stopping and exiting enigma2."
+		print("[FactoryReset] Stopping and exiting enigma2.")
 		_exit(0)
 		self.close()  # We should never get to here!
 
@@ -159,14 +159,14 @@ class FactoryReset(Setup, ProtectedScreen):
 			target = pathjoin(path, file)
 			try:
 				if isdir(target):
-					# print "[FactoryReset] DEBUG: Removing directory '%s'." % target
+					# print("[FactoryReset] DEBUG: Removing directory '%s'." % target)
 					shutil.rmtree(target)
 				else:
-					# print "[FactoryReset] DEBUG: Removing file '%s'." % target
+					# print("[FactoryReset] DEBUG: Removing file '%s'." % target)
 					remove(target)
 			except (IOError, OSError) as err:
 				if err.errno != errno.ENOENT:
-					print "[FactoryReset] Error: Unable to delete '%s'!  (%s)" % (target, str(err))
+					print("[FactoryReset] Error: Unable to delete '%s'!  (%s)" % (target, str(err)))
 
 	def keyCancel(self):  # Old Setup close key method.
 		self.closeConfigList(recursiveClose=False)
