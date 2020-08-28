@@ -46,7 +46,6 @@ class Screen(dict):
 		self.summaries = CList()
 		self["Title"] = StaticText()
 		self["ScreenPath"] = StaticText()
-		self["menu_path_compressed"] = StaticText()  # Support legacy screen history skins.
 		self.screenPath = ""  # This is the current screen path without the title.
 		self.screenTitle = ""  # This is the current screen title without the path.
 
