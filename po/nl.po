@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-22 18:16+0000\n"
-"PO-Revision-Date: 2020-08-24 08:49+0200\n"
+"POT-Creation-Date: 2020-08-27 02:52+0000\n"
+"PO-Revision-Date: 2020-08-28 08:39+0200\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -1775,6 +1775,9 @@ msgstr "Voegt schema toe..."
 
 msgid "Additional Info"
 msgstr "Aanvullende info"
+
+msgid "Additional cable of motorized LNB"
+msgstr "Extra kabel van gemotoriseerde LNB"
 
 msgid "Additional motor options allow you to enter details from your motor's spec sheet so enigma can work out how long it will take to move the dish from one satellite to another satellite."
 msgstr "Aanvullende motoropties geven de mogelijkheid de specifieke eigenschappen van uw motor in te stellen."
@@ -11785,6 +11788,9 @@ msgstr "Inhoudslijst voor verzameling"
 msgid "Tags"
 msgstr "Markeringen"
 
+msgid "Taiwan"
+msgstr "Taiwan"
+
 msgid "Tajikistan"
 msgstr "Tajikistan"
 
@@ -14203,9 +14209,6 @@ msgstr "[TimeShift] Timeshift wordt herstart!"
 msgid "[Timeshift] Merging records failed!"
 msgstr "[Timeshift] Samenvoegen van opnames is milukt!"
 
-msgid "[a]"
-msgstr "[a]"
-
 msgid "[alternative edit]"
 msgstr "[alternatieven bewerken]"
 
@@ -14235,6 +14238,9 @@ msgstr "activeer PiP lang"
 
 msgid "add bookmark"
 msgstr "markeerpunt toevoegen"
+
+msgid "additional cable of rotor"
+msgstr "Extra kabel van rotor"
 
 msgid "address:"
 msgstr "adres:"
@@ -15099,6 +15105,9 @@ msgstr "rock/pop"
 
 msgid "romance"
 msgstr "romantiek"
+
+msgid "rotor"
+msgstr "rotor: "
 
 msgid "running..."
 msgstr "actief..."
@@ -17160,6 +17169,9 @@ msgstr "zapte"
 
 #~ msgid "Zap back to service before tuner setup?"
 #~ msgstr "Wilt u terug naar het vorige kanaal"
+
+#~ msgid "[a]"
+#~ msgstr "[a]"
 
 #~ msgid "bc%s"
 #~ msgstr "bc%s"
