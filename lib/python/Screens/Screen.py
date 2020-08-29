@@ -165,7 +165,6 @@ class Screen(dict):
 			screenPath = ""
 			screenTitle = title
 		self["ScreenPath"].text = screenPath
-		self["menu_path_compressed"].text = screenPath  # Support legacy screen history skins.
 		self["Title"].text = screenTitle
 
 	def getTitle(self):
