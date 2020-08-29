@@ -94,7 +94,19 @@ def InitUsageConfig():
 	config.usage.show_picon_bkgrn = ConfigSelection(default = "transparent", choices = [("none", _("Disabled")), ("transparent", _("Transparent")), ("blue", _("Blue")), ("red", _("Red")), ("black", _("Black")), ("white", _("White")), ("lightgrey", _("Light Grey")), ("grey", _("Grey"))])
 	config.usage.show_genre_info = ConfigYesNo(default=False)
 	config.usage.menu_show_numbers = ConfigYesNo(default = False)
-	config.usage.show_menupath = ConfigSelection(default = "small", choices = [("off", _("None")), ("small", _("Small")), ("large", _("Large"))])
+	config.usage.showScreenPath = ConfigSelection(default="small", choices=[("off", _("None")), ("small", _("Small")), ("large", _("Large"))])
+	# The following code is to be short lived and exists to transition
+	# settings from the old config.usage.show_menupath to the new
+	# config.usage.showScreenPath as this is the value to now shared
+	# by all images.  Thise code will transition the setting and then
+	# remove the old entry from user's settings files.
+	config.usage.show_menupath = ConfigSelection(default="small", choices=[("off", _("None")), ("small", _("Small")), ("large", _("Large"))])
+	if config.usage.show_menupath.value != config.usage.show_menupath.default:
+		config.usage.showScreenPath.value = config.usage.show_menupath.value
+		config.usage.show_menupath.value = config.usage.show_menupath.default
+		config.usage.save()
+		print("[UserConfig] DEBUG: The 'show_menupath' setting of '%s' has been transferred to 'showScreenPath'." % config.usage.showScreenPath.value)
+	# End of temporary code.
 	config.usage.show_spinner = ConfigYesNo(default = True)
 	config.usage.enable_tt_caching = ConfigYesNo(default = True)
 	config.usage.sort_settings = ConfigYesNo(default = False)
