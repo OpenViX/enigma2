@@ -155,10 +155,10 @@ class Screen(dict):
 		except AttributeError:
 			pass
 		self.screenTitle = title
-		if config.usage.show_menupath.value == "large":
+		if config.usage.showScreenPath.value == "large":
 			screenPath = ""
 			screenTitle = "%s > %s" % (self.screenPath, title) if self.screenPath else title
-		elif config.usage.show_menupath.value == "small":
+		elif config.usage.showScreenPath.value == "small":
 			screenPath = "%s >" % self.screenPath if self.screenPath else ""
 			screenTitle = title
 		else:
