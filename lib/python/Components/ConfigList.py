@@ -148,19 +148,12 @@ class ConfigListScreen:
 		self.entryChanged = on_change if on_change is not None else lambda: None
 		if "key_menu" not in self:
 			self["key_menu"] = StaticText(_("MENU"))
-		if "key_red" not in self:
-			self["key_red"] = StaticText(_("Cancel"))
-		if "key_green" not in self:
-			self["key_green"] = StaticText(_("Save"))
 		if "HelpWindow" not in self:
 			self["HelpWindow"] = Pixmap()
 			self["HelpWindow"].hide()
 		if "VKeyIcon" not in self:
 			self["VKeyIcon"] = Boolean(False)
 		self["configActions"] = HelpableActionMap(self, ["ConfigListActions"], {
-			"cancel": (self.keyCancel, _("Cancel any changed settings and exit")),
-			"close": (self.closeRecursive, _("Cancel any changed settings and exit all menus")),
-			"save": (self.keySave, _("Save all changed settings and exit")),
 			"ok": (self.keySelect, _("Select, toggle, process or edit the current entry")),
 			"select": (self.keySelect, _("Select, toggle, process or edit the current entry"))
 		}, prio=1, description=_("Common Setup Functions"))
