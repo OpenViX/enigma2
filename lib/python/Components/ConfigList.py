@@ -144,8 +144,18 @@ class ConfigList(GUIComponent, object):
 
 
 class ConfigListScreen:
-	def __init__(self, list, session=None, on_change=None):
+	def __init__(self, list, session=None, on_change=None, fullUI=False):
 		self.entryChanged = on_change if on_change is not None else lambda: None
+		if fullUI:
+			if "key_red" not in self:
+				self["key_red"] = StaticText(_("Cancel"))
+			if "key_green" not in self:
+				self["key_green"] = StaticText(_("Save"))
+			self["fullUIActions"] = HelpableActionMap(self, ["ConfigListActions"], {
+				"cancel": (self.keyCancel, _("Cancel any changed settings and exit")),
+				"close": (self.closeRecursive, _("Cancel any changed settings and exit all menus")),
+				"save": (self.keySave, _("Save all changed settings and exit"))
+			}, prio=1, description=_("Common Setup Functions"))
 		if "key_menu" not in self:
 			self["key_menu"] = StaticText(_("MENU"))
 		if "HelpWindow" not in self:
