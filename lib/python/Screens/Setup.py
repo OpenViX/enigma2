@@ -24,7 +24,7 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 	ALLOW_SUSPEND = True
 
 	def __init__(self, session, setup, plugin=None, PluginLanguageDomain=None):
-		Screen.__init__(self, session)
+		Screen.__init__(self, session, mandatoryWidgets=["config", "footnote", "description"])
 		HelpableScreen.__init__(self)
 		self.setup = setup
 		self.plugin = plugin
@@ -35,8 +35,8 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 		else:
 			self.skinName = []
 		if setup:
-			self.skinName.append("Setup%s" % setup)
-			self.skinName.append("setup_%s" % setup)  # DEBUG: Old setup screen.
+			self.skinName.append("Setup%s" % setup)  # DEBUG: Proposed for new setup screens.
+			self.skinName.append("setup_%s" % setup)
 		self.skinName.append("Setup")
 		self.onChangedEntry = []
 		self.list = []
