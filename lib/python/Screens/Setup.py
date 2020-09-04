@@ -29,7 +29,6 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 		self.setup = setup
 		self.plugin = plugin
 		self.pluginLanguageDomain = PluginLanguageDomain
-		self.onChangedEntry = []
 		if hasattr(self, "skinName"):
 			if not isinstance(self.skinName, list):
 				self.skinName = [self.skinName]
@@ -38,11 +37,13 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 		if setup:
 			self.skinName.append("Setup_%s" % setup)
 		self.skinName.append("Setup")
+		self.onChangedEntry = []
 		self.list = []
 		ConfigListScreen.__init__(self, self.list, session=session, on_change=self.changedEntry, fullUI=True)
 		self["footnote"] = Label()
 		self["footnote"].hide()
 		self["description"] = Label()
+		self.createSetup()
 		defaultSetupImage = setups.get("default", "")
 		setupImage = setups.get(setup, defaultSetupImage)
 		if setupImage:
@@ -55,7 +56,6 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 				print("[Setup] Error: Unable to load menu image '%s'!" % setupImage)
 		else:
 			self.setupImage = None
-		self.createSetup()
 		if self.layoutFinished not in self.onLayoutFinish:
 			self.onLayoutFinish.append(self.layoutFinished)
 		if self.selectionChanged not in self["config"].onSelectionChanged:
@@ -69,23 +69,22 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 		oldList = self.list
 		self.switch = False
 		self.list = []
-		title = ""
+		title = None
 		xmlData = setupDom(self.setup, self.plugin)
 		for setup in xmlData.findall("setup"):
 			if setup.get("key") == self.setup:
 				self.addItems(setup)
-				skin = setup.get("skin", "")
-				if skin != "":
+				skin = setup.get("skin", None)
+				if skin and skin != "":
 					self.skinName.insert(0, skin)
 				if config.usage.showScreenPath.value in ("large", "small") and "menuTitle" in setup:
-					title = setup.get("menuTitle", "").encode("UTF-8")
+					title = setup.get("menuTitle", None).encode("UTF-8")
 				else:
-					title = setup.get("title", "").encode("UTF-8")
+					title = setup.get("title", None).encode("UTF-8")
 				# If this break is executed then there can only be one setup tag with this key.
 				# This may not be appropriate if conditional setup blocks become available.
 				break
-		title = _("Setup") if title == "" else _(title)
-		self.setTitle(title)
+		self.setTitle(_(title) if title and title != "" else _("Setup"))
 		if self.list != oldList or self.switch:
 			print("[Setup] DEBUG: Config list has changed!")
 			currentItem = self["config"].getCurrent()
@@ -131,8 +130,9 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 				itemDescription = itemDescription.replace("%s %s", "%s %s" % (SystemInfo["MachineBrand"], SystemInfo["MachineName"]))
 				item = eval(element.text or "")
 				if item != "" and not isinstance(item, ConfigNothing):
-					itemDefault = "(Default: %s)" % item.toDisplayString(item.default)
-					itemDescription = "%s  %s" % (itemDescription, itemDefault) if itemDescription and itemDescription != " " else itemDefault
+					default = _("Default")
+					itemDefault = item.toDisplayString(item.default)
+					itemDescription = "%s  (%s: %s)" % (itemDescription, default, itemDefault) if itemDescription and itemDescription != " " else "%s: '%s'." % (default, itemDefault)
 					self.list.append((itemText, item, itemDescription))  # Add the item to the config list.
 				if item is config.usage.boolean_graphic:
 					self.switch = True
