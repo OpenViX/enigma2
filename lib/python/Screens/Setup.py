@@ -11,7 +11,7 @@ from Components.Pixmap import Pixmap
 from Components.SystemInfo import SystemInfo
 from Components.Sources.StaticText import StaticText
 from Screens.HelpMenu import HelpableScreen
-from Screens.Screen import Screen
+from Screens.Screen import Screen, ScreenSummary
 from Tools.Directories import SCOPE_CURRENT_SKIN, SCOPE_PLUGINS, SCOPE_SKIN, resolveFilename
 from Tools.LoadPixmap import LoadPixmap
 
@@ -35,7 +35,8 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 		else:
 			self.skinName = []
 		if setup:
-			self.skinName.append("Setup_%s" % setup)
+			self.skinName.append("Setup%s" % setup)
+			self.skinName.append("setup_%s" % setup)  # DEBUG: Old setup screen.
 		self.skinName.append("Setup")
 		self.onChangedEntry = []
 		self.list = []
@@ -172,18 +173,22 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 	def getIndexFromItem(self, item):
 		return self["config"].list.index(item) if item in self["config"].list else 0
 
+	def createSummary(self):
+		return SetupSummary
 
-class SetupSummary(Screen):
+
+class SetupSummary(ScreenSummary):
 	def __init__(self, session, parent):
-		Screen.__init__(self, session, parent=parent)
+		ScreenSummary.__init__(self, session, parent=parent)
+		self["entry"] = StaticText("")  # DEBUG: Proposed for new summary screens.
+		self["value"] = StaticText("")  # DEBUG: Proposed for new summary screens.
 		self["SetupTitle"] = StaticText(parent.getTitle())
 		self["SetupEntry"] = StaticText("")
 		self["SetupValue"] = StaticText("")
-		if hasattr(self.parent, "onChangedEntry"):
-			if self.addWatcher not in self.onShow:
-				self.onShow.append(self.addWatcher)
-			if self.removeWatcher not in self.onHide:
-				self.onHide.append(self.removeWatcher)
+		if self.addWatcher not in self.onShow:
+			self.onShow.append(self.addWatcher)
+		if self.removeWatcher not in self.onHide:
+			self.onHide.append(self.removeWatcher)
 
 	def addWatcher(self):
 		if self.selectionChanged not in self.parent.onChangedEntry:
@@ -199,6 +204,8 @@ class SetupSummary(Screen):
 			self.parent["config"].onSelectionChanged.remove(self.selectionChanged)
 
 	def selectionChanged(self):
+		self["entry"].text = self.parent.getCurrentEntry()  # DEBUG: Proposed for new summary screens.
+		self["value"].text = self.parent.getCurrentValue()  # DEBUG: Proposed for new summary screens.
 		self["SetupEntry"].text = self.parent.getCurrentEntry()
 		self["SetupValue"].text = self.parent.getCurrentValue()
 
