@@ -47,6 +47,7 @@ class Screen(dict):
 		self.summaries = CList()
 		self["Title"] = StaticText()
 		self["ScreenPath"] = StaticText()
+		self["title"] = StaticText()  # DEBUG: Hack to support for some summary screens.
 		self.screenPath = ""  # This is the current screen path without the title.
 		self.screenTitle = ""  # This is the current screen title without the path.
 
@@ -167,6 +168,7 @@ class Screen(dict):
 			screenTitle = title
 		self["ScreenPath"].text = screenPath
 		self["Title"].text = screenTitle
+		self["title"].text = self.screenTitle
 
 	def getTitle(self):
 		return self.screenTitle
