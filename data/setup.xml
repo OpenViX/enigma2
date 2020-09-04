@@ -467,5 +467,45 @@
 	<setup key="wizardoptions" title="Common options">
 		<item level="0" text="Picons: Show in channel list" description="Configure if service picons will be shown in the channel selection list.">config.usage.service_icon_enable</item>
 	</setup>
-
+	<setup key="movieselection" title="Movie List Setup">
+		<item level="0" text="Use trash can in movie list" description="When enabled, deleted recordings are moved to the trash can, instead of being deleted immediately.">config.usage.movielist_trashcan</item>
+		<item level="0" text="Remove items from trash can after (days)" description="Configure the number of days after which items are automatically removed from the trash can.\nA setting of 0 disables this.">config.usage.movielist_trashcan_days</item>
+		<item level="0" text="Clean network trash cans" description="When enabled, network trash cans are probed for cleaning.">config.usage.movielist_trashcan_network_clean</item>
+		<item level="0" text="Disk space to reserve for recordings (in GB)" description="Configure the minimum amount of disk space to be available for recordings. When the amount of space drops below this value, deleted items will be removed from the trash can.">config.usage.movielist_trashcan_reserve</item>
+		<item level="0" text="Background delete option" description="Configure on which devices the background delete option should be used.">config.misc.erase_flags</item>
+		<item level="0" text="Background delete speed" description="Configure the speed of the background deletion process. Lower speed will consume less hard disk drive performance.">config.misc.erase_speed</item>
+		<item level="0" text="Font size" description="This allows you change the font size relative to skin size, so 1 increases by 1 point size, and -1 decreases by 1 point size">config.movielist.fontsize</item>
+		<item level="0" text="Number of rows" description="Number of rows to display">config.movielist.itemsperpage</item>
+		<item level="0" text="Use slim screen" description="Use the alternative screen">config.movielist.useslim</item>
+		<item level="0" text="Use adaptive date display" description="Adaptive date display allows recent dates to be displayed as 'Today' or 'Yesterday'.  It hides the year for recordings made this year.  It hides the day of the week for recordings made in previous years.">config.movielist.use_fuzzy_dates</item>
+		<item level="0" text="Sort" description="Set the default sorting method.">self.cfg.moviesort</item>
+		<item level="0" text="Sort Trash by deletion time" description="Use the deletion time to sort Trash directories.\nMost recently deleted at the top.">config.usage.trashsort_deltime</item>
+		<item level="0" text="Show extended description" description="Show or hide the extended description, (skin dependant).">self.cfg.description</item>
+		<item level="0" text="Use individual settings for each directory" description="When set, each directory will show the previous state used. When off, the default values will be shown.">config.movielist.settings_per_directory</item>]
+		<item level="0" text="Permanent sort key changes" description="When set, sort changes via the sort key will be permanent.\nWhen unset, sort changes will be temporary - just for this view of a directory." requires="!config.movielist.settings_per_directory">config.movielist.perm_sort_changes</item>
+		<item level="0" text="Stop service on return to movie list" description="Stop previous broadcasted service on return to movie list.">config.movielist.stop_service</item>
+		<item level="0" text="Show status icons in movie list" description="Shows the watched status of the movie.">config.usage.show_icons_in_movielist</item>]
+		<item level="0" text="Show icon for new/unseen items" description="Shows the icons when new/unseen, otherwise it will not show an icon." conditional="config.usage.show_icons_in_movielist.value != 'o'">config.usage.movielist_unseen</item>
+		<item level="0" text="Service Title mode" description="Show picons in the movie list.">config.usage.movielist_servicename_mode</item>
+		<item level="0" text="Picon Width" description="." conditional="'picon' in config.usage.movielist_servicename_mode.value">config.usage.movielist_piconwidth</item>
+		<item level="0" text="Show movie lengths in movie list" description="When enabled, the length of each recording will be shown in the movielist (this might cause some additional loading time).">config.usage.load_length_of_movies_in_moviellist</item>
+		<item level="0" text="Play audio in background" description="Keeps the movie list open whilst playing audio files.">config.movielist.play_audio_internal</item>
+		<item level="0" text="Root directory" description="Sets the root directory of movie list, to remove the '..' from being shown in that folder.">config.movielist.root</item>
+		<item level="0" text="Hide known extensions" description="Allows you to hide the extensions of known file types.">config.movielist.hide_extensions</item>
+		<item level="0" text="Show live tv when movie stopped" description="When set the PIG will return to live after a movie has stopped playing.">config.movielist.show_live_tv_in_movielist</item>
+		<item level="0" text="Red" description="Allows you to setup the button to do what you choose.">config.movielist.btn_red</item>
+		<item level="0" text="Green" description="Allows you to setup the button to do what you choose.">config.movielist.btn_green</item>
+		<item level="0" text="Yellow" description="Allows you to setup the button to do what you choose.">config.movielist.btn_yellow</item>
+		<item level="0" text="Blue" description="Allows you to setup the button to do what you choose.">config.movielist.btn_blue</item>
+		<item level="0" text="Red long" description="Allows you to setup the button to do what you choose.">config.movielist.btn_redlong</item>
+		<item level="0" text="Green long" description="Allows you to setup the button to do what you choose.">config.movielist.btn_greenlong</item>
+		<item level="0" text="Yellow long" description="Allows you to setup the button to do what you choose.">config.movielist.btn_yellowlong</item>
+		<item level="0" text="Blue long" description="Allows you to setup the button to do what you choose.">config.movielist.btn_bluelong</item>
+		<item level="0" text="TV" description="Allows you to setup the button to do what you choose.">config.movielist.btn_tv</item>
+		<item level="0" text="Radio" description="Allows you to setup the button to do what you choose.">config.movielist.btn_radio</item>
+		<item level="0" text="Text" description="Allows you to setup the button to do what you choose.">config.movielist.btn_text</item>
+		<item level="0" text="F1" description="Allows you to setup the button to do what you choose.">config.movielist.btn_F1</item>
+		<item level="0" text="F2" description="Allows you to setup the button to do what you choose.">config.movielist.btn_F2</item>
+		<item level="0" text="F3" description="Allows you to setup the button to do what you choose.">config.movielist.btn_F3</item>
+	</setup>
 </setupxml>
