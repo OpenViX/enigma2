@@ -14,7 +14,7 @@ from Components.SystemInfo import SystemInfo
 from Components.Sources.StaticText import StaticText
 from Components.Sources.StreamService import StreamServiceList
 import Screens.InfoBar
-from Screens.Screen import Screen
+from Screens.Screen import Screen, ScreenSummary
 from Tools import Notifications
 
 inStandby = None
@@ -182,7 +182,7 @@ class Standby(Standby2):
 	def doStandby(self):
 		Notifications.AddNotification(Screens.Standby.Standby2)
 
-class StandbySummary(Screen):
+class StandbySummary(ScreenSummary):
 	skin = """
 	<screen position="0,0" size="132,64">
 		<widget source="global.CurrentTime" render="Label" position="0,0" size="132,64" font="Regular;40" halign="center">
