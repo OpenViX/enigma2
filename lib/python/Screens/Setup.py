@@ -254,9 +254,9 @@ def setupDom(setup=None, plugin=None):
 				print("[Setup] Error: Unable to parse setup data in '%s' - '%s'!" % (setupFile, err))
 	except (IOError, OSError) as err:
 		if err.errno == errno.ENOENT:  # No such file or directory
-			print("[Skin] Warning: Setup file '%s' does not exist!" % setupFile)
+			print("[Setup] Warning: Setup file '%s' does not exist!" % setupFile)
 		else:
-			print("[Skin] Error %d: Opening setup file '%s'! (%s)" % (err.errno, setupFile, err.strerror))
+			print("[Setup] Error %d: Opening setup file '%s'! (%s)" % (err.errno, setupFile, err.strerror))
 	except Exception as err:
 		print("[Setup] Error %d: Unexpected error opening setup file '%s'! (%s)" % (err.errno, setupFile, err.strerror))
 	return setupFileDom
