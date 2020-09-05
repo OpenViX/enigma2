@@ -1,4 +1,4 @@
-from Screens.Screen import Screen
+from Screens.Screen import Screen, ScreenSummary
 from Screens.ParentalControlSetup import ProtectedScreen
 from Components.Sources.List import List
 from Components.ActionMap import NumberActionMap
@@ -44,23 +44,26 @@ class MenuUpdater:
 menuupdater = MenuUpdater()
 
 
-class MenuSummary(Screen):
+class MenuSummary(ScreenSummary):
 	def __init__(self, session, parent):
-		Screen.__init__(self, session, parent=parent)
-		self["MenuTitle"] = StaticText(parent.getTitle())
-		self["MenuEntry"] = StaticText("")
-		self.onShow.append(self.addWatcher)
-		self.onHide.append(self.removeWatcher)
+		ScreenSummary.__init__(self, session, parent=parent)
+		self["entry"] = StaticText("")  # DEBUG: Proposed for new summary screens.
+		if self.addWatcher not in self.onShow:
+			self.onShow.append(self.addWatcher)
+		if self.removeWatcher not in self.onHide:
+			self.onHide.append(self.removeWatcher)
 
 	def addWatcher(self):
-		self.parent["menu"].onSelectionChanged.append(self.selectionChanged)
+		if self.selectionChanged not in self.parent["menu"].onSelectionChanged:
+			self.parent["menu"].onSelectionChanged.append(self.selectionChanged)
 	 	self.selectionChanged()
 
 	def removeWatcher(self):
-		self.parent["menu"].onSelectionChanged.remove(self.selectionChanged)
+		if self.selectionChanged in self.parent["menu"].onSelectionChanged:
+			self.parent["menu"].onSelectionChanged.remove(self.selectionChanged)
 
 	def selectionChanged(self):
-		self["MenuEntry"].text = self.parent["menu"].getCurrent()[0]
+		self["entry"].text = self.parent["menu"].getCurrent()[0]  # DEBUG: Proposed for new summary screens.
 
 
 class Menu(Screen, ProtectedScreen):
