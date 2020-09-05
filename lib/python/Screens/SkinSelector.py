@@ -19,7 +19,7 @@ from Tools.Directories import resolveFilename, SCOPE_CURRENT_SKIN, SCOPE_LCDSKIN
 
 
 class SkinSelector(Screen, HelpableScreen):
-	skinTemplate = """
+	skin = ["""
 	<screen name="SkinSelector" position="center,center" size="%d,%d">
 		<widget name="preview" position="center,%d" size="%d,%d" alphatest="blend" />
 		<widget source="skins" render="Listbox" position="center,%d" size="%d,%d" enableWrapAround="1" scrollbarMode="showOnDemand">
@@ -37,8 +37,7 @@ class SkinSelector(Screen, HelpableScreen):
 		<widget source="description" render="Label" position="center,e-%d" size="%d,%d" font="Regular;%d" valign="center" />
 		<widget source="key_red" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="key_red" font="Regular;%d" foregroundColor="key_text" halign="center" valign="center" />
 		<widget source="key_green" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="key_green" font="Regular;%d" foregroundColor="key_text" halign="center" valign="center" />
-	</screen>"""
-	scaleData = [
+	</screen>""",
 		670, 570,
 		10, 356, 200,
 		230, 650, 240,
@@ -50,13 +49,10 @@ class SkinSelector(Screen, HelpableScreen):
 		10, 50, 140, 40, 20,
 		160, 50, 140, 40, 20
 	]
-	skin = None
 
 	def __init__(self, session, screenTitle=_("GUI Skin")):
-		Screen.__init__(self, session)
+		Screen.__init__(self, session, mandatoryWidgets=["skins", "preview", "description"])
 		HelpableScreen.__init__(self)
-		if SkinSelector.skin is None:
-			self.initialiseSkin()
 		self.setTitle(screenTitle)
 		self.rootDir = resolveFilename(SCOPE_SKIN)
 		self.config = config.skin.primary_skin
@@ -82,29 +78,6 @@ class SkinSelector(Screen, HelpableScreen):
 		self.picload = ePicLoad()
 		self.picload.PictureData.get().append(self.showPic)
 		self.onLayoutFinish.append(self.layoutFinished)
-
-	def initialiseSkin(self):
-		element, path = domScreens.get("SkinSelector", (None, None))
-		if element is None:  # This skin does not have a SkinConverter screen.
-			buildSkin = True
-		else:  # Test the skin's SkinConverter screen to ensure it works with the new code.
-			buildSkin = False
-			widgets = element.findall("widget")
-			if widgets is not None:
-				for widget in widgets:
-					name = widget.get("name", None)
-					source = widget.get("source", None)
-					if name and name in ("Preview", "SkinList") or source == "introduction":
-						print("[SkinSelector] Warning: Current skin '%s' does not support this version of SkinSelector!    Please contact the skin's author!" % config.skin.primary_skin.value)
-						del domScreens["SkinSelector"]  # It is incompatible, delete the screen from the skin.
-						buildSkin = True
-						break
-		if buildSkin:  # Build the embedded skin and scale it to the current screen resolution.
-			# The skin template is designed for a HD screen so the scaling factor is 720.
-			SkinSelector.skin = SkinSelector.skinTemplate % tuple([x * getDesktop(0).size().height() / 720 for x in SkinSelector.scaleData])
-			# print("[SkinSelector] DEBUG: Height=%d\n%s" % (getDesktop(0).size().height(), SkinSelector.skin))
-		else:
-			SkinSelector.skin = "<screen />"
 
 	def showPic(self, picInfo=""):
 		ptr = self.picload.getData()
