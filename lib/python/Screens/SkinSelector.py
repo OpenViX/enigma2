@@ -6,7 +6,7 @@ from os import listdir
 from os.path import dirname, exists, isdir, join as pathjoin
 
 from skin import DEFAULT_SKIN, DEFAULT_DISPLAY_SKIN, EMERGENCY_NAME, EMERGENCY_SKIN, currentDisplaySkin, currentPrimarySkin, domScreens
-from Components.ActionMap import HelpableNumberActionMap
+from Components.ActionMap import HelpableActionMap
 from Components.config import config
 from Components.Pixmap import Pixmap
 from Components.Sources.List import List
@@ -64,17 +64,22 @@ class SkinSelector(Screen, HelpableScreen):
 		self["key_red"] = StaticText(_("Cancel"))
 		self["key_green"] = StaticText(_("Save"))
 		self["description"] = StaticText(_("Please wait... Loading list..."))
-		self["actions"] = HelpableNumberActionMap(self, ["SetupActions", "DirectionActions", "ColorActions"], {
-			"ok": (self.save, _("Save and activate the currently selected skin")),
-			"cancel": (self.cancel, _("Cancel any changes to the currently active skin")),
-			"close": (self.cancelRecursive, _("Cancel any changes to the currently active skin and exit all menus")),
-			"red": (self.cancel, _("Cancel any changes to the currently active skin")),
-			"green": (self.save, _("Save and activate the currently selected skin")),
-			"up": (self.up, _("Move to the previous skin")),
-			"down": (self.down, _("Move to the next skin")),
-			"left": (self.left, _("Move to the previous page")),
-			"right": (self.right, _("Move to the next page"))
-		}, -1, description=_("Skin Selection Actions"))
+		self["skinActions"] = HelpableActionMap(self, ["CancelSaveActions", "OkActions", "NavigationActions"], {
+			"cancel": (self.keyCancel, _("Cancel any changes to the currently active skin")),
+			"close": (self.closeRecursive, _("Cancel any changes to the currently active skin and exit all menus")),
+			"save": (self.keySave, _("Save and activate the currently selected skin")),
+			"ok": (self.keySave, _("Save and activate the currently selected skin")),
+			"top": (self.keyPageUp, _("Move up a screen")),
+			"pageUp": (self.keyPageUp, _("Move up a screen")),
+			"up": (self.keyUp, _("Move up a line")),
+			"first": (self.keyPageUp, _("Move up a screen")),
+			"left": (self.keyPageUp, _("Move up a screen")),
+			"right": (self.keyPageDown, _("Move down a screen")),
+			"last": (self.keyPageDown, _("Move down a screen")),
+			"down": (self.keyDown, _("Move down a line")),
+			"pageDown": (self.keyPageDown, _("Move down a screen")),
+			"bottom": (self.keyPageDown, _("Move down a screen"))
+		}, prio=-1, description=_("Skin Selection Actions"))
 		self.picload = ePicLoad()
 		self.picload.PictureData.get().append(self.showPic)
 		self.onLayoutFinish.append(self.layoutFinished)
@@ -168,13 +173,13 @@ class SkinSelector(Screen, HelpableScreen):
 		else:
 			self["description"].setText(_("Press OK to activate the selected%s skin.") % msg)
 
-	def cancel(self):
+	def keyCancel(self):
 		self.close(False)
 
-	def cancelRecursive(self):
+	def closeRecursive(self):
 		self.close(True)
 
-	def save(self):
+	def keySave(self):
 		label = self.currentEntry[1]
 		skin = self.currentEntry[4]
 		if skin == self.config.value:
@@ -202,23 +207,30 @@ class SkinSelector(Screen, HelpableScreen):
 			self.session.open(TryQuitMainloop, QUIT_RESTART)
 		self.refreshList()
 
-	def up(self):
-		self["skins"].up()
+	def keyTop(self):
+		self["skins"].moveTop()
 		self.loadPreview()
 
-	def down(self):
-		self["skins"].down()
-		self.loadPreview()
-
-	def left(self):
+	def keyPageUp(self):
 		self["skins"].pageUp()
 		self.loadPreview()
 
-	def right(self):
+	def keyUp(self):
+		self["skins"].up()
+		self.loadPreview()
+
+	def keyDown(self):
+		self["skins"].down()
+		self.loadPreview()
+
+	def keyPageDown(self):
 		self["skins"].pageDown()
 		self.loadPreview()
 
-	# For summary screen.
+	def keyBottom(self):
+		self["skins"].moveEnd()
+		self.loadPreview()
+
 	def changedEntry(self):
 		for x in self.onChangedEntry:
 			x()
