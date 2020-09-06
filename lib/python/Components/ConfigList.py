@@ -390,19 +390,19 @@ class ConfigListScreen:
 	def closeRecursive(self):
 		self.closeConfigList((True,))
 
-	def closeConfigList(self, recursiveClose=()):
+	def closeConfigList(self, closeParameters=()):
 		if self["config"].isChanged():
-			self.recursiveClose = recursiveClose
+			self.closeParameters = closeParameters
 			self.session.openWithCallback(self.cancelConfirm, MessageBox, self.cancelMsg, default=False, type=MessageBox.TYPE_YESNO)
 		else:
-			self.close(*recursiveClose)
+			self.close(*closeParameters)
 
 	def cancelConfirm(self, result):
 		if not result:
 			return
 		for x in self["config"].list:
 			x[1].cancel()
-		self.close(*self.recursiveClose)
+		self.close(*self.closeParameters)
 
 	def createSummary(self):  # This should not be required if ConfigList is invoked via Setup (as it should).
 		from Screens.Setup import SetupSummary
