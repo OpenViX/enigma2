@@ -24,7 +24,7 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 	ALLOW_SUSPEND = True
 
 	def __init__(self, session, setup, plugin=None, PluginLanguageDomain=None):
-		Screen.__init__(self, session, mandatoryWidgets=["config", "footnote", "description"])
+		Screen.__init__(self, session)
 		HelpableScreen.__init__(self)
 		self.setup = setup
 		self.plugin = plugin
