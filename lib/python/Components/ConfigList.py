@@ -209,12 +209,17 @@ class ConfigListScreen:
 		self["config"] = ConfigList(list, session=session)
 		self.setCancelMessage(None)
 		self.onChangedEntry = []
+		if self.noNativeKeys not in self.onLayoutFinish:
+			self.onLayoutFinish.append(self.noNativeKeys)
 		if self.handleInputHelpers not in self["config"].onSelectionChanged:
 			self["config"].onSelectionChanged.append(self.handleInputHelpers)
 		if self.showHelpWindow not in self.onExecBegin:
 			self.onExecBegin.append(self.showHelpWindow)
 		if self.hideHelpWindow not in self.onExecEnd:
 			self.onExecEnd.append(self.hideHelpWindow)
+
+	def noNativeKeys(self):
+		self["config"].instance.allowNativeKeys(False)
 
 	def setCancelMessage(self, msg):
 		self.cancelMsg = _("Really close without saving settings?") if msg is None else msg
