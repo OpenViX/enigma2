@@ -656,7 +656,7 @@ class AboutSummary(ScreenSummary):
 		aboutText = _("Model: %s %s\n") % (getMachineBrand(), getMachineName())
 		if path.exists('/proc/stb/info/chipset'):
 			chipset = open('/proc/stb/info/chipset', 'r').read()
-			aboutText += _("Chipset: BCM%s") % chipset.replace('\n', '') + "\n"
+			aboutText += _("Chipset: %s") % chipset.replace('\n', '') + "\n"
 		aboutText += _("ViX version: %s") % getImageVersion() + "\n"
 		aboutText += _("Build: %s") % getImageBuild() + "\n"
 		aboutText += _("Kernel: %s") % about.getKernelVersionString() + "\n"
