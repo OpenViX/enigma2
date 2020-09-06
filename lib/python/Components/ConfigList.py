@@ -166,24 +166,22 @@ class ConfigListScreen:
 		self["configActions"] = HelpableActionMap(self, ["ConfigListActions"], {
 			"select": (self.keySelect, _("Select, toggle, process or edit the current entry"))
 		}, prio=1, description=_("Common Setup Functions"))
+		self["navigationActions"] = HelpableActionMap(self, ["NavigationActions"], {
+			"top": (self.keyTop, _("Move to first line")),
+			"pageUp": (self.keyPageUp, _("Move up a screen")),
+			"up": (self.keyUp, _("Move up a line")),
+			"first": (self.keyFirst, _("Jump to first item in list or the start of text")),
+			"left": (self.keyLeft, _("Select the previous item in list or move cursor left")),
+			"right": (self.keyRight, _("Select the next item in list or move cursor right")),
+			"last": (self.keyLast, _("Jump to last item in list or the end of text")),
+			"down": (self.keyDown, _("Move down a line")),
+			"pageDown": (self.keyPageDown, _("Move down a screen")),
+			"bottom": (self.keyBottom, _("Move to last line"))
+		}, prio=1, description=_("Common Setup Functions"))
 		self["menuConfigActions"] = HelpableActionMap(self, "ConfigListActions", {
 			"menu": (self.keyMenu, _("Display selection list as a selection menu")),
 		}, prio=1, description=_("Common Setup Functions"))
 		self["menuConfigActions"].setEnabled(False)
-		self["directionActions"] = HelpableActionMap(self, ["NavigationActions"], {
-			"pageDown": (self.keyPageDown, _("Move down a screen")),
-			"first": (self.keyFirst, _("Jump to first item in list or the start of text")),
-			"last": (self.keyLast, _("Jump to last item in list or the end of text")),
-			"pageUp": (self.keyPageUp, _("Move up a screen"))
-		}, prio=1, description=_("Common Setup Functions"))
-		self["navigationActions"] = HelpableActionMap(self, ["NavigationActions"], {
-			"top": (self.keyTop, _("Move to first line")),
-			"up": (self.keyUp, _("Move up a line")),
-			"left": (self.keyLeft, _("Select the previous item in list or move cursor left")),
-			"right": (self.keyRight, _("Select the next item in list or move cursor right")),
-			"down": (self.keyDown, _("Move down a line")),
-			"bottom": (self.keyBottom, _("Move to last line"))
-		}, prio=-1, description=_("Common Setup Functions"))  # The priority is set to -1 to override the internal list box navigation controls.
 		self["editConfigActions"] = HelpableNumberActionMap(self, ["NumberActions", "TextEditActions"], {
 			"backspace": (self.keyBackspace, _("Delete the character to the left of cursor")),
 			"delete": (self.keyDelete, _("Delete the character under the cursor")),
