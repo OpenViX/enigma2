@@ -34,10 +34,30 @@
 		undesirable side effects.
 	-->
 
+	<map context="ColorActions">
+		<key id="KEY_RED" mapto="red" flags="b" />
+		<key id="KEY_RED" mapto="redlong" flags="l" />
+		<key id="KEY_GREEN" mapto="green" flags="b" />
+		<key id="KEY_GREEN" mapto="greenlong" flags="l" />
+		<key id="KEY_YELLOW" mapto="yellow" flags="b" />
+		<key id="KEY_YELLOW" mapto="yellowlong" flags="l" />
+		<key id="KEY_BLUE" mapto="blue" flags="b" />
+		<key id="KEY_BLUE" mapto="bluelong" flags="l" />
+	</map>
+
 	<map context="HelpActions">
 		<key id="KEY_HELP" mapto="displayHelp" flags="b" />
 		<!-- Keyboard specific buttons -->
 		<key id="KEY_F1" mapto="displayHelp" flags="b" />
+	</map>
+
+	<map context="InputAsciiActions">
+		<key id="KEY_ASCII" mapto="gotAsciiCode" flags="mr" />
+	</map>
+
+	<map context="MenuActions">
+		<key id="KEY_MENU" mapto="menu" flags="mr" />
+		<key id="KEY_SPACE" mapto="menu" flags="mr" />
 	</map>
 
 	<map context="NavigationActions">
@@ -84,6 +104,24 @@
 		<key id="KEY_KP7" mapto="7" flags="m" />
 		<key id="KEY_KP8" mapto="8" flags="m" />
 		<key id="KEY_KP9" mapto="9" flags="m" />
+	</map>
+
+	<map context="OkCancelActions">
+		<key id="KEY_OK" mapto="ok" flags="m" />
+		<key id="KEY_OK" mapto="OK" flags="b" />
+		<key id="KEY_OK" mapto="OKLong" flags="l" />
+		<key id="KEY_EXIT" mapto="cancel" flags="m" />
+		<!-- <key id="KEY_EXIT" mapto="CANCEL" flags="b" /> -->
+		<!-- <key id="KEY_EXIT" mapto="close" flags="l" /> -->
+		<!-- Keyboard specific buttons -->
+		<key id="KEY_ENTER" mapto="ok" flags="m" />
+		<key id="KEY_ENTER" mapto="OK" flags="b" />
+		<key id="KEY_ENTER" mapto="OKLong" flags="l" />
+		<key id="KEY_ESC" mapto="cancel" flags="m" />
+		<key id="KEY_ESC" mapto="CANCEL" flags="b" />
+		<key id="KEY_ESC" mapto="close" flags="l" />
+		<key id="\x0a" mapto="ok" flags="m" />
+		<key id="\x1b" mapto="cancel" flags="m" />
 	</map>
 
 	<map context="TextEditActions">
@@ -407,10 +445,6 @@
 		<key id="KEY_ESC" mapto="cancel" flags="m" />
 	</map>
 
-	<map context="InputAsciiActions">
-		<key id="KEY_ASCII" mapto="gotAsciiCode" flags="mr" />
-	</map>
-
 	<map context="InputBoxActions">
 		<key id="KEY_LEFT" mapto="left" flags="mr" />
 		<key id="KEY_RIGHT" mapto="right" flags="mr" />
@@ -452,11 +486,6 @@
 		<key id="KEY_OPTION" mapto="showNetworkSetup" flags="mr" />
 		<key id="KEY_F5" mapto="showRFmod" flags="b" />
 		<key id="KEY_F5" mapto="toggleAspectRatio" flags="l" />
-	</map>
-
-	<map context="MenuActions">
-		<key id="KEY_MENU" mapto="menu" flags="mr" />
-		<key id="KEY_SPACE" mapto="menu" flags="mr" />
 	</map>
 
 	<map context="InfobarShowHideActions">
@@ -875,24 +904,6 @@
 		<key id="KEY_EPG" mapto="openSingleServiceEPG" flags="m" />
 	</map>
 
-	<map context="OkCancelActions">
-		<key id="KEY_OK" mapto="ok" flags="m" />
-		<key id="KEY_OK" mapto="OK" flags="b" />
-		<key id="KEY_OK" mapto="OKLong" flags="l" />
-		<key id="KEY_EXIT" mapto="cancel" flags="m" />
-		<!-- <key id="KEY_EXIT" mapto="CANCEL" flags="b" /> -->
-		<!-- <key id="KEY_EXIT" mapto="close" flags="l" /> -->
-		<!-- Keyboard specific buttons -->
-		<key id="KEY_ENTER" mapto="ok" flags="m" />
-		<key id="KEY_ENTER" mapto="OK" flags="b" />
-		<key id="KEY_ENTER" mapto="OKLong" flags="l" />
-		<key id="KEY_ESC" mapto="cancel" flags="m" />
-		<key id="KEY_ESC" mapto="CANCEL" flags="b" />
-		<key id="KEY_ESC" mapto="close" flags="l" />
-		<key id="\x0a" mapto="ok" flags="m" />
-		<key id="\x1b" mapto="cancel" flags="m" />
-	</map>
-
 	<map context="DirectionActions">
 		<key id="KEY_UP" mapto="up" flags="mr" />
 		<key id="KEY_DOWN" mapto="down" flags="mr" />
@@ -900,17 +911,6 @@
 		<key id="KEY_RIGHT" mapto="right" flags="mr" />
 		<key id="KEY_PREVIOUS" mapto="shiftUp" flags="m" />
 		<key id="KEY_NEXT" mapto="shiftDown" flags="m" />
-	</map>
-
-	<map context="ColorActions">
-		<key id="KEY_RED" mapto="red" flags="b" />
-		<key id="KEY_RED" mapto="redlong" flags="l" />
-		<key id="KEY_GREEN" mapto="green" flags="b" />
-		<key id="KEY_GREEN" mapto="greenlong" flags="l" />
-		<key id="KEY_YELLOW" mapto="yellow" flags="b" />
-		<key id="KEY_YELLOW" mapto="yellowlong" flags="l" />
-		<key id="KEY_BLUE" mapto="blue" flags="b" />
-		<key id="KEY_BLUE" mapto="bluelong" flags="l" />
 	</map>
 
 	<map context="FunctionKeyActions">
