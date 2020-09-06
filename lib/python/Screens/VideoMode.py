@@ -62,7 +62,6 @@ class VideoSetup(Screen, ConfigListScreen):
 
 	def createSetup(self):
 		level = config.usage.setup_level.index
-
 		self.list = [
 			getConfigListEntry(_("Video output"), config.av.videoport, _("Configures which video output connector will be used."))
 		]
