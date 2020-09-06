@@ -47,6 +47,7 @@ class Screen(dict):
 		self.summaries = CList()
 		self["Title"] = StaticText()
 		self["ScreenPath"] = StaticText()
+		self["title"] = StaticText()  # DEBUG: Hack to support for some summary screens.
 		self.screenPath = ""  # This is the current screen path without the title.
 		self.screenTitle = ""  # This is the current screen title without the path.
 
@@ -167,6 +168,7 @@ class Screen(dict):
 			screenTitle = title
 		self["ScreenPath"].text = screenPath
 		self["Title"].text = screenTitle
+		self["title"].text = self.screenTitle
 
 	def getTitle(self):
 		return self.screenTitle
@@ -299,6 +301,8 @@ class ScreenSummary(Screen):
 		names = parent.skinName
 		if not isinstance(names, list):
 			names = [names]
-		self.skinName = ["%sSummary" % x for x in names]
-		self.skinName.append("ScreenSummary")
+		self.skinName = ["%sSummary" % x for x in names]  # DEBUG: Proposed for new summary screens.
+		self.skinName.append("ScreenSummary")  # DEBUG: Proposed for new summary screens.
+		self.skinName += ["%s_summary" % x for x in names]
+		self.skinName.append("SimpleSummary")
 		self.skin = parent.__dict__.get("skinSummary", self.skin)  # If parent has a "skinSummary" defined, use that as default.

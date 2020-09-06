@@ -11,7 +11,7 @@ from Components.Pixmap import Pixmap
 from Components.SystemInfo import SystemInfo
 from Components.Sources.StaticText import StaticText
 from Screens.HelpMenu import HelpableScreen
-from Screens.Screen import Screen
+from Screens.Screen import Screen, ScreenSummary
 from Tools.Directories import SCOPE_CURRENT_SKIN, SCOPE_PLUGINS, SCOPE_SKIN, resolveFilename
 from Tools.LoadPixmap import LoadPixmap
 
@@ -24,38 +24,39 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 	ALLOW_SUSPEND = True
 
 	def __init__(self, session, setup, plugin=None, PluginLanguageDomain=None):
-		Screen.__init__(self, session)
+		Screen.__init__(self, session, mandatoryWidgets=["config", "footnote", "description"])
 		HelpableScreen.__init__(self)
 		self.setup = setup
 		self.plugin = plugin
-		self.PluginLanguageDomain = PluginLanguageDomain
-		self.onChangedEntry = []
+		self.pluginLanguageDomain = PluginLanguageDomain
 		if hasattr(self, "skinName"):
 			if not isinstance(self.skinName, list):
 				self.skinName = [self.skinName]
 		else:
 			self.skinName = []
 		if setup:
-			self.skinName.append("Setup_%s" % setup)
+			self.skinName.append("Setup%s" % setup)  # DEBUG: Proposed for new setup screens.
+			self.skinName.append("setup_%s" % setup)
 		self.skinName.append("Setup")
+		self.onChangedEntry = []
 		self.list = []
-		ConfigListScreen.__init__(self, self.list, session=session, on_change=self.changedEntry)
+		ConfigListScreen.__init__(self, self.list, session=session, on_change=self.changedEntry, fullUI=True)
 		self["footnote"] = Label()
 		self["footnote"].hide()
 		self["description"] = Label()
-		defaultmenuimage = setups.get("default", "")
-		menuimage = setups.get(setup, defaultmenuimage)
-		if menuimage:
-			print("[Setup] %s image '%s'." % ("Default" if menuimage is defaultmenuimage else "Menu", menuimage))
-			menuimage = resolveFilename(SCOPE_CURRENT_SKIN, menuimage)
-			self.menuimage = LoadPixmap(menuimage)
-			if self.menuimage:
+		self.createSetup()
+		defaultSetupImage = setups.get("default", "")
+		setupImage = setups.get(setup, defaultSetupImage)
+		if setupImage:
+			print("[Setup] %s image '%s'." % ("Default" if setupImage is defaultSetupImage else "Setup", setupImage))
+			setupImage = resolveFilename(SCOPE_CURRENT_SKIN, setupImage)
+			self.setupImage = LoadPixmap(setupImage)
+			if self.setupImage:
 				self["menuimage"] = Pixmap()
 			else:
-				print("[Setup] Error: Unable to load menu image '%s'!" % menuimage)
+				print("[Setup] Error: Unable to load menu image '%s'!" % setupImage)
 		else:
-			self.menuimage = None
-		self.createSetup()
+			self.setupImage = None
 		if self.layoutFinished not in self.onLayoutFinish:
 			self.onLayoutFinish.append(self.layoutFinished)
 		if self.selectionChanged not in self["config"].onSelectionChanged:
@@ -69,23 +70,22 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 		oldList = self.list
 		self.switch = False
 		self.list = []
-		title = ""
-		xmldata = setupDom(self.setup, self.plugin)
-		for setup in xmldata.findall("setup"):
+		title = None
+		xmlData = setupDom(self.setup, self.plugin)
+		for setup in xmlData.findall("setup"):
 			if setup.get("key") == self.setup:
 				self.addItems(setup)
-				skin = setup.get("skin", "")
-				if skin != "":
+				skin = setup.get("skin", None)
+				if skin and skin != "":
 					self.skinName.insert(0, skin)
 				if config.usage.showScreenPath.value in ("large", "small") and "menuTitle" in setup:
-					title = setup.get("menuTitle", "").encode("UTF-8")
+					title = setup.get("menuTitle", None).encode("UTF-8")
 				else:
-					title = setup.get("title", "").encode("UTF-8")
+					title = setup.get("title", None).encode("UTF-8")
 				# If this break is executed then there can only be one setup tag with this key.
 				# This may not be appropriate if conditional setup blocks become available.
 				break
-		title = _("Setup") if title == "" else _(title)
-		self.setTitle(title)
+		self.setTitle(_(title) if title and title != "" else _("Setup"))
 		if self.list != oldList or self.switch:
 			print("[Setup] DEBUG: Config list has changed!")
 			currentItem = self["config"].getCurrent()
@@ -121,9 +121,9 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 				conditional = element.get("conditional")
 				if conditional and not eval(conditional):  # The item conditions are not met.
 					continue
-				if self.PluginLanguageDomain:
-					itemText = dgettext(self.PluginLanguageDomain, element.get("text", "??").encode("UTF-8"))
-					itemDescription = dgettext(self.PluginLanguageDomain, element.get("description", " ").encode("UTF-8"))
+				if self.pluginLanguageDomain:
+					itemText = dgettext(self.pluginLanguageDomain, element.get("text", "??").encode("UTF-8"))
+					itemDescription = dgettext(self.pluginLanguageDomain, element.get("description", " ").encode("UTF-8"))
 				else:
 					itemText = _(element.get("text", "??").encode("UTF-8"))
 					itemDescription = _(element.get("description", " ").encode("UTF-8"))
@@ -131,24 +131,24 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 				itemDescription = itemDescription.replace("%s %s", "%s %s" % (SystemInfo["MachineBrand"], SystemInfo["MachineName"]))
 				item = eval(element.text or "")
 				if item != "" and not isinstance(item, ConfigNothing):
-					itemDefault = "(Default: %s)" % item.toDisplayString(item.default)
-					itemDescription = "%s  %s" % (itemDescription, itemDefault) if itemDescription and itemDescription != " " else itemDefault
+					itemDefault = item.toDisplayString(item.default)
+					itemDescription = _("%s  (Default: %s)") % (itemDescription, itemDefault) if itemDescription and itemDescription != " " else _("Default: '%s'.") % itemDefault
 					self.list.append((itemText, item, itemDescription))  # Add the item to the config list.
 				if item is config.usage.boolean_graphic:
 					self.switch = True
 
 	def layoutFinished(self):
-		if self.menuimage:
-			self["menuimage"].instance.setPixmap(self.menuimage)
+		if self.setupImage:
+			self["menuimage"].instance.setPixmap(self.setupImage)
 		if not self["config"]:
-			print("[Setup] No menu items available!")
+			print("[Setup] No setup items available!")
 
 	def selectionChanged(self):
 		if self["config"]:
 			self.setFootnote(None)
 			self["description"].text = self.getCurrentDescription()
 		else:
-			self["description"].text = _("There are no items currently available for this menu.")
+			self["description"].text = _("There are no items currently available for this screen.")
 
 	def setFootnote(self, footnote):
 		if footnote is None:
@@ -172,18 +172,22 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 	def getIndexFromItem(self, item):
 		return self["config"].list.index(item) if item in self["config"].list else 0
 
+	def createSummary(self):
+		return SetupSummary
 
-class SetupSummary(Screen):
+
+class SetupSummary(ScreenSummary):
 	def __init__(self, session, parent):
-		Screen.__init__(self, session, parent=parent)
+		ScreenSummary.__init__(self, session, parent=parent)
+		self["entry"] = StaticText("")  # DEBUG: Proposed for new summary screens.
+		self["value"] = StaticText("")  # DEBUG: Proposed for new summary screens.
 		self["SetupTitle"] = StaticText(parent.getTitle())
 		self["SetupEntry"] = StaticText("")
 		self["SetupValue"] = StaticText("")
-		if hasattr(self.parent, "onChangedEntry"):
-			if self.addWatcher not in self.onShow:
-				self.onShow.append(self.addWatcher)
-			if self.removeWatcher not in self.onHide:
-				self.onHide.append(self.removeWatcher)
+		if self.addWatcher not in self.onShow:
+			self.onShow.append(self.addWatcher)
+		if self.removeWatcher not in self.onHide:
+			self.onHide.append(self.removeWatcher)
 
 	def addWatcher(self):
 		if self.selectionChanged not in self.parent.onChangedEntry:
@@ -199,36 +203,45 @@ class SetupSummary(Screen):
 			self.parent["config"].onSelectionChanged.remove(self.selectionChanged)
 
 	def selectionChanged(self):
+		self["entry"].text = self.parent.getCurrentEntry()  # DEBUG: Proposed for new summary screens.
+		self["value"].text = self.parent.getCurrentValue()  # DEBUG: Proposed for new summary screens.
 		self["SetupEntry"].text = self.parent.getCurrentEntry()
 		self["SetupValue"].text = self.parent.getCurrentValue()
 
 
-# Read the setup menu XML file.
+# Read the setup XML file.
 #
 def setupDom(setup=None, plugin=None):
-	if plugin:
-		setupFile = resolveFilename(SCOPE_PLUGINS, pathJoin(plugin, "setup.xml"))
-		msg = " from plugin '%s'" % plugin
-	else:
-		setupFile = resolveFilename(SCOPE_SKIN, "setup.xml")
-		msg = ""
+	setupFileDom = xml.etree.cElementTree.fromstring("<setupxml></setupxml>")
+	setupFile = resolveFilename(SCOPE_PLUGINS, pathJoin(plugin, "setup.xml")) if plugin else resolveFilename(SCOPE_SKIN, "setup.xml")
 	try:
 		modTime = getmtime(setupFile)
 	except (IOError, OSError) as err:
 		print("[Setup] Error: Unable to get '%s' modified time - Error (%d): %s!" % (setupFile, err.errno, err.strerror))
-		return xml.etree.cElementTree.fromstring("<setupxml></setupxml>")
+		return setupFileDom
 	cached = setupFile in domSetups and setupFile in setupModTimes and setupModTimes[setupFile] == modTime
-	print("[Setup] XML%s source file '%s'." % (" cached" if cached else "", setupFile))
-	if setup is not None:
-		print("[Setup] XML Setup menu '%s'%s." % (setup, msg))
+	print("[Setup] XML%s setup file '%s', using element '%s'%s." % (" cached" if cached else "", setupFile, setup, " from plugin '%s'" % plugin if plugin else ""))
 	if cached:
 		return domSetups[setupFile]
-	gotFile = False
 	try:
 		with open(setupFile, "r") as fd:  # This open gets around a possible file handle leak in Python's XML parser.
 			try:
-				setupfiledom = xml.etree.cElementTree.parse(fd).getroot()
-				gotFile = True
+				fileDom = xml.etree.cElementTree.parse(fd).getroot()
+				setupFileDom = fileDom
+				domSetups[setupFile] = setupFileDom
+				setupModTimes[setupFile] = modTime
+				for setup in setupFileDom.findall("setup"):
+					key = setup.get("key", "")
+					if key in setupTitles:
+						print("[Setup] Warning: Setup key '%s' has been redefined!" % key)
+					title = setup.get("menuTitle", "").encode("UTF-8")
+					if title == "":
+						title = setup.get("title", "").encode("UTF-8")
+						if title == "":
+							print("[Setup] Error: Setup key '%s' title is missing or blank!" % key)
+							title = "** Setup error: '%s' title is missing or blank!" % key
+					setupTitles[key] = _(title)
+					# print("[Setup] DEBUG: XML setup load: key='%s', title='%s', menuTitle='%s', translated title='%s'" % (key, setup.get("title", "").encode("UTF-8"), setup.get("menuTitle", "").encode("UTF-8"), setupTitles[key]))
 			except xml.etree.cElementTree.ParseError as err:
 				fd.seek(0)
 				content = fd.readlines()
@@ -241,33 +254,12 @@ def setupDom(setup=None, plugin=None):
 				print("[Setup] Error: Unable to parse setup data in '%s' - '%s'!" % (setupFile, err))
 	except (IOError, OSError) as err:
 		if err.errno == errno.ENOENT:  # No such file or directory
-			print("[Skin] Warning: Setup file '%s' does not exist!" % setupFile)
+			print("[Setup] Warning: Setup file '%s' does not exist!" % setupFile)
 		else:
-			print("[Skin] Error %d: Opening setup file '%s'! (%s)" % (err.errno, setupFile, err.strerror))
+			print("[Setup] Error %d: Opening setup file '%s'! (%s)" % (err.errno, setupFile, err.strerror))
 	except Exception as err:
 		print("[Setup] Error %d: Unexpected error opening setup file '%s'! (%s)" % (err.errno, setupFile, err.strerror))
-	if gotFile:
-		domSetups[setupFile] = setupfiledom
-		setupModTimes[setupFile] = modTime
-		xmldata = setupfiledom
-		for setup in xmldata.findall("setup"):
-			key = setup.get("key", "")
-			if key in setupTitles:
-				print("[Setup] Warning: Setup key '%s' has been redefined!" % key)
-			title = setup.get("menuTitle", "").encode("UTF-8")
-			if title == "":
-				title = setup.get("title", "").encode("UTF-8")
-				if title == "":
-					print("[Setup] Error: Setup key '%s' title is missing or blank!" % key)
-					setupTitles[key] = _("** Setup error: '%s' title is missing or blank!") % key
-				else:
-					setupTitles[key] = _(title)
-			else:
-				setupTitles[key] = _(title)
-			# print("[Setup] DEBUG XML Setup menu load: key='%s', title='%s', menuTitle='%s', translated title='%s'" % (key, setup.get("title", "").encode("UTF-8"), setup.get("menuTitle", "").encode("UTF-8"), setupTitles[key]))
-	else:
-		setupfiledom = xml.etree.cElementTree.fromstring("<setupxml></setupxml>")
-	return setupfiledom
+	return setupFileDom
 
 # Temporary legacy interface.
 #
