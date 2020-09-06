@@ -164,7 +164,6 @@ class ConfigListScreen:
 		if "VKeyIcon" not in self:
 			self["VKeyIcon"] = Boolean(False)
 		self["configActions"] = HelpableActionMap(self, ["ConfigListActions"], {
-			"ok": (self.keySelect, _("Select, toggle, process or edit the current entry")),
 			"select": (self.keySelect, _("Select, toggle, process or edit the current entry"))
 		}, prio=1, description=_("Common Setup Functions"))
 		self["menuConfigActions"] = HelpableActionMap(self, "ConfigListActions", {
