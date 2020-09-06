@@ -155,7 +155,7 @@ class ConfigListScreen:
 				"cancel": (self.keyCancel, _("Cancel any changed settings and exit")),
 				"close": (self.closeRecursive, _("Cancel any changed settings and exit all menus")),
 				"save": (self.keySave, _("Save all changed settings and exit"))
-			}, prio=1, description=_("Common Setup Functions"))
+			}, prio=1, description=_("Common Setup Actions"))
 		if "key_menu" not in self:
 			self["key_menu"] = StaticText(_("MENU"))
 		if "HelpWindow" not in self:
@@ -165,7 +165,7 @@ class ConfigListScreen:
 			self["VKeyIcon"] = Boolean(False)
 		self["configActions"] = HelpableActionMap(self, ["ConfigListActions"], {
 			"select": (self.keySelect, _("Select, toggle, process or edit the current entry"))
-		}, prio=1, description=_("Common Setup Functions"))
+		}, prio=1, description=_("Common Setup Actions"))
 		self["navigationActions"] = HelpableActionMap(self, ["NavigationActions"], {
 			"top": (self.keyTop, _("Move to first line")),
 			"pageUp": (self.keyPageUp, _("Move up a screen")),
@@ -177,14 +177,14 @@ class ConfigListScreen:
 			"down": (self.keyDown, _("Move down a line")),
 			"pageDown": (self.keyPageDown, _("Move down a screen")),
 			"bottom": (self.keyBottom, _("Move to last line"))
-		}, prio=1, description=_("Common Setup Functions"))
+		}, prio=1, description=_("Common Setup Actions"))
 		self["menuConfigActions"] = HelpableActionMap(self, "ConfigListActions", {
 			"menu": (self.keyMenu, _("Display selection list as a selection menu")),
-		}, prio=1, description=_("Common Setup Functions"))
+		}, prio=1, description=_("Common Setup Actions"))
 		self["menuConfigActions"].setEnabled(False)
 		self["editConfigActions"] = HelpableNumberActionMap(self, ["NumberActions", "TextEditActions"], {
-			"backspace": (self.keyBackspace, _("Delete the character to the left of cursor")),
-			"delete": (self.keyDelete, _("Delete the character under the cursor")),
+			"backspace": (self.keyBackspace, _("Delete character to left of cursor or select AM times")),
+			"delete": (self.keyDelete, _("Delete character under cursor or select PM times")),
 			"erase": (self.keyErase, _("Delete all the text")),
 			"toggleOverwrite": (self.keyToggleOW, _("Toggle new text inserts before or overwrites existing text")),
 			"1": (self.keyNumberGlobal, _("Number or SMS style data entry")),
@@ -198,11 +198,11 @@ class ConfigListScreen:
 			"9": (self.keyNumberGlobal, _("Number or SMS style data entry")),
 			"0": (self.keyNumberGlobal, _("Number or SMS style data entry")),
 			"gotAsciiCode": (self.keyGotAscii, _("Keyboard data entry"))
-		}, prio=1, description=_("Common Setup Functions"))
+		}, prio=1, description=_("Common Setup Actions"))
 		self["editConfigActions"].setEnabled(False)
 		self["VirtualKB"] = HelpableActionMap(self, "VirtualKeyboardActions", {
 			"showVirtualKeyboard": (self.keyText, _("Display the virtual keyboard for data entry"))
-		}, prio=1, description=_("Common Setup Functions"))
+		}, prio=1, description=_("Common Setup Actions"))
 		self["VirtualKB"].setEnabled(False)
 		self["config"] = ConfigList(list, session=session)
 		self.setCancelMessage(None)
