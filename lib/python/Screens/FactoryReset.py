@@ -168,11 +168,5 @@ class FactoryReset(Setup, ProtectedScreen):
 				if err.errno != errno.ENOENT:
 					print("[FactoryReset] Error: Unable to delete '%s'!  (%s)" % (target, str(err)))
 
-	def keyCancel(self):  # Old Setup close key method.
-		self.closeConfigList(recursiveClose=False)
-
-	def closeRecursive(self):  # Old Setup close recursive key method.
-		self.closeConfigList(recursiveClose=True)
-
-	def closeConfigList(self, recursiveClose=False):
-		self.close(recursiveClose)
+	def closeConfigList(self, closeParameters=()):
+		self.close(*closeParameters)
