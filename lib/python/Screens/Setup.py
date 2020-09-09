@@ -96,49 +96,51 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 		else:
 			print("[Setup] DEBUG: Config list is unchanged!")
 
+	def includeElement(self, element):
+		itemLevel = int(element.get("level", 0))
+		if itemLevel > config.usage.setup_level.index:  # The item is higher than the current setup level.
+			return False
+		requires = element.get("requires")
+		if requires:
+			negate = requires.startswith("!")
+			if negate:
+				requires = requires[1:]
+			if requires.startswith("config."):
+				item = eval(requires)
+				result = bool(item.value and item.value not in ("0", "False", "false"))
+			else:
+				result = bool(SystemInfo.get(requires, False))
+			if requires and negate == result:  # The item requirements are not met.
+				return False
+		conditional = element.get("conditional")
+		return not conditional or eval(conditional)
+
+	def addItem(self, element):
+		if self.pluginLanguageDomain:
+			itemText = dgettext(self.pluginLanguageDomain, element.get("text", "??").encode("UTF-8"))
+			itemDescription = dgettext(self.pluginLanguageDomain, element.get("description", " ").encode("UTF-8"))
+		else:
+			itemText = _(element.get("text", "??").encode("UTF-8"))
+			itemDescription = _(element.get("description", " ").encode("UTF-8"))
+		itemText = itemText.replace("%s %s", "%s %s" % (SystemInfo["MachineBrand"], SystemInfo["MachineName"]))
+		itemDescription = itemDescription.replace("%s %s", "%s %s" % (SystemInfo["MachineBrand"], SystemInfo["MachineName"]))
+		item = eval(element.text or "")
+		if item != "" and not isinstance(item, ConfigNothing):
+			itemDefault = item.toDisplayString(item.default)
+			itemDescription = _("%s  (Default: %s)") % (itemDescription, itemDefault) if itemDescription and itemDescription != " " else _("Default: '%s'.") % itemDefault
+			self.list.append((itemText, item, itemDescription))  # Add the item to the config list.
+		if item is config.usage.boolean_graphic:
+			self.switch = True
+
 	def addItems(self, parentNode):
 		for element in parentNode:
 			if element.tag and element.tag in ("item", "if"):
-				itemLevel = int(element.get("level", 0))
-				if itemLevel > config.usage.setup_level.index:  # The item is higher than the current setup level.
-					continue
-				requires = element.get("requires")
-				if requires:
-					negate = requires.startswith("!")
-					if negate:
-						requires = requires[1:]
-					if requires.startswith("config."):
-						item = eval(requires)
-						SystemInfo[requires] = True if item.value and item.value not in ("0", "False", "false") else False
-						clean = True
-					else:
-						clean = False
-					result = bool(SystemInfo.get(requires, False))
-					if clean:
-						SystemInfo.pop(requires, None)
-					if requires and negate == result:  # The item requirements are not met.
-						continue
-				conditional = element.get("conditional")
-				if conditional and not eval(conditional):  # The item conditions are not met.
+				if not self.includeElement(element):
 					continue
 				if element.tag == "if":
 					self.addItems(element)
 					continue
-				if self.pluginLanguageDomain:
-					itemText = dgettext(self.pluginLanguageDomain, element.get("text", "??").encode("UTF-8"))
-					itemDescription = dgettext(self.pluginLanguageDomain, element.get("description", " ").encode("UTF-8"))
-				else:
-					itemText = _(element.get("text", "??").encode("UTF-8"))
-					itemDescription = _(element.get("description", " ").encode("UTF-8"))
-				itemText = itemText.replace("%s %s", "%s %s" % (SystemInfo["MachineBrand"], SystemInfo["MachineName"]))
-				itemDescription = itemDescription.replace("%s %s", "%s %s" % (SystemInfo["MachineBrand"], SystemInfo["MachineName"]))
-				item = eval(element.text or "")
-				if item != "" and not isinstance(item, ConfigNothing):
-					itemDefault = item.toDisplayString(item.default)
-					itemDescription = _("%s  (Default: %s)") % (itemDescription, itemDefault) if itemDescription and itemDescription != " " else _("Default: '%s'.") % itemDefault
-					self.list.append((itemText, item, itemDescription))  # Add the item to the config list.
-				if item is config.usage.boolean_graphic:
-					self.switch = True
+				self.addItem(element)
 
 	def layoutFinished(self):
 		if self.setupImage:
