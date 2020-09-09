@@ -58,7 +58,7 @@ class RecordingSettings(Screen,ConfigListScreen):
 			if x.get("key") != self.setup:
 				continue
 			self.addItems(list, x)
-			self.setTitle = _(x.get("title", "Setup").encode("UTF-8"))
+			self.title = _(x.get("title", "Setup").encode("UTF-8"))
 			self.seperation = int(x.get('separation', '0'))
 
 	def __init__(self, session):
