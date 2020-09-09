@@ -98,7 +98,7 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 
 	def addItems(self, parentNode):
 		for element in parentNode:
-			if element.tag and element.tag == "item":
+			if element.tag and element.tag in ("item", "if"):
 				itemLevel = int(element.get("level", 0))
 				if itemLevel > config.usage.setup_level.index:  # The item is higher than the current setup level.
 					continue
@@ -120,6 +120,9 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 						continue
 				conditional = element.get("conditional")
 				if conditional and not eval(conditional):  # The item conditions are not met.
+					continue
+				if element.tag == "if":
+					self.addItems(element)
 					continue
 				if self.pluginLanguageDomain:
 					itemText = dgettext(self.pluginLanguageDomain, element.get("text", "??").encode("UTF-8"))
