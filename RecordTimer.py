@@ -31,10 +31,12 @@ from sys import maxint
 # event data         (ONLY for time adjustments etc.)
 
 
-# We need to handle concurrency when updating timers.xml
+# We need to handle concurrency when updating timers.xml and
+# when checking was_rectimer_wakeup
 #
 import threading
 write_lock = threading.Lock()
+wasrec_lock = threading.Lock()
 
 # Parses an event, and returns a (begin, end, name, duration, eit)-tuple.
 # begin and end include padding (if set in config)
@@ -555,9 +557,15 @@ class RecordTimerEntry(timer.TimerEntry, object):
 
 		elif next_state == self.StateRunning:
 			global wasRecTimerWakeup
-			if os.path.exists("/tmp/was_rectimer_wakeup") and not wasRecTimerWakeup:
-				wasRecTimerWakeup = int(open("/tmp/was_rectimer_wakeup", "r").read()) and True or False
-				os.remove("/tmp/was_rectimer_wakeup")
+
+# Run this under a lock.
+# We've seen two threads arrive here "together".
+# Both see the file as existing, but only one can delete it...
+#
+			with wasrec_lock:
+				if os.path.exists("/tmp/was_rectimer_wakeup") and not wasRecTimerWakeup:
+					wasRecTimerWakeup = int(open("/tmp/was_rectimer_wakeup", "r").read()) and True or False
+					os.remove("/tmp/was_rectimer_wakeup")
 
 			self.autostate = Screens.Standby.inStandby
 
