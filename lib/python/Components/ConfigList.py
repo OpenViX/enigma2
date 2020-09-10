@@ -155,7 +155,7 @@ class ConfigListScreen:
 				"cancel": (self.keyCancel, _("Cancel any changed settings and exit")),
 				"close": (self.closeRecursive, _("Cancel any changed settings and exit all menus")),
 				"save": (self.keySave, _("Save all changed settings and exit"))
-			}, prio=1, description=_("Common Setup Functions"))
+			}, prio=1, description=_("Common Setup Actions"))
 		if "key_menu" not in self:
 			self["key_menu"] = StaticText(_("MENU"))
 		if "HelpWindow" not in self:
@@ -164,30 +164,27 @@ class ConfigListScreen:
 		if "VKeyIcon" not in self:
 			self["VKeyIcon"] = Boolean(False)
 		self["configActions"] = HelpableActionMap(self, ["ConfigListActions"], {
-			"ok": (self.keySelect, _("Select, toggle, process or edit the current entry")),
 			"select": (self.keySelect, _("Select, toggle, process or edit the current entry"))
-		}, prio=1, description=_("Common Setup Functions"))
-		self["menuConfigActions"] = HelpableActionMap(self, "ConfigListActions", {
-			"menu": (self.keyMenu, _("Display selection list as a selection menu")),
-		}, prio=1, description=_("Common Setup Functions"))
-		self["menuConfigActions"].setEnabled(False)
-		self["directionActions"] = HelpableActionMap(self, ["NavigationActions"], {
-			"pageDown": (self.keyPageDown, _("Move down a screen")),
-			"first": (self.keyFirst, _("Jump to first item in list or the start of text")),
-			"last": (self.keyLast, _("Jump to last item in list or the end of text")),
-			"pageUp": (self.keyPageUp, _("Move up a screen"))
-		}, prio=1, description=_("Common Setup Functions"))
+		}, prio=1, description=_("Common Setup Actions"))
 		self["navigationActions"] = HelpableActionMap(self, ["NavigationActions"], {
 			"top": (self.keyTop, _("Move to first line")),
+			"pageUp": (self.keyPageUp, _("Move up a screen")),
 			"up": (self.keyUp, _("Move up a line")),
+			"first": (self.keyFirst, _("Jump to first item in list or the start of text")),
 			"left": (self.keyLeft, _("Select the previous item in list or move cursor left")),
 			"right": (self.keyRight, _("Select the next item in list or move cursor right")),
+			"last": (self.keyLast, _("Jump to last item in list or the end of text")),
 			"down": (self.keyDown, _("Move down a line")),
+			"pageDown": (self.keyPageDown, _("Move down a screen")),
 			"bottom": (self.keyBottom, _("Move to last line"))
-		}, prio=-1, description=_("Common Setup Functions"))  # The priority is set to -1 to override the internal list box navigation controls.
+		}, prio=1, description=_("Common Setup Actions"))
+		self["menuConfigActions"] = HelpableActionMap(self, "ConfigListActions", {
+			"menu": (self.keyMenu, _("Display selection list as a selection menu")),
+		}, prio=1, description=_("Common Setup Actions"))
+		self["menuConfigActions"].setEnabled(False)
 		self["editConfigActions"] = HelpableNumberActionMap(self, ["NumberActions", "TextEditActions"], {
-			"backspace": (self.keyBackspace, _("Delete the character to the left of cursor")),
-			"delete": (self.keyDelete, _("Delete the character under the cursor")),
+			"backspace": (self.keyBackspace, _("Delete character to left of cursor or select AM times")),
+			"delete": (self.keyDelete, _("Delete character under cursor or select PM times")),
 			"erase": (self.keyErase, _("Delete all the text")),
 			"toggleOverwrite": (self.keyToggleOW, _("Toggle new text inserts before or overwrites existing text")),
 			"1": (self.keyNumberGlobal, _("Number or SMS style data entry")),
@@ -201,21 +198,26 @@ class ConfigListScreen:
 			"9": (self.keyNumberGlobal, _("Number or SMS style data entry")),
 			"0": (self.keyNumberGlobal, _("Number or SMS style data entry")),
 			"gotAsciiCode": (self.keyGotAscii, _("Keyboard data entry"))
-		}, prio=1, description=_("Common Setup Functions"))
+		}, prio=1, description=_("Common Setup Actions"))
 		self["editConfigActions"].setEnabled(False)
 		self["VirtualKB"] = HelpableActionMap(self, "VirtualKeyboardActions", {
 			"showVirtualKeyboard": (self.keyText, _("Display the virtual keyboard for data entry"))
-		}, prio=1, description=_("Common Setup Functions"))
+		}, prio=1, description=_("Common Setup Actions"))
 		self["VirtualKB"].setEnabled(False)
 		self["config"] = ConfigList(list, session=session)
 		self.setCancelMessage(None)
 		self.onChangedEntry = []
+		if self.noNativeKeys not in self.onLayoutFinish:
+			self.onLayoutFinish.append(self.noNativeKeys)
 		if self.handleInputHelpers not in self["config"].onSelectionChanged:
 			self["config"].onSelectionChanged.append(self.handleInputHelpers)
 		if self.showHelpWindow not in self.onExecBegin:
 			self.onExecBegin.append(self.showHelpWindow)
 		if self.hideHelpWindow not in self.onExecEnd:
 			self.onExecEnd.append(self.hideHelpWindow)
+
+	def noNativeKeys(self):
+		self["config"].instance.allowNativeKeys(False)
 
 	def setCancelMessage(self, msg):
 		self.cancelMsg = _("Really close without saving settings?") if msg is None else msg
@@ -289,8 +291,12 @@ class ConfigListScreen:
 				self.entryChanged()
 
 	def keySelect(self):
-		if isinstance(self.getCurrentItem(), ConfigSelection):
+		if isinstance(self.getCurrentItem(), ConfigBoolean):
+			self.keyRight()
+		elif isinstance(self.getCurrentItem(), ConfigSelection):
 			self.keyMenu()
+		elif isinstance(self.getCurrentItem(), ConfigText):
+			self.keyText()
 		else:
 			self["config"].handleKey(KEYA_SELECT)
 
@@ -391,19 +397,19 @@ class ConfigListScreen:
 	def closeRecursive(self):
 		self.closeConfigList((True,))
 
-	def closeConfigList(self, recursiveClose=()):
+	def closeConfigList(self, closeParameters=()):
 		if self["config"].isChanged():
-			self.recursiveClose = recursiveClose
+			self.closeParameters = closeParameters
 			self.session.openWithCallback(self.cancelConfirm, MessageBox, self.cancelMsg, default=False, type=MessageBox.TYPE_YESNO)
 		else:
-			self.close(*recursiveClose)
+			self.close(*closeParameters)
 
 	def cancelConfirm(self, result):
 		if not result:
 			return
 		for x in self["config"].list:
 			x[1].cancel()
-		self.close(*self.recursiveClose)
+		self.close(*self.closeParameters)
 
 	def createSummary(self):  # This should not be required if ConfigList is invoked via Setup (as it should).
 		from Screens.Setup import SetupSummary
