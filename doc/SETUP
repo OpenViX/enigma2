@@ -1,8 +1,10 @@
-Standardised and Uniform Setup Menus in Enigma2
------------------------------------------------
+Standardised and Uniform Setup Screens in Enigma2
+-------------------------------------------------
 
 Written by IanSav -  2-Apr-2018
 Updated by IanSav - 11-Jul-2020
+Updated by IanSav - 12-Sep-2020
+
 
 INTRODUCTION:
 =============
@@ -16,11 +18,12 @@ interchangeably.
 
 Standard variable names are documented, together with code and skin coding 
 conventions to assist in creating code that works more universally, with 
-additional benefits from improved Setup menu load performance and reduction 
+additional benefits from improved Setup screen load performance and reduction 
 in merge issues between images.
 
 Lastly, the document explains the operation and features of the refactored 
-Setup menu interface ("Screen/Setup.py").
+Setup screen interface ("Screen/Setup.py").
+
 
 REFACTOR OF "Screens/Setup.py":
 ===============================
@@ -31,9 +34,9 @@ written to make the "Screens/Setup.py" a superset of capabilities from all
 the images.
 
 The changes, even with the enhancements, can result in a significant 
-reduction in time to generate any "Screens/Setup.py" based Setup menu.  
-The time taken to build any Setup menu lists is slightly longer for the 
-first menu item but then about 50 time faster for all subsequent searches.
+reduction in time to generate any "Screens/Setup.py" based screen.  The 
+time taken to build any Setup screen is slightly longer for the first 
+screen item but then about 50 time faster for all subsequent searches.
 
 Significant changes, in no particular order, are:
 
@@ -41,29 +44,29 @@ Significant changes, in no particular order, are:
 	Every subsequent access will check if the source file has been 
 	changed.  If so, the file will be reloaded and reprocessed.  If not, 
 	the cached results are returned.  This change can significantly 
-	improve "Screens/Setup.py" menu load times.
+	improve "Screens/Setup.py" screen load times.
 
 	This change also means that the GUI no longer has to be restarted to 
 	allow changes to "setup.xml" to be processed by OpenPLi.
 
-2)	All setup menu titles are also extracted and cached to improve menu 
-	building time.  This code uses a derivative of the OpenViX 
+2)	All setup screen titles are also extracted and cached to reduce 
+	screen building time.  This code uses a derivative of the OpenViX 
 	"titleshort" attribute here known as "menuTitle" to allow 
 	"Screens/Menu.py" based menus to have alternate title text.  This 
-	change improves "Screens/Menu.py" menu load times for "Setup" based 
-	menus.
+	change improves "Screens/Menu.py" screen load times for "Setup" 
+	based screens.
 
-3)	Optimise, improve and enhance generation of Setup menu item lists.  
+3)	Optimise, improve and enhance generation of Setup screen item lists.  
 	Thange allows the list to be processed 	once for display rather than 
 	the two or three cycles in some previous versions.
 
-4)	Create a log entry if the Setup menu has no valid entries.
+4)	Create a log entry if the Setup screen has no valid entries.
 
 5)	Remove remnants of the setup.xml "separation" attribute directive.  
 	This feature is now offered via the skin parameter 
 	"ConfigListSeperator".
 
-6)	When enabled, always obey Setup menu sort setting.
+6)	When enabled, always obey Setup screen sort setting.
 
 7)	If "%s %s" is found in an item's "text" or "description" attribute 
 	then replace it with the current box machine brand and model name.
@@ -71,19 +74,19 @@ Significant changes, in no particular order, are:
 8)	Move the description code from the "SetupSummary" class into the main 
 	"Setup" class where it is used.
 
-9) 	For OpenPLi add footnote support.  If the last character of a menu 
+9) 	For OpenPLi add footnote support.  If the last character of an entry 
 	item is an "*" then when this item is currently selected by the user 
 	a footnote message will appear to advise the user that a restart 
 	will be required if this item is changed.
 
-10)	Add an option to provide "Setup" menu images based on matching the 
-	setup menu "key" attribute with an image defined in a new "<setups>" 
+10)	Add an option to provide "Setup" screen image based on matching the 
+	setup "key" attribute with an image defined in a new "<setups>" 
 	block in the skin.  This code is conditional on having compatible 
 	changes in "skin.py".
 
 11)	Enable the HELP button to allow users to obtain help while using any 
 	"Screens/Setup.py" based screen.  To be fully operational these 
-	changes also need to be accompanied by changes to 
+	changes also need to be accompanied by appropriate changes to 
 	"Components/ConfigList.py".
 
 	To properly implement HELP and clean up the ActionMaps, the ActionMap 
@@ -91,21 +94,22 @@ Significant changes, in no particular order, are:
 	integrated into the ActionMap in "Components/ConfigList.py".
 
 12)	The "setup_key" skin facility appears to be unused.  The name has 
-	been changed to "Setup_key" to better match existing skin names.  
+	been changed to "Setupkey" to better match existing skin names.  
 	This option allows skin designers to create custom "Setup" based 
-	screens for any "Setup" menu item.
+	screens.
 
 	The "setup.xml" file's "setup" tag also offers a "skin" attribute to 
-	also allow for the screen for that menu to be specified.
+	also allow for the screen for that setup key to be specified.
 
 	The order of screen selection is first look for a "skin" attribute 
-	screen, then try for a "Setup_key" screen and finally use the 
+	screen, then try for a "Setupkey" screen and finally use the 
 	standard "Setup" screen.
 
 13)	Perform a PEP8 clean-up of the code.
 
 14)	Reorganise the imports and code blocks to improve readability of the 
 	refactored code.
+
 
 STRUCTURE OF "setup.xml" FILES:
 ===============================
@@ -120,6 +124,13 @@ Syntax:
 		<setup key="Sample2" title="Sample2 settings">
 			<item level="0" text="Configuration item 3" description="This is the description text that explains the purpose and settings of config item 3.">configItem3</item>
 			<item level="1" text="Configuration item 4" description="This is the description text that explains the purpose and settings of config item 4.">configItem4</item>
+			<if level="2">
+				<item text="Configuration item 5" description="This is the description text that explains the purpose and settings of config item 5.">configItem5</item>
+			<elif conditional="self.configVariable.value != 'once'" />
+				<item text="Configuration item 6" description="This is the description text that explains the purpose and settings of config item 6.">configItem6</item>
+			<else />
+				<item text="Configuration item 7" description="This is the description text that explains the purpose and settings of config item 7.">configItem7</item>
+			</if>
 		</setup>
 	</setupxml>
 
@@ -136,15 +147,16 @@ Each of the "setup" tags can have the following attributes:
 	---------	--------	-----------
 	"key"		Mandatory	This attribute is the reference name, 
 					or key, used to identify this Setup 
-					menu.
+					screen.
 
 	"title"		Mandatory	This attribute is the long form title 
 					text used for the heading or title of 
-					this setup menu screen.
+					this setup screen.
 
 	"menuTitle"	Optional	This attribute is the title that can 
 					be used as an alternative for the 
-					"title" in menus of Setup menu items.
+					"title" in menus of Setup screen 
+					items.
 
 	"showOpenWebIF"	Optional	This attribute is used to signal that 
 					this Setup screen should be made 
@@ -153,12 +165,15 @@ Each of the "setup" tags can have the following attributes:
 	"requires"	Optional	This attribute is used to test is the 
 					nominated requirements have been met 
 					to enable the activation and use of 
-					this Setup menu.
+					this Setup screen.
 
 	"skin"		Optional	This attribute is used to specify an 
 					override screen name defined in the 
 					skin to be used to display this Setup 
 					screen.
+
+Each of the "if" or "elif" tags can have at least one of the "level", 
+"conditional" or "requires" attributes as per the "item" tag as follows.
 
 Each of the "item" tags can have the following attributes:
 
@@ -166,10 +181,10 @@ Each of the "item" tags can have the following attributes:
 	---------	--------	-----------
 	"text"		Mandatory	This attribute is the prompt text 
 					that is displayed to the user when 
-					activating this Setup menu.
+					activating this Setup screen.
 
 	"level"		Recommended	The list of items that may be 
-					displayed in any Setup menu is 
+					displayed in any Setup screen is 
 					dynamic. This attribute determines 
 					the user interface setup mode or 
 					level where this option may be 
@@ -192,7 +207,7 @@ Each of the "item" tags can have the following attributes:
 	"conditional"	Optional	This attribute allows for programmed 
 					logic to decide is this item is 
 					eligible for display in the Setup 
-					menu.
+					screen.
 
 	"requires"	Optional	This attribute allows for "SystemInfo" 
 					or "config" variables to be used to 
@@ -226,11 +241,15 @@ by the encompassing item tag.
 	--------		-----------
 	ScreenPath		This variable uses a source="ScreenPath" 
 				render=Label" widget that provides the menu 
-				path to the currently used "Setup" menu.
+				path to the currently used "Setup" screen.
 
 	Title			This variable uses a source="title" 
 				render=Label" widget that provides the title 
-				of the "Setup" menu.
+				of the "Setup" screen.
+
+	setupimage		This variable uses a name="setupimage" 
+				widget that provides an image to represent 
+				the "Setup" screen being displayed.
 
 	config			This variable uses a name="config" widget 
 				that provides the list of available "Setup" 
@@ -291,6 +310,7 @@ by the encompassing item tag.
 				that displays the SMS helper window overlay 
 				when appropriate.
 
+
 SAMPLE "Setup" SCREEN:
 ======================
 
@@ -323,11 +343,12 @@ SAMPLE "Setup" SCREEN:
 			<convert type="ConditionalShowHide"/>
 		</widget>
 		<widget name="HelpWindow" pixmap="buttons/vkey_icon.png" position="0,250" size="1,1" zPosition="+1" />
-		<widget name="menuimage" position="0,50" size="200,400" alphatest="blend" conditional="menuimage" transparent="1" />
+		<widget name="setupimage" position="0,50" size="200,400" alphatest="blend" conditional="setupimage" transparent="1" />
 		<widget name="config" position="200,50" size="800,400" enableWrapAround="1" scrollbarMode="showOnDemand" transparent="1" />
 		<widget name="footnote" position="200,460" size="800,20" font="Regular;18" transparent="1" valign="center" />
 		<widget name="description" position="200,490" size="800,75" font="Regular;20" transparent="1" valign="center" />
 	</screen>
+
 
 SKIN "Setups" SUPPORT BLOCK:
 ============================
@@ -340,23 +361,24 @@ Syntax:
 	</setups>
 
 This block is optional but if defined allows a skin designer to associate 
-an image with any "Screens/Setup.py" based menu.  The "setups" tag has no 
+an image with any "Screens/Setup.py" based screen.  The "setups" tag has no 
 attributes and contains a list of "setup" tags.
 
 Each "setup" tag must contain two attributes:
 
 	key	This attribute is the value of the key attribute from a 
 		setup.xml file.  If the keys match then this entry defines 
-		an image that is to be used when the nominated Setup menu 
-		is displayed.
+		an image that is to be used when the nominated Setup 
+		screen is displayed.
 
 	image	This attribute is the pathname of the image that is to be 
-		associated with the Setup menu identified by the "key" 
+		associated with the Setup screen identified by the "key" 
 		attribute.
 
 There is a special "key" attribute with the name "default".  This entry, 
 if defined, assigns a default image to be used in ALL "Screens/Setup.py" 
 screens that do not have a specifically assigned image.
+
 
 CONCLUSION:
 ===========
@@ -364,7 +386,7 @@ CONCLUSION:
 For all the Enigma2 images there is a significant difference in facilities 
 offered by the "Screens/Setup.py code.  This proposal outlines what I 
 believe to be a conservative approach to making a significant and beneficial 
-change in unifying and standardising the operation of "Setup" menus and 
-screens across the Enigma2 UI.
+change in unifying and standardising the operation of "Setup" screens across 
+the Enigma2 UI.
 
 ---END---
