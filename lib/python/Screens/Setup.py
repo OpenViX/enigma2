@@ -343,7 +343,8 @@ def getConfigMenuItem(configElement):
 #
 def getSetupTitle(key):
 	setupDom()  # Load or check for an updated setup.xml file.
-	key = str(key)
+	if not isinstance(key, str):
+		key = str(key)
 	title = setupTitles.get(key, None)
 	if title is None:
 		print("[Setup] Error: Setup key '%s' not found in setup file!" % key)
