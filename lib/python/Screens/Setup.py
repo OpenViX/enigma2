@@ -52,7 +52,7 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 			setupImage = resolveFilename(SCOPE_CURRENT_SKIN, setupImage)
 			self.setupImage = LoadPixmap(setupImage)
 			if self.setupImage:
-				self["menuimage"] = Pixmap()
+				self["setupimage"] = Pixmap()
 			else:
 				print("[Setup] Error: Unable to load menu image '%s'!" % setupImage)
 		else:
@@ -197,7 +197,7 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 
 	def layoutFinished(self):
 		if self.setupImage:
-			self["menuimage"].instance.setPixmap(self.setupImage)
+			self["setupimage"].instance.setPixmap(self.setupImage)
 		if not self["config"]:
 			print("[Setup] No setup items available!")
 
