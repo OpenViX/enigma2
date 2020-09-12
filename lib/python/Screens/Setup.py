@@ -185,47 +185,6 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 	def getIndexFromItem(self, item):
 		return self["config"].list.index(item) if item in self["config"].list else 0
 
-	# Constants for checkItems()
-	ROOT_ALLOWED = ("item", "if")  # Tags allowed in top level of setup entry
-	IF_ALLOWED = ("item", "if", "elif", "else")  # Tags allowed inside <if/>
-	AFTER_ELSE_ALLOWED = ("item", "if")  # Tags allowed after <elif/> or <else/>
-	CHILDREN_ALLOWED = ("if", )  # Tags that may have children
-	TEXT_ALLOWED = ("item", )  # Tags that may have non-whitespace text (or tail)
-
-	@staticmethod
-	def checkItems(parentNode, setupName, allowed=ROOT_ALLOWED):  # Used by setupDom.
-		for element in parentNode:
-			if element.tag not in allowed:
-				print("[Setup] Tag '%s' not permitted in '%s'. Permitted: '%s'." % (element.tag, setupName, ", ".join(allowed)))
-				continue
-
-			if element.tag not in Setup.TEXT_ALLOWED:
-				if element.text and not element.text.isspace():
-					print("[Setup] Tag '%s' in '%s' contains text: '%s'." % (element.tag, setupName, element.text.strip()))
-
-				if element.tail and not element.tail.isspace():
-					print("[Setup] Tag '%s' in '%s' has trailing text: '%s'." % (element.tag, setupName, element.text.strip()))
-
-			if element.tag not in Setup.CHILDREN_ALLOWED:
-				try:
-					it = element.iter()
-					it.next()  # The element itself
-					it.next()  # First child
-					print("[Setup] Tag '%s' in '%s' contains children where none expected." % (element.tag, setupName))
-				except StopIteration:
-					pass
-
-			if element.tag == "item":
-				pass
-			elif element.tag == "if":
-				Setup.checkItems(element, setupName, allowed=Setup.IF_ALLOWED)
-			elif element.tag == "else":
-				allowed = Setup.AFTER_ELSE_ALLOWED  # else and elif not permitted after else
-			elif element.tag == "elif":
-				pass
-			else:
-				print("[Setup] Error: Tag '%s' in permitted set in '%s', but not checked! Permitted: '%s'." % (element.tag, setupName, ", ".join(allowed)))
-
 	def createSummary(self):
 		return SetupSummary
 
@@ -266,6 +225,42 @@ class SetupSummary(ScreenSummary):
 # Read the setup XML file.
 #
 def setupDom(setup=None, plugin=None):
+	# Constants for checkItems()
+	ROOT_ALLOWED = ("item", "if")  # Tags allowed in top level of setup entry
+	IF_ALLOWED = ("item", "if", "elif", "else")  # Tags allowed inside <if/>
+	AFTER_ELSE_ALLOWED = ("item", "if")  # Tags allowed after <elif/> or <else/>
+	CHILDREN_ALLOWED = ("if", )  # Tags that may have children
+	TEXT_ALLOWED = ("item", )  # Tags that may have non-whitespace text (or tail)
+
+	def checkItems(parentNode, setupName, allowed=ROOT_ALLOWED):
+		for element in parentNode:
+			if element.tag not in allowed:
+				print("[Setup] Tag '%s' not permitted in '%s'. Permitted: '%s'." % (element.tag, setupName, ", ".join(allowed)))
+				continue
+			if element.tag not in TEXT_ALLOWED:
+				if element.text and not element.text.isspace():
+					print("[Setup] Tag '%s' in '%s' contains text '%s'." % (element.tag, setupName, element.text.strip()))
+				if element.tail and not element.tail.isspace():
+					print("[Setup] Tag '%s' in '%s' has trailing text '%s'." % (element.tag, setupName, element.text.strip()))
+			if element.tag not in CHILDREN_ALLOWED:
+				try:
+					it = element.iter()
+					it.next()  # The element itself
+					it.next()  # First child
+					print("[Setup] Tag '%s' in '%s' contains children where none expected." % (element.tag, setupName))
+				except StopIteration:
+					pass
+			if element.tag == "item":
+				pass
+			elif element.tag == "if":
+				checkItems(element, setupName, allowed=IF_ALLOWED)
+			elif element.tag == "else":
+				allowed = AFTER_ELSE_ALLOWED  # else and elif not permitted after else
+			elif element.tag == "elif":
+				pass
+			else:
+				print("[Setup] Error: Tag '%s' in permitted set in '%s', but not checked! (Permitted: '%s')" % (element.tag, setupName, ", ".join(allowed)))
+
 	setupFileDom = xml.etree.cElementTree.fromstring("<setupxml></setupxml>")
 	setupFile = resolveFilename(SCOPE_PLUGINS, pathJoin(plugin, "setup.xml")) if plugin else resolveFilename(SCOPE_SKIN, "setup.xml")
 	try:
@@ -296,7 +291,7 @@ def setupDom(setup=None, plugin=None):
 							title = "** Setup error: '%s' title is missing or blank!" % key
 					setupTitles[key] = _(title)
 					# print("[Setup] DEBUG: XML setup load: key='%s', title='%s', menuTitle='%s', translated title='%s'" % (key, setup.get("title", "").encode("UTF-8", errors="ignore"), setup.get("menuTitle", "").encode("UTF-8", errors="ignore"), setupTitles[key]))
-					Setup.checkItems(setup, key)
+					checkItems(setup, key)
 			except xml.etree.cElementTree.ParseError as err:
 				fd.seek(0)
 				content = fd.readlines()
