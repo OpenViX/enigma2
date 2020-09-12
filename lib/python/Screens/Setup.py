@@ -79,9 +79,9 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 				if skin and skin != "":
 					self.skinName.insert(0, skin)
 				if config.usage.showScreenPath.value in ("large", "small") and "menuTitle" in setup:
-					title = setup.get("menuTitle", None).encode("UTF-8")
+					title = setup.get("menuTitle", None).encode("UTF-8", errors="ignore")
 				else:
-					title = setup.get("title", None).encode("UTF-8")
+					title = setup.get("title", None).encode("UTF-8", errors="ignore")
 				# If this break is executed then there can only be one setup tag with this key.
 				# This may not be appropriate if conditional setup blocks become available.
 				break
@@ -117,11 +117,11 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 
 	def addItem(self, element):
 		if self.pluginLanguageDomain:
-			itemText = dgettext(self.pluginLanguageDomain, element.get("text", "??").encode("UTF-8"))
-			itemDescription = dgettext(self.pluginLanguageDomain, element.get("description", " ").encode("UTF-8"))
+			itemText = dgettext(self.pluginLanguageDomain, element.get("text", "??").encode("UTF-8", errors="ignore"))
+			itemDescription = dgettext(self.pluginLanguageDomain, element.get("description", " ").encode("UTF-8", errors="ignore"))
 		else:
-			itemText = _(element.get("text", "??").encode("UTF-8"))
-			itemDescription = _(element.get("description", " ").encode("UTF-8"))
+			itemText = _(element.get("text", "??").encode("UTF-8", errors="ignore"))
+			itemDescription = _(element.get("description", " ").encode("UTF-8", errors="ignore"))
 		itemText = itemText.replace("%s %s", "%s %s" % (SystemInfo["MachineBrand"], SystemInfo["MachineName"]))
 		itemDescription = itemDescription.replace("%s %s", "%s %s" % (SystemInfo["MachineBrand"], SystemInfo["MachineName"]))
 		item = eval(element.text or "")
@@ -292,14 +292,14 @@ def setupDom(setup=None, plugin=None):
 					key = setup.get("key", "")
 					if key in setupTitles:
 						print("[Setup] Warning: Setup key '%s' has been redefined!" % key)
-					title = setup.get("menuTitle", "").encode("UTF-8")
+					title = setup.get("menuTitle", "").encode("UTF-8", errors="ignore")
 					if title == "":
-						title = setup.get("title", "").encode("UTF-8")
+						title = setup.get("title", "").encode("UTF-8", errors="ignore")
 						if title == "":
 							print("[Setup] Error: Setup key '%s' title is missing or blank!" % key)
 							title = "** Setup error: '%s' title is missing or blank!" % key
 					setupTitles[key] = _(title)
-					# print("[Setup] DEBUG: XML setup load: key='%s', title='%s', menuTitle='%s', translated title='%s'" % (key, setup.get("title", "").encode("UTF-8"), setup.get("menuTitle", "").encode("UTF-8"), setupTitles[key]))
+					# print("[Setup] DEBUG: XML setup load: key='%s', title='%s', menuTitle='%s', translated title='%s'" % (key, setup.get("title", "").encode("UTF-8", errors="ignore"), setup.get("menuTitle", "").encode("UTF-8", errors="ignore"), setupTitles[key]))
 					Setup.checkItems(setup, key, setupFile)
 			except xml.etree.cElementTree.ParseError as err:
 				fd.seek(0)
