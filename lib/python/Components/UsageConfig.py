@@ -140,24 +140,19 @@ def InitUsageConfig():
 
 	if not os.path.exists(resolveFilename(SCOPE_HDD)):
 		try:
-			os.mkdir(resolveFilename(SCOPE_HDD),0755)
-		except:
+			os.mkdir(resolveFilename(SCOPE_HDD), 0755)
+		except (IOError, OSError):
 			pass
-	config.usage.default_path = ConfigText(default = resolveFilename(SCOPE_HDD))
-	if not config.usage.default_path.value.endswith('/'):
-		tmpvalue = config.usage.default_path.value
-		config.usage.default_path.setValue(tmpvalue + '/')
-		config.usage.default_path.save()
-	def defaultpathChanged(configElement):
-		if not config.usage.default_path.value.endswith('/'):
-			tmpvalue = config.usage.default_path.value
-			config.usage.default_path.setValue(tmpvalue + '/')
-			config.usage.default_path.save()
-	config.usage.default_path.addNotifier(defaultpathChanged, immediate_feedback = False)
-
-	config.usage.timer_path = ConfigText(default = "<default>")
-	config.usage.instantrec_path = ConfigText(default = "<default>")
-
+	defaultValue = resolveFilename(SCOPE_HDD)
+	config.usage.default_path = ConfigSelection(default=defaultValue, choices=[(defaultValue, defaultValue)])
+	config.usage.default_path.load()
+	if config.usage.default_path.saved_value:
+		savedValue = os.path.join(config.usage.default_path.saved_value, "")
+		if savedValue and savedValue != defaultValue:
+			config.usage.default_path.setChoices([(defaultValue, defaultValue), (savedValue, savedValue)], default=defaultValue)
+	config.usage.default_path.save()
+	config.usage.timer_path = ConfigSelection(default="<default>", choices=[("<default>", "<default>")])
+	config.usage.instantrec_path = ConfigSelection(default="<default>", choices=[("<default>", "<default>")])
 	if not os.path.exists(resolveFilename(SCOPE_TIMESHIFT)):
 		try:
 			os.mkdir(resolveFilename(SCOPE_TIMESHIFT),0755)
