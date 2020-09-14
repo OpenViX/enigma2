@@ -242,14 +242,8 @@ def setupDom(setup=None, plugin=None):
 					print("[Setup] Tag '%s' in '%s' contains text '%s'." % (element.tag, setupName, element.text.strip()))
 				if element.tail and not element.tail.isspace():
 					print("[Setup] Tag '%s' in '%s' has trailing text '%s'." % (element.tag, setupName, element.text.strip()))
-			if element.tag not in CHILDREN_ALLOWED:
-				try:
-					it = element.iter()
-					it.next()  # The element itself
-					it.next()  # First child
+			if element.tag not in CHILDREN_ALLOWED and len(element):
 					print("[Setup] Tag '%s' in '%s' contains children where none expected." % (element.tag, setupName))
-				except StopIteration:
-					pass
 			if element.tag == "item":
 				pass
 			elif element.tag == "if":
