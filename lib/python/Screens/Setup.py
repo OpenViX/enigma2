@@ -226,66 +226,97 @@ class SetupSummary(ScreenSummary):
 #
 def setupDom(setup=None, plugin=None):
 	# Constants for checkItems()
-	ROOT_ALLOWED = ("item", "if")  # Tags allowed in top level of setup entry
-	IF_ALLOWED = ("item", "if", "elif", "else")  # Tags allowed inside <if/>
-	AFTER_ELSE_ALLOWED = ("item", "if")  # Tags allowed after <elif/> or <else/>
-	CHILDREN_ALLOWED = ("if", )  # Tags that may have children
-	TEXT_ALLOWED = ("item", )  # Tags that may have non-whitespace text (or tail)
+	ROOT_ALLOWED = ("setup", )  # Tags allowed in top level of setupxml entry.
+	ELEMENT_ALLOWED = ("item", "if")  # Tags allowed in top level of setup entry.
+	IF_ALLOWED = ("item", "if", "elif", "else")  # Tags allowed inside <if />.
+	AFTER_ELSE_ALLOWED = ("item", "if")  # Tags allowed after <elif /> or <else />.
+	CHILDREN_ALLOWED = ("setup", "if", )  # Tags that may have children.
+	TEXT_ALLOWED = ("item", )  # Tags that may have non-whitespace text (or tail).
+	KEY_ATTRIBUTES = {  # Tags that have a reference key mandatory attribute.
+		"setup": "key",
+		"item": "text"
+	}
+	MANDATORY_ATTRIBUTES = {  # Tags that have a list of mandatory attributes.
+		"setup": ("key", "title"),
+		"item": ("text", )
+	}
 
-	def checkItems(parentNode, setupName, allowed=ROOT_ALLOWED):
+	def checkItems(parentNode, key, allowed=ROOT_ALLOWED, mandatory=MANDATORY_ATTRIBUTES, reference=KEY_ATTRIBUTES):
+		keyText = " in '%s'" % key if key else ""
 		for element in parentNode:
 			if element.tag not in allowed:
-				print("[Setup] Tag '%s' not permitted in '%s'. Permitted: '%s'." % (element.tag, setupName, ", ".join(allowed)))
+				print("[Setup] Error: Tag '%s' not permitted%s!  (Permitted: '%s')" % (element.tag, keyText, ", ".join(allowed)))
 				continue
+			if mandatory and element.tag in mandatory:
+				valid = True
+				for attrib in mandatory[element.tag]:
+					if element.get(attrib) is None:
+						print("[Setup] Error: Tag '%s'%s does not contain the mandatory '%s' attribute!" % (element.tag, keyText, attrib))
+						valid = False
+				if not valid:
+					continue
 			if element.tag not in TEXT_ALLOWED:
 				if element.text and not element.text.isspace():
-					print("[Setup] Tag '%s' in '%s' contains text '%s'." % (element.tag, setupName, element.text.strip()))
+					print("[Setup] Tag '%s'%s contains text '%s'." % (element.tag, keyText, element.text.strip()))
 				if element.tail and not element.tail.isspace():
-					print("[Setup] Tag '%s' in '%s' has trailing text '%s'." % (element.tag, setupName, element.text.strip()))
+					print("[Setup] Tag '%s'%s has trailing text '%s'." % (element.tag, keyText, element.text.strip()))
 			if element.tag not in CHILDREN_ALLOWED and len(element):
-					print("[Setup] Tag '%s' in '%s' contains children where none expected." % (element.tag, setupName))
-			if element.tag == "item":
-				pass
-			elif element.tag == "if":
-				checkItems(element, setupName, allowed=IF_ALLOWED)
+				itemKey = ""
+				if element.tag in reference:
+					itemKey = " (%s)" % element.get(reference[element.tag])
+				print("[Setup] Tag '%s'%s%s contains children where none expected." % (element.tag, itemKey, keyText))
+			if element.tag in CHILDREN_ALLOWED:
+				if element.tag in reference:
+					key = element.get(reference[element.tag])
+				checkItems(element, key, allowed=IF_ALLOWED)
 			elif element.tag == "else":
 				allowed = AFTER_ELSE_ALLOWED  # else and elif not permitted after else
 			elif element.tag == "elif":
 				pass
-			else:
-				print("[Setup] Error: Tag '%s' in permitted set in '%s', but not checked! (Permitted: '%s')" % (element.tag, setupName, ", ".join(allowed)))
 
 	setupFileDom = xml.etree.cElementTree.fromstring("<setupxml></setupxml>")
 	setupFile = resolveFilename(SCOPE_PLUGINS, pathJoin(plugin, "setup.xml")) if plugin else resolveFilename(SCOPE_SKIN, "setup.xml")
+	global setupTitles
 	try:
 		modTime = getmtime(setupFile)
 	except (IOError, OSError) as err:
 		print("[Setup] Error: Unable to get '%s' modified time - Error (%d): %s!" % (setupFile, err.errno, err.strerror))
+		if setupFile in domSetups:
+			del domSetups[setupFile]
+		if setupFile in setupModTimes:
+			del setupModTimes[setupFile]
+		setupTitles = {}
 		return setupFileDom
 	cached = setupFile in domSetups and setupFile in setupModTimes and setupModTimes[setupFile] == modTime
 	print("[Setup] XML%s setup file '%s', using element '%s'%s." % (" cached" if cached else "", setupFile, setup, " from plugin '%s'" % plugin if plugin else ""))
 	if cached:
 		return domSetups[setupFile]
 	try:
+		if setupFile in domSetups:
+			del domSetups[setupFile]
+		if setupFile in setupModTimes:
+			del setupModTimes[setupFile]
+		setupTitles = {}
 		with open(setupFile, "r") as fd:  # This open gets around a possible file handle leak in Python's XML parser.
 			try:
 				fileDom = xml.etree.cElementTree.parse(fd).getroot()
+				checkItems(fileDom, None)
 				setupFileDom = fileDom
 				domSetups[setupFile] = setupFileDom
 				setupModTimes[setupFile] = modTime
 				for setup in setupFileDom.findall("setup"):
-					key = setup.get("key", "")
-					if key in setupTitles:
-						print("[Setup] Warning: Setup key '%s' has been redefined!" % key)
-					title = setup.get("menuTitle", "").encode("UTF-8", errors="ignore")
-					if title == "":
-						title = setup.get("title", "").encode("UTF-8", errors="ignore")
+					key = setup.get("key")
+					if key:  # If there is no key then this element is useless and can be skipped!
+						if key in setupTitles:
+							print("[Setup] Warning: Setup key '%s' has been redefined!" % key)
+						title = setup.get("menuTitle", "").encode("UTF-8", errors="ignore")
 						if title == "":
-							print("[Setup] Error: Setup key '%s' title is missing or blank!" % key)
-							title = "** Setup error: '%s' title is missing or blank!" % key
-					setupTitles[key] = _(title)
-					# print("[Setup] DEBUG: XML setup load: key='%s', title='%s', menuTitle='%s', translated title='%s'" % (key, setup.get("title", "").encode("UTF-8", errors="ignore"), setup.get("menuTitle", "").encode("UTF-8", errors="ignore"), setupTitles[key]))
-					checkItems(setup, key)
+							title = setup.get("title", "").encode("UTF-8", errors="ignore")
+							if title == "":
+								print("[Setup] Error: Setup key '%s' title is missing or blank!" % key)
+								title = "** Setup error: '%s' title is missing or blank!" % key
+						setupTitles[key] = _(title)
+						# print("[Setup] DEBUG: XML setup load: key='%s', title='%s', menuTitle='%s', translated title='%s'" % (key, setup.get("title", "").encode("UTF-8", errors="ignore"), setup.get("menuTitle", "").encode("UTF-8", errors="ignore"), setupTitles[key]))
 			except xml.etree.cElementTree.ParseError as err:
 				fd.seek(0)
 				content = fd.readlines()
