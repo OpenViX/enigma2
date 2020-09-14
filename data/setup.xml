@@ -1,7 +1,7 @@
 <!--suppress XmlUnboundNsPrefix -->
 <!-- "menuTitle" attribute is optional. If present it will be used as the item title in the menu. It will also be used as the header in setup screens when menu path is enabled. -->
 <setupxml>
-	<setup key="time" title="Time">
+	<setup key="Time" title="Time">
 		<item level="0" text="Time zone area" description="Select your time zone area or region.">config.timezone.area</item>
 		<item level="0" text="Time zone" description="Select the time zone within the area or region.">config.timezone.val</item>
 		<item level="0" text="Sync time using" description="Synchronize system time using transponder or internet.">config.misc.SyncTimeUsing</item>
