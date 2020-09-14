@@ -3,7 +3,7 @@ import struct, socket, fcntl, re, sys, os, time
 from sys import modules
 from Tools.HardwareInfo import HardwareInfo
 
-from boxbranding import getBoxType, getMachineBuild
+from boxbranding import getBoxType, getMachineBuild, getImageType
 
 def getVersionString():
 	return getImageVersionString()
@@ -110,11 +110,12 @@ def getHardwareTypeString():
 	return HardwareInfo().get_device_string()
 
 def getImageTypeString():
-	try:
-		image_type = open("/etc/issue").readlines()[-2].strip()[:-6]
-		return image_type.capitalize()
-	except:
-		return _("undefined")
+	#try:
+	#       image_type = open("/etc/issue").readlines()[-2].strip()[:-6]
+	#       return image_type.capitalize()
+	#except:
+	#       return _("undefined")
+	return getImageType()
 
 def getCPUInfoString():
 	if getMachineBuild() in ('gbmv200', ):
