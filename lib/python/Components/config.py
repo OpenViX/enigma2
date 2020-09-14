@@ -501,81 +501,72 @@ class ConfigSelection(ConfigElement):
 	description = property(lambda self: descriptionList(self.choices.choices, self.choices.type))
 
 
-# a binary decision.
+# This is the control, and base class, for binary decisions.
 #
-# several customized versions exist for different
-# descriptions.
+# Several customized versions exist for different descriptions.
 #
 class ConfigBoolean(ConfigElement):
-	def __init__(self, default=False, descriptions={False: _("false"), True: _("true")}, graphic=True):
+	def __init__(self, default=False, descriptions={False: _("False"), True: _("True")}, graphic=True):
 		ConfigElement.__init__(self)
-		self.descriptions = descriptions
 		self.value = self.last_value = self.default = default
+		self.descriptions = descriptions
 		self.graphic = graphic
 
 	def handleKey(self, key):
-		if key in (KEY_LEFT, KEY_RIGHT):
+		if key in (KEYA_TOGGLE, KEYA_SELECT, KEYA_LEFT, KEYA_RIGHT):
 			self.value = not self.value
-		elif key == KEY_HOME:
+		elif key == KEYA_FIRST:
 			self.value = False
-		elif key == KEY_END:
+		elif key == KEYA_LAST:
 			self.value = True
+
+	def fromstring(self, val):
+		return str(val).lower() == "true"
+
+	def tostring(self, value):
+		return "True" if value or str(value).lower() == "true" else "False"
+
+	def toDisplayString(self, value):
+		return self.descriptions[True] if value or str(value).lower() in ["true", self.descriptions[True].lower()] else self.descriptions[False]
 
 	def getText(self):
 		return self.descriptions[self.value]
 
 	def getMulti(self, selected):
-		from config import config
 		from skin import switchPixmap
+		from Components.config import config
 		if self.graphic and config.usage.boolean_graphic.value in ("yes", "only_bool") and "menu_on" in switchPixmap and "menu_off" in switchPixmap:
 			return ('pixmap', switchPixmap["menu_on" if self.value else "menu_off"])
 		return ("text", self.descriptions[self.value])
 
-	def tostring(self, value):
-		if not value or str(value).lower() == 'false':
-			return "False"
-		else:
-			return "True"
-
-	def toDisplayString(self, value):
-		return self.descriptions[True] if value or str(value).lower() in ["true", self.descriptions[True].lower()] else self.descriptions[False]
-
-	def fromstring(self, val):
-		if str(val).lower() == "true":
-			return True
-		else:
-			return False
-
-	def getHTML(self, id):
-		if self.value:
-			checked = ' checked="checked"'
-		else:
-			checked = ''
-		return '<input type="checkbox" name="' + id + '" value="1" ' + checked + " />"
-
-	# this is FLAWED. and must be fixed.
-	def unsafeAssign(self, value):
-		if value == "1":
-			self.value = True
-		else:
-			self.value = False
-
 	def onDeselect(self, session):
-		if not self.last_value == self.value:
+		if self.last_value != self.value:
 			self.changedFinal()
 			self.last_value = self.value
 
-class ConfigYesNo(ConfigBoolean):
-	def __init__(self, default=False, graphic=True):
-		ConfigBoolean.__init__(self, default=default, descriptions={False: _("no"), True: _("yes")}, graphic=graphic)
+	# For HTML Interface - Is this still used?
 
-class ConfigOnOff(ConfigBoolean):
-	def __init__(self, default=False, graphic=True):
-		ConfigBoolean.__init__(self, default=default, descriptions={False: _("off"), True: _("on")}, graphic=graphic)
+	def getHTML(self, id):  # DEBUG: Is this still used?
+		return "<input type=\"checkbox\" name=\"%s\" value=\"1\"%s />" % (id, " checked=\"checked\"" if self.value else "")
+
+	def unsafeAssign(self, value):  # DEBUG: Is this still used?
+		self.value = True if value.lower in ("1", "enable", "on", "true", "yes") else False
+
 
 class ConfigEnableDisable(ConfigBoolean):
 	def __init__(self, default=False, graphic=True):
-		ConfigBoolean.__init__(self, default=default, descriptions={False: _("disable"), True: _("enable")}, graphic=graphic)
+		ConfigBoolean.__init__(self, default=default, descriptions={False: _("Disable"), True: _("Enable")}, graphic=graphic)
+
+
+class ConfigOnOff(ConfigBoolean):
+	def __init__(self, default=False, graphic=True):
+		ConfigBoolean.__init__(self, default=default, descriptions={False: _("Off"), True: _("On")}, graphic=graphic)
+
+
+class ConfigYesNo(ConfigBoolean):
+	def __init__(self, default=False, graphic=True):
+		ConfigBoolean.__init__(self, default=default, descriptions={False: _("No"), True: _("Yes")}, graphic=graphic)
+
 
 class ConfigDateTime(ConfigElement):
 	def __init__(self, default, formatstring, increment=86400):
