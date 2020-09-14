@@ -14,7 +14,8 @@ KEYA_DELETE = 3
 KEYA_BACKSPACE = 4
 KEYA_HOME = 5
 KEYA_END = 6
-KEYA_TOGGLEOW = 7
+KEYA_TOGGLE = 7
+KEYA_TOGGLEOW = KEYA_TOGGLE
 KEYA_ASCII = 8
 KEYA_TIMEOUT = 9
 KEYA_NUMBERS = range(12, 12 + 10)
@@ -45,7 +46,7 @@ KEY_DELETE = KEYA_DELETE
 KEY_BACKSPACE = KEYA_BACKSPACE
 KEY_HOME = KEYA_HOME
 KEY_END = KEYA_END
-KEY_TOGGLEOW = KEYA_TOGGLEOW
+KEY_TOGGLEOW = KEYA_TOGGLE
 KEY_ASCII = KEYA_ASCII
 KEY_TIMEOUT = KEYA_TIMEOUT
 KEY_NUMBERS = KEYA_NUMBERS
@@ -1269,7 +1270,7 @@ class ConfigText(ConfigElement, NumericalTextInput):
 		elif key == KEYA_ERASE:
 			self.timeout()
 			self.deleteAllChars()
-		elif key == KEYA_TOGGLEOW:
+		elif key == KEYA_TOGGLE:
 			self.timeout()
 			self.overwrite = not self.overwrite
 		elif key == KEYA_ASCII:
@@ -1578,91 +1579,91 @@ class ConfigSatlist(ConfigSelection):
 
 	orbital_position = property(getOrbitalPosition)
 
+
+# This is the control, and base class, for a set of selection toggle fields.
+#
 class ConfigSet(ConfigElement):
 	def __init__(self, choices, default=None):
-		if not default:
-			default = []
 		ConfigElement.__init__(self)
 		if isinstance(choices, list):
 			choices.sort()
 			self.choices = choicesList(choices, choicesList.LIST_TYPE_LIST)
 		else:
-			assert False, "ConfigSet choices must be a list!"
+			assert False, "[Config] Error: 'ConfigSet' choices must be a list!"
 		if default is None:
 			default = []
-		self.pos = -1
 		default.sort()
 		self.last_value = self.default = default
 		self.value = default[:]
-
-	def toggleChoice(self, choice):
-		value = self.value
-		if choice in value:
-			value.remove(choice)
-		else:
-			value.append(choice)
-			value.sort()
-		self.changed()
+		self.pos = 0
 
 	def handleKey(self, key):
-		if key in KEY_NUMBERS + [KEY_DELETE, KEY_BACKSPACE]:
-			if self.pos != -1:
-				self.toggleChoice(self.choices[self.pos])
-		elif key == KEY_LEFT:
-			if self.pos < 0:
-				self.pos = len(self.choices) - 1
+		if key in [KEYA_TOGGLE, KEYA_SELECT, KEYA_DELETE, KEYA_BACKSPACE] + KEYA_NUMBERS:
+			value = self.value
+			choice = self.choices[self.pos]
+			if choice in value:
+				value.remove(choice)
 			else:
+				value.append(choice)
+				value.sort()
+			self.changed()
+		elif key == KEYA_LEFT:
+			if self.pos > 0:
 				self.pos -= 1
-		elif key == KEY_RIGHT:
-			if self.pos >= len(self.choices) - 1:
-				self.pos = -1
 			else:
+				self.pos = len(self.choices) - 1
+		elif key == KEYA_RIGHT:
+			if self.pos < len(self.choices) - 1:
 				self.pos += 1
-		elif key in (KEY_HOME, KEY_END):
-			self.pos = -1
-
-	def genString(self, lst):
-		res = ""
-		for x in lst:
-			res += self.description[x] + " "
-		return res
-
-	def getText(self):
-		return self.genString(self.value)
-
-	def getMulti(self, selected):
-		if not selected or self.pos == -1:
-			return "text", self.genString(self.value)
-		else:
-			tmp = self.value[:]
-			ch = self.choices[self.pos]
-			mem = ch in self.value
-			if not mem:
-				tmp.append(ch)
-				tmp.sort()
-			ind = tmp.index(ch)
-			val1 = self.genString(tmp[:ind])
-			val2 = " " + self.genString(tmp[ind + 1:])
-			if mem:
-				chstr = " " + self.description[ch] + " "
 			else:
-				chstr = "(" + self.description[ch] + ")"
-			len_val1 = len(val1)
-			return "mtext", val1 + chstr + val2, range(len_val1, len_val1 + len(chstr))
+				self.pos = 0
+		elif key == KEYA_HOME:
+			self.pos = 0
+		elif key == KEYA_END:
+			self.pos = len(self.choices) - 1
 
-	def onDeselect(self, session):
-		self.pos = -1
-		if not self.last_value == self.value:
-			self.changedFinal()
-			self.last_value = self.value[:]
-
-	def tostring(self, value):
-		return str(value)
+	def load(self):
+		ConfigElement.load(self)
+		self.value.sort()
 
 	def fromstring(self, val):
 		return eval(val)
 
+	def tostring(self, val):
+		return str(val)
+
+	def toDisplayString(self, val):
+		return ", ".join([self.description[x] for x in val])
+
+	def getText(self):
+		return " ".join([self.description[x] for x in self.value])
+
+	def getMulti(self, selected):
+		if selected:
+			text = []
+			pos = 0
+			start = 0
+			end = 0
+			for item in self.choices:
+				itemStr = str(item)
+				text.append(" %s " % itemStr if item in self.value else "(%s)" % itemStr)
+				length = 2 + len(itemStr)
+				if item == self.choices[self.pos]:
+					start = pos
+					end = start + length
+				pos += length
+			return "mtext", "".join(text), range(start, end)
+		else:
+			return "text", " ".join([self.description[x] for x in self.value])
+
+	def onDeselect(self, session):
+		# self.pos = 0  # Enable this to reset the position marker to the first element.
+		if self.last_value != self.value:
+			self.changedFinal()
+			self.last_value = self.value[:]
+
 	description = property(lambda self: descriptionList(self.choices.choices, choicesList.LIST_TYPE_LIST))
+
 
 class ConfigLocations(ConfigElement):
 	def __init__(self, default=None, visible_width=False):
