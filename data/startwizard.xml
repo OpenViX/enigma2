@@ -341,7 +341,7 @@ config.ParentalControl.servicepinactive.save()
 
 		<step id="softcam">
 			<condition>
-self.condition = config.misc.installwizard.hasnetwork.value and config.misc.installwizard.ipkgloaded.value
+self.condition = config.misc.installwizard.hasnetwork.value and config.misc.installwizard.opkgloaded.value
 			</condition>
 			<text value="Would you like to be able to install softcams?\n\nAttention - Country specific illegal!\n\nCheck legality for your specific country in advance!"/>
 			<config screen="InstallWizard" module="InstallWizard" args="2" type="ConfigList"/>
