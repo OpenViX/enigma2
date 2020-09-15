@@ -125,7 +125,7 @@ If you discover 'bugs' please keep them reported on www.teamblue.tech.\n\nDo you
 			config.usage.show_update_disclaimer.value = False
 			config.usage.show_update_disclaimer.save()
 		if justShow and answer:
-			self.opkgCallback(IpkgComponent.EVENT_DONE, None)
+			self.opkgCallback(OpkgComponent.EVENT_DONE, None)
 		else:
 			self.startActualUpdate(answer)
 
