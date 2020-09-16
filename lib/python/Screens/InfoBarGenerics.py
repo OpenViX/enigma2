@@ -1527,7 +1527,7 @@ class InfoBarEPG:
 
 	def getDefaultEPGtype(self):
 		pluginlist = self.getEPGPluginList()
-		config.usage.defaultEPGType = ConfigSelection(default = "None", choices = [(self.getNonLocalisedPluginName(p[0]), p[0]) for p in pluginlist])
+		config.usage.defaultEPGType = ConfigSelection(default = "Grid EPG", choices = [(self.getNonLocalisedPluginName(p[0]), p[0]) for p in pluginlist])
 		for plugin in pluginlist:
 			if plugin[0] == self.plugintexts.get(config.usage.defaultEPGType.value, config.usage.defaultEPGType.value):
 				return plugin[1]
@@ -1581,7 +1581,7 @@ class InfoBarEPG:
 
 	def RedPressed(self):
 		if isStandardInfoBar(self) or isMoviePlayerInfoBar(self):
-			if config.usage.defaultEPGType.value != _("Graphical EPG") and config.usage.defaultEPGType.value != _("None"):
+			if config.usage.defaultEPGType.value != "Grid EPG":
 				self.openGridEPG()
 			else:
 				self.openSingleServiceEPG()
