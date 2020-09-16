@@ -8,9 +8,9 @@ from Components.PluginComponent import plugins
 from Components.ServiceEventTracker import ServiceEventTracker
 from Components.Sources.ServiceEvent import ServiceEvent
 from Components.Sources.Boolean import Boolean
-from Components.config import config, configfile, ConfigBoolean, ConfigClock
+from Components.config import config, configfile, ConfigBoolean, ConfigClock, ConfigSelection
 from Components.SystemInfo import SystemInfo
-from Components.UsageConfig import preferredInstantRecordPath, defaultMoviePath, preferredTimerPath, ConfigSelection
+from Components.UsageConfig import preferredInstantRecordPath, defaultMoviePath, preferredTimerPath
 from Components.VolumeControl import VolumeControl
 from Components.Pixmap import MovingPixmap, MultiPixmap
 from Components.Sources.StaticText import StaticText
