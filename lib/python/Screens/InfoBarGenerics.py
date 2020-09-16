@@ -1516,22 +1516,27 @@ class InfoBarEPG:
 
 	def getEPGPluginList(self):
 		pluginlist = [(p.name, boundFunction(self.runPlugin, p)) for p in plugins.getPlugins(where = PluginDescriptor.WHERE_EVENTINFO)]
+		self.plugintexts = {"Event Info": _("Event Info"), "Grid EPG": _("Grid EPG"), "Infobar EPG": _("Infobar EPG"), "Multi EPG": _("Multi EPG"), "Single EPG": _("Single EPG"),}
 		if pluginlist:
-			pluginlist.append((_("Event Info"), self.openEventView))
-			pluginlist.append((_("Grid EPG"), self.openGridEPG))
-			pluginlist.append((_("Infobar EPG"), self.openInfoBarEPG))
-			pluginlist.append((_("Multi EPG"), self.openMultiServiceEPG))
-			pluginlist.append((_("Single EPG"), self.openSingleServiceEPG))
+			pluginlist.append((self.plugintexts["Event Info"], self.openEventView))
+			pluginlist.append((self.plugintexts["Grid EPG"], self.openGridEPG))
+			pluginlist.append((self.plugintexts["Infobar EPG"], self.openInfoBarEPG))
+			pluginlist.append((self.plugintexts["Multi EPG"], self.openMultiServiceEPG))
+			pluginlist.append((self.plugintexts["Single EPG"], self.openSingleServiceEPG))
 		return pluginlist
 
 	def getDefaultEPGtype(self):
 		pluginlist = self.getEPGPluginList()
-		config.usage.defaultEPGType = ConfigSelection(default = "None", choices = [p[0] for p in pluginlist])
+		config.usage.defaultEPGType = ConfigSelection(default = "None", choices = [(self.getNonLocalisedPluginName(p[0]), p[0]) for p in pluginlist])
 		for plugin in pluginlist:
-			if plugin[0] == config.usage.defaultEPGType.value:
+			if plugin[0] == self.plugintexts.get(config.usage.defaultEPGType.value, config.usage.defaultEPGType.value):
 				return plugin[1]
 		return None
 
+	def getNonLocalisedPluginName(self, val):
+		return {v:k for k, v in self.plugintexts.items()}.get(val, val)
+	
+	
 	def showEventInfoPlugins(self):
 		if isStandardInfoBar(self):
 			if getBrandOEM() not in ('xtrend', 'odin', 'ini', 'dags' ,'gigablue', 'xp'):
@@ -1552,7 +1557,7 @@ class InfoBarEPG:
 	def defaultEpgPluginChosen(self, answer):
 		if answer is not None:
 			self.defaultEPGType = answer[1]
-			config.usage.defaultEPGType.value = answer[0]
+			config.usage.defaultEPGType.value = self.getNonLocalisedPluginName(answer[0])
 			config.usage.defaultEPGType.save()
 			configfile.save()
 
