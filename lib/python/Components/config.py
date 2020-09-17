@@ -521,10 +521,12 @@ class ConfigBoolean(ConfigElement):
 			self.value = True
 
 	def fromstring(self, val):
-		return str(val).lower() == "true"
+		return str(val).lower() in ("1", "enable", "on", "true", "yes")
 
 	def tostring(self, value):
-		return "True" if value or str(value).lower() == "true" else "False"
+		return "True" if value or str(value).lower() in ("1", "enable", "on", "true", "yes") else "False"
+		# Use the following if settings should be saved using the same values as displayed to the user.
+		# self.descriptions[True] if value or str(value).lower() in ("1", "enable", "on", "true", "yes") else self.descriptions[True]
 
 	def toDisplayString(self, value):
 		return self.descriptions[True] if value or str(value).lower() in ["true", self.descriptions[True].lower()] else self.descriptions[False]
@@ -550,7 +552,7 @@ class ConfigBoolean(ConfigElement):
 		return "<input type=\"checkbox\" name=\"%s\" value=\"1\"%s />" % (id, " checked=\"checked\"" if self.value else "")
 
 	def unsafeAssign(self, value):  # DEBUG: Is this still used?
-		self.value = True if value.lower in ("1", "enable", "on", "true", "yes") else False
+		self.value = value.lower() in ("1", "enable", "on", "true", "yes")
 
 
 class ConfigEnableDisable(ConfigBoolean):
