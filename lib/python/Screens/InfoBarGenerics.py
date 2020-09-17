@@ -1528,6 +1528,7 @@ class InfoBarEPG:
 	def getDefaultEPGtype(self):
 		pluginlist = self.getEPGPluginList()
 		config.usage.defaultEPGType = ConfigSelection(default = "Grid EPG", choices = [(self.getNonLocalisedPluginName(p[0]), p[0]) for p in pluginlist])
+		self.lastDefaultEPGType = config.usage.defaultEPGType.value
 		for plugin in pluginlist:
 			if plugin[0] == self.plugintexts.get(config.usage.defaultEPGType.value, config.usage.defaultEPGType.value):
 				return plugin[1]
@@ -1557,7 +1558,7 @@ class InfoBarEPG:
 	def defaultEpgPluginChosen(self, answer):
 		if answer is not None:
 			self.defaultEPGType = answer[1]
-			config.usage.defaultEPGType.value = self.getNonLocalisedPluginName(answer[0])
+			self.lastDefaultEPGType = config.usage.defaultEPGType.value = self.getNonLocalisedPluginName(answer[0])
 			config.usage.defaultEPGType.save()
 			configfile.save()
 
@@ -1721,6 +1722,8 @@ class InfoBarEPG:
 				self.eventView.setEvent(self.epglist[0])
 
 	def showDefaultEPG(self):
+		if self.lastDefaultEPGType != config.usage.defaultEPGType.value: # if something outside this module has changed the value of config.usage.defaultEPGType, e.g. EPG settings
+			self.defaultEPGType = self.getDefaultEPGtype()
 		if self.defaultEPGType is not None:
 			self.defaultEPGType()
 			return
