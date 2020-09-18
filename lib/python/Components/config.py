@@ -12,9 +12,9 @@ KEYA_RIGHT = 1
 KEYA_SELECT = 2
 KEYA_DELETE = 3
 KEYA_BACKSPACE = 4
-KEYA_HOME = 5
-KEYA_END = 6
-KEYA_TOGGLEOW = 7
+KEYA_FIRST = 5
+KEYA_LAST = 6
+KEYA_TOGGLE = 7
 KEYA_ASCII = 8
 KEYA_TIMEOUT = 9
 KEYA_NUMBERS = range(12, 12 + 10)
@@ -43,9 +43,9 @@ KEY_RIGHT = KEYA_RIGHT
 KEY_OK = KEYA_SELECT
 KEY_DELETE = KEYA_DELETE
 KEY_BACKSPACE = KEYA_BACKSPACE
-KEY_HOME = KEYA_HOME
-KEY_END = KEYA_END
-KEY_TOGGLEOW = KEYA_TOGGLEOW
+KEY_HOME = KEYA_FIRST
+KEY_END = KEYA_LAST
+KEY_TOGGLEOW = KEYA_TOGGLE
 KEY_ASCII = KEYA_ASCII
 KEY_TIMEOUT = KEYA_TIMEOUT
 KEY_NUMBERS = KEYA_NUMBERS
@@ -244,8 +244,8 @@ class ConfigElement(object):
 				return extra_arg[1]
 
 def getKeyNumber(key):
-	assert key in KEY_NUMBERS
-	return key - KEY_0
+	assert key in KEYA_NUMBERS
+	return key - KEYA_0
 
 class choicesList(object):  # XXX: we might want a better name for this
 	LIST_TYPE_LIST = 1
@@ -452,13 +452,13 @@ class ConfigSelection(ConfigElement):
 		nchoices = len(self.choices)
 		if nchoices > 1:
 			i = self.choices.index(self.value)
-			if key == KEY_LEFT:
+			if key == KEYA_LEFT:
 				self.value = self.choices[(i + nchoices - 1) % nchoices]
-			elif key == KEY_RIGHT:
+			elif key == KEYA_RIGHT:
 				self.value = self.choices[(i + 1) % nchoices]
-			elif key == KEY_HOME:
+			elif key == KEYA_FIRST:
 				self.value = self.choices[0]
-			elif key == KEY_END:
+			elif key == KEYA_LAST:
 				self.value = self.choices[nchoices - 1]
 
 	def selectNext(self):
@@ -501,81 +501,74 @@ class ConfigSelection(ConfigElement):
 	description = property(lambda self: descriptionList(self.choices.choices, self.choices.type))
 
 
-# a binary decision.
+# This is the control, and base class, for binary decisions.
 #
-# several customized versions exist for different
-# descriptions.
+# Several customized versions exist for different descriptions.
 #
 class ConfigBoolean(ConfigElement):
 	def __init__(self, default=False, descriptions={False: _("false"), True: _("true")}, graphic=True):
 		ConfigElement.__init__(self)
-		self.descriptions = descriptions
 		self.value = self.last_value = self.default = default
+		self.descriptions = descriptions
 		self.graphic = graphic
 
 	def handleKey(self, key):
-		if key in (KEY_LEFT, KEY_RIGHT):
+		if key in (KEYA_TOGGLE, KEYA_SELECT, KEYA_LEFT, KEYA_RIGHT):
 			self.value = not self.value
-		elif key == KEY_HOME:
+		elif key == KEYA_FIRST:
 			self.value = False
-		elif key == KEY_END:
+		elif key == KEYA_LAST:
 			self.value = True
+
+	def fromstring(self, val):
+		return str(val).lower() in ("1", "enable", "on", "true", "yes")
+
+	def tostring(self, value):
+		return "True" if value or str(value).lower() in ("1", "enable", "on", "true", "yes") else "False"
+		# Use the following if settings should be saved using the same values as displayed to the user.
+		# self.descriptions[True] if value or str(value).lower() in ("1", "enable", "on", "true", "yes") else self.descriptions[True]
+
+	def toDisplayString(self, value):
+		return self.descriptions[True] if value or str(value).lower() in ["true", self.descriptions[True].lower()] else self.descriptions[False]
 
 	def getText(self):
 		return self.descriptions[self.value]
 
 	def getMulti(self, selected):
-		from config import config
 		from skin import switchPixmap
+		from Components.config import config
 		if self.graphic and config.usage.boolean_graphic.value in ("yes", "only_bool") and "menu_on" in switchPixmap and "menu_off" in switchPixmap:
 			return ('pixmap', switchPixmap["menu_on" if self.value else "menu_off"])
 		return ("text", self.descriptions[self.value])
 
-	def tostring(self, value):
-		if not value or str(value).lower() == 'false':
-			return "False"
-		else:
-			return "True"
-
-	def toDisplayString(self, value):
-		return self.descriptions[True] if value or str(value).lower() in ["true", self.descriptions[True].lower()] else self.descriptions[False]
-
-	def fromstring(self, val):
-		if str(val).lower() == "true":
-			return True
-		else:
-			return False
-
-	def getHTML(self, id):
-		if self.value:
-			checked = ' checked="checked"'
-		else:
-			checked = ''
-		return '<input type="checkbox" name="' + id + '" value="1" ' + checked + " />"
-
-	# this is FLAWED. and must be fixed.
-	def unsafeAssign(self, value):
-		if value == "1":
-			self.value = True
-		else:
-			self.value = False
-
 	def onDeselect(self, session):
-		if not self.last_value == self.value:
+		if self.last_value != self.value:
 			self.changedFinal()
 			self.last_value = self.value
 
-class ConfigYesNo(ConfigBoolean):
+	# For HTML Interface - Is this still used?
+
+	def getHTML(self, id):  # DEBUG: Is this still used?
+		return "<input type=\"checkbox\" name=\"%s\" value=\"1\"%s />" % (id, " checked=\"checked\"" if self.value else "")
+
+	def unsafeAssign(self, value):  # DEBUG: Is this still used?
+		self.value = value.lower() in ("1", "enable", "on", "true", "yes")
+
+
+class ConfigEnableDisable(ConfigBoolean):
 	def __init__(self, default=False, graphic=True):
-		ConfigBoolean.__init__(self, default=default, descriptions={False: _("no"), True: _("yes")}, graphic=graphic)
+		ConfigBoolean.__init__(self, default=default, descriptions={False: _("disable"), True: _("enable")}, graphic=graphic)
+
 
 class ConfigOnOff(ConfigBoolean):
 	def __init__(self, default=False, graphic=True):
 		ConfigBoolean.__init__(self, default=default, descriptions={False: _("off"), True: _("on")}, graphic=graphic)
 
-class ConfigEnableDisable(ConfigBoolean):
+
+class ConfigYesNo(ConfigBoolean):
 	def __init__(self, default=False, graphic=True):
-		ConfigBoolean.__init__(self, default=default, descriptions={False: _("disable"), True: _("enable")}, graphic=graphic)
+		ConfigBoolean.__init__(self, default=default, descriptions={False: _("no"), True: _("yes")}, graphic=graphic)
+
 
 class ConfigDateTime(ConfigElement):
 	def __init__(self, default, formatstring, increment=86400):
@@ -585,11 +578,11 @@ class ConfigDateTime(ConfigElement):
 		self.value = self.last_value = self.default = int(default)
 
 	def handleKey(self, key):
-		if key == KEY_LEFT:
+		if key == KEYA_LEFT:
 			self.value -= self.increment
-		elif key == KEY_RIGHT:
+		elif key == KEYA_RIGHT:
 			self.value += self.increment
-		elif key == KEY_HOME or key == KEY_END:
+		elif key == KEYA_FIRST or key == KEYA_LAST:
 			self.value = self.default
 
 	def getText(self):
@@ -663,19 +656,19 @@ class ConfigSequence(ConfigElement):
 		self.endNotifier.append(notifier)
 
 	def handleKey(self, key):
-		if key == KEY_LEFT:
+		if key == KEYA_LEFT:
 			self.marked_pos -= 1
 			self.validatePos()
 
-		elif key == KEY_RIGHT:
+		elif key == KEYA_RIGHT:
 			self.marked_pos += 1
 			self.validatePos()
 
-		elif key == KEY_HOME:
+		elif key == KEYA_FIRST:
 			self.marked_pos = 0
 			self.validatePos()
 
-		elif key == KEY_END:
+		elif key == KEYA_LAST:
 			max_pos = 0
 			num = 0
 			for i in self._value:
@@ -684,8 +677,8 @@ class ConfigSequence(ConfigElement):
 			self.marked_pos = max_pos - 1
 			self.validatePos()
 
-		elif key in KEY_NUMBERS or key == KEY_ASCII:
-			if key == KEY_ASCII:
+		elif key in KEYA_NUMBERS or key == KEYA_ASCII:
+			if key == KEYA_ASCII:
 				code = getPrevAsciiCode()
 				if code < 48 or code > 57:
 					return
@@ -780,26 +773,26 @@ class ConfigIP(ConfigSequence):
 		self.auto_jump = auto_jump
 
 	def handleKey(self, key):
-		if key == KEY_LEFT:
+		if key == KEYA_LEFT:
 			if self.marked_block > 0:
 				self.marked_block -= 1
 			self.overwrite = True
 
-		elif key == KEY_RIGHT:
+		elif key == KEYA_RIGHT:
 			if self.marked_block < len(self.limits) - 1:
 				self.marked_block += 1
 			self.overwrite = True
 
-		elif key == KEY_HOME:
+		elif key == KEYA_FIRST:
 			self.marked_block = 0
 			self.overwrite = True
 
-		elif key == KEY_END:
+		elif key == KEYA_LAST:
 			self.marked_block = len(self.limits) - 1
 			self.overwrite = True
 
-		elif key in KEY_NUMBERS or key == KEY_ASCII:
-			if key == KEY_ASCII:
+		elif key in KEYA_NUMBERS or key == KEYA_ASCII:
+			if key == KEYA_ASCII:
 				code = getPrevAsciiCode()
 				if code < 48 or code > 57:
 					return
@@ -815,14 +808,14 @@ class ConfigIP(ConfigSequence):
 				oldvalue *= 10
 				newvalue = oldvalue + number
 				if self.auto_jump and newvalue > self.limits[self.marked_block][1] and self.marked_block < len(self.limits) - 1:
-					self.handleKey(KEY_RIGHT)
+					self.handleKey(KEYA_RIGHT)
 					self.handleKey(key)
 					return
 				else:
 					self._value[self.marked_block] = newvalue
 
 			if len(str(self._value[self.marked_block])) >= self.block_len[self.marked_block]:
-				self.handleKey(KEY_RIGHT)
+				self.handleKey(KEYA_RIGHT)
 
 			self.validate()
 			self.changed()
@@ -891,7 +884,7 @@ class ConfigMacText(ConfigElement, NumericalTextInput):
 			self.text = self.text[0:pos] + ch + self.text[pos:]
 
 	def handleKey(self, key):
-		if key == KEY_LEFT:
+		if key == KEYA_LEFT:
 			self.timeout()
 			if self.allmarked:
 				self.marked_pos = len(self.text)
@@ -901,7 +894,7 @@ class ConfigMacText(ConfigElement, NumericalTextInput):
 					self.marked_pos -= 2
 				else:
 					self.marked_pos -= 1
-		elif key == KEY_RIGHT:
+		elif key == KEYA_RIGHT:
 			self.timeout()
 			if self.allmarked:
 				self.marked_pos = 0
@@ -912,11 +905,11 @@ class ConfigMacText(ConfigElement, NumericalTextInput):
 						self.marked_pos += 2
 					else:
 						self.marked_pos += 1
-		elif key in KEY_NUMBERS:
+		elif key in KEYA_NUMBERS:
 			owr = self.lastKey == getKeyNumber(key)
 			newChar = self.getKey(getKeyNumber(key))
 			self.insertChar(newChar, self.marked_pos, owr)
-		elif key == KEY_TIMEOUT:
+		elif key == KEYA_TIMEOUT:
 			self.timeout()
 			if self.help_window:
 				self.help_window.update(self)
@@ -1034,20 +1027,20 @@ class ConfigClock(ConfigSequence):
 		self.changed()
 
 	def handleKey(self, key):
-		if key == KEY_DELETE and config.usage.time.wide.value:
+		if key == KEYA_DELETE and config.usage.time.wide.value:
 			if self._value[0] < 12:
 				self._value[0] += 12
 				self.validate()
 				self.changed()
 
-		elif key == KEY_BACKSPACE and config.usage.time.wide.value:
+		elif key == KEYA_BACKSPACE and config.usage.time.wide.value:
 			if self._value[0] >= 12:
 				self._value[0] -= 12
 				self.validate()
 				self.changed()
 
-		elif key in KEY_NUMBERS or key == KEY_ASCII:
-			if key == KEY_ASCII:
+		elif key in KEYA_NUMBERS or key == KEYA_ASCII:
+			if key == KEYA_ASCII:
 				code = getPrevAsciiCode()
 				if code < 48 or code > 57:
 					return
@@ -1225,7 +1218,7 @@ class ConfigText(ConfigElement, NumericalTextInput):
 	def handleKey(self, key):
 		# This will no change anything on the value itself
 		# so we can handle it here in gui element.
-		if key == KEYA_HOME:
+		if key == KEYA_FIRST:
 			self.timeout()
 			self.allmarked = False
 			self.marked_pos = 0
@@ -1243,7 +1236,7 @@ class ConfigText(ConfigElement, NumericalTextInput):
 				self.allmarked = False
 			else:
 				self.marked_pos += 1
-		elif key == KEYA_END:
+		elif key == KEYA_LAST:
 			self.timeout()
 			self.allmarked = False
 			self.marked_pos = len(self.text)
@@ -1269,7 +1262,7 @@ class ConfigText(ConfigElement, NumericalTextInput):
 		elif key == KEYA_ERASE:
 			self.timeout()
 			self.deleteAllChars()
-		elif key == KEYA_TOGGLEOW:
+		elif key == KEYA_TOGGLE:
 			self.timeout()
 			self.overwrite = not self.overwrite
 		elif key == KEYA_ASCII:
@@ -1424,22 +1417,22 @@ class ConfigSelectionNumber(ConfigSelection):
 
 	def handleKey(self, key):
 		if not self.wraparound:
-			if key == KEY_RIGHT:
+			if key == KEYA_RIGHT:
 				if len(self.choices) == (self.choices.index(str(self.value)) + 1):
 					return
-			if key == KEY_LEFT:
+			if key == KEYA_LEFT:
 				if self.choices.index(str(self.value)) == 0:
 					return
 		nchoices = len(self.choices)
 		if nchoices > 1:
 			i = self.choices.index(str(self.value))
-			if key == KEY_LEFT:
+			if key == KEYA_LEFT:
 				self.value = self.choices[(i + nchoices - 1) % nchoices]
-			elif key == KEY_RIGHT:
+			elif key == KEYA_RIGHT:
 				self.value = self.choices[(i + 1) % nchoices]
-			elif key == KEY_HOME:
+			elif key == KEYA_FIRST:
 				self.value = self.choices[0]
-			elif key == KEY_END:
+			elif key == KEYA_LAST:
 				self.value = self.choices[nchoices - 1]
 
 class ConfigNumber(ConfigText):
@@ -1466,8 +1459,8 @@ class ConfigNumber(ConfigText):
 			self.marked_pos = len(self.text) - pos
 
 	def handleKey(self, key):
-		if key in KEY_NUMBERS or key == KEY_ASCII:
-			if key == KEY_ASCII:
+		if key in KEYA_NUMBERS or key == KEYA_ASCII:
+			if key == KEYA_ASCII:
 				ascii = getPrevAsciiCode()
 				if not (48 <= ascii <= 57):
 					return
@@ -1542,13 +1535,13 @@ class ConfigSlider(ConfigElement):
 			self.value = self.max
 
 	def handleKey(self, key):
-		if key == KEY_LEFT:
+		if key == KEYA_LEFT:
 			self.value -= self.increment
-		elif key == KEY_RIGHT:
+		elif key == KEYA_RIGHT:
 			self.value += self.increment
-		elif key == KEY_HOME:
+		elif key == KEYA_FIRST:
 			self.value = self.min
-		elif key == KEY_END:
+		elif key == KEYA_LAST:
 			self.value = self.max
 		else:
 			return
@@ -1578,91 +1571,95 @@ class ConfigSatlist(ConfigSelection):
 
 	orbital_position = property(getOrbitalPosition)
 
+
+# This is the control, and base class, for a set of selection toggle fields.
+#
 class ConfigSet(ConfigElement):
 	def __init__(self, choices, default=None):
-		if not default:
-			default = []
 		ConfigElement.__init__(self)
 		if isinstance(choices, list):
 			choices.sort()
 			self.choices = choicesList(choices, choicesList.LIST_TYPE_LIST)
 		else:
-			assert False, "ConfigSet choices must be a list!"
+			assert False, "[Config] Error: 'ConfigSet' choices must be a list!"
 		if default is None:
 			default = []
-		self.pos = -1
 		default.sort()
 		self.last_value = self.default = default
 		self.value = default[:]
-
-	def toggleChoice(self, choice):
-		value = self.value
-		if choice in value:
-			value.remove(choice)
-		else:
-			value.append(choice)
-			value.sort()
-		self.changed()
+		self.pos = 0
 
 	def handleKey(self, key):
-		if key in KEY_NUMBERS + [KEY_DELETE, KEY_BACKSPACE]:
-			if self.pos != -1:
-				self.toggleChoice(self.choices[self.pos])
-		elif key == KEY_LEFT:
-			if self.pos < 0:
-				self.pos = len(self.choices) - 1
+		if key in [KEYA_TOGGLE, KEYA_SELECT, KEYA_DELETE, KEYA_BACKSPACE] + KEYA_NUMBERS:
+			value = self.value
+			choice = self.choices[self.pos]
+			if choice in value:
+				value.remove(choice)
 			else:
+				value.append(choice)
+				value.sort()
+			self.changed()
+		elif key == KEYA_LEFT:
+			if self.pos > 0:
 				self.pos -= 1
-		elif key == KEY_RIGHT:
-			if self.pos >= len(self.choices) - 1:
-				self.pos = -1
 			else:
+				self.pos = len(self.choices) - 1
+		elif key == KEYA_RIGHT:
+			if self.pos < len(self.choices) - 1:
 				self.pos += 1
-		elif key in (KEY_HOME, KEY_END):
-			self.pos = -1
-
-	def genString(self, lst):
-		res = ""
-		for x in lst:
-			res += self.description[x] + " "
-		return res
-
-	def getText(self):
-		return self.genString(self.value)
-
-	def getMulti(self, selected):
-		if not selected or self.pos == -1:
-			return "text", self.genString(self.value)
-		else:
-			tmp = self.value[:]
-			ch = self.choices[self.pos]
-			mem = ch in self.value
-			if not mem:
-				tmp.append(ch)
-				tmp.sort()
-			ind = tmp.index(ch)
-			val1 = self.genString(tmp[:ind])
-			val2 = " " + self.genString(tmp[ind + 1:])
-			if mem:
-				chstr = " " + self.description[ch] + " "
 			else:
-				chstr = "(" + self.description[ch] + ")"
-			len_val1 = len(val1)
-			return "mtext", val1 + chstr + val2, range(len_val1, len_val1 + len(chstr))
+				self.pos = 0
+		elif key == KEYA_FIRST:
+			self.pos = 0
+		elif key == KEYA_LAST:
+			self.pos = len(self.choices) - 1
 
-	def onDeselect(self, session):
-		self.pos = -1
-		if not self.last_value == self.value:
-			self.changedFinal()
-			self.last_value = self.value[:]
-
-	def tostring(self, value):
-		return str(value)
+	def load(self):
+		ConfigElement.load(self)
+		if not self.value:
+			self.value = []
+		if not isinstance(self.value, list):
+			self.value = list(self.value)
+		self.value.sort()
 
 	def fromstring(self, val):
 		return eval(val)
 
+	def tostring(self, val):
+		return str(val)
+
+	def toDisplayString(self, val):
+		return ", ".join([self.description[x] for x in val])
+
+	def getText(self):
+		return " ".join([self.description[x] for x in self.value])
+
+	def getMulti(self, selected):
+		if selected:
+			text = []
+			pos = 0
+			start = 0
+			end = 0
+			for item in self.choices:
+				itemStr = str(item)
+				text.append(" %s " % itemStr if item in self.value else "(%s)" % itemStr)
+				length = 2 + len(itemStr)
+				if item == self.choices[self.pos]:
+					start = pos
+					end = start + length
+				pos += length
+			return "mtext", "".join(text), range(start, end)
+		else:
+			return "text", " ".join([self.description[x] for x in self.value])
+
+	def onDeselect(self, session):
+		# self.pos = 0  # Enable this to reset the position marker to the first element.
+		if self.last_value != self.value:
+			self.changedFinal()
+			self.last_value = self.value[:]
+
 	description = property(lambda self: descriptionList(self.choices.choices, choicesList.LIST_TYPE_LIST))
+
 
 class ConfigLocations(ConfigElement):
 	def __init__(self, default=None, visible_width=False):
@@ -1768,15 +1765,15 @@ class ConfigLocations(ConfigElement):
 		return None
 
 	def handleKey(self, key):
-		if key == KEY_LEFT:
+		if key == KEYA_LEFT:
 			self.pos -= 1
 			if self.pos < -1:
 				self.pos = len(self.value) - 1
-		elif key == KEY_RIGHT:
+		elif key == KEYA_RIGHT:
 			self.pos += 1
 			if self.pos >= len(self.value):
 				self.pos = -1
-		elif key in (KEY_HOME, KEY_END):
+		elif key in (KEYA_FIRST, KEYA_LAST):
 			self.pos = -1
 
 	def getText(self):
@@ -2136,8 +2133,8 @@ def updateConfigElement(element, newelement):
 # config.arg = ConfigSubDict()
 # config.arg["Hello"] = ConfigYesNo()
 #
-# config.arg["Hello"].handleKey(KEY_RIGHT)
-# config.arg["Hello"].handleKey(KEY_RIGHT)
+# config.arg["Hello"].handleKey(KEYA_RIGHT)
+# config.arg["Hello"].handleKey(KEYA_RIGHT)
 #
 # #config.saved_value
 #
@@ -2156,26 +2153,26 @@ class ConfigCECAddress(ConfigSequence):
 		self.auto_jump = auto_jump
 
 	def handleKey(self, key):
-		if key == KEY_LEFT:
+		if key == KEYA_LEFT:
 			if self.marked_block > 0:
 				self.marked_block -= 1
 			self.overwrite = True
 
-		elif key == KEY_RIGHT:
+		elif key == KEYA_RIGHT:
 			if self.marked_block < len(self.limits) - 1:
 				self.marked_block += 1
 			self.overwrite = True
 
-		elif key == KEY_HOME:
+		elif key == KEYA_FIRST:
 			self.marked_block = 0
 			self.overwrite = True
 
-		elif key == KEY_END:
+		elif key == KEYA_LAST:
 			self.marked_block = len(self.limits) - 1
 			self.overwrite = True
 
-		elif key in KEY_NUMBERS or key == KEY_ASCII:
-			if key == KEY_ASCII:
+		elif key in KEYA_NUMBERS or key == KEYA_ASCII:
+			if key == KEYA_ASCII:
 				code = getPrevAsciiCode()
 				if code < 48 or code > 57:
 					return
@@ -2191,14 +2188,14 @@ class ConfigCECAddress(ConfigSequence):
 				oldvalue *= 10
 				newvalue = oldvalue + number
 				if self.auto_jump and newvalue > self.limits[self.marked_block][1] and self.marked_block < len(self.limits) - 1:
-					self.handleKey(KEY_RIGHT)
+					self.handleKey(KEYA_RIGHT)
 					self.handleKey(key)
 					return
 				else:
 					self._value[self.marked_block] = newvalue
 
 			if len(str(self._value[self.marked_block])) >= self.block_len[self.marked_block]:
-				self.handleKey(KEY_RIGHT)
+				self.handleKey(KEYA_RIGHT)
 
 			self.validate()
 			self.changed()

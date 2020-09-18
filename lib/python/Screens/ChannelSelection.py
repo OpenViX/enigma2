@@ -2264,7 +2264,7 @@ class ChannelSelection(ChannelSelectionEdit, ChannelSelectionBase, ChannelSelect
 		self.buildTitleString()
 
 	def showPipzapMessage(self):
-		time = config.usage.infobar_timeout.index
+		time = int(config.usage.infobar_timeout.value)
 		if time:
 			self.pipzaptimer.callback.append(self.hidePipzapMessage)
 			self.pipzaptimer.startLongTimer(time)
