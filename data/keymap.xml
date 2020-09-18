@@ -1158,7 +1158,7 @@
 			<key id="KEY_TEXT" mapto="nextSubtitleTrack" flags="m" />
 			<key id="KEY_VIDEO" mapto="nextAngle" flags="m" />
 		</device>
-		<!--device name="dreambox ir keyboard">
+		<!-- device name="dreambox ir keyboard">
 			<key id="KEY_PAUSE" mapto="pause" flags="m" />
 			<key id="KEY_PLAY" mapto="play" flags="m" />
 			<key id="KEY_STOP" mapto="stop" flags="b" />
@@ -1166,7 +1166,7 @@
 			<key id="KEY_RECORD" mapto="shift_record" flags="l" />
 			<key id="KEY_PREVIOUSSONG" mapto="previous" flags="m" />
 			<key id="KEY_NEXTSONG" mapto="next" flags="m" />
-		</device-->
+		</device -->
 	</map>
 
 	<map context="ButtonSetupActions">
