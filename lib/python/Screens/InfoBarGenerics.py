@@ -1546,7 +1546,7 @@ class InfoBarEPG:
 		if self.defaultEPGtypeChangedByThisModule: # if this is false the selection was changed from the setup menu
 			configElement.save()
 			configfile.save()
-		self.defaultEPGtypeChangedByThisModule = False
+			self.defaultEPGtypeChangedByThisModule = False
 
 	def showEventInfoPlugins(self):
 		if isStandardInfoBar(self):
