@@ -141,4 +141,3 @@ SystemInfo["CanProc"] = SystemInfo["HasMMC"] and getBrandOEM() != "vuplus"
 SystemInfo["canRecovery"] = getMachineBuild() in ('gbmv200',) and ('usb_update.bin','none')
 SystemInfo["FlashOnlineBackup"] = getMachineBuild() not in ('dummy')
 SystemInfo["FbcTunerPowerAlwaysOn"] = getBoxType() in ('vusolo4k', 'vuduo4k', 'vuultimo4k') or getMachineBuild() in ('gb7252')
-SystemInfo["TunerIgnoreDelsysInfo"] = ["Sundtek",]
