@@ -1530,9 +1530,9 @@ class InfoBarEPG:
 		default = "Grid EPG"
 		choices = [(self.getNonLocalisedPluginName(p[0]), p[0]) for p in pluginlist]
 		if not hasattr(config.usage, "defaultEPGType"): # first run
-			self.defaultEPGtypeChangedByThisModule = False # initialise this variable
 			config.usage.defaultEPGType = ConfigSelection(default=default, choices=choices)
-			config.usage.defaultEPGType.addNotifier(self.defaultEPGtypeNotifier, initial_call=False)
+			config.usage.defaultEPGType.addNotifier(self.defaultEPGtypeNotifier, initial_call=False, immediate_feedback=False)
+			config.usage.defaultEPGType.callNotifiersOnSaveAndCancel = True
 		for plugin in pluginlist:
 			if plugin[0] == self.plugintexts.get(config.usage.defaultEPGType.value, config.usage.defaultEPGType.value):
 				return plugin[1]
@@ -1543,10 +1543,6 @@ class InfoBarEPG:
 
 	def defaultEPGtypeNotifier(self, configElement):
 		self.defaultEPGType = self.getDefaultEPGtype()
-		if self.defaultEPGtypeChangedByThisModule: # if this is false the selection was changed from the setup menu
-			configElement.save()
-			configfile.save()
-			self.defaultEPGtypeChangedByThisModule = False
 
 	def showEventInfoPlugins(self):
 		if isStandardInfoBar(self):
@@ -1567,8 +1563,9 @@ class InfoBarEPG:
 
 	def defaultEpgPluginChosen(self, answer):
 		if answer is not None:
-			self.defaultEPGtypeChangedByThisModule = True
 			config.usage.defaultEPGType.value = self.getNonLocalisedPluginName(answer[0])
+			config.usage.defaultEPGType.save() # saving also forces self.defaultEPGTypeNotifier() to update self.defaultEPGType
+			configfile.save()
 
 	def showEventGuidePlugins(self):
 		if isMoviePlayerInfoBar(self):
