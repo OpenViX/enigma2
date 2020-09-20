@@ -1527,8 +1527,12 @@ class InfoBarEPG:
 
 	def getDefaultEPGtype(self):
 		pluginlist = self.getEPGPluginList()
-		config.usage.defaultEPGType = ConfigSelection(default = "Grid EPG", choices = [(self.getNonLocalisedPluginName(p[0]), p[0]) for p in pluginlist])
-		self.lastDefaultEPGType = config.usage.defaultEPGType.value
+		default = "Grid EPG"
+		choices = [(self.getNonLocalisedPluginName(p[0]), p[0]) for p in pluginlist]
+		if not hasattr(config.usage, "defaultEPGType"): # first run
+			self.defaultEPGtypeChangedByThisModule = False # initialise this variable
+			config.usage.defaultEPGType = ConfigSelection(default=default, choices=choices)
+			config.usage.defaultEPGType.addNotifier(self.defaultEPGtypeNotifier, initial_call=False)
 		for plugin in pluginlist:
 			if plugin[0] == self.plugintexts.get(config.usage.defaultEPGType.value, config.usage.defaultEPGType.value):
 				return plugin[1]
@@ -1536,8 +1540,14 @@ class InfoBarEPG:
 
 	def getNonLocalisedPluginName(self, val):
 		return {v:k for k, v in self.plugintexts.items()}.get(val, val)
-	
-	
+
+	def defaultEPGtypeNotifier(self, configElement):
+		self.defaultEPGType = self.getDefaultEPGtype()
+		if self.defaultEPGtypeChangedByThisModule: # if this is false the selection was changed from the setup menu
+			configElement.save()
+			configfile.save()
+			self.defaultEPGtypeChangedByThisModule = False
+
 	def showEventInfoPlugins(self):
 		if isStandardInfoBar(self):
 			if getBrandOEM() not in ('xtrend', 'odin', 'ini', 'dags' ,'gigablue', 'xp'):
@@ -1557,10 +1567,8 @@ class InfoBarEPG:
 
 	def defaultEpgPluginChosen(self, answer):
 		if answer is not None:
-			self.defaultEPGType = answer[1]
-			self.lastDefaultEPGType = config.usage.defaultEPGType.value = self.getNonLocalisedPluginName(answer[0])
-			config.usage.defaultEPGType.save()
-			configfile.save()
+			self.defaultEPGtypeChangedByThisModule = True
+			config.usage.defaultEPGType.value = self.getNonLocalisedPluginName(answer[0])
 
 	def showEventGuidePlugins(self):
 		if isMoviePlayerInfoBar(self):
@@ -1722,8 +1730,6 @@ class InfoBarEPG:
 				self.eventView.setEvent(self.epglist[0])
 
 	def showDefaultEPG(self):
-		if self.lastDefaultEPGType != config.usage.defaultEPGType.value: # if something outside this module has changed the value of config.usage.defaultEPGType, e.g. EPG settings
-			self.defaultEPGType = self.getDefaultEPGtype()
 		if self.defaultEPGType is not None:
 			self.defaultEPGType()
 			return
