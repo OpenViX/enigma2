@@ -1506,11 +1506,11 @@ class InfoBarEPG:
 			{
 				"RedPressed": (self.RedPressed, _("Show epg")),
 				"IPressed": (self.IPressed, _("Show program information...")),
-				"InfoPressed": (self.InfoPressed, _("Show program information...")),
-				"showEventInfoPlugin": (self.showEventInfoPlugins, _("List EPG functions...")),
-				"EPGPressed":  (self.showDefaultEPG, _("Show EPG...")),
+				"InfoPressed": (self.InfoPressed, _("Show program information...")), # short INFO
+				"showEventInfoPlugin": (self.showEventInfoPlugins, _("List EPG functions...")), # long INFO
+				"EPGPressed":  (self.showDefaultEPG, _("Show EPG...")), # short EPG
 				"showSingleEPG": (self.openSingleServiceEPG, _("Show single channel EPG...")), # not in the keymap
-				"showEventGuidePlugin": (self.showEventGuidePlugins, _("List EPG functions...")),
+				"showEventGuidePlugin": (self.showEventGuidePlugins, _("List EPG functions...")), # long EPG
 				"showInfobarOrEpgWhenInfobarAlreadyVisible": (self.showEventInfoWhenNotVisible, _("Show infobar or infobar EPG")), # not in the keymap
 			}, description=_("EPG access"))
 
