@@ -54,7 +54,6 @@ from Tools.KeyBindings import getKeyDescription
 import NavigationInstance
 
 from enigma import eTimer, eServiceCenter, eDVBServicePMTHandler, iServiceInformation, iPlayableService, iRecordableService, eServiceReference, eEPGCache, eActionMap, getDesktop, eDVBDB
-from boxbranding import getBrandOEM
 from keyids import KEYFLAGS, KEYIDS, invertKeyIds
 
 from time import time, localtime, strftime
@@ -1546,15 +1545,15 @@ class InfoBarEPG:
 
 	def showEventInfoPlugins(self):
 		if isStandardInfoBar(self):
-			if getBrandOEM() not in ('xtrend', 'odin', 'ini', 'dags' ,'gigablue', 'xp'):
+			if SystemInfo["HasInfoButton"]:
+				self.openEventView()
+			else:
 				pluginlist = self.getEPGPluginList()
 				if pluginlist:
 					pluginlist.append((_("Select default action of EPG button"), self.selectDefaultEpgPlugin))
 					self.session.openWithCallback(self.EventInfoPluginChosen, ChoiceBox, title=_("Please choose an extension..."), list=pluginlist, skin_name="EPGExtensionsList", reorderConfig="eventinfo_order")
 				else:
 					self.openSingleServiceEPG()
-			else:
-				self.openEventView()
 		elif isMoviePlayerInfoBar(self):
 			self.openEventView()
 
