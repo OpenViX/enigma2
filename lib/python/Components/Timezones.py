@@ -302,11 +302,10 @@ class Timezones:
 			from Plugins.Extensions.AutoTimer.plugin import autotimer, autopoller
 			self.autotimerPoller = autopoller
 			self.autotimerTimer = autotimer
-			self.pollDelay = 3  # Poll delay in minutes.
 			try:
 				self.autotimerPollDelay = config.plugins.autotimer.delay.value
 			except AttributeError:
-				self.autotimerPollDelay = self.pollDelay
+				self.autotimerPollDelay = 3
 			self.timer = eTimer()
 			self.timer.callback.append(self.autotimeQuery)
 			self.addCallback(self.autotimerCallback)
@@ -320,8 +319,8 @@ class Timezones:
 			print("[Timezones] Trying to stop main AutoTimer poller.")
 			if self.autotimerPoller is not None:
 				self.autotimerPoller.stop()
-			print("[Timezones] AutoTimer poller will be run in %d minutes." % self.pollDelay)
-			self.timer.startLongTimer(self.pollDelay * 60)
+			print("[Timezones] AutoTimer poller will be run in %d minutes." % self.autotimerPollDelay)
+			self.timer.startLongTimer(self.autotimerPollDelay * 60)
 
 	def autotimeQuery(self):
 		print("[Timezones] AutoTimer poll is running.")
