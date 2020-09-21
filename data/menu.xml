@@ -102,7 +102,7 @@ self.session.openWithCallback(msgClosed, EpgDeleteMsg)
 				<menu weight="4" level="0" text="Front panel display" entryID="display_selection" requires="Display">
 					<id val="display"/>
 					<item weight="1" level="0" text="Settings" entryID="display_setup"><setup id="display"/></item>
-					<item weight="2" level="0" text="Skin" entryID="lcd_skin_setup"><screen module="SkinSelector" screen="LcdSkinSelector"/></item>
+					<item weight="2" level="0" text="Skin" entryID="lcd_skin_setup" requires="LCDSKINSetup"><screen module="SkinSelector" screen="LcdSkinSelector"/></item>
 				</menu>
 				<!-- Menu / Setup / User Interface / LED Display -->
 				<menu weight="5" level="0" text="LED display panel" entryID="leddisplay_selection" requires="DisplayLED">
@@ -147,9 +147,9 @@ self.session.open(SABnzbdSetupScreen)
 				<item level="2" text="Password" entryID="password_setup"><screen module="NetworkSetup" screen="NetworkPassword"/></item>
 			</menu>
 			<!-- Menu / Setup / Common Interface -->
-			<menu weight="7" text="Common interface" entryID="cicam_setup">
+			<menu weight="7" text="Common interface" entryID="cicam_setup" requires="CommonInterface">
 				<id val="cicam"/>
-				<item weight="10" level="1" text="Common interface" entryID="ci_setup" requires="CommonInterface"><screen module="Ci" screen="CiSelection"/></item>
+				<item weight="10" level="1" text="Common interface" entryID="ci_setup"><screen module="Ci" screen="CiSelection"/></item>
 			</menu>
 			<!-- Menu / Setup / Softcam -->
 			<menu weight="8" text="Softcam" entryID="cam_setup">
@@ -166,7 +166,7 @@ self.session.open(SABnzbdSetupScreen)
 				<item level="0" text="Filesystem check" entryID="harddisk_check"><screen module="HarddiskSetup" screen="HarddiskFsckSelection"/></item>
 			</menu>
 			<!-- Menu / Setup / Time Settings -->
-			<item level="0" entryID="time_setup"><setup id="time"/></item>
+			<item level="0" text="Time" entryID="time_setup"><screen module="Time" screen="Time" /></item>
 			<!-- Menu / Setup / Recordings, Playback & Timeshift -->
 			<menu weight="11" level="1" text="Recordings, playback &amp; timeshift" entryID="rec_setup">
 			 	<id val="rec" />
@@ -190,19 +190,7 @@ self.session.open(SABnzbdSetupScreen)
 				<!-- Menu / Setup / System / RF Setup -->
 				<item weight="5" level="1" entryID="rfmod_setup" requires="RfModulator"><setup id="RFmod"/></item>
 				<!-- Menu / Setup / System / Factory Reset -->
-				<item weight="99" level="0" text="Factory reset" entryID="factory_reset">
-<code>
-from Screens.FactoryReset import FactoryReset
-def msgClosed(ret):
-	if ret:
-		from os import system, _exit
-		system("rm -R /etc/enigma2")
-		system("cp -R /usr/share/enigma2/defaults /etc/enigma2")
-		system("/usr/bin/showiframe /usr/share/backdrop.mvi")
-		_exit(0)
-self.session.openWithCallback(msgClosed, FactoryReset)
-</code>
-				</item>
+				<item weight="99" level="0" text="Factory reset" entryID="factory_reset"><screen module="FactoryReset" screen="FactoryReset"/></item>
 				<item weight="2" level="0" text="Software update" entryID="software_update"><screen module="SoftwareUpdate" screen="UpdatePlugin"/></item>
 			</menu>
 			<!-- Menu / Setup / HDMI-CEC -->

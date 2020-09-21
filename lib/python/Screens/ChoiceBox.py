@@ -13,7 +13,7 @@ config.misc.pluginlist.eventinfo_order = ConfigText(default="")
 config.misc.pluginlist.extension_order = ConfigText(default="")
 
 class ChoiceBox(Screen):
-	def __init__(self, session, title="", list=None, keys=None, selection=0, skin_name=None, text="", reorderConfig="", windowTitle=None, var="", menu_path=""):
+	def __init__(self, session, title="", list=None, keys=None, selection=0, skin_name=None, text="", reorderConfig="", windowTitle=None, var=""):
 		if not list: list = []
 		if not skin_name: skin_name = []
 		Screen.__init__(self, session)
@@ -29,11 +29,11 @@ class ChoiceBox(Screen):
 		if title:
 			title = _(title)
 			if len(title) < 55 and title.find('\n') == -1:
-				Screen.setTitle(self, title)
+				self.setTitle(title)
 			elif title.find('\n') != -1:
 				temptext = title.split('\n')
 				if len(temptext[0]) < 55:
-					Screen.setTitle(self, temptext[0])
+					self.setTitle(temptext[0])
 					count = 2
 					labeltext = ""
 					while len(temptext) >= count:
@@ -41,7 +41,6 @@ class ChoiceBox(Screen):
 							labeltext += '\n'
 						labeltext = labeltext + temptext[count-1]
 						count += 1
-						print '[Choicebox] count', count
 					self["text"].setText(labeltext)
 				else:
 					self["text"].setText(title)
@@ -117,13 +116,9 @@ class ChoiceBox(Screen):
 			"right": self.right,
 			"shiftUp": self.additionalMoveUp,
 			"shiftDown": self.additionalMoveDown,
-			"menu": self.setDefaultChoiceList
+			"menu": self.setDefaultChoiceList,
+			"back": self.cancel
 		}, prio=-2)
-
-		self["cancelaction"] = ActionMap(["WizardActions"],
-		{
-			"back": self.cancel,
-		}, prio=-1)
 
 	def autoResize(self):
 		desktop_w = enigma.getDesktop(0).size().width()
@@ -300,3 +295,21 @@ class ChoiceBox(Screen):
 				self["list"].up()
 			self.config_type.value = ",".join(x[0][0] for x in self.list)
 			self.config_type.save()
+
+
+# This choicebox overlays the current screen
+class PopupChoiceBox(ChoiceBox):
+	def __init__(self, session, title="", list=None, keys=None, selection=0, skin_name=None, text="", reorderConfig="", windowTitle=None, var="", closeCB=None):
+		ChoiceBox.__init__(self, session, title, list, keys, selection, skin_name, text, reorderConfig, windowTitle, var)
+		self.closeCB = closeCB
+
+	def show(self):
+		self["actions"].execBegin()
+		ChoiceBox.show(self)
+
+	def hide(self):
+		self["actions"].execEnd()
+		ChoiceBox.hide(self)
+
+	def cancel(self):
+		self.closeCB()

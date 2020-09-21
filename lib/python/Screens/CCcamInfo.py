@@ -185,7 +185,7 @@ if path.exists(resolveFilename(SCOPE_ACTIVE_SKIN, "icons/lock_on.png")):
 	lock_on = loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, "icons/lock_on.png"))
 else:
 	lock_on = loadPNG("/usr/share/enigma2/skin_default/icons/lock_on.png")
-	
+
 if path.exists(resolveFilename(SCOPE_ACTIVE_SKIN, "icons/lock_off.png")):
 	lock_off = loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, "icons/lock_off.png"))
 else:
@@ -265,7 +265,7 @@ def CCcamListEntry(name, idx):
 	else:
 		if fileExists(png):
 			res.append(MultiContentEntryPixmapAlphaBlend(pos=(0, 0), size=(35, 25), png=loadPNG(png)))
-		res.append(MultiContentEntryText(pos=(40, 3), size=(500, 25), font=0, text=name))			
+		res.append(MultiContentEntryText(pos=(40, 3), size=(500, 25), font=0, text=name))
 	return res
 
 def CCcamServerListEntry(name, color):
@@ -367,20 +367,9 @@ def CCcamMenuConfigListEntry(name, blacklisted):
 #############################################################
 
 class CCcamInfoMain(Screen):
-	def __init__(self, session, menu_path=""):
+	def __init__(self, session):
 		Screen.__init__(self, session)
-		screentitle = _("CCcam Info")
-		menu_path += screentitle
-		if config.usage.show_menupath.value == 'large':
-			title = menu_path
-			self["menu_path_compressed"] = StaticText("")
-		elif config.usage.show_menupath.value == 'small':
-			title = screentitle
-			self["menu_path_compressed"] = StaticText(menu_path + " >" if not menu_path.endswith(' / ') else menu_path[:-3] + " >" or "")
-		else:
-			title = screentitle
-			self["menu_path_compressed"] = StaticText("")
-		Screen.setTitle(self, title)
+		self.setTitle(_("CCcam Info"))
 
 		self.session = session
 

@@ -22,29 +22,10 @@ class PowerTimerEditList(Screen):
 	CLEANUP = 3
 	DELETE = 4
 
-	def __init__(self, session, menu_path=""):
+	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.skinName = "TimerEditList"
-		screentitle = _("PowerTimer List")
-		self.menu_path = menu_path
-		if config.usage.show_menupath.value == 'large':
-			self.menu_path += screentitle
-			title = self.menu_path
-			self["menu_path_compressed"] = StaticText("")
-			self.menu_path += ' / '
-		elif config.usage.show_menupath.value == 'small':
-			title = screentitle
-			condtext = ""
-			if self.menu_path and not self.menu_path.endswith(' / '):
-				condtext = self.menu_path + " >"
-			elif self.menu_path:
-				condtext = self.menu_path[:-3] + " >"
-			self["menu_path_compressed"] = StaticText(condtext)
-			self.menu_path += screentitle + ' / '
-		else:
-			title = screentitle
-			self["menu_path_compressed"] = StaticText("")
-		Screen.setTitle(self, title)
+		self.setTitle(_("Power Timer List"))
 
 		self.onChangedEntry = [ ]
 		list = [ ]
@@ -225,12 +206,12 @@ class PowerTimerEditList(Screen):
 	def showLog(self):
 		cur=self["timerlist"].getCurrent()
 		if cur:
-			self.session.openWithCallback(self.finishedEdit, TimerLog, cur, self.menu_path)
+			self.session.openWithCallback(self.finishedEdit, TimerLog, cur)
 
 	def openEdit(self):
 		cur=self["timerlist"].getCurrent()
 		if cur:
-			self.session.openWithCallback(self.finishedEdit, TimerEntry, cur, self.menu_path)
+			self.session.openWithCallback(self.finishedEdit, TimerEntry, cur)
 
 	def cleanupQuestion(self):
 		self.session.openWithCallback(self.cleanupTimer, MessageBox, _("Really delete completed timers?"))
@@ -276,7 +257,7 @@ class PowerTimerEditList(Screen):
 		self.addTimer(PowerTimerEntry(checkOldTimers = True, *data))
 
 	def addTimer(self, timer):
-		self.session.openWithCallback(self.finishedAdd, TimerEntry, timer, self.menu_path)
+		self.session.openWithCallback(self.finishedAdd, TimerEntry, timer)
 
 	def finishedEdit(self, answer):
 		if answer[0]:

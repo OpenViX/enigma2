@@ -104,22 +104,9 @@ def InitOsdPosition():
 
 
 class UserInterfacePositioner(Screen, ConfigListScreen):
-	def __init__(self, session, menu_path=""):
+	def __init__(self, session):
 		Screen.__init__(self, session)
-		screentitle = _("OSD position")
-		if config.usage.show_menupath.value == 'large':
-			menu_path += screentitle
-			title = menu_path
-			self.setup_title = title
-			self["menu_path_compressed"] = StaticText("")
-		elif config.usage.show_menupath.value == 'small':
-			title = screentitle
-			self.setup_title = screentitle
-			self["menu_path_compressed"] = StaticText(menu_path + " >" if not menu_path.endswith(' / ') else menu_path[:-3] + " >" or "")
-		else:
-			title = screentitle
-			self.setup_title = title
-			self["menu_path_compressed"] = StaticText("")
+		self.setTitle(_("OSD position"))
 		self.Console = Console()
 		self["status"] = StaticText()
 		self["key_red"] = StaticText(_("Cancel"))
@@ -149,7 +136,6 @@ class UserInterfacePositioner(Screen, ConfigListScreen):
 		self["config"].l.setList(self.list)
 
 		self.serviceRef = None
-		self.onLayoutFinish.append(self.layoutFinished)
 		if self.welcomeWarning not in self.onShow:
 			self.onShow.append(self.welcomeWarning)
 		if self.selectionChanged not in self["config"].onSelectionChanged:
@@ -159,9 +145,6 @@ class UserInterfacePositioner(Screen, ConfigListScreen):
 	def selectionChanged(self):
 		self["status"].setText(self["config"].getCurrent()[2])
 
-	def layoutFinished(self):
-		self.setTitle(_(self.setup_title))
-
 	def welcomeWarning(self):
 		if self.welcomeWarning in self.onShow:
 			self.onShow.remove(self.welcomeWarning)
@@ -170,7 +153,7 @@ class UserInterfacePositioner(Screen, ConfigListScreen):
 			"USAGE: Adjust the screen size and position settings so that the shaded user interface layer *just* "
 			"covers the test pattern in the background.\n\n"
 			"Select Yes to continue or No to exit."), type=MessageBox.TYPE_YESNO, timeout=-1, default=False)
-		popup.setTitle(self.setup_title)
+		popup.setTitle(_("OSD position"))
 
 	def welcomeAction(self, answer):
 		if answer:
@@ -279,23 +262,10 @@ class UserInterfacePositioner(Screen, ConfigListScreen):
 
 
 class OSD3DSetupScreen(Screen, ConfigListScreen):
-	def __init__(self, session, menu_path=""):
+	def __init__(self, session):
 		Screen.__init__(self, session)
-		screentitle = _("3D")
-		if config.usage.show_menupath.value == 'large':
-			menu_path += screentitle
-			title = menu_path
-			self.setup_title = title
-			self["menu_path_compressed"] = StaticText("")
-		elif config.usage.show_menupath.value == 'small':
-			title = screentitle
-			self.setup_title = screentitle
-			self["menu_path_compressed"] = StaticText(menu_path + " >" if not menu_path.endswith(' / ') else menu_path[:-3] + " >" or "")
-		else:
-			title = screentitle
-			self.setup_title = title
-			self["menu_path_compressed"] = StaticText("")
 		self.skinName = "Setup"
+		self.setTitle(_("3D"))
 		self["status"] = StaticText()
 		self["HelpWindow"] = Pixmap()
 		self["HelpWindow"].hide()
@@ -318,16 +288,12 @@ class OSD3DSetupScreen(Screen, ConfigListScreen):
 		self["config"].list = self.list
 		self["config"].l.setList(self.list)
 
-		self.onLayoutFinish.append(self.layoutFinished)
 		if not self.selectionChanged in self["config"].onSelectionChanged:
 			self["config"].onSelectionChanged.append(self.selectionChanged)
 		self.selectionChanged()
 
 	def selectionChanged(self):
 		self["status"].setText(self["config"].getCurrent()[2])
-
-	def layoutFinished(self):
-		self.setTitle(_(self.setup_title))
 
 	def createSummary(self):
 		from Screens.Setup import SetupSummary

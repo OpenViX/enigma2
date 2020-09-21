@@ -1,3 +1,4 @@
+from __future__ import print_function
 from Components.ActionMap import HelpableActionMap
 from Components.EpgList import EPG_TYPE_SINGLE
 from Screens.EpgSelectionChannel import EPGSelectionChannel
@@ -8,8 +9,8 @@ from Screens.EpgSelectionChannel import EPGSelectionChannel
 class EPGSelection(EPGSelectionChannel):
 	def __init__(self, session, service=None, zapFunc=None, eventid=None, bouquetChangeCB=None, serviceChangeCB=None, EPGtype="similar", StartBouquet=None, StartRef=None, bouquets=None):
 		if EPGtype not in ("similar", "single"):
-			print "[EPGSelection] Warning: EPGSelection does not support type '%s'!" % EPGtype
-			print "               Attempting to continue in single EPG mode"
+			print("[EPGSelection] Warning: EPGSelection does not support type '%s'" % EPGtype)
+			print("               Attempting to continue in single EPG mode")
 		EPGSelectionChannel.__init__(self, session, service)
 
 		# Rewrite the EPG actions to invoke the compatibility functions.
@@ -86,8 +87,20 @@ class EPGSelection(EPGSelectionChannel):
 	def sortEpg(self):
 		self.sortEPG(self)
 
+	def timerAdd(self):
+		self.addEditTimerMenu()
+
+	def doRecordTimer(self):
+		self.doInstantTimer(0)
+
+	def doZapTimer(self):
+		self.doInstantTimer(1)
+
 	def RecordTimerQuestion(self, manual=False):
-		self.recordTimerQuestion(manual)
+		if manual:
+			self.addEditTimer()
+		else:
+			self.addEditTimerMenu()
 
 	# Things that need to be able to be overridden.
 	def refreshList(self):

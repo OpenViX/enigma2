@@ -188,20 +188,9 @@ def getButtonSetupFunctions():
 	return ButtonSetupFunctions
 
 class ButtonSetup(Screen):
-	def __init__(self, session, menu_path="", args=None):
+	def __init__(self, session):
 		Screen.__init__(self, session)
-		screentitle = _("Button setup")
-		if config.usage.show_menupath.value == 'large':
-			menu_path += screentitle
-			title = menu_path
-			self["menu_path_compressed"] = StaticText("")
-		elif config.usage.show_menupath.value == 'small':
-			title = screentitle
-			self["menu_path_compressed"] = StaticText(menu_path + " >" if not menu_path.endswith(' / ') else menu_path[:-3] + " >" or "")
-		else:
-			title = screentitle
-			self["menu_path_compressed"] = StaticText("")
-		Screen.setTitle(self, title)
+		self.setTitle(_("Button Setup"))
 		self['description'] = Label(_('On your remote, click on the button you want to change'))
 		self.session = session
 		self.list = []
@@ -265,7 +254,7 @@ class ButtonSetup(Screen):
 			self["choosen"].setList(selected)
 
 class ButtonSetupSelect(Screen):
-	def __init__(self, session, key, args=None):
+	def __init__(self, session, key):
 		Screen.__init__(self, session)
 		self.skinName="ButtonSetupSelect"
 		self['description'] = Label(_('Select the desired function and click on "OK" to assign it. Use "CH+/-" to toggle between the lists. Select an assigned function and click on "OK" to de-assign it. Use "Next/Previous" to change the order of the assigned functions.'))

@@ -6,15 +6,17 @@ from ServiceReference import ServiceReference
 from Components.About import about
 from Components.ActionMap import HelpableActionMap, HelpableNumberActionMap
 from Components.Button import Button
-from Components.config import ConfigClock, config, configfile
+from Components.config import config, configfile, ConfigSelection, ConfigSubsection
 from Components.EpgListSingle import EPGListSingle
-from Screens.EpgSelectionBase import EPGSelectionBase, EPGServiceNumberSelection, EPGServiceBrowse, EPGServiceZap
+from Screens.EpgSelectionBase import EPGSelectionBase, EPGServiceNumberSelection, EPGServiceBrowse, EPGServiceZap, epgActions, infoActions, okActions
 from Screens.HelpMenu import HelpableScreen
 from Screens.Setup import Setup
+from Screens.UserDefinedButtons import UserDefinedButtons
 
 
-class EPGSelectionSingle(EPGSelectionBase, EPGServiceNumberSelection, EPGServiceBrowse, EPGServiceZap):
+class EPGSelectionSingle(EPGSelectionBase, EPGServiceNumberSelection, EPGServiceBrowse, EPGServiceZap, UserDefinedButtons):
 	def __init__(self, session, zapFunc, startBouquet, startRef, bouquets, timeFocus=None):
+		UserDefinedButtons.__init__(self, config.epgselection.single, epgActions, okActions)
 		EPGSelectionBase.__init__(self, session, config.epgselection.single, startBouquet, startRef, bouquets)
 		EPGServiceNumberSelection.__init__(self)
 		EPGServiceZap.__init__(self, zapFunc)
@@ -28,11 +30,14 @@ class EPGSelectionSingle(EPGSelectionBase, EPGServiceNumberSelection, EPGService
 			"prevBouquet": (self.prevBouquet, _("Go to previous bouquet")),
 			"nextService": (self.nextService, _("Go to next channel")),
 			"prevService": (self.prevService, _("Go to previous channel")),
-			"info": (self.openEventView, _("Show detailed event info")),
-			"infolong": (self.openSingleEPG, _("Show single epg for current channel")),
+			"epg": self.helpKeyAction("epg"),
+			"epglong": self.helpKeyAction("epglong"),
+			"info": self.helpKeyAction("info"),
+			"infolong": self.helpKeyAction("infolong"),
 			"tv": (self.toggleBouquetList, _("Toggle between bouquet/epg lists")),
 			"timer": (self.openTimerList, _("Show timer list")),
 			"timerlong": (self.openAutoTimerList, _("Show autotimer list")),
+			"back": (self.goToCurrentTimeOrService, _("Go to current time, then the start service")),
 			"menu": (self.createSetup, _("Setup menu"))
 		}, prio=-1, description=helpDescription)
 		self["epgcursoractions"] = HelpableActionMap(self, "DirectionActions", {
@@ -52,6 +57,7 @@ class EPGSelectionSingle(EPGSelectionBase, EPGServiceNumberSelection, EPGService
 			self["list"].setFontsize()
 			self["list"].setItemsPerPage()
 			self["list"].recalcEntrySize()
+			self._updateButtonText()
 
 		self.closeEventViewDialog()
 		self.session.openWithCallback(onClose, Setup, "epgsingle")
@@ -74,11 +80,39 @@ class EPGSelectionSingle(EPGSelectionBase, EPGServiceNumberSelection, EPGService
 		else:
 			self["list"].setCurrentIndex(index)
 
+	def moveToService(self, serviceRef):
+		self.setCurrentService(serviceRef)
+		self.refreshList(self.timeFocus)
+
 	def bouquetChanged(self):
-		self.refreshList(time())
+		self.refreshList(self.timeFocus)
 
 	def serviceChanged(self):
-		self.refreshList(time())
+		self.refreshList(self.timeFocus)
+
+	def moveUp(self):
+		EPGSelectionBase.moveUp(self)
+		self.timeFocus = self["list"].getSelectedEventStartTime() or time()
+
+	def moveDown(self):
+		EPGSelectionBase.moveDown(self)
+		self.timeFocus = self["list"].getSelectedEventStartTime() or time()
+
+	def nextPage(self):
+		EPGSelectionBase.nextPage(self)
+		self.timeFocus = self["list"].getSelectedEventStartTime() or time()
+
+	def prevPage(self):
+		EPGSelectionBase.prevPage(self)
+		self.timeFocus = self["list"].getSelectedEventStartTime() or time()
+
+	def toTop(self):
+		EPGSelectionBase.toTop(self)
+		self.timeFocus = self["list"].getSelectedEventStartTime() or time()
+
+	def toEnd(self):
+		EPGSelectionBase.toEnd(self)
+		self.timeFocus = self["list"].getSelectedEventStartTime() or time()
 
 	def eventViewCallback(self, setEvent, setService, val):
 		if val == -1:
@@ -97,3 +131,21 @@ class EPGSelectionSingle(EPGSelectionBase, EPGServiceNumberSelection, EPGService
 		config.epgselection.sort.save()
 		configfile.save()
 		self["list"].sortEPG()
+
+	def goToCurrentTimeOrService(self):
+		list = self["list"]
+		oldEvent, service = list.getCurrent()
+		self.timeFocus = time()
+		self.refreshList(self.timeFocus)
+		newEvent, service = list.getCurrent()
+		if oldEvent and newEvent and oldEvent.getEventId() == newEvent.getEventId():
+			if self.startRef and service and service.ref.toString() != self.startRef.toString():
+				self.moveToService(self.startRef)
+
+	def forward24Hours(self):
+		self.timeFocus = (self["list"].getSelectedEventStartTime() or time()) + 86400
+		self.refreshList(self.timeFocus)
+
+	def back24Hours(self):
+		self.timeFocus = (self["list"].getSelectedEventStartTime() or time()) - 86400
+		self.refreshList(self.timeFocus)

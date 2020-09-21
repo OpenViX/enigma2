@@ -6,12 +6,14 @@ from Components.ActionMap import HelpableActionMap
 from Components.config import config, configfile
 from Components.EpgListSingle import EPGListSingle
 from Components.Sources.Event import Event
-from Screens.EpgSelectionBase import EPGSelectionBase, EPGServiceZap, EPGServiceBrowse
+from Screens.EpgSelectionBase import EPGSelectionBase, EPGServiceZap, EPGServiceBrowse, EPGStandardButtons, epgActions, okActions
 from Screens.Setup import Setup
+from Screens.UserDefinedButtons import UserDefinedButtons
 
 
-class EPGSelectionInfobarSingle(EPGSelectionBase, EPGServiceZap, EPGServiceBrowse):
+class EPGSelectionInfobarSingle(EPGSelectionBase, EPGServiceZap, EPGServiceBrowse, UserDefinedButtons):
 	def __init__(self, session, zapFunc, startBouquet, startRef, bouquets):
+		UserDefinedButtons.__init__(self, config.epgselection.infobar, epgActions, okActions)
 		EPGSelectionBase.__init__(self, session, config.epgselection.infobar, startBouquet, startRef, bouquets)
 		EPGServiceZap.__init__(self, zapFunc)
 
@@ -47,6 +49,7 @@ class EPGSelectionInfobarSingle(EPGSelectionBase, EPGServiceZap, EPGServiceBrows
 				# switching to other infobar EPG type
 				self.close("reopeninfobar")
 			else:
+				self._updateButtonText()
 				self["list"].sortEPG()
 				self["list"].setFontsize()
 				self["list"].setItemsPerPage()

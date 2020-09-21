@@ -14,7 +14,7 @@ from Components.Pixmap import MultiPixmap
 from Components.ScrollLabel import ScrollLabel
 from Components.Sources.StaticText import StaticText
 from Components.SystemInfo import SystemInfo
-from Screen import Screen
+from Screen import Screen, ScreenSummary
 from Screens.GitCommitInfo import CommitInfo
 from Screens.SoftwareUpdate import UpdatePlugin
 from Tools.Directories import fileExists, fileCheck, pathExists
@@ -23,28 +23,9 @@ from Tools.StbHardware import getFPVersion
 import skin
 
 class About(Screen):
-	def __init__(self, session, menu_path=""):
+	def __init__(self, session):
 		Screen.__init__(self, session)
-		screentitle = _("About")
-		self.menu_path = menu_path
-		if config.usage.show_menupath.value == 'large':
-			self.menu_path += screentitle
-			title = self.menu_path
-			self["menu_path_compressed"] = StaticText("")
-			self.menu_path += ' / '
-		elif config.usage.show_menupath.value == 'small':
-			title = screentitle
-			condtext = ""
-			if self.menu_path and not self.menu_path.endswith(' / '):
-				condtext = self.menu_path + " >"
-			elif self.menu_path:
-				condtext = self.menu_path[:-3] + " >"
-			self["menu_path_compressed"] = StaticText(condtext)
-			self.menu_path += screentitle + ' / '
-		else:
-			title = screentitle
-			self["menu_path_compressed"] = StaticText("")
-		Screen.setTitle(self, title)
+		self.setTitle(_("About"))
 		self.skinName = "AboutOE"
 		self.populate()
 
@@ -89,7 +70,7 @@ class About(Screen):
 
 		if SystemInfo["HasH9SD"]:
 			if "rootfstype=ext4" in open('/sys/firmware/devicetree/base/chosen/bootargs', 'r').read():
-				part = "        - SD card in use for Image root \n" 
+				part = "        - SD card in use for Image root \n"
 			else:
 				part = "        - eMMC slot in use for Image root \n"
 			AboutText += _("%s") % part
@@ -99,7 +80,7 @@ class About(Screen):
 			part = "eMMC slot %s" %slot
 			bootmode = ""
 			if SystemInfo["canMode12"]:
-				bootmode = "bootmode = %s" %GetCurrentImageMode()		
+				bootmode = "bootmode = %s" %GetCurrentImageMode()
 			print "[About] HasHiSi = %s, slot = %s" %(SystemInfo["HasHiSi"], slot)
 			if SystemInfo["HasHiSi"] and "sda" in SystemInfo["canMultiBoot"][slot]['root']:
 				if slot > 4:
@@ -198,32 +179,21 @@ class About(Screen):
 				return False
 
 	def showTranslationInfo(self):
-		self.session.open(TranslationInfo, self.menu_path)
+		self.session.open(TranslationInfo)
 
 	def showUpdatePlugin(self):
-		self.session.open(UpdatePlugin, self.menu_path)
+		self.session.open(UpdatePlugin)
 
 	def showAboutReleaseNotes(self):
-		self.session.open(CommitInfo, self.menu_path)
+		self.session.open(CommitInfo)
 
 	def createSummary(self):
 		return AboutSummary
 
 class Devices(Screen):
-	def __init__(self, session, menu_path = ""):
+	def __init__(self, session):
 		Screen.__init__(self, session)
-		screentitle = _("Devices")
-		if config.usage.show_menupath.value == 'large':
-			menu_path += screentitle
-			title = menu_path
-			self["menu_path_compressed"] = StaticText("")
-		elif config.usage.show_menupath.value == 'small':
-			title = screentitle
-			self["menu_path_compressed"] = StaticText(menu_path + " >" if not menu_path.endswith(' / ') else menu_path[:-3] + " >" or "")
-		else:
-			title = screentitle
-			self["menu_path_compressed"] = StaticText("")
-		Screen.setTitle(self, title)
+		self.setTitle(_("Devices"))
 		self["TunerHeader"] = StaticText(_("Detected tuners:"))
 		self["HDDHeader"] = StaticText(_("Detected devices:"))
 		self["MountsHeader"] = StaticText(_("Network servers:"))
@@ -354,20 +324,9 @@ class Devices(Screen):
 
 
 class SystemMemoryInfo(Screen):
-	def __init__(self, session, menu_path = ""):
+	def __init__(self, session):
 		Screen.__init__(self, session)
-		screentitle = _("Memory")
-		if config.usage.show_menupath.value == 'large':
-			menu_path += screentitle
-			title = menu_path
-			self["menu_path_compressed"] = StaticText("")
-		elif config.usage.show_menupath.value == 'small':
-			title = screentitle
-			self["menu_path_compressed"] = StaticText(menu_path + " >" if not menu_path.endswith(' / ') else menu_path[:-3] + " >" or "")
-		else:
-			title = screentitle
-			self["menu_path_compressed"] = StaticText("")
-		Screen.setTitle(self, title)
+		self.setTitle(_("Memory"))
 		self.skinName = ["SystemMemoryInfo", "About"]
 		self["lab1"] = StaticText(_("Virtuosso Image Xtreme"))
 		self["lab2"] = StaticText(_("By Team ViX"))
@@ -429,20 +388,9 @@ class SystemMemoryInfo(Screen):
 
 
 class SystemNetworkInfo(Screen):
-	def __init__(self, session, menu_path = ""):
+	def __init__(self, session):
 		Screen.__init__(self, session)
-		screentitle = _("Network")
-		if config.usage.show_menupath.value == 'large':
-			menu_path += screentitle
-			title = menu_path
-			self["menu_path_compressed"] = StaticText("")
-		elif config.usage.show_menupath.value == 'small':
-			title = screentitle
-			self["menu_path_compressed"] = StaticText(menu_path + " >" if not menu_path.endswith(' / ') else menu_path[:-3] + " >" or "")
-		else:
-			title = screentitle
-			self["menu_path_compressed"] = StaticText("")
-		Screen.setTitle(self, title)
+		self.setTitle(_("Network"))
 		self.skinName = ["SystemNetworkInfo", "WlanStatus"]
 		self["LabelBSSID"] = StaticText()
 		self["LabelESSID"] = StaticText()
@@ -701,29 +649,24 @@ class SystemNetworkInfo(Screen):
 		return AboutSummary
 
 
-class AboutSummary(Screen):
+class AboutSummary(ScreenSummary):
 	def __init__(self, session, parent):
-		Screen.__init__(self, session, parent=parent)
-		self["selected"] = StaticText("ViX:" + getImageVersion())
-
-		AboutText = _("Model: %s %s\n") % (getMachineBrand(), getMachineName())
-
+		ScreenSummary.__init__(self, session, parent=parent)
+		self.skinName = "AboutSummary"
+		aboutText = _("Model: %s %s\n") % (getMachineBrand(), getMachineName())
 		if path.exists('/proc/stb/info/chipset'):
 			chipset = open('/proc/stb/info/chipset', 'r').read()
-			AboutText += _("Chipset: BCM%s") % chipset.replace('\n', '') + "\n"
-
-		AboutText += _("Version: %s") % getImageVersion() + "\n"
-		AboutText += _("Build: %s") % getImageBuild() + "\n"
-		AboutText += _("Kernel: %s") % about.getKernelVersionString() + "\n"
-
+			aboutText += _("Chipset: %s") % chipset.replace('\n', '') + "\n"
+		aboutText += _("ViX version: %s") % getImageVersion() + "\n"
+		aboutText += _("Build: %s") % getImageBuild() + "\n"
+		aboutText += _("Kernel: %s") % about.getKernelVersionString() + "\n"
 		string = getDriverDate()
 		year = string[0:4]
 		month = string[4:6]
 		day = string[6:8]
 		driversdate = '-'.join((year, month, day))
-		AboutText += _("Drivers: %s") % driversdate + "\n"
-		AboutText += _("Last update: %s") % getEnigmaVersionString() + "\n\n"
-
+		aboutText += _("Drivers: %s") % driversdate + "\n"
+		aboutText += _("Last update: %s") % getEnigmaVersionString() + "\n\n"
 		tempinfo = ""
 		if path.exists('/proc/stb/sensors/temp0/value'):
 			with open('/proc/stb/sensors/temp0/value', 'r') as f:
@@ -736,25 +679,15 @@ class AboutSummary(Screen):
 				tempinfo = f.read()
 		if tempinfo and int(tempinfo.replace('\n', '')) > 0:
 			mark = str('\xc2\xb0')
-			AboutText += _("System temperature: %s") % tempinfo.replace('\n', '') + mark + "C\n\n"
+			aboutText += _("System temperature: %s") % tempinfo.replace('\n', '') + mark + "C\n\n"
+		self["about"] = StaticText(aboutText)  # DEBUG: Proposed for new summary screens.
+		self["AboutText"] = StaticText(aboutText)
 
-		self["AboutText"] = StaticText(AboutText)
 
 class TranslationInfo(Screen):
-	def __init__(self, session, menu_path=""):
+	def __init__(self, session):
 		Screen.__init__(self, session)
-		screentitle = _("Translations")
-		if config.usage.show_menupath.value == 'large':
-			menu_path += screentitle
-			title = menu_path
-			self["menu_path_compressed"] = StaticText("")
-		elif config.usage.show_menupath.value == 'small':
-			title = screentitle
-			self["menu_path_compressed"] = StaticText(menu_path + " >" if not menu_path.endswith(' / ') else menu_path[:-3] + " >" or "")
-		else:
-			title = screentitle
-			self["menu_path_compressed"] = StaticText("")
-		Screen.setTitle(self, title)
+		self.setTitle(_("Translations"))
 		# don't remove the string out of the _(), or it can't be "translated" anymore.
 
 		# TRANSLATORS: Add here whatever should be shown in the "translator" about screen, up to 6 lines (use \n for newline)

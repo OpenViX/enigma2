@@ -1,7 +1,8 @@
-from Screens.Screen import Screen
+from Screens.HelpMenu import HelpableScreen
+from Screens.Screen import Screen, ScreenSummary
 from Screens.ParentalControlSetup import ProtectedScreen
 from Components.Sources.List import List
-from Components.ActionMap import NumberActionMap
+from Components.ActionMap import HelpableNumberActionMap
 from Components.Sources.StaticText import StaticText
 from Components.config import configfile
 from Components.PluginComponent import plugins
@@ -22,8 +23,6 @@ file = open(resolveFilename(SCOPE_SKIN, 'menu.xml'), 'r')
 mdom = xml.etree.cElementTree.parse(file)
 file.close()
 
-menu_path = ""
-full_menu_path = ""
 
 class MenuUpdater:
 	def __init__(self):
@@ -45,10 +44,30 @@ class MenuUpdater:
 
 menuupdater = MenuUpdater()
 
-class MenuSummary(Screen):
-	pass
 
-class Menu(Screen, ProtectedScreen):
+class MenuSummary(ScreenSummary):
+	def __init__(self, session, parent):
+		ScreenSummary.__init__(self, session, parent=parent)
+		self["entry"] = StaticText("")  # DEBUG: Proposed for new summary screens.
+		if self.addWatcher not in self.onShow:
+			self.onShow.append(self.addWatcher)
+		if self.removeWatcher not in self.onHide:
+			self.onHide.append(self.removeWatcher)
+
+	def addWatcher(self):
+		if self.selectionChanged not in self.parent["menu"].onSelectionChanged:
+			self.parent["menu"].onSelectionChanged.append(self.selectionChanged)
+	 	self.selectionChanged()
+
+	def removeWatcher(self):
+		if self.selectionChanged in self.parent["menu"].onSelectionChanged:
+			self.parent["menu"].onSelectionChanged.remove(self.selectionChanged)
+
+	def selectionChanged(self):
+		self["entry"].text = self.parent["menu"].getCurrent()[0]  # DEBUG: Proposed for new summary screens.
+
+
+class Menu(Screen, HelpableScreen, ProtectedScreen):
 	ALLOW_SUSPEND = True
 
 	def okbuttonClick(self):
@@ -80,7 +99,7 @@ class Menu(Screen, ProtectedScreen):
 		self.session.openWithCallback(self.menuClosed, *dialog)
 
 	def openSetup(self, dialog):
-		self.session.openWithCallback(self.menuClosed, Setup, dialog, None, full_menu_path)
+		self.session.openWithCallback(self.menuClosed, Setup, dialog)
 
 	def addMenu(self, destList, node):
 		requires = node.get("requires")
@@ -102,10 +121,6 @@ class Menu(Screen, ProtectedScreen):
 		destList.append((MenuTitle, a, entryID, weight))
 
 	def menuClosedWithConfigFlush(self, *res):
-		global menu_path
-		menu_path = ""
-		global full_menu_path
-		full_menu_path = ""
 		configfile.save()
 		self.menuClosed(*res)
 
@@ -129,10 +144,9 @@ class Menu(Screen, ProtectedScreen):
 		weight = node.get("weight", 50)
 		for x in node:
 			if x.tag == 'screen':
-				args = 'full_menu_path'
 				module = x.get("module")
 				screen = x.get("screen")
-				
+
 				if screen is None:
 					screen = module
 
@@ -141,11 +155,12 @@ class Menu(Screen, ProtectedScreen):
 					module = "Screens." + module
 				else:
 					module = ""
+
 				# check for arguments. they will be appended to the
 				# openDialog call
-				if x.text:
-					args = x.text or ""
+				args = x.text or ""
 				screen += ", " + args
+
 				destList.append((_(item_text or "??"), boundFunction(self.runScreen, (module, screen)), entryID, weight))
 				return
 			elif x.tag == 'plugin':
@@ -191,6 +206,7 @@ class Menu(Screen, ProtectedScreen):
 
 	def __init__(self, session, parent):
 		Screen.__init__(self, session)
+		HelpableScreen.__init__(self)
 		list = []
 
 		menuID = None
@@ -250,46 +266,27 @@ class Menu(Screen, ProtectedScreen):
 
 		self["menu"] = List(list)
 
-		self["actions"] = NumberActionMap(["OkCancelActions", "MenuActions", "NumberActions"],
-			{
-				"ok": self.okbuttonClick,
-				"cancel": self.closeNonRecursive,
-				"menu": self.closeRecursive,
-				"0": self.keyNumberGlobal,
-				"1": self.keyNumberGlobal,
-				"2": self.keyNumberGlobal,
-				"3": self.keyNumberGlobal,
-				"4": self.keyNumberGlobal,
-				"5": self.keyNumberGlobal,
-				"6": self.keyNumberGlobal,
-				"7": self.keyNumberGlobal,
-				"8": self.keyNumberGlobal,
-				"9": self.keyNumberGlobal
-			})
+		# self["menuActions"] = HelpableNumberActionMap(self, ["OkCancelActions", "MenuActions", "NumberActions"], {
+		self["menuActions"] = HelpableNumberActionMap(self, ["OkCancelActions", "NumberActions"], {
+			"ok": (self.okbuttonClick, _("Select the current menu item")),
+			"cancel": (self.closeNonRecursive, _("Exit menu")),
+			"close": (self.closeRecursive, _("Exit all menus")),
+			# "menu": (self.closeRecursive, _("Exit all menus")),
+			"1": (self.keyNumberGlobal, _("Direct menu item selection")),
+			"2": (self.keyNumberGlobal, _("Direct menu item selection")),
+			"3": (self.keyNumberGlobal, _("Direct menu item selection")),
+			"4": (self.keyNumberGlobal, _("Direct menu item selection")),
+			"5": (self.keyNumberGlobal, _("Direct menu item selection")),
+			"6": (self.keyNumberGlobal, _("Direct menu item selection")),
+			"7": (self.keyNumberGlobal, _("Direct menu item selection")),
+			"8": (self.keyNumberGlobal, _("Direct menu item selection")),
+			"9": (self.keyNumberGlobal, _("Direct menu item selection")),
+			"0": (self.keyNumberGlobal, _("Direct menu item selection"))
+		}, prio=0, description=_("Common Menu Actions"))
 
 		a = parent.get("title", "").encode("UTF-8") or None
 		a = a and _(a) or _(parent.get("text", "").encode("UTF-8"))
-		self.menu_title = a
-		global menu_path
-		self.menu_path_compressed = menu_path
-		if menu_path == "":
-			menu_path += a
-		elif not menu_path.endswith(a):
-			menu_path += " / " + a
-		global full_menu_path
-		full_menu_path = menu_path + ' / '
-		if config.usage.show_menupath.value == 'large':
-			Screen.setTitle(self, menu_path)
-			self["title"] = StaticText(menu_path)
-			self["menu_path_compressed"] = StaticText("")
-		elif config.usage.show_menupath.value == 'small':
-			Screen.setTitle(self, a)
-			self["title"] = StaticText(a)
-			self["menu_path_compressed"] = StaticText(self.menu_path_compressed and self.menu_path_compressed + " >" or "")
-		else:
-			Screen.setTitle(self, a)
-			self["title"] = StaticText(a)
-			self["menu_path_compressed"] = StaticText("")
+		self.setTitle(a)
 
 		self.number = 0
 		self.nextNumberTimer = eTimer()
@@ -310,18 +307,10 @@ class Menu(Screen, ProtectedScreen):
 		self.number = 0
 
 	def closeNonRecursive(self):
-		global menu_path
-		menu_path = self.menu_path_compressed
-		global full_menu_path
-		full_menu_path = menu_path + ' / '
 		self.resetNumberKey()
 		self.close(False)
 
 	def closeRecursive(self):
-		global menu_path
-		menu_path = ""
-		global full_menu_path
-		full_menu_path = ""
 		self.resetNumberKey()
 		self.close(True)
 

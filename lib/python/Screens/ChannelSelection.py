@@ -67,7 +67,7 @@ FLAG_CENTER_DVB_SUBS = 2048 #define in lib/dvb/idvb.h as dxNewFound = 64 and dxI
 class BouquetSelector(Screen):
 	def __init__(self, session, bouquets, selectedFunc, enableWrapAround=True):
 		Screen.__init__(self, session)
-		Screen.setTitle(self, _("Choose Bouquet"))
+		self.setTitle(_("Choose Bouquet"))
 
 		self.selectedFunc=selectedFunc
 
@@ -97,32 +97,17 @@ class BouquetSelector(Screen):
 
 
 class EpgBouquetSelector(BouquetSelector):
-	def __init__(self, session, bouquets, selectedFunc, enableWrapAround=False):
-		BouquetSelector.__init__(self, session, bouquets, selectedFunc, enableWrapAround=False)
+	def __init__(self, session, bouquets, enableWrapAround=False):
+		BouquetSelector.__init__(self, session, bouquets, None, enableWrapAround=False)
 		self.skinName = "BouquetSelector"
 		self.bouquets=bouquets
 
 	def okbuttonClick(self):
-		self.selectedFunc(self.getCurrent(),self.bouquets)
+		self.close(True, self.getCurrent(), self.bouquets)
 
+	def cancelClick(self):
+		self.close(False, None, None)
 
-class SilentBouquetSelector:
-	def __init__(self, bouquets, enableWrapAround=False, current=0):
-		self.bouquets = [b[1] for b in bouquets]
-		self.pos = current
-		self.count = len(bouquets)
-		self.enableWrapAround = enableWrapAround
-
-	def up(self):
-		if self.pos > 0 or self.enableWrapAround:
-			self.pos = (self.pos - 1) % self.count
-
-	def down(self):
-		if self.pos < (self.count - 1) or self.enableWrapAround:
-			self.pos = (self.pos + 1) % self.count
-
-	def getCurrent(self):
-		return self.bouquets[self.pos]
 
 # csel.bouquet_mark_edit values
 OFF = 0
@@ -153,7 +138,7 @@ class ChannelContextMenu(Screen):
 	def __init__(self, session, csel):
 
 		Screen.__init__(self, session)
-		Screen.setTitle(self, _("Channel list context menu"))
+		self.setTitle(_("Channel List Context Menu"))
 		self.csel = csel
 		self.bsel = None
 		if self.isProtected():
@@ -284,6 +269,7 @@ class ChannelContextMenu(Screen):
 					_append_when_current_valid(current, menu, actions, (_("Disable move mode"), self.toggleMoveMode), level=0, key="red")
 				else:
 					_append_when_current_valid(current, menu, actions, (_("Enable move mode"), self.toggleMoveMode), level=1, key="red")
+				self.removeFunction = self.removeCurrentService
 				if not csel.entry_marked and not inBouquetRootList and current_root and not (current_root.flags & eServiceReference.isGroup):
 					_append_when_current_valid(current, menu, actions, (_("Add marker"), self.showMarkerInputBox), level=0, key="green")
 					if not csel.movemode:
@@ -1248,6 +1234,8 @@ class ChannelSelectionEdit:
 				self.removeCurrentService()
 
 	def removeCurrentService(self, bouquet=False):
+		if self.movemode and self.entry_marked:
+			self.toggleMoveMarked() # unmark current entry
 		self.editMode = True
 		ref = self.servicelist.getCurrent()
 		mutableList = self.getMutableList()
@@ -1334,19 +1322,19 @@ class ChannelSelectionEdit:
 		l.setFontsize()
 		l.setItemsPerPage()
 		l.setMode('MODE_TV')
-		
-		# l.setMode('MODE_TV') automatically sets "hide number marker" to 
+
+		# l.setMode('MODE_TV') automatically sets "hide number marker" to
 		# the config.usage.hide_number_markers.value so when we are in "movemode"
-		# we need to force display of the markers here after l.setMode('MODE_TV') 
-		# has run. If l.setMode('MODE_TV') were ever removed above, 
-		# "self.servicelist.l.setHideNumberMarker(False)" could be moved 
+		# we need to force display of the markers here after l.setMode('MODE_TV')
+		# has run. If l.setMode('MODE_TV') were ever removed above,
+		# "self.servicelist.l.setHideNumberMarker(False)" could be moved
 		# directly to the "else" clause of "def toggleMoveMode".
-		if self.movemode: 
+		if self.movemode:
 			self.servicelist.l.setHideNumberMarker(False)
 
 		if close:
 			self.cancel()
-			
+
 
 MODE_TV = 0
 MODE_RADIO = 1
@@ -1411,6 +1399,7 @@ class ChannelSelectionBase(Screen):
 				"nextMarker": self.nextMarker,
 				"prevMarker": self.prevMarker,
 				"gotAsciiCode": self.keyAsciiCode,
+				"toggleTwoLines": self.toggleTwoLines,
 				"1": self.keyNumberGlobal,
 				"2": self.keyNumberGlobal,
 				"3": self.keyNumberGlobal,
@@ -1421,7 +1410,7 @@ class ChannelSelectionBase(Screen):
 				"8": self.keyNumberGlobal,
 				"9": self.keyNumberGlobal,
 				"0": self.keyNumberGlobal
-			})
+			}, prio=-1)
 		self.maintitle = _("Channel selection")
 		self.recallBouquetMode()
 		self.onShown.append(self.applyKeyMap)
@@ -1813,6 +1802,13 @@ class ChannelSelectionBase(Screen):
 				self.changeBouquet(-1)
 			else:
 				self.servicelist.moveDown()
+
+	def toggleTwoLines(self):
+		if config.usage.setup_level.index > 1 and not self.pathChangeDisabled and self.servicelist.mode == self.servicelist.MODE_FAVOURITES:
+			config.usage.servicelist_twolines.value = not config.usage.servicelist_twolines.value
+			config.usage.servicelist_twolines.save()
+		else:
+			return 0
 
 	def showFavourites(self):
 		self["key_green"].setText(_("Satellites"))
@@ -2268,7 +2264,7 @@ class ChannelSelection(ChannelSelectionEdit, ChannelSelectionBase, ChannelSelect
 		self.buildTitleString()
 
 	def showPipzapMessage(self):
-		time = config.usage.infobar_timeout.index
+		time = int(config.usage.infobar_timeout.value)
 		if time:
 			self.pipzaptimer.callback.append(self.hidePipzapMessage)
 			self.pipzaptimer.startLongTimer(time)
@@ -2705,7 +2701,7 @@ class PiPZapSelection(ChannelSelection):
 class RadioInfoBar(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
-		Screen.setTitle(self, _("Radio Channel Selection"))
+		self.setTitle(_("Radio Channel Selection"))
 		self['RdsDecoder'] = RdsDecoder(self.session.nav)
 
 
@@ -2928,7 +2924,7 @@ class HistoryZapSelector(Screen):
 				"jumpNextMark": self.next,
 				"toggleMark": self.okbuttonClick,
 			})
-		self.setTitle(_("History zap..."))
+		self.setTitle(_("History Zap"))
 		self.list = []
 		cnt = 0
 		serviceHandler = eServiceCenter.getInstance()

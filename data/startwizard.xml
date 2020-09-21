@@ -377,13 +377,14 @@ self.selectKey("OK")
 		</step>
 
 		<step id="timeoptions" nextstep="wizardoptions">
-			<text value="Please set your time options" />
+			<text value="Please set your time options.\n\nPress YELLOW to set the time zone via geolocation." />
 			<displaytext value="Please set your time options" />
-			<config screen="Setup" module="Setup" args="time" type="ConfigList" />
+			<config screen="Time" module="Time" args="time" type="ConfigList" />
 			<code>
 self.clearSelectedKeys()
 self.selectKey("LEFT")
 self.selectKey("RIGHT")
+self.selectKey("YELLOW")
 			</code>
 		</step>
 

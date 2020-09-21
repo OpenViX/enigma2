@@ -39,6 +39,9 @@ def InitUsageConfig():
 		refreshServiceList()
 	config.usage.alternative_number_mode.addNotifier(alternativeNumberModeChange)
 
+	config.usage.servicelist_twolines = ConfigYesNo(default = False)
+	config.usage.servicelist_twolines.addNotifier(refreshServiceList)
+
 	config.usage.hide_number_markers = ConfigYesNo(default = True)
 	config.usage.hide_number_markers.addNotifier(refreshServiceList)
 
@@ -91,7 +94,19 @@ def InitUsageConfig():
 	config.usage.show_picon_bkgrn = ConfigSelection(default = "transparent", choices = [("none", _("Disabled")), ("transparent", _("Transparent")), ("blue", _("Blue")), ("red", _("Red")), ("black", _("Black")), ("white", _("White")), ("lightgrey", _("Light Grey")), ("grey", _("Grey"))])
 	config.usage.show_genre_info = ConfigYesNo(default=False)
 	config.usage.menu_show_numbers = ConfigYesNo(default = False)
-	config.usage.show_menupath = ConfigSelection(default = "small", choices = [("off", _("None")), ("small", _("Small")), ("large", _("Large"))])
+	config.usage.showScreenPath = ConfigSelection(default="small", choices=[("off", _("None")), ("small", _("Small")), ("large", _("Large"))])
+	# The following code is to be short lived and exists to transition
+	# settings from the old config.usage.show_menupath to the new
+	# config.usage.showScreenPath as this is the value to now shared
+	# by all images.  Thise code will transition the setting and then
+	# remove the old entry from user's settings files.
+	config.usage.show_menupath = ConfigSelection(default="small", choices=[("off", _("None")), ("small", _("Small")), ("large", _("Large"))])
+	if config.usage.show_menupath.value != config.usage.show_menupath.default:
+		config.usage.showScreenPath.value = config.usage.show_menupath.value
+		config.usage.show_menupath.value = config.usage.show_menupath.default
+		config.usage.save()
+		print("[UserConfig] DEBUG: The 'show_menupath' setting of '%s' has been transferred to 'showScreenPath'." % config.usage.showScreenPath.value)
+	# End of temporary code.
 	config.usage.show_spinner = ConfigYesNo(default = True)
 	config.usage.enable_tt_caching = ConfigYesNo(default = True)
 	config.usage.sort_settings = ConfigYesNo(default = False)
@@ -125,40 +140,32 @@ def InitUsageConfig():
 
 	if not os.path.exists(resolveFilename(SCOPE_HDD)):
 		try:
-			os.mkdir(resolveFilename(SCOPE_HDD),0755)
-		except:
+			os.mkdir(resolveFilename(SCOPE_HDD), 0755)
+		except (IOError, OSError):
 			pass
-	config.usage.default_path = ConfigText(default = resolveFilename(SCOPE_HDD))
-	if not config.usage.default_path.value.endswith('/'):
-		tmpvalue = config.usage.default_path.value
-		config.usage.default_path.setValue(tmpvalue + '/')
-		config.usage.default_path.save()
-	def defaultpathChanged(configElement):
-		if not config.usage.default_path.value.endswith('/'):
-			tmpvalue = config.usage.default_path.value
-			config.usage.default_path.setValue(tmpvalue + '/')
-			config.usage.default_path.save()
-	config.usage.default_path.addNotifier(defaultpathChanged, immediate_feedback = False)
-
-	config.usage.timer_path = ConfigText(default = "<default>")
-	config.usage.instantrec_path = ConfigText(default = "<default>")
-
+	defaultValue = resolveFilename(SCOPE_HDD)
+	config.usage.default_path = ConfigSelection(default=defaultValue, choices=[(defaultValue, defaultValue)])
+	config.usage.default_path.load()
+	if config.usage.default_path.saved_value:
+		savedValue = os.path.join(config.usage.default_path.saved_value, "")
+		if savedValue and savedValue != defaultValue:
+			config.usage.default_path.setChoices([(defaultValue, defaultValue), (savedValue, savedValue)], default=defaultValue)
+	config.usage.default_path.save()
+	config.usage.timer_path = ConfigSelection(default="<default>", choices=[("<default>", "<default>")])
+	config.usage.instantrec_path = ConfigSelection(default="<default>", choices=[("<default>", "<default>")])
 	if not os.path.exists(resolveFilename(SCOPE_TIMESHIFT)):
 		try:
-			os.mkdir(resolveFilename(SCOPE_TIMESHIFT),0755)
+			os.mkdir(resolveFilename(SCOPE_TIMESHIFT), 0755)
 		except:
 			pass
-	config.usage.timeshift_path = ConfigText(default = resolveFilename(SCOPE_TIMESHIFT))
-	if not config.usage.default_path.value.endswith('/'):
-		tmpvalue = config.usage.timeshift_path.value
-		config.usage.timeshift_path.setValue(tmpvalue + '/')
-		config.usage.timeshift_path.save()
-	def timeshiftpathChanged(configElement):
-		if not config.usage.timeshift_path.value.endswith('/'):
-			tmpvalue = config.usage.timeshift_path.value
-			config.usage.timeshift_path.setValue(tmpvalue + '/')
-			config.usage.timeshift_path.save()
-	config.usage.timeshift_path.addNotifier(timeshiftpathChanged, immediate_feedback = False)
+	defaultValue = resolveFilename(SCOPE_TIMESHIFT)
+	config.usage.timeshift_path = ConfigSelection(default=defaultValue, choices=[(defaultValue, defaultValue)])
+	config.usage.timeshift_path.load()
+	if config.usage.timeshift_path.saved_value:
+		savedValue = os.path.join(config.usage.timeshift_path.saved_value, "")
+		if savedValue and savedValue != defaultValue:
+			config.usage.timeshift_path.setChoices([(defaultValue, defaultValue), (savedValue, savedValue)], default=defaultValue)
+	config.usage.timeshift_path.save()
 	config.usage.allowed_timeshift_paths = ConfigLocations(default = [resolveFilename(SCOPE_TIMESHIFT)])
 
 	config.usage.trashsort_deltime = ConfigSelection(default = "no", choices = [

@@ -1,6 +1,7 @@
+from __future__ import print_function
 from enigma import eRect
 
-from config import config
+from .config import config
 from Components.EpgListSingle import EPGListSingle
 import Screens.InfoBar
 
@@ -39,15 +40,8 @@ class Rect:
 class EPGList(EPGListSingle):
 	def __init__(self, type=EPG_TYPE_SINGLE, selChangedCB=None, timer=None, time_epoch=120, overjump_empty=False, graphic=False):
 		if type != EPG_TYPE_SINGLE:
-			print "[EPGList] Warning: EPGList no longer supports", {
-				"infobar": "EPG_TYPE_INFOBAR",
-				"enhanced": "EPG_TYPE_ENHANCED",
-				"graph": "EPG_TYPE_GRAPH",
-				"infobargraph": "EPG_TYPE_INFOBARGRAPH",
-				"multi": "EPG_TYPE_MULTI",
-				None: "EPGtype == None"
-			}.get(type, type)
-			print "          attempting to continue in single EPG mode"
+			print("[EPGList] Warning: EPGList does not support type '%s'" % type)
+			print("          Attempting to continue in single EPG mode")
 		EPGListSingle.__init__(self, Screens.InfoBar.InfoBar.instance.session, config.epgselection.single, selChangedCB)
 
 		# Attributes for backwards compatibility.
@@ -62,16 +56,14 @@ class EPGList(EPGListSingle):
 
 	def getPixmapForEntry(self, service, eventId, beginTime, duration):
 		timer, matchType = self.session.nav.RecordTimer.isInTimer(service, beginTime, duration)
-		if timer is not None:
-			if matchType == 3:
-				# recording whole event
-				timerType = 2 if timer.always_zap else 1 if timer.justplay else 0
-				return matchType + timerType
-			self.wasEntryAutoTimer = timer.isAutoTimer
-			return matchType
-		else:
+		if timer is None:
 			self.wasEntryAutoTimer = False
 			return None
+		self.wasEntryAutoTimer = timer.isAutoTimer
+		if matchType == 3:
+			# recording whole event, add timer type onto pixmap lookup index
+			matchType += 2 if timer.always_zap else 1 if timer.justplay else 0
+		return matchType
 
 	# These properties are expected to be Rect not eRect.
 	@property
