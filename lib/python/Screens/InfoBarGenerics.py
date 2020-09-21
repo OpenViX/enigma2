@@ -1612,7 +1612,6 @@ class InfoBarEPG:
 			self.openEventView()
 		else:
 			self.toggleShow()
-			return 1
 
 	def zapToService(self, service, bouquet = None, preview = False, zapback = False):
 		if self.servicelist.startServiceRef is None:
