@@ -1,6 +1,10 @@
-from enigma import getDesktop
+from __future__ import print_function, absolute_import
+
+
 from os import mkdir, path, rmdir
 import tempfile
+
+from enigma import getDesktop
 
 from Components.ActionMap import HelpableActionMap
 from Components.ChoiceList import ChoiceEntryComponent, ChoiceList
@@ -80,7 +84,7 @@ class MultiBootSelector(Screen, HelpableScreen):
 		self.deletedImagesExists = False
 		currentimageslot = GetCurrentImage()
 		mode = GetCurrentImageMode() or 0
-		print "[MultiBootSelector] reboot1 slot:", currentimageslot
+		print("[MultiBootSelector] reboot1 slot:", currentimageslot)
 		current = "  %s" % _("(Current)")
 		slotSingle = _("Slot %s: %s%s")
 		slotMulti = _("Slot %s: %s - %s mode%s")
@@ -101,7 +105,7 @@ class MultiBootSelector(Screen, HelpableScreen):
 		else:
 			list.append(ChoiceEntryComponent("", ((_("No images found")), "Waiter")))
 		self["config"].setList(list)
-		print "[MultiBootSelector] list 0 = %s" % list 
+		print("[MultiBootSelector] list 0 = %s" % list) 
 
 	def reboot(self):
 		self.currentSelected = self["config"].l.getCurrentSelection()
@@ -112,14 +116,14 @@ class MultiBootSelector(Screen, HelpableScreen):
 			self.session.open(MessageBox, _("Cannot reboot to deleted image"), MessageBox.TYPE_ERROR, timeout=3)
 			self.getImagelist()
 		if self.currentSelected[0][1] != "Queued":
-			print "[MultiBootSelector] reboot2 rebootslot = %s, " % self.slot
-			print "[MultiBootSelector] reboot3 slotinfo = %s" % SystemInfo["canMultiBoot"]
+			print("[MultiBootSelector] reboot2 rebootslot = %s, " % self.slot)
+			print("[MultiBootSelector] reboot3 slotinfo = %s" % SystemInfo["canMultiBoot"])
 			if self.slot < 12:
 				copyfile(path.join(self.tmp_dir, SystemInfo["canMultiBoot"][self.slot]["startupfile"]), path.join(self.tmp_dir, "STARTUP"))
 			else:
 				self.slot -= 12
 				startupfile = path.join(self.tmp_dir, SystemInfo["canMultiBoot"][self.slot]["startupfile"].replace("BOXMODE_1", "BOXMODE_12"))
-				print "[MultiBootSelector] reboot5 startupfile = %s" % startupfile
+				print("[MultiBootSelector] reboot5 startupfile = %s" % startupfile)
 				if "BOXMODE" in startupfile:
 					copyfile(startupfile, path.join(self.tmp_dir, "STARTUP"))
 				else:
@@ -138,7 +142,10 @@ class MultiBootSelector(Screen, HelpableScreen):
 	def deleteImageCallback(self, answer):
 		if answer:
 			self.currentSelected = self["config"].l.getCurrentSelection()
-			emptySlot(self.currentSelected[0][1])
+			self.slot = self.currentSelected[0][1]
+			if self.slot >= 12:
+				self.slot -= 12 
+			emptySlot(self.slot)
 		self.getImagelist()
 
 	def restoreImages(self):
