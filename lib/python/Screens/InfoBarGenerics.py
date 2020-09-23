@@ -54,7 +54,6 @@ from Tools.KeyBindings import getKeyDescription
 import NavigationInstance
 
 from enigma import eTimer, eServiceCenter, eDVBServicePMTHandler, iServiceInformation, iPlayableService, iRecordableService, eServiceReference, eEPGCache, eActionMap, getDesktop, eDVBDB
-from boxbranding import getBrandOEM, getMachineBuild
 from keyids import KEYFLAGS, KEYIDS, invertKeyIds
 
 from time import time, localtime, strftime
@@ -1506,11 +1505,11 @@ class InfoBarEPG:
 			{
 				"RedPressed": (self.RedPressed, _("Show epg")),
 				"IPressed": (self.IPressed, _("Show program information...")),
-				"InfoPressed": (self.InfoPressed, _("Show program information...")),
-				"showEventInfoPlugin": (self.showEventInfoPlugins, _("List EPG functions...")),
-				"EPGPressed":  (self.showDefaultEPG, _("Show EPG...")),
+				"InfoPressed": (self.InfoPressed, _("Show program information...")), # short INFO
+				"showEventInfoPlugin": (self.showEventInfoPlugins, _("List EPG functions...")), # long INFO
+				"EPGPressed":  (self.showDefaultEPG, _("Show EPG...")), # short EPG
 				"showSingleEPG": (self.openSingleServiceEPG, _("Show single channel EPG...")), # not in the keymap
-				"showEventGuidePlugin": (self.showEventGuidePlugins, _("List EPG functions...")),
+				"showEventGuidePlugin": (self.showEventGuidePlugins, _("List EPG functions...")), # long EPG
 				"showInfobarOrEpgWhenInfobarAlreadyVisible": (self.showEventInfoWhenNotVisible, _("Show infobar or infobar EPG")), # not in the keymap
 			}, description=_("EPG access"))
 
@@ -1530,9 +1529,9 @@ class InfoBarEPG:
 		default = "Grid EPG"
 		choices = [(self.getNonLocalisedPluginName(p[0]), p[0]) for p in pluginlist]
 		if not hasattr(config.usage, "defaultEPGType"): # first run
-			self.defaultEPGtypeChangedByThisModule = False # initialise this variable
 			config.usage.defaultEPGType = ConfigSelection(default=default, choices=choices)
-			config.usage.defaultEPGType.addNotifier(self.defaultEPGtypeNotifier, initial_call=False)
+			config.usage.defaultEPGType.addNotifier(self.defaultEPGtypeNotifier, initial_call=False, immediate_feedback=False)
+			config.usage.defaultEPGType.callNotifiersOnSaveAndCancel = True
 		for plugin in pluginlist:
 			if plugin[0] == self.plugintexts.get(config.usage.defaultEPGType.value, config.usage.defaultEPGType.value):
 				return plugin[1]
@@ -1543,22 +1542,18 @@ class InfoBarEPG:
 
 	def defaultEPGtypeNotifier(self, configElement):
 		self.defaultEPGType = self.getDefaultEPGtype()
-		if self.defaultEPGtypeChangedByThisModule: # if this is false the selection was changed from the setup menu
-			configElement.save()
-			configfile.save()
-			self.defaultEPGtypeChangedByThisModule = False
 
 	def showEventInfoPlugins(self):
 		if isStandardInfoBar(self):
-			if getBrandOEM() not in ('xtrend', 'odin', 'ini', 'dags' ,'gigablue', 'xp'):
+			if SystemInfo["HasInfoButton"]:
+				self.openEventView()
+			else:
 				pluginlist = self.getEPGPluginList()
 				if pluginlist:
 					pluginlist.append((_("Select default action of EPG button"), self.selectDefaultEpgPlugin))
 					self.session.openWithCallback(self.EventInfoPluginChosen, ChoiceBox, title=_("Please choose an extension..."), list=pluginlist, skin_name="EPGExtensionsList", reorderConfig="eventinfo_order")
 				else:
 					self.openSingleServiceEPG()
-			else:
-				self.openEventView()
 		elif isMoviePlayerInfoBar(self):
 			self.openEventView()
 
@@ -1567,8 +1562,9 @@ class InfoBarEPG:
 
 	def defaultEpgPluginChosen(self, answer):
 		if answer is not None:
-			self.defaultEPGtypeChangedByThisModule = True
 			config.usage.defaultEPGType.value = self.getNonLocalisedPluginName(answer[0])
+			config.usage.defaultEPGType.save() # saving also forces self.defaultEPGTypeNotifier() to update self.defaultEPGType
+			configfile.save()
 
 	def showEventGuidePlugins(self):
 		if isMoviePlayerInfoBar(self):
@@ -1615,7 +1611,6 @@ class InfoBarEPG:
 			self.openEventView()
 		else:
 			self.toggleShow()
-			return 1
 
 	def zapToService(self, service, bouquet = None, preview = False, zapback = False):
 		if self.servicelist.startServiceRef is None:
@@ -2852,7 +2847,7 @@ class InfoBarPiP:
 			info = service and service.info()
 			if info:
 				xres = str(info.getInfo(iServiceInformation.sVideoWidth))
-			if info and int(xres) <= 720 or getMachineBuild() != 'blackbox7405':
+			if info and int(xres) <= 720:
 				self.session.pip = self.session.instantiateDialog(PictureInPicture)
 				self.session.pip.setAnimationMode(0)
 				self.session.pip.show()

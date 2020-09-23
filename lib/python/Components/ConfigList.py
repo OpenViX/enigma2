@@ -206,6 +206,7 @@ class ConfigListScreen:
 		self["VirtualKB"].setEnabled(False)
 		self["config"] = ConfigList(list, session=session)
 		self.setCancelMessage(None)
+		self.setRestartMessage(None)
 		self.onChangedEntry = []
 		if self.noNativeKeys not in self.onLayoutFinish:
 			self.onLayoutFinish.append(self.noNativeKeys)
@@ -221,6 +222,9 @@ class ConfigListScreen:
 
 	def setCancelMessage(self, msg):
 		self.cancelMsg = _("Really close without saving settings?") if msg is None else msg
+
+	def setRestartMessage(self, msg):
+		self.restartMsg = _("Restart GUI now?") if msg is None else msg
 
 	def getCurrentItem(self):
 		return self["config"].getCurrent() and self["config"].getCurrent()[1] or None
@@ -377,17 +381,23 @@ class ConfigListScreen:
 
 	def keySave(self):
 		self.saveAll()
-		self.close()
+		if self.restart:
+			self.session.openWithCallback(self.restartConfirm, MessageBox, self.restartMsg, default=True, type=MessageBox.TYPE_YESNO)
+		else:
+			self.close()
 
 	def saveAll(self):
-		restart = False
+		self.restart = False
 		for x in self["config"].list:
 			if x[0].endswith("*") and x[1].isChanged():
-				restart = True
+				self.restart = True
 			x[1].save()
 		configfile.save()
-		if restart:
+
+	def restartConfirm(self, result):
+		if result:
 			self.session.open(TryQuitMainloop, retvalue=QUIT_RESTART)
+			self.close()
 
 	def keyCancel(self):
 		self.closeConfigList(())
