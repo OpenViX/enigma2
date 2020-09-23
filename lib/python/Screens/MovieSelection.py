@@ -1,6 +1,6 @@
 from Screen import Screen
 from Components.Button import Button
-from Components.ActionMap import HelpableActionMap, ActionMap, NumberActionMap
+from Components.ActionMap import HelpableActionMap, ActionMap, HelpableNumberActionMap
 from Components.ChoiceList import ChoiceList, ChoiceEntryComponent
 from Components.MenuList import MenuList
 from Components.MovieList import MovieList, resetMoviePlayState, AUDIO_EXTENSIONS, DVD_EXTENSIONS, IMAGE_EXTENSIONS, moviePlayState
@@ -565,22 +565,23 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 				"showRadio": (self.btn_radio, boundFunction(self.getinitUserDefinedActionsDescription, "btn_radio")),
 				"showTv": (self.btn_tv, boundFunction(self.getinitUserDefinedActionsDescription, "btn_tv")),
 				"showText": (self.btn_text, boundFunction(self.getinitUserDefinedActionsDescription, "btn_text")),
-			})
+			}, description=_("Basic functions"))
 
-		self["NumberActions"] =  NumberActionMap(["NumberActions", "InputAsciiActions"],
+		numberActionHelp = _("Search by first letter of name")
+		self["NumberActions"] =  HelpableNumberActionMap(self, ["NumberActions", "InputAsciiActions"],
 			{
 				"gotAsciiCode": self.keyAsciiCode,
-				"0": self.keyNumberGlobal,
-				"1": self.keyNumberGlobal,
-				"2": self.keyNumberGlobal,
-				"3": self.keyNumberGlobal,
-				"4": self.keyNumberGlobal,
-				"5": self.keyNumberGlobal,
-				"6": self.keyNumberGlobal,
-				"7": self.keyNumberGlobal,
-				"8": self.keyNumberGlobal,
-				"9": self.keyNumberGlobal
-			})
+				"0": (self.keyNumberGlobal, numberActionHelp),
+				"1": (self.keyNumberGlobal, numberActionHelp),
+				"2": (self.keyNumberGlobal, numberActionHelp),
+				"3": (self.keyNumberGlobal, numberActionHelp),
+				"4": (self.keyNumberGlobal, numberActionHelp),
+				"5": (self.keyNumberGlobal, numberActionHelp),
+				"6": (self.keyNumberGlobal, numberActionHelp),
+				"7": (self.keyNumberGlobal, numberActionHelp),
+				"8": (self.keyNumberGlobal, numberActionHelp),
+				"9": (self.keyNumberGlobal, numberActionHelp),
+			}, description=_("Search by name (SMS-style entry on remote)"))
 
 		self["playbackActions"] = HelpableActionMap(self, "MoviePlayerActions",
 			{
@@ -589,12 +590,12 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 				"movePrev": (self.playPrev, _("Play previous")),
 				"channelUp": (self.moveToFirstOrFirstFile, _("Go to first movie or top of list")),
 				"channelDown": (self.moveToLastOrFirstFile, _("Go to first movie or last item")),
-			})
+			}, description=_("Recording/media selection"))
 		self["MovieSelectionActions"] = HelpableActionMap(self, "MovieSelectionActions",
 			{
 				"contextMenu": (self.doContext, _("Menu")),
 				"showEventInfo": (self.showEventInformation, _("Show event details")),
-			})
+			}, description=_("Settings, information and more functions"))
 
 		self["ColorActions"] = HelpableActionMap(self, "ColorActions",
 			{
@@ -606,23 +607,23 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 				"greenlong": (self.btn_greenlong, boundFunction(self.getinitUserDefinedActionsDescription, "btn_greenlong")),
 				"yellowlong": (self.btn_yellowlong, boundFunction(self.getinitUserDefinedActionsDescription, "btn_yellowlong")),
 				"bluelong": (self.btn_bluelong, boundFunction(self.getinitUserDefinedActionsDescription, "btn_bluelong")),
-			})
+			}, description=_("User-selectable functions"))
 		self["FunctionKeyActions"] = HelpableActionMap(self, "FunctionKeyActions",
 			{
 				"f1": (self.btn_F1, boundFunction(self.getinitUserDefinedActionsDescription, "btn_F1")),
 				"f2": (self.btn_F2, boundFunction(self.getinitUserDefinedActionsDescription, "btn_F2")),
 				"f3": (self.btn_F3, boundFunction(self.getinitUserDefinedActionsDescription, "btn_F3")),
-			})
+			}, description=_("User-selectable functions"))
 		self["OkCancelActions"] = HelpableActionMap(self, "OkCancelActions",
 			{
 				"cancel": (self.abort, _("Exit movie list")),
 				"ok": (self.itemSelected, _("Select movie")),
-			})
+			}, description=_("Selection and exit"))
 		self["DirectionActions"] = HelpableActionMap(self, "DirectionActions",
 			{
 				"up": (self.keyUp, _("Go up the list")),
 				"down": (self.keyDown, _("Go down the list"))
-			}, prio = -2)
+			}, prio = -2, description=_("Navigation"))
 
 		tPreview = _("Preview")
 		tFwd = _("skip forward") + " (" + tPreview +")"
@@ -638,7 +639,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 				"seekFwdManual": (ssfwd, tFwd),
 				"seekBack": (sback, tBack),
 				"seekBackManual": (ssback, tBack),
-			}, prio=5)
+			}, prio=5, description=_("Pause, rewind and fast forward"))
 		self.onShown.append(self.onFirstTimeShown)
 		self.onLayoutFinish.append(self.saveListsize)
 		self.list.connectSelChanged(self.updateButtons)
