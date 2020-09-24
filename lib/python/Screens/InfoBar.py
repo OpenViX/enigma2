@@ -54,7 +54,7 @@ class InfoBar(InfoBarBase, InfoBarShowHide,
 				"showRadio": (self.showRadio, _("Show the radio player...")),
 				"showTv": (self.TvRadioToggle, _("Show the tv player...")),
 				"openBouquetList": (self.openBouquetList, _("Open bouquet list")),
-			}, prio=2)
+			}, prio=2, description=_("Basic functions"))
 
 		self["key_red"] = Label()
 		self["key_yellow"] = Label()
@@ -246,7 +246,7 @@ class MoviePlayer(InfoBarBase, InfoBarShowHide, InfoBarLongKeyDetection, InfoBar
 			{
 				"leavePlayer": (self.leavePlayer, _("Exit movie player...")),
 				"leavePlayerOnExit": (self.leavePlayerOnExit, _("Exit movie player..."))
-			})
+			}, description=_("Movie player"))
 
 		self.allowPiP = True
 

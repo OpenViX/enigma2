@@ -21,8 +21,6 @@ setupTitles = {}
 
 
 class Setup(ConfigListScreen, Screen, HelpableScreen):
-	ALLOW_SUSPEND = True
-
 	def __init__(self, session, setup, plugin=None, PluginLanguageDomain=None):
 		Screen.__init__(self, session)
 		HelpableScreen.__init__(self)
