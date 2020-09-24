@@ -150,9 +150,25 @@ def InitUsageConfig():
 		savedValue = os.path.join(config.usage.default_path.saved_value, "")
 		if savedValue and savedValue != defaultValue:
 			config.usage.default_path.setChoices([(defaultValue, defaultValue), (savedValue, savedValue)], default=defaultValue)
+			config.usage.default_path.value = savedValue
 	config.usage.default_path.save()
-	config.usage.timer_path = ConfigSelection(default="<default>", choices=[("<default>", "<default>")])
-	config.usage.instantrec_path = ConfigSelection(default="<default>", choices=[("<default>", "<default>")])
+	choiceList = [("<default>", "<default>"), ("<current>", "<current>"), ("<timer>", "<timer>")]
+	config.usage.timer_path = ConfigSelection(default="<default>", choices=choiceList)
+	config.usage.timer_path.load()
+	if config.usage.timer_path.saved_value:
+		savedValue = config.usage.timer_path.saved_value if config.usage.timer_path.saved_value.startswith("<") else os.path.join(config.usage.timer_path.saved_value, "")
+		if savedValue and savedValue not in choiceList:
+			config.usage.timer_path.setChoices(choiceList + [(savedValue, savedValue)], default="<default>")
+			config.usage.timer_path.value = savedValue
+	config.usage.timer_path.save()
+	config.usage.instantrec_path = ConfigSelection(default="<default>", choices=choiceList)
+	config.usage.instantrec_path.load()
+	if config.usage.instantrec_path.saved_value:
+		savedValue = config.usage.instantrec_path.saved_value if config.usage.instantrec_path.saved_value.startswith("<") else os.path.join(config.usage.instantrec_path.saved_value, "")
+		if savedValue and savedValue not in choiceList:
+			config.usage.instantrec_path.setChoices(choiceList + [(savedValue, savedValue)], default="<default>")
+			config.usage.instantrec_path.value = savedValue
+	config.usage.instantrec_path.save()
 	if not os.path.exists(resolveFilename(SCOPE_TIMESHIFT)):
 		try:
 			os.mkdir(resolveFilename(SCOPE_TIMESHIFT), 0755)
@@ -165,6 +181,7 @@ def InitUsageConfig():
 		savedValue = os.path.join(config.usage.timeshift_path.saved_value, "")
 		if savedValue and savedValue != defaultValue:
 			config.usage.timeshift_path.setChoices([(defaultValue, defaultValue), (savedValue, savedValue)], default=defaultValue)
+			config.usage.timeshift_path.value = savedValue
 	config.usage.timeshift_path.save()
 	config.usage.allowed_timeshift_paths = ConfigLocations(default = [resolveFilename(SCOPE_TIMESHIFT)])
 
