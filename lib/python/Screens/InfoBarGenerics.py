@@ -1562,12 +1562,11 @@ class InfoBarEPG:
 	def getEPGPluginList(self):
 		pluginlist = [(p.name, boundFunction(self.runPlugin, p)) for p in plugins.getPlugins(where = PluginDescriptor.WHERE_EVENTINFO)]
 		self.plugintexts = {"Event Info": _("Event Info"), "Grid EPG": _("Grid EPG"), "Infobar EPG": _("Infobar EPG"), "Multi EPG": _("Multi EPG"), "Single EPG": _("Single EPG"),}
-		if pluginlist:
-			pluginlist.append((self.plugintexts["Event Info"], self.openEventView))
-			pluginlist.append((self.plugintexts["Grid EPG"], self.openGridEPG))
-			pluginlist.append((self.plugintexts["Infobar EPG"], self.openInfoBarEPG))
-			pluginlist.append((self.plugintexts["Multi EPG"], self.openMultiServiceEPG))
-			pluginlist.append((self.plugintexts["Single EPG"], self.openSingleServiceEPG))
+		pluginlist.append((self.plugintexts["Event Info"], self.openEventView))
+		pluginlist.append((self.plugintexts["Grid EPG"], self.openGridEPG))
+		pluginlist.append((self.plugintexts["Infobar EPG"], self.openInfoBarEPG))
+		pluginlist.append((self.plugintexts["Multi EPG"], self.openMultiServiceEPG))
+		pluginlist.append((self.plugintexts["Single EPG"], self.openSingleServiceEPG))
 		return pluginlist
 
 	def getDefaultEPGtype(self):
@@ -1590,30 +1589,16 @@ class InfoBarEPG:
 		self.defaultEPGType = self.getDefaultEPGtype()
 
 	def _helpShowEventInfoPlugins(self):
-		if isStandardInfoBar(self):
-			if SystemInfo["HasInfoButton"]:
-				return _("Show program information...")
-			else:
-				pluginlist = self.getEPGPluginList()
-				if pluginlist:
-					return _("List EPG functions...")
-				else:
-					return _("Show single channel EPG...")
-		elif isMoviePlayerInfoBar(self):
+		if not SystemInfo["HasInfoButton"]:
+			return self._helpShowEventGuidePlugins()
+		if isStandardInfoBar(self) or isMoviePlayerInfoBar(self):
 			return _("Show program information...")
 
 	def showEventInfoPlugins(self):
-		if isStandardInfoBar(self):
-			if SystemInfo["HasInfoButton"]:
-				self.openEventView()
-			else:
-				pluginlist = self.getEPGPluginList()
-				if pluginlist:
-					pluginlist.append((_("Select default action of EPG button"), self.selectDefaultEpgPlugin))
-					self.session.openWithCallback(self.EventInfoPluginChosen, ChoiceBox, title=_("Please choose an extension..."), list=pluginlist, skin_name="EPGExtensionsList", reorderConfig="eventinfo_order")
-				else:
-					self.openSingleServiceEPG()
-		elif isMoviePlayerInfoBar(self):
+		if not SystemInfo["HasInfoButton"]:
+			self.showEventGuidePlugins()
+			return
+		if isStandardInfoBar(self) or isMoviePlayerInfoBar(self):
 			self.openEventView()
 
 	def selectDefaultEpgPlugin(self):
@@ -1629,22 +1614,15 @@ class InfoBarEPG:
 		if isMoviePlayerInfoBar(self):
 			return _("Show program information...")
 		else:
-			pluginlist = self.getEPGPluginList()
-			if pluginlist:
-				return _("List EPG functions...")
-			else:
-				return _("Show single channel EPG...")
+			return _("List EPG functions...")
 
 	def showEventGuidePlugins(self):
 		if isMoviePlayerInfoBar(self):
 			self.openEventView()
 		else:
 			pluginlist = self.getEPGPluginList()
-			if pluginlist:
-				pluginlist.append((_("Select default action of EPG button"), self.selectDefaultEpgPlugin))
-				self.session.openWithCallback(self.EventInfoPluginChosen, ChoiceBox, title=_("Please choose an extension..."), list = pluginlist, skin_name = "EPGExtensionsList")
-			else:
-				self.openSingleServiceEPG()
+			pluginlist.append((_("Select default action of EPG button"), self.selectDefaultEpgPlugin))
+			self.session.openWithCallback(self.EventInfoPluginChosen, ChoiceBox, title=_("Please choose an extension..."), list = pluginlist, skin_name = "EPGExtensionsList")
 
 	def runPlugin(self, plugin):
 		plugin(session = self.session, servicelist=self.servicelist)
@@ -1669,18 +1647,17 @@ class InfoBarEPG:
 				self.openSingleServiceEPG()
 
 	def _helpInfoPressed(self):
+		if not SystemInfo['HasInfoButton']:
+			return self._helpShowDefaultEPG()
 		if isStandardInfoBar(self) or isMoviePlayerInfoBar(self):
-			if SystemInfo['HasInfoButton']:
-				return _("Show program information...")
-			else:
-				self._helpShowDefaultEPG()
+			return _("Show program information...")
 
 	def InfoPressed(self):
+		if not SystemInfo['HasInfoButton']:
+			self.showDefaultEPG()
+			return
 		if isStandardInfoBar(self) or isMoviePlayerInfoBar(self):
-			if SystemInfo['HasInfoButton']:
-				self.openEventView()
-			else:
-				self.showDefaultEPG()
+			self.openEventView()
 
 	def _helpIPressed(self):
 		if isStandardInfoBar(self) or isMoviePlayerInfoBar(self):
