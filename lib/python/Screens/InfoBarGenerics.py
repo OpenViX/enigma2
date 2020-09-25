@@ -1548,6 +1548,11 @@ class InfoBarEPG:
 				iPlayableService.evUpdatedEventInfo: self.__evEventInfoChanged,
 			})
 
+		# Note regarding INFO button on the RCU. Some RCUs do not have an INFO button, but to make matters 
+		# more complicated they have an EPG button that sends KEY_INFO instead of KEY_EPG. To deal with 
+		# this the INFO button methods check SystemInfo["HasInfoButton"] to see if the RCU has an INFO button 
+		# and if not the event is rerouted to the corresponding EPG button method of the same name.
+		
 		self["EPGActions"] = HelpableActionMap(self, "InfobarEPGActions",
 			{
 				"RedPressed": (self.RedPressed, self._helpRedPressed),
