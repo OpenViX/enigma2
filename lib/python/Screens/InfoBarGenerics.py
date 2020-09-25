@@ -1550,7 +1550,6 @@ class InfoBarEPG:
 		self["EPGActions"] = HelpableActionMap(self, "InfobarEPGActions",
 			{
 				"RedPressed": (self.RedPressed, self._helpRedPressed),
-				"IPressed": (self.IPressed, self._helpIPressed),
 				"InfoPressed": (self.InfoPressed, _("Show program information...")), # SHORT INFO
 				"showEventInfoPlugin": (self.showEventInfoPlugins, self._helpShowEventInfoPlugins), # LONG INFO
 				"EPGPressed":  (self.showDefaultEPG, self._helpShowDefaultEPG), # SHORT EPG
@@ -1659,21 +1658,12 @@ class InfoBarEPG:
 		if isStandardInfoBar(self) or isMoviePlayerInfoBar(self):
 			self.openEventView()
 
-	def _helpIPressed(self):
-		if isStandardInfoBar(self) or isMoviePlayerInfoBar(self):
-			return _("Show program information...")
-		return None
-
-	def IPressed(self):
-		if isStandardInfoBar(self) or isMoviePlayerInfoBar(self):
-			self.openEventView()
-
 	def _helpEPGPressed(self):
 		if isStandardInfoBar(self) or isMoviePlayerInfoBar(self):
 			return _("Show Grid EPG")
 		return None
 
-	def EPGPressed(self):
+	def EPGPressed(self): # This is the fallback if no defaultEPGType is available
 		if isStandardInfoBar(self) or isMoviePlayerInfoBar(self):
 			self.openGridEPG()
 
