@@ -138,7 +138,10 @@ class MultiBootSelector(Screen, HelpableScreen):
 	def deleteImageCallback(self, answer):
 		if answer:
 			self.currentSelected = self["config"].l.getCurrentSelection()
-			emptySlot(self.currentSelected[0][1])
+			self.slot = self.currentSelected[0][1]
+			if self.slot >= 12:
+				self.slot -= 12 
+			emptySlot(self.slot)
 		self.getImagelist()
 
 	def restoreImages(self):
