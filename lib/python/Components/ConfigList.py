@@ -380,24 +380,24 @@ class ConfigListScreen:
 		self.entryChanged()
 
 	def keySave(self):
-		self.saveAll()
-		if self.restart:
+		if self.saveAll():
 			self.session.openWithCallback(self.restartConfirm, MessageBox, self.restartMsg, default=True, type=MessageBox.TYPE_YESNO)
 		else:
 			self.close()
-
-	def saveAll(self):
-		self.restart = False
-		for x in self["config"].list:
-			if x[0].endswith("*") and x[1].isChanged():
-				self.restart = True
-			x[1].save()
-		configfile.save()
 
 	def restartConfirm(self, result):
 		if result:
 			self.session.open(TryQuitMainloop, retvalue=QUIT_RESTART)
 			self.close()
+
+	def saveAll(self):
+		restart = False
+		for x in self["config"].list:
+			if x[0].endswith("*") and x[1].isChanged():
+				restart = True
+			x[1].save()
+		configfile.save()
+		return restart
 
 	def keyCancel(self):
 		self.closeConfigList(())

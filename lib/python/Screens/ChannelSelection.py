@@ -3,11 +3,12 @@ import os, unicodedata
 from Tools.Profile import profile
 
 from Screen import Screen
+from Screens.HelpMenu import HelpableScreen
 import Screens.InfoBar
 import Components.ParentalControl
 from Components.Button import Button
 from Components.ServiceList import ServiceList, refreshServiceList
-from Components.ActionMap import NumberActionMap, ActionMap, HelpableActionMap
+from Components.ActionMap import ActionMap, HelpableActionMap, HelpableNumberActionMap
 from Components.MenuList import MenuList
 from Components.ServiceEventTracker import ServiceEventTracker, InfoBarBase
 from Components.Sources.List import List
@@ -38,7 +39,7 @@ from Screens.VirtualKeyBoard import VirtualKeyBoard
 from Screens.ChoiceBox import ChoiceBox
 from Screens.MessageBox import MessageBox
 from Screens.ServiceInfo import ServiceInfo
-from Screens.ButtonSetup import InfoBarButtonSetup, ButtonSetupActionMap, getButtonSetupFunctions
+from Screens.ButtonSetup import InfoBarButtonSetup, helpableButtonSetupActionMap, getButtonSetupFunctions
 profile("ChannelSelection.py 4")
 from Screens.PictureInPicture import PictureInPicture
 from Screens.RdsDisplay import RassInteractive
@@ -707,7 +708,7 @@ class SelectionEventInfo:
 			pass
 
 
-class ChannelSelectionEPG(InfoBarButtonSetup):
+class ChannelSelectionEPG(InfoBarButtonSetup, HelpableScreen):
 	def __init__(self):
 		self.ChoiceBoxDialog = None
 		self.RemoveTimerDialog = None
@@ -715,22 +716,22 @@ class ChannelSelectionEPG(InfoBarButtonSetup):
 			("Info (EPG)" + " " + _("long"), "info_long", "Infobar/showEventInfoPlugins"),
 			("Epg/Guide", "epg", "Infobar/EPGPressed/1"),
 			("Epg/Guide" + " " + _("long"), "epg_long", "Infobar/showEventInfoPlugins")]
-		self["ChannelSelectEPGActions"] = ButtonSetupActionMap(["ChannelSelectEPGActions"], dict((x[1], self.ButtonSetupGlobal) for x in self.hotkeys))
+		self["ChannelSelectEPGActions"] = helpableButtonSetupActionMap(self, ["ChannelSelectEPGActions"], dict((x[1], self.ButtonSetupGlobal) for x in self.hotkeys))
 		self.currentSavedPath = []
 		self.onExecBegin.append(self.clearLongkeyPressed)
 
-		self["ChannelSelectEPGActions"] = ActionMap(["ChannelSelectEPGActions"],
+		self["ChannelSelectEPGActions"] = HelpableActionMap(self, ["ChannelSelectEPGActions"],
 			{
-				"showEPGList": self.showEPGList,
-			})
+				"showEPGList": (self.showEPGList, _("Show Single EPG")),
+			}, description=_("EPG access"))
 		self["recordingactions"] = HelpableActionMap(self, "InfobarInstantRecord",
 			{
 				"ShortRecord": (self.RecordTimerQuestion, _("Add a record timer")),
 				'LongRecord': (self.doZapTimer, _('Add a zap timer for next event'))
-			},-1)
+			}, prio=-1, description=_("Add timers"))
 		self['dialogactions'] = ActionMap(['OkCancelActions'],
 			{
-				'cancel': self.closeChoiceBoxDialog,
+				'cancel': (self.closeChoiceBoxDialog, _("Exit channel selection")),
 			})
 		self['dialogactions'].execEnd()
 
@@ -920,11 +921,9 @@ class ChannelSelectionEdit:
 		self.editMode = False
 		self.confirmRemove = True
 
-		class ChannelSelectionEditActionMap(ActionMap):
-			def __init__(self, csel, contexts=None, actions=None, prio=0):
-				if not contexts: contexts = []
-				if not actions: actions = {}
-				ActionMap.__init__(self, contexts, actions, prio)
+		class ChannelSelectionEditActionMap(HelpableActionMap):
+			def __init__(self, csel, *args, **kwargs):
+				HelpableActionMap.__init__(self, csel, *args, **kwargs)
 				self.csel = csel
 
 			def action(self, contexts, action):
@@ -934,12 +933,12 @@ class ChannelSelectionEdit:
 				elif action == "ok":
 					return 0 # fall-trough
 				else:
-					return ActionMap.action(self, contexts, action)
+					return HelpableActionMap.action(self, contexts, action)
 
 		self["ChannelSelectEditActions"] = ChannelSelectionEditActionMap(self, ["ChannelSelectEditActions", "OkCancelActions"],
 			{
-				"contextMenu": self.doContext,
-			})
+				"contextMenu": (self.doContext, _("Open menu")),
+			}, description=_("Menu"))
 
 	def getMutableList(self, root=eServiceReference()):
 		if not self.mutableList is None:
@@ -1353,13 +1352,14 @@ MODE_RADIO = 1
 service_types_tv = '1:7:1:0:0:0:0:0:0:0:(type == 1) || (type == 17) || (type == 22) || (type == 25) || (type == 31) || (type == 134) || (type == 195)'
 service_types_radio = '1:7:2:0:0:0:0:0:0:0:(type == 2) || (type == 10)'
 
-class ChannelSelectionBase(Screen):
+class ChannelSelectionBase(Screen, HelpableScreen):
 
 	orbposReStr = "\(satellitePosition *== *(\d+)"
 	orbposRe = None  # Lazy compilation
 
 	def __init__(self, session):
 		Screen.__init__(self, session)
+		HelpableScreen.__init__(self)
 
 		self["key_red"] = Button(_("All"))
 		self["key_green"] = Button(_("Satellites"))
@@ -1388,29 +1388,29 @@ class ChannelSelectionBase(Screen):
 		self.movemode = False
 		self.showSatDetails = False
 
-		self["ChannelSelectBaseActions"] = NumberActionMap(["ChannelSelectBaseActions", "NumberActions", "InputAsciiActions"],
+		self["ChannelSelectBaseActions"] = HelpableNumberActionMap(self, ["ChannelSelectBaseActions", "NumberActions", "InputAsciiActions"],
 			{
 				"showFavourites": self.showFavourites,
 				"showAllServices": self.showAllServices,
 				"showProviders": self.showProviders,
 				"showSatellites": boundFunction(self.showSatellites, changeMode=True),
-				"nextBouquet": self.nextBouquet,
-				"prevBouquet": self.prevBouquet,
-				"nextMarker": self.nextMarker,
-				"prevMarker": self.prevMarker,
+				"nextBouquet": (self.nextBouquet, lambda: self._prevNextBouquetHelp(prev=False)),
+				"prevBouquet": (self.prevBouquet, lambda: self._prevNextBouquetHelp(prev=True)),
+				"nextMarker": (self.nextMarker, _("Jump to next bookmark")),
+				"prevMarker": (self.prevMarker, _("Jump to previous bookmark")),
 				"gotAsciiCode": self.keyAsciiCode,
-				"toggleTwoLines": self.toggleTwoLines,
-				"1": self.keyNumberGlobal,
-				"2": self.keyNumberGlobal,
-				"3": self.keyNumberGlobal,
-				"4": self.keyNumberGlobal,
-				"5": self.keyNumberGlobal,
-				"6": self.keyNumberGlobal,
-				"7": self.keyNumberGlobal,
-				"8": self.keyNumberGlobal,
-				"9": self.keyNumberGlobal,
-				"0": self.keyNumberGlobal
-			}, prio=-1)
+				"toggleTwoLines": (self.toggleTwoLines, _("Toggle between one & two-line channel list")),
+				"1": (self.keyNumberGlobal, lambda: self._helpKeyNumberGlobal(1)),
+				"2": (self.keyNumberGlobal, lambda: self._helpKeyNumberGlobal(2)),
+				"3": (self.keyNumberGlobal, lambda: self._helpKeyNumberGlobal(3)),
+				"4": (self.keyNumberGlobal, lambda: self._helpKeyNumberGlobal(4)),
+				"5": (self.keyNumberGlobal, lambda: self._helpKeyNumberGlobal(5)),
+				"6": (self.keyNumberGlobal, lambda: self._helpKeyNumberGlobal(6)),
+				"7": (self.keyNumberGlobal, lambda: self._helpKeyNumberGlobal(7)),
+				"8": (self.keyNumberGlobal, lambda: self._helpKeyNumberGlobal(8)),
+				"9": (self.keyNumberGlobal, lambda: self._helpKeyNumberGlobal(9)),
+				"0": (self.keyNumberGlobal, lambda: self._helpKeyNumberGlobal(0)),
+			}, prio=-1, description=_("Basic functions"))
 		self.maintitle = _("Channel selection")
 		self.recallBouquetMode()
 		self.onShown.append(self.applyKeyMap)
@@ -1779,6 +1779,18 @@ class ChannelSelectionBase(Screen):
 	def atEnd(self):
 		return self.servicelist.atEnd()
 
+	def _prevNextBouquetHelp(self, prev=False):
+		if ("reverseB" in config.usage.servicelist_cursor_behavior.value) == prev:
+			if config.usage.channelbutton_mode.value == '0':
+				return _("Move up in bouquet list")
+			else:
+				return _("Move up in channel list")
+		else:
+			if config.usage.channelbutton_mode.value == '0':
+				return _("Move down in bouquet list")
+			else:
+				return _("Move down in channel list")
+
 	def nextBouquet(self):
 		if "reverseB" in config.usage.servicelist_cursor_behavior.value:
 			if config.usage.channelbutton_mode.value == '0':
@@ -1821,6 +1833,30 @@ class ChannelSelectionBase(Screen):
 					if currentRoot is None or currentRoot != self.bouquet_root:
 						self.clearPath()
 						self.enterPath(self.bouquet_root)
+
+	def _helpKeyNumberGlobal(self, number):
+		if config.usage.show_channel_jump_in_servicelist.value == "quick":
+			quickAction = {
+				2: _("Rename channel"),
+				6: _("Toggle channel move mode"),
+				8: _("Remove current channel from list"),
+			}.get(number)
+			if self.isBasePathEqual(self.bouquet_root):
+				if hasattr(self, "editMode") and self.editMode:
+					return quickAction
+				else:
+					return _("Zap to channel number")
+			else:
+				current_root = self.getRoot()
+				if current_root and 'FROM BOUQUET "bouquets.' in current_root.getPath():
+					return quickAction
+				else:
+					return _("Zap to channel number")
+		elif config.usage.show_channel_jump_in_servicelist.value == "alpha":
+			return _("Search channel list, SMS style ABC2")
+		elif config.usage.show_channel_jump_in_servicelist.value == "number":
+			return _("Search channel list, SMS style 2ABC")
+		return None
 
 	def keyNumberGlobal(self, number):
 		if config.usage.show_channel_jump_in_servicelist.value == "quick":
@@ -2740,8 +2776,8 @@ class ChannelSelectionRadio(ChannelSelectionEdit, ChannelSelectionBase, ChannelS
 		self["RdsDecoder"] = self.info["RdsDecoder"]
 		self["RdsActions"] = HelpableActionMap(self, "InfobarRdsActions",
 		{
-			"startRassInteractive": (self.startRassInteractive, _("View Rass interactive..."))
-		},-1)
+			"startRassInteractive": (self.startRassInteractive, _("Open RDS/RASS screen...")),
+		}, prio=-1, description=_("RDS/RASS display"))
 		self["RdsActions"].setEnabled(False)
 		infobar.rds_display.onRassInteractivePossibilityChanged.append(self.RassInteractivePossibilityChanged)
 		self.onClose.append(self.__onClose)
@@ -2906,24 +2942,24 @@ class SimpleChannelSelection(ChannelSelectionBase):
 		self.setRadioMode()
 		self.showFavourites()
 
-class HistoryZapSelector(Screen):
+class HistoryZapSelector(Screen, HelpableScreen):
 	def __init__(self, session, items=None, sel_item=0, mark_item=0, invert_items=False, redirect_buttons=False, wrap_around=True):
 		if not items: items = []
 		Screen.__init__(self, session)
+		HelpableScreen.__init__(self)
 		self.redirectButton = redirect_buttons
 		self.invertItems = invert_items
 		if self.invertItems:
 			self.currentPos = len(items) - sel_item - 1
 		else:
 			self.currentPos = sel_item
-		self["actions"] = ActionMap(["OkCancelActions", "InfobarCueSheetActions"],
-			{
-				"ok": self.okbuttonClick,
-				"cancel": self.cancelClick,
-				"jumpPreviousMark": self.prev,
-				"jumpNextMark": self.next,
-				"toggleMark": self.okbuttonClick,
-			})
+		self["actions"] = HelpableActionMap(self, ["OkCancelActions", "InfobarCueSheetActions"], {
+			"ok": (self.okbuttonClick, _("Select channel from history")),
+			"cancel": (self.cancelClick, _("Cancel")),
+			"jumpPreviousMark": (self.prev, _("Move to previous channel")),
+			"jumpNextMark": (self.next, _("Move to next channel")),
+			"toggleMark": (self.okbuttonClick, _("Select channel from history")),
+		}, prio=0, description=_("History Zap Actions"))
 		self.setTitle(_("History Zap"))
 		self.list = []
 		cnt = 0
