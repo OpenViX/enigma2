@@ -1542,6 +1542,7 @@ class InfoBarEPG:
 		self.eventView = None
 		self.epglist = []
 		self.defaultEPGType = self.getDefaultEPGtype()
+		self.defaultINFOType = self.getDefaultINFOtype()
 		self.__event_tracker = ServiceEventTracker(screen=self, eventmap=
 			{
 				iPlayableService.evUpdatedEventInfo: self.__evEventInfoChanged,
@@ -1550,7 +1551,7 @@ class InfoBarEPG:
 		self["EPGActions"] = HelpableActionMap(self, "InfobarEPGActions",
 			{
 				"RedPressed": (self.RedPressed, self._helpRedPressed),
-				"InfoPressed": (self.InfoPressed, _("Show program information...")), # SHORT INFO
+				"InfoPressed": (self.showDefaultINFO, self._helpShowDefaultINFO), # SHORT INFO
 				"showEventInfoPlugin": (self.showEventInfoPlugins, self._helpShowEventInfoPlugins), # LONG INFO
 				"EPGPressed":  (self.showDefaultEPG, self._helpShowDefaultEPG), # SHORT EPG
 				"showSingleEPG": (self.openSingleServiceEPG, _("Show single channel EPG...")), # not in the keymap
@@ -1581,32 +1582,44 @@ class InfoBarEPG:
 				return plugin[1]
 		return None
 
+	def getDefaultINFOtype(self):
+		pluginlist = self.getEPGPluginList()
+		default = "Event Info"
+		choices = [(self.getNonLocalisedPluginName(p[0]), p[0]) for p in pluginlist]
+		if not hasattr(config.usage, "defaultINFOType"): # first run
+			config.usage.defaultINFOType = ConfigSelection(default=default, choices=choices)
+			config.usage.defaultINFOType.addNotifier(self.defaultINFOtypeNotifier, initial_call=False, immediate_feedback=False)
+			config.usage.defaultINFOType.callNotifiersOnSaveAndCancel = True
+		for plugin in pluginlist:
+			if plugin[0] == self.plugintexts.get(config.usage.defaultINFOType.value, config.usage.defaultINFOType.value):
+				return plugin[1]
+		return None
+
 	def getNonLocalisedPluginName(self, val):
 		return {v:k for k, v in self.plugintexts.items()}.get(val, val)
 
 	def defaultEPGtypeNotifier(self, configElement):
 		self.defaultEPGType = self.getDefaultEPGtype()
 
-	def _helpShowEventInfoPlugins(self):
-		if not SystemInfo["HasInfoButton"]:
-			return self._helpShowEventGuidePlugins()
-		if isStandardInfoBar(self) or isMoviePlayerInfoBar(self):
-			return _("Show program information...")
-
-	def showEventInfoPlugins(self):
-		if not SystemInfo["HasInfoButton"]:
-			self.showEventGuidePlugins()
-			return
-		if isStandardInfoBar(self) or isMoviePlayerInfoBar(self):
-			self.openEventView()
+	def defaultINFOtypeNotifier(self, configElement):
+		self.defaultINFOType = self.getDefaultINFOtype()
 
 	def selectDefaultEpgPlugin(self):
 		self.session.openWithCallback(self.defaultEpgPluginChosen, ChoiceBox, title=_("Please select the default action of the EPG button"), list=self.getEPGPluginList(), skin_name="EPGExtensionsList")
+
+	def selectDefaultInfoPlugin(self):
+		self.session.openWithCallback(self.defaultInfoPluginChosen, ChoiceBox, title=_("Please select the default action of the INFO button"), list=self.getEPGPluginList(), skin_name="EPGExtensionsList", selection=5)
 
 	def defaultEpgPluginChosen(self, answer):
 		if answer is not None:
 			config.usage.defaultEPGType.value = self.getNonLocalisedPluginName(answer[0])
 			config.usage.defaultEPGType.save() # saving also forces self.defaultEPGTypeNotifier() to update self.defaultEPGType
+			configfile.save()
+
+	def defaultInfoPluginChosen(self, answer):
+		if answer is not None:
+			config.usage.defaultINFOType.value = self.getNonLocalisedPluginName(answer[0])
+			config.usage.defaultINFOType.save() # saving also forces self.defaultINFOTypeNotifier() to update self.defaultINFOType
 			configfile.save()
 
 	def _helpShowEventGuidePlugins(self):
@@ -1621,12 +1634,24 @@ class InfoBarEPG:
 		else:
 			pluginlist = self.getEPGPluginList()
 			pluginlist.append((_("Select default action of EPG button"), self.selectDefaultEpgPlugin))
-			self.session.openWithCallback(self.EventInfoPluginChosen, ChoiceBox, title=_("Please choose an extension..."), list = pluginlist, skin_name = "EPGExtensionsList")
+			self.session.openWithCallback(self.EventPluginChosenCallback, ChoiceBox, title=_("Please choose an extension..."), list = pluginlist, skin_name = "EPGExtensionsList")
+
+	def _helpShowEventInfoPlugins(self):
+		if not SystemInfo["HasInfoButton"]:
+			return self._helpShowEventGuidePlugins()
+		if isStandardInfoBar(self) or isMoviePlayerInfoBar(self):
+			return _("Select default action of INFO button")
+
+	def showEventInfoPlugins(self):
+		if not SystemInfo["HasInfoButton"]:
+			self.showEventGuidePlugins()
+			return
+		self.selectDefaultInfoPlugin()
 
 	def runPlugin(self, plugin):
 		plugin(session = self.session, servicelist=self.servicelist)
 
-	def EventInfoPluginChosen(self, answer):
+	def EventPluginChosenCallback(self, answer):
 		if answer is not None:
 			answer[1]()
 
@@ -1646,15 +1671,10 @@ class InfoBarEPG:
 				self.openSingleServiceEPG()
 
 	def _helpInfoPressed(self):
-		if not SystemInfo['HasInfoButton']:
-			return self._helpShowDefaultEPG()
 		if isStandardInfoBar(self) or isMoviePlayerInfoBar(self):
 			return _("Show program information...")
 
 	def InfoPressed(self):
-		if not SystemInfo['HasInfoButton']:
-			self.showDefaultEPG()
-			return
 		if isStandardInfoBar(self) or isMoviePlayerInfoBar(self):
 			self.openEventView()
 
@@ -1802,6 +1822,22 @@ class InfoBarEPG:
 			self.defaultEPGType()
 			return
 		self.EPGPressed()
+
+	def _helpShowDefaultINFO(self):
+		if not SystemInfo['HasInfoButton']:
+			return self._helpShowDefaultEPG()
+		if self.defaultINFOType is not None:
+			return _("Show %s") % config.usage.defaultINFOType.description[config.usage.defaultINFOType.value]
+		return self._helpINFOPressed()
+
+	def showDefaultINFO(self):
+		if not SystemInfo['HasInfoButton']:
+			self.showDefaultEPG()
+			return
+		if self.defaultINFOType is not None:
+			self.defaultINFOType()
+			return
+		self.InfoPressed()
 
 	def openEventView(self, simple=False):
 		if self.servicelist is None:
