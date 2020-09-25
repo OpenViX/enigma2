@@ -8,7 +8,7 @@ from Screens.Screen import Screen
 import ChannelSelection
 from ServiceReference import ServiceReference
 from Components.config import config, ConfigSelection, ConfigText, ConfigSubList, ConfigDateTime, ConfigClock, ConfigYesNo
-from Components.ActionMap import NumberActionMap, HelpableActionMap
+from Components.ActionMap import HelpableActionMap
 from Components.MenuList import MenuList
 from Components.Button import Button
 from Components.Label import Label
@@ -16,6 +16,7 @@ from Components.Pixmap import Pixmap
 from Components.SystemInfo import SystemInfo
 from Components.UsageConfig import defaultMoviePath
 from Screens.Setup import Setup
+from Screens.HelpMenu import HelpableScreen
 from Screens.MovieSelection import getPreferredTagEditor
 from Screens.LocationBox import MovieLocationBox
 from Screens.ChoiceBox import ChoiceBox
@@ -427,9 +428,10 @@ class TimerEntry(Setup):
 			if ent[1] is conf:
 				self["config"].invalidate(ent)
 
-class TimerLog(Screen):
+class TimerLog(Screen, HelpableScreen):
 	def __init__(self, session, timer):
 		Screen.__init__(self, session)
+		HelpableScreen.__init__(self)
 		self.setTitle(_("Log"))
 
 		self.timer = timer
@@ -443,19 +445,19 @@ class TimerLog(Screen):
 		self["key_red"] = Button(_("Delete entry"))
 		self["key_blue"] = Button(_("Clear log"))
 
-		self.onShown.append(self.updateText)
+		self["loglist"].onSelectionChanged.append(self.updateText)
 
-		self["actions"] = NumberActionMap(["OkCancelActions", "DirectionActions", "ColorActions"],
+		self["actions"] = HelpableActionMap(self, ["OkCancelActions", "DirectionActions", "ColorActions"],
 		{
-			"ok": self.keyClose,
-			"cancel": self.keyClose,
-			"up": self.up,
-			"down": self.down,
-			"left": self.left,
-			"right": self.right,
-			"red": self.deleteEntry,
-			"blue": self.clearLog
-		}, -1)
+			"ok": (self.keyClose, _("Close screen")),
+			"cancel": (self.keyClose, _("Close screen")),
+			"up": (self.moveUp, _("Move up a line")),
+			"down": (self.moveDown, _("Move down a line")),
+			"left": (self.pageUp, _("Move up a screen")),
+			"right": (self.pageDown, _("Move down a screen")),
+			"red": (self.deleteEntry, _("Delete log entry")),
+			"blue": (self.clearLog, _("Delete all log entries")),
+		})
 
 	def deleteEntry(self):
 		cur = self["loglist"].getCurrent()
@@ -483,26 +485,38 @@ class TimerLog(Screen):
 			self.close((False,))
 
 	def up(self):
-		self["loglist"].instance.moveSelection(self["loglist"].instance.moveUp)
-		self.updateText()
+		print "[TimerLog] up() is deprecated, call moveUp() instead"
+		self.moveUp()
+
+	def moveUp(self):
+		self["loglist"].moveUp()
 
 	def down(self):
-		self["loglist"].instance.moveSelection(self["loglist"].instance.moveDown)
-		self.updateText()
+		print "[TimerLog] down() is deprecated, call moveDown() instead"
+		self.moveDown()
+
+	def moveDown(self):
+		self["loglist"].moveDown()
 
 	def left(self):
-		self["loglist"].instance.moveSelection(self["loglist"].instance.pageUp)
-		self.updateText()
+		print "[TimerLog] left() is deprecated, call pageUp() instead"
+		self.pageUp()
+
+	def pageUp(self):
+		self["loglist"].pageUp()
 
 	def right(self):
-		self["loglist"].instance.moveSelection(self["loglist"].instance.pageDown)
-		self.updateText()
+		print "[TimerLog] right() is deprecated, call pageDown() instead"
+		self.pageDown()
+
+	def pageDown(self):
+		self["loglist"].pageDown()
 
 	def updateText(self):
 		if self.list:
-			self["logentry"].setText(str(self["loglist"].getCurrent()[1][2]))
+			self["logentry"].text = str(self["loglist"].getCurrent()[1][2])
 		else:
-			self["logentry"].setText("")
+			self["logentry"].text = ""
 
 class InstantRecordTimerEntry(TimerEntry):
 	def __init__(self, session, timer, zap):

@@ -1,7 +1,7 @@
 from Screens.Screen import Screen
 from Screens.Setup import Setup
 from Components.config import ConfigSelection, ConfigSubList, ConfigDateTime, ConfigClock, ConfigYesNo, ConfigInteger
-from Components.ActionMap import NumberActionMap, HelpableActionMap
+from Components.ActionMap import HelpableActionMap, NumberActionMap
 from Components.MenuList import MenuList
 from Components.Button import Button
 from Components.Label import Label
@@ -258,82 +258,7 @@ class TimerEntry(Setup):
 			if ent[1] is conf:
 				self["config"].invalidate(ent)
 
-class TimerLog(Screen):
-	def __init__(self, session, timer):
-		Screen.__init__(self, session)
-		self.setTitle(_("Log"))
+from TimerEntry import TimerLog as TimerLogTE
 
-		self.skinName = "TimerLog"
-		self.timer = timer
-		self.log_entries = self.timer.log_entries[:]
-
-		self.fillLogList()
-
-		self["loglist"] = MenuList(self.list)
-		self["logentry"] = Label()
-
-		self["key_red"] = Button(_("Delete entry"))
-		self["key_green"] = Button()
-		self["key_yellow"] = Button("")
-		self["key_blue"] = Button(_("Clear log"))
-
-		self.onShown.append(self.updateText)
-
-		self["actions"] = NumberActionMap(["OkCancelActions", "DirectionActions", "ColorActions"],
-		{
-			"ok": self.keyClose,
-			"cancel": self.keyClose,
-			"up": self.up,
-			"down": self.down,
-			"left": self.left,
-			"right": self.right,
-			"red": self.deleteEntry,
-			"blue": self.clearLog
-		}, -1)
-
-	def deleteEntry(self):
-		cur = self["loglist"].getCurrent()
-		if cur is None:
-			return
-		self.log_entries.remove(cur[1])
-		self.fillLogList()
-		self["loglist"].l.setList(self.list)
-		self.updateText()
-
-	def fillLogList(self):
-		self.list = [(str(strftime("%Y-%m-%d %H-%M", localtime(x[0])) + " - " + x[2]), x) for x in self.log_entries]
-
-	def clearLog(self):
-		self.log_entries = []
-		self.fillLogList()
-		self["loglist"].l.setList(self.list)
-		self.updateText()
-
-	def keyClose(self):
-		if self.timer.log_entries != self.log_entries:
-			self.timer.log_entries = self.log_entries
-			self.close((True, self.timer))
-		else:
-			self.close((False,))
-
-	def up(self):
-		self["loglist"].instance.moveSelection(self["loglist"].instance.moveUp)
-		self.updateText()
-
-	def down(self):
-		self["loglist"].instance.moveSelection(self["loglist"].instance.moveDown)
-		self.updateText()
-
-	def left(self):
-		self["loglist"].instance.moveSelection(self["loglist"].instance.pageUp)
-		self.updateText()
-
-	def right(self):
-		self["loglist"].instance.moveSelection(self["loglist"].instance.pageDown)
-		self.updateText()
-
-	def updateText(self):
-		if self.list:
-			self["logentry"].setText(str(self["loglist"].getCurrent()[1][2]))
-		else:
-			self["logentry"].setText("")
+class TimerLog(TimerLogTE):
+	pass
