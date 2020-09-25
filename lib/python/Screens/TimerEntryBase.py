@@ -37,8 +37,6 @@ class TimerEntryBase(Setup):
 		}, prio=-1)
 
 	def createConfig(self):
-		weekday_table = ("mon", "tue", "wed", "thu", "fri", "sat", "sun")
-
 		# calculate default values
 		day = []
 		weekday = 0
@@ -82,7 +80,8 @@ class TimerEntryBase(Setup):
 
 		self.timerentry_repeatedbegindate = ConfigDateTime(default = self.timer.repeatedbegindate, formatstring = config.usage.date.full.value, increment = 86400)
 
-		self.timerentry_weekday = ConfigSelection(default = weekday_table[weekday], choices = [("mon",_("Monday")), ("tue", _("Tuesday")), ("wed",_("Wednesday")), ("thu", _("Thursday")), ("fri", _("Friday")), ("sat", _("Saturday")), ("sun", _("Sunday"))])
+		choices = [("mon",_("Monday")), ("tue", _("Tuesday")), ("wed",_("Wednesday")), ("thu", _("Thursday")), ("fri", _("Friday")), ("sat", _("Saturday")), ("sun", _("Sunday"))]
+		self.timerentry_weekday = ConfigSelection(default = choices[weekday][0], choices = choices)
 
 		self.timerentry_day = ConfigSubList()
 		for x in (0, 1, 2, 3, 4, 5, 6):
