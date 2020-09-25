@@ -1610,10 +1610,14 @@ class InfoBarEPG:
 		self.defaultINFOType = self.getDefaultINFOtype()
 
 	def selectDefaultEpgPlugin(self):
-		self.session.openWithCallback(self.defaultEpgPluginChosen, ChoiceBox, title=_("Please select the default action of the EPG button"), list=self.getEPGPluginList(), skin_name="EPGExtensionsList")
+		plugins = self.getEPGPluginList()
+		selection = config.usage.defaultEPGType.description[config.usage.defaultEPGType.value] in [p[0] for p in plugins] and [p[0] for p in plugins].index(config.usage.defaultEPGType.description[config.usage.defaultEPGType.value]) or 0
+		self.session.openWithCallback(self.defaultEpgPluginChosen, ChoiceBox, title=_("Please select the default action of the INFO button"), list=plugins, skin_name="EPGExtensionsList", selection=selection)
 
 	def selectDefaultInfoPlugin(self):
-		self.session.openWithCallback(self.defaultInfoPluginChosen, ChoiceBox, title=_("Please select the default action of the INFO button"), list=self.getEPGPluginList(), skin_name="EPGExtensionsList", selection=5)
+		plugins = self.getEPGPluginList()
+		selection = config.usage.defaultINFOType.description[config.usage.defaultINFOType.value] in [p[0] for p in plugins] and [p[0] for p in plugins].index(config.usage.defaultINFOType.description[config.usage.defaultINFOType.value]) or 0
+		self.session.openWithCallback(self.defaultInfoPluginChosen, ChoiceBox, title=_("Please select the default action of the INFO button"), list=plugins, skin_name="EPGExtensionsList", selection=selection)
 
 	def defaultEpgPluginChosen(self, answer):
 		if answer is not None:
