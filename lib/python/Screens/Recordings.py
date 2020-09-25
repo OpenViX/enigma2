@@ -22,7 +22,7 @@ class RecordingSettings(Setup):
 		self.buildChoices("DefaultPath", config.usage.default_path, None)
 		self.buildChoices("TimerPath", config.usage.timer_path, None)
 		self.buildChoices("InstantPath", config.usage.instantrec_path, None)
-		Setup.__init__(self, session=session, setup="Recording")
+		Setup.__init__(self, session=session, setup="recording")
 		self.greenText = self["key_green"].text
 		self.errorItem = -1
 		if self.getCurrentItem() in (config.usage.default_path, config.usage.timer_path, config.usage.instantrec_path):

@@ -18,7 +18,7 @@ class TimeshiftSettings(Setup):
 				if device not in self.inhibitDevs:
 					self.inhibitDevs.append(device)
 		self.buildChoices("TimeshiftPath", config.usage.timeshift_path, None)
-		Setup.__init__(self, session=session, setup="Timeshift")
+		Setup.__init__(self, session=session, setup="timeshift")
 		self.greenText = self["key_green"].text
 		self.errorItem = -1
 		if self.getCurrentItem() is config.usage.timeshift_path:
