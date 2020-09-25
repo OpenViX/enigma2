@@ -40,7 +40,6 @@ class TimerEntry(Setup):
 
 		self["actions"] = HelpableActionMap(self, ["ConfigListActions", "GlobalActions", "PiPSetupActions"],
 		{
-                        "select": (self.keySelect, _("Edit channel, location or tags, otherwise save timer")),
 			"save": (self.keySave, _("Save timer")),
 			"cancel": (self.keyCancel, _("Cancel timer creation / changes")),
 			"close": (self.keyCancel, _("Cancel timer creation / changes")),
@@ -166,24 +165,6 @@ class TimerEntry(Setup):
 	def getPreferredTagEditor(self):
 		return getPreferredTagEditor()
 
-	def keyLeft(self):
-		cur = self["config"].getCurrent()
-		if cur and cur[1] in (self.timerentry_service, self.timerentry_tagsset):
-			self.keySelect()
-		elif cur and isinstance(cur[1], ConfigText):
-			self.renameEntry()
-		else:
-			Setup.keyLeft(self)
-
-	def keyRight(self):
-		cur = self["config"].getCurrent()
-		if cur and cur[1] in (self.timerentry_service, self.timerentry_tagsset):
-			self.keySelect()
-		elif cur and isinstance(cur[1], ConfigText):
-			self.renameEntry()
-		else:
-			Setup.keyRight(self)
-
 	def keyText(self):
 		self.renameEntry()
 
@@ -239,8 +220,10 @@ class TimerEntry(Setup):
 				getPreferredTagEditor(),
 				self.timerentry_tags
 			)
+		elif cur and isinstance(cur[1], ConfigText):
+			self.renameEntry()
 		else:
-			self.keySave()
+			Setup.keySelect(self)
 
 	def finishedChannelSelection(self, *args):
 		if args:
@@ -425,7 +408,7 @@ class TimerEntry(Setup):
 		self.session.nav.RecordTimer.saveTimer()
 
 	def keyCancel(self):
-		self.close((False,))
+		self.closeConfigList(((False,),))
 
 	def pathSelected(self, res):
 		if res is not None:

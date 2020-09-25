@@ -29,7 +29,6 @@ class TimerEntry(Setup):
 
 		self["actions"] = HelpableActionMap(self, ["ConfigListActions", "GlobalActions", "PiPSetupActions"],
 		{
-                        "select": (self.keySelect, _("Edit channel, location or tags, otherwise save timer")),
 			"save": (self.keySave, _("Save timer")),
 			"cancel": (self.keyCancel, _("Cancel timer creation / changes")),
 			"close": (self.keyCancel, _("Cancel timer creation / changes")),
@@ -252,7 +251,7 @@ class TimerEntry(Setup):
 		self.session.nav.PowerTimer.saveTimer()
 
 	def keyCancel(self):
-		self.close((False,))
+		self.closeConfigList(((False,),))
 
 	def invalidateConfigEntry(self, conf):
 		for ent in self.list:
