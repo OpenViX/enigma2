@@ -1612,7 +1612,7 @@ class InfoBarEPG:
 	def selectDefaultEpgPlugin(self):
 		plugins = self.getEPGPluginList()
 		selection = config.usage.defaultEPGType.description[config.usage.defaultEPGType.value] in [p[0] for p in plugins] and [p[0] for p in plugins].index(config.usage.defaultEPGType.description[config.usage.defaultEPGType.value]) or 0
-		self.session.openWithCallback(self.defaultEpgPluginChosen, ChoiceBox, title=_("Please select the default action of the INFO button"), list=plugins, skin_name="EPGExtensionsList", selection=selection)
+		self.session.openWithCallback(self.defaultEpgPluginChosen, ChoiceBox, title=_("Please select the default action of the EPG button"), list=plugins, skin_name="EPGExtensionsList", selection=selection)
 
 	def selectDefaultInfoPlugin(self):
 		plugins = self.getEPGPluginList()
