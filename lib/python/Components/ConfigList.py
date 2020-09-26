@@ -284,7 +284,9 @@ class ConfigListScreen:
 					currConf.help_window.hide()
 
 	def keySelect(self):
-		if isinstance(self.getCurrentItem(), ConfigSelection):
+		if isinstance(self.getCurrentItem(), ConfigBoolean):
+			self.keyToggle()
+		elif isinstance(self.getCurrentItem(), ConfigSelection):
 			self.keyMenu()
 		elif isinstance(self.getCurrentItem(), ConfigText):
 			self.keyText()
