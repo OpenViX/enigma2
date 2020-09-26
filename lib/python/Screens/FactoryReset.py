@@ -25,7 +25,7 @@ class FactoryReset(Setup, ProtectedScreen):
 		self.resetTimers = ConfigYesNo(default=True)
 		self.resetOthers = ConfigYesNo(default=True)
 		self.setup = {}  # Old Setup config entry data.
-		Setup.__init__(self, session=session, setup="FactoryReset")
+		Setup.__init__(self, session=session, setup="factoryreset")
 		self["key_green"].text = _("Reset")
 		ProtectedScreen.__init__(self)
 		self.setTitle(_("Factory Reset"))
@@ -34,9 +34,6 @@ class FactoryReset(Setup, ProtectedScreen):
 		return config.ParentalControl.setuppinactive.value and (
 			not config.ParentalControl.config_sections.main_menu.value and not config.ParentalControl.config_sections.configuration.value or hasattr(self.session, "infobar") and self.session.infobar is None
 		) and config.ParentalControl.config_sections.manufacturer_reset.value
-
-	def createSetupList(self):  # Old Setup config list builder method.
-		self.createSetup()
 
 	def createSetup(self):
 		self.analyseEnigma2()
