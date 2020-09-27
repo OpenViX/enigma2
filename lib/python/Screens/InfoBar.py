@@ -100,10 +100,10 @@ class InfoBar(InfoBarBase, InfoBarShowHide,
 		if config.vixsettings.ColouredButtons.value:
 			self["key_yellow"].setText(_("Search"))
 
-			if config.usage.defaultEPGType.value == "Graphical EPG..." or config.usage.defaultEPGType.value == "None":
+			if config.usage.defaultEPGType.value == "Grid EPG":
 				self["key_red"].setText(_("Single EPG"))
 			else:
-				self["key_red"].setText(_("ViX EPG"))
+				self["key_red"].setText(_("Grid EPG"))
 
 			if not config.vixsettings.Subservice.value:
 				self["key_green"].setText(_("Timers"))
