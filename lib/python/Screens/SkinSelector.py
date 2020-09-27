@@ -174,7 +174,7 @@ class SkinSelector(Screen, HelpableScreen):
 			self["description"].setText(_("Press OK to activate the selected%s skin.") % msg)
 
 	def keyCancel(self):
-		self.close(False)
+		self.close()
 
 	def closeRecursive(self):
 		self.close(True)
