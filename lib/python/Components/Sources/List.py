@@ -106,17 +106,13 @@ to generate HTML."""
 		self.index = old_index
 		self.disable_callbacks = False
 
+	def top(self):
+		self.setIndex(0)
+
 	def pageUp(self):
 		try:
 			instance = self.master.master.instance
 			instance.moveSelection(instance.pageUp)
-		except AttributeError:
-			return
-
-	def pageDown(self):
-		try:
-			instance = self.master.master.instance
-			instance.moveSelection(instance.pageDown)
 		except AttributeError:
 			return
 
@@ -125,6 +121,16 @@ to generate HTML."""
 
 	def down(self):
 		self.selectNext()
+
+	def pageDown(self):
+		try:
+			instance = self.master.master.instance
+			instance.moveSelection(instance.pageDown)
+		except AttributeError:
+			return
+
+	def bottom(self):
+		self.setIndex(self.count() - 1)
 
 	def getSelectedIndex(self):
 		return self.getIndex()
