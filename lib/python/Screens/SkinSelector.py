@@ -174,7 +174,7 @@ class SkinSelector(Screen, HelpableScreen):
 			self["description"].setText(_("Press OK to activate the selected%s skin.") % msg)
 
 	def keyCancel(self):
-		self.close(False)
+		self.close()
 
 	def closeRecursive(self):
 		self.close(True)
@@ -185,7 +185,7 @@ class SkinSelector(Screen, HelpableScreen):
 		if skin == self.config.value:
 			if skin == self.currentSkin:
 				print("[SkinSelector] Selected skin: '%s' (Unchanged!)" % pathjoin(self.rootDir, skin))
-				self.cancel()
+				self.close()
 			else:
 				print("[SkinSelector] Selected skin: '%s' (Trying to restart again!)" % pathjoin(self.rootDir, skin))
 				restartBox = self.session.openWithCallback(self.restartGUI, MessageBox, _("To apply the selected '%s' skin the GUI needs to restart. Would you like to restart the GUI now?") % label, MessageBox.TYPE_YESNO)
@@ -194,7 +194,7 @@ class SkinSelector(Screen, HelpableScreen):
 			print("[SkinSelector] Selected skin: '%s' (Pending skin '%s' cancelled!)" % (pathjoin(self.rootDir, skin), pathjoin(self.rootDir, self.config.value)))
 			self.config.value = skin
 			self.config.save()
-			self.cancel()
+			self.close()
 		else:
 			print("[SkinSelector] Selected skin: '%s'" % pathjoin(self.rootDir, skin))
 			restartBox = self.session.openWithCallback(self.restartGUI, MessageBox, _("To save and apply the selected '%s' skin the GUI needs to restart. Would you like to save the selection and restart the GUI now?") % label, MessageBox.TYPE_YESNO)

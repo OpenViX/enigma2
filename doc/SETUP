@@ -2,8 +2,7 @@ Standardised and Uniform Setup Screens in Enigma2
 -------------------------------------------------
 
 Written by IanSav -  2-Apr-2018
-Updated by IanSav - 11-Jul-2020
-Updated by IanSav - 12-Sep-2020
+Updated by IanSav - 26-Sep-2020
 
 
 INTRODUCTION:
@@ -117,11 +116,11 @@ STRUCTURE OF "setup.xml" FILES:
 Syntax:
 	
 	<setupxml>
-		<setup key="Sample1" title="Sample1 settings">
+		<setup key="sample1" title="Sample1 settings">
 			<item level="0" text="Configuration item 1" description="This is the description text that explains the purpose and settings of config item 1.">configItem1</item>
 			<item level="0" text="Configuration item 2" description="This is the description text that explains the purpose and settings of config item 2.">configItem2</item>
 		</setup>
-		<setup key="Sample2" title="Sample2 settings">
+		<setup key="sample2" title="Sample2 settings">
 			<item level="0" text="Configuration item 3" description="This is the description text that explains the purpose and settings of config item 3.">configItem3</item>
 			<item level="1" text="Configuration item 4" description="This is the description text that explains the purpose and settings of config item 4.">configItem4</item>
 			<if level="2">
@@ -147,7 +146,9 @@ Each of the "setup" tags can have the following attributes:
 	---------	--------	-----------
 	"key"		Mandatory	This attribute is the reference name, 
 					or key, used to identify this Setup 
-					screen.
+					screen.  By convention, common usage 
+					and agreement all keys should use 
+					lowercase names.
 
 	"title"		Mandatory	This attribute is the long form title 
 					text used for the heading or title of 
@@ -357,7 +358,7 @@ Syntax:
 
 	<setups>
 		<setup key="default" image="setup_default.png" />
-		<setup key="Sample1" image="setup_key.png" />
+		<setup key="sample1" image="setup_key.png" />
 	</setups>
 
 This block is optional but if defined allows a skin designer to associate 

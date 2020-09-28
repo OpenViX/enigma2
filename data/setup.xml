@@ -1,7 +1,7 @@
 <!--suppress XmlUnboundNsPrefix -->
 <!-- "menuTitle" attribute is optional. If present it will be used as the item title in the menu. It will also be used as the header in setup screens when menu path is enabled. -->
 <setupxml>
-	<setup key="Time" title="Time">
+	<setup key="time" title="Time">
 		<item level="0" text="Time zone area" description="Select your time zone area or region.">config.timezone.area</item>
 		<item level="0" text="Time zone" description="Select the time zone within the area or region.">config.timezone.val</item>
 		<item level="0" text="Sync time using" description="Synchronize system time using transponder or internet.">config.misc.SyncTimeUsing</item>
@@ -175,7 +175,7 @@
 		<item level="1" text="EPG language selection 1" description="Configure the primary EPG language.">config.autolanguage.audio_epglanguage</item>
 		<item level="1" text="EPG language selection 2" conditional="config.autolanguage.audio_epglanguage.value" description="Configure the secondary EPG language.">config.autolanguage.audio_epglanguage_alternative</item>
 	</setup>
-	<setup key="Recording" title="Recording and playback">
+	<setup key="recording" title="Recording and playback">
 		<item level="0" text="Default movie location" description="Set the default location for your recordings. Press OK to add new locations, LEFT/RIGHT to select from any existing locations.">config.usage.default_path</item>
 		<item level="2" text="Timer recording location" description="Set the default location for your timers. Press OK to add new locations, LEFT/RIGHT to select from any existing locations.">config.usage.timer_path</item>
 		<item level="2" text="Instant recording location" description="Set the default location for your instant recordings. Press OK to add new locations, LEFT/RIGHT to select from any existing locations.">config.usage.instantrec_path</item>
@@ -305,7 +305,7 @@
 		<item level="2" text="e-mail address" description="Enter your e-mail address to send a copy of the log to.">config.logmanager.useremail</item>
 		<item level="2" text="Send yourself a copy" description="Allows you to send a copy of the log to yourself.">config.logmanager.usersendcopy</item>
 	</setup>
-	<setup key="Timeshift" title="Timeshift">
+	<setup key="timeshift" title="Timeshift">
 		<item level="0" text="Timeshift location" description="Set the default location for your timeshift files. Press OK to add new locations, LEFT/RIGHT to select any existing locations.">config.usage.timeshift_path</item>
 		<item level="1" text="Automatically start timeshift after" description="When enabled, timeshift starts automatically in background after the specified time.">config.timeshift.startdelay</item>
 		<item level="1" text="Show warning when timeshift is stopped" description="When enabled, a warning will be displayed and the user will get an option to stop or to continue the timeshift.">config.usage.check_timeshift</item>
@@ -512,5 +512,73 @@
 		<item level="0" text="F1" description="Allows you to setup the button to do what you choose.">config.movielist.btn_F1</item>
 		<item level="0" text="F2" description="Allows you to setup the button to do what you choose.">config.movielist.btn_F2</item>
 		<item level="0" text="F3" description="Allows you to setup the button to do what you choose.">config.movielist.btn_F3</item>
+	</setup>
+	<setup key="timerentry" title="Timer Edit">
+		<item text="Name" description="Set the name the recording will get.">self.timerentry_name</item>
+		<item text="Description" description="Set the description of the recording.">self.timerentry_description</item>
+		<item text="Timer type" description="Chose between record and ZAP.">self.timerentry_justplay</item>
+		<item text="Repeat type" description="A repeating timer or just once?">self.timerentry_type</item>
+		<if conditional="self.timerentry_type.value != 'once'">
+			<item text="Repeats" description="Choose between Daily, Weekly, Weekdays or user defined.">self.timerentry_repeated</item>
+			<item text="Starting on" description="Set the date the timer must start.">self.timerentry_repeatedbegindate</item>
+			<if conditional="self.timerentry_repeated.value == 'daily'">
+			<elif conditional="self.timerentry_repeated.value == 'weekdays'"/>
+			<elif conditional="self.timerentry_repeated.value == 'weekly'"/>
+				<item text="Weekday">self.timerentry_weekday</item>
+			<elif conditional="self.timerentry_repeated.value == 'user'"/>
+				<item text="Monday">self.timerentry_day[0]</item>
+				<item text="Tuesday">self.timerentry_day[1]</item>
+				<item text="Wednesday">self.timerentry_day[2]</item>
+				<item text="Thursday">self.timerentry_day[3]</item>
+				<item text="Friday">self.timerentry_day[4]</item>
+				<item text="Saturday">self.timerentry_day[5]</item>
+				<item text="Sunday">self.timerentry_day[6]</item>
+			</if>
+			<item text="Rename name and description for new events" conditional="self.timerentry_justplay.value != 'zap'">self.timerentry_renamerepeat</item>
+		</if>
+		<item text="Date" description="Set the date the timer must start." conditional="self.timerentry_type.value == 'once'">self.timerentry_date</item>
+		<item text="Start time" description="Set the time the timer must start.">self.timerentry_starttime</item>
+		<item text="Use as PiP if possible" conditional="self.timerentry_justplay.value == 'zap' and SystemInfo['PIPAvailable']">self.timerentry_pipzap</item>
+		<item text="End time" description="Set the time the timer must stop." conditional="self.timerentry_justplay.value != 'zap' or self.timerentry_showendtime.value">self.timerentry_endtime</item>
+		<item text="Enable timer conflict detection">self.timerentry_conflictdetection</item>
+		<item text="Channel" description="Set the channel for this timer.">self.timerentry_service</item>
+		<if conditional="self.timerentry_justplay.value != 'zap'">
+			<item level="2" text="Location" description="Where should the recording be saved?">self.timerentry_dirname</item>
+			<item text="Tags" description="Choose a tag for easy finding a recording." conditional="self.getPreferredTagEditor()">self.timerentry_tagsset</item>
+			<item text="After event" description="What action is required on completion of the timer? 'Auto' lets the box return to the state it had when the timer started. 'Do nothing', 'Go to standby' and 'Go to deep standby' do exactly that.">self.timerentry_afterevent</item>
+			<item text="Recording type" description="Descramble &amp; record ECM' gives the option to descramble afterwards if descrambling on recording failed. 'Don't descramble, record ECM' save a scramble recording that can be descrambled on playback. 'Normal' means descramble the recording and don't record ECM.">self.timerentry_recordingtype</item>
+		</if>
+	</setup>
+	<setup key="powertimerentry" title="Power Timer Edit">
+		<item text="Timer type">self.timerentry_timertype</item>
+		<if conditional="self.timerentry_timertype.value in ('autostandby', 'autodeepstandby')">
+			<item text="Only active when in standby" conditional="self.timerentry_timertype.value == 'autodeepstandby'">self.timerentry_autosleepinstandbyonly</item>
+			<item text="Sleep delay">self.timerentry_autosleepdelay</item>
+			<item text="Repeat type">self.timerentry_autosleeprepeat</item>
+		<else/>
+			<item text="Repeat type">self.timerentry_type</item>
+			<if conditional="self.timerentry_type.value != 'once'">
+				<item text="Repeats">self.timerentry_repeated</item>
+				<item text="Starting on">self.timerentry_repeatedbegindate</item>
+				<if conditional="self.timerentry_repeated.value == 'daily'">
+				<elif conditional="self.timerentry_repeated.value == 'weekdays'"/>
+				<elif conditional="self.timerentry_repeated.value == 'weekly'"/>
+					<item text="Weekday" >self.timerentry_weekday</item>
+				<elif conditional="self.timerentry_repeated.value == 'user'"/>
+					<item text="Monday">self.timerentry_day[0]</item>
+					<item text="Tuesday">self.timerentry_day[1]</item>
+					<item text="Wednesday">self.timerentry_day[2]</item>
+					<item text="Thursday">self.timerentry_day[3]</item>
+					<item text="Friday">self.timerentry_day[4]</item>
+					<item text="Saturday">self.timerentry_day[5]</item>
+					<item text="Sunday">self.timerentry_day[6]</item>
+				</if>
+			</if>
+			<item text="Date" conditional="self.timerentry_type.value == 'once'">self.timerentry_date</item>
+			<item text="Start time">self.timerentry_starttime</item>
+			<item text="Set end time">self.timerentry_showendtime</item>
+			<item text="End time" conditional="self.timerentry_showendtime.value">self.timerentry_endtime</item>
+			<item text="After event">self.timerentry_afterevent</item>
+		</if>
 	</setup>
 </setupxml>
