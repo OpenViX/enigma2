@@ -19,7 +19,8 @@ from Tools.Directories import resolveFilename, SCOPE_CURRENT_SKIN, SCOPE_LCDSKIN
 
 
 class SkinSelector(Screen, HelpableScreen):
-	skin = ["""
+	skin = [
+		"""
 	<screen name="SkinSelector" position="center,center" size="%d,%d">
 		<widget name="preview" position="center,%d" size="%d,%d" alphatest="blend" />
 		<widget source="skins" render="Listbox" position="center,%d" size="%d,%d" enableWrapAround="1" scrollbarMode="showOnDemand">
@@ -122,8 +123,8 @@ class SkinSelector(Screen, HelpableScreen):
 					if skinFile == "skin.xml":
 						with open(skinPath, "r") as fd:
 							mm = mmap.mmap(fd.fileno(), 0, prot=mmap.PROT_READ)
-							skinWidth = re.search("\<?resolution.*?\sxres\s*=\s*\"(\d+)\"", mm)
-							skinHeight = re.search("\<?resolution.*?\syres\s*=\s*\"(\d+)\"", mm)
+							skinWidth = re.search(r"<?resolution.*?\sxres\s*=\s*\"(\d+)\"", mm)
+							skinHeight = re.search(r"<?resolution.*?\syres\s*=\s*\"(\d+)\"", mm)
 							if skinWidth and skinHeight:
 								skinSize = "%sx%s" % (skinWidth.group(1), skinHeight.group(1))
 							resolution = skinHeight and resolutions.get(skinHeight.group(1), None)
