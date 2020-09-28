@@ -273,7 +273,5 @@ class SkinSelectorSummary(ScreenSummary):
 	def selectionChanged(self):
 		currentEntry = self.parent["skins"].getCurrent()  # Label
 		self["entry"].setText(currentEntry[1])
-		self["value"].setText("%s   %s" % (
-			currentEntry[5], currentEntry[2] if currentEntry[5] and currentEntry[2] else currentEntry[5] or currentEntry[2]
-		))  # Resolution and/or Flag.
+		self["value"].setText("%s   %s" % (currentEntry[5], currentEntry[2]) if currentEntry[5] and currentEntry[2] else currentEntry[5] or currentEntry[2])  # Resolution and/or Flag.
 		self["Name"].setText(self["entry"].getText())
