@@ -3,7 +3,7 @@ import struct, socket, fcntl, re, sys, os, time
 from sys import modules
 from Tools.HardwareInfo import HardwareInfo
 
-from boxbranding import getBoxType, getMachineBuild, getImageType
+from boxbranding import getBoxType, getMachineBuild, getImageType, getImageVersion
 
 def getVersionString():
 	return getImageVersionString()
@@ -115,7 +115,7 @@ def getImageTypeString():
 	#       return image_type.capitalize()
 	#except:
 	#       return _("undefined")
-	return getImageType()
+	return "%s %s" % (getImageVersion(),getImageType())
 
 def getCPUInfoString():
 	if getMachineBuild() in ('gbmv200', ):
