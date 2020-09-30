@@ -6,8 +6,8 @@ from Tools.Geolocation import geolocation
 
 
 class Time(Setup):
-	def __init__(self, session, PluginLanguageDomain=None):
-		Setup.__init__(self, session=session, setup="time", plugin=None, PluginLanguageDomain=PluginLanguageDomain)
+	def __init__(self, session):
+		Setup.__init__(self, session=session, setup="time")
 		self["key_yellow"] = StaticText("")
 		self["geolocationActions"] = HelpableActionMap(self, "ColorActions", {
 			"yellow": (self.useGeolocation, _("Use geolocation to set the current time zone location"))
