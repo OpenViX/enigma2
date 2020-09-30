@@ -55,6 +55,7 @@ from Tools.KeyBindings import getKeyDescription, getKeyBindingKeys
 import NavigationInstance
 
 from enigma import eTimer, eServiceCenter, eDVBServicePMTHandler, iServiceInformation, iPlayableService, iRecordableService, eServiceReference, eEPGCache, eActionMap, getDesktop, eDVBDB
+from boxbranding import getBrandOEM, getMachineBuild
 from keyids import KEYFLAGS, KEYIDS, invertKeyIds
 
 from time import time, localtime, strftime
