@@ -3852,27 +3852,22 @@ class InfoBarCueSheetSupport:
 		force_resume = self.force_next_resume
 		self.force_next_resume = False
 		self.resume_point = None
-		last = start = None
 		if self.ENABLE_RESUME_SUPPORT:
 			for (pts, what) in self.cut_list:
-				if what == self.CUT_TYPE_MARK and start is None:
-					start = pts
-				elif what == self.CUT_TYPE_LAST and last is None:
+				if what == self.CUT_TYPE_LAST:
 					last = pts
-				if start is not None and last is not None:
 					break
-			last = last or getResumePoint(self.session)
+			else:
+				last = getResumePoint(self.session)
+			if last is None:
+				return
+			# only resume if at least 10 seconds ahead, or <10 seconds before the end.
 			seekable = self.__getSeekable()
 			if seekable is None:
 				return # Should not happen?
 			length = seekable.getLength() or (None,0)
-			# if there's no resume or resume is in the first 10 seconds, use the start marker
-			# if it's within the first 20% or the pre-recording padding
-			if ((last is None or last < 900000) and
-				(start < length[1] / 5 or start < (config.recording.margin_before.value+1) * 5400000)):
-				last = start
-			# only resume if the resume point is more than 10 seconds from the start or the end.
-			if last > 900000 and (not length[1] or last < length[1] - 900000):
+			# Hmm, this implies we don't resume if the length is unknown...
+			if (last > 900000) and (not length[1]  or (last < length[1] - 900000)):
 				self.resume_point = last
 				l = last / 90000
 				if force_resume:
