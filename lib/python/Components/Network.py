@@ -221,7 +221,15 @@ class Network:
 			# load ns only once
 			self.loadNameserverConfig()
 			print "[Network] read configured interface:", ifaces
-			print "[Network] self.ifaces after loading:", self.ifaces
+# Take a copy of self.ifaces and mask any Wifi password in it...
+# The only password will be a preup -k option to wl-config.sh, set in
+# lib/python/Plugins/SystemPlugins/WirelessLan/plugin.py
+#
+			safe_ifaces = self.ifaces.copy()
+			for intf in safe_ifaces:
+				if 'preup' in safe_ifaces[intf] and safe_ifaces[intf]['preup'] is not False:
+					safe_ifaces[intf]['preup'] = re.sub(' -k \S* ', ' -k XXXX ', safe_ifaces[intf]['preup'])
+			print "[Network] self.ifaces after loading:", safe_ifaces
 			self.config_ready = True
 			self.msgPlugins()
 			if callback is not None:
