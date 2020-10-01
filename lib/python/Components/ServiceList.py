@@ -65,7 +65,7 @@ class ServiceList(GUIComponent):
 		self.ServiceInfoFontName = "Regular"
 		self.ServiceInfoFontSize = 18
 		self.ServiceNextInfoFontName = "Regular"
-		self.ServiceInfoFontSize = 15
+		self.ServiceNextInfoFontSize = 15
 		self.progressBarWidth = 52
 		self.progressPercentWidth = 0
 		self.fieldMargins = 10
