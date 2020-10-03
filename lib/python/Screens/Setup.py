@@ -337,17 +337,6 @@ def setupDom(setup=None, plugin=None):
 		print("[Setup] Error %d: Unexpected error opening setup file '%s'! (%s)" % (err.errno, setupFile, err.strerror))
 	return setupFileDom
 
-# Temporary legacy interface.
-#
-def setupdom(plugin=None):
-	if plugin:
-		setupfile = file(resolveFilename(SCOPE_PLUGINS, pathJoin(plugin, "setup.xml")), "r")
-	else:
-		setupfile = file(resolveFilename(SCOPE_SKIN, "setup.xml"), "r")
-	setupfiledom = xml.etree.cElementTree.parse(setupfile)
-	setupfile.close()
-	return setupfiledom
-
 # Only used in AudioSelection screen...
 #
 def getConfigMenuItem(configElement):
