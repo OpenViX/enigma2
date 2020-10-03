@@ -27,7 +27,7 @@
 		<menu weight="1" level="0" text="Audio &amp; video" entryID="av_setup">
 			<id val="av" />
 			<item weight="1" text="Settings" entryID="av_setup"><screen module="VideoMode" screen="VideoSetup" /></item>
-			<item level="1" entryID="autolanguage_setup"><setup id="autolanguagesetup" /></item>
+			<item level="1" entryID="autolanguage_setup" text="Automatic Language"><setup id="autolanguagesetup" /></item>
 		</menu>
 
 		<!-- Menu / Setup / Tuners -->
@@ -36,7 +36,7 @@
 			<!-- Menu / Setup / Tuners / Settings -->
 			<item weight="1" text="Tuner setup" entryID="tuner_setup" requires="ClientModeDisabled"><screen module="Satconfig" screen="NimSelection" /></item>
 			<item weight="2" text="Tuner setup" entryID="client_mode" requires="ClientModeEnabled"><screen module="ClientMode" screen="ClientModeScreen" /></item>
-			<item weight="3" entryID="tunermisc_setup"><setup id="tunermisc" /></item>
+			<item weight="3" entryID="tunermisc_setup" text="Miscellaneous"><setup id="tunermisc" /></item>
 			<item weight="20" text="Automatic scan" entryID="auto_scan" conditional="nimmanager.somethingConnected()" requires="ClientModeDisabled"><screen module="ScanSetup" screen="ScanSimple" /></item>
 			<item weight="30" text="Manual scan" entryID="manual_scan" conditional="nimmanager.somethingConnected()" requires="ClientModeDisabled"><screen module="ScanSetup" /></item>
 			<item weight="100" text="Fallback configuration" entryID="fallback_mode" requires="ClientModeDisabled"><screen  module="FallbackTunerSetup" screen="FallbackTunerSetup" /></item>
@@ -45,10 +45,10 @@
 		<!-- Menu / Setup / EPG -->
 		<menu weight="3" text="EPG" entryID="epg_menu">
 			<id val="epg" />
-			<item level="0" entryID="epg_setup"><setup id="epgsettings" /></item>
+			<item level="0" entryID="epg_setup" text="Settings"><setup id="epgsettings" /></item>
 			<menu level="2" text="Load-save-delete" entryID="epgloadsave_menu">
 				<id val="epgloadsave_menu" />
-				<item level="0" entryID="saveepgcache" text="Save EPG">
+				<item level="0" entryID="saveepgcache" text="Save EPG Cache">
 					<code>
 from Components.EpgLoadSave import EpgSaveMsg
 def msgClosed(ret):
@@ -59,7 +59,7 @@ def msgClosed(ret):
 self.session.openWithCallback(msgClosed, EpgSaveMsg)
 					</code>
 				</item>
-				<item level="0" entryID="loadepgcache" text="Load EPG">
+				<item level="0" entryID="loadepgcache" text="Load EPG Cache">
 					<code>
 from Components.EpgLoadSave import EpgLoadMsg
 def msgClosed(ret):
@@ -70,7 +70,7 @@ def msgClosed(ret):
 self.session.openWithCallback(msgClosed, EpgLoadMsg)
 					</code>
 				</item>
-				<item level="0" entryID="deleteepgcache" text="Delete EPG">
+				<item level="0" entryID="deleteepgcache" text="Delete EPG Cache">
 					<code>
 from Components.EpgLoadSave import EpgDeleteMsg
 def msgClosed(ret):
@@ -86,20 +86,20 @@ self.session.openWithCallback(msgClosed, EpgDeleteMsg)
 					</code>
 				</item>
 			</menu>
-			<item level="2" entryID="setup_epgsingle"><setup id="epgsingle" /></item>
-			<item level="2" entryID="setup_epggrid"><setup id="epggrid" /></item>
-			<item level="2" entryID="setup_epginfobarsingle"><setup id="epginfobarsingle" /></item>
-			<item level="2" entryID="setup_epginfobargrid"><setup id="epginfobargrid" /></item>
-			<item level="2" entryID="setup_epgmulti"><setup id="epgmulti" /></item>
+			<item level="2" entryID="setup_epgsingle" text="Single EPG"><setup id="epgsingle" /></item>
+			<item level="2" entryID="setup_epggrid" text="Grid EPG"><setup id="epggrid" /></item>
+			<item level="2" entryID="setup_epginfobarsingle" text="Infobar Single EPG"><setup id="epginfobarsingle" /></item>
+			<item level="2" entryID="setup_epginfobargrid" text="Infobar Grid EPG"><setup id="epginfobargrid" /></item>
+			<item level="2" entryID="setup_epgmulti" text="Multi EPG"><setup id="epgmulti" /></item>
 		</menu>
 
 		<!-- Menu / Setup / User Interface -->
 		<menu weight="4" text="User interface" entryID="osd_setup" requires="OsdMenu">
 			<id val="osd_menu" />
 			<!-- Menu / Setup / User Interface / Settings -->
-			<item weight="1" entryID="user_interface"><setup id="userinterface" /></item>
+			<item weight="1" entryID="user_interface" text="Settings"><setup id="userinterface" /></item>
 			<!-- Menu / Setup / User Interface / Channel Selection settings -->
-			<item weight="2" level="0" entryID="channelselection_setup"><setup id="channelselection" /></item>
+			<item weight="2" level="0" entryID="channelselection_setup" text="Channel Selection"><setup id="channelselection" /></item>
 			<!-- Menu / Setup / User Interface / Skin Setup -->
 			<menu weight="3" level="0" text="Skin setup" entryID="gui_skin" requires="OsdMenu">
 				<id val="skinsetup" />
@@ -120,7 +120,7 @@ self.session.openWithCallback(msgClosed, EpgDeleteMsg)
 			<!-- Menu / Setup / User Interface / Button Setup -->
 			<item weight="6" level="2" text="Button setup" entryID="buttonsetup_setup"><screen module="ButtonSetup" screen="ButtonSetup" /></item>
 			<!-- Menu / Setup / User Interface / Subtitles -->
-			<item weight="7" level="2" entryID="subtitle_setup"><setup id="subtitlesetup" /></item>
+			<item weight="7" level="2" entryID="subtitle_setup" text="Subtitles"><setup id="subtitlesetup" /></item>
 			<!-- Menu / Setup / User Interface / Language Selection -->
 			<item weight="8" level="0" text="Language" entryID="language_setup"><screen module="LanguageSelection" /></item>
 			<!-- Menu / Setup / User Interface / Parental Control -->
@@ -187,7 +187,7 @@ self.session.open(SABnzbdSetupScreen)
 		<menu weight="98" level="0" text="System" entryID="system_selection">
 			<id val="system" />
 			<!-- Menu / Setup / System / Logs -->
-			<item weight="1" entryID="usage_setup"><setup id="usage" /></item>
+			<item weight="1" entryID="usage_setup" text="Customize"><setup id="usage" /></item>
 			<menu weight="2" level="2" text="Logs" entryID="logs_setup">
 				<id val="logs_menu" />
 				<item level="2" text="Settings" entryID="logs_setup"><setup id="logs" /></item>
@@ -198,7 +198,7 @@ self.session.open(SABnzbdSetupScreen)
 			<!-- Menu / Setup / System / Keyboard Setup -->
 			<item weight="4" entryID="keyboard_setup" text="Keyboard"><setup id="keyboard" /></item>
 			<!-- Menu / Setup / System / RF Setup -->
-			<item weight="5" level="1" entryID="rfmod_setup" requires="RfModulator"><setup id="RFmod" /></item>
+			<item weight="5" level="1" entryID="rfmod_setup" text="Settings" requires="RfModulator"><setup id="RFmod" /></item>
 			<!-- Menu / Setup / System / Factory Reset -->
 			<item weight="99" level="0" text="Factory reset" entryID="factory_reset"><screen module="FactoryReset" screen="FactoryReset" /></item>
 			<item weight="2" level="0" text="Software update" entryID="software_update"><screen module="SoftwareUpdate" screen="UpdatePlugin" /></item>
