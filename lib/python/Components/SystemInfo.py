@@ -131,7 +131,7 @@ SystemInfo["VideoModes"] = getChipSetString() in (  # 2160p and 1080p capable ha
 	["720p", "1080p", "2160p", "1080i", "576p", "576i", "480p", "480i"],  # Normal modes.
 	{"720p", "1080p", "2160p", "1080i"}  # Widescreen modes.
 ) or getChipSetString() in (  # 1080p capable hardware...
-	"7241", "7356", "73565", "7358", "7362", "73625", "7424", "7425", "7552"
+	"7241", "7356", "73565", "7358", "7362", "73625", "7424", "7425", "7552", "3716mv410"
 ) and (
 	["720p", "1080p", "1080i", "576p", "576i", "480p", "480i"],  # Normal modes.
 	{"720p", "1080p", "1080i"}  # Widescreen modes.
