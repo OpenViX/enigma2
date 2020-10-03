@@ -54,3 +54,4 @@ class Time(Setup):
 		self.selectionChanged()
 		self.useGeolocation()
 		self["config"].l.invalidate()
+		config.timezone.save()
