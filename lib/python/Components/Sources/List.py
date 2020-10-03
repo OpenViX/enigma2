@@ -1,5 +1,6 @@
-from Source import Source
 from Components.Element import cached
+from Components.Sources.Source import Source
+
 
 class List(Source, object):
 	"""The datasource of a listbox. Currently, the format depends on the used converter. So
@@ -9,17 +10,20 @@ setup the "fonts".
 
 This has been done so another converter could convert the list to a different format, for example
 to generate HTML."""
+
 	def __init__(self, list=None, enableWrapAround=False, item_height=25, fonts=None):
-		if not list: list = []
-		if not fonts: fonts = []
 		Source.__init__(self)
+		if not list:
+			list = []
+		if not fonts:
+			fonts = []
 		self.__list = list
-		self.onSelectionChanged = [ ]
+		self.onSelectionChanged = []
 		self.item_height = item_height
 		self.fonts = fonts
 		self.disable_callbacks = False
 		self.enableWrapAround = enableWrapAround
-		self.__style = "default" # style might be an optional string which can be used to define different visualisations in the skin
+		self.__style = "default"  # Style might be an optional string which can be used to define different visualisations in the skin.
 
 	def setList(self, list):
 		self.__list = list
@@ -41,12 +45,9 @@ to generate HTML."""
 	def selectionChanged(self, index):
 		if self.disable_callbacks:
 			return
-
-		# update all non-master targets
-		for x in self.downstream_elements:
+		for x in self.downstream_elements:  # Update all non-master targets.
 			if x is not self.master:
 				x.index = index
-
 		for x in self.onSelectionChanged:
 			x()
 
@@ -63,10 +64,7 @@ to generate HTML."""
 
 	@cached
 	def getIndex(self):
-		if self.master is not None:
-			return self.master.index
-		else:
-			return None
+		return self.master.index if self.master is not None else None
 
 	setCurrentIndex = setIndex
 
@@ -108,12 +106,21 @@ to generate HTML."""
 		self.index = old_index
 		self.disable_callbacks = False
 
+	def top(self):
+		self.setIndex(0)
+
 	def pageUp(self):
 		try:
 			instance = self.master.master.instance
 			instance.moveSelection(instance.pageUp)
 		except AttributeError:
 			return
+
+	def up(self):
+		self.selectPrevious()
+
+	def down(self):
+		self.selectNext()
 
 	def pageDown(self):
 		try:
@@ -122,11 +129,8 @@ to generate HTML."""
 		except AttributeError:
 			return
 
-	def up(self):
-		self.selectPrevious()
-		
-	def down(self):
-		self.selectNext()
+	def bottom(self):
+		self.setIndex(self.count() - 1)
 
 	def getSelectedIndex(self):
 		return self.getIndex()

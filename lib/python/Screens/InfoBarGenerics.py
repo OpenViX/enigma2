@@ -55,7 +55,6 @@ from Tools.KeyBindings import getKeyDescription, getKeyBindingKeys
 import NavigationInstance
 
 from enigma import eTimer, eServiceCenter, eDVBServicePMTHandler, iServiceInformation, iPlayableService, iRecordableService, eServiceReference, eEPGCache, eActionMap, getDesktop, eDVBDB
-from boxbranding import getMachineBrand, getMachineName
 from keyids import KEYFLAGS, KEYIDS, invertKeyIds
 
 from time import time, localtime, strftime
@@ -3009,8 +3008,6 @@ class InfoBarPiP:
 			service = self.session.nav.getCurrentService()
 			info = service and service.info()
 			if info:
-				xres = str(info.getInfo(iServiceInformation.sVideoWidth))
-			if info and int(xres) <= 720:
 				self.session.pip = self.session.instantiateDialog(PictureInPicture)
 				self.session.pip.setAnimationMode(0)
 				self.session.pip.show()
@@ -3055,8 +3052,6 @@ class InfoBarPiP:
 						self.lastPiPService = None
 						self.session.pipshown = False
 						del self.session.pip
-			elif info:
-				self.session.open(MessageBox, _("Your %s %s does not support PiP HD") % (getMachineBrand(), getMachineName()), type = MessageBox.TYPE_INFO,timeout = 5 )
 			else:
 				self.session.open(MessageBox, _("No active channel found."), type = MessageBox.TYPE_INFO,timeout = 5 )
 		if self.session.pipshown and hasattr(self, "screenSaverTimer"):

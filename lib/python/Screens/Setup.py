@@ -274,7 +274,7 @@ def setupDom(setup=None, plugin=None):
 
 	setupFileDom = xml.etree.cElementTree.fromstring("<setupxml></setupxml>")
 	setupFile = resolveFilename(SCOPE_PLUGINS, pathJoin(plugin, "setup.xml")) if plugin else resolveFilename(SCOPE_SKIN, "setup.xml")
-	global setupTitles
+	global domSetups, setupModTimes, setupTitles
 	try:
 		modTime = getmtime(setupFile)
 	except (IOError, OSError) as err:
@@ -283,7 +283,8 @@ def setupDom(setup=None, plugin=None):
 			del domSetups[setupFile]
 		if setupFile in setupModTimes:
 			del setupModTimes[setupFile]
-		setupTitles = {}
+		if setupFile in setupTitles:
+			del setupTitles[setupFile]
 		return setupFileDom
 	cached = setupFile in domSetups and setupFile in setupModTimes and setupModTimes[setupFile] == modTime
 	print("[Setup] XML%s setup file '%s', using element '%s'%s." % (" cached" if cached else "", setupFile, setup, " from plugin '%s'" % plugin if plugin else ""))
@@ -294,7 +295,8 @@ def setupDom(setup=None, plugin=None):
 			del domSetups[setupFile]
 		if setupFile in setupModTimes:
 			del setupModTimes[setupFile]
-		setupTitles = {}
+		if setupFile in setupTitles:
+			del setupTitles[setupFile]
 		with open(setupFile, "r") as fd:  # This open gets around a possible file handle leak in Python's XML parser.
 			try:
 				fileDom = xml.etree.cElementTree.parse(fd).getroot()
@@ -302,10 +304,11 @@ def setupDom(setup=None, plugin=None):
 				setupFileDom = fileDom
 				domSetups[setupFile] = setupFileDom
 				setupModTimes[setupFile] = modTime
+				setupTitles[setupFile] = {}
 				for setup in setupFileDom.findall("setup"):
 					key = setup.get("key")
 					if key:  # If there is no key then this element is useless and can be skipped!
-						if key in setupTitles:
+						if key in setupTitles[setupFile]:
 							print("[Setup] Warning: Setup key '%s' has been redefined!" % key)
 						title = setup.get("menuTitle", "").encode("UTF-8", errors="ignore")
 						if title == "":
@@ -313,7 +316,7 @@ def setupDom(setup=None, plugin=None):
 							if title == "":
 								print("[Setup] Error: Setup key '%s' title is missing or blank!" % key)
 								title = "** Setup error: '%s' title is missing or blank!" % key
-						setupTitles[key] = _(title)
+						setupTitles[setupFile][key] = _(title)
 						# print("[Setup] DEBUG: XML setup load: key='%s', title='%s', menuTitle='%s', translated title='%s'" % (key, setup.get("title", "").encode("UTF-8", errors="ignore"), setup.get("menuTitle", "").encode("UTF-8", errors="ignore"), setupTitles[key]))
 			except xml.etree.cElementTree.ParseError as err:
 				fd.seek(0)
@@ -359,7 +362,7 @@ def getSetupTitle(key):
 	setupDom()  # Load or check for an updated setup.xml file.
 	if not isinstance(key, str):
 		key = str(key)
-	title = setupTitles.get(key, None)
+	title = setupTitles[resolveFilename(SCOPE_SKIN, "setup.xml")].get(key, None)
 	if title is None:
 		print("[Setup] Error: Setup key '%s' not found in setup file!" % key)
 		title = _("** Setup error: '%s' section not found! **") % key

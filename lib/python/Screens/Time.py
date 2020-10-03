@@ -35,9 +35,9 @@ class Time(Setup):
 			areaItem = None
 			valItem = None
 			for item in self["config"].list:
-				if item[1] == config.timezone.area:
+				if item[1] is config.timezone.area:
 					areaItem = item
-				if item[1] == config.timezone.val:
+				if item[1] is config.timezone.val:
 					valItem = item
 			area, zone = tz.split("/", 1)
 			config.timezone.area.value = area
@@ -51,4 +51,7 @@ class Time(Setup):
 			self.setFootnote(_("Geolocation has been used to set the time zone."))
 
 	def yellow(self):  # Invoked from the Wizard.
+		self.selectionChanged()
 		self.useGeolocation()
+		self["config"].l.invalidate()
+		config.timezone.save()
