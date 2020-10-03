@@ -16,7 +16,7 @@ from enigma import eTimer
 
 import xml.etree.cElementTree
 
-from Screens.Setup import Setup, getSetupTitle
+from Screens.Setup import Setup
 
 # read the menu
 file = open(resolveFilename(SCOPE_SKIN, 'menu.xml'), 'r')
@@ -139,7 +139,9 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 		conditional = node.get("conditional")
 		if conditional and not eval(conditional):
 			return
-		item_text = node.get("text", "").encode("UTF-8")
+		item_text = node.get("text", "* Undefined *").encode("UTF-8")
+		if item_text:
+			item_text = _(item_text)
 		entryID = node.get("entryID", "undefined")
 		weight = node.get("weight", 50)
 		for x in node:
@@ -161,7 +163,7 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 				args = x.text or ""
 				screen += ", " + args
 
-				destList.append((_(item_text or "??"), boundFunction(self.runScreen, (module, screen)), entryID, weight))
+				destList.append((item_text, boundFunction(self.runScreen, (module, screen)), entryID, weight))
 				return
 			elif x.tag == 'plugin':
 				extensions = x.get("extensions")
@@ -188,17 +190,13 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 				args = x.text or ""
 				screen += ", " + args
 
-				destList.append((_(item_text or "??"), boundFunction(self.runScreen, (module, screen)), entryID, weight))
+				destList.append((item_text, boundFunction(self.runScreen, (module, screen)), entryID, weight))
 				return
 			elif x.tag == 'code':
-				destList.append((_(item_text or "??"), boundFunction(self.execText, x.text), entryID, weight))
+				destList.append((item_text, boundFunction(self.execText, x.text), entryID, weight))
 				return
 			elif x.tag == 'setup':
 				id = x.get("id")
-				if item_text == "":
-					item_text = _(getSetupTitle(id))
-				else:
-					item_text = _(item_text)
 				destList.append((item_text, boundFunction(self.openSetup, id), entryID, weight))
 				return
 		destList.append((item_text, self.nothing, entryID, weight))
