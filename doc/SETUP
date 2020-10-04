@@ -2,7 +2,9 @@ Standardised and Uniform Setup Screens in Enigma2
 -------------------------------------------------
 
 Written by IanSav -  2-Apr-2018
-Updated by IanSav - 26-Sep-2020
+Updated by IanSav - 11-Jul-2020
+Updated by IanSav - 12-Sep-2020  (Thanks to Prl for suggestions.)
+Updated by IanSav -  3-Oct-2020
 
 
 INTRODUCTION:
@@ -18,7 +20,7 @@ interchangeably.
 Standard variable names are documented, together with code and skin coding 
 conventions to assist in creating code that works more universally, with 
 additional benefits from improved Setup screen load performance and reduction 
-in merge issues between images.
+in merge issues between Enigma2 images.
 
 Lastly, the document explains the operation and features of the refactored 
 Setup screen interface ("Screen/Setup.py").
@@ -48,42 +50,35 @@ Significant changes, in no particular order, are:
 	This change also means that the GUI no longer has to be restarted to 
 	allow changes to "setup.xml" to be processed by OpenPLi.
 
-2)	All setup screen titles are also extracted and cached to reduce 
-	screen building time.  This code uses a derivative of the OpenViX 
-	"titleshort" attribute here known as "menuTitle" to allow 
-	"Screens/Menu.py" based menus to have alternate title text.  This 
-	change improves "Screens/Menu.py" screen load times for "Setup" 
-	based screens.
+2)	Optimise, improve and enhance generation of Setup screen item lists.  
+	This change allows the list to be processed once for display rather 
+	than the two or three cycles in some previous versions.
 
-3)	Optimise, improve and enhance generation of Setup screen item lists.  
-	Thange allows the list to be processed 	once for display rather than 
-	the two or three cycles in some previous versions.
+3)	Create a log entry if the Setup screen has no valid entries.
 
-4)	Create a log entry if the Setup screen has no valid entries.
-
-5)	Remove remnants of the setup.xml "separation" attribute directive.  
+4)	Remove remnants of the setup.xml "separation" attribute directive.  
 	This feature is now offered via the skin parameter 
 	"ConfigListSeperator".
 
-6)	When enabled, always obey Setup screen sort setting.
+5)	When enabled, always obey Setup screen sort setting.
 
-7)	If "%s %s" is found in an item's "text" or "description" attribute 
+6)	If "%s %s" is found in an item's "text" or "description" attribute 
 	then replace it with the current box machine brand and model name.
 
-8)	Move the description code from the "SetupSummary" class into the main 
+7)	Move the description code from the "SetupSummary" class into the main 
 	"Setup" class where it is used.
 
-9) 	For OpenPLi add footnote support.  If the last character of an entry 
+8) 	For OpenPLi add footnote support.  If the last character of an entry 
 	item is an "*" then when this item is currently selected by the user 
 	a footnote message will appear to advise the user that a restart 
 	will be required if this item is changed.
 
-10)	Add an option to provide "Setup" screen image based on matching the 
-	setup "key" attribute with an image defined in a new "<setups>" 
-	block in the skin.  This code is conditional on having compatible 
+9)	Add an option to provide "Setup" screen graphic based on matching the 
+	setup "key" attribute with a graphic defined in a new "<setups>" 
+	element in the skin.  This code is conditional on having compatible 
 	changes in "skin.py".
 
-11)	Enable the HELP button to allow users to obtain help while using any 
+10)	Enable the HELP button to allow users to obtain help while using any 
 	"Screens/Setup.py" based screen.  To be fully operational these 
 	changes also need to be accompanied by appropriate changes to 
 	"Components/ConfigList.py".
@@ -92,7 +87,7 @@ Significant changes, in no particular order, are:
 	and associated code should be removed from "Screens/Setup.py" and 
 	integrated into the ActionMap in "Components/ConfigList.py".
 
-12)	The "setup_key" skin facility appears to be unused.  The name has 
+11)	The "setup_key" skin facility appears to be unused.  The name has 
 	been changed to "Setupkey" to better match existing skin names.  
 	This option allows skin designers to create custom "Setup" based 
 	screens.
@@ -104,10 +99,19 @@ Significant changes, in no particular order, are:
 	screen, then try for a "Setupkey" screen and finally use the 
 	standard "Setup" screen.
 
-13)	Perform a PEP8 clean-up of the code.
+12)	Perform a PEP8 clean-up of the code.
 
-14)	Reorganise the imports and code blocks to improve readability of the 
+13)	Reorganise the imports and code blocks to improve readability of the 
 	refactored code.
+
+14)	Logic functionality has been added to the setup XML file.  The 
+	addition of "if", "elif" and "else" elements allow for "item" 
+	elements to be selected for inclusion or exclusion from any setup 
+	based screen.
+
+15)	The syntax consistency of the "if", "elif" and "item" elements is
+	now checked when the setup XML file is loaded.  Issues are reported 
+	in the log file.
 
 
 STRUCTURE OF "setup.xml" FILES:
@@ -135,10 +139,12 @@ Syntax:
 
 The "setupxml" tag defines that the file is a setup configuration file. The 
 "setupxml" tag has no attributes and should contain a list of one or more 
-"setup" tag blocks. Each of the "setup" tag blocks should contain a list of 
-one or more "item" blocks.  Each of the "item" tag blocks must contain a 
-configuration element that has been defined in "Components/UsageConfig.py" 
-or elsewhere.
+"setup" tag elements. Each of the "setup" tag elements should contain a list 
+of one or more "item" or "if" elements.  Each "item" tag element must contain 
+a configuration element that has been defined in "Components/UsageConfig.py" 
+or elsewhere.  Each "if" tag element should contain logic attributes "level", 
+"conditional" or "requires" to allow evaluation as to whether or not that 
+element's content will be used for the Setup screen.
 
 Each of the "setup" tags can have the following attributes:
 
@@ -154,11 +160,6 @@ Each of the "setup" tags can have the following attributes:
 					text used for the heading or title of 
 					this setup screen.
 
-	"menuTitle"	Optional	This attribute is the title that can 
-					be used as an alternative for the 
-					"title" in menus of Setup screen 
-					items.
-
 	"showOpenWebIF"	Optional	This attribute is used to signal that 
 					this Setup screen should be made 
 					available in OpenWebif.
@@ -166,7 +167,14 @@ Each of the "setup" tags can have the following attributes:
 	"requires"	Optional	This attribute is used to test is the 
 					nominated requirements have been met 
 					to enable the activation and use of 
-					this Setup screen.
+					this Setup screen.  The "requires" 
+					attribute value can be either the 
+					name of a config variable without 
+					the ".value" attribute, or the name 
+					of a SystemInfo entry.  If the first 
+					character of the attribute argument 
+					is "!" then the argument logic is 
+					inverted.
 
 	"skin"		Optional	This attribute is used to specify an 
 					override screen name defined in the 
@@ -184,7 +192,15 @@ Each of the "item" tags can have the following attributes:
 					that is displayed to the user when 
 					activating this Setup screen.
 
-	"level"		Recommended	The list of items that may be 
+	"description"	Recommended	This attribute is the help prompt or 
+					information that can, and should, be 
+					used to offer guidance to users in 
+					when and how to set the associated 
+					configuration option.  If this is 
+					omitted no assistance or information 
+					will be offered to users.
+
+	"level"		Optional	The list of items that may be 
 					displayed in any Setup screen is 
 					dynamic. This attribute determines 
 					the user interface setup mode or 
@@ -197,18 +213,19 @@ Each of the "item" tags can have the following attributes:
 				Level=2 -> Expert
 				Level=9 -> Deactivate this entry
 
-	"description"	Recommended	This attribute is the help prompt or 
-					information that can, and should, be 
-					used to offer guidance to users in 
-					when and how to set the associated 
-					configuration option.  If this is 
-					omitted no assistance or information 
-					will be offered to users.
-
 	"conditional"	Optional	This attribute allows for programmed 
 					logic to decide is this item is 
 					eligible for display in the Setup 
-					screen.
+					screen.  The "conditional" attribute 
+					value is a Python expression that 
+					must evaluate to a value that can be 
+					converted to a Boolean.  It is 
+					evaluated in the context of a Setup 
+					class instance, and in the expression 
+					self refers to that instance (which 
+					is mainly useful for classes that 
+					derive from Setup, like 
+					MovieBrowserConfiguration).
 
 	"requires"	Optional	This attribute allows for "SystemInfo" 
 					or "config" variables to be used to 
@@ -249,8 +266,8 @@ by the encompassing item tag.
 				of the "Setup" screen.
 
 	setupimage		This variable uses a name="setupimage" 
-				widget that provides an image to represent 
-				the "Setup" screen being displayed.
+				widget that provides a graphic image to 
+				represent the "Setup" screen being displayed.
 
 	config			This variable uses a name="config" widget 
 				that provides the list of available "Setup" 
@@ -351,8 +368,8 @@ SAMPLE "Setup" SCREEN:
 	</screen>
 
 
-SKIN "Setups" SUPPORT BLOCK:
-============================
+SKIN "Setups" SUPPORT ELEMENT:
+==============================
 
 Syntax:
 
@@ -361,24 +378,25 @@ Syntax:
 		<setup key="sample1" image="setup_key.png" />
 	</setups>
 
-This block is optional but if defined allows a skin designer to associate 
-an image with any "Screens/Setup.py" based screen.  The "setups" tag has no 
-attributes and contains a list of "setup" tags.
+This element is optional but if defined allows a skin designer to associate 
+a graphical image with any "Screens/Setup.py" based screen.  The "setups" 
+tag element has no attributes and contains a list of "setup" tag elements.
 
-Each "setup" tag must contain two attributes:
+Each "setup" tag element must contain two attributes:
 
 	key	This attribute is the value of the key attribute from a 
 		setup.xml file.  If the keys match then this entry defines 
-		an image that is to be used when the nominated Setup 
-		screen is displayed.
+		a graphical image that is to be used when the nominated 
+		Setup screen is displayed.
 
-	image	This attribute is the pathname of the image that is to be 
-		associated with the Setup screen identified by the "key" 
-		attribute.
+	image	This attribute is the pathname of the graphical image that 
+		is to be associated with the Setup screen identified by the 
+		"key" attribute.
 
 There is a special "key" attribute with the name "default".  This entry, 
-if defined, assigns a default image to be used in ALL "Screens/Setup.py" 
-screens that do not have a specifically assigned image.
+if defined, assigns a default graphical image to be used in ALL 
+"Screens/Setup.py" screens that do not have a specifically assigned 
+image.
 
 
 CONCLUSION:

@@ -531,7 +531,7 @@ class ConfigBoolean(ConfigElement):
 		return str(val).lower() in self.trueValues
 
 	def tostring(self, value):
-		return "True" if value or str(value).lower() in self.trueValues else "False"
+		return "True" if value and str(value).lower() in self.trueValues else "False"
 		# Use the following if settings should be saved using the same values as displayed to the user.
 		# self.descriptions[True] if value or str(value).lower() in ("1", "enable", "on", "true", "yes") else self.descriptions[True]
 

@@ -1,5 +1,4 @@
 <!--suppress XmlUnboundNsPrefix -->
-<!-- "menuTitle" attribute is optional. If present it will be used as the item title in the menu. It will also be used as the header in setup screens when menu path is enabled. -->
 <setupxml>
 	<setup key="time" title="Time">
 		<item level="0" text="Time zone area" description="Select your time zone area or region.">config.timezone.area</item>
@@ -13,7 +12,7 @@
 	<setup key="avsetup" title="A/V settings">
 		<!-- This is just a placeholder, the Videomode plugin implements this submenu -->
 	</setup>
-	<setup key="usage" title="Customize settings" menuTitle="Customize">
+	<setup key="usage" title="Customize settings">
 		<item level="0" text="Setup mode" description="Choose which level of menu/settings to display. 'Expert' level shows all items.">config.usage.setup_level</item>
 		<item level="0" text="Task warning on shutdown" description="On shutdown/restart warn about any pending jobs being carried out in the background.">config.usage.task_warning</item>
 		<item level="1" text="Enable teletext caching" description="When enabled, teletext pages will be cached, allowing faster access.">config.usage.enable_tt_caching</item>
@@ -23,7 +22,7 @@
 		<item level="2" text="Require authentication for http streams" description="When enabled, authentication is required to watch http streams.">config.streaming.authentication</item>
 		<item level="2" text="Wake On LAN" description="When enabled the set top box is able to wakeup on LAN" requires="WakeOnLAN">config.usage.wakeOnLAN</item>
 	</setup>
-	<setup key="tunermisc" title="Tuner miscellaneous" menuTitle="Miscellaneous" showOpenWebIF="1">
+	<setup key="tunermisc" title="Tuner miscellaneous" showOpenWebIF="1">
 		<item level="1" text="12V output" description="12V output." requires="12V_Output">config.usage.output_12V</item>
 		<item level="2" text="Preferred tuner" description="Configure which tuner will be preferred, when more than one tuner is available. If set to 'auto' the system will give priority to the tuner having the lowest number of channels/satellites.">config.usage.frontend_priority</item>
 		<item level="2" text="Preferred tuner DVB-S" description="When enabled, this setting has more weight than 'Preferred tuner'." requires="DVB-S_priority_tuner_available">config.usage.frontend_priority_dvbs</item>
@@ -41,7 +40,7 @@
 		<item level="2" text="Ignore DVB-T namespace sub network" description="On valid ONIDs, ignore frequency sub network part">config.usage.subnetwork_terrestrial</item>
 		<item level="2" text="Alternative services tuner priority" description="Configure which tuner type will be preferred, when the same service is available on different types of tuners.">config.usage.alternatives_priority</item>
 	</setup>
-	<setup key="userinterface" title="GUI settings" menuTitle="Settings">
+	<setup key="userinterface" title="GUI settings">
 		<item level="0" text="1st Infobar timeout" description="Set the time delay before hiding the infobar.">config.usage.infobar_timeout</item>
 		<item level="2" text="Show second infobar" description="Configure whether (and for how long) a second infobar will be shown when OK is pressed twice. The second infobar contains additional information about the current channel.">config.usage.show_second_infobar</item>
 		<item level="0" text="Enable infobar fade-out" description="Fade the infobar when hiding">config.usage.show_infobar_do_dimming</item>
@@ -112,7 +111,7 @@
 		<item level="1" text="Zap mode" requires="ZapMode" description="Setup how to control the channel changing.">config.misc.zapmode</item>
 		<item level="2" text="Number of digits in channel number" description="This allows you to set the number of digits you can input when selecting channels using number input.">config.usage.maxchannelnumlen</item>
 	</setup>
-	<setup key="epgsettings" title="EPG settings" menuTitle="Settings">
+	<setup key="epgsettings" title="EPG settings">
 		<item level="0" text="EPG button action" description="Choose what will be displayed when the 'EPG' button is pressed.">config.usage.defaultEPGType</item>
 		<item level="0" text="INFO button action" description="Choose what will be displayed when the 'INFO' button is pressed.">config.usage.defaultINFOType</item>
 		<item level="2" text="EPG location" description="Choose the location where the EPG data will be stored when the %s %s is shut down. The location must be available at boot time.">config.misc.epgcachepath</item>
@@ -210,10 +209,10 @@
 		<item level="2" text="Offline decode delay (ms)" description="Configure the offline decoding delay (in milliseconds). The configured delay is observed at each control word parity change.">config.recording.offline_decode_delay</item>
 		<item level="2" text="Default recording type" description="Descramble &amp; record ECM' gives the option to descramble afterwards if descrambling on recording failed. 'Don't descramble, record ECM' save a scramble recording that can be descrambled on playback. 'Normal' means descramble the recording and don't record ECM.">config.recording.ecm_data</item>
 	</setup>
-	<setup key="harddisk" title="HDD settings" menuTitle="Settings">
+	<setup key="harddisk" title="HDD settings">
 		<item level="0" text="Hard disk standby after" description="Configure duration of inactivity before the hard disk drive goes to standby">config.usage.hdd_standby</item>
 	</setup>
-	<setup key="network" title="Network settings" menuTitle="Settings">
+	<setup key="network" title="Network settings">
 		<item text="Use DHCP" description="When enabled, use DHCP for the IP configuration.">config.network.dhcp</item>
 		<item text="IP address" description="Configure the IP address.">config.network.ip</item>
 		<item text="Netmask" description="Configure the netmask.">config.network.netmask</item>
@@ -221,7 +220,7 @@
 		<item text="Nameserver" description="Configure the nameserver (DNS).">config.network.dns</item>
 		<item text="Activate network settings" description="Activate the configured network settings.">config.network.activate</item>
 	</setup>
-	<setup key="RFmod" title="RF output settings" menuTitle="Settings">
+	<setup key="RFmod" title="RF output settings">
 		<item level="1" text="Modulator">config.rfmod.enable</item>
 		<item level="2" text="Test mode">config.rfmod.test</item>
 		<item level="2" text="Sound">config.rfmod.sound</item>
@@ -229,10 +228,10 @@
 		<item level="1" text="Channel">config.rfmod.channel</item>
 		<item level="1" text="Finetune">config.rfmod.finetune</item>
 	</setup>
-	<setup key="keyboard" title="Keyboard settings" menuTitle="Settings">
+	<setup key="keyboard" title="Keyboard settings">
 		<item level="0" text="Keyboard map">config.keyboard.keymap</item>
 	</setup>
-	<setup key="display" title="Front panel settings" menuTitle="Settings" requires="FrontpanelDisplay">
+	<setup key="display" title="Front panel settings" requires="FrontpanelDisplay">
 		<item level="0" text="Use separate Picon pack for Front Display" description="Use piconlcd directory for picons on color LCD">config.lcd.picon_pack</item>
 		<item level="0" text="Show MiniTV in the Front Display" description="You can Display MiniTV with or without OSD Menu" requires="LCDMiniTV">config.lcd.minitvmode</item>
 		<item level="0" text="Show PIP in the Front Display" description="You can Display PIP with or without OSD Menu" requires="LCDMiniTVPiP">config.lcd.minitvpipmode</item>
@@ -283,18 +282,18 @@
 		<item text="Latitude" description="Configure the latitude of your location.">config.sat.diseqcb</item>
 		<item text="Use power measurement" description="When enabled, measure power consumption to detect when the rotor stops turning (when supported by the tuner)." >config.sat.diseqcc</item>
 	</setup>
-	<setup key="softwareupdate" title="Software update settings" menuTitle="Settings">
+	<setup key="softwareupdate" title="Software update settings">
 		<item level="1" text="Background check" description="Perform an online update check in the background">config.softwareupdate.check</item>
 		<item level="1" text="Check every (hours)" description="Setup the interval (in hours) to check for online updates." requires="config.softwareupdate.check">config.softwareupdate.checktimer</item>
 		<item level="1" text="Allow unstable (experimental) updates" description="When enabled the online checker will also check for experimental versions">config.softwareupdate.updatebeta</item>
 		<item level="1" text="Automatic settings backup" description="Perform a settings backup before updating.">config.softwareupdate.autosettingsbackup</item>
 		<item level="1" text="Automatic image backup" description="Perform a complete image backup before updating.">config.softwareupdate.autoimagebackup</item>
 	</setup>
-	<setup key="softcamsetup" title="Softcam settings" menuTitle="Settings">
+	<setup key="softcamsetup" title="Softcam settings">
 		<item level="2" text="Show CCcam Info in extensions?" description="Allows you to show/hide CCcam Info in extensions (blue button).">config.cccaminfo.showInExtensions</item>
 		<item level="2" text="Show OScam Info in extensions?" description="Allows you to show/hide OScam Info in extensions (blue button).">config.oscaminfo.showInExtensions</item>
 	</setup>
-	<setup key="logs" title="Logs settings" menuTitle="Settings">
+	<setup key="logs" title="Logs settings">
 		<item level="2" text="Logs folder location" description="Choose the location for crash and debug logs folder.">config.crash.debug_path</item>
 		<item level="2" text="Enable debug logs *" description="Allows you to enable the debug logs. They contain very detailed information about everything the system does. Reboot required to enable this!">config.crash.enabledebug</item>
 		<item level="2" text="Limit debug log size (MB)" description="Allows you to set the maximum size (MB) of the individual debug logs. When that size is reached, the log file will be truncated to the maximum size every 60 minutes.">config.crash.debugloglimit</item>
@@ -466,7 +465,7 @@
 		<item level="2" text="Blue button (short)" description="Set to what you want the button to do.">config.epgselection.grid.btn_blue</item>
 		<item level="2" text="Blue button (long)" description="Set to what you want the button to do.">config.epgselection.grid.btn_bluelong</item>
 	</setup>
-	<setup key="pluginbrowsersetup" title="Plugin browser settings" menuTitle="Settings">
+	<setup key="pluginbrowsersetup" title="Plugin browser settings">
 		<item level="2" text="Show translation packages" description="If set to 'yes' it will show the 'PO' packages in browser.">config.pluginbrowser.po</item>
 		<item level="2" text="Show source packages" description="If set to 'yes' it will show the 'SRC' packages in browser.">config.pluginbrowser.src</item>
 	</setup>
