@@ -517,7 +517,6 @@ class ConfigBoolean(ConfigElement):
 		self.value = self.last_value = self.default = default
 		self.descriptions = descriptions
 		self.graphic = graphic
-		self.trueValues = ("1", "enable", "on", "true", "yes")
 
 	def handleKey(self, key):
 		if key in (KEYA_TOGGLE, KEYA_SELECT, KEYA_LEFT, KEYA_RIGHT):
@@ -528,15 +527,15 @@ class ConfigBoolean(ConfigElement):
 			self.value = True
 
 	def fromstring(self, val):
-		return str(val).lower() in self.trueValues
+		return str(val).lower() in self.trueValues()
 
 	def tostring(self, value):
-		return "True" if value and str(value).lower() in self.trueValues else "False"
+		return "True" if value and str(value).lower() in self.trueValues() else "False"
 		# Use the following if settings should be saved using the same values as displayed to the user.
 		# self.descriptions[True] if value or str(value).lower() in ("1", "enable", "on", "true", "yes") else self.descriptions[True]
 
 	def toDisplayString(self, value):
-		return self.descriptions[True] if value or str(value).lower() in self.trueValues else self.descriptions[False]
+		return self.descriptions[True] if value or str(value).lower() in self.trueValues() else self.descriptions[False]
 
 	def getText(self):
 		return self.descriptions[self.value]
@@ -559,7 +558,11 @@ class ConfigBoolean(ConfigElement):
 		return "<input type=\"checkbox\" name=\"%s\" value=\"1\"%s />" % (id, " checked=\"checked\"" if self.value else "")
 
 	def unsafeAssign(self, value):  # DEBUG: Is this still used?
-		self.value = value.lower() in self.trueValues
+		self.value = value.lower() in self.trueValues()
+
+	def trueValues(self):
+		# This should be set in the __init__() but has been done this way as a workaround for a stupid broken plugin that fails to call ConfigBoolean.__init__().
+		return ("1", "enable", "on", "true", "yes")
 
 
 class ConfigEnableDisable(ConfigBoolean):
