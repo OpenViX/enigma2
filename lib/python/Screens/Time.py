@@ -51,7 +51,4 @@ class Time(Setup):
 			self.setFootnote(_("Geolocation has been used to set the time zone."))
 
 	def yellow(self):  # Invoked from the Wizard.
-		self.selectionChanged()
 		self.useGeolocation()
-		self["config"].l.invalidate()
-		config.timezone.save()
