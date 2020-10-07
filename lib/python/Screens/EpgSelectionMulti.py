@@ -3,21 +3,25 @@ from time import localtime, strftime, time
 from enigma import eTimer
 
 from Components.ActionMap import HelpableActionMap
-from Components.config import config
+from Components.config import config, ConfigSelection, ConfigSubsection
 from Components.EpgListMulti import EPGListMulti
 from Components.Label import Label
 from Components.Pixmap import Pixmap
-from Screens.EpgSelectionBase import EPGBouquetSelection, EPGSelectionBase, EPGServiceZap
+from Screens.EpgSelectionBase import EPGBouquetSelection, EPGSelectionBase, EPGServiceNumberSelection, EPGServiceZap, epgActions, infoActions, okActions
 from Screens.Setup import Setup
+from Screens.UserDefinedButtons import UserDefinedButtons
 
 
-class EPGSelectionMulti(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
-	def __init__(self, session, zapFunc, startBouquet, startRef, bouquets):
+class EPGSelectionMulti(EPGSelectionBase, EPGBouquetSelection, EPGServiceNumberSelection, EPGServiceZap, UserDefinedButtons):
+	def __init__(self, session, zapFunc, startBouquet, startRef, bouquets, timeFocus=-1):
+		UserDefinedButtons.__init__(self, config.epgselection.multi, epgActions, okActions)
 		EPGSelectionBase.__init__(self, session, config.epgselection.multi, startBouquet, startRef, bouquets)
 		EPGBouquetSelection.__init__(self, False)
+		EPGServiceNumberSelection.__init__(self)
 		EPGServiceZap.__init__(self, zapFunc)
+
 		self.skinName = ["MultiEPG", "EPGSelectionMulti"]
-		self.askTime = -1
+		self.askTime = timeFocus
 
 		self["now_button"] = Pixmap()
 		self["next_button"] = Pixmap()
@@ -43,12 +47,14 @@ class EPGSelectionMulti(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 			"nextBouquet": (self.nextBouquet, _("Go to next bouquet")),
 			"prevBouquet": (self.prevBouquet, _("Go to previous bouquet")),
 			"input_date_time": (self.enterDateTime, _("Go to specific data/time")),
-			"epg": (self.openSingleEPG, _("Show single epg for current channel")),
-			"info": (self.openEventView, _("Show detailed event info")),
-			"infolong": (self.openSingleEPG, _("Show single epg for current channel")),
+			"epg": self.helpKeyAction("epg"),
+			"epglong": self.helpKeyAction("epglong"),
+			"info": self.helpKeyAction("info"),
+			"infolong": self.helpKeyAction("infolong"),
 			"tv": (self.toggleBouquetList, _("Toggle between bouquet/epg lists")),
 			"timer": (self.openTimerList, _("Show timer list")),
 			"timerlong": (self.openAutoTimerList, _("Show autotimer list")),
+			"back": (self.goToCurrentTimeOrServiceOrTop, _("Go to current time, then the start service")),
 			"menu": (self.createSetup, _("Setup menu"))
 		}, prio=-1, description=helpDescription)
 
@@ -59,6 +65,7 @@ class EPGSelectionMulti(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 			self["list"].setFontsize()
 			self["list"].setItemsPerPage()
 			self["list"].recalcEntrySize()
+			self._updateButtonText()
 
 		self.closeEventViewDialog()
 		self.session.openWithCallback(onClose, Setup, "epgmulti")
@@ -83,6 +90,9 @@ class EPGSelectionMulti(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 		self.refreshTimer.stop()
 		self["list"].updateEPG(0)
 
+	def moveToService(self, serviceRef):
+		self["list"].moveToService(serviceRef)
+
 	def leftPressed(self):
 		self["list"].updateEPG(-1)
 
@@ -97,6 +107,17 @@ class EPGSelectionMulti(EPGSelectionBase, EPGBouquetSelection, EPGServiceZap):
 	def getCurrentService(self):
 		service = self["list"].getCurrent()[1]
 		return service
+
+	def goToCurrentTimeOrServiceOrTop(self):
+		list = self["list"]
+		oldEvent, service = list.getCurrent()
+		self["list"].fillEPG(self.services, time())
+		newEvent, service = list.getCurrent()
+		if oldEvent and newEvent and oldEvent.getEventId() == newEvent.getEventId():
+			if self.startRef and service and service.ref.toString() != self.startRef.toString():
+				self.moveToService(self.startRef)
+			else:
+				self.toTop()
 
 	def onDateTimeInputClosed(self, ret):
 		if len(ret) > 1 and ret[0]:

@@ -14,7 +14,7 @@ from Components.Pixmap import MultiPixmap
 from Components.ScrollLabel import ScrollLabel
 from Components.Sources.StaticText import StaticText
 from Components.SystemInfo import SystemInfo
-from Screen import Screen
+from Screen import Screen, ScreenSummary
 from Screens.GitCommitInfo import CommitInfo
 from Screens.SoftwareUpdate import UpdatePlugin
 from Tools.Directories import fileExists, fileCheck, pathExists
@@ -649,29 +649,24 @@ class SystemNetworkInfo(Screen):
 		return AboutSummary
 
 
-class AboutSummary(Screen):
+class AboutSummary(ScreenSummary):
 	def __init__(self, session, parent):
-		Screen.__init__(self, session, parent=parent)
-		self["selected"] = StaticText("ViX:" + getImageVersion())
-
-		AboutText = _("Model: %s %s\n") % (getMachineBrand(), getMachineName())
-
+		ScreenSummary.__init__(self, session, parent=parent)
+		self.skinName = "AboutSummary"
+		aboutText = _("Model: %s %s\n") % (getMachineBrand(), getMachineName())
 		if path.exists('/proc/stb/info/chipset'):
 			chipset = open('/proc/stb/info/chipset', 'r').read()
-			AboutText += _("Chipset: BCM%s") % chipset.replace('\n', '') + "\n"
-
-		AboutText += _("Version: %s") % getImageVersion() + "\n"
-		AboutText += _("Build: %s") % getImageBuild() + "\n"
-		AboutText += _("Kernel: %s") % about.getKernelVersionString() + "\n"
-
+			aboutText += _("Chipset: %s") % chipset.replace('\n', '') + "\n"
+		aboutText += _("ViX version: %s") % getImageVersion() + "\n"
+		aboutText += _("Build: %s") % getImageBuild() + "\n"
+		aboutText += _("Kernel: %s") % about.getKernelVersionString() + "\n"
 		string = getDriverDate()
 		year = string[0:4]
 		month = string[4:6]
 		day = string[6:8]
 		driversdate = '-'.join((year, month, day))
-		AboutText += _("Drivers: %s") % driversdate + "\n"
-		AboutText += _("Last update: %s") % getEnigmaVersionString() + "\n\n"
-
+		aboutText += _("Drivers: %s") % driversdate + "\n"
+		aboutText += _("Last update: %s") % getEnigmaVersionString() + "\n\n"
 		tempinfo = ""
 		if path.exists('/proc/stb/sensors/temp0/value'):
 			with open('/proc/stb/sensors/temp0/value', 'r') as f:
@@ -684,9 +679,10 @@ class AboutSummary(Screen):
 				tempinfo = f.read()
 		if tempinfo and int(tempinfo.replace('\n', '')) > 0:
 			mark = str('\xc2\xb0')
-			AboutText += _("System temperature: %s") % tempinfo.replace('\n', '') + mark + "C\n\n"
+			aboutText += _("System temperature: %s") % tempinfo.replace('\n', '') + mark + "C\n\n"
+		self["about"] = StaticText(aboutText)  # DEBUG: Proposed for new summary screens.
+		self["AboutText"] = StaticText(aboutText)
 
-		self["AboutText"] = StaticText(AboutText)
 
 class TranslationInfo(Screen):
 	def __init__(self, session):

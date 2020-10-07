@@ -160,7 +160,8 @@ void eStreamClient::notifier(int what)
 				set_tcp_option(streamFd, TCP_USER_TIMEOUT, 10 * 1000);
 
 				if (serviceref.substr(0, 10) == "file?file=") /* convert openwebif stream reqeust back to serviceref */
-					serviceref = "1:0:1:0:0:0:0:0:0:0:" + serviceref.substr(10);
+					serviceref = std::string("1:0:1:0:0:0:0:0:0:0:") + serviceref.substr(10);
+
 				pos = serviceref.find('?');
 				if (pos == std::string::npos)
 				{
@@ -209,7 +210,9 @@ void eStreamClient::notifier(int what)
 						int framerate = 25000;
 						int interlaced = 0;
 						int aspectratio = 0;
+						int buffersize;
 						std::string vcodec, acodec;
+
 						sscanf(request.substr(pos).c_str(), "&bitrate=%d", &bitrate);
 						pos = request.find("&width=");
 						if (pos != std::string::npos)
@@ -246,20 +249,26 @@ void eStreamClient::notifier(int what)
 								acodec = acodec.substr(0, pos);
 							}
 						}
+
 						encoderFd = -1;
-						if (eEncoder::getInstance())
-							encoderFd = eEncoder::getInstance()->allocateEncoder(serviceref, bitrate, width, height, framerate, !!interlaced, aspectratio, vcodec, acodec);
-						if (encoderFd >= 0)
+
+						if(eEncoder::getInstance())
+							encoderFd = eEncoder::getInstance()->allocateEncoder(serviceref, buffersize, bitrate, width, height, framerate, !!interlaced, aspectratio,
+									vcodec, acodec);
+
+						if(encoderFd >= 0)
 						{
-							running = true;
-							streamThread = new eDVBRecordStreamThread(188);
+							m_serviceref = serviceref;
+							m_useencoder = true;
+
+							streamThread = new eDVBRecordStreamThread(188, buffersize);
+
 							if (streamThread)
 							{
 								streamThread->setTargetFD(streamFd);
 								streamThread->start(encoderFd);
+								running = true;
 							}
-							m_serviceref = serviceref;
-							m_useencoder = true;
 						}
 					}
 				}

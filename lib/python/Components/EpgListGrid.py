@@ -675,7 +675,7 @@ class EPGListGrid(EPGListBase):
 		sely = self.instance.position().y() + self.itemHeight * index
 		if sely >= self.instance.position().y() + self.listHeight:
 			sely -= self.listHeight
-		return self.listWidth, sely
+		return self.selectionRect.left() + self.selectionRect.width(), sely
 
 	def refreshSelection(self):
 		events = self.selectedService and self.selectedService[2]  # (service, serviceName, events, picon)

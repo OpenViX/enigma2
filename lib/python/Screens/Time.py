@@ -6,8 +6,8 @@ from Tools.Geolocation import geolocation
 
 
 class Time(Setup):
-	def __init__(self, session, PluginLanguageDomain=None):
-		Setup.__init__(self, session=session, setup="time", plugin=None, PluginLanguageDomain=PluginLanguageDomain)
+	def __init__(self, session):
+		Setup.__init__(self, session=session, setup="time")
 		self["key_yellow"] = StaticText("")
 		self["geolocationActions"] = HelpableActionMap(self, "ColorActions", {
 			"yellow": (self.useGeolocation, _("Use geolocation to set the current time zone location"))
@@ -35,9 +35,9 @@ class Time(Setup):
 			areaItem = None
 			valItem = None
 			for item in self["config"].list:
-				if item[1] == config.timezone.area:
+				if item[1] is config.timezone.area:
 					areaItem = item
-				if item[1] == config.timezone.val:
+				if item[1] is config.timezone.val:
 					valItem = item
 			area, zone = tz.split("/", 1)
 			config.timezone.area.value = area

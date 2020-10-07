@@ -242,19 +242,23 @@ class Wizard(Screen):
 
 	def red(self):
 # 		print "red"
-		pass
+		if self.wizard[self.currStep]["config"]["screen"] is not None and hasattr(self.configInstance, "red") and callable(self.configInstance.red):
+			self.configInstance.red()
 
 	def green(self):
 # 		print "green"
-		pass
+		if self.wizard[self.currStep]["config"]["screen"] is not None and hasattr(self.configInstance, "green") and callable(self.configInstance.green):
+			self.configInstance.green()
 
 	def yellow(self):
 # 		print "yellow"
-		pass
+		if self.wizard[self.currStep]["config"]["screen"] is not None and hasattr(self.configInstance, "yellow") and callable(self.configInstance.yellow):
+			self.configInstance.yellow()
 
 	def blue(self):
 # 		print "blue"
-		pass
+		if self.wizard[self.currStep]["config"]["screen"] is not None and hasattr(self.configInstance, "blue") and callable(self.configInstance.blue):
+			self.configInstance.blue()
 
 	def deleteForward(self):
 		self.resetCounter()
@@ -580,7 +584,7 @@ class Wizard(Screen):
 				if self.wizard[self.currStep]["config"]["type"] == "dynamic":
 					print "[Wizard] config type is dynamic"
 					self["config"].instance.setZPosition(2)
-					self["config"].l.setList(eval("self." + self.wizard[self.currStep]["config"]["source"])())
+					self["config"].list = eval("self." + self.wizard[self.currStep]["config"]["source"])()
 				elif self.wizard[self.currStep]["config"]["screen"] is not None:
 					if self.wizard[self.currStep]["config"]["type"] == "standalone":
 						print "[Wizard] Type is standalone"
@@ -595,8 +599,13 @@ class Wizard(Screen):
 								self.configInstance = self.session.instantiateDialog(self.wizard[self.currStep]["config"]["screen"], eval(self.wizard[self.currStep]["config"]["args"]))
 							except:
 								self.configInstance = self.session.instantiateDialog(self.wizard[self.currStep]["config"]["screen"], self.wizard[self.currStep]["config"]["args"])
-						self.configInstance.setAnimationMode(0)
-						self["config"].l.setList(self.configInstance["config"].list)
+						# When run this way, the setup screen is instantiated, not shown.
+						# The contents of self.configInstance["config"].list are copied
+						# into self["config"], the contents of
+						# self.configInstance["config"] are cleared (as if by a close()),
+						# and self["config"] is assigned to
+						# self.configInstance["config"]
+						self["config"].list = self.configInstance["config"].list
 						callbacks = self.configInstance["config"].onSelectionChanged
 						self.configInstance["config"].destroy()
 						print "[Wizard] clearConfigList", self.configInstance["config"], self["config"]
@@ -604,7 +613,7 @@ class Wizard(Screen):
 						self.configInstance["config"].onSelectionChanged = callbacks
 						print "[Wizard] clearConfigList", self.configInstance["config"], self["config"]
 				else:
-					self["config"].l.setList([])
+					self["config"].list = []
 					self.handleInputHelpers()
 
 

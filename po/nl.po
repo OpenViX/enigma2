@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-21 07:33+0000\n"
-"PO-Revision-Date: 2020-07-10 14:40+0200\n"
+"POT-Creation-Date: 2020-10-05 02:58+0000\n"
+"PO-Revision-Date: 2020-10-05 15:36+0200\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SourceCharset: iso-8859-15\n"
-"X-Generator: Poedit 2.3.1\n"
+"X-Generator: Poedit 2.4.1\n"
 
 #, python-format
 msgid ""
@@ -1004,6 +1004,10 @@ msgid "%s"
 msgstr "%s"
 
 #, python-format
+msgid "%s  (Default: %s)"
+msgstr "%s  (Standaard: %s)"
+
+#, python-format
 msgid "%s %s advanced remote control (native)"
 msgstr "%s %s geavanceerde afstandsbediening"
 
@@ -1102,7 +1106,7 @@ msgstr "(Huidig)"
 
 #, python-format
 msgid "(Partition %d)"
-msgstr " (Partitie %d)"
+msgstr "(Partitie %d)"
 
 msgid "(PiP)"
 msgstr "(PiP)"
@@ -1143,13 +1147,11 @@ msgstr "* Alleen beschikbaar indien meer dan één interface actief is."
 msgid "* current animation"
 msgstr "* huidige animatie"
 
-#, python-format
-msgid "** Setup error: '%s' section not found! **"
-msgstr ""
+msgid "+24 hours"
+msgstr "+24 uur"
 
-#, python-format
-msgid "** Setup error: '%s' title is missing or blank!"
-msgstr ""
+msgid "-24 hours"
+msgstr "-24 uur"
 
 msgid "-NO SERVICE\n"
 msgstr "-GEEN SERVICE\n"
@@ -1291,6 +1293,9 @@ msgstr "3D"
 msgid "3D Mode"
 msgstr "3D modus"
 
+msgid "3D Setup"
+msgstr "3D instellingen"
+
 msgid "3D Surround"
 msgstr "3D surround"
 
@@ -1386,9 +1391,6 @@ msgstr "<onbekend>"
 
 msgid "=NO STREAM\n"
 msgstr "=GEEN STREAM\n"
-
-msgid "??"
-msgstr "??"
 
 msgid "A"
 msgstr "A"
@@ -1538,9 +1540,8 @@ msgstr ""
 "Timer opname mislukt!\n"
 "Verander van zender en probeer het opnieuw.\n"
 
-#, fuzzy
 msgid "A/V settings"
-msgstr "AV instellingen"
+msgstr "A/V instellingen"
 
 msgid "AAC downmix"
 msgstr "AAC downmix"
@@ -1602,6 +1603,9 @@ msgstr "Uw ontvanger"
 
 msgid "Accept the current selection"
 msgstr "Accepteer huidige selectie"
+
+msgid "Access extensions"
+msgstr "Toegang tot extensies"
 
 msgid "Accesspoint:"
 msgstr "Toegangspunt:"
@@ -1678,6 +1682,9 @@ msgstr "Voeg opname timer toe"
 msgid "Add a record timer for current event"
 msgstr "Voeg opnametimer toe voor huidige programma"
 
+msgid "Add a record timer or an autotimer for current event"
+msgstr "Voeg opnametimer of AutoTimer toe voor huidige programma"
+
 msgid "Add a zap timer for current event"
 msgstr "Voeg zaptimer toe voor huidig programma"
 
@@ -1689,6 +1696,9 @@ msgstr "Alternatieven toevoegen"
 
 msgid "Add an autotimer for current event"
 msgstr "Voeg AutoTimer toe voor huidig programma"
+
+msgid "Add and edit a record timer for current event"
+msgstr "Voeg opnametimer toe voor huidige programma of pas deze aan"
 
 msgid "Add bookmark"
 msgstr "Voeg een bladwijzer toe"
@@ -1741,6 +1751,9 @@ msgstr "Zenders toevoegen aan deze favorietenlijst?"
 msgid "Add timer"
 msgstr "Timer"
 
+msgid "Add timers"
+msgstr "Timers toevoegen"
+
 msgid "Add title"
 msgstr "Voeg titel toe"
 
@@ -1753,6 +1766,9 @@ msgstr "Voeg aan favorieten toe"
 msgid "Add to parental protection"
 msgstr "Zender achter kinderslot zetten"
 
+msgid "Add/Edit an autotimer for current event"
+msgstr "Voeg AutoTimer toe voor huidig programma of pas deze aan"
+
 msgid "Add/Remove timer for current event"
 msgstr "Timer voor huidige programma toevoegen/verwijderen"
 
@@ -1761,6 +1777,9 @@ msgstr "Voegt schema toe..."
 
 msgid "Additional Info"
 msgstr "Aanvullende info"
+
+msgid "Additional cable of motorized LNB"
+msgstr "Extra kabel van gemotoriseerde LNB"
 
 msgid "Additional motor options allow you to enter details from your motor's spec sheet so enigma can work out how long it will take to move the dish from one satellite to another satellite."
 msgstr "Aanvullende motoropties geven de mogelijkheid de specifieke eigenschappen van uw motor in te stellen."
@@ -1975,7 +1994,7 @@ msgstr "Er is een onbekende fout opgetreden!"
 msgid "Andorra"
 msgstr "Andorra"
 
-msgid "Android mode"
+msgid "Android Mode"
 msgstr "Android mode"
 
 msgid "Angola"
@@ -2034,9 +2053,7 @@ msgid "Are you sure you want to delete all the selected logs:\n"
 msgstr "Weet u zeker dat u alle geselecteerde logs wilt verwijderen:\n"
 
 msgid "Are you sure you want to delete image:"
-msgstr ""
-"Weet u zeker dat u dit image wil verwijderen:\n"
-" "
+msgstr "Weet u zeker dat u dit image wil verwijderen:"
 
 msgid "Are you sure you want to delete the EPG data from:\n"
 msgstr "Weet u zeker dat u de EPG data wilt verwijderen van:\n"
@@ -2133,6 +2150,9 @@ msgstr "Vraag gebruiker (met 'nee' als default)"
 msgid "Ask user (with default as 'yes')"
 msgstr "Vraag gebruiker (met ja' als default)"
 
+msgid "Ask whether to stop movie"
+msgstr "Vraag de film te stoppen"
+
 msgid "Aspect ratio"
 msgstr "Aspectverhouding"
 
@@ -2154,7 +2174,7 @@ msgstr "Let op: dit is een herhalende timer!\n"
 msgid "Audio"
 msgstr "Audio"
 
-msgid "Audio & video"
+msgid "Audio & Video"
 msgstr "Audio & video"
 
 msgid "Audio PID"
@@ -2185,6 +2205,9 @@ msgstr "Audiospoor (%s) formaat"
 #, python-format
 msgid "Audio track (%s) language"
 msgstr "Audiospoor (%s) taal"
+
+msgid "Audio track selection, downmix and other audio options"
+msgstr "Audiotrack keuze, downmix en andere opties"
 
 msgid "Australia"
 msgstr "Australië"
@@ -2247,8 +2270,14 @@ msgstr "Automatisch scart schakelen"
 msgid "Auto volume level"
 msgstr "Automatisch volumeniveau"
 
+msgid "AutoTimer List"
+msgstr "AutoTimer Lijst"
+
 msgid "Automatic"
 msgstr "Automatisch"
+
+msgid "Automatic Language"
+msgstr "Automatische taalinstellingen"
 
 msgid "Automatic Scan"
 msgstr "Automatisch zoeken"
@@ -2386,6 +2415,9 @@ msgstr "Barbados"
 msgid "Base time"
 msgstr "Basis timer"
 
+msgid "Basic functions"
+msgstr "Basis functies"
+
 msgid "Basque"
 msgstr "Baskisch"
 
@@ -2454,6 +2486,12 @@ msgstr "Blokruis vermindering"
 
 msgid "Blue"
 msgstr "Blauw"
+
+msgid "Blue button (long)"
+msgstr "Blauwe toets (lang)"
+
+msgid "Blue button (short)"
+msgstr "Blauwe toets (kort)"
 
 msgid "Blue long"
 msgstr "Lang-blauw"
@@ -2552,9 +2590,6 @@ msgstr "Burundi"
 msgid "Bus: "
 msgstr "Bus: "
 
-msgid "Button"
-msgstr "Toets"
-
 msgid "Button Setup"
 msgstr "Toetsinstellingen"
 
@@ -2633,9 +2668,6 @@ msgstr "CCcam share-informatie"
 msgid "CCcam Shares Info"
 msgstr "CCcam share-informatie"
 
-msgid "CCcam info"
-msgstr "CCcam info"
-
 msgid "CH"
 msgstr "CH"
 
@@ -2704,13 +2736,11 @@ msgstr "Canada"
 msgid "Cancel"
 msgstr "Annuleer"
 
-#, fuzzy
 msgid "Cancel any changed settings and exit"
-msgstr "Annuleer tekst en sluit af"
+msgstr "Annuleer wijzigingen en sluit af"
 
-#, fuzzy
 msgid "Cancel any changed settings and exit all menus"
-msgstr "Annuleer image keuze en verlaat alle menu's"
+msgstr "Annuleer alle wijzigen en verlaat alle menu's"
 
 msgid "Cancel any changes to the currently active skin"
 msgstr "Annuleer aanpassingen aan de actieve skin"
@@ -2732,6 +2762,9 @@ msgstr "Annuleer image keuze en verlaat alle menu's"
 
 msgid "Cancel the selection"
 msgstr "Annuleer deze selectie"
+
+msgid "Cancel timer creation / changes"
+msgstr "Annuleer timer maken/aanpassen"
 
 msgid "Cancelled upon user request"
 msgstr "Geannuleerd door de gebruiker"
@@ -2790,6 +2823,12 @@ msgstr "Centreer DVB-ondertitels"
 msgid "Central African Republic"
 msgstr "Central African Republic"
 
+msgid "Ch+ button"
+msgstr "Ch+ toets"
+
+msgid "Ch- button"
+msgstr "Ch- toets"
+
 msgid "Chad"
 msgstr "Chad"
 
@@ -2829,9 +2868,6 @@ msgstr "Verander de kleurruimte voor HDR"
 msgid "Change the Colorspace from Auto to RGB"
 msgstr "Verander de kleurruimte van Auto naar RGB"
 
-msgid "Change to service"
-msgstr "Wijzig in kanaal"
-
 msgid "Channel"
 msgstr "Kanaal"
 
@@ -2843,6 +2879,9 @@ msgstr "Kanaallijst"
 
 msgid "Channel List Context Menu"
 msgstr "Kanaallijst contextmenu"
+
+msgid "Channel Selection"
+msgstr "Zenderkeuze"
 
 msgid "Channel down"
 msgstr "Kanaal omlaag"
@@ -2958,8 +2997,8 @@ msgid "Chipset:\tHiSilicon %s\n"
 msgstr "Chipset:\tHiSilicon %s\n"
 
 #, python-format
-msgid "Chipset: BCM%s"
-msgstr "Chipset: BCM%s"
+msgid "Chipset: %s"
+msgstr "Chipset: %s"
 
 msgid "Choose Bouquet"
 msgstr "Kies favorieten"
@@ -3008,6 +3047,12 @@ msgstr "Kies het tijdsinterval waarop de grafische indeling wordt afgerond."
 
 msgid "Choose what channel to select when the EPG opens."
 msgstr "Kies welk kanaal u wil selecteren wanneer de EPG geopend wordt."
+
+msgid "Choose what will be displayed when the 'EPG' button is pressed."
+msgstr "Kies wat getoond moet worden als de EPG-toets wordt gebruikt."
+
+msgid "Choose what will be displayed when the 'INFO' button is pressed."
+msgstr "Kies wat getoond moet worden als de INFO-toets wordt gebruikt."
 
 msgid "Choose what you want the '0' button to do when PIP is active."
 msgstr "Stel hier in wat de \"0\"-toets moet doen wanneer PIP actief is."
@@ -3106,11 +3151,8 @@ msgstr "Sluiten"
 msgid "Close PiP on exit"
 msgstr "Sluit PiP met de exit-toets"
 
-msgid "Close dialog box"
-msgstr "Sluit dialoog"
-
-msgid "Close number zap."
-msgstr "Sluit nummer-zap."
+msgid "Close screen"
+msgstr "Sluit scherm"
 
 msgid "Close title selection"
 msgstr "Sluit titelselectie"
@@ -3163,12 +3205,11 @@ msgstr "Type opdracht"
 msgid "Common Interface"
 msgstr "Common interface"
 
-#, fuzzy
-msgid "Common Setup Functions"
-msgstr "Algemene instellingen"
+msgid "Common Menu Actions"
+msgstr "Algemene menu-instellingen"
 
-msgid "Common interface"
-msgstr "Common interface"
+msgid "Common Setup Actions"
+msgstr "Algemene instellingen"
 
 msgid "Common interface assignment"
 msgstr "Common interface toewijzing"
@@ -3239,7 +3280,7 @@ msgid "Configure an additional delay to improve subtitle synchronisation."
 msgstr "Stel een extra vertraging in om de synchronisatie van ondertitels te verbeteren."
 
 msgid "Configure duration of inactivity before the hard disk drive goes to standby"
-msgstr "Stel in na hoeveel tijd niet gebruikt te zijn de harde schijf moet gaan slapen."
+msgstr "Stel in na hoeveel tijd niet gebruikt te zijn de harde schijf moet gaan slapen"
 
 msgid "Configure for how many minutes finished events should remain visible in the EPG. Useful when you need information about an event which has just finished, or has been delayed."
 msgstr "Bepaal hoelang oude info in de EPG zichtbaar moet blijven. Nuttig als u informatie zoekt over een programma dat net is afgelopen of dat verlaat is."
@@ -3272,7 +3313,7 @@ msgid "Configure if service picons will be shown in the channel selection list."
 msgstr "Stel in of picons moeten worden getoond in de kanaallijst.."
 
 msgid "Configure if the subtitle should switch between normal, italic, bold and bolditalic"
-msgstr "Stel in of de ondertitels kunnen wisselen tussen normaal, schuin en vet."
+msgstr "Stel in of de ondertitels kunnen wisselen tussen normaal, schuin en vet"
 
 msgid "Configure interface"
 msgstr "Configureer interface"
@@ -3411,7 +3452,7 @@ msgid "Configure the primary EPG language."
 msgstr "Kies EPG taal 1."
 
 msgid "Configure the refresh rate of the screen. Multi means refresh rate depends on the source 24/50/60Hz"
-msgstr "Stel de verversingsfrequentie van het scherm in. 'Multi' betekent dat de waarde afhangt van de bron 24/50/60Hz."
+msgstr "Stel de verversingsfrequentie van het scherm in. 'Multi' betekent dat de waarde afhangt van de bron 24/50/60Hz"
 
 msgid "Configure the second audio language."
 msgstr "Kies audiotaal 2."
@@ -3654,6 +3695,12 @@ msgstr "Crash logs"
 msgid "Create DVD-ISO"
 msgstr "DVD-ISO maken"
 
+msgid "Create Timer"
+msgstr "Maak timer"
+
+msgid "Create Zap Timer"
+msgstr "Maak ZAP-timer"
+
 msgid "Create directory"
 msgstr "Map aanmaken"
 
@@ -3685,7 +3732,7 @@ msgstr "Croatisch"
 msgid "Cron Manager"
 msgstr "Cronmanager"
 
-msgid "Cron timers"
+msgid "Cron Timers"
 msgstr "Cron timers"
 
 msgid "Cuba"
@@ -3746,6 +3793,9 @@ msgstr "Aangepaste springtijd voor de '4'/'6'-toetsen"
 msgid "Custom skip time for '7'/'9' buttons"
 msgstr "Aangepaste springtijd voor de '7'/'9'-toetsen"
 
+msgid "Customize"
+msgstr "Aanpassen"
+
 msgid "Customize settings"
 msgstr "Instellingen aanpassen"
 
@@ -3757,6 +3807,9 @@ msgstr "Cutlist editor"
 
 msgid "Cutlist editor..."
 msgstr "Cutlist editor..."
+
+msgid "Cycle through infobar displays"
+msgstr "Blader door de verschillende weergaves van de infobar"
 
 msgid "Cyprus"
 msgstr "Cyprus"
@@ -3879,142 +3932,142 @@ msgid "Date style"
 msgstr "Datumstijl"
 
 msgid "Day D Mon"
-msgstr "dag D ma"
+msgstr "Dag D ma"
 
 msgid "Day D-Mon"
-msgstr "dag D-ma"
+msgstr "Dag D-ma"
 
 msgid "Day D/M"
-msgstr "dag D/M"
+msgstr "Dag D/M"
 
 msgid "Day D/MM"
-msgstr "dag D/MM"
+msgstr "Dag D/MM"
 
 msgid "Day DD Mon"
-msgstr "dag DD ma"
+msgstr "Dag DD ma"
 
 msgid "Day DD-Mon"
-msgstr "dag DD-ma"
+msgstr "Dag DD-ma"
 
 msgid "Day DD/M"
-msgstr "dag DD/M"
+msgstr "Dag DD/M"
 
 msgid "Day DD/MM"
-msgstr "dag DD/MM"
+msgstr "Dag DD/MM"
 
 msgid "Day M/D"
-msgstr "dag M/D"
+msgstr "Dag M/D"
 
 msgid "Day M/DD"
-msgstr "dag M/DD"
+msgstr "Dag M/DD"
 
 msgid "Day MM/D"
-msgstr "dag MM/D"
+msgstr "Dag MM/D"
 
 msgid "Day MM/DD"
-msgstr "dag MM/DD"
+msgstr "Dag MM/DD"
 
 msgid "Day Mon D"
-msgstr "dag ma D"
+msgstr "Dag ma D"
 
 msgid "Day Mon DD"
-msgstr "dag ma DD"
+msgstr "Dag ma DD"
 
 msgid "Day Mon-D"
-msgstr "dag ma-D"
+msgstr "Dag ma-D"
 
 msgid "Day Mon-DD"
-msgstr "dag ma-DD"
+msgstr "Dag ma-DD"
 
 msgid "Dayname D Month Year"
-msgstr "dagnaam D maand jaar"
+msgstr "Dagnaam D maand jaar"
 
 msgid "Dayname D-Month-Year"
-msgstr "dagnaam D-maand-jaar"
+msgstr "Dagnaam D-maand-jaar"
 
 msgid "Dayname D. Month Year"
-msgstr "dagnaam D. maand jaar"
+msgstr "Dagnaam D. maand jaar"
 
 msgid "Dayname D.M.Year"
-msgstr "dagnaam D.M.jaar"
+msgstr "Dagnaam D.M.jaar"
 
 msgid "Dayname D.MM.Year"
-msgstr "dagnaam D.MM.jaar"
+msgstr "Dagnaam D.MM.jaar"
 
 msgid "Dayname D/M/Year"
-msgstr "dagnaam D/M/jaar"
+msgstr "Dagnaam D/M/jaar"
 
 msgid "Dayname D/MM/Year"
-msgstr "dagnaam D/MM/jaar"
+msgstr "Dagnaam D/MM/jaar"
 
 msgid "Dayname DD Month Year"
-msgstr "dagnaam DD maand jaar"
+msgstr "Dagnaam DD maand jaar"
 
 msgid "Dayname DD-Month-Year"
-msgstr "dagnaam DD-maand-jaar"
+msgstr "Dagnaam DD-maand-jaar"
 
 msgid "Dayname DD. Month Year"
-msgstr "dagnaam DD. maand jaar"
+msgstr "Dagnaam DD. maand jaar"
 
 msgid "Dayname DD.M.Year"
-msgstr "dagnaam DD.M.jaar"
+msgstr "Dagnaam DD.M.jaar"
 
 msgid "Dayname DD.MM.Year"
-msgstr "dagnaam DD.MM.jaar"
+msgstr "Dagnaam DD.MM.jaar"
 
 msgid "Dayname DD/M/Year"
-msgstr "dagnaam DD/M/jaar"
+msgstr "Dagnaam DD/M/jaar"
 
 msgid "Dayname DD/MM/Year"
-msgstr "dagnaam DD/MM/jaar"
+msgstr "Dagnaam DD/MM/jaar"
 
 msgid "Dayname M/D/Year"
-msgstr "dagnaam M/D/jaar"
+msgstr "Dagnaam M/D/jaar"
 
 msgid "Dayname M/DD/Year"
-msgstr "dagnaam M/DD/jaar"
+msgstr "Dagnaam M/DD/jaar"
 
 msgid "Dayname MM/D/Year"
-msgstr "dagnaam MM/D/jaar"
+msgstr "Dagnaam MM/D/jaar"
 
 msgid "Dayname MM/DD/Year"
-msgstr "dagnaam MM/DD/jaar"
+msgstr "Dagnaam MM/DD/jaar"
 
 msgid "Dayname Month D Year"
-msgstr "dagnaam maand D jaar"
+msgstr "Dagnaam maand D jaar"
 
 msgid "Dayname Month DD Year"
-msgstr "dagnaam maand DD jaar"
+msgstr "Dagnaam maand DD jaar"
 
 msgid "Dayname Month-D-Year"
-msgstr "dagnaam maand-D-jaar"
+msgstr "Dagnaam maand-D-jaar"
 
 msgid "Dayname Month-DD-Year"
-msgstr "dagnaam maand-DD-jaar"
+msgstr "Dagnaam maand-DD-jaar"
 
 msgid "Dayname Year Month D"
-msgstr "dagnaam jaar maand D"
+msgstr "Dagnaam jaar maand D"
 
 msgid "Dayname Year Month DD"
-msgstr "dagnaam jaar maand DD"
+msgstr "Dagnaam jaar maand DD"
 
 msgid "Dayname Year-Month-D"
-msgstr "dagnaam jaar-maand-D"
+msgstr "Dagnaam jaar-maand-D"
 
 msgid "Dayname Year-Month-DD"
-msgstr "dagnaam jaar-maand-DD"
+msgstr "Dagnaam jaar-maand-DD"
 
 msgid "Dayname Year/M/D"
-msgstr "dagnaam jaar/M/D"
+msgstr "Dagnaam jaar/M/D"
 
 msgid "Dayname Year/M/DD"
-msgstr "dagnaam jaar/M/DD"
+msgstr "Dagnaam jaar/M/DD"
 
 msgid "Dayname Year/MM/D"
-msgstr "dagnaam jaar/MM/D"
+msgstr "Dagnaam jaar/MM/D"
 
 msgid "Dayname Year/MM/DD"
-msgstr "dagnaam jaar/MM/DD"
+msgstr "Dagnaam jaar/MM/DD"
 
 msgid "De-select"
 msgstr "Deselecteer"
@@ -4024,6 +4077,13 @@ msgstr "Debug logs"
 
 msgid "Debug log time format *"
 msgstr "Debuglog tijdformaat *"
+
+#
+msgid "Decrement end time"
+msgstr "Verminder eindtijd"
+
+msgid "Decrement start time"
+msgstr "Verminder starttijd"
 
 msgid "Deep Standby"
 msgstr "Uitschakelen"
@@ -4049,6 +4109,10 @@ msgstr "Standaard opname type"
 
 msgid "Default settings"
 msgstr "Standaard instellingen"
+
+#, python-format
+msgid "Default: '%s'."
+msgstr "Standaard: '%s'."
 
 msgid "Defaults"
 msgstr "Standaard waardes"
@@ -4129,8 +4193,8 @@ msgstr "Verwijder %s?"
 msgid "Delete Confirmation"
 msgstr "Bevestig verwijderen"
 
-msgid "Delete EPG"
-msgstr "EPG verwijderen"
+msgid "Delete EPG Cache"
+msgstr "EPG-cache verwijderen"
 
 msgid "Delete Language(s)"
 msgstr "Verwijder talen"
@@ -4138,8 +4202,17 @@ msgstr "Verwijder talen"
 msgid "Delete Timer"
 msgstr "Verwijder timer"
 
+msgid "Delete all log entries"
+msgstr "Verwijder alle loginvoer"
+
 msgid "Delete all the text"
 msgstr "Verwijder alle tekst"
+
+msgid "Delete character to left of cursor or select AM times"
+msgstr "Verwijder karakter links van de cursor of kies AM-tijden"
+
+msgid "Delete character under cursor or select PM times"
+msgstr "Verwijder karakter onder de cursor of kies PM-tijden"
 
 msgid "Delete entry"
 msgstr "Verwijder invoer"
@@ -4150,22 +4223,17 @@ msgstr "Verwijderen is mislukt!"
 msgid "Delete file"
 msgstr "Verwijder bestand"
 
+msgid "Delete log entry"
+msgstr "Verwijder log-invoer"
+
 msgid "Delete playlist entry"
 msgstr "Wis item in de afspeellijst"
 
 msgid "Delete saved playlist"
 msgstr "Opgeslagen afspeellijst verwijderen"
 
-#, fuzzy
-msgid "Delete the character to the left of cursor"
-msgstr "Verwijder karakter links van de cursor"
-
 msgid "Delete the character to the left of text cursor"
 msgstr "Verwijder karakter links van de cursor"
-
-#, fuzzy
-msgid "Delete the character under the cursor"
-msgstr "Verwijder karakter onder de cursor"
 
 msgid "Delete the character under the text cursor"
 msgstr "Verwijder karakter onder de cursor"
@@ -4272,6 +4340,9 @@ msgstr "Dim vertraging"
 msgid "Dim the LCD after specified time."
 msgstr "Dim het LCD na de ingestelde tijd."
 
+msgid "Direct menu item selection"
+msgstr "Directe menukeuze"
+
 msgid "Direct playback of linked titles without menu"
 msgstr "Direct afspelen van titels zonder menu"
 
@@ -4281,6 +4352,22 @@ msgstr "Map"
 #, python-format
 msgid "Directory %s does not exist."
 msgstr "Map %s bestaat niet."
+
+#, python-format
+msgid "Directory '%s' can't be linked to recordings!"
+msgstr "Map '%s' kan niet worden gelinked aan opnames!"
+
+#, python-format
+msgid "Directory '%s' does not exist!"
+msgstr "Map '%s' bestaat niet!"
+
+#, python-format
+msgid "Directory '%s' not writable!"
+msgstr "In map '%s' kan niet worden geschreven!"
+
+#, python-format
+msgid "Directory '%s' not writeable!"
+msgstr "In map '%s' kan niet worden geschreven!"
 
 msgid "Directory browser"
 msgstr "Bestandsverkenner"
@@ -4328,19 +4415,19 @@ msgid "Display message before playing next movie"
 msgstr "Toon een bericht alvorens de volgende film te spelen"
 
 msgid "Display selection list as a selection menu"
-msgstr ""
+msgstr "Toon selectielijst als selectiemenu"
 
 msgid "Display the EIT now/next eventdata in infobar."
 msgstr "Toon EIT nu/straks programmagegevens in de infobar."
 
 msgid "Display the virtual keyboard for data entry"
-msgstr ""
+msgstr "Toon het virtuele toetsenbord voor het ingeven van data"
 
 msgid "Djibouti"
 msgstr "Djibouti"
 
 msgid "Do not center DVB subs on this service"
-msgstr "Centreer DVB-ondertitels niet voor dit kanaal."
+msgstr "Centreer DVB-ondertitels niet voor dit kanaal"
 
 msgid "Do not change"
 msgstr "Niet veranderen"
@@ -4438,7 +4525,7 @@ msgid "Do you want to burn this collection to DVD medium?"
 msgstr "Wilt u deze verzameling op een DVD medium schrijven?"
 
 msgid "Do you want to change the default skin"
-msgstr "Wilt u van skin veraanderen?"
+msgstr "Wilt u van skin veranderen?"
 
 msgid "Do you want to continue?"
 msgstr "Wilt u doorgaan?"
@@ -4517,7 +4604,7 @@ msgid "Don't save"
 msgstr "Niet opslaan"
 
 msgid "Don't stop current event but disable future events"
-msgstr "Huidige timer niet stoppen, maar toekomstige timers uitschakelen."
+msgstr "Huidige timer niet stoppen, maar toekomstige timers uitschakelen"
 
 msgid "Don't zap"
 msgstr "Niet zappen"
@@ -4615,6 +4702,18 @@ msgstr "EPG-commando"
 msgid "EPG Search"
 msgstr "EPG zoeken"
 
+msgid "EPG access"
+msgstr "EPG toegang"
+
+msgid "EPG button (long)"
+msgstr "EPG-toets (lang)"
+
+msgid "EPG button (short)"
+msgstr "EPG-toets (kort)"
+
+msgid "EPG button action"
+msgstr "EPG-toets actie"
+
 msgid "EPG filename"
 msgstr "EPG bestandsnaam"
 
@@ -4666,6 +4765,9 @@ msgstr "Ecuador"
 
 msgid "Edit"
 msgstr "Bewerk"
+
+msgid "Edit AutoTimer"
+msgstr "Wijzig AutoTimer"
 
 msgid "Edit DNS"
 msgstr "DNS wijzigen"
@@ -4892,6 +4994,9 @@ msgstr "Voer blijvende PIN in"
 msgid "Enter pin code"
 msgstr "Voer pincode in"
 
+msgid "Enter service number"
+msgstr "Voer kanaalnummer in"
+
 msgid "Enter the FTP password of the host receiver (normally just leave empty)."
 msgstr "Geef het FTP-wachtwoord van de gast-ontvanger."
 
@@ -5064,6 +5169,12 @@ msgstr "Verlaat EPG"
 msgid "Exit MAC address configuration"
 msgstr "Verlaat MAC-adres configuratie"
 
+msgid "Exit all menus"
+msgstr "Verlaat alle menu's"
+
+msgid "Exit channel selection"
+msgstr "Verlaat zenderkeuze"
+
 msgid "Exit editor"
 msgstr "Editor afsluiten"
 
@@ -5075,6 +5186,9 @@ msgstr "Mediaspeler afsluiten?"
 
 msgid "Exit mediaplayer"
 msgstr "Mediaspeler afsluiten"
+
+msgid "Exit menu"
+msgstr "Verlaat menu"
 
 msgid "Exit mounts setup menu"
 msgstr "Verlaat mountinstellingen menu"
@@ -5257,9 +5371,6 @@ msgstr "FTP passieve modus"
 msgid "Factory Reset"
 msgstr "Fabrieksinstellingen"
 
-msgid "Factory reset"
-msgstr "Fabrieksinstellingen"
-
 msgid "Fade the infobar when hiding"
 msgstr "Vervaag de infobar als die verborgen wordt"
 
@@ -5272,14 +5383,14 @@ msgstr "Mislukt te schrijven naar /tmp/positionersetup.log: "
 msgid "Falkland Islands (Malvinas)"
 msgstr "Falkland Islands (Malvinas)"
 
+msgid "Fallback Configuration"
+msgstr "Fallback configuratie"
+
 msgid "Fallback Tuner Setup"
 msgstr "Fallback tuner-instellingen"
 
 msgid "Fallback address type"
 msgstr "Fallback adres-type"
-
-msgid "Fallback configuration"
-msgstr "Fallback configuratie"
 
 msgid "Fallback receiver IP address"
 msgstr "Fallback ontvanger URL"
@@ -5356,9 +5467,6 @@ msgstr "Bestandnaam"
 msgid "Filesystem Check"
 msgstr "Bestandssysteemcontrole"
 
-msgid "Filesystem check"
-msgstr "Controle filesysteem"
-
 msgid "Final position at"
 msgstr "Eindpositie op"
 
@@ -5388,6 +5496,10 @@ msgstr "Fins"
 
 msgid "Fixed"
 msgstr "Vast"
+
+#, python-format
+msgid "Flash directory '%s' not allowed!"
+msgstr "Flash-map'%s' is niet toegestaan!"
 
 msgid "Flashing"
 msgstr "Bezig met flashen"
@@ -5479,7 +5591,7 @@ msgstr "vrijdag"
 msgid "From :"
 msgstr "Van:"
 
-msgid "Front panel display"
+msgid "Front Panel Display"
 msgstr "Paneeldisplay"
 
 msgid "Front panel settings"
@@ -5548,6 +5660,15 @@ msgstr "Algemeen"
 msgid "Genre"
 msgstr "Genre"
 
+msgid "Geolocation does not contain time zone information."
+msgstr "Geolokatie bevat geen tijdzoneinformatie."
+
+msgid "Geolocation has been used to set the time zone."
+msgstr "Geolokatie is gebruikt om de tijdzone in te stellen."
+
+msgid "Geolocation is not available."
+msgstr "Geolokatie is niet beschikbaar."
+
 msgid "Georgia"
 msgstr "Georgië"
 
@@ -5569,8 +5690,20 @@ msgstr "Ghana"
 msgid "Gibraltar"
 msgstr "Gibraltar"
 
+msgid "Go back 24 hours"
+msgstr "Spring 24 uur terug"
+
 msgid "Go down the list"
 msgstr "Ga naar beneden in de lijst"
+
+msgid "Go forward 24 hours"
+msgstr "Spring 24 uur vooruit"
+
+msgid "Go to current time, then the start service"
+msgstr "Ga naar de huidige tijd, ga daarna naar het kanaal"
+
+msgid "Go to current time, then the start service, then home of list"
+msgstr "Ga naar de huidige tijd, ga daarna naar het kanaal, daarna naar het begin van de lijsten"
 
 msgid "Go to first movie or last item"
 msgstr "Ga naar de eerste opname of het laatste item"
@@ -5629,9 +5762,6 @@ msgstr "Naar positie draaien"
 msgid "GotoX calibration"
 msgstr "GotoX calibratie"
 
-msgid "Graphical EPG"
-msgstr "Grafische EPG"
-
 msgid "Graphics"
 msgstr "Grafisch"
 
@@ -5646,6 +5776,12 @@ msgstr "Grieks"
 
 msgid "Green"
 msgstr "Groen"
+
+msgid "Green button (long)"
+msgstr "Groene-toets (lang)"
+
+msgid "Green button (short)"
+msgstr "Groene-toets (kort)"
 
 msgid "Green long"
 msgstr "Lang-groen"
@@ -5764,6 +5900,9 @@ msgstr "HDMI kleurruimte"
 msgid "HDMI HDR Type"
 msgstr "HDMI HDR type"
 
+msgid "HDMI input"
+msgstr "HDMI-ingang"
+
 msgid "HDMIin"
 msgstr "HDMI-in"
 
@@ -5800,6 +5939,9 @@ msgstr "Harde schijf stand-by na"
 msgid "Harddisk setup"
 msgstr "Harde schijf instellingen"
 
+msgid "HbbTV"
+msgstr "HbbTV"
+
 msgid "Heard Island and McDonald Islands"
 msgstr "Heard Island and McDonald Islands"
 
@@ -5833,6 +5975,15 @@ msgstr "Verberg alle zapfouten."
 msgid "Hide error messages from the Common Interface module."
 msgstr "Verberg foutmeldingen van de CAM."
 
+msgid "Hide infobar display"
+msgstr "Verberg infobar"
+
+msgid "Hide infobar display and ask whether to close PiP"
+msgstr "Verberg de infobar en vraag om PiP te sluiten"
+
+msgid "Hide infobar display and close PiP"
+msgstr "Verberg de infobar en sluit PiP"
+
 msgid "Hide known extensions"
 msgstr "Verberg bekende extensies"
 
@@ -5859,6 +6010,9 @@ msgstr "Markeer actuele programma's"
 
 msgid "History Zap"
 msgstr "Geschiedenis-zap"
+
+msgid "History Zap Actions"
+msgstr "Geschiedenis-zap acties"
 
 msgid "History back"
 msgstr "Historie terug"
@@ -5968,6 +6122,9 @@ msgstr "IMDb zoeken"
 msgid "INFO"
 msgstr "INFO"
 
+msgid "INFO button action"
+msgstr "INFO-toets actie"
+
 msgid "INS"
 msgstr "INS"
 
@@ -6023,6 +6180,9 @@ msgstr "Indien ingeschakeld zal de video altijd worden gede-interlaced."
 msgid "If enabled, display shows 12 chars instead 8, but in latin-1/translit only."
 msgstr "Indien ingeschakeld toont het display 12 karakters i.p.v. 8, maar alleen in latin-1/translit."
 
+msgid "If set to 'Standard' number buttons page up/down/left/right."
+msgstr "Indien ingesteld op 'standaard' gaat u met de nummertoetsen een pagina omhoog/omlaag/links/rechts."
+
 msgid "If set to 'yes' channels without EPG will not be shown."
 msgstr "Als u 'ja' kiest, zullen kanalen zonder EPG niet getoond worden."
 
@@ -6032,7 +6192,7 @@ msgstr "Als u 'ja' kiest, zijn alle 'PO' (taal)-pakketten in de browser zichtbaa
 msgid "If set to 'yes' it will show the 'SRC' packages in browser."
 msgstr "Als u 'ja' kiest, zijn alle 'SRC' (source (= bron))-pakketten in de browser zichtbaar."
 
-msgid "If set to 'yes' shows a small TV-screen in the EPG."
+msgid "If set to 'yes' shows a small TV screen in the EPG."
 msgstr "Als u 'ja' kiest, zal het tv-beeld in een klein schermpje in de EPG worden getoond."
 
 msgid "If set to 'yes' signal values (SNR, etc) will be calculated from API V3. This is an old API version that has now been superseded."
@@ -6169,6 +6329,13 @@ msgstr "Vergroot tijdschaal"
 msgid "Increased voltage"
 msgstr "Verhoogd voltage"
 
+#
+msgid "Increment end time"
+msgstr "Vergroot eindtijd"
+
+msgid "Increment start time"
+msgstr "Vergroot starttijd"
+
 msgid "Index allocated:"
 msgstr "Index toegewezen:"
 
@@ -6253,9 +6420,6 @@ msgstr "Formatteer"
 msgid "Initialize Devices"
 msgstr "Initialiseer apparaten"
 
-msgid "Initialize devices"
-msgstr "Initialiseer apparaten"
-
 msgid "Initializing storage device..."
 msgstr "Opslagmedium initialiseren..."
 
@@ -6279,9 +6443,6 @@ msgstr "Invoerapparaten"
 
 msgid "Input Stream ID"
 msgstr "Inputstream-ID"
-
-msgid "Input devices"
-msgstr "Invoerapparaten"
 
 msgid "Install"
 msgstr "Installeer"
@@ -6339,17 +6500,14 @@ msgstr "Installeert service"
 msgid "Instant record"
 msgstr "Directe opname"
 
-msgid "Instant record location"
-msgstr "Lokatie directe opname"
+msgid "Instant recording"
+msgstr "Directe opname"
 
 msgid "Instant recording location"
 msgstr "Lokatie van directe opnames"
 
 msgid "Instant recording..."
 msgstr "Directe opname..."
-
-msgid "Instant recordings location"
-msgstr "Lokatie van directe opnames"
 
 msgid "Interface"
 msgstr "Interface"
@@ -6455,14 +6613,8 @@ msgstr "Taken"
 msgid "Jordan"
 msgstr "Jordan"
 
-msgid "Jump back 24 hours"
-msgstr "Spring 24 uur terug"
-
 msgid "Jump first press in channel selection"
 msgstr "Springt is kanaallijst als eerste"
-
-msgid "Jump forward 24 hours"
-msgstr "Spring 24 uur vooruit"
 
 msgid "Jump to beginning of list"
 msgstr "Spring naar het begin van de lijst"
@@ -6474,10 +6626,16 @@ msgid "Jump to end of list"
 msgstr "Ga naar einde van de lijst"
 
 msgid "Jump to first item in list or the start of text"
-msgstr ""
+msgstr "Spring naar het eerste item in de lijst of het begin van de tekst"
 
 msgid "Jump to last item in list or the end of text"
-msgstr ""
+msgstr "Spring naar het laatste item in de lijst of het einde van de tekst"
+
+msgid "Jump to next bookmark"
+msgstr "Spring naar de volgende markering"
+
+msgid "Jump to previous bookmark"
+msgstr "Spring naar de vorige markering"
 
 msgid "Jump to prime time"
 msgstr "Spring naar prime time"
@@ -6572,6 +6730,9 @@ msgstr "LAN-verbinding"
 msgid "LED Deep Standby"
 msgstr "LED deep sleep"
 
+msgid "LED Display Panel"
+msgstr "LED-paneeldisplay"
+
 msgid "LED Normal"
 msgstr "LED normaal"
 
@@ -6586,9 +6747,6 @@ msgstr "LED helderheid tijdens normaal gebruik."
 
 msgid "LED brightness during standby."
 msgstr "LED helderheid tijdens stand-by."
-
-msgid "LED display panel"
-msgstr "LED-paneeldisplay"
 
 msgid "LNB"
 msgstr "LNB"
@@ -6759,8 +6917,8 @@ msgstr "Litouws"
 msgid "Load"
 msgstr "Laden"
 
-msgid "Load EPG"
-msgstr "Laad EPG"
+msgid "Load EPG Cache"
+msgstr "Laad EPG-cache"
 
 msgid "Load playlist"
 msgstr "Afspeellijst laden"
@@ -6768,8 +6926,8 @@ msgstr "Afspeellijst laden"
 msgid "Load unlinked userbouquets"
 msgstr "Laad niet-verbonden favorietenlijsten"
 
-msgid "Load-save-delete"
-msgstr "Laad-Sla op-Verwijder"
+msgid "Load, Save & Delete EPG Cache"
+msgstr "Laad, bewaar en verwijder EPG-cache"
 
 msgid "Local box"
 msgstr "Lokale box"
@@ -6810,9 +6968,6 @@ msgid "Log"
 msgstr "Log"
 
 msgid "Log Manager"
-msgstr "Logmanager"
-
-msgid "Log manager"
 msgstr "Logmanager"
 
 msgid "Log results to harddisk"
@@ -6876,7 +7031,7 @@ msgid "MB"
 msgstr "MB"
 
 msgid "MENU"
-msgstr ""
+msgstr "MENU"
 
 msgid "Macao"
 msgstr "Macao"
@@ -6887,10 +7042,10 @@ msgstr "Macedonia (the former Yugoslav Republic of)"
 msgid "Madagascar"
 msgstr "Madagascar"
 
-msgid "Main menu"
+msgid "Main Menu"
 msgstr "Hoofdmenu"
 
-msgid "Mainmenu"
+msgid "Main menu"
 msgstr "Hoofdmenu"
 
 msgid "Maintain old EPG data for"
@@ -7075,6 +7230,9 @@ msgstr "Minuten seconden"
 msgid "Mipsel"
 msgstr "Mipsel"
 
+msgid "Miscellaneous"
+msgstr "Diverse"
+
 msgid "Missing "
 msgstr "Ontbrekend "
 
@@ -7181,9 +7339,14 @@ msgstr "Ga een regel naar beneden"
 msgid "Move down a page"
 msgstr "Ga een pagina naar beneden"
 
-#, fuzzy
 msgid "Move down a screen"
-msgstr "Ga een regel naar beneden"
+msgstr "Ga een scherm omlaag"
+
+msgid "Move down in bouquet list"
+msgstr "Naar beneden in favorietenlijst"
+
+msgid "Move down in channel list"
+msgstr "Naar beneden in kanaallijst"
 
 msgid "Move down to last entry"
 msgstr "Verplaats omlaag naar laaste ingave"
@@ -7218,31 +7381,23 @@ msgstr "Verplaats de cursor naar het eerste karakter"
 msgid "Move the text cursor to the last character"
 msgstr "Verplaats de cursor naar het laatste karakter"
 
-#, fuzzy
-msgid "Move to first line"
-msgstr "Verplaats omhoog naar eerste ingave"
+msgid "Move to first line / screen"
+msgstr "Ga naar de eerste regel/scherm"
 
 msgid "Move to home of list"
 msgstr "Ga naar begin van de lijst"
 
-#, fuzzy
-msgid "Move to last line"
-msgstr "Ga een regel naar beneden"
+msgid "Move to last line / screen"
+msgstr "Ga naar de laatste regel/scherm"
+
+msgid "Move to next channel"
+msgstr "Ga naar het volgende kanaal"
 
 msgid "Move to position X"
 msgstr "Naar positie X draaien"
 
-msgid "Move to the next page"
-msgstr "Verplaats naar de volgende pagina"
-
-msgid "Move to the next skin"
-msgstr "Verplaats naar de volgende skin"
-
-msgid "Move to the previous page"
-msgstr "Verplaats naar de vorige pagina"
-
-msgid "Move to the previous skin"
-msgstr "Verplaats naar de vorige pagina"
+msgid "Move to previous channel"
+msgstr "Ga naar het vorige kanaal"
 
 msgid "Move up a line"
 msgstr "Ga een regel omhoog"
@@ -7250,9 +7405,14 @@ msgstr "Ga een regel omhoog"
 msgid "Move up a page"
 msgstr "Ga een pagina omhoog"
 
-#, fuzzy
 msgid "Move up a screen"
-msgstr "Ga een regel omhoog"
+msgstr "Ga een scherm omhoog"
+
+msgid "Move up in bouquet list"
+msgstr "Ga naar boven in favorietenlijst"
+
+msgid "Move up in channel list"
+msgstr "Ga naar boven kanaallijst"
 
 msgid "Move up to first entry"
 msgstr "Verplaats omhoog naar eerste ingave"
@@ -7281,8 +7441,8 @@ msgstr "Opnamelijst"
 msgid "Movie List Setup"
 msgstr "Opnamelijstinstellingen"
 
-msgid "Movie location"
-msgstr "Opnamelokatie"
+msgid "Movie player"
+msgstr "Filmspeler"
 
 msgid "Movie selection"
 msgstr "Opname selecteren"
@@ -7322,9 +7482,6 @@ msgstr "MultiBootselectie akties"
 
 msgid "MultiType"
 msgstr "Multitype"
-
-msgid "Multiboot Image Selector"
-msgstr "Multibootimage kiezen"
 
 msgid "Multimedia"
 msgstr "Multimedia"
@@ -7435,6 +7592,9 @@ msgstr "Namibia"
 msgid "Nauru"
 msgstr "Nauru"
 
+msgid "Navigation"
+msgstr "Navigatie"
+
 msgid "Nepal"
 msgstr "Nepal"
 
@@ -7513,9 +7673,6 @@ msgstr "Wachtwoord instellen"
 msgid "New profile: "
 msgstr "Niew profiel: "
 
-msgid "New timers location"
-msgstr "Lokatie voor nieuwe timers"
-
 msgid "New version:"
 msgstr "Nieuwe versie:"
 
@@ -7579,6 +7736,9 @@ msgstr "Geen streaming klanten"
 
 msgid "No connection"
 msgstr "Geen verbinding"
+
+msgid "No current function"
+msgstr "Momenteel geen functie"
 
 msgid ""
 "No data on transponder!\n"
@@ -7645,7 +7805,7 @@ msgid "No standby"
 msgstr "Geen stand-by"
 
 msgid "No subtitles available"
-msgstr "Geen updates beschikbaar."
+msgstr "Geen updates beschikbaar"
 
 msgid "No tags are set on these movies."
 msgstr "Geen markeringen geplaatst op deze opnames."
@@ -7806,6 +7966,9 @@ msgstr ""
 msgid "Number"
 msgstr "Nummer"
 
+msgid "Number buttons mode"
+msgstr "Nummertoetsen modus"
+
 msgid "Number of digits in channel number"
 msgstr "Aantal cijfers in kanaalnummer"
 
@@ -7839,6 +8002,9 @@ msgstr "OSD"
 msgid "OSD 3D Setup"
 msgstr "OSD 3D-Instellingen"
 
+msgid "OSD Position"
+msgstr "OSD positie"
+
 msgid "OSD name request"
 msgstr "OSD naamverzoek"
 
@@ -7847,9 +8013,6 @@ msgstr "OSD positie"
 
 msgid "OScam Info"
 msgstr "OScam Info"
-
-msgid "OScam info"
-msgstr "OScam info"
 
 msgid "OVR"
 msgstr "OVR"
@@ -7882,7 +8045,7 @@ msgid "On valid ONIDs, ignore frequency sub network part"
 msgstr "Op geldige ONIDs negeer het frequentie netwerk deel"
 
 msgid "On your remote, click on the button you want to change"
-msgstr "Druk op uw AB op de toets die u wilt veranderen."
+msgstr "Druk op uw AB op de toets die u wilt veranderen"
 
 msgid "Once per day"
 msgstr "Eenmaal per dag"
@@ -7920,11 +8083,26 @@ msgstr "Alleen na opstarten"
 msgid "Only select 'yes' if you are using a multiswich that requires a DiSEqC Port-A command signal. For all other setups select 'no'."
 msgstr "Kies alleen 'ja' als u een multiswich gebruikt die een DiSEqC Port-A commando gebruikt. In alle andere gevallen kiest u 'nee'."
 
+msgid "Open RDS/RASS screen..."
+msgstr "Open RDS/RASS scherm..."
+
 msgid "Open bouquet list"
 msgstr "Open favorietenlijst"
 
+msgid "Open infobar EPG"
+msgstr "Open Informatiebalk EPG"
+
+msgid "Open infobar EPG..."
+msgstr "Open Informatiebalk EPG..."
+
+msgid "Open menu"
+msgstr "Open menu"
+
 msgid "Open nameserver configuration"
 msgstr "Open naamserverconfiguratie"
+
+msgid "Open seekbar"
+msgstr "Open zoekbalk"
 
 msgid "Open service list"
 msgstr "Open de kanaalljist"
@@ -8063,11 +8241,17 @@ msgstr "Pakketbeheer"
 msgid "Page down"
 msgstr "Pagina naar beneden"
 
+msgid "Page down in description"
+msgstr "Pagina omlaag in beschrijving"
+
 msgid "Page right"
 msgstr "Pagina naar rechts"
 
 msgid "Page up"
 msgstr "Pagina omhoog"
+
+msgid "Page up in description"
+msgstr "Pagina omhoog in beschrijving"
 
 msgid "Pakistan"
 msgstr "Pakistan"
@@ -8133,6 +8317,9 @@ msgstr "Pauzeer afspelen aan het einde"
 msgid "Pause playback"
 msgstr "Pauzeer afspelen"
 
+msgid "Pause, rewind and fast forward"
+msgstr "Pauze, terugspoelen en snel vooruit spoelen"
+
 msgid "Pause/Continue playback"
 msgstr "Pauzeer/Vervolg afspelen"
 
@@ -8161,13 +8348,13 @@ msgid "Perform a settings backup before updating."
 msgstr "Maak een settingsback-up alvorens te updaten."
 
 msgid "Perform a settings backup,"
-msgstr "Maak een settingsback-up."
+msgstr "Maak een settingsback-up"
 
 msgid "Perform a settings backup, making a backup before updating is strongly advised."
 msgstr "Maak een settingsback-up; het maken van een back-up alvorens te updaten wordt sterk geadviseerd."
 
 msgid "Perform an online update check in the background"
-msgstr "Controleer op de achtergrond op updates."
+msgstr "Controleer op de achtergrond op updates"
 
 msgid "Permanent sort key changes"
 msgstr "Permanente sorteer aanpassingen"
@@ -8211,8 +8398,11 @@ msgstr "Picon, kanaalnummer en kanaalnaam"
 msgid "Picons: Show in channel list"
 msgstr "Picons: Toon in kanaallijst"
 
-msgid "Picture in graphics"
-msgstr "Toon mini-TV"
+msgid "Picture in Picture (PIP)"
+msgstr "Picture In Picture (PiP)"
+
+msgid "Picture in graphic"
+msgstr "Toon mini TV-beeld"
 
 msgid "Picture player"
 msgstr "Fotospeler"
@@ -8285,7 +8475,7 @@ msgid ""
 msgstr ""
 "Afspeelinformatie ontbreekt\n"
 "Afspelen afgebroken om een crash te voorkomen\n"
-"Probeer het nogmaals."
+"Probeer het nogmaals"
 
 msgid "Playlist"
 msgstr "Playlist"
@@ -8395,11 +8585,20 @@ msgstr "Selecteer een subkanaal voor opname..."
 msgid "Please select a subservice..."
 msgstr "Selecteer een subkanaal..."
 
+msgid "Please select an acceptable directory."
+msgstr "Kies een bruikbare map."
+
 msgid "Please select medium to be scanned"
 msgstr "Selecteer het te scannen medium"
 
 msgid "Please select medium to use as backup location"
 msgstr "Selecteer het te gebruiken medium als back-up lokatie"
+
+msgid "Please select the default action of the EPG button"
+msgstr "Kies de standaard actie voor de EPG-toets"
+
+msgid "Please select the default action of the INFO button"
+msgstr "Kies de standaard actie voor de INFO-toets"
 
 msgid "Please select the movie path..."
 msgstr "Selecteer het opnamepad..."
@@ -8469,6 +8668,15 @@ msgstr "Configureer tuner R"
 
 msgid "Please set your time options"
 msgstr "Maak uw tijinstellingen"
+
+msgid ""
+"Please set your time options.\n"
+"\n"
+"Press YELLOW to set the time zone via geolocation."
+msgstr ""
+"Kies uw tijdinstellingen.\n"
+"\n"
+"Druk op GEEL om uw tijdzone m.b.v. GeoLokatie in te stellen."
 
 msgid ""
 "Please setup your user interface by adjusting the values till the edges of the user interface box are covering the test pattern and touching the edges of your TV.\n"
@@ -8625,7 +8833,7 @@ msgid "Power LED Colour State in Standby"
 msgstr "Power-LED kleur in stand-by"
 
 msgid "Power LED Colour State when Running."
-msgstr "Power-LED kleur indien actief"
+msgstr "Power-LED kleur indien actief."
 
 msgid "Power LED can be turned on or off here."
 msgstr "Power-LED kan hier worden in- of uitgeschakeld."
@@ -8645,6 +8853,9 @@ msgstr "Powertimer bewerken"
 msgid "Power Timer List"
 msgstr "Powertimer Lijst"
 
+msgid "Power Timers"
+msgstr "Powertimers"
+
 msgid "Power long"
 msgstr "Power lang"
 
@@ -8659,9 +8870,6 @@ msgstr "Limieteer stroomverbruik in mA"
 
 msgid "Power threshold. Consult your receiver's manual for more information."
 msgstr "Power threshold. Consulteer de handleiding van uw ontvanger voor meer informatie."
-
-msgid "Power timers"
-msgstr "Powertimers"
 
 msgid "PowerControl FrontDisplay Normal Mode"
 msgstr "PowerControl frontpaneel normale modus"
@@ -8802,7 +9010,7 @@ msgid ""
 msgstr ""
 "Gebruik Op/Neer om door de geselecteerde logs te bladeren.\n"
 "\n"
-"Gebruik Links/Rechts om de verschillende log-types te zien."
+"Gebruik Links/Rechts om de verschillende log-types te zien"
 
 msgid "Press yellow to set this interface as the default interface."
 msgstr "Druk op geel om deze interface als standaard in te stellen."
@@ -8830,7 +9038,7 @@ msgid ""
 "If this issue persists please check/report on forum"
 msgstr ""
 "Probleem met verkrijgen updatelijst.\n"
-"Als dit probleem aanhoudt kunt u het forum raadplegen."
+"Als dit probleem aanhoudt kunt u het forum raadplegen"
 
 msgid "Process"
 msgstr "Proces"
@@ -8967,6 +9175,9 @@ msgstr "Speler kan verlaten worden met de Exit-toets"
 msgid "RAM"
 msgstr "RAM"
 
+msgid "RDS/RASS display"
+msgstr "RDS/RASS scherm"
+
 msgid "REC"
 msgstr "OPN"
 
@@ -9069,6 +9280,15 @@ msgstr "Herstarten"
 msgid "Rec"
 msgstr "Record"
 
+msgid "Rec button (long)"
+msgstr "Opname-toets (lang)"
+
+msgid "Rec button (short)"
+msgstr "Opname-toets (kort)"
+
+msgid "Recall channel, panic button & number zap"
+msgstr "Terugvalkanaal, paniektoets en nummerzap"
+
 msgid "Record"
 msgstr "Opname"
 
@@ -9088,7 +9308,7 @@ msgstr "Opnametijd beperkt vanwege conflicterende timer %s"
 msgid "Recording"
 msgstr "Opname"
 
-msgid "Recording & playback"
+msgid "Recording & Playback"
 msgstr "Opname & afspelen"
 
 msgid "Recording and playback"
@@ -9106,20 +9326,29 @@ msgstr "Type opname"
 msgid "Recording(s) are in progress or coming up in few seconds!"
 msgstr "Een opname is bezig of zal elk moment aanvangen in een paar seconden!"
 
+msgid "Recording/media selection"
+msgstr "Opname/media selecteren"
+
 msgid "Recordings"
 msgstr "Opnames"
 
 msgid "Recordings always have priority"
 msgstr "Een opname heeft altijd voorrang"
 
-msgid "Recordings, playback & timeshift"
-msgstr "Opname, afspelen en timeshift"
+msgid "Recordings, Playback & Timeshift"
+msgstr "Opname, afspelen & timeshift"
 
-msgid "Recovery mode"
+msgid "Recovery Mode"
 msgstr "Herstelmodus"
 
 msgid "Red"
 msgstr "Rood"
+
+msgid "Red button (long)"
+msgstr "Rode-toets (lang)"
+
+msgid "Red button (short)"
+msgstr "Rode-toets (kort)"
 
 msgid "Red button..."
 msgstr "Rode toets..."
@@ -9139,9 +9368,9 @@ msgid ""
 "Please wait until your %s %s reboots\n"
 "This may take a few minutes"
 msgstr ""
-"Flashen is bezig.\n"
-"Wacht tot uw %s %s weer is opgestart.\n"
-"Dit kan een paar minuten duren."
+"Flashen is bezig\n"
+"Wacht tot uw %s %s weer is opgestart\n"
+"Dit kan een paar minuten duren"
 
 msgid "Reflash recommended!"
 msgstr "Opnieuw flashen wordt aanbevolen!"
@@ -9260,6 +9489,9 @@ msgstr "Verwijder kinderslot van favorietenlijst"
 msgid "Remove cable services"
 msgstr "Verwijder kabelzenders"
 
+msgid "Remove current channel from list"
+msgstr "Verwijder huidige kanaal uit de lijst"
+
 msgid "Remove currently selected title"
 msgstr "De momenteel geselecteerde titel verwijderen"
 
@@ -9315,6 +9547,9 @@ msgstr "Verwijdert kanaal"
 msgid "Rename"
 msgstr "Hernoemen"
 
+msgid "Rename channel"
+msgstr "Hernoem kanaal"
+
 msgid "Rename entry"
 msgstr "Hernoem invoer"
 
@@ -9338,7 +9573,7 @@ msgid "Repeat Display Message"
 msgstr "Herhaal OSD-bericht"
 
 msgid "Repeat how often"
-msgstr "Hoe vaak herhalen?"
+msgstr "Hoe vaak herhalen"
 
 msgid "Repeat type"
 msgstr "Type herhaling"
@@ -9648,12 +9883,11 @@ msgstr "Opslaan"
 msgid "Save / Enter text and exit"
 msgstr "Sla op/Geef tekst in en sluit af"
 
-msgid "Save EPG"
-msgstr "Sla EPG op"
+msgid "Save EPG Cache"
+msgstr "EPG-cache opslaan"
 
-#, fuzzy
 msgid "Save all changed settings and exit"
-msgstr "Sla op/Geef tekst in en sluit af"
+msgstr "Sla alle wijzigingen op en sluit af"
 
 msgid "Save and activate the currently selected skin"
 msgstr "Activeer de momenteel geselecteerde skin"
@@ -9669,6 +9903,9 @@ msgstr "Sla elke X uur op"
 
 msgid "Save playlist"
 msgstr "Afspeellijst opslaan"
+
+msgid "Save timer"
+msgstr "Sla timer op"
 
 msgid "Save timeshift and zap"
 msgstr "Sla timeshiftbestand op en zap"
@@ -9757,6 +9994,9 @@ msgstr "Doorzoekt standaard lamedb gesorteerd op satelliet middels een verbonden
 msgid "Schedule EPG and channel list import"
 msgstr "Plan EPG en kanaallijst import"
 
+msgid "Screen proportions"
+msgstr "Schermformaat"
+
 msgid "Scrolling Speed"
 msgstr "Sroll-snelheid"
 
@@ -9771,6 +10011,18 @@ msgstr "Zoek"
 
 msgid "Search IMDb for information about the current event."
 msgstr "Zoek in IMDb naar informatie over huidige programma."
+
+msgid "Search by first letter of name"
+msgstr "Zoek op de eerste letter van de naam"
+
+msgid "Search by name (SMS-style entry on remote)"
+msgstr "Zoek op naam (SMS-stijl toetsen op AB)"
+
+msgid "Search channel list, SMS style 2ABC"
+msgstr "Zoek kanaallijst, SMS-stijl 2ABC"
+
+msgid "Search channel list, SMS style ABC2"
+msgstr "Zoek kanaallijst, SMS-stijl ABC2"
 
 msgid "Search east"
 msgstr "Zoek oost"
@@ -9805,6 +10057,9 @@ msgstr "Zoekt west..."
 
 msgid "Second cable of motorized LNB"
 msgstr "2e kabel van gemotoriseerde LNB"
+
+msgid "Second infobar"
+msgstr "Tweede informatiebalk"
 
 msgid "Secondary DNS"
 msgstr "Secondaire DNS"
@@ -9865,7 +10120,7 @@ msgid "Select 'Yes' to remove all media player resume data. Selecting this optio
 msgstr "Kies 'Ja' om alle markeerpunten te verwijderen. Dit zal de data verwijderen die werd gebruikt om het afspelen van mediabestanden te laten starten op het punt waar de weergave werd beëindigd."
 
 msgid "Select 'Yes' to remove all network data. Selecting this option will remove all network data including automounts and network connection data including connection accounts and passwords. This could cause some Enigma2 functions to fail if they are configured to use these network resources."
-msgstr "Kies 'Ja' om alle netwerkgegevens te verwijderen. Dit zal alle netwerkinstellingen, inclusief mounts en netwerkverbindingen en wachtwoorden verwijderen. Dit kan problemen veroorzaken als bepaalde Enigma2 functies netwerk afhankelijk zijn. "
+msgstr "Kies 'Ja' om alle netwerkgegevens te verwijderen. Dit zal alle netwerkinstellingen, inclusief mounts en netwerkverbindingen en wachtwoorden verwijderen. Dit kan problemen veroorzaken als bepaalde Enigma2 functies netwerk afhankelijk zijn."
 
 msgid "Select 'Yes' to remove all other files and directories not covered by the options above."
 msgstr "Kies 'Ja' om alle andere bestanden en mappen te verwijderen die niet in bovengenoemde opties staan."
@@ -9877,7 +10132,7 @@ msgid "Select 'Yes' to remove all settings, tuning data, timers, resume pointers
 msgstr "Kies 'Ja' om alle instellingen, tunergegevens, markeerpunten etc. te verwijderen. Dit zal alle persoonlijke instellingen verwijderen en de standaard waardes herstellen. Dit is de meest betrouwbare vorm van het herstellen van de fabrieksinstellingen."
 
 msgid "Select 'Yes' to remove all timer configuration data. Selecting this option will clear all timers, autotimers and power timers."
-msgstr "Kies 'Ja' om alle timerinstelgegevens te verwijderen. Dit zal alle timers, autotimers en powertimers verwijderen. "
+msgstr "Kies 'Ja' om alle timerinstelgegevens te verwijderen. Dit zal alle timers, autotimers en powertimers verwijderen."
 
 msgid "Select 'Yes' to remove all tuning data. Selecting this option will remove all tuning and bouquet data and will make timers non functional until the receiver is retuned."
 msgstr "Kies 'Ja' om alle tunergegevens te verwijderen. Dit zal alle tunerinstellingen en favorieten verwijderen en de timers uitschakelen totdat er nieuwe instellingen zijn gemaakt."
@@ -9907,7 +10162,7 @@ msgid "Select 'polarisation' if using a 'universal' LNB, otherwise consult your 
 msgstr "Kies 'polarisatie als u een universele LNB gebruikt. Consulteer de specs van uw LNB."
 
 msgid "Select 'provider' to scan from the predefined list of cable multiplexes. Select 'bands' to only scan certain parts of the spectrum. Select 'steps' to scan in steps of a particular frequency bandwidth."
-msgstr "Kies 'provider' om te scannen vanuit de voorgedefinieerde lijst van kabel multiplexen. Kies 'type' om alleen een deel van het spectrum te scannen. Kies 'stappen' om in stappen een bepaald deel van het spectrum te scannen. "
+msgstr "Kies 'provider' om te scannen vanuit de voorgedefinieerde lijst van kabel multiplexen. Kies 'type' om alleen een deel van het spectrum te scannen. Kies 'stappen' om in stappen een bepaald deel van het spectrum te scannen."
 
 msgid "Select 'yes' if this tuner is connected to the SCR device through another tuner, otherwise select 'no'."
 msgstr "Kies 'ja' als deze tuner verbonden is met een SCR-apparaat, anders kiest u 'nee'."
@@ -9933,6 +10188,9 @@ msgstr "Kies 'ja' om het DiSEqC-commando alleen te versturen bij veranderen van 
 msgid "Select CAId"
 msgstr "Selecteer CAId"
 
+msgid "Select EPG channel"
+msgstr "Kies EPG-kanaal"
+
 msgid "Select Fast DiSEqC if your aerial system supports this. If you are unsure select 'no'."
 msgstr "Kies 'snelle DiSEqC' als uw antennesysteem dat ondersteunt. Als u er niet zeker va bent, kiest u 'nee'."
 
@@ -9943,7 +10201,7 @@ msgid "Select Satellites"
 msgstr "Kies satellieten"
 
 msgid "Select a receiver to use for fallback tuners. If the host receiver is not listed, manually enter the URL or IP address"
-msgstr "Kies een ontvanger om te gebruiken als fallback-tuner. Als de gast-ontvanger niet getoond wordt, kunt u de URL of IP-adres handmatig ingeven."
+msgstr "Kies een ontvanger om te gebruiken als fallback-tuner. Als de gast-ontvanger niet getoond wordt, kunt u de URL of IP-adres handmatig ingeven"
 
 msgid "Select a wireless network"
 msgstr "Kies een draadloos netwerk"
@@ -9970,6 +10228,9 @@ msgstr "Kies een back-up lokatie"
 msgid "Select between entering an IP address or a domain."
 msgstr "Kies tussen ingave van IP-adres of domein."
 
+msgid "Select channel from history"
+msgstr "Kies het kanaal uit geschiedenis"
+
 msgid "Select channel to record from"
 msgstr "Selecteer een zender voor opname"
 
@@ -9978,6 +10239,12 @@ msgstr "Selecteer kopiëer bestemming voor:"
 
 msgid "Select current service"
 msgstr "Selecteer huidig kanaal"
+
+msgid "Select default action of EPG button"
+msgstr "Kies de standaard actie voor de EPG-toets"
+
+msgid "Select default action of INFO button"
+msgstr "Kies de standaard actie voor de INFO-toets"
 
 msgid "Select destination for:"
 msgstr "Selecteer bestemming voor:"
@@ -10060,6 +10327,9 @@ msgstr "Kies de gebruikersband die u voor deze tuner wilt gebruiken. Dat is een 
 msgid "Select the character or action under the keyboard cursor"
 msgstr "Selecteer karakter of actie onder de cursor"
 
+msgid "Select the current menu item"
+msgstr "Selecteer huidig menu-item"
+
 msgid "Select the desired function and click on \"OK\" to assign it. Use \"CH+/-\" to toggle between the lists. Select an assigned function and click on \"OK\" to de-assign it. Use \"Next/Previous\" to change the order of the assigned functions."
 msgstr "Kies de gewenste functie en klik dan op \"OK\" om deze toe te wijzen. Gebruik \"CH+/-\" om te wisselen tussen de kolommen in de lijst. Kies de toegewezen functie en klik op \"OK\" om de toewijzing te verwijderen. Gebruik \"Volgende/Vorige\" om de volgorde van de toegewezen functies te veranderen."
 
@@ -10081,12 +10351,11 @@ msgstr "Kies het typenummer van uw SCR-apparaat. Als deze niet in de lijst voork
 msgid "Select the movie path"
 msgstr "Bepaal het opnamepad"
 
-#, fuzzy
 msgid "Select the next item in list or move cursor right"
-msgstr "Tijdzone instellen."
+msgstr "Kies het volgende item in de lijst of verplaats de cursor naar rechts"
 
 msgid "Select the previous item in list or move cursor left"
-msgstr ""
+msgstr "Kies het vorige item in de lijst of verplaats cursor naar links"
 
 msgid "Select the protocol used by your SCR device. Choices are 'SCR Unicable' (Unicable), or 'SCR JESS' (JESS, also known as Unicable II)."
 msgstr "Kies het format van uw SCR-apparaat. keuzes zijn 'SCR Unicable' (Unicable) en 'SCR JESS' (JESS, ook bekend als Unicable 2)."
@@ -10152,7 +10421,7 @@ msgid "Select video mode"
 msgstr "Selecteer videomodus"
 
 msgid "Select whether your SCR device is externally powered."
-msgstr "Geef aan of uw SCR-apparaat een externe voeding heeft"
+msgstr "Geef aan of uw SCR-apparaat een externe voeding heeft."
 
 msgid "Select wireless network"
 msgstr "Secteer draadloos netwerk"
@@ -10175,9 +10444,8 @@ msgstr "Selecteer uw regio. Indien deze niet beschikbaar is verandert u 'land' e
 msgid "Select your time zone area or region."
 msgstr "Tijdzone instellen."
 
-#, fuzzy
 msgid "Select, toggle, process or edit the current entry"
-msgstr "Doorzoek de EPG naar het huidige programma."
+msgstr "Kies, wissel, behandel of verander de huidige waarde"
 
 msgid "Selecting satellites 1 (USALS)"
 msgstr "Alle satellieten 1 (USALS)"
@@ -10187,6 +10455,9 @@ msgstr "Alle satellieten 2 (USALS)"
 
 msgid "Selecting this option allows you to configure a group of satellites in one block."
 msgstr "Met deze optie kunt u satellieten als groep veranderen."
+
+msgid "Selection and exit"
+msgstr "Kies en sluit af"
 
 msgid "Send"
 msgstr "Verstuur"
@@ -10386,17 +10657,17 @@ msgstr "Kies het kanaal voor deze timer."
 msgid "Set the date the timer must start."
 msgstr "Stel de datum in waarop de timer moet starten."
 
-msgid "Set the default location for your instant recordings. Press 'OK' to add new locations, select left/right to select an existing location."
-msgstr "Stel hier de standaardlokatie in voor 'instant opnames'. Druk op 'OK' om nieuwe lokaties toe te voegen; met links/rechts kiest u uit bestaande, reeds vastgelegde lokaties."
+msgid "Set the default location for your instant recordings. Press OK to add new locations, LEFT/RIGHT to select from any existing locations."
+msgstr "Stel hier de standaard locatie in voor 'instant opnames'. Druk op 'OK' om nieuwe locaties toe te voegen; met LINKS/RECHTS kiest u uit bestaande, reeds vastgelegde locaties."
 
-msgid "Set the default location for your recordings. Press 'OK' to add new locations, select left/right to select an existing location."
-msgstr "Stel hier de standaardlokatie in voor opnames. Druk op 'OK' om nieuwe lokaties toe te voegen; met links/rechts kiest u uit bestaande, reeds vastgelegde lokaties."
+msgid "Set the default location for your recordings. Press OK to add new locations, LEFT/RIGHT to select from any existing locations."
+msgstr "Stel hier de standaard locatie in voor opnames. Druk op 'OK' om nieuwe locaties toe te voegen; met LINKS/RECHTS kiest u uit bestaande, reeds vastgelegde locaties."
 
-msgid "Set the default location for your timers. Press 'OK' to add new locations, select left/right to select an existing location."
-msgstr "Stel hier de standaardlokatie in voor timers'. Druk op 'OK' om nieuwe lokaties toe te voegen; met links/rechts kiest u uit bestaande, reeds vastgelegde lokaties."
+msgid "Set the default location for your timers. Press OK to add new locations, LEFT/RIGHT to select from any existing locations."
+msgstr "Stel hier de standaard locatie in voor timers'. Druk op 'OK' om nieuwe locaties toe te voegen; met LINKS/RECHTS kiest u uit bestaande, reeds vastgelegde locaties."
 
-msgid "Set the default location for your timeshift-files. Press 'OK' to add new locations, select left/right to select an existing location."
-msgstr "Stel hier de standaardlokatie in voortimeshift bestanden. Druk op 'OK' om nieuwe lokaties toe te voegen; met links/rechts kiest u uit bestaande, reeds vastgelegde lokaties."
+msgid "Set the default location for your timeshift files. Press OK to add new locations, LEFT/RIGHT to select any existing locations."
+msgstr "Stel hier de standaard locatie in voor timeshift bestanden. Druk op 'OK' om nieuwe locaties toe te voegen; met LINKS/RECHTS kiest u uit bestaande, reeds vastgelegde locaties."
 
 msgid "Set the default sorting method."
 msgstr "Kies de standaard sorteermethode."
@@ -10474,6 +10745,9 @@ msgstr ""
 msgid "Settings"
 msgstr "Instellingen"
 
+msgid "Settings, information and more functions"
+msgstr "Instellingen, informatie en meer functies"
+
 msgid "Setup"
 msgstr "Instellingen"
 
@@ -10522,6 +10796,10 @@ msgstr "Korte naam"
 msgid "Should the FTP connection to the remote receiver be established in passive mode (normally 'no')?"
 msgstr "Moet de FTP-verbinding naar de gast-ontvanger in passieve modus plaatsvinden (normaal 'nee')?"
 
+#, python-format
+msgid "Show %s"
+msgstr "Toon %s"
+
 msgid "Show /tmp/ecm.info"
 msgstr "Toon /tmp/ecm.info"
 
@@ -10563,9 +10841,6 @@ msgstr "Toon schermiconen"
 
 msgid "Show EIT now/next in infobar"
 msgstr "Toon EIT nu/straks in informatiebalk"
-
-msgid "Show EPG..."
-msgstr "Toon EPG..."
 
 msgid "Show Grid EPG"
 msgstr "Toon Multi-EPG"
@@ -10612,6 +10887,9 @@ msgstr "Zender EPG"
 msgid "Show Time Remaining/Elapsed"
 msgstr "Toon resterende/verstreken tijd"
 
+msgid "Show Timer List"
+msgstr "Toon timers"
+
 msgid "Show Transponder Remaining/Elapsed as"
 msgstr "Toon resterende/verstreken tijd als"
 
@@ -10645,8 +10923,14 @@ msgstr "Toon achtergrond in radiomodus"
 msgid "Show background when tuned to a radio channel."
 msgstr "Toon achtergrond als op een radiokanaal is afgestemd."
 
+msgid "Show bouquet list"
+msgstr "Toon favorietenlijst"
+
 msgid "Show bouquet on launch"
 msgstr "Toon favorieten na opstarten"
+
+msgid "Show channel list"
+msgstr "Toon kanaallijst"
 
 msgid "Show channel number in infobar"
 msgstr "Toon kanaalnummers in informatiebalk"
@@ -10663,14 +10947,17 @@ msgstr "Toon iconen voor versleutelde kanalen"
 msgid "Show crypto info in infobar"
 msgstr "Laat crypto-informatie zien in informatiebalk"
 
+msgid "Show description for next event)"
+msgstr "Toon de beschrijving voor het komende programma"
+
+msgid "Show description for previous event)"
+msgstr "Toon de beschrijving voor het vorige programma"
+
 msgid "Show detailed event info"
 msgstr "Toon gedetailleerde programma info"
 
 msgid "Show encryption info in the infobar (when supported by the skin)."
 msgstr "Toon encryptie informatie in de informatiebalk (als dat door uw skin wordt ondersteund)."
-
-msgid "Show epg"
-msgstr "Toon EPG"
 
 msgid "Show event details"
 msgstr "EPG-details weergeven"
@@ -10697,9 +10984,6 @@ msgstr "Toon extensies..."
 msgid "Show favourites list"
 msgstr "Toon favorietenlijst"
 
-msgid "Show full menu path"
-msgstr "Toon het volledige menupad"
-
 msgid "Show help"
 msgstr "Toon help"
 
@@ -10718,6 +11002,9 @@ msgstr "Info weergeven"
 msgid "Show info line"
 msgstr "Toon infolijn"
 
+msgid "Show infobar EPG"
+msgstr "Toon Informatiebalk EPG"
+
 msgid "Show infobar on channel change"
 msgstr "Informatiebalk zichtbaar na zenderwissel"
 
@@ -10729,6 +11016,9 @@ msgstr "Informatiebalk zichtbaar na overslaan, vooruit/achteruit"
 
 msgid "Show job tasks in extensions"
 msgstr "Toon systeemtaken in extensies"
+
+msgid "Show list of similar programs"
+msgstr "Toon lijst met soortgelijke programma's"
 
 msgid "Show live tv when movie stopped"
 msgstr "Toon live-TV als de opname gestopt is"
@@ -10781,6 +11071,12 @@ msgstr "Toon programma informatie..."
 msgid "Show record indicator"
 msgstr "Toon opnameindicatie"
 
+msgid "Show recorded movies"
+msgstr "Toon opnames"
+
+msgid "Show screen path"
+msgstr "Toon scherm pad"
+
 msgid "Show screensaver"
 msgstr "Toon screensaver"
 
@@ -10805,6 +11101,9 @@ msgstr "Toon iconen voor servicetype"
 msgid "Show shutdown menu"
 msgstr "Afsluitmenu weergeven"
 
+msgid "Show single channel EPG..."
+msgstr "Toon kanaallijst EPG..."
+
 msgid "Show single epg for current channel"
 msgstr "Toon EPG voor huidige kanaal"
 
@@ -10819,6 +11118,9 @@ msgstr "Toon stream-klanten"
 
 msgid "Show subservice selection"
 msgstr "Toon subservice selectie"
+
+msgid "Show subservice selection list..."
+msgstr "Toon subservice selectie..."
 
 msgid "Show subtitle selection"
 msgstr "Toon ondertitelselectie"
@@ -10871,6 +11173,9 @@ msgstr "Toon waarschuwing als timeshift gestopt wordt"
 msgid "Show/Games show"
 msgstr "Show/Spelshow"
 
+msgid "Show/hide infobar"
+msgstr "Toon/verberg infobar"
+
 msgid "Shows live tv or informations on LCD."
 msgstr "Toon live TV of informatie op LCD."
 
@@ -10886,8 +11191,8 @@ msgstr "Toont de 'bekeken-status' van de opnames."
 msgid "Shuffle playlist"
 msgstr "Afspeellijst in willekeur"
 
-msgid "Shut down"
-msgstr "Afsluiten"
+msgid "Shut Down"
+msgstr "Sluit af"
 
 msgid "Side by Side"
 msgstr "Naast elkaar"
@@ -10967,6 +11272,9 @@ msgstr "Skinkeuze"
 msgid "Skin Setting"
 msgstr "Skin instellen"
 
+msgid "Skin Setup"
+msgstr "Skin instellingen"
+
 msgid "Skin install"
 msgstr "Skin installeren"
 
@@ -10986,14 +11294,32 @@ msgstr "Skins"
 msgid "Skip back"
 msgstr "Achteruit springen"
 
+msgid "Skip back "
+msgstr "Achteruit springen "
+
+msgid "Skip back (enter time in minutes)"
+msgstr "Spring achteruit (tijd in minuten invoeren)"
+
 msgid "Skip empty services"
 msgstr "Sla lege zenders over"
 
 msgid "Skip forward"
 msgstr "Vooruit springen"
 
+msgid "Skip forward "
+msgstr "Vooruit springen "
+
+msgid "Skip forward (enter time in minutes)"
+msgstr "Spring vooruit (tijd in minuten invoeren)"
+
 msgid "Skip internet connection check (disables automatic package installation)"
 msgstr "Sla cotrole op internetverbinding over (schakelt automatische updates uit)"
+
+msgid "Skip, pause, rewind and fast forward"
+msgstr "Sla over, pauzeer, spoel terug en snel vooruit"
+
+msgid "Skip, pause, rewind and fast forward timeshift"
+msgstr "Sla over, pauzeer, spoel terug en snel vooruit timeshift"
 
 msgid "Sleep"
 msgstr "Slaap"
@@ -11081,6 +11407,9 @@ msgstr "Softcamcontrole"
 
 msgid "Software"
 msgstr "Software"
+
+msgid "Software Update"
+msgstr "Software-update"
 
 #
 msgid "Software management"
@@ -11259,14 +11588,14 @@ msgstr "Standaardlijst"
 msgid "Standby"
 msgstr "Stand-by"
 
+msgid "Standby & Restart"
+msgstr "Stand-by en afsluiten"
+
 msgid "Standby / restart"
 msgstr "Stand-by/afsluiten"
 
 msgid "Standby LED"
 msgstr "Stand-by LED"
-
-msgid "Standby and Restart"
-msgstr "Stand-by en Afsluiten"
 
 msgid "Start"
 msgstr "Start"
@@ -11352,6 +11681,9 @@ msgstr "Stop de huidige timer, maar volgende timers toestaan"
 msgid "Stop entry"
 msgstr "Stoppen"
 
+msgid "Stop movie"
+msgstr "Stop film"
+
 msgid "Stop play TV"
 msgstr "Stop TV afspelen"
 
@@ -11430,11 +11762,11 @@ msgstr "Stream-tv"
 msgid "Streaming"
 msgstr "Streaming"
 
+msgid "Streaming Clients"
+msgstr "Stream-klanten"
+
 msgid "Streaming Clients Info"
 msgstr "Stream-klanten info"
-
-msgid "Streaming clients"
-msgstr "Stream-klanten"
 
 msgid "Strict DLNA"
 msgstr "Strict DLNA"
@@ -11447,6 +11779,9 @@ msgstr "Sterkste positie"
 
 msgid "Subnet"
 msgstr "Subnet"
+
+msgid "Subservice selection"
+msgstr "Subservice selectie"
 
 msgid "Subservices"
 msgstr "Subkanalen"
@@ -11517,6 +11852,13 @@ msgstr "Zo"
 msgid "Sunday"
 msgstr "zondag"
 
+msgid ""
+"Sundtek - hardware blind scan in progress.\n"
+"Please wait(3-20 min) for the scan to finish."
+msgstr ""
+"Sundtek - hardware blindscan is bezig.\n"
+"Wacht (3-20 min) om de scan te laten voltooien."
+
 msgid "Support at"
 msgstr "Ondersteuning op"
 
@@ -11566,11 +11908,23 @@ msgstr "Schakel TV naar juiste ingang"
 msgid "Switch between filelist/playlist"
 msgstr "Schakel tussen bestands- en afspeellist"
 
+msgid "Switch between last two channels watched"
+msgstr "Schakel tussen de twee laatst bekeken kanalen"
+
 msgid "Switch config"
 msgstr "Wissel configuratie"
 
+msgid "Switch to Grid EPG"
+msgstr "Kies grid-EPG"
+
 msgid "Switch to HDMI in mode"
 msgstr "Schakel over naar HDMI-in"
+
+msgid "Switch to Multi EPG"
+msgstr "Kies multi-EPG"
+
+msgid "Switch to Single EPG"
+msgstr "Kies zender-EPG"
 
 msgid "Switch to TV mode"
 msgstr "Schakel  naar TV- modus"
@@ -11691,6 +12045,9 @@ msgstr "Inhoudslijst voor verzameling"
 
 msgid "Tags"
 msgstr "Markeringen"
+
+msgid "Taiwan"
+msgstr "Taiwan"
 
 msgid "Tajikistan"
 msgstr "Tajikistan"
@@ -11856,23 +12213,6 @@ msgstr "Het commitlog kan momenteel niet binnengehaald worden; probeer het later
 msgid "The current update may be unstable"
 msgstr "De huidige update kan onstabiel zijn"
 
-#, python-format
-msgid ""
-"The directory %s is not a EXT2, EXT3, EXT4 or NFS partition.\n"
-"Make sure you select a valid partition type."
-msgstr ""
-"De lokatie %s is geen EXT2, EXT3, EXT4 of NFS partitie.\n"
-"Zorg dat u een geldige partitietype kies."
-
-#
-#, python-format
-msgid ""
-"The directory %s is not writable.\n"
-"Make sure you select a writable directory instead."
-msgstr ""
-"De map %s is niet beschrijfbaar.\n"
-"Zorg ervoor dat u een beschrijfbare map selecteert."
-
 msgid "The following files were found..."
 msgstr "De volgende bestanden zijn gevonden..."
 
@@ -11965,9 +12305,8 @@ msgstr "Er zijn minstens %s updates beschikbaar."
 msgid "There are currently no outstanding actions."
 msgstr "Er zijn geen uitstaande acties."
 
-#, fuzzy
-msgid "There are no items currently available for this menu."
-msgstr "Er zijn momenteel geen updates beschikbaar."
+msgid "There are no items currently available for this screen."
+msgstr "Er zijn momenteel geen onderdelen beschikbaar voor dit scherm."
 
 msgid "There are no saved playlists to delete!"
 msgstr "Er zijn geen playlists om te verwijderen!"
@@ -11979,7 +12318,7 @@ msgid "There are no updates available."
 msgstr "Er zijn momenteel geen updates beschikbaar."
 
 msgid "There has been an error, please try again later. If this issue persists, please check openvix.co.uk or world-of-satellite.com"
-msgstr "Er is een fout opgetreden. Als het probleem aanhoudt, controleer dan op openvix.co.uk of op world-of-satellite.com wat er aan de hand is."
+msgstr "Er is een fout opgetreden. Als het probleem aanhoudt, controleert u op openvix.co.uk of op world-of-satellite.com wat er aan de hand is"
 
 msgid "There is no signal to lock on !"
 msgstr "Er is geen signaal om een lock te verkrijgen!"
@@ -11999,10 +12338,10 @@ msgid "This DVD RW medium is already formatted - reformatting will erase all con
 msgstr "Dit DVD-RW medium is reeds geformatteerd; herformatteren zal alles op deze disk verwijderen."
 
 msgid "This allows you change the font size relative to skin size, so 1 increases by 1 point size, and -1 decreases by 1 point size"
-msgstr "Hier stelt u de lettergrootte in t.o.v. de waarde die in de skin staat. Dus '1' vergroot die met 1 punt en '-1' verkleint die met 1 punt."
+msgstr "Hier stelt u de lettergrootte in t.o.v. de waarde die in de skin staat. Dus '1' vergroot die met 1 punt en '-1' verkleint die met 1 punt"
 
 msgid "This allows you to change the font size relative to skin size, so 1 increases by 1 point size, and -1 decreases by 1 point size"
-msgstr "Hier stelt u de lettergrootte in t.o.v. de waarde die in de skin staat. Dus '1' vergroot die met 1 punt en '-1' verkleint die met 1 punt."
+msgstr "Hier stelt u de lettergrootte in t.o.v. de waarde die in de skin staat. Dus '1' vergroot die met 1 punt en '-1' verkleint die met 1 punt"
 
 msgid "This allows you to change the number of rows shown."
 msgstr "Hier kunt u het aantal regels dat vertoond wordt aanpassen."
@@ -12105,7 +12444,7 @@ msgid "This option allows you to choose how to display the remaining/elapsed tim
 msgstr "Hier kunt u instellen of u de resterende en/of de vertsreken tijd wilt zien voor het afspelen van opnames."
 
 msgid "This option allows you to choose what the first button press jumps to in channel list screen, (so pressing '2' jumps to 'A' or '2' first), when 'Quick Actions' preset actions are perfomed. "
-msgstr "Hier stelt u in waarheen als eerste gesprongen wordt in de kanaallijst (dus bij drukken op '2' springt u afhankelijk van deze instelling eerst naar 'A' of naar '2')."
+msgstr "Hier stelt u in waarheen als eerste gesprongen wordt in de kanaallijst (dus bij drukken op '2' springt u afhankelijk van deze instelling eerst naar 'A' of naar '2'). "
 
 msgid "This option allows you to choose whether or not to display genre information for the event."
 msgstr "Hier kunt u instellen of u de genreinformatie wilt zien voor TV-programma's."
@@ -12114,7 +12453,7 @@ msgid "This option allows you to disable sorting of the menus"
 msgstr "Hier kunt u het sorteren van menu's inschakelen"
 
 msgid "This option allows you to disable sorting of the option in setting screens"
-msgstr "Hiermee kunt u de sortering van de instellingenschermen uitschakelen."
+msgstr "Hiermee kunt u de sortering van de instellingenschermen uitschakelen"
 
 msgid "This option allows you to disable sorting of the plugin browser."
 msgstr "Hiermee kunt u de sortering van de pluginbrowser uitschakelen."
@@ -12134,8 +12473,8 @@ msgstr "Hiermee kunt u menunummers als snelkoppeling laten weergeven."
 msgid "This option allows you to show the SNR as a percentage (not all receivers support this)."
 msgstr "Hiermee kiest u of de SNR in dB of in % wordt weergegeven (wordt niet door alle ontvangers ondersteund)."
 
-msgid "This option allows you to show the full menu path"
-msgstr "Hiermee kunt u het volledige menupad zichtbaar maken."
+msgid "This option allows you to show the full screen path leading to the current screen."
+msgstr "Hiermee kunt u het volledige menu-pad zichtbaar maken."
 
 msgid "This option allows you to view the old and new settings side by side."
 msgstr "Met deze optie kunt u de oude en de nieuwe instelling in een half beeld naast elkaar zien. Dit vergemakkelijkt het maken van de juiste instelling."
@@ -12156,16 +12495,16 @@ msgid "This option configures the video output mode (or resolution)."
 msgstr "Deze instelling bepaalt de video output (of resolutie)."
 
 msgid "This option lets you adjust the 3D depth"
-msgstr "Hier kunt u de 3D-diepte instellen."
+msgstr "Hier kunt u de 3D-diepte instellen"
 
 msgid "This option lets you adjust the transparency of the user interface"
-msgstr "Hier kunt u de gewenste transparantie van de gebruikersinterface instellen."
+msgstr "Hier kunt u de gewenste transparantie van de gebruikersinterface instellen"
 
 msgid "This option lets you choose the 3D mode"
 msgstr "Hier kunt u de gewenste 3D-modus kiezen"
 
 msgid "This option lets you show the option in the extension screen"
-msgstr "Hiermee stelt u in of de optie in de extenxielijst wordt getoond."
+msgstr "Hiermee stelt u in of de optie in de extensielijst wordt getoond"
 
 msgid "This option moves the PVR status from the separate window into the Movie Player infobar."
 msgstr "Deze optie verplaatst de PVR status (gestopt etc.) van een apart venstertje naar de informatiebalk (wordt niet door alle skins ondersteund)."
@@ -12256,6 +12595,9 @@ msgstr "TiVo support"
 msgid "Time"
 msgstr "Tijd"
 
+msgid "Time Setup Actions"
+msgstr "Tijd instellingen"
+
 msgid "Time Update in Minutes:"
 msgstr "Update tijd in minuten:"
 
@@ -12295,8 +12637,14 @@ msgstr "Timer bewerken"
 msgid "Timer List"
 msgstr "Timers"
 
+msgid "Timer Menu"
+msgstr "Timer menu"
+
 msgid "Timer Sanity Error"
 msgstr "Timer conflict"
+
+msgid "Timer control"
+msgstr "Timer beheren"
 
 msgid ""
 "Timer overlap in pm_timers.xml detected!\n"
@@ -12311,9 +12659,6 @@ msgid ""
 msgstr ""
 "Timer overlap in timers.xml gedetecteerd!\n"
 "Controleer deze!"
-
-msgid "Timer record location"
-msgstr "Timer opnamelokatie"
 
 msgid "Timer recording location"
 msgstr "Timer opnamelokatie"
@@ -12407,8 +12752,17 @@ msgstr "Wissel aspectverhouding..."
 msgid "Toggle between bouquet/epg lists"
 msgstr "Schakel tussen favorieten- en EPG-lijst"
 
+msgid "Toggle between one & two-line channel list"
+msgstr "Schakel tussen weergave van één en twee regels in de kanaallijst"
+
+msgid "Toggle channel move mode"
+msgstr "Schakel tussen kanaal verplaatsingsmodi"
+
 msgid "Toggle default subtitles"
 msgstr "Kies de standaard sorteermethode"
+
+msgid "Toggle infobar"
+msgstr "Informatiebalk verbergen/tonen"
 
 msgid "Toggle new text inserts before or overwrites existing text"
 msgstr "Schakel tussen nieuwe tekst ingeven voor of overschrijven bestaande tekst"
@@ -12561,9 +12915,6 @@ msgstr "Tuner is niet beschikbaar."
 msgid "Tuner settings values"
 msgstr "Tunerinstellingen"
 
-msgid "Tuner setup"
-msgstr "Tunerinstellingen"
-
 msgid "Tuner slot"
 msgstr "Tunerslot"
 
@@ -12575,7 +12926,7 @@ msgstr "Tunerstatus:"
 msgid "Tuner type"
 msgstr "Tunertype"
 
-msgid "Tuners & scanning"
+msgid "Tuners & Scanning"
 msgstr "Tuners & scannen"
 
 #
@@ -12776,7 +13127,7 @@ msgid "Updating Cache"
 msgstr "Bezig cache te updaten"
 
 msgid "Updating cache"
-msgstr "Bezig cache te updaten..."
+msgstr "Bezig cache te updaten"
 
 msgid "Updating cache, please wait..."
 msgstr "Bezig cache te updaten, even wachten..."
@@ -12798,7 +13149,7 @@ msgid ""
 msgstr ""
 "Upgrade is bezig.\n"
 "Wacht tot uw %s %s weer is opgestart.\n"
-"Dit kan een paar minuten duren."
+"Dit kan een paar minuten duren"
 
 msgid "Upgrading"
 msgstr "Bezig met update"
@@ -12828,7 +13179,7 @@ msgid "Use"
 msgstr "Gebruik"
 
 msgid "Use 12 characters display mode"
-msgstr "Gebruik de modus met 12 karakters."
+msgstr "Gebruik de modus met 12 karakters"
 
 msgid "Use DHCP"
 msgstr "Gebruik DHCP"
@@ -12839,6 +13190,9 @@ msgstr "Gebruik EIT EPG informatie indien beschikbaar."
 msgid "Use FreeSat EPG information when it is available."
 msgstr "Gebruik FreeSat EPG informatie indien beschikbaar."
 
+msgid "Use Geolocation"
+msgstr "Gebruik Geolokatie"
+
 msgid "Use MHW EPG information when it is available."
 msgstr "Gebruik MHW EPG informatie indien beschikbaar."
 
@@ -12846,7 +13200,7 @@ msgid "Use Netmed EPG information when it is available."
 msgstr "Gebruik Netmed EPG informatie indien beschikbaar."
 
 msgid "Use OpenTV EPG information when it is available. For reading OpenTV EPG data tuning to a dedicated transponder is required"
-msgstr "Gebruik OpenTV EPG-informatie indien beschikbaar. Voor het binnenhalen van die data is het afstemmen op een bepaalde transponder vereist."
+msgstr "Gebruik OpenTV EPG-informatie indien beschikbaar. Voor het binnenhalen van die data is het afstemmen op een bepaalde transponder vereist"
 
 msgid "Use TV remote control"
 msgstr "Gebruik de afstandsbediening van de TV"
@@ -12881,6 +13235,9 @@ msgstr "Gebruik fastscan zendervolgorde"
 msgid "Use frequency or channel"
 msgstr "Gebruik frequentie of kanaal"
 
+msgid "Use geolocation to set the current time zone location"
+msgstr "Gebruik Geolokatie om de huidige tijdzone in te stellen"
+
 msgid "Use individual settings for each directory"
 msgstr "Bewaar de instellingen voor elke map"
 
@@ -12897,7 +13254,7 @@ msgid "Use original teletext position"
 msgstr "Gebruik de originele teletekst positie"
 
 msgid "Use piconlcd directory for picons on color LCD"
-msgstr "Gebruik picon_LCD map voor picons op kleuren-LCD."
+msgstr "Gebruik picon_LCD map voor picons op kleuren-LCD"
 
 msgid "Use power measurement"
 msgstr "Meet stroomopname"
@@ -12972,20 +13329,23 @@ msgstr "Gebruikt:"
 msgid "User - bouquets"
 msgstr "Favorieten"
 
+msgid "User Interface"
+msgstr "Gebruikersinterface"
+
 msgid "User defined"
 msgstr "Door u ingesteld"
 
 msgid "User defined transponder"
 msgstr "Door gebruiker bepaalde transponder"
 
-msgid "User interface"
-msgstr "Gebruikersinterface"
-
 msgid "User interface settings"
 msgstr "Gebruikersinterface-instellingen"
 
 msgid "User interface visibility"
 msgstr "Zichtbaarheid gebruikersinterface"
+
+msgid "User-selectable functions"
+msgstr "Gebruiker instelbare functies"
 
 msgid "Username"
 msgstr "Gebruikersnaam"
@@ -13019,7 +13379,7 @@ msgstr "Extra's"
 msgid "Uzbekistan"
 msgstr "Uzbekistan"
 
-msgid "VCR scart"
+msgid "VCR Scart"
 msgstr "VCR scart"
 
 msgid "VLAN connection"
@@ -13046,18 +13406,15 @@ msgstr "Venezuela (Bolivarian Republic of)"
 msgid "Version: "
 msgstr "Versie: "
 
-#, python-format
-msgid "Version: %s"
-msgstr "Versie: %s"
-
 msgid "Vertical"
 msgstr "Verticaal"
 
 msgid "Vertical turning speed"
 msgstr "Verticale draaisnelheid"
 
-msgid "ViX EPG"
-msgstr "ViX EPG"
+#, python-format
+msgid "ViX version: %s"
+msgstr "ViX versie: %s"
 
 msgid "Video & Audio Settings"
 msgstr "Video- en audio-instellingen"
@@ -13122,9 +13479,6 @@ msgstr "Bekijken"
 
 msgid "View Movies..."
 msgstr "Bekijk opname..."
-
-msgid "View Rass interactive..."
-msgstr "Rass Interactive weergeven..."
 
 msgid "View Video CD..."
 msgstr "Bekijk video CD..."
@@ -13326,7 +13680,7 @@ msgid ""
 "\n"
 "Select Yes to change these settings or No to skip this step."
 msgstr ""
-"uw Welkom bij OpenViX!\n"
+"Welkom bij OpenViX!\n"
 "\n"
 "Opmerking: Dit onderdeel van de wizard is alleen bedoeld indien 'overscan' van uw TV/beeldscherm niet kan worden uitgeschakeld. Probeer 'overscan' uit te schakelen alvorens deze optie te gebruiken.\n"
 "\n"
@@ -13396,13 +13750,13 @@ msgid "What do you want to scan?"
 msgstr "Wat wilt u zoeken?"
 
 msgid "When enabled enigma2 will load unlinked userbouquets. This means that userbouquets that are available, but not included in the bouquets.tv or bouquets.radio files, will still be loaded. This allows you for example to keep your own user bouquet while installed settings are upgraded"
-msgstr "Indien ingeschakeld zal enigma2 niet geregistreerde favorietenlijsten laden. Dat betekent dat de lijsten die beschikbaar zijn maar niet zijn opgenomen in de radio- en TV-lijsten, toch geladen zullen worden. Dit stelt u b.v. in staat om eigen lijsten te bewaren, terwijl settings worden geüpgradet."
+msgstr "Indien ingeschakeld zal enigma2 niet geregistreerde favorietenlijsten laden. Dat betekent dat de lijsten die beschikbaar zijn maar niet zijn opgenomen in de radio- en TV-lijsten, toch geladen zullen worden. Dit stelt u b.v. in staat om eigen lijsten te bewaren, terwijl settings worden geüpgraded"
 
 msgid "When enabled the online checker will also check for experimental versions"
-msgstr "Indien geactiveerd zal ook worden gecontroleerd op experimentele versies."
+msgstr "Indien geactiveerd zal ook worden gecontroleerd op experimentele versies"
 
 msgid "When enabled the set top box is able to wakeup on LAN"
-msgstr "Indien ingeschakeld is het mogelijk de STB via 'wakeup on LAN' vanuit deep stand-by te laten starten."
+msgstr "Indien ingeschakeld is het mogelijk de STB via 'wakeup on LAN' vanuit deep stand-by te laten starten"
 
 msgid "When enabled, AIT data will be included in http streams. This allows a client receiver to use HbbTV."
 msgstr "Indien geactiveerd, zal AIT-data in HTTP-stream worden meegestuurd. Dit maakt het gebruik van HbbTV door een klant-box mogelijk."
@@ -13492,7 +13846,7 @@ msgid "When enabled, the PiP can be closed by the EXIT button."
 msgstr "Indien ingeschakeld kan PiP (ook) verlaten worden door op de exit-toets te drukken."
 
 msgid "When enabled, the VCR scart option will be shown in the main menu"
-msgstr "Indien ingeschakeld zal de VCR-Scart in het hoofdmenu worden getoond."
+msgstr "Indien ingeschakeld zal de VCR-Scart in het hoofdmenu worden getoond"
 
 msgid "When enabled, the length of each recording will be shown in the movielist (this might cause some additional loading time)."
 msgstr "Toon de lengte van opnames (dit kan een iets langere laadtijd van het scherm veroorxaken)."
@@ -13537,10 +13891,14 @@ msgid "When set the PIG will return to live after a movie has stopped playing."
 msgstr "Indien 'Ja' wordt gekozen, wordt in de opnamelijst live-TV op de achtergrond of in PiG getoond zolang er geen opname loopt."
 
 msgid "When set, each directory will show the previous state used. When off, the default values will be shown."
-msgstr "Indien ingeschakeld, worden de vorige waarden van elke map getoond. Indien uitgeschakeld worden de defaults getoond. "
+msgstr "Indien ingeschakeld, worden de vorige waarden van elke map getoond. Indien uitgeschakeld worden de defaults getoond."
 
-msgid "When set, sort changes via the sort key will be permanent."
-msgstr "Indien ingeschakeld, zullen de veranderingen permanent zijn."
+msgid ""
+"When set, sort changes via the sort key will be permanent.\n"
+"When unset, sort changes will be temporary - just for this view of a directory."
+msgstr ""
+"Indien gekozen, zullen de veranderingen via de sorteer-toets permanent zijn.\n"
+"Indien niet gekozen, zullen de aanpassingen tijdelijk zijn; alleen voor deze keer dat u deze map inziet."
 
 msgid "When the content has an aspect ratio of 16:9, choose whether to scale/stretch the picture."
 msgstr "Als het beeld een verhouding heeft van 16:9 kan het beeld worden uitgerekt of geschaald."
@@ -13550,9 +13908,6 @@ msgstr "Als het beeld een verhouding heeft van 4:3 kan het beeld worden uitgerek
 
 msgid "When tuned to a service the system will normally scan the transponder for any changes and save them. Only set to 'yes' if you're absolutely sure of what you're doing."
 msgstr "Als uw ontvanger op een kanaal is afgestemd, wordt normaal gesproken de transponder gescand op veranderingen. Schakel dit alleen uit, als u zeker bent van wat u doet."
-
-msgid "When unset, sort changes will be temporary - just for this view of a directory."
-msgstr "Indien uitgeschakeld, zullen de veranderingen tijdelijk zijn; alleen voor deze keer dat u deze map inziet."
 
 msgid "Where do you want to backup your settings?"
 msgstr "Waar wilt u de instellingen opslaan?"
@@ -13591,7 +13946,7 @@ msgid "Wireless network state"
 msgstr "Status draadloos netwerk"
 
 msgid "With T2MI RAW mode disabled (default) we can use single T2MI PLP de-encapsulation. With T2MI RAW mode enabled we can use astra-sm to analyze T2MI"
-msgstr "Indien T2MI RAW modus gedeactiveerd is (default), kunnen we de enkele T2MI PLP de-encapsulation gebruiken. Indien T2MI RAW modus geactiveerd is, kunnen we astra-sm gebruiken om T2MI te analyseren."
+msgstr "Indien T2MI RAW modus gedeactiveerd is (default), kunnen we de enkele T2MI PLP de-encapsulation gebruiken. Indien T2MI RAW modus geactiveerd is, kunnen we astra-sm gebruiken om T2MI te analyseren"
 
 msgid "With popup"
 msgstr "Met pop-up"
@@ -13658,6 +14013,12 @@ msgstr "Geel"
 
 msgid "Yellow DVB subtitles"
 msgstr "Gele DVB-ondertitels"
+
+msgid "Yellow button (long)"
+msgstr "Gele-toets (lang)"
+
+msgid "Yellow button (short)"
+msgstr "Gele-toets (kort)"
 
 msgid "Yellow long"
 msgstr "Lang-geel"
@@ -13741,7 +14102,7 @@ msgstr ""
 "wilt u \"%s\" verwijderen?"
 
 msgid "You can Display MiniTV with or without OSD Menu"
-msgstr "U kunt MiniTV met en zonder OSD-menu tonen."
+msgstr "U kunt MiniTV met en zonder OSD-menu tonen"
 
 msgid "You can Display PIP with or without OSD Menu"
 msgstr "U kubt PIP met en zonder OSD-menu tonen"
@@ -13795,7 +14156,7 @@ msgid "You have not selected any logs to delete."
 msgstr "U heeft geen logs geselecteerd om te verwijderen."
 
 msgid "You have not selected any logs to send"
-msgstr "U heeft geen logs geselecteerd om te verzenden."
+msgstr "U heeft geen logs geselecteerd om te versturen"
 
 msgid ""
 "You have not setup your user info in the setup screen\n"
@@ -13830,10 +14191,6 @@ msgstr "U bent in timeshift modus. Wilt u timeshift beëindigen?"
 
 msgid "You seem to be in timeshift, Do you want to leave timeshift? Streams & IPTV not fully supported!"
 msgstr "U bent in timeshift modus. Wilt u timeshift beëindigen? Timeshift op streams & IPTV wordt niet volledig ondersteund!"
-
-#, python-format
-msgid "Your %s %s does not support PiP HD"
-msgstr "Uw %s %s ondersteunt geen HD-PiP"
 
 #, python-format
 msgid "Your %s %s has no %s access, please check your network settings and make sure you have network cable connected and try again."
@@ -14043,11 +14400,17 @@ msgstr "Zapmodus"
 msgid "Zap to"
 msgstr "Zap naar"
 
+msgid "Zap to channel number"
+msgstr "Zap naar kanaalnummer"
+
 msgid "Zap to channel/service"
 msgstr "Zap naar kanaal"
 
 msgid "Zap to channel/service and close"
 msgstr "Zap naar kanaal en sluit"
+
+msgid "Zap to first channel & clear zap history"
+msgstr "ZAP naar het eerste kanaal en verwijder de zap-geschiedenis"
 
 msgid "Zap up"
 msgstr "Zap omhoog"
@@ -14075,6 +14438,9 @@ msgstr "Zgemma i55"
 msgid "Zimbabwe"
 msgstr "Zimbabwe"
 
+msgid "Zoom"
+msgstr "Zoom"
+
 msgid "Zoom In/Out TV..."
 msgstr "Zoom In/Uit TV..."
 
@@ -14092,9 +14458,6 @@ msgstr "[TimeShift] Timeshift wordt herstart!"
 
 msgid "[Timeshift] Merging records failed!"
 msgstr "[Timeshift] Samenvoegen van opnames is milukt!"
-
-msgid "[a]"
-msgstr "[a]"
 
 msgid "[alternative edit]"
 msgstr "[alternatieven bewerken]"
@@ -14124,7 +14487,10 @@ msgid "activatePiP long"
 msgstr "activeer PiP lang"
 
 msgid "add bookmark"
-msgstr "Markeerpunt toevoegen."
+msgstr "markeerpunt toevoegen"
+
+msgid "additional cable of rotor"
+msgstr "Extra kabel van rotor"
 
 msgid "address:"
 msgstr "adres:"
@@ -14281,7 +14647,7 @@ msgid "circular right"
 msgstr "circular rechts"
 
 msgid "clip overscan / letterbox borders"
-msgstr "Knip overscan/letterbox grenzen"
+msgstr "knip overscan/letterbox grenzen"
 
 msgid "close share view"
 msgstr "sluit shareview"
@@ -14299,16 +14665,16 @@ msgid "connected"
 msgstr "verbonden"
 
 msgid "controlled by HDMI"
-msgstr "Beheerd door HDMI"
+msgstr "beheerd door HDMI"
 
 msgid "convert to AC3"
-msgstr "Converteer naar AC3"
+msgstr "converteer naar AC3"
 
 msgid "convert to DTS"
-msgstr "Converteer naar DTS"
+msgstr "converteer naar DTS"
 
 msgid "convert to multi-channel PCM"
-msgstr "Convert naar meerkanaals PCM"
+msgstr "converteer naar meerkanaals PCM"
 
 msgid "cooking"
 msgstr "koken"
@@ -14515,10 +14881,10 @@ msgid "football/soccer"
 msgstr "voetbal/rugby"
 
 msgid "force disabled"
-msgstr "Geforceerd gedeactiveerd"
+msgstr "geforceerd gedeactiveerd"
 
 msgid "force enabled"
-msgstr "Geforceerd geactiveerd"
+msgstr "geforceerd geactiveerd"
 
 msgid "foreign countries/expeditions"
 msgstr "buitenland/expedities"
@@ -14807,7 +15173,7 @@ msgid "no CAId selected"
 msgstr "geen CAId geselecteerd"
 
 msgid "no CI slots found"
-msgstr "Geen CI-slots gevonden"
+msgstr "geen CI-slots gevonden"
 
 msgid "no channel list"
 msgstr "geen kanaallijst"
@@ -14930,6 +15296,9 @@ msgstr "opname"
 msgid "recording..."
 msgstr "opnemen..."
 
+msgid "recordings by date then other media by name"
+msgstr "opnames op datum, andere media op naam"
+
 msgid "red"
 msgstr "rood"
 
@@ -14987,6 +15356,9 @@ msgstr "rock/pop"
 msgid "romance"
 msgstr "romantiek"
 
+msgid "rotor"
+msgstr "rotor: "
+
 msgid "running..."
 msgstr "actief..."
 
@@ -15007,6 +15379,9 @@ msgstr "SDR"
 
 msgid "se"
 msgstr "ZO"
+
+msgid "sec"
+msgstr "sec"
 
 msgid "seconds"
 msgstr "seconden"
@@ -15036,7 +15411,7 @@ msgid "show all cards"
 msgstr "toon alle kaarten"
 
 msgid "show all tags"
-msgstr "Laat alle tags zien."
+msgstr "Laat alle tags zien"
 
 msgid "show cards with uphop 0"
 msgstr "toon kaarten met uphop 0"
@@ -15095,14 +15470,8 @@ msgstr "eenvoudig"
 msgid "skip backward"
 msgstr "achteruit springen"
 
-msgid "skip backward (enter time)"
-msgstr "spring achteruit (tijd invoeren)"
-
 msgid "skip forward"
 msgstr "vooruit spoelen"
-
-msgid "skip forward (enter time)"
-msgstr "spring vooruit (tijd invoeren)"
 
 msgid "slow"
 msgstr "langzaam"
@@ -15165,7 +15534,7 @@ msgid "switch to the next angle"
 msgstr "schakel naar de volgende hoek"
 
 msgid "switch to the next audio track"
-msgstr "Kies het volgende audiospoor."
+msgstr "Kies het volgende audiospoor"
 
 msgid "switch to the next subtitle language"
 msgstr "Kies de volgende ondertiteltaal"
@@ -15189,13 +15558,13 @@ msgid "tennis/squash"
 msgstr "tennis/squash"
 
 msgid "this bouquet is protected by a parental control pin"
-msgstr "Deze favorietenlijst is beveiligd met een kinderslot-pincode."
+msgstr "Deze favorietenlijst is beveiligd met een kinderslot-pincode"
 
 msgid "this recording"
 msgstr "deze opname"
 
 msgid "this service is protected by a parental control pin"
-msgstr "Dit kanaal is beveiligd met een kinderslot-pincode."
+msgstr "Dit kanaal is beveiligd met een kinderslot-pincode"
 
 msgid "toggle time, chapter, audio, subtitle info"
 msgstr "tijd, hoofdstuk, audio en ondertitels instellen"
@@ -15526,6 +15895,12 @@ msgstr "zapte"
 #~ msgid "%k:%M %e/%m"
 #~ msgstr "%k:%M %e/%m"
 
+#~ msgid "** Setup error: '%s' section not found! **"
+#~ msgstr "** Instellingsfoutr: '%s' sectie niet gevonden!**"
+
+#~ msgid "** Setup error: '%s' title is missing or blank!"
+#~ msgstr "** Instellingsfout: '%s' titel ontbreekt!"
+
 #~ msgid "128"
 #~ msgstr "128"
 
@@ -15534,9 +15909,6 @@ msgstr "zapte"
 
 #~ msgid "32"
 #~ msgstr "32"
-
-#~ msgid "3D setup"
-#~ msgstr "3D instellingen"
 
 #~ msgid "9 Mon"
 #~ msgstr "9 ma"
@@ -15655,6 +16027,9 @@ msgstr "zapte"
 #~ msgid "9Mon"
 #~ msgstr "9Ma"
 
+#~ msgid "??"
+#~ msgstr "??"
+
 #~ msgid ""
 #~ "A finished power timer wants to shut down\n"
 #~ "your %s %s. Shutdown now?"
@@ -15722,8 +16097,14 @@ msgstr "zapte"
 #~ msgid "BB"
 #~ msgstr "BB"
 
+#~ msgid "Button"
+#~ msgstr "Toets"
+
 #~ msgid "ButtonSetup Setup"
 #~ msgstr "Toetsinstellingen"
+
+#~ msgid "CCcam info"
+#~ msgstr "CCcam info"
 
 #~ msgid "CPU speed:\t%s\n"
 #~ msgstr "CPU -snelheid:\t%s\n"
@@ -15739,6 +16120,9 @@ msgstr "zapte"
 
 #~ msgid "Change to bouquet"
 #~ msgstr "Verander in favorietenlijst"
+
+#~ msgid "Change to service"
+#~ msgstr "Wijzig in kanaal"
 
 #~ msgid "Changelog"
 #~ msgstr "Veranderingslogboek"
@@ -15773,8 +16157,11 @@ msgstr "zapte"
 #~ msgid "Choose the layout view mode (Text or Graphics)."
 #~ msgstr "Hier kiest u de lay-out: tekst of grafisch."
 
-#~ msgid "Close bouquet list."
-#~ msgstr "Sluit favorietenlijst."
+#~ msgid "Close dialog box"
+#~ msgstr "Sluit dialoog"
+
+#~ msgid "Close number zap."
+#~ msgstr "Sluit nummer-zap."
 
 #~ msgid "Coderate HP"
 #~ msgstr "Coderate HP"
@@ -15784,6 +16171,9 @@ msgstr "zapte"
 
 #~ msgid "Common Interface Assignment"
 #~ msgstr "Common interface taken"
+
+#~ msgid "Common interface"
+#~ msgstr "Common interface"
 
 #~ msgid "Compare case sensitive"
 #~ msgstr "Vergelijk hoofdlettergevoelig"
@@ -15835,9 +16225,6 @@ msgstr "zapte"
 
 #~ msgid "Currently installed image"
 #~ msgstr "Huidig geïnstalleerd image"
-
-#~ msgid "Customize"
-#~ msgstr "Aanpassen"
 
 #~ msgid "DVB_C"
 #~ msgstr "DVB_C"
@@ -16126,8 +16513,14 @@ msgstr "zapte"
 #~ msgid "FTP setup"
 #~ msgstr "FTP instellingen"
 
+#~ msgid "Factory reset"
+#~ msgstr "Fabrieksinstellingen"
+
 #~ msgid "Fernando de Noronha"
 #~ msgstr "Fernando de Noronha"
+
+#~ msgid "Filesystem check"
+#~ msgstr "Controle filesysteem"
 
 #~ msgid "Find currently played service"
 #~ msgstr "Vind het nu spelende kanaal"
@@ -16177,6 +16570,9 @@ msgstr "zapte"
 
 #~ msgid "Get latest release image"
 #~ msgstr "Ontvang het laatste release image"
+
+#~ msgid "Graphical EPG"
+#~ msgstr "Grafische EPG"
 
 #~ msgid "Graphical InfobarEPG"
 #~ msgstr "Grafische InfobarEPG"
@@ -16236,6 +16632,18 @@ msgstr "zapte"
 #~ msgid "Initialization"
 #~ msgstr "Initialiseren"
 
+#~ msgid "Initialize devices"
+#~ msgstr "Initialiseer apparaten"
+
+#~ msgid "Input devices"
+#~ msgstr "Invoerapparaten"
+
+#~ msgid "Instant record location"
+#~ msgstr "Lokatie directe opname"
+
+#~ msgid "Instant recordings location"
+#~ msgstr "Lokatie van directe opnames"
+
 #~ msgid "Johnston Atoll"
 #~ msgstr "Johnston Atoll"
 
@@ -16245,8 +16653,17 @@ msgstr "zapte"
 #~ msgid "Link Quality:"
 #~ msgstr "Kwaliteit verbinding:"
 
+#~ msgid "Load-save-delete"
+#~ msgstr "Laad-Sla op-Verwijder"
+
+#~ msgid "Log manager"
+#~ msgstr "Logmanager"
+
 #~ msgid "Lord Howe Island"
 #~ msgstr "Lord Howe Island"
+
+#~ msgid "Mainmenu"
+#~ msgstr "Hoofdmenu"
 
 #~ msgid "Marquesas Islands"
 #~ msgstr "Marquesas Islands"
@@ -16259,9 +16676,6 @@ msgstr "zapte"
 
 #~ msgid "MiniDLNA setup"
 #~ msgstr "MiniDLNA instellingen"
-
-#~ msgid "Miscellaneous"
-#~ msgstr "Diverse"
 
 #~ msgid ""
 #~ "Misconfigured unicable connection from tuner %s to tuner %s!\n"
@@ -16316,8 +16730,23 @@ msgstr "zapte"
 #~ msgid "Move to other directory"
 #~ msgstr "Verplaats naar andere map"
 
+#~ msgid "Move to the next page"
+#~ msgstr "Verplaats naar de volgende pagina"
+
+#~ msgid "Move to the next skin"
+#~ msgstr "Verplaats naar de volgende skin"
+
+#~ msgid "Move to the previous page"
+#~ msgstr "Verplaats naar de vorige pagina"
+
+#~ msgid "Move to the previous skin"
+#~ msgstr "Verplaats naar de vorige pagina"
+
 #~ msgid "Move to..."
 #~ msgstr "Verplaats naar..."
+
+#~ msgid "Movie location"
+#~ msgstr "Opnamelokatie"
 
 #~ msgid "Movie manager"
 #~ msgstr "Opnamebeheerder"
@@ -16339,6 +16768,9 @@ msgstr "zapte"
 
 #~ msgid "Multiboot ERROR! - no STARTUP in boot partition."
 #~ msgstr "Multiboot FOUT! - geen STARTUP in bootpartitie."
+
+#~ msgid "Multiboot Image Selector"
+#~ msgstr "Multibootimage kiezen"
 
 #~ msgid "NFI image flashing"
 #~ msgstr "NFI image schrijven"
@@ -16363,6 +16795,9 @@ msgstr "zapte"
 
 #~ msgid "New PIN"
 #~ msgstr "Nieuwe pincode"
+
+#~ msgid "New timers location"
+#~ msgstr "Lokatie voor nieuwe timers"
 
 #~ msgid "No cable tuner found!"
 #~ msgstr "Geen kabeltuner gevonden!"
@@ -16431,6 +16866,9 @@ msgstr "zapte"
 #~ msgid "OE-A Changes"
 #~ msgstr "OE-A veranderingen"
 
+#~ msgid "OScam info"
+#~ msgstr "OScam info"
+
 #~ msgid "On destination '%s' is %s free space only!"
 #~ msgstr "Bestemming '%s' heeft slechts %s vrije ruimte!"
 
@@ -16475,9 +16913,6 @@ msgstr "zapte"
 
 #~ msgid "Please check your network settings!"
 #~ msgstr "Controleer uw netwerkinstellingen!"
-
-#~ msgid "Please select a default EPG type..."
-#~ msgstr "Kies het standaard EPG-type..."
 
 #~ msgid "Please select an NFI file and press green key to flash!"
 #~ msgstr "Selecteer een NFI-bestand en druk op de groene toets om te flashen!"
@@ -16601,8 +17036,8 @@ msgstr "zapte"
 #~ msgid "Satellite equipment control"
 #~ msgstr "Satelliet apparatuur controle"
 
-#~ msgid "Save and exit"
-#~ msgstr "Bewaar en sla op"
+#~ msgid "Save EPG"
+#~ msgstr "Sla EPG op"
 
 #~ msgid "Save timeshift in movie dir and zap"
 #~ msgstr "Bewaar timeshift als opname en zap"
@@ -16612,9 +17047,6 @@ msgstr "zapte"
 
 #~ msgid "Select an image to be downloaded"
 #~ msgstr "Kies bestand om te downloaden"
-
-#~ msgid "Select default EPG type..."
-#~ msgstr "Kies het standaard EPG-type..."
 
 #~ msgid "Select desired image from feed list"
 #~ msgstr "Selecteer het gewenste bestand van de feed-lijst"
@@ -16645,9 +17077,6 @@ msgstr "zapte"
 
 #~ msgid "Select input device"
 #~ msgstr "Selecteer invoerapparaat"
-
-#~ msgid "Select locale"
-#~ msgstr "Kies taal"
 
 #~ msgid "Select operation:"
 #~ msgstr "Kies bewerking:"
@@ -16704,17 +17133,23 @@ msgstr "zapte"
 #~ msgid "Show EPG for current service"
 #~ msgstr "Toon EPG voor huidige kanaal"
 
+#~ msgid "Show EPG..."
+#~ msgstr "Toon EPG..."
+
 #~ msgid "Show OE Log"
 #~ msgstr "Toon OE-Log"
+
+#~ msgid "Show epg"
+#~ msgstr "Toon EPG"
+
+#~ msgid "Show full menu path"
+#~ msgstr "Toon het volledige menupad"
 
 #~ msgid "Show graphical multi EPG"
 #~ msgstr "Toon graphische multi EPG"
 
 #~ msgid "Show services beginning with"
 #~ msgstr "Laat zenders zien die beginnen met"
-
-#~ msgid "Show single service EPG"
-#~ msgstr "Toon kanaallijst EPG"
 
 #~ msgid "Show status icons in movielist"
 #~ msgstr "Laat status-iconen zien in opnamelijst"
@@ -16731,9 +17166,6 @@ msgstr "zapte"
 
 #~ msgid "Show warning when in a stream"
 #~ msgstr "Toon waarschuwing wanneer in een stream"
-
-#~ msgid "Show/hide infoBar"
-#~ msgstr "Toon/Verberg infoBar"
 
 #~ msgid "Signal Finder"
 #~ msgstr "Signaalzoeker"
@@ -16761,9 +17193,6 @@ msgstr "zapte"
 
 #~ msgid "Softcam setings"
 #~ msgstr "Softcaminstellingen"
-
-#~ msgid "Software Update"
-#~ msgstr "Software-update"
 
 #~ msgid "Solo4K Misc. Control"
 #~ msgstr "Solo4K diverse instellingen"
@@ -16803,9 +17232,6 @@ msgstr "zapte"
 #~ "Systeemtemperatuur: %s%sC\n"
 #~ "\n"
 
-#~ msgid "TV button mode"
-#~ msgstr "TV toets functie"
-
 #~ msgid "Terrestrial provider"
 #~ msgstr "Regio"
 
@@ -16836,6 +17262,21 @@ msgstr "zapte"
 #~ msgstr ""
 #~ "Het commitlog kan momenteel niet binnengehaald worden; probeer het later nog eens.\n"
 #~ "%s"
+
+#~ msgid ""
+#~ "The directory %s is not a EXT2, EXT3, EXT4 or NFS partition.\n"
+#~ "Make sure you select a valid partition type."
+#~ msgstr ""
+#~ "De lokatie %s is geen EXT2, EXT3, EXT4 of NFS partitie.\n"
+#~ "Zorg dat u een geldige partitietype kies."
+
+#
+#~ msgid ""
+#~ "The directory %s is not writable.\n"
+#~ "Make sure you select a writable directory instead."
+#~ msgstr ""
+#~ "De map %s is niet beschrijfbaar.\n"
+#~ "Zorg ervoor dat u een beschrijfbare map selecteert."
 
 #~ msgid ""
 #~ "The following device was found:\n"
@@ -16886,17 +17327,14 @@ msgstr "zapte"
 #~ "In de volgende stap kan een BFI-bestand worden gedownload van de update server en op de stick worden opgeslagen.\n"
 #~ "Als u al een geschikte stick heeft, kunt u die nu inpluggen. Anders een stick met minimaal 64MB gebruiken!"
 
-#~ msgid "Time settings"
-#~ msgstr "Tijd instellingen"
-
-#~ msgid "Timer entry"
-#~ msgstr "Timer invoer"
-
 #~ msgid "Timer log"
 #~ msgstr "Timer-log"
 
 #~ msgid "Timer overview"
 #~ msgstr "Timer overzicht"
+
+#~ msgid "Timer record location"
+#~ msgstr "Timer opnamelokatie"
 
 #~ msgid "Timeshift on a stream is not supported!"
 #~ msgstr "Timeshift van een stream wordt niet ondersteund!"
@@ -16932,6 +17370,9 @@ msgstr "zapte"
 
 #~ msgid "Tuner Configuration"
 #~ msgstr "Tunerconfiguratie"
+
+#~ msgid "Tuner setup"
+#~ msgstr "Tunerinstellingen"
 
 #~ msgid "Tuner value settings"
 #~ msgstr "Tunerinstellingen"
@@ -16981,6 +17422,9 @@ msgstr "zapte"
 #~ msgid "Use the cursor keys to select an installed image and then Reboot button."
 #~ msgstr "Gebruik de pijltjestoetsen om een geïnstalleerd image te kiezen en druk dan op de reboot toets."
 
+#~ msgid "ViX EPG"
+#~ msgstr "ViX EPG"
+
 #~ msgid "Video fine-tuning"
 #~ msgstr "Video fijninstellingen."
 
@@ -16995,6 +17439,9 @@ msgstr "zapte"
 
 #~ msgid "Videosize"
 #~ msgstr "Video-afmetingen"
+
+#~ msgid "View Rass interactive..."
+#~ msgstr "Rass Interactive weergeven..."
 
 #~ msgid "Wake Island"
 #~ msgstr "Wake Island"
@@ -17016,6 +17463,9 @@ msgstr "zapte"
 
 #~ msgid "When enabled, the original line breaks will be removed from the teletext subtitles."
 #~ msgstr "Indien geactiveerd worden de regeleindes van de teletekst ondertitels verwijderd."
+
+#~ msgid "When set, sort changes via the sort key will be permanent."
+#~ msgstr "Indien ingeschakeld, zullen de veranderingen permanent zijn."
 
 #~ msgid ""
 #~ "When you perform a factory reset, you will lose ALL of your configuration data\n"
@@ -17042,6 +17492,9 @@ msgstr "zapte"
 #~ msgid "You system does not support ext4"
 #~ msgstr "Uw systeem ondersteunt geen ext4"
 
+#~ msgid "Your %s %s does not support PiP HD"
+#~ msgstr "Uw %s %s ondersteunt geen HD-PiP"
+
 #~ msgid "Your %s %s is not connected to the internet, please check your network settings and try again."
 #~ msgstr "Uw %s %s is niet met het internet verbonden. Controleer uw netwerkinstellingen en probeer het opnieuw."
 
@@ -17050,6 +17503,9 @@ msgstr "zapte"
 
 #~ msgid "Zap back to service before tuner setup?"
 #~ msgstr "Wilt u terug naar het vorige kanaal"
+
+#~ msgid "[a]"
+#~ msgstr "[a]"
 
 #~ msgid "bc%s"
 #~ msgstr "bc%s"
@@ -17068,9 +17524,6 @@ msgstr "zapte"
 
 #~ msgid "equal to"
 #~ msgstr "gelijk aan"
-
-#~ msgid "fine-tune your display"
-#~ msgstr "uw scherm fijn-afstellen"
 
 #~ msgid "leave movie player..."
 #~ msgstr "opnamemenu afsluiten"

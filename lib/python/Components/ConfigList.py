@@ -2,7 +2,7 @@ from enigma import eListbox, eListboxPythonConfigContent, ePoint, eRCInput, eTim
 from skin import parameters
 
 from Components.ActionMap import HelpableActionMap, HelpableNumberActionMap
-from Components.config import ConfigBoolean, ConfigElement, ConfigInteger, ConfigMacText, ConfigSelection, ConfigSequence, ConfigText, KEYA_LEFT, KEYA_RIGHT, KEYA_HOME, KEYA_END, KEYA_0, KEYA_DELETE, KEYA_BACKSPACE, KEYA_SELECT, KEYA_TOGGLEOW, KEYA_ASCII, KEYA_NUMBERS, KEYA_TIMEOUT, config, configfile
+from Components.config import ConfigBoolean, ConfigElement, ConfigInteger, ConfigMacText, ConfigSelection, ConfigSequence, ConfigText, KEYA_0, KEYA_ASCII, KEYA_BACKSPACE, KEYA_DELETE, KEYA_ERASE, KEYA_FIRST, KEYA_LAST, KEYA_LEFT, KEYA_NUMBERS, KEYA_RIGHT, KEYA_SELECT, KEYA_TIMEOUT, KEYA_TOGGLE, config, configfile
 from Components.GUIComponent import GUIComponent
 from Components.Pixmap import Pixmap
 from Components.Sources.Boolean import Boolean
@@ -122,17 +122,9 @@ class ConfigList(GUIComponent, object):
 		if self.instance is not None:
 			self.instance.moveSelection(self.instance.moveTop)
 
-	def moveBottom(self):
-		if self.instance is not None:
-			self.instance.moveSelection(self.instance.moveEnd)
-
 	def pageUp(self):
 		if self.instance is not None:
 			self.instance.moveSelection(self.instance.pageUp)
-
-	def pageDown(self):
-		if self.instance is not None:
-			self.instance.moveSelection(self.instance.pageDown)
 
 	def moveUp(self):
 		if self.instance is not None:
@@ -142,27 +134,40 @@ class ConfigList(GUIComponent, object):
 		if self.instance is not None:
 			self.instance.moveSelection(self.instance.moveDown)
 
+	def pageDown(self):
+		if self.instance is not None:
+			self.instance.moveSelection(self.instance.pageDown)
+
+	def moveBottom(self):
+		if self.instance is not None:
+			self.instance.moveSelection(self.instance.moveEnd)
+
 
 class ConfigListScreen:
-	def __init__(self, list, session=None, on_change=None):
+	def __init__(self, list, session=None, on_change=None, fullUI=False):
 		self.entryChanged = on_change if on_change is not None else lambda: None
+		if fullUI:
+			if "key_red" not in self:
+				self["key_red"] = StaticText(_("Cancel"))
+			if "key_green" not in self:
+				self["key_green"] = StaticText(_("Save"))
+			self["fullUIActions"] = HelpableActionMap(self, ["ConfigListActions"], {
+				"cancel": (self.keyCancel, _("Cancel any changed settings and exit")),
+				"close": (self.closeRecursive, _("Cancel any changed settings and exit all menus")),
+				"save": (self.keySave, _("Save all changed settings and exit"))
+			}, prio=1, description=_("Common Setup Actions"))
 		if "key_menu" not in self:
 			self["key_menu"] = StaticText(_("MENU"))
-		if "key_red" not in self:
-			self["key_red"] = StaticText(_("Cancel"))
-		if "key_green" not in self:
-			self["key_green"] = StaticText(_("Save"))
 		if "HelpWindow" not in self:
 			self["HelpWindow"] = Pixmap()
 			self["HelpWindow"].hide()
 		if "VKeyIcon" not in self:
 			self["VKeyIcon"] = Boolean(False)
-		self["configActions"] = HelpableNumberActionMap(self, "ConfigListActions", {
-			"cancel": (self.keyCancel, _("Cancel any changed settings and exit")),
-			"close": (self.closeRecursive, _("Cancel any changed settings and exit all menus")),
-			"save": (self.keySave, _("Save all changed settings and exit")),
-			"select": (self.keySelect, _("Select, toggle, process or edit the current entry")),
-			"top": (self.keyTop, _("Move to first line")),
+		self["configActions"] = HelpableActionMap(self, ["ConfigListActions"], {
+			"select": (self.keySelect, _("Select, toggle, process or edit the current entry"))
+		}, prio=1, description=_("Common Setup Actions"))
+		self["navigationActions"] = HelpableActionMap(self, ["NavigationActions"], {
+			"top": (self.keyTop, _("Move to first line / screen")),
 			"pageUp": (self.keyPageUp, _("Move up a screen")),
 			"up": (self.keyUp, _("Move up a line")),
 			"first": (self.keyFirst, _("Jump to first item in list or the start of text")),
@@ -171,16 +176,17 @@ class ConfigListScreen:
 			"last": (self.keyLast, _("Jump to last item in list or the end of text")),
 			"down": (self.keyDown, _("Move down a line")),
 			"pageDown": (self.keyPageDown, _("Move down a screen")),
-			"bottom": (self.keyBottom, _("Move to last line"))
-		}, prio=-1, description=_("Common Setup Functions"))
-		self["menuConfigActions"] = HelpableNumberActionMap(self, "ConfigListActions", {
+			"bottom": (self.keyBottom, _("Move to last line / screen"))
+		}, prio=1, description=_("Common Setup Actions"))
+		self["menuConfigActions"] = HelpableActionMap(self, "ConfigListActions", {
 			"menu": (self.keyMenu, _("Display selection list as a selection menu")),
-		}, prio=-1, description=_("Common Setup Functions"))
+		}, prio=1, description=_("Common Setup Actions"))
 		self["menuConfigActions"].setEnabled(False)
-		self["digitConfigActions"] = HelpableNumberActionMap(self, "ConfigListActions", {
-			"toggleOverwrite": (self.keyToggleOW, _("Toggle new text inserts before or overwrites existing text")),
-			"backspace": (self.keyBackspace, _("Delete the character to the left of cursor")),
-			"delete": (self.keyDelete, _("Delete the character under the cursor")),
+		self["editConfigActions"] = HelpableNumberActionMap(self, ["NumberActions", "TextEditActions"], {
+			"backspace": (self.keyBackspace, _("Delete character to left of cursor or select AM times")),
+			"delete": (self.keyDelete, _("Delete character under cursor or select PM times")),
+			"erase": (self.keyErase, _("Delete all the text")),
+			"toggleOverwrite": (self.keyToggle, _("Toggle new text inserts before or overwrites existing text")),
 			"1": (self.keyNumberGlobal, _("Number or SMS style data entry")),
 			"2": (self.keyNumberGlobal, _("Number or SMS style data entry")),
 			"3": (self.keyNumberGlobal, _("Number or SMS style data entry")),
@@ -192,16 +198,18 @@ class ConfigListScreen:
 			"9": (self.keyNumberGlobal, _("Number or SMS style data entry")),
 			"0": (self.keyNumberGlobal, _("Number or SMS style data entry")),
 			"gotAsciiCode": (self.keyGotAscii, _("Keyboard data entry"))
-		}, prio=-1, description=_("Common Setup Functions"))
-		self["digitConfigActions"].setEnabled(False)
+		}, prio=1, description=_("Common Setup Actions"))
+		self["editConfigActions"].setEnabled(False)
 		self["VirtualKB"] = HelpableActionMap(self, "VirtualKeyboardActions", {
 			"showVirtualKeyboard": (self.keyText, _("Display the virtual keyboard for data entry"))
-		}, prio=-2, description=_("Common Setup Functions"))
+		}, prio=1, description=_("Common Setup Actions"))
 		self["VirtualKB"].setEnabled(False)
 		self["config"] = ConfigList(list, session=session)
 		self.setCancelMessage(None)
 		self.setRestartMessage(None)
 		self.onChangedEntry = []
+		if self.noNativeKeys not in self.onLayoutFinish:
+			self.onLayoutFinish.append(self.noNativeKeys)
 		if self.handleInputHelpers not in self["config"].onSelectionChanged:
 			self["config"].onSelectionChanged.append(self.handleInputHelpers)
 		if self.showHelpWindow not in self.onExecBegin:
@@ -209,9 +217,8 @@ class ConfigListScreen:
 		if self.hideHelpWindow not in self.onExecEnd:
 			self.onExecEnd.append(self.hideHelpWindow)
 
-	def createSummary(self):  # This should not be required if ConfigList is invoked via Setup (as it should).
-		from Screens.Setup import SetupSummary
-		return SetupSummary
+	def noNativeKeys(self):
+		self["config"].instance.allowNativeKeys(False)
 
 	def setCancelMessage(self, msg):
 		self.cancelMsg = _("Really close without saving settings?") if msg is None else msg
@@ -239,9 +246,9 @@ class ConfigListScreen:
 		currConfig = self["config"].getCurrent()
 		if currConfig is not None:
 			if isinstance(currConfig[1], (ConfigInteger, ConfigMacText, ConfigSequence, ConfigText)):
-				self["digitConfigActions"].setEnabled(True)
+				self["editConfigActions"].setEnabled(True)
 			else:
-				self["digitConfigActions"].setEnabled(False)
+				self["editConfigActions"].setEnabled(False)
 			if isinstance(currConfig[1], ConfigSelection):
 				self["menuConfigActions"].setEnabled(True)
 				self["key_menu"].setText(_("MENU"))
@@ -268,7 +275,7 @@ class ConfigListScreen:
 		self.displayHelp(False)
 
 	def displayHelp(self, state):
-		if "config" in self and "HelpWindow" in self and self["config"].getCurrent() is not None:
+		if "config" in self and "HelpWindow" in self and self["config"].getCurrent() is not None and len(self["config"].getCurrent()) > 1:
 			currConf = self["config"].getCurrent()[1]
 			if isinstance(currConf, ConfigText) and currConf.help_window is not None and currConf.help_window.instance is not None:
 				if state:
@@ -276,10 +283,23 @@ class ConfigListScreen:
 				else:
 					currConf.help_window.hide()
 
-	def keyText(self):
-		self.session.openWithCallback(self.VirtualKeyBoardCallback, VirtualKeyBoard, title=self.getCurrentEntry(), text=str(self.getCurrentValue()))
+	def keySelect(self):
+		if isinstance(self.getCurrentItem(), ConfigBoolean):
+			self.keyToggle()
+		elif isinstance(self.getCurrentItem(), ConfigSelection):
+			self.keyMenu()
+		elif isinstance(self.getCurrentItem(), ConfigText):
+			self.keyText()
+		else:
+			self["config"].handleKey(KEYA_SELECT)
 
-	def VirtualKeyBoardCallback(self, callback=None):
+	def keyOK(self):  # This is the deprecated version of keySelect!
+		self.keySelect()
+
+	def keyText(self):
+		self.session.openWithCallback(self.keyTextCallback, VirtualKeyBoard, title=self.getCurrentEntry(), text=str(self.getCurrentValue()))
+
+	def keyTextCallback(self, callback=None):
 		if callback is not None:
 			prev = str(self.getCurrentValue())
 			self["config"].getCurrent()[1].setValue(callback)
@@ -287,37 +307,33 @@ class ConfigListScreen:
 			if callback != prev:
 				self.entryChanged()
 
-	def keySelect(self):
-		if isinstance(self.getCurrentItem(), ConfigSelection):
-			self.keyMenu()
-		else:
-			self["config"].handleKey(KEYA_SELECT)
-
-	def keyOK(self):  # This is the deprecated version of keySelect!
-		self.keySelect()
-
 	def keyMenu(self):
 		currConfig = self["config"].getCurrent()
 		if currConfig and currConfig[1].enabled and hasattr(currConfig[1], "description"):
 			self.session.openWithCallback(
-				self.handleKeyMenuCallback, ChoiceBox, title=currConfig[0],
+				self.keyMenuCallback, ChoiceBox, title=currConfig[0],
 				list=zip(currConfig[1].description, currConfig[1].choices),
 				selection=currConfig[1].getIndex(),
 				keys=[]
 			)
 
-	def handleKeyMenuCallback(self, answer):
+	def keyMenuCallback(self, answer):
 		if answer:
 			self["config"].getCurrent()[1].value = answer[1]
 			self["config"].invalidateCurrent()
 			self.entryChanged()
 
+	def keyTop(self):
+		self["config"].moveTop()
+
+	def keyPageUp(self):
+		self["config"].pageUp()
+
+	def keyUp(self):
+		self["config"].moveUp()
+
 	def keyFirst(self):
 		self["config"].handleKey(KEYA_HOME)
-		self.entryChanged()
-
-	def keyLast(self):
-		self["config"].handleKey(KEYA_END)
 		self.entryChanged()
 
 	def keyLeft(self):
@@ -328,24 +344,33 @@ class ConfigListScreen:
 		self["config"].handleKey(KEYA_RIGHT)
 		self.entryChanged()
 
-	def keyHome(self):
-		self["config"].handleKey(KEYA_HOME)
+	def keyLast(self):
+		self["config"].handleKey(KEYA_END)
 		self.entryChanged()
 
-	def keyEnd(self):
-		self["config"].handleKey(KEYA_END)
+	def keyDown(self):
+		self["config"].moveDown()
+
+	def keyPageDown(self):
+		self["config"].pageDown()
+
+	def keyBottom(self):
+		self["config"].moveBottom()
+
+	def keyBackspace(self):
+		self["config"].handleKey(KEYA_BACKSPACE)
 		self.entryChanged()
 
 	def keyDelete(self):
 		self["config"].handleKey(KEYA_DELETE)
 		self.entryChanged()
 
-	def keyBackspace(self):
-		self["config"].handleKey(KEYA_BACKSPACE)
+	def keyErase(self):
+		self["config"].handleKey(KEYA_ERASE)
 		self.entryChanged()
 
-	def keyToggleOW(self):
-		self["config"].handleKey(KEYA_TOGGLEOW)
+	def keyToggle(self):
+		self["config"].handleKey(KEYA_TOGGLE)
 		self.entryChanged()
 
 	def keyGotAscii(self):
@@ -356,27 +381,16 @@ class ConfigListScreen:
 		self["config"].handleKey(KEYA_0 + number)
 		self.entryChanged()
 
-	def keyTop(self):
-		self["config"].moveTop()
-
-	def keyBottom(self):
-		self["config"].moveBottom()
-
-	def keyPageUp(self):
-		self["config"].pageUp()
-
-	def keyPageDown(self):
-		self["config"].pageDown()
-
-	def keyUp(self):
-		self["config"].moveUp()
-
-	def keyDown(self):
-		self["config"].moveDown()
-
 	def keySave(self):
-		self.saveAll()
-		self.close()
+		if self.saveAll():
+			self.session.openWithCallback(self.restartConfirm, MessageBox, self.restartMsg, default=True, type=MessageBox.TYPE_YESNO)
+		else:
+			self.close()
+
+	def restartConfirm(self, result):
+		if result:
+			self.session.open(TryQuitMainloop, retvalue=QUIT_RESTART)
+			self.close()
 
 	def saveAll(self):
 		restart = False
@@ -385,32 +399,31 @@ class ConfigListScreen:
 				restart = True
 			x[1].save()
 		configfile.save()
-		if restart:
-			self.session.openWithCallback(self.restartConfirm, MessageBox, self.restartMsg, default=True, type=MessageBox.TYPE_YESNO)
-
-	def restartConfirm(self, result):
-		if result:
-			self.session.open(TryQuitMainloop, retvalue=QUIT_RESTART)
+		return restart
 
 	def keyCancel(self):
-		self.closeConfigList(False)
+		self.closeConfigList(())
 
 	def closeRecursive(self):
-		self.closeConfigList(True)
+		self.closeConfigList((True,))
 
-	def closeConfigList(self, recursiveClose=False):
+	def closeConfigList(self, closeParameters=()):
 		if self["config"].isChanged():
-			self.recursiveClose = recursiveClose
+			self.closeParameters = closeParameters
 			self.session.openWithCallback(self.cancelConfirm, MessageBox, self.cancelMsg, default=False, type=MessageBox.TYPE_YESNO)
 		else:
-			self.close(recursiveClose)
+			self.close(*closeParameters)
 
 	def cancelConfirm(self, result):
 		if not result:
 			return
 		for x in self["config"].list:
 			x[1].cancel()
-		self.close(self.recursiveClose)
+		self.close(*self.closeParameters)
+
+	def createSummary(self):  # This should not be required if ConfigList is invoked via Setup (as it should).
+		from Screens.Setup import SetupSummary
+		return SetupSummary
 
 	def run(self):  # Allow ConfigList based screens to be processed from the Wizard.
 		self.keySave()

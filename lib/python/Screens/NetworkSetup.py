@@ -351,24 +351,13 @@ class NameserverSetup(Screen, ConfigListScreen, HelpableScreen):
 		self["introduction"] = StaticText(_("Press OK to activate the settings."))
 		self.createConfig()
 
-		self["OkCancelActions"] = HelpableActionMap(self, "OkCancelActions",
+		self["actions"] = HelpableActionMap(self, ["SetupActions", "ColorActions"],
 			{
 			"cancel": (self.cancel, _("Exit nameserver configuration")),
-			"ok": (self.ok, _("Activate current configuration")),
-			})
-
-		self["ColorActions"] = HelpableActionMap(self, "ColorActions",
-			{
-			"red": (self.cancel, _("Exit nameserver configuration")),
-			"green": (self.ok, _("Activate current configuration")),
+			"save": (self.ok, _("Activate current configuration")),
 			"yellow": (self.add, _("Add a nameserver entry")),
 			"blue": (self.remove, _("Remove a nameserver entry")),
 			})
-
-		self["actions"] = NumberActionMap(["SetupActions"],
-		{
-			"ok": self.ok,
-		}, -2)
 
 		self.list = []
 		ConfigListScreen.__init__(self, self.list)
@@ -3388,11 +3377,9 @@ class NetworkPassword(ConfigListScreen, Screen):
 		self["key_yellow"] = StaticText(_("Random password"))
 
 		self["actions"] = ActionMap(["SetupActions", "ColorActions"], {
-			"red": self.close,
 			"cancel": self.close,
-			"green": self.SetPasswd,
 			"save": self.SetPasswd,
-			"yellow": self.newRandom,
+			"yellow": self.newRandom
 		})
 
 		self["description"] = Label()

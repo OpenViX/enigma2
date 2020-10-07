@@ -105,8 +105,10 @@ class MultiBootSelector(Screen, HelpableScreen):
 
 	def reboot(self):
 		self.currentSelected = self["config"].l.getCurrentSelection()
-		self.slot = self.currentSelected[0][1]
-		if self.imagedict[self.slot]["imagename"] == _("Deleted image"):
+		self.slotx = self.slot = self.currentSelected[0][1]
+		if self.slotx >= 12:
+			self.slotx -= 12 
+		if self.imagedict[self.slotx]["imagename"] == _("Deleted image"):
 			self.session.open(MessageBox, _("Cannot reboot to deleted image"), MessageBox.TYPE_ERROR, timeout=3)
 			self.getImagelist()
 		if self.currentSelected[0][1] != "Queued":
@@ -136,7 +138,10 @@ class MultiBootSelector(Screen, HelpableScreen):
 	def deleteImageCallback(self, answer):
 		if answer:
 			self.currentSelected = self["config"].l.getCurrentSelection()
-			emptySlot(self.currentSelected[0][1])
+			self.slot = self.currentSelected[0][1]
+			if self.slot >= 12:
+				self.slot -= 12 
+			emptySlot(self.slot)
 		self.getImagelist()
 
 	def restoreImages(self):

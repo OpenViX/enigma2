@@ -37,6 +37,7 @@
 		</manufacturer>
 		<manufacturer name="Inverto">
 			<product name="IDLP-40UNIQD+S" scrs="1680,1420,2040,1210"/>
+			<product name="IDLB-QUDL43-UNE1L-OPP" scrs="1210,1420,1680,2040"/>
 			<product name="IDLB-QUDL-UNI2L-OPP" scrs="1210,1420,1680,2040"/>
 			<product name="IDLB-QUDL42-UNI2L-1PP" scrs="1210,1420,1680,2040"/>
 			<product name="IDLU-24UL40-UNMOO-OPP" positions="4" bootuptime="800" format="jess" scrs="1210,1420,1680,2040,1005,1050,1095,1140,1260,1305,1350,1475,1520,1565,1610,1725,1770,1815,1860,1905,1950,1995,2085,2130"/>
@@ -50,9 +51,7 @@
 		</manufacturer>
 		<manufacturer name="Maclean">
 			<product name="MCTV-762" scrs="1210,1420,1680,2040"/>
-		</manufacturer>
-		<manufacturer name="Maclean">
-		<product name="Unicable II MCTV-785" format="jess" scrs ="1210,1420,1680,2040,985,1050,1115,1275,1340,1485 ,1550,1615,1745,1810,1875,1940"/>
+			<product name="Unicable II MCTV-785" format="jess" scrs ="1210,1420,1680,2040,985,1050,1115,1275,1340,1485 ,1550,1615,1745,1810,1875,1940"/>
 		</manufacturer>
 		<manufacturer name="Megasat">
 			<product name="Unicable II LNB Diavolo" format="jess" bootuptime="2500" scrs="1210,1420,1680,2040,1005,1050,1095,1140,1260,1305,1350,1475,1520,1565,1610,1725,1770,1815,1860,1905,1950,1995,2085,2130"/>
@@ -275,7 +274,7 @@
 		</manufacturer>
 		<manufacturer name="ROTEK">
 			<product name="EKL2/1" scrs="1400,1516"/>
-			<product name="EKL2/1E,1632,1748"/>
+			<product name="EKL2/1E" scrs="1632,1748"/>
 		</manufacturer>
 		<manufacturer name="SetOne">
 			<product name="SCR 5/8" scrs="1284,1400,1516,1632,1748,1864,1980,2096"/>
@@ -316,6 +315,7 @@
 			<product name="TechniRouter 9/1x8" positions="2" scrs="1284,1400,1516,1632,1748,1864,1980,2096"/>
 			<product name="TechniRouter 5/2x4" scrs="1284,1400,1516,1632"/>
 			<product name="TechniRouter 9/2x4" positions="2" scrs="1284,1400,1516,1632"/>
+			<product name="TechniRouter 5/1x16" format="jess" scrs="1210,1420,1680,2040,985,1050,1115,1275,1340,1485,1550,1615,1745,1810,1875,1940"/>
 		</manufacturer>
 		<manufacturer name="Telestar">
 			<product name="SCR 5/1x8" scrs="1284,1400,1516,1632,1748,1864,1980,2096"/>
