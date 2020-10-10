@@ -731,9 +731,9 @@ class ChannelSelectionEPG(InfoBarButtonSetup, HelpableScreen):
 			}, prio=-1, description=_("Add timers"))
 		self['dialogactions'] = ActionMap(['OkCancelActions'],
 			{
-				'cancel': (self.closeChoiceBoxDialog, _("Exit channel selection")),
+				'cancel': self.closeChoiceBoxDialog,
 			})
-		self['dialogactions'].execEnd()
+		self['dialogactions'].setEnabled(False)
 
 	def getKeyFunctions(self, key):
 		selection = eval("config.misc.ButtonSetup." + key + ".value.split(',')")
@@ -791,12 +791,13 @@ class ChannelSelectionEPG(InfoBarButtonSetup, HelpableScreen):
 		self['recordingactions'].setEnabled(False)
 		self['ChannelSelectEPGActions'].setEnabled(False)
 		self["ChannelSelectBaseActions"].setEnabled(False)
-		self['dialogactions'].execBegin()
+		self["helpActions"].setEnabled(False)
+		self['dialogactions'].setEnabled(True)
 		self.ChoiceBoxDialog['actions'].execBegin()
 		self.ChoiceBoxDialog.show()
 
 	def closeChoiceBoxDialog(self):
-		self['dialogactions'].execEnd()
+		self['dialogactions'].setEnabled(False)
 		if self.ChoiceBoxDialog:
 			self.ChoiceBoxDialog['actions'].execEnd()
 			self.session.deleteDialog(self.ChoiceBoxDialog)
@@ -804,6 +805,7 @@ class ChannelSelectionEPG(InfoBarButtonSetup, HelpableScreen):
 		self['recordingactions'].setEnabled(True)
 		self['ChannelSelectEPGActions'].setEnabled(True)
 		self["ChannelSelectBaseActions"].setEnabled(True)
+		self["helpActions"].setEnabled(True)
 
 	def doRecordCurrentTimer(self):
 		self.doInstantTimer(0)
