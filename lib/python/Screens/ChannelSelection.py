@@ -791,6 +791,7 @@ class ChannelSelectionEPG(InfoBarButtonSetup, HelpableScreen):
 		self['recordingactions'].setEnabled(False)
 		self['ChannelSelectEPGActions'].setEnabled(False)
 		self["ChannelSelectBaseActions"].setEnabled(False)
+		self["helpActions"].setEnabled(False)
 		self['dialogactions'].setEnabled(True)
 		self.ChoiceBoxDialog['actions'].execBegin()
 		self.ChoiceBoxDialog.show()
@@ -804,6 +805,7 @@ class ChannelSelectionEPG(InfoBarButtonSetup, HelpableScreen):
 		self['recordingactions'].setEnabled(True)
 		self['ChannelSelectEPGActions'].setEnabled(True)
 		self["ChannelSelectBaseActions"].setEnabled(True)
+		self["helpActions"].setEnabled(True)
 
 	def doRecordCurrentTimer(self):
 		self.doInstantTimer(0)
