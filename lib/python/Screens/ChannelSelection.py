@@ -731,7 +731,7 @@ class ChannelSelectionEPG(InfoBarButtonSetup, HelpableScreen):
 			}, prio=-1, description=_("Add timers"))
 		self['dialogactions'] = ActionMap(['OkCancelActions'],
 			{
-				'cancel': (self.closeChoiceBoxDialog, _("Exit channel selection")),
+				'cancel': self.closeChoiceBoxDialog,
 			})
 		self['dialogactions'].execEnd()
 
