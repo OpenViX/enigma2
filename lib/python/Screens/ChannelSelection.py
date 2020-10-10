@@ -733,7 +733,7 @@ class ChannelSelectionEPG(InfoBarButtonSetup, HelpableScreen):
 			{
 				'cancel': self.closeChoiceBoxDialog,
 			})
-		self['dialogactions'].execEnd()
+		self['dialogactions'].setEnabled(False)
 
 	def getKeyFunctions(self, key):
 		selection = eval("config.misc.ButtonSetup." + key + ".value.split(',')")
@@ -791,12 +791,12 @@ class ChannelSelectionEPG(InfoBarButtonSetup, HelpableScreen):
 		self['recordingactions'].setEnabled(False)
 		self['ChannelSelectEPGActions'].setEnabled(False)
 		self["ChannelSelectBaseActions"].setEnabled(False)
-		self['dialogactions'].execBegin()
+		self['dialogactions'].setEnabled(True)
 		self.ChoiceBoxDialog['actions'].execBegin()
 		self.ChoiceBoxDialog.show()
 
 	def closeChoiceBoxDialog(self):
-		self['dialogactions'].execEnd()
+		self['dialogactions'].setEnabled(False)
 		if self.ChoiceBoxDialog:
 			self.ChoiceBoxDialog['actions'].execEnd()
 			self.session.deleteDialog(self.ChoiceBoxDialog)
