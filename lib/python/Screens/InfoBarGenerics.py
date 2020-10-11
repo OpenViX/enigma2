@@ -1550,7 +1550,7 @@ class InfoBarEPG:
 
 		# Note regarding INFO button on the RCU. Some RCUs do not have an INFO button, but to make matters 
 		# more complicated they have an EPG button that sends KEY_INFO instead of KEY_EPG. To deal with 
-		# this the INFO button methods check SystemInfo["HasInfoButton"] to see if the RCU has an INFO button 
+		# this the INFO button methods check SystemInfo["mapKeyInfoToEpgFunctions"] to see if the RCU has an INFO button 
 		# and if not the event is rerouted to the corresponding EPG button method of the same name.
 		
 		self["EPGActions"] = HelpableActionMap(self, "InfobarEPGActions",
@@ -1646,13 +1646,13 @@ class InfoBarEPG:
 			self.session.openWithCallback(self.EventPluginChosenCallback, ChoiceBox, title=_("Please choose an extension..."), list = pluginlist, skin_name = "EPGExtensionsList")
 
 	def _helpShowEventInfoPlugins(self):
-		if not SystemInfo["HasInfoButton"]:
+		if SystemInfo["mapKeyInfoToEpgFunctions"]:
 			return self._helpShowEventGuidePlugins()
 		if isStandardInfoBar(self) or isMoviePlayerInfoBar(self):
 			return _("Select default action of INFO button")
 
 	def showEventInfoPlugins(self):
-		if not SystemInfo["HasInfoButton"]:
+		if SystemInfo["mapKeyInfoToEpgFunctions"]:
 			self.showEventGuidePlugins()
 			return
 		self.selectDefaultInfoPlugin()
@@ -1833,14 +1833,14 @@ class InfoBarEPG:
 		self.EPGPressed()
 
 	def _helpShowDefaultINFO(self):
-		if not SystemInfo['HasInfoButton']:
+		if SystemInfo['mapKeyInfoToEpgFunctions']:
 			return self._helpShowDefaultEPG()
 		if self.defaultINFOType is not None:
 			return _("Show %s") % config.usage.defaultINFOType.description[config.usage.defaultINFOType.value]
 		return self._helpINFOPressed()
 
 	def showDefaultINFO(self):
-		if not SystemInfo['HasInfoButton']:
+		if SystemInfo['mapKeyInfoToEpgFunctions']:
 			self.showDefaultEPG()
 			return
 		if self.defaultINFOType is not None:
