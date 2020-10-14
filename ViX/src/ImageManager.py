@@ -1338,12 +1338,12 @@ class ImageManagerDownload(Screen):
 		self.jsonlist = {}
 		list = []
 		self.boxtype = getMachineMake()
-		model = HardwareInfo().get_device_name()
-		if model == "dm8000":
-			model = getMachineMake()
+		if "pli" in self.urlDistro:
+			self.boxtype = HardwareInfo().get_device_name()
+			if self.boxtype == "dm8000":
+				self.boxtype = getMachineMake()
 		
 		if not self.Pli and not self.imagesList: # OpenViX
-			versions = [6.4] # What was this for? I haven't removed it as I don't want to break anything. Most likely just delete the 'if' clause below and substitute with the ViX build version numbers.
 			if "www.openvix" in self.urlDistro:
 				versions = [4.2, 5.0, 5.1, 5.2, 5.3, 5.4, 5.5]
 
@@ -1377,7 +1377,7 @@ class ImageManagerDownload(Screen):
 		if self.Pli and not self.imagesList:
 			if not self.jsonlist:
 				try:
-					urljson = path.join(self.urlDistro, model)
+					urljson = path.join(self.urlDistro, self.boxtype)
 					self.jsonlist = dict(json.load(urlopen("%s" % urljson)))
 				except Exception:
 					print "[ImageManager] OpenPli/OpenATV no model: %s in downloads" % model
