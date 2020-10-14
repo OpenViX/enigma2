@@ -1344,8 +1344,7 @@ class ImageManagerDownload(Screen):
 				self.boxtype = getMachineMake()
 		
 		if not self.Pli and not self.imagesList: # OpenViX
-			if "www.openvix" in self.urlDistro:
-				versions = [4.2, 5.0, 5.1, 5.2, 5.3, 5.4, 5.5]
+			versions = [4.2, 5.0, 5.1, 5.2, 5.3, 5.4, 5.5]
 
 			subfolders = ('', 'Archives') # i.e. check root folder and "Archives" folder. Images will appear in the UI in this order.
 			for subfolder in subfolders:
