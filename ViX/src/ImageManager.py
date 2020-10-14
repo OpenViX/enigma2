@@ -1,4 +1,4 @@
-from urllib2 import urlopen, HTTPError
+from urllib2 import urlopen, HTTPError, URLError
 import json
 
 from boxbranding import getBoxType, getImageType, getImageDistro, getImageVersion, getImageBuild, getImageDevBuild, getImageFolder, getImageFileSystem, getBrandOEM, getMachineBrand, getMachineName, getMachineBuild, getMachineMake, getMachineMtdRoot, getMachineRootFile, getMachineMtdKernel, getMachineKernelFile, getMachineMKUBIFS, getMachineUBINIZE
@@ -1351,18 +1351,20 @@ class ImageManagerDownload(Screen):
 			for subfolder in subfolders:
 				tmp_image_list = []
 				fullUrl = subfolder and path.join(self.urlDistro, self.boxtype, subfolder, "") or path.join(self.urlDistro, self.boxtype, "")
+				html = None
 				try:
 					conn = urlopen(fullUrl)
 					html = conn.read()
-				except (urllib2.HTTPError, urllib2.URLError) as e:
+				except (HTTPError, URLError) as e:
 					print "[ImageManager] HTTPError: %s %s" % (getattr(e, "code", ""), getattr(e, "reason", ""))
 
-				soup = BeautifulSoup(html, 'lxml')
-				links = soup.find_all("a")
-				for tag in links:
-					link = tag.get("href", None)
-					if link is not None and link.endswith("zip") and link.find(getMachineMake()) != -1 and link.find("recovery") == -1:
-						tmp_image_list.append(str(link))
+				if html:
+					soup = BeautifulSoup(html, 'lxml')
+					links = soup.find_all("a")
+					for tag in links:
+						link = tag.get("href", None)
+						if link is not None and link.endswith("zip") and link.find(getMachineMake()) != -1 and link.find("recovery") == -1:
+							tmp_image_list.append(str(link))
 				
 				for version in sorted(versions, reverse=True):
 					newversion = _("Image Version %s%s") % (version, " (%s)" % subfolder if subfolder else "")
