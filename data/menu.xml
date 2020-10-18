@@ -106,7 +106,7 @@ self.session.openWithCallback(msgClosed, EpgDeleteMsg)
 			<menu entryID="display_selection" level="0" text="Front Panel Display" weight="4" requires="Display">
 				<id val="display" />
 				<item entryID="display_setup" level="0" text="Settings" weight="1"><setup id="display" /></item>
-				<item entryID="lcd_skin_setup" level="0" text="Skin" weight="2"><screen module="SkinSelector" screen="LcdSkinSelector" /></item>
+				<item entryID="lcd_skin_setup" level="0" text="Skin" weight="2" requires="LCDSKINSetup"><screen module="SkinSelector" screen="LcdSkinSelector" /></item>
 			</menu>
 			<menu entryID="leddisplay_selection" level="0" text="LED Display Panel" weight="5" requires="DisplayLED">
 				<id val="leddisplay" />
@@ -144,9 +144,9 @@ self.session.open(SABnzbdSetupScreen)
 		</menu>
 
 		<!-- Menu / Setup / Common Interface -->
-		<menu entryID="cicam_setup" level="0" text="Common Interface" weight="7">
+		<menu entryID="cicam_setup" level="0" text="Common Interface" requires="CommonInterface" weight="7">
 			<id val="cicam" />
-			<item entryID="ci_setup" level="1" text="Common Interface" weight="10" requires="CommonInterface"><screen module="Ci" screen="CiSelection" /></item>
+			<item entryID="ci_setup" level="1" text="Common Interface" weight="10"><screen module="Ci" screen="CiSelection" /></item>
 		</menu>
 
 		<!-- Menu / Setup / Softcam -->
