@@ -59,6 +59,8 @@ class PaxWeather2(Poll, Converter, object):
 
 	@cached
 	def getText(self):
+		global WEATHER_DATA
+		self.data = WEATHER_DATA
 		if self.type == self.TempNow:
 			return self.getTemperature_Current()
 		elif self.type in (self.MeteoNow, self.MeteoNext):
