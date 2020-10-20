@@ -2104,11 +2104,8 @@ class InfoBarSeek:
 				"playpauseService": (self.playpauseService, _("Pause/Continue playback")),
 				"pauseService": (self.pauseService, _("Pause playback")),
 				"unPauseService": (self.unPauseService, _("Continue playback")),
-				"seekFwdManual": (self.seekFwdManual, lambda: self._helpSeekManualSeekbar(config.seek.baractivation.value != "leftright", True)),
-				"seekBackManual": (self.seekBackManual, lambda: self._helpSeekManualSeekbar(config.seek.baractivation.value != "leftright", False)),
-
-				"SeekbarFwd": (self.seekFwdSeekbar, lambda: self._helpSeekManualSeekbar(config.seek.baractivation.value == "leftright", True)),
-				"SeekbarBack": (self.seekBackSeekbar, lambda: self._helpSeekManualSeekbar(config.seek.baractivation.value == "leftright", False)),
+				"seekFwd": (self.seekFwd, _("Seek forward")),
+				"seekBack": (self.seekBack, _("Seek backward")),
 			}, prio=-1, description=_("Skip, pause, rewind and fast forward timeshift")) # give them a little more priority to win over color buttons
 		self["SeekActionsPTS"].setEnabled(False)
 
