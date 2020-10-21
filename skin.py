@@ -225,20 +225,24 @@ class SkinError(Exception):
 #         e      : Take the parent size/width.
 #         c      : Take the center point of parent size/width.
 #         %      : Take given percentage of parent size/width.
-#         w      : Multiply by current font width.
-#         h      : Multiply by current font height.
+#         w      : Multiply by current font width. (Only to be used in elements where the font attribute is available, i.e. not "None")
+#         h      : Multiply by current font height. (Only to be used in elements where the font attribute is available, i.e. not "None")
+#         f      : Replace with getSkinFactor().
 #
 def parseCoordinate(s, e, size=0, font=None):
-	s = s.strip()
+	orig = s = s.strip()
 	if s == "center":  # For speed as this can be common case.
-		val = 0 if not size else (e - size) / 2
+		val = 0 if not size else (e - size) // 2
 	elif s == "*":
 		return None
 	else:
 		try:
 			val = int(s)  # For speed try a simple number first.
 		except ValueError:
-			if "t" in s:
+			if font is None and ("w" in s or "h" in s):
+				print("[Skin] Error: 'w' or 'h' is being used in a field where neither is valid. Input string: '%s'" % orig)
+				return 0
+			if "center" in s:
 				s = s.replace("center", str((e - size) / 2.0))
 			if "e" in s:
 				s = s.replace("e", str(e))
@@ -250,10 +254,16 @@ def parseCoordinate(s, e, size=0, font=None):
 				s = s.replace("h", "*%s" % str(fonts[font][2]))
 			if "%" in s:
 				s = s.replace("%", "*%s" % str(e / 100.0))
+			if "f" in s:
+				s = s.replace("f", str(getSkinFactor()))
 			try:
 				val = int(s)  # For speed try a simple number first.
 			except ValueError:
-				val = int(eval(s))
+				try:
+					val = int(eval(s))
+				except Exception as err:
+					print("[Skin] %s '%s': Coordinate '%s', processed to '%s', cannot be evaluated!" % (type(err).__name__, err, orig, s))
+					val = 0
 	# print("[Skin] DEBUG: parseCoordinate s='%s', e='%s', size=%s, font='%s', val='%s'." % (s, e, size, font, val))
 	if val < 0:
 		val = 0
@@ -295,6 +305,16 @@ def parseSize(s, scale, object=None, desktop=None):
 def parseFont(s, scale=((1, 1), (1, 1))):
 	if ";" in s:
 		name, size = s.split(";")
+		orig = size
+		try:
+			size = int(size)
+		except ValueError:
+			try:
+				size = size.replace("f", str(getSkinFactor()))
+				size = int(eval(size))
+			except Exception as err:
+				print("[Skin] %s '%s': font size formula '%s', processed to '%s', cannot be evaluated!" % (type(err).__name__, err, orig, s))
+				size = None
 	else:
 		name = s
 		size = None
@@ -721,24 +741,20 @@ def loadSingleSkinData(desktop, screenID, domSkin, pathSkin, scope=SCOPE_CURRENT
 	for tag in domSkin.findall("include"):
 		filename = tag.attrib.get("filename")
 		if filename:
-			filename = resolveFilename(scope, filename, path_prefix=pathSkin)
-			if isfile(filename):
-				loadSkin(filename, scope=scope, desktop=desktop, screenID=screenID)
+			resolved = resolveFilename(scope, filename, path_prefix=pathSkin)
+			if isfile(resolved):
+				loadSkin(resolved, scope=scope, desktop=desktop, screenID=screenID)
 			else:
-				raise SkinError("Included file '%s' not found" % filename)
+				raise SkinError("Tag 'include' needs an existing filename, got filename '%s' (%s)" % (filename, resolved))
 	for tag in domSkin.findall("switchpixmap"):
 		for pixmap in tag.findall("pixmap"):
 			name = pixmap.attrib.get("name")
-			if not name:
-				raise SkinError("Pixmap needs name attribute")
 			filename = pixmap.attrib.get("filename")
-			if not filename:
-				raise SkinError("Pixmap needs filename attribute")
 			resolved = resolveFilename(scope, filename, path_prefix=pathSkin)
-			if isfile(resolved):
+			if name and isfile(resolved):
 				switchPixmap[name] = LoadPixmap(resolved, cached=True)
 			else:
-				raise SkinError("The switchpixmap pixmap filename='%s' (%s) not found" % (filename, resolved))
+				raise SkinError("Tag 'pixmap' needs a name and existing filename, got name='%s' and filename='%s' (%s)" % (name, filename, resolved))
 	for tag in domSkin.findall("colors"):
 		for color in tag.findall("color"):
 			name = color.attrib.get("name")
@@ -753,44 +769,42 @@ def loadSingleSkinData(desktop, screenID, domSkin, pathSkin, scope=SCOPE_CURRENT
 			filename = font.attrib.get("filename", "<NONAME>")
 			name = font.attrib.get("name", "Regular")
 			scale = font.attrib.get("scale")
-			scale = int(scale) if scale else 100
+			scale = int(scale) if scale and scale.isdigit() else 100
 			isReplacement = font.attrib.get("replacement") and True or False
 			render = font.attrib.get("render")
-			if render:
-				render = int(render)
-			else:
-				render = 0
-			filename = resolveFilename(SCOPE_FONTS, filename, path_prefix=pathSkin)
-			if isfile(filename):
-				addFont(filename, name, scale, isReplacement, render)
+			render = int(render) if render and render.isdigit() else 0
+			resolved = resolveFilename(SCOPE_FONTS, filename, path_prefix=pathSkin)
+			if isfile(resolved) and name:
+				addFont(resolved, name, scale, isReplacement, render)
 				# Log provided by C++ addFont code.
-				# print("[Skin] Add font: Font path='%s', name='%s', scale=%d, isReplacement=%s, render=%d." % (filename, name, scale, isReplacement, render))
+				# print("[Skin] DEBUG: Font filename='%s', path='%s', name='%s', scale=%d, isReplacement=%s, render=%d." % (filename, resolved, name, scale, isReplacement, render))
 			else:
-				raise SkinError("Font file '%s' not found" % filename)
+				raise SkinError("Tag 'font' needs an existing filename and name, got filename='%s' (%s) and name='%s'" % (filename, resolved, name))
 		fallbackFont = resolveFilename(SCOPE_FONTS, "fallback.font", path_prefix=pathSkin)
 		if isfile(fallbackFont):
 			addFont(fallbackFont, "Fallback", 100, -1, 0)
 		# else:  # As this is optional don't raise an error.
 		# 	raise SkinError("Fallback font '%s' not found" % fallbackFont)
 		for alias in tag.findall("alias"):
-			try:
-				name = alias.attrib.get("name")
-				font = alias.attrib.get("font")
-				size = int(alias.attrib.get("size"))
-				height = int(alias.attrib.get("height", size))  # To be calculated some day.
-				width = int(alias.attrib.get("width", size))
+			name = alias.attrib.get("name")
+			font = alias.attrib.get("font")
+			size = alias.attrib.get("size")
+			size = int(size) if size and size.isdigit() else 0  # This assumes that the attributes are always strings!
+			height = int(alias.attrib.get("height", size))  # To be calculated some day.
+			width = int(alias.attrib.get("width", size))  # To be calculated some day.
+			if name and font and size:
 				fonts[name] = (font, size, height, width)
 				# print("[Skin] Add font alias: name='%s', font='%s', size=%d, height=%s, width=%d." % (name, font, size, height, width))
-			except Exception as err:
-				raise SkinError("Bad font alias: '%s'" % str(err))
+			else:
+				raise SkinError("Tag 'alias' needs a name, font and size, got name='%s', font'%s' and size='%s'" % (name, font, size))
 	for tag in domSkin.findall("parameters"):
 		for parameter in tag.findall("parameter"):
-			try:
-				name = parameter.attrib.get("name")
-				value = parameter.attrib.get("value")
-				parameters[name] = map(parseParameter, [x.strip() for x in value.split(",")]) if "," in value else parseParameter(value)
-			except Exception as err:
-				raise SkinError("Bad parameter: '%s'" % str(err))
+			name = parameter.attrib.get("name")
+			value = parameter.attrib.get("value")
+			if name and value:
+				parameters[name] = list(map(parseParameter, [x.strip() for x in value.split(",")])) if "," in value else parseParameter(value)
+			else:
+				raise SkinError("Tag 'parameter' needs a name and value, got name='%s' and size='%s'" % (name, value))
 	for tag in domSkin.findall("menus"):
 		for setup in tag.findall("menu"):
 			key = setup.attrib.get("key")
@@ -799,7 +813,7 @@ def loadSingleSkinData(desktop, screenID, domSkin, pathSkin, scope=SCOPE_CURRENT
 				menus[key] = image
 				# print("[Skin] DEBUG: Menu key='%s', image='%s'." % (key, image))
 			else:
-				raise SkinError("Tag menu needs key and image, got key='%s' and image='%s'" % (key, image))
+				raise SkinError("Tag 'menu' needs key and image, got key='%s' and image='%s'" % (key, image))
 	for tag in domSkin.findall("setups"):
 		for setup in tag.findall("setup"):
 			key = setup.attrib.get("key")
@@ -808,7 +822,7 @@ def loadSingleSkinData(desktop, screenID, domSkin, pathSkin, scope=SCOPE_CURRENT
 				setups[key] = image
 				# print("[Skin] DEBUG: Setup key='%s', image='%s'." % (key, image))
 			else:
-				raise SkinError("Tag setup needs key and image, got key='%s' and image='%s'" % (key, image))
+				raise SkinError("Tag 'setup' needs key and image, got key='%s' and image='%s'" % (key, image))
 	for tag in domSkin.findall("subtitles"):
 		from enigma import eSubtitleWidget
 		scale = ((1, 1), (1, 1))

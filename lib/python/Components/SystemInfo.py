@@ -2,6 +2,8 @@ from boxbranding import getBoxType, getBrandOEM, getDisplayType, getHaveAVJACK, 
 from enigma import Misc_Options, eDVBCIInterfaces, eDVBResourceManager
 
 from Components.About import getChipSetString
+from Components.RcModel import rc_model
+
 from Tools.Directories import fileCheck, fileExists, fileHas, pathExists
 from Tools.HardwareInfo import HardwareInfo
 
@@ -81,7 +83,6 @@ SystemInfo["CanNotDoSimultaneousTranscodeAndPIP"] = getBoxType() in ("vusolo4k",
 SystemInfo["hasXcoreVFD"] = getBoxType() in ("osmega", "spycat4k", "spycat4kmini", "spycat4kcomb") and fileCheck("/sys/module/brcmstb_%s/parameters/pt6302_cgram" % getBoxType())
 SystemInfo["HasHDMIin"] = getHaveHDMIinHD() in ("True",) or getHaveHDMIinFHD() in ("True",)
 SystemInfo["HasHDMI-CEC"] = fileExists("/usr/lib/enigma2/python/Plugins/SystemPlugins/HdmiCEC/plugin.pyo")
-SystemInfo["HasInfoButton"] = getBrandOEM() in ("airdigital", "broadmedia", "ceryon", "dags", "dinobot", "edision", "formuler", "gfutures", "gigablue", "ini", "maxytec", "octagon", "odin", "skylake", "tiviar", "xcore", "xp", "xtrend")
 SystemInfo["Has24hz"] = fileCheck("/proc/stb/video/videomode_24hz")
 SystemInfo["AndroidMode"] = SystemInfo["RecoveryMode"] and getMachineBuild() in ("multibox",)
 SystemInfo["MBbootdevice"] = getMBbootdevice()
@@ -141,3 +142,8 @@ SystemInfo["VideoModes"] = getChipSetString() in (  # 2160p and 1080p capable ha
 )
 
 SystemInfo["LnbPowerAlwaysOn"] = getBoxType() in ("vusolo4k", "vuduo4k", "vuduo4kse", "vuultimo4k", "vuuno4k", "vuuno4kse", "gbquad4k", "gbue4k")
+
+SystemInfo["rc_model"] = rc_model.getRcFolder()
+SystemInfo["mapKeyInfoToEpgFunctions"] = SystemInfo["rc_model"] in ("vu", "vu2", "vu3", "vu4") # due to button limitations of the remote control
+SystemInfo["toggleTvRadioButtonEvents"] = SystemInfo["rc_model"] in ("ax4", "beyonwiz1", "beyonwiz2", "gb0", "gb1", "gb2", "gb3", "gb4", "sf8008", "uniboxhde") # due to button limitations of the remote control
+

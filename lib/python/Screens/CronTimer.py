@@ -315,7 +315,7 @@ class CronTimersConfig(Screen, ConfigListScreen):
 			'red': self.close,
 			'green': self.checkentry,
 			'back': self.close,
-			'showVirtualKeyboard': self.KeyText,
+			'showVirtualKeyboard': self.keyText,
 		})
 		self["HelpWindow"] = Pixmap()
 		self["HelpWindow"].hide()
