@@ -128,7 +128,10 @@ def resolveFilename(scope, base="", path_prefix=None):
 			os.path.join(defaultPaths[SCOPE_CONFIG][0], skin),
 			os.path.join(defaultPaths[SCOPE_CONFIG][0], "skin_common"),
 			defaultPaths[SCOPE_CONFIG][0],  # Can we deprecate top level of SCOPE_CONFIG directory to allow a clean up?
-			os.path.join(defaultPaths[SCOPE_SKIN][0], skin),
+		]
+		if not "skin_default" in skin:
+			resolveList.append(os.path.join(defaultPaths[SCOPE_SKIN][0], skin))
+		resolveList += [	
 			os.path.join(defaultPaths[SCOPE_SKIN][0], "skin_fallback_%d" % getDesktop(0).size().height()),
 			os.path.join(defaultPaths[SCOPE_SKIN][0], "skin_default"),
 			defaultPaths[SCOPE_SKIN][0]  # Can we deprecate top level of SCOPE_SKIN directory to allow a clean up?
