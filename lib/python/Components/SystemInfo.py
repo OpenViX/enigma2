@@ -1,4 +1,4 @@
-from boxbranding import getBoxType, getBrandOEM, getDisplayType, getHaveAVJACK, getHaveHDMIinFHD, getHaveHDMIinHD, getHaveRCA, getHaveSCART, getHaveYUV, getMachineBrand, getMachineBuild, getMachineMtdRoot, getMachineName
+from boxbranding import getBoxType, getBrandOEM, getDisplayType, getHaveAVJACK, getHaveHDMIinFHD, getHaveHDMIinHD, getHaveRCA, getHaveSCART, getHaveSCARTYUV, getHaveYUV, getMachineBrand, getMachineBuild, getMachineMtdRoot, getMachineName
 from enigma import Misc_Options, eDVBCIInterfaces, eDVBResourceManager
 
 from Components.About import getChipSetString
@@ -118,8 +118,8 @@ SystemInfo["HDRSupport"] = fileExists("/proc/stb/hdmi/hlg_support_choices")
 SystemInfo["Canedidchecking"] = fileCheck("/proc/stb/hdmi/bypass_edid_checking")
 SystemInfo["haveboxmode"] = fileExists("/proc/stb/info/boxmode")
 SystemInfo["HasScaler_sharpness"] = pathExists("/proc/stb/vmpeg/0/pep_scaler_sharpness")
-# Machines that do have SCART component video (red, green and blue RCA sockets).
-SystemInfo["Scart-YPbPr"] = getBrandOEM() == "vuplus" and "4k" not in getBoxType()
+# Machines that out component video via scart socket.
+SystemInfo["Scart-YPbPr"] = getHaveSCARTYUV() == "True"
 # Machines that do not have component video (red, green and blue RCA sockets).
 SystemInfo["no_YPbPr"] = not getHaveYUV()
 # Machines that have composite video (yellow RCA socket) but do not have Scart.
