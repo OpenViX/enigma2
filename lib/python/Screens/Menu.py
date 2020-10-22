@@ -64,7 +64,9 @@ class MenuSummary(ScreenSummary):
 			self.parent["menu"].onSelectionChanged.remove(self.selectionChanged)
 
 	def selectionChanged(self):
-		self["entry"].text = self.parent["menu"].getCurrent()[0]  # DEBUG: Proposed for new summary screens.
+		selection = self.parent["menu"].getCurrent()
+		if selection:
+			self["entry"].text = selection[0]  # DEBUG: Proposed for new summary screens.
 
 
 class Menu(Screen, HelpableScreen, ProtectedScreen):
