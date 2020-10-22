@@ -181,7 +181,7 @@ class ConfigListScreen:
 		self["menuConfigActions"] = HelpableActionMap(self, "ConfigListActions", {
 			"menu": (self.keyMenu, _("Display selection list as a selection menu")),
 		}, prio=1, description=_("Common Setup Actions"))
-		self["menuConfigActions"].setEnabled(False)
+		self["menuConfigActions"].setEnabled(False if fullUI else True)
 		self["editConfigActions"] = HelpableNumberActionMap(self, ["NumberActions", "TextEditActions"], {
 			"backspace": (self.keyBackspace, _("Delete character to left of cursor or select AM times")),
 			"delete": (self.keyDelete, _("Delete character under cursor or select PM times")),
@@ -199,7 +199,7 @@ class ConfigListScreen:
 			"0": (self.keyNumberGlobal, _("Number or SMS style data entry")),
 			"gotAsciiCode": (self.keyGotAscii, _("Keyboard data entry"))
 		}, prio=1, description=_("Common Setup Actions"))
-		self["editConfigActions"].setEnabled(False)
+		self["editConfigActions"].setEnabled(False if fullUI else True)
 		self["VirtualKB"] = HelpableActionMap(self, "VirtualKeyboardActions", {
 			"showVirtualKeyboard": (self.keyText, _("Display the virtual keyboard for data entry"))
 		}, prio=1, description=_("Common Setup Actions"))
