@@ -159,7 +159,9 @@ def loadSkin(filename, scope=SCOPE_SKIN, desktop=getDesktop(GUI_SKIN_ID), screen
 				print("[Skin] XML Parse Error: '%s'" % data)
 				print("[Skin] XML Parse Error: '%s^%s'" % ("-" * column, " " * (len(data) - column - 1)))
 			except Exception as err:
-				print("[Skin] Error: Unable to parse skin data in '%s' - '%s'!" % (filename, err))
+				print("[Skin] Error: Unable to parse skin data in '%s' - %s: '%s'!" % (filename, type(err).__name__, err))
+				import traceback
+				traceback.print_exc()
 	except (IOError, OSError) as err:
 		if err.errno == errno.ENOENT:  # No such file or directory
 			print("[Skin] Warning: Skin file '%s' does not exist!" % filename)
