@@ -8087,7 +8087,7 @@ msgid "Open infobar EPG..."
 msgstr "Открыть инфобар EPG..."
 
 msgid "Open menu"
-msgstr "Open menu"
+msgstr "Открыть меню"
 
 msgid "Open nameserver configuration"
 msgstr "Открыть конфигуратор DNS"
