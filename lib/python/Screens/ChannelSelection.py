@@ -729,7 +729,7 @@ class ChannelSelectionEPG(InfoBarButtonSetup, HelpableScreen):
 				"ShortRecord": (self.RecordTimerQuestion, _("Add a record timer")),
 				'LongRecord': (self.doZapTimer, _('Add a zap timer for next event'))
 			}, prio=-1, description=_("Add timers"))
-		self['dialogactions'] = ActionMap(['OkCancelActions'],
+		self['dialogactions'] = HelpableActionMap(['OkCancelActions'],
 			{
 				'cancel': self.closeChoiceBoxDialog,
 			})
