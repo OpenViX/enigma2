@@ -159,7 +159,9 @@ def loadSkin(filename, scope=SCOPE_SKIN, desktop=getDesktop(GUI_SKIN_ID), screen
 				print("[Skin] XML Parse Error: '%s'" % data)
 				print("[Skin] XML Parse Error: '%s^%s'" % ("-" * column, " " * (len(data) - column - 1)))
 			except Exception as err:
-				print("[Skin] Error: Unable to parse skin data in '%s' - '%s'!" % (filename, err))
+				print("[Skin] Error: Unable to parse skin data in '%s' - %s: '%s'!" % (filename, type(err).__name__, err))
+				import traceback
+				traceback.print_exc()
 	except (IOError, OSError) as err:
 		if err.errno == errno.ENOENT:  # No such file or directory
 			print("[Skin] Warning: Skin file '%s' does not exist!" % filename)
@@ -356,6 +358,19 @@ def parseParameter(s):
 	else:  # Integer.
 		return int(s)
 
+def parseScale(s):
+	orig = s
+	try:
+		val = int(s)
+	except ValueError:
+		try:
+			s = s.replace("f", str(getSkinFactor()))
+			val = int(eval(s))
+		except Exception as err:
+			print("[Skin] %s '%s': size formula '%s', processed to '%s', cannot be evaluated!" % (type(err).__name__, err, orig, s))
+			val = 0
+	return val > 0 and val or 0
+
 def loadPixmap(path, desktop):
 	option = path.find("#")
 	if option != -1:
@@ -468,7 +483,7 @@ class AttributeParser:
 		self.guiObject.setZPosition(int(value))
 
 	def itemHeight(self, value):
-		self.guiObject.setItemHeight(int(value))
+		self.guiObject.setItemHeight(parseScale(value))
 
 	def pixmap(self, value):
 		self.guiObject.setPixmap(loadPixmap(value, self.desktop))
@@ -785,10 +800,9 @@ def loadSingleSkinData(desktop, screenID, domSkin, pathSkin, scope=SCOPE_CURRENT
 		for alias in tag.findall("alias"):
 			name = alias.attrib.get("name")
 			font = alias.attrib.get("font")
-			size = alias.attrib.get("size")
-			size = int(size) if size and size.isdigit() else 0  # This assumes that the attributes are always strings!
-			height = int(alias.attrib.get("height", size))  # To be calculated some day.
-			width = int(alias.attrib.get("width", size))  # To be calculated some day.
+			size = parseScale(alias.attrib.get("size"))
+			height = parseScale(alias.attrib.get("height", size))  # To be calculated some day.
+			width = parseScale(alias.attrib.get("width", size))  # To be calculated some day.
 			if name and font and size:
 				fonts[name] = (font, size, height, width)
 				# print("[Skin] Add font alias: name='%s', font='%s', size=%d, height=%s, width=%d." % (name, font, size, height, width))
