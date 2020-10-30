@@ -8,6 +8,7 @@ from Components.Pixmap import Pixmap, MultiPixmap
 from Components.Sources.StaticText import StaticText
 from Screens.HelpMenu import HelpableScreen
 from Screens.Screen import Screen
+from skin import parseScale
 
 
 class MessageBox(Screen, HelpableScreen):
@@ -162,14 +163,39 @@ class MessageBox(Screen, HelpableScreen):
 		if self.baseTitle is not None:
 			self.setTitle(self.baseTitle)
 
+	def getListItemHeight(self):
+		defaultItemHeight = 25 # if no itemHeight is present in the skin
+		if self.list and hasattr(self["list"], "skinAttributes") and isinstance(self["list"].skinAttributes, list):
+			for (attrib, value) in self["list"].skinAttributes:
+				if attrib == "itemHeight":
+					itemHeight = parseScale(value) # if value does not parse (due to bad syntax in skin), itemHeight will be 0
+					return itemHeight if itemHeight else defaultItemHeight
+		return defaultItemHeight # if itemHeight not in skinAttributes
+	
+	def getPixmapWidth(self):
+		defaultPixmapWidth = 53
+		try: # protect from skin errors
+			return self["ErrorPixmap"].visible and hasattr(self["ErrorPixmap"], 'getSize') and isinstance(self["ErrorPixmap"].getSize(), tuple) and len(self["ErrorPixmap"].getSize()) and self["ErrorPixmap"].getSize()[0] or \
+				self["QuestionPixmap"].visible and hasattr(self["QuestionPixmap"], 'getSize') and isinstance(self["QuestionPixmap"].getSize(), tuple) and len(self["QuestionPixmap"].getSize()) and self["QuestionPixmap"].getSize()[0] or \
+				self["InfoPixmap"].visible and hasattr(self["InfoPixmap"], 'getSize') and isinstance(self["InfoPixmap"].getSize(), tuple) and len(self["InfoPixmap"].getSize()) and self["InfoPixmap"].getSize()[0] or \
+				defaultPixmapWidth
+		except Exception as err: 
+			print("[MessageBox] defaultPixmapWidth, %s: '%s'" % (type(err).__name__, err))
+		return defaultPixmapWidth
+	
 	def autoResize(self):
+		# Get the real pixmap width from the skin so this can be used in the formula below.
+		# Historically the default pixmap width has been 53 + 12 pixels of right margin.
+		pixmapWidth = self.getPixmapWidth()
+		pixmapMargin = 12
+		itemHeight = self.getListItemHeight()
 		count = len(self.list)
 		if not self["text"].text:
 			textsize = (520, 0)
-			listsize = (520, 25 * count)
+			listsize = (520, itemHeight * count)
 			if self.picon:
-				self["list"].instance.move(ePoint(65, 0))
-				wsizex = textsize[0] + 65
+				self["list"].instance.move(ePoint(pixmapWidth + pixmapMargin, 0))
+				wsizex = textsize[0] + pixmapWidth + pixmapMargin
 			else:
 				self["list"].instance.move(ePoint(0, 0))
 				wsizex = textsize[0]
@@ -182,13 +208,13 @@ class MessageBox(Screen, HelpableScreen):
 				textsize = (textsize[0], textsize[1] + 25)
 			else:
 				textsize = (520, textsize[1] + 25)
-			listsize = (textsize[0], 25 * count)
+			listsize = (textsize[0], itemHeight * count)
 
 			self["text"].instance.resize(eSize(*textsize))
 			if self.picon:
-				self["text"].instance.move(ePoint(65, 0))
-				self["list"].instance.move(ePoint(65, textsize[1]))
-				wsizex = textsize[0] + 65
+				self["text"].instance.move(ePoint(pixmapWidth + pixmapMargin, 0))
+				self["list"].instance.move(ePoint(pixmapWidth + pixmapMargin, textsize[1]))
+				wsizex = textsize[0] + pixmapWidth + pixmapMargin
 			else:
 				self["text"].instance.move(ePoint(10, 10))
 				self["list"].instance.move(ePoint(0, textsize[1]))
