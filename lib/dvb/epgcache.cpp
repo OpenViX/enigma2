@@ -2244,8 +2244,8 @@ void eEPGCache::importEvents(ePyObject serviceReferences, ePyObject list)
 			return;
 		}
 
-		long start = PyLong_AsLong(PyTuple_GET_ITEM(singleEvent, 0));
-		long duration = PyLong_AsLong(PyTuple_GET_ITEM(singleEvent, 1));
+		long start = PyLong_AsUnsignedLongMask(PyTuple_GET_ITEM(singleEvent, 0));
+		long duration = PyLong_AsUnsignedLongMask(PyTuple_GET_ITEM(singleEvent, 1));
 		const char *title = getStringFromPython(PyTuple_GET_ITEM(singleEvent, 2));
 		const char *short_summary = getStringFromPython(PyTuple_GET_ITEM(singleEvent, 3));
 		const char *long_description = getStringFromPython(PyTuple_GET_ITEM(singleEvent, 4));
@@ -2257,11 +2257,11 @@ void eEPGCache::importEvents(ePyObject serviceReferences, ePyObject list)
 			event_types.reserve(numberOfEventTypes);
 			for (int j = 0; j < numberOfEventTypes;  ++j)
 			{
-				uint8_t event_type = (uint8_t) PyLong_AsLong(eventTypeIsTuple ? PyTuple_GET_ITEM(eventTypeList, j) : PyList_GET_ITEM(eventTypeList, j));
+				uint8_t event_type = (uint8_t) PyLong_AsUnsignedLongMask(eventTypeIsTuple ? PyTuple_GET_ITEM(eventTypeList, j) : PyList_GET_ITEM(eventTypeList, j));
 				event_types.push_back(event_type);
 			}
 		} else if (PyLong_Check(eventTypeList)) {
-			uint8_t event_type = (uint8_t) PyLong_AsLong(eventTypeList);
+			uint8_t event_type = (uint8_t) PyLong_AsUnsignedLongMask(eventTypeList);
 			event_types.push_back(event_type);
 		} else {
 			eDebug("[eEPGCache:import] event type must be a single integer or a list or tuple of integers, aborting");
@@ -2271,7 +2271,7 @@ void eEPGCache::importEvents(ePyObject serviceReferences, ePyObject list)
 		uint16_t eventId = 0;
 		if (tupleSize >= 7)
 		{
-			eventId = (uint16_t) PyLong_AsLong(PyTuple_GET_ITEM(singleEvent, 6));
+			eventId = (uint16_t) PyLong_AsUnsignedLongMask(PyTuple_GET_ITEM(singleEvent, 6));
 		}
 
 		std::vector<eit_parental_rating> parental_ratings;
@@ -2298,7 +2298,7 @@ void eEPGCache::importEvents(ePyObject serviceReferences, ePyObject list)
 					}
 					eit_parental_rating p_rating;
 					memcpy(p_rating.country_code, country, 3);
-					u_char rating = (u_char) PyLong_AsLong(PyTuple_GET_ITEM(parentalInfo, 1));
+					u_char rating = (u_char) PyLong_AsUnsignedLongMask(PyTuple_GET_ITEM(parentalInfo, 1));
 					p_rating.rating = rating;
 					parental_ratings.push_back(p_rating);
 				}
