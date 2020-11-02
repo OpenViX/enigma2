@@ -205,7 +205,8 @@ class MessageBox(Screen, HelpableScreen):
 			if textsize[0] < textsize[1]:
 				textsize = (textsize[1], textsize[0] + 10)
 			if textsize[0] > 520:
-				textsize = (textsize[0], textsize[1] + 25)
+				textBottomMargin = int(1.0*textsize[0]/520*30) # previously always 25
+				textsize = (textsize[0], textsize[1] + textBottomMargin)
 			else:
 				textsize = (520, textsize[1] + 25)
 			listsize = (textsize[0], itemHeight * count)
