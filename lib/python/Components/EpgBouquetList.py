@@ -2,7 +2,7 @@ from time import localtime, time, strftime
 
 from enigma import eEPGCache, eListbox, eListboxPythonMultiContent, loadPNG, gFont, getDesktop, eRect, eSize, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_HALIGN_CENTER, RT_VALIGN_CENTER, RT_VALIGN_TOP, RT_WRAP, BT_SCALE, BT_KEEP_ASPECT_RATIO, BT_ALIGN_CENTER
 
-from skin import parseColor, parseFont
+from skin import parseColor, parseFont, parseScale
 from Components.GUIComponent import GUIComponent
 from Components.MultiContent import MultiContentEntryText, MultiContentEntryPixmapAlphaBlend, MultiContentEntryPixmapAlphaTest
 from Tools.Alternatives import CompareWithAlternatives
@@ -61,7 +61,7 @@ class EPGBouquetList(GUIComponent):
 				elif attrib == "borderWidth":
 					self.borderWidth = int(value)
 				elif attrib == "itemHeight":
-					self.itemHeight = int(value)
+					self.itemHeight = parseScale(value)
 				else:
 					attribs.append((attrib, value))
 			self.skinAttributes = attribs

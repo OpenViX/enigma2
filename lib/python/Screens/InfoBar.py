@@ -8,6 +8,7 @@ from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
 from Components.Label import Label
 from Components.Pixmap import MultiPixmap
+from Components.SystemInfo import SystemInfo
 
 profile("LOAD:enigma")
 import enigma
@@ -51,8 +52,8 @@ class InfoBar(InfoBarBase, InfoBarShowHide,
 		self["actions"] = HelpableActionMap(self, "InfobarActions",
 			{
 				"showMovies": (self.showMovies, _("Play recorded movies...")),
-				"showRadio": (self.showRadio, _("Show the radio player...")),
-				"showTv": (self.TvRadioToggle, _("Show the tv player...")),
+				"showRadio": (self.keyRadio, _("Show the radio player...")),
+				"showTv": (self.keyTV, _("Show the tv player...")),
 				"openBouquetList": (self.openBouquetList, _("Open bouquet list")),
 			}, prio=2, description=_("Basic functions"))
 
@@ -147,19 +148,24 @@ class InfoBar(InfoBarBase, InfoBarShowHide,
 			self.showTvChannelList(True)
 			self.servicelist.showFavourites()
 
-	def TvRadioToggle(self):
-		if getBrandOEM() == 'gigablue':
+	def keyTV(self):
+		if SystemInfo["toggleTvRadioButtonEvents"]:
 			self.toogleTvRadio()
 		else:
 			self.showTv()
 
-	def toogleTvRadio(self): 
-		if self.radioTV == 1:
-			self.radioTV = 0
+	def keyRadio(self):
+		if SystemInfo["toggleTvRadioButtonEvents"]:
+			self.toogleTvRadio()
+		else:
+			self.showRadio()
+
+	def toogleTvRadio(self):
+		if self.radioTV:
 			self.showTv() 
-		else: 
-			self.radioTV = 1
-			self.showRadio() 
+		else:
+			self.showRadio()
+		self.radioTV ^= 1
 
 	def showTv(self):
 		if config.usage.tvradiobutton_mode.value == "MovieList":
