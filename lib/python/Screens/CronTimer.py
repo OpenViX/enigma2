@@ -32,6 +32,8 @@ class CronTimers(Screen):
 		self['labrun'] = Label(_("Running"))
 		self['labrun'].hide()
 		self['labactive'].hide()
+		self['footnote'] = Label(_("Press OK to show details"))
+		self['footnote'].hide()
 		self.summary_running = ''
 		self['key'] = Label(_("H: = Hourly / D: = Daily / W: = Weekly / M: = Monthly"))
 		self.Console = Console()
@@ -156,6 +158,7 @@ class CronTimers(Screen):
 		self['labdisabled'].hide()
 		self.my_crond_active = False
 		self.my_crond_run = False
+		self['footnote'].hide()
 		if path.exists('/etc/rc3.d/S90crond'):
 			self['labdisabled'].hide()
 			self['labactive'].show()
@@ -263,6 +266,8 @@ class CronTimers(Screen):
 						res = (line2, line)
 						self.list.append(res)
 			f.close()
+		if len(self.list):
+			self['footnote'].show()
 		self['list'].list = self.list
 		self["actions"].setEnabled(True)
 
