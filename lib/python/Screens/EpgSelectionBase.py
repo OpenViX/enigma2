@@ -632,7 +632,7 @@ class EPGServiceNumberSelectionPopup(Screen):
 		self.number += str(number)
 		service, bouquet = self.getServiceByNumber(int(self.number))
 		self["number"].setText(self.number)
-		self["service"].newService(service)
+		self["service"].newService(service if service is None else service.ref)
 
 		if len(self.number) >= 4:
 			self.__OK()
@@ -657,7 +657,7 @@ class EPGServiceNumberSelection:
 			if number is not None:
 				service, bouquet = self.getServiceByNumber(number)
 				if service is not None:
-					self.startRef = service
+					self.startRef = service.ref
 					self.startBouquet = bouquet
 					self.setBouquet(bouquet)
 					self.bouquetChanged()
@@ -827,6 +827,8 @@ class EPGServiceBrowse(EPGBouquetSelection):
 		if serviceRef is None:
 			self.selectedServiceIndex = 0
 		else:
+			if isinstance(serviceRef, ServiceReference):
+				serviceRef = serviceRef.ref
 			index = 0
 			for service in self.services:
 				if service.ref == serviceRef:
