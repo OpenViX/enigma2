@@ -81,7 +81,7 @@ class ServiceInfoList(GUIComponent):
 					self.fontName = font.family
 					self.fontSize = font.pointSize
 				elif attrib == "itemHeight":
-					self.ItemHeight = int(value)
+					self.ItemHeight = skin.parseScale(value)
 				else:
 					attribs.append((attrib,value))
 			self.skinAttributes = attribs
