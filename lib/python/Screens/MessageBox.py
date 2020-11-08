@@ -100,9 +100,9 @@ class MessageBox(Screen, HelpableScreen):
 		self.timeout_default = timeout_default
 		self.baseTitle = title
 		self.activeTitle = None
-		# DEBUG: This is a temporary patch to stop the VuRemote and GigaBlueRemote plugins from crashing!
-		# If this code is accepted then the offending lines from the plugins can safely be removed.
-		self.timerRunning = None  # DEBG: See note above!
+		self.timerRunning = False
+		if timeout > 0:
+			self.timerRunning = True
 		self["text"] = Label(self.text)
 		self["Text"] = StaticText(self.text)  # What is self["Text"] for?
 		self["selectedChoice"] = StaticText()
