@@ -1281,6 +1281,7 @@ class TunerScreen(ConfigListScreen, Screen):
 		self.fe_data = fe_data
 		Screen.__init__(self, session)
 		self.setTitle(_("Tune"))
+		self.skinName = ["TunerScreen", "Setup"]
 		ConfigListScreen.__init__(self, None)
 		self.createConfig(fe_data)
 		self.initialSetup()
@@ -1298,8 +1299,8 @@ class TunerScreen(ConfigListScreen, Screen):
 		}, -2)
 
 		self["key_red"] = StaticText(_("Cancel"))
-		self["key_green"] = StaticText(_("OK"))
-		self["introduction"] = Label(_("Press OK, save and exit..."))
+		self["key_green"] = StaticText(_("Save"))
+		self["introduction"] = Label(_("Press OK to save and exit."))
 
 	def createConfig(self, frontendData):
 		satlist = nimmanager.getRotorSatListForNim(self.feid)
