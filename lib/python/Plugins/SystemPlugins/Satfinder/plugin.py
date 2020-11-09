@@ -1,4 +1,4 @@
-from enigma import eDVBResourceManager, eDVBFrontendParametersSatellite, eDVBFrontendParametersTerrestrial
+from enigma import eDVBResourceManager, eDVBFrontendParametersSatellite, eDVBFrontendParametersTerrestrial, eTimer
 
 from Screens.ScanSetup import ScanSetup, buildTerTransponder
 from Screens.ServiceScan import ServiceScan
@@ -56,6 +56,8 @@ class Satfinder(ScanSetup, ServiceScan):
 		self.session.postScanService = self.session.nav.getCurrentlyPlayingServiceOrGroup()
 		self.onClose.append(self.__onClose)
 		self.onShow.append(self.prepareFrontend)
+		self.timer = eTimer()
+		self.timer.callback.append(self.updateFrontendStatus)
 
 	def openFrontend(self):
 		res_mgr = eDVBResourceManager.getInstance()
@@ -82,6 +84,15 @@ class Satfinder(ScanSetup, ServiceScan):
 			self.updatePreDefTransponders()
 		self.createSetup()
 		self.retune(None)
+
+	def updateFrontendStatus(self):
+		if self.frontend:
+			dict = {}
+			self.frontend.getFrontendStatus(dict)
+			if dict["tuner_state"] == "FAILED" or dict["tuner_state"] == "LOSTLOCK":
+				self.retune()
+			else:
+				self.timer.start(500, True)
 
 	def __onClose(self):
 		self.session.nav.playService(self.session.postScanService)
@@ -482,6 +493,7 @@ class Satfinder(ScanSetup, ServiceScan):
 			self.retuneCab(configElement)
 		elif nimmanager.nim_slots[int(self.satfinder_scan_nims.value)].isCompatible("ATSC"):
 			self.retuneATSC(configElement)
+		self.timer.start(500, True)
 
 	def keyGoScan(self):
 		if self.transponder is None:
