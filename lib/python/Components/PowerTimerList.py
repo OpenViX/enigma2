@@ -2,7 +2,7 @@ from enigma import eListboxPythonMultiContent, eListbox, gFont, getDesktop, \
 	RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_VALIGN_TOP, RT_VALIGN_BOTTOM
 
 from GUIComponent import GUIComponent
-from skin import parseFont
+from skin import parseFont, parseScale
 from Tools.FuzzyDate import FuzzyTime
 from Tools.LoadPixmap import LoadPixmap
 from timer import TimerEntry
@@ -149,7 +149,7 @@ class PowerTimerList(GUIComponent, object):
 
 	def applySkin(self, desktop, parent):
 		def itemHeight(value):
-			self.itemHeight = int(value)
+			self.itemHeight = parseScale(value)
 		def setServiceNameFont(value):
 			self.serviceNameFont = parseFont(value, ((1,1),(1,1)))
 		def setEventNameFont(value):
@@ -157,11 +157,11 @@ class PowerTimerList(GUIComponent, object):
 		def setFont(value):
 			self.font = parseFont(value, ((1,1),(1,1)))
 		def rowSplit(value):
-			self.rowSplit = int(value)
+			self.rowSplit = parseScale(value)
 		def iconMargin(value):
-			self.iconMargin = int(value)
+			self.iconMargin = parseScale(value)
 		def satPosLeft(value):
-			self.satPosLeft = int(value)
+			self.satPosLeft = parseScale(value)
 		for (attrib, value) in list(self.skinAttributes):
 			try:
 				locals().get(attrib)(value)
