@@ -937,7 +937,7 @@ class ChannelSelectionEdit:
 				else:
 					return HelpableActionMap.action(self, contexts, action)
 
-		self["ChannelSelectEditActions"] = ChannelSelectionEditActionMap(self, ["ChannelSelectEditActions", "OkCancelActions"],
+		self["ChannelSelectEditActions"] = ChannelSelectionEditActionMap(self, ["ChannelSelectEditActions"],
 			{
 				"contextMenu": (self.doContext, _("Open menu")),
 			}, description=_("Menu"))
