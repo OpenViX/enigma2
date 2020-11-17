@@ -6,7 +6,6 @@ from Components.Sources.Boolean import Boolean
 from Components.Sources.StaticText import StaticText
 from Components.config import config, configfile, ConfigText, ConfigSubsection, ConfigSelection, ConfigIP, ConfigYesNo, ConfigInteger, getConfigListEntry
 from Components.ConfigList import ConfigListScreen
-from Screens.MessageBox import MessageBox
 from Screens.HelpMenu import HelpableScreen
 
 from enigma import getPeerStreamingBoxes
