@@ -137,9 +137,11 @@ def GetDeviceId(filter, nim_idx):
 	device_id = 0
 	socket_id = 0
 	for nim in nimmanager.nim_slots:
-		name_token = nim.description.split(' ')
-		name = name_token[-1][4:-1]
-		if name == filter:
+		try:
+			name_token = nim.description.split(' ')[-1][4:-1]
+		except:
+			name_token = ""
+		if name_token == filter:
 			if socket_id == nim_idx:
 				break
 			if device_id:
