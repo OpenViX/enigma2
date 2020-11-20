@@ -65,6 +65,12 @@ config.hdmicec.tv_wakeup_detection = ConfigSelection(
 	"activity": _("Any activity"),
 	},
 	default = "streamrequest")
+config.hdmicec.tv_wakeup_command = ConfigSelection(
+	choices = {
+	"imageview": _("Image View On"),
+	"textview": _("Text View On"),
+	},
+	default = "imageview")
 config.hdmicec.fixed_physical_address = ConfigText(default = "0.0.0.0")
 config.hdmicec.volume_forwarding = ConfigYesNo(default = False)
 config.hdmicec.control_receiver_wakeup = ConfigYesNo(default = False)
@@ -167,76 +173,78 @@ class HdmiCec:
 		eHdmiCEC.getInstance().setFixedPhysicalAddress(int(float.fromhex(hexstring)))
 
 	def sendMessage(self, address, message):
-		if config.hdmicec.enabled.value:
-			cmd = 0
-			data = ''
-			if message == "wakeup":
+		cmd = 0
+		data = ''
+		if message == "wakeup":
+			if config.hdmicec.tv_wakeup_command.value == 'textview':
+				cmd = 0x0d
+			else:
 				cmd = 0x04
-			elif message == "sourceactive":
-				address = 0x0f # use broadcast for active source command
-				cmd = 0x82
-				data = self.setData()
-			elif message == "standby":
-				cmd = 0x36
-			elif message == "sourceinactive":
-				cmd = 0x9d
-				data = self.setData()
-			elif message == "menuactive":
-				cmd = 0x8e
-				data = str(struct.pack('B', 0x00))
-			elif message == "menuinactive":
-				cmd = 0x8e
-				data = str(struct.pack('B', 0x01))
-			elif message == "givesystemaudiostatus":
-				cmd = 0x7d
-				address = 0x05
-			elif message == "setsystemaudiomode":
-				cmd = 0x70
-				address = 0x05
-				data = self.setData()
-			elif message == "osdname":
-				cmd = 0x47
-				data = os.uname()[1]
-				data = data[:14]
-			elif message == "poweractive":
-				cmd = 0x90
-				data = str(struct.pack('B', 0x00))
-			elif message == "powerinactive":
-				cmd = 0x90
-				data = str(struct.pack('B', 0x01))
-			elif message == "reportaddress":
-				address = 0x0f # use broadcast address
-				cmd = 0x84
-				data = self.setData(True)
-			elif message == "vendorid":
-				cmd = 0x87
-				data = '\x00\x00\x00'
-			elif message == "keypoweron":
-				cmd = 0x44
-				data = str(struct.pack('B', 0x6d))
-			elif message == "keypoweroff":
-				cmd = 0x44
-				data = str(struct.pack('B', 0x6c))
-			elif message == "sendcecversion":
-				cmd = 0x9E
-				data = str(struct.pack('B', 0x04)) # v1.3a
-			elif message == "requestactivesource":
-				address = 0x0f # use broadcast address
-				cmd = 0x85
-			elif message == "getpowerstatus":
-				self.useStandby = True;
-				address = 0x0f # use broadcast address => boxes will send info
-				cmd = 0x8f
-    	
-			if cmd:
-				if config.hdmicec.minimum_send_interval.value != "0":
-					self.queue.append((address, cmd, data))
-					if not self.wait.isActive():
-						self.wait.start(int(config.hdmicec.minimum_send_interval.value), True)
-				else:
-					eHdmiCEC.getInstance().sendMessage(address, cmd, data, len(data))
-				if config.hdmicec.debug.value in["1","3"]:
-					self.debugTx(address, cmd, data)
+		elif message == "sourceactive":
+			address = 0x0f # use broadcast for active source command
+			cmd = 0x82
+			data = self.setData()
+		elif message == "standby":
+			cmd = 0x36
+		elif message == "sourceinactive":
+			cmd = 0x9d
+			data = self.setData()
+		elif message == "menuactive":
+			cmd = 0x8e
+			data = str(struct.pack('B', 0x00))
+		elif message == "menuinactive":
+			cmd = 0x8e
+			data = str(struct.pack('B', 0x01))
+		elif message == "givesystemaudiostatus":
+			cmd = 0x7d
+			address = 0x05
+		elif message == "setsystemaudiomode":
+			cmd = 0x70
+			address = 0x05
+			data = self.setData()
+		elif message == "osdname":
+			cmd = 0x47
+			data = os.uname()[1]
+			data = data[:14]
+		elif message == "poweractive":
+			cmd = 0x90
+			data = str(struct.pack('B', 0x00))
+		elif message == "powerinactive":
+			cmd = 0x90
+			data = str(struct.pack('B', 0x01))
+		elif message == "reportaddress":
+			address = 0x0f # use broadcast address
+			cmd = 0x84
+			data = self.setData(True)
+		elif message == "vendorid":
+			cmd = 0x87
+			data = '\x00\x00\x00'
+		elif message == "keypoweron":
+			cmd = 0x44
+			data = str(struct.pack('B', 0x6d))
+		elif message == "keypoweroff":
+			cmd = 0x44
+			data = str(struct.pack('B', 0x6c))
+		elif message == "sendcecversion":
+			cmd = 0x9E
+			data = str(struct.pack('B', 0x04)) # v1.3a
+		elif message == "requestactivesource":
+			address = 0x0f # use broadcast address
+			cmd = 0x85
+		elif message == "getpowerstatus":
+			self.useStandby = True;
+			address = 0x0f # use broadcast address => boxes will send info
+			cmd = 0x8f
+
+		if cmd:
+			if config.hdmicec.minimum_send_interval.value != "0":
+				self.queue.append((address, cmd, data))
+				if not self.wait.isActive():
+					self.wait.start(int(config.hdmicec.minimum_send_interval.value), True)
+			else:
+				eHdmiCEC.getInstance().sendMessage(address, cmd, data, len(data))
+			if config.hdmicec.debug.value in["1","3"]:
+				self.debugTx(address, cmd, data)
 
 	def sendCmd(self):
 		if len(self.queue):
