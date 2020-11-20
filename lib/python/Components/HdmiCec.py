@@ -89,6 +89,35 @@ class HdmiCec:
 	instance = None
 
 	def __init__(self):
+		assert not HdmiCec.instance, "only one HdmiCec instance is allowed!"
+		HdmiCec.instance = self
+
+		self.wait = eTimer()
+		self.wait.timeout.get().append(self.sendCmd)
+		self.waitKeyEvent = eTimer()
+		self.waitKeyEvent.timeout.get().append(self.sendKeyEvent)
+		self.queueKeyEvent = []
+		self.repeat = eTimer()
+		self.repeat.timeout.get().append(self.wakeupMessages)
+		self.queue = []
+
+		self.delay = eTimer()
+		self.delay.timeout.get().append(self.sendStandbyMessages)
+		self.useStandby = True
+
+		self.handlingStandbyFromTV = False
+
+		eHdmiCEC.getInstance().messageReceived.get().append(self.messageReceived)
+		config.misc.standbyCounter.addNotifier(self.onEnterStandby, initial_call = False)
+		config.misc.DeepStandby.addNotifier(self.onEnterDeepStandby, initial_call = False)
+		self.setFixedPhysicalAddress(config.hdmicec.fixed_physical_address.value)
+
+		self.volumeForwardingEnabled = False
+		self.volumeForwardingDestination = 0
+		self.wakeup_from_tv = False
+		eActionMap.getInstance().bindAction('', -maxint - 1, self.keyEvent)
+		config.hdmicec.volume_forwarding.addNotifier(self.configVolumeForwarding)
+		config.hdmicec.enabled.addNotifier(self.configVolumeForwarding)
 		if config.hdmicec.enabled.value:
 			assert not HdmiCec.instance, "only one HdmiCec instance is allowed!"
 			HdmiCec.instance = self
@@ -255,7 +284,7 @@ class HdmiCec:
 	def sendStandbyMessages(self):
 			messages = []
 			if config.hdmicec.control_tv_standby.value:
-				if self.useStandby:
+				if self.useStandby and not self.handlingStandbyFromTV:
 					messages.append("standby")
 				else:
 					messages.append("sourceinactive")
@@ -369,7 +398,12 @@ class HdmiCec:
 
 			# handle standby request from the tv
 			if cmd == 0x36 and config.hdmicec.handle_tv_standby.value:
+				# avoid echoing the 'System Standby' command back to the tv
+				self.handlingStandbyFromTV = True
+				# handle standby
 				self.standby()
+				# after handling the standby command, we are free to send 'standby' ourselves again
+				self.handlingStandbyFromTV = False
 
 			# handle wakeup requests from the tv
 			if inStandby and config.hdmicec.handle_tv_wakeup.value:
