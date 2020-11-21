@@ -17,7 +17,7 @@ from Tools.Multiboot import emptySlot, GetCurrentImage, GetImagelist, GetCurrent
 
 
 class MultiBootSelector(Screen, HelpableScreen):
-	skinTemplate = """
+	skin = ["""
 	<screen title="MultiBoot Image Selector" position="center,center" size="%d,%d">
 		<widget name="config" position="%d,%d" size="%d,%d" font="Regular;%d" itemHeight="%d" scrollbarMode="showOnDemand" />
 		<widget source="description" render="Label" position="%d,e-%d" size="%d,%d" font="Regular;%d" />
@@ -25,8 +25,7 @@ class MultiBootSelector(Screen, HelpableScreen):
 		<widget source="key_green" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="key_green" font="Regular;%d" foregroundColor="key_text" halign="center" noWrap="1" valign="center" />
 		<widget source="key_yellow" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="key_yellow" font="Regular;%d" foregroundColor="key_text" halign="center" noWrap="1" valign="center" />
 		<widget source="key_blue" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="key_blue" font="Regular;%d" foregroundColor="key_text" halign="center" noWrap="1" valign="center" />
-	</screen>"""
-	scaleData = [
+	</screen>""",
 		900, 460,
 		10, 10, 880, 306, 24, 34,
 		10, 125, 880, 60, 22,
@@ -35,15 +34,12 @@ class MultiBootSelector(Screen, HelpableScreen):
 		310, 50, 140, 40, 20,
 		460, 50, 140, 40, 20
 	]
-	skin = None
 
 	def __init__(self, session, *args):
-		Screen.__init__(self, session)
+		Screen.__init__(self, session, mandatoryWidgets=["key_yellow", "key_blue"])
 		HelpableScreen.__init__(self)
-		if MultiBootSelector.skin is None:
-			# The skin template is designed for a HD screen so the scaling factor is 720.
-			MultiBootSelector.skin = MultiBootSelector.skinTemplate % tuple([x * getDesktop(0).size().height() / 720 for x in MultiBootSelector.scaleData])
 		Screen.setTitle(self, _("MultiBoot Image Selector"))
+		self.skinName = ["MultiBootSelector","Setup"]
 		self.tmp_dir = None
 		self["config"] = ChoiceList(list=[ChoiceEntryComponent("", ((_("Retrieving image slots - Please wait...")), "Queued"))])
 		self["description"] = StaticText(_("Press GREEN (Reboot) to switch images, YELLOW (Delete) to erase an image or BLUE (Restore) to restore all deleted images."))

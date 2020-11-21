@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-05 02:58+0000\n"
-"PO-Revision-Date: 2020-10-05 15:36+0200\n"
+"POT-Creation-Date: 2020-11-21 03:23+0000\n"
+"PO-Revision-Date: 2020-11-21 11:04+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SourceCharset: iso-8859-15\n"
-"X-Generator: Poedit 2.4.1\n"
+"X-Generator: Poedit 2.4.2\n"
 
 #, python-format
 msgid ""
@@ -7513,6 +7513,9 @@ msgstr "N"
 msgid "N/A"
 msgstr "NVT"
 
+msgid "NEXT"
+msgstr "VOLGENDE"
+
 msgid "NFS"
 msgstr "NFS"
 
@@ -7710,6 +7713,9 @@ msgstr "Geen (ondersteunde) DVD-ROM gevonden!"
 msgid "No Connection"
 msgstr "Geen verbinding"
 
+msgid "No ECM info is currently available. This is only available while decrypting."
+msgstr "Momenteel geen ECM beschikbaar. Deze is alleen beschikbaar tijdens het ontcijferen."
+
 msgid "No ECMPids available (FTA Service)"
 msgstr "Geen ECMPids beschikbaar (FTA-kanaal)"
 
@@ -7786,9 +7792,6 @@ msgstr "Geen netwerken gevonden"
 msgid "No of items switch (increase or reduced)"
 msgstr "Aantal onderdelen (verklein of vergroot)"
 
-msgid "No positioner capable frontend found."
-msgstr "Geen geschikte positioner gevonden."
-
 msgid "No priority"
 msgstr "Geen prioriteit"
 
@@ -7818,9 +7821,6 @@ msgstr "Nee op alles"
 
 msgid "No transparency"
 msgstr "Niet doorzichtig"
-
-msgid "No tuner is configured for use with a diseqc positioner!"
-msgstr "Er is geen tuner ingesteld voor gebruik van een DiSEqC positioner!"
 
 msgid ""
 "No tuner is enabled!\n"
@@ -8973,6 +8973,9 @@ msgstr "Druk op OK voor meer details van: %s"
 msgid "Press OK to keep the currently selected%s skin."
 msgstr "Druk op OK om de momenteel actieve %s skin te behouden."
 
+msgid "Press OK to save and exit."
+msgstr "Klik op OK om op te slaan en sluit af."
+
 msgid "Press OK to scan"
 msgstr "Druk OK om te scannen"
 
@@ -8994,14 +8997,14 @@ msgstr "Druk op OK om de CAId aan/uit te zetten."
 msgid "Press OK to set the MAC address."
 msgstr "Druk op OK om MAC-adres in te stellen."
 
+msgid "Press OK to show details"
+msgstr "Druk OK voor details"
+
 msgid "Press OK to toggle the selection"
 msgstr "Druk op OK om de selectie te wisselen"
 
 msgid "Press OK to toggle the selection."
 msgstr "Druk op OK om de selectie te (de)activeren."
-
-msgid "Press OK, save and exit..."
-msgstr "Klik op OK, sla op en sluit af..."
 
 msgid ""
 "Press up/down to scroll through the selected log\n"
@@ -10735,12 +10738,13 @@ msgstr "Voltage en 22KHz instellen"
 msgid "Sets the root directory of movie list, to remove the '..' from being shown in that folder."
 msgstr "Stelt de root-map van de opnamelijst in, om '..' niet te tonen."
 
+#, python-format
 msgid ""
-"Setting a password is strongly advised if your STB is open to the internet.\n"
-"This is the case if you have in your router a port forwarded to the STB."
+"Setting a network password is mandatory in OpenViX %s if you wish to use network services. \n"
+"To set a password using the virtual keyboard press the 'text' button on your remote control."
 msgstr ""
-"Het gebruik van een wachtwoord is sterk aanbevolen indien uw STB open met het internet is verbonden.\n"
-"Dat is het geval indien in uw router een 'port forwarded' is naar uw STB."
+"Het gebruik van een wachtwoord in ViX %s is verplicht als u van een netwerk gebruik wilt maken. \n"
+"Om het virtuele toetsenbord te gebruiken om een wachtwoord in te stellen, drukt u op de 'text'-toets op uw AB."
 
 msgid "Settings"
 msgstr "Instellingen"
@@ -11092,9 +11096,6 @@ msgstr "Toon kanaallijst"
 msgid "Show service list or movies"
 msgstr "Toon kanaallijst of opnames"
 
-msgid "Show service name and event description above and below each other instead of side by side."
-msgstr "Toon de kanaalnaam en programmabeschrijving boven elkaar in plaats van naast elkaar."
-
 msgid "Show service type icons"
 msgstr "Toon iconen voor servicetype"
 
@@ -11139,6 +11140,9 @@ msgstr "Toon de pluginbrowser.."
 
 msgid "Show the radio player..."
 msgstr "Radioweergave modus..."
+
+msgid "Show the service information on two lines in the channel selection screen. You can choose between the current event description below the channel name, or the current event description next to the channel name, and the next event description on the second line."
+msgstr "Toon de kanaalinformatie in twee regels in het kanaalselectiescherm. U kunt kiezen tussen de huidige programmabeschrijving onder de kanaalnaam of de huidige programmabeschrijving naast de kanaalnaam en het volgende programma de tweede regel. "
 
 msgid "Show the tv player..."
 msgstr "TV-weergave modus..."
@@ -15578,6 +15582,12 @@ msgstr "toerisme/reizen"
 msgid "true"
 msgstr "waar"
 
+msgid "two lines"
+msgstr "twee regels"
+
+msgid "two lines and next event"
+msgstr "twee regels en volgende programma"
+
 msgid "type"
 msgstr "type"
 
@@ -16820,11 +16830,17 @@ msgstr "zapte"
 #~ msgid "No new plugins found"
 #~ msgstr "Geen nieuwe plugins gevonden"
 
+#~ msgid "No positioner capable frontend found."
+#~ msgstr "Geen geschikte positioner gevonden."
+
 #~ msgid "No stream clients"
 #~ msgstr "Geen stream-klanten"
 
 #~ msgid "No suitable sat tuner found!"
 #~ msgstr "Geen geschikte satelliettuner gevonden!"
+
+#~ msgid "No tuner is configured for use with a diseqc positioner!"
+#~ msgstr "Er is geen tuner ingesteld voor gebruik van een DiSEqC positioner!"
 
 #~ msgid "No updates available. Please try again later."
 #~ msgstr "Geen updates beschikbaar. Probeer het later nog eens."
@@ -17114,6 +17130,13 @@ msgstr "zapte"
 #~ msgid "Setting"
 #~ msgstr "Instelling"
 
+#~ msgid ""
+#~ "Setting a password is strongly advised if your STB is open to the internet.\n"
+#~ "This is the case if you have in your router a port forwarded to the STB."
+#~ msgstr ""
+#~ "Het gebruik van een wachtwoord is sterk aanbevolen indien uw STB open met het internet is verbonden.\n"
+#~ "Dat is het geval indien in uw router een 'port forwarded' is naar uw STB."
+
 #~ msgid "Settings..."
 #~ msgstr "Instellingen..."
 
@@ -17147,6 +17170,9 @@ msgstr "zapte"
 
 #~ msgid "Show graphical multi EPG"
 #~ msgstr "Toon graphische multi EPG"
+
+#~ msgid "Show service name and event description above and below each other instead of side by side."
+#~ msgstr "Toon de kanaalnaam en programmabeschrijving boven elkaar in plaats van naast elkaar."
 
 #~ msgid "Show services beginning with"
 #~ msgstr "Laat zenders zien die beginnen met"

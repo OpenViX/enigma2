@@ -1,4 +1,4 @@
-from boxbranding import getBoxType, getMachineBrand, getMachineName, getImageType
+from boxbranding import getBoxType, getMachineBrand, getMachineName, getImageType, getImageVersion
 from os import path as os_path, remove, unlink, rename, chmod, access, X_OK
 from shutil import move
 import time
@@ -3405,13 +3405,13 @@ class NetworkPassword(ConfigListScreen, Screen):
 
 	def updateList(self):
 		self.password = NoSave(ConfigPassword(default=""))
-		instructions = _("Setting a password is strongly advised if your STB is open to the internet.\nThis is the case if you have in your router a port forwarded to the STB.")
+		instructions = _("Setting a network password is mandatory in OpenViX %s if you wish to use network services. \nTo set a password using the virtual keyboard press the 'text' button on your remote control.") % getImageVersion()
 		self.list.append(getConfigListEntry(_('New password'), self.password, instructions))
 		self['config'].list = self.list
 		self['config'].l.setList(self.list)
 
 	def GeneratePassword(self):
-		passwdChars = string.letters + string.digits
+		passwdChars = string.ascii_letters + string.digits
 		passwdLength = 10
 		return ''.join(Random().sample(passwdChars, passwdLength))
 

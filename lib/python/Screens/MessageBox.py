@@ -226,17 +226,16 @@ class MessageBox(Screen, HelpableScreen):
 		self.instance.move(ePoint((getDesktop(0).size().width() - wsizex) / 2, (getDesktop(0).size().height() - wsizey) / 2))
 
 	def cancel(self):
-		if self["list"].list:
-			for l in self["list"].list:
-				# print "[MessageBox] DEBUG: (cancel) '%s' -> '%s'" % (str(l[0]), str(l[1]))
-				# Should we be looking at the second element to get the boolean value rather than the word?
-				if l[0].lower() == _('no') or l[0].lower() == _('false'):
-					if len(l) > 2:
-						l[2](None)
-					else:
-						self.close(False)
-					break
-		self.close(False)
+		for l in self["list"].list:
+			# print "[MessageBox] DEBUG: (cancel) '%s' -> '%s'" % (str(l[0]), str(l[1]))
+			# Should we be looking at the second element to get the boolean value rather than the word?
+			if l[0].lower() == _('no') or l[0].lower() == _('false'):
+				if len(l) > 2:
+					l[2](None)
+				break
+		# Don't close again if the MessageBox was closed in the loop
+		if hasattr(self, "execing"):
+			self.close(False)
 
 	def ok(self):
 		if self["list"].getCurrent():

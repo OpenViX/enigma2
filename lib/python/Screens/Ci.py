@@ -361,13 +361,14 @@ class CiSelection(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.setTitle(_("Common Interface"))
-		self["actions"] = ActionMap(["OkCancelActions", "CiSelectionActions"],
+		self["actions"] = ActionMap(["SetupActions", "CiSelectionActions"],
 			{
 				"left": self.keyLeft,
 				"right": self.keyLeft,
 				"ok": self.okbuttonClick,
 				"cancel": self.cancel
 			},-1)
+		self["key_red"] = StaticText(_("Cancel"))
 
 		self.dlg = None
 		self.state = { }

@@ -55,6 +55,7 @@ class SkinSelector(Screen, HelpableScreen):
 		Screen.__init__(self, session, mandatoryWidgets=["skins", "preview", "description"])
 		HelpableScreen.__init__(self)
 		self.setTitle(screenTitle)
+		self.skinName = ["SkinSelector","__SkinSelector__"]
 		self.rootDir = resolveFilename(SCOPE_SKIN)
 		self.config = config.skin.primary_skin
 		self.currentSkin = currentPrimarySkin
