@@ -228,7 +228,7 @@ class CableTransponderSearchSupport:
 				tmpstr += data[0]
 				self.cable_search_session["text"].setText(tmpstr)
 
-	def def startCableTransponderSearch(self, nim_idx):
+	def startCableTransponderSearch(self, nim_idx):
 		def GetCommand(nim_idx):
 			try:
 				device_id = ""
