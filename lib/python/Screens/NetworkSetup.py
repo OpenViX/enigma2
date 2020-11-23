@@ -1,9 +1,9 @@
 from boxbranding import getBoxType, getMachineBrand, getMachineName, getImageType, getImageVersion
 from os import path as os_path, remove, unlink, rename, chmod, access, X_OK
+import netifaces as ni
 from shutil import move
 import time
 
-from Components.About import about
 from Components.ActionMap import ActionMap, NumberActionMap, HelpableActionMap
 from Components.config import config, ConfigSubsection, ConfigYesNo, ConfigIP, ConfigText, ConfigPassword, ConfigSelection, getConfigListEntry, ConfigNumber, ConfigLocations, NoSave, ConfigMacText
 from Components.ConfigList import ConfigListScreen, ConfigList
@@ -443,8 +443,8 @@ class NetworkMacSetup(Screen, ConfigListScreen, HelpableScreen):
 		self.createSetup()
 
 	def getmac(self, iface):
-		eth = about.getIfConfig(iface)
-		return eth['hwaddr']
+		nit = ni.ifaddresses(iface)
+		return nit[ni.AF_LINK][0]['addr'] 
 
 	def createSetup(self):
 		self.list = []
