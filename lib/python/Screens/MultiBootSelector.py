@@ -87,11 +87,11 @@ class MultiBootSelector(Screen, HelpableScreen):
 					self.deletedImagesExists = True
 				if self.imagedict[x]["imagename"] != _("Empty slot"):
 					if SystemInfo["canMode12"]:
-						list.insert(index, ChoiceEntryComponent("", (slotMulti % (x, self.imagedict[x]["imagename"], "Kodi", current if x == currentimageslot and mode != 12 else ""), x)))
-						list.append(ChoiceEntryComponent("", (slotMulti % (x, self.imagedict[x]["imagename"], "PiP", current if x == currentimageslot and mode == 12 else ""), x + 12)))
+						list.insert(index, ChoiceEntryComponent("", (slotMulti % (x, self.imagedict[x]["imagename"], "Kodi", current if x == currentimageslot and mode != 12 else ""), (x, 1))))
+						list.append(ChoiceEntryComponent("", (slotMulti % (x, self.imagedict[x]["imagename"], "PiP", current if x == currentimageslot and mode == 12 else ""), (x, 12))))
 						indextot = index + 1
 					else:
-						list.append(ChoiceEntryComponent("", (slotSingle % (x, self.imagedict[x]["imagename"], current if x == currentimageslot else ""), x)))
+						list.append(ChoiceEntryComponent("", (slotSingle % (x, self.imagedict[x]["imagename"], current if x == currentimageslot else ""), (x, 1))))
 			if SystemInfo["canMode12"]:
 				list.insert(indextot, " ")
 		else:
@@ -101,26 +101,27 @@ class MultiBootSelector(Screen, HelpableScreen):
 
 	def reboot(self):
 		self.currentSelected = self["config"].l.getCurrentSelection()
-		self.slotx = self.slot = self.currentSelected[0][1]
-		if self.slotx >= 12:
-			self.slotx -= 12 
+		self.slotx = self.slot = self.currentSelected[0][1][0]
 		if self.imagedict[self.slotx]["imagename"] == _("Deleted image"):
 			self.session.open(MessageBox, _("Cannot reboot to deleted image"), MessageBox.TYPE_ERROR, timeout=3)
 			self.getImagelist()
 		if self.currentSelected[0][1] != "Queued":
-			print "[MultiBootSelector] reboot2 rebootslot = %s, " % self.slot
+			slot = self.currentSelected[0][1][0]
+			boxmode = self.currentSelected[0][1][1]
+			print "[MultiBootSelector] reboot2 reboot slot = %s, " % slot
+			print "[MultiBootSelector] reboot2 reboot boxmode = %s, " % boxmode
 			print "[MultiBootSelector] reboot3 slotinfo = %s" % SystemInfo["canMultiBoot"]
-			if self.slot < 12:
-				copyfile(path.join(self.tmp_dir, SystemInfo["canMultiBoot"][self.slot]["startupfile"]), path.join(self.tmp_dir, "STARTUP"))
-			else:
-				self.slot -= 12
-				startupfile = path.join(self.tmp_dir, SystemInfo["canMultiBoot"][self.slot]["startupfile"].replace("BOXMODE_1", "BOXMODE_12"))
-				print "[MultiBootSelector] reboot5 startupfile = %s" % startupfile
-				if "BOXMODE" in startupfile:
+			if SystemInfo["canMode12"]:
+				if "BOXMODE" in SystemInfo["canMultiBoot"][slot]['startupfile']:
+					startupfile = path.join(self.tmp_dir, "%s_%s" % (SystemInfo["canMultiBoot"][slot]['startupfile'].rsplit('_', 1)[0], boxmode))
 					copyfile(startupfile, path.join(self.tmp_dir, "STARTUP"))
 				else:
-					f = open(startupfile, "r").read().replace("boxmode=1'", "boxmode=12'").replace("%s" % SystemInfo["canMode12"][0], "%s" % SystemInfo["canMode12"][1])
+					f = open(path.join(self.tmp_dir, SystemInfo["canMultiBoot"][slot]['startupfile']), "r").read()
+					if boxmode == 12:
+						f = f.replace("boxmode=1'", "boxmode=12'").replace("%s" % SystemInfo["canMode12"][0], "%s" % SystemInfo["canMode12"][1])
 					open(path.join(self.tmp_dir, "STARTUP"), "w").write(f)
+			else:
+				copyfile(path.join(self.tmp_dir, SystemInfo["canMultiBoot"][slot]["startupfile"]), path.join(self.tmp_dir, "STARTUP"))
 			self.cancel(QUIT_REBOOT)
 
 	def deleteImage(self):
