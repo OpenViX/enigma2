@@ -10,117 +10,72 @@ import os
 config.av = ConfigSubsection()
 
 class AVSwitch:
+	print("BoxBranding", "MachineBuild", getMachineBuild())
+	print("BoxBranding", "BoxType", getBoxType())
+	print("BoxBranding", "BrandOEM", getBrandOEM())
+	print("BoxBranding", "DisplayType", getDisplayType())
+	print("AVSwitch", "hasRCA", SystemInfo["hasRCA"])
+	print("AVSwitch", "hasSCART", SystemInfo["hasScart"])
+	print("AVSwitch", "hasJACK", SystemInfo["hasJack"])
+	print("AVSwitch", "hasYUV", SystemInfo["hasYUV"])
+	print("AVSwitch", "HasScartYUV", SystemInfo["hasScartYUV"])
 
-	has_rca = getHaveRCA() in ('True',)
-	has_dvi = getHaveDVI() in ('True',)
-	has_jack = getHaveAVJACK() in ('True',)
-	has_scart = getHaveSCART() in ('True',)
+	rates = {}  # high-level, use selectable modes.
+	modes = {}  # a list of (high-level) modes for a certain port.
 
-	print "SystemInfo", "MachineBuild", getMachineBuild()
-	print "SystemInfo", "BoxType", getBoxType()
-	print "SystemInfo", "BrandOEM", getBrandOEM()
-	print "SystemInfo", "DisplayType", getDisplayType()
-	print "SystemInfo", "HaveRCA", getHaveRCA()
-	print "SystemInfo", "getHaveDVI", getHaveDVI()
-	print "SystemInfo", "HaveYUV", getHaveYUV()
-	print "SystemInfo", "HaveSCART", getHaveSCART()
-	print "SystemInfo", "HaveAVJACK", getHaveAVJACK()
-	print "SystemInfo", "HaveSCARTYUV", getHaveSCARTYUV()
-	print "SystemInfo", "HaveHDMI", getHaveHDMI()
-	print "SystemInfo", "MachineMtdRoot", getMachineMtdRoot()
-	print "VideoWizard", "has_dvi", has_dvi
-	print "VideoWizard", "has_rca", has_rca
-	print "VideoWizard", "has_jack", has_jack
-	print "VideoWizard", "has_scart", has_scart
-	print "AVSwitch", "Scart-YPbPr", SystemInfo["Scart-YPbPr"]
-	print "AVSwitch", "no_YPbPr", SystemInfo["no_YPbPr"]
-	print "AVSwitch", "yellow_RCA_no_scart", SystemInfo["yellow_RCA_no_scart"]
-	print "AVSwitch", "no_yellow_RCA__no_scart", SystemInfo["no_yellow_RCA__no_scart"]
-
-	rates = { } # high-level, use selectable modes.
-	modes = { }  # a list of (high-level) modes for a certain port.
-
-	rates["PAL"]  = { "50Hz":  { 50: "pal" },
-					  "60Hz":  { 60: "pal60" },
-					  "multi": { 50: "pal", 60: "pal60" } }
-
-	rates["NTSC"]  = { "60Hz": { 60: "ntsc" } }
-
-	rates["Multi"] = { "multi": { 50: "pal", 60: "ntsc" } }
-
-	rates["480i"] = { "60Hz": { 60: "480i" } }
-
-	rates["576i"] = { "50Hz": { 50: "576i" } }
-
-	rates["480p"] = { "60Hz": { 60: "480p" } }
-
-	rates["576p"] = { "50Hz": { 50: "576p" } }
-
-	rates["720p"] = { "50Hz": { 50: "720p50" },
-					  "60Hz": { 60: "720p" },
-					  "multi": { 50: "720p50", 60: "720p" } }
-
-	rates["1080i"] = { "50Hz":  { 50: "1080i50" },
-					   "60Hz":  { 60: "1080i" },
-					   "multi": { 50: "1080i50", 60: "1080i" } }
-
-	rates["1080p"] = { "50Hz":  { 50: "1080p50" },
-					   "60Hz":  { 60: "1080p" },
-					   "multi": { 50: "1080p50", 60: "1080p" } }
-
-	rates["2160p"] = { "50Hz":  { 50: "2160p50" },
-					   "60Hz":  { 60: "2160p" },
-					   "multi": { 50: "2160p50", 60: "2160p" } }
-
+	rates["PAL"] = {"50Hz": {50: "pal"}, "60Hz": {60: "pal60"}, "multi": {50: "pal", 60: "pal60"}}
+	rates["NTSC"] = {"60Hz": {60: "ntsc"}}
+	rates["Multi"] = {"multi": {50: "pal", 60: "ntsc"}}
+	rates["480i"] = {"60Hz": {60: "480i"}}
+	rates["576i"] = {"50Hz": {50: "576i"}}
+	rates["480p"] = {"60Hz": {60: "480p"}}
+	rates["576p"] = {"50Hz": {50: "576p"}}
+	rates["720p"] = {"50Hz": {50: "720p50"}, "60Hz": {60: "720p"}, "multi": {50: "720p50", 60: "720p"}}
+	rates["1080i"] = {"50Hz": {50: "1080i50"}, "60Hz": {60: "1080i"}, "multi": {50: "1080i50", 60: "1080i"}}
+	rates["1080p"] = {"50Hz": {50: "1080p50"}, "60Hz": {60: "1080p"}, "multi": {50: "1080p50", 60: "1080p"}}
+	rates["2160p"] = {"50Hz": {50: "2160p50"}, "60Hz": {60: "2160p"}, "multi": {50: "2160p50", 60: "2160p"}}
 	rates["PC"] = {
-		"1024x768": { 60: "1024x768" }, # not possible on DM7025
-		"800x600" : { 60: "800x600" },  # also not possible
-		"720x480" : { 60: "720x480" },
-		"720x576" : { 60: "720x576" },
-		"1280x720": { 60: "1280x720" },
-		"1280x720 multi": { 50: "1280x720_50", 60: "1280x720" },
-		"1920x1080": { 60: "1920x1080"},
-		"1920x1080 multi": { 50: "1920x1080", 60: "1920x1080_50" },
-		"1280x1024" : { 60: "1280x1024"},
-		"1366x768" : { 60: "1366x768"},
-		"1366x768 multi" : { 50: "1366x768", 60: "1366x768_50" },
-		"1280x768": { 60: "1280x768" },
-		"640x480" : { 60: "640x480" }
+		"1024x768": {60: "1024x768"},  # not possible on DM7025
+		"800x600": {60: "800x600"},  # also not possible
+		"720x480": {60: "720x480"},
+		"720x576": {60: "720x576"},
+		"1280x720": {60: "1280x720"},
+		"1280x720 multi": {50: "1280x720_50", 60: "1280x720"},
+		"1920x1080": {60: "1920x1080"},
+		"1920x1080 multi": {50: "1920x1080", 60: "1920x1080_50"},
+		"1280x1024": {60: "1280x1024"},
+		"1366x768": {60: "1366x768"},
+		"1366x768 multi": {50: "1366x768", 60: "1366x768_50"},
+		"1280x768": {60: "1280x768"},
+		"640x480": {60: "640x480"}
 	}
 
-	modes["Scart"] = ["PAL", "NTSC", "Multi"]
-	# modes["DVI-PC"] = ["PC"]
-
-	modes["HDMI"] = SystemInfo["VideoModes"][0] 
+	modes["HDMI"] = SystemInfo["VideoModes"][0]
 	widescreen_modes = SystemInfo["VideoModes"][1]
 
-	modes["YPbPr"] = modes["HDMI"]
+	if SystemInfo["hasYUV"]:
+		modes["YPbPr"] = modes["HDMI"]
 
-	if SystemInfo["Scart-YPbPr"]:
+	if SystemInfo["hasScartYUV"]:
 		modes["Scart-YPbPr"] = modes["HDMI"]
 
-	# if "DVI-PC" in modes and not getModeList("DVI-PC"):
-	# 	print "[VideoHardware] remove DVI-PC because of not existing modes"
-	# 	del modes["DVI-PC"]
+	if SystemInfo["hasRCA"]:
+		modes["RCA"] = ["PAL", "NTSC", "Multi"]
 
-	if "YPbPr" in modes and SystemInfo["no_YPbPr"]:
-		del modes["YPbPr"]
+	if SystemInfo["hasJack"]:
+		modes["Jack"] = ["PAL", "NTSC", "Multi"]
 
-	if "Scart" in modes and SystemInfo["yellow_RCA_no_scart"]:
-		modes["RCA"] = modes["Scart"]
-		del modes["Scart"]
+	if SystemInfo["hasScart"]:
+		modes["Scart"] = ["PAL", "NTSC", "Multi"]
 
-	if "Scart" in modes and SystemInfo["no_yellow_RCA__no_scart"]:
-		del modes["Scart"]
+	print("[AVSwitch] Modes-B are %s" % modes)
 
 	def __init__(self):
-		self.last_modes_preferred =  [ ]
+		self.last_modes_preferred = []
 		self.on_hotplug = CList()
 		self.current_mode = None
 		self.current_port = None
-
 		self.readAvailableModes()
-
 		self.createConfig()
 		self.readPreferredModes()
 

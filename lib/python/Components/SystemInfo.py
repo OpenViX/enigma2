@@ -118,14 +118,11 @@ SystemInfo["HDRSupport"] = fileExists("/proc/stb/hdmi/hlg_support_choices")
 SystemInfo["Canedidchecking"] = fileCheck("/proc/stb/hdmi/bypass_edid_checking")
 SystemInfo["haveboxmode"] = fileExists("/proc/stb/info/boxmode")
 SystemInfo["HasScaler_sharpness"] = pathExists("/proc/stb/vmpeg/0/pep_scaler_sharpness")
-# Machines that out component video via scart socket.
-SystemInfo["Scart-YPbPr"] = getHaveSCARTYUV() == "True"
-# Machines that do not have component video (red, green and blue RCA sockets).
-SystemInfo["no_YPbPr"] = not getHaveYUV()
-# Machines that have composite video (yellow RCA socket) but do not have Scart.
-SystemInfo["yellow_RCA_no_scart"] = not getHaveSCART() and (getHaveRCA() in ("True",) or getHaveAVJACK() in ("True",))
-# Machines that have neither yellow RCA nor Scart sockets.
-SystemInfo["no_yellow_RCA__no_scart"] = not getHaveRCA() and (not getHaveSCART() and not getHaveAVJACK())
+SystemInfo["hasJack"] = getHaveAVJACK() in ('True',)
+SystemInfo["hasRCA"] = getHaveRCA() in ('True',)
+SystemInfo["hasScart"] = getHaveSCART() in ('True',)
+SystemInfo["hasScartYUV"] = getHaveSCARTYUV() in ('True',)
+SystemInfo["hasYUV"] = getHaveYUV() in ('True',)
 SystemInfo["VideoModes"] = getChipSetString() in (  # 2160p and 1080p capable hardware...
 	"5272s", "7251", "7251s", "7252", "7252s", "7278", "7366", "7376", "7444s", "72604", "3798mv200", "3798cv200", "hi3798mv200", "hi3798cv200"
 ) and (
