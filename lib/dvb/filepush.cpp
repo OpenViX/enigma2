@@ -37,6 +37,12 @@ static void signal_handler(int x)
 
 static void ignore_but_report_signals()
 {
+	/* we must set a signal mask for the thread otherwise signals don't have any effect */
+	sigset_t sigmask;
+	sigemptyset(&sigmask);
+	sigaddset(&sigmask, SIGUSR1);
+	pthread_sigmask(SIG_UNBLOCK, &sigmask, NULL);
+	
 	/* we set the signal to not restart syscalls, so we can detect our signal. */
 	struct sigaction act;
 	act.sa_handler = signal_handler; // no, SIG_IGN doesn't do it. we want to receive the -EINTR
