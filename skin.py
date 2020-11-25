@@ -1282,6 +1282,11 @@ def getSkinFactor():
 	# 	print("[Skin] Warning: Unexpected result for getSkinFactor '%0.4f'!" % skinfactor)
 	return skinfactor
 
+# Multiply the numeric input by the skin factor 
+# and return the result as an integer.
+def applySkinFactor(d):
+	return int(d * getSkinFactor())
+
 # Search the domScreens dictionary to see if any of the screen names provided
 # have a skin based screen.  This will allow coders to know if the named
 # screen will be skinned by the skin code.  A return of None implies that the
