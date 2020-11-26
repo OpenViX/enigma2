@@ -1,5 +1,5 @@
 from enigma import eListbox, eListboxPythonConfigContent, ePoint, eRCInput, eTimer
-from skin import parameters
+from skin import parameters, applySkinFactor
 
 from Components.ActionMap import HelpableActionMap, HelpableNumberActionMap
 from Components.config import ConfigBoolean, ConfigElement, ConfigInteger, ConfigMacText, ConfigSelection, ConfigSequence, ConfigText, KEYA_0, KEYA_ASCII, KEYA_BACKSPACE, KEYA_DELETE, KEYA_ERASE, KEYA_FIRST, KEYA_LAST, KEYA_LEFT, KEYA_NUMBERS, KEYA_RIGHT, KEYA_SELECT, KEYA_TIMEOUT, KEYA_TOGGLE, config, configfile
@@ -17,9 +17,9 @@ class ConfigList(GUIComponent, object):
 	def __init__(self, list, session=None):
 		GUIComponent.__init__(self)
 		self.l = eListboxPythonConfigContent()
-		seperation = parameters.get("ConfigListSeperator", 200)
+		seperation = parameters.get("ConfigListSeperator", applySkinFactor(200))
 		self.l.setSeperation(seperation)
-		height, space = parameters.get("ConfigListSlider", (17, 0))
+		height, space = parameters.get("ConfigListSlider", (applySkinFactor(17), applySkinFactor(0)))
 		self.l.setSlider(height, space)
 		self.timer = eTimer()
 		self.list = list

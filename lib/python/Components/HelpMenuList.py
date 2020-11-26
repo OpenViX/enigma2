@@ -48,27 +48,27 @@ class HelpMenuList(GUIComponent):
 				if isinstance(help, list):
 					self.extendedHelp = True
 					print "extendedHelpEntry found"
-					x, y, w, h = skin.parameters.get("HelpMenuListExtHlp0",(0, 0, 600, 26))
-					x1, y1, w1, h1 = skin.parameters.get("HelpMenuListExtHlp1",(0, 28, 600, 20))
+					x, y, w, h = skin.parameters.get("HelpMenuListExtHlp0",(skin.applySkinFactor(5), 0, skin.applySkinFactor(595), skin.applySkinFactor(26)))
+					x1, y1, w1, h1 = skin.parameters.get("HelpMenuListExtHlp1",(skin.applySkinFactor(5), skin.applySkinFactor(28), skin.applySkinFactor(595), skin.applySkinFactor(20)))
 					entry.extend((
 						(eListboxPythonMultiContent.TYPE_TEXT, x, y, w, h, 0, 0, help[0]),
 						(eListboxPythonMultiContent.TYPE_TEXT, x1, y1, w1, h1, 1, 0, help[1])
 					))
 				else:
-					x, y, w, h = skin.parameters.get("HelpMenuListHlp",(0, 0, 600, 28))
+					x, y, w, h = skin.parameters.get("HelpMenuListHlp",(skin.applySkinFactor(5), skin.applySkinFactor(7), skin.applySkinFactor(595), skin.applySkinFactor(28)))
 					entry.append( (eListboxPythonMultiContent.TYPE_TEXT, x, y, w, h, 0, 0, help) )
 
 				l.append(entry)
 
 		self.l.setList(l)
 		if self.extendedHelp is True:
-			font = skin.fonts.get("HelpMenuListExt0", ("Regular", 24, 50))
+			font = skin.fonts.get("HelpMenuListExt0", ("Regular", skin.applySkinFactor(24), skin.applySkinFactor(50)))
 			self.l.setFont(0, gFont(font[0], font[1]))
 			self.l.setItemHeight(font[2])
-			font = skin.fonts.get("HelpMenuListExt1", ("Regular", 18))
+			font = skin.fonts.get("HelpMenuListExt1", ("Regular", skin.applySkinFactor(18)))
 			self.l.setFont(1, gFont(font[0], font[1]))
 		else:
-			font = skin.fonts.get("HelpMenuList", ("Regular", 24, 38))
+			font = skin.fonts.get("HelpMenuList", ("Regular", skin.applySkinFactor(24), skin.applySkinFactor(38)))
 			self.l.setFont(0, gFont(font[0], font[1]))
 			self.l.setItemHeight(font[2])
 
