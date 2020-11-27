@@ -4,6 +4,8 @@ from Components.config import config, getConfigListEntry
 from Components.Label import Label
 from Components.Sources.StaticText import StaticText
 
+import Components.HdmiCec
+
 class HdmiCECSetupScreen(Screen, ConfigListScreen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
@@ -136,19 +138,6 @@ class HdmiCECSetupScreen(Screen, ConfigListScreen):
 				inhibitDirs=inhibitDirs, minFree=1
 				)
 
-def main(session, **kwargs):
-	session.open(HdmiCECSetupScreen)
-
-def startSetup(menuid):
-	# only show in the menu when set to intermediate or higher
-	if menuid == "video" and config.av.videoport.value == "DVI" and config.usage.setup_level.index >= 1:
-		return [(_("HDMI-CEC setup"), main, "hdmi_cec_setup", 0)]
-	return []
-
 def Plugins(**kwargs):
-	from os import path
-	if path.exists("/dev/hdmi_cec") or path.exists("/dev/misc/hdmi_cec0"):
-		import Components.HdmiCec
-		from Plugins.Plugin import PluginDescriptor
-		return [PluginDescriptor(where = PluginDescriptor.WHERE_MENU, fnc = startSetup)]
+	# imported directly by menu.xml based on SystemInfo["HDMICEC"]
 	return []
