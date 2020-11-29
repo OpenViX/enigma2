@@ -21,6 +21,16 @@ def resolveAlternate(serviceref):
 	return nref
 
 # Extensions to eServiceReference
+@staticmethod
+def __fromDirectory(path):
+	ref = eServiceReference(eServiceReference.idFile,
+			eServiceReference.flagDirectory |
+			eServiceReference.shouldSort | eServiceReference.sort1, path)
+	ref.setData(0, 1)
+	return ref
+
+eServiceReference.fromDirectory = __fromDirectory
+
 eServiceReference.isPlayback = lambda serviceref: "0:0:0:0:0:0:0:0:0" in serviceref.toCompareString()
 
 # Apply ServiceReference method proxies to the eServiceReference object so the two classes can be used interchangeably

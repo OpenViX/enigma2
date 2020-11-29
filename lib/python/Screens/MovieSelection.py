@@ -996,10 +996,9 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 
 	def showEventInformation(self):
 		from Screens.EventView import EventViewSimple
-		from ServiceReference import ServiceReference
 		evt = self["list"].getCurrentEvent()
 		if evt:
-			self.session.open(EventViewSimple, evt, ServiceReference(self.getCurrent()))
+			self.session.open(EventViewSimple, evt, self.getCurrent())
 
 	def saveListsize(self):
 		listsize = self["list"].instance.size()
@@ -1529,7 +1528,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		self["list"].setSortType(type)
 
 	def setCurrentRef(self, path):
-		self.current_ref = eServiceReference("2:0:1:0:0:0:0:0:0:0:" + path)
+		self.current_ref = eServiceReference.fromDirectory(path)
 		# Magic: this sets extra things to show
 		self.current_ref.setName('16384:jpg 16384:png 16384:gif 16384:bmp')
 
@@ -1625,7 +1624,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 				if selItem:
 					self.reloadList(home = True, sel = selItem)
 				else:
-					self.reloadList(home = True, sel = eServiceReference("2:0:1:0:0:0:0:0:0:0:" + currentDir))
+					self.reloadList(home = True, sel = eServiceReference.fromDirectory(currentDir))
 			else:
 				mbox=self.session.open(
 					MessageBox,
@@ -1810,7 +1809,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			os.mkdir(path)
 			if not path.endswith('/'):
 				path += '/'
-			self.reloadList(sel = eServiceReference("2:0:1:0:0:0:0:0:0:0:" + path))
+			self.reloadList(sel = eServiceReference.fromDirectory(path))
 		except OSError, e:
 			print "[MovieSelection] Error %s:" % e.errno, e
 			if e.errno == 17:
@@ -1847,13 +1846,12 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			text = name)
 
 	def do_decode(self):
-		from ServiceReference import ServiceReference
 		item = self.getCurrentSelection()
 		info = item[1]
 		filepath = item[0].getPath()
 		if not filepath.endswith('.ts'):
 			return
-		serviceref = ServiceReference(None, reftype = eServiceReference.idDVB, path = filepath)
+		serviceref = eServiceReference(eServiceReference.idDVB, 0, filepath)
 		name = info.getName(item[0]) + ' - decoded'
 		description = info.getInfoString(item[0], iServiceInformation.sDescription)
 		recording = RecordTimer.RecordTimerEntry(serviceref, int(time.time()), int(time.time()) + 3600, name, description, 0, dirname = preferredTimerPath())
@@ -1892,7 +1890,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 				msg = None
 				print "[MovieSelection] rename", path, "to", newpath
 				os.rename(path, newpath)
-				self.reloadList(sel = eServiceReference("2:0:1:0:0:0:0:0:0:0:" + newpath))
+				self.reloadList(sel = eServiceReference.fromDirectory(newpath))
 			except OSError, e:
 				print "[MovieSelection] Error %s:" % e.errno, e
 				if e.errno == 17:
