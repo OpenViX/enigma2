@@ -152,7 +152,7 @@ class TimerEntry(TimerEntryBase):
 		elif cur and isinstance(cur[1], ConfigText):
 			self.renameEntry()
 		else:
-			Setup.keySelect(self)
+			TimerEntryBase.keySelect(self)
 
 	def finishedChannelSelection(self, *args):
 		if args:
