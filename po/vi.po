@@ -3720,6 +3720,10 @@ msgstr "Kỷ nguyên nhanh"
 msgid "Fast forward speeds"
 msgstr "Tốc độ chuyển tiếp nhanh"
 
+#, fuzzy
+msgid "FastScan"
+msgstr "Quét nhanh"
+
 msgid "Favourites"
 msgstr "Yêu thích"
 

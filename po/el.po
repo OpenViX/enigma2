@@ -4459,6 +4459,10 @@ msgid ""
 "Please unmount Fixed Mounted Devices with Device Manager Panel!"
 msgstr ""
 
+#, fuzzy
+msgid "FastScan"
+msgstr "Γρήγορη ανίχνευση"
+
 msgid "Favourites"
 msgstr "Αγαπημένα"
 

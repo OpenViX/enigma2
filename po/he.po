@@ -4682,6 +4682,11 @@ msgid ""
 msgstr ""
 
 #
+#, fuzzy
+msgid "FastScan"
+msgstr "מהיר"
+
+#
 msgid "Favourites"
 msgstr "מועדפים"
 

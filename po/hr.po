@@ -4916,6 +4916,9 @@ msgid ""
 "Please unmount Fixed Mounted Devices with Device Manager Panel!"
 msgstr ""
 
+msgid "FastScan"
+msgstr "Brzo pretraživanje"
+
 #
 msgid "Favourites"
 msgstr "Favoriti"

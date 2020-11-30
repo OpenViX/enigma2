@@ -5090,6 +5090,10 @@ msgstr ""
 "You puede quitar el dispositivo, si no más particiones (muestra como P.x en lista dispositivo - donde x > = 2) se montan en el mismo dispositivo. \n"
 "Please desmontar dispositivos fijos montados con el panel del administrador de dispositivos!"
 
+#, fuzzy
+msgid "FastScan"
+msgstr "Exploración rápida"
+
 #
 msgid "Favourites"
 msgstr "Favoritos"

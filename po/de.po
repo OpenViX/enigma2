@@ -4222,6 +4222,10 @@ msgstr ""
 "Wenn weitere Partitionen im System eingebunden sind hängen Sie sie vorher aus (umount)\n"
 "Für Fest eingebundene Laufwerke benutzen sich bitte den Gerätemanager!"
 
+#, fuzzy
+msgid "FastScan"
+msgstr "Fast-Scan"
+
 msgid "Favourites"
 msgstr "Favoriten"
 

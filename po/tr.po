@@ -4283,6 +4283,10 @@ msgstr ""
 "Aynı Cihaz üzerine monte edilir - başka Bölümler (x> = 2 Cihaz Listesi P.x olarak gösterilir) eğer güvenle, şimdi Cihazı kaldırabilirsiniz.\n"
 "Aygıt Yöneticisi Paneli Sabit Üstü Cihazları çıkarılırken Lütfen!"
 
+#, fuzzy
+msgid "FastScan"
+msgstr "Hızlı Tarama"
+
 msgid "Favourites"
 msgstr "Favoriler"
 

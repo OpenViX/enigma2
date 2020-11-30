@@ -4465,6 +4465,9 @@ msgstr ""
 msgid "Fast Scan"
 msgstr "Быстрый поиск по провайдеру"
 
+msgid "FastScan"
+msgstr "Быстрый поиск - провайдеры 23.5E-19.2E"
+
 msgid "Fast epoch"
 msgstr "Время для быстрой скорости"
 

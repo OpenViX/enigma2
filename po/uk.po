@@ -4495,6 +4495,10 @@ msgid ""
 "Please unmount Fixed Mounted Devices with Device Manager Panel!"
 msgstr ""
 
+#, fuzzy
+msgid "FastScan"
+msgstr "Швидкий пошук по провайдеру"
+
 msgid "Favourites"
 msgstr "Фаворити"
 

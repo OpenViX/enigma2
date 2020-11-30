@@ -4402,6 +4402,9 @@ msgid ""
 "You can safely remove the Device now, if no further Partitions (displayed as P.x on Devicelist - where x >=2) are mounted on the same Device.\n"
 "Please unmount Fixed Mounted Devices with Device Manager Panel!"
 msgstr ""
+#, fuzzy
+msgid "FastScan"
+msgstr "快速扫描"
 
 msgid "Favourites"
 msgstr "喜爱频道"

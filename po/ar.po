@@ -4731,6 +4731,10 @@ msgid ""
 "Please unmount Fixed Mounted Devices with Device Manager Panel!"
 msgstr ""
 
+#, fuzzy
+msgid "FastScan"
+msgstr "البحث السريع"
+
 #
 msgid "Favourites"
 msgstr "المفضله"

@@ -4416,6 +4416,9 @@ msgstr ""
 "Vous pouvez maintenant enlever votre périphérique maintenant, si plus aucune partition (affiché comme P.x dans la liste des périphérique - où x >=2) n’est mountée sur le même périphérique.\n"
 "Merci de démonter les périphériques montés fixes via le panneau de gestion des périphériques!"
 
+msgid "FastScan"
+msgstr "Scan rapide"
+
 msgid "Favourites"
 msgstr "Favoris"
 

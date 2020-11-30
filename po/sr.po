@@ -5089,6 +5089,11 @@ msgid ""
 msgstr ""
 
 #
+#, fuzzy
+msgid "FastScan"
+msgstr "Brzo"
+
+#
 msgid "Favourites"
 msgstr "Favoriti"
 

@@ -4818,6 +4818,11 @@ msgid ""
 "Please unmount Fixed Mounted Devices with Device Manager Panel!"
 msgstr ""
 
+#
+#, fuzzy
+msgid "FastScan"
+msgstr "Hratt"
+
 msgid "Favourites"
 msgstr "Eftirlætis listar"
 

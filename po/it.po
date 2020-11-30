@@ -4982,7 +4982,7 @@ msgid "Fast forward speeds"
 msgstr "Velocità FFW"
 
 #, fuzzy
-msgid "Fast mount"
+msgid "FastScan"
 msgstr "Ricerca veloce"
 
 msgid ""

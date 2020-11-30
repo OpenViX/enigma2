@@ -5119,6 +5119,11 @@ msgid ""
 msgstr ""
 
 #
+#, fuzzy
+msgid "FastScan"
+msgstr "Hitro iskanje"
+
+#
 msgid "Favourites"
 msgstr "Priljubljene"
 
