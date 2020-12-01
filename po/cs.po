@@ -5087,10 +5087,6 @@ msgid ""
 msgstr ""
 
 #
-msgid "FastScan"
-msgstr "Fastscan"
-
-#
 msgid "Favourites"
 msgstr "Oblíbené"
 
