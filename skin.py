@@ -356,6 +356,7 @@ def parseParameter(s):
 		return int(s)
 
 def parseScale(s):
+	# Replaces "f" with skin factor in non-coordinte fields and evaluates the formula
 	orig = s
 	try:
 		val = int(s)
