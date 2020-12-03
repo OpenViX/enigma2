@@ -10061,6 +10061,10 @@ msgid "Show record clock icons"
 msgstr "Második információs sáv megjelenítése"
 
 #, fuzzy
+msgid "Show satellites list"
+msgstr "Csatornalista megjelenítése"
+
+#, fuzzy
 msgid "Show record indicator"
 msgstr "Második információs sáv megjelenítése"
 

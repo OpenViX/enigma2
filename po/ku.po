@@ -10051,6 +10051,10 @@ msgid "Show record clock icons"
 msgstr "Show second infobar"
 
 #, fuzzy
+msgid "Show satellites list"
+msgstr "Satellites"
+
+#, fuzzy
 msgid "Show record indicator"
 msgstr "Show second infobar"
 

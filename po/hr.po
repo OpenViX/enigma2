@@ -11212,6 +11212,10 @@ msgstr "Započeti Snimanje?"
 msgid "Show record indicator"
 msgstr ""
 
+#, fuzzy
+msgid "Show satellites list"
+msgstr "Prikažite popis usluga"
+
 msgid "Show screensaver"
 msgstr ""
 

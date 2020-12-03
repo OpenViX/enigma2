@@ -11416,6 +11416,11 @@ msgstr "Rotor beweching sjen litte"
 
 #
 #, fuzzy
+msgid "Show satellites list"
+msgstr "Satellyten"
+
+#
+#, fuzzy
 msgid "Show record clock icons"
 msgstr "Start opnimmen?"
 

@@ -10045,6 +10045,10 @@ msgid "Show positioner position"
 msgstr "Exibir movimento do posicionador"
 
 #, fuzzy
+msgid "Show satellites list"
+msgstr "Satélites"
+
+#, fuzzy
 msgid "Show record clock icons"
 msgstr "Exibir barra de informações secundária"
 

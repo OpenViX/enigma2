@@ -9557,6 +9557,10 @@ msgstr "Kayıt saat simgelerini göster"
 msgid "Show record indicator"
 msgstr "Ikinci bilgi çubuğunu göster"
 
+#, fuzzy
+msgid "Show satellites list"
+msgstr "Servis listesini göster"
+
 msgid "Show screensaver"
 msgstr "Ekran koruyucu göster"
 

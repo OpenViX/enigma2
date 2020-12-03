@@ -10033,6 +10033,10 @@ msgid "Show positioner position"
 msgstr "Näita positsioneeri liikumist"
 
 #, fuzzy
+msgid "Show satellites list"
+msgstr "Näita kanalinimekirja"
+
+#, fuzzy
 msgid "Show record clock icons"
 msgstr "Näita teist inforiba"
 

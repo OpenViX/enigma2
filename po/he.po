@@ -10668,6 +10668,11 @@ msgstr "Show positioner movement"
 
 #
 #, fuzzy
+msgid "Show satellites list"
+msgstr "לוויינים"
+
+#
+#, fuzzy
 msgid "Show record clock icons"
 msgstr "?התחל להקליט"
 

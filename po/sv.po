@@ -11307,6 +11307,10 @@ msgid "Show positioner position"
 msgstr "Visa ikon vid positionsrörelse"
 
 #, fuzzy
+msgid "Show satellites list"
+msgstr "Visa kanallista"
+
+#, fuzzy
 msgid "Show record clock icons"
 msgstr "Visa andra infobalken"
 

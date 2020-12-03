@@ -11597,6 +11597,11 @@ msgstr "Prikaži kretanje motora"
 
 #
 #, fuzzy
+msgid "Show satellites list"
+msgstr "Sateliti"
+
+#
+#, fuzzy
 msgid "Show record clock icons"
 msgstr "Započeti snimanje?"
 

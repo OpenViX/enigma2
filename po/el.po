@@ -10063,6 +10063,10 @@ msgid "Show record clock icons"
 msgstr "Εμφάνιση κρυπτοεικονιδίων"
 
 #, fuzzy
+msgid "Show satellites list"
+msgstr "Εμφάνιση λίστας υπηρεσιών"
+
+#, fuzzy
 msgid "Show record indicator"
 msgstr "Εμφάνιση της δεύτερης μπάρας πληροφοριών"
 

@@ -11604,6 +11604,9 @@ msgstr "Ikony kodowania kanału"
 msgid "Show record indicator"
 msgstr "Wskaźnik nagrywania"
 
+msgid "Show satellites list"
+msgstr "Wyświetl listę satelitów"
+
 msgid "Show screensaver"
 msgstr "Wygaszacz ekranu"
 

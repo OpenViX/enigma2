@@ -10087,6 +10087,10 @@ msgstr "Incepe inregistrarea?"
 msgid "Show record indicator"
 msgstr ""
 
+#, fuzzy
+msgid "Show satellites list"
+msgstr "Sateliti"
+
 msgid "Show screensaver"
 msgstr ""
 

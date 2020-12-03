@@ -10229,6 +10229,10 @@ msgid "Show positioner position"
 msgstr "نمایش گردش مکان یاب"
 
 #, fuzzy
+msgid "Show satellites list"
+msgstr "ماهواره ها"
+
+#, fuzzy
 msgid "Show record clock icons"
 msgstr "نمایش نوار اطلاعات دوم"
 

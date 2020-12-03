@@ -9450,6 +9450,10 @@ msgstr "Zeige Aufnahme Uhr-Symbole"
 msgid "Show record indicator"
 msgstr "Zeige Aufnahmesymbol"
 
+#, fuzzy
+msgid "Show satellites list"
+msgstr "Senderliste anzeigen"
+
 msgid "Show screensaver"
 msgstr "Zeige Screensaver"
 

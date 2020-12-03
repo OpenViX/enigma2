@@ -11569,6 +11569,10 @@ msgid "Show positioner position"
 msgstr "Vis motor bevægelse"
 
 #, fuzzy
+msgid "Show satellites list"
+msgstr "Vis serviceliste"
+
+#, fuzzy
 msgid "Show record clock icons"
 msgstr "Vis ekstra infobar"
 

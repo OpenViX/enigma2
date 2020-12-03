@@ -10743,6 +10743,11 @@ msgstr "أبـدأ التسجيل؟"
 msgid "Show record indicator"
 msgstr ""
 
+
+#, fuzzy
+msgid "Show satellites list"
+msgstr "عرض قائمة القنوات"
+
 msgid "Show screensaver"
 msgstr ""
 

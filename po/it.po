@@ -11309,6 +11309,10 @@ msgid "Show positioner position"
 msgstr "Mostrare il movimento motore"
 
 #, fuzzy
+msgid "Show satellites list"
+msgstr "Mostrare la lista canali"
+
+#, fuzzy
 msgid "Show record clock icons"
 msgstr "Mostrare la seconda barra informazioni per"
 

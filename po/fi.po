@@ -11345,6 +11345,10 @@ msgid "Show positioner position"
 msgstr "Näytä kuvake kääntömoottorin liikkuessa"
 
 #, fuzzy
+msgid "Show satellites list"
+msgstr "Avaa kanavalista"
+
+#, fuzzy
 msgid "Show record clock icons"
 msgstr "Näytä toinen tietopalkki"
 

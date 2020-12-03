@@ -11599,6 +11599,10 @@ msgstr "Prikaz premikanja rotorja"
 msgid "Show positioner position"
 msgstr "Prikaz premikanja rotorja"
 
+#, fuzzy
+msgid "Show satellites list"
+msgstr "Prikaz seznama kanalov"
+
 #
 #, fuzzy
 msgid "Show record clock icons"

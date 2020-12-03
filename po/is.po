@@ -11215,6 +11215,11 @@ msgstr "Sýna færslu mótors"
 
 #
 #, fuzzy
+msgid "Show satellites list"
+msgstr "Gervihnettir"
+
+#
+#, fuzzy
 msgid "Show record clock icons"
 msgstr "Byrja upptöku?"
 

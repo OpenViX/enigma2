@@ -9999,7 +9999,15 @@ msgid "Show record clock icons"
 msgstr "计时器记录位置"
 
 msgid "Show record indicator"
-msgstr ""
+msgstr "显示记录指示器"
+
+#, fuzzy
+msgid "Show satellites list"
+msgstr "显示频道列表"
+
+#, fuzzy
+msgid "Show screen path"
+msgstr "显示菜单路径"
 
 msgid "Show screensaver"
 msgstr ""

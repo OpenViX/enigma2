@@ -9888,6 +9888,10 @@ msgstr "Afficher les icônes d'encryption"
 msgid "Show record indicator"
 msgstr "Afficher l’indicateur d’enregistrement"
 
+#, fuzzy
+msgid "Show satellites list"
+msgstr "Afficher liste service"
+
 msgid "Show screensaver"
 msgstr "Afficher l'économiseur d'écran"
 

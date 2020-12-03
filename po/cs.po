@@ -11510,6 +11510,10 @@ msgstr "Zobrazovat ikony kódování"
 msgid "Show record indicator"
 msgstr "Zobrazovat indikátor záznamu"
 
+#, fuzzy
+msgid "Show satellites list"
+msgstr "Přehled programů"
+
 msgid "Show screensaver"
 msgstr "Zobrazovat spořič obrazovky"
 

@@ -10111,6 +10111,10 @@ msgid "Show positioner position"
 msgstr "Показати рух позіционеру"
 
 #, fuzzy
+msgid "Show satellites list"
+msgstr "Показати список сервісів"
+
+#, fuzzy
 msgid "Show record clock icons"
 msgstr "Показати другий інфобар"
 

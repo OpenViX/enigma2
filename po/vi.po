@@ -7980,6 +7980,10 @@ msgstr "Hiển thị biểu tượng đồng hồ kỷ lục"
 msgid "Show record indicator"
 msgstr "Hiển thị chỉ số hồ sơ"
 
+#, fuzzy
+msgid "Show satellites list"
+msgstr "Hiển thị danh sách dịch vụ"
+
 msgid "Show screensaver"
 msgstr "Hiển thị bảo vệ màn hình"
 

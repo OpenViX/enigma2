@@ -10081,6 +10081,10 @@ msgid "Show record clock icons"
 msgstr "Показать второй инфобар"
 
 #, fuzzy
+msgid "Show satellites list"
+msgstr "Показать список сервисов"
+
+#, fuzzy
 msgid "Show record indicator"
 msgstr "Показать второй инфобар"
 

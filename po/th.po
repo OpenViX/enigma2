@@ -10134,6 +10134,10 @@ msgstr "เริ่มบันทึก?"
 msgid "Show record indicator"
 msgstr ""
 
+#, fuzzy
+msgid "Show satellites list"
+msgstr "ดาวเทียม"
+
 msgid "Show screensaver"
 msgstr ""
 

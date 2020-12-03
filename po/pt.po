@@ -11570,6 +11570,11 @@ msgstr "Mostrar movimento do posicionador"
 msgid "Show positioner position"
 msgstr "Mostrar movimento do posicionador"
 
+#
+#, fuzzy
+msgid "Show satellites list"
+msgstr "Satélites"
+
 #, fuzzy
 msgid "Show record clock icons"
 msgstr "Mostrar ícones de encriptação"

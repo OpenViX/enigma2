@@ -10192,6 +10192,10 @@ msgstr "Spustiť nahrávanie?"
 msgid "Show record indicator"
 msgstr ""
 
+#, fuzzy
+msgid "Show satellites list"
+msgstr "Zobraziť zoznam služieb"
+
 msgid "Show screensaver"
 msgstr ""
 

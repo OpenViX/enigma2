@@ -10015,6 +10015,13 @@ msgstr "定時錄影位置"
 msgid "Show record indicator"
 msgstr ""
 
+#, fuzzy
+msgid "Show satellites list"
+msgstr "衛星"
+
+msgid "Show screen path"
+msgstr ""
+
 msgid "Show screensaver"
 msgstr ""
 

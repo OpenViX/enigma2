@@ -10085,6 +10085,10 @@ msgid "Show positioner position"
 msgstr "Rādīt pozicioniera kustību"
 
 #, fuzzy
+msgid "Show satellites list"
+msgstr "Atvērt kanālu sarakstu"
+
+#, fuzzy
 msgid "Show record clock icons"
 msgstr "Rādīt otro infojoslu"
 

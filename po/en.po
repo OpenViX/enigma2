@@ -9246,6 +9246,10 @@ msgstr ""
 msgid "Show record indicator"
 msgstr ""
 
+#, fuzzy
+msgid "Show satellites list"
+msgstr "Satellites"
+
 msgid "Show screensaver"
 msgstr ""
 

@@ -10265,6 +10265,10 @@ msgstr "Toon icoon indien gecodeerd"
 msgid "Show record indicator"
 msgstr "Toon opname indicatie"
 
+#, fuzzy
+msgid "Show satellites list"
+msgstr "Toon de zenderlijst"
+
 msgid "Show screensaver"
 msgstr "Screensaver tonen na"
 

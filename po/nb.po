@@ -11010,6 +11010,11 @@ msgstr "Vis krypterings indikator"
 msgid "Show record indicator"
 msgstr "Vis opptaks indikator"
 
+#
+#, fuzzy
+msgid "Show satellites list"
+msgstr "Vis kanalliste"
+
 msgid "Show screensaver"
 msgstr "Vis skjermsparer"
 

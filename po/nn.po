@@ -10691,6 +10691,10 @@ msgstr ""
 msgid "Show record indicator"
 msgstr ""
 
+#, fuzzy
+msgid "Show satellites list"
+msgstr "Distributører"
+
 msgid "Show screensaver"
 msgstr "Vis skjermsparer"
 

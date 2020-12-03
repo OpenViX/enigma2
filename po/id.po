@@ -9894,6 +9894,11 @@ msgstr ""
 msgid "Show record indicator"
 msgstr "Tampilkan indikator rekaman"
 
+#, fuzzy
+msgid "Show satellites list"
+msgstr "Tampilkan daftar layanan"
+
+
 msgid "Show screensaver"
 msgstr "Tampilkan screensaver"
 
