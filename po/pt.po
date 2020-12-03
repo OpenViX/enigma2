@@ -4409,11 +4409,11 @@ msgstr "Activar Guia de Programação Virgin"
 msgid "Enable Wake On LAN"
 msgstr "Activar Wake On LAN"
 
-msgid "Enable auto fast scan"
+msgid "Enable auto fastscan"
 msgstr "Activar pesquisa rápida automática"
 
 #, fuzzy, python-format
-msgid "Enable auto fast scan for %s"
+msgid "Enable auto fastscan for %s"
 msgstr "Activar pesquisa rápida automática"
 
 #

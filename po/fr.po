@@ -3829,12 +3829,12 @@ msgstr "Activer EPG Virgin"
 msgid "Enable Wake On LAN"
 msgstr "Activer le réveil sur réseau (WOL)"
 
-msgid "Enable auto fast scan"
-msgstr "Actvier auto fast scan"
+msgid "Enable auto fastscan"
+msgstr "Actvier auto fastscan"
 
 #, fuzzy, python-format
-msgid "Enable auto fast scan for %s"
-msgstr "Actvier auto fast scan"
+msgid "Enable auto fastscan for %s"
+msgstr "Actvier auto fastscan"
 
 #, fuzzy
 msgid "Enable bouquet edit"
@@ -13512,7 +13512,7 @@ msgstr "Activé"
 
 #, fuzzy
 msgid "enable intro screen"
-msgstr "Actvier auto fast scan"
+msgstr "Actvier auto fastscan"
 
 msgid "enabled"
 msgstr "Activé"

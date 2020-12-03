@@ -3828,11 +3828,11 @@ msgstr "Aktifkan EPG Virgin"
 msgid "Enable Wake On LAN"
 msgstr ""
 
-msgid "Enable auto fast scan"
+msgid "Enable auto fastscan"
 msgstr "Aktifkan pelacakan cepat otomatis"
 
 #, python-format
-msgid "Enable auto fast scan for %s"
+msgid "Enable auto fastscan for %s"
 msgstr "Aktifkan pelacakan cepat otomatis pada %s"
 
 #, fuzzy

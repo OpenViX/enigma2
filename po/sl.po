@@ -4439,11 +4439,11 @@ msgstr "Virgin EPG sistem"
 msgid "Enable Wake On LAN"
 msgstr "Omogoči zbujanje preko omrežnega vmesnika"
 
-msgid "Enable auto fast scan"
+msgid "Enable auto fastscan"
 msgstr "Omogoči samodejno hitro iskanje"
 
 #, fuzzy, python-format
-msgid "Enable auto fast scan for %s"
+msgid "Enable auto fastscan for %s"
 msgstr "Omogoči samodejno hitro iskanje"
 
 #

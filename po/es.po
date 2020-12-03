@@ -4408,11 +4408,11 @@ msgstr "Habilitar Virgin EPG"
 msgid "Enable Wake On LAN"
 msgstr "Habilitar Wake On LAN"
 
-msgid "Enable auto fast scan"
+msgid "Enable auto fastscan"
 msgstr "Activar búsqueda auto rápida"
 
 #, fuzzy, python-format
-msgid "Enable auto fast scan for %s"
+msgid "Enable auto fastscan for %s"
 msgstr "Activar búsqueda auto rápida"
 
 #

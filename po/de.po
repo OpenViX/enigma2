@@ -3652,11 +3652,11 @@ msgstr "Aktiviere Virgin EPG"
 msgid "Enable Wake On LAN"
 msgstr "Aktiviere Wake on LAN"
 
-msgid "Enable auto fast scan"
+msgid "Enable auto fastscan"
 msgstr "Automatischen schnellen Suchlauf aktivieren"
 
 #, python-format
-msgid "Enable auto fast scan for %s"
+msgid "Enable auto fastscan for %s"
 msgstr "Automatischen schnellen Suchlauf für %s aktivieren"
 
 msgid "Enable bouquet edit"

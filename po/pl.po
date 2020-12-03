@@ -4404,7 +4404,7 @@ msgstr "Włącz EIT EPG"
 
 #, fuzzy
 msgid "Enable Swap at startup"
-msgstr "Włącz automatyczny fast scan"
+msgstr "Włącz automatyczny fastscan"
 
 #
 msgid "Enable ViaSat EPG"
@@ -4417,12 +4417,12 @@ msgstr "Włącz Virgin EPG"
 msgid "Enable Wake On LAN"
 msgstr ""
 
-msgid "Enable auto fast scan"
-msgstr "Włącz automatyczny fast scan"
+msgid "Enable auto fastscan"
+msgstr "Włącz automatyczny fastscan"
 
 #, fuzzy, python-format
-msgid "Enable auto fast scan for %s"
-msgstr "Włącz automatyczny fast scan"
+msgid "Enable auto fastscan for %s"
+msgstr "Włącz automatyczny fastscan"
 
 #
 #, fuzzy
@@ -15733,7 +15733,7 @@ msgstr "Włączone"
 
 #, fuzzy
 msgid "enable intro screen"
-msgstr "Włącz automatyczny fast scan"
+msgstr "Włącz automatyczny fastscan"
 
 #
 msgid "enabled"

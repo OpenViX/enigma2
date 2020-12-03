@@ -4040,11 +4040,11 @@ msgstr "Virgin EPG inschakelen"
 msgid "Enable Wake On LAN"
 msgstr "Activeer Wake On LAN"
 
-msgid "Enable auto fast scan"
+msgid "Enable auto fastscan"
 msgstr "Activeer auto fastscan"
 
 #, fuzzy, python-format
-msgid "Enable auto fast scan for %s"
+msgid "Enable auto fastscan for %s"
 msgstr "Activeer auto fastscan"
 
 #, fuzzy

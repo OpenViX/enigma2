@@ -3862,11 +3862,11 @@ msgstr "Ενεργοποίηση Virgin EPG"
 msgid "Enable Wake On LAN"
 msgstr "Ενεργοποίηση Αφύπνισης Σε LAN"
 
-msgid "Enable auto fast scan"
+msgid "Enable auto fastscan"
 msgstr "Ενεργοποίηση της αυτόματης γρήγορης ανίχνευσης"
 
 #, fuzzy, python-format
-msgid "Enable auto fast scan for %s"
+msgid "Enable auto fastscan for %s"
 msgstr "Ενεργοποίηση της αυτόματης γρήγορης ανίχνευσης"
 
 #, fuzzy

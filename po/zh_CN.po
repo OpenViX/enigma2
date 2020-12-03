@@ -3814,11 +3814,11 @@ msgid "Enable Wake On LAN"
 msgstr ""
 
 #, fuzzy
-msgid "Enable auto fast scan"
+msgid "Enable auto fastscan"
 msgstr "不能创建符号连接 !"
 
 #, python-format
-msgid "Enable auto fast scan for %s"
+msgid "Enable auto fastscan for %s"
 msgstr ""
 
 #, fuzzy

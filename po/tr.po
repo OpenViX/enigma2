@@ -3705,11 +3705,11 @@ msgstr "Virgin EPG etkinleştir"
 msgid "Enable Wake On LAN"
 msgstr "LAN Wake On etkinleştirme"
 
-msgid "Enable auto fast scan"
+msgid "Enable auto fastscan"
 msgstr "Otomatik hızlı tarama etkinleştir"
 
 #, python-format
-msgid "Enable auto fast scan for %s"
+msgid "Enable auto fastscan for %s"
 msgstr "Otomatik hızlı tarama etkinleştir % s"
 
 #, fuzzy

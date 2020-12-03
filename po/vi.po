@@ -3179,11 +3179,11 @@ msgstr "Kích hoạt Virgin EPG"
 msgid "Enable auto cable scan"
 msgstr "Cho phép quét cáp tự động"
 
-msgid "Enable auto fast scan"
+msgid "Enable auto fastscan"
 msgstr "Cho phép tự động quét nhanh"
 
 #, python-format
-msgid "Enable auto fast scan for %s"
+msgid "Enable auto fastscan for %s"
 msgstr "Cho phép tự động quét nhanh cho%s"
 
 msgid "Enable bouquet edit"
