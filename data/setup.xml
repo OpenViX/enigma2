@@ -581,4 +581,27 @@
 			<item text="After event">self.timerentry_afterevent</item>
 		</if>
 	</setup>
+	<setup key="clientmode" title="Client Mode setup">
+		<item text="Enable client mode" description="Enable or disable using HDMI-CEC.">config.clientmode.enabled</item>
+		<if conditional="config.clientmode.enabled.value">
+			<item text="Host receiver address type" description="Select between entering an IP address or a domain.">config.clientmode.serverAddressType</item>
+			<if conditional="config.clientmode.serverAddressType.value == 'ip'">
+				<item text="Host receiver IP address" description="Enter the IP address of the host receiver.">config.clientmode.serverIP</item>
+			<else/>
+				<item text="Host domain" description="Enter the domain of the host receiver. Do not include 'http://' or port number.">config.clientmode.serverDomain</item>
+			</if>
+			<item text="Host receiver streaming port" description="Enter the streaming port of the host receiver (normally '8001').">config.clientmode.serverStreamingPort</item>
+			<item text="Host receiver FTP username" description="Enter the FTP username of the host receiver (normally 'root').">config.clientmode.serverFTPusername</item>
+			<item text="Host receiver FTP password" description="Enter the FTP password of the host receiver (required for any server running OpenViX 5.4 or greater).">config.clientmode.serverFTPpassword</item>
+			<item text="Host receiver FTP port" description="Enter the FTP port of the host receiver (normally '21').">config.clientmode.serverFTPPort</item>
+			<item text="FTP passive mode" description="Should the FTP connection to the remote receiver be established in passive mode (normally 'no')?">config.clientmode.passive</item>
+			<item text="Schedule EPG and channel list import" description="Allows you to set a schedule to import the EPG and channels list. The EPG and channels list will always be imported on reboot or GUI restart.">config.clientmode.enableSchedule</item>
+			<if conditional="config.clientmode.enableSchedule.value">
+				<item text="Repeat how often" description="Set the repeat interval of the schedule.">config.clientmode.scheduleRepeatInterval</item>
+				<if conditional="config.clientmode.scheduleRepeatInterval.value == 'daily'">
+					<item text="Time import should start" description="Set the time of day to perform the import.">config.clientmode.scheduletime</item>
+				</if>
+			</if>
+		</if>
+	</setup>
 </setupxml>
