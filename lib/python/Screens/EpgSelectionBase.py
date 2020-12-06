@@ -30,12 +30,6 @@ try:
 except ImportError:
 	plugin_PiPServiceRelation_installed = False
 
-def ignoreLongKeyPress(action):
-	def fn():
-		from Screens.InfoBar import InfoBar
-		if not InfoBar.instance.LongButtonPressed:
-			action()
-	return fn
 
 def getServiceRefStr(service):
 	return ":".join(service.ref.toString().split(":")[:11])
@@ -869,17 +863,17 @@ class EPGStandardButtons:
 	# build a tuple suitable for using in a helpable action
 	def helpKeyAction(self, actionName):
 		actions = {
-			"red": (ignoreLongKeyPress(self.openIMDb), _("IMDB search for current event")),
+			"red": (self.openIMDb, _("IMDB search for current event")),
 			"redlong": (self.sortEPG, _("Sort the EPG list")),
-			"green": (ignoreLongKeyPress(self.addEditTimer), _("Add/Remove timer for current event")),
+			"green": (self.addEditTimer, _("Add/Remove timer for current event")),
 			"greenlong": (self.openTimerList, _("Show timer list")),
-			"yellow": (ignoreLongKeyPress(self.openEPGSearch), _("Search for similar events")),
+			"yellow": (self.openEPGSearch, _("Search for similar events")),
 			"yellowlong": (lambda _ : None, _("Search for similar events")),
-			"blue": (ignoreLongKeyPress(self.addEditAutoTimer), _("Add an autotimer for current event")),
+			"blue": (self.addEditAutoTimer, _("Add an autotimer for current event")),
 			"bluelong": (self.openAutoTimerList, _("Show autotimer list")),
-			"ok": (ignoreLongKeyPress(self.OK), _("Zap to channel/service")),
+			"ok": (self.OK, _("Zap to channel/service")),
 			"oklong": (self.OKLong, _("Zap to channel/service and close")),
-			"rec": (ignoreLongKeyPress(self.addEditTimerMenu), _("Add a record timer for current event")),
+			"rec": (self.addEditTimerMenu, _("Add a record timer for current event")),
 			"reclong": (self.addEditZapTimerSilent, _("Add a zap timer for current event"))
 		}
 		return actions[actionName]

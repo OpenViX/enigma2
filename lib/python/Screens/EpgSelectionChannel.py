@@ -3,7 +3,7 @@ from ServiceReference import ServiceReference
 from Components.ActionMap import HelpableActionMap
 from Components.config import config, configfile
 from Components.EpgListSingle import EPGListSingle
-from Screens.EpgSelectionBase import EPGSelectionBase, EPGStandardButtons, ignoreLongKeyPress
+from Screens.EpgSelectionBase import EPGSelectionBase, EPGStandardButtons
 from Screens.Setup import Setup
 
 
@@ -16,7 +16,7 @@ class EPGSelectionChannel(EPGSelectionBase, EPGStandardButtons):
 		helpDescription = _("EPG Commands")
 		self["okactions"] = HelpableActionMap(self, "OkCancelActions", {
 			"cancel": (self.closeScreen, _("Exit EPG")),
-			"OK": (ignoreLongKeyPress(self.OK), _("Close")),
+			"OK": (self.OK, _("Close")),
 			"OKLong": (self.OKLong, _("Close"))
 		}, prio=-1, description=helpDescription)
 		self["epgactions"] = HelpableActionMap(self, "EPGSelectActions", {
