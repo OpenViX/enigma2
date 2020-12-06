@@ -18,7 +18,6 @@ from Tools.XMLTools import stringToXML
 import timer
 import xml.etree.cElementTree
 import NavigationInstance
-from ServiceReference import ServiceReference
 
 from time import localtime, strftime, ctime, time
 from bisect import insort
@@ -56,9 +55,6 @@ def parseEvent(event, description=True, service=None):
 	begin -= config.recording.margin_before.value * 60
 
 	if service is not None and config.recording.split_programme_minutes.value > 0:
-		# yes, we have to deal with this being a ServiceReference or an eServiceReference
-		if isinstance(service, ServiceReference):
-			service = service.ref
 		# check for events split by, for example, silly 5 minute entertainment news
 		test = ['IX', (service.toString(), 0, event.getBeginTime(), 300)]
 		epgCache =  eEPGCache.getInstance()
@@ -188,12 +184,12 @@ class RecordTimerEntry(timer.TimerEntry, object):
 		if self.end < self.begin:
 			self.end = self.begin
 
-		assert isinstance(serviceref, ServiceReference)
+		assert isinstance(serviceref, eServiceReference)
 
 		if serviceref and serviceref.isRecordable():
 			self.service_ref = serviceref
 		else:
-			self.service_ref = ServiceReference(None)
+			self.service_ref = eServiceReference()
 		self.eit = eit
 		self.dontSave = False
 		self.name = name
@@ -909,7 +905,7 @@ class RecordTimerEntry(timer.TimerEntry, object):
 def createTimer(xml):
 	begin = int(xml.get("begin"))
 	end = int(xml.get("end"))
-	serviceref = ServiceReference(xml.get("serviceref").encode("utf-8"))
+	serviceref = eServiceReference(xml.get("serviceref").encode("utf-8"))
 	description = xml.get("description").encode("utf-8")
 	repeated = xml.get("repeated").encode("utf-8")
 	rename_repeat = long(xml.get("rename_repeat") or "1")
@@ -1340,16 +1336,16 @@ class RecordTimer(timer.Timer):
 		end = begin + duration
 		startAt = begin - config.recording.margin_before.value * 60
 		endAt = end + config.recording.margin_after.value * 60
-		if isinstance(service, ServiceReference):
-			refstr = service.ref.toCompareString()
-		else:
+		if isinstance(service, str):
 			refstr = ':'.join(service.split(':')[:11])
+		else:
+			refstr = service.toCompareString()
 
 		# iterating is faster than using bisect+indexing to find the first relevant timer
 		for timer in self.timer_list:
 			# repeat timers represent all their future repetitions, so always include them
 			if (startAt <= timer.end or timer.repeated) and timer.begin < endAt:
-				check = timer.service_ref.ref.toCompareString() == refstr
+				check = timer.service_ref.toCompareString() == refstr
 				if check:
 					matchType = RecordTimer.__checkTimer(timer, check_offset_time, begin, end, duration)
 					if matchType is not None:

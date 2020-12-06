@@ -1,5 +1,4 @@
 from time import time
-from ServiceReference import ServiceReference
 from Components.ActionMap import HelpableActionMap
 from Components.config import config, configfile
 from Components.EpgListSingle import EPGListSingle
@@ -46,7 +45,7 @@ class EPGSelectionChannel(EPGSelectionBase, EPGStandardButtons):
 
 	def onCreate(self):
 		self["list"].recalcEntrySize()
-		service = ServiceReference(self.startRef)
+		service = self.startRef
 		self["Service"].newService(service.ref)
 		title = service.getServiceName()
 		self.setTitle(title)
@@ -57,7 +56,7 @@ class EPGSelectionChannel(EPGSelectionBase, EPGStandardButtons):
 	def refreshList(self):
 		self.refreshTimer.stop()
 		index = self["list"].getCurrentIndex()
-		self["list"].fillEPG(ServiceReference(self.startRef))
+		self["list"].fillEPG(self.startRef)
 		self["list"].setCurrentIndex(index)
 
 	def eventViewCallback(self, setEvent, setService, val):
