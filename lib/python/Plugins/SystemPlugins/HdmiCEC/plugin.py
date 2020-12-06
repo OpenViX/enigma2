@@ -9,9 +9,7 @@ class HdmiCECSetupScreen(Setup):
 	def __init__(self, session):
 		self["key_yellow"] = StaticText(_("Set fixed"))
 		self["key_blue"] = StaticText(_("Clear fixed"))
-		Setup.__init__(self, session=session, setup=None)
-		self.skinName = ["Setup"]
-		self.title= _("HDMI-CEC setup")
+		Setup.__init__(self, session=session, setup="hdmicec", plugin="SystemPlugins/HdmiCEC")
 		self["actions"] = HelpableActionMap(self, ["ColorActions"],
 		{
 			"yellow": (self.setFixedAddress, _("Set HDMI-CEC fixed address")),
@@ -19,36 +17,6 @@ class HdmiCECSetupScreen(Setup):
 		},  prio=-2, description=_("HDMI-CEC address editing actions"))
 		
 		self.updateAddress()
-
-	def createSetup(self):
-		self.list = []
-		self.list.append((_("Enabled"), config.hdmicec.enabled, _("Enable or disable HDMI-CEC commands.")))
-		if config.hdmicec.enabled.value:
-			self.list.append((_("Put TV in standby"), config.hdmicec.control_tv_standby, _("Automatically put the TV in standby whenever the receiver goes into standby or deep standby.")))
-			self.list.append((_("Wakeup TV from standby"), config.hdmicec.control_tv_wakeup, _("When the receiver wakes from standby, it will send a command to the TV to bring it out of standby too.")))
-			if config.hdmicec.control_tv_wakeup.value:
-				self.list.append((_("Wakeup command for TV"), config.hdmicec.tv_wakeup_command, _("Some TVs do not wake from standby when they receive the 'Image View On' command. If this is the case try the 'Text View On' command instead.")))
-			self.list.append((_("Regard deep standby as standby"), config.hdmicec.handle_deepstandby_events, _("If set to 'yes' the same commands will be sent to the TV for deep standby events, as are sent during regular standby events.")))
-			self.list.append((_("Switch TV to correct input"), config.hdmicec.report_active_source, _("When receiver wakes from standby, it will command the TV to switch to the HDMI input the receiver is connected to.")))
-			self.list.append((_("Use TV remote control"), config.hdmicec.report_active_menu, _("Allows the TV remote to be used to control the receiver.")))
-			self.list.append((_("Handle standby from TV"), config.hdmicec.handle_tv_standby, _("When enabled the receiver will automatically return to standby when the TV is turned off.")))
-			self.list.append((_("Handle wakeup from TV"), config.hdmicec.handle_tv_wakeup, _("When enabled the receiver will automatically wake from standby when the TV is turned on.")))
-			if config.hdmicec.handle_tv_wakeup.value:
-				self.list.append((_("Wakeup signal from TV"), config.hdmicec.tv_wakeup_detection, _("Wake the receiver from standby when the wake command is sent from the TV.")))
-			self.list.append((_("Forward volume keys"), config.hdmicec.volume_forwarding, _("Volume keys on the receiver remote will control the TV volume.")))
-			self.list.append((_("Put receiver in standby"), config.hdmicec.control_receiver_standby, _("Put A/V receiver in standby.")))
-			self.list.append((_("Wakeup receiver from standby"), config.hdmicec.control_receiver_wakeup, _("Wake A/V receiver from standby.")))
-			self.list.append((_("Minimum send interval"), config.hdmicec.minimum_send_interval, _("Delay between CEC commands when sending a series of commands. Some devices require this delay for correct functioning, usually between 50-150ms.")))
-			self.list.append((_("Repeat leave standby messages"), config.hdmicec.repeat_wakeup_timer, _("The command to wake from standby will be sent multiple times.")))
-			self.list.append((_("Send 'sourceactive' before zap timers"), config.hdmicec.sourceactive_zaptimers, _("Command the TV to switch to the correct HDMI input when zap timers activate.")))
-			self.list.append((_("Detect next boxes before standby"), config.hdmicec.next_boxes_detect, _("Before sending the command to switch the TV to standby, the receiver tests if all the other devices plugged into TV are in standby. If they are not, the 'sourceactive' command will be sent to the TV instead of the 'standby' command.")))
-			self.list.append((_("Debug to file"), config.hdmicec.debug, _("If enabled, a log will be kept of CEC protocol traffic ('hdmicec.log').")))
-			if config.hdmicec.debug.value != "0":
-				self.list.append((_("Select path for logfile"), config.hdmicec.log_path, _("Press OK to select the save location of the log file.")))
-			
-		currentItem = self["config"].getCurrent()
-		self["config"].setList(self.list)
-		self.moveToItem(currentItem)
 
 	def selectionChanged(self): # This is needed because the description is not standard. i.e. a concatenation.
 		self.updateDescription()
