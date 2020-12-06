@@ -28,7 +28,7 @@ from collections import defaultdict
 class HelpMenuList(GUIComponent):
 	def __init__(self, helplist, callback, rcPos=None):
 		GUIComponent.__init__(self)
-		self.onSelChanged = [ ]
+		self.onSelChanged = []
 		self.l = eListboxPythonMultiContent()
 		self.callback = callback
 		self.extendedHelp = False
@@ -38,13 +38,13 @@ class HelpMenuList(GUIComponent):
 		self.longSeen = False
 
 		headings, sortCmp, sortKey = {
-				"headings+alphabetic":	(True, None, self._sortKeyAlpha),
-				"flat+alphabetic":	(False, None, self._sortKeyAlpha),
-				"flat+remotepos":	(False, self._sortCmpPos, None),
-				"flat+remotegroups":	(False, self._sortCmpInd, None)
-			}.get(config.usage.help_sortorder.value, (False, None, None))
+			"headings+alphabetic": (True, None, self._sortKeyAlpha),
+			"flat+alphabetic": (False, None, self._sortKeyAlpha),
+			"flat+remotepos": (False, self._sortCmpPos, None),
+			"flat+remotegroups": (False, self._sortCmpInd, None)
+		}.get(config.usage.help_sortorder.value, (False, None, None))
 
-		if rcPos == None:
+		if rcPos is None:
 			if sortCmp in (self._sortCmpPos, self._sortCmpInd):
 				sortCmp = None
 		else:
@@ -82,7 +82,7 @@ class HelpMenuList(GUIComponent):
 				if not buttons:
 					continue
 
-				buttonNames = [ ]
+				buttonNames = []
 
 				for n in buttons:
 					name = getKeyDescription(n[0])
@@ -110,13 +110,13 @@ class HelpMenuList(GUIComponent):
 					helpStr = _("%s (%s)") % (helpStr, tagsStr)
 					help = [helpStr, help[1]] if isExtended else helpStr
 
-				entry = [ (actionmap, context, action, buttonNames ), help ]
+				entry = [(actionmap, context, action, buttonNames), help]
 				if self._filterHelpList(entry, helpSeen):
 					actionMapHelp[id(actionmap)].append(entry)
 
 		x, y, w, h = self.extendedHelp and skin.parameters.get("HelpMenuListExtHlp0",(skin.applySkinFactor(5), 0, skin.applySkinFactor(595), skin.applySkinFactor(28))) or skin.parameters.get("HelpMenuListHlp",(skin.applySkinFactor(5), 0, skin.applySkinFactor(595), skin.applySkinFactor(28)))
 
-		l = [ ]
+		l = []
 		for (actionmap, context, actions) in helplist:
 			amId = id(actionmap)
 			if headings and amId in actionMapHelp and getattr(actionmap, "description", None):
