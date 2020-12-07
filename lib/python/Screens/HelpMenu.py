@@ -29,7 +29,6 @@ The order and grouping of the help information list can be controlled using MENU
 		self.setup_title = _("Help")
 		Screen.setTitle(self, self.setup_title)
 		Rc.__init__(self)
-		self.onSelChanged = []
 		self["list"] = HelpMenuList(list, self.close, rcPos=self.getRcPositions())
 		self["longshift_key0"] = Label("")
 		self["longshift_key1"] = Label("")
@@ -77,12 +76,12 @@ The order and grouping of the help information list can be controlled using MENU
 		self.onLayoutFinish.append(self.doOnLayoutFinish)
 
 	def doOnLayoutFinish(self):
-		self["list"].onSelChanged.append(self.SelectionChanged)
+		self["list"].onSelectionChanged.append(self.SelectionChanged)
 		self.SelectionChanged()
 
 	def doOnClose(self):
 		eActionMap.getInstance().unbindAction('', self["list"].handleButton)
-		self["list"].onSelChanged.remove(self.SelectionChanged)
+		self["list"].onSelectionChanged.remove(self.SelectionChanged)
 
 	def SelectionChanged(self):
 		self.clearSelectedKeys()
