@@ -35,15 +35,12 @@ from collections import defaultdict
 class HelpMenuList(List):
 	def __init__(self, helplist, callback, rcPos=None):
 		List.__init__(self)
-		self.onSelChanged = []
 		self.callback = callback
 		self.extendedHelp = False
 		self.rcPos = rcPos
 		self.rcKeyIndex = None
 		self.buttonMap = {}
 		self.longSeen = False
-
-		self.onSelectionChanged.append(self.selChanged)
 
 		def actMapId():
 			return getattr(actionmap, "description", None) or id(actionmap)
@@ -257,7 +254,3 @@ class HelpMenuList(List):
 	def getCurrent(self):
 		sel = super(HelpMenuList, self).getCurrent()
 		return sel and sel[0]
-
-	def selChanged(self):
-		for x in self.onSelChanged:
-			x()
