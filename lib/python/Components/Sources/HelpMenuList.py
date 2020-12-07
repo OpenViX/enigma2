@@ -1,9 +1,5 @@
-from Components.GUIComponent import GUIComponent
-
-from enigma import eListboxPythonMultiContent, eListbox, gFont
-from Components.MultiContent import MultiContentEntryText
+from Components.Sources.List import List
 from Tools.KeyBindings import queryKeyBinding, getKeyDescription
-import skin
 from Components.config import config
 from collections import defaultdict
 
@@ -25,17 +21,32 @@ from collections import defaultdict
 # The code recognises that more than one button can map to an action and
 # places a button name list instead of a single button in the help entry.
 
-class HelpMenuList(GUIComponent):
+# In the template for HelpMenuList:
+
+# Template "default" for simple string help items
+# Use data[1] = helpText and data[2] = ""  for non-indented text
+# and data[1] = "" and data[2] = helpText  for indented text (20 pixel indent)
+
+# Template for list/tuple help items
+# Use data[1:3] = helpTuple and data[3:5] = ["", ""] for non-indented text
+# and data[1:3] = ["", ""] and data[3:5] = helpTuple for indented text
+
+
+class HelpMenuList(List):
 	def __init__(self, helplist, callback, rcPos=None):
-		GUIComponent.__init__(self)
+		List.__init__(self)
 		self.onSelChanged = []
-		self.l = eListboxPythonMultiContent()
 		self.callback = callback
 		self.extendedHelp = False
 		self.rcPos = rcPos
 		self.rcKeyIndex = None
 		self.buttonMap = {}
 		self.longSeen = False
+
+		self.onSelectionChanged.append(self.selChanged)
+
+		def actMapId():
+			return getattr(actionmap, "description", None) or id(actionmap)
 
 		headings, sortCmp, sortKey = {
 			"headings+alphabetic": (True, None, self._sortKeyAlpha),
@@ -51,7 +62,13 @@ class HelpMenuList(GUIComponent):
 			if sortCmp == self._sortCmpInd:
 				self.rcKeyIndex = dict((x[1], x[0]) for x in enumerate(rcPos.getRcKeyList()))
 
-		indent = False
+		indent = 0
+
+		if headings:
+			for (actionmap, context, actions) in helplist:
+				if actionmap.enabled and getattr(actionmap, "description", None):
+					indent = 1
+					break
 
 		buttonsProcessed = set()
 		helpSeen = defaultdict(list)
@@ -62,14 +79,11 @@ class HelpMenuList(GUIComponent):
 			if not actionmap.enabled:
 				continue
 
-			if actionmap.description:
-				if not indent:
-					print "[HelpMenuList] indent found"
-				indent = True
+			amId = actMapId()
 
 			for (action, help) in actions:
 				helpTags = []
-				if hasattr(help, '__call__'):
+				if callable(help):
 					help = help()
 					helpTags.append(pgettext('Abbreviation of "Configurable"', 'C'))
 
@@ -82,60 +96,61 @@ class HelpMenuList(GUIComponent):
 				if not buttons:
 					continue
 
+				name = None
+				flags = 0
+
 				buttonNames = []
 
 				for n in buttons:
-					name = getKeyDescription(n[0])
-					if name is not None and (len(name) < 2 or name[1] not in ("fp", "kbd")):
-						# for long keypresses, make the second tuple item "long".
-						if n[1] & 8:
-							name = (name[0], "long")
-						if name not in buttonsProcessed:
-							buttonNames.append(name)
-							buttonsProcessed.add(name)
+					name, flags = getKeyDescription(n[0]), n[1]
+					if name is not None:
+						if not (name and self.rcPos.getRcKeyPos(name[0])):
+							continue
+						if (len(name) < 2 or name[1] not in("fp", "kbd")):
+							if flags & 8:  # for long keypresses, make the second tuple item "long".
+								name = (name[0], "long")
+							nlong = (n[0], flags & 8)
+							if nlong not in buttonsProcessed:
+								buttonNames.append(name)
+								buttonsProcessed.add(nlong)
 
-				# only show entries with keys that are available on the used rc
-				if not buttonNames:
+				# only show non-empty entries with keys that are available on the used rc
+				if not (buttonNames and help):
 					continue
-
-				isExtended = isinstance(help, list)
-				if isExtended:
-					if not self.extendedHelp:
-						print "[HelpMenuList] extendedHelpEntry found"
+				if isinstance(help, (tuple, list)):
 					self.extendedHelp = True
-
 				if helpTags:
-					helpStr = help[0] if isExtended else help
-					tagsStr = pgettext("Text list separator", ', ').join(helpTags)
-					helpStr = _("%s (%s)") % (helpStr, tagsStr)
-					help = [helpStr, help[1]] if isExtended else helpStr
+					helpTagStr = " (" + ", ".join(helpTags) + ")"
+					if isinstance(help, (tuple, list)):
+						help[0] += helpTagStr
+					else:
+						help += helpTagStr
 
 				entry = [(actionmap, context, action, buttonNames), help]
 				if self._filterHelpList(entry, helpSeen):
-					actionMapHelp[id(actionmap)].append(entry)
-
-		x, y, w, h = self.extendedHelp and skin.parameters.get("HelpMenuListExtHlp0",(skin.applySkinFactor(5), 0, skin.applySkinFactor(595), skin.applySkinFactor(28))) or skin.parameters.get("HelpMenuListHlp",(skin.applySkinFactor(5), 0, skin.applySkinFactor(595), skin.applySkinFactor(28)))
+					actionMapHelp[amId].append(entry)
 
 		l = []
+		extendedPadding = ('', '') if self.extendedHelp else ()
+
 		for (actionmap, context, actions) in helplist:
-			amId = id(actionmap)
+			amId = actMapId()
 			if headings and amId in actionMapHelp and getattr(actionmap, "description", None):
 				if sortCmp or sortKey:
 					actionMapHelp[amId].sort(cmp=sortCmp, key=sortKey)
 				self.addListBoxContext(actionMapHelp[amId], indent)
 
-				l.append([None, MultiContentEntryText(pos=(x, y), size=(w, h), text=actionmap.description)])
+				l.append((None, actionmap.description, '') + extendedPadding)
 				l.extend(actionMapHelp[amId])
 				del actionMapHelp[amId]
 
 		if actionMapHelp:
-			# Add a header if other actionmaps have descriptions
 			if indent:
-				l.append([None, MultiContentEntryText(pos=(x, y), size=(w, h), text=_("Other functions"))])
+				l.append((None, _("Other functions"), '') + extendedPadding)
 
 			otherHelp = []
 			for (actionmap, context, actions) in helplist:
-				amId = id(actionmap)
+				amId = actMapId()
 				if amId in actionMapHelp:
 					otherHelp.extend(actionMapHelp[amId])
 					del actionMapHelp[amId]
@@ -148,25 +163,22 @@ class HelpMenuList(GUIComponent):
 		for i, ent in enumerate(l):
 			if ent[0] is not None:
 				for b in ent[0][3]:
-					self.buttonMap[b] = i
+					# Ignore "break" events from
+					# OK and EXIT on return from
+					# help popup
+					if b[0] not in ('OK', 'EXIT'):
+						self.buttonMap[b] = i
 
-		self.l.setList(l)
 		if self.extendedHelp:
-			font = skin.fonts.get("HelpMenuListExt0", ("Regular", skin.applySkinFactor(24), skin.applySkinFactor(56)))
-			self.l.setFont(0, gFont(font[0], font[1]))
-			self.l.setItemHeight(font[2])
-			font = skin.fonts.get("HelpMenuListExt1", ("Regular", skin.applySkinFactor(18)))
-			self.l.setFont(1, gFont(font[0], font[1]))
-		else:
-			font = skin.fonts.get("HelpMenuList", ("Regular", skin.applySkinFactor(24), skin.applySkinFactor(28)))
-			self.l.setFont(0, gFont(font[0], font[1]))
-			self.l.setItemHeight(font[2])
+			self.style = "extended"
+
+		self.list = l
 
 	def _mergeButLists(self, bl1, bl2):
 		bl1.extend([b for b in bl2 if b not in bl1])
 
 	def _filterHelpList(self, ent, seen):
-		hlp = tuple(ent[1] if isinstance(ent[1], list) else [ent[1], ''])
+		hlp = tuple(ent[1] if isinstance(ent[1], (tuple, list)) else [ent[1], ''])
 		if hlp in seen:
 			self._mergeButLists(seen[hlp], ent[0][3])
 			return False
@@ -175,29 +187,18 @@ class HelpMenuList(GUIComponent):
 			return True
 
 	def addListBoxContext(self, actionMapHelp, indent):
-		for ent in actionMapHelp:
+		for i, ent in enumerate(actionMapHelp):
 			help = ent[1]
-			if isinstance(help, list):
-				x, y, w, h = skin.parameters.get("HelpMenuListExtHlp0",(skin.applySkinFactor(5), 0, skin.applySkinFactor(595), skin.applySkinFactor(28)))
-				x1, y1, w1, h1 = skin.parameters.get("HelpMenuListExtHlp1",(skin.applySkinFactor(5), skin.applySkinFactor(34), skin.applySkinFactor(595), skin.applySkinFactor(22)))
-				i = skin.applySkinFactor(20)
-				i1 = skin.applySkinFactor(20)
-				if indent:
-					x = min(x + i, x + w)
-					w = max(w - i, 0)
-					x1 = min(x1 + i1, x1 + w1)
-					w1 = max(w1 - i1, 0)
-				ent[1:] = [
-					MultiContentEntryText(pos=(x, y), size=(w, h), font=0, text=help[0]),
-					MultiContentEntryText(pos=(x1, y1), size=(w1, h1), font=1, text=help[1]),
-				]
+			if self.extendedHelp:
+				ent[1:] = ('', '', '', '')
 			else:
-				x, y, w, h = skin.parameters.get("HelpMenuListHlp",(skin.applySkinFactor(5), 0, skin.applySkinFactor(595), skin.applySkinFactor(28)))
-				i = skin.applySkinFactor(20)
-				if indent:
-					x = min(x + i, x + w)
-					w = max(w - i, 0)
-				ent[1] = MultiContentEntryText(pos=(x, y), size=(w, h), font=0, text=help)
+				ent[1:] = ('', '')
+			if isinstance(help, (tuple, list)):
+				ent[1 + indent] = help[0]
+				ent[3 + indent] = help[1]
+			else:
+				ent[1 + indent] = help
+			actionMapHelp[i] = tuple(ent)
 
 	def _getMinPos(self, a):
 		# Reverse the coordinate tuple, too, to (y, x) to get
@@ -221,7 +222,7 @@ class HelpMenuList(GUIComponent):
 	def _sortKeyAlpha(self, hlp):
 		# Convert normal help to extended help form for comparison
 		# and ignore case
-		return map(str.lower, hlp[1] if isinstance(hlp[1], list) else [hlp[1], ''])
+		return map(str.lower, hlp[1] if isinstance(hlp[1], (tuple, list)) else [hlp[1], ''])
 
 	def ok(self):
 		# a list entry has a "private" tuple as first entry...
@@ -254,24 +255,9 @@ class HelpMenuList(GUIComponent):
 		return 0
 
 	def getCurrent(self):
-		sel = self.l.getCurrentSelection()
+		sel = super(HelpMenuList, self).getCurrent()
 		return sel and sel[0]
 
-	def setIndex(self, index):
-		if self.instance is not None:
-			self.instance.moveSelectionTo(index)
-
-	GUI_WIDGET = eListbox
-
-	def postWidgetCreate(self, instance):
-		instance.setContent(self.l)
-		instance.selectionChanged.get().append(self.selectionChanged)
-		self.instance.setWrapAround(True)
-
-	def preWidgetRemove(self, instance):
-		instance.setContent(None)
-		instance.selectionChanged.get().remove(self.selectionChanged)
-
-	def selectionChanged(self):
+	def selChanged(self):
 		for x in self.onSelChanged:
 			x()
