@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-24 01:26+0000\n"
-"PO-Revision-Date: 2020-11-24 06:38+0100\n"
+"POT-Creation-Date: 2020-12-08 03:19+0000\n"
+"PO-Revision-Date: 2020-12-08 14:59+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -3127,6 +3127,9 @@ msgstr "Ruim op"
 msgid "Clear"
 msgstr "Wis"
 
+msgid "Clear HDMI-CEC fixed address"
+msgstr "Verwijder HDMI-CEC vaste adres"
+
 msgid "Clear before scan"
 msgstr "Vóór zoeken alle zenders verwijderen"
 
@@ -3143,14 +3146,11 @@ msgstr "Afspeellijst leegmaken"
 msgid "Client Info ( Oscam-Version: %s )"
 msgstr "KlantInfo ( Oscam-Versie: %s )"
 
-msgid "Client Mode"
-msgstr "Client-modus"
+msgid "Client Mode setup"
+msgstr "Client-modus instellingen"
 
 msgid "Client mode"
 msgstr "Client-modus"
-
-msgid "Client mode sets up this receiver to stream from another receiver. In this mode no local tuners will be available and channel lists, EPG, etc, will come from the remote receiver. All tuner settings will be cleared."
-msgstr "'Client mode' stelt deze ontvanger in om streams van een andere ontvanger weer te geven. In deze modus zullen tuners niet beschikbaar zijn en kanaallijsten, EPG etc zullen van de server-ontvanger afkomstig zijn. Alle tunerinstellingen zullen worden verwijderd."
 
 msgid "Clients"
 msgstr "Klanten"
@@ -4880,11 +4880,11 @@ msgstr "Virgin EPG inschakelen"
 msgid "Enable auto cable scan"
 msgstr "Automatische kabelscan inschakelen"
 
-msgid "Enable auto fast scan"
+msgid "Enable auto fastscan"
 msgstr "Auto Fastscan inschakelen"
 
 #, python-format
-msgid "Enable auto fast scan for %s"
+msgid "Enable auto fastscan for %s"
 msgstr "Auto Fastscan voor %s inschakelen"
 
 msgid "Enable blinking rec symbol on the LCD Display"
@@ -4914,9 +4914,6 @@ msgstr "Verplaatsmodus inschakelen"
 msgid "Enable multiple bouquets"
 msgstr "Meerdere favorietenlijsten toestaan"
 
-msgid "Enable or disable HDMI-CEC commands."
-msgstr "Schakel HDMI-CEC commando's in of uit."
-
 msgid "Enable or disable the 10 Bit Color Mode"
 msgstr "Schakel 10bit kleurmodus in of uit"
 
@@ -4931,6 +4928,9 @@ msgstr "Schakel forceren HDR10 modus voor UHD in of uit"
 
 msgid "Enable or disable to force HLG Modes for UHD"
 msgstr "Schakel forceren HGL modus voor UHD in of uit"
+
+msgid "Enable or disable using HDMI-CEC."
+msgstr "Schakel HDMI-CEC commando's in of uit."
 
 msgid "Enable panic button"
 msgstr "Paniektoets gebruiken"
@@ -5025,8 +5025,8 @@ msgstr "Voer pincode in"
 msgid "Enter service number"
 msgstr "Voer kanaalnummer in"
 
-msgid "Enter the FTP password of the host receiver (normally just leave empty)."
-msgstr "Geef het FTP-wachtwoord van de gast-ontvanger."
+msgid "Enter the FTP password of the host receiver (required for any server running OpenViX 5.4 or greater)."
+msgstr "Geef het FTP-wachtwoord van de gast-ontvanger (noodzakelijk voor elke server die OpenViX 5.4 of hoger draait)."
 
 msgid "Enter the FTP port of the host receiver (normally '21')."
 msgstr "Geef de FTP-poort van de gast-ontvanger (normaal '21')."
@@ -5446,17 +5446,20 @@ msgstr "Snel"
 msgid "Fast DiSEqC"
 msgstr "Snelle DiSEqC"
 
-msgid "Fast Scan"
-msgstr "Fastscan"
-
 msgid "Fast epoch"
 msgstr "Snel spoelen"
 
 msgid "Fast forward speeds"
 msgstr "Vooruitspoelsnelheid"
 
+msgid "FastScan"
+msgstr "Fastscan"
+
 msgid "Fastforward"
 msgstr "Vooruitspoelen"
+
+msgid "Fastscan"
+msgstr "Fastscan"
 
 msgid "Favourites"
 msgstr "Favorieten"
@@ -5928,8 +5931,8 @@ msgstr "HDMI HDR type"
 msgid "HDMI input"
 msgstr "HDMI-ingang"
 
-msgid "HDMI-CEC setup"
-msgstr "HDMI-CEC instellingen"
+msgid "HDMI-CEC address editing actions"
+msgstr "HDMI-CEC adresinstellingen"
 
 msgid "HDMIin"
 msgstr "HDMI-in"
@@ -5969,6 +5972,9 @@ msgstr "Harde schijf instellingen"
 
 msgid "HbbTV"
 msgstr "HbbTV"
+
+msgid "Hdmi-CEC setup"
+msgstr "HDMI-CEC instellingen"
 
 msgid "Heard Island and McDonald Islands"
 msgstr "Heard Island and McDonald Islands"
@@ -9186,14 +9192,14 @@ msgstr "Puerto Rico"
 msgid "Purge deleted user bouquets"
 msgstr "Verwijder de verwijderde favorietenlijsten definitief"
 
+msgid "Put A/V receiver in standby"
+msgstr "Zet versterker in stand-by"
+
 msgid "Put A/V receiver in standby."
 msgstr "Zet versterker in stand-by"
 
 msgid "Put TV in standby"
 msgstr "Zet TV in stand-by"
-
-msgid "Put receiver in standby"
-msgstr "Zet ontvanger in stand-by"
 
 msgid "Python frontend for /tmp/mmi.socket"
 msgstr "Python frontend voor /tmp/mmi.socket"
@@ -10672,6 +10678,9 @@ msgstr "Stel CI toewijzing in voor de detectie van de beschikbare kanalen."
 
 msgid "Set Framerate for MiniTV"
 msgstr "Stel framerate in voor MiniTV"
+
+msgid "Set HDMI-CEC fixed address"
+msgstr "Gebruik een vast adres voor HDMI-CEC"
 
 msgid "Set LED Color or disable the LED."
 msgstr "Stel de LED kleur in of schakel de LED uit."
@@ -13689,6 +13698,9 @@ msgstr "Wacht op mount."
 msgid "Waiting for partition."
 msgstr "Wacht op partitie."
 
+msgid "Wake A/V receiver from standby"
+msgstr "Wakeup versterker vanuit stand-by"
+
 msgid "Wake A/V receiver from standby."
 msgstr "Wakeup versterker vanuit stand-by"
 
@@ -13712,9 +13724,6 @@ msgstr "Wakeup TV vanuit stand-by"
 
 msgid "Wakeup command for TV"
 msgstr "Wakeup signaal voor TV"
-
-msgid "Wakeup receiver from standby"
-msgstr "Wakeup ontvanger vanuit stand-by"
 
 msgid "Wakeup signal from TV"
 msgstr "Wakeup signaal van TV"
@@ -16262,6 +16271,9 @@ msgstr "zapte"
 #~ msgid "Choose the layout view mode (Text or Graphics)."
 #~ msgstr "Hier kiest u de lay-out: tekst of grafisch."
 
+#~ msgid "Client mode sets up this receiver to stream from another receiver. In this mode no local tuners will be available and channel lists, EPG, etc, will come from the remote receiver. All tuner settings will be cleared."
+#~ msgstr "'Client mode' stelt deze ontvanger in om streams van een andere ontvanger weer te geven. In deze modus zullen tuners niet beschikbaar zijn en kanaallijsten, EPG etc zullen van de server-ontvanger afkomstig zijn. Alle tunerinstellingen zullen worden verwijderd."
+
 #~ msgid "Close dialog box"
 #~ msgstr "Sluit dialoog"
 
@@ -17074,6 +17086,9 @@ msgstr "zapte"
 #~ msgid "Provider to scan"
 #~ msgstr "Zoek op provider"
 
+#~ msgid "Put receiver in standby"
+#~ msgstr "Zet ontvanger in stand-by"
+
 #~ msgid "Put your %s %s in standby"
 #~ msgstr "Zet uw %s %s in stand-by"
 
@@ -17569,6 +17584,9 @@ msgstr "zapte"
 
 #~ msgid "Wake Island"
 #~ msgstr "Wake Island"
+
+#~ msgid "Wakeup receiver from standby"
+#~ msgstr "Wakeup ontvanger vanuit stand-by"
 
 #~ msgid "Wakeup your %s %s from standby"
 #~ msgstr "Uw %s %s vanuit stand-by wakker maken"
