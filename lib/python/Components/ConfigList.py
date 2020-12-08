@@ -333,7 +333,7 @@ class ConfigListScreen:
 		self["config"].moveUp()
 
 	def keyFirst(self):
-		self["config"].handleKey(KEYA_HOME)
+		self["config"].handleKey(KEYA_FIRST)
 		self.entryChanged()
 
 	def keyLeft(self):
@@ -345,7 +345,7 @@ class ConfigListScreen:
 		self.entryChanged()
 
 	def keyLast(self):
-		self["config"].handleKey(KEYA_END)
+		self["config"].handleKey(KEYA_LAST)
 		self.entryChanged()
 
 	def keyDown(self):
