@@ -130,6 +130,7 @@ SystemInfo["CanDownmixDTSHD"] = fileHas("/proc/stb/audio/dtshd_choices", "downmi
 SystemInfo["CanDownmixAAC"] = fileHas("/proc/stb/audio/aac_choices", "downmix")
 SystemInfo["CanDownmixAACPlus"] = fileHas("/proc/stb/audio/aacplus_choices", "downmix")
 SystemInfo["HDMIAudioSource"] = fileCheck("/proc/stb/hdmi/audio_source")
+<<<<<<< HEAD
 SystemInfo["MBbootdevice"] = getMBbootdevice()
 SystemInfo["canMultiBoot"] = getMultibootslots()
 SystemInfo["canMode12"] = getMachineBuild() in ('hd51','vs1500','h7') and ('brcm_cma=440M@328M brcm_cma=192M@768M', 'brcm_cma=520M@248M brcm_cma=200M@768M')
@@ -141,3 +142,7 @@ SystemInfo["CanProc"] = SystemInfo["HasMMC"] and getBrandOEM() != "vuplus"
 SystemInfo["canRecovery"] = getMachineBuild() in ('gbmv200',) and ('usb_update.bin','none')
 SystemInfo["FlashOnlineBackup"] = getMachineBuild() not in ('dummy')
 SystemInfo["FbcTunerPowerAlwaysOn"] = getBoxType() in ('vusolo4k', 'vuduo4k', 'vuultimo4k') or getMachineBuild() in ('gb7252')
+=======
+SystemInfo["BootDevice"] = getBootdevice()
+SystemInfo["FbcTunerPowerAlwaysOn"] = model in ("vusolo4k", "vuduo4k", "vuduo4kse", "vuultimo4k", "vuuno4k", "vuuno4kse", "gbquad4k", "gbue4k")
+>>>>>>> 42b39d5e3... [SystemInfo] add "HasHDMIin" (#2821)
