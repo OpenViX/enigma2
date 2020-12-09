@@ -1769,7 +1769,6 @@ class InfoBarEPG:
 		startRef = self.lastservice if isMoviePlayerInfoBar(self) else self.session.nav.getCurrentlyPlayingServiceOrGroup()
 		if startRef:
 			bouquets = self.servicelist.getEPGBouquetList()
-			services = self.getBouquetServices(startBouquet)
 			self.session.openWithCallback(self.epgClosed, EPGSelectionSingle, self.zapToService, startBouquet, startRef, bouquets)
 
 	def openInfoBarEPG(self):
@@ -1798,9 +1797,6 @@ class InfoBarEPG:
 				self.openGridEPG()
 			elif args[0] == 'reopeninfobar':
 				self.openInfoBarEPG()
-			elif args[0] == 'closemovieplayer' and isMoviePlayerInfoBar(self):
-				self.lastservice = self.session.nav.getCurrentlyPlayingServiceOrGroup()
-				self.close()
 
 	def openSimilarList(self, eventId, refstr):
 		self.session.open(EPGSelectionSimilar, refstr, eventId=eventId)

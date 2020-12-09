@@ -627,13 +627,11 @@ class RecordTimerEntry(timer.TimerEntry, object):
 						from Screens.InfoBar import MoviePlayer
 						if MoviePlayer.instance is not None:
 							MoviePlayer.instance.lastservice = self.service_ref.ref
-# Shut it down if it's actually running...
-# ...uses one of the more weirdly named functions, it actually
-# functions as setMoviePlayerInactive
+# Shut it down if it's actually running
 #
 							if MoviePlayer.instance.execing:
 								print "[RecordTimer] Shutting down MoviePlayer"
-								NavigationInstance.instance.isMovieplayerActive()
+								MoviePlayer.ensureClosed()
 
 						self._bouquet_search()
 				return True
@@ -1033,9 +1031,11 @@ class RecordTimer(timer.Timer):
 #
 	def loadTimer(self, justLoad=False):
 		try:
+			print "[sc] loading xml"
 			file = open(self.Filename, 'r')
 			doc = xml.etree.cElementTree.parse(file)
 			file.close()
+			print "[sc] finished loading xml"
 		except SyntaxError:
 			from Tools.Notifications import AddPopup
 			from Screens.MessageBox import MessageBox
@@ -1058,6 +1058,7 @@ class RecordTimer(timer.Timer):
 		checkit = False
 		timer_text = ""
 		for timer in root.findall("timer"):
+			print "[sc] loading timer"
 			newTimer = createTimer(timer)
 			conflict_list = self.record(newTimer, ignoreTSC=True, dosave=False, loadtimer=True, justLoad=justLoad)
 			if conflict_list:
@@ -1070,6 +1071,7 @@ class RecordTimer(timer.Timer):
 			AddPopup(_("Timer overlap in timers.xml detected!\nPlease recheck it!") + timer_text, type = MessageBox.TYPE_ERROR, timeout = 0, id = "TimerLoadFailed")
 
 	def saveTimer(self):
+		print "[sc] saving timers"
 		list = ['<?xml version="1.0" ?>\n', '<timers>\n']
 
 		for timer in self.timer_list + self.processed_timers:
@@ -1131,6 +1133,7 @@ class RecordTimer(timer.Timer):
 			list.append('</timer>\n')
 
 		list.append('</timers>\n')
+		print "[sc] finished building timer list"
 
 # We have to run this section with a lock.
 #  Imagine setting a timer manually while the (background) AutoTimer
@@ -1157,6 +1160,7 @@ class RecordTimer(timer.Timer):
 
 			os.fsync(file.fileno())
 			file.close()
+			print "[sc] finished writing timers.xml"
 			os.rename(self.Filename + ".writing", self.Filename)
 
 	def getNextZapTime(self):

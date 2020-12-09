@@ -99,7 +99,6 @@ class EPGSelectionBase(Screen, HelpableScreen):
 		self.closeRecursive = False
 		self.eventviewDialog = None
 		self.eventviewWasShown = False
-		self.originalPlayingServiceOrGroup = self.session.nav.getCurrentlyPlayingServiceOrGroup()
 		self.session.pipshown = False
 		self.pipServiceRelation = getRelationDict() if plugin_PiPServiceRelation_installed else {}
 		self["Service"] = ServiceEvent()
@@ -497,52 +496,59 @@ class EPGSelectionBase(Screen, HelpableScreen):
 
 class EPGServiceZap:
 	def __init__(self, zapFunc):
+		self.__originalPlayingService = self.session.nav.getCurrentlyPlayingServiceOrGroup() or eServiceReference()
 		self.prevch = None
 		self.currch = None
 		self.zapFunc = zapFunc
 
 	def zapExit(self):
+		selectedService = self["list"].getCurrent()[1]
+		from Screens.InfoBar import MoviePlayer
+		MoviePlayer.ensureClosed(selectedService)
 		self.zapSelectedService()
 		self.closeEventViewDialog()
-		self.close("close")
+		self.close()
 
 	def zap(self):
-		if self.session.nav.getCurrentlyPlayingServiceOrGroup() and self.session.nav.getCurrentlyPlayingServiceOrGroup().isPlayback():
+		currentService = self.session.nav.getCurrentlyPlayingServiceOrGroup()
+		if currentService and currentService.isPlayback():
+			# in movie playback, so store the resume point before zapping
 			from Screens.InfoBarGenerics import setResumePoint
 			setResumePoint(self.session)
 		self.zapSelectedService(True)
 		self.refreshTimer.start(1)
 		if not self.currch or self.currch == self.prevch:
+			# Zapping the same service for a second time, record it with the zap history and exit
+			from Screens.InfoBar import MoviePlayer
+			MoviePlayer.ensureClosed(currentService)
 			self.zapFunc(None, False)
 			self.closeEventViewDialog()
-			self.close("close")
+			self.close()
 
 	def closeScreen(self):
-		closeParam = True
-
 		# When exiting, restore the previous service/playback if a channel has been previewed.
-		if self.session.nav.getCurrentlyPlayingServiceOrGroup() and self.session.nav.getCurrentlyPlayingServiceOrGroup().toString() != self.originalPlayingServiceOrGroup.toString():
+		currentService = self.session.nav.getCurrentlyPlayingServiceOrGroup()
+		if currentService and currentService.toString() != self.__originalPlayingService.toString():
+			# service has changed from the original
 			if self.epgConfig.preview_mode.value:
 				# In preview mode, the original service or movie playback is restored
-				if self.originalPlayingServiceOrGroup.isPlayback():
-					# Restart movie playback, MoviePlayer screen is still active.
+				if self.__originalPlayingService.isPlayback():
+					# Restart movie playback at the resume point stored earlier
 					from Screens.InfoBar import MoviePlayer
 					if MoviePlayer.instance:
 						MoviePlayer.instance.forceNextResume()
-				self.session.nav.playService(self.originalPlayingServiceOrGroup)
+				self.session.nav.playService(self.__originalPlayingService)
 			else:
 				# In non-preview mode, stick with the now playing service; this means closing the movieplayer
-				# if it's open, and setting the infobar's current service
-				if self.originalPlayingServiceOrGroup.isPlayback():
-					# Previously we were in playback, so we'll need to close the movie player
-					closeParam = 'closemovieplayer'
-				# Not preview mode and service has been changed before exiting, record it with the zap history
+				# if it's open, and setting the infobar's lastservice
+				from Screens.InfoBar import MoviePlayer
+				MoviePlayer.ensureClosed(currentService)
 				self.zapFunc(None, False)
 		if self.session.pipshown:
 			self.session.pipshown = False
 			del self.session.pip
 		self.closeEventViewDialog()
-		self.close(closeParam)
+		self.close()
 
 	def zapSelectedService(self, prev=False):
 		currservice = self.session.nav.getCurrentlyPlayingServiceReference() and self.session.nav.getCurrentlyPlayingServiceReference().toString() or None
