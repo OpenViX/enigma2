@@ -72,9 +72,8 @@ def InitUsageConfig():
 	config.usage.quickzap_bouquet_change = ConfigYesNo(default = False)
 	config.usage.e1like_radio_mode = ConfigYesNo(default = True)
 
-	choicelist = [("0", _("No timeout"))]
-	for i in range(1, 21):
-		choicelist.append((str(i), ngettext("%d second", "%d seconds", i) % i))
+	choicelist = [("0", _("No timeout"))] + \
+		[(str(i), ngettext("%d second", "%d seconds", i) % i) for i in range(1, 21)]
 	config.usage.infobar_timeout = ConfigSelection(default = "5", choices = choicelist)
 	config.usage.show_infobar_do_dimming = ConfigYesNo(default = False)
 	config.usage.show_infobar_dimming_speed = ConfigSelectionNumber(min = 1, max = 40, stepwidth = 1, default = 40, wraparound = True)
@@ -82,7 +81,10 @@ def InitUsageConfig():
 	config.usage.show_infobar_on_skip = ConfigYesNo(default = True)
 	config.usage.show_infobar_on_event_change = ConfigYesNo(default = False)
 	config.usage.show_infobar_channel_number = ConfigYesNo(default = False)
-	config.usage.show_second_infobar = ConfigSelection(default = "5", choices = [("none", _("None"))] + choicelist + [("EPG",_("EPG")),("INFOBAREPG",_("InfoBar EPG"))])
+	choicelist = [("none", _("None")), ("0", _("No timeout"))] + \
+		[(str(i), ngettext("%d second", "%d seconds", i) % i) for i in [3, 5, 7, 10, 15, 20, 30, 60]] + \
+		[("EPG",_("EPG")),("INFOBAREPG",_("InfoBar EPG"))]
+	config.usage.show_second_infobar = ConfigSelection(default = "5", choices = choicelist)
 	def showsecondinfobarChanged(configElement):
 		if config.usage.show_second_infobar.value != "INFOBAREPG":
 			SystemInfo["InfoBarEpg"] = True

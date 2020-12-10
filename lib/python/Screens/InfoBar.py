@@ -12,7 +12,6 @@ from Components.SystemInfo import SystemInfo
 
 profile("LOAD:enigma")
 import enigma
-from boxbranding import getBrandOEM
 
 profile("LOAD:InfoBarGenerics")
 from Screens.InfoBarGenerics import InfoBarShowHide, \
@@ -235,6 +234,21 @@ class MoviePlayer(InfoBarBase, InfoBarShowHide, InfoBarLongKeyDetection, InfoBar
 	ALLOW_SUSPEND = True
 
 	instance = None
+
+	# Call this to ensure the movie player is closed and, if a movie is playing, 
+	# the resume point saved. If a returnService is specified, then the movieplayer
+	# will switch to that service when it closes
+	@staticmethod
+	def ensureClosed(nextService = None):
+		player = MoviePlayer.instance
+		if player is not None:
+			# Only try to set a resumepoint if currently playing something
+			ref = player.session.nav.getCurrentlyPlayingServiceOrGroup()
+			if ref is not None and ref.isPlayback():
+				setResumePoint(player.session)
+			if nextService:
+				player.lastservice = nextService
+			player.close()
 
 	def __init__(self, session, service, slist = None, lastservice = None):
 		Screen.__init__(self, session)

@@ -1,6 +1,6 @@
 from time import localtime, time, strftime
 
-from enigma import eEPGCache, eListbox, eListboxPythonMultiContent, loadPNG, gFont, getDesktop, eRect, eSize, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_HALIGN_CENTER, RT_VALIGN_CENTER, RT_VALIGN_TOP, RT_WRAP, BT_SCALE, BT_KEEP_ASPECT_RATIO, BT_ALIGN_CENTER
+from enigma import eListbox, eListboxPythonMultiContent, eServiceReference, loadPNG, gFont, eRect, eSize, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_HALIGN_CENTER, RT_VALIGN_CENTER, RT_VALIGN_TOP, RT_WRAP, BT_SCALE, BT_KEEP_ASPECT_RATIO, BT_ALIGN_CENTER
 
 from skin import parseColor, parseFont, parseScale
 from Components.EpgListBase import EPGListBase
@@ -9,7 +9,6 @@ from Components.MultiContent import MultiContentEntryText, MultiContentEntryPixm
 from Components.Renderer.Picon import getPiconName
 from Components.config import config
 from RecordTimer import RecordTimer
-from ServiceReference import ServiceReference
 from Tools.Alternatives import CompareWithAlternatives
 from Tools.Directories import resolveFilename, SCOPE_CURRENT_SKIN
 from Tools.TextBoundary import getTextBoundarySize
@@ -219,10 +218,10 @@ class EPGListGrid(EPGListBase):
 		events = self.selectedService[2]
 		refstr = self.selectedService[0]
 		if self.selectedEventIndex is None or not events or (self.selectedEventIndex and events and self.selectedEventIndex > len(events) - 1):
-			return None, ServiceReference(refstr)
+			return None, eServiceReference(refstr)
 		event = events[self.selectedEventIndex]  # (eventId, eventTitle, beginTime, duration)
 		eventId = event[0]
-		service = ServiceReference(refstr)
+		service = eServiceReference(refstr)
 		event = self.getEventFromId(service, eventId)  # Get full event info.
 		return event, service
 

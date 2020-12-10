@@ -18,7 +18,6 @@ from Tools.XMLTools import stringToXML
 import timer
 import xml.etree.cElementTree
 import NavigationInstance
-from ServiceReference import ServiceReference
 
 from time import localtime, strftime, ctime, time
 from bisect import insort
@@ -56,9 +55,6 @@ def parseEvent(event, description=True, service=None):
 	begin -= config.recording.margin_before.value * 60
 
 	if service is not None and config.recording.split_programme_minutes.value > 0:
-		# yes, we have to deal with this being a ServiceReference or an eServiceReference
-		if isinstance(service, ServiceReference):
-			service = service.ref
 		# check for events split by, for example, silly 5 minute entertainment news
 		test = ['IX', (service.toString(), 0, event.getBeginTime(), 300)]
 		epgCache =  eEPGCache.getInstance()
@@ -188,12 +184,12 @@ class RecordTimerEntry(timer.TimerEntry, object):
 		if self.end < self.begin:
 			self.end = self.begin
 
-		assert isinstance(serviceref, ServiceReference)
+		assert isinstance(serviceref, eServiceReference)
 
 		if serviceref and serviceref.isRecordable():
 			self.service_ref = serviceref
 		else:
-			self.service_ref = ServiceReference(None)
+			self.service_ref = eServiceReference()
 		self.eit = eit
 		self.dontSave = False
 		self.name = name
@@ -631,13 +627,11 @@ class RecordTimerEntry(timer.TimerEntry, object):
 						from Screens.InfoBar import MoviePlayer
 						if MoviePlayer.instance is not None:
 							MoviePlayer.instance.lastservice = self.service_ref.ref
-# Shut it down if it's actually running...
-# ...uses one of the more weirdly named functions, it actually
-# functions as setMoviePlayerInactive
+# Shut it down if it's actually running
 #
 							if MoviePlayer.instance.execing:
 								print "[RecordTimer] Shutting down MoviePlayer"
-								NavigationInstance.instance.isMovieplayerActive()
+								MoviePlayer.ensureClosed()
 
 						self._bouquet_search()
 				return True
@@ -909,7 +903,7 @@ class RecordTimerEntry(timer.TimerEntry, object):
 def createTimer(xml):
 	begin = int(xml.get("begin"))
 	end = int(xml.get("end"))
-	serviceref = ServiceReference(xml.get("serviceref").encode("utf-8"))
+	serviceref = eServiceReference(xml.get("serviceref").encode("utf-8"))
 	description = xml.get("description").encode("utf-8")
 	repeated = xml.get("repeated").encode("utf-8")
 	rename_repeat = long(xml.get("rename_repeat") or "1")
@@ -1037,9 +1031,11 @@ class RecordTimer(timer.Timer):
 #
 	def loadTimer(self, justLoad=False):
 		try:
+			print "[sc] loading xml"
 			file = open(self.Filename, 'r')
 			doc = xml.etree.cElementTree.parse(file)
 			file.close()
+			print "[sc] finished loading xml"
 		except SyntaxError:
 			from Tools.Notifications import AddPopup
 			from Screens.MessageBox import MessageBox
@@ -1062,6 +1058,7 @@ class RecordTimer(timer.Timer):
 		checkit = False
 		timer_text = ""
 		for timer in root.findall("timer"):
+			print "[sc] loading timer"
 			newTimer = createTimer(timer)
 			conflict_list = self.record(newTimer, ignoreTSC=True, dosave=False, loadtimer=True, justLoad=justLoad)
 			if conflict_list:
@@ -1074,6 +1071,7 @@ class RecordTimer(timer.Timer):
 			AddPopup(_("Timer overlap in timers.xml detected!\nPlease recheck it!") + timer_text, type = MessageBox.TYPE_ERROR, timeout = 0, id = "TimerLoadFailed")
 
 	def saveTimer(self):
+		print "[sc] saving timers"
 		list = ['<?xml version="1.0" ?>\n', '<timers>\n']
 
 		for timer in self.timer_list + self.processed_timers:
@@ -1135,6 +1133,7 @@ class RecordTimer(timer.Timer):
 			list.append('</timer>\n')
 
 		list.append('</timers>\n')
+		print "[sc] finished building timer list"
 
 # We have to run this section with a lock.
 #  Imagine setting a timer manually while the (background) AutoTimer
@@ -1161,6 +1160,7 @@ class RecordTimer(timer.Timer):
 
 			os.fsync(file.fileno())
 			file.close()
+			print "[sc] finished writing timers.xml"
 			os.rename(self.Filename + ".writing", self.Filename)
 
 	def getNextZapTime(self):
@@ -1340,16 +1340,16 @@ class RecordTimer(timer.Timer):
 		end = begin + duration
 		startAt = begin - config.recording.margin_before.value * 60
 		endAt = end + config.recording.margin_after.value * 60
-		if isinstance(service, ServiceReference):
-			refstr = service.ref.toCompareString()
-		else:
+		if isinstance(service, str):
 			refstr = ':'.join(service.split(':')[:11])
+		else:
+			refstr = service.toCompareString()
 
 		# iterating is faster than using bisect+indexing to find the first relevant timer
 		for timer in self.timer_list:
 			# repeat timers represent all their future repetitions, so always include them
 			if (startAt <= timer.end or timer.repeated) and timer.begin < endAt:
-				check = timer.service_ref.ref.toCompareString() == refstr
+				check = timer.service_ref.toCompareString() == refstr
 				if check:
 					matchType = RecordTimer.__checkTimer(timer, check_offset_time, begin, end, duration)
 					if matchType is not None:

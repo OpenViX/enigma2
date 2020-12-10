@@ -169,6 +169,8 @@ class TimerEntryBase(Setup):
 			# when a timer end is set before the start, add 1 day
 			if self.timer.end < self.timer.begin:
 				self.timer.end += 86400
+		# vital, otherwise start_prepare will be wrong if begin time has been changed
+		self.timer.timeChanged()
 
 	def invalidateConfigEntry(self, conf):
 		for ent in self.list:
