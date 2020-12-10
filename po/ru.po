@@ -13688,7 +13688,7 @@ msgid "Wake Up"
 msgstr "Пробуждение"
 
 msgid "Wake Up To Standby"
-msgstr "Пробуждение в режиме ожидания"
+msgstr "Выход в режим ожидания"
 
 msgid "Wake the receiver from standby when the wake command is sent from the TV."
 msgstr "Пробуждение ресивер при включение телевизора."
