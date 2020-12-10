@@ -3138,6 +3138,9 @@ msgstr "Очистить"
 msgid "Clear"
 msgstr "Очистить"
 
+msgid "Clear HDMI-CEC fixed address"
+msgstr "Удалить фиксированный адрес HDMI-CEC"
+
 msgid "Clear before scan"
 msgstr "Очистить перед сканированием"
 
@@ -3154,14 +3157,11 @@ msgstr "Очистить список воспроизведения"
 msgid "Client Info ( Oscam-Version: %s )"
 msgstr "Клиент ( Версия OSCam: %s )"
 
-msgid "Client Mode"
-msgstr "Режим клиента"
+msgid "Client Mode setup"
+msgstr "Настройки режима клиента"
 
 msgid "Client mode"
 msgstr "Режим клиента"
-
-msgid "Client mode sets up this receiver to stream from another receiver. In this mode no local tuners will be available and channel lists, EPG, etc, will come from the remote receiver. All tuner settings will be cleared."
-msgstr "Режим клиента настраивает ресивер на поток с другого ресивера. В этом режиме локальные тюнеры не будут доступны, а списки каналов, EPG будут поступать с удалённого ресивера. Все настройки тюнера будут очищены."
 
 msgid "Clients"
 msgstr "Клиенты"
@@ -4888,11 +4888,11 @@ msgstr "Включить Virgin EPG"
 msgid "Enable auto cable scan"
 msgstr "Включить автопоиск кабельных каналов"
 
-msgid "Enable auto fast scan"
+msgid "Enable auto fastscan"
 msgstr "Быстрый поиск автоматически"
 
 #, python-format
-msgid "Enable auto fast scan for %s"
+msgid "Enable auto fastscan for %s"
 msgstr "Быстрый поиск автоматически для %s"
 
 msgid "Enable blinking rec symbol on the LCD Display"
@@ -4922,9 +4922,6 @@ msgstr "Включить режим перемещения"
 msgid "Enable multiple bouquets"
 msgstr "Включить мультипакеты"
 
-msgid "Enable or disable HDMI-CEC commands."
-msgstr "Включение или отключение команд HDMI-CEC."
-
 msgid "Enable or disable the 10 Bit Color Mode"
 msgstr "Включить или отключить 10-битный цветовой режим"
 
@@ -4939,6 +4936,9 @@ msgstr "Принудительно включить режим HDR10 для UHD"
 
 msgid "Enable or disable to force HLG Modes for UHD"
 msgstr "Принудительно включить режим HLG для UHD"
+
+msgid "Enable or disable using HDMI-CEC."
+msgstr "Включение или отключение команд HDMI-CEC."
 
 msgid "Enable panic button"
 msgstr "Включить тревожную кнопку"
@@ -5033,8 +5033,8 @@ msgstr "Введите PIN-код"
 msgid "Enter pin code"
 msgstr "Введите PIN-код"
 
-msgid "Enter the FTP password of the host receiver (normally just leave empty)."
-msgstr "Введите пароль FTP (как правило, просто оставляют пустым)."
+msgid "Enter the FTP password of the host receiver (required for any server running OpenViX 5.4 or greater)."
+msgstr "Введите пароль FTP (необходим для любого сервера под OpenViX 5.4 или выше)."
 
 msgid "Enter the FTP port of the host receiver (normally '21')."
 msgstr "Введите порт FTP (обычно - '21')."
@@ -5451,17 +5451,20 @@ msgstr "Быстро"
 msgid "Fast DiSEqC"
 msgstr "Быстрый DiSEqC"
 
-msgid "Fast Scan"
-msgstr "Быстрый поиск"
-
 msgid "Fast epoch"
 msgstr "Время для быстрой скорости"
 
 msgid "Fast forward speeds"
 msgstr "Скорость перемотки вперед"
 
+msgid "FastScan"
+msgstr "Быстрый поиск"
+
 msgid "Fastforward"
 msgstr "Перемотка вперед"
+
+msgid "Fastscan"
+msgstr "Быстрый поиск"
 
 msgid "Favourites"
 msgstr "Избранное"
@@ -5933,8 +5936,8 @@ msgstr "Режим HDMI HDR"
 msgid "HDMI input"
 msgstr "Вход HDMI"
 
-msgid "HDMI-CEC setup"
-msgstr "Настройки HDMI-CEC"
+msgid "HDMI-CEC address editing actions"
+msgstr "Настройки адреса HDMI-CEC"
 
 msgid "HDMIin"
 msgstr "HDMIin"
@@ -5974,6 +5977,9 @@ msgstr "Настройки жесткого диска"
 
 msgid "HbbTV"
 msgstr "HbbTV"
+
+msgid "Hdmi-CEC setup"
+msgstr "Настройки HDMI-CEC"
 
 msgid "Heard Island and McDonald Islands"
 msgstr "Остров Херд и острова Макдональд"
@@ -9009,13 +9015,13 @@ msgid "Press OK to scan"
 msgstr "Нажмите OK для поиска"
 
 msgid "Press OK to select a group of satellites to configure in one block."
-msgstr "Нажмите OK, для выбора группы спутников для их одновременной настройки"
+msgstr "Нажмите ОК, чтобы выбрать группу спутников для их одновременной настройки."
 
 msgid "Press OK to select a provider."
 msgstr "Нажмите ОК для выбора провайдера."
 
 msgid "Press OK to select a service."
-msgstr "Нажмите OK, для выбора канала."
+msgstr "Нажмите OK для выбора канала."
 
 msgid "Press OK to select satellites"
 msgstr "Нажмите ОК для выбора спутников"
@@ -9172,14 +9178,14 @@ msgstr "Пуэрто-Рико"
 msgid "Purge deleted user bouquets"
 msgstr "Очистить удаленные пакеты"
 
+msgid "Put A/V receiver in standby"
+msgstr "Перевести ресивер в режим ожидания"
+
 msgid "Put A/V receiver in standby."
 msgstr "Перевести ресивер в режим ожидания"
 
 msgid "Put TV in standby"
 msgstr "Перевести ТВ в режим ожидания"
-
-msgid "Put receiver in standby"
-msgstr "Перевести ресивер в режим ожидания"
 
 msgid "Python frontend for /tmp/mmi.socket"
 msgstr "Интерфейс Python для /tmp/mmi.socket"
@@ -10657,6 +10663,9 @@ msgstr "Включить назначение модуля доступа для
 msgid "Set Framerate for MiniTV"
 msgstr "Частота кадров для MiniTV"
 
+msgid "Set HDMI-CEC fixed address"
+msgstr "Использовать фиксированный адрес HDMI-CEC"
+
 msgid "Set LED Color or disable the LED."
 msgstr "Установите LED Color или отключите LED."
 
@@ -12073,7 +12082,7 @@ msgid "TRANSLATOR_INFO"
 msgstr ""
 "Перевод OpenViX 5.4\n"
 "litvcom\n"
-"Ноябрь 2020\n"
+"Декабрь 2020\n"
 "Поддержка: world-of-satellite.com"
 
 msgid "TS file is too large for ISO9660 level 1!"
@@ -13666,6 +13675,9 @@ msgstr "Ожидание монтирования"
 msgid "Waiting for partition."
 msgstr "Ожидание раздела"
 
+msgid "Wake A/V receiver from standby"
+msgstr "Выход ресивера из режима ожидания"
+
 msgid "Wake A/V receiver from standby."
 msgstr "Выход ресивера из режима ожидания"
 
@@ -13676,7 +13688,7 @@ msgid "Wake Up"
 msgstr "Пробуждение"
 
 msgid "Wake Up To Standby"
-msgstr "Пробуждение в режим ожидания"
+msgstr "Выход в режим ожидания"
 
 msgid "Wake the receiver from standby when the wake command is sent from the TV."
 msgstr "Пробуждение ресивер при включение телевизора."
@@ -13689,9 +13701,6 @@ msgstr "Пробудить ТВ из режима ожидания"
 
 msgid "Wakeup command for TV"
 msgstr "Сигнал пробуждения для ТВ"
-
-msgid "Wakeup receiver from standby"
-msgstr "Пробуждение ресивера из режима ожидания"
 
 msgid "Wakeup signal from TV"
 msgstr "Сигнал пробуждения от ТВ"
