@@ -13,9 +13,8 @@ from Components.MenuList import MenuList
 from Components.ServiceEventTracker import ServiceEventTracker, InfoBarBase
 from Components.Sources.List import List
 from Components.SystemInfo import SystemInfo
-from Components.UsageConfig import preferredTimerPath
 from Components.Renderer.Picon import getPiconName
-from Screens.TimerEdit import TimerSanityConflict
+from Screens.TimerEntry import addTimerFromEventSilent
 profile("ChannelSelection.py 1")
 from EpgSelectionSingle import EPGSelectionSingle
 from enigma import eActionMap, eServiceReference, eEPGCache, eServiceCenter, eRCInput, eTimer, ePoint, eDVBDB, iPlayableService, iServiceInformation, getPrevAsciiCode, eEnv, loadPNG, eDVBLocalTimeHandler
@@ -32,9 +31,9 @@ profile("ChannelSelection.py 2.3")
 from Components.Input import Input
 profile("ChannelSelection.py 3")
 from Components.ChoiceList import ChoiceList, ChoiceEntryComponent
-from RecordTimer import RecordTimerEntry, AFTEREVENT, parseEvent
-from TimerEntry import TimerEntry, InstantRecordTimerEntry
-from Screens.InputBox import InputBox, PinInput
+from RecordTimer import AFTEREVENT
+from TimerEntry import TimerEntry
+from Screens.InputBox import PinInput
 from Screens.VirtualKeyBoard import VirtualKeyBoard
 from Screens.ChoiceBox import ChoiceBox
 from Screens.MessageBox import MessageBox
@@ -858,41 +857,7 @@ class ChannelSelectionEPG(InfoBarButtonSetup, HelpableScreen):
 				break
 		else:
 			event = epgCache.lookupEventId(serviceref.ref, eventid)
-			newEntry = RecordTimerEntry(serviceref, checkOldTimers = True, dirname = preferredTimerPath(), *parseEvent(event, service=serviceref))
-			if not newEntry:
-				return
-			self.InstantRecordDialog = self.session.instantiateDialog(InstantRecordTimerEntry, newEntry, zap)
-			retval = [True, self.InstantRecordDialog.retval()]
-			self.session.deleteDialogWithCallback(self.finishedAdd, self.InstantRecordDialog, retval)
-
-	def finishedAdd(self, answer):
-		# print "finished add"
-		if answer[0]:
-			entry = answer[1]
-			simulTimerList = self.session.nav.RecordTimer.record(entry)
-			if simulTimerList is not None:
-				for x in simulTimerList:
-					if x.setAutoincreaseEnd(entry):
-						self.session.nav.RecordTimer.timeChanged(x)
-				simulTimerList = self.session.nav.RecordTimer.record(entry)
-				if simulTimerList is not None:
-					if not entry.repeated and not config.recording.margin_before.value and not config.recording.margin_after.value and len(simulTimerList) > 1:
-						change_time = False
-						conflict_begin = simulTimerList[1].begin
-						conflict_end = simulTimerList[1].end
-						if conflict_begin == entry.end:
-							entry.end -= 30
-							change_time = True
-						elif entry.begin == conflict_end:
-							entry.begin += 30
-							change_time = True
-						if change_time:
-							simulTimerList = self.session.nav.RecordTimer.record(entry)
-					if simulTimerList is not None:
-						self.session.openWithCallback(self.finishSanityCorrection, TimerSanityConflict, simulTimerList)
-
-	def finishSanityCorrection(self, answer):
-		self.finishedAdd(answer)
+			addTimerFromEventSilent(self.session, None, event, serviceref)
 
 	def removeTimer(self, timer):
 		timer.afterEvent = AFTEREVENT.NONE

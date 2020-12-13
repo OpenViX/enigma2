@@ -10,7 +10,7 @@ from Components.Sources.ServiceEvent import ServiceEvent
 from Components.Sources.Boolean import Boolean
 from Components.config import config, configfile, ConfigBoolean, ConfigClock, ConfigSelection
 from Components.SystemInfo import SystemInfo
-from Components.UsageConfig import preferredInstantRecordPath, defaultMoviePath, preferredTimerPath
+from Components.UsageConfig import preferredInstantRecordPath, defaultMoviePath
 from Components.VolumeControl import VolumeControl
 from Components.Pixmap import MovingPixmap, MultiPixmap
 from Components.Sources.StaticText import StaticText
@@ -42,11 +42,11 @@ from Screens.SubtitleDisplay import SubtitleDisplay
 from Screens.RdsDisplay import RdsInfoDisplay, RassInteractive
 from Screens.TimeDateInput import TimeDateInput
 from Screens.TimerEdit import TimerEditList
+from Screens.TimerEntry import TimerEntry as addTimerFromEvent
 from Screens.UnhandledKey import UnhandledKey
 from ServiceReference import ServiceReference, isPlayableForCur
 
 from RecordTimer import RecordTimerEntry, parseEvent, AFTEREVENT, findSafeRecordPath
-from Screens.TimerEntry import TimerEntry as TimerEntry
 
 from Tools import Notifications
 from Tools.Directories import pathExists, fileExists
@@ -441,50 +441,22 @@ class SecondInfoBar(Screen, HelpableScreen):
 		if event is None:
 			return
 		eventid = event.getEventId()
-		refstr = serviceref.ref.toString()
+		refstr = serviceref.toString()
 		for timer in self.session.nav.RecordTimer.timer_list:
-			if timer.eit == eventid and timer.service_ref.ref.toString() == refstr:
+			if timer.eit == eventid and timer.service_ref.toString() == refstr:
 				cb_func = lambda ret : not ret or self.removeTimer(timer)
 				self.session.openWithCallback(cb_func, MessageBox, _("Do you really want to delete %s?") % event.getEventName(), simple=True)
 				break
 		else:
-			newEntry = RecordTimerEntry(self.currentService, checkOldTimers = True, dirname = preferredTimerPath(), *parseEvent(self.event, service=serviceref))
-			self.session.openWithCallback(self.finishedAdd, TimerEntry, newEntry)
+			def refreshButtons(timer):
+				if timer:
+					self["key_green"].setText(_("Remove timer"))
+					self.key_green_choice = self.REMOVE_TIMER
+				else:
+					self["key_green"].setText(_("Add timer"))
+					self.key_green_choice = self.ADD_TIMER
 
-	def finishedAdd(self, answer):
-		# print "finished add"
-		if answer[0]:
-			entry = answer[1]
-			simulTimerList = self.session.nav.RecordTimer.record(entry)
-			if simulTimerList is not None:
-				for x in simulTimerList:
-					if x.setAutoincreaseEnd(entry):
-						self.session.nav.RecordTimer.timeChanged(x)
-				simulTimerList = self.session.nav.RecordTimer.record(entry)
-				if simulTimerList is not None:
-					if not entry.repeated and not config.recording.margin_before.value and not config.recording.margin_after.value and len(simulTimerList) > 1:
-						change_time = False
-						conflict_begin = simulTimerList[1].begin
-						conflict_end = simulTimerList[1].end
-						if conflict_begin == entry.end:
-							entry.end -= 30
-							change_time = True
-						elif entry.begin == conflict_end:
-							entry.begin += 30
-							change_time = True
-						if change_time:
-							simulTimerList = self.session.nav.RecordTimer.record(entry)
-					if simulTimerList is not None:
-						self.session.openWithCallback(self.finishSanityCorrection, TimerSanityConflict, simulTimerList)
-			self["key_green"].setText(_("Remove timer"))
-			self.key_green_choice = self.REMOVE_TIMER
-		else:
-			self["key_green"].setText(_("Add timer"))
-			self.key_green_choice = self.ADD_TIMER
-			# print "Timeredit aborted"
-
-	def finishSanityCorrection(self, answer):
-		self.finishedAdd(answer)
+			addTimerFromEvent(self.session, refreshButtons, event, serviceref)
 
 	def setService(self, service):
 		self.currentService=service

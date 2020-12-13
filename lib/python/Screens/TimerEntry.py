@@ -7,18 +7,15 @@ from Screens.Screen import Screen
 import ChannelSelection
 from ServiceReference import ServiceReference
 from Components.config import config, ConfigSelection, ConfigText, ConfigYesNo
-from Components.ActionMap import HelpableActionMap
-from Components.Label import Label
-from Components.Pixmap import Pixmap
 from Components.SystemInfo import SystemInfo
-from Components.UsageConfig import defaultMoviePath
+from Components.UsageConfig import defaultMoviePath, preferredTimerPath
 from Screens.TimerEntryBase import TimerEntryBase, TimerLogBase
 from Screens.MovieSelection import getPreferredTagEditor
 from Screens.LocationBox import MovieLocationBox
 from Screens.ChoiceBox import ChoiceBox
 from Screens.MessageBox import MessageBox
 from Screens.VirtualKeyBoard import VirtualKeyBoard
-from RecordTimer import AFTEREVENT
+from RecordTimer import AFTEREVENT, RecordTimerEntry, parseEvent
 
 
 class TimerEntry(TimerEntryBase):
@@ -117,15 +114,6 @@ class TimerEntry(TimerEntryBase):
 			target.value = answer
 			self.invalidateConfigEntry(target)
 
-#	No longer called from ConfigListScreen since keyFile() removed.
-#	def handleKeyFileCallback(self, answer):
-#		cur = self["config"].getCurrent()
-#		if cur and cur[1] in (self.timerentry_service, self.timerentry_tagsset):
-#			self.keySelect()
-#		else:
-#			Setup.handleKeyFileCallback(self, answer)
-#			self.changedEntry()
-
 	def keySelect(self):
 		cur = self["config"].getCurrent()
 		if cur and cur[1] == self.timerentry_service:
@@ -202,11 +190,11 @@ class TimerEntry(TimerEntryBase):
 			"standby": AFTEREVENT.STANDBY,
 			"auto": AFTEREVENT.AUTO
 			}[self.timerentry_afterevent.value]
-# There is no point doing anything after a Zap-only timer!
-# For a start, you can't actually configure anything in the menu, but
-# leaving it as AUTO means that the code may try to shutdown at Zap time
-# if the Zap timer woke the box up.
-#
+		# There is no point doing anything after a Zap-only timer!
+		# For a start, you can't actually configure anything in the menu, but
+		# leaving it as AUTO means that the code may try to shutdown at Zap time
+		# if the Zap timer woke the box up.
+		#
 		if self.timer.justplay:
 			self.timer.afterEvent = AFTEREVENT.NONE
 		self.timer.descramble = {
@@ -291,21 +279,46 @@ class TimerEntry(TimerEntryBase):
 class TimerLog(TimerLogBase):
 	pass
 
-class InstantRecordTimerEntry(TimerEntry):
-	def __init__(self, session, timer, zap):
-		Screen.__init__(self, session)
-		self.timer = timer
-		self.timer.justplay = zap
-		self.keySave()
+def addTimerFromEvent(session, refreshCallback, event, service):
+	if event is None or event.getBeginTime() + event.getDuration() < time():
+		return
+	timer = RecordTimerEntry(service, checkOldTimers=True, dirname=preferredTimerPath(), *parseEvent(event, service=service))
+	session.openWithCallback(lambda answer: checkForConflicts(session, refreshCallback, answer[1]) if answer[0] else None, TimerEntry, timer)
 
-	def keySave(self, result = None):
-		if self.timer.justplay:
-			self.timer.end = self.timer.begin + (config.recording.margin_before.value * 60) + 1
-		self.timer.resetRepeated()
-		self.saveTimer()
+def addTimerFromEventSilent(session, refreshCallback, event, service, zap=0):
+	if event is None or event.getBeginTime() + event.getDuration() < time():
+		return
+	timer = RecordTimerEntry(service, checkOldTimers=True, dirname=preferredTimerPath(), *parseEvent(event, service=service))
+	if zap:
+		timer.justplay = 1
+		timer.end = timer.begin + (config.recording.margin_before.value * 60) + 1
+	timer.resetRepeated()
+	checkForConflicts(session, refreshCallback, timer)
 
-	def retval(self):
-		return self.timer
+def checkForConflicts(session, refreshCallback, timer):
+	simulTimerList = getTimerConflicts(session, timer)
+	if simulTimerList is not None:
+		from Screens.TimerEdit import TimerSanityConflict
+		session.openWithCallback(lambda answer: checkForConflicts(session, refreshCallback, answer[1]) if answer[0] else None, TimerSanityConflict, simulTimerList)
+	else:
+		if refreshCallback is not None:
+			refreshCallback(timer)
+		session.nav.RecordTimer.saveTimer()
 
-	def saveTimer(self):
-		self.session.nav.RecordTimer.saveTimer()
+def getTimerConflicts(session, timer):
+	# every call must explicitly tell record to "dosave=False" to prevent regeneration of timer.xml
+	# we *really* don't need it serialised to disk up to four times
+	simulTimerList = session.nav.RecordTimer.record(timer, dosave=False)
+	if simulTimerList is not None:
+		for x in simulTimerList:
+			if x.setAutoincreaseEnd(timer):
+				session.nav.RecordTimer.timeChanged(x)
+		simulTimerList = session.nav.RecordTimer.record(timer, dosave=False)
+	if simulTimerList and not timer.repeated and not config.recording.margin_before.value and not config.recording.margin_after.value and len(simulTimerList) > 1:
+		if simulTimerList[1].begin == timer.end:
+			timer.end -= 30
+			simulTimerList = session.nav.RecordTimer.record(timer, dosave=False)
+		elif timer.begin == simulTimerList[1].end:
+			timer.begin += 30
+			simulTimerList = session.nav.RecordTimer.record(timer, dosave=False)
+	return simulTimerList

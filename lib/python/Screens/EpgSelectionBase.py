@@ -2,14 +2,13 @@ from time import time
 
 from enigma import ePoint, eServiceCenter, eServiceReference, eTimer
 
-from RecordTimer import AFTEREVENT, RecordTimerEntry, parseEvent
+from RecordTimer import AFTEREVENT
 from Components.ActionMap import ActionMap, HelpableActionMap, HelpableNumberActionMap
 from Components.Button import Button
 from Components.EpgBouquetList import EPGBouquetList
 from Components.Label import Label
 from Components.Sources.Event import Event
 from Components.Sources.ServiceEvent import ServiceEvent
-from Components.UsageConfig import preferredTimerPath
 from Components.config import ConfigClock, ConfigDateTime, config
 from Screens.ChoiceBox import PopupChoiceBox
 from Screens.EventView import EventViewEPGSelect
@@ -18,9 +17,7 @@ from Screens.MessageBox import MessageBox
 from Screens.PictureInPicture import PictureInPicture
 from Screens.Screen import Screen
 from Screens.TimeDateInput import TimeDateInput
-from Screens.TimerEdit import TimerSanityConflict
-from Screens.TimerEntry import InstantRecordTimerEntry, TimerEntry
-
+from Screens.TimerEntry import TimerEntry, addTimerFromEvent, addTimerFromEventSilent
 
 # PiPServiceRelation installed?
 try:
@@ -270,12 +267,9 @@ class EPGSelectionBase(Screen, HelpableScreen):
 		except ImportError:
 			self.session.open(MessageBox, self.noAutotimer, type=MessageBox.TYPE_INFO, timeout=10)
 
-	def addAutoTimerSilent(self):
+	def addAutoTimerSilent(self, event, service):
 		try:
 			from Plugins.Extensions.AutoTimer.AutoTimerEditor import addAutotimerFromEventSilent
-			event, service = self["list"].getCurrent()[:2]
-			if event is None:
-				return
 			addAutotimerFromEventSilent(self.session, evt=event, service=service)
 			self.refreshTimer.start(3000)
 		except ImportError:
@@ -343,61 +337,57 @@ class EPGSelectionBase(Screen, HelpableScreen):
 		self.setActionButtonText("addEditTimer", _("Add Timer"))
 		self.refreshList()
 
+	def refreshTimerActionButton(self, timer):
+		self.setActionButtonText("addEditTimer", _("Change Timer") if timer is not None else _("Add Timer"))
+		self.refreshList()
+
 	def addEditTimerMenu(self):
-		def callback(choice):
-			self.closePopupDialog()
-			if choice:
-				choice()
+		event, service = self.__timerEditPopupMenu()
+		if event is None or event.getBeginTime() + event.getDuration() <= time():
+			return
 
 		self.closeEventViewDialog()
-		event, service = self.__timerEditPopupMenu()
-		if event is not None:
-			if event.getBeginTime() + event.getDuration() <= time():
-				return
-			self.__popupMenu(
-					"%s?" % event.getEventName(),
-					[(_("Add Timer"), "CALLFUNC", callback, self.doInstantTimer),
-					(_("Add AutoTimer"), "CALLFUNC", callback, self.addAutoTimerSilent)])
+		self.__popupMenu(
+				"%s?" % event.getEventName(),
+				[[_("Add Timer"), addTimerFromEventSilent, self.session, self.refreshTimerActionButton, event, service],
+				[_("Add AutoTimer"), self.addAutoTimerSilent, event, service]])
 
 	def addEditTimer(self):
 		self.closeEventViewDialog()
 		event, service = self.__timerEditPopupMenu()
-		if event is not None:
-			newEntry = RecordTimerEntry(service, checkOldTimers=True, dirname=preferredTimerPath(), *parseEvent(event, service=service))
-			self.session.openWithCallback(self.finishedAdd, TimerEntry, newEntry)
+		addTimerFromEvent(self.session, self.refreshTimerActionButton, event, service)
 
 	def addEditTimerSilent(self):
 		self.closeEventViewDialog()
 		event, service = self.__timerEditPopupMenu()
-		if event is not None:
-			self.doInstantTimer(0)
+		addTimerFromEventSilent(self.session, self.refreshTimerActionButton, event, service)
 
 	def addEditZapTimerSilent(self):
 		self.closeEventViewDialog()
 		event, service = self.__timerEditPopupMenu()
-		if event is not None:
-			self.doInstantTimer(1)
+		addTimerFromEventSilent(self.session, self.refreshTimerActionButton, event, service, 1)
 
 	def __timerEditPopupMenu(self):
-		def callback(choice):
-			self.closePopupDialog()
-			if choice:
-				choice(self)
-
 		event, service = self["list"].getCurrent()[:2]
 		if event is None:
 			return None, None
 		timer = self.session.nav.RecordTimer.getTimerForEvent(service, event)
-		if timer is not None:
-			self.__popupMenu(
-				_("Select action for timer %s:") % event.getEventName(),
-				[(_("Delete Timer"), "CALLFUNC", callback, lambda ret: self.removeTimer(timer)),
-				(_("Edit Timer"), "CALLFUNC", callback, lambda ret: self.editTimer(timer)),
-				(_("Disable Timer"), "CALLFUNC", callback, lambda ret: self.disableTimer(timer))])
-			return None, None
-		return event, service
+		if timer is None:
+			return event, service
+
+		self.__popupMenu(
+			_("Select action for timer %s:") % event.getEventName(),
+			[[_("Delete Timer"), self.removeTimer, timer],
+			[_("Edit Timer"), self.editTimer, timer],
+			[_("Disable Timer"), self.disableTimer, timer]])
+		return None, None
 
 	def __popupMenu(self, title, menu):
+		def callback(choice):
+			self.closePopupDialog()
+			choice[0](*choice[1:])
+
+		menu = [(item[0], "CALLFUNC", callback, item[1:]) for item in menu]
 		self.popupDialog = self.session.instantiateDialog(PopupChoiceBox, title=title, list=menu, keys=["green", "blue"], skin_name="RecordTimerQuestion", closeCB=self.closePopupDialog)
 		pos = self["list"].getSelectionPosition()
 		self.popupDialog.instance.move(ePoint(pos[0] - self.popupDialog.instance.size().width(), self.instance.position().y() + pos[1]))
@@ -428,51 +418,6 @@ class EPGSelectionBase(Screen, HelpableScreen):
 		if "numberactions" in self:
 			self["numberactions"].setEnabled(True)
 		self["helpActions"].setEnabled(True)
-
-	def doInstantTimer(self, zap=0):
-		event, service = self["list"].getCurrent()[:2]
-		if event is None or event.getBeginTime() + event.getDuration() < time():
-			return
-		newEntry = RecordTimerEntry(service, checkOldTimers=True, *parseEvent(event, service=service))
-		self.instantRecordDialog = self.session.instantiateDialog(InstantRecordTimerEntry, newEntry, zap)
-		retval = [True, self.instantRecordDialog.retval()]
-		self.session.deleteDialogWithCallback(self.finishedAdd, self.instantRecordDialog, retval)
-
-	def finishedAdd(self, answer):
-		saveRequired = False
-		if answer[0]:
-			entry = answer[1]
-			# every call must be explicit with "dosave" not saving the timer.xml
-			# we *really* don't need it serialised to disk every time record is called
-			simulTimerList = self.session.nav.RecordTimer.record(entry, dosave=False)
-			if simulTimerList is not None:
-				for x in simulTimerList:
-					if x.setAutoincreaseEnd(entry):
-						self.session.nav.RecordTimer.timeChanged(x)
-						saveRequired = True
-				simulTimerList = self.session.nav.RecordTimer.record(entry, dosave=False)
-				if simulTimerList is not None:
-					if not entry.repeated and not config.recording.margin_before.value and not config.recording.margin_after.value and len(simulTimerList) > 1:
-						changeTime = False
-						conflictBegin = simulTimerList[1].begin
-						conflictEnd = simulTimerList[1].end
-						if conflictBegin == entry.end:
-							entry.end -= 30
-							changeTime = True
-						elif entry.begin == conflictEnd:
-							entry.begin += 30
-							changeTime = True
-						if changeTime:
-							saveRequired = True
-							simulTimerList = self.session.nav.RecordTimer.record(entry, dosave=False)
-					if simulTimerList is not None:
-						self.session.openWithCallback(self.finishedAdd, TimerSanityConflict, simulTimerList)
-			self.setActionButtonText("addEditTimer", _("Change Timer"))
-		else:
-			self.setActionButtonText("addEditTimer", _("Add Timer"))
-		self.refreshList()
-		if saveRequired:
-			self.session.nav.RecordTimer.record.saveTimer()
 
 	def onSelectionChanged(self):
 		event, service = self["list"].getCurrent()[:2]
