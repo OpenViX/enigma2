@@ -514,7 +514,7 @@ void eFilePushThreadRecorder::thread()
 
 	sigemptyset(&sigset);
 	sigaddset(&sigset, SIGUSR1);
-	sigprocmask(SIG_BLOCK, &sigset, (sigset_t *)0);
+	pthread_sigmask(SIG_BLOCK, &sigset, (sigset_t *)0);
 
 	hasStarted();
 	if(m_protocol == _PROTO_RTSP_TCP)
