@@ -439,14 +439,18 @@ class EPGSelectionBase(Screen, HelpableScreen):
 		self.session.deleteDialogWithCallback(self.finishedAdd, self.instantRecordDialog, retval)
 
 	def finishedAdd(self, answer):
+		saveRequired = False
 		if answer[0]:
 			entry = answer[1]
-			simulTimerList = self.session.nav.RecordTimer.record(entry)
+			# every call must be explicit with "dosave" not saving the timer.xml
+			# we *really* don't need it serialised to disk every time record is called
+			simulTimerList = self.session.nav.RecordTimer.record(entry, dosave=False)
 			if simulTimerList is not None:
 				for x in simulTimerList:
 					if x.setAutoincreaseEnd(entry):
 						self.session.nav.RecordTimer.timeChanged(x)
-				simulTimerList = self.session.nav.RecordTimer.record(entry)
+						saveRequired = True
+				simulTimerList = self.session.nav.RecordTimer.record(entry, dosave=False)
 				if simulTimerList is not None:
 					if not entry.repeated and not config.recording.margin_before.value and not config.recording.margin_after.value and len(simulTimerList) > 1:
 						changeTime = False
@@ -459,16 +463,16 @@ class EPGSelectionBase(Screen, HelpableScreen):
 							entry.begin += 30
 							changeTime = True
 						if changeTime:
-							simulTimerList = self.session.nav.RecordTimer.record(entry)
+							saveRequired = True
+							simulTimerList = self.session.nav.RecordTimer.record(entry, dosave=False)
 					if simulTimerList is not None:
-						self.session.openWithCallback(self.finishSanityCorrection, TimerSanityConflict, simulTimerList)
+						self.session.openWithCallback(self.finishedAdd, TimerSanityConflict, simulTimerList)
 			self.setActionButtonText("addEditTimer", _("Change Timer"))
 		else:
 			self.setActionButtonText("addEditTimer", _("Add Timer"))
 		self.refreshList()
-
-	def finishSanityCorrection(self, answer):
-		self.finishedAdd(answer)
+		if saveRequired:
+			self.session.nav.RecordTimer.record.saveTimer()
 
 	def onSelectionChanged(self):
 		event, service = self["list"].getCurrent()[:2]
