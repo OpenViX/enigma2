@@ -281,7 +281,7 @@ def InitLcd():
 
  	if SystemInfo["StandbyLED"]:
 		def setPowerLEDstanbystate(configElement):
-			print("[LCD] StandbyLED = %s configElement = %s" % SystemInfo["StandbyLED"], configElement.value)
+			print("[LCD] StandbyLED = %s configElement = %s" % (SystemInfo["StandbyLED"], configElement.value))
 			f = open("/proc/stb/power/standbyled", "w")
 			f.write(configElement.value)
 			f.close()
@@ -290,7 +290,7 @@ def InitLcd():
 
  	if SystemInfo["SuspendLED"]:
 		def setPowerLEDdeepstanbystate(configElement):
-			print("[LCD] SuspendLED = %s configElement = %s" % SystemInfo["SuspendLED"], configElement.value)
+			print("[LCD] SuspendLED = %s configElement = %s" % (SystemInfo["SuspendLED"], configElement.value))
 			f = open("/proc/stb/power/suspendled", "w")
 			f.write(configElement.value)
 			f.close()
