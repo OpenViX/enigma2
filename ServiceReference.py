@@ -37,6 +37,12 @@ eServiceReference.isPlayback = lambda serviceref: "0:0:0:0:0:0:0:0:0" in service
 # These are required for ServiceReference backwards compatibility
 eServiceReference.isRecordable = lambda serviceref: serviceref.flags & eServiceReference.isGroup or (serviceref.type == eServiceReference.idDVB or serviceref.type == eServiceReference.idDVB + 0x100 or serviceref.type == 0x2000 or serviceref.type == eServiceReference.idServiceMP3)
 
+def __repr(serviceref):
+	chnum = serviceref.getChannelNum()
+	chnum = ", ChannelNum=" + str(chnum) if chnum else ""
+	return "eServiceReference(Name=%s%s, String=%s)" % (serviceref.getServiceName(), chnum, serviceref.toString())
+eServiceReference.__repr__ = __repr
+
 def __toString(serviceref):
 	return serviceref.toString()
 eServiceReference.__str__ = __toString
