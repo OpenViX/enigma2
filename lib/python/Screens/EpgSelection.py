@@ -2,6 +2,7 @@ from __future__ import print_function
 from enigma import eServiceReference
 from Components.ActionMap import HelpableActionMap
 from Screens.EpgSelectionChannel import EPGSelectionChannel
+from Screens.TimerEntry import addTimerFromEventSilent
 
 
 # Keep for backwards compatibility with plugins, including the parameter naming.
@@ -104,6 +105,10 @@ class EPGSelection(EPGSelectionChannel):
 			self.addEditTimer()
 		else:
 			self.addEditTimerMenu()
+
+	def doInstantTimer(self, zap=0):
+		event, service = self["list"].getCurrent()[:2]
+		addTimerFromEventSilent(self.session, self.refreshTimerActionButton, event, service, zap)
 
 	# Things that need to be able to be overridden.
 	def refreshList(self):

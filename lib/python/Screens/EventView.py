@@ -13,12 +13,11 @@ from Components.Sources.StaticText import StaticText
 from Components.ScrollLabel import ScrollLabel
 from Components.PluginComponent import plugins
 from Components.MenuList import MenuList
-from Components.UsageConfig import preferredTimerPath
 from Components.Pixmap import Pixmap
 from Components.Sources.ServiceEvent import ServiceEvent
 from Components.Sources.Event import Event
-from RecordTimer import RecordTimerEntry, parseEvent, AFTEREVENT
-from Screens.TimerEntry import TimerEntry
+from RecordTimer import AFTEREVENT
+from Screens.TimerEntry import TimerEntry, addTimerFromEvent
 from Plugins.Plugin import PluginDescriptor
 from Tools.BoundFunction import boundFunction
 
@@ -136,8 +135,7 @@ class EventViewBase:
 			self.ChoiceBoxDialog.instance.move(ePoint(self.instance.position().x()+self["key_green"].getPosition()[0], self.instance.position().y()+self["key_green"].getPosition()[1]-self["key_green"].instance.size().height()))
 			self.showChoiceBoxDialog()
 		else:
-			newEntry = RecordTimerEntry(self.currentService, checkOldTimers = True, dirname = preferredTimerPath(), *parseEvent(self.event, service=self.currentService))
-			self.session.openWithCallback(self.finishedAdd, TimerEntry, newEntry)
+			addTimerFromEvent(self.session, lambda _: self.updateButtons(), event, self.currentService)
 
 	def showChoiceBoxDialog(self):
 		self['actions'].setEnabled(False)
@@ -151,35 +149,6 @@ class EventViewBase:
 			self.ChoiceBoxDialog['actions'].execEnd()
 			self.session.deleteDialog(self.ChoiceBoxDialog)
 		self['actions'].setEnabled(True)
-
-	def finishedAdd(self, answer):
-		if answer[0]:
-			entry = answer[1]
-			simulTimerList = self.session.nav.RecordTimer.record(entry)
-			if simulTimerList is not None:
-				for x in simulTimerList:
-					if x.setAutoincreaseEnd(entry):
-						self.session.nav.RecordTimer.timeChanged(x)
-				simulTimerList = self.session.nav.RecordTimer.record(entry)
-				if simulTimerList is not None:
-					if not entry.repeated and not config.recording.margin_before.value and not config.recording.margin_after.value and len(simulTimerList) > 1:
-						change_time = False
-						conflict_begin = simulTimerList[1].begin
-						conflict_end = simulTimerList[1].end
-						if conflict_begin == entry.end:
-							entry.end -= 30
-							change_time = True
-						elif entry.begin == conflict_end:
-							entry.begin += 30
-							change_time = True
-						if change_time:
-							simulTimerList = self.session.nav.RecordTimer.record(entry)
-					if simulTimerList is not None:
-						self.session.openWithCallback(self.finishSanityCorrection, TimerSanityConflict, simulTimerList)
-		self.updateButtons()
-
-	def finishSanityCorrection(self, answer):
-		self.finishedAdd(answer)
 
 	def setService(self, service):
 		self.currentService = service
