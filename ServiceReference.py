@@ -83,7 +83,7 @@ class ServiceReference(eServiceReference):
 			new = ref
 			new.__class__ = ServiceReference
 			return new
-		return object.__new__(cls, ref, reftype, flags, path)
+		return eServiceReference.__new__(cls)
 
 	def __init__(self, ref, reftype=eServiceReference.idInvalid, flags=0, path=''):
 		if reftype != eServiceReference.idInvalid:
