@@ -1027,8 +1027,8 @@ class RecordTimer(timer.Timer):
 				return True
 		return False
 
-# justLoad is passed on to record()
-#
+	# justLoad is passed on to record()
+	#
 	def loadTimer(self, justLoad=False):
 		try:
 			file = open(self.Filename, 'r')
@@ -1055,9 +1055,10 @@ class RecordTimer(timer.Timer):
 		# put out a message when at least one timer overlaps
 		checkit = False
 		timer_text = ""
+		now = time()
 		for timer in root.findall("timer"):
 			newTimer = createTimer(timer)
-			conflict_list = self.record(newTimer, ignoreTSC=True, dosave=False, loadtimer=True, justLoad=justLoad)
+			conflict_list = self.record(newTimer, ignoreTSC=True, dosave=False, loadtimer=True, justLoad=justLoad, sanityCheck=now < newTimer.end)
 			if conflict_list:
 				checkit = True
 				if newTimer in conflict_list:
@@ -1218,37 +1219,38 @@ class RecordTimer(timer.Timer):
 # as we load.  On a restore we may not have the correct tuner
 # configuration (and no USB tuners)...
 #
-	def record(self, entry, ignoreTSC=False, dosave=True, loadtimer=False, justLoad=False):
-		real_cd = entry.conflict_detection
-		if justLoad:
-			entry.conflict_detection = False
-		check_timer_list = self.timer_list[:]
-		timersanitycheck = TimerSanityCheck(check_timer_list, entry)
+	def record(self, entry, ignoreTSC=False, dosave=True, loadtimer=False, justLoad=False, sanityCheck=True):
 		answer = None
-		if not timersanitycheck.check():
-			if not ignoreTSC:
-				print "[RecordTimer] timer conflict detected!"
-				print timersanitycheck.getSimulTimerList()
-				return timersanitycheck.getSimulTimerList()
-			else:
-				print "[RecordTimer] ignore timer conflict..."
-				if not dosave and loadtimer:
-					simulTimerList = timersanitycheck.getSimulTimerList()
-					if entry in simulTimerList:
-						entry.disabled = True
-						if entry in check_timer_list:
-							check_timer_list.remove(entry)
-					answer = simulTimerList
-		elif timersanitycheck.doubleCheck():
-			print "[RecordTimer] ignore double timer..."
-			return None
-		elif not loadtimer and not entry.disabled and not entry.justplay and not (entry.service_ref and '%3a//' in entry.service_ref.ref.toString()):
-			for x in check_timer_list:
-				if x.begin == entry.begin and not x.disabled and not x.justplay and not (x.service_ref and '%3a//' in x.service_ref.ref.toString()):
-					entry.begin += 1
-		entry.conflict_detection = real_cd
+		if sanityCheck:
+			real_cd = entry.conflict_detection
+			if justLoad:
+				entry.conflict_detection = False
+			check_timer_list = self.timer_list[:]
+			timersanitycheck = TimerSanityCheck(check_timer_list, entry)
+			if not timersanitycheck.check():
+				if not ignoreTSC:
+					print("[RecordTimer] timer conflict detected!")
+					print(timersanitycheck.getSimulTimerList())
+					return timersanitycheck.getSimulTimerList()
+				else:
+					print("[RecordTimer] ignore timer conflict...")
+					if not dosave and loadtimer:
+						simulTimerList = timersanitycheck.getSimulTimerList()
+						if entry in simulTimerList:
+							entry.disabled = True
+							if entry in check_timer_list:
+								check_timer_list.remove(entry)
+						answer = simulTimerList
+			elif timersanitycheck.doubleCheck():
+				print("[RecordTimer] ignore double timer...")
+				return None
+			elif not loadtimer and not entry.disabled and not entry.justplay and not (entry.service_ref and '%3a//' in entry.service_ref.toString()):
+				for x in check_timer_list:
+					if x.begin == entry.begin and not x.disabled and not x.justplay and not (x.service_ref and '%3a//' in x.service_ref.toString()):
+						entry.begin += 1
+			entry.conflict_detection = real_cd
 		entry.timeChanged()
-		print "[Timer] Record " + str(entry)
+		print("[Timer] Record %s" % entry)
 		entry.Timer = self
 		self.addTimerEntry(entry)
 		if dosave:
