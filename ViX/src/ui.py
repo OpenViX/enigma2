@@ -1,14 +1,17 @@
-# for localized messages
+from __future__ import print_function
+
 from os import listdir, path, mkdir
 
 from . import _
-from Screens.Screen import Screen
+
 from Components.ActionMap import NumberActionMap
+from Components.config import config
 from Components.Sources.StaticText import StaticText
 from Components.Sources.List import List
-from Screens.ParentalControlSetup import ProtectedScreen
-from Components.config import config
 from Components.SystemInfo import SystemInfo
+from Screens.ParentalControlSetup import ProtectedScreen
+from Screens.Screen import Screen
+
 
 class VIXMenu(Screen, ProtectedScreen):
 	skin = """
@@ -45,8 +48,8 @@ class VIXMenu(Screen, ProtectedScreen):
 		self.menu = args
 		self.list = []
 		if self.menu == 0:
-			self.list.append(("backup-manager", _("Backup manager"), _("Manage the backups of your settings."), None))
-			self.list.append(("image-manager", _("Image manager"), _("Create and flash complete images of your system."), None))
+			self.list.append(("backup-manager", _("Backup manager"), _("Manage settings backup."), None))
+			self.list.append(("image-manager", _("Image manager"), _("Backup/Flash/ReBoot system image."), None))
 			self.list.append(("ipkg-install", _("Install local extension"), _("Install IPK's from your tmp folder."), None))
 			self.list.append(("mount-manager", _("Mount manager"), _("Manage your devices mount points."), None))
 			self.list.append(("script-runner", _("Script runner"), _("Run your shell scripts."), None))
@@ -81,7 +84,6 @@ class VIXMenu(Screen, ProtectedScreen):
 	
 	def createSummary(self):
 		from Screens.PluginBrowser import PluginBrowserSummary
-
 		return PluginBrowserSummary
 
 	def selectionChanged(self):
@@ -110,25 +112,25 @@ class VIXMenu(Screen, ProtectedScreen):
 			currentEntry = current[0]
 			if self.menu == 0:
 				if currentEntry == "backup-manager":
-					from BackupManager import VIXBackupManager
+					from .BackupManager import VIXBackupManager
 					self.session.open(VIXBackupManager)
 				elif currentEntry == "image-manager":
-					from ImageManager import VIXImageManager
+					from .ImageManager import VIXImageManager
 					self.session.open(VIXImageManager)
 				elif currentEntry == "H9SDcard manager":
-					from H9SDmanager import H9SDmanager
+					from .H9SDmanager import H9SDmanager
 					self.session.open(H9SDmanager)
 				elif currentEntry == "ipkg-install":
-					from IPKInstaller import VIXIPKInstaller
+					from .IPKInstaller import VIXIPKInstaller
 					self.session.open(VIXIPKInstaller)
 				elif currentEntry == "mount-manager":
-					from MountManager import VIXDevicesPanel
+					from .MountManager import VIXDevicesPanel
 					self.session.open(VIXDevicesPanel)
 				elif currentEntry == "script-runner":
-					from ScriptRunner import VIXScriptRunner
+					from .ScriptRunner import VIXScriptRunner
 					self.session.open(VIXScriptRunner, None)
 				elif currentEntry == "swap-manager":
-					from SwapManager import VIXSwap
+					from .SwapManager import VIXSwap
 					self.session.open(VIXSwap)
 
 	def closeRecursive(self):

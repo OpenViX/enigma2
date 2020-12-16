@@ -1,29 +1,36 @@
+from __future__ import print_function
+
 # for localized messages
 from os import listdir, path, walk, stat
 from boxbranding import getBoxType, getImageDistro
 
+
 from . import _
 from Plugins.Plugin import PluginDescriptor
 from Components.config import config, ConfigBoolean, configfile
-from BackupManager import BackupManagerautostart
-from ImageManager import ImageManagerautostart
-from SwapManager import SwapAutostart
-from SoftcamManager import SoftcamAutostart
-from ScriptRunner import ScriptRunnerAutostart
-from IPKInstaller import IpkgInstaller
+
+from .BackupManager import BackupManagerautostart
+from .ImageManager import ImageManagerautostart
+from .IPKInstaller import IpkgInstaller
+from .ScriptRunner import ScriptRunnerAutostart
+from .SoftcamManager import SoftcamAutostart
+from .SwapManager import SwapAutostart
+from .IPKInstaller import IpkgInstaller
 
 config.misc.restorewizardrun = ConfigBoolean(default=False)
 
 def setLanguageFromBackup(backupfile):
 	try:
-		print backupfile
+		print(backupfile)
 		import tarfile
 		tar = tarfile.open(backupfile)
 		for member in tar.getmembers():
-			if member.name == 'etc/enigma2/settings':
+			if member.name == "etc/enigma2/settings":
 				for line in tar.extractfile(member):
-					if line.startswith('config.osd.language'):
-						languageToSelect = line.strip().split('=')[1]
+					if line.startswith("config.osd.language"):
+						print(line)
+						languageToSelect = line.strip().split("=")[1]
+						print(languageToSelect)
 						if languageToSelect:
 							from Components.Language import language
 							language.activateLanguage(languageToSelect)
@@ -50,18 +57,18 @@ def checkConfigBackup():
 					files = []
 				if len(files):
 					for file in files:
-						if file.endswith('.tar.gz') and "vix" in file.lower():
+						if file.endswith(".tar.gz") and "vix" in file.lower():
 							list.append((path.join(devpath, file)))
- 		if len(list):
-			print '[RestoreWizard] Backup Image:', list[0]
+		if len(list):
+			print("[RestoreWizard] Backup Image:", list[0])
 			backupfile = list[0]
 			if path.isfile(backupfile):
 				setLanguageFromBackup(backupfile)
 			return True
 		else:
 			return None
-	except IOError, e:
-		print "[ViX] unable to use device (%s)..." % str(e)
+	except IOError as e:
+		print("[ViX] unable to use device (%s)..." % str(e))
 		return None
 
 if config.misc.firstrun.value and not config.misc.restorewizardrun.value:
@@ -72,7 +79,7 @@ if config.misc.firstrun.value and not config.misc.restorewizardrun.value:
 
 
 def VIXMenu(session):
-	import ui
+	from .import ui
 	return ui.VIXMenu(session)
 
 def UpgradeMain(session, **kwargs):
@@ -84,11 +91,11 @@ def startSetup(menuid):
 	return [(_("ViX"), UpgradeMain, "vix_menu", 1010)]
 
 def RestoreWizard(*args, **kwargs):
-	from RestoreWizard import RestoreWizard
+	from .RestoreWizard import RestoreWizard
 	return RestoreWizard(*args, **kwargs)
 
 def SoftcamManager(session):
-	from SoftcamManager import VIXSoftcamManager
+	from .SoftcamManager import VIXSoftcamManager
 	return VIXSoftcamManager(session)
 
 def SoftcamMenu(session, **kwargs):
@@ -100,7 +107,7 @@ def SoftcamSetup(menuid):
 	return []
 
 def BackupManager(session):
-	from BackupManager import VIXBackupManager
+	from .BackupManager import VIXBackupManager
 	return VIXBackupManager(session)
 
 def BackupManagerMenu(session, **kwargs):
@@ -114,28 +121,28 @@ def ImageMangerMenu(session, **kwargs):
 	session.open(ImageManager)
 
 def H9SDmanager(session):
-	from H9SDmanager import H9SDmanager
+	from .H9SDmanager import H9SDmanager
 	return H9SDmanager(session)
 
 def H9SDmanagerMenu(session, **kwargs):
 	session.open(H9SDmanager)
 
 def MountManager(session):
-	from MountManager import VIXDevicesPanel
+	from .MountManager import VIXDevicesPanel
 	return VIXDevicesPanel(session)
 
 def MountManagerMenu(session, **kwargs):
 	session.open(MountManager)
 
 def ScriptRunner(session):
-	from ScriptRunner import VIXScriptRunner
+	from .ScriptRunner import VIXScriptRunner
 	return VIXScriptRunner(session)
 
 def ScriptRunnerMenu(session, **kwargs):
 	session.open(ScriptRunner)
 
 def SwapManager(session):
-	from SwapManager import VIXSwap
+	from .SwapManager import VIXSwap
 	return VIXSwap(session)
 
 def SwapManagerMenu(session, **kwargs):
@@ -160,7 +167,7 @@ def filescan(**kwargs):
 
 def Plugins(**kwargs):
 	plist = [PluginDescriptor(where=PluginDescriptor.WHERE_MENU, needsRestart=False, fnc=startSetup),
-			 PluginDescriptor(name=_("ViX"), where=PluginDescriptor.WHERE_EXTENSIONSMENU, fnc=UpgradeMain),
+			 PluginDescriptor(name=_("ViX Image Management"), where=PluginDescriptor.WHERE_EXTENSIONSMENU, fnc=UpgradeMain),
 			 PluginDescriptor(where=PluginDescriptor.WHERE_MENU, fnc=SoftcamSetup)]
 	if config.softcammanager.showinextensions.value:
 		plist.append(PluginDescriptor(name=_("Softcam manager"), where=PluginDescriptor.WHERE_EXTENSIONSMENU, fnc=SoftcamMenu))
@@ -179,4 +186,3 @@ def Plugins(**kwargs):
 	plist.append(PluginDescriptor(name=_("ViX Script runner"), where=PluginDescriptor.WHERE_VIXMENU, fnc=ScriptRunnerMenu))
 	plist.append(PluginDescriptor(name=_("ViX SWAP manager"), where=PluginDescriptor.WHERE_VIXMENU, fnc=SwapManagerMenu))
 	return plist
-
