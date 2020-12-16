@@ -8995,7 +8995,7 @@ msgstr "Нажмите ОК, чтобы продолжить."
 
 #, python-format
 msgid "Press OK to activate the selected%s skin."
-msgstr "Нажмите OK, чтобы активировать выбранный%s скин."
+msgstr "Нажмите OK, чтобы активировать выбранный %s скин."
 
 msgid "Press OK to activate the settings."
 msgstr "Нажмите ОК для активации установок."
@@ -9009,7 +9009,7 @@ msgstr "Нажмите ОК, чтобы получить подробную ин
 
 #, python-format
 msgid "Press OK to keep the currently selected%s skin."
-msgstr "Нажмите OK, чтобы оставить текущий%s скин."
+msgstr "Нажмите OK, чтобы оставить текущий %s скин."
 
 msgid "Press OK to scan"
 msgstr "Нажмите OK для поиска"
@@ -9107,28 +9107,28 @@ msgid "Properties of current title"
 msgstr "Свойства текущего заголовка"
 
 msgid "Protect configuration"
-msgstr "Заблокировать настройки"
+msgstr "Защитить настройки"
 
 msgid "Protect context menus"
-msgstr "Защита контекстных меню"
+msgstr "Защитить контекстные меню"
 
 msgid "Protect main menu"
-msgstr "Заблокировать главное меню"
+msgstr "Защитить главное меню"
 
 msgid "Protect manufacturer reset screen"
-msgstr "Защита меню сброса на заводские настройки"
+msgstr "Защитить меню сброса на заводские настройки"
 
 msgid "Protect movie list"
-msgstr "Заблокировать список записей"
+msgstr "Защитить список записей"
 
 msgid "Protect on epg age"
-msgstr "Заблокировать по возрасту с телегида"
+msgstr "Защитить по возрастному ограничению EPG"
 
 msgid "Protect plugin browser"
-msgstr "Заблокировать меню плагинов"
+msgstr "Защитить меню плагинов"
 
 msgid "Protect screens"
-msgstr "Заблокировать экраны"
+msgstr "Защитить меню"
 
 msgid "Protect services"
 msgstr "Защитить каналы"
@@ -9137,10 +9137,10 @@ msgid "Protect software update screen"
 msgstr "Защита меню обновления ПО"
 
 msgid "Protect standby menu"
-msgstr "Заблокировать меню режима ожидания"
+msgstr "Защитить меню выключения"
 
 msgid "Protect timer menu"
-msgstr "Заблокировать меню таймеров"
+msgstr "Защитить меню таймеров"
 
 msgid "Protect vix menu"
 msgstr "Защитить Меню ViX"
@@ -9785,7 +9785,7 @@ msgid "Root"
 msgstr "Root"
 
 msgid "Root directory"
-msgstr "Каталог суперпользователя"
+msgstr "Корневой каталог"
 
 msgid "Rotor step position:"
 msgstr "Шаг позиции ротора:"
@@ -10595,7 +10595,7 @@ msgid "Service Number, Picon and Service Name"
 msgstr "Пикон, номер и название сервиса"
 
 msgid "Service Title mode"
-msgstr "Режим переименования сервиса"
+msgstr "Режим названия сервиса"
 
 msgid "Service font size"
 msgstr "Размер шрифта для сервиса"
@@ -11343,7 +11343,7 @@ msgid "Skin:\t%s"
 msgstr "Скин:\t%s"
 
 msgid "SkinSelector: Restart GUI"
-msgstr "SkinSelector: Перезапуск GUI"
+msgstr "Выбор скина: Перезапуск GUI"
 
 msgid "Skins"
 msgstr "Скины"
@@ -11711,7 +11711,7 @@ msgid "Stop"
 msgstr "Стоп"
 
 msgid "Stop PiP"
-msgstr "Отключить PIP"
+msgstr "Остановить PiP"
 
 msgid "Stop Streams"
 msgstr "Остановить потоки"
@@ -12939,7 +12939,7 @@ msgid "Try to find used transponders in terrestrial network... please wait..."
 msgstr "Поиск транспондеров, используемые в наземной сети. Пожалуйста, подождите..."
 
 msgid "Trying to download a new packetlist. Please wait..."
-msgstr "Идет загрузка списка пакетов. Пожалуйста, подождите..."
+msgstr "Загрузка списка пакетов. Пожалуйста, подождите..."
 
 msgid "Tue"
 msgstr "Вт"
@@ -13248,19 +13248,19 @@ msgid "Use DHCP"
 msgstr "Использовать DHCP"
 
 msgid "Use EIT EPG information when it is available."
-msgstr "Использовать информацию EIT телегида, когда она существует"
+msgstr "Использовать информацию EIT телегида, когда она существует."
 
 msgid "Use FreeSat EPG information when it is available."
-msgstr "Использовать информацию FreeSat телегида, когда она существует"
+msgstr "Использовать информацию FreeSat телегида, когда она существует."
 
 msgid "Use Geolocation"
 msgstr "Использовать геолокацию"
 
 msgid "Use MHW EPG information when it is available."
-msgstr "Использовать информацию MHW телегида, когда она существует"
+msgstr "Использовать информацию MHW телегида, когда она существует."
 
 msgid "Use Netmed EPG information when it is available."
-msgstr "Использовать информацию Netmed телегида, когда она существует"
+msgstr "Использовать информацию Netmed телегида, когда она существует."
 
 msgid "Use OpenTV EPG information when it is available. For reading OpenTV EPG data tuning to a dedicated transponder is required"
 msgstr "Использовать информацию OpenTV телегида, когда она существует."
@@ -13272,10 +13272,10 @@ msgid "Use USALS for this sat"
 msgstr "Использовать USALS для этого спутника"
 
 msgid "Use ViaSat EPG information when it is available."
-msgstr "Использовать информацию Viasat телегида, когда она существует"
+msgstr "Использовать информацию Viasat телегида, когда она существует."
 
 msgid "Use Virgin EPG information when it is available."
-msgstr "Использовать информацию Virgin телегида, когда она существует"
+msgstr "Использовать информацию Virgin телегида, когда она существует."
 
 msgid "Use a gateway"
 msgstr "Использовать шлюз"
