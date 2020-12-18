@@ -23,7 +23,8 @@ def mergeText(nodelist):
 			rc = rc + node.data
 	return rc
 
+_illegal_xml_chars_RE = re.compile(u'[\x00-\x08\x0b\x0c\x0e-\x1F\uD800-\uDFFF\uFFFE\uFFFF]')
+
 def stringToXML(text):
-	illegal_xml_chars_RE = re.compile(u'[\x00-\x08\x0b\x0c\x0e-\x1F\uD800-\uDFFF\uFFFE\uFFFF]')
-	text = illegal_xml_chars_RE.sub('', text)
+	text = _illegal_xml_chars_RE.sub('', text)
 	return text.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;').replace("'", '&apos;').replace('"', '&quot;')
