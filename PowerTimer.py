@@ -71,7 +71,6 @@ class PowerTimerEntry(timer.TimerEntry, object):
 		self.autosleepdelay = 60
 		self.autosleeprepeat = 'once'
 
-		self.log_entries = []
 		self.resetState()
 
 	def __repr__(self):
@@ -458,7 +457,7 @@ class PowerTimer(timer.Timer):
 				self.addTimerEntry(w)
 			else:
 				# Remove old timers as set in config
-				self.cleanupDaily(config.recording.keep_timers.value)
+				self.cleanupDaily(config.recording.keep_timers.value, config.recording.keep_finished_timer_logs.value)
 				insort(self.processed_timers, w)
 		self.stateChanged(w)
 
@@ -516,8 +515,6 @@ class PowerTimer(timer.Timer):
 			AFTEREVENT.STANDBY: "standby",
 			AFTEREVENT.DEEPSTANDBY: "deepstandby"
 		}
-		now = time()
-		keepThreshold = config.recording.keep_timers.value > 0 and now - config.recording.keep_timers.value*86400
 
 		list = ['<?xml version="1.0" ?>\n<timers>\n']
 		for timer in self.timer_list + self.processed_timers:
@@ -546,17 +543,7 @@ class PowerTimer(timer.Timer):
 			if len(timer.log_entries) == 0:
 				list.append('/>\n')
 			else:
-				# Handle repeat entries, which never end and so never get pruned by cleanupDaily
-				# Repeating timers get autosleeprepeat="repeated" or repeated="127" (daily) or
-				# "31" (weekdays) [dow bitmap] etc.
-				ignore_before = 0
-				if config.recording.keep_timers.value > 0:
-					if str(timer.autosleeprepeat) == "repeated" or int(timer.repeated) > 0:
-						ignore_before = now - config.recording.keep_timers.value*86400
-
 				for log_time, code, msg in timer.log_entries:
-					if log_time < ignore_before:
-						continue
 					list.append('>\n<log code="%d" time="%d">%s</log' % (code, log_time, stringToXML(msg)))
 				list.append('>\n</timer>\n')
 
@@ -648,3 +635,14 @@ class PowerTimer(timer.Timer):
 
 	def shutdown(self):
 		self.saveTimer()
+
+	def cleanupDaily(self, days, finishedLogDays=None):
+		timer.TimerEntry.cleanupDaily(self, days, finishedLogDays)
+		if days > 0:
+			now = time()
+			keepThreshold = now - days * 86400
+			for entry in self.processed_timers:
+				if str(timer.autosleeprepeat) == "repeated":
+					# Handle repeat entries, which never end
+					# Repeating timers get autosleeprepeat="repeated" as well as the cases handled by TimerEntry
+					entry.log_entries = [entry for entry in entry.log_entries if entry.log_time > keepThreshold]

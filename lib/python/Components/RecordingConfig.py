@@ -9,6 +9,8 @@ def InitRecordingConfig():
 	config.recording.split_programme_minutes = ConfigSelectionNumber(min = 0, max = 30, stepwidth = 1, default = 15, wraparound = True)
 	config.recording.ascii_filenames = ConfigYesNo(default = False)
 	config.recording.keep_timers = ConfigSelectionNumber(min = 1, max = 120, stepwidth = 1, default = 7, wraparound = True)
+	choicelist = [(0, _("Keep logs"))] + [(i, str(i)) for i in range(1, 14)]
+	config.recording.keep_finished_timer_logs = ConfigSelection(default=0, choices=choicelist)
 	config.recording.filename_composition = ConfigSelection(default = "standard", choices = [
 		("standard", _("Date first")),
 		("event", _("Event name first")),
