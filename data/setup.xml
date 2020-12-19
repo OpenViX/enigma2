@@ -206,6 +206,7 @@
 		<item level="1" text="Show picons in timer list" description="Configure if picons will be shown in the timer list.">config.usage.timerlist_showpicons</item>
 		<item level="1" text="Position of finished timers in timer list" description="Control how finished timers are shown in the timer list. If set to hide, disabled timers will still be shown">config.usage.timerlist_finished_timer_position</item>
 		<item level="2" text="Remove finished timers after (days)" description="Configure the number of days old timers are kept before they are automatically removed from the timer list.">config.recording.keep_timers</item>
+		<item level="2" text="Remove finished timer logs after (days)" description="Configure the number of days old timers' log details are kept before they're automatically removed.">config.recording.keep_finished_timer_logs</item>
 		<item level="2" text="Offline decode delay (ms)" description="Configure the offline decoding delay (in milliseconds). The configured delay is observed at each control word parity change.">config.recording.offline_decode_delay</item>
 		<item level="2" text="Default recording type" description="Descramble &amp; record ECM' gives the option to descramble afterwards if descrambling on recording failed. 'Don't descramble, record ECM' save a scramble recording that can be descrambled on playback. 'Normal' means descramble the recording and don't record ECM.">config.recording.ecm_data</item>
 	</setup>

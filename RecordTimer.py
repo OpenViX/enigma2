@@ -257,7 +257,6 @@ class RecordTimerEntry(timer.TimerEntry, object):
 		self.autoTimerId = autoTimerId
 		self.wasInStandby = False
 
-		self.log_entries = []
 		self.flags = set()
 		self.resetState()
 
@@ -1002,7 +1001,7 @@ class RecordTimer(timer.Timer):
 				# check for disabled timers, if time as passed set to completed
 				self.cleanupDisabled()
 				# Remove old timers as set in config
-				self.cleanupDaily(config.recording.keep_timers.value)
+				self.cleanupDaily(config.recording.keep_timers.value, config.recording.keep_finished_timer_logs.value)
 				# If we want to keep done timers, re-insert in the active list
 				if config.recording.keep_timers.value > 0:
 					insort(self.processed_timers, w)
@@ -1075,8 +1074,6 @@ class RecordTimer(timer.Timer):
 			AFTEREVENT.DEEPSTANDBY: "deepstandby",
 			AFTEREVENT.AUTO: "auto"
 		}
-		now = time()
-		keepThreshold = config.recording.keep_timers.value > 0 and now - config.recording.keep_timers.value*86400
 
 		list = ['<?xml version="1.0" ?>\n<timers>\n']
 		for entry in self.timer_list + self.processed_timers:
@@ -1129,12 +1126,7 @@ class RecordTimer(timer.Timer):
 			if len(entry.log_entries) == 0:
 				list.append('/>\n')
 			else:
-				# Handle repeat entries, which never end and so never get pruned by cleanupDaily
-				# Repeating timers get, e.g., repeated="127" (dow bitmap)
-				ignore_before = entry.repeated > 0 and keepThreshold
 				for log_time, code, msg in entry.log_entries:
-					if log_time < ignore_before:
-						continue
 					list.append('>\n<log code="%d" time="%d">%s</log' % (code, log_time, stringToXML(msg)))
 				list.append('>\n</timer>\n')
 
@@ -1407,8 +1399,4 @@ class RecordTimer(timer.Timer):
 
 	def cleanup(self):
 		timer.Timer.cleanup(self)
-		self.saveTimer()
-
-	def cleanupDaily(self, days):
-		timer.Timer.cleanupDaily(self, days)
 		self.saveTimer()
