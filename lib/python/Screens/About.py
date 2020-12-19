@@ -896,7 +896,7 @@ class Troubleshoot(Screen):
 
 	def updateOptions(self):
 		self.titles = ["dmesg", "ifconfig", "df", "top", "ps", "messages"]
-		self.commands = ["dmesg", "ifconfig", "df -h", "top -n 1", "ps", "cat /var/volatile/log/messages"]
+		self.commands = ["dmesg", "ifconfig", "df -h", "top -n 1", "ps -l", "cat /var/volatile/log/messages"]
 		install_log = "/home/root/autoinstall.log"
 		if os.path.isfile(install_log):
 				self.titles.append("%s" % install_log)
@@ -909,6 +909,14 @@ class Troubleshoot(Screen):
 			for fileName in reversed(fileNames):
 				self.titles.append("logfile %s (%s/%s)" % (fileName, logfileCounter, totalNumberOfLogfiles))
 				self.commands.append("cat %s" % (fileName))
+				logfileCounter += 1
+		fileNames = self.getDebugFilesList()
+		if fileNames:
+			totalNumberOfLogfiles = len(fileNames)
+			logfileCounter = 1
+			for fileName in reversed(fileNames):
+				self.titles.append("debug log %s (%s/%s)" % (fileName, logfileCounter, totalNumberOfLogfiles))
+				self.commands.append("tail -n 2500 %s" % (fileName))
 				logfileCounter += 1
 		self.commandIndex = min(len(self.commands) - 1, self.commandIndex)
 		self.updateKeys()
