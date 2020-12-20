@@ -660,8 +660,6 @@ class RecordTimerEntry(timer.TimerEntry, object):
 					NavigationInstance.instance.stopRecordService(self.record_service)
 					self.record_service = None
 
-			NavigationInstance.instance.RecordTimer.saveTimer()
-
 # From here on we are checking whether to put the box into Standby or
 # Deep Standby.
 # Don't even *bother* checking this if a playback is in progress or an
@@ -967,7 +965,7 @@ class RecordTimer(timer.Timer):
 		except IOError:
 			print "[RecordTimer] unable to load timers from file!"
 
-	def doActivate(self, w):
+	def doActivate(self, w, dosave=True):
 		# when activating a timer which has already passed,
 		# simply abort the timer. don't run trough all the stages.
 		if w.shouldSkip():
@@ -996,18 +994,19 @@ class RecordTimer(timer.Timer):
 				w.first_try_prepare = True
 				self.addTimerEntry(w)
 			else:
-				# correct wrong running timers
-				self.checkWrongRunningTimers()
-				# check for disabled timers, if time as passed set to completed
-				self.cleanupDisabled()
-				# Remove old timers as set in config
-				self.cleanupDaily(config.recording.keep_timers.value, config.recording.keep_finished_timer_logs.value)
 				# If we want to keep done timers, re-insert in the active list
 				if config.recording.keep_timers.value > 0:
 					insort(self.processed_timers, w)
-					self.saveTimer()
+			# correct wrong running timers
+			self.checkWrongRunningTimers()
+			# check for disabled timers, if time as passed set to completed
+			self.cleanupDisabled()
+			# Remove old timers as set in config
+			self.cleanupDaily(config.recording.keep_timers.value, config.recording.keep_finished_timer_logs.value)
 
 		self.stateChanged(w)
+		if dosave:
+			self.saveTimer()
 
 	def isRecTimerWakeup(self):
 		return wasRecTimerWakeup
@@ -1380,7 +1379,7 @@ class RecordTimer(timer.Timer):
 		entry.abort()
 
 		if entry.state != entry.StateEnded:
-			self.timeChanged(entry)
+			self.timeChanged(entry, False)
 
 		# print "[RecordTimer]state: ", entry.state
 		# print "[RecordTimer]in processed: ", entry in self.processed_timers
@@ -1389,13 +1388,13 @@ class RecordTimer(timer.Timer):
 		if not entry.dontSave:
 			for x in self.timer_list:
 				if x.setAutoincreaseEnd():
-					self.timeChanged(x)
+					self.timeChanged(x, False)
 		# now the timer should be in the processed_timers list. remove it from there.
 		self.processed_timers.remove(entry)
 		self.saveTimer()
 
 	def shutdown(self):
-		self.saveTimer()
+		self.saveTimer(True)
 
 	def cleanup(self):
 		timer.Timer.cleanup(self)

@@ -420,7 +420,7 @@ class PowerTimer(timer.Timer):
 		except IOError:
 			print "unable to load timers from file!"
 
-	def doActivate(self, w):
+	def doActivate(self, w, dosave=True):
 		# when activating a timer which has already passed,
 		# simply abort the timer. don't run trough all the stages.
 		if w.shouldSkip():
@@ -460,6 +460,8 @@ class PowerTimer(timer.Timer):
 				self.cleanupDaily(config.recording.keep_timers.value, config.recording.keep_finished_timer_logs.value)
 				insort(self.processed_timers, w)
 		self.stateChanged(w)
+		if dosave:
+			self.saveTimer()
 
 	def loadTimer(self):
 		# TODO: PATH!
