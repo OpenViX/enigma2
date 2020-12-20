@@ -21,7 +21,7 @@ from . import _, PluginLanguageDomain
 from Components.ActionMap import ActionMap
 from Components.Button import Button
 from Components.ChoiceList import ChoiceList, ChoiceEntryComponent
-from Components.config import config, ConfigSubsection, ConfigYesNo, ConfigSelection, ConfigText, ConfigNumber, NoSave, ConfigClock
+from Components.config import config, ConfigSubsection, ConfigYesNo, ConfigSelection, ConfigText, ConfigNumber, NoSave, ConfigClock, configfile
 from Components.Console import Console
 from Components.Harddisk import harddiskmanager, getProcMounts
 from Components.Label import Label
@@ -64,9 +64,12 @@ config.imagemanager.scheduletime = ConfigClock(default=0)  # 1:00
 config.imagemanager.query = ConfigYesNo(default=True)
 config.imagemanager.lastbackup = ConfigNumber(default=0)
 config.imagemanager.number_to_keep = ConfigNumber(default=0)
-config.imagemanager.imagefeed_ViX = ConfigText(default="http://www.openvix.co.uk/openvix-builds/", fixed_size=False)
+config.imagemanager.imagefeed_ViX = ConfigText(default="https://www.openvix.co.uk/json", fixed_size=False)
 config.imagemanager.imagefeed_ATV = ConfigText(default="http://images.mynonpublic.com/openatv/json", fixed_size=False)
 config.imagemanager.imagefeed_Pli = ConfigText(default="http://downloads.openpli.org/json", fixed_size=False)
+config.imagemanager.login_as_ViX_developer = ConfigYesNo(default=False)
+config.imagemanager.developer_username = ConfigText(default="username", fixed_size=False)
+config.imagemanager.developer_password = ConfigText(default="password", fixed_size=False)
 
 autoImageManagerTimer = None
 
@@ -91,6 +94,7 @@ def ImageManagerautostart(reason, session=None, **kwargs):
 		if autoImageManagerTimer is not None:
 			print("[ImageManager] Stop")
 			autoImageManagerTimer.stop()
+
 
 class VIXImageManager(Screen):
 	skin = """<screen name="VIXImageManager" position="center,center" size="560,400">
@@ -244,24 +248,18 @@ class VIXImageManager(Screen):
 				self["lab1"].setText(_("Device: ") + config.imagemanager.backuplocation.value + "\n" + _("There is a problem with this device. Please reformat it and try again."))
 
 	def createSetup(self):
-		self.session.openWithCallback(self.setupDone, Setup, "viximagemanager", "SystemPlugins/ViX", PluginLanguageDomain)
+		self.session.openWithCallback(self.setupDone, ImageManagerSetup)
 
 	def doDownload(self):
-		self.choices = [("OpenViX", 1), ("OpenATV", 2), ("OpenPli", 3)]
-		self.urlchoices = [config.imagemanager.imagefeed_ViX.value, config.imagemanager.imagefeed_ATV.value, config.imagemanager.imagefeed_Pli.value]
-		self.message = _("Do you want to change download url")
-		self.session.openWithCallback(self.doDownload2, MessageBox, self.message, list=self.choices, default=1, simple=True)
+		choices = [("OpenViX", config.imagemanager.imagefeed_ViX), ("OpenATV", config.imagemanager.imagefeed_ATV), ("OpenPli", config.imagemanager.imagefeed_Pli)]
+		message = _("Do you want to change download url")
+		self.session.openWithCallback(self.doDownloadCallback, MessageBox, message, list=choices, default=1, simple=True)
 
-	def doDownload2(self, retval):
+	def doDownloadCallback(self, retval): # retval will be the config element (or False, in the case of aborting the MessageBox).
 		if retval:
-			retval -= 1
-			self.urlDistro = self.urlchoices[retval]
-			self.session.openWithCallback(self.refreshList, ImageManagerDownload, self.BackupDirectory, self.urlDistro)
+			self.session.openWithCallback(self.refreshList, ImageManagerDownload, self.BackupDirectory, retval)
 
-	def setupDone(self, test=None):
-		if config.imagemanager.folderprefix.value == "":
-			config.imagemanager.folderprefix.value = defaultprefix
-			config.imagemanager.folderprefix.save()
+	def setupDone(self, retval=None):
 		self.populate_List()
 		self.doneConfiguring()
 
@@ -491,6 +489,7 @@ class VIXImageManager(Screen):
 			else:
 				return False
 
+
 class AutoImageManagerTimer:
 	def __init__(self, session):
 		self.session = session
@@ -610,6 +609,7 @@ class AutoImageManagerTimer:
 			config.imagemanager.lastbackup.value = sched_t
 			config.imagemanager.lastbackup.save()
 		# self.close()
+
 
 class ImageBackup(Screen):
 	skin = """
@@ -1265,6 +1265,7 @@ class ImageBackup(Screen):
 		else:
 			autoImageManagerTimer.backupstop()
 
+
 class ImageManagerDownload(Screen):
 	skin = """
 	<screen name = "VIXImageManager" position = "center, center" size = "560,400">
@@ -1283,27 +1284,14 @@ class ImageManagerDownload(Screen):
 		</applet>
 	</screen>"""
 
-	def __init__(self, session, BackupDirectory, urlDistro):
+	def __init__(self, session, BackupDirectory, ConfigObj):
 		Screen.__init__(self, session)
-		self.setTitle(_("Downloads"))
-		self.parseJsonFormat = False
-		self.urlDistro = urlDistro
+		self.setTitle(_("%s downloads") % {config.imagemanager.imagefeed_ATV: "OpenATV", config.imagemanager.imagefeed_Pli: "OpenPLi", config.imagemanager.imagefeed_ViX: "OpenViX"}.get(ConfigObj, ''))
+		self.ConfigObj = ConfigObj
 		self.BackupDirectory = BackupDirectory
 		self["lab1"] = Label(_("Select an image to download for %s:" % getMachineMake()))
 		self["key_red"] = Button(_("Close"))
 		self["key_green"] = Button(_("Download"))
-		self.Downlist = []
-		self.imagesList = {}
-		self.setIndex = 0
-		self.expanded = []
-		if "pli" in self.urlDistro:
-			self.parseJsonFormat = True
-		if "atv" in self.urlDistro:
-			self.parseJsonFormat = True
-		self["list"] = ChoiceList(list=[ChoiceEntryComponent("", ((_("No images found for selected download server...if password check validity")), "Waiter"))])
-		self.getImageDistro()
-
-	def getImageDistro(self):
 		self["ImageDown"] = ActionMap(["OkCancelActions", "ColorActions", "DirectionActions", "KeyboardInputActions", "MenuActions"], {
 			"cancel": self.close,
 			"red": self.close,
@@ -1319,77 +1307,43 @@ class ImageManagerDownload(Screen):
 			"rightRepeated": self.keyRight,
 			"menu": self.close,
 		}, -1)
+		self.imagesList = {}
+		self.setIndex = 0
+		self.expanded = []
+		self["list"] = ChoiceList(list=[ChoiceEntryComponent("", ((_("No images found on the selected download server...if password check validity")), "Waiter"))])
+		self.imagesList = {}
+		self.getImageDistro()
 
+	def getImageDistro(self):
 		if not path.exists(self.BackupDirectory):
 			mkdir(self.BackupDirectory, 0o755)
-		from bs4 import BeautifulSoup
-		self.imagesList = {}
-		self.jsonlist = {}
-		imglist = []
 		self.boxtype = getMachineMake()
-		if "pli" in self.urlDistro:
+		if self.ConfigObj == config.imagemanager.imagefeed_Pli:
 			self.boxtype = HardwareInfo().get_device_name()
 			if self.boxtype == "dm8000":
 				self.boxtype = getMachineMake()
-		versions = [6.4, 6.5]		# for Twol
-		if "www.openvix" in self.urlDistro:
-			versions = [4.2, 5.0, 5.1, 5.2, 5.3, 5.4, 5.5]
-		subfolders = ("", "Archives") # i.e. check root folder and "Archives" folder. Images will appear in the UI in this order.
-		if not self.parseJsonFormat and not self.imagesList: # OpenViX
-			print("[ImageManager]1 urldistro: %s" % self.urlDistro)
-			for subfolder in subfolders:
-#				print("[ImageManager]2 urldistro: %s" % self.urlDistro)
-				tmp_image_list = []
-#				print("[ImageManager] subfolder: %s" % subfolder)
-				fullUrl = subfolder and path.join(self.urlDistro, self.boxtype, subfolder, "") or path.join(self.urlDistro, self.boxtype, "")
-#				print("[ImageManager] fullUrl: %s" % fullUrl)
-				html = None
-				try:
-					conn = urlopen(fullUrl)
-					html = conn.read()
-				except (HTTPError, URLError) as e:
-					print("[ImageManager] HTTPError: %s %s" % (getattr(e, "code", ""), getattr(e, "reason", "")))
-				if "Dev" in self.urlDistro:
-					lines = html.split("\n")
-					for line in lines:
-						if line.find("openvix") > -1 and line.find(".zip") > -1 and line.find(getMachineMake()) != -1 and line.find("recovery") == -1:
-							t = line.find("openvix")
-							lineb = (line[t:t + 51]).replace(" ", "")
-							countimage.append(lineb)
-				elif html:
-					soup = BeautifulSoup(html, features="lxml")
-					links = soup.find_all("a")
-					for tag in links:
-						link = tag.get("href", None)
-						if link is not None and link.endswith("zip") and link.find(getMachineMake()) != -1 and link.find("recovery") == -1:
-							tmp_image_list.append(str(link))
 
-				for version in sorted(versions, reverse=True):
-					newversion = _("Image Version %s%s") % (version, " (%s)" % subfolder if subfolder else "")
-					for image in tmp_image_list:
-						# print "[ImageManager] image:%s, version:%s " % (image, version)
-						if "%s" % version in image:
-							if newversion not in self.imagesList:
-								self.imagesList[newversion] = {}
-							self.imagesList[newversion][image] = {}
-							self.imagesList[newversion][image]["name"] = image
-							if "Dev" in self.urlDistro:
-								self.imagesList[newversion][image]["link"] = "%s/%s" % (self.urlBox, image)
-							else:
-								self.imagesList[newversion][image]["link"] = "%s/%s/%s" % (self.urlDistro, self.boxtype, image)
+		if not self.imagesList:
+			boxtype = self.boxtype
+			if self.ConfigObj == config.imagemanager.imagefeed_ViX \
+				and self.ConfigObj.value.startswith("https") \
+				and config.imagemanager.login_as_ViX_developer.value \
+				and config.imagemanager.developer_username.value \
+				and config.imagemanager.developer_username.value != config.imagemanager.developer_username.default \
+				and config.imagemanager.developer_password.value \
+				and config.imagemanager.developer_password.value != config.imagemanager.developer_password.default:
+				boxtype = path.join(boxtype, config.imagemanager.developer_username.value, config.imagemanager.developer_password.value)
+			try:
+				urljson = path.join(self.ConfigObj.value, boxtype)
+				self.imagesList = dict(json.load(urlopen("%s" % urljson)))
+			except Exception:
+				print("[ImageManager] no images available for: the '%s' at '%s'" % (self.boxtype, ConfigObj.value))
+				return
 
-		if self.parseJsonFormat and not self.imagesList:
-			if not self.jsonlist:
-				try:
-					urljson = path.join(self.urlDistro, self.boxtype)
-					self.jsonlist = dict(json.load(urlopen("%s" % urljson)))
-				except Exception:
-					print("[ImageManager] OpenPli/OpenATV no model: %s in downloads" % self.boxtype)
-					return
-			self.imagesList = self.jsonlist
-		if self.parseJsonFormat and not self.jsonlist and not self.imagesList:
+		if not self.imagesList: # Nothing has been found on that server so we might as well give up.
 			return
 
+		imglist = [] # this is reset on every "ok" key press of an expandable item so it reflects the current state of expandability of that item
 		for categorie in sorted(self.imagesList.keys(), reverse=True):
 			if categorie in self.expanded:
 				imglist.append(ChoiceEntryComponent("expanded", ((str(categorie)), "Expander")))
@@ -1465,12 +1419,8 @@ class ImageManagerDownload(Screen):
 			selectedimage = currentSelected[0][0]
 			fileurl = currentSelected[0][1]
 			fileloc = self.BackupDirectory + selectedimage
-#			print("[ImageManager] [getImageDistro] self.urlBox= %s, self.urlDistro= %s fileurl= %s fileloc= %s" % (self.urlBox, self.urlDistro, fileurl, fileloc))
-			if "Dev" in self.urlDistro:
-				try:
-					urlretrieve("%s" % fileurl, "%s" % fileloc)
-				except HTTPError as e:
-					print("[ImageManager] HTTP download ERROR: %s" % e.code)
+			if "@" in fileurl:
+				handleBasicHttpAuthentication(fileurl, fileloc) # spinner, no progress bar
 			else:
 				url_encode = "utf-8"
 				b_url = fileurl.encode(url_encode)
@@ -1487,3 +1437,57 @@ class ImageManagerDownload(Screen):
 
 	def JobViewCB(self, in_background):
 		Components.Task.job_manager.in_background = in_background
+
+
+class ImageManagerSetup(Setup):
+	def __init__(self, session):
+		Setup.__init__(self, session=session, setup="viximagemanager", plugin="SystemPlugins/ViX", PluginLanguageDomain=PluginLanguageDomain)
+
+	def keySave(self):
+		if config.imagemanager.folderprefix.value == "":
+			config.imagemanager.folderprefix.value = defaultprefix
+		for configElement in (config.imagemanager.developer_username, config.imagemanager.developer_password):
+			if not configElement.value:
+				configElement.value = configElement.default
+		if not configElement.value:
+			config.imagemanager.imagefeed_DevL.value = config.imagemanager.imagefeed_DevL.default
+		for configElement in (config.imagemanager.imagefeed_ViX, config.imagemanager.imagefeed_ATV, config.imagemanager.imagefeed_Pli):
+			self.check_URL_format(configElement)
+		for x in self["config"].list:
+			x[1].save()
+		configfile.save()
+		self.close()
+
+	def check_URL_format(self, configElement):
+		if configElement.value:
+			configElement.value = "%s%s" % (not (configElement.value.startswith("http://") or configElement.value.startswith("https://") or configElement.value.startswith("ftp://")) and "http://" or "", configElement.value)
+			configElement.value = configElement.value.strip("/") # remove any trailing slash
+		else:
+			configElement.value = configElement.default
+
+
+def handleBasicHttpAuthentication(url, destination):
+	import base64
+	try:
+		from urlparse import urlparse
+	except:
+		from urllib.parse import urlparse
+	parsed = urlparse(url)
+	scheme = parsed.scheme
+	username = parsed.username if parsed.username else ""
+	password = parsed.password if parsed.password else ""
+	hostname = parsed.hostname
+	path  = parsed.path
+
+	try:
+		request = Request(scheme + "://" + hostname + path)
+		base64string = base64.b64encode('%s:%s' % (username, password))
+		request.add_header("Authorization", "Basic %s" % base64string)
+		response = urlopen(request)
+		with open(destination, 'wb') as f:
+			f.write(response.read())
+			f.close()
+	except Exception as err:
+		print("[ImageManager] Unable to download %s\n%s: '%s'!" % (url, type(err).__name__, err))
+		import traceback
+		traceback.print_exc()
