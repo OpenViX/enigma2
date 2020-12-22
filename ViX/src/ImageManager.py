@@ -252,7 +252,7 @@ class VIXImageManager(Screen):
 
 	def doDownload(self):
 		choices = [("OpenViX", config.imagemanager.imagefeed_ViX), ("OpenATV", config.imagemanager.imagefeed_ATV), ("OpenPli", config.imagemanager.imagefeed_Pli)]
-		message = _("Do you want to change download url")
+		message = _("From which image library do you want to download?")
 		self.session.openWithCallback(self.doDownloadCallback, MessageBox, message, list=choices, default=1, simple=True)
 
 	def doDownloadCallback(self, retval): # retval will be the config element (or False, in the case of aborting the MessageBox).
