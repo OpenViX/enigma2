@@ -688,8 +688,8 @@ int eDVBTSTools::takeSample(off_t off, pts_t &p)
 			{
 				if ((l->second > off) || (u->second < off))
 				{
-					eDebug("[eDVBTSTools] takeSample ignoring sample %lld %lld %lld (%lld %lld %lld)",
-						l->second, off, u->second, l->first, p, u->first);
+					eDebug("[eDVBTSTools] takeSample ignoring sample %lld %jd %lld (%lld %lld %lld)",
+						l->second, (intmax_t)off, u->second, l->first, p, u->first);
 					return 1;
 				}
 			}
