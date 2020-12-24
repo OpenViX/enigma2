@@ -55,7 +55,7 @@ eDVBScan::~eDVBScan()
 
 int eDVBScan::isValidONIDTSID(int orbital_position, eOriginalNetworkID onid, eTransportStreamID tsid)
 {
-	if(onid.get() == 0 || onid.get() == 1 && tsid < 2 || onid.get() >= 0xFF00)
+	if(onid.get() == 0 || (onid.get() == 1 && tsid < 2) || onid.get() >= 0xFF00)
 	{
 		return 0;
 	}
