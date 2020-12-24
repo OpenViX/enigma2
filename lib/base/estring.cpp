@@ -444,9 +444,9 @@ std::string GEOSTD8ToUTF8(const char *szIn, int len, int *pconvertedLen)
 		if ((unsigned char)szIn[i] == 0x10)
 			continue;
 		// no GEOSTD8 chars. drop it
-		if ((unsigned char)szIn[i] >= 0x80 && (unsigned char)szIn[i] < 0xA0 ||
+		if (((unsigned char)szIn[i] >= 0x80 && (unsigned char)szIn[i] < 0xA0) ||
 			(unsigned char)szIn[i] == 0xC6 ||
-			(unsigned char)szIn[i] >= 0xC8 && (unsigned char)szIn[i] <= 0xCC ||
+			((unsigned char)szIn[i] >= 0xC8 && (unsigned char)szIn[i] <= 0xCC) ||
 			(unsigned char)szIn[i] == 0xCE || (unsigned char)szIn[i] == 0xCF)
 			continue;
 
