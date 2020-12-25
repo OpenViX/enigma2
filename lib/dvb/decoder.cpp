@@ -1264,17 +1264,17 @@ RESULT eTSMPEGDecoder::showSinglePic(const char *filename)
 					eDebug("[eTSMPEGDecoder] VIDEO_SELECT_SOURCE MEMORY failed: %m");
 #else
 				if (ioctl(m_video_clip_fd, VIDEO_SELECT_SOURCE, VIDEO_SOURCE_MEMORY) < 0)
-					eDebug("VIDEO_SELECT_SOURCE MEMORY failed (%m)");
+					eDebug("[eTSMPEGDecoder] VIDEO_SELECT_SOURCE MEMORY failed (%m)");
 #endif
 				if (ioctl(m_video_clip_fd, VIDEO_SET_STREAMTYPE, streamtype) < 0)
-					eDebug("VIDEO_SET_STREAMTYPE failed(%m)");
+					eDebug("[eTSMPEGDecoder] VIDEO_SET_STREAMTYPE failed(%m)");
 				if (ioctl(m_video_clip_fd, VIDEO_PLAY) < 0)
-					eDebug("VIDEO_PLAY failed (%m)");
+					eDebug("[eTSMPEGDecoder] VIDEO_PLAY failed (%m)");
 				if (ioctl(m_video_clip_fd, VIDEO_CONTINUE) < 0)
-					eDebug("video: VIDEO_CONTINUE: %m");
+					eDebug("[eTSMPEGDecoder] VIDEO_CONTINUE: %m");
 				if (ioctl(m_video_clip_fd, VIDEO_CLEAR_BUFFER) < 0)
-					eDebug("video: VIDEO_CLEAR_BUFFER: %m");
-				while(pos <= (s.st_size-4) && !(seq_end_avail = (!iframe[pos] && !iframe[pos+1] && iframe[pos+2] == 1 && iframe[pos+3] == 0xB7)))
+					eDebug("[eTSMPEGDecoder] VIDEO_CLEAR_BUFFER: %m");
+				while(pos <= static_cast<size_t>(s.st_size-4) && !(seq_end_avail = (!iframe[pos] && !iframe[pos+1] && iframe[pos+2] == 1 && iframe[pos+3] == 0xB7)))
 					++pos;
 				if ((iframe[3] >> 4) != 0xE) // no pes header
 					writeAll(m_video_clip_fd, pes_header, sizeof(pes_header));
