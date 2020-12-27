@@ -558,7 +558,7 @@ AX_CXX_COMPILE_STDCXX_11([ext],[mandatory])
 
 CPPFLAGS="$CPPFLAGS $PYTHON_CPPFLAGS"
 CFLAGS="$CFLAGS -Wall"
-CXXFLAGS="$CXXFLAGS -Wall -Werror -flto \
+CXXFLAGS="$CXXFLAGS -Wall -Werror \
 						-Wmaybe-uninitialized -Wdangling-else -Wformat-overflow=2 \
 						-Wno-error=stringop-truncation \
 						$BASE_CFLAGS $ENIGMA2_CFLAGS $PTHREAD_CFLAGS $OPENMP_CFLAGS $ALSA_CFLAGS $GLES_CFLAGS"
