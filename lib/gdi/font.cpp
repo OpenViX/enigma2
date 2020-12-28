@@ -1216,7 +1216,7 @@ void eTextPara::realign(int dir)	// der code hier ist ein wenig merkwuerdig.
 			if (linelength > area.width())
 				return;
 			dir = dirCenter;
-			// fall-through on purpose
+			[[fallthrough]];
 		case dirRight:
 		case dirCenter:
 		case dirBidi:
