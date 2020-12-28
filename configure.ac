@@ -565,8 +565,9 @@ CXXFLAGS="$CXXFLAGS -Wall \
 	-Wunused-but-set-parameter -Wunused-const-variable=1 -Wuninitialized \
 	-Wstringop-overflow=3 \
 	-Wunsafe-loop-optimizations -Wpointer-arith \
-	-Wattribute-alias=1 -Wfloat-equal \
-	-Wno-error=stringop-truncation -Wno-error=shadow \
+	-Wattribute-alias=1 -Wfloat-equal -Wlogical-op \
+	-Wno-error=cast-align=strict \
+	-Wno-error=stringop-truncation -Wno-error=shadow -Wno-error=cast-qual \
 	$BASE_CFLAGS $ENIGMA2_CFLAGS $PTHREAD_CFLAGS $OPENMP_CFLAGS $ALSA_CFLAGS $GLES_CFLAGS"
 AX_SWIG_PYTHON_OPT="$AX_SWIG_PYTHON_OPT -DSWIG_PYTHON_LEGACY_BOOL"
 
