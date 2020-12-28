@@ -47,6 +47,7 @@ config.movielist.use_fuzzy_dates = ConfigYesNo(default=True)
 config.movielist.moviesort = ConfigInteger(default=MovieList.SORT_GROUPWISE)
 config.movielist.description = ConfigInteger(default=MovieList.SHOW_DESCRIPTION)
 config.movielist.last_videodir = ConfigText(default=resolveFilename(SCOPE_HDD))
+config.movielist.last_videocollection = ConfigText(default="")
 config.movielist.last_timer_videodir = ConfigText(default=resolveFilename(SCOPE_HDD))
 config.movielist.videodirs = ConfigLocations(default=[resolveFilename(SCOPE_HDD)])
 config.movielist.last_selected_tags = ConfigSet([], default=[])
@@ -56,6 +57,7 @@ config.movielist.perm_sort_changes = ConfigYesNo(default=True)
 config.movielist.root = ConfigSelection(default="/media", choices=["/","/media","/media/hdd","/media/hdd/movie","/media/usb","/media/usb/movie"])
 config.movielist.hide_extensions = ConfigYesNo(default=False)
 config.movielist.stop_service = ConfigYesNo(default=True)
+config.movielist.enable_collections = ConfigYesNo(default=False)
 
 userDefinedButtons = None
 last_selected_dest = []
@@ -124,7 +126,7 @@ def isSimpleFile(item):
 		return False
 	if not item[0] or not item[1]:
 		return False
-	return (item[0].flags & eServiceReference.mustDescent) == 0
+	return (item[0].flags & (eServiceReference.mustDescent | eServiceReference.isGroup)) == 0
 
 def isFolder(item):
 	if not item:
@@ -140,9 +142,15 @@ def canMove(item):
 		return False
 	return True
 
-canDelete = canMove
-canCopy = canMove
-canRename = canMove
+def canDelete(item):
+	if not item:
+		return False
+	if not item[0] or not item[1]:
+		return False
+	return True
+
+canCopy = canDelete
+canRename = canDelete
 
 def createMoveList(serviceref, dest):
 	#normpath is to remove the trailing '/' from directories
@@ -490,6 +498,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		else:
 			self.selected_tags = None
 		self.selected_tags_ele = None
+		self.collectionName = config.movielist.last_videocollection.value
 		self.nextInBackground = None
 
 		self.movemode = False
@@ -531,7 +540,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		}
 		self.movieOff = self.settings["movieoff"]
 
-		self["list"] = MovieList(None, sort_type=self.settings["moviesort"], descr_state=self.settings["description"])
+		self["list"] = MovieList(None, allowCollections=True, sort_type=self.settings["moviesort"], descr_state=self.settings["description"])
 
 		self.list = self["list"]
 		self.selectedmovie = selectedmovie
@@ -1237,6 +1246,12 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 					Screens.InfoBar.InfoBar.instance.checkTimeshiftRunning(boundFunction(self.itemSelectedCheckTimeshiftCallback, '.img', path))
 					return
 				self.gotFilename(path)
+			elif current.flags & eServiceReference.isGroup:
+				# moving "into" a collection - select the .. item
+				self.collectionName = path
+				config.movielist.last_videocollection.value = path
+				config.movielist.last_videocollection.save()
+				self.reloadList(sel=eServiceReference.fromDirectory(config.movielist.last_videodir.value))
 			else:
 				ext = os.path.splitext(path)[1].lower()
 				if config.movielist.play_audio_internal.value and (ext in AUDIO_EXTENSIONS):
@@ -1554,7 +1569,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		if config.usage.movielist_trashcan.value and os.access(config.movielist.last_videodir.value, os.W_OK):
 			trash = Tools.Trashcan.createTrashFolder(config.movielist.last_videodir.value)
 		self.loadLocalSettings()
-		self["list"].reload(self.current_ref, self.selected_tags)
+		self["list"].reload(self.current_ref, self.selected_tags, self.collectionName)
 		self.updateTags()
 		title = ""
 		if config.usage.setup_level.index >= 2: # expert+
@@ -1607,7 +1622,13 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		if not res.endswith('/'):
 			res += '/'
 		currentDir = config.movielist.last_videodir.value
-		if res != currentDir:
+		if res != currentDir or self.collectionName:
+			if self.collectionName:
+				# going "up" a level to the current directory - select this collection
+				selItem = eServiceReference(eServiceReference.idFile, eServiceReference.isGroup, self.collectionName)
+				self.collectionName = None
+				config.movielist.last_videocollection.value = ""
+				config.movielist.last_videocollection.save()
 			if os.path.isdir(res):
 				baseName = os.path.basename(res[:-1])
 				if config.ParentalControl.servicepinactive.value and baseName.startswith(".") and not baseName.startswith(".Trash"):
@@ -1917,7 +1938,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		if canMove(item):
 			current = item[0]
 			info = item[1]
-			if info is None:
+			if info is None and not(current.flags & eServiceReference.isGroup):
 				# Special case
 				return
 			name = info and info.getName(current) or _("this recording")
@@ -1963,11 +1984,15 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		try:
 			item = self.getCurrentSelection()
 			current = item[0]
-			if item[1] is None:
-				name = None
+			if current.flags & eServiceReference.isGroup:
+				for colItem in item[3].collectionItems:
+					moveServiceFiles(colItem[0], dest, colItem[1])
 			else:
-				name = item[1].getName(current)
-			moveServiceFiles(current, dest, name)
+				if item[1] is None:
+					name = None
+				else:
+					name = item[1].getName(current)
+				moveServiceFiles(current, dest, name)
 			self["list"].removeService(current)
 		except Exception, e:
 			mbox=self.session.open(MessageBox, str(e), MessageBox.TYPE_ERROR)
