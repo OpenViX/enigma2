@@ -45,7 +45,8 @@ int eDVBCIDateTimeSession::doAction()
 		sendDateTime();
 		return 0;
 	case stateFinal:
-		eDebug("[CI DT] stateFinal und action! kann doch garnicht sein ;)");
+		eDebug("[CI DT] stateFinal and action should not happen");
+		[[fallthrough]];
 	default:
 		return 0;
 	}
