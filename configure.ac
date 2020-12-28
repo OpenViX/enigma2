@@ -558,7 +558,7 @@ AX_CXX_COMPILE_STDCXX_11([ext],[mandatory])
 
 CPPFLAGS="$CPPFLAGS $PYTHON_CPPFLAGS"
 CFLAGS="$CFLAGS -Wall"
-CXXFLAGS="$CXXFLAGS -Wall -Werror \
+CXXFLAGS="$CXXFLAGS -Wall \
 						-Warray-bounds=1 \
 						-Wmaybe-uninitialized -Wdangling-else -Wformat-overflow=2 \
 						-Wno-error=stringop-truncation \
