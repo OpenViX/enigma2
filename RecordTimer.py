@@ -1394,7 +1394,7 @@ class RecordTimer(timer.Timer):
 		self.saveTimer()
 
 	def shutdown(self):
-		self.saveTimer(True)
+		self.saveTimer()
 
 	def cleanup(self):
 		timer.Timer.cleanup(self)
