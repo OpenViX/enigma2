@@ -163,7 +163,7 @@ int formatTime(char *buf, int bufferSize, int flags)
 void eDebugImpl(int flags, const char* fmt, ...)
 {
 	char * buf = new char[eDEBUG_BUFLEN];
-	struct timespec tp;
+	struct timespec;
 
 	int pos = formatTime(buf, eDEBUG_BUFLEN, flags);
 
