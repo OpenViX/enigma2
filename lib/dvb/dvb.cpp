@@ -1914,7 +1914,7 @@ void eDVBChannel::getNextSourceSpan(off_t current_offset, size_t bytes_read, off
 			continue;
 		}
 
-		eDebug("[eDVBChannel] ok, resolved skip (rel: %d, diff %lld), now at %08jx", relative, pts, (intmax_t)offset);
+		eDebug("[eDVBChannel] ok, resolved skip (rel: %d, diff %lld), now at %16jx", relative, pts, (intmax_t)offset);
 		current_offset = align(offset, blocksize); /* in case tstools return non-aligned offset */
 	}
 
