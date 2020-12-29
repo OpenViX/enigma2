@@ -85,15 +85,13 @@ int logOutputColors = 1;
 
 static bool inNoNewLine = false;
 
-static pthread_mutex_t =
-	PTHREAD_ADAPTIVE_MUTEX_INITIALIZER_NP;
-
+static pthread_mutex_t DebugLock = PTHREAD_ADAPTIVE_MUTEX_INITIALIZER_NP;
 #define RINGBUFFER_SIZE 16384
 static char ringbuffer[RINGBUFFER_SIZE];
 static unsigned int ringbuffer_head;
-
 static void logOutput(const char *data, unsigned int len)
 {
+	singleLock s(DebugLock);
 	while (len)
 	{
 		unsigned int remaining = RINGBUFFER_SIZE - ringbuffer_head;
@@ -478,7 +476,7 @@ void eDebugEOL(void)
 		if(m_erroroutput && m_erroroutput->isErrorOututActive())
 		{
 			int n;
-			char obuf[16];
+			char obuf[32];
 			snprintf(obuf, sizeof(obuf), "\n");
 			n=write(m_erroroutput->getPipe(), obuf, strlen(obuf));
 			if(n<0)
