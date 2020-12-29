@@ -249,7 +249,7 @@ void _eFatal(const char *file, int line, const char *function, const char* fmt, 
 			if(m_erroroutput && m_erroroutput->isErrorOututActive())
 			{
 				int n;
-				char obuf[1024];
+				char obuf[1280];
 				snprintf(obuf, sizeof(obuf), "FATAL: %s%s\n", header, ncbuf);
 				n=write(m_erroroutput->getPipe(), obuf, strlen(obuf));
 				if(n<0)
@@ -258,7 +258,7 @@ void _eFatal(const char *file, int line, const char *function, const char* fmt, 
 			else
 				fprintf(stderr, "FATAL: %s%s\n", header, ncbuf);
 		}
-	char obuf[1024];
+	char obuf[1280];
 	if (logOutputColors)
 	{
 		snprintf(header, sizeof(header),
@@ -315,7 +315,7 @@ void _eDebug(const char *file, int line, const char *function, const char* fmt, 
 	logOutput(lvlDebug, std::string(header) + std::string(ncbuf) + "\n");
 	if (logOutputConsole)
 	{
-		char obuf[1024];
+		char obuf[1280];
 		if(logOutputColors)
 		{
 			snprintf(header, sizeof(header),
@@ -373,7 +373,7 @@ void _eDebugNoNewLineStart(const char *file, int line, const char *function, con
 	logOutput(lvlDebug, std::string(header) + std::string(ncbuf));
 	if (logOutputConsole)
 	{
-		char obuf[1024];
+		char obuf[1280];
 		if(logOutputColors)
 		{
 			snprintf(header, sizeof(header),
@@ -415,7 +415,7 @@ void eDebugNoNewLine(const char* fmt, ...)
 		if(m_erroroutput && m_erroroutput->isErrorOututActive())
 		{
 			int n;
-			char obuf[1024];
+			char obuf[1280];
 			snprintf(obuf, sizeof(obuf), "%s", logOutputColors? buf : ncbuf);
 			n=write(m_erroroutput->getPipe(), obuf, strlen(obuf));
 			if(n<0)
@@ -443,7 +443,7 @@ void eDebugNoNewLineEnd(const char* fmt, ...)
 			if(m_erroroutput && m_erroroutput->isErrorOututActive())
 			{
 				int n;
-				char obuf[1024];
+				char obuf[1280];
 				snprintf(obuf, sizeof(obuf), "%s\n", ncbuf);
 				n=write(m_erroroutput->getPipe(), obuf, strlen(obuf));
 				if(n<0)
@@ -457,7 +457,7 @@ void eDebugNoNewLineEnd(const char* fmt, ...)
 			if(m_erroroutput && m_erroroutput->isErrorOututActive())
 			{
 				int n;
-				char obuf[1024];
+				char obuf[1280];
 				snprintf(obuf, sizeof(obuf), "%s\n" ANSI_RESET, buf);
 				n=write(m_erroroutput->getPipe(), obuf, strlen(obuf));
 				if(n<0)
@@ -506,7 +506,7 @@ void _eWarning(const char *file, int line, const char *function, const char* fmt
 	logOutput(lvlWarning, std::string(header) + std::string(ncbuf) + "\n");
 	if (logOutputConsole)
 	{
-		char obuf[1024];
+		char obuf[1280];
 		if(logOutputColors)
 		{
 			snprintf(header, sizeof(header),
