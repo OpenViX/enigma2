@@ -85,7 +85,7 @@ int logOutputColors = 1;
 
 static bool inNoNewLine = false;
 
-static pthread_mutex_t DebugLock =
+static pthread_mutex_t =
 	PTHREAD_ADAPTIVE_MUTEX_INITIALIZER_NP;
 
 #define RINGBUFFER_SIZE 16384
