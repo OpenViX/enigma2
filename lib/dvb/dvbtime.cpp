@@ -33,7 +33,10 @@ void noRTC()
 		if (fb)
 		{
 			char buf[20];
-			fgets(buf, 20, fb);
+			if (!fgets(buf, 20, fb))
+			{
+				eDebug("[eDVBLocalTimerHandler] unable to read from filestream");
+			}
 			strncpy(mybox, buf, 20);
 			fclose(fb);
 			strtok(mybox, "\n");
