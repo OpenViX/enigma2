@@ -566,11 +566,13 @@ CXXFLAGS="$CXXFLAGS -Wall \
 	-Wimplicit-fallthrough=5 -Wduplicated-branches -Wtrampolines \
 	-Wdangling-else -Wshift-overflow=2 -Wswitch \
 	-Wunused-but-set-parameter -Wunused-const-variable=1 -Wuninitialized \
-	-Wstringop-overflow=3 \
+	-Wstringop-overflow=3 -Woverlength-strings \
 	-Wunsafe-loop-optimizations -Wpointer-arith \
 	-Wfloat-equal -Wlogical-op \
 	-Wno-error=cast-align=strict \
 	-Wno-error=stringop-truncation -Wno-error=shadow -Wno-error=cast-qual \
+	-Wno-error=aggregate-return -Wno-error=missing-field-initializers \
+	-Wno-error=packed -Wno-error=vla \
 	$BASE_CFLAGS $ENIGMA2_CFLAGS $PTHREAD_CFLAGS $OPENMP_CFLAGS $ALSA_CFLAGS $GLES_CFLAGS"
 AX_SWIG_PYTHON_OPT="$AX_SWIG_PYTHON_OPT -DSWIG_PYTHON_LEGACY_BOOL"
 
