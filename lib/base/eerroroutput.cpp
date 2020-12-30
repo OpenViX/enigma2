@@ -48,7 +48,6 @@ void eErrorOutput::thread()
 {
 //	fprintf(stderr, "[eErrorOutput] start thread\n");
 	hasStarted();
-	nice(4);
 	if (nice(4) == -1)
         {
                 fprintf(stderr, "[eErrorOutput] thread failed to modify scheduling priority (%m)");
