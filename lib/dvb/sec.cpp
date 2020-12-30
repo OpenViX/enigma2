@@ -143,7 +143,7 @@ int eDVBSatelliteEquipmentControl::canTune(const eDVBFrontendParametersSatellite
 				}
 				else
 				{
-					if ( sat.frequency > lnb_param.m_lof_threshold )
+					if ( (unsigned)sat.frequency > lnb_param.m_lof_threshold )
 						band |= 1;
 					if (!(sat.polarisation & eDVBFrontendParametersSatellite::Polarisation_Vertical))
 						band |= 2;
