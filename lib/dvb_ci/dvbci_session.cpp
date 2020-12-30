@@ -155,10 +155,6 @@ void eDVBCISession::createSession(eDVBCISlot *slot, const unsigned char *resourc
 		session = new eDVBCICAManagerSession(slot);
 		eDebug("[CI SESS] CA MANAGER");
 		break;
-	case 0x00240041:
-		session=new eDVBCIDateTimeSession;
-		eDebug("[CI SESS] DATE-TIME");
-		break;
 	case 0x00400041:
 		session = new eDVBCIMMISession(slot);
 		eDebug("[CI SESS] MMI - create session");
