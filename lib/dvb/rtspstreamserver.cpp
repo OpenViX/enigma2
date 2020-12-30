@@ -843,7 +843,7 @@ void eRTSPStreamClient::http_response(int sock, int rc, const std::string &ah, c
 				pos += rb;
 			if (pos == len)
 				break;
-			if (rb == -1 && (errno != EAGAIN)
+			if (rb == -1 && (errno != EAGAIN))
 				break;
 			if (rb == -1 && (errno != EWOULDBLOCK))
 				break;
