@@ -327,7 +327,6 @@ void eDBoxLCD::update()
 		}
 		else
 		{
-			FILE *file;
 #ifdef LCD_COLOR_BITORDER_RGB565
 			if ((file = fopen("/proc/stb/info/gbmodel", "r")) != NULL )
 			{

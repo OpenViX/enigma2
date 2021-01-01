@@ -88,14 +88,6 @@ static char* readInputCI(int NimNumber)
 	return inputName;
 }
 
-static std::string getTunerLetterDM(int NimNumber)
-{
-	char *srcCI = readInputCI(NimNumber);
-	if (srcCI) return std::string(srcCI);
-	return eDVBCISlot::getTunerLetter(NimNumber);
-}
-
-
 eDVBCIInterfaces::eDVBCIInterfaces()
 {
 	int num_ci = 0;
