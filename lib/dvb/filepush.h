@@ -96,6 +96,7 @@ protected:
 	unsigned int m_overflow_count;
 private:
 	int m_stop;
+	bool m_stopped;
 	eFixedMessagePump<int> m_messagepump;
 	void recvEvent(const int &evt);
 	int m_protocol, m_session_id, m_stream_id, m_packet_no;
