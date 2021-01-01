@@ -18,16 +18,18 @@ from Screens.Screen import Screen # for services found class
 
 try: # for reading the current transport stream (SatfinderExtra)
 	from Plugins.SystemPlugins.AutoBouquetsMaker.scanner import dvbreader
+	dvbreader_available = True
+except ImportError:
+	print "[Satfinder] import dvbreader not available"
+	dvbreader_available = False
+
+if dvbreader_available:
 	from Components.Sources.StaticText import StaticText
 	from Components.ScrollLabel import ScrollLabel
 	from Components.Label import Label
 	import time
 	import datetime
 	import thread
-	dvbreader_available = True
-except ImportError:
-	print "[Satfinder] import dvbreader not available"
-	dvbreader_available = False
 
 class Satfinder(ScanSetup, ServiceScan):
 	"""Inherits StaticText [key_red] and [key_green] properties from ScanSetup"""
