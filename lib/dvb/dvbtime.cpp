@@ -224,7 +224,7 @@ eDVBLocalTimeHandler::eDVBLocalTimeHandler()
 	{
 		res_mgr->connectChannelAdded(sigc::mem_fun(*this,&eDVBLocalTimeHandler::DVBChannelAdded), m_chanAddedConn);
 		time_t now = time(0);
-		if ( now < 1072224000 ) // 01.01.2004
+		if ( now < timeOK ) // 01.01.2004
 			eDebug("[eDVBLocalTimeHandler] RTC not ready... wait for transponder time");
 		else // inform all who's waiting for valid system time..
 		{
@@ -286,7 +286,7 @@ void eDVBLocalTimeHandler::setUseDVBTime(bool b)
 		if (!b)
 		{
 			time_t now = time(0);
-			if (now < 1072224000) /* 01.01.2004 */
+			if (now < timeOK) /* 01.01.2004 */
 			{
 				eDebug("[eDVBLocalTimeHandler] invalid system time, refuse to disable transponder time sync");
 				return;
