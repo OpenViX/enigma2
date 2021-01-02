@@ -89,6 +89,7 @@ class ChoiceBox(Screen):
 				pos += 1
 
 		self["list"] = ChoiceList(list = self.list, selection = selection)
+		self["key_menu"] = StaticText(_("MENU"))
 		self["summary_list"] = StaticText()
 		self["summary_selection"] = StaticText()
 		self.updateSummary(selection)
