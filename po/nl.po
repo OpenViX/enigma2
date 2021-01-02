@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-08 03:19+0000\n"
-"PO-Revision-Date: 2020-12-08 14:59+0100\n"
+"POT-Creation-Date: 2021-01-02 04:32+0000\n"
+"PO-Revision-Date: 2021-01-02 11:58+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -1905,10 +1905,10 @@ msgstr "Accepteer ondertitels voor slechthorenden"
 msgid "Allow unstable (experimental) updates"
 msgstr "Accepteer niet geteste (experimentele) updates"
 
-msgid "Allows the %s %s to read the stored EPG data regularly."
+msgid "Allows the %s %s to load the saved EPG data regularly."
 msgstr "Laat de %s %s regelmatig de opgeslagen EPG-data lezen."
 
-msgid "Allows the %s %s to store the EPG data regularly."
+msgid "Allows the %s %s to save the EPG data regularly."
 msgstr "Laat de %s %s de EPG data regelmatig opslaan."
 
 msgid "Allows the TV remote to be used to control the receiver."
@@ -2295,8 +2295,8 @@ msgstr "Automatische imageback-up"
 msgid "Automatic language"
 msgstr "Automatische taalinstellingen"
 
-msgid "Automatic refresh"
-msgstr "Automatisch verversen"
+msgid "Automatic reload"
+msgstr "Automatisch herladen"
 
 msgid "Automatic resolution"
 msgstr "Automatische resolutie"
@@ -3049,7 +3049,7 @@ msgstr "Kies de lay-out (Tekst / Grafische Multi-EPG of kanaal-EPG)."
 msgid "Choose the location for crash and debug logs folder."
 msgstr "Kies waar u crash- en debuglogs wilt opslaan."
 
-msgid "Choose the location where the EPG data will be stored when the %s %s is shut down. The location must be available at boot time."
+msgid "Choose the location where the EPG data will be saved when the %s %s is shut down. The location must be available at boot time."
 msgstr "Kies de lokatie waar uw %s %s de EPG-data moet opslaan als wordt afgesloten. De lokatie moet tijdens het booten beschikbaar zijn."
 
 msgid "Choose the name of the file that holds the EPG data when the %s %s is shut down. This can be handy to differentiate between several boxes."
@@ -3451,6 +3451,9 @@ msgstr ""
 
 msgid "Configure the number of days old timers are kept before they are automatically removed from the timer list."
 msgstr "Confugureer het aantal dagen dat verlopen timers worden bewaard."
+
+msgid "Configure the number of days old timers' log details are kept before they're automatically removed."
+msgstr "Confugureer het aantal dagen dat details van verlopen timers worden bewaard."
 
 msgid "Configure the number of rows shown."
 msgstr "Configureer het aantal rijen."
@@ -4442,7 +4445,7 @@ msgstr "Toon een bericht alvorens de volgende film te spelen"
 msgid "Display selection list as a selection menu"
 msgstr "Toon selectielijst als selectiemenu"
 
-msgid "Display the EIT now/next eventdata in infobar."
+msgid "Display the EIT now/next event data in infobar."
 msgstr "Toon EIT nu/straks programmagegevens in de infobar."
 
 msgid "Display the virtual keyboard for data entry"
@@ -6707,6 +6710,9 @@ msgstr "KA-SAT"
 
 msgid "Kazakhstan"
 msgstr "Kazakhstan"
+
+msgid "Keep logs"
+msgstr "Bewaar logs"
 
 msgid "Keep service"
 msgstr "Behoud zender"
@@ -9432,9 +9438,6 @@ msgstr ""
 msgid "Reflash recommended!"
 msgstr "Opnieuw flashen wordt aanbevolen!"
 
-msgid "Refresh every (in hours)"
-msgstr "Ververs elke (in uren)"
-
 msgid "Refresh rate"
 msgstr "Herhalingsfrequentie"
 
@@ -9461,6 +9464,9 @@ msgstr "Herlaad"
 
 msgid "Reload blacklists"
 msgstr "Herlaad zwarte lijst"
+
+msgid "Reload every (in hours)"
+msgstr "Lees elke X uur"
 
 msgid "Reloading EPG Cache..."
 msgstr "Bezig de EPG-cache te herladen..."
@@ -9554,6 +9560,9 @@ msgstr "De momenteel geselecteerde titel verwijderen"
 
 msgid "Remove entry"
 msgstr "Verwijder invoer"
+
+msgid "Remove finished timer logs after (days)"
+msgstr "Verwijder voltooide timers na X dagen"
 
 msgid "Remove finished timers after (days)"
 msgstr "Verwijder voltooide timers na X dagen"
@@ -12215,10 +12224,10 @@ msgstr ""
 "Uw %s %s is nu gereed voor gebruik.\n"
 "Druk op 'OK' om uw %s %s in gebruik te nemen."
 
-msgid "The %s %s reads the stored EPG data every (hours)."
+msgid "The %s %s loads the saved EPG data every (hours)."
 msgstr "Uw %s %s leest de opgeslagen EPG-data elke (aantal) uur."
 
-msgid "The %s %s stores the EPG data every (hours)."
+msgid "The %s %s saves the EPG data every (hours)."
 msgstr "Uw %s %s slaat de EPG-data elke (aantal) uur op."
 
 msgid ""
@@ -16205,6 +16214,9 @@ msgstr "zapte"
 #~ msgid "Auto language settings"
 #~ msgstr "Automatische taalinstellingen"
 
+#~ msgid "Automatic refresh"
+#~ msgstr "Automatisch verversen"
+
 #~ msgid "BA"
 #~ msgstr "BA"
 
@@ -17122,6 +17134,9 @@ msgstr "zapte"
 
 #~ msgid "Recording Setup"
 #~ msgstr "Opname Instellingen"
+
+#~ msgid "Refresh every (in hours)"
+#~ msgstr "Ververs elke (in uren)"
 
 #~ msgid "Reload protected list"
 #~ msgstr "Beschermde lijsten opnieuw inladen"
