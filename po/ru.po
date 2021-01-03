@@ -1913,10 +1913,10 @@ msgstr "Субтитры для людей с ослабленным слухо�
 msgid "Allow unstable (experimental) updates"
 msgstr "Разрешить нестабильные (экспериментальные) обновления"
 
-msgid "Allows the %s %s to read the stored EPG data regularly."
+msgid "Allows the %s %s to load the saved EPG data regularly."
 msgstr "Позволяет %s %s регулярно считывать сохраненные данные EPG"
 
-msgid "Allows the %s %s to store the EPG data regularly."
+msgid "Allows the %s %s to save the EPG data regularly."
 msgstr "Позволяет %s %s регулярно сохранять данные EPG"
 
 msgid "Allows the TV remote to be used to control the receiver."
@@ -2303,8 +2303,8 @@ msgstr "Автосохранение имиджа"
 msgid "Automatic language"
 msgstr "Автоматический выбор языка"
 
-msgid "Automatic refresh"
-msgstr "Обновлять автоматически"
+msgid "Automatic reload"
+msgstr "Автоматическая перезагрузка"
 
 msgid "Automatic resolution"
 msgstr "Авторазрешение экрана"
@@ -3060,7 +3060,7 @@ msgstr "Выберите режим просмотра (Текстовий, Гр
 msgid "Choose the location for crash and debug logs folder."
 msgstr "Выберите каталог для журналов."
 
-msgid "Choose the location where the EPG data will be stored when the %s %s is shut down. The location must be available at boot time."
+msgid "Choose the location where the EPG data will be saved when the %s %s is shut down. The location must be available at boot time."
 msgstr "Выберите каталог для хранения данных EPG, когда %s %s выключен. Каталог должен быть доступен при загрузке"
 
 msgid "Choose the name of the file that holds the EPG data when the %s %s is shut down. This can be handy to differentiate between several boxes."
@@ -3462,6 +3462,9 @@ msgstr ""
 
 msgid "Configure the number of days old timers are kept before they are automatically removed from the timer list."
 msgstr "Настройка количества дней, для хранения старых таймеров и затем автоматического удаления из списка таймеров."
+
+msgid "Configure the number of days old timers' log details are kept before they're automatically removed."
+msgstr "Настройка количество дней, в течение которых хранятся сведения об истекших таймерах."
 
 msgid "Configure the number of rows shown."
 msgstr "Настройка количества отображаемых строк."
@@ -4450,7 +4453,7 @@ msgstr "Сообщение перед воспр. следующей запис�
 msgid "Display selection list as a selection menu"
 msgstr "Показать список выбора как меню выбора"
 
-msgid "Display the EIT now/next eventdata in infobar."
+msgid "Display the EIT now/next event data in infobar."
 msgstr "Позволяет показывать EIT-данные (сейчас/следующее) о событиях в информационной панели."
 
 msgid "Display the virtual keyboard for data entry"
@@ -6704,6 +6707,9 @@ msgstr "KA-SAT"
 
 msgid "Kazakhstan"
 msgstr "Казахстан"
+
+msgid "Keep logs"
+msgstr "Вести журналы"
 
 msgid "Keep service"
 msgstr "Сохранять текущий сервис"
@@ -9418,9 +9424,6 @@ msgstr ""
 msgid "Reflash recommended!"
 msgstr "Перепрошейте!"
 
-msgid "Refresh every (in hours)"
-msgstr "Интервал обновления (Час)"
-
 msgid "Refresh rate"
 msgstr "Частота обновления"
 
@@ -9447,6 +9450,9 @@ msgstr "Обновить"
 
 msgid "Reload blacklists"
 msgstr "Обновить чёрные списки"
+
+msgid "Reload every (in hours)"
+msgstr "Интервал обновления (Час)"
 
 msgid "Reloading EPG Cache..."
 msgstr "Перезагрузить кэш телегида"
@@ -9540,6 +9546,9 @@ msgstr "Удалить выбранный заголовок"
 
 msgid "Remove entry"
 msgstr "Удалить выбранное"
+
+msgid "Remove finished timer logs after (days)"
+msgstr "Удалять завершённые таймеры после (дней)"
 
 msgid "Remove finished timers after (days)"
 msgstr "Удалять завершённые таймеры после (дней)"
@@ -12082,7 +12091,7 @@ msgid "TRANSLATOR_INFO"
 msgstr ""
 "Перевод OpenViX 5.4\n"
 "litvcom\n"
-"Декабрь 2020\n"
+"Январь 2021\n"
 "Поддержка: world-of-satellite.com"
 
 msgid "TS file is too large for ISO9660 level 1!"
@@ -12199,10 +12208,10 @@ msgstr ""
 "Спасибо, что воспользовались мастером настройки. Ваш %s %s теперь готов к использованию\n"
 "Чтобы начать пользоваться Вашим %s %s нажмите ОК"
 
-msgid "The %s %s reads the stored EPG data every (hours)."
+msgid "The %s %s loads the saved EPG data every (hours)."
 msgstr "Ваш %s %s считывает данные EPG каждые (Часов)"
 
-msgid "The %s %s stores the EPG data every (hours)."
+msgid "The %s %s saves the EPG data every (hours)."
 msgstr "Ваш %s %s сохраняет данные EPG автоматически каждые (Часов)"
 
 msgid ""
