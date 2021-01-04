@@ -24,9 +24,9 @@
         <item level="2" text="Repeat how often" requires="config.imagemanager.schedule" description="Set the repeat interval of backup schedule.">config.imagemanager.repeattype</item>
         <item level="2" text="Query before image backup starts" requires="config.imagemanager.schedule" description="Query before starting image backup.">config.imagemanager.query</item>
         <item level="2" text="Max image backups to keep (0==all)" requires="config.imagemanager.schedule" description="Backups to keep">config.imagemanager.number_to_keep</item>
-        <item level="2" text="ATV library" description="This http url for the OpenATV image library being accessed.">config.imagemanager.imagefeed_ATV</item>
+        <!-- item level="2" text="ATV library" description="This http url for the OpenATV image library being accessed.">config.imagemanager.imagefeed_ATV</item>
         <item level="2" text="Pli library" description="This http url for the OpenPLi image library being accessed.">config.imagemanager.imagefeed_Pli</item>
-        <item level="2" text="ViX library" description="This http url for the OpenViX image library being accessed.">config.imagemanager.imagefeed_ViX</item>
+        <item level="2" text="ViX library" description="This http url for the OpenViX image library being accessed.">config.imagemanager.imagefeed_ViX</item -->
         <item level="2" text="Login as an OpenViX developer" description="If you are an OpenViX developer you can enter your login details to have direct access to OpenViX developer images for your receiver. This feature is only available via 'https' connections.">config.imagemanager.login_as_ViX_developer</item>
         <if conditional="config.imagemanager.login_as_ViX_developer.value">
             <item level="2" text="Developer username" description="Enter your OpenViX developer username.">config.imagemanager.developer_username</item>
