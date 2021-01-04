@@ -1782,7 +1782,7 @@ std::string eServiceMP3::getInfoString(int w)
 		if (gst_tag_list_get_date(m_stream_tags, GST_TAG_DATE, &date))
 		{
 			gchar res[5];
-			snprintf(res, 16384, "%04d", g_date_get_year(date));
+			snprintf(res, sizeof(res)+1, "%04d", g_date_get_year(date));
 			g_date_free(date);
 			return (std::string)res;
 		}
@@ -1792,7 +1792,7 @@ std::string eServiceMP3::getInfoString(int w)
 			if (gst_date_time_has_year(date_time))
 			{
 				gchar res[5];
-				snprintf(res, 16384, "%04d", gst_date_time_get_year(date_time));
+				snprintf(res, sizeof(res)+1, "%04d", gst_date_time_get_year(date_time));
 				gst_date_time_unref(date_time);
 				return (std::string)res;
 			}
