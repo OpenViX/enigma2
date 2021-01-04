@@ -1,4 +1,3 @@
-#include <linux/version.h>
 #include <linux/dvb/version.h>
 
 #include <lib/dvb/dvb.h>
