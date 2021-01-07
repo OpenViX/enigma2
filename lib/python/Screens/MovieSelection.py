@@ -200,14 +200,42 @@ def copyServiceFiles(serviceref, dest, name=None):
 		# rethrow exception
 		raise
 
-# Appends possible destinations to the bookmarks object. Appends tuples
-# in the form (description, path) to it.
-def buildMovieLocationList(bookmarks):
+# Appends possible destinations to the bookmarks dictionary
+def buildMovieLocationList(includeOther=False, path=None, includeSubdirs=False, includeParentDir=False):
 	inlist = []
+	bookmarks = []
+	if includeOther:
+		bookmarks.append(("(" + _("Other") + "...)", None))
+	if path:
+		base = os.path.split(path)[0]
+		if includeParentDir and base != config.movielist.root.value:
+			d = os.path.split(base)[0]
+			if os.path.isdir(d) and d != config.movielist.root.value and (d not in inlist):
+				bookmarks.append((d, d))
+				inlist.append(d)
+		if includeSubdirs:
+			try:
+				base = os.path.split(path)[0]
+				for fn in os.listdir(base):
+					if not fn.startswith('.'): # Skip hidden things
+						d = os.path.join(base, fn)
+						if os.path.isdir(d) and (d not in inlist):
+							bookmarks.append((fn, d))
+							inlist.append(d)
+			except Exception as e:
+				print("[MovieSelection] %s" % e)
+	# Last favourites
+	for d in last_selected_dest:
+		if d not in inlist:
+			bookmarks.append((d,d))
+			inlist.append(d)
+	# Other favourites
 	for d in config.movielist.videodirs.value:
 		d = os.path.normpath(d)
-		bookmarks.append((d,d))
-		inlist.append(d)
+		if d not in inlist:
+			bookmarks.append((d,d))
+			inlist.append(d)
+	# Mount points
 	for p in Components.Harddisk.harddiskmanager.getMountedPartitions():
 		d = os.path.normpath(p.mountpoint)
 		if d in inlist:
@@ -218,10 +246,8 @@ def buildMovieLocationList(bookmarks):
 				pass # When already listed as some "friendly" name
 		else:
 			bookmarks.append((p.tabbedDescription(), d))
-		inlist.append(d)
-	for d in last_selected_dest:
-		if d not in inlist:
-			bookmarks.append((d,d))
+			inlist.append(d)
+	return bookmarks
 
 class MovieBrowserConfiguration(Setup):
 	def __init__(self, session, args = 0):
@@ -691,10 +717,8 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			}
 			for p in plugins.getPlugins(PluginDescriptor.WHERE_MOVIELIST):
 				userDefinedActions['@' + p.name] = p.description
-			locations = []
-			buildMovieLocationList(locations)
 			prefix = _("Goto") + ": "
-			for d,p in locations:
+			for d,p in buildMovieLocationList():
 				if p and p.startswith('/'):
 					userDefinedActions[p] = prefix + d
 			config.movielist.btn_red = ConfigSelection(default='delete', choices=userDefinedActions)
@@ -1644,8 +1668,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		mbox.setTitle(self.getTitle())
 
 	def selectMovieLocation(self, title, callback):
-		bookmarks = [("("+_("Other")+"...)", None)]
-		buildMovieLocationList(bookmarks)
+		bookmarks = buildMovieLocationList(includeOther=True)
 		self.onMovieSelected = callback
 		self.movieSelectTitle = title
 		self.session.openWithCallback(self.gotMovieLocation, ChoiceBox, title=title, list = bookmarks)
@@ -1879,33 +1902,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			# show a more limited list of destinations, no point
 			# in showing mountpoints.
 			title = _("Select destination for:") + " " + name
-			bookmarks = [("("+_("Other")+"...)", None)]
-			inlist = []
-			# Subdirs
-			try:
-				base = os.path.split(path)[0]
-				for fn in os.listdir(base):
-					if not fn.startswith('.'): # Skip hidden things
-						d = os.path.join(base, fn)
-						if os.path.isdir(d) and (d not in inlist):
-							bookmarks.append((fn,d))
-							inlist.append(d)
-			except Exception, e :
-				print "[MovieSelection]", e
-			# Last favourites
-			for d in last_selected_dest:
-				if d not in inlist:
-					bookmarks.append((d,d))
-			# Other favourites
-			for d in config.movielist.videodirs.value:
-				d = os.path.normpath(d)
-				bookmarks.append((d,d))
-				inlist.append(d)
-			for p in Components.Harddisk.harddiskmanager.getMountedPartitions():
-				d = os.path.normpath(p.mountpoint)
-				if d not in inlist:
-					bookmarks.append((p.description, d))
-					inlist.append(d)
+			bookmarks = buildMovieLocationList(includeOther=True, path=path, includeSubdirs=True, includeParentDir=True)
 			self.onMovieSelected = self.gotMoveMovieDest
 			self.movieSelectTitle = title
 			self.session.openWithCallback(self.gotMovieLocation, ChoiceBox, title=title, list=bookmarks)
