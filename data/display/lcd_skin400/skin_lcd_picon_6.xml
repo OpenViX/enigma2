@@ -18,7 +18,7 @@
 		<!-- pick a funky name for the font, so we don't conflict  -->
 		<font filename="nmsbd.ttf" name="FdLcD" scale="100"/>
 		<font filename="/usr/share/fonts/lcd.ttf" name="LCD" scale="100"/>
-		<font filename="/usr/share/enigma2/GigabluePax/fonts/OpenSans-Regular.ttf" name="RegularLCD" scale="95"/>
+		<font filename="/usr/share/enigma2/GigabluePaxV2/fonts/OpenSans-Regular.ttf" name="RegularLCD" scale="95"/>
 	</fonts>
 
 <!-- template -->

@@ -128,7 +128,7 @@ class OverscanWizard(Screen, ConfigListScreen):
 			self.yes_no.value = True
 			self.list.append(getConfigListEntry(_("Do you want to quit the overscan wizard?"), self.yes_no))
 		elif self.step == 6:
-			config.skin.primary_skin.value = "GigabluePax/skin.xml"
+			config.skin.primary_skin.value = "GigabluePaxV2/skin.xml"
 			config.save()
 			self["introduction"].setText(_("The user interface of the receiver will now restart to select the selected skin"))
 			quitMainloop(3)
