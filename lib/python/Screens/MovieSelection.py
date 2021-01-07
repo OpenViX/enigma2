@@ -750,45 +750,21 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			a()
 
 	def btn_red(self):
-		from InfoBar import InfoBar
-		InfoBarInstance = InfoBar.instance
-		if not InfoBarInstance.LongButtonPressed:
-			self._callButton(config.movielist.btn_red.value)
+		self._callButton(config.movielist.btn_red.value)
 	def btn_green(self):
-		from InfoBar import InfoBar
-		InfoBarInstance = InfoBar.instance
-		if not InfoBarInstance.LongButtonPressed:
-			self._callButton(config.movielist.btn_green.value)
+		self._callButton(config.movielist.btn_green.value)
 	def btn_yellow(self):
-		from InfoBar import InfoBar
-		InfoBarInstance = InfoBar.instance
-		if not InfoBarInstance.LongButtonPressed:
-			self._callButton(config.movielist.btn_yellow.value)
+		self._callButton(config.movielist.btn_yellow.value)
 	def btn_blue(self):
-		from InfoBar import InfoBar
-		InfoBarInstance = InfoBar.instance
-		if not InfoBarInstance.LongButtonPressed:
-			self._callButton(config.movielist.btn_blue.value)
+		self._callButton(config.movielist.btn_blue.value)
 	def btn_redlong(self):
-		from InfoBar import InfoBar
-		InfoBarInstance = InfoBar.instance
-		if InfoBarInstance.LongButtonPressed:
-			self._callButton(config.movielist.btn_redlong.value)
+		self._callButton(config.movielist.btn_redlong.value)
 	def btn_greenlong(self):
-		from InfoBar import InfoBar
-		InfoBarInstance = InfoBar.instance
-		if InfoBarInstance.LongButtonPressed:
-			self._callButton(config.movielist.btn_greenlong.value)
+		self._callButton(config.movielist.btn_greenlong.value)
 	def btn_yellowlong(self):
-		from InfoBar import InfoBar
-		InfoBarInstance = InfoBar.instance
-		if InfoBarInstance.LongButtonPressed:
-			self._callButton(config.movielist.btn_yellowlong.value)
+		self._callButton(config.movielist.btn_yellowlong.value)
 	def btn_bluelong(self):
-		from InfoBar import InfoBar
-		InfoBarInstance = InfoBar.instance
-		if InfoBarInstance.LongButtonPressed:
-			self._callButton(config.movielist.btn_bluelong.value)
+		self._callButton(config.movielist.btn_bluelong.value)
 	def btn_radio(self):
 		self._callButton(config.movielist.btn_radio.value)
 	def btn_tv(self):
