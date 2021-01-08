@@ -34,6 +34,7 @@ eFilePushThread::~eFilePushThread()
 
 static void signal_handler(int x)
 {
+	eDebug("[eFilePush] SIGUSR1 received");
 }
 
 static void ignore_but_report_signals()
@@ -529,7 +530,10 @@ void eFilePushThreadRecorder::thread()
 				if(rv < 0)
 				{
 					if(errno == EINTR)
+					{
+						eDebug("[eFilePushThreadRecorder] poll got interrupted by signal, stop: %d", m_stop);
 						continue;
+					}
 
 					eWarning("[eFilePushThreadRecorder] POLL ERROR, aborting thread: %m");
 					sendEvent(evtWriteError);
@@ -568,7 +572,10 @@ void eFilePushThreadRecorder::thread()
 			}
 
 			if (errno == EINTR || errno == EBUSY)
+			{
+				eDebug("[eFilePushThreadRecorder] read got interrupted by signal, stop: %d", m_stop);
 				continue;
+			}
 
 			if (errno == EOVERFLOW)
 			{
@@ -620,7 +627,10 @@ void eFilePushThreadRecorder::stop()
 	int safeguard;
 
 	if (m_stop == 1)
+	{
+		eDebug("[eFilePushThreadRecorder] requesting to stop thread but thread is already stopped");
 		return;
+	}
 
 	m_stop = 1;
 
