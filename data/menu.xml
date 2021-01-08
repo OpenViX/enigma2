@@ -57,6 +57,7 @@
 				<item weight="0" level="0" text="Basic settings" entryID="tuner_setup" requires="hasTuners"><screen module="Satconfig" screen="NimSelection" /></item>
 				<item weight="5" level="0" text="Automatic scan" entryID="auto_scan" conditional="nimmanager.somethingConnected()" requires="hasTuners"><screen module="ScanSetup" screen="ScanSimple" /></item>
 				<item weight="10" level="0" text="Manual scan" entryID="manual_scan" conditional="nimmanager.somethingConnected()" requires="hasTuners"><screen module="ScanSetup" /></item>
+				<item weight="15" level="2" text="SATPI Setup" entryID="netsatpi_setup"><screen module="NetworkTools" screen="NetworkSATPI"/></item>
 				<item weight="20" level="0" text="Fallback remote receiver setup" entryID="fallbacktuner_settings"><screen module="SetupFallbacktuner"/></item>
 			</menu>
 
