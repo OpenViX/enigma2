@@ -5,7 +5,6 @@ from random import Random
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
 from Screens.HelpMenu import HelpableScreen
-from Components.About import about
 from Components.Network import iNetwork
 from Components.Sources.StaticText import StaticText
 from Components.Sources.Boolean import Boolean
@@ -35,6 +34,7 @@ class NetworkAdapterSelection(Screen,HelpableScreen):
 		self.edittext = _("Press OK to edit the settings.")
 		self.defaulttext = _("Press yellow to set this interface as default interface.")
 		self.restartLanRef = None
+
 		self["key_red"] = StaticText(_("Close"))
 		self["key_green"] = StaticText(_("Select"))
 		self["key_yellow"] = StaticText("")
@@ -588,7 +588,7 @@ class AdapterSetup(Screen, ConfigListScreen, HelpableScreen):
 		else:
 			self["Gateway"].setText("")
 			self["Gatewaytext"].setText("")
-		self["Adapter"].setText( "/dev/" + self.iface + ": " + iNetwork.getFriendlyAdapterDescription(self.iface))
+		self["Adapter"].setText(iNetwork.getFriendlyAdapterName(self.iface))
 
 	def createConfig(self):
 		self.InterfaceEntry = None
@@ -719,53 +719,13 @@ class AdapterSetup(Screen, ConfigListScreen, HelpableScreen):
 
 	def keySave(self):
 		self.hideInputHelp()
-		self.oldInterfaceState = iNetwork.getAdapterAttribute(self.iface, "up")
-		self.oldDHCPState = iNetwork.getAdapterAttribute(self.iface, 'dhcp')
-		self.oldGatewayState = iNetwork.getAdapterAttribute(self.iface, "gateway")
-		if self.oldGatewayState == None:
-			oldstate = False
+		if self["config"].isChanged():
+			self.session.openWithCallback(self.keySaveConfirm, MessageBox, (_("Are you sure you want to activate this network configuration?\n\n") + self.oktext ) )
 		else:
-			oldstate = True
-		self.longdesc = str(iNetwork.getFriendlyAdapterDescription(self.iface))[0:30]
-		if self.dhcpConfigEntry.value == False:
-			dhcpstat = _("disabled")
-		else:
-			dhcpstat = _("enabled")
-		dhcpinfo = ""
-		if self.activateInterfaceEntry.value == False:
-			cardonoff = _("disabled")
-			dhcpinfo = ""
-		else:
-			cardonoff = _("enabled")
-			dhcpinfo = "DHCP: \t" +  dhcpstat
-		gwinfo = ""
-		if self.dhcpConfigEntry.value == True:
-			gwinfo = _("Gateway") + ":\t" + _("enabled") + " ("  + _("automatic from DHCP") +")"
-		if self.hasGatewayConfigEntry.value == True:
-			if self.dhcpConfigEntry.value == False:
-				gwinfo = _("Gateway") + ":\t" + '%s.%s.%s.%s'% tuple(self.gatewayConfigEntry.value)	
-		if self.hasGatewayConfigEntry.value == False:
-			if self.dhcpConfigEntry.value == False:
-				gwinfo = _("Gateway") + ":\t" + _("disabled")
-		if self.activateInterfaceEntry.value == False:
-			gwinfo = ""
-
-		netinfo =  _("Device")  + ":\t" + str(self.iface) + "\n"
-		netinfo += _("Adapter") + ":\t" + self.longdesc  + "\n" + _("Network") + ": \t" + cardonoff 
-		netinfo += "\n" + dhcpinfo 
-		netinfo += "\n" + gwinfo
-		keySavego = self.session.openWithCallback(self.keySavego, MessageBox, ( _("Are you sure you want to activate this network configuration?\n\n")  + netinfo))
-		keySavego.setTitle(self.longdesc)
-
-	def keySavego(self, answer):
-			if answer is True:
-				config.network.save()
-				self.keySaveConfirm(ret = True)
+			if self.finished_cb:
+				self.finished_cb()
 			else:
-				if self.finished_cb:
-					self.finished_cb()
-				else:
-					return
+				self.close('cancel')
 
 	def keySaveConfirm(self, ret = False):
 		if ret:
@@ -1077,7 +1037,7 @@ class AdapterSetupConfiguration(Screen, HelpableScreen):
 		self.mainmenu = self.genMainMenu()
 		self["menulist"].l.setList(self.mainmenu)
 		self["IFtext"].setText(_("Network:"))
-		self["IF"].setText("/dev/" + self.iface + ": " + iNetwork.getFriendlyAdapterDescription(self.iface))
+		self["IF"].setText(iNetwork.getFriendlyAdapterName(self.iface))
 		self["Statustext"].setText(_("Link:"))
 
 		if iNetwork.isWirelessInterface(self.iface):
@@ -1125,9 +1085,8 @@ class AdapterSetupConfiguration(Screen, HelpableScreen):
 
 		if os.path.exists(resolveFilename(SCOPE_PLUGINS, "SystemPlugins/NetworkWizard/networkwizard.xml")):
 			menu.append((_("Network wizard"), "openwizard"))
-		kernel_ver = about.getKernelVersionString()
 		# CHECK WHICH BOXES NOW SUPPORT MAC-CHANGE VIA GUI
-		if getBoxType() not in ('DUMMY', ) and self.iface == 'eth0':
+		if getBoxType() not in ('DUMMY') and self.iface == 'eth0':
 			menu.append((_("Network MAC settings"), "mac"))
 			# DISABLE IPv6 SUPPORT 
 			menu.append((_("Enable/Disable IPv6"), "ipv6"))
@@ -1397,7 +1356,7 @@ class NetworkAdapterTest(Screen):
 		self["key_yellow"].setText(_("Stop test"))
 
 	def doStep2(self):
-		self["Adapter"].setText("/dev/" + self.iface + ": " + iNetwork.getFriendlyAdapterDescription(self.iface))
+		self["Adapter"].setText(iNetwork.getFriendlyAdapterName(self.iface))
 		self["Adapter"].setForegroundColorNum(2)
 		self["Adaptertext"].setForegroundColorNum(1)
 		self["AdapterInfo_Text"].setForegroundColorNum(1)
