@@ -183,6 +183,7 @@ def getButtonSetupFunctions():
 	ButtonSetupFunctions.append((_("User interface settings"), "Setup/userinterface", "Setup"))
 	ButtonSetupFunctions.append((_("Recording and playback settings"), "Setup/recording", "Setup"))
 	ButtonSetupFunctions.append((_("Skin setup"), "Module/Screens.SkinSelector/SkinSelector", "Setup"))
+	ButtonSetupFunctions.append((_("Reload skin"), "Infobar/reloadSkin", "Setup"))
 	ButtonSetupFunctions.append((_("Harddisk setup"), "Setup/harddisk", "Setup"))
 	ButtonSetupFunctions.append((_("Subtitles settings"), "Setup/subtitlesetup", "Setup"))
 	return ButtonSetupFunctions
@@ -554,3 +555,6 @@ class InfoBarButtonSetup():
 
 	def ToggleLCDLiveTV(self):
 		config.lcd.showTv.value = not config.lcd.showTv.value
+
+	def reloadSkin(self):
+		self.session.reloadSkin()

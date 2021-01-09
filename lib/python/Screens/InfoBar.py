@@ -89,6 +89,11 @@ class InfoBar(InfoBarBase, InfoBarShowHide,
 		if config.misc.initialchannelselection.value:
 			self.onShown.append(self.showMenu)
 		self.onShow.append(self.doButtonsCheck)
+		self.onClose.append(self.__onClose)
+
+	def __onClose(self):
+		# clear the instance value so the skin reloader works correctly
+		InfoBar.instance = None
 
 	def showMenu(self):
 		self.onShown.remove(self.showMenu)
@@ -110,9 +115,6 @@ class InfoBar(InfoBarBase, InfoBarShowHide,
 			else:
 				self["key_green"].setText(_("Subservices"))
 		self["key_blue"].setText(_("Extensions"))
-
-	def __onClose(self):
-		InfoBar.instance = None
 
 	def __eventInfoChanged(self):
 		if self.execing:
@@ -299,8 +301,9 @@ class MoviePlayer(InfoBarBase, InfoBarShowHide, InfoBarLongKeyDetection, InfoBar
 		self["key_blue"].setText(_("Extensions"))
 
 	def __onClose(self):
-		config.misc.standbyCounter.removeNotifier(self.standbyCountChanged)
+		# clear the instance value so the skin reloader works correctly
 		MoviePlayer.instance = None
+		config.misc.standbyCounter.removeNotifier(self.standbyCountChanged)
 		from Screens.MovieSelection import playlist
 		del playlist[:]
 		if not config.movielist.stop_service.value:

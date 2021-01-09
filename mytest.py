@@ -371,6 +371,20 @@ class Session:
 		if self.summary is not None:
 			self.summary.show()
 
+	def reloadSkin(self):
+		# close all dialogs in the stack
+		if self.dialog_stack:
+			for (d,s) in self.dialog_stack:
+				d.doClose()
+			self.dialog_stack = []
+		# need to be back on the main lopp before actually reloading the skin
+		self.updateTimer = enigma.eTimer()
+		self.updateTimer.callback.append((
+			skin.InitSkins(booting=False),
+			self.open(InfoBar.InfoBar)))
+		self.updateTimer.start(1, True)
+
+
 profile("Standby,PowerKey")
 import Screens.Standby
 from Screens.Menu import MainMenu, mdom

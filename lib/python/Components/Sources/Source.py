@@ -15,7 +15,11 @@ class Source(Element):
 		pass
 
 	def destroy(self):
-		self.__dict__.clear()
+		# by setting all attributes to None, we release any references promptly
+		# without completely removing attributes that are expected to exist 
+		# dict's clear() can cause crashes due to expected attributes
+		for name in self.__dict__:
+			setattr(self, name, None)
 
 
 class ObsoleteSource(Source):
