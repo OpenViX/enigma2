@@ -10,7 +10,7 @@ from Components.Sources.ServiceEvent import ServiceEvent
 from Components.Sources.Boolean import Boolean
 from Components.config import config, configfile, ConfigBoolean, ConfigClock, ConfigSelection
 from Components.SystemInfo import SystemInfo
-from Components.UsageConfig import preferredInstantRecordPath, defaultMoviePath, preferredTimerPath
+from Components.UsageConfig import preferredInstantRecordPath, defaultMoviePath
 from Components.VolumeControl import VolumeControl
 from Components.Pixmap import MovingPixmap, MultiPixmap
 from Components.Sources.StaticText import StaticText
@@ -42,11 +42,11 @@ from Screens.SubtitleDisplay import SubtitleDisplay
 from Screens.RdsDisplay import RdsInfoDisplay, RassInteractive
 from Screens.TimeDateInput import TimeDateInput
 from Screens.TimerEdit import TimerEditList
+from Screens.TimerEntry import TimerEntry as addTimerFromEvent
 from Screens.UnhandledKey import UnhandledKey
 from ServiceReference import ServiceReference, isPlayableForCur
 
 from RecordTimer import RecordTimerEntry, parseEvent, AFTEREVENT, findSafeRecordPath
-from Screens.TimerEntry import TimerEntry as TimerEntry
 
 from Tools import Notifications
 from Tools.Directories import pathExists, fileExists
@@ -441,50 +441,22 @@ class SecondInfoBar(Screen, HelpableScreen):
 		if event is None:
 			return
 		eventid = event.getEventId()
-		refstr = serviceref.ref.toString()
+		refstr = serviceref.toString()
 		for timer in self.session.nav.RecordTimer.timer_list:
-			if timer.eit == eventid and timer.service_ref.ref.toString() == refstr:
+			if timer.eit == eventid and timer.service_ref.toString() == refstr:
 				cb_func = lambda ret : not ret or self.removeTimer(timer)
 				self.session.openWithCallback(cb_func, MessageBox, _("Do you really want to delete %s?") % event.getEventName(), simple=True)
 				break
 		else:
-			newEntry = RecordTimerEntry(self.currentService, checkOldTimers = True, dirname = preferredTimerPath(), *parseEvent(self.event, service=serviceref))
-			self.session.openWithCallback(self.finishedAdd, TimerEntry, newEntry)
+			def refreshButtons(timer):
+				if timer:
+					self["key_green"].setText(_("Remove timer"))
+					self.key_green_choice = self.REMOVE_TIMER
+				else:
+					self["key_green"].setText(_("Add timer"))
+					self.key_green_choice = self.ADD_TIMER
 
-	def finishedAdd(self, answer):
-		# print "finished add"
-		if answer[0]:
-			entry = answer[1]
-			simulTimerList = self.session.nav.RecordTimer.record(entry)
-			if simulTimerList is not None:
-				for x in simulTimerList:
-					if x.setAutoincreaseEnd(entry):
-						self.session.nav.RecordTimer.timeChanged(x)
-				simulTimerList = self.session.nav.RecordTimer.record(entry)
-				if simulTimerList is not None:
-					if not entry.repeated and not config.recording.margin_before.value and not config.recording.margin_after.value and len(simulTimerList) > 1:
-						change_time = False
-						conflict_begin = simulTimerList[1].begin
-						conflict_end = simulTimerList[1].end
-						if conflict_begin == entry.end:
-							entry.end -= 30
-							change_time = True
-						elif entry.begin == conflict_end:
-							entry.begin += 30
-							change_time = True
-						if change_time:
-							simulTimerList = self.session.nav.RecordTimer.record(entry)
-					if simulTimerList is not None:
-						self.session.openWithCallback(self.finishSanityCorrection, TimerSanityConflict, simulTimerList)
-			self["key_green"].setText(_("Remove timer"))
-			self.key_green_choice = self.REMOVE_TIMER
-		else:
-			self["key_green"].setText(_("Add timer"))
-			self.key_green_choice = self.ADD_TIMER
-			# print "Timeredit aborted"
-
-	def finishSanityCorrection(self, answer):
-		self.finishedAdd(answer)
+			addTimerFromEvent(self.session, refreshButtons, event, serviceref)
 
 	def setService(self, service):
 		self.currentService=service
@@ -706,8 +678,10 @@ class InfoBarShowHide(InfoBarScreenSaver):
 				self.hideTimer.start(val * 1000, True)
 		elif (self.secondInfoBarScreen and self.secondInfoBarScreen.shown) or ((not config.usage.show_second_infobar.value or isMoviePlayerInfoBar(self)) and self.EventViewIsShown):
 			self.hideTimer.stop()
-			val = int(config.usage.show_second_infobar.value)
-			if val:
+			# some settings are non integer
+			val = config.usage.show_second_infobar.value
+			val = val.isdigit() and int(val) or 0
+			if val > 0:
 				self.hideTimer.start(val * 1000, True)
 		elif hasattr(self, "pvrStateDialog"):
 			self.hideTimer.stop()
@@ -1321,10 +1295,10 @@ class InfoBarChannelSelection:
 				if prev:
 					prev = prev.toString()
 					while True:
-						if config.usage.quickzap_bouquet_change.value:
-							if self.servicelist.atBegin():
-								self.servicelist.prevBouquet()
-						self.servicelist.moveUp()
+						if config.usage.quickzap_bouquet_change.value and self.servicelist.atBegin():
+							self.servicelist.prevBouquet()
+						else:
+							self.servicelist.moveUp()
 						cur = self.servicelist.getCurrentSelection()
 						if cur:
 							if self.servicelist.dopipzap:
@@ -1350,10 +1324,10 @@ class InfoBarChannelSelection:
 				if prev:
 					prev = prev.toString()
 					while True:
-						if config.usage.quickzap_bouquet_change.value:
-							if self.servicelist2.atBegin():
-								self.servicelist2.prevBouquet()
-						self.servicelist2.moveUp()
+						if config.usage.quickzap_bouquet_change.value and self.servicelist2.atBegin():
+							self.servicelist2.prevBouquet()
+						else:
+							self.servicelist2.moveUp()
 						cur = self.servicelist2.getCurrentSelection()
 						if cur:
 							if ChannelSelectionInstance.dopipzap:
@@ -1767,7 +1741,6 @@ class InfoBarEPG:
 		startRef = self.lastservice if isMoviePlayerInfoBar(self) else self.session.nav.getCurrentlyPlayingServiceOrGroup()
 		if startRef:
 			bouquets = self.servicelist.getEPGBouquetList()
-			services = self.getBouquetServices(startBouquet)
 			self.session.openWithCallback(self.epgClosed, EPGSelectionSingle, self.zapToService, startBouquet, startRef, bouquets)
 
 	def openInfoBarEPG(self):
@@ -1796,9 +1769,6 @@ class InfoBarEPG:
 				self.openGridEPG()
 			elif args[0] == 'reopeninfobar':
 				self.openInfoBarEPG()
-			elif args[0] == 'closemovieplayer' and isMoviePlayerInfoBar(self):
-				self.lastservice = self.session.nav.getCurrentlyPlayingServiceOrGroup()
-				self.close()
 
 	def openSimilarList(self, eventId, refstr):
 		self.session.open(EPGSelectionSimilar, refstr, eventId=eventId)

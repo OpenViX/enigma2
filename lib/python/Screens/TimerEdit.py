@@ -347,7 +347,7 @@ class TimerEditList(Screen, ProtectedScreen):
 		if event is None:
 			data = (int(time()), int(time() + 60), "", "", None)
 		else:
-			data = parseEvent(event, description = False)
+			data = parseEvent(event, description = True)
 
 		self.addTimer(RecordTimerEntry(serviceref, checkOldTimers = True, dirname = preferredTimerPath(), *data))
 

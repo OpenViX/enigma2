@@ -446,7 +446,7 @@ class OscamInfoMenu(Screen):
 			if os.path.exists("/tmp/ecm.info"):
 				self.session.open(oscECMInfo)
 			else:
-				pass
+				self.session.open(MessageBox, _("No ECM info is currently available. This is only available while decrypting."), MessageBox.TYPE_INFO)
 		elif entry == 1:
 			self.session.open(oscInfo, "c")
 		elif entry == 2:

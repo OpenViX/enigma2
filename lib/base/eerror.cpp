@@ -163,7 +163,7 @@ int formatTime(char *buf, int bufferSize, int flags)
 void eDebugImpl(int flags, const char* fmt, ...)
 {
 	char * buf = new char[eDEBUG_BUFLEN];
-	struct timespec tp;
+	struct timespec;
 
 	int pos = formatTime(buf, eDEBUG_BUFLEN, flags);
 
@@ -201,7 +201,8 @@ void eDebugImpl(int flags, const char* fmt, ...)
 
 	logOutput(buf, pos);
 
-	::write(2, buf, pos);
+	ssize_t ret = ::write(2, buf, pos);
+	if (ret < 0) (void)ret;
 
 	delete[] buf;
 	if (flags & _DBGFLG_FATAL)

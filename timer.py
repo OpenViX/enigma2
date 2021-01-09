@@ -3,6 +3,7 @@ from time import time, localtime, mktime
 from enigma import eTimer, eActionMap
 import datetime
 
+
 class TimerEntry:
 	StateWaiting  = 0
 	StatePrepared = 1
@@ -25,6 +26,7 @@ class TimerEntry:
 
 		self.disabled = False
 		self.failed = False
+		self.log_entries = []
 
 	def resetState(self):
 		self.state = self.StateWaiting
@@ -137,6 +139,9 @@ class TimerEntry:
 	def getNextActivation(self):
 		pass
 
+	def saveTimer(self):
+		pass
+
 	def fail(self):
 		self.faileded = True
 
@@ -181,11 +186,21 @@ class Timer:
 		for timer in disabled_timers:
 			timer.shouldSkip()
 
-	def cleanupDaily(self, days):
-		limit = time() - (days * 3600 * 24)
-		self.processed_timers = [entry for entry in self.processed_timers if (entry.disabled and entry.repeated) or (entry.end and (entry.end > limit))]
+	def cleanupDaily(self, days, finishedLogDays=None):
+		now = time()
+		keepThreshold = now - days * 86400 if days else 0
+		keepFinishedLogThreshold = now - finishedLogDays * 86400 if finishedLogDays else 0
+		self.processed_timers = [entry for entry in self.processed_timers if (entry.disabled and entry.repeated) or (entry.end and (entry.end > keepThreshold))]
+		for entry in self.processed_timers:
+			if entry.repeated:
+				# Handle repeat entries, which never end
+				# Repeating timers get, e.g., repeated="127" (day of week bitmap)
+				entry.log_entries = [entry for entry in entry.log_entries if entry.log_time > keepThreshold]
+			elif entry.end < keepFinishedLogThreshold and len(entry.log_entries) > 0:
+				# Clear logs on finished timers
+				entry.log_entries = []
 
-	def addTimerEntry(self, entry, noRecalc=0):
+	def addTimerEntry(self, entry, noRecalc=0, dosave=True):
 		entry.processRepeated()
 
 		# when the timer has not yet started, and is already passed,
@@ -197,7 +212,7 @@ class Timer:
 		else:
 			insort(self.timer_list, entry)
 			if not noRecalc:
-				self.calcNextActivation()
+				self.calcNextActivation(dosave)
 
 # small piece of example code to understand how to use record simulation
 #		if NavigationInstance.instance:
@@ -225,7 +240,7 @@ class Timer:
 		self.timer.start(delay, 1)
 		self.next = when
 
-	def calcNextActivation(self):
+	def calcNextActivation(self, dosave=True):
 		now = time()
 		if self.lastActivation > now:
 			print "[timer.py] timewarp - re-evaluating all processed timers."
@@ -234,9 +249,9 @@ class Timer:
 			for x in tl:
 				# simulate a "waiting" state to give them a chance to re-occure
 				x.resetState()
-				self.addTimerEntry(x, noRecalc=1)
+				self.addTimerEntry(x, noRecalc=1, dosave=dosave)
 
-		self.processActivation()
+		self.processActivation(dosave)
 		self.lastActivation = now
 
 		min = int(now) + self.MaxWaitTime
@@ -256,7 +271,7 @@ class Timer:
 
 		self.setNextActivation(now, min)
 
-	def timeChanged(self, timer):
+	def timeChanged(self, timer, dosave=True):
 		timer.timeChanged()
 		if timer.state == TimerEntry.StateEnded:
 			self.processed_timers.remove(timer)
@@ -274,9 +289,9 @@ class Timer:
 				eActionMap.getInstance().unbindAction('', timer.keyPressed)
 			timer.state = TimerEntry.StateWaiting
 
-		self.addTimerEntry(timer)
+		self.addTimerEntry(timer, dosave=dosave)
 
-	def doActivate(self, w):
+	def doActivate(self, w, dosave=True):
 		self.timer_list.remove(w)
 
 		# when activating a timer which has already passed,
@@ -299,33 +314,42 @@ class Timer:
 			if w.repeated:
 				w.processRepeated()
 				w.state = TimerEntry.StateWaiting
-				self.addTimerEntry(w)
+				self.addTimerEntry(w, dosave=dosave)
 			else:
 				insort(self.processed_timers, w)
 
 		self.stateChanged(w)
 
-	def processActivation(self):
+	def processActivation(self, dosave):
 		t = int(time()) + 1
-# We keep on processing the first entry until it goes into the future.
-#
-# As we activate a timer, mark it as such and don't activate it again if
-# it is so marked.
-# This is to prevent a situation that obtains for Record timers.
-# These do not remove themselves from the timer_list at the start of
-# their doActivate() (as various parts of that code expects them to
-# still be there - each timers steps through various states) and hence
-# one thread can activate it and then, on a file-system access, python
-# switches to another thread and, if that happens to end up running the
-# timer code, the same timer will be run again.
-#
-# Since this tag is only for use here, we remove it after use.
-#
+		# We keep on processing the first entry until it goes into the future.
+		#
+		# As we activate a timer, mark it as such and don't activate it again if
+		# it is so marked.
+		# This is to prevent a situation that obtains for Record timers.
+		# These do not remove themselves from the timer_list at the start of
+		# their doActivate() (as various parts of that code expects them to
+		# still be there - each timers steps through various states) and hence
+		# one thread can activate it and then, on a file-system access, python
+		# switches to another thread and, if that happens to end up running the
+		# timer code, the same timer will be run again.
+		#
+		# Since this tag is only for use here, we remove it after use.
+		#
+
+		wasActivated = False
 		while True:
-			timer_list = [ tmr for tmr in self.timer_list if (not tmr.disabled and not getattr(tmr, "currentlyActivated", False)) ]
-			if timer_list and timer_list[0].getNextActivation() < t:
-				timer_list[0].currentlyActivated = True
-				self.doActivate(timer_list[0])
-				del timer_list[0].currentlyActivated
+			entry = None
+			for tmr in self.timer_list:
+				if not tmr.disabled and not getattr(tmr, "currentlyActivated", False):
+					entry = tmr
+					break
+			if entry and entry.getNextActivation() < t:
+				entry.currentlyActivated = True
+				self.doActivate(entry, False)
+				del entry.currentlyActivated
+				wasActivated = True
 			else:
 				break
+		if wasActivated and dosave:
+			self.saveTimer()

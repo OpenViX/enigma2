@@ -91,8 +91,8 @@ SystemInfo["HasHiSi"] = pathExists("/proc/hisi")
 SystemInfo["canBackupEMC"] = getMachineBuild() in ("hd51", "h7") and ("disk.img", "%s" % SystemInfo["MBbootdevice"]) or getMachineBuild() in ("osmio4k", "osmio4kplus", "osmini4k") and ("emmc.img", "%s" % SystemInfo["MBbootdevice"]) or SystemInfo["HasHiSi"] and ("usb_update.bin", "none")
 SystemInfo["canMode12"] = getMachineBuild() in ("hd51", "h7") and ("brcm_cma=440M@328M brcm_cma=192M@768M", "brcm_cma=520M@248M brcm_cma=200M@768M")
 SystemInfo["HasMMC"] = fileHas("/proc/cmdline", "root=/dev/mmcblk") or "mmcblk" in getMachineMtdRoot()
-SystemInfo["HasH9SD"] = getMachineBuild() in ("h9", "i55plus") and pathExists("/dev/mmcblk0p1")
-SystemInfo["HasSDnomount"] = getMachineBuild() in ("h9", "i55plus") and (False, "none") or getMachineBuild() in ("multibox", "h9combo", "h9twin") and (True, "mmcblk0")
+SystemInfo["HasH9SD"] = getMachineBuild() in ("h9", "h9se", "i55plus", "i55se") and pathExists("/dev/mmcblk0p1")
+SystemInfo["HasSDnomount"] = getMachineBuild() in ("h9", "h9se", "i55plus", "i55se") and (False, "none") or getMachineBuild() in ("multibox", "h9combo", "h9combose", "h9twin") and (True, "mmcblk0")
 SystemInfo["CanProc"] = SystemInfo["HasMMC"] and getBrandOEM() != "vuplus"
 SystemInfo["Canaudiosource"] = fileCheck("/proc/stb/hdmi/audio_source")
 SystemInfo["Can3DSurround"] = fileHas("/proc/stb/audio/3d_surround_choices", "none")
@@ -118,14 +118,11 @@ SystemInfo["HDRSupport"] = fileExists("/proc/stb/hdmi/hlg_support_choices")
 SystemInfo["Canedidchecking"] = fileCheck("/proc/stb/hdmi/bypass_edid_checking")
 SystemInfo["haveboxmode"] = fileExists("/proc/stb/info/boxmode")
 SystemInfo["HasScaler_sharpness"] = pathExists("/proc/stb/vmpeg/0/pep_scaler_sharpness")
-# Machines that out component video via scart socket.
-SystemInfo["Scart-YPbPr"] = getHaveSCARTYUV() == "True"
-# Machines that do not have component video (red, green and blue RCA sockets).
-SystemInfo["no_YPbPr"] = not getHaveYUV()
-# Machines that have composite video (yellow RCA socket) but do not have Scart.
-SystemInfo["yellow_RCA_no_scart"] = not getHaveSCART() and (getHaveRCA() in ("True",) or getHaveAVJACK() in ("True",))
-# Machines that have neither yellow RCA nor Scart sockets.
-SystemInfo["no_yellow_RCA__no_scart"] = not getHaveRCA() and (not getHaveSCART() and not getHaveAVJACK())
+SystemInfo["hasJack"] = getHaveAVJACK() in ('True',)
+SystemInfo["hasRCA"] = getHaveRCA() in ('True',)
+SystemInfo["hasScart"] = getHaveSCART() in ('True',)
+SystemInfo["hasScartYUV"] = getHaveSCARTYUV() in ('True',)
+SystemInfo["hasYUV"] = getHaveYUV() in ('True',)
 SystemInfo["VideoModes"] = getChipSetString() in (  # 2160p and 1080p capable hardware...
 	"5272s", "7251", "7251s", "7252", "7252s", "7278", "7366", "7376", "7444s", "72604", "3798mv200", "3798cv200", "hi3798mv200", "hi3798cv200"
 ) and (
@@ -145,5 +142,5 @@ SystemInfo["LnbPowerAlwaysOn"] = getBoxType() in ("vusolo4k", "vuduo4k", "vuduo4
 
 SystemInfo["rc_model"] = rc_model.getRcFolder()
 SystemInfo["mapKeyInfoToEpgFunctions"] = SystemInfo["rc_model"] in ("vu", "vu2", "vu3", "vu4") # due to button limitations of the remote control
-SystemInfo["toggleTvRadioButtonEvents"] = SystemInfo["rc_model"] in ("ax4", "beyonwiz1", "beyonwiz2", "gb0", "gb1", "gb2", "gb3", "gb4", "sf8008", "uniboxhde") # due to button limitations of the remote control
+SystemInfo["toggleTvRadioButtonEvents"] = SystemInfo["rc_model"] in ("ax4", "beyonwiz1", "beyonwiz2", "gb0", "gb1", "gb2", "gb3", "gb4", "sf8008", "sf8008m", "uniboxhde") # due to button limitations of the remote control
 

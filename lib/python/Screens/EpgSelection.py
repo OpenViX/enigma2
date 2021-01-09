@@ -1,7 +1,8 @@
 from __future__ import print_function
+from enigma import eServiceReference
 from Components.ActionMap import HelpableActionMap
-from Components.EpgList import EPG_TYPE_SINGLE
 from Screens.EpgSelectionChannel import EPGSelectionChannel
+from Screens.TimerEntry import addTimerFromEventSilent
 
 
 # Keep for backwards compatibility with plugins, including the parameter naming.
@@ -11,7 +12,7 @@ class EPGSelection(EPGSelectionChannel):
 		if EPGtype not in ("similar", "single"):
 			print("[EPGSelection] Warning: EPGSelection does not support type '%s'" % EPGtype)
 			print("               Attempting to continue in single EPG mode")
-		EPGSelectionChannel.__init__(self, session, service)
+		EPGSelectionChannel.__init__(self, session, eServiceReference(service))
 
 		# Rewrite the EPG actions to invoke the compatibility functions.
 		helpDescription = _("EPG Commands")
@@ -104,6 +105,10 @@ class EPGSelection(EPGSelectionChannel):
 			self.addEditTimer()
 		else:
 			self.addEditTimerMenu()
+
+	def doInstantTimer(self, zap=0):
+		event, service = self["list"].getCurrent()[:2]
+		addTimerFromEventSilent(self.session, self.refreshTimerActionButton, event, service, zap)
 
 	# Things that need to be able to be overridden.
 	def refreshList(self):

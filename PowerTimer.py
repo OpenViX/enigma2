@@ -13,7 +13,7 @@ from Screens.MessageBox import MessageBox
 import Screens.Standby
 from Tools import Directories, Notifications
 from Tools.XMLTools import stringToXML
-import timer
+from timer import Timer, TimerEntry
 import NavigationInstance
 
 
@@ -48,9 +48,9 @@ class TIMERTYPE:
 	RESTART = 8
 
 # please do not translate log messages
-class PowerTimerEntry(timer.TimerEntry, object):
+class PowerTimerEntry(TimerEntry, object):
 	def __init__(self, begin, end, disabled = False, afterEvent = AFTEREVENT.NONE, timerType = TIMERTYPE.WAKEUP, checkOldTimers = False):
-		timer.TimerEntry.__init__(self, int(begin), int(end))
+		TimerEntry.__init__(self, int(begin), int(end))
 		if checkOldTimers:
 			if self.begin < time() - 1209600:
 				self.begin = int(time())
@@ -71,7 +71,6 @@ class PowerTimerEntry(timer.TimerEntry, object):
 		self.autosleepdelay = 60
 		self.autosleeprepeat = 'once'
 
-		self.log_entries = []
 		self.resetState()
 
 	def __repr__(self):
@@ -410,9 +409,9 @@ def createTimer(xml):
 
 	return entry
 
-class PowerTimer(timer.Timer):
+class PowerTimer(Timer):
 	def __init__(self):
-		timer.Timer.__init__(self)
+		Timer.__init__(self)
 
 		self.Filename = Directories.resolveFilename(Directories.SCOPE_CONFIG, "pm_timers.xml")
 
@@ -421,7 +420,7 @@ class PowerTimer(timer.Timer):
 		except IOError:
 			print "unable to load timers from file!"
 
-	def doActivate(self, w):
+	def doActivate(self, w, dosave=True):
 		# when activating a timer which has already passed,
 		# simply abort the timer. don't run trough all the stages.
 		if w.shouldSkip():
@@ -458,9 +457,11 @@ class PowerTimer(timer.Timer):
 				self.addTimerEntry(w)
 			else:
 				# Remove old timers as set in config
-				self.cleanupDaily(config.recording.keep_timers.value)
+				self.cleanupDaily(config.recording.keep_timers.value, config.recording.keep_finished_timer_logs.value)
 				insort(self.processed_timers, w)
 		self.stateChanged(w)
+		if dosave:
+			self.saveTimer()
 
 	def loadTimer(self):
 		# TODO: PATH!
@@ -500,62 +501,58 @@ class PowerTimer(timer.Timer):
 				checkit = False # at moment it is enough when the message is displayed one time
 
 	def saveTimer(self):
-		list = ['<?xml version="1.0" ?>\n', '<timers>\n']
+		timerTypes = {
+			TIMERTYPE.WAKEUP: "wakeup",
+			TIMERTYPE.WAKEUPTOSTANDBY: "wakeuptostandby",
+			TIMERTYPE.AUTOSTANDBY: "autostandby",
+			TIMERTYPE.AUTODEEPSTANDBY: "autodeepstandby",
+			TIMERTYPE.STANDBY: "standby",
+			TIMERTYPE.DEEPSTANDBY: "deepstandby",
+			TIMERTYPE.REBOOT: "reboot",
+			TIMERTYPE.RESTART: "restart"
+		}
+		afterEvents = {
+			AFTEREVENT.NONE: "nothing",
+			AFTEREVENT.WAKEUPTOSTANDBY: "wakeuptostandby",
+			AFTEREVENT.STANDBY: "standby",
+			AFTEREVENT.DEEPSTANDBY: "deepstandby"
+		}
+
+		list = ['<?xml version="1.0" ?>\n<timers>\n']
 		for timer in self.timer_list + self.processed_timers:
 			if timer.dontSave:
 				continue
-			list.append('<timer')
-			list.append(' timertype="' + str(stringToXML({
-				TIMERTYPE.WAKEUP: "wakeup",
-				TIMERTYPE.WAKEUPTOSTANDBY: "wakeuptostandby",
-				TIMERTYPE.AUTOSTANDBY: "autostandby",
-				TIMERTYPE.AUTODEEPSTANDBY: "autodeepstandby",
-				TIMERTYPE.STANDBY: "standby",
-				TIMERTYPE.DEEPSTANDBY: "deepstandby",
-				TIMERTYPE.REBOOT: "reboot",
-				TIMERTYPE.RESTART: "restart"
-				}[timer.timerType])) + '"')
-			list.append(' begin="' + str(int(timer.begin)) + '"')
-			list.append(' end="' + str(int(timer.end)) + '"')
-			list.append(' repeated="' + str(int(timer.repeated)) + '"')
-			list.append(' afterevent="' + str(stringToXML({
-				AFTEREVENT.NONE: "nothing",
-				AFTEREVENT.WAKEUPTOSTANDBY: "wakeuptostandby",
-				AFTEREVENT.STANDBY: "standby",
-				AFTEREVENT.DEEPSTANDBY: "deepstandby"
-				}[timer.afterEvent])) + '"')
-			list.append(' disabled="' + str(int(timer.disabled)) + '"')
-			list.append(' autosleepinstandbyonly="' + str(timer.autosleepinstandbyonly) + '"')
-			list.append(' autosleepdelay="' + str(timer.autosleepdelay) + '"')
-			list.append(' autosleeprepeat="' + str(timer.autosleeprepeat) + '"')
-			list.append('>\n')
+			list.append('<timer'
+						' timertype="%s"'
+						' begin="%d"'
+						' end="%d"'
+						' repeated="%d"'
+						' afterevent="%s"'
+						' disabled="%d"'
+						' autosleepinstandbyonly="%s"'
+						' autosleepdelay="%s"'
+						' autosleeprepeat="%s"' % ( \
+						timerTypes[timer.timerType], \
+						int(timer.begin), \
+						int(timer.end), \
+						int(timer.repeated), \
+						afterEvents[timer.afterEvent], \
+						int(timer.disabled), \
+						timer.autosleepinstandbyonly, \
+						timer.autosleepdelay, \
+						timer.autosleeprepeat))
 
-#		Handle repeat entries, which never end and so never get pruned by cleanupDaily
-#       Repeating timers get autosleeprepeat="repeated" or repeated="127" (daily) or
-#       "31" (weekdays) [dow bitmap] etc.
-#
-			ignore_before = 0
-			if config.recording.keep_timers.value > 0:
-				if str(timer.autosleeprepeat) == "repeated" or int(timer.repeated) > 0:
-					ignore_before = time() - config.recording.keep_timers.value*86400
-
-			for log_time, code, msg in timer.log_entries:
-				if log_time < ignore_before:
-					continue
-				list.append('<log')
-				list.append(' code="' + str(code) + '"')
-				list.append(' time="' + str(log_time) + '"')
-				list.append('>')
-				list.append(str(stringToXML(msg)))
-				list.append('</log>\n')
-
-			list.append('</timer>\n')
+			if len(timer.log_entries) == 0:
+				list.append('/>\n')
+			else:
+				for log_time, code, msg in timer.log_entries:
+					list.append('>\n<log code="%d" time="%d">%s</log' % (code, log_time, stringToXML(msg)))
+				list.append('>\n</timer>\n')
 
 		list.append('</timers>\n')
 
 		file = open(self.Filename + ".writing", "w")
-		for x in list:
-			file.write(x)
+		file.writelines(list)
 		file.flush()
 
 		os.fsync(file.fileno())
@@ -640,3 +637,14 @@ class PowerTimer(timer.Timer):
 
 	def shutdown(self):
 		self.saveTimer()
+
+	def cleanupDaily(self, days, finishedLogDays=None):
+		Timer.cleanupDaily(self, days, finishedLogDays)
+		if days > 0:
+			now = time()
+			keepThreshold = now - days * 86400
+			for entry in self.processed_timers:
+				if str(timer.autosleeprepeat) == "repeated":
+					# Handle repeat entries, which never end
+					# Repeating timers get autosleeprepeat="repeated" as well as the cases handled by TimerEntry
+					entry.log_entries = [entry for entry in entry.log_entries if entry.log_time > keepThreshold]

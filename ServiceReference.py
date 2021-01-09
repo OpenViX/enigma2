@@ -21,11 +21,27 @@ def resolveAlternate(serviceref):
 	return nref
 
 # Extensions to eServiceReference
+@staticmethod
+def __fromDirectory(path):
+	ref = eServiceReference(eServiceReference.idFile,
+			eServiceReference.flagDirectory |
+			eServiceReference.shouldSort | eServiceReference.sort1, path)
+	ref.setData(0, 1)
+	return ref
+
+eServiceReference.fromDirectory = __fromDirectory
+
 eServiceReference.isPlayback = lambda serviceref: "0:0:0:0:0:0:0:0:0" in serviceref.toCompareString()
 
 # Apply ServiceReference method proxies to the eServiceReference object so the two classes can be used interchangeably
 # These are required for ServiceReference backwards compatibility
 eServiceReference.isRecordable = lambda serviceref: serviceref.flags & eServiceReference.isGroup or (serviceref.type == eServiceReference.idDVB or serviceref.type == eServiceReference.idDVB + 0x100 or serviceref.type == 0x2000 or serviceref.type == eServiceReference.idServiceMP3)
+
+def __repr(serviceref):
+	chnum = serviceref.getChannelNum()
+	chnum = ", ChannelNum=" + str(chnum) if chnum else ""
+	return "eServiceReference(Name=%s%s, String=%s)" % (serviceref.getServiceName(), chnum, serviceref.toString())
+eServiceReference.__repr__ = __repr
 
 def __toString(serviceref):
 	return serviceref.toString()
@@ -73,7 +89,7 @@ class ServiceReference(eServiceReference):
 			new = ref
 			new.__class__ = ServiceReference
 			return new
-		return object.__new__(cls, ref, reftype, flags, path)
+		return eServiceReference.__new__(cls)
 
 	def __init__(self, ref, reftype=eServiceReference.idInvalid, flags=0, path=''):
 		if reftype != eServiceReference.idInvalid:

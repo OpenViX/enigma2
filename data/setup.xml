@@ -100,7 +100,7 @@
 		<item level="1" text="Show service type icons" description="Configure if and how service type icons will be shown.">config.usage.servicetype_icon_mode</item>
 		<item level="1" text="Show record indicator" description="Configure if and how the record indicator will be shown in the channel selection list.">config.usage.record_indicator_mode</item>
 		<item level="1" text="Show picons in service list" description="Configure if picons will be shown in the service list.">config.usage.service_icon_enable</item>
-		<item level="1" text="Show columns" conditional="not config.usage.servicelist_twolines.value" description="Configure if and how wide the service name column will be shown in the channel selection list.">config.usage.servicelist_column</item>
+		<item level="1" text="Show columns" conditional="config.usage.servicelist_twolines.value == '0'" description="Configure if and how wide the service name column will be shown in the channel selection list.">config.usage.servicelist_column</item>
 		<item level="1" text="Number of rows" description="This allows you to change the number of rows shown.">config.usage.serviceitems_per_page</item>
 		<item level="1" text="Service number font size" description="This allows you to change the font size relative to skin size, so 1 increases by 1 point size, and -1 decreases by 1 point size">config.usage.servicenum_fontsize</item>
 		<item level="1" text="Service name font size" description="This allows you to change the font size relative to skin size, so 1 increases by 1 point size, and -1 decreases by 1 point size">config.usage.servicename_fontsize</item>
@@ -114,13 +114,13 @@
 	<setup key="epgsettings" title="EPG settings">
 		<item level="0" text="EPG button action" description="Choose what will be displayed when the 'EPG' button is pressed.">config.usage.defaultEPGType</item>
 		<item level="0" text="INFO button action" description="Choose what will be displayed when the 'INFO' button is pressed.">config.usage.defaultINFOType</item>
-		<item level="2" text="EPG location" description="Choose the location where the EPG data will be stored when the %s %s is shut down. The location must be available at boot time.">config.misc.epgcachepath</item>
+		<item level="2" text="EPG location" description="Choose the location where the EPG data will be saved when the %s %s is shut down. The location must be available at boot time.">config.misc.epgcachepath</item>
 		<item level="2" text="EPG filename" description="Choose the name of the file that holds the EPG data when the %s %s is shut down. This can be handy to differentiate between several boxes.">config.misc.epgcachefilename</item>
-		<item level="2" text="Automatic refresh" description="Allows the %s %s to read the stored EPG data regularly.">config.epg.cacheloadsched</item>
-		<item level="2" text="Refresh every (in hours)" requires="config.epg.cacheloadsched" description="The %s %s reads the stored EPG data every (hours).">config.epg.cacheloadtimer</item>
-		<item level="2" text="Automatic save" description="Allows the %s %s to store the EPG data regularly.">config.epg.cachesavesched</item>
-		<item level="2" text="Save every (in hours)" requires="config.epg.cachesavesched" description="The %s %s stores the EPG data every (hours).">config.epg.cachesavetimer</item>
-		<item level="2" text="Show EIT now/next in infobar" description="Display the EIT now/next eventdata in infobar.">config.usage.show_eit_nownext</item>
+		<item level="2" text="Automatic save" description="Allows the %s %s to save the EPG data regularly.">config.epg.cachesavesched</item>
+		<item level="2" text="Save every (in hours)" requires="config.epg.cachesavesched" description="The %s %s saves the EPG data every (hours).">config.epg.cachesavetimer</item>
+		<item level="2" text="Automatic reload" description="Allows the %s %s to load the saved EPG data regularly.">config.epg.cacheloadsched</item>
+		<item level="2" text="Reload every (in hours)" requires="config.epg.cacheloadsched" description="The %s %s loads the saved EPG data every (hours).">config.epg.cacheloadtimer</item>
+		<item level="2" text="Show EIT now/next in infobar" description="Display the EIT now/next event data in infobar.">config.usage.show_eit_nownext</item>
 		<item level="2" text="Enable EIT EPG" description="Use EIT EPG information when it is available.">config.epg.eit</item>
 		<item level="2" text="Enable MHW EPG" description="Use MHW EPG information when it is available.">config.epg.mhw</item>
 		<item level="2" text="Enable FreeSat EPG" description="Use FreeSat EPG information when it is available.">config.epg.freesat</item>
@@ -206,6 +206,7 @@
 		<item level="1" text="Show picons in timer list" description="Configure if picons will be shown in the timer list.">config.usage.timerlist_showpicons</item>
 		<item level="1" text="Position of finished timers in timer list" description="Control how finished timers are shown in the timer list. If set to hide, disabled timers will still be shown">config.usage.timerlist_finished_timer_position</item>
 		<item level="2" text="Remove finished timers after (days)" description="Configure the number of days old timers are kept before they are automatically removed from the timer list.">config.recording.keep_timers</item>
+		<item level="2" text="Remove finished timer logs after (days)" description="Configure the number of days old timers' log details are kept before they're automatically removed.">config.recording.keep_finished_timer_logs</item>
 		<item level="2" text="Offline decode delay (ms)" description="Configure the offline decoding delay (in milliseconds). The configured delay is observed at each control word parity change.">config.recording.offline_decode_delay</item>
 		<item level="2" text="Default recording type" description="Descramble &amp; record ECM' gives the option to descramble afterwards if descrambling on recording failed. 'Don't descramble, record ECM' save a scramble recording that can be descrambled on playback. 'Normal' means descramble the recording and don't record ECM.">config.recording.ecm_data</item>
 	</setup>
@@ -579,6 +580,29 @@
 			<item text="Set end time">self.timerentry_showendtime</item>
 			<item text="End time" conditional="self.timerentry_showendtime.value">self.timerentry_endtime</item>
 			<item text="After event">self.timerentry_afterevent</item>
+		</if>
+	</setup>
+	<setup key="clientmode" title="Client Mode setup">
+		<item text="Enable client mode" description="Enable or disable using HDMI-CEC.">config.clientmode.enabled</item>
+		<if conditional="config.clientmode.enabled.value">
+			<item text="Host receiver address type" description="Select between entering an IP address or a domain.">config.clientmode.serverAddressType</item>
+			<if conditional="config.clientmode.serverAddressType.value == 'ip'">
+				<item text="Host receiver IP address" description="Enter the IP address of the host receiver.">config.clientmode.serverIP</item>
+			<else/>
+				<item text="Host domain" description="Enter the domain of the host receiver. Do not include 'http://' or port number.">config.clientmode.serverDomain</item>
+			</if>
+			<item text="Host receiver streaming port" description="Enter the streaming port of the host receiver (normally '8001').">config.clientmode.serverStreamingPort</item>
+			<item text="Host receiver FTP username" description="Enter the FTP username of the host receiver (normally 'root').">config.clientmode.serverFTPusername</item>
+			<item text="Host receiver FTP password" description="Enter the FTP password of the host receiver (required for any server running OpenViX 5.4 or greater).">config.clientmode.serverFTPpassword</item>
+			<item text="Host receiver FTP port" description="Enter the FTP port of the host receiver (normally '21').">config.clientmode.serverFTPPort</item>
+			<item text="FTP passive mode" description="Should the FTP connection to the remote receiver be established in passive mode (normally 'no')?">config.clientmode.passive</item>
+			<item text="Schedule EPG and channel list import" description="Allows you to set a schedule to import the EPG and channels list. The EPG and channels list will always be imported on reboot or GUI restart.">config.clientmode.enableSchedule</item>
+			<if conditional="config.clientmode.enableSchedule.value">
+				<item text="Repeat how often" description="Set the repeat interval of the schedule.">config.clientmode.scheduleRepeatInterval</item>
+				<if conditional="config.clientmode.scheduleRepeatInterval.value == 'daily'">
+					<item text="Time import should start" description="Set the time of day to perform the import.">config.clientmode.scheduletime</item>
+				</if>
+			</if>
 		</if>
 	</setup>
 </setupxml>

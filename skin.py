@@ -31,9 +31,9 @@ colors = {  # Dictionary of skin color names.
 	"key_text": gRGB(0x00ffffff),
 	"key_yellow": gRGB(0x00a08500)
 }
+BodyFont = ("Regular", 20, 25, 18) # font which is used when a font alias definition is missing from the "fonts" dict.
 fonts = {  # Dictionary of predefined and skin defined font aliases.
-	"Body": ("Regular", 18, 22, 16),
-	"ChoiceList": ("Regular", 20, 24, 18)
+	"Body": (BodyFont[0], BodyFont[1], BodyFont[2], BodyFont[3]),
 }
 menus = {}  # Dictionary of images associated with menu entries.
 parameters = {}  # Dictionary of skin parameters used to modify code behavior.
@@ -184,8 +184,7 @@ def reloadSkins():
 	}
 	fonts.clear()
 	fonts = {
-		"Body": ("Regular", 18, 22, 16),
-		"ChoiceList": ("Regular", 20, 24, 18)
+		"Body": (BodyFont[0], BodyFont[1], BodyFont[2], BodyFont[3]),
 	}
 	menus.clear()
 	parameters.clear()
@@ -300,7 +299,7 @@ def parsePosition(s, scale, object=None, desktop=None, size=None):
 	return ePoint(*parseValuePair(s, scale, object, desktop, size))
 
 def parseSize(s, scale, object=None, desktop=None):
-	return eSize(*parseValuePair(s, scale, object, desktop))
+	return eSize(*[max(0,x) for x in parseValuePair(s, scale, object, desktop)])
 
 def parseFont(s, scale=((1, 1), (1, 1))):
 	if ";" in s:
@@ -352,11 +351,12 @@ def parseParameter(s):
 		return colors[s].argb()
 	elif s.find(";") != -1:  # Font.
 		font, size = [x.strip() for x in s.split(";", 1)]
-		return [font, parseScale(size)]
+		return [font, int(size)]
 	else:  # Integer.
-		return parseScale(s)
+		return int(s)
 
 def parseScale(s):
+	# Replaces "f" with skin factor in non-coordinte fields and evaluates the formula
 	orig = s
 	try:
 		val = int(s)
@@ -608,13 +608,13 @@ class AttributeParser:
 		self.guiObject.setBorderColor(parseColor(value))
 
 	def borderWidth(self, value):
-		self.guiObject.setBorderWidth(int(value))
+		self.guiObject.setBorderWidth(parseScale(value))
 
 	def scrollbarSliderBorderWidth(self, value):
-		self.guiObject.setScrollbarSliderBorderWidth(int(value))
+		self.guiObject.setScrollbarSliderBorderWidth(parseScale(value))
 
 	def scrollbarWidth(self, value):
-		self.guiObject.setScrollbarWidth(int(value))
+		self.guiObject.setScrollbarWidth(parseScale(value))
 
 	def scrollbarSliderBorderColor(self, value):
 		self.guiObject.setSliderBorderColor(parseColor(value))
@@ -656,6 +656,16 @@ class AttributeParser:
 		value = 1 if value.lower() in ("1", "enabled", "nowrap", "on", "true", "yes") else 0
 		self.guiObject.setNoWrap(value)
 
+	def split(self, value):
+		pass
+
+	def colposition(self, value):
+		pass
+
+	def dividechar(self, value):
+		pass
+
+
 def applySingleAttribute(guiObject, desktop, attrib, value, scale=((1, 1), (1, 1))):
 	# Is anyone still using applySingleAttribute?
 	AttributeParser(guiObject, desktop, scale).applyOne(attrib, value)
@@ -688,66 +698,50 @@ def loadSingleSkinData(desktop, screenID, domSkin, pathSkin, scope=SCOPE_CURRENT
 				desktop.resize(eSize(xres, yres))
 				if bpp != 32:
 					pass  # Load palette (Not yet implemented!)
-				if yres >= 1080:
-					parameters["AutotimerEnabledIcon"] = (2, 1, 38, 36)
-					parameters["AutotimerRecordIcon"] = (42, 5, 30, 30)
-					parameters["ChoicelistDash"] = (0, 3, 1000, 30)
-					parameters["ChoicelistIcon"] = (7, 0, 52, 38)
-					parameters["ChoicelistName"] = (68, 3, 1000, 30)
-					parameters["ConfigListSeperator"] = 300
-					parameters["DreamexplorerIcon"] = (15, 4, 30, 30)
-					parameters["DreamexplorerName"] = (62, 0, 1200, 38)
-					parameters["EPGImportFilterListDescr"] = (30, 3, 500, 30)
-					parameters["EPGImportFilterListLockOff"] = (0, 0, 30, 30)
-					parameters["EPGImportFilterListLockOn"] = (0, 0, 30, 30)
-					parameters["ExpandableListCategory"] = (60, 0, 655, 38)
-					parameters["ExpandableListIcon"] = (5, 0, 45, 38)
-					parameters["ExpandableListItem"] = (105, 0, 620, 38)
-					parameters["ExpandableListLock"] = (60, 1, 38, 36)
-					parameters["FileListIcon"] = (7, 4, 52, 37)
-					parameters["FileListMultiIcon"] = (45, 4, 30, 30)
-					parameters["FileListMultiLock"] = (2, 0, 36, 36)
-					parameters["FileListMultiName"] = (90, 3, 1000, 32)
-					parameters["FileListName"] = (68, 4, 1000, 34)
-					parameters["HelpMenuListExtHlp0"] = (0, 0, 900, 39)
-					parameters["HelpMenuListExtHlp1"] = (0, 42, 900, 30)
-					parameters["HelpMenuListHlp"] = (0, 0, 900, 42)
-					parameters["PartnerBoxBouquetListName"] = (0, 0, 45)
-					parameters["PartnerBoxChannelListName"] = (0, 0, 45)
-					parameters["PartnerBoxChannelListTime"] = (0, 78, 225, 30)
-					parameters["PartnerBoxChannelListTitle"] = (0, 42, 30)
-					parameters["PartnerBoxE1TimerState"] = (255, 78, 255, 30)
-					parameters["PartnerBoxE1TimerTime"] = (0, 78, 255, 30)
-					parameters["PartnerBoxE2TimerIcon"] = (1050, 8, 20, 20)
-					parameters["PartnerBoxE2TimerIconRepeat"] = (1050, 38, 20, 20)
-					parameters["PartnerBoxE2TimerState"] = (225, 78, 225, 30)
-					parameters["PartnerBoxE2TimerTime"] = (0, 78, 225, 30)
-					parameters["PartnerBoxEntryListIP"] = (180, 2, 225, 38)
-					parameters["PartnerBoxEntryListName"] = (8, 2, 225, 38)
-					parameters["PartnerBoxEntryListPort"] = (405, 2, 150, 38)
-					parameters["PartnerBoxEntryListType"] = (615, 2, 150, 38)
-					parameters["PartnerBoxTimerName"] = (0, 42, 30)
-					parameters["PartnerBoxTimerServicename"] = (0, 0, 45)
-					parameters["PicturePlayerThumb"] = (30, 285, 45, 300, 30, 25)
-					parameters["PlayListIcon"] = (7, 7, 24, 24)
-					parameters["PlayListName"] = (38, 2, 1000, 34)
-					parameters["PluginBrowserDescr"] = (180, 42, 25)
-					parameters["PluginBrowserDownloadDescr"] = (120, 42, 25)
-					parameters["PluginBrowserDownloadIcon"] = (15, 0, 90, 76)
-					parameters["PluginBrowserDownloadName"] = (120, 8, 38)
-					parameters["PluginBrowserIcon"] = (15, 8, 150, 60)
-					parameters["PluginBrowserName"] = (180, 8, 38)
-					parameters["SHOUTcastListItem"] = (30, 27, 35, 96, 35, 33, 60, 32)
-					parameters["SelectionListDescr"] = (45, 3, 1000, 32)
-					parameters["SelectionListLock"] = (0, 2, 36, 36)
-					parameters["SelectionListLockOff"] = (0, 2, 36, 36)
-					parameters["ServiceInfo"] = (0, 0, 450, 50)
-					parameters["ServiceInfoLeft"] = (0, 0, 450, 45)
-					parameters["ServiceInfoRight"] = (450, 0, 1000, 45)
-					parameters["VirtualKeyBoard"] = (68, 68)
-					parameters["VirtualKeyBoardAlignment"] = (0, 0)
-					parameters["VirtualKeyBoardPadding"] = (7, 7)
-					parameters["VirtualKeyBoardShiftColors"] = (0x00ffffff, 0x00ffffff, 0x0000ffff, 0x00ff00ff)
+				
+				fonts["Body"] = (BodyFont[0], applySkinFactor(BodyFont[1]), applySkinFactor(BodyFont[2]), applySkinFactor(BodyFont[3]))
+
+				# Only add font aliases here for lists that are not part of enigma2 repo.
+				# Font aliases for modules in this repository should be dealt with directly in the corresponding py, not here.
+				fonts["Dreamexplorer"] = fonts["Body"]
+				fonts["ExpandableList"] = fonts["Body"]
+				fonts["ImsSelectionList"] = ("Regular", applySkinFactor(22), applySkinFactor(30))
+				fonts["PartnerBoxBouquetList0"] = ("Regular", applySkinFactor(20), applySkinFactor(30))
+				fonts["PartnerBoxBouquetList1"] = ("Regular", applySkinFactor(18))
+				fonts["PartnerBoxChannelList0"] = ("Regular", applySkinFactor(20), applySkinFactor(70))
+				fonts["PartnerBoxChannelList1"] = ("Regular", applySkinFactor(18))
+				fonts["PartnerBoxChannelEPGList0"] = ("Regular", applySkinFactor(22), applySkinFactor(30))
+				fonts["PartnerBoxE2TimerMenu0"] = ("Regular", applySkinFactor(20), applySkinFactor(70))
+				fonts["PartnerBoxE2TimerMenu1"] = ("Regular", applySkinFactor(18))
+				fonts["PartnerBoxEntryList0"] = ("Regular", applySkinFactor(20), applySkinFactor(30))
+				fonts["PartnerBoxEntryList1"] = ("Regular", applySkinFactor(18))
+
+				# Only add parameters here for lists that are not part of enigma2 repo.
+				# Parameters for modules in this repository should be dealt with directly in the corresponding py, not here.
+				parameters["DreamexplorerIcon"] = (applySkinFactor(12), applySkinFactor(3), applySkinFactor(20), applySkinFactor(20))
+				parameters["DreamexplorerName"] = (applySkinFactor(40), applySkinFactor(2), applySkinFactor(1000), applySkinFactor(22))
+				parameters["ExpandableListCategory"] = (applySkinFactor(45), applySkinFactor(0), applySkinFactor(655), applySkinFactor(25))
+				parameters["ExpandableListIcon"] = (applySkinFactor(5), applySkinFactor(0), applySkinFactor(30), applySkinFactor(25))
+				parameters["ExpandableListItem"] = (applySkinFactor(80), applySkinFactor(3), applySkinFactor(620), applySkinFactor(25))
+				parameters["ExpandableListLock"] = (applySkinFactor(45), applySkinFactor(1), applySkinFactor(25), applySkinFactor(24))
+				parameters["PartnerBoxBouquetListName"] = (0, 0, applySkinFactor(30))
+				parameters["PartnerBoxChannelListName"] = (0, 0, applySkinFactor(30))
+				parameters["PartnerBoxChannelListTime"] = (0, applySkinFactor(50), applySkinFactor(150), applySkinFactor(20))
+				parameters["PartnerBoxChannelListTitle"] = (0, applySkinFactor(30), applySkinFactor(20))
+				parameters["PartnerBoxE1TimerState"] = (applySkinFactor(170), applySkinFactor(50), applySkinFactor(170), applySkinFactor(20))
+				parameters["PartnerBoxE1TimerTime"] = (0, applySkinFactor(50), applySkinFactor(170), applySkinFactor(20))
+				parameters["PartnerBoxE2TimerIcon"] = (applySkinFactor(510), applySkinFactor(5), applySkinFactor(20), applySkinFactor(20))
+				parameters["PartnerBoxE2TimerIconRepeat"] = (applySkinFactor(510), applySkinFactor(30), applySkinFactor(20), applySkinFactor(20))
+				parameters["PartnerBoxE2TimerState"] = (applySkinFactor(150), applySkinFactor(50), applySkinFactor(150), applySkinFactor(20))
+				parameters["PartnerBoxE2TimerTime"] = (0, applySkinFactor(50), applySkinFactor(150), applySkinFactor(20))
+				parameters["PartnerBoxEntryListName"] = (applySkinFactor(5), 0, applySkinFactor(150), applySkinFactor(20))
+				parameters["PartnerBoxEntryListIP"] = (applySkinFactor(120), 0, applySkinFactor(150), applySkinFactor(20))
+				parameters["PartnerBoxEntryListPort"] = (applySkinFactor(270), 0, applySkinFactor(100), applySkinFactor(20))
+				parameters["PartnerBoxEntryListType"] = (applySkinFactor(410), 0, applySkinFactor(100), applySkinFactor(20))
+				parameters["PartnerBoxTimerName"] = (0, applySkinFactor(30), applySkinFactor(20))
+				parameters["PartnerBoxTimerServicename"] = (0, 0, applySkinFactor(30))
+				parameters["SHOUTcastListItem"] = (applySkinFactor(20), applySkinFactor(18), applySkinFactor(22), applySkinFactor(69), applySkinFactor(20), applySkinFactor(23), applySkinFactor(43), applySkinFactor(22))
+
 	for tag in domSkin.findall("include"):
 		filename = tag.attrib.get("filename")
 		if filename:
@@ -798,9 +792,9 @@ def loadSingleSkinData(desktop, screenID, domSkin, pathSkin, scope=SCOPE_CURRENT
 		for alias in tag.findall("alias"):
 			name = alias.attrib.get("name")
 			font = alias.attrib.get("font")
-			size = parseScale(alias.attrib.get("size"))
-			height = parseScale(alias.attrib.get("height", size))  # To be calculated some day.
-			width = parseScale(alias.attrib.get("width", size))  # To be calculated some day.
+			size = int(alias.attrib.get("size"))
+			height = int(alias.attrib.get("height", size))  # To be calculated some day.
+			width = int(alias.attrib.get("width", size))  # To be calculated some day.
 			if name and font and size:
 				fonts[name] = (font, size, height, width)
 				# print("[Skin] Add font alias: name='%s', font='%s', size=%d, height=%s, width=%d." % (name, font, size, height, width))
@@ -1271,6 +1265,11 @@ def getSkinFactor():
 	# if skinfactor not in [0.8, 1, 1.5, 3, 6]:
 	# 	print("[Skin] Warning: Unexpected result for getSkinFactor '%0.4f'!" % skinfactor)
 	return skinfactor
+
+# Multiply the numeric input by the skin factor 
+# and return the result as an integer.
+def applySkinFactor(d):
+	return int(d * getSkinFactor())
 
 # Search the domScreens dictionary to see if any of the screen names provided
 # have a skin based screen.  This will allow coders to know if the named

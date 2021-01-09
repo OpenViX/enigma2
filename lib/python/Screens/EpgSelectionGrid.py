@@ -8,6 +8,7 @@ from Components.EpgListGrid import EPGListGrid, MAX_TIMELINES, TimelineText
 from Components.Label import Label
 from Components.Pixmap import Pixmap
 from Components.Sources.Event import Event
+from Components.Sources.StaticText import StaticText
 from Screens.EpgSelectionBase import EPGSelectionBase, EPGBouquetSelection, EPGServiceNumberSelection, EPGServiceZap, epgActions, infoActions, okActions
 from Screens.EventView import EventViewSimple
 from Screens.Setup import Setup
@@ -36,6 +37,7 @@ class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceNumberSe
 		self["change_bouquet"] = Label(_("CHANGE BOUQUET"))
 		self["jump"] = Label(_("JUMP 24 HOURS"))
 		self["page"] = Label(_("PAGE UP/DOWN"))
+		self["key_text"] = StaticText(_("TEXT"))
 		self.timeLines = []
 		for x in range(0, MAX_TIMELINES):
 			pm = Pixmap()

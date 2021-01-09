@@ -16,12 +16,19 @@ class HelpMenuList(GUIComponent):
 		self.extendedHelp = False
 
 		l = [ ]
+		
+		sortlist = []
 		for (actionmap, context, actions) in helplist:
 			for (action, help) in actions:
 				if hasattr(help, '__call__'):
 					help = help()
 				if not help:
 					continue
+				sortlist.append((actionmap, context, action, help))
+		# Sort by description text (main and extended), then by action (this puts numeric actions in ascending order).
+		sortlist.sort(key=lambda helpItem: (map(str.lower, helpItem[3] if isinstance(helpItem[3], (tuple, list)) else [helpItem[3]]), helpItem[2]))
+		
+		for (actionmap, context, action, help) in sortlist:
 				buttons = queryKeyBinding(context, action)
 
 				# do not display entries which are not accessible from keys
@@ -48,27 +55,27 @@ class HelpMenuList(GUIComponent):
 				if isinstance(help, list):
 					self.extendedHelp = True
 					print "extendedHelpEntry found"
-					x, y, w, h = skin.parameters.get("HelpMenuListExtHlp0",(0, 0, 600, 26))
-					x1, y1, w1, h1 = skin.parameters.get("HelpMenuListExtHlp1",(0, 28, 600, 20))
+					x, y, w, h = skin.parameters.get("HelpMenuListExtHlp0",(skin.applySkinFactor(5), 0, skin.applySkinFactor(595), skin.applySkinFactor(28)))
+					x1, y1, w1, h1 = skin.parameters.get("HelpMenuListExtHlp1",(skin.applySkinFactor(5), skin.applySkinFactor(34), skin.applySkinFactor(595), skin.applySkinFactor(22)))
 					entry.extend((
 						(eListboxPythonMultiContent.TYPE_TEXT, x, y, w, h, 0, 0, help[0]),
 						(eListboxPythonMultiContent.TYPE_TEXT, x1, y1, w1, h1, 1, 0, help[1])
 					))
 				else:
-					x, y, w, h = skin.parameters.get("HelpMenuListHlp",(0, 0, 600, 28))
+					x, y, w, h = skin.parameters.get("HelpMenuListHlp",(skin.applySkinFactor(5), 0, skin.applySkinFactor(595), skin.applySkinFactor(28)))
 					entry.append( (eListboxPythonMultiContent.TYPE_TEXT, x, y, w, h, 0, 0, help) )
 
 				l.append(entry)
 
 		self.l.setList(l)
 		if self.extendedHelp is True:
-			font = skin.fonts.get("HelpMenuListExt0", ("Regular", 24, 50))
+			font = skin.fonts.get("HelpMenuListExt0", ("Regular", skin.applySkinFactor(24), skin.applySkinFactor(56)))
 			self.l.setFont(0, gFont(font[0], font[1]))
 			self.l.setItemHeight(font[2])
-			font = skin.fonts.get("HelpMenuListExt1", ("Regular", 18))
+			font = skin.fonts.get("HelpMenuListExt1", ("Regular", skin.applySkinFactor(18)))
 			self.l.setFont(1, gFont(font[0], font[1]))
 		else:
-			font = skin.fonts.get("HelpMenuList", ("Regular", 24, 38))
+			font = skin.fonts.get("HelpMenuList", ("Regular", skin.applySkinFactor(24), skin.applySkinFactor(28)))
 			self.l.setFont(0, gFont(font[0], font[1]))
 			self.l.setItemHeight(font[2])
 

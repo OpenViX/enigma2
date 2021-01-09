@@ -385,6 +385,7 @@ void eHdmiCEC::hdmiEvent(int what)
 					case 0x44: /* key pressed */
 						keypressed = true;
 						pressedkey = rxmessage.data[1];
+						break;
 					case 0x45: /* key released */
 					{
 						long code = translateKey(pressedkey);
@@ -544,7 +545,8 @@ void eHdmiCEC::sendMessage(struct cec_message &message)
 			message.flag = 1;
 			::ioctl(hdmiFd, 3, &message);
 #else
-			::write(hdmiFd, &message, 2 + message.length);
+			ssize_t ret = ::write(hdmiFd, &message, 2 + message.length);
+			if (ret < 0) eDebug("[eHdmiCEC] write failed: %m");
 #endif
 		}
 	}

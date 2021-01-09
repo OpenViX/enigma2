@@ -19,42 +19,12 @@ from Tools.Directories import resolveFilename, SCOPE_CURRENT_SKIN, SCOPE_LCDSKIN
 
 
 class SkinSelector(Screen, HelpableScreen):
-	skin = [
-		"""
-	<screen name="SkinSelector" position="center,center" size="%d,%d">
-		<widget name="preview" position="center,%d" size="%d,%d" alphatest="blend" />
-		<widget source="skins" render="Listbox" position="center,%d" size="%d,%d" enableWrapAround="1" scrollbarMode="showOnDemand">
-			<convert type="TemplatedMultiContent">
-				{
-				"template": [
-					MultiContentEntryText(pos = (%d, 0), size = (%d, %d), font = 0, flags = RT_HALIGN_LEFT | RT_VALIGN_CENTER, text = 1),
-					MultiContentEntryText(pos = (%d, 0), size = (%d, %d), font = 0, flags = RT_HALIGN_RIGHT | RT_VALIGN_CENTER, text = 2)
-				],
-				"fonts": [gFont("Regular",%d)],
-				"itemHeight": %d
-				}
-			</convert>
-		</widget>
-		<widget source="description" render="Label" position="center,e-%d" size="%d,%d" font="Regular;%d" valign="center" />
-		<widget source="key_red" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="key_red" font="Regular;%d" foregroundColor="key_text" halign="center" valign="center" />
-		<widget source="key_green" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="key_green" font="Regular;%d" foregroundColor="key_text" halign="center" valign="center" />
-	</screen>""",
-		670, 570,
-		10, 356, 200,
-		230, 650, 240,
-		10, 350, 30,
-		370, 260, 30,
-		25,
-		30,
-		85, 650, 25, 20,
-		10, 50, 140, 40, 20,
-		160, 50, 140, 40, 20
-	]
 
 	def __init__(self, session, screenTitle=_("GUI Skin")):
 		Screen.__init__(self, session, mandatoryWidgets=["skins", "preview", "description"])
 		HelpableScreen.__init__(self)
 		self.setTitle(screenTitle)
+		self.skinName = ["SkinSelector","__SkinSelector__"]
 		self.rootDir = resolveFilename(SCOPE_SKIN)
 		self.config = config.skin.primary_skin
 		self.currentSkin = currentPrimarySkin

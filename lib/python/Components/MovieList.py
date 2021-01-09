@@ -8,11 +8,9 @@ from Tools.FuzzyDate import FuzzyTime
 from Components.MultiContent import MultiContentEntryText, MultiContentEntryPixmapAlphaTest, MultiContentEntryPixmapAlphaBlend, MultiContentEntryProgress
 from Components.config import config
 from Components.Renderer.Picon import getPiconName
+from Screens.LocationBox import defaultInhibitDirs
 from Tools.LoadPixmap import LoadPixmap
 from Tools.Directories import SCOPE_ACTIVE_SKIN, resolveFilename
-from Screens.LocationBox import defaultInhibitDirs
-from ServiceReference import ServiceReference
-#
 from Tools.Trashcan import getTrashFolder
 import NavigationInstance
 from skin import parseColor, parseFont, parseScale
@@ -195,8 +193,6 @@ class MovieList(GUIComponent):
 
 		if root is not None:
 			self.reload(root)
-
-		self.l.setBuildFunc(self.buildMovieListEntry)
 
 		self.onSelectionChanged = [ ]
 		self.iconPart = []
@@ -551,6 +547,7 @@ class MovieList(GUIComponent):
 			self.load(root, filter_tags)
 		else:
 			self.load(self.root, filter_tags)
+		self.l.setBuildFunc(self.buildMovieListEntry)  # don't move that to __init__ as this will create memory leak when calling MovieList from WebIf
 		self.l.setList(self.list)
 
 	def removeService(self, service):
@@ -599,8 +596,7 @@ class MovieList(GUIComponent):
 				# enigma wants an extra '/' appended
 				if not parent.endswith('/'):
 					parent += '/'
-				ref = eServiceReference("2:0:1:0:0:0:0:0:0:0:" + parent)
-				ref.flags = eServiceReference.flagDirectory
+				ref = eServiceReference.fromDirectory(parent)
 				self.list.append((ref, None, 0, -1))
 				numberOfDirs += 1
 

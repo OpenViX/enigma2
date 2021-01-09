@@ -1,15 +1,8 @@
-from time import localtime, mktime, strftime, time
-
-from enigma import ePoint, eServiceCenter, eServiceReference, eTimer
-
-from ServiceReference import ServiceReference
-from Components.About import about
-from Components.ActionMap import HelpableActionMap, HelpableNumberActionMap
-from Components.Button import Button
-from Components.config import config, configfile, ConfigSelection, ConfigSubsection
+from time import time
+from Components.ActionMap import HelpableActionMap
+from Components.config import config, configfile
 from Components.EpgListSingle import EPGListSingle
-from Screens.EpgSelectionBase import EPGSelectionBase, EPGServiceNumberSelection, EPGServiceBrowse, EPGServiceZap, epgActions, infoActions, okActions
-from Screens.HelpMenu import HelpableScreen
+from Screens.EpgSelectionBase import EPGSelectionBase, EPGServiceNumberSelection, EPGServiceBrowse, EPGServiceZap, epgActions, okActions
 from Screens.Setup import Setup
 from Screens.UserDefinedButtons import UserDefinedButtons
 
