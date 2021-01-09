@@ -22,24 +22,36 @@ SUBTITLE_SKIN = "skin_subtitles.xml"
 GUI_SKIN_ID = 0  # Main frame-buffer.
 DISPLAY_SKIN_ID = 1  # Front panel / display / LCD.
 
-domScreens = {}  # Dictionary of skin based screens.
-colors = {  # Dictionary of skin color names.
-	"key_back": gRGB(0x00313131),
-	"key_blue": gRGB(0x0018188b),
-	"key_green": gRGB(0x001f771f),
-	"key_red": gRGB(0x009f1313),
-	"key_text": gRGB(0x00ffffff),
-	"key_yellow": gRGB(0x00a08500)
-}
-BodyFont = ("Regular", 20, 25, 18) # font which is used when a font alias definition is missing from the "fonts" dict.
-fonts = {  # Dictionary of predefined and skin defined font aliases.
-	"Body": (BodyFont[0], BodyFont[1], BodyFont[2], BodyFont[3]),
-}
-menus = {}  # Dictionary of images associated with menu entries.
-parameters = {}  # Dictionary of skin parameters used to modify code behavior.
-setups = {}  # Dictionary of images associated with setup menus.
-switchPixmap = {}  # Dictionary of switch images.
-windowStyles = {}  # Dictionary of window styles for each screen ID.
+domScreens = None  # Dictionary of skin based screens.
+colors = None  # Dictionary of skin color names.
+bodyFont = None # font which is used when a font alias definition is missing from the "fonts" dict.
+fonts = None  # Dictionary of predefined and skin defined font aliases.
+menus = None  # Dictionary of images associated with menu entries.
+parameters = None  # Dictionary of skin parameters used to modify code behavior.
+setups = None  # Dictionary of images associated with setup menus.
+switchPixmap = None  # Dictionary of switch images.
+windowStyles = None  # Dictionary of window styles for each screen ID.
+
+def loadSkinDefaults():
+	global domScreens, colors, bodyFont, fonts, menus, parameters, setups, switchPixmap, windowStyles
+	domScreens = {}
+	colors = {
+		"key_back": gRGB(0x00313131),
+		"key_blue": gRGB(0x0018188b),
+		"key_green": gRGB(0x001f771f),
+		"key_red": gRGB(0x009f1313),
+		"key_text": gRGB(0x00ffffff),
+		"key_yellow": gRGB(0x00a08500)
+	}
+	bodyFont = ("Regular", 20, 25, 18)
+	fonts = {
+		"Body": bodyFont[:]
+	}
+	menus = {}
+	parameters = {}
+	setups = {}
+	switchPixmap = {}
+	windowStyles = {}
 
 config.skin = ConfigSubsection()
 skin = resolveFilename(SCOPE_SKIN, DEFAULT_SKIN)
@@ -51,8 +63,7 @@ config.skin.display_skin = ConfigText(default=DEFAULT_DISPLAY_SKIN)
 
 currentPrimarySkin = None
 currentDisplaySkin = None
-callbacks = []
-runCallbacks = False
+onLoadCallbacks = []
 
 # Skins are loaded in order of priority.  Skin with highest priority is
 # loaded last.  This is usually the user-specified skin.  In this way
@@ -66,9 +77,9 @@ runCallbacks = False
 # SCOPE_CURRENT_LCDSKIN.  The full path is NOT saved.
 # E.g. "MySkin/skin_display.xml"
 #
-def InitSkins():
+def InitSkins(booting=True):
 	global currentPrimarySkin, currentDisplaySkin
-	runCallbacks = False
+	loadSkinDefaults()
 	# Add the emergency skin.  This skin should provide enough functionality
 	# to enable basic GUI functions to work.
 	loadSkin(EMERGENCY_SKIN, scope=SCOPE_CURRENT_SKIN, desktop=getDesktop(GUI_SKIN_ID), screenID=GUI_SKIN_ID)
@@ -104,8 +115,11 @@ def InitSkins():
 		if isfile(resolveFilename(SCOPE_CURRENT_SKIN, name)):
 			result = loadSkin(name, scope=SCOPE_CURRENT_SKIN, desktop=getDesktop(GUI_SKIN_ID), screenID=GUI_SKIN_ID)
 	if result is None:
-		loadSkin(USER_SKIN, scope=SCOPE_CURRENT_SKIN, desktop=getDesktop(GUI_SKIN_ID), screenID=GUI_SKIN_ID)
-	runCallbacks = True
+		result = loadSkin(USER_SKIN, scope=SCOPE_CURRENT_SKIN, desktop=getDesktop(GUI_SKIN_ID), screenID=GUI_SKIN_ID)
+	if result and not booting:
+		for method in onLoadCallbacks:
+			if method:
+				method()
 
 # Temporary entry point for older versions of mytest.py.
 #
@@ -145,10 +159,6 @@ def loadSkin(filename, scope=SCOPE_SKIN, desktop=getDesktop(GUI_SKIN_ID), screen
 					# Element is not a screen or windowstyle element so no need for it any longer.
 				reloadWindowStyles()  # Reload the window style to ensure all skin changes are taken into account.
 				print("[Skin] Loading skin file '%s' complete." % filename)
-				if runCallbacks:
-					for method in self.callbacks:
-						if method:
-							method()
 				return True
 			except xml.etree.cElementTree.ParseError as err:
 				fd.seek(0)
@@ -171,34 +181,13 @@ def loadSkin(filename, scope=SCOPE_SKIN, desktop=getDesktop(GUI_SKIN_ID), screen
 		print("[Skin] Error: Unexpected error opening skin file '%s'! (%s)" % (filename, err))
 	return False
 
-def reloadSkins():
-	domScreens.clear()
-	colors.clear()
-	colors = {
-		"key_back": gRGB(0x00313131),
-		"key_blue": gRGB(0x0018188b),
-		"key_green": gRGB(0x001f771f),
-		"key_red": gRGB(0x009f1313),
-		"key_text": gRGB(0x00ffffff),
-		"key_yellow": gRGB(0x00a08500)
-	}
-	fonts.clear()
-	fonts = {
-		"Body": (BodyFont[0], BodyFont[1], BodyFont[2], BodyFont[3]),
-	}
-	menus.clear()
-	parameters.clear()
-	setups.clear()
-	switchPixmap.clear()
-	InitSkins()
+def addOnLoadCallback(callback):
+	if callback not in onLoadCallbacks:
+		onLoadCallbacks.append(callback)
 
-def addCallback(callback):
-	if callback not in callbacks:
-		callbacks.append(callback)
-
-def removeCallback(callback):
-	if callback in self.callbacks:
-		callbacks.remove(callback)
+def removeOnLoadCallback(callback):
+	if callback in onLoadCallbacks:
+		onLoadCallbacks.remove(callback)
 
 
 class SkinError(Exception):
@@ -699,7 +688,7 @@ def loadSingleSkinData(desktop, screenID, domSkin, pathSkin, scope=SCOPE_CURRENT
 				if bpp != 32:
 					pass  # Load palette (Not yet implemented!)
 				
-				fonts["Body"] = (BodyFont[0], applySkinFactor(BodyFont[1]), applySkinFactor(BodyFont[2]), applySkinFactor(BodyFont[3]))
+				fonts["Body"] = (bodyFont[0], applySkinFactor(bodyFont[1]), applySkinFactor(bodyFont[2]), applySkinFactor(bodyFont[3]))
 
 				# Only add font aliases here for lists that are not part of enigma2 repo.
 				# Font aliases for modules in this repository should be dealt with directly in the corresponding py, not here.
