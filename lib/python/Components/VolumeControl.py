@@ -4,6 +4,7 @@ from Screens.Volume import Volume
 from Screens.Mute import Mute
 from GlobalActions import globalActionMap
 from config import config, ConfigSubsection, ConfigInteger
+import skin
 
 profile("VolumeControl")
 #TODO .. move this to a own .py file
@@ -12,6 +13,8 @@ class VolumeControl:
 	"""Volume control, handles volUp, volDown, volMute actions and display
 	a corresponding dialog"""
 	def __init__(self, session):
+		self.session = session
+
 		global globalActionMap
 		globalActionMap.actions["volumeUp"]=self.volUp
 		globalActionMap.actions["volumeDown"]=self.volDown
@@ -19,22 +22,31 @@ class VolumeControl:
 
 		assert not VolumeControl.instance, "only one VolumeControl instance is allowed!"
 		VolumeControl.instance = self
+		skin.addOnLoadCallback(self.skinChanged)
 
 		config.audio = ConfigSubsection()
 		config.audio.volume = ConfigInteger(default = 100, limits = (0, 100))
 
-		self.volumeDialog = session.instantiateDialog(Volume)
-		self.volumeDialog.setAnimationMode(0)
-		self.muteDialog = session.instantiateDialog(Mute)
-		self.muteDialog.setAnimationMode(0)
+		vol = config.audio.volume.value
+		self.volctrl = eDVBVolumecontrol.getInstance()
+		self.volctrl.setVolume(vol, vol)
+
+		self.openDialogs()
 
 		self.hideVolTimer = eTimer()
 		self.hideVolTimer.callback.append(self.volHide)
 
-		vol = config.audio.volume.value
-		self.volumeDialog.setValue(vol)
-		self.volctrl = eDVBVolumecontrol.getInstance()
-		self.volctrl.setVolume(vol, vol)
+	def openDialogs(self):
+		self.volumeDialog = self.session.instantiateDialog(Volume)
+		self.volumeDialog.setAnimationMode(0)
+		self.volumeDialog.setValue(self.volctrl.getVolume())
+		self.muteDialog = self.session.instantiateDialog(Mute)
+		self.muteDialog.setAnimationMode(0)
+
+	def skinChanged(self):
+		self.volumeDialog.close()
+		self.muteDialog.close()
+		self.openDialogs()
 
 	def volSave(self):
 		if self.volctrl.isMuted():

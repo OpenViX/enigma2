@@ -108,7 +108,11 @@ class Screen(dict):
 			val.destroy()
 			del self[name]
 		self.renderer = []
-		self.__dict__.clear()  # Really delete all elements now.
+		# by setting all attributes to None, we release any references promptly
+		# without completely removing attributes that are expected to exist 
+		# dict's clear() can cause crashes due to expected attributes
+		for name in self.__dict__:
+			setattr(self, name, None)
 
 	def close(self, *retval):
 		if not self.execing:
