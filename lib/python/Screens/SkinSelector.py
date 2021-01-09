@@ -1,11 +1,11 @@
 import mmap
 import re
 
-from enigma import ePicLoad, getDesktop
+from enigma import ePicLoad
 from os import listdir
 from os.path import dirname, exists, isdir, join as pathjoin
 
-from skin import DEFAULT_SKIN, DEFAULT_DISPLAY_SKIN, EMERGENCY_NAME, EMERGENCY_SKIN, currentDisplaySkin, currentPrimarySkin, domScreens
+from skin import DEFAULT_SKIN, DEFAULT_DISPLAY_SKIN, EMERGENCY_NAME, EMERGENCY_SKIN
 from Components.ActionMap import HelpableActionMap
 from Components.config import config
 from Components.Pixmap import Pixmap
@@ -27,6 +27,7 @@ class SkinSelector(Screen, HelpableScreen):
 		self.skinName = ["SkinSelector","__SkinSelector__"]
 		self.rootDir = resolveFilename(SCOPE_SKIN)
 		self.config = config.skin.primary_skin
+		from skin import currentPrimarySkin # value types are imported by value at import time
 		self.currentSkin = currentPrimarySkin
 		self.xmlList = ["skin.xml"]
 		self.onChangedEntry = []
@@ -216,6 +217,7 @@ class LcdSkinSelector(SkinSelector):
 		self.skinName = ["LcdSkinSelector", "SkinSelector"]
 		self.rootDir = resolveFilename(SCOPE_LCDSKIN)
 		self.config = config.skin.display_skin
+		from skin import currentDisplaySkin # value types are imported by value at import time
 		self.currentSkin = currentDisplaySkin
 		self.xmlList = ["skin_display.xml", "skin_display_picon.xml"]
 
