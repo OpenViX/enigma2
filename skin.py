@@ -22,36 +22,37 @@ SUBTITLE_SKIN = "skin_subtitles.xml"
 GUI_SKIN_ID = 0  # Main frame-buffer.
 DISPLAY_SKIN_ID = 1  # Front panel / display / LCD.
 
-domScreens = None  # Dictionary of skin based screens.
-colors = None  # Dictionary of skin color names.
-bodyFont = None # font which is used when a font alias definition is missing from the "fonts" dict.
-fonts = None  # Dictionary of predefined and skin defined font aliases.
-menus = None  # Dictionary of images associated with menu entries.
-parameters = None  # Dictionary of skin parameters used to modify code behavior.
-setups = None  # Dictionary of images associated with setup menus.
-switchPixmap = None  # Dictionary of switch images.
-windowStyles = None  # Dictionary of window styles for each screen ID.
+domScreens = {}  # Dictionary of skin based screens.
+colors = {}  # Dictionary of skin color names.
+bodyFont = ("Regular", 20, 25, 18) # font which is used when a font alias definition is missing from the "fonts" dict.
+fonts = {}  # Dictionary of predefined and skin defined font aliases.
+menus = {}  # Dictionary of images associated with menu entries.
+parameters = {}  # Dictionary of skin parameters used to modify code behavior.
+setups = {}  # Dictionary of images associated with setup menus.
+switchPixmap = {}  # Dictionary of switch images.
+windowStyles = {}  # Dictionary of window styles for each screen ID.
 
 def loadSkinDefaults():
 	global domScreens, colors, bodyFont, fonts, menus, parameters, setups, switchPixmap, windowStyles
-	domScreens = {}
-	colors = {
+	domScreens.clear()
+	colors.clear()
+	colors.update({
 		"key_back": gRGB(0x00313131),
 		"key_blue": gRGB(0x0018188b),
 		"key_green": gRGB(0x001f771f),
 		"key_red": gRGB(0x009f1313),
 		"key_text": gRGB(0x00ffffff),
 		"key_yellow": gRGB(0x00a08500)
-	}
-	bodyFont = ("Regular", 20, 25, 18)
-	fonts = {
+	})
+	fonts.clear()
+	fonts.update({
 		"Body": bodyFont[:]
-	}
-	menus = {}
-	parameters = {}
-	setups = {}
-	switchPixmap = {}
-	windowStyles = {}
+	})
+	menus.clear()
+	parameters.clear()
+	setups.clear()
+	switchPixmap.clear()
+	windowStyles.clear()
 
 config.skin = ConfigSubsection()
 skin = resolveFilename(SCOPE_SKIN, DEFAULT_SKIN)
