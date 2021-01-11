@@ -4259,7 +4259,7 @@ msgid "Exit editor"
 msgstr "Editor beenden"
 
 msgid "Exit editor and write changes (if any)"
-msgstr "Editor beenden und �~Dnderungen speichern (falls vorhanden)"
+msgstr "Editor beenden und Änderungen speichern (falls vorhanden)"
 
 msgid "Exit input device selection."
 msgstr "Eingabegeräteauswahl verlassen."
@@ -9918,7 +9918,7 @@ msgid "Show animation while busy"
 msgstr "Zeige Animation bei Beschäftigung"
 
 msgid "Show as Picture (press any key to close)"
-msgstr "Zeige als Bild (beliebige Taste, um die Anzeige zu schlie�~_en)"
+msgstr "Zeige als Bild (beliebige Taste, um die Anzeige zu schließen)"
 
 #, python-format
 msgid "Show as Picture and save as file ('%s')"
@@ -12321,7 +12321,7 @@ msgid "Use power measurement"
 msgstr "Stromaufnahme messen"
 
 msgid "Use the cursor keys to select an installed image and then Erase button."
-msgstr "Ein installiertes Image auswählen und danach die TasteGrün drücken, um es zu löschen."
+msgstr "Ein installiertes Image auswählen und danach die Taste Grün drücken, um es zu löschen."
 
 msgid "Use the cursor keys to select an installed image and then Reboot button."
 msgstr ""
@@ -14016,7 +14016,7 @@ msgid "handicraft"
 msgstr "Handwerkskunst"
 
 msgid "has been CHANGED! Do you want to save it?"
-msgstr "wurde GE�~DNDERT! Möchten Sie es speichern?"
+msgstr "wurde GEÄNDERT! Möchten Sie es speichern?"
 
 msgid "height"
 msgstr "Höhe"
