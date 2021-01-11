@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-21 09:07+0100\n"
+"POT-Creation-Date: 2021-01-11 15:15+0100\n"
 "PO-Revision-Date: 2018-02-14 16:51+0330\n"
 "Last-Translator: Persian Prince <persianprince@pe4k.com>\n"
 "Language-Team: Persian Professionals <persianpros@yahoo.com>\n"
@@ -37,6 +37,11 @@ msgstr ""
 msgid ""
 "\n"
 "Conflict detection disabled!"
+msgstr ""
+
+msgid ""
+"\n"
+"Maintain your multiboot device."
 msgstr ""
 
 msgid ""
@@ -75,7 +80,35 @@ msgid ""
 "[User - bouquets (RADIO)]\n"
 msgstr ""
 
+#, python-format
+msgid ""
+"\n"
+"optional parameter:\n"
+"%s"
+msgstr ""
+
 msgid " "
+msgstr ""
+
+msgid "     no space left on back-up device"
+msgstr ""
+
+msgid "     no writing permission on back-up device"
+msgstr ""
+
+msgid "     wrong back-up destination "
+msgstr ""
+
+#, python-format
+msgid " ('%s') finished successefully."
+msgstr ""
+
+#, python-format
+msgid " ('%s') finished with error messages."
+msgstr ""
+
+#, python-format
+msgid " ('%s') finished with error number [%d]."
 msgstr ""
 
 #, fuzzy
@@ -133,6 +166,9 @@ msgstr "%d دقیقه"
 
 msgid " ms"
 msgstr "میلی ثانیه"
+
+msgid " or save the picture additionally to a file"
+msgstr ""
 
 msgid " packages selected."
 msgstr "بسته های انتخاب شده"
@@ -246,6 +282,11 @@ msgid_plural "%d cores"
 msgstr[0] ""
 
 #, python-format
+msgid "%d day"
+msgid_plural "%d days"
+msgstr[0] ""
+
+#, python-format
 msgid "%d file"
 msgid_plural "%d files"
 msgstr[0] ""
@@ -284,10 +325,6 @@ msgstr[0] "%d دقیقه"
 #, python-format
 msgid "%d minutes"
 msgstr "%d دقیقه"
-
-#, python-format
-msgid "%d of %d kBytes"
-msgstr ""
 
 #, python-format
 msgid "%d pixel wide"
@@ -344,6 +381,17 @@ msgid "%k:%M %e/%m"
 msgstr "%k:%M %e/%m"
 
 #, python-format
+msgid "%s"
+msgstr ""
+
+#, python-format
+msgid ""
+"%s\n"
+"Press ok for multiboot selection\n"
+"Press exit to close"
+msgstr ""
+
+#, python-format
 msgid "%s %d.%d"
 msgstr ""
 
@@ -355,13 +403,21 @@ msgstr ""
 msgid "%s (%04o)"
 msgstr "%s (%s)\n"
 
+#, fuzzy, python-format
+msgid "%s (%s"
+msgstr "%s (%s)\n"
+
+#, fuzzy, python-format
+msgid "%s (%s)"
+msgstr "%s (%s)\n"
+
 #, python-format
 msgid "%s (%s)\n"
 msgstr "%s (%s)\n"
 
-#, fuzzy, python-format
-msgid "%s build date %s"
-msgstr "آخرین به روز رسانی: "
+#, python-format
+msgid "%s - extraction errors."
+msgstr ""
 
 #, python-format
 msgid "%s imported from fallback tuner"
@@ -370,6 +426,14 @@ msgstr ""
 #. TRANSLATORS: The satellite with name '%s' is no longer used after a configuration change. The user is asked whether or not the satellite should be deleted.
 #, python-format
 msgid "%s is no longer used. Should it be deleted?"
+msgstr ""
+
+#, python-format
+msgid "%s is password protected."
+msgstr ""
+
+#, python-format
+msgid "%s successfully extracted."
 msgstr ""
 
 #
@@ -395,6 +459,10 @@ msgid "%s:%s"
 msgstr ""
 
 #, python-format
+msgid "'%s' not installed and no known package"
+msgstr ""
+
+#, python-format
 msgid "(%d jobs)"
 msgstr ""
 
@@ -414,6 +482,10 @@ msgstr "(حذف)"
 #, python-format
 msgid "(activated +%d min)"
 msgstr ""
+
+#, fuzzy
+msgid "(current image)"
+msgstr "اضافه کردن پیکربندی شبکه؟"
 
 msgid "(empty)"
 msgstr "(خالی)"
@@ -456,6 +528,12 @@ msgstr "شاخه اصلی"
 #, fuzzy
 msgid "/var directory"
 msgstr "شاخه اصلی"
+
+msgid "0"
+msgstr ""
+
+msgid "1"
+msgstr ""
 
 msgid "1.0"
 msgstr "1.0"
@@ -514,6 +592,9 @@ msgstr ""
 msgid "18 V"
 msgstr "18 ولت"
 
+msgid "2"
+msgstr ""
+
 msgid "2048 MB (maximum)"
 msgstr ""
 
@@ -534,6 +615,10 @@ msgstr ""
 
 msgid "29.97"
 msgstr ""
+
+#, fuzzy
+msgid "3"
+msgstr "3"
 
 msgid "30"
 msgstr ""
@@ -583,8 +668,18 @@ msgstr ""
 msgid "512 MB (recommended for this chipset)"
 msgstr ""
 
+msgid "6"
+msgstr ""
+
 msgid "64 MB"
 msgstr ""
+
+msgid "7"
+msgstr ""
+
+#, fuzzy
+msgid "8"
+msgstr "8"
 
 #, fuzzy
 msgid "8K"
@@ -593,25 +688,13 @@ msgstr "8"
 msgid "8bit"
 msgstr ""
 
+msgid "9"
+msgstr ""
+
+msgid ": "
+msgstr ""
+
 msgid ": 0000 - default (disabled)"
-msgstr ""
-
-#, fuzzy
-msgid "< Current >"
-msgstr "تنظیمات فعلی:"
-
-#, fuzzy
-msgid "< Default + Picon >"
-msgstr "تنظیمات پیش فرض"
-
-#, fuzzy
-msgid "< Default >"
-msgstr "تنظیمات پیش فرض"
-
-msgid "< Emergency >"
-msgstr ""
-
-msgid "< Pending restart >"
 msgstr ""
 
 msgid "<Current movielist location>"
@@ -632,6 +715,10 @@ msgstr "<نامشخص>"
 
 msgid "=NO STREAM\n"
 msgstr ""
+
+#, fuzzy
+msgid "?"
+msgstr "??"
 
 msgid "??"
 msgstr "??"
@@ -763,6 +850,10 @@ msgstr "AC3/DTS downmix"
 msgid "ACQUIRING TSID/ONID"
 msgstr ""
 
+#, fuzzy
+msgid "AFP Setup"
+msgstr "تنظیمات"
+
 msgid "AGC:"
 msgstr ""
 
@@ -862,10 +953,6 @@ msgstr ""
 
 msgid "Active"
 msgstr ""
-
-#, fuzzy
-msgid "Adapter"
-msgstr "LAN آداپتور"
 
 msgid "Adapter settings"
 msgstr "تنظیمات آداپتور"
@@ -986,6 +1073,17 @@ msgstr ""
 msgid "Adding schedule..."
 msgstr ""
 
+msgid "Additional cable of motorized LNB"
+msgstr ""
+
+#
+#, fuzzy
+msgid "Additional files/folders to backup"
+msgstr "انتخاب فایل و پوشه ها برای تهیه نسخه پشتیبان"
+
+msgid "Additional motor options allow you to enter details from your motor's spec sheet so enigma can work out how long it will take to move the dish from one satellite to another satellite."
+msgstr ""
+
 msgid "Additional motor options allow you to enter details from your motor's spec sheet so enigma can work out how long it will take to move to another satellite."
 msgstr ""
 
@@ -1049,6 +1147,9 @@ msgid "Album"
 msgstr "آلبوم"
 
 msgid "Algeria"
+msgstr ""
+
+msgid "Alias"
 msgstr ""
 
 msgid "Alignment of events"
@@ -1115,6 +1216,9 @@ msgid "Allows you to enable the debug log. They contain very detailed informatio
 msgstr ""
 
 msgid "Allows you to enable the twisted log. They contain very detailed information of everything the twisted does."
+msgstr ""
+
+msgid "Almost there... "
 msgstr ""
 
 msgid "Alpha"
@@ -1251,6 +1355,12 @@ msgstr ""
 "آیا مطمئن هستید که میخواهید\n"
 "این نسخه پشتیبان را حذف کنید\n"
 
+#, fuzzy, python-format
+msgid "Are you sure you want to delete image slot %s ?"
+msgstr ""
+"آیا مطمئن هستید که میخواهید\n"
+"این نسخه پشتیبان را حذف کنید\n"
+
 #, fuzzy
 msgid "Are you sure you want to delete the EPG data from:\n"
 msgstr ""
@@ -1287,15 +1397,6 @@ msgstr ""
 msgid ""
 "Are you sure you want to restore the backup?\n"
 "Your receiver will restart after the backup has been restored!"
-msgstr ""
-"آیا مطمئن هستید که میخواهید نسخه پشتیبان انیگما 2 خود را بازگردانی کنید ؟\n"
-"انیگما 2 بعد از این بازگردانی دوباره راه اندازی میشود"
-
-#
-#, fuzzy
-msgid ""
-"Are you sure you want to restore your Plugins?\n"
-"GUI will restart after the Plugins have been restored!"
 msgstr ""
 "آیا مطمئن هستید که میخواهید نسخه پشتیبان انیگما 2 خود را بازگردانی کنید ؟\n"
 "انیگما 2 بعد از این بازگردانی دوباره راه اندازی میشود"
@@ -1449,6 +1550,9 @@ msgstr "انتخاب زبان خودکار"
 msgid "Auto play blu-ray file"
 msgstr ""
 
+msgid "Auto play last service in radio mode"
+msgstr ""
+
 msgid "Auto scart switching"
 msgstr "جایگزینی خودکار scart"
 
@@ -1500,6 +1604,10 @@ msgstr ""
 msgid "BDMV Compatible Bludisc (HDTV only)"
 msgstr ""
 
+#, fuzzy
+msgid "BER"
+msgstr "مقدار خطا:"
+
 msgid "BER:"
 msgstr "مقدار خطا:"
 
@@ -1517,6 +1625,14 @@ msgstr ""
 
 msgid "Back"
 msgstr "بازگشت"
+
+#, fuzzy, python-format
+msgid "Back-up Tool for a %s\n"
+msgstr "تهیه نسخه پشتیبان ناموفق"
+
+#, fuzzy, python-format
+msgid "Back-up Tool for an %s\n"
+msgstr "تهیه نسخه پشتیبان ناموفق"
 
 msgid "Background"
 msgstr "پس زمینه"
@@ -1552,6 +1668,10 @@ msgid "Backup Mode"
 msgstr "تهیه نسخه پشتیبان ناموفق"
 
 #, fuzzy
+msgid "Backup Settings"
+msgstr "ویرایش تنظیمات"
+
+#, fuzzy
 msgid "Backup completed."
 msgstr "تهیه نسخه پشتیبان ناموفق"
 
@@ -1562,8 +1682,17 @@ msgstr "تهیه نسخه پشتیبان ناموفق"
 msgid "Backup is running..."
 msgstr "نسخه پشتیبان در حال اجرا است"
 
+msgid ""
+"Backup plugins found\n"
+"do you want to install now?"
+msgstr ""
+
 msgid "Backup system settings"
 msgstr "تهیه نسخه پشتیبان از تنظیمات"
+
+#, fuzzy, python-format
+msgid "Backup to destination: %s"
+msgstr "انتخاب محل نسخه پشتیبان"
 
 #, fuzzy
 msgid "Backup your Receiver settings."
@@ -1658,6 +1787,10 @@ msgstr "صفحه نمایش سیاه"
 msgid "Black screen till locked"
 msgstr "صفحه نمایش سیاه تا زمانی که قفل شود"
 
+#, fuzzy
+msgid "Block device"
+msgstr "وسیله های ورودی"
+
 #
 msgid "Block noise reduction"
 msgstr "بستن کاهش صدا"
@@ -1716,6 +1849,11 @@ msgstr ""
 msgid "Buffering %d%%"
 msgstr ""
 
+#
+#, fuzzy, python-format
+msgid "Build: %s"
+msgstr "سیگنال:"
+
 #, fuzzy
 msgid "Bulgaria"
 msgstr "بلغاری"
@@ -1750,8 +1888,12 @@ msgstr "گذرگاه:"
 msgid "By default, SNR will be shown in dB (when supported by the tuner). This setting forces SNR to be shown as a percentage instead."
 msgstr ""
 
-msgid "By teamBlue Image Team"
+msgid "By teamblue Image Team"
 msgstr ""
+
+#, fuzzy
+msgid "C"
+msgstr "C"
 
 msgid "C-Band"
 msgstr "باند C"
@@ -1763,6 +1905,10 @@ msgid "CF Drive"
 msgstr ""
 
 msgid "CH"
+msgstr ""
+
+#, python-format
+msgid "CH%s"
 msgstr ""
 
 #, fuzzy
@@ -1849,6 +1995,15 @@ msgid ""
 msgstr ""
 
 #, python-format
+msgid ""
+"Can not run %s: %s.\n"
+"%s may be in a plugin that is not installed."
+msgstr ""
+
+msgid "Can only find a network drive to store the backup this means after the flash the autorestore will not work. Alternatively you can mount the network drive after the flash and perform a manufacturer reset to autorestore"
+msgstr ""
+
+#, python-format
 msgid "Can't read link contents: %s"
 msgstr ""
 
@@ -1871,13 +2026,30 @@ msgstr ""
 msgid "Cancel execution?"
 msgstr "انتخاب کانال"
 
+msgid "Cancel the image selection and exit"
+msgstr ""
+
+msgid "Cancel the image selection and exit all menus"
+msgstr ""
+
 msgid "Cancelled upon user request"
 msgstr ""
+
+#, fuzzy
+msgid "Cannot create backup directory"
+msgstr "ایجاد شاخه %s ناموفق "
+
+#, fuzzy
+msgid "Cannot delete downloaded image"
+msgstr "زمان های انجام شده حذف شوند ؟"
 
 msgid "Cannot determine"
 msgstr "نمیتوان تعیین کرد"
 
 msgid "Cannot find any signal ..., aborting !"
+msgstr ""
+
+msgid "Cannot find images - please try later"
 msgstr ""
 
 msgid ""
@@ -2017,6 +2189,10 @@ msgstr ""
 msgid "Channel not in services list"
 msgstr "کانال در لیست کانال ها وجود ندارد"
 
+#, fuzzy
+msgid "Channel selection"
+msgstr "انتخاب کانال"
+
 msgid "Channel zap delay another button"
 msgstr ""
 
@@ -2028,6 +2204,10 @@ msgstr ""
 
 msgid "Channel:"
 msgstr "کانال:"
+
+#, fuzzy
+msgid "Channellist menu"
+msgstr "منوی لیست کانال"
 
 msgid "Channelnumber and picon"
 msgstr ""
@@ -2059,6 +2239,10 @@ msgstr "فصل"
 
 msgid "Chapter:"
 msgstr "فصل:"
+
+#, fuzzy
+msgid "Character device"
+msgstr "لیست وسیله های ذخیره سازی"
 
 msgid "Check"
 msgstr "بررسی"
@@ -2148,6 +2332,10 @@ msgstr "چرخش چپ"
 msgid "Circular right"
 msgstr "چرخش راست"
 
+#, fuzzy
+msgid "Clean image"
+msgstr "پاک سازی گزارش"
+
 msgid "Cleanup"
 msgstr "پاک سازی"
 
@@ -2200,6 +2388,9 @@ msgstr "نرخ کد HP"
 msgid "Code rate LP"
 msgstr "نرخ کد LP"
 
+msgid "Collapse"
+msgstr ""
+
 msgid "Collection name"
 msgstr "نام مجموعه"
 
@@ -2229,8 +2420,16 @@ msgstr "فرمت رنگ"
 msgid "Combo"
 msgstr ""
 
+#, fuzzy
+msgid "Command execution..."
+msgstr "انتخاب کانال"
+
 msgid "Command order"
 msgstr "ترتیب فرمان"
+
+#, fuzzy
+msgid "Commit info"
+msgstr "کنتراست"
 
 msgid "Common Interface"
 msgstr "رابط مشترک"
@@ -2254,6 +2453,9 @@ msgid "Composition of the recording filenames"
 msgstr "ترکیب نام های فایل های ضبط"
 
 msgid "Config Scan Details"
+msgstr ""
+
+msgid "Config file name (ok to change):"
 msgstr ""
 
 msgid "Config resolution of pictures"
@@ -2781,6 +2983,10 @@ msgstr ""
 msgid "Copy to bouquets"
 msgstr "اضافه کردن به لیست"
 
+#, fuzzy, python-format
+msgid "Cores: %s"
+msgstr "سرعت های بازگشت:"
+
 msgid "Costa Rica"
 msgstr ""
 
@@ -2788,6 +2994,9 @@ msgid "Cote d'Ivoire"
 msgstr ""
 
 msgid "Could not find installed channel list."
+msgstr ""
+
+msgid "Could not find suitable media - Please remove some downloaded images or insert a media (e.g. USB stick) with sufficient free space and try again!"
 msgstr ""
 
 #, fuzzy
@@ -2848,6 +3057,15 @@ msgstr ""
 msgid "Create user-named symbolic link"
 msgstr ""
 
+#
+#, fuzzy
+msgid "Create:"
+msgstr "ایجاد DVD-ISO"
+
+#, python-format
+msgid "Create: Recovery Fullbackup %s"
+msgstr ""
+
 #, python-format
 msgid "Creating directory %s failed."
 msgstr "ایجاد شاخه %s ناموفق "
@@ -2872,6 +3090,10 @@ msgstr ""
 
 msgid "Curacao"
 msgstr ""
+
+#, fuzzy
+msgid "Current"
+msgstr "تنظیمات فعلی:"
 
 msgid "Current CEC address"
 msgstr "آدرس فعلی CEC"
@@ -2960,6 +3182,10 @@ msgstr "چکوسلواکی"
 msgid "Czechia"
 msgstr "چکوسلواکی"
 
+#, fuzzy
+msgid "D"
+msgstr "3"
+
 msgid "DAC"
 msgstr ""
 
@@ -2967,6 +3193,9 @@ msgid "DHCP"
 msgstr "DHCP"
 
 msgid "DHCP is off"
+msgstr ""
+
+msgid "DLNA support"
 msgstr ""
 
 msgid "DMM advanced"
@@ -3041,15 +3270,20 @@ msgid "DVD Menu"
 msgstr "منو"
 
 #, fuzzy
-msgid "DVD Player"
-msgstr "پخش کننده DVD"
-
-#, fuzzy
 msgid "DVD Titlelist"
 msgstr "لیست عنوان DVD"
 
+#
+#, fuzzy
+msgid "DVD file browser"
+msgstr "مرورگر فایل DVD"
+
 #, fuzzy
 msgid "DVD player"
+msgstr "پخش کننده DVD"
+
+#, fuzzy
+msgid "DVDPlayer"
 msgstr "پخش کننده DVD"
 
 msgid "Danish"
@@ -3109,6 +3343,11 @@ msgstr "نوع ضبط"
 msgid "Default file sorting right"
 msgstr "نوع ضبط"
 
+#
+#, fuzzy
+msgid "Default files/folders to backup"
+msgstr "انتخاب فایل و پوشه ها برای تهیه نسخه پشتیبان"
+
 #, fuzzy
 msgid "Default folder"
 msgstr "پیش فرض"
@@ -3139,6 +3378,10 @@ msgstr ""
 #, fuzzy
 msgid "Default timer type"
 msgstr "نوع ضبط"
+
+#, fuzzy
+msgid "Default+Picon"
+msgstr "تنظیمات پیش فرض"
 
 msgid "Delay after change voltage before switch command"
 msgstr ""
@@ -3215,6 +3458,14 @@ msgstr "موارد حذف شده"
 msgid "Delete 1 element"
 msgstr "حذف مورد"
 
+#, fuzzy
+msgid "Delete all the text"
+msgstr "حذف مورد"
+
+#, fuzzy
+msgid "Delete current line"
+msgstr "حذف مورد"
+
 msgid "Delete entry"
 msgstr "حذف مورد"
 
@@ -3233,6 +3484,10 @@ msgid "Delete folder"
 msgstr "حذف ناموفق"
 
 #, fuzzy
+msgid "Delete image"
+msgstr "حذف ناموفق"
+
+#, fuzzy
 msgid "Delete playlist entry"
 msgstr "حذف مورد"
 
@@ -3240,10 +3495,10 @@ msgstr "حذف مورد"
 msgid "Delete saved playlist"
 msgstr "ذخیره لیست پخش"
 
-msgid "Delete the character to the left of text buffer cursor"
+msgid "Delete the character to the left of text cursor"
 msgstr ""
 
-msgid "Delete the character under the text buffer cursor"
+msgid "Delete the character under the text cursor"
 msgstr ""
 
 msgid "Delete the selected files or directories"
@@ -3304,10 +3559,6 @@ msgstr "دیسک سخت شناخته شده:"
 
 msgid "Detected NIMs:"
 msgstr "NIM های شناسایی شده:"
-
-#, fuzzy
-msgid "Device"
-msgstr "کانال ها"
 
 msgid "Device Details"
 msgstr ""
@@ -3509,12 +3760,6 @@ msgid ""
 "You cannot go back!"
 msgstr ""
 
-#, fuzzy, python-format
-msgid ""
-"Do you really want to delete\n"
-"%s ?"
-msgstr "آیا واقعا قصد حذف کردن %s را دارید؟ "
-
 #, python-format
 msgid "Do you really want to delete %s?"
 msgstr "آیا واقعا قصد حذف کردن %s را دارید؟ "
@@ -3563,6 +3808,10 @@ msgstr ""
 " آیا واقعا میخواهید دانلود کنید\n"
 "پلاگین \"%s\"?"
 
+#, fuzzy
+msgid "Do you want change rights?\n"
+msgstr "آیا میخواهید اسکن کانال انجام شود ؟"
+
 msgid "Do you want this?"
 msgstr ""
 
@@ -3582,11 +3831,21 @@ msgstr ""
 msgid "Do you want to burn this collection to DVD medium?"
 msgstr "آیا میخواهید این مجموعه را روی DVD رایت کنید ؟"
 
+#, fuzzy
+msgid "Do you want to delete the old settings in /etc/enigma2 first?"
+msgstr "آیا میخواهید تنظیمات شما بازگردانی شود ؟"
+
 msgid "Do you want to do a service scan?"
 msgstr "آیا میخواهید اسکن کانال انجام شود ؟"
 
 msgid "Do you want to do another manual service scan?"
 msgstr "آیا میخواهید اسکن دستی کانال دیگری انجام شود ؟"
+
+#, fuzzy, python-format
+msgid ""
+"Do you want to flash image\n"
+"%s"
+msgstr "آیا میخواهید بسته به روز رسانی شود:\n"
 
 msgid "Do you want to install a channel list?"
 msgstr ""
@@ -3611,10 +3870,6 @@ msgstr "آیا میخواهید این مجموعه را روی DVD رایت ک�
 #, fuzzy
 msgid "Do you want to quit the overscan wizard?"
 msgstr "آیا مطمئن هستید که میخواهید از این هدایتگر خارج شوید ؟"
-
-#, fuzzy, python-format
-msgid "Do you want to reboot now the image in slot %s?"
-msgstr "آیا میخواهید ایمیج را در %s دانلود کنید ؟"
 
 #, fuzzy
 msgid "Do you want to reboot your Receiver?"
@@ -3649,6 +3904,10 @@ msgstr "آیا میخواهید ایمیج را در %s دانلود کنید ؟
 
 msgid "Do you want to update your receiver?"
 msgstr ""
+
+#, fuzzy
+msgid "Do you want to view or run the script?\n"
+msgstr "آیا میخواهید بسته را حذف کنید:\n"
 
 msgid "Dolby"
 msgstr ""
@@ -3695,21 +3954,21 @@ msgid_plural "Done - Installed, updated or removed %d packages (%s)"
 msgstr[0] "انجام شد ، تعداد %d بسته با %d خطا نصب ، به روز رسانی و یا حذف شد"
 
 #, fuzzy
-msgid "Download Failed !!"
-msgstr "پلاگین های قابل دانلود"
-
-#, fuzzy
 msgid "Download plugins"
 msgstr "دانلود پلاگین ها"
 
 msgid "Downloadable plugins"
 msgstr "پلاگین های قابل دانلود"
 
+#, fuzzy
+msgid "Downloaded images"
+msgstr "در حال دانلود"
+
 msgid "Downloading"
 msgstr "در حال دانلود"
 
-#, fuzzy, python-format
-msgid "Downloading %s"
+#, fuzzy
+msgid "Downloading Image"
 msgstr "در حال دانلود"
 
 msgid "Downloading plugin information. Please wait..."
@@ -3726,13 +3985,10 @@ msgid "Dreambox format data DVD (won't work in other DVD players)"
 msgstr ""
 
 #, python-format
-msgid "Drivers: %s"
+msgid "Drivers:\t%s"
 msgstr ""
 
 msgid "Drop unconfigured satellites"
-msgstr ""
-
-msgid "Due to the used filesystem, the fullbackup\n"
 msgstr ""
 
 msgid "Dutch"
@@ -3769,6 +4025,10 @@ msgstr "انتخاب زبان EPG 2"
 
 msgid "EPG only"
 msgstr ""
+
+#, fuzzy
+msgid "EPG selection"
+msgstr "EPG انتخاب"
 
 msgid "EPG settings"
 msgstr ""
@@ -3809,6 +4069,14 @@ msgstr "حالت رادیو متناوب"
 
 msgid "Edit chapters of current title"
 msgstr "ویرایش فصل های عنوان فعلی"
+
+#, fuzzy
+msgid "Edit current line"
+msgstr "ویرایش فصل های عنوان فعلی"
+
+#, fuzzy
+msgid "Edit line "
+msgstr "ویرایش عنوان"
 
 #, fuzzy
 msgid "Edit menu"
@@ -3861,6 +4129,9 @@ msgid "Electronic Program Guide"
 msgstr "راهنمای الکترونیکی برنامه"
 
 msgid "Embedded"
+msgstr ""
+
+msgid "Emergency"
 msgstr ""
 
 msgid "Empty slot"
@@ -4055,14 +4326,6 @@ msgstr "انگلیسی"
 msgid "Enigma (re)starts: %d\n"
 msgstr ""
 
-#, python-format
-msgid "Enigma2 Build: %s"
-msgstr ""
-
-#, python-format
-msgid "Enigma2 Version: %s"
-msgstr ""
-
 #, fuzzy
 msgid "Enter"
 msgstr "رمز جدید را دوباره وارد کنید"
@@ -4129,6 +4392,9 @@ msgstr ""
 msgid "Equatorial Guinea"
 msgstr ""
 
+msgid "Erase"
+msgstr ""
+
 #, fuzzy
 msgid "Eritrea"
 msgstr "درخواست جریان"
@@ -4136,12 +4402,12 @@ msgstr "درخواست جریان"
 msgid "Error"
 msgstr "خطا"
 
-msgid "Error checking disk. The disk may be damaged"
-msgstr ""
-
 #, fuzzy, python-format
 msgid "Error %s"
 msgstr "خطا"
+
+msgid "Error checking disk. The disk may be damaged"
+msgstr ""
 
 msgid "Error code"
 msgstr "کد خطا"
@@ -4152,6 +4418,19 @@ msgid ""
 "%s"
 msgstr "ایجاد شاخه %s ناموفق "
 
+#, python-format
+msgid ""
+"Error during downloading image\n"
+"%s\n"
+"%s"
+msgstr ""
+
+#, python-format
+msgid ""
+"Error during unzipping image\n"
+"%s"
+msgstr ""
+
 msgid "Error formatting disk. The disk may be damaged"
 msgstr ""
 
@@ -4161,13 +4440,17 @@ msgid ""
 "%s"
 msgstr ""
 
+msgid "Error reading bouquets.radio"
+msgstr ""
+
+#, fuzzy
+msgid "Error reading bouquets.tv"
+msgstr "ویرایش لیست های کانال"
+
 #, python-format
 msgid ""
 "Error renaming %s to %s:\n"
 "%s"
-msgstr ""
-
-msgid "Error stop stream!"
 msgstr ""
 
 msgid "Error when writing epg.dat on server"
@@ -4184,6 +4467,10 @@ msgstr ""
 
 msgid "Error while retreiving location of epg.dat on server"
 msgstr ""
+
+#, fuzzy
+msgid "Error..."
+msgstr "خطا"
 
 #, python-format
 msgid ""
@@ -4216,7 +4503,15 @@ msgid "Event name first"
 msgstr ""
 
 #, fuzzy
+msgid "Event view"
+msgstr "منوی مشاهده رخداد"
+
+#, fuzzy
 msgid "Event view context menu"
+msgstr "منوی مشاهده رخداد"
+
+#, fuzzy
+msgid "Event view menu"
 msgstr "منوی مشاهده رخداد"
 
 #, fuzzy
@@ -4263,6 +4558,9 @@ msgstr "اضافه کردن پیکربندی شبکه؟"
 msgid "Exit editor"
 msgstr "خروج از ویرایشگر"
 
+msgid "Exit editor and write changes (if any)"
+msgstr ""
+
 msgid "Exit input device selection."
 msgstr "خروج از انتخاب وسیله ورودی"
 
@@ -4291,8 +4589,14 @@ msgstr "رابط شبکه Ethernet"
 msgid "Exit network wizard"
 msgstr "خروج از هدایتگر شبکه"
 
+msgid "Exit picture viewer"
+msgstr ""
+
 msgid "Exit the wizard"
 msgstr "خروج از هدایتگر"
+
+msgid "Expand"
+msgstr ""
 
 msgid "Expert"
 msgstr "تخصصی"
@@ -4326,6 +4630,10 @@ msgstr "ویرایش تنظیمات"
 #, fuzzy
 msgid "Extended setup..."
 msgstr "تنظیمات تمدید شده"
+
+#, fuzzy
+msgid "Extensions"
+msgstr "بسته ها"
 
 msgid "Extensions management"
 msgstr "مدیریت بسته های نرم افزاری"
@@ -4407,8 +4715,15 @@ msgstr ""
 msgid "FHD"
 msgstr ""
 
+msgid "FIFO"
+msgstr ""
+
 msgid "FTA"
 msgstr "FTA"
+
+#, fuzzy
+msgid "FTP Setup"
+msgstr "تنظیمات"
 
 msgid "Factory reset"
 msgstr "بازگشت به حالت کارخانه ای"
@@ -4493,9 +4808,6 @@ msgstr "سریع DiSEqC"
 msgid "Fast Mounted Remove"
 msgstr ""
 
-msgid "Fast Scan"
-msgstr "اسکن سریع"
-
 msgid "Fast epoch"
 msgstr "epoch سریع"
 
@@ -4517,6 +4829,10 @@ msgstr ""
 msgid "FastScan"
 msgstr "اسکن سریع"
 
+#, fuzzy
+msgid "Fastscan"
+msgstr "اسکن سریع"
+
 msgid "Favourites"
 msgstr "محبوب"
 
@@ -4527,8 +4843,43 @@ msgstr ""
 msgid "File Commander"
 msgstr "ترتیب فرمان"
 
+#, fuzzy
+msgid "File Commander - Addon File-Viewer"
+msgstr "منوی لیست کانال"
+
+#, fuzzy
+msgid "File Commander - Addon Mediaplayer"
+msgstr "منوی لیست کانال"
+
+#, fuzzy
+msgid "File Commander - Addon Movieplayer"
+msgstr "منوی لیست کانال"
+
 msgid "File Commander - all Task's completed!"
 msgstr ""
+
+msgid "File Commander - generalised archive handler"
+msgstr ""
+
+#, fuzzy
+msgid "File Commander - gzip Addon"
+msgstr "ترتیب فرمان"
+
+#, fuzzy
+msgid "File Commander - ipk Addon"
+msgstr "ترتیب فرمان"
+
+#, fuzzy
+msgid "File Commander - tar Addon"
+msgstr "ترتیب فرمان"
+
+#, fuzzy
+msgid "File Commander - unrar Addon"
+msgstr "ترتیب فرمان"
+
+#, fuzzy
+msgid "File Commander - unzip Addon"
+msgstr "تنظیمات"
 
 #, fuzzy
 msgid "File Commander Settings"
@@ -4550,6 +4901,10 @@ msgstr ""
 msgid "File checksums/hashes"
 msgstr ""
 
+#, fuzzy, python-format
+msgid "File not found: %s"
+msgstr "مخفی کردن خطا های جابجایی"
+
 msgid "File transfer was cancelled by user"
 msgstr ""
 
@@ -4564,6 +4919,11 @@ msgstr "پیکربندی شبکه"
 #, fuzzy
 msgid "Filename"
 msgstr "تغییر نام"
+
+#
+#, fuzzy
+msgid "Files/folders to exclude from backup"
+msgstr "انتخاب فایل و پوشه ها برای تهیه نسخه پشتیبان"
 
 #, fuzzy
 msgid "Filesystem check"
@@ -4632,29 +4992,43 @@ msgid ""
 "Restart your %s %s now?"
 msgstr ""
 
-msgid "Flash"
+#, fuzzy
+msgid "Flash Image"
 msgstr "فلش"
 
 msgid "Flash On the Fly"
-msgstr ""
-
-msgid "Flash On the fly (select a image)"
 msgstr ""
 
 msgid "Flash Online"
 msgstr ""
 
 #, fuzzy
+msgid "Flash and restore settings"
+msgstr "تنظیمات"
+
+#, fuzzy
 msgid "Flash on the fly your your Receiver software."
 msgstr "مدیریت نرم افزار رسیور شما"
+
+msgid "Flash, restore settings and user selected plugins"
+msgstr ""
 
 #, fuzzy
 msgid "Flashed: "
 msgstr "فلش کردن ناموفق"
 
 #, fuzzy
-msgid "Flashing: "
+msgid "Flashing Image"
 msgstr "فلش کردن ناموفق"
+
+msgid "Flashing image successful"
+msgstr ""
+
+#, python-format
+msgid ""
+"Flashing image was not successful\n"
+"%s"
+msgstr ""
 
 #
 msgid "Following tasks will be done after you press OK!"
@@ -4757,6 +5131,9 @@ msgstr ""
 msgid "Frontprocessor version: %s"
 msgstr "نسخه پردازنده جلویی: %d"
 
+msgid "Full Image Backup "
+msgstr ""
+
 #. TRANSLATORS: (aspect ratio policy: display as fullscreen, even if the content aspect ratio does not match the screen ratio)
 #, fuzzy
 msgid "Full screen"
@@ -4769,9 +5146,9 @@ msgstr "شفافیت سیاه زیرنویس DVB"
 msgid "Full view resolution"
 msgstr ""
 
-#, python-format
-msgid "Fullback for %s\n"
-msgstr ""
+#, fuzzy
+msgid "Fullbackup images"
+msgstr "تهیه نسخه پشتیبان ناموفق"
 
 #, python-format
 msgid "Fullbackup on %s"
@@ -4784,9 +5161,6 @@ msgid "Further Options"
 msgstr ""
 
 msgid "Further options"
-msgstr ""
-
-msgid "GB800SOLO takes about 20 mins !!\n"
 msgstr ""
 
 #, fuzzy
@@ -4877,6 +5251,10 @@ msgstr "برو پایین لیست"
 msgid "Go to bookmarked folder"
 msgstr ""
 
+#, fuzzy
+msgid "Go to end of file"
+msgstr "برو بالای لیست"
+
 msgid "Go to first movie or last item"
 msgstr "مراجعه به اولین فیلم یا آخرین مورد"
 
@@ -4911,6 +5289,10 @@ msgstr "مراجعه به رخداد قبلی"
 msgid "Go to previous page of service"
 msgstr "مراجعه به صفحه قبلی کانال"
 
+#, fuzzy
+msgid "Go to start of file"
+msgstr "مراجعه به صفحه بعدی کانال"
+
 msgid "Go up the list"
 msgstr "برو بالای لیست"
 
@@ -4925,6 +5307,10 @@ msgstr "مراجعه به 0"
 
 msgid "Goto X"
 msgstr "مراجعه به X"
+
+#, fuzzy
+msgid "Goto down service"
+msgstr "مراجعه به آخرین کانال"
 
 msgid "Goto index position"
 msgstr ""
@@ -4950,6 +5336,10 @@ msgstr "مراجعه به موقعیت"
 
 msgid "Goto specific date/time"
 msgstr ""
+
+#, fuzzy
+msgid "Goto up service"
+msgstr "مراجعه به آخرین کانال"
 
 msgid "Goto:"
 msgstr "مراجعه به:"
@@ -5025,11 +5415,6 @@ msgid "HD11/HD51/HD1100/HD1200/HD1265/HD1500/HD500C/HD530C/VS1000/VS1500/et7x00/
 msgstr ""
 
 msgid "HD2400"
-msgstr ""
-
-msgid ""
-"HDD = Do you want to create a fullbackup on HDD? \n"
-"This only takes 2 or 10 minutes and is fully automatic."
 msgstr ""
 
 msgid "HDMI"
@@ -5288,9 +5673,6 @@ msgstr ""
 msgid "IP:"
 msgstr ""
 
-msgid "IPv6"
-msgstr ""
-
 msgid "IPv6 support"
 msgstr ""
 
@@ -5373,6 +5755,37 @@ msgstr ""
 msgid "Ignore conflict"
 msgstr ""
 
+#, fuzzy
+msgid "Image Backup"
+msgstr "بازگشت"
+
+msgid "Image View On"
+msgstr ""
+
+#, python-format
+msgid "Image created on: %s/%s-%s-%s-backup-%s_mmc.zip"
+msgstr ""
+
+#, python-format
+msgid "Image created on: %s/%s-%s-%s-backup-%s_recovery_emmc.zip"
+msgstr ""
+
+#, python-format
+msgid "Image created on: %s/%s-%s-%s-backup-%s_usb.zip"
+msgstr ""
+
+msgid "Image creation failed - "
+msgstr ""
+
+#, python-format
+msgid ""
+"Image to install is invalid\n"
+"%s"
+msgstr ""
+
+msgid "ImageWizard"
+msgstr ""
+
 msgid "Import channels and/or EPG from remote receiver URL also when the receiver is getting out of standby"
 msgstr ""
 
@@ -5409,6 +5822,13 @@ msgstr "حالت رادیو متناوب"
 msgid "Inactivity Sleeptimer"
 msgstr ""
 
+msgid "Inadyn Log"
+msgstr ""
+
+#, fuzzy
+msgid "Inadyn Setup"
+msgstr "تنظیمات مکان یاب"
+
 #, python-format
 msgid "Include %s"
 msgstr ""
@@ -5438,6 +5858,9 @@ msgstr "فعال کردن تصویر در تصویر"
 msgid "Increased voltage"
 msgstr "ولتاژ افزایش یافته"
 
+msgid "Index"
+msgstr ""
+
 msgid "Index allocated:"
 msgstr ""
 
@@ -5447,11 +5870,12 @@ msgstr ""
 msgid "Indonesia"
 msgstr ""
 
-msgid "Inetd recovery"
-msgstr ""
-
 msgid "Info"
 msgstr "اطلاعات"
+
+#, fuzzy
+msgid "Info bar"
+msgstr "مهلت نمایش نوار اطلاعات"
 
 #, fuzzy
 msgid "Info bar timeout"
@@ -5511,6 +5935,9 @@ msgstr "در حال مقدار دهی اولیه وسیله ذخیره سازی"
 msgid "Inode:"
 msgstr ""
 
+msgid "Inotify Monitoring"
+msgstr ""
+
 msgid "Input"
 msgstr "ورودی"
 
@@ -5521,17 +5948,36 @@ msgstr "ورودی"
 msgid "Input Stream ID"
 msgstr ""
 
+#, fuzzy
+msgid "Input config file name:"
+msgstr "نام های طولانی فایل"
+
 msgid "Input device setup"
 msgstr "تنظیم دستگاه ورودی"
 
 msgid "Input devices"
 msgstr "وسیله های ورودی"
 
+msgid "Insert"
+msgstr ""
+
+#, fuzzy
+msgid "Insert line before current line"
+msgstr "مشخصات عنوان فعلی"
+
 msgid "Insert mount point:"
 msgstr ""
 
 msgid "Install"
 msgstr "نصب"
+
+#, python-format
+msgid "Install '%s' and enable this operation"
+msgstr ""
+
+#, fuzzy
+msgid "Install Plugins"
+msgstr "نصب پیکون ها در"
 
 #
 msgid "Install a new image with a USB stick"
@@ -5571,17 +6017,34 @@ msgstr "محاسبه کامل شد"
 msgid "Installation or removal has completed."
 msgstr "نصب یا حذف پایان یافت"
 
-msgid ""
-"Installed Plugins will be written to:\n"
-"/etc/enigma2/installed-list.txt\n"
-"Make sure you include that file into settings backup."
-msgstr ""
-
 msgid "Installing"
 msgstr "در حال نصب"
 
 #, fuzzy
+msgid "Installing Plugin ..."
+msgstr "نصب پیکون ها در"
+
+#, fuzzy
 msgid "Installing Service"
+msgstr "در حال نصب"
+
+msgid "Installing feeds from IPK ..."
+msgstr ""
+
+#, fuzzy
+msgid "Installing feeds from feed ..."
+msgstr "محاسبه کامل شد"
+
+#, fuzzy
+msgid "Installing plugins from IPK ..."
+msgstr "نصب پیکون ها در"
+
+#, fuzzy
+msgid "Installing plugins from feed ..."
+msgstr "نصب پیکون ها در"
+
+#, fuzzy
+msgid "Installing software..."
 msgstr "در حال نصب"
 
 #, fuzzy
@@ -5595,6 +6058,10 @@ msgstr "مکان ضبط کردن فوری"
 #, fuzzy
 msgid "Instant recording..."
 msgstr "مکان ضبط کردن فوری"
+
+#, fuzzy
+msgid "Interface"
+msgstr "رابط:"
 
 msgid "Interface: "
 msgstr "رابط:"
@@ -5686,7 +6153,17 @@ msgstr ""
 msgid "It follows:"
 msgstr ""
 
+msgid "It is not possible to calculate hashes on <List of Storage Devices>"
+msgstr ""
+
+msgid "It is not possible to change the file mode of <List of Storage Devices>"
+msgstr ""
+
 msgid "It is not possible to get the file status of <List of Storage Devices>"
+msgstr ""
+
+#, python-format
+msgid "It is not possible to run '%s' on <List of Storage Devices>"
 msgstr ""
 
 msgid ""
@@ -5850,7 +6327,7 @@ msgid "Last speed"
 msgstr "آخرین سرعت"
 
 #, fuzzy, python-format
-msgid "Last update: %s"
+msgid "Last update:\t%s"
 msgstr "آخرین به روز رسانی: "
 
 #, fuzzy
@@ -6036,13 +6513,6 @@ msgid "Load unlinked userbouquets"
 msgstr "فعال کردن چندین لیست"
 
 #, fuzzy
-msgid "Local"
-msgstr "محل"
-
-msgid "Local = Flash a image from local path /hdd/images"
-msgstr ""
-
-#, fuzzy
 msgid "Local network"
 msgstr "شبکه محلی"
 
@@ -6120,6 +6590,9 @@ msgid "MIME Version"
 msgstr "وارونگی"
 
 msgid "MMC card"
+msgstr ""
+
+msgid "MORE"
 msgstr ""
 
 msgid "MSN Weather City Name"
@@ -6286,6 +6759,10 @@ msgid "Message"
 msgstr "پیام"
 
 #, fuzzy
+msgid "Message..."
+msgstr "پیام"
+
+#, fuzzy
 msgid "Messages"
 msgstr "پیام"
 
@@ -6297,6 +6774,13 @@ msgstr ""
 
 msgid "Micronesia (Federated States of)"
 msgstr ""
+
+msgid "MiniDLNA Log"
+msgstr ""
+
+#, fuzzy
+msgid "MiniDLNA Setup"
+msgstr "تنظیمات"
 
 msgid "MiniTV - video0"
 msgstr ""
@@ -6335,10 +6819,18 @@ msgctxt "Video output mode"
 msgid "Mode"
 msgstr "حالت"
 
+#, fuzzy, python-format
+msgid "Mode %s (%04o)"
+msgstr "%s (%s)\n"
+
 msgid ""
 "Mode 1 suppports Kodi, PiP may not work.\n"
 "Mode 12 supports PiP, Kodi may not work."
 msgstr ""
+
+#, fuzzy
+msgid "Mode for autorestore"
+msgstr "بازگردانی نرم افزار"
 
 #, fuzzy
 msgid "Model"
@@ -6485,6 +6977,10 @@ msgid "Move Picture in Picture"
 msgstr "فعال کردن تصویر در تصویر"
 
 #, fuzzy
+msgid "Move down a line"
+msgstr "برو پایین لیست"
+
+#, fuzzy
 msgid "Move down list"
 msgstr "برو پایین لیست"
 
@@ -6506,28 +7002,28 @@ msgstr "لطفا نام پوشه جدید را وارد کنید"
 msgid "Move folder"
 msgstr "جابجایی به شرق"
 
-msgid "Move the text buffer cursor left"
+msgid "Move the keyboard cursor down"
 msgstr ""
 
-msgid "Move the text buffer cursor right"
+msgid "Move the keyboard cursor left"
 msgstr ""
 
-msgid "Move the text buffer cursor to the first character"
+msgid "Move the keyboard cursor right"
 msgstr ""
 
-msgid "Move the text buffer cursor to the last character"
+msgid "Move the keyboard cursor up"
 msgstr ""
 
-msgid "Move the virtual keyboard cursor down"
+msgid "Move the text cursor left"
 msgstr ""
 
-msgid "Move the virtual keyboard cursor left"
+msgid "Move the text cursor right"
 msgstr ""
 
-msgid "Move the virtual keyboard cursor right"
+msgid "Move the text cursor to the first character"
 msgstr ""
 
-msgid "Move the virtual keyboard cursor up"
+msgid "Move the text cursor to the last character"
 msgstr ""
 
 msgid "Move to position X"
@@ -6546,6 +7042,10 @@ msgstr "مراجعه به رخداد قبلی"
 #, fuzzy
 msgid "Move to the previous skin"
 msgstr "مراجعه به رخداد قبلی"
+
+#, fuzzy
+msgid "Move up a line"
+msgstr "برو بالای لیست"
 
 #, fuzzy
 msgid "Move up list"
@@ -6613,7 +7113,23 @@ msgid "MultiBoot"
 msgstr "چندین ماهواره"
 
 #, fuzzy
+msgid "MultiBoot Image Manager"
+msgstr "انتخاب لیست EPG چندگانه"
+
+#, fuzzy
+msgid "MultiBoot Image Selector"
+msgstr "انتخاب لیست EPG چندگانه"
+
+#, fuzzy
+msgid "MultiBoot Manager"
+msgstr "انتخاب لیست EPG چندگانه"
+
+#, fuzzy
 msgid "MultiBoot Selector"
+msgstr "انتخاب لیست EPG چندگانه"
+
+#, fuzzy
+msgid "MultiBootSelector Actions"
 msgstr "انتخاب لیست EPG چندگانه"
 
 #, fuzzy
@@ -6621,12 +7137,8 @@ msgid "MultiType"
 msgstr "چند رسانه ای"
 
 #, python-format
-msgid "Multiboot ERROR! - no %s in boot partition."
+msgid "Multiboot Image created on: %s/%s-%s-%s-backup-%s_usb.zip"
 msgstr ""
-
-#, fuzzy
-msgid "Multiboot Image Selector"
-msgstr "انتخاب لیست EPG چندگانه"
 
 #, fuzzy
 msgid "Multichannel PCM"
@@ -6654,6 +7166,9 @@ msgstr ""
 msgid "Music/Ballet/Dance"
 msgstr ""
 
+msgid "Mute"
+msgstr ""
+
 #, fuzzy
 msgid "My Extension"
 msgstr "بسته ها"
@@ -6667,6 +7182,9 @@ msgstr ""
 
 msgid "N/A"
 msgstr "در دسترس نیست"
+
+msgid "NEXT"
+msgstr ""
 
 #, fuzzy
 msgid "NFS Setup"
@@ -6687,6 +7205,10 @@ msgstr ""
 
 #, fuzzy
 msgid "NO"
+msgstr "اکنون"
+
+#, fuzzy
+msgid "NOW"
 msgstr "اکنون"
 
 msgid "NTP"
@@ -6714,6 +7236,10 @@ msgid "Nameserver %d"
 msgstr "Nameserver %d"
 
 msgid "Nameserver settings"
+msgstr "Nameserver تنظیمات"
+
+#, fuzzy
+msgid "Nameserver setup"
 msgstr "Nameserver تنظیمات"
 
 msgid "Namespace & Orbital pos."
@@ -6764,6 +7290,10 @@ msgid "Network configuration"
 msgstr "پیکربندی شبکه"
 
 #, fuzzy
+msgid "Network configuration..."
+msgstr "پیکربندی شبکه"
+
+#, fuzzy
 msgid "Network mount"
 msgstr "هیچ شبکه ای یافت نشد"
 
@@ -6782,6 +7312,10 @@ msgid "Network setup"
 msgstr "تنظیمات شبکه"
 
 msgid "Network test"
+msgstr "تست شبکه"
+
+#, fuzzy
+msgid "Network test..."
 msgstr "تست شبکه"
 
 msgid "Network test: "
@@ -6853,18 +7387,6 @@ msgstr ""
 msgid "No (supported) DVDROM found!"
 msgstr "هیچ DVDROM قابل پشتیبانی یافت نشد"
 
-msgid ""
-"No /hdd found !!\n"
-"Please make sure you have a HDD mounted.\n"
-msgstr ""
-
-msgid ""
-"No /hdd found !!\n"
-"Please make sure you have a HDD mounted.\n"
-"\n"
-"Exit plugin."
-msgstr ""
-
 msgid "No Connection"
 msgstr "ارتباطی وجود ندارد"
 
@@ -6873,12 +7395,6 @@ msgstr ""
 
 msgid "No HDD found or HDD not initialized!"
 msgstr "دیسک سخت پیدا نشد و یا دیسک سخت مقدار دهی اولیه نشده است"
-
-msgid ""
-"No USB-Device found for fullbackup !!\n"
-"\n"
-"\n"
-msgstr ""
 
 #
 #, fuzzy
@@ -6921,11 +7437,18 @@ msgstr "هیچ اطلاعات رخدادی یافت نشد ، ضبط کردن ب
 msgid "No fast winding possible yet.. but you can use the number buttons to skip forward/backward!"
 msgstr ""
 
+#, fuzzy
+msgid "No files found."
+msgstr "هیچ شبکه ای یافت نشد"
+
 msgid "No free index available"
 msgstr ""
 
 msgid "No free tuner!"
 msgstr "تیونر آزاد وجود ندارد"
+
+msgid "No hash calculations configured"
+msgstr ""
 
 #, fuzzy
 msgid "No images found"
@@ -7001,6 +7524,10 @@ msgstr "به روز رسانی های در دسترس"
 msgid "No updates available. Please try again later."
 msgstr ""
 
+#, python-format
+msgid "No viewer installed for this file type: %s"
+msgstr ""
+
 msgid "No wireless networks found! Searching..."
 msgstr "هیچ شبکه بدون سیمی یافت نشد ، در حال جستجو"
 
@@ -7025,6 +7552,14 @@ msgstr ""
 msgid "No, but restart from begin"
 msgstr "خیر ، ولی از ابتدا راه اندازی شود"
 
+#, fuzzy
+msgid "No, do not backup an image"
+msgstr "خیر ، کاری انجام نشود"
+
+#, fuzzy
+msgid "No, do not flash an image"
+msgstr "خیر ، کاری انجام نشود"
+
 msgid "No, do nothing."
 msgstr "خیر ، کاری انجام نشود"
 
@@ -7032,7 +7567,7 @@ msgid "No, except Wakeup timer"
 msgstr ""
 
 #, fuzzy
-msgid "No, just start my GigaBlue"
+msgid "No, just start my %s %s"
 msgstr "خیر ، ولی از ابتدا راه اندازی شود"
 
 msgid "No, never"
@@ -7043,6 +7578,10 @@ msgstr ""
 
 msgid "None"
 msgstr "هیچکدام"
+
+#, python-format
+msgid "None of the hash programs for the hashes %s are available"
+msgstr ""
 
 #. TRANSLATORS: (aspect ratio policy: display as fullscreen, with stretching the left/right)
 #, fuzzy
@@ -7076,6 +7615,9 @@ msgstr "نصب"
 msgid "Not Required"
 msgstr "تست شبکه:"
 
+msgid "Not allowed with folders"
+msgstr ""
+
 msgid "Not associated"
 msgstr ""
 
@@ -7087,29 +7629,14 @@ msgstr "تست شبکه:"
 msgid "Not enough disk space. Please free up some disk space and try again. (%d MB required, %d MB available)"
 msgstr "فضای کافی وجود ندارد ، لطفا مقداری فضا خالی و دوباره تلاش کنید . (%d مگابایت نیاز است و %d مگابایت در دسترس است)"
 
-#, python-format
-msgid ""
-"Not enough free space on %s !!\n"
-"You need at least 300Mb free space.\n"
-msgstr ""
-
-msgid ""
-"Not enough free space on /hdd !!\n"
-"You need at least 300Mb free space.\n"
-msgstr ""
-
-msgid ""
-"Not enough free space on /hdd !!\n"
-"You need at least 300Mb free space.\n"
-"\n"
-"Exit plugin."
-msgstr ""
-
 #, fuzzy
 msgid "Not tested:"
 msgstr "تست شبکه:"
 
 msgid "Not-Associated"
+msgstr ""
+
+msgid "Note: slot list does not show current image or empty slots."
 msgstr ""
 
 msgid "Note: when enabled, and you do want standby mode after wake up, set option 'Startup to Standby' as 'No, except Wakeup timer'."
@@ -7133,6 +7660,13 @@ msgstr "خیر"
 msgctxt "now/next: 'now' event label"
 msgid "Now"
 msgstr ""
+
+msgid "Now building the Backup Image"
+msgstr ""
+
+#, fuzzy
+msgid "Now playing"
+msgstr "ادامه پخش کردن"
 
 msgid "Now, use the contrast setting to turn up the brightness of the background as much as possible, but make sure that you can still see the difference between the two brightest levels of shades.If you have done that, press OK."
 msgstr ""
@@ -7220,13 +7754,6 @@ msgstr "یک"
 msgid "One partition"
 msgstr "ایجاد پارتیشن"
 
-#, fuzzy
-msgid "Online"
-msgstr "غیر خطی"
-
-msgid "Online = Download a image and flash it"
-msgstr ""
-
 msgid "Only change this setting if you are using a SCR device that has been reprogrammed with a custom programmer. For further information check with the person that reprogrammed the device."
 msgstr ""
 
@@ -7278,6 +7805,26 @@ msgid "Open the movie list"
 msgstr "بازگشت به لیست فیلم"
 
 msgid "Open with File Commander"
+msgstr ""
+
+#, fuzzy
+msgid "OpenVPN Setup"
+msgstr "تنظیمات"
+
+msgid "OpenVpn Log"
+msgstr ""
+
+#, fuzzy
+msgid "OpenVpn Setup"
+msgstr "لطفا تیونر دوم را تنظیم کنید"
+
+msgid "Operating LED status in deep standby mode"
+msgstr ""
+
+msgid "Operating LED status in standby mode"
+msgstr ""
+
+msgid "Operating LED status while running."
 msgstr ""
 
 msgid "Opkg"
@@ -7389,6 +7936,13 @@ msgstr ""
 msgid "PGS file"
 msgstr ""
 
+msgid "PID Filtering"
+msgstr ""
+
+#, fuzzy
+msgid "PIN code needed"
+msgstr "نیازی به نسخه پشتیبان نیست"
+
 msgid "PIP"
 msgstr ""
 
@@ -7476,6 +8030,10 @@ msgstr "شاخه اصلی"
 msgid "Parental control"
 msgstr "کنترل والدین"
 
+#, fuzzy
+msgid "Parental control services editor"
+msgstr "ویرایشگر کانال های کنترل والدین"
+
 msgid "Parental control setup"
 msgstr "تنظیمات کنترل والدین"
 
@@ -7525,6 +8083,10 @@ msgstr "ادامه پخش"
 msgid "Pause/Continue playback"
 msgstr "ادامه پخش کردن"
 
+#, fuzzy
+msgid "Pending restart"
+msgstr "خاموشی موقت / راه اندازی مجدد"
+
 msgid "Percentage left"
 msgstr ""
 
@@ -7550,6 +8112,10 @@ msgstr ""
 
 msgid "Philippines"
 msgstr ""
+
+#, fuzzy
+msgid "PiP setup"
+msgstr "تنظیمات"
 
 msgid "Picon"
 msgstr ""
@@ -7614,6 +8180,10 @@ msgstr ""
 msgid "Play entry"
 msgstr "پخش بعدی"
 
+#, fuzzy
+msgid "Play folder"
+msgstr "حذف ناموفق"
+
 msgid "Play from next mark or playlist entry"
 msgstr ""
 
@@ -7642,17 +8212,25 @@ msgstr "پخش قبلی"
 msgid "Play recorded movies..."
 msgstr "پخش فیلم های ضبط شده"
 
+#, fuzzy
+msgid "Play title"
+msgstr "اضافه کردن عنوان"
+
 msgid "Play/view/edit/install/extract/run file or enter directory"
 msgstr ""
 
 msgid "Please add titles to the compilation."
 msgstr ""
 
-msgid "Please be patient, a fullbackup will now be created.\n"
+msgid "Please be patient, a backup will now be made,\n"
 msgstr ""
 
 msgid "Please change recording endtime"
 msgstr "لطفا زمان پایان ضبط کردن را تغییر دهید"
+
+#, fuzzy
+msgid "Please check the manual of the receiver"
+msgstr "لطفا نام پوشه جدید را وارد کنید"
 
 msgid "Please choose an extension..."
 msgstr "لطفا یک بسته انتخاب کنید"
@@ -7704,6 +8282,10 @@ msgstr "لطفا یک نام جدید برای فایل وارد کنید"
 msgid "Please enter new name:"
 msgstr ""
 
+#, fuzzy
+msgid "Please enter password"
+msgstr "لطفا رمز قبلی را وارد کنید"
+
 msgid "Please enter the correct pin code"
 msgstr "لطفا رمز درست را وارد کنید"
 
@@ -7739,6 +8321,10 @@ msgstr "لطفا دکمه OK را برای ادامه دادن فشار دهید
 msgid "Please re-enter the new PIN code"
 msgstr "لطفا رمز قبلی را وارد کنید"
 
+#, fuzzy
+msgid "Please select a backup destination"
+msgstr "لطفا یک وسیله را برای استفاده به عنوان محل نسخه پشتیبان انتخاب کنید"
+
 msgid "Please select a playlist to delete..."
 msgstr "لطفا یک لیست پخش را برای حذف شدن انتخاب کنید"
 
@@ -7758,10 +8344,6 @@ msgstr "لطفا یک کانال فرعی انتخاب کنید"
 #, fuzzy
 msgid "Please select device to use as swapfile location"
 msgstr "لطفا یک وسیله را برای استفاده به عنوان محل نسخه پشتیبان انتخاب کنید"
-
-#, fuzzy
-msgid "Please select medium"
-msgstr "لطفا یک رسانه را برای اسکن انتخاب کنید"
 
 #, fuzzy
 msgid "Please select medium to be scanned"
@@ -7788,6 +8370,11 @@ msgid ""
 "Please select the wireless network that you want to connect to.\n"
 "\n"
 "Please press OK to continue."
+msgstr ""
+
+msgid ""
+"Please select what to do after flashing the image:\n"
+"(In addition, if it exists, a local script will be executed as well at /media/hdd/images/config/myrestore.sh)"
 msgstr ""
 
 #
@@ -7874,6 +8461,11 @@ msgstr "لطفا صبر کنید تا شبکه شما تست شود"
 msgid "Please wait while scanning is in progress..."
 msgstr "وقتی اسکن در حال انجام است لطفا صبر کنید"
 
+#
+#, fuzzy
+msgid "Please wait while we check your installed plugins..."
+msgstr "لطفا صبر کنید تا شبکه شما تست شود"
+
 msgid "Please wait while we configure your network..."
 msgstr "لطفا صبر کنید ، ما در حال پیکربندی شبکه شما هستیم"
 
@@ -7887,6 +8479,10 @@ msgstr "لطفا صبر کنید تا شبکه شما تست شود"
 
 msgid "Please wait while your network is restarting..."
 msgstr "راه اندازی دوباره شبکه شما ، لطفا صبر کنید"
+
+#, fuzzy
+msgid "Please wait, Loading image."
+msgstr "لطفا صبر کنید - در حال آماده سازی لیست"
 
 msgid "Please wait, restarting primary and secondary softcam."
 msgstr ""
@@ -7905,8 +8501,9 @@ msgstr "لطفا صبر کنید"
 msgid "Please wait... Loading list..."
 msgstr "لطفا صبر کنید - در حال آماده سازی لیست"
 
-msgid "Please: DO NOT reboot your STB and turn off the power.\n"
-msgstr ""
+#, fuzzy
+msgid "Please wait...almost ready! "
+msgstr "لطفا صبر کنید"
 
 #, fuzzy
 msgid "Plugin Browser"
@@ -7914,6 +8511,10 @@ msgstr "مرورگر پلاگین"
 
 #, fuzzy
 msgid "Plugin Filter..."
+msgstr "مرورگر پلاگین"
+
+#, fuzzy
+msgid "Plugin browser"
 msgstr "مرورگر پلاگین"
 
 #, fuzzy
@@ -7930,13 +8531,6 @@ msgstr "راهنمای مدیریت پلاگین"
 
 msgid "Plugins"
 msgstr "پلاگین ها"
-
-msgid ""
-"Plugins will be restored from:\n"
-"/etc/enigma2/installed-list.txt\n"
-"Please be patient!\n"
-"GUI will automatically restart once finished!"
-msgstr ""
 
 msgid "Poland"
 msgstr ""
@@ -8114,11 +8708,11 @@ msgstr "دکمه MENU روی ریموت کنترل را برای گزینه ها
 msgid "Press OK on your remote control to continue."
 msgstr "دکمه OK را برای ادامه دادن فشار دهید"
 
-msgid "Press OK to activate the selected skin."
+#, fuzzy, python-format
+msgid "Press OK to activate the selected %s skin."
 msgstr "دکمه OK را برای فعال کردن پوسته انتخاب شده فشار دهید"
 
-#, fuzzy, python-format
-msgid "Press OK to activate the selected%s skin."
+msgid "Press OK to activate the selected skin."
 msgstr "دکمه OK را برای فعال کردن پوسته انتخاب شده فشار دهید"
 
 msgid "Press OK to activate the settings."
@@ -8132,7 +8726,7 @@ msgid "Press OK to get further details for %s"
 msgstr "دکمه OK را برای دریافت جزئیات بیشتر %s فشار دهید"
 
 #, fuzzy, python-format
-msgid "Press OK to keep the currently selected%s skin."
+msgid "Press OK to keep the currently selected %s skin."
 msgstr "دکمه OK را برای فعال کردن پوسته انتخاب شده فشار دهید"
 
 msgid "Press OK to scan"
@@ -8206,8 +8800,35 @@ msgstr "حذف زمان"
 msgid "Priority"
 msgstr "اولویت"
 
+msgid "Probable causes could be"
+msgstr ""
+
 msgid "Process"
 msgstr "پردازش"
+
+#, python-format
+msgid ""
+"Program '%s' is installed.\n"
+"The package containing this program isn't known, so it can't be uninstalled."
+msgstr ""
+
+#, python-format
+msgid ""
+"Program '%s' needs to be installed to run the '%s' action.\n"
+"Uninstall the '%s' package to uninstall the program?"
+msgstr ""
+
+#, python-format
+msgid ""
+"Program '%s' needs to be installed to run this action.\n"
+"Install the '%s' package to install the program?"
+msgstr ""
+
+#, python-format
+msgid ""
+"Program '%s' not installed.\n"
+"The package containing this program isn't known."
+msgstr ""
 
 msgid "Progress"
 msgstr "پیشرفت"
@@ -8330,11 +8951,19 @@ msgstr ""
 msgid "Quick zap"
 msgstr "جابجایی سریع"
 
+#, fuzzy
+msgid "REC"
+msgstr "FEC"
+
 msgid "RF output"
 msgstr "خروجی RF"
 
 msgid "RGB"
 msgstr "RGB"
+
+#, fuzzy
+msgid "Radio"
+msgstr "(رادیو)"
 
 #, fuzzy
 msgid "Ram disk"
@@ -8368,6 +8997,10 @@ msgid "Read speed: %s"
 msgstr "سرعت های بازگشت:"
 
 #, fuzzy, python-format
+msgid "Ready to install %s ?"
+msgstr "بازگشت به لیست فیلم"
+
+#, fuzzy, python-format
 msgid "Ready to remove %s ?"
 msgstr "بازگشت به لیست فیلم"
 
@@ -8387,6 +9020,10 @@ msgstr ""
 #, fuzzy, python-format
 msgid "Really reboot your %s %s now?"
 msgstr "راه اندازی مجدد هم اکنون؟"
+
+#, fuzzy, python-format
+msgid "Really reflash your %s %s and reboot now?"
+msgstr "دستگاه شما به روز رسانی و هم اکنون راه اندازی مجدد شود ؟"
 
 #, fuzzy, python-format
 msgid "Really restart your %s %s now?"
@@ -8412,12 +9049,20 @@ msgid "Reboot"
 msgstr ""
 
 #, fuzzy
+msgid "Rec"
+msgstr "ضبط"
+
+#, fuzzy
 msgid "Recall to previous service"
 msgstr "بازگشت به کانال قبلی"
 
 #, fuzzy
 msgid "Reception lists"
 msgstr "تنظیمات دریافت"
+
+#, fuzzy
+msgid "Reception settings"
+msgstr "تنظیمات مجموعه"
 
 msgid "Record"
 msgstr "ضبط"
@@ -8464,7 +9109,7 @@ msgid "Records"
 msgstr "ضبط"
 
 #, fuzzy
-msgid "Recover"
+msgid "Recovery Mode"
 msgstr "ضبط"
 
 #, fuzzy
@@ -8510,10 +9155,11 @@ msgstr ""
 msgid "Region"
 msgstr ""
 
-msgid "Relative"
-msgstr ""
+#, fuzzy
+msgid "Regular file"
+msgstr "حذف ناموفق"
 
-msgid "Relevant PIDs routing"
+msgid "Relative"
 msgstr ""
 
 msgid "Reload"
@@ -8556,6 +9202,10 @@ msgstr "نوع کنترل والدین"
 msgid "Removal has completed."
 msgstr "حذف ناموفق"
 
+#, python-format
+msgid "Removal of this slot will not show in %s Gui.  Are you sure you want to delete image slot %s ?"
+msgstr ""
+
 msgid "Remove"
 msgstr "حذف"
 
@@ -8596,6 +9246,10 @@ msgstr "محافظت از کانال ها"
 #, fuzzy
 msgid "Remove completed timers after (days)"
 msgstr "حذف موارد از سطل زباله بعد از (روز)"
+
+#, fuzzy
+msgid "Remove confirmation"
+msgstr "پیکربندی شبکه"
 
 msgid "Remove current folder from bookmarks"
 msgstr ""
@@ -8770,6 +9424,10 @@ msgid "Restart GUI now?"
 msgstr "راه اندازی مجدد رابط گرافیک کاربری؟"
 
 #, fuzzy
+msgid "Restart Network Adapter"
+msgstr "راه اندازی دوباره شبکه"
+
+#, fuzzy
 msgid "Restart both"
 msgstr "راه اندازی دوباره تست"
 
@@ -8793,6 +9451,10 @@ msgstr "راه اندازی دوباره ارتباط شبکه شما و راب�
 
 msgid "Restore"
 msgstr "بازگردانی"
+
+#, fuzzy
+msgid "Restore Plugins"
+msgstr "حذف پلاگین ها"
 
 msgid "Restore backups"
 msgstr "بازگردانی نسخه های پشتیبان"
@@ -8853,6 +9515,10 @@ msgstr "ادامه دادن مکان در %s"
 #. TRANSLATORS: question or a choice, but it is a statement.)
 msgid "Resuming playback"
 msgstr "ادامه پخش"
+
+#, fuzzy
+msgid "Retrieving image list - Please wait..."
+msgstr "لطفا صبر کنید"
 
 #, fuzzy
 msgid "Retrieving image slots - Please wait..."
@@ -8924,11 +9590,29 @@ msgstr "مولف:"
 msgid "Round start time on"
 msgstr ""
 
+#, python-format
+msgid "Run '%s' command"
+msgstr ""
+
 msgid "Run script"
+msgstr ""
+
+#, fuzzy
+msgid "Run script in background"
+msgstr "%d عملیات در پس زمینه انجام میشود"
+
+msgid "Run script with optional parameter"
+msgstr ""
+
+msgid "Run script with optional parameter in background"
 msgstr ""
 
 msgid "Running"
 msgstr ""
+
+#, fuzzy
+msgid "Running Myrestore script, Please wait ..."
+msgstr "لطفا صبر کنید"
 
 msgid "Russian"
 msgstr "روسی"
@@ -8941,6 +9625,14 @@ msgstr ""
 
 msgid "S-Video"
 msgstr "S-Video"
+
+#, fuzzy
+msgid "SABnzbd Setup"
+msgstr "تنظیمات"
+
+#, fuzzy
+msgid "SATPI Setup"
+msgstr "تنظیمات"
 
 msgid "SCPC optimized search range"
 msgstr ""
@@ -8958,12 +9650,13 @@ msgstr ""
 msgid "SDR"
 msgstr "کیفیت سیگنال"
 
-msgid "SDcard is not initialised for multiboot - Exit and use MultiBoot Image Manager to initialise"
-msgstr ""
-
 #
 msgid "SINGLE LAYER DVD"
 msgstr "DVD یک لایه ای"
+
+#, fuzzy
+msgid "SNR"
+msgstr "کیفیت سیگنال:"
 
 msgid "SNR:"
 msgstr "کیفیت سیگنال:"
@@ -8986,9 +9679,6 @@ msgstr ""
 #
 msgid "SSID:"
 msgstr "SSID:"
-
-msgid "STARTUP"
-msgstr ""
 
 msgid ""
 "STB-GUI Skinselector\n"
@@ -9135,6 +9825,9 @@ msgstr "ذخیره لیست پخش"
 msgid "Save right folder on exit"
 msgstr ""
 
+msgid "Save settings and EPG data"
+msgstr ""
+
 msgid "Save the EPG data regularly"
 msgstr ""
 
@@ -9266,6 +9959,10 @@ msgid "Scheduled save of epg.dat"
 msgstr ""
 
 msgid "Screenshot of LCD in /tmp"
+msgstr ""
+
+#, python-format
+msgid "Script '%s' must have read permission to be able to run it"
 msgstr ""
 
 #, fuzzy
@@ -9401,6 +10098,10 @@ msgid "Select Fast DiSEqC if your aerial system supports this. If you are unsure
 msgstr ""
 
 #, fuzzy
+msgid "Select HDD"
+msgstr "انتخاب"
+
+#, fuzzy
 msgid "Select LCD clock:"
 msgstr "انتخاب محل"
 
@@ -9408,6 +10109,18 @@ msgstr "انتخاب محل"
 #, fuzzy
 msgid "Select Software Update"
 msgstr "به روز رسانی نرم افزار"
+
+#, fuzzy
+msgid "Select a LCD skin"
+msgstr "انتخاب فیلم"
+
+#, fuzzy
+msgid "Select a bouquet"
+msgstr "انتخاب فیلم"
+
+#, fuzzy
+msgid "Select a movie"
+msgstr "انتخاب فیلم"
 
 #, fuzzy
 msgid "Select a network adapter"
@@ -9418,8 +10131,16 @@ msgid "Select a path"
 msgstr "انتخاب فیلم"
 
 #, fuzzy
+msgid "Select a tuner"
+msgstr "انتخاب فیلم"
+
+#, fuzzy
 msgid "Select a wireless network"
 msgstr "انتخاب شبکه بدون سیم"
+
+#, fuzzy
+msgid "Select aLCD clock"
+msgstr "انتخاب محل"
 
 msgid "Select action"
 msgstr ""
@@ -9465,6 +10186,10 @@ msgstr "انتخاب فایل برای تهیه نسخه پشتیبان"
 #
 msgid "Select files/folders to backup"
 msgstr "انتخاب فایل و پوشه ها برای تهیه نسخه پشتیبان"
+
+#, fuzzy
+msgid "Select folders"
+msgstr "حذف ناموفق"
 
 #, fuzzy
 msgid "Select function"
@@ -9551,8 +10276,15 @@ msgstr ""
 msgid "Select the User Band frequency to be assigned to this tuner. This is the frequency the SCR switch or SCR LNB uses to pass the requested transponder to the tuner."
 msgstr ""
 
-msgid "Select the character or action under the virtual keyboard cursor"
+msgid "Select the character or action under the keyboard cursor"
 msgstr ""
+
+msgid "Select the highlighted image and reboot"
+msgstr ""
+
+#, fuzzy
+msgid "Select the locale from a menu"
+msgstr "لطفا مسیر فیلم را انتخاب کنید"
 
 msgid "Select the manufacturer of your SCR device. If the manufacturer is not listed, set 'SCR' to 'user defined' and enter the device parameters manually according to its spec sheet."
 msgstr ""
@@ -9585,6 +10317,13 @@ msgstr ""
 msgid "Select the satellite your dish receives from. If you are unsure select 'automatic' and the receiver will attempt to determine this for you."
 msgstr ""
 
+#, fuzzy
+msgid "Select the shifted character set"
+msgstr "لطفا مسیر فیلم را انتخاب کنید"
+
+msgid "Select the shifted character set for the next character only"
+msgstr ""
+
 msgid "Select the tuner that controls the motorised dish."
 msgstr ""
 
@@ -9598,15 +10337,6 @@ msgid "Select the type of LNB/device being used (normally 'Universal'). If your 
 msgstr ""
 
 msgid "Select the type of Single Cable Reception device you are using."
-msgstr ""
-
-msgid "Select the virtual keyboard locale from a menu"
-msgstr ""
-
-msgid "Select the virtual keyboard shifted character set"
-msgstr ""
-
-msgid "Select the virtual keyboard shifted character set for the next character only"
 msgstr ""
 
 msgid "Select timezone area or region."
@@ -9714,6 +10444,11 @@ msgid "Serbian"
 msgstr "صربستانی"
 
 #
+#, fuzzy
+msgid "Serial No"
+msgstr "سیگنال:"
+
+#
 #, fuzzy, python-format
 msgid "Serial: %s"
 msgstr "سیگنال:"
@@ -9817,6 +10552,10 @@ msgid "Set PIN"
 msgstr "رمز جدید"
 
 #, fuzzy
+msgid "Set System"
+msgstr "سیستم"
+
+#, fuzzy
 msgid "Set action when movie playback is finished."
 msgstr "عملکرد هنگامی که یک فیلم شروع میشود"
 
@@ -9824,6 +10563,9 @@ msgid "Set all hotkey to default?"
 msgstr ""
 
 msgid "Set alternative fallback tuners for DVB-T/C or ATSC"
+msgstr ""
+
+msgid "Set archive mode (644)"
 msgstr ""
 
 #, fuzzy
@@ -9839,6 +10581,9 @@ msgstr ""
 #, fuzzy
 msgid "Set end time"
 msgstr "تنظیم زمان پایان"
+
+msgid "Set executable mode (755)"
+msgstr ""
 
 msgid "Set fixed"
 msgstr "تنظیم ثابت"
@@ -9962,6 +10707,14 @@ msgstr "تنظیم مکان یاب شما"
 msgid "Seychelles"
 msgstr ""
 
+msgid "Share Folder's"
+msgstr ""
+
+#
+#, fuzzy
+msgid "Shares"
+msgstr "Sharpness"
+
 #
 msgid "Sharpness"
 msgstr "Sharpness"
@@ -9979,6 +10732,12 @@ msgstr "نام های کوتاه فایل"
 #, fuzzy
 msgid "Show"
 msgstr "نمایش اطلاعات"
+
+#, python-format
+msgid ""
+"Show '%s' as picture %s?\n"
+"The current service must be interrupted!"
+msgstr ""
 
 #, fuzzy
 msgid "Show Audioselection"
@@ -10045,6 +10804,13 @@ msgstr "حالت رادیو متناوب"
 msgid "Show animation while busy"
 msgstr "نمایش انیمیشن هنگام کار"
 
+msgid "Show as Picture (press any key to close)"
+msgstr ""
+
+#, python-format
+msgid "Show as Picture and save as file ('%s')"
+msgstr ""
+
 #, fuzzy
 msgid "Show background behind subtitles"
 msgstr "نمایش تصویر پس زمینه در حالت رادیو"
@@ -10066,6 +10832,18 @@ msgid "Show channel numbers in channel selection"
 msgstr "نمایش شماره کانال ها در انتخاب کانال"
 
 msgid "Show columns"
+msgstr ""
+
+msgid "Show contents of ipk file"
+msgstr ""
+
+msgid "Show contents of rar file"
+msgstr ""
+
+msgid "Show contents of tar or compressed tar file"
+msgstr ""
+
+msgid "Show contents of zip file"
 msgstr ""
 
 msgid "Show crypto icons"
@@ -10124,6 +10902,10 @@ msgstr ""
 msgid "Show icon for new/unseen items"
 msgstr ""
 
+#, fuzzy
+msgid "Show image information"
+msgstr "اطلاعات مدیریت نرم افزار"
+
 msgid "Show in extensions menu"
 msgstr ""
 
@@ -10161,10 +10943,6 @@ msgstr "نمایش پخش کننده رادیو"
 msgid "Show menu or plugin numbers"
 msgstr "شماره تلفن"
 
-#, fuzzy
-msgid "Show menu paths"
-msgstr "نمایش اطلاعات"
-
 msgid "Show message if File Commander is not running and all Task's are completed."
 msgstr ""
 
@@ -10193,6 +10971,9 @@ msgstr ""
 msgid "Show new Packages"
 msgstr ""
 
+msgid "Show next picture"
+msgstr ""
+
 msgid "Show notification when import channels and/or EPG from remote receiver URL did not complete"
 msgstr ""
 
@@ -10203,9 +10984,6 @@ msgid "Show notification when import channels was not successful"
 msgstr ""
 
 msgid "Show notification when import channels was successful"
-msgstr ""
-
-msgid "Show only found image and mtd partitions.\n"
 msgstr ""
 
 #, fuzzy
@@ -10229,8 +11007,8 @@ msgid "Show positioner position"
 msgstr "نمایش گردش مکان یاب"
 
 #, fuzzy
-msgid "Show satellites list"
-msgstr "ماهواره ها"
+msgid "Show previous picture"
+msgstr "جابجایی به کانال فرعی قبلی"
 
 #, fuzzy
 msgid "Show record clock icons"
@@ -10239,6 +11017,14 @@ msgstr "نمایش نوار اطلاعات دوم"
 #, fuzzy
 msgid "Show record indicator"
 msgstr "نمایش نوار اطلاعات دوم"
+
+#, fuzzy
+msgid "Show satellites list"
+msgstr "ماهواره ها"
+
+#, fuzzy
+msgid "Show screen path"
+msgstr "نمایش اطلاعات"
 
 msgid "Show screensaver"
 msgstr ""
@@ -10253,9 +11039,6 @@ msgstr "نمایش نوار اطلاعات دوم"
 #, fuzzy
 msgid "Show service list"
 msgstr "ویرایش لیست کانال ها"
-
-msgid "Show service name and event description among each other instead of side by side."
-msgstr ""
 
 msgid "Show service type icons"
 msgstr ""
@@ -10303,6 +11086,9 @@ msgstr "نمایش پخش کننده رادیو"
 #, fuzzy
 msgid "Show the plugin browser.."
 msgstr "مرورگر پلاگین"
+
+msgid "Show the service information on two lines in the channel selection screen. You can choose between the current event description below the channel name, or the current event description next to the channel name, and the next event description on the second line."
+msgstr ""
 
 #, fuzzy
 msgid "Show transponder info"
@@ -10372,6 +11158,11 @@ msgstr ""
 msgid "Signal Strength:"
 msgstr "قدرت سیگنال:"
 
+#
+#, fuzzy
+msgid "Signal finder"
+msgstr "سیگنال:"
+
 msgid "Signal quality"
 msgstr "کیفیت سیگنال"
 
@@ -10409,9 +11200,6 @@ msgstr ""
 msgid "Simple zoom"
 msgstr "ساده"
 
-msgid "Simulate (no write)"
-msgstr ""
-
 #, fuzzy
 msgid "Singapore"
 msgstr "یک"
@@ -10421,6 +11209,10 @@ msgstr "یک"
 
 msgid "Single EPG"
 msgstr "یک EPG"
+
+#, fuzzy
+msgid "Single line mode"
+msgstr "انتخاب حالت تصویر"
 
 msgid "Single satellite"
 msgstr "یک ماهواره"
@@ -10517,6 +11309,14 @@ msgstr ""
 msgid "Slot %d"
 msgstr "شکاف %d"
 
+#, python-format
+msgid "Slot %s: %s - Mode %d%s"
+msgstr ""
+
+#, fuzzy, python-format
+msgid "Slot %s: %s%s"
+msgstr "DiSEqC تکرار"
+
 msgid "Slovak"
 msgstr "اسلواکی"
 
@@ -10554,6 +11354,9 @@ msgid "Smooth"
 msgstr ""
 
 msgid "Social/Political/Economics"
+msgstr ""
+
+msgid "Socket"
 msgstr ""
 
 msgid "SocketMMI"
@@ -10598,10 +11401,19 @@ msgstr ""
 msgid "Some plugins are not available:\n"
 msgstr "بعضی از پلاگین ها در دسترس نیستند:\n"
 
+msgid "Sorry Inadyn Config is Missing"
+msgstr ""
+
+msgid "Sorry MiniDLNA Config is Missing"
+msgstr ""
+
 msgid "Sorry feeds are down for maintenance"
 msgstr ""
 
 msgid "Sorry feeds are down for maintenance, please try again later."
+msgstr ""
+
+msgid "Sorry uShare Config is Missing"
 msgstr ""
 
 #
@@ -10618,12 +11430,6 @@ msgstr ""
 #, fuzzy, python-format
 msgid "Sorry, %s has not been installed!"
 msgstr "متاسفانه MediaScanner نصب نشده است"
-
-#, python-format
-msgid ""
-"Sorry, %s not found!\n"
-"Restore settings first."
-msgstr ""
 
 msgid "Sorry, deleting directories can (for now) only be done through the trash can."
 msgstr ""
@@ -10843,6 +11649,9 @@ msgstr "شروع تست"
 msgid "Start with list screen"
 msgstr ""
 
+msgid "Start/stop slide show"
+msgstr ""
+
 msgid "Starting on"
 msgstr "شروع در"
 
@@ -10978,6 +11787,9 @@ msgstr "درخواست جریان"
 msgid "Streaming clients info"
 msgstr ""
 
+msgid "Strict DLNA"
+msgstr ""
+
 msgid "Stripes"
 msgstr ""
 
@@ -11036,12 +11848,24 @@ msgstr "انتخاب زیرنویس"
 msgid "Subtitle settings"
 msgstr "تنظیمات زیرنویس"
 
+#, fuzzy
+msgid "Subtitle show/hide..."
+msgstr "انتخاب زیرنویس"
+
 msgid "Subtitles"
 msgstr "زیرنویس ها"
 
 #, fuzzy
 msgid "Subtitles Settings"
 msgstr "تنظیمات زیرنویس"
+
+#, fuzzy
+msgid "Subtitles disabled"
+msgstr "تنظیمات زیرنویس"
+
+#, fuzzy
+msgid "Subtitles enabled"
+msgstr "محدودیت ها فعال شدند"
 
 msgid "Succeeded:"
 msgstr ""
@@ -11057,6 +11881,11 @@ msgstr "یکشنبه"
 
 msgid "Sunday"
 msgstr "یکشنبه"
+
+msgid ""
+"Sundtek - hardware blind scan in progress.\n"
+"Please wait(3-20 min) for the scan to finish."
+msgstr ""
 
 #, fuzzy
 msgid "Support at"
@@ -11127,6 +11956,15 @@ msgstr "جابجایی به کانال فرعی بعدی"
 msgid "Switch channel up"
 msgstr "جابجایی به کانال فرعی بعدی"
 
+msgid "Switch on the display during Standby Mode"
+msgstr ""
+
+msgid "Switch on the display during Suspend Mode"
+msgstr ""
+
+msgid "Switch on the display during operation."
+msgstr ""
+
 msgid "Switch to TV mode"
 msgstr ""
 
@@ -11187,6 +12025,9 @@ msgstr "سیمبل ریت"
 msgid "Symbol rate:"
 msgstr ""
 
+msgid "Symbolic link"
+msgstr ""
+
 msgid "Symlink to "
 msgstr ""
 
@@ -11225,6 +12066,9 @@ msgstr ""
 msgid "T2MI RAW Mode"
 msgstr ""
 
+msgid "TEXT"
+msgstr ""
+
 #. TRANSLATORS: Add here whatever should be shown in the "translator" about screen, up to 6 lines (use \n for newline)
 msgid "TRANSLATOR_INFO"
 msgstr "اطلاعات مترجم"
@@ -11235,6 +12079,9 @@ msgstr "فایل TS بسیار بزرگ است برای  ISO9660 level 1"
 
 msgid "TSID"
 msgstr "TSID"
+
+msgid "TUNER:"
+msgstr ""
 
 msgid "TUNING"
 msgstr ""
@@ -11272,6 +12119,17 @@ msgstr "لیست HD"
 msgid "Teletext subtitle color"
 msgstr "رنگ زیرنویس تله تکست"
 
+#, fuzzy
+msgid "Telnet Interface"
+msgstr "انتخاب رابط"
+
+msgid "Telnet Port"
+msgstr ""
+
+#, fuzzy
+msgid "Telnet Setup"
+msgstr "تنظیمات"
+
 msgid "Terrestrial"
 msgstr "Terrestrial"
 
@@ -11292,6 +12150,9 @@ msgid "Testscreens"
 msgstr ""
 
 msgid "Testscreens that are helpfull to fine-tune your display"
+msgstr ""
+
+msgid "Text View On"
 msgstr ""
 
 #, fuzzy
@@ -11339,6 +12200,9 @@ msgstr ""
 msgid "The EPG data will be stored every (hours)"
 msgstr ""
 
+msgid "The Image Viewer component of the File Commander requires the PicturePlayer extension. Install PicturePlayer to enable this operation."
+msgstr ""
+
 #
 #, fuzzy
 msgid ""
@@ -11379,6 +12243,9 @@ msgstr ""
 msgid "The aspect ratio of the recording."
 msgstr ""
 
+msgid "The authors are NOT RESPONSIBLE"
+msgstr ""
+
 msgid "The backup failed. Please choose a different backup location."
 msgstr ""
 
@@ -11403,13 +12270,15 @@ msgstr ""
 msgid "The frame rate of the recording. Ideally, this will match the frame rate of the source or be an integer multiple. If in doubt, set to 60, which should work with most sources."
 msgstr ""
 
+msgid ""
+"The function has been interrupted.\n"
+"Don't press any key until the picture from mvi-file is displayed!"
+msgstr ""
+
+msgid "The hash of a directory can't be calculated."
+msgstr ""
+
 msgid "The height of the picture. The input will be scaled to match this value."
-msgstr ""
-
-msgid "The image is downloaded. Do you want to flash now?"
-msgstr ""
-
-msgid "The image or kernel will be flashing and auto booted in few minutes.\n"
 msgstr ""
 
 #
@@ -11612,6 +12481,9 @@ msgstr ""
 msgid "This is the order in which DiSEqC commands are sent to the aerial system. The order must correspond exactly with the order the physical devices are arranged along the signal cable (starting from the receiver end)."
 msgstr ""
 
+msgid "This line is not editable!"
+msgstr ""
+
 msgid "This option allows to reduce the block-noise in the picture. Obviously this is at the cost of the picture's sharpness."
 msgstr ""
 
@@ -11684,7 +12556,7 @@ msgstr ""
 msgid "This option allows you to show menu and/or plugin number quick links."
 msgstr ""
 
-msgid "This option allows you to show menu paths."
+msgid "This option allows you to show the full screen path leading to the current screen."
 msgstr ""
 
 msgid "This option allows you to view the old and new settings side by side."
@@ -11786,13 +12658,6 @@ msgid ""
 "Are you sure?"
 msgstr ""
 
-msgid "This will take about 2-9 minutes for this system.\n"
-msgstr ""
-
-#, fuzzy, python-format
-msgid "Threads: %s"
-msgstr "سرعت های بازگشت:"
-
 msgid "Three"
 msgstr ""
 
@@ -11811,13 +12676,26 @@ msgstr ""
 msgid "Thursday"
 msgstr ""
 
+msgid "TiVo support"
+msgstr ""
+
 msgid "Time"
+msgstr ""
+
+msgid "Time Update in Minutes"
+msgstr ""
+
+msgid "Time Update in Minutes:"
 msgstr ""
 
 msgid "Time between slides in image viewer slideshow."
 msgstr ""
 
 msgid "Time for Slideshow"
+msgstr ""
+
+#, python-format
+msgid "Time required for this process: %s"
 msgstr ""
 
 msgid "Time scale"
@@ -11832,6 +12710,10 @@ msgstr ""
 
 msgid "Timer Overview"
 msgstr ""
+
+#, fuzzy
+msgid "Timer edit"
+msgstr "زمان خواب"
 
 msgid "Timer entry"
 msgstr ""
@@ -11868,6 +12750,13 @@ msgstr "نوع لیست"
 msgid "Timer:"
 msgstr "نوع لیست"
 
+#, fuzzy
+msgid "Timeshift"
+msgstr "توقف تغییر زمان ؟"
+
+msgid "Timeshift Live"
+msgstr ""
+
 msgid "Timeshift is running. Select an action.\n"
 msgstr ""
 
@@ -11903,8 +12792,9 @@ msgstr ""
 msgid "To audio selection"
 msgstr ""
 
-msgid "To back-up directly to the USB-stick, the USB-stick MUST\n"
-msgstr ""
+#, fuzzy
+msgid "To restore the image:"
+msgstr "مدیریت بسته های نرم افزاری"
 
 #, python-format
 msgid "To save and apply the selected '%s' skin the GUI needs to restart. Would you like to save the selection and restart the GUI now?"
@@ -11939,6 +12829,13 @@ msgstr ""
 
 msgid "Toggle show/hide"
 msgstr ""
+
+msgid "Toggle subtitles show/hide"
+msgstr ""
+
+#, fuzzy
+msgid "Toggle videomode"
+msgstr "انتخاب حالت تصویر"
 
 msgid "Togo"
 msgstr ""
@@ -11985,6 +12882,10 @@ msgstr "فلش کردن ناموفق"
 
 msgid "Translation"
 msgstr ""
+
+#, fuzzy
+msgid "Translation:"
+msgstr "فرستنده فعلی"
 
 msgid "Translations"
 msgstr ""
@@ -12083,6 +12984,12 @@ msgstr ""
 msgid "Tunisia"
 msgstr ""
 
+msgid ""
+"Turbo: One reboot after flash\n"
+"Fast: One reboot after flash, one reboot after restore\n"
+"Slow: One reboot after flash, one reboot after restore in GUI"
+msgstr ""
+
 msgid "Turkey"
 msgstr ""
 
@@ -12112,6 +13019,14 @@ msgstr ""
 
 msgid "Two"
 msgstr ""
+
+#, fuzzy
+msgid "Two lines"
+msgstr "نمایش اطلاعات"
+
+#, fuzzy
+msgid "Two lines and next event"
+msgstr "مراجعه به رخداد بعدی"
 
 #, python-format
 msgid "Two partitions (50% - 50%)"
@@ -12151,12 +13066,6 @@ msgstr ""
 msgid "USALS calibration"
 msgstr ""
 
-msgid ""
-"USB = Do you want to create a fullbackup on USB?\n"
-"This will take between 4 and 15 minutes depending on the used filesystem and is fully automatic.\n"
-"Make sure you first insert an USB flash drive before you select USB."
-msgstr ""
-
 msgid "USB Stick"
 msgstr ""
 
@@ -12173,6 +13082,9 @@ msgid "Ukrainian"
 msgstr ""
 
 msgid "Unable to change password"
+msgstr ""
+
+msgid "Unable to create the required directories on the media (e.g. USB stick or Harddisk) - Please verify media and try again!"
 msgstr ""
 
 #, python-format
@@ -12206,6 +13118,9 @@ msgstr ""
 msgid "Unexpected error while retreiving fallback tuner's timer information"
 msgstr ""
 
+msgid "UnhandledKey"
+msgstr ""
+
 #, fuzzy
 msgid "Unhide parental control services"
 msgstr "ویرایشگر کانال های کنترل والدین"
@@ -12220,6 +13135,10 @@ msgid "Unicable delay after last diseqc command"
 msgstr ""
 
 msgid "Uninstall"
+msgstr ""
+
+#, python-format
+msgid "Uninstall '%s' package and disable '%s'"
 msgstr ""
 
 msgid "Unit"
@@ -12246,18 +13165,33 @@ msgstr ""
 msgid "Unknown"
 msgstr ""
 
+#, fuzzy, python-format
+msgid "Unknown group: %d"
+msgstr "خطای نامشخصی رخ داد"
+
+#, fuzzy, python-format
+msgid "Unknown user: %d"
+msgstr "خطای نامشخصی رخ داد"
+
 msgid "Unmark service as dedicated 3D service"
 msgstr ""
 
 msgid "Unmount"
 msgstr ""
 
-msgid "Unsupported"
+#, python-format
+msgid "Unpack to %s"
 msgstr ""
 
 #, fuzzy
-msgid "Unzipping files, Please wait ..."
-msgstr "لطفا صبر کنید"
+msgid "Unpack to current folder"
+msgstr "منوی تنظیمات"
+
+msgid "Unsupported"
+msgstr ""
+
+msgid "Unzipping Image"
+msgstr ""
 
 msgid "Update"
 msgstr ""
@@ -12295,6 +13229,9 @@ msgstr ""
 msgid "Updating software catalog"
 msgstr ""
 
+msgid "Upgrade (Backup, Flash & Restore All)"
+msgstr ""
+
 msgid "Upgrade and ask to reboot"
 msgstr ""
 
@@ -12308,6 +13245,9 @@ msgid "Upgrading"
 msgstr ""
 
 msgid "Upper case"
+msgstr ""
+
+msgid "Uptime"
 msgstr ""
 
 msgid "Uruguay"
@@ -12339,6 +13279,9 @@ msgid "Use MHW EPG information when it is available."
 msgstr ""
 
 msgid "Use Netmed EPG information when it is available."
+msgstr ""
+
+msgid "Use OnlineFlash in SoftwareManager"
 msgstr ""
 
 msgid "Use OpenTV EPG information when it is available."
@@ -12393,7 +13336,13 @@ msgstr ""
 msgid "Use power measurement"
 msgstr ""
 
+msgid "Use the cursor keys to select an installed image and then Erase button."
+msgstr ""
+
 msgid "Use the cursor keys to select an installed image and then Reboot button."
+msgstr ""
+
+msgid "Use the cursor keys to select an installed image and then Start button."
 msgstr ""
 
 msgid "Use the network wizard to configure selected network adapter"
@@ -12452,6 +13401,10 @@ msgstr ""
 msgid "User interface"
 msgstr "انتخاب رابط"
 
+#, fuzzy
+msgid "Username"
+msgstr "تغییر نام"
+
 #, python-format
 msgid "Using LNB %d"
 msgstr ""
@@ -12497,6 +13450,15 @@ msgstr "پخش قبلی"
 
 msgid "Venezuela (Bolivarian Republic of)"
 msgstr ""
+
+#, fuzzy, python-format
+msgid "Version %s %s"
+msgstr "راه اندازی دوباره تست"
+
+#
+#, fuzzy, python-format
+msgid "Version: %s"
+msgstr "سیگنال:"
 
 msgid "Vertical"
 msgstr ""
@@ -12560,6 +13522,10 @@ msgstr "خروج از هدایتگر"
 msgid "Video: %s fps"
 msgstr ""
 
+#, fuzzy
+msgid "VideoMode"
+msgstr "S-Video"
+
 msgid "Videocodec, size & format"
 msgstr ""
 
@@ -12614,6 +13580,10 @@ msgstr ""
 msgid "View or edit file (if size < 1MB)"
 msgstr ""
 
+#, python-format
+msgid "View or edit this %s script"
+msgstr ""
+
 #, fuzzy
 msgid "View photos..."
 msgstr "تنظیمات صدا"
@@ -12645,6 +13615,9 @@ msgstr ""
 msgid "Voltage mode"
 msgstr ""
 
+msgid "Volume"
+msgstr ""
+
 msgid "Volume down"
 msgstr ""
 
@@ -12652,6 +13625,9 @@ msgid "Volume up"
 msgstr ""
 
 msgid "W"
+msgstr ""
+
+msgid "WARNING!"
 msgstr ""
 
 msgid "WEP"
@@ -12701,6 +13677,9 @@ msgid "Wakeup"
 msgstr ""
 
 msgid "Wakeup TV from standby"
+msgstr ""
+
+msgid "Wakeup command for TV"
 msgstr ""
 
 msgid "Wakeup receiver for start timer"
@@ -12757,6 +13736,10 @@ msgstr ""
 msgid "Web Browser"
 msgstr ""
 
+#, fuzzy
+msgid "Web Interface"
+msgstr "انتخاب رابط"
+
 msgid "Wed"
 msgstr ""
 
@@ -12777,15 +13760,15 @@ msgid ""
 "Then seek to the end, press OK, select 'end cut'. That's it."
 msgstr ""
 
-msgid "Welcome to the Image restore wizard. The wizard will assist you in upgrading the firmware of your GigaBlue by providing a backup facility for your current settings and a short explanation of how to upgrade your firmware."
-msgstr ""
-
 msgid ""
 "Welcome to the cutlist editor.\n"
 "\n"
 "Seek to the start of the stuff you want to cut away. Press OK, select 'start cut'.\n"
 "\n"
 "Then seek to the end, press OK, select 'end cut'. That's it."
+msgstr ""
+
+msgid "Welcome to the image upgrade wizard. The wizard will assist you in upgrading the firmware of your %s %s by providing a backup facility for your current settings and a short explanation of how to upgrade your firmware."
 msgstr ""
 
 msgid ""
@@ -12814,6 +13797,10 @@ msgstr ""
 
 msgid "Western Sahara"
 msgstr ""
+
+#, fuzzy
+msgid "What do you want to play?\n"
+msgstr "آیا میخواهید یک DVD پخش کنید ؟"
 
 msgid "What do you want to scan?"
 msgstr ""
@@ -12928,6 +13915,9 @@ msgid "When enabled, http streams are descrambled on the server side. The (remot
 msgstr ""
 
 msgid "When enabled, it is possible to leave the movieplayer with exit."
+msgstr ""
+
+msgid "When enabled, it will automatically play to the last saved radio service when switching to radio mode."
 msgstr ""
 
 msgid "When enabled, measure power consumption to detect when the rotor stops turning (when supported by the tuner)."
@@ -13062,6 +14052,18 @@ msgid ""
 "Do you understand this?"
 msgstr ""
 
+msgid "With this option you can switch on the display during operation."
+msgstr ""
+
+msgid "With this option you can switch on the display in Deep Standby Mode."
+msgstr ""
+
+msgid "With this option you can switch on the display in Standby Mode."
+msgstr ""
+
+msgid "With this option you can switch the LED color or deactivate the LED."
+msgstr ""
+
 msgid "Without popup"
 msgstr ""
 
@@ -13083,6 +14085,9 @@ msgid "Write failed!"
 msgstr ""
 
 msgid "Write to /tmp/positionersetup.log"
+msgstr ""
+
+msgid "XBox 360 support"
 msgstr ""
 
 msgid "YCbCr420"
@@ -13149,13 +14154,13 @@ msgstr ""
 msgid "Yes, do another manual scan now"
 msgstr ""
 
-msgid "Yes, perform a shutdown now."
-msgstr ""
-
 msgid "Yes, restore the settings now"
 msgstr ""
 
 msgid "Yes, returning to movie list"
+msgstr ""
+
+msgid "Yes, shut down now."
 msgstr ""
 
 msgid "Yesterday"
@@ -13205,11 +14210,6 @@ msgstr ""
 msgid "You can remove this plugin."
 msgstr ""
 
-msgid ""
-"You can select with yellow the OnlineFlash Image\n"
-" or select Recovery to create a USB Disk Image for clean Install."
-msgstr ""
-
 msgid "You can set how will be finished movieplayer with 'Exit' button."
 msgstr ""
 
@@ -13219,6 +14219,14 @@ msgstr ""
 #, fuzzy
 msgid "You can set sorting type for items in movielist."
 msgstr "آماده سازی طول فیلم ها در لیست فیلم"
+
+#, python-format
+msgid "You can't usefully run '%s' on '%s'."
+msgstr ""
+
+#, python-format
+msgid "You can't usefully run '%s' on a directory."
+msgstr ""
 
 msgid "You cannot delete this!"
 msgstr ""
@@ -13250,7 +14258,7 @@ msgstr ""
 msgid "You have chosen to backup your settings. Please press OK to start the backup now."
 msgstr ""
 
-msgid "You have chosen to restore your settings. GUI will restart after restore. Please press OK to start the restore now."
+msgid "You have chosen to restore your settings. Enigma2 will restart after restore. Please press OK to start the restore now."
 msgstr ""
 
 msgid "You have to create a Swap File before activating autostart."
@@ -13271,7 +14279,15 @@ msgstr ""
 msgid "You must switch to the service %s (%s - '%s')!\n"
 msgstr ""
 
+msgid ""
+"You need a PC connected to your %s %s. If you need further instructions, please visit the website https://www.opena.tv.\n"
+"Your %s %s will now be halted. After you have performed the update instructions from the website, your new firmware will ask you to restore your settings."
+msgstr ""
+
 msgid "You need to initialize your storage device first"
+msgstr ""
+
+msgid "You seem to be in timeshift!"
 msgstr ""
 
 msgid "Your %s %s does not have an internet connection"
@@ -13293,6 +14309,23 @@ msgstr ""
 msgid "Your %s %s is shutting down"
 msgstr ""
 
+msgid "Your %s %s is shutting down. Please wait..."
+msgstr ""
+
+#, python-format
+msgid "Your %s %s will Reboot..."
+msgstr ""
+
+#, python-format
+msgid "Your %s %s will Restart..."
+msgstr ""
+
+#, python-format
+msgid ""
+"Your %s %s will be restarted after the installation of service\n"
+"Ready to install %s ?"
+msgstr ""
+
 #, python-format
 msgid ""
 "Your %s %s will be restarted after the installation of service.\n"
@@ -13301,24 +14334,17 @@ msgstr ""
 
 #, python-format
 msgid ""
+"Your %s %s will be restarted after the removal of service\n"
+"Do you want to remove now ?"
+msgstr ""
+
+#, python-format
+msgid ""
 "Your %s %s will be restarted after the removal of service.\n"
 "Do you want to remove now ?"
 msgstr ""
 
-msgid "Your GigaBlue is shutting down. Please stand by..."
-msgstr ""
-
-msgid ""
-"Your GigaBlue will now be halted.\n"
-"You need to plug-in your USB-flash drive with your image to restore.\n"
-"Power on your GigaBlue and you can flash your backup image.\n"
-"After flashing you can restore your settings."
-msgstr ""
-
 msgid "Your Receiver isn't connected to the internet properly. Please check it and try again."
-msgstr ""
-
-msgid "Your STB will freeze during the flashing process.\n"
 msgstr ""
 
 msgid "Your backup succeeded. We will now continue to explain the further upgrade process."
@@ -13482,9 +14508,6 @@ msgstr ""
 msgid "[Enigma2 Settings]\n"
 msgstr "ویرایش تنظیمات"
 
-msgid "[Full Image Backup]\n"
-msgstr ""
-
 msgid "[Harddisk] You system does not support ext4"
 msgstr ""
 
@@ -13524,6 +14547,9 @@ msgid "active NFS Shares:"
 msgstr ""
 
 msgid "actual time only"
+msgstr ""
+
+msgid "additional cable of rotor"
 msgstr ""
 
 msgid "adult movie/drama"
@@ -13615,10 +14641,6 @@ msgid "automatic"
 msgstr "خودکار"
 
 #, fuzzy
-msgid "automatic from DHCP"
-msgstr "خودکار"
-
-#, fuzzy
 msgid "automatically scan every day"
 msgstr "اسکن خودکار"
 
@@ -13628,9 +14650,6 @@ msgstr ""
 msgid "background image"
 msgstr ""
 
-msgid "backupstick or backupstick.txt"
-msgstr ""
-
 msgid "ballet"
 msgstr ""
 
@@ -13638,7 +14657,7 @@ msgstr ""
 msgid "bc%s"
 msgstr ""
 
-msgid "because of the used filesystem the backup\n"
+msgid "because of the used filesystem the back-up\n"
 msgstr ""
 
 msgid "better"
@@ -13702,6 +14721,10 @@ msgstr ""
 msgid "comedy"
 msgstr ""
 
+#, fuzzy
+msgid "config menu"
+msgstr "منوی اصلی"
+
 msgid "configure in which resolution pictures are displayed with the picture viewer and movieplayer"
 msgstr ""
 
@@ -13709,11 +14732,6 @@ msgid "confirmed"
 msgstr ""
 
 msgid "connected"
-msgstr ""
-
-msgid ""
-"contain a file with the name: \n"
-"\n"
 msgstr ""
 
 msgid "controlled by HDMI"
@@ -13861,9 +14879,6 @@ msgstr ""
 msgid "exit DVD player or return to file browser"
 msgstr ""
 
-msgid "exit inetd recovery"
-msgstr ""
-
 msgid "exit network adapter configuration"
 msgstr ""
 
@@ -13888,6 +14903,9 @@ msgid "false"
 msgstr ""
 
 msgid "fashion"
+msgstr ""
+
+msgid "fast"
 msgstr ""
 
 msgid "fileformats (BMP, PNG, JPG, GIF)"
@@ -13917,6 +14935,9 @@ msgstr ""
 msgid "football/soccer"
 msgstr ""
 
+msgid "for DATA LOSS OR DAMAGE !!!"
+msgstr ""
+
 #, fuzzy
 msgid "force disabled"
 msgstr "غیر فعال شد"
@@ -13938,9 +14959,6 @@ msgstr "صدا"
 msgid "free"
 msgstr ""
 
-msgid "from"
-msgstr ""
-
 msgid "from dir"
 msgstr ""
 
@@ -13959,6 +14977,14 @@ msgstr ""
 msgid "go to standby"
 msgstr ""
 
+#, fuzzy
+msgid "goto deep-standby"
+msgstr "فقط کانال های مجانی"
+
+#, fuzzy
+msgid "goto standby"
+msgstr "خاموشی موقت"
+
 msgid "grab this frame as bitmap"
 msgstr ""
 
@@ -13966,6 +14992,9 @@ msgid "green"
 msgstr ""
 
 msgid "handicraft"
+msgstr ""
+
+msgid "has been CHANGED! Do you want to save it?"
 msgstr ""
 
 msgid "height"
@@ -14004,6 +15033,17 @@ msgstr ""
 msgid "insert mark here"
 msgstr ""
 
+msgid "install/unpack ipk Files"
+msgstr ""
+
+#, fuzzy, python-format
+msgid "internal flash:  %s %s "
+msgstr "فلش داخلی"
+
+#, python-format
+msgid "internal flash: %s %s as USB Recovery"
+msgstr ""
+
 msgid "invalid type"
 msgstr ""
 
@@ -14017,6 +15057,9 @@ msgid "jump forward to the next title"
 msgstr ""
 
 msgid "jump to chapter by number"
+msgstr ""
+
+msgid "just boot"
 msgstr ""
 
 msgid "languages"
@@ -14240,24 +15283,15 @@ msgstr ""
 msgid "offset is"
 msgstr ""
 
-msgid "ofgwrite flashing ready.\n"
-msgstr ""
-
-msgid ""
-"ofgwrite not found !!\n"
-"Please make sure you have ofgwrite installed in /usr/bin/ofgwrite.\n"
-"\n"
-"Exit plugin."
-msgstr ""
-
-msgid "ofgwrite will stop enigma2 now to run the flash.\n"
-msgstr ""
-
 msgid "on"
 msgstr ""
 
 msgid "on READ ONLY medium."
 msgstr ""
+
+#, fuzzy
+msgid "on how to restore the image"
+msgstr "آیا میخواهید بسته را حذف کنید:\n"
 
 msgid "once"
 msgstr ""
@@ -14300,12 +15334,14 @@ msgstr ""
 msgid "picons"
 msgstr "آیکون"
 
-msgid "please press OK when ready"
+msgid "play Files"
 msgstr ""
 
-#, fuzzy
-msgid "please press exit to go back to the menu.\n"
-msgstr "لطفا دکمه OK را برای ادامه دادن فشار دهید"
+msgid "play/show Files"
+msgstr ""
+
+msgid "please press OK when ready"
+msgstr ""
 
 #, fuzzy
 msgid "please wait"
@@ -14334,6 +15370,9 @@ msgstr ""
 msgid "pre-school children's program"
 msgstr ""
 
+msgid "python"
+msgstr ""
+
 msgid "receiver software because updates are available."
 msgstr ""
 
@@ -14342,10 +15381,6 @@ msgstr ""
 
 msgid "recording..."
 msgstr ""
-
-#, fuzzy
-msgid "recover inetd"
-msgstr "قرار دادن دستگاه در خاموشی موقت"
 
 msgid "red"
 msgstr ""
@@ -14389,8 +15424,9 @@ msgstr ""
 msgid "romance"
 msgstr ""
 
-msgid "root and kernel"
-msgstr ""
+#, fuzzy
+msgid "rotor"
+msgstr "مولف:"
 
 msgid "running"
 msgstr ""
@@ -14399,6 +15435,12 @@ msgid "scan state"
 msgstr ""
 
 msgid "science fiction/fantasy/horror"
+msgstr ""
+
+msgid "script 'sterr':"
+msgstr ""
+
+msgid "script 'stout':"
 msgstr ""
 
 msgid "seconds"
@@ -14426,6 +15468,9 @@ msgstr "آماده سازی طول فیلم ها در لیست فیلم"
 #, fuzzy
 msgid "settings"
 msgstr "تنظیمات"
+
+msgid "shell"
+msgstr ""
 
 msgid "show DVD main menu"
 msgstr ""
@@ -14468,27 +15513,22 @@ msgid "skip forward"
 msgstr ""
 
 #, python-format
-msgid "slot%s - %s mode 1"
+msgid "slot%s - %s"
 msgstr ""
 
 #, python-format
-msgid "slot%s - %s mode 1 (current image)"
+msgid "slot%s - %s "
 msgstr ""
 
 #, python-format
-msgid "slot%s - %s mode 12"
+msgid "slot%s - %s (current image)"
 msgstr ""
 
 #, python-format
-msgid "slot%s - %s mode 12 (current image)"
+msgid "slot%s - %s as USB Recovery"
 msgstr ""
 
-#, python-format
-msgid "slot%s -%s - %s (current image)"
-msgstr ""
-
-#, python-format
-msgid "slot%s -%s- %s "
+msgid "slow"
 msgstr ""
 
 msgid "soap/melodram/folkloric"
@@ -14592,9 +15632,26 @@ msgstr ""
 msgid "true"
 msgstr ""
 
+msgid "turbo"
+msgstr ""
+
 #, fuzzy
 msgid "type"
 msgstr "نوع لیست"
+
+#, fuzzy
+msgid "uShare Log"
+msgstr "نمایش اطلاعات"
+
+msgid "uShare Name"
+msgstr ""
+
+msgid "uShare Port"
+msgstr ""
+
+#, fuzzy
+msgid "uShare Setup"
+msgstr "تنظیمات"
 
 msgid "unavailable"
 msgstr ""
@@ -14605,10 +15662,6 @@ msgstr ""
 msgid "undefined"
 msgstr ""
 
-#, fuzzy
-msgid "unknow"
-msgstr "<نامشخص>"
-
 msgid "unknown"
 msgstr ""
 
@@ -14617,6 +15670,21 @@ msgid "unknown error"
 msgstr "خطای نامشخصی رخ داد"
 
 msgid "unknown service"
+msgstr ""
+
+msgid "unpack Rar Files"
+msgstr ""
+
+msgid "unpack archives"
+msgstr ""
+
+msgid "unpack gzip Files"
+msgstr ""
+
+msgid "unpack tar/compressed tar Files"
+msgstr ""
+
+msgid "unpack zip Files"
 msgstr ""
 
 msgid "unpublished"
@@ -14642,6 +15710,9 @@ msgid "variety show"
 msgstr ""
 
 msgid "vertical"
+msgstr ""
+
+msgid "violet"
 msgstr ""
 
 msgid "wait for mmi..."
@@ -14674,13 +15745,10 @@ msgstr ""
 msgid "width"
 msgstr ""
 
-msgid "will take about 1-4 minutes for this system.\n"
+msgid "will take about 1-15 minutes for this system\n"
 msgstr ""
 
-msgid "will take about 3-12 minutes for this system.\n"
-msgstr ""
-
-msgid "will take about 30 minutes for this system.\n"
+msgid "will take about 30 minutes for this system\n"
 msgstr ""
 
 msgid "winter sport"
