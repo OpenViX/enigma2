@@ -52,7 +52,6 @@ class MultiBootWizard(Screen):
 		{
 			"red": boundFunction(self.close, None),
 			"green": self.erase,
-			"ok": self.erase,
 			"cancel": boundFunction(self.close, None),
 			"up": self.keyUp,
 			"down": self.keyDown,

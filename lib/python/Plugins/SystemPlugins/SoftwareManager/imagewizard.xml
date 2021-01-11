@@ -1,14 +1,15 @@
+<!--suppress XmlUnboundNsPrefix -->
 <wizard>
 	<step id="restorequestion">
 		<condition>
-from Plugins.SystemPlugins.SoftwareManager.RestoreWizard import checkConfigBackup
+from Plugins.SystemPlugins.SoftwareManager.ImageWizard import checkConfigBackup
 self.backuppath = checkConfigBackup()
 self.condition = (self.backuppath is not None and config.misc.firstrun.value)
 		</condition>
 		<text value="Do you want to restore your settings?" />
 		<list>
 			<listentry caption="Yes, restore the settings now" step="restore" />
-			<listentry caption="No, just start my GigaBlue" step="end" />
+			<listentry caption="No, just start my %s %s" step="end" />
 		</list>
 		<code>
 self.clearSelectedKeys()
@@ -17,7 +18,7 @@ self.selectKey("OK")
 	</step>
 
 	<step id="welcome">
-		<text value="Welcome to the Image restore wizard. The wizard will assist you in upgrading the firmware of your GigaBlue by providing a backup facility for your current settings and a short explanation of how to upgrade your firmware." />
+		<text value="Welcome to the image upgrade wizard. The wizard will assist you in upgrading the firmware of your %s %s by providing a backup facility for your current settings and a short explanation of how to upgrade your firmware." />
 		<list>
 			<listentry caption="OK, guide me through the upgrade process" step="backupquestion" />
 			<listentry caption="Exit the wizard" step="end" />
@@ -48,7 +49,7 @@ self.afterAsyncCode()
 
 	<step id="backupresult" nextstep="upgrade">
 		<condition>
-from Plugins.SystemPlugins.SoftwareManager.RestoreWizard import checkBackupFile
+from Plugins.SystemPlugins.SoftwareManager.ImageWizard import checkBackupFile
 self.backuppath = checkBackupFile()
 self.condition = (self.backuppath is True)
 		</condition>
@@ -57,7 +58,7 @@ self.condition = (self.backuppath is True)
 
 	<step id="backupresult" nextstep="backupwhere">
 		<condition>
-from Plugins.SystemPlugins.SoftwareManager.RestoreWizard import checkBackupFile
+from Plugins.SystemPlugins.SoftwareManager.ImageWizard import checkBackupFile
 self.backuppath = checkBackupFile()
 self.condition = (self.backuppath is False)
 		</condition>
@@ -65,7 +66,7 @@ self.condition = (self.backuppath is False)
 	</step>
 
 	<step id="restore" nextstep="backupresult">
-		<text value="You have chosen to restore your settings. GUI will restart after restore. Please press OK to start the restore now." />
+		<text value="You have chosen to restore your settings. Enigma2 will restart after restore. Please press OK to start the restore now." />
 		<config screen="RestoreScreen" module="Plugins.SystemPlugins.SoftwareManager.BackupRestore" type="ConfigList" />
 	</step>
 
@@ -78,9 +79,9 @@ self.condition = (self.backuppath is False)
 	</step>
 
 	<step id="upgrade">
-		<text value="Your GigaBlue will now be halted.\nYou need to plug-in your USB-flash drive with your image to restore.\nPower on your GigaBlue and you can flash your backup image.\nAfter flashing you can restore your settings." />
+		<text value="You need a PC connected to your %s %s. If you need further instructions, please visit the website https://www.opena.tv.\nYour %s %s will now be halted. After you have performed the update instructions from the website, your new firmware will ask you to restore your settings." />
 		<list>
-			<listentry caption="Yes, perform a shutdown now." step="shutdown" />
+			<listentry caption="Yes, shut down now." step="shutdown" />
 			<listentry caption="No, do nothing." step="end" />
 		</list>
 	</step>
@@ -90,7 +91,7 @@ self.condition = (self.backuppath is False)
 from enigma import quitMainloop
 quitMainloop(1)
 		</code>
-		<text value="Your GigaBlue is shutting down. Please stand by..." />
+		<text value="Your %s %s is shutting down. Please wait..." />
 	</step>
 
 	<step id="end" laststep="true">

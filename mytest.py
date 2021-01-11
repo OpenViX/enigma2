@@ -12,7 +12,6 @@ import eBaseImpl
 enigma.eTimer = eBaseImpl.eTimer
 enigma.eSocketNotifier = eBaseImpl.eSocketNotifier
 enigma.eConsoleAppContainer = eConsoleImpl.eConsoleAppContainer
-from boxbranding import getBoxType
 
 from traceback import print_exc
 
@@ -126,10 +125,7 @@ except ImportError:
 	def runReactor():
 		enigma.runMainloop()
 
-#profile("LOAD:Plugin")
-
-# initialize autorun plugins and plugin menu entries
-#from Components.PluginComponent import plugins
+profile("LOAD:Plugin")
 
 from twisted.python import log
 config.misc.enabletwistedlog = ConfigYesNo(default = False)
@@ -138,8 +134,10 @@ if config.misc.enabletwistedlog.value == True:
 else:
 	log.startLogging(sys.stdout)
 
+# initialize autorun plugins and plugin menu entries
+from Components.PluginComponent import plugins
+
 profile("LOAD:Wizard")
-from Screens.Wizard import wizardManager
 from Screens.StartWizard import *
 import Screens.Rc
 from Tools.BoundFunction import boundFunction
@@ -355,8 +353,8 @@ class Session:
 	def pushSummary(self):
 		if self.summary:
 			self.summary.hide()
-			self.summary_stack.append(self.summary)
-			self.summary = None
+		self.summary_stack.append(self.summary)
+		self.summary = None
 
 	def popSummary(self):
 		if self.summary:
@@ -474,13 +472,30 @@ from Screens.Ci import CiHandler
 profile("Load:VolumeControl")
 from Components.VolumeControl import VolumeControl
 
-profile("LOAD:Plugin")
-# initialize autorun plugins and plugin menu entries
-from Components.PluginComponent import plugins
+
+from time import time, localtime, strftime
+from Tools.StbHardware import setFPWakeuptime, setRTCtime
+
+def autorestoreLoop():
+	# Check if auto restore settings fails, just start the wizard (avoid a endless loop) 
+	count = 0
+	if os.path.exists("/media/hdd/images/config/autorestore"):
+		f = open("/media/hdd/images/config/autorestore", "r")
+		try:
+			count = int(f.read())
+		except:
+			count = 0;
+		f.close()
+		if count >= 3:
+			return False
+	count += 1
+	f = open("/media/hdd/images/config/autorestore", "w")
+	f.write(str(count))
+	f.close()
+	return True		
 
 def runScreenTest():
 	config.misc.startCounter.value += 1
-	config.misc.startCounter.save()
 
 	profile("readPluginList")
 	enigma.pauseInit()
@@ -493,13 +508,24 @@ def runScreenTest():
 
 	CiHandler.setSession(session)
 
-	screensToRun = [ p.__call__ for p in plugins.getPlugins(PluginDescriptor.WHERE_WIZARD) ]
-
 	profile("wizards")
-	screensToRun += wizardManager.getWizards()
+	screensToRun = []
+	RestoreSettings = None
+	if os.path.exists("/media/hdd/images/config/settings") and config.misc.firstrun.value:
+		if autorestoreLoop():
+			RestoreSettings = True
+			from Plugins.SystemPlugins.SoftwareManager.BackupRestore import RestoreScreen
+			session.open(RestoreScreen, runRestore = True)
+		else:
+			screensToRun = [ p.__call__ for p in plugins.getPlugins(PluginDescriptor.WHERE_WIZARD) ]
+			screensToRun += wizardManager.getWizards()
+	else:
+		if os.path.exists("/media/hdd/images/config/autorestore"):
+			os.system('rm -f /media/hdd/images/config/autorestore')
+		screensToRun = [ p.__call__ for p in plugins.getPlugins(PluginDescriptor.WHERE_WIZARD) ]
+		screensToRun += wizardManager.getWizards()
 
 	screensToRun.append((100, InfoBar.InfoBar))
-
 	screensToRun.sort()
 
 	enigma.ePythonConfigQuery.setQueryFunc(configfile.getResolvedKey)
@@ -519,18 +545,14 @@ def runScreenTest():
 
 	config.misc.epgcache_filename.addNotifier(setEPGCachePath)
 
-	runNextScreen(session, screensToRun)
+	if not RestoreSettings:
+		runNextScreen(session, screensToRun)
 
 	profile("Init:VolumeControl")
 	vol = VolumeControl(session)
 	profile("Init:PowerKey")
 	power = PowerKey(session)
 	
-	if getBoxType() in ('spycat', ):
-		profile("VFDSYMBOLS")
-		import Components.VfdSymbols
-		Components.VfdSymbols.SymbolsCheck(session)
-
 	# we need session.scart to access it from within menu.xml
 	session.scart = AutoScartControl(session)
 
@@ -541,7 +563,18 @@ def runScreenTest():
 	profile("RunReactor")
 	profile_final()
 
+	if not config.usage.shutdownOK.value and not config.usage.shutdownNOK_action.value == 'normal':
+		print("last shutdown = %s" % config.usage.shutdownOK.value)
+	if not RestoreSettings:
+		config.usage.shutdownOK.setValue(False)
+		config.usage.shutdownOK.save()
+		configfile.save()
+
 	runReactor()
+
+	config.misc.startCounter.save()
+	config.usage.shutdownOK.setValue(True)
+	config.usage.shutdownOK.save()
 
 	profile("wakeup")
 

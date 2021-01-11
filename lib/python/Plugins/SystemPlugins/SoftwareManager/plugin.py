@@ -38,24 +38,17 @@ from Tools.NumericalTextInput import NumericalTextInput
 from enigma import eTimer, RT_HALIGN_LEFT, RT_VALIGN_CENTER, eListboxPythonMultiContent, eListbox, gFont, getDesktop, ePicLoad, eRCInput, getPrevAsciiCode, eEnv, iRecordableService, getEnigmaVersionString
 from twisted.web import client
 from twisted.internet import reactor
+
 from ImageBackup import ImageBackup
 from Flash_online import FlashOnline
-from RestoreWizard import RestoreWizard
+from ImageWizard import ImageWizard
 from Multibootmgr import MultiBootWizard
-from PluginBackup import PluginBackup
-from PluginRestore import PluginRestore
 from BackupRestore import BackupSelection, RestoreMenu, BackupScreen, RestoreScreen, getBackupPath, getOldBackupPath, getBackupFilename
+from BackupRestore import InitConfig as BackupRestore_InitConfig
 from SoftwareTools import iSoftwareTools
 
 
-config.plugins.configurationbackup = ConfigSubsection()
-config.plugins.configurationbackup.backuplocation = ConfigText(default = '/media/hdd/', visible_width = 50, fixed_size = False)
-config.plugins.configurationbackup.backupdirs = ConfigLocations(default=[eEnv.resolve('${sysconfdir}/enigma2/'),
-																		 '/etc/network/interfaces', '/etc/wpa_supplicant.conf', '/etc/wpa_supplicant.ath0.conf',
-																		 '/etc/wpa_supplicant.wlan0.conf', '/etc/resolv.conf', '/etc/default_gw', '/etc/hostname', '/etc/fstab', '/picon/',
-																		 '/etc/auto.master', '/etc/auto.net', '/etc/auto.network', '/etc/autofs.conf', '/etc/tuxbox/config/',
-																		 eEnv.resolve("${datadir}/enigma2/keymap.usr"), eEnv.resolve("${datadir}/enigma2/keymap.ntr")])
-
+config.plugins.configurationbackup = BackupRestore_InitConfig()
 config.plugins.softwaremanager = ConfigSubsection()
 config.plugins.softwaremanager.overwriteSettingsFiles = ConfigYesNo(default=False)
 config.plugins.softwaremanager.overwriteDriversFiles = ConfigYesNo(default=True)
@@ -76,6 +69,12 @@ config.plugins.softwaremanager.updatetype = ConfigSelection(
 					("hot", _("Upgrade with GUI")),
 					("cold", _("Unattended upgrade without GUI")),
 				], "hot")
+config.plugins.softwaremanager.restoremode = ConfigSelection(
+				[
+					("turbo", _("turbo")),
+					("fast", _("fast")),
+					("slow", _("slow")),
+				], "turbo")
 config.plugins.softwaremanager.epgcache = ConfigYesNo(default=False)
 
 def write_cache(cache_file, cache_data):
@@ -144,17 +143,14 @@ class UpdatePluginMenu(Screen):
 		self.backupdirs = ' '.join( config.plugins.configurationbackup.backupdirs.value )
 		if self.menu == 0:
 			# print "building menu entries"
-			# self.list.append(("install-extensions", _("Manage extensions"), _("Manage extensions or plugins for your Receiver." ) + self.oktext, None))
 			if SystemInfo["FlashOnlineBackup"]:
 				self.list.append(("flash-online", _("Flash Online"), _("Flash on the fly your your Receiver software.") + self.oktext, None))
 				self.list.append(("software-restore", _("Software restore"), _("Restore your Receiver with a new firmware." ) + self.oktext, None))
 				self.list.append(("backup-image", _("Backup Image"), _("Backup your running Receiver image to HDD or USB." ) + self.oktext, None))
 			if SystemInfo["canMultiBoot"]:
-				self.list.append(("multiboot-manager", _("Multiboot Manager"), _("\nMaintain your multiboot device.") + self.oktext, None))
+				self.list.append(("multiboot-manager", _("MultiBoot Manager"), _("\nMaintain your multiboot device.") + self.oktext, None))
 			self.list.append(("system-backup", _("Backup system settings"), _("Backup your Receiver settings." ) + self.oktext + "\n\n" + self.infotext, None))
 			self.list.append(("system-restore",_("Restore system settings"), _("Restore your Receiver settings." ) + self.oktext, None))
-			# self.list.append(("plugin-backup",_("Backup Plugins"), _("Backup your installed plugins." ) + self.oktext, None))
-			# self.list.append(("plugin-restore",_("Restore Plugins"), _("Restore your previously installed plugins." ) + self.oktext, None))
 			self.list.append(("opkg-install", _("Install local extension"),  _("Scan for local extensions and install them." ) + self.oktext, None))
 			for p in plugins.getPlugins(PluginDescriptor.WHERE_SOFTWAREMANAGER):
 				if "SoftwareSupported" in p.__call__:
@@ -215,9 +211,10 @@ class UpdatePluginMenu(Screen):
 		}, -1)
 		self.onLayoutFinish.append(self.layoutFinished)
 		self.backuppath = getBackupPath()
+		if not os.path.isdir(self.backuppath):
+			self.backuppath = getOldBackupPath()
 		self.backupfile = getBackupFilename()
 		self.fullbackupfilename = self.backuppath + "/" + self.backupfile
-		self.pluginbackupfilename = "/etc/enigma2/installed-list.txt"
 		self.onShown.append(self.setWindowTitle)
 		self.onChangedEntry = []
 		self["menu"].onSelectionChanged.append(self.selectionChanged)
@@ -266,8 +263,8 @@ class UpdatePluginMenu(Screen):
 		current = self["menu"].getCurrent()
 		if current:
 			currentEntry = current[0]
-			if currentEntry in ("system-backup","backupfiles"):
-				self.session.open(SoftwareManagerInfo, mode = "backupinfo")
+			if currentEntry in ("system-backup", "backupfiles", "backupfiles_exclude", "backupfiles_addon"):
+				self.session.open(SoftwareManagerInfo, mode = "backupinfo", submode = currentEntry)
 
 	def go(self, num = None):
 		if num is not None:
@@ -282,7 +279,7 @@ class UpdatePluginMenu(Screen):
 				if (currentEntry == "software-update"):
 					self.session.open(UpdatePlugin, self.skin_path)
 				elif (currentEntry == "software-restore"):
-					self.session.open(RestoreWizard)
+					self.session.open(ImageWizard)
 				elif (currentEntry == "install-extensions"):
 					self.session.open(PluginManager, self.skin_path)
 				elif (currentEntry == "flash-online"):
@@ -298,13 +295,6 @@ class UpdatePluginMenu(Screen):
 						self.session.openWithCallback(self.startRestore, MessageBox, _("Are you sure you want to restore the backup?\nYour receiver will restart after the backup has been restored!"))
 					else:
 						self.session.open(MessageBox, _("Sorry, no backups found!"), MessageBox.TYPE_INFO, timeout = 10)
-				elif (currentEntry == "plugin-backup"):
-					self.session.open(PluginBackup)
-				elif (currentEntry == "plugin-restore"):
-					if os.path.exists(self.pluginbackupfilename):
-						self.session.openWithCallback(self.startPluginRestore, MessageBox, _("Are you sure you want to restore your Plugins?\nGUI will restart after the Plugins have been restored!"))
-					else:
-						self.session.open(MessageBox, _("Sorry, %s not found!\nRestore settings first.") % (self.pluginbackupfilename), MessageBox.TYPE_INFO, timeout = 10)
 				elif (currentEntry == "opkg-install"):
 					try:
 						from Plugins.Extensions.MediaScanner.plugin import main
@@ -327,7 +317,11 @@ class UpdatePluginMenu(Screen):
 					if len(parts):
 						self.session.openWithCallback(self.backuplocation_choosen, ChoiceBox, title = _("Please select medium to use as backup location"), list = parts)
 				elif (currentEntry == "backupfiles"):
-					self.session.openWithCallback(self.backupfiles_choosen,BackupSelection)
+					self.session.open(BackupSelection, title=_("Default files/folders to backup"), configBackupDirs=config.plugins.configurationbackup.backupdirs_default)
+				elif (currentEntry == "backupfiles_addon"):
+					self.session.open(BackupSelection, title=_("Additional files/folders to backup"), configBackupDirs=config.plugins.configurationbackup.backupdirs)
+				elif (currentEntry == "backupfiles_exclude"):
+					self.session.open(BackupSelection, title=_("Files/folders to exclude from backup"), configBackupDirs=config.plugins.configurationbackup.backupdirs_exclude)
 				elif (currentEntry == "advancedrestore"):
 					self.session.open(RestoreMenu, self.skin_path)
 				elif (currentEntry == "opkg-source"):
@@ -335,12 +329,6 @@ class UpdatePluginMenu(Screen):
 				elif (currentEntry == "advanced-plugin"):
 					self.extended = current[3]
 					self.extended(self.session, None)
-
-	def backupfiles_choosen(self, ret):
-		self.backupdirs = ' '.join( config.plugins.configurationbackup.backupdirs.value )
-		config.plugins.configurationbackup.backupdirs.save()
-		config.plugins.configurationbackup.save()
-		config.save()
 
 	def backuplocation_choosen(self, option):
 		oldpath = config.plugins.configurationbackup.backuplocation.getValue()
@@ -372,10 +360,6 @@ class UpdatePluginMenu(Screen):
 		if (ret == True):
 			self.exe = True
 			self.session.open(RestoreScreen, runRestore = True)
-
-	def startPluginRestore(self, ret = False):
-		if (ret == True):
-			self.session.open(PluginRestore)
 
 class SoftwareManagerSetup(Screen, ConfigListScreen):
 
@@ -410,6 +394,7 @@ class SoftwareManagerSetup(Screen, ConfigListScreen):
 		self.overwritePiconsfilesEntry = None
 		self.overwriteBootlogofilesEntry = None
 		self.overwriteSpinnerfilesEntry = None
+		self.restoremodeEntry = None
 		self.updatetypeEntry = None
 
 		self.list = [ ]
@@ -443,6 +428,7 @@ class SoftwareManagerSetup(Screen, ConfigListScreen):
 		self.overwritePiconsfilesEntry = getConfigListEntry(_("Overwrite Picon Files ?"), config.plugins.softwaremanager.overwritePiconsFiles)
 		self.overwriteBootlogofilesEntry = getConfigListEntry(_("Overwrite Bootlogo Files ?"), config.plugins.softwaremanager.overwriteBootlogoFiles)
 		self.overwriteSpinnerfilesEntry = getConfigListEntry(_("Overwrite Spinner Files ?"), config.plugins.softwaremanager.overwriteSpinnerFiles)
+		self.restoremodeEntry  = getConfigListEntry(_("Mode for autorestore"), config.plugins.softwaremanager.restoremode)
 		self.updatetypeEntry  = getConfigListEntry(_("Select Software Update"), config.plugins.softwaremanager.updatetype)
 		self.list.append(self.overwriteConfigfilesEntry)
 		self.list.append(getConfigListEntry(_("show softwaremanager in setup menu"), config.plugins.softwaremanager.onSetupMenu))
@@ -454,6 +440,7 @@ class SoftwareManagerSetup(Screen, ConfigListScreen):
 		self.list.append(self.overwritePiconsfilesEntry)
 		self.list.append(self.overwriteBootlogofilesEntry)
 		self.list.append(self.overwriteSpinnerfilesEntry)
+		self.list.append(self.restoremodeEntry)
 		self["config"].list = self.list
 		self["config"].l.setSeperation(400)
 		self["config"].l.setList(self.list)
@@ -476,6 +463,8 @@ class SoftwareManagerSetup(Screen, ConfigListScreen):
 			self["introduction"].setText(_("Overwrite bootlogo files during software upgrade?"))
 		elif self["config"].getCurrent() == self.overwriteSpinnerfilesEntry:
 			self["introduction"].setText(_("Overwrite spinner files during software upgrade?"))
+		elif self["config"].getCurrent() == self.restoremodeEntry:
+			self["introduction"].setText(_("Turbo: One reboot after flash\nFast: One reboot after flash, one reboot after restore\nSlow: One reboot after flash, one reboot after restore in GUI"))
 		elif self["config"].getCurrent() == self.updatetypeEntry:
 			self["introduction"].setText(_("Select how your box will upgrade."))
 		else:
@@ -496,8 +485,6 @@ class SoftwareManagerSetup(Screen, ConfigListScreen):
 			return
 		else:
 			self.keySave()
-			plugins.clearPluginList()
-			plugins.readPluginList(resolveFilename(SCOPE_PLUGINS))
 
 	def apply(self):
 		self.session.openWithCallback(self.confirm, MessageBox, _("Use these settings?"), MessageBox.TYPE_YESNO, timeout = 20, default = True)
@@ -557,10 +544,11 @@ class SoftwareManagerInfo(Screen):
 			<widget source="introduction" render="Label" position="5,410" size="550,30" zPosition="10" font="Regular;21" halign="center" valign="center" backgroundColor="#25062748" transparent="1" />
 		</screen>"""
 
-	def __init__(self, session, skin_path = None, mode = None):
+	def __init__(self, session, skin_path = None, mode = None, submode = None):
 		Screen.__init__(self, session)
 		self.session = session
 		self.mode = mode
+		self.submode = submode
 		self.skin_path = skin_path
 		if self.skin_path is None:
 			self.skin_path = resolveFilename(SCOPE_CURRENT_PLUGIN, "SystemPlugins/SoftwareManager")
@@ -590,7 +578,12 @@ class SoftwareManagerInfo(Screen):
 	def showInfos(self):
 		if self.mode == "backupinfo":
 			self.list = []
-			backupfiles = config.plugins.configurationbackup.backupdirs.value
+			if self.submode == "backupfiles_exclude":
+				backupfiles = config.plugins.configurationbackup.backupdirs_exclude.value
+			elif self.submode == "backupfiles_addon":
+				backupfiles = config.plugins.configurationbackup.backupdirs.value
+			else:
+				backupfiles = config.plugins.configurationbackup.backupdirs_default.value
 			for entry in backupfiles:
 				self.list.append((entry,))
 			self['list'].setList(self.list)
@@ -1506,53 +1499,6 @@ class UpdatePlugin(Screen):
 			self.close()
 			return
 
-	#def checkTraficLight(self):
-	#	from urllib import urlopen
-	#	import socket
-	#	currentTimeoutDefault = socket.getdefaulttimeout()
-	#	socket.setdefaulttimeout(3)
-	#	message = ""
-	#	picon = None
-	#	default = True
-	#	doUpdate = True
-		# TODO: Use Twisted's URL fetcher, urlopen is evil. And it can
-		# run in parallel to the package update.
-	#	try:
-	#		urlopenSTATUS = "http://status.teamblue.tech/index.php"
-	#		d = urlopen(urlopenSTATUS)
-	#		tmpStatus = d.read()
-	#		if config.softwareupdate.updatebeta.getValue() and 'gelb.png' in tmpStatus:
-	#			message = _("Caution update not tested yet !!") + "\n" + _("Update at your own risk") + "\n\n" + _("For more information see http://www.teamblue.tech") + "\n\n"# + _("Last Status Date") + ": "  + statusDate + "\n\n"
-	#			picon = MessageBox.TYPE_ERROR
-	#			default = False
-	#		elif 'rot.png' in tmpStatus:
-	#			if config.softwareupdate.updateisunstable.getValue():
-	#				message = _("Update is reported as faulty !!") + "\n" + _("But you have activated \"Install unstable updates\"") + "\n" + _("Update anyway?")# + "\n\n" + _("Last Status Date") + ": " + statusDate
-	#				picon = MessageBox.TYPE_ERROR
-	#				default = False
-	#			else:
-	#				message = _("Update is reported as faulty !!") + "\n" + _("Aborting updateprogress") + "\n\n" + _("For more information see http://www.teamblue.tech")# + "\n\n" + _("Last Status Date") + ": " + statusDate
-	#				picon = MessageBox.TYPE_ERROR
-	#				default = False
-	#				doUpdate = False
-	#	except:
-	#		message = _("The status of the current update could not be checked because http://www.teamblue.tech could not be reached for some reason") + "\n"
-	#		picon = MessageBox.TYPE_ERROR
-	#		default = False
-	#	socket.setdefaulttimeout(currentTimeoutDefault)
-
-	#	if default:
-		        # We'll ask later
-	#	        self.runUpgrade(True)
-	#	else:
-	#		if doUpdate:
-				# Ask for Update, 
-	#			message += _("Do you want to update your Receiver?")+"\n"+_("After pressing OK, please wait!")
-	#			self.session.openWithCallback(self.runUpgrade, MessageBox, message, default = default, picon = picon)
-	#		else:
-				# Don't Update RED LIGHT !!
-	#			self.session.open(MessageBox, message, picon, timeout = 20)
-	#			self.runUpgrade(False)
 
 	def runUpgrade(self, result):
 		self.TraficResult = result

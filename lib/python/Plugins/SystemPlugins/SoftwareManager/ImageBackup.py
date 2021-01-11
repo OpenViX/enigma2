@@ -105,7 +105,7 @@ class ImageBackup(Screen):
 			for media in ['/media/%s' % x for x in os.listdir('/media')] + (['/media/net/%s' % x for x in os.listdir('/media/net')] if os.path.isdir('/media/net') else []):
 				if Harddisk.Freespace(media) > 300000:
 					choices.append((_("Backup to destination: %s") % (media),self.currentSelected[0][1], media, self.currentSelected[0][2]))
-			choices.append((_("No, do not backup a image"), False))
+			choices.append((_("No, do not backup an image"), False))
 			self.session.openWithCallback(self.doFullBackup, ChoiceBox,title=title,list=choices)
 
 	def selectionChanged(self):
@@ -194,7 +194,7 @@ class ImageBackup(Screen):
 				print "[Image Backup] DESTINATION = >%s< " %self.DIRECTORY
 				print "[Image Backup] SLOT = >%s< " %self.SLOT
 
-				self.TITLE = _("Full back-up on %s") % (self.DIRECTORY)
+				self.TITLE = _("Fullbackup on %s") % (self.DIRECTORY)
 				self.START = time()
 				self.DATE = strftime("%Y%m%d_%H%M", localtime(self.START))
 				self.IMAGEVERSION = self.imageInfo()
@@ -632,8 +632,8 @@ class ImageBackup(Screen):
 
 	def imageInfo(self):
 		AboutText = _("Full Image Backup ")
-		AboutText += _("By openATV Image Team") + "\n"
-		AboutText += _("Support at") + " www.opena.tv\n\n"
+		AboutText += _("By teamblue Image Team") + "\n"
+		AboutText += _("Support at") + " www.gigablue-support.org\n\n"
 		AboutText += _("[Image Info]\n")
 		AboutText += _("Model: %s %s\n") % (getMachineBrand(), getMachineName())
 		AboutText += _("Backup Date: %s\n") % strftime("%Y-%m-%d", localtime(self.START))
