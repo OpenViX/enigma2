@@ -32,27 +32,6 @@ setups = {}  # Dictionary of images associated with setup menus.
 switchPixmap = {}  # Dictionary of switch images.
 windowStyles = {}  # Dictionary of window styles for each screen ID.
 
-def loadSkinDefaults():
-	global domScreens, colors, bodyFont, fonts, menus, parameters, setups, switchPixmap, windowStyles
-	domScreens.clear()
-	colors.clear()
-	colors.update({
-		"key_back": gRGB(0x00313131),
-		"key_blue": gRGB(0x0018188b),
-		"key_green": gRGB(0x001f771f),
-		"key_red": gRGB(0x009f1313),
-		"key_text": gRGB(0x00ffffff),
-		"key_yellow": gRGB(0x00a08500)
-	})
-	fonts.clear()
-	fonts.update({
-		"Body": bodyFont[:]
-	})
-	menus.clear()
-	parameters.clear()
-	setups.clear()
-	switchPixmap.clear()
-	windowStyles.clear()
 
 config.skin = ConfigSubsection()
 skin = resolveFilename(SCOPE_SKIN, DEFAULT_SKIN)
@@ -80,44 +59,58 @@ onLoadCallbacks = []
 #
 def InitSkins(booting=True):
 	global currentPrimarySkin, currentDisplaySkin
-	loadSkinDefaults()
+	global domScreens, colors, bodyFont, fonts, menus, parameters, setups, switchPixmap, windowStyles
+	# Reset skin dictionaries. We can reload skins without a restart
+	# Make sure we keep the original dictionaries as many modules now import skin globals explicitly
+	domScreens.clear()
+	colors.clear()
+	fonts.clear()
+	fonts.update({
+		"Body": bodyFont[:]
+	})
+	menus.clear()
+	parameters.clear()
+	setups.clear()
+	switchPixmap.clear()
+	windowStyles.clear()
 	# Add the emergency skin.  This skin should provide enough functionality
 	# to enable basic GUI functions to work.
 	loadSkin(EMERGENCY_SKIN, scope=SCOPE_CURRENT_SKIN, desktop=getDesktop(GUI_SKIN_ID), screenID=GUI_SKIN_ID)
 	# Add the subtitle skin.
 	loadSkin(SUBTITLE_SKIN, scope=SCOPE_CURRENT_SKIN, desktop=getDesktop(GUI_SKIN_ID), screenID=GUI_SKIN_ID)
 	# Add the front panel / display / lcd skin.
-	result = []
+	processed = []
 	for skin, name in [(config.skin.display_skin.value, "current"), (DEFAULT_DISPLAY_SKIN, "default")]:
-		if skin in result:  # Don't try to add a skin that has already failed.
+		if skin in processed:  # Don't try to add a skin that has already failed.
 			continue
 		config.skin.display_skin.value = skin
 		if loadSkin(config.skin.display_skin.value, scope=SCOPE_CURRENT_LCDSKIN, desktop=getDesktop(DISPLAY_SKIN_ID), screenID=DISPLAY_SKIN_ID):
 			currentDisplaySkin = config.skin.display_skin.value
 			break
 		print("[Skin] Error: Adding %s display skin '%s' has failed!" % (name, config.skin.display_skin.value))
-		result.append(skin)
+		processed.append(skin)
 	# Add the main GUI skin.
-	result = []
+	processed = []
 	for skin, name in [(config.skin.primary_skin.value, "current"), (DEFAULT_SKIN, "default")]:
-		if skin in result:  # Don't try to add a skin that has already failed.
+		if skin in processed:  # Don't try to add a skin that has already failed.
 			continue
 		config.skin.primary_skin.value = skin
 		if loadSkin(config.skin.primary_skin.value, scope=SCOPE_CURRENT_SKIN, desktop=getDesktop(GUI_SKIN_ID), screenID=GUI_SKIN_ID):
 			currentPrimarySkin = config.skin.primary_skin.value
 			break
 		print("[Skin] Error: Adding %s GUI skin '%s' has failed!" % (name, config.skin.primary_skin.value))
-		result.append(skin)
+		processed.append(skin)
 	# Add an optional skin related user skin "user_skin_<SkinName>.xml".  If there is
 	# not a skin related user skin then try to add am optional generic user skin.
-	result = None
+	loadedUser = False
 	if isfile(resolveFilename(SCOPE_SKIN, config.skin.primary_skin.value)):
 		name = USER_SKIN_TEMPLATE % dirname(config.skin.primary_skin.value)
 		if isfile(resolveFilename(SCOPE_CURRENT_SKIN, name)):
-			result = loadSkin(name, scope=SCOPE_CURRENT_SKIN, desktop=getDesktop(GUI_SKIN_ID), screenID=GUI_SKIN_ID)
-	if result is None:
-		result = loadSkin(USER_SKIN, scope=SCOPE_CURRENT_SKIN, desktop=getDesktop(GUI_SKIN_ID), screenID=GUI_SKIN_ID)
-	if result and not booting:
+			loadedUser = loadSkin(name, scope=SCOPE_CURRENT_SKIN, desktop=getDesktop(GUI_SKIN_ID), screenID=GUI_SKIN_ID)
+	if not loadedUser:
+		loadSkin(USER_SKIN, scope=SCOPE_CURRENT_SKIN, desktop=getDesktop(GUI_SKIN_ID), screenID=GUI_SKIN_ID)
+	# notify any other modules about skin reloads
+	if not booting:
 		for method in onLoadCallbacks:
 			if method:
 				method()
