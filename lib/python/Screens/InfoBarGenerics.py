@@ -1186,7 +1186,7 @@ class InfoBarChannelSelection:
 		][int(config.usage.channelbutton_mode.value)]
 
 	def _helpChannelPlusPressed(self):
-		self._helpChannelPlusMinusPressed(_("Switch to the next channel"))
+		return self._helpChannelPlusMinusPressed(_("Switch to the next channel"))
 
 	def ChannelPlusPressed(self):
 		if config.usage.channelbutton_mode.value == "0" or config.usage.show_second_infobar.value == "INFOBAREPG":
@@ -1199,7 +1199,7 @@ class InfoBarChannelSelection:
 			self.session.execDialog(self.servicelist)
 
 	def _helpChannelMinusPressed(self):
-		self._helpChannelPlusMinusPressed(_("Switch to the previous channel"))
+		return self._helpChannelPlusMinusPressed(_("Switch to the previous channel"))
 
 	def ChannelMinusPressed(self):
 		if config.usage.channelbutton_mode.value == "0" or config.usage.show_second_infobar.value == "INFOBAREPG":
