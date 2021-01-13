@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-11 15:15+0100\n"
+"POT-Creation-Date: 2021-01-13 22:11+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Budiarno\n"
 "Language-Team: \n"
@@ -2978,10 +2978,6 @@ msgstr "Membuat DVD-ISO"
 msgid "Create directory"
 msgstr "buat direktori"
 
-#, fuzzy
-msgid "Create directory/folder"
-msgstr "buat direktori"
-
 msgid "Create new folder and exit"
 msgstr "Buat folder baru lalu keluar"
 
@@ -3245,10 +3241,6 @@ msgstr "Bawaan"
 
 msgid "Default CPU priority (nice) for executed scripts. This can reduce the load so that scripts do not interfere with the rest of the system. (higher values = lower priority)"
 msgstr ""
-
-#, fuzzy
-msgid "Default Folder"
-msgstr "Bawaan"
 
 msgid "Default I/O priority (ionice) for executed scripts. This can reduce the load so that scripts do not interfere with the rest of the system. (higher values = lower priority)"
 msgstr ""
@@ -4241,6 +4233,10 @@ msgstr "Inggris"
 #, python-format
 msgid "Enigma (re)starts: %d\n"
 msgstr "Enigma (re)starts: %d\n"
+
+#, python-format
+msgid "Enigma2 debug level:\t%d"
+msgstr ""
 
 #, fuzzy
 msgid "Enter"
@@ -14451,13 +14447,6 @@ msgstr ""
 
 msgid "cooking"
 msgstr "memasak"
-
-#, fuzzy
-msgid "copy file"
-msgstr "%d berkas"
-
-msgid "copy folder"
-msgstr ""
 
 msgid "create symlink ..."
 msgstr ""

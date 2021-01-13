@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-11 15:15+0100\n"
+"POT-Creation-Date: 2021-01-13 22:11+0100\n"
 "PO-Revision-Date: 2008-12-29 16:22+0100\n"
 "Last-Translator: gerrit <gerrit@nedlinux.nl>\n"
 "Language-Team: gerrit <fy@li.org>\n"
@@ -3345,11 +3345,6 @@ msgstr "Meitsje DVD-ISO"
 msgid "Create directory"
 msgstr "map meitsje"
 
-#
-#, fuzzy
-msgid "Create directory/folder"
-msgstr "map meitsje"
-
 msgid "Create new folder and exit"
 msgstr ""
 
@@ -3661,11 +3656,6 @@ msgstr ""
 
 msgid "Default CPU priority (nice) for executed scripts. This can reduce the load so that scripts do not interfere with the rest of the system. (higher values = lower priority)"
 msgstr ""
-
-#
-#, fuzzy
-msgid "Default Folder"
-msgstr "Start opnimmen?"
 
 msgid "Default I/O priority (ionice) for executed scripts. This can reduce the load so that scripts do not interfere with the rest of the system. (higher values = lower priority)"
 msgstr ""
@@ -4795,6 +4785,10 @@ msgstr "Engelsk"
 
 #, python-format
 msgid "Enigma (re)starts: %d\n"
+msgstr ""
+
+#, python-format
+msgid "Enigma2 debug level:\t%d"
 msgstr ""
 
 #
@@ -16525,12 +16519,6 @@ msgid "convert to multi channel PCM"
 msgstr "Kanaal"
 
 msgid "cooking"
-msgstr ""
-
-msgid "copy file"
-msgstr ""
-
-msgid "copy folder"
 msgstr ""
 
 msgid "create symlink ..."

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue (Apachi70)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-11 15:15+0100\n"
+"POT-Creation-Date: 2021-01-13 22:11+0100\n"
 "PO-Revision-Date: 2015-12-18 21:05+0200\n"
 "Last-Translator: Yetkin AYDIN <yetkina@gmail.com>\n"
 "Language-Team: http://www.hurforum.com <yetkina@gmail.com>\n"
@@ -2908,9 +2908,6 @@ msgstr "ISO oluştur"
 msgid "Create directory"
 msgstr "klasör oluştur"
 
-msgid "Create directory/folder"
-msgstr "Dizin / klasör oluştur"
-
 msgid "Create new folder and exit"
 msgstr "Yeni bir klasör oluştur ve çık"
 
@@ -3161,9 +3158,6 @@ msgstr "Varsayılan"
 
 msgid "Default CPU priority (nice) for executed scripts. This can reduce the load so that scripts do not interfere with the rest of the system. (higher values = lower priority)"
 msgstr "Yürütülen komut dosyaları için varsayılan CPU önceliği (hoş). Bu, yükleri azaltabilir, böylece komut dosyaları sistemin geri kalanını etkilemez. (daha yüksek değerler = düşük öncelik)"
-
-msgid "Default Folder"
-msgstr "Varsayılan klasör"
 
 msgid "Default I/O priority (ionice) for executed scripts. This can reduce the load so that scripts do not interfere with the rest of the system. (higher values = lower priority)"
 msgstr "Yürütülen komut dosyaları için varsayılan G / Ç önceliği (iyon). Bu, yükleri azaltabilir, böylece komut dosyaları sistemin geri kalanını etkilemez. (daha yüksek değerler = düşük öncelik)"
@@ -4112,6 +4106,10 @@ msgstr "İngilizce"
 #, python-format
 msgid "Enigma (re)starts: %d\n"
 msgstr "Enigma (yeniden) başlar: %d\n"
+
+#, python-format
+msgid "Enigma2 debug level:\t%d"
+msgstr ""
 
 msgid "Enter"
 msgstr "Girmek"
@@ -14057,12 +14055,6 @@ msgstr "multi kanallı PCM'ye dönüştür"
 
 msgid "cooking"
 msgstr "yemek"
-
-msgid "copy file"
-msgstr "dosya kopyalamak"
-
-msgid "copy folder"
-msgstr "kopya klasörü"
 
 msgid "create symlink ..."
 msgstr "sembolik link oluştur ..."

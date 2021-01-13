@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-11 15:15+0100\n"
+"POT-Creation-Date: 2021-01-13 22:11+0100\n"
 "PO-Revision-Date: 2014-11-12 00:49+0200\n"
 "Last-Translator: Taapat <taapat@gmail.com>\n"
 "Language-Team: Taapat <taapat@gmail.com>\n"
@@ -3032,10 +3032,6 @@ msgstr "Izveidot DVD-ISO"
 msgid "Create directory"
 msgstr "izveidot mapi"
 
-#, fuzzy
-msgid "Create directory/folder"
-msgstr "izveidot mapi"
-
 msgid "Create new folder and exit"
 msgstr ""
 
@@ -3300,10 +3296,6 @@ msgstr "Noklusējuma"
 
 msgid "Default CPU priority (nice) for executed scripts. This can reduce the load so that scripts do not interfere with the rest of the system. (higher values = lower priority)"
 msgstr ""
-
-#, fuzzy
-msgid "Default Folder"
-msgstr "Noklusējuma"
 
 msgid "Default I/O priority (ionice) for executed scripts. This can reduce the load so that scripts do not interfere with the rest of the system. (higher values = lower priority)"
 msgstr ""
@@ -4300,6 +4292,10 @@ msgstr "Angļu"
 
 #, python-format
 msgid "Enigma (re)starts: %d\n"
+msgstr ""
+
+#, python-format
+msgid "Enigma2 debug level:\t%d"
 msgstr ""
 
 #, fuzzy
@@ -14687,13 +14683,6 @@ msgstr "Rādīt daudzkanālu EPG"
 
 msgid "cooking"
 msgstr "cepšana"
-
-#, fuzzy
-msgid "copy file"
-msgstr "%d fails"
-
-msgid "copy folder"
-msgstr ""
 
 msgid "create symlink ..."
 msgstr ""

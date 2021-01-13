@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-11 15:15+0100\n"
+"POT-Creation-Date: 2021-01-13 22:11+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: ims <ims21@users.sourceforge.net>\n"
 "Language-Team: PLi <ims@openpli.org>\n"
@@ -3389,11 +3389,6 @@ msgstr "vytvořit DVD-ISO"
 msgid "Create directory"
 msgstr "založit adresář"
 
-#
-#, fuzzy
-msgid "Create directory/folder"
-msgstr "založit adresář"
-
 msgid "Create new folder and exit"
 msgstr ""
 
@@ -3699,11 +3694,6 @@ msgstr "Defaultní"
 
 msgid "Default CPU priority (nice) for executed scripts. This can reduce the load so that scripts do not interfere with the rest of the system. (higher values = lower priority)"
 msgstr ""
-
-#
-#, fuzzy
-msgid "Default Folder"
-msgstr "Defaultní"
 
 msgid "Default I/O priority (ionice) for executed scripts. This can reduce the load so that scripts do not interfere with the rest of the system. (higher values = lower priority)"
 msgstr ""
@@ -4865,6 +4855,10 @@ msgstr "Anglicky"
 
 #, python-format
 msgid "Enigma (re)starts: %d\n"
+msgstr ""
+
+#, python-format
+msgid "Enigma2 debug level:\t%d"
 msgstr ""
 
 #
@@ -16648,13 +16642,6 @@ msgstr "Zobrazovat vícekanálovou EPG"
 
 msgid "cooking"
 msgstr "vaření"
-
-#, fuzzy
-msgid "copy file"
-msgstr "%d soubor"
-
-msgid "copy folder"
-msgstr ""
 
 msgid "create symlink ..."
 msgstr ""

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-11 15:15+0100\n"
+"POT-Creation-Date: 2021-01-13 22:11+0100\n"
 "PO-Revision-Date: 2020-03-21 09:12+0100\n"
 "Last-Translator: Pr2\n"
 "Language-Team: french\n"
@@ -2990,10 +2990,6 @@ msgstr "Créer un ISO"
 msgid "Create directory"
 msgstr "Création répertoire"
 
-#, fuzzy
-msgid "Create directory/folder"
-msgstr "Création répertoire"
-
 msgid "Create new folder and exit"
 msgstr "Créer un répertoire et quitter"
 
@@ -3257,10 +3253,6 @@ msgstr "Par défaut"
 
 msgid "Default CPU priority (nice) for executed scripts. This can reduce the load so that scripts do not interfere with the rest of the system. (higher values = lower priority)"
 msgstr ""
-
-#, fuzzy
-msgid "Default Folder"
-msgstr "Par défaut"
 
 msgid "Default I/O priority (ionice) for executed scripts. This can reduce the load so that scripts do not interfere with the rest of the system. (higher values = lower priority)"
 msgstr ""
@@ -4234,6 +4226,10 @@ msgstr "Anglais"
 #, python-format
 msgid "Enigma (re)starts: %d\n"
 msgstr "Redémarrage(s) Enigma: %d\n"
+
+#, python-format
+msgid "Enigma2 debug level:\t%d"
+msgstr ""
 
 #, fuzzy
 msgid "Enter"
@@ -14435,13 +14431,6 @@ msgstr "PCM Multicanaux"
 
 msgid "cooking"
 msgstr "Cuisine"
-
-#, fuzzy
-msgid "copy file"
-msgstr "%d fichier"
-
-msgid "copy folder"
-msgstr ""
 
 msgid "create symlink ..."
 msgstr ""

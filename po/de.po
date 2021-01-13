@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-11 15:15+0100\n"
-"PO-Revision-Date: 2021-01-11 16:36+0100\n"
+"POT-Creation-Date: 2021-01-13 17:52+0100\n"
+"PO-Revision-Date: 2021-01-13 22:10+0100\n"
 "Last-Translator: teamblue-e2 <teamblue@online.de>\n"
 "Language-Team: Teamblue teamblue@online.de\n"
 "Language: de\n"
@@ -115,15 +115,15 @@ msgstr "     falsches Backup Ziel "
 
 #, python-format
 msgid " ('%s') finished successefully."
-msgstr ""
+msgstr " (‚%s‘) erfolgreich abgeschlossen."
 
 #, python-format
 msgid " ('%s') finished with error messages."
-msgstr ""
+msgstr " (‚%s‘) mit Fehlern abgeschlossen."
 
 #, python-format
 msgid " ('%s') finished with error number [%d]."
-msgstr ""
+msgstr " (‚%s‘) mit Fehlernummer [%d] abgeschlossen."
 
 msgid " (0 - all networks)"
 msgstr " (0 - alle Netzwerke)"
@@ -202,11 +202,11 @@ msgstr "%.0f kB"
 
 #, python-format
 msgid "%.1f° E"
-msgstr ""
+msgstr "%.1f° E"
 
 #, python-format
 msgid "%.1f° W"
-msgstr ""
+msgstr "%.1f° W"
 
 #, python-format
 msgid "%.2f GB"
@@ -602,7 +602,7 @@ msgid "16:9 always"
 msgstr "immer 16:9"
 
 msgid "16K"
-msgstr ""
+msgstr "16K"
 
 msgid "18 V"
 msgstr "18 V"
@@ -668,7 +668,7 @@ msgid "4:3 PanScan"
 msgstr "4:3 PanScan"
 
 msgid "4K"
-msgstr ""
+msgstr "4K"
 
 msgid "5"
 msgstr "5"
@@ -692,7 +692,7 @@ msgid "8"
 msgstr "8"
 
 msgid "8K"
-msgstr ""
+msgstr "8K"
 
 msgid "8bit"
 msgstr "8bit"
@@ -921,19 +921,19 @@ msgid "Activate current configuration"
 msgstr "Aktuelle Konfiguration verwenden"
 
 msgid "Activate left-hand file list as multi-select source"
-msgstr ""
+msgstr "Aktivieren Sie die linke Dateiliste als Mehrfachauswahlquelle"
 
 msgid "Activate left-hand file list as source"
-msgstr ""
+msgstr "Linke Dateiliste als Quelle aktivieren"
 
 msgid "Activate network settings"
 msgstr "Aktiviere Netzwerkeinstellungen"
 
 msgid "Activate right-hand file list as multi-select source"
-msgstr ""
+msgstr "Aktivieren Sie die rechte Dateiliste als Mehrfachauswahlquelle"
 
 msgid "Activate right-hand file list as source"
-msgstr ""
+msgstr "Rechte Dateiliste als Quelle aktivieren"
 
 msgid "Activate the configured network settings."
 msgstr "Aktiviert die Netzwerkeinstellungen."
@@ -975,7 +975,7 @@ msgid "Add bouquet to parental protection"
 msgstr "Jugendschutz zu Bouquet hinzufügen"
 
 msgid "Add current folder to bookmarks"
-msgstr ""
+msgstr "Aktuellen Ordner zu Lesezeichen hinzufügen"
 
 msgid "Add directory to playlist"
 msgstr "Verzeichnis zur Wiedergabeliste hinzufügen"
@@ -990,10 +990,10 @@ msgid "Add marker"
 msgstr "Marker hinzufügen"
 
 msgid "Add plugin to Extensions menu*"
-msgstr ""
+msgstr "Plugin zum Erweiterungsmenü hinzufügen*"
 
 msgid "Add plugin to main menu*"
-msgstr ""
+msgstr "Plugin zum Hauptmenü hinzufügen*"
 
 msgid "Add provider"
 msgstr "Provider hinzufügen"
@@ -1011,7 +1011,7 @@ msgid "Add recording (stop after current event)"
 msgstr "Aufnahme hinzufügen (aktuelle Sendung)"
 
 msgid "Add selected folder to bookmarks"
-msgstr ""
+msgstr "Ausgewählten Ordner zu Lesezeichen hinzufügen"
 
 msgid "Add service"
 msgstr "Kanal hinzufügen"
@@ -1197,10 +1197,10 @@ msgid "Alternative"
 msgstr "Alternative"
 
 msgid "Alternative 1"
-msgstr ""
+msgstr "Alternative 1"
 
 msgid "Alternative 2"
-msgstr ""
+msgstr "Alternative 2"
 
 msgid "Alternative URLs for DVB-T/C or ATSC"
 msgstr "Alternative URLs für DVB-T/C or ATSC"
@@ -1402,10 +1402,10 @@ msgstr "Ton PID"
 
 #, python-format
 msgid "Audio PID%s, codec & lang"
-msgstr ""
+msgstr "Audio PID%s, Codec & Sprache"
 
 msgid "Audio PID, codec & lang"
-msgstr ""
+msgstr "Audio PID, Codec & Sprache"
 
 msgid "Audio auto volume level"
 msgstr "Audio Auto Lautstärkeregelung"
@@ -1630,7 +1630,7 @@ msgid "Barbados"
 msgstr "Barbados"
 
 msgid "Basic PID info"
-msgstr ""
+msgstr "Basis PID Info"
 
 msgid "Basic settings"
 msgstr "Grundeinstellungen"
@@ -1705,7 +1705,7 @@ msgid "Bolivia (Plurinational State of)"
 msgstr "Bolivien (Plurinationaler Staat von)"
 
 msgid "Bolt"
-msgstr ""
+msgstr "Bolt"
 
 msgid "Bonaire, Sint Eustatius and Saba"
 msgstr "Bonaire, Sint Eustatius und Saba"
@@ -1720,7 +1720,7 @@ msgid "Boost green"
 msgstr "Grün verstärken"
 
 msgid "Bootup time"
-msgstr ""
+msgstr "Boot Dauer"
 
 msgid "Bosnia and Herzegovina"
 msgstr "Bosnien-Herzegowina"
@@ -1804,7 +1804,7 @@ msgstr "Kanal"
 
 #, python-format
 msgid "CH%s"
-msgstr ""
+msgstr "CH%s"
 
 msgid "CI"
 msgstr "CI"
@@ -1819,7 +1819,7 @@ msgid "CI slot: "
 msgstr "CI Slot: "
 
 msgid "CPU priority for script execution"
-msgstr ""
+msgstr "CPU-Priorität für die Skriptausführung"
 
 msgid "CPU: "
 msgstr "CPU: "
@@ -1850,7 +1850,7 @@ msgid "Calculate all positions"
 msgstr "Berechne alle Positionen"
 
 msgid "Calculate file checksums"
-msgstr ""
+msgstr "Dateiprüfsummen berechnen"
 
 msgid "Calculation complete"
 msgstr "Berechnung abgeschlossen"
@@ -1884,6 +1884,22 @@ msgid ""
 "Screens change with left/right buttons or use red, green, blue to toggle.\n"
 "Yellow for returning back to this intro"
 msgstr ""
+"„Kann verwendet werden, um auf defekte Pixel am TV zu testen.\\n“\n"
+"„\\n“\n"
+"„Verfügbare Farb-Test-Bildschirme:\\n“\n"
+"„\\n“\n"
+"„Rot\\n“\n"
+"„Grün\\n“\n"
+"„Blau\\n“\n"
+"„Wei�~_\\n“\n"
+"„Schwarz\\n“\n"
+"„Cyan\\n“\n"
+"„Magenta\\n“\n"
+"„Gelb\\n“\n"
+"„\\n“\n"
+"„Mit den Tasten Links/Rechts den Bildschirm wechseln.\\n“\n"
+"„Mit den Tasten ROT, GR�~\\N oder BLAU direkt umschalten.\\n“\n"
+"„Mit der Taste GELB zurück zur Einführung.“"
 
 #, python-format
 msgid ""
@@ -1896,7 +1912,7 @@ msgstr ""
 
 #, python-format
 msgid "Can't read link contents: %s"
-msgstr ""
+msgstr "Linkinhalt kann nicht gelesen werden: %s"
 
 msgid "Canada"
 msgstr "Kanada"
@@ -1905,16 +1921,16 @@ msgid "Cancel"
 msgstr "Abbrechen"
 
 msgid "Cancel any changes to the currently active skin"
-msgstr ""
+msgstr "Änderungen am aktiven Skin zurücknehmen"
 
 msgid "Cancel any changes to the currently active skin and exit all menus"
-msgstr ""
+msgstr "Änderungen am aktiven Skin zurücknehmen und alle Menüs schliessen"
 
 msgid "Cancel any text changes and exit"
 msgstr "Jegliche Textänderung abbrechen und verlassen"
 
 msgid "Cancel execution?"
-msgstr ""
+msgstr "Ausführung abbrechen?"
 
 msgid "Cancel the image selection and exit"
 msgstr "Imageauswahl abbrechen und schließen"
@@ -1991,7 +2007,7 @@ msgid "Capacity: "
 msgstr "Kapazität: "
 
 msgid "Card"
-msgstr ""
+msgstr "Karte"
 
 msgid "Cascade PiP"
 msgstr "Kaskadiere PiP"
@@ -2024,10 +2040,10 @@ msgid "Change bouquets in quickzap"
 msgstr "Bouquet wechseln bei Quickzap"
 
 msgid "Change buttons for list navigation"
-msgstr ""
+msgstr "Tasten für die Listennavigation ändern"
 
 msgid "Change execute permissions (755/644)"
-msgstr ""
+msgstr "Berechtigungen ändern (755/644)"
 
 msgid "Change old drive with this new drive"
 msgstr "Ersetze altes Laufwerk mit diesem neuen Laufwerk"
@@ -2061,7 +2077,7 @@ msgid "Channel Info"
 msgstr "Kanal Info"
 
 msgid "Channel button always changes sides"
-msgstr ""
+msgstr "Kanaltaste wechselt immer die Seite"
 
 msgid "Channel context menu"
 msgstr "Kanal Kontextmenü"
@@ -2194,7 +2210,7 @@ msgid "Choose the location for crash and debuglogs."
 msgstr "Speicherort für Crash- und Debuglogs auswählen."
 
 msgid "Choose whether multi channel sound tracks should be convert to PCM or SPDIF."
-msgstr ""
+msgstr "Wählen Sie, ob Multikanal Ton zu PCM oder SPDIF konvertiert werden sollen."
 
 msgid "Choose which tuner to configure."
 msgstr "Wählen Sie den einzustellendenTuner aus."
@@ -2233,7 +2249,7 @@ msgid "Clear playlist"
 msgstr "Wiedergabeliste leeren"
 
 msgid "Client is streaming from this box!"
-msgstr ""
+msgstr "Ein Client streamt von der Box!"
 
 msgid "ClientIP"
 msgstr "ClientIP"
@@ -2311,7 +2327,7 @@ msgid "Comoros"
 msgstr "Comoros"
 
 msgid "Compact flash"
-msgstr ""
+msgstr "Compact Flash"
 
 msgid "Complete"
 msgstr "Komplett"
@@ -2360,7 +2376,7 @@ msgid "Configure an additional delay to improve subtitle synchronisation."
 msgstr "Konfiguriert eine zusätzliche Verzögerung zur besseren Synchronisation der Untertitel."
 
 msgid "Configure default type for new timers."
-msgstr ""
+msgstr "Konfiguriere Standardtyp von neuen Timern."
 
 msgid "Configure for how long the infobar will remain visible after activation."
 msgstr "Konfigurieren Sie wie lange die Infoleiste nach Einblendung sichtbar bleibt."
@@ -2784,22 +2800,22 @@ msgstr "Kopieren"
 
 #, python-format
 msgid "Copy %d elements"
-msgstr ""
+msgstr "%d Elemente kopieren"
 
 msgid "Copy 1 element"
-msgstr ""
+msgstr "1 Element kopieren"
 
 msgid "Copy file"
-msgstr ""
+msgstr "Datei kopieren"
 
 msgid "Copy file/directory to target directory"
-msgstr ""
+msgstr "Datei/Verzeichnis in Zielverzeichnis kopieren"
 
 msgid "Copy files/directories to target directory"
-msgstr ""
+msgstr "Dateien/Verzeichnisse in das Zielverzeichnis kopieren"
 
 msgid "Copy folder"
-msgstr ""
+msgstr "Ordner opieren"
 
 msgid "Copy to bouquets"
 msgstr "In Bouquets kopieren"
@@ -2854,9 +2870,6 @@ msgstr "DVD-ISO erstellen"
 
 msgid "Create directory"
 msgstr "Verzeichnis erstellen"
-
-msgid "Create directory/folder"
-msgstr ""
 
 msgid "Create new folder and exit"
 msgstr "Neuen Ordner erstellen und verlassen"
@@ -2953,7 +2966,7 @@ msgid "Customize"
 msgstr "Anpassen"
 
 msgid "Customize OpenWebIF settings for fallback tuner"
-msgstr ""
+msgstr "Reserve-Tuner in den OpenWebIF Einstellungen anpassen"
 
 msgid "Customize channel list cursor behavior"
 msgstr "Cursor-Verhalten in Kanalliste einstellen"
@@ -3080,7 +3093,7 @@ msgid "Date"
 msgstr "Datum"
 
 msgid "Date reverse"
-msgstr ""
+msgstr "Datum absteigend"
 
 msgid "Date/time input"
 msgstr "Zeit/Datum-Eingabe"
@@ -3101,34 +3114,31 @@ msgid "Default"
 msgstr "Standard"
 
 msgid "Default CPU priority (nice) for executed scripts. This can reduce the load so that scripts do not interfere with the rest of the system. (higher values = lower priority)"
-msgstr ""
-
-msgid "Default Folder"
-msgstr ""
+msgstr "Standard CPU-Priorität (nice) für ausgeführte Skripts. Dies kann die Last reduzieren, so dass Skripts den Rest des Systems nicht beeinträchtigen. (höhere Werte = niedrigere Priorität)"
 
 msgid "Default I/O priority (ionice) for executed scripts. This can reduce the load so that scripts do not interfere with the rest of the system. (higher values = lower priority)"
-msgstr ""
+msgstr "Standard I/O-Priorität (ionice) für ausgeführte Skripts. Dies kann die Last reduzieren, so dass Skripts den Rest des Systems nicht beeinträchtigen. (höhere Werte = niedrigere Priorität)"
 
 msgid "Default Services Scanner"
 msgstr "Standard Kanal Sucher"
 
 msgid "Default directory sorting"
-msgstr ""
+msgstr "Standardsortierung für Verzeichnisse"
 
 msgid "Default file sorting left"
-msgstr ""
+msgstr "Standardsortierung für Dateien links"
 
 msgid "Default file sorting right"
-msgstr ""
+msgstr "Standardsortierung für Dateien rechts"
 
 msgid "Default files/folders to backup"
 msgstr "Standardliste gesicherter Dateien"
 
 msgid "Default folder"
-msgstr ""
+msgstr "Standardordner"
 
 msgid "Default folder if the left or right folder isn't saved, and target folder for button 5."
-msgstr ""
+msgstr "Legt den Standardordner fest, wenn der linke oder rechte Ordner nicht gespeichert wird, sowie den Zielordner für die Taste 5."
 
 msgid "Default movie location"
 msgstr "Standard Filmlisten Ort"
@@ -3140,13 +3150,13 @@ msgid "Default settings"
 msgstr "Voreinstellungen"
 
 msgid "Default sorting method for directories on both sides."
-msgstr ""
+msgstr "Standardsortierung für Verzeichnisse auf beiden Seiten."
 
 msgid "Default sorting method for files on the left side."
-msgstr ""
+msgstr "Standardsortierung für Verzeichnisse auf der linke Seite."
 
 msgid "Default sorting method for files on the right side."
-msgstr ""
+msgstr "rechten"
 
 msgid "Default timer type"
 msgstr "Standard Aufnahmetyp"
@@ -3243,7 +3253,7 @@ msgid "Delete file"
 msgstr "Datei löschen"
 
 msgid "Delete file or directory (and all its contents)"
-msgstr ""
+msgstr "Datei/Verzeichnis (mit gesamtem Inhalt) löschen"
 
 msgid "Delete folder"
 msgstr "Ordner löschen"
@@ -3264,7 +3274,7 @@ msgid "Delete the character under the text cursor"
 msgstr "Lösche das Zeichen unter dem Text Cursor"
 
 msgid "Delete the selected files or directories"
-msgstr ""
+msgstr "Ausgewählte Dateien oder Verzeichnisse löschen"
 
 msgid "Delete timer"
 msgstr "Timer löschen"
@@ -3459,7 +3469,7 @@ msgid "Display EPG list for current channel"
 msgstr "Zeige EPG für aktuellen Kanal"
 
 msgid "Display Skin"
-msgstr ""
+msgstr "Display Skin"
 
 msgid "Display and userinterface"
 msgstr "Display und Benutzeroberfläche"
@@ -4021,6 +4031,10 @@ msgstr "Englisch"
 #, python-format
 msgid "Enigma (re)starts: %d\n"
 msgstr "Enigma (Neu)starts: %d\n"
+
+#, python-format
+msgid "Enigma2 debug level:\t%d"
+msgstr "Enigma2 Debuglevel:\t%d"
 
 msgid "Enter"
 msgstr ""
@@ -9269,7 +9283,7 @@ msgid "Select 'yes' to only send the DiSEqC command when changing from one satel
 msgstr "Wählen Sie \"Ja\", um nur bei Satellitenwechsel den DiSEqC-Befehl zu senden, oder wählen Sie \"Nein\", damit der DiSEqC-Befehl bei jedem Zap gesendet wird."
 
 msgid "Select (source list) or enter directory (target list)"
-msgstr ""
+msgstr "Wählen Sie (Quellenliste) oder betreten Sie das Verzeichnis (Zielliste)"
 
 msgid "Select CAId"
 msgstr "CAID auswählen"
@@ -9302,7 +9316,7 @@ msgid "Select a network adapter"
 msgstr "Netzwerkadapter auswählen"
 
 msgid "Select a path"
-msgstr ""
+msgstr "Pfad auswähle"
 
 msgid "Select a tuner"
 msgstr "Tuner auswählen"
@@ -9617,10 +9631,10 @@ msgid "Service info - ECM Info"
 msgstr "Kanal Info - ECM Info"
 
 msgid "Service info - service & Basic PID Info"
-msgstr ""
+msgstr "Service Info - Service & Basis PID Info"
 
 msgid "Service info - service & Extended PID Info"
-msgstr ""
+msgstr "Service Info - Service & Erweiterte PID Info"
 
 msgid "Service info - service & PIDs"
 msgstr "Service info - service & PIDs"
@@ -9686,7 +9700,7 @@ msgid "Set all hotkey to default?"
 msgstr "Alle Tastenbelegungen auf Voreinstellungen zurücksetzen?"
 
 msgid "Set alternative fallback tuners for DVB-T/C or ATSC"
-msgstr ""
+msgstr "Bestimme alternativen Reserve-Tuner für DVB-T / C oder ATSC"
 
 msgid "Set archive mode (644)"
 msgstr "Archivmodus einstellen (644)"
@@ -9710,7 +9724,7 @@ msgid "Set fixed"
 msgstr "Adresse fest einstellen"
 
 msgid "Set for 'stout' and 'sterr' the number of lines in script info or script error messages."
-msgstr ""
+msgstr "Legen Sie für 'stout' und 'sterr' die Anzahl der Zeilen fest, die in Skriptinformationen oder Skriptfehlermeldungen angezeigt werden."
 
 msgid "Set fps for external subtitles"
 msgstr "Einstellung fps für externe Untertitel"
@@ -9740,13 +9754,13 @@ msgid "Set the MAC-adress of your receiver.\n"
 msgstr "Einstellen der MAC-Adresse Ihres Receivers.\n"
 
 msgid "Set the User ID of the OpenWebif from your fallback tuner"
-msgstr ""
+msgstr "Fügen Sie die User ID des OpenWebIf vom Reserve-Tuner ein"
 
 msgid "Set the password of the OpenWebif from your fallback tuner"
-msgstr ""
+msgstr "Bestimmen Sie das Passwort vom OpenWebIf des Reserve-Tuners"
 
 msgid "Set the port of the OpenWebif from your fallback tuner"
-msgstr ""
+msgstr "Bestimmen Sie den Port vom OpenWebIf des Reserve-Tuners"
 
 msgid "Set the type of the progress indication in the channel selection screen."
 msgstr "Zeige Sendungs-Fortschritt in der Kanal-Liste."
@@ -9827,7 +9841,7 @@ msgid "Shellscript"
 msgstr "Shellscript"
 
 msgid "Shift"
-msgstr ""
+msgstr "Wechsel"
 
 msgid "Short filenames"
 msgstr "Kurze Dateinamen"
@@ -9877,10 +9891,10 @@ msgid "Show SNR percentage instead of dB value"
 msgstr "Zeige SNR Prozentsatz anstelle von dB-Wert"
 
 msgid "Show Script completed message"
-msgstr ""
+msgstr "Benachrichtige wenn Skripts fertig sind"
 
 msgid "Show Task's completed message"
-msgstr ""
+msgstr "Benachrichtige wenn Aufgaben fertig sind"
 
 msgid "Show True/False as graphical switch"
 msgstr "Zeige True / False als grafischen Schalter"
@@ -12302,7 +12316,7 @@ msgid "Use the cursor keys to select an installed image and then Erase button."
 msgstr "Ein installiertes Image auswählen und danach die Taste Grün drücken, um es zu löschen."
 
 msgid "Use the cursor keys to select an installed image and then Reboot button."
-msgstr ""
+msgstr "Ein installiertes Image auswählen und danach die Taste Grün für den Neustart drücken."
 
 msgid "Use the cursor keys to select an installed image and then Start button."
 msgstr "Ein installiertes Image auswählen und danach die grüne Taste um das Fullbackup zu starten."
@@ -13748,22 +13762,16 @@ msgid "connected"
 msgstr "Verbunden"
 
 msgid "controlled by HDMI"
-msgstr ""
+msgstr "HDMI gesteuert"
 
 msgid "convert to multi channel PCM"
-msgstr ""
+msgstr "Konvertiere zu Mehrkanal-PCM"
 
 msgid "cooking"
 msgstr "Kochen"
 
-msgid "copy file"
-msgstr ""
-
-msgid "copy folder"
-msgstr ""
-
 msgid "create symlink ..."
-msgstr ""
+msgstr "erzeuge Symlink…"
 
 msgid "daily"
 msgstr "Täglich"
