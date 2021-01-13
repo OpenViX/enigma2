@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-13 22:11+0100\n"
+"POT-Creation-Date: 2021-01-13 22:52+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: ims <ims21@users.sourceforge.net>\n"
 "Language-Team: PLi <ims@openpli.org>\n"
@@ -5549,7 +5549,7 @@ msgstr "Vyberte soubory/složky pro zálohování"
 msgid "Filesystem check"
 msgstr "Kontrola souborového systému"
 
-msgid "Filter extension for 'My Extension' setting of 'Filter extension'. Use the extension name without a '.'."
+msgid "Filter extension for 'My extension' setting of 'Filter extension'. Use the extension name without a '.'."
 msgstr ""
 
 msgid "Filter extension, (*) appears in title"
@@ -8035,11 +8035,6 @@ msgstr "hudba/balet/tanec"
 
 msgid "Mute"
 msgstr ""
-
-#
-#, fuzzy
-msgid "My Extension"
-msgstr "Rozšíření"
 
 #
 #, fuzzy
@@ -11388,10 +11383,6 @@ msgstr ""
 #
 msgid "Select CAId"
 msgstr "Vyberte CAId"
-
-#
-msgid "Select Channel"
-msgstr "Vybrat kanál"
 
 msgid "Select Fast DiSEqC if your aerial system supports this. If you are unsure select 'no'."
 msgstr ""

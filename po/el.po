@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-13 22:11+0100\n"
+"POT-Creation-Date: 2021-01-13 22:52+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: MCelliotG <mcelliotg@gmail.com>\n"
 "Language-Team: MCelliotG <mcelliotg@gmail.com>\n"
@@ -4873,7 +4873,7 @@ msgstr "Επιλογή αρχείων/φακέλων για αντίγραφα �
 msgid "Filesystem check"
 msgstr "Έλεγχος συστήματος αρχείων"
 
-msgid "Filter extension for 'My Extension' setting of 'Filter extension'. Use the extension name without a '.'."
+msgid "Filter extension for 'My extension' setting of 'Filter extension'. Use the extension name without a '.'."
 msgstr ""
 
 msgid "Filter extension, (*) appears in title"
@@ -7058,10 +7058,6 @@ msgstr "Μουσική/Μπαλέτο/Χορός"
 
 msgid "Mute"
 msgstr ""
-
-#, fuzzy
-msgid "My Extension"
-msgstr "Επεκτάσεις"
 
 #, fuzzy
 msgid "My extension"
@@ -9953,10 +9949,6 @@ msgstr ""
 
 msgid "Select CAId"
 msgstr "Επιλογή CAId"
-
-#, fuzzy
-msgid "Select Channel"
-msgstr "Επιλογή όλων"
 
 msgid "Select Fast DiSEqC if your aerial system supports this. If you are unsure select 'no'."
 msgstr ""

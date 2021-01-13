@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-13 22:11+0100\n"
+"POT-Creation-Date: 2021-01-13 22:52+0100\n"
 "PO-Revision-Date: 2018-12-17 02:51+0200\n"
 "Last-Translator: Hazem <moustafagamal@hotmail.com>\n"
 "Language-Team: Arabic <moustafagamal@hotmail.com>\n"
@@ -5157,7 +5157,7 @@ msgstr "أختار ملفات/مجلدات النسخه الاحتياطيه"
 msgid "Filesystem check"
 msgstr "فحص نظام الملفات"
 
-msgid "Filter extension for 'My Extension' setting of 'Filter extension'. Use the extension name without a '.'."
+msgid "Filter extension for 'My extension' setting of 'Filter extension'. Use the extension name without a '.'."
 msgstr ""
 
 msgid "Filter extension, (*) appears in title"
@@ -7517,10 +7517,6 @@ msgstr ""
 
 msgid "Mute"
 msgstr ""
-
-#, fuzzy
-msgid "My Extension"
-msgstr "إضافات"
 
 #
 #, fuzzy
@@ -10581,11 +10577,6 @@ msgstr ""
 #, fuzzy
 msgid "Select CAId"
 msgstr "أختار"
-
-#
-#, fuzzy
-msgid "Select Channel"
-msgstr "اختار الفيلم"
 
 msgid "Select Fast DiSEqC if your aerial system supports this. If you are unsure select 'no'."
 msgstr ""

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-13 22:11+0100\n"
+"POT-Creation-Date: 2021-01-13 22:52+0100\n"
 "PO-Revision-Date: 2019-07-25 17:52+0300\n"
 "Last-Translator: Dimitrij <Dima-73@inbox.lv>\n"
 "Language-Team: openPLi Dimitrij\n"
@@ -4892,7 +4892,7 @@ msgstr "Выбор файлов/папок для резервного копи�
 msgid "Filesystem check"
 msgstr "Проверка файловой системы"
 
-msgid "Filter extension for 'My Extension' setting of 'Filter extension'. Use the extension name without a '.'."
+msgid "Filter extension for 'My extension' setting of 'Filter extension'. Use the extension name without a '.'."
 msgstr ""
 
 msgid "Filter extension, (*) appears in title"
@@ -7080,10 +7080,6 @@ msgstr "Музыка/Балет/Танец"
 
 msgid "Mute"
 msgstr ""
-
-#, fuzzy
-msgid "My Extension"
-msgstr "Расширения"
 
 #, fuzzy
 msgid "My extension"
@@ -9969,10 +9965,6 @@ msgstr ""
 
 msgid "Select CAId"
 msgstr "Выбор CAId"
-
-#, fuzzy
-msgid "Select Channel"
-msgstr "Выбрать тюнер"
 
 msgid "Select Fast DiSEqC if your aerial system supports this. If you are unsure select 'no'."
 msgstr ""

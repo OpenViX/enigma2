@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-13 22:11+0100\n"
+"POT-Creation-Date: 2021-01-13 22:52+0100\n"
 "PO-Revision-Date: 2019-02-13 20:52+0200\n"
 "Last-Translator: jamu\n"
 "Language-Team: BoxFreak/jamu\n"
@@ -5421,7 +5421,7 @@ msgstr "Valitse varmistettavat tiedostot/kansiot"
 msgid "Filesystem check"
 msgstr "Tiedostojärjestelmän tarkistus"
 
-msgid "Filter extension for 'My Extension' setting of 'Filter extension'. Use the extension name without a '.'."
+msgid "Filter extension for 'My extension' setting of 'Filter extension'. Use the extension name without a '.'."
 msgstr ""
 
 msgid "Filter extension, (*) appears in title"
@@ -7860,11 +7860,6 @@ msgstr "Musiikki/Baletti/Tanssi"
 
 msgid "Mute"
 msgstr ""
-
-#
-#, fuzzy
-msgid "My Extension"
-msgstr "Laajennukset"
 
 #, fuzzy
 msgid "My extension"
@@ -11209,11 +11204,6 @@ msgstr ""
 #
 msgid "Select CAId"
 msgstr "Valitse CAId"
-
-#
-#, fuzzy
-msgid "Select Channel"
-msgstr "Valitse viritin"
 
 msgid "Select Fast DiSEqC if your aerial system supports this. If you are unsure select 'no'."
 msgstr ""

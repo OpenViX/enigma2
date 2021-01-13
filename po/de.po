@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-13 17:52+0100\n"
-"PO-Revision-Date: 2021-01-13 22:10+0100\n"
+"POT-Creation-Date: 2021-01-13 22:54+0100\n"
+"PO-Revision-Date: 2021-01-13 22:53+0100\n"
 "Last-Translator: teamblue-e2 <teamblue@online.de>\n"
 "Language-Team: Teamblue teamblue@online.de\n"
 "Language: de\n"
@@ -4174,7 +4174,7 @@ msgid ""
 "%s"
 msgstr ""
 "Fehler beim Abruf der Notfall Timer Information\n"
-"\v%s"
+"%s"
 
 msgid "Error while retreiving location of epg.dat on server"
 msgstr "Fehler beim Empfangen des epg.dat Speicherorts"
@@ -4603,7 +4603,8 @@ msgstr "Nicht zu sichernde Dateien/Ordner"
 msgid "Filesystem check"
 msgstr "Dateisystemüberprüfung"
 
-msgid "Filter extension for 'My Extension' setting of 'Filter extension'. Use the extension name without a '.'."
+#, fuzzy
+msgid "Filter extension for 'My extension' setting of 'Filter extension'. Use the extension name without a '.'."
 msgstr "Filtererweiterung für 'meine Erweiterung' Einstellung von 'Filtererweiterung'. Verwenden Sie den Erweiterungsnamen ohne '.' ein."
 
 msgid "Filter extension, (*) appears in title"
@@ -6636,16 +6637,13 @@ msgid "Multistream"
 msgstr "Multistream"
 
 msgid "Music"
-msgstr ""
+msgstr "Musik"
 
 msgid "Music/Ballet/Dance"
 msgstr "Musik/Ballett/Tanz"
 
 msgid "Mute"
 msgstr "Stumm"
-
-msgid "My Extension"
-msgstr ""
 
 msgid "My extension"
 msgstr ""
@@ -9174,7 +9172,7 @@ msgid "Scroll repeats"
 msgstr "Text-Durchlauf Wiederholung"
 
 msgid "Search"
-msgstr ""
+msgstr "Suche"
 
 msgid "Search east"
 msgstr "Östlich suchen"
@@ -9287,9 +9285,6 @@ msgstr "Wählen Sie (Quellenliste) oder betreten Sie das Verzeichnis (Zielliste)
 
 msgid "Select CAId"
 msgstr "CAID auswählen"
-
-msgid "Select Channel"
-msgstr "Kanal auswählen"
 
 msgid "Select Fast DiSEqC if your aerial system supports this. If you are unsure select 'no'."
 msgstr "Wählen Sie Fast DiSEqC, wenn Ihr Antennensystem dies unterstützt. Wenn Sie unsicher sind, wählen Sie \"Nein\"."
@@ -10276,13 +10271,13 @@ msgid "Site longitude"
 msgstr "Längengrad ausrichten"
 
 msgid "Size"
-msgstr ""
+msgstr "Größe"
 
 msgid "Size reverse"
 msgstr ""
 
 msgid "Size:"
-msgstr ""
+msgstr "Größe:"
 
 msgid "Skin"
 msgstr "Skin"
@@ -11020,16 +11015,16 @@ msgid "System & Modulation"
 msgstr "System & Modulation"
 
 msgid "T2MI PID"
-msgstr ""
+msgstr "T2MI PID"
 
 msgid "T2MI PLP"
-msgstr ""
+msgstr "T2MI PLP"
 
 msgid "T2MI PLP ID"
-msgstr ""
+msgstr "T2MI PLP ID"
 
 msgid "T2MI RAW Mode"
-msgstr ""
+msgstr "T2MI PLP ID"
 
 msgid "TEXT"
 msgstr "TEXT"
@@ -11066,7 +11061,7 @@ msgid "Tags"
 msgstr "Tags"
 
 msgid "Taiwan"
-msgstr ""
+msgstr "Taiwan"
 
 msgid "Tajikistan"
 msgstr "Tajikistan"
@@ -11281,7 +11276,7 @@ msgstr ""
 "Testmuster von TigerDave - www.tigerdave.com/ht_menu.htm"
 
 msgid "The password can not be blank."
-msgstr ""
+msgstr "Das Passwort kann nicht leer sein."
 
 #, python-format
 msgid "The path %s already exists."
@@ -11372,10 +11367,10 @@ msgid "There are currently no outstanding actions."
 msgstr "Es sind keine Aktivitäten geplant."
 
 msgid "There are no saved playlists to delete!"
-msgstr ""
+msgstr "Keine gespeicherten Wiedergabelisten zum löschen vorhanden!"
 
 msgid "There are no saved playlists to load!"
-msgstr ""
+msgstr "Keine gespeicherten Wiedergabelisten zum zum laden vorhanden!"
 
 msgid "There are no updates available."
 msgstr "Es sind keine Updates verfügbar."
@@ -11739,7 +11734,7 @@ msgid "Timer type"
 msgstr "Timertyp"
 
 msgid "Timer:"
-msgstr ""
+msgstr "Timer:"
 
 msgid "Timeshift"
 msgstr "Timeshift"

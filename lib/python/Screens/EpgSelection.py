@@ -57,7 +57,7 @@ class EPGSelection(Screen):
 			self.setTitle(_("Single EPG"))
 			self.type = EPG_TYPE_SINGLE
 			self["key_yellow"] = StaticText()
-			self["key_blue"] = StaticText(_("Select Channel"))
+			self["key_blue"] = StaticText(_("Select channel"))
 			self.currentService=ServiceReference(service)
 			self.zapFunc = zapFunc
 			self.sort_type = 0

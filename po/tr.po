@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue (Apachi70)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-13 22:11+0100\n"
+"POT-Creation-Date: 2021-01-13 22:52+0100\n"
 "PO-Revision-Date: 2015-12-18 21:05+0200\n"
 "Last-Translator: Yetkin AYDIN <yetkina@gmail.com>\n"
 "Language-Team: http://www.hurforum.com <yetkina@gmail.com>\n"
@@ -4699,7 +4699,8 @@ msgstr "Yedeklenecek dosya/klasörleri seç"
 msgid "Filesystem check"
 msgstr "Dosya sistemi kontrolü"
 
-msgid "Filter extension for 'My Extension' setting of 'Filter extension'. Use the extension name without a '.'."
+#, fuzzy
+msgid "Filter extension for 'My extension' setting of 'Filter extension'. Use the extension name without a '.'."
 msgstr "Filter Filtre uzantısı ’için My Uzantım’ ayarı için filtre uzantısı. '. Olmadan uzantı adını kullanın '.'."
 
 msgid "Filter extension, (*) appears in title"
@@ -6789,9 +6790,6 @@ msgstr "Müzik/Bale/Dans"
 
 msgid "Mute"
 msgstr ""
-
-msgid "My Extension"
-msgstr "Benim uzatma"
 
 msgid "My extension"
 msgstr "Benim uzatma"
@@ -9502,9 +9500,6 @@ msgstr "Seçin (kaynak listesi) veya dizini girin (hedef listesi)"
 
 msgid "Select CAId"
 msgstr "CAId Seç"
-
-msgid "Select Channel"
-msgstr "Kanal seçin"
 
 msgid "Select Fast DiSEqC if your aerial system supports this. If you are unsure select 'no'."
 msgstr "Anten sisteminiz bunu destekliyorsa Hızlı DiSEqC'yi seçin. Emin değilseniz 'hayır' seçeneğini seçin."

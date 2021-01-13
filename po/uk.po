@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-13 22:11+0100\n"
+"POT-Creation-Date: 2021-01-13 22:52+0100\n"
 "PO-Revision-Date: 2016-11-17 12:51+0200\n"
 "Last-Translator: vovan43<vovan43@ex.ua>, sety <tim1065@mail.ru>, Irkoff <irkoff@gmail.com>\n"
 "Language-Team: gisclub.tv <http://gisclub.tv/>\n"
@@ -4904,7 +4904,7 @@ msgstr "Вибір файлів/папок для резервного копі�
 msgid "Filesystem check"
 msgstr "Перевірка файлової системи"
 
-msgid "Filter extension for 'My Extension' setting of 'Filter extension'. Use the extension name without a '.'."
+msgid "Filter extension for 'My extension' setting of 'Filter extension'. Use the extension name without a '.'."
 msgstr ""
 
 msgid "Filter extension, (*) appears in title"
@@ -7090,10 +7090,6 @@ msgstr "Музика/Балет/Танець"
 
 msgid "Mute"
 msgstr ""
-
-#, fuzzy
-msgid "My Extension"
-msgstr "Плагіни та Додатки"
 
 #, fuzzy
 msgid "My extension"
@@ -9995,10 +9991,6 @@ msgstr ""
 
 msgid "Select CAId"
 msgstr "Вибір CAId"
-
-#, fuzzy
-msgid "Select Channel"
-msgstr "Вибрати тюнер"
 
 msgid "Select Fast DiSEqC if your aerial system supports this. If you are unsure select 'no'."
 msgstr ""
