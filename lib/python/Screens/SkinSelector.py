@@ -95,14 +95,17 @@ class SkinSelector(Screen, HelpableScreen):
 					skinSize = None
 					resolution = None
 					if skinFile == "skin.xml":
-						with open(skinPath, "r") as fd:
-							mm = mmap.mmap(fd.fileno(), 0, prot=mmap.PROT_READ)
-							skinWidth = re.search(r"<?resolution.*?\sxres\s*=\s*\"(\d+)\"", mm)
-							skinHeight = re.search(r"<?resolution.*?\syres\s*=\s*\"(\d+)\"", mm)
-							if skinWidth and skinHeight:
-								skinSize = "%sx%s" % (skinWidth.group(1), skinHeight.group(1))
-							resolution = skinHeight and resolutions.get(skinHeight.group(1), None)
-							mm.close()
+						try:
+							with open(skinPath, "r") as fd:
+								mm = mmap.mmap(fd.fileno(), 0, prot=mmap.PROT_READ)
+								skinWidth = re.search(r"<?resolution.*?\sxres\s*=\s*\"(\d+)\"", mm)
+								skinHeight = re.search(r"<?resolution.*?\syres\s*=\s*\"(\d+)\"", mm)
+								if skinWidth and skinHeight:
+									skinSize = "%sx%s" % (skinWidth.group(1), skinHeight.group(1))
+								resolution = skinHeight and resolutions.get(skinHeight.group(1), None)
+								mm.close()
+						except:
+							pass
 						print("[SkinSelector] Resolution of skin '%s': '%s' (%s)." % (skinPath, "Unknown" if resolution is None else resolution, skinSize))
 						# Code can be added here to reject unsupported resolutions.
 					# The "piconprev.png" image should be "prevpicon.png" to keep it with its partner preview image.
