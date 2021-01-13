@@ -399,7 +399,7 @@ class FileCommanderScreen(Screen, HelpableScreen, key_actions):
 			"prevMarker": (self.listLeft, _("Activate left-hand file list as source")),
 			"nextBouquet": (self.listRightB, _("Activate right-hand file list as source")),
 			"prevBouquet": (self.listLeftB, _("Activate left-hand file list as source")),
-			"1": (self.gomakeDir, _("Create directory/folder")),
+			"1": (self.gomakeDir, _("Create directory")),
 			"2": (self.gomakeSym, _("Create user-named symbolic link")),
 			"3": (self.gofileStatInfo, _("File/Directory Status Information")),
 			"4": (self.call_change_mode, _("Change execute permissions (755/644)")),
