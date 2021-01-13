@@ -200,7 +200,7 @@ class FileCommanderSetup(ConfigListScreen, Screen):
 
 	def ok(self):
 		if self["config"].getCurrent()[1] is config.plugins.filecommander.path_default:
-			self.session.openWithCallback(self.pathSelected, LocationBox, text=_("Default Folder"), currDir=config.plugins.filecommander.path_default.getValue(), minFree=100)
+			self.session.openWithCallback(self.pathSelected, LocationBox, text=_("Default folder"), currDir=config.plugins.filecommander.path_default.getValue(), minFree=100)
 
 	def pathSelected(self, res):
 		if res is not None:
