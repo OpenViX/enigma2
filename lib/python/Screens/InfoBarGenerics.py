@@ -243,15 +243,16 @@ class InfoBarUnhandledKey:
 
 	def actionA(self, key, flag):  # This function is called on every keypress!
 		print "[InfoBarGenerics] Key: %s (%s) KeyID='%s' Binding='%s'." % (key, KEYFLAGS[flag], self.invKeyIds.get(key, ""), getKeyDescription(key))
-		self.unhandledKeyDialog.hide()
-		if self.closeSIB(key) and self.secondInfoBarScreen and self.secondInfoBarScreen.shown:
-			self.secondInfoBarScreen.hide()
-			self.secondInfoBarWasShown = False
+		if flag != 2: # don't hide on repeat
+			self.unhandledKeyDialog.hide()
+			if self.closeSIB(key) and self.secondInfoBarScreen and self.secondInfoBarScreen.shown:
+				self.secondInfoBarScreen.hide()
+				self.secondInfoBarWasShown = False
 		if flag != 4:
 			if self.flags & (1 << 1):
 				self.flags = self.uflags = 0
 			self.flags |= (1 << flag)
-			if flag == 1:  # Break
+			if flag == 1 or flag == 3:  # Break and Long
 				self.checkUnusedTimer.start(0, True)
 		return 0
 
