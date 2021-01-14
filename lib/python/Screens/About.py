@@ -19,7 +19,7 @@ from Components.ProgressBar import ProgressBar
 from os import popen
 from Tools.StbHardware import getFPVersion
 
-from boxbranding import getBoxType, getMachineBuild
+from boxbranding import getBoxType, getMachineBuild, getImageVersion, getImageType
 boxtype = getBoxType()
 
 from enigma import eTimer, eLabel, eConsoleAppContainer, getDesktop
@@ -344,8 +344,8 @@ class CommitInfo(Screen):
 		self.project = 0
 		self.projects = [
 			#("organisation",  "repository",           "readable name",                "branch", "github/gitlab"),
-			("teamblue-e2",      "enigma2",               "teamBlue Enigma2",             "6.5", "github"),
-			("teamblue-e2",      "skin",             "teamBlue Skin GigaBlue Pax",   "master", "github"),
+                        ("teamblue-e2",      "enigma2",               "teamBlue Enigma2",             ("master" if (getImageType() == "DEV") else getImageVersion())  , "github"),
+			("teamblue-e2",      "skin",             "teamBlue Skin GigaBlue Pax",   ("master" if (getImageType() == "release") else getImageType()), "github"),
 			("oe-alliance",   "oe-alliance-core",     "OE Alliance Core",             "4.5", "github"),
 			("oe-alliance",   "oe-alliance-plugins",  "OE Alliance Plugins",          "master", "github"),
 			("oe-alliance",   "enigma2-plugins",      "OE Alliance Enigma2 Plugins",  "master", "github")
