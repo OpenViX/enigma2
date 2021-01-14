@@ -890,6 +890,10 @@ class Troubleshoot(Screen):
 		self.container = None
 		self.close()
 
+	def getDebugFilesList(self):
+		import glob
+		return [x for x in sorted(glob.glob("/home/root/enigma.*.debuglog"), key=lambda x: os.path.isfile(x) and os.path.getmtime(x))]
+
 	def getLogFilesList(self):
 		import glob
 		home_root = "/home/root/enigma2_crash.log"
