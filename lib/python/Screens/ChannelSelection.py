@@ -1748,39 +1748,21 @@ class ChannelSelectionBase(Screen, HelpableScreen):
 
 	def _prevNextBouquetHelp(self, prev=False):
 		if ("reverseB" in config.usage.servicelist_cursor_behavior.value) == prev:
-			if config.usage.channelbutton_mode.value == '0':
-				return _("Move up in bouquet list")
-			else:
-				return _("Move up in channel list")
+			return _("Move up in bouquet list")
 		else:
-			if config.usage.channelbutton_mode.value == '0':
-				return _("Move down in bouquet list")
-			else:
-				return _("Move down in channel list")
+			return _("Move down in bouquet list")
 
 	def nextBouquet(self):
 		if "reverseB" in config.usage.servicelist_cursor_behavior.value:
-			if config.usage.channelbutton_mode.value == '0':
-				self.changeBouquet(-1)
-			else:
-				self.servicelist.moveDown()
+			self.changeBouquet(-1)
 		else:
-			if config.usage.channelbutton_mode.value == '0':
-				self.changeBouquet(+1)
-			else:
-				self.servicelist.moveUp()
+			self.changeBouquet(+1)
 
 	def prevBouquet(self):
 		if "reverseB" in config.usage.servicelist_cursor_behavior.value:
-			if config.usage.channelbutton_mode.value == '0':
-				self.changeBouquet(+1)
-			else:
-				self.servicelist.moveUp()
+			self.changeBouquet(+1)
 		else:
-			if config.usage.channelbutton_mode.value == '0':
-				self.changeBouquet(-1)
-			else:
-				self.servicelist.moveDown()
+			self.changeBouquet(-1)
 
 	def toggleTwoLines(self):
 		if config.usage.setup_level.index > 1 and not self.pathChangeDisabled and self.servicelist.mode == self.servicelist.MODE_FAVOURITES:

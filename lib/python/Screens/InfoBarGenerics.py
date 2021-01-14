@@ -1152,10 +1152,10 @@ class InfoBarChannelSelection:
 				"openBouquets": (self.openBouquets, _("Open the favourites list")),
 				"LeftPressed": (self.LeftPressed, self._helpLeftPressed),
 				"RightPressed": (self.RightPressed, self._helpRightPressed),
-				"ChannelPlusPressed": (self.ChannelPlusPressed, self._helpChannelPlusPressed),
-				"ChannelMinusPressed": (self.ChannelMinusPressed, self._helpChannelMinusPressed),
-				"ChannelPlusPressedLong": (self.ChannelPlusPressed, self._helpChannelPlusPressed),
-				"ChannelMinusPressedLong": (self.ChannelMinusPressed, self._helpChannelMinusPressed),
+				"ChannelPlusPressed": (self.zapDown, _("Switch to the next channel")),
+				"ChannelMinusPressed": (self.zapUp, _("Switch to the previous channel")),
+				"ChannelPlusPressedLong": (self.zapDown, _("Switch the PiP to the next channel")),
+				"ChannelMinusPressedLong": (self.zapUp, _("Switch the PiP to the previous channel")),
 			}, description=_("Channel selection"))
 
 	def _helpLeftRightPressed(self, zapHelp):
@@ -1178,39 +1178,6 @@ class InfoBarChannelSelection:
 			self.openInfoBarEPG()
 		else:
 			self.zapDown()
-
-	def _helpChannelPlusMinusPressed(self, zapHelp):
-		return [
-			zapHelp,
-			_("Show channel list"),
-			_("Show bouquet list"),
-		][int(config.usage.channelbutton_mode.value)]
-
-	def _helpChannelPlusPressed(self):
-		return self._helpChannelPlusMinusPressed(_("Switch to the next channel"))
-
-	def ChannelPlusPressed(self):
-		if config.usage.channelbutton_mode.value == "0" or config.usage.show_second_infobar.value == "INFOBAREPG":
-			self.zapDown()
-		elif config.usage.channelbutton_mode.value == "1":
-			self.openServiceList()
-		elif config.usage.channelbutton_mode.value == "2":
-			self.serviceListType = "Norm"
-			self.servicelist.showFavourites()
-			self.session.execDialog(self.servicelist)
-
-	def _helpChannelMinusPressed(self):
-		return self._helpChannelPlusMinusPressed(_("Switch to the previous channel"))
-
-	def ChannelMinusPressed(self):
-		if config.usage.channelbutton_mode.value == "0" or config.usage.show_second_infobar.value == "INFOBAREPG":
-			self.zapUp()
-		elif config.usage.channelbutton_mode.value == "1":
-			self.openServiceList()
-		elif config.usage.channelbutton_mode.value == "2":
-			self.serviceListType = "Norm"
-			self.servicelist.showFavourites()
-			self.session.execDialog(self.servicelist)
 
 	def showTvChannelList(self, zap=False):
 		self.servicelist.setModeTv()
