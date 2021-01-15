@@ -1080,7 +1080,7 @@ void eDVBDB::loadBouquet(const char *path)
 			}
 			else
 			{
-				eDebug("can't load bouquet %s",path);
+				eDebug("[eDVBDB] can't load bouquet %s",path);
 				return;
 			}
 		}
