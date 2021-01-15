@@ -18,10 +18,6 @@ bcm7356|bcm7362|bcm73625|bcm7252s|bcm72604 )
   TASKSETVALUE=1;;
 esac
 
-# disable oom killer
-# echo 99 >/proc/sys/vm/overcommit_ratio
-# echo 2 >/proc/sys/vm/overcommit_memory
-
 # check for /etc/enigma2 folder
 if [ ! -d /etc/enigma2 ] ; then
 	mkdir -p /etc/enigma2
@@ -55,14 +51,6 @@ fi
 ## update NTP time if NTP Time Enabled
 #if [ "$(grep config.misc.SyncTimeUsing /etc/enigma2/settings)" == "config.misc.SyncTimeUsing=1" ]; then
 #	@sbindir@/ntpdate -s -u pool.ntp.org &
-#fi
-
-# update permissions of autofs config files
-#if [ ! -f /etc/auto.network ] ; then
-# chmod 640 /etc/auto.network
-# chmod 644 /etc/auto.master
-# chmod 755 /etc/auto.net
-# /etc/init.d/autofs restart
 #fi
 
 # remove annoying WebInterface relicts
@@ -100,11 +88,7 @@ if [ -d /home/root ]; then
 fi
 
 # any debuglevel passed?
-if [ -z $ENIGMA_DEBUG_LVL ]; then
-	DEBUG_LVL=3
-else
-	DEBUG_LVL=$ENIGMA_DEBUG_LVL
-fi
+DEBUG_LVL=${ENIGMA_DEBUG_LVL:-4}
 
 #check for sundtek tuner helper lib
 if [ -e /opt/lib/libmediaclient.so ]; then
@@ -121,15 +105,9 @@ sysctl -p
 (sleep 2; echo "enigma2 is the main pvr application... adjust oom score!"; PID=$(pidof enigma2); \
         [ -e /proc/$PID/oom_score_adj ] && echo "-999" > /proc/$PID/oom_score_adj || echo "-17" > /proc/$PID/oom_adj;) &
 
-VERBOSE=''
-if [ "$(grep config.log.level /etc/enigma2/settings)" == "config.log.level=3" ]; then
-	DEBUG_LVL='4'
-fi
-
 export LC_CTYPE="en_US.UTF-8"
 
 if [ "$(grep config.crash.enabledebug /etc/enigma2/settings)" == "config.crash.enabledebug=true" ]; then
-	DEBUG_LVL='4'
 	RANDOMIZE1970=''
 	time=`date +%Y` ;
 	if [ "$time" = 1970 ]; then
@@ -140,9 +118,11 @@ if [ "$(grep config.crash.enabledebug /etc/enigma2/settings)" == "config.crash.e
 	if [ "$(grep config.crash.debug_path= /etc/enigma2/settings | sed 's/config.crash.debug_path=//g')" != "" -a -d "$(grep config.crash.debug_path= /etc/enigma2/settings | sed 's/config.crash.debug_path=//g')" ]; then
 		LOGFOLDER=$(grep config.crash.debug_path= /etc/enigma2/settings | sed 's/config.crash.debug_path=//g')
 	fi
-	LD_PRELOAD=$LIBS ENIGMA_DEBUG_LVL=$DEBUG_LVL @bindir@/enigma2 &> ${LOGFOLDER}Enigma2-debug-$(date +%Y%m%d_%H-%M-%S)${RANDOMIZE1970}.log
+	LD_PRELOAD=$LIBS ENIGMA_DEBUG_LVL=$DEBUG_LVL @bindir@/enigma2 2&>1 | tee -a ${LOGFOLDER}Enigma2-debug-$(date +%Y%m%d_%H-%M-%S)${RANDOMIZE1970}.log
+	ret=${PIPESTATUS[0]}
 else
 	LD_PRELOAD=$LIBS ENIGMA_DEBUG_LVL=$DEBUG_LVL @bindir@/enigma2
+	ret=$?
 fi
 
 # enigma2 exit codes:
@@ -153,7 +133,6 @@ fi
 #
 # >128 signal
 
-ret=$?
 if [ "$ret" -ne "1" ]; then
 	if [ -e /proc/stb/info/boxtype ]; then
 		stbcheck=`cat /proc/stb/info/boxtype`
