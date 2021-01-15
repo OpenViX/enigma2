@@ -1,4 +1,4 @@
-import glob
+lib/python/Tools/Multiboot.py   import glob
 import shutil
 import subprocess
 
@@ -184,8 +184,11 @@ class GetImagelist():
 						date = max(date, datetime.fromtimestamp(stat(path.join(imagedir, "usr/bin/enigma2")).st_mtime).strftime("%Y-%m-%d"))
 					except Exception:
 						date = _("Unknown")
-					reader = boxbranding_reader(imagedir)
-					BuildVersion = "%s - %s (%s)" % (open(path.join(imagedir, "etc/issue")).readlines()[-2].capitalize().strip()[:-6], reader.getImageType(), date)
+					try:
+						reader = boxbranding_reader(imagedir)
+						BuildVersion = "%s - %s (%s)" % (open(path.join(imagedir, "etc/issue")).readlines()[-2].capitalize().strip()[:-6], reader.getImageType(), date)
+					except Exception:
+						BuildVersion = "%s (%s)" % (open(path.join(imagedir, "etc/issue")).readlines()[-2].capitalize().strip()[:-6], date)
 				self.imagelist[self.slot] = {"imagename": "%s" % BuildVersion}
 			else:
 				self.imagelist[self.slot] = {"imagename": _("Empty slot")}
