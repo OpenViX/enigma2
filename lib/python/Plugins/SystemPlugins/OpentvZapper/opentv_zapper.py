@@ -1,5 +1,6 @@
 from __future__ import print_function
 from __future__ import absolute_import
+from __future__ import division
 
 from Components.config import config
 from Components.NimManager import nimmanager
@@ -80,7 +81,7 @@ class LamedbReader():
 
 		try:
 			lamedb = open(path + "/lamedb", "r")
-		except Exception, e:
+		except Exception as e:
 			return transponders
 
 		content = lamedb.read()
@@ -197,7 +198,7 @@ class LamedbReader():
 
 		srv_blocks = content[srv_start + 9:srv_stop].strip().split("\n")
 
-		for i in range(0, len(srv_blocks)/3):
+		for i in list(range(0, len(srv_blocks)//3)):
 			service_reference = srv_blocks[i*3].strip()
 			service_name = srv_blocks[(i*3)+1].strip()
 			service_provider = srv_blocks[(i*3)+2].strip()
@@ -618,7 +619,7 @@ class LamedbWriter():
 					service["flags"],
 					":%x" % service["ATSC_source_id"] if "ATSC_source_id" in service else ":0"))
 
-				control_chars = ''.join(map(unichr, range(0,32) + range(127,160)))
+				control_chars = ''.join(map(unichr, list(range(0,32)) + list(range(127,160))))
 				control_char_re = re.compile('[%s]' % re.escape(control_chars))
 				if 'provider_name' in service.keys():
 					service_name = control_char_re.sub('', service["service_name"]).decode('latin-1').encode("utf8")
