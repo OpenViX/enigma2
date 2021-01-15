@@ -1,4 +1,4 @@
-lib/python/Tools/Multiboot.py   import glob
+import glob
 import shutil
 import subprocess
 
