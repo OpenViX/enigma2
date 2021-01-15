@@ -4677,7 +4677,7 @@ msgid "Flash Online"
 msgstr "Flashen Online"
 
 msgid "Flash and restore settings"
-msgstr "Flaschen und Einstellungen wiederherstellen"
+msgstr "Flashen und Einstellungen wiederherstellen"
 
 msgid "Flash on the fly your your Receiver software."
 msgstr "Online-Flash Ihrer Receiver-Software."
