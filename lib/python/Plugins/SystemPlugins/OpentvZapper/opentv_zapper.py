@@ -725,11 +725,15 @@ class Opentv_Zapper():
 		from Screens.Standby import inStandby
 
 		# this is here so tuner setup is fresh for every download
-		self.num_tuners = len(getNimListForSat(self.transponder["orbital_position"]))
-		if self.session and self.num_tuners and not self.downloading and not self.session.nav.RecordTimer.isRecording():
+		tuners = getNimListForSat(self.transponder["orbital_position"])
+		num_tuners = len(tuners)
+		if self.session and num_tuners and not self.downloading and not self.session.nav.RecordTimer.isRecording():
 			self.adapter = None
 			self.downloading = False
-			if not inStandby and self.num_tuners > 1:
+			currentlyPlayingNIM = self.getCurrentlyPlayingNIM()
+			print("[%s]currentlyPlayingNIM" % (debug_name), currentlyPlayingNIM)
+			print("[%s]available tuners" % (debug_name), tuners)
+			if not inStandby and (num_tuners > 1 or tuners[0] != currentlyPlayingNIM):
 				self.adapter = RecordAdapter(self.session)
 				self.downloading = self.adapter.play(self.sref)
 			if not self.downloading and (inStandby or self.force):
@@ -757,6 +761,15 @@ class Opentv_Zapper():
 		print("[%s]download completed... Next download scheduled for %s" % (debug_name, next_download))
 		if not inStandby and config.plugins.opentvzapper.notifications.value:
 			Notifications.AddPopup(text=_("OpenTV EPG download completed.\nNext download: %s") % next_download, type=MessageBox.TYPE_INFO, timeout=5, id=debug_name)
+
+	def getCurrentlyPlayingNIM(self):
+		currentlyPlayingNIM = None
+		currentService = self.session and self.session.nav.getCurrentService()
+		frontendInfo = currentService and currentService.frontendInfo()
+		frontendData = frontendInfo and frontendInfo.getAll(True)
+		if frontendData is not None:
+			currentlyPlayingNIM = frontendData.get("tuner_number", None)
+		return currentlyPlayingNIM
 		
 		
 opentv_zapper = Opentv_Zapper()
