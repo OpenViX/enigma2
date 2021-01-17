@@ -173,6 +173,19 @@ class ConfigElement(object):
 					x(self)
 
 	def addNotifier(self, notifier, initial_call=True, immediate_feedback=True, extra_args=None):
+		# "initial_call=True" triggers the notifier as soon as "addNotifier" is encountered in the code. 
+		#
+		# "initial_call=False" skips the above activation of the notifier.
+		#
+		# "immediate_feedback=True" notifiers are called on every single change of the config item,  
+		# e.g. if going left/right through a ConfigSelection it will trigger on every step.
+		#
+		# "immediate_feedback=False" notifiers are only called from ConfigList screens, and only called 
+		# "onDeselect", i.e. moving to another list item, or closing the ConfigList screen. 
+		# 
+		# Use of the "self.callNotifiersOnSaveAndCancel" flag is dubious as it affects all notifiers of the current  
+		# config element (i.e. self). It is impossible to confine this to individual notifiers. This need looking at.
+		#
 		assert callable(notifier), "notifiers must be callable"
 		if extra_args is not None:
 			self.__addExtraArgs(notifier, extra_args)
