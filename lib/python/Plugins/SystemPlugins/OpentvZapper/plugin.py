@@ -27,6 +27,7 @@ class OpentvZapper_Setup(Setup):
 	def keySave(self):
 		if config.plugins.opentvzapper.enabled.value:
 			config.epg.opentv.value = True
+			config.epg.opentv.save()
 		provider_changed = config.plugins.opentvzapper.providers.isChanged()
 		enabled_changed = config.plugins.opentvzapper.enabled.isChanged()
 		self.saveAll()
