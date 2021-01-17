@@ -716,25 +716,27 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 				'movieoff_menu': _("On end of movie (as menu)")
 			}
 			for p in plugins.getPlugins(PluginDescriptor.WHERE_MOVIELIST):
-				userDefinedActions['@' + p.name] = p.description
+				userDefinedActions['@' + p.name] = p.description.capitalize()
 			prefix = _("Goto") + ": "
 			for d,p in buildMovieLocationList():
 				if p and p.startswith('/'):
 					userDefinedActions[p] = prefix + d
-			config.movielist.btn_red = ConfigSelection(default='delete', choices=userDefinedActions)
-			config.movielist.btn_green = ConfigSelection(default='move', choices=userDefinedActions)
-			config.movielist.btn_yellow = ConfigSelection(default='bookmarks', choices=userDefinedActions)
-			config.movielist.btn_blue = ConfigSelection(default='sortby', choices=userDefinedActions)
-			config.movielist.btn_redlong = ConfigSelection(default='rename', choices=userDefinedActions)
-			config.movielist.btn_greenlong = ConfigSelection(default='copy', choices=userDefinedActions)
-			config.movielist.btn_yellowlong = ConfigSelection(default='tags', choices=userDefinedActions)
-			config.movielist.btn_bluelong = ConfigSelection(default='sortdefault', choices=userDefinedActions)
-			config.movielist.btn_radio = ConfigSelection(default='tags', choices=userDefinedActions)
-			config.movielist.btn_tv = ConfigSelection(default='gohome', choices=userDefinedActions)
-			config.movielist.btn_text = ConfigSelection(default='movieoff', choices=userDefinedActions)
-			config.movielist.btn_F1 = ConfigSelection(default='movieoff_menu', choices=userDefinedActions)
-			config.movielist.btn_F2 = ConfigSelection(default='preview', choices=userDefinedActions)
-			config.movielist.btn_F3 = ConfigSelection(default='/media', choices=userDefinedActions)
+			choices = [(k, v) for k, v in userDefinedActions.items()]
+			choices.sort(key=lambda t: t[1])
+			config.movielist.btn_red = ConfigSelection(default='delete', choices=choices)
+			config.movielist.btn_green = ConfigSelection(default='move', choices=choices)
+			config.movielist.btn_yellow = ConfigSelection(default='bookmarks', choices=choices)
+			config.movielist.btn_blue = ConfigSelection(default='sortby', choices=choices)
+			config.movielist.btn_redlong = ConfigSelection(default='rename', choices=choices)
+			config.movielist.btn_greenlong = ConfigSelection(default='copy', choices=choices)
+			config.movielist.btn_yellowlong = ConfigSelection(default='tags', choices=choices)
+			config.movielist.btn_bluelong = ConfigSelection(default='sortdefault', choices=choices)
+			config.movielist.btn_radio = ConfigSelection(default='tags', choices=choices)
+			config.movielist.btn_tv = ConfigSelection(default='gohome', choices=choices)
+			config.movielist.btn_text = ConfigSelection(default='movieoff', choices=choices)
+			config.movielist.btn_F1 = ConfigSelection(default='movieoff_menu', choices=choices)
+			config.movielist.btn_F2 = ConfigSelection(default='preview', choices=choices)
+			config.movielist.btn_F3 = ConfigSelection(default='/media', choices=choices)
 			userDefinedButtons ={
 				'red': config.movielist.btn_red,
 				'green': config.movielist.btn_green,
