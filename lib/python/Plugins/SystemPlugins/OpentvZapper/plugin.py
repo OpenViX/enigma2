@@ -42,7 +42,7 @@ def startdownload(session, **kwargs): # Called from extensions menu if this opti
 
 def OpentvZapperStart(menuid, **kwargs): # Menu position of plugin setup screen
 	if menuid == "epg":
-		return [(_("OpenTV EPG"), OpentvZapperMain, "OpentvZapper_Setup", None)]
+		return [(_("OpenTV EPG downloader"), OpentvZapperMain, "OpentvZapper_Setup", None)]
 	return []
 
 def OpentvZapperMain(session, **kwargs): # calls setup screen
