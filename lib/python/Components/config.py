@@ -222,6 +222,7 @@ class ConfigElement(object):
 
 	def onDeselect(self, session):
 		if not self.last_value == self.value:
+			self.changedFinal()
 			self.last_value = self.value
 
 	def hideHelp(self, session):
