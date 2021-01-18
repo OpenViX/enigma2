@@ -5,7 +5,7 @@ from enigma import ePicLoad, getDesktop
 from os import listdir
 from os.path import dirname, exists, isdir, join as pathjoin
 
-from skin import DEFAULT_SKIN, DEFAULT_DISPLAY_SKIN, EMERGENCY_NAME, EMERGENCY_SKIN, currentDisplaySkin, currentPrimarySkin, domScreens
+from skin import DEFAULT_SKIN, DEFAULT_DISPLAY_SKIN, EMERGENCY_NAME, EMERGENCY_SKIN, currentDisplaySkin, currentPrimarySkin, currentClockSkin, domScreens, DISPLAY_SKIN_ID, loadSkin
 from Components.ActionMap import HelpableNumberActionMap
 from Components.config import config
 from Components.Pixmap import Pixmap
@@ -15,7 +15,7 @@ from Screens.HelpMenu import HelpableScreen
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
 from Screens.Standby import TryQuitMainloop, QUIT_RESTART
-from Tools.Directories import resolveFilename, SCOPE_CURRENT_SKIN, SCOPE_LCDSKIN, SCOPE_SKIN
+from Tools.Directories import resolveFilename, SCOPE_CURRENT_SKIN, SCOPE_LCDSKIN, SCOPE_SKIN, SCOPE_CURRENT_LCDSKIN
 
 
 class SkinSelector(Screen, HelpableScreen):
@@ -235,10 +235,127 @@ class LcdSkinSelector(SkinSelector):
 	def __init__(self, session, screenTitle=_("Display Skin")):
 		SkinSelector.__init__(self, session, screenTitle=screenTitle)
 		self.skinName = ["LcdSkinSelector", "SkinSelector"]
-		self.rootDir = resolveFilename(SCOPE_LCDSKIN)
+		self.rootDir = resolveFilename(SCOPE_LCDSKIN, "lcd_skin/")
 		self.config = config.skin.display_skin
 		self.current = currentDisplaySkin
-		self.xmlList = ["skin_display.xml", "skin_display_picon.xml"]
+		self.xmlList = []
+		from os.path import walk
+		walk(self.rootDir, self.find, "")
+
+	def find(self, arg, dirname, names):
+		for x in names:
+			if x.startswith("skin_lcd") and x.endswith(".xml"):
+				if dirname <> self.rootDir:
+					subdir = dirname[19:]
+					skinname = x
+					#skinname = skinname
+					self.xmlList.append(skinname)
+				else:
+					skinname = x
+					self.xmlList.append(skinname)
+
+	def refreshList(self):
+		default = _("Default")
+		current = _("Current")
+		pending = _("Pending restart")
+		skinList = []
+		# Find and list the available skins...
+		previewPath = self.rootDir
+		dir = "lcd_skin/"
+		for skinFile in self.xmlList:
+			skin = "lcd_skin/" + skinFile
+			skinPath = pathjoin(self.rootDir, skinFile)
+			if exists(skinPath):
+				resolution = skinFile.replace(".xml", "").replace("skin_lcd_", "").replace("_"," ").capitalize()
+				preview = pathjoin(previewPath, skinFile.replace(".xml", "_prev.png") or "prev.png")
+				if skin == DEFAULT_DISPLAY_SKIN:
+					list = [default, default, dir, skin, resolution, preview]
+				else:
+					list = [skinFile.replace(".xml", "").replace("skin_lcd_", ""), "", dir, skin, resolution, preview]
+				if skin == self.current:
+					list[1] = current
+				elif skin == self.config.value:
+					list[1] = pending
+				list.append("%s (%s)" % (list[0], list[1]) if list[1] else list[0])
+				if list[1]:
+					list[1] = "<%s>" % list[1]
+				#0=SortKey, 1=Label, 2=Flag, 3=Directory, 4=Skin, 5=Resolution, 6=Preview, 7=Label + Flag
+				skinList.append(tuple([list[0].replace("_"," ").capitalize()] + list))
+		skinList.sort()
+		self["skins"].setList(skinList)
+		# Set the list pointer to the current skin...
+		for index in range(len(skinList)):
+			if skinList[index][4] == self.config.value:
+				self["skins"].setIndex(index)
+				break
+		self.loadPreview()
+
+class ClockSkinSelector(SkinSelector):
+	def __init__(self, session, screenTitle=_("Clock Skin")):
+		SkinSelector.__init__(self, session, screenTitle=screenTitle)
+		self.skinName = ["ClockSkinSelector", "SkinSelector"]
+		self.rootDir = resolveFilename(SCOPE_LCDSKIN, "lcd_skin/")
+		self.config = config.skin.clock_skin
+		self.current = currentClockSkin
+		self.xmlList = []
+		from os.path import walk
+		walk(self.rootDir, self.find, "")
+
+	def find(self, arg, dirname, names):
+		for x in names:
+			if x.startswith("clock_lcd") and x.endswith(".xml"):
+				if dirname <> self.rootDir:
+					subdir = dirname[19:]
+					skinname = x
+					#skinname = skinname
+					self.xmlList.append(skinname)
+				else:
+					skinname = x
+					self.xmlList.append(skinname)
+
+	def refreshList(self):
+		default = _("Default")
+		current = _("Current")
+		pending = _("Pending restart")
+		skinList = []
+		# Find and list the available skins...
+		previewPath = self.rootDir
+		dir = "lcd_skin/"
+		for skinFile in self.xmlList:
+			skin = dir + skinFile
+			skinPath = pathjoin(self.rootDir, skinFile)
+			if exists(skinPath):
+				resolution = skinFile.replace(".xml", "").replace("clock_lcd_", "").replace("_"," ").capitalize()
+				preview = pathjoin(previewPath, skinFile.replace(".xml", "_prev.png") or "prev.png")
+				if skin == DEFAULT_DISPLAY_SKIN:
+					list = [default, default, dir, skin, resolution, preview]
+				else:
+					list = [skinFile.replace(".xml", "").replace("clock_lcd_", ""), "", dir, skin, resolution, preview]
+				if skin == self.current:
+					list[1] = current
+				elif skin == self.config.value:
+					list[1] = pending
+				list.append("%s (%s)" % (list[0], list[1]) if list[1] else list[0])
+				if list[1]:
+					list[1] = "<%s>" % list[1]
+				#0=SortKey, 1=Label, 2=Flag, 3=Directory, 4=Skin, 5=Resolution, 6=Preview, 7=Label + Flag
+				skinList.append(tuple([list[0].replace("_"," ").capitalize()] + list))
+		skinList.sort()
+		self["skins"].setList(skinList)
+		# Set the list pointer to the current skin...
+		for index in range(len(skinList)):
+			if skinList[index][4] == self.config.value:
+				self["skins"].setIndex(index)
+				break
+		self.loadPreview()
+
+	def save(self):
+		label, skin = self.currentSelectedSkin[1], self.currentSelectedSkin[4]
+		print("[SkinSelector] Selected skin: '%s' (Pending skin '%s' cancelled!)" % (pathjoin(self.rootDir, skin), pathjoin(self.rootDir, self.config.value)))
+		self.config.value = skin
+		self.config.save()
+		loadSkin(skin, scope=SCOPE_CURRENT_LCDSKIN, desktop=getDesktop(DISPLAY_SKIN_ID), screenID=DISPLAY_SKIN_ID)
+		self.cancel()
 
 class SkinSelectorSummary(Screen):
 	def __init__(self, session, parent):

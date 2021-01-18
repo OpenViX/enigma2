@@ -17,6 +17,7 @@ from Tools import Notifications
 from time import time, localtime
 from GlobalActions import globalActionMap
 from enigma import eDVBVolumecontrol, eTimer, eDVBLocalTimeHandler, eServiceReference, eStreamServer, quitMainloop, iRecordableService
+from Tools.Directories import resolveFilename, SCOPE_LCDSKIN
 
 inStandby = None
 infoBarInstance = None
@@ -59,16 +60,11 @@ def checkTimeshiftRunning():
 
 class StandbyScreen(Screen):
 	def __init__(self, session, StandbyCounterIncrease=True):
-		self.skinName = "Standby"
 		Screen.__init__(self, session)
 		self.skinName = "Standby"
 		self.avswitch = AVSwitch()
 
 		print "[Standby] enter standby"
-		if os.path.exists("/usr/script/Standby.sh"):
-			Console().ePopen("/usr/script/Standby.sh off")
-		if os.path.exists("/usr/script/standby_enter.sh"):
-			Console().ePopen("/usr/script/standby_enter.sh")
 
 		self["actions"] = ActionMap( [ "StandbyActions" ],
 		{
@@ -163,11 +159,7 @@ class StandbyScreen(Screen):
 		if RecordTimer.RecordTimerEntry.receiveRecordEvents:
 			RecordTimer.RecordTimerEntry.stopTryQuitMainloop()
 		self.avswitch.setInput("ENCODER")
-		if os.path.exists("/usr/script/Standby.sh"):
-			Console().ePopen("/usr/script/Standby.sh on")
 		self.leaveMute()
-		if os.path.exists("/usr/script/standby_leave.sh"):
-			Console().ePopen("/usr/script/standby_leave.sh")
 		if os.path.exists("/proc/stb/hdmi/output"):
 			open("/proc/stb/hdmi/output", "w").write("on")
 		if config.usage.remote_fallback_import_standby.value:
@@ -248,14 +240,7 @@ class Standby(StandbyScreen):
 
 class StandbySummary(Screen):
 	if getBoxType() in ('gbquad4k', 'gbue4k', 'gbquadplus', 'gbquad', 'gbultraue', 'gbultraueh', 'gb800ueplus', 'gb800ue'):
-		def __init__(self, session, what = None):
-			root = "/usr/share/enigma2/display/lcd_skin/"
-			try:
-				what = open(root+"active").read()
-			except:
-				what = "clock_lcd_analog.xml"
-			tmpskin = root+what
-			self.skin = open(tmpskin,'r').read()
+                def __init__(self, session, what = None):
 			Screen.__init__(self, session)
 	else:
 		skin = """
@@ -364,10 +349,6 @@ class TryQuitMainloop(MessageBox):
 			if self.retval == QUIT_SHUTDOWN:
 				config.misc.DeepStandby.value = True
 				if not inStandby:
-					if os.path.exists("/usr/script/Standby.sh"):
-						Console().ePopen("/usr/script/Standby.sh off")
-					if os.path.exists("/usr/script/standby_enter.sh"):
-						Console().ePopen("/usr/script/standby_enter.sh")
 					if SystemInfo["HasHDMI-CEC"] and config.hdmicec.enabled.value and config.hdmicec.control_tv_standby.value and config.hdmicec.next_boxes_detect.value:
 						import Components.HdmiCec
 						Components.HdmiCec.hdmi_cec.secondBoxActive()
