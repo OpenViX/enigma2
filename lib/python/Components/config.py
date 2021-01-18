@@ -234,7 +234,7 @@ class ConfigElement(object):
 		pass
 
 	def onDeselect(self, session):
-		if not self.last_value == self.value:
+		if self.last_value != self.value:
 			self.changedFinal()
 			self.last_value = self.value
 
