@@ -1,4 +1,5 @@
 from Wizard import wizardManager
+from Screens.MessageBox import MessageBox
 from Screens.WizardLanguage import WizardLanguage
 from Screens.Rc import Rc
 from Tools.HardwareInfo import HardwareInfo
@@ -9,6 +10,7 @@ except:
 
 from boxbranding import getBoxType
 
+from Components.About import about
 from Components.Pixmap import Pixmap
 from Components.config import config, ConfigBoolean, configfile
 from Components.SystemInfo import SystemInfo
@@ -22,6 +24,7 @@ if OverscanWizard:
 	config.misc.do_overscanwizard = ConfigBoolean(default = True)
 else:
 	config.misc.do_overscanwizard = ConfigBoolean(default = False)
+config.misc.check_developimage = ConfigBoolean(default = True)
 
 class StartWizard(WizardLanguage, Rc):
 	def __init__(self, session, silent = True, showSteps = False, neededTag = None):
@@ -42,6 +45,23 @@ class StartWizard(WizardLanguage, Rc):
 		config.misc.firstrun.save()
 		configfile.save()
 
+def checkForDevelopImage():
+	if "DEV" in about.getImageTypeString():
+		return config.misc.check_developimage.value
+	elif not config.misc.check_developimage.value:
+		config.misc.check_developimage.value = True
+		config.misc.check_developimage.save()
+
+class DevelopWizard(MessageBox):
+	def __init__(self, session):
+		MessageBox.__init__(self, session, _("This image is intended for developers and testers.\nNo support will be provided!\nDo you understand this?"), type=MessageBox.TYPE_YESNO, simple=True)
+
+	def close(self, value):
+		config.misc.check_developimage.value = not value
+		config.misc.check_developimage.save()
+		MessageBox.close(self)
+
+wizardManager.registerWizard(DevelopWizard, checkForDevelopImage(), priority=0)
 wizardManager.registerWizard(LanguageWizard, config.misc.languageselected.value, priority = 10)
 if OverscanWizard:
 	wizardManager.registerWizard(OverscanWizard, config.misc.do_overscanwizard.value, priority = 20)
