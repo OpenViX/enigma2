@@ -118,7 +118,7 @@ if [ "$(grep config.crash.enabledebug /etc/enigma2/settings)" == "config.crash.e
 	if [ "$(grep config.crash.debug_path= /etc/enigma2/settings | sed 's/config.crash.debug_path=//g')" != "" -a -d "$(grep config.crash.debug_path= /etc/enigma2/settings | sed 's/config.crash.debug_path=//g')" ]; then
 		LOGFOLDER=$(grep config.crash.debug_path= /etc/enigma2/settings | sed 's/config.crash.debug_path=//g')
 	fi
-	LD_PRELOAD=$LIBS ENIGMA_DEBUG_LVL=$DEBUG_LVL @bindir@/enigma2 2&>1 | tee -a ${LOGFOLDER}Enigma2-debug-$(date +%Y%m%d_%H-%M-%S)${RANDOMIZE1970}.log
+	LD_PRELOAD=$LIBS ENIGMA_DEBUG_LVL=$DEBUG_LVL @bindir@/enigma2 2>&1 | tee -a ${LOGFOLDER}Enigma2-debug-$(date +%Y%m%d_%H-%M-%S)${RANDOMIZE1970}.log
 	ret=${PIPESTATUS[0]}
 else
 	LD_PRELOAD=$LIBS ENIGMA_DEBUG_LVL=$DEBUG_LVL @bindir@/enigma2
