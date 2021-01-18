@@ -249,7 +249,7 @@ class InfoBarUnhandledKey:
 				self.secondInfoBarScreen.hide()
 				self.secondInfoBarWasShown = False
 		if flag != 4:
-			if self.flags & (1 << 1):
+			if flag == 0:
 				self.flags = self.uflags = 0
 			self.flags |= (1 << flag)
 			if flag == 1 or flag == 3:  # Break and Long
