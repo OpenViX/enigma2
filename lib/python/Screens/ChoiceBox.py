@@ -212,6 +212,9 @@ class ChoiceBox(Screen):
 			entry[2](arg)
 		elif entry and len(entry) > 2 and isinstance(entry[1], str) and entry[1] == "CALLFUNC":
 			entry[2](None)
+		elif entry and len(entry) > 1 and callable(entry[1]):
+			entry[1](*entry[2:])
+			self.close()
 		else:
 			self.close(entry)
 

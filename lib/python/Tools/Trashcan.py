@@ -7,6 +7,10 @@ import time
 import os
 import enigma
 
+def isTrashFolder(path):
+	path = os.path.realpath(path)
+	return getTrashFolder(path) == path
+
 def getTrashFolder(path=None):
 	# Returns trash folder without symlinks
 	try:
