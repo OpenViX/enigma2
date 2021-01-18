@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-02 04:32+0000\n"
-"PO-Revision-Date: 2021-01-02 11:58+0100\n"
+"POT-Creation-Date: 2021-01-15 08:26+0000\n"
+"PO-Revision-Date: 2021-01-15 12:11+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -1799,6 +1799,9 @@ msgstr "Wijzig de kleuren zodanig dat alle tinten te onderscheiden, maar wel zo 
 
 msgid "Adult Audience, Strong Violence 15+"
 msgstr "Geweld, 15+"
+
+msgid "Advance EPG to the following date and time"
+msgstr "Ga in de EPG naar de volgende datum/tijd"
 
 msgid "Advanced"
 msgstr "Geavanceerd"
@@ -4874,6 +4877,9 @@ msgstr "Netmed EPG inschakelen"
 msgid "Enable OpenTV EPG"
 msgstr "OpenTV EPG inschakelen"
 
+msgid "Enable OpenTV download"
+msgstr "OpenTV EPG inschakelen"
+
 msgid "Enable ViaSat EPG"
 msgstr "Viasat EPG inschakelen"
 
@@ -4889,6 +4895,9 @@ msgstr "Auto Fastscan inschakelen"
 #, python-format
 msgid "Enable auto fastscan for %s"
 msgstr "Auto Fastscan voor %s inschakelen"
+
+msgid "Enable automated downloading of OpenTV EPG data. If only one tuner is available the download will be done when the reciever is in standby."
+msgstr "Schakel automatisch downloaden van OpenTV EPG in. Als er slechts één tuner beschikbaar is, zal dit gebeuren als de ontvanger in stand-by staat."
 
 msgid "Enable blinking rec symbol on the LCD Display"
 msgstr "Schakel knipperend opnamesymbool in op het LCD-scherm"
@@ -8189,11 +8198,34 @@ msgstr "Open de satellitenlijst"
 msgid "Open the service list"
 msgstr "Open de kanaallijst"
 
+msgid "OpenTV EPG"
+msgstr "OpenTV EPG"
+
+#, python-format
+msgid ""
+"OpenTV EPG download completed.\n"
+"Next download: %s"
+msgstr ""
+"OpenTV EPG download voltooid.\n"
+"Volgende download: %s"
+
+msgid "OpenTV EPG download starting."
+msgstr "OpenTV EPG download start."
+
+msgid "OpenTV EPG forced download"
+msgstr "OpenTV EPG gedwongen download"
+
+msgid "OpenTV download setup"
+msgstr "OpenTV download instellingen"
+
 msgid "OpenVPN"
 msgstr "Open-VPN"
 
 msgid "OpenVpn Setup"
 msgstr "Open-VPN instellingen"
+
+msgid "OpentvZapper"
+msgstr "OpentvZapper"
 
 msgid "Orbital position"
 msgstr "Orbitale positie"
@@ -9467,6 +9499,9 @@ msgstr "Herlaad zwarte lijst"
 
 msgid "Reload every (in hours)"
 msgstr "Lees elke X uur"
+
+msgid "Reload skin"
+msgstr "Herlaad skin"
 
 msgid "Reloading EPG Cache..."
 msgstr "Bezig de EPG-cache te herladen..."
@@ -11078,6 +11113,9 @@ msgstr "Toon icoon voor nieuwe/niet bekeken onderdelen"
 msgid "Show in Standby"
 msgstr "Toon in stand-by"
 
+msgid "Show in extensions"
+msgstr "Toon in extensiemenu"
+
 msgid "Show in extensions list ?"
 msgstr "Toon in extensiemenu?"
 
@@ -11125,6 +11163,12 @@ msgstr "Toon movies"
 
 msgid "Show network mounts ..."
 msgstr "Toon netwerk-mounts ..."
+
+msgid "Show notifications"
+msgstr "Toon notificaties"
+
+msgid "Show on-screen notifications (pop up) to warn the OpenTV download is in progress."
+msgstr "Toont een waarschuwing (pop-up) als de OpenTV download bezig is."
 
 msgid "Show or hide the extended description, (skin dependant)."
 msgstr "Toon of verberg de uitgebreide beschrijving (skin afhankelijk)."
@@ -13854,6 +13898,9 @@ msgstr "Welke dag van de week?"
 msgid "What do you want to scan?"
 msgstr "Wat wilt u zoeken?"
 
+msgid "When enabled a forced download will be possible from the extensions menu (blue button). Shows after next restart."
+msgstr "Indien ingeschakeld zal een geforceerde download vanuit het extensie-menu mogelijk zijn. De optie wordt pas na een herstart getoond."
+
 msgid "When enabled enigma2 will load unlinked userbouquets. This means that userbouquets that are available, but not included in the bouquets.tv or bouquets.radio files, will still be loaded. This allows you for example to keep your own user bouquet while installed settings are upgraded"
 msgstr "Indien ingeschakeld zal enigma2 niet geregistreerde favorietenlijsten laden. Dat betekent dat de lijsten die beschikbaar zijn maar niet zijn opgenomen in de radio- en TV-lijsten, toch geladen zullen worden. Dit stelt u b.v. in staat om eigen lijsten te bewaren, terwijl settings worden geüpgraded"
 
@@ -14539,6 +14586,9 @@ msgstr "Gezapt naar timer-kanaal %s als PiP!"
 #, python-format
 msgid "Zapped to timer service %s!"
 msgstr "Gezapt naar het timerkanaal %s!"
+
+msgid "Zaps to EPG download transponder for EPG fetch."
+msgstr "Zapt naar de juiste transponder voor het binnenhalen van de EPG."
 
 msgid "Zgemma H.S/H.2S/H.2H/H5"
 msgstr "Zgemma H.S/H.2S/H.2H/H5"

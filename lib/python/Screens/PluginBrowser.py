@@ -74,6 +74,7 @@ class PluginBrowser(Screen, ProtectedScreen):
 
 		self["key_red"] = Button(_("Remove plugins"))
 		self["key_green"] = Button(_("Download plugins"))
+		self["key_menu"] = StaticText(_("MENU"))
 
 		self.list = []
 		self["list"] = PluginList(self.list)
