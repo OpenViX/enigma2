@@ -125,7 +125,7 @@ class ConfigElement(object):
 		if sv is None:
 			self.value = self.default
 		else:
-			self.value = self.fromstring(sv)
+			self.last_value = self.value = self.fromstring(sv)
 
 	def tostring(self, value):
 		return str(value)
@@ -452,7 +452,7 @@ class ConfigSelection(ConfigElement):
 		if sv is None:
 			self.value = self.default
 		else:
-			self.value = self.choices[self.choices.index(sv)]
+			self.last_value = self.value = self.choices[self.choices.index(sv)]
 
 	def setCurrentText(self, text):
 		i = self.choices.index(self.value)
@@ -1645,6 +1645,7 @@ class ConfigSet(ConfigElement):
 		if not isinstance(self.value, list):
 			self.value = list(self.value)
 		self.value.sort()
+		self.last_value = self.value[:]
 
 	def fromstring(self, val):
 		return eval(val)
@@ -1735,6 +1736,7 @@ class ConfigLocations(ConfigElement):
 				x[1] = self.getMountpoint(x[0])
 				x[2] = True
 		self.locations = locations
+		self.last_value = self.locations[:]
 
 	def save(self):
 		locations = self.locations
@@ -1833,6 +1835,14 @@ class ConfigLocations(ConfigElement):
 
 	def onDeselect(self, session):
 		self.pos = -1
+		if self.last_value != self.locations:
+			# No "notifiers final" have ever been available in ConfigLocations class.
+			# This "if" clause is here for consistency only, or possible future use.
+			# Currently its sole function is to keep self.last_value up to date, should
+			# this variable ever be required by external code.
+			# Adding "self.changedFinal()" here would enable "notifiers final" in 
+			# this class if this were ever necessary.
+			self.last_value = self.locations[:]
 
 # nothing.
 class ConfigNothing(ConfigSelection):
