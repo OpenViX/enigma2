@@ -1,5 +1,5 @@
 import time
-from os import chmod, access, remove, X_OK,system, popen,listdir
+from os import remove, rename, popen, listdir
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
 from Screens.Standby import TryQuitMainloop
@@ -18,9 +18,6 @@ from Components.ActionMap import ActionMap, HelpableActionMap
 from Components.FileList import MultiFileSelectList
 from Tools.Directories import fileExists
 from boxbranding import getMachineBrand, getMachineName, getBoxType
-from subprocess import call
-import commands
-import os
 import glob
 import sys
 
@@ -155,7 +152,7 @@ class NetworkNfs(Screen):
 			netz = popen('ip route show |grep "/" |cut -d " " -f 0').read().strip()
 			opt = "(sync,no_subtree_check,rw)"
 			i=0
-			z = os.listdir("/media")
+			z = listdir("/media")
 			h = open("/etc/exports","w")
 			while i < len(z):
 				if z[i] !="autofs" and z[i] !="net":

@@ -1,4 +1,4 @@
-import os
+from os import path, unlink, system
 import commands
 import string
 from random import Random
@@ -126,10 +126,10 @@ class NetworkAdapterSelection(Screen,HelpableScreen):
 			self["introduction"].setText(self.edittext)
 			self["DefaultInterfaceAction"].setEnabled(False)
 
-		if num_configured_if < 2 and os.path.exists("/etc/default_gw"):
-			os.unlink("/etc/default_gw")
+		if num_configured_if < 2 and path.exists("/etc/default_gw"):
+			unlink("/etc/default_gw")
 
-		if os.path.exists("/etc/default_gw"):
+		if path.exists("/etc/default_gw"):
 			fp = file('/etc/default_gw', 'r')
 			result = fp.read()
 			fp.close()
@@ -146,7 +146,7 @@ class NetworkAdapterSelection(Screen,HelpableScreen):
 				active_int = False
 			self.list.append(self.buildInterfaceList(x[1],_(x[0]),default_int,active_int ))
 
-		if os.path.exists(resolveFilename(SCOPE_PLUGINS, "SystemPlugins/NetworkWizard/networkwizard.xml")):
+		if path.exists(resolveFilename(SCOPE_PLUGINS, "SystemPlugins/NetworkWizard/networkwizard.xml")):
 			self["key_blue"].setText(_("Network wizard"))
 		self["list"].setList(self.list)
 
@@ -155,7 +155,7 @@ class NetworkAdapterSelection(Screen,HelpableScreen):
 		num_if = len(self.list)
 		old_default_gw = None
 		num_configured_if = len(iNetwork.getConfiguredAdapters())
-		if os.path.exists("/etc/default_gw"):
+		if path.exists("/etc/default_gw"):
 			fp = open('/etc/default_gw', 'r')
 			old_default_gw = fp.read()
 			fp.close()
@@ -165,7 +165,7 @@ class NetworkAdapterSelection(Screen,HelpableScreen):
 			fp.close()
 			self.restartLan()
 		elif old_default_gw and num_configured_if < 2:
-			os.unlink("/etc/default_gw")
+			unlink("/etc/default_gw")
 			self.restartLan()
 
 	def okbuttonClick(self):
@@ -202,7 +202,7 @@ class NetworkAdapterSelection(Screen,HelpableScreen):
 			self.session.open(MessageBox, _("Finished configuring your network"), type = MessageBox.TYPE_INFO, timeout = 10, default = False)
 
 	def openNetworkWizard(self):
-		if os.path.exists(resolveFilename(SCOPE_PLUGINS, "SystemPlugins/NetworkWizard/networkwizard.xml")):
+		if path.exists(resolveFilename(SCOPE_PLUGINS, "SystemPlugins/NetworkWizard/networkwizard.xml")):
 			try:
 				from Plugins.SystemPlugins.NetworkWizard.NetworkWizard import NetworkWizard
 			except ImportError:
@@ -350,9 +350,9 @@ class NetworkMacSetup(Screen, ConfigListScreen, HelpableScreen):
 		f.write(MAC)
 		f.close()
 		route = commands.getoutput("route -n |grep UG | awk '{print $2}'")
-		os.system('ifconfig eth0 down')
-		os.system('ifconfig eth0 hw ether %s up' % MAC)
-		os.system('route add default gw %s eth0' % route)
+		system('ifconfig eth0 down')
+		system('ifconfig eth0 hw ether %s up' % MAC)
+		system('route add default gw %s eth0' % route)
 		self.close()
 
 	def run(self):
@@ -480,7 +480,7 @@ class IPv6Setup(Screen, ConfigListScreen, HelpableScreen):
 			f.close()
 		else:
 			fp.write("0")
-			os.system("rm -R "+ipv6)
+			system("rm -R "+ipv6)
 		fp.close()
 		self.restoreinetdData()
 		self.close()
@@ -611,7 +611,7 @@ class AdapterSetup(Screen, ConfigListScreen, HelpableScreen):
 			self.encryptionlist.append(("Unencrypted", _("Unencrypted")))
 			self.encryptionlist.append(("WEP", _("WEP")))
 			self.encryptionlist.append(("WPA", _("WPA")))
-			if not os.path.exists("/tmp/bcm/" + self.iface):
+			if not path.exists("/tmp/bcm/" + self.iface):
 				self.encryptionlist.append(("WPA/WPA2", _("WPA or WPA2")))
 			self.encryptionlist.append(("WPA2", _("WPA2")))
 			self.weplist = []
@@ -675,7 +675,7 @@ class AdapterSetup(Screen, ConfigListScreen, HelpableScreen):
 						self.extended = callFnc
 						if "configStrings" in p.__call__:
 							self.configStrings = p.__call__["configStrings"]
-						isExistBcmWifi = os.path.exists("/tmp/bcm/" + self.iface)
+						isExistBcmWifi = path.exists("/tmp/bcm/" + self.iface)
 						if not isExistBcmWifi:
 							self.hiddenSSID = getConfigListEntry(_("Hidden network"), config.plugins.wlan.hiddenessid)
 							self.list.append(self.hiddenSSID)
@@ -1083,7 +1083,7 @@ class AdapterSetupConfiguration(Screen, HelpableScreen):
 					self.extendedSetup = ('extendedSetup',menuEntryDescription, self.extended)
 					menu.append((menuEntryName,self.extendedSetup))
 
-		if os.path.exists(resolveFilename(SCOPE_PLUGINS, "SystemPlugins/NetworkWizard/networkwizard.xml")):
+		if path.exists(resolveFilename(SCOPE_PLUGINS, "SystemPlugins/NetworkWizard/networkwizard.xml")):
 			menu.append((_("Network wizard"), "openwizard"))
 		# CHECK WHICH BOXES NOW SUPPORT MAC-CHANGE VIA GUI
 		if getBoxType() not in ('DUMMY') and self.iface == 'eth0':
