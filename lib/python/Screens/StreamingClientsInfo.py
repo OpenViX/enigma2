@@ -2,7 +2,6 @@ from Screen import Screen
 from Components.ActionMap import ActionMap
 from Components.Converter.ClientsStreaming import ClientsStreaming
 import skin
-import gettext
 from Components.Sources.StaticText import StaticText
 
 class StreamingClientsInfo(Screen):

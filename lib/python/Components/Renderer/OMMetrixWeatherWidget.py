@@ -22,7 +22,7 @@
 
 from Renderer import Renderer
 from Components.VariableText import VariableText
-from urllib2 import Request, URLError, HTTPError, urlopen as urlopen2, quote as urllib2_quote, unquote as urllib2_unquote
+from urllib2 import Request, URLError, urlopen as urlopen2, quote as urllib2_quote
 from enigma import ePixmap
 from datetime import datetime
 from Components.Element import cached

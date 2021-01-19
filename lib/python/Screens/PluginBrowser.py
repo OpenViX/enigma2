@@ -23,7 +23,6 @@ from Plugins.Plugin import PluginDescriptor
 from Tools.Directories import resolveFilename, SCOPE_PLUGINS, SCOPE_CURRENT_SKIN
 from Tools.LoadPixmap import LoadPixmap
 
-from time import time
 import os
 
 config.pluginfilter = ConfigSubsection()

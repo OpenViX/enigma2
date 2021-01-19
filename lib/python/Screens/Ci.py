@@ -1,6 +1,3 @@
-import os
-import time
-
 import Screens.Standby
 from Components.ActionMap import ActionMap, NumberActionMap
 from Components.ConfigList import ConfigList, ConfigListScreen

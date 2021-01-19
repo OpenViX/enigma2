@@ -901,7 +901,6 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			NavigationInstance.instance.RecordTimer.on_state_change.remove(self.list.updateRecordings)
 		except Exception, e:
 			print "[ML] failed to unsubscribe:", e
-			pass
 
 	def createSummary(self):
 		return MovieSelectionSummary

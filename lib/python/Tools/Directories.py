@@ -2,7 +2,6 @@
 import errno
 import inspect
 import os
-import stat
 
 from enigma import eEnv, getDesktop
 from re import compile

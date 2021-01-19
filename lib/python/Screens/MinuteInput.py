@@ -34,7 +34,6 @@ class MinuteInput(Screen):
 
 		def keyNumberGlobal(self, number):
 			self["minutes"].number(number)
-			pass
 
 		def left(self):
 			self["minutes"].left()

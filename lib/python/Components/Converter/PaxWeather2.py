@@ -19,7 +19,7 @@ from Components.Converter.Converter import Converter
 from Components.Element import cached
 from Components.config import config
 from enigma import eTimer
-import requests, time
+import requests
 from Poll import Poll
 from Plugins.Extensions.PaxWeather import ping
 from lxml import etree

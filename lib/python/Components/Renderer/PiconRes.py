@@ -103,7 +103,6 @@ def resizePicon(pngname):
 		pngname = "/tmp/picon.png"
 	except:
 		print"[PiconRes] error resizePicon"
-		pass
 	return pngname
 
 class PiconRes(Renderer):

@@ -216,7 +216,6 @@ class Task(object):
 
 	def processOutputLine(self, line):
 		print "[Task %s]" % self.name, line[:-1]
-		pass
 
 	def processFinished(self, returncode):
 		self.returncode = returncode

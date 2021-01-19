@@ -23,7 +23,6 @@ from RecordTimer import AFTEREVENT
 from enigma import eEPGCache, iRecordableServicePtr
 from time import localtime, mktime, time, strftime
 from datetime import datetime
-import urllib
 
 class TimerEntry(Screen, ConfigListScreen):
 	def __init__(self, session, timer, edit=False):

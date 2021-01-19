@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from twisted.internet import threads
-from config import config
 from enigma import eDBoxLCD, eTimer, iPlayableService
 import NavigationInstance
 from Tools.Directories import fileExists

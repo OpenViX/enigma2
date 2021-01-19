@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import struct, socket, fcntl, re, sys, os, time
-from sys import modules
 from Tools.HardwareInfo import HardwareInfo
 
 from boxbranding import getBoxType, getMachineBuild, getImageType, getImageVersion
@@ -203,12 +202,10 @@ def getIfConfig(ifname):
 	infos['hwaddr']  = 0x8927 # SIOCSIFHWADDR
 	infos['netmask'] = 0x891b # SIOCGIFNETMASK
 	try:
-		print "in TRYYYYYYY", ifname
 		for k,v in infos.items():
 			print infos.items()
 			ifreq[k] = _ifinfo(sock, v, ifname)
 	except:
-		print "IN EXCEEEEEEEEPT", ifname
 		pass
 	sock.close()
 	return ifreq
