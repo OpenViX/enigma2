@@ -47,6 +47,7 @@ class ParentalControlSetup(Screen, ConfigListScreen, ProtectedScreen):
 		  "cancel": self.keyCancel,
 		  "save": self.keySave,
 		  "menu": self.closeRecursive,
+		  "ok": self.keyOK,
 		}, -2)
 		self["key_red"] = StaticText(_("Cancel"))
 		self["key_green"] = StaticText(_("Save"))
