@@ -1781,7 +1781,9 @@ class NetworkuShareSetup(Screen, ConfigListScreen):
 
 	def selectfolders(self):
 		try:
-			self["config"].getCurrent()[1].help_window.hide()
+			# FIXME
+			#self["config"].getCurrent()[1].help_window.hide()
+			self["config"].getCurrent()[1]
 		except:
 			pass
 		self.session.openWithCallback(self.updateList, uShareSelection)
@@ -2251,7 +2253,9 @@ class NetworkMiniDLNASetup(Screen, ConfigListScreen):
 
 	def selectfolders(self):
 		try:
-			self["config"].getCurrent()[1].help_window.hide()
+			# FIXME
+			#self["config"].getCurrent()[1].help_window.hide()
+			self["config"].getCurrent()[1]
 		except:
 			pass
 		self.session.openWithCallback(self.updateList, MiniDLNASelection)
