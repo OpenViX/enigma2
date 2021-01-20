@@ -83,9 +83,8 @@ def InitTimeZones():
 	def timezoneNotifier(configElement):
 		timezones.activateTimezone(configElement.value, config.timezone.area.value)
 
-	config.timezone.area.addNotifier(timezoneAreaChoices, initial_call=False, immediate_feedback=True)
-	config.timezone.val.addNotifier(timezoneNotifier, initial_call=True, immediate_feedback=True)
-	config.timezone.val.callNotifiersOnSaveAndCancel = True
+	config.timezone.area.addNotifier(timezoneAreaChoices, initial_call=False)
+	config.timezone.val.addNotifier(timezoneNotifier)
 
 
 class Timezones:
