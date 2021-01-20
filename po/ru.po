@@ -1808,6 +1808,9 @@ msgstr "Настройте параметры цвета, так чтобы вс
 msgid "Adult Audience, Strong Violence 15+"
 msgstr "Для взрослых, сильное насилие"
 
+msgid "Advance EPG to the following date and time"
+msgstr "Перейти к следующей дате/времени в EPG"
+
 msgid "Advanced"
 msgstr "Расширенный"
 
@@ -4882,6 +4885,9 @@ msgstr "Включить Netmed EPG"
 msgid "Enable OpenTV EPG"
 msgstr "Включить OpenTV EPG"
 
+msgid "Enable OpenTV download"
+msgstr "Включить загрузку OpenTV EPG"
+
 msgid "Enable ViaSat EPG"
 msgstr "Включить Viasat EPG"
 
@@ -4897,6 +4903,9 @@ msgstr "Быстрый поиск автоматически"
 #, python-format
 msgid "Enable auto fastscan for %s"
 msgstr "Быстрый поиск автоматически для %s"
+
+msgid "Enable automated downloading of OpenTV EPG data. If only one tuner is available the download will be done when the reciever is in standby."
+msgstr "Включает автоматическую загрузку OpenTV EPG. Если доступен только один тюнер, загрузка будет выполнена, когда ресивер находится в режиме ожидания."
 
 msgid "Enable blinking rec symbol on the LCD Display"
 msgstr "Включить символ записи на дисплее"
@@ -8180,11 +8189,34 @@ msgstr "Открыть список спутников"
 msgid "Open the service list"
 msgstr "Открыть список сервисов"
 
+msgid "OpenTV EPG"
+msgstr "OpenTV EPG"
+
+#, python-format
+msgid ""
+"OpenTV EPG download completed.\n"
+"Next download: %s"
+msgstr ""
+"Загрузка OpenTV EPG завершена.\n"
+"Следующая загрузка: %s"
+
+msgid "OpenTV EPG download starting."
+msgstr "Начало загрузки OpenTV EPG."
+
+msgid "OpenTV EPG forced download"
+msgstr "OpenTV EPG принудительная загрузка"
+
+msgid "OpenTV download setup"
+msgstr "Настройки загрузки OpenTV"
+
 msgid "OpenVPN"
 msgstr "OpenVPN"
 
 msgid "OpenVpn Setup"
 msgstr "Настройки OpenVPN"
+
+msgid "OpentvZapper"
+msgstr "OpentvZapper"
 
 msgid "Orbital position"
 msgstr "Позиция на орбите"
@@ -9453,6 +9485,9 @@ msgstr "Обновить чёрные списки"
 
 msgid "Reload every (in hours)"
 msgstr "Интервал обновления (Час)"
+
+msgid "Reload skin"
+msgstr "Перезагрузить скин"
 
 msgid "Reloading EPG Cache..."
 msgstr "Перезагрузить кэш телегида"
@@ -11059,8 +11094,11 @@ msgstr "Показ иконки для новых/невидимых элеме�
 msgid "Show in Standby"
 msgstr "Показать в режиме ожидания"
 
-msgid "Show in extensions list ?"
+msgid "Show in extensions"
 msgstr "Показать в меню дополнений"
+
+msgid "Show in extensions list ?"
+msgstr "Показать в меню дополнений?"
 
 msgid "Show info"
 msgstr "Показать инфо"
@@ -11106,6 +11144,12 @@ msgstr "Показать записи"
 
 msgid "Show network mounts ..."
 msgstr "Показать точки монтирования сети"
+
+msgid "Show notifications"
+msgstr "Показать уведомления"
+
+msgid "Show on-screen notifications (pop up) to warn the OpenTV download is in progress."
+msgstr "Показывать уведомления (всплывающее), когда идёт загрузка OpenTV."
 
 msgid "Show or hide the extended description, (skin dependant)."
 msgstr "Показать или спрятать расширенное описание, если скин поддерживает"
@@ -13831,6 +13875,9 @@ msgstr "Какой день недели?"
 msgid "What do you want to scan?"
 msgstr "Что Вы хотите сканировать?"
 
+msgid "When enabled a forced download will be possible from the extensions menu (blue button). Shows after next restart."
+msgstr "Если включено, возможна принудительная загрузка из меню дополнений. Параметр отображается только после перезапуска."
+
 msgid "When enabled enigma2 will load unlinked userbouquets. This means that userbouquets that are available, but not included in the bouquets.tv or bouquets.radio files, will still be loaded. This allows you for example to keep your own user bouquet while installed settings are upgraded"
 msgstr "Если включено, то будут загружаться невыбранные пакеты пользователя. Это означает, что пакеты существуют, но они не включены в bouquets.tv или bouquets.radio. Это позволяет внедрить в список свой собственный пакет."
 
@@ -14516,6 +14563,9 @@ msgstr "Таймер переключен %s как PiP!"
 #, python-format
 msgid "Zapped to timer service %s!"
 msgstr "Таймер переключен %s!"
+
+msgid "Zaps to EPG download transponder for EPG fetch."
+msgstr "Переход к транспондеру для загрузки EPG."
 
 msgid "Zgemma H.S/H.2S/H.2H/H5"
 msgstr "Zgemma H.S/H.2S/H.2H/H5"
