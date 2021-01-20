@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-13 22:52+0100\n"
+"POT-Creation-Date: 2021-01-20 12:56+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Budiarno\n"
 "Language-Team: \n"
@@ -170,6 +170,9 @@ msgstr " paket yang dipilih."
 
 msgid " updates available."
 msgstr " pembaruan tersedia."
+
+msgid "$PROJECT_DIR$"
+msgstr ""
 
 #, python-format
 msgid "%.0f GB"
@@ -2321,7 +2324,7 @@ msgid "ClientIP"
 msgstr ""
 
 #, fuzzy
-msgid "Clock"
+msgid "Clock Skin"
 msgstr "terkunci"
 
 msgid "Clone TV screen to LCD"
@@ -5083,14 +5086,6 @@ msgid ""
 "Do you want to restart the GUI now?"
 msgstr ""
 
-#, fuzzy
-msgid ""
-"GUI needs a restart to apply a new skin\n"
-"Do you want to Restart the GUI now?"
-msgstr ""
-"GUI perlu direstart untuk mengganti tampilan\n"
-"Anda ingin restart GUI sekarang?"
-
 msgid ""
 "GUI needs a restart to apply a new skin\n"
 "Do you want to restart the GUI now?"
@@ -5538,6 +5533,9 @@ msgid "I/O priority for script execution"
 msgstr ""
 
 msgid "IDLE"
+msgstr ""
+
+msgid "IGNORE"
 msgstr ""
 
 msgid "INFO"
@@ -8554,10 +8552,6 @@ msgstr "Preview menu"
 msgid "Preview selected channel"
 msgstr "Preview selected channel"
 
-#, fuzzy
-msgid "Preview:"
-msgstr "Preview"
-
 msgid "Primary DNS"
 msgstr "Primary DNS"
 
@@ -9379,6 +9373,9 @@ msgstr ""
 msgid "SDR"
 msgstr "SNR"
 
+msgid "SELECTIVE"
+msgstr ""
+
 msgid "SINGLE LAYER DVD"
 msgstr "SINGLE LAYER DVD"
 
@@ -9812,10 +9809,6 @@ msgid "Select HDD"
 msgstr "Pilih"
 
 #, fuzzy
-msgid "Select LCD clock:"
-msgstr "Pilih film"
-
-#, fuzzy
 msgid "Select Software Update"
 msgstr "Pembaruan Perangkat Lunak"
 
@@ -9954,10 +9947,6 @@ msgstr "Pilih film"
 msgid "Select service to add..."
 msgstr "Select service to add..."
 
-#, fuzzy
-msgid "Select skin:"
-msgstr "Pilih satu tampilan"
-
 msgid "Select slot"
 msgstr ""
 
@@ -10065,10 +10054,6 @@ msgstr "Select wireless network"
 msgid "Select your ATSC provider."
 msgstr "Penyedia ATSC"
 
-#, fuzzy
-msgid "Select your LCD clock and press OK to activate the selected clock."
-msgstr "Pilih provider anda, dan tekan OK untuk mulai pelacakan"
-
 msgid "Select your Skin"
 msgstr "Pilih tampilan anda"
 
@@ -10098,10 +10083,6 @@ msgstr "Pilih provider anda, dan tekan OK untuk mulai pelacakan"
 
 msgid "Select your region. If not available change 'Country' to 'all' and select one of the default alternatives."
 msgstr ""
-
-#, fuzzy
-msgid "Select your skin and press OK to activate the selected skin."
-msgstr "Tekan OK untuk mengaktifkan tampilan."
 
 msgid "Selected mount point is already used by another drive."
 msgstr ""
@@ -10606,9 +10587,6 @@ msgid "Show menu or plugin numbers"
 msgstr "Plugin browser"
 
 msgid "Show message if File Commander is not running and all Task's are completed."
-msgstr ""
-
-msgid "Show message if a background script ends successefully. Has 'stout', then this is displayed as additional info."
 msgstr ""
 
 msgid "Show message if a background script ends successfully. Has 'stout', then this is displayed as additional info."
@@ -12056,6 +12034,12 @@ msgstr ""
 
 #, python-format
 msgid "This field allows you to search an additional symbol rate up to %s."
+msgstr ""
+
+msgid ""
+"This image is intended for developers and testers.\n"
+"No support will be provided!\n"
+"Do you understand this?"
 msgstr ""
 
 msgid ""
@@ -14416,6 +14400,9 @@ msgstr ""
 msgid "codec"
 msgstr ""
 
+msgid "com.jetbrains.python.configuration.PythonContentEntriesConfigurable"
+msgstr ""
+
 msgid "comedy"
 msgstr "lawak"
 
@@ -14523,6 +14510,9 @@ msgstr "aktifkan"
 
 msgid "end cut here"
 msgstr "akhiri potong di sini"
+
+msgid "enigma2"
+msgstr ""
 
 #, fuzzy
 msgid "enigma2 and network"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-13 22:52+0100\n"
+"POT-Creation-Date: 2021-01-20 12:56+0100\n"
 "PO-Revision-Date: 2020-03-21 09:12+0100\n"
 "Last-Translator: Pr2\n"
 "Language-Team: french\n"
@@ -182,6 +182,9 @@ msgstr " Paquets sélectionnés."
 
 msgid " updates available."
 msgstr " Mise à jour disponibles."
+
+msgid "$PROJECT_DIR$"
+msgstr ""
 
 #, python-format
 msgid "%.0f GB"
@@ -2334,7 +2337,8 @@ msgstr ""
 msgid "ClientIP"
 msgstr ""
 
-msgid "Clock"
+#, fuzzy
+msgid "Clock Skin"
 msgstr "Horloge"
 
 msgid "Clone TV screen to LCD"
@@ -5086,13 +5090,6 @@ msgstr ""
 
 msgid ""
 "GUI needs a restart to apply a new skin\n"
-"Do you want to Restart the GUI now?"
-msgstr ""
-"L’interface doit redémarrer pour appliquer ce thème\n"
-"Voulez-vous relancer l’interface maintenant?"
-
-msgid ""
-"GUI needs a restart to apply a new skin\n"
 "Do you want to restart the GUI now?"
 msgstr ""
 "L'interface doit redémarrer pour appliquer ce thème\n"
@@ -5539,6 +5536,9 @@ msgid "I/O priority for script execution"
 msgstr ""
 
 msgid "IDLE"
+msgstr ""
+
+msgid "IGNORE"
 msgstr ""
 
 msgid "INFO"
@@ -8526,9 +8526,6 @@ msgstr "Menu aperçu"
 msgid "Preview selected channel"
 msgstr "Aperçu de la chaine sélectionné"
 
-msgid "Preview:"
-msgstr "Prévisualisation:"
-
 msgid "Primary DNS"
 msgstr "DNS primaire"
 
@@ -9348,6 +9345,9 @@ msgstr "Unicable LNB"
 msgid "SDR"
 msgstr "SNR"
 
+msgid "SELECTIVE"
+msgstr ""
+
 msgid "SINGLE LAYER DVD"
 msgstr "SIMPLE COUCHE DVD"
 
@@ -9788,9 +9788,6 @@ msgstr ""
 msgid "Select HDD"
 msgstr "Sélectionner"
 
-msgid "Select LCD clock:"
-msgstr "Choisir une horloge LCD:"
-
 msgid "Select Software Update"
 msgstr "Choisir mise à jour logiciel"
 
@@ -9929,9 +9926,6 @@ msgstr ""
 msgid "Select service to add..."
 msgstr "Choisir service à ajouter..."
 
-msgid "Select skin:"
-msgstr "Choisir un thème:"
-
 msgid "Select slot"
 msgstr "Choisir un slot"
 
@@ -10038,9 +10032,6 @@ msgstr "Sélectionner l'interface sans fil"
 msgid "Select your ATSC provider."
 msgstr "Ajouter Opérateur"
 
-msgid "Select your LCD clock and press OK to activate the selected clock."
-msgstr "Choisir votre horloge LCD et appuyez sur OK pour activer l’horloge sélectionnée."
-
 #, fuzzy
 msgid "Select your Skin"
 msgstr "Choisir un skin"
@@ -10069,9 +10060,6 @@ msgstr "Sélectionnez votre opérateur, et pressez OK pour lancer l'analyse"
 
 msgid "Select your region. If not available change 'Country' to 'all' and select one of the default alternatives."
 msgstr ""
-
-msgid "Select your skin and press OK to activate the selected skin."
-msgstr "Choisir votre thème et appuyez sur OK pour activer le thème sélectionné"
 
 msgid "Selected mount point is already used by another drive."
 msgstr "Le point de montage choisi est déjà utilisé par un autre périphérique."
@@ -10574,9 +10562,6 @@ msgid "Show menu or plugin numbers"
 msgstr "Afficher les films"
 
 msgid "Show message if File Commander is not running and all Task's are completed."
-msgstr ""
-
-msgid "Show message if a background script ends successefully. Has 'stout', then this is displayed as additional info."
 msgstr ""
 
 msgid "Show message if a background script ends successfully. Has 'stout', then this is displayed as additional info."
@@ -12019,6 +12004,12 @@ msgstr "Cela permet d’afficher le module des plugins systèmes dans les télé
 
 #, python-format
 msgid "This field allows you to search an additional symbol rate up to %s."
+msgstr ""
+
+msgid ""
+"This image is intended for developers and testers.\n"
+"No support will be provided!\n"
+"Do you understand this?"
 msgstr ""
 
 msgid ""
@@ -14399,6 +14390,9 @@ msgstr ""
 msgid "codec"
 msgstr "codec"
 
+msgid "com.jetbrains.python.configuration.PythonContentEntriesConfigurable"
+msgstr ""
+
 msgid "comedy"
 msgstr "Comédie"
 
@@ -14509,6 +14503,9 @@ msgstr "Activé"
 
 msgid "end cut here"
 msgstr "Fin de coupe ici"
+
+msgid "enigma2"
+msgstr ""
 
 msgid "enigma2 and network"
 msgstr "enigma2 et réseau"

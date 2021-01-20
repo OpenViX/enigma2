@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-13 22:52+0100\n"
+"POT-Creation-Date: 2021-01-20 12:56+0100\n"
 "PO-Revision-Date: 2014-11-12 00:49+0200\n"
 "Last-Translator: Taapat <taapat@gmail.com>\n"
 "Language-Team: Taapat <taapat@gmail.com>\n"
@@ -176,6 +176,9 @@ msgstr "izvēlētas pakotnes."
 
 msgid " updates available."
 msgstr "atjaunojumi pieejami."
+
+msgid "$PROJECT_DIR$"
+msgstr ""
 
 #, python-format
 msgid "%.0f GB"
@@ -2369,7 +2372,7 @@ msgid "ClientIP"
 msgstr ""
 
 #, fuzzy
-msgid "Clock"
+msgid "Clock Skin"
 msgstr "noenkurojies"
 
 msgid "Clone TV screen to LCD"
@@ -5154,14 +5157,6 @@ msgstr ""
 "Lai lietotu jauno ādiņu nepieciešams pārstartēt GUI,\n"
 "vai vēlaties pārstartēt GUI tagad?"
 
-#, fuzzy
-msgid ""
-"GUI needs a restart to apply a new skin\n"
-"Do you want to Restart the GUI now?"
-msgstr ""
-"Lai lietotu jauno ādiņu nepieciešams pārstartēt GUI,\n"
-"vai vēlaties pārstartēt GUI tagad?"
-
 msgid ""
 "GUI needs a restart to apply a new skin\n"
 "Do you want to restart the GUI now?"
@@ -5618,6 +5613,9 @@ msgid "I/O priority for script execution"
 msgstr ""
 
 msgid "IDLE"
+msgstr ""
+
+msgid "IGNORE"
 msgstr ""
 
 msgid "INFO"
@@ -8681,10 +8679,6 @@ msgstr "Priekšskatījuma izvēlne"
 msgid "Preview selected channel"
 msgstr "Izvēlētā kanāla priekšskatījums"
 
-#, fuzzy
-msgid "Preview:"
-msgstr "Priekšskatījums"
-
 msgid "Primary DNS"
 msgstr "Primārais DNS"
 
@@ -9534,6 +9528,9 @@ msgstr "Vienkabeļa LNB"
 msgid "SDR"
 msgstr "SNR"
 
+msgid "SELECTIVE"
+msgstr ""
+
 msgid "SINGLE LAYER DVD"
 msgstr "SINGLE LAYER DVD"
 
@@ -9984,10 +9981,6 @@ msgid "Select HDD"
 msgstr "Izvēlēties"
 
 #, fuzzy
-msgid "Select LCD clock:"
-msgstr "Izvēlieties atrašanās vietu"
-
-#, fuzzy
 msgid "Select Software Update"
 msgstr "Programmatūras atjaunināšana"
 
@@ -10128,10 +10121,6 @@ msgid "Select service to add..."
 msgstr "Izvēlieties kanālu kuru pievienot..."
 
 #, fuzzy
-msgid "Select skin:"
-msgstr "Izvēlieties ādiņu"
-
-#, fuzzy
 msgid "Select slot"
 msgstr "Izvēlieties atrašanās vietu"
 
@@ -10240,10 +10229,6 @@ msgid "Select your ATSC provider."
 msgstr "Pievienot operatoru"
 
 #, fuzzy
-msgid "Select your LCD clock and press OK to activate the selected clock."
-msgstr "Izvēlieties jūsu operatoru un nospiediet OK lai sāktu meklēt"
-
-#, fuzzy
 msgid "Select your Skin"
 msgstr "Izvēlieties ādiņu"
 
@@ -10271,10 +10256,6 @@ msgstr "Izvēlieties jūsu operatoru un nospiediet OK lai sāktu meklēt"
 
 msgid "Select your region. If not available change 'Country' to 'all' and select one of the default alternatives."
 msgstr ""
-
-#, fuzzy
-msgid "Select your skin and press OK to activate the selected skin."
-msgstr "Spiediet OK lai aktivizētu izvēlēto ādiņu."
 
 msgid "Selected mount point is already used by another drive."
 msgstr ""
@@ -10793,9 +10774,6 @@ msgid "Show menu or plugin numbers"
 msgstr "Tālruņa numurs"
 
 msgid "Show message if File Commander is not running and all Task's are completed."
-msgstr ""
-
-msgid "Show message if a background script ends successefully. Has 'stout', then this is displayed as additional info."
 msgstr ""
 
 msgid "Show message if a background script ends successfully. Has 'stout', then this is displayed as additional info."
@@ -12281,6 +12259,12 @@ msgstr ""
 
 #, python-format
 msgid "This field allows you to search an additional symbol rate up to %s."
+msgstr ""
+
+msgid ""
+"This image is intended for developers and testers.\n"
+"No support will be provided!\n"
+"Do you understand this?"
 msgstr ""
 
 msgid ""
@@ -14650,6 +14634,9 @@ msgstr ""
 msgid "codec"
 msgstr "Video kodeks"
 
+msgid "com.jetbrains.python.configuration.PythonContentEntriesConfigurable"
+msgstr ""
+
 msgid "comedy"
 msgstr "komēdija"
 
@@ -14759,6 +14746,9 @@ msgstr "aktivizēts"
 
 msgid "end cut here"
 msgstr "beigt griešanu šeit"
+
+msgid "enigma2"
+msgstr ""
 
 #, fuzzy
 msgid "enigma2 and network"

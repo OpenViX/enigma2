@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-13 22:52+0100\n"
+"POT-Creation-Date: 2021-01-20 12:56+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Frenske <voorzitter@openpli.org>\n"
 "Language-Team: PLiteam <translators@openpli.org>\n"
@@ -175,6 +175,9 @@ msgstr "geselecteerde pakketten."
 
 msgid " updates available."
 msgstr "updates beschikbaar."
+
+msgid "$PROJECT_DIR$"
+msgstr ""
 
 #, python-format
 msgid "%.0f GB"
@@ -2359,7 +2362,7 @@ msgid "ClientIP"
 msgstr ""
 
 #, fuzzy
-msgid "Clock"
+msgid "Clock Skin"
 msgstr "locked"
 
 msgid "Clone TV screen to LCD"
@@ -5317,14 +5320,6 @@ msgstr ""
 "De gebruikersinterface moet herstart worden om\n"
 "de nieuwe skin te activeren. Nu herstarten?"
 
-#, fuzzy
-msgid ""
-"GUI needs a restart to apply a new skin\n"
-"Do you want to Restart the GUI now?"
-msgstr ""
-"De gebruikersinterface moet herstart worden om\n"
-"de nieuwe skin te activeren. Nu herstarten?"
-
 msgid ""
 "GUI needs a restart to apply a new skin\n"
 "Do you want to restart the GUI now?"
@@ -5784,6 +5779,9 @@ msgid "I/O priority for script execution"
 msgstr ""
 
 msgid "IDLE"
+msgstr ""
+
+msgid "IGNORE"
 msgstr ""
 
 msgid "INFO"
@@ -8859,10 +8857,6 @@ msgstr "Voorbeeld menu"
 msgid "Preview selected channel"
 msgstr "Preview geselecteerd kanaal"
 
-#, fuzzy
-msgid "Preview:"
-msgstr "Voorbeeld"
-
 msgid "Primary DNS"
 msgstr "Primaire DNS"
 
@@ -9714,6 +9708,9 @@ msgstr "Unicable LNB"
 msgid "SDR"
 msgstr "SNR"
 
+msgid "SELECTIVE"
+msgstr ""
+
 msgid "SINGLE LAYER DVD"
 msgstr "SINGLE LAYER DVD"
 
@@ -10161,10 +10158,6 @@ msgid "Select HDD"
 msgstr "Selecteer"
 
 #, fuzzy
-msgid "Select LCD clock:"
-msgstr "Kies een locatie"
-
-#, fuzzy
 msgid "Select Software Update"
 msgstr "Software update"
 
@@ -10305,10 +10298,6 @@ msgid "Select service to add..."
 msgstr "Selecteer zender om toe te voegen..."
 
 #, fuzzy
-msgid "Select skin:"
-msgstr "Kies een skin"
-
-#, fuzzy
 msgid "Select slot"
 msgstr "Kies een locatie"
 
@@ -10417,10 +10406,6 @@ msgid "Select your ATSC provider."
 msgstr "Provider toevoegen"
 
 #, fuzzy
-msgid "Select your LCD clock and press OK to activate the selected clock."
-msgstr "Kies uw provider en druk OK om de scan te starten"
-
-#, fuzzy
 msgid "Select your Skin"
 msgstr "Kies een skin"
 
@@ -10448,10 +10433,6 @@ msgstr "Kies uw provider en druk OK om de scan te starten"
 
 msgid "Select your region. If not available change 'Country' to 'all' and select one of the default alternatives."
 msgstr ""
-
-#, fuzzy
-msgid "Select your skin and press OK to activate the selected skin."
-msgstr "Druk op OK om de geselecteerde skin te activeren."
 
 msgid "Selected mount point is already used by another drive."
 msgstr ""
@@ -10978,9 +10959,6 @@ msgid "Show menu or plugin numbers"
 msgstr "Telefoonnummer"
 
 msgid "Show message if File Commander is not running and all Task's are completed."
-msgstr ""
-
-msgid "Show message if a background script ends successefully. Has 'stout', then this is displayed as additional info."
 msgstr ""
 
 msgid "Show message if a background script ends successfully. Has 'stout', then this is displayed as additional info."
@@ -12463,6 +12441,12 @@ msgstr ""
 
 #, python-format
 msgid "This field allows you to search an additional symbol rate up to %s."
+msgstr ""
+
+msgid ""
+"This image is intended for developers and testers.\n"
+"No support will be provided!\n"
+"Do you understand this?"
 msgstr ""
 
 msgid ""
@@ -14860,6 +14844,9 @@ msgstr ""
 msgid "codec"
 msgstr "Videocodec"
 
+msgid "com.jetbrains.python.configuration.PythonContentEntriesConfigurable"
+msgstr ""
+
 msgid "comedy"
 msgstr "komedie"
 
@@ -14970,6 +14957,9 @@ msgstr "geactiveerd"
 
 msgid "end cut here"
 msgstr "Stop snijpunt hier"
+
+msgid "enigma2"
+msgstr ""
 
 #, fuzzy
 msgid "enigma2 and network"

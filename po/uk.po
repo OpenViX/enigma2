@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-13 22:52+0100\n"
+"POT-Creation-Date: 2021-01-20 12:56+0100\n"
 "PO-Revision-Date: 2016-11-17 12:51+0200\n"
 "Last-Translator: vovan43<vovan43@ex.ua>, sety <tim1065@mail.ru>, Irkoff <irkoff@gmail.com>\n"
 "Language-Team: gisclub.tv <http://gisclub.tv/>\n"
@@ -176,6 +176,9 @@ msgstr " пакетів вибрано."
 
 msgid " updates available."
 msgstr " доступних оновлень."
+
+msgid "$PROJECT_DIR$"
+msgstr ""
 
 #, python-format
 msgid "%.0f GB"
@@ -2365,7 +2368,7 @@ msgid "ClientIP"
 msgstr ""
 
 #, fuzzy
-msgid "Clock"
+msgid "Clock Skin"
 msgstr "захоплено"
 
 msgid "Clone TV screen to LCD"
@@ -5159,14 +5162,6 @@ msgstr ""
 "Для активації нового скіна необхідний рестарт GUI.\n"
 "Ви хочете зробити це зараз?"
 
-#, fuzzy
-msgid ""
-"GUI needs a restart to apply a new skin\n"
-"Do you want to Restart the GUI now?"
-msgstr ""
-"Для активації нового скіна необхідний рестарт GUI.\n"
-"Ви хочете зробити це зараз?"
-
 msgid ""
 "GUI needs a restart to apply a new skin\n"
 "Do you want to restart the GUI now?"
@@ -5620,6 +5615,9 @@ msgid "I/O priority for script execution"
 msgstr ""
 
 msgid "IDLE"
+msgstr ""
+
+msgid "IGNORE"
 msgstr ""
 
 msgid "INFO"
@@ -8690,10 +8688,6 @@ msgstr "Меню прев'ю"
 msgid "Preview selected channel"
 msgstr "Прев'ю обраного каналу"
 
-#, fuzzy
-msgid "Preview:"
-msgstr "Прев'ю"
-
 msgid "Primary DNS"
 msgstr "Первинний DNS"
 
@@ -9546,6 +9540,9 @@ msgstr "Unicable LNB"
 msgid "SDR"
 msgstr "SNR"
 
+msgid "SELECTIVE"
+msgstr ""
+
 msgid "SINGLE LAYER DVD"
 msgstr "Одношаровий DVD"
 
@@ -10000,10 +9997,6 @@ msgid "Select HDD"
 msgstr "Вибрати"
 
 #, fuzzy
-msgid "Select LCD clock:"
-msgstr "Виберіть дію:"
-
-#, fuzzy
 msgid "Select Software Update"
 msgstr "Оновлення софта"
 
@@ -10144,10 +10137,6 @@ msgid "Select service to add..."
 msgstr "Вибір сервісу для додавання..."
 
 #, fuzzy
-msgid "Select skin:"
-msgstr "Вибрати скін"
-
-#, fuzzy
 msgid "Select slot"
 msgstr "Вибір розташування"
 
@@ -10257,10 +10246,6 @@ msgid "Select your ATSC provider."
 msgstr "Додати провайдера"
 
 #, fuzzy
-msgid "Select your LCD clock and press OK to activate the selected clock."
-msgstr "Виберіть провайдера і натисніть ОК для сканування"
-
-#, fuzzy
 msgid "Select your Skin"
 msgstr "Виберіть формат скіну"
 
@@ -10288,10 +10273,6 @@ msgstr "Виберіть провайдера і натисніть ОК для 
 
 msgid "Select your region. If not available change 'Country' to 'all' and select one of the default alternatives."
 msgstr ""
-
-#, fuzzy
-msgid "Select your skin and press OK to activate the selected skin."
-msgstr "Натисніть OK для активації вибраного скіна."
 
 msgid "Selected mount point is already used by another drive."
 msgstr ""
@@ -10810,9 +10791,6 @@ msgid "Show menu or plugin numbers"
 msgstr "Номер набору"
 
 msgid "Show message if File Commander is not running and all Task's are completed."
-msgstr ""
-
-msgid "Show message if a background script ends successefully. Has 'stout', then this is displayed as additional info."
 msgstr ""
 
 msgid "Show message if a background script ends successfully. Has 'stout', then this is displayed as additional info."
@@ -12292,6 +12270,12 @@ msgstr ""
 
 #, python-format
 msgid "This field allows you to search an additional symbol rate up to %s."
+msgstr ""
+
+msgid ""
+"This image is intended for developers and testers.\n"
+"No support will be provided!\n"
+"Do you understand this?"
 msgstr ""
 
 msgid ""
@@ -14671,6 +14655,9 @@ msgstr ""
 msgid "codec"
 msgstr "Відеокодек"
 
+msgid "com.jetbrains.python.configuration.PythonContentEntriesConfigurable"
+msgstr ""
+
 msgid "comedy"
 msgstr "комедія"
 
@@ -14780,6 +14767,9 @@ msgstr "увімкнено"
 
 msgid "end cut here"
 msgstr "кінець редагування"
+
+msgid "enigma2"
+msgstr ""
 
 #, fuzzy
 msgid "enigma2 and network"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-13 22:52+0100\n"
+"POT-Creation-Date: 2021-01-20 12:56+0100\n"
 "PO-Revision-Date: 2012-03-08 10:40+0330\n"
 "Last-Translator: \n"
 "Language-Team: Arabic <moustafagamal@hotmail.com>\n"
@@ -182,6 +182,9 @@ msgstr "חבילות נבחרו"
 #
 msgid " updates available."
 msgstr "עדכונים זמינים"
+
+msgid "$PROJECT_DIR$"
+msgstr ""
 
 #, python-format
 msgid "%.0f GB"
@@ -2481,7 +2484,7 @@ msgid "ClientIP"
 msgstr ""
 
 #, fuzzy
-msgid "Clock"
+msgid "Clock Skin"
 msgstr "locked"
 
 msgid "Clone TV screen to LCD"
@@ -5370,15 +5373,6 @@ msgstr ""
 "Do you want to restart the GUI now?"
 
 #
-#, fuzzy
-msgid ""
-"GUI needs a restart to apply a new skin\n"
-"Do you want to Restart the GUI now?"
-msgstr ""
-"GUI needs a restart to apply a new skin\n"
-"Do you want to restart the GUI now?"
-
-#
 msgid ""
 "GUI needs a restart to apply a new skin\n"
 "Do you want to restart the GUI now?"
@@ -5857,6 +5851,9 @@ msgid "I/O priority for script execution"
 msgstr ""
 
 msgid "IDLE"
+msgstr ""
+
+msgid "IGNORE"
 msgstr ""
 
 msgid "INFO"
@@ -9153,10 +9150,6 @@ msgstr "תצוגה מקדימה לתפריט"
 msgid "Preview selected channel"
 msgstr ""
 
-#, fuzzy
-msgid "Preview:"
-msgstr "תצוגה מקדימה"
-
 msgid "Primary DNS"
 msgstr "Primary DNS"
 
@@ -10044,6 +10037,9 @@ msgstr ""
 msgid "SDR"
 msgstr "SNR"
 
+msgid "SELECTIVE"
+msgstr ""
+
 #
 msgid "SINGLE LAYER DVD"
 msgstr "SINGLE LAYER DVD"
@@ -10516,10 +10512,6 @@ msgid "Select HDD"
 msgstr "בחר"
 
 #, fuzzy
-msgid "Select LCD clock:"
-msgstr "Select Location"
-
-#, fuzzy
 msgid "Select Software Update"
 msgstr "עדכון תוכנה"
 
@@ -10674,11 +10666,6 @@ msgstr ""
 msgid "Select service to add..."
 msgstr "Select service to add..."
 
-#
-#, fuzzy
-msgid "Select skin:"
-msgstr "Select a movie"
-
 #, fuzzy
 msgid "Select slot"
 msgstr "Select Location"
@@ -10791,10 +10778,6 @@ msgstr "בחר רשת אלחוטית"
 msgid "Select your ATSC provider."
 msgstr "add Provider"
 
-#, fuzzy
-msgid "Select your LCD clock and press OK to activate the selected clock."
-msgstr "Press OK to activate the selected skin."
-
 #
 #, fuzzy
 msgid "Select your Skin"
@@ -10824,10 +10807,6 @@ msgstr ""
 
 msgid "Select your region. If not available change 'Country' to 'all' and select one of the default alternatives."
 msgstr ""
-
-#, fuzzy
-msgid "Select your skin and press OK to activate the selected skin."
-msgstr "Press OK to activate the selected skin."
 
 msgid "Selected mount point is already used by another drive."
 msgstr ""
@@ -11399,9 +11378,6 @@ msgid "Show menu or plugin numbers"
 msgstr "מספר טלפון"
 
 msgid "Show message if File Commander is not running and all Task's are completed."
-msgstr ""
-
-msgid "Show message if a background script ends successefully. Has 'stout', then this is displayed as additional info."
 msgstr ""
 
 msgid "Show message if a background script ends successfully. Has 'stout', then this is displayed as additional info."
@@ -13024,6 +13000,12 @@ msgstr ""
 
 #, python-format
 msgid "This field allows you to search an additional symbol rate up to %s."
+msgstr ""
+
+msgid ""
+"This image is intended for developers and testers.\n"
+"No support will be provided!\n"
+"Do you understand this?"
 msgstr ""
 
 msgid ""
@@ -15468,6 +15450,9 @@ msgstr ""
 msgid "codec"
 msgstr ""
 
+msgid "com.jetbrains.python.configuration.PythonContentEntriesConfigurable"
+msgstr ""
+
 msgid "comedy"
 msgstr ""
 
@@ -15582,6 +15567,9 @@ msgstr "אופשר"
 
 msgid "end cut here"
 msgstr "end cut here"
+
+msgid "enigma2"
+msgstr ""
 
 msgid "enigma2 and network"
 msgstr ""

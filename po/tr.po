@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue (Apachi70)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-13 22:52+0100\n"
+"POT-Creation-Date: 2021-01-20 12:56+0100\n"
 "PO-Revision-Date: 2015-12-18 21:05+0200\n"
 "Last-Translator: Yetkin AYDIN <yetkina@gmail.com>\n"
 "Language-Team: http://www.hurforum.com <yetkina@gmail.com>\n"
@@ -184,6 +184,9 @@ msgstr " paket seçildi."
 
 msgid " updates available."
 msgstr " güncelleme mevcut."
+
+msgid "$PROJECT_DIR$"
+msgstr ""
 
 #, python-format
 msgid "%.0f GB"
@@ -2282,7 +2285,8 @@ msgstr "Alici bu kutudan yayın yapıyor!"
 msgid "ClientIP"
 msgstr "ClientIP"
 
-msgid "Clock"
+#, fuzzy
+msgid "Clock Skin"
 msgstr "Saat"
 
 msgid "Clone TV screen to LCD"
@@ -4948,13 +4952,6 @@ msgstr ""
 
 msgid ""
 "GUI needs a restart to apply a new skin\n"
-"Do you want to Restart the GUI now?"
-msgstr ""
-"Yeni arayüzü etkinleştirmek için yeniden başlatma gerekiyor\n"
-"Grafik arayüzü (GUI) yeniden başlatmak istiyor musunuz?"
-
-msgid ""
-"GUI needs a restart to apply a new skin\n"
 "Do you want to restart the GUI now?"
 msgstr ""
 "Yeni arayüzü etkinleştirmek için yeniden başlatma gerekiyor\n"
@@ -5381,6 +5378,9 @@ msgstr "Komut dosyası yürütme için I/O önceliği"
 
 msgid "IDLE"
 msgstr "BOŞTA"
+
+msgid "IGNORE"
+msgstr ""
 
 msgid "INFO"
 msgstr "BİLGİ"
@@ -8279,9 +8279,6 @@ msgstr "Önizleme menüsü"
 msgid "Preview selected channel"
 msgstr "Seçili kanalı önizle"
 
-msgid "Preview:"
-msgstr "Önizleme:"
-
 msgid "Primary DNS"
 msgstr "Birincil DNS"
 
@@ -9080,6 +9077,9 @@ msgstr "SCR Unicable"
 msgid "SDR"
 msgstr "SDR"
 
+msgid "SELECTIVE"
+msgstr ""
+
 msgid "SINGLE LAYER DVD"
 msgstr "TEK KATMAN DVD"
 
@@ -9508,9 +9508,6 @@ msgstr "Anten sisteminiz bunu destekliyorsa Hızlı DiSEqC'yi seçin. Emin deği
 msgid "Select HDD"
 msgstr "Seç"
 
-msgid "Select LCD clock:"
-msgstr "LCD saat seçin:"
-
 msgid "Select Software Update"
 msgstr "Yazılım Güncelleme Seç"
 
@@ -9641,9 +9638,6 @@ msgstr "İkincil Softcam seçin"
 msgid "Select service to add..."
 msgstr "Eklenecek kanalı seçin..."
 
-msgid "Select skin:"
-msgstr "Arayüz seç:"
-
 msgid "Select slot"
 msgstr "Yuva seçin"
 
@@ -9752,9 +9746,6 @@ msgstr "Kablosuz ağ seç"
 msgid "Select your ATSC provider."
 msgstr "ATSC sağlayıcınızı seçin."
 
-msgid "Select your LCD clock and press OK to activate the selected clock."
-msgstr "LCD saatinizi seçin ve seçilen saati aktif hale getirmek için OK tuşuna basın."
-
 msgid "Select your Skin"
 msgstr "Arayüzünü seç"
 
@@ -9781,9 +9772,6 @@ msgstr "Sağlayıcı seçin ve taramayı başlatmak için OK tuşuna basın"
 
 msgid "Select your region. If not available change 'Country' to 'all' and select one of the default alternatives."
 msgstr "Bölgenizi seçin. Kullanılamıyorsa, \"Ülke\" yi \"tümünü\" olarak değiştirin ve varsayılan alternatiflerden birini seçin."
-
-msgid "Select your skin and press OK to activate the selected skin."
-msgstr "Arayüzü etkinleştirmek için OK tuşuna basın."
 
 msgid "Selected mount point is already used by another drive."
 msgstr "Seçili bağlama noktası zaten başka bir sürücü tarafından kullanılıyor."
@@ -10270,9 +10258,6 @@ msgstr "Menü veya eklenti numaralarını göster"
 
 msgid "Show message if File Commander is not running and all Task's are completed."
 msgstr "Dosya Komutanı çalışmıyorsa ve tüm Görevler tamamlandıysa mesajı göster."
-
-msgid "Show message if a background script ends successefully. Has 'stout', then this is displayed as additional info."
-msgstr "Bir arka plan komut dosyası başarılı bir şekilde sona ererse mesajı göster. 'Stout' var, bu ek bilgi olarak gösterilir."
 
 #, fuzzy
 msgid "Show message if a background script ends successfully. Has 'stout', then this is displayed as additional info."
@@ -11688,6 +11673,12 @@ msgstr "Bu indirme içinde systemplugins modülleri göstermek sağlar"
 #, python-format
 msgid "This field allows you to search an additional symbol rate up to %s."
 msgstr "Bu alan,%s değerine kadar ek bir simge oranı aramanıza olanak tanır."
+
+msgid ""
+"This image is intended for developers and testers.\n"
+"No support will be provided!\n"
+"Do you understand this?"
+msgstr ""
 
 msgid ""
 "This info is for developers only.\n"
@@ -14026,6 +14017,9 @@ msgstr "overscan / posta kutusu sınırlarını klibi"
 msgid "codec"
 msgstr "video çözücü codec"
 
+msgid "com.jetbrains.python.configuration.PythonContentEntriesConfigurable"
+msgstr ""
+
 msgid "comedy"
 msgstr "komedi"
 
@@ -14133,6 +14127,9 @@ msgstr "etkin"
 
 msgid "end cut here"
 msgstr "kesimi burada bitir"
+
+msgid "enigma2"
+msgstr ""
 
 msgid "enigma2 and network"
 msgstr "enigma2 ve ağ"

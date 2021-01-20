@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-13 22:52+0100\n"
+"POT-Creation-Date: 2021-01-20 12:56+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: MCelliotG <mcelliotg@gmail.com>\n"
 "Language-Team: MCelliotG <mcelliotg@gmail.com>\n"
@@ -169,6 +169,9 @@ msgstr " επιλεγμένα πακέτα."
 
 msgid " updates available."
 msgstr " διαθέσιμες ενημερώσεις."
+
+msgid "$PROJECT_DIR$"
+msgstr ""
 
 #, python-format
 msgid "%.0f GB"
@@ -2338,7 +2341,7 @@ msgid "ClientIP"
 msgstr ""
 
 #, fuzzy
-msgid "Clock"
+msgid "Clock Skin"
 msgstr "κλειδωμένο"
 
 msgid "Clone TV screen to LCD"
@@ -5125,12 +5128,6 @@ msgid ""
 "Do you want to restart the GUI now?"
 msgstr "Πρέπει να γίνει  επανεκκίνηση του enigma2 για να ενεργοποιηθεί το νέο θέμα. Να γίνει τώρα;"
 
-#, fuzzy
-msgid ""
-"GUI needs a restart to apply a new skin\n"
-"Do you want to Restart the GUI now?"
-msgstr "Πρέπει να γίνει  επανεκκίνηση του enigma2 για να ενεργοποιηθεί το νέο θέμα. Να γίνει τώρα;"
-
 msgid ""
 "GUI needs a restart to apply a new skin\n"
 "Do you want to restart the GUI now?"
@@ -5588,6 +5585,9 @@ msgid "I/O priority for script execution"
 msgstr ""
 
 msgid "IDLE"
+msgstr ""
+
+msgid "IGNORE"
 msgstr ""
 
 msgid "INFO"
@@ -8657,10 +8657,6 @@ msgstr "Μενού προεπισκόπησης"
 msgid "Preview selected channel"
 msgstr "Προεπισκόπηση επιλεγμένου καναλιού"
 
-#, fuzzy
-msgid "Preview:"
-msgstr "Προεπισκόπηση"
-
 msgid "Primary DNS"
 msgstr "Πρωτεύον DNS"
 
@@ -9511,6 +9507,9 @@ msgstr "Unicable LNB"
 msgid "SDR"
 msgstr "SNR"
 
+msgid "SELECTIVE"
+msgstr ""
+
 msgid "SINGLE LAYER DVD"
 msgstr "DVD ΜΟΝΗΣ ΣΤΡΩΣΗΣ"
 
@@ -9958,10 +9957,6 @@ msgid "Select HDD"
 msgstr "Επιλογή"
 
 #, fuzzy
-msgid "Select LCD clock:"
-msgstr "Επιλογή τοποθεσίας"
-
-#, fuzzy
 msgid "Select Software Update"
 msgstr "Ενημέρωση λογισμικού"
 
@@ -10102,10 +10097,6 @@ msgid "Select service to add..."
 msgstr "Επιλογή υπηρεσίας για προσθήκη..."
 
 #, fuzzy
-msgid "Select skin:"
-msgstr "Επιλογή θέματος"
-
-#, fuzzy
 msgid "Select slot"
 msgstr "Επιλογή τοποθεσίας"
 
@@ -10214,10 +10205,6 @@ msgid "Select your ATSC provider."
 msgstr "Προσθήκη παρόχου"
 
 #, fuzzy
-msgid "Select your LCD clock and press OK to activate the selected clock."
-msgstr "Επιλέξτε πάροχο, και πιέστε ΟΚ για να ξεκινήσει η ανίχνευση"
-
-#, fuzzy
 msgid "Select your Skin"
 msgstr "Επιλογή θέματος"
 
@@ -10245,10 +10232,6 @@ msgstr "Επιλέξτε πάροχο, και πιέστε ΟΚ για να ξε
 
 msgid "Select your region. If not available change 'Country' to 'all' and select one of the default alternatives."
 msgstr ""
-
-#, fuzzy
-msgid "Select your skin and press OK to activate the selected skin."
-msgstr "Πιέστε ΟΚ για ενεργοποίηση του επιλεγμένου θέματος."
 
 msgid "Selected mount point is already used by another drive."
 msgstr ""
@@ -10767,9 +10750,6 @@ msgid "Show menu or plugin numbers"
 msgstr "Τηλεφωνικός αριθμός"
 
 msgid "Show message if File Commander is not running and all Task's are completed."
-msgstr ""
-
-msgid "Show message if a background script ends successefully. Has 'stout', then this is displayed as additional info."
 msgstr ""
 
 msgid "Show message if a background script ends successfully. Has 'stout', then this is displayed as additional info."
@@ -12253,6 +12233,12 @@ msgstr ""
 
 #, python-format
 msgid "This field allows you to search an additional symbol rate up to %s."
+msgstr ""
+
+msgid ""
+"This image is intended for developers and testers.\n"
+"No support will be provided!\n"
+"Do you understand this?"
 msgstr ""
 
 msgid ""
@@ -14619,6 +14605,9 @@ msgstr ""
 msgid "codec"
 msgstr "Κωδικοποιητής"
 
+msgid "com.jetbrains.python.configuration.PythonContentEntriesConfigurable"
+msgstr ""
+
 msgid "comedy"
 msgstr "κωμωδία"
 
@@ -14729,6 +14718,9 @@ msgstr "ενεργοποιημένο"
 
 msgid "end cut here"
 msgstr "τέλος αποκοπής εδώ"
+
+msgid "enigma2"
+msgstr ""
 
 #, fuzzy
 msgid "enigma2 and network"

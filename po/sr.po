@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-13 22:52+0100\n"
+"POT-Creation-Date: 2021-01-20 12:56+0100\n"
 "PO-Revision-Date: 2011-04-14 00:02+0200\n"
 "Last-Translator: majevica <jovanovic@gmx.ch>\n"
 "Language-Team: veselin & majevica CRNABERZA <jovanovic@gmx.ch>\n"
@@ -187,6 +187,9 @@ msgstr "Paketa izabrano"
 #
 msgid " updates available."
 msgstr "ažuriranja dostupna."
+
+msgid "$PROJECT_DIR$"
+msgstr ""
 
 #, python-format
 msgid "%.0f GB"
@@ -2669,7 +2672,7 @@ msgstr ""
 
 #
 #, fuzzy
-msgid "Clock"
+msgid "Clock Skin"
 msgstr "zaključan"
 
 msgid "Clone TV screen to LCD"
@@ -5835,15 +5838,6 @@ msgstr ""
 " Želite li restartovati GUI sada ?"
 
 #
-#, fuzzy
-msgid ""
-"GUI needs a restart to apply a new skin\n"
-"Do you want to Restart the GUI now?"
-msgstr ""
-"GUI se treba restartovati da se primeni nova maska\n"
-" Želite li restartovati GUI sada ?"
-
-#
 msgid ""
 "GUI needs a restart to apply a new skin\n"
 "Do you want to restart the GUI now?"
@@ -6366,6 +6360,9 @@ msgid "I/O priority for script execution"
 msgstr ""
 
 msgid "IDLE"
+msgstr ""
+
+msgid "IGNORE"
 msgstr ""
 
 msgid "INFO"
@@ -9932,11 +9929,6 @@ msgid "Preview selected channel"
 msgstr ""
 
 #
-#, fuzzy
-msgid "Preview:"
-msgstr "Pregled"
-
-#
 msgid "Primary DNS"
 msgstr "Primarni DNS"
 
@@ -10939,6 +10931,9 @@ msgstr "Unikabl LNB"
 msgid "SDR"
 msgstr "SNR"
 
+msgid "SELECTIVE"
+msgstr ""
+
 #
 msgid "SINGLE LAYER DVD"
 msgstr "JEDNOSLOJNI DVD"
@@ -11452,11 +11447,6 @@ msgstr "Izaberi"
 
 #
 #, fuzzy
-msgid "Select LCD clock:"
-msgstr "Izaberi lokaciju"
-
-#
-#, fuzzy
 msgid "Select Software Update"
 msgstr "Nadogradnja softvera"
 
@@ -11630,11 +11620,6 @@ msgstr "Izaberi kanal za dodavanje..."
 
 #
 #, fuzzy
-msgid "Select skin:"
-msgstr "Odaberi film"
-
-#
-#, fuzzy
 msgid "Select slot"
 msgstr "Izaberi lokaciju"
 
@@ -11756,11 +11741,6 @@ msgstr "Dodaj provajdera"
 
 #
 #, fuzzy
-msgid "Select your LCD clock and press OK to activate the selected clock."
-msgstr "Pritisnite OK za aktiviranje izabrane maske."
-
-#
-#, fuzzy
 msgid "Select your Skin"
 msgstr "Odaberi film"
 
@@ -11790,11 +11770,6 @@ msgstr ""
 
 msgid "Select your region. If not available change 'Country' to 'all' and select one of the default alternatives."
 msgstr ""
-
-#
-#, fuzzy
-msgid "Select your skin and press OK to activate the selected skin."
-msgstr "Pritisnite OK za aktiviranje izabrane maske."
 
 msgid "Selected mount point is already used by another drive."
 msgstr ""
@@ -12407,9 +12382,6 @@ msgid "Show menu or plugin numbers"
 msgstr "Telefonski broj"
 
 msgid "Show message if File Commander is not running and all Task's are completed."
-msgstr ""
-
-msgid "Show message if a background script ends successefully. Has 'stout', then this is displayed as additional info."
 msgstr ""
 
 msgid "Show message if a background script ends successfully. Has 'stout', then this is displayed as additional info."
@@ -14124,6 +14096,12 @@ msgstr ""
 
 #, python-format
 msgid "This field allows you to search an additional symbol rate up to %s."
+msgstr ""
+
+msgid ""
+"This image is intended for developers and testers.\n"
+"No support will be provided!\n"
+"Do you understand this?"
 msgstr ""
 
 msgid ""
@@ -16734,6 +16712,9 @@ msgstr ""
 msgid "codec"
 msgstr ""
 
+msgid "com.jetbrains.python.configuration.PythonContentEntriesConfigurable"
+msgstr ""
+
 msgid "comedy"
 msgstr ""
 
@@ -16861,6 +16842,9 @@ msgstr "omogućeno"
 #
 msgid "end cut here"
 msgstr "završi rez ovde"
+
+msgid "enigma2"
+msgstr ""
 
 #
 #, fuzzy

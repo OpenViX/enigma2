@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-13 22:52+0100\n"
+"POT-Creation-Date: 2021-01-20 12:56+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: ims <ims21@users.sourceforge.net>\n"
 "Language-Team: PLi <ims@openpli.org>\n"
@@ -189,6 +189,9 @@ msgstr " balíčků vybráno."
 #
 msgid " updates available."
 msgstr " dostupných aktualizací."
+
+msgid "$PROJECT_DIR$"
+msgstr ""
 
 #, python-format
 msgid "%.0f GB"
@@ -2650,7 +2653,7 @@ msgstr ""
 
 #
 #, fuzzy
-msgid "Clock"
+msgid "Clock Skin"
 msgstr "zamknuto"
 
 msgid "Clone TV screen to LCD"
@@ -5836,15 +5839,6 @@ msgstr ""
 "Chcete nyní restartovat GUI?"
 
 #
-#, fuzzy
-msgid ""
-"GUI needs a restart to apply a new skin\n"
-"Do you want to Restart the GUI now?"
-msgstr ""
-"Pro uplatnění skinu je potřeba restartovat GUI\n"
-"Chcete nyní restartovat GUI?"
-
-#
 msgid ""
 "GUI needs a restart to apply a new skin\n"
 "Do you want to restart the GUI now?"
@@ -6349,6 +6343,9 @@ msgid "I/O priority for script execution"
 msgstr ""
 
 msgid "IDLE"
+msgstr ""
+
+msgid "IGNORE"
 msgstr ""
 
 msgid "INFO"
@@ -9894,11 +9891,6 @@ msgid "Preview selected channel"
 msgstr "Náhled vybraného kanálu"
 
 #
-#, fuzzy
-msgid "Preview:"
-msgstr "náhled"
-
-#
 msgid "Primary DNS"
 msgstr "Primární DNS"
 
@@ -10887,6 +10879,9 @@ msgstr ""
 msgid "SDR"
 msgstr "SNR"
 
+msgid "SELECTIVE"
+msgstr ""
+
 #
 msgid "SINGLE LAYER DVD"
 msgstr "JEDNOVRSTVÉ DVD"
@@ -11394,11 +11389,6 @@ msgstr "Zvolit"
 
 #
 #, fuzzy
-msgid "Select LCD clock:"
-msgstr "Vyberte umístění"
-
-#
-#, fuzzy
 msgid "Select Software Update"
 msgstr "Aktualizace software"
 
@@ -11570,11 +11560,6 @@ msgstr "Vyberte program pro přidání..."
 
 #
 #, fuzzy
-msgid "Select skin:"
-msgstr "Vyberte skin"
-
-#
-#, fuzzy
 msgid "Select slot"
 msgstr "Vyberte umístění"
 
@@ -11696,11 +11681,6 @@ msgstr "Přidat poskytovatele"
 
 #
 #, fuzzy
-msgid "Select your LCD clock and press OK to activate the selected clock."
-msgstr "Zvolte poskytovatele a stiskem OK začněte prohledávat"
-
-#
-#, fuzzy
 msgid "Select your Skin"
 msgstr "Vyberte skin"
 
@@ -11731,11 +11711,6 @@ msgstr "Zvolte poskytovatele a stiskem OK začněte prohledávat"
 
 msgid "Select your region. If not available change 'Country' to 'all' and select one of the default alternatives."
 msgstr ""
-
-#
-#, fuzzy
-msgid "Select your skin and press OK to activate the selected skin."
-msgstr "Stiskněte OK pro aktivaci zvoleného skinu."
 
 msgid "Selected mount point is already used by another drive."
 msgstr ""
@@ -12311,9 +12286,6 @@ msgid "Show menu or plugin numbers"
 msgstr "Telefonní číslo"
 
 msgid "Show message if File Commander is not running and all Task's are completed."
-msgstr ""
-
-msgid "Show message if a background script ends successefully. Has 'stout', then this is displayed as additional info."
 msgstr ""
 
 msgid "Show message if a background script ends successfully. Has 'stout', then this is displayed as additional info."
@@ -13963,6 +13935,12 @@ msgstr ""
 
 #, python-format
 msgid "This field allows you to search an additional symbol rate up to %s."
+msgstr ""
+
+msgid ""
+"This image is intended for developers and testers.\n"
+"No support will be provided!\n"
+"Do you understand this?"
 msgstr ""
 
 #, fuzzy
@@ -16604,6 +16582,9 @@ msgstr ""
 msgid "codec"
 msgstr "Kodek videa"
 
+msgid "com.jetbrains.python.configuration.PythonContentEntriesConfigurable"
+msgstr ""
+
 msgid "comedy"
 msgstr "komedie"
 
@@ -16733,6 +16714,9 @@ msgstr "povoleno"
 #
 msgid "end cut here"
 msgstr "konec střihu zde"
+
+msgid "enigma2"
+msgstr ""
 
 #, fuzzy
 msgid "enigma2 and network"

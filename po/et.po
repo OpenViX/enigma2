@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-13 22:52+0100\n"
+"POT-Creation-Date: 2021-01-20 12:56+0100\n"
 "PO-Revision-Date: 2019-04-03 06:49+0300\n"
 "Last-Translator: \n"
 "Language-Team: Raivo, Henkka, eesatfan, rimas, zeros\\n faas, sateks, valgekotkas, tigekala, rootsikunn\\n kain, i70, mustkass, pelmeen, Scott\\n <digi-tv.ee>\n"
@@ -175,6 +175,9 @@ msgstr " paketti valitud."
 
 msgid " updates available."
 msgstr " uuendust saadaval."
+
+msgid "$PROJECT_DIR$"
+msgstr ""
 
 #, python-format
 msgid "%.0f GB"
@@ -2348,7 +2351,7 @@ msgid "ClientIP"
 msgstr ""
 
 #, fuzzy
-msgid "Clock"
+msgid "Clock Skin"
 msgstr "lukustatud"
 
 msgid "Clone TV screen to LCD"
@@ -5117,14 +5120,6 @@ msgstr ""
 "Kas taaskäivitad kasutajaliidese\n"
 "uue välimuse aktiveerimiseks?"
 
-#, fuzzy
-msgid ""
-"GUI needs a restart to apply a new skin\n"
-"Do you want to Restart the GUI now?"
-msgstr ""
-"Kas taaskäivitad kasutajaliidese\n"
-"uue välimuse aktiveerimiseks?"
-
 msgid ""
 "GUI needs a restart to apply a new skin\n"
 "Do you want to restart the GUI now?"
@@ -5581,6 +5576,9 @@ msgid "I/O priority for script execution"
 msgstr ""
 
 msgid "IDLE"
+msgstr ""
+
+msgid "IGNORE"
 msgstr ""
 
 msgid "INFO"
@@ -8637,10 +8635,6 @@ msgstr "Eelvaate menüü"
 msgid "Preview selected channel"
 msgstr "Valitud kanali eelvaatlus"
 
-#, fuzzy
-msgid "Preview:"
-msgstr "Eelvaade"
-
 msgid "Primary DNS"
 msgstr "Esmane nimeserver"
 
@@ -9490,6 +9484,9 @@ msgstr "Unicable LNB"
 msgid "SDR"
 msgstr "SNR"
 
+msgid "SELECTIVE"
+msgstr ""
+
 msgid "SINGLE LAYER DVD"
 msgstr "ÜHEKIHILINE DVD"
 
@@ -9931,10 +9928,6 @@ msgid "Select HDD"
 msgstr "Vali"
 
 #, fuzzy
-msgid "Select LCD clock:"
-msgstr "Vali asukoht"
-
-#, fuzzy
 msgid "Select Software Update"
 msgstr "Tarkvara uuendamine"
 
@@ -10075,10 +10068,6 @@ msgid "Select service to add..."
 msgstr "Vali kanal lisamiseks"
 
 #, fuzzy
-msgid "Select skin:"
-msgstr "Vali välimus"
-
-#, fuzzy
 msgid "Select slot"
 msgstr "Vali asukoht"
 
@@ -10187,10 +10176,6 @@ msgid "Select your ATSC provider."
 msgstr "Lisa levitaja"
 
 #, fuzzy
-msgid "Select your LCD clock and press OK to activate the selected clock."
-msgstr "Vali teenusepakkuja ja vajuta otsingu alustamiseks OK"
-
-#, fuzzy
 msgid "Select your Skin"
 msgstr "Vali välimus"
 
@@ -10218,10 +10203,6 @@ msgstr "Vali teenusepakkuja ja vajuta otsingu alustamiseks OK"
 
 msgid "Select your region. If not available change 'Country' to 'all' and select one of the default alternatives."
 msgstr ""
-
-#, fuzzy
-msgid "Select your skin and press OK to activate the selected skin."
-msgstr "Vajuta OK uue välimuse aktiveerimiseks."
 
 msgid "Selected mount point is already used by another drive."
 msgstr ""
@@ -10740,9 +10721,6 @@ msgid "Show menu or plugin numbers"
 msgstr "Telefoni number"
 
 msgid "Show message if File Commander is not running and all Task's are completed."
-msgstr ""
-
-msgid "Show message if a background script ends successefully. Has 'stout', then this is displayed as additional info."
 msgstr ""
 
 msgid "Show message if a background script ends successfully. Has 'stout', then this is displayed as additional info."
@@ -12221,6 +12199,12 @@ msgstr ""
 
 #, python-format
 msgid "This field allows you to search an additional symbol rate up to %s."
+msgstr ""
+
+msgid ""
+"This image is intended for developers and testers.\n"
+"No support will be provided!\n"
+"Do you understand this?"
 msgstr ""
 
 msgid ""
@@ -14579,6 +14563,9 @@ msgstr ""
 msgid "codec"
 msgstr "Videokoodek"
 
+msgid "com.jetbrains.python.configuration.PythonContentEntriesConfigurable"
+msgstr ""
+
 msgid "comedy"
 msgstr "komöödia"
 
@@ -14688,6 +14675,9 @@ msgstr "lubatud"
 
 msgid "end cut here"
 msgstr "lõpeta lõige siin"
+
+msgid "enigma2"
+msgstr ""
 
 #, fuzzy
 msgid "enigma2 and network"

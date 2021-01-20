@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-13 22:52+0100\n"
+"POT-Creation-Date: 2021-01-20 12:56+0100\n"
 "PO-Revision-Date: 2013-10-23 19:15+0100\n"
 "Last-Translator: andy1 <dmmm8000pvr@gmail.com>\n"
 "Language-Team: none\n"
@@ -173,6 +173,9 @@ msgstr " valgte pakker."
 
 msgid " updates available."
 msgstr " oppdateringer er tilgjengelig."
+
+msgid "$PROJECT_DIR$"
+msgstr ""
 
 #, python-format
 msgid "%.0f GB"
@@ -2483,7 +2486,7 @@ msgstr ""
 
 #
 #, fuzzy
-msgid "Clock"
+msgid "Clock Skin"
 msgstr "låst"
 
 msgid "Clone TV screen to LCD"
@@ -5454,14 +5457,6 @@ msgid ""
 "Do you want to restart the GUI now?"
 msgstr ""
 
-#, fuzzy
-msgid ""
-"GUI needs a restart to apply a new skin\n"
-"Do you want to Restart the GUI now?"
-msgstr ""
-"GUI skal startes på nytt for aktivering av nytt skin\n"
-"Vil du starte på nytt nå?"
-
 msgid ""
 "GUI needs a restart to apply a new skin\n"
 "Do you want to restart the GUI now?"
@@ -5938,6 +5933,9 @@ msgid "I/O priority for script execution"
 msgstr ""
 
 msgid "IDLE"
+msgstr ""
+
+msgid "IGNORE"
 msgstr ""
 
 msgid "INFO"
@@ -9255,11 +9253,6 @@ msgid "Preview selected channel"
 msgstr "Forhåndsvis valgte kanal"
 
 #
-#, fuzzy
-msgid "Preview:"
-msgstr "Forhåndsvisning"
-
-#
 msgid "Primary DNS"
 msgstr "Primær DNS"
 
@@ -10147,6 +10140,9 @@ msgstr ""
 msgid "SDR"
 msgstr ""
 
+msgid "SELECTIVE"
+msgstr ""
+
 #
 msgid "SINGLE LAYER DVD"
 msgstr "ETTLAGS DVD"
@@ -10605,10 +10601,6 @@ msgid "Select HDD"
 msgstr "Velg"
 
 #, fuzzy
-msgid "Select LCD clock:"
-msgstr "Velg en film"
-
-#, fuzzy
 msgid "Select Software Update"
 msgstr "Programvareoppdatering"
 
@@ -10762,11 +10754,6 @@ msgstr "Velg en film"
 msgid "Select service to add..."
 msgstr "Velg kanal som skal legges til..."
 
-#
-#, fuzzy
-msgid "Select skin:"
-msgstr "Velg et skin"
-
 msgid "Select slot"
 msgstr ""
 
@@ -10877,10 +10864,6 @@ msgstr "Velg trådløst nettverk"
 msgid "Select your ATSC provider."
 msgstr "Velg leverandør å legge til..."
 
-#, fuzzy
-msgid "Select your LCD clock and press OK to activate the selected clock."
-msgstr "Velg leverandør og trykk OK for å starte søk"
-
 msgid "Select your Skin"
 msgstr ""
 
@@ -10911,10 +10894,6 @@ msgstr "Velg leverandør og trykk OK for å starte søk"
 
 msgid "Select your region. If not available change 'Country' to 'all' and select one of the default alternatives."
 msgstr ""
-
-#, fuzzy
-msgid "Select your skin and press OK to activate the selected skin."
-msgstr "Trykk OK for å ta i bruk det valgte skin."
 
 msgid "Selected mount point is already used by another drive."
 msgstr ""
@@ -11453,9 +11432,6 @@ msgid "Show menu or plugin numbers"
 msgstr "Oversikt over programtillegg"
 
 msgid "Show message if File Commander is not running and all Task's are completed."
-msgstr ""
-
-msgid "Show message if a background script ends successefully. Has 'stout', then this is displayed as additional info."
 msgstr ""
 
 msgid "Show message if a background script ends successfully. Has 'stout', then this is displayed as additional info."
@@ -13023,6 +12999,12 @@ msgstr ""
 
 #, python-format
 msgid "This field allows you to search an additional symbol rate up to %s."
+msgstr ""
+
+msgid ""
+"This image is intended for developers and testers.\n"
+"No support will be provided!\n"
+"Do you understand this?"
 msgstr ""
 
 msgid ""
@@ -15540,6 +15522,9 @@ msgstr ""
 msgid "codec"
 msgstr ""
 
+msgid "com.jetbrains.python.configuration.PythonContentEntriesConfigurable"
+msgstr ""
+
 msgid "comedy"
 msgstr "komedie"
 
@@ -15664,6 +15649,9 @@ msgstr "aktivert"
 #
 msgid "end cut here"
 msgstr "avslutt klippet her"
+
+msgid "enigma2"
+msgstr ""
 
 #, fuzzy
 msgid "enigma2 and network"

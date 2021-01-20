@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-13 22:52+0100\n"
+"POT-Creation-Date: 2021-01-20 12:56+0100\n"
 "PO-Revision-Date: 2010-03-09 21:03+0100\n"
 "Last-Translator: \n"
 "Language-Team: HDTV ROMANIA(superonic,costel_mbc,neutrin,otheitis,cipy_1982,neutrin,runcanion)\n"
@@ -170,6 +170,9 @@ msgid " packages selected."
 msgstr ""
 
 msgid " updates available."
+msgstr ""
+
+msgid "$PROJECT_DIR$"
 msgstr ""
 
 #, python-format
@@ -2344,7 +2347,7 @@ msgid "ClientIP"
 msgstr ""
 
 #, fuzzy
-msgid "Clock"
+msgid "Clock Skin"
 msgstr "inchis"
 
 msgid "Clone TV screen to LCD"
@@ -5114,12 +5117,6 @@ msgid ""
 "Do you want to restart the GUI now?"
 msgstr "Interfata grafica necesita repornirea pentru aplicarea noilor decoratiuniDoriti repornirea interfetei grafice acum?"
 
-#, fuzzy
-msgid ""
-"GUI needs a restart to apply a new skin\n"
-"Do you want to Restart the GUI now?"
-msgstr "Interfata grafica necesita repornirea pentru aplicarea noilor decoratiuniDoriti repornirea interfetei grafice acum?"
-
 msgid ""
 "GUI needs a restart to apply a new skin\n"
 "Do you want to restart the GUI now?"
@@ -5580,6 +5577,9 @@ msgid "I/O priority for script execution"
 msgstr ""
 
 msgid "IDLE"
+msgstr ""
+
+msgid "IGNORE"
 msgstr ""
 
 msgid "INFO"
@@ -8652,10 +8652,6 @@ msgstr "Meniu previzualizare"
 msgid "Preview selected channel"
 msgstr ""
 
-#, fuzzy
-msgid "Preview:"
-msgstr "Meniu previzualizare"
-
 msgid "Primary DNS"
 msgstr "DNS Primar"
 
@@ -9501,6 +9497,9 @@ msgstr "Unicable LNB"
 msgid "SDR"
 msgstr "SNR"
 
+msgid "SELECTIVE"
+msgstr ""
+
 msgid "SINGLE LAYER DVD"
 msgstr ""
 
@@ -9949,10 +9948,6 @@ msgid "Select HDD"
 msgstr "Selectare"
 
 #, fuzzy
-msgid "Select LCD clock:"
-msgstr "Alege locatia"
-
-#, fuzzy
 msgid "Select Software Update"
 msgstr "Actualizare software"
 
@@ -10098,10 +10093,6 @@ msgid "Select service to add..."
 msgstr "Selectati serviciul care sa fie adaugat..."
 
 #, fuzzy
-msgid "Select skin:"
-msgstr "Alegeti un film"
-
-#, fuzzy
 msgid "Select slot"
 msgstr "Alege locatia"
 
@@ -10211,9 +10202,6 @@ msgstr ""
 msgid "Select your ATSC provider."
 msgstr "adauga Provider"
 
-msgid "Select your LCD clock and press OK to activate the selected clock."
-msgstr ""
-
 #, fuzzy
 msgid "Select your Skin"
 msgstr "Alegeti un film"
@@ -10242,10 +10230,6 @@ msgstr ""
 
 msgid "Select your region. If not available change 'Country' to 'all' and select one of the default alternatives."
 msgstr ""
-
-#, fuzzy
-msgid "Select your skin and press OK to activate the selected skin."
-msgstr "Apasati OK pentru a activa setarile"
 
 msgid "Selected mount point is already used by another drive."
 msgstr ""
@@ -10776,9 +10760,6 @@ msgid "Show menu or plugin numbers"
 msgstr "arata meniul de tag-uri"
 
 msgid "Show message if File Commander is not running and all Task's are completed."
-msgstr ""
-
-msgid "Show message if a background script ends successefully. Has 'stout', then this is displayed as additional info."
 msgstr ""
 
 msgid "Show message if a background script ends successfully. Has 'stout', then this is displayed as additional info."
@@ -12266,6 +12247,12 @@ msgstr ""
 
 #, python-format
 msgid "This field allows you to search an additional symbol rate up to %s."
+msgstr ""
+
+msgid ""
+"This image is intended for developers and testers.\n"
+"No support will be provided!\n"
+"Do you understand this?"
 msgstr ""
 
 msgid ""
@@ -14590,6 +14577,9 @@ msgstr ""
 msgid "codec"
 msgstr ""
 
+msgid "com.jetbrains.python.configuration.PythonContentEntriesConfigurable"
+msgstr ""
+
 msgid "comedy"
 msgstr ""
 
@@ -14699,6 +14689,9 @@ msgstr "activat"
 
 msgid "end cut here"
 msgstr "sfarsit decupare aici"
+
+msgid "enigma2"
+msgstr ""
 
 #, fuzzy
 msgid "enigma2 and network"

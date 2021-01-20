@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-13 22:52+0100\n"
+"POT-Creation-Date: 2021-01-20 12:56+0100\n"
 "PO-Revision-Date: 2020-05-13 21:36+0200\n"
 "Last-Translator: mcfly82\n"
 "Language-Team: mcfly82 & wysless\n"
@@ -175,6 +175,9 @@ msgstr " szoftvercsomag kiválasztva."
 
 msgid " updates available."
 msgstr " frissítés elérhető."
+
+msgid "$PROJECT_DIR$"
+msgstr ""
 
 #, python-format
 msgid "%.0f GB"
@@ -2351,7 +2354,7 @@ msgid "ClientIP"
 msgstr ""
 
 #, fuzzy
-msgid "Clock"
+msgid "Clock Skin"
 msgstr "hangolva"
 
 msgid "Clone TV screen to LCD"
@@ -5126,14 +5129,6 @@ msgstr ""
 "Az új skin betöltéséhez újra kell indítani a kezelő felületet.\n"
 "Megtörténhet ez most azonnal?"
 
-#, fuzzy
-msgid ""
-"GUI needs a restart to apply a new skin\n"
-"Do you want to Restart the GUI now?"
-msgstr ""
-"Az új skin betöltéséhez újra kell indítani a kezelő felületet.\n"
-"Megtörténhet ez most azonnal?"
-
 msgid ""
 "GUI needs a restart to apply a new skin\n"
 "Do you want to restart the GUI now?"
@@ -5591,6 +5586,9 @@ msgid "I/O priority for script execution"
 msgstr ""
 
 msgid "IDLE"
+msgstr ""
+
+msgid "IGNORE"
 msgstr ""
 
 msgid "INFO"
@@ -8651,10 +8649,6 @@ msgstr "Előnézeti menü"
 msgid "Preview selected channel"
 msgstr "Kijelőlt csatorna előnézete"
 
-#, fuzzy
-msgid "Preview:"
-msgstr "Előnézet"
-
 msgid "Primary DNS"
 msgstr "Elsődl. DNS"
 
@@ -9503,6 +9497,9 @@ msgstr "Unicable fej"
 msgid "SDR"
 msgstr "SNR"
 
+msgid "SELECTIVE"
+msgstr ""
+
 msgid "SINGLE LAYER DVD"
 msgstr "Egyrétegű DVD"
 
@@ -9950,10 +9947,6 @@ msgid "Select HDD"
 msgstr "Megjelölés"
 
 #, fuzzy
-msgid "Select LCD clock:"
-msgstr "Válassza ki a helyet"
-
-#, fuzzy
 msgid "Select Software Update"
 msgstr "Szoftver frissítés"
 
@@ -10094,10 +10087,6 @@ msgid "Select service to add..."
 msgstr "Válasszon hozzáadandó csatornát..."
 
 #, fuzzy
-msgid "Select skin:"
-msgstr "Felvétel kiválasztása"
-
-#, fuzzy
 msgid "Select slot"
 msgstr "Válassza ki a helyet"
 
@@ -10205,10 +10194,6 @@ msgid "Select your ATSC provider."
 msgstr "Szolgáltató hozzáadása"
 
 #, fuzzy
-msgid "Select your LCD clock and press OK to activate the selected clock."
-msgstr "Válassza ki a szolgáltatóját, nyomja le az OK-t"
-
-#, fuzzy
 msgid "Select your Skin"
 msgstr "Felvétel kiválasztása"
 
@@ -10236,10 +10221,6 @@ msgstr "Válassza ki a szolgáltatóját, nyomja le az OK-t"
 
 msgid "Select your region. If not available change 'Country' to 'all' and select one of the default alternatives."
 msgstr ""
-
-#, fuzzy
-msgid "Select your skin and press OK to activate the selected skin."
-msgstr "Válassza ki a szolgáltatóját, nyomja le az OK-t"
 
 msgid "Selected mount point is already used by another drive."
 msgstr ""
@@ -10758,9 +10739,6 @@ msgid "Show menu or plugin numbers"
 msgstr "Telefonszám"
 
 msgid "Show message if File Commander is not running and all Task's are completed."
-msgstr ""
-
-msgid "Show message if a background script ends successefully. Has 'stout', then this is displayed as additional info."
 msgstr ""
 
 msgid "Show message if a background script ends successfully. Has 'stout', then this is displayed as additional info."
@@ -12254,6 +12232,12 @@ msgstr ""
 
 #, python-format
 msgid "This field allows you to search an additional symbol rate up to %s."
+msgstr ""
+
+msgid ""
+"This image is intended for developers and testers.\n"
+"No support will be provided!\n"
+"Do you understand this?"
 msgstr ""
 
 msgid ""
@@ -14625,6 +14609,9 @@ msgstr ""
 msgid "codec"
 msgstr "Videó kodek"
 
+msgid "com.jetbrains.python.configuration.PythonContentEntriesConfigurable"
+msgstr ""
+
 msgid "comedy"
 msgstr "vígjáték"
 
@@ -14734,6 +14721,9 @@ msgstr "engedélyezve"
 
 msgid "end cut here"
 msgstr "vágás kilépő pontja"
+
+msgid "enigma2"
+msgstr ""
 
 #, fuzzy
 msgid "enigma2 and network"
