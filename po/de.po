@@ -7528,7 +7528,7 @@ msgid "N/A"
 msgstr "N/V"
 
 msgid "NEXT"
-msgstr ""
+msgstr "Demnächst"
 
 msgid "NFS"
 msgstr ""
