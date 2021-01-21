@@ -214,7 +214,7 @@ class SkinSelector(Screen, HelpableScreen):
 class LcdSkinSelector(SkinSelector):
 	def __init__(self, session, screenTitle=_("Display Skin")):
 		SkinSelector.__init__(self, session, screenTitle=screenTitle)
-		self.skinName = ["LcdSkinSelector", "SkinSelector"]
+		self.skinName = ["LcdSkinSelector"] + self.skinName
 		self.rootDir = resolveFilename(SCOPE_LCDSKIN)
 		self.config = config.skin.display_skin
 		from skin import currentDisplaySkin # value types are imported by value at import time
