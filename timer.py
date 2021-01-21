@@ -190,13 +190,15 @@ class Timer:
 		now = time()
 		keepThreshold = now - days * 86400 if days else 0
 		keepFinishedLogThreshold = now - finishedLogDays * 86400 if finishedLogDays else 0
-		self.processed_timers = [entry for entry in self.processed_timers if (entry.disabled and entry.repeated) or (entry.end and (entry.end > keepThreshold))]
-		for entry in self.processed_timers:
+		for entry in self.timer_list:
 			if entry.repeated:
 				# Handle repeat entries, which never end
 				# Repeating timers get, e.g., repeated="127" (day of week bitmap)
-				entry.log_entries = [entry for entry in entry.log_entries if entry.log_time > keepThreshold]
-			elif entry.end < keepFinishedLogThreshold and len(entry.log_entries) > 0:
+				entry.log_entries = [log_entry for log_entry in entry.log_entries if log_entry[0] > keepThreshold]
+
+		self.processed_timers = [entry for entry in self.processed_timers if (entry.disabled and entry.repeated) or (entry.end and (entry.end > keepThreshold))]
+		for entry in self.processed_timers:
+			if entry.end < keepFinishedLogThreshold and len(entry.log_entries) > 0:
 				# Clear logs on finished timers
 				entry.log_entries = []
 
