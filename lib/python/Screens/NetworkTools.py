@@ -1828,11 +1828,14 @@ class uShareSelection(Screen):
 		self.selectionChanged()
 
 	def selectionChanged(self):
-		current = self["checkList"].getCurrent()
-		if current[2] == True:
-			self["key_yellow"].setText(_("Deselect"))
-		else:
-			self["key_yellow"].setText(_("Select"))
+		current = self["checkList"].getCurrent()[0]
+		try:
+			if current[2] == True:
+				self["key_yellow"].setText(_("Deselect"))
+			else:
+				self["key_yellow"].setText(_("Select"))
+		except:
+			pass
 
 	def up(self):
 		self["checkList"].up()
@@ -2299,11 +2302,14 @@ class MiniDLNASelection(Screen):
 		self.selectionChanged()
 
 	def selectionChanged(self):
-		current = self["checkList"].getCurrent()
-		if current[2] == True:
-			self["key_yellow"].setText(_("Deselect"))
-		else:
-			self["key_yellow"].setText(_("Select"))
+		current = self["checkList"].getCurrent()[0]
+		try:
+			if current[2] == True:
+				self["key_yellow"].setText(_("Deselect"))
+			else:
+				self["key_yellow"].setText(_("Select"))
+		except:
+			pass
 
 	def up(self):
 		self["checkList"].up()
