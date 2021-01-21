@@ -1340,7 +1340,7 @@ class ImageManagerDownload(Screen):
 				urljson = path.join(self.ConfigObj.value, boxtype)
 				self.imagesList = dict(json.load(urlopen("%s" % urljson)))
 			except Exception:
-				print("[ImageManager] no images available for: the '%s' at '%s'" % (self.boxtype, ConfigObj.value))
+				print("[ImageManager] no images available for: the '%s' at '%s'" % (self.boxtype, self.ConfigObj.value))
 				return
 
 		if not self.imagesList: # Nothing has been found on that server so we might as well give up.
