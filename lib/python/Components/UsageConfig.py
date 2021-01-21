@@ -306,10 +306,6 @@ def InitUsageConfig():
 					("ChannelList", _("Channel List")),
 					("BouquetList", _("Bouquet List")),
 					("MovieList", _("Movie List"))])
-	config.usage.channelbutton_mode = ConfigSelection(default="0", choices = [
-					("0", _("Just change channels")),
-					("1", _("Channel List")),
-					("2", _("Bouquet List"))])
 	config.usage.show_bouquetalways = ConfigYesNo(default = False)
 	config.usage.show_event_progress_in_servicelist = ConfigSelection(default = 'barright', choices = [
 		('barleft', _("Progress bar left")),
