@@ -57,8 +57,9 @@ class FeedsStatusCheck:
 			sd.connect((host, port))
 			print "[OnlineUpdateCheck][NetworkUp] PASSED"
 			result = True
-		except Exception as err:
-			print "[OnlineUpdateCheck][NetworkUp] FAILED", err.message
+		except:
+			err = sys.exc_info()[0]
+			print("[OnlineUpdateCheck][NetworkUp] FAILED", err)
 			result = False
 		finally:
 			if sd:
