@@ -1644,4 +1644,200 @@ self.instance.move(ePoint(orgpos.x() + (orgwidth - newwidth)/2, orgpos.y() + (or
 		<ePixmap pixmap="div-h.png" position="20,360" zPosition="1" size="600,2"/>
 		<widget source="lab3" render="Label" position="0,370" size="560,60" zPosition="10" font="Regular;21" halign="center" valign="center" backgroundColor="#25062748" transparent="1"/>
 	</screen>
+	<screen name="NetworkNfs" position="center,center" size="560,390" title="NFS Setup">
+		<widget name="lab1" position="30,20" size="260,30" font="Regular;20" valign="center" />
+		<widget name="labactive" position="330,20" size="200,30" font="Regular;20" valign="center" />
+		<widget name="lab2" position="30,60" size="260,30" font="Regular;20" valign="center" />
+		<widget name="labstop" position="330,60" size="200,30" foregroundColor="#f23d21" font="Regular;20" valign="center" />
+		<widget name="labrun" position="330,60" size="200,30" foregroundColor="#389416" font="Regular;20" valign="center" />
+		<widget name="lab4" position="30,100" size="500,30" font="Regular;20" valign="center" />
+		<widget name="lab3" position="30,140" size="500,150" font="Regular;20" valign="top" />
+		<widget source="key_red" render="Label" position="30,300" size="200,30" backgroundColor="#f23d21" font="Regular;20" halign="center" valign="center" />
+		<widget source="key_green" render="Label" position="330,300" size="200,30" backgroundColor="#389416" font="Regular;20" halign="center" valign="center" />
+		<widget source="key_yellow" render="Label" position="30,340" size="200,30" backgroundColor="#e5b243" font="Regular;20" halign="center" valign="center" />
+		<widget source="key_blue" render="Label" position="330,340" size="200,30" backgroundColor="#0064c7" font="Regular;20" halign="center" valign="center" />
+	</screen>
+	<screen name="NetworkSamba" position="center,center" size="560,190" title="Samba Setup">
+		<widget name="lab1" position="30,20" size="260,30" font="Regular;20" valign="center" />
+		<widget name="labactive" position="330,20" size="200,30" font="Regular;20" valign="center" />
+		<widget name="lab2" position="30,60" size="260,30" font="Regular;20" valign="center" />
+		<widget name="labstop" position="330,60" size="200,30" foregroundColor="#f23d21" font="Regular;20" valign="center" />
+		<widget name="labrun" position="330,60" size="200,30" foregroundColor="#389416" font="Regular;20" valign="center" />
+		<widget source="key_red" render="Label" position="30,100" size="200,30" backgroundColor="#f23d21" font="Regular;20" halign="center" valign="center" />
+		<widget source="key_green" render="Label" position="330,100" size="200,30" backgroundColor="#389416" font="Regular;20" halign="center" valign="center" />
+		<widget source="key_yellow" render="Label" position="30,140" size="200,30" backgroundColor="#e5b243" font="Regular;20" halign="center" valign="center" />
+		<widget source="key_blue" render="Label" position="330,140" size="200,30" backgroundColor="#0064c7" font="Regular;20" halign="center" valign="center" />
+	</screen>
+	<screen name="NetworkLog" position="center,center" size="660,360" title="Samba Log">
+		<widget source="infotext" render="Label" position="30,300" size="600,30" font="Regular;20" />
+	</screen>
+	<screen name="NetworkAfp" position="center,center" size="560,190" title="AFP Setup">
+		<widget name="lab1" position="30,20" size="260,30" font="Regular;20" valign="center" />
+		<widget name="labactive" position="330,20" size="200,30" font="Regular;20" valign="center" />
+		<widget name="lab2" position="30,60" size="260,30" font="Regular;20" valign="center" />
+		<widget name="labstop" position="330,60" size="200,30" foregroundColor="#f23d21" font="Regular;20" valign="center" />
+		<widget name="labrun" position="330,60" size="200,30" foregroundColor="#389416" font="Regular;20" valign="center" />
+		<widget source="key_red" render="Label" position="30,100" size="200,30" backgroundColor="#f23d21" font="Regular;20" halign="center" valign="center" />
+		<widget source="key_green" render="Label" position="330,100" size="200,30" backgroundColor="#389416" font="Regular;20" halign="center" valign="center" />
+		<widget source="key_yellow" render="Label" position="30,140" size="200,30" backgroundColor="#e5b243" font="Regular;20" halign="center" valign="center" />
+	</screen>
+	<screen name="NetworkSABnzbd" position="center,center" size="560,190" title="SABnzbd Setup">
+		<widget name="lab1" position="30,20" size="260,30" font="Regular;20" valign="center" />
+		<widget name="labactive" position="330,20" size="200,30" font="Regular;20" valign="center" />
+		<widget name="lab2" position="30,60" size="260,30" font="Regular;20" valign="center" />
+		<widget name="labstop" position="330,60" size="200,30" foregroundColor="#f23d21" font="Regular;20" valign="center" />
+		<widget name="labrun" position="330,60" size="200,30" foregroundColor="#389416" font="Regular;20" valign="center" />
+		<widget source="key_red" render="Label" position="30,100" size="200,30" backgroundColor="#f23d21" font="Regular;20" halign="center" valign="center" />
+		<widget source="key_green" render="Label" position="330,100" size="200,30" backgroundColor="#389416" font="Regular;20" halign="center" valign="center" />
+		<widget source="key_yellow" render="Label" position="30,140" size="200,30" backgroundColor="#e5b243" font="Regular;20" halign="center" valign="center" />
+	</screen>
+	<screen name="NetworkFTP" position="center,center" size="560,150" title="FTP Setup">
+		<widget name="lab1" position="30,20" size="260,30" font="Regular;20" valign="center" />
+		<widget name="labactive" position="330,20" size="200,30" font="Regular;20" valign="center" />
+		<widget name="lab2" position="30,60" size="260,30" font="Regular;20" valign="center" />
+		<widget name="labstop" position="330,60" size="200,30" foregroundColor="#f23d21" font="Regular;20" valign="center" />
+		<widget name="labrun" position="330,60" size="200,30" foregroundColor="#389416" font="Regular;20" valign="center" />
+		<widget source="key_green" render="Label" position="30,100" size="200,30" backgroundColor="#389416" font="Regular;20" halign="center" valign="center" />
+		<widget source="key_yellow" render="Label" position="330,100" size="200,30" backgroundColor="#e5b243" font="Regular;20" halign="center" valign="center" />
+	</screen>
+	<screen name="NetworkOpenvpn" position="center,center" size="560,270" title="OpenVpn Setup">
+		<widget name="lab1" position="30,20" size="260,30" font="Regular;20" valign="center" />
+		<widget name="labactive" position="330,20" size="200,30" font="Regular;20" valign="center" />
+		<widget name="lab2" position="30,60" size="260,30" font="Regular;20" valign="center" />
+		<widget name="labstop" position="330,60" size="200,30" foregroundColor="#f23d21" font="Regular;20" valign="center" />
+		<widget name="labrun" position="330,60" size="200,30" foregroundColor="#389416" font="Regular;20" valign="center" />
+		<widget name="labconfig" position="30,100" size="500,30" font="Regular;20" valign="center" />
+		<widget name="labconfigfilename" position="30,140" size="500,30" font="Regular;20" valign="center" />
+		<widget source="key_red" render="Label" position="30,180" size="200,30" backgroundColor="#f23d21" font="Regular;20" halign="center" valign="center" />
+		<widget source="key_green" render="Label" position="330,180" size="200,30" backgroundColor="#389416" font="Regular;20" halign="center" valign="center" />
+		<widget source="key_yellow" render="Label" position="30,220" size="200,30" backgroundColor="#e5b243" font="Regular;20" halign="center" valign="center" />
+		<widget source="key_blue" render="Label" position="330,220" size="200,30" backgroundColor="#0064c7" font="Regular;20" halign="center" valign="center" />
+	</screen>
+	<screen name="NetworkTelnet" position="center,center" size="560,190" title="Telnet Setup">
+		<widget name="lab1" position="30,20" size="260,30" font="Regular;20" valign="center" />
+		<widget name="labactive" position="330,20" size="200,30" font="Regular;20" valign="center" />
+		<widget name="lab2" position="30,60" size="260,30" font="Regular;20" valign="center" />
+		<widget name="labstop" position="330,60" size="200,30" foregroundColor="#f23d21" font="Regular;20" valign="center" />
+		<widget name="labrun" position="330,60" size="200,30" foregroundColor="#389416" font="Regular;20" valign="center" />
+		<widget source="key_red" render="Label" position="30,100" size="200,30" backgroundColor="#f23d21" font="Regular;20" halign="center" valign="center" />
+		<widget source="key_green" render="Label" position="330,100" size="200,30" backgroundColor="#389416" font="Regular;20" halign="center" valign="center" />
+		<widget source="key_yellow" render="Label" position="30,140" size="200,30" backgroundColor="#e5b243" font="Regular;20" halign="center" valign="center" />
+	</screen>
+	<screen name="NetworkInadyn" position="center,center" size="800,390" title="Inadyn Setup">
+		<widget name="autostart" position="30,20" size="260,30" font="Regular;20" valign="center" />
+		<widget name="labdisabled" position="330,20" size="230,30" font="Regular;20" foregroundColor="#f23d21" valign="center" />
+		<widget name="labactive" position="330,20" size="230,30" font="Regular;20" foregroundColor="#389416" valign="center" />
+		<widget name="status" position="30,60" size="260,30" font="Regular;20" valign="center" />
+		<widget name="labstop" position="330,60" size="230,30" font="Regular;20" foregroundColor="#f23d21" valign="center" />
+		<widget name="labrun" position="330,60" size="230,30" font="Regular;20" foregroundColor="#389416" valign="center" />
+		<widget name="time" position="30,100" size="260,30" font="Regular;20" valign="center" />
+		<widget name="labtime" position="330,100" size="440,30" font="Regular;20" valign="center" />
+		<widget name="username" position="30,140" size="260,30" font="Regular;20" valign="center" />
+		<widget name="labuser" position="330,140" size="440,30" font="Regular;20" valign="center" />
+		<widget name="password" position="30,180" size="260,30" font="Regular;20" valign="center" />
+		<widget name="labpass" position="330,180" size="440,30" font="Regular;20" valign="center" />
+		<widget name="alias" position="30,220" size="260,30" font="Regular;20" valign="center" />
+		<widget name="labalias" position="330,220" size="440,30" font="Regular;20" valign="center" />
+		<widget name="system" position="30,260" size="260,30" font="Regular;20" valign="center" />
+		<widget name="sinactive" position="330,263" pixmap="skin_default/icons/lock_off.png" size="25,24" alphatest="on" />
+		<widget name="sactive" position="330,263" pixmap="skin_default/icons/lock_on.png" size="25,24" alphatest="on" />
+		<widget name="labsys" position="370,260" size="400,30" font="Regular;20" valign="center" />
+		<widget source="key_red" render="Label" position="30,300" size="200,30" backgroundColor="#f23d21" font="Regular;20" halign="center" valign="center" />
+		<widget source="key_green" render="Label" position="330,300" size="200,30" backgroundColor="#389416" font="Regular;20" halign="center" valign="center" />
+		<widget source="key_yellow" render="Label" position="30,340" size="200,30" backgroundColor="#e5b243" font="Regular;20" halign="center" valign="center" />
+		<widget source="key_blue" render="Label" position="330,340" size="200,30" backgroundColor="#0064c7" font="Regular;20" halign="center" valign="center" />
+	</screen>
+	<screen name="NetworkInadynSetup" position="center,center" size="660,290" title="Inadyn Setup">
+		<widget name="config" position="30,20" size="600,210" itemHeight="30" font="Regular;20" scrollbarMode="showOnDemand" />
+		<widget source="key_red" render="Label" position="30,240" size="200,30" backgroundColor="#f23d21" font="Regular;20" halign="center" valign="center" />
+	</screen>
+	<screen name="NetworkInadynLog" position="center,center" size="660,360" title="Inadyn Log">
+		<widget source="infotext" render="Label" position="30,300" size="600,30" font="Regular;20" />
+	</screen>
+	<screen name="NetworkuShare" position="center,center" size="800,550" title="uShare Setup">
+		<widget name="autostart" position="30,20" size="260,30" font="Regular;20" valign="center" />
+		<widget name="labdisabled" position="330,20" size="200,30" font="Regular;20" foregroundColor="#f23d21" valign="center" />
+		<widget name="labactive" position="330,20" size="200,30" font="Regular;20" foregroundColor="#389416" valign="center" />
+		<widget name="status" position="30,60" size="260,30" font="Regular;20" valign="center" />
+		<widget name="labstop" position="330,60" size="200,30" font="Regular;20" foregroundColor="#f23d21" valign="center" />
+		<widget name="labrun" position="330,60" size="200,30" font="Regular;20" foregroundColor="#389416" valign="center" />
+		<widget name="username" position="30,100" size="260,30" font="Regular;20" valign="center" />
+		<widget name="labuser" position="330,100" size="440,30" font="Regular;20" valign="center" />
+		<widget name="iface" position="30,140" size="260,30" font="Regular;20" valign="center" />
+		<widget name="labiface" position="330,140" size="440,30" font="Regular;20" valign="center" />
+		<widget name="port" position="30,180" size="260,30" font="Regular;20" valign="center" />
+		<widget name="labport" position="330,180" size="440,30" font="Regular;20" valign="center" />
+		<widget name="telnetport" position="30,220" size="260,30" font="Regular;20" valign="center" />
+		<widget name="labtelnetport" position="330,220" size="440,30" font="Regular;20" valign="center" />
+		<widget name="sharedir" position="30,260" size="260,30" font="Regular;20" valign="center" />
+		<widget name="labsharedir" position="330,260" size="440,30" font="Regular;20" valign="center" />
+		<widget name="web" position="30,300" size="290,30" font="Regular;20" valign="center" />
+		<widget name="webactive" position="330,303" pixmap="skin_default/icons/lock_on.png" size="25,24" alphatest="on" />
+		<widget name="webinactive" position="330,303" pixmap="skin_default/icons/lock_off.png" size="25,24" alphatest="on" />
+		<widget name="telnet" position="30,340" size="290,30" font="Regular;20" valign="center" />
+		<widget name="telnetactive" position="330,343" pixmap="skin_default/icons/lock_on.png" size="25,24" alphatest="on" />
+		<widget name="telnetinactive" position="330,343" pixmap="skin_default/icons/lock_off.png" size="25,24" alphatest="on" />
+		<widget name="xbox" position="30,380" size="290,30" font="Regular;20" valign="center" />
+		<widget name="xboxactive" position="330,383" pixmap="skin_default/icons/lock_on.png" size="25,24" alphatest="on" />
+		<widget name="xboxinactive" position="330,383" pixmap="skin_default/icons/lock_off.png" size="25,24" alphatest="on" />
+		<widget name="dlna" position="30,420" size="290,30" font="Regular;20" valign="center" />
+		<widget name="dlnaactive" position="330,423" pixmap="skin_default/icons/lock_on.png" size="25,24" alphatest="on" />
+		<widget name="dlnainactive" position="330,423" pixmap="skin_default/icons/lock_off.png" size="25,24" alphatest="on" />
+		<widget source="key_red" render="Label" position="30,460" size="200,30" backgroundColor="#f23d21" font="Regular;20" halign="center" valign="center" />
+		<widget source="key_green" render="Label" position="330,460" size="200,30" backgroundColor="#389416" font="Regular;20" halign="center" valign="center" />
+		<widget source="key_yellow" render="Label" position="30,500" size="200,30" backgroundColor="#e5b243" font="Regular;20" halign="center" valign="center" />
+		<widget source="key_blue" render="Label" position="330,500" size="200,30" backgroundColor="#0064c7" font="Regular;20" halign="center" valign="center" />
+	</screen>
+	<screen name="NetworkuShareSetup" position="center,center" size="660,290" title="uShare Setup">
+		<widget name="config" position="30,20" size="600,210" itemHeight="30" font="Regular;20" scrollbarMode="showOnDemand" />
+		<widget source="key_red" render="Label" position="30,240" size="200,30" backgroundColor="#f23d21" font="Regular;20" halign="center" valign="center" />
+		<widget source="key_green" render="Label" position="330,240" size="200,30" backgroundColor="#389416" font="Regular;20" halign="center" valign="center" />
+	</screen>
+	<screen name="uShareSelection" position="center,center" size="660,330" title="Select folders">
+		<widget name="checkList" position="30,20" size="600,210" itemHeight="30" font="Regular;20" scrollbarMode="showOnDemand" />
+		<widget source="key_red" render="Label" position="30,240" size="200,30" backgroundColor="#f23d21" font="Regular;20" halign="center" valign="center" />
+		<widget source="key_green" render="Label" position="330,240" size="200,30" backgroundColor="#389416" font="Regular;20" halign="center" valign="center" />
+		<widget source="key_yellow" render="Label" position="30,280" size="200,30" backgroundColor="#e5b243" font="Regular;20" halign="center" valign="center" />
+	</screen>
+	<screen name="NetworkMiniDLNA" position="center,center" size="800,510" title="MiniDLNA Setup">
+		<widget name="autostart" position="30,20" size="260,30" font="Regular;20" valign="center" />
+		<widget name="labdisabled" position="330,20" size="230,30" font="Regular;20" foregroundColor="#f23d21" valign="center" />
+		<widget name="labactive" position="330,20" size="230,30" font="Regular;20" foregroundColor="#389416" valign="center" />
+		<widget name="status" position="30,60" size="260,30" font="Regular;20" valign="center" />
+		<widget name="labstop" position="330,60" size="230,30" font="Regular;20" foregroundColor="#f23d21" valign="center" />
+		<widget name="labrun" position="330,60" size="230,30" font="Regular;20" foregroundColor="#389416" valign="center" />
+		<widget name="username" position="30,100" size="260,30" font="Regular;20" valign="center" />
+		<widget name="labuser" position="330,100" size="440,30" font="Regular;20" valign="center" />
+		<widget name="iface" position="30,140" size="260,30" font="Regular;20" valign="center" />
+		<widget name="labiface" position="330,140" size="400,30" font="Regular;20" valign="center" />
+		<widget name="port" position="30,180" size="260,30" font="Regular;20" valign="center" />
+		<widget name="labport" position="330,180" size="440,30" font="Regular;20" valign="center" />
+		<widget name="serialno" position="30,220" size="260,30" font="Regular;20" valign="center" />
+		<widget name="labserialno" position="330,220" size="440,30" font="Regular;20" valign="center" />
+		<widget name="sharedir" position="30,260" size="260,30" font="Regular;20" valign="center" />
+		<widget name="labsharedir" position="330,260" size="440,30" font="Regular;20" valign="center" />
+		<widget name="inotify" position="30,300" size="290,30" font="Regular;20" valign="center" />
+		<widget name="inotifyactive" position="330,303" pixmap="skin_default/icons/lock_on.png" size="25,24" alphatest="on" />
+		<widget name="inotifyinactive" position="330,303" pixmap="skin_default/icons/lock_off.png" size="25,24" alphatest="on" />
+		<widget name="tivo" position="30,340" size="290,30" font="Regular;20" valign="center" />
+		<widget name="tivoactive" position="330,343" pixmap="skin_default/icons/lock_on.png" size="25,24" alphatest="on" />
+		<widget name="tivoinactive" position="330,343" pixmap="skin_default/icons/lock_off.png" size="25,24" alphatest="on" />
+		<widget name="dlna" position="30,380" size="290,30" font="Regular;20" valign="center" />
+		<widget name="dlnaactive" position="330,383" pixmap="skin_default/icons/lock_on.png" size="25,24" alphatest="on" />
+		<widget name="dlnainactive" position="330,383" pixmap="skin_default/icons/lock_off.png" size="25,24" alphatest="on" />
+		<widget source="key_red" render="Label" position="30,420" size="200,30" backgroundColor="#f23d21" font="Regular;20" halign="center" valign="center" />
+		<widget source="key_green" render="Label" position="330,420" size="200,30" backgroundColor="#389416" font="Regular;20" halign="center" valign="center" />
+		<widget source="key_yellow" render="Label" position="30,460" size="200,30" backgroundColor="#e5b243" font="Regular;20" halign="center" valign="center" />
+		<widget source="key_blue" render="Label" position="330,460" size="200,30" backgroundColor="#0064c7" font="Regular;20" halign="center" valign="center" />
+	</screen>
+	<screen name="NetworkSATPI" position="center,center" size="560,190" title="SATPI Setup">
+		<widget name="lab1" position="30,20" size="260,30" font="Regular;20" valign="center" />
+		<widget name="labactive" position="330,20" size="200,30" font="Regular;20" valign="center" />
+		<widget name="lab2" position="30,60" size="260,30" font="Regular;20" valign="center" />
+		<widget name="labstop" position="330,60" size="200,30" foregroundColor="#f23d21" font="Regular;20" valign="center" />
+		<widget name="labrun" position="330,60" size="200,30" foregroundColor="#389416" font="Regular;20" valign="center" />
+		<widget source="key_red" render="Label" position="30,100" size="200,30" backgroundColor="#f23d21" font="Regular;20" halign="center" valign="center" />
+		<widget source="key_green" render="Label" position="330,100" size="200,30" backgroundColor="#389416" font="Regular;20" halign="center" valign="center" />
+		<widget source="key_yellow" render="Label" position="30,140" size="200,30" backgroundColor="#e5b243" font="Regular;20" halign="center" valign="center" />
+	</screen>
 </skin>
