@@ -643,8 +643,8 @@ class PowerTimer(Timer):
 		if days > 0:
 			now = time()
 			keepThreshold = now - days * 86400
-			for entry in self.processed_timers:
-				if str(timer.autosleeprepeat) == "repeated":
+			for entry in self.timer_list:
+				if str(entry.autosleeprepeat) == "repeated":
 					# Handle repeat entries, which never end
 					# Repeating timers get autosleeprepeat="repeated" as well as the cases handled by TimerEntry
-					entry.log_entries = [entry for entry in entry.log_entries if entry.log_time > keepThreshold]
+					entry.log_entries = [log_entry for log_entry in entry.log_entries if log_entry[0] > keepThreshold]
