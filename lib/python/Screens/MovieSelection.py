@@ -304,19 +304,19 @@ class MovieContextMenu(Screen, ProtectedScreen):
 				"red": self.cancelClick,
 				"ok": self.okbuttonClick,
 				"cancel": self.cancelClick,
-				"green": self.do_showDeviceMounts,
-				"yellow": self.do_showNetworkMounts,
-				"blue": self.do_selectSortby,
-				"menu": self.do_configure,
-				"1": self.do_addbookmark,
-				"2": self.do_createdir,
-				"3": self.do_delete,
-				"4": self.do_move,
-				"5": self.do_copy,
-				"6": self.do_rename,
-				"7": self.do_reset,
-				"8": self.do_decode,
-				"9": self.do_unhideParentalServices
+				"green": boundFunction(self.close, csel.showDeviceMounts),
+				"yellow": boundFunction(self.close, csel.showNetworkMounts),
+				"blue": boundFunction(self.close, csel.selectSortby),
+				"menu": boundFunction(self.close, csel.configure),
+				"1": boundFunction(self.close, csel.do_addbookmark),
+				"2": boundFunction(self.close, csel.do_createdir),
+				"3": boundFunction(self.close, csel.do_delete),
+				"4": boundFunction(self.close, csel.do_move),
+				"5": boundFunction(self.close, csel.do_copy),
+				"6": boundFunction(self.close, csel.do_rename),
+				"7": boundFunction(self.close, csel.do_reset),
+				"8": boundFunction(self.close, csel.do_decode),
+				"9": boundFunction(self.close, csel.unhideParentalServices)
 			})
 
 		self["key_red"] = StaticText(_("Cancel"))
@@ -380,32 +380,6 @@ class MovieContextMenu(Screen, ProtectedScreen):
 	def okbuttonClick(self):
 		self.close(self["config"].getCurrent()[0][1])
 
-	def do_rename(self):
-		self.close(self.csel.do_rename())
-	def do_copy(self):
-		self.close(self.csel.do_copy())
-	def do_move(self):
-		self.close(self.csel.do_move())
-	def do_createdir(self):
-		self.close(self.csel.do_createdir())
-	def do_delete(self):
-		self.close(self.csel.do_delete())
-	def do_unhideParentalServices(self):
-		self.close(self.csel.unhideParentalServices())
-	def do_configure(self):
-		self.close(self.csel.configure())
-	def do_showDeviceMounts(self):
-		self.close(self.csel.showDeviceMounts())
-	def do_showNetworkMounts(self):
-		self.close(self.csel.showNetworkMounts())
-	def do_addbookmark(self):
-		self.close(self.csel.do_addbookmark())
-	def do_selectSortby(self):
-		self.close(self.csel.selectSortby())
-	def do_decode(self):
-		self.close(self.csel.do_decode())
-	def do_reset(self):
-		self.close(self.csel.do_reset())
 	def cancelClick(self):
 		self.close(None)
 
