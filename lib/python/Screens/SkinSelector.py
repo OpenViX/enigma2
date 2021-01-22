@@ -21,7 +21,7 @@ from Tools.Directories import resolveFilename, SCOPE_CURRENT_SKIN, SCOPE_LCDSKIN
 class SkinSelector(Screen, HelpableScreen):
 
 	def __init__(self, session, screenTitle=_("GUI Skin")):
-		Screen.__init__(self, session, mandatoryWidgets=["skins", "preview", "description"])
+		Screen.__init__(self, session, mandatoryWidgets=["skins", "preview"])
 		HelpableScreen.__init__(self)
 		self.setTitle(screenTitle)
 		self.skinName = ["SkinSelector","__SkinSelector__"]
