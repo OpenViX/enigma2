@@ -20,11 +20,13 @@ from Tools.Directories import resolveFilename, SCOPE_CURRENT_SKIN, SCOPE_LCDSKIN
 
 class SkinSelector(Screen, HelpableScreen):
 
-	def __init__(self, session, screenTitle=_("GUI Skin")):
+	def __init__(self, session, screenTitle=_("GUI Skin"), skin_name=None):
 		Screen.__init__(self, session, mandatoryWidgets=["skins", "preview"])
 		HelpableScreen.__init__(self)
 		self.setTitle(screenTitle)
 		self.skinName = ["SkinSelector","__SkinSelector__"]
+		if isinstance(skin_name, str):
+			self.skinName = [skin_name] + self.skinName
 		self.rootDir = resolveFilename(SCOPE_SKIN)
 		self.config = config.skin.primary_skin
 		from skin import currentPrimarySkin # value types are imported by value at import time
