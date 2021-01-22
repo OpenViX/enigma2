@@ -155,7 +155,7 @@ self.session.openWithCallback(msgClosed, EpgSaveMsg)
 					<item weight="45" level="2" text="SABnzbd Setup" entryID="netsabnzbd_setup"><screen module="NetworkTools" screen="NetworkSABnzbd"/></item>
 					<item weight="50" level="2" text="Telnet Setup" entryID="nettelnet_setup"><screen module="NetworkTools" screen="NetworkTelnet"/></item>
 					<item weight="55" level="2" text="uShare Setup" entryID="netushare_setup"><screen module="NetworkTools" screen="NetworkuShare"/></item>
-						<!-- <item weight="60" level="2" text="AFP Setup" entryID="netafp_setup"><screen module="NetworkTools" screen="NetworkAfp"/></item> -->
+					<item weight="60" level="2" text="AFP Setup" entryID="netafp_setup"><screen module="NetworkTools" screen="NetworkAfp"/></item>
 				</menu>
 
 				<!-- Menu / Settings / System / Devices Menu -->
