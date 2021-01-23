@@ -172,7 +172,7 @@ class SkinSelector(Screen, HelpableScreen):
 			self.close()
 		else:
 			print("[SkinSelector] Selected skin: '%s'" % pathjoin(self.rootDir, skin))
-			if not self.reboot:
+			if config.usage.fast_skin_reload.value or not self.reboot:
 				self.saveConfig()
 				self.session.reloadSkin()
 			else:
