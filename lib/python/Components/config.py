@@ -181,11 +181,9 @@ class ConfigElement(object):
 		# "immediate_feedback=True" notifiers are called on every single change of the config item,  
 		# e.g. if going left/right through a ConfigSelection it will trigger on every step.
 		#
-		# "immediate_feedback=False" notifiers are only called from ConfigList screens, and only called 
-		# "onDeselect", i.e. moving to another list item, or closing the ConfigList screen. 
+		# "immediate_feedback=False" notifiers are called on ConfigElement.save() only. 
 		# 
-		# Use of the "self.callNotifiersOnSaveAndCancel" flag is dubious as it affects all notifiers of the current  
-		# config element (i.e. self). It is impossible to confine this to individual notifiers. This need looking at.
+		# Use of the "self.callNotifiersOnSaveAndCancel" flag serves no purpose in the current code.
 		#
 		assert callable(notifier), "notifiers must be callable"
 		if extra_args is not None:
