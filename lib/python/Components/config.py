@@ -83,7 +83,7 @@ class ConfigElement(object):
 		self.__notifiers = None
 		self.__notifiers_final = None
 		self.enabled = True
-		self.callNotifiersOnSaveAndCancel = False  # this flag only affects notifiers set with "immediate_feedback = False". If set to false the notifier will never run on save/exit by default.
+		self.callNotifiersOnSaveAndCancel = False
 
 	def getNotifiers(self):
 		if self.__notifiers is None:
@@ -125,7 +125,7 @@ class ConfigElement(object):
 		if sv is None:
 			self.value = self.default
 		else:
-			self.value = self.fromstring(sv)
+			self.last_value = self.value = self.fromstring(sv)
 
 	def tostring(self, value):
 		return str(value)
@@ -173,6 +173,19 @@ class ConfigElement(object):
 					x(self)
 
 	def addNotifier(self, notifier, initial_call=True, immediate_feedback=True, extra_args=None):
+		# "initial_call=True" triggers the notifier as soon as "addNotifier" is encountered in the code. 
+		#
+		# "initial_call=False" skips the above activation of the notifier.
+		#
+		# "immediate_feedback=True" notifiers are called on every single change of the config item,  
+		# e.g. if going left/right through a ConfigSelection it will trigger on every step.
+		#
+		# "immediate_feedback=False" notifiers are only called from ConfigList screens, and only called 
+		# "onDeselect", i.e. moving to another list item, or closing the ConfigList screen. 
+		# 
+		# Use of the "self.callNotifiersOnSaveAndCancel" flag is dubious as it affects all notifiers of the current  
+		# config element (i.e. self). It is impossible to confine this to individual notifiers. This need looking at.
+		#
 		assert callable(notifier), "notifiers must be callable"
 		if extra_args is not None:
 			self.__addExtraArgs(notifier, extra_args)
@@ -222,6 +235,7 @@ class ConfigElement(object):
 
 	def onDeselect(self, session):
 		if not self.last_value == self.value:
+			self.changedFinal()
 			self.last_value = self.value
 
 	def hideHelp(self, session):
@@ -438,7 +452,7 @@ class ConfigSelection(ConfigElement):
 		if sv is None:
 			self.value = self.default
 		else:
-			self.value = self.choices[self.choices.index(sv)]
+			self.last_value = self.value = self.choices[self.choices.index(sv)]
 
 	def setCurrentText(self, text):
 		i = self.choices.index(self.value)
@@ -1631,6 +1645,7 @@ class ConfigSet(ConfigElement):
 		if not isinstance(self.value, list):
 			self.value = list(self.value)
 		self.value.sort()
+		self.last_value = self.value[:]
 
 	def fromstring(self, val):
 		return eval(val)
@@ -1721,6 +1736,7 @@ class ConfigLocations(ConfigElement):
 				x[1] = self.getMountpoint(x[0])
 				x[2] = True
 		self.locations = locations
+		self.last_value = self.locations[:]
 
 	def save(self):
 		locations = self.locations
@@ -1819,6 +1835,14 @@ class ConfigLocations(ConfigElement):
 
 	def onDeselect(self, session):
 		self.pos = -1
+		if self.last_value != self.locations:
+			# No "notifiers final" have ever been available in ConfigLocations class.
+			# This "if" clause is here for consistency only, or possible future use.
+			# Currently its sole function is to keep self.last_value up to date, should
+			# this variable ever be required by external code.
+			# Adding "self.changedFinal()" here would enable "notifiers final" in 
+			# this class if this were ever necessary.
+			self.last_value = self.locations[:]
 
 # nothing.
 class ConfigNothing(ConfigSelection):

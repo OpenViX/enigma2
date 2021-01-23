@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-14 08:27+0000\n"
-"PO-Revision-Date: 2020-10-15 19:57+0200\n"
+"POT-Creation-Date: 2021-01-18 09:04+0000\n"
+"PO-Revision-Date: 2021-01-19 10:30+0100\n"
 "Last-Translator: Ralf Biedermann <ralf.biedermann@rbsoft.de>\n"
 "Language-Team: AndyBlacburn, j-ot&Trial\n"
 "Language: de\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
-"X-Generator: Poedit 2.4.1\n"
+"X-Generator: Poedit 2.2.3\n"
 "X-Poedit-SourceCharset: iso-8859-15\n"
 
 #, python-format
@@ -911,6 +911,10 @@ msgstr[0] "%d Pixel Breite"
 msgstr[1] "%d Pixel Breite"
 
 #, python-format
+msgid "%d sec"
+msgstr "%d Sekunde"
+
+#, python-format
 msgid "%d second"
 msgid_plural "%d seconds"
 msgstr[0] "%d Sekunde"
@@ -1774,9 +1778,6 @@ msgstr "Timer für aktuelle Sendung hinzufügen/entfernen"
 msgid "Adding schedule..."
 msgstr "Termin hinzufügen..."
 
-msgid "Additional Info"
-msgstr "Zusätzliche Informationen"
-
 msgid "Additional cable of motorized LNB"
 msgstr "Zusätzliches vom motorisiertem LNB"
 
@@ -1794,6 +1795,9 @@ msgstr "Verändere die Farbeinstellungen, so dass alle Farbabstufungen voneinand
 
 msgid "Adult Audience, Strong Violence 15+"
 msgstr "Für Erwachsene, starke Gewalt 15+"
+
+msgid "Advance EPG to the following date and time"
+msgstr "EPG vom folgenden Zeitpunkt anzeigen"
 
 msgid "Advanced"
 msgstr "Erweitert"
@@ -1900,11 +1904,14 @@ msgstr "Erlaube Untertitel für Hörgeschädigte"
 msgid "Allow unstable (experimental) updates"
 msgstr "Instabile (ungetestete) Updates erlauben"
 
-msgid "Allows the %s %s to read the stored EPG data regularly."
+msgid "Allows the %s %s to load the saved EPG data regularly."
 msgstr "Regelmäßiges lesen der EPG Daten von der %s %s erlauben."
 
-msgid "Allows the %s %s to store the EPG data regularly."
+msgid "Allows the %s %s to save the EPG data regularly."
 msgstr "Regelmäßiges schreiben der EPG Daten von der %s %s erlauben."
+
+msgid "Allows the TV remote to be used to control the receiver."
+msgstr "Erlaubt es die Fernseh-Fernbedienung zur Steuerung des Receivers zu benutzen-"
 
 msgid "Allows you to adjust the amount of time the resolution infomation display on screen."
 msgstr "Erlaubt es die Zeit einzustellen für die das Fenster mit der neuen Auflösung angezeigt wird."
@@ -1917,9 +1924,6 @@ msgstr "Anzeige von PIcons auf dem Display am Gerät erlauben."
 
 msgid "Allows you to hide the extensions of known file types."
 msgstr "Erlaubt es Erweiterungen bekannter Dateitypen zu verstecken."
-
-msgid "Allows you to send a copy of the log to yourself."
-msgstr "Erlaubt es dir eine Kopie an dich selbst zu schicken."
 
 msgid "Allows you to set a schedule to import the EPG and channels list. The EPG and channels list will always be imported on reboot or GUI restart."
 msgstr "Erlaubt es einen Zeitplan für den Import von EPG und Kanalliste zu setzen. EPG und Kanalliste wird immer beim Start geladen."
@@ -2118,9 +2122,6 @@ msgstr ""
 msgid "Are you sure you want to save the EPG Cache to:\n"
 msgstr "Bist Du sicher das die EPG Daten an diesen Ort gespeichert werden sollen:\n"
 
-msgid "Are you sure you want to send this log:\n"
-msgstr "Bist Du sicher das diese Log Datei gesendet werden soll:\n"
-
 #, python-format
 msgid "Are you sure you want to update your %s %s ?"
 msgstr "Sicher das die %s %s aktualisiert werden soll?"
@@ -2163,9 +2164,6 @@ msgstr "Zugewiesene Sender/Anbieter:"
 
 msgid "At End:"
 msgstr "Am Ende:"
-
-msgid "Attach a file"
-msgstr "Eine Datei anhängen"
 
 msgid "Attention, this is repeated timer!\n"
 msgstr "Achtung! Dies ist ein Wiederholungstimer\n"
@@ -2287,8 +2285,8 @@ msgstr "Automatische Image Sicherung"
 msgid "Automatic language"
 msgstr "Automatische Sprachwahl"
 
-msgid "Automatic refresh"
-msgstr "Automatisch aktualisieren"
+msgid "Automatic reload"
+msgstr "Automatische nachladen"
 
 msgid "Automatic resolution"
 msgstr "Automatische Auflösung"
@@ -2304,6 +2302,9 @@ msgstr "Automatische Suche"
 
 msgid "Automatic settings backup"
 msgstr "Automatische Einstellungs Sicherung"
+
+msgid "Automatically put the TV in standby whenever the receiver goes into standby or deep standby."
+msgstr "Schalte den Fernseher automatisch in Bereitschaft wenn der Receiver in Bereitschaf oder Aus geschaltet wird."
 
 msgid "Automatically start timeshift after"
 msgstr "TimeShift automatisch starten nach"
@@ -2419,6 +2420,9 @@ msgstr "Basisfunktionen"
 
 msgid "Basque"
 msgstr "Baskisch"
+
+msgid "Before sending the command to switch the TV to standby, the receiver tests if all the other devices plugged into TV are in standby. If they are not, the 'sourceactive' command will be sent to the TV instead of the 'standby' command."
+msgstr "Bevor der Receiver den Fernseher in Bereitschaft schaltet wird überprüft ob alle mit dem Fernseher verbundenen Geräte auch in Bereitschaft sind. Wenn es noch aktive Geräte gibt schickt die Box nur das 'Quelle aktiv' anstatt das 'Bereitschaft' Kommando an den Fernseher."
 
 msgid "Begin time"
 msgstr "Startzeit"
@@ -3039,7 +3043,7 @@ msgstr "Wähle das Layout für die Ansicht (Text/Grafik Multi-Channel- oder Einz
 msgid "Choose the location for crash and debug logs folder."
 msgstr "Wähle den Speicherort für Crash- und Debug-Logs."
 
-msgid "Choose the location where the EPG data will be stored when the %s %s is shut down. The location must be available at boot time."
+msgid "Choose the location where the EPG data will be saved when the %s %s is shut down. The location must be available at boot time."
 msgstr "Wähle einen Ort wo die EPG Daten gespeichert werden wenn die %s %s ausgeschaltet wird. Dieser Ort muss beim Start verfügbar sein."
 
 msgid "Choose the name of the file that holds the EPG data when the %s %s is shut down. This can be handy to differentiate between several boxes."
@@ -3117,6 +3121,9 @@ msgstr "Aufräumen"
 msgid "Clear"
 msgstr "Löschen"
 
+msgid "Clear HDMI-CEC fixed address"
+msgstr ""
+
 msgid "Clear before scan"
 msgstr "Vor der Suche löschen"
 
@@ -3133,14 +3140,11 @@ msgstr "Wiedergabeliste leeren"
 msgid "Client Info ( Oscam-Version: %s )"
 msgstr ""
 
-msgid "Client Mode"
-msgstr "Client Modus"
+msgid "Client Mode setup"
+msgstr "Klienten Modus Einsstellungen"
 
 msgid "Client mode"
 msgstr "Client Modus"
-
-msgid "Client mode sets up this receiver to stream from another receiver. In this mode no local tuners will be available and channel lists, EPG, etc, will come from the remote receiver. All tuner settings will be cleared."
-msgstr "Client Modus richtet den Receiver so ein das von einem anderen Receiver gestreamt wird. In diesem Modus gibt es keine lokalen Tuner und Kanalliste, EPG usw. werden vom Server-Receiver geholt. Alle Tunereinstellungen werden gelöscht."
 
 msgid "Clients"
 msgstr "Klienten"
@@ -3198,6 +3202,9 @@ msgstr "Comedy"
 
 msgid "Command order"
 msgstr "Befehlsfolge"
+
+msgid "Command the TV to switch to the correct HDMI input when zap timers activate."
+msgstr "Schalte den Fernseher auf den korrekten HDM Eingang wenn ein Umschalttimer aktiviert wurde."
 
 msgid "Command to run"
 msgstr "Kommando zum Ausführen"
@@ -3437,6 +3444,9 @@ msgstr ""
 "Eine 0 deaktiviert diese Option."
 
 msgid "Configure the number of days old timers are kept before they are automatically removed from the timer list."
+msgstr "Konfiguriere wie viele Tage Timer erhalten bleiben sollen bevor sie gelöscht werden."
+
+msgid "Configure the number of days old timers' log details are kept before they're automatically removed."
 msgstr "Konfiguriere wie viele Tage Timer erhalten bleiben sollen bevor sie gelöscht werden."
 
 msgid "Configure the number of rows shown."
@@ -4080,6 +4090,9 @@ msgstr "Debug Logs"
 msgid "Debug log time format *"
 msgstr "Debug-Log Zeitformat *"
 
+msgid "Debug to file"
+msgstr "Debug in datei"
+
 msgid "Decrement end time"
 msgstr "Verringere End-Zeit"
 
@@ -4162,6 +4175,9 @@ msgstr "Verzögerung bevor Tastenwiederholung startet:"
 
 msgid "Delay before sequence repeat"
 msgstr "Verzögerung bevor Sequenz wiederholt wird"
+
+msgid "Delay between CEC commands when sending a series of commands. Some devices require this delay for correct functioning, usually between 50-150ms."
+msgstr "Verzögerung zwischen CEC Kommandos wenn eine Folge von Kommandos geschickt werden soll. Einige Geräte benötigen die Pausen (typisch 50-150ms) um alle korrekt bearbeiten zu können."
 
 msgid "Delay between diseqc commands"
 msgstr "Pause zwischen Diseqc Kommandos"
@@ -4278,6 +4294,9 @@ msgstr "Markierung aufheben"
 
 msgid "Details for plugin: "
 msgstr "Details für Plugin: "
+
+msgid "Detect next boxes before standby"
+msgstr ""
 
 msgid "Detect programs split by news bulletins. Choose the maximum duration in minutes to consider as a bulletin, or 0 to disable."
 msgstr "Erkennene Programmteilungen durch Nachrichten. Wähle die maximale Unterbrechungszeit in Minuten oder 0 zum Deaktiviere."
@@ -4418,7 +4437,7 @@ msgstr "Nachricht vor Wiedergabe des nächsten Films"
 msgid "Display selection list as a selection menu"
 msgstr "Zeige Auswahlliste als Auswahlmenü"
 
-msgid "Display the EIT now/next eventdata in infobar."
+msgid "Display the EIT now/next event data in infobar."
 msgstr "EIT jetzt/demnächst in Infobar anzeigen."
 
 msgid "Display the virtual keyboard for data entry"
@@ -4511,16 +4530,6 @@ msgstr "Das Lesezeichen %s wirklich löschen?"
 msgid "Do you really want to stop the current recording and delete timer %s?"
 msgstr "Aufnahme anhalten und den Timer für %s wirklich löschen?"
 
-msgid "Do you want to add any additional information ?"
-msgstr "Willst Du weitere Informationen hinzufügen?"
-
-msgid ""
-"Do you want to attach a text file to explain the log ?\n"
-"(choose 'No' to type message using virtual keyboard.)"
-msgstr ""
-"Willst Du eine Textdatei anhängen in der das Log erklärt wird?\n"
-"(Wähle 'nein' um eine Nachricht mit der virtuellen Tastatur einzugeben.)"
-
 msgid "Do you want to burn this collection to DVD medium?"
 msgstr "Soll diese Zusammenstellung auf DVD gebrannt werden?"
 
@@ -4570,13 +4579,6 @@ msgstr "Die Einstellungen wiederherstellen?"
 
 msgid "Do you want to resume playback?"
 msgstr "Die Wiedergabe an der letzten Stelle fortsetzen?"
-
-msgid ""
-"Do you want to send all the selected files:\n"
-"(choose 'No' to only send the currently selected file.)"
-msgstr ""
-"Willst Du alle gewählten Dateien senden:\n"
-"(Wähle 'Nein' um nur die gerade gewählte Datei zu senden.)"
 
 #, python-format
 msgid "Do you want to update your %s %s ?"
@@ -4846,6 +4848,9 @@ msgstr "Netmed EPG aktivieren"
 msgid "Enable OpenTV EPG"
 msgstr "OpenTV EPG aktivieren"
 
+msgid "Enable OpenTV download"
+msgstr "OpenTV EPG herunter laden aktivieren"
+
 msgid "Enable ViaSat EPG"
 msgstr "ViaSat EPG aktivieren"
 
@@ -4855,12 +4860,15 @@ msgstr "Virgin EPG aktivieren"
 msgid "Enable auto cable scan"
 msgstr "Automatische Schnellsuche aktivieren"
 
-msgid "Enable auto fast scan"
+msgid "Enable auto fastscan"
 msgstr "Automatische Schnellsuche aktivieren"
 
 #, python-format
-msgid "Enable auto fast scan for %s"
+msgid "Enable auto fastscan for %s"
 msgstr "Automatische Schnellsuche für %s aktivieren"
+
+msgid "Enable automated downloading of OpenTV EPG data. If only one tuner is available the download will be done when the reciever is in standby."
+msgstr "Aktiviere automatisches herunter laden der OpenTV EPG Daten. Wenn nur ein Tuner zur Verfügung steht geschieht das herunter laden wenn der Receiver im Bereitschaft ist."
 
 msgid "Enable blinking rec symbol on the LCD Display"
 msgstr "Aktiviere blinkendes Aufnahme Symbol auf LCD Anzeige"
@@ -4903,6 +4911,9 @@ msgstr "HDR Modus bei UHD aktivieren/deaktivieren"
 
 msgid "Enable or disable to force HLG Modes for UHD"
 msgstr "HDR Modus bei UHD aktivieren/deaktivieren"
+
+msgid "Enable or disable using HDMI-CEC."
+msgstr "HDMI-CEC/HDMI-Steuerung aktivieren oder deaktivieren. "
 
 msgid "Enable panic button"
 msgstr "Paniktaste aktivieren"
@@ -4997,8 +5008,8 @@ msgstr "PIN-Code eingeben"
 msgid "Enter service number"
 msgstr "Gebe Sendernummer ein"
 
-msgid "Enter the FTP password of the host receiver (normally just leave empty)."
-msgstr "Gebe FTP Passowrt für den Notfallreceiver an (normalerweise leer lassen)."
+msgid "Enter the FTP password of the host receiver (required for any server running OpenViX 5.4 or greater)."
+msgstr "Gebe FTP Passwort für den Notfallreceiver an (muss für OpenViX >= 5.4 angegeben werden)."
 
 msgid "Enter the FTP port of the host receiver (normally '21')."
 msgstr "Gebe FTP Port für den Notfallreceiver an (normalerweise '21')."
@@ -5039,12 +5050,6 @@ msgstr "Gebe den Breitengrad deines Standortes an. Das ist der Winkelabstand vom
 msgid "Enter your current longitude. This is the number of degrees you are from zero meridian as a decimal."
 msgstr "Gebe den Längengrad deines Standortes an. Das ist der Winkelabstand von Greenwich."
 
-msgid "Enter your e-mail address to send a copy of the log to."
-msgstr "Gebe deine E-Mail-Adresse an zu der eine Kopie des Logs geschickt werden soll."
-
-msgid "Enter your forum user name, to make it easier to trace logs."
-msgstr "Gebe deinen Foren-Nick ein damit die Logs einfacher zugeordnet werden können."
-
 msgid "Enter your high band local oscillator frequency. For more information consult the spec sheet of your LNB."
 msgstr "Gebe die Oszillator-Frequenz für das High-Band an. Für diese Information lese die Spezifikationen deines LNBs."
 
@@ -5083,14 +5088,6 @@ msgstr "Ausführen des Plugins fehlgeschlagen"
 
 msgid "Error reading webpage!"
 msgstr "Fehler beim Lesen der Web-Seite!"
-
-#, python-format
-msgid ""
-"Error:\n"
-"%s"
-msgstr ""
-"Fehler:\n"
-"%s"
 
 #, python-format
 msgid ""
@@ -5415,17 +5412,20 @@ msgstr "Schnell"
 msgid "Fast DiSEqC"
 msgstr "Schnelles DiSEqC"
 
-msgid "Fast Scan"
-msgstr "Fast-Scan"
-
 msgid "Fast epoch"
 msgstr "Schnell Zeitraum"
 
 msgid "Fast forward speeds"
 msgstr "Vorlaufgeschwindigkeiten"
 
+msgid "FastScan"
+msgstr "Fast-Scan"
+
 msgid "Fastforward"
 msgstr "Vorlauf"
+
+msgid "Fastscan"
+msgstr "Fast-Scan"
 
 msgid "Favourites"
 msgstr "Favoriten"
@@ -5883,9 +5883,6 @@ msgstr ""
 msgid "HDMI CEC"
 msgstr "HDMI CEC"
 
-msgid "HDMI CEC Setup"
-msgstr "HDMI CEC Einstellungen"
-
 msgid "HDMI Colordepth"
 msgstr "HDMI Bittiefe"
 
@@ -5900,6 +5897,9 @@ msgstr ""
 
 msgid "HDMI input"
 msgstr "HDMI Eingang"
+
+msgid "HDMI-CEC address editing actions"
+msgstr "HDMI-CEC-Adresse Kommandos bearbeiten"
 
 msgid "HDMIin"
 msgstr "HDMIin"
@@ -5939,6 +5939,9 @@ msgstr "Festplatten Einstellungen"
 
 msgid "HbbTV"
 msgstr ""
+
+msgid "Hdmi-CEC setup"
+msgstr "HDMI-CEC Einstellungen"
 
 msgid "Heard Island and McDonald Islands"
 msgstr "Heard Island und McDonald Islands"
@@ -6173,6 +6176,9 @@ msgstr "Wenn aktiviert wird versucht die Auflösung des Bildes der Auflösung de
 msgid "If enabled the video will always be de-interlaced."
 msgstr "Wenn aktiviert wird das Video immer von der Box DeInterlaced."
 
+msgid "If enabled, a log will be kept of CEC protocol traffic ('hdmicec.log')."
+msgstr "Wenn aktiviert wird eine Log-Datei mit der CEC-Kommunikation angelegt ('hdmicec.log')"
+
 msgid "If enabled, display shows 12 chars instead 8, but in latin-1/translit only."
 msgstr "Wenn aktivier zeigt Display 12 statt 8 Buchstaben aber nur bei Latin-1/Translit."
 
@@ -6208,6 +6214,9 @@ msgstr "Wenn 'Ja' eingestellt ist wird die Infobar angezeigt wenn ein neues Prog
 
 msgid "If set to 'yes' the infobar will be displayed when changing channels."
 msgstr "Wenn 'Ja' eingestellt ist wird die Infobar angezeigt wenn der Sender gewechselt wird."
+
+msgid "If set to 'yes' the same commands will be sent to the TV for deep standby events, as are sent during regular standby events."
+msgstr "Wenn 'Ja' wird das selbe Kommando zum Fernseher für Ausschalten wie für Bereitschaft geschickt."
 
 msgid "If set to 'yes' you can preview channels in the EPG list."
 msgstr "Wenn 'Ja' eingestellt ist erhältst Du eine Programmvorschau im EPG."
@@ -6266,6 +6275,9 @@ msgstr "Ingnoriere DVB-T Subnetzwerk"
 #, python-format
 msgid "Image Slot:\t%s"
 msgstr ""
+
+msgid "Image View On"
+msgstr "Image View an"
 
 msgid "Image manager"
 msgstr "Image Verwaltung"
@@ -6658,6 +6670,9 @@ msgstr "KA-SAT (9°E)"
 msgid "Kazakhstan"
 msgstr "Kazakhstan"
 
+msgid "Keep logs"
+msgstr "behalte Logs"
+
 msgid "Keep service"
 msgstr "Sender beibehalten"
 
@@ -6677,6 +6692,9 @@ msgstr "Kernel: %s"
 
 msgid "Key"
 msgstr "Key"
+
+msgid "Key Events"
+msgstr ""
 
 msgid "Keyboard"
 msgstr "Tastatur"
@@ -7189,6 +7207,9 @@ msgstr ""
 msgid "MessageBox Functions"
 msgstr "Meldungsbox Funktionen"
 
+msgid "Messages"
+msgstr ""
+
 msgid "Mexico"
 msgstr "Mexico"
 
@@ -7506,6 +7527,9 @@ msgstr "N"
 msgid "N/A"
 msgstr "N/V"
 
+msgid "NEXT"
+msgstr "Demnächst"
+
 msgid "NFS"
 msgstr ""
 
@@ -7701,6 +7725,9 @@ msgstr "Kein (unterstütztes) DVD-Laufwerk gefunden!"
 msgid "No Connection"
 msgstr "Keine Verbindung"
 
+msgid "No ECM info is currently available. This is only available while decrypting."
+msgstr "Keine ECM-Informationen vorhanden. Diese Informationen gibt es nur wenn gerade entschlüsselt wird."
+
 msgid "No ECMPids available (FTA Service)"
 msgstr "Keine ECMPids verfügbar (freies Programm)"
 
@@ -7777,9 +7804,6 @@ msgstr "Keine Netzwerke gefunden"
 msgid "No of items switch (increase or reduced)"
 msgstr "Anzahl von Elementen wechseln (erhöhen oder verringern)"
 
-msgid "No positioner capable frontend found."
-msgstr "Keinen rotortauglichen Tuner gefunden."
-
 msgid "No priority"
 msgstr "Keine Priorität"
 
@@ -7809,9 +7833,6 @@ msgstr "Nein zu allen"
 
 msgid "No transparency"
 msgstr "Keine Transparenz"
-
-msgid "No tuner is configured for use with a diseqc positioner!"
-msgstr "Es wurde kein Tuner für die Benutzung eines DiSEqC-Rotors konfiguriert!"
 
 msgid ""
 "No tuner is enabled!\n"
@@ -8122,11 +8143,32 @@ msgstr "Öffne Satellitenliste"
 msgid "Open the service list"
 msgstr "Öffne Senderliste"
 
+#, python-format
+msgid ""
+"OpenTV EPG download completed.\n"
+"Next download: %s"
+msgstr "OpenTV EPG herunter laden beendet. Nächster Termin: '%s'"
+
+msgid "OpenTV EPG download starting."
+msgstr "OpenTV EPG herunter laden gestartet."
+
+msgid "OpenTV EPG downloader"
+msgstr "OpenTV EPG Laderr"
+
+msgid "OpenTV EPG forced download"
+msgstr "OpenTV EPG erzwungenes herunter laden "
+
+msgid "OpenTV download setup"
+msgstr "OpenTV Einstellungen"
+
 msgid "OpenVPN"
 msgstr "OpenVPN"
 
 msgid "OpenVpn Setup"
 msgstr "OpenVPN Einstellungen"
+
+msgid "OpentvZapper"
+msgstr ""
 
 msgid "Orbital position"
 msgstr "Orbitale Position"
@@ -8959,6 +9001,9 @@ msgstr "Drücke OK, um weitere Details zu %s zu erhalten"
 msgid "Press OK to keep the currently selected%s skin."
 msgstr "Drücke OK um den gewählten Skin %s zu aktivieren."
 
+msgid "Press OK to save and exit."
+msgstr "Dürcke OK für Speichern und Verlassen."
+
 msgid "Press OK to scan"
 msgstr "Zum Starten der Suche OK drücken"
 
@@ -8974,20 +9019,23 @@ msgstr "Drücke OK um einen Sender auszuwählen."
 msgid "Press OK to select satellites"
 msgstr "Drücke OK um einen Satelliten auszuwählen"
 
+msgid "Press OK to select the save location of the log file."
+msgstr "Drücke OK um den Ort für die Log-Datei zu speichern."
+
 msgid "Press OK to select/deselect a CAId."
 msgstr "Drücke OK um eine CAID auszuwählen/abzuwählen."
 
 msgid "Press OK to set the MAC address."
 msgstr "OK drücken um die MAC-Adresse zu setzen."
 
+msgid "Press OK to show details"
+msgstr "Drücke OK um Details anzuzeigen"
+
 msgid "Press OK to toggle the selection"
 msgstr "Drücke OK um die Auswahl umzuschalten"
 
 msgid "Press OK to toggle the selection."
 msgstr "Drücke OK um die Auswahl umzuschalten."
-
-msgid "Press OK, save and exit..."
-msgstr "Dürcke OK für Speichern und Verlassen..."
 
 msgid ""
 "Press up/down to scroll through the selected log\n"
@@ -9123,12 +9171,14 @@ msgstr "Puerto Rico"
 msgid "Purge deleted user bouquets"
 msgstr "Gelöschte Favoritenlisten säubern"
 
+msgid "Put A/V receiver in standby"
+msgstr "AV-Rceiver in Bereitschaft versetzen"
+
+msgid "Put A/V receiver in standby."
+msgstr "AV-Rceiver in Bereitschaft versetzen"
+
 msgid "Put TV in standby"
 msgstr "Fernseher in Bereitschaft versetzen"
-
-#, python-format
-msgid "Put your %s %s in standby"
-msgstr "%s %s in Bereitschaft versetzen"
 
 msgid "Python frontend for /tmp/mmi.socket"
 msgstr "Python Frontend für /tmp/mmi.socket"
@@ -9361,9 +9411,6 @@ msgstr ""
 msgid "Reflash recommended!"
 msgstr "Neu flashen wird empfohlen!"
 
-msgid "Refresh every (in hours)"
-msgstr "Alle x Stunden erneuern"
-
 msgid "Refresh rate"
 msgstr "Wiederholrate"
 
@@ -9390,6 +9437,12 @@ msgstr "Aktualisieren"
 
 msgid "Reload blacklists"
 msgstr "Black-/Whitelisten neu laden"
+
+msgid "Reload every (in hours)"
+msgstr "Laden alle x Stunden"
+
+msgid "Reload skin"
+msgstr "Skin neu laden"
 
 msgid "Reloading EPG Cache..."
 msgstr "EPG Cache erneut laden..."
@@ -9484,6 +9537,9 @@ msgstr "Aktuell ausgewählten Titel löschen"
 msgid "Remove entry"
 msgstr "Eintrag löschen"
 
+msgid "Remove finished timer logs after (days)"
+msgstr "Lösche vollendete Timer nach (Tagen)"
+
 msgid "Remove finished timers after (days)"
 msgstr "Lösche vollendete Timer nach (Tagen)"
 
@@ -9561,6 +9617,9 @@ msgstr "Nachricht wiederholen"
 msgid "Repeat how often"
 msgstr "Wie oft wiederholen"
 
+msgid "Repeat leave standby messages"
+msgstr "Wiederhole 'Verlasse Bereitschaft' Kommando"
+
 msgid "Repeat type"
 msgstr "Wiederholungstyp"
 
@@ -9577,6 +9636,12 @@ msgstr "Wiederholungen"
 
 msgid "Replace `- ` in dialogs with colored text per speaker (like teletext subtitles for the hearing impaired)"
 msgstr "Ersetze '-' in Dialogen mit farbigen Text pro Sprecher wie z.B. Videotextuntertitel für Hörgeschädigte."
+
+msgid "Request for physical address report"
+msgstr "TV physikalische Adresse anfordern"
+
+msgid "Request for vendor report"
+msgstr ""
 
 msgid "Require authentication for http streams"
 msgstr "Verlange Authentifizierung für HTTP-Streams"
@@ -10233,6 +10298,9 @@ msgstr "Wähle Standardaktion von Info-Taste"
 msgid "Select destination for:"
 msgstr "Wähle Ziel für:"
 
+msgid "Select directory for logfile"
+msgstr "Wähle Verzeichnis für Log-Datei"
+
 msgid "Select files for backup."
 msgstr "Wähle Dateien zum sichern."
 
@@ -10277,6 +10345,9 @@ msgstr "Wähle einen Menüpunkt"
 
 msgid "Select movie"
 msgstr "Wähle Film"
+
+msgid "Select path for logfile"
+msgstr "Wähle Pfad für Log-Datei"
 
 msgid "Select provider to add..."
 msgstr "Wähle einen Anbieter zum Hinzufügen..."
@@ -10443,23 +10514,14 @@ msgstr "Diese Option erlaubt es mehrere Satelliten in einem Block zu konfigurier
 msgid "Selection and exit"
 msgstr "Auswahl und Verlassen"
 
-msgid "Send"
-msgstr "Senden"
-
 msgid "Send 'sourceactive' before zap timers"
 msgstr "Sende 'Quelle aktiv' vor Timer Umschaltung"
-
-msgid "Send Confirmation"
-msgstr "Sendebestätigung"
 
 msgid "Send DiSEqC"
 msgstr "DiSEqC senden"
 
 msgid "Send DiSEqC only on satellite change"
 msgstr "DiSEqC nur bei Sat-Wechsel senden"
-
-msgid "Send yourself a copy"
-msgstr "Möchtest Du eine Kopie gesendet bekommen"
 
 msgid "Senegal"
 msgstr "Senegal"
@@ -10591,6 +10653,9 @@ msgstr "Setze CI Zuweisung für Erkennung verfügbarer Sender."
 msgid "Set Framerate for MiniTV"
 msgstr "Setze Bildrate für MiniTV"
 
+msgid "Set HDMI-CEC fixed address"
+msgstr "Setze feste HDMI-CEC Adresse"
+
 msgid "Set LED Color or disable the LED."
 msgstr "Wähle LED Farbe oder deaktiviere LED."
 
@@ -10718,12 +10783,13 @@ msgstr "Setze Spannung und 22KHz"
 msgid "Sets the root directory of movie list, to remove the '..' from being shown in that folder."
 msgstr "Wähle die Basis der Aufnahmeliste um die \"..\" in der Ansicht zu unterdrücken."
 
+#, python-format
 msgid ""
-"Setting a password is strongly advised if your STB is open to the internet.\n"
-"This is the case if you have in your router a port forwarded to the STB."
+"Setting a network password is mandatory in OpenViX %s if you wish to use network services. \n"
+"To set a password using the virtual keyboard press the 'text' button on your remote control."
 msgstr ""
-"Ein Passwort wird dringend empfohlen wenn die Box für das Internet geöffnet wurde.\n"
-"Das ist der Fall wenn im Router Powerforwarding zur Box eingerichtet wurde."
+"Netzwerk-Passwort ist Pflicht in OpenViX %s wenn das Netzwerk benutzt werden soll.\n"
+"Um das Passwort mit der virtuellen Tastatur einzugeben drücke 'Text' auf er Fernbedienung."
 
 msgid "Settings"
 msgstr "Einstellungen"
@@ -10975,6 +11041,9 @@ msgstr "Zeige Icon für neue/ungesehene Einträge"
 msgid "Show in Standby"
 msgstr "Zeige in Bereitschaft"
 
+msgid "Show in extensions"
+msgstr "Zeige in Erweiterungen"
+
 msgid "Show in extensions list ?"
 msgstr "Zeige in Erweiterungen?"
 
@@ -11022,6 +11091,12 @@ msgstr "Zeige Filme"
 
 msgid "Show network mounts ..."
 msgstr "Zeige Netzwerk Mounts..."
+
+msgid "Show notifications"
+msgstr "Zeige Meldungen"
+
+msgid "Show on-screen notifications (pop up) to warn the OpenTV download is in progress."
+msgstr "Zeige Nachricht auf dem Fernseher (PopUp) wenn OpenTV EPG herunter geladen wird."
 
 msgid "Show or hide the extended description, (skin dependant)."
 msgstr "Zeige oder verstecke erweiterte Beschreibung (skinabhängig)."
@@ -11074,9 +11149,6 @@ msgstr "Zeige Senderliste"
 msgid "Show service list or movies"
 msgstr "Zeige Sender- oder Filmliste"
 
-msgid "Show service name and event description above and below each other instead of side by side."
-msgstr "Zeige Sendernamen und Beschreibung über und unter anstatt links und rechts."
-
 msgid "Show service type icons"
 msgstr "Zeige Sendertype Icon"
 
@@ -11121,6 +11193,9 @@ msgstr "Zeige die Erweiterungsliste..."
 
 msgid "Show the radio player..."
 msgstr "Radio-Wiedergabemodus..."
+
+msgid "Show the service information on two lines in the channel selection screen. You can choose between the current event description below the channel name, or the current event description next to the channel name, and the next event description on the second line."
+msgstr "Zeige die Programminformationen in der Senderliste mit 2 Zeilen. Du kannst wählen ob die aktuelle Beschreibung in der 2. Zeile stehen soll oder ob sie hinter dem Sendernamen stehen soll und in der zweiten Zeile dann die Beschreibung der nächsten Sendung."
 
 msgid "Show the tv player..."
 msgstr "TV-Wiedergabemodus..."
@@ -11416,6 +11491,9 @@ msgstr "Solomon Islands"
 
 msgid "Somalia"
 msgstr "Somalia"
+
+msgid "Some TVs do not wake from standby when they receive the 'Image View On' command. If this is the case try the 'Text View On' command instead."
+msgstr "Einige Fernseher wachen nicht aus der Bereitschaft auf wenn sie das 'Image View On' Kommando bekommen. Wenn das der Fall ist versuche 'Text View On'."
 
 msgid "Some plugins are not available:\n"
 msgstr "Einige Plugins sind nicht verfügbar:\n"
@@ -12089,6 +12167,9 @@ msgstr ""
 msgid "Text Grid EPG"
 msgstr "Text Multi-EPG"
 
+msgid "Text View On"
+msgstr ""
+
 msgid "Text color"
 msgstr "Textfarbe"
 
@@ -12112,10 +12193,10 @@ msgstr ""
 "Danke für die Benutzung des Assistenten. Die %s %s ist jetzt einsatzbereit.\n"
 "Drücke OK auf der Fernbedienung um die %s %s jetzt zu benutzen."
 
-msgid "The %s %s reads the stored EPG data every (hours)."
+msgid "The %s %s loads the saved EPG data every (hours)."
 msgstr "Die %s %s liest die EPG Daten alle x Stunden."
 
-msgid "The %s %s stores the EPG data every (hours)."
+msgid "The %s %s saves the EPG data every (hours)."
 msgstr "Die %s %s speichert die EPG alle x Stunden."
 
 msgid ""
@@ -12182,6 +12263,9 @@ msgstr "Die eingegebenen Pincodes sind unterschiedlich."
 
 msgid "The backup failed. Please choose a different backup location."
 msgstr "Die Sicherung ist fehlgeschlagen. Bitte einen anderes Sicherungs Verzeichnis auswählen."
+
+msgid "The command to wake from standby will be sent multiple times."
+msgstr "Das Kommando zum aufwachen aus der Bereitschaft wird mehrfach gesendet."
 
 msgid "The commit log cannot be retrieved at the moment - please try again later."
 msgstr "Die übertragene Log-Datei kann im Moment nicht ermittelt werden. Bitte später versuchen."
@@ -13537,11 +13621,11 @@ msgstr "Virtuosso Image Xtreme"
 msgid "Visual impaired commentary"
 msgstr "Kommentar für Sehgeschädigte"
 
-msgid "Vix forum user name"
-msgstr "Username im ViX Forum"
-
 msgid "Voltage mode"
 msgstr "Spannungs-Modus"
+
+msgid "Volume keys on the receiver remote will control the TV volume."
+msgstr "Lautstärketasten von der Receiver-Fernbedienung werden an den Fernseher geschickt um ihn zu steuern."
 
 msgid "W"
 msgstr "W"
@@ -13582,6 +13666,12 @@ msgstr "Warte auf einhängen."
 msgid "Waiting for partition."
 msgstr "Warte auf Partition."
 
+msgid "Wake A/V receiver from standby"
+msgstr "AV-Receiver aus Bereitschaft einschalten."
+
+msgid "Wake A/V receiver from standby."
+msgstr "AV-Receiver aus Bereitschaft einschalten."
+
 msgid "Wake On LAN"
 msgstr "WakeOnLan"
 
@@ -13591,18 +13681,20 @@ msgstr "Einschalten"
 msgid "Wake Up To Standby"
 msgstr "Einschalten in Bereitschaft"
 
+msgid "Wake the receiver from standby when the wake command is sent from the TV."
+msgstr "Wache den Receiver aus Bereitschaft auf wenn ein 'wake' Kommando vom Fernseher kommt."
+
 msgid "Wakeup"
 msgstr "Einschalten"
 
 msgid "Wakeup TV from standby"
 msgstr "Fernseher aus Bereitschaft einschalten"
 
+msgid "Wakeup command for TV"
+msgstr "Einschalt-Kommando für Fernseher"
+
 msgid "Wakeup signal from TV"
 msgstr "Einschaltsignal vom Fernseher"
-
-#, python-format
-msgid "Wakeup your %s %s from standby"
-msgstr "%s %s aus Bereitschaft einschalten"
 
 msgid "Wallis and Futuna"
 msgstr "Wallis and Futuna"
@@ -13721,11 +13813,20 @@ msgstr "Welchen Tag der Woche?"
 msgid "What do you want to scan?"
 msgstr "Was durchsuchen?"
 
+msgid "When enabled a forced download will be possible from the extensions menu (blue button). Shows after next restart."
+msgstr "Wenn aktiviert ein \"erzwinge OpenTV EPG herunter laden' wird im Erweiterungsmenü angezeigt. Wird erst nach dem nächsten Neustart angezeigt."
+
 msgid "When enabled enigma2 will load unlinked userbouquets. This means that userbouquets that are available, but not included in the bouquets.tv or bouquets.radio files, will still be loaded. This allows you for example to keep your own user bouquet while installed settings are upgraded"
 msgstr "Wenn aktiviert lädt Enigma2 nicht verbundene Favoritenlisten. Das heißt Favoritenlisten die vorhanden sind aber nicht in bouquets.tv oder bouquets.radio aufgeführt sind werden trotzdem geladen. Dies erlaubt es z.B. automatisch generierte oder installierte Favoritenlisten mit eigenen Erweiterungen zu versehen"
 
 msgid "When enabled the online checker will also check for experimental versions"
 msgstr "Wenn aktiviert werden auch experimentelle Updates gesucht"
+
+msgid "When enabled the receiver will automatically return to standby when the TV is turned off."
+msgstr "Wenn aktiviert wird er Receiver in Bereitschaft versetzt wenn der Fernseher ausgeschaltet wird."
+
+msgid "When enabled the receiver will automatically wake from standby when the TV is turned on."
+msgstr "Wenn aktiviert wird er Receiver eingeschaltet wenn der Fernseher eingeschaltet wird."
 
 msgid "When enabled the set top box is able to wakeup on LAN"
 msgstr "Wenn aktiviert kann die Box per WoL aufgeweckt werden"
@@ -13859,6 +13960,9 @@ msgstr "Wenn hier ein Wert ungleich 0 steht startet eine Aufnahme um diese Anzah
 msgid "When nonzero, a recording will stop later than the ending time indicated by the EPG."
 msgstr "Wenn hier ein Wert ungleich 0 steht stoppt eine Aufnahme um diese Anzahl Minuten später als es die Informationen aus dem EPG besagen."
 
+msgid "When receiver wakes from standby, it will command the TV to switch to the HDMI input the receiver is connected to."
+msgstr "Wenn der Receiver aus Bereitschaft aufwacht schickt er ein Kommando zum Fernseher um auf den korrekten HDMI-Eingang umzuschalten."
+
 msgid "When set the PIG will return to live after a movie has stopped playing."
 msgstr "Wenn aktiviert PIG wird Live-TV zeigen wenn der Film beendet wurde."
 
@@ -13877,6 +13981,9 @@ msgstr "Wenn der Bildinhalt ein Aspect/Ratio von 16:9 hat wähle ob das Bild ska
 
 msgid "When the content has an aspect ratio of 4:3, choose whether to scale/stretch the picture."
 msgstr "Wenn der Bildinhalt ein Aspect/Ratio von 4:3 hat wähle ob das Bild skaliert/gestreckt werden soll."
+
+msgid "When the receiver wakes from standby, it will send a command to the TV to bring it out of standby too."
+msgstr "Wenn der Receiver aus Bereitschaft aufwacht schickt er ein Kommando zum Fernseher um ihn auch aus Bereitschaft einzuschalten."
 
 msgid "When tuned to a service the system will normally scan the transponder for any changes and save them. Only set to 'yes' if you're absolutely sure of what you're doing."
 msgstr "Wenn ein Sender eingestellt ist durchsucht die Box den Transponder nach Änderungen und speichert sie. Nur 'Nein' einstellen wenn Du weißt was Du tust."
@@ -14108,9 +14215,6 @@ msgstr "Löschen nicht möglich!"
 msgid "You didn't select a channel to record from."
 msgstr "Du hast keinen Sender zum Aufnehmen ausgewählt."
 
-msgid "You have already sent this log, are you sure you want to resend it?\n"
-msgstr "Du hast dieses Log schon geschickt. Bist Du sicher das Du dies erneut schicken willst?\n"
-
 msgid "You have chosen to backup your settings. Please press OK to start the backup now."
 msgstr "Du hast dich entschieden deine Einstellungen zu sichern. Drücke OK, um den Vorgang zu starten."
 
@@ -14126,16 +14230,6 @@ msgstr ""
 
 msgid "You have not selected any logs to delete."
 msgstr "Du hast keine Logs zum Löschen gewählt."
-
-msgid "You have not selected any logs to send"
-msgstr "Du hast keine Logs zum Verschicken gewählt"
-
-msgid ""
-"You have not setup your user info in the setup screen\n"
-"Press MENU, enter your info, and then try again"
-msgstr ""
-"Du hast deine Benutzerinformationen nicht eingegeben\n"
-"Drücke MENU und gebe die Informationen ein und dann versuche es erneut"
 
 #, python-format
 msgid "You have to wait %s!"
@@ -14395,6 +14489,9 @@ msgstr "Auf Timer-Sender umgeschaltet %s mit PiP!"
 #, python-format
 msgid "Zapped to timer service %s!"
 msgstr "Auf Timer-Sender umgeschaltet %s!"
+
+msgid "Zaps to EPG download transponder for EPG fetch."
+msgstr "Schaltet auf EPG-Kanal um die Daten herunter zu laden."
 
 msgid "Zgemma H.S/H.2S/H.2H/H5"
 msgstr ""
@@ -14721,9 +14818,6 @@ msgstr "erledigt!"
 msgid "drama (general)"
 msgstr "Film/Drama (allgemein)"
 
-msgid "e-mail address"
-msgstr "E-Mail-Adresse"
-
 msgid "east"
 msgstr "Drehen nach Osten"
 
@@ -14924,13 +15018,6 @@ msgstr "Handwerk"
 
 msgid "handled"
 msgstr "behandelt"
-
-msgid ""
-"has been sent to the ViX team.\n"
-"please quote"
-msgstr ""
-"ist zum ViX Beta Team geschickt worden.\n"
-"Bitte zitieren"
 
 msgid "hdr10"
 msgstr ""
@@ -15550,6 +15637,12 @@ msgstr "Tourismus/Reise"
 msgid "true"
 msgstr "ja"
 
+msgid "two lines"
+msgstr "Zwei Zeilen"
+
+msgid "two lines and next event"
+msgstr "Zwei Zeilen und nächste Sendung"
+
 msgid "type"
 msgstr "Typ"
 
@@ -15643,18 +15736,6 @@ msgstr "Wenn PiPZap aktiviert ist wechsle Kanal runter..."
 msgid "when PiPzap enabled zap channel up..."
 msgstr "Wenn PiPZap aktiviert ist wechsle Kanal hoch..."
 
-msgid "when asking questions about this log"
-msgstr "wenn Fragen zu diesem Log gestellt werden"
-
-msgid ""
-"when asking questions about this log\n"
-"\n"
-"A copy has been sent to yourself."
-msgstr ""
-"wenn Fragen zu diesem Log gestellt werden\n"
-"\n"
-"Eine Kopie wurde zu dir selbst geschickt."
-
 msgid "white"
 msgstr "Weiß"
 
@@ -15727,17 +15808,68 @@ msgstr "umgeschaltet"
 #~ msgid "??"
 #~ msgstr "??"
 
+#~ msgid "Additional Info"
+#~ msgstr "Zusätzliche Informationen"
+
+#~ msgid "Allows you to send a copy of the log to yourself."
+#~ msgstr "Erlaubt es dir eine Kopie an dich selbst zu schicken."
+
+#~ msgid "Are you sure you want to send this log:\n"
+#~ msgstr "Bist Du sicher das diese Log Datei gesendet werden soll:\n"
+
+#~ msgid "Attach a file"
+#~ msgstr "Eine Datei anhängen"
+
+#~ msgid "Automatic refresh"
+#~ msgstr "Automatisch aktualisieren"
+
 #~ msgid "CCcam info"
 #~ msgstr "CCcam Informationen"
 
+#~ msgid "Client mode sets up this receiver to stream from another receiver. In this mode no local tuners will be available and channel lists, EPG, etc, will come from the remote receiver. All tuner settings will be cleared."
+#~ msgstr "Client Modus richtet den Receiver so ein das von einem anderen Receiver gestreamt wird. In diesem Modus gibt es keine lokalen Tuner und Kanalliste, EPG usw. werden vom Server-Receiver geholt. Alle Tunereinstellungen werden gelöscht."
+
 #~ msgid "Common interface"
 #~ msgstr "Common Interface"
+
+#~ msgid "Do you want to add any additional information ?"
+#~ msgstr "Willst Du weitere Informationen hinzufügen?"
+
+#~ msgid ""
+#~ "Do you want to attach a text file to explain the log ?\n"
+#~ "(choose 'No' to type message using virtual keyboard.)"
+#~ msgstr ""
+#~ "Willst Du eine Textdatei anhängen in der das Log erklärt wird?\n"
+#~ "(Wähle 'nein' um eine Nachricht mit der virtuellen Tastatur einzugeben.)"
+
+#~ msgid ""
+#~ "Do you want to send all the selected files:\n"
+#~ "(choose 'No' to only send the currently selected file.)"
+#~ msgstr ""
+#~ "Willst Du alle gewählten Dateien senden:\n"
+#~ "(Wähle 'Nein' um nur die gerade gewählte Datei zu senden.)"
+
+#~ msgid "Enter your e-mail address to send a copy of the log to."
+#~ msgstr "Gebe deine E-Mail-Adresse an zu der eine Kopie des Logs geschickt werden soll."
+
+#~ msgid "Enter your forum user name, to make it easier to trace logs."
+#~ msgstr "Gebe deinen Foren-Nick ein damit die Logs einfacher zugeordnet werden können."
+
+#~ msgid ""
+#~ "Error:\n"
+#~ "%s"
+#~ msgstr ""
+#~ "Fehler:\n"
+#~ "%s"
 
 #~ msgid "Factory reset"
 #~ msgstr "Werkseinstellungen"
 
 #~ msgid "Filesystem check"
 #~ msgstr "Dateisystemprüfung"
+
+#~ msgid "HDMI CEC Setup"
+#~ msgstr "HDMI CEC Einstellungen"
 
 #~ msgid "Initialize devices"
 #~ msgstr "Initialisieren"
@@ -15769,17 +15901,48 @@ msgstr "umgeschaltet"
 #~ msgid "New timers location"
 #~ msgstr "Neuer Speicherort für Timer"
 
+#~ msgid "No positioner capable frontend found."
+#~ msgstr "Keinen rotortauglichen Tuner gefunden."
+
+#~ msgid "No tuner is configured for use with a diseqc positioner!"
+#~ msgstr "Es wurde kein Tuner für die Benutzung eines DiSEqC-Rotors konfiguriert!"
+
 #~ msgid "OScam info"
 #~ msgstr "OScam Info"
 
+#~ msgid "Put your %s %s in standby"
+#~ msgstr "%s %s in Bereitschaft versetzen"
+
+#~ msgid "Refresh every (in hours)"
+#~ msgstr "Alle x Stunden erneuern"
+
 #~ msgid "Save EPG"
 #~ msgstr "EPG speichern"
+
+#~ msgid "Send"
+#~ msgstr "Senden"
+
+#~ msgid "Send Confirmation"
+#~ msgstr "Sendebestätigung"
+
+#~ msgid "Send yourself a copy"
+#~ msgstr "Möchtest Du eine Kopie gesendet bekommen"
+
+#~ msgid ""
+#~ "Setting a password is strongly advised if your STB is open to the internet.\n"
+#~ "This is the case if you have in your router a port forwarded to the STB."
+#~ msgstr ""
+#~ "Ein Passwort wird dringend empfohlen wenn die Box für das Internet geöffnet wurde.\n"
+#~ "Das ist der Fall wenn im Router Powerforwarding zur Box eingerichtet wurde."
 
 #~ msgid "Show EPG..."
 #~ msgstr "Zeige EPG..."
 
 #~ msgid "Show epg"
 #~ msgstr "Zeige EPG"
+
+#~ msgid "Show service name and event description above and below each other instead of side by side."
+#~ msgstr "Zeige Sendernamen und Beschreibung über und unter anstatt links und rechts."
 
 #~ msgid ""
 #~ "The directory %s is not a EXT2, EXT3, EXT4 or NFS partition.\n"
@@ -15807,5 +15970,46 @@ msgstr "umgeschaltet"
 #~ msgid "View Rass interactive..."
 #~ msgstr "Zeige RaSS Interaktiv..."
 
+#~ msgid "Vix forum user name"
+#~ msgstr "Username im ViX Forum"
+
+#~ msgid "Wakeup your %s %s from standby"
+#~ msgstr "%s %s aus Bereitschaft einschalten"
+
+#~ msgid "You have already sent this log, are you sure you want to resend it?\n"
+#~ msgstr "Du hast dieses Log schon geschickt. Bist Du sicher das Du dies erneut schicken willst?\n"
+
+#~ msgid "You have not selected any logs to send"
+#~ msgstr "Du hast keine Logs zum Verschicken gewählt"
+
+#~ msgid ""
+#~ "You have not setup your user info in the setup screen\n"
+#~ "Press MENU, enter your info, and then try again"
+#~ msgstr ""
+#~ "Du hast deine Benutzerinformationen nicht eingegeben\n"
+#~ "Drücke MENU und gebe die Informationen ein und dann versuche es erneut"
+
 #~ msgid "Your %s %s does not support PiP HD"
 #~ msgstr "Dein %s %s unterstützt kein HD PiP"
+
+#~ msgid "e-mail address"
+#~ msgstr "E-Mail-Adresse"
+
+#~ msgid ""
+#~ "has been sent to the ViX team.\n"
+#~ "please quote"
+#~ msgstr ""
+#~ "ist zum ViX Beta Team geschickt worden.\n"
+#~ "Bitte zitieren"
+
+#~ msgid "when asking questions about this log"
+#~ msgstr "wenn Fragen zu diesem Log gestellt werden"
+
+#~ msgid ""
+#~ "when asking questions about this log\n"
+#~ "\n"
+#~ "A copy has been sent to yourself."
+#~ msgstr ""
+#~ "wenn Fragen zu diesem Log gestellt werden\n"
+#~ "\n"
+#~ "Eine Kopie wurde zu dir selbst geschickt."

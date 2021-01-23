@@ -175,7 +175,8 @@ class EPGSelectionBase(Screen, HelpableScreen):
 			# The stored date and time is shared by all EPG types.
 			EPGSelectionBase.lastEnteredTime = ConfigClock(default=time())
 			EPGSelectionBase.lastEnteredDate = ConfigDateTime(default=time(), formatstring=config.usage.date.full.value, increment=86400)
-		self.session.openWithCallback(self.onDateTimeInputClosed, TimeDateInput, EPGSelectionBase.lastEnteredTime, EPGSelectionBase.lastEnteredDate)
+		dti = self.session.openWithCallback(self.onDateTimeInputClosed, TimeDateInput, EPGSelectionBase.lastEnteredTime, EPGSelectionBase.lastEnteredDate)
+		dti.setTitle(_("Advance EPG to the following date and time"))
 
 	def showMovies(self):
 		from Screens.InfoBar import InfoBar
