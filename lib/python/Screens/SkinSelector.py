@@ -20,10 +20,11 @@ from Tools.Directories import resolveFilename, SCOPE_CURRENT_SKIN, SCOPE_LCDSKIN
 
 class SkinSelector(Screen, HelpableScreen):
 
-	def __init__(self, session, screenTitle=_("GUI Skin"), skin_name=None):
+	def __init__(self, session, screenTitle=_("GUI Skin"), skin_name=None, reboot=True):
 		Screen.__init__(self, session, mandatoryWidgets=["skins", "preview"])
 		HelpableScreen.__init__(self)
 		self.setTitle(screenTitle)
+		self.reboot = reboot
 		self.skinName = ["SkinSelector","__SkinSelector__"]
 		if isinstance(skin_name, str):
 			self.skinName = [skin_name] + self.skinName
@@ -171,15 +172,22 @@ class SkinSelector(Screen, HelpableScreen):
 			self.close()
 		else:
 			print("[SkinSelector] Selected skin: '%s'" % pathjoin(self.rootDir, skin))
-			restartBox = self.session.openWithCallback(self.restartGUI, MessageBox, _("To save and apply the selected '%s' skin the GUI needs to restart. Would you like to save the selection and restart the GUI now?") % label, MessageBox.TYPE_YESNO)
-			restartBox.setTitle(_("SkinSelector: Restart GUI"))
+			if not self.reboot:
+				self.saveConfig()
+				self.session.reloadSkin()
+			else:
+				restartBox = self.session.openWithCallback(self.restartGUI, MessageBox, _("To save and apply the selected '%s' skin the GUI needs to restart. Would you like to save the selection and restart the GUI now?") % label, MessageBox.TYPE_YESNO)
+				restartBox.setTitle(_("SkinSelector: Restart GUI"))
 
 	def restartGUI(self, answer):
 		if answer is True:
-			self.config.value = self.currentEntry[4]
-			self.config.save()
+			self.saveConfig()
 			self.session.open(TryQuitMainloop, QUIT_RESTART)
 		self.refreshList()
+
+	def saveConfig(self):
+		self.config.value = self.currentEntry[4]
+		self.config.save()
 
 	def keyTop(self):
 		self["skins"].moveTop()
