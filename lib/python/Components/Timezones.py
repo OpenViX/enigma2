@@ -93,10 +93,6 @@ class Timezones:
 		self.loadTimezones()
 		self.readTimezones()
 		self.callbacks = []
-		# This is a work around to maintain support of AutoTimers
-		# until AutoTimers are updated to use the Timezones
-		# callbacks.  Once AutoTimers are updated *all* AutoTimer
-		# code should be removed from the Timezones.py code!
 
 	# Scan the zoneinfo directory tree and all load all time zones found.
 	#
