@@ -3,6 +3,7 @@
 		<item text="Enable OpenTV download" description="Enable automated downloading of OpenTV EPG data. If only one tuner is available the download will be done when the reciever is in standby.">config.plugins.opentvzapper.enabled</item>
 		<if conditional="config.plugins.opentvzapper.enabled.value">
 			<item text="Provider" description=" ">config.plugins.opentvzapper.providers</item>
+			<item text="Update Interval" description="Set update interval (in hours).">config.plugins.opentvzapper.update_interval</item>
 			<item text="Show in extensions" description="When enabled a forced download will be possible from the extensions menu (blue button). Shows after next restart.">config.plugins.opentvzapper.extensions</item>
 			<item text="Show notifications" description="Show on-screen notifications (pop up) to warn the OpenTV download is in progress.">config.plugins.opentvzapper.notifications</item>
 		</if>

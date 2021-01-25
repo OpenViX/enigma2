@@ -21,7 +21,7 @@ import six
 
 debug_name = "opentv_zapper"
 lamedb_path = "/etc/enigma2"
-download_interval = 6 * 60 * 60 # 6 hours
+download_interval = config.plugins.opentvzapper.update_interval.value * 60 * 60 #  6 hours
 download_duration = 180 # stay tuned for 3 minutes
 start_first_download = 5 * 60 # 5 minutes after booting
 wait_time_on_fail = 15 * 60 # 15 minutes
