@@ -2,7 +2,7 @@ import locale
 import os
 import skin
 from time import time
-from boxbranding import getBrandOEM, getBoxType, getDisplayType
+from boxbranding import getBrandOEM, getDisplayType
 
 from enigma import eDVBDB, eEPGCache, setTunerTypePriorityOrder, setPreferredTuner, setSpinnerOnOff, setEnableTtCachingOnOff, eEnv, Misc_Options, eBackgroundFileEraser, eServiceEvent, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_HALIGN_CENTER, RT_VALIGN_CENTER, RT_WRAP
 
@@ -90,7 +90,7 @@ def InitUsageConfig():
 			SystemInfo["InfoBarEpg"] = True
 		else:
 			SystemInfo["InfoBarEpg"] = False
-	config.usage.show_second_infobar.addNotifier(showsecondinfobarChanged, immediate_feedback = True)
+	config.usage.show_second_infobar.addNotifier(showsecondinfobarChanged)
 	config.usage.infobar_frontend_source = ConfigSelection(default = "tuner", choices = [("settings", _("Settings")), ("tuner", _("Tuner"))])
 
 	config.usage.show_picon_bkgrn = ConfigSelection(default = "transparent", choices = [("none", _("Disabled")), ("transparent", _("Transparent")), ("blue", _("Blue")), ("red", _("Red")), ("black", _("Black")), ("white", _("White")), ("lightgrey", _("Light Grey")), ("grey", _("Grey"))])
@@ -717,6 +717,9 @@ def InitUsageConfig():
 		config.usage.time.display.value = config.usage.time.display.default
 
 	config.usage.boolean_graphic = ConfigSelection(default="no", choices={"no": _("no"), "yes": _("yes"), "only_bool": _("yes, but not in multi selections")})
+	config.usage.fast_skin_reload = ConfigYesNo(default = False)
+	if not SystemInfo["DeveloperImage"]:
+		config.usage.fast_skin_reload.value = False
 
 	if SystemInfo["hasXcoreVFD"]:
 		def set12to8characterVFD(configElement):
@@ -771,8 +774,8 @@ def InitUsageConfig():
 	def EpgCacheSaveSchedChanged(configElement):
 		import EpgLoadSave
 		EpgLoadSave.EpgCacheSaveCheck()
-	config.epg.cacheloadsched.addNotifier(EpgCacheLoadSchedChanged, immediate_feedback = False)
-	config.epg.cachesavesched.addNotifier(EpgCacheSaveSchedChanged, immediate_feedback = False)
+	config.epg.cacheloadsched.addNotifier(EpgCacheLoadSchedChanged, immediate_feedback=False)
+	config.epg.cachesavesched.addNotifier(EpgCacheSaveSchedChanged, immediate_feedback=False)
 	config.epg.cacheloadtimer = ConfigSelectionNumber(default = 24, stepwidth = 1, min = 1, max = 24, wraparound = True)
 	config.epg.cachesavetimer = ConfigSelectionNumber(default = 24, stepwidth = 1, min = 1, max = 24, wraparound = True)
 
@@ -794,8 +797,8 @@ def InitUsageConfig():
 		if not config.misc.epgcache_filename.value.startswith("/etc/enigma2/"):
 			if os.path.exists('/etc/enigma2/' + config.misc.epgcachefilename.value.replace('.dat','') + '.dat'):
 				os.remove('/etc/enigma2/' + config.misc.epgcachefilename.value.replace('.dat','') + '.dat')
-	config.misc.epgcachepath.addNotifier(EpgCacheChanged, immediate_feedback = False)
-	config.misc.epgcachefilename.addNotifier(EpgCacheChanged, immediate_feedback = False)
+	config.misc.epgcachepath.addNotifier(EpgCacheChanged, immediate_feedback=False)
+	config.misc.epgcachefilename.addNotifier(EpgCacheChanged, immediate_feedback=False)
 
 	config.misc.epgratingcountry = ConfigSelection(default="", choices=[("", _("Auto Detect")), ("ETSI", _("Generic")), ("AUS", _("Australia"))])
 	config.misc.epggenrecountry = ConfigSelection(default="", choices=[("", _("Auto Detect")), ("ETSI", _("Generic")), ("AUS", _("Australia"))])
@@ -892,7 +895,7 @@ def InitUsageConfig():
 	def updatedebug_path(configElement):
 		if not os.path.exists(config.crash.debug_path.value):
 			os.mkdir(config.crash.debug_path.value,0755)
-	config.crash.debug_path.addNotifier(updatedebug_path, immediate_feedback = False)
+	config.crash.debug_path.addNotifier(updatedebug_path, immediate_feedback=False)
 
 	config.usage.timerlist_showpicons = ConfigYesNo(default = True)
 	config.usage.timerlist_finished_timer_position = ConfigSelection(default = "end", choices = [("beginning", _("at beginning")), ("end", _("at end")), ("hide", _("hide"))])
@@ -902,14 +905,14 @@ def InitUsageConfig():
 			configElement.value = [2]
 		updateChoices(config.seek.enter_forward, configElement.value)
 
-	config.seek.speeds_forward.addNotifier(updateEnterForward, immediate_feedback = False)
+	config.seek.speeds_forward.addNotifier(updateEnterForward, immediate_feedback=False)
 
 	def updateEnterBackward(configElement):
 		if not configElement.value:
 			configElement.value = [2]
 		updateChoices(config.seek.enter_backward, configElement.value)
 
-	config.seek.speeds_backward.addNotifier(updateEnterBackward, immediate_feedback = False)
+	config.seek.speeds_backward.addNotifier(updateEnterBackward, immediate_feedback=False)
 
 	def updateEraseSpeed(el):
 		eBackgroundFileEraser.getInstance().setEraseSpeed(int(el.value))
@@ -920,12 +923,12 @@ def InitUsageConfig():
 		("20", _("20 MB/s")),
 		("50", _("50 MB/s")),
 		("100", _("100 MB/s"))])
-	config.misc.erase_speed.addNotifier(updateEraseSpeed, immediate_feedback = False)
+	config.misc.erase_speed.addNotifier(updateEraseSpeed, immediate_feedback=False)
 	config.misc.erase_flags = ConfigSelection(default="1", choices = [
 		("0", _("Disable")),
 		("1", _("Internal hdd only")),
 		("3", _("Everywhere"))])
-	config.misc.erase_flags.addNotifier(updateEraseFlags, immediate_feedback = False)
+	config.misc.erase_flags.addNotifier(updateEraseFlags, immediate_feedback=False)
 
 	config.misc.zapkey_delay = ConfigSelectionNumber(default = 5, stepwidth = 1, min = 0, max = 20, wraparound = True)
 	config.misc.numzap_picon = ConfigYesNo(default = False)
@@ -936,7 +939,7 @@ def InitUsageConfig():
 			file.close()
 		config.misc.zapmode = ConfigSelection(default = "mute", choices = [
 			("mute", _("Black screen")), ("hold", _("Hold screen")), ("mutetilllock", _("Black screen till locked")), ("holdtilllock", _("Hold till locked"))])
-		config.misc.zapmode.addNotifier(setZapmode, immediate_feedback = False)
+		config.misc.zapmode.addNotifier(setZapmode, immediate_feedback=False)
 	config.usage.historymode = ConfigSelection(default = "1", choices = [("0", _("Just zap")), ("1", _("Show menu"))])
 
 	config.subtitles = ConfigSubsection()

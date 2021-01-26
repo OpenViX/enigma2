@@ -1478,7 +1478,6 @@ class InfoBarEPG:
 		if not hasattr(config.usage, "defaultEPGType"): # first run
 			config.usage.defaultEPGType = ConfigSelection(default=default, choices=choices)
 			config.usage.defaultEPGType.addNotifier(self.defaultEPGtypeNotifier, initial_call=False, immediate_feedback=False)
-			config.usage.defaultEPGType.callNotifiersOnSaveAndCancel = True
 		for plugin in pluginlist:
 			if plugin[0] == self.plugintexts.get(config.usage.defaultEPGType.value, config.usage.defaultEPGType.value):
 				return plugin[1]
@@ -1491,7 +1490,6 @@ class InfoBarEPG:
 		if not hasattr(config.usage, "defaultINFOType"): # first run
 			config.usage.defaultINFOType = ConfigSelection(default=default, choices=choices)
 			config.usage.defaultINFOType.addNotifier(self.defaultINFOtypeNotifier, initial_call=False, immediate_feedback=False)
-			config.usage.defaultINFOType.callNotifiersOnSaveAndCancel = True
 		for plugin in pluginlist:
 			if plugin[0] == self.plugintexts.get(config.usage.defaultINFOType.value, config.usage.defaultINFOType.value):
 				return plugin[1]

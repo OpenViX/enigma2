@@ -112,7 +112,7 @@ class InstallWizard(Screen, ConfigListScreen):
 			self.session.open(PluginDownloadBrowser, 0, True, "PluginDownloadBrowserWizard")
 		elif self.index == self.INSTALL_SKINS and self.enabled.value:
 			from SkinSelector import SkinSelector
-			self.session.open(SkinSelector, "SkinSelectorWizard")
+			self.session.open(SkinSelector, skin_name="SkinSelectorWizard", reboot=False)
 		return
 
 class InstallWizardIpkgUpdater(Screen):

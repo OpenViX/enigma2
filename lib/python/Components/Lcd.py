@@ -367,7 +367,6 @@ def InitLcd():
 		config.lcd.ledbrightness = ConfigSlider(default = 3, increment = 1, limits = (0,15))
 		config.lcd.ledbrightness.addNotifier(setLEDnormalstate)
 		config.lcd.ledbrightness.apply = lambda : setLEDnormalstate(config.lcd.ledbrightness)
-		config.lcd.ledbrightness.callNotifiersOnSaveAndCancel = True
 
 	if detected:
 		config.lcd.scroll_speed = ConfigSelection(default = "300", choices = [
@@ -434,8 +433,6 @@ def InitLcd():
 		config.lcd.bright = ConfigSlider(default=5, limits=(0, 10))
 		config.lcd.bright.addNotifier(setLCDbright)
 		config.lcd.bright.apply = lambda : setLCDbright(config.lcd.bright)
-		config.lcd.bright.callNotifiersOnSaveAndCancel = True
-
 		config.lcd.dimbright = ConfigSlider(default=standby_default, limits=(0, 10))
 		config.lcd.dimbright.addNotifier(setLCDdimbright);
 		config.lcd.dimbright.apply = lambda : setLCDdimbright(config.lcd.dimbright)
