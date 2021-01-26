@@ -143,10 +143,9 @@ class UpdatePluginMenu(Screen):
 		self.backupdirs = ' '.join( config.plugins.configurationbackup.backupdirs.value )
 		if self.menu == 0:
 			# print "building menu entries"
-			if SystemInfo["FlashOnlineBackup"]:
-				self.list.append(("flash-online", _("Flash Online"), _("Flash on the fly your your Receiver software.") + self.oktext, None))
-				self.list.append(("software-restore", _("Software restore"), _("Restore your Receiver with a new firmware." ) + self.oktext, None))
-				self.list.append(("backup-image", _("Backup Image"), _("Backup your running Receiver image to HDD or USB." ) + self.oktext, None))
+			self.list.append(("flash-online", _("Flash Online"), _("Flash on the fly your your Receiver software.") + self.oktext, None))
+			self.list.append(("software-restore", _("Software restore"), _("Restore your Receiver with a new firmware." ) + self.oktext, None))
+			self.list.append(("backup-image", _("Backup Image"), _("Backup your running Receiver image to HDD or USB." ) + self.oktext, None))
 			if SystemInfo["canMultiBoot"]:
 				self.list.append(("multiboot-manager", _("MultiBoot Manager"), _("\nMaintain your multiboot device.") + self.oktext, None))
 			self.list.append(("system-backup", _("Backup system settings"), _("Backup your Receiver settings." ) + self.oktext + "\n\n" + self.infotext, None))
