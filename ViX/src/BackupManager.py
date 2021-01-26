@@ -244,6 +244,10 @@ class VIXBackupManager(Screen):
 					self.emlist.append(fil)
 				self["list"].setList(self.emlist)
 				self["list"].show()
+				if len(self.emlist):
+					self["key_red"].show()
+				else:
+					self["key_red"].hide()
 			except:
 				self["lab1"].setText(_("Device: ") + config.backupmanager.backuplocation.value + "\n" + _("There is a problem with this device. Please reformat it and try again."))
 
@@ -289,9 +293,10 @@ class VIXBackupManager(Screen):
 
 	def keyDelete(self):
 		self.sel = self["list"].getCurrent()
-		self["list"].instance.moveSelectionTo(0)
-		remove(self.BackupDirectory + self.sel)
-		self.populate_List()
+		if self.sel is not None:
+			self["list"].instance.moveSelectionTo(0)
+			remove(self.BackupDirectory + self.sel)
+			self.populate_List()
 
 	def GreenPressed(self):
 		self.BackupRunning = False
