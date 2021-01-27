@@ -194,8 +194,10 @@ class VIXImageManager(Screen):
 			self.emlist.append(fil)
 		if len(self.emlist):
 			self["key_red"].show()
+			self["key_blue"].show()
 		else:
 			self["key_red"].hide()
+			self["key_blue"].hide()
 		self["list"].setList(self.emlist)
 		self["list"].show()
 

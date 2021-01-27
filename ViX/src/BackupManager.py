@@ -246,8 +246,10 @@ class VIXBackupManager(Screen):
 				self["list"].show()
 				if len(self.emlist):
 					self["key_red"].show()
+					self["key_yellow"].show()
 				else:
 					self["key_red"].hide()
+					self["key_yellow"].hide()
 			except:
 				self["lab1"].setText(_("Device: ") + config.backupmanager.backuplocation.value + "\n" + _("There is a problem with this device. Please reformat it and try again."))
 
