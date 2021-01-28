@@ -58,6 +58,8 @@ class EventViewBase:
 		self["datetime"] = Label()
 		self["channel"] = Label()
 		self["duration"] = Label()
+		if [p for p in plugins.getPlugins(PluginDescriptor.WHERE_EVENTINFO) if 'servicelist' not in p.__call__.func_code.co_varnames]:
+			self["key_menu"] = StaticText(_("MENU"))
 		if similarEPGCB is not None:
 			self["key_red"] = Button("")
 			self.SimilarBroadcastTimer = eTimer()

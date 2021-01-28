@@ -12,6 +12,7 @@ from Components.ActionMap import ActionMap, HelpableActionMap, HelpableNumberAct
 from Components.MenuList import MenuList
 from Components.ServiceEventTracker import ServiceEventTracker, InfoBarBase
 from Components.Sources.List import List
+from Components.Sources.StaticText import StaticText
 from Components.SystemInfo import SystemInfo
 from Components.Renderer.Picon import getPiconName
 from Screens.TimerEntry import addTimerFromEventSilent
@@ -1332,6 +1333,9 @@ class ChannelSelectionBase(Screen, HelpableScreen):
 		self["key_green"] = Button(_("Satellites"))
 		self["key_yellow"] = Button(_("Providers"))
 		self["key_blue"] = Button(_("Favourites"))
+		
+		self["key_menu"] = StaticText(_("MENU"))
+		self["key_info"] = StaticText(_("INFO"))
 
 		self["list"] = ServiceList(self)
 		self.servicelist = self["list"]

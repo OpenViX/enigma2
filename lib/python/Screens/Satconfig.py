@@ -759,6 +759,8 @@ class NimSelection(Screen):
 		self["key_green"] = StaticText(_("Select"))
 		self["key_yellow"] = StaticText(_("Client mode"))
 
+		self["key_info"] = StaticText(_("INFO"))
+
 		self["actions"] = ActionMap(["SetupActions", "ColorActions", "MenuActions", "ChannelSelectEPGActions"],
 		{
 			"ok": self.okbuttonClick,

@@ -292,11 +292,6 @@ class MovieContextMenu(Screen, ProtectedScreen):
 		self.setup_title = _("Movie List Setup")
 		Screen.setTitle(self, _(self.setup_title))
 
-		# No ConfigText fields in MovieBrowserConfiguration so these are not currently used.
-		#self["HelpWindow"] = Pixmap()
-		#self["HelpWindow"].hide()
-		#self["VKeyIcon"] = Boolean(False)
-
 		self['footnote'] = Label("")
 		self["description"] = StaticText()
 
@@ -549,6 +544,9 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		self["key_yellow"] = Button("")
 		self["key_blue"] = Button("")
 		self._updateButtonTexts()
+		
+		self["key_menu"] = StaticText(_("MENU"))
+		self["key_info"] = StaticText(_("INFO"))
 
 		self["movie_off"] = MultiPixmap()
 		self["movie_off"].hide()
