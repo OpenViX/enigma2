@@ -61,6 +61,7 @@ class picshow(Screen):
 		self["key_red"] = StaticText(_("Close"))
 		self["key_green"] = StaticText(_("Thumbnails"))
 		self["key_yellow"] = StaticText("")
+		self["key_menu"] = StaticText(_("MENU"))
 		self["label"] = StaticText("")
 		self["thn"] = Pixmap()
 
