@@ -136,6 +136,9 @@ class VIXBackupManager(Screen):
 		self["key_yellow"] = Button(_("Restore"))
 		self["key_red"] = Button(_("Delete"))
 
+		self["key_menu"] = StaticText(_("MENU"))
+		self["key_info"] = StaticText(_("INFO"))
+
 		self.BackupRunning = False
 		self.BackupDirectory = " "
 		self.onChangedEntry = []

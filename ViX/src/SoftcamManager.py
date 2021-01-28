@@ -98,7 +98,7 @@ class VIXSoftcamManager(Screen):
 									  "green": self.keyStart,
 									  "yellow": self.getRestartPID,
 									  "blue": self.changeSelectionState,
-									  "log": self.showLog,
+									  "log": self.showLog, # KEY_INFO
 									  "menu": self.createSetup,
 									  }, -1)
 
@@ -106,6 +106,9 @@ class VIXSoftcamManager(Screen):
 		self["key_green"] = Button("")
 		self["key_yellow"] = Button("")
 		self["key_blue"] = Button(_("Autostart"))
+
+		self["key_menu"] = StaticText(_("MENU"))
+		self["key_info"] = StaticText(_("INFO"))
 
 		self.currentactivecam = ""
 		self.activityTimer = eTimer()

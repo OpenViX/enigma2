@@ -129,6 +129,8 @@ class VIXImageManager(Screen):
 		self["key_yellow"] = Button(_("Downloads"))
 		self["key_blue"] = Button(_("Flash"))
 
+		self["key_menu"] = StaticText(_("MENU"))
+
 		self.BackupRunning = False
 		self.BackupDirectory = " "
 		if SystemInfo["canMultiBoot"]:
