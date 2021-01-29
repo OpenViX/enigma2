@@ -25,19 +25,18 @@ class Satfinder(ScanSetup, ServiceScan):
 		del feinfo
 		del service
 
-		self.preDefTransponders = None
-		self.TerrestrialTransponders = None
-		self.CableTransponders = None
 		self.typeOfTuningEntry = None
 		self.systemEntry = None
 		self.systemEntryATSC = None
 		self.satfinderTunerEntry = None
 		self.satEntry = None
 		self.typeOfInputEntry = None
-		self.modulationEntry = None
-		self.transponder = None
 		self.DVB_TypeEntry = None
 		self.systemEntryTerr = None
+		self.preDefTransponderEntry = None
+		self.preDefTransponderCableEntry = None
+		self.preDefTransponderTerrEntry = None
+		self.preDefTransponderAtscEntry = None
 		self.frontend = None
 		self.is_id_boolEntry = None
 		self.t2mi_plp_id_boolEntry = None
@@ -45,7 +44,7 @@ class Satfinder(ScanSetup, ServiceScan):
 		self.timer.callback.append(self.updateFrontendStatus)
 
 		ScanSetup.__init__(self, session)
-		self.setTitle(_("Signal Finder"))
+		self.setTitle(_("Signal finder"))
 		self["Frontend"] = FrontendStatus(frontend_source = lambda : self.frontend, update_interval = 100)
 
 		self["actions"] = ActionMap(["SetupActions", "ColorActions"],
@@ -81,10 +80,7 @@ class Satfinder(ScanSetup, ServiceScan):
 					if not self.openFrontend():
 						self.frontend = None # in normal case this should not happen
 		self.tuner = Tuner(self.frontend)
-		if nimmanager.nim_slots[int(self.satfinder_scan_nims.value)].isCompatible("DVB-S"):
-			self.updatePreDefTransponders()
-		self.createSetup()
-		self.retune(None)
+		self.retune()
 
 	def updateFrontendStatus(self):
 		if self.frontend:
@@ -108,8 +104,10 @@ class Satfinder(ScanSetup, ServiceScan):
 					self.DVB_TypeEntry,
 					self.systemEntryTerr,
 					self.satEntry
-					):
+					):  # update screen and retune
 			self.createSetup()
+			self.retune()
+
 		elif cur == self.satfinderTunerEntry: # switching tuners, update screen, get frontend, and retune (in prepareFrontend())
 			self.feid = int(self.satfinder_scan_nims.value)
 			self.createSetup()
@@ -119,6 +117,9 @@ class Satfinder(ScanSetup, ServiceScan):
 				if self.session.nav.RecordTimer.isRecording():
 					msg += _("\nRecording in progress.")
 				self.session.open(MessageBox, msg, MessageBox.TYPE_ERROR)
+
+		elif cur in (self.preDefTransponderEntry, self.preDefTransponderCableEntry, self.preDefTransponderTerrEntry, self.preDefTransponderAtscEntry): # retune only
+			self.retune()
 		elif cur == self.is_id_boolEntry:
 			if self.is_id_boolEntry[1].value:
 				self.scan_sat.is_id.value = 0 if self.is_id_memory < 0 else self.is_id_memory
@@ -132,6 +133,7 @@ class Satfinder(ScanSetup, ServiceScan):
 				self.scan_sat.pls_mode.value = eDVBFrontendParametersSatellite.PLS_Gold
 				self.scan_sat.pls_code.value = eDVBFrontendParametersSatellite.PLS_Default_Gold_Code
 			self.createSetup()
+			self.retune()
 		elif cur == self.t2mi_plp_id_boolEntry:
 			if self.t2mi_plp_id_boolEntry[1].value:
 				self.scan_sat.t2mi_plp_id.value = 0 if self.t2mi_plp_id_memory < 0 else self.t2mi_plp_id_memory
@@ -142,17 +144,7 @@ class Satfinder(ScanSetup, ServiceScan):
 				self.scan_sat.t2mi_plp_id.value = eDVBFrontendParametersSatellite.No_T2MI_PLP_Id
 				self.scan_sat.t2mi_pid.value = eDVBFrontendParametersSatellite.T2MI_Default_Pid
 			self.createSetup()
-		else:
-			if cur == self.satEntry:
-				self.preDefTransponders = None
-			self.createSetup()
-		if cur not in (
-			self.systemEntry,
-			self.satfinderTunerEntry,
-			self.modulationEntry,
-			self.systemEntryATSC
-			):
-			self.retune(None)
+			self.retune()
 
 	def createSetup(self):
 		self.list = []
@@ -165,62 +157,61 @@ class Satfinder(ScanSetup, ServiceScan):
 			self.list.append(self.DVB_TypeEntry)
 		if self.DVB_type.value == "DVB-S":
 			self.tuning_sat = self.scan_satselection[self.getSelectedSatIndex(self.feid)]
-			if self.tuning_sat.value:
-				self.satEntry = getConfigListEntry(_('Satellite'), self.tuning_sat)
-				self.list.append(self.satEntry)
-				self.typeOfTuningEntry = getConfigListEntry(_('Tune'), self.tuning_type)
-				if len(nimmanager.getTransponders(int(self.tuning_sat.value))) < 1: # Only offer 'predefined transponder' if some transponders exist
-					self.tuning_type.value = "single_transponder"
+			self.satEntry = getConfigListEntry(_('Satellite'), self.tuning_sat)
+			self.list.append(self.satEntry)
+			self.typeOfTuningEntry = getConfigListEntry(_('Tune'), self.tuning_type)
+			if len(nimmanager.getTransponders(int(self.tuning_sat.value), self.feid)) < 1: # Only offer 'predefined transponder' if some transponders exist
+				self.tuning_type.value = "single_transponder"
+			else:
+				self.list.append(self.typeOfTuningEntry)
+
+			nim = nimmanager.nim_slots[self.feid]
+
+			if self.tuning_type.value == "single_transponder":
+				if nim.canBeCompatible("DVB-S2"):
+					self.systemEntry = getConfigListEntry(_('System'), self.scan_sat.system)
+					self.list.append(self.systemEntry)
 				else:
-					self.list.append(self.typeOfTuningEntry)
-
-				nim = nimmanager.nim_slots[self.feid]
-
-				if self.tuning_type.value == "single_transponder":
-					if nim.isCompatible("DVB-S2"):
-						self.systemEntry = getConfigListEntry(_('System'), self.scan_sat.system)
-						self.list.append(self.systemEntry)
+					# downgrade to dvb-s, in case a -s2 config was active
+					self.scan_sat.system.value = eDVBFrontendParametersSatellite.System_DVB_S
+				self.list.append(getConfigListEntry(_('Frequency'), self.scan_sat.frequency))
+				self.list.append(getConfigListEntry(_('Polarization'), self.scan_sat.polarization))
+				self.list.append(getConfigListEntry(_('Symbol rate'), self.scan_sat.symbolrate))
+				self.list.append(getConfigListEntry(_('Inversion'), self.scan_sat.inversion))
+				if self.scan_sat.system.value == eDVBFrontendParametersSatellite.System_DVB_S:
+					self.list.append(getConfigListEntry(_("FEC"), self.scan_sat.fec))
+				elif self.scan_sat.system.value == eDVBFrontendParametersSatellite.System_DVB_S2:
+					self.list.append(getConfigListEntry(_("FEC"), self.scan_sat.fec_s2))
+					self.modulationEntry = getConfigListEntry(_('Modulation'), self.scan_sat.modulation)
+					self.list.append(self.modulationEntry)
+					self.list.append(getConfigListEntry(_('Roll-off'), self.scan_sat.rolloff))
+					self.list.append(getConfigListEntry(_('Pilot'), self.scan_sat.pilot))
+					if nim.isMultistream():
+						self.is_id_boolEntry = getConfigListEntry(_('Transport Stream Type'), self.scan_sat.is_id_bool)
+						self.list.append(self.is_id_boolEntry)
+						if self.scan_sat.is_id_bool.value:
+							self.list.append(getConfigListEntry("%s%s" % (indent, _('Input Stream ID')), self.scan_sat.is_id))
+							self.list.append(getConfigListEntry("%s%s" % (indent, _('PLS Mode')), self.scan_sat.pls_mode))
+							self.list.append(getConfigListEntry("%s%s" % (indent, _('PLS Code')), self.scan_sat.pls_code))
 					else:
-						# downgrade to dvb-s, in case a -s2 config was active
-						self.scan_sat.system.value = eDVBFrontendParametersSatellite.System_DVB_S
-					self.list.append(getConfigListEntry(_('Frequency'), self.scan_sat.frequency))
-					self.list.append(getConfigListEntry(_('Polarization'), self.scan_sat.polarization))
-					self.list.append(getConfigListEntry(_('Symbol rate'), self.scan_sat.symbolrate))
-					self.list.append(getConfigListEntry(_('Inversion'), self.scan_sat.inversion))
-					if self.scan_sat.system.value == eDVBFrontendParametersSatellite.System_DVB_S:
-						self.list.append(getConfigListEntry(_("FEC"), self.scan_sat.fec))
-					elif self.scan_sat.system.value == eDVBFrontendParametersSatellite.System_DVB_S2:
-						self.list.append(getConfigListEntry(_("FEC"), self.scan_sat.fec_s2))
-						self.modulationEntry = getConfigListEntry(_('Modulation'), self.scan_sat.modulation)
-						self.list.append(self.modulationEntry)
-						self.list.append(getConfigListEntry(_('Roll-off'), self.scan_sat.rolloff))
-						self.list.append(getConfigListEntry(_('Pilot'), self.scan_sat.pilot))
-						if nim.isMultistream():
-							self.is_id_boolEntry = getConfigListEntry(_('Transport Stream Type'), self.scan_sat.is_id_bool)
-							self.list.append(self.is_id_boolEntry)
-							if self.scan_sat.is_id_bool.value:
-								self.list.append(getConfigListEntry("%s%s" % (indent, _('Input Stream ID')), self.scan_sat.is_id))
-								self.list.append(getConfigListEntry("%s%s" % (indent, _('PLS Mode')), self.scan_sat.pls_mode))
-								self.list.append(getConfigListEntry("%s%s" % (indent, _('PLS Code')), self.scan_sat.pls_code))
-						else:
-							self.scan_sat.is_id.value = eDVBFrontendParametersSatellite.No_Stream_Id_Filter
-							self.scan_sat.pls_mode.value = eDVBFrontendParametersSatellite.PLS_Gold
-							self.scan_sat.pls_code.value = eDVBFrontendParametersSatellite.PLS_Default_Gold_Code
-						if nim.isT2MI():
-							self.t2mi_plp_id_boolEntry = getConfigListEntry(_('T2MI PLP'), self.scan_sat.t2mi_plp_id_bool)
-							self.list.append(self.t2mi_plp_id_boolEntry)
-							if self.scan_sat.t2mi_plp_id_bool.value:
-								self.list.append(getConfigListEntry("%s%s" % (indent, _('T2MI PLP ID')), self.scan_sat.t2mi_plp_id))
-								self.list.append(getConfigListEntry("%s%s" % (indent, _('T2MI PID')), self.scan_sat.t2mi_pid))
-						else:
-							self.scan_sat.t2mi_plp_id.value = eDVBFrontendParametersSatellite.No_T2MI_PLP_Id
-							self.scan_sat.t2mi_pid.value = eDVBFrontendParametersSatellite.T2MI_Default_Pid
-				elif self.tuning_type.value == "predefined_transponder":
-					self.scan_nims.value = self.satfinder_scan_nims.value
-					if self.preDefTransponders is None:
-						self.updatePreDefTransponders()
-					self.list.append(getConfigListEntry(_("Transponder"), self.preDefTransponders))
-		elif nimmanager.nim_slots[int(self.satfinder_scan_nims.value)].isCompatible("DVB-C"):
+						self.scan_sat.is_id.value = eDVBFrontendParametersSatellite.No_Stream_Id_Filter
+						self.scan_sat.pls_mode.value = eDVBFrontendParametersSatellite.PLS_Gold
+						self.scan_sat.pls_code.value = eDVBFrontendParametersSatellite.PLS_Default_Gold_Code
+					if nim.isT2MI():
+						self.t2mi_plp_id_boolEntry = getConfigListEntry(_('T2MI PLP'), self.scan_sat.t2mi_plp_id_bool)
+						self.list.append(self.t2mi_plp_id_boolEntry)
+						if self.scan_sat.t2mi_plp_id_bool.value:
+							self.list.append(getConfigListEntry("%s%s" % (indent, _('T2MI PLP ID')), self.scan_sat.t2mi_plp_id))
+							self.list.append(getConfigListEntry("%s%s" % (indent, _('T2MI PID')), self.scan_sat.t2mi_pid))
+					else:
+						self.scan_sat.t2mi_plp_id.value = eDVBFrontendParametersSatellite.No_T2MI_PLP_Id
+						self.scan_sat.t2mi_pid.value = eDVBFrontendParametersSatellite.T2MI_Default_Pid
+			elif self.tuning_type.value == "predefined_transponder":
+				self.scan_nims.value = self.satfinder_scan_nims.value
+				self.updatePreDefTransponders()
+				self.preDefTransponderEntry = getConfigListEntry(_("Transponder"), self.preDefTransponders)
+				self.list.append(self.preDefTransponderEntry)
+		elif self.DVB_type.value == "DVB-C":
 			self.typeOfTuningEntry = getConfigListEntry(_('Tune'), self.tuning_type)
 			if config.Nims[self.feid].cable.scan_type.value != "provider" or len(nimmanager.getTranspondersCable(int(self.satfinder_scan_nims.value))) < 1: # only show 'predefined transponder' if in provider mode and transponders exist
 				self.tuning_type.value = "single_transponder"
@@ -234,10 +225,10 @@ class Satfinder(ScanSetup, ServiceScan):
 				self.list.append(getConfigListEntry(_("FEC"), self.scan_cab.fec))
 			elif self.tuning_type.value == "predefined_transponder":
 				self.scan_nims.value = self.satfinder_scan_nims.value
-				if self.CableTransponders is None:
-					self.predefinedCabTranspondersList()
-				self.list.append(getConfigListEntry(_('Transponder'), self.CableTransponders))
-		elif nimmanager.nim_slots[int(self.satfinder_scan_nims.value)].isCompatible("DVB-T"):
+				self.predefinedCabTranspondersList()
+				self.preDefTransponderCableEntry = getConfigListEntry(_("Transponder"), self.CableTransponders)
+				self.list.append(self.preDefTransponderCableEntry)
+		elif self.DVB_type.value == "DVB-T":
 			self.typeOfTuningEntry = getConfigListEntry(_('Tune'), self.tuning_type)
 			region = nimmanager.getTerrestrialDescription(int(self.satfinder_scan_nims.value))
 			if len(nimmanager.getTranspondersTerrestrial(region)) < 1: # Only offer 'predefined transponder' if some transponders exist
@@ -245,7 +236,7 @@ class Satfinder(ScanSetup, ServiceScan):
 			else:
 				self.list.append(self.typeOfTuningEntry)
 			if self.tuning_type.value == "single_transponder":
-				if nimmanager.nim_slots[int(self.satfinder_scan_nims.value)].isCompatible("DVB-T2"):
+				if nimmanager.nim_slots[int(self.satfinder_scan_nims.value)].canBeCompatible("DVB-T2"):
 					self.systemEntryTerr = getConfigListEntry(_('System'), self.scan_ter.system)
 					self.list.append(self.systemEntryTerr)
 				else:
@@ -278,10 +269,10 @@ class Satfinder(ScanSetup, ServiceScan):
 					self.list.append(getConfigListEntry(_('PLP ID'), self.scan_ter.plp_id))
 			elif self.tuning_type.value == "predefined_transponder":
 				self.scan_nims.value = self.satfinder_scan_nims.value
-				if self.TerrestrialTransponders is None:
-					self.predefinedTerrTranspondersList()
-				self.list.append(getConfigListEntry(_('Transponder'), self.TerrestrialTransponders))
-		elif nimmanager.nim_slots[int(self.satfinder_scan_nims.value)].isCompatible("ATSC"):
+				self.predefinedTerrTranspondersList()
+				self.preDefTransponderTerrEntry = getConfigListEntry(_('Transponder'), self.TerrestrialTransponders)
+				self.list.append(self.preDefTransponderTerrEntry)
+		elif self.DVB_type.value == "ATSC":
 			self.typeOfTuningEntry = getConfigListEntry(_('Tune'), self.tuning_type)
 			if len(nimmanager.getTranspondersATSC(int(self.satfinder_scan_nims.value))) < 1: # only show 'predefined transponder' if transponders exist
 				self.tuning_type.value = "single_transponder"
@@ -297,7 +288,8 @@ class Satfinder(ScanSetup, ServiceScan):
 				#FIXME add region
 				self.scan_nims.value = self.satfinder_scan_nims.value
 				self.predefinedATSCTranspondersList()
-				self.list.append(getConfigListEntry(_('Transponder'), self.ATSCTransponders))
+				self.preDefTransponderAtscEntry = getConfigListEntry(_('Transponder'), self.ATSCTransponders)
+				self.list.append(self.preDefTransponderAtscEntry)
 		self["config"].list = self.list
 		self["config"].l.setList(self.list)
 
@@ -308,11 +300,13 @@ class Satfinder(ScanSetup, ServiceScan):
 			self.orbital_position = self.frontendData['orbital_position']
 		ScanSetup.createConfig(self, self.frontendData)
 
+		# The following are updated in self.newConfig(). Do not add here.
+		# self.scan_sat.system, self.tuning_type, self.scan_input_as, self.scan_ats.system, self.DVB_type, self.scan_ter.system, self.satfinder_scan_nims, self.tuning_sat
 		for x in (self.scan_sat.frequency,
 			self.scan_sat.inversion, self.scan_sat.symbolrate,
 			self.scan_sat.polarization, self.scan_sat.fec, self.scan_sat.pilot,
 			self.scan_sat.fec_s2, self.scan_sat.fec, self.scan_sat.modulation,
-			self.scan_sat.rolloff, self.scan_sat.system,
+			self.scan_sat.rolloff,
 			self.scan_sat.is_id, self.scan_sat.pls_mode, self.scan_sat.pls_code,
 			self.scan_sat.t2mi_plp_id, self.scan_sat.t2mi_pid,
 			self.scan_ter.channel, self.scan_ter.frequency, self.scan_ter.inversion,
@@ -321,15 +315,14 @@ class Satfinder(ScanSetup, ServiceScan):
 			self.scan_ter.guard, self.scan_ter.hierarchy, self.scan_ter.plp_id,
 			self.scan_cab.frequency, self.scan_cab.inversion, self.scan_cab.symbolrate,
 			self.scan_cab.modulation, self.scan_cab.fec,
-			self.scan_ats.frequency, self.scan_ats.modulation, self.scan_ats.inversion,
-			self.scan_ats.system):
+			self.scan_ats.frequency, self.scan_ats.modulation, self.scan_ats.inversion):
 			x.addNotifier(self.retune, initial_call = False)
 
 		satfinder_nim_list = []
 		for n in nimmanager.nim_slots:
 			if not any([n.isCompatible(x) for x in "DVB-S", "DVB-T", "DVB-C", "ATSC"]):
 				continue
-			if n.config_mode  in ("loopthrough_internal", "loopthrough_external", "satposdepends", "nothing"):
+			if n.config_mode  in ("loopthrough", "satposdepends", "nothing"):
 				continue
 			if n.isCompatible("DVB-S") and n.config_mode == "advanced" and len(nimmanager.getSatListForNim(n.slot)) < 1:
 				continue
@@ -351,7 +344,7 @@ class Satfinder(ScanSetup, ServiceScan):
 
 		if self.frontendData:
 			ttype = self.frontendData.get("tuner_type", "UNKNOWN")
-			if ttype == "DVB-S" and self.predefinedTranspondersList(self.getSelectedSatIndex(self.feid)) is None and len(nimmanager.getTransponders(self.getSelectedSatIndex(self.feid))) > 0:
+			if ttype == "DVB-S" and self.predefinedTranspondersList(self.getSelectedSatIndex(self.feid)) is None and len(nimmanager.getTransponders(self.getSelectedSatIndex(self.feid), self.feid)) > 0:
 				self.tuning_type.value = "single_transponder"
 			elif ttype == "DVB-T" and self.predefinedTerrTranspondersList() is None and len(nimmanager.getTranspondersTerrestrial(nimmanager.getTerrestrialDescription(self.feid))) > 0:
 				self.tuning_type.value = "single_transponder"
@@ -374,7 +367,7 @@ class Satfinder(ScanSetup, ServiceScan):
 	def updatePreDefTransponders(self):
 		ScanSetup.predefinedTranspondersList(self, self.tuning_sat.orbital_position)
 
-	def retuneCab(self, configElement):
+	def retuneCab(self):
 		if not self.initcomplete:
 			return
 		if self.tuning_type.value == "single_transponder":
@@ -396,7 +389,7 @@ class Satfinder(ScanSetup, ServiceScan):
 				self.tuner.tuneCab(transponder)
 				self.transponder = transponder
 
-	def retuneTerr(self, configElement):
+	def retuneTerr(self):
 		if not self.initcomplete:
 			return
 		if self.scan_input_as.value == "channel":
@@ -428,7 +421,7 @@ class Satfinder(ScanSetup, ServiceScan):
 				self.tuner.tuneTerr(transponder[1], transponder[9], transponder[2], transponder[4], transponder[5], transponder[3], transponder[7], transponder[6], transponder[8], transponder[10], transponder[11])
 				self.transponder = transponder
 
-	def retuneATSC(self, configElement):
+	def retuneATSC(self):
 		if not self.initcomplete:
 			return
 		if self.tuning_type.value == "single_transponder":
@@ -448,62 +441,61 @@ class Satfinder(ScanSetup, ServiceScan):
 				self.tuner.tuneATSC(transponder)
 				self.transponder = transponder
 
-	def retuneSat(self, configElement): #satellite
+	def retuneSat(self): #satellite
 		if not self.tuning_sat.value:
 			return
-		if self.initcomplete:
-			satpos = int(self.tuning_sat.value)
-			if self.tuning_type.value == "single_transponder":
-				if self.scan_sat.system.value == eDVBFrontendParametersSatellite.System_DVB_S2:
-					fec = self.scan_sat.fec_s2.value
-				else:
-					fec = self.scan_sat.fec.value
-				transponder = (
-					self.scan_sat.frequency.value,
-					self.scan_sat.symbolrate.value,
-					self.scan_sat.polarization.value,
-					fec,
-					self.scan_sat.inversion.value,
-					satpos,
-					self.scan_sat.system.value,
-					self.scan_sat.modulation.value,
-					self.scan_sat.rolloff.value,
-					self.scan_sat.pilot.value,
-					self.scan_sat.is_id.value,
-					self.scan_sat.pls_mode.value,
-					self.scan_sat.pls_code.value,
-					self.scan_sat.t2mi_plp_id.value,
-					self.scan_sat.t2mi_pid.value)
+		satpos = int(self.tuning_sat.value)
+		if self.tuning_type.value == "single_transponder":
+			if self.scan_sat.system.value == eDVBFrontendParametersSatellite.System_DVB_S2:
+				fec = self.scan_sat.fec_s2.value
+			else:
+				fec = self.scan_sat.fec.value
+			transponder = (
+				self.scan_sat.frequency.value,
+				self.scan_sat.symbolrate.value,
+				self.scan_sat.polarization.value,
+				fec,
+				self.scan_sat.inversion.value,
+				satpos,
+				self.scan_sat.system.value,
+				self.scan_sat.modulation.value,
+				self.scan_sat.rolloff.value,
+				self.scan_sat.pilot.value,
+				self.scan_sat.is_id.value,
+				self.scan_sat.pls_mode.value,
+				self.scan_sat.pls_code.value,
+				self.scan_sat.t2mi_plp_id.value,
+				self.scan_sat.t2mi_pid.value)
+			if self.initcomplete:
 				self.tuner.tune(transponder)
-				self.transponder = transponder
-			elif self.tuning_type.value == "predefined_transponder":
-				tps = nimmanager.getTransponders(satpos)
-				if len(tps) > self.preDefTransponders.index:
-					tp = tps[self.preDefTransponders.index]
-					transponder = (tp[1] / 1000, tp[2] / 1000,
-						tp[3], tp[4], 2, satpos, tp[5], tp[6], tp[8], tp[9], tp[10], tp[11], tp[12], tp[13], tp[14])
+			self.transponder = transponder
+		elif self.tuning_type.value == "predefined_transponder":
+			tps = nimmanager.getTransponders(satpos, int(self.satfinder_scan_nims.value))
+			if len(tps) > self.preDefTransponders.index:
+				tp = tps[self.preDefTransponders.index]
+				transponder = (tp[1] / 1000, tp[2] / 1000,
+					tp[3], tp[4], 2, satpos, tp[5], tp[6], tp[8], tp[9], tp[10], tp[11], tp[12], tp[13], tp[14])
+				if self.initcomplete:
 					self.tuner.tune(transponder)
-					self.transponder = transponder
+				self.transponder = transponder
 
-	def retune(self, configElement):
-		if nimmanager.nim_slots[int(self.satfinder_scan_nims.value)].isCompatible("DVB-S"):
-			self.retuneSat(configElement)
-		elif nimmanager.nim_slots[int(self.satfinder_scan_nims.value)].isCompatible("DVB-T"):
-			self.retuneTerr(configElement)
-		elif nimmanager.nim_slots[int(self.satfinder_scan_nims.value)].isCompatible("DVB-C"):
-			self.retuneCab(configElement)
-		elif nimmanager.nim_slots[int(self.satfinder_scan_nims.value)].isCompatible("ATSC"):
-			self.retuneATSC(configElement)
+	def retune(self, configElement=None):
+		if self.DVB_type.value == "DVB-S":
+			self.retuneSat()
+		elif self.DVB_type.value == "DVB-T":
+			self.retuneTerr()
+		elif self.DVB_type.value == "DVB-C":
+			self.retuneCab()
+		elif self.DVB_type.value == "ATSC":
+			self.retuneATSC()
 		self.timer.start(500, True)
 
 	def keyGoScan(self):
-		if self.transponder is None:
-			return
 		self.frontend = None
 		if self.raw_channel:
 			del(self.raw_channel)
 		tlist = []
-		if nimmanager.nim_slots[int(self.satfinder_scan_nims.value)].isCompatible("DVB-S"):
+		if self.DVB_type.value == "DVB-S":
 			self.addSatTransponder(tlist,
 				self.transponder[0], # frequency
 				self.transponder[1], # sr
@@ -521,7 +513,7 @@ class Satfinder(ScanSetup, ServiceScan):
 				self.transponder[13],# t2mi_plp_id
 				self.transponder[14] # t2mi_pid
 			)
-		elif nimmanager.nim_slots[int(self.satfinder_scan_nims.value)].isCompatible("DVB-T"):
+		elif self.DVB_type.value == "DVB-T":
 			parm = buildTerTransponder(
 				self.transponder[1],  # frequency
 				self.transponder[9],  # inversion
@@ -536,7 +528,7 @@ class Satfinder(ScanSetup, ServiceScan):
 				self.transponder[11]  # plp_id
 			)
 			tlist.append(parm)
-		elif nimmanager.nim_slots[int(self.satfinder_scan_nims.value)].isCompatible("DVB-C"):
+		elif self.DVB_type.value == "DVB-C":
 			self.addCabTransponder(tlist,
 				self.transponder[0], # frequency
 				self.transponder[1], # sr
@@ -544,7 +536,7 @@ class Satfinder(ScanSetup, ServiceScan):
 				self.transponder[3], # fec_inner
 				self.transponder[4]  # inversion
 			)
-		elif nimmanager.nim_slots[int(self.satfinder_scan_nims.value)].isCompatible("ATSC"):
+		elif self.DVB_type.value == "ATSC":
 			self.addATSCTransponder(tlist,
 				self.transponder[0], # frequency
 				self.transponder[1], # modulation
@@ -584,7 +576,7 @@ def SatfinderMain(session, close=None, **kwargs):
 	for n in nims:
 		if not any([n.isCompatible(x) for x in "DVB-S", "DVB-T", "DVB-C", "ATSC"]):
 			continue
-		if n.config_mode in ("loopthrough_internal", "loopthrough_external", "satposdepends", "nothing"):
+		if n.config_mode in ("loopthrough", "satposdepends", "nothing"):
 			continue
 		if n.isCompatible("DVB-S") and n.config_mode in ("advanced", "simple") and len(nimmanager.getSatListForNim(n.slot)) < 1 and len(n.getTunerTypesEnabled()) < 2:
 			continue
@@ -597,12 +589,12 @@ def SatfinderMain(session, close=None, **kwargs):
 
 def SatfinderStart(menuid, **kwargs):
 	if menuid == "scan" and nimmanager.somethingConnected():
-		return [(_("Signal Finder"), SatfinderMain, "satfinder", None)]
+		return [(_("Signal finder"), SatfinderMain, "satfinder", None)]
 	else:
 		return []
 
 def Plugins(**kwargs):
 	if any([nimmanager.hasNimType(x) for x in "DVB-S", "DVB-T", "DVB-C", "ATSC"]):
-		return PluginDescriptor(name=_("Signal Finder"), description=_("Helps setting up your signal"), where = PluginDescriptor.WHERE_MENU, needsRestart = False, fnc=SatfinderStart)
+		return PluginDescriptor(name=_("Signal finder"), description=_("Helps setting up your antenna"), where = PluginDescriptor.WHERE_MENU, needsRestart = False, fnc=SatfinderStart)
 	else:
 		return []
