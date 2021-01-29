@@ -62,6 +62,7 @@ class MMIDialog(Screen):
 		self["title"] = Label("")
 		self["subtitle"] = Label("")
 		self["bottom"] = Label("")
+		self["key_menu"] = StaticText(_("MENU"))
 		self["entries"] = ConfigList([ ])
 
 		self["actions"] = NumberActionMap(["SetupActions", "MenuActions"],
