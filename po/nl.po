@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-21 03:29+0000\n"
-"PO-Revision-Date: 2021-01-21 11:19+0100\n"
+"POT-Creation-Date: 2021-01-29 03:11+0000\n"
+"PO-Revision-Date: 2021-01-29 14:27+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -1895,6 +1895,9 @@ msgstr "Staat 10bit toe"
 
 msgid "Allow 12bit"
 msgstr "Staat 12bit toe"
+
+msgid "Allow fast skin reload"
+msgstr "Skin snel herladen toestaan"
 
 msgid "Allow subtitle language to equal audio language"
 msgstr "Ondertiteltaal overeenkomstig aan audiotaal"
@@ -5367,6 +5370,9 @@ msgstr "FTP passieve modus"
 
 msgid "Factory Reset"
 msgstr "Fabrieksinstellingen"
+
+msgid "Factory Reset: Clearing data"
+msgstr "Fabrieksinstellingen: verwijdert gegevens"
 
 msgid "Fade the infobar when hiding"
 msgstr "Vervaag de infobar als die verborgen wordt"
@@ -10787,6 +10793,9 @@ msgstr "Stel de gewenste primetime in."
 msgid "Set to what you want the button to do."
 msgstr "Kies wat een toets moet doen."
 
+msgid "Set update interval (in hours)."
+msgstr "Updateinterval (in uren)"
+
 msgid "Set voltage and 22KHz"
 msgstr "Voltage en 22KHz instellen"
 
@@ -12651,6 +12660,9 @@ msgstr ""
 "Dit zal alle posities herberekenen en zal alle opgeslagen posities verwijderen!\n"
 "Weet u het zeker?"
 
+msgid "This will permanently delete the current configuration. It would be a good idea to make a backup before taking this drastic action. Are you certain you want to continue with a factory reset?"
+msgstr "Dit zal de huidige configuratie voorgoed verwijderen. Het is wellicht een goed idee een back-up te maken alvorens zo'n drastische stap te nemen. Weet u zeker dat u naar de fabrieksinstellingen terug wil?"
+
 msgid "Three"
 msgstr "Drie"
 
@@ -13176,6 +13188,9 @@ msgstr "Omhoog"
 
 msgid "Update"
 msgstr "Update"
+
+msgid "Update Interval"
+msgstr "Updateinterval"
 
 msgid "Update channel list only"
 msgstr "Update alleen de kanaallijst"
@@ -13833,6 +13848,9 @@ msgstr "Welke dag van de week?"
 
 msgid "What do you want to scan?"
 msgstr "Wat wilt u zoeken?"
+
+msgid "When changing skins this allows the skin to load without requiring an enigma restart."
+msgstr "Dit maakt het mogelijk van skin te veranderen zonder Enigma2 te herstarten."
 
 msgid "When enabled a forced download will be possible from the extensions menu (blue button). Shows after next restart."
 msgstr "Indien ingeschakeld zal een geforceerde download vanuit het extensie-menu mogelijk zijn. De optie wordt pas na een herstart getoond."
