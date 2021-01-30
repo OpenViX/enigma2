@@ -1787,9 +1787,6 @@ msgstr "Добавить/Удалить таймер для текущего с�
 msgid "Adding schedule..."
 msgstr "Добавление задания"
 
-msgid "Additional Info"
-msgstr "Дополнительная информация"
-
 msgid "Additional cable of motorized LNB"
 msgstr "Дополнительный кабель от моторизованного LNB"
 
@@ -1907,6 +1904,9 @@ msgstr "Включить 10bit"
 msgid "Allow 12bit"
 msgstr "Включить 12bit"
 
+msgid "Allow fast skin reload"
+msgstr "Разрешить быструю перезагрузку скина"
+
 msgid "Allow subtitle language to equal audio language"
 msgstr "Показывать субтитры при совпадении с языком аудио"
 
@@ -1936,9 +1936,6 @@ msgstr "Позволяет включить/отключить отображе�
 
 msgid "Allows you to hide the extensions of known file types."
 msgstr "Позволяет скрывать расширения известных типов файлов."
-
-msgid "Allows you to send a copy of the log to yourself."
-msgstr "Позволяет отправить копию журнала себе."
 
 msgid "Allows you to set a schedule to import the EPG and channels list. The EPG and channels list will always be imported on reboot or GUI restart."
 msgstr "Позволяет установить расписание для импорта EPG и списка каналов. EPG и список каналов всегда будут импортироваться при перезагрузке или перезагрузке графического интерфейса."
@@ -2137,9 +2134,6 @@ msgstr ""
 msgid "Are you sure you want to save the EPG Cache to:\n"
 msgstr "Уверены, что хотите сохранить данные EPG:\n"
 
-msgid "Are you sure you want to send this log:\n"
-msgstr "Уверены, что хотите отправить этот журнал:\n"
-
 #, python-format
 msgid "Are you sure you want to update your %s %s ?"
 msgstr "Уверены, что хотите обновить Ваш %s %s?"
@@ -2182,9 +2176,6 @@ msgstr "Назначены сервисы/провайдеры:"
 
 msgid "At End:"
 msgstr "В конце:"
-
-msgid "Attach a file"
-msgstr "Прикрепить файл"
 
 msgid "Attention, this is repeated timer!\n"
 msgstr "Данный таймер уже установлен ранее!\n"
@@ -3400,7 +3391,7 @@ msgid "Configure the cursor behavior in the channel selection list. When opening
 msgstr "Настройка поведения курсора в списке каналов. При открытии списка каналов кнопками курсор можете оставить на текущем сервисе или перенесённым вверх или вниз выбором кнопки CHANNEL +/- или же можно задать обратный порядок."
 
 msgid "Configure the duration (in minutes) for the screensaver."
-msgstr "Настройка продолжительности заставки в минутах."
+msgstr "Настройка продолжительности заставки (в минутах)."
 
 msgid "Configure the first audio language (highest priority)."
 msgstr "Настройка первого языка аудио (высокий приоритет)."
@@ -4549,16 +4540,6 @@ msgstr "Вы действительно хотите удалить заклад
 msgid "Do you really want to stop the current recording and delete timer %s?"
 msgstr "Действительно хотите остановить текущую запись и удалить таймер %s?"
 
-msgid "Do you want to add any additional information ?"
-msgstr "Хотите добавить дополнительную информацию?"
-
-msgid ""
-"Do you want to attach a text file to explain the log ?\n"
-"(choose 'No' to type message using virtual keyboard.)"
-msgstr ""
-"Вы желаете прикрепить текстовый файл к журналу?\n"
-"(выберите 'Нет', чтобы ввести сообщение, используя виртуальную клавиатуру)"
-
 msgid "Do you want to burn this collection to DVD medium?"
 msgstr "Вы хотите записать эту коллекцию на DVD носитель?"
 
@@ -4608,13 +4589,6 @@ msgstr "Вы хотите восстановить Ваши настройки?"
 
 msgid "Do you want to resume playback?"
 msgstr "Хотите продолжить воспроизведение?"
-
-msgid ""
-"Do you want to send all the selected files:\n"
-"(choose 'No' to only send the currently selected file.)"
-msgstr ""
-"Хотите отправить все выбранные файлы:\n"
-"(Выберите 'Нет', чтобы отправить только выбранный файл.)"
 
 #, python-format
 msgid "Do you want to update your %s %s ?"
@@ -5087,12 +5061,6 @@ msgstr "Введите текущую широту (количество гра�
 msgid "Enter your current longitude. This is the number of degrees you are from zero meridian as a decimal."
 msgstr "Введите текущую долготу (количество градусов от нулевого меридиана в виде десятичного числа)"
 
-msgid "Enter your e-mail address to send a copy of the log to."
-msgstr "Введите свой адрес электронной почты, чтобы отправить копию журнала."
-
-msgid "Enter your forum user name, to make it easier to trace logs."
-msgstr "Введите имя пользователя форума ViX, чтобы было легче отслеживать журналы."
-
 msgid "Enter your high band local oscillator frequency. For more information consult the spec sheet of your LNB."
 msgstr "Введите верхнюю частоту гетеродина. Дополнительную информацию можно найти в инструкции для LNB."
 
@@ -5131,14 +5099,6 @@ msgstr "Ошибка выполнения плагина"
 
 msgid "Error reading webpage!"
 msgstr "Ошибка чтения страницы!"
-
-#, python-format
-msgid ""
-"Error:\n"
-"%s"
-msgstr ""
-"Ошибка:\n"
-"%s"
 
 #, python-format
 msgid ""
@@ -5400,7 +5360,7 @@ msgid "FP version:\t%s"
 msgstr "Версия FP:\t%s"
 
 msgid "FTA TV"
-msgstr "FTA ТВ"
+msgstr "FTA TV"
 
 msgid "FTP"
 msgstr "FTP"
@@ -5416,6 +5376,9 @@ msgstr "Пассивный режим FTP"
 
 msgid "Factory Reset"
 msgstr "Заводские установки"
+
+msgid "Factory Reset: Clearing data"
+msgstr "Заводские установки: очистка данных"
 
 msgid "Fade the infobar when hiding"
 msgstr "Затухание инфобара при исчезание."
@@ -6698,9 +6661,6 @@ msgstr "Перейти к следующей метке"
 msgid "Jump to the previous marked position"
 msgstr "Перейти к предыдущей метке"
 
-msgid "Just change channels"
-msgstr "Только смена каналов"
-
 #. TRANSLATORS: (aspect ratio policy: display as fullscreen, even if this breaks the aspect)
 #. TRANSLATORS: (aspect ratio policy: display as fullscreen, with stretching the left/right)
 #. "nonlinear": _("Nonlinear"),
@@ -7402,9 +7362,6 @@ msgstr "Переместить экран вниз"
 msgid "Move down in bouquet list"
 msgstr "Переместить вниз в списоке избранного"
 
-msgid "Move down in channel list"
-msgstr "Переместить вниз в списке каналов"
-
 msgid "Move down to last entry"
 msgstr "Переместить вниз к последней записи"
 
@@ -7467,9 +7424,6 @@ msgstr "Переместить экран вверх"
 
 msgid "Move up in bouquet list"
 msgstr "Перейти вверх в списке избранного"
-
-msgid "Move up in channel list"
-msgstr "Перейти вверх в списке каналов"
 
 msgid "Move up to first entry"
 msgstr "Переместить вверх к первой записи"
@@ -8189,9 +8143,6 @@ msgstr "Открыть список спутников"
 msgid "Open the service list"
 msgstr "Открыть список сервисов"
 
-msgid "OpenTV EPG"
-msgstr "OpenTV EPG"
-
 #, python-format
 msgid ""
 "OpenTV EPG download completed.\n"
@@ -8202,6 +8153,9 @@ msgstr ""
 
 msgid "OpenTV EPG download starting."
 msgstr "Начало загрузки OpenTV EPG."
+
+msgid "OpenTV EPG downloader"
+msgstr "OpenTV EPG загрузка"
 
 msgid "OpenTV EPG forced download"
 msgstr "OpenTV EPG принудительная загрузка"
@@ -9484,7 +9438,7 @@ msgid "Reload blacklists"
 msgstr "Обновить чёрные списки"
 
 msgid "Reload every (in hours)"
-msgstr "Интервал обновления (Час)"
+msgstr "Интервал обновления (в часах)"
 
 msgid "Reload skin"
 msgstr "Перезагрузить скин"
@@ -9991,7 +9945,7 @@ msgid "Save and stop"
 msgstr "Сохранить и остановить"
 
 msgid "Save every (in hours)"
-msgstr "Сохранять каждые (В часах)"
+msgstr "Сохранять каждые (в часах)"
 
 msgid "Save playlist"
 msgstr "Сохранить плейлист"
@@ -10559,23 +10513,14 @@ msgstr "Выбор этой опции позволяет настроить г�
 msgid "Selection and exit"
 msgstr "Выбрать и выйти"
 
-msgid "Send"
-msgstr "Отправить"
-
 msgid "Send 'sourceactive' before zap timers"
 msgstr "Отправить 'sourceactive' перед таймерами"
-
-msgid "Send Confirmation"
-msgstr "Подтверждение отправки"
 
 msgid "Send DiSEqC"
 msgstr "Отправить DiSEqC"
 
 msgid "Send DiSEqC only on satellite change"
 msgstr "Отправить DiSEqC только при смене спутника"
-
-msgid "Send yourself a copy"
-msgstr "Отправлять копию себе"
 
 msgid "Senegal"
 msgstr "Сенегал"
@@ -10831,6 +10776,9 @@ msgstr "Установите время прайм-тайма."
 msgid "Set to what you want the button to do."
 msgstr "Выберите действие для кнопки."
 
+msgid "Set update interval (in hours)."
+msgstr "Интервал обновления (в часах)."
+
 msgid "Set voltage and 22KHz"
 msgstr "Установить напряжение и 22КГц"
 
@@ -10866,7 +10814,7 @@ msgid "Setup network time synchronization interval."
 msgstr "Настройки интервала синхронизации времени."
 
 msgid "Setup the interval (in hours) to check for online updates."
-msgstr "Настройка интервала времени проверки онлайн-обновлений (В часах)."
+msgstr "Настройка интервала времени проверки онлайн-обновлений (в часах)."
 
 msgid "Setup your positioner"
 msgstr "Настройки позиционера"
@@ -11025,14 +10973,8 @@ msgstr "Показать фон в режиме радио"
 msgid "Show background when tuned to a radio channel."
 msgstr "Показать фон при настройке на радиоканал."
 
-msgid "Show bouquet list"
-msgstr "Показать список избранного"
-
 msgid "Show bouquet on launch"
 msgstr "Показать меню выбора фаворитов"
-
-msgid "Show channel list"
-msgstr "Показать список каналов"
 
 msgid "Show channel number in infobar"
 msgstr "Показать номер канала в инфобаре"
@@ -12026,6 +11968,12 @@ msgstr "Переключение между двумя последними ка
 msgid "Switch config"
 msgstr "Конфигурация переключений"
 
+msgid "Switch the PiP to the next channel"
+msgstr "Перейти к следующему каналу в режиме PiP"
+
+msgid "Switch the PiP to the previous channel"
+msgstr "Перейти на предыдущий канал в режиме PiP"
+
 msgid "Switch to Grid EPG"
 msgstr "Переключить в графический"
 
@@ -12698,6 +12646,9 @@ msgstr ""
 "Произойдет (пере-)расчет всех позиций позиционера и все сохранённые позиции и настройки могут быть утеряны!\n"
 "Уверены, что хотите продолжить?"
 
+msgid "This will permanently delete the current configuration. It would be a good idea to make a backup before taking this drastic action. Are you certain you want to continue with a factory reset?"
+msgstr "Это навсегда удалит текущую конфигурацию. Перед тем, как продолжить, рекомендуется создать резервную копию. Вы уверены, что хотите вернуться к заводским установкам?"
+
 msgid "Three"
 msgstr "Три"
 
@@ -13216,6 +13167,9 @@ msgstr "Стрелка вверх"
 msgid "Update"
 msgstr "Обновление"
 
+msgid "Update Interval"
+msgstr "Интервал обновления"
+
 msgid "Update channel list only"
 msgstr "Обновить только список каналов"
 
@@ -13680,9 +13634,6 @@ msgstr "Virtuosso Image Xtreme"
 msgid "Visual impaired commentary"
 msgstr "Отключение комментариев"
 
-msgid "Vix forum user name"
-msgstr "Имя пользователя"
-
 msgid "Voltage mode"
 msgstr "Режим напряжения"
 
@@ -13874,6 +13825,9 @@ msgstr "Какой день недели?"
 
 msgid "What do you want to scan?"
 msgstr "Что Вы хотите сканировать?"
+
+msgid "When changing skins this allows the skin to load without requiring an enigma restart."
+msgstr "Позволяет менять скин без перезагрузки GUI."
 
 msgid "When enabled a forced download will be possible from the extensions menu (blue button). Shows after next restart."
 msgstr "Если включено, возможна принудительная загрузка из меню дополнений. Параметр отображается только после перезапуска."
@@ -14278,9 +14232,6 @@ msgstr "Вы не можете удалит это!"
 msgid "You didn't select a channel to record from."
 msgstr "Вы не выбрали канал для записи."
 
-msgid "You have already sent this log, are you sure you want to resend it?\n"
-msgstr "Этот журнал уже был отправлен. Вы уверены, что хотите отправить его?\n"
-
 msgid "You have chosen to backup your settings. Please press OK to start the backup now."
 msgstr "Вы выбрали резервное копирование настроек. Пожалуйста нажмите ОК для начала резервного копирования."
 
@@ -14296,16 +14247,6 @@ msgstr ""
 
 msgid "You have not selected any logs to delete."
 msgstr "Журнал для удаления не выбран"
-
-msgid "You have not selected any logs to send"
-msgstr "Журнал для отправки не выбран"
-
-msgid ""
-"You have not setup your user info in the setup screen\n"
-"Press MENU, enter your info, and then try again"
-msgstr ""
-"Нет настроек Вашего пользователя\n"
-"Нажмите кнопку Меню, и введите настройки Вашего пользователя, затем попробуйте снова "
 
 #, python-format
 msgid "You have to wait %s!"
@@ -14892,9 +14833,6 @@ msgstr "Выполнено!"
 msgid "drama (general)"
 msgstr "Драма"
 
-msgid "e-mail address"
-msgstr "Адрес электронной почты"
-
 msgid "east"
 msgstr "Восток"
 
@@ -15095,13 +15033,6 @@ msgstr "Ремесла"
 
 msgid "handled"
 msgstr "Удалось"
-
-msgid ""
-"has been sent to the ViX team.\n"
-"please quote"
-msgstr ""
-"Отправлен команде ViX\n"
-"Пожалуйста, процитируйте"
 
 msgid "hdr10"
 msgstr "HDR10"
@@ -15813,18 +15744,6 @@ msgstr "Если PiPZap включен, переключает на канал �
 
 msgid "when PiPzap enabled zap channel up..."
 msgstr "Если PiPZap включен, переключает на канал вверх"
-
-msgid "when asking questions about this log"
-msgstr "Когда будет запрос насчёт данного журнала"
-
-msgid ""
-"when asking questions about this log\n"
-"\n"
-"A copy has been sent to yourself."
-msgstr ""
-"Когда будет запрос насчёт данного журнала\n"
-"\n"
-"Копия будет отправлена"
 
 msgid "white"
 msgstr "Белый"
