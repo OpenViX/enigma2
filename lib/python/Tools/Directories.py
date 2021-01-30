@@ -332,7 +332,7 @@ def getRecordingFilename(basename, dirname=None):
 	while True:
 		if not os.path.isfile(path + ".ts"):
 			return path
-		path += "_%03d" % i
+		path = "%s_%03d" % (filename, i)
 		i += 1
 
 # This is clearly a hack:
