@@ -3391,7 +3391,7 @@ msgid "Configure the cursor behavior in the channel selection list. When opening
 msgstr "Настройка поведения курсора в списке каналов. При открытии списка каналов кнопками курсор можете оставить на текущем сервисе или перенесённым вверх или вниз выбором кнопки CHANNEL +/- или же можно задать обратный порядок."
 
 msgid "Configure the duration (in minutes) for the screensaver."
-msgstr "Настройка продолжительности заставки в минутах."
+msgstr "Настройка продолжительности заставки (в минутах)."
 
 msgid "Configure the first audio language (highest priority)."
 msgstr "Настройка первого языка аудио (высокий приоритет)."
