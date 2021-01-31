@@ -830,7 +830,7 @@ class MovieList(GUIComponent):
 		# x = ref,info,begin,...
 		ref = x[0]
 		name = x[1] and x[1].getName(ref)
-		len = x[1] and x[1].getLength(ref)
+		len = x[1] and (x[1].getLength(ref) // 60) # we only display minutes, so sort by minutes
 		if ref.flags & eServiceReference.mustDescent:
 			return 0, len or 0, name and name.lower() or "", -x[2]
 		return 1, len or 0, name and name.lower() or "", -x[2]
