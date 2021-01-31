@@ -49,8 +49,7 @@ class DefaultAdapter:
 		return True
 
 	def stop(self):
-		if self.previousService is not None:
-			self.navcore.playService(self.previousService)
+		self.navcore.playService(self.previousService)
 
 
 class RecordAdapter:
