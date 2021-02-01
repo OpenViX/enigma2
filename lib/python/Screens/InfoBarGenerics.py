@@ -42,7 +42,7 @@ from Screens.SubtitleDisplay import SubtitleDisplay
 from Screens.RdsDisplay import RdsInfoDisplay, RassInteractive
 from Screens.TimeDateInput import TimeDateInput
 from Screens.TimerEdit import TimerEditList
-from Screens.TimerEntry import TimerEntry as addTimerFromEvent
+from Screens.TimerEntry import TimerEntry, addTimerFromEvent
 from Screens.UnhandledKey import UnhandledKey
 from ServiceReference import ServiceReference, isPlayableForCur
 
