@@ -629,6 +629,7 @@ class MovieList(GUIComponent):
 				ref = eServiceReference.fromDirectory(parent)
 				self.list.append((ref, None, 0, -1))
 				numberOfDirs += 1
+		firstDir = numberOfDirs
 
 		if config.usage.movielist_trashcan.value:
 			here = os.path.realpath(rootPath)
@@ -733,15 +734,16 @@ class MovieList(GUIComponent):
 		elif self.current_sort == MovieList.SORT_ALPHANUMERIC:
 			self.list = sorted(self.list[:numberOfDirs], key=self.buildAlphaNumericSortKey) + sorted(self.list[numberOfDirs:], key=self.buildAlphaNumericSortKey)
 		elif self.current_sort == MovieList.SORT_ALPHANUMERIC_REVERSE:
-			self.list = sorted(self.list[:numberOfDirs], key=self.buildAlphaNumericSortKey, reverse = True) + sorted(self.list[numberOfDirs:], key=self.buildAlphaNumericSortKey, reverse = True)
+			self.list = (self.list[:firstDir] + sorted(self.list[firstDir:numberOfDirs], key=self.buildAlphaNumericSortKey, reverse = True) +
+				sorted(self.list[numberOfDirs:], key=self.buildAlphaNumericSortKey, reverse = True))
 		elif self.current_sort == MovieList.SORT_ALPHANUMERIC_FLAT:
 			self.list.sort(key=self.buildAlphaNumericFlatSortKey)
 		elif self.current_sort == MovieList.SORT_ALPHANUMERIC_FLAT_REVERSE:
-			self.list.sort(key=self.buildAlphaNumericFlatSortKey, reverse = True)
+			self.list = self.list[:firstDir] + sorted(self.list[firstDir:], key=self.buildAlphaNumericFlatSortKey, reverse = True)
 		elif self.current_sort == MovieList.SORT_RECORDED:
 			self.list = sorted(self.list[:numberOfDirs], key=self.buildBeginTimeSortKey) + sorted(self.list[numberOfDirs:], key=self.buildBeginTimeSortKey)
 		elif self.current_sort == MovieList.SORT_RECORDED_REVERSE:
-			self.list = sorted(self.list[:numberOfDirs], key=self.buildBeginTimeSortKey, reverse = True) + sorted(self.list[numberOfDirs:], key=self.buildBeginTimeSortKey, reverse = True)
+			self.list = self.list[:firstDir] + sorted(self.list[firstDir:numberOfDirs], key=self.buildBeginTimeSortKey, reverse = True) + sorted(self.list[numberOfDirs:], key=self.buildBeginTimeSortKey, reverse = True)
 		elif self.current_sort == MovieList.SHUFFLE:
 			dirlist = self.list[:numberOfDirs]
 			shufflelist = self.list[numberOfDirs:]
@@ -750,7 +752,7 @@ class MovieList(GUIComponent):
 		elif self.current_sort == MovieList.SORT_ALPHA_DATE_OLDEST_FIRST:
 			self.list = sorted(self.list[:numberOfDirs], key=self.buildAlphaDateSortKey) + sorted(self.list[numberOfDirs:], key=self.buildAlphaDateSortKey)
 		elif self.current_sort == MovieList.SORT_ALPHAREV_DATE_NEWEST_FIRST:
-			self.list = sorted(self.list[:numberOfDirs], key=self.buildAlphaDateSortKey, reverse = True) + sorted(self.list[numberOfDirs:], key=self.buildAlphaDateSortKey, reverse = True)
+			self.list = self.list[:firstDir] + sorted(self.list[firstDir:numberOfDirs], key=self.buildAlphaDateSortKey, reverse = True) + sorted(self.list[numberOfDirs:], key=self.buildAlphaDateSortKey, reverse = True)
 		elif self.current_sort == MovieList.SORT_LONGEST:
 			self.list = sorted(self.list[:numberOfDirs], key=self.buildAlphaNumericSortKey) + sorted(self.list[numberOfDirs:], key=self.buildLengthSortKey, reverse = True)
 		elif self.current_sort == MovieList.SORT_SHORTEST:
