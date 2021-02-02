@@ -91,6 +91,14 @@ def InitUsageConfig():
 		else:
 			SystemInfo["InfoBarEpg"] = False
 	config.usage.show_second_infobar.addNotifier(showsecondinfobarChanged)
+
+	try:
+		SystemInfo["SecondInfoBarSimple"] = skin.parameters.get("SecondInfoBarSimple", 0) > 0
+	except Exception as err:
+		print("[UsageConfig] Error loading 'SecondInfoBarSimple' skin parameter! (%s)" % err)
+		SystemInfo["SecondInfoBarSimple"] = False
+	config.usage.second_infobar_simple = ConfigBoolean(descriptions={False: _("Standard"), True: _("Simple")}, graphic=False)
+	
 	config.usage.infobar_frontend_source = ConfigSelection(default = "tuner", choices = [("settings", _("Settings")), ("tuner", _("Tuner"))])
 
 	config.usage.show_picon_bkgrn = ConfigSelection(default = "transparent", choices = [("none", _("Disabled")), ("transparent", _("Transparent")), ("blue", _("Blue")), ("red", _("Red")), ("black", _("Black")), ("white", _("White")), ("lightgrey", _("Light Grey")), ("grey", _("Grey"))])

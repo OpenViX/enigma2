@@ -329,6 +329,8 @@ class SecondInfoBar(Screen, HelpableScreen):
 
 	def __init__(self, session):
 		Screen.__init__(self, session)
+		if config.usage.second_infobar_simple.value:
+			self.skinName = ["SecondInfoBarSimple", "SecondInfoBar"]
 		HelpableScreen.__init__(self)
 		self["epg_description"] = ScrollLabel()
 		self["channel"] = Label()
