@@ -627,7 +627,6 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		self["NumberActions"] =  HelpableNumberActionMap(self, ["NumberActions", "InputAsciiActions"],
 			{
 				"gotAsciiCode": self.keyAsciiCode,
-				"0": (self.keyNumberGlobal, numberActionHelp),
 				"1": (self.keyNumberGlobal, numberActionHelp),
 				"2": (self.keyNumberGlobal, numberActionHelp),
 				"3": (self.keyNumberGlobal, numberActionHelp),
