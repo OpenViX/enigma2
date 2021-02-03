@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-02 14:05+0000\n"
-"PO-Revision-Date: 2021-02-02 17:08+0100\n"
+"POT-Creation-Date: 2021-02-03 10:09+0000\n"
+"PO-Revision-Date: 2021-02-03 17:02+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -902,6 +902,10 @@ msgstr "%d opdrachten draaien op de achtergrond!"
 #, python-format
 msgid "%d kB"
 msgstr "%d kB"
+
+#, python-format
+msgid "%d marked item"
+msgstr "%d gemarkeerde bestanden"
 
 #, python-format
 msgid "%d marked items"
@@ -3727,42 +3731,50 @@ msgstr "Kon configuratiebestand %s niet opslaan!"
 
 #, python-format
 msgid ""
-"Couldn't copy '%s'.\n"
-"%s"
-msgid_plural ""
 "Couldn't copy %d items.\n"
 "%s"
-msgstr[0] ""
+msgstr ""
+"Kon %d bestanden niet kopiëren.\n"
+"%s"
+
+#, python-format
+msgid ""
+"Couldn't copy '%s'.\n"
+"%s"
+msgstr ""
 "Kon '%s' niet kopiëren.\n"
 "%s"
-msgstr[1] ""
-"Kon %d items niet kopiëren.\n"
-"%s"
+
+#, python-format
+msgid "Couldn't delete %d items."
+msgstr "Kon %d bestanden niet verwijderen."
 
 #, python-format
 msgid "Couldn't delete '%s'."
-msgid_plural "Couldn't delete %d items."
-msgstr[0] "Kon '%s' niet verwijderen."
-msgstr[1] "Kon %d bestanden niet verwijderen."
+msgstr "Kon '%s' niet verwijderen."
+
+#, python-format
+msgid "Couldn't move %d items to the trash can. Do you want to delete them instead?"
+msgstr "Kon %d bestanden niet naar de prullenbak verplaatsen. Wilt u ze in plaats daarvan geheel verwijderen?"
+
+#, python-format
+msgid ""
+"Couldn't move %d items.\n"
+"%s"
+msgstr ""
+"Kon %d bestanden niet verplaatsen.\n"
+"%s"
 
 #, python-format
 msgid "Couldn't move '%s' to the trash can. Do you want to delete it instead?"
-msgid_plural "Couldn't move %d items to the trash can. Do you want to delete them instead?"
-msgstr[0] "Kon '%s' niet naar de prullenbak verplaatsen. Wilt u het in plaats daarvan geheel verwijderen?"
-msgstr[1] "Kon %d items niet naar de prullenbak verplaatsen. Wilt u ze in plaats daarvan geheel verwijderen?"
+msgstr "Kon '%s' niet naar de prullenbak verplaatsen. Wilt u het in plaats daarvan geheel verwijderen?"
 
 #, python-format
 msgid ""
 "Couldn't move '%s'.\n"
 "%s"
-msgid_plural ""
-"Couldn't move %d items.\n"
-"%s"
-msgstr[0] ""
+msgstr ""
 "Kon '%s' niet verplaatsen.\n"
-"%s"
-msgstr[1] ""
-"Kon %d bestanden niet verplaatsen.\n"
 "%s"
 
 msgid "Country"
@@ -4581,21 +4593,27 @@ msgstr ""
 
 #, python-format
 msgid "Do you really want to move '%s' to the trash can?"
-msgid_plural "Do you really want to move these %d items to the trash can?"
-msgstr[0] "Wilt u '%s' echt naar de prullenbak verplaatsen?"
-msgstr[1] "Wilt u deze %d bestanden echt verplaatsen naar de prullenbak?"
+msgstr "Wilt u '%s' echt naar de prullenbak verplaatsen?"
+
+#, python-format
+msgid "Do you really want to move these %d items to the trash can?"
+msgstr "Wilt u deze %d bestanden echt naar de prullenbak verplaatsen?"
 
 #, python-format
 msgid "Do you really want to permanently delete '%s' from the trash can?"
-msgid_plural "Do you really want to permanently delete these %d items from the trash can?"
-msgstr[0] "Wilt u '%s' echt permanent verwijderen uit de prullenbak?"
-msgstr[1] "Wilt u echt %d bestanden permanent verwijderen uit de prullenbak?"
+msgstr "Wilt u '%s' echt permanent verwijderen uit de prullenbak?"
 
 #, python-format
 msgid "Do you really want to permanently delete '%s'?"
-msgid_plural "Do you really want to permanently delete these %d items?"
-msgstr[0] "Wilt u '%s' echt permanent verwijderen?"
-msgstr[1] "Wilt u deze %d bestanden echt permanent verwijderen?"
+msgstr "Wilt u '%s' echt permanent verwijderen?"
+
+#, python-format
+msgid "Do you really want to permanently delete these %d items from the trash can?"
+msgstr "Wilt u deze %d bestanden echt permanent verwijderen uit de prullenbak?"
+
+#, python-format
+msgid "Do you really want to permanently delete these %d items?"
+msgstr "Wilt u deze %d bestanden echt permanent verwijderen?"
 
 #, python-format
 msgid "Do you really want to remove directory %s from the disk?"
@@ -8604,7 +8622,7 @@ msgstr "Opname afspelen..."
 
 #, python-format
 msgid "Play the marked recording"
-msgid_plural "Play the %d marked recordings"
+msgid_plural "Play %d marked recordings"
 msgstr[0] "Speel de gemarkeerde opname af"
 msgstr[1] "Speel de %d gemarkeerde opnames af"
 
@@ -9472,7 +9490,7 @@ msgstr "Opname-en afspeelinstellingen"
 msgid "Recording in progress: %s"
 msgid_plural "Recordings in progress: %d"
 msgstr[0] "Opname is bezig: %s"
-msgstr[1] "Opname is bezig: %d"
+msgstr[1] "Opnames zijn bezig: %d"
 
 msgid "Recording type"
 msgstr "Type opname"
