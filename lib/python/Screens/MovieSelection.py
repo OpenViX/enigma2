@@ -627,7 +627,6 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		self["NumberActions"] =  HelpableNumberActionMap(self, ["NumberActions", "InputAsciiActions"],
 			{
 				"gotAsciiCode": self.keyAsciiCode,
-				"0": (self.keyNumberGlobal, numberActionHelp),
 				"1": (self.keyNumberGlobal, numberActionHelp),
 				"2": (self.keyNumberGlobal, numberActionHelp),
 				"3": (self.keyNumberGlobal, numberActionHelp),
@@ -1294,7 +1293,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		else:
 			title = ngettext("You have a marked recording", "You have marked recordings", markedFilesCount)
 			choices = [
-				(ngettext("Play the marked recording", "Play the %d marked recordings" % markedFilesCount, markedFilesCount), self.__addItemsToPlaylist, markedFiles),
+				(ngettext("Play the marked recording", "Play %d marked recordings" % markedFilesCount, markedFilesCount), self.__addItemsToPlaylist, markedFiles),
 				(_("Play the selected recording"), self.__playCurrentItem)]
 			self.session.open(ChoiceBox, title=title, list=choices)
 
@@ -2098,8 +2097,10 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			self.showActionFeedback(_("Moved '%s'") % name if movedCount == 1 else _("Moved %d items") % movedCount)
 		if failedList:
 			failedCount = len(failedList)
-			msg = ngettext("Couldn't move '%s'.\n%s" % (failedList[0], failedList[1]),
-				"Couldn't move %d items.\n%s" % (failedCount, failedList[0][1]), failedCount)
+			if failedCount == 1:
+				msg = _("Couldn't move '%s'.\n%s") % (failedList[0], failedList[1])
+			else:
+				msg = _("Couldn't move %d items.\n%s") % (failedCount, failedList[0][1])
 			mbox = self.session.open(MessageBox, msg, MessageBox.TYPE_ERROR)
 			mbox.setTitle(self.getTitle())
 
@@ -2133,8 +2134,10 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		
 		if failedList:
 			failedCount = len(failedList)
-			msg = ngettext("Couldn't copy '%s'.\n%s" % (failedList[0][0], failedList[0][1]),
-				"Couldn't copy %d items.\n%s" % (failedCount, failedList[0][1]), failedCount)
+			if failedCount == 1:
+				msg = _("Couldn't copy '%s'.\n%s") % (failedList[0][0], failedList[0][1])
+			else:
+				msg = _("Couldn't copy %d items.\n%s") % (failedCount, failedList[0][1])
 			mbox = self.session.open(MessageBox, msg, MessageBox.TYPE_ERROR)
 			mbox.setTitle(self.getTitle())
 
@@ -2224,15 +2227,21 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			itemRef, info = delList[0][:2]
 			singleName = getItemDisplayName(itemRef, info)
 		if inTrash:
-			are_you_sure = ngettext("Do you really want to permanently delete '%s' from the trash can?" % singleName,
-				"Do you really want to permanently delete these %d items from the trash can?" % itemCount, itemCount)
+			if itemCount == 1:
+				are_you_sure = _("Do you really want to permanently delete '%s' from the trash can?") % singleName
+			else:
+				are_you_sure = _("Do you really want to permanently delete these %d items from the trash can?") % itemCount
 		elif config.usage.movielist_trashcan.value:
-			are_you_sure = ngettext("Do you really want to move '%s' to the trash can?" % singleName, 
-				"Do you really want to move these %d items to the trash can?" % itemCount, itemCount)
+			if itemCount == 1:
+				are_you_sure = _("Do you really want to move '%s' to the trash can?") % singleName
+			else:
+				are_you_sure = _("Do you really want to move these %d items to the trash can?") % itemCount
 			callback = lambda confirmed: self.__deleteListConfirmed(delList, confirmed)
 		else:
-			are_you_sure = ngettext("Do you really want to permanently delete '%s'?" % singleName, 
-				"Do you really want to permanently delete these %d items?" % itemCount, itemCount)
+			if itemCount == 1:
+				are_you_sure = _("Do you really want to permanently delete '%s'?") % singleName
+			else:
+				are_you_sure = _("Do you really want to permanently delete these %d items?") % itemCount
 		if dirCount > 0 and subItemCount > 0:
 			# deleting one or more non empty directories, so it's a good idea to get confirmation
 			if itemCount == 1:
@@ -2281,8 +2290,10 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		# some things didn't move to the trash can. Ask whether we should try doing a permanent delete instead
 		if failedList:
 			failedCount = len(failedList)
-			msg = ngettext("Couldn't move '%s' to the trash can. Do you want to delete it instead?" % getItemDisplayName(*failedList[0][:2]),
-				"Couldn't move %d items to the trash can. Do you want to delete them instead?" % failedCount, failedCount)
+			if failedCount == 1:
+				msg = _("Couldn't move '%s' to the trash can. Do you want to delete it instead?") % getItemDisplayName(*failedList[0][:2])
+			else:
+				msg= _("Couldn't move %d items to the trash can. Do you want to delete them instead?") % failedCount
 			mbox = self.session.openWithCallback(lambda confirmed: self.__permanentDeleteListConfirmed(failedList, confirmed), MessageBox, msg)
 			mbox.setTitle(self.getTitle())
 
@@ -2321,7 +2332,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		# some things didn't delete. Ask whether we should try doing a permanent delete instead
 		if failedList:
 			failedCount = len(failedList)
-			msg = ngettext("Couldn't delete '%s'." % failedList[0], "Couldn't delete %d items." % failedCount, failedCount)
+			msg = _("Couldn't delete '%s'.") % failedList[0] if failedCount == 1 else _("Couldn't delete %d items.") % failedCount
 			mbox = self.session.open(MessageBox, msg, MessageBox.TYPE_ERROR)
 			mbox.setTitle(self.getTitle())
 
@@ -2364,7 +2375,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 	def hideActionFeedback(self):
 		markedCount = self.list.countMarked()
 		if markedCount > 0:
-			self.diskinfo.setText(ngettext(_("%d marked items"), _("%d marked items"), markedCount) % markedCount)
+			self.diskinfo.setText(ngettext(_("%d marked item"), _("%d marked items"), markedCount) % markedCount)
 		else:
 			self.diskinfo.update()
 			current = self.getCurrent()
