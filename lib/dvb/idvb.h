@@ -414,13 +414,11 @@ class eDVBFrontendParametersATSC;
 
 class iDVBFrontendParameters: public iObject
 {
-#ifdef SWIG
 public:
+#ifdef SWIG
 	iDVBFrontendParameters();
 	~iDVBFrontendParameters();
-private:
 #endif
-public:
 	enum { flagOnlyFree = 1 };
 	virtual SWIG_VOID(RESULT) getSystem(int &SWIG_OUTPUT) const = 0;
 	virtual SWIG_VOID(RESULT) getDVBS(eDVBFrontendParametersSatellite &SWIG_OUTPUT) const = 0;

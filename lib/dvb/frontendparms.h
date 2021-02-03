@@ -55,7 +55,7 @@ public:
 		PLS_Root, PLS_Gold, PLS_Combo, PLS_Unknown
 	};
 
-enum {
+	enum {
 		No_Stream_Id_Filter = NO_STREAM_ID_FILTER
 	};
 
