@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-20 12:56+0100\n"
-"PO-Revision-Date: 2021-01-20 12:56+0100\n"
+"POT-Creation-Date: 2021-02-04 00:16+0100\n"
+"PO-Revision-Date: 2021-02-04 00:12+0100\n"
 "Last-Translator: teamblue-e2 <teamblue@online.de>\n"
 "Language-Team: Teamblue teamblue@online.de\n"
 "Language: de\n"
@@ -532,6 +532,9 @@ msgstr "-KEIN SERVICE\n"
 msgid "-SERVICE ERROR:%d\n"
 msgstr "-SERVICE FEHLER:%d\n"
 
+msgid "..."
+msgstr "..."
+
 msgid "/media/custom"
 msgstr "/media/custom"
 
@@ -546,6 +549,9 @@ msgstr "/var Verzeichnis"
 
 msgid "0"
 msgstr "0"
+
+msgid "0,24,1147,20"
+msgstr ""
 
 msgid "1"
 msgstr "1"
@@ -564,6 +570,12 @@ msgstr "1024 MB"
 
 msgid "10bit"
 msgstr "10bit"
+
+msgid "120,2,30"
+msgstr ""
+
+msgid "120,28,26"
+msgstr ""
 
 msgid "128 MB"
 msgstr "128 MB"
@@ -610,6 +622,9 @@ msgstr "18 V"
 msgid "2"
 msgstr "2"
 
+msgid "2,0,80,50"
+msgstr ""
+
 msgid "2048 MB (maximum)"
 msgstr "2048 MB (maximum)"
 
@@ -628,17 +643,38 @@ msgstr "256 MB"
 msgid "256 MB (recommended for this chipset)"
 msgstr "256 MB (für diesen Chipsatz empfohlen)"
 
+msgid "26,1,559,28"
+msgstr ""
+
 msgid "29.97"
 msgstr "29.97"
 
 msgid "3"
 msgstr "3"
 
+msgid "3,3,25,25"
+msgstr ""
+
+msgid "3,5,100,40"
+msgstr ""
+
 msgid "30"
 msgstr "30"
 
+msgid "306,1,320,28"
+msgstr ""
+
 msgid "32 MB"
 msgstr "32 MB"
+
+msgid "33,0,694,30"
+msgstr ""
+
+msgid "33,3,25,25"
+msgstr ""
+
+msgid "36,1,694,28"
+msgstr ""
 
 msgid "3D"
 msgstr "3D"
@@ -658,6 +694,16 @@ msgstr "3D-Modus"
 msgid "4"
 msgstr "4"
 
+#, fuzzy
+msgid "400"
+msgstr "400"
+
+msgid "47,1,1147,28"
+msgstr ""
+
+msgid "47,1,685,28"
+msgstr ""
+
 msgid "4:3"
 msgstr "4:3"
 
@@ -673,14 +719,44 @@ msgstr "4K"
 msgid "5"
 msgstr "5"
 
+msgid "5,1,520,23"
+msgstr ""
+
+msgid "5,1,630,23"
+msgstr ""
+
+msgid "5,2,630,28"
+msgstr ""
+
+msgid "5,25,630,23"
+msgstr ""
+
+msgid "5,30,630,27"
+msgstr ""
+
+msgid "5,7,16,16"
+msgstr ""
+
 msgid "512 MB"
 msgstr "512 MB"
 
 msgid "512 MB (recommended for this chipset)"
 msgstr "512 MB (für diesen Chipsatz empfohlen)"
 
+msgid "535,1,100,23"
+msgstr ""
+
 msgid "6"
 msgstr "6"
+
+msgid "6,1,300,28"
+msgstr ""
+
+msgid "6,1,320,28"
+msgstr ""
+
+msgid "63,0,661,30"
+msgstr ""
 
 msgid "64 MB"
 msgstr "64 MB"
@@ -688,8 +764,17 @@ msgstr "64 MB"
 msgid "7"
 msgstr "7"
 
+msgid "7,0,40,30"
+msgstr ""
+
 msgid "8"
 msgstr "8"
+
+msgid "83,2,30"
+msgstr ""
+
+msgid "83,28,26"
+msgstr ""
 
 msgid "8K"
 msgstr "8K"
@@ -1251,6 +1336,9 @@ msgstr "Angola"
 msgid "Anguilla"
 msgstr "Anguilla"
 
+msgid "Animation Settings"
+msgstr "Animation Einstellungen"
+
 msgid "Animation Setup"
 msgstr "Einstellungen Animation"
 
@@ -1480,6 +1568,18 @@ msgstr "Im Radio Modus letzten Sender automatisch abspielen"
 
 msgid "Auto scart switching"
 msgstr "Automatische Scart-Umschaltung"
+
+msgid "AutoDiseqc"
+msgstr "Auto Diseqc"
+
+msgid "AutoMountManager"
+msgstr "Auto Mount Manager"
+
+msgid "AutoTimer Overview"
+msgstr "AutoTimer-Übersicht"
+
+msgid "AutoTimer Settings"
+msgstr "AutoTimer Einstellungen"
 
 msgid "Automatic"
 msgstr "Automatisch"
@@ -1818,6 +1918,10 @@ msgstr "CI Zuweisung"
 
 msgid "CI slot: "
 msgstr "CI Slot: "
+
+#, fuzzy
+msgid "CIHelper Setup"
+msgstr "CIHelper Zugang"
 
 msgid "CPU priority for script execution"
 msgstr "CPU-Priorität für die Skriptausführung"
@@ -3587,6 +3691,9 @@ msgstr ""
 msgid "Do you want to burn this collection to DVD medium?"
 msgstr "Soll diese Zusammenstellung auf DVD gebrannt werden?"
 
+msgid "Do you want to delete all other languages?"
+msgstr "Wollen Sie alle anderen Sprachen entfernen?"
+
 msgid "Do you want to delete the old settings in /etc/enigma2 first?"
 msgstr "Wollen Sie zuerst die alten Einstellungen unter /etc/enigma2 löschen?"
 
@@ -3701,6 +3808,9 @@ msgid_plural "Done - Installed, updated or removed %d packages (%s)"
 msgstr[0] "Abgeschlossen - %d Paket installiert, aktualisiert oder entfernt (%s)"
 msgstr[1] "Abgeschlossen - %d Pakete installiert, aktualisiert oder entfernt (%s)"
 
+msgid "Download Movie Info"
+msgstr "Film Informationen herunterladen"
+
 msgid "Download plugins"
 msgstr "Plugins herunterladen"
 
@@ -3747,6 +3857,21 @@ msgstr "E"
 msgid "ECM Info"
 msgstr "ECM Info"
 
+msgid "EEPGRefresh Configuration"
+msgstr "EPGRefresh Einstellungen"
+
+msgid "EMC Cover Selecter"
+msgstr "EMC Cover Auswahl"
+
+msgid "EMC Cover search"
+msgstr "EMC Cover Suche"
+
+msgid "EMC imdb Setup"
+msgstr "EMC imdb Einstellungen"
+
+msgid "EMC menu"
+msgstr "EMC Menü"
+
 msgid "ENABLE DISABLE PLUGIN IF U WANT IT"
 msgstr "Plugin aktivieren / deaktivieren"
 
@@ -3777,6 +3902,9 @@ msgstr "EPG-Einstellungen"
 msgid "EPG:"
 msgstr "EPG:"
 
+msgid "EPGRefresh Configuration"
+msgstr "EPGRefresh Konfiguration"
+
 #, python-format
 msgid "ERROR - failed to scan (%s)!"
 msgstr "FEHLER - Suche fehlgeschlagen (%s)!"
@@ -3796,6 +3924,18 @@ msgstr "Ecuador"
 
 msgid "Edit"
 msgstr "Bearbeiten"
+
+#, fuzzy
+msgid "Edit AutoTimer"
+msgstr "AutoTimer editieren"
+
+#, fuzzy
+msgid "Edit AutoTimer Filters"
+msgstr "AutoTimer Filter editieren"
+
+#, fuzzy
+msgid "Edit AutoTimer Services"
+msgstr "Ändere AutoTimer Sender"
 
 msgid "Edit DNS"
 msgstr "Bearbeite DNS"
@@ -3856,6 +3996,10 @@ msgstr "El Salvador"
 
 msgid "Electronic Program Guide"
 msgstr "Elektronischer Programmführer"
+
+#, fuzzy
+msgid "Electronic Program Guide Setup"
+msgstr "Elektronischer Programmführe Einstellungenr"
 
 msgid "Embedded"
 msgstr "Eingebettet"
@@ -4031,6 +4175,12 @@ msgstr "Zeitpunkt nachdem nicht mehr vom Standby in den Schlafmodus gewechselt w
 
 msgid "English"
 msgstr "Englisch"
+
+msgid "Enhanced Movie Center"
+msgstr "Enhanced Movie Center"
+
+msgid "EnhancedMovieCenterMenu"
+msgstr "EnhancedMovieCenterMenu"
 
 #, python-format
 msgid "Enigma (re)starts: %d\n"
@@ -4419,6 +4569,18 @@ msgstr "FIFO"
 msgid "FTA"
 msgstr "FTA"
 
+msgid "FTP Browser"
+msgstr "FTP Browser"
+
+msgid "FTP Queue Manager"
+msgstr "FTP Queue Manager"
+
+msgid "FTP Server Editor"
+msgstr "FTP Server Editor"
+
+msgid "FTP Server Manager"
+msgstr "FTP Server Manager"
+
 msgid "FTP Setup"
 msgstr "FTP-Dateiserver"
 
@@ -4693,6 +4855,9 @@ msgstr "Online-Flash Ihrer Receiver-Software."
 msgid "Flash, restore settings and user selected plugins"
 msgstr "Flashen, Einstellungen und gewählte Plugins wiederherstellen"
 
+msgid "FlashOnline"
+msgstr "FlashOnline"
+
 msgid "Flashed: "
 msgstr "Flashed: "
 
@@ -4833,6 +4998,10 @@ msgstr "Weitere Optionen"
 msgid "Further options"
 msgstr "Weitere Optionen"
 
+#, fuzzy
+msgid "GBAspectRatioSwitchSetup"
+msgstr "GBAspectRatioSwitch Einstellungen"
+
 msgid "GStreamer: "
 msgstr "GStreamer: "
 
@@ -4899,6 +5068,12 @@ msgstr "Ghana"
 
 msgid "Gibraltar"
 msgstr "Gibraltar"
+
+msgid "GigaBlue IPBox Client"
+msgstr "GigaBlue IPBox Client"
+
+msgid "GigaBlue Setup"
+msgstr "GigaBlue Einstellungen"
 
 msgid "Go down the list"
 msgstr "Liste nach unten durchgehen"
@@ -5056,8 +5231,14 @@ msgstr "HD11/HD51/HD1100/HD1200/HD1265/HD1500/HD500C/HD530C/VS1000/VS1500/et7x00
 msgid "HD2400"
 msgstr "HD2400"
 
+msgid "HDD Info"
+msgstr "Festplatten Info"
+
 msgid "HDMI"
 msgstr "HDMI"
+
+msgid "HDMI CEC setup"
+msgstr "HDMI-CEC Einstellungen"
 
 msgid "HDMI Colordepth"
 msgstr "HDMI Farbtiefe"
@@ -5125,6 +5306,13 @@ msgstr "Receiver mit Fernseher in den Standby versetzen"
 msgid "Handle wakeup from TV"
 msgstr "Receiver mit Fernseher aufwecken"
 
+#, fuzzy
+msgid "Hard Drive Partitions"
+msgstr "Partitionen"
+
+msgid "Hard Drive Setup"
+msgstr "Festplatten Einstellungen"
+
 msgid "Hard disk"
 msgstr "Festplatte"
 
@@ -5143,6 +5331,10 @@ msgstr "Festplatten Einstellungen"
 msgid "Harddisk standby after"
 msgstr "Festplatten Standby nach"
 
+#, fuzzy
+msgid "HddMount"
+msgstr "Einhängepunkt"
+
 #, python-format
 msgid "Heads: %s (max) %s (current)"
 msgstr "Heads: %s (max) %s (current)"
@@ -5159,7 +5351,7 @@ msgstr "Hebräisch"
 msgid "Height"
 msgstr "Höhe"
 
-msgid "Helps setting up your signal"
+msgid "Helps setting up your antenna"
 msgstr "Hilfe zur Einrichtung der Antenne"
 
 msgid "Hidden network"
@@ -5291,6 +5483,10 @@ msgstr "IP Adresse der Notfall-Receiver"
 msgid "IP:"
 msgstr "IP:"
 
+#, fuzzy
+msgid "IPv6 setup"
+msgstr "IPv6 Einstellungen"
+
 msgid "IPv6 support"
 msgstr "IPv6 Unterstützung"
 
@@ -5406,6 +5602,10 @@ msgstr ""
 
 msgid "ImageWizard"
 msgstr "Einstellungen wiederherstellen"
+
+#, fuzzy
+msgid "Import AutoTimer"
+msgstr "AutoTimer Import"
 
 msgid "Import channels and/or EPG from remote receiver URL also when the receiver is getting out of standby"
 msgstr "Importieren Sie Kanäle und / oder EPG über die Remote-Empfänger-URL , auch wenn der Receiver den Standby-Modus verlässt"
@@ -5849,6 +6049,9 @@ msgstr "Korea (Democratic People's Republic of)"
 msgid "Korea (Republic of)"
 msgstr "Korea (Republic of)"
 
+msgid "KravenHD"
+msgstr "KravenHD"
+
 msgid "Kuwait"
 msgstr "Kuwait"
 
@@ -6124,6 +6327,9 @@ msgstr "MMC Karte"
 
 msgid "MORE"
 msgstr "MEHR"
+
+msgid "MPHelp"
+msgstr "MPHilfe"
 
 msgid "MSN Weather City Name"
 msgstr "MSN Weather Stadt Name"
@@ -6454,6 +6660,14 @@ msgstr "Eigener Mountpunkt"
 msgid "Mount point exist!"
 msgstr "Der angegebene Mountpunkt ist bereits vorhanden!"
 
+#, fuzzy
+msgid "MountEdit"
+msgstr "Einhängepunkt Anpassen"
+
+#, fuzzy
+msgid "MountView"
+msgstr "Einhängepunkt Anschauen"
+
 msgid "Mountpoints"
 msgstr "Einhängepunkt"
 
@@ -6559,6 +6773,17 @@ msgstr "Steuerung"
 
 msgid "Movie"
 msgstr "Film"
+
+msgid "Movie Info Preview"
+msgstr "Film Info Vorschau"
+
+#, fuzzy
+msgid "Movie Info Setup"
+msgstr "Film Info Einstellungen"
+
+#, fuzzy
+msgid "Movie List Setup"
+msgstr "Film Listen Einstellungen"
 
 msgid "Movie list configuration"
 msgstr "Filmlisten Einstellungen"
@@ -6747,6 +6972,10 @@ msgstr "Network Information"
 
 msgid "Network MAC settings"
 msgstr "MAC-Einstellungen"
+
+#, fuzzy
+msgid "Network Neighbourhood"
+msgstr "Netzwerk Nachbarn"
 
 msgid "Network Speed:"
 msgstr "Netzwerkgeschwindigkeit:"
@@ -7247,6 +7476,9 @@ msgstr "OpenVpn Log"
 msgid "OpenVpn Setup"
 msgstr "OpenVpn Einstellungen"
 
+msgid "OpenWebif Configuration"
+msgstr "OpenWebif Konfiguration"
+
 msgid "Operating LED status in deep standby mode"
 msgstr "Betriebs-LED-Status im Deep-Standby"
 
@@ -7270,6 +7502,9 @@ msgstr "Gewöhnlich"
 
 msgid "Original"
 msgstr "Original"
+
+msgid "OscamSmartcard-Setup"
+msgstr "OscamSmartcard-Setup"
 
 msgid "Other"
 msgstr "Andere"
@@ -7392,6 +7627,9 @@ msgid "Packages to update"
 msgstr "Zu aktualisierende Pakete"
 
 msgid "Packet manager"
+msgstr "Paketmanager"
+
+msgid "PacketManager"
 msgstr "Paketmanager"
 
 msgid "Page down list"
@@ -8448,6 +8686,14 @@ msgstr "Region"
 msgid "Regular file"
 msgstr "Normale Datei"
 
+#, fuzzy
+msgid "Regular;18"
+msgstr "Normale Datei"
+
+#, fuzzy
+msgid "Regular;20"
+msgstr "Normale Datei"
+
 msgid "Relative"
 msgstr "Relativ"
 
@@ -9304,6 +9550,10 @@ msgstr "Wählen Sie Fast DiSEqC, wenn Ihr Antennensystem dies unterstützt. Wenn
 msgid "Select HDD"
 msgstr "Festplatte auswählen"
 
+#, fuzzy
+msgid "Select OPKG source....."
+msgstr "Wählen Sie eine Update Quelle....."
+
 msgid "Select Software Update"
 msgstr "Softwareaktualisierung auswählen"
 
@@ -9370,6 +9620,10 @@ msgstr "Dateien zum Sichern auswählen."
 
 msgid "Select files/folders to backup"
 msgstr "Wählen Sie Dateien/Ordner für die Sicherung"
+
+#, fuzzy
+msgid "Select files/folders to backup..."
+msgstr "Wählen Sie Dateien/Ordner für die Sicherung..."
 
 msgid "Select folders"
 msgstr "Ordner auswählen"
@@ -10197,9 +10451,6 @@ msgstr "Side by Side"
 
 msgid "Sierra Leone"
 msgstr "Sierra Leone"
-
-msgid "Signal Finder"
-msgstr "Signal suchen"
 
 msgid "Signal OK, proceeding"
 msgstr "Signal OK, fortsetzen"
@@ -12696,6 +12947,12 @@ msgstr ""
 "Ihr Receiver startet in 10 Sekunden neu!\n"
 "Komponente: enigma2"
 
+msgid "WeatherPlugin: Edit Entry"
+msgstr "WeatherPlugin: Eintrag bearbeiten"
+
+msgid "WeatherPlugin: List of Entries"
+msgstr "WeatherPlugin: Liste der Einträge"
+
 msgid "Web Browser"
 msgstr "Web Browser"
 
@@ -13742,6 +13999,10 @@ msgstr "Links-zirkular"
 msgid "circular right"
 msgstr "Rechts-zirkular"
 
+#, fuzzy
+msgid "clean up"
+msgstr "Aufräumen"
+
 msgid "clip overscan / letterbox borders"
 msgstr "beschneide Overscan / Letterbox Ränder"
 
@@ -14313,6 +14574,9 @@ msgstr "Historien Browser öffnen"
 msgid "open nameserver configuration"
 msgstr "DNS-Server Konfiguration öffnen"
 
+msgid "openMultiboot Manager"
+msgstr "openMultiBoot Manager"
+
 msgid "original"
 msgstr "Original"
 
@@ -14763,6 +15027,9 @@ msgstr "mit Fehlern"
 
 msgid "without"
 msgstr "ohne"
+
+msgid "x"
+msgstr "x"
 
 msgid "xp1000"
 msgstr "xp1000"

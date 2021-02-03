@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-20 12:56+0100\n"
+"POT-Creation-Date: 2021-02-03 23:45+0100\n"
 "PO-Revision-Date: 2013-10-23 19:15+0100\n"
 "Last-Translator: andy1 <dmmm8000pvr@gmail.com>\n"
 "Language-Team: none\n"
@@ -531,6 +531,11 @@ msgstr ""
 msgid "-SERVICE ERROR:%d\n"
 msgstr ""
 
+#
+#, fuzzy
+msgid "..."
+msgstr "hjelp..."
+
 msgid "/media/custom"
 msgstr ""
 
@@ -546,6 +551,9 @@ msgid "/var directory"
 msgstr "start katalog"
 
 msgid "0"
+msgstr ""
+
+msgid "0,24,1147,20"
 msgstr ""
 
 msgid "1"
@@ -567,6 +575,12 @@ msgid "1024 MB"
 msgstr ""
 
 msgid "10bit"
+msgstr ""
+
+msgid "120,2,30"
+msgstr ""
+
+msgid "120,28,26"
 msgstr ""
 
 msgid "128 MB"
@@ -621,6 +635,12 @@ msgstr ""
 msgid "2"
 msgstr ""
 
+msgid "2,0,80,50"
+msgstr ""
+
+msgid "20"
+msgstr ""
+
 msgid "2048 MB (maximum)"
 msgstr ""
 
@@ -641,17 +661,38 @@ msgstr ""
 msgid "256 MB (recommended for this chipset)"
 msgstr ""
 
+msgid "26,1,559,28"
+msgstr ""
+
 msgid "29.97"
 msgstr ""
 
 msgid "3"
 msgstr ""
 
+msgid "3,3,25,25"
+msgstr ""
+
+msgid "3,5,100,40"
+msgstr ""
+
 #
 msgid "30"
 msgstr ""
 
+msgid "306,1,320,28"
+msgstr ""
+
 msgid "32 MB"
+msgstr ""
+
+msgid "33,0,694,30"
+msgstr ""
+
+msgid "33,3,25,25"
+msgstr ""
+
+msgid "36,1,694,28"
 msgstr ""
 
 msgid "3D"
@@ -673,6 +714,15 @@ msgstr "3d valg"
 msgid "4"
 msgstr ""
 
+msgid "400"
+msgstr ""
+
+msgid "47,1,1147,28"
+msgstr ""
+
+msgid "47,1,685,28"
+msgstr ""
+
 #
 msgid "4:3"
 msgstr ""
@@ -691,13 +741,43 @@ msgstr ""
 msgid "5"
 msgstr ""
 
+msgid "5,1,520,23"
+msgstr ""
+
+msgid "5,1,630,23"
+msgstr ""
+
+msgid "5,2,630,28"
+msgstr ""
+
+msgid "5,25,630,23"
+msgstr ""
+
+msgid "5,30,630,27"
+msgstr ""
+
+msgid "5,7,16,16"
+msgstr ""
+
 msgid "512 MB"
 msgstr ""
 
 msgid "512 MB (recommended for this chipset)"
 msgstr ""
 
+msgid "535,1,100,23"
+msgstr ""
+
 msgid "6"
+msgstr ""
+
+msgid "6,1,300,28"
+msgstr ""
+
+msgid "6,1,320,28"
+msgstr ""
+
+msgid "63,0,661,30"
 msgstr ""
 
 msgid "64 MB"
@@ -706,7 +786,16 @@ msgstr ""
 msgid "7"
 msgstr ""
 
+msgid "7,0,40,30"
+msgstr ""
+
 msgid "8"
+msgstr ""
+
+msgid "83,2,30"
+msgstr ""
+
+msgid "83,28,26"
 msgstr ""
 
 msgid "8K"
@@ -1358,6 +1447,11 @@ msgstr ""
 
 #
 #, fuzzy
+msgid "Animation Settings"
+msgstr "Motoroppsett"
+
+#
+#, fuzzy
 msgid "Animation Setup"
 msgstr "Motoroppsett"
 
@@ -1624,6 +1718,25 @@ msgstr ""
 #
 msgid "Auto scart switching"
 msgstr "Auto scart bytte"
+
+#
+#, fuzzy
+msgid "AutoDiseqc"
+msgstr "Automatisk"
+
+#, fuzzy
+msgid "AutoMountManager"
+msgstr "Fullstendig EPG kanallisteutvalg"
+
+#
+#, fuzzy
+msgid "AutoTimer Overview"
+msgstr "Tidtaker oversikt"
+
+#
+#, fuzzy
+msgid "AutoTimer Settings"
+msgstr "Nettverksinstillinger"
 
 #
 msgid "Automatic"
@@ -2025,6 +2138,9 @@ msgid "CI assignment"
 msgstr "CI tildeling"
 
 msgid "CI slot: "
+msgstr ""
+
+msgid "CIHelper Setup"
 msgstr ""
 
 msgid "CPU priority for script execution"
@@ -4019,6 +4135,11 @@ msgstr "Vil du brenne denne samlingen pål DVD?"
 
 #
 #, fuzzy
+msgid "Do you want to delete all other languages?"
+msgstr "Vil du installerere pakken:\n"
+
+#
+#, fuzzy
 msgid "Do you want to delete the old settings in /etc/enigma2 first?"
 msgstr "Vil du gjenopprette dine innstillinger?"
 
@@ -4154,6 +4275,11 @@ msgstr[0] "Ferdig - Installert, oppdatert eller fjernet %d pakke (%s)"
 msgstr[1] "Ferdig - Installert, oppdatert eller fjernet %d pakker (%s)"
 
 #
+#, fuzzy
+msgid "Download Movie Info"
+msgstr "Laster ned"
+
+#
 msgid "Download plugins"
 msgstr "Last ned proramvaretillegg"
 
@@ -4215,6 +4341,27 @@ msgstr ""
 msgid "ECM Info"
 msgstr "Info"
 
+#
+#, fuzzy
+msgid "EEPGRefresh Configuration"
+msgstr "Konfigurasjon..."
+
+#, fuzzy
+msgid "EMC Cover Selecter"
+msgstr "Opptaksvalg"
+
+msgid "EMC Cover search"
+msgstr ""
+
+#, fuzzy
+msgid "EMC imdb Setup"
+msgstr "Programvare oppsett"
+
+#
+#, fuzzy
+msgid "EMC menu"
+msgstr "Hovedmeny"
+
 msgid "ENABLE DISABLE PLUGIN IF U WANT IT"
 msgstr ""
 
@@ -4247,6 +4394,11 @@ msgstr "EPG innstilling"
 msgid "EPG:"
 msgstr ""
 
+#
+#, fuzzy
+msgid "EPGRefresh Configuration"
+msgstr "Konfigurasjon..."
+
 #, python-format
 msgid "ERROR - failed to scan (%s)!"
 msgstr "FEIL - kunne ikke søke (%s)!"
@@ -4267,6 +4419,18 @@ msgstr ""
 
 msgid "Edit"
 msgstr "Endre"
+
+#, fuzzy
+msgid "Edit AutoTimer"
+msgstr "Endre navn"
+
+msgid "Edit AutoTimer Filters"
+msgstr ""
+
+#
+#, fuzzy
+msgid "Edit AutoTimer Services"
+msgstr "Gå til første kanal"
 
 #
 msgid "Edit DNS"
@@ -4341,6 +4505,11 @@ msgstr ""
 
 #
 msgid "Electronic Program Guide"
+msgstr "Elektronisk Program Guide"
+
+#
+#, fuzzy
+msgid "Electronic Program Guide Setup"
 msgstr "Elektronisk Program Guide"
 
 msgid "Embedded"
@@ -4551,6 +4720,12 @@ msgstr ""
 #
 msgid "English"
 msgstr "Engelsk"
+
+msgid "Enhanced Movie Center"
+msgstr ""
+
+msgid "EnhancedMovieCenterMenu"
+msgstr ""
 
 #, python-format
 msgid "Enigma (re)starts: %d\n"
@@ -4972,6 +5147,22 @@ msgstr ""
 
 #
 #, fuzzy
+msgid "FTP Browser"
+msgstr "DVD fil leser"
+
+#, fuzzy
+msgid "FTP Queue Manager"
+msgstr "Enhetsnavn:"
+
+msgid "FTP Server Editor"
+msgstr ""
+
+#, fuzzy
+msgid "FTP Server Manager"
+msgstr "Enhetsnavn:"
+
+#
+#, fuzzy
 msgid "FTP Setup"
 msgstr "Innstilling"
 
@@ -5280,6 +5471,10 @@ msgid "Flash, restore settings and user selected plugins"
 msgstr ""
 
 #, fuzzy
+msgid "FlashOnline"
+msgstr "Flash"
+
+#, fuzzy
 msgid "Flashed: "
 msgstr "Flash"
 
@@ -5441,6 +5636,11 @@ msgstr ""
 
 #
 #, fuzzy
+msgid "GBAspectRatioSwitchSetup"
+msgstr "Sideforhold"
+
+#
+#, fuzzy
 msgid "GStreamer: "
 msgstr "Linuxkjerne versjon: "
 
@@ -5513,6 +5713,13 @@ msgstr ""
 
 msgid "Gibraltar"
 msgstr ""
+
+msgid "GigaBlue IPBox Client"
+msgstr ""
+
+#, fuzzy
+msgid "GigaBlue Setup"
+msgstr "Programvare oppsett"
 
 msgid "Go down the list"
 msgstr "Gå nedover listen"
@@ -5690,7 +5897,15 @@ msgstr ""
 msgid "HD2400"
 msgstr ""
 
+#
+#, fuzzy
+msgid "HDD Info"
+msgstr "Info"
+
 msgid "HDMI"
+msgstr ""
+
+msgid "HDMI CEC setup"
 msgstr ""
 
 msgid "HDMI Colordepth"
@@ -5768,6 +5983,14 @@ msgid "Handle wakeup from TV"
 msgstr "Håndtere 'oppvåkning' fra TV"
 
 #, fuzzy
+msgid "Hard Drive Partitions"
+msgstr "Polarisasjon"
+
+#, fuzzy
+msgid "Hard Drive Setup"
+msgstr "Disk oppsett"
+
+#, fuzzy
 msgid "Hard disk"
 msgstr "Disk"
 
@@ -5786,6 +6009,10 @@ msgstr ""
 #, fuzzy
 msgid "Harddisk standby after"
 msgstr "Slå av disk etter"
+
+#, fuzzy
+msgid "HddMount"
+msgstr "Montere"
 
 #, python-format
 msgid "Heads: %s (max) %s (current)"
@@ -5806,7 +6033,7 @@ msgstr "Hebraisk"
 msgid "Height"
 msgstr "høyde"
 
-msgid "Helps setting up your signal"
+msgid "Helps setting up your antenna"
 msgstr ""
 
 msgid "Hidden network"
@@ -5954,6 +6181,11 @@ msgstr ""
 msgid "IP:"
 msgstr ""
 
+#
+#, fuzzy
+msgid "IPv6 setup"
+msgstr "PiP-bilde i bilde oppsett"
+
 #, fuzzy
 msgid "IPv6 support"
 msgstr "ikke støttet"
@@ -6073,6 +6305,11 @@ msgstr ""
 
 msgid "ImageWizard"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Import AutoTimer"
+msgstr "Sortere tid"
 
 msgid "Import channels and/or EPG from remote receiver URL also when the receiver is getting out of standby"
 msgstr ""
@@ -6594,6 +6831,9 @@ msgstr ""
 msgid "Korea (Republic of)"
 msgstr ""
 
+msgid "KravenHD"
+msgstr ""
+
 #
 #, fuzzy
 msgid "Kuwait"
@@ -6929,6 +7169,9 @@ msgid "MMC card"
 msgstr ""
 
 msgid "MORE"
+msgstr ""
+
+msgid "MPHelp"
 msgstr ""
 
 msgid "MSN Weather City Name"
@@ -7305,6 +7548,14 @@ msgid "Mount point exist!"
 msgstr ""
 
 #, fuzzy
+msgid "MountEdit"
+msgstr "Montere"
+
+#, fuzzy
+msgid "MountView"
+msgstr "Montere"
+
+#, fuzzy
 msgid "Mountpoints"
 msgstr "Montere"
 
@@ -7438,6 +7689,18 @@ msgstr "Bevegelse"
 #, fuzzy
 msgid "Movie"
 msgstr "Kjører"
+
+msgid "Movie Info Preview"
+msgstr ""
+
+#
+#, fuzzy
+msgid "Movie Info Setup"
+msgstr "Innstilling"
+
+#, fuzzy
+msgid "Movie List Setup"
+msgstr "Opptaksliste"
 
 msgid "Movie list configuration"
 msgstr "Innstilling for opptaksliste"
@@ -7666,6 +7929,11 @@ msgstr "Nettverksinnstilling..."
 #, fuzzy
 msgid "Network MAC settings"
 msgstr "Aktivere nettverksinnstillinger"
+
+#
+#, fuzzy
+msgid "Network Neighbourhood"
+msgstr "Nettverksveiviser"
 
 #
 #, fuzzy
@@ -8236,6 +8504,11 @@ msgstr ""
 msgid "OpenVpn Setup"
 msgstr ""
 
+#
+#, fuzzy
+msgid "OpenWebif Configuration"
+msgstr "Konfigurasjon..."
+
 msgid "Operating LED status in deep standby mode"
 msgstr ""
 
@@ -8259,6 +8532,9 @@ msgstr ""
 
 msgid "Original"
 msgstr "Original"
+
+msgid "OscamSmartcard-Setup"
+msgstr ""
 
 msgid "Other"
 msgstr "Annen"
@@ -8407,6 +8683,10 @@ msgid "Packages to update"
 msgstr ""
 
 msgid "Packet manager"
+msgstr "Pakkeforvalter"
+
+#, fuzzy
+msgid "PacketManager"
 msgstr "Pakkeforvalter"
 
 #, fuzzy
@@ -9621,6 +9901,16 @@ msgstr ""
 msgid "Regular file"
 msgstr "filformat"
 
+#
+#, fuzzy
+msgid "Regular;18"
+msgstr "filformat"
+
+#
+#, fuzzy
+msgid "Regular;20"
+msgstr "filformat"
+
 msgid "Relative"
 msgstr "Forhold"
 
@@ -10601,6 +10891,10 @@ msgid "Select HDD"
 msgstr "Velg"
 
 #, fuzzy
+msgid "Select OPKG source....."
+msgstr "Velg oppdateringssted"
+
+#, fuzzy
 msgid "Select Software Update"
 msgstr "Programvareoppdatering"
 
@@ -10681,6 +10975,10 @@ msgid "Select files for backup."
 msgstr "Velg filer for sikkerhetskopiering."
 
 msgid "Select files/folders to backup"
+msgstr "Velg filer/mapper for sikkerhetskopiering"
+
+#, fuzzy
+msgid "Select files/folders to backup..."
 msgstr "Velg filer/mapper for sikkerhetskopiering"
 
 #
@@ -11621,10 +11919,6 @@ msgstr "Side om side"
 
 msgid "Sierra Leone"
 msgstr ""
-
-#, fuzzy
-msgid "Signal Finder"
-msgstr "Satellittsøker"
 
 msgid "Signal OK, proceeding"
 msgstr "Signal OK, fortsetter"
@@ -14421,6 +14715,12 @@ msgid ""
 "Component: enigma2"
 msgstr ""
 
+msgid "WeatherPlugin: Edit Entry"
+msgstr ""
+
+msgid "WeatherPlugin: List of Entries"
+msgstr ""
+
 msgid "Web Browser"
 msgstr ""
 
@@ -15516,6 +15816,10 @@ msgstr "sirkulær venstre"
 msgid "circular right"
 msgstr "sirkulær høyre"
 
+#, fuzzy
+msgid "clean up"
+msgstr "Rydde opp"
+
 msgid "clip overscan / letterbox borders"
 msgstr ""
 
@@ -16193,6 +16497,10 @@ msgstr "Søk i kataloger"
 msgid "open nameserver configuration"
 msgstr "åpne innstilling for navneserver "
 
+#, fuzzy
+msgid "openMultiboot Manager"
+msgstr "Fullstendig EPG kanallisteutvalg"
+
 msgid "original"
 msgstr "original"
 
@@ -16690,6 +16998,9 @@ msgstr ""
 #, fuzzy
 msgid "without"
 msgstr "Uten varsel"
+
+msgid "x"
+msgstr ""
 
 msgid "xp1000"
 msgstr ""

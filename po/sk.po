@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-20 12:56+0100\n"
+"POT-Creation-Date: 2021-02-03 23:45+0100\n"
 "PO-Revision-Date: 2020-02-10 12:49+0100\n"
 "Last-Translator: Andrej Tobola <andrej.tobola@gmail.com>\n"
 "Language-Team: \n"
@@ -539,6 +539,10 @@ msgstr ""
 msgid "-SERVICE ERROR:%d\n"
 msgstr ""
 
+#, fuzzy
+msgid "..."
+msgstr "Pomoc..."
+
 msgid "/media/custom"
 msgstr ""
 
@@ -554,6 +558,9 @@ msgid "/var directory"
 msgstr "počiatočný adresár"
 
 msgid "0"
+msgstr ""
+
+msgid "0,24,1147,20"
 msgstr ""
 
 msgid "1"
@@ -572,6 +579,12 @@ msgid "1024 MB"
 msgstr ""
 
 msgid "10bit"
+msgstr ""
+
+msgid "120,2,30"
+msgstr ""
+
+msgid "120,28,26"
 msgstr ""
 
 msgid "128 MB"
@@ -619,6 +632,12 @@ msgstr "18 V"
 msgid "2"
 msgstr ""
 
+msgid "2,0,80,50"
+msgstr ""
+
+msgid "20"
+msgstr ""
+
 msgid "2048 MB (maximum)"
 msgstr ""
 
@@ -637,6 +656,9 @@ msgstr ""
 msgid "256 MB (recommended for this chipset)"
 msgstr ""
 
+msgid "26,1,559,28"
+msgstr ""
+
 msgid "29.97"
 msgstr ""
 
@@ -644,10 +666,28 @@ msgstr ""
 msgid "3"
 msgstr "3"
 
+msgid "3,3,25,25"
+msgstr ""
+
+msgid "3,5,100,40"
+msgstr ""
+
 msgid "30"
 msgstr ""
 
+msgid "306,1,320,28"
+msgstr ""
+
 msgid "32 MB"
+msgstr ""
+
+msgid "33,0,694,30"
+msgstr ""
+
+msgid "33,3,25,25"
+msgstr ""
+
+msgid "36,1,694,28"
 msgstr ""
 
 #, fuzzy
@@ -670,6 +710,15 @@ msgstr ""
 msgid "4"
 msgstr "4"
 
+msgid "400"
+msgstr ""
+
+msgid "47,1,1147,28"
+msgstr ""
+
+msgid "47,1,685,28"
+msgstr ""
+
 msgid "4:3"
 msgstr "4:3"
 
@@ -686,13 +735,43 @@ msgstr "4"
 msgid "5"
 msgstr "5"
 
+msgid "5,1,520,23"
+msgstr ""
+
+msgid "5,1,630,23"
+msgstr ""
+
+msgid "5,2,630,28"
+msgstr ""
+
+msgid "5,25,630,23"
+msgstr ""
+
+msgid "5,30,630,27"
+msgstr ""
+
+msgid "5,7,16,16"
+msgstr ""
+
 msgid "512 MB"
 msgstr ""
 
 msgid "512 MB (recommended for this chipset)"
 msgstr ""
 
+msgid "535,1,100,23"
+msgstr ""
+
 msgid "6"
+msgstr ""
+
+msgid "6,1,300,28"
+msgstr ""
+
+msgid "6,1,320,28"
+msgstr ""
+
+msgid "63,0,661,30"
 msgstr ""
 
 msgid "64 MB"
@@ -701,9 +780,18 @@ msgstr ""
 msgid "7"
 msgstr ""
 
+msgid "7,0,40,30"
+msgstr ""
+
 #, fuzzy
 msgid "8"
 msgstr "8"
+
+msgid "83,2,30"
+msgstr ""
+
+msgid "83,28,26"
+msgstr ""
 
 #, fuzzy
 msgid "8K"
@@ -1319,6 +1407,10 @@ msgid "Anguilla"
 msgstr ""
 
 #, fuzzy
+msgid "Animation Settings"
+msgstr "Nastavenie motora"
+
+#, fuzzy
 msgid "Animation Setup"
 msgstr "Nastavenie motora"
 
@@ -1573,6 +1665,22 @@ msgstr ""
 
 msgid "Auto scart switching"
 msgstr "Automatické prepnutie scartu"
+
+#, fuzzy
+msgid "AutoDiseqc"
+msgstr "Automaticky"
+
+#, fuzzy
+msgid "AutoMountManager"
+msgstr "Výber titulkov"
+
+#, fuzzy
+msgid "AutoTimer Overview"
+msgstr "Položka časovača"
+
+#, fuzzy
+msgid "AutoTimer Settings"
+msgstr "Výber titulkov"
 
 msgid "Automatic"
 msgstr "Automaticky"
@@ -1941,6 +2049,10 @@ msgstr "Priradenie CI"
 #, fuzzy
 msgid "CI slot: "
 msgstr "nenájdené otvory CI"
+
+#, fuzzy
+msgid "CIHelper Setup"
+msgstr "Nastavenia"
 
 msgid "CPU priority for script execution"
 msgstr ""
@@ -3824,6 +3936,10 @@ msgid "Do you want to burn this collection to DVD medium?"
 msgstr "Chcete túto zostavu napáliť na DVD?"
 
 #, fuzzy
+msgid "Do you want to delete all other languages?"
+msgstr "Chcete vymazať všetky súbory o zlyhaní?"
+
+#, fuzzy
 msgid "Do you want to delete the old settings in /etc/enigma2 first?"
 msgstr "Chcete obnoviť nastavenia?"
 
@@ -3948,6 +4064,10 @@ msgstr[1] "Hotovo - %d nainštalovaných, aktualizovaných alebo odstránených 
 msgstr[2] "Hotovo - %d nainštalovaných, aktualizovaných alebo odstránených balíčkov s %d chybami"
 
 #, fuzzy
+msgid "Download Movie Info"
+msgstr "Sťahovanie"
+
+#, fuzzy
 msgid "Download plugins"
 msgstr "Stiahnuť prídavné moduly"
 
@@ -3997,6 +4117,25 @@ msgstr "V"
 msgid "ECM Info"
 msgstr "Informačná lišta"
 
+#, fuzzy
+msgid "EEPGRefresh Configuration"
+msgstr "Nastavenie tunera"
+
+#, fuzzy
+msgid "EMC Cover Selecter"
+msgstr "Umiestenie filmu"
+
+msgid "EMC Cover search"
+msgstr ""
+
+#, fuzzy
+msgid "EMC imdb Setup"
+msgstr "Nastavenia"
+
+#, fuzzy
+msgid "EMC menu"
+msgstr "Hlavné menu"
+
 msgid "ENABLE DISABLE PLUGIN IF U WANT IT"
 msgstr ""
 
@@ -4028,6 +4167,10 @@ msgstr ""
 msgid "EPG:"
 msgstr ""
 
+#, fuzzy
+msgid "EPGRefresh Configuration"
+msgstr "Nastavenie tunera"
+
 #, python-format
 msgid "ERROR - failed to scan (%s)!"
 msgstr "CHYBA - zlyhalo vyhľadávanie (%s)!"
@@ -4047,6 +4190,17 @@ msgstr ""
 
 msgid "Edit"
 msgstr "Upraviť"
+
+#, fuzzy
+msgid "Edit AutoTimer"
+msgstr "Upraviť titul"
+
+msgid "Edit AutoTimer Filters"
+msgstr ""
+
+#, fuzzy
+msgid "Edit AutoTimer Services"
+msgstr "nahor na prvú položku"
 
 msgid "Edit DNS"
 msgstr "Upraviť DNS"
@@ -4118,6 +4272,10 @@ msgid "El Salvador"
 msgstr ""
 
 msgid "Electronic Program Guide"
+msgstr "Elektronický programový sprievodca"
+
+#, fuzzy
+msgid "Electronic Program Guide Setup"
 msgstr "Elektronický programový sprievodca"
 
 msgid "Embedded"
@@ -4311,6 +4469,12 @@ msgstr ""
 
 msgid "English"
 msgstr "Angličtina"
+
+msgid "Enhanced Movie Center"
+msgstr ""
+
+msgid "EnhancedMovieCenterMenu"
+msgstr ""
 
 #, python-format
 msgid "Enigma (re)starts: %d\n"
@@ -4720,6 +4884,21 @@ msgid "FTA"
 msgstr ""
 
 #, fuzzy
+msgid "FTP Browser"
+msgstr "Prehliadač modulov"
+
+#, fuzzy
+msgid "FTP Queue Manager"
+msgstr "Vyhľadávanie staníc"
+
+msgid "FTP Server Editor"
+msgstr ""
+
+#, fuzzy
+msgid "FTP Server Manager"
+msgstr "Vyhľadávanie staníc"
+
+#, fuzzy
 msgid "FTP Setup"
 msgstr "Nastavenia"
 
@@ -5010,6 +5189,10 @@ msgid "Flash, restore settings and user selected plugins"
 msgstr ""
 
 #, fuzzy
+msgid "FlashOnline"
+msgstr "Flešovanie zlyhalo"
+
+#, fuzzy
 msgid "Flashed: "
 msgstr "Flešovanie zlyhalo"
 
@@ -5156,6 +5339,10 @@ msgstr ""
 msgid "Further options"
 msgstr ""
 
+#, fuzzy
+msgid "GBAspectRatioSwitchSetup"
+msgstr "Pomer strán"
+
 msgid "GStreamer: "
 msgstr ""
 
@@ -5226,6 +5413,13 @@ msgstr ""
 
 msgid "Gibraltar"
 msgstr ""
+
+msgid "GigaBlue IPBox Client"
+msgstr ""
+
+#, fuzzy
+msgid "GigaBlue Setup"
+msgstr "Nastavenia"
 
 msgid "Go down the list"
 msgstr ""
@@ -5400,8 +5594,16 @@ msgstr ""
 msgid "HD2400"
 msgstr ""
 
+#, fuzzy
+msgid "HDD Info"
+msgstr "Informačná lišta"
+
 msgid "HDMI"
 msgstr ""
+
+#, fuzzy
+msgid "HDMI CEC setup"
+msgstr "Nastavenia"
 
 #, fuzzy
 msgid "HDMI Colordepth"
@@ -5478,6 +5680,14 @@ msgid "Handle wakeup from TV"
 msgstr ""
 
 #, fuzzy
+msgid "Hard Drive Partitions"
+msgstr "Polarizácia"
+
+#, fuzzy
+msgid "Hard Drive Setup"
+msgstr "Nastavenie pevného disku"
+
+#, fuzzy
 msgid "Hard disk"
 msgstr "Pevný disk"
 
@@ -5500,6 +5710,9 @@ msgstr "Nastavenie pevného disku"
 msgid "Harddisk standby after"
 msgstr "Uspať disk po"
 
+msgid "HddMount"
+msgstr ""
+
 #, python-format
 msgid "Heads: %s (max) %s (current)"
 msgstr ""
@@ -5518,7 +5731,7 @@ msgstr ""
 msgid "Height"
 msgstr "Doprava"
 
-msgid "Helps setting up your signal"
+msgid "Helps setting up your antenna"
 msgstr ""
 
 msgid "Hidden network"
@@ -5662,6 +5875,10 @@ msgid "IP:"
 msgstr ""
 
 #, fuzzy
+msgid "IPv6 setup"
+msgstr "Nastavenia"
+
+#, fuzzy
 msgid "IPv6 support"
 msgstr "nepodporované"
 
@@ -5776,6 +5993,10 @@ msgstr ""
 
 msgid "ImageWizard"
 msgstr ""
+
+#, fuzzy
+msgid "Import AutoTimer"
+msgstr "Triediť podľa času"
 
 msgid "Import channels and/or EPG from remote receiver URL also when the receiver is getting out of standby"
 msgstr ""
@@ -6265,6 +6486,9 @@ msgstr ""
 msgid "Korea (Republic of)"
 msgstr ""
 
+msgid "KravenHD"
+msgstr ""
+
 #, fuzzy
 msgid "Kuwait"
 msgstr "čakám"
@@ -6572,6 +6796,9 @@ msgid "MMC card"
 msgstr ""
 
 msgid "MORE"
+msgstr ""
+
+msgid "MPHelp"
 msgstr ""
 
 msgid "MSN Weather City Name"
@@ -6923,6 +7150,13 @@ msgstr ""
 msgid "Mount point exist!"
 msgstr ""
 
+#, fuzzy
+msgid "MountEdit"
+msgstr "Upraviť"
+
+msgid "MountView"
+msgstr ""
+
 msgid "Mountpoints"
 msgstr ""
 
@@ -7045,6 +7279,17 @@ msgstr ""
 
 msgid "Movie"
 msgstr ""
+
+msgid "Movie Info Preview"
+msgstr ""
+
+#, fuzzy
+msgid "Movie Info Setup"
+msgstr "Nastavenia"
+
+#, fuzzy
+msgid "Movie List Setup"
+msgstr "Menu filmov"
 
 #, fuzzy
 msgid "Movie list configuration"
@@ -7255,6 +7500,10 @@ msgstr "Konfigurácia siete..."
 #, fuzzy
 msgid "Network MAC settings"
 msgstr "Aktivovať nastavenia siete"
+
+#, fuzzy
+msgid "Network Neighbourhood"
+msgstr "Sprievodca sieťou"
 
 #, fuzzy
 msgid "Network Speed:"
@@ -7792,6 +8041,10 @@ msgstr ""
 msgid "OpenVpn Setup"
 msgstr "Nastavte tuner B"
 
+#, fuzzy
+msgid "OpenWebif Configuration"
+msgstr "Nastavenie tunera"
+
 msgid "Operating LED status in deep standby mode"
 msgstr ""
 
@@ -7814,6 +8067,9 @@ msgid "Ordinary"
 msgstr ""
 
 msgid "Original"
+msgstr ""
+
+msgid "OscamSmartcard-Setup"
 msgstr ""
 
 msgid "Other"
@@ -7957,6 +8213,10 @@ msgid "Packages to update"
 msgstr "Aktualizovať zoznam balíčkov"
 
 msgid "Packet manager"
+msgstr "Správca balíčkov"
+
+#, fuzzy
+msgid "PacketManager"
 msgstr "Správca balíčkov"
 
 msgid "Page down list"
@@ -9113,6 +9373,14 @@ msgstr ""
 msgid "Regular file"
 msgstr "šablóna"
 
+#, fuzzy
+msgid "Regular;18"
+msgstr "šablóna"
+
+#, fuzzy
+msgid "Regular;20"
+msgstr "šablóna"
+
 msgid "Relative"
 msgstr ""
 
@@ -10055,6 +10323,10 @@ msgid "Select HDD"
 msgstr "Zvoliť"
 
 #, fuzzy
+msgid "Select OPKG source....."
+msgstr "Zvoľte zdroj aktualizácie, ktorý chcete upraviť."
+
+#, fuzzy
 msgid "Select Software Update"
 msgstr "Aktualizovať softvér"
 
@@ -10132,6 +10404,10 @@ msgid "Select files for backup."
 msgstr "Zvoľte súbory na zálohovanie"
 
 msgid "Select files/folders to backup"
+msgstr "Zvoľte súbory a adresáre na zálohovanie"
+
+#, fuzzy
+msgid "Select files/folders to backup..."
 msgstr "Zvoľte súbory a adresáre na zálohovanie"
 
 #, fuzzy
@@ -11063,10 +11339,6 @@ msgstr ""
 
 msgid "Sierra Leone"
 msgstr ""
-
-#, fuzzy
-msgid "Signal Finder"
-msgstr "Signál:"
 
 msgid "Signal OK, proceeding"
 msgstr ""
@@ -13711,6 +13983,12 @@ msgid ""
 "Component: enigma2"
 msgstr ""
 
+msgid "WeatherPlugin: Edit Entry"
+msgstr ""
+
+msgid "WeatherPlugin: List of Entries"
+msgstr ""
+
 msgid "Web Browser"
 msgstr ""
 
@@ -14718,6 +14996,10 @@ msgstr "kruhová ľavá"
 msgid "circular right"
 msgstr "kruhová pravá"
 
+#, fuzzy
+msgid "clean up"
+msgstr "Vyčistiť"
+
 msgid "clip overscan / letterbox borders"
 msgstr ""
 
@@ -15324,6 +15606,10 @@ msgstr "Prehľadávač adresárov"
 msgid "open nameserver configuration"
 msgstr "Otvoriť nastavenia DNS"
 
+#, fuzzy
+msgid "openMultiboot Manager"
+msgstr "Výber titulkov"
+
 msgid "original"
 msgstr ""
 
@@ -15787,6 +16073,9 @@ msgid "with_errors"
 msgstr ""
 
 msgid "without"
+msgstr ""
+
+msgid "x"
 msgstr ""
 
 msgid "xp1000"

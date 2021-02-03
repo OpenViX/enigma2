@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-20 12:56+0100\n"
+"POT-Creation-Date: 2021-02-03 23:45+0100\n"
 "PO-Revision-Date: 2010-04-08 18:13+0700\n"
 "Last-Translator: Tony - Thaidreambox\n"
 "Language-Team: Tony @ Thai Dreambox <tonyboyth@gmail.com>\n"
@@ -524,6 +524,10 @@ msgstr ""
 msgid "-SERVICE ERROR:%d\n"
 msgstr ""
 
+#, fuzzy
+msgid "..."
+msgstr "ช่วยเหลือ..."
+
 msgid "/media/custom"
 msgstr ""
 
@@ -539,6 +543,9 @@ msgid "/var directory"
 msgstr "โฟล์เดอร์เริ่มต้น"
 
 msgid "0"
+msgstr ""
+
+msgid "0,24,1147,20"
 msgstr ""
 
 msgid "1"
@@ -557,6 +564,12 @@ msgid "1024 MB"
 msgstr ""
 
 msgid "10bit"
+msgstr ""
+
+msgid "120,2,30"
+msgstr ""
+
+msgid "120,28,26"
 msgstr ""
 
 msgid "128 MB"
@@ -604,6 +617,12 @@ msgstr "18 V"
 msgid "2"
 msgstr ""
 
+msgid "2,0,80,50"
+msgstr ""
+
+msgid "20"
+msgstr ""
+
 msgid "2048 MB (maximum)"
 msgstr ""
 
@@ -622,6 +641,9 @@ msgstr ""
 msgid "256 MB (recommended for this chipset)"
 msgstr ""
 
+msgid "26,1,559,28"
+msgstr ""
+
 msgid "29.97"
 msgstr ""
 
@@ -629,10 +651,28 @@ msgstr ""
 msgid "3"
 msgstr "3"
 
+msgid "3,3,25,25"
+msgstr ""
+
+msgid "3,5,100,40"
+msgstr ""
+
 msgid "30"
 msgstr ""
 
+msgid "306,1,320,28"
+msgstr ""
+
 msgid "32 MB"
+msgstr ""
+
+msgid "33,0,694,30"
+msgstr ""
+
+msgid "33,3,25,25"
+msgstr ""
+
+msgid "36,1,694,28"
 msgstr ""
 
 #, fuzzy
@@ -655,6 +695,15 @@ msgstr ""
 msgid "4"
 msgstr "4"
 
+msgid "400"
+msgstr ""
+
+msgid "47,1,1147,28"
+msgstr ""
+
+msgid "47,1,685,28"
+msgstr ""
+
 msgid "4:3"
 msgstr "4:3"
 
@@ -671,13 +720,43 @@ msgstr "4"
 msgid "5"
 msgstr "5"
 
+msgid "5,1,520,23"
+msgstr ""
+
+msgid "5,1,630,23"
+msgstr ""
+
+msgid "5,2,630,28"
+msgstr ""
+
+msgid "5,25,630,23"
+msgstr ""
+
+msgid "5,30,630,27"
+msgstr ""
+
+msgid "5,7,16,16"
+msgstr ""
+
 msgid "512 MB"
 msgstr ""
 
 msgid "512 MB (recommended for this chipset)"
 msgstr ""
 
+msgid "535,1,100,23"
+msgstr ""
+
 msgid "6"
+msgstr ""
+
+msgid "6,1,300,28"
+msgstr ""
+
+msgid "6,1,320,28"
+msgstr ""
+
+msgid "63,0,661,30"
 msgstr ""
 
 msgid "64 MB"
@@ -686,9 +765,18 @@ msgstr ""
 msgid "7"
 msgstr ""
 
+msgid "7,0,40,30"
+msgstr ""
+
 #, fuzzy
 msgid "8"
 msgstr "8"
+
+msgid "83,2,30"
+msgstr ""
+
+msgid "83,28,26"
+msgstr ""
 
 #, fuzzy
 msgid "8K"
@@ -1301,6 +1389,10 @@ msgid "Anguilla"
 msgstr ""
 
 #, fuzzy
+msgid "Animation Settings"
+msgstr "ตั้งค่าตัวขับจาน"
+
+#, fuzzy
 msgid "Animation Setup"
 msgstr "ตั้งค่าตัวขับจาน"
 
@@ -1554,6 +1646,22 @@ msgstr ""
 
 msgid "Auto scart switching"
 msgstr "เปลี่ยน scart อัตโนมัติ"
+
+#, fuzzy
+msgid "AutoDiseqc"
+msgstr "อัตโนมัติ"
+
+#, fuzzy
+msgid "AutoMountManager"
+msgstr "เลือกซับไตเติ้ล"
+
+#, fuzzy
+msgid "AutoTimer Overview"
+msgstr "ตั้งเวลา"
+
+#, fuzzy
+msgid "AutoTimer Settings"
+msgstr "เลือกซับไตเติ้ล"
 
 msgid "Automatic"
 msgstr "อัตโนมัติ"
@@ -1921,6 +2029,10 @@ msgstr "CI assignment"
 #, fuzzy
 msgid "CI slot: "
 msgstr "ไม่พบ CI"
+
+#, fuzzy
+msgid "CIHelper Setup"
+msgstr "ตั้งค่า"
 
 msgid "CPU priority for script execution"
 msgstr ""
@@ -3797,6 +3909,10 @@ msgid "Do you want to burn this collection to DVD medium?"
 msgstr "ท่านต้องการที่จะเขียนคอลเล็คชั่นนี้ลงแผ่นดีวีดีหรือไม่?"
 
 #, fuzzy
+msgid "Do you want to delete all other languages?"
+msgstr "ท่านต้องการที่จะติดตั้งส่วนประกอบนี้:\n"
+
+#, fuzzy
 msgid "Do you want to delete the old settings in /etc/enigma2 first?"
 msgstr "ท่านต้องการที่จะนำการตั้งค่าต่างๆ กลับมาใช้หรือไม่?"
 
@@ -3920,6 +4036,10 @@ msgstr[0] "เสร็จแล้ว - ติดตั้งปรับปร
 msgstr[1] "เสร็จแล้ว - ติดตั้งปรับปรุงหรือลบ %d รายการ พบข้อผิดพลาด %d รายการ"
 
 #, fuzzy
+msgid "Download Movie Info"
+msgstr "กำลังดาวน์โหลด"
+
+#, fuzzy
 msgid "Download plugins"
 msgstr "ดาวน์โหลด Plugins"
 
@@ -3969,6 +4089,25 @@ msgstr "E"
 msgid "ECM Info"
 msgstr "ข้อมูล"
 
+#, fuzzy
+msgid "EEPGRefresh Configuration"
+msgstr "ตั้งค่า Tuner"
+
+#, fuzzy
+msgid "EMC Cover Selecter"
+msgstr "เลือกการตั้งเวลา"
+
+msgid "EMC Cover search"
+msgstr ""
+
+#, fuzzy
+msgid "EMC imdb Setup"
+msgstr "ตั้งค่า"
+
+#, fuzzy
+msgid "EMC menu"
+msgstr "เมนูหลัก"
+
 msgid "ENABLE DISABLE PLUGIN IF U WANT IT"
 msgstr ""
 
@@ -4000,6 +4139,10 @@ msgstr ""
 msgid "EPG:"
 msgstr ""
 
+#, fuzzy
+msgid "EPGRefresh Configuration"
+msgstr "ตั้งค่า Tuner"
+
 #, python-format
 msgid "ERROR - failed to scan (%s)!"
 msgstr "ผิดพลาด - การค้นหา (%s) ล้มเหลว"
@@ -4019,6 +4162,17 @@ msgstr ""
 
 msgid "Edit"
 msgstr "แก้ไข"
+
+#, fuzzy
+msgid "Edit AutoTimer"
+msgstr "แก้ไขชื่อเรื่อง"
+
+msgid "Edit AutoTimer Filters"
+msgstr ""
+
+#, fuzzy
+msgid "Edit AutoTimer Services"
+msgstr "ย้ายไปบนสุด"
 
 msgid "Edit DNS"
 msgstr "แก้ไข DNS"
@@ -4089,6 +4243,10 @@ msgid "El Salvador"
 msgstr ""
 
 msgid "Electronic Program Guide"
+msgstr "ผังรายการ (EPG)"
+
+#, fuzzy
+msgid "Electronic Program Guide Setup"
 msgstr "ผังรายการ (EPG)"
 
 msgid "Embedded"
@@ -4281,6 +4439,12 @@ msgstr ""
 
 msgid "English"
 msgstr "ภาษาอังกฤษ"
+
+msgid "Enhanced Movie Center"
+msgstr ""
+
+msgid "EnhancedMovieCenterMenu"
+msgstr ""
 
 #, python-format
 msgid "Enigma (re)starts: %d\n"
@@ -4683,6 +4847,21 @@ msgid "FTA"
 msgstr ""
 
 #, fuzzy
+msgid "FTP Browser"
+msgstr "แสดงปลั๊กอิน"
+
+#, fuzzy
+msgid "FTP Queue Manager"
+msgstr "ค้นหาบริการ"
+
+msgid "FTP Server Editor"
+msgstr ""
+
+#, fuzzy
+msgid "FTP Server Manager"
+msgstr "ค้นหาบริการ"
+
+#, fuzzy
 msgid "FTP Setup"
 msgstr "ตั้งค่า"
 
@@ -4972,6 +5151,10 @@ msgid "Flash, restore settings and user selected plugins"
 msgstr ""
 
 #, fuzzy
+msgid "FlashOnline"
+msgstr "การลงอิมเมจล้มเหลว"
+
+#, fuzzy
 msgid "Flashed: "
 msgstr "การลงอิมเมจล้มเหลว"
 
@@ -5118,6 +5301,10 @@ msgstr ""
 msgid "Further options"
 msgstr ""
 
+#, fuzzy
+msgid "GBAspectRatioSwitchSetup"
+msgstr "สัดส่วนภาพ"
+
 msgid "GStreamer: "
 msgstr ""
 
@@ -5188,6 +5375,13 @@ msgstr ""
 
 msgid "Gibraltar"
 msgstr ""
+
+msgid "GigaBlue IPBox Client"
+msgstr ""
+
+#, fuzzy
+msgid "GigaBlue Setup"
+msgstr "ตั้งค่า"
 
 msgid "Go down the list"
 msgstr ""
@@ -5361,8 +5555,16 @@ msgstr ""
 msgid "HD2400"
 msgstr ""
 
+#, fuzzy
+msgid "HDD Info"
+msgstr "ข้อมูล"
+
 msgid "HDMI"
 msgstr ""
+
+#, fuzzy
+msgid "HDMI CEC setup"
+msgstr "ตั้งค่า"
 
 #, fuzzy
 msgid "HDMI Colordepth"
@@ -5439,6 +5641,14 @@ msgid "Handle wakeup from TV"
 msgstr ""
 
 #, fuzzy
+msgid "Hard Drive Partitions"
+msgstr "ค่าทิศทาง"
+
+#, fuzzy
+msgid "Hard Drive Setup"
+msgstr "ตั้งค่าฮาร์ดดิสก์"
+
+#, fuzzy
 msgid "Hard disk"
 msgstr "ฮาร์ดดิสก์"
 
@@ -5461,6 +5671,9 @@ msgstr "ตั้งค่าฮาร์ดดิสก์"
 msgid "Harddisk standby after"
 msgstr "ให้ฮาร์ดดิสก์ standby หลังจาก"
 
+msgid "HddMount"
+msgstr ""
+
 #, python-format
 msgid "Heads: %s (max) %s (current)"
 msgstr ""
@@ -5479,7 +5692,7 @@ msgstr ""
 msgid "Height"
 msgstr "ขวา"
 
-msgid "Helps setting up your signal"
+msgid "Helps setting up your antenna"
 msgstr ""
 
 msgid "Hidden network"
@@ -5623,6 +5836,10 @@ msgid "IP:"
 msgstr ""
 
 #, fuzzy
+msgid "IPv6 setup"
+msgstr "ตั้งค่า"
+
+#, fuzzy
 msgid "IPv6 support"
 msgstr "ไม่รองรับ"
 
@@ -5737,6 +5954,10 @@ msgstr ""
 
 msgid "ImageWizard"
 msgstr ""
+
+#, fuzzy
+msgid "Import AutoTimer"
+msgstr "จัดเรียงเวลา"
 
 msgid "Import channels and/or EPG from remote receiver URL also when the receiver is getting out of standby"
 msgstr ""
@@ -6223,6 +6444,9 @@ msgstr ""
 msgid "Korea (Republic of)"
 msgstr ""
 
+msgid "KravenHD"
+msgstr ""
+
 #, fuzzy
 msgid "Kuwait"
 msgstr "กำลังรอ"
@@ -6529,6 +6753,9 @@ msgid "MMC card"
 msgstr ""
 
 msgid "MORE"
+msgstr ""
+
+msgid "MPHelp"
 msgstr ""
 
 msgid "MSN Weather City Name"
@@ -6879,6 +7106,13 @@ msgstr ""
 msgid "Mount point exist!"
 msgstr ""
 
+#, fuzzy
+msgid "MountEdit"
+msgstr "แก้ไข"
+
+msgid "MountView"
+msgstr ""
+
 msgid "Mountpoints"
 msgstr ""
 
@@ -7001,6 +7235,17 @@ msgstr ""
 
 msgid "Movie"
 msgstr ""
+
+msgid "Movie Info Preview"
+msgstr ""
+
+#, fuzzy
+msgid "Movie Info Setup"
+msgstr "ตั้งค่า"
+
+#, fuzzy
+msgid "Movie List Setup"
+msgstr "เมนูรายการภาพยนต์"
 
 #, fuzzy
 msgid "Movie list configuration"
@@ -7211,6 +7456,10 @@ msgstr "ตั้งค่าเครือข่าย..."
 #, fuzzy
 msgid "Network MAC settings"
 msgstr "ตั้งค่าเครือข่าย"
+
+#, fuzzy
+msgid "Network Neighbourhood"
+msgstr "ตัวช่วยเครือข่าย"
 
 #, fuzzy
 msgid "Network Speed:"
@@ -7747,6 +7996,10 @@ msgstr ""
 msgid "OpenVpn Setup"
 msgstr "กรุณาตั้งค่า Tuner B"
 
+#, fuzzy
+msgid "OpenWebif Configuration"
+msgstr "ตั้งค่า Tuner"
+
 msgid "Operating LED status in deep standby mode"
 msgstr ""
 
@@ -7769,6 +8022,9 @@ msgid "Ordinary"
 msgstr ""
 
 msgid "Original"
+msgstr ""
+
+msgid "OscamSmartcard-Setup"
 msgstr ""
 
 msgid "Other"
@@ -7907,6 +8163,10 @@ msgid "Packages to update"
 msgstr "ปรับปรุงรายการของส่วนประกอบ"
 
 msgid "Packet manager"
+msgstr "ตัวจัดการส่วนประกอบ"
+
+#, fuzzy
+msgid "PacketManager"
 msgstr "ตัวจัดการส่วนประกอบ"
 
 msgid "Page down list"
@@ -9061,6 +9321,14 @@ msgstr ""
 msgid "Regular file"
 msgstr "ไฟล์ต้นฉบับ"
 
+#, fuzzy
+msgid "Regular;18"
+msgstr "ไฟล์ต้นฉบับ"
+
+#, fuzzy
+msgid "Regular;20"
+msgstr "ไฟล์ต้นฉบับ"
+
 msgid "Relative"
 msgstr ""
 
@@ -9995,6 +10263,10 @@ msgid "Select HDD"
 msgstr "เลือก"
 
 #, fuzzy
+msgid "Select OPKG source....."
+msgstr "เลือกที่มาเพื่อปรับปรุง"
+
+#, fuzzy
 msgid "Select Software Update"
 msgstr "ปรับปรุงซอพท์แวร์"
 
@@ -10072,6 +10344,10 @@ msgid "Select files for backup."
 msgstr ""
 
 msgid "Select files/folders to backup"
+msgstr "เลือกไฟล์/โฟล์เดอร์ที่จะสำรอง"
+
+#, fuzzy
+msgid "Select files/folders to backup..."
 msgstr "เลือกไฟล์/โฟล์เดอร์ที่จะสำรอง"
 
 #, fuzzy
@@ -11000,10 +11276,6 @@ msgstr ""
 
 msgid "Sierra Leone"
 msgstr ""
-
-#, fuzzy
-msgid "Signal Finder"
-msgstr "สัญญาณ:"
 
 msgid "Signal OK, proceeding"
 msgstr ""
@@ -13628,6 +13900,12 @@ msgid ""
 "Component: enigma2"
 msgstr ""
 
+msgid "WeatherPlugin: Edit Entry"
+msgstr ""
+
+msgid "WeatherPlugin: List of Entries"
+msgstr ""
+
 msgid "Web Browser"
 msgstr ""
 
@@ -14630,6 +14908,10 @@ msgstr "วนไปทางซ้าย"
 msgid "circular right"
 msgstr "วนไปทางขวา"
 
+#, fuzzy
+msgid "clean up"
+msgstr "Cleanup"
+
 msgid "clip overscan / letterbox borders"
 msgstr ""
 
@@ -15236,6 +15518,10 @@ msgstr "ดูโฟล์เดอร์"
 msgid "open nameserver configuration"
 msgstr "ตั้งค่า Nameserver"
 
+#, fuzzy
+msgid "openMultiboot Manager"
+msgstr "เลือกซับไตเติ้ล"
+
 msgid "original"
 msgstr ""
 
@@ -15698,6 +15984,9 @@ msgid "with_errors"
 msgstr ""
 
 msgid "without"
+msgstr ""
+
+msgid "x"
 msgstr ""
 
 msgid "xp1000"

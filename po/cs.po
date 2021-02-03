@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-20 12:56+0100\n"
+"POT-Creation-Date: 2021-02-03 23:45+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: ims <ims21@users.sourceforge.net>\n"
 "Language-Team: PLi <ims@openpli.org>\n"
@@ -574,6 +574,11 @@ msgstr ""
 msgid "-SERVICE ERROR:%d\n"
 msgstr ""
 
+#
+#, fuzzy
+msgid "..."
+msgstr "nápověda..."
+
 msgid "/media/custom"
 msgstr ""
 
@@ -591,6 +596,9 @@ msgid "/var directory"
 msgstr "Výchozí adresář"
 
 msgid "0"
+msgstr ""
+
+msgid "0,24,1147,20"
 msgstr ""
 
 msgid "1"
@@ -612,6 +620,12 @@ msgid "1024 MB"
 msgstr ""
 
 msgid "10bit"
+msgstr ""
+
+msgid "120,2,30"
+msgstr ""
+
+msgid "120,28,26"
 msgstr ""
 
 msgid "128 MB"
@@ -668,6 +682,12 @@ msgstr "18 V"
 msgid "2"
 msgstr ""
 
+msgid "2,0,80,50"
+msgstr ""
+
+msgid "20"
+msgstr ""
+
 msgid "2048 MB (maximum)"
 msgstr ""
 
@@ -686,6 +706,9 @@ msgstr ""
 msgid "256 MB (recommended for this chipset)"
 msgstr ""
 
+msgid "26,1,559,28"
+msgstr ""
+
 msgid "29.97"
 msgstr ""
 
@@ -694,10 +717,28 @@ msgstr ""
 msgid "3"
 msgstr "3"
 
+msgid "3,3,25,25"
+msgstr ""
+
+msgid "3,5,100,40"
+msgstr ""
+
 msgid "30"
 msgstr ""
 
+msgid "306,1,320,28"
+msgstr ""
+
 msgid "32 MB"
+msgstr ""
+
+msgid "33,0,694,30"
+msgstr ""
+
+msgid "33,3,25,25"
+msgstr ""
+
+msgid "36,1,694,28"
 msgstr ""
 
 #
@@ -724,6 +765,15 @@ msgstr "3D mód"
 msgid "4"
 msgstr "4"
 
+msgid "400"
+msgstr ""
+
+msgid "47,1,1147,28"
+msgstr ""
+
+msgid "47,1,685,28"
+msgstr ""
+
 #
 msgid "4:3"
 msgstr "4:3"
@@ -745,13 +795,43 @@ msgstr "4"
 msgid "5"
 msgstr "5"
 
+msgid "5,1,520,23"
+msgstr ""
+
+msgid "5,1,630,23"
+msgstr ""
+
+msgid "5,2,630,28"
+msgstr ""
+
+msgid "5,25,630,23"
+msgstr ""
+
+msgid "5,30,630,27"
+msgstr ""
+
+msgid "5,7,16,16"
+msgstr ""
+
 msgid "512 MB"
 msgstr ""
 
 msgid "512 MB (recommended for this chipset)"
 msgstr ""
 
+msgid "535,1,100,23"
+msgstr ""
+
 msgid "6"
+msgstr ""
+
+msgid "6,1,300,28"
+msgstr ""
+
+msgid "6,1,320,28"
+msgstr ""
+
+msgid "63,0,661,30"
 msgstr ""
 
 msgid "64 MB"
@@ -760,10 +840,19 @@ msgstr ""
 msgid "7"
 msgstr ""
 
+msgid "7,0,40,30"
+msgstr ""
+
 #
 #, fuzzy
 msgid "8"
 msgstr "8"
+
+msgid "83,2,30"
+msgstr ""
+
+msgid "83,28,26"
+msgstr ""
 
 #
 #, fuzzy
@@ -1470,6 +1559,10 @@ msgid "Anguilla"
 msgstr ""
 
 #, fuzzy
+msgid "Animation Settings"
+msgstr "Nastavení pozicioneru"
+
+#, fuzzy
 msgid "Animation Setup"
 msgstr "Nastavení pozicioneru"
 
@@ -1761,6 +1854,25 @@ msgstr ""
 #
 msgid "Auto scart switching"
 msgstr "Automatické přepínání scart"
+
+#
+#, fuzzy
+msgid "AutoDiseqc"
+msgstr "Automatické"
+
+#
+#, fuzzy
+msgid "AutoMountManager"
+msgstr "Multisat vybrat vše"
+
+#
+#, fuzzy
+msgid "AutoTimer Overview"
+msgstr "Přehled časovačů"
+
+#, fuzzy
+msgid "AutoTimer Settings"
+msgstr "Nastavení titulků"
 
 #
 msgid "Automatic"
@@ -2178,6 +2290,10 @@ msgstr "CI přiřazení"
 #, fuzzy
 msgid "CI slot: "
 msgstr "žádný CI slot nenalezen"
+
+#, fuzzy
+msgid "CIHelper Setup"
+msgstr "Přizpůsobení"
 
 msgid "CPU priority for script execution"
 msgstr ""
@@ -4283,6 +4399,10 @@ msgstr ""
 msgid "Do you want to burn this collection to DVD medium?"
 msgstr "Chcete vypálit tuto kompilaci na DVD?"
 
+#, fuzzy
+msgid "Do you want to delete all other languages?"
+msgstr "Chcete odstranit všechny protokoly pádu systému"
+
 #
 #, fuzzy
 msgid "Do you want to delete the old settings in /etc/enigma2 first?"
@@ -4431,6 +4551,11 @@ msgstr[1] "Dokončeno - instalovány, aktualizovány nebo odstraněny %d balíč
 msgstr[2] "Dokončeno - instalováno, aktualizováno nebo odstraněno %d balíčků (%s)"
 
 #
+#, fuzzy
+msgid "Download Movie Info"
+msgstr "Stahuji"
+
+#
 msgid "Download plugins"
 msgstr "Stáhnout pluginy"
 
@@ -4492,6 +4617,26 @@ msgstr "Východní"
 msgid "ECM Info"
 msgstr "Informace"
 
+#, fuzzy
+msgid "EEPGRefresh Configuration"
+msgstr "Konfigurace tuneru"
+
+#, fuzzy
+msgid "EMC Cover Selecter"
+msgstr "Výběr filmů"
+
+msgid "EMC Cover search"
+msgstr ""
+
+#, fuzzy
+msgid "EMC imdb Setup"
+msgstr "Přizpůsobení"
+
+#
+#, fuzzy
+msgid "EMC menu"
+msgstr "Upravit časovač"
+
 msgid "ENABLE DISABLE PLUGIN IF U WANT IT"
 msgstr ""
 
@@ -4526,6 +4671,10 @@ msgstr "Nastavení EPG"
 msgid "EPG:"
 msgstr ""
 
+#, fuzzy
+msgid "EPGRefresh Configuration"
+msgstr "Konfigurace tuneru"
+
 #
 #, python-format
 msgid "ERROR - failed to scan (%s)!"
@@ -4548,6 +4697,20 @@ msgstr ""
 #
 msgid "Edit"
 msgstr "Upravit"
+
+#
+#, fuzzy
+msgid "Edit AutoTimer"
+msgstr "Upravit časovač"
+
+#
+#, fuzzy
+msgid "Edit AutoTimer Filters"
+msgstr "Upravit časovač"
+
+#, fuzzy
+msgid "Edit AutoTimer Services"
+msgstr "Přejít na první program"
 
 #
 msgid "Edit DNS"
@@ -4632,6 +4795,11 @@ msgstr ""
 
 #
 msgid "Electronic Program Guide"
+msgstr "EPG"
+
+#
+#, fuzzy
+msgid "Electronic Program Guide Setup"
 msgstr "EPG"
 
 msgid "Embedded"
@@ -4855,6 +5023,12 @@ msgstr "Konec ignorování vypnutí ve standby"
 #
 msgid "English"
 msgstr "Anglicky"
+
+msgid "Enhanced Movie Center"
+msgstr ""
+
+msgid "EnhancedMovieCenterMenu"
+msgstr ""
 
 #, python-format
 msgid "Enigma (re)starts: %d\n"
@@ -5309,6 +5483,23 @@ msgstr ""
 msgid "FTA"
 msgstr ""
 
+#, fuzzy
+msgid "FTP Browser"
+msgstr "Pluginy"
+
+#
+#, fuzzy
+msgid "FTP Queue Manager"
+msgstr "Název zařízení:"
+
+msgid "FTP Server Editor"
+msgstr ""
+
+#
+#, fuzzy
+msgid "FTP Server Manager"
+msgstr "Název zařízení:"
+
 #
 #, fuzzy
 msgid "FTP Setup"
@@ -5649,6 +5840,11 @@ msgstr ""
 
 #
 #, fuzzy
+msgid "FlashOnline"
+msgstr "Nahrání selhalo"
+
+#
+#, fuzzy
 msgid "Flashed: "
 msgstr "Nahrání selhalo"
 
@@ -5818,6 +6014,11 @@ msgstr "Další možnosti"
 msgid "Further options"
 msgstr "Další možnosti"
 
+#
+#, fuzzy
+msgid "GBAspectRatioSwitchSetup"
+msgstr "Poměr stran"
+
 msgid "GStreamer: "
 msgstr ""
 
@@ -5897,6 +6098,13 @@ msgstr ""
 
 msgid "Gibraltar"
 msgstr ""
+
+msgid "GigaBlue IPBox Client"
+msgstr ""
+
+#, fuzzy
+msgid "GigaBlue Setup"
+msgstr "Přizpůsobení"
 
 #
 msgid "Go down the list"
@@ -6075,8 +6283,18 @@ msgstr ""
 msgid "HD2400"
 msgstr ""
 
+#
+#, fuzzy
+msgid "HDD Info"
+msgstr "Informace"
+
 msgid "HDMI"
 msgstr ""
+
+#
+#, fuzzy
+msgid "HDMI CEC setup"
+msgstr "Nastavení HDMI-CEC"
 
 #
 #, fuzzy
@@ -6165,6 +6383,14 @@ msgstr "Zachytávat standby z TV"
 msgid "Handle wakeup from TV"
 msgstr "Zachytávat probouzení z TV"
 
+#, fuzzy
+msgid "Hard Drive Partitions"
+msgstr "Polarizace"
+
+#, fuzzy
+msgid "Hard Drive Setup"
+msgstr "Nastavení pevného disku"
+
 #
 #, fuzzy
 msgid "Hard disk"
@@ -6190,6 +6416,11 @@ msgstr "Nastavení pevného disku"
 msgid "Harddisk standby after"
 msgstr "Uspat pevný disk po"
 
+#
+#, fuzzy
+msgid "HddMount"
+msgstr "Připojit"
+
 #, python-format
 msgid "Heads: %s (max) %s (current)"
 msgstr ""
@@ -6211,7 +6442,7 @@ msgid "Height"
 msgstr "výška"
 
 #, fuzzy
-msgid "Helps setting up your signal"
+msgid "Helps setting up your antenna"
 msgstr "Pomáhá nastavit parabolu"
 
 msgid "Hidden network"
@@ -6364,6 +6595,11 @@ msgstr "URL pro záložní vzdálený přijímač"
 msgid "IP:"
 msgstr ""
 
+#
+#, fuzzy
+msgid "IPv6 setup"
+msgstr "Nastavení"
+
 #, fuzzy
 msgid "IPv6 support"
 msgstr "nepodporováno"
@@ -6486,6 +6722,11 @@ msgstr ""
 
 msgid "ImageWizard"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Import AutoTimer"
+msgstr "Setřídit dle času"
 
 msgid "Import channels and/or EPG from remote receiver URL also when the receiver is getting out of standby"
 msgstr ""
@@ -7033,6 +7274,9 @@ msgstr ""
 msgid "Korea (Republic of)"
 msgstr ""
 
+msgid "KravenHD"
+msgstr ""
+
 #
 #, fuzzy
 msgid "Kuwait"
@@ -7382,6 +7626,9 @@ msgid "MMC card"
 msgstr ""
 
 msgid "MORE"
+msgstr ""
+
+msgid "MPHelp"
 msgstr ""
 
 msgid "MSN Weather City Name"
@@ -7773,6 +8020,16 @@ msgstr ""
 
 #
 #, fuzzy
+msgid "MountEdit"
+msgstr "Připojit"
+
+#
+#, fuzzy
+msgid "MountView"
+msgstr "Připojit"
+
+#
+#, fuzzy
 msgid "Mountpoints"
 msgstr "Připojit"
 
@@ -7915,6 +8172,19 @@ msgstr "Natáčení"
 #, fuzzy
 msgid "Movie"
 msgstr "Natáčení"
+
+msgid "Movie Info Preview"
+msgstr ""
+
+#
+#, fuzzy
+msgid "Movie Info Setup"
+msgstr "Nastavení"
+
+#
+#, fuzzy
+msgid "Movie List Setup"
+msgstr "Nabídka seznamu filmů"
 
 msgid "Movie list configuration"
 msgstr "Nastavení seznamu filmů"
@@ -8160,6 +8430,11 @@ msgstr "Nastavení sítě..."
 #, fuzzy
 msgid "Network MAC settings"
 msgstr "Aktivovat nastavení sítě"
+
+#
+#, fuzzy
+msgid "Network Neighbourhood"
+msgstr "Pomocník sítě"
 
 #
 #, fuzzy
@@ -8775,6 +9050,10 @@ msgstr ""
 msgid "OpenVpn Setup"
 msgstr "Prosím, nastavte tuner A"
 
+#, fuzzy
+msgid "OpenWebif Configuration"
+msgstr "Konfigurace tuneru"
+
 msgid "Operating LED status in deep standby mode"
 msgstr ""
 
@@ -8798,6 +9077,9 @@ msgstr ""
 
 msgid "Original"
 msgstr "Originál"
+
+msgid "OscamSmartcard-Setup"
+msgstr ""
 
 msgid "Other"
 msgstr "Další"
@@ -8948,6 +9230,11 @@ msgstr "Balíčky k aktualizaci"
 
 #
 msgid "Packet manager"
+msgstr "Správce doplňků"
+
+#
+#, fuzzy
+msgid "PacketManager"
 msgstr "Správce doplňků"
 
 #
@@ -10309,6 +10596,16 @@ msgid "Regular file"
 msgstr "Soubor s šablonou"
 
 #
+#, fuzzy
+msgid "Regular;18"
+msgstr "Soubor s šablonou"
+
+#
+#, fuzzy
+msgid "Regular;20"
+msgstr "Soubor s šablonou"
+
+#
 msgid "Relative"
 msgstr "Relativní"
 
@@ -11389,6 +11686,11 @@ msgstr "Zvolit"
 
 #
 #, fuzzy
+msgid "Select OPKG source....."
+msgstr "Vyberte zdroje pro aktualizaci"
+
+#
+#, fuzzy
 msgid "Select Software Update"
 msgstr "Aktualizace software"
 
@@ -11479,6 +11781,11 @@ msgstr "Výběr souborů pro zálohování."
 
 #
 msgid "Select files/folders to backup"
+msgstr "Vyberte soubory/složky pro zálohování"
+
+#
+#, fuzzy
+msgid "Select files/folders to backup..."
 msgstr "Vyberte soubory/složky pro zálohování"
 
 #
@@ -12490,11 +12797,6 @@ msgstr "Vedle sebe"
 
 msgid "Sierra Leone"
 msgstr ""
-
-#
-#, fuzzy
-msgid "Signal Finder"
-msgstr "Signál: "
 
 msgid "Signal OK, proceeding"
 msgstr "Signál OK, pokračuji"
@@ -15434,6 +15736,12 @@ msgid ""
 "Component: enigma2"
 msgstr ""
 
+msgid "WeatherPlugin: Edit Entry"
+msgstr ""
+
+msgid "WeatherPlugin: List of Entries"
+msgstr ""
+
 #, fuzzy
 msgid "Web Browser"
 msgstr "Pluginy"
@@ -16575,6 +16883,11 @@ msgstr "levá kruhová (polarizace)"
 msgid "circular right"
 msgstr "pravá kruhová (polarizace)"
 
+#
+#, fuzzy
+msgid "clean up"
+msgstr "Vyčistit"
+
 msgid "clip overscan / letterbox borders"
 msgstr ""
 
@@ -17283,6 +17596,11 @@ msgstr "Prohlížeč adresářů"
 msgid "open nameserver configuration"
 msgstr "otevřít konfiguraci DNS"
 
+#
+#, fuzzy
+msgid "openMultiboot Manager"
+msgstr "Multisat vybrat vše"
+
 msgid "original"
 msgstr "původní"
 
@@ -17816,6 +18134,9 @@ msgstr "s %d chybou"
 #, fuzzy
 msgid "without"
 msgstr "bez dialogu"
+
+msgid "x"
+msgstr ""
 
 msgid "xp1000"
 msgstr ""

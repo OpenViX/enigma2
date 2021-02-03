@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-20 12:56+0100\n"
+"POT-Creation-Date: 2021-02-03 23:45+0100\n"
 "PO-Revision-Date: 2018-12-17 02:51+0200\n"
 "Last-Translator: Hazem <moustafagamal@hotmail.com>\n"
 "Language-Team: Arabic <moustafagamal@hotmail.com>\n"
@@ -587,6 +587,10 @@ msgstr ""
 msgid "-SERVICE ERROR:%d\n"
 msgstr ""
 
+#, fuzzy
+msgid "..."
+msgstr "مساعده..."
+
 msgid "/media/custom"
 msgstr ""
 
@@ -605,6 +609,9 @@ msgstr "دليل البدايه"
 msgid "0"
 msgstr ""
 
+msgid "0,24,1147,20"
+msgstr ""
+
 msgid "1"
 msgstr ""
 
@@ -621,6 +628,12 @@ msgid "1024 MB"
 msgstr ""
 
 msgid "10bit"
+msgstr ""
+
+msgid "120,2,30"
+msgstr ""
+
+msgid "120,28,26"
 msgstr ""
 
 msgid "128 MB"
@@ -674,6 +687,12 @@ msgstr "18 ف"
 msgid "2"
 msgstr ""
 
+msgid "2,0,80,50"
+msgstr ""
+
+msgid "20"
+msgstr ""
+
 msgid "2048 MB (maximum)"
 msgstr ""
 
@@ -692,6 +711,9 @@ msgstr ""
 msgid "256 MB (recommended for this chipset)"
 msgstr ""
 
+msgid "26,1,559,28"
+msgstr ""
+
 msgid "29.97"
 msgstr ""
 
@@ -699,10 +721,28 @@ msgstr ""
 msgid "3"
 msgstr "3"
 
+msgid "3,3,25,25"
+msgstr ""
+
+msgid "3,5,100,40"
+msgstr ""
+
 msgid "30"
 msgstr ""
 
+msgid "306,1,320,28"
+msgstr ""
+
 msgid "32 MB"
+msgstr ""
+
+msgid "33,0,694,30"
+msgstr ""
+
+msgid "33,3,25,25"
+msgstr ""
+
+msgid "36,1,694,28"
 msgstr ""
 
 #, fuzzy
@@ -726,6 +766,15 @@ msgstr ""
 msgid "4"
 msgstr "4"
 
+msgid "400"
+msgstr ""
+
+msgid "47,1,1147,28"
+msgstr ""
+
+msgid "47,1,685,28"
+msgstr ""
+
 msgid "4:3"
 msgstr "4:3"
 
@@ -744,13 +793,43 @@ msgstr "4"
 msgid "5"
 msgstr "5"
 
+msgid "5,1,520,23"
+msgstr ""
+
+msgid "5,1,630,23"
+msgstr ""
+
+msgid "5,2,630,28"
+msgstr ""
+
+msgid "5,25,630,23"
+msgstr ""
+
+msgid "5,30,630,27"
+msgstr ""
+
+msgid "5,7,16,16"
+msgstr ""
+
 msgid "512 MB"
 msgstr ""
 
 msgid "512 MB (recommended for this chipset)"
 msgstr ""
 
+msgid "535,1,100,23"
+msgstr ""
+
 msgid "6"
+msgstr ""
+
+msgid "6,1,300,28"
+msgstr ""
+
+msgid "6,1,320,28"
+msgstr ""
+
+msgid "63,0,661,30"
 msgstr ""
 
 msgid "64 MB"
@@ -759,9 +838,18 @@ msgstr ""
 msgid "7"
 msgstr ""
 
+msgid "7,0,40,30"
+msgstr ""
+
 #, fuzzy
 msgid "8"
 msgstr "8"
+
+msgid "83,2,30"
+msgstr ""
+
+msgid "83,28,26"
+msgstr ""
 
 #, fuzzy
 msgid "8K"
@@ -1425,6 +1513,10 @@ msgid "Anguilla"
 msgstr ""
 
 #, fuzzy
+msgid "Animation Settings"
+msgstr "ضبط الموتور"
+
+#, fuzzy
 msgid "Animation Setup"
 msgstr "ضبط الموتور"
 
@@ -1684,6 +1776,25 @@ msgstr ""
 
 msgid "Auto scart switching"
 msgstr "التحول الآلى الى السكارت"
+
+#, fuzzy
+msgid "AutoDiseqc"
+msgstr "آلى"
+
+#
+#, fuzzy
+msgid "AutoMountManager"
+msgstr "إختيار العناوين الفرعيه"
+
+#
+#, fuzzy
+msgid "AutoTimer Overview"
+msgstr "إدخال المؤقت"
+
+#
+#, fuzzy
+msgid "AutoTimer Settings"
+msgstr "إختيار العناوين الفرعيه"
 
 msgid "Automatic"
 msgstr "آلى"
@@ -2075,6 +2186,11 @@ msgstr ""
 
 msgid "CI slot: "
 msgstr ""
+
+#
+#, fuzzy
+msgid "CIHelper Setup"
+msgstr "الضبـط"
 
 msgid "CPU priority for script execution"
 msgstr ""
@@ -4009,6 +4125,10 @@ msgid "Do you want to burn this collection to DVD medium?"
 msgstr "هل تريد حرق هذه المجموعه فى وسيط دى فى دى ؟"
 
 #, fuzzy
+msgid "Do you want to delete all other languages?"
+msgstr "هل تريد فعلا حذف الرزمه:\n"
+
+#, fuzzy
 msgid "Do you want to delete the old settings in /etc/enigma2 first?"
 msgstr "هل تريد إستعادة الاعدادات ؟"
 
@@ -4143,6 +4263,10 @@ msgstr[4] "تم - تثبيت ، تحديث أو حذف %d الرزم والاخ�
 msgstr[5] "تم - تثبيت ، تحديث أو حذف %d الرزم والاخطاء%d "
 
 #, fuzzy
+msgid "Download Movie Info"
+msgstr "جارى التحميل"
+
+#, fuzzy
 msgid "Download plugins"
 msgstr "تحميل بلج إنز"
 
@@ -4194,6 +4318,27 @@ msgstr ""
 msgid "ECM Info"
 msgstr "معلومات"
 
+#, fuzzy
+msgid "EEPGRefresh Configuration"
+msgstr "تهيئة الموالف"
+
+#, fuzzy
+msgid "EMC Cover Selecter"
+msgstr "مكان الفيلم"
+
+msgid "EMC Cover search"
+msgstr ""
+
+#
+#, fuzzy
+msgid "EMC imdb Setup"
+msgstr "الضبـط"
+
+#
+#, fuzzy
+msgid "EMC menu"
+msgstr "القائـمه الرئيسيـه"
+
 msgid "ENABLE DISABLE PLUGIN IF U WANT IT"
 msgstr ""
 
@@ -4226,6 +4371,10 @@ msgstr ""
 msgid "EPG:"
 msgstr ""
 
+#, fuzzy
+msgid "EPGRefresh Configuration"
+msgstr "تهيئة الموالف"
+
 #
 #, python-format
 msgid "ERROR - failed to scan (%s)!"
@@ -4247,6 +4396,17 @@ msgstr ""
 
 msgid "Edit"
 msgstr "تحرير"
+
+#, fuzzy
+msgid "Edit AutoTimer"
+msgstr "تحرير العنوان"
+
+msgid "Edit AutoTimer Filters"
+msgstr ""
+
+#, fuzzy
+msgid "Edit AutoTimer Services"
+msgstr "الانتقال لاعلى الى البند الاول"
 
 #
 msgid "Edit DNS"
@@ -4323,6 +4483,10 @@ msgid "El Salvador"
 msgstr ""
 
 msgid "Electronic Program Guide"
+msgstr "دليل البرنامج الالكترونى"
+
+#, fuzzy
+msgid "Electronic Program Guide Setup"
 msgstr "دليل البرنامج الالكترونى"
 
 msgid "Embedded"
@@ -4531,6 +4695,12 @@ msgstr ""
 #
 msgid "English"
 msgstr "إنجليزى"
+
+msgid "Enhanced Movie Center"
+msgstr ""
+
+msgid "EnhancedMovieCenterMenu"
+msgstr ""
 
 #, python-format
 msgid "Enigma (re)starts: %d\n"
@@ -4948,6 +5118,24 @@ msgstr ""
 
 #
 #, fuzzy
+msgid "FTP Browser"
+msgstr "متصفح البلج إنز"
+
+#
+#, fuzzy
+msgid "FTP Queue Manager"
+msgstr "بخث عن القنوات"
+
+msgid "FTP Server Editor"
+msgstr ""
+
+#
+#, fuzzy
+msgid "FTP Server Manager"
+msgstr "بخث عن القنوات"
+
+#
+#, fuzzy
 msgid "FTP Setup"
 msgstr "الضبـط"
 
@@ -5246,6 +5434,10 @@ msgid "Flash, restore settings and user selected plugins"
 msgstr ""
 
 #, fuzzy
+msgid "FlashOnline"
+msgstr "فشل الشحن"
+
+#, fuzzy
 msgid "Flashed: "
 msgstr "فشل الشحن"
 
@@ -5403,6 +5595,10 @@ msgstr ""
 msgid "Further options"
 msgstr ""
 
+#, fuzzy
+msgid "GBAspectRatioSwitchSetup"
+msgstr "نسبة الجانب"
+
 msgid "GStreamer: "
 msgstr ""
 
@@ -5478,6 +5674,14 @@ msgstr ""
 
 msgid "Gibraltar"
 msgstr ""
+
+msgid "GigaBlue IPBox Client"
+msgstr ""
+
+#
+#, fuzzy
+msgid "GigaBlue Setup"
+msgstr "الضبـط"
 
 msgid "Go down the list"
 msgstr ""
@@ -5656,8 +5860,18 @@ msgstr ""
 msgid "HD2400"
 msgstr ""
 
+#
+#, fuzzy
+msgid "HDD Info"
+msgstr "معلومات"
+
 msgid "HDMI"
 msgstr ""
+
+#
+#, fuzzy
+msgid "HDMI CEC setup"
+msgstr "الضبـط"
 
 #, fuzzy
 msgid "HDMI Colordepth"
@@ -5737,6 +5951,15 @@ msgstr ""
 
 #
 #, fuzzy
+msgid "Hard Drive Partitions"
+msgstr "الاستقطاب"
+
+#, fuzzy
+msgid "Hard Drive Setup"
+msgstr "ضبط القرص الصلب"
+
+#
+#, fuzzy
 msgid "Hard disk"
 msgstr "قرص صلب"
 
@@ -5760,6 +5983,9 @@ msgstr "ضبط القرص الصلب"
 msgid "Harddisk standby after"
 msgstr "القرص الصلب فى وضع الاستعداد بعد"
 
+msgid "HddMount"
+msgstr ""
+
 #, python-format
 msgid "Heads: %s (max) %s (current)"
 msgstr ""
@@ -5778,7 +6004,7 @@ msgstr ""
 msgid "Height"
 msgstr "يمين"
 
-msgid "Helps setting up your signal"
+msgid "Helps setting up your antenna"
 msgstr ""
 
 msgid "Hidden network"
@@ -5924,6 +6150,11 @@ msgstr ""
 msgid "IP:"
 msgstr ""
 
+#
+#, fuzzy
+msgid "IPv6 setup"
+msgstr "الضبـط"
+
 #, fuzzy
 msgid "IPv6 support"
 msgstr "غير مدعم"
@@ -6039,6 +6270,11 @@ msgstr ""
 
 msgid "ImageWizard"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Import AutoTimer"
+msgstr "تصنيف الوقت"
 
 msgid "Import channels and/or EPG from remote receiver URL also when the receiver is getting out of standby"
 msgstr ""
@@ -6554,6 +6790,9 @@ msgstr ""
 msgid "Korea (Republic of)"
 msgstr ""
 
+msgid "KravenHD"
+msgstr ""
+
 #, fuzzy
 msgid "Kuwait"
 msgstr "فى الانتظار"
@@ -6894,6 +7133,9 @@ msgid "MMC card"
 msgstr ""
 
 msgid "MORE"
+msgstr ""
+
+msgid "MPHelp"
 msgstr ""
 
 msgid "MSN Weather City Name"
@@ -7278,6 +7520,13 @@ msgstr ""
 msgid "Mount point exist!"
 msgstr ""
 
+#, fuzzy
+msgid "MountEdit"
+msgstr "تحرير"
+
+msgid "MountView"
+msgstr ""
+
 msgid "Mountpoints"
 msgstr ""
 
@@ -7402,6 +7651,18 @@ msgstr ""
 
 msgid "Movie"
 msgstr ""
+
+msgid "Movie Info Preview"
+msgstr ""
+
+#
+#, fuzzy
+msgid "Movie Info Setup"
+msgstr "الضبـط"
+
+#, fuzzy
+msgid "Movie List Setup"
+msgstr "قائمة سجل الافلام"
 
 #, fuzzy
 msgid "Movie list configuration"
@@ -7629,6 +7890,10 @@ msgstr "تكوين الشبكه"
 #, fuzzy
 msgid "Network MAC settings"
 msgstr "تفعيل إعدادات الشبكه"
+
+#, fuzzy
+msgid "Network Neighbourhood"
+msgstr "نافذة ضبط الشبكه"
 
 #, fuzzy
 msgid "Network Speed:"
@@ -8203,6 +8468,10 @@ msgstr ""
 msgid "OpenVpn Setup"
 msgstr "من فضلك أضبط الموالف B"
 
+#, fuzzy
+msgid "OpenWebif Configuration"
+msgstr "تهيئة الموالف"
+
 msgid "Operating LED status in deep standby mode"
 msgstr ""
 
@@ -8225,6 +8494,9 @@ msgid "Ordinary"
 msgstr ""
 
 msgid "Original"
+msgstr ""
+
+msgid "OscamSmartcard-Setup"
 msgstr ""
 
 msgid "Other"
@@ -8370,6 +8642,10 @@ msgid "Packages to update"
 msgstr "تحديث قائمة الباقات"
 
 msgid "Packet manager"
+msgstr "المتحكم فى الحزم"
+
+#, fuzzy
+msgid "PacketManager"
 msgstr "المتحكم فى الحزم"
 
 msgid "Page down list"
@@ -9590,6 +9866,14 @@ msgstr ""
 msgid "Regular file"
 msgstr "ملف قالب"
 
+#, fuzzy
+msgid "Regular;18"
+msgstr "ملف قالب"
+
+#, fuzzy
+msgid "Regular;20"
+msgstr "ملف قالب"
+
 msgid "Relative"
 msgstr ""
 
@@ -10582,6 +10866,10 @@ msgid "Select HDD"
 msgstr "أختار"
 
 #, fuzzy
+msgid "Select OPKG source....."
+msgstr "أختار مصدر الترقيه المراد تحريره"
+
+#, fuzzy
 msgid "Select Software Update"
 msgstr "ترقية البرنامج التشغيلى"
 
@@ -10666,6 +10954,10 @@ msgid "Select files for backup."
 msgstr ""
 
 msgid "Select files/folders to backup"
+msgstr "أختار ملفات/مجلدات النسخه الاحتياطيه"
+
+#, fuzzy
+msgid "Select files/folders to backup..."
 msgstr "أختار ملفات/مجلدات النسخه الاحتياطيه"
 
 #, fuzzy
@@ -11652,11 +11944,6 @@ msgstr ""
 
 msgid "Sierra Leone"
 msgstr ""
-
-#
-#, fuzzy
-msgid "Signal Finder"
-msgstr "الاشاره"
 
 msgid "Signal OK, proceeding"
 msgstr ""
@@ -14496,6 +14783,12 @@ msgid ""
 "Component: enigma2"
 msgstr ""
 
+msgid "WeatherPlugin: Edit Entry"
+msgstr ""
+
+msgid "WeatherPlugin: List of Entries"
+msgstr ""
+
 msgid "Web Browser"
 msgstr ""
 
@@ -15518,6 +15811,10 @@ msgstr "دائرى يسار"
 msgid "circular right"
 msgstr "دائرى يمين"
 
+#, fuzzy
+msgid "clean up"
+msgstr "تنظيف"
+
 msgid "clip overscan / letterbox borders"
 msgstr ""
 
@@ -16159,6 +16456,11 @@ msgstr "متصفح الدليل"
 msgid "open nameserver configuration"
 msgstr "فتح تكوين أسم الخادم"
 
+#
+#, fuzzy
+msgid "openMultiboot Manager"
+msgstr "إختيار العناوين الفرعيه"
+
 msgid "original"
 msgstr ""
 
@@ -16648,6 +16950,9 @@ msgid "with_errors"
 msgstr ""
 
 msgid "without"
+msgstr ""
+
+msgid "x"
 msgstr ""
 
 msgid "xp1000"

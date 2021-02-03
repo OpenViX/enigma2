@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-20 12:56+0100\n"
+"POT-Creation-Date: 2021-02-03 23:45+0100\n"
 "PO-Revision-Date: 2020-02-29 08:52+0200\n"
 "Last-Translator: Audronis Grincevicius <adga45@gmail.com>\n"
 "Language-Team: Adga (C) <adga45@gmail.com>\n"
@@ -523,6 +523,10 @@ msgstr ""
 msgid "-SERVICE ERROR:%d\n"
 msgstr ""
 
+#, fuzzy
+msgid "..."
+msgstr "pagalba..."
+
 msgid "/media/custom"
 msgstr ""
 
@@ -538,6 +542,9 @@ msgid "/var directory"
 msgstr "pradėti direktoriją"
 
 msgid "0"
+msgstr ""
+
+msgid "0,24,1147,20"
 msgstr ""
 
 msgid "1"
@@ -556,6 +563,12 @@ msgid "1024 MB"
 msgstr ""
 
 msgid "10bit"
+msgstr ""
+
+msgid "120,2,30"
+msgstr ""
+
+msgid "120,28,26"
 msgstr ""
 
 msgid "128 MB"
@@ -603,6 +616,12 @@ msgstr "18 V"
 msgid "2"
 msgstr ""
 
+msgid "2,0,80,50"
+msgstr ""
+
+msgid "20"
+msgstr ""
+
 msgid "2048 MB (maximum)"
 msgstr ""
 
@@ -621,6 +640,9 @@ msgstr ""
 msgid "256 MB (recommended for this chipset)"
 msgstr ""
 
+msgid "26,1,559,28"
+msgstr ""
+
 msgid "29.97"
 msgstr ""
 
@@ -628,10 +650,28 @@ msgstr ""
 msgid "3"
 msgstr "3"
 
+msgid "3,3,25,25"
+msgstr ""
+
+msgid "3,5,100,40"
+msgstr ""
+
 msgid "30"
 msgstr ""
 
+msgid "306,1,320,28"
+msgstr ""
+
 msgid "32 MB"
+msgstr ""
+
+msgid "33,0,694,30"
+msgstr ""
+
+msgid "33,3,25,25"
+msgstr ""
+
+msgid "36,1,694,28"
 msgstr ""
 
 #, fuzzy
@@ -654,6 +694,15 @@ msgstr ""
 msgid "4"
 msgstr "4"
 
+msgid "400"
+msgstr ""
+
+msgid "47,1,1147,28"
+msgstr ""
+
+msgid "47,1,685,28"
+msgstr ""
+
 msgid "4:3"
 msgstr "4:3"
 
@@ -670,13 +719,43 @@ msgstr "4"
 msgid "5"
 msgstr "5"
 
+msgid "5,1,520,23"
+msgstr ""
+
+msgid "5,1,630,23"
+msgstr ""
+
+msgid "5,2,630,28"
+msgstr ""
+
+msgid "5,25,630,23"
+msgstr ""
+
+msgid "5,30,630,27"
+msgstr ""
+
+msgid "5,7,16,16"
+msgstr ""
+
 msgid "512 MB"
 msgstr ""
 
 msgid "512 MB (recommended for this chipset)"
 msgstr ""
 
+msgid "535,1,100,23"
+msgstr ""
+
 msgid "6"
+msgstr ""
+
+msgid "6,1,300,28"
+msgstr ""
+
+msgid "6,1,320,28"
+msgstr ""
+
+msgid "63,0,661,30"
 msgstr ""
 
 msgid "64 MB"
@@ -685,9 +764,18 @@ msgstr ""
 msgid "7"
 msgstr ""
 
+msgid "7,0,40,30"
+msgstr ""
+
 #, fuzzy
 msgid "8"
 msgstr "8"
+
+msgid "83,2,30"
+msgstr ""
+
+msgid "83,28,26"
+msgstr ""
 
 #, fuzzy
 msgid "8K"
@@ -1303,6 +1391,10 @@ msgid "Anguilla"
 msgstr ""
 
 #, fuzzy
+msgid "Animation Settings"
+msgstr "Pozicionieriaus nustatymas"
+
+#, fuzzy
 msgid "Animation Setup"
 msgstr "Pozicionieriaus nustatymas"
 
@@ -1557,6 +1649,22 @@ msgstr ""
 
 msgid "Auto scart switching"
 msgstr "Automatinis skarto perjungimas"
+
+#, fuzzy
+msgid "AutoDiseqc"
+msgstr "Automatinis"
+
+#, fuzzy
+msgid "AutoMountManager"
+msgstr "Multi-EPG paketų pasirinkimas"
+
+#, fuzzy
+msgid "AutoTimer Overview"
+msgstr "Laikmačio užduotis"
+
+#, fuzzy
+msgid "AutoTimer Settings"
+msgstr "Subtitrų pasirinkimas"
 
 msgid "Automatic"
 msgstr "Automatinis"
@@ -1925,6 +2033,10 @@ msgstr "CI nustatymas"
 #, fuzzy
 msgid "CI slot: "
 msgstr "jokie CI skaitytuvai nesurasti"
+
+#, fuzzy
+msgid "CIHelper Setup"
+msgstr "Nustatymai"
 
 msgid "CPU priority for script execution"
 msgstr ""
@@ -3809,6 +3921,10 @@ msgid "Do you want to burn this collection to DVD medium?"
 msgstr "Jūs norite įrašyti šią kolekciją į DVD?"
 
 #, fuzzy
+msgid "Do you want to delete all other languages?"
+msgstr "Ar norite pašalinti visus \"lūžimo\" žurnalų failus"
+
+#, fuzzy
 msgid "Do you want to delete the old settings in /etc/enigma2 first?"
 msgstr "Jūs norite atkurti nustatymus?"
 
@@ -3932,6 +4048,10 @@ msgstr[0] "Baigta - Įdiegti, patobulinti ar pašalinti %d paketai su %d klaidom
 msgstr[1] "Baigta - Įdiegti, patobulinti ar pašalinti %d paketai su %d klaidomis"
 
 #, fuzzy
+msgid "Download Movie Info"
+msgstr "Parsisiunčiama"
+
+#, fuzzy
 msgid "Download plugins"
 msgstr "Parsisiųsti papildomas programas"
 
@@ -3981,6 +4101,25 @@ msgstr "E"
 msgid "ECM Info"
 msgstr "Informacija"
 
+#, fuzzy
+msgid "EEPGRefresh Configuration"
+msgstr "Imtuvo konfigūravimas"
+
+#, fuzzy
+msgid "EMC Cover Selecter"
+msgstr "Filmo vieta"
+
+msgid "EMC Cover search"
+msgstr ""
+
+#, fuzzy
+msgid "EMC imdb Setup"
+msgstr "Nustatymai"
+
+#, fuzzy
+msgid "EMC menu"
+msgstr "Pagrindinis meniu"
+
 msgid "ENABLE DISABLE PLUGIN IF U WANT IT"
 msgstr ""
 
@@ -4012,6 +4151,10 @@ msgstr ""
 msgid "EPG:"
 msgstr ""
 
+#, fuzzy
+msgid "EPGRefresh Configuration"
+msgstr "Imtuvo konfigūravimas"
+
 #, python-format
 msgid "ERROR - failed to scan (%s)!"
 msgstr "KLAIDA - nenuskanuota (%s)!"
@@ -4031,6 +4174,17 @@ msgstr ""
 
 msgid "Edit"
 msgstr "Redaguoti"
+
+#, fuzzy
+msgid "Edit AutoTimer"
+msgstr "Redaguoti"
+
+msgid "Edit AutoTimer Filters"
+msgstr ""
+
+#, fuzzy
+msgid "Edit AutoTimer Services"
+msgstr "perkelti aukštyn prie pirmo įėjimo"
 
 msgid "Edit DNS"
 msgstr "Redaguoti DNS"
@@ -4101,6 +4255,10 @@ msgid "El Salvador"
 msgstr ""
 
 msgid "Electronic Program Guide"
+msgstr "Elektroninis programų gidas"
+
+#, fuzzy
+msgid "Electronic Program Guide Setup"
 msgstr "Elektroninis programų gidas"
 
 msgid "Embedded"
@@ -4296,6 +4454,12 @@ msgstr ""
 
 msgid "English"
 msgstr "Anglų"
+
+msgid "Enhanced Movie Center"
+msgstr ""
+
+msgid "EnhancedMovieCenterMenu"
+msgstr ""
 
 #, python-format
 msgid "Enigma (re)starts: %d\n"
@@ -4705,6 +4869,21 @@ msgid "FTA"
 msgstr ""
 
 #, fuzzy
+msgid "FTP Browser"
+msgstr "Papildomų programų naršyklė"
+
+#, fuzzy
+msgid "FTP Queue Manager"
+msgstr "Kanalų skanavimas"
+
+msgid "FTP Server Editor"
+msgstr ""
+
+#, fuzzy
+msgid "FTP Server Manager"
+msgstr "Kanalų skanavimas"
+
+#, fuzzy
 msgid "FTP Setup"
 msgstr "Nustatymai"
 
@@ -4995,6 +5174,10 @@ msgid "Flash, restore settings and user selected plugins"
 msgstr ""
 
 #, fuzzy
+msgid "FlashOnline"
+msgstr "Diegimas klaidingas"
+
+#, fuzzy
 msgid "Flashed: "
 msgstr "Diegimas klaidingas"
 
@@ -5141,6 +5324,10 @@ msgstr ""
 msgid "Further options"
 msgstr ""
 
+#, fuzzy
+msgid "GBAspectRatioSwitchSetup"
+msgstr "Vaizdo formatas"
+
 msgid "GStreamer: "
 msgstr ""
 
@@ -5211,6 +5398,13 @@ msgstr ""
 
 msgid "Gibraltar"
 msgstr ""
+
+msgid "GigaBlue IPBox Client"
+msgstr ""
+
+#, fuzzy
+msgid "GigaBlue Setup"
+msgstr "Nustatymai"
 
 msgid "Go down the list"
 msgstr ""
@@ -5385,8 +5579,16 @@ msgstr ""
 msgid "HD2400"
 msgstr ""
 
+#, fuzzy
+msgid "HDD Info"
+msgstr "Informacija"
+
 msgid "HDMI"
 msgstr ""
+
+#, fuzzy
+msgid "HDMI CEC setup"
+msgstr "Nustatymai"
 
 #, fuzzy
 msgid "HDMI Colordepth"
@@ -5463,6 +5665,14 @@ msgid "Handle wakeup from TV"
 msgstr ""
 
 #, fuzzy
+msgid "Hard Drive Partitions"
+msgstr "Poliarizacija"
+
+#, fuzzy
+msgid "Hard Drive Setup"
+msgstr "Kieto disko nustatymas"
+
+#, fuzzy
 msgid "Hard disk"
 msgstr "Kietas diskas"
 
@@ -5485,6 +5695,9 @@ msgstr "Kieto disko nustatymas"
 msgid "Harddisk standby after"
 msgstr "Kietas diskas išsijungs po"
 
+msgid "HddMount"
+msgstr ""
+
 #, python-format
 msgid "Heads: %s (max) %s (current)"
 msgstr ""
@@ -5503,7 +5716,7 @@ msgstr ""
 msgid "Height"
 msgstr "Dešinys"
 
-msgid "Helps setting up your signal"
+msgid "Helps setting up your antenna"
 msgstr ""
 
 msgid "Hidden network"
@@ -5647,6 +5860,10 @@ msgid "IP:"
 msgstr ""
 
 #, fuzzy
+msgid "IPv6 setup"
+msgstr "Nustatymai"
+
+#, fuzzy
 msgid "IPv6 support"
 msgstr "nepalaikomas"
 
@@ -5761,6 +5978,10 @@ msgstr ""
 
 msgid "ImageWizard"
 msgstr ""
+
+#, fuzzy
+msgid "Import AutoTimer"
+msgstr "Rūšiuoti laiką"
 
 msgid "Import channels and/or EPG from remote receiver URL also when the receiver is getting out of standby"
 msgstr ""
@@ -6250,6 +6471,9 @@ msgstr ""
 msgid "Korea (Republic of)"
 msgstr ""
 
+msgid "KravenHD"
+msgstr ""
+
 #, fuzzy
 msgid "Kuwait"
 msgstr "laukimas"
@@ -6556,6 +6780,9 @@ msgid "MMC card"
 msgstr ""
 
 msgid "MORE"
+msgstr ""
+
+msgid "MPHelp"
 msgstr ""
 
 msgid "MSN Weather City Name"
@@ -6907,6 +7134,13 @@ msgstr ""
 msgid "Mount point exist!"
 msgstr ""
 
+#, fuzzy
+msgid "MountEdit"
+msgstr "Redaguoti"
+
+msgid "MountView"
+msgstr ""
+
 msgid "Mountpoints"
 msgstr ""
 
@@ -7029,6 +7263,17 @@ msgstr ""
 
 msgid "Movie"
 msgstr ""
+
+msgid "Movie Info Preview"
+msgstr ""
+
+#, fuzzy
+msgid "Movie Info Setup"
+msgstr "Nustatymai"
+
+#, fuzzy
+msgid "Movie List Setup"
+msgstr "Filmų sąrašo meniu"
 
 #, fuzzy
 msgid "Movie list configuration"
@@ -7239,6 +7484,10 @@ msgstr "Tinklo konfigūracija..."
 #, fuzzy
 msgid "Network MAC settings"
 msgstr "Aktyvuoti tinklo nustatymus"
+
+#, fuzzy
+msgid "Network Neighbourhood"
+msgstr "Tinklo vedlys"
 
 #, fuzzy
 msgid "Network Speed:"
@@ -7778,6 +8027,10 @@ msgstr ""
 msgid "OpenVpn Setup"
 msgstr "Prašome nustatyti imtuvą B"
 
+#, fuzzy
+msgid "OpenWebif Configuration"
+msgstr "Imtuvo konfigūravimas"
+
 msgid "Operating LED status in deep standby mode"
 msgstr ""
 
@@ -7800,6 +8053,9 @@ msgid "Ordinary"
 msgstr ""
 
 msgid "Original"
+msgstr ""
+
+msgid "OscamSmartcard-Setup"
 msgstr ""
 
 msgid "Other"
@@ -7943,6 +8199,10 @@ msgid "Packages to update"
 msgstr "Paketo sąrašo atnaujinimas"
 
 msgid "Packet manager"
+msgstr "Paketo valdytojas"
+
+#, fuzzy
+msgid "PacketManager"
 msgstr "Paketo valdytojas"
 
 msgid "Page down list"
@@ -9104,6 +9364,14 @@ msgstr ""
 msgid "Regular file"
 msgstr "šablono failas"
 
+#, fuzzy
+msgid "Regular;18"
+msgstr "šablono failas"
+
+#, fuzzy
+msgid "Regular;20"
+msgstr "šablono failas"
+
 msgid "Relative"
 msgstr ""
 
@@ -10043,6 +10311,10 @@ msgid "Select HDD"
 msgstr "Išsirinkite"
 
 #, fuzzy
+msgid "Select OPKG source....."
+msgstr "Išsirinkite atnaujinimo šaltinį dėl redagavimo."
+
+#, fuzzy
 msgid "Select Software Update"
 msgstr "Programinės įrangos atnaujinimas"
 
@@ -10120,6 +10392,10 @@ msgid "Select files for backup."
 msgstr "Pasirinkite failus atsarginei kopijai."
 
 msgid "Select files/folders to backup"
+msgstr "Išsirinkite failus/aplankus dėl atsarginės kopijos"
+
+#, fuzzy
+msgid "Select files/folders to backup..."
 msgstr "Išsirinkite failus/aplankus dėl atsarginės kopijos"
 
 #, fuzzy
@@ -11055,10 +11331,6 @@ msgstr ""
 
 msgid "Sierra Leone"
 msgstr ""
-
-#, fuzzy
-msgid "Signal Finder"
-msgstr "Signalas:"
 
 msgid "Signal OK, proceeding"
 msgstr ""
@@ -13704,6 +13976,12 @@ msgid ""
 "Component: enigma2"
 msgstr ""
 
+msgid "WeatherPlugin: Edit Entry"
+msgstr ""
+
+msgid "WeatherPlugin: List of Entries"
+msgstr ""
+
 msgid "Web Browser"
 msgstr ""
 
@@ -14711,6 +14989,10 @@ msgstr "apskritiminė kairė"
 msgid "circular right"
 msgstr "apskritiminė dešinė"
 
+#, fuzzy
+msgid "clean up"
+msgstr "Išvalyti"
+
 msgid "clip overscan / letterbox borders"
 msgstr ""
 
@@ -15317,6 +15599,10 @@ msgstr "Direktorijų naršyklė"
 msgid "open nameserver configuration"
 msgstr "atidaryti serverio pavadinimo konfigūraciją"
 
+#, fuzzy
+msgid "openMultiboot Manager"
+msgstr "Multi-EPG paketų pasirinkimas"
+
 msgid "original"
 msgstr ""
 
@@ -15780,6 +16066,9 @@ msgid "with_errors"
 msgstr ""
 
 msgid "without"
+msgstr ""
+
+msgid "x"
 msgstr ""
 
 msgid "xp1000"

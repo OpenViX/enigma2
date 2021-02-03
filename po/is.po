@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-20 12:56+0100\n"
+"POT-Creation-Date: 2021-02-03 23:45+0100\n"
 "PO-Revision-Date: 2011-05-07 12:23+0200\n"
 "Last-Translator: Baldur <bsveinsson@gmail.com>\n"
 "Language-Team: Polar Team/LT Team <baddi@oreind.is>\n"
@@ -558,6 +558,11 @@ msgstr ""
 msgid "-SERVICE ERROR:%d\n"
 msgstr ""
 
+#
+#, fuzzy
+msgid "..."
+msgstr "hjálp..."
+
 msgid "/media/custom"
 msgstr ""
 
@@ -574,6 +579,9 @@ msgid "/var directory"
 msgstr "byrjunar mappa"
 
 msgid "0"
+msgstr ""
+
+msgid "0,24,1147,20"
 msgstr ""
 
 msgid "1"
@@ -595,6 +603,12 @@ msgid "1024 MB"
 msgstr ""
 
 msgid "10bit"
+msgstr ""
+
+msgid "120,2,30"
+msgstr ""
+
+msgid "120,28,26"
 msgstr ""
 
 msgid "128 MB"
@@ -651,6 +665,12 @@ msgstr "18 V"
 msgid "2"
 msgstr ""
 
+msgid "2,0,80,50"
+msgstr ""
+
+msgid "20"
+msgstr ""
+
 msgid "2048 MB (maximum)"
 msgstr ""
 
@@ -669,6 +689,9 @@ msgstr ""
 msgid "256 MB (recommended for this chipset)"
 msgstr ""
 
+msgid "26,1,559,28"
+msgstr ""
+
 msgid "29.97"
 msgstr ""
 
@@ -677,10 +700,28 @@ msgstr ""
 msgid "3"
 msgstr "3"
 
+msgid "3,3,25,25"
+msgstr ""
+
+msgid "3,5,100,40"
+msgstr ""
+
 msgid "30"
 msgstr ""
 
+msgid "306,1,320,28"
+msgstr ""
+
 msgid "32 MB"
+msgstr ""
+
+msgid "33,0,694,30"
+msgstr ""
+
+msgid "33,3,25,25"
+msgstr ""
+
+msgid "36,1,694,28"
 msgstr ""
 
 #
@@ -706,6 +747,15 @@ msgstr ""
 msgid "4"
 msgstr "4"
 
+msgid "400"
+msgstr ""
+
+msgid "47,1,1147,28"
+msgstr ""
+
+msgid "47,1,685,28"
+msgstr ""
+
 #
 msgid "4:3"
 msgstr "4:3"
@@ -727,13 +777,43 @@ msgstr "4"
 msgid "5"
 msgstr "5"
 
+msgid "5,1,520,23"
+msgstr ""
+
+msgid "5,1,630,23"
+msgstr ""
+
+msgid "5,2,630,28"
+msgstr ""
+
+msgid "5,25,630,23"
+msgstr ""
+
+msgid "5,30,630,27"
+msgstr ""
+
+msgid "5,7,16,16"
+msgstr ""
+
 msgid "512 MB"
 msgstr ""
 
 msgid "512 MB (recommended for this chipset)"
 msgstr ""
 
+msgid "535,1,100,23"
+msgstr ""
+
 msgid "6"
+msgstr ""
+
+msgid "6,1,300,28"
+msgstr ""
+
+msgid "6,1,320,28"
+msgstr ""
+
+msgid "63,0,661,30"
 msgstr ""
 
 msgid "64 MB"
@@ -742,10 +822,19 @@ msgstr ""
 msgid "7"
 msgstr ""
 
+msgid "7,0,40,30"
+msgstr ""
+
 #
 #, fuzzy
 msgid "8"
 msgstr "8"
+
+msgid "83,2,30"
+msgstr ""
+
+msgid "83,28,26"
+msgstr ""
 
 #
 #, fuzzy
@@ -1424,6 +1513,11 @@ msgstr ""
 
 #
 #, fuzzy
+msgid "Animation Settings"
+msgstr "Uppsetning mótors"
+
+#
+#, fuzzy
 msgid "Animation Setup"
 msgstr "Uppsetning mótors"
 
@@ -1687,6 +1781,24 @@ msgstr ""
 
 msgid "Auto scart switching"
 msgstr "Sjálfvirk skipting á scarti"
+
+#, fuzzy
+msgid "AutoDiseqc"
+msgstr "Sjálfvirkt"
+
+#, fuzzy
+msgid "AutoMountManager"
+msgstr "Mörg-EPG rásavanda val"
+
+#
+#, fuzzy
+msgid "AutoTimer Overview"
+msgstr "Innsláttur tímastilltra atriða"
+
+#
+#, fuzzy
+msgid "AutoTimer Settings"
+msgstr "Velja undirtexta"
 
 msgid "Automatic"
 msgstr "Sjálfvirkt"
@@ -2068,6 +2180,11 @@ msgstr "CI stillingar"
 #, fuzzy
 msgid "CI slot: "
 msgstr "fann engin CI tengi"
+
+#
+#, fuzzy
+msgid "CIHelper Setup"
+msgstr "Uppsetning"
 
 msgid "CPU priority for script execution"
 msgstr ""
@@ -4060,6 +4177,11 @@ msgstr "Viltu brenna þessa skráar safn á DVD disk?"
 
 #
 #, fuzzy
+msgid "Do you want to delete all other languages?"
+msgstr "Viltu setja inn pakkann:\n"
+
+#
+#, fuzzy
 msgid "Do you want to delete the old settings in /etc/enigma2 first?"
 msgstr "Viltu setja inn stillingarnar þínar aftur?"
 
@@ -4203,6 +4325,10 @@ msgstr[0] "Búin, setti inn, uppfærði eða tót út %d pakka með %d villum"
 msgstr[1] "Búin, setti inn, uppfærði eða tót út %d pakka með %d villum"
 
 #, fuzzy
+msgid "Download Movie Info"
+msgstr "Hleð niður"
+
+#, fuzzy
 msgid "Download plugins"
 msgstr "Hala niður íforritum"
 
@@ -4255,6 +4381,28 @@ msgstr "E"
 msgid "ECM Info"
 msgstr "Upplýsingar"
 
+#
+#, fuzzy
+msgid "EEPGRefresh Configuration"
+msgstr "Stilling móttakara"
+
+#, fuzzy
+msgid "EMC Cover Selecter"
+msgstr "Staðsetning bíómynda"
+
+msgid "EMC Cover search"
+msgstr ""
+
+#
+#, fuzzy
+msgid "EMC imdb Setup"
+msgstr "Uppsetning"
+
+#
+#, fuzzy
+msgid "EMC menu"
+msgstr "Aðalvalmynd"
+
 msgid "ENABLE DISABLE PLUGIN IF U WANT IT"
 msgstr ""
 
@@ -4287,6 +4435,11 @@ msgstr ""
 msgid "EPG:"
 msgstr ""
 
+#
+#, fuzzy
+msgid "EPGRefresh Configuration"
+msgstr "Stilling móttakara"
+
 #, python-format
 msgid "ERROR - failed to scan (%s)!"
 msgstr "VILLA - gat ekki leitað (%s)!"
@@ -4308,6 +4461,19 @@ msgstr ""
 #
 msgid "Edit"
 msgstr "Breyta"
+
+#
+#, fuzzy
+msgid "Edit AutoTimer"
+msgstr "Breyta titili"
+
+msgid "Edit AutoTimer Filters"
+msgstr ""
+
+#
+#, fuzzy
+msgid "Edit AutoTimer Services"
+msgstr "fara upp í fyrsta atriði"
 
 #
 msgid "Edit DNS"
@@ -4388,6 +4554,11 @@ msgstr ""
 
 #
 msgid "Electronic Program Guide"
+msgstr "Rafrænn dagskrárstjóri (EPG)"
+
+#
+#, fuzzy
+msgid "Electronic Program Guide Setup"
 msgstr "Rafrænn dagskrárstjóri (EPG)"
 
 msgid "Embedded"
@@ -4603,6 +4774,12 @@ msgstr ""
 #
 msgid "English"
 msgstr "Enska"
+
+msgid "Enhanced Movie Center"
+msgstr ""
+
+msgid "EnhancedMovieCenterMenu"
+msgstr ""
 
 #, python-format
 msgid "Enigma (re)starts: %d\n"
@@ -5036,6 +5213,23 @@ msgstr ""
 msgid "FTA"
 msgstr ""
 
+#, fuzzy
+msgid "FTP Browser"
+msgstr "Íforrita leit"
+
+#
+#, fuzzy
+msgid "FTP Queue Manager"
+msgstr "Leita að rásum"
+
+msgid "FTP Server Editor"
+msgstr ""
+
+#
+#, fuzzy
+msgid "FTP Server Manager"
+msgstr "Leita að rásum"
+
 #
 #, fuzzy
 msgid "FTP Setup"
@@ -5353,6 +5547,11 @@ msgstr ""
 
 #
 #, fuzzy
+msgid "FlashOnline"
+msgstr "Forritun tókt ekki"
+
+#
+#, fuzzy
 msgid "Flashed: "
 msgstr "Forritun tókt ekki"
 
@@ -5516,6 +5715,10 @@ msgstr ""
 msgid "Further options"
 msgstr ""
 
+#, fuzzy
+msgid "GBAspectRatioSwitchSetup"
+msgstr "Stærðarhlutfall"
+
 msgid "GStreamer: "
 msgstr ""
 
@@ -5596,6 +5799,14 @@ msgstr ""
 
 msgid "Gibraltar"
 msgstr ""
+
+msgid "GigaBlue IPBox Client"
+msgstr ""
+
+#
+#, fuzzy
+msgid "GigaBlue Setup"
+msgstr "Uppsetning"
 
 msgid "Go down the list"
 msgstr ""
@@ -5786,8 +5997,18 @@ msgstr ""
 msgid "HD2400"
 msgstr ""
 
+#
+#, fuzzy
+msgid "HDD Info"
+msgstr "Upplýsingar"
+
 msgid "HDMI"
 msgstr ""
+
+#
+#, fuzzy
+msgid "HDMI CEC setup"
+msgstr "Uppsetning"
 
 #, fuzzy
 msgid "HDMI Colordepth"
@@ -5867,6 +6088,16 @@ msgstr ""
 
 #
 #, fuzzy
+msgid "Hard Drive Partitions"
+msgstr "Pólun"
+
+#
+#, fuzzy
+msgid "Hard Drive Setup"
+msgstr "Uppsetning harða disks"
+
+#
+#, fuzzy
 msgid "Hard disk"
 msgstr "Harður diskur"
 
@@ -5894,6 +6125,9 @@ msgstr "Uppsetning harða disks"
 msgid "Harddisk standby after"
 msgstr "Harði diskur í biðstöðu eftir"
 
+msgid "HddMount"
+msgstr ""
+
 #, python-format
 msgid "Heads: %s (max) %s (current)"
 msgstr ""
@@ -5914,7 +6148,7 @@ msgstr ""
 msgid "Height"
 msgstr "Hægri"
 
-msgid "Helps setting up your signal"
+msgid "Helps setting up your antenna"
 msgstr ""
 
 msgid "Hidden network"
@@ -6071,6 +6305,11 @@ msgstr ""
 msgid "IP:"
 msgstr ""
 
+#
+#, fuzzy
+msgid "IPv6 setup"
+msgstr "Uppsetning"
+
 #, fuzzy
 msgid "IPv6 support"
 msgstr "ekki stutt"
@@ -6189,6 +6428,11 @@ msgstr ""
 
 msgid "ImageWizard"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Import AutoTimer"
+msgstr "Raða Tíma"
 
 msgid "Import channels and/or EPG from remote receiver URL also when the receiver is getting out of standby"
 msgstr ""
@@ -6735,6 +6979,9 @@ msgstr ""
 msgid "Korea (Republic of)"
 msgstr ""
 
+msgid "KravenHD"
+msgstr ""
+
 #
 #, fuzzy
 msgid "Kuwait"
@@ -7088,6 +7335,9 @@ msgid "MMC card"
 msgstr ""
 
 msgid "MORE"
+msgstr ""
+
+msgid "MPHelp"
 msgstr ""
 
 msgid "MSN Weather City Name"
@@ -7481,6 +7731,14 @@ msgstr ""
 msgid "Mount point exist!"
 msgstr ""
 
+#
+#, fuzzy
+msgid "MountEdit"
+msgstr "Breyta"
+
+msgid "MountView"
+msgstr ""
+
 msgid "Mountpoints"
 msgstr ""
 
@@ -7622,6 +7880,19 @@ msgstr ""
 
 msgid "Movie"
 msgstr ""
+
+msgid "Movie Info Preview"
+msgstr ""
+
+#
+#, fuzzy
+msgid "Movie Info Setup"
+msgstr "Uppsetning"
+
+#
+#, fuzzy
+msgid "Movie List Setup"
+msgstr "Bíómynda valmynd"
 
 #, fuzzy
 msgid "Movie list configuration"
@@ -7858,6 +8129,10 @@ msgstr "Stilling nettengingar..."
 #, fuzzy
 msgid "Network MAC settings"
 msgstr "Virkja netkerfis stillingar"
+
+#, fuzzy
+msgid "Network Neighbourhood"
+msgstr "Netkerfis ráðgjafi"
 
 #
 #, fuzzy
@@ -8470,6 +8745,11 @@ msgstr ""
 msgid "OpenVpn Setup"
 msgstr "Vinsamlega settu upp móttakara B"
 
+#
+#, fuzzy
+msgid "OpenWebif Configuration"
+msgstr "Stilling móttakara"
+
 msgid "Operating LED status in deep standby mode"
 msgstr ""
 
@@ -8492,6 +8772,9 @@ msgid "Ordinary"
 msgstr ""
 
 msgid "Original"
+msgstr ""
+
+msgid "OscamSmartcard-Setup"
 msgstr ""
 
 msgid "Other"
@@ -8644,6 +8927,11 @@ msgstr "Listi uppfærðra pakka"
 
 #
 msgid "Packet manager"
+msgstr "Hugbúnaðarpakka stjóri"
+
+#
+#, fuzzy
+msgid "PacketManager"
 msgstr "Hugbúnaðarpakka stjóri"
 
 msgid "Page down list"
@@ -9985,6 +10273,16 @@ msgstr ""
 msgid "Regular file"
 msgstr "sniðmáts skrá"
 
+#
+#, fuzzy
+msgid "Regular;18"
+msgstr "sniðmáts skrá"
+
+#
+#, fuzzy
+msgid "Regular;20"
+msgstr "sniðmáts skrá"
+
 msgid "Relative"
 msgstr ""
 
@@ -11058,6 +11356,11 @@ msgstr "Veldu"
 
 #
 #, fuzzy
+msgid "Select OPKG source....."
+msgstr "Veldu upphafs slóð til að breyta."
+
+#
+#, fuzzy
 msgid "Select Software Update"
 msgstr "Hugbúnaðar uppfærsla"
 
@@ -11147,6 +11450,11 @@ msgstr "Veldu skrár fyrir afrit."
 
 #
 msgid "Select files/folders to backup"
+msgstr "Veldu skrár/möppur til afritunar"
+
+#
+#, fuzzy
+msgid "Select files/folders to backup..."
 msgstr "Veldu skrár/möppur til afritunar"
 
 #
@@ -12183,11 +12491,6 @@ msgstr ""
 
 msgid "Sierra Leone"
 msgstr ""
-
-#
-#, fuzzy
-msgid "Signal Finder"
-msgstr "Merki:"
 
 msgid "Signal OK, proceeding"
 msgstr ""
@@ -15166,6 +15469,12 @@ msgid ""
 "Component: enigma2"
 msgstr ""
 
+msgid "WeatherPlugin: Edit Entry"
+msgstr ""
+
+msgid "WeatherPlugin: List of Entries"
+msgstr ""
+
 msgid "Web Browser"
 msgstr ""
 
@@ -16246,6 +16555,10 @@ msgstr "hringpólun vinstri"
 msgid "circular right"
 msgstr "hringpólun hægri"
 
+#, fuzzy
+msgid "clean up"
+msgstr "Hreinsa"
+
 msgid "clip overscan / letterbox borders"
 msgstr ""
 
@@ -16948,6 +17261,10 @@ msgstr "Möppu vafri"
 msgid "open nameserver configuration"
 msgstr "opna nafnaþjóns stillingar"
 
+#, fuzzy
+msgid "openMultiboot Manager"
+msgstr "Mörg-EPG rásavanda val"
+
 msgid "original"
 msgstr ""
 
@@ -17462,6 +17779,9 @@ msgid "with_errors"
 msgstr ""
 
 msgid "without"
+msgstr ""
+
+msgid "x"
 msgstr ""
 
 msgid "xp1000"

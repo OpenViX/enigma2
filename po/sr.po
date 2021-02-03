@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-20 12:56+0100\n"
+"POT-Creation-Date: 2021-02-03 23:45+0100\n"
 "PO-Revision-Date: 2011-04-14 00:02+0200\n"
 "Last-Translator: majevica <jovanovic@gmx.ch>\n"
 "Language-Team: veselin & majevica CRNABERZA <jovanovic@gmx.ch>\n"
@@ -573,6 +573,11 @@ msgstr ""
 msgid "-SERVICE ERROR:%d\n"
 msgstr ""
 
+#
+#, fuzzy
+msgid "..."
+msgstr "pomoć..."
+
 msgid "/media/custom"
 msgstr ""
 
@@ -590,6 +595,9 @@ msgid "/var directory"
 msgstr "Početni direktorijum"
 
 msgid "0"
+msgstr ""
+
+msgid "0,24,1147,20"
 msgstr ""
 
 msgid "1"
@@ -611,6 +619,12 @@ msgid "1024 MB"
 msgstr ""
 
 msgid "10bit"
+msgstr ""
+
+msgid "120,2,30"
+msgstr ""
+
+msgid "120,28,26"
 msgstr ""
 
 msgid "128 MB"
@@ -667,6 +681,12 @@ msgstr "18 V"
 msgid "2"
 msgstr ""
 
+msgid "2,0,80,50"
+msgstr ""
+
+msgid "20"
+msgstr ""
+
 msgid "2048 MB (maximum)"
 msgstr ""
 
@@ -685,6 +705,9 @@ msgstr ""
 msgid "256 MB (recommended for this chipset)"
 msgstr ""
 
+msgid "26,1,559,28"
+msgstr ""
+
 msgid "29.97"
 msgstr ""
 
@@ -693,10 +716,28 @@ msgstr ""
 msgid "3"
 msgstr "3"
 
+msgid "3,3,25,25"
+msgstr ""
+
+msgid "3,5,100,40"
+msgstr ""
+
 msgid "30"
 msgstr ""
 
+msgid "306,1,320,28"
+msgstr ""
+
 msgid "32 MB"
+msgstr ""
+
+msgid "33,0,694,30"
+msgstr ""
+
+msgid "33,3,25,25"
+msgstr ""
+
+msgid "36,1,694,28"
 msgstr ""
 
 #
@@ -721,6 +762,15 @@ msgstr ""
 msgid "4"
 msgstr "4"
 
+msgid "400"
+msgstr ""
+
+msgid "47,1,1147,28"
+msgstr ""
+
+msgid "47,1,685,28"
+msgstr ""
+
 #
 msgid "4:3"
 msgstr "4:3"
@@ -741,13 +791,43 @@ msgstr "4"
 msgid "5"
 msgstr "5"
 
+msgid "5,1,520,23"
+msgstr ""
+
+msgid "5,1,630,23"
+msgstr ""
+
+msgid "5,2,630,28"
+msgstr ""
+
+msgid "5,25,630,23"
+msgstr ""
+
+msgid "5,30,630,27"
+msgstr ""
+
+msgid "5,7,16,16"
+msgstr ""
+
 msgid "512 MB"
 msgstr ""
 
 msgid "512 MB (recommended for this chipset)"
 msgstr ""
 
+msgid "535,1,100,23"
+msgstr ""
+
 msgid "6"
+msgstr ""
+
+msgid "6,1,300,28"
+msgstr ""
+
+msgid "6,1,320,28"
+msgstr ""
+
+msgid "63,0,661,30"
 msgstr ""
 
 msgid "64 MB"
@@ -756,10 +836,19 @@ msgstr ""
 msgid "7"
 msgstr ""
 
+msgid "7,0,40,30"
+msgstr ""
+
 #
 #, fuzzy
 msgid "8"
 msgstr "8"
+
+msgid "83,2,30"
+msgstr ""
+
+msgid "83,28,26"
+msgstr ""
 
 #
 #, fuzzy
@@ -1475,6 +1564,11 @@ msgstr ""
 
 #
 #, fuzzy
+msgid "Animation Settings"
+msgstr "Postavke motora"
+
+#
+#, fuzzy
 msgid "Animation Setup"
 msgstr "Postavke motora"
 
@@ -1764,6 +1858,25 @@ msgstr ""
 #
 msgid "Auto scart switching"
 msgstr "Automatsko uključenje skarta"
+
+#
+#, fuzzy
+msgid "AutoDiseqc"
+msgstr "Automatski"
+
+#, fuzzy
+msgid "AutoMountManager"
+msgstr "Multi EPG izbor buketa"
+
+#
+#, fuzzy
+msgid "AutoTimer Overview"
+msgstr "Unos Tajmera"
+
+#
+#, fuzzy
+msgid "AutoTimer Settings"
+msgstr "Izbor subtitlova"
 
 #
 msgid "Automatic"
@@ -2190,6 +2303,11 @@ msgstr "CI dodela"
 #, fuzzy
 msgid "CI slot: "
 msgstr "CI otvor nije nađen"
+
+#
+#, fuzzy
+msgid "CIHelper Setup"
+msgstr "Podešavanje"
 
 msgid "CPU priority for script execution"
 msgstr ""
@@ -4308,6 +4426,11 @@ msgstr "Da li želite da narežete ovu kolekciju na DVD medij?"
 
 #
 #, fuzzy
+msgid "Do you want to delete all other languages?"
+msgstr "Da li želite da instalirate paket:\n"
+
+#
+#, fuzzy
 msgid "Do you want to delete the old settings in /etc/enigma2 first?"
 msgstr "Želite li vratiti vaše postavke iz sigurnosne kopije?"
 
@@ -4454,6 +4577,11 @@ msgstr[2] "Učinjeno,instalisano,nadograđeno ili uklonjeno %d paketa sa %d gre�
 
 #
 #, fuzzy
+msgid "Download Movie Info"
+msgstr "Skidanje"
+
+#
+#, fuzzy
 msgid "Download plugins"
 msgstr "Skini dodatke"
 
@@ -4512,6 +4640,29 @@ msgstr "E"
 msgid "ECM Info"
 msgstr "Info"
 
+#
+#, fuzzy
+msgid "EEPGRefresh Configuration"
+msgstr "Konfiguracija tjunera"
+
+#
+#, fuzzy
+msgid "EMC Cover Selecter"
+msgstr "Lokacija filmova"
+
+msgid "EMC Cover search"
+msgstr ""
+
+#
+#, fuzzy
+msgid "EMC imdb Setup"
+msgstr "Podešavanje"
+
+#
+#, fuzzy
+msgid "EMC menu"
+msgstr "Glavni meni"
+
 msgid "ENABLE DISABLE PLUGIN IF U WANT IT"
 msgstr ""
 
@@ -4545,6 +4696,11 @@ msgid "EPG:"
 msgstr ""
 
 #
+#, fuzzy
+msgid "EPGRefresh Configuration"
+msgstr "Konfiguracija tjunera"
+
+#
 #, python-format
 msgid "ERROR - failed to scan (%s)!"
 msgstr "GREŠKA - neuspešno skeniranje (%s)!"
@@ -4566,6 +4722,19 @@ msgstr ""
 #
 msgid "Edit"
 msgstr "Urediti"
+
+#
+#, fuzzy
+msgid "Edit AutoTimer"
+msgstr "Urediti naslov"
+
+msgid "Edit AutoTimer Filters"
+msgstr ""
+
+#
+#, fuzzy
+msgid "Edit AutoTimer Services"
+msgstr "Pomeri gore na prvi unos"
 
 #
 msgid "Edit DNS"
@@ -4650,6 +4819,11 @@ msgstr ""
 
 #
 msgid "Electronic Program Guide"
+msgstr "Elektronski Programski Vodič"
+
+#
+#, fuzzy
+msgid "Electronic Program Guide Setup"
 msgstr "Elektronski Programski Vodič"
 
 msgid "Embedded"
@@ -4870,6 +5044,12 @@ msgstr ""
 #
 msgid "English"
 msgstr "Engleski"
+
+msgid "Enhanced Movie Center"
+msgstr ""
+
+msgid "EnhancedMovieCenterMenu"
+msgstr ""
 
 #, python-format
 msgid "Enigma (re)starts: %d\n"
@@ -5324,6 +5504,24 @@ msgstr ""
 
 #
 #, fuzzy
+msgid "FTP Browser"
+msgstr "Pretraživač dodataka"
+
+#
+#, fuzzy
+msgid "FTP Queue Manager"
+msgstr "Skeniranje Kanala"
+
+msgid "FTP Server Editor"
+msgstr ""
+
+#
+#, fuzzy
+msgid "FTP Server Manager"
+msgstr "Skeniranje Kanala"
+
+#
+#, fuzzy
 msgid "FTP Setup"
 msgstr "Podešavanje"
 
@@ -5651,6 +5849,11 @@ msgstr ""
 
 #
 #, fuzzy
+msgid "FlashOnline"
+msgstr "Fleš nije uspeo"
+
+#
+#, fuzzy
 msgid "Flashed: "
 msgstr "Fleš nije uspeo"
 
@@ -5817,6 +6020,11 @@ msgstr ""
 msgid "Further options"
 msgstr ""
 
+#
+#, fuzzy
+msgid "GBAspectRatioSwitchSetup"
+msgstr "Odnos slike"
+
 msgid "GStreamer: "
 msgstr ""
 
@@ -5898,6 +6106,14 @@ msgstr ""
 
 msgid "Gibraltar"
 msgstr ""
+
+msgid "GigaBlue IPBox Client"
+msgstr ""
+
+#
+#, fuzzy
+msgid "GigaBlue Setup"
+msgstr "Podešavanje"
 
 msgid "Go down the list"
 msgstr ""
@@ -6091,8 +6307,18 @@ msgstr ""
 msgid "HD2400"
 msgstr ""
 
+#
+#, fuzzy
+msgid "HDD Info"
+msgstr "Info"
+
 msgid "HDMI"
 msgstr ""
+
+#
+#, fuzzy
+msgid "HDMI CEC setup"
+msgstr "Podešavanje"
 
 #
 #, fuzzy
@@ -6176,6 +6402,16 @@ msgstr ""
 
 #
 #, fuzzy
+msgid "Hard Drive Partitions"
+msgstr "Polarizacija"
+
+#
+#, fuzzy
+msgid "Hard Drive Setup"
+msgstr "Postavke hard diska"
+
+#
+#, fuzzy
 msgid "Hard disk"
 msgstr "Hard disk"
 
@@ -6203,6 +6439,9 @@ msgstr "Postavke hard diska"
 msgid "Harddisk standby after"
 msgstr "Isključi hard disk posle"
 
+msgid "HddMount"
+msgstr ""
+
 #, python-format
 msgid "Heads: %s (max) %s (current)"
 msgstr ""
@@ -6223,7 +6462,7 @@ msgstr ""
 msgid "Height"
 msgstr "Desno"
 
-msgid "Helps setting up your signal"
+msgid "Helps setting up your antenna"
 msgstr ""
 
 msgid "Hidden network"
@@ -6382,6 +6621,11 @@ msgstr ""
 msgid "IP:"
 msgstr ""
 
+#
+#, fuzzy
+msgid "IPv6 setup"
+msgstr "Podešavanje"
+
 #, fuzzy
 msgid "IPv6 support"
 msgstr "nije podržano"
@@ -6502,6 +6746,11 @@ msgstr ""
 
 msgid "ImageWizard"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Import AutoTimer"
+msgstr "Vreme sortiranja"
 
 msgid "Import channels and/or EPG from remote receiver URL also when the receiver is getting out of standby"
 msgstr ""
@@ -7060,6 +7309,9 @@ msgstr ""
 msgid "Korea (Republic of)"
 msgstr ""
 
+msgid "KravenHD"
+msgstr ""
+
 #
 #, fuzzy
 msgid "Kuwait"
@@ -7421,6 +7673,9 @@ msgid "MMC card"
 msgstr ""
 
 msgid "MORE"
+msgstr ""
+
+msgid "MPHelp"
 msgstr ""
 
 msgid "MSN Weather City Name"
@@ -7816,6 +8071,14 @@ msgstr ""
 msgid "Mount point exist!"
 msgstr ""
 
+#
+#, fuzzy
+msgid "MountEdit"
+msgstr "Urediti"
+
+msgid "MountView"
+msgstr ""
+
 msgid "Mountpoints"
 msgstr ""
 
@@ -7957,6 +8220,19 @@ msgstr ""
 
 msgid "Movie"
 msgstr ""
+
+msgid "Movie Info Preview"
+msgstr ""
+
+#
+#, fuzzy
+msgid "Movie Info Setup"
+msgstr "Podešavanje"
+
+#
+#, fuzzy
+msgid "Movie List Setup"
+msgstr "Meni liste filmova"
 
 #
 #, fuzzy
@@ -8198,6 +8474,11 @@ msgstr "Mrežna konfiguracija..."
 #, fuzzy
 msgid "Network MAC settings"
 msgstr "Aktiviraj mrežne postavke"
+
+#
+#, fuzzy
+msgid "Network Neighbourhood"
+msgstr "Mrežni čarobnjak"
 
 #
 #, fuzzy
@@ -8817,6 +9098,11 @@ msgstr ""
 msgid "OpenVpn Setup"
 msgstr "Molim podesite tuner B"
 
+#
+#, fuzzy
+msgid "OpenWebif Configuration"
+msgstr "Konfiguracija tjunera"
+
 msgid "Operating LED status in deep standby mode"
 msgstr ""
 
@@ -8839,6 +9125,9 @@ msgid "Ordinary"
 msgstr ""
 
 msgid "Original"
+msgstr ""
+
+msgid "OscamSmartcard-Setup"
 msgstr ""
 
 msgid "Other"
@@ -8992,6 +9281,11 @@ msgstr "Nadogradnja liste paketa"
 
 #
 msgid "Packet manager"
+msgstr "Menadžer paketa"
+
+#
+#, fuzzy
+msgid "PacketManager"
 msgstr "Menadžer paketa"
 
 msgid "Page down list"
@@ -10359,6 +10653,16 @@ msgstr ""
 msgid "Regular file"
 msgstr "Šablon datoteka"
 
+#
+#, fuzzy
+msgid "Regular;18"
+msgstr "Šablon datoteka"
+
+#
+#, fuzzy
+msgid "Regular;20"
+msgstr "Šablon datoteka"
+
 msgid "Relative"
 msgstr ""
 
@@ -11447,6 +11751,11 @@ msgstr "Izaberi"
 
 #
 #, fuzzy
+msgid "Select OPKG source....."
+msgstr "Izaberi izvor nadodradnje za uređivanje."
+
+#
+#, fuzzy
 msgid "Select Software Update"
 msgstr "Nadogradnja softvera"
 
@@ -11539,6 +11848,11 @@ msgstr "Izaberi datoteke za bekap."
 
 #
 msgid "Select files/folders to backup"
+msgstr "Izaberi datoteke/fascikle za bekap"
+
+#
+#, fuzzy
+msgid "Select files/folders to backup..."
 msgstr "Izaberi datoteke/fascikle za bekap"
 
 #
@@ -12601,11 +12915,6 @@ msgstr ""
 
 msgid "Sierra Leone"
 msgstr ""
-
-#
-#, fuzzy
-msgid "Signal Finder"
-msgstr "Signal: "
 
 msgid "Signal OK, proceeding"
 msgstr ""
@@ -15612,6 +15921,12 @@ msgid ""
 "Component: enigma2"
 msgstr ""
 
+msgid "WeatherPlugin: Edit Entry"
+msgstr ""
+
+msgid "WeatherPlugin: List of Entries"
+msgstr ""
+
 msgid "Web Browser"
 msgstr ""
 
@@ -16706,6 +17021,11 @@ msgstr "leva cirkularna"
 msgid "circular right"
 msgstr "desna cirkularna"
 
+#
+#, fuzzy
+msgid "clean up"
+msgstr "Čišćenje"
+
 msgid "clip overscan / letterbox borders"
 msgstr ""
 
@@ -17412,6 +17732,10 @@ msgstr "Pretraživač direktorijuma"
 msgid "open nameserver configuration"
 msgstr "Otvori konfiguraciju nejmservera "
 
+#, fuzzy
+msgid "openMultiboot Manager"
+msgstr "Multi EPG izbor buketa"
+
 msgid "original"
 msgstr ""
 
@@ -17933,6 +18257,9 @@ msgid "with_errors"
 msgstr ""
 
 msgid "without"
+msgstr ""
+
+msgid "x"
 msgstr ""
 
 msgid "xp1000"

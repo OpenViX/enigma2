@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-20 12:56+0100\n"
+"POT-Creation-Date: 2021-02-03 23:45+0100\n"
 "PO-Revision-Date: 2020-05-13 21:36+0200\n"
 "Last-Translator: mcfly82\n"
 "Language-Team: mcfly82 & wysless\n"
@@ -528,6 +528,10 @@ msgstr ""
 msgid "-SERVICE ERROR:%d\n"
 msgstr ""
 
+#, fuzzy
+msgid "..."
+msgstr "Súgó..."
+
 msgid "/media/custom"
 msgstr ""
 
@@ -546,6 +550,9 @@ msgstr "Kiindulási mappa"
 msgid "0"
 msgstr "30"
 
+msgid "0,24,1147,20"
+msgstr ""
+
 msgid "1"
 msgstr ""
 
@@ -562,6 +569,12 @@ msgid "1024 MB"
 msgstr ""
 
 msgid "10bit"
+msgstr ""
+
+msgid "120,2,30"
+msgstr ""
+
+msgid "120,28,26"
 msgstr ""
 
 msgid "128 MB"
@@ -610,6 +623,13 @@ msgstr "18 V"
 msgid "2"
 msgstr "24"
 
+msgid "2,0,80,50"
+msgstr ""
+
+#, fuzzy
+msgid "20"
+msgstr "30"
+
 msgid "2048 MB (maximum)"
 msgstr ""
 
@@ -628,6 +648,9 @@ msgstr ""
 msgid "256 MB (recommended for this chipset)"
 msgstr ""
 
+msgid "26,1,559,28"
+msgstr ""
+
 msgid "29.97"
 msgstr "29.97"
 
@@ -635,10 +658,28 @@ msgstr "29.97"
 msgid "3"
 msgstr "30"
 
+msgid "3,3,25,25"
+msgstr ""
+
+msgid "3,5,100,40"
+msgstr ""
+
 msgid "30"
 msgstr "30"
 
+msgid "306,1,320,28"
+msgstr ""
+
 msgid "32 MB"
+msgstr ""
+
+msgid "33,0,694,30"
+msgstr ""
+
+msgid "33,3,25,25"
+msgstr ""
+
+msgid "36,1,694,28"
 msgstr ""
 
 #, fuzzy
@@ -661,6 +702,15 @@ msgstr "3D mód"
 msgid "4"
 msgstr "4"
 
+msgid "400"
+msgstr ""
+
+msgid "47,1,1147,28"
+msgstr ""
+
+msgid "47,1,685,28"
+msgstr ""
+
 msgid "4:3"
 msgstr "4:3"
 
@@ -677,13 +727,43 @@ msgstr "4"
 msgid "5"
 msgstr "5"
 
+msgid "5,1,520,23"
+msgstr ""
+
+msgid "5,1,630,23"
+msgstr ""
+
+msgid "5,2,630,28"
+msgstr ""
+
+msgid "5,25,630,23"
+msgstr ""
+
+msgid "5,30,630,27"
+msgstr ""
+
+msgid "5,7,16,16"
+msgstr ""
+
 msgid "512 MB"
 msgstr ""
 
 msgid "512 MB (recommended for this chipset)"
 msgstr ""
 
+msgid "535,1,100,23"
+msgstr ""
+
 msgid "6"
+msgstr ""
+
+msgid "6,1,300,28"
+msgstr ""
+
+msgid "6,1,320,28"
+msgstr ""
+
+msgid "63,0,661,30"
 msgstr ""
 
 msgid "64 MB"
@@ -692,9 +772,18 @@ msgstr ""
 msgid "7"
 msgstr ""
 
+msgid "7,0,40,30"
+msgstr ""
+
 #, fuzzy
 msgid "8"
 msgstr "8"
+
+msgid "83,2,30"
+msgstr ""
+
+msgid "83,28,26"
+msgstr ""
 
 #, fuzzy
 msgid "8K"
@@ -1304,6 +1393,10 @@ msgid "Anguilla"
 msgstr ""
 
 #, fuzzy
+msgid "Animation Settings"
+msgstr "Forgatómotor Beálltások"
+
+#, fuzzy
 msgid "Animation Setup"
 msgstr "Forgatómotor Beálltások"
 
@@ -1551,6 +1644,22 @@ msgstr ""
 
 msgid "Auto scart switching"
 msgstr "Automatikus SCART átkapcsolás"
+
+#, fuzzy
+msgid "AutoDiseqc"
+msgstr "Automatikus"
+
+#, fuzzy
+msgid "AutoMountManager"
+msgstr "Multi-EPG bouquet-választás"
+
+#, fuzzy
+msgid "AutoTimer Overview"
+msgstr "Időzítések áttekintése"
+
+#, fuzzy
+msgid "AutoTimer Settings"
+msgstr "Feliratozás"
 
 msgid "Automatic"
 msgstr "Automatikus"
@@ -1920,6 +2029,10 @@ msgstr "CI hozzárendelés"
 #, fuzzy
 msgid "CI slot: "
 msgstr "nincs található CI foglalat"
+
+#, fuzzy
+msgid "CIHelper Setup"
+msgstr "Beállítások"
 
 msgid "CPU priority for script execution"
 msgstr ""
@@ -3784,6 +3897,10 @@ msgid "Do you want to burn this collection to DVD medium?"
 msgstr "Fel szeretné írni ezt a gyűjteményt a DVD lemezre?"
 
 #, fuzzy
+msgid "Do you want to delete all other languages?"
+msgstr "Szeretne eltávolítani minden crash logfile-t?"
+
+#, fuzzy
 msgid "Do you want to delete the old settings in /etc/enigma2 first?"
 msgstr "Szeretné visszaállítani a beállításait?"
 
@@ -3907,6 +4024,10 @@ msgid_plural "Done - Installed, updated or removed %d packages (%s)"
 msgstr[0] "%d szoftvercsomag telepítése, frissítése vagy eltávolítása elkészült (%s)"
 msgstr[1] "%d szoftvercsomag telepítése, frissítése vagy eltávolítása elkészült (%s)"
 
+#, fuzzy
+msgid "Download Movie Info"
+msgstr "Letöltés"
+
 msgid "Download plugins"
 msgstr "Pluginek letöltése"
 
@@ -3958,6 +4079,25 @@ msgstr "K"
 msgid "ECM Info"
 msgstr "Információ"
 
+#, fuzzy
+msgid "EEPGRefresh Configuration"
+msgstr "Tuner beállítások"
+
+#, fuzzy
+msgid "EMC Cover Selecter"
+msgstr "Filmválasztás"
+
+msgid "EMC Cover search"
+msgstr ""
+
+#, fuzzy
+msgid "EMC imdb Setup"
+msgstr "Beállítások"
+
+#, fuzzy
+msgid "EMC menu"
+msgstr "Főmenü"
+
 msgid "ENABLE DISABLE PLUGIN IF U WANT IT"
 msgstr ""
 
@@ -3989,6 +4129,10 @@ msgstr "EPG beállítások"
 msgid "EPG:"
 msgstr ""
 
+#, fuzzy
+msgid "EPGRefresh Configuration"
+msgstr "Tuner beállítások"
+
 #, python-format
 msgid "ERROR - failed to scan (%s)!"
 msgstr "HIBA - nem sikerült a keresés (%s)!"
@@ -4008,6 +4152,17 @@ msgstr ""
 
 msgid "Edit"
 msgstr "Szerkesztés"
+
+#, fuzzy
+msgid "Edit AutoTimer"
+msgstr "Cím módosítása"
+
+msgid "Edit AutoTimer Filters"
+msgstr ""
+
+#, fuzzy
+msgid "Edit AutoTimer Services"
+msgstr "Ugrás az első csatornára"
 
 msgid "Edit DNS"
 msgstr "DNS módosítása"
@@ -4078,6 +4233,10 @@ msgid "El Salvador"
 msgstr ""
 
 msgid "Electronic Program Guide"
+msgstr "Elektronikus Műsorújság"
+
+#, fuzzy
+msgid "Electronic Program Guide Setup"
 msgstr "Elektronikus Műsorújság"
 
 msgid "Embedded"
@@ -4270,6 +4429,12 @@ msgstr ""
 
 msgid "English"
 msgstr "Angol"
+
+msgid "Enhanced Movie Center"
+msgstr ""
+
+msgid "EnhancedMovieCenterMenu"
+msgstr ""
 
 #, python-format
 msgid "Enigma (re)starts: %d\n"
@@ -4670,6 +4835,21 @@ msgid "FTA"
 msgstr "FTA"
 
 #, fuzzy
+msgid "FTP Browser"
+msgstr "Telepített Pluginek"
+
+#, fuzzy
+msgid "FTP Queue Manager"
+msgstr "Eszköznév"
+
+msgid "FTP Server Editor"
+msgstr ""
+
+#, fuzzy
+msgid "FTP Server Manager"
+msgstr "Eszköznév"
+
+#, fuzzy
 msgid "FTP Setup"
 msgstr "Beállítások"
 
@@ -4961,6 +5141,10 @@ msgid "Flash, restore settings and user selected plugins"
 msgstr ""
 
 #, fuzzy
+msgid "FlashOnline"
+msgstr "Flashelés sikertelen"
+
+#, fuzzy
 msgid "Flashed: "
 msgstr "Flashelés sikertelen"
 
@@ -5111,6 +5295,10 @@ msgid "Further options"
 msgstr "továbboktatás"
 
 #, fuzzy
+msgid "GBAspectRatioSwitchSetup"
+msgstr "Kép méretarány"
+
+#, fuzzy
 msgid "GStreamer: "
 msgstr "Adatfolyam"
 
@@ -5179,6 +5367,13 @@ msgstr ""
 
 msgid "Gibraltar"
 msgstr ""
+
+msgid "GigaBlue IPBox Client"
+msgstr ""
+
+#, fuzzy
+msgid "GigaBlue Setup"
+msgstr "Beállítások"
 
 msgid "Go down the list"
 msgstr "A listán lefelé"
@@ -5347,8 +5542,16 @@ msgstr ""
 msgid "HD2400"
 msgstr ""
 
+#, fuzzy
+msgid "HDD Info"
+msgstr "Információ"
+
 msgid "HDMI"
 msgstr ""
+
+#, fuzzy
+msgid "HDMI CEC setup"
+msgstr "Beállítások"
 
 #, fuzzy
 msgid "HDMI Colordepth"
@@ -5426,6 +5629,14 @@ msgid "Handle wakeup from TV"
 msgstr "Bekapcsolás fogadása a TV-től"
 
 #, fuzzy
+msgid "Hard Drive Partitions"
+msgstr "Polarizáció"
+
+#, fuzzy
+msgid "Hard Drive Setup"
+msgstr "Háttértár beállítások"
+
+#, fuzzy
 msgid "Hard disk"
 msgstr "Háttértár"
 
@@ -5446,6 +5657,10 @@ msgstr "Háttértár beállítások"
 msgid "Harddisk standby after"
 msgstr "Merevlemez leállítása megadott idö után"
 
+#, fuzzy
+msgid "HddMount"
+msgstr "Csatlakozás"
+
 #, python-format
 msgid "Heads: %s (max) %s (current)"
 msgstr ""
@@ -5465,7 +5680,7 @@ msgid "Height"
 msgstr "magasság"
 
 #, fuzzy
-msgid "Helps setting up your signal"
+msgid "Helps setting up your antenna"
 msgstr "Segítség az antenna beállításhoz"
 
 msgid "Hidden network"
@@ -5607,6 +5822,10 @@ msgid "IP:"
 msgstr ""
 
 #, fuzzy
+msgid "IPv6 setup"
+msgstr "Beállítások"
+
+#, fuzzy
 msgid "IPv6 support"
 msgstr "nem támogatott"
 
@@ -5722,6 +5941,10 @@ msgstr ""
 
 msgid "ImageWizard"
 msgstr ""
+
+#, fuzzy
+msgid "Import AutoTimer"
+msgstr "Rendez: Idő"
 
 msgid "Import channels and/or EPG from remote receiver URL also when the receiver is getting out of standby"
 msgstr ""
@@ -6192,6 +6415,9 @@ msgstr ""
 msgid "Korea (Republic of)"
 msgstr ""
 
+msgid "KravenHD"
+msgstr ""
+
 #, fuzzy
 msgid "Kuwait"
 msgstr "várakozás"
@@ -6489,6 +6715,9 @@ msgid "MMC card"
 msgstr ""
 
 msgid "MORE"
+msgstr ""
+
+msgid "MPHelp"
 msgstr ""
 
 msgid "MSN Weather City Name"
@@ -6834,6 +7063,14 @@ msgid "Mount point exist!"
 msgstr ""
 
 #, fuzzy
+msgid "MountEdit"
+msgstr "Csatlakozás"
+
+#, fuzzy
+msgid "MountView"
+msgstr "Csatlakozás"
+
+#, fuzzy
 msgid "Mountpoints"
 msgstr "Csatlakozás"
 
@@ -6956,6 +7193,17 @@ msgstr "Mozgás"
 #, fuzzy
 msgid "Movie"
 msgstr "Mozgatás"
+
+msgid "Movie Info Preview"
+msgstr ""
+
+#, fuzzy
+msgid "Movie Info Setup"
+msgstr "Beállítások"
+
+#, fuzzy
+msgid "Movie List Setup"
+msgstr "Fájllista menü"
 
 msgid "Movie list configuration"
 msgstr "Fájllista konfigurációja"
@@ -7165,6 +7413,10 @@ msgstr "Hálózati beállítások..."
 #, fuzzy
 msgid "Network MAC settings"
 msgstr "Hálózati beállítások aktiválása"
+
+#, fuzzy
+msgid "Network Neighbourhood"
+msgstr "Hálózati Varázsló"
 
 #, fuzzy
 msgid "Network Speed:"
@@ -7698,6 +7950,10 @@ msgstr ""
 msgid "OpenVpn Setup"
 msgstr "Állítsa be a B tunert"
 
+#, fuzzy
+msgid "OpenWebif Configuration"
+msgstr "Tuner beállítások"
+
 msgid "Operating LED status in deep standby mode"
 msgstr "A működési LED állapota mély készenlét módban"
 
@@ -7721,6 +7977,9 @@ msgstr ""
 
 msgid "Original"
 msgstr "eredeti"
+
+msgid "OscamSmartcard-Setup"
+msgstr ""
 
 msgid "Other"
 msgstr "Más"
@@ -7865,6 +8124,10 @@ msgid "Packages to update"
 msgstr "Csomaglista frissítés"
 
 msgid "Packet manager"
+msgstr "Szoftvercsomag-kezelő"
+
+#, fuzzy
+msgid "PacketManager"
 msgstr "Szoftvercsomag-kezelő"
 
 #, fuzzy
@@ -9014,6 +9277,14 @@ msgstr "vallás"
 msgid "Regular file"
 msgstr "sablon-fájl"
 
+#, fuzzy
+msgid "Regular;18"
+msgstr "sablon-fájl"
+
+#, fuzzy
+msgid "Regular;20"
+msgstr "sablon-fájl"
+
 msgid "Relative"
 msgstr "relatív"
 
@@ -9947,6 +10218,10 @@ msgid "Select HDD"
 msgstr "Megjelölés"
 
 #, fuzzy
+msgid "Select OPKG source....."
+msgstr "Válasszon szerkesztendő frissítési forrást"
+
+#, fuzzy
 msgid "Select Software Update"
 msgstr "Szoftver frissítés"
 
@@ -10020,6 +10295,10 @@ msgid "Select files for backup."
 msgstr "Biztonsági mentésbe helyezendő fájlok."
 
 msgid "Select files/folders to backup"
+msgstr "Válasszon fájlokat/mappákat a biztonsági mentéshez"
+
+#, fuzzy
+msgid "Select files/folders to backup..."
 msgstr "Válasszon fájlokat/mappákat a biztonsági mentéshez"
 
 #, fuzzy
@@ -10931,10 +11210,6 @@ msgstr "Kétoldalt"
 
 msgid "Sierra Leone"
 msgstr ""
-
-#, fuzzy
-msgid "Signal Finder"
-msgstr "Jel:"
 
 msgid "Signal OK, proceeding"
 msgstr "Jelszint rendben, kezdem"
@@ -13553,6 +13828,12 @@ msgid ""
 "Component: enigma2"
 msgstr ""
 
+msgid "WeatherPlugin: Edit Entry"
+msgstr ""
+
+msgid "WeatherPlugin: List of Entries"
+msgstr ""
+
 msgid "Web Browser"
 msgstr ""
 
@@ -14602,6 +14883,10 @@ msgstr "forgó balos"
 msgid "circular right"
 msgstr "forgó jobbos"
 
+#, fuzzy
+msgid "clean up"
+msgstr "Takarítás"
+
 msgid "clip overscan / letterbox borders"
 msgstr ""
 
@@ -15207,6 +15492,10 @@ msgstr "Mappa tallózása"
 msgid "open nameserver configuration"
 msgstr "névszerver konfiguráció megnyítása"
 
+#, fuzzy
+msgid "openMultiboot Manager"
+msgstr "Multi-EPG bouquet-választás"
+
 msgid "original"
 msgstr "eredeti"
 
@@ -15676,6 +15965,9 @@ msgstr "%d hibával"
 #, fuzzy
 msgid "without"
 msgstr "Figyelmeztetés nélkül"
+
+msgid "x"
+msgstr ""
 
 msgid "xp1000"
 msgstr ""

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-20 12:56+0100\n"
+"POT-Creation-Date: 2021-02-03 23:45+0100\n"
 "PO-Revision-Date: 2019-07-25 17:52+0300\n"
 "Last-Translator: Dimitrij <Dima-73@inbox.lv>\n"
 "Language-Team: openPLi Dimitrij\n"
@@ -541,6 +541,9 @@ msgstr ""
 msgid "-SERVICE ERROR:%d\n"
 msgstr ""
 
+msgid "..."
+msgstr ""
+
 msgid "/media/custom"
 msgstr ""
 
@@ -556,6 +559,9 @@ msgid "/var directory"
 msgstr "начальный каталог"
 
 msgid "0"
+msgstr ""
+
+msgid "0,24,1147,20"
 msgstr ""
 
 msgid "1"
@@ -574,6 +580,12 @@ msgid "1024 MB"
 msgstr ""
 
 msgid "10bit"
+msgstr ""
+
+msgid "120,2,30"
+msgstr ""
+
+msgid "120,28,26"
 msgstr ""
 
 msgid "128 MB"
@@ -621,6 +633,12 @@ msgstr "18 V"
 msgid "2"
 msgstr ""
 
+msgid "2,0,80,50"
+msgstr ""
+
+msgid "20"
+msgstr ""
+
 msgid "2048 MB (maximum)"
 msgstr ""
 
@@ -639,6 +657,9 @@ msgstr ""
 msgid "256 MB (recommended for this chipset)"
 msgstr ""
 
+msgid "26,1,559,28"
+msgstr ""
+
 msgid "29.97"
 msgstr ""
 
@@ -646,10 +667,28 @@ msgstr ""
 msgid "3"
 msgstr "3"
 
+msgid "3,3,25,25"
+msgstr ""
+
+msgid "3,5,100,40"
+msgstr ""
+
 msgid "30"
 msgstr ""
 
+msgid "306,1,320,28"
+msgstr ""
+
 msgid "32 MB"
+msgstr ""
+
+msgid "33,0,694,30"
+msgstr ""
+
+msgid "33,3,25,25"
+msgstr ""
+
+msgid "36,1,694,28"
 msgstr ""
 
 #, fuzzy
@@ -672,6 +711,15 @@ msgstr "Режим 3D"
 msgid "4"
 msgstr "4"
 
+msgid "400"
+msgstr ""
+
+msgid "47,1,1147,28"
+msgstr ""
+
+msgid "47,1,685,28"
+msgstr ""
+
 msgid "4:3"
 msgstr "4:3"
 
@@ -688,13 +736,43 @@ msgstr "4"
 msgid "5"
 msgstr "5"
 
+msgid "5,1,520,23"
+msgstr ""
+
+msgid "5,1,630,23"
+msgstr ""
+
+msgid "5,2,630,28"
+msgstr ""
+
+msgid "5,25,630,23"
+msgstr ""
+
+msgid "5,30,630,27"
+msgstr ""
+
+msgid "5,7,16,16"
+msgstr ""
+
 msgid "512 MB"
 msgstr ""
 
 msgid "512 MB (recommended for this chipset)"
 msgstr ""
 
+msgid "535,1,100,23"
+msgstr ""
+
 msgid "6"
+msgstr ""
+
+msgid "6,1,300,28"
+msgstr ""
+
+msgid "6,1,320,28"
+msgstr ""
+
+msgid "63,0,661,30"
 msgstr ""
 
 msgid "64 MB"
@@ -703,9 +781,18 @@ msgstr ""
 msgid "7"
 msgstr ""
 
+msgid "7,0,40,30"
+msgstr ""
+
 #, fuzzy
 msgid "8"
 msgstr "8"
+
+msgid "83,2,30"
+msgstr ""
+
+msgid "83,28,26"
+msgstr ""
 
 #, fuzzy
 msgid "8K"
@@ -1315,6 +1402,10 @@ msgid "Anguilla"
 msgstr ""
 
 #, fuzzy
+msgid "Animation Settings"
+msgstr "Настройка позиционера"
+
+#, fuzzy
 msgid "Animation Setup"
 msgstr "Настройка позиционера"
 
@@ -1563,6 +1654,22 @@ msgstr ""
 
 msgid "Auto scart switching"
 msgstr "Автоматическое переключение SCART"
+
+#, fuzzy
+msgid "AutoDiseqc"
+msgstr "Автоматически"
+
+#, fuzzy
+msgid "AutoMountManager"
+msgstr "Выбор букетов при старте мульти-EPG"
+
+#, fuzzy
+msgid "AutoTimer Overview"
+msgstr "Обзор таймеров"
+
+#, fuzzy
+msgid "AutoTimer Settings"
+msgstr "Меню настройки субтитров"
 
 msgid "Automatic"
 msgstr "Автоматически"
@@ -1932,6 +2039,10 @@ msgstr "Назначение CI"
 #, fuzzy
 msgid "CI slot: "
 msgstr "не найден модуль"
+
+#, fuzzy
+msgid "CIHelper Setup"
+msgstr "Настройка"
 
 msgid "CPU priority for script execution"
 msgstr ""
@@ -3798,6 +3909,10 @@ msgid "Do you want to burn this collection to DVD medium?"
 msgstr "Вы хотите прожечь эту коллекцию на DVD носитель?"
 
 #, fuzzy
+msgid "Do you want to delete all other languages?"
+msgstr "Вы действительно хотите удалить все креш-файлы?"
+
+#, fuzzy
 msgid "Do you want to delete the old settings in /etc/enigma2 first?"
 msgstr "Вы хотите восстановить ваши установки?"
 
@@ -3922,6 +4037,10 @@ msgstr[0] "Выполнено - Установлен, обновлен или у
 msgstr[1] "Выполнено - Установлено, обновлено или удалено %d пакета (%s)"
 msgstr[2] "Выполнено - Установлено, обновлено или удалено %d пакетов (%s)"
 
+#, fuzzy
+msgid "Download Movie Info"
+msgstr "Загрузка"
+
 msgid "Download plugins"
 msgstr "Скачать плагины"
 
@@ -3973,6 +4092,25 @@ msgstr "E"
 msgid "ECM Info"
 msgstr "Инфо"
 
+#, fuzzy
+msgid "EEPGRefresh Configuration"
+msgstr "Настройка тюнера"
+
+#, fuzzy
+msgid "EMC Cover Selecter"
+msgstr "Выбор видео"
+
+msgid "EMC Cover search"
+msgstr ""
+
+#, fuzzy
+msgid "EMC imdb Setup"
+msgstr "Настройка"
+
+#, fuzzy
+msgid "EMC menu"
+msgstr "Главное меню"
+
 msgid "ENABLE DISABLE PLUGIN IF U WANT IT"
 msgstr ""
 
@@ -4004,6 +4142,10 @@ msgstr "Настройки EPG"
 msgid "EPG:"
 msgstr ""
 
+#, fuzzy
+msgid "EPGRefresh Configuration"
+msgstr "Настройка тюнера"
+
 #, python-format
 msgid "ERROR - failed to scan (%s)!"
 msgstr "Ошибка - невозможно сканирование (%s)!"
@@ -4023,6 +4165,17 @@ msgstr ""
 
 msgid "Edit"
 msgstr "Редактировать"
+
+#, fuzzy
+msgid "Edit AutoTimer"
+msgstr "Редактировать заголовок"
+
+msgid "Edit AutoTimer Filters"
+msgstr ""
+
+#, fuzzy
+msgid "Edit AutoTimer Services"
+msgstr "Перейти на первый сервис"
 
 msgid "Edit DNS"
 msgstr "Изменить DNS"
@@ -4093,6 +4246,10 @@ msgid "El Salvador"
 msgstr ""
 
 msgid "Electronic Program Guide"
+msgstr "Электронный программный гид"
+
+#, fuzzy
+msgid "Electronic Program Guide Setup"
 msgstr "Электронный программный гид"
 
 msgid "Embedded"
@@ -4285,6 +4442,12 @@ msgstr ""
 
 msgid "English"
 msgstr "Английский"
+
+msgid "Enhanced Movie Center"
+msgstr ""
+
+msgid "EnhancedMovieCenterMenu"
+msgstr ""
 
 #, python-format
 msgid "Enigma (re)starts: %d\n"
@@ -4691,6 +4854,21 @@ msgid "FTA"
 msgstr "FTA"
 
 #, fuzzy
+msgid "FTP Browser"
+msgstr "Браузер плагинов"
+
+#, fuzzy
+msgid "FTP Queue Manager"
+msgstr "Имя устройства:"
+
+msgid "FTP Server Editor"
+msgstr ""
+
+#, fuzzy
+msgid "FTP Server Manager"
+msgstr "Имя устройства:"
+
+#, fuzzy
 msgid "FTP Setup"
 msgstr "Настройка"
 
@@ -4982,6 +5160,10 @@ msgid "Flash, restore settings and user selected plugins"
 msgstr ""
 
 #, fuzzy
+msgid "FlashOnline"
+msgstr "Прошивка не удалась"
+
+#, fuzzy
 msgid "Flashed: "
 msgstr "Прошивка не удалась"
 
@@ -5131,6 +5313,10 @@ msgid "Further options"
 msgstr "дальнейшее образование"
 
 #, fuzzy
+msgid "GBAspectRatioSwitchSetup"
+msgstr "Соотношение сторон"
+
+#, fuzzy
 msgid "GStreamer: "
 msgstr "Порт стриминга"
 
@@ -5199,6 +5385,13 @@ msgstr ""
 
 msgid "Gibraltar"
 msgstr ""
+
+msgid "GigaBlue IPBox Client"
+msgstr ""
+
+#, fuzzy
+msgid "GigaBlue Setup"
+msgstr "Настройка"
 
 msgid "Go down the list"
 msgstr "переместить вниз к последней записи"
@@ -5366,8 +5559,16 @@ msgstr ""
 msgid "HD2400"
 msgstr ""
 
+#, fuzzy
+msgid "HDD Info"
+msgstr "Инфо"
+
 msgid "HDMI"
 msgstr ""
+
+#, fuzzy
+msgid "HDMI CEC setup"
+msgstr "Настройка"
 
 #, fuzzy
 msgid "HDMI Colordepth"
@@ -5445,6 +5646,14 @@ msgid "Handle wakeup from TV"
 msgstr "Включить при включении ТВ"
 
 #, fuzzy
+msgid "Hard Drive Partitions"
+msgstr "Поляризация"
+
+#, fuzzy
+msgid "Hard Drive Setup"
+msgstr "Настройка диска"
+
+#, fuzzy
 msgid "Hard disk"
 msgstr "Жесткий диск"
 
@@ -5465,6 +5674,10 @@ msgstr "Настройка диска"
 msgid "Harddisk standby after"
 msgstr "Отключение HDD через"
 
+#, fuzzy
+msgid "HddMount"
+msgstr "Просмотр подключений"
+
 #, python-format
 msgid "Heads: %s (max) %s (current)"
 msgstr ""
@@ -5483,7 +5696,7 @@ msgstr "Иврит"
 msgid "Height"
 msgstr "высота"
 
-msgid "Helps setting up your signal"
+msgid "Helps setting up your antenna"
 msgstr ""
 
 msgid "Hidden network"
@@ -5625,6 +5838,10 @@ msgid "IP:"
 msgstr ""
 
 #, fuzzy
+msgid "IPv6 setup"
+msgstr "Настройка"
+
+#, fuzzy
 msgid "IPv6 support"
 msgstr "Неизвестная"
 
@@ -5740,6 +5957,10 @@ msgstr ""
 
 msgid "ImageWizard"
 msgstr ""
+
+#, fuzzy
+msgid "Import AutoTimer"
+msgstr "По времени"
 
 msgid "Import channels and/or EPG from remote receiver URL also when the receiver is getting out of standby"
 msgstr ""
@@ -6212,6 +6433,9 @@ msgstr ""
 msgid "Korea (Republic of)"
 msgstr ""
 
+msgid "KravenHD"
+msgstr ""
+
 #, fuzzy
 msgid "Kuwait"
 msgstr "ожидание"
@@ -6510,6 +6734,9 @@ msgid "MMC card"
 msgstr ""
 
 msgid "MORE"
+msgstr ""
+
+msgid "MPHelp"
 msgstr ""
 
 msgid "MSN Weather City Name"
@@ -6855,6 +7082,14 @@ msgid "Mount point exist!"
 msgstr ""
 
 #, fuzzy
+msgid "MountEdit"
+msgstr "Просмотр подключений"
+
+#, fuzzy
+msgid "MountView"
+msgstr "Просмотр подключений"
+
+#, fuzzy
 msgid "Mountpoints"
 msgstr "Просмотр подключений"
 
@@ -6978,6 +7213,17 @@ msgstr "Перемещение"
 #, fuzzy
 msgid "Movie"
 msgstr "Перемещаем"
+
+msgid "Movie Info Preview"
+msgstr ""
+
+#, fuzzy
+msgid "Movie Info Setup"
+msgstr "Настройка"
+
+#, fuzzy
+msgid "Movie List Setup"
+msgstr "Меню списка видео"
 
 msgid "Movie list configuration"
 msgstr "Конфигурация списка видео"
@@ -7186,6 +7432,10 @@ msgstr "Конфигурация сети..."
 #, fuzzy
 msgid "Network MAC settings"
 msgstr "Активировать сетевые установки"
+
+#, fuzzy
+msgid "Network Neighbourhood"
+msgstr "Мастер настройки сети"
 
 #, fuzzy
 msgid "Network Speed:"
@@ -7719,6 +7969,10 @@ msgstr ""
 msgid "OpenVpn Setup"
 msgstr "Настройте тюнер А"
 
+#, fuzzy
+msgid "OpenWebif Configuration"
+msgstr "Настройка тюнера"
+
 msgid "Operating LED status in deep standby mode"
 msgstr ""
 
@@ -7742,6 +7996,9 @@ msgstr ""
 
 msgid "Original"
 msgstr "Оригинал"
+
+msgid "OscamSmartcard-Setup"
+msgstr ""
 
 msgid "Other"
 msgstr "Другая"
@@ -7885,6 +8142,10 @@ msgid "Packages to update"
 msgstr "Список пакетов обновления"
 
 msgid "Packet manager"
+msgstr "Менеджер пакетов"
+
+#, fuzzy
+msgid "PacketManager"
 msgstr "Менеджер пакетов"
 
 #, fuzzy
@@ -9034,6 +9295,14 @@ msgstr "религия"
 msgid "Regular file"
 msgstr "Шаблон файла"
 
+#, fuzzy
+msgid "Regular;18"
+msgstr "Шаблон файла"
+
+#, fuzzy
+msgid "Regular;20"
+msgstr "Шаблон файла"
+
 msgid "Relative"
 msgstr "относительная"
 
@@ -9971,6 +10240,10 @@ msgid "Select HDD"
 msgstr "Выбрать"
 
 #, fuzzy
+msgid "Select OPKG source....."
+msgstr "Выбор источника обновления"
+
+#, fuzzy
 msgid "Select Software Update"
 msgstr "Обновление софта"
 
@@ -10044,6 +10317,10 @@ msgid "Select files for backup."
 msgstr "Выбор файлов для резервного копирования."
 
 msgid "Select files/folders to backup"
+msgstr "Выбор файлов/папок для резервного копирования."
+
+#, fuzzy
+msgid "Select files/folders to backup..."
 msgstr "Выбор файлов/папок для резервного копирования."
 
 #, fuzzy
@@ -10956,10 +11233,6 @@ msgstr "Лево и право"
 
 msgid "Sierra Leone"
 msgstr ""
-
-#, fuzzy
-msgid "Signal Finder"
-msgstr "Сигнал: "
 
 msgid "Signal OK, proceeding"
 msgstr "Сигнал ОК,в процессе"
@@ -13572,6 +13845,12 @@ msgid ""
 "Component: enigma2"
 msgstr ""
 
+msgid "WeatherPlugin: Edit Entry"
+msgstr ""
+
+msgid "WeatherPlugin: List of Entries"
+msgstr ""
+
 msgid "Web Browser"
 msgstr ""
 
@@ -14637,6 +14916,10 @@ msgstr "Круговая левая"
 msgid "circular right"
 msgstr "Круговая правая"
 
+#, fuzzy
+msgid "clean up"
+msgstr "Очистить"
+
 msgid "clip overscan / letterbox borders"
 msgstr ""
 
@@ -15306,6 +15589,10 @@ msgid "open nameserver configuration"
 msgstr "закрыть конфигуратор DNS"
 
 #, fuzzy
+msgid "openMultiboot Manager"
+msgstr "Выбор букетов при старте мульти-EPG"
+
+#, fuzzy
 msgid "original"
 msgstr "Оригинал"
 
@@ -15828,6 +16115,9 @@ msgstr "с %d ошибкой"
 #, fuzzy
 msgid "without"
 msgstr "без сообщения"
+
+msgid "x"
+msgstr ""
 
 msgid "xp1000"
 msgstr ""
