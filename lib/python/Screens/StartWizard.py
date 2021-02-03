@@ -3,6 +3,7 @@ from Screens.MessageBox import MessageBox
 from Screens.WizardLanguage import WizardLanguage
 from Screens.Rc import Rc
 from Tools.HardwareInfo import HardwareInfo
+from Components.Language import language
 try:
 	from Plugins.SystemPlugins.OSDPositionSetup.overscanwizard import OverscanWizard
 except:
@@ -18,6 +19,8 @@ from LanguageSelection import LanguageWizard
 
 config.misc.firstrun = ConfigBoolean(default = True)
 config.misc.languageselected = ConfigBoolean(default = True)
+config.misc.ask_languagedeletion = ConfigBoolean(default = True)
+config.misc.do_deletelanguage = ConfigBoolean(default = False)
 
 if OverscanWizard:
 	#config.misc.do_overscanwizard = ConfigBoolean(default = OverscanWizard and config.skin.primary_skin.value == "PLi-FullNightHD/skin.xml")
@@ -62,8 +65,23 @@ class DevelopWizard(MessageBox):
 			config.misc.check_developimage.save()
 		MessageBox.close(self)
 
+class LanguageDeleteWizard(MessageBox):
+	def __init__(self, session):
+		MessageBox.__init__(self, session, _("Do you want to delete all other languages?"), type=MessageBox.TYPE_YESNO, timeout=20, default=False, simple=True)
+
+	def close(self, value):
+		if value:
+			language.delLanguage()
+			config.misc.do_deletelanguage.value = True
+			config.misc.do_deletelanguage.save()
+                config.misc.ask_languagedeletion.value = False
+                config.misc.ask_languagedeletion.save()
+		configfile.save()
+		MessageBox.close(self)
+
 wizardManager.registerWizard(DevelopWizard, checkForDevelopImage(), priority=0)
 wizardManager.registerWizard(LanguageWizard, config.misc.languageselected.value, priority = 10)
+wizardManager.registerWizard(LanguageDeleteWizard, config.misc.ask_languagedeletion.value, priority = 15)
 if OverscanWizard:
 	wizardManager.registerWizard(OverscanWizard, config.misc.do_overscanwizard.value, priority = 20)
 wizardManager.registerWizard(StartWizard, config.misc.firstrun.value, priority = 25)

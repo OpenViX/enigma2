@@ -21,45 +21,48 @@ class Language:
 		self.langlistselection = []
 		# FIXME make list dynamically
 		# name, iso-639 language, iso-3166 country. Please don't mix language&country!
-		self.addLanguage("English",     "en", "EN", "ISO-8859-15")
-		self.addLanguage("Deutsch",     "de", "DE", "ISO-8859-15")
-		self.addLanguage("Türkçe",      "tr", "TR", "ISO-8859-15")
-		self.addLanguage("Arabic",      "ar", "AE", "ISO-8859-15")
-		self.addLanguage("Български",   "bg", "BG", "ISO-8859-15")
-		self.addLanguage("Català",      "ca", "AD", "ISO-8859-15")
-		self.addLanguage("Česky",       "cs", "CZ", "ISO-8859-15")
-		self.addLanguage("Dansk",       "da", "DK", "ISO-8859-15")
-		self.addLanguage("Ελληνικά",    "el", "GR", "ISO-8859-7")
-		self.addLanguage("Español",     "es", "ES", "ISO-8859-15")
-		self.addLanguage("Eesti",       "et", "EE", "ISO-8859-15")
+		self.addLanguage("Arabic",	"ar", "AE", "ISO-8859-15")
+		self.addLanguage("Български",	"bg", "BG", "ISO-8859-15")
+		self.addLanguage("Català",	"ca", "AD", "ISO-8859-15")
+		self.addLanguage("Česky",	"cs", "CZ", "ISO-8859-15")
+		self.addLanguage("Dansk",	"da", "DK", "ISO-8859-15")
+		self.addLanguage("Deutsch",	"de", "DE", "ISO-8859-15")
+		self.addLanguage("Ελληνικά",	"el", "GR", "ISO-8859-7")
+		self.addLanguage("English",	"en", "EN", "ISO-8859-15")
+		self.addLanguage("Español",	"es", "ES", "ISO-8859-15")
+		self.addLanguage("Eesti",	"et", "EE", "ISO-8859-15")
 		self.addLanguage("فارسی",	"fa", "IR", "UTF-8")
-		self.addLanguage("Suomi",       "fi", "FI", "ISO-8859-15")
-		self.addLanguage("Français",    "fr", "FR", "ISO-8859-15")
-		self.addLanguage("Frysk",       "fy", "NL", "ISO-8859-15")
-		self.addLanguage("Hebrew",      "he", "IL", "ISO-8859-15")
-		self.addLanguage("Hrvatski",    "hr", "HR", "ISO-8859-15")
-		self.addLanguage("Magyar",      "hu", "HU", "ISO-8859-15")
-		self.addLanguage("Íslenska",    "is", "IS", "ISO-8859-15")
-		self.addLanguage("Italiano",    "it", "IT", "ISO-8859-15")
+		self.addLanguage("Suomi",	"fi", "FI", "ISO-8859-15")
+		self.addLanguage("Français",	"fr", "FR", "ISO-8859-15")
+		self.addLanguage("Frysk",	"fy", "NL", "ISO-8859-15")
+		self.addLanguage("Galician",	"gl", "ES", "ISO-8859-15")
+		self.addLanguage("Hebrew",	"he", "IL", "ISO-8859-15")
+		self.addLanguage("Hrvatski",	"hr", "HR", "ISO-8859-15")
+		self.addLanguage("Magyar",	"hu", "HU", "ISO-8859-15")
 		self.addLanguage("Indonesian",	"id", "ID", "ISO-8859-15")
-		self.addLanguage("Kurdish",     "ku", "KU", "ISO-8859-15")
-		self.addLanguage("Lietuvių",    "lt", "LT", "ISO-8859-15")
-		self.addLanguage("Latviešu",    "lv", "LV", "ISO-8859-15")
-		self.addLanguage("Nederlands",  "nl", "NL", "ISO-8859-15")
-		self.addLanguage("Norsk",       "no", "NO", "ISO-8859-15")
-		self.addLanguage("Polski",      "pl", "PL", "ISO-8859-15")
-		self.addLanguage("Português",   "pt", "PT", "ISO-8859-15")
-		self.addLanguage("Português do Brasil",  "pt", "BR", "ISO-8859-15")
-		self.addLanguage("Romanian",    "ro", "RO", "ISO-8859-15")
-		self.addLanguage("Русский",     "ru", "RU", "ISO-8859-15")
-		self.addLanguage("Slovensky",   "sk", "SK", "ISO-8859-15")
-		self.addLanguage("Slovenščina", "sl", "SI", "ISO-8859-15")
-		self.addLanguage("Srpski",      "sr", "YU", "ISO-8859-15")
-		self.addLanguage("Svenska",     "sv", "SE", "ISO-8859-15")
-		self.addLanguage("ภาษาไทย",     "th", "TH", "ISO-8859-15")
-		self.addLanguage("Українська",  "uk", "UA", "ISO-8859-15")
-		self.addLanguage("SChinese",    "zh", "CN", "UTF-8")
-		self.addLanguage("TChinese",    "zh", "HK", "UTF-8")
+		self.addLanguage("Íslenska",	"is", "IS", "ISO-8859-15")
+		self.addLanguage("Italiano",	"it", "IT", "ISO-8859-15")
+		self.addLanguage("Kurdish",	"ku", "KU", "ISO-8859-15")
+		self.addLanguage("Lietuvių",	"lt", "LT", "ISO-8859-15")
+		self.addLanguage("Latviešu",	"lv", "LV", "ISO-8859-15")
+		self.addLanguage("Nederlands",	"nl", "NL", "ISO-8859-15")
+		self.addLanguage("Norsk Bokmål","nb", "NO", "ISO-8859-15")
+		self.addLanguage("Norsk Nynorsk", "nn", "NO", "ISO-8859-15")
+		self.addLanguage("Polski",	"pl", "PL", "ISO-8859-15")
+		self.addLanguage("Português",	"pt", "PT", "ISO-8859-15")
+		self.addLanguage("Português do Brasil","pt", "BR", "ISO-8859-15")
+		self.addLanguage("Romanian",	"ro", "RO", "ISO-8859-15")
+		self.addLanguage("Русский",	"ru", "RU", "ISO-8859-15")
+		self.addLanguage("Slovensky",	"sk", "SK", "ISO-8859-15")
+		self.addLanguage("Slovenščina",	"sl", "SI", "ISO-8859-15")
+		self.addLanguage("Srpski",	"sr", "YU", "ISO-8859-15")
+		self.addLanguage("Svenska",	"sv", "SE", "ISO-8859-15")
+		self.addLanguage("ภาษาไทย",	"th", "TH", "ISO-8859-15")
+		self.addLanguage("Türkçe",	"tr", "TR", "ISO-8859-15")
+		self.addLanguage("Українська",	"uk", "UA", "ISO-8859-15")
+		self.addLanguage("Tiếng Việt",	"vi", "VN", "UTF-8")
+		self.addLanguage("SChinese",	"zh", "CN", "UTF-8")
+		self.addLanguage("TChinese",	"zh", "HK", "UTF-8")
 
 	def addLanguage(self, name, lang, country, encoding):
 		try:
@@ -75,6 +78,9 @@ class Language:
 				print "Selected language %s does not exist, fallback to en_EN!" % index
 				index = "en_EN"
 			lang = self.lang[index]
+                        if not os.path.exists(resolveFilename(SCOPE_LANGUAGE, lang[1])):
+                            print "Language %s is not installed. Try to install it now." % lang[0]
+                            os.system("opkg install enigma2-locale-%s" % lang[1])
 			print "Activating language " + lang[0]
 			os.environ["LANGUAGE"] = lang[1] # set languange in order gettext to work properly on external plugins
 			self.catalog = gettext.translation('enigma2', resolveFilename(SCOPE_LANGUAGE, ""), languages=[index], fallback=True)
@@ -134,5 +140,39 @@ class Language:
 
 	def addCallback(self, callback):
 		self.callbacks.append(callback)
+
+	def delLanguage(self, delLang = None):
+		from Components.config import config, configfile
+
+		LPATH = resolveFilename(SCOPE_LANGUAGE, "")
+		Lpackagename = "enigma2-locale-"
+		lang = config.osd.language.value
+
+		if delLang:
+			print"DELETE LANG", delLang
+			if delLang == "en_US" or delLang == "de_DE":
+				print"Default Language can not be deleted !!"
+				return
+			elif delLang == "en_GB" or delLang == "pt_BR":
+				delLang = delLang.lower()
+				delLang = delLang.replace('_','-')
+				os.system("opkg remove --autoremove --force-depends " + Lpackagename + delLang)
+			else:
+				os.system("opkg remove --autoremove --force-depends " + Lpackagename + delLang[:2])
+		else:
+			print"Delete all lang except ", lang
+			ll = os.listdir(LPATH)
+			for x in ll:
+				if len(x) > 2:
+					if x != lang and x != "de":
+						x = x.lower()
+						x = x.replace('_','-')
+						os.system("opkg remove --autoremove --force-depends " + Lpackagename + x)
+				else:
+					if x != lang[:2] and x != "en" and x != "de":
+						os.system("opkg remove --autoremove --force-depends " + Lpackagename + x)
+					elif x == "pt":
+						if x != lang:
+							os.system("opkg remove --autoremove --force-depends " + Lpackagename + x)
 
 language = Language()

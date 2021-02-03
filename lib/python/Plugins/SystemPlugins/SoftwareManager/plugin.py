@@ -1613,6 +1613,8 @@ class UpdatePlugin(Screen):
 	def exit(self):
 		if not self.opkg.isRunning():
 			if self.packages != 0 and self.error == 0:
+                                if config.misc.do_deletelanguage.value:
+                                        language.delLanguage()
 				self.session.openWithCallback(self.exitAnswer, MessageBox, _("Upgrade finished.") +" "+_("Do you want to reboot your Receiver?"))
 			else:
 				self.close()
