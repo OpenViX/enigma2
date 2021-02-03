@@ -751,8 +751,8 @@ class PliExtraInfo(Poll, Converter, object):
 		feraw = self.feraw
 		if not feraw:
 			feraw = info.getInfoObject(iServiceInformation.sTransponderData)
-			if not feraw:
-				return ""
+#			if not feraw: # commented out for further testing. This "return" is blocking information display when no tuner is active, e.g. streaming.
+#				return ""
 			fedata = ConvertToHumanReadable(feraw)
 		else:
 			fedata = self.fedata
