@@ -78,9 +78,10 @@ class Language:
 				print "Selected language %s does not exist, fallback to en_EN!" % index
 				index = "en_EN"
 			lang = self.lang[index]
-                        if not os.path.exists(resolveFilename(SCOPE_LANGUAGE, lang[1])):
-                            print "Language %s is not installed. Try to install it now." % lang[0]
-                            os.system("opkg install enigma2-locale-%s" % lang[1])
+			if not os.path.exists(resolveFilename(SCOPE_LANGUAGE, lang[1])):
+				print "Language %s is not installed. Try to install it now." % lang[0]
+				os.system("opkg install enigma2-locale-%s" % lang[1])
+				self.delLanguage()
 			print "Activating language " + lang[0]
 			os.environ["LANGUAGE"] = lang[1] # set languange in order gettext to work properly on external plugins
 			self.catalog = gettext.translation('enigma2', resolveFilename(SCOPE_LANGUAGE, ""), languages=[index], fallback=True)
