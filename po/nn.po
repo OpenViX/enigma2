@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-03 23:45+0100\n"
+"POT-Creation-Date: 2021-02-04 21:24+0100\n"
 "PO-Revision-Date: 2013-10-23 19:15+0100\n"
 "Last-Translator: andy1 <dmmm8000pvr@gmail.com>\n"
 "Language-Team: none\n"
@@ -632,13 +632,13 @@ msgstr ""
 msgid "18 V"
 msgstr ""
 
+msgid "19"
+msgstr ""
+
 msgid "2"
 msgstr ""
 
 msgid "2,0,80,50"
-msgstr ""
-
-msgid "20"
 msgstr ""
 
 msgid "2048 MB (maximum)"
@@ -664,13 +664,16 @@ msgstr ""
 msgid "26,1,559,28"
 msgstr ""
 
+msgid "265,1,300,23"
+msgstr ""
+
 msgid "29.97"
 msgstr ""
 
 msgid "3"
 msgstr ""
 
-msgid "3,3,25,25"
+msgid "3,0,25,25"
 msgstr ""
 
 msgid "3,5,100,40"
@@ -680,19 +683,16 @@ msgstr ""
 msgid "30"
 msgstr ""
 
-msgid "306,1,320,28"
-msgstr ""
-
 msgid "32 MB"
 msgstr ""
 
-msgid "33,0,694,30"
+msgid "33,1,694,24"
 msgstr ""
 
-msgid "33,3,25,25"
+msgid "33,3,22,22"
 msgstr ""
 
-msgid "36,1,694,28"
+msgid "36,1,694,23"
 msgstr ""
 
 msgid "3D"
@@ -717,10 +717,10 @@ msgstr ""
 msgid "400"
 msgstr ""
 
-msgid "47,1,1147,28"
+msgid "47,1,1147,24"
 msgstr ""
 
-msgid "47,1,685,28"
+msgid "47,1,685,24"
 msgstr ""
 
 #
@@ -741,19 +741,22 @@ msgstr ""
 msgid "5"
 msgstr ""
 
+msgid "5,1,250,23"
+msgstr ""
+
 msgid "5,1,520,23"
+msgstr ""
+
+msgid "5,1,530,28"
 msgstr ""
 
 msgid "5,1,630,23"
 msgstr ""
 
-msgid "5,2,630,28"
-msgstr ""
-
 msgid "5,25,630,23"
 msgstr ""
 
-msgid "5,30,630,27"
+msgid "5,28,530,23"
 msgstr ""
 
 msgid "5,7,16,16"
@@ -771,13 +774,7 @@ msgstr ""
 msgid "6"
 msgstr ""
 
-msgid "6,1,300,28"
-msgstr ""
-
-msgid "6,1,320,28"
-msgstr ""
-
-msgid "63,0,661,30"
+msgid "63,1,661,24"
 msgstr ""
 
 msgid "64 MB"
@@ -786,7 +783,7 @@ msgstr ""
 msgid "7"
 msgstr ""
 
-msgid "7,0,40,30"
+msgid "7,0,40,25"
 msgstr ""
 
 msgid "8"
@@ -4135,11 +4132,6 @@ msgstr "Vil du brenne denne samlingen pål DVD?"
 
 #
 #, fuzzy
-msgid "Do you want to delete all other languages?"
-msgstr "Vil du installerere pakken:\n"
-
-#
-#, fuzzy
 msgid "Do you want to delete the old settings in /etc/enigma2 first?"
 msgstr "Vil du gjenopprette dine innstillinger?"
 
@@ -4196,6 +4188,11 @@ msgstr "Vil du starte mottakeren på nytt?"
 
 msgid "Do you want to remove all the crash logfiles"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Do you want to remove all unused translations?"
+msgstr "Vil du gjenopprette dine innstillinger?"
 
 #
 msgid "Do you want to remove the package:\n"
@@ -4439,6 +4436,9 @@ msgstr "Endre DNS"
 #, fuzzy
 msgid "Edit Title"
 msgstr "Endre navn"
+
+msgid "Edit VLC Server"
+msgstr ""
 
 #, fuzzy
 msgid "Edit alternatives"
@@ -9265,6 +9265,11 @@ msgstr "Oversikt over programtillegg"
 
 #
 #, fuzzy
+msgid "Plugin details"
+msgstr "Avinstallere"
+
+#
+#, fuzzy
 msgid "Plugin install"
 msgstr "Avinstallere"
 
@@ -9908,6 +9913,11 @@ msgstr "filformat"
 
 #
 #, fuzzy
+msgid "Regular;19"
+msgstr "filformat"
+
+#
+#, fuzzy
 msgid "Regular;20"
 msgstr "filformat"
 
@@ -10217,6 +10227,11 @@ msgstr "Starte nettverksforbindelse på nytt.\n"
 #
 msgid "Restore"
 msgstr "Gjenopprette"
+
+#
+#, fuzzy
+msgid "Restore Backups"
+msgstr "Gjenopprette sikkerhetskopier"
 
 #
 #, fuzzy
@@ -10673,6 +10688,10 @@ msgstr "Søk %s"
 msgid "Scan %s band"
 msgstr "Søk %s bånd"
 
+#, fuzzy
+msgid "Scan IP"
+msgstr "Søk"
+
 msgid "Scan additional SR"
 msgstr "Søk etter flere SR"
 
@@ -10780,6 +10799,10 @@ msgstr "Søker etter nye installerte eller avinstallerte pakker. Vennligst vent 
 
 msgid "Searching west ..."
 msgstr "Søker vestover..."
+
+#, fuzzy
+msgid "Second InfoBar"
+msgstr "Vis ekstra informasjonslinje"
 
 msgid "Second cable of motorized LNB"
 msgstr ""
@@ -11327,6 +11350,10 @@ msgid ""
 msgstr ""
 "Kanal utilgjengelig!\n"
 "Kontroller tuner konfigurasjon!"
+
+#, fuzzy
+msgid "Serviceinfo"
+msgstr "Kanalinfo"
 
 msgid "Servicename"
 msgstr ""
@@ -12031,6 +12058,11 @@ msgstr "EPG valg"
 
 #
 #, fuzzy
+msgid "Skin Selector"
+msgstr "EPG valg"
+
+#
+#, fuzzy
 msgid "Skin setup"
 msgstr "PiP-bilde i bilde oppsett"
 
@@ -12152,6 +12184,10 @@ msgstr "Programvare oppsett"
 
 #, fuzzy
 msgid "Softcam startup..."
+msgstr "Programvare oppsett"
+
+#, fuzzy
+msgid "SoftcamSetup"
 msgstr "Programvare oppsett"
 
 #
@@ -12695,6 +12731,10 @@ msgstr "Kanalnavn"
 msgid "Svalbard and Jan Mayen"
 msgstr ""
 
+#, fuzzy
+msgid "Swap File Manager"
+msgstr "Pakkeforvalter"
+
 msgid "Swap File not found. You have to create the file before to activate."
 msgstr ""
 
@@ -12852,6 +12892,11 @@ msgstr "System"
 
 msgid "System & Modulation"
 msgstr ""
+
+#
+#, fuzzy
+msgid "SystemNetworkInfo"
+msgstr "Nettverksinnstilling..."
 
 msgid "T2MI PID"
 msgstr ""
@@ -13776,6 +13821,11 @@ msgstr "Spor"
 msgid "Transcode"
 msgstr "Sendingstype"
 
+#
+#, fuzzy
+msgid "Transcoding Setup"
+msgstr "Sendingstype"
+
 msgid "Transcoding: "
 msgstr ""
 
@@ -14359,6 +14409,14 @@ msgstr "Brukerdefinert transponder"
 msgid "User interface"
 msgstr "Innstilling"
 
+msgid "UserDialog"
+msgstr ""
+
+#
+#, fuzzy
+msgid "UserManager"
+msgstr "Gi nytt navn"
+
 #
 #, fuzzy
 msgid "Username"
@@ -14387,6 +14445,12 @@ msgstr ""
 #, fuzzy
 msgid "VLAN connection"
 msgstr "LAN oppkobling"
+
+msgid "VLC Media List"
+msgstr ""
+
+msgid "VLC Server List"
+msgstr ""
 
 msgid "VMGM (intro trailer)"
 msgstr "VMGM (intro trailer)"
@@ -14498,6 +14562,11 @@ msgstr "Bilde PID"
 
 msgid "Videocodec, size & format"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Videoenhancement"
+msgstr "Video oppsett"
 
 msgid "Viet Nam"
 msgstr ""
@@ -15561,6 +15630,14 @@ msgstr ""
 msgid "Zap-History Browser"
 msgstr "Søk i kataloger"
 
+#, fuzzy
+msgid "ZapHistoryBrowser"
+msgstr "Søk i kataloger"
+
+#, fuzzy
+msgid "ZapHistoryConfigurator"
+msgstr "Søk i kataloger"
+
 #
 #, fuzzy, python-format
 msgid "Zapped to timer service %s as Picture in Picture!"
@@ -15905,6 +15982,10 @@ msgstr "diskusjon/intervju/debatt"
 #
 msgid "do nothing"
 msgstr "ikke gjør noe"
+
+#, fuzzy
+msgid "doFlashImage"
+msgstr "Flash"
 
 msgid "documentary"
 msgstr "dokumentar"

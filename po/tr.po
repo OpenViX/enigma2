@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue (Apachi70)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-03 23:45+0100\n"
+"POT-Creation-Date: 2021-02-04 21:24+0100\n"
 "PO-Revision-Date: 2015-12-18 21:05+0200\n"
 "Last-Translator: Yetkin AYDIN <yetkina@gmail.com>\n"
 "Language-Team: http://www.hurforum.com <yetkina@gmail.com>\n"
@@ -608,15 +608,15 @@ msgid "18 V"
 msgstr "18 V"
 
 #, fuzzy
+msgid "19"
+msgstr "16:9"
+
+#, fuzzy
 msgid "2"
 msgstr "24"
 
 msgid "2,0,80,50"
 msgstr ""
-
-#, fuzzy
-msgid "20"
-msgstr "30"
 
 msgid "2048 MB (maximum)"
 msgstr "2048 MB (azami)"
@@ -639,6 +639,9 @@ msgstr "256 MB (bu chipset için önerilir)"
 msgid "26,1,559,28"
 msgstr ""
 
+msgid "265,1,300,23"
+msgstr ""
+
 msgid "29.97"
 msgstr "29.97"
 
@@ -646,7 +649,7 @@ msgstr "29.97"
 msgid "3"
 msgstr "30"
 
-msgid "3,3,25,25"
+msgid "3,0,25,25"
 msgstr ""
 
 msgid "3,5,100,40"
@@ -655,19 +658,16 @@ msgstr ""
 msgid "30"
 msgstr "30"
 
-msgid "306,1,320,28"
-msgstr ""
-
 msgid "32 MB"
 msgstr "32 MB"
 
-msgid "33,0,694,30"
+msgid "33,1,694,24"
 msgstr ""
 
-msgid "33,3,25,25"
+msgid "33,3,22,22"
 msgstr ""
 
-msgid "36,1,694,28"
+msgid "36,1,694,23"
 msgstr ""
 
 msgid "3D"
@@ -692,10 +692,10 @@ msgstr "4"
 msgid "400"
 msgstr "HD2400"
 
-msgid "47,1,1147,28"
+msgid "47,1,1147,24"
 msgstr ""
 
-msgid "47,1,685,28"
+msgid "47,1,685,24"
 msgstr ""
 
 msgid "4:3"
@@ -714,19 +714,22 @@ msgstr "4"
 msgid "5"
 msgstr "5"
 
+msgid "5,1,250,23"
+msgstr ""
+
 msgid "5,1,520,23"
+msgstr ""
+
+msgid "5,1,530,28"
 msgstr ""
 
 msgid "5,1,630,23"
 msgstr ""
 
-msgid "5,2,630,28"
-msgstr ""
-
 msgid "5,25,630,23"
 msgstr ""
 
-msgid "5,30,630,27"
+msgid "5,28,530,23"
 msgstr ""
 
 msgid "5,7,16,16"
@@ -744,13 +747,7 @@ msgstr ""
 msgid "6"
 msgstr ""
 
-msgid "6,1,300,28"
-msgstr ""
-
-msgid "6,1,320,28"
-msgstr ""
-
-msgid "63,0,661,30"
+msgid "63,1,661,24"
 msgstr ""
 
 msgid "64 MB"
@@ -759,7 +756,7 @@ msgstr "64 MB"
 msgid "7"
 msgstr ""
 
-msgid "7,0,40,30"
+msgid "7,0,40,25"
 msgstr ""
 
 #, fuzzy
@@ -3759,10 +3756,6 @@ msgid "Do you want to burn this collection to DVD medium?"
 msgstr "Bu koleksiyonu DVD medyasına yazmak istiyor musunuz?"
 
 #, fuzzy
-msgid "Do you want to delete all other languages?"
-msgstr "Seçilen paketi yüklemek istiyor musunuz?:\n"
-
-#, fuzzy
 msgid "Do you want to delete the old settings in /etc/enigma2 first?"
 msgstr "Ayarlarınızı geri yüklemek istiyor musunuz?"
 
@@ -3807,6 +3800,10 @@ msgstr "Alıcıyı yeniden başlatmak istiyor musunuz?"
 
 msgid "Do you want to remove all the crash logfiles"
 msgstr ""
+
+#, fuzzy
+msgid "Do you want to remove all unused translations?"
+msgstr "Ayarlarınızı geri yüklemek istiyor musunuz?"
 
 msgid "Do you want to remove the package:\n"
 msgstr "Seçilen paketi kaldırmak istiyor musunuz?:\n"
@@ -4019,6 +4016,9 @@ msgstr "DNS Düzenle"
 
 msgid "Edit Title"
 msgstr "Başlığı düzenle"
+
+msgid "Edit VLC Server"
+msgstr ""
 
 #, fuzzy
 msgid "Edit alternatives"
@@ -8301,6 +8301,10 @@ msgstr "Eklenti Filtre ..."
 msgid "Plugin browser"
 msgstr "Eklenti Gezgini"
 
+#, fuzzy
+msgid "Plugin details"
+msgstr "Eklenti yükle"
+
 msgid "Plugin install"
 msgstr "Eklenti yükle"
 
@@ -8887,6 +8891,10 @@ msgid "Regular;18"
 msgstr "taslak dosya"
 
 #, fuzzy
+msgid "Regular;19"
+msgstr "taslak dosya"
+
+#, fuzzy
 msgid "Regular;20"
 msgstr "taslak dosya"
 
@@ -9159,6 +9167,10 @@ msgstr "Ağ bağlantısını ve ağ arayüzlerini yeniden başlatın.\n"
 
 msgid "Restore"
 msgstr "Geri Yükle"
+
+#, fuzzy
+msgid "Restore Backups"
+msgstr "Yedekten geri yükle"
 
 #, fuzzy
 msgid "Restore Plugins"
@@ -9585,6 +9597,10 @@ msgstr "%s Tara"
 msgid "Scan %s band"
 msgstr "%s bant Tarama"
 
+#, fuzzy
+msgid "Scan IP"
+msgstr "Tara "
+
 msgid "Scan additional SR"
 msgstr "Eklenen SR'leri ara"
 
@@ -9683,6 +9699,10 @@ msgstr "Yeni yüklenen veya kaldırılan paketler aranıyor. Lütfen bekleyin...
 
 msgid "Searching west ..."
 msgstr "Batı aranıyor ..."
+
+#, fuzzy
+msgid "Second InfoBar"
+msgstr "İkinci bilgi çubuğunu göster"
 
 msgid "Second cable of motorized LNB"
 msgstr "Motorlu LNB'nin ikinci kablosu"
@@ -10174,6 +10194,10 @@ msgid ""
 msgstr ""
 "Kanal kullanılamaz!\n"
 "Tuner ayarlarınızı kontrol edin!"
+
+#, fuzzy
+msgid "Serviceinfo"
+msgstr "Kanal bilgisi"
 
 msgid "Servicename"
 msgstr "Kanal adı"
@@ -10801,6 +10825,10 @@ msgstr "Cilt ve Çözünürlük:% s (% sx% s)"
 msgid "Skin Selection Actions"
 msgstr "Eylem seç"
 
+#, fuzzy
+msgid "Skin Selector"
+msgstr "Seçimi atla"
+
 msgid "Skin setup"
 msgstr "Skin kurmak"
 
@@ -10906,6 +10934,10 @@ msgstr "Softcam başlangıç"
 
 msgid "Softcam startup..."
 msgstr "Softcam başlangıç ..."
+
+#, fuzzy
+msgid "SoftcamSetup"
+msgstr "Softcam başlangıç"
 
 msgid "Software"
 msgstr "Yazılım"
@@ -11393,6 +11425,10 @@ msgstr "Surinam"
 msgid "Svalbard and Jan Mayen"
 msgstr "Svalbard ve Jan Mayen"
 
+#, fuzzy
+msgid "Swap File Manager"
+msgstr "Takas [Swap) Yönetici"
+
 msgid "Swap File not found. You have to create the file before to activate."
 msgstr "Takas(Swap) Dosya bulunamadı. Sen etkinleştirmek için önce dosyayı oluşturmak zorunda."
 
@@ -11532,6 +11568,10 @@ msgstr "Sistem"
 
 msgid "System & Modulation"
 msgstr "Sistem & Modülasyon"
+
+#, fuzzy
+msgid "SystemNetworkInfo"
+msgstr "Ağ Bilgisi"
 
 msgid "T2MI PID"
 msgstr "T2MI PID"
@@ -12392,6 +12432,10 @@ msgstr "İz"
 msgid "Transcode"
 msgstr "Kod dönüştürme"
 
+#, fuzzy
+msgid "Transcoding Setup"
+msgstr "Transcoding: "
+
 msgid "Transcoding: "
 msgstr "Transcoding: "
 
@@ -12910,6 +12954,13 @@ msgstr "Kullanıcı tanımlı transponder"
 msgid "User interface"
 msgstr "Kullanıcı arayüzü"
 
+msgid "UserDialog"
+msgstr ""
+
+#, fuzzy
+msgid "UserManager"
+msgstr "Adını değiştirmek"
+
 #, fuzzy
 msgid "Username"
 msgstr "Adını değiştirmek"
@@ -12936,6 +12987,12 @@ msgstr "VCR scart"
 
 msgid "VLAN connection"
 msgstr "VLAN bağlantısı"
+
+msgid "VLC Media List"
+msgstr ""
+
+msgid "VLC Server List"
+msgstr ""
 
 msgid "VMGM (intro trailer)"
 msgstr "VMGM (tanıtım filmi)"
@@ -13031,6 +13088,10 @@ msgstr "Video"
 
 msgid "Videocodec, size & format"
 msgstr "Videocodec, boyut & biçim"
+
+#, fuzzy
+msgid "Videoenhancement"
+msgstr "Görüntü iyileştirme kurulumu"
 
 msgid "Viet Nam"
 msgstr "Viet Nam"
@@ -14071,6 +14132,14 @@ msgstr "Zap-Tarihçe Tarayıcı"
 msgid "Zap-History Browser"
 msgstr "Zap-Tarihçe Tarayıcı"
 
+#, fuzzy
+msgid "ZapHistoryBrowser"
+msgstr "Zap-Tarihçe Tarayıcı"
+
+#, fuzzy
+msgid "ZapHistoryConfigurator"
+msgstr "Zap-Tarihçe Tarayıcı"
+
 #, fuzzy, python-format
 msgid "Zapped to timer service %s as Picture in Picture!"
 msgstr "PiP olarak zamanlayıcı servisine% s eklendi!"
@@ -14373,6 +14442,10 @@ msgstr "tartışma / röportaj / tartışmalar"
 
 msgid "do nothing"
 msgstr "birşey yapma"
+
+#, fuzzy
+msgid "doFlashImage"
+msgstr "Flaş"
 
 msgid "documentary"
 msgstr "belgesel"

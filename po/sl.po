@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-03 23:45+0100\n"
+"POT-Creation-Date: 2021-02-04 21:24+0100\n"
 "PO-Revision-Date: 2015-08-30 09:00+0200\n"
 "Last-Translator: Taykun345 <support@satnigmo.com>\n"
 "Language-Team: Satnigmo <support@satnigmo.com>\n"
@@ -695,16 +695,16 @@ msgstr "18 V"
 
 #
 #, fuzzy
+msgid "19"
+msgstr "16:9"
+
+#
+#, fuzzy
 msgid "2"
 msgstr "24"
 
 msgid "2,0,80,50"
 msgstr ""
-
-#
-#, fuzzy
-msgid "20"
-msgstr "30"
 
 msgid "2048 MB (maximum)"
 msgstr ""
@@ -729,6 +729,9 @@ msgstr ""
 msgid "26,1,559,28"
 msgstr ""
 
+msgid "265,1,300,23"
+msgstr ""
+
 msgid "29.97"
 msgstr "29.97"
 
@@ -737,7 +740,7 @@ msgstr "29.97"
 msgid "3"
 msgstr "30"
 
-msgid "3,3,25,25"
+msgid "3,0,25,25"
 msgstr ""
 
 msgid "3,5,100,40"
@@ -747,19 +750,16 @@ msgstr ""
 msgid "30"
 msgstr "30"
 
-msgid "306,1,320,28"
-msgstr ""
-
 msgid "32 MB"
 msgstr ""
 
-msgid "33,0,694,30"
+msgid "33,1,694,24"
 msgstr ""
 
-msgid "33,3,25,25"
+msgid "33,3,22,22"
 msgstr ""
 
-msgid "36,1,694,28"
+msgid "36,1,694,23"
 msgstr ""
 
 #
@@ -788,10 +788,10 @@ msgstr "4"
 msgid "400"
 msgstr ""
 
-msgid "47,1,1147,28"
+msgid "47,1,1147,24"
 msgstr ""
 
-msgid "47,1,685,28"
+msgid "47,1,685,24"
 msgstr ""
 
 #
@@ -815,19 +815,22 @@ msgstr "4"
 msgid "5"
 msgstr "5"
 
+msgid "5,1,250,23"
+msgstr ""
+
 msgid "5,1,520,23"
+msgstr ""
+
+msgid "5,1,530,28"
 msgstr ""
 
 msgid "5,1,630,23"
 msgstr ""
 
-msgid "5,2,630,28"
-msgstr ""
-
 msgid "5,25,630,23"
 msgstr ""
 
-msgid "5,30,630,27"
+msgid "5,28,530,23"
 msgstr ""
 
 msgid "5,7,16,16"
@@ -845,13 +848,7 @@ msgstr ""
 msgid "6"
 msgstr ""
 
-msgid "6,1,300,28"
-msgstr ""
-
-msgid "6,1,320,28"
-msgstr ""
-
-msgid "63,0,661,30"
+msgid "63,1,661,24"
 msgstr ""
 
 msgid "64 MB"
@@ -860,7 +857,7 @@ msgstr ""
 msgid "7"
 msgstr ""
 
-msgid "7,0,40,30"
+msgid "7,0,40,25"
 msgstr ""
 
 #
@@ -4440,11 +4437,6 @@ msgstr "Ali želite zapisati izbrano zbirko na DVD medij?"
 
 #
 #, fuzzy
-msgid "Do you want to delete all other languages?"
-msgstr "Želite namestiti ta paket?:\n"
-
-#
-#, fuzzy
 msgid "Do you want to delete the old settings in /etc/enigma2 first?"
 msgstr "Želite povrniti vaše nastavitve?"
 
@@ -4503,6 +4495,11 @@ msgstr "Želite izvesti ponovni zagon sprejemnika?"
 
 msgid "Do you want to remove all the crash logfiles"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Do you want to remove all unused translations?"
+msgstr "Želite povrniti vaše nastavitve?"
 
 #
 msgid "Do you want to remove the package:\n"
@@ -4767,6 +4764,9 @@ msgstr "Urejanje DNS"
 #, fuzzy
 msgid "Edit Title"
 msgstr "Spremenite naslov"
+
+msgid "Edit VLC Server"
+msgstr ""
 
 #
 #, fuzzy
@@ -9907,6 +9907,11 @@ msgstr "Seznam vtičnikov"
 
 #
 #, fuzzy
+msgid "Plugin details"
+msgstr "Odstranitev"
+
+#
+#, fuzzy
 msgid "Plugin install"
 msgstr "Odstranitev"
 
@@ -10664,6 +10669,11 @@ msgstr "predloga"
 
 #
 #, fuzzy
+msgid "Regular;19"
+msgstr "predloga"
+
+#
+#, fuzzy
 msgid "Regular;20"
 msgstr "predloga"
 
@@ -11007,6 +11017,11 @@ msgstr "Ponovno zaženite omrežno povezavo in vmesnike.\n"
 #
 msgid "Restore"
 msgstr "Povrnitev prejšnjega stanja"
+
+#
+#, fuzzy
+msgid "Restore Backups"
+msgstr "Povrnitev varnostne kopije"
 
 #
 #, fuzzy
@@ -11524,6 +11539,11 @@ msgid "Scan %s band"
 msgstr "Iskanje %s pasu"
 
 #
+#, fuzzy
+msgid "Scan IP"
+msgstr "Iskanje"
+
+#
 msgid "Scan additional SR"
 msgstr "Iskanje dodatnih SR"
 
@@ -11648,6 +11668,11 @@ msgstr "Iskanje na novo nameščenih ali odstranjenih paketkov... Prosim počaka
 
 msgid "Searching west ..."
 msgstr "Iskanje na zahodu..."
+
+#
+#, fuzzy
+msgid "Second InfoBar"
+msgstr "Prikaz razširjene informacijske vrstice"
 
 #
 msgid "Second cable of motorized LNB"
@@ -12252,6 +12277,11 @@ msgid ""
 msgstr ""
 "Kanal ni dostopen!\n"
 "Preverite nastavitve kanalnika."
+
+#
+#, fuzzy
+msgid "Serviceinfo"
+msgstr "Info. o kanalu"
 
 #, fuzzy
 msgid "Servicename"
@@ -13045,6 +13075,11 @@ msgstr "Izberi dogodek"
 
 #
 #, fuzzy
+msgid "Skin Selector"
+msgstr "EPG izbira"
+
+#
+#, fuzzy
 msgid "Skin setup"
 msgstr "Nastavitve"
 
@@ -13174,6 +13209,11 @@ msgstr "Vrsta emulatorja"
 #
 #, fuzzy
 msgid "Softcam startup..."
+msgstr "Vrsta emulatorja"
+
+#
+#, fuzzy
+msgid "SoftcamSetup"
 msgstr "Vrsta emulatorja"
 
 #
@@ -13761,6 +13801,11 @@ msgstr "Ime kanala"
 msgid "Svalbard and Jan Mayen"
 msgstr ""
 
+#
+#, fuzzy
+msgid "Swap File Manager"
+msgstr "Upravljanje paketkov"
+
 msgid "Swap File not found. You have to create the file before to activate."
 msgstr ""
 
@@ -13939,6 +13984,11 @@ msgstr "Sistem "
 #, fuzzy
 msgid "System & Modulation"
 msgstr "Modulacija"
+
+#
+#, fuzzy
+msgid "SystemNetworkInfo"
+msgstr "Nastavitve omrežja"
 
 #, fuzzy
 msgid "T2MI PID"
@@ -14887,6 +14937,11 @@ msgstr "Transponder"
 
 #
 #, fuzzy
+msgid "Transcoding Setup"
+msgstr "Prevod:"
+
+#
+#, fuzzy
 msgid "Transcoding: "
 msgstr "Prevod:"
 
@@ -15503,6 +15558,14 @@ msgstr "Predefinirani transponder"
 msgid "User interface"
 msgstr "Uporabniški vmesnik"
 
+msgid "UserDialog"
+msgstr ""
+
+#
+#, fuzzy
+msgid "UserManager"
+msgstr "Preimenovanje"
+
 #
 #, fuzzy
 msgid "Username"
@@ -15532,6 +15595,12 @@ msgstr "Preklop na SCART vhod"
 #, fuzzy
 msgid "VLAN connection"
 msgstr "Žična omrežna povezava"
+
+msgid "VLC Media List"
+msgstr ""
+
+msgid "VLC Server List"
+msgstr ""
 
 #
 msgid "VMGM (intro trailer)"
@@ -15655,6 +15724,11 @@ msgstr "S-Video"
 #, fuzzy
 msgid "Videocodec, size & format"
 msgstr "Razmerje slike"
+
+#
+#, fuzzy
+msgid "Videoenhancement"
+msgstr "Nastavitve slike"
 
 msgid "Viet Nam"
 msgstr ""
@@ -16783,6 +16857,16 @@ msgid "Zap-History Browser"
 msgstr "Raziskovalec"
 
 #
+#, fuzzy
+msgid "ZapHistoryBrowser"
+msgstr "Raziskovalec"
+
+#
+#, fuzzy
+msgid "ZapHistoryConfigurator"
+msgstr "Raziskovalec"
+
+#
 #, fuzzy, python-format
 msgid "Zapped to timer service %s as Picture in Picture!"
 msgstr "Pojdi na prvi kanal"
@@ -17145,6 +17229,11 @@ msgstr ""
 #
 msgid "do nothing"
 msgstr "Izhod"
+
+#
+#, fuzzy
+msgid "doFlashImage"
+msgstr "Nadgradi"
 
 msgid "documentary"
 msgstr ""

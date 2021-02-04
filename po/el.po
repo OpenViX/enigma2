@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-03 23:45+0100\n"
+"POT-Creation-Date: 2021-02-04 21:24+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: MCelliotG <mcelliotg@gmail.com>\n"
 "Language-Team: MCelliotG <mcelliotg@gmail.com>\n"
@@ -614,15 +614,15 @@ msgid "18 V"
 msgstr "18 V"
 
 #, fuzzy
+msgid "19"
+msgstr "16:9"
+
+#, fuzzy
 msgid "2"
 msgstr "24"
 
 msgid "2,0,80,50"
 msgstr ""
-
-#, fuzzy
-msgid "20"
-msgstr "30"
 
 msgid "2048 MB (maximum)"
 msgstr ""
@@ -645,6 +645,9 @@ msgstr ""
 msgid "26,1,559,28"
 msgstr ""
 
+msgid "265,1,300,23"
+msgstr ""
+
 msgid "29.97"
 msgstr "29.97"
 
@@ -652,7 +655,7 @@ msgstr "29.97"
 msgid "3"
 msgstr "30"
 
-msgid "3,3,25,25"
+msgid "3,0,25,25"
 msgstr ""
 
 msgid "3,5,100,40"
@@ -661,19 +664,16 @@ msgstr ""
 msgid "30"
 msgstr "30"
 
-msgid "306,1,320,28"
-msgstr ""
-
 msgid "32 MB"
 msgstr ""
 
-msgid "33,0,694,30"
+msgid "33,1,694,24"
 msgstr ""
 
-msgid "33,3,25,25"
+msgid "33,3,22,22"
 msgstr ""
 
-msgid "36,1,694,28"
+msgid "36,1,694,23"
 msgstr ""
 
 #, fuzzy
@@ -699,10 +699,10 @@ msgstr "4"
 msgid "400"
 msgstr ""
 
-msgid "47,1,1147,28"
+msgid "47,1,1147,24"
 msgstr ""
 
-msgid "47,1,685,28"
+msgid "47,1,685,24"
 msgstr ""
 
 msgid "4:3"
@@ -721,19 +721,22 @@ msgstr "4"
 msgid "5"
 msgstr "5"
 
+msgid "5,1,250,23"
+msgstr ""
+
 msgid "5,1,520,23"
+msgstr ""
+
+msgid "5,1,530,28"
 msgstr ""
 
 msgid "5,1,630,23"
 msgstr ""
 
-msgid "5,2,630,28"
-msgstr ""
-
 msgid "5,25,630,23"
 msgstr ""
 
-msgid "5,30,630,27"
+msgid "5,28,530,23"
 msgstr ""
 
 msgid "5,7,16,16"
@@ -751,13 +754,7 @@ msgstr ""
 msgid "6"
 msgstr ""
 
-msgid "6,1,300,28"
-msgstr ""
-
-msgid "6,1,320,28"
-msgstr ""
-
-msgid "63,0,661,30"
+msgid "63,1,661,24"
 msgstr ""
 
 msgid "64 MB"
@@ -766,7 +763,7 @@ msgstr ""
 msgid "7"
 msgstr ""
 
-msgid "7,0,40,30"
+msgid "7,0,40,25"
 msgstr ""
 
 #, fuzzy
@@ -3886,10 +3883,6 @@ msgid "Do you want to burn this collection to DVD medium?"
 msgstr "Θέλετε να γίνει εγγραφή αυτής της συλλογής σε DVD;"
 
 #, fuzzy
-msgid "Do you want to delete all other languages?"
-msgstr "Θέλετε να διαγραφούν όλες οι καταγραφές κρασαρίσματος"
-
-#, fuzzy
 msgid "Do you want to delete the old settings in /etc/enigma2 first?"
 msgstr "Θέλετε να επαναφέρετε τις ρυθμίσεις σας;"
 
@@ -3937,6 +3930,10 @@ msgid "Do you want to reboot your receiver?"
 msgstr "Θέλετε να επανεκκινήσετε τον δέκτη σας;"
 
 msgid "Do you want to remove all the crash logfiles"
+msgstr "Θέλετε να διαγραφούν όλες οι καταγραφές κρασαρίσματος"
+
+#, fuzzy
+msgid "Do you want to remove all unused translations?"
 msgstr "Θέλετε να διαγραφούν όλες οι καταγραφές κρασαρίσματος"
 
 msgid "Do you want to remove the package:\n"
@@ -4162,6 +4159,9 @@ msgstr "Επεξεργασία DNS"
 #, fuzzy
 msgid "Edit Title"
 msgstr "Επεξεργασία τίτλου"
+
+msgid "Edit VLC Server"
+msgstr ""
 
 #, fuzzy
 msgid "Edit alternatives"
@@ -8659,6 +8659,10 @@ msgid "Plugin browser"
 msgstr "Πλοηγός προσθέτων"
 
 #, fuzzy
+msgid "Plugin details"
+msgstr "Απεγκατάσταση"
+
+#, fuzzy
 msgid "Plugin install"
 msgstr "Απεγκατάσταση"
 
@@ -9291,6 +9295,10 @@ msgid "Regular;18"
 msgstr "αρχείο προτύπου"
 
 #, fuzzy
+msgid "Regular;19"
+msgstr "αρχείο προτύπου"
+
+#, fuzzy
 msgid "Regular;20"
 msgstr "αρχείο προτύπου"
 
@@ -9575,6 +9583,10 @@ msgstr "Επανεκκίνηση σύνδεσης δικτύου και διεπ
 
 msgid "Restore"
 msgstr "Επαναφορά"
+
+#, fuzzy
+msgid "Restore Backups"
+msgstr "Επαναφορά αντιγράφων ασφαλείας"
 
 #, fuzzy
 msgid "Restore Plugins"
@@ -10021,6 +10033,10 @@ msgstr "Ανίχνευση %s"
 msgid "Scan %s band"
 msgstr "Ανίχνευση μπάντας %s"
 
+#, fuzzy
+msgid "Scan IP"
+msgstr "Ανίχνευση "
+
 msgid "Scan additional SR"
 msgstr "Ανίχνευση πρόσθετου SR"
 
@@ -10128,6 +10144,10 @@ msgstr "Αναζήτηση για νέα εγκατεστημένα ή διεγ�
 
 msgid "Searching west ..."
 msgstr "Αναζήτηση δυτικά ..."
+
+#, fuzzy
+msgid "Second InfoBar"
+msgstr "Εμφάνιση της δεύτερης μπάρας πληροφοριών"
 
 msgid "Second cable of motorized LNB"
 msgstr "Δεύτερο καλώδιο από LNB σε μοτέρ"
@@ -10640,6 +10660,10 @@ msgid ""
 msgstr ""
 "Υπηρεσία μη διαθέσιμη!\n"
 "Ελέγξτε τις ρυθμίσεις του tuner!"
+
+#, fuzzy
+msgid "Serviceinfo"
+msgstr "Πληροφορίες υπηρεσίας"
 
 #, fuzzy
 msgid "Servicename"
@@ -11319,6 +11343,10 @@ msgid "Skin Selection Actions"
 msgstr "Επιλογή ενέργειας"
 
 #, fuzzy
+msgid "Skin Selector"
+msgstr "Επιλογή EPG"
+
+#, fuzzy
 msgid "Skin setup"
 msgstr "Εγκατάσταση"
 
@@ -11430,6 +11458,10 @@ msgstr "Τύπος softcam"
 
 #, fuzzy
 msgid "Softcam startup..."
+msgstr "Τύπος softcam"
+
+#, fuzzy
+msgid "SoftcamSetup"
 msgstr "Τύπος softcam"
 
 msgid "Software"
@@ -11942,6 +11974,10 @@ msgstr "Όνομα υπηρεσίας"
 msgid "Svalbard and Jan Mayen"
 msgstr ""
 
+#, fuzzy
+msgid "Swap File Manager"
+msgstr "Διαχείριση πακέτων"
+
 msgid "Swap File not found. You have to create the file before to activate."
 msgstr ""
 
@@ -12092,6 +12128,10 @@ msgstr "Σύστημα"
 #, fuzzy
 msgid "System & Modulation"
 msgstr "Διαμόρφωση"
+
+#, fuzzy
+msgid "SystemNetworkInfo"
+msgstr "Διαμόρφωση δικτύου..."
 
 #, fuzzy
 msgid "T2MI PID"
@@ -12950,6 +12990,10 @@ msgid "Transcode"
 msgstr "Αναμεταδότης"
 
 #, fuzzy
+msgid "Transcoding Setup"
+msgstr "Μετάφραση:"
+
+#, fuzzy
 msgid "Transcoding: "
 msgstr "Μετάφραση:"
 
@@ -13490,6 +13534,13 @@ msgstr "Χειροκίνητος αναμεταδότης"
 msgid "User interface"
 msgstr "Ρυθμίσεις επιφάνειας χρήστη"
 
+msgid "UserDialog"
+msgstr ""
+
+#, fuzzy
+msgid "UserManager"
+msgstr "Μετονομασία"
+
 #, fuzzy
 msgid "Username"
 msgstr "Μετονομασία"
@@ -13517,6 +13568,12 @@ msgstr "VCR scart"
 #, fuzzy
 msgid "VLAN connection"
 msgstr "Σύνδεση δικτύου"
+
+msgid "VLC Media List"
+msgstr ""
+
+msgid "VLC Server List"
+msgstr ""
 
 msgid "VMGM (intro trailer)"
 msgstr "VMGM (εντός τρέιλερ)"
@@ -13622,6 +13679,10 @@ msgstr "S-Video"
 #, fuzzy
 msgid "Videocodec, size & format"
 msgstr "Λόγος πλευρών"
+
+#, fuzzy
+msgid "Videoenhancement"
+msgstr "Ρύθμιση βελτίωσης εικόνας"
 
 msgid "Viet Nam"
 msgstr ""
@@ -14648,6 +14709,14 @@ msgstr ""
 msgid "Zap-History Browser"
 msgstr "Πλοηγός φακέλων"
 
+#, fuzzy
+msgid "ZapHistoryBrowser"
+msgstr "Πλοηγός φακέλων"
+
+#, fuzzy
+msgid "ZapHistoryConfigurator"
+msgstr "Πλοηγός φακέλων"
+
 #, fuzzy, python-format
 msgid "Zapped to timer service %s as Picture in Picture!"
 msgstr "Μετάβαση στην πρώτη υπηρεσία"
@@ -14960,6 +15029,10 @@ msgstr "συζητήσεις/συνέντευξη/ντιμπέιτ"
 
 msgid "do nothing"
 msgstr "να μη γίνει τίποτα"
+
+#, fuzzy
+msgid "doFlashImage"
+msgstr "Flash"
 
 msgid "documentary"
 msgstr "ντοκυμαντέρ"

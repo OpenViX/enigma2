@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-03 23:45+0100\n"
+"POT-Creation-Date: 2021-02-04 21:24+0100\n"
 "PO-Revision-Date: 2020-03-17 01:28+0100\n"
 "Last-Translator: Jose Juan <jzapater@gmail.com>\n"
 "Language-Team: ANGELODOS  angelo2807@hotmail.com\n"
@@ -663,13 +663,15 @@ msgstr "16K"
 msgid "18 V"
 msgstr "18 V"
 
+#
+#, fuzzy
+msgid "19"
+msgstr "16:9"
+
 msgid "2"
 msgstr ""
 
 msgid "2,0,80,50"
-msgstr ""
-
-msgid "20"
 msgstr ""
 
 msgid "2048 MB (maximum)"
@@ -693,6 +695,9 @@ msgstr ""
 msgid "26,1,559,28"
 msgstr ""
 
+msgid "265,1,300,23"
+msgstr ""
+
 msgid "29.97"
 msgstr ""
 
@@ -702,7 +707,7 @@ msgstr ""
 msgid "3"
 msgstr "3D"
 
-msgid "3,3,25,25"
+msgid "3,0,25,25"
 msgstr ""
 
 msgid "3,5,100,40"
@@ -711,19 +716,16 @@ msgstr ""
 msgid "30"
 msgstr ""
 
-msgid "306,1,320,28"
-msgstr ""
-
 msgid "32 MB"
 msgstr ""
 
-msgid "33,0,694,30"
+msgid "33,1,694,24"
 msgstr ""
 
-msgid "33,3,25,25"
+msgid "33,3,22,22"
 msgstr ""
 
-msgid "36,1,694,28"
+msgid "36,1,694,23"
 msgstr ""
 
 #
@@ -752,10 +754,10 @@ msgstr "4"
 msgid "400"
 msgstr ""
 
-msgid "47,1,1147,28"
+msgid "47,1,1147,24"
 msgstr ""
 
-msgid "47,1,685,28"
+msgid "47,1,685,24"
 msgstr ""
 
 #
@@ -778,19 +780,22 @@ msgstr "4K"
 msgid "5"
 msgstr "5"
 
+msgid "5,1,250,23"
+msgstr ""
+
 msgid "5,1,520,23"
+msgstr ""
+
+msgid "5,1,530,28"
 msgstr ""
 
 msgid "5,1,630,23"
 msgstr ""
 
-msgid "5,2,630,28"
-msgstr ""
-
 msgid "5,25,630,23"
 msgstr ""
 
-msgid "5,30,630,27"
+msgid "5,28,530,23"
 msgstr ""
 
 msgid "5,7,16,16"
@@ -808,13 +813,7 @@ msgstr ""
 msgid "6"
 msgstr ""
 
-msgid "6,1,300,28"
-msgstr ""
-
-msgid "6,1,320,28"
-msgstr ""
-
-msgid "63,0,661,30"
+msgid "63,1,661,24"
 msgstr ""
 
 msgid "64 MB"
@@ -823,7 +822,7 @@ msgstr ""
 msgid "7"
 msgstr ""
 
-msgid "7,0,40,30"
+msgid "7,0,40,25"
 msgstr ""
 
 #
@@ -4420,10 +4419,6 @@ msgstr ""
 msgid "Do you want to burn this collection to DVD medium?"
 msgstr "¿Quiere grabar esta colección a disco DVD?"
 
-#, fuzzy
-msgid "Do you want to delete all other languages?"
-msgstr "¿Desea eliminar todos los archivos de registro de fallos?"
-
 #
 #, fuzzy
 msgid "Do you want to delete the old settings in /etc/enigma2 first?"
@@ -4482,6 +4477,10 @@ msgid "Do you want to reboot your receiver?"
 msgstr "¿Quiere reiniciar su receptor?"
 
 msgid "Do you want to remove all the crash logfiles"
+msgstr "¿Desea eliminar todos los archivos de registro de fallos?"
+
+#, fuzzy
+msgid "Do you want to remove all unused translations?"
 msgstr "¿Desea eliminar todos los archivos de registro de fallos?"
 
 #
@@ -4742,6 +4741,9 @@ msgstr "Editar DNS"
 #
 msgid "Edit Title"
 msgstr "Editar título"
+
+msgid "Edit VLC Server"
+msgstr ""
 
 #
 #, fuzzy
@@ -9874,6 +9876,11 @@ msgstr "Navegador de plugins"
 
 #
 #, fuzzy
+msgid "Plugin details"
+msgstr "Desinstalar"
+
+#
+#, fuzzy
 msgid "Plugin install"
 msgstr "Desinstalar"
 
@@ -10611,6 +10618,11 @@ msgstr "fichero de plantilla"
 
 #
 #, fuzzy
+msgid "Regular;19"
+msgstr "fichero de plantilla"
+
+#
+#, fuzzy
 msgid "Regular;20"
 msgstr "fichero de plantilla"
 
@@ -10952,6 +10964,11 @@ msgstr "Reiniciar su conexión y dispositivos de red.\n"
 #
 msgid "Restore"
 msgstr "Restaurar"
+
+#
+#, fuzzy
+msgid "Restore Backups"
+msgstr "Restaurar backups"
 
 #
 #, fuzzy
@@ -11454,6 +11471,11 @@ msgid "Scan %s band"
 msgstr "Escanear banda %s"
 
 #
+#, fuzzy
+msgid "Scan IP"
+msgstr "Escanear"
+
+#
 msgid "Scan additional SR"
 msgstr "Escanear otro SR"
 
@@ -11571,6 +11593,11 @@ msgstr "Buscando para nuevos paquetes instalados o borrados. Espere..."
 
 msgid "Searching west ..."
 msgstr "Buscando al oeste ..."
+
+#
+#, fuzzy
+msgid "Second InfoBar"
+msgstr "Mostrar segunda barra de información"
 
 msgid "Second cable of motorized LNB"
 msgstr "segundo cable del LNB motorizado"
@@ -12171,6 +12198,12 @@ msgid ""
 msgstr ""
 "¡Canal no disponible!\n"
 "¡Revisa la configuración del sintonizador!"
+
+#
+#
+#, fuzzy
+msgid "Serviceinfo"
+msgstr "Info del canal"
 
 #
 #, fuzzy
@@ -12930,6 +12963,12 @@ msgid "Skin Selection Actions"
 msgstr " Skin Seleccione la acción"
 
 #
+#
+#, fuzzy
+msgid "Skin Selector"
+msgstr "Selección EPG"
+
+#
 #, fuzzy
 msgid "Skin setup"
 msgstr "Configuración de NFS"
@@ -13066,6 +13105,12 @@ msgstr "Software"
 #
 #, fuzzy
 msgid "Softcam startup..."
+msgstr "Software"
+
+#
+#
+#, fuzzy
+msgid "SoftcamSetup"
 msgstr "Software"
 
 #
@@ -13647,6 +13692,11 @@ msgstr "Nombre del servicio"
 msgid "Svalbard and Jan Mayen"
 msgstr ""
 
+#
+#, fuzzy
+msgid "Swap File Manager"
+msgstr "Manejador de swap"
+
 msgid "Swap File not found. You have to create the file before to activate."
 msgstr "Archivo de intercambio no se encuentra. Tienes que crear el archivo antes de activar."
 
@@ -13817,6 +13867,12 @@ msgstr "Sistema"
 #, fuzzy
 msgid "System & Modulation"
 msgstr "Modulación"
+
+#
+#
+#, fuzzy
+msgid "SystemNetworkInfo"
+msgstr "Configuración de Red..."
 
 msgid "T2MI PID"
 msgstr ""
@@ -14791,6 +14847,10 @@ msgid "Transcode"
 msgstr "Transponder"
 
 #, fuzzy
+msgid "Transcoding Setup"
+msgstr "Transcodificación AAC"
+
+#, fuzzy
 msgid "Transcoding: "
 msgstr "Transcodificación AAC"
 
@@ -15405,6 +15465,14 @@ msgstr "Transpondedor definido por el usuario"
 msgid "User interface"
 msgstr "Interfaz de usuario"
 
+msgid "UserDialog"
+msgstr ""
+
+#
+#, fuzzy
+msgid "UserManager"
+msgstr "Renombrar"
+
 #
 #, fuzzy
 msgid "Username"
@@ -15434,6 +15502,12 @@ msgstr "Euroconector VCR"
 #, fuzzy
 msgid "VLAN connection"
 msgstr "Conexión LAN"
+
+msgid "VLC Media List"
+msgstr ""
+
+msgid "VLC Server List"
+msgstr ""
 
 #
 msgid "VMGM (intro trailer)"
@@ -15555,6 +15629,11 @@ msgstr "Vídeo"
 #, fuzzy
 msgid "Videocodec, size & format"
 msgstr "Formato de video"
+
+#
+#, fuzzy
+msgid "Videoenhancement"
+msgstr "Configuración de mejora de video"
 
 msgid "Viet Nam"
 msgstr ""
@@ -16690,6 +16769,16 @@ msgstr "Zap - Navegador de historial"
 msgid "Zap-History Browser"
 msgstr "Zap - Navegador de historial"
 
+#
+#, fuzzy
+msgid "ZapHistoryBrowser"
+msgstr "Zap - Navegador de historial"
+
+#
+#, fuzzy
+msgid "ZapHistoryConfigurator"
+msgstr "Zap - Navegador de historial"
+
 #, python-format
 msgid "Zapped to timer service %s as Picture in Picture!"
 msgstr "Zapped al servicio de temporizador% s como Picture in Picture!"
@@ -17056,6 +17145,11 @@ msgstr "discusión / entrevista / debate"
 #
 msgid "do nothing"
 msgstr "no hacer nada"
+
+#
+#, fuzzy
+msgid "doFlashImage"
+msgstr "Flash"
 
 msgid "documentary"
 msgstr "documental"

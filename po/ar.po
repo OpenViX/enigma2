@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-03 23:45+0100\n"
+"POT-Creation-Date: 2021-02-04 21:24+0100\n"
 "PO-Revision-Date: 2018-12-17 02:51+0200\n"
 "Last-Translator: Hazem <moustafagamal@hotmail.com>\n"
 "Language-Team: Arabic <moustafagamal@hotmail.com>\n"
@@ -684,13 +684,14 @@ msgstr ""
 msgid "18 V"
 msgstr "18 ف"
 
+#, fuzzy
+msgid "19"
+msgstr "16:9"
+
 msgid "2"
 msgstr ""
 
 msgid "2,0,80,50"
-msgstr ""
-
-msgid "20"
 msgstr ""
 
 msgid "2048 MB (maximum)"
@@ -714,6 +715,9 @@ msgstr ""
 msgid "26,1,559,28"
 msgstr ""
 
+msgid "265,1,300,23"
+msgstr ""
+
 msgid "29.97"
 msgstr ""
 
@@ -721,7 +725,7 @@ msgstr ""
 msgid "3"
 msgstr "3"
 
-msgid "3,3,25,25"
+msgid "3,0,25,25"
 msgstr ""
 
 msgid "3,5,100,40"
@@ -730,19 +734,16 @@ msgstr ""
 msgid "30"
 msgstr ""
 
-msgid "306,1,320,28"
-msgstr ""
-
 msgid "32 MB"
 msgstr ""
 
-msgid "33,0,694,30"
+msgid "33,1,694,24"
 msgstr ""
 
-msgid "33,3,25,25"
+msgid "33,3,22,22"
 msgstr ""
 
-msgid "36,1,694,28"
+msgid "36,1,694,23"
 msgstr ""
 
 #, fuzzy
@@ -769,10 +770,10 @@ msgstr "4"
 msgid "400"
 msgstr ""
 
-msgid "47,1,1147,28"
+msgid "47,1,1147,24"
 msgstr ""
 
-msgid "47,1,685,28"
+msgid "47,1,685,24"
 msgstr ""
 
 msgid "4:3"
@@ -793,19 +794,22 @@ msgstr "4"
 msgid "5"
 msgstr "5"
 
+msgid "5,1,250,23"
+msgstr ""
+
 msgid "5,1,520,23"
+msgstr ""
+
+msgid "5,1,530,28"
 msgstr ""
 
 msgid "5,1,630,23"
 msgstr ""
 
-msgid "5,2,630,28"
-msgstr ""
-
 msgid "5,25,630,23"
 msgstr ""
 
-msgid "5,30,630,27"
+msgid "5,28,530,23"
 msgstr ""
 
 msgid "5,7,16,16"
@@ -823,13 +827,7 @@ msgstr ""
 msgid "6"
 msgstr ""
 
-msgid "6,1,300,28"
-msgstr ""
-
-msgid "6,1,320,28"
-msgstr ""
-
-msgid "63,0,661,30"
+msgid "63,1,661,24"
 msgstr ""
 
 msgid "64 MB"
@@ -838,7 +836,7 @@ msgstr ""
 msgid "7"
 msgstr ""
 
-msgid "7,0,40,30"
+msgid "7,0,40,25"
 msgstr ""
 
 #, fuzzy
@@ -4125,10 +4123,6 @@ msgid "Do you want to burn this collection to DVD medium?"
 msgstr "هل تريد حرق هذه المجموعه فى وسيط دى فى دى ؟"
 
 #, fuzzy
-msgid "Do you want to delete all other languages?"
-msgstr "هل تريد فعلا حذف الرزمه:\n"
-
-#, fuzzy
 msgid "Do you want to delete the old settings in /etc/enigma2 first?"
 msgstr "هل تريد إستعادة الاعدادات ؟"
 
@@ -4181,6 +4175,10 @@ msgstr ""
 
 #, fuzzy
 msgid "Do you want to remove all the crash logfiles"
+msgstr "هل تريد فعلا حذف الرزمه:\n"
+
+#, fuzzy
+msgid "Do you want to remove all unused translations?"
 msgstr "هل تريد فعلا حذف الرزمه:\n"
 
 msgid "Do you want to remove the package:\n"
@@ -4415,6 +4413,9 @@ msgstr ""
 #, fuzzy
 msgid "Edit Title"
 msgstr "تحرير العنوان"
+
+msgid "Edit VLC Server"
+msgstr ""
 
 #, fuzzy
 msgid "Edit alternatives"
@@ -9209,6 +9210,10 @@ msgid "Plugin browser"
 msgstr "متصفح البلج إنز"
 
 #, fuzzy
+msgid "Plugin details"
+msgstr "تراجع عن التثبيت"
+
+#, fuzzy
 msgid "Plugin install"
 msgstr "تراجع عن التثبيت"
 
@@ -9871,6 +9876,10 @@ msgid "Regular;18"
 msgstr "ملف قالب"
 
 #, fuzzy
+msgid "Regular;19"
+msgstr "ملف قالب"
+
+#, fuzzy
 msgid "Regular;20"
 msgstr "ملف قالب"
 
@@ -10172,6 +10181,10 @@ msgstr "إعادة تشغيل إتصال الشبكه والواجهه.\n"
 
 msgid "Restore"
 msgstr "إستعاده"
+
+#, fuzzy
+msgid "Restore Backups"
+msgstr "إستعادة النسخه الإحتياطيه "
 
 #, fuzzy
 msgid "Restore Plugins"
@@ -10632,6 +10645,10 @@ msgstr "بحـث"
 msgid "Scan %s band"
 msgstr ""
 
+#, fuzzy
+msgid "Scan IP"
+msgstr "بحـث"
+
 #
 msgid "Scan additional SR"
 msgstr "البحث عن SR إضافى"
@@ -10759,6 +10776,10 @@ msgstr "جارى البحث عن حزم جديده تم تثبيتها أو حذ
 
 msgid "Searching west ..."
 msgstr ""
+
+#, fuzzy
+msgid "Second InfoBar"
+msgstr "إظهار بيانات التردد"
 
 msgid "Second cable of motorized LNB"
 msgstr ""
@@ -11312,6 +11333,11 @@ msgid ""
 msgstr ""
 "الخدمه غير متاحه !\n"
 "تأكد من تهيئة الموالف !"
+
+#
+#, fuzzy
+msgid "Serviceinfo"
+msgstr "معلومات القناه"
 
 #
 #, fuzzy
@@ -12060,6 +12086,11 @@ msgstr "إختيار EPG"
 
 #
 #, fuzzy
+msgid "Skin Selector"
+msgstr "إختيار EPG"
+
+#
+#, fuzzy
 msgid "Skin setup"
 msgstr "الضبـط"
 
@@ -12184,6 +12215,10 @@ msgstr "برنامج تشغيلى"
 
 #, fuzzy
 msgid "Softcam startup..."
+msgstr "برنامج تشغيلى"
+
+#, fuzzy
+msgid "SoftcamSetup"
 msgstr "برنامج تشغيلى"
 
 msgid "Software"
@@ -12753,6 +12788,10 @@ msgstr "بخث عن القنوات"
 msgid "Svalbard and Jan Mayen"
 msgstr ""
 
+#, fuzzy
+msgid "Swap File Manager"
+msgstr "المتحكم فى الحزم"
+
 msgid "Swap File not found. You have to create the file before to activate."
 msgstr ""
 
@@ -12927,6 +12966,10 @@ msgstr "النـظام"
 #, fuzzy
 msgid "System & Modulation"
 msgstr "تعديل"
+
+#, fuzzy
+msgid "SystemNetworkInfo"
+msgstr "تكوين الشبكه"
 
 msgid "T2MI PID"
 msgstr ""
@@ -13829,6 +13872,11 @@ msgstr "التردد"
 
 #
 #, fuzzy
+msgid "Transcoding Setup"
+msgstr "ترجمه:"
+
+#
+#, fuzzy
 msgid "Transcoding: "
 msgstr "ترجمه:"
 
@@ -14412,6 +14460,13 @@ msgstr ""
 msgid "User interface"
 msgstr "استخدم الواجهه"
 
+msgid "UserDialog"
+msgstr ""
+
+#, fuzzy
+msgid "UserManager"
+msgstr "إعادة التسميه"
+
 #, fuzzy
 msgid "Username"
 msgstr "إعادة التسميه"
@@ -14440,6 +14495,12 @@ msgstr "وصله فيديو كاسيت"
 #, fuzzy
 msgid "VLAN connection"
 msgstr "أتصال شبكه محليه"
+
+msgid "VLC Media List"
+msgstr ""
+
+msgid "VLC Server List"
+msgstr ""
 
 #
 msgid "VMGM (intro trailer)"
@@ -14546,6 +14607,10 @@ msgstr "S-Video"
 
 msgid "Videocodec, size & format"
 msgstr ""
+
+#, fuzzy
+msgid "Videoenhancement"
+msgstr "ضبط تعزيز الفيديو"
 
 msgid "Viet Nam"
 msgstr ""
@@ -15564,6 +15629,16 @@ msgstr ""
 msgid "Zap-History Browser"
 msgstr "متصفح الدليل"
 
+#
+#, fuzzy
+msgid "ZapHistoryBrowser"
+msgstr "متصفح الدليل"
+
+#
+#, fuzzy
+msgid "ZapHistoryConfigurator"
+msgstr "متصفح الدليل"
+
 #, fuzzy, python-format
 msgid "Zapped to timer service %s as Picture in Picture!"
 msgstr "الانتقال لاعلى الى البند الاول"
@@ -15895,6 +15970,10 @@ msgstr ""
 
 msgid "do nothing"
 msgstr "                                                                                                       لا تفعل شيئ"
+
+#, fuzzy
+msgid "doFlashImage"
+msgstr "شحن"
 
 msgid "documentary"
 msgstr ""

@@ -67,7 +67,7 @@ class DevelopWizard(MessageBox):
 
 class LanguageDeleteWizard(MessageBox):
 	def __init__(self, session):
-		MessageBox.__init__(self, session, _("Do you want to delete all other languages?"), type=MessageBox.TYPE_YESNO, timeout=20, default=False, simple=True)
+            MessageBox.__init__(self, session, _("Do you want to remove all unused translations?"), type=MessageBox.TYPE_YESNO, timeout=20, default=False, simple=True)
 
 	def close(self, value):
 		if value:

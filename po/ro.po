@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-03 23:45+0100\n"
+"POT-Creation-Date: 2021-02-04 21:24+0100\n"
 "PO-Revision-Date: 2010-03-09 21:03+0100\n"
 "Last-Translator: \n"
 "Language-Team: HDTV ROMANIA(superonic,costel_mbc,neutrin,otheitis,cipy_1982,neutrin,runcanion)\n"
@@ -610,13 +610,13 @@ msgstr ""
 msgid "18 V"
 msgstr ""
 
+msgid "19"
+msgstr ""
+
 msgid "2"
 msgstr ""
 
 msgid "2,0,80,50"
-msgstr ""
-
-msgid "20"
 msgstr ""
 
 msgid "2048 MB (maximum)"
@@ -640,6 +640,9 @@ msgstr ""
 msgid "26,1,559,28"
 msgstr ""
 
+msgid "265,1,300,23"
+msgstr ""
+
 msgid "29.97"
 msgstr ""
 
@@ -647,7 +650,7 @@ msgstr ""
 msgid "3"
 msgstr "D"
 
-msgid "3,3,25,25"
+msgid "3,0,25,25"
 msgstr ""
 
 msgid "3,5,100,40"
@@ -656,19 +659,16 @@ msgstr ""
 msgid "30"
 msgstr ""
 
-msgid "306,1,320,28"
-msgstr ""
-
 msgid "32 MB"
 msgstr ""
 
-msgid "33,0,694,30"
+msgid "33,1,694,24"
 msgstr ""
 
-msgid "33,3,25,25"
+msgid "33,3,22,22"
 msgstr ""
 
-msgid "36,1,694,28"
+msgid "36,1,694,23"
 msgstr ""
 
 #, fuzzy
@@ -694,10 +694,10 @@ msgstr ""
 msgid "400"
 msgstr ""
 
-msgid "47,1,1147,28"
+msgid "47,1,1147,24"
 msgstr ""
 
-msgid "47,1,685,28"
+msgid "47,1,685,24"
 msgstr ""
 
 msgid "4:3"
@@ -715,19 +715,22 @@ msgstr ""
 msgid "5"
 msgstr ""
 
+msgid "5,1,250,23"
+msgstr ""
+
 msgid "5,1,520,23"
+msgstr ""
+
+msgid "5,1,530,28"
 msgstr ""
 
 msgid "5,1,630,23"
 msgstr ""
 
-msgid "5,2,630,28"
-msgstr ""
-
 msgid "5,25,630,23"
 msgstr ""
 
-msgid "5,30,630,27"
+msgid "5,28,530,23"
 msgstr ""
 
 msgid "5,7,16,16"
@@ -745,13 +748,7 @@ msgstr ""
 msgid "6"
 msgstr ""
 
-msgid "6,1,300,28"
-msgstr ""
-
-msgid "6,1,320,28"
-msgstr ""
-
-msgid "63,0,661,30"
+msgid "63,1,661,24"
 msgstr ""
 
 msgid "64 MB"
@@ -760,7 +757,7 @@ msgstr ""
 msgid "7"
 msgstr ""
 
-msgid "7,0,40,30"
+msgid "7,0,40,25"
 msgstr ""
 
 msgid "8"
@@ -3892,10 +3889,6 @@ msgid "Do you want to burn this collection to DVD medium?"
 msgstr "Doriti scrierea acestei colectii pe discul DVD?"
 
 #, fuzzy
-msgid "Do you want to delete all other languages?"
-msgstr "Doriti sa instalati pachetul:\n"
-
-#, fuzzy
 msgid "Do you want to delete the old settings in /etc/enigma2 first?"
 msgstr "Doriti restaurarea setarilor dvs?"
 
@@ -3944,6 +3937,10 @@ msgstr ""
 
 msgid "Do you want to remove all the crash logfiles"
 msgstr ""
+
+#, fuzzy
+msgid "Do you want to remove all unused translations?"
+msgstr "Doriti restaurarea setarilor dvs?"
 
 msgid "Do you want to remove the package:\n"
 msgstr "Doriti sa stergeti pachetul:\n"
@@ -4163,6 +4160,9 @@ msgstr "Editare DNS"
 #, fuzzy
 msgid "Edit Title"
 msgstr "Editare titlu"
+
+msgid "Edit VLC Server"
+msgstr ""
 
 #, fuzzy
 msgid "Edit alternatives"
@@ -8658,6 +8658,10 @@ msgid "Plugin browser"
 msgstr "Browser-ul plugin"
 
 #, fuzzy
+msgid "Plugin details"
+msgstr "Plugin-uri"
+
+#, fuzzy
 msgid "Plugin install"
 msgstr "Plugin-uri"
 
@@ -9280,6 +9284,10 @@ msgid "Regular;18"
 msgstr "fisier template"
 
 #, fuzzy
+msgid "Regular;19"
+msgstr "fisier template"
+
+#, fuzzy
 msgid "Regular;20"
 msgstr "fisier template"
 
@@ -9565,6 +9573,10 @@ msgid "Restart your network connection and interfaces.\n"
 msgstr "Restartati conexiunea la retea si interfata \n"
 
 msgid "Restore"
+msgstr "Revenire"
+
+#, fuzzy
+msgid "Restore Backups"
 msgstr "Revenire"
 
 #, fuzzy
@@ -10005,6 +10017,10 @@ msgstr "Scanare"
 msgid "Scan %s band"
 msgstr "Scanare banda EU MID"
 
+#, fuzzy
+msgid "Scan IP"
+msgstr "Scanare"
+
 msgid "Scan additional SR"
 msgstr "Scanare SR aditional"
 
@@ -10110,6 +10126,10 @@ msgstr "Cautare pachete nou instalate sau sterse. Va rugam asteptati..."
 
 msgid "Searching west ..."
 msgstr ""
+
+#, fuzzy
+msgid "Second InfoBar"
+msgstr "arata info despre transponder"
 
 msgid "Second cable of motorized LNB"
 msgstr ""
@@ -10636,6 +10656,10 @@ msgid ""
 msgstr ""
 "Serviciul nu este valabil!\n"
 "Verificati setarile tunerului!"
+
+#, fuzzy
+msgid "Serviceinfo"
+msgstr "Info serviciu"
 
 #, fuzzy
 msgid "Servicename"
@@ -11322,6 +11346,10 @@ msgid "Skin Selection Actions"
 msgstr "Selectie EPG"
 
 #, fuzzy
+msgid "Skin Selector"
+msgstr "Selectie EPG"
+
+#, fuzzy
 msgid "Skin setup"
 msgstr "Configurare"
 
@@ -11436,6 +11464,10 @@ msgstr "Software"
 
 #, fuzzy
 msgid "Softcam startup..."
+msgstr "Software"
+
+#, fuzzy
+msgid "SoftcamSetup"
 msgstr "Software"
 
 msgid "Software"
@@ -11956,6 +11988,10 @@ msgstr "Scanare Serviciu"
 msgid "Svalbard and Jan Mayen"
 msgstr ""
 
+#, fuzzy
+msgid "Swap File Manager"
+msgstr "Manager pachet"
+
 msgid "Swap File not found. You have to create the file before to activate."
 msgstr ""
 
@@ -12114,6 +12150,10 @@ msgstr "Sistem"
 #, fuzzy
 msgid "System & Modulation"
 msgstr "Modulatie"
+
+#, fuzzy
+msgid "SystemNetworkInfo"
+msgstr "Configurare retea..."
 
 msgid "T2MI PID"
 msgstr ""
@@ -12963,6 +13003,10 @@ msgid "Transcode"
 msgstr "Transponder"
 
 #, fuzzy
+msgid "Transcoding Setup"
+msgstr "Traducere:"
+
+#, fuzzy
 msgid "Transcoding: "
 msgstr "Traducere:"
 
@@ -13506,6 +13550,13 @@ msgstr ""
 msgid "User interface"
 msgstr "Foloseste Interfata"
 
+msgid "UserDialog"
+msgstr ""
+
+#, fuzzy
+msgid "UserManager"
+msgstr "Redenumire"
+
 #, fuzzy
 msgid "Username"
 msgstr "Redenumire"
@@ -13533,6 +13584,12 @@ msgstr "VCR scart"
 #, fuzzy
 msgid "VLAN connection"
 msgstr "Locatie"
+
+msgid "VLC Media List"
+msgstr ""
+
+msgid "VLC Server List"
+msgstr ""
 
 msgid "VMGM (intro trailer)"
 msgstr "VMGM (intro trailer)"
@@ -13637,6 +13694,10 @@ msgstr "S-Video"
 
 msgid "Videocodec, size & format"
 msgstr ""
+
+#, fuzzy
+msgid "Videoenhancement"
+msgstr "Setarile video avansate"
 
 msgid "Viet Nam"
 msgstr ""
@@ -14616,6 +14677,13 @@ msgstr ""
 msgid "Zap-History Browser"
 msgstr ""
 
+msgid "ZapHistoryBrowser"
+msgstr ""
+
+#, fuzzy
+msgid "ZapHistoryConfigurator"
+msgstr "Configurare retea..."
+
 #, fuzzy, python-format
 msgid "Zapped to timer service %s as Picture in Picture!"
 msgstr "muta sus la prima intrare"
@@ -14928,6 +14996,10 @@ msgstr ""
 
 msgid "do nothing"
 msgstr "nu face nimic"
+
+#, fuzzy
+msgid "doFlashImage"
+msgstr "Flash"
 
 msgid "documentary"
 msgstr ""

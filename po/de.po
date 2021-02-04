@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-04 00:16+0100\n"
+"POT-Creation-Date: 2021-02-04 21:24+0100\n"
 "PO-Revision-Date: 2021-02-04 00:12+0100\n"
 "Last-Translator: teamblue-e2 <teamblue@online.de>\n"
 "Language-Team: Teamblue teamblue@online.de\n"
@@ -100,9 +100,6 @@ msgid ""
 msgstr ""
 "\n"
 "optionaler Parameter:%s"
-
-msgid " "
-msgstr " "
 
 msgid "     no space left on back-up device"
 msgstr "     kein Platz mehr auf dem Backup-Gerät"
@@ -531,54 +528,11 @@ msgstr "-KEIN SERVICE\n"
 #, python-format
 msgid "-SERVICE ERROR:%d\n"
 msgstr "-SERVICE FEHLER:%d\n"
-
-msgid "..."
-msgstr "..."
-
-msgid "/media/custom"
-msgstr "/media/custom"
-
-msgid "/s"
-msgstr "/s"
-
 msgid "/usr/share/enigma2 directory"
 msgstr "/usr/share/enigma2 Verzeichnis"
 
 msgid "/var directory"
 msgstr "/var Verzeichnis"
-
-msgid "0"
-msgstr "0"
-
-msgid "0,24,1147,20"
-msgstr ""
-
-msgid "1"
-msgstr "1"
-
-msgid "1.0"
-msgstr "1.0"
-
-msgid "1.1"
-msgstr "1.1"
-
-msgid "1.2"
-msgstr "1.2"
-
-msgid "1024 MB"
-msgstr "1024 MB"
-
-msgid "10bit"
-msgstr "10bit"
-
-msgid "120,2,30"
-msgstr ""
-
-msgid "120,28,26"
-msgstr ""
-
-msgid "128 MB"
-msgstr "128 MB"
 
 msgid "128 MB (recommended for this chipset)"
 msgstr "128 MB (für diesen Chipsatz empfohlen)"
@@ -586,26 +540,11 @@ msgstr "128 MB (für diesen Chipsatz empfohlen)"
 msgid "12V output"
 msgstr "12V Ausgang"
 
-msgid "12bit"
-msgstr "12bit"
-
-msgid "13 V"
-msgstr "13 V"
-
-msgid "16 MB"
-msgstr "16 MB"
-
-msgid "16:10"
-msgstr "16:10"
-
 msgid "16:10 Letterbox"
 msgstr "16:10 Letterbox"
 
 msgid "16:10 PanScan"
 msgstr "16:10 PanScan"
-
-msgid "16:9"
-msgstr "16:9"
 
 msgid "16:9 Letterbox"
 msgstr "16:9 Letterbox"
@@ -613,71 +552,14 @@ msgstr "16:9 Letterbox"
 msgid "16:9 always"
 msgstr "immer 16:9"
 
-msgid "16K"
-msgstr "16K"
-
-msgid "18 V"
-msgstr "18 V"
-
-msgid "2"
-msgstr "2"
-
-msgid "2,0,80,50"
-msgstr ""
-
 msgid "2048 MB (maximum)"
 msgstr "2048 MB (maximum)"
-
-msgid "23.976"
-msgstr "23.976"
-
-msgid "24"
-msgstr "24"
-
-msgid "25"
-msgstr "25"
 
 msgid "256 MB"
 msgstr "256 MB"
 
 msgid "256 MB (recommended for this chipset)"
 msgstr "256 MB (für diesen Chipsatz empfohlen)"
-
-msgid "26,1,559,28"
-msgstr ""
-
-msgid "29.97"
-msgstr "29.97"
-
-msgid "3"
-msgstr "3"
-
-msgid "3,3,25,25"
-msgstr ""
-
-msgid "3,5,100,40"
-msgstr ""
-
-msgid "30"
-msgstr "30"
-
-msgid "306,1,320,28"
-msgstr ""
-
-msgid "32 MB"
-msgstr "32 MB"
-
-msgid "33,0,694,30"
-msgstr ""
-
-msgid "33,3,25,25"
-msgstr ""
-
-msgid "36,1,694,28"
-msgstr ""
-
-msgid "3D"
-msgstr "3D"
 
 msgid "3D surround"
 msgstr "3D Surround"
@@ -691,102 +573,14 @@ msgstr "3D-Surround-Lautsprecherposition"
 msgid "3d mode"
 msgstr "3D-Modus"
 
-msgid "4"
-msgstr "4"
-
-#, fuzzy
-msgid "400"
-msgstr "400"
-
-msgid "47,1,1147,28"
-msgstr ""
-
-msgid "47,1,685,28"
-msgstr ""
-
-msgid "4:3"
-msgstr "4:3"
-
 msgid "4:3 Letterbox"
 msgstr "4:3 Letterbox"
 
 msgid "4:3 PanScan"
 msgstr "4:3 PanScan"
 
-msgid "4K"
-msgstr "4K"
-
-msgid "5"
-msgstr "5"
-
-msgid "5,1,520,23"
-msgstr ""
-
-msgid "5,1,630,23"
-msgstr ""
-
-msgid "5,2,630,28"
-msgstr ""
-
-msgid "5,25,630,23"
-msgstr ""
-
-msgid "5,30,630,27"
-msgstr ""
-
-msgid "5,7,16,16"
-msgstr ""
-
-msgid "512 MB"
-msgstr "512 MB"
-
 msgid "512 MB (recommended for this chipset)"
 msgstr "512 MB (für diesen Chipsatz empfohlen)"
-
-msgid "535,1,100,23"
-msgstr ""
-
-msgid "6"
-msgstr "6"
-
-msgid "6,1,300,28"
-msgstr ""
-
-msgid "6,1,320,28"
-msgstr ""
-
-msgid "63,0,661,30"
-msgstr ""
-
-msgid "64 MB"
-msgstr "64 MB"
-
-msgid "7"
-msgstr "7"
-
-msgid "7,0,40,30"
-msgstr ""
-
-msgid "8"
-msgstr "8"
-
-msgid "83,2,30"
-msgstr ""
-
-msgid "83,28,26"
-msgstr ""
-
-msgid "8K"
-msgstr "8K"
-
-msgid "8bit"
-msgstr "8bit"
-
-msgid "9"
-msgstr "9"
-
-msgid ": "
-msgstr ": "
 
 msgid ": 0000 - default (disabled)"
 msgstr ": 0000 - Standard (deaktiviert)"
@@ -808,15 +602,6 @@ msgstr "<unbekannt>"
 
 msgid "=NO STREAM\n"
 msgstr "=KEIN STREAM\n"
-
-msgid "?"
-msgstr "?"
-
-msgid "??"
-msgstr "??"
-
-msgid "A"
-msgstr "A"
 
 msgid "A background update check is in progress, please wait a few minutes and try again."
 msgstr "Eine Prüfung auf Aktualisierungen läuft im Hintergrund, bitte warten Sie einige Minuten und versuchen Sie es erneut."
@@ -1921,7 +1706,7 @@ msgstr "CI Slot: "
 
 #, fuzzy
 msgid "CIHelper Setup"
-msgstr "CIHelper Zugang"
+msgstr "CIHelper Einstellungen"
 
 msgid "CPU priority for script execution"
 msgstr "CPU-Priorität für die Skriptausführung"
@@ -3691,9 +3476,6 @@ msgstr ""
 msgid "Do you want to burn this collection to DVD medium?"
 msgstr "Soll diese Zusammenstellung auf DVD gebrannt werden?"
 
-msgid "Do you want to delete all other languages?"
-msgstr "Wollen Sie alle anderen Sprachen entfernen?"
-
 msgid "Do you want to delete the old settings in /etc/enigma2 first?"
 msgstr "Wollen Sie zuerst die alten Einstellungen unter /etc/enigma2 löschen?"
 
@@ -3740,6 +3522,10 @@ msgstr "Wollen Sie Ihren Receiver neu starten?"
 
 msgid "Do you want to remove all the crash logfiles"
 msgstr "Wollen Sie alle Crash-Logs entfernen"
+
+#, fuzzy
+msgid "Do you want to remove all unused translations?"
+msgstr "Wollen Sie alle unbenutzten Übersetzungen entfernen?"
 
 msgid "Do you want to remove the package:\n"
 msgstr "Wollen Sie das Paket entfernen:\n"
@@ -3943,6 +3729,9 @@ msgstr "Bearbeite DNS"
 msgid "Edit Title"
 msgstr "Titel ändern"
 
+msgid "Edit VLC Server"
+msgstr "VLC Server Editieren"
+
 msgid "Edit alternatives"
 msgstr "Alternativen bearbeiten"
 
@@ -3999,7 +3788,7 @@ msgstr "Elektronischer Programmführer"
 
 #, fuzzy
 msgid "Electronic Program Guide Setup"
-msgstr "Elektronischer Programmführe Einstellungenr"
+msgstr "Elektronischer Programmführer Einstellungenr"
 
 msgid "Embedded"
 msgstr "Eingebettet"
@@ -5308,7 +5097,7 @@ msgstr "Receiver mit Fernseher aufwecken"
 
 #, fuzzy
 msgid "Hard Drive Partitions"
-msgstr "Partitionen"
+msgstr "Festplatten Partitionen"
 
 msgid "Hard Drive Setup"
 msgstr "Festplatten Einstellungen"
@@ -6777,11 +6566,9 @@ msgstr "Film"
 msgid "Movie Info Preview"
 msgstr "Film Info Vorschau"
 
-#, fuzzy
 msgid "Movie Info Setup"
 msgstr "Film Info Einstellungen"
 
-#, fuzzy
 msgid "Movie List Setup"
 msgstr "Film Listen Einstellungen"
 
@@ -8107,6 +7894,10 @@ msgstr "Filter Erweiterungen..."
 msgid "Plugin browser"
 msgstr "Plugin Manager"
 
+#, fuzzy
+msgid "Plugin details"
+msgstr "Erweiterungesdetails"
+
 msgid "Plugin install"
 msgstr "Erweiterungen installieren"
 
@@ -8686,14 +8477,6 @@ msgstr "Region"
 msgid "Regular file"
 msgstr "Normale Datei"
 
-#, fuzzy
-msgid "Regular;18"
-msgstr "Normale Datei"
-
-#, fuzzy
-msgid "Regular;20"
-msgstr "Normale Datei"
-
 msgid "Relative"
 msgstr "Relativ"
 
@@ -8951,6 +8734,10 @@ msgstr "Neustart der Netzwerk-Konfiguration des Receivers.\n"
 
 msgid "Restore"
 msgstr "Wiederherstellen"
+
+#, fuzzy
+msgid "Restore Backups"
+msgstr "Sicherungen wiederherstellen"
 
 msgid "Restore Plugins"
 msgstr "Plugins wiederherstellen"
@@ -9354,6 +9141,10 @@ msgstr "Suche %s"
 msgid "Scan %s band"
 msgstr "Suche %s Band"
 
+#, fuzzy
+msgid "Scan IP"
+msgstr "Suchlauf IP"
+
 msgid "Scan additional SR"
 msgstr "Durchsuche weitere SR"
 
@@ -9452,6 +9243,9 @@ msgstr "Suche nach neu installierten oder deinstallierten Erweiterungen. Bitte w
 
 msgid "Searching west ..."
 msgstr "Suche westlich ..."
+
+msgid "Second InfoBar"
+msgstr "Zweite Infoleiste"
 
 msgid "Second cable of motorized LNB"
 msgstr "Zweites Kabel für motorisiertes LNB"
@@ -9621,7 +9415,6 @@ msgstr "Dateien zum Sichern auswählen."
 msgid "Select files/folders to backup"
 msgstr "Wählen Sie Dateien/Ordner für die Sicherung"
 
-#, fuzzy
 msgid "Select files/folders to backup..."
 msgstr "Wählen Sie Dateien/Ordner für die Sicherung..."
 
@@ -9926,6 +9719,9 @@ msgid ""
 msgstr ""
 "Kanal nicht verfügbar!\n"
 "Bitte Tuner-Konfiguration überprüfen!"
+
+msgid "Serviceinfo"
+msgstr "Kanal-Infos"
 
 msgid "Servicename"
 msgstr "Kanalname"
@@ -10537,6 +10333,10 @@ msgstr "Skin & Auflösung: %s (%sx%s)"
 msgid "Skin Selection Actions"
 msgstr "Skin Auswahl Aktionen"
 
+#, fuzzy
+msgid "Skin Selector"
+msgstr "Skin Auswahl"
+
 msgid "Skin setup"
 msgstr "Skin einstellen"
 
@@ -10641,6 +10441,9 @@ msgstr "Softcam Einstellung"
 
 msgid "Softcam startup..."
 msgstr "Softcam Einstellung..."
+
+msgid "SoftcamSetup"
+msgstr "Softcam Einstellung"
 
 msgid "Software"
 msgstr "Software"
@@ -11125,6 +10928,9 @@ msgstr "Suriname"
 msgid "Svalbard and Jan Mayen"
 msgstr "Svalbard and Jan Mayen"
 
+msgid "Swap File Manager"
+msgstr "Swap Datei Manager"
+
 msgid "Swap File not found. You have to create the file before to activate."
 msgstr "Swapdatei nicht gefunden. Diese muss vorm Aktivieren angelegt werden."
 
@@ -11262,6 +11068,9 @@ msgstr "System"
 
 msgid "System & Modulation"
 msgstr "System & Modulation"
+
+msgid "SystemNetworkInfo"
+msgstr "Network Information"
 
 msgid "T2MI PID"
 msgstr "T2MI PID"
@@ -12114,6 +11923,10 @@ msgstr "Spur"
 msgid "Transcode"
 msgstr "Transkodieren"
 
+#, fuzzy
+msgid "Transcoding Setup"
+msgstr "Transkodierungs Einstellungen "
+
 msgid "Transcoding: "
 msgstr "Transkodierung: "
 
@@ -12625,6 +12438,13 @@ msgstr "Transponder benutzerdefiniert"
 msgid "User interface"
 msgstr "Benutzeroberfläche"
 
+msgid "UserDialog"
+msgstr "Bedienfeld"
+
+#, fuzzy
+msgid "UserManager"
+msgstr "Benutzer Manager"
+
 msgid "Username"
 msgstr "Benutzername"
 
@@ -12650,6 +12470,13 @@ msgstr "Scart-Videorekorder"
 
 msgid "VLAN connection"
 msgstr "VLAN Verbindung"
+
+msgid "VLC Media List"
+msgstr "VLC Media Liste"
+
+#, fuzzy
+msgid "VLC Server List"
+msgstr "VLC Server Liste"
 
 msgid "VMGM (intro trailer)"
 msgstr "VMGM (Intro-Trailer)"
@@ -12744,6 +12571,10 @@ msgstr "Video-Modus"
 
 msgid "Videocodec, size & format"
 msgstr "Videocodec, Größe & Format"
+
+#, fuzzy
+msgid "Videoenhancement"
+msgstr "Videoverbesserung"
 
 msgid "Viet Nam"
 msgstr "Viet Nam"
@@ -13776,6 +13607,14 @@ msgstr "Zap-Historie Browser"
 msgid "Zap-History Browser"
 msgstr "Zap-History Browser"
 
+#, fuzzy
+msgid "ZapHistoryBrowser"
+msgstr "Zap-History Browser"
+
+#, fuzzy
+msgid "ZapHistoryConfigurator"
+msgstr "Zap-History Konfigurator"
+
 #, python-format
 msgid "Zapped to timer service %s as Picture in Picture!"
 msgstr "Zum Timerkanal %s als PiP geschaltet!"
@@ -14071,6 +13910,10 @@ msgstr "Diskussion/Interview/Debatte"
 
 msgid "do nothing"
 msgstr "Nichts"
+
+#, fuzzy
+msgid "doFlashImage"
+msgstr "Image flashen"
 
 msgid "documentary"
 msgstr "Dokumentationen"
@@ -15027,9 +14870,6 @@ msgstr "mit Fehlern"
 
 msgid "without"
 msgstr "ohne"
-
-msgid "x"
-msgstr "x"
 
 msgid "xp1000"
 msgstr "xp1000"

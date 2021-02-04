@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-03 23:45+0100\n"
+"POT-Creation-Date: 2021-02-04 21:24+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: satdreamgr\n"
 "Language-Team: \n"
@@ -597,13 +597,13 @@ msgstr ""
 msgid "18 V"
 msgstr ""
 
+msgid "19"
+msgstr ""
+
 msgid "2"
 msgstr ""
 
 msgid "2,0,80,50"
-msgstr ""
-
-msgid "20"
 msgstr ""
 
 msgid "2048 MB (maximum)"
@@ -627,13 +627,16 @@ msgstr ""
 msgid "26,1,559,28"
 msgstr ""
 
+msgid "265,1,300,23"
+msgstr ""
+
 msgid "29.97"
 msgstr ""
 
 msgid "3"
 msgstr ""
 
-msgid "3,3,25,25"
+msgid "3,0,25,25"
 msgstr ""
 
 msgid "3,5,100,40"
@@ -642,19 +645,16 @@ msgstr ""
 msgid "30"
 msgstr ""
 
-msgid "306,1,320,28"
-msgstr ""
-
 msgid "32 MB"
 msgstr ""
 
-msgid "33,0,694,30"
+msgid "33,1,694,24"
 msgstr ""
 
-msgid "33,3,25,25"
+msgid "33,3,22,22"
 msgstr ""
 
-msgid "36,1,694,28"
+msgid "36,1,694,23"
 msgstr ""
 
 msgid "3D"
@@ -678,10 +678,10 @@ msgstr ""
 msgid "400"
 msgstr ""
 
-msgid "47,1,1147,28"
+msgid "47,1,1147,24"
 msgstr ""
 
-msgid "47,1,685,28"
+msgid "47,1,685,24"
 msgstr ""
 
 msgid "4:3"
@@ -699,19 +699,22 @@ msgstr ""
 msgid "5"
 msgstr ""
 
+msgid "5,1,250,23"
+msgstr ""
+
 msgid "5,1,520,23"
+msgstr ""
+
+msgid "5,1,530,28"
 msgstr ""
 
 msgid "5,1,630,23"
 msgstr ""
 
-msgid "5,2,630,28"
-msgstr ""
-
 msgid "5,25,630,23"
 msgstr ""
 
-msgid "5,30,630,27"
+msgid "5,28,530,23"
 msgstr ""
 
 msgid "5,7,16,16"
@@ -729,13 +732,7 @@ msgstr ""
 msgid "6"
 msgstr ""
 
-msgid "6,1,300,28"
-msgstr ""
-
-msgid "6,1,320,28"
-msgstr ""
-
-msgid "63,0,661,30"
+msgid "63,1,661,24"
 msgstr ""
 
 msgid "64 MB"
@@ -744,7 +741,7 @@ msgstr ""
 msgid "7"
 msgstr ""
 
-msgid "7,0,40,30"
+msgid "7,0,40,25"
 msgstr ""
 
 msgid "8"
@@ -3593,9 +3590,6 @@ msgstr ""
 msgid "Do you want to burn this collection to DVD medium?"
 msgstr ""
 
-msgid "Do you want to delete all other languages?"
-msgstr ""
-
 msgid "Do you want to delete the old settings in /etc/enigma2 first?"
 msgstr ""
 
@@ -3639,6 +3633,9 @@ msgid "Do you want to reboot your receiver?"
 msgstr ""
 
 msgid "Do you want to remove all the crash logfiles"
+msgstr ""
+
+msgid "Do you want to remove all unused translations?"
 msgstr ""
 
 msgid "Do you want to remove the package:\n"
@@ -3838,6 +3835,9 @@ msgid "Edit DNS"
 msgstr ""
 
 msgid "Edit Title"
+msgstr ""
+
+msgid "Edit VLC Server"
 msgstr ""
 
 msgid "Edit alternatives"
@@ -7917,6 +7917,9 @@ msgstr ""
 msgid "Plugin browser"
 msgstr ""
 
+msgid "Plugin details"
+msgstr ""
+
 msgid "Plugin install"
 msgstr ""
 
@@ -8494,6 +8497,9 @@ msgstr ""
 msgid "Regular;18"
 msgstr ""
 
+msgid "Regular;19"
+msgstr ""
+
 msgid "Regular;20"
 msgstr ""
 
@@ -8749,6 +8755,9 @@ msgid "Restart your network connection and interfaces.\n"
 msgstr ""
 
 msgid "Restore"
+msgstr ""
+
+msgid "Restore Backups"
 msgstr ""
 
 msgid "Restore Plugins"
@@ -9148,6 +9157,9 @@ msgstr ""
 msgid "Scan %s band"
 msgstr ""
 
+msgid "Scan IP"
+msgstr ""
+
 msgid "Scan additional SR"
 msgstr ""
 
@@ -9245,6 +9257,9 @@ msgid "Searching for new installed or removed packages. Please wait..."
 msgstr ""
 
 msgid "Searching west ..."
+msgstr ""
+
+msgid "Second InfoBar"
 msgstr ""
 
 msgid "Second cable of motorized LNB"
@@ -9710,6 +9725,9 @@ msgstr ""
 msgid ""
 "Service unavailable!\n"
 "Check tuner configuration!"
+msgstr ""
+
+msgid "Serviceinfo"
 msgstr ""
 
 msgid "Servicename"
@@ -10325,6 +10343,10 @@ msgid "Skin Selection Actions"
 msgstr ""
 
 #, fuzzy
+msgid "Skin Selector"
+msgstr "Positioner setup"
+
+#, fuzzy
 msgid "Skin setup"
 msgstr "Positioner setup"
 
@@ -10428,6 +10450,9 @@ msgid "Softcam startup"
 msgstr ""
 
 msgid "Softcam startup..."
+msgstr ""
+
+msgid "SoftcamSetup"
 msgstr ""
 
 msgid "Software"
@@ -10905,6 +10930,9 @@ msgstr ""
 msgid "Svalbard and Jan Mayen"
 msgstr ""
 
+msgid "Swap File Manager"
+msgstr ""
+
 msgid "Swap File not found. You have to create the file before to activate."
 msgstr ""
 
@@ -11041,6 +11069,9 @@ msgid "System"
 msgstr ""
 
 msgid "System & Modulation"
+msgstr ""
+
+msgid "SystemNetworkInfo"
 msgstr ""
 
 msgid "T2MI PID"
@@ -11820,6 +11851,9 @@ msgstr ""
 msgid "Transcode"
 msgstr ""
 
+msgid "Transcoding Setup"
+msgstr ""
+
 msgid "Transcoding: "
 msgstr ""
 
@@ -12325,6 +12359,12 @@ msgstr ""
 msgid "User interface"
 msgstr ""
 
+msgid "UserDialog"
+msgstr ""
+
+msgid "UserManager"
+msgstr ""
+
 msgid "Username"
 msgstr ""
 
@@ -12349,6 +12389,12 @@ msgid "VCR scart"
 msgstr ""
 
 msgid "VLAN connection"
+msgstr ""
+
+msgid "VLC Media List"
+msgstr ""
+
+msgid "VLC Server List"
 msgstr ""
 
 msgid "VMGM (intro trailer)"
@@ -12438,6 +12484,9 @@ msgid "VideoMode"
 msgstr ""
 
 msgid "Videocodec, size & format"
+msgstr ""
+
+msgid "Videoenhancement"
 msgstr ""
 
 msgid "Viet Nam"
@@ -13380,6 +13429,12 @@ msgstr ""
 msgid "Zap-History Browser"
 msgstr ""
 
+msgid "ZapHistoryBrowser"
+msgstr ""
+
+msgid "ZapHistoryConfigurator"
+msgstr ""
+
 #, python-format
 msgid "Zapped to timer service %s as Picture in Picture!"
 msgstr ""
@@ -13674,6 +13729,9 @@ msgid "discussion/interview/debate"
 msgstr ""
 
 msgid "do nothing"
+msgstr ""
+
+msgid "doFlashImage"
 msgstr ""
 
 msgid "documentary"

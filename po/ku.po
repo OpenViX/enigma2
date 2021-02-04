@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-03 23:45+0100\n"
+"POT-Creation-Date: 2021-02-04 21:24+0100\n"
 "PO-Revision-Date: 2013-04-22 04:29+0330\n"
 "Last-Translator: dimili21\n"
 "Language-Team: \n"
@@ -620,13 +620,14 @@ msgstr ""
 msgid "18 V"
 msgstr "18 V"
 
+#, fuzzy
+msgid "19"
+msgstr "16:9"
+
 msgid "2"
 msgstr ""
 
 msgid "2,0,80,50"
-msgstr ""
-
-msgid "20"
 msgstr ""
 
 msgid "2048 MB (maximum)"
@@ -650,6 +651,9 @@ msgstr ""
 msgid "26,1,559,28"
 msgstr ""
 
+msgid "265,1,300,23"
+msgstr ""
+
 msgid "29.97"
 msgstr ""
 
@@ -657,7 +661,7 @@ msgstr ""
 msgid "3"
 msgstr "3"
 
-msgid "3,3,25,25"
+msgid "3,0,25,25"
 msgstr ""
 
 msgid "3,5,100,40"
@@ -666,19 +670,16 @@ msgstr ""
 msgid "30"
 msgstr ""
 
-msgid "306,1,320,28"
-msgstr ""
-
 msgid "32 MB"
 msgstr ""
 
-msgid "33,0,694,30"
+msgid "33,1,694,24"
 msgstr ""
 
-msgid "33,3,25,25"
+msgid "33,3,22,22"
 msgstr ""
 
-msgid "36,1,694,28"
+msgid "36,1,694,23"
 msgstr ""
 
 #, fuzzy
@@ -704,10 +705,10 @@ msgstr "4"
 msgid "400"
 msgstr ""
 
-msgid "47,1,1147,28"
+msgid "47,1,1147,24"
 msgstr ""
 
-msgid "47,1,685,28"
+msgid "47,1,685,24"
 msgstr ""
 
 msgid "4:3"
@@ -726,19 +727,22 @@ msgstr "4"
 msgid "5"
 msgstr "5"
 
+msgid "5,1,250,23"
+msgstr ""
+
 msgid "5,1,520,23"
+msgstr ""
+
+msgid "5,1,530,28"
 msgstr ""
 
 msgid "5,1,630,23"
 msgstr ""
 
-msgid "5,2,630,28"
-msgstr ""
-
 msgid "5,25,630,23"
 msgstr ""
 
-msgid "5,30,630,27"
+msgid "5,28,530,23"
 msgstr ""
 
 msgid "5,7,16,16"
@@ -756,13 +760,7 @@ msgstr ""
 msgid "6"
 msgstr ""
 
-msgid "6,1,300,28"
-msgstr ""
-
-msgid "6,1,320,28"
-msgstr ""
-
-msgid "63,0,661,30"
+msgid "63,1,661,24"
 msgstr ""
 
 msgid "64 MB"
@@ -771,7 +769,7 @@ msgstr ""
 msgid "7"
 msgstr ""
 
-msgid "7,0,40,30"
+msgid "7,0,40,25"
 msgstr ""
 
 #, fuzzy
@@ -3894,10 +3892,6 @@ msgid "Do you want to burn this collection to DVD medium?"
 msgstr "Do you want to burn this collection to DVD medium?"
 
 #, fuzzy
-msgid "Do you want to delete all other languages?"
-msgstr "Do you want to install the package:\n"
-
-#, fuzzy
 msgid "Do you want to delete the old settings in /etc/enigma2 first?"
 msgstr "Do you want to restore your settings?"
 
@@ -3946,6 +3940,10 @@ msgstr "Do you want to reboot your receiver?"
 
 msgid "Do you want to remove all the crash logfiles"
 msgstr ""
+
+#, fuzzy
+msgid "Do you want to remove all unused translations?"
+msgstr "Do you want to restore your settings?"
 
 msgid "Do you want to remove the package:\n"
 msgstr "Do you want to remove the package:\n"
@@ -4167,6 +4165,9 @@ msgstr "Edit DNS"
 #, fuzzy
 msgid "Edit Title"
 msgstr "Edit title"
+
+msgid "Edit VLC Server"
+msgstr ""
 
 #, fuzzy
 msgid "Edit alternatives"
@@ -8648,6 +8649,10 @@ msgid "Plugin browser"
 msgstr "Plugin browser"
 
 #, fuzzy
+msgid "Plugin details"
+msgstr "Uninstall"
+
+#, fuzzy
 msgid "Plugin install"
 msgstr "Uninstall"
 
@@ -9276,6 +9281,10 @@ msgid "Regular;18"
 msgstr "template file"
 
 #, fuzzy
+msgid "Regular;19"
+msgstr "template file"
+
+#, fuzzy
 msgid "Regular;20"
 msgstr "template file"
 
@@ -9560,6 +9569,10 @@ msgstr "Restart your network connection and interfaces.\n"
 
 msgid "Restore"
 msgstr "Restore"
+
+#, fuzzy
+msgid "Restore Backups"
+msgstr "Restore backups"
 
 #, fuzzy
 msgid "Restore Plugins"
@@ -10000,6 +10013,10 @@ msgstr "Scan %s"
 msgid "Scan %s band"
 msgstr "Scan %s band"
 
+#, fuzzy
+msgid "Scan IP"
+msgstr "Scan "
+
 msgid "Scan additional SR"
 msgstr "Scan additional SR"
 
@@ -10107,6 +10124,10 @@ msgstr "Searching for new installed or removed packages. Please wait..."
 
 msgid "Searching west ..."
 msgstr "Searching west ..."
+
+#, fuzzy
+msgid "Second InfoBar"
+msgstr "Show second infobar"
 
 msgid "Second cable of motorized LNB"
 msgstr ""
@@ -10618,6 +10639,10 @@ msgid ""
 msgstr ""
 "Service unavailable!\n"
 "Check tuner configuration!"
+
+#, fuzzy
+msgid "Serviceinfo"
+msgstr "Service info"
 
 #, fuzzy
 msgid "Servicename"
@@ -11297,6 +11322,10 @@ msgid "Skin Selection Actions"
 msgstr "EPG selection"
 
 #, fuzzy
+msgid "Skin Selector"
+msgstr "EPG selection"
+
+#, fuzzy
 msgid "Skin setup"
 msgstr "Çékirin"
 
@@ -11408,6 +11437,10 @@ msgstr "Softcam type"
 
 #, fuzzy
 msgid "Softcam startup..."
+msgstr "Softcam type"
+
+#, fuzzy
+msgid "SoftcamSetup"
 msgstr "Softcam type"
 
 msgid "Software"
@@ -11918,6 +11951,10 @@ msgstr "Service name"
 msgid "Svalbard and Jan Mayen"
 msgstr ""
 
+#, fuzzy
+msgid "Swap File Manager"
+msgstr "Packet manager"
+
 msgid "Swap File not found. You have to create the file before to activate."
 msgstr ""
 
@@ -12068,6 +12105,10 @@ msgstr "Systemé wi"
 #, fuzzy
 msgid "System & Modulation"
 msgstr "Modulation"
+
+#, fuzzy
+msgid "SystemNetworkInfo"
+msgstr "Network configuration..."
 
 #, fuzzy
 msgid "T2MI PID"
@@ -12926,6 +12967,10 @@ msgid "Transcode"
 msgstr "Transponder"
 
 #, fuzzy
+msgid "Transcoding Setup"
+msgstr "Translation:"
+
+#, fuzzy
 msgid "Transcoding: "
 msgstr "Translation:"
 
@@ -13463,6 +13508,13 @@ msgstr ""
 msgid "User interface"
 msgstr "Çékirina te"
 
+msgid "UserDialog"
+msgstr ""
+
+#, fuzzy
+msgid "UserManager"
+msgstr "Rename"
+
 #, fuzzy
 msgid "Username"
 msgstr "Rename"
@@ -13490,6 +13542,12 @@ msgstr "VCR scart"
 #, fuzzy
 msgid "VLAN connection"
 msgstr "LAN connection"
+
+msgid "VLC Media List"
+msgstr ""
+
+msgid "VLC Server List"
+msgstr ""
 
 msgid "VMGM (intro trailer)"
 msgstr "VMGM (intro trailer)"
@@ -13593,6 +13651,10 @@ msgstr "S-Video"
 #, fuzzy
 msgid "Videocodec, size & format"
 msgstr "Videoformat"
+
+#, fuzzy
+msgid "Videoenhancement"
+msgstr "Video enhancement setup"
 
 msgid "Viet Nam"
 msgstr ""
@@ -14619,6 +14681,14 @@ msgstr ""
 msgid "Zap-History Browser"
 msgstr "Directory browser"
 
+#, fuzzy
+msgid "ZapHistoryBrowser"
+msgstr "Directory browser"
+
+#, fuzzy
+msgid "ZapHistoryConfigurator"
+msgstr "Directory browser"
+
 #, fuzzy, python-format
 msgid "Zapped to timer service %s as Picture in Picture!"
 msgstr "Go to first service"
@@ -14932,6 +15002,10 @@ msgstr "discussion/interview/debate"
 
 msgid "do nothing"
 msgstr "do nothing"
+
+#, fuzzy
+msgid "doFlashImage"
+msgstr "Flash"
 
 msgid "documentary"
 msgstr "documentary"
