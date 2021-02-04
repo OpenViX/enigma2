@@ -81,7 +81,7 @@ class LanguageDeleteWizard(MessageBox):
 
 wizardManager.registerWizard(DevelopWizard, checkForDevelopImage(), priority=0)
 wizardManager.registerWizard(LanguageWizard, config.misc.languageselected.value, priority = 10)
-wizardManager.registerWizard(LanguageDeleteWizard, config.misc.ask_languagedeletion.value, priority = 15)
+wizardManager.registerWizard(LanguageDeleteWizard, config.misc.ask_languagedeletion.value, priority = 10)
 if OverscanWizard:
 	wizardManager.registerWizard(OverscanWizard, config.misc.do_overscanwizard.value, priority = 20)
 wizardManager.registerWizard(StartWizard, config.misc.firstrun.value, priority = 25)
