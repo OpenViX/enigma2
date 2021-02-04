@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-18 09:04+0000\n"
-"PO-Revision-Date: 2021-01-19 10:30+0100\n"
+"POT-Creation-Date: 2021-02-03 09:11+0000\n"
+"PO-Revision-Date: 2021-02-04 10:25+0100\n"
 "Last-Translator: Ralf Biedermann <ralf.biedermann@rbsoft.de>\n"
 "Language-Team: AndyBlacburn, j-ot&Trial\n"
 "Language: de\n"
@@ -58,6 +58,13 @@ msgstr ""
 "\n"
 "Upgrade Quell-Adresse bearbeiten."
 
+msgid ""
+"\n"
+"It contains other items."
+msgstr ""
+"\n"
+"Es enthält andere Objekte."
+
 #, python-format
 msgid ""
 "\n"
@@ -65,6 +72,19 @@ msgid ""
 msgstr ""
 "\n"
 "Verwaltung der Erweiterungen und Plugins der %s %s"
+
+msgid ""
+"\n"
+"One is a directory that isn't empty."
+msgid_plural ""
+"\n"
+"There are directories that aren't empty."
+msgstr[0] ""
+"\n"
+"Eines davon ist ein Verzeichnis, das nicht leer ist."
+msgstr[1] ""
+"\n"
+"Es gibt Verzeichnisse die nicht leer sind."
 
 #, python-format
 msgid ""
@@ -865,6 +885,10 @@ msgstr[0] "%d Stunde"
 msgstr[1] "%d Stunden"
 
 #, python-format
+msgid "%d items"
+msgstr "%d Objekte"
+
+#, python-format
 msgid "%d job is running in the background!"
 msgid_plural "%d jobs are running in the background!"
 msgstr[0] "Es laufen noch %d Jobs im Hintergrund!"
@@ -877,6 +901,14 @@ msgstr "Es laufen noch %d Jobs im Hintergrund!"
 #, python-format
 msgid "%d kB"
 msgstr "%d kB"
+
+#, python-format
+msgid "%d marked item"
+msgstr "%d markiertes Objekt"
+
+#, python-format
+msgid "%d marked items"
+msgstr "%d markierte Objekte"
 
 #, python-format
 msgid "%d min"
@@ -1050,6 +1082,10 @@ msgstr "%s (%s)\n"
 msgid "%s - %s (%s%d min)"
 msgstr "%s - %s (%s%d Min)"
 
+#, python-format
+msgid "%s files cannot be bulk renamed"
+msgstr "%s Dateien können nicht massenhaft umbenannt werden"
+
 #. TRANSLATORS: The satellite with name '%s' is no longer used after a configuration change. The user is asked whether or not the satellite should be deleted.
 #, python-format
 msgid "%s is no longer used. Should it be deleted?"
@@ -1086,8 +1122,8 @@ msgid "%s?"
 msgstr "%s?"
 
 #, python-format
-msgid "'%s' contains %d file(s) and %d sub-directories.\n"
-msgstr "'%s' enthält %d Datei(en) und %d Verzeichnis(se).\n"
+msgid "'%s' already exists"
+msgstr "'%s' existiert bereits."
 
 msgid "'Network peer' automatically detects other Enigma2 receivers on the local network. You can also manually enter the URL or IP address."
 msgstr "'Netwerk Peer' erkennt andere Enigma2 Receiver automatisch im lokalen Netzwerk. Du kannst natürlich auch manuell URL oder IP Adresse eingeben."
@@ -1894,6 +1930,9 @@ msgstr "10bit erlauben"
 
 msgid "Allow 12bit"
 msgstr "12bit erlauben"
+
+msgid "Allow fast skin reload"
+msgstr "Erlaube schnellen Skinwechsel"
 
 msgid "Allow subtitle language to equal audio language"
 msgstr "Erlaube gleiche Sprache bei Untertitel und Ton"
@@ -2775,9 +2814,6 @@ msgstr "Auf Benutzerwunsch abgebrochen"
 msgid "Cannot delete current image"
 msgstr "Kann aktuelles Image nicht löschen"
 
-msgid "Cannot delete file"
-msgstr "Kann Datei nicht löschen"
-
 msgid "Cannot determine"
 msgstr "Erfassen nicht möglich"
 
@@ -3049,6 +3085,9 @@ msgstr "Wähle einen Ort wo die EPG Daten gespeichert werden wenn die %s %s ausg
 msgid "Choose the name of the file that holds the EPG data when the %s %s is shut down. This can be handy to differentiate between several boxes."
 msgstr "Wähle den Dateinamen für die EPG-Daten wenn die %s %s ausgeschaltet wird. Das kann nützlich sein wenn mehrere Boxen verwendet werden."
 
+msgid "Choose the style of the second infobar. The 'Standard' view normally includes technical data. The 'Simple' view shows minimal technical data."
+msgstr "Wähle den Stil der zweiten Infobar. Der 'Standard' enthält einige technische Details. Der 'Einfache' zeigt nur wenige technische Details."
+
 msgid "Choose time interval to which the graphics will be rounded off."
 msgstr "Wähle das Zeitraster auf das die Grafiken gerundet werden."
 
@@ -3122,7 +3161,7 @@ msgid "Clear"
 msgstr "Löschen"
 
 msgid "Clear HDMI-CEC fixed address"
-msgstr ""
+msgstr "Lösche die feste Adresse von HDMI-CEC"
 
 msgid "Clear before scan"
 msgstr "Vor der Suche löschen"
@@ -3132,6 +3171,9 @@ msgstr "Neue Adresse"
 
 msgid "Clear log"
 msgstr "Log löschen"
+
+msgid "Clear marks"
+msgstr "Entferne Markierungen"
 
 msgid "Clear playlist"
 msgstr "Wiedergabeliste leeren"
@@ -3689,6 +3731,54 @@ msgstr "Aufnahme wegen ungültigen Sender %s fehlgeschlagen"
 #, python-format
 msgid "Could not save configfile %s!"
 msgstr "Kann Config-Datei %s nicht speichern!"
+
+#, python-format
+msgid ""
+"Couldn't copy %d items.\n"
+"%s"
+msgstr ""
+"Konnte %d Objekte nicht kopieren.\n"
+"%s"
+
+#, python-format
+msgid ""
+"Couldn't copy '%s'.\n"
+"%s"
+msgstr ""
+"Konnte '%s' nicht kopieren\n"
+"%s"
+
+#, python-format
+msgid "Couldn't delete %d items."
+msgstr "Konnte %d Objekte nicht löschen."
+
+#, python-format
+msgid "Couldn't delete '%s'."
+msgstr "Konnte '%s' nicht löschen."
+
+#, python-format
+msgid "Couldn't move %d items to the trash can. Do you want to delete them instead?"
+msgstr "Konnte %d Objekte nicht in den Papierkorb verschieben. Sollen sie stattdessen gelöscht werden?"
+
+#, python-format
+msgid ""
+"Couldn't move %d items.\n"
+"%s"
+msgstr ""
+"Konnte %d Objekte nicht verschieben.\n"
+"%s"
+
+#, python-format
+msgid "Couldn't move '%s' to the trash can. Do you want to delete it instead?"
+msgstr "Konnte '%s' nicht in den Papierkorb verschieben. Sollen es stattdessen gelöscht werden?"
+
+#, python-format
+msgid ""
+"Couldn't move '%s'.\n"
+"%s"
+msgstr ""
+"Konnte '%s' nicht verschieben.\n"
+"%s"
 
 msgid "Country"
 msgstr "Land"
@@ -4255,12 +4345,17 @@ msgstr "Lösche das Zeichen links vom Cursor"
 msgid "Delete the character under the text cursor"
 msgstr "Lösche das Zeichen unter dem Cursor"
 
-msgid "Deleted"
-msgstr "Gelöscht"
+#, python-format
+msgid "Deleted %d items"
+msgstr "%d Objekte gelöscht"
 
 #, python-format
 msgid "Deleted %s!"
 msgstr "%s gelöscht!"
+
+#, python-format
+msgid "Deleted '%s'"
+msgstr "Gelöscht '%s'"
 
 msgid "Deleted image"
 msgstr "Image löschen"
@@ -4296,7 +4391,7 @@ msgid "Details for plugin: "
 msgstr "Details für Plugin: "
 
 msgid "Detect next boxes before standby"
-msgstr ""
+msgstr "Erkenne nahe Boxen vor dem Ausschalten"
 
 msgid "Detect programs split by news bulletins. Choose the maximum duration in minutes to consider as a bulletin, or 0 to disable."
 msgstr "Erkennene Programmteilungen durch Nachrichten. Wähle die maximale Unterbrechungszeit in Minuten oder 0 zum Deaktiviere."
@@ -4365,6 +4460,9 @@ msgstr "Direkte Auswahl des Menüpunktes"
 
 msgid "Direct playback of linked titles without menu"
 msgstr "Direkte Wiedergabe verknüpfter Titel ohne Menü"
+
+msgid "Directories cannot be bulk renamed"
+msgstr "Verzeichnisse können nicht massenhaft umbenannt werden"
 
 msgid "Directory"
 msgstr "Verzeichnis"
@@ -4466,15 +4564,8 @@ msgstr ""
 "Die Überprüfung könnte einige Zeit in Anspruch nehmen!"
 
 #, python-format
-msgid "Do you really want to delete %s ?"
-msgstr "Wollen Sie %s wirklich löschen?"
-
-#, python-format
 msgid "Do you really want to delete %s?"
 msgstr "%s wirklich löschen?"
-
-msgid "Do you really want to delete ?"
-msgstr "Wirklich löschen?"
 
 msgid ""
 "Do you really want to delete selected language:\n"
@@ -4500,15 +4591,29 @@ msgstr ""
 "Das Laufwerk wirklich formatieren?\n"
 "Sämtliche Daten auf dem Laufwerk gehen dabei verloren!"
 
-msgid "Do you really want to move to the trash can ?"
-msgstr "Wirklich in den Mülleimer verschieben?"
+#, python-format
+msgid "Do you really want to move '%s' to the trash can?"
+msgstr "'%s' wirklich in den Mülleimer verschieben?"
 
 #, python-format
-msgid "Do you really want to permamently remove '%s' from the trash can ?"
-msgstr "Soll die Datei %s wirklich endgültig aus dem Mülleimer entfernt werden?"
+msgid "Do you really want to move these %d items to the trash can?"
+msgstr "%d Objekte wirklich in den Mülleimer verschieben?"
 
-msgid "Do you really want to permanently remove from the trash can ?"
-msgstr "Wirklich endgültig aus dem Mülleimer löschen?"
+#, python-format
+msgid "Do you really want to permanently delete '%s' from the trash can?"
+msgstr "Soll die Datei %s wirklich endgültig aus dem Mülleimer gelöscht werden?"
+
+#, python-format
+msgid "Do you really want to permanently delete '%s'?"
+msgstr "%s wirklich endgültig löschen?"
+
+#, python-format
+msgid "Do you really want to permanently delete these %d items from the trash can?"
+msgstr "Sollen %d Dateien wirklich endgültig aus dem Mülleimer gelöscht werden?"
+
+#, python-format
+msgid "Do you really want to permanently delete these %d items?"
+msgstr "%d Dateien wirklich endgültig löschen?"
 
 #, python-format
 msgid "Do you really want to remove directory %s from the disk?"
@@ -4618,7 +4723,7 @@ msgid "Don't zap and remove timer"
 msgstr "Nicht umschalten und Timer löschen"
 
 msgid "Done"
-msgstr ""
+msgstr "Fertig"
 
 #, python-format
 msgid "Done - Installed, upgraded or removed %d package (%s)"
@@ -4826,6 +4931,9 @@ msgstr "Elektronischer Programmführer"
 
 msgid "Empty slot"
 msgstr "Leerer Slot"
+
+msgid "Empty trash can"
+msgstr "Mülleimer leeren"
 
 msgid "Enable"
 msgstr "Ein"
@@ -5088,6 +5196,10 @@ msgstr "Ausführen des Plugins fehlgeschlagen"
 
 msgid "Error reading webpage!"
 msgstr "Fehler beim Lesen der Web-Seite!"
+
+#, python-format
+msgid "Error renaming '%s'"
+msgstr "Fehler beim Umbenennen von '%s'"
 
 #, python-format
 msgid ""
@@ -5366,6 +5478,9 @@ msgstr "FTP passiver Modus"
 msgid "Factory Reset"
 msgstr "Werkseinstellungen"
 
+msgid "Factory Reset: Clearing data"
+msgstr "Werkseinstellungen: Einstellungen werden gelöscht"
+
 msgid "Fade the infobar when hiding"
 msgstr "Sanftes Ausblenden der Infobar"
 
@@ -5447,9 +5562,6 @@ msgstr "Feed Status: aktualisieren"
 
 msgid "Fiji"
 msgstr "Fiji"
-
-msgid "File appears to be busy.\n"
-msgstr "Die Datei ist gerade in Verwendung.\n"
 
 msgid ""
 "File oscam.conf not found.\n"
@@ -6651,9 +6763,6 @@ msgstr "Springe zur nächsten Markerposition"
 msgid "Jump to the previous marked position"
 msgstr "Springe zur vorherigen Markerposition"
 
-msgid "Just change channels"
-msgstr "Nur Umschalten"
-
 #. TRANSLATORS: (aspect ratio policy: display as fullscreen, even if this breaks the aspect)
 #. TRANSLATORS: (aspect ratio policy: display as fullscreen, with stretching the left/right)
 #. "nonlinear": _("Nonlinear"),
@@ -7042,7 +7151,7 @@ msgid "MB"
 msgstr "MB"
 
 msgid "MENU"
-msgstr ""
+msgstr "Menü"
 
 msgid "Macao"
 msgstr "Macao"
@@ -7202,13 +7311,13 @@ msgid "Merging Timeshift files"
 msgstr "TimeShift-Dateien werden zusammengefügt"
 
 msgid "Message"
-msgstr ""
+msgstr "Meldung"
 
 msgid "MessageBox Functions"
 msgstr "Meldungsbox Funktionen"
 
 msgid "Messages"
-msgstr ""
+msgstr "Meldungen"
 
 msgid "Mexico"
 msgstr "Mexico"
@@ -7359,9 +7468,6 @@ msgstr "Seite runter"
 msgid "Move down in bouquet list"
 msgstr "Gehe Favoritenliste runter"
 
-msgid "Move down in channel list"
-msgstr "In Senderliste runter gehen"
-
 msgid "Move down to last entry"
 msgstr "Zum letzten Eintrag gehen"
 
@@ -7425,9 +7531,6 @@ msgstr "Seite hoch"
 msgid "Move up in bouquet list"
 msgstr "Gehe Favoritenliste hoch"
 
-msgid "Move up in channel list"
-msgstr "Gehe Senderliste hoch"
-
 msgid "Move up to first entry"
 msgstr "Zum ersten Eintrag gehen"
 
@@ -7436,6 +7539,14 @@ msgstr "Zum vorherigen Eintrag gehen"
 
 msgid "Move west"
 msgstr "Drehen nach Westen"
+
+#, python-format
+msgid "Moved %d items"
+msgstr "%d Objekte verschoben"
+
+#, python-format
+msgid "Moved '%s'"
+msgstr "'%s' verschoben"
 
 msgid "Moved to position 0"
 msgstr "Auf Position 0 drehen"
@@ -8391,9 +8502,6 @@ msgstr "Permanente Änderung der Sortierung"
 msgid "Permanently delete all recordings in the trash can?"
 msgstr "Alle Aufnahmen im Mülleimer löschen?"
 
-msgid "Permanently remove all deleted items"
-msgstr "Gelöschte Filme endgültig löschen"
-
 msgid "Persian"
 msgstr "Persisch"
 
@@ -8496,6 +8604,15 @@ msgstr "Spiele Vorheriges"
 
 msgid "Play recorded movies..."
 msgstr "Aufgenommene Filme abspielen..."
+
+#, python-format
+msgid "Play the marked recording"
+msgid_plural "Play %d marked recordings"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Play the selected recording"
+msgstr "Gewählte  Aufnahme wiedergeben?"
 
 msgid ""
 "Playback information missing\n"
@@ -9353,8 +9470,11 @@ msgstr "Aufnahme und Wiedergabe"
 msgid "Recording and playback settings"
 msgstr "Aufnahme/Wiedergabe Einstellungen"
 
-msgid "Recording in progress"
-msgstr "Aktive Aufnahmen"
+#, python-format
+msgid "Recording in progress: %s"
+msgid_plural "Recordings in progress: %d"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "Recording type"
 msgstr "Aufnahmetyp"
@@ -9509,6 +9629,9 @@ msgstr "Entferne alle Plugin-Einstellungen"
 
 msgid "Remove all resume point data"
 msgstr "Entferne all gespeicherten Medienpositionen"
+
+msgid "Remove all selection marks"
+msgstr "Entferne alle Markierungen"
 
 msgid "Remove all settings data"
 msgstr "Entferne alle Einstellungen"
@@ -10108,6 +10231,9 @@ msgstr "Zweites Kabel vom Rotor"
 
 msgid "Second infobar"
 msgstr "SecondInfoBar"
+
+msgid "Second infobar style*"
+msgstr "Stil vom zweiten Infobar*"
 
 msgid "Secondary DNS"
 msgstr "Zweiter DNS"
@@ -10777,6 +10903,9 @@ msgstr "Wähle die gewünschte Primetime (Stunde)."
 msgid "Set to what you want the button to do."
 msgstr "Wähle was die Taste machen soll."
 
+msgid "Set update interval (in hours)."
+msgstr "Update Zeitintervall x Stunden"
+
 msgid "Set voltage and 22KHz"
 msgstr "Setze Spannung und 22KHz"
 
@@ -10972,14 +11101,8 @@ msgstr "Zeige Hintergrund im Radio Modus"
 msgid "Show background when tuned to a radio channel."
 msgstr "Zeige Hintergrund wenn ein Radiosender eingestellt ist."
 
-msgid "Show bouquet list"
-msgstr "Zeige Favoritenliste"
-
 msgid "Show bouquet on launch"
 msgstr "Zeige Favoritenlisten beim Start"
-
-msgid "Show channel list"
-msgstr "Zeige Senderliste"
 
 msgid "Show channel number in infobar"
 msgstr "Zeige Sendernummer in Infobar"
@@ -11755,9 +11878,6 @@ msgstr "Angezeigten Sender beenden und Filmliste anzeigen."
 msgid "Stop recording"
 msgstr "Aufnahme beenden"
 
-msgid "Stop recording and delete"
-msgstr "Aufnahme beenden und löschen"
-
 msgid "Stop recording now"
 msgstr "Aufnahme jetzt beenden"
 
@@ -11778,6 +11898,16 @@ msgstr "Stoppe Test nach # fehlgeschlagenen Transpondern"
 
 msgid "Stop testing plane after # successful transponders"
 msgstr "Stoppe Test nach # erfolgreichen Transpondern"
+
+msgid "Stop this recording"
+msgid_plural "Stop these recordings"
+msgstr[0] "Aufnahme beenden"
+msgstr[1] "Aufnahmen beenden"
+
+msgid "Stop this recording and delete it"
+msgid_plural "Stop these recordings and delete them"
+msgstr[0] "Aufnahme beenden und löschen"
+msgstr[1] "Aufnahmen beenden und löschen"
 
 msgid "Stop timer recording"
 msgstr "Timeraufnahme beenden"
@@ -11970,6 +12100,12 @@ msgstr "Wechsle zwischen letzten beiden Sendern"
 
 msgid "Switch config"
 msgstr "Wechsele Konfiguration"
+
+msgid "Switch the PiP to the next channel"
+msgstr "Schalte PiP zu nächsten Sender"
+
+msgid "Switch the PiP to the previous channel"
+msgstr "Schalte PiP zu vorherigen Sender"
 
 msgid "Switch to Grid EPG"
 msgstr "Wechsle zu graphischen Multi-EPG"
@@ -12640,6 +12776,9 @@ msgstr ""
 "Dies wird alle Positionen des Rotors (neu) berechnen und kann vorher gespeicherte Positionen und Optimierungen löschen!\n"
 "Sicher?"
 
+msgid "This will permanently delete the current configuration. It would be a good idea to make a backup before taking this drastic action. Are you certain you want to continue with a factory reset?"
+msgstr "Dies wird die aktuelle Konfiguration permanent löschen. Es ist zu empfehlen vorher eine Sicherrungskopie anzulegen. Sicher das Werkseinstellungen hergestellt werden sollen?"
+
 msgid "Three"
 msgstr "Drei"
 
@@ -12812,6 +12951,9 @@ msgstr "Schalte PiPZap um"
 msgid "Toggle a cut mark at the current position"
 msgstr "Schnittmarke an der aktuellen Position ändern"
 
+msgid "Toggle a selection mark"
+msgstr "Ändere Markierung"
+
 msgid "Toggle aspect ratio..."
 msgstr "Aspect/Ratio umschalten..."
 
@@ -12829,6 +12971,9 @@ msgstr "Ändere Standarduntertitel"
 
 msgid "Toggle infobar"
 msgstr "Schalte InfoBar um"
+
+msgid "Toggle mark"
+msgstr "Ändere Markierung"
 
 msgid "Toggle new text inserts before or overwrites existing text"
 msgstr "Schalte um zwischen neuen Text vor bestehendem Text über überschreiben"
@@ -12911,6 +13056,9 @@ msgstr "Transponder Information"
 
 msgid "Transport Stream Type"
 msgstr "TransportstreamTyp"
+
+msgid "Trash"
+msgstr "Mülleimer"
 
 msgid "Trash can"
 msgstr "Mülleimer"
@@ -13060,7 +13208,7 @@ msgid "Type: "
 msgstr "Typ: "
 
 msgid "UNKNOWN"
-msgstr ""
+msgstr "Unbekannt"
 
 msgid "URL"
 msgstr ""
@@ -13157,6 +13305,9 @@ msgstr "Hoch"
 
 msgid "Update"
 msgstr "Aktualisieren"
+
+msgid "Update Interval"
+msgstr "Update Zeitintervall"
 
 msgid "Update channel list only"
 msgstr "Nur Senderliste aktualisieren"
@@ -13813,6 +13964,9 @@ msgstr "Welchen Tag der Woche?"
 msgid "What do you want to scan?"
 msgstr "Was durchsuchen?"
 
+msgid "When changing skins this allows the skin to load without requiring an enigma restart."
+msgstr "Dies erlaubt es Skins ohne Enigma Neustart zu wechseln."
+
 msgid "When enabled a forced download will be possible from the extensions menu (blue button). Shows after next restart."
 msgstr "Wenn aktiviert ein \"erzwinge OpenTV EPG herunter laden' wird im Erweiterungsmenü angezeigt. Wird erst nach dem nächsten Neustart angezeigt."
 
@@ -14214,6 +14368,11 @@ msgstr "Löschen nicht möglich!"
 
 msgid "You didn't select a channel to record from."
 msgstr "Du hast keinen Sender zum Aufnehmen ausgewählt."
+
+msgid "You have a marked recording"
+msgid_plural "You have marked recordings"
+msgstr[0] "Du hast eine Aufnahme markiert"
+msgstr[1] "Du hast Aufnahmen markiert"
 
 msgid "You have chosen to backup your settings. Please press OK to start the backup now."
 msgstr "Du hast dich entschieden deine Einstellungen zu sichern. Drücke OK, um den Vorgang zu starten."
@@ -15802,6 +15961,9 @@ msgstr "umschalten und aufnehmen"
 msgid "zapped"
 msgstr "umgeschaltet"
 
+#~ msgid "'%s' contains %d file(s) and %d sub-directories.\n"
+#~ msgstr "'%s' enthält %d Datei(en) und %d Verzeichnis(se).\n"
+
 #~ msgid "** Setup error: '%s' section not found! **"
 #~ msgstr "** Setup Fehler: '%s' Sektion nicht gefunden! **"
 
@@ -15826,11 +15988,23 @@ msgstr "umgeschaltet"
 #~ msgid "CCcam info"
 #~ msgstr "CCcam Informationen"
 
+#~ msgid "Cannot delete file"
+#~ msgstr "Kann Datei nicht löschen"
+
 #~ msgid "Client mode sets up this receiver to stream from another receiver. In this mode no local tuners will be available and channel lists, EPG, etc, will come from the remote receiver. All tuner settings will be cleared."
 #~ msgstr "Client Modus richtet den Receiver so ein das von einem anderen Receiver gestreamt wird. In diesem Modus gibt es keine lokalen Tuner und Kanalliste, EPG usw. werden vom Server-Receiver geholt. Alle Tunereinstellungen werden gelöscht."
 
 #~ msgid "Common interface"
 #~ msgstr "Common Interface"
+
+#~ msgid "Deleted"
+#~ msgstr "Gelöscht"
+
+#~ msgid "Do you really want to delete %s ?"
+#~ msgstr "Wollen Sie %s wirklich löschen?"
+
+#~ msgid "Do you really want to delete ?"
+#~ msgstr "Wirklich löschen?"
 
 #~ msgid "Do you want to add any additional information ?"
 #~ msgstr "Willst Du weitere Informationen hinzufügen?"
@@ -15865,6 +16039,9 @@ msgstr "umgeschaltet"
 #~ msgid "Factory reset"
 #~ msgstr "Werkseinstellungen"
 
+#~ msgid "File appears to be busy.\n"
+#~ msgstr "Die Datei ist gerade in Verwendung.\n"
+
 #~ msgid "Filesystem check"
 #~ msgstr "Dateisystemprüfung"
 
@@ -15883,6 +16060,9 @@ msgstr "umgeschaltet"
 #~ msgid "Instant recordings location"
 #~ msgstr "Pfad für Sofortaufnahmen"
 
+#~ msgid "Just change channels"
+#~ msgstr "Nur Umschalten"
+
 #~ msgid "Load-save-delete"
 #~ msgstr "Laden/Speichern/Löschen"
 
@@ -15891,6 +16071,12 @@ msgstr "umgeschaltet"
 
 #~ msgid "Mainmenu"
 #~ msgstr "Hauptmenü"
+
+#~ msgid "Move down in channel list"
+#~ msgstr "In Senderliste runter gehen"
+
+#~ msgid "Move up in channel list"
+#~ msgstr "Gehe Senderliste hoch"
 
 #~ msgid "Movie location"
 #~ msgstr "Film Verzeichnis"
@@ -15909,6 +16095,9 @@ msgstr "umgeschaltet"
 
 #~ msgid "OScam info"
 #~ msgstr "OScam Info"
+
+#~ msgid "Permanently remove all deleted items"
+#~ msgstr "Gelöschte Filme endgültig löschen"
 
 #~ msgid "Put your %s %s in standby"
 #~ msgstr "%s %s in Bereitschaft versetzen"
@@ -15937,6 +16126,12 @@ msgstr "umgeschaltet"
 
 #~ msgid "Show EPG..."
 #~ msgstr "Zeige EPG..."
+
+#~ msgid "Show bouquet list"
+#~ msgstr "Zeige Favoritenliste"
+
+#~ msgid "Show channel list"
+#~ msgstr "Zeige Senderliste"
 
 #~ msgid "Show epg"
 #~ msgstr "Zeige EPG"
