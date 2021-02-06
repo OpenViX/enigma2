@@ -56,17 +56,25 @@ class NSCommon:
 		time.sleep(3)
 		self.updateService()
 
-	def removeComplete(self,result = None, retval = None, extra_args = None):
+	def removeComplete(self, result = None, retval = None, extra_args = None):
 		if self.reboot_at_end:
-			self.session.open(TryQuitMainloop, 2)
-		self.message.close()
-		self.close()
+			restartbox = self.session.openWithCallback(self.operationComplete, MessageBox, 
+				_('Your %s %s needs to be restarted to complete the removal of %s\nDo you want to reboot now ?') % (getMachineBrand(), getMachineName(), self.getTitle()), MessageBox.TYPE_YESNO)
+			restartbox.setTitle(_("Reboot required"))
+		else:
+			self.operationComplete()
 
-	def installComplete(self,result = None, retval = None, extra_args = None):
+	def installComplete(self, result = None, retval = None, extra_args = None):
 		if self.reboot_at_end:
-			self.session.open(TryQuitMainloop, 2)
+			restartbox = self.session.openWithCallback(self.operationComplete, MessageBox, 
+				_('Your %s %s needs to be restarted to complete the installation of %s\nDo you want to reboot now ?') % (getMachineBrand(), getMachineName(), self.getTitle()), MessageBox.TYPE_YESNO)
+			restartbox.setTitle(_("Reboot required"))
 		else:
 			self.updateService()
+	
+	def operationComplete(self, reboot=False):
+		if reboot:
+			self.session.open(TryQuitMainloop, 2)
 		self.message.close()
 		self.close()
 
@@ -87,10 +95,7 @@ class NSCommon:
 			if (getImageType() != 'release' and feedsstatuscheck.getFeedsBool() != 'unknown') or (getImageType() == 'release' and feedsstatuscheck.getFeedsBool() not in ('stable', 'unstable')):
 				self.session.openWithCallback(self.InstallPackageFailed, MessageBox, feedsstatuscheck.getFeedsErrorMessage(), type=MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 			else:
-				if self.reboot_at_end:
-					mtext = _('Your %s %s will be restarted after the installation of the service\nAre you ready to install "%s" ?') % (getMachineBrand(), getMachineName(), self.service_name)
-				else:
-					mtext = _('Are you ready to install "%s" ?') % self.service_name
+				mtext = _('Are you ready to install %s ?') % self.getTitle()
 				self.session.openWithCallback(self.InstallPackage, MessageBox, mtext, MessageBox.TYPE_YESNO)
 		else:
 			self.updateService()
@@ -100,11 +105,7 @@ class NSCommon:
 
 	def RemovedataAvail(self, str, retval, extra_args):
 		if str:
-			if self.reboot_at_end:
-				restartbox = self.session.openWithCallback(self.RemovePackage,MessageBox,_('Your %s %s will be restarted after the removal of the service\nDo you want to remove the service now ?') % (getMachineBrand(), getMachineName()), MessageBox.TYPE_YESNO)
-				restartbox.setTitle(_('Are you ready to remove "%s" ?') % self.service_name)
-			else:
-				self.session.openWithCallback(self.RemovePackage, MessageBox, _('Ready to remove "%s" ?') % self.service_name, MessageBox.TYPE_YESNO)
+			self.session.openWithCallback(self.RemovePackage, MessageBox, _('Are you ready to remove %s ?') % self.getTitle(), MessageBox.TYPE_YESNO)
 		else:
 			self.updateService()
 
