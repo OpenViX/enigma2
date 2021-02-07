@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-03 10:09+0000\n"
-"PO-Revision-Date: 2021-02-03 17:02+0100\n"
+"POT-Creation-Date: 2021-02-06 15:21+0000\n"
+"PO-Revision-Date: 2021-02-07 17:30+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -2068,12 +2068,12 @@ msgid "Are You Sure ?"
 msgstr "Weet u het zeker?"
 
 #, python-format
-msgid "Are you ready to install \"%s\" ?"
-msgstr "Gereed om \"%s\" te installeren?"
+msgid "Are you ready to install %s ?"
+msgstr "Gereed om %s te installeren?"
 
 #, python-format
-msgid "Are you ready to remove \"%s\" ?"
-msgstr "Bent u gereed om \"%s\" te verwijderen?"
+msgid "Are you ready to remove %s ?"
+msgstr "Bent u gereed om %s te verwijderen?"
 
 msgid "Are you sure to remove this entry?"
 msgstr "Weet u zeker dat deze waarde verwijderd mag worden?"
@@ -8623,8 +8623,8 @@ msgstr "Opname afspelen..."
 #, python-format
 msgid "Play the marked recording"
 msgid_plural "Play %d marked recordings"
-msgstr[0] "Speel de gemarkeerde opname af"
-msgstr[1] "Speel de %d gemarkeerde opnames af"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "Play the selected recording"
 msgstr "Speel de geselecteerde opname af"
@@ -9446,6 +9446,9 @@ msgstr "Uw %s %s echt upgraden en herstarten?"
 msgid "Reboot"
 msgstr "Herstarten"
 
+msgid "Reboot required"
+msgstr "Herstarten is noodzakelijk"
+
 msgid "Rec"
 msgstr "Record"
 
@@ -9485,12 +9488,6 @@ msgstr "Opname en afspelen"
 
 msgid "Recording and playback settings"
 msgstr "Opname-en afspeelinstellingen"
-
-#, python-format
-msgid "Recording in progress: %s"
-msgid_plural "Recordings in progress: %d"
-msgstr[0] "Opname is bezig: %s"
-msgstr[1] "Opnames zijn bezig: %d"
 
 msgid "Recording type"
 msgstr "Type opname"
@@ -10972,7 +10969,7 @@ msgstr "Satellietapparatuur instellen"
 msgid "Seychelles"
 msgstr "Seychelles"
 
-msgid "Share Folder's"
+msgid "Share Folders"
 msgstr "Deel mappen"
 
 msgid "Share View"
@@ -12626,29 +12623,29 @@ msgstr "Met deze optie bepaalt u de virtuele luidsprekeropstelling."
 msgid "This option allows you to choose from the two channel lists that are available."
 msgstr "Hier kiest u tussen twee lijsttypes (afhankelijk van uw skin kunnen er twee met een verschillende indeling zijn)."
 
-msgid "This option allows you to choose how to display 1080p 24Hz on your TV. (as not all TV's support these resolutions)"
-msgstr "Hier kunt u aangeven hoe 1080p24 op uw TV moet worden weergegeven (omdat niet alle TV's deze resolutie ondersteunen)"
+msgid "This option allows you to choose how to display 1080p 24Hz on your TV. (as not all TVs support these resolutions)"
+msgstr "Hier kunt u aangeven hoe 1080p 24Hz op uw TV moet worden weergegeven (omdat niet alle Tv's deze resolutie ondersteunen)"
 
-msgid "This option allows you to choose how to display 1080p 25Hz on your TV. (as not all TV's support these resolutions)"
-msgstr "Hier kunt u aangeven hoe 1080p25 op uw TV moet worden weergegeven (omdat niet alle TV's deze resolutie ondersteunen)"
+msgid "This option allows you to choose how to display 1080p 25Hz on your TV. (as not all TVs support these resolutions)"
+msgstr "Hier kunt u aangeven hoe 1080p 25Hz op uw TV moet worden weergegeven (omdat niet alle Tv's deze resolutie ondersteunen)"
 
-msgid "This option allows you to choose how to display 1080p 30Hz on your TV. (as not all TV's support these resolutions)"
-msgstr "Hier kunt u aangeven hoe 1080p30 op uw TV moet worden weergegeven (omdat niet alle TV's deze resolutie ondersteunen)"
+msgid "This option allows you to choose how to display 1080p 30Hz on your TV. (as not all TVs support these resolutions)"
+msgstr "Hier kunt u aangeven hoe 1080p 30Hz op uw TV moet worden weergegeven (omdat niet alle Tv's deze resolutie ondersteunen)"
 
-msgid "This option allows you to choose how to display 2160p 24Hz on your TV. (as not all TV's support these resolutions)"
-msgstr "Hier kunt u aangeven hoe 2160p 24Hz op uw TV moet worden weergegeven (omdat niet alle TV's deze resolutie ondersteunen)."
+msgid "This option allows you to choose how to display 2160p 24Hz on your TV. (as not all TVs support these resolutions)"
+msgstr "Hier kunt u aangeven hoe 2160p 24Hz op uw TV moet worden weergegeven (omdat niet alle Tv's deze resolutie ondersteunen)."
 
-msgid "This option allows you to choose how to display 2160p 25Hz on your TV. (as not all TV's support these resolutions)"
-msgstr "Hier kunt u aangeven hoe 2160p 25Hz op uw TV moet worden weergegeven (omdat niet alle TV's deze resolutie ondersteunen)."
+msgid "This option allows you to choose how to display 2160p 25Hz on your TV. (as not all TVs support these resolutions)"
+msgstr "Hier kunt u aangeven hoe 2160p 25Hz op uw TV moet worden weergegeven (omdat niet alle Tv's deze resolutie ondersteunen)."
 
-msgid "This option allows you to choose how to display 2160p 30Hz on your TV. (as not all TV's support these resolutions)"
-msgstr "Hier kunt u aangeven hoe 2160p 30Hz op uw TV moet worden weergegeven (omdat niet alle TV's deze resolutie ondersteunen)"
+msgid "This option allows you to choose how to display 2160p 30Hz on your TV. (as not all TVs support these resolutions)"
+msgstr "Hier kunt u aangeven hoe 2160p 30Hz op uw TV moet worden weergegeven (omdat niet alle Tv's deze resolutie ondersteunen)"
 
-msgid "This option allows you to choose how to display 720p 24Hz on your TV. (as not all TV's support these resolutions)"
-msgstr "Hier kunt u aangeven hoe 720p24 op uw TV moet worden weergegeven (omdat niet alle TV's deze resolutie ondersteunen)"
+msgid "This option allows you to choose how to display 720p 24Hz on your TV. (as not all TVs support these resolutions)"
+msgstr "Hier kunt u aangeven hoe 720p 24Hz op uw TV moet worden weergegeven (omdat niet alle Tv's deze resolutie ondersteunen)"
 
-msgid "This option allows you to choose how to display SD progressive 24Hz on your TV. (as not all TV's support these resolutions)"
-msgstr "Hier kunt u aangeven hoe 24Hz op uw TV moet worden weergegeven (omdat niet alle TV's deze resolutie ondersteunen)"
+msgid "This option allows you to choose how to display SD progressive 24Hz on your TV. (as not all TVs support these resolutions)"
+msgstr "Hier kunt u aangeven hoe SD progressief 24Hz op uw TV moet worden weergegeven (omdat niet alle Tv's deze resolutie ondersteunen)"
 
 msgid "This option allows you to choose how to display elapsed time. As + or -"
 msgstr "Hier kunt u aangeven of de verstreken tijd als + of - wordt vertoond"
@@ -14500,6 +14497,22 @@ msgstr "Uw  %s %s kan nu onbruikbaar zijn geworden. Raadpleeg voordat u uw %s %s
 
 #, python-format
 msgid ""
+"Your %s %s needs to be restarted to complete the installation of %s\n"
+"Do you want to reboot now ?"
+msgstr ""
+"Uw %s %s moet na het installeren van de service opnieuw worden gestart om de installatie van %s af te ronden\n"
+"Wilt u nu herstarten?"
+
+#, python-format
+msgid ""
+"Your %s %s needs to be restarted to complete the removal of %s\n"
+"Do you want to reboot now ?"
+msgstr ""
+"Uw %s %s moet na het verwijderen van de service opnieuw worden gestart om het verwijderen van %s af te ronden\n"
+"Wilt u nu herstarten?"
+
+#, python-format
+msgid ""
 "Your %s %s will be restarted after the installation of service.\n"
 "\n"
 "Do you want to install now ?"
@@ -14510,27 +14523,11 @@ msgstr ""
 
 #, python-format
 msgid ""
-"Your %s %s will be restarted after the installation of the service\n"
-"Are you ready to install \"%s\" ?"
-msgstr ""
-"Uw %s %s zal worden herstart na de installatie van de service\n"
-"Gereed om \"%s\" te installeren?"
-
-#, python-format
-msgid ""
 "Your %s %s will be restarted after the removal of service\n"
 "Do you want to remove now ?"
 msgstr ""
 "Uw %s %s zal na het verwijderen van de service opnieuw worden gestart\n"
 "Wilt u nu verwijderen?"
-
-#, python-format
-msgid ""
-"Your %s %s will be restarted after the removal of the service\n"
-"Do you want to remove the service now ?"
-msgstr ""
-"Uw %s %s zal na het verwijderen van de service opnieuw worden gestart\n"
-"Wilt u de service nu verwijderen?"
 
 msgid "Your STB will restart after pressing OK on your remote control."
 msgstr "Als u op OK drukt zal uw ontvanger opnieuw opstarten."
@@ -17332,6 +17329,11 @@ msgstr "zapte"
 #~ msgid "Recording Setup"
 #~ msgstr "Opname Instellingen"
 
+#~ msgid "Recording in progress: %s"
+#~ msgid_plural "Recordings in progress: %d"
+#~ msgstr[0] "Opname is bezig: %s"
+#~ msgstr[1] "Opnames zijn bezig: %d"
+
 #~ msgid "Refresh every (in hours)"
 #~ msgstr "Ververs elke (in uren)"
 
@@ -17885,6 +17887,20 @@ msgstr "zapte"
 
 #~ msgid "Your %s %s is not connected to the internet, please check your network settings and try again."
 #~ msgstr "Uw %s %s is niet met het internet verbonden. Controleer uw netwerkinstellingen en probeer het opnieuw."
+
+#~ msgid ""
+#~ "Your %s %s will be restarted after the installation of the service\n"
+#~ "Are you ready to install \"%s\" ?"
+#~ msgstr ""
+#~ "Uw %s %s zal worden herstart na de installatie van de service\n"
+#~ "Gereed om \"%s\" te installeren?"
+
+#~ msgid ""
+#~ "Your %s %s will be restarted after the removal of the service\n"
+#~ "Do you want to remove the service now ?"
+#~ msgstr ""
+#~ "Uw %s %s zal na het verwijderen van de service opnieuw worden gestart\n"
+#~ "Wilt u de service nu verwijderen?"
 
 #~ msgid "Your timezone in the area."
 #~ msgstr "Uw tijdzone."
