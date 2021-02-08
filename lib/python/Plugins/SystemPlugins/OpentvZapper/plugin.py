@@ -1,6 +1,6 @@
 from __future__ import absolute_import
 
-from Components.config import config, ConfigSelection, ConfigSubsection, ConfigYesNo
+from Components.config import config, ConfigSelection, ConfigSubsection, ConfigYesNo, ConfigSelectionNumber
 from Components.NimManager import nimmanager
 
 from Plugins.Plugin import PluginDescriptor
@@ -12,6 +12,7 @@ from .providers import providers
 config.plugins.opentvzapper = ConfigSubsection()
 config.plugins.opentvzapper.enabled = ConfigYesNo(default = False)
 config.plugins.opentvzapper.providers = ConfigSelection(default="Astra 28.2", choices=list(providers.keys()))
+config.plugins.opentvzapper.update_interval = ConfigSelectionNumber(min = 3, max = 24, stepwidth = 3, default = 6, wraparound = True)
 config.plugins.opentvzapper.extensions = ConfigYesNo(default = True)
 config.plugins.opentvzapper.notifications = ConfigYesNo(default = False)
 

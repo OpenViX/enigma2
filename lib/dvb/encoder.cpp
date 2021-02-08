@@ -196,16 +196,15 @@ int eEncoder::allocateEncoder(const std::string &serviceref, int &buffersize,
 	snprintf(filename, sizeof(filename), "/proc/stb/encoder/%d/apply", encoder_index);
 	CFile::writeInt(filename, 1);
 
-	if(encoder[encoder_index].navigation_instance->playService(serviceref) < 0)
+	if(source_file.empty())
+		encoder[encoder_index].file_fd = -1;
+	else
 	{
-		eWarning("[eEncoder] navigation->playservice failed");
-		return(-1);
-	}
-
-	if(!source_file.empty() && ((encoder[encoder_index].file_fd = open(source_file.c_str(), O_RDONLY, 0)) < 0))
-	{
-		eWarning("[eEncoder] open source file failed");
-		return(-1);
+		if((encoder[encoder_index].file_fd = open(source_file.c_str(), O_RDONLY, 0)) < 0)
+		{
+			eWarning("[eEncoder] open source file failed");
+			return(-1);
+		}
 	}
 
 	snprintf(filename, sizeof(filename), "/dev/%s%d", bcm_encoder ? "bcm_enc" : "encoder", encoder_index);
@@ -238,6 +237,9 @@ int eEncoder::allocateEncoder(const std::string &serviceref, int &buffersize,
 			default:
 			{
 				eWarning("[eEncoder] only encoder 0 and encoder 1 implemented");
+				close(encoder[encoder_index].encoder_fd);
+				encoder[encoder_index].encoder_fd = -1;
+				return(-1);
 				break;
 			}
 		}
@@ -246,6 +248,12 @@ int eEncoder::allocateEncoder(const std::string &serviceref, int &buffersize,
 	{
 		buffersize = -1;
 		encoder[encoder_index].state = EncoderContext::state_running;
+	}
+
+	if(encoder[encoder_index].navigation_instance->playService(serviceref) < 0)
+	{
+		eWarning("[eEncoder] navigation->playservice failed");
+		return(-1);
 	}
 
 	return(encoder[encoder_index].encoder_fd);
@@ -440,38 +448,11 @@ void eEncoder::navigation_event(int encoder_index, int event)
 
 			if((vpid > 0) && (apid > 0) && (pmtpid > 0))
 			{
-				eDebug("[eEncoder] info complete: %d, %d, %d", vpid, apid, pmtpid);
+				eDebug("[eEncoder] info complete, vpid: %d (0x%x), apid: %d (0x%x), pmptpid: %d (0x%x)", vpid, vpid, apid, apid, pmtpid, pmtpid);
 
 				pids.push_back(pmtpid);
 				pids.push_back(vpid);
 				pids.push_back(apid);
-
-				if(encoder[encoder_index].file_fd < 0)
-				{
-					service->tap(tservice);
-
-					if(tservice == nullptr)
-					{
-						eWarning("[eEncoder] tap service failed");
-						freeEncoder(encoder[encoder_index].encoder_fd);
-						return;
-					}
-
-					tservice->startTapToFD(encoder[encoder_index].encoder_fd, pids);
-				}
-				else
-				{
-					if(encoder[encoder_index].stream_thread != nullptr)
-					{
-						eWarning("[eEncoder] datapump already running");
-						return;
-					}
-
-					encoder[encoder_index].stream_thread = new eDVBRecordStreamThread(188, -1, true);
-
-					encoder[encoder_index].stream_thread->setTargetFD(encoder[encoder_index].encoder_fd);
-					encoder[encoder_index].stream_thread->start(encoder[encoder_index].file_fd);
-				}
 
 				if(ioctl(encoder[encoder_index].encoder_fd, IOCTL_BROADCOM_SET_PMTPID_MIPS, pmtpid) ||
 						ioctl(encoder[encoder_index].encoder_fd, IOCTL_BROADCOM_SET_VPID_MIPS, vpid) ||
@@ -489,8 +470,37 @@ void eEncoder::navigation_event(int encoder_index, int event)
 					}
 				}
 
-				encoder[encoder_index].state = EncoderContext::state_running;
 				encoder[encoder_index].run();
+
+				if(encoder[encoder_index].file_fd < 0)
+				{
+					service->tap(tservice);
+
+					if(tservice == nullptr)
+					{
+						eWarning("[eEncoder] tap service failed");
+						freeEncoder(encoder[encoder_index].encoder_fd);
+						return;
+					}
+
+					tservice->startTapToFD(encoder[encoder_index].encoder_fd, pids);
+				}
+				else
+				{
+					service->stop();
+
+					if(encoder[encoder_index].stream_thread != nullptr)
+					{
+						eWarning("[eEncoder] datapump already running");
+						return;
+					}
+
+					encoder[encoder_index].stream_thread = new eDVBRecordStreamThread(188, 188 * 256, true);
+					encoder[encoder_index].stream_thread->setTargetFD(encoder[encoder_index].encoder_fd);
+					encoder[encoder_index].stream_thread->start(encoder[encoder_index].file_fd);
+				}
+
+				encoder[encoder_index].state = EncoderContext::state_running;
 			}
 		}
 	}
@@ -510,8 +520,12 @@ void eEncoder::EncoderContext::thread(void)
 {
 	hasStarted();
 
+	eDebug("[EncoderContext %x] start ioctl transcoding", (int)pthread_self());
+
 	if(ioctl(encoder_fd, IOCTL_BROADCOM_START_TRANSCODING, 0))
 		eWarning("[eEncoder] thread encoder failed");
+
+	eDebug("[EncoderContext %x] finish ioctl transcoding", (int)pthread_self());
 }
 
 eAutoInitPtr<eEncoder> init_eEncoder(eAutoInitNumbers::service + 1, "Encoders");

@@ -194,6 +194,9 @@ class PositionerSetup(Screen):
 		self.blue = Button("")
 		self["key_blue"] = self.blue
 
+		self["key_menu"] = StaticText(_("MENU"))
+		self["key_info"] = StaticText(_("INFO"))
+
 		self.list = []
 		self["list"] = ConfigList(self.list)
 
@@ -238,7 +241,7 @@ class PositionerSetup(Screen):
 			"green": self.greenKey,
 			"yellow": self.yellowKey,
 			"blue": self.blueKey,
-			"log": self.showLog,
+			"log": self.showLog, # KEY_INFO
 			"mainMenu": self.furtherOptions,
 			"1": self.keyNumberGlobal,
 			"2": self.keyNumberGlobal,

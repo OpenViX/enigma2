@@ -759,6 +759,8 @@ class NimSelection(Screen):
 		self["key_green"] = StaticText(_("Select"))
 		self["key_yellow"] = StaticText(_("Client mode"))
 
+		self["key_info"] = StaticText(_("INFO"))
+
 		self["actions"] = ActionMap(["SetupActions", "ColorActions", "MenuActions", "ChannelSelectEPGActions"],
 		{
 			"ok": self.okbuttonClick,
@@ -827,6 +829,8 @@ class NimSelection(Screen):
 	def updateList(self, index=None):
 		self.list = [ ]
 		for x in nimmanager.nim_slots:
+			if x.isFBCLink() and not x.isFBCLinkEnabled():
+				continue
 			slotid = x.slot
 			nimConfig = nimmanager.getNimConfig(x.slot)
 			text = ""

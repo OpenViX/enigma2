@@ -23,6 +23,7 @@ from Components.ActionMap import NumberActionMap, HelpableActionMap
 from Components.Label import Label
 from Components.Pixmap import Pixmap
 from Components.Button import Button
+from Components.Sources.StaticText import StaticText
 from Components.FileList import FileList
 from Components.MenuList import MenuList
 
@@ -79,6 +80,7 @@ class LocationBox(Screen, NumericalTextInput, HelpableScreen):
 		self["key_yellow"] = Button(_("Rename"))
 		self["key_blue"] = Button(_("Remove bookmark"))
 		self["key_red"] = Button(_("Cancel"))
+		self["key_menu"] = StaticText(_("MENU"))
 
 		# Background for Buttons
 		self["green"] = Pixmap()

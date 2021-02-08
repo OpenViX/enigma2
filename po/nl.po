@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-21 03:29+0000\n"
-"PO-Revision-Date: 2021-01-21 11:19+0100\n"
+"POT-Creation-Date: 2021-02-06 15:21+0000\n"
+"PO-Revision-Date: 2021-02-07 17:30+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -59,6 +59,13 @@ msgstr ""
 "\n"
 "Wijzig het bronadres voor upgrades ."
 
+msgid ""
+"\n"
+"It contains other items."
+msgstr ""
+"\n"
+"het bevat andere items."
+
 #, python-format
 msgid ""
 "\n"
@@ -66,6 +73,19 @@ msgid ""
 msgstr ""
 "\n"
 "Beheer extensies en plugins voor uw %s %s"
+
+msgid ""
+"\n"
+"One is a directory that isn't empty."
+msgid_plural ""
+"\n"
+"There are directories that aren't empty."
+msgstr[0] ""
+"\n"
+"Één is een map die niet leeg is."
+msgstr[1] ""
+"\n"
+"Er zijn mappen die niet leeg zijn."
 
 #, python-format
 msgid ""
@@ -866,6 +886,10 @@ msgstr[0] "%d uur"
 msgstr[1] "%d uren"
 
 #, python-format
+msgid "%d items"
+msgstr "%d bestanden"
+
+#, python-format
 msgid "%d job is running in the background!"
 msgid_plural "%d jobs are running in the background!"
 msgstr[0] "%d opdracht draait op de achtergrond!"
@@ -878,6 +902,14 @@ msgstr "%d opdrachten draaien op de achtergrond!"
 #, python-format
 msgid "%d kB"
 msgstr "%d kB"
+
+#, python-format
+msgid "%d marked item"
+msgstr "%d gemarkeerde bestanden"
+
+#, python-format
+msgid "%d marked items"
+msgstr "%d gemarkeerde bestanden"
 
 #, python-format
 msgid "%d min"
@@ -1051,6 +1083,10 @@ msgstr "%s (%s)\n"
 msgid "%s - %s (%s%d min)"
 msgstr "%s - %s (%s%d min)"
 
+#, python-format
+msgid "%s files cannot be bulk renamed"
+msgstr "%s bestanden kunnen niet en masse hernoemd worden"
+
 #. TRANSLATORS: The satellite with name '%s' is no longer used after a configuration change. The user is asked whether or not the satellite should be deleted.
 #, python-format
 msgid "%s is no longer used. Should it be deleted?"
@@ -1087,8 +1123,8 @@ msgid "%s?"
 msgstr "%s?"
 
 #, python-format
-msgid "'%s' contains %d file(s) and %d sub-directories.\n"
-msgstr "'%s' bevat  %d bestand(en) en %d sub-mappen.\n"
+msgid "'%s' already exists"
+msgstr "'%s' bestaat al"
 
 msgid "'Network peer' automatically detects other Enigma2 receivers on the local network. You can also manually enter the URL or IP address."
 msgstr "'Network peer' detecteert andere Enigma2-ontvangers op het lokale netwerk automatisch. U kunt ook handmatig het IP-adres ingeven."
@@ -1896,6 +1932,9 @@ msgstr "Staat 10bit toe"
 msgid "Allow 12bit"
 msgstr "Staat 12bit toe"
 
+msgid "Allow fast skin reload"
+msgstr "Skin snel herladen toestaan"
+
 msgid "Allow subtitle language to equal audio language"
 msgstr "Ondertiteltaal overeenkomstig aan audiotaal"
 
@@ -2029,12 +2068,12 @@ msgid "Are You Sure ?"
 msgstr "Weet u het zeker?"
 
 #, python-format
-msgid "Are you ready to install \"%s\" ?"
-msgstr "Gereed om \"%s\" te installeren?"
+msgid "Are you ready to install %s ?"
+msgstr "Gereed om %s te installeren?"
 
 #, python-format
-msgid "Are you ready to remove \"%s\" ?"
-msgstr "Bent u gereed om \"%s\" te verwijderen?"
+msgid "Are you ready to remove %s ?"
+msgstr "Bent u gereed om %s te verwijderen?"
 
 msgid "Are you sure to remove this entry?"
 msgstr "Weet u zeker dat deze waarde verwijderd mag worden?"
@@ -2776,9 +2815,6 @@ msgstr "Geannuleerd door de gebruiker"
 msgid "Cannot delete current image"
 msgstr "Kan huidige image verwijderen"
 
-msgid "Cannot delete file"
-msgstr "Kan bestand niet verwijderen"
-
 msgid "Cannot determine"
 msgstr "Kan niet beslissen"
 
@@ -3046,6 +3082,9 @@ msgstr "Kies de lokatie waar uw %s %s de EPG-data moet opslaan als wordt afgeslo
 msgid "Choose the name of the file that holds the EPG data when the %s %s is shut down. This can be handy to differentiate between several boxes."
 msgstr "Kies de naam van het bestand waarin uw %s %s de EPG-data moet opslaan als wordt afgesloten. Dit kan handig zijn om ondersheid te maken tussen de bestanden van verschillende ontvangers."
 
+msgid "Choose the style of the second infobar. The 'Standard' view normally includes technical data. The 'Simple' view shows minimal technical data."
+msgstr "Kies de stijl van de tweede informatiebalk. De 'standaard' bevat meer technische data; de 'simpele' toont minimale technische gegevens."
+
 msgid "Choose time interval to which the graphics will be rounded off."
 msgstr "Kies het tijdsinterval waarop de grafische indeling wordt afgerond."
 
@@ -3129,6 +3168,9 @@ msgstr "Verwijder vaste"
 
 msgid "Clear log"
 msgstr "Wis log"
+
+msgid "Clear marks"
+msgstr "Verwijder markeringen"
 
 msgid "Clear playlist"
 msgstr "Afspeellijst leegmaken"
@@ -3686,6 +3728,54 @@ msgstr "Opname was niet mogelijk vanwege ongeldige service %s"
 #, python-format
 msgid "Could not save configfile %s!"
 msgstr "Kon configuratiebestand %s niet opslaan!"
+
+#, python-format
+msgid ""
+"Couldn't copy %d items.\n"
+"%s"
+msgstr ""
+"Kon %d bestanden niet kopiëren.\n"
+"%s"
+
+#, python-format
+msgid ""
+"Couldn't copy '%s'.\n"
+"%s"
+msgstr ""
+"Kon '%s' niet kopiëren.\n"
+"%s"
+
+#, python-format
+msgid "Couldn't delete %d items."
+msgstr "Kon %d bestanden niet verwijderen."
+
+#, python-format
+msgid "Couldn't delete '%s'."
+msgstr "Kon '%s' niet verwijderen."
+
+#, python-format
+msgid "Couldn't move %d items to the trash can. Do you want to delete them instead?"
+msgstr "Kon %d bestanden niet naar de prullenbak verplaatsen. Wilt u ze in plaats daarvan geheel verwijderen?"
+
+#, python-format
+msgid ""
+"Couldn't move %d items.\n"
+"%s"
+msgstr ""
+"Kon %d bestanden niet verplaatsen.\n"
+"%s"
+
+#, python-format
+msgid "Couldn't move '%s' to the trash can. Do you want to delete it instead?"
+msgstr "Kon '%s' niet naar de prullenbak verplaatsen. Wilt u het in plaats daarvan geheel verwijderen?"
+
+#, python-format
+msgid ""
+"Couldn't move '%s'.\n"
+"%s"
+msgstr ""
+"Kon '%s' niet verplaatsen.\n"
+"%s"
 
 msgid "Country"
 msgstr "Land"
@@ -4254,12 +4344,17 @@ msgstr "Verwijder karakter links van de cursor"
 msgid "Delete the character under the text cursor"
 msgstr "Verwijder karakter onder de cursor"
 
-msgid "Deleted"
-msgstr "Verwijdert"
+#, python-format
+msgid "Deleted %d items"
+msgstr "%d bestanden verwijderd"
 
 #, python-format
 msgid "Deleted %s!"
 msgstr "%s verwijderd!"
+
+#, python-format
+msgid "Deleted '%s'"
+msgstr "'%s' verwijderd"
 
 msgid "Deleted image"
 msgstr "Image verwijderd"
@@ -4365,6 +4460,9 @@ msgstr "Directe menukeuze"
 msgid "Direct playback of linked titles without menu"
 msgstr "Direct afspelen van titels zonder menu"
 
+msgid "Directories cannot be bulk renamed"
+msgstr "Mappen kunnen niet en masse hernoemd worden"
+
 msgid "Directory"
 msgstr "Map"
 
@@ -4465,15 +4563,8 @@ msgstr ""
 "Dit kan heel lang duren!"
 
 #, python-format
-msgid "Do you really want to delete %s ?"
-msgstr "Wilt u echt %s verwijderen?"
-
-#, python-format
 msgid "Do you really want to delete %s?"
 msgstr "Wilt u %s echt verwijderen?"
-
-msgid "Do you really want to delete ?"
-msgstr "Echt verwijderen?"
 
 msgid ""
 "Do you really want to delete selected language:\n"
@@ -4500,15 +4591,29 @@ msgstr ""
 "Wilt u het apparaat echt initialiseren?\n"
 "Alle gegevens worden dan verwijderd!"
 
-msgid "Do you really want to move to the trash can ?"
-msgstr "Wilt u echt verplaatsen naar de prullenbak?"
+#, python-format
+msgid "Do you really want to move '%s' to the trash can?"
+msgstr "Wilt u '%s' echt naar de prullenbak verplaatsen?"
 
 #, python-format
-msgid "Do you really want to permamently remove '%s' from the trash can ?"
-msgstr "Wilt u '%s' permanent verwijderen uit de prullenbak?"
+msgid "Do you really want to move these %d items to the trash can?"
+msgstr "Wilt u deze %d bestanden echt naar de prullenbak verplaatsen?"
 
-msgid "Do you really want to permanently remove from the trash can ?"
-msgstr "Wilt u permanent verwijderen uit de prullenbak?"
+#, python-format
+msgid "Do you really want to permanently delete '%s' from the trash can?"
+msgstr "Wilt u '%s' echt permanent verwijderen uit de prullenbak?"
+
+#, python-format
+msgid "Do you really want to permanently delete '%s'?"
+msgstr "Wilt u '%s' echt permanent verwijderen?"
+
+#, python-format
+msgid "Do you really want to permanently delete these %d items from the trash can?"
+msgstr "Wilt u deze %d bestanden echt permanent verwijderen uit de prullenbak?"
+
+#, python-format
+msgid "Do you really want to permanently delete these %d items?"
+msgstr "Wilt u deze %d bestanden echt permanent verwijderen?"
 
 #, python-format
 msgid "Do you really want to remove directory %s from the disk?"
@@ -4827,6 +4932,9 @@ msgstr "Elektronische programmagids"
 msgid "Empty slot"
 msgstr "Leeg slot"
 
+msgid "Empty trash can"
+msgstr "Prullenbak leegmaken"
+
 msgid "Enable"
 msgstr "Aan"
 
@@ -5088,6 +5196,10 @@ msgstr "Fout bij uitvoeren applicatie"
 
 msgid "Error reading webpage!"
 msgstr "Fout bij lezen webpagina!"
+
+#, python-format
+msgid "Error renaming '%s'"
+msgstr "Fout bij hernoemen '%s'"
 
 #, python-format
 msgid ""
@@ -5368,6 +5480,9 @@ msgstr "FTP passieve modus"
 msgid "Factory Reset"
 msgstr "Fabrieksinstellingen"
 
+msgid "Factory Reset: Clearing data"
+msgstr "Fabrieksinstellingen: verwijdert gegevens"
+
 msgid "Fade the infobar when hiding"
 msgstr "Vervaag de infobar als die verborgen wordt"
 
@@ -5450,9 +5565,6 @@ msgstr "Feeds status: bezig met updaten"
 
 msgid "Fiji"
 msgstr "Fiji"
-
-msgid "File appears to be busy.\n"
-msgstr "Bestand lijkt in gebruik te zijn.\n"
 
 msgid ""
 "File oscam.conf not found.\n"
@@ -7435,6 +7547,14 @@ msgstr "Verplaats omhoog naar vorige ingave"
 msgid "Move west"
 msgstr "Draai west"
 
+#, python-format
+msgid "Moved %d items"
+msgstr "%d bestanden verplaatst"
+
+#, python-format
+msgid "Moved '%s'"
+msgstr "'%s' verplaatst"
+
 msgid "Moved to position 0"
 msgstr "Naar positie 0 gedraaid"
 
@@ -8397,9 +8517,6 @@ msgstr "Permanente sorteer aanpassingen"
 msgid "Permanently delete all recordings in the trash can?"
 msgstr "Alle bestanden in de prullenbak nu permanent verwijderen?"
 
-msgid "Permanently remove all deleted items"
-msgstr "Prullenbak leegmaken"
-
 msgid "Persian"
 msgstr "Perzisch"
 
@@ -8502,6 +8619,15 @@ msgstr "Speel vorige"
 
 msgid "Play recorded movies..."
 msgstr "Opname afspelen..."
+
+#, python-format
+msgid "Play the marked recording"
+msgid_plural "Play %d marked recordings"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Play the selected recording"
+msgstr "Speel de geselecteerde opname af"
 
 msgid ""
 "Playback information missing\n"
@@ -9320,6 +9446,9 @@ msgstr "Uw %s %s echt upgraden en herstarten?"
 msgid "Reboot"
 msgstr "Herstarten"
 
+msgid "Reboot required"
+msgstr "Herstarten is noodzakelijk"
+
 msgid "Rec"
 msgstr "Record"
 
@@ -9359,9 +9488,6 @@ msgstr "Opname en afspelen"
 
 msgid "Recording and playback settings"
 msgstr "Opname-en afspeelinstellingen"
-
-msgid "Recording in progress"
-msgstr "Opname is bezig"
 
 msgid "Recording type"
 msgstr "Type opname"
@@ -9516,6 +9642,9 @@ msgstr "Verwijder alle plugininstellingen"
 
 msgid "Remove all resume point data"
 msgstr "Verwijder alle markeerpunten"
+
+msgid "Remove all selection marks"
+msgstr "Verwijder alle markeringen"
 
 msgid "Remove all settings data"
 msgstr "Verwijder alle instellingen"
@@ -10118,6 +10247,9 @@ msgstr "2e kabel van gemotoriseerde LNB"
 
 msgid "Second infobar"
 msgstr "Tweede informatiebalk"
+
+msgid "Second infobar style*"
+msgstr "Stijl tweede informatiebalk*"
 
 msgid "Secondary DNS"
 msgstr "Secondaire DNS"
@@ -10787,6 +10919,9 @@ msgstr "Stel de gewenste primetime in."
 msgid "Set to what you want the button to do."
 msgstr "Kies wat een toets moet doen."
 
+msgid "Set update interval (in hours)."
+msgstr "Updateinterval (in uren)"
+
 msgid "Set voltage and 22KHz"
 msgstr "Voltage en 22KHz instellen"
 
@@ -10834,7 +10969,7 @@ msgstr "Satellietapparatuur instellen"
 msgid "Seychelles"
 msgstr "Seychelles"
 
-msgid "Share Folder's"
+msgid "Share Folders"
 msgstr "Deel mappen"
 
 msgid "Share View"
@@ -11761,9 +11896,6 @@ msgstr "Stop de vorige zender bij terugkeer naar de opnamelijst."
 msgid "Stop recording"
 msgstr "Stop opname"
 
-msgid "Stop recording and delete"
-msgstr "Stop opname en verwijder"
-
 msgid "Stop recording now"
 msgstr "Stop de opname nu"
 
@@ -11784,6 +11916,16 @@ msgstr "Stop testen na # falende transponders"
 
 msgid "Stop testing plane after # successful transponders"
 msgstr "Stop testen na # succesvolle transponders"
+
+msgid "Stop this recording"
+msgid_plural "Stop these recordings"
+msgstr[0] "Stop deze opname"
+msgstr[1] "Stop deze opnames"
+
+msgid "Stop this recording and delete it"
+msgid_plural "Stop these recordings and delete them"
+msgstr[0] "Stop deze opname en verwijder hem"
+msgstr[1] "Stop deze opnames en verwijder ze"
 
 msgid "Stop timer recording"
 msgstr "Stop opname"
@@ -12481,29 +12623,29 @@ msgstr "Met deze optie bepaalt u de virtuele luidsprekeropstelling."
 msgid "This option allows you to choose from the two channel lists that are available."
 msgstr "Hier kiest u tussen twee lijsttypes (afhankelijk van uw skin kunnen er twee met een verschillende indeling zijn)."
 
-msgid "This option allows you to choose how to display 1080p 24Hz on your TV. (as not all TV's support these resolutions)"
-msgstr "Hier kunt u aangeven hoe 1080p24 op uw TV moet worden weergegeven (omdat niet alle TV's deze resolutie ondersteunen)"
+msgid "This option allows you to choose how to display 1080p 24Hz on your TV. (as not all TVs support these resolutions)"
+msgstr "Hier kunt u aangeven hoe 1080p 24Hz op uw TV moet worden weergegeven (omdat niet alle Tv's deze resolutie ondersteunen)"
 
-msgid "This option allows you to choose how to display 1080p 25Hz on your TV. (as not all TV's support these resolutions)"
-msgstr "Hier kunt u aangeven hoe 1080p25 op uw TV moet worden weergegeven (omdat niet alle TV's deze resolutie ondersteunen)"
+msgid "This option allows you to choose how to display 1080p 25Hz on your TV. (as not all TVs support these resolutions)"
+msgstr "Hier kunt u aangeven hoe 1080p 25Hz op uw TV moet worden weergegeven (omdat niet alle Tv's deze resolutie ondersteunen)"
 
-msgid "This option allows you to choose how to display 1080p 30Hz on your TV. (as not all TV's support these resolutions)"
-msgstr "Hier kunt u aangeven hoe 1080p30 op uw TV moet worden weergegeven (omdat niet alle TV's deze resolutie ondersteunen)"
+msgid "This option allows you to choose how to display 1080p 30Hz on your TV. (as not all TVs support these resolutions)"
+msgstr "Hier kunt u aangeven hoe 1080p 30Hz op uw TV moet worden weergegeven (omdat niet alle Tv's deze resolutie ondersteunen)"
 
-msgid "This option allows you to choose how to display 2160p 24Hz on your TV. (as not all TV's support these resolutions)"
-msgstr "Hier kunt u aangeven hoe 2160p 24Hz op uw TV moet worden weergegeven (omdat niet alle TV's deze resolutie ondersteunen)."
+msgid "This option allows you to choose how to display 2160p 24Hz on your TV. (as not all TVs support these resolutions)"
+msgstr "Hier kunt u aangeven hoe 2160p 24Hz op uw TV moet worden weergegeven (omdat niet alle Tv's deze resolutie ondersteunen)."
 
-msgid "This option allows you to choose how to display 2160p 25Hz on your TV. (as not all TV's support these resolutions)"
-msgstr "Hier kunt u aangeven hoe 2160p 25Hz op uw TV moet worden weergegeven (omdat niet alle TV's deze resolutie ondersteunen)."
+msgid "This option allows you to choose how to display 2160p 25Hz on your TV. (as not all TVs support these resolutions)"
+msgstr "Hier kunt u aangeven hoe 2160p 25Hz op uw TV moet worden weergegeven (omdat niet alle Tv's deze resolutie ondersteunen)."
 
-msgid "This option allows you to choose how to display 2160p 30Hz on your TV. (as not all TV's support these resolutions)"
-msgstr "Hier kunt u aangeven hoe 2160p 30Hz op uw TV moet worden weergegeven (omdat niet alle TV's deze resolutie ondersteunen)"
+msgid "This option allows you to choose how to display 2160p 30Hz on your TV. (as not all TVs support these resolutions)"
+msgstr "Hier kunt u aangeven hoe 2160p 30Hz op uw TV moet worden weergegeven (omdat niet alle Tv's deze resolutie ondersteunen)"
 
-msgid "This option allows you to choose how to display 720p 24Hz on your TV. (as not all TV's support these resolutions)"
-msgstr "Hier kunt u aangeven hoe 720p24 op uw TV moet worden weergegeven (omdat niet alle TV's deze resolutie ondersteunen)"
+msgid "This option allows you to choose how to display 720p 24Hz on your TV. (as not all TVs support these resolutions)"
+msgstr "Hier kunt u aangeven hoe 720p 24Hz op uw TV moet worden weergegeven (omdat niet alle Tv's deze resolutie ondersteunen)"
 
-msgid "This option allows you to choose how to display SD progressive 24Hz on your TV. (as not all TV's support these resolutions)"
-msgstr "Hier kunt u aangeven hoe 24Hz op uw TV moet worden weergegeven (omdat niet alle TV's deze resolutie ondersteunen)"
+msgid "This option allows you to choose how to display SD progressive 24Hz on your TV. (as not all TVs support these resolutions)"
+msgstr "Hier kunt u aangeven hoe SD progressief 24Hz op uw TV moet worden weergegeven (omdat niet alle Tv's deze resolutie ondersteunen)"
 
 msgid "This option allows you to choose how to display elapsed time. As + or -"
 msgstr "Hier kunt u aangeven of de verstreken tijd als + of - wordt vertoond"
@@ -12650,6 +12792,9 @@ msgid ""
 msgstr ""
 "Dit zal alle posities herberekenen en zal alle opgeslagen posities verwijderen!\n"
 "Weet u het zeker?"
+
+msgid "This will permanently delete the current configuration. It would be a good idea to make a backup before taking this drastic action. Are you certain you want to continue with a factory reset?"
+msgstr "Dit zal de huidige configuratie voorgoed verwijderen. Het is wellicht een goed idee een back-up te maken alvorens zo'n drastische stap te nemen. Weet u zeker dat u naar de fabrieksinstellingen terug wil?"
 
 msgid "Three"
 msgstr "Drie"
@@ -12823,6 +12968,9 @@ msgstr "Wissel PIP-zap"
 msgid "Toggle a cut mark at the current position"
 msgstr "Op huidige positie een snijmarkering wijzigen"
 
+msgid "Toggle a selection mark"
+msgstr "Toggle de selectiemarkering"
+
 msgid "Toggle aspect ratio..."
 msgstr "Wissel aspectverhouding..."
 
@@ -12840,6 +12988,9 @@ msgstr "Kies de standaard sorteermethode"
 
 msgid "Toggle infobar"
 msgstr "Informatiebalk verbergen/tonen"
+
+msgid "Toggle mark"
+msgstr "Toggle markering"
 
 msgid "Toggle new text inserts before or overwrites existing text"
 msgstr "Schakel tussen nieuwe tekst ingeven voor of overschrijven bestaande tekst"
@@ -12922,6 +13073,9 @@ msgstr "Transponderinformatie"
 
 msgid "Transport Stream Type"
 msgstr "Transportstream type"
+
+msgid "Trash"
+msgstr "Prullenbak"
 
 msgid "Trash can"
 msgstr "Prullenbak"
@@ -13176,6 +13330,9 @@ msgstr "Omhoog"
 
 msgid "Update"
 msgstr "Update"
+
+msgid "Update Interval"
+msgstr "Updateinterval"
 
 msgid "Update channel list only"
 msgstr "Update alleen de kanaallijst"
@@ -13834,6 +13991,9 @@ msgstr "Welke dag van de week?"
 msgid "What do you want to scan?"
 msgstr "Wat wilt u zoeken?"
 
+msgid "When changing skins this allows the skin to load without requiring an enigma restart."
+msgstr "Dit maakt het mogelijk van skin te veranderen zonder Enigma2 te herstarten."
+
 msgid "When enabled a forced download will be possible from the extensions menu (blue button). Shows after next restart."
 msgstr "Indien ingeschakeld zal een geforceerde download vanuit het extensie-menu mogelijk zijn. De optie wordt pas na een herstart getoond."
 
@@ -14236,6 +14396,11 @@ msgstr "U kunt dit niet verwijderen!"
 msgid "You didn't select a channel to record from."
 msgstr "U heeft geen kanaal geselecteerd om op te nemen."
 
+msgid "You have a marked recording"
+msgid_plural "You have marked recordings"
+msgstr[0] "U heeft een gemarkeerde opname"
+msgstr[1] "U heeft gemarkeerde opnames"
+
 msgid "You have chosen to backup your settings. Please press OK to start the backup now."
 msgstr "U heeft gekozen een back-up van uw instellingen te maken. Druk op OK om te beginnen."
 
@@ -14332,6 +14497,22 @@ msgstr "Uw  %s %s kan nu onbruikbaar zijn geworden. Raadpleeg voordat u uw %s %s
 
 #, python-format
 msgid ""
+"Your %s %s needs to be restarted to complete the installation of %s\n"
+"Do you want to reboot now ?"
+msgstr ""
+"Uw %s %s moet na het installeren van de service opnieuw worden gestart om de installatie van %s af te ronden\n"
+"Wilt u nu herstarten?"
+
+#, python-format
+msgid ""
+"Your %s %s needs to be restarted to complete the removal of %s\n"
+"Do you want to reboot now ?"
+msgstr ""
+"Uw %s %s moet na het verwijderen van de service opnieuw worden gestart om het verwijderen van %s af te ronden\n"
+"Wilt u nu herstarten?"
+
+#, python-format
+msgid ""
 "Your %s %s will be restarted after the installation of service.\n"
 "\n"
 "Do you want to install now ?"
@@ -14342,27 +14523,11 @@ msgstr ""
 
 #, python-format
 msgid ""
-"Your %s %s will be restarted after the installation of the service\n"
-"Are you ready to install \"%s\" ?"
-msgstr ""
-"Uw %s %s zal worden herstart na de installatie van de service\n"
-"Gereed om \"%s\" te installeren?"
-
-#, python-format
-msgid ""
 "Your %s %s will be restarted after the removal of service\n"
 "Do you want to remove now ?"
 msgstr ""
 "Uw %s %s zal na het verwijderen van de service opnieuw worden gestart\n"
 "Wilt u nu verwijderen?"
-
-#, python-format
-msgid ""
-"Your %s %s will be restarted after the removal of the service\n"
-"Do you want to remove the service now ?"
-msgstr ""
-"Uw %s %s zal na het verwijderen van de service opnieuw worden gestart\n"
-"Wilt u de service nu verwijderen?"
 
 msgid "Your STB will restart after pressing OK on your remote control."
 msgstr "Als u op OK drukt zal uw ontvanger opnieuw opstarten."
@@ -15969,6 +16134,9 @@ msgstr "zapte"
 #~ msgid "%k:%M %e/%m"
 #~ msgstr "%k:%M %e/%m"
 
+#~ msgid "'%s' contains %d file(s) and %d sub-directories.\n"
+#~ msgstr "'%s' bevat  %d bestand(en) en %d sub-mappen.\n"
+
 #~ msgid "** Setup error: '%s' section not found! **"
 #~ msgstr "** Instellingsfoutr: '%s' sectie niet gevonden!**"
 
@@ -16197,6 +16365,9 @@ msgstr "zapte"
 
 #~ msgid "CPU speed:\t%s\n"
 #~ msgstr "CPU -snelheid:\t%s\n"
+
+#~ msgid "Cannot delete file"
+#~ msgstr "Kan bestand niet verwijderen"
 
 #~ msgid "Change pin code"
 #~ msgstr "Verander pincode"
@@ -16474,6 +16645,9 @@ msgstr "zapte"
 #~ msgid "Delete..."
 #~ msgstr "Wissen..."
 
+#~ msgid "Deleted"
+#~ msgstr "Verwijdert"
+
 #~ msgid "Device Information"
 #~ msgstr "Apparaatinformatie"
 
@@ -16513,6 +16687,15 @@ msgstr "zapte"
 #~ msgstr ""
 #~ "Wilt u het bestandssysteem echt converteren?\n"
 #~ "U kunt het niet meer ongedaan maken!"
+
+#~ msgid "Do you really want to delete %s ?"
+#~ msgstr "Wilt u echt %s verwijderen?"
+
+#~ msgid "Do you really want to delete ?"
+#~ msgstr "Echt verwijderen?"
+
+#~ msgid "Do you really want to permanently remove from the trash can ?"
+#~ msgstr "Wilt u permanent verwijderen uit de prullenbak?"
 
 #~ msgid "Do you want to add any additional information ?"
 #~ msgstr "Wilt u informatie toevoegen?"
@@ -16640,6 +16823,9 @@ msgstr "zapte"
 
 #~ msgid "Fernando de Noronha"
 #~ msgstr "Fernando de Noronha"
+
+#~ msgid "File appears to be busy.\n"
+#~ msgstr "Bestand lijkt in gebruik te zijn.\n"
 
 #~ msgid "Filesystem check"
 #~ msgstr "Controle filesysteem"
@@ -17045,6 +17231,9 @@ msgstr "zapte"
 #~ msgid "Password deleted sucessfully for the root user"
 #~ msgstr "Wachtwoord voor root-gebruiker succesvol verwijderd."
 
+#~ msgid "Permanently remove all deleted items"
+#~ msgstr "Prullenbak leegmaken"
+
 #~ msgid "Pitcairn Islands"
 #~ msgstr "Pitcairn Islands"
 
@@ -17139,6 +17328,11 @@ msgstr "zapte"
 
 #~ msgid "Recording Setup"
 #~ msgstr "Opname Instellingen"
+
+#~ msgid "Recording in progress: %s"
+#~ msgid_plural "Recordings in progress: %d"
+#~ msgstr[0] "Opname is bezig: %s"
+#~ msgstr[1] "Opnames zijn bezig: %d"
 
 #~ msgid "Refresh every (in hours)"
 #~ msgstr "Ververs elke (in uren)"
@@ -17693,6 +17887,20 @@ msgstr "zapte"
 
 #~ msgid "Your %s %s is not connected to the internet, please check your network settings and try again."
 #~ msgstr "Uw %s %s is niet met het internet verbonden. Controleer uw netwerkinstellingen en probeer het opnieuw."
+
+#~ msgid ""
+#~ "Your %s %s will be restarted after the installation of the service\n"
+#~ "Are you ready to install \"%s\" ?"
+#~ msgstr ""
+#~ "Uw %s %s zal worden herstart na de installatie van de service\n"
+#~ "Gereed om \"%s\" te installeren?"
+
+#~ msgid ""
+#~ "Your %s %s will be restarted after the removal of the service\n"
+#~ "Do you want to remove the service now ?"
+#~ msgstr ""
+#~ "Uw %s %s zal na het verwijderen van de service opnieuw worden gestart\n"
+#~ "Wilt u de service nu verwijderen?"
 
 #~ msgid "Your timezone in the area."
 #~ msgstr "Uw tijdzone."

@@ -1,10 +1,9 @@
 import os, re, unicodedata
 from Renderer import Renderer
-from enigma import ePixmap, ePicLoad
+from enigma import ePixmap, eServiceReference
 from Tools.Alternatives import GetWithAlternative
 from Tools.Directories import pathExists, SCOPE_ACTIVE_SKIN, resolveFilename
 from Components.Harddisk import harddiskmanager
-from ServiceReference import ServiceReference
 
 class PiconLocator:
 	def __init__(self, piconDirectories = ['picon']):
@@ -85,7 +84,7 @@ class PiconLocator:
 			fields[2] = '1'
 			pngname = self.findPicon('_'.join(fields))
 		if not pngname: # picon by channel name
-			name = ServiceReference(serviceName).getServiceName()
+			name = eServiceReference(serviceName).getServiceName()
 			name = unicodedata.normalize('NFKD', unicode(name, 'utf_8', errors='ignore')).encode('ASCII', 'ignore')
 			name = re.sub('[^a-z0-9]', '', name.replace('&', 'and').replace('+', 'plus').replace('*', 'star').lower())
 			if len(name) > 0:

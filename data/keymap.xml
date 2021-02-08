@@ -819,6 +819,8 @@
 		<key id="KEY_MENU" mapto="contextMenu" flags="m" />
 		<key id="KEY_SPACE" mapto="contextMenu" flags="m" />
 		<key id="KEY_INFO" mapto="showEventInfo" flags="m" />
+		<key id="KEY_0" mapto="toggleMark" flags="b" />
+		<key id="KEY_0" mapto="clearMarks" flags="l" />
 	</map>
 
 	<map context="InfobarMovieListActions">
@@ -937,6 +939,7 @@
 		<key id="KEY_I" mapto="log" flags="m" />
 		<key id="KEY_CHANNELUP" mapto="moveTop" flags="m" />
 		<key id="KEY_CHANNELDOWN" mapto="moveEnd" flags="m" />
+		<key id="KEY_MENU" mapto="menu" flags="m" />
 	</map>
 
 	<map context="EPGSelectActions">

@@ -20,11 +20,14 @@ from Tools.Directories import resolveFilename, SCOPE_CURRENT_SKIN, SCOPE_LCDSKIN
 
 class SkinSelector(Screen, HelpableScreen):
 
-	def __init__(self, session, screenTitle=_("GUI Skin")):
-		Screen.__init__(self, session, mandatoryWidgets=["skins", "preview", "description"])
+	def __init__(self, session, screenTitle=_("GUI Skin"), skin_name=None, reboot=True):
+		Screen.__init__(self, session, mandatoryWidgets=["skins", "preview"])
 		HelpableScreen.__init__(self)
 		self.setTitle(screenTitle)
+		self.reboot = reboot
 		self.skinName = ["SkinSelector","__SkinSelector__"]
+		if isinstance(skin_name, str):
+			self.skinName = [skin_name] + self.skinName
 		self.rootDir = resolveFilename(SCOPE_SKIN)
 		self.config = config.skin.primary_skin
 		from skin import currentPrimarySkin # value types are imported by value at import time
@@ -92,14 +95,17 @@ class SkinSelector(Screen, HelpableScreen):
 					skinSize = None
 					resolution = None
 					if skinFile == "skin.xml":
-						with open(skinPath, "r") as fd:
-							mm = mmap.mmap(fd.fileno(), 0, prot=mmap.PROT_READ)
-							skinWidth = re.search(r"<?resolution.*?\sxres\s*=\s*\"(\d+)\"", mm)
-							skinHeight = re.search(r"<?resolution.*?\syres\s*=\s*\"(\d+)\"", mm)
-							if skinWidth and skinHeight:
-								skinSize = "%sx%s" % (skinWidth.group(1), skinHeight.group(1))
-							resolution = skinHeight and resolutions.get(skinHeight.group(1), None)
-							mm.close()
+						try:
+							with open(skinPath, "r") as fd:
+								mm = mmap.mmap(fd.fileno(), 0, prot=mmap.PROT_READ)
+								skinWidth = re.search(r"<?resolution.*?\sxres\s*=\s*\"(\d+)\"", mm)
+								skinHeight = re.search(r"<?resolution.*?\syres\s*=\s*\"(\d+)\"", mm)
+								if skinWidth and skinHeight:
+									skinSize = "%sx%s" % (skinWidth.group(1), skinHeight.group(1))
+								resolution = skinHeight and resolutions.get(skinHeight.group(1), None)
+								mm.close()
+						except:
+							pass
 						print("[SkinSelector] Resolution of skin '%s': '%s' (%s)." % (skinPath, "Unknown" if resolution is None else resolution, skinSize))
 						# Code can be added here to reject unsupported resolutions.
 					# The "piconprev.png" image should be "prevpicon.png" to keep it with its partner preview image.
@@ -169,15 +175,22 @@ class SkinSelector(Screen, HelpableScreen):
 			self.close()
 		else:
 			print("[SkinSelector] Selected skin: '%s'" % pathjoin(self.rootDir, skin))
-			restartBox = self.session.openWithCallback(self.restartGUI, MessageBox, _("To save and apply the selected '%s' skin the GUI needs to restart. Would you like to save the selection and restart the GUI now?") % label, MessageBox.TYPE_YESNO)
-			restartBox.setTitle(_("SkinSelector: Restart GUI"))
+			if config.usage.fast_skin_reload.value or not self.reboot:
+				self.saveConfig()
+				self.session.reloadSkin()
+			else:
+				restartBox = self.session.openWithCallback(self.restartGUI, MessageBox, _("To save and apply the selected '%s' skin the GUI needs to restart. Would you like to save the selection and restart the GUI now?") % label, MessageBox.TYPE_YESNO)
+				restartBox.setTitle(_("SkinSelector: Restart GUI"))
 
 	def restartGUI(self, answer):
 		if answer is True:
-			self.config.value = self.currentEntry[4]
-			self.config.save()
+			self.saveConfig()
 			self.session.open(TryQuitMainloop, QUIT_RESTART)
 		self.refreshList()
+
+	def saveConfig(self):
+		self.config.value = self.currentEntry[4]
+		self.config.save()
 
 	def keyTop(self):
 		self["skins"].moveTop()

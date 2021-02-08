@@ -9,7 +9,7 @@ def InitClientMode():
 		SystemInfo["ClientModeEnabled"] = configElement.value == True
 		SystemInfo["ClientModeDisabled"] = configElement.value != True
 
-	config.clientmode.enabled.addNotifier(clientModeChanged, immediate_feedback=True, initial_call=True)
+	config.clientmode.enabled.addNotifier(clientModeChanged)
 	config.clientmode.serverAddressType = ConfigSelection(default="ip", choices=[("ip", _("IP")), ("domain", _("Domain"))])
 	config.clientmode.serverIP = ConfigIP(default=[0,0,0,0], auto_jump=True)
 	config.clientmode.serverDomain = ConfigText(default="", fixed_size=False)

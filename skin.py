@@ -100,8 +100,8 @@ def InitSkins(booting=True):
 			break
 		print("[Skin] Error: Adding %s GUI skin '%s' has failed!" % (name, config.skin.primary_skin.value))
 		processed.append(skin)
-	# Add an optional skin related user skin "user_skin_<SkinName>.xml".  If there is
-	# not a skin related user skin then try to add am optional generic user skin.
+	# Add an optional skin related user skin "skin_user_<SkinName>.xml".  If there is
+	# not a skin related user skin then try to add an optional generic user skin.
 	loadedUser = False
 	if isfile(resolveFilename(SCOPE_SKIN, config.skin.primary_skin.value)):
 		name = USER_SKIN_TEMPLATE % dirname(config.skin.primary_skin.value)

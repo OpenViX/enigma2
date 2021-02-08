@@ -9,6 +9,7 @@ from Components.EpgBouquetList import EPGBouquetList
 from Components.Label import Label
 from Components.Sources.Event import Event
 from Components.Sources.ServiceEvent import ServiceEvent
+from Components.Sources.StaticText import StaticText
 from Components.config import ConfigClock, ConfigDateTime, config
 from Screens.ChoiceBox import PopupChoiceBox
 from Screens.EventView import EventViewEPGSelect
@@ -106,6 +107,9 @@ class EPGSelectionBase(Screen, HelpableScreen):
 		self["key_green"] = Button(_("Add Timer"))
 		self["key_yellow"] = Button(_("EPG Search"))
 		self["key_blue"] = Button(_("Add AutoTimer"))
+		
+		self["key_menu"] = StaticText(_("MENU"))
+		self["key_info"] = StaticText(_("INFO"))
 
 		helpDescription = _("EPG Commands")
 

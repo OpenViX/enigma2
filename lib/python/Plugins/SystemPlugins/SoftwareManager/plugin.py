@@ -171,6 +171,7 @@ class UpdatePluginMenu(Screen):
 
 		self["menu"] = List(self.list)
 		self["key_red"] = StaticText(_("Close"))
+		self["key_menu"] = StaticText(_("MENU"))
 		self["status"] = StaticText(self.menutext)
 
 		self["shortcuts"] = NumberActionMap(["ShortcutActions", "WizardActions", "InfobarEPGActions", "MenuActions", "NumberActions"],

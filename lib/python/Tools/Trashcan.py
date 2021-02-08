@@ -7,11 +7,14 @@ import time
 import os
 import enigma
 
+def isTrashFolder(path):
+	path = os.path.realpath(path)
+	return getTrashFolder(path) == path
+
 def getTrashFolder(path=None):
 	# Returns trash folder without symlinks
 	try:
 		if path is None or os.path.realpath(path) == '/media/autofs':
-			print 'path is none'
 			return ""
 		else:
 			trashcan = Harddisk.findMountPoint(os.path.realpath(path))
@@ -25,9 +28,8 @@ def getTrashFolder(path=None):
 		return None
 
 def createTrashFolder(path=None):
-	print '[TRASHCAN DeBug path]', path
 	trash = getTrashFolder(path)
-	print '[TRASHCAN DeBug]', trash
+	print('[Trashcan] Debug path %s => %s' % (path, trash))
 	if trash and os.access(os.path.split(trash)[0], os.W_OK):
 		if not os.path.isdir(trash):
 			try:
