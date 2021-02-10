@@ -332,8 +332,6 @@ void eDVBLocalTimeHandler::setUseDVBTime(bool b)
 			} else {
 				m_time_ready = true;
 			}
-			else
-				m_time_ready = true;
 		}
 		if (m_use_dvb_time) {
 			eDebug("[eDVBLocalTimeHandler] disable sync local time with transponder time!");
