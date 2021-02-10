@@ -13,7 +13,10 @@ config.misc.pluginlist.eventinfo_order = ConfigText(default="")
 config.misc.pluginlist.extension_order = ConfigText(default="")
 
 class ChoiceBox(Screen):
-	def __init__(self, session, title="", list=None, keys=None, selection=0, skin_name=None, text="", reorderConfig="", windowTitle=None, var=""):
+	def __init__(self, session, title="", list=None, callbackList=None, keys=None, selection=0, skin_name=None, text="", reorderConfig="", windowTitle=None, var=""):
+		# callbackList is in the format (<display text>, <callback func>, [<parameters>,])
+		self.isCallbackList = bool(callbackList)
+		list = list or callbackList
 		if not list: list = []
 		if not skin_name: skin_name = []
 		Screen.__init__(self, session)
@@ -207,14 +210,15 @@ class ChoiceBox(Screen):
 
 	# runs a specific entry
 	def goEntry(self, entry):
-		if entry and len(entry) > 3 and isinstance(entry[1], str) and entry[1] == "CALLFUNC":
+		if self.isCallbackList:
+			if entry and len(entry) > 1 and entry[1]:
+				entry[1](*entry[2:])
+			self.close()
+		elif entry and len(entry) > 3 and isinstance(entry[1], str) and entry[1] == "CALLFUNC":
 			arg = entry[3]
 			entry[2](arg)
 		elif entry and len(entry) > 2 and isinstance(entry[1], str) and entry[1] == "CALLFUNC":
 			entry[2](None)
-		elif entry and len(entry) > 1 and callable(entry[1]):
-			entry[1](*entry[2:])
-			self.close()
 		else:
 			self.close(entry)
 
@@ -304,7 +308,7 @@ class ChoiceBox(Screen):
 # This choicebox overlays the current screen
 class PopupChoiceBox(ChoiceBox):
 	def __init__(self, session, title="", list=None, keys=None, selection=0, skin_name=None, text="", reorderConfig="", windowTitle=None, var="", closeCB=None):
-		ChoiceBox.__init__(self, session, title, list, keys, selection, skin_name, text, reorderConfig, windowTitle, var)
+		ChoiceBox.__init__(self, session, title, None, list, keys, selection, skin_name, text, reorderConfig, windowTitle, var)
 		self.closeCB = closeCB
 
 	def show(self):
@@ -315,5 +319,13 @@ class PopupChoiceBox(ChoiceBox):
 		self["actions"].execEnd()
 		ChoiceBox.hide(self)
 
+	def goEntry(self, entry):
+		self.cancel()
+		if entry and len(entry) > 1:
+			entry[1](*entry[2:])
+
 	def cancel(self):
-		self.closeCB()
+		# doClose will remove all properties so grab the callback function first
+		cb = self.closeCB
+		self.doClose()
+		cb()
