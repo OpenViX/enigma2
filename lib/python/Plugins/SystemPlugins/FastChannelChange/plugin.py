@@ -554,7 +554,7 @@ def ToggleUpdate():
 	FCCChanged()
 
 def FCCSupportInit(reason, **kwargs):
-	if kwargs.has_key("session"):
+	if "session" in kwargs:
 		global FccInstance
 		FccInstance = FCCSupport(kwargs["session"])
 
