@@ -1,11 +1,11 @@
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
-from Components.ActionMap import ActionMap, NumberActionMap
+from Components.ActionMap import NumberActionMap
 from Components.config import config, ConfigSubsection, ConfigText
 from Components.Label import Label
 from Components.ChoiceList import ChoiceEntryComponent, ChoiceList
 from Components.Sources.StaticText import StaticText
-from Components.Pixmap import Pixmap
+from Tools.BoundFunction import boundFunction
 import enigma
 
 config.misc.pluginlist = ConfigSubsection()
@@ -214,7 +214,11 @@ class ChoiceBox(Screen):
 	def goEntry(self, entry):
 		if self.isCallbackList:
 			if entry and len(entry) > 1 and entry[1]:
-				entry[1](*entry[2:])
+				# stuff the selected item's callback function into the dialog's session callback
+				# (callers shouldn't need to be using the session callback)
+				# This allows the ChoiceBox to close itself and schedule the selected item's
+				# callback to happen on the next poll execution
+				self.callback = boundFunction(*entry[1:])
 			self.close()
 		elif entry and len(entry) > 3 and isinstance(entry[1], str) and entry[1] == "CALLFUNC":
 			arg = entry[3]
