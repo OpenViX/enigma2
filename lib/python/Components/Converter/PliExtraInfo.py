@@ -751,14 +751,15 @@ class PliExtraInfo(Poll, Converter, object):
 		feraw = self.feraw
 		if not feraw:
 			feraw = info.getInfoObject(iServiceInformation.sTransponderData)
-#			if not feraw: # commented out for further testing. This "return" is blocking information display when no tuner is active, e.g. streaming.
-#				return ""
 			fedata = ConvertToHumanReadable(feraw)
 		else:
 			fedata = self.fedata
 		if self.type == "All":
 			self.getCryptoInfo(info)
-			if int(config.usage.show_cryptoinfo.value) > 0:
+			if not feraw:
+				return addspace(self.createProviderName(info)) + self.createTransponderInfo(fedata, feraw, info) + "\n"\
+				+ addspace(self.createVideoCodec(info)) + self.createResolution(info)
+			elif int(config.usage.show_cryptoinfo.value) > 0:
 				return addspace(self.createProviderName(info)) + self.createTransponderInfo(fedata, feraw, info) + addspace(self.createTransponderName(feraw)) + "\n"\
 				+ addspace(self.createCryptoBar(info)) + addspace(self.createCryptoSpecial(info)) + "\n"\
 				+ addspace(self.createPIDInfo(info)) + addspace(self.createVideoCodec(info)) + self.createResolution(info)
@@ -766,6 +767,9 @@ class PliExtraInfo(Poll, Converter, object):
 				return addspace(self.createProviderName(info)) + self.createTransponderInfo(fedata, feraw, info) + addspace(self.createTransponderName(feraw)) + "\n" \
 				+ addspace(self.createCryptoBar(info)) + self.current_source + "\n" \
 				+ addspace(self.createCryptoSpecial(info)) + addspace(self.createVideoCodec(info)) + self.createResolution(info)
+
+		if not feraw:
+			return ""
 
 		if self.type == "ServiceInfo":
 			return addspace(self.createProviderName(info)) + addspace(self.createTunerSystem(fedata)) + addspace(self.createFrequency(feraw)) + addspace(self.createPolarization(fedata)) \
@@ -782,9 +786,6 @@ class PliExtraInfo(Poll, Converter, object):
 
 		if self.type == "ServiceRef":
 			return self.createServiceRef(info)
-
-		if not feraw:
-			return ""
 
 		if self.type == "TransponderInfo":
 			return self.createTransponderInfo(fedata, feraw, info)
