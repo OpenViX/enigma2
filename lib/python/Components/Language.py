@@ -15,7 +15,7 @@ class Language:
 		self.lang = {}
 		self.InitLang()
 		self.callbacks = []
-		
+
 	def InitLang(self):
 		self.langlist = []
 		self.langlistselection = []

@@ -53,11 +53,11 @@ class HddPartitions(Screen):
 
 	def __init__(self, session, disk):
 		self.session = session
-		
+
 		Screen.__init__(self, session)
 		self.disk = disk
 		self.refreshMP(False)
-		
+
 		self["menu"] = List(self.partitions)
 		self["menu"].onSelectionChanged.append(self.selectionChanged)
 		self["key_red"] = Button("")
@@ -80,7 +80,7 @@ class HddPartitions(Screen):
 			if self.disk[5][0][3] == "83" or self.disk[5][0][3] == "7" or self.disk[5][0][3] == "b":
 				self["key_green"].setText(_("Check"))
 				self["key_yellow"].setText(_("Format"))
-				
+
 				mp = self.mountpoints.get(self.disk[0], 1)
 				rmp = self.mountpoints.getRealMount(self.disk[0], 1)
 				if len(mp) > 0 or len(rmp) > 0:
@@ -97,13 +97,13 @@ class HddPartitions(Screen):
 		self["key_green"].setText("")
 		self["key_yellow"].setText("")
 		self["key_red"].setText("")
-		
+
 		if len(self.disk[5]) > 0:
 			index = self["menu"].getIndex()
 			if self.disk[5][index][3] == "83" or self.disk[5][index][3] == "7" or self.disk[5][index][3] == "b":
 				self["key_green"].setText(_("Check"))
 				self["key_yellow"].setText(_("Format"))
-				
+
 				mp = self.mountpoints.get(self.disk[0], index+1)
 				rmp = self.mountpoints.getRealMount(self.disk[0], index+1)
 				if len(mp) > 0 or len(rmp) > 0:

@@ -249,7 +249,7 @@ bool URI::Parse(const std::string &u)
 		curstr = tmpstr;
 	}
 
-	/* parse key value parameters from query 
+	/* parse key value parameters from query
 	 * multiple parameters with the same key
 	 * not supported at the moment
 	 */

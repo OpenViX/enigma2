@@ -193,7 +193,7 @@ def InitAVSwitch():
 		def setAC3PlusDownmix(configElement):
 			open("/proc/stb/audio/ac3plus", "w").write(configElement.value and "downmix" or "passthrough")
 		config.av.downmix_ac3plus = ConfigYesNo(default = True)
-		config.av.downmix_ac3plus.addNotifier(setAC3PlusDownmix)	
+		config.av.downmix_ac3plus.addNotifier(setAC3PlusDownmix)
 
 	if SystemInfo["CanDownmixDTS"]:
 		def setDTSDownmix(configElement):
@@ -301,7 +301,7 @@ def InitAVSwitch():
 			open(SystemInfo["Has3DSurroundSoftLimiter"], "w").write(configElement.value and "enabled" or "disabled")
 		config.av.surround_softlimiter_3d = ConfigYesNo(default = False)
 		config.av.surround_softlimiter_3d.addNotifier(set3DSurroundSoftLimiter)
-		
+
 	if SystemInfo["HDMIAudioSource"]:
 		def setHDMIAudioSource(configElement):
 			open(SystemInfo["HDMIAudioSource"], "w").write(configElement.value)

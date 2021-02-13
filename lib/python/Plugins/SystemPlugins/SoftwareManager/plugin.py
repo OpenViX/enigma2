@@ -1428,7 +1428,7 @@ class UpdatePlugin(Screen):
 	def __init__(self, session, *args):
 		Screen.__init__(self, session)
 		Screen.setTitle(self, _("Software update"))
-		
+
 		self.sliderPackages = { "dreambox-dvb-modules": 1, "enigma2": 2, "tuxbox-image-info": 3 }
 
 		self.slider = Slider(0, 4)
@@ -2214,7 +2214,7 @@ class ShowUpdatePackages(Screen, NumericalTextInput):
 				</convert>
 			</widget>
 		</screen>"""
-		
+
 	def __init__(self, session, plugin_path, args = None):
 		Screen.__init__(self, session)
 		NumericalTextInput.__init__(self)
@@ -2241,7 +2241,7 @@ class ShowUpdatePackages(Screen, NumericalTextInput):
 			"9": self.keyNumberGlobal,
 			"0": self.keyNumberGlobal
 		}, -1)
-		
+
 		self.list = []
 		self.statuslist = []
 		self["list"] = List(self.list)
@@ -2263,12 +2263,12 @@ class ShowUpdatePackages(Screen, NumericalTextInput):
 			keyvalue = key.encode("utf-8")
 			if len(keyvalue) == 1:
 				self.setNextIdx(keyvalue[0])
-		
+
 	def keyGotAscii(self):
 		keyvalue = unichr(getPrevAsciiCode()).encode("utf-8")
 		if len(keyvalue) == 1:
 			self.setNextIdx(keyvalue[0])
-		
+
 	def setNextIdx(self,char):
 		if char in ("0", "1", "a"):
 			self["list"].setIndex(0)
@@ -2287,7 +2287,7 @@ class ShowUpdatePackages(Screen, NumericalTextInput):
 		rcinput = eRCInput.getInstance()
 		rcinput.setKeyboardMode(rcinput.kmNone)
 		self.close()
-			
+
 	def setWindowTitle(self):
 		self.setTitle(_("New Packages"))
 
@@ -2298,11 +2298,11 @@ class ShowUpdatePackages(Screen, NumericalTextInput):
 			if status == 'update':
 				statuspng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_CURRENT_PLUGIN, "SystemPlugins/SoftwareManager/upgrade.png"))
 				self.statuslist.append(( _("Package list update"), '', _("Trying to download a new updatelist. Please wait..." ),'',statuspng, divpng ))
-				self['list'].setList(self.statuslist)	
+				self['list'].setList(self.statuslist)
 			elif status == 'error':
 				statuspng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_CURRENT_PLUGIN, "SystemPlugins/SoftwareManager/remove.png"))
 				self.statuslist.append(( _("Error"), '', _("There was an error downloading the updatelist. Please try again." ),'',statuspng, divpng ))
-				self['list'].setList(self.statuslist)				
+				self['list'].setList(self.statuslist)
 
 	def rebuildList(self):
 		self.setStatus('update')
@@ -2315,17 +2315,17 @@ class ShowUpdatePackages(Screen, NumericalTextInput):
 			self.buildPacketList()
 
 		pass
-	
+
 	def buildEntryComponent(self, name, version, description, state):
 		divpng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_CURRENT_SKIN, "div-h.png"))
 		if not description:
 			description = "No description available."
 		if state == 'installed':
 			installedpng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_CURRENT_PLUGIN, "SystemPlugins/SoftwareManager/installed.png"))
-			return((name, version, _(description), state, installedpng, divpng))	
+			return((name, version, _(description), state, installedpng, divpng))
 		elif state == 'upgradeable':
 			upgradeablepng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_CURRENT_PLUGIN, "SystemPlugins/SoftwareManager/upgradeable.png"))
-			return((name, version, _(description), state, upgradeablepng, divpng))	
+			return((name, version, _(description), state, upgradeablepng, divpng))
 		else:
 			installablepng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_CURRENT_PLUGIN, "SystemPlugins/SoftwareManager/installable.png"))
 			return((name, version, _(description), state, installablepng, divpng))
@@ -2349,7 +2349,7 @@ class ShowUpdatePackages(Screen, NumericalTextInput):
 						self.list.append(self.buildEntryComponent(x[0], '', 'no valid architecture, ignoring !!', "installable"))
 
 			self['list'].setList(self.list)
-	
+
 		else:
 			self.setStatus('error')
 

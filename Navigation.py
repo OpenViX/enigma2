@@ -63,7 +63,7 @@ class Navigation:
 				self.timesynctimer.callback.append(self.TimeSynctimer)
 				self.timesynctimer.start(5000, True)
 				print"[NAVIGATION] wait for time sync"
-				
+
 			elif abs(self.RecordTimer.getNextRecordingTime() - time()) <= 360: # if there is a recording sheduled in the next 5 mins, set the wasTimerWakeup flag
 				wasTimerWakeup = True
 				f = open("/tmp/was_timer_wakeup_workaround.txt", "w")
@@ -79,7 +79,7 @@ class Navigation:
 				self.timesynctimer.callback.append(self.TimeSynctimer)
 				self.timesynctimer.start(5000, True)
 				print"[NAVIGATION] wait for time sync"
-	
+
 			elif nextRecordTimerAfterEventActionAuto and abs(self.RecordTimer.getNextRecordingTime() - time()) <= 360:
 				self.__wasRecTimerWakeup = True
 				print 'RECTIMER: wakeup to standby detected.'

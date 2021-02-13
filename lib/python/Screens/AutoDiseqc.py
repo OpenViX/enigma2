@@ -76,7 +76,7 @@ class AutoDiseqc(Screen, ConfigListScreen):
 			eDVBFrontendParametersSatellite.System_DVB_S,
 			eDVBFrontendParametersSatellite.Modulation_Auto,
 			eDVBFrontendParametersSatellite.RollOff_auto,
-			eDVBFrontendParametersSatellite.Pilot_Unknown,		
+			eDVBFrontendParametersSatellite.Pilot_Unknown,
 			eDVBFrontendParametersSatellite.No_Stream_Id_Filter,
 			eDVBFrontendParametersSatellite.PLS_Gold,
 			eDVBFrontendParametersSatellite.PLS_Default_Gold_Code,

@@ -128,7 +128,7 @@ self.condition = nimmanager.somethingConnected() and not config.misc.installwiza
 			</condition>
 			<code>
 self.hideRc()
-			</code>	
+			</code>
 			<list>
 				<listentry caption="No, scan later manually" step="end" />
 				<listentry caption="Yes, do an automatic scan now" step="scan" />

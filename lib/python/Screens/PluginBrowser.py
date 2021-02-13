@@ -50,7 +50,7 @@ def checksoftcam():
 	softcam = False
 	if os.path.isfile('/etc/init.d/softcam.none'):
 		softcam = True
-	
+
 def CreateFeedConfig():
 	fileconf = "/etc/opkg/user-feed.conf"
 	feedurl = "src/gz user-feeds %s\n" % config.pluginfilter.userfeed.getValue()
@@ -774,7 +774,7 @@ class PluginFilter(ConfigListScreen, Screen):
 			self.list.append(getConfigListEntry(_("softcams"), config.pluginfilter.softcams, _("This allows you to show softcams modules in downloads")))
 		self.list.append(getConfigListEntry(_("systemplugins"), config.pluginfilter.systemplugins, _("This allows you to show systemplugins modules in downloads")))
 		self.list.append(getConfigListEntry(_("User Feed URL"), config.pluginfilter.userfeed, _("Please enter your personal feed URL")))
-		
+
 		self["config"].list = self.list
 		self["config"].setList(self.list)
 		if config.usage.sort_settings.getValue():

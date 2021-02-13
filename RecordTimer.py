@@ -887,7 +887,7 @@ class RecordTimer(timer.Timer):
 					self.saveTimer()
 
 		self.stateChanged(w)
-	
+
 	def isRecTimerWakeup(self):
 		return wasRecTimerWakeup
 

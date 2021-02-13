@@ -765,7 +765,7 @@ class InfoBarChannelSelection:
 		else:
 			self.session.open(MessageBox, _("The Zap-History Browser plugin is not installed!\nPlease install it."), type = MessageBox.TYPE_INFO,timeout = 10 )
 
-			
+
 	def openDeviceManager(self):
 		if fileExists("/usr/lib/enigma2/python/Plugins/SystemPlugins/DeviceManager/plugin.pyo"):
 			for plugin in plugins.getPlugins([PluginDescriptor.WHERE_EXTENSIONSMENU, PluginDescriptor.WHERE_EVENTINFO]):
@@ -774,7 +774,7 @@ class InfoBarChannelSelection:
 					break
 		else:
 			self.session.open(MessageBox, _("The Device Manager plugin is not installed!\nPlease install it."), type = MessageBox.TYPE_INFO,timeout = 10 )
-			
+
 	def openAroraPlugins(self):
 		if fileExists("/usr/lib/enigma2/python/Plugins/Extensions/WebBrowser/plugin.pyo"):
 			for plugin in plugins.getPlugins([PluginDescriptor.WHERE_PLUGINMENU, PluginDescriptor.WHERE_EVENTINFO]):
@@ -824,7 +824,7 @@ class InfoBarChannelSelection:
 
 	def openBouquetList(self):
 		self.servicelist.showFavourites()
-		self.session.execDialog(self.servicelist)	
+		self.session.execDialog(self.servicelist)
 
 	def keyUpCheck(self):
 		if config.usage.oldstyle_zap_controls.value:
@@ -3761,6 +3761,6 @@ class InfoBarHDMI:
 				elif isStandardInfoBar(self):
 					self.session.nav.playService(slist.servicelist.getCurrent())
 				else:
-					self.session.nav.playService(self.cur_service)  
+					self.session.nav.playService(self.cur_service)
 		else:
 			pass

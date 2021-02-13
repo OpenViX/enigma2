@@ -19,7 +19,7 @@ int mapEncoding(char *s_table)
 	int ex_table_flag = 0;
 
 	//if encoding string has a option 'N' or 'NOID' first split by ':' , it indicates that the string has no
-	//encoding id char in the first byte, and the bit 0x0800 of encoding id will be set. if encoding string 
+	//encoding id char in the first byte, and the bit 0x0800 of encoding id will be set. if encoding string
         //has a option 'E' or 'ENFORCE' first split by ':' , it indicates that the string encode by provide value,
         //and skip the first encode byte, and the bit 0x0100 of encoding id will be set.
 

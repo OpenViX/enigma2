@@ -34,7 +34,7 @@ class eHttpStream: public iTsSource, public sigc::trackable, public eThread
 	int valid();
 	bool isStream() { return true; };
 	int reconnect();
-	
+
 public:
 	eHttpStream();
 	~eHttpStream();

@@ -126,7 +126,7 @@ void eSubtitleWidget::setPage(const eDVBSubtitlePage &p)
 
 	int verticalShift=0;
 	int original_position = eConfigManager::getConfigIntValue("config.subtitles.dvb_subtitles_original_position");
-	
+
 //	In case of absolute positioning determine bottom of lowest region (Note that the regions are not necessarily in order)
 //	Compute vertcial shift of all regions, and make sure it does not extend above the top of the display.
 	if (original_position==1)
@@ -142,7 +142,7 @@ void eSubtitleWidget::setPage(const eDVBSubtitlePage &p)
 		}
 		verticalShift=std::min(highestLine,lowestLine-(p.m_display_size.height()-lowerborder));
 	}
-	
+
 	for (std::list<eDVBSubtitleRegion>::iterator it(m_dvb_page.m_regions.begin()); it != m_dvb_page.m_regions.end(); ++it)
 	{
 		if (original_position)

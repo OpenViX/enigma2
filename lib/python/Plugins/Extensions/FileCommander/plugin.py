@@ -111,7 +111,7 @@ choicelist = [
 				("0.1", _("Name reverse")),
 				("1.0", _("Date")),
 				("1.1", _("Date reverse")),
-				("2.0", _("Size")), 
+				("2.0", _("Size")),
 				("2.1", _("Size reverse"))]
 config.plugins.filecommander.sortFiles_left = ConfigSelection(default = "1.1", choices = choicelist)
 config.plugins.filecommander.sortFiles_right = ConfigSelection(default = "1.1", choices = choicelist)
@@ -179,7 +179,7 @@ class FileCommanderSetup(ConfigListScreen, Screen):
 		self.list.append(getConfigListEntry(_("I/O priority for script execution"), config.plugins.filecommander.script_priority_ionice))
 		self.list.append(getConfigListEntry(_("File checksums/hashes"), config.plugins.filecommander.hashes))
 		self.list.append(getConfigListEntry(_("Time for Slideshow"), config.plugins.filecommander.diashow))
-		
+
 		ConfigListScreen.__init__(self, self.list, session = session)
 		self["help"] = Label(_("Select your personal settings:"))
 		self["key_red"] = Label(_("Cancel"))
@@ -205,7 +205,7 @@ class FileCommanderSetup(ConfigListScreen, Screen):
 	def pathSelected(self, res):
 		if res is not None:
 			config.plugins.filecommander.path_default.value = res
-		
+
 	def save(self):
 		print "[FileCommander]: Settings saved"
 		for x in self["config"].list:
@@ -355,10 +355,10 @@ class FileCommanderScreen(Screen, HelpableScreen, key_actions):
 
 		# set filter
 		filter = self.fileFilter()
-		
+
 		# disable actions
 		self.disableActions_Timer = eTimer()
-		
+
 		self.jobs = 0
 		self.jobs_old = 0
 
@@ -440,7 +440,7 @@ class FileCommanderScreen(Screen, HelpableScreen, key_actions):
 			self.onLayoutFinish.append(self.listLeft)
 		else:
 			self.onLayoutFinish.append(self.listRight)
-		
+
 		self.checkJobs_Timer = eTimer()
 		self.checkJobs_Timer.callback.append(self.checkJobs_TimerCB)
 		#self.onLayoutFinish.append(self.onLayout)

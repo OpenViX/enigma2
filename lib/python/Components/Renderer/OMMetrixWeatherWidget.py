@@ -64,7 +64,7 @@ def initWeatherConfig():
 	configfile.save()
 
 initWeatherConfig()
-	
+
 class OMMetrixWeatherWidget(Renderer):
 
 	def __init__(self):

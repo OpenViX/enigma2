@@ -22,7 +22,7 @@ class ConfigFilename(ConfigText):
 		else:
 			mark = [filename]
 		return ("mtext"[1-selected:], filename, mark)
-	
+
 class Project:
 	MAX_SL = 4480
 	MAX_DL = 8150
@@ -92,7 +92,7 @@ class Project:
 		while fileExists(filename):
 			i = i+1
 			filename = path + name + str(i).zfill(3) + ".ddvdp.xml"
-		try:	
+		try:
 			file = open(filename, "w")
 			for x in list:
 				file.write(x)

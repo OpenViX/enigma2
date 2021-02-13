@@ -422,8 +422,8 @@ int eDVBPMTParser::getProgramInfo(program &program)
 					{
 						isvideo = 1;
 						video.type = videoStream::vtH265_HEVC;
-					}		
-					
+					}
+
 					prev_audio = 0;
 					break;
 				}

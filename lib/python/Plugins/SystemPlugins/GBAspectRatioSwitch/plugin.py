@@ -23,11 +23,11 @@ import os.path
 ASPECT = ["4_3_letterbox", "4_3_panscan", "16_9", "16_9_always", "16_10_letterbox", "16_10_panscan", "16_9_letterbox"]
 ASPECTMSG = {
 		"4_3_letterbox": _("4:3 Letterbox"),
-		"4_3_panscan": _("4:3 PanScan"), 
-		"16_9": _("16:9"), 
+		"4_3_panscan": _("4:3 PanScan"),
+		"16_9": _("16:9"),
 		"16_9_always": _("16:9 always"),
 		"16_10_letterbox": _("16:10 Letterbox"),
-		"16_10_panscan": _("16:10 PanScan"), 
+		"16_10_panscan": _("16:10 PanScan"),
 		"16_9_letterbox": _("16:9 Letterbox")}
 
 PACKAGE_PATH = os.path.dirname(str((globals())["__file__"]))
@@ -49,12 +49,12 @@ class GBAspectRatioSwitchSetup(ConfigListScreen, Screen):
 			<widget name="config" position="0,0" size="550,300" scrollbarMode="showOnDemand" />
 			<widget name="label" position="50,300" size="450,60" font="Regular;18" halign="center" />
 			<widget name="buttonred" position="10,360" size="100,40" backgroundColor="red" valign="center" halign="center" zPosition="2" foregroundColor="white" font="Regular;18"/>
-			<widget name="buttongreen" position="120,360" size="100,40" backgroundColor="green" valign="center" halign="center" zPosition="2" foregroundColor="white" font="Regular;18"/> 
+			<widget name="buttongreen" position="120,360" size="100,40" backgroundColor="green" valign="center" halign="center" zPosition="2" foregroundColor="white" font="Regular;18"/>
 		</screen>"""
 
 	def __init__(self, session, args=None):
 		Screen.__init__(self, session)
-		
+
 		self.list = []
 		self.list.append(getConfigListEntry(_("Quick switching via remote control"), config.plugins.GBAspectRatioSwitch.enabled))
 		self.list.append(getConfigListEntry(_("Key mapping"), config.plugins.GBAspectRatioSwitch.keymap))
@@ -78,7 +78,7 @@ class GBAspectRatioSwitchSetup(ConfigListScreen, Screen):
 
 	def save(self):
 		global aspect_ratio_switch
-		
+
 		if len([modeconf for modeconf in config.plugins.GBAspectRatioSwitch.modes.values() if modeconf.value]) < 2:
 			self.session.open(MessageBox, _("You have to include at least %d aspect ratio modes!") % 2, MessageBox.TYPE_ERROR)
 			return
@@ -97,7 +97,7 @@ class GBAspectRatioSwitchSetup(ConfigListScreen, Screen):
 
 		for x in self["config"].list:
 			x[1].save()
-		
+
 		self.close()
 
 	def cancel(self):
@@ -128,7 +128,7 @@ class GBAspectRatioSwitch:
 	def unload_keymap(self):
 		for keymap in KEYMAPPINGS.values():
 			keymapparser.removeKeymap(keymap)
-		
+
 		global globalActionMap
 		if 'switchAspectUp' in globalActionMap.actions:
 			del globalActionMap.actions['switchAspectUp']
@@ -145,7 +145,7 @@ class GBAspectRatioSwitch:
 	def enable(self):
 		self.change_keymap(config.plugins.GBAspectRatioSwitch.keymap.value)
 		self.reload_enabledaspects()
-	
+
 	def disable(self):
 		global aspect_ratio_switch
 		self.unload_keymap()
@@ -153,7 +153,7 @@ class GBAspectRatioSwitch:
 
 	def switchAspectRatioUp(self):
 		self.switchAspectRatio(+1)
-		
+
 	def switchAspectRatioDown(self):
 		self.switchAspectRatio(-1)
 

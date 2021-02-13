@@ -573,7 +573,7 @@ class key_actions(stat_info):
 		for prog in progs:
 			toRun += [("echo", "-n", prog[0] + ": "), (prog[1], filepath)]
 		self.session.open(Console, cmdlist=toRun)
-		
+
 	def play_music(self, dirsource):
 		self.sourceDir = dirsource
 		askList = [(_("Play title"), "SINGLE"), (_("Play folder"), "LIST"), (_("Cancel"), "NO")]

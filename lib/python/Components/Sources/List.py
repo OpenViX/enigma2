@@ -122,7 +122,7 @@ to generate HTML."""
 
 	def up(self):
 		self.selectPrevious()
-		
+
 	def down(self):
 		self.selectNext()
 

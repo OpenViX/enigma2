@@ -360,7 +360,7 @@ class NetworkMacSetup(Screen, ConfigListScreen, HelpableScreen):
 
 	def cancel(self):
 		self.close()
-		
+
 class IPv6Setup(Screen, ConfigListScreen, HelpableScreen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
@@ -393,7 +393,7 @@ class IPv6Setup(Screen, ConfigListScreen, HelpableScreen):
 
 		self.list = []
 		ConfigListScreen.__init__(self, self.list)
-		
+
 		fp = open('/proc/sys/net/ipv6/conf/all/disable_ipv6', 'r')
 		old_ipv6 = fp.read()
 		fp.close()
@@ -817,7 +817,7 @@ class AdapterSetup(Screen, ConfigListScreen, HelpableScreen):
 		if not result:
 			return
 		if SystemInfo["WakeOnLAN"]:
-			config.network.wol.setValue(self.wolstartvalue)	
+			config.network.wol.setValue(self.wolstartvalue)
 		if self.oldInterfaceState is False:
 			iNetwork.deactivateInterface(self.iface,self.keyCancelCB)
 		else:
@@ -1088,7 +1088,7 @@ class AdapterSetupConfiguration(Screen, HelpableScreen):
 		# CHECK WHICH BOXES NOW SUPPORT MAC-CHANGE VIA GUI
 		if getBoxType() not in ('DUMMY') and self.iface == 'eth0':
 			menu.append((_("Network MAC settings"), "mac"))
-			# DISABLE IPv6 SUPPORT 
+			# DISABLE IPv6 SUPPORT
 			menu.append((_("Enable/Disable IPv6"), "ipv6"))
 
 		return menu
@@ -1665,7 +1665,7 @@ class NetworkPassword(ConfigListScreen, Screen):
 	def newRandom(self):
 		self.password.value = self.GeneratePassword()
 		self["config"].invalidateCurrent()
-	
+
 	def updateList(self):
 		self.password = NoSave(ConfigPassword(default=""))
 		instructions = _("You must set a root password in order to be able to use network services,"
@@ -1674,10 +1674,10 @@ class NetworkPassword(ConfigListScreen, Screen):
 		self['config'].list = self.list
 		self['config'].l.setList(self.list)
 
-	def GeneratePassword(self): 
+	def GeneratePassword(self):
 		passwdChars = string.letters + string.digits
 		passwdLength = 10
-		return ''.join(Random().sample(passwdChars, passwdLength)) 
+		return ''.join(Random().sample(passwdChars, passwdLength))
 
 	def SetPasswd(self):
 		self.hideHelpWindow()
@@ -1685,7 +1685,7 @@ class NetworkPassword(ConfigListScreen, Screen):
 		if not password:
 			self.session.openWithCallback(self.showHelpWindow, MessageBox, _("The password can not be blank.") , MessageBox.TYPE_ERROR)
 			return
-		#print "[NetworkPassword] Changing the password for %s to %s" % (self.user,self.password) 
+		#print "[NetworkPassword] Changing the password for %s to %s" % (self.user,self.password)
 		self.container = eConsoleAppContainer()
 		self.container.appClosed.append(self.runFinished)
 		self.container.dataAvail.append(self.dataAvail)

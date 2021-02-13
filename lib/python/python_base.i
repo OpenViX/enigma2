@@ -150,7 +150,7 @@ eTimerPy_get_cb_list(eTimerPy *self, void *closure)
 }
 
 static PyObject *
-eTimerPy_timeout(eTimerPy *self, void *closure) 
+eTimerPy_timeout(eTimerPy *self, void *closure)
 { //used for compatibilty with the old eTimer
 	Org_Py_INCREF((PyObject*)self);
 	return (PyObject*)self;

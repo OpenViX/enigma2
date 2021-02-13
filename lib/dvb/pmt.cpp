@@ -747,7 +747,7 @@ int eDVBServicePMTHandler::getProgramInfo(program &program)
 			else if (autoaudio_aac != -1)
 				program.defaultAudioStream = autoaudio_aac;
 			else if (autoaudio_dra != -1)
-				program.defaultAudioStream = autoaudio_dra;	
+				program.defaultAudioStream = autoaudio_dra;
 			else if (first_non_mpeg != -1 && (defaultac3 || defaultddp))
 				program.defaultAudioStream = first_non_mpeg;
 		}

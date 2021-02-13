@@ -98,7 +98,7 @@ class About(Screen):
 		if Boxserial != "":
 			serial = ":Serial : " + Boxserial
 
-		AboutHeader = _("About") + " " + BoxName 
+		AboutHeader = _("About") + " " + BoxName
 		self["AboutHeader"] = StaticText(AboutHeader)
 
 		AboutText = BoxName + " - " + ImageType + serial + "\n"
@@ -139,7 +139,7 @@ class About(Screen):
 		else:
 			fp_version = _("Frontprocessor version: %s") % fp_version
 			#AboutText += fp_version +"\n"
-		self["FPVersion"] = StaticText(fp_version) 
+		self["FPVersion"] = StaticText(fp_version)
 
 		AboutText += "\n"
 
@@ -214,9 +214,9 @@ class About(Screen):
 		else:
 			hddinfo = _("none")
 		self["hddA"] = StaticText(hddinfo)
-		AboutText += hddinfo 
-		
-		#AboutText += "\n\n" + _("Network Info") 
+		AboutText += hddinfo
+
+		#AboutText += "\n\n" + _("Network Info")
 		#for x in about.GetIPsFromNetworkInterfaces():
 		#	AboutText += "\n" + iNetwork.getFriendlyAdapterDescription(x[0]) + " :" + "/dev/" + x[0] + " " + x[1]
 		AboutText += '\n\n' + _("Uptime") + ": " + about.getBoxUptime()
@@ -513,7 +513,7 @@ class MemoryInfoSkinParams(GUIComponent):
 					self.rows_in_column = int(value)
 			self.skinAttributes = attribs
 		return GUIComponent.applySkin(self, desktop, screen)
-	
+
 	GUI_WIDGET = eLabel
 
 class SystemNetworkInfo(Screen):

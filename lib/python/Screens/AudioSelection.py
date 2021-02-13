@@ -250,11 +250,11 @@ class AudioSelection(Screen, ConfigListScreen):
 		if SystemInfo["CanDownmixAAC"]:
 			config.av.downmix_aac.value = config.av.downmix_ac3.value
 			config.av.downmix_aac.save()
-			
+
 	def setAC3plusTranscode(self, transcode):
 		config.av.transcode_ac3plus.setValue(transcode)
 		config.av.transcode_ac3plus.save()
-		
+
 	def setAACTranscode(self, transcode):
 		config.av.transcode_aac.setValue(transcode)
 		config.av.transcode_aac.save()

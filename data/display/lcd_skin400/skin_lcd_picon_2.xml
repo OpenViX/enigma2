@@ -32,7 +32,7 @@
 		<widget source="session.Event_Now" render="Label" position="0,200" size="200,40" font="RegularLCD;40" foregroundColor="#F78181" >
 			<convert type="EventTime">Remaining</convert>
 			<convert type="RemainingToText">FOLLOW</convert>
-		</widget>		
+		</widget>
 		<widget source="session.Event_Now" render="Progress" position="200,200" size="200,40" borderWidth="4" >
 			<convert type="EventTime">Progress</convert>
 		</widget>

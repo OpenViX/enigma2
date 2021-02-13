@@ -27,7 +27,7 @@ class mpeg2encTask(Task):
 		self.args += ["-f8", "-np", "-a2", "-o", outputfile]
 		self.inputFile = inputfile
 		self.weighting = 25
-		
+
 	def run(self, callback):
 		Task.run(self, callback)
 		self.container.readFromFile(self.inputFile)
@@ -274,7 +274,7 @@ class DVDAuthorFinalTask(Task):
 class WaitForResidentTasks(Task):
 	def __init__(self, job):
 		Task.__init__(self, job, "waiting for dvdauthor to finalize")
-		
+
 	def run(self, callback):
 		print "waiting for %d resident task(s) %s to finish..." % (len(self.job.resident_tasks),str(self.job.resident_tasks))
 		self.callback = callback
@@ -312,7 +312,7 @@ class BurnTask(Task):
 		self.postconditions.append(BurnTaskPostcondition())
 		self.setTool(tool)
 		self.args += extra_args
-	
+
 	def prepare(self):
 		self.error = None
 
@@ -363,7 +363,7 @@ class BurnTask(Task):
 			self.error = self.ERROR_FILETOOLARGE
 		elif line.startswith("genisoimage: File too large."):
 			self.error = self.ERROR_ISOTOOLARGE
-	
+
 	def setTool(self, tool):
 		self.cmd = tool
 		self.args = [tool]
@@ -423,7 +423,7 @@ class PreviewTask(Task):
 
 	def abort(self):
 		self.finish(aborted = True)
-	
+
 	def previewCB(self, answer):
 		if answer == True:
 			self.previewProject()
@@ -467,7 +467,7 @@ class ImagePrepareTask(Task):
 		self.weighting = 20
 		self.job = job
 		self.Menus = job.Menus
-		
+
 	def run(self, callback):
 		self.callback = callback
 		# we are doing it this weird way so that the TaskView Screen actually pops up before the spinner comes
@@ -533,7 +533,7 @@ class MenuImageTask(Task):
 		spuxml = """<?xml version="1.0" encoding="utf-8"?>
 	<subpictures>
 	<stream>
-	<spu 
+	<spu
 	highlight="%s"
 	transparent="%02x%02x%02x"
 	start="00:00:00.00"
@@ -584,7 +584,7 @@ class MenuImageTask(Task):
 
 			draw_cell_bg.text(titlePos, titleText, fill=self.Menus.color_button, font=fonts[1])
 			draw_cell_high.text(titlePos, titleText, fill=1, font=self.Menus.fonts[1])
-			
+
 			subtitleText = title.formatDVDmenuText(s.subtitleformat.getValue(), title_no).decode("utf-8")
 			subtitlePos = self.getPosition(s.offset_subtitle.getValue(), 0, 0, width, height, draw_cell_bg.textsize(subtitleText, font=fonts[2]))
 			draw_cell_bg.text(subtitlePos, subtitleText, fill=self.Menus.color_button, font=fonts[2])
@@ -638,7 +638,7 @@ class MenuImageTask(Task):
 		Task.processFinished(self, 0)
 		#except:
 			#Task.processFinished(self, 1)
-			
+
 	def getPosition(self, offset, left, top, right, bottom, size):
 		pos = [left, top]
 		if offset[0] != -1:
@@ -665,7 +665,7 @@ class Menus:
 
 		ImagePrepareTask(job)
 		nr_titles = len(job.project.titles)
-		
+
 		job.titles_per_menu = s.cols.getValue()*s.rows.getValue()
 
 		job.nr_menus = ((nr_titles+job.titles_per_menu-1)/job.titles_per_menu)
@@ -685,7 +685,7 @@ class Menus:
 			MplexTask(job, outputfile=menubgmpgfilename, inputfiles = [menubgm2vfilename, menuaudiofilename], weighting = 20)
 			menuoutputfilename = job.workspace+"/dvdmenu"+num+".mpg"
 			spumuxTask(job, spuxmlfilename, menubgmpgfilename, menuoutputfilename)
-		
+
 def CreateAuthoringXML_singleset(job):
 	nr_titles = len(job.project.titles)
 	mode = job.project.settings.authormode.getValue()
@@ -874,7 +874,7 @@ class DVDJob(Job):
 			CreateAuthoringXML_singleset(self)
 
 		DVDAuthorTask(self)
-		
+
 		nr_titles = len(self.project.titles)
 
 		if self.menupreview:

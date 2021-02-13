@@ -131,7 +131,7 @@ class ConfigElement(object):
 		assert callable(notifier), "notifiers must be callable"
 		try:
 			self.extra_args[notifier] = extra_args
-		except: pass	
+		except: pass
 		if immediate_feedback:
 			self.__notifiers[str(notifier)] = (notifier, self.value, call_on_save_or_cancel)
 		else:

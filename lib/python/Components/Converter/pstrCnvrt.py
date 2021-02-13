@@ -75,4 +75,4 @@ class pstrCnvrt(Converter, object):
 					return "S"+seg.group(2).zfill(2)+"E"+seg.group(1).zfill(2)
 				else :
 					return "S"+seg.group(1).zfill(2)+"E"+seg.group(2).zfill(2)
-		return ""
+		return ""

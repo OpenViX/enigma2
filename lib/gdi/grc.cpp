@@ -623,7 +623,7 @@ void gPainter::sendShow(ePoint point, eSize size) {
 	o.parm.setShowHideInfo = new gOpcode::para::psetShowHideInfo;
 	o.parm.setShowHideInfo->point = point;
 	o.parm.setShowHideInfo->size = size;
-	m_rc->submit(o); 
+	m_rc->submit(o);
 }
 
 void gPainter::sendHide(ePoint point, eSize size) {
@@ -635,7 +635,7 @@ void gPainter::sendHide(ePoint point, eSize size) {
 	o.parm.setShowHideInfo = new gOpcode::para::psetShowHideInfo;
 	o.parm.setShowHideInfo->point = point;
 	o.parm.setShowHideInfo->size = size;
-	m_rc->submit(o); 
+	m_rc->submit(o);
 }
 #endif
 

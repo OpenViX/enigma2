@@ -1253,7 +1253,7 @@ void eDVBFrontend::calculateSignalQuality(int snr, int &signalquality, int &sign
 		switch (parm.system)
 		{
 			case eDVBFrontendParametersTerrestrial::System_DVB_T:
-			case eDVBFrontendParametersTerrestrial::System_DVB_T2: 
+			case eDVBFrontendParametersTerrestrial::System_DVB_T2:
 			case eDVBFrontendParametersTerrestrial::System_DVB_T_T2: ret = (int)(snr / 58); ter_max = 1700; break;
 			default: break;
 		}

@@ -51,7 +51,7 @@ class MountPoints():
 				if res[0] == "/dev/%s%i" % (device, partition):
 					mounts.close()
 					return res[1]
-					
+
 		mounts.close()
 		return ""
 

@@ -49,7 +49,7 @@ protected:
 	virtual void streamStopped() {}
 	virtual void tuneFailed() {}
 	virtual void eventUpdate(int event){}
- 	int m_record_no_pids = 0;	
+ 	int m_record_no_pids = 0;
 	void recordPids(std::set<int> pids_to_record, int timing_pid, int timing_stream_type, iDVBTSRecorder::timing_pid_type timing_pid_type);
 	bool recordCachedPids();
 };

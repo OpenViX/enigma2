@@ -99,9 +99,9 @@ class SymbolsCheckPoller:
 		else:
 			if not fileExists("/proc/stb/lcd/symbol_recording") or not fileExists("/proc/stb/lcd/symbol_record_1") or not fileExists("/proc/stb/lcd/symbol_record_2"):
 				return
-	
+
 			recordings = len(NavigationInstance.instance.getRecordings())
-		
+
 			if recordings > 0:
 				open("/proc/stb/lcd/symbol_recording", "w").write("1")
 				if recordings == 1:

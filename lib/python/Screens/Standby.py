@@ -142,7 +142,7 @@ class StandbyScreen(Screen):
 		global inStandby
 		inStandby = None
 		self.standbyTimeoutTimer.stop()
-		self.standbyStopServiceTimer.stop()  
+		self.standbyStopServiceTimer.stop()
 		self.standbyWakeupTimer.stop()
 		self.timeHandler and self.timeHandler.m_timeUpdated.get().remove(self.stopService)
 		if self.paused_service:
@@ -252,7 +252,7 @@ class StandbySummary(Screen):
 				<convert type="ConfigEntryTest">config.usage.blinking_display_clock_during_recording,True,CheckSourceBoolean</convert>
 				<convert type="ConditionalShowHide">Blink</convert>
 			</widget>
-		</screen>"""	
+		</screen>"""
 
 class QuitMainloopScreen(Screen):
 	def __init__(self, session, retvalue=QUIT_SHUTDOWN):

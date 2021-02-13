@@ -20,7 +20,7 @@ class ConfigAction(ConfigElement):
 		ConfigElement.__init__(self)
 		self.value = "(OK)"
 		self.action = action
-		self.actionargs = args 
+		self.actionargs = args
 	def handleKey(self, key):
 		if (key == KEY_OK):
 			self.action(*self.actionargs)
@@ -67,7 +67,7 @@ class SoftcamStartup(Screen, ConfigListScreen):
 		self.list.append(getConfigListEntry(_("Select primary softcam"), self.softcamlistprimary))
 		self.list.append(getConfigListEntry(_("Select secondary softcam"), self.softcamlistsecondary))
 		self.list.append(getConfigListEntry(_("Restart primary softcam"), ConfigAction(self.restart, "s")))
-		self.list.append(getConfigListEntry(_("Restart secondary softcam"), ConfigAction(self.restart, "c"))) 
+		self.list.append(getConfigListEntry(_("Restart secondary softcam"), ConfigAction(self.restart, "c")))
 		self.list.append(getConfigListEntry(_("Restart both"), ConfigAction(self.restart, "sc")))
 
 		if showExtentionMenuOption:
@@ -109,7 +109,7 @@ class SoftcamStartup(Screen, ConfigListScreen):
 
 	def doStart(self):
 		self.activityTimer.stop()
-		del self.activityTimer 
+		del self.activityTimer
 		if "s" in self.what:
 			self.softcam1.select(self.softcamlistprimary.value)
 			self.softcam1.command('start')

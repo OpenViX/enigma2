@@ -31,7 +31,7 @@
 		<key id="KEY_REWIND" mapto="seekBackManual" flags="l" />
 		<key id="KEY_FASTFORWARD" mapto="seekFwdManual" flags="l" />
 
-		
+
 		<key id="KEY_LEFT" mapto="seek:-1" flags="m" />
 		<key id="KEY_RIGHT" mapto="seek:1" flags="m" />
 

@@ -383,7 +383,7 @@ void eServiceWebTS::recv_event(int evt)
 			m_decoder->pause();
 			m_event(this, evStart);
 			m_decoder->play();
-			
+
 		}
 		bool wasnull = !m_audioInfo;
 		m_streamthread->getAudioInfo(m_audioInfo);

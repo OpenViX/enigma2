@@ -37,7 +37,7 @@ class CamControl:
 		dst = self.name + '.' + which
 		if not os.path.exists('/etc/init.d/' + dst):
 			print "[CamControl] init script does not exist:", dst
-			return 
+			return
 		try:
 			os.unlink(self.link)
 		except:

@@ -3574,7 +3574,7 @@ void eDVBServicePlay::newDVBSubtitlePage(const eDVBSubtitlePage &p)
 
 		// Where subtitles are delivered out of sync with video, only treat subtitles in the past as having bad timing.
 		// Those that are delivered too early are cached for displaying at the appropriate later time
-		// Note that this can be due to buggy drivers, as well as problems with the broadcast 
+		// Note that this can be due to buggy drivers, as well as problems with the broadcast
 		if (pos-p.m_show_time > 1800000 && (m_is_pvr || m_timeshift_enabled))
 		{
 			// Subtitles delivered over 20 seconds too late

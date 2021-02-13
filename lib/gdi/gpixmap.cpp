@@ -470,7 +470,7 @@ void gPixmap::blit(const gPixmap &src, const eRect &_pos, const gRegion &clip, i
 	{
 		// pos' size is ignored if left or top aligning.
 		// if its size isn't set, centre and right/bottom aligning is ignored
-		
+
 		if (_pos.size().isValid())
 		{
 			if (flag & blitHAlignCenter)

@@ -8,7 +8,7 @@ from Tools.Directories import fileExists, resolveFilename, SCOPE_PLUGINS, SCOPE_
 from enigma import RT_HALIGN_LEFT, BT_SCALE, eListboxPythonMultiContent, \
 	eServiceReference, eServiceCenter
 # commented out
-#eServiceReferenceFS, 
+#eServiceReferenceFS,
 from Tools.LoadPixmap import LoadPixmap
 from addons.key_actions import TEXT_EXTENSIONS
 import skin

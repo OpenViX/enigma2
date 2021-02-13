@@ -44,8 +44,8 @@ public:
 
 typedef std::map<std::string, CacheItem> NameToPixmap;
 
-static bool CompareLastUsed(NameToPixmap::value_type i, NameToPixmap::value_type j) 
-{ 
+static bool CompareLastUsed(NameToPixmap::value_type i, NameToPixmap::value_type j)
+{
 	return i.second.lastUsed < j.second.lastUsed;
 }
 
@@ -122,7 +122,7 @@ void PixmapCache::Set(const char *filename, gPixmap* pixmap)
 			{
 				// need to release the pixmap being replaced after we've finished updating the cache
 				disposePixmap = it->second.pixmap;
-				
+
 				// swap in the updated pixmap
 				pixmap->AddRef();
 				it->second.pixmap = pixmap;

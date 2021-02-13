@@ -26,4 +26,4 @@ class HbbtvApplication(Source):
 	@cached
 	def getName(self):
 		return self._appname
-	name = property(getName) 
+	name = property(getName)

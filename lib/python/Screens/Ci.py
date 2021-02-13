@@ -521,7 +521,7 @@ class PermanentPinEntry(Screen, ConfigListScreen):
 		self.list.append(getConfigListEntry(_("Enter PIN"), NoSave(self.pin1)))
 		self.list.append(getConfigListEntry(_("Reenter PIN"), NoSave(self.pin2)))
 		ConfigListScreen.__init__(self, self.list)
-		
+
 		self["actions"] = NumberActionMap(["DirectionActions", "ColorActions", "OkCancelActions"],
 		{
 			"cancel": self.cancel,

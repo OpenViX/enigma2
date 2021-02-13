@@ -254,7 +254,7 @@
 		<item level="0" text="Deep Standby LED" description="Turn on the power LED during deep standby." requires="SuspendLED">config.usage.suspendLED</item>
 		<item level="1" requires="LCDMiniTV" text="MiniTV on frontpanel" description="You can display MiniTV with or without OSD Menu">config.lcd.modeminitv</item>
 		<item level="1" requires="LCDMiniTV" text="MiniTV framerate" description="Lower Framerate save CPU Time">config.lcd.fpsminitv</item>
-		<item level="1" requires="LCDMiniTV" text="PIP on frontpanel" description="You can display PIP with or without OSD Menu">config.lcd.modepip</item>	
+		<item level="1" requires="LCDMiniTV" text="PIP on frontpanel" description="You can display PIP with or without OSD Menu">config.lcd.modepip</item>
 		<item level="2" requires="LCDMiniTV" text="Screenshot of LCD in /tmp" description="Enable screenshot of LCD in /tmp">config.lcd.screenshot</item>
 		<item level="0" requires="LedPowerColor" text="Operating LED status while running." description="With this option you can switch the LED color or deactivate the LED.">config.lcd.ledpowercolor</item>
 		<item level="0" requires="LedStandbyColor" text="Operating LED status in standby mode" description="With this option you can switch the LED color or deactivate the LED.">config.lcd.ledstandbycolor</item>

@@ -214,7 +214,7 @@ void bsodFatal(const char *component)
 
 	std::string logtail;
 	int lines = 20;
-	
+
 	if (logp2)
 	{
 		unsigned int size = logs2;
@@ -226,7 +226,7 @@ void bsodFatal(const char *component)
 				if (!lines) {
 					logtail = std::string(r, logs2 - size);
 					break;
-				} 
+				}
 			}
 			else {
 				logtail = std::string(logp2, logs2);
@@ -246,7 +246,7 @@ void bsodFatal(const char *component)
 				if (!lines) {
 					logtail += std::string(r, logs1 - size);
 					break;
-				} 
+				}
 			}
 			else {
 				logtail += std::string(logp1, logs1);

@@ -19,7 +19,7 @@ private:
 	bool m_have_border_color;
 	int m_value;
 	int endx, endy, basex, basey;
-	
+
 	gRGB m_border_color;
 };
 

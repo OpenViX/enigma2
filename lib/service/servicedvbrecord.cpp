@@ -3,7 +3,7 @@
 #include <lib/dvb/db.h>
 #include <lib/dvb/epgcache.h>
 #include <lib/dvb/metaparser.h>
-#include <lib/base/nconfig.h> 
+#include <lib/base/nconfig.h>
 #include <lib/base/httpstream.h>
 #include <fcntl.h>
 

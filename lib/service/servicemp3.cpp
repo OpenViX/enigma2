@@ -1184,7 +1184,7 @@ RESULT eServiceMP3::trickSeek(gdouble ratio)
 			{
 				eDebug("[eServiceMP3] blocked pipeline we need to flush playposition in pts at last pos before paused is %" G_GINT64_FORMAT, (gint64)pts);
 				seekTo(pts);
-				
+
 			}
 			else if (getPlayPosition(pts) >= 0)
 			{
@@ -1392,7 +1392,7 @@ GstElement *getVideoDecElement(GstElement *m_gst_playbin, int i)
 
 	if (!e)
 		eDebug("no VideoDecElement");
-		
+
 	return e;
 }
 GstElement * getAudioDecElement(GstElement *m_gst_playbin, int i)
@@ -3607,7 +3607,7 @@ void eServiceMP3::saveCuesheet()
 			m_cuesheet_changed = 2;
 			loadCuesheet();
 			if (m_cue_entries.size() == 0 && m_last_seek_pos > (m_media_lenght - 1800000))
-			{			
+			{
 				removefile = true;
 				eDebug("[eServiceMP3] *** REMOVING EXISTING CUTS FILE NO LAST PLAY NO MANUAL CUTS***");
 			}
@@ -3656,7 +3656,7 @@ void eServiceMP3::saveCuesheet()
 				/* ignore double entries */
 				continue;
 			else
-			{			
+			{
 				where = htobe64(i->where);
 				what = htonl(i->what);
 				fwrite(&where, sizeof(where), 1, f);

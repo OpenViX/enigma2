@@ -1,7 +1,7 @@
 # converter STBInfo - renamed from pliLayoutInfo.py to not conflict on modifications
 #
 # <convert type="STBInfo">{FlashInfo,HddInfo,HddTemp,LoadAvg,MemFree,MemTotal,SwapFree,SwapTotal,UsbInfo,SystemTemp},{Short,Full}</convert>
-# 
+#
 #     <widget source="session.CurrentService" render="Label" ...
 #       <convert type="STBInfo">MemTotal,Short</convert>
 #     </widget>

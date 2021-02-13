@@ -603,7 +603,7 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 		self.nimConfig = self.nim.config
 		self.createSetup()
 		self.setTitle(_("Setup tuner") + " " + self.nim.input_name)
-		
+
 		if not self.selectionChanged in self["config"].onSelectionChanged:
 			self["config"].onSelectionChanged.append(self.selectionChanged)
 		self.selectionChanged()

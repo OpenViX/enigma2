@@ -184,30 +184,30 @@
 
 #include <stdlib.h>
 
-#ifndef _w32_GB18030_H 
-#define _w32_GB18030_H 
+#ifndef _w32_GB18030_H
+#define _w32_GB18030_H
 
-#define STB_SUPPORT_UNICODE_FONT 
-#ifdef STB_SUPPORT_UNICODE_FONT 
+#define STB_SUPPORT_UNICODE_FONT
+#ifdef STB_SUPPORT_UNICODE_FONT
 
 #ifndef _iconv_var_
-#define _iconv_var_ 
-typedef long  ucs4_t; 
- 
-typedef struct { 
-        int istate; 
-      } *conv_t; 
- 
-typedef struct { 
-        unsigned short  indx;  /* index into big table */ 
-        unsigned short  used;  /* bitmask of used entries */ 
-      } Summary16; 
- 
- 
-#define RET_ILUNI      -1 
-#define RET_ILSEQ      -2 
-#define RET_TOOSMALL   -3 
-#define RET_TOOFEW(n) (-4-(n)) 
+#define _iconv_var_
+typedef long  ucs4_t;
+
+typedef struct {
+        int istate;
+      } *conv_t;
+
+typedef struct {
+        unsigned short  indx;  /* index into big table */
+        unsigned short  used;  /* bitmask of used entries */
+      } Summary16;
+
+
+#define RET_ILUNI      -1
+#define RET_ILSEQ      -2
+#define RET_TOOSMALL   -3
+#define RET_TOOFEW(n) (-4-(n))
 
 #endif
 
@@ -5264,6 +5264,6 @@ gbkext2_mbtowc (ucs4_t *pwc, const unsigned char *s, int n)
   return RET_ILSEQ;
 }
 
-#endif 
- 
-#endif 
+#endif
+
+#endif
