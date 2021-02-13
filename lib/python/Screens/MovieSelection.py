@@ -1292,7 +1292,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		else:
 			title = ngettext("You have a marked recording", "You have marked recordings", markedFilesCount)
 			choices = [
-				(ngettext("Play the marked recording", "Play %d marked recordings" % markedFilesCount, markedFilesCount), self.__addItemsToPlaylist, markedFiles),
+				(_("Play the marked recording") if markedFilesCount == 1 else _("Play the %d marked recordings") % markedFilesCount, self.__addItemsToPlaylist, markedFiles),
 				(_("Play the selected recording"), self.__playCurrentItem)]
 			self.session.open(ChoiceBox, title=title, callbackList=choices)
 
