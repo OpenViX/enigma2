@@ -36,7 +36,8 @@ def InitEPGConfig():
 		config.epgselection.infobar.preview_mode = ConfigSelection(choices = [("0",_("Disabled")), ("1", _("Full screen")), ("2", _("PiP"))], default = "1")
 	else:
 		config.epgselection.infobar.preview_mode = ConfigSelection(choices = [("0",_("Disabled")), ("1", _("Full screen"))], default = "1")
-	config.epgselection.infobar.itemsperpage = ConfigSelectionNumber(default = 2, stepwidth = 1, min = 1, max = 4, wraparound = True)
+	choices = [(0, _("Use skin default"))] + [(i, _("%d") % i) for i in range(1, 5)]
+	config.epgselection.infobar.itemsperpage = ConfigSelection(default=0, choices=choices)
 	config.epgselection.infobar.roundto = ConfigSelection(default = "15", choices = [("15", _("%d minutes") % 15), ("30", _("%d minutes") % 30), ("60", _("%d minutes") % 60)])
 	config.epgselection.infobar.prevtimeperiod = ConfigSelection(default = "180", choices = [("60", _("%d minutes") % 60), ("90", _("%d minutes") % 90), ("120", _("%d minutes") % 120), ("150", _("%d minutes") % 150), ("180", _("%d minutes") % 180), ("210", _("%d minutes") % 210), ("240", _("%d minutes") % 240), ("270", _("%d minutes") % 270), ("300", _("%d minutes") % 300)])
 	config.epgselection.infobar.primetime = ConfigClock(default = 20 * 60)
@@ -69,7 +70,8 @@ def InitEPGConfig():
 	config.epgselection.single.browse_mode = ConfigSelection(default = "lastepgservice", choices = singleBrowseModeChoices)
 	config.epgselection.single.preview_mode = ConfigYesNo(default = True)
 	config.epgselection.single.eventfs = ConfigSelectionNumber(default = 0, stepwidth = 1, min = -8, max = 10, wraparound = True)
-	config.epgselection.single.itemsperpage = ConfigSelectionNumber(default = 18, stepwidth = 1, min = 1, max = 40, wraparound = True)
+	choices = [(0, _("Use skin default"))] + [(i, _("%d") % i) for i in range(1, 41)]
+	config.epgselection.single.itemsperpage = ConfigSelection(default=0, choices=choices)
 	config.epgselection.single.btn_red = ConfigSelection(choices=epgActions, default="openIMDb")
 	config.epgselection.single.btn_redlong = ConfigSelection(choices=epgActions, default="sortEPG")
 	config.epgselection.single.btn_green = ConfigSelection(choices=epgActions, default="addEditTimer")
@@ -92,7 +94,8 @@ def InitEPGConfig():
 	config.epgselection.multi.browse_mode = ConfigSelection(default = "currentservice", choices = multiBrowseModeChoices)
 	config.epgselection.multi.preview_mode = ConfigYesNo(default = True)
 	config.epgselection.multi.eventfs = ConfigSelectionNumber(default = 0, stepwidth = 1, min = -8, max = 10, wraparound = True)
-	config.epgselection.multi.itemsperpage = ConfigSelectionNumber(default = 18, stepwidth = 1, min = 12, max = 40, wraparound = True)
+	choices = [(0, _("Use skin default"))] + [(i, _("%d") % i) for i in range(12, 41)]
+	config.epgselection.multi.itemsperpage = ConfigSelection(default=0, choices=choices)
 	config.epgselection.multi.servicewidth = ConfigSelectionNumber(default = 7, stepwidth = 1, min = 5, max = 20, wraparound = True)
 	config.epgselection.multi.btn_ok = ConfigSelection(choices=okActions, default="zap")
 	config.epgselection.multi.btn_oklong = ConfigSelection(choices=okActions, default="zapExit")
@@ -136,7 +139,8 @@ def InitEPGConfig():
 	config.epgselection.grid.eventfs = ConfigSelectionNumber(default = 0, stepwidth = 1, min = -8, max = 10, wraparound = True)
 	config.epgselection.grid.timelinefs = ConfigSelectionNumber(default = 0, stepwidth = 1, min = -8, max = 10, wraparound = True)
 	config.epgselection.grid.timeline24h = ConfigYesNo(default = True)
-	config.epgselection.grid.itemsperpage = ConfigSelectionNumber(default = 8, stepwidth = 1, min = 3, max = 20, wraparound = True)
+	choices = [(0, _("Use skin default"))] + [(i, _("%d") % i) for i in range(3, 21)]
+	config.epgselection.grid.itemsperpage = ConfigSelection(default=0, choices=choices)
 	config.epgselection.grid.pig = ConfigYesNo(default = True)
 	config.epgselection.grid.heightswitch = NoSave(ConfigYesNo(default = False))
 	config.epgselection.grid.servicewidth = ConfigSelectionNumber(default = 250, stepwidth = 1, min = 70, max = 500, wraparound = True)

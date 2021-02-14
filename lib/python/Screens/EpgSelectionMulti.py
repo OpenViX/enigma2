@@ -60,7 +60,7 @@ class EPGSelectionMulti(EPGSelectionBase, EPGBouquetSelection, EPGServiceNumberS
 			"menu": (self.createSetup, _("Setup menu"))
 		}, prio=-1, description=helpDescription)
 
-		self["list"] = EPGListMulti(session, selChangedCB=self.onSelectionChanged)
+		self["list"] = EPGListMulti(session, config.epgselection.multi, selChangedCB=self.onSelectionChanged)
 
 	def createSetup(self):
 		def onClose(test=None):

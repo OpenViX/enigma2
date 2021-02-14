@@ -177,6 +177,7 @@ class MovieList(GUIComponent):
 		self.parentDirectory = 0
 		self.fontName = "Regular"
 		self.fontSize = 20
+		self.itemHeight = 25
 		self.listHeight = None
 		self.listWidth = None
 		self.pbarShift = 5
@@ -290,6 +291,8 @@ class MovieList(GUIComponent):
 			font = parseFont(value, ((1,1),(1,1)))
 			self.fontName = font.family
 			self.fontSize = font.pointSize
+		def itemHeight(value):
+			self.itemHeight = parseScale(value)
 		def pbarShift(value):
 			self.pbarShift = int(value)
 		def pbarHeight(value):
@@ -330,11 +333,8 @@ class MovieList(GUIComponent):
 		return rc
 
 	def setItemsPerPage(self):
-		if self.listHeight > 0:
-			itemHeight = self.listHeight / config.movielist.itemsperpage.value
-		else:
-			itemHeight = 25 # some default (270/5)
-		self.itemHeight = itemHeight
+		numberOfRows = config.movielist.itemsperpage.value
+		itemHeight = self.listHeight // numberOfRows if numberOfRows else self.itemHeight
 		self.l.setItemHeight(itemHeight)
 		self.instance.resize(eSize(self.listWidth, self.listHeight / itemHeight * itemHeight))
 
