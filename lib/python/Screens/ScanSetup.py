@@ -602,7 +602,7 @@ class ScanSetup(ConfigListScreen, Screen, CableTransponderSearchSupport, Terrest
 		self.statusTimer.callback.append(self.updateStatus)
 
 		self.list = []
-		ConfigListScreen.__init__(self, self.list, fullUI = True)
+		ConfigListScreen.__init__(self, self.list, on_change=self.newConfig, fullUI = True)
 		self["introduction"] = Label("")
 		if not self.scan_nims.value == "":
 			self.createSetup()
@@ -1234,14 +1234,6 @@ class ScanSetup(ConfigListScreen, Screen, CableTransponderSearchSupport, Terrest
 		self.scan_networkScan = ConfigYesNo(default = False)
 
 		return True
-
-	def keyLeft(self):
-		ConfigListScreen.keyLeft(self)
-		self.newConfig()
-
-	def keyRight(self):
-		ConfigListScreen.keyRight(self)
-		self.newConfig()
 
 	def updateStatus(self):
 		print "[ScanSetup] updatestatus"
