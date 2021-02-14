@@ -371,17 +371,21 @@ class Session:
 			self.summary.show()
 
 	def reloadSkin(self):
-		# close all dialogs in the stack
-		if self.dialog_stack:
-			for (d,s) in self.dialog_stack:
-				d.doClose()
-			self.dialog_stack = []
-		# need to be back on the main lopp before actually reloading the skin
-		self.updateTimer = enigma.eTimer()
-		self.updateTimer.callback.append((
-			skin.InitSkins(booting=False),
-			self.open(InfoBar.InfoBar)))
-		self.updateTimer.start(1, True)
+		from Screens.MessageBox import MessageBox
+		reloadNotification = self.instantiateDialog(MessageBox, _("Loading skin"), MessageBox.TYPE_MESSAGE)
+		reloadNotification.show()
+
+		# close all open dialogs by emptying the dialog stack
+		# remove any return values and callbacks for a swift exit
+		while self.current_dialog is not None and type(self.current_dialog) is not InfoBar.InfoBar:
+			print("[SkinReloader] closing %s" % type(self.current_dialog))
+			self.current_dialog.returnValue = None
+			self.current_dialog.callback = None
+			self.execEnd()
+			self.processDelay()
+		# need to close the infobar outside the loop as its exit causes a new infobar to be created
+		print("[SkinReloader] closing InfoBar")
+		InfoBar.InfoBar.instance.close("reloadskin", reloadNotification)
 
 
 profile("Standby,PowerKey")
@@ -521,15 +525,17 @@ def runScreenTest():
 
 	def runNextScreen(session, screensToRun, *result):
 		if result:
-			enigma.quitMainloop(*result)
-			return
-
-		screen = screensToRun[0][1]
-		args = screensToRun[0][2:]
-		if screensToRun:
-			session.openWithCallback(boundFunction(runNextScreen, session, screensToRun[1:]), screen, *args)
+			if result[0] == "reloadskin":
+				skin.InitSkins(False)
+				session.openWithCallback(boundFunction(runNextScreen, session, []), InfoBar.InfoBar)
+				if result[1]:
+					session.deleteDialog(result[1])
+			else:
+				enigma.quitMainloop(*result)
 		else:
-			session.open(screen, *args)
+			screen = screensToRun[0][1]
+			args = screensToRun[0][2:]
+			session.openWithCallback(boundFunction(runNextScreen, session, screensToRun), screen, *args)
 
 	runNextScreen(session, screensToRun)
 
