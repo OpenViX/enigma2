@@ -69,6 +69,8 @@ class ServiceList(GUIComponent):
 		self.progressBarWidth = 52
 		self.progressPercentWidth = 0
 		self.fieldMargins = 10
+		self.ItemHeight = None
+		self.skinItemHeight = None
 
 		self.onSelectionChanged = [ ]
 
@@ -127,7 +129,7 @@ class ServiceList(GUIComponent):
 			pic = LoadPixmap(resolveFilename(SCOPE_ACTIVE_SKIN, value))
 			pic and self.l.setPixmap(self.l.picServiceEventProgressbar, pic)
 		def serviceItemHeight(value):
-			self.ItemHeight = int(value)
+			self.skinItemHeight = int(value)
 		def serviceNameFont(value):
 			font = parseFont(value, ((1,1),(1,1)) )
 			self.ServiceNameFontName = font.family
@@ -166,8 +168,8 @@ class ServiceList(GUIComponent):
 		rc = GUIComponent.applySkin(self, desktop, parent)
 		self.listHeight = self.instance.size().height()
 		self.listWidth = self.instance.size().width()
-		self.setItemsPerPage()
 		self.setFontsize()
+		self.setMode(self.mode)
 		return rc
 
 	def connectSelChanged(self, fnc):
@@ -275,14 +277,21 @@ class ServiceList(GUIComponent):
 	GUI_WIDGET = eListbox
 
 	def setItemsPerPage(self):
-		if self.listHeight > 0:
-			itemHeight = self.listHeight / config.usage.serviceitems_per_page.value
-		else:
-			itemHeight = 28
+		numberOfRows = config.usage.serviceitems_per_page.value
+		itemHeight = (self.listHeight // numberOfRows if numberOfRows > 0 else self.skinItemHeight) or 28
 		self.ItemHeight = itemHeight
 		self.l.setItemHeight(itemHeight)
 		if self.listHeight:
 			self.instance.resize(eSize(self.listWidth, self.listHeight / itemHeight * itemHeight))
+
+	def getSelectionPosition(self):
+		# Adjust absolute index to index in displayed view
+		rowCount = self.listHeight // self.ItemHeight
+		index = self.getCurrentIndex() % rowCount
+		sely = self.instance.position().y() + self.ItemHeight * index
+		if sely >= self.instance.position().y() + self.listHeight:
+			sely -= self.listHeight
+		return self.listWidth, sely
 
 	def setFontsize(self):
 		self.ServiceNumberFont = gFont(self.ServiceNameFontName, self.ServiceNameFontSize + config.usage.servicenum_fontsize.value)
@@ -298,7 +307,7 @@ class ServiceList(GUIComponent):
 		instance.setContent(self.l)
 		instance.selectionChanged.get().append(self.selectionChanged)
 		self.setFontsize()
-		self.setMode(self.mode)
+
 
 	def preWidgetRemove(self, instance):
 		instance.setContent(None)

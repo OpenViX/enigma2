@@ -50,7 +50,6 @@ from Tools.Alternatives import GetWithAlternative
 import Tools.Transponder
 from Plugins.Plugin import PluginDescriptor
 from Components.PluginComponent import plugins
-from Screens.ChoiceBox import ChoiceBox
 from time import localtime, time, strftime
 import re
 try:
@@ -755,15 +754,6 @@ class ChannelSelectionEPG(InfoBarButtonSetup, HelpableScreen):
 		eventidnext = list[1][0]
 		if eventid is None:
 			return
-		indx = int(self.servicelist.getCurrentIndex())
-		selx = self.servicelist.instance.size().width()
-		while indx+1 > config.usage.serviceitems_per_page.value:
-			indx = indx - config.usage.serviceitems_per_page.value
-		pos = self.servicelist.instance.position().y()
-		sely = int(pos)+(int(self.servicelist.ItemHeight)*int(indx))
-		temp = int(self.servicelist.instance.position().y())+int(self.servicelist.instance.size().height())
-		if int(sely) >= temp:
-			sely = int(sely) - int(self.listHeight)
 		menu1 = _("Record now")
 		menu2 = _("Record next")
 		for timer in self.session.nav.RecordTimer.timer_list:
@@ -773,6 +763,7 @@ class ChannelSelectionEPG(InfoBarButtonSetup, HelpableScreen):
 				menu2 = _("Change next timer")
 		menu = [(menu1, 'CALLFUNC', self.ChoiceBoxCB, self.doRecordCurrentTimer), (menu2, 'CALLFUNC', self.ChoiceBoxCB, self.doRecordNextTimer)]
 		self.ChoiceBoxDialog = self.session.instantiateDialog(ChoiceBox, list=menu, keys=['red', 'green'], skin_name="RecordTimerQuestion")
+		selx, sely = self.servicelist.getSelectionPosition()
 		self.ChoiceBoxDialog.instance.move(ePoint(selx-self.ChoiceBoxDialog.instance.size().width(),self.instance.position().y()+sely))
 		self.showChoiceBoxDialog()
 
@@ -830,15 +821,6 @@ class ChannelSelectionEPG(InfoBarButtonSetup, HelpableScreen):
 		eventid, eventname = list[eventIndex]
 		if eventid is None:
 			return
-		indx = int(self.servicelist.getCurrentIndex())
-		selx = self.servicelist.instance.size().width()
-		while indx+1 > config.usage.serviceitems_per_page.value:
-			indx = indx - config.usage.serviceitems_per_page.value
-		pos = self.servicelist.instance.position().y()
-		sely = int(pos)+(int(self.servicelist.ItemHeight)*int(indx))
-		temp = int(self.servicelist.instance.position().y())+int(self.servicelist.instance.size().height())
-		if int(sely) >= temp:
-			sely = int(sely) - int(self.listHeight)
 
 		for timer in self.session.nav.RecordTimer.timer_list:
 			if timer.eit == eventid and ':'.join(timer.service_ref.ref.toString().split(':')[:11]) == refstr:
@@ -853,6 +835,7 @@ class ChannelSelectionEPG(InfoBarButtonSetup, HelpableScreen):
 					cb_func2 = lambda ret: self.editTimer(timer)
 					menu = [(_("Delete Timer"), 'CALLFUNC', self.RemoveTimerDialogCB, cb_func1), (_("Edit Timer"), 'CALLFUNC', self.RemoveTimerDialogCB, cb_func2)]
 					self.ChoiceBoxDialog = self.session.instantiateDialog(ChoiceBox, title=_("Select action for timer %s:") % eventname, list=menu, keys=['green', 'blue'], skin_name="RecordTimerQuestion")
+					selx, sely = self.serviceList.getSelectionPosition()
 					self.ChoiceBoxDialog.instance.move(ePoint(selx-self.ChoiceBoxDialog.instance.size().width(),self.instance.position().y()+sely))
 				self.showChoiceBoxDialog()
 				break

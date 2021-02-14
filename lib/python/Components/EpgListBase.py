@@ -1,4 +1,4 @@
-from enigma import eEPGCache, eListbox, eListboxPythonMultiContent, eServiceReference, loadPNG, getDesktop
+from enigma import eEPGCache, eListbox, eListboxPythonMultiContent, eServiceReference, eSize, loadPNG, getDesktop
 
 from Components.GUIComponent import GUIComponent
 from Tools.Alternatives import CompareWithAlternatives
@@ -39,29 +39,50 @@ class EPGListBase(GUIComponent):
 		self.isFullHd = getDesktop(0).size().width() == 1920
 		self.listHeight = None
 		self.listWidth = None
+		self.skinItemHeight = None
 		self.numberOfRows = None
 
 	def applySkin(self, desktop, screen):
 		if self.skinAttributes is not None:
 			attribs = []
 			for (attrib, value) in self.skinAttributes:
-				if attrib == "NumberOfRows":
+				if attrib == "itemHeight":
+					self.skinItemHeight = int(value)
+				if attrib == "NumberOfRows": # for compatibility with ATV skins
 					self.numberOfRows = int(value)
 				else:
 					attribs.append((attrib, value))
 			self.skinAttributes = attribs
 		rc = GUIComponent.applySkin(self, desktop, screen)
-		self.listHeight = self.instance.size().height()
+		self.skinListHeight = self.listHeight = self.instance.size().height()
 		self.listWidth = self.instance.size().width()
 		self.setFontsize()
 		self.setItemsPerPage()
 		return rc
+
+	def setItemsPerPage(self, defaultItemHeight=54):
+		numberOfRows = self.epgConfig.itemsperpage.value or self.numberOfRows
+		itemHeight = (self.skinListHeight // numberOfRows if numberOfRows > 0 else self.skinItemHeight) or defaultItemHeight
+		self.l.setItemHeight(itemHeight)
+		self.instance.resize(eSize(self.listWidth, self.skinListHeight / itemHeight * itemHeight))
+		self.listHeight = self.instance.size().height()
+		self.listWidth = self.instance.size().width()
+		self.itemHeight = itemHeight
 
 	def getEventFromId(self, service, eventId):
 		event = None
 		if self.epgcache is not None and eventId is not None:
 			event = self.epgcache.lookupEventId(service.ref, eventId)
 		return event
+
+	def getSelectionPosition(self):
+		# Adjust absolute index to index in displayed view
+		rowCount = self.listHeight // self.itemHeight
+		index = self.l.getCurrentSelectionIndex() % rowCount
+		sely = self.instance.position().y() + self.itemHeight * index
+		if sely >= self.instance.position().y() + self.listHeight:
+			sely -= self.listHeight
+		return self.listWidth, sely
 
 	def getIndexFromService(self, serviceref):
 		if serviceref is not None:
