@@ -672,10 +672,6 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 		else:
 			self.newConfig()
 
-	def handleKeyFileCallback(self, answer):
-		ConfigListScreen.handleKeyFileCallback(self, answer)
-		self.newConfig()
-
 	def keyCancel(self):
 		if self["config"].isChanged():
 			self.session.openWithCallback(self.cancelConfirm, MessageBox, _("Really close without saving settings?"), default = False)

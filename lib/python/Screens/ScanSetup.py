@@ -1243,10 +1243,6 @@ class ScanSetup(ConfigListScreen, Screen, CableTransponderSearchSupport, Terrest
 		ConfigListScreen.keyRight(self)
 		self.newConfig()
 
-	def handleKeyFileCallback(self, answer):
-		ConfigListScreen.handleKeyFileCallback(self, answer)
-		self.newConfig()
-
 	def updateStatus(self):
 		print "[ScanSetup] updatestatus"
 
