@@ -18,7 +18,7 @@ from Components.AVSwitch import iAVSwitch
 
 resolutionlabel = None
 
-class VideoSetup(Screen, ConfigListScreen):
+class VideoSetup(ConfigListScreen, Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.skinName = ["Setup"]
@@ -226,11 +226,6 @@ class VideoSetup(Screen, ConfigListScreen):
 			self.session.openWithCallback(self.confirm, MessageBox, _("Is this video mode ok?"), MessageBox.TYPE_YESNO, timeout = 20, default = False)
 		else:
 			self.keySave()
-
-	# for summary:
-	def createSummary(self):
-		from Screens.Setup import SetupSummary
-		return SetupSummary
 
 class AutoVideoModeLabel(Screen):
 	def __init__(self, session):
