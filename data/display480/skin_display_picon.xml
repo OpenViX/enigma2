@@ -216,8 +216,8 @@
 	</screen>
 <!-- Numberzap -->    
 	<screen name="NumberZap_summary" position="0,0" size="480,320">
-		<widget source="parent.number_summary" render="Label" position="0,0" size="400,99" font="FdLcD;105" halign="center" valign="center" transparent="1" />
-		<widget source="parent.service_summary" render="Label" position="0,101" size="400,139" font="FdLcD;55" halign="center" valign="center" transparent="1" />
+		<widget source="parent.servicename_summary" render="Label" position="0,5" size="480,70" font="FdLcD;55" halign="center" valign="center" foregroundColor="yellow" />
+		<widget source="parent.number_summary" render="Label" position="10,100" size="480,80" foregroundColor="white" font="FdLcD;75" halign="center" valign="center" />
 	</screen>
 <!-- NumberZapExt -->    
 	<screen name="NumberZapExt_summary" position="0,0" size="480,320">
