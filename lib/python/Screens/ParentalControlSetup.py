@@ -106,7 +106,7 @@ class ParentalControlSetup(Screen, ConfigListScreen, ProtectedScreen):
 			configfile.save()
 			from Components.ParentalControl import parentalControl
 			parentalControl.hideBlacklist()
-		self.close(self.recursive)
+		self.close()
 
 	def keyNumberGlobal(self, number):
 		pass
