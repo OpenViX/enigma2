@@ -26,7 +26,7 @@ class ProtectedScreen:
 	def closeProtectedScreen(self, result=None):
 		self.close(None)
 
-class ParentalControlSetup(Screen, ConfigListScreen, ProtectedScreen):
+class ParentalControlSetup(ConfigListScreen, Screen, ProtectedScreen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		ProtectedScreen.__init__(self)
@@ -110,10 +110,6 @@ class ParentalControlSetup(Screen, ConfigListScreen, ProtectedScreen):
 
 	def keyNumberGlobal(self, number):
 		pass
-
-	def createSummary(self):
-		from Screens.Setup import SetupSummary
-		return SetupSummary
 
 	def oldPinEntered(self, answer):
 		if answer:
