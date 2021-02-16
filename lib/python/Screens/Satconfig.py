@@ -612,34 +612,29 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 
 	def __init__(self, session, slotid):
 		Screen.__init__(self, session)
-		self.setTitle(_("Tuner Settings"))
-
 		self.list = [ ]
 		ServiceStopScreen.__init__(self)
 		ConfigListScreen.__init__(self, self.list)
 
-		self["key_red"] = StaticText(_("Close"))
+		self["key_red"] = StaticText(_("Cancel"))
 		self["key_green"] = StaticText(_("Save"))
-		self["key_yellow"] = StaticText()
-		self["key_blue"] = StaticText()
+		self["key_yellow"] = StaticText("")
+		self["key_blue"] = StaticText("")
 		self["description"] = Label("")
-
-		self["actions"] = ActionMap(["SetupActions", "SatlistShortcutAction", "ColorActions"],
+		self["actions"] = ActionMap(["SetupActions", "SatlistShortcutAction"],
 		{
 			"ok": self.keyOk,
 			"save": self.keySave,
 			"cancel": self.keyCancel,
 			"changetype": self.changeConfigurationMode,
-			"nothingconnected": self.nothingConnectedShortcut,
-			"red": self.keyCancel,
-			"green": self.keySave,
+			"nothingconnected": self.nothingConnectedShortcut
 		}, -2)
 
 		self.slotid = slotid
 		self.nim = nimmanager.nim_slots[slotid]
 		self.nimConfig = self.nim.config
 		self.createSetup()
-		self.setTitle("%s %s" % (_("Setup"), self.nim.friendly_full_description))
+		self.setTitle(_("Setup") + " " + self.nim.friendly_full_description)
 
 		if not self.selectionChanged in self["config"].onSelectionChanged:
 			self["config"].onSelectionChanged.append(self.selectionChanged)
@@ -661,7 +656,7 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 		self["key_yellow"].setText((self.nimConfig.configMode.value == "simple"  and (not self.nim.isCombined() or self.nimConfig.configModeDVBS.value)) and _("Auto Diseqc") or self.configMode and _("Configuration mode") or "")
 
 	def setTextKeyBlue(self):
-		self["key_blue"].setText(self["config"].isChanged() and _("Set default") or "")
+		self["key_blue"].setText(self.isChanged() and _("Set default") or "")
 
 	def keyRight(self):
 		if self.nim.isFBCLink() and self["config"].getCurrent() in (self.advancedLof, self.advancedConnected):
@@ -673,7 +668,7 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 			self.newConfig()
 
 	def keyCancel(self):
-		if self["config"].isChanged():
+		if self.isChanged():
 			self.session.openWithCallback(self.cancelConfirm, MessageBox, _("Really close without saving settings?"), default = False)
 		else:
 			self.restartPrevService()
