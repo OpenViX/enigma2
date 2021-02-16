@@ -1936,13 +1936,6 @@ class Seekbar(Screen):
 		if self.percent > 100.0:
 			self.percent = 100.0
 
-	def keyNumberGlobal(self, number):
-		sel = self["config"].getCurrent()[1]
-		if sel == self.positionEntry:
-			self.percent = float(number) * 10.0
-		else:
-			ConfigListScreen.keyNumberGlobal(self, number)
-
 class InfoBarSeek:
 	"""handles actions like seeking, pause"""
 
