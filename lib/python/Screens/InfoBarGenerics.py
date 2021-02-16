@@ -1889,7 +1889,13 @@ class Seekbar(Screen):
 		self["PositionGauge"] = Label()
 		self["time"] = Label()
 
-		self["actions"] = ActionMap(["WizardActions", "DirectionActions"], {"back": self.exit, "ok": self.keyOK, "left": self.keyLeft, "right": self.keyRight}, prio=-1)
+		self["actions"] = ActionMap(["WizardActions", "DirectionActions"],
+		{
+			"back": self.exit, 
+			"ok": self.keyOK, 
+			"left": self.keyLeft, 
+			"right": self.keyRight
+		}, prio=-1)
 
 		self.cursorTimer = eTimer()
 		self.cursorTimer.callback.append(self.updateCursor)
