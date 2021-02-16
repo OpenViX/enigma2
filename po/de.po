@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-03 09:11+0000\n"
-"PO-Revision-Date: 2021-02-04 10:25+0100\n"
+"POT-Creation-Date: 2021-02-14 12:23+0000\n"
+"PO-Revision-Date: 2021-02-16 09:58+0100\n"
 "Last-Translator: Ralf Biedermann <ralf.biedermann@rbsoft.de>\n"
 "Language-Team: AndyBlacburn, j-ot&Trial\n"
 "Language: de\n"
@@ -2067,11 +2067,11 @@ msgid "Are You Sure ?"
 msgstr "Bist Du sicher?"
 
 #, python-format
-msgid "Are you ready to install \"%s\" ?"
+msgid "Are you ready to install %s ?"
 msgstr "Fertig zur Installation von \"%s\"?"
 
 #, python-format
-msgid "Are you ready to remove \"%s\" ?"
+msgid "Are you ready to remove %s ?"
 msgstr "Fertig zum Löschen von \"%s\"?"
 
 msgid "Are you sure to remove this entry?"
@@ -8606,10 +8606,11 @@ msgid "Play recorded movies..."
 msgstr "Aufgenommene Filme abspielen..."
 
 #, python-format
+msgid "Play the %d marked recordings"
+msgstr "%d gewählte  Aufnahme(n) wiedergeben?"
+
 msgid "Play the marked recording"
-msgid_plural "Play %d marked recordings"
-msgstr[0] ""
-msgstr[1] ""
+msgstr ""
 
 msgid "Play the selected recording"
 msgstr "Gewählte  Aufnahme wiedergeben?"
@@ -9430,6 +9431,9 @@ msgstr "Die %s %s wirklich aktualisieren und neu starten?"
 msgid "Reboot"
 msgstr "Neustart"
 
+msgid "Reboot required"
+msgstr "Neustart erforderlich"
+
 msgid "Rec"
 msgstr "Aufnahme"
 
@@ -9469,12 +9473,6 @@ msgstr "Aufnahme und Wiedergabe"
 
 msgid "Recording and playback settings"
 msgstr "Aufnahme/Wiedergabe Einstellungen"
-
-#, python-format
-msgid "Recording in progress: %s"
-msgid_plural "Recordings in progress: %d"
-msgstr[0] ""
-msgstr[1] ""
 
 msgid "Recording type"
 msgstr "Aufnahmetyp"
@@ -10953,7 +10951,7 @@ msgstr "Satelliten-Ausrüstung konfigurieren"
 msgid "Seychelles"
 msgstr "Seychelles"
 
-msgid "Share Folder's"
+msgid "Share Folders"
 msgstr "Verzeichnis freigeben"
 
 msgid "Share View"
@@ -12606,29 +12604,29 @@ msgstr "Dies Option erlaubt es virtuelle Lautsprecherpositionen anzugeben."
 msgid "This option allows you to choose from the two channel lists that are available."
 msgstr "Diese Option gibt dir die Wahl zwischen den beiden verfügbaren Senderlisten."
 
-msgid "This option allows you to choose how to display 1080p 24Hz on your TV. (as not all TV's support these resolutions)"
+msgid "This option allows you to choose how to display 1080p 24Hz on your TV. (as not all TVs support these resolutions)"
 msgstr "Diese Option erlaubt es einzustellen wie ein 1080p 24Hz Video angezeigt wird. (Nicht alle Fernseher unterstützen alle Formate)"
 
-msgid "This option allows you to choose how to display 1080p 25Hz on your TV. (as not all TV's support these resolutions)"
+msgid "This option allows you to choose how to display 1080p 25Hz on your TV. (as not all TVs support these resolutions)"
 msgstr "Diese Option erlaubt es einzustellen wie ein 1080p 25Hz Video angezeigt wird. (Nicht alle Fernseher unterstützen alle Formate)"
 
-msgid "This option allows you to choose how to display 1080p 30Hz on your TV. (as not all TV's support these resolutions)"
+msgid "This option allows you to choose how to display 1080p 30Hz on your TV. (as not all TVs support these resolutions)"
 msgstr "Diese Option erlaubt es einzustellen wie ein 1080p 30Hz Video angezeigt wird. (Nicht alle Fernseher unterstützen alle Formate)"
 
-msgid "This option allows you to choose how to display 2160p 24Hz on your TV. (as not all TV's support these resolutions)"
+msgid "This option allows you to choose how to display 2160p 24Hz on your TV. (as not all TVs support these resolutions)"
 msgstr "Diese Option erlaubt es einzustellen wie ein 2160p 24Hz Video angezeigt wird. (Nicht alle Fernseher unterstützen alle Formate)"
 
-msgid "This option allows you to choose how to display 2160p 25Hz on your TV. (as not all TV's support these resolutions)"
+msgid "This option allows you to choose how to display 2160p 25Hz on your TV. (as not all TVs support these resolutions)"
 msgstr "Diese Option erlaubt es einzustellen wie ein 2160p 25Hz Video angezeigt wird. (Nicht alle Fernseher unterstützen alle Formate)"
 
-msgid "This option allows you to choose how to display 2160p 30Hz on your TV. (as not all TV's support these resolutions)"
+msgid "This option allows you to choose how to display 2160p 30Hz on your TV. (as not all TVs support these resolutions)"
 msgstr "Diese Option erlaubt es einzustellen wie ein 2160p 30Hz Video angezeigt wird. (Nicht alle Fernseher unterstützen alle Formate)"
 
-msgid "This option allows you to choose how to display 720p 24Hz on your TV. (as not all TV's support these resolutions)"
+msgid "This option allows you to choose how to display 720p 24Hz on your TV. (as not all TVs support these resolutions)"
 msgstr "Diese Option erlaubt es einzustellen wie ein 720p 24Hz Video angezeigt wird. (Nicht alle Fernseher unterstützen alle Formate)"
 
-msgid "This option allows you to choose how to display SD progressive 24Hz on your TV. (as not all TV's support these resolutions)"
-msgstr "Diese Option erlaubt es einzustellen wie ein 480/576p 24Hz Video angezeigt wird. (Nicht alle Fernseher unterstützen alle Formate)"
+msgid "This option allows you to choose how to display SD progressive 24Hz on your TV. (as not all TVs support these resolutions)"
+msgstr "Diese Option erlaubt es einzustellen wie ein progressives 480/576p 24Hz Video angezeigt wird. (Nicht alle Fernseher unterstützen alle Formate)"
 
 msgid "This option allows you to choose how to display elapsed time. As + or -"
 msgstr "Diese Option erlaubt dir zu wählen ob die verstrichene Zeit mit + oder - angezeigt wird."
@@ -14470,6 +14468,22 @@ msgstr "Die %s %s könnte jetzt unbenutzbar sein. Bitte im Handbuch nach Hinweis
 
 #, python-format
 msgid ""
+"Your %s %s needs to be restarted to complete the installation of %s\n"
+"Do you want to reboot now ?"
+msgstr ""
+"Deine %s %s muss neu gestartet werden um die Installation von %s abzuschließen\n"
+"Jetzt neu starten?"
+
+#, python-format
+msgid ""
+"Your %s %s needs to be restarted to complete the removal of %s\n"
+"Do you want to reboot now ?"
+msgstr ""
+"Deine %s %s muss neu gestartet werden um die Löschung von %s abzuschließen\n"
+"Jetzt neu starten?"
+
+#, python-format
+msgid ""
 "Your %s %s will be restarted after the installation of service.\n"
 "\n"
 "Do you want to install now ?"
@@ -14480,24 +14494,8 @@ msgstr ""
 
 #, python-format
 msgid ""
-"Your %s %s will be restarted after the installation of the service\n"
-"Are you ready to install \"%s\" ?"
-msgstr ""
-"Die %s %s wird neu gestartet wenn der Service installiert ist.\n"
-"Bereit \"%s\" zu installieren?"
-
-#, python-format
-msgid ""
 "Your %s %s will be restarted after the removal of service\n"
 "Do you want to remove now ?"
-msgstr ""
-"Deine %s %s wird nach entfernen des Services neu gestartet\n"
-"Service jetzt entfernen?"
-
-#, python-format
-msgid ""
-"Your %s %s will be restarted after the removal of the service\n"
-"Do you want to remove the service now ?"
 msgstr ""
 "Deine %s %s wird nach entfernen des Services neu gestartet\n"
 "Service jetzt entfernen?"
@@ -16186,6 +16184,20 @@ msgstr "umgeschaltet"
 
 #~ msgid "Your %s %s does not support PiP HD"
 #~ msgstr "Dein %s %s unterstützt kein HD PiP"
+
+#~ msgid ""
+#~ "Your %s %s will be restarted after the installation of the service\n"
+#~ "Are you ready to install \"%s\" ?"
+#~ msgstr ""
+#~ "Die %s %s wird neu gestartet wenn der Service installiert ist.\n"
+#~ "Bereit \"%s\" zu installieren?"
+
+#~ msgid ""
+#~ "Your %s %s will be restarted after the removal of the service\n"
+#~ "Do you want to remove the service now ?"
+#~ msgstr ""
+#~ "Deine %s %s wird nach entfernen des Services neu gestartet\n"
+#~ "Service jetzt entfernen?"
 
 #~ msgid "e-mail address"
 #~ msgstr "E-Mail-Adresse"
