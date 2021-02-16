@@ -104,15 +104,13 @@ class InputDeviceSelection(Screen, HelpableScreen):
 		self.updateList()
 
 
-class InputDeviceSetup(Screen, ConfigListScreen):
+class InputDeviceSetup(ConfigListScreen, Screen):
 	def __init__(self, session, device=None):
 		Screen.__init__(self, session)
 		self.setTitle(_("Input Device Setup"))
 
 		self.inputDevice = device
 		iInputDevices.currentDevice = self.inputDevice
-		self.onChangedEntry = [ ]
-		self.isStepSlider = None
 		self.enableEntry = None
 		self.repeatEntry = None
 		self.delayEntry = None
@@ -120,17 +118,8 @@ class InputDeviceSetup(Screen, ConfigListScreen):
 		self.enableConfigEntry = None
 
 		self.list = [ ]
-		ConfigListScreen.__init__(self, self.list, session = session, on_change = self.changedEntry)
+		ConfigListScreen.__init__(self, self.list, session = session, on_change = self.changedEntry, fullUI = True)
 
-		self["actions"] = ActionMap(["SetupActions", "MenuActions"],
-			{
-				"cancel": self.keyCancel,
-				"save": self.apply,
-				"menu": self.closeRecursive,
-			}, -2)
-
-		self["key_red"] = StaticText(_("Cancel"))
-		self["key_green"] = StaticText(_("OK"))
 		self["introduction"] = StaticText()
 
 		# for generating strings into .po only
@@ -150,18 +139,10 @@ class InputDeviceSetup(Screen, ConfigListScreen):
 
 	def createSetup(self):
 		self.list = [ ]
-		label = _("Change repeat and delay settings?")
-		cmd = "self.enableEntry = getConfigListEntry(label, config.inputDevices.%s.enabled)" % self.inputDevice
-		exec(cmd)
-		label = _("Interval between keys when repeating:")
-		cmd = "self.repeatEntry = getConfigListEntry(label, config.inputDevices.%s.repeat)" % self.inputDevice
-		exec(cmd)
-		label = _("Delay before key repeat starts:")
-		cmd = "self.delayEntry = getConfigListEntry(label, config.inputDevices.%s.delay)" % self.inputDevice
-		exec(cmd)
-		label = _("Devicename:")
-		cmd = "self.nameEntry = getConfigListEntry(label, config.inputDevices.%s.name)" % self.inputDevice
-		exec(cmd)
+		self.enableEntry = getConfigListEntry(_("Change repeat and delay settings?"), getattr(config.inputDevices, self.inputDevice).enabled)
+		self.repeatEntry = getConfigListEntry(_("Interval between keys when repeating:"), getattr(config.inputDevices, self.inputDevice).repeat)
+		self.delayEntry = getConfigListEntry(_("Delay before key repeat starts:"), getattr(config.inputDevices, self.inputDevice).delay)
+		self.nameEntry = getConfigListEntry(_("Devicename:"), getattr(config.inputDevices, self.inputDevice).name)
 		if self.enableEntry:
 			if isinstance(self.enableEntry[1], ConfigYesNo):
 				self.enableConfigEntry = self.enableEntry[1]
@@ -211,40 +192,19 @@ class InputDeviceSetup(Screen, ConfigListScreen):
 			return
 		else:
 			self.nameEntry[1].setValue(iInputDevices.getDeviceAttribute(self.inputDevice, 'name'))
-			cmd = "config.inputDevices.%s.name.save()" % self.inputDevice
-			exec(cmd)
+			getattr(config.inputDevices, self.inputDevice).name.save()
 			self.keySave()
 
 	def apply(self):
 		self.session.openWithCallback(self.confirm, MessageBox, _("Use these input device settings?"), MessageBox.TYPE_YESNO, timeout=20, default=True)
 
-	def cancelConfirm(self, result):
-		if not result:
-			return
-		for x in self["config"].list:
-			x[1].cancel()
-		self.close()
-
-	def keyCancel(self):
-		if self["config"].isChanged():
-			self.session.openWithCallback(self.cancelConfirm, MessageBox, _("Really close without saving settings?"), MessageBox.TYPE_YESNO, timeout=20, default=True)
-		else:
-			self.close()
 	# for summary:
 	def changedEntry(self):
-		for x in self.onChangedEntry:
-			x()
-		self.selectionChanged()
+		ConfigListScreen.changedEntry(self)
+		self.selectionChanged() # to update hints text from the slider in real time.
 
-	def getCurrentEntry(self):
-		return self["config"].getCurrent()[0]
-
-	def getCurrentValue(self):
+	def getCurrentValue(self): # required because getCurrentValue() in ConfigListScreen outputs .getText() e.g. '100/500' rather than just .value, '100' and this is what is wanted in the hints text.
 		return str(self["config"].getCurrent()[1].value)
-
-	def createSummary(self):
-		from Screens.Setup import SetupSummary
-		return SetupSummary
 
 
 class RemoteControlType(Screen, ConfigListScreen):
