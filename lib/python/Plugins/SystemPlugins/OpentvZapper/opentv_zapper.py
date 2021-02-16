@@ -19,6 +19,11 @@ from time import localtime, time, strftime
 import os, codecs, re
 import six
 
+#for pip
+from Screens.PictureInPicture import PictureInPicture
+from Components.SystemInfo import SystemInfo
+from enigma import ePoint, eSize
+
 debug_name = "opentv_zapper"
 lamedb_path = "/etc/enigma2"
 download_interval = config.plugins.opentvzapper.update_interval.value * 60 * 60 #  6 hours
@@ -72,6 +77,45 @@ class RecordAdapter:
 			self.__service = None
 
 			
+class PipAdapter:
+	def __init__(self, session, hide=True):
+		self.hide = hide
+		self.session = session
+
+	def __hidePiP(self):
+		# set pip size to 1 pixel
+		x = y = 0
+		w = h = 1
+		self.session.pip.instance.move(ePoint(x, y))
+		self.session.pip.instance.resize(eSize(w, y))
+		self.session.pip["video"].instance.resize(eSize(w, y))
+
+	def __initPiP(self):
+		self.session.pip = self.session.instantiateDialog(PictureInPicture)
+		self.session.pip.show()
+		if self.hide:
+			self.__hidePiP()
+		self.session.pipshown = True # Always pretends it's shown (since the ressources are present)
+		newservice = self.session.nav.getCurrentlyPlayingServiceReference()
+		if self.session.pip.playService(newservice):
+			self.session.pip.servicePath = newservice.getPath()
+
+	def play(self, service):
+		self.__initPiP()
+
+		if self.session.pip.playService(service):
+			self.session.pip.servicePath = service.getPath()
+			return True
+		return False
+
+	def stop(self):
+		try: 
+			del self.session.pip
+		except Exception: 
+			pass
+		self.session.pipshown = False
+
+
 class LamedbReader():
 	def readLamedb(self, path):
 		#print("[%s-LamedbReader] Reading lamedb..." % (debug_name))
@@ -733,8 +777,12 @@ class Opentv_Zapper():
 			print("[%s]currentlyPlayingNIM" % (debug_name), currentlyPlayingNIM)
 			print("[%s]available tuners" % (debug_name), tuners)
 			if not inStandby and (num_tuners > 1 or tuners[0] != currentlyPlayingNIM):
-				self.adapter = RecordAdapter(self.session)
-				self.downloading = self.adapter.play(self.sref)
+				if SystemInfo.get("NumVideoDecoders", 1) > 1 and not (hasattr(self.session, 'pipshown') and self.session.pipshown):
+					self.adapter = PipAdapter(self.session)
+					self.downloading = self.adapter.play(self.sref)
+				else:
+					self.adapter = RecordAdapter(self.session)
+					self.downloading = self.adapter.play(self.sref)
 			if not self.downloading and (inStandby or self.force):
 				self.adapter = DefaultAdapter(self.session)
 				self.downloading = self.adapter.play(self.sref)
@@ -742,6 +790,7 @@ class Opentv_Zapper():
 		if self.downloading:
 			self.enddownloadtimer.startLongTimer(download_duration)
 			print("[%s]download running..." % (debug_name))
+			print("[%s]using adapter" % (debug_name), type(self.adapter))
 			if not inStandby and config.plugins.opentvzapper.notifications.value:
 				Notifications.AddPopup(text=_("OpenTV EPG download starting."), type=MessageBox.TYPE_INFO, timeout=5, id=debug_name)
 		else:
