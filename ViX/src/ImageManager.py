@@ -81,6 +81,12 @@ if path.exists(config.imagemanager.backuplocation.value + "imagebackups/imageres
 		rmtree(config.imagemanager.backuplocation.value + "imagebackups/imagerestore")
 	except Exception:
 		pass
+TMPDIR = config.imagemanager.backuplocation.value + "imagebackups/" + config.imagemanager.folderprefix.value + "-" + getImageType() + "-mount"		
+if path.exists(TMPDIR + "/root") and path.ismount(TMPDIR + "/root"):
+	try:
+		system("umount " + TMPDIR + "/root")
+	except Exception:
+		pass				
 
 def ImageManagerautostart(reason, session=None, **kwargs):
 	"""called with reason=1 to during /sbin/shutdown.sysvinit, with reason=0 at startup?"""
@@ -745,7 +751,7 @@ class ImageBackup(Screen):
 		task.work = self.doBackup2
 		task.weighting = 5
 
-		task = Components.Task.ConditionTask(job, _("Backing up root file system..."), timeoutCount=900)
+		task = Components.Task.ConditionTask(job, _("Backing up root file system..."), timeoutCount=2700)
 		task.check = lambda: self.Stage2Completed
 		task.weighting = 15
 
@@ -917,7 +923,7 @@ class ImageBackup(Screen):
 				output.write("vol_name=rootfs\n")
 				output.write("vol_flags=autoresize\n")
 
-			self.commands.append("mount --bind / %s/root" % self.TMPDIR)
+			self.commands.append("mount -o bind,ro / %s/root" % self.TMPDIR)
 			if getMachineBuild() in ("h9", "i55plus"):
 				with open("/proc/cmdline", "r") as z:
 					if SystemInfo["HasMMC"] and "root=/dev/mmcblk0p1" in z.read():
@@ -942,6 +948,8 @@ class ImageBackup(Screen):
 					self.commands.append('echo "' + _("Create:") + " logo dump" + '"')
 					self.commands.append("dd if=/dev/mtd4 of=%s/logo.bin" % self.WORKDIR)
 			else:
+				self.MKUBIFS_ARGS = "-m 2048 -e 126976 -c 4096 -F"
+				self.UBINIZE_ARGS = "-m 2048 -p 128KiB"
 				self.commands.append("touch %s/root.ubi" % self.WORKDIR)
 				self.commands.append("mkfs.ubifs -r %s/root -o %s/root.ubi %s" % (self.TMPDIR, self.WORKDIR, self.MKUBIFS_ARGS))
 				self.commands.append("ubinize -o %s/rootfs.ubifs %s %s/ubinize.cfg" % (self.WORKDIR, self.UBINIZE_ARGS, self.WORKDIR))
