@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-06 15:21+0000\n"
-"PO-Revision-Date: 2021-02-07 17:30+0100\n"
+"POT-Creation-Date: 2021-02-15 09:19+0000\n"
+"PO-Revision-Date: 2021-02-15 17:18+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -8621,10 +8621,11 @@ msgid "Play recorded movies..."
 msgstr "Opname afspelen..."
 
 #, python-format
+msgid "Play the %d marked recordings"
+msgstr "Speel de %d geselecteerde opnames af"
+
 msgid "Play the marked recording"
-msgid_plural "Play %d marked recordings"
-msgstr[0] ""
-msgstr[1] ""
+msgstr "Speel de gemarkeerde opname af"
 
 msgid "Play the selected recording"
 msgstr "Speel de geselecteerde opname af"
@@ -9137,9 +9138,6 @@ msgstr "Druk op OK om de momenteel actieve %s skin te behouden."
 msgid "Press OK to save and exit."
 msgstr "Klik op OK om op te slaan en sluit af."
 
-msgid "Press OK to scan"
-msgstr "Druk OK om te scannen"
-
 msgid "Press OK to select a group of satellites to configure in one block."
 msgstr "Druk op OK om een groep satellieten in één keer te kiezen."
 
@@ -9153,7 +9151,7 @@ msgid "Press OK to select satellites"
 msgstr "Druk op OK om satellieten te kiezen"
 
 msgid "Press OK to select the save location of the log file."
-msgstr "Druk op OK om de lokatie van het logbestand op te slaan"
+msgstr "Druk op OK om de lokatie van het logbestand op te slaan."
 
 msgid "Press OK to select/deselect a CAId."
 msgstr "Druk op OK om de CAId aan/uit te zetten."
@@ -9308,7 +9306,7 @@ msgid "Put A/V receiver in standby"
 msgstr "Zet versterker in stand-by"
 
 msgid "Put A/V receiver in standby."
-msgstr "Zet versterker in stand-by"
+msgstr "Zet versterker in stand-by."
 
 msgid "Put TV in standby"
 msgstr "Zet TV in stand-by"
@@ -11335,7 +11333,7 @@ msgid "Show the radio player..."
 msgstr "Radioweergave modus..."
 
 msgid "Show the service information on two lines in the channel selection screen. You can choose between the current event description below the channel name, or the current event description next to the channel name, and the next event description on the second line."
-msgstr "Toon de kanaalinformatie in twee regels in het kanaalselectiescherm. U kunt kiezen tussen de huidige programmabeschrijving onder de kanaalnaam of de huidige programmabeschrijving naast de kanaalnaam en het volgende programma de tweede regel. "
+msgstr "Toon de kanaalinformatie in twee regels in het kanaalselectiescherm. U kunt kiezen tussen de huidige programmabeschrijving onder de kanaalnaam of de huidige programmabeschrijving naast de kanaalnaam en het volgende programma de tweede regel."
 
 msgid "Show the tv player..."
 msgstr "TV-weergave modus..."
@@ -11634,7 +11632,7 @@ msgid "Somalia"
 msgstr "Somalia"
 
 msgid "Some TVs do not wake from standby when they receive the 'Image View On' command. If this is the case try the 'Text View On' command instead."
-msgstr "Sommige TV's gaan niet aan als zij het 'beeld aan' commando krijgen. Als dat het geval is, probeer dan de 'teletekst aan' opdracht te gebruiken. "
+msgstr "Sommige TV's gaan niet aan als zij het 'beeld aan' commando krijgen. Als dat het geval is, probeer dan de 'teletekst aan' opdracht te gebruiken."
 
 msgid "Some plugins are not available:\n"
 msgstr "Applicaties die niet beschikbaar zijn:\n"
@@ -13848,7 +13846,7 @@ msgid "Wake A/V receiver from standby"
 msgstr "Wakeup versterker vanuit stand-by"
 
 msgid "Wake A/V receiver from standby."
-msgstr "Wakeup versterker vanuit stand-by"
+msgstr "Wakeup versterker vanuit stand-by."
 
 msgid "Wake On LAN"
 msgstr "Schakel WoL in"
@@ -14745,7 +14743,7 @@ msgid "add bookmark"
 msgstr "markeerpunt toevoegen"
 
 msgid "additional cable of rotor"
-msgstr "Extra kabel van rotor"
+msgstr "extra kabel van rotor"
 
 msgid "address:"
 msgstr "adres:"
@@ -15586,9 +15584,6 @@ msgstr "omgekeerd chronologisch"
 msgid "rewind to the previous chapter"
 msgstr "terugspoelen naar vorig hoofdstuk"
 
-msgid "rgb"
-msgstr "rgb"
-
 msgid "right"
 msgstr "rechts"
 
@@ -15602,7 +15597,7 @@ msgid "romance"
 msgstr "romantiek"
 
 msgid "rotor"
-msgstr "rotor: "
+msgstr "rotor"
 
 msgid "running..."
 msgstr "actief..."
@@ -17283,6 +17278,9 @@ msgstr "zapte"
 #~ msgid "Press 'Add Language' or MENU to add additional language(s). English language can not be deleted"
 #~ msgstr "Druk op MENU of 'Voeg taal toe' om extra talen te installeren. Engels kan niet worden verwijderd."
 
+#~ msgid "Press OK to scan"
+#~ msgstr "Druk OK om te scannen"
+
 #~ msgid "Press OK to start the scan"
 #~ msgstr "Druk OK om te scannen."
 
@@ -17963,6 +17961,9 @@ msgstr "zapte"
 
 #~ msgid "reliable"
 #~ msgstr "betrouwbaar"
+
+#~ msgid "rgb"
+#~ msgstr "rgb"
 
 #~ msgid "second cable of motorized LNB"
 #~ msgstr "2e kabel van gemotoriseerde LNB"

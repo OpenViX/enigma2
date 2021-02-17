@@ -102,7 +102,7 @@ class EventViewBase:
 		self.updateButtons()
 
 	def updateButtons(self):
-		if hasattr(self, "key_green"):
+		if "key_green" in self:
 			if self.isRecording or self.event is None:
 				self["key_green"].setText("")
 				return

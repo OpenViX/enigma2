@@ -329,14 +329,12 @@ class EPGSelectionBase(Screen, HelpableScreen):
 		self.session.openWithCallback(callback, TimerEntry, timer)
 
 	def removeTimer(self, timer):
-		self.closePopupDialog()
 		timer.afterEvent = AFTEREVENT.NONE
 		self.session.nav.RecordTimer.removeEntry(timer)
 		self.setActionButtonText("addEditTimer", _("Add Timer"))
 		self.refreshList()
 
 	def disableTimer(self, timer):
-		self.closePopupDialog()
 		timer.disable()
 		self.session.nav.RecordTimer.timeChanged(timer)
 		self.setActionButtonText("addEditTimer", _("Add Timer"))
@@ -388,11 +386,6 @@ class EPGSelectionBase(Screen, HelpableScreen):
 		return None, None
 
 	def __popupMenu(self, title, menu):
-		def callback(choice):
-			self.closePopupDialog()
-			choice[0](*choice[1:])
-
-		menu = [(item[0], "CALLFUNC", callback, item[1:]) for item in menu]
 		self.popupDialog = self.session.instantiateDialog(PopupChoiceBox, title=title, list=menu, keys=["green", "blue"], skin_name="RecordTimerQuestion", closeCB=self.closePopupDialog)
 		pos = self["list"].getSelectionPosition()
 		self.popupDialog.instance.move(ePoint(pos[0] - self.popupDialog.instance.size().width(), self.instance.position().y() + pos[1]))
@@ -411,9 +404,7 @@ class EPGSelectionBase(Screen, HelpableScreen):
 		self.popupDialog.show()
 
 	def closePopupDialog(self):
-		if self.popupDialog is not None:
-			self.popupDialog.doClose()
-			self.popupDialog = None
+		self.popupDialog = None
 		self["okactions"].setEnabled(True)
 		if "epgcursoractions" in self:
 			self["epgcursoractions"].setEnabled(True)
@@ -604,6 +595,8 @@ class EPGServiceNumberSelection:
 
 	def keyNumberGlobal(self, number):
 		def closed(number):
+			if self.popupDialog:
+				self.popupDialog.doClose()
 			self.closePopupDialog()
 			if number is not None:
 				service, bouquet = self.getServiceByNumber(number)

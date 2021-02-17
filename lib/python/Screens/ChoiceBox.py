@@ -1,11 +1,11 @@
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
-from Components.ActionMap import ActionMap, NumberActionMap
+from Components.ActionMap import NumberActionMap
 from Components.config import config, ConfigSubsection, ConfigText
 from Components.Label import Label
 from Components.ChoiceList import ChoiceEntryComponent, ChoiceList
 from Components.Sources.StaticText import StaticText
-from Components.Pixmap import Pixmap
+from Tools.BoundFunction import boundFunction
 import enigma
 
 config.misc.pluginlist = ConfigSubsection()
@@ -13,7 +13,12 @@ config.misc.pluginlist.eventinfo_order = ConfigText(default="")
 config.misc.pluginlist.extension_order = ConfigText(default="")
 
 class ChoiceBox(Screen):
-	def __init__(self, session, title="", list=None, keys=None, selection=0, skin_name=None, text="", reorderConfig="", windowTitle=None, var=""):
+	def __init__(self, session, title="", list=None, keys=None, selection=0, skin_name=None, text="", reorderConfig="", 
+				 windowTitle=None, var="", callbackList=None):
+		# list is in the format (<display text>, [<parameters to pass to close callback>,])
+		# callbackList is in the format (<display text>, <callback func>, [<parameters>,])
+		self.isCallbackList = bool(callbackList)
+		list = list or callbackList
 		if not list: list = []
 		if not skin_name: skin_name = []
 		Screen.__init__(self, session)
@@ -207,14 +212,19 @@ class ChoiceBox(Screen):
 
 	# runs a specific entry
 	def goEntry(self, entry):
-		if entry and len(entry) > 3 and isinstance(entry[1], str) and entry[1] == "CALLFUNC":
+		if self.isCallbackList:
+			if entry and len(entry) > 1 and entry[1]:
+				# stuff the selected item's callback function into the dialog's session callback
+				# (callers shouldn't need to be using the session callback)
+				# This allows the ChoiceBox to close itself and schedule the selected item's
+				# callback to happen on the next poll execution
+				self.callback = boundFunction(*entry[1:])
+			self.close()
+		elif entry and len(entry) > 3 and isinstance(entry[1], str) and entry[1] == "CALLFUNC":
 			arg = entry[3]
 			entry[2](arg)
 		elif entry and len(entry) > 2 and isinstance(entry[1], str) and entry[1] == "CALLFUNC":
 			entry[2](None)
-		elif entry and len(entry) > 1 and callable(entry[1]):
-			entry[1](*entry[2:])
-			self.close()
 		else:
 			self.close(entry)
 
@@ -303,8 +313,8 @@ class ChoiceBox(Screen):
 
 # This choicebox overlays the current screen
 class PopupChoiceBox(ChoiceBox):
-	def __init__(self, session, title="", list=None, keys=None, selection=0, skin_name=None, text="", reorderConfig="", windowTitle=None, var="", closeCB=None):
-		ChoiceBox.__init__(self, session, title, list, keys, selection, skin_name, text, reorderConfig, windowTitle, var)
+	def __init__(self, session, title="", list=None, keys=None, selection=0, skin_name=None, closeCB=None):
+		ChoiceBox.__init__(self, session, title, None, keys, selection, skin_name, callbackList=list)
 		self.closeCB = closeCB
 
 	def show(self):
@@ -315,5 +325,13 @@ class PopupChoiceBox(ChoiceBox):
 		self["actions"].execEnd()
 		ChoiceBox.hide(self)
 
+	def goEntry(self, entry):
+		self.cancel()
+		if entry and len(entry) > 1:
+			entry[1](*entry[2:])
+
 	def cancel(self):
-		self.closeCB()
+		# doClose will remove all properties so grab the callback function first
+		cb = self.closeCB
+		self.doClose()
+		cb()

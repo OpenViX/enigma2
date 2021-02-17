@@ -2,7 +2,7 @@ from enigma import eListbox, eListboxPythonConfigContent, ePoint, eRCInput, eTim
 from skin import parameters, applySkinFactor
 
 from Components.ActionMap import HelpableActionMap, HelpableNumberActionMap
-from Components.config import ConfigBoolean, ConfigElement, ConfigInteger, ConfigMacText, ConfigSelection, ConfigSequence, ConfigText, KEYA_0, KEYA_ASCII, KEYA_BACKSPACE, KEYA_DELETE, KEYA_ERASE, KEYA_FIRST, KEYA_LAST, KEYA_LEFT, KEYA_NUMBERS, KEYA_RIGHT, KEYA_SELECT, KEYA_TIMEOUT, KEYA_TOGGLE, config, configfile
+from Components.config import ConfigBoolean, ConfigElement, ConfigInteger, ConfigMacText, ConfigNothing, ConfigSelection, ConfigSequence, ConfigText, KEYA_0, KEYA_ASCII, KEYA_BACKSPACE, KEYA_DELETE, KEYA_ERASE, KEYA_FIRST, KEYA_LAST, KEYA_LEFT, KEYA_NUMBERS, KEYA_RIGHT, KEYA_SELECT, KEYA_TIMEOUT, KEYA_TOGGLE, config, configfile
 from Components.GUIComponent import GUIComponent
 from Components.Pixmap import Pixmap
 from Components.Sources.Boolean import Boolean
@@ -249,7 +249,7 @@ class ConfigListScreen:
 				self["editConfigActions"].setEnabled(True)
 			else:
 				self["editConfigActions"].setEnabled(False)
-			if isinstance(currConfig[1], ConfigSelection):
+			if isinstance(currConfig[1], ConfigSelection) and not isinstance(currConfig[1], ConfigNothing):
 				self["menuConfigActions"].setEnabled(True)
 				self["key_menu"].setText(_("MENU"))
 			else:

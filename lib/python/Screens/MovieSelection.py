@@ -2,7 +2,6 @@ from Screen import Screen
 from Components.Button import Button
 from Components.ActionMap import HelpableActionMap, ActionMap, HelpableNumberActionMap
 from Components.ChoiceList import ChoiceList, ChoiceEntryComponent
-from Components.MenuList import MenuList
 from Components.MovieList import MovieList, getItemDisplayName, resetMoviePlayState, AUDIO_EXTENSIONS, DVD_EXTENSIONS, IMAGE_EXTENSIONS, moviePlayState
 from Components.DiskInfo import DiskInfo
 from Tools.Trashcan import TrashInfo
@@ -1293,9 +1292,9 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		else:
 			title = ngettext("You have a marked recording", "You have marked recordings", markedFilesCount)
 			choices = [
-				(ngettext("Play the marked recording", "Play %d marked recordings" % markedFilesCount, markedFilesCount), self.__addItemsToPlaylist, markedFiles),
+				(_("Play the marked recording") if markedFilesCount == 1 else _("Play the %d marked recordings") % markedFilesCount, self.__addItemsToPlaylist, markedFiles),
 				(_("Play the selected recording"), self.__playCurrentItem)]
-			self.session.open(ChoiceBox, title=title, list=choices)
+			self.session.open(ChoiceBox, title=title, callbackList=choices)
 
 	def __addItemsToPlaylist(self, markedItems):
 		global playlist
@@ -2203,20 +2202,19 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			title = "Recording in progress: %s" % name if recCount == 1 else "Recordings in progress: %d" % recCount
 			choices = [
 				(_("Cancel"), None),
-				(ngettext("Stop this recording", "Stop these recordings", recCount), "s"),
-				(ngettext("Stop this recording and delete it", "Stop these recordings and delete them", recCount), "d")]
-			self.session.openWithCallback(lambda choice: self.__onTimerChoice(delList, recList, delInfo, choice), ChoiceBox, title=title, list=choices)
+				(ngettext("Stop this recording", "Stop these recordings", recCount), self.__onTimerChoiceStop, recList),
+				(ngettext("Stop this recording and delete it", "Stop these recordings and delete them", recCount), self.__onTimerChoiceDelete, delList, recList, delInfo)]
+			self.session.open(ChoiceBox, title=title, callbackList=choices)
 
-	def __onTimerChoice(self, delList, recList, delInfo, choice):
-		if choice is None or choice[1] is None:
-			return
+	def __onTimerChoiceStop(self, recList):
 		for rec in recList:
 			self.stopTimer(rec[1])
-		# only continue if the delete option was selected, otherwise unmark everything
-		if choice[1] == "d":
-			self.__showDeleteConfirmation(delList, delInfo)
-		else:
-			self.clearMarks()
+		self.clearMarks()
+
+	def __onTimerChoiceDelete(self, delList, recList, delInfo):
+		for rec in recList:
+			self.stopTimer(rec[1])
+		self.__showDeleteConfirmation(delList, delInfo)
 
 	def __showDeleteConfirmation(self, delList, delInfo):
 		dirCount, fileCount, subItemCount, inTrash = delInfo

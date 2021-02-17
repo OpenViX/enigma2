@@ -571,7 +571,7 @@ class ScanSetup(ConfigListScreen, Screen, CableTransponderSearchSupport, Terrest
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.setTitle(_("Manual Scan"))
-
+		self.skinName = ["ScanSetup", "Setup"]
 		self.finished_cb = None
 		self.updateSatList()
 		self.service = session.nav.getCurrentService()
@@ -591,29 +591,23 @@ class ScanSetup(ConfigListScreen, Screen, CableTransponderSearchSupport, Terrest
 
 		self.session.postScanService = session.nav.getCurrentlyPlayingServiceOrGroup()
 
-		self["key_red"] = StaticText(_("Close"))
 		self["key_green"] = StaticText(_("Scan"))
 
-		self["actions"] = NumberActionMap(["SetupActions", "MenuActions", "ColorActions"],
+		self["actions"] = NumberActionMap(["SetupActions"],
 		{
-			"ok": self.keyGo,
 			"save": self.keyGo,
-			"cancel": self.keyCancel,
-			"red": self.keyCancel,
-			"green": self.keyGo,
-			"menu": self.doCloseRecursive,
 		}, -2)
 
 		self.statusTimer = eTimer()
 		self.statusTimer.callback.append(self.updateStatus)
 
 		self.list = []
-		ConfigListScreen.__init__(self, self.list)
+		ConfigListScreen.__init__(self, self.list, on_change=self.newConfig, fullUI = True)
+		self["introduction"] = Label("")
 		if not self.scan_nims.value == "":
 			self.createSetup()
-			self["introduction"] = Label(_("Press OK to scan"))
 		else:
-			self["introduction"] = Label(_("Nothing to scan! Setup your tuner and try again."))
+			self["introduction"].text = _("Nothing to scan! Setup your tuner and try again.")
 
 	def runAsync(self, finished_cb):
 		self.finished_cb = finished_cb
@@ -1241,18 +1235,6 @@ class ScanSetup(ConfigListScreen, Screen, CableTransponderSearchSupport, Terrest
 
 		return True
 
-	def keyLeft(self):
-		ConfigListScreen.keyLeft(self)
-		self.newConfig()
-
-	def keyRight(self):
-		ConfigListScreen.keyRight(self)
-		self.newConfig()
-
-	def handleKeyFileCallback(self, answer):
-		ConfigListScreen.handleKeyFileCallback(self, answer)
-		self.newConfig()
-
 	def updateStatus(self):
 		print "[ScanSetup] updatestatus"
 
@@ -1682,18 +1664,13 @@ class ScanSimple(ConfigListScreen, Screen, CableTransponderSearchSupport, Terres
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.setTitle(_("Automatic Scan"))
+		self.skinName = ["ScanSimple", "Setup"]
 
-		self["key_red"] = StaticText(_("Close"))
 		self["key_green"] = StaticText(_("Scan"))
 
-		self["actions"] = ActionMap(["SetupActions", "MenuActions", "ColorActions"],
+		self["actions"] = ActionMap(["SetupActions"],
 		{
-			"ok": self.keyGo,
 			"save": self.keyGo,
-			"cancel": self.keyCancel,
-			"menu": self.doCloseRecursive,
-			"red": self.keyCancel,
-			"green": self.keyGo,
 		}, -2)
 
 		self.session.postScanService = session.nav.getCurrentlyPlayingServiceOrGroup()
@@ -1744,8 +1721,7 @@ class ScanSimple(ConfigListScreen, Screen, CableTransponderSearchSupport, Terres
 				self.nim_enable.append(nimconfig)
 				self.list.append(getConfigListEntry(_("Scan ") + nim.slot_name + " (" + nim.friendly_type + ")", nimconfig))
 
-		ConfigListScreen.__init__(self, self.list)
-		self["introduction"] = self["footer"] = Label(_("Press OK to scan")) # "introduction" is used by all other screens. "footer" just left for skin backwards compatibility
+		ConfigListScreen.__init__(self, self.list, fullUI = True)
 
 	def getNetworksForNim(self, nim):
 		if nim.isCompatible("DVB-S"):

@@ -61,14 +61,15 @@ class Satfinder(ScanSetup, ServiceScan):
 		self.timer.callback.append(self.updateFrontendStatus)
 
 		ScanSetup.__init__(self, session)
+		self.entryChanged = self.newConfig
 		self.setTitle(_("Signal finder"))
 		self["Frontend"] = FrontendStatus(frontend_source = lambda : self.frontend, update_interval = 100)
 
-		self["actions"] = ActionMap(["SetupActions", "ColorActions"],
+		self["actions"] = ActionMap(["CancelSaveActions"],
 		{
 			"save": self.keyGoScan,
-			"ok": self.keyGoScan,
 			"cancel": self.keyCancel,
+			"close": self.doCloseRecursive,
 		}, -3)
 
 		self.initcomplete = True

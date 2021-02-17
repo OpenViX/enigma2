@@ -582,6 +582,8 @@ class MovieList(GUIComponent):
 			if item[0] == service:
 				self.removeMark(item[0])
 				del self.list[index]
+				if index < self.instance.getCurrentIndex():
+					self.moveUp()
 				return True
 		return False
 
