@@ -1578,7 +1578,7 @@ class InfoBarEPG:
 		else:
 			plugins = [(p[0], p[2]) for p in self.getEPGPluginList()]
 			plugins.append((_("Select default action of EPG button"), self.selectDefaultEpgPlugin))
-			self.session.open(ChoiceBox, title=_("Please choose an extension..."), callbackList=plugins, skin_name="EPGExtensionsList")
+			self.session.open(ChoiceBox, title=_("Please choose an extension..."), callbackList=plugins, skin_name="EPGExtensionsList", reorderConfig="eventinfo_order")
 
 	def _helpShowEventInfoPlugins(self):
 		if SystemInfo["mapKeyInfoToEpgFunctions"]:
