@@ -1,7 +1,7 @@
 import errno
 import xml.etree.cElementTree
 
-from enigma import addFont, eLabel, ePixmap, ePoint, eRect, eSize, eWindow, eWindowStyleManager, eWindowStyleSkinned, getDesktop, gFont, getFontFaces, gRGB
+from enigma import addFont, eLabel, ePixmap, ePoint, eRect, eSize, eWindow, eWindowStyleManager, eWindowStyleSkinned, getDesktop, gFont, getFontFaces, gMainDC, gRGB
 from os.path import basename, dirname, isfile
 
 from Components.config import ConfigSubsection, ConfigText, config
@@ -31,6 +31,8 @@ parameters = {}  # Dictionary of skin parameters used to modify code behavior.
 setups = {}  # Dictionary of images associated with setup menus.
 switchPixmap = {}  # Dictionary of switch images.
 windowStyles = {}  # Dictionary of window styles for each screen ID.
+xres = 720
+yres = 576
 
 
 config.skin = ConfigSubsection()
@@ -59,7 +61,7 @@ onLoadCallbacks = []
 #
 def InitSkins(booting=True):
 	global currentPrimarySkin, currentDisplaySkin
-	global domScreens, colors, bodyFont, fonts, menus, parameters, setups, switchPixmap, windowStyles
+	global domScreens, colors, bodyFont, fonts, menus, parameters, setups, switchPixmap, windowStyles, xres, yres
 	# Reset skin dictionaries. We can reload skins without a restart
 	# Make sure we keep the original dictionaries as many modules now import skin globals explicitly
 	domScreens.clear()
@@ -73,11 +75,12 @@ def InitSkins(booting=True):
 	setups.clear()
 	switchPixmap.clear()
 	windowStyles.clear()
+	desktop = getDesktop(GUI_SKIN_ID)
 	# Add the emergency skin.  This skin should provide enough functionality
 	# to enable basic GUI functions to work.
-	loadSkin(EMERGENCY_SKIN, scope=SCOPE_CURRENT_SKIN, desktop=getDesktop(GUI_SKIN_ID), screenID=GUI_SKIN_ID)
+	loadSkin(EMERGENCY_SKIN, scope=SCOPE_CURRENT_SKIN, desktop=desktop, screenID=GUI_SKIN_ID)
 	# Add the subtitle skin.
-	loadSkin(SUBTITLE_SKIN, scope=SCOPE_CURRENT_SKIN, desktop=getDesktop(GUI_SKIN_ID), screenID=GUI_SKIN_ID)
+	loadSkin(SUBTITLE_SKIN, scope=SCOPE_CURRENT_SKIN, desktop=desktop, screenID=GUI_SKIN_ID)
 	# Add the front panel / display / lcd skin.
 	processed = []
 	for skin, name in [(config.skin.display_skin.value, "current"), (DEFAULT_DISPLAY_SKIN, "default")]:
@@ -95,7 +98,7 @@ def InitSkins(booting=True):
 		if skin in processed:  # Don't try to add a skin that has already failed.
 			continue
 		config.skin.primary_skin.value = skin
-		if loadSkin(config.skin.primary_skin.value, scope=SCOPE_CURRENT_SKIN, desktop=getDesktop(GUI_SKIN_ID), screenID=GUI_SKIN_ID):
+		if loadSkin(config.skin.primary_skin.value, scope=SCOPE_CURRENT_SKIN, desktop=desktop, screenID=GUI_SKIN_ID):
 			currentPrimarySkin = config.skin.primary_skin.value
 			break
 		print("[Skin] Error: Adding %s GUI skin '%s' has failed!" % (name, config.skin.primary_skin.value))
@@ -106,9 +109,14 @@ def InitSkins(booting=True):
 	if isfile(resolveFilename(SCOPE_SKIN, config.skin.primary_skin.value)):
 		name = USER_SKIN_TEMPLATE % dirname(config.skin.primary_skin.value)
 		if isfile(resolveFilename(SCOPE_CURRENT_SKIN, name)):
-			loadedUser = loadSkin(name, scope=SCOPE_CURRENT_SKIN, desktop=getDesktop(GUI_SKIN_ID), screenID=GUI_SKIN_ID)
+			loadedUser = loadSkin(name, scope=SCOPE_CURRENT_SKIN, desktop=desktop, screenID=GUI_SKIN_ID)
 	if not loadedUser:
-		loadSkin(USER_SKIN, scope=SCOPE_CURRENT_SKIN, desktop=getDesktop(GUI_SKIN_ID), screenID=GUI_SKIN_ID)
+		loadSkin(USER_SKIN, scope=SCOPE_CURRENT_SKIN, desktop=desktop, screenID=GUI_SKIN_ID)
+
+	# done loading the skin data, set the screen resolution. Once.
+	gMainDC.getInstance().setResolution(xres, yres)
+	desktop.resize(eSize(xres, yres))
+
 	# notify any other modules about skin reloads
 	if not booting:
 		for method in onLoadCallbacks:
@@ -664,7 +672,7 @@ def reloadWindowStyles():
 def loadSingleSkinData(desktop, screenID, domSkin, pathSkin, scope=SCOPE_CURRENT_SKIN):
 	"""Loads skin data like colors, windowstyle etc."""
 	assert domSkin.tag == "skin", "root element in skin must be 'skin'!"
-	global colors, fonts, menus, parameters, setups, switchPixmap
+	global colors, fonts, menus, parameters, setups, switchPixmap, xres, yres
 	for tag in domSkin.findall("output"):
 		scrnID = int(tag.attrib.get("id", GUI_SKIN_ID))
 		if scrnID == GUI_SKIN_ID:
@@ -676,9 +684,6 @@ def loadSingleSkinData(desktop, screenID, domSkin, pathSkin, scope=SCOPE_CURRENT
 				bpp = res.attrib.get("bpp")
 				bpp = int(bpp) if bpp else 32
 				# print("[Skin] DEBUG: Resolution xres=%d, yres=%d, bpp=%d." % (xres, yres, bpp))
-				from enigma import gMainDC
-				gMainDC.getInstance().setResolution(xres, yres)
-				desktop.resize(eSize(xres, yres))
 				if bpp != 32:
 					pass  # Load palette (Not yet implemented!)
 				
@@ -1244,7 +1249,7 @@ def findWidgets(name):
 # screen will be 1.
 #
 def getSkinFactor():
-	skinfactor = getDesktop(GUI_SKIN_ID).size().height() / 720.0
+	skinfactor = yres / 720.0
 	# if skinfactor not in [0.8, 1, 1.5, 3, 6]:
 	# 	print("[Skin] Warning: Unexpected result for getSkinFactor '%0.4f'!" % skinfactor)
 	return skinfactor
