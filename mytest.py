@@ -372,7 +372,8 @@ class Session:
 
 	def reloadSkin(self):
 		from Screens.MessageBox import MessageBox
-		reloadNotification = self.instantiateDialog(MessageBox, _("Loading skin"), MessageBox.TYPE_MESSAGE)
+		reloadNotification = self.instantiateDialog(MessageBox, _("Loading skin"), MessageBox.TYPE_INFO, 
+			simple=True, picon=False, title=_("Please wait"))
 		reloadNotification.show()
 
 		# close all open dialogs by emptying the dialog stack
