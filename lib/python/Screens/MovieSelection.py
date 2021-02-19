@@ -2098,7 +2098,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		if failedList:
 			failedCount = len(failedList)
 			if failedCount == 1:
-				msg = _("Couldn't move '%s'.\n%s") % (failedList[0], failedList[1])
+				msg = _("Couldn't move '%s'.\n%s") % failedList[0]
 			else:
 				msg = _("Couldn't move %d items.\n%s") % (failedCount, failedList[0][1])
 			mbox = self.session.open(MessageBox, msg, MessageBox.TYPE_ERROR)
@@ -2135,7 +2135,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		if failedList:
 			failedCount = len(failedList)
 			if failedCount == 1:
-				msg = _("Couldn't copy '%s'.\n%s") % (failedList[0][0], failedList[0][1])
+				msg = _("Couldn't copy '%s'.\n%s") % failedList[0]
 			else:
 				msg = _("Couldn't copy %d items.\n%s") % (failedCount, failedList[0][1])
 			mbox = self.session.open(MessageBox, msg, MessageBox.TYPE_ERROR)
