@@ -30,6 +30,10 @@ class ChoiceBox(Screen):
 		self.reorderConfig = reorderConfig
 		self["text"] = Label()
 		self.var = ""
+		if reorderConfig:
+			self["key_menu"] = StaticText(_("MENU"))
+			self["key_previous"] = StaticText(_("PREVIOUS"))
+			self["key_next"] = StaticText(_("NEXT"))
 
 		if title:
 			title = _(title)
