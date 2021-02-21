@@ -19,8 +19,7 @@ class ScrollLabel(GUIComponent):
 		self.splitchar = "|"
 
 	def applySkin(self, desktop, parent):
-		scrollbarWidth = 10
-		scrollbarBorderWidth = 1
+		scrollbarWidth = skin.applySlider(self.scrollbar, 10, 1)
 		ret = False
 		if self.skinAttributes:
 			widget_attribs = []
@@ -42,7 +41,7 @@ class ScrollLabel(GUIComponent):
 					scrollbarWidth = int(value)
 					self.skinAttributes.remove((attrib, value))
 				elif "scrollbarSliderBorderWidth" in attrib:
-					scrollbarBorderWidth = int(value)
+					self.scrollbar.setBorderWidth(int(value))
 					self.skinAttributes.remove((attrib, value))
 				elif "split" in attrib:
 					self.split = 1 if value.lower() in ("1", "enabled", "on", "split", "true", "yes") else 0
@@ -71,7 +70,6 @@ class ScrollLabel(GUIComponent):
 		self.scrollbar.resize(eSize(scrollbarWidth, self.pageHeight + int(lineheight / 6)))
 		self.scrollbar.setOrientation(eSlider.orVertical)
 		self.scrollbar.setRange(0, 100)
-		self.scrollbar.setBorderWidth(scrollbarBorderWidth)
 		self.setText(self.message)
 		return ret
 

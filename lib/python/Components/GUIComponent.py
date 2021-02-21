@@ -1,6 +1,6 @@
 import skin
 
-from enigma import ePoint, eSize
+from enigma import ePoint, eSize, eListbox
 
 class GUIComponent(object):
 	""" GUI component """
@@ -33,6 +33,8 @@ class GUIComponent(object):
 		if not self.visible:
 			self.instance.hide()
 
+		if type(self.instance) == eListbox:
+			skin.applyScrollbar(self.instance)
 		if self.skinAttributes:
 			skin.applyAllAttributes(self.instance, desktop, self.skinAttributes, parent.scale)
 			return True
