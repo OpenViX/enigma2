@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-15 09:19+0000\n"
-"PO-Revision-Date: 2021-02-15 17:18+0100\n"
+"POT-Creation-Date: 2021-02-21 17:29+0000\n"
+"PO-Revision-Date: 2021-02-22 06:02+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -819,6 +819,10 @@ msgstr "%b=%-d "
 
 msgid "%b=%d "
 msgstr "%b=%d "
+
+#, python-format
+msgid "%d"
+msgstr "%d"
 
 msgid "%d %B %Y"
 msgstr "%d %B %Y"
@@ -7056,6 +7060,9 @@ msgstr "Laad niet-verbonden favorietenlijsten"
 msgid "Load, Save & Delete EPG Cache"
 msgstr "Laad, bewaar en verwijder EPG-cache"
 
+msgid "Loading skin"
+msgstr "Skin wordt geladen..."
+
 msgid "Local box"
 msgstr "Lokale box"
 
@@ -8377,6 +8384,9 @@ msgstr "PLS Modus & PLS Code"
 
 msgid "PMT PID"
 msgstr "PMT PID"
+
+msgid "PREVIOUS"
+msgstr ""
 
 msgid "PRIMETIME"
 msgstr "PRIMETIME"
@@ -13121,9 +13131,6 @@ msgstr "Tuner"
 msgid "Tuner :"
 msgstr "Tuner:"
 
-msgid "Tuner Settings"
-msgstr "Tunerinstellingen"
-
 msgid "Tuner Setup"
 msgstr "Tunerinstellingen"
 
@@ -13493,6 +13500,9 @@ msgstr "Meet stroomopname"
 
 msgid "Use separate Picon pack for Front Display"
 msgstr "Gebruik apart picon-pakket voor het paneeldisplay"
+
+msgid "Use skin default"
+msgstr "Gebruik de default skin"
 
 msgid "Use slim screen"
 msgstr "Gebruik slim screen"
@@ -17736,6 +17746,9 @@ msgstr "zapte"
 
 #~ msgid "Tuner Configuration"
 #~ msgstr "Tunerconfiguratie"
+
+#~ msgid "Tuner Settings"
+#~ msgstr "Tunerinstellingen"
 
 #~ msgid "Tuner setup"
 #~ msgstr "Tunerinstellingen"
