@@ -666,30 +666,30 @@ def ifHasValue(value, function):
 	return function(value) if value is not None else None
 
 def applyScrollbar(guiObject):
-		global scrollbarStyle
-		if scrollbarStyle is None:
-			return
-		guiObject.setScrollbarWidth(scrollbarStyle["width"])
-		guiObject.setScrollbarBorderWidth(scrollbarStyle["borderWidth"])
-		guiObject.setScrollbarBorderColor(scrollbarStyle["borderColor"])
-		guiObject.setScrollbarForegroundColor(scrollbarStyle["foregroundColor"])
-		guiObject.setScrollbarBackgroundColor(scrollbarStyle["backgroundColor"])
-		ifHasValue(scrollbarStyle.get("pixmap"), guiObject.setScrollbarPixmap)
-		ifHasValue(scrollbarStyle.get("backgroundPixmap"), guiObject.setScrollbarBackgroundPixmap)
-		guiObject.setScrollbarMode(scrollbarStyle["mode"])
+	global scrollbarStyle
+	if scrollbarStyle is None:
+		return
+	guiObject.setScrollbarWidth(scrollbarStyle["width"])
+	guiObject.setScrollbarBorderWidth(scrollbarStyle["borderWidth"])
+	guiObject.setScrollbarBorderColor(scrollbarStyle["borderColor"])
+	guiObject.setScrollbarForegroundColor(scrollbarStyle["foregroundColor"])
+	guiObject.setScrollbarBackgroundColor(scrollbarStyle["backgroundColor"])
+	ifHasValue(scrollbarStyle.get("pixmap"), guiObject.setScrollbarPixmap)
+	ifHasValue(scrollbarStyle.get("backgroundPixmap"), guiObject.setScrollbarBackgroundPixmap)
+	guiObject.setScrollbarMode(scrollbarStyle["mode"])
 
 def applySlider(guiObject, defaultWidth, defaultBorderWidth):
-		global scrollbarStyle
-		if scrollbarStyle:
-			defaultWidth = scrollbarStyle["width"]
-			defaultBorderWidth = scrollbarStyle.get("borderWidth", defaultBorderWidth)
-			guiObject.setBorderColor(scrollbarStyle["borderColor"])
-			guiObject.setForegroundColor(scrollbarStyle["foregroundColor"])
-			guiObject.setBackgroundColor(scrollbarStyle["backgroundColor"])
-			ifHasValue(scrollbarStyle.get("pixmap"), guiObject.setPixmap)
-			ifHasValue(scrollbarStyle.get("backgroundPixmap"), guiObject.setBackgroundPixmap)
-		guiObject.setBorderWidth(defaultBorderWidth)
-		return defaultWidth
+	global scrollbarStyle
+	if scrollbarStyle:
+		defaultWidth = scrollbarStyle["width"]
+		defaultBorderWidth = scrollbarStyle.get("borderWidth", defaultBorderWidth)
+		guiObject.setBorderColor(scrollbarStyle["borderColor"])
+		guiObject.setForegroundColor(scrollbarStyle["foregroundColor"])
+		guiObject.setBackgroundColor(scrollbarStyle["backgroundColor"])
+		ifHasValue(scrollbarStyle.get("pixmap"), guiObject.setPixmap)
+		ifHasValue(scrollbarStyle.get("backgroundPixmap"), guiObject.setBackgroundPixmap)
+	guiObject.setBorderWidth(defaultBorderWidth)
+	return defaultWidth
 
 def applySingleAttribute(guiObject, desktop, attrib, value, scale=((1, 1), (1, 1))):
 	# Is anyone still using applySingleAttribute?
