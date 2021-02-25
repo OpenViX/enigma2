@@ -96,6 +96,8 @@ class MovieInfo(Converter, object):
 			elif self.type == self.MOVIE_REC_FILESIZE:
 				if (service.flags & eServiceReference.flagDirectory) == eServiceReference.flagDirectory:
 					return _("Directory")
+				if (service.flags & eServiceReference.isGroup) == eServiceReference.isGroup:
+					return _("Collection")
 				filesize = info.getInfoObject(service, iServiceInformation.sFileSize)
 				if filesize is not None:
 					if filesize >= 104857600000: #100000*1024*1024

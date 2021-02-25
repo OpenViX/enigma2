@@ -483,6 +483,7 @@
 		<item level="0" text="Number of rows" description="Number of rows to display">config.movielist.itemsperpage</item>
 		<item level="0" text="Use slim screen" description="Use the alternative screen">config.movielist.useslim</item>
 		<item level="0" text="Use adaptive date display" description="Adaptive date display allows recent dates to be displayed as 'Today' or 'Yesterday'.  It hides the year for recordings made this year.  It hides the day of the week for recordings made in previous years.">config.movielist.use_fuzzy_dates</item>
+		<item level="0" text="Enable automatic collections" description="When enabled, recordings are grouped by name into collections automatically.">config.movielist.enable_collections</item>
 		<item level="0" text="Sort" description="Set the default sorting method.">self.cfg.moviesort</item>
 		<item level="0" text="Sort Trash by deletion time" description="Use the deletion time to sort Trash directories.\nMost recently deleted at the top.">config.usage.trashsort_deltime</item>
 		<item level="0" text="Show extended description" description="Show or hide the extended description, (skin dependant).">self.cfg.description</item>
