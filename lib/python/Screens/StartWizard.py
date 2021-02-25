@@ -49,7 +49,7 @@ class StartWizard(WizardLanguage, Rc):
 		configfile.save()
 
 def checkForDevelopImage():
-	if "DEV" in about.getImageTypeString():
+	if "DEV" in about.getImageTypeString() or "beta" in about.getImageTypeString():
 		return config.misc.check_developimage.value
 	elif not config.misc.check_developimage.value:
 		config.misc.check_developimage.value = True
