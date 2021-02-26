@@ -14,6 +14,29 @@ pip_config_initialized = False
 PipPigModeEnabled = False
 PipPigModeTimer = eTimer()
 
+def openPip(serviceRef=None):
+	pipOpened = False
+	from Screens.InfoBar import InfoBar
+	session = InfoBar.instance and InfoBar.instance.session
+	if session:
+		if not session.pipshown:
+			session.pip = session.instantiateDialog(PictureInPicture)
+			session.pip.show()
+			session.pipshown = True
+			pipOpened = True
+		if serviceRef:
+			session.pip.playService(serviceRef)
+	return pipOpened
+
+def closePip():
+	from Screens.InfoBar import InfoBar
+	session = InfoBar.instance and InfoBar.instance.session
+	if session and session.pipshown and session.pip:
+		session.pipshown = False
+		del session.pip
+		return True
+	return False
+
 def timedStopPipPigMode():
 	from Screens.InfoBar import InfoBar
 	if InfoBar.instance and InfoBar.instance.session:
@@ -44,6 +67,7 @@ def PipPigMode(value):
 				PipPigModeEnabled = True
 		else:
 			PipPigModeTimer.start(100, True)
+
 
 class PictureInPictureZapping(Screen):
 	skin = """<screen name="PictureInPictureZapping" flags="wfNoBorder" position="50,50" size="90,26" title="PiPZap" zPosition="-1">
@@ -150,6 +174,12 @@ class PictureInPicture(Screen):
 	def setExternalPiP(self, onoff):
 		if SystemInfo["HasExternalPIP"]:
 			open(SystemInfo["HasExternalPIP"], "w").write(onoff and "on" or "off")
+
+	def show(self):
+		Screen.show(self)
+
+	def hide(self):
+		Screen.hide(self)
 
 	def active(self):
 		self.pipActive.show()

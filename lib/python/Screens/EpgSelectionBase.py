@@ -15,17 +15,10 @@ from Screens.ChoiceBox import PopupChoiceBox
 from Screens.EventView import EventViewEPGSelect
 from Screens.HelpMenu import HelpableScreen
 from Screens.MessageBox import MessageBox
-from Screens.PictureInPicture import PictureInPicture
 from Screens.Screen import Screen
 from Screens.TimeDateInput import TimeDateInput
 from Screens.TimerEntry import TimerEntry, addTimerFromEvent, addTimerFromEventSilent
 
-# PiPServiceRelation installed?
-try:
-	from Plugins.SystemPlugins.PiPServiceRelation.plugin import getRelationDict
-	plugin_PiPServiceRelation_installed = True
-except ImportError:
-	plugin_PiPServiceRelation_installed = False
 
 epgActions = [
 	# function name, button label, help text
@@ -97,8 +90,6 @@ class EPGSelectionBase(Screen, HelpableScreen):
 		self.closeRecursive = False
 		self.eventviewDialog = None
 		self.eventviewWasShown = False
-		self.session.pipshown = False
-		self.pipServiceRelation = getRelationDict() if plugin_PiPServiceRelation_installed else {}
 		self["Service"] = ServiceEvent()
 		self["Event"] = Event()
 		self["lab1"] = Label(_("Please wait while gathering EPG data..."))
@@ -489,48 +480,15 @@ class EPGServiceZap:
 				from Screens.InfoBar import MoviePlayer
 				MoviePlayer.ensureClosed(currentService)
 				self.zapFunc(None, False)
-		if self.session.pipshown:
-			self.session.pipshown = False
-			del self.session.pip
 		self.closeEventViewDialog()
 		self.close()
 
 	def zapSelectedService(self, prev=False):
-		currservice = self.session.nav.getCurrentlyPlayingServiceReference() and self.session.nav.getCurrentlyPlayingServiceReference().toString() or None
-		if self.session.pipshown:
-			self.prevch = self.session.pip.getCurrentService() and self.session.pip.getCurrentService().toString() or None
-		else:
-			self.prevch = currservice
-		service = self["list"].getCurrent()[1]
-		if service is not None:
-			if self.epgConfig.preview_mode.value == "2":
-				if not prev:
-					if self.session.pipshown:
-						self.session.pipshown = False
-						del self.session.pip
-					self.zapFunc(service, bouquet=self.getCurrentBouquet(), preview=False)
-					return
-				if not self.session.pipshown:
-					self.session.pip = self.session.instantiateDialog(PictureInPicture)
-					self.session.pip.show()
-					self.session.pipshown = True
-				pipPluginService = self.pipServiceRelation.get(service.toString(), None)
-				if pipPluginService is not None:
-					serviceRef = pipPluginService
-				else:
-					serviceRef = service
-				if self.currch == serviceRef.toString():
-					if self.session.pipshown:
-						self.session.pipshown = False
-						del self.session.pip
-					self.zapFunc(service, bouquet=self.getCurrentBouquet(), preview=False)
-					return
-				if self.prevch != serviceRef.toString() and currservice != serviceRef.toString():
-					self.session.pip.playService(serviceRef)
-					self.currch = self.session.pip.getCurrentService() and self.session.pip.getCurrentService().toString()
-			else:
-				self.zapFunc(service, bouquet=self.getCurrentBouquet(), preview=prev)
-				self.currch = self.session.nav.getCurrentlyPlayingServiceReference() and self.session.nav.getCurrentlyPlayingServiceReference().toString()
+		self.prevch = self.session.nav.getCurrentlyPlayingServiceReference() and self.session.nav.getCurrentlyPlayingServiceReference().toString() or None
+		selectedService = self["list"].getCurrent()[1]
+		if selectedService is not None:
+			self.zapFunc(selectedService, bouquet=self.getCurrentBouquet(), preview=prev)
+			self.currch = self.session.nav.getCurrentlyPlayingServiceReference() and self.session.nav.getCurrentlyPlayingServiceReference().toString()
 
 class EPGServiceNumberSelectionPopup(Screen):
 	def __init__(self, session, getServiceByNumber, callback, number):

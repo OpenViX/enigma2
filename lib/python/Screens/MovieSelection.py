@@ -2018,7 +2018,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 						index = self.list.findService(newItemRef)
 						self.list.invalidateItem(index)
 					else:
-						failedList.append(_("'%s' already exists") % os.path.basename(path))
+						failedList.append(_("'%s' already exists") % newname)
 				else:
 					metafile = open(meta, "r+")
 					sid = metafile.readline()
