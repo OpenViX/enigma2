@@ -168,13 +168,13 @@ class MovieList(GUIComponent):
 	HIDE_DESCRIPTION = 1
 	SHOW_DESCRIPTION = 2
 
-# So MovieSelection.selectSortby() can find out whether we are
-# in a Trash folder and, if so, what the last sort was
-# The numbering starts after SORT_* values above.
-# in MovieSelection.py (that has no SORT_GROUPWISE)
-# NOTE! that these two *must* *follow on* from the end of the
-#       SORT_* items above!
-#
+	# So MovieSelection.selectSortby() can find out whether we are
+	# in a Trash folder and, if so, what the last sort was
+	# The numbering starts after SORT_* values above.
+	# in MovieSelection.py (that has no SORT_GROUPWISE)
+	# NOTE! that these two *must* *follow on* from the end of the
+	#       SORT_* items above!
+	#
 	TRASHSORT_SHOWRECORD = 13
 	TRASHSORT_SHOWDELETE = 14
 	UsingTrashSort = False
@@ -670,6 +670,7 @@ class MovieList(GUIComponent):
 			currentFolder = os.path.normpath(rootPath) + '/'
 			if collectionName:
 				self.list.append((eServiceReference.fromDirectory(currentFolder), None, 0, MovieListData()))
+				numberOfDirs += 1
 			elif parent and (parent not in defaultInhibitDirs) and not currentFolder.endswith(config.usage.default_path.value):
 				# enigma wants an extra '/' appended
 				if not parent.endswith('/'):
@@ -715,8 +716,8 @@ class MovieList(GUIComponent):
 						begin2 = begin      # Save for later re-instatement
 					begin = os.stat(f_path).st_ctime
 
-			# Filter on a specific collections
-			if collectionName and collectionName != name.strip():
+			# Filter on a specific collections. Users don't care about case of the name
+			if collectionName and collectionName.lower() != name.strip().lower():
 				continue
 
 			if not collectionName and serviceref.flags & eServiceReference.mustDescent:
@@ -747,7 +748,6 @@ class MovieList(GUIComponent):
 				this_tags_fullname = set(this_tags_fullname)
 				this_tags = set(this_tags)
 				if not this_tags.issuperset(filter_tags) and not this_tags_fullname.issuperset(filter_tags):
-# 					print "Skipping", name, "tags=", this_tags, " filter=", filter_tags
 					continue
 			if begin2 != 0:
 				self.list.append((serviceref, info, begin, MovieListData(), begin2))
@@ -755,15 +755,16 @@ class MovieList(GUIComponent):
 				self.list.append((serviceref, info, begin, MovieListData()))
 
 		if not collectionName and collectionMode and self.allowCollections:
-			# not displaying the contents of a collection, group similar named recordings into collections
+			# not displaying the contents of a collection, group similar named 
+			# recordings into collections ignoring case
 			groupedFiles = {}
 			items = []
 			for item in self.list:
 				if item[0].flags & eServiceReference.mustDescent:
 					items.append(item)
 				else:
-					name = item[1].getName(item[0]).strip()
-					if collectionMode == 1 and name == split[1]:
+					name = item[1].getName(item[0]).strip().lower()
+					if collectionMode == 1 and name == split[1].lower():
 						items.append(item)
 					elif groupedFiles.get(name):
 						groupedFiles[name].append(item)
@@ -774,13 +775,14 @@ class MovieList(GUIComponent):
 				if len(groupedItems) == 1:
 					# insert single items as normal files
 					items.append(groupedItems[0])
-				else:
+				elif len(groupedItems) > 1:
 					# more than one item, display a collection
+					firstItem = groupedItems[0]
 					data = MovieListData()
 					data.collectionCount = len(groupedItems)
 					data.collectionItems = groupedItems
-					data.txt = key
-					serviceref = eServiceReference(eServiceReference.idFile, eServiceReference.isGroup, key)
+					data.txt = firstItem[1].getName(firstItem[0]).strip()
+					serviceref = eServiceReference(eServiceReference.idFile, eServiceReference.isGroup, data.txt)
 					items.append((serviceref, serviceref.info(), max(groupedItems, key=lambda i: i[2])[2], data))
 			self.list = items
 
@@ -789,11 +791,11 @@ class MovieList(GUIComponent):
 
 		self.list.sort(key=self.buildGroupwiseSortkey)
 
-# Have we had a temporary sort method override set in MovieSelectiom.py?
-# If so use it, remove it (it's a one-off) and set the current method so
-# that the "Sort by" menu can highlight it and "Sort" knows which to
-# move on from (both in Screens/MovieSelection.py).
-#
+		# Have we had a temporary sort method override set in MovieSelectiom.py?
+		# If so use it, remove it (it's a one-off) and set the current method so
+		# that the "Sort by" menu can highlight it and "Sort" knows which to
+		# move on from (both in Screens/MovieSelection.py).
+		#
 		try:
 			self.current_sort = self.temp_sort
 			del self.temp_sort
@@ -802,10 +804,10 @@ class MovieList(GUIComponent):
 
 		if MovieList.UsingTrashSort:      # Same as SORT_RECORDED, but must come first...
 			self.list = sorted(self.list[:numberOfDirs], key=self.buildBeginTimeSortKey) + sorted(self.list[numberOfDirs:], key=self.buildBeginTimeSortKey)
-# Having sorted on *deletion* times, re-instate any record times for
-# *display* if that option is set.
-# self.list is a list of tuples, so we can't just assign to elements...
-#
+			# Having sorted on *deletion* times, re-instate any record times for
+			# *display* if that option is set.
+			# self.list is a list of tuples, so we can't just assign to elements...
+			#
 			if config.usage.trashsort_deltime.value == "show record time":
 				for i in range(len(self.list)):
 					if len(self.list[i]) == 5:
@@ -1004,7 +1006,7 @@ class MovieList(GUIComponent):
 			itemsBelow = self.list[currentIndex + 1:]
 			#first search the items below the selection
 			for index, item in enumerate(itemsBelow):
-# Just ignore any "root tagged" item - for which item[1] is None
+				# Just ignore any "root tagged" item - for which item[1] is None
 				if not item[1]:
 					continue
 				ref = item[0]
@@ -1020,7 +1022,7 @@ class MovieList(GUIComponent):
 		if found == False and currentIndex > 0:
 			itemsAbove = self.list[1:currentIndex] #first item (0) points parent folder - no point to include
 			for index, item in enumerate(itemsAbove):
-# Just ignore any "root tagged" item - for which item[1] is None
+				# Just ignore any "root tagged" item - for which item[1] is None
 				if not item[1]:
 					continue
 				ref = item[0]

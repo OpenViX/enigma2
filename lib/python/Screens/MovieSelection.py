@@ -140,8 +140,6 @@ def canMove(item):
 		return False
 	if not item[0] or not item[1] or isTrashFolder(item[0]):
 		return False
-	#if (item[0].flags & eServiceReference.isGroup) != 0:
-	#	return False
 	return True
 
 def canDelete(item):
@@ -149,8 +147,6 @@ def canDelete(item):
 		return False
 	if not item[0] or not item[1]:
 		return False
-	#if (item[0].flags & eServiceReference.isGroup) != 0:
-	#	return False
 	return True
 
 canCopy = canMove
@@ -912,7 +908,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		item = self.list.getItem(index)
 		if item:
 			path = item.getPath()
-			if not item.flags & eServiceReference.mustDescent:
+			if not item.flags & (eServiceReference.mustDescent | eServiceReference.isGroup):
 				ext = os.path.splitext(path)[1].lower()
 				if ext in IMAGE_EXTENSIONS:
 					return False
@@ -953,14 +949,12 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			else:
 				self.playGoTo = -1
 				self.goToPlayingService()
-		else:
-			current = self.getCurrent()
-			if current is not None:
-				if self["list"].getCurrentIndex() > 0:
-					path = current.getPath()
-					path = os.path.abspath(os.path.join(path, os.path.pardir))
-					path = os.path.abspath(os.path.join(path, os.path.pardir))
-					self.gotFilename(path)
+		elif self.current_ref is not None:
+			# Go up a level
+			path = self.current_ref.getPath()
+			if not self.collectionName:
+				path = os.path.abspath(os.path.join(path, os.path.pardir))
+			self.gotFilename(path)
 
 	def __onClose(self):
 		config.misc.standbyCounter.removeNotifier(self.standbyCountChanged)
@@ -1199,6 +1193,8 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			path = current.getPath()
 			if current.flags & eServiceReference.mustDescent:
 				self.gotFilename(path)
+			elif current.flags & eServiceReference.isGroup:
+				self.openCollection(path)
 			else:
 				Screens.InfoBar.InfoBar.instance.checkTimeshiftRunning(self.previewCheckTimeshiftCallback)
 
@@ -1312,7 +1308,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		for item in markedItems:
 			itemRef = item[0]
 			path = itemRef.getPath()
-			if not itemRef.flags & eServiceReference.mustDescent:
+			if not itemRef.flags & (eServiceReference.mustDescent | eServiceReference.isGroup):
 				ext = os.path.splitext(path)[1].lower()
 				if ext in IMAGE_EXTENSIONS:
 					continue
@@ -1349,11 +1345,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 					return
 				self.gotFilename(path)
 			elif current.flags & eServiceReference.isGroup:
-				# moving "into" a collection - select the .. item
-				self.collectionName = path
-				config.movielist.last_videocollection.value = path
-				config.movielist.last_videocollection.save()
-				self.reloadList(sel=eServiceReference.fromDirectory(config.movielist.last_videodir.value))
+				self.openCollection(path)
 			else:
 				ext = os.path.splitext(path)[1].lower()
 				if config.movielist.play_audio_internal.value and (ext in AUDIO_EXTENSIONS):
@@ -1728,8 +1720,12 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		currentDir = config.movielist.last_videodir.value
 		if res != currentDir or self.collectionName:
 			if self.collectionName:
-				# going "up" a level to the current directory - select this collection
-				selItem = eServiceReference(eServiceReference.idFile, eServiceReference.isGroup, self.collectionName)
+				# going "up" a level to the current directory
+				if len(self.list) == 2:
+					# collection is going to disappear, select the one remaining item that'll replace the collection
+					selItem = self.list.getItem(1)
+				else: # select this collection
+					selItem = eServiceReference(eServiceReference.idFile, eServiceReference.isGroup, self.collectionName)
 				self.collectionName = None
 				config.movielist.last_videocollection.value = ""
 				config.movielist.last_videocollection.save()
@@ -1758,6 +1754,13 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 					timeout = 5
 					)
 				mbox.setTitle(self.getTitle())
+
+	def openCollection(self, collectionName):
+		# moving "into" a collection - select the .. item
+		self.collectionName = collectionName
+		config.movielist.last_videocollection.value = collectionName
+		config.movielist.last_videocollection.save()
+		self.reloadList(sel=eServiceReference.fromDirectory(config.movielist.last_videodir.value))
 
 	def pinEntered(self, res, selItem, result):
 		if result:
@@ -2506,7 +2509,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			if item:
 				item = item[0]
 				path = item.getPath()
-				if not item.flags & eServiceReference.mustDescent:
+				if not item.flags & (eServiceReference.mustDescent | eServiceReference.isGroup):
 					ext = os.path.splitext(path)[1].lower()
 					if ext in IMAGE_EXTENSIONS:
 						continue
