@@ -6694,7 +6694,7 @@ msgid "NO"
 msgstr "NEIN"
 
 msgid "NOW"
-msgstr "JETTZ"
+msgstr "JETZT"
 
 msgid "NTP"
 msgstr "NTP"
