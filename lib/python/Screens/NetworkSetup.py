@@ -743,7 +743,7 @@ class AdapterSetup(Screen, ConfigListScreen, HelpableScreen):
 			gwinfo = _("Gateway") + ":\t" + _("enabled") + " ("  + _("automatic from DHCP") +")"
 		if self.hasGatewayConfigEntry.value == True:
 			if self.dhcpConfigEntry.value == False:
-				gwinfo = _("Gateway") + ":\t" + '%s.%s.%s.%s'% tuple(self.gatewayConfigEntry.value)	
+				gwinfo = _("Gateway") + ":\t" + '%s.%s.%s.%s'% tuple(self.gatewayConfigEntry.value)
 		if self.hasGatewayConfigEntry.value == False:
 			if self.dhcpConfigEntry.value == False:
 				gwinfo = _("Gateway") + ":\t" + _("disabled")
