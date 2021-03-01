@@ -3,6 +3,7 @@
               <device name="gigablue remote control">
                       <key from="KEY_OPTION" to="KEY_SUBTITLE"/>
                       <key from="KEY_HOME" to="KEY_UNKNOWN"/>
+                      <key from="KEY_TV" to="KEY_TV2"/>
                       <!-- <key from="KEY_F1" to="KEY_AUX"/> -->
               </device>
       </translate>

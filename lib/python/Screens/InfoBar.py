@@ -47,7 +47,9 @@ class InfoBar(InfoBarBase, InfoBarShowHide,
 		self["actions"] = HelpableActionMap(self, "InfobarActions",
 			{
 				"showMovies": (self.showMovies, _("Play recorded movies...")),
-				"toogleTvRadio": (self.toogleTvRadio, _("toggels between tv and radio...")),
+				"showRadio": (self.showRadio, _("Show the radio player...")),
+				"showTv": (self.showTv, _("Show the tv player...")),
+				"toggleTvRadio": (self.toggleTvRadio, _("toggels between tv and radio...")),
 				"openTimerList": (self.openTimerList, _("Open Timerlist...")),
 				"showMediaPlayer": (self.showMediaPlayer, _("Show the media player...")),
 			}, prio=2)
@@ -119,7 +121,7 @@ class InfoBar(InfoBarBase, InfoBarShowHide,
 			from Screens.ChannelSelection import ChannelSelectionRadio
 			self.session.openWithCallback(self.ChannelSelectionRadioClosed, ChannelSelectionRadio, self)
 
-	def toogleTvRadio(self):
+	def toggleTvRadio(self):
 		if self.radioTV == 1:
 			self.radioTV = 0
 			self.showTv()
@@ -130,8 +132,6 @@ class InfoBar(InfoBarBase, InfoBarShowHide,
 	def ChannelSelectionRadioClosed(self, *arg):
 		self.rds_display.show()  # in InfoBarRdsDecoder
 		self.servicelist.correctChannelNumber()
-		self.radioTV = 0
-		self.doShow()
 
 	def showMovies(self, defaultRef=None):
 		self.lastservice = self.session.nav.getCurrentlyPlayingServiceOrGroup()
