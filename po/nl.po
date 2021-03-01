@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-21 17:29+0000\n"
-"PO-Revision-Date: 2021-02-25 06:00+0100\n"
+"POT-Creation-Date: 2021-03-01 01:05+0000\n"
+"PO-Revision-Date: 2021-03-01 13:34+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -871,6 +871,12 @@ msgid "%d Min"
 msgid_plural "%d Mins"
 msgstr[0] "%d Min"
 msgstr[1] "%d Mins"
+
+#, python-format
+msgid "%d Recording"
+msgid_plural "%d Recordings"
+msgstr[0] "%d opname"
+msgstr[1] "%d opnames"
 
 #. TRANSLATORS: Intermediate scanning result, '%d' channel(s) have been found so far
 #, python-format
@@ -3219,6 +3225,9 @@ msgstr "Code rate HP"
 msgid "Code rate LP"
 msgstr "Code rate LP"
 
+msgid "Collection"
+msgstr "Collectie"
+
 msgid "Collection name"
 msgstr "Naam van verzameling"
 
@@ -4981,6 +4990,9 @@ msgstr "Auto Fastscan voor %s inschakelen"
 
 msgid "Enable automated downloading of OpenTV EPG data. If only one tuner is available the download will be done when the reciever is in standby."
 msgstr "Schakel automatisch downloaden van OpenTV EPG in. Als er slechts één tuner beschikbaar is, zal dit gebeuren als de ontvanger in stand-by staat."
+
+msgid "Enable automatic collections"
+msgstr "Automatische collecties inschakelen"
 
 msgid "Enable blinking rec symbol on the LCD Display"
 msgstr "Schakel knipperend opnamesymbool in op het LCD-scherm"
@@ -14085,6 +14097,9 @@ msgstr "Indien ingeschakeld zullen nummer markeringen verborgen worden."
 
 msgid "When enabled, pressing '0' will zap you to the first channel in your first bouquet and delete your zap-history."
 msgstr "Indien ingeschakeld zapt '0' naar het eerste kanaal van het eerste bouquet en wordt de zap-historie verwijderd."
+
+msgid "When enabled, recordings are grouped by name into collections automatically."
+msgstr "Indien ingeschakeld worden opnames automatisch gegropeerd in collecties."
 
 msgid "When enabled, reformat subtitles to match the width of the screen."
 msgstr "Indien ingeschakeld worden ondertitels opnieuw ingedeeld om te passen bij de breedte van het scherm."
