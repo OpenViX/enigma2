@@ -361,7 +361,7 @@
 	<map context="InfobarActions">
 		<key id="KEY_VIDEO" mapto="showMovies" flags="b" />
 		<key id="KEY_RADIO" mapto="showRadio" flags="b" />
-		<key id="KEY_TV" mapto="showTv" flags="b" />
+		<key id="KEY_TV" mapto="toggleTvRadio" flags="b" />
 		<key id="KEY_TV2" mapto="toggleTvRadio" flags="b" />
 		<key id="KEY_FILE" mapto="showMovies" flags="m" />
 		<key id="KEY_TEXT" mapto="showText" flags="m" />
