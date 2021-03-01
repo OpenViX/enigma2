@@ -719,13 +719,53 @@ class AdapterSetup(Screen, ConfigListScreen, HelpableScreen):
 
 	def keySave(self):
 		self.hideInputHelp()
-		if self["config"].isChanged():
-			self.session.openWithCallback(self.keySaveConfirm, MessageBox, (_("Are you sure you want to activate this network configuration?\n\n") + self.oktext ) )
+		self.oldInterfaceState = iNetwork.getAdapterAttribute(self.iface, "up")
+		self.oldDHCPState = iNetwork.getAdapterAttribute(self.iface, 'dhcp')
+		self.oldGatewayState = iNetwork.getAdapterAttribute(self.iface, "gateway")
+		if self.oldGatewayState == None:
+			oldstate = False
 		else:
-			if self.finished_cb:
-				self.finished_cb()
+			oldstate = True
+		self.longdesc = str(iNetwork.getFriendlyAdapterDescription(self.iface))[0:30]
+		if self.dhcpConfigEntry.value == False:
+			dhcpstat = _("disabled")
+		else:
+			dhcpstat = _("enabled")
+		dhcpinfo = ""
+		if self.activateInterfaceEntry.value == False:
+			cardonoff = _("disabled")
+			dhcpinfo = ""
+		else:
+			cardonoff = _("enabled")
+			dhcpinfo = "DHCP: \t" +  dhcpstat
+		gwinfo = ""
+		if self.dhcpConfigEntry.value == True:
+			gwinfo = _("Gateway") + ":\t" + _("enabled") + " ("  + _("automatic from DHCP") +")"
+		if self.hasGatewayConfigEntry.value == True:
+			if self.dhcpConfigEntry.value == False:
+				gwinfo = _("Gateway") + ":\t" + '%s.%s.%s.%s'% tuple(self.gatewayConfigEntry.value)	
+		if self.hasGatewayConfigEntry.value == False:
+			if self.dhcpConfigEntry.value == False:
+				gwinfo = _("Gateway") + ":\t" + _("disabled")
+		if self.activateInterfaceEntry.value == False:
+			gwinfo = ""
+
+		netinfo =  _("Device")  + ":\t" + str(self.iface) + "\n"
+		netinfo += _("Adapter") + ":\t" + self.longdesc  + "\n" + _("Network") + ": \t" + cardonoff 
+		netinfo += "\n" + dhcpinfo 
+		netinfo += "\n" + gwinfo
+		keySavego = self.session.openWithCallback(self.keySavego, MessageBox, ( _("Are you sure you want to activate this network configuration?\n\n")  + netinfo))
+		keySavego.setTitle(self.longdesc)
+
+	def keySavego(self, answer):
+			if answer is True:
+				config.network.save()
+				self.keySaveConfirm(ret = True)
 			else:
-				self.close('cancel')
+				if self.finished_cb:
+					self.finished_cb()
+				else:
+					return
 
 	def keySaveConfirm(self, ret = False):
 		if ret:
