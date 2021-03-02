@@ -1,7 +1,7 @@
 import errno
 import xml.etree.cElementTree
 
-from enigma import addFont, eLabel, ePixmap, ePoint, eRect, eSize, eWindow, eWindowStyleManager, eWindowStyleSkinned, getDesktop, gFont, getFontFaces, gRGB
+from enigma import addFont, eLabel, ePixmap, ePoint, eRect, eSize, eWindow, eWindowStyleManager, eWindowStyleSkinned, getDesktop, gFont, getFontFaces, gMainDC, gRGB
 from os.path import basename, dirname, isfile
 
 from Components.config import ConfigSubsection, ConfigText, config
@@ -30,7 +30,10 @@ menus = {}  # Dictionary of images associated with menu entries.
 parameters = {}  # Dictionary of skin parameters used to modify code behavior.
 setups = {}  # Dictionary of images associated with setup menus.
 switchPixmap = {}  # Dictionary of switch images.
+scrollbarStyle = None # When set, a dictionary of scrollbar styles
 windowStyles = {}  # Dictionary of window styles for each screen ID.
+xres = 720
+yres = 576
 
 
 config.skin = ConfigSubsection()
@@ -59,7 +62,7 @@ onLoadCallbacks = []
 #
 def InitSkins(booting=True):
 	global currentPrimarySkin, currentDisplaySkin
-	global domScreens, colors, bodyFont, fonts, menus, parameters, setups, switchPixmap, windowStyles
+	global domScreens, colors, bodyFont, fonts, menus, parameters, setups, switchPixmap, scrollbarStyle, windowStyles, xres, yres
 	# Reset skin dictionaries. We can reload skins without a restart
 	# Make sure we keep the original dictionaries as many modules now import skin globals explicitly
 	domScreens.clear()
@@ -72,12 +75,14 @@ def InitSkins(booting=True):
 	parameters.clear()
 	setups.clear()
 	switchPixmap.clear()
+	scrollbarStyle = None
 	windowStyles.clear()
+	desktop = getDesktop(GUI_SKIN_ID)
 	# Add the emergency skin.  This skin should provide enough functionality
 	# to enable basic GUI functions to work.
-	loadSkin(EMERGENCY_SKIN, scope=SCOPE_CURRENT_SKIN, desktop=getDesktop(GUI_SKIN_ID), screenID=GUI_SKIN_ID)
+	loadSkin(EMERGENCY_SKIN, scope=SCOPE_CURRENT_SKIN, desktop=desktop, screenID=GUI_SKIN_ID)
 	# Add the subtitle skin.
-	loadSkin(SUBTITLE_SKIN, scope=SCOPE_CURRENT_SKIN, desktop=getDesktop(GUI_SKIN_ID), screenID=GUI_SKIN_ID)
+	loadSkin(SUBTITLE_SKIN, scope=SCOPE_CURRENT_SKIN, desktop=desktop, screenID=GUI_SKIN_ID)
 	# Add the front panel / display / lcd skin.
 	processed = []
 	for skin, name in [(config.skin.display_skin.value, "current"), (DEFAULT_DISPLAY_SKIN, "default")]:
@@ -95,7 +100,7 @@ def InitSkins(booting=True):
 		if skin in processed:  # Don't try to add a skin that has already failed.
 			continue
 		config.skin.primary_skin.value = skin
-		if loadSkin(config.skin.primary_skin.value, scope=SCOPE_CURRENT_SKIN, desktop=getDesktop(GUI_SKIN_ID), screenID=GUI_SKIN_ID):
+		if loadSkin(config.skin.primary_skin.value, scope=SCOPE_CURRENT_SKIN, desktop=desktop, screenID=GUI_SKIN_ID):
 			currentPrimarySkin = config.skin.primary_skin.value
 			break
 		print("[Skin] Error: Adding %s GUI skin '%s' has failed!" % (name, config.skin.primary_skin.value))
@@ -106,9 +111,14 @@ def InitSkins(booting=True):
 	if isfile(resolveFilename(SCOPE_SKIN, config.skin.primary_skin.value)):
 		name = USER_SKIN_TEMPLATE % dirname(config.skin.primary_skin.value)
 		if isfile(resolveFilename(SCOPE_CURRENT_SKIN, name)):
-			loadedUser = loadSkin(name, scope=SCOPE_CURRENT_SKIN, desktop=getDesktop(GUI_SKIN_ID), screenID=GUI_SKIN_ID)
+			loadedUser = loadSkin(name, scope=SCOPE_CURRENT_SKIN, desktop=desktop, screenID=GUI_SKIN_ID)
 	if not loadedUser:
-		loadSkin(USER_SKIN, scope=SCOPE_CURRENT_SKIN, desktop=getDesktop(GUI_SKIN_ID), screenID=GUI_SKIN_ID)
+		loadSkin(USER_SKIN, scope=SCOPE_CURRENT_SKIN, desktop=desktop, screenID=GUI_SKIN_ID)
+
+	# done loading the skin data, set the screen resolution. Once.
+	gMainDC.getInstance().setResolution(xres, yres)
+	desktop.resize(eSize(xres, yres))
+
 	# notify any other modules about skin reloads
 	if not booting:
 		for method in onLoadCallbacks:
@@ -352,6 +362,18 @@ def parseScale(s):
 			val = 0
 	return val
 
+def parseScrollbarMode(s):
+	from enigma import eListbox
+	try:
+		return {
+			"showOnDemand": eListbox.showOnDemand,
+			"showAlways": eListbox.showAlways,
+			"showNever": eListbox.showNever,
+			"showLeft": eListbox.showLeft
+		}[s]
+	except KeyError:
+		print("[Skin] Error: Invalid scrollbarMode '%s'!  Must be one of 'showOnDemand', 'showAlways', 'showNever' or 'showLeft'." % s)
+
 def loadPixmap(path, desktop):
 	option = path.find("#")
 	if option != -1:
@@ -476,16 +498,16 @@ class AttributeParser:
 		self.guiObject.setSelectionPicture(loadPixmap(value, self.desktop))
 
 	def sliderPixmap(self, value):
-		self.guiObject.setSliderPicture(loadPixmap(value, self.desktop))
+		self.guiObject.setScrollbarPixmap(loadPixmap(value, self.desktop))
 
 	def scrollbarbackgroundPixmap(self, value):
-		self.guiObject.setScrollbarBackgroundPicture(loadPixmap(value, self.desktop))
+		self.guiObject.setScrollbarBackgroundPixmap(loadPixmap(value, self.desktop))
 
 	def scrollbarSliderPicture(self, value):  # For compatibility same as sliderPixmap.
-		self.guiObject.setSliderPicture(loadPixmap(value, self.desktop))
+		self.sliderPixmap(value)
 
 	def scrollbarBackgroundPicture(self, value):  # For compatibility same as scrollbarbackgroundPixmap.
-		self.guiObject.setScrollbarBackgroundPicture(loadPixmap(value, self.desktop))
+		self.scrollbarbackgroundPixmap(value)
 
 	def alphatest(self, value):
 		try:
@@ -594,27 +616,19 @@ class AttributeParser:
 		self.guiObject.setBorderWidth(parseScale(value))
 
 	def scrollbarSliderBorderWidth(self, value):
-		self.guiObject.setScrollbarSliderBorderWidth(parseScale(value))
+		self.guiObject.setScrollbarBorderWidth(parseScale(value))
 
 	def scrollbarWidth(self, value):
 		self.guiObject.setScrollbarWidth(parseScale(value))
 
 	def scrollbarSliderBorderColor(self, value):
-		self.guiObject.setSliderBorderColor(parseColor(value))
+		self.guiObject.setScrollbarBorderColor(parseColor(value))
 
 	def scrollbarSliderForegroundColor(self, value):
-		self.guiObject.setSliderForegroundColor(parseColor(value))
+		self.guiObject.setScrollbarForegroundColor(parseColor(value))
 
 	def scrollbarMode(self, value):
-		try:
-			self.guiObject.setScrollbarMode({
-				"showOnDemand": self.guiObject.showOnDemand,
-				"showAlways": self.guiObject.showAlways,
-				"showNever": self.guiObject.showNever,
-				"showLeft": self.guiObject.showLeft
-			}[value])
-		except KeyError:
-			print("[Skin] Error: Invalid scrollbarMode '%s'!  Must be one of 'showOnDemand', 'showAlways', 'showNever' or 'showLeft'." % value)
+		self.guiObject.setScrollbarMode(parseScrollbarMode(value))
 
 	def enableWrapAround(self, value):
 		value = True if value.lower() in ("1", "enabled", "enablewraparound", "on", "true", "yes") else False
@@ -648,6 +662,34 @@ class AttributeParser:
 	def dividechar(self, value):
 		pass
 
+def ifHasValue(value, function):
+	return function(value) if value is not None else None
+
+def applyScrollbar(guiObject):
+	global scrollbarStyle
+	if scrollbarStyle is None:
+		return
+	guiObject.setScrollbarWidth(scrollbarStyle["width"])
+	guiObject.setScrollbarBorderWidth(scrollbarStyle["borderWidth"])
+	guiObject.setScrollbarBorderColor(scrollbarStyle["borderColor"])
+	guiObject.setScrollbarForegroundColor(scrollbarStyle["foregroundColor"])
+	guiObject.setScrollbarBackgroundColor(scrollbarStyle["backgroundColor"])
+	ifHasValue(scrollbarStyle.get("pixmap"), guiObject.setScrollbarPixmap)
+	ifHasValue(scrollbarStyle.get("backgroundPixmap"), guiObject.setScrollbarBackgroundPixmap)
+	guiObject.setScrollbarMode(scrollbarStyle["mode"])
+
+def applySlider(guiObject, defaultWidth, defaultBorderWidth):
+	global scrollbarStyle
+	if scrollbarStyle:
+		defaultWidth = scrollbarStyle["width"]
+		defaultBorderWidth = scrollbarStyle.get("borderWidth", defaultBorderWidth)
+		guiObject.setBorderColor(scrollbarStyle["borderColor"])
+		guiObject.setForegroundColor(scrollbarStyle["foregroundColor"])
+		guiObject.setBackgroundColor(scrollbarStyle["backgroundColor"])
+		ifHasValue(scrollbarStyle.get("pixmap"), guiObject.setPixmap)
+		ifHasValue(scrollbarStyle.get("backgroundPixmap"), guiObject.setBackgroundPixmap)
+	guiObject.setBorderWidth(defaultBorderWidth)
+	return defaultWidth
 
 def applySingleAttribute(guiObject, desktop, attrib, value, scale=((1, 1), (1, 1))):
 	# Is anyone still using applySingleAttribute?
@@ -664,7 +706,7 @@ def reloadWindowStyles():
 def loadSingleSkinData(desktop, screenID, domSkin, pathSkin, scope=SCOPE_CURRENT_SKIN):
 	"""Loads skin data like colors, windowstyle etc."""
 	assert domSkin.tag == "skin", "root element in skin must be 'skin'!"
-	global colors, fonts, menus, parameters, setups, switchPixmap
+	global colors, fonts, menus, parameters, setups, switchPixmap, scrollbarStyle, xres, yres
 	for tag in domSkin.findall("output"):
 		scrnID = int(tag.attrib.get("id", GUI_SKIN_ID))
 		if scrnID == GUI_SKIN_ID:
@@ -676,9 +718,6 @@ def loadSingleSkinData(desktop, screenID, domSkin, pathSkin, scope=SCOPE_CURRENT
 				bpp = res.attrib.get("bpp")
 				bpp = int(bpp) if bpp else 32
 				# print("[Skin] DEBUG: Resolution xres=%d, yres=%d, bpp=%d." % (xres, yres, bpp))
-				from enigma import gMainDC
-				gMainDC.getInstance().setResolution(xres, yres)
-				desktop.resize(eSize(xres, yres))
 				if bpp != 32:
 					pass  # Load palette (Not yet implemented!)
 				
@@ -733,6 +772,27 @@ def loadSingleSkinData(desktop, screenID, domSkin, pathSkin, scope=SCOPE_CURRENT
 				loadSkin(resolved, scope=scope, desktop=desktop, screenID=screenID)
 			else:
 				raise SkinError("Tag 'include' needs an existing filename, got filename '%s' (%s)" % (filename, resolved))
+
+	for scrollbar in domSkin.findall("scrollbarstyle"):
+		def loadResolvedPixmap(filename):
+			if filename:
+				resolved = resolveFilename(scope, filename, path_prefix=pathSkin)
+				if isfile(resolved):
+					return LoadPixmap(resolved)
+				else:
+					print("[Skin] Pixmap %s can't be loaded" % filename)
+
+		scrollbarStyle = {
+			"width": parseScale(scrollbar.attrib.get("width", 10)),
+			"borderWidth": parseScale(scrollbar.attrib.get("borderWidth", 1)),
+			"borderColor": parseColor(scrollbar.attrib.get("borderColor", "white")),
+			"foregroundColor": parseColor(scrollbar.attrib.get("foregroundColor", "white")),
+			"backgroundColor": parseColor(scrollbar.attrib.get("backgroundColor", "black")),
+			"pixmap": loadResolvedPixmap(scrollbar.attrib.get("pixmap")),
+			"backgroundPixmap": loadResolvedPixmap(scrollbar.attrib.get("backgroundPixmap")),
+			"mode": parseScrollbarMode(scrollbar.attrib.get("mode", "showOnDemand"))
+		}
+
 	for tag in domSkin.findall("switchpixmap"):
 		for pixmap in tag.findall("pixmap"):
 			name = pixmap.attrib.get("name")
@@ -1244,7 +1304,7 @@ def findWidgets(name):
 # screen will be 1.
 #
 def getSkinFactor():
-	skinfactor = getDesktop(GUI_SKIN_ID).size().height() / 720.0
+	skinfactor = yres / 720.0
 	# if skinfactor not in [0.8, 1, 1.5, 3, 6]:
 	# 	print("[Skin] Warning: Unexpected result for getSkinFactor '%0.4f'!" % skinfactor)
 	return skinfactor

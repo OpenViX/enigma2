@@ -103,28 +103,22 @@ def InitOsdPosition():
 	config.osd.alpha.addNotifier(setOSDAlpha)
 
 
-class UserInterfacePositioner(Screen, ConfigListScreen):
+class UserInterfacePositioner(ConfigListScreen, Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.setTitle(_("OSD position"))
 		self.Console = Console()
 		self["status"] = StaticText()
-		self["key_red"] = StaticText(_("Cancel"))
-		self["key_green"] = StaticText(_("OK"))
 		self["key_yellow"] = StaticText(_("Defaults"))
 
-		self["actions"] = ActionMap(["SetupActions", "ColorActions"],
+		self["actions"] = ActionMap(["ColorActions"],
 			{
-				"cancel": self.keyCancel,
-				"save": self.keySave,
-				"left": self.keyLeft,
-				"right": self.keyRight,
 				"yellow": self.keyDefault,
 			}, -2)
 
 		self.onChangedEntry = [ ]
 		self.list = []
-		ConfigListScreen.__init__(self, self.list, session = self.session, on_change = self.changedEntry)
+		ConfigListScreen.__init__(self, self.list, session = self.session, on_change = self.changedEntry, fullUI = True)
 		if SystemInfo["CanChangeOsdAlpha"]:
 			self.list.append(getConfigListEntry(_("User interface visibility"), config.osd.alpha, _("This option lets you adjust the transparency of the user interface")))
 		if SystemInfo["CanChangeOsdPosition"]:
@@ -171,21 +165,6 @@ class UserInterfacePositioner(Screen, ConfigListScreen):
 		except:
 			pass
 
-	def createSummary(self):
-		from Screens.Setup import SetupSummary
-		return SetupSummary
-
-	# for summary:
-	def changedEntry(self):
-		for x in self.onChangedEntry:
-			x()
-
-	def getCurrentEntry(self):
-		return self["config"].getCurrent()[0]
-
-	def getCurrentValue(self):
-		return str(self["config"].getCurrent()[1].getText())
-
 	def keyLeft(self):
 		ConfigListScreen.keyLeft(self)
 		self.setPreviewPosition()
@@ -225,31 +204,6 @@ class UserInterfacePositioner(Screen, ConfigListScreen):
 			self["config"].invalidate(item)
 		print '[UserInterfacePositioner] Setting OSD position: %s %s %s %s' %  (config.osd.dst_left.value, config.osd.dst_width.value, config.osd.dst_top.value, config.osd.dst_height.value)
 
-	def saveAll(self):
-		for x in self["config"].list:
-			x[1].save()
-		configfile.save()
-
-	# keySave and keyCancel are just provided in case you need them.
-	# you have to call them by yourself.
-	def keySave(self):
-		self.saveAll()
-		self.close()
-
-	def cancelConfirm(self, result):
-		if not result:
-			return
-		for x in self["config"].list:
-			x[1].cancel()
-		self.close()
-
-	def keyCancel(self):
-		if self["config"].isChanged():
-			from Screens.MessageBox import MessageBox
-			self.session.openWithCallback(self.cancelConfirm, MessageBox, _("Really close without saving settings?"), default = False)
-		else:
-			self.close()
-
 # This is called by the Wizard...
 
 	def run(self):
@@ -261,27 +215,16 @@ class UserInterfacePositioner(Screen, ConfigListScreen):
 		self.close()
 
 
-class OSD3DSetupScreen(Screen, ConfigListScreen):
+class OSD3DSetupScreen(ConfigListScreen, Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.skinName = "Setup"
 		self.setTitle(_("3D"))
-		self["status"] = StaticText()
-		self["HelpWindow"] = Pixmap()
-		self["HelpWindow"].hide()
-
-		self["key_red"] = StaticText(_("Cancel"))
-		self["key_green"] = StaticText(_("OK"))
-
-		self["actions"] = ActionMap(["SetupActions"],
-			{
-				"cancel": self.keyCancel,
-				"save": self.keySave,
-			}, -2)
+		self["description"] = StaticText()
 
 		self.onChangedEntry = [ ]
 		self.list = []
-		ConfigListScreen.__init__(self, self.list, session = self.session, on_change = self.changedEntry)
+		ConfigListScreen.__init__(self, self.list, session = self.session, on_change = self.changedEntry, fullUI = True)
 		self.list.append(getConfigListEntry(_("3D Mode"), config.osd.threeDmode, _("This option lets you choose the 3D mode")))
 		self.list.append(getConfigListEntry(_("Depth"), config.osd.threeDznorm, _("This option lets you adjust the 3D depth")))
 		self.list.append(getConfigListEntry(_("Show in extensions list ?"), config.osd.show3dextensions, _("This option lets you show the option in the extension screen")))
@@ -293,45 +236,5 @@ class OSD3DSetupScreen(Screen, ConfigListScreen):
 		self.selectionChanged()
 
 	def selectionChanged(self):
-		self["status"].setText(self["config"].getCurrent()[2])
+		self["description"].setText(self["config"].getCurrent()[2])
 
-	def createSummary(self):
-		from Screens.Setup import SetupSummary
-		return SetupSummary
-
-	# for summary:
-	def changedEntry(self):
-		for x in self.onChangedEntry:
-			x()
-
-	def getCurrentEntry(self):
-		return self["config"].getCurrent()[0]
-
-	def getCurrentValue(self):
-		return str(self["config"].getCurrent()[1].getText())
-
-	def saveAll(self):
-		for x in self["config"].list:
-			x[1].save()
-		configfile.save()
-
-	# keySave and keyCancel are just provided in case you need them.
-	# you have to call them by yourself.
-	def keySave(self):
-		self.saveAll()
-		self.close()
-
-	def cancelConfirm(self, result):
-		if not result:
-			return
-
-		for x in self["config"].list:
-			x[1].cancel()
-		self.close()
-
-	def keyCancel(self):
-		if self["config"].isChanged():
-			from Screens.MessageBox import MessageBox
-			self.session.openWithCallback(self.cancelConfirm, MessageBox, _("Really close without saving settings?"))
-		else:
-			self.close()

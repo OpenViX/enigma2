@@ -36,14 +36,7 @@ class EPGListSingle(EPGListBase):
 		return EPGListBase.applySkin(self, desktop, screen)
 
 	def setItemsPerPage(self):
-		if self.numberOfRows:
-			self.epgConfig.itemsperpage.default = self.numberOfRows
-		itemHeight = max(self.listHeight / self.epgConfig.itemsperpage.value, 20) if self.listHeight > 0 else 32
-		self.l.setItemHeight(itemHeight)
-		self.instance.resize(eSize(self.listWidth, self.listHeight / itemHeight * itemHeight))
-		self.listHeight = self.instance.size().height()
-		self.listWidth = self.instance.size().width()
-		self.itemHeight = itemHeight
+		EPGListBase.setItemsPerPage(self, 32)
 
 	def setFontsize(self):
 		self.l.setFont(0, gFont(self.eventFontName, self.eventFontSize + self.epgConfig.eventfs.value))
@@ -101,18 +94,10 @@ class EPGListSingle(EPGListBase):
 		res.append((eListboxPythonMultiContent.TYPE_TEXT, r3.left(), r3.top(), eventW, r3.height(), 0, RT_HALIGN_LEFT | RT_VALIGN_CENTER, eventName))
 		return res
 
-	def getSelectionPosition(self):
-		# Adjust absolute index to index in displayed view
-		index = self.l.getCurrentSelectionIndex() % self.epgConfig.itemsperpage.value
-		sely = self.instance.position().y() + self.itemHeight * index
-		if sely >= self.instance.position().y() + self.listHeight:
-			sely -= self.listHeight
-		return self.listWidth, sely
-
 	def fillSimilarList(self, refstr, eventId):
-  		# Search similar broadcastings.
-  		if eventId is None:
-  			return
+		# Search similar broadcastings.
+		if eventId is None:
+			return
 		self.list = self.epgcache.search(('RIBDN', 1024, eEPGCache.SIMILAR_BROADCASTINGS_SEARCH, refstr, eventId))
 		if self.list and len(self.list):
 			self.list.sort(key=lambda x: x[2])

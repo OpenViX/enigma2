@@ -504,7 +504,7 @@ class CiSelection(Screen):
 				CiHandler.unregisterCIMessageHandler(slot)
 		self.close()
 
-class PermanentPinEntry(Screen, ConfigListScreen):
+class PermanentPinEntry(ConfigListScreen, Screen):
 	def __init__(self, session, pin, pin_slot):
 		Screen.__init__(self, session)
 		self.skinName = ["ParentalControlChangePin", "Setup" ]
@@ -519,18 +519,9 @@ class PermanentPinEntry(Screen, ConfigListScreen):
 		self.pin2.addEndNotifier(boundFunction(self.valueChanged, 2))
 		self.list.append(getConfigListEntry(_("Enter PIN"), NoSave(self.pin1)))
 		self.list.append(getConfigListEntry(_("Re-enter PIN"), NoSave(self.pin2)))
-		ConfigListScreen.__init__(self, self.list)
-
-		self["actions"] = NumberActionMap(["DirectionActions", "ColorActions", "OkCancelActions"],
-		{
-			"cancel": self.cancel,
-			"red": self.cancel,
-			"save": self.keyOK,
-		}, -1)
+		ConfigListScreen.__init__(self, self.list, fullUI = True)
 
 		self.setTitle(_("Enter PIN Code"))
-		self["key_red"] = StaticText(_("Cancel"))
-		self["key_green"] = StaticText(_("OK"))
 
 	def valueChanged(self, pin, value):
 		if pin == 1:
@@ -538,7 +529,7 @@ class PermanentPinEntry(Screen, ConfigListScreen):
 		elif pin == 2:
 			self.keyOK()
 
-	def keyOK(self):
+	def keySave(self):
 		if self.pin1.value == self.pin2.value:
 			self.pin.value = self.pin1.value
 			self.pin.save()
@@ -546,22 +537,5 @@ class PermanentPinEntry(Screen, ConfigListScreen):
 		else:
 			self.session.open(MessageBox, _("The PIN codes you entered are different."), MessageBox.TYPE_ERROR)
 
-	def cancel(self):
+	def keyCancel(self):
 		self.close(None)
-
-	def keyNumberGlobal(self, number):
-		ConfigListScreen.keyNumberGlobal(self, number)
-
-	def changedEntry(self):
-		for x in self.onChangedEntry:
-			x()
-
-	def getCurrentEntry(self):
-		return self["config"].getCurrent()[0]
-
-	def getCurrentValue(self):
-		return str(self["config"].getCurrent()[1].getText())
-
-	def createSummary(self):
-		from Screens.Setup import SetupSummary
-		return SetupSummary

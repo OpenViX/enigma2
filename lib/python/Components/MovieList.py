@@ -24,10 +24,13 @@ KNOWN_EXTENSIONS = MOVIE_EXTENSIONS.union(IMAGE_EXTENSIONS, DVD_EXTENSIONS, AUDI
 
 # Gets the name of a movielist item for display in the UI honouring the hide extensions setting
 def getItemDisplayName(itemRef, info, removeExtension=None):
-	name = info.getName(itemRef)
-	if itemRef.flags & eServiceReference.isDirectory:
+	if itemRef.flags & eServiceReference.isGroup:
+		name = itemRef.getName()
+	elif itemRef.flags & eServiceReference.isDirectory:
+		name = info.getName(itemRef)
 		name = os.path.basename(name.rstrip("/"))
 	else:
+		name = info.getName(itemRef)
 		removeExtension = config.movielist.hide_extensions.value if removeExtension is None else removeExtension
 		if removeExtension:
 			fileName, fileExtension = os.path.splitext(name)
@@ -35,11 +38,20 @@ def getItemDisplayName(itemRef, info, removeExtension=None):
 				name = fileName
 	return name
 
+def expandCollections(items):
+	expanded = []
+	for item in items:
+		if item[0].flags & eServiceReference.isGroup:
+			expanded.extend(item[3].collectionItems)
+		else:
+			expanded.append(item)
+	return expanded
+
 cutsParser = struct.Struct('>QI') # big-endian, 64-bit PTS and 32-bit type
 
 class MovieListData:
 	def __init__(self):
-		pass
+		self.dirty = True
 
 # iStaticServiceInformation
 class StubInfo:
@@ -156,19 +168,19 @@ class MovieList(GUIComponent):
 	HIDE_DESCRIPTION = 1
 	SHOW_DESCRIPTION = 2
 
-# So MovieSelection.selectSortby() can find out whether we are
-# in a Trash folder and, if so, what the last sort was
-# The numbering starts after SORT_* values above.
-# in MovieSelection.py (that has no SORT_GROUPWISE)
-# NOTE! that these two *must* *follow on* from the end of the
-#       SORT_* items above!
-#
+	# So MovieSelection.selectSortby() can find out whether we are
+	# in a Trash folder and, if so, what the last sort was
+	# The numbering starts after SORT_* values above.
+	# in MovieSelection.py (that has no SORT_GROUPWISE)
+	# NOTE! that these two *must* *follow on* from the end of the
+	#       SORT_* items above!
+	#
 	TRASHSORT_SHOWRECORD = 13
 	TRASHSORT_SHOWDELETE = 14
 	UsingTrashSort = False
 	InTrashFolder = False
 
-	def __init__(self, root, sort_type=None, descr_state=None):
+	def __init__(self, root, sort_type=None, descr_state=None, allowCollections=False):
 		GUIComponent.__init__(self)
 		self.list = []
 		self.descr_state = descr_state or self.HIDE_DESCRIPTION
@@ -177,15 +189,16 @@ class MovieList(GUIComponent):
 		self.parentDirectory = 0
 		self.fontName = "Regular"
 		self.fontSize = 20
+		self.skinItemHeight = None
 		self.listHeight = None
 		self.listWidth = None
-		self.pbarShift = 5
+		self.pbarShift = None
 		self.pbarHeight = 16
 		self.pbarLargeWidth = 48
 		self.pbarColour = 0x206333
 		self.pbarColourSeen = 0xffc71d
 		self.pbarColourRec = 0xff001d
-		self.partIconeShift = 5
+		self.partIconeShift = None
 		self.spaceRight = 2
 		self.spaceIconeText = 2
 		self.iconsWidth = 22
@@ -197,6 +210,7 @@ class MovieList(GUIComponent):
 		self.l = eListboxPythonMultiContent()
 		self.tags = set()
 		self.markList = []
+		self.allowCollections = allowCollections # used to disable collections when loaded by OpenWebIf
 		self.root = None
 		self._playInBackground = None
 		self._playInForeground = None
@@ -215,6 +229,7 @@ class MovieList(GUIComponent):
 		self.iconUnwatched = loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, "icons/part_unwatched.png"))
 		self.iconFolder = loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, "icons/folder.png"))
 		self.iconMarked = loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, "icons/mark_on.png"))
+		self.iconCollection = loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, "icons/collection.png")) or self.iconFolder
 		self.iconTrash = loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, "icons/trashcan.png"))
 		self.runningTimers = {}
 		self.updateRecordings()
@@ -290,6 +305,8 @@ class MovieList(GUIComponent):
 			font = parseFont(value, ((1,1),(1,1)))
 			self.fontName = font.family
 			self.fontSize = font.pointSize
+		def itemHeight(value):
+			self.skinItemHeight = parseScale(value)
 		def pbarShift(value):
 			self.pbarShift = int(value)
 		def pbarHeight(value):
@@ -330,10 +347,8 @@ class MovieList(GUIComponent):
 		return rc
 
 	def setItemsPerPage(self):
-		if self.listHeight > 0:
-			itemHeight = self.listHeight / config.movielist.itemsperpage.value
-		else:
-			itemHeight = 25 # some default (270/5)
+		numberOfRows = config.movielist.itemsperpage.value
+		itemHeight = (self.listHeight // numberOfRows if numberOfRows else self.skinItemHeight) or 25
 		self.itemHeight = itemHeight
 		self.l.setItemHeight(itemHeight)
 		self.instance.resize(eSize(self.listWidth, self.listHeight / itemHeight * itemHeight))
@@ -343,8 +358,9 @@ class MovieList(GUIComponent):
 		self.l.setFont(1, gFont(self.fontName, (self.fontSize - 3) + config.movielist.fontsize.value))
 
 	def invalidateItem(self, index):
-		x = self.list[index]
-		self.list[index] = (x[0], x[1], x[2], None)
+		data = self.list[index][3]
+		if data:
+			data.dirty = True
 		self.l.invalidateEntry(index)
 
 	def invalidateCurrentItem(self):
@@ -374,6 +390,15 @@ class MovieList(GUIComponent):
 		pathName = serviceref.getPath()
 		res = [ None ]
 
+		if serviceref.flags & eServiceReference.isGroup:
+			# Collections
+			res.append(MultiContentEntryPixmapAlphaBlend(pos=(0, 0), size=(col0iconSize, self.itemHeight), png=self.iconCollection, flags=BT_ALIGN_CENTER))
+			if self.getCurrent() in self.markList:
+				res.append(MultiContentEntryPixmapAlphaBlend(pos=(0, 0), size=(col0iconSize, self.itemHeight), png=self.iconMarked))
+			res.append(MultiContentEntryText(pos=(col0iconSize + space, 0), size=(width-220, self.itemHeight), font=0, flags = RT_HALIGN_LEFT|RT_VALIGN_CENTER, text = data.txt))
+			recordingCount = ngettext("%d Recording", "%d Recordings", data.collectionCount) % data.collectionCount
+			res.append(MultiContentEntryText(pos=(width-220-r, 0), size=(220, self.itemHeight), font=1, flags=RT_HALIGN_RIGHT|RT_VALIGN_CENTER, text=recordingCount))
+			return res
 		if serviceref.flags & eServiceReference.mustDescent:
 			# Directory
 			# Name is full path name
@@ -397,8 +422,7 @@ class MovieList(GUIComponent):
 			res.append(MultiContentEntryText(pos=(col0iconSize + space, 0), size=(width-145, self.itemHeight), font=0, flags = RT_HALIGN_LEFT|RT_VALIGN_CENTER, text = txt))
 			res.append(MultiContentEntryText(pos=(width-145-r, 0), size=(145, self.itemHeight), font=1, flags=RT_HALIGN_RIGHT|RT_VALIGN_CENTER, text=_("Directory")))
 			return res
-		if data == -1 or data is None:
-			data = MovieListData()
+		if data.dirty:
 			cur_idx = self.l.getCurrentSelectionIndex()
 			x = self.list[cur_idx] # x = ref,info,begin,...
 			if config.usage.load_length_of_movies_in_moviellist.value:
@@ -454,12 +478,19 @@ class MovieList(GUIComponent):
 			# icon/progress
 			if data:
 				if switch == 'i' and hasattr(data, 'icon') and data.icon is not None:
-					res.append(MultiContentEntryPixmapAlphaBlend(pos=(colX,self.partIconeShift), size=(iconSize,data.icon.size().height()), png=data.icon))
+					if self.partIconeShift is None:
+						res.append(MultiContentEntryPixmapAlphaBlend(pos=(colX,0), size=(iconSize,ih), png=data.icon, flags=BT_ALIGN_CENTER))
+					else:
+						res.append(MultiContentEntryPixmapAlphaBlend(pos=(colX,self.partIconeShift), size=(iconSize,data.icon.size().height()), png=data.icon))
 				elif switch in ('p', 's'):
 					if hasattr(data, 'part') and data.part > 0:
-						res.append(MultiContentEntryProgress(pos=(colX,self.pbarShift), size=(iconSize, self.pbarHeight), percent=data.part, borderWidth=2, foreColor=data.partcol, foreColorSelected=None, backColor=None, backColorSelected=None))
+						pbarY = (self.itemHeight - self.pbarHeight) // 2 if self.pbarShift is None else self.pbarShift
+						res.append(MultiContentEntryProgress(pos=(colX,pbarY), size=(iconSize, self.pbarHeight), percent=data.part, borderWidth=2, foreColor=data.partcol, foreColorSelected=None, backColor=None, backColorSelected=None))
 					elif hasattr(data, 'icon') and data.icon is not None:
-						res.append(MultiContentEntryPixmapAlphaBlend(pos=(colX,self.pbarShift), size=(iconSize, self.pbarHeight), png=data.icon))
+						if self.pbarShift is None:
+							res.append(MultiContentEntryPixmapAlphaBlend(pos=(colX,0), size=(iconSize, ih), png=data.icon, flags=BT_ALIGN_CENTER))
+						else:
+							res.append(MultiContentEntryPixmapAlphaBlend(pos=(colX,self.pbarShift), size=(iconSize, self.pbarHeight), png=data.icon))
 			return iconSize
 
 		if piconWidth > 0:
@@ -556,14 +587,14 @@ class MovieList(GUIComponent):
 		instance.setContent(None)
 		instance.selectionChanged.get().remove(self.selectionChanged)
 
-	def reload(self, root = None, filter_tags = None):
+	def reload(self, root=None, filter_tags=None, collection=None):
 		if self.reloadDelayTimer is not None:
 			self.reloadDelayTimer.stop()
 			self.reloadDelayTimer = None
 		if root is not None:
-			self.load(root, filter_tags)
+			self.load(root, filter_tags, collection)
 		else:
-			self.load(self.root, filter_tags)
+			self.load(self.root, filter_tags, collection)
 		self.l.setBuildFunc(self.buildMovieListEntry)  # don't move that to __init__ as this will create memory leak when calling MovieList from WebIf
 		self.refreshDisplay()
 
@@ -585,6 +616,15 @@ class MovieList(GUIComponent):
 				if index < self.instance.getCurrentIndex():
 					self.moveUp()
 				return True
+			data = item[3]
+			if item[0].flags & eServiceReference.isGroup and data:
+				for colIemIndex, colItem in enumerate(data.collectionItems):
+					if colItem[0] == service:
+						del data.collectionItems[colIemIndex]
+						if len(data.collectionItems) == 0:
+							self.removeMark(item[0])
+							del self.list[index]
+						return True
 		return False
 
 	def findService(self, service):
@@ -604,13 +644,16 @@ class MovieList(GUIComponent):
 	def __iter__(self):
 		return self.list.__iter__()
 
-	def load(self, root, filter_tags):
+	def load(self, root, filter_tags, collectionName=None):
 		# this lists our root service, then building a
 		# nice list
 		del self.list[:]
 		del self.markList[:]
 		serviceHandler = eServiceCenter.getInstance()
 		numberOfDirs = 0
+		collectionMode = config.movielist.enable_collections.value
+		if not collectionMode or not self.allowCollections:
+			collectionName = None
 
 		reflist = root and serviceHandler.list(root)
 		if reflist is None:
@@ -619,17 +662,21 @@ class MovieList(GUIComponent):
 		realtags = set()
 		autotags = {}
 		rootPath = os.path.normpath(root.getPath())
+		split = os.path.split(rootPath)
 		parent = None
 		# Don't navigate above the "root"
 		if len(rootPath) > 1 and (os.path.realpath(rootPath) != os.path.realpath(config.movielist.root.value)):
-			parent = os.path.split(os.path.normpath(rootPath))[0]
-			currentfolder = os.path.normpath(rootPath) + '/'
-			if parent and (parent not in defaultInhibitDirs) and not currentfolder.endswith(config.usage.default_path.value):
+			parent = split[0]
+			currentFolder = os.path.normpath(rootPath) + '/'
+			if collectionName:
+				self.list.append((eServiceReference.fromDirectory(currentFolder), None, 0, MovieListData()))
+				numberOfDirs += 1
+			elif parent and (parent not in defaultInhibitDirs) and not currentFolder.endswith(config.usage.default_path.value):
 				# enigma wants an extra '/' appended
 				if not parent.endswith('/'):
 					parent += '/'
 				ref = eServiceReference.fromDirectory(parent)
-				self.list.append((ref, None, 0, -1))
+				self.list.append((ref, None, 0, MovieListData()))
 				numberOfDirs += 1
 		firstDir = numberOfDirs
 
@@ -658,6 +705,10 @@ class MovieList(GUIComponent):
 				info = justStubInfo
 			begin = info.getInfo(serviceref, iServiceInformation.sTimeCreate)
 			begin2 = 0
+			name = info.getName(serviceref)
+			# OSX put a lot of stupid files ._* everywhere... we need to skip them
+			if name[:2] == "._":
+				continue
 			if MovieList.UsingTrashSort:
 				f_path = serviceref.getPath()
 				if os.path.exists(f_path):  # Override with deltime for sorting
@@ -665,20 +716,18 @@ class MovieList(GUIComponent):
 						begin2 = begin      # Save for later re-instatement
 					begin = os.stat(f_path).st_ctime
 
-			if serviceref.flags & eServiceReference.mustDescent:
-				dirname = info.getName(serviceref)
-				if not dirname.endswith('.AppleDouble/') and not dirname.endswith('.AppleDesktop/') and not dirname.endswith('.AppleDB/') and not dirname.endswith('Network Trash Folder/') and not dirname.endswith('Temporary Items/'):
-					self.list.append((serviceref, info, begin, -1))
+			# Filter on a specific collections. Users don't care about case of the name
+			if collectionName and collectionName.lower() != name.strip().lower():
+				continue
+
+			if not collectionName and serviceref.flags & eServiceReference.mustDescent:
+				if not name.endswith('.AppleDouble/') and not name.endswith('.AppleDesktop/') and not name.endswith('.AppleDB/') and not name.endswith('Network Trash Folder/') and not name.endswith('Temporary Items/'):
+					self.list.append((serviceref, info, begin, MovieListData()))
 					numberOfDirs += 1
 				continue
+
 			# convert space-separated list of tags into a set
 			this_tags = info.getInfoString(serviceref, iServiceInformation.sTags).split(' ')
-			name = info.getName(serviceref)
-
-			# OSX put a lot of stupid files ._* everywhere... we need to skip them
-			if name[:2] == "._":
-				continue
-
 			if this_tags == ['']:
 				# No tags? Auto tag!
 				this_tags = name.replace(',',' ').replace('.',' ').replace('_',' ').replace(':',' ').split()
@@ -699,23 +748,54 @@ class MovieList(GUIComponent):
 				this_tags_fullname = set(this_tags_fullname)
 				this_tags = set(this_tags)
 				if not this_tags.issuperset(filter_tags) and not this_tags_fullname.issuperset(filter_tags):
-# 					print "Skipping", name, "tags=", this_tags, " filter=", filter_tags
 					continue
 			if begin2 != 0:
-				self.list.append((serviceref, info, begin, -1, begin2))
+				self.list.append((serviceref, info, begin, MovieListData(), begin2))
 			else:
-				self.list.append((serviceref, info, begin, -1))
+				self.list.append((serviceref, info, begin, MovieListData()))
+
+		if not collectionName and collectionMode and self.allowCollections:
+			# not displaying the contents of a collection, group similar named 
+			# recordings into collections ignoring case
+			groupedFiles = {}
+			items = []
+			for item in self.list:
+				if item[0].flags & eServiceReference.mustDescent:
+					items.append(item)
+				else:
+					name = item[1].getName(item[0]).strip().lower()
+					if collectionMode == 1 and name == split[1].lower():
+						items.append(item)
+					elif groupedFiles.get(name):
+						groupedFiles[name].append(item)
+					else:
+						groupedFiles[name] = [item]
+
+			for key, groupedItems in groupedFiles.items():
+				if len(groupedItems) == 1:
+					# insert single items as normal files
+					items.append(groupedItems[0])
+				elif len(groupedItems) > 1:
+					# more than one item, display a collection
+					firstItem = groupedItems[0]
+					data = MovieListData()
+					data.collectionCount = len(groupedItems)
+					data.collectionItems = groupedItems
+					data.txt = firstItem[1].getName(firstItem[0]).strip()
+					serviceref = eServiceReference(eServiceReference.idFile, eServiceReference.isGroup, data.txt)
+					items.append((serviceref, serviceref.info(), max(groupedItems, key=lambda i: i[2])[2], data))
+			self.list = items
 
 		self.firstFileEntry = numberOfDirs
 		self.parentDirectory = 0
 
 		self.list.sort(key=self.buildGroupwiseSortkey)
 
-# Have we had a temporary sort method override set in MovieSelectiom.py?
-# If so use it, remove it (it's a one-off) and set the current method so
-# that the "Sort by" menu can highlight it and "Sort" knows which to
-# move on from (both in Screens/MovieSelection.py).
-#
+		# Have we had a temporary sort method override set in MovieSelectiom.py?
+		# If so use it, remove it (it's a one-off) and set the current method so
+		# that the "Sort by" menu can highlight it and "Sort" knows which to
+		# move on from (both in Screens/MovieSelection.py).
+		#
 		try:
 			self.current_sort = self.temp_sort
 			del self.temp_sort
@@ -724,10 +804,10 @@ class MovieList(GUIComponent):
 
 		if MovieList.UsingTrashSort:      # Same as SORT_RECORDED, but must come first...
 			self.list = sorted(self.list[:numberOfDirs], key=self.buildBeginTimeSortKey) + sorted(self.list[numberOfDirs:], key=self.buildBeginTimeSortKey)
-# Having sorted on *deletion* times, re-instate any record times for
-# *display* if that option is set.
-# self.list is a list of tuples, so we can't just assign to elements...
-#
+			# Having sorted on *deletion* times, re-instate any record times for
+			# *display* if that option is set.
+			# self.list is a list of tuples, so we can't just assign to elements...
+			#
 			if config.usage.trashsort_deltime.value == "show record time":
 				for i in range(len(self.list)):
 					if len(self.list[i]) == 5:
@@ -832,6 +912,11 @@ class MovieList(GUIComponent):
 		# x = ref,info,begin,...
 		ref = x[0]
 		name = x[1] and x[1].getName(ref)
+		# if a collection, use the first item in the collection for the length
+		if ref.flags & eServiceReference.isGroup:
+			firstItem = x[3].collectionItems[0]
+			if firstItem:
+				ref = firstItem[0] or ref
 		len = x[1] and (x[1].getLength(ref) // 60) # we only display minutes, so sort by minutes
 		if ref.flags & eServiceReference.mustDescent:
 			return 0, len or 0, name and name.lower() or "", -x[2]
@@ -845,7 +930,7 @@ class MovieList(GUIComponent):
 			return 0, name and name.lower() or "", -x[2]
 		return 1, name and name.lower() or "", -x[2]
 
-# as for buildAlphaNumericSortKey, but without negating dates
+	# as for buildAlphaNumericSortKey, but without negating dates
 	def buildAlphaDateSortKey(self, x):
 		# x = ref,info,begin,...
 		ref = x[0]
@@ -865,8 +950,6 @@ class MovieList(GUIComponent):
 				# if path ends in '/', p is blank.
 				p = os.path.split(p[0])
 			name = p[1]
-		# print "Sorting for -%s-" % name
-
 		return 1, name and name.lower() or "", -x[2]
 
 	def buildBeginTimeSortKey(self, x):
@@ -923,7 +1006,7 @@ class MovieList(GUIComponent):
 			itemsBelow = self.list[currentIndex + 1:]
 			#first search the items below the selection
 			for index, item in enumerate(itemsBelow):
-# Just ignore any "root tagged" item - for which item[1] is None
+				# Just ignore any "root tagged" item - for which item[1] is None
 				if not item[1]:
 					continue
 				ref = item[0]
@@ -939,7 +1022,7 @@ class MovieList(GUIComponent):
 		if found == False and currentIndex > 0:
 			itemsAbove = self.list[1:currentIndex] #first item (0) points parent folder - no point to include
 			for index, item in enumerate(itemsAbove):
-# Just ignore any "root tagged" item - for which item[1] is None
+				# Just ignore any "root tagged" item - for which item[1] is None
 				if not item[1]:
 					continue
 				ref = item[0]

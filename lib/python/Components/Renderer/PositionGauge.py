@@ -19,9 +19,10 @@ class PositionGauge(Renderer):
 
 	def changed(self, what):
 		if what[0] == self.CHANGED_CLEAR:
-			(self.length, self.position) = 0
+			self.length = self.position = 0
 		else:
-			(self.length, self.position) = (self.source.length or 0, self.source.position or 0)
+			self.length = self.source.length or 0
+			self.position = self.source.position or 0
 
 	def cutlist_changed(self):
 		self.cutlist = self.source.cutlist or [ ]

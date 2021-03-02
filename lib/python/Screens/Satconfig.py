@@ -148,10 +148,13 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 				elif self.nimConfig.configMode.value == "nothing":
 					pass
 				elif self.nimConfig.configMode.value == "advanced":
-					advanced_satposdepends_satlist_choices = (3607, _('Additional cable of motorized LNB'), 1)
-					advanced_satlist_choices = self.nimConfig.advanced.sats.choices.choices
 					advanced_setchoices = False
-					if nimmanager.canDependOn(self.slotid, True):
+					advanced_satposdepends_satlist_choices = ("3607", _("Additional cable of motorized LNB"), 1)
+					advanced_satlist_choices = self.nimConfig.advanced.sats.choices.choices[:]
+					if self.nim.isFBCLink() and ("3602", _('All satellites 2 (USALS)')) in advanced_satlist_choices:
+						advanced_satlist_choices = nimmanager.satList[:]
+						advanced_setchoices = True
+					if nimmanager.canDependOn(self.slotid, advanced_satposdepends=self.nim.isFBCLink() and "fbc" or "all"):
 						if advanced_satposdepends_satlist_choices not in advanced_satlist_choices:
 							advanced_satlist_choices.append(advanced_satposdepends_satlist_choices)
 							advanced_setchoices = True
@@ -162,14 +165,14 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 						default_orbpos = None
 						for x in self.nimConfig.advanced.sat.keys():
 							if x == 192:
-								default_orbpos = "192"
+								default_orbpos = str(x)
 								break
 						self.nimConfig.advanced.sats.setChoices(advanced_satlist_choices, default=default_orbpos)
 					self.advancedSatsEntry = getConfigListEntry(self.indent % _("Satellite"), self.nimConfig.advanced.sats, _("Select the satellite you want to configure. Once that satellite is configured you can select and configure other satellites that will be accessed using this same tuner."))
 					self.list.append(self.advancedSatsEntry)
 					current_config_sats = self.nimConfig.advanced.sats.value
 					if current_config_sats == "3607":
-						self.nimConfig.connectedTo.setChoices([((str(id), nimmanager.getNimDescription(id))) for id in nimmanager.canDependOn(self.slotid, True)])
+						self.nimConfig.connectedTo.setChoices([((str(id), nimmanager.getNimDescription(id))) for id in nimmanager.canDependOn(self.slotid, advanced_satposdepends=self.nim.isFBCLink() and "fbc" or "all")])
 						self.list.append(getConfigListEntry(self.indent % _("Tuner"), self.nimConfig.connectedTo, _("Select the tuner that controls the motorised dish.")))
 					if current_config_sats in ("3605", "3606", "3607"):
 						if current_config_sats != "3607":
@@ -404,7 +407,7 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 					self.list.append(getConfigListEntry(self.indent % "LOF/L", currLnb.lofl, _("Consult your SCR device spec sheet for this information.")))
 					self.list.append(getConfigListEntry(self.indent % "LOF/H", currLnb.lofh, _("Consult your SCR device spec sheet for this information.")))
 					self.list.append(getConfigListEntry(self.indent % _("Threshold"), currLnb.threshold, _("Consult your SCR device spec sheet for this information.")))
-					if not SystemInfo["LnbPowerAlwaysOn"] or not self.nim.isFBCTuner():
+					if not SystemInfo["FbcTunerPowerAlwaysOn"] or not self.nim.isFBCTuner():
 						self.list.append(self.externallyPowered)
 					if not currLnb.powerinserter.value:
 						self.list.append(getConfigListEntry(self.indent % _("Bootup time"), currLnb.bootuptime, _("Consult your SCR device spec sheet for this information.")))
@@ -418,7 +421,7 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 					if currLnb.positions.value > 1:
 						self.list.append(self.advancedPosition)
 					self.list.append(self.advancedSCR)
-					if not SystemInfo["LnbPowerAlwaysOn"] or not self.nim.isFBCTuner():
+					if not SystemInfo["FbcTunerPowerAlwaysOn"] or not self.nim.isFBCTuner():
 						self.list.append(self.externallyPowered)
 				choices = []
 				connectable = nimmanager.canConnectTo(self.slotid)
@@ -440,6 +443,8 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 				self.list.append(getConfigListEntry(self.indent % _("Tone mode"), Sat.tonemode, _("Select 'band' if using a 'universal' LNB, otherwise consult your LNB spec sheet.")))
 
 			if lnbnum < 65 or lnbnum == 71:
+				if self.nim.isFBCLink() and ("1_2", _("1.2")) in currLnb.diseqcMode.choices.choices:
+					currLnb.diseqcMode.setChoices([("none", _("None")), ("1_0", _("1.0")), ("1_1", _("1.1"))], "none")
 				self.advancedDiseqcMode = getConfigListEntry(self.indent % _("DiSEqC mode"), currLnb.diseqcMode, _("Select '1.0' for standard committed switches, '1.1' for uncommitted switches, and '1.2' for systems using a positioner."))
 				self.list.append(self.advancedDiseqcMode)
 			if currLnb.diseqcMode.value != "none":
@@ -612,34 +617,29 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 
 	def __init__(self, session, slotid):
 		Screen.__init__(self, session)
-		self.setTitle(_("Tuner Settings"))
-
 		self.list = [ ]
 		ServiceStopScreen.__init__(self)
 		ConfigListScreen.__init__(self, self.list)
 
-		self["key_red"] = StaticText(_("Close"))
+		self["key_red"] = StaticText(_("Cancel"))
 		self["key_green"] = StaticText(_("Save"))
-		self["key_yellow"] = StaticText()
-		self["key_blue"] = StaticText()
+		self["key_yellow"] = StaticText("")
+		self["key_blue"] = StaticText("")
 		self["description"] = Label("")
-
-		self["actions"] = ActionMap(["SetupActions", "SatlistShortcutAction", "ColorActions"],
+		self["actions"] = ActionMap(["SetupActions", "SatlistShortcutAction"],
 		{
 			"ok": self.keyOk,
 			"save": self.keySave,
 			"cancel": self.keyCancel,
 			"changetype": self.changeConfigurationMode,
-			"nothingconnected": self.nothingConnectedShortcut,
-			"red": self.keyCancel,
-			"green": self.keySave,
+			"nothingconnected": self.nothingConnectedShortcut
 		}, -2)
 
 		self.slotid = slotid
 		self.nim = nimmanager.nim_slots[slotid]
 		self.nimConfig = self.nim.config
 		self.createSetup()
-		self.setTitle("%s %s" % (_("Setup"), self.nim.friendly_full_description))
+		self.setTitle(_("Setup") + " " + self.nim.friendly_full_description)
 
 		if not self.selectionChanged in self["config"].onSelectionChanged:
 			self["config"].onSelectionChanged.append(self.selectionChanged)
@@ -661,7 +661,7 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 		self["key_yellow"].setText((self.nimConfig.configMode.value == "simple"  and (not self.nim.isCombined() or self.nimConfig.configModeDVBS.value)) and _("Auto Diseqc") or self.configMode and _("Configuration mode") or "")
 
 	def setTextKeyBlue(self):
-		self["key_blue"].setText(self["config"].isChanged() and _("Set default") or "")
+		self["key_blue"].setText(self.isChanged() and _("Set default") or "")
 
 	def keyRight(self):
 		if self.nim.isFBCLink() and self["config"].getCurrent() in (self.advancedLof, self.advancedConnected):
@@ -673,7 +673,7 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 			self.newConfig()
 
 	def keyCancel(self):
-		if self["config"].isChanged():
+		if self.isChanged():
 			self.session.openWithCallback(self.cancelConfirm, MessageBox, _("Really close without saving settings?"), default = False)
 		else:
 			self.restartPrevService()

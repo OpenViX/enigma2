@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-15 09:19+0000\n"
-"PO-Revision-Date: 2021-02-15 17:18+0100\n"
+"POT-Creation-Date: 2021-03-01 01:05+0000\n"
+"PO-Revision-Date: 2021-03-01 13:34+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -820,6 +820,10 @@ msgstr "%b=%-d "
 msgid "%b=%d "
 msgstr "%b=%d "
 
+#, python-format
+msgid "%d"
+msgstr "%d"
+
 msgid "%d %B %Y"
 msgstr "%d %B %Y"
 
@@ -867,6 +871,12 @@ msgid "%d Min"
 msgid_plural "%d Mins"
 msgstr[0] "%d Min"
 msgstr[1] "%d Mins"
+
+#, python-format
+msgid "%d Recording"
+msgid_plural "%d Recordings"
+msgstr[0] "%d opname"
+msgstr[1] "%d opnames"
 
 #. TRANSLATORS: Intermediate scanning result, '%d' channel(s) have been found so far
 #, python-format
@@ -3215,6 +3225,9 @@ msgstr "Code rate HP"
 msgid "Code rate LP"
 msgstr "Code rate LP"
 
+msgid "Collection"
+msgstr "Collectie"
+
 msgid "Collection name"
 msgstr "Naam van verzameling"
 
@@ -4977,6 +4990,9 @@ msgstr "Auto Fastscan voor %s inschakelen"
 
 msgid "Enable automated downloading of OpenTV EPG data. If only one tuner is available the download will be done when the reciever is in standby."
 msgstr "Schakel automatisch downloaden van OpenTV EPG in. Als er slechts één tuner beschikbaar is, zal dit gebeuren als de ontvanger in stand-by staat."
+
+msgid "Enable automatic collections"
+msgstr "Automatische collecties inschakelen"
 
 msgid "Enable blinking rec symbol on the LCD Display"
 msgstr "Schakel knipperend opnamesymbool in op het LCD-scherm"
@@ -7056,6 +7072,9 @@ msgstr "Laad niet-verbonden favorietenlijsten"
 msgid "Load, Save & Delete EPG Cache"
 msgstr "Laad, bewaar en verwijder EPG-cache"
 
+msgid "Loading skin"
+msgstr "Skin wordt geladen..."
+
 msgid "Local box"
 msgstr "Lokale box"
 
@@ -8377,6 +8396,9 @@ msgstr "PLS Modus & PLS Code"
 
 msgid "PMT PID"
 msgstr "PMT PID"
+
+msgid "PREVIOUS"
+msgstr "VORIGE"
 
 msgid "PRIMETIME"
 msgstr "PRIMETIME"
@@ -13121,9 +13143,6 @@ msgstr "Tuner"
 msgid "Tuner :"
 msgstr "Tuner:"
 
-msgid "Tuner Settings"
-msgstr "Tunerinstellingen"
-
 msgid "Tuner Setup"
 msgstr "Tunerinstellingen"
 
@@ -13493,6 +13512,9 @@ msgstr "Meet stroomopname"
 
 msgid "Use separate Picon pack for Front Display"
 msgstr "Gebruik apart picon-pakket voor het paneeldisplay"
+
+msgid "Use skin default"
+msgstr "Gebruik de default skin"
 
 msgid "Use slim screen"
 msgstr "Gebruik slim screen"
@@ -14075,6 +14097,9 @@ msgstr "Indien ingeschakeld zullen nummer markeringen verborgen worden."
 
 msgid "When enabled, pressing '0' will zap you to the first channel in your first bouquet and delete your zap-history."
 msgstr "Indien ingeschakeld zapt '0' naar het eerste kanaal van het eerste bouquet en wordt de zap-historie verwijderd."
+
+msgid "When enabled, recordings are grouped by name into collections automatically."
+msgstr "Indien ingeschakeld worden opnames automatisch gegropeerd in collecties."
 
 msgid "When enabled, reformat subtitles to match the width of the screen."
 msgstr "Indien ingeschakeld worden ondertitels opnieuw ingedeeld om te passen bij de breedte van het scherm."
@@ -17736,6 +17761,9 @@ msgstr "zapte"
 
 #~ msgid "Tuner Configuration"
 #~ msgstr "Tunerconfiguratie"
+
+#~ msgid "Tuner Settings"
+#~ msgstr "Tunerinstellingen"
 
 #~ msgid "Tuner setup"
 #~ msgstr "Tunerinstellingen"
