@@ -1005,7 +1005,7 @@ def InitUsageConfig():
 	config.subtitles.pango_autoturnon = ConfigYesNo(default = True)
 
 	config.autolanguage = ConfigSubsection()
-	default_autoselect = "eng qaa Englisch" # for audio_autoselect1
+	default_autoselect = "eng Englisch" # for audio_autoselect1
 	audio_language_choices=[
 		("", _("None")),
 		("und", _("Undetermined")),
