@@ -7,7 +7,7 @@ def InitSetupDevices():
 		language.activateLanguage(configElement.value)
 
 	config.osd = ConfigSubsection()
-	config.osd.language = ConfigText(default="en_EN")
+	config.osd.language = ConfigText(default="en_GB")
 	config.osd.language.addNotifier(languageNotifier)
 
 	def keyboardNotifier(configElement):
