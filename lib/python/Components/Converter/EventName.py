@@ -109,6 +109,7 @@ class EventName(Converter, object):
 		# Arguments...
 		"Name": ("type", NAME),
 		"Description": ("type", SHORT_DESCRIPTION),
+		"ShortDescription": ("type", SHORT_DESCRIPTION), # added for consistency with MovieInfo
 		"ExtendedDescription": ("type", EXTENDED_DESCRIPTION),
 		"FullDescription": ("type", FULL_DESCRIPTION),
 		"ID": ("type", ID),
