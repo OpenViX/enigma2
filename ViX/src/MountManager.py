@@ -145,7 +145,7 @@ def buildPartitionInfo(partition, bplist):
 			description = _("Size: ") + str(size) + _("MB")
 		else:
 			description = _("Size: ") + _("unavailable")
-	if description != "":
+	if description != "": # how will this ever return false?
 		if SystemInfo["MountManager"]:
 			if rw.startswith("rw"):
 				rw = " R/W"
