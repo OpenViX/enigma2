@@ -135,16 +135,15 @@ def buildPartitionInfo(partition, bplist):
 		description = _("Size: ") + _("unavailable")
 	else:
 		stat = statvfs(mediamount)
-		cap = int(stat.f_blocks * stat.f_bsize)
-		size = cap // 1000 // 1000
-		if ((size / 1024) / 1024) >= 1:
-			description = _("Size: ") + str(round(((size / 1024) / 1024), 2)) + _("TB")
-		elif (size / 1024) >= 1:
-			description = _("Size: ") + str(round((size / 1024), 2)) + _("GB")
-		elif size >= 1:
-			description = _("Size: ") + str(size) + _("MB")
+		size = (stat.f_blocks * stat.f_bsize) / (1000 * 1000) # get size in MB
+		if size < 1: # is condition ever fulfilled?
+			description = _("Size: unavailable")
+		if size < 1000:
+			description = _("Size: %sMB") % str(size)
+		elif size < 1000 * 1000:
+			description = _("Size: %sGB") % format(size / 1000, '.2f')
 		else:
-			description = _("Size: ") + _("unavailable")
+			description = _("Size: %sTB") % format(size / (1000 * 1000), '.2f')
 	if description != "": # how will this ever return false?
 		if SystemInfo["MountManager"]:
 			if rw.startswith("rw"):
