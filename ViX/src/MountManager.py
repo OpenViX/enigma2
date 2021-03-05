@@ -119,7 +119,7 @@ def buildPartitionInfo(partition, bplist):
 
 	description = ""
 	mediamount = _("None")
-	format = _("unavailable")
+	_format = _("unavailable")
 	rw = _("None")
 
 	with open("/proc/mounts", "r") as f:
@@ -127,7 +127,7 @@ def buildPartitionInfo(partition, bplist):
 			if line.find(partition) != -1:
 				parts = line.strip().split()
 				mediamount = parts[1]		# media mount e.g. /media/xxxxx
-				format = parts[2]		# format e.g. ext4
+				_format = parts[2]		# _format e.g. ext4
 				rw = parts[3]			# read/write
 				break
 
@@ -153,7 +153,7 @@ def buildPartitionInfo(partition, bplist):
 				rw = " R/O"
 			else:
 				rw = ""
-			description += "\t" + _("Mount: ") + mediamount + "\n" + _("Device: ") + "/dev/" + partition + "\t" + _("Type: ") + format + rw
+			description += "\t" + _("Mount: ") + mediamount + "\n" + _("Device: ") + "/dev/" + partition + "\t" + _("Type: ") + _format + rw
 			png = LoadPixmap(mypixmap)
 			partitionInfo = (name, description, png)
 		else:
@@ -168,13 +168,13 @@ def buildPartitionInfo(partition, bplist):
 				("/media/sdcard", "/media/sdcard")
 			]
 			item = NoSave(ConfigSelection(default="/media/%s" % partition, choices=Gmedia))
-			if format == "Linux":
-				format = "ext4"
+			if _format == "Linux":
+				_format = "ext4"
 			else:
-				format = "auto"
+				_format = "auto"
 			item.value = mediamount.strip()
 			text = name + " " + description + " /dev/" + partition
-			partitionInfo = getConfigListEntry(text, item, partition, format)
+			partitionInfo = getConfigListEntry(text, item, partition, _format)
 		bplist.append(partitionInfo)
 
 
