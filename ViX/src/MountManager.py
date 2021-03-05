@@ -137,10 +137,10 @@ def buildPartitionInfo(partition, bplist):
 		stat = statvfs(mediamount)
 		cap = int(stat.f_blocks * stat.f_bsize)
 		size = cap // 1000 // 1000
-		if ((float(size) // 1024) // 1024) >= 1:
-			description = _("Size: ") + str(round(((float(size) // 1024) // 1024), 2)) + _("TB")
+		if ((size / 1024) / 1024) >= 1:
+			description = _("Size: ") + str(round(((size / 1024) / 1024), 2)) + _("TB")
 		elif (size / 1024) >= 1:
-			description = _("Size: ") + str(round((float(size) // 1024), 2)) + _("GB")
+			description = _("Size: ") + str(round((size / 1024), 2)) + _("GB")
 		elif size >= 1:
 			description = _("Size: ") + str(size) + _("MB")
 		else:
