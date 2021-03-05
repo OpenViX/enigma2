@@ -139,7 +139,7 @@ def buildPartitionInfo(partition, bplist):
 		if size < 1: # is condition ever fulfilled?
 			description = _("Size: unavailable")
 		if size < 1000:
-			description = _("Size: %sMB") % str(size)
+			description = _("Size: %sMB") % str(int(size))
 		elif size < 1000 * 1000:
 			description = _("Size: %sGB") % format(size / 1000, '.2f')
 		else:
