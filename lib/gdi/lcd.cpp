@@ -328,6 +328,7 @@ void eDBoxLCD::update()
 		else
 		{
 #ifdef LCD_COLOR_BITORDER_RGB565
+			FILE *file;
 			if ((file = fopen("/proc/stb/info/gbmodel", "r")) != NULL )
 			{
 				//gggrrrrrbbbbbggg bit order from memory
