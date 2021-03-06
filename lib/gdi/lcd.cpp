@@ -339,7 +339,7 @@ void eDBoxLCD::update()
 					for (int offset = 0; offset < ((_stride * res.height())>>2); offset ++)
 					{
 						unsigned int src = ((unsigned int*)_buffer)[offset];
-						((unsigned int*)gb_buffer)[offset] = src & 0xE007E007 | (src & 0x1F001F00) >>5 | (src & 0x00F800F8) << 5;
+						((unsigned int*)gb_buffer)[offset] = (src & 0xE007E007) | ((src & 0x1F001F00) >>5) | ((src & 0x00F800F8) << 5);
 					}
 				}
 				else
