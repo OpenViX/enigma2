@@ -919,7 +919,13 @@ class TimelineText(GUIComponent):
 			serviceRect = list.getServiceRect()
 			timeSteps = 60 if timeEpoch > 180 else 30
 			numLines = timeEpoch / timeSteps
-			incWidth = eventRect.width() / numLines
+# Whereas we need the integer division to get numLines, we
+# need real division to find out what the incremental space is
+# between successive timelines
+# NOTE: that Py3 can/will be different!
+#
+			fnum = float(timeEpoch)/float(timeSteps)
+			incWidth = int(eventRect.width() / fnum)
 			timeStepsCalc = timeSteps * SECS_IN_MIN
 
 			nowTime = localtime(time())
