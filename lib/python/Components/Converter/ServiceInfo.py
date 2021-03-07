@@ -9,7 +9,7 @@ WIDESCREEN = [3, 4, 7, 8, 0xB, 0xC, 0xF, 0x10]
 class ServiceInfo(Converter, object):
 	HAS_TELETEXT = 1
 	IS_MULTICHANNEL = 2
-	AUDIO_STEREO = 3
+	IS_STEREO = 3
 	IS_CRYPTED = 4
 	IS_WIDESCREEN = 5
 	IS_NOT_WIDESCREEN = 6
@@ -47,7 +47,7 @@ class ServiceInfo(Converter, object):
 		self.type, self.interesting_events = {
 			"HasTelext": (self.HAS_TELETEXT, (iPlayableService.evUpdatedInfo,)),
 			"IsMultichannel": (self.IS_MULTICHANNEL, (iPlayableService.evUpdatedInfo,)),
-			"IsStereo": (self.AUDIO_STEREO, (iPlayableService.evUpdatedInfo,)),
+			"IsStereo": (self.IS_STEREO, (iPlayableService.evUpdatedInfo,)),
 			"IsCrypted": (self.IS_CRYPTED, (iPlayableService.evUpdatedInfo,)),
 			"IsWidescreen": (self.IS_WIDESCREEN, (iPlayableService.evVideoSizeChanged,)),
 			"IsNotWidescreen": (self.IS_NOT_WIDESCREEN, (iPlayableService.evVideoSizeChanged,)),
@@ -150,7 +150,7 @@ class ServiceInfo(Converter, object):
 		if self.type == self.HAS_TELETEXT:
 			tpid = info.getInfo(iServiceInformation.sTXTPID)
 			return tpid != -1
-		elif self.type in (self.IS_MULTICHANNEL, self.AUDIO_STEREO):
+		elif self.type in (self.IS_MULTICHANNEL, self.IS_STEREO):
 			# FIXME. but currently iAudioTrackInfo doesn't provide more information.
 			audio = service.audioTracks()
 			if audio:
@@ -162,12 +162,12 @@ class ServiceInfo(Converter, object):
 					if description in ("AC3", "AC-3", "DTS"):
 						if self.type == self.IS_MULTICHANNEL:
 							return True
-						elif self.type == self.AUDIO_STEREO:
+						elif self.type == self.IS_STEREO:
 							return False
 					idx += 1
 				if self.type == self.IS_MULTICHANNEL:
 					return False
-				elif self.type == self.AUDIO_STEREO:
+				elif self.type == self.IS_STEREO:
 					return True
 			return False
 		elif self.type == self.IS_CRYPTED:
