@@ -6,7 +6,7 @@ from Tools.Transponder import ConvertToHumanReadable
 
 WIDESCREEN = [3, 4, 7, 8, 0xB, 0xC, 0xF, 0x10]
 
-class ServiceInfo(Converter, object):
+class ServiceInfo(Converter):
 	HAS_TELETEXT = 1
 	IS_MULTICHANNEL = 2
 	IS_STEREO = 3
