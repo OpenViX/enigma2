@@ -1586,8 +1586,9 @@ int handleEvent(eServiceEvent *ptr, ePyObject dest_list, const char* argstring, 
 //   the third
 //      when type is eventid it is the event_id
 //      when type is time then it is the start_time ( -1 for now_time )
-//   the fourth is the end_time .. ( optional .. for query all events in time range)
-
+//   the fourth is the duration *beyond* start_time to search.
+//     It is NOT the end_time (despite being documented as such earlier)!
+//     It is the DURATION BEYOND start_time IN MINUTES!!!
 PyObject *eEPGCache::lookupEvent(ePyObject list, ePyObject convertFunc)
 {
 	ePyObject convertFuncArgs;
