@@ -99,6 +99,10 @@ class ServiceInfo(Converter):
 			"IsVideoHEVC": (self.IS_VIDEO_HEVC,(iPlayableService.evUpdatedInfo,)),
 		}[type]
 
+	def isVideoService(self, info):
+		serviceInfo = info.getInfoString(iServiceInformation.sServiceref).split(':')
+		return len(serviceInfo) < 3 or serviceInfo[2] != '2'
+
 	def getServiceInfoString(self, info, what, convert=lambda x: "%d" % x):
 		v = info.getInfo(what)
 		if v == -1:
@@ -190,10 +194,6 @@ class ServiceInfo(Converter):
 			return False
 		elif self.type == self.IS_CRYPTED:
 			return info.getInfo(iServiceInformation.sIsCrypted) == 1
-		elif self.type == self.IS_WIDESCREEN:
-			return video_aspect in WIDESCREEN
-		elif self.type == self.IS_NOT_WIDESCREEN:
-			return video_aspect not in WIDESCREEN
 		elif self.type == self.SUBSERVICES_AVAILABLE:
 			return hasActiveSubservicesForCurrentChannel(':'.join(info.getInfoString(iServiceInformation.sServiceref).split(':')[:11]))
 		elif self.type == self.HAS_HBBTV:
@@ -211,40 +211,45 @@ class ServiceInfo(Converter):
 			return hasattr(self.source, "editmode") and not not self.source.editmode
 		elif self.type == self.IS_STREAM:
 			return service.streamed() is not None
-		elif self.type == self.IS_SD:
-			return video_height < 720
-		elif self.type == self.IS_HD:
-			return video_height >= 720 and video_height < 2160
-		elif self.type == self.IS_SD_AND_WIDESCREEN:
-			return video_height < 720 and video_aspect in WIDESCREEN
-		elif self.type == self.IS_SD_AND_NOT_WIDESCREEN:
-			return video_height < 720 and video_aspect not in WIDESCREEN
-		elif self.type == self.IS_1080:
-			return video_height > 1000 and video_height <= 1080
-		elif self.type == self.IS_720:
-			return video_height > 700 and video_height <= 720
-		elif self.type == self.IS_576:
-			return video_height > 500 and video_height <= 576
-		elif self.type == self.IS_480:
-			return video_height > 0 and video_height <= 480
-		elif self.type == self.IS_4K:
-			return video_height >= 2100
-		elif self.PROGRESSIVE:
-			return bool(self._getProgressive(info))
-		elif self.type == self.IS_SDR:
-			return info.getInfo(iServiceInformation.sGamma) == 0
-		elif self.type == self.IS_HDR:
-			return info.getInfo(iServiceInformation.sGamma) == 1
-		elif self.type == self.IS_HDR10:
-			return info.getInfo(iServiceInformation.sGamma) == 2
-		elif self.type == self.IS_HLG:
-			return info.getInfo(iServiceInformation.sGamma) == 3
-		elif self.type == self.IS_VIDEO_MPEG2:
-			return info.getInfo(iServiceInformation.sVideoType) == 0
-		elif self.type == self.IS_VIDEO_AVC:
-			return info.getInfo(iServiceInformation.sVideoType) == 1
-		elif self.type == self.IS_VIDEO_HEVC:
-			return info.getInfo(iServiceInformation.sVideoType) == 7
+		elif self.isVideoService(info):
+			if self.type == self.IS_WIDESCREEN:
+				return video_aspect in WIDESCREEN
+			elif self.type == self.IS_NOT_WIDESCREEN:
+				return video_aspect not in WIDESCREEN
+			elif self.type == self.IS_SD:
+				return video_height < 720
+			elif self.type == self.IS_HD:
+				return video_height >= 720 and video_height < 2160
+			elif self.type == self.IS_SD_AND_WIDESCREEN:
+				return video_height < 720 and video_aspect in WIDESCREEN
+			elif self.type == self.IS_SD_AND_NOT_WIDESCREEN:
+				return video_height < 720 and video_aspect not in WIDESCREEN
+			elif self.type == self.IS_1080:
+				return video_height > 1000 and video_height <= 1080
+			elif self.type == self.IS_720:
+				return video_height > 700 and video_height <= 720
+			elif self.type == self.IS_576:
+				return video_height > 500 and video_height <= 576
+			elif self.type == self.IS_480:
+				return video_height > 0 and video_height <= 480
+			elif self.type == self.IS_4K:
+				return video_height >= 2100
+			elif self.PROGRESSIVE:
+				return bool(self._getProgressive(info))
+			elif self.type == self.IS_SDR:
+				return info.getInfo(iServiceInformation.sGamma) == 0
+			elif self.type == self.IS_HDR:
+				return info.getInfo(iServiceInformation.sGamma) == 1
+			elif self.type == self.IS_HDR10:
+				return info.getInfo(iServiceInformation.sGamma) == 2
+			elif self.type == self.IS_HLG:
+				return info.getInfo(iServiceInformation.sGamma) == 3
+			elif self.type == self.IS_VIDEO_MPEG2:
+				return info.getInfo(iServiceInformation.sVideoType) == 0
+			elif self.type == self.IS_VIDEO_AVC:
+				return info.getInfo(iServiceInformation.sVideoType) == 1
+			elif self.type == self.IS_VIDEO_HEVC:
+				return info.getInfo(iServiceInformation.sVideoType) == 7
 		return False
 
 	boolean = property(getBoolean)
