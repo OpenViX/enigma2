@@ -41,6 +41,8 @@ class ServiceInfo(Converter, object):
 	FREQ_INFO = 32
 	PROGRESSIVE = 33
 	VIDEO_INFO = 34
+	IS_SD_AND_WIDESCREEN = 35
+	IS_SD_AND_NOT_WIDESCREEN = 36
 
 	def __init__(self, type):
 		Converter.__init__(self, type)
@@ -74,6 +76,8 @@ class ServiceInfo(Converter, object):
 			"IsStream": (self.IS_STREAM, (iPlayableService.evUpdatedInfo, iPlayableService.evStart)),
 			"IsSD": (self.IS_SD, (iPlayableService.evVideoSizeChanged, iPlayableService.evUpdatedInfo, iPlayableService.evStart)),
 			"IsHD": (self.IS_HD, (iPlayableService.evVideoSizeChanged, iPlayableService.evUpdatedInfo, iPlayableService.evStart)),
+			"IsSDAndWidescreen": (self.IS_SD_AND_WIDESCREEN, (iPlayableService.evVideoSizeChanged, iPlayableService.evUpdatedInfo, iPlayableService.evStart)),
+			"IsSDAndNotWidescreen": (self.IS_SD_AND_NOT_WIDESCREEN, (iPlayableService.evVideoSizeChanged, iPlayableService.evUpdatedInfo, iPlayableService.evStart)),
 			"Is1080": (self.IS_1080, (iPlayableService.evVideoSizeChanged, iPlayableService.evUpdatedInfo, iPlayableService.evStart)),
 			"Is720": (self.IS_720, (iPlayableService.evVideoSizeChanged, iPlayableService.evUpdatedInfo, iPlayableService.evStart)),
 			"Is576": (self.IS_576, (iPlayableService.evVideoSizeChanged, iPlayableService.evUpdatedInfo, iPlayableService.evStart)),
@@ -197,6 +201,10 @@ class ServiceInfo(Converter, object):
 			return video_height < 720
 		elif self.type == self.IS_HD:
 			return video_height >= 720 and video_height < 2160
+		elif self.type == self.IS_SD_AND_WIDESCREEN:
+			return video_height < 720 and video_aspect in WIDESCREEN
+		elif self.type == self.IS_SD_AND_NOT_WIDESCREEN:
+			return video_height < 720 and video_aspect not in WIDESCREEN
 		elif self.type == self.IS_1080:
 			return video_height > 1000 and video_height <= 1080
 		elif self.type == self.IS_720:
