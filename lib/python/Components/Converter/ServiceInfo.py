@@ -47,6 +47,9 @@ class ServiceInfo(Converter):
 	IS_HDR = 38
 	IS_HDR10 = 39
 	IS_HLG = 40
+	IS_VIDEO_MPEG2 = 41
+	IS_VIDEO_AVC = 42
+	IS_VIDEO_HEVC = 43
 
 	def __init__(self, type):
 		Converter.__init__(self, type)
@@ -91,6 +94,9 @@ class ServiceInfo(Converter):
 			"IsHDR": (self.IS_HDR, (iPlayableService.evVideoGammaChanged, iPlayableService.evUpdatedInfo)),
 			"IsHDR10": (self.IS_HDR10, (iPlayableService.evVideoGammaChanged, iPlayableService.evUpdatedInfo)),
 			"IsHLG": (self.IS_HLG, (iPlayableService.evVideoGammaChanged, iPlayableService.evUpdatedInfo)),
+			"IsVideoMPEG2": (self.IS_VIDEO_MPEG2, (iPlayableService.evUpdatedInfo,)),
+			"IsVideoAVC": (self.IS_VIDEO_AVC, (iPlayableService.evUpdatedInfo,)),
+			"IsVideoHEVC": (self.IS_VIDEO_HEVC,(iPlayableService.evUpdatedInfo,)),
 		}[type]
 
 	def getServiceInfoString(self, info, what, convert=lambda x: "%d" % x):
@@ -233,6 +239,12 @@ class ServiceInfo(Converter):
 			return info.getInfo(iServiceInformation.sGamma) == 2
 		elif self.type == self.IS_HLG:
 			return info.getInfo(iServiceInformation.sGamma) == 3
+		elif self.type == self.IS_VIDEO_MPEG2:
+			return info.getInfo(iServiceInformation.sVideoType) == 0
+		elif self.type == self.IS_VIDEO_AVC:
+			return info.getInfo(iServiceInformation.sVideoType) == 1
+		elif self.type == self.IS_VIDEO_HEVC:
+			return info.getInfo(iServiceInformation.sVideoType) == 7
 		return False
 
 	boolean = property(getBoolean)
