@@ -27,7 +27,7 @@ from enigma import ePoint, eSize
 debug_name = "opentv_zapper"
 lamedb_path = "/etc/enigma2"
 download_interval = config.plugins.opentvzapper.update_interval.value * 60 * 60 #  6 hours
-download_duration = 180 # stay tuned for 3 minutes
+download_duration = 10 # stay tuned for 3 minutes
 start_first_download = 5 * 60 # 5 minutes after booting
 wait_time_on_fail = 15 * 60 # 15 minutes
 
@@ -47,14 +47,24 @@ class DefaultAdapter:
 	def __init__(self, session):
 		self.navcore = session.nav
 		self.previousService = None
+		self.config_tv_lastroot = ""
+		self.config_tv_lastservice = ""
 
 	def play(self, service):
 		self.previousService = self.navcore.getCurrentlyPlayingServiceReference()
+		self.config_tv_lastroot = config.tv.lastroot.value
+		self.config_tv_lastservice = config.tv.lastservice.value
 		self.navcore.playService(service)
 		return True
 
 	def stop(self):
+		if self.config_tv_lastroot:
+			config.tv.lastroot.value = self.config_tv_lastroot
+			config.tv.lastroot.save()
 		self.navcore.playService(self.previousService)
+		if self.config_tv_lastservice:
+			config.tv.lastservice.value = self.config_tv_lastservice
+			config.tv.lastservice.save()
 
 
 class RecordAdapter:
