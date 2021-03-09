@@ -47,6 +47,7 @@ class DefaultAdapter:
 	def __init__(self, session):
 		self.navcore = session.nav
 		self.previousService = None
+		self.currentService = ""
 		self.config_tv_lastroot = ""
 		self.config_tv_lastservice = ""
 
@@ -55,16 +56,18 @@ class DefaultAdapter:
 		self.config_tv_lastroot = config.tv.lastroot.value
 		self.config_tv_lastservice = config.tv.lastservice.value
 		self.navcore.playService(service)
+		self.currentService = self.navcore.getCurrentlyPlayingServiceReference()
 		return True
 
 	def stop(self):
-		if self.config_tv_lastroot:
-			config.tv.lastroot.value = self.config_tv_lastroot
-			config.tv.lastroot.save()
-		self.navcore.playService(self.previousService)
-		if self.config_tv_lastservice:
-			config.tv.lastservice.value = self.config_tv_lastservice
-			config.tv.lastservice.save()
+		if self.currentService == self.navcore.getCurrentlyPlayingServiceReference(): # check the user hasn't zapped in the mean time
+			if self.config_tv_lastroot:
+				config.tv.lastroot.value = self.config_tv_lastroot
+				config.tv.lastroot.save()
+			self.navcore.playService(self.previousService)
+			if self.config_tv_lastservice:
+				config.tv.lastservice.value = self.config_tv_lastservice
+				config.tv.lastservice.save()
 
 
 class RecordAdapter:
