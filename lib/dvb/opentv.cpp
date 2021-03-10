@@ -114,6 +114,7 @@ OpenTvChannelSection::OpenTvChannelSection(const uint8_t * const buffer) : LongC
 								OpenTvChannel *channel = new OpenTvChannel(&buffer[pos2]);
 								channel->setTransportStreamId(transportStreamId);
 								channel->setOriginalNetworkId(originalNetworkId);
+								eDebug("[OpenTV] +chan ts:%04x onid:%04x", transportStreamId, originalNetworkId); //BB
 								channels.push_back(channel);
 								bytesLeft3 -= loopLength2;
 								pos2 += loopLength2;
@@ -172,6 +173,8 @@ OpenTvTitle::OpenTvTitle(const uint8_t * const buffer, uint16_t startMjd)
 			tmp[0] = '\0';
 
 		title = convertDVBUTF8(tmp, sizeof(tmp), 5);
+
+		eDebug("[OpenTV] +titl:\"%s\" MJD:%04x BCD:%04x len:%i", title, startMjd, startTimeBcd, duration); //BB
 
 		/* storing all the crc unique titles in the title reader phase,
 		   would give us a titles reduction of 155,000 down to 13,000!
