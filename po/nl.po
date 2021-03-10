@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-01 01:05+0000\n"
-"PO-Revision-Date: 2021-03-01 13:34+0100\n"
+"POT-Creation-Date: 2021-03-09 21:18+0000\n"
+"PO-Revision-Date: 2021-03-10 13:49+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -2004,12 +2004,6 @@ msgstr "Ook na stand-by"
 
 msgid "Alternative"
 msgstr "Alternatief"
-
-msgid "Alternative 1"
-msgstr "Alternatief 1"
-
-msgid "Alternative 2"
-msgstr "Alternatief 2"
 
 msgid "Alternative numbering mode"
 msgstr "Alternatieve nummermethode"
@@ -8188,6 +8182,9 @@ msgstr "Bij het einde van bestand"
 
 msgid "On end of movie (as menu)"
 msgstr "Aan het einde van de film (als menu)"
+
+msgid "On except in same named directory"
+msgstr "Aan, behalve in gelijknamige map"
 
 msgid "On shutdown/restart warn about any pending jobs being carried out in the background."
 msgstr "Waarschuw bij afsluiten/herstarten als er op de achtergrond taken worden uitgevoerd."
@@ -16352,6 +16349,12 @@ msgstr "zapte"
 
 #~ msgid "Allows you to send a copy of the log to yourself."
 #~ msgstr "Maakt het mogelijk een kopie van de logs naar uzelf te sturen."
+
+#~ msgid "Alternative 1"
+#~ msgstr "Alternatief 1"
+
+#~ msgid "Alternative 2"
+#~ msgstr "Alternatief 2"
 
 #~ msgid "Animation Setup"
 #~ msgstr "Animatie-instellingen"
