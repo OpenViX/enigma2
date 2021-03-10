@@ -244,7 +244,6 @@ void eEPGChannelData::startEPG()
 
 		if (huffman_dictionary_read)
 		{
-			eDebug("[eEPGTransponderDataReader] Successfully read in %s", dictionary); //BB
 			m_OPENTV_EIT_index = m_OPENTV_crc32 = 0;
 			m_OPENTV_ChannelsReader->connectRead(sigc::mem_fun(*this, &eEPGChannelData::OPENTV_ChannelsSection), m_OPENTV_ChannelsConn);
 			mask.pid = 0x11;
