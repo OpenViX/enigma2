@@ -168,7 +168,7 @@ class Satfinder(ScanSetup, ServiceScan):
 	def createSetup(self):
 		self.list = []
 		indent = "- "
-		self.satfinderTunerEntry = getConfigListEntry(_("Tuner"), self.satfinder_scan_nims)
+		self.satfinderTunerEntry = getConfigListEntry(_(" "), self.satfinder_scan_nims)
 		self.list.append(self.satfinderTunerEntry)
 		self.DVB_type = self.nim_type_dict[int(self.satfinder_scan_nims.value)]["selection"]
 		self.DVB_TypeEntry = getConfigListEntry(_("DVB type"), self.DVB_type) # multitype?
