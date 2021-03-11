@@ -374,7 +374,7 @@ def parseScrollbarMode(s):
 	except KeyError:
 		print("[Skin] Error: Invalid scrollbarMode '%s'!  Must be one of 'showOnDemand', 'showAlways', 'showNever' or 'showLeft'." % s)
 
-loadPixmap(path, desktop, size=None):
+def loadPixmap(path, desktop, size=None):
 	option = path.find("#")
 	if option != -1:
 		path = path[:option]
