@@ -58,6 +58,13 @@ msgstr ""
 "\n"
 "Редактировать адрес источника обновления."
 
+msgid ""
+"\n"
+"It contains other items."
+msgstr ""
+"\n"
+"Содержит другие элементы."
+
 #, python-format
 msgid ""
 "\n"
@@ -799,6 +806,10 @@ msgstr "%b=%-d "
 msgid "%b=%d "
 msgstr "%b=%d "
 
+#, python-format
+msgid "%d"
+msgstr "%d"
+
 msgid "%d %B %Y"
 msgstr "%d %B %Y"
 
@@ -848,6 +859,13 @@ msgstr[0] "%d минута"
 msgstr[1] "%d минуты"
 msgstr[2] "%d минут"
 
+#, python-format
+msgid "%d Recording"
+msgid_plural "%d Recordings"
+msgstr[0] "%d запись"
+msgstr[1] "%d записи"
+msgstr[2] "%d записей"
+
 #. TRANSLATORS: Intermediate scanning result, '%d' channel(s) have been found so far
 #, python-format
 msgid "%d channel found"
@@ -875,12 +893,24 @@ msgstr[1] "%d процесса запущено в фоновом режиме!"
 msgstr[2] "%d процессов запущено в фоновом режиме!"
 
 #, python-format
+msgid "%d items"
+msgstr "%d элементов"
+
+#, python-format
 msgid "%d jobs are running in the background!"
 msgstr "%d процесс запущен в фоновом режиме!"
 
 #, python-format
 msgid "%d kB"
 msgstr "%d Кб"
+
+#, python-format
+msgid "%d marked item"
+msgstr "%d отмеченные элементы"
+
+#, python-format
+msgid "%d marked items"
+msgstr "%d отмеченных элементов"
 
 #, python-format
 msgid "%d min"
@@ -1058,6 +1088,10 @@ msgstr "%s (%s)\n"
 msgid "%s - %s (%s%d min)"
 msgstr "%s - %s (%s%d мин)"
 
+#, python-format
+msgid "%s files cannot be bulk renamed"
+msgstr "%s файлы не могут быть переименованы массово"
+
 #. TRANSLATORS: The satellite with name '%s' is no longer used after a configuration change. The user is asked whether or not the satellite should be deleted.
 #, python-format
 msgid "%s is no longer used. Should it be deleted?"
@@ -1095,8 +1129,8 @@ msgid "%s?"
 msgstr "%s?"
 
 #, python-format
-msgid "'%s' contains %d file(s) and %d sub-directories.\n"
-msgstr "'%s' содержит %d файла(ов) и %d каталога(ов)\n"
+msgid "'%s' already exists"
+msgstr "'%s' уже существует"
 
 msgid "'Network peer' automatically detects other Enigma2 receivers on the local network. You can also manually enter the URL or IP address."
 msgstr "'Сетевой узел' автоматически обнаруживает другие ресиверы Enigma2 в локальной сети. Вы также можете вручную ввести URL или IP-адрес."
@@ -1967,12 +2001,6 @@ msgstr "Также из режима ожидания"
 msgid "Alternative"
 msgstr "Альтернативный"
 
-msgid "Alternative 1"
-msgstr "Вариант 1"
-
-msgid "Alternative 2"
-msgstr "Вариант 2"
-
 msgid "Alternative numbering mode"
 msgstr "Альтернативный режим нумерации"
 
@@ -2040,12 +2068,12 @@ msgid "Are You Sure ?"
 msgstr "Вы уверены?"
 
 #, python-format
-msgid "Are you ready to install \"%s\" ?"
-msgstr "Установить \"%s\"?"
+msgid "Are you ready to install %s ?"
+msgstr "Установить %s ?"
 
 #, python-format
-msgid "Are you ready to remove \"%s\" ?"
-msgstr "Удалить \"%s\"?"
+msgid "Are you ready to remove %s ?"
+msgstr "Удалить %s ?"
 
 msgid "Are you sure to remove this entry?"
 msgstr "Уверены, что хотите удалить?"
@@ -2790,9 +2818,6 @@ msgstr "Отменено по запросу пользователя"
 msgid "Cannot delete current image"
 msgstr "Имидж не может быть удален"
 
-msgid "Cannot delete file"
-msgstr "Не удаётся удалить файл"
-
 msgid "Cannot determine"
 msgstr "Невозможно определить"
 
@@ -3049,7 +3074,7 @@ msgid "Choose the front panel display formatting style for times. 'H' / 'HH' is 
 msgstr "Выберите стиль дисплея на передней панели для форматирования времени. 'H'/'HH' - 24-часовой формат времени, 'h'/'hh' - 12-часовой формат времени, 'mm' - минуты."
 
 msgid "Choose the layout. Single channel, Graphics Grid EPG or Text Grid EPG."
-msgstr "Выберите режим просмотра (Текстовий, Графический (Мультителегид) или Одиночный)."
+msgstr "Выберите режим просмотра (Текстовий, Графический или Одиночный)."
 
 msgid "Choose the location for crash and debug logs folder."
 msgstr "Выберите каталог для журналов."
@@ -3059,6 +3084,9 @@ msgstr "Выберите каталог для хранения данных EPG
 
 msgid "Choose the name of the file that holds the EPG data when the %s %s is shut down. This can be handy to differentiate between several boxes."
 msgstr "Выберите имя файла для данных EPG, когда %s %s выключен. Это может быть полезным, если используется несколько ресиверов"
+
+msgid "Choose the style of the second infobar. The 'Standard' view normally includes technical data. The 'Simple' view shows minimal technical data."
+msgstr "Выберите стиль второй информационной панели. 'Стандартный' вид включает технические данные. 'Простой' вид показывает минимальные технические данные."
 
 msgid "Choose time interval to which the graphics will be rounded off."
 msgstr "Выберите временной интервал для округления."
@@ -3144,6 +3172,9 @@ msgstr "Очищать"
 msgid "Clear log"
 msgstr "Очистить журнал"
 
+msgid "Clear marks"
+msgstr "Очистить отметки"
+
 msgid "Clear playlist"
 msgstr "Очистить список воспроизведения"
 
@@ -3186,6 +3217,9 @@ msgstr "Скорость кодирования HP"
 
 msgid "Code rate LP"
 msgstr "Скорость кодирования LP"
+
+msgid "Collection"
+msgstr "Коллекция"
 
 msgid "Collection name"
 msgstr "Название коллекции"
@@ -3700,6 +3734,54 @@ msgstr "Запись невозможна, канал %s не существуе
 #, python-format
 msgid "Could not save configfile %s!"
 msgstr "Не удалось сохранить файл конфигурации %s!"
+
+#, python-format
+msgid ""
+"Couldn't copy %d items.\n"
+"%s"
+msgstr ""
+"Не удалось скопировать %d файлов.\n"
+"%s"
+
+#, python-format
+msgid ""
+"Couldn't copy '%s'.\n"
+"%s"
+msgstr ""
+"Не удалось скопировать '%s'.\n"
+"%s"
+
+#, python-format
+msgid "Couldn't delete %d items."
+msgstr "Не удалось удалить %d файлов."
+
+#, python-format
+msgid "Couldn't delete '%s'."
+msgstr "Не удалось удалить '%s'."
+
+#, python-format
+msgid "Couldn't move %d items to the trash can. Do you want to delete them instead?"
+msgstr "Не удалось переместить %d файлов в корзину. Вы хотите вместо этого полностью удалить их?"
+
+#, python-format
+msgid ""
+"Couldn't move %d items.\n"
+"%s"
+msgstr ""
+"Не удалось переместить %d файлов.\n"
+"%s"
+
+#, python-format
+msgid "Couldn't move '%s' to the trash can. Do you want to delete it instead?"
+msgstr "Не удалось переместить '%s' в корзину. Вы хотите вместо этого полностью удалить его?"
+
+#, python-format
+msgid ""
+"Couldn't move '%s'.\n"
+"%s"
+msgstr ""
+"Не удалось переместить '%s'.\n"
+"%s"
 
 msgid "Country"
 msgstr "Страна"
@@ -4265,12 +4347,15 @@ msgstr "Удалить символ слева от курсора"
 msgid "Delete the character under the text cursor"
 msgstr "Удалить символ под курсором"
 
-msgid "Deleted"
-msgstr "Удалено"
+msgid "Deleted %d items"
+msgstr "%d элементов удалено"
 
 #, python-format
 msgid "Deleted %s!"
 msgstr "Удалено %s!"
+
+msgid "Deleted '%s'"
+msgstr "Удален '%s'"
 
 msgid "Deleted image"
 msgstr "Удалить имидж"
@@ -4376,6 +4461,9 @@ msgstr "Прямой выбор меню"
 msgid "Direct playback of linked titles without menu"
 msgstr "Воспроизводить связанные названия без меню"
 
+msgid "Directories cannot be bulk renamed"
+msgstr "Каталоги нельзя переименовывать массово"
+
 msgid "Directory"
 msgstr "Каталог"
 
@@ -4476,15 +4564,8 @@ msgstr ""
 "Это займет некоторое время!"
 
 #, python-format
-msgid "Do you really want to delete %s ?"
-msgstr "Действительно хотите удалить %s?"
-
-#, python-format
 msgid "Do you really want to delete %s?"
 msgstr "Вы действительно хотите удалить %s?"
-
-msgid "Do you really want to delete ?"
-msgstr "Действительно хотите удалить %s?"
 
 msgid ""
 "Do you really want to delete selected language:\n"
@@ -4510,15 +4591,29 @@ msgstr ""
 "Действительно хотите инициализировать устройство?\n"
 "Все данные на диске будут потеряны!"
 
-msgid "Do you really want to move to the trash can ?"
-msgstr "Действительно хотите удалить в корзину?"
+#, python-format
+msgid "Do you really want to move '%s' to the trash can?"
+msgstr "Вы действительно хотите переместить '%s' в корзину?"
 
 #, python-format
-msgid "Do you really want to permamently remove '%s' from the trash can ?"
-msgstr "Действительно хотите навсегда удалить '%s' из корзины?"
+msgid "Do you really want to move these %d items to the trash can?"
+msgstr "Вы действительно хотите переместить эти %d файлы в корзину?"
 
-msgid "Do you really want to permanently remove from the trash can ?"
-msgstr "Действительно хотите окончательно удалить из корзины?"
+#, python-format
+msgid "Do you really want to permanently delete '%s' from the trash can?"
+msgstr "Вы действительно хотите навсегда удалить '%s' из корзины?"
+
+#, python-format
+msgid "Do you really want to permanently delete '%s'?"
+msgstr "Вы действительно хотите навсегда удалить '%s'?"
+
+#, python-format
+msgid "Do you really want to permanently delete these %d items from the trash can?"
+msgstr "Вы действительно хотите навсегда удалить эти файлы %d из корзины?"
+
+#, python-format
+msgid "Do you really want to permanently delete these %d items?"
+msgstr "Вы действительно хотите окончательно удалить эти %d файлы?"
 
 #, python-format
 msgid "Do you really want to remove directory %s from the disk?"
@@ -4641,7 +4736,7 @@ msgid "Down"
 msgstr "Вниз"
 
 msgid "Download plugins"
-msgstr "Скачать"
+msgstr "Установить"
 
 msgid "Downloading"
 msgstr "Загрузка"
@@ -4838,6 +4933,9 @@ msgstr "Электронный телегид"
 msgid "Empty slot"
 msgstr "Пустой слот"
 
+msgid "Empty trash can"
+msgstr "Очистить корзину"
+
 msgid "Enable"
 msgstr "Включить"
 
@@ -4880,6 +4978,9 @@ msgstr "Быстрый поиск автоматически для %s"
 
 msgid "Enable automated downloading of OpenTV EPG data. If only one tuner is available the download will be done when the reciever is in standby."
 msgstr "Включает автоматическую загрузку OpenTV EPG. Если доступен только один тюнер, загрузка будет выполнена, когда ресивер находится в режиме ожидания."
+
+msgid "Enable automatic collections"
+msgstr "Включить автоматические коллекции"
 
 msgid "Enable blinking rec symbol on the LCD Display"
 msgstr "Включить символ записи на дисплее"
@@ -5099,6 +5200,10 @@ msgstr "Ошибка выполнения плагина"
 
 msgid "Error reading webpage!"
 msgstr "Ошибка чтения страницы!"
+
+#, python-format
+msgid "Error renaming '%s'"
+msgstr "Ошибка переименования '%s'"
 
 #, python-format
 msgid ""
@@ -5462,9 +5567,6 @@ msgstr "Статус сервера: Обновляется"
 msgid "Fiji"
 msgstr "Фиджи"
 
-msgid "File appears to be busy.\n"
-msgstr "Файл занят другим процессом.\n"
-
 msgid ""
 "File oscam.conf not found.\n"
 "Please enter username/password manually."
@@ -5777,7 +5879,7 @@ msgid "Graphics"
 msgstr "Графический"
 
 msgid "Graphics Grid EPG"
-msgstr "Графический (Мультителегид)"
+msgstr "Графический"
 
 msgid "Greece"
 msgstr "Греция"
@@ -5807,7 +5909,7 @@ msgid "Grey"
 msgstr "Серый"
 
 msgid "Grid EPG"
-msgstr "Таблица телегида"
+msgstr "Графический"
 
 msgid "Grow drop"
 msgstr "Увеличение снизу"
@@ -6389,10 +6491,10 @@ msgid "Infobar EPG activation"
 msgstr "Включение графичес. телегида (инфобар)"
 
 msgid "Infobar Grid EPG"
-msgstr "Таблица телегида (инфобар)"
+msgstr "Графический (инфобар)"
 
 msgid "Infobar Single EPG"
-msgstr "Одиночный телегид (инфобар)"
+msgstr "Одиночный (инфобар)"
 
 msgid "Infobar fade-out speed"
 msgstr "Скорость затухания инфобара"
@@ -6945,6 +7047,9 @@ msgstr "Загружать невыбранные пакеты пользова�
 msgid "Load, Save & Delete EPG Cache"
 msgstr "Загрузить/Сохранить/Удалить"
 
+msgid "Loading skin"
+msgstr "Скин загружается..."
+
 msgid "Local box"
 msgstr "Ресивер"
 
@@ -7433,6 +7538,14 @@ msgstr "Переместить вверх к предыдущей записи"
 
 msgid "Move west"
 msgstr "Переместить на запад"
+
+#, python-format
+msgid "Moved %d items"
+msgstr "Перемещено %d файлов"
+
+#, python-format
+msgid "Moved '%s'"
+msgstr "Перемещено '%s'"
 
 msgid "Moved to position 0"
 msgstr "Перемещение к позиции Х"
@@ -8047,6 +8160,9 @@ msgstr "В конце фильма"
 msgid "On end of movie (as menu)"
 msgstr "В конце фильма (как меню)"
 
+msgid "On except in same named directory"
+msgstr "Включено, кроме одноименной папки"
+
 msgid "On shutdown/restart warn about any pending jobs being carried out in the background."
 msgstr "При выключении/перезагрузке предупреждайте о любых ожидающих задания, выполняемых в фоновом режиме."
 
@@ -8254,6 +8370,9 @@ msgstr "Режим и код PLS"
 msgid "PMT PID"
 msgstr "PMT PID"
 
+msgid "PREVIOUS"
+msgstr "Предыдущий"
+
 msgid "PRIMETIME"
 msgstr "Прайм-тайм"
 
@@ -8393,9 +8512,6 @@ msgstr "Постоянные настройки сортировки"
 msgid "Permanently delete all recordings in the trash can?"
 msgstr "Окончательное удаление всех записей в корзине?"
 
-msgid "Permanently remove all deleted items"
-msgstr "Очистка корзины"
-
 msgid "Persian"
 msgstr "Персидский"
 
@@ -8498,6 +8614,16 @@ msgstr "Играть предыдущий"
 
 msgid "Play recorded movies..."
 msgstr "Воспроизвести записанное видео"
+
+#, python-format
+msgid "Play the %d marked recordings"
+msgstr "Воспроизвести %d отмеченных записей"
+
+msgid "Play the marked recording"
+msgstr "Воспроизвести отмеченную запись"
+
+msgid "Play the selected recording"
+msgstr "Воспроизвести выбранную запись"
 
 msgid ""
 "Playback information missing\n"
@@ -9003,8 +9129,8 @@ msgstr "Нажмите ОК, чтобы получить подробную ин
 msgid "Press OK to keep the currently selected%s skin."
 msgstr "Нажмите OK, чтобы оставить текущий %s скин."
 
-msgid "Press OK to scan"
-msgstr "Нажмите OK для поиска"
+msgid "Press OK to save and exit."
+msgstr "Нажмите ОК, чтобы сохранить и выйти."
 
 msgid "Press OK to select a group of satellites to configure in one block."
 msgstr "Нажмите ОК, чтобы выбрать группу спутников для их одновременной настройки."
@@ -9312,6 +9438,9 @@ msgstr "Действительно обновить Ваш %s %s и переза
 msgid "Reboot"
 msgstr "Перезагрузить"
 
+msgid "Reboot required"
+msgstr "Требуется перезагрузка"
+
 msgid "Rec"
 msgstr "Запись"
 
@@ -9351,9 +9480,6 @@ msgstr "Запись и воспроизведение"
 
 msgid "Recording and playback settings"
 msgstr "Запись и воспроизведение"
-
-msgid "Recording in progress"
-msgstr "Идет запись"
 
 msgid "Recording type"
 msgstr "Тип записи"
@@ -10108,6 +10234,9 @@ msgstr "Второй кабель от позиционера"
 msgid "Second infobar"
 msgstr "Второй инфобар"
 
+msgid "Second infobar style*"
+msgstr "Стиль второго инфобара*"
+
 msgid "Secondary DNS"
 msgstr "Вторичный DNS"
 
@@ -10825,7 +10954,7 @@ msgstr "Настройка спутникового оборудованияt"
 msgid "Seychelles"
 msgstr "Сейшелы"
 
-msgid "Share Folder's"
+msgid "Share Folders"
 msgstr "Расшаренные папки"
 
 msgid "Share View"
@@ -11295,7 +11424,7 @@ msgid "Single"
 msgstr "Один"
 
 msgid "Single EPG"
-msgstr "Одиночный телегид"
+msgstr "Одиночный"
 
 msgid "Single core"
 msgstr "Одноядерный"
@@ -11325,7 +11454,7 @@ msgid "Skin Setting"
 msgstr "Настройки скина"
 
 msgid "Skin Setup"
-msgstr "Настройки скина"
+msgstr "Настройка скина"
 
 msgid "Skin install"
 msgstr "Установка скина"
@@ -11750,9 +11879,6 @@ msgstr "По возвращении в список записей остано�
 msgid "Stop recording"
 msgstr "Остановить запись"
 
-msgid "Stop recording and delete"
-msgstr "Остановить и удалить запись"
-
 msgid "Stop recording now"
 msgstr "Остановить запись сейчас"
 
@@ -11773,6 +11899,18 @@ msgstr "Остановить тестирование после кол. оши�
 
 msgid "Stop testing plane after # successful transponders"
 msgstr "Остановить тестирование после кол. исправных транспондеров"
+
+msgid "Stop this recording"
+msgstr "Остановить эту запись"
+
+msgid "Stop these recordings"
+msgstr "Остановить эти записи"
+
+msgid "Stop this recording and delete it"
+msgstr "Остановить и удалить эту запись"
+
+msgid "Stop these recordings and delete them"
+msgstr "Остановить и удалить эти записи"
 
 msgid "Stop timer recording"
 msgstr "Остановить запись таймера"
@@ -12073,7 +12211,7 @@ msgid "T2MI RAW Mode"
 msgstr "T2MI RAW режим"
 
 msgid "TB"
-msgstr "ТБ"
+msgstr "TB"
 
 msgid "TEXT"
 msgstr "TEXT"
@@ -12083,7 +12221,7 @@ msgid "TRANSLATOR_INFO"
 msgstr ""
 "Перевод OpenViX 5.4\n"
 "litvcom\n"
-"Январь 2021\n"
+"Март 2021\n"
 "Поддержка: world-of-satellite.com"
 
 msgid "TS file is too large for ISO9660 level 1!"
@@ -12476,28 +12614,28 @@ msgstr "Опция позволяет изменять положение вир
 msgid "This option allows you to choose from the two channel lists that are available."
 msgstr "Опция позволяет выбрать один из двух списков каналов, которые (если) доступны."
 
-msgid "This option allows you to choose how to display 1080p 24Hz on your TV. (as not all TV's support these resolutions)"
+msgid "This option allows you to choose how to display 1080p 24Hz on your TV. (as not all TVs support these resolutions)"
 msgstr "Опция позволяет выбрать способ отображения 1080p 24Гц на экране телевизора (не все телевизоры поддерживают это разрешение)."
 
-msgid "This option allows you to choose how to display 1080p 25Hz on your TV. (as not all TV's support these resolutions)"
+msgid "This option allows you to choose how to display 1080p 25Hz on your TV. (as not all TVs support these resolutions)"
 msgstr "Опция позволяет выбрать способ отображения 1080p 25Гц на экране телевизора (не все телевизоры поддерживают это разрешение)."
 
-msgid "This option allows you to choose how to display 1080p 30Hz on your TV. (as not all TV's support these resolutions)"
+msgid "This option allows you to choose how to display 1080p 30Hz on your TV. (as not all TVs support these resolutions)"
 msgstr "Опция позволяет выбрать способ отображения 1080p 30Гц на экране телевизора (не все телевизоры поддерживают это разрешение)."
 
-msgid "This option allows you to choose how to display 2160p 24Hz on your TV. (as not all TV's support these resolutions)"
+msgid "This option allows you to choose how to display 2160p 24Hz on your TV. (as not all TVs support these resolutions)"
 msgstr "Опция позволяет выбрать способ отображения 2160p 24Гц на экране телевизора (не все телевизоры поддерживают это разрешение)."
 
-msgid "This option allows you to choose how to display 2160p 25Hz on your TV. (as not all TV's support these resolutions)"
+msgid "This option allows you to choose how to display 2160p 25Hz on your TV. (as not all TVs support these resolutions)"
 msgstr "Опция позволяет выбрать способ отображения 2160p 25Гц на экране телевизора (не все телевизоры поддерживают это разрешение)."
 
-msgid "This option allows you to choose how to display 2160p 30Hz on your TV. (as not all TV's support these resolutions)"
+msgid "This option allows you to choose how to display 2160p 30Hz on your TV. (as not all TVs support these resolutions)"
 msgstr "Опция позволяет выбрать способ отображения 2160p 30Гц на экране телевизора (не все телевизоры поддерживают это разрешение)."
 
-msgid "This option allows you to choose how to display 720p 24Hz on your TV. (as not all TV's support these resolutions)"
+msgid "This option allows you to choose how to display 720p 24Hz on your TV. (as not all TVs support these resolutions)"
 msgstr "Опция позволяет выбрать способ отображения 720p 24Гц на экране телевизора (не все телевизоры поддерживают это разрешение)."
 
-msgid "This option allows you to choose how to display SD progressive 24Hz on your TV. (as not all TV's support these resolutions)"
+msgid "This option allows you to choose how to display SD progressive 24Hz on your TV. (as not all TVs support these resolutions)"
 msgstr "Опция позволяет выбрать способ отображения SD (прогрессивную развёртку) 24Гц на экране телевизора (не все телевизоры поддерживают это разрешение)."
 
 msgid "This option allows you to choose how to display elapsed time. As + or -"
@@ -12821,6 +12959,9 @@ msgstr "Переключение PIP-ZAP"
 msgid "Toggle a cut mark at the current position"
 msgstr "Расположить метку обработки в текущей позиции"
 
+msgid "Toggle a selection mark"
+msgstr "Установите отметку выбора"
+
 msgid "Toggle aspect ratio..."
 msgstr "Переключение соотношения сторон..."
 
@@ -12838,6 +12979,9 @@ msgstr "Переключить субтитры по умолчанию"
 
 msgid "Toggle infobar"
 msgstr "Показать/Скрыть инфобар"
+
+msgid "Toggle mark"
+msgstr "Переключить отметку"
 
 msgid "Toggle new text inserts before or overwrites existing text"
 msgstr "Переключение между режимами вставки и перезаписи"
@@ -12921,6 +13065,9 @@ msgstr "Информация о транспондере"
 msgid "Transport Stream Type"
 msgstr "Тип потока транспондера"
 
+msgid "Trash"
+msgstr "Корзина"
+
 msgid "Trash can"
 msgstr "Корзина"
 
@@ -12965,9 +13112,6 @@ msgstr "Тюнер"
 
 msgid "Tuner :"
 msgstr "Тюнер :"
-
-msgid "Tuner Settings"
-msgstr "Настройки тюнера"
 
 msgid "Tuner Setup"
 msgstr "Конфигурация тюнера"
@@ -13331,6 +13475,9 @@ msgstr "Используйте измерение мощности"
 
 msgid "Use separate Picon pack for Front Display"
 msgstr "Использовать отдельный пакет пиконов для дисплея"
+
+msgid "Use skin default"
+msgstr "Настройки скина"
 
 msgid "Use slim screen"
 msgstr "Используйте мини-окно"
@@ -13913,6 +14060,9 @@ msgstr "Если включено, числовые метки будут скр
 msgid "When enabled, pressing '0' will zap you to the first channel in your first bouquet and delete your zap-history."
 msgstr "Если включено, нажатие кнопки '0' переключает ресивер на первый канал в Вашем первом фаворите, и история переключений будет очищена."
 
+msgid "When enabled, recordings are grouped by name into collections automatically."
+msgstr "Если включено, записи автоматически группируются в коллекции."
+
 msgid "When enabled, reformat subtitles to match the width of the screen."
 msgstr "Если включено, субтитры будут форматироваться в соответствии с текущей шириной экрана."
 
@@ -14328,6 +14478,22 @@ msgstr "Ваш %s %s может стать непригодным к испол�
 
 #, python-format
 msgid ""
+"Your %s %s needs to be restarted to complete the installation of %s\n"
+"Do you want to reboot now ?"
+msgstr ""
+"Ваш %s %s необходимо перезагрузить, чтобы завершить установку %s\n"
+"Вы хотите перезагрузить сейчас?"
+
+#, python-format
+msgid ""
+"Your %s %s needs to be restarted to complete the removal of %s\n"
+"Do you want to reboot now ?"
+msgstr ""
+"Ваш %s %s необходимо перезагрузить, чтобы завершить удаление %s\n"
+"Вы хотите перезагрузить сейчас?"
+
+#, python-format
+msgid ""
 "Your %s %s will be restarted after the installation of service.\n"
 "\n"
 "Do you want to install now ?"
@@ -14338,27 +14504,11 @@ msgstr ""
 
 #, python-format
 msgid ""
-"Your %s %s will be restarted after the installation of the service\n"
-"Are you ready to install \"%s\" ?"
-msgstr ""
-"Ваш %s %s будет перезагружен после установки сервиса\n"
-"Вы готовы к установке \"%s\"?"
-
-#, python-format
-msgid ""
 "Your %s %s will be restarted after the removal of service\n"
 "Do you want to remove now ?"
 msgstr ""
 "Ваш %s %s будет перезагружен после удаления сервиса\n"
 "Хотите удалить сейчас?"
-
-#, python-format
-msgid ""
-"Your %s %s will be restarted after the removal of the service\n"
-"Do you want to remove the service now ?"
-msgstr ""
-"Ваш %s %s будет перезагружен после удаления сервиса\n"
-"Хотите удалить сервис прямо сейчас?"
 
 msgid "Your STB will restart after pressing OK on your remote control."
 msgstr "Ресивер будет перезагружен после нажатия кнопки ОК."
@@ -15415,9 +15565,6 @@ msgstr "Поменять по дате"
 msgid "rewind to the previous chapter"
 msgstr "Переключить к предыдущей главе"
 
-msgid "rgb"
-msgstr "RGB"
-
 msgid "right"
 msgstr "Вправо"
 
@@ -15431,7 +15578,7 @@ msgid "romance"
 msgstr "Романтика"
 
 msgid "rotor"
-msgstr "Ротор: "
+msgstr "Ротор"
 
 msgid "running..."
 msgstr "Активный..."

@@ -234,7 +234,7 @@ class ServiceInfo(Converter):
 				return video_height > 0 and video_height <= 480
 			elif self.type == self.IS_4K:
 				return video_height >= 2100
-			elif self.PROGRESSIVE:
+			elif self.type == self.PROGRESSIVE:
 				return bool(self._getProgressive(info))
 			elif self.type == self.IS_SDR:
 				return info.getInfo(iServiceInformation.sGamma) == 0
