@@ -114,7 +114,6 @@ OpenTvChannelSection::OpenTvChannelSection(const uint8_t * const buffer) : LongC
 								OpenTvChannel *channel = new OpenTvChannel(&buffer[pos2]);
 								channel->setTransportStreamId(transportStreamId);
 								channel->setOriginalNetworkId(originalNetworkId);
-//								eDebug("[OpenTV] +chan ts:%04x onid:%04x", transportStreamId, originalNetworkId); //BB
 								channels.push_back(channel);
 								bytesLeft3 -= loopLength2;
 								pos2 += loopLength2;
@@ -158,16 +157,12 @@ OpenTvTitle::OpenTvTitle(const uint8_t * const buffer, uint16_t startMjd)
 		uint8_t descriptor_length = buffer[1];
 		uint8_t titleLength = descriptor_length > 7 ? descriptor_length-7 : 0;
 
-		uint32_t startSecond = (UINT16(&buffer[2]) << 1); //BB
+		uint32_t startSecond = (UINT16(&buffer[2]) << 1);
 
-		if (startSecond >= 86400) //BB...
-		{
-			startSecond -= (0x20000 - 86400);
-			--startMjd; // Interpret weird time beyond 86400 seconds as previous day
-		}			//...BB
+		startTimeBcd = ((startMjd - 40587) * 86400) + startSecond;
 		
-		startTimeBcd = ((startMjd - 40587) * 86400) + startSecond; //BB
-		
+		if (startSecond >= 86400)
+			startTimeBcd -= 0x20000;
 		
 		duration = UINT16(&buffer[4]) << 1;
 
