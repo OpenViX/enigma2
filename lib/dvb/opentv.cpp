@@ -179,8 +179,6 @@ OpenTvTitle::OpenTvTitle(const uint8_t * const buffer, uint16_t startMjd)
 
 		title = convertDVBUTF8(tmp, sizeof(tmp), 5);
 
-		eDebug("[OpenTV] +titl:\"%s\" SMJD:%u Ss:%u SBD:%u len:%u", tmp, startMjd, startSecond, startTimeBcd, duration); //BB
-
 		/* storing all the crc unique titles in the title reader phase,
 		   would give us a titles reduction of 155,000 down to 13,000!
 		   we currently add/delete as we go with reduction size ~5000 */
