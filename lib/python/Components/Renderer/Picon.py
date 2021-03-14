@@ -22,7 +22,7 @@ class PiconLocator:
 				path = os.path.join(mountpoint, piconDirectory) + '/'
 				if os.path.isdir(path) and path not in self.searchPaths:
 					for fn in os.listdir(path):
-						if fn.endswith('.png'):
+						if fn.endswith('.png') or fn.endswith('.svg'):
 							print "[PiconLocator] adding path:", path
 							self.searchPaths.append(path)
 							break
@@ -47,15 +47,17 @@ class PiconLocator:
 
 	def findPicon(self, serviceName):
 		if self.activePiconPath is not None:
-			pngname = self.activePiconPath + serviceName + ".png"
-			if pathExists(pngname):
-				return pngname
+			for ext in ('.png', '.svg'):
+				pngname = self.activePiconPath + serviceName + ext
+				if pathExists(pngname):
+					return pngname
 		else:
 			for path in self.searchPaths:
-				pngname = path + serviceName + ".png"
-				if pathExists(pngname):
-					self.activePiconPath = path
-					return pngname
+				for ext in ('.png', '.svg'):
+					pngname = path + serviceName + ext
+					if pathExists(pngname):
+						self.activePiconPath = path
+						return pngname
 		return ""
 
 	def addSearchPath(self, value):
