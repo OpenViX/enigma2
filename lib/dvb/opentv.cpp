@@ -161,8 +161,10 @@ OpenTvTitle::OpenTvTitle(const uint8_t * const buffer, uint16_t startMjd)
 
 		startTimeBcd = ((startMjd - 40587) * 86400) + startSecond;
 		
-		if (startSecond >= 86400)
-			startTimeBcd -= 0x20000;
+		if (startSecond >= 86400)        // Fix for occasional spurious events appearing 0x20000 seconds ahead of their correct position.
+			startTimeBcd -= 0x20000; // Seen in Sky UK OpenTV EPG at certain times of the day.
+			                         // Effected events can be identified by testing intermediate result startSecond >= 86400
+			                         // Discussion and history: https://www.world-of-satellite.com/showthread.php?64109
 		
 		duration = UINT16(&buffer[4]) << 1;
 
