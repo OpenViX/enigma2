@@ -400,6 +400,9 @@
 
 	<map context="InfobarPiPActions">
 		<key id="KEY_SCREEN" mapto="activatePiP" flags="b" />
+		<device name="gigablue remote control">
+			<key id="KEY_F6" mapto="activatePiP" flags="b" />
+		</device>
 	</map>
 
 	<map context="InfobarSubserviceQuickzapActions">
@@ -931,7 +934,5 @@
 	<translate>
 		<device name="gigablue remote control">
 			<key from="KEY_OPTION" to="KEY_HELP" />
-			<key from="KEY_F2" to="KEY_SCREEN" />
 		</device>
 	</translate>
-</keymap>
