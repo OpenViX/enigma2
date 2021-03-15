@@ -6073,7 +6073,7 @@ msgid "Logs location"
 msgstr "Logs Speicherort"
 
 msgid "Logs settings"
-msgstr "Einstellungen Debug Log"
+msgstr "Log Einstellungen"
 
 msgid "Long filenames"
 msgstr "Lange Dateinamen"
