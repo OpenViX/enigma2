@@ -751,8 +751,8 @@ class AdapterSetup(Screen, ConfigListScreen, HelpableScreen):
 			gwinfo = ""
 
 		netinfo =  _("Device")  + ":\t" + str(self.iface) + "\n"
-		netinfo += _("Adapter") + ":\t" + self.longdesc  + "\n" + _("Network") + ": \t" + cardonoff 
-		netinfo += "\n" + dhcpinfo 
+		netinfo += _("Adapter") + ":\t" + self.longdesc  + "\n" + _("Network") + ": \t" + cardonoff
+		netinfo += "\n" + dhcpinfo
 		netinfo += "\n" + gwinfo
 		keySavego = self.session.openWithCallback(self.keySavego, MessageBox, ( _("Are you sure you want to activate this network configuration?\n\n")  + netinfo))
 		keySavego.setTitle(self.longdesc)
