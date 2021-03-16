@@ -14,6 +14,7 @@ config.mediaplayer.defaultDir = ConfigDirectory()
 config.mediaplayer.sortPlaylists = ConfigYesNo(default=False)
 config.mediaplayer.alwaysHideInfoBar = ConfigYesNo(default=True)
 config.mediaplayer.onMainMenu = ConfigYesNo(default=False)
+config.mediaplayer.confirmClose = ConfigYesNo(default=True)
 
 class DirectoryBrowser(Screen, HelpableScreen):
 
@@ -92,6 +93,7 @@ class MediaPlayerSettings(Screen, ConfigListScreen):
 			self.list.append(getConfigListEntry(_("Sorting of playlists"), config.mediaplayer.sortPlaylists))
 			self.list.append(getConfigListEntry(_("Always hide infobar"), config.mediaplayer.alwaysHideInfoBar))
 			self.list.append(getConfigListEntry(_("Show media player on main menu"), config.mediaplayer.onMainMenu))
+			self.list.append(getConfigListEntry(_("Confirm closure of media player"), config.mediaplayer.confirmClose))
 			self["config"].setList(self.list)
 		except KeyError:
 			print "keyError"

@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-02-04 21:24+0100\n"
-"PO-Revision-Date: 2021-02-04 00:12+0100\n"
+"PO-Revision-Date: 2021-03-16 20:26+0100\n"
 "Last-Translator: teamblue-e2 <teamblue@online.de>\n"
 "Language-Team: Teamblue teamblue@online.de\n"
 "Language: de\n"
@@ -528,6 +528,7 @@ msgstr "-KEIN SERVICE\n"
 #, python-format
 msgid "-SERVICE ERROR:%d\n"
 msgstr "-SERVICE FEHLER:%d\n"
+
 msgid "/usr/share/enigma2 directory"
 msgstr "/usr/share/enigma2 Verzeichnis"
 
@@ -2600,6 +2601,9 @@ msgstr "Wahl des Videoausgang-Anschlusses."
 
 msgid "Configuring"
 msgstr "Konfiguriere"
+
+msgid "Confirm closure of media player"
+msgstr "Schließen des Mediaplayer bestätigen"
 
 msgid "Conflict not resolved!"
 msgstr "Nicht gelöster Konflikt!"
@@ -11923,7 +11927,6 @@ msgstr "Spur"
 msgid "Transcode"
 msgstr "Transkodieren"
 
-#, fuzzy
 msgid "Transcoding Setup"
 msgstr "Transkodierungs Einstellungen "
 
