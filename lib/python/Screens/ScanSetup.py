@@ -11,15 +11,13 @@ from Tools.HardwareInfo import HardwareInfo
 from Tools.Transponder import getChannelNumber, supportedChannels, channel2frequency
 from Screens.InfoBar import InfoBar
 from Screens.MessageBox import MessageBox
-from enigma import eTimer, eDVBFrontendParametersSatellite, eComponentScan, \
-	eDVBFrontendParametersTerrestrial, eDVBFrontendParametersCable, eConsoleAppContainer, \
-	eDVBResourceManager, eDVBFrontendParametersATSC
+from enigma import eTimer, eDVBFrontendParametersSatellite, eComponentScan, eDVBFrontendParametersTerrestrial, eDVBFrontendParametersCable, eConsoleAppContainer, eDVBResourceManager, eDVBFrontendParametersATSC
 
 def buildTerTransponder(frequency,
 		inversion=2, bandwidth = 7000000, fechigh = 6, feclow = 6,
 		modulation = 2, transmission = 2, guard = 4,
 		hierarchy = 4, system = 0, plp_id = 0):
-#	print "freq", frequency, "inv", inversion, "bw", bandwidth, "fech", fechigh, "fecl", feclow, "mod", modulation, "tm", transmission, "guard", guard, "hierarchy", hierarchy, "system", system, "plp_id", plp_id
+	#print "freq", frequency, "inv", inversion, "bw", bandwidth, "fech", fechigh, "fecl", feclow, "mod", modulation, "tm", transmission, "guard", guard, "hierarchy", hierarchy, "system", system, "plp_id", plp_id
 	parm = eDVBFrontendParametersTerrestrial()
 	parm.frequency = frequency
 	parm.inversion = inversion
@@ -115,7 +113,7 @@ cable_autoscan_nimtype = {
 'TURBO' : 'vuplus_turbo_c',
 'TURBO2' : 'vuplus_turbo2_c',
 'TT2L08' : 'tt2l08',
-'BCM3148' : 'bcm3148',
+'BCM3148' : 'bcm3148', #BCM3158/BCM3148 use the same bcm3148 utility 
 'BCM3158': 'bcm3148'
 }
 
@@ -129,10 +127,10 @@ terrestrial_autoscan_nimtype = {
 }
 
 dual_tuner_list = ('TT3L10', 'BCM3466')
-vtuner_need_idx_list = ('TURBO2')
+vtuner_need_idx_list = ('TURBO2',)
 
 def GetDeviceId(filter, nim_idx):
-	device_id = socket_id = 0
+	socket_id = device_id = 0
 	for nim in nimmanager.nim_slots:
 		try:
 			name_token = nim.description.split(' ')[-1][4:-1]
@@ -151,9 +149,8 @@ def GetDeviceId(filter, nim_idx):
 def getVtunerId(filter, nim_idx):
 	idx_count = 1
 	for slot in nimmanager.nim_slots:
-		slot_idx = slot.slot
 		if filter in slot.description:
-			if slot_idx == nim_idx :
+			if slot.slot == nim_idx:
 				return "--idx " + str(idx_count)
 			else:
 				idx_count += 1
@@ -293,7 +290,6 @@ class CableTransponderSearchSupport:
 				else:
 					bus = 4 # DM8000 second num is /dev/i2c/4
 
-		bin_name = None
 		if tunername == "CXD1981":
 			bin_name = "CXD1981"
 			cmd = "cxd1978 --init --scan --verbose --wakeup --inv 2 --bus %d" % bus
@@ -477,12 +473,12 @@ class TerrestrialTransponderSearchSupport:
 						parm.system = parm.System_DVB_T2
 						parm.plp_id = int(plp_id)
 						self.__tlist.append(parm)
-				tmpstr = _("Try to find used transponders in terrestrial network... please wait...")
-				tmpstr += "\n\n"
-				tmpstr += data[1][:-3]
-				tmpstr += " kHz "
-				tmpstr += data[0]
-				self.terrestrial_search_session["text"].setText(tmpstr)
+			tmpstr = _("Try to find used transponders in terrestrial network... please wait...")
+			tmpstr += "\n\n"
+			tmpstr += data[1][:-3]
+			tmpstr += " kHz "
+			tmpstr += data[0]
+			self.terrestrial_search_session["text"].setText(tmpstr)
 
 	def terrestrialTransponderInitSearchList(self, searchList, region):
 		tpList = nimmanager.getTranspondersTerrestrial(region)
@@ -562,7 +558,6 @@ class TerrestrialTransponderSearchSupport:
 			self.terrestrial_search_bus = nimmanager.getI2CDevice(nim_idx)
 			if self.terrestrial_search_bus is None:
 				self.terrestrial_search_bus = 2
-
 			self.terrestrial_search_feid = nim_idx
 			self.terrestrial_search_enable_5v = nimmanager.nim_slots[nim_idx].config.terrestrial_5V.value
 			self.terrestrial_search_list = []
@@ -1125,7 +1120,7 @@ class ScanSetup(ConfigListScreen, Screen, CableTransponderSearchSupport, Terrest
 			(6000000, "6MHz"),
 			(7000000, "7MHz"),
 			(8000000, "8MHz"),
-			(10000000,"10MHz")
+			(10000000, "10MHz")
 			])
 		#, (eDVBFrontendParametersTerrestrial.Bandwidth_Auto, _("Auto"))))
 		self.scan_ter.fechigh = ConfigSelection(default = defaultTer["fechigh"], choices = [
@@ -1381,10 +1376,10 @@ class ScanSetup(ConfigListScreen, Screen, CableTransponderSearchSupport, Terrest
 		elif self.DVB_type.value == "DVB-C":
 			if self.scan_typecable.value == "single_transponder":
 				self.addCabTransponder(tlist, self.scan_cab.frequency.value,
-											  self.scan_cab.symbolrate.value*1000,
-											  self.scan_cab.modulation.value,
-											  self.scan_cab.fec.value,
-											  self.scan_cab.inversion.value)
+							self.scan_cab.symbolrate.value*1000,
+							self.scan_cab.modulation.value,
+							self.scan_cab.fec.value,
+							self.scan_cab.inversion.value)
 				removeAll = False
 			elif self.scan_typecable.value == "predefined_transponder":
 				tps = nimmanager.getTranspondersCable(index_to_scan)
@@ -1398,11 +1393,10 @@ class ScanSetup(ConfigListScreen, Screen, CableTransponderSearchSupport, Terrest
 					getInitialCableTransponderList(tlist, index_to_scan)
 				elif nimmanager.nim_slots[index_to_scan].supportsBlindScan():
 					flags |= eComponentScan.scanBlindSearch
-					self.addCabTransponder(tlist, 73000,
-												  (866000 - 73000) / 1000,
-												  eDVBFrontendParametersCable.Modulation_Auto,
-												  eDVBFrontendParametersCable.FEC_Auto,
-												  eDVBFrontendParametersCable.Inversion_Unknown)
+					self.addCabTransponder(tlist, 73000, (866000 - 73000) / 1000,
+								eDVBFrontendParametersCable.Modulation_Auto,
+								eDVBFrontendParametersCable.FEC_Auto,
+								eDVBFrontendParametersCable.Inversion_Unknown)
 					removeAll = False
 				else:
 					action = SEARCH_CABLE_TRANSPONDERS
@@ -1442,7 +1436,6 @@ class ScanSetup(ConfigListScreen, Screen, CableTransponderSearchSupport, Terrest
 					if nim.canBeCompatible("DVB-T2"):
 						if len(self.terrestrialTransponderGetCmd(nim.slot)):
 							action = SEARCH_TERRESTRIAL2_TRANSPONDERS
-						else:
 							skip_t2 = True
 				getInitialTerrestrialTransponderList(tlist, self.TerrestrialRegion.description[self.TerrestrialRegion.value], int(self.scan_ter.complete_system.value), skip_t2)
 
@@ -1495,8 +1488,7 @@ class ScanSetup(ConfigListScreen, Screen, CableTransponderSearchSupport, Terrest
 			self.startTerrestrialTransponderSearch(self.feid, nimmanager.getTerrestrialDescription(self.feid))
 
 	def setCableTransponderSearchResult(self, tlist):
-		if tlist is not None:
-			self.tlist.extend(tlist)
+		self.tlist = tlist
 
 	def cableTransponderSearchFinished(self):
 		if self.tlist is None:
@@ -1505,7 +1497,8 @@ class ScanSetup(ConfigListScreen, Screen, CableTransponderSearchSupport, Terrest
 			self.startScan(self.tlist, self.flags, self.feid)
 
 	def setTerrestrialTransponderSearchResult(self, tlist):
-		self.tlist = tlist
+		if tlist is not None:
+			self.tlist.extend(tlist)
 
 	def terrestrialTransponderSearchFinished(self):
 		if self.tlist is None:
@@ -1813,7 +1806,6 @@ class ScanSimple(ConfigListScreen, Screen, CableTransponderSearchSupport, Terres
 							if nim.canBeCompatible("DVB-T2"):
 								if len(self.terrestrialTransponderGetCmd(nim.slot)):
 									action = SEARCH_TERRESTRIAL2_TRANSPONDERS
-								else:
 									skip_t2 = True
 						getInitialTerrestrialTransponderList(tlist, nimmanager.getTerrestrialDescription(nim.slot), skip_t2=skip_t2)
 					if nim.isCompatible("ATSC"):
