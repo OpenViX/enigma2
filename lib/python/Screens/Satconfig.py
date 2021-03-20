@@ -810,11 +810,12 @@ class NimSelection(Screen):
 		if answer is True:
 			nim = self["nimlist"].getCurrent()
 			nim = nim and nim[3]
-			nimConfig = nimmanager.getNimConfig(nim.slot)
-			if nim.isFBCLink() and nimConfig.configMode.value == "nothing" and not getLinkedSlotID(nim.slot) == -1:
-				return
-			if nim is not None and (not nim.empty or nim.isMultiType()) and nim.isSupported():
-				self.session.openWithCallback(boundFunction(self.NimSetupCB, self["nimlist"].getIndex()), self.resultclass, nim.slot)
+			if nim is not None:
+				nimConfig = nimmanager.getNimConfig(nim.slot)
+				if nim.isFBCLink() and nimConfig.configMode.value == "nothing" and not getLinkedSlotID(nim.slot) == -1:
+					return
+				if nim is not None and (not nim.empty or nim.isMultiType()) and nim.isSupported():
+					self.session.openWithCallback(boundFunction(self.NimSetupCB, self["nimlist"].getIndex()), self.resultclass, nim.slot)
 
 	def NimSetupCB(self, index=None):
 		self.updateList(index)
