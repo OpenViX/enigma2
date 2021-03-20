@@ -160,8 +160,8 @@ OpenTvTitle::OpenTvTitle(const uint8_t * const buffer, uint16_t startMjd)
 		uint32_t startSecond = (UINT16(&buffer[2]) << 1);
 
 		startTimeBcd = ((startMjd - 40587) * 86400) + startSecond;
-		
-		// HACK ALERT: There is a bug somewhere in the data that causes some 
+
+		// HACK ALERT: There is a bug somewhere in the data that causes some
 		// events to be cataloged 0x20000 seconds further into the future
 		// than they should be. In these cases "startSecond" will have a value
 		// of 86400 seconds or greater. i.e. more than one day. When this
@@ -169,7 +169,7 @@ OpenTvTitle::OpenTvTitle(const uint8_t * const buffer, uint16_t startMjd)
 		// and therefore the excess 0x20000 seconds is removed from "startTimeBcd".
 		if (startSecond >= 86400)
 			startTimeBcd -= 0x20000;
-		
+
 		duration = UINT16(&buffer[4]) << 1;
 
 		//genre content
