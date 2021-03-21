@@ -1437,7 +1437,7 @@ class ScanSetup(ConfigListScreen, Screen, CableTransponderSearchSupport, Terrest
 				elif SystemInfo["Blindscan_t2_available"] and self.scan_terrestrial_binary_scan.value and nim.isCompatible("DVB-T2") and len(self.terrestrialTransponderGetCmd(nim.slot)):
 					action = SEARCH_TERRESTRIAL2_TRANSPONDERS
 				else:
-					getInitialTerrestrialTransponderList(tlist, self.TerrestrialRegion.description[self.TerrestrialRegion.value], int(self.scan_ter.system.value))
+					getInitialTerrestrialTransponderList(tlist, self.TerrestrialRegion.description[self.TerrestrialRegion.value], int(self.scan_ter.complete_system.value))
 
 		elif self.DVB_type.value == "ATSC":
 			if self.scan_type_atsc.value == "single_transponder":
