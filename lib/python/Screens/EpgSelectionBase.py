@@ -204,7 +204,7 @@ class EPGSelectionBase(Screen, HelpableScreen):
 	def openIMDb(self):
 		self.closeEventViewDialog()
 		try:
-			from Plugins.Extensions.IMDb.plugin import IMDB, IMDBEPGSelection
+			from Plugins.Extensions.IMDb.plugin import IMDB
 			try:
 				event = self["list"].getCurrent()[0]
 				if event is None:
