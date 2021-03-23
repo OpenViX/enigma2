@@ -1783,6 +1783,9 @@ msgstr "Бекап завершено."
 msgid "Backup Settings"
 msgstr "Змінити налаштування"
 
+msgid "Backup EPG cache"
+msgstr "Резервне кешування EPG"
+
 msgid "Backup completed."
 msgstr "Бекап завершено."
 
@@ -1834,8 +1837,8 @@ msgstr "Бангладеш"
 msgid "Barbados"
 msgstr ""
 
-msgid "Basic PID info"
-msgstr ""
+msgid "Basic PID Info"
+msgstr "Основна інформація про ПІД"
 
 #, fuzzy
 msgid "Basic settings"
@@ -4132,6 +4135,9 @@ msgstr ""
 msgid "EPG Cache Path"
 msgstr ""
 
+msgid "EPG cache backup"
+msgstr "Резервне копіювання кешу ЕПГ"
+
 msgid "EPG language selection 1"
 msgstr "Вибір мови EPG 1"
 
@@ -5234,6 +5240,9 @@ msgstr ""
 #, fuzzy
 msgid "Frame rate"
 msgstr "Частота оновлення"
+
+msgid "Frame rate"
+msgstr "Частота кадрів"
 
 msgid "Frame size in full view"
 msgstr "Розмір рамки при перегляді на весь екран"
@@ -7993,12 +8002,14 @@ msgid "Operating LED status in standby mode"
 msgstr ""
 
 msgid "Operating LED status while running."
-msgstr ""
+msgstr "Індикатор LED під час роботи."
 
 msgid "Opkg"
 msgstr ""
 
-#, fuzzy
+msgid "Options/Restore"
+msgstr "Параметри/Відновлення"
+
 msgid "Options disable timer"
 msgstr "Варіант для всіх іміджів"
 
@@ -8096,7 +8107,7 @@ msgid "PCM"
 msgstr ""
 
 msgid "PCR PID"
-msgstr "PCR PID"
+msgstr "PCR ПІД"
 
 msgid "PDC"
 msgstr ""
@@ -9401,6 +9412,9 @@ msgstr "Всі файли видалені"
 msgid "Remove all new found flags"
 msgstr "видалити всі нові знайдені прапори"
 
+msgid "Remove autoinstall list"
+msgstr "Видалити список автовстановлення"
+
 msgid "Remove bookmark"
 msgstr "Видалити закладку"
 
@@ -9784,6 +9798,9 @@ msgstr "Працює"
 msgid "Running Myrestore script, Please wait ..."
 msgstr "Будь ласка зачекайте..."
 
+msgid "Run autoinstall"
+msgstr "Запуск автовстановлення"
+
 msgid "Russian"
 msgstr "Російський"
 
@@ -10002,7 +10019,9 @@ msgstr "Зберегти плейлист при виході"
 msgid "Save right folder on exit"
 msgstr "Створити нову папку"
 
-#, fuzzy
+msgid "Save previous backup"
+msgstr "Зберегти попередню резервну копію"
+
 msgid "Save settings and EPG data"
 msgstr "Зберегти epg.dat"
 
@@ -12189,7 +12208,10 @@ msgstr ""
 
 #. TRANSLATORS: Add here whatever should be shown in the "translator" about screen, up to 6 lines (use \n for newline)
 msgid "TRANSLATOR_INFO"
-msgstr "Irkoff <irkoff@gmail.com>"
+msgstr ""
+"Переклад:  kvinto - 23.03.2021\n"
+"Сторінка:    https://gisclub.tv\n"
+"                  kvinto@rambler.ru"
 
 msgid "TS file is too large for ISO9660 level 1!"
 msgstr "TS файл занадто великий для ISO9660 level 1!"
@@ -13118,7 +13140,7 @@ msgstr ""
 
 #, fuzzy
 msgid "Tuner live values"
-msgstr "Статус тюнера"
+msgstr "Текучы значення тюнера"
 
 #, fuzzy
 msgid "Tuner not available."
@@ -13674,6 +13696,9 @@ msgstr "Перегляд установок"
 msgid "Video clipping setup"
 msgstr "Налаштування відео"
 
+msgid "Video codec"
+msgstr "Відео кодек"
+
 msgid "Video enhancement preview"
 msgstr "Попередній перегляд відео налаштувань"
 
@@ -14189,7 +14214,7 @@ msgid "When enabled, the VCR scart option will be shown on the main menu"
 msgstr "При включенні цієї опції 'Відеомагнітофон' буде показаний в головному меню."
 
 msgid "When enabled, the channel selection list will be hidden while listening to a radio channel"
-msgstr "Якщо встановлено значення 'так', то список вибору каналів буде приховано під час прослуховування радіо каналів"
+msgstr "Якщо увімкнено, під час прослуховування радіоканалу список вибору каналів буде приховано"
 
 msgid "When enabled, the infobar will be displayed when a new event starts."
 msgstr "Якщо увімкнено, при початку нової події EPG на поточному каналі, з'явиться інфобар."
