@@ -1279,9 +1279,11 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		self.hideActionFeedback()
 
 	def itemSelected(self):
+		currentSelection = self.getCurrentSelection()
+		if currentSelection is None:
+			return
 		markedFiles = self.list.getMarked(excludeDirs=True)
 		markedFilesCount = len(markedFiles)
-		currentSelection = self.getCurrentSelection()
 	
 		# Rules:
 		#  - if a directory (include parent .. and trash can) is selected, marks are completely ignored and the directory is opened
@@ -2052,6 +2054,8 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		if self.list.countMarked() > 0:
 			return
 		item = self.getCurrentSelection()
+		if item is None:
+			return
 		info = item[1]
 		filepath = item[0].getPath()
 		if not filepath.endswith('.ts'):
@@ -2375,8 +2379,9 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		if not confirmed:
 			return
 		item = self.getCurrentSelection()
-		current = item[0]
-		Tools.Trashcan.cleanAll(os.path.split(current.getPath())[0])
+		if item:
+			current = item[0]
+			Tools.Trashcan.cleanAll(os.path.split(current.getPath())[0])
 
 	def showNetworkMounts(self):
 		import NetworkSetup
