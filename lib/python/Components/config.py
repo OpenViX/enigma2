@@ -608,6 +608,9 @@ class ConfigDateTime(ConfigElement):
 	def getText(self):
 		return strftime(self.formatstring, localtime(self.value))
 
+	def toDisplayString(self, value):
+		return strftime(self.formatstring, localtime(value))
+
 	def getMulti(self, selected):
 		return "text", strftime(self.formatstring, localtime(self.value))
 
@@ -1106,14 +1109,18 @@ class ConfigClock(ConfigSequence):
 		else:
 			ConfigSequence.handleKey(self, key)
 
+	def toDisplayString(self, value):
+		newtime = list(self.t)
+		newtime[3] = value[0]
+		newtime[4] = value[1]
+		retval = strftime(config.usage.time.short.value.replace("%-I", "%_I").replace("%-H", "%_H"), newtime)
+		return retval
+
 	def genText(self):
 		mPos = self.marked_pos
 		if mPos >= 2:
 			mPos += 1  # Skip over the separator
-		newtime = list(self.t)
-		newtime[3] = self._value[0]
-		newtime[4] = self._value[1]
-		value = strftime(config.usage.time.short.value.replace("%-I", "%_I").replace("%-H", "%_H"), newtime)
+		value = self.toDisplayString(self._value)
 		return value, mPos
 
 date_limits = [(1, 31), (1, 12), (1970, 2050)]
