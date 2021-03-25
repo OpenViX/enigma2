@@ -116,19 +116,24 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 		else:
 			itemText = _(element.get("text", "??").encode("UTF-8", errors="ignore"))
 			itemDescription = _(element.get("description", " ").encode("UTF-8", errors="ignore"))
-		itemText = itemText.replace("%s %s", "%s %s" % (SystemInfo["MachineBrand"], SystemInfo["MachineName"]))
-		itemDescription = itemDescription.replace("%s %s", "%s %s" % (SystemInfo["MachineBrand"], SystemInfo["MachineName"]))
 		item = eval(element.text or "")
 		if item != "" and not isinstance(item, ConfigNothing):
-			itemDefault = item.toDisplayString(item.default)
-			if config.usage.setupShowDefault.value:
-				spacer = "\n" if config.usage.setupShowDefault.value == "newline" else "  "
-				itemDescription = _("%s%s(Default: %s)") % (itemDescription, spacer, itemDefault) if itemDescription and itemDescription != " " else _("Default: '%s'.") % itemDefault
-			self.list.append((itemText, item, itemDescription))  # Add the item to the config list.
+			self.list.append((self.formatItemText(itemText), item, self.formatItemDescription(item, itemDescription)))  # Add the item to the config list.
 		if item is config.usage.setupShowDefault:
 			self.showDefaultChanged = True
 		if item is config.usage.boolean_graphic:
 			self.graphicSwitchChanged = True
+
+	def formatItemText(self, itemText):
+		return itemText.replace("%s %s", "%s %s" % (SystemInfo["MachineBrand"], SystemInfo["MachineName"]))
+
+	def formatItemDescription(self, item, itemDescription):
+		itemDescription = itemDescription.replace("%s %s", "%s %s" % (SystemInfo["MachineBrand"], SystemInfo["MachineName"]))
+		if config.usage.setupShowDefault.value:
+			spacer = "\n" if config.usage.setupShowDefault.value == "newline" else "  "
+			itemDefault = item.toDisplayString(item.default)
+			itemDescription = _("%s%s(Default: %s)") % (itemDescription, spacer, itemDefault) if itemDescription and itemDescription != " " else _("Default: '%s'.") % itemDefault
+		return itemDescription
 
 	def includeElement(self, element):
 		itemLevel = int(element.get("level", 0))
