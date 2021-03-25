@@ -65,7 +65,8 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 
 	def createSetup(self):
 		oldList = self.list
-		self.switch = False
+		self.showDefaultChanged = False
+		self.graphicSwitchChanged = False
 		self.list = []
 		title = None
 		xmlData = setupDom(self.setup, self.plugin)
@@ -80,7 +81,7 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 				# This may not be appropriate if conditional setup blocks become available.
 				break
 		self.setTitle(_(title) if title and title != "" else _("Setup"))
-		if self.list != oldList or self.switch:
+		if self.list != oldList or self.showDefaultChanged or self.graphicSwitchChanged:
 			print("[Setup] DEBUG: Config list has changed!")
 			currentItem = self["config"].getCurrent()
 			self["config"].setList(self.list)
@@ -120,10 +121,14 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 		item = eval(element.text or "")
 		if item != "" and not isinstance(item, ConfigNothing):
 			itemDefault = item.toDisplayString(item.default)
-			itemDescription = _("%s  (Default: %s)") % (itemDescription, itemDefault) if itemDescription and itemDescription != " " else _("Default: '%s'.") % itemDefault
+			if config.usage.setupShowDefault.value:
+				spacer = "\n" if config.usage.setupShowDefault.value == "newline" else "  "
+				itemDescription = _("%s%s(Default: %s)") % (itemDescription, spacer, itemDefault) if itemDescription and itemDescription != " " else _("Default: '%s'.") % itemDefault
 			self.list.append((itemText, item, itemDescription))  # Add the item to the config list.
+		if item is config.usage.setupShowDefault:
+			self.showDefaultChanged = True
 		if item is config.usage.boolean_graphic:
-			self.switch = True
+			self.graphicSwitchChanged = True
 
 	def includeElement(self, element):
 		itemLevel = int(element.get("level", 0))
@@ -177,7 +182,14 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 			self["config"].setCurrentIndex(self.getIndexFromItem(item))
 
 	def getIndexFromItem(self, item):
-		return self["config"].list.index(item) if item in self["config"].list else 0
+		if item is None:  # If there is no item position at the top of the config list.
+			return 0
+		if item in self["config"].list:  # If the item is in the config list position to that item.
+			return self["config"].list.index(item)
+		for pos, data in enumerate(self["config"].list):
+			if data[0] == item[0] and data[1] == item[1]:  # If the label and config class match then position to that item.
+				return pos
+		return 0  # We can't match the item to the config list then position to the top of the list.
 
 	def createSummary(self):
 		return SetupSummary

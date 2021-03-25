@@ -123,6 +123,12 @@ def InitUsageConfig():
 	config.usage.sort_menus = ConfigYesNo(default = False)
 	config.usage.sort_pluginlist = ConfigYesNo(default = True)
 	config.usage.movieplayer_pvrstate = ConfigYesNo(default = True)
+	
+	config.usage.setupShowDefault = ConfigSelection(default="spaces", choices=[
+		("", _("Don't show default")),
+		("spaces", _("Show default after description")),
+		("newline", _("Show default on new line"))
+	])
 
 	choicelist = []
 	for i in (10, 30):
