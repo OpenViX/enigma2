@@ -1,8 +1,0 @@
-<skin>
-	<!--	Skin: Default-OE-A skinViX addition Vs 0.00	-->
-	<!--	This skin is part of the default OE-A-skin; the same license applies.	-->
-	<output id="0">
-		<resolution bpp="32" xres="1280" yres="720"/>
-	</output>
-	<include filename="./skin_default_windowstyle.xml" />
-</skin>
