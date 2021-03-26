@@ -419,6 +419,8 @@ class ConfigListScreen:
 			return
 		for x in self["config"].list:
 			x[1].cancel()
+		if not hasattr(self, "closeParameters"):
+			self.closeParameters = ()
 		self.close(*self.closeParameters)
 
 	def createSummary(self):  # This should not be required if ConfigList is invoked via Setup (as it should).
