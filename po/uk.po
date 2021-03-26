@@ -5241,9 +5241,6 @@ msgstr ""
 msgid "Frame rate"
 msgstr "Частота оновлення"
 
-msgid "Frame rate"
-msgstr "Частота кадрів"
-
 msgid "Frame size in full view"
 msgstr "Розмір рамки при перегляді на весь екран"
 
