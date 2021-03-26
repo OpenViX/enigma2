@@ -1,9 +1,9 @@
+import xml.etree.cElementTree
+
 from gettext import dgettext
 from os.path import getmtime, join as pathjoin
-from six import PY2
-from xml.etree.cElementTree import ParseError, fromstring, parse
-
 from skin import setups
+
 from Components.config import ConfigBoolean, ConfigNothing, ConfigSelection, config
 from Components.ConfigList import ConfigListScreen
 from Components.Label import Label
@@ -20,46 +20,8 @@ setupModTimes = {}
 
 
 class Setup(ConfigListScreen, Screen, HelpableScreen):
-	skin = [
-		"""
-	<screen name="Setup" position="center,center" size="%d,%d">
-		<widget name="config" position="%d,%d" size="e-%d,%d" enableWrapAround="1" font="Regular;%d" itemHeight="%d" scrollbarMode="showOnDemand" />
-		<widget name="footnote" position="%d,e-%d" size="e-%d,%d" font="Regular;%d" valign="center" />
-		<widget name="description" position="%d,e-%d" size="e-%d,%d" font="Regular;%d" valign="center" />
-		<widget source="key_red" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="key_red" font="Regular;%d" foregroundColor="key_text" halign="center" valign="center">
-			<convert type="ConditionalShowHide" />
-		</widget>
-		<widget source="key_green" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="key_green" font="Regular;%d" foregroundColor="key_text" halign="center" valign="center">
-			<convert type="ConditionalShowHide" />
-		</widget>
-		<widget source="key_menu" render="Label" position="e-%d,e-%d" size="%d,%d" backgroundColor="key_back" font="Regular;%d" foregroundColor="key_text" halign="center" valign="center">
-			<convert type="ConditionalShowHide" />
-		</widget>
-		<widget source="key_info" render="Label" position="e-%d,e-%d" size="%d,%d" backgroundColor="key_back" font="Regular;%d" foregroundColor="key_text" halign="center" valign="center">
-			<convert type="ConditionalShowHide" />
-		</widget>
-		<widget source="VKeyIcon" text="TEXT" render="Label" position="e-%d,e-%d" size="%d,%d" backgroundColor="key_back" font="Regular;%d" foregroundColor="key_text" halign="center" valign="center">
-			<convert type="ConditionalShowHide" />
-		</widget>
-		<widget source="key_help" render="Label" position="e-%d,e-%d" size="%d,%d" backgroundColor="key_back" font="Regular;%d" foregroundColor="key_text" halign="center" valign="center">
-			<convert type="ConditionalShowHide" />
-		</widget>
-		<widget name="setupimage" position="0,0" size="0,0" alphatest="blend" conditional="setupimage" transparent="1" />
-	</screen>""",
-		900, 570,  # screen
-		10, 10, 20, 350, 25, 35,  # config
-		10, 185, 20, 25, 20,  # footnote
-		10, 160, 20, 100, 20,  # description
-		10, 50, 180, 40, 20,  # key_red
-		200, 50, 180, 40, 20,  # key_green
-		360, 50, 80, 40, 20,  # key_menu
-		150, 50, 80, 40, 20,  # key_info
-		180, 50, 80, 40, 20,  # key_text
-		90, 50, 80, 40, 20  # key_help
-	]
-
 	def __init__(self, session, setup, plugin=None, PluginLanguageDomain=None):
-		Screen.__init__(self, session, mandatoryWidgets=["config", "footnote", "description"])
+		Screen.__init__(self, session)
 		HelpableScreen.__init__(self)
 		self.setup = setup
 		self.plugin = plugin
@@ -73,6 +35,7 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 			self.skinName.append("Setup%s" % setup)  # DEBUG: Proposed for new setup screens.
 			self.skinName.append("setup_%s" % setup)
 		self.skinName.append("Setup")
+		self.onChangedEntry = []
 		self.list = []
 		ConfigListScreen.__init__(self, self.list, session=session, on_change=self.changedEntry, fullUI=True)
 		self["footnote"] = Label()
@@ -113,7 +76,7 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 				skin = setup.get("skin", None)
 				if skin and skin != "":
 					self.skinName.insert(0, skin)
-				title = setup.get("title", None).encode("UTF-8", errors="ignore") if PY2 else setup.get("title", None)
+				title = setup.get("title", None).encode("UTF-8", errors="ignore")
 				# If this break is executed then there can only be one setup tag with this key.
 				# This may not be appropriate if conditional setup blocks become available.
 				break
@@ -148,11 +111,11 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 
 	def addItem(self, element):
 		if self.pluginLanguageDomain:
-			itemText = dgettext(self.pluginLanguageDomain, element.get("text", "??").encode("UTF-8", errors="ignore")) if PY2 else dgettext(self.pluginLanguageDomain, element.get("text", "??"))
-			itemDescription = dgettext(self.pluginLanguageDomain, element.get("description", " ").encode("UTF-8", errors="ignore")) if PY2 else dgettext(self.pluginLanguageDomain, element.get("description", " "))
+			itemText = dgettext(self.pluginLanguageDomain, element.get("text", "??").encode("UTF-8", errors="ignore"))
+			itemDescription = dgettext(self.pluginLanguageDomain, element.get("description", " ").encode("UTF-8", errors="ignore"))
 		else:
-			itemText = _(element.get("text", "??").encode("UTF-8", errors="ignore")) if PY2 else _(element.get("text", "??"))
-			itemDescription = _(element.get("description", " ").encode("UTF-8", errors="ignore")) if PY2 else _(element.get("description", " "))
+			itemText = _(element.get("text", "??").encode("UTF-8", errors="ignore"))
+			itemDescription = _(element.get("description", " ").encode("UTF-8", errors="ignore"))
 		item = eval(element.text or "")
 		if item != "" and not isinstance(item, ConfigNothing):
 			self.list.append((self.formatItemText(itemText), item, self.formatItemDescription(item, itemDescription)))  # Add the item to the config list.
@@ -162,10 +125,10 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 			self.graphicSwitchChanged = True
 
 	def formatItemText(self, itemText):
-		return itemText.replace("%s %s", "%s %s" % (SystemInfo["MachineBrand"], SystemInfo["MachineModel"]))
+		return itemText.replace("%s %s", "%s %s" % (SystemInfo["MachineBrand"], SystemInfo["MachineName"]))
 
 	def formatItemDescription(self, item, itemDescription):
-		itemDescription = itemDescription.replace("%s %s", "%s %s" % (SystemInfo["MachineBrand"], SystemInfo["MachineModel"]))
+		itemDescription = itemDescription.replace("%s %s", "%s %s" % (SystemInfo["MachineBrand"], SystemInfo["MachineName"]))
 		if config.usage.setupShowDefault.value:
 			spacer = "\n" if config.usage.setupShowDefault.value == "newline" else "  "
 			itemDefault = item.toDisplayString(item.default)
@@ -319,11 +282,11 @@ def setupDom(setup=None, plugin=None):
 					key = element.get(reference[element.tag])
 				checkItems(element, key, allowed=IF_ALLOWED)
 			elif element.tag == "else":
-				allowed = AFTER_ELSE_ALLOWED  # Another else and elif not permitted after else.
+				allowed = AFTER_ELSE_ALLOWED  # else and elif not permitted after else
 			elif element.tag == "elif":
 				pass
 
-	setupFileDom = fromstring("<setupxml></setupxml>")
+	setupFileDom = xml.etree.cElementTree.fromstring("<setupxml></setupxml>")
 	setupFile = resolveFilename(SCOPE_PLUGINS, pathjoin(plugin, "setup.xml")) if plugin else resolveFilename(SCOPE_SKIN, "setup.xml")
 	global domSetups, setupModTimes
 	try:
@@ -346,7 +309,7 @@ def setupDom(setup=None, plugin=None):
 			del setupModTimes[setupFile]
 		with open(setupFile, "r") as fd:  # This open gets around a possible file handle leak in Python's XML parser.
 			try:
-				fileDom = parse(fd).getroot()
+				fileDom = xml.etree.cElementTree.parse(fd).getroot()
 				checkItems(fileDom, None)
 				setupFileDom = fileDom
 				domSetups[setupFile] = setupFileDom
@@ -354,12 +317,12 @@ def setupDom(setup=None, plugin=None):
 				for setup in setupFileDom.findall("setup"):
 					key = setup.get("key")
 					if key:  # If there is no key then this element is useless and can be skipped!
-						title = setup.get("title", "").encode("UTF-8", errors="ignore") if PY2 else setup.get("title", "")
+						title = setup.get("title", "").encode("UTF-8", errors="ignore")
 						if title == "":
 							print("[Setup] Error: Setup key '%s' title is missing or blank!" % key)
 							title = "** Setup error: '%s' title is missing or blank!" % key
 						# print("[Setup] DEBUG: XML setup load: key='%s', title='%s'." % (key, setup.get("title", "").encode("UTF-8", errors="ignore")))
-			except ParseError as err:
+			except xml.etree.cElementTree.ParseError as err:
 				fd.seek(0)
 				content = fd.readlines()
 				line, column = err.position
@@ -370,7 +333,7 @@ def setupDom(setup=None, plugin=None):
 			except Exception as err:
 				print("[Setup] Error: Unable to parse setup data in '%s' - '%s'!" % (setupFile, err))
 	except (IOError, OSError) as err:
-		if err.errno == errno.ENOENT:  # No such file or directory.
+		if err.errno == errno.ENOENT:  # No such file or directory
 			print("[Setup] Warning: Setup file '%s' does not exist!" % setupFile)
 		else:
 			print("[Setup] Error %d: Opening setup file '%s'! (%s)" % (err.errno, setupFile, err.strerror))
@@ -378,12 +341,11 @@ def setupDom(setup=None, plugin=None):
 		print("[Setup] Error %d: Unexpected error opening setup file '%s'! (%s)" % (err.errno, setupFile, err.strerror))
 	return setupFileDom
 
-
-# Temporary legacy interface.  Known to be used by the Heinz plugin and possibly others.
+# Temporary legacy interface.
+# Not used any OpenViX enigma2 module. Known to be used by the Heinz plugin.
 #
 def setupdom(setup=None, plugin=None):
 	return setupDom(setup, plugin)
-
 
 # Only used in AudioSelection screen...
 #
