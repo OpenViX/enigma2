@@ -35,7 +35,6 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 			self.skinName.append("Setup%s" % setup)  # DEBUG: Proposed for new setup screens.
 			self.skinName.append("setup_%s" % setup)
 		self.skinName.append("Setup")
-		self.onChangedEntry = []
 		self.list = []
 		ConfigListScreen.__init__(self, self.list, session=session, on_change=self.changedEntry, fullUI=True)
 		self["footnote"] = Label()
