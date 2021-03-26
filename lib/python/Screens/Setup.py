@@ -141,16 +141,17 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 			return False
 		requires = element.get("requires")
 		if requires:
-			negate = requires.startswith("!")
-			if negate:
-				requires = requires[1:]
-			if requires.startswith("config."):
-				item = eval(requires)
-				result = bool(item.value and item.value not in ("0", "False", "false"))
-			else:
-				result = bool(SystemInfo.get(requires, False))
-			if requires and negate == result:  # The item requirements are not met.
-				return False
+			for require in requires.split(";"):
+				negate = require.startswith("!")
+				if negate:
+					require = require[1:]
+				if require.startswith("config."):
+					item = eval(require)
+					result = bool(item.value and item.value not in ("0", "Disable", "disable", "False", "false", "No", "no", "Off", "off"))
+				else:
+					result = bool(SystemInfo.get(require, False))
+				if require and negate == result:  # The item requirements are not met.
+					return False
 		conditional = element.get("conditional")
 		return not conditional or eval(conditional)
 
