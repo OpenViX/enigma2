@@ -1263,7 +1263,9 @@ def readSkin(screen, skin, names, desktop):
 		context.y = 0
 		processScreen(myScreen, context)
 	except Exception as err:
-		print("[Skin] Error in screen '%s' %s!" % (name, str(err)))
+		print("[Skin] Error in screen '%s', %s: %s!" % (name, type(err).__name__, str(err)))
+		import traceback
+		traceback.print_exc()
 
 	from Components.GUIComponent import GUIComponent
 	unusedComponents = [x for x in set(screen.keys()) - usedComponents if isinstance(x, GUIComponent)]
