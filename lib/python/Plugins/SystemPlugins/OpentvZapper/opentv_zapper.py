@@ -783,6 +783,7 @@ class Opentv_Zapper():
 		# this is here so tuner setup is fresh for every download
 		tuners = getNimListForSat(self.transponder["orbital_position"])
 		num_tuners = len(tuners)
+		self.adaptername = ""
 		if self.session and num_tuners and not self.downloading and not self.session.nav.RecordTimer.isRecording():
 			self.adapter = None
 			self.downloading = False
@@ -793,20 +794,20 @@ class Opentv_Zapper():
 				if SystemInfo.get("NumVideoDecoders", 1) > 1 and not (hasattr(self.session, 'pipshown') and self.session.pipshown):
 					self.adapter = PipAdapter(self.session)
 					self.downloading = self.adapter.play(self.sref)
-					adapter = "Pip"
+					self.adaptername = "Pip"
 				else:
 					self.adapter = RecordAdapter(self.session)
 					self.downloading = self.adapter.play(self.sref)
-					adapter = "Record"
+					self.adaptername = "Record"
 			if not self.downloading and (inStandby or self.force):
 				self.adapter = DefaultAdapter(self.session)
 				self.downloading = self.adapter.play(self.sref)
-				adapter = "Default"
+				self.adaptername = "Default"
 		self.force = False
 		if self.downloading:
 			self.enddownloadtimer.startLongTimer(download_duration)
 			print("[%s]download running..." % (debug_name))
-			print("[%s]using '%s' adapter" % (debug_name, adapter))
+			print("[%s] %s" % (debug_name, "using '%s' adapter" % self.adaptername if self.adaptername else "a download is already in progress"))
 			if not inStandby and config.plugins.opentvzapper.notifications.value:
 				Notifications.AddPopup(text=_("OpenTV EPG download starting."), type=MessageBox.TYPE_INFO, timeout=5, id=debug_name)
 		else:
