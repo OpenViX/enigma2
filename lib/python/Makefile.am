@@ -2,7 +2,7 @@ installdir = $(pkglibdir)/python
 
 SUBDIRS = Components Tools Screens Plugins
 
-install_PYTHON = upgrade.py \
+install_PYTHON = \
 	e2reactor.py \
 	GlobalActions.py \
 	keyids.py \
@@ -14,5 +14,5 @@ install_PYTHON = upgrade.py \
 	ServiceReference.py \
 	skin.py \
 	startup.py \
-	timer.py
-
+	timer.py \
+	upgrade.py
