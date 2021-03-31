@@ -46,7 +46,7 @@ void ePixmap::setPixmapFromFile(const char *filename)
 	}
 	else
 	{
-		loadPNG(m_pixmap, filename, m_scale);
+		loadPNG(m_pixmap, filename);
 	}
 
 	if (!m_pixmap)
