@@ -129,7 +129,7 @@ class ServiceList(GUIComponent):
 			pic = LoadPixmap(resolveFilename(SCOPE_ACTIVE_SKIN, value))
 			pic and self.l.setPixmap(self.l.picServiceEventProgressbar, pic)
 		def serviceItemHeight(value):
-			self.skinItemHeight = int(value)
+			self.skinItemHeight = parseScale(value)
 		def serviceNameFont(value):
 			font = parseFont(value, ((1,1),(1,1)) )
 			self.ServiceNameFontName = font.family
@@ -152,7 +152,7 @@ class ServiceList(GUIComponent):
 		def progressBarWidth(value):
 			self.progressBarWidth = parseScale(value)
 		def progressPercentWidth(value):
-			self.progressPercentWidth = int(value)
+			self.progressPercentWidth = parseScale(value)
 		def fieldMargins(value):
 			self.fieldMargins = parseScale(value)
 		def nonplayableMargins(value):

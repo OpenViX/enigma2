@@ -308,11 +308,11 @@ class MovieList(GUIComponent):
 		def itemHeight(value):
 			self.skinItemHeight = parseScale(value)
 		def pbarShift(value):
-			self.pbarShift = int(value)
+			self.pbarShift = parseScale(value)
 		def pbarHeight(value):
-			self.pbarHeight = int(value)
+			self.pbarHeight = parseScale(value)
 		def pbarLargeWidth(value):
-			self.pbarLargeWidth = int(value)
+			self.pbarLargeWidth = parseScale(value)
 		def pbarColour(value):
 			self.pbarColour = parseColor(value).argb()
 		def pbarColourSeen(value):
@@ -320,19 +320,19 @@ class MovieList(GUIComponent):
 		def pbarColourRec(value):
 			self.pbarColourRec = parseColor(value).argb()
 		def partIconeShift(value):
-			self.partIconeShift = int(value)
+			self.partIconeShift = parseScale(value)
 		def spaceIconeText(value):
-			self.spaceIconeText = int(value)
+			self.spaceIconeText = parseScale(value)
 		def iconsWidth(value):
 			self.iconsWidth = parseScale(value)
 		def spaceRight(value):
-			self.spaceRight = int(value)
+			self.spaceRight = parseScale(value)
 		def durationWidth(value):
 			self.durationWidth = parseScale(value)
 		def dateWidth(value):
 			self.dateWidth = parseScale(value)
 			if config.usage.time.wide.value:
-				self.dateWidth = int(self.dateWidth * 1.15)
+				self.dateWidth = parseScale(self.dateWidth * 1.15)
 		for (attrib, value) in self.skinAttributes[:]:
 			try:
 				locals().get(attrib)(value)
