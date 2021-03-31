@@ -262,7 +262,7 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 			list.sort(key=lambda x: int(x[3]))
 
 		if config.usage.menu_show_numbers.value:
-			list = [(str(x[0] + 1) + "  " +x[1][0], x[1][1], x[1][2]) for x in enumerate(list)]
+			list = [(str(x[0] + 1) + "  " +x[1][0], x[1][1], x[1][2], x[1][3]) for x in enumerate(list)]
 
 		self["menu"] = List(list)
 
@@ -325,6 +325,7 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 				return True
 			elif config.ParentalControl.config_sections.standby_menu.value and self.menuID == "shutdown":
 				return True
+
 class MainMenu(Menu):
 	#add file load functions for the xml-file
 

@@ -57,7 +57,7 @@ config.movielist.perm_sort_changes = ConfigYesNo(default=True)
 config.movielist.root = ConfigSelection(default="/media", choices=["/","/media","/media/hdd","/media/hdd/movie","/media/usb","/media/usb/movie"])
 config.movielist.hide_extensions = ConfigYesNo(default=False)
 config.movielist.stop_service = ConfigYesNo(default=True)
-config.movielist.enable_collections = ConfigSelection(default=0, choices=[(0,"Off"), (1, "On except in same named directory"), (2, "On")])
+config.movielist.enable_collections = ConfigSelection(default=0, choices=[(0, _("Off")), (1, _("On except in same named directory")), (2, _("On"))])
 
 userDefinedButtons = None
 last_selected_dest = []
@@ -1279,9 +1279,11 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		self.hideActionFeedback()
 
 	def itemSelected(self):
+		currentSelection = self.getCurrentSelection()
+		if currentSelection is None:
+			return
 		markedFiles = self.list.getMarked(excludeDirs=True)
 		markedFilesCount = len(markedFiles)
-		currentSelection = self.getCurrentSelection()
 	
 		# Rules:
 		#  - if a directory (include parent .. and trash can) is selected, marks are completely ignored and the directory is opened
@@ -2052,6 +2054,8 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		if self.list.countMarked() > 0:
 			return
 		item = self.getCurrentSelection()
+		if item is None:
+			return
 		info = item[1]
 		filepath = item[0].getPath()
 		if not filepath.endswith('.ts'):
@@ -2375,8 +2379,9 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		if not confirmed:
 			return
 		item = self.getCurrentSelection()
-		current = item[0]
-		Tools.Trashcan.cleanAll(os.path.split(current.getPath())[0])
+		if item:
+			current = item[0]
+			Tools.Trashcan.cleanAll(os.path.split(current.getPath())[0])
 
 	def showNetworkMounts(self):
 		import NetworkSetup

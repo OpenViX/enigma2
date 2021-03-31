@@ -47,14 +47,27 @@ class DefaultAdapter:
 	def __init__(self, session):
 		self.navcore = session.nav
 		self.previousService = None
+		self.currentService = ""
+		self.config_tv_lastroot = ""
+		self.config_tv_lastservice = ""
 
 	def play(self, service):
 		self.previousService = self.navcore.getCurrentlyPlayingServiceReference()
+		self.config_tv_lastroot = config.tv.lastroot.value
+		self.config_tv_lastservice = config.tv.lastservice.value
 		self.navcore.playService(service)
+		self.currentService = self.navcore.getCurrentlyPlayingServiceReference()
 		return True
 
 	def stop(self):
-		self.navcore.playService(self.previousService)
+		if self.currentService == self.navcore.getCurrentlyPlayingServiceReference(): # check the user hasn't zapped in the mean time
+			if self.config_tv_lastroot:
+				config.tv.lastroot.value = self.config_tv_lastroot
+				config.tv.lastroot.save()
+			self.navcore.playService(self.previousService)
+			if self.config_tv_lastservice:
+				config.tv.lastservice.value = self.config_tv_lastservice
+				config.tv.lastservice.save()
 
 
 class RecordAdapter:
@@ -780,17 +793,20 @@ class Opentv_Zapper():
 				if SystemInfo.get("NumVideoDecoders", 1) > 1 and not (hasattr(self.session, 'pipshown') and self.session.pipshown):
 					self.adapter = PipAdapter(self.session)
 					self.downloading = self.adapter.play(self.sref)
+					adapter = "Pip"
 				else:
 					self.adapter = RecordAdapter(self.session)
 					self.downloading = self.adapter.play(self.sref)
+					adapter = "Record"
 			if not self.downloading and (inStandby or self.force):
 				self.adapter = DefaultAdapter(self.session)
 				self.downloading = self.adapter.play(self.sref)
+				adapter = "Default"
 		self.force = False
 		if self.downloading:
 			self.enddownloadtimer.startLongTimer(download_duration)
 			print("[%s]download running..." % (debug_name))
-			print("[%s]using adapter" % (debug_name), type(self.adapter))
+			print("[%s]using '%s' adapter" % (debug_name, adapter))
 			if not inStandby and config.plugins.opentvzapper.notifications.value:
 				Notifications.AddPopup(text=_("OpenTV EPG download starting."), type=MessageBox.TYPE_INFO, timeout=5, id=debug_name)
 		else:

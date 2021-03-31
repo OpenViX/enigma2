@@ -1,7 +1,15 @@
 from Components.config import ConfigOnOff, ConfigSelection, ConfigSubsection, ConfigText, config
 from Components.Keyboard import keyboard
+from Components.Language import language
 
 def InitSetupDevices():
+	def languageNotifier(configElement):
+		language.activateLanguage(configElement.value)
+
+	config.osd = ConfigSubsection()
+	config.osd.language = ConfigText(default="en_GB")
+	config.osd.language.addNotifier(languageNotifier)
+
 	def keyboardNotifier(configElement):
 		keyboard.activateKeyboardMap(configElement.index)
 

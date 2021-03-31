@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-01 01:05+0000\n"
-"PO-Revision-Date: 2021-03-01 13:34+0100\n"
+"POT-Creation-Date: 2021-03-29 07:40+0000\n"
+"PO-Revision-Date: 2021-03-30 10:19+0200\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -1050,10 +1050,6 @@ msgid "%s"
 msgstr "%s"
 
 #, python-format
-msgid "%s  (Default: %s)"
-msgstr "%s  (Standaard: %s)"
-
-#, python-format
 msgid "%s %s advanced remote control (native)"
 msgstr "%s %s geavanceerde afstandsbediening"
 
@@ -1119,6 +1115,10 @@ msgstr[1] "%s geupdate pakketten beschikbaar"
 #, python-format
 msgid "%s%d Min"
 msgstr "%s%d Min"
+
+#, python-format
+msgid "%s%s(Default: %s)"
+msgstr "%s%s(Default: %s)"
 
 #, python-format
 msgid "%s/%s: %s"
@@ -2005,12 +2005,6 @@ msgstr "Ook na stand-by"
 msgid "Alternative"
 msgstr "Alternatief"
 
-msgid "Alternative 1"
-msgstr "Alternatief 1"
-
-msgid "Alternative 2"
-msgstr "Alternatief 2"
-
 msgid "Alternative numbering mode"
 msgstr "Alternatieve nummermethode"
 
@@ -2527,6 +2521,12 @@ msgstr "Zwart scherm"
 
 msgid "Black screen till locked"
 msgstr "Zwart scherm tot gelocked"
+
+msgid "Blindscan"
+msgstr "Blindscan"
+
+msgid "Blindscan terrestrial (if possible)"
+msgstr "Blindscan terrestrial (indien mogelijk)"
 
 msgid "Blinking REC"
 msgstr "Knipperend OPN"
@@ -4723,6 +4723,9 @@ msgstr "Dominican Republic"
 msgid "Don't save"
 msgstr "Niet opslaan"
 
+msgid "Don't show default"
+msgstr "Toon standaard waarde niet"
+
 msgid "Don't stop current event but disable future events"
 msgstr "Huidige timer niet stoppen, maar toekomstige timers uitschakelen"
 
@@ -6421,6 +6424,9 @@ msgstr "Image:\t%s.%s%s (%s)\n"
 
 msgid "Immediate shutdown"
 msgstr "Onmiddellijk uitschakelen"
+
+msgid "In Setup screens choose whether to show the default value of the selected item in the description field."
+msgstr "Kies in instelschermen of de standaard waarde van de geselecteerde ingang moet worden getoond."
 
 msgid "In live view wait this many seconds after a numeric key press before assuming the required channel number has been entered. Default: 5 seconds. Setting zero will require confirmation with 'OK'. "
 msgstr "Tijdens live-TV wacht het systeem dit aantal seconden na het ingeven van een cijfer tot er naar dat kanaalnummer gezapt wordt, De standaard waarde is 5 seconde. '0' betekent dat u met 'OK' moet bevestigen."
@@ -8188,6 +8194,9 @@ msgstr "Bij het einde van bestand"
 
 msgid "On end of movie (as menu)"
 msgstr "Aan het einde van de film (als menu)"
+
+msgid "On except in same named directory"
+msgstr "Aan, behalve in gelijknamige map"
 
 msgid "On shutdown/restart warn about any pending jobs being carried out in the background."
 msgstr "Waarschuw bij afsluiten/herstarten als er op de achtergrond taken worden uitgevoerd."
@@ -11155,6 +11164,12 @@ msgstr "Toon iconen voor versleutelde kanalen"
 msgid "Show crypto info in infobar"
 msgstr "Laat crypto-informatie zien in informatiebalk"
 
+msgid "Show default after description"
+msgstr "Toon standaard na beschrijving"
+
+msgid "Show default on new line"
+msgstr "Toon standaard op nieuwe regel"
+
 msgid "Show description for next event)"
 msgstr "Toon de beschrijving voor het komende programma"
 
@@ -11311,6 +11326,9 @@ msgstr "Toon kanaallijst of opnames"
 
 msgid "Show service type icons"
 msgstr "Toon iconen voor servicetype"
+
+msgid "Show setup default values"
+msgstr "Toon standaard instelwaardes"
 
 msgid "Show shutdown menu"
 msgstr "Afsluitmenu weergeven"
@@ -16352,6 +16370,12 @@ msgstr "zapte"
 
 #~ msgid "Allows you to send a copy of the log to yourself."
 #~ msgstr "Maakt het mogelijk een kopie van de logs naar uzelf te sturen."
+
+#~ msgid "Alternative 1"
+#~ msgstr "Alternatief 1"
+
+#~ msgid "Alternative 2"
+#~ msgstr "Alternatief 2"
 
 #~ msgid "Animation Setup"
 #~ msgstr "Animatie-instellingen"

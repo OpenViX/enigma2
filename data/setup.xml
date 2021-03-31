@@ -81,6 +81,7 @@
 		<item level="1" text="Behavior of 0 key in PiP-mode" description="Choose what you want the '0' button to do when PIP is active.">config.usage.pip_zero_button</item>
 		<item level="1" text="History buttons mode" description="Configure the function of the &lt;  &gt; buttons.">config.usage.historymode</item>
 		<item level="2" text="Show True/False as graphical switch" description="Enable to display all true/false, yes/no, on/off and enable/disable set up options as a graphical switch.">config.usage.boolean_graphic</item>
+		<item level="1" text="Show setup default values" description="In Setup screens choose whether to show the default value of the selected item in the description field.">config.usage.setupShowDefault</item>
 		<item level="2" text="Allow fast skin reload" requires="DeveloperImage" description="When changing skins this allows the skin to load without requiring an enigma restart.">config.usage.fast_skin_reload</item>
 	</setup>
 	<setup key="channelselection" title="Channel selection">

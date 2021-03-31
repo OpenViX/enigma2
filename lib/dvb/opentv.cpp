@@ -157,7 +157,21 @@ OpenTvTitle::OpenTvTitle(const uint8_t * const buffer, uint16_t startMjd)
 		uint8_t descriptor_length = buffer[1];
 		uint8_t titleLength = descriptor_length > 7 ? descriptor_length-7 : 0;
 
-		startTimeBcd = (((startMjd - 40587) * 86400) + (UINT16(&buffer[2]) << 1));
+		// HACK: startSecond is detected as being from the previous 
+		// mjd date when the h:m:s is sent as greater than 1 day.
+		// when this occurs, shifted two's complement has a negative 
+		// sign bit of a signed integer, and is not a positive number.
+
+		int32_t startSecond = UINT16(&buffer[2]) << 1;
+
+		// if h:m:s is sent as greater than 1 day in seconds,
+		// first bit is a negative sign bit without padding.
+
+		if (startSecond >= 86400)
+			startSecond = 0xFFFE0000 | (startSecond & 0x1FFFF);
+
+		startTimeBcd = ((startMjd - 40587) * 86400) + startSecond;
+
 		duration = UINT16(&buffer[4]) << 1;
 
 		//genre content
