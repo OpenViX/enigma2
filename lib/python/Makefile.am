@@ -13,6 +13,6 @@ install_PYTHON = \
 	RecordTimer.py \
 	ServiceReference.py \
 	skin.py \
-	startup.py \
+	Startup.py \
 	timer.py \
 	upgrade.py
