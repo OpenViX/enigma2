@@ -1,9 +1,14 @@
-from Converter import Converter
-from Poll import Poll
+from __future__ import absolute_import
+from __future__ import division
+
 from time import time
-from Components.Element import cached, ElementError
-from Components.config import config
+
 from enigma import eEPGCache
+
+from Components.config import config
+from Components.Converter.Converter import Converter
+from Components.Converter.Poll import Poll
+from Components.Element import cached, ElementError
 
 class EventTime(Poll, Converter, object):
 	STARTTIME = 0
@@ -98,7 +103,7 @@ class EventTime(Poll, Converter, object):
 		if self.type == self.TIMES:
 			return (st, et)
 
-		if self.type == self.REMAINING or self.type == self.REMAINING_VFD or self.type == self.ELAPSED or self.type == self.ELAPSED_VFD:
+		if self.type in (self.REMAINING, self.REMAINING_VFD, self.ELAPSED, self.ELAPSED_VFD):
 			now = int(time())
 			remaining = et - now
 			if remaining < 0:
@@ -147,7 +152,7 @@ class EventTime(Poll, Converter, object):
 			info = reference and self.source.info
 			if info is None:
 				return
-			test = [ 'IBDCX', (reference.toString(), 1, -1, 1440) ] # search next 24 hours
+			test = ['IBDCX', (reference.toString(), 1, -1, 1440)] # search next 24 hours
 			self.list = [] if self.epgcache is None else self.epgcache.lookupEvent(test)
 			if self.list:
 				try:
@@ -174,7 +179,6 @@ class EventTime(Poll, Converter, object):
 					# failed to return any epg data.
 					return None
 
-
 	@cached
 	def getValue(self):
 		assert self.type == self.PROGRESS
@@ -188,7 +192,7 @@ class EventTime(Poll, Converter, object):
 		if duration > 0 and progress >= 0:
 			if progress > duration:
 				progress = duration
-			return progress * 1000 / duration
+			return progress * 1000 // duration
 		else:
 			return None
 

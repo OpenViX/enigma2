@@ -1,10 +1,15 @@
 # -*- coding: utf-8 -*-
-from Converter import Converter
-from Components.Element import cached
-from Components.config import config
-from Tools.Transponder import orbpos
-from Components.NimManager import nimmanager
+from __future__ import absolute_import
+
 from enigma import eDVBSatelliteEquipmentControl
+
+from Components.Converter.Converter import Converter
+from Components.config import config
+from Components.Element import cached
+from Components.NimManager import nimmanager
+from Tools.Transponder import orbpos
+
+
 
 class RotorPosition(Converter, object):
 	DEFAULT = 0

@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import
+
 from Components.Converter.Converter import Converter
 from enigma import iServiceInformation, iPlayableService, iPlayableServicePtr, eServiceCenter
 from Components.Element import cached
@@ -55,7 +57,7 @@ class TransponderInfo(Converter, object):
 			return _("Stream") + " " + ref.rsplit("@", 1)[1].split("/")[0]
 		elif "://" in ref:
 			return _("Stream") + " " + ref.rsplit("://", 1)[1].split("/")[0]
- 		return ""
+		return ""
 
 	text = property(getText)
 

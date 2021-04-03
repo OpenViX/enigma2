@@ -1,3 +1,6 @@
+from __future__ import print_function
+from __future__ import absolute_import
+
 from enigma import eEPGCache
 
 from Components.Converter.Converter import Converter
@@ -161,7 +164,7 @@ class EventName(Converter, object):
 		for arg in args:
 			name, value = self.KEYWORDS.get(arg, ("Error", None))
 			if name == "Error":
-				print "[EventName] ERROR: Unexpected / Invalid argument token '%s'!" % arg
+				print("[EventName] ERROR: Unexpected / Invalid argument token '%s'!" % arg)
 			else:
 				setattr(self, name, value)
 

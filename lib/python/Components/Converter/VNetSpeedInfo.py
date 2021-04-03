@@ -16,12 +16,13 @@
 # www.vuplus-support.org
 #
 ####################################################################### 
+from __future__ import absolute_import
 
 import os
-from Components.Label import Label
+
 from Components.Converter.Converter import Converter
 from Components.Element import cached
-from Poll import Poll
+from Components.Converter.Poll import Poll
 
 class VNetSpeedInfo(Poll, Converter, object):
 	RCL = 0 			# Receive Lan in Megabit/s = Geschwindigkeit/Bandbreite
@@ -162,24 +163,24 @@ class VNetSpeedInfo(Poll, Converter, object):
 		sp=[]
 		while (bw):
 			bw = bwm.readline()
-			while bw.find("  ") is not -1:
-				bw=bw.replace("  "," ")
-			if bw.find("eth") is not -1:
+			while bw.find("  ") != -1:
+				bw=bw.replace("  ", " ")
+			if bw.find("eth") != -1:
 				flaglan=1
 				sp=bw.split(":")
 				bw=sp[1].lstrip()
 				sp=bw.split(" ")
-				if len(sp[0]) is 0:
+				if len(sp[0]) == 0:
 					sp[0]="0"
-				if len(sp[2]) is 0:
+				if len(sp[2]) == 0:
 					sp[2]="0"
-				if len(sp[3]) is 0:
+				if len(sp[3]) == 0:
 					sp[3]="0"
-				if len(sp[8]) is 0:
+				if len(sp[8]) == 0:
 					sp[8]="0"
-				if len(sp[10]) is 0:
+				if len(sp[10]) == 0:
 					sp[10]="0"
-				if len(sp[11]) is 0:
+				if len(sp[11]) == 0:
 					sp[11]="0"
 				newlanreceive=int(sp[0])/1024
 				self.error_lanrecive=int(sp[2])
@@ -203,22 +204,22 @@ class VNetSpeedInfo(Poll, Converter, object):
 				self.lantransmittotalout=newlantransmit/1024
 				if (self.lantransmittotal + self.lanreceivetotal) == 0:
 					flaglan = 0
-			if (bw.find("ra") is not -1) or (bw.find("wlan") is not -1) or (bw.find("wifi") is not -1):
+			if (bw.find("ra") != -1) or (bw.find("wlan") != -1) or (bw.find("wifi") != -1):
 				flagwlan=1
 				sp=bw.split(":")
 				bw=sp[1].lstrip()
 				sp=bw.split(" ")
-				if len(sp[0]) is 0:
+				if len(sp[0]) == 0:
 					sp[0]="0"
-				if len(sp[2]) is 0:
+				if len(sp[2]) == 0:
 					sp[2]="0"
-				if len(sp[3]) is 0:
+				if len(sp[3]) == 0:
 					sp[3]="0"
-				if len(sp[8]) is 0:
+				if len(sp[8]) == 0:
 					sp[8]="0"
-				if len(sp[10]) is 0:
+				if len(sp[10]) == 0:
 					sp[10]="0"
-				if len(sp[11]) is 0:
+				if len(sp[11]) == 0:
 					sp[11]="0"
 				newwlanreceive=int(sp[0])/1024
 				self.error_wlanrecive=int(sp[2])

@@ -1,6 +1,10 @@
+from __future__ import absolute_import
+from __future__ import division
+
 from Components.Converter.Converter import Converter
-from Components.Element import cached
+
 from Components.config import config
+from Components.Element import cached
 from Components.NimManager import nimmanager
 from skin import parameters
 from Tools.Hex2strColor import Hex2strColor
@@ -59,7 +63,7 @@ class FrontendInfo(Converter):
 			percent = self.source.snr
 		elif self.type == self.SNR or self.type == self.SNRdB:
 			if self.source.snr_db is not None:
-				return _("%3.01f dB") % (self.source.snr_db / 100.0)
+				return _("%3.01f dB") % (self.source.snr_db // 100.0)
 			elif self.source.snr is not None: #fallback to normal SNR...
 				percent = self.source.snr
 		elif self.type == self.TUNER_TYPE:
@@ -96,7 +100,7 @@ class FrontendInfo(Converter):
 			return string
 		if percent is None:
 			return _("N/A")
-		return "%d %%" % (percent * 100 / 65535)
+		return "%d %%" % (percent * 100 // 65535)
 
 	@cached
 	def getBool(self):
