@@ -922,8 +922,11 @@ int eTSMPEGDecoder::setState()
 		if (m_text)
 		{
 			m_text->stop();
-			if (m_demux && m_decoder == 0)	// Tuxtxt caching actions only on primary decoder
+			if (m_demux && m_decoder == 0 && m_is_streamx == 0)	// Tuxtxt caching actions only on primary decoder and not stream
+			{
+				eDebug("[decoder][eDVBText] stopCaching");
 				eTuxtxtApp::getInstance()->stopCaching();
+			}
 		}
 		m_text = 0;
 	}
@@ -962,20 +965,26 @@ int eTSMPEGDecoder::setState()
 	{
 		if ((m_textpid >= 0) && (m_textpid < 0x1FFF) && !nott)
 		{
+			eDebug("[decoder][eDVBText] startPID entry  M_is_stream %d", m_is_streamx);	// m_is_streamx set in servicedvb 0 = false 1 = stream
 			m_text = new eDVBTText(m_demux, m_decoder);
 			if (m_text->startPid(m_textpid))
-				res = -1;
-
-			if (m_demux && m_decoder == 0)	// Tuxtxt caching actions only on primary decoder
 			{
+				eDebug("[decoder][eDVBText] startPID");
+				res = -1;
+			}
+			if (m_demux && m_decoder == 0 && m_is_streamx == 0)	// Tuxtxt caching actions only on primary decoder and not stream = false(0)
+			{
+				eDebug("[decoder][eDVBText] startCaching  M_is_stream %d", m_is_streamx);
 				uint8_t demux = 0;
 				m_demux->getCADemuxID(demux);
 				eTuxtxtApp::getInstance()->startCaching(m_textpid, demux);
 			}
 		}
 		else if (m_demux && m_decoder == 0)	// Tuxtxt caching actions only on primary decoder
+		{
+			eDebug("[decoder][eDVBText] resetPID");
 			eTuxtxtApp::getInstance()->resetPid();
-
+		}
 		m_changed &= ~changeText;
 	}
 
@@ -1074,7 +1083,10 @@ eTSMPEGDecoder::eTSMPEGDecoder(eDVBDemux *demux, int decoder)
 	m_has_audio = !access(filename, W_OK);
 
 	if (m_demux && m_decoder == 0)	// Tuxtxt caching actions only on primary decoder
+	{
+		eDebug("[decoder][eDVBText] initCache");
 		eTuxtxtApp::getInstance()->initCache();
+	}
 }
 
 eTSMPEGDecoder::~eTSMPEGDecoder()
@@ -1085,7 +1097,10 @@ eTSMPEGDecoder::~eTSMPEGDecoder()
 	setState();
 
 	if (m_demux && m_decoder == 0)	// Tuxtxt caching actions only on primary decoder
+	{
+		eDebug("[decoder][eDVBText] freeCache");
 		eTuxtxtApp::getInstance()->freeCache();
+	}
 }
 
 RESULT eTSMPEGDecoder::setVideoPID(int vpid, int type)

@@ -229,6 +229,7 @@ protected:
 	void serviceEventTimeshift(int event);
 	sigc::signal2<void,iPlayableService*,int> m_event;
 
+		/* fix tuxtxt for streams */
 	bool m_is_stream;
 
 		/* pvr */

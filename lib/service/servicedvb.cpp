@@ -42,6 +42,8 @@ using namespace std;
 #include <sstream>
 #include <iomanip>
 
+bool m_is_streamx = false;
+
 class eStaticServiceDVBInformation: public iStaticServiceInformation
 {
 	DECLARE_REF(eStaticServiceDVBInformation);
@@ -400,7 +402,7 @@ int eStaticServiceDVBPVRInformation::getLength(const eServiceReference &ref)
 
 			/* check if cached data is still valid */
 	if (m_parser.m_data_ok && (s.st_size == m_parser.m_filesize) && (m_parser.m_length))
-		return m_parser.m_length / 90000;
+		return (int)(m_parser.m_length / 90000);
 
 			/* open again, this time with stream info */
 	if (tstools.openFile(ref.path.c_str()))
@@ -420,7 +422,7 @@ int eStaticServiceDVBPVRInformation::getLength(const eServiceReference &ref)
  	m_parser.m_length = len;
 	m_parser.m_filesize = s.st_size;
 	m_parser.updateMeta(ref.path);
-	return m_parser.m_length / 90000;
+	return (int)(m_parser.m_length / 90000);
 }
 
 int eStaticServiceDVBPVRInformation::getInfo(const eServiceReference &ref, int w)
@@ -1039,6 +1041,9 @@ eDVBServicePlay::eDVBServicePlay(const eServiceReference &ref, eDVBService *serv
 	m_subtitle_sync_timer(eTimer::create(eApp)),
 	m_nownext_timer(eTimer::create(eApp))
 {
+	m_is_streamx = m_is_stream;	// sets to false if looking at fallback url at this point as m_is_stream(ref.path.find("://") is false.
+	eDebug("[servicedvb][eDVBServicePlay] now running: m_is_streamx set by M_is_stream %d", m_is_streamx);
+	eDebug("[servicedvb][eDVBServicePlay] now running: m_is_pvr set to; %d", m_is_pvr);
 	CONNECT(m_service_handler.serviceEvent, eDVBServicePlay::serviceEvent);
 	CONNECT(m_service_handler_timeshift.serviceEvent, eDVBServicePlay::serviceEventTimeshift);
 	CONNECT(m_event_handler.m_eit_changed, eDVBServicePlay::gotNewEvent);
@@ -1329,8 +1334,10 @@ RESULT eDVBServicePlay::start()
 	bool scrambled = true;
 	int packetsize = 188;
 	eDVBServicePMTHandler::serviceType type = eDVBServicePMTHandler::livetv;
+	eDebug("[servicedvb][eDVBServicePlay][start] m_is_stream set to: %d", m_is_stream);
+	eDebug("[servicedvb][eDVBServicePlay][start] m_is_pvr set to; %d", m_is_pvr);
 	if(tryFallbackTuner(/*REF*/service, /*REF*/m_is_stream, m_is_pvr, /*simulate*/false))
-		eDebug("[eDVBServicePlay] fallback tuner selected");
+		eDebug("[servicedvb][eDVBServicePlay] fallback tuner selected");
 
 		/* in pvr mode, we only want to use one demux. in tv mode, we're using
 		   two (one for decoding, one for data source), as we must be prepared
@@ -2225,11 +2232,7 @@ int eDVBServicePlay::selectAudioStream(int i)
 		int different_pid = program.videoStreams.empty() && program.audioStreams.size() == 1 && program.audioStreams[stream].rdsPid != -1;
 		if (different_pid)
 			rdsPid = program.audioStreams[stream].rdsPid;
-#if HAVE_HISILICON
-		if (different_pid && (!m_rds_decoder || m_rds_decoder->getPid() != rdsPid))
-#else 
 		if (!m_rds_decoder || m_rds_decoder->getPid() != rdsPid)
-#endif
 		{
 			m_rds_decoder = 0;
 			ePtr<iDVBDemux> data_demux;
@@ -2377,8 +2380,10 @@ bool eDVBServiceBase::tryFallbackTuner(eServiceReferenceDVB &service, bool &is_s
 	size_t index;
 
 	if (is_stream || is_pvr || simulate)
+	{
+		m_is_streamx = false;	// used by decoder.cpp to stop tuxtxt logging on text pid for Fallback Tuner streams
 		return false;
-
+	}
 	if (!eConfigManager::getConfigBoolValue("config.usage.remote_fallback_enabled", false))
 		return false;
 
@@ -2437,6 +2442,8 @@ bool eDVBServiceBase::tryFallbackTuner(eServiceReferenceDVB &service, bool &is_s
 	service = eServiceReferenceDVB(remote_service_ref.str());
 
 	is_stream = true;
+	
+	m_is_streamx = true;	// used by decoder.cpp to stop tuxtxt logging on text pid for streams
 
 	return true;
 }
@@ -3078,27 +3085,30 @@ void eDVBServicePlay::updateDecoder(bool sendSeekableStateChanged)
 		if (!m_noaudio)
 			m_decoder->setAudioChannel(achannel);
 
-		if (mustPlay && m_decode_demux && m_decoder_index == 0)
+		if (!m_is_stream)
 		{
-			m_teletext_parser = new eDVBTeletextParser(m_decode_demux);
-			m_teletext_parser->connectNewStream(sigc::mem_fun(*this, &eDVBServicePlay::newSubtitleStream), m_new_subtitle_stream_connection);
-			m_teletext_parser->connectNewPage(sigc::mem_fun(*this, &eDVBServicePlay::newSubtitlePage), m_new_subtitle_page_connection);
-			m_subtitle_parser = new eDVBSubtitleParser(m_decode_demux);
-			m_subtitle_parser->connectNewPage(sigc::mem_fun(*this, &eDVBServicePlay::newDVBSubtitlePage), m_new_dvb_subtitle_page_connection);
-			if (m_timeshift_changed)
+			if (mustPlay && m_decode_demux && m_decoder_index == 0)
 			{
-				struct SubtitleTrack track;
-				if (getCachedSubtitle(track) >= 0)
+				eDebug("[servicedvb][eDVBServicePlay] m_teletext_parser active");
+				m_teletext_parser = new eDVBTeletextParser(m_decode_demux);
+				m_teletext_parser->connectNewStream(sigc::mem_fun(*this, &eDVBServicePlay::newSubtitleStream), m_new_subtitle_stream_connection);
+				m_teletext_parser->connectNewPage(sigc::mem_fun(*this, &eDVBServicePlay::newSubtitlePage), m_new_subtitle_page_connection);
+				m_subtitle_parser = new eDVBSubtitleParser(m_decode_demux);
+				m_subtitle_parser->connectNewPage(sigc::mem_fun(*this, &eDVBServicePlay::newDVBSubtitlePage), m_new_dvb_subtitle_page_connection);
+				if (m_timeshift_changed)
 				{
-					if (track.type == 0) // dvb
-						m_subtitle_parser->start(track.pid, track.page_number, track.magazine_number);
-					else if (track.type == 1) // ttx
-						m_teletext_parser->setPageAndMagazine(track.page_number, track.magazine_number, track.language_code.c_str());
+					struct SubtitleTrack track;
+					if (getCachedSubtitle(track) >= 0)
+					{
+						if (track.type == 0) // dvb
+							m_subtitle_parser->start(track.pid, track.page_number, track.magazine_number);
+						else if (track.type == 1) // ttx
+							m_teletext_parser->setPageAndMagazine(track.page_number, track.magazine_number, track.language_code.c_str());
+					}
 				}
+				m_teletext_parser->start(program.textPid);
 			}
-			m_teletext_parser->start(program.textPid);
 		}
-
 		/* don't worry about non-existing services, nor pvr services */
 		if (m_dvb_service)
 		{
@@ -3360,9 +3370,15 @@ RESULT eDVBServicePlay::getCachedSubtitle(struct SubtitleTrack &track)
 					unsigned int data = (unsigned int)tmp;
 					int pid = (data&0xFFFF0000)>>16;
 					if (program.textPid == pid) // teletext
+					{
 						track.type = 1; // type teletext
+						eDebug("[servicedvb][eDVBServicePlay] program.textPid teletext active");
+					}
 					else
+					{
 						track.type = 0; // type dvb
+						eDebug("[servicedvb][eDVBServicePlay] program.textPid dvb active");
+					}
 					track.pid = pid; // pid
 					track.page_number = (data >> 8) & 0xff; // composition_page / page
 					int k = (data >> 3) & 0x1f;
@@ -3375,6 +3391,7 @@ RESULT eDVBServicePlay::getCachedSubtitle(struct SubtitleTrack &track)
 			{
 				if (program.subtitleStreams[stream].subtitling_type == 1)
 				{
+					eDebug("[servicedvb][eDVBServicePlay] stream program.textPid teletext active");
 					track.type = 1; // type teletext
 					track.pid = program.subtitleStreams[stream].pid;
 					track.page_number = program.subtitleStreams[stream].teletext_page_number & 0xff;
@@ -3384,6 +3401,7 @@ RESULT eDVBServicePlay::getCachedSubtitle(struct SubtitleTrack &track)
 				}
 				else
 				{
+					eDebug("[servicedvb][eDVBServicePlay] stream program.textPid dvb active");
 					track.type = 0; // type dvb
 					track.pid = program.subtitleStreams[stream].pid;
 					track.page_number = program.subtitleStreams[stream].composition_page_id;
