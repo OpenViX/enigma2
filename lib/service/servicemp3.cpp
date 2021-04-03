@@ -8,6 +8,7 @@
 #include <lib/base/object.h>
 #include <lib/dvb/epgcache.h>
 #include <lib/dvb/decoder.h>
+#include <lib/dvb/dvb.h>
 #include <lib/components/file_eraser.h>
 #include <lib/gui/esubtitle.h>
 #include <lib/service/servicemp3.h>
@@ -598,6 +599,20 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 	}
 	else if ( m_sourceinfo.containertype == ctVCD )
 	{
+		int tmp_fd = -1;
+		tmp_fd = ::open("/dev/null", O_RDONLY | O_CLOEXEC);
+		/* eDebug("[servicemp3] Twol00 Opened tmp_fd: %d", tmp_fd); */
+		if (tmp_fd == 0)
+		{
+			::close(tmp_fd);
+			tmp_fd = -1;	
+			fd0lock = ::open("/dev/null", O_RDONLY | O_CLOEXEC);
+			/* eDebug("[servicemp3] opening null fd returned: %d", fd0lock); */
+		}
+		if (tmp_fd != -1)
+		{
+			::close(tmp_fd);
+		}
 		int ret = -1;
 		int fd = open(filename,O_RDONLY);
 		if (fd >= 0)
