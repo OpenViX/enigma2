@@ -1113,7 +1113,7 @@ class ConfigClock(ConfigSequence):
 		newtime = list(self.t)
 		newtime[3] = value[0]
 		newtime[4] = value[1]
-		retval = strftime(config.usage.time.short.value.replace("%-I", "%_I").replace("%-H", "%_H"), newtime)
+		retval = strftime(config.usage.time.short.value.replace("%-I", "%_I").replace("%-H", "%_H"), tuple(newtime))
 		return retval
 
 	def genText(self):
