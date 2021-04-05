@@ -1,3 +1,4 @@
+from __future__ import print_function
 from enigma import eDBoxLCD, eRCInput, fbClass, eConsoleAppContainer
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
@@ -17,12 +18,12 @@ class PluginRunner(Screen):
 		eDBoxLCD.getInstance().lock()
 		eRCInput.getInstance().lock()
 		fbClass.getInstance().lock()
-		print "[Tuxbox] executing:", ("pluginlauncher -x %s" % pluginname)
+		print("[Tuxbox] executing:", ("pluginlauncher -x %s" % pluginname))
 		if self.container.execute("pluginlauncher -x %s" % pluginname):
 			self.finishedExecution(None)
 
 	def finishedExecution(self, retval = 1):
-		print "[Tuxbox] PluginRunner retval:", retval
+		print("[Tuxbox] PluginRunner retval:", retval)
 		fbClass.getInstance().unlock()
 		eRCInput.getInstance().unlock()
 		eDBoxLCD.getInstance().unlock()
