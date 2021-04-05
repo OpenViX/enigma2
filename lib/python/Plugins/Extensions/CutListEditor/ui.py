@@ -1,3 +1,6 @@
+from __future__ import print_function
+from __future__ import division
+
 import bisect
 
 from enigma import getDesktop, iPlayableService
@@ -18,9 +21,9 @@ from Components.Sources.List import List
 def CutListEntry(where, what):
 	w = where / 90
 	ms = w % 1000
-	s = (w / 1000) % 60
-	m = (w / 60000) % 60
-	h = w / 3600000
+	s = (w // 1000) % 60
+	m = (w // 60000) % 60
+	h = w // 3600000
 	if what == 0:
 		type = "IN"
 		type_col = 0x004000
@@ -155,7 +158,7 @@ class CutListEditor(Screen, InfoBarBase, InfoBarSeek, InfoBarCueSheetSupport, He
 		cue = service and service.cueSheet()
 		if cue is not None:
 			# disable cutlists. we want to freely browse around in the movie
-			print "cut lists disabled!"
+			print("cut lists disabled!")
 			cue.setCutListEnable(0)
 
 		self.downloadCuesheet()
@@ -202,7 +205,7 @@ class CutListEditor(Screen, InfoBarBase, InfoBarSeek, InfoBarCueSheetSupport, He
 	def showTutorial(self):
 		if not CutListEditor.tutorial_seen:
 			CutListEditor.tutorial_seen = True
-			self.session.open(MessageBox,_("Welcome to the cutlist editor.\n\nSeek to the start of the stuff you want to cut away. Press OK, select 'start cut'.\n\nThen seek to the end, press OK, select 'end cut'. That's it."), MessageBox.TYPE_INFO)
+			self.session.open(MessageBox, _("Welcome to the cutlist editor.\n\nSeek to the start of the stuff you want to cut away. Press OK, select 'start cut'.\n\nThen seek to the end, press OK, select 'end cut'. That's it."), MessageBox.TYPE_INFO)
 
 	def checkSkipShowHideLock(self):
 		pass
@@ -249,17 +252,17 @@ class CutListEditor(Screen, InfoBarBase, InfoBarSeek, InfoBarCueSheetSupport, He
 		if not self.inhibit_seek:
 			where = self["cutlist"].getCurrent()
 			if where is None:
-				print "no selection"
+				print("no selection")
 				return
 			pts = where[0][0]
 			seek = self.getSeek()
 			if seek is None:
-				print "no seek"
+				print("no seek")
 				return
 			seek.seekTo(pts)
 
 	def refillList(self):
-		print "cue sheet changed, refilling"
+		print("cue sheet changed, refilling")
 		self.downloadCuesheet()
 
 		# get the first changed entry, counted from the end, and select it
@@ -268,7 +271,7 @@ class CutListEditor(Screen, InfoBarBase, InfoBarSeek, InfoBarCueSheetSupport, He
 
 		l1 = len(new_list)
 		l2 = len(self.last_cuts)
-		for i in range(min(l1, l2)):
+		for i in list(range(min(l1, l2))):
 			if new_list[l1-i-1] != self.last_cuts[l2-i-1]:
 				self["cutlist"].setIndex(l1-i-1)
 				break
@@ -301,13 +304,13 @@ class CutListEditor(Screen, InfoBarBase, InfoBarSeek, InfoBarCueSheetSupport, He
 
 		cur_state = self.getStateForPosition(curpos)
 		if cur_state == 0:
-			print "currently in 'IN'"
+			print("currently in 'IN'")
 			if self.cut_start is None or self.context_position < self.cut_start:
 				state = CutListContextMenu.SHOW_STARTCUT
 			else:
 				state = CutListContextMenu.SHOW_ENDCUT
 		else:
-			print "currently in 'OUT'"
+			print("currently in 'OUT'")
 			state = CutListContextMenu.SHOW_DELETECUT
 
 		if self.context_nearest_mark is None:
@@ -327,7 +330,7 @@ class CutListEditor(Screen, InfoBarBase, InfoBarSeek, InfoBarCueSheetSupport, He
 		elif result == CutListContextMenu.RET_ENDCUT:
 			# remove in/out marks between the new cut
 			for (where, what) in self.cut_list[:]:
-				if self.cut_start <= where <= self.context_position and what in (0,1):
+				if self.cut_start <= where <= self.context_position and what in (0, 1):
 					self.cut_list.remove((where, what))
 
 			bisect.insort(self.cut_list, (self.cut_start, 1))
@@ -364,7 +367,7 @@ class CutListEditor(Screen, InfoBarBase, InfoBarSeek, InfoBarCueSheetSupport, He
 		elif result == CutListContextMenu.RET_REMOVEBEFORE:
 			# remove in/out marks before current position
 			for (where, what) in self.cut_list[:]:
-				if where <= self.context_position and what in (0,1):
+				if where <= self.context_position and what in (0, 1):
 					self.cut_list.remove((where, what))
 			# add 'in' point
 			bisect.insort(self.cut_list, (self.context_position, 0))
@@ -374,7 +377,7 @@ class CutListEditor(Screen, InfoBarBase, InfoBarSeek, InfoBarCueSheetSupport, He
 		elif result == CutListContextMenu.RET_REMOVEAFTER:
 			# remove in/out marks after current position
 			for (where, what) in self.cut_list[:]:
-				if where >= self.context_position and what in (0,1):
+				if where >= self.context_position and what in (0, 1):
 					self.cut_list.remove((where, what))
 			# add 'out' point
 			bisect.insort(self.cut_list, (self.context_position, 1))
@@ -396,6 +399,6 @@ class CutListEditor(Screen, InfoBarBase, InfoBarSeek, InfoBarCueSheetSupport, He
 		path = self.session.nav.getCurrentlyPlayingServiceReference().getPath()
 		from Components.Console import Console
 		grabConsole = Console()
-		cmd = 'grab -vblpr%d "%s"' % (180, path.rsplit('.',1)[0] + ".png")
+		cmd = 'grab -vblpr%d "%s"' % (180, path.rsplit('.', 1)[0] + ".png")
 		grabConsole.ePopen(cmd)
 		self.playpauseService()
