@@ -1,34 +1,44 @@
-from enigma import eTimer, eDVBSatelliteEquipmentControl, eDVBResourceManager, eDVBDiseqcCommand, eDVBFrontendParametersSatellite, iDVBFrontend
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+import six
 
-from Screens.Screen import Screen
-from Screens.MessageBox import MessageBox
-from Screens.ChoiceBox import ChoiceBox
-from Plugins.Plugin import PluginDescriptor
-from Screens.Satconfig import NimSetup
-from Screens.InfoBar import InfoBar
-from Components.Label import Label
-from Components.Button import Button
-from Components.Sources.StaticText import StaticText
-from Components.ConfigList import ConfigList
-from Components.ConfigList import ConfigListScreen
-from Components.TunerInfo import TunerInfo
-from Components.ActionMap import NumberActionMap, ActionMap
-from Components.NimManager import nimmanager
-from Components.MenuList import MenuList
-from Components.ScrollLabel import ScrollLabel
-from Components.config import config, ConfigSatlist, ConfigNothing, ConfigSelection, \
-	 ConfigSubsection, ConfigInteger, ConfigFloat, KEY_LEFT, KEY_RIGHT, KEY_0, getConfigListEntry
-from Components.TuneTest import Tuner
-from Tools.Transponder import ConvertToHumanReadable
+from enigma import eTimer, eDVBResourceManager, eDVBDiseqcCommand, eDVBFrontendParametersSatellite, iDVBFrontend
 
 from time import sleep
 from operator import mul as mul
 from random import SystemRandom as SystemRandom
+import sys
 from threading import Thread as Thread
 from threading import Event as Event
 
-import log
-import rotor_calc
+from enigma import eTimer, eDVBSatelliteEquipmentControl, eDVBResourceManager, eDVBDiseqcCommand, eDVBFrontendParametersSatellite, iDVBFrontend
+
+from Components.ActionMap import NumberActionMap, ActionMap
+from Components.Button import Button
+from Components.config import config, ConfigSatlist, ConfigNothing, ConfigSelection, \
+	 ConfigSubsection, ConfigInteger, ConfigFloat, KEY_LEFT, KEY_RIGHT, KEY_0, getConfigListEntry
+from Components.ConfigList import ConfigList
+from Components.ConfigList import ConfigListScreen
+from Components.Label import Label
+from Components.MenuList import MenuList
+from Components.NimManager import nimmanager
+from Components.ScrollLabel import ScrollLabel
+from Components.Sources.StaticText import StaticText
+from Components.TunerInfo import TunerInfo
+from Components.TuneTest import Tuner
+from Plugins.Plugin import PluginDescriptor
+from Screens.ChoiceBox import ChoiceBox
+from Screens.InfoBar import InfoBar
+from Screens.MessageBox import MessageBox
+from Screens.Satconfig import NimSetup
+from Screens.Screen import Screen
+from Tools.Transponder import ConvertToHumanReadable
+
+
+
+from . import log
+from . import rotor_calc
 
 frequency_label = _('Frequency:')
 polarisation_label = _('Polarisation:')
@@ -96,11 +106,16 @@ class PositionerSetup(Screen):
 			self.advanced = True
 			self.advancedconfig = config.Nims[self.feid].advanced
 			self.advancedsats = self.advancedconfig.sat
-			self.availablesats = map(lambda x: x[0], nimmanager.getRotorSatListForNim(self.feid))
+			if six.PY3:
+				self.availablesats = [x[0] for x in nimmanager.getRotorSatListForNim(self.feid)]
+			else:
+				self.availablesats = map(lambda x: x[0], nimmanager.getRotorSatListForNim(self.feid))
 		else:
 			self.advanced = False
-			self.availablesats = map(lambda x: x[0], nimmanager.getRotorSatListForNim(self.feid))
-
+			if six.PY3:
+				self.availablesats = [x[0] for x in nimmanager.getRotorSatListForNim(self.feid)]
+			else:
+				self.availablesats = map(lambda x: x[0], nimmanager.getRotorSatListForNim(self.feid))
 		cur = { }
 		if not self.openFrontend():
 			service = self.session.nav.getCurrentService()
@@ -165,8 +180,8 @@ class PositionerSetup(Screen):
 		# True means we dont like that the normal sec stuff sends commands to the rotor!
 		self.tuner = Tuner(self.frontend, ignore_rotor = True)
 
-		tp = ( cur.get("frequency", 0) / 1000,
-			cur.get("symbol_rate", 0) / 1000,
+		tp = ( cur.get("frequency", 0) // 1000,
+			cur.get("symbol_rate", 0) // 1000,
 			cur.get("polarization", eDVBFrontendParametersSatellite.Polarisation_Horizontal),
 			cur.get("fec_inner", eDVBFrontendParametersSatellite.FEC_Auto),
 			cur.get("inversion", eDVBFrontendParametersSatellite.Inversion_Unknown),
@@ -226,7 +241,7 @@ class PositionerSetup(Screen):
 		self.statusMsgTimeoutTicks = 0
 		self.statusMsgBlinking = False
 		self.statusMsgBlinkCount = 0
-		self.statusMsgBlinkRate = 500 / self.UPDATE_INTERVAL	# milliseconds
+		self.statusMsgBlinkRate = 500 // self.UPDATE_INTERVAL	# milliseconds
 		self.tuningChangedTo(tp)
 
 		self["actions"] = NumberActionMap(["DirectionActions", "OkCancelActions", "ColorActions", "TimerEditActions", "InputActions", "InfobarMenuActions"],
@@ -275,8 +290,8 @@ class PositionerSetup(Screen):
 	def OrbToStr(self, orbpos):
 		if orbpos > 1800:
 			orbpos = 3600 - orbpos
-			return "%d.%d\xc2\xb0 W" % (orbpos/10, orbpos%10)
-		return "%d.%d\xc2\xb0 E" % (orbpos/10, orbpos%10)
+			return "%d.%d\xc2\xb0 W" % (orbpos // 10, orbpos%10)
+		return "%d.%d\xc2\xb0 E" % (orbpos // 10, orbpos%10)
 
 	def setDishOrbosValue(self):
 		if self.getRotorMovingState():
@@ -333,11 +348,11 @@ class PositionerSetup(Screen):
 				if self.frontend:
 					return True
 				else:
-					print "getFrontend failed"
+					print("getFrontend failed")
 			else:
-				print "getRawChannel failed"
+				print("getRawChannel failed")
 		else:
-			print "getResourceManager instance failed"
+			print("getResourceManager instance failed")
 		return False
 
 	def setLNB(self, lnb):
@@ -365,7 +380,7 @@ class PositionerSetup(Screen):
 	def createConfig(self):
 		rotorposition = 1
 		orb_pos = 0
- 		self.printMsg(_("Using tuner %s") % chr(0x41 + self.feid))
+		self.printMsg(_("Using tuner %s") % chr(0x41 + self.feid))
 		if not self.advanced:
 			self.printMsg(_("Configuration mode: %s") % _("simple"))
 			nim = config.Nims[self.feid]
@@ -398,7 +413,7 @@ class PositionerSetup(Screen):
 		self.positioner_storage = ConfigInteger(default = rotorposition, limits = (1, self.rotorPositions))
 		self.allocatedIndices = []
 		m = PositionerSetup.satposition2metric(orb_pos)
-		self.orbitalposition = ConfigFloat(default = [int(m[0] / 10), m[0] % 10], limits = [(0,180),(0,9)])
+		self.orbitalposition = ConfigFloat(default = [int(m[0] // 10), m[0] % 10], limits = [(0,180),(0,9)])
 		self.orientation = ConfigSelection([("east", _("East")), ("west", _("West"))], default = m[1])
 		for x in (self.positioner_tune, self.positioner_storage, self.orbitalposition):
 			x.addNotifier(self.retune, initial_call = False)
@@ -440,7 +455,7 @@ class PositionerSetup(Screen):
 		if orb_pos in self.availablesats:
 			lnbnum = int(self.advancedsats[orb_pos].lnb.value)
 			if not lnbnum:
-				for allsats in range(3601, 3607):
+				for allsats in list(range(3601, 3607)):
 					lnbnum = int(self.advancedsats[allsats].lnb.value)
 					if lnbnum:
 						break
@@ -546,8 +561,8 @@ class PositionerSetup(Screen):
 			self.blue.setText("")
 
 	def printMsg(self, msg):
-		print msg
-		print>>log, msg
+		print(msg)
+		print(msg, file=log)
 
 	def stopMoving(self):
 		self.printMsg(_("Stop"))
@@ -589,8 +604,8 @@ class PositionerSetup(Screen):
 		if entry == "tune":
 			# Auto focus
 			self.printMsg(_("Auto focus"))
-			print>>log, (_("Site latitude") + "      : %5.1f %s") % PositionerSetup.latitude2orbital(self.sitelat)
-			print>>log, (_("Site longitude") + "     : %5.1f %s") % PositionerSetup.longitude2orbital(self.sitelon)
+			print((_("Site latitude") + "      : %5.1f %s") % PositionerSetup.latitude2orbital(self.sitelat), file=log)
+			print((_("Site longitude") + "     : %5.1f %s") % PositionerSetup.longitude2orbital(self.sitelon), file=log)
 			Thread(target = self.autofocus).start()
 		elif entry == "move":
 			if self.isMoving:
@@ -673,15 +688,15 @@ class PositionerSetup(Screen):
 			self.printMsg(_("Move to position X"))
 			satlon = self.orbitalposition.float
 			position = "%5.1f %s" % (satlon, self.orientation.value)
-			print>>log, (_("Satellite longitude:") + " %s") % position
+			print((_("Satellite longitude:") + " %s") % position, file=log)
 			satlon = PositionerSetup.orbital2metric(satlon, self.orientation.value)
 			self.statusMsg((_("Moving to position") + " %s") % position, timeout = self.STATUS_MSG_TIMEOUT)
 			self.gotoX(satlon)
 		elif entry == "tune":
 			# Start USALS calibration
 			self.printMsg(_("USALS Calibration"))
-			print>>log, (_("Site latitude") + "      : %5.1f %s") % PositionerSetup.latitude2orbital(self.sitelat)
-			print>>log, (_("Site longitude") + "     : %5.1f %s") % PositionerSetup.longitude2orbital(self.sitelon)
+			print((_("Site latitude") + "      : %5.1f %s") % PositionerSetup.latitude2orbital(self.sitelat), file=log)
+			print((_("Site longitude") + "     : %5.1f %s") % PositionerSetup.longitude2orbital(self.sitelon), file=log)
 			Thread(target = self.gotoXcalibration).start()
 
 	def blueKey(self):
@@ -735,8 +750,8 @@ class PositionerSetup(Screen):
 	def recalcConfirmed(self, yesno):
 		if yesno:
 			self.printMsg(_("Calculate all positions"))
-			print>>log, (_("Site latitude") + "      : %5.1f %s") % PositionerSetup.latitude2orbital(self.sitelat)
-			print>>log, (_("Site longitude") + "     : %5.1f %s") % PositionerSetup.longitude2orbital(self.sitelon)
+			print((_("Site latitude") + "      : %5.1f %s") % PositionerSetup.latitude2orbital(self.sitelat), file=log)
+			print((_("Site longitude") + "     : %5.1f %s") % PositionerSetup.longitude2orbital(self.sitelon), file=log)
 			lon = self.sitelon
 			if lon >= 180:
 				lon -= 360
@@ -752,7 +767,7 @@ class PositionerSetup(Screen):
 		self.session.open(PositionerSetupLog)
 
 	def diseqccommand(self, cmd, param = 0):
-		print>>log, "Diseqc(%s, %X)" % (cmd, param)
+		print("Diseqc(%s, %X)" % (cmd, param), file=log)
 		self["rotorstatus"].setText("")
 		self.diseqc.command(cmd, param)
 		self.tuner.retune()
@@ -767,7 +782,7 @@ class PositionerSetup(Screen):
 		feparm = self.tuner.lastparm.getDVBS()
 		orb_pos = feparm.orbital_position
 		m = PositionerSetup.satposition2metric(orb_pos)
-		self.orbitalposition.value = [int(m[0] / 10), m[0] % 10]
+		self.orbitalposition.value = [int(m[0] // 10), m[0] % 10]
 		self.orientation.value = m[1]
 		if self.advanced:
 			if orb_pos in self.availablesats:
@@ -800,7 +815,7 @@ class PositionerSetup(Screen):
 		if not blinking:
 			self["status_bar"].visible = True
 		self["status_bar"].setText(msg)
-		self.statusMsgTimeoutTicks = (timeout * 1000 + self.UPDATE_INTERVAL / 2) / self.UPDATE_INTERVAL
+		self.statusMsgTimeoutTicks = (timeout * 1000 + self.UPDATE_INTERVAL // 2) // self.UPDATE_INTERVAL
 
 	def updateStatus(self):
 		self.statusTimer.start(self.UPDATE_INTERVAL, True)
@@ -840,7 +855,7 @@ class PositionerSetup(Screen):
 					self.collectingStatistics = False
 					count = float(self.stat_count)
 					self.lock_count /= count
-					self.snr_percentage *= 100.0 / 0x10000 / count
+					self.snr_percentage *= 100.0 // 0x10000 // count
 					self.dataAvailable.set()
 
 	def tuningChangedTo(self, tp):
@@ -851,7 +866,7 @@ class PositionerSetup(Screen):
 			# It is an heuristic determination without any pretence. For symbol rates
 			# of 5000 the interval is multiplied by 3 until 15000 which is seen
 			# as a high symbol rate. Linear interpolation elsewhere.
-			return max(int(round((3 - 1) * (symbolrate - 15000) / (5000 - 15000) + 1)), 1)
+			return max(int(round((3 - 1) * (symbolrate - 15000) // (5000 - 15000) + 1)), 1)
 
 		self.symbolrate = tp[1]
 		self.polarisation = tp[2]
@@ -865,14 +880,14 @@ class PositionerSetup(Screen):
 
 	@staticmethod
 	def rotorCmd2Step(rotorCmd, stepsize):
-		return round(float(rotorCmd & 0xFFF) / 0x10 / stepsize) * (1 - ((rotorCmd & 0x1000) >> 11))
+		return round(float(rotorCmd & 0xFFF) // 0x10 // stepsize) * (1 - ((rotorCmd & 0x1000) >> 11))
 
 	@staticmethod
 	def gotoXcalc(satlon, sitelat, sitelon):
 		def azimuth2Rotorcode(angle):
 			gotoXtable = (0x00, 0x02, 0x03, 0x05, 0x06, 0x08, 0x0A, 0x0B, 0x0D, 0x0E)
 			a = int(round(abs(angle) * 10.0))
-			return ((a / 10) << 4) + gotoXtable[a % 10]
+			return ((a // 10) << 4) + gotoXtable[a % 10]
 
 		satHourAngle = rotor_calc.calcSatHourangle(satlon, sitelat, sitelon)
 		if sitelat >= 0: # Northern Hemisphere
@@ -892,7 +907,7 @@ class PositionerSetup(Screen):
 		rotorCmd = PositionerSetup.gotoXcalc(satlon, self.sitelat, self.sitelon)
 		self.diseqccommand("gotoX", rotorCmd)
 		x = PositionerSetup.rotorCmd2Step(rotorCmd, self.tuningstepsize)
-		print>>log, (_("Rotor step position:") + " %4d") % x
+		print((_("Rotor step position:") + " %4d") % x, file=log)
 		return x
 
 	def getTurningspeed(self):
@@ -913,7 +928,7 @@ class PositionerSetup(Screen):
 		self.lock_count = 0.0
 		self.stat_count = 0
 		self.low_rate_adapter_count = 0
-		self.max_count = max(int((time * 1000 + self.UPDATE_INTERVAL / 2)/ self.UPDATE_INTERVAL), 1)
+		self.max_count = max(int((time * 1000 + self.UPDATE_INTERVAL // 2) // self.UPDATE_INTERVAL), 1)
 		self.collectingStatistics = True
 		self.dataAvailable.clear()
 		self.dataAvailable.wait()
@@ -942,18 +957,22 @@ class PositionerSetup(Screen):
 
 		def move(x):
 			z = self.gotoX(x + satlon)
-			time = int(abs(x - prev_pos) / turningspeed + 2 * self.TURNING_START_STOP_DELAY)
+			time = int(abs(x - prev_pos) // turningspeed + 2 * self.TURNING_START_STOP_DELAY)
 			sleep(time * self.MAX_LOW_RATE_ADAPTER_COUNT)
 			return z
 
 		def reportlevels(pos, level, lock):
-			print>>log, (_("Signal quality") + " %5.1f" + chr(176) + "   : %6.2f") % (pos, level)
-			print>>log, (_("Lock ratio") + "     %5.1f" + chr(176) + "   : %6.2f") % (pos, lock)
+			print((_("Signal quality") + " %5.1f" + chr(176) + "   : %6.2f") % (pos, level), file=log)
+			print((_("Lock ratio") + "     %5.1f" + chr(176) + "   : %6.2f") % (pos, lock), file=log)
 
 		def optimise(readings):
-			xi = readings.keys()
-			yi = map(lambda (x, y) : x, readings.values())
-			x0 = sum(map(mul, xi, yi)) / sum(yi)
+			#	if six.PY3:
+			xi = list(readings.keys())
+			yi = [x_y[0] for x_y in list(readings.values())]
+			#	else:
+			#		xi = readings.keys()
+			#		yi = map(lambda (x, y) : x, readings.values())
+			x0 = sum(map(mul, xi, yi)) // sum(yi)
 			xm = xi[yi.index(max(yi))]
 			return x0, xm
 
@@ -971,7 +990,7 @@ class PositionerSetup(Screen):
 
 		self.logMsg(_("GotoX calibration"))
 		satlon = self.orbitalposition.float
-		print>>log, (_("Satellite longitude:") + " %5.1f" + chr(176) + " %s") % (satlon, self.orientation.value)
+		print((_("Satellite longitude:") + " %5.1f" + chr(176) + " %s") % (satlon, self.orientation.value), file=log)
 		satlon = PositionerSetup.orbital2metric(satlon, self.orientation.value)
 		prev_pos = 0.0						# previous relative position w.r.t. satlon
 		turningspeed = self.getTurningspeed()
@@ -1003,13 +1022,13 @@ class PositionerSetup(Screen):
 				self.statusMsg("")
 				self.session.open(MessageBox, msg, MessageBox.TYPE_ERROR, timeout = 5)
 				return
-		x = round(x / self.tuningstepsize) * self.tuningstepsize
+		x = round(x // self.tuningstepsize) * self.tuningstepsize
 		move(x)
 		prev_pos = x
 		measurements = {}
 		self.measure()
-		print>>log, (_("Initial signal quality") + " %5.1f" + chr(176) + ": %6.2f") % (x, self.snr_percentage)
-		print>>log, (_("Initial lock ratio") + "     %5.1f" + chr(176) + ": %6.2f") % (x, self.lock_count)
+		print((_("Initial signal quality") + " %5.1f" + chr(176) + ": %6.2f") % (x, self.snr_percentage), file=log)
+		print((_("Initial lock ratio") + "     %5.1f" + chr(176) + ": %6.2f") % (x, self.lock_count), file=log)
 		measurements[x] = (self.snr_percentage, self.lock_count)
 
 		start_pos = x
@@ -1066,8 +1085,8 @@ class PositionerSetup(Screen):
 			satlon -= 360
 		x0 += satlon
 		xm += satlon
-		print>>log, (_("Weighted position") + "     : %5.1f" + chr(176) + " %s") % (abs(x0), toGeopos(x0))
-		print>>log, (_("Strongest position") + "    : %5.1f" + chr(176) + " %s") % (abs(xm), toGeopos(xm))
+		print((_("Weighted position") + "     : %5.1f" + chr(176) + " %s") % (abs(x0), toGeopos(x0)), file=log)
+		print((_("Strongest position") + "    : %5.1f" + chr(176) + " %s") % (abs(xm), toGeopos(xm)), file=log)
 		self.logMsg((_("Final position at") + " %5.1f" + chr(176) + " %s / %d; " + _("offset is") + " %4.1f" + chr(176)) % (abs(x0), toGeopos(x0), x, x0 - satlon), timeout = 10)
 
 	def autofocus(self):
@@ -1078,17 +1097,21 @@ class PositionerSetup(Screen):
 			elif x < 0:
 				self.diseqccommand("moveWest", x & 0xFF)
 			if x != 0:
-				time = int(abs(x) * self.tuningstepsize / turningspeed + 2 * self.TURNING_START_STOP_DELAY)
+				time = int(abs(x) * self.tuningstepsize // turningspeed + 2 * self.TURNING_START_STOP_DELAY)
 				sleep(time * self.MAX_LOW_RATE_ADAPTER_COUNT)
 
 		def reportlevels(pos, level, lock):
-			print>>log, (_("Signal quality") + " [%2d]   : %6.2f") % (pos, level)
-			print>>log, (_("Lock ratio") + " [%2d]       : %6.2f") % (pos, lock)
+			print((_("Signal quality") + " [%2d]   : %6.2f") % (pos, level), file=log)
+			print((_("Lock ratio") + " [%2d]       : %6.2f") % (pos, lock), file=log)
 
 		def optimise(readings):
-			xi = readings.keys()
-			yi = map(lambda (x, y) : x, readings.values())
-			x0 = int(round(sum(map(mul, xi, yi)) / sum(yi)))
+			#	if sys.version_info >= (3, 0):
+			xi = list(readings.keys())
+			yi = [x_y1[0] for x_y1 in list(readings.values())]
+			#	else:
+			#		xi = readings.keys()
+			#		yi = map(lambda (x, y) : x, readings.values())
+			x0 = int(round(sum(map(mul, xi, yi)) // sum(yi)))
 			xm = xi[yi.index(max(yi))]
 			return x0, xm
 
@@ -1101,17 +1124,17 @@ class PositionerSetup(Screen):
 		self.logMsg(_("Auto focus commencing ..."))
 		turningspeed = self.getTurningspeed()
 		measurements = {}
-		maxsteps = max(min(round(self.MAX_FOCUS_ANGLE / self.tuningstepsize), 0x1F), 3)
+		maxsteps = max(min(round(self.MAX_FOCUS_ANGLE // self.tuningstepsize), 0x1F), 3)
 		self.measure()
-		print>>log, (_("Initial signal quality:") + " %6.2f") % self.snr_percentage
-		print>>log, (_("Initial lock ratio") + "    : %6.2f") % self.lock_count
+		print((_("Initial signal quality:") + " %6.2f") % self.snr_percentage, file=log)
+		print((_("Initial lock ratio") + "    : %6.2f") % self.lock_count, file=log)
 		if self.lock_count < 1 - self.LOCK_LIMIT:
 			msg = _("There is no signal to lock on !")
 			self.printMsg(msg)
 			self.statusMsg("")
 			self.session.open(MessageBox, msg, MessageBox.TYPE_ERROR, timeout = 5)
 			return
-		print>>log, _("Signal OK, proceeding")
+		print(_("Signal OK, proceeding"), file=log)
 		x = 0
 		dir = 1
 		if self.randomBool():
@@ -1162,8 +1185,8 @@ class PositionerSetup(Screen):
 			self.session.open(MessageBox, msg, MessageBox.TYPE_ERROR, timeout = 5)
 			return
 		(x0, xm) = optimise(measurements)
-		print>>log, (_("Weighted position") + "     : %2d") % x0
-		print>>log, (_("Strongest position") + "    : %2d") % xm
+		print((_("Weighted position") + "     : %2d") % x0, file=log)
+		print((_("Strongest position") + "    : %2d") % xm, file=log)
 		self.logMsg((_("Final position at index") + " %2d (%5.1f" + chr(176) + ")") % (x0, x0 * self.tuningstepsize), timeout = 6)
 		move(x0 - x)
 
@@ -1197,8 +1220,8 @@ class Diseqc:
 			else:
 				string = 'E03160' #positioner stop
 
-			print "diseqc command:",
-			print string
+			print("diseqc command:", end=' ')
+			print(string)
 			cmd.setCommandString(string)
 			self.frontend.setTone(iDVBFrontend.toneOff)
 			sleep(0.015) # wait 15msec after disable tone
@@ -1256,7 +1279,7 @@ class PositionerSetupLog(Screen):
 			f.write(log.getvalue())
 			f.close()
 			self.session.open(MessageBox, _("Write to /tmp/positionersetup.log"), MessageBox.TYPE_INFO, timeout = 5)
-		except Exception, e:
+		except Exception as e:
 			self["list"].setText(_("Failed to write /tmp/positionersetup.log: ") + str(e))
 		self.close(True)
 
@@ -1336,9 +1359,9 @@ class TunerScreen(ConfigListScreen, Screen):
 		if frontendData is not None:
 			ttype = frontendData.get("tuner_type", "UNKNOWN")
 			defaultSat["system"] = frontendData.get("system", eDVBFrontendParametersSatellite.System_DVB_S)
-			defaultSat["frequency"] = frontendData.get("frequency", 0) / 1000
+			defaultSat["frequency"] = frontendData.get("frequency", 0) // 1000
 			defaultSat["inversion"] = frontendData.get("inversion", eDVBFrontendParametersSatellite.Inversion_Unknown)
-			defaultSat["symbolrate"] = frontendData.get("symbol_rate", 0) / 1000
+			defaultSat["symbolrate"] = frontendData.get("symbol_rate", 0) // 1000
 			defaultSat["polarization"] = frontendData.get("polarization", eDVBFrontendParametersSatellite.Polarisation_Horizontal)
 			if defaultSat["system"] == eDVBFrontendParametersSatellite.System_DVB_S2:
 				defaultSat["fec_s2"] = frontendData.get("fec_inner", eDVBFrontendParametersSatellite.FEC_Auto)
@@ -1476,7 +1499,7 @@ class TunerScreen(ConfigListScreen, Screen):
 			pol = "CR"
 		else:
 			pol = "??"
-		return str(tr[1] / scale) + "," + pol + "," + str(tr[2] / scale)
+		return str(tr[1] // scale) + "," + pol + "," + str(tr[2] // scale)
 
 	def updateTransponders(self):
 		if len(self.tuning.sat.choices):
@@ -1518,7 +1541,7 @@ class TunerScreen(ConfigListScreen, Screen):
 				self.scan_sat.t2mi_pid.value)
 		elif self.tuning.type.value == "predefined_transponder":
 			transponder = nimmanager.getTransponders(satpos)[self.tuning.transponder.index]
-			returnvalue = (transponder[1] / 1000, transponder[2] / 1000,
+			returnvalue = (transponder[1] // 1000, transponder[2] // 1000,
 				transponder[3], transponder[4], 2, satpos, transponder[5], transponder[6], transponder[8], transponder[9], transponder[10], transponder[11], transponder[12], transponder[13], transponder[14])
 		self.close(returnvalue)
 
