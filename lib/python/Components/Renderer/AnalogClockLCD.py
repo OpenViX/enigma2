@@ -1,8 +1,9 @@
 # original code is from openmips gb Team: [OMaClockLcd] Renderer #
 # Thx to arn354 #
+from __future__ import absolute_import
 
 import math
-from Renderer import Renderer
+from Components.Renderer.Renderer import Renderer
 from skin import parseColor
 from enigma import eCanvas, eSize, gRGB, eRect
 from Components.VariableText import VariableText
@@ -86,7 +87,7 @@ class AnalogClockLCD(Renderer):
 		deltay = abs((y1 - y0))
 		error = (-deltax / 2)
 		y = y0
-		for x in range(x0, (x1 + 1)):
+		for x in list(range(x0, (x1 + 1))):
 			if steep:
 				self.instance.fillRect(eRect(y, x, self.linewidth, self.linewidth), self.fColor)
 			else:
@@ -102,7 +103,7 @@ class AnalogClockLCD(Renderer):
 			sopt = int(opt[0])
 			if len(opt) < 2:
 				opt.append('')
-		except Exception, e:
+		except Exception as e:
 			return
 
 		if (what[0] == self.CHANGED_CLEAR):

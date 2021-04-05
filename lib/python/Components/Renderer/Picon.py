@@ -1,17 +1,21 @@
+from __future__ import print_function
+from __future__ import absolute_import
+import six
+
 import os, re, unicodedata
-from Renderer import Renderer
+from Components.Renderer.Renderer import Renderer
 from enigma import ePixmap, eServiceReference
 from Tools.Alternatives import GetWithAlternative
 from Tools.Directories import pathExists, SCOPE_ACTIVE_SKIN, resolveFilename
 from Components.Harddisk import harddiskmanager
 
 class PiconLocator:
-	def __init__(self, piconDirectories = ['picon']):
+	def __init__(self, piconDirectories = ["picon"]):
 		harddiskmanager.on_partition_list_change.append(self.__onPartitionChange)
 		self.piconDirectories = piconDirectories
 		self.activePiconPath = None
 		self.searchPaths = []
-		for mp in ('/usr/share/enigma2/', '/'):
+		for mp in ("/usr/share/enigma2/", "/"):
 			self.__onMountpointAdded(mp)
 		for part in harddiskmanager.getMountedPartitions():
 			self.__onMountpointAdded(part.mountpoint)
@@ -19,11 +23,11 @@ class PiconLocator:
 	def __onMountpointAdded(self, mountpoint):
 		for piconDirectory in self.piconDirectories:
 			try:
-				path = os.path.join(mountpoint, piconDirectory) + '/'
+				path = os.path.join(mountpoint, piconDirectory) + "/"
 				if os.path.isdir(path) and path not in self.searchPaths:
 					for fn in os.listdir(path):
-						if fn.endswith('.png') or fn.endswith('.svg'):
-							print "[PiconLocator] adding path:", path
+						if fn.endswith(".png") or fn.endswith(".svg"):
+							print("[PiconLocator] adding path:", path)
 							self.searchPaths.append(path)
 							break
 			except:
@@ -31,29 +35,28 @@ class PiconLocator:
 
 	def __onMountpointRemoved(self, mountpoint):
 		for piconDirectory in self.piconDirectories:
-			path = os.path.join(mountpoint, piconDirectory) + '/'
-			print "[Picon] DEBUG: Remove mountpoint =%s" % (path)
+			path = os.path.join(mountpoint, piconDirectory) + "/"
 			try:
 				self.searchPaths.remove(path)
-				print "[PiconLocator] removed path:", path
+				print("[PiconLocator] removed path:", path)
 			except:
 				pass
 
 	def __onPartitionChange(self, why, part):
-		if why == 'add':
+		if why == "add":
 			self.__onMountpointAdded(part.mountpoint)
-		elif why == 'remove':
+		elif why == "remove":
 			self.__onMountpointRemoved(part.mountpoint)
 
 	def findPicon(self, serviceName):
 		if self.activePiconPath is not None:
-			for ext in ('.png', '.svg'):
+			for ext in (".png", ".svg"):
 				pngname = self.activePiconPath + serviceName + ext
 				if pathExists(pngname):
 					return pngname
 		else:
 			for path in self.searchPaths:
-				for ext in ('.png', '.svg'):
+				for ext in (".png", ".svg"):
 					pngname = path + serviceName + ext
 					if pathExists(pngname):
 						self.activePiconPath = path
@@ -62,26 +65,26 @@ class PiconLocator:
 
 	def addSearchPath(self, value):
 		if pathExists(value):
-			if not value.endswith('/'):
-				value += '/'
-			if not value.startswith('/media/net') and not value.startswith('/media/autofs') and	value not in self.searchPaths:
+			if not value.endswith("/"):
+				value += "/"
+			if not value.startswith("/media/net") and not value.startswith("/media/autofs") and	value not in self.searchPaths:
 				self.searchPaths.append(value)
 
 	def getPiconName(self, serviceName):
-		#remove the path and name fields, and replace ':' by '_'
-		fields = GetWithAlternative(serviceName).split(':', 10)[:10]
+		#remove the path and name fields, and replace ":" by "_"
+		fields = GetWithAlternative(serviceName).split(":", 10)[:10]
 		if not fields or len(fields) < 10:
 			return ""
-		pngname = self.findPicon('_'.join(fields))
+		pngname = self.findPicon("_".join(fields))
 		if not pngname and not fields[6].endswith("0000"):
 			#remove "sub-network" from namespace
 			fields[6] = fields[6][:-4] + "0000"
-			pngname = self.findPicon('_'.join(fields))
-		if not pngname and fields[0] != '1':
+			pngname = self.findPicon("_".join(fields))
+		if not pngname and fields[0] != "1":
 			#fallback to 1 for IPTV streams
-			fields[0] = '1'
-			pngname = self.findPicon('_'.join(fields))
-		if not pngname and fields[2] != '2':
+			fields[0] = "1"
+			pngname = self.findPicon("_".join(fields))
+		if not pngname and fields[2] != "2":
 			#fallback to 1 for TV services with non-standard service types
 			fields[2] = '1'
 			pngname = self.findPicon('_'.join(fields))
