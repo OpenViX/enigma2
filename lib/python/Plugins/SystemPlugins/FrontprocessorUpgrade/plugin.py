@@ -1,7 +1,7 @@
-from Screens.Screen import Screen
 from Components.ActionMap import ActionMap
 from Components.Label import Label
 from Plugins.Plugin import PluginDescriptor
+from Screens.Screen import Screen
 
 def getUpgradeVersion():
 	import os
@@ -75,7 +75,7 @@ def Plugins(**kwargs):
 	newversion = getUpgradeVersion() or 0
 	list = []
 	if version is not None and version < newversion:
-		list.append(PluginDescriptor(name="FP Upgrade", where = PluginDescriptor.WHERE_WIZARD, needsRestart = True, fnc=(8, FPUpgrade)))
+		list.append(PluginDescriptor(name = "FP Upgrade", where = PluginDescriptor.WHERE_WIZARD, needsRestart = True, fnc=(8, FPUpgrade)))
 
 	try:
 		msg = open("/proc/stb/message").read()
