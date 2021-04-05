@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 from time import localtime, time, strftime
 import functools
 import traceback

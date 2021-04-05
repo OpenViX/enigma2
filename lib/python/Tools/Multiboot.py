@@ -1,3 +1,6 @@
+from __future__ import print_function
+import six
+
 import glob
 import shutil
 import subprocess
@@ -332,11 +335,3 @@ class readImageIdentifier():
 
 	def getImageBuildDate(self):
 		return self.methods["getImageBuildDate"]
-
-	
-
-# just for testing
-#if __name__ == "__main__":
-#	filepath = "" # path to image folder
-#	reader = readImageIdentifier(filepath)
-#	print("reader.getBoxType() %s" % (reader.getBoxType(),))#
