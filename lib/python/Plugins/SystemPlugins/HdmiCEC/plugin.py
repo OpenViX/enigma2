@@ -1,9 +1,10 @@
-from Screens.Setup import Setup
 from Components.ActionMap import HelpableActionMap
 from Components.config import config
-from Components.Sources.StaticText import StaticText
-
 import Components.HdmiCec
+from Components.Sources.StaticText import StaticText
+from Screens.Setup import Setup
+
+
 
 class HdmiCECSetupScreen(Setup):
 	def __init__(self, session):
@@ -31,17 +32,14 @@ class HdmiCECSetupScreen(Setup):
 			Setup.keySelect(self)
 
 	def setFixedAddress(self):
-		import Components.HdmiCec
 		Components.HdmiCec.hdmi_cec.setFixedPhysicalAddress(Components.HdmiCec.hdmi_cec.getPhysicalAddress())
 		self.updateAddress()
 
 	def clearFixedAddress(self):
-		import Components.HdmiCec
 		Components.HdmiCec.hdmi_cec.setFixedPhysicalAddress("0.0.0.0")
 		self.updateAddress()
 
 	def updateAddress(self):
-		import Components.HdmiCec
 		self.current_address = _("Current CEC address") + ": " + Components.HdmiCec.hdmi_cec.getPhysicalAddress()
 		if config.hdmicec.fixed_physical_address.value == "0.0.0.0":
 			self.fixed_address = ""
