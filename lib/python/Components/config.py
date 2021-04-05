@@ -1017,8 +1017,8 @@ class ConfigClock(ConfigSequence):
 			l[3] = default[0] # hours
 			l[4] = default[1] # minutes
 			default = int(mktime(tuple(l)))
-		self.t = localtime(default)
-		ConfigSequence.__init__(self, seperator=":", limits=clock_limits, default=[self.t.tm_hour, self.t.tm_min])
+		t = localtime(default)
+		ConfigSequence.__init__(self, seperator=":", limits=clock_limits, default=[t.tm_hour, t.tm_min])
 
 	def increment(self):
 		# Check if Minutes maxed out
@@ -1117,7 +1117,7 @@ class ConfigClock(ConfigSequence):
 			ConfigSequence.handleKey(self, key)
 
 	def toDisplayString(self, value):
-		newtime = list(self.t)
+		newtime = list(localtime())
 		newtime[3] = value[0]
 		newtime[4] = value[1]
 		retval = strftime(config.usage.time.short.value.replace("%-I", "%_I").replace("%-H", "%_H"), tuple(newtime))
