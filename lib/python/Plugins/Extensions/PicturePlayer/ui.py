@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 from boxbranding import getMachineBrand
 
 from enigma import ePicLoad, eTimer, getDesktop, gMainDC, eSize
@@ -87,7 +89,7 @@ class picshow(Screen):
 			self["thn"].instance.setPixmap(ptr.__deref__())
 			self["thn"].show()
 
-		text = picInfo.split('\n',1)
+		text = picInfo.split('\n', 1)
 		self["label"].setText(text[1])
 		self["key_yellow"].setText(_("Exif"))
 
@@ -239,7 +241,7 @@ class Pic_Exif(Screen):
 		exifdesc = [_("filename")+':', "EXIF-Version:", "Make:", "Camera:", "Date/Time:", "Width / Height:", "Flash used:", "Orientation:", "User Comments:", "Metering Mode:", "Exposure Program:", "Light Source:", "CompressedBitsPerPixel:", "ISO Speed Rating:", "X-Resolution:", "Y-Resolution:", "Resolution Unit:", "Brightness:", "Exposure Time:", "Exposure Bias:", "Distance:", "CCD-Width:", "ApertureFNumber:"]
 		list = []
 
-		for x in range(len(exiflist)):
+		for x in list(range(len(exiflist))):
 			if x>0:
 				list.append((exifdesc[x], exiflist[x]))
 			else:
@@ -264,7 +266,7 @@ class Pic_Thumb(Screen):
 
 		self.textcolor = config.pic.textcolor.value
 		self.color = config.pic.bgcolor.value
-		self.spaceX, self.picX, self.spaceY, self.picY, textsize, thumtxt  = skin.parameters.get("PicturePlayerThumb",(35, 190, 30, 200, 20, 14))
+		self.spaceX, self.picX, self.spaceY, self.picY, textsize, thumtxt  = skin.parameters.get("PicturePlayerThumb", (35, 190, 30, 200, 20, 14))
 
 		pic_frame = resolveFilename(SCOPE_ACTIVE_SKIN, "icons/pic_frame.png")
 
@@ -278,7 +280,7 @@ class Pic_Thumb(Screen):
 		skincontent = ""
 
 		posX = -1
-		for x in range(self.thumbsC):
+		for x in list(range(self.thumbsC)):
 			posY = x / self.thumbsX
 			posX += 1
 			if posX >= self.thumbsX:
@@ -311,7 +313,7 @@ class Pic_Thumb(Screen):
 		}, -1)
 
 		self["frame"] = MovingPixmap()
-		for x in range(self.thumbsC):
+		for x in list(range(self.thumbsC)):
 			self["label"+str(x)] = StaticText()
 			self["thumb"+str(x)] = Pixmap()
 
@@ -369,7 +371,7 @@ class Pic_Thumb(Screen):
 	def newPage(self):
 		self.Thumbnaillist = []
 		#clear Labels and Thumbnail
-		for x in range(self.thumbsC):
+		for x in list(range(self.thumbsC)):
 			self["label"+str(x)].setText("")
 			self["thumb"+str(x)].hide()
 		#paint Labels and fill Thumbnail-List
@@ -382,7 +384,7 @@ class Pic_Thumb(Screen):
 		self.showPic()
 
 	def showPic(self, picInfo=""):
-		for x in range(len(self.Thumbnaillist)):
+		for x in list(range(len(self.Thumbnaillist))):
 			if self.Thumbnaillist[x][0] == 0:
 				if self.picload.getThumbnail(self.Thumbnaillist[x][2]) == 1: #zu tun probier noch mal
 					self.ThumbTimer.start(500, True)
@@ -554,7 +556,7 @@ class Pic_Full_View(Screen):
 		if ptr is not None:
 			text = ""
 			try:
-				text = picInfo.split('\n',1)
+				text = picInfo.split('\n', 1)
 				text = "(" + str(self.index+1) + "/" + str(self.maxentry+1) + ") " + text[0].split('/')[-1]
 			except:
 				pass
@@ -568,7 +570,7 @@ class Pic_Full_View(Screen):
 		self.picload.startDecode(self.filelist[self.index])
 		self["point"].show()
 
-	def next(self):
+	def __next__(self):
 		self.index += 1
 		if self.index > self.maxentry:
 			self.index = 0
@@ -579,8 +581,8 @@ class Pic_Full_View(Screen):
 			self.index = self.maxentry
 
 	def slidePic(self):
-		print "slide to next Picture index=" + str(self.lastindex)
-		if config.pic.loop.value==False and self.lastindex == self.maxentry:
+		print("slide to next Picture index=" + str(self.lastindex))
+		if config.pic.loop.value == False and self.lastindex == self.maxentry:
 			self.PlayPause()
 		self.shownow = True
 		self.ShowPicture()

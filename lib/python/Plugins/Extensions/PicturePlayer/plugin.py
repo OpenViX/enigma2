@@ -1,25 +1,29 @@
-from Plugins.Plugin import PluginDescriptor
+from __future__ import print_function
+from __future__ import absolute_import
+
 from enigma import getDesktop
+from Plugins.Plugin import PluginDescriptor
 
 #------------------------------------------------------------------------------------------
 
 def Pic_Thumb(*args, **kwa):
-	import ui
+	from . import ui
 	return ui.Pic_Thumb(*args, **kwa)
 
 def picshow(*args, **kwa):
-	import ui
+	from . import ui
 	return ui.picshow(*args, **kwa)
 
 def main(session, **kwargs):
-	from ui import picshow
+	from .ui import picshow
 	session.open(picshow)
 
 def filescan_open(list, session, **kwargs):
 	# Recreate List as expected by PicView
 	filelist = [((file.path, False), None) for file in list]
-	from ui import Pic_Full_View
-	session.open(Pic_Full_View, filelist, 0, file.path)
+	from .ui import Pic_Full_View
+	p = filelist[0][0][0]
+	session.open(Pic_Full_View, filelist, 0, p)
 
 def filescan(**kwargs):
 	from Components.Scanner import Scanner, ScanPath
