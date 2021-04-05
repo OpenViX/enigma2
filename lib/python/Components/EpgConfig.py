@@ -40,7 +40,7 @@ def InitEPGConfig():
 	config.epgselection.infobar.itemsperpage = ConfigSelection(default=0, choices=choices)
 	config.epgselection.infobar.roundto = ConfigSelection(default = "15", choices = [("15", _("%d minutes") % 15), ("30", _("%d minutes") % 30), ("60", _("%d minutes") % 60)])
 	config.epgselection.infobar.prevtimeperiod = ConfigSelection(default = "180", choices = [("60", _("%d minutes") % 60), ("90", _("%d minutes") % 90), ("120", _("%d minutes") % 120), ("150", _("%d minutes") % 150), ("180", _("%d minutes") % 180), ("210", _("%d minutes") % 210), ("240", _("%d minutes") % 240), ("270", _("%d minutes") % 270), ("300", _("%d minutes") % 300)])
-	config.epgselection.infobar.primetime = ConfigClock(default = 20 * 60)
+	config.epgselection.infobar.primetime = ConfigClock(default = (20, 0))
 	config.epgselection.infobar.servicetitle_mode = ConfigSelection(default = "servicename", choices = serviceTitleChoices)
 	config.epgselection.infobar.servfs = ConfigSelectionNumber(default = 0, stepwidth = 1, min = -8, max = 10, wraparound = True)
 	config.epgselection.infobar.eventfs = ConfigSelectionNumber(default = 0, stepwidth = 1, min = -8, max = 10, wraparound = True)
@@ -122,7 +122,7 @@ def InitEPGConfig():
 	config.epgselection.grid.highlight_current_events = ConfigYesNo(default=True)
 	config.epgselection.grid.roundto = ConfigSelection(default = "15", choices = [("15", _("%d minutes") % 15), ("30", _("%d minutes") % 30), ("60", _("%d minutes") % 60)])
 	config.epgselection.grid.prevtimeperiod = ConfigSelection(default = "180", choices = [("60", _("%d minutes") % 60), ("90", _("%d minutes") % 90), ("120", _("%d minutes") % 120), ("150", _("%d minutes") % 150), ("180", _("%d minutes") % 180), ("210", _("%d minutes") % 210), ("240", _("%d minutes") % 240), ("270", _("%d minutes") % 270), ("300", _("%d minutes") % 300)])
-	config.epgselection.grid.primetime = ConfigClock(default = 20 * 60)
+	config.epgselection.grid.primetime = ConfigClock(default = (20, 0))
 	config.epgselection.grid.servicetitle_mode = ConfigSelection(default = "servicename", choices = serviceTitleChoices)
 	possibleAlignmentChoices = [
 			( str(RT_HALIGN_LEFT   | RT_VALIGN_CENTER          ) , _("left")),

@@ -5,7 +5,7 @@ from Components.Harddisk import harddiskmanager
 from Tools.LoadPixmap import LoadPixmap
 from copy import copy as copy_copy
 from os import path as os_path
-from time import localtime, strftime
+from time import localtime, strftime, mktime
 
 KEYA_LEFT = 0
 KEYA_RIGHT = 1
@@ -1010,6 +1010,13 @@ class ConfigPosition(ConfigSequence):
 clock_limits = [(0, 23), (0, 59)]
 class ConfigClock(ConfigSequence):
 	def __init__(self, default):
+		# dafault can either be a timestamp
+		# or an (hours, minutes) tuple.
+		if isinstance(default, tuple):
+			l = list(localtime())
+			l[3] = default[0] # hours
+			l[4] = default[1] # minutes
+			default = int(mktime(tuple(l)))
 		self.t = localtime(default)
 		ConfigSequence.__init__(self, seperator=":", limits=clock_limits, default=[self.t.tm_hour, self.t.tm_min])
 
