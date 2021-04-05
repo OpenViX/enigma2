@@ -1,5 +1,7 @@
 from boxbranding import getMachineBrand, getMachineName
 import time
+import sys
+import six
 
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
@@ -48,15 +50,16 @@ class SABnzbdSetupScreen(Screen):
 		self.my_sabnzbd_active = False
 		self.my_sabnzbd_run = False
 		self['actions'] = ActionMap(['WizardActions', 'ColorActions'], {'ok': self.close, 'back': self.close, 'red': self.UninstallCheck, 'green': self.SABnzbdStartStop, 'yellow': self.activateSABnzbd})
-		self.service_name = 'sabnzbd'
+		self.service_name = ("sabnzbd3" if sys.version_info[0] >= 3 else "sabnzbd")
 		self.onLayoutFinish.append(self.InstallCheck)
 
 	def InstallCheck(self):
 		self.Console.ePopen('/usr/bin/opkg list_installed ' + self.service_name, self.InstalldataAvail)
 
 	def InstalldataAvail(self, str, retval, extra_args):
+		str = six.ensure_str(str)
 		if not str:
-			restartbox = self.session.openWithCallback(self.InstallPackage,MessageBox,_('Your %s %s will be restarted after the installation of service.\n\nDo you want to install now ?') % (getMachineBrand(), getMachineName()), MessageBox.TYPE_YESNO)
+			restartbox = self.session.openWithCallback(self.InstallPackage, MessageBox, _('Your %s %s will be restarted after the installation of service.\n\nDo you want to install now ?') % (getMachineBrand(), getMachineName()), MessageBox.TYPE_YESNO)
 			restartbox.setTitle(_('Ready to install "%s" ?') % self.service_name)
 		else:
 			self.updateService()
@@ -69,7 +72,7 @@ class SABnzbdSetupScreen(Screen):
 
 	def doInstall(self, callback, pkgname):
 		self["actions"].setEnabled(False)
-		self.message = self.session.open(MessageBox,_("please wait..."), MessageBox.TYPE_INFO)
+		self.message = self.session.open(MessageBox, _("please wait..."), MessageBox.TYPE_INFO)
 		self.message.setTitle(_('Installing Service'))
 		self.Console.ePopen('/usr/bin/opkg install ' + pkgname + ' sync', callback)
 
@@ -82,8 +85,9 @@ class SABnzbdSetupScreen(Screen):
 		self.Console.ePopen('/usr/bin/opkg list_installed ' + self.service_name, self.UninstalldataAvail)
 
 	def UninstalldataAvail(self, str, retval, extra_args):
+		str = six.ensure_str(str)
 		if str:
-			restartbox = self.session.openWithCallback(self.RemovePackage,MessageBox,_('Your %s %s will be restarted after the removal of service\nDo you want to remove now ?') % (getMachineBrand(), getMachineName()), MessageBox.TYPE_YESNO)
+			restartbox = self.session.openWithCallback(self.RemovePackage, MessageBox, _('Your %s %s will be restarted after the removal of service\nDo you want to remove now ?') % (getMachineBrand(), getMachineName()), MessageBox.TYPE_YESNO)
 			restartbox.setTitle(_('Ready to remove "%s" ?') % self.service_name)
 		else:
 			self.updateService()
@@ -94,7 +98,7 @@ class SABnzbdSetupScreen(Screen):
 
 	def doRemove(self, callback, pkgname):
 		self["actions"].setEnabled(False)
-		self.message = self.session.open(MessageBox,_("please wait..."), MessageBox.TYPE_INFO)
+		self.message = self.session.open(MessageBox, _("please wait..."), MessageBox.TYPE_INFO)
 		self.message.setTitle(_('Removing Service'))
 		self.Console.ePopen('/usr/bin/opkg remove ' + pkgname + ' --force-remove --autoremove sync', callback)
 
