@@ -1,5 +1,8 @@
 import sys
-import cPickle
+try: # python 3
+	import pickle as cPickle
+except ImportError: # Python 2
+	import cPickle
 
 infilename = "iso-639-3.tab"
 outfilename = "iso-639-3.pck"
