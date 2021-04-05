@@ -1,13 +1,18 @@
+from __future__ import print_function
+from __future__ import absolute_import
+
+import sys
 from enigma import ePicLoad
 
-from Screens.Screen import Screen
+
 from Components.ActionMap import ActionMap
 from Components.Sources.StaticText import StaticText
 from Components.Pixmap import Pixmap
 from Components.config import config, getConfigListEntry, ConfigInteger
 from Components.ConfigList import ConfigListScreen
 from Components.AVSwitch import AVSwitch
-import DVDTitle
+from Screens.Screen import Screen
+from . import DVDTitle
 
 
 class TitleProperties(Screen,ConfigListScreen):
@@ -102,7 +107,7 @@ class TitleProperties(Screen,ConfigListScreen):
 		self.parent.editTitle()
 
 	def update(self):
-		print "[onShown]"
+		print("[onShown]")
 		self.initConfigList()
 		self.loadThumb()
 
@@ -130,7 +135,7 @@ class TitleProperties(Screen,ConfigListScreen):
 		current_pos = self.title_idx+1
 		new_pos = self.properties.position.value
 		if new_pos != current_pos:
-			print "title got repositioned from ", current_pos, "to", new_pos
+			print("title got repositioned from ", current_pos, "to", new_pos)
 			swaptitle = self.project.titles.pop(current_pos-1)
 			self.project.titles.insert(new_pos-1, swaptitle)
 
@@ -150,13 +155,22 @@ class LanguageChoices():
 		syslang = syslanguage.getLanguage()[:2]
 		self.langdict = { }
 		self.choices = []
-		for key, val in LanguageCodes.iteritems():
-			if len(key) == 2:
-				self.langdict[key] = val[0]
-		for key, val in self.langdict.iteritems():
-			if key not in (syslang, 'en'):
-				self.langdict[key] = val
-				self.choices.append((key, val))
+		if sys.version_info >= (3, 0):
+			for key, val in LanguageCodes.items():
+				if len(key) == 2:
+					self.langdict[key] = val[0]
+			for key, val in self.langdict.items():
+				if key not in (syslang, 'en'):
+					self.langdict[key] = val
+					self.choices.append((key, val))
+		else:
+			for key, val in LanguageCodes.iteritems():
+				if len(key) == 2:
+					self.langdict[key] = val[0]
+			for key, val in self.langdict.iteritems():
+				if key not in (syslang, 'en'):
+					self.langdict[key] = val
+					self.choices.append((key, val))
 		self.choices.sort()
 		self.choices.insert(0,("nolang", "unspecified"))
 		self.choices.insert(1,(syslang, self.langdict[syslang]))
@@ -167,20 +181,36 @@ class LanguageChoices():
 		DVB_lang = DVB_lang.lower()
 		for word in ("stereo", "audio", "description", "2ch", "dolby digital"):
 			DVB_lang = DVB_lang.replace(word,"").strip()
-		for key, val in LanguageCodes.iteritems():
-			if DVB_lang.find(key.lower()) == 0:
-				if len(key) == 2:
+		if sys.version_info >= (3, 0):
+			for key, val in LanguageCodes.items():
+				if DVB_lang.find(key.lower()) == 0:
+					if len(key) == 2:
+						return key
+					else:
+						DVB_lang = (LanguageCodes[key])[0]
+				elif DVB_lang.find(val[0].lower()) > -1:
+					if len(key) == 2:
+						return key
+					else:
+						DVB_lang = (LanguageCodes[key])[0]
+			for key, val in self.langdict.items():
+				if val == DVB_lang:
 					return key
-				else:
-					DVB_lang = (LanguageCodes[key])[0]
-			elif DVB_lang.find(val[0].lower()) > -1:
-				if len(key) == 2:
+		else:
+			for key, val in LanguageCodes.iteritems():
+				if DVB_lang.find(key.lower()) == 0:
+					if len(key) == 2:
+						return key
+					else:
+						DVB_lang = (LanguageCodes[key])[0]
+				elif DVB_lang.find(val[0].lower()) > -1:
+					if len(key) == 2:
+						return key
+					else:
+						DVB_lang = (LanguageCodes[key])[0]
+			for key, val in self.langdict.iteritems():
+				if val == DVB_lang:
 					return key
-				else:
-					DVB_lang = (LanguageCodes[key])[0]
-		for key, val in self.langdict.iteritems():
-			if val == DVB_lang:
-				return key
 		return "nolang"
 
 languageChoices = LanguageChoices()

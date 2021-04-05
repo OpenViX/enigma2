@@ -1,5 +1,6 @@
+from __future__ import division
 from Components.config import ConfigSubsection, ConfigSubList, ConfigInteger, ConfigText, ConfigSelection
-import TitleCutter
+from . import TitleCutter
 
 class ConfigFixedText(ConfigText):
 	def __init__(self, text, visible_width=60):
@@ -79,7 +80,7 @@ class DVDTitle:
 		template = template.replace("$C", self.DVBchannel)
 
 		#if template.find("$A") >= 0:
-		from TitleProperties import languageChoices
+		from .TitleProperties import languageChoices
 		audiolist = [ ]
 		for audiotrack in self.properties.audiotracks:
 			active = audiotrack.active.value
@@ -163,9 +164,9 @@ class DVDTitle:
 		else:
 			chapters = self.chaptermarks
 		for p in chapters:
-			timestring = template.replace("$h", str(p / (90000 * 3600)))
-			timestring = timestring.replace("$m", ("%02d" % (p % (90000 * 3600) / (90000 * 60))))
-			timestring = timestring.replace("$s", ("%02d" % (p % (90000 * 60) / 90000)))
-			timestring = timestring.replace("$t", ("%03d" % ((p % 90000) / 90)))
+			timestring = template.replace("$h", str(p // (90000 * 3600)))
+			timestring = timestring.replace("$m", ("%02d" % (p % (90000 * 3600) // (90000 * 60))))
+			timestring = timestring.replace("$s", ("%02d" % (p % (90000 * 60) // 90000)))
+			timestring = timestring.replace("$t", ("%03d" % ((p % 90000) // 90)))
 			timestamps.append(timestring)
 		return timestamps
