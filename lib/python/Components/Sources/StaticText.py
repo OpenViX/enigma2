@@ -1,4 +1,6 @@
-from Source import Source
+from __future__ import absolute_import
+
+from Components.Sources.Source import Source
 
 class StaticText(Source):
 	# filter is a function which filters external, untrusted strings
@@ -26,5 +28,4 @@ class StaticText(Source):
 	def getBoolean(self):
 		return bool(self.__text)
 
-	boolean = property(getBoolean)
-	
+	boolean = property(getBoolean)	

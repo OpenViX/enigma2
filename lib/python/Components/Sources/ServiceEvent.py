@@ -1,6 +1,8 @@
+from __future__ import absolute_import
+
+from Components.Sources.Source import Source
 from Components.Element import cached
 from enigma import eServiceCenter
-from Source import Source
 
 class ServiceEvent(Source, object):
 	def __init__(self):

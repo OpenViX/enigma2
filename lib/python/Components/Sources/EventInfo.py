@@ -1,7 +1,10 @@
-from Components.PerServiceDisplay import PerServiceBase
-from Components.Element import cached
+from __future__ import absolute_import
+
 from enigma import iPlayableService, iServiceInformation, eServiceReference, eEPGCache
-from Source import Source
+
+from Components.Sources.Source import Source
+from Components.Element import cached
+from Components.PerServiceDisplay import PerServiceBase
 
 class EventInfo(PerServiceBase, Source, object):
 	NOW = 0
