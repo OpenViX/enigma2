@@ -1,4 +1,6 @@
-from Renderer import Renderer
+from __future__ import absolute_import
+
+from Components.Renderer.Renderer import Renderer
 
 from enigma import ePixmap
 

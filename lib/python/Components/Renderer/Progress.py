@@ -1,3 +1,6 @@
+from __future__ import absolute_import
+
+from Components.Renderer.Renderer import Renderer
 from Components.VariableValue import VariableValue
 from Renderer import Renderer
 
