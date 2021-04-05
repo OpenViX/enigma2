@@ -714,6 +714,8 @@ class LamedbWriter():
 		#print("[%s-LamedbWriter] Wrote %d transponders and %d services" % (debug_name, transponders_count, services_count))
 
 	def utf8_convert(self, text):
+		if six.PY3:
+			return text
 		for encoding in ["utf8","latin-1"]:
 			try:
 				text.decode(encoding=encoding)
