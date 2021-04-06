@@ -1,28 +1,35 @@
+from __future__ import print_function
+from __future__ import absolute_import
+import six
+
 import os
 from fcntl import ioctl
 import platform
 import struct
-from boxbranding import getBrandOEM
-from .config import config, ConfigInteger, ConfigSlider, ConfigSubsection, ConfigText, ConfigYesNo
-from .SystemInfo import SystemInfo
 import errno
 import xml.etree.cElementTree
 from enigma import eRCInput
 from keyids import KEYIDS
-from RcModel import rc_model
+from Components.RcModel import rc_model
+
+from boxbranding import getBrandOEM
+from Components.config import config, ConfigInteger, ConfigSlider, ConfigSubsection, ConfigText, ConfigYesNo
+from Components.RcModel import rc_model
+from Components.SystemInfo import SystemInfo
+
+
 
 # include/uapi/asm-generic/ioctl.h
-IOC_NRBITS = 8L
-IOC_TYPEBITS = 8L
-IOC_SIZEBITS = 13L if "mips" in platform.machine() else 14L
-IOC_DIRBITS = 3L if "mips" in platform.machine() else 2L
-
-IOC_NRSHIFT = 0L
+IOC_NRBITS = 8
+IOC_TYPEBITS = 8
+IOC_SIZEBITS = 13 if "mips" in platform.machine() else 14
+IOC_DIRBITS = 3 if "mips" in platform.machine() else 2
+IOC_NRSHIFT = 0
 IOC_TYPESHIFT = IOC_NRSHIFT+IOC_NRBITS
 IOC_SIZESHIFT = IOC_TYPESHIFT+IOC_TYPEBITS
 IOC_DIRSHIFT = IOC_SIZESHIFT+IOC_SIZEBITS
 
-IOC_READ = 2L
+IOC_READ = 2
 
 def EVIOCGNAME(length):
 	return (IOC_READ<<IOC_DIRSHIFT)|(length<<IOC_SIZESHIFT)|(0x45<<IOC_TYPESHIFT)|(0x06<<IOC_NRSHIFT)
@@ -43,17 +50,17 @@ class inputDevices:
 				buffer = "\0"*512
 				self.fd = os.open("/dev/input/" + evdev, os.O_RDWR | os.O_NONBLOCK)
 				self.name = ioctl(self.fd, EVIOCGNAME(256), buffer)
-				self.name = self.name[:self.name.find("\0")]
+				self.name = self.name[:self.name.find(b"\0")]
+				self.name = six.ensure_str(self.name)
 				os.close(self.fd)
 			except (IOError,OSError) as err:
 				print("[InputDevice] Error: evdev='%s' getInputDevices <ERROR: ioctl(EVIOCGNAME): '%s'>" % (evdev, str(err)))
 				self.name = None
 
 			if self.name:
-				devtype = self.getInputDeviceType(self.name)
+				devtype = self.getInputDeviceType(six.ensure_str(self.name))
 				print("[InputDevice] Found: evdev='%s', name='%s', type='%s'" % (evdev, self.name, devtype))
 				self.Devices[evdev] = {'name': self.name, 'type': devtype, 'enabled': False, 'configuredName': None }
-
 
 	def getInputDeviceType(self,name):
 		if "remote control" in str(name).lower():
@@ -73,7 +80,7 @@ class inputDevices:
 			return "Unknown device name"
 
 	def getDeviceList(self):
-		return sorted(self.Devices.keys())
+		return sorted(six.iterkeys(self.Devices))
 
 	def setDeviceAttribute(self, device, attribute, value):
 		#print "[InputDevice] setting for device", device, "attribute", attribute, " to value", value
@@ -139,7 +146,7 @@ class InitInputDevices:
 
 	def createConfig(self, *args):
 		config.inputDevices = ConfigSubsection()
-		for device in sorted(iInputDevices.Devices.keys()):
+		for device in sorted(six.iterkeys(iInputDevices.Devices)):
 			self.currentDevice = device
 			#print "[InputDevice] creating config entry for device: %s -> %s  " % (self.currentDevice, iInputDevices.Devices[device]["name"])
 			self.setupConfigEntries(self.currentDevice)

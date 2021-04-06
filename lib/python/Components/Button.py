@@ -1,5 +1,4 @@
-from GUIComponent import GUIComponent
-from VariableText import VariableText
+from __future__ import absolute_import
 
 from enigma import eButton
 

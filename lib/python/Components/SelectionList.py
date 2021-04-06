@@ -1,4 +1,6 @@
-from MenuList import MenuList
+from __future__ import absolute_import
+
+from Components.MenuList import MenuList
 from Tools.Directories import resolveFilename, SCOPE_ACTIVE_SKIN
 from enigma import eListboxPythonMultiContent, gFont, RT_HALIGN_LEFT, RT_VALIGN_CENTER
 from Tools.LoadPixmap import LoadPixmap
@@ -44,7 +46,7 @@ class SelectionList(MenuList):
 		return [ (item[0][0], item[0][1], item[0][2]) for item in self.list if item[0][3] ]
 
 	def toggleAllSelection(self):
-		for idx,item in enumerate(self.list):
+		for idx, item in enumerate(self.list):
 			item = self.list[idx][0]
 			self.list[idx] = SelectionEntryComponent(item[0], item[1], item[2], not item[3])
 		self.setList(self.list)
@@ -70,7 +72,7 @@ class SelectionList(MenuList):
 		# 1 - value
 		# 2 - index
 		# 3 - selected
-		self.list.sort(key=lambda x: x[0][sortType],reverse=flag)
+		self.list.sort(key=lambda x: x[0][sortType], reverse = flag)
 		self.setList(self.list)
 
 	def len(self):

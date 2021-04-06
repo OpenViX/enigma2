@@ -1,4 +1,8 @@
-from GUIComponent import GUIComponent
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+
+from Components.GUIComponent import GUIComponent
 from skin import parseColor, parseFont, parseScale
 
 from enigma import eListboxServiceContent, eListbox, eServiceCenter, eServiceReference, gFont, eRect, eSize
@@ -56,8 +60,8 @@ class ServiceList(GUIComponent):
 
 		self.root = None
 		self.mode = self.MODE_NORMAL
-		self.listHeight = None
-		self.listWidth = None
+		self.listHeight = 0
+		self.listWidth = 0
 		self.ServiceNumberFontName = "Regular"
 		self.ServiceNumberFontSize = 20
 		self.ServiceNameFontName = "Regular"
@@ -189,7 +193,7 @@ class ServiceList(GUIComponent):
 			return None
 		from Components.ServiceEventTracker import InfoBarCount
 		if adjust and config.usage.multibouquet.value and InfoBarCount == 1 and ref and ref.type != 8192:
-			print "[ServiceList] search for service in userbouquets"
+			print("[ServiceList] search for service in userbouquets")
 			if self.serviceList:
 				revert_mode = config.servicelist.lastmode.value
 				revert_root = self.getRoot()
@@ -213,7 +217,7 @@ class ServiceList(GUIComponent):
 						self.serviceList.saveChannel(ref)
 						return True
 				self.serviceList.enterUserbouquet(revert_radio_root)
-				print "[ServiceList] service not found in any userbouquets"
+				print("[ServiceList] service not found in any userbouquets")
 				if revert_mode == "tv":
 					self.serviceList.setModeTv()
 				elif revert_mode == "radio":
@@ -250,7 +254,7 @@ class ServiceList(GUIComponent):
 
 	def moveToChar(self, char):
 		# TODO fill with life
-		print "[ServiceList] Next char: "
+		print("[ServiceList] Next char: ")
 		index = self.l.getNextBeginningWithChar(char)
 		indexup = self.l.getNextBeginningWithChar(char.upper())
 		if indexup != 0:
@@ -258,7 +262,7 @@ class ServiceList(GUIComponent):
 				index = indexup
 
 		self.instance.moveSelectionTo(index)
-		print "[ServiceList] Moving to character " + str(char)
+		print("[ServiceList] Moving to character " + str(char))
 
 	def moveToNextMarker(self):
 		idx = self.l.getNextMarkerPos()
@@ -282,7 +286,7 @@ class ServiceList(GUIComponent):
 		self.ItemHeight = itemHeight
 		self.l.setItemHeight(itemHeight)
 		if self.listHeight:
-			self.instance.resize(eSize(self.listWidth, self.listHeight / itemHeight * itemHeight))
+			self.instance.resize(eSize(self.listWidth, self.listHeight // itemHeight * itemHeight))
 
 	def getSelectionPosition(self):
 		# Adjust absolute index to index in displayed view
@@ -321,7 +325,7 @@ class ServiceList(GUIComponent):
 		list = serviceHandler.list(self.root)
 		dest = [ ]
 		if list is not None:
-			while 1:
+			while True:
 				s = list.getNext()
 				if s.valid():
 					dest.append(s.toString())

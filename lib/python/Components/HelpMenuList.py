@@ -1,6 +1,9 @@
-from GUIComponent import GUIComponent
+from __future__ import print_function
+from __future__ import absolute_import
 
 from enigma import eListboxPythonMultiContent, eListbox, gFont
+
+from Components.GUIComponent import GUIComponent
 from Tools.KeyBindings import queryKeyBinding, getKeyDescription
 import skin
 #getKeyPositions
@@ -16,7 +19,7 @@ class HelpMenuList(GUIComponent):
 		self.extendedHelp = False
 
 		l = [ ]
-		
+
 		sortlist = []
 		for (actionmap, context, actions) in helplist:
 			for (action, help) in actions:
@@ -26,8 +29,9 @@ class HelpMenuList(GUIComponent):
 					continue
 				sortlist.append((actionmap, context, action, help))
 		# Sort by description text (main and extended), then by action (this puts numeric actions in ascending order).
-		sortlist.sort(key=lambda helpItem: (map(str.lower, helpItem[3] if isinstance(helpItem[3], (tuple, list)) else [helpItem[3]]), helpItem[2]))
-		
+#		sortlist.sort(key=lambda helpItem: (list(map(str.lower, helpItem[3] if isinstance(helpItem[3], (tuple, list)) else [helpItem[3]])), helpItem[2]))
+		sortlist.sort(key=lambda helpItem: ([s.lower() for s in (helpItem[3] if isinstance(helpItem[3], (tuple, list)) else [helpItem[3]])], helpItem[2]))
+
 		for (actionmap, context, action, help) in sortlist:
 				buttons = queryKeyBinding(context, action)
 
@@ -54,7 +58,7 @@ class HelpMenuList(GUIComponent):
 
 				if isinstance(help, list):
 					self.extendedHelp = True
-					print "extendedHelpEntry found"
+					print("extendedHelpEntry found")
 					x, y, w, h = skin.parameters.get("HelpMenuListExtHlp0",(skin.applySkinFactor(5), 0, skin.applySkinFactor(595), skin.applySkinFactor(28)))
 					x1, y1, w1, h1 = skin.parameters.get("HelpMenuListExtHlp1",(skin.applySkinFactor(5), skin.applySkinFactor(34), skin.applySkinFactor(595), skin.applySkinFactor(22)))
 					entry.extend((

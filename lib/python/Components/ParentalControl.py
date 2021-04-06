@@ -1,14 +1,18 @@
+from __future__ import absolute_import
+import six
+
+import time, os
+
+from enigma import eTimer, eServiceCenter, iServiceInformation, eServiceReference, eDVBDB
 from Components.config import config, ConfigSubsection, ConfigSelection, ConfigPIN, ConfigYesNo, ConfigSubList, ConfigInteger
 from Components.ServiceList import refreshServiceList
 from Screens.InputBox import PinInput
 from Screens.MessageBox import MessageBox
-from Tools.BoundFunction import boundFunction
 from ServiceReference import ServiceReference
-from Tools import Notifications
+from Tools.BoundFunction import boundFunction
 from Tools.Directories import resolveFilename, SCOPE_CONFIG
+import Tools.Notifications
 from Tools.Notifications import AddPopup
-from enigma import eTimer, eServiceCenter, iServiceInformation, eServiceReference, eDVBDB
-import time, os
 
 TYPE_SERVICE = "SERVICE"
 TYPE_BOUQUETSERVICE = "BOUQUETSERVICE"
@@ -26,7 +30,7 @@ def InitParentalControl():
 	config.ParentalControl.retries.servicepin.time = ConfigInteger(default = 3)
 	config.ParentalControl.servicepin = ConfigSubList()
 	config.ParentalControl.servicepin.append(ConfigPIN(default = 0))
-	config.ParentalControl.age = ConfigSelection(default = "18", choices = [("0", _("No age block"))] + list((str(x), "%d+" % x) for x in range(3,19)))
+	config.ParentalControl.age = ConfigSelection(default = "18", choices = [("0", _("No age block"))] + list((str(x), "%d+" % x) for x in list(range(3, 19))))
 	config.ParentalControl.hideBlacklist = ConfigYesNo(default = False)
 	config.ParentalControl.config_sections = ConfigSubsection()
 	config.ParentalControl.config_sections.main_menu = ConfigYesNo(default = False)
@@ -112,12 +116,12 @@ class ParentalControl:
 			service = ref.toCompareString()
 			title = 'FROM BOUQUET "userbouquet.' in service and _("this bouquet is protected by a parental control pin") or _("this service is protected by a parental control pin")
 			if session:
-				Notifications.RemovePopup("Parental control")
+				Tools.Notifications.RemovePopup("Parental control")
 				if self.PinDlg:
 					self.PinDlg.close()
 				self.PinDlg = session.openWithCallback(boundFunction(self.servicePinEntered, ref), PinInput, triesEntry=config.ParentalControl.retries.servicepin, pinList=self.getPinList(), service=ServiceReference(ref).getServiceName(), title=title, windowTitle=_("Parental control"), simple=False)
 			else:
-				Notifications.AddNotificationParentalControl(boundFunction(self.servicePinEntered, ref), PinInput, triesEntry=config.ParentalControl.retries.servicepin, pinList=self.getPinList(), service=ServiceReference(ref).getServiceName(), title=title, windowTitle=_("Parental control"))
+				Tools.Notifications.AddNotificationParentalControl(boundFunction(self.servicePinEntered, ref), PinInput, triesEntry=config.ParentalControl.retries.servicepin, pinList=self.getPinList(), service=ServiceReference(ref).getServiceName(), title=title, windowTitle=_("Parental control"))
 			return False
 		else:
 			return True
@@ -193,11 +197,11 @@ class ParentalControl:
 			else:
 				AddPopup(messageText, MessageBox.TYPE_ERROR, timeout = 3)
 
-	def saveListToFile(self,sWhichList,vList):
+	def saveListToFile(self, sWhichList, vList):
 		#Replaces saveWhiteList and saveBlackList:
 		#I don't like to have two functions with identical code...
 		file = open(resolveFilename(SCOPE_CONFIG, sWhichList), 'w')
-		for sService,sType in vList.iteritems():
+		for sService, sType in six.iteritems(vList):
 			#Only Services that are selected directly and Bouqets are saved.
 			#Services that are added by a bouquet are not saved.
 			#This is the reason for the change in self.whitelist and self.blacklist
@@ -205,7 +209,7 @@ class ParentalControl:
 				file.write(str(sService) + "\n")
 		file.close()
 
-	def openListFromFile(self,sWhichList):
+	def openListFromFile(self, sWhichList):
 		#Replaces openWhiteList and openBlackList:
 		#I don't like to have two functions with identical code...
 		result = {}
@@ -237,7 +241,7 @@ class ParentalControl:
 			if not vList[service]:
 				del vList[service]
 
-	def readServicesFromBouquet(self,sBouquetSelection,formatstring):
+	def readServicesFromBouquet(self, sBouquetSelection, formatstring):
 		#This method gives back a list of services for a given bouquet
 		from enigma import eServiceCenter, eServiceReference
 		serviceHandler = eServiceCenter.getInstance()
@@ -266,7 +270,7 @@ class ParentalControl:
 			if not self.filesOpened:
 				self.open()
 				return getattr(self, name)
-		raise AttributeError, name
+		raise AttributeError(name)
 
 	def hideBlacklist(self):
 		if self.blacklist:

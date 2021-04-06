@@ -23,12 +23,12 @@ class Sensors:
 	# returns a list of sensorids of type "type"
 	def getSensorsList(self, type = None):
 		if type is None:
-			return range(len(self.sensors_list))
-		list = []
+			return list(range(len(self.sensors_list)))
+		xlist = []
 		for sensorid in range(len(self.sensors_list)):
 			if self.sensors_list[sensorid][0] == type:
-				list.append(sensorid)
-		return list
+				xlist.append(sensorid)
+		return xlist
 
 
 	def getSensorType(self, sensorid):

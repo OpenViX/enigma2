@@ -1,9 +1,10 @@
-from MenuList import MenuList
-
-from Tools.Directories import resolveFilename, SCOPE_ACTIVE_SKIN
-from Components.MultiContent import MultiContentEntryText, MultiContentEntryPixmapAlphaBlend
+from __future__ import absolute_import
 
 from enigma import eListboxPythonMultiContent, gFont, BT_SCALE, BT_KEEP_ASPECT_RATIO, BT_HALIGN_CENTER, BT_VALIGN_CENTER
+
+from Components.MenuList import MenuList
+from Components.MultiContent import MultiContentEntryText, MultiContentEntryPixmapAlphaBlend
+from Tools.Directories import resolveFilename, SCOPE_ACTIVE_SKIN
 from Tools.LoadPixmap import LoadPixmap
 import skin
 

@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+
 import xml.sax
 from Tools.Directories import crawlDirectory, resolveFilename, SCOPE_CONFIG, SCOPE_SKIN, copyfile, copytree
 from Components.NimManager import nimmanager
@@ -26,7 +28,7 @@ class InfoHandler(xml.sax.ContentHandler):
 		self.data = ""
 
 	def printError(self, error):
-		raise InfoHandlerParseError, error
+		raise InfoHandlerParseError(error)
 
 	def startElement(self, name, attrs):
 		self.elements.append(name)
@@ -157,7 +159,7 @@ class PackageInfoHandler:
 		try:
 			xml.sax.parse(file, handler)
 			for entry in handler.list:
-				self.packageslist.append((entry,file))
+				self.packageslist.append((entry, file))
 		except InfoHandlerParseError:
 			pass
 
@@ -166,7 +168,7 @@ class PackageInfoHandler:
 		try:
 			xml.sax.parse(file, handler)
 			for entry in handler.list:
-				self.packagesIndexlist.append((entry,file))
+				self.packagesIndexlist.append((entry, file))
 		except InfoHandlerParseError:
 			pass
 
@@ -176,7 +178,7 @@ class PackageInfoHandler:
 		try:
 			xml.sax.parse(file, handler)
 			for entry in handler.list:
-				self.packageDetails.append((entry,file))
+				self.packageDetails.append((entry, file))
 		except InfoHandlerParseError:
 			pass
 
@@ -215,7 +217,7 @@ class PackageInfoHandler:
 			for file in indexfileList:
 				neededFile = self.directory[0] + "/" + file
 				if os.path.isfile(neededFile):
-					self.readIndex(self.directory[0] + "/" , neededFile)
+					self.readIndex(self.directory[0] + "/", neededFile)
 
 		if prerequisites:
 			for package in self.packagesIndexlist[:]:

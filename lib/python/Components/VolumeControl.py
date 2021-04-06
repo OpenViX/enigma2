@@ -1,9 +1,11 @@
+from __future__ import absolute_import
+
 from enigma import eDVBVolumecontrol, eTimer
 from Tools.Profile import profile
 from Screens.Volume import Volume
 from Screens.Mute import Mute
 from GlobalActions import globalActionMap
-from config import config, ConfigSubsection, ConfigInteger
+from Components.config import config, ConfigSubsection, ConfigInteger
 import skin
 
 profile("VolumeControl")

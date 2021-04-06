@@ -1,10 +1,10 @@
-from MenuList import MenuList
+from __future__ import absolute_import
 
-from Tools.Directories import SCOPE_ACTIVE_SKIN, resolveFilename
 from os import path
 
 from enigma import eListboxPythonMultiContent, RT_VALIGN_CENTER, gFont, eServiceCenter
-
+from Components.MenuList import MenuList
+from Tools.Directories import SCOPE_ACTIVE_SKIN, resolveFilename
 from Tools.LoadPixmap import LoadPixmap
 import skin
 
@@ -36,7 +36,7 @@ class PlayList(MenuList):
 	def PlaylistEntryComponent(self, serviceref, state):
 		res = [ serviceref ]
 		text = serviceref.getName()
-		if text is "":
+		if text == "":
 			text = path.split(serviceref.getPath().split('/')[-1])[1]
 		x, y, w, h = skin.parameters.get("PlayListName",(skin.applySkinFactor(25), skin.applySkinFactor(1), skin.applySkinFactor(470), skin.applySkinFactor(22)))
 		res.append((eListboxPythonMultiContent.TYPE_TEXT, x, y, w, h, 0, RT_VALIGN_CENTER, text))

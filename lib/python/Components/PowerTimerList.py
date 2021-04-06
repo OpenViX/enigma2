@@ -1,7 +1,9 @@
+from __future__ import absolute_import
+
 from enigma import eListboxPythonMultiContent, eListbox, gFont, getDesktop, \
 	RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_VALIGN_TOP, RT_VALIGN_BOTTOM
 
-from GUIComponent import GUIComponent
+from Components.GUIComponent import GUIComponent
 from skin import parseFont, parseScale
 from Tools.FuzzyDate import FuzzyTime
 from Tools.LoadPixmap import LoadPixmap
