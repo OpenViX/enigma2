@@ -1,6 +1,10 @@
+from __future__ import print_function
+from __future__ import absolute_import
+import six
+
 import os
 import re
-from MenuList import MenuList
+from Components.MenuList import MenuList
 from Components.Harddisk import harddiskmanager
 from Tools.Directories import SCOPE_ACTIVE_SKIN, resolveFilename, fileExists, pathExists
 from enigma import RT_HALIGN_LEFT, eListboxPythonMultiContent, \
@@ -70,7 +74,7 @@ def FileEntryComponent(name, absolute = None, isDir = False):
 	if isDir:
 		png = LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, "extensions/directory.png"))
 	else:
-		extension = name.split('.')
+		extension = name.split(".")
 		extension = extension[-1].lower()
 		if extension in EXTENSIONS:
 			png = LoadPixmap(resolveFilename(SCOPE_ACTIVE_SKIN, "extensions/" + EXTENSIONS[extension] + ".png"))
@@ -180,14 +184,17 @@ class FileList(MenuList):
 			files = [ ]
 			directories = [ ]
 		elif self.useServiceRef:
-			# we should not use the 'eServiceReference(string)' constructor, because it doesn't allow ':' in the directoryname
-			root = eServiceReference.fromDirectory(directory)
+			# we should not use the "eServiceReference(string)" constructor, because it doesn't allow ":" in the directoryname
+			if six.PY3:
+				root = eServiceReference(2, 0, directory)
+			else:
+				root = eServiceReference.fromDirectory(directory)
 			if self.additional_extensions:
 				root.setName(self.additional_extensions)
 			serviceHandler = eServiceCenter.getInstance()
 			list = serviceHandler.list(root)
 
-			while 1:
+			while True:
 				s = list.getNext()
 				if not s.valid():
 					del list
@@ -215,19 +222,19 @@ class FileList(MenuList):
 			if directory == self.current_mountpoint and self.showMountpoints:
 				self.list.append(FileEntryComponent(name = "<" +_("List of storage devices") + ">", absolute = None, isDir = True))
 			elif (directory != "/") and not (self.inhibitMounts and self.getMountpoint(directory) in self.inhibitMounts):
-				self.list.append(FileEntryComponent(name = "<" +_("Parent directory") + ">", absolute = '/'.join(directory.split('/')[:-2]) + '/', isDir = True))
+				self.list.append(FileEntryComponent(name = "<" +_("Parent directory") + ">", absolute = "/".join(directory.split("/")[:-2]) + "/", isDir = True))
 
 		if self.showDirectories:
 			for x in directories:
 				if not (self.inhibitMounts and self.getMountpoint(x) in self.inhibitMounts) and not self.inParentDirs(x, self.inhibitDirs):
-					name = x.split('/')[-2]
+					name = x.split("/")[-2]
 					self.list.append(FileEntryComponent(name = name, absolute = x, isDir = True))
 
 		if self.showFiles:
 			for x in files:
 				if self.useServiceRef:
 					path = x.getPath()
-					name = path.split('/')[-1]
+					name = path.split("/")[-1]
 				else:
 					path = directory + x
 					name = x
@@ -299,7 +306,7 @@ class FileList(MenuList):
 
 def MultiFileSelectEntryComponent(name, absolute = None, isDir = False, selected = False):
 	res = [ (absolute, isDir, selected, name) ]
-	if not name.startswith('<'):
+	if not name.startswith("<"):
 		if selected:
 			icon = LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, "icons/lock_on.png"))
 		else:
@@ -310,7 +317,7 @@ def MultiFileSelectEntryComponent(name, absolute = None, isDir = False, selected
 	if isDir:
 		png = LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, "extensions/directory.png"))
 	else:
-		extension = name.split('.')
+		extension = name.split(".")
 		extension = extension[-1].lower()
 		if extension in EXTENSIONS:
 			png = LoadPixmap(resolveFilename(SCOPE_ACTIVE_SKIN, "extensions/" + EXTENSIONS[extension] + ".png"))
@@ -351,7 +358,7 @@ class MultiFileSelectList(FileList):
 			idx = self.l.getCurrentSelectionIndex()
 			newList = self.list[:]
 			x = self.list[idx]
-			if not x[0][3].startswith('<'):
+			if not x[0][3].startswith("<"):
 				if x[0][1] is True:
 					realPathname = x[0][0]
 				else:
@@ -364,7 +371,7 @@ class MultiFileSelectList(FileList):
 						try:
 							self.selectedFiles.remove(os.path.normpath(realPathname))
 						except:
-							print "Couldn't remove:", realPathname
+							print("Couldn't remove:", realPathname)
 				else:
 					SelectState = True
 					if (realPathname not in self.selectedFiles) and (os.path.normpath(realPathname) not in self.selectedFiles):
@@ -410,7 +417,7 @@ class MultiFileSelectList(FileList):
 			serviceHandler = eServiceCenter.getInstance()
 			list = serviceHandler.list(root)
 
-			while 1:
+			while True:
 				s = list.getNext()
 				if not s.valid():
 					del list
@@ -438,12 +445,12 @@ class MultiFileSelectList(FileList):
 			if directory == self.current_mountpoint and self.showMountpoints:
 				self.list.append(MultiFileSelectEntryComponent(name = "<" +_("List of storage devices") + ">", absolute = None, isDir = True))
 			elif (directory != "/") and not (self.inhibitMounts and self.getMountpoint(directory) in self.inhibitMounts):
-				self.list.append(MultiFileSelectEntryComponent(name = "<" +_("Parent directory") + ">", absolute = '/'.join(directory.split('/')[:-2]) + '/', isDir = True))
+				self.list.append(MultiFileSelectEntryComponent(name = "<" +_("Parent directory") + ">", absolute = "/".join(directory.split("/")[:-2]) + "/", isDir = True))
 
 		if self.showDirectories:
 			for x in directories:
 				if not (self.inhibitMounts and self.getMountpoint(x) in self.inhibitMounts) and not self.inParentDirs(x, self.inhibitDirs):
-					name = x.split('/')[-2]
+					name = x.split("/")[-2]
 					alreadySelected = (x in self.selectedFiles) or (os.path.normpath(x) in self.selectedFiles)
 					self.list.append(MultiFileSelectEntryComponent(name = name, absolute = x, isDir = True, selected = alreadySelected))
 
@@ -451,7 +458,7 @@ class MultiFileSelectList(FileList):
 			for x in files:
 				if self.useServiceRef:
 					path = x.getPath()
-					name = path.split('/')[-1]
+					name = path.split("/")[-1]
 				else:
 					path = directory + x
 					name = x
@@ -476,4 +483,3 @@ class MultiFileSelectList(FileList):
 				if p == select:
 					self.moveToIndex(i)
 				i += 1
-

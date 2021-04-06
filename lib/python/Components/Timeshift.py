@@ -26,6 +26,7 @@
 
 # note that a timeshift can be enabled ("recording") and
 # activated (currently time-shifting).
+from __future__ import print_function
 
 
 from Components.ActionMap import ActionMap, HelpableActionMap
@@ -365,7 +366,7 @@ class InfoBarTimeshift:
 			return self.playpauseService2()
 
 		if ts.isTimeshiftEnabled():
-			print "hu, timeshift already enabled?"
+			print("hu, timeshift already enabled?")
 		else:
 			self.pts_eventcount = 0
 			self.activatePermanentTimeshift()
@@ -570,7 +571,7 @@ class InfoBarTimeshift:
 			try:
 				os.makedirs(timeshiftdir)
 			except:
-				print "[TimeShift] Failed to create %s !!" %timeshiftdir
+				print("[TimeShift] Failed to create %s !!" %timeshiftdir)
 
 	def restartTimeshift(self):
 		self.activatePermanentTimeshift()
@@ -672,8 +673,8 @@ class InfoBarTimeshift:
 								ptsfilename = "%s - %s - %s - %s" % (strftime("%Y%m%d %H%M",localtime(self.pts_starttime)),self.pts_curevent_station,self.pts_curevent_name.replace("\n", ""),self.pts_curevent_description.replace("\n", ""))
 							elif config.recording.filename_composition.value == "short":
 								ptsfilename = "%s - %s" % (strftime("%Y%m%d",localtime(self.pts_starttime)),self.pts_curevent_name.replace("\n", ""))
-					except Exception, errormsg:
-						print "[TimeShift] Using default filename"
+					except Exception as errormsg:
+						print("[TimeShift] Using default filename")
 
 					if config.recording.ascii_filenames.value:
 						ptsfilename = ASCIItranslit.legacyEncode(ptsfilename)
@@ -704,8 +705,8 @@ class InfoBarTimeshift:
 								ptsfilename = "%s - %s - %s - %s" % (strftime("%Y%m%d %H%M",localtime(int(begintime))),self.pts_curevent_station,eventname,description)
 							elif config.recording.filename_composition.value == "short":
 								ptsfilename = "%s - %s" % (strftime("%Y%m%d",localtime(int(begintime))),eventname)
-					except Exception, errormsg:
-						print "[TimeShift] Using default filename"
+					except Exception as errormsg:
+						print("[TimeShift] Using default filename")
 
 					if config.recording.ascii_filenames.value:
 						ptsfilename = ASCIItranslit.legacyEncode(ptsfilename)
@@ -726,7 +727,7 @@ class InfoBarTimeshift:
 				if not mergelater:
 					self.ptsCreateAPSCFiles(fullname+".ts")
 
-			except Exception, errormsg:
+			except Exception as errormsg:
 				timeshift_saved = False
 				timeshift_saveerror1 = errormsg
 
@@ -790,7 +791,7 @@ class InfoBarTimeshift:
 						timeshift_saveerror1 = ""
 						timeshift_saveerror2 = _("Not enough free Diskspace!\n\nFilesize: %sMB\nFree Space: %sMB\nPath: %s" % (filesize,freespace,config.usage.default_path.value))
 
-				except Exception, errormsg:
+				except Exception as errormsg:
 					timeshift_saved = False
 					timeshift_saveerror2 = errormsg
 
@@ -814,12 +815,12 @@ class InfoBarTimeshift:
 				if statinfo.st_mtime < (time()-3.0):
 				# try:
 					# print "[TimeShift] Erasing stranded timeshift %s" % filename
-					self.BgFileEraser.erase("%s%s" % (config.usage.timeshift_path.value,filename))
+					self.BgFileEraser.erase("%s%s" % (config.usage.timeshift_path.value, filename))
 
 					# Delete Meta and EIT File too
 					# if filename.startswith("pts_livebuffer_") is True:
-					# 	self.BgFileEraser.erase("%s%s.meta" % (config.usage.timeshift_path.value,filename))
-					# 	self.BgFileEraser.erase("%s%s.eit" % (config.usage.timeshift_path.value,filename))
+					# 	self.BgFileEraser.erase("%s%s.meta" % (config.usage.timeshift_path.value, filename))
+					# 	self.BgFileEraser.erase("%s%s.eit" % (config.usage.timeshift_path.value, filename))
 				# except:
 				# 	print "[TimeShift] IO-Error while cleaning Timeshift Folder ..."
 
@@ -836,7 +837,7 @@ class InfoBarTimeshift:
 			service = self.session.nav.getCurrentService()
 			info = service and service.info()
 			event = info and info.getEvent(0)
-		except Exception, errormsg:
+		except Exception as errormsg:
 			Notifications.AddNotification(MessageBox, _("Getting Event Info failed!")+"\n\n%s" % errormsg, MessageBox.TYPE_ERROR, timeout=10)
 
 		if event is not None:
@@ -900,7 +901,7 @@ class InfoBarTimeshift:
 					metafile = open("%spts_livebuffer_%s.meta" % (config.usage.timeshift_path.value,self.pts_eventcount), "w")
 					metafile.write("%s\n%s\n%s\n%i\n" % (self.pts_curevent_servicerefname,self.pts_curevent_name.replace("\n", ""),self.pts_curevent_description.replace("\n", ""),int(self.pts_starttime)))
 					metafile.close()
-				except Exception, errormsg:
+				except Exception as errormsg:
 					Notifications.AddNotification(MessageBox, _("Creating Hardlink to Timeshift file failed!")+"\n"+_("The Filesystem on your Timeshift-Device does not support hardlinks.\nMake sure it is formatted in EXT2, EXT3 or EXT4!")+"\n\n%s" % errormsg, MessageBox.TYPE_ERROR)
 
 				# Create EIT File
@@ -915,8 +916,8 @@ class InfoBarTimeshift:
 						metafile = open("%s.ts.meta" % fullname, "w")
 						metafile.write("%s\n%s\n%s\n%i\nautosaved\n" % (self.pts_curevent_servicerefname,self.pts_curevent_name.replace("\n", ""),self.pts_curevent_description.replace("\n", ""),int(self.pts_starttime)))
 						metafile.close()
-					except Exception, errormsg:
-						print "[Timeshift] %s" % errormsg
+					except Exception as errormsg:
+						print("[Timeshift] %s" % errormsg)
 
 	def ptsRecordCurrentEvent(self):
 		recording = RecordTimerEntry(ServiceReference(self.session.nav.getCurrentlyPlayingServiceOrGroup()), time(), self.pts_curevent_end, self.pts_curevent_name, self.pts_curevent_description, self.pts_curevent_eventid, dirname = config.usage.default_path.value)
@@ -1014,8 +1015,8 @@ class InfoBarTimeshift:
 			try:
 				serviceref = ServiceReference(self.session.nav.getCurrentlyPlayingServiceOrGroup()).ref
 				eEPGCache.getInstance().saveEventToFile(filename+".eit", serviceref, self.pts_curevent_eventid, -1, -1)
-			except Exception, errormsg:
-				print "[Timeshift] %s" % errormsg
+			except Exception as errormsg:
+				print("[Timeshift] %s" % errormsg)
 
 	def ptsCopyFilefinished(self, srcfile, destfile):
 		# Erase Source File
@@ -1124,7 +1125,7 @@ class InfoBarTimeshift:
 			return False
 
 	def ptsSeekPointerOK(self):
-		if self.pvrStateDialog.has_key("PTSSeekPointer") and self.timeshiftEnabled() and self.isSeekable():
+		if "PTSSeekPointer" in self.pvrStateDialog and self.timeshiftEnabled() and self.isSeekable():
 			if not self.pvrStateDialog.shown:
 				if self.seekstate != self.SEEK_STATE_PLAY or self.seekstate == self.SEEK_STATE_PAUSE:
 					self.setSeekState(self.SEEK_STATE_PLAY)
@@ -1148,23 +1149,23 @@ class InfoBarTimeshift:
 			return
 
 	def ptsSeekPointerLeft(self):
-		if self.pvrStateDialog.has_key("PTSSeekPointer") and self.pvrStateDialog.shown and self.timeshiftEnabled() and self.isSeekable():
+		if "PTSSeekPointer" in self.pvrStateDialog and self.pvrStateDialog.shown and self.timeshiftEnabled() and self.isSeekable():
 			self.ptsMoveSeekPointer(direction="left")
 		else:
 			return
 
 	def ptsSeekPointerRight(self):
-		if self.pvrStateDialog.has_key("PTSSeekPointer") and  self.pvrStateDialog.shown and self.timeshiftEnabled() and self.isSeekable():
+		if "PTSSeekPointer" in self.pvrStateDialog and  self.pvrStateDialog.shown and self.timeshiftEnabled() and self.isSeekable():
 			self.ptsMoveSeekPointer(direction="right")
 		else:
 			return
 
 	def ptsSeekPointerReset(self):
-		if self.pvrStateDialog.has_key("PTSSeekPointer") and self.timeshiftEnabled():
+		if "PTSSeekPointer" in self.pvrStateDialog and self.timeshiftEnabled():
 			self.pvrStateDialog["PTSSeekPointer"].setPosition(int(self.pvrStateDialog["PTSSeekBack"].instance.position().x())+8,self.pvrStateDialog["PTSSeekPointer"].position[1])
 
 	def ptsSeekPointerSetCurrentPos(self):
-		if not self.pvrStateDialog.has_key("PTSSeekPointer") or not self.timeshiftEnabled() or not self.isSeekable():
+		if "PTSSeekPointer" not in self.pvrStateDialog or not self.timeshiftEnabled() or not self.isSeekable():
 			return
 
 		position = self.ptsGetPosition()
@@ -1175,7 +1176,7 @@ class InfoBarTimeshift:
 			self.pvrStateDialog["PTSSeekPointer"].setPosition(int(self.pvrStateDialog["PTSSeekBack"].instance.position().x())+8+tpixels, self.pvrStateDialog["PTSSeekPointer"].position[1])
 
 	def ptsMoveSeekPointer(self, direction=None):
-		if direction is None or not self.pvrStateDialog.has_key("PTSSeekPointer"):
+		if direction is None or "PTSSeekPointer" not in self.pvrStateDialog:
 			return
 		isvalidjump = False
 		cur_pos = self.pvrStateDialog["PTSSeekPointer"].position

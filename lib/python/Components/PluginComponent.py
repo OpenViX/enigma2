@@ -1,3 +1,6 @@
+from __future__ import print_function
+from __future__ import absolute_import
+
 import os
 from shutil import rmtree
 from bisect import insort
@@ -46,26 +49,28 @@ class PluginComponent:
 			if not os.path.isdir(directory_category):
 				continue
 			for pluginname in os.listdir(directory_category):
+				if pluginname == "__pycache__":
+					continue
 				path = os.path.join(directory_category, pluginname)
 				if os.path.isdir(path):
 						profile('plugin '+pluginname)
 						try:
 							plugin = my_import('.'.join(["Plugins", c, pluginname, "plugin"]))
 							plugins = plugin.Plugins(path=path)
-						except Exception, exc:
-							print "[PluginComponent] Plugin ", c + "/" + pluginname, "failed to load:", exc
+						except Exception as exc:
+							print("[PluginComponent] Plugin ", c + "/" + pluginname, "failed to load:", exc)
 							# supress errors due to missing plugin.py* files (badly removed plugin)
-							for fn in ('plugin.py', 'plugin.pyo'):
+							for fn in ('plugin.py', 'plugin.pyc', 'plugin.pyo'):
 								if os.path.exists(os.path.join(path, fn)):
 									self.warnings.append( (c + "/" + pluginname, str(exc)) )
 									from traceback import print_exc
 									print_exc()
 									break
 							else:
-								if path.find('WebInterface') == -1:
-									print "[PluginComponent] Plugin probably removed, but not cleanly in", path
-									print "[PluginComponent] trying to remove:", path
-# rmtree will produce an error if path is a symlink, so...
+								if not pluginname == "WebInterface":
+									print("[PluginComponent] Plugin probably removed, but not cleanly in", path)
+									print("[PluginComponent] trying to remove:", path)
+                                                # allow single entry not to be a list
 									if os.path.islink(path):
 										rmtree(os.path.realpath(path))
 										os.unlink(path)
@@ -86,8 +91,8 @@ class PluginComponent:
 						if fileExists(keymap):
 							try:
 								keymapparser.readKeymap(keymap)
-							except Exception, exc:
-								print "[PluginComponent] keymap for plugin %s/%s failed to load: " % (c, pluginname), exc
+							except Exception as exc:
+								print("[PluginComponent] keymap for plugin %s/%s failed to load: " % (c, pluginname), exc)
 								self.warnings.append( (c + "/" + pluginname, str(exc)) )
 
 		# build a diff between the old list of plugins and the new one
