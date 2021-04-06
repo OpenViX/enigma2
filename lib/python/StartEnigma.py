@@ -685,7 +685,7 @@ Components.Network.InitNetwork()
 profile("LCD")
 import Components.Lcd
 Components.Lcd.InitLcd()
-Components.Lcd.IconCheck()
+# ------------------>Components.Lcd.IconCheck()
 
 profile("UserInterface")
 import Screens.UserInterfacePositioner

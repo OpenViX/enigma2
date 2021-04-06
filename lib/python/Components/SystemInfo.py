@@ -46,6 +46,7 @@ SystemInfo["ConfigDisplay"] = SystemInfo["FrontpanelDisplay"] and getDisplayType
 SystemInfo["LCDSKINSetup"] = pathExists("/usr/share/enigma2/display") and not SystemInfo["7segment"]
 SystemInfo["OledDisplay"] = fileExists("/dev/dbox/oled0")
 SystemInfo["LcdDisplay"] = fileExists("/dev/dbox/lcd0")
+SystemInfo["HasNoDisplay"] = getBoxType() in ("et4x00", "et5x00", "et6x00", "gb800se", "gb800solo", "gbx34k", "iqonios300hd", "mbmicro", "sf128", "sf138", "tmsingle", "tmnano2super", "tmnanose", "tmnanoseplus", "tmnanosem2", "tmnanosem2plus", "tmnanosecombo", "vusolo")
 SystemInfo["DisplayLED"] = getBoxType() in ("gb800se", "gb800solo", "gbx1", "gbx2", "gbx3", "gbx3h")
 SystemInfo["LEDButtons"] = False # getBoxType() == "vuultimo", For some reason this causes a cpp crash on vuultimo (which we no longer build). The cause needs investigating or the dead code in surrounding modules that this change causes should be removed.
 SystemInfo["DeepstandbySupport"] = HardwareInfo().has_deepstandby()
