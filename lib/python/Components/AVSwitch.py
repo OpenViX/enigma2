@@ -1,27 +1,20 @@
 from __future__ import print_function
 from __future__ import absolute_import
 
-from Components.config import ConfigBoolean, ConfigEnableDisable, ConfigNothing, ConfigSelection, ConfigSelectionNumber, ConfigSlider, ConfigSubDict, ConfigSubsection, ConfigYesNo, NoSave, configfrom Components.config import ConfigBoolean, ConfigEnableDisable, ConfigNothing, ConfigSelection, ConfigSelectionNumber, ConfigSlider, ConfigSubDict, ConfigSubsection, ConfigYesNo, NoSave, config
+import os
+
+from enigma import eAVSwitch, getDesktop
+from boxbranding import getBoxType, getBrandOEM, getHaveAVJACK, getHaveRCA, getHaveSCART, getHaveSCARTYUV, getHaveYUV
+
 from Components.About import about
+from Components.config import ConfigBoolean, ConfigEnableDisable, ConfigNothing, ConfigSelection, ConfigSelectionNumber, ConfigSlider, ConfigSubDict, ConfigSubsection, ConfigYesNo, NoSave, configfrom Components.config import ConfigBoolean, ConfigEnableDisable, ConfigNothing, ConfigSelection, ConfigSelectionNumber, ConfigSlider, ConfigSubDict, ConfigSubsection, ConfigYesNo, NoSave, config
+from Components.SystemInfo import SystemInfo
 from Tools.CList import CList
 from Tools.HardwareInfo import HardwareInfo
-from enigma import eAVSwitch, getDesktop
-from boxbranding import getMachineBuild, getBoxType, getBrandOEM, getDisplayType, getHaveRCA, getHaveDVI, getHaveYUV, getHaveSCART, getHaveAVJACK, getHaveSCARTYUV, getHaveHDMI, getMachineMtdRoot
-from Components.SystemInfo import SystemInfo
-import os
 
 config.av = ConfigSubsection()
 
 class AVSwitch:
-	print("BoxBranding", "MachineBuild", getMachineBuild())
-	print("BoxBranding", "BoxType", getBoxType())
-	print("BoxBranding", "BrandOEM", getBrandOEM())
-	print("BoxBranding", "DisplayType", getDisplayType())
-	print("AVSwitch", "hasRCA", SystemInfo["hasRCA"])
-	print("AVSwitch", "hasSCART", SystemInfo["hasScart"])
-	print("AVSwitch", "hasJACK", SystemInfo["hasJack"])
-	print("AVSwitch", "hasYUV", SystemInfo["hasYUV"])
-	print("AVSwitch", "HasScartYUV", SystemInfo["hasScartYUV"])
 
 	rates = {}  # high-level, use selectable modes.
 	modes = {}  # a list of (high-level) modes for a certain port.
@@ -84,30 +77,28 @@ class AVSwitch:
 
 	def readAvailableModes(self):
 		try:
-			f = open("/proc/stb/video/videomode_choices")
-			modes = f.read()[:-1]
-			f.close()
-		except IOError:
-			print "[VideoHardware] couldn't read available videomodes."
-			modes = [ ]
+			with open("/proc/stb/video/videomode_choices", "r") as fd:
+				modes = fd.read()[:-1]
+		except (IOError, OSError):
+			print("[VideoHardware] couldn't read available videomodes.")
+			modes = []
 			return modes
-		return modes.split(' ')
+		return modes.split(" ")
 
 	def readPreferredModes(self):
 		try:
-			f = open("/proc/stb/video/videomode_preferred")
-			modes = f.read()[:-1]
-			f.close()
-			self.modes_preferred = modes.split(' ')
+			with open("/proc/stb/video/videomode_preferred", "r") as fd:
+				modes = fd.read()[:-1]
+			self.modes_preferred = modes.split(" ")
 		except (IOError, OSError):
 			print("[VideoHardware] reading preferred modes failed, using all modes")
 			self.modes_preferred = self.readAvailableModes()
-
 		if self.modes_preferred != self.last_modes_preferred:
 			self.last_modes_preferred = self.modes_preferred
-			self.on_hotplug("HDMI") # must be HDMI
+			self.on_hotplug("HDMI")  # Must be HDMI.
 
-	# check if a high-level mode with a given rate is available.
+	# Check if a high-level mode with a given rate is available.
+	#
 	def isModeAvailable(self, port, mode, rate):
 		rate = self.rates[mode][rate]
 		for mode in list(rate.values()):
@@ -127,30 +118,38 @@ class AVSwitch:
 		modes = self.rates[mode][rate]
 		mode_50 = modes.get(50)
 		mode_60 = modes.get(60)
+		mode_24 = modes.get(24)
 		if mode_50 is None or force == 60:
 			mode_50 = mode_60
 		if mode_60 is None or force == 50:
 			mode_60 = mode_50
-
+		if mode_24 is None or force:
+			mode_24 = mode_60
+			if force == 50:
+				mode_24 = mode_50
 		try:
-			f = open("/proc/stb/video/videomode_50hz", "w")
-			f.write(mode_50)
-			f.close()
-		except IOError:
-			print "[AVSwitch] cannot open /proc/stb/video/videomode_50hz"
+			with open("/proc/stb/video/videomode_50hz", "w") as fd:
+				fd.write(mode_50)
+		except (IOError, OSError):
+			print("[AVSwitch] cannot open /proc/stb/video/videomode_50hz")
 		try:
-			f = open("/proc/stb/video/videomode_60hz", "w")
-			f.write(mode_60)
-			f.close()
+			with open("/proc/stb/video/videomode_60hz", "w") as fd:
+				fd.write(mode_60)
 		except (IOError, OSError):
 			print("[AVSwitch] cannot open /proc/stb/video/videomode_60hz")
 
-		if getBrandOEM() in ('gigablue'):
+		if SystemInfo["Has24hz"]:
+			try:
+				with open("/proc/stb/video/videomode_24hz", "w") as fd:
+					fd.write(mode_24)
+			except (IOError, OSError):
+				print("[AVSwitch] cannot open /proc/stb/video/videomode_24hz")
+
+		if getBrandOEM() in ("gigablue",):
 			try:
 				# use 50Hz mode (if available) for booting
-				f = open("/etc/videomode", "w")
-				f.write(mode_50)
-				f.close()
+				with open("/etc/videomode", "w") as fd:
+					fd.write(mode_50)
 			except IOError:
 				print("[AVSwitch] GigaBlue writing initial videomode to /etc/videomode failed.")
 		try:
@@ -158,9 +157,8 @@ class AVSwitch:
 		except Exception:  # Don't support 50Hz, 60Hz for 1080p.
 			set_mode = mode_50
 		print("[AVSwitch] set mode is %s" % set_mode)
-		f = open("/proc/stb/video/videomode", "w")
-		f.write(set_mode)
-		f.close()
+		with open("/proc/stb/video/videomode", "w") as fd:
+			fd.write(set_mode)
 		map = {"cvbs": 0, "rgb": 1, "svideo": 2, "yuv": 3}
 		self.setColorFormat(map[config.av.colorformat.value])
 
@@ -253,9 +251,8 @@ class AVSwitch:
 
 	def setAspect(self, cfgelement):
 		print("[VideoHardware] setting aspect: %s" % cfgelement.value)
-		f = open("/proc/stb/video/aspect", "w")
-		f.write(cfgelement.value)
-		f.close()
+		with open("/proc/stb/video/aspect", "w") as fd:
+			fd.write(cfgelement.value)
 
 	def setWss(self, cfgelement):
 		if not cfgelement.value:
@@ -263,25 +260,22 @@ class AVSwitch:
 		else:
 			wss = "auto"
 		print("[VideoHardware] setting wss: %s" % wss)
-		f = open("/proc/stb/denc/0/wss", "w")
-		f.write(wss)
-		f.close()
+		with open("/proc/stb/denc/0/wss", "w") as fd:
+			fd.write(wss)
 
 	def setPolicy43(self, cfgelement):
 		print("[VideoHardware] setting policy: %s" % cfgelement.value)
-		f = open("/proc/stb/video/policy", "w")
-		f.write(cfgelement.value)
-		f.close()
+		with open("/proc/stb/video/policy", "w") as fd:
+			fd.write(cfgelement.value)
 
 	def setPolicy169(self, cfgelement):
 		if os.path.exists("/proc/stb/video/policy2"):
 			print("[VideoHardware] setting policy2: %s" % cfgelement.value)
-			f = open("/proc/stb/video/policy2", "w")
-			f.write(cfgelement.value)
-			f.close()
+			with open("/proc/stb/video/policy2", "w") as fd:
+				fd.write(cfgelement.value)
 
 	def getOutputAspect(self):
-		ret = (16,9)
+		ret = (16, 9)
 		port = config.av.videoport.value
 		if port not in config.av.videomode:
 			print("[VideoHardware] current port not available in getOutputAspect!!! force 16:9")
@@ -296,16 +290,15 @@ class AVSwitch:
 				else:
 					aspect = {"16:9": "16:9", "16:10": "16:10"}[config.av.aspect.value]
 					if aspect == "16:10":
-						ret = (16,10)
+						ret = (16, 10)
 			elif is_auto:
 				try:
-					aspect_str = open("/proc/stb/vmpeg/0/aspect", "r").read()
-					if aspect_str == "1": # 4:3
-						ret = (4,3)
+					if "1" in open("/proc/stb/vmpeg/0/aspect", "r").read():  # 4:3
+						return (4, 3)
 				except (IOError, OSError):
 					pass
 			else:  # 4:3
-				ret = (4,3)
+				ret = (4, 3)
 		return ret
 
 	def getFramebufferScale(self):
@@ -453,47 +446,40 @@ def InitAVSwitch():
 
 	def setHDMIColorspace(configElement):
 		try:
-			f = open(SystemInfo["havecolorspace"], "w")
-			f.write(configElement.value)
-			f.close()
+			with open(SystemInfo["havecolorspace"], "w") as fd:
+				fd.write(configElement.value)
 		except (IOError, OSError):
 			pass
 
 	def setHDMIColorimetry(configElement):
 		try:
-			f = open(SystemInfo["havecolorimetry"], "w")
-			f.write(configElement.value)
-			f.close()
+			with open(SystemInfo["havecolorimetry"], "w") as fd:
+				fd.write(configElement.value)
 		except (IOError, OSError):
 			pass
 
 	def setHdmiColordepth(configElement):
 		try:
-			f = open(SystemInfo["havehdmicolordepth"], "w")
-			f.write(configElement.value)
-			f.close()
+			with open(SystemInfo["havehdmicolordepth"], "w") as fd:
+				fd.write(configElement.value)
 		except (IOError, OSError):
 			pass
 
 	def set3DSurround(configElement):
-		f = open("/proc/stb/audio/3d_surround", "w")
-		f.write(configElement.value)
-		f.close()
+		with open("/proc/stb/audio/3d_surround", "w") as fd:
+			fd.write(configElement.value)
 
 	def set3DPosition(configElement):
-		f = open("/proc/stb/audio/3d_surround_speaker_position", "w")
-		f.write(configElement.value)
-		f.close()
+		with open("/proc/stb/audio/3d_surround_speaker_position", "w") as fd:
+			fd.write(configElement.value)
 
 	def setAutoVolume(configElement):
-		f = open("/proc/stb/audio/avl", "w")
-		f.write(configElement.value)
-		f.close()
+		with open("/proc/stb/audio/avl", "w") as fd:
+			fd.write(configElement.value)
 
 	def setAC3Downmix(configElement):
-		f = open("/proc/stb/audio/ac3", "w")
-		f.write(configElement.value)
-		f.close()
+		with open("/proc/stb/audio/ac3", "w") as fd:
+			fd.write(configElement.value)
 		if SystemInfo.get("supportPcmMultichannel", False) and not configElement.value:
 			SystemInfo["CanPcmMultichannel"] = True
 		else:
@@ -502,59 +488,48 @@ def InitAVSwitch():
 				config.av.pcm_multichannel.setValue(False)
 
 	def setAC3plusTranscode(configElement):
-		f = open("/proc/stb/audio/ac3plus", "w")
-		f.write(configElement.value)
-		f.close()
+		with open("/proc/stb/audio/ac3plus", "w") as fd:
+			fd.write(configElement.value)
 
 	def setDTSDownmix(configElement):
-		f = open("/proc/stb/audio/dts", "w")
-		f.write(configElement.value)
-		f.close()
+		with open("/proc/stb/audio/dts", "w") as fd:
+			fd.write(configElement.value)
 
 	def setDTSHD(configElement):
-		f = open("/proc/stb/audio/dtshd", "w")
-		f.write(configElement.value)
-		f.close()
+		with open("/proc/stb/audio/dtshd", "w") as fd:
+			fd.write(configElement.value)
 
 	def setAACDownmix(configElement):
-		f = open("/proc/stb/audio/aac", "w")
-		f.write(configElement.value)
-		f.close()
+		with open("/proc/stb/audio/aac", "w") as fd:
+			fd.write(configElement.value)
 
 	def setAACDownmixPlus(configElement):
-		f = open("/proc/stb/audio/aacplus", "w")
-		f.write(configElement.value)
-		f.close()
-
+		with open("/proc/stb/audio/aacplus", "w") as fd:
+			fd.write(configElement.value)
 
 	def setAACTranscode(configElement):
-		f = open("/proc/stb/audio/aac_transcode", "w")
-		f.write(configElement.value)
-		f.close()
+		with open("/proc/stb/audio/aac_transcode", "w") as fd:
+			fd.write(configElement.value)
 
 	def setWMAPRO(configElement):
-		f = open("/proc/stb/audio/wmapro", "w")
-		f.write(configElement.value)
-		f.close()
+		with open("/proc/stb/audio/wmapro", "w") as fd:
+			fd.write(configElement.value)
 
 	def setBoxmode(configElement):
 		try:
-			f = open("/proc/stb/info/boxmode", "w")
-			f.write(configElement.value)
-			f.close()
-		except:
+			with open("/proc/stb/info/boxmode", "w") as fd:
+				fd.write(configElement.value)
+		except (IOError, OSError):
 			pass
 
 	def setScaler_sharpness(config):
 		myval = int(config.value)
 		try:
 			print("[VideoHardware] setting scaler_sharpness to: %0.8X" % myval)
-			f = open("/proc/stb/vmpeg/0/pep_scaler_sharpness", "w")
-			f.write("%0.8X" % myval)
-			f.close()
-			f = open("/proc/stb/vmpeg/0/pep_apply", "w")
-			f.write("1")
-			f.close()
+			with open("/proc/stb/vmpeg/0/pep_scaler_sharpness", "w") as fd:
+				fd.write("%0.8X" % myval)
+			with open("/proc/stb/vmpeg/0/pep_apply", "w") as fd:
+				fd.write("1")
 		except (IOError, OSError):
 			print("[VideoHardware] couldn't write pep_scaler_sharpness")
 
@@ -585,11 +560,9 @@ def InitAVSwitch():
 		}
 		iAVSwitch.setAspectRatio(map[configElement.value])
 
-
 	def read_choices(procx, defchoice):
-		with open(procx, 'r') as myfile:
+		with open(procx, "r") as myfile:
 			choices = myfile.read().strip()
-		myfile.close()
 		if choices:
 			choiceslist = choices.split(" ")
 			choicesx = [(item, _("%s") % item) for item in choiceslist]
@@ -606,10 +579,9 @@ def InitAVSwitch():
 	if SystemInfo["Canedidchecking"]:
 		def setEDIDBypass(configElement):
 			try:
-				f = open("/proc/stb/hdmi/bypass_edid_checking", "w")
-				f.write(configElement.value)
-				f.close()
-			except:
+				with open("/proc/stb/hdmi/bypass_edid_checking", "w") as fd:
+					fd.write(configElement.value)
+			except (IOError, OSError):
 				pass
 		config.av.bypass_edid_checking = ConfigSelection(choices={
 			"00000000": _("off"),
@@ -678,10 +650,9 @@ def InitAVSwitch():
 	if SystemInfo["havehdmihdrtype"]:
 		def setHdmiHdrType(configElement):
 			try:
-				f = open("/proc/stb/video/hdmi_hdrtype", "w")
-				f.write(configElement.value)
-				f.close()
-			except:
+				with open("/proc/stb/video/hdmi_hdrtype", "w") as fd:
+					fd.write(configElement.value)
+			except (IOError, OSError):
 				pass
 		config.av.hdmihdrtype = ConfigSelection(choices={
 			"auto": _("Auto"),
@@ -736,10 +707,9 @@ def InitAVSwitch():
 	if SystemInfo["Canaudiosource"]:
 		def setAudioSource(configElement):
 			try:
-				f = open("/proc/stb/hdmi/audio_source", "w")
-				f.write(configElement.value)
-				f.close()
-			except:
+				with open("/proc/stb/hdmi/audio_source", "w") as fd:
+					fd.write(configElement.value)
+			except (IOError, OSError):
 				pass
 
 		config.av.audio_source = ConfigSelection(choices={
