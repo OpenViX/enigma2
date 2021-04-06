@@ -1,3 +1,7 @@
+from __future__ import absolute_import
+from __future__ import division
+from time import localtime, time, strftime
+
 from enigma import eEPGCache, eListbox, eListboxPythonMultiContent, eServiceReference, eSize, loadPNG, getDesktop
 
 from Components.GUIComponent import GUIComponent
@@ -37,10 +41,10 @@ class EPGListBase(GUIComponent):
 		self.autotimericon = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock_autotimer.png"))
 
 		self.isFullHd = getDesktop(0).size().width() == 1920
-		self.listHeight = None
-		self.listWidth = None
-		self.skinItemHeight = None
-		self.numberOfRows = None
+		self.listHeight = 0
+		self.listWidth = 0
+		self.skinItemHeight = 0
+		self.numberOfRows = 0
 
 	def applySkin(self, desktop, screen):
 		if self.skinAttributes is not None:
@@ -64,7 +68,7 @@ class EPGListBase(GUIComponent):
 		numberOfRows = self.epgConfig.itemsperpage.value or self.numberOfRows
 		itemHeight = (self.skinListHeight // numberOfRows if numberOfRows > 0 else self.skinItemHeight) or defaultItemHeight
 		self.l.setItemHeight(itemHeight)
-		self.instance.resize(eSize(self.listWidth, self.skinListHeight / itemHeight * itemHeight))
+		self.instance.resize(eSize(self.listWidth, self.skinListHeight // itemHeight * itemHeight))
 		self.listHeight = self.instance.size().height()
 		self.listWidth = self.instance.size().width()
 		self.itemHeight = itemHeight
@@ -86,7 +90,7 @@ class EPGListBase(GUIComponent):
 
 	def getIndexFromService(self, serviceref):
 		if serviceref is not None:
-			for x in range(len(self.list)):
+			for x in list(range(len(self.list))):
 				if CompareWithAlternatives(self.list[x][0], serviceref):
 					return x
 				if CompareWithAlternatives(self.list[x][1], serviceref):

@@ -1,7 +1,7 @@
 from __future__ import print_function
 from enigma import eRect
 
-from .config import config
+from Components.config import config
 from Components.EpgListSingle import EPGListSingle
 import Screens.InfoBar
 

@@ -1,3 +1,6 @@
+from __future__ import absolute_import
+from __future__ import division
+
 from time import localtime, time, strftime
 
 from enigma import eEPGCache, eListbox, eListboxPythonMultiContent, loadPNG, gFont, getDesktop, eRect, eSize, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_HALIGN_CENTER, RT_VALIGN_CENTER, RT_VALIGN_TOP, RT_WRAP, BT_SCALE, BT_KEEP_ASPECT_RATIO, BT_ALIGN_CENTER
@@ -57,7 +60,7 @@ class EPGListMulti(EPGListBase):
 		self.serviceRect = eRect(left, 0, servWidth, height)
 		left += servWidth + sepWidth
 		self.startEndRect = eRect(left, 0, timeWidth, height)
-		progTop = int((height - progHeight) / 2)
+		progTop = int((height - progHeight) // 2)
 		self.progressRect = eRect(left, progTop, timeWidth, progHeight)
 		left += timeWidth + breakWidth
 		self.durationRect = eRect(left, 0, durWidth, height)
@@ -83,11 +86,11 @@ class EPGListMulti(EPGListBase):
 					(eListboxPythonMultiContent.TYPE_TEXT, r2.left(), r2.top(), split, r2.height(), 0, RT_HALIGN_RIGHT | RT_VALIGN_CENTER, strftime(config.usage.time.short.value + " - ", begin)),
 					(eListboxPythonMultiContent.TYPE_TEXT, r2.left() + split, r2.top(), r2.width() - split, r2.height(), 0, RT_HALIGN_RIGHT | RT_VALIGN_CENTER, strftime(config.usage.time.short.value, end))
 				))
-				remaining = duration / SECS_IN_MIN
+				remaining = duration // SECS_IN_MIN
 				prefix = ""
 			else:
-				percent = (nowTime - beginTime) * 100 / duration
-				remaining = ((beginTime + duration) - int(time())) / SECS_IN_MIN
+				percent = (nowTime - beginTime) * 100 // duration
+				remaining = ((beginTime + duration) - int(time())) // SECS_IN_MIN
 				prefix = "" if remaining <= 0 else "+"
 				res.append((eListboxPythonMultiContent.TYPE_PROGRESS, r3.left(), r3.top(), r3.width(), r3.height(), percent))
 			res.append((eListboxPythonMultiContent.TYPE_TEXT, r4.left(), r4.top(), r4.width(), r4.height(), 0, RT_HALIGN_RIGHT | RT_VALIGN_CENTER, _("%s%d Min") % (prefix, remaining)))
@@ -95,12 +98,12 @@ class EPGListMulti(EPGListBase):
 			timer, matchType = self.session.nav.RecordTimer.isInTimer(service, beginTime, duration)
 			if timer:
 				clockSize = 25 if self.isFullHd else 21
-				width -= clockSize / 2 if matchType == 0 else clockSize
+				width -= clockSize // 2 if matchType == 0 else clockSize
 				timerIcon, autoTimerIcon = self.getPixmapsForTimer(timer, matchType)
-				res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, r5.left() + width, (r5.height() - clockSize) / 2, clockSize, clockSize, timerIcon))
+				res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, r5.left() + width, (r5.height() - clockSize) // 2, clockSize, clockSize, timerIcon))
 				if autoTimerIcon:
 					width -= clockSize + 1
-					res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, r5.left() + width, (r5.height() - clockSize) / 2, clockSize, clockSize, autoTimerIcon))
+					res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, r5.left() + width, (r5.height() - clockSize) // 2, clockSize, clockSize, autoTimerIcon))
 				width -= 5
 			res.append((eListboxPythonMultiContent.TYPE_TEXT, r5.left(), r5.top(), width, r5.height(), 0, RT_HALIGN_LEFT | RT_VALIGN_CENTER, EventName))
 		return res

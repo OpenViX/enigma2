@@ -1,3 +1,7 @@
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+
 from time import localtime, time, strftime
 
 from enigma import eListbox, eListboxPythonMultiContent, eServiceReference, loadPNG, gFont, eRect, eSize, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_HALIGN_CENTER, RT_VALIGN_CENTER, RT_VALIGN_TOP, RT_WRAP, BT_SCALE, BT_KEEP_ASPECT_RATIO, BT_ALIGN_CENTER
@@ -95,7 +99,7 @@ class EPGListGrid(EPGListBase):
 		self.loadConfig()
 
 	def loadConfig(self):
- 		self.graphic = self.epgConfig.type_mode.value == "graphics"
+		self.graphic = self.epgConfig.type_mode.value == "graphics"
 		self.graphicsloaded = False
 		self.epgHistorySecs = int(config.epg.histminutes.value) * SECS_IN_MIN
 		self.roundBySecs = int(self.epgConfig.roundto.value) * SECS_IN_MIN
@@ -205,7 +209,7 @@ class EPGListGrid(EPGListBase):
 
 	def getIndexFromService(self, serviceref):
 		if serviceref is not None:
-			for x in range(len(self.list)):
+			for x in list(range(len(self.list))):
 				if CompareWithAlternatives(self.list[x][0], serviceref):
 					return x
 				if CompareWithAlternatives(self.list[x][1], serviceref):
@@ -337,8 +341,8 @@ class EPGListGrid(EPGListBase):
 		self.eventRect = eRect(w, 0, width - w, height)
 
 	def calcEventPosAndWidthHelper(self, stime, duration, start, end, width):
-		xpos = (stime - start) * width / (end - start)
-		ewidth = (stime + duration - start) * width / (end - start)
+		xpos = (stime - start) * width // (end - start)
+		ewidth = (stime + duration - start) * width // (end - start)
 		ewidth -= xpos
 		if xpos < 0:
 			ewidth += xpos
@@ -645,7 +649,7 @@ class EPGListGrid(EPGListBase):
 					if config.epgselection.grid.rec_icon_height.value != "hide":
 						clockSize = 26 if self.isFullHd else 21
 						if config.epgselection.grid.rec_icon_height.value == "middle":
-							recIconHeight = top + (height - clockSize) / 2
+							recIconHeight = top + (height - clockSize) // 2
 						elif config.epgselection.grid.rec_icon_height.value == "top":
 							recIconHeight = top + 3
 						else:
@@ -888,6 +892,7 @@ class TimelineText(GUIComponent):
 		self.listHeight = self.instance.size().height()
 		self.listWidth = self.instance.size().width()
 		self.setFontsize()
+#		print("[EpgListGrid1] itemHeight %s" % (self.itemHeight))
 		self.l.setItemHeight(self.itemHeight)
 		if self.graphic:
 			self.timelineDate = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "epg/TimeLineDate.png"))
@@ -918,13 +923,13 @@ class TimelineText(GUIComponent):
 		if self.timeBase != timeBase or self.timeEpoch != timeEpoch or force:
 			serviceRect = list.getServiceRect()
 			timeSteps = 60 if timeEpoch > 180 else 30
-			numLines = timeEpoch / timeSteps
+			numLines = timeEpoch // timeSteps
 # Whereas we need the integer division to get numLines, we
 # need real division to find out what the incremental space is
 # between successive timelines
-# NOTE: that Py3 can/will be different!
+# NOTE: that Py3 can/will be different! ... kept float for compat with py2 and int
 #
-			fnum = float(timeEpoch)/float(timeSteps)
+			fnum = timeEpoch/timeSteps
 			incWidth = int(eventRect.width() / fnum)
 			timeStepsCalc = timeSteps * SECS_IN_MIN
 
@@ -1021,7 +1026,7 @@ class TimelineText(GUIComponent):
 
 		now = time()
 		if timeBase <= now < (timeBase + timeEpoch * SECS_IN_MIN):
-			xpos = int((((now - timeBase) * eventRect.width()) / (timeEpoch * SECS_IN_MIN)) - (timelineNow.instance.size().width() / 2))
+			xpos = int((((now - timeBase) * eventRect.width()) // (timeEpoch * SECS_IN_MIN)) - (timelineNow.instance.size().width() // 2))
 			oldPos = timelineNow.position
 			newPos = (xpos + eventLeft, oldPos[1])
 			if oldPos != newPos:
