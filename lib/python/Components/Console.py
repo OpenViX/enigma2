@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import enigma, os
 
 class ConsoleItem:
@@ -34,7 +36,7 @@ class ConsoleItem:
 	def dataAvailCB(self, data):
 		self.appResults.append(data)
 	def finishedCB(self, retval):
-		print "[Console] finished:", self.name
+		print("[Console] finished:", self.name)
 		del self.containers[self.name]
 		del self.container.dataAvail[:]
 		del self.container.appClosed[:]
@@ -46,12 +48,13 @@ class ConsoleItem:
 
 class Console(object):
 	def __init__(self):
-		# Still called appContainers because Network.py accesses it to
+		# Still called appContainers and appResults because Network.py accesses it to
 		# know if there's still stuff running
 		self.appContainers = {}
+		self.appResults = {}
 
 	def ePopen(self, cmd, callback=None, extra_args=[]):
-		print "[Console] command:", cmd
+		print("[Console] command:", cmd)
 		return ConsoleItem(self.appContainers, cmd, callback, extra_args)
 
 	def eBatch(self, cmds, callback, extra_args=None, debug=False):
@@ -63,7 +66,7 @@ class Console(object):
 	def eBatchCB(self, data, retval, _extra_args):
 		(cmds, callback, extra_args) = _extra_args
 		if self.debug:
-			print '[eBatch] retval=%s, cmds left=%d, data:\n%s' % (retval, len(cmds), data)
+			print('[eBatch] retval=%s, cmds left=%d, data:\n%s' % (retval, len(cmds), data))
 		if cmds:
 			cmd = cmds.pop(0)
 			self.ePopen(cmd, self.eBatchCB, [cmds, callback, extra_args])
@@ -72,10 +75,10 @@ class Console(object):
 
 	def kill(self, name):
 		if name in self.appContainers:
-			print "[Console] killing: ", name
+			print("[Console] killing: ", name)
 			self.appContainers[name].container.kill()
 
 	def killAll(self):
-		for name, item in self.appContainers.items():
-			print "[Console] killing: ", name
+		for name, item in list(self.appContainers.items()):
+			print("[Console] killing: ", name)
 			item.container.kill()
