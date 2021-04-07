@@ -13910,12 +13910,6 @@ msgid "The user interface of your %s %s is restarting"
 msgstr "Vinsamlega bíðið á meðan netkerfið er endurræst..."
 
 #
-#, fuzzy, python-format
-msgid ""
-"The user interface of your %s %s is restarting\n"
-"due to an error in mytest.py"
-msgstr "Vinsamlega bíðið á meðan netkerfið er endurræst..."
-
 msgid "The width of the picture. The input will be scaled to match this value."
 msgstr ""
 

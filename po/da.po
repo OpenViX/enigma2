@@ -14274,14 +14274,6 @@ msgstr ""
 msgid "The user interface of your %s %s is restarting"
 msgstr "Brugerinterfacet på din modtager genstarter"
 
-#, fuzzy, python-format
-msgid ""
-"The user interface of your %s %s is restarting\n"
-"due to an error in mytest.py"
-msgstr ""
-"Brugerinterfacet på din modtager genstarter\n"
-"på grund af en fejl i mytest.py"
-
 msgid "The width of the picture. The input will be scaled to match this value."
 msgstr ""
 

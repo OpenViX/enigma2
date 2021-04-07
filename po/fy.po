@@ -14120,12 +14120,6 @@ msgid "The user interface of your %s %s is restarting"
 msgstr "Wachtsje oant it netwurk opnei start is..."
 
 #
-#, fuzzy, python-format
-msgid ""
-"The user interface of your %s %s is restarting\n"
-"due to an error in mytest.py"
-msgstr "Wachtsje oant it netwurk opnei start is..."
-
 msgid "The width of the picture. The input will be scaled to match this value."
 msgstr ""
 

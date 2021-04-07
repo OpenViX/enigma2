@@ -13284,14 +13284,6 @@ msgstr "Reiniciarase a interface de usuario do receptor para seleccionar a skin 
 msgid "The user interface of your %s %s is restarting"
 msgstr "Está a reiniciarse a interface de usuario do receptor"
 
-#, fuzzy, python-format
-msgid ""
-"The user interface of your %s %s is restarting\n"
-"due to an error in mytest.py"
-msgstr ""
-"Está a reiniciarse a interface de usuario do receptor\n"
-"debido a un erro en mytest.py"
-
 msgid "The width of the picture. The input will be scaled to match this value."
 msgstr ""
 

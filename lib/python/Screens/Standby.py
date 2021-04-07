@@ -267,7 +267,6 @@ class QuitMainloopScreen(Screen):
 			QUIT_REBOOT: _("Your %s %s is rebooting") % (MACHINEBRAND, MACHINENAME),
 			QUIT_RESTART: _("The user interface of your %s %s is restarting") % (MACHINEBRAND, MACHINENAME),
 			QUIT_UPGRADE_FP: _("Your frontprocessor will be updated\nPlease wait until your %s %s reboots\nThis may take a few minutes") % (MACHINEBRAND, MACHINENAME),
-			QUIT_ERROR_RESTART: _("The user interface of your %s %s is restarting\ndue to an error in mytest.py") % (MACHINEBRAND, MACHINENAME),
 			QUIT_UPGRADE_PROGRAM: _("Unattended update in progress\nPlease wait until your %s %s reboots\nThis may take a few minutes") % (MACHINEBRAND, MACHINENAME),
 			GB_ENTER_WOL: _("Your %s %s goes to WOL") % (MACHINEBRAND, MACHINENAME)
 		}.get(retvalue)

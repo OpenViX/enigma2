@@ -12574,12 +12574,6 @@ msgstr ""
 msgid "The user interface of your %s %s is restarting"
 msgstr "Prašome laukti kol paleidžiamas iš naujo jūsų tinklas..."
 
-#, fuzzy, python-format
-msgid ""
-"The user interface of your %s %s is restarting\n"
-"due to an error in mytest.py"
-msgstr "Prašome laukti kol paleidžiamas iš naujo jūsų tinklas..."
-
 msgid "The width of the picture. The input will be scaled to match this value."
 msgstr ""
 

@@ -12456,14 +12456,6 @@ msgstr ""
 msgid "The user interface of your %s %s is restarting"
 msgstr "Рестарт GUI ресивера"
 
-#, fuzzy, python-format
-msgid ""
-"The user interface of your %s %s is restarting\n"
-"due to an error in mytest.py"
-msgstr ""
-"Рестарт GUI ресивера\n"
-"из-за ошибки в mytest.py"
-
 msgid "The width of the picture. The input will be scaled to match this value."
 msgstr ""
 

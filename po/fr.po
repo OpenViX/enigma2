@@ -12214,14 +12214,6 @@ msgstr ""
 msgid "The user interface of your %s %s is restarting"
 msgstr "L’interface de votre %s %s redémarre."
 
-#, python-format
-msgid ""
-"The user interface of your %s %s is restarting\n"
-"due to an error in mytest.py"
-msgstr ""
-"L’interface de votre %s %s redémarre\n"
-"du à une erreur dans mytest.py"
-
 msgid "The width of the picture. The input will be scaled to match this value."
 msgstr ""
 

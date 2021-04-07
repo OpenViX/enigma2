@@ -11884,14 +11884,6 @@ msgstr "Alıcının kullanıcı arayüzü, seçilen arayüzü seçmek için yeni
 msgid "The user interface of your %s %s is restarting"
 msgstr "%s %s kullanıcı arayüzü yeniden başlatılıyor"
 
-#, python-format
-msgid ""
-"The user interface of your %s %s is restarting\n"
-"due to an error in mytest.py"
-msgstr ""
-"Mytest.py deki bir hata nedeniyle\n"
-"%s %s kullanıcı arayüzü yeniden başlatılıyor"
-
 msgid "The width of the picture. The input will be scaled to match this value."
 msgstr "Resmin genişliği. Girdi, bu değere uyacak şekilde ölçeklendirilecektir."
 

@@ -14006,14 +14006,6 @@ msgstr ""
 msgid "The user interface of your %s %s is restarting"
 msgstr "Vastaanottimesi käyttöliittymä käynnistyy uudelleen"
 
-#, fuzzy, python-format
-msgid ""
-"The user interface of your %s %s is restarting\n"
-"due to an error in mytest.py"
-msgstr ""
-"Vastaanottimesi käyttöliittymä käynnistyy uudelleen\n"
-"johtuen virheestä mytest.py tiedostossa"
-
 msgid "The width of the picture. The input will be scaled to match this value."
 msgstr ""
 

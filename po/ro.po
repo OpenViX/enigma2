@@ -12453,12 +12453,6 @@ msgstr ""
 msgid "The user interface of your %s %s is restarting"
 msgstr "Va rugam asteptati pana cand reteaua se va restarta..."
 
-#, fuzzy, python-format
-msgid ""
-"The user interface of your %s %s is restarting\n"
-"due to an error in mytest.py"
-msgstr "Va rugam asteptati pana cand reteaua se va restarta..."
-
 msgid "The width of the picture. The input will be scaled to match this value."
 msgstr ""
 

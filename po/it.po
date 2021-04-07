@@ -13979,14 +13979,6 @@ msgstr ""
 msgid "The user interface of your %s %s is restarting"
 msgstr "Riavvio interfaccia utente del ricevitore in corso"
 
-#, fuzzy, python-format
-msgid ""
-"The user interface of your %s %s is restarting\n"
-"due to an error in mytest.py"
-msgstr ""
-"L'interfaccia utente del ricevitore si sta riavviando\n"
-"a causa di un errore in mytest.py"
-
 msgid "The width of the picture. The input will be scaled to match this value."
 msgstr ""
 

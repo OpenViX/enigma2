@@ -12437,14 +12437,6 @@ msgstr ""
 msgid "The user interface of your %s %s is restarting"
 msgstr "A kezelőfelület újraindítása folyamatban van"
 
-#, fuzzy, python-format
-msgid ""
-"The user interface of your %s %s is restarting\n"
-"due to an error in mytest.py"
-msgstr ""
-"A kezelőfelület újraindítása folyamatban van\n"
-"egy, a mytest.py fájlban lévő hiba miatt"
-
 msgid "The width of the picture. The input will be scaled to match this value."
 msgstr ""
 

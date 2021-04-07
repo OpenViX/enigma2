@@ -14167,14 +14167,6 @@ msgstr ""
 msgid "The user interface of your %s %s is restarting"
 msgstr "Uživatelské rozhraní se restartuje"
 
-#, fuzzy, python-format
-msgid ""
-"The user interface of your %s %s is restarting\n"
-"due to an error in mytest.py"
-msgstr ""
-"Uživatelské rozhraní bylo restartováno\n"
-"kvůli chybě v mytest.py"
-
 msgid "The width of the picture. The input will be scaled to match this value."
 msgstr ""
 

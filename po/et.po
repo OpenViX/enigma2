@@ -12404,14 +12404,6 @@ msgstr ""
 msgid "The user interface of your %s %s is restarting"
 msgstr "Vastuvõtja kasutajaliides taaskäivitub."
 
-#, fuzzy, python-format
-msgid ""
-"The user interface of your %s %s is restarting\n"
-"due to an error in mytest.py"
-msgstr ""
-"Vastuvõtja kasutajaliides taaskäivitub\n"
-"vea tõttu 'mytest.py' failis"
-
 msgid "The width of the picture. The input will be scaled to match this value."
 msgstr ""
 

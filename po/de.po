@@ -11387,14 +11387,6 @@ msgstr "Die Benutzeroberfläche des Empfängers wird jetzt neu gestartet, um die
 msgid "The user interface of your %s %s is restarting"
 msgstr "Die Benutzeroberfläche Ihrer %s %s wird neu gestartet"
 
-#, python-format
-msgid ""
-"The user interface of your %s %s is restarting\n"
-"due to an error in mytest.py"
-msgstr ""
-"Die Benutzeroberfläche des Ihrer %s %s wird aufgrund eines Fehlers\n"
-"in mytest.py neu gestartet"
-
 msgid "The width of the picture. The input will be scaled to match this value."
 msgstr "Die Breite des Bildes. Die Eingabe wird skaliert, um mit diesem Wert übereinzustimmen."
 

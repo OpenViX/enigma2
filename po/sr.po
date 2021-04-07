@@ -14336,12 +14336,6 @@ msgid "The user interface of your %s %s is restarting"
 msgstr "Molim sačekajte dok se vaša mreža ponovo startuje"
 
 #
-#, fuzzy, python-format
-msgid ""
-"The user interface of your %s %s is restarting\n"
-"due to an error in mytest.py"
-msgstr "Molim sačekajte dok se vaša mreža ponovo startuje"
-
 msgid "The width of the picture. The input will be scaled to match this value."
 msgstr ""
 

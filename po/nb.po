@@ -13574,14 +13574,6 @@ msgstr ""
 msgid "The user interface of your %s %s is restarting"
 msgstr "Enigma2 starter på nytt"
 
-#, fuzzy, python-format
-msgid ""
-"The user interface of your %s %s is restarting\n"
-"due to an error in mytest.py"
-msgstr ""
-"Mottakerens brukergrensesnitt må startes på nytt\n"
-"på grunn av en feil i mytest.py"
-
 msgid "The width of the picture. The input will be scaled to match this value."
 msgstr ""
 
