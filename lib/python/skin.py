@@ -125,7 +125,7 @@ def InitSkins(booting=True):
 			if method:
 				method()
 
-# Temporary entry point for older versions of mytest.py.
+# Temporary entry point for older versions of StartEnigma.py.
 #
 def loadSkinData(desktop):
 	InitSkins()
