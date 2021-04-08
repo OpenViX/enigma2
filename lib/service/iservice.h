@@ -1,5 +1,6 @@
 #ifndef __lib_dvb_iservice_h
 #define __lib_dvb_iservice_h
+#define HAVE_ITAPSERVICE
 
 #include <lib/python/swig.h>
 #include <lib/python/python.h>
