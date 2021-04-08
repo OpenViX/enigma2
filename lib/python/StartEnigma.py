@@ -132,8 +132,7 @@ try:
 	def runReactor():
 		reactor.run(installSignalHandlers=False)
 except ImportError:
-	print "[mytest] twisted not available"
-
+	print "[StartEnigma] Twisted not available"
 	def runReactor():
 		enigma.runMainloop()
 
@@ -234,7 +233,7 @@ class Session:
 			try:
 				p(reason=0, session=self)
 			except:
-				print "[mytest] Plugin raised exception at WHERE_SESSIONSTART"
+				print "[StartEnigma] Plugin raised exception at WHERE_SESSIONSTART"
 				import traceback
 				traceback.print_exc()
 
@@ -349,7 +348,7 @@ class Session:
 
 	def close(self, screen, *retval):
 		if not self.in_exec:
-			print "[mytest] close after exec!"
+			print "[StartEnigma] Close after exec!"
 			return
 
 		# be sure that the close is for the right dialog!
@@ -415,7 +414,7 @@ class PowerKey:
 				print "[mytest] PowerOff - Now!"
 				self.session.open(Screens.Standby.TryQuitMainloop, 1)
 		elif not Screens.Standby.inTryQuitMainloop and self.session.current_dialog and self.session.current_dialog.ALLOW_SUSPEND:
-			print "[mytest] PowerOff - Now!"
+			print "[StartEnigma] PowerOff - Now!"
 			self.session.open(Screens.Standby.TryQuitMainloop, 1)
 		else:
 			return 0
@@ -440,7 +439,7 @@ class PowerKey:
 					exec "from " + selected[1] + " import *"
 					exec "self.session.open(" + ",".join(selected[2:]) + ")"
 				except:
-					print "[mytest] error during executing module %s, screen %s" % (selected[1], selected[2])
+					print "[StartEnigma] Error during executing module %s, screen %s" % (selected[1], selected[2])
 			elif selected[0] == "Menu":
 				from Screens.Menu import MainMenu, mdom
 				root = mdom.getroot()
@@ -630,7 +629,7 @@ def runScreenTest():
 		if not config.misc.useTransponderTime.value:
 			print "[mytest] dvb time sync disabled... so set RTC now to current linux time!", strftime("%Y/%m/%d %H:%M", localtime(nowTime))
 			setRTCtime(nowTime)
-		print "[mytest] set wakeup time to", strftime("%Y/%m/%d %H:%M", localtime(wptime))
+		print "[StartEnigma] Set wakeup time to", strftime("%Y/%m/%d %H:%M", localtime(wptime))
 		setFPWakeuptime(wptime)
 		recordTimerWakeupAuto = startTime[1] == 0 and startTime[2]
 		print '[mytest] recordTimerWakeupAuto', recordTimerWakeupAuto
@@ -741,8 +740,8 @@ try:
 
 	Components.ParentalControl.parentalControl.save()
 except:
-	print '[mytest] EXCEPTION IN PYTHON STARTUP CODE:'
-	print '-' * 60
+	print '[StartEnigma] EXCEPTION IN PYTHON STARTUP CODE:'
+	print '-'*60
 	print_exc(file=stdout)
 	enigma.quitMainloop(5)
 	print '-' * 60
