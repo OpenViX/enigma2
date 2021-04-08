@@ -1,9 +1,16 @@
+# -*- coding: utf-8 -*-
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+import six
+
 from time import localtime, mktime, time, strftime
 
 from enigma import eEPGCache, eTimer, eServiceReference, ePoint
 
 from Screens.Screen import Screen
 from Screens.TimerEdit import TimerSanityConflict
+from Screens.TimerEntry import TimerEntry, addTimerFromEvent
 from Screens.ChoiceBox import ChoiceBox
 from Components.ActionMap import ActionMap
 from Components.Button import Button
@@ -58,8 +65,10 @@ class EventViewBase:
 		self["datetime"] = Label()
 		self["channel"] = Label()
 		self["duration"] = Label()
-		if [p for p in plugins.getPlugins(PluginDescriptor.WHERE_EVENTINFO) if 'servicelist' not in p.__call__.func_code.co_varnames]:
-			self["key_menu"] = StaticText(_("MENU"))
+		for p in plugins.getPlugins(PluginDescriptor.WHERE_EVENTINFO):
+			#only list service or event specific eventinfo plugins here, no servicelist plugins
+			if "servicelist" not in p.__call__.__code__.co_varnames:
+				self["key_menu"] = StaticText(_("MENU"))
 		if similarEPGCB is not None:
 			self["key_red"] = Button("")
 			self.SimilarBroadcastTimer = eTimer()
@@ -102,7 +111,7 @@ class EventViewBase:
 		self.updateButtons()
 
 	def updateButtons(self):
-		if "key_green" in self:
+		if hasattr(self, "key_green"):
 			if self.isRecording or self.event is None:
 				self["key_green"].setText("")
 				return
@@ -229,9 +238,8 @@ class EventViewBase:
 		epgcache = eEPGCache.getInstance()
 		ret = epgcache.search(('NB', 100, eEPGCache.SIMILAR_BROADCASTINGS_SEARCH, refstr, id))
 		if ret is not None:
-			text = '\n\n' + _('Similar broadcasts:')
-			ret.sort(self.sort_func)
-			for x in ret:
+			text = "\n\n" + _("Similar broadcasts:")
+			for x in sorted(ret, key=lambda x: x[1]):
 				text += "\n%s  -  %s" % (strftime(config.usage.date.long.value + ", " + config.usage.time.short.value, localtime(x[1])), x[0])
 			descr = self["epg_description"]
 			descr.setText(descr.getText()+text)
@@ -251,7 +259,7 @@ class EventViewBase:
 			menu = []
 			for p in plugins.getPlugins(PluginDescriptor.WHERE_EVENTINFO):
 				#only list service or event specific eventinfo plugins here, no servelist plugins
-				if 'servicelist' not in p.__call__.func_code.co_varnames:
+				if "servicelist" not in p.__call__.__code__.co_varnames:
 					menu.append((p.name, boundFunction(self.runPlugin, p)))
 			if menu:
 				self.session.open(EventViewContextMenu, menu)

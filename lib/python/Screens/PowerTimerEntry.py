@@ -1,11 +1,9 @@
+from __future__ import absolute_import
+
 from Screens.TimerEntryBase import TimerEntryBase, TimerLogBase
 from Components.config import ConfigSelection, ConfigYesNo, ConfigInteger
 from Components.ActionMap import HelpableActionMap, NumberActionMap
-from Components.Label import Label
-from Components.Pixmap import Pixmap
 from Components.SystemInfo import SystemInfo
-#from Components.Sources.Boolean import Boolean
-from Components.Sources.StaticText import StaticText
 from PowerTimer import AFTEREVENT, TIMERTYPE
 from time import localtime, time, strftime
 

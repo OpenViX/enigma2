@@ -1,3 +1,8 @@
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+import six
+
 from copy import copy, deepcopy
 
 from enigma import BT_SCALE, RT_HALIGN_CENTER, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_VALIGN_BOTTOM, RT_VALIGN_CENTER, RT_VALIGN_TOP, eListboxPythonMultiContent, getPrevAsciiCode, gFont
@@ -514,7 +519,7 @@ class VirtualKeyBoard(Screen, HelpableScreen):
 		}, -2, description=_("Virtual KeyBoard Functions"))
 		self.lang = language.getLanguage()
 		self["prompt"] = Label(prompt)
-		self["text"] = Input(text=text, maxSize=maxSize, visible_width=visible_width, type=type, currPos=len(text.decode("utf-8", "ignore")) if currPos is None else currPos, allMarked=allMarked)
+		self["text"] = Input(text=text, maxSize=maxSize, visible_width=visible_width, type=type, currPos=len(six.ensure_text(text, errors='ignore')) if currPos is None else currPos, allMarked=allMarked)
 		self["list"] = VirtualKeyBoardList([])
 		self["mode"] = Label(_("INS"))
 		self["locale"] = Label(_("Locale") + ": " + self.lang)
@@ -891,7 +896,7 @@ class VirtualKeyBoard(Screen, HelpableScreen):
 		self.keyboardWidth = len(self.keyList[self.shiftLevel][0])  # Determine current keymap size.
 		self.keyboardHeight = len(self.keyList[self.shiftLevel])
 		self.maxKey = self.keyboardWidth * (self.keyboardHeight - 1) + len(self.keyList[self.shiftLevel][-1]) - 1
-		# print("[VirtualKeyBoard] DEBUG: Width=%d, Height=%d, Keys=%d, maxKey=%d, shiftLevels=%d" % (self.keyboardWidth, self.keyboardHeight, self.maxKey + 1, self.maxKey, self.shiftLevels))
+		# print("[VirtualKeyBoard] DEBUG: Width = %d, Height = %d, Keys = %d, maxKey = %d, shiftLevels = %d" % (self.keyboardWidth, self.keyboardHeight, self.maxKey + 1, self.maxKey, self.shiftLevels))
 		self.index = 0
 		self.list = []
 		for keys in self.keyList[self.shiftLevel]:  # Process all the buttons in this shift level.
@@ -975,12 +980,12 @@ class VirtualKeyBoard(Screen, HelpableScreen):
 					elif alignV == RT_VALIGN_BOTTOM:
 						top += h - hImage
 					res.append(MultiContentEntryPixmapAlphaTest(pos=(left, top), size=(wImage, hImage), png=image))
-					# print("[VirtualKeyBoard] DEBUG: Left=%d, Top=%d, Width=%d, Height=%d, Image Width=%d, Image Height=%d" % (left, top, w, h, wImage, hImage))
+					# print("[VirtualKeyBoard] DEBUG: Left = %d, Top = %d, Width = %d, Height = %d, Image Width = %d, Image Height = %d" % (left, top, w, h, wImage, hImage))
 				else:  # Display the cell text.
 					if len(key) > 1:  # NOTE: UTF8 / Unicode glyphs only count as one character here.
-						text.append(MultiContentEntryText(pos=(xData, self.padding[1]), size=(w, h), font=1, flags=alignH | alignV, text=key.encode("utf-8"), color=self.shiftColors[self.shiftLevel]))
+						text.append(MultiContentEntryText(pos=(xData, self.padding[1]), size=(w, h), font=1, flags=alignH | alignV, text=six.ensure_str(key), color=self.shiftColors[self.shiftLevel]))
 					else:
-						text.append(MultiContentEntryText(pos=(xData, self.padding[1]), size=(w, h), font=0, flags=alignH | alignV, text=key.encode("utf-8"), color=self.shiftColors[self.shiftLevel]))
+						text.append(MultiContentEntryText(pos=(xData, self.padding[1]), size=(w, h), font=0, flags=alignH | alignV, text=six.ensure_str(key), color=self.shiftColors[self.shiftLevel]))
 			prevKey = key
 			self.index += 1
 		return res + text
@@ -1021,15 +1026,15 @@ class VirtualKeyBoard(Screen, HelpableScreen):
 			if start + width >= max or self.keyList[self.shiftLevel][row][start + width] != self.keyList[self.shiftLevel][row][key]:
 				break
 			width += 1
-		# print("[VirtualKeyBoard] DEBUG: Key='%s', Position=%d, Start=%d, Width=%d" % (self.keyList[self.shiftLevel][row][key], key, start, width))
+		# print("[VirtualKeyBoard] DEBUG: Key = '%s', Position = %d, Start = %d, Width = %d" % (self.keyList[self.shiftLevel][row][key], key, start, width))
 		return (start, width)
 
 	def processSelect(self):
 		self.smsChar = None
-		text = self.keyList[self.shiftLevel][self.selectedKey // self.keyboardWidth][self.selectedKey % self.keyboardWidth].encode("UTF-8")
+		text = six.ensure_str(self.keyList[self.shiftLevel][self.selectedKey // self.keyboardWidth][self.selectedKey % self.keyboardWidth])
 		cmd = self.cmds.get(text.upper(), None)
 		if cmd is None:
-			self['text'].char(text.encode('UTF-8'))
+			self['text'].char(six.ensure_str(text))
 		else:
 			exec(cmd)
 		if text not in (u"SHIFT", u"SHIFTICON") and self.shiftHold != -1:
@@ -1043,7 +1048,7 @@ class VirtualKeyBoard(Screen, HelpableScreen):
 
 	def localeMenu(self):
 		languages = []
-		for locale, data in self.locales.iteritems():
+		for locale, data in six.iteritems(self.locales):
 			languages.append((data[0] + "  -  " + data[1] + "  (" + locale + ")", locale))
 		languages = sorted(languages)
 		index = 0
@@ -1153,7 +1158,7 @@ class VirtualKeyBoard(Screen, HelpableScreen):
 
 	def keyGotAscii(self):
 		self.smsChar = None
-		if self.selectAsciiKey(str(unichr(getPrevAsciiCode()).encode("utf-8"))):
+		if six.ensure_str(self.selectAsciiKey(str(six.unichr(getPrevAsciiCode())))):
 			self.processSelect()
 
 	def selectAsciiKey(self, char):

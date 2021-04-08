@@ -1,3 +1,6 @@
+from __future__ import print_function
+from __future__ import absolute_import
+
 from Screens.Screen import Screen
 from Screens.HelpMenu import HelpableScreen
 from Screens.MessageBox import MessageBox
@@ -24,7 +27,7 @@ class InputDeviceSelection(Screen, HelpableScreen):
 		self["introduction"] = StaticText(self.edittext)
 
 		self.devices = [(iInputDevices.getDeviceName(x),x) for x in iInputDevices.getDeviceList()]
-		print("[InputDeviceSetup] found devices :->", len(self.devices),self.devices)
+		print(("[InputDeviceSetup] found devices :->", len(self.devices),self.devices))
 
 		self["OkCancelActions"] = HelpableActionMap(self, "OkCancelActions",
 			{
@@ -82,19 +85,24 @@ class InputDeviceSelection(Screen, HelpableScreen):
 
 	def updateList(self):
 		self.list = []
+#		print("[InputDevice] iRcTypeControl.multipleRcSupported = {}".format(iRcTypeControl.multipleRcSupported()))
+
 		if iRcTypeControl.multipleRcSupported():
 			self.list.append(self.buildInterfaceList('rctype', _('Select to configure remote control type'), None, False))
 
 		for x in self.devices:
 			dev_type = iInputDevices.getDeviceAttribute(x[1], 'type')
 			self.list.append(self.buildInterfaceList(x[1],_(x[0]), dev_type))
+#		print("[InputDevice] list = {}, self.currentIndex = {}".format(self.list, self.currentIndex))
 		self["list"].setList(self.list)
 		self["list"].setIndex(self.currentIndex)
 
 	def okbuttonClick(self):
 		selection = self["list"].getCurrent()
 		self.currentIndex = self["list"].getIndex()
+#		print "[InputDevice] selection = {}".format(selection)
 		if selection is not None:
+#			print("[InputDevice] selection[0] = {}".format(selection[0]))
 			if selection[0] == 'rctype':
 				self.session.open(RemoteControlType)
 			else:
@@ -315,8 +323,10 @@ class RemoteControlType(Screen, ConfigListScreen):
 				break
 # If there is none in the list, use the current value...
 #
+#		print("[InputDevice] self.defaultRcType 1 = {}".format(self.defaultRcType))
 		if self.defaultRcType == 0:
 			self.defaultRcType = iRcTypeControl.readRcType()
+#		print("[InputDevice] self.defaultRcType 2 = {}".format(self.defaultRcType))
 
 	def setDefaultRcType(self):
 		iRcTypeControl.writeRcType(self.defaultRcType)

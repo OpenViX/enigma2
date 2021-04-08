@@ -1,3 +1,6 @@
+from __future__ import print_function
+from __future__ import absolute_import
+
 from Components.ActionMap import HelpableActionMap
 from Components.MenuList import MenuList
 from Components.Button import Button
@@ -55,7 +58,7 @@ class TimerEntryBase(Setup):
 				count = 0
 				for x in (0, 1, 2, 3, 4, 5, 6):
 					if flags == 1: # weekly
-# 						print "[TimerEntryBase] Set to weekday " + str(x)
+# 						print("[TimerEntryBase] Set to weekday " + str(x))
 						weekday = x
 					if flags & 1 == 1: # set user defined flags
 						day[x] = 1
@@ -132,7 +135,7 @@ class TimerEntryBase(Setup):
 		pass
 
 	def keyGo(self, result = None):
-		print "[TimerEntryBase] keyGo() is deprecated, call keySave() instead"
+		print("[TimerEntryBase] keyGo() is deprecated, call keySave() instead")
 		self.keySave(result)
 
 	def keyCancel(self):
@@ -234,28 +237,28 @@ class TimerLogBase(Screen, HelpableScreen):
 			self.close((False,))
 
 	def up(self):
-		print "[TimerLog] up() is deprecated, call moveUp() instead"
+		print("[TimerLog] up() is deprecated, call moveUp() instead")
 		self.moveUp()
 
 	def moveUp(self):
 		self["loglist"].moveUp()
 
 	def down(self):
-		print "[TimerLog] down() is deprecated, call moveDown() instead"
+		print("[TimerLog] down() is deprecated, call moveDown() instead")
 		self.moveDown()
 
 	def moveDown(self):
 		self["loglist"].moveDown()
 
 	def left(self):
-		print "[TimerLog] left() is deprecated, call pageUp() instead"
+		print("[TimerLog] left() is deprecated, call pageUp() instead")
 		self.pageUp()
 
 	def pageUp(self):
 		self["loglist"].pageUp()
 
 	def right(self):
-		print "[TimerLog] right() is deprecated, call pageDown() instead"
+		print( "[TimerLog] right() is deprecated, call pageDown() instead")
 		self.pageDown()
 
 	def pageDown(self):

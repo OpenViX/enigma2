@@ -1,6 +1,8 @@
 #
 # Generic Screen to select a path/filename combination
 #
+from __future__ import absolute_import
+import six
 
 # GUI (Screens)
 from Screens.Screen import Screen
@@ -447,7 +449,7 @@ class LocationBox(Screen, NumericalTextInput, HelpableScreen):
 
 		# Get char and append to text
 		char = self.getKey(number)
-		self.quickselect = self.quickselect[:self.curr_pos] + unicode(char)
+		self.quickselect = self.quickselect[:self.curr_pos] + six.text_type(char)
 
 		# Start Timeout
 		self.qs_timer_type = 0

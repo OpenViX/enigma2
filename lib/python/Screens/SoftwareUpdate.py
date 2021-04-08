@@ -1,3 +1,7 @@
+from __future__ import print_function
+from __future__ import absolute_import
+import six
+
 from boxbranding import getImageVersion, getImageBuild, getImageDevBuild, getImageType, getImageDistro, getMachineBrand, getMachineName, getMachineBuild
 from os import path
 from gettext import dgettext
@@ -48,9 +52,9 @@ class SoftwareUpdateChanges(CommitInfo):
 
 class UpdateChoices(ChoiceBox):
 	def __init__(self, session, title="", list=None, keys=None, selection=0, skin_name=None, text="", reorderConfig="", var=""):
-		print 'title:',title
+		print('title:',title)
 		ChoiceBox.__init__(self, session, title, list, keys, selection, skin_name, text, reorderConfig, var)
-		print 'title:',title
+		print('title:',title)
 
 		if var and var in ('unstable', 'updating', 'stable', 'unknown'):
 			self.var = var
@@ -158,7 +162,6 @@ class UpdatePlugin(Screen, ProtectedScreen):
 			self['tl_yellow'].show()
 		else:
 			self['tl_off'].show()
-
 		if (getImageType() != 'release' and self.trafficLight != 'unknown') or (getImageType() == 'release' and self.trafficLight not in ('stable', 'unstable')):
 			self.session.openWithCallback(self.close, MessageBox, feedsstatuscheck.getFeedsErrorMessage(), type=MessageBox.TYPE_INFO, timeout=30, close_on_any_key=True)
 			return
@@ -331,7 +334,7 @@ class UpdatePlugin(Screen, ProtectedScreen):
 			if 'enigma2-plugin-settings-' in param[0] and self.channellist_only > 0:
 				self.channellist_name = param[0]
 				self.channellist_only = 2
-		#print event, "-", param
+		#print( event, "-", param)
 		pass
 
 	def setEndMessage(self, txt):

@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+
 from Screens.Screen import Screen
 from Components.Sources.CurrentService import CurrentService
 from Components.Sources.EventInfo import EventInfo

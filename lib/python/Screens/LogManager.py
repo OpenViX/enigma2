@@ -13,6 +13,7 @@ from os import path, remove, walk, stat, rmdir
 from time import time
 from enigma import eTimer, eBackgroundFileEraser, eLabel
 from glob import glob
+import sys
 
 import Components.Task
 
@@ -22,7 +23,10 @@ import smtplib, base64
 # Here are the email package modules we'll need
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from email.Utils import formatdate
+if sys.version_info[0] >= 3:
+	from email.utils import formatdate
+else:
+	from email.Utils import formatdate
 
 _session = None
 
@@ -65,11 +69,11 @@ class LogManagerPoller:
 		self.TrashTimer.stop()
 
 	def TrimTimerJob(self):
-		print '[LogManager] Trim Poll Started'
+		print("[LogManager] Trim Poll Started")
 		Components.Task.job_manager.AddJob(self.createTrimJob())
 
 	def TrashTimerJob(self):
-		print '[LogManager] Trash Poll Started'
+		print("[LogManager] Trash Poll Started")
 		Components.Task.job_manager.AddJob(self.createTrashJob())
 
 	def createTrimJob(self):
@@ -109,22 +113,21 @@ class LogManagerPoller:
 
 		mounts = []
 		matches = []
-		print "[LogManager] probing folders"
-		f = open('/proc/mounts', 'r')
-		for line in f.readlines():
-			parts = line.strip().split()
-			mounts.append(parts[1])
-		f.close()
+		print("[LogManager] probing folders")
+		with open("/proc/mounts", "r") as f:
+			for line in f.readlines():
+				parts = line.strip().split()
+				mounts.append(parts[1])
 
 		for mount in mounts:
 			if path.isdir(path.join(mount,'logs')):
 				matches.append(path.join(mount,'logs'))
 		matches.append('/home/root/logs')
 
-		print "[LogManager] found following log's:", matches
+		print("[LogManager] found following log's:", matches)
 		if len(matches):
 			for logsfolder in matches:
-				print "[LogManager] looking in:", logsfolder
+				print("[LogManager] looking in:", logsfolder)
 				logssize = get_size(logsfolder)
 				bytesToRemove = logssize - allowedBytes
 				candidates = []
@@ -135,14 +138,14 @@ class LogManagerPoller:
 							fn = path.join(root, name)
 							st = stat(fn)
 							if st.st_ctime < ctimeLimit:
-								print "[LogManager] " + str(fn) + ": Too old:", name, st.st_ctime
+								print("[LogManager] " + str(fn) + ": Too old:", name, st.st_ctime)
 								eBackgroundFileEraser.getInstance().erase(fn)
 								bytesToRemove -= st.st_size
 							else:
 								candidates.append((st.st_ctime, fn, st.st_size))
 								size += st.st_size
-						except Exception, e:
-							print "[LogManager] Failed to stat %s:"% name, e
+						except Exception as e:
+							print("[LogManager] Failed to stat %s:"% name, e)
 					# Remove empty directories if possible
 					for name in dirs:
 						try:
@@ -152,7 +155,7 @@ class LogManagerPoller:
 					candidates.sort()
 					# Now we have a list of ctime, candidates, size. Sorted by ctime (=deletion time)
 					for st_ctime, fn, st_size in candidates:
-						print "[LogManager] " + str(logsfolder) + ": bytesToRemove", bytesToRemove
+						print("[LogManager] " + str(logsfolder) + ": bytesToRemove", bytesToRemove)
 						if bytesToRemove < 0:
 							break
 						eBackgroundFileEraser.getInstance().erase(fn)

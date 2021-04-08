@@ -1,4 +1,5 @@
-from Screens.Wizard import Wizard
+from __future__ import print_function
+
 from Components.Label import Label
 from Components.Language import language
 
@@ -14,7 +15,7 @@ class WizardLanguage(Wizard):
 		self.languageSelect()
 
 	def languageSelect(self):
-		print "[WizardLanguage] languageSelect"
+		print("[WizardLanguage] languageSelect")
 		newlanguage = language.getActiveLanguageIndex() + 1
 		if newlanguage >= len(language.getLanguageList()):
 			newlanguage = 0
@@ -23,11 +24,11 @@ class WizardLanguage(Wizard):
 		self.updateTexts()
 
 	def updateLanguageDescription(self):
-		print language.getLanguageList()[language.getActiveLanguageIndex()]
+		print(language.getLanguageList()[language.getActiveLanguageIndex()])
 		self["languagetext"].setText(self.getTranslation(language.getLanguageList()[language.getActiveLanguageIndex()][1][0]))
 
 	def updateTexts(self):
-		print "[WizardLanguage] updateTexts"
+		print("[WizardLanguage] updateTexts")
 		self.updateText(firstset = True)
 		self.updateValues()
 		self.updateLanguageDescription()

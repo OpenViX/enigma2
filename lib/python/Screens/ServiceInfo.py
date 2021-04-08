@@ -1,3 +1,7 @@
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+
 from Components.GUIComponent import GUIComponent
 from Screens.Screen import Screen
 from Components.ActionMap import ActionMap
@@ -25,16 +29,16 @@ def to_unsigned(x):
 	return x & 0xFFFFFFFF
 
 def ServiceInfoListEntry(a, b="", valueType=TYPE_TEXT, param=4):
-	print "b:", b
+	print("b:", b)
 	if not isinstance(b, str):
 		if valueType == TYPE_VALUE_HEX:
 			b = ("%0" + str(param) + "X") % to_unsigned(b)
 		elif valueType == TYPE_VALUE_FREQ:
-			b = "%s MHz" % (b / 1000)
+			b = "%s MHz" % (b // 1000)
 		elif valueType == TYPE_VALUE_FREQ_FLOAT:
-			b = "%.3f MHz" % (b / 1000.0)
+			b = "%.3f MHz" % (b // 1000.0)
 		elif valueType == TYPE_VALUE_BITRATE:
-			b = "%s KSymbols/s" % (b / 1000)
+			b = "%s KSymbols/s" % (b // 1000)
 		elif valueType == TYPE_VALUE_HEX_DEC:
 			b = ("%0" + str(param) + "X (%d)") % (to_unsigned(b), b)
 		elif valueType == TYPE_VALUE_ORBIT_DEC:
@@ -45,9 +49,11 @@ def ServiceInfoListEntry(a, b="", valueType=TYPE_TEXT, param=4):
 			b = ("%d.%d%s") % (b // 10, b % 10, direction)
 		else:
 			b = str(b)
+
 	x, y, w, h = skin.parameters.get("ServiceInfo",(0, 0, skin.applySkinFactor(300), skin.applySkinFactor(30)))
 	xa, ya, wa, ha = skin.parameters.get("ServiceInfoLeft",(0, 0, skin.applySkinFactor(300), skin.applySkinFactor(25)))
 	xb, yb, wb, hb = skin.parameters.get("ServiceInfoRight",(skin.applySkinFactor(300), 0, skin.applySkinFactor(600), skin.applySkinFactor(25)))
+
 	if b:
 		return [
 			#PyObject *type, *px, *py, *pwidth, *pheight, *pfnt, *pstring, *pflags;
@@ -77,13 +83,13 @@ class ServiceInfoList(GUIComponent):
 			attribs = [ ]
 			for (attrib, value) in self.skinAttributes:
 				if attrib == "font":
-					font = skin.parseFont(value, ((1,1),(1,1)))
+					font = skin.parseFont(value, ((1,1), (1,1)))
 					self.fontName = font.family
 					self.fontSize = font.pointSize
 				elif attrib == "itemHeight":
 					self.ItemHeight = skin.parseScale(value)
 				else:
-					attribs.append((attrib,value))
+					attribs.append((attrib, value))
 			self.skinAttributes = attribs
 		rc = GUIComponent.applySkin(self, desktop, screen)
 		self.setFontsize()
@@ -179,8 +185,8 @@ class ServiceInfo(Screen):
 				height = self.info.getInfo(iServiceInformation.sVideoHeight)
 				if width > 0 and height > 0:
 					resolution = videocodec + " - "
-					resolution += "%dx%d - " % (width,height)
-					resolution += str((self.info.getInfo(iServiceInformation.sFrameRate) + 500) / 1000)
+					resolution += "%dx%d - " % (width, height)
+					resolution += str((self.info.getInfo(iServiceInformation.sFrameRate) + 500) // 1000)
 					resolution += ("i", "p", "")[self.info.getInfo(iServiceInformation.sProgressive)]
 					aspect = self.getServiceInfoValue(iServiceInformation.sAspect)
 					aspect = aspect in ( 1, 2, 5, 6, 9, 0xA, 0xD, 0xE ) and "4:3" or "16:9"
@@ -336,5 +342,6 @@ class ServiceInfo(Screen):
 			color = "\c00??;?00" if caid[1] == int(ecmdata[3], 16) and caid[0] == int(ecmdata[1], 16) else ""
 			tlist.append(ServiceInfoListEntry("%sECMPid %04X (%d) %04X-%s %s" % (color, caid[1], caid[1], caid[0], CaIdDescription, extra_info)))
 		if not tlist:
-			tlist.append(ServiceInfoListEntry(_("No ECMPids available (FTA Service)")))
+				tlist.append(ServiceInfoListEntry(_("No ECMPids available")))
+				tlist.append(ServiceInfoListEntry(_("(FTA Service)")))
 		self["infolist"].l.setList(tlist)

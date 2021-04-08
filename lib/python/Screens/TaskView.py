@@ -1,3 +1,6 @@
+from __future__ import print_function
+from __future__ import absolute_import
+
 from Components.ActionMap import ActionMap
 from Components.config import config, ConfigSubsection, ConfigSelection, getConfigListEntry
 from Components.ConfigList import ConfigListScreen
@@ -5,13 +8,12 @@ from Components.Sources.Progress import Progress
 from Components.Sources.StaticText import StaticText
 from Components.SystemInfo import SystemInfo
 from Components.Task import job_manager
-from InfoBarGenerics import InfoBarNotifications
-from Tools import Notifications
-from Screen import Screen
+from Screens.InfoBarGenerics import InfoBarNotifications
+import Tools.Notifications
+from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
 import Screens.Standby
 
-from Tools import Notifications
 from boxbranding import getMachineBrand, getMachineName
 
 class JobView(InfoBarNotifications, Screen, ConfigListScreen):
@@ -135,7 +137,7 @@ class JobView(InfoBarNotifications, Screen, ConfigListScreen):
 		if self.job.status == self.job.NOT_STARTED:
 			job_manager.active_jobs.remove(self.job)
 			self.close(False)
-		elif self.job.status == self.job.IN_PROGRESS and self.cancelable:
+		elif self.job.status == self.job.IN_PROGRESS and self.cancelable == True:
 			self.job.cancel()
 		else:
 			self.close(False)
@@ -148,21 +150,21 @@ class JobView(InfoBarNotifications, Screen, ConfigListScreen):
 			self.close(False)
 		if self.settings.afterEvent.value == "deepstandby":
 			if not Screens.Standby.inTryQuitMainloop:
-				Notifications.AddNotificationWithCallback(self.sendTryQuitMainloopNotification, MessageBox, _("A sleep timer wants to shut down\nyour %s %s. Proceed?") % (getMachineBrand(), getMachineName()), timeout = 20)
+				Tools.Notifications.AddNotificationWithCallback(self.sendTryQuitMainloopNotification, MessageBox, _("A sleep timer wants to shut down\nyour %s %s. Proceed?") % (getMachineBrand(), getMachineName()), timeout = 20)
 		elif self.settings.afterEvent.value == "standby":
 			if not Screens.Standby.inStandby:
-				Notifications.AddNotificationWithCallback(self.sendStandbyNotification, MessageBox, _("A sleep timer wants to set your\n%s %s to standby. Proceed?") % (getMachineBrand(), getMachineName()), timeout = 20)
+				Tools.Notifications.AddNotificationWithCallback(self.sendStandbyNotification, MessageBox, _("A sleep timer wants to set your\n%s %s to standby. Proceed?") % (getMachineBrand(), getMachineName()), timeout = 20)
 
 	def checkNotifications(self):
 		InfoBarNotifications.checkNotifications(self)
-		if not Notifications.notifications:
+		if not Tools.Notifications.notifications:
 			if self.settings.afterEvent.value == "close" and self.job.status == self.job.FAILED:
 				self.close(False)
 
 	def sendStandbyNotification(self, answer):
 		if answer:
-			Notifications.AddNotification(Screens.Standby.Standby)
+			Tools.Notifications.AddNotification(Screens.Standby.Standby)
 
 	def sendTryQuitMainloopNotification(self, answer):
 		if answer:
-			Notifications.AddNotification(Screens.Standby.TryQuitMainloop, 1)
+			Tools.Notifications.AddNotification(Screens.Standby.TryQuitMainloop, 1)

@@ -1,3 +1,6 @@
+from __future__ import print_function
+from __future__ import absolute_import
+
 from boxbranding import getMachineBrand, getMachineName
 from xml.sax import make_parser
 from xml.sax.handler import ContentHandler
@@ -31,7 +34,7 @@ class Wizard(Screen):
 	instance = None
 
 	def createSummary(self):
-		print "[Wizard] WizardCreateSummary"
+		print("[Wizard] WizardCreateSummary")
 		return WizardSummary
 
 	class parseWizard(ContentHandler):
@@ -92,9 +95,9 @@ class Wizard(Screen):
 				self.wizard[self.lastStep]["config"]["type"] = type
 				if type == "ConfigList" or type == "standalone":
 					try:
-						exec "from Screens." + str(attrs.get('module')) + " import *"
+						exec("from Screens." + str(attrs.get('module')) + " import *")
 					except:
-						exec "from " + str(attrs.get('module')) + " import *"
+						exec("from " + str(attrs.get('module')) + " import *")
 
 					self.wizard[self.lastStep]["config"]["screen"] = eval(str(attrs.get('screen')))
 					if 'args' in attrs:
@@ -105,7 +108,7 @@ class Wizard(Screen):
 					if 'evaluation' in attrs:
 						self.wizard[self.lastStep]["config"]["evaluation"] = str(attrs.get('evaluation'))
 			elif name == "code":
-				self.async_code = attrs.has_key('async') and str(attrs.get('async')) == "yes"
+				self.async_code = 'async' in attrs and str(attrs.get('async')) == "yes"
 				if 'pos' in attrs and str(attrs.get('pos')) == "after":
 					self.codeafter = True
 				else:
@@ -311,9 +314,9 @@ class Wizard(Screen):
 	def getStepWithID(self, id):
 # 		print "getStepWithID:", id
 		count = 0
-		for x in self.wizard.keys():
+		for x in list(self.wizard.keys()):
 			if self.wizard[x]["id"] == id:
-				print "[Wizard] result:", count
+				print("[Wizard] result:", count)
 				return count
 			count += 1
 # 		print "result: nothing"
@@ -415,7 +418,7 @@ class Wizard(Screen):
 		elif self.showList and len(self.wizard[self.currStep]["evaluatedlist"]) > 0:
 			self["list"].selectPrevious()
 			if "onselect" in self.wizard[self.currStep]:
-				print "[Wizard] current:", self["list"].current
+				print("[Wizard] current:", self["list"].current)
 				self.selection = self["list"].current[-1]
 				#self.selection = self.wizard[self.currStep]["evaluatedlist"][self["list"].l.getCurrentSelectionIndex()][1]
 				getattr(self, self.wizard[self.currStep]["onselect"])()
@@ -446,7 +449,7 @@ class Wizard(Screen):
 		elif self.showList and len(self.wizard[self.currStep]["evaluatedlist"]) > 0:
 			if "onselect" in self.wizard[self.currStep]:
 				self.selection = self["list"].current[-1]
-				print "[Wizard] self.selection:", self.selection
+				print("[Wizard] self.selection:", self.selection)
 				getattr(self, self.wizard[self.currStep]["onselect"])()
 
 	def resetCounter(self):
@@ -455,7 +458,7 @@ class Wizard(Screen):
 	def runCode(self, code):
 		if code != "":
 # 			print "code", code
-			exec code
+			exec(code)
 			return True
 		return False
 
@@ -554,7 +557,7 @@ class Wizard(Screen):
 					rootrenderer = renderer
 					while renderer.source is not None:
 						if renderer.source is self["list"]:
-							print "[Wizard] setZPosition"
+							print("[Wizard] setZPosition")
 							rootrenderer.instance.setZPosition(1)
 						renderer = renderer.source
 
@@ -575,19 +578,19 @@ class Wizard(Screen):
 				self["list"].hide()
 
 			if self.showConfig:
-				print "[Wizard] showing config"
+				print("[Wizard] showing config")
 # 				self["config"].instance.setZPosition(1)
 				if self.wizard[self.currStep]["config"]["type"] == "dynamic":
-					print "[Wizard] config type is dynamic"
+					print("[Wizard] config type is dynamic")
 					self["config"].instance.setZPosition(2)
 					self["config"].list = getattr(self, self.wizard[self.currStep]["config"]["source"])()
 				elif self.wizard[self.currStep]["config"]["screen"] is not None:
 					if self.wizard[self.currStep]["config"]["type"] == "standalone":
-						print "[Wizard] Type is standalone"
+						print("[Wizard] Type is standalone")
 						self.session.openWithCallback(self.ok, self.wizard[self.currStep]["config"]["screen"])
 					else:
 						self["config"].instance.setZPosition(2)
-						print "[Wizard] ", self.wizard[self.currStep]["config"]["screen"]
+						print("[Wizard] ", self.wizard[self.currStep]["config"]["screen"])
 						if self.wizard[self.currStep]["config"]["args"] is None:
 							self.configInstance = self.session.instantiateDialog(self.wizard[self.currStep]["config"]["screen"])
 						else:
@@ -604,10 +607,10 @@ class Wizard(Screen):
 						self["config"].list = self.configInstance["config"].list
 						callbacks = self.configInstance["config"].onSelectionChanged
 						self.configInstance["config"].destroy()
-						print "[Wizard] clearConfigList", self.configInstance["config"], self["config"]
+						print("[Wizard] clearConfigList", self.configInstance["config"], self["config"])
 						self.configInstance["config"] = self["config"]
 						self.configInstance["config"].onSelectionChanged = callbacks
-						print "[Wizard] clearConfigList", self.configInstance["config"], self["config"]
+						print("[Wizard] clearConfigList", self.configInstance["config"], self["config"])
 				else:
 					self["config"].list = []
 					self.handleInputHelpers()

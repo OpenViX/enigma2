@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+
 from Components.config import config, configfile, ConfigText, ConfigSelection, ConfigIP, ConfigYesNo, ConfigInteger
 from Screens.Setup import Setup
 from enigma import getPeerStreamingBoxes

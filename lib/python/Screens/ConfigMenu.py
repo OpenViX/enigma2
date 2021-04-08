@@ -1,6 +1,8 @@
-from Screen import Screen
+from __future__ import absolute_import
+
 from Components.ConfigList import ConfigList
 from Components.ActionMap import ActionMap
+from Screens.Screen import Screen
 
 class ConfigMenu(Screen):
 	#create a generic class for view/edit settings

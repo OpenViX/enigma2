@@ -1,3 +1,6 @@
+from __future__ import print_function
+from __future__ import absolute_import
+
 from enigma import eRCInput, eTimer, eWindow  # , getDesktop
 
 from skin import GUI_SKIN_ID, applyAllAttributes
@@ -12,7 +15,7 @@ from Tools.CList import CList
 
 
 class Screen(dict):
-	NO_SUSPEND, SUSPEND_STOPS, SUSPEND_PAUSES = range(3)
+	NO_SUSPEND, SUSPEND_STOPS, SUSPEND_PAUSES = list(range(3))
 	ALLOW_SUSPEND = NO_SUSPEND
 	globalScreen = None
 
@@ -71,7 +74,7 @@ class Screen(dict):
 					return
 			# assert self.session is None, "a screen can only exec once per time"
 			# self.session = session
-			for val in self.values() + self.renderer:
+			for val in list(self.values()) + self.renderer:
 				val.execBegin()
 				# DEBUG: if not self.standAlone and self.session.current_dialog != self:
 				if not self.stand_alone and self.session.current_dialog != self:
@@ -104,7 +107,7 @@ class Screen(dict):
 		for val in self.renderer:
 			val.disconnectAll()  # Disconnect converter/sources and probably destroy them. Sources will not be destroyed.
 		del self.session
-		for (name, val) in self.items():
+		for (name, val) in list(self.items()):
 			val.destroy()
 			del self[name]
 		self.renderer = []
@@ -121,7 +124,7 @@ class Screen(dict):
 			self.session.close(self, *retval)
 
 	def show(self):
-		print("[Screen] Showing screen '%s'." % self.skinName)  # To ease identification of screens.
+		# print("[Screen] Showing screen '%s'." % self.skinName)  # To ease identification of screens.
 		# DEBUG: if (self.shown and self.alreadyShown) or not self.instance:
 		if (self.shown and self.already_shown) or not self.instance:
 			return
@@ -131,7 +134,7 @@ class Screen(dict):
 		self.instance.show()
 		for x in self.onShow:
 			x()
-		for val in self.values() + self.renderer:
+		for val in list(self.values()) + self.renderer:
 			if isinstance(val, GUIComponent) or isinstance(val, Source):
 				val.onShow()
 
@@ -142,7 +145,7 @@ class Screen(dict):
 		self.instance.hide()
 		for x in self.onHide:
 			x()
-		for val in self.values() + self.renderer:
+		for val in list(self.values()) + self.renderer:
 			if isinstance(val, GUIComponent) or isinstance(val, Source):
 				val.onHide()
 
@@ -268,13 +271,12 @@ class Screen(dict):
 			applyAllAttributes(w.instance, desktop, w.skinAttributes, self.scale)
 		for f in self.onLayoutFinish:
 			if not isinstance(f, type(self.close)):
-				exec f in globals(), locals()  # Python 2
-				# exec(f, globals(), locals())  # Python 3
+				exec(f, globals(), locals())  # Python 3
 			else:
 				f()
 
 	def deleteGUIScreen(self):
-		for (name, val) in self.items():
+		for (name, val) in list(self.items()):
 			if isinstance(val, GUIComponent):
 				val.GUIdelete()
 

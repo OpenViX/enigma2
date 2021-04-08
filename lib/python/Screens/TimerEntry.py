@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import
+import six
+
 from time import localtime, time, strftime
 
 from enigma import eEPGCache
 
 from Screens.Screen import Screen
-import ChannelSelection
+import Screens.ChannelSelection
 from ServiceReference import ServiceReference
 from Components.config import config, ConfigSelection, ConfigText, ConfigYesNo
 from Components.SystemInfo import SystemInfo
@@ -53,7 +56,10 @@ class TimerEntry(TimerEntryBase):
 			shutdownString = _("shut down")
 		self.timerentry_afterevent = ConfigSelection(choices = [("nothing", _("do nothing")), ("standby", _("go to standby")), ("deepstandby", shutdownString), ("auto", _("auto"))], default = afterevent)
 		self.timerentry_recordingtype = ConfigSelection(choices = [("normal", _("normal")), ("descrambled+ecm", _("descramble and record ecm")), ("scrambled+ecm", _("don't descramble, record ecm"))], default = recordingtype)
-		self.timerentry_name = ConfigText(default = self.timer.name.replace('\xc2\x86', '').replace('\xc2\x87', '').encode("utf-8"), visible_width = 50, fixed_size = False)
+		if six.PY3:
+			self.timerentry_name = ConfigText(default = self.timer.name.replace('\x86', '').replace('\x87', ''), visible_width = 50, fixed_size = False)
+		else:
+			self.timerentry_name = ConfigText(default = self.timer.name.replace('\xc2\x86', '').replace('\xc2\x87', '').encode("utf-8"), visible_width = 50, fixed_size = False)
 		self.timerentry_description = ConfigText(default = self.timer.description, visible_width = 50, fixed_size = False)
 		self.timerentry_tags = self.timer.tags[:]
 		# if no tags found, make name of event default tag set.
@@ -119,7 +125,7 @@ class TimerEntry(TimerEntryBase):
 		if cur and cur[1] == self.timerentry_service:
 			self.session.openWithCallback(
 				self.finishedChannelSelection,
-				ChannelSelection.SimpleChannelSelection,
+				Screens.ChannelSelection.SimpleChannelSelection,
 				_("Select channel to record from"),
 				currentBouquet=True
 			)
@@ -161,7 +167,7 @@ class TimerEntry(TimerEntryBase):
 	def selectChannelSelector(self, *args):
 		self.session.openWithCallback(
 				self.finishedChannelSelectionCorrection,
-				ChannelSelection.SimpleChannelSelection,
+				Screens.ChannelSelection.SimpleChannelSelection,
 				_("Select channel to record from")
 			)
 
@@ -229,7 +235,7 @@ class TimerEntry(TimerEntryBase):
 					ref = self.session.nav.getCurrentlyPlayingServiceOrGroup()
 					parent = self.timer.service_ref.ref
 					selection = 0
-					for x in range(n):
+					for x in list(range(n)):
 						i = event.getLinkageService(parent, x)
 						if i.toString() == ref.toString():
 							selection = x

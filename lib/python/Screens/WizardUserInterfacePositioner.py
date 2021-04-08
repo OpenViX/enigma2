@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+
 from Screens.MessageBox import MessageBox
 from Screens.WizardLanguage import WizardLanguage
 from Screens.Rc import Rc
