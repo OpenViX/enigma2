@@ -41,7 +41,7 @@ workflows:
           matrix:
             parameters:
               CC: ["8", "10"]
-              PYTHON: ["2.7", "3.8"]
+              PYTHON: ["2.7"]
           pre-steps: # steps to run before steps defined in the job bar
             - run: |
                 sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
