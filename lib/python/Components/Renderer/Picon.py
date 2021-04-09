@@ -86,18 +86,18 @@ class PiconLocator:
 			pngname = self.findPicon("_".join(fields))
 		if not pngname and fields[2] != "2":
 			#fallback to 1 for TV services with non-standard service types
-			fields[2] = '1'
-			pngname = self.findPicon('_'.join(fields))
+			fields[2] = "1"
+			pngname = self.findPicon("_".join(fields))
 		if not pngname: # picon by channel name
 			name = eServiceReference(serviceName).getServiceName()
-			name = unicodedata.normalize('NFKD', unicode(name, 'utf_8', errors='ignore')).encode('ASCII', 'ignore')
-			name = re.sub('[^a-z0-9]', '', name.replace('&', 'and').replace('+', 'plus').replace('*', 'star').lower())
+			name = six.ensure_str(unicodedata.normalize("NFKD", name).encode("ASCII", "ignore")) if six.PY3 else unicodedata.normalize("NFKD", unicode(name, "utf_8", errors="ignore")).encode("ASCII", "ignore")
+			name = re.sub("[^a-z0-9]", "", name.replace("&", "and").replace("+", "plus").replace("*", "star").lower())
 			if len(name) > 0:
 				pngname = self.findPicon(name)
-				if not pngname and len(name) > 2 and name.endswith('hd'):
+				if not pngname and len(name) > 2 and name.endswith("hd"):
 					pngname = self.findPicon(name[:-2])
 				if not pngname and len(name) > 6:
-					series = re.sub(r's[0-9]*e[0-9]*$', '', name)
+					series = re.sub(r"s[0-9]*e[0-9]*$", "", name)
 					pngname = self.findPicon(series)
 		return pngname
 

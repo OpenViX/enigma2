@@ -1,8 +1,13 @@
 # -*- coding: utf-8 -*-
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+import six
+
 import os, unicodedata
 from Tools.Profile import profile
 
-from Screen import Screen
+from Screens.Screen import Screen
 from Screens.HelpMenu import HelpableScreen
 import Screens.InfoBar
 import Components.ParentalControl

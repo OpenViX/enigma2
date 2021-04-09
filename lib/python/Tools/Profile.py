@@ -4,7 +4,7 @@ from __future__ import division
 # the implementation here is a bit crappy.
 from boxbranding import getBoxType, getMachineBuild
 import time
-from Directories import resolveFilename, SCOPE_CONFIG
+from Tools.Directories import resolveFilename, SCOPE_CONFIG
 
 PERCENTAGE_START = 0
 PERCENTAGE_END = 100

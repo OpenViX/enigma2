@@ -38,6 +38,7 @@ import RecordTimer
 from enigma import eServiceReference, eServiceCenter, eTimer, eSize, iPlayableService, iServiceInformation, getPrevAsciiCode, eRCInput
 import os
 import time
+import sys
 if sys.version_info >= (3, 0):
 	import pickle as cPickle
 else:
