@@ -934,11 +934,11 @@ class TimelineText(GUIComponent):
 			if nowTime.tm_year == begTime.tm_year and nowTime.tm_yday == begTime.tm_yday:
 				datestr = _("Today")
 			else:
-				if serviceWidth > 179:
+				if serviceWidth > (self.timelineFontSize + self.epgConfig.timelinefs.value) * 7.6:
 					dateFormat = config.usage.date.daylong.value
-				elif serviceWidth > 129:
+				elif serviceWidth > (self.timelineFontSize + self.epgConfig.timelinefs.value) * 4.5:
 					dateFormat = config.usage.date.dayshort.value
-				elif serviceWidth > 79:
+				elif serviceWidth > (self.timelineFontSize + self.epgConfig.timelinefs.value) * 2.85:
 					dateFormat = config.usage.date.daysmall.value
 				else:
 					dateFormat = "%a"
