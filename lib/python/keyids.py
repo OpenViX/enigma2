@@ -5,6 +5,7 @@
 #
 # PLEASE NOTE: If you add any buttons PLEASE update this list to assist
 # others in maintaining this file.
+from __future__ import print_function
 
 KEYIDS = {
 	"KEY_RESERVED": 0,

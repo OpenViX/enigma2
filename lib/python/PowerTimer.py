@@ -1,3 +1,7 @@
+from __future__ import print_function, division
+from builtins import range
+import six
+
 import os
 from boxbranding import getMachineBrand, getMachineName
 import xml.etree.cElementTree
@@ -370,8 +374,9 @@ def createTimer(xml):
 		}[timertype]
 	begin = int(xml.get("begin"))
 	end = int(xml.get("end"))
-	repeated = xml.get("repeated").encode("utf-8")
-	disabled = long(xml.get("disabled") or "0")
+	# FIXME WHY NOT str()
+	repeated = six.ensure_str(xml.get("repeated"))
+	disabled = int(xml.get("disabled") or "0")
 	afterevent = str(xml.get("afterevent") or "nothing")
 	afterevent = {
 		"nothing": AFTEREVENT.NONE,
@@ -403,10 +408,9 @@ def createTimer(xml):
 
 	for l in xml.findall("log"):
 		ltime = int(l.get("time"))
-		lcode = int(l.get("code"))
-		msg = l.text.strip().encode("utf-8")
+		code = int(l.get("code"))
+		msg = six.ensure_str(l.text).strip()
 		entry.log_entries.append((ltime, lcode, msg))
-
 	return entry
 
 class PowerTimer(Timer):
@@ -418,7 +422,7 @@ class PowerTimer(Timer):
 		try:
 			self.loadTimer()
 		except IOError:
-			print "unable to load timers from file!"
+			print("unable to load timers from file!")
 
 	def doActivate(self, w, dosave=True):
 		# when activating a timer which has already passed,
@@ -435,7 +439,7 @@ class PowerTimer(Timer):
 		try:
 			self.timer_list.remove(w)
 		except:
-			print '[PowerManager]: Remove list failed'
+			print('[PowerManager]: Remove list failed')
 
 		# did this timer reached the last state?
 		if w.state < PowerTimerEntry.StateEnded:
@@ -477,15 +481,15 @@ class PowerTimer(Timer):
 
 			AddPopup(_("The timer file (pm_timers.xml) is corrupt and could not be loaded."), type = MessageBox.TYPE_ERROR, timeout = 0, id = "TimerLoadFailed")
 
-			print "pm_timers.xml failed to load!"
+			print("pm_timers.xml failed to load!")
 			try:
 				import os
 				os.rename(self.Filename, self.Filename + "_old")
 			except (IOError, OSError):
-				print "renaming broken timer failed"
+				print("renaming broken timer failed")
 			return
 		except IOError:
-			print "pm_timers.xml not found!"
+			print("pm_timers.xml not found!")
 			return
 
 		root = doc.getroot()
@@ -598,7 +602,7 @@ class PowerTimer(Timer):
 
 	def record(self, entry, ignoreTSC=False, dosave=True):		#wird von loadTimer mit dosave=False aufgerufen
 		entry.timeChanged()
-		print "[PowerTimer]",str(entry)
+		print("[PowerTimer]",str(entry))
 		entry.Timer = self
 		self.addTimerEntry(entry)
 		if dosave:
@@ -606,7 +610,7 @@ class PowerTimer(Timer):
 		return None
 
 	def removeEntry(self, entry):
-		print "[PowerTimer] Remove",str(entry)
+		print("[PowerTimer] Remove",str(entry))
 
 		# avoid re-enqueuing
 		entry.repeated = False
