@@ -1,0 +1,100 @@
+version: 2.1
+
+jobs:
+  build:
+    parameters:
+      CC:
+        type: string
+      PYTHON:
+        type: string
+    environment:
+      CC: gcc-<< parameters.CC >>
+      CXX: g++-<< parameters.CC >>
+      PY: << parameters.PYTHON >>
+    machine:
+      image: ubuntu-2004:202010-01
+    steps:
+      - when:
+          condition:
+            equal: [ "3.8", << parameters.PYTHON >> ]
+          steps:
+            - run:
+                name: Installing Python 3.8
+                command: |
+                  pyenv install 3.8-dev
+                  pyenv global 3.8-dev
+                  pip3 install --upgrade pip tox six
+      - checkout
+      - run:
+          name: compiling enigma2
+          command: |
+            autoreconf -i
+            ./configure --with-libsdl=no --with-boxtype=nobox --enable-dependency-tracking ac_cv_prog_c_openmp=-fopenmp --with-gstversion=1.0 --with-textlcd
+            make
+            python -m compileall .
+            echo done!
+
+workflows:
+  all-tests:
+    jobs:
+      - build:
+          matrix:
+            parameters:
+              CC: ["8", "10"]
+              PYTHON: ["2.7", "3.8"]
+          pre-steps: # steps to run before steps defined in the job bar
+            - run: |
+                sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+                sudo apt-get -q update
+                sudo apt install ${CXX}
+            - run:
+                name: Install required packages
+                command: | 
+                  sudo apt-get -q update
+                  sudo apt-get install \
+                  linux-libc-dev git build-essential \
+                  automake libtool python-dev zlib1g-dev gettext \
+                  swig libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev \
+                  libfreetype6-dev libsigc++-2.0-dev libfribidi-dev \
+                  libssl-dev libavahi-client-dev libjpeg-turbo8-dev \
+                  libgif-dev
+            - run:
+                name: getting gstreamer
+                command: |
+                  cd /tmp/
+                  pip install --upgrade pip tox six
+                  curl -L https://people.freedesktop.org/~slomo/gstreamer.tar.gz | tar xz
+                  sed -i "s;prefix=/root/gstreamer;prefix=$PWD/gstreamer;g" $PWD/gstreamer/lib/x86_64-linux-gnu/pkgconfig/*.pc
+                  export PKG_CONFIG_PATH=$PWD/gstreamer/lib/x86_64-linux-gnu/pkgconfig
+                  export GST_PLUGIN_SYSTEM_PATH=$PWD/gstreamer/lib/x86_64-linux-gnu/gstreamer-1.0
+                  export GST_PLUGIN_SCANNER=$PWD/gstreamer/libexec/gstreamer-1.0/gst-plugin-scanner
+                  export PATH=$PATH:$PWD/gstreamer/bin
+                  export LD_LIBRARY_PATH=$PWD/gstreamer/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH
+            - run:
+                name: installing libdvbsi++
+                command: |
+                  cd /tmp
+                  git clone --depth 1 git://git.opendreambox.org/git/obi/libdvbsi++.git
+                  cd libdvbsi++
+                  autoreconf -i
+                  ./configure
+                  make
+                  sudo make install
+            - run:
+                name: installing tuxtxt
+                command: |
+                  cd /tmp
+                  git clone --depth 1 https://github.com/OpenPLi/tuxtxt.git
+                  cd tuxtxt/libtuxtxt
+                  autoreconf -i
+                  ./configure --with-boxtype=generic DVB_API_VERSION=5
+                  make
+                  sudo make install
+                  cd ../tuxtxt
+                  autoreconf -i
+                  ./configure --with-boxtype=generic DVB_API_VERSION=5
+                  make
+                  sudo make install
+          post-steps: # steps to run after steps defined in the job bar
+            - run:
+                command: echo "upload artifact to s3"
