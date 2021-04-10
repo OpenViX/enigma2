@@ -1,5 +1,4 @@
 import sys
-import sys
 if sys.version_info >= (3, 0):
 	import pickle as cPickle
 else:
