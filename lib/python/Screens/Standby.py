@@ -220,7 +220,7 @@ class QuitMainloopScreen(Screen):
 			QUIT_ANDROID: _("Your %s %s is rebooting into Android Mode") % (getMachineBrand(), getMachineName()),
 			QUIT_MAINT: _("Your %s %s is rebooting into Recovery Mode") % (getMachineBrand(), getMachineName()),
 			QUIT_UPGRADE_FP: _("Your frontprocessor will be upgraded\nPlease wait until your %s %s reboots\nThis may take a few minutes") % (getMachineBrand(), getMachineName()),
-			QUIT_ERROR_RESTART: _("The user interface of your %s %s is restarting\ndue to an error in mytest.py") % (getMachineBrand(), getMachineName()),
+			QUIT_ERROR_RESTART: _("The user interface of your %s %s is restarting\ndue to an error in StartEnigma.py") % (getMachineBrand(), getMachineName()),
 			QUIT_UPGRADE_PROGRAM: _("Upgrade in progress\nPlease wait until your %s %s reboots\nThis may take a few minutes") % (getMachineBrand(), getMachineName()),
 			QUIT_IMAGE_RESTORE: _("Reflash in progress\nPlease wait until your %s %s reboots\nThis may take a few minutes") % (getMachineBrand(), getMachineName())
 		}.get(retvalue)
