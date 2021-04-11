@@ -708,7 +708,7 @@ class CCcamInfoMain(Screen):
 							while string.endswith(" "):
 								string = string[:-1]
 
-							idx = .index()
+							idx = " ".index()
 							uphops = string[:idx]
 							string = string[idx+1:]
 
