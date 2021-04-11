@@ -4,3 +4,5 @@ enigma2
 =======
 
 OpenViX Enigma2 
+
+Branch "Dev-python3-compatible". All Python 3 compatibility work by @TwolDE2
