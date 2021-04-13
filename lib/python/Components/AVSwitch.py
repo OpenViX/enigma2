@@ -309,4 +309,3 @@ def InitAVSwitch():
 			open(SystemInfo["HDMIAudioSource"], "w").write(configElement.value)
 		config.av.hdmi_audio_source = ConfigSelection(default="pcm", choices=[("pcm", _("PCM")), ("spdif", _("SPDIF"))])
 		config.av.hdmi_audio_source.addNotifier(setHDMIAudioSource)
-

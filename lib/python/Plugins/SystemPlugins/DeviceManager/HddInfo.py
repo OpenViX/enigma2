@@ -128,4 +128,3 @@ class HddInfo(ConfigListScreen, Screen):
 			if temp:
 				self["temp"].setText(_("Disk temperature: %s") % temp[0].lstrip())
 		hddtemp.close()
-
