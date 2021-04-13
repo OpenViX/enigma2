@@ -111,7 +111,7 @@ class TimerSanityCheck:
 				begin += 86400
 				rflags >>= 1
 		else:
-			self.nrep_eventlist.extend([(self.newtimer.begin,self.bflag,-1), (self.newtimer.end,self.eflag,-1)])
+			self.nrep_eventlist.extend([(self.newtimer.begin, self.bflag, -1), (self.newtimer.end, self.eflag, -1)])
 
 ##################################################################################
 # now process existing timers
@@ -135,7 +135,7 @@ class TimerSanityCheck:
 						begin += 86400
 						rflags >>= 1
 				else:
-					self.nrep_eventlist.extend([(timer.begin,self.bflag,idx), (timer.end,self.eflag,idx)])
+					self.nrep_eventlist.extend([(timer.begin, self.bflag, idx), (timer.end, self.eflag, idx)])
 			self.check_timerlist.append(timer)
 			idx += 1
 

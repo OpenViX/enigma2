@@ -22,7 +22,7 @@ except ImportError: # Python 2
 if getImageType() == 'release':
 	ImageVer = "%03d" % int(getImageBuild())
 else:
-	ImageVer = "%s.%s" % (getImageBuild(),getImageDevBuild())
+	ImageVer = "%s.%s" % (getImageBuild(), getImageDevBuild())
 	ImageVer = float(ImageVer)
 
 E2Branches = {

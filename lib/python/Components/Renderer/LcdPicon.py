@@ -25,7 +25,7 @@ class LcdPicon(Renderer):
 		Renderer.__init__(self)
 		self.PicLoad = ePicLoad()
 		self.PicLoad.PictureData.get().append(self.updatePicon)
-		self.piconsize = (0,0)
+		self.piconsize = (0, 0)
 		config.lcd.picon_pack.addNotifier(self.configChanged)
 
 	def configChanged(self, _):
@@ -47,7 +47,7 @@ class LcdPicon(Renderer):
 		for (attrib, value) in self.skinAttributes:
 			if attrib == "path":
 				lcdPiconLocator.addSearchPath(value)
-				attribs.remove((attrib,value))
+				attribs.remove((attrib, value))
 			elif attrib == "size":
 				self.piconsize = value
 		self.skinAttributes = attribs

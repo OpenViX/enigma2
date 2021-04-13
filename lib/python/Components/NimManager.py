@@ -585,7 +585,7 @@ class NIM(object):
 		connectable = {
 				"DVB-S": ("DVB-S", "DVB-S2", "DVB-S2X"),
 				"DVB-C": ("DVB-C", "DVB-C2"),
-				"DVB-T": ("DVB-T","DVB-T2"),
+				"DVB-T": ("DVB-T", "DVB-T2"),
 				"DVB-S2": ("DVB-S", "DVB-S2", "DVB-S2X"),
 				"DVB-S2X": ("DVB-S", "DVB-S2", "DVB-S2X"),
 				"DVB-C2": ("DVB-C", "DVB-C2"),
@@ -674,7 +674,7 @@ class NIM(object):
 
 	def getFriendlyType(self):
 		if list(self.multi_type.values()):
-			returnValue = "/".join([x[1].replace("DVB-", "") for x in sorted([({"DVB-S":1, "DVB-C": 2, "DVB-T": 3, "ATSC": 4}[x[:5]], x) for x in list(self.multi_type.values())])])
+			returnValue = "/".join([x[1].replace("DVB-", "") for x in sorted([({"DVB-S": 1, "DVB-C": 2, "DVB-T": 3, "ATSC": 4}[x[:5]], x) for x in list(self.multi_type.values())])])
 			return "%s %s" % (_("Combined") if self.combined else _("MultiType"), returnValue if returnValue == 'ATSC' else "DVB-%s" % returnValue)
 		return self.getType() or _("empty")
 
@@ -1490,11 +1490,11 @@ def InitNimManager(nimmgr, update_slots=[]):
 		nim.positionerMode = ConfigSelection(positioner_mode_choices, "usals")
 		nim.userSatellitesList = ConfigText('[]')
 		nim.pressOKtoList = ConfigNothing()
-		nim.longitude = ConfigFloat(default=[5, 100], limits=[(0, 359),(0, 999)])
+		nim.longitude = ConfigFloat(default=[5, 100], limits=[(0, 359), (0, 999)])
 		nim.longitudeOrientation = ConfigSelection(longitude_orientation_choices, "east")
-		nim.latitude = ConfigFloat(default=[50, 767], limits=[(0, 359),(0, 999)])
+		nim.latitude = ConfigFloat(default=[50, 767], limits=[(0, 359), (0, 999)])
 		nim.latitudeOrientation = ConfigSelection(latitude_orientation_choices, "north")
-		nim.tuningstepsize = ConfigFloat(default=[0, 360], limits=[(0, 9),(0, 999)])
+		nim.tuningstepsize = ConfigFloat(default=[0, 360], limits=[(0, 9), (0, 999)])
 		nim.rotorPositions = ConfigInteger(default=99, limits=[1, 999])
 		nim.turningspeedH = ConfigFloat(default=[2, 3], limits=[(0, 9), (0, 9)])
 		nim.turningspeedV = ConfigFloat(default=[1, 7], limits=[(0, 9), (0, 9)])

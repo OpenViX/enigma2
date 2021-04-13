@@ -31,7 +31,7 @@ class VideoEnhancement:
 				if not VideoEnhancement.firstRun:
 					self.setConfiguredValues()
 
-			config.pep.contrast = ConfigSlider(default=128, limits=(0,256))
+			config.pep.contrast = ConfigSlider(default=128, limits=(0, 256))
 			config.pep.contrast.addNotifier(setContrast)
 		else:
 			config.pep.contrast = NoSave(ConfigNothing())
@@ -50,7 +50,7 @@ class VideoEnhancement:
 				if not VideoEnhancement.firstRun:
 					self.setConfiguredValues()
 
-			config.pep.saturation = ConfigSlider(default=128, limits=(0,256))
+			config.pep.saturation = ConfigSlider(default=128, limits=(0, 256))
 			config.pep.saturation.addNotifier(setSaturation)
 		else:
 			config.pep.saturation = NoSave(ConfigNothing())
@@ -126,7 +126,7 @@ class VideoEnhancement:
 				if not VideoEnhancement.firstRun:
 					self.setConfiguredValues()
 
-			config.pep.mosquito_noise_reduction = ConfigSlider(default=0, limits=(0,5))
+			config.pep.mosquito_noise_reduction = ConfigSlider(default=0, limits=(0, 5))
 			config.pep.mosquito_noise_reduction.addNotifier(setMosquito_noise_reduction)
 		else:
 			config.pep.mosquito_noise_reduction = NoSave(ConfigNothing())

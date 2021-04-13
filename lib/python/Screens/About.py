@@ -114,7 +114,7 @@ class About(Screen):
 
 		AboutText += _("Drivers:\t%s\n") % driversdate
 		AboutText += _("Kernel:\t%s\n") % about.getKernelVersionString()
-		AboutText += _("GStreamer:\t%s\n") % about.getGStreamerVersionString().replace("GStreamer ","")
+		AboutText += _("GStreamer:\t%s\n") % about.getGStreamerVersionString().replace("GStreamer ", "")
 		AboutText += _("Python:\t%s\n") % about.getPythonVersionString()
 		AboutText += _("Installed:\t%s\n") % about.getFlashDateString()
 		AboutText += _("Last update:\t%s\n") % getEnigmaVersionString()
@@ -138,7 +138,7 @@ class About(Screen):
 			with open("/proc/stb/sensors/temp/value", "r") as f:
 				tempinfo = f.read()
 		if tempinfo and int(tempinfo.replace("\n", "")) > 0:
-			AboutText += _("System temp:\t%s") % tempinfo.replace("\n", "").replace(" ","") + SIGN + "C\n"
+			AboutText += _("System temp:\t%s") % tempinfo.replace("\n", "").replace(" ", "") + SIGN + "C\n"
 
 		tempinfo = ""
 		if path.exists("/proc/stb/fp/temp_sensor_avs"):
@@ -157,7 +157,7 @@ class About(Screen):
 			except:
 				tempinfo = ""
 		if tempinfo and int(tempinfo) > 0:
-			AboutText += _("Processor temp:\t%s") % tempinfo.replace("\n", "").replace(" ","") + SIGN + "C\n"
+			AboutText += _("Processor temp:\t%s") % tempinfo.replace("\n", "").replace(" ", "") + SIGN + "C\n"
 
 		fp_version = getFPVersion()
 		if fp_version is None:

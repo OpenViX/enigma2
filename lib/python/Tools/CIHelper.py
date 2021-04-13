@@ -67,7 +67,7 @@ class CIHelper:
 			for item in self.CI_ASSIGNMENT_LIST:
 				print("[CI_Activate] activate CI%d with following settings:" % item[0])
 				try:
-					eDVBCIInterfaces.getInstance().setDescrambleRules(item[0],item[1])
+					eDVBCIInterfaces.getInstance().setDescrambleRules(item[0], item[1])
 				except:
 					print("[CI_Activate_Config_CI%d] error setting DescrambleRules..." % item[0])
 				for x in item[1][0]:

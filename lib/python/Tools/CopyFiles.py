@@ -103,9 +103,9 @@ class DownloadTask(Task):
 		if (recvbytes - self.last_recvbytes) > 100000: # anti-flicker
 			self.progress = int(100 * (float(recvbytes) / float(totalbytes)))
 			if (((float(totalbytes) / 1024) / 1024) / 1024) >= 1:
-				self.name = _("Downloading") + ' ' + _("%s of %s GB") % (str(round((((float(recvbytes) / 1024) / 1024) / 1024),2)), str(round((((float(totalbytes) / 1024) / 1024) / 1024),2)))
+				self.name = _("Downloading") + ' ' + _("%s of %s GB") % (str(round((((float(recvbytes) / 1024) / 1024) / 1024), 2)), str(round((((float(totalbytes) / 1024) / 1024) / 1024), 2)))
 			elif ((float(totalbytes) / 1024) / 1024) >= 1:
-				self.name = _("Downloading") + ' ' + _("%s of %s MB") % (str(round(((float(recvbytes) / 1024) / 1024),2)), str(round(((float(totalbytes) / 1024) / 1024),2)))
+				self.name = _("Downloading") + ' ' + _("%s of %s MB") % (str(round(((float(recvbytes) / 1024) / 1024), 2)), str(round(((float(totalbytes) / 1024) / 1024), 2)))
 			elif (totalbytes / 1024) >= 1:
 				self.name = _("Downloading") + ' ' + _("%d of %d KB") % (recvbytes / 1024, totalbytes / 1024)
 			else:

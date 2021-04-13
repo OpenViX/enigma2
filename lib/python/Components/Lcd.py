@@ -237,7 +237,7 @@ def InitLcd():
 			f = open("/proc/stb/fp/ledpowercolor", "w")
 			f.write(configElement.value)
 			f.close()
-		config.lcd.ledpowercolor = ConfigSelection(default="1", choices=[("0", _("off")),("1", _("blue")), ("2", _("red")), ("3", _("violet"))])
+		config.lcd.ledpowercolor = ConfigSelection(default="1", choices=[("0", _("off")), ("1", _("blue")), ("2", _("red")), ("3", _("violet"))])
 		config.lcd.ledpowercolor.addNotifier(setLedPowerColor)
 
 	if SystemInfo["LedStandbyColor"]:
@@ -245,7 +245,7 @@ def InitLcd():
 			f = open("/proc/stb/fp/ledstandbycolor", "w")
 			f.write(configElement.value)
 			f.close()
-		config.lcd.ledstandbycolor = ConfigSelection(default="3", choices=[("0", _("off")),("1", _("blue")), ("2", _("red")), ("3", _("violet"))])
+		config.lcd.ledstandbycolor = ConfigSelection(default="3", choices=[("0", _("off")), ("1", _("blue")), ("2", _("red")), ("3", _("violet"))])
 		config.lcd.ledstandbycolor.addNotifier(setLedStandbyColor)
 
 	if SystemInfo["LedSuspendColor"]:
@@ -253,7 +253,7 @@ def InitLcd():
 			f = open("/proc/stb/fp/ledsuspendledcolor", "w")
 			f.write(configElement.value)
 			f.close()
-		config.lcd.ledsuspendcolor = ConfigSelection(default="2", choices=[("0", _("off")),("1", _("blue")), ("2", _("red")), ("3", _("violet"))])
+		config.lcd.ledsuspendcolor = ConfigSelection(default="2", choices=[("0", _("off")), ("1", _("blue")), ("2", _("red")), ("3", _("violet"))])
 		config.lcd.ledsuspendcolor.addNotifier(setLedSuspendColor)
 
 	if SystemInfo["Power24x7On"]:
@@ -290,16 +290,16 @@ def InitLcd():
 		def setLEDblinkingtime(configElement):
 			ilcd.setLEDBlinkingTime(configElement.value)
 
-		config.lcd.ledblinkingtime = ConfigSlider(default=5, increment=1, limits=(0,15))
+		config.lcd.ledblinkingtime = ConfigSlider(default=5, increment=1, limits=(0, 15))
 		config.lcd.ledblinkingtime.addNotifier(setLEDblinkingtime)
-		config.lcd.ledbrightnessdeepstandby = ConfigSlider(default=1, increment=1, limits=(0,15))
+		config.lcd.ledbrightnessdeepstandby = ConfigSlider(default=1, increment=1, limits=(0, 15))
 		config.lcd.ledbrightnessdeepstandby.addNotifier(setLEDnormalstate)
 		config.lcd.ledbrightnessdeepstandby.addNotifier(setLEDdeepstandby)
 		config.lcd.ledbrightnessdeepstandby.apply = lambda: setLEDdeepstandby(config.lcd.ledbrightnessdeepstandby)
-		config.lcd.ledbrightnessstandby = ConfigSlider(default=1, increment=1, limits=(0,15))
+		config.lcd.ledbrightnessstandby = ConfigSlider(default=1, increment=1, limits=(0, 15))
 		config.lcd.ledbrightnessstandby.addNotifier(setLEDnormalstate)
 		config.lcd.ledbrightnessstandby.apply = lambda: setLEDnormalstate(config.lcd.ledbrightnessstandby)
-		config.lcd.ledbrightness = ConfigSlider(default=3, increment=1, limits=(0,15))
+		config.lcd.ledbrightness = ConfigSlider(default=3, increment=1, limits=(0, 15))
 		config.lcd.ledbrightness.addNotifier(setLEDnormalstate)
 		config.lcd.ledbrightness.apply = lambda: setLEDnormalstate(config.lcd.ledbrightness)
 

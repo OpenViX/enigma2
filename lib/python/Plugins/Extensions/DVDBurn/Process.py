@@ -134,7 +134,7 @@ class DemuxTask(Task):
 			self.haveProgress(progress)
 		elif line.startswith(MSG_NEW_MP2) or line.startswith(MSG_NEW_AC3):
 			try:
-				self.currentPID = str(int(line.split(': PID 0x',1)[1].split(' ', 1)[0], 16))
+				self.currentPID = str(int(line.split(': PID 0x', 1)[1].split(' ', 1)[0], 16))
 			except ValueError:
 				print("[DemuxTask] ERROR: couldn't detect Audio PID (projectx too old?)")
 
@@ -499,7 +499,7 @@ class ImagePrepareTask(Task):
 		from enigma import eTimer
 		self.delayTimer = eTimer()
 		self.delayTimer.callback.append(self.conduct)
-		self.delayTimer.start(10,1)
+		self.delayTimer.start(10, 1)
 
 	def conduct(self):
 		try:
@@ -511,7 +511,7 @@ class ImagePrepareTask(Task):
 			if self.Menus.im_bg_orig.size != (width, height):
 				self.Menus.im_bg_orig = self.Menus.im_bg_orig.resize((width, height))
 			self.Menus.fontsizes = [s.fontsize_headline.value, s.fontsize_title.value, s.fontsize_subtitle.value]
-			self.Menus.fonts = [(truetype(s.fontface_headline.value, self.Menus.fontsizes[0])), (truetype(s.fontface_title.value, self.Menus.fontsizes[1])),(truetype(s.fontface_subtitle.value, self.Menus.fontsizes[2]))]
+			self.Menus.fonts = [(truetype(s.fontface_headline.value, self.Menus.fontsizes[0])), (truetype(s.fontface_title.value, self.Menus.fontsizes[1])), (truetype(s.fontface_subtitle.value, self.Menus.fontsizes[2]))]
 			Task.processFinished(self, 0)
 		except:
 			Task.processFinished(self, 1)
@@ -598,7 +598,7 @@ class MenuImageTask(Task):
 				box = (thumbPos[0], thumbPos[1], thumbPos[0] + thumb_size[0], thumbPos[1] + thumb_size[1])
 				try:
 					thumbIm = Image_open(title.inputfile.rsplit('.', 1)[0] + ".png")
-					im_cell_bg.paste(thumbIm,thumbPos)
+					im_cell_bg.paste(thumbIm, thumbPos)
 				except:
 					draw_cell_bg.rectangle(box, fill=(64, 127, 127, 127))
 				border = s.thumb_border.value
@@ -618,11 +618,11 @@ class MenuImageTask(Task):
 
 			del draw_cell_bg
 			del draw_cell_high
-			im_bg.paste(im_cell_bg,(left, top, right, bottom), mask=im_cell_bg)
-			im_high.paste(im_cell_high,(left, top, right, bottom))
+			im_bg.paste(im_cell_bg, (left, top, right, bottom), mask=im_cell_bg)
+			im_high.paste(im_cell_high, (left, top, right, bottom))
 
 			spuxml += """
-	<button name="button%s" x0="%d" x1="%d" y0="%d" y1="%d"/>""" % (str(title_no).zfill(2),left,right,top,bottom)
+	<button name="button%s" x0="%d" x1="%d" y0="%d" y1="%d"/>""" % (str(title_no).zfill(2), left, right, top, bottom)
 			if col < nr_cols:
 				col += 1
 			else:
@@ -637,7 +637,7 @@ class MenuImageTask(Task):
 			draw_bg.text(pos, next_page_text, fill=self.Menus.color_button, font=fonts[1])
 			draw_high.text(pos, next_page_text, fill=1, font=fonts[1])
 			spuxml += """
-	<button name="button_next" x0="%d" x1="%d" y0="%d" y1="%d"/>""" % (pos[0],pos[0] + textsize[0],pos[1],pos[1] + textsize[1])
+	<button name="button_next" x0="%d" x1="%d" y0="%d" y1="%d"/>""" % (pos[0], pos[0] + textsize[0], pos[1], pos[1] + textsize[1])
 		if self.menu_count > 1:
 			prev_page_text = s.prev_page_text.value.decode("utf-8")
 			textsize = draw_bg.textsize(prev_page_text, font=fonts[1])
@@ -645,14 +645,14 @@ class MenuImageTask(Task):
 			draw_bg.text(pos, prev_page_text, fill=self.Menus.color_button, font=fonts[1])
 			draw_high.text(pos, prev_page_text, fill=1, font=fonts[1])
 			spuxml += """
-	<button name="button_prev" x0="%d" x1="%d" y0="%d" y1="%d"/>""" % (pos[0], pos[0] + textsize[0],pos[1],pos[1] + textsize[1])
+	<button name="button_prev" x0="%d" x1="%d" y0="%d" y1="%d"/>""" % (pos[0], pos[0] + textsize[0], pos[1], pos[1] + textsize[1])
 		del draw_bg
 		del draw_high
-		fd = open(self.menubgpngfilename,"w")
-		im_bg.save(fd,"PNG")
+		fd = open(self.menubgpngfilename, "w")
+		im_bg.save(fd, "PNG")
 		fd.close()
-		fd = open(self.highlightpngfilename,"w")
-		im_high.save(fd,"PNG")
+		fd = open(self.highlightpngfilename, "w")
+		im_high.save(fd, "PNG")
 		fd.close()
 		spuxml += """
 	</spu>
@@ -958,7 +958,7 @@ class DVDdataJob(Job):
 		nr_titles = len(self.project.titles)
 		for self.i in list(range(nr_titles)):
 			title = self.project.titles[self.i]
-			filename = title.inputfile.rstrip("/").rsplit("/",1)[1]
+			filename = title.inputfile.rstrip("/").rsplit("/", 1)[1]
 			link_name = self.workspace + filename
 			LinkTS(self, title.inputfile, link_name)
 			CopyMeta(self, title.inputfile)
