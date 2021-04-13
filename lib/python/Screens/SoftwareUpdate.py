@@ -108,7 +108,7 @@ class UpdatePlugin(Screen, ProtectedScreen):
 		self['actions'].csel = self
 		self["actions"].setEnabled(False)
 
-		self.sliderPackages = { "dreambox-dvb-modules": 1, "enigma2": 2, "tuxbox-image-info": 3 }
+		self.sliderPackages = {"dreambox-dvb-modules": 1, "enigma2": 2, "tuxbox-image-info": 3}
 		self.slider = Slider(0, 4)
 		self["slider"] = self.slider
 		self.activityslider = Slider(0, 100)

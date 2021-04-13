@@ -8,7 +8,7 @@ class PositionGauge(Renderer):
 		self.__seek_position = 0
 		self.__length = 0
 		self.__seek_enable = 0
-		self.__cutlist = [ ]
+		self.__cutlist = []
 
 	GUI_WIDGET = ePositionGauge
 
@@ -25,7 +25,7 @@ class PositionGauge(Renderer):
 			self.position = self.source.position or 0
 
 	def cutlist_changed(self):
-		self.cutlist = self.source.cutlist or [ ]
+		self.cutlist = self.source.cutlist or []
 
 	def getPosition(self):
 		return self.__position

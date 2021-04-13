@@ -66,7 +66,7 @@ preferredTagEditor = None
 # this kludge is needed because ConfigSelection only takes numbers
 # and someone appears to be fascinated by 'enums'.
 l_moviesort = [
-	(str(MovieList.SORT_GROUPWISE), _("recordings by date then other media by name") , '02/01 & A-Z'),
+	(str(MovieList.SORT_GROUPWISE), _("recordings by date then other media by name"), '02/01 & A-Z'),
 	(str(MovieList.SORT_RECORDED), _("by date"), '03/02/01'),
 	(str(MovieList.SORT_ALPHANUMERIC), _("alphabetic"), 'A-Z'),
 	(str(MovieList.SORT_ALPHA_DATE_OLDEST_FIRST), _("alpha then oldest"), 'A1 A2 Z1'),
@@ -441,7 +441,7 @@ class MovieContextMenu(Screen, ProtectedScreen):
 			# Plugins expect a valid selection, so only include them if we selected a non-dir
 			if not(service.flags & eServiceReference.mustDescent):
 				for p in plugins.getPlugins(PluginDescriptor.WHERE_MOVIELIST):
-					append_to_menu( menu, (p.description, boundFunction(p, session, service)), key="bullet")
+					append_to_menu(menu, (p.description, boundFunction(p, session, service)), key="bullet")
 
 		self["config"] = ChoiceList(menu)
 

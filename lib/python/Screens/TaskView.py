@@ -15,7 +15,7 @@ from Tools import Notifications
 from boxbranding import getMachineBrand, getMachineName
 
 class JobView(InfoBarNotifications, Screen, ConfigListScreen):
-	def __init__(self, session, job, parent=None, cancelable=True, backgroundable=True, afterEventChangeable=True , afterEvent="nothing"):
+	def __init__(self, session, job, parent=None, cancelable=True, backgroundable=True, afterEventChangeable=True, afterEvent="nothing"):
 		Screen.__init__(self, session, parent)
 		Screen.setTitle(self, _("Job View"))
 		InfoBarNotifications.__init__(self)
@@ -73,7 +73,7 @@ class JobView(InfoBarNotifications, Screen, ConfigListScreen):
 
 	def setupList(self):
 		if self.afterEventChangeable:
-			self["config"].setList( [ getConfigListEntry(_("After event"), self.settings.afterEvent) ])
+			self["config"].setList([getConfigListEntry(_("After event"), self.settings.afterEvent)])
 		else:
 			self["config"].hide()
 		self.job.afterEvent = self.settings.afterEvent.value

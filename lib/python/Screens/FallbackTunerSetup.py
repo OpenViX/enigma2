@@ -30,7 +30,7 @@ class FallbackTunerSetup(Setup):
 			result = re.search("[:](\d+)$", config.usage.remote_fallback.value)
 			if result is not None:
 				portDefault = int(result.group(1))
-		self.ip = ConfigIP( default=ipDefault, auto_jump=True)
+		self.ip = ConfigIP(default=ipDefault, auto_jump=True)
 
 		self.port = ConfigInteger(default=portDefault, limits=(1,65535))
 

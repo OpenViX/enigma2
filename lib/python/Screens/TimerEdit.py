@@ -34,7 +34,7 @@ class TimerEditList(Screen, ProtectedScreen):
 		ProtectedScreen.__init__(self)
 		self.setTitle(_("Timer List"))
 
-		self.onChangedEntry = [ ]
+		self.onChangedEntry = []
 		self.list = []
 		self["timerlist"] = TimerList(self.list)
 
@@ -193,7 +193,7 @@ class TimerEditList(Screen, ProtectedScreen):
 				self.removeAction("yellow")
 				self["key_yellow"].setText("")
 				self.key_yellow_choice = self.EMPTY
-			elif ((not cur.isRunning())or cur.repeated ) and (not cur.disabled) and (self.key_yellow_choice != self.DISABLE):
+			elif ((not cur.isRunning())or cur.repeated) and (not cur.disabled) and (self.key_yellow_choice != self.DISABLE):
 				self["actions"].actions.update({"yellow":self.toggleDisabledState})
 				self["key_yellow"].setText(_("Disable"))
 				self.key_yellow_choice = self.DISABLE
@@ -520,7 +520,7 @@ class TimerSanityConflict(Screen):
 					self.removeAction("blue")
 					self["key_blue"].setText("")
 					self.key_blue_choice = self.EMPTY
-				elif (not self.timer[x].isRunning() or self.timer[x].repeated ) and self.key_blue_choice != self.DISABLE:
+				elif (not self.timer[x].isRunning() or self.timer[x].repeated) and self.key_blue_choice != self.DISABLE:
 					self["actions"].actions.update({"blue":self.toggleTimer})
 					self["key_blue"].setText(_("Disable"))
 					self.key_blue_choice = self.DISABLE

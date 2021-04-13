@@ -360,13 +360,13 @@ def InitLcd():
 		config.lcd.ledbrightnessdeepstandby = ConfigSlider(default=1, increment=1, limits=(0,15))
 		config.lcd.ledbrightnessdeepstandby.addNotifier(setLEDnormalstate)
 		config.lcd.ledbrightnessdeepstandby.addNotifier(setLEDdeepstandby)
-		config.lcd.ledbrightnessdeepstandby.apply = lambda : setLEDdeepstandby(config.lcd.ledbrightnessdeepstandby)
+		config.lcd.ledbrightnessdeepstandby.apply = lambda: setLEDdeepstandby(config.lcd.ledbrightnessdeepstandby)
 		config.lcd.ledbrightnessstandby = ConfigSlider(default=1, increment=1, limits=(0,15))
 		config.lcd.ledbrightnessstandby.addNotifier(setLEDnormalstate)
-		config.lcd.ledbrightnessstandby.apply = lambda : setLEDnormalstate(config.lcd.ledbrightnessstandby)
+		config.lcd.ledbrightnessstandby.apply = lambda: setLEDnormalstate(config.lcd.ledbrightnessstandby)
 		config.lcd.ledbrightness = ConfigSlider(default=3, increment=1, limits=(0,15))
 		config.lcd.ledbrightness.addNotifier(setLEDnormalstate)
-		config.lcd.ledbrightness.apply = lambda : setLEDnormalstate(config.lcd.ledbrightness)
+		config.lcd.ledbrightness.apply = lambda: setLEDnormalstate(config.lcd.ledbrightness)
 
 	if detected:
 		config.lcd.scroll_speed = ConfigSelection(default="300", choices=[
@@ -428,14 +428,14 @@ def InitLcd():
 
 		config.lcd.standby = ConfigSlider(default=standby_default, limits=(0, 10))
 		config.lcd.standby.addNotifier(setLCDbright)
-		config.lcd.standby.apply = lambda : setLCDbright(config.lcd.standby)
+		config.lcd.standby.apply = lambda: setLCDbright(config.lcd.standby)
 
 		config.lcd.bright = ConfigSlider(default=5, limits=(0, 10))
 		config.lcd.bright.addNotifier(setLCDbright)
-		config.lcd.bright.apply = lambda : setLCDbright(config.lcd.bright)
+		config.lcd.bright.apply = lambda: setLCDbright(config.lcd.bright)
 		config.lcd.dimbright = ConfigSlider(default=standby_default, limits=(0, 10))
 		config.lcd.dimbright.addNotifier(setLCDdimbright)
-		config.lcd.dimbright.apply = lambda : setLCDdimbright(config.lcd.dimbright)
+		config.lcd.dimbright.apply = lambda: setLCDdimbright(config.lcd.dimbright)
 		config.lcd.dimdelay = ConfigSelection(default="0", choices=[
 			("5", "5 " + _("seconds")),
 			("10", "10 " + _("seconds")),
@@ -554,16 +554,16 @@ def InitLcd():
 		config.lcd.contrast = ConfigNothing()
 		config.lcd.bright = ConfigNothing()
 		config.lcd.standby = ConfigNothing()
-		config.lcd.bright.apply = lambda : doNothing()
-		config.lcd.standby.apply = lambda : doNothing()
+		config.lcd.bright.apply = lambda: doNothing()
+		config.lcd.standby.apply = lambda: doNothing()
 		config.lcd.mode = ConfigNothing()
 		config.lcd.power = ConfigNothing()
 		config.lcd.ledbrightness = ConfigNothing()
-		config.lcd.ledbrightness.apply = lambda : doNothing()
+		config.lcd.ledbrightness.apply = lambda: doNothing()
 		config.lcd.ledbrightnessstandby = ConfigNothing()
-		config.lcd.ledbrightnessstandby.apply = lambda : doNothing()
+		config.lcd.ledbrightnessstandby.apply = lambda: doNothing()
 		config.lcd.ledbrightnessdeepstandby = ConfigNothing()
-		config.lcd.ledbrightnessdeepstandby.apply = lambda : doNothing()
+		config.lcd.ledbrightnessdeepstandby.apply = lambda: doNothing()
 		config.lcd.ledblinkingtime = ConfigNothing()
 		config.lcd.picon_pack = ConfigNothing()
 

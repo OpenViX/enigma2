@@ -167,7 +167,7 @@ class EPGBouquetList(GUIComponent):
 				flags=BT_SCALE))
 		else:
 			res.append(MultiContentEntryText(
-				pos=(left , top), size=(width, height),
+				pos=(left, top), size=(width, height),
 				font=0, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER,
 				text="", color=None, color_sel=None,
 				backcolor=backColor, backcolor_sel=backColorSel,

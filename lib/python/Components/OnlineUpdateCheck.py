@@ -171,7 +171,7 @@ class FeedsStatusCheck:
 			elif self.ipkg.currentCommand == IpkgComponent.CMD_UPGRADE_LIST:
 				self.total_packages = len(self.ipkg.getFetchedList())
 				if self.total_packages and (getImageType() != 'release' or (config.softwareupdate.updateisunstable.value == '1' and config.softwareupdate.updatebeta.value) or config.softwareupdate.updateisunstable.value == '0'):
-					print ('[OnlineUpdateCheck][ipkgCallback] %s Updates available' % self.total_packages)
+					print('[OnlineUpdateCheck][ipkgCallback] %s Updates available' % self.total_packages)
 					config.softwareupdate.updatefound.setValue(True)
 		pass
 

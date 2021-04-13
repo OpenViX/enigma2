@@ -77,7 +77,7 @@ class BouquetSelector(Screen):
 				"ok": self.okbuttonClick,
 				"cancel": self.cancelClick
 			})
-		entrys = [ (x[0], x[1]) for x in bouquets ]
+		entrys = [(x[0], x[1]) for x in bouquets]
 		self["menu"] = MenuList(entrys, enableWrapAround)
 
 	def getCurrent(self):
@@ -166,7 +166,7 @@ class ChannelContextMenu(Screen):
 			# "8": self.renameEntry,
 			# "9": self.removeEntry
 		}
-		menu = [ ]
+		menu = []
 
 
 		menu.append(ChoiceEntryComponent("menu", (_("Configuration..."), self.openSetup)))
@@ -747,7 +747,7 @@ class ChannelSelectionEPG(InfoBarButtonSetup, HelpableScreen):
 	def RecordTimerQuestion(self):
 		serviceref = ServiceReference(self.getCurrentSelection())
 		refstr = ':'.join(serviceref.ref.toString().split(':')[:11])
-		test = ["ITX", (refstr, 1, -1, 1440) ] # search next 24 hours
+		test = ["ITX", (refstr, 1, -1, 1440)] # search next 24 hours
 		list = eEPGCache.getInstance().lookupEvent(test)
 		if list is None or len(list) < 2:
 			return
@@ -866,7 +866,7 @@ class ChannelSelectionEdit:
 		self.entry_marked = False
 		self.bouquet_mark_edit = OFF
 		self.mutableList = None
-		self.__marked = [ ]
+		self.__marked = []
 		self.saved_title = None
 		self.saved_root = None
 		self.current_ref = None
@@ -1326,10 +1326,10 @@ class ChannelSelectionBase(Screen, HelpableScreen):
 
 		self.numericalTextInput = NumericalTextInput(handleTimeout=False)
 
-		self.servicePathTV = [ ]
-		self.servicePathRadio = [ ]
-		self.servicePath = [ ]
-		self.history = [ ]
+		self.servicePathTV = []
+		self.servicePathRadio = []
+		self.servicePath = []
+		self.history = []
 		self.rootChanged = False
 		self.startRoot = None
 		self.selectionNumber = ""
@@ -2406,7 +2406,7 @@ class ChannelSelection(ChannelSelectionEdit, ChannelSelectionBase, ChannelSelect
 		if selpos > hlen-1:
 			selpos = hlen-1
 		serviceHandler = eServiceCenter.getInstance()
-		historylist = [ ]
+		historylist = []
 		for x in self.history:
 			info = serviceHandler.info(x[-1])
 			if info:
@@ -2445,8 +2445,8 @@ class ChannelSelection(ChannelSelectionEdit, ChannelSelectionBase, ChannelSelect
 			self.lastroot.save()
 
 	def restoreRoot(self):
-		tmp = [ x for x in self.lastroot.value.split(';') if x != '' ]
-		current = [ x.toString() for x in self.servicePath ]
+		tmp = [x for x in self.lastroot.value.split(';') if x != '']
+		current = [x.toString() for x in self.servicePath]
 		if tmp != current or self.rootChanged:
 			self.clearPath()
 			cnt = 0
@@ -2797,8 +2797,8 @@ class ChannelSelectionRadio(ChannelSelectionEdit, ChannelSelectionBase, ChannelS
 			config.radio.lastroot.save()
 
 	def restoreRoot(self):
-		tmp = [ x for x in config.radio.lastroot.value.split(';') if x != '' ]
-		current = [ x.toString() for x in self.servicePath ]
+		tmp = [x for x in config.radio.lastroot.value.split(';') if x != '']
+		current = [x.toString() for x in self.servicePath]
 		if tmp != current or self.rootChanged:
 			cnt = 0
 			for i in tmp:

@@ -48,7 +48,7 @@ class TimerEntry(TimerEntryBase):
 		self.timerentry_autosleeprepeat = ConfigSelection(choices=[("once",_("once")), ("repeated", _("repeated"))], default=autosleeprepeat)
 		self.timerentry_autosleepinstandbyonly = ConfigSelection(choices=[("yes",_("Yes")), ("no", _("No"))],default=autosleepinstandbyonly)
 
-		self.timerentry_showendtime = ConfigYesNo(default=(((self.timer.end - self.timer.begin) /60 ) > 1))
+		self.timerentry_showendtime = ConfigYesNo(default=(((self.timer.end - self.timer.begin) /60) > 1))
 
 	def keySelect(self, result=None):
 		self.keySave()
