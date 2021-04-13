@@ -320,7 +320,8 @@ class BurnTaskPostcondition(Condition):
 class BurnTask(Task):
 	ERROR_NOTWRITEABLE, ERROR_LOAD, ERROR_SIZE, ERROR_WRITE_FAILED, ERROR_DVDROM, ERROR_ISOFS, ERROR_FILETOOLARGE, ERROR_ISOTOOLARGE, ERROR_MINUSRWBUG, ERROR_UNKNOWN = range(10)
 	def __init__(self, job, extra_args=None, tool="growisofs"):
-		if not extra_args: extra_args = []
+		if not extra_args:
+			extra_args = []
 		Task.__init__(self, job, job.name)
 		self.weighting = 500
 		self.end = 120 # 100 for writing, 10 for buffer flush, 10 for closing disc
@@ -396,7 +397,8 @@ class CheckDiskspaceTask(Task):
 		maxsize = 0
 		for title in job.project.titles:
 			titlesize = title.estimatedDiskspace
-			if titlesize > maxsize: maxsize = titlesize
+			if titlesize > maxsize:
+				maxsize = titlesize
 			totalsize += titlesize
 		diskSpaceNeeded = totalsize + maxsize
 		job.estimateddvdsize = totalsize / 1024 / 1024
@@ -761,7 +763,8 @@ def CreateAuthoringXML_singleset(job):
 			post_tag = "jump title %d;" % ( title_no+1 )
 		elif mode.startswith("menu"):
 			post_tag = "call vmgm menu 1;"
-		else:	post_tag = ""
+		else:
+			post_tag = ""
 
 		authorxml.append('    <pgc>\n')
 		authorxml.append('     <vob file="' + title_filename + '" chapters="' + chapters + '" />\n')
@@ -849,7 +852,8 @@ def CreateAuthoringXML_multiset(job):
 			post_tag = "jump titleset %d title 1;" % ( title_no+1 )
 		elif mode.startswith("menu"):
 			post_tag = "call vmgm menu 1;"
-		else:	post_tag = ""
+		else:
+			post_tag = ""
 
 		authorxml.append('    <pgc>\n')
 		authorxml.append('     <vob file="' + title_filename + '" chapters="' + chapters + '" />\n')

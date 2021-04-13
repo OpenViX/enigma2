@@ -195,7 +195,7 @@ class PowerTimerEntry(TimerEntry, object):
 # Also added () around the test and split them across lines
 # to make it clearer what each test is.
 #
-				from Components.Converter.ClientsStreaming import ClientsStreaming;
+				from Components.Converter.ClientsStreaming import ClientsStreaming
 				if ((not Screens.Standby.inStandby and NavigationInstance.instance.getCurrentlyPlayingServiceReference() and
 					('0:0:0:0:0:0:0:0:0' in NavigationInstance.instance.getCurrentlyPlayingServiceReference().toString() or
 					 '4097:' in NavigationInstance.instance.getCurrentlyPlayingServiceReference().toString()
@@ -531,15 +531,15 @@ class PowerTimer(Timer):
 						' disabled="%d"'
 						' autosleepinstandbyonly="%s"'
 						' autosleepdelay="%s"'
-						' autosleeprepeat="%s"' % ( \
-						timerTypes[timer.timerType], \
-						int(timer.begin), \
-						int(timer.end), \
-						int(timer.repeated), \
-						afterEvents[timer.afterEvent], \
-						int(timer.disabled), \
-						timer.autosleepinstandbyonly, \
-						timer.autosleepdelay, \
+						' autosleeprepeat="%s"' % (
+						timerTypes[timer.timerType],
+						int(timer.begin),
+						int(timer.end),
+						int(timer.repeated),
+						afterEvents[timer.afterEvent],
+						int(timer.disabled),
+						timer.autosleepinstandbyonly,
+						timer.autosleepdelay,
 						timer.autosleeprepeat))
 
 			if len(timer.log_entries) == 0:

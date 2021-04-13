@@ -117,7 +117,8 @@ class DVDPlayer(Screen, InfoBarBase, InfoBarNotifications, InfoBarSeek, InfoBarP
 		config.seek.on_pause.value = self.saved_config_seek_on_pause
 
 	def __init__(self, session, dvd_device=None, dvd_filelist=None, args=None):
-		if not dvd_filelist: dvd_filelist = []
+		if not dvd_filelist:
+			dvd_filelist = []
 		Screen.__init__(self, session)
 		InfoBarBase.__init__(self)
 		InfoBarNotifications.__init__(self)

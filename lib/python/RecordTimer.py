@@ -674,7 +674,7 @@ class RecordTimerEntry(TimerEntry, object):
 # box up from standby.
 			if self.justplay:
 				return True
-			from Components.Converter.ClientsStreaming import ClientsStreaming;
+			from Components.Converter.ClientsStreaming import ClientsStreaming
 			if (not Screens.Standby.inStandby and NavigationInstance.instance.getCurrentlyPlayingServiceReference() and
 				('0:0:0:0:0:0:0:0:0' in NavigationInstance.instance.getCurrentlyPlayingServiceReference().toString() or
 				 '4097:' in NavigationInstance.instance.getCurrentlyPlayingServiceReference().toString())
@@ -696,7 +696,7 @@ class RecordTimerEntry(TimerEntry, object):
 # Also might want to back off - but that is set-up for trying to start
 # recordings, so has a low maximum delay.
 #
-				from Components.Converter.ClientsStreaming import ClientsStreaming;
+				from Components.Converter.ClientsStreaming import ClientsStreaming
 				if int(ClientsStreaming("NUMBER").getText()) > 0:
 					if not Screens.Standby.inStandby: # not already in standby
 						Notifications.AddNotificationWithCallback(self.sendStandbyNotification, MessageBox,
@@ -1093,21 +1093,21 @@ class RecordTimer(Timer):
 						' conflict_detection="%d"'
 						' descramble="%d"'
 						' record_ecm="%d"'
-						' isAutoTimer="%d"' % ( \
-						int(entry.begin), \
-						int(entry.end), \
-						stringToXML(str(entry.service_ref)), \
-						int(entry.repeated), \
-						int(entry.rename_repeat), \
-						stringToXML(entry.name), \
-						stringToXML(entry.description), \
-						afterEvents[entry.afterEvent], \
-						int(entry.justplay), \
-						int(entry.always_zap), \
-						int(entry.pipzap), \
-						int(entry.conflict_detection), \
-						int(entry.descramble), \
-						int(entry.record_ecm), \
+						' isAutoTimer="%d"' % (
+						int(entry.begin),
+						int(entry.end),
+						stringToXML(str(entry.service_ref)),
+						int(entry.repeated),
+						int(entry.rename_repeat),
+						stringToXML(entry.name),
+						stringToXML(entry.description),
+						afterEvents[entry.afterEvent],
+						int(entry.justplay),
+						int(entry.always_zap),
+						int(entry.pipzap),
+						int(entry.conflict_detection),
+						int(entry.descramble),
+						int(entry.record_ecm),
 						int(entry.isAutoTimer)))
 			if entry.eit is not None:
 				list.append(' eit="' + str(entry.eit) + '"')
@@ -1281,7 +1281,8 @@ class RecordTimer(Timer):
 			checking_time = x.begin < begin or begin <= x.begin <= end
 			if xbt.tm_yday != xet.tm_yday:
 				oday = bday - 1
-				if oday == -1: oday = 6
+				if oday == -1:
+					oday = 6
 				offset_day = x.repeated & (1 << oday)
 			xbegin = 1440 + xbt.tm_hour * 60 + xbt.tm_min
 			xend = xbegin + ((timer_end - x.begin) / 60)

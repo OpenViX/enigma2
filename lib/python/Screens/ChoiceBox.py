@@ -19,8 +19,10 @@ class ChoiceBox(Screen):
 		# callbackList is in the format (<display text>, <callback func>, [<parameters>,])
 		self.isCallbackList = bool(callbackList)
 		list = list or callbackList
-		if not list: list = []
-		if not skin_name: skin_name = []
+		if not list:
+			list = []
+		if not skin_name:
+			skin_name = []
 		Screen.__init__(self, session)
 
 		if isinstance(skin_name, str):

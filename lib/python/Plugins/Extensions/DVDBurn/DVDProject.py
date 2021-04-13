@@ -9,7 +9,8 @@ from Tools.Directories import resolveFilename, SCOPE_PLUGINS, SCOPE_FONTS
 
 class ConfigColor(ConfigSequence):
 	def __init__(self, default=None):
-		if not default: default = [128, 128, 128]
+		if not default:
+			default = [128, 128, 128]
 		ConfigSequence.__init__(self, seperator = "#", limits = [(0,255),(0,255),(0,255)], default = default)
 
 class ConfigFilename(ConfigText):
