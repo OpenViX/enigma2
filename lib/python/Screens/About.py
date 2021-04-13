@@ -25,7 +25,8 @@ boxtype = getBoxType()
 from enigma import eTimer, eLabel, eConsoleAppContainer, getDesktop
 
 from Components.GUIComponent import GUIComponent
-import skin, os
+import skin
+import os
 
 
 class About(Screen):
