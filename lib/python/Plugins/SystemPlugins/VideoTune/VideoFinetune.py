@@ -9,7 +9,7 @@ from Tools.Directories import fileExists
 
 
 def RGB(r, g, b):
-	return (r<<16)|(g<<8)|b
+	return (r << 16) | (g << 8) | b
 
 class OverscanTestScreen(Screen):
 	skin = """
@@ -118,7 +118,7 @@ class VideoFinetune(Screen):
 		open("/proc/stb/fb/dst_height", "w").write(self.height)
 
 	def keyNumber(self, key):
-		(self.testpic_brightness, self.testpic_contrast, self.testpic_colors, self.testpic_filter, self.testpic_gamma, self.testpic_overscan, self.testpic_fullhd)[key-1]()
+		(self.testpic_brightness, self.testpic_contrast, self.testpic_colors, self.testpic_filter, self.testpic_gamma, self.testpic_overscan, self.testpic_fullhd)[key - 1]()
 
 	def callNext(self):
 		if self.next:
@@ -154,7 +154,7 @@ class VideoFinetune(Screen):
 			if col == 0 or col == 16 or col == 116:
 				c.fill(x, offset, width, 2, RGB(255, 255, 255))
 			if i < 2:
-				c.writeText(x + width, offset, width, eh, RGB(255, 255, 255), RGB(0, 0, 0), gFont("Regular", 20), "%d." % (i+1))
+				c.writeText(x + width, offset, width, eh, RGB(255, 255, 255), RGB(0, 0, 0), gFont("Regular", 20), "%d." % (i + 1))
 
 		c.writeText(xres // 10, yres // 6 - 40, xres * 3 // 5, 40, RGB(128, 255, 255), RGB(0, 0, 0), gFont("Regular", 40),
 			_("Brightness"))
@@ -196,7 +196,7 @@ class VideoFinetune(Screen):
 			if col == 185 or col == 235 or col == 255:
 				c.fill(x, offset, width, 2, RGB(0, 0, 0))
 			if i >= 13:
-				c.writeText(x + width, offset, width, eh, RGB(0, 0, 0), RGB(255, 255, 255), gFont("Regular", 20), "%d." % (i-13+1))
+				c.writeText(x + width, offset, width, eh, RGB(0, 0, 0), RGB(255, 255, 255), gFont("Regular", 20), "%d." % (i - 13 + 1))
 
 		c.writeText(xres // 10, yres // 6 - 40, xres * 3 // 5, 40, RGB(128, 0, 0), RGB(255, 255, 255), gFont("Regular", 40),
 			_("Contrast"))
@@ -328,7 +328,7 @@ class VideoFinetune(Screen):
 			col = int(math.pow(.5, 1.0 / gamma) * 256.0)
 			c.fill(offset_x + width // 2, offset_y + l, width // 2, h, RGB(col, col, col))
 
-			c.writeText(offset_x + width // 2, offset_y + l, width // 2, h, RGB(0, 0, 0), RGB(col, col, col), fnt, "%1.2f" % gamma, RT_WRAP|RT_HALIGN_RIGHT)
+			c.writeText(offset_x + width // 2, offset_y + l, width // 2, h, RGB(0, 0, 0), RGB(col, col, col), fnt, "%1.2f" % gamma, RT_WRAP | RT_HALIGN_RIGHT)
 			l = y
 
 		c.flush()

@@ -21,7 +21,7 @@ from Tools.HardwareInfo import HardwareInfo
 
 def InitUsageConfig():
 	config.version = ConfigNumber(default=0)
-	config.misc.useNTPminutes = ConfigSelection(default="30", choices=[("30", "30" + " " +_("minutes")), ("60", _("Hour")), ("1440", _("Once per day"))])
+	config.misc.useNTPminutes = ConfigSelection(default="30", choices=[("30", "30" + " " + _("minutes")), ("60", _("Hour")), ("1440", _("Once per day"))])
 	if getBrandOEM() in ('vuplus', 'ini'):
 		config.misc.remotecontrol_text_support = ConfigYesNo(default=True)
 	else:
@@ -781,7 +781,7 @@ def InitUsageConfig():
 
 	config.epg.histminutes = ConfigSelectionNumber(min=0, max=720, stepwidth=15, default=0, wraparound=True)
 	def EpgHistorySecondsChanged(configElement):
-		eEPGCache.getInstance().setEpgHistorySeconds(config.epg.histminutes.value*60)
+		eEPGCache.getInstance().setEpgHistorySeconds(config.epg.histminutes.value * 60)
 	config.epg.histminutes.addNotifier(EpgHistorySecondsChanged)
 
 	config.epg.cacheloadsched = ConfigYesNo(default=False)
@@ -1015,7 +1015,7 @@ def InitUsageConfig():
 
 	config.autolanguage = ConfigSubsection()
 	default_autoselect = "eng Englisch" # for audio_autoselect1
-	audio_language_choices=[
+	audio_language_choices = [
 		("", _("None")),
 		("und", _("Undetermined")),
 		("orj dos ory org esl qaa und mis mul ORY ORJ Audio_ORJ oth", _("Original")),

@@ -396,11 +396,11 @@ class PowerKey:
 
 	def __init__(self, session):
 		self.session = session
-		globalActionMap.actions["power_down"]=self.powerdown
-		globalActionMap.actions["power_up"]=self.powerup
-		globalActionMap.actions["power_long"]=self.powerlong
-		globalActionMap.actions["deepstandby"]=self.shutdown # frontpanel long power button press
-		globalActionMap.actions["discrete_off"]=self.standby
+		globalActionMap.actions["power_down"] = self.powerdown
+		globalActionMap.actions["power_up"] = self.powerup
+		globalActionMap.actions["power_long"] = self.powerlong
+		globalActionMap.actions["deepstandby"] = self.shutdown # frontpanel long power button press
+		globalActionMap.actions["discrete_off"] = self.standby
 		self.standbyblocked = 1
 
 	def MenuClosed(self, *val):
@@ -592,7 +592,7 @@ def runScreenTest():
 		if not config.misc.SyncTimeUsing.value == "0":
 			print("[StartEnigma] dvb time sync disabled... so set RTC now to current linux time!", strftime("%Y/%m/%d %H:%M", localtime(nowTime)))
 			setRTCtime(nowTime)
-		print("[StartEnigma] set wakeup time to", strftime("%Y/%m/%d %H:%M", localtime(wptime+60)))
+		print("[StartEnigma] set wakeup time to", strftime("%Y/%m/%d %H:%M", localtime(wptime + 60)))
 		setFPWakeuptime(wptime)
 		PowerTimerWakeupAuto = startTime[1] == 3 and startTime[2]
 		print("[StartEnigma] PowerTimerWakeupAuto", PowerTimerWakeupAuto)

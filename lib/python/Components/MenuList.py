@@ -71,7 +71,7 @@ class MenuList(GUIComponent):
 
 	# Add new moveDown method for symmetry with ConfigList
 	def moveDown(self):
-		if self.instance  != None:
+		if self.instance != None:
 
 			self.instance.moveSelection(self.instance.moveDown)
 

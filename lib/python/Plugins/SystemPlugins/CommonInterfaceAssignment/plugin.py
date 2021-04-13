@@ -58,17 +58,17 @@ class CIselectMainMenu(Screen):
 		self.dlg = None
 		self.state = {}
 		self.list = []
-		if  NUM_CI and NUM_CI > 0:
+		if NUM_CI and NUM_CI > 0:
 			for slot in list(range(NUM_CI)):
 				state = eDVBCI_UI.getInstance().getState(slot)
 				if state != -1:
-					appname = _("Slot %d") %(slot+1) + " - " + _("Unknown error")
+					appname = _("Slot %d") % (slot + 1) + " - " + _("Unknown error")
 					if state == 0:
-						appname = _("Slot %d") %(slot+1) + " - " + _("No module found")
+						appname = _("Slot %d") % (slot + 1) + " - " + _("No module found")
 					elif state == 1:
-						appname = _("Slot %d") %(slot+1) + " - " + _("Init modules")
+						appname = _("Slot %d") % (slot + 1) + " - " + _("Init modules")
 					elif state == 2:
-						appname = _("Slot %d") %(slot+1) + " - " + eDVBCI_UI.getInstance().getAppName(slot)
+						appname = _("Slot %d") % (slot + 1) + " - " + eDVBCI_UI.getInstance().getAppName(slot)
 					self.list.append((appname, ConfigNothing(), 0, slot))
 		else:
 			self.list.append((_("no CI slots found"), ConfigNothing(), 1, -1))
@@ -147,7 +147,7 @@ class CIconfigMenu(Screen):
 			i += 1
 			self.caidlist.append((str(hex(int(caid))),str(caid),i))
 
-		print("[CI_Wizzard_Config_CI%d] read following CAIds from CI: %s" %(self.ci_slot, self.caidlist))
+		print("[CI_Wizzard_Config_CI%d] read following CAIds from CI: %s" % (self.ci_slot, self.caidlist))
 
 		self.selectedcaid = []
 		self.servicelist = []
@@ -266,7 +266,7 @@ class CIconfigMenu(Screen):
 	def finishedCAidSelection(self, *args):
 		if len(args):
 			self.selectedcaid = args[0]
-			self.caids=""
+			self.caids = ""
 			if len(self.selectedcaid):
 				for item in self.selectedcaid:
 					if len(self.caids):
@@ -301,7 +301,7 @@ class CIconfigMenu(Screen):
 					if item[2] == 1:
 						fp.write("\t\t<provider name=\"%s\" dvbnamespace=\"%s\" />\n" % (stringToXML(name), item[3]))
 					else:
-						fp.write("\t\t<service name=\"%s\" ref=\"%s\" />\n"  % (stringToXML(name), item[3]))
+						fp.write("\t\t<service name=\"%s\" ref=\"%s\" />\n" % (stringToXML(name), item[3]))
 			fp.write("\t</slot>\n")
 			fp.write("</ci>\n")
 			fp.close()
@@ -316,7 +316,7 @@ class CIconfigMenu(Screen):
 
 		def getValue(definitions, default):
 			Len = len(definitions)
-			return Len > 0 and definitions[Len-1].text or default
+			return Len > 0 and definitions[Len - 1].text or default
 		self.read_services = []
 		self.read_providers = []
 		self.usingcaid = []
@@ -332,12 +332,12 @@ class CIconfigMenu(Screen):
 					self.usingcaid.append(int(read_caid,16))
 					i += 1
 
-				for service in  slot.findall("service"):
+				for service in slot.findall("service"):
 					read_service_name = six.ensure_str(service.get("name"))
 					read_service_ref = six.ensure_str(service.get("ref"))
 					self.read_services.append(read_service_ref)
 
-				for provider in  slot.findall("provider"):
+				for provider in slot.findall("provider"):
 					read_provider_name = six.ensure_str(provider.get("name"))
 					read_provider_dvbname = six.ensure_str(provider.get("dvbnamespace"))
 					self.read_providers.append((read_provider_name, read_provider_dvbname))
@@ -516,20 +516,20 @@ class myProviderSelection(ChannelSelectionBase):
 		if changeMode:
 			return
 		if not self.pathChangeDisabled:
-			refstr = '%s FROM SATELLITES ORDER BY satellitePosition'%(self.service_types)
+			refstr = '%s FROM SATELLITES ORDER BY satellitePosition' % (self.service_types)
 			if not self.preEnterPath(refstr):
 				ref = eServiceReference(refstr)
-				justSet=False
+				justSet = False
 				prev = None
 
 				if self.isBasePathEqual(ref):
 					if self.isPrevPathEqual(ref):
-						justSet=True
+						justSet = True
 					prev = self.pathUp(justSet)
 				else:
 					currentRoot = self.getRoot()
 					if currentRoot is None or currentRoot != ref:
-						justSet=True
+						justSet = True
 						self.clearPath()
 						self.enterPath(ref, True)
 				if justSet:

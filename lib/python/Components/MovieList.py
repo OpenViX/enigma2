@@ -278,7 +278,7 @@ class MovieList(GUIComponent):
 		result = {}
 		for timer in NavigationInstance.instance.RecordTimer.timer_list:
 			if timer.isRunning() and not timer.justplay and hasattr(timer, 'Filename'):
-				result[os.path.split(timer.Filename)[1]+'.ts'] = timer
+				result[os.path.split(timer.Filename)[1] + '.ts'] = timer
 		if self.runningTimers == result:
 			return
 		self.runningTimers = result
@@ -402,9 +402,9 @@ class MovieList(GUIComponent):
 			res.append(MultiContentEntryPixmapAlphaBlend(pos=(0, 0), size=(col0iconSize, self.itemHeight), png=self.iconCollection, flags=BT_ALIGN_CENTER))
 			if self.getCurrent() in self.markList:
 				res.append(MultiContentEntryPixmapAlphaBlend(pos=(0, 0), size=(col0iconSize, self.itemHeight), png=self.iconMarked))
-			res.append(MultiContentEntryText(pos=(col0iconSize + space, 0), size=(width-220, self.itemHeight), font=0, flags=RT_HALIGN_LEFT|RT_VALIGN_CENTER, text=data.txt))
+			res.append(MultiContentEntryText(pos=(col0iconSize + space, 0), size=(width - 220, self.itemHeight), font=0, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER, text=data.txt))
 			recordingCount = ngettext("%d Recording", "%d Recordings", data.collectionCount) % data.collectionCount
-			res.append(MultiContentEntryText(pos=(width-220-r, 0), size=(220, self.itemHeight), font=1, flags=RT_HALIGN_RIGHT|RT_VALIGN_CENTER, text=recordingCount))
+			res.append(MultiContentEntryText(pos=(width - 220 - r, 0), size=(220, self.itemHeight), font=1, flags=RT_HALIGN_RIGHT | RT_VALIGN_CENTER, text=recordingCount))
 			return res
 		if serviceref.flags & eServiceReference.mustDescent:
 			# Directory
@@ -420,14 +420,14 @@ class MovieList(GUIComponent):
 				txt = p[1]
 			if txt == ".Trash":
 				res.append(MultiContentEntryPixmapAlphaBlend(pos=(0, 0), size=(col0iconSize, self.itemHeight), png=self.iconTrash, flags=BT_ALIGN_CENTER))
-				res.append(MultiContentEntryText(pos=(col0iconSize + space, 0), size=(width-145, self.itemHeight), font=0, flags=RT_HALIGN_LEFT|RT_VALIGN_CENTER, text=_("Deleted items")))
-				res.append(MultiContentEntryText(pos=(width-145-r, 0), size=(145, self.itemHeight), font=1, flags=RT_HALIGN_RIGHT|RT_VALIGN_CENTER, text=_("Trash can")))
+				res.append(MultiContentEntryText(pos=(col0iconSize + space, 0), size=(width - 145, self.itemHeight), font=0, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER, text=_("Deleted items")))
+				res.append(MultiContentEntryText(pos=(width - 145 - r, 0), size=(145, self.itemHeight), font=1, flags=RT_HALIGN_RIGHT | RT_VALIGN_CENTER, text=_("Trash can")))
 				return res
 			res.append(MultiContentEntryPixmapAlphaBlend(pos=(0, 0), size=(col0iconSize, self.itemHeight), png=self.iconFolder, flags=BT_ALIGN_CENTER))
 			if self.getCurrent() in self.markList:
 				res.append(MultiContentEntryPixmapAlphaBlend(pos=(0, 0), size=(col0iconSize, self.itemHeight), png=self.iconMarked))
-			res.append(MultiContentEntryText(pos=(col0iconSize + space, 0), size=(width-145, self.itemHeight), font=0, flags=RT_HALIGN_LEFT|RT_VALIGN_CENTER, text=txt))
-			res.append(MultiContentEntryText(pos=(width-145-r, 0), size=(145, self.itemHeight), font=1, flags=RT_HALIGN_RIGHT|RT_VALIGN_CENTER, text=_("Directory")))
+			res.append(MultiContentEntryText(pos=(col0iconSize + space, 0), size=(width - 145, self.itemHeight), font=0, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER, text=txt))
+			res.append(MultiContentEntryText(pos=(width - 145 - r, 0), size=(145, self.itemHeight), font=1, flags=RT_HALIGN_RIGHT | RT_VALIGN_CENTER, text=_("Directory")))
 			return res
 		if data.dirty:
 			cur_idx = self.l.getCurrentSelectionIndex()
@@ -517,8 +517,8 @@ class MovieList(GUIComponent):
 		colX += space
 
 		# Recording name
-		res.append(MultiContentEntryText(pos=(colX, 0), size=(width-iconSize-space-durationWidth-dateWidth-r-colX, ih), font=0, flags=RT_HALIGN_LEFT|RT_VALIGN_CENTER, text=data.txt))
-		colX = width-iconSize-space-durationWidth-dateWidth-r
+		res.append(MultiContentEntryText(pos=(colX, 0), size=(width - iconSize - space - durationWidth - dateWidth - r - colX, ih), font=0, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER, text=data.txt))
+		colX = width - iconSize - space - durationWidth - dateWidth - r
 
 		if piconWidth > 0:
 			colX += addProgress()
@@ -529,7 +529,7 @@ class MovieList(GUIComponent):
 				len = data.len
 				if len > 0:
 					len = ngettext("%d Min", "%d Mins", (len // 60)) % (len // 60)
-					res.append(MultiContentEntryText(pos=(colX, 0), size=(durationWidth, ih), font=1, flags=RT_HALIGN_RIGHT|RT_VALIGN_CENTER, text=len))
+					res.append(MultiContentEntryText(pos=(colX, 0), size=(durationWidth, ih), font=1, flags=RT_HALIGN_RIGHT | RT_VALIGN_CENTER, text=len))
 
 		# Date
 		begin_string = ""
@@ -539,7 +539,7 @@ class MovieList(GUIComponent):
 			else:
 				begin_string = strftime("%s, %s" % (config.usage.date.daylong.value, config.usage.time.short.value), localtime(begin))
 
-		res.append(MultiContentEntryText(pos=(width-dateWidth-r, 0), size=(dateWidth, ih), font=1, flags=RT_HALIGN_RIGHT|RT_VALIGN_CENTER, text=begin_string))
+		res.append(MultiContentEntryText(pos=(width - dateWidth - r, 0), size=(dateWidth, ih), font=1, flags=RT_HALIGN_RIGHT | RT_VALIGN_CENTER, text=begin_string))
 
 		return res
 

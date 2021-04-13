@@ -127,12 +127,12 @@ def InitEPGConfig():
 	config.epgselection.grid.primetime = ConfigClock(default=(20, 0))
 	config.epgselection.grid.servicetitle_mode = ConfigSelection(default="servicename", choices=serviceTitleChoices)
 	possibleAlignmentChoices = [
-			(str(RT_HALIGN_LEFT   | RT_VALIGN_CENTER), _("left")),
+			(str(RT_HALIGN_LEFT | RT_VALIGN_CENTER), _("left")),
 			(str(RT_HALIGN_CENTER | RT_VALIGN_CENTER), _("centered")),
-			(str(RT_HALIGN_RIGHT  | RT_VALIGN_CENTER), _("right")),
-			(str(RT_HALIGN_LEFT   | RT_VALIGN_CENTER | RT_WRAP), _("left, wrapped")),
+			(str(RT_HALIGN_RIGHT | RT_VALIGN_CENTER), _("right")),
+			(str(RT_HALIGN_LEFT | RT_VALIGN_CENTER | RT_WRAP), _("left, wrapped")),
 			(str(RT_HALIGN_CENTER | RT_VALIGN_CENTER | RT_WRAP), _("centered, wrapped")),
-			(str(RT_HALIGN_RIGHT  | RT_VALIGN_CENTER | RT_WRAP), _("right, wrapped"))]
+			(str(RT_HALIGN_RIGHT | RT_VALIGN_CENTER | RT_WRAP), _("right, wrapped"))]
 	config.epgselection.grid.servicename_alignment = ConfigSelection(default=possibleAlignmentChoices[0][0], choices=possibleAlignmentChoices)
 	config.epgselection.grid.servicenumber_alignment = ConfigSelection(default=possibleAlignmentChoices[0][0], choices=possibleAlignmentChoices)
 	config.epgselection.grid.event_alignment = ConfigSelection(default=possibleAlignmentChoices[0][0], choices=possibleAlignmentChoices)
@@ -148,7 +148,7 @@ def InitEPGConfig():
 	config.epgselection.grid.servicewidth = ConfigSelectionNumber(default=250, stepwidth=1, min=70, max=500, wraparound=True)
 	config.epgselection.grid.piconwidth = ConfigSelectionNumber(default=100, stepwidth=1, min=50, max=500, wraparound=True)
 	config.epgselection.grid.infowidth = ConfigSelectionNumber(default=50, stepwidth=25, min=0, max=150, wraparound=True)
-	config.epgselection.grid.rec_icon_height = ConfigSelection(choices=[("bottom",_("bottom")),("top", _("top")), ("middle", _("middle")),  ("hide", _("hide"))], default="bottom")
+	config.epgselection.grid.rec_icon_height = ConfigSelection(choices=[("bottom",_("bottom")),("top", _("top")), ("middle", _("middle")), ("hide", _("hide"))], default="bottom")
 	config.epgselection.grid.number_buttons_mode = ConfigSelection(choices=[("paging", _("Standard")), ("service", _("Enter service number"))], default="paging")
 	config.epgselection.grid.btn_ok = ConfigSelection(choices=okActions, default="zap")
 	config.epgselection.grid.btn_oklong = ConfigSelection(choices=okActions, default="zapExit")

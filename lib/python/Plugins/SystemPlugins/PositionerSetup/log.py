@@ -13,7 +13,7 @@ import sys
 if six.PY3:
 	from io import StringIO
 else:
-	from  StringIO import StringIO
+	from StringIO import StringIO
 import threading
 
 

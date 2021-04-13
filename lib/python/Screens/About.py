@@ -84,18 +84,18 @@ class About(Screen):
 			AboutText += _("%s") % part
 
 		if SystemInfo["canMultiBoot"]:
-			slot = image= GetCurrentImage()
-			part = "eMMC slot %s" %slot
+			slot = image = GetCurrentImage()
+			part = "eMMC slot %s" % slot
 			bootmode = ""
 			if SystemInfo["canMode12"]:
-				bootmode = "bootmode = %s" %GetCurrentImageMode()
-			print("[About] HasHiSi = %s, slot = %s" %(SystemInfo["HasHiSi"], slot))
+				bootmode = "bootmode = %s" % GetCurrentImageMode()
+			print("[About] HasHiSi = %s, slot = %s" % (SystemInfo["HasHiSi"], slot))
 			if SystemInfo["HasHiSi"] and "sda" in SystemInfo["canMultiBoot"][slot]["root"]:
 				if slot > 4:
-					image -=4
+					image -= 4
 				else:
-					image -=1
-				part = "SDcard slot %s (%s) " %(image, SystemInfo["canMultiBoot"][slot]["root"])
+					image -= 1
+				part = "SDcard slot %s (%s) " % (image, SystemInfo["canMultiBoot"][slot]["root"])
 			AboutText += _("Image Slot:\t%s") % "STARTUP_" + str(slot) + "  " + part + " " + bootmode + "\n"
 
 		if getMachineName() in ("ET8500") and path.exists("/proc/mtd"):
@@ -284,7 +284,7 @@ class Devices(Screen):
 		self.hddlist = harddiskmanager.HDDList()
 		self.list = []
 		if self.hddlist:
-			print("[About] hddlist = %s" %(self.hddlist))
+			print("[About] hddlist = %s" % (self.hddlist))
 			for count in list(range(len(self.hddlist))):
 				hdd = self.hddlist[count][1]
 				hddp = self.hddlist[count][0]
@@ -302,7 +302,7 @@ class Devices(Screen):
 					continue
 				else:
 					freeline = _("Free: ") + _("full")
-				line = "%s      %s" %(hddp, freeline)
+				line = "%s      %s" % (hddp, freeline)
 				self.list.append(line)
 		self.list = "\n".join(self.list)
 		self["hdd"].setText(self.list)
@@ -508,7 +508,7 @@ class SystemNetworkInfo(Screen):
 		self.AboutText += _("Bytes sent:") + "\t" + tx_bytes + "\n"
 		for line in popen("ethtool %s |grep Speed" % self.iface, "r"):
 			line = line.strip().split(":")
-			line =line[1].replace(" ", "")
+			line = line[1].replace(" ", "")
 			if "Speed:" in line:
 				self.AboutText += _("Speed:") + "\t" + line + _("Mb/s")
 		hostname = open("/proc/sys/kernel/hostname").read()
