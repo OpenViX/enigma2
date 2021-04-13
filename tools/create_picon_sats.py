@@ -7,7 +7,8 @@
 #
 # by pieterg, 2008
 from builtins import range
-import os, sys
+import os
+import sys
 
 f = open(sys.argv[1]).readlines()
 

@@ -2,7 +2,9 @@ from __future__ import print_function
 from __future__ import division
 
 from sys import modules, version_info
-import socket, fcntl, struct
+import socket
+import fcntl
+import struct
 
 from boxbranding import getImageVersion, getMachineBuild, getBoxType
 

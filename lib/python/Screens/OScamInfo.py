@@ -20,7 +20,8 @@ from enigma import eTimer, RT_HALIGN_LEFT, eListboxPythonMultiContent, gFont, ge
 from xml.etree import ElementTree
 
 from operator import itemgetter
-import os, time
+import os
+import time
 # required methods: Request, urlopen, HTTPError, URLError
 try: # python 3
 	from urllib.request import urlopen, Request # raises ImportError in Python 2

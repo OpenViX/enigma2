@@ -4,7 +4,8 @@ from __future__ import absolute_import
 from __future__ import division
 import six
 
-import os, unicodedata
+import os
+import unicodedata
 from Tools.Profile import profile
 
 from Screens.Screen import Screen

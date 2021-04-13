@@ -1,6 +1,8 @@
 from __future__ import absolute_import
 
-import os, re, unicodedata
+import os
+import re
+import unicodedata
 from Components.Renderer.Renderer import Renderer
 from enigma import ePixmap, ePicLoad
 from Tools.Directories import pathExists, SCOPE_ACTIVE_SKIN, resolveFilename
