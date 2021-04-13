@@ -29,13 +29,13 @@ class VideoSetup(ConfigListScreen, Screen):
 		self['footnote'] = Label()
 
 		self.hw = iAVSwitch
-		self.onChangedEntry = [ ]
+		self.onChangedEntry = []
 
 		# handle hotplug by re-creating setup
 		self.onShow.append(self.startHotplug)
 		self.onHide.append(self.stopHotplug)
 
-		self.list = [ ]
+		self.list = []
 		ConfigListScreen.__init__(self, self.list, session=session, on_change=self.changedEntry, fullUI=True)
 
 		from Components.ActionMap import ActionMap

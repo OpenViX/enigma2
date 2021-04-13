@@ -58,15 +58,15 @@ class Network:
 
 	# helper function to convert ips from a sring to a list of ints
 	def convertIP(self, ip):
-		return [ int(n) for n in ip.split('.') ]
+		return [int(n) for n in ip.split('.')]
 
 	def getAddrInet(self, iface, callback):
 		cmd = ("/sbin/ip", "/sbin/ip", "-o", "addr", "show", "dev", iface)
 		self.console.ePopen(cmd, self.IPaddrFinished, [iface, callback])
 
 	def IPaddrFinished(self, result, retval, extra_args):
-		(iface, callback ) = extra_args
-		data = { 'up': False, 'dhcp': False, 'preup' : False, 'predown' : False }
+		(iface, callback) = extra_args
+		data = {'up': False, 'dhcp': False, 'preup': False, 'predown': False}
 		globalIPpattern = re.compile("scope global")
 		ipRegexp = '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'
 		netRegexp = '[0-9]{1,2}'
@@ -438,7 +438,7 @@ class Network:
 		self.restartConsole.eBatch(self.commands, self.restartNetworkFinished, callback, debug=True)
 
 	def restartNetworkFinished(self,extra_args):
-		( callback ) = extra_args
+		(callback) = extra_args
 		if callback is not None:
 			callback(True)
 

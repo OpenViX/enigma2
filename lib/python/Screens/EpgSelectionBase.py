@@ -774,7 +774,7 @@ class EPGStandardButtons:
 			"green": (self.addEditTimer, _("Add/Remove timer for current event")),
 			"greenlong": (self.openTimerList, _("Show timer list")),
 			"yellow": (self.openEPGSearch, _("Search for similar events")),
-			"yellowlong": (lambda _ : None, _("Search for similar events")),
+			"yellowlong": (lambda _: None, _("Search for similar events")),
 			"blue": (self.addEditAutoTimer, _("Add an autotimer for current event")),
 			"bluelong": (self.openAutoTimerList, _("Show autotimer list")),
 			"ok": (self.OK, _("Zap to channel/service")),

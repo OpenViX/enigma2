@@ -86,7 +86,7 @@ class AVSwitch:
 			f.close()
 		except IOError:
 			print "[VideoHardware] couldn't read available videomodes."
-			modes = [ ]
+			modes = []
 			return modes
 		return modes.split(' ')
 
@@ -189,14 +189,14 @@ class AVSwitch:
 
 	# get a list with all modes, with all rates, for a given port.
 	def getModeList(self, port):
-		res = [ ]
+		res = []
 		for mode in self.modes[port]:
 			# list all rates which are completely valid
 			rates = [rate for rate in self.rates[mode] if self.isModeAvailable(port, mode, rate)]
 
 			# if at least one rate is ok, add this mode
 			if len(rates):
-				res.append( (mode, rates) )
+				res.append((mode, rates))
 		return res
 
 	def createConfig(self, *args):
@@ -224,7 +224,7 @@ class AVSwitch:
 		config.av.videoport = ConfigSelection(choices=lst)
 
 	def setInput(self, input):
-		INPUT = { "ENCODER": 0, "SCART": 1, "AUX": 2 }
+		INPUT = {"ENCODER": 0, "SCART": 1, "AUX": 2}
 		eAVSwitch.getInstance().setInput(INPUT[input])
 
 	def setColorFormat(self, value):
@@ -533,7 +533,7 @@ def InitAVSwitch():
 	config.av.colorformat.addNotifier(setColorFormat)
 
 	def setAspectRatio(configElement):
-		map = {"4_3_letterbox": 0, "4_3_panscan": 1, "16_9": 2, "16_9_always": 3, "16_10_letterbox": 4, "16_10_panscan": 5, "16_9_letterbox" : 6}
+		map = {"4_3_letterbox": 0, "4_3_panscan": 1, "16_9": 2, "16_9_always": 3, "16_10_letterbox": 4, "16_10_panscan": 5, "16_9_letterbox": 6}
 		iAVSwitch.setAspectRatio(map[configElement.value])
 
 
@@ -631,7 +631,7 @@ def InitAVSwitch():
 	else:
 		config.av.hdmicolordepth = ConfigNothing()
 
-	if SystemInfo["havehdmihdrtype"] :
+	if SystemInfo["havehdmihdrtype"]:
 		def setHdmiHdrType(configElement):
 			try:
 				f = open("/proc/stb/video/hdmi_hdrtype", "w")
@@ -654,23 +654,23 @@ def InitAVSwitch():
 		def setHlgSupport(configElement):
 			open("/proc/stb/hdmi/hlg_support", "w").write(configElement.value)
 		config.av.hlg_support = ConfigSelection(default="auto(EDID)", 
-			choices=[ ("auto(EDID)", _("controlled by HDMI")), ("yes", _("force enabled")), ("no", _("force disabled")) ])
+			choices=[("auto(EDID)", _("controlled by HDMI")), ("yes", _("force enabled")), ("no", _("force disabled"))])
 		config.av.hlg_support.addNotifier(setHlgSupport)
 
 		def setHdr10Support(configElement):
 			open("/proc/stb/hdmi/hdr10_support", "w").write(configElement.value)
 		config.av.hdr10_support = ConfigSelection(default="auto(EDID)", 
-			choices=[ ("auto(EDID)", _("controlled by HDMI")), ("yes", _("force enabled")), ("no", _("force disabled")) ])
+			choices=[("auto(EDID)", _("controlled by HDMI")), ("yes", _("force enabled")), ("no", _("force disabled"))])
 		config.av.hdr10_support.addNotifier(setHdr10Support)
 
 		def setDisable12Bit(configElement):
 			open("/proc/stb/video/disable_12bit", "w").write(configElement.value)
-		config.av.allow_12bit = ConfigSelection(default="0", choices=[ ("0", _("yes")), ("1", _("no")) ])
+		config.av.allow_12bit = ConfigSelection(default="0", choices=[("0", _("yes")), ("1", _("no"))])
 		config.av.allow_12bit.addNotifier(setDisable12Bit)
 
 		def setDisable10Bit(configElement):
 			open("/proc/stb/video/disable_10bit", "w").write(configElement.value)
-		config.av.allow_10bit = ConfigSelection(default="0", choices=[ ("0", _("yes")), ("1", _("no")) ])
+		config.av.allow_10bit = ConfigSelection(default="0", choices=[("0", _("yes")), ("1", _("no"))])
 		config.av.allow_10bit.addNotifier(setDisable10Bit)
 
 	if SystemInfo["Canaudiosource"]:
@@ -816,7 +816,7 @@ def InitAVSwitch():
 			f = "/proc/stb/audio/aac_transcode_choices"
 			(choices, default) = read_choices(f, default)
 
-		config.av.transcodeaac = ConfigSelection( choices=choices, default=default)
+		config.av.transcodeaac = ConfigSelection(choices=choices, default=default)
 		config.av.transcodeaac.addNotifier(setAACTranscode)
 	else:
 		config.av.transcodeaac = ConfigNothing()

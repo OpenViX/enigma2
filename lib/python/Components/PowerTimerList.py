@@ -37,7 +37,7 @@ class PowerTimerList(GUIComponent, object):
 
 		height = self.l.getItemSize().height()
 		width = self.l.getItemSize().width()
-		res = [ None ]
+		res = [None]
 		x = width / 2
 		res.append((eListboxPythonMultiContent.TYPE_TEXT, self.iconWidth + self.iconMargin, 2, width, self.rowSplit, 0, RT_HALIGN_LEFT|RT_VALIGN_BOTTOM, timertype))
 		if timer.timerType == TIMERTYPE.AUTOSTANDBY or timer.timerType == TIMERTYPE.AUTODEEPSTANDBY:
@@ -63,7 +63,7 @@ class PowerTimerList(GUIComponent, object):
 			res.append((eListboxPythonMultiContent.TYPE_TEXT, 148, 26, width-150, self.itemHeight - self.rowSplit, 2, RT_HALIGN_RIGHT|RT_VALIGN_BOTTOM, _("Delay:") + " " + str(timer.autosleepdelay) + "(" + _("mins") + ")"))
 		else:
 			res.append((eListboxPythonMultiContent.TYPE_TEXT, x+24, 2, x-2-24, self.itemHeight - self.rowSplit, 2, RT_HALIGN_RIGHT|RT_VALIGN_BOTTOM, _('At End:') + ' ' + afterevent))
-			days = ( _("Mon"), _("Tue"), _("Wed"), _("Thu"), _("Fri"), _("Sat"), _("Sun") )
+			days = (_("Mon"), _("Tue"), _("Wed"), _("Thu"), _("Fri"), _("Sat"), _("Sun"))
 			begin = FuzzyTime(timer.begin)
 			if timer.repeated:
 				repeatedtext = []

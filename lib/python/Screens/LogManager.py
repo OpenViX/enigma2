@@ -183,12 +183,12 @@ class LogManager(Screen):
 		self["key_green"] = Button(_("View"))
 		self["key_yellow"] = Button(_("Delete"))
 
-		self.onChangedEntry = [ ]
+		self.onChangedEntry = []
 		self.sentsingle = ""
 		self.selectedFiles = config.logmanager.sentfiles.value
 		self.defaultDir = config.crash.debug_path.value
 		self.matchingPattern = 'Enigma2_crash_'
-		self.filelist = MultiFileSelectList(self.selectedFiles, self.defaultDir, showDirectories=False, matchingPattern=self.matchingPattern )
+		self.filelist = MultiFileSelectList(self.selectedFiles, self.defaultDir, showDirectories=False, matchingPattern=self.matchingPattern)
 		self["list"] = self.filelist
 		self["LogsSize"] = self.logsinfo = LogInfo(config.crash.debug_path.value, LogInfo.USED, update=False)
 		self.onLayoutFinish.append(self.layoutFinished)

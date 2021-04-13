@@ -10,12 +10,12 @@ import skin
 class HelpMenuList(GUIComponent):
 	def __init__(self, helplist, callback):
 		GUIComponent.__init__(self)
-		self.onSelChanged = [ ]
+		self.onSelChanged = []
 		self.l = eListboxPythonMultiContent()
 		self.callback = callback
 		self.extendedHelp = False
 
-		l = [ ]
+		l = []
 		
 		sortlist = []
 		for (actionmap, context, actions) in helplist:
@@ -50,7 +50,7 @@ class HelpMenuList(GUIComponent):
 				if flags & 8: # for long keypresses, prepend l_ into the key name.
 					name = (name[0], "long")
 
-				entry = [ (actionmap, context, action, name ) ]
+				entry = [(actionmap, context, action, name)]
 
 				if isinstance(help, list):
 					self.extendedHelp = True
@@ -63,7 +63,7 @@ class HelpMenuList(GUIComponent):
 					))
 				else:
 					x, y, w, h = skin.parameters.get("HelpMenuListHlp",(skin.applySkinFactor(5), 0, skin.applySkinFactor(595), skin.applySkinFactor(28)))
-					entry.append( (eListboxPythonMultiContent.TYPE_TEXT, x, y, w, h, 0, 0, help) )
+					entry.append((eListboxPythonMultiContent.TYPE_TEXT, x, y, w, h, 0, 0, help))
 
 				l.append(entry)
 

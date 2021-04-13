@@ -56,8 +56,8 @@ def OpentvZapperWakeupTime(): # Called on shutdown (going into deep standby) to 
 def Plugins(**kwargs):
 	plist = []
 	if nimmanager.hasNimType("DVB-S"):
-		plist.append(PluginDescriptor(name=_("OpentvZapper"), description=description, where=PluginDescriptor.WHERE_MENU, needsRestart=True, fnc=OpentvZapperStart) )
-		plist.append(PluginDescriptor(name="OpentvZapperScheduler", where=[ PluginDescriptor.WHERE_AUTOSTART, PluginDescriptor.WHERE_SESSIONSTART ], fnc=startSession, wakeupfnc=OpentvZapperWakeupTime, needsRestart=True))
+		plist.append(PluginDescriptor(name=_("OpentvZapper"), description=description, where=PluginDescriptor.WHERE_MENU, needsRestart=True, fnc=OpentvZapperStart))
+		plist.append(PluginDescriptor(name="OpentvZapperScheduler", where=[PluginDescriptor.WHERE_AUTOSTART, PluginDescriptor.WHERE_SESSIONSTART], fnc=startSession, wakeupfnc=OpentvZapperWakeupTime, needsRestart=True))
 		if config.plugins.opentvzapper.enabled.value and config.plugins.opentvzapper.extensions.value:
 			plist.append(PluginDescriptor(name=_("OpenTV EPG forced download"), description=description, where=PluginDescriptor.WHERE_EXTENSIONSMENU, fnc=startdownload, needsRestart=True))
 	return plist

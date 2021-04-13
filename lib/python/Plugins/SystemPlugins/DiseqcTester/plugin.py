@@ -561,9 +561,9 @@ class DiseqcTesterTestTypeSelection(Screen, ConfigListScreen):
 	def __init__(self, session, feid):
 		Screen.__init__(self, session)
 		# for the skin: first try MediaPlayerSettings, then Setup, this allows individual skinning
-		self.skinName = ["DiseqcTesterTestTypeSelection", "Setup" ]
+		self.skinName = ["DiseqcTesterTestTypeSelection", "Setup"]
 		self.setup_title = _("DiSEqC-tester settings")
-		self.onChangedEntry = [ ]
+		self.onChangedEntry = []
 		self.feid = feid
 
 		self.list = []
@@ -664,5 +664,5 @@ def autostart(reason, **kwargs):
 	resourcemanager.addResource("DiseqcTester", DiseqcTesterMain)
 
 def Plugins(**kwargs):
-	return [ PluginDescriptor(name="DiSEqC Tester", description=_("Test DiSEqC settings"), where=PluginDescriptor.WHERE_PLUGINMENU, needsRestart=False, fnc=DiseqcTesterMain),
+	return [PluginDescriptor(name="DiSEqC Tester", description=_("Test DiSEqC settings"), where=PluginDescriptor.WHERE_PLUGINMENU, needsRestart=False, fnc=DiseqcTesterMain),
 			PluginDescriptor(where=PluginDescriptor.WHERE_AUTOSTART, needsRestart=False, fnc=autostart)]

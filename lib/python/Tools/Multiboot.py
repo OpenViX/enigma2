@@ -121,7 +121,7 @@ def GetImagelist():
 				BuildVersion = "%s Image Date: %s" % (Creator, date)
 			Imagelist[slot] = {"imagename": "%s" % BuildVersion}
 		elif path.isfile(path.join(imagedir, "usr/bin/enigmax")):
-			Imagelist[slot] = { "imagename": _("Deleted image") }
+			Imagelist[slot] = {"imagename": _("Deleted image")}
 		Console().ePopen("umount %s" % tmp.dir)
 	if not path.ismount(tmp.dir):
 		rmdir(tmp.dir)

@@ -117,7 +117,7 @@ class InputDeviceSetup(ConfigListScreen, Screen):
 		self.nameEntry = None
 		self.enableConfigEntry = None
 
-		self.list = [ ]
+		self.list = []
 		ConfigListScreen.__init__(self, self.list, session=session, on_change=self.changedEntry, fullUI=True)
 
 		self["introduction"] = StaticText()
@@ -138,7 +138,7 @@ class InputDeviceSetup(ConfigListScreen, Screen):
 		iInputDevices.currentDevice = ""
 
 	def createSetup(self):
-		self.list = [ ]
+		self.list = []
 		self.enableEntry = getConfigListEntry(_("Change repeat and delay settings?"), getattr(config.inputDevices, self.inputDevice).enabled)
 		self.repeatEntry = getConfigListEntry(_("Interval between keys when repeating:"), getattr(config.inputDevices, self.inputDevice).repeat)
 		self.delayEntry = getConfigListEntry(_("Delay before key repeat starts:"), getattr(config.inputDevices, self.inputDevice).delay)
@@ -168,7 +168,7 @@ class InputDeviceSetup(ConfigListScreen, Screen):
 
 	def selectionChanged(self):
 		if self["config"].getCurrent() == self.enableEntry:
-			self["introduction"].setText(_("Current device: ") + str(iInputDevices.getDeviceAttribute(self.inputDevice, 'name')) )
+			self["introduction"].setText(_("Current device: ") + str(iInputDevices.getDeviceAttribute(self.inputDevice, 'name')))
 		else:
 			self["introduction"].setText(_("Current value: ") + self.getCurrentValue() + ' ' + _("ms"))
 
@@ -283,7 +283,7 @@ class RemoteControlType(Screen, ConfigListScreen):
 
 	def __init__(self, session):
 		Screen.__init__(self, session)
-		self.skinName = ["RemoteControlType", "Setup" ]
+		self.skinName = ["RemoteControlType", "Setup"]
 
 		self["actions"] = ActionMap(["SetupActions"],
 		{

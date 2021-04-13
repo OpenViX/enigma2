@@ -101,7 +101,7 @@ def getButtonSetupFunctions():
 				twinPaths[plugin.path[plugin.path.rfind("Plugins"):]] += 1
 			else:
 				twinPaths[plugin.path[plugin.path.rfind("Plugins"):]] = 1
-			ButtonSetupFunctions.append((plugin.name, plugin.path[plugin.path.rfind("Plugins"):] + "/" + str(twinPaths[plugin.path[plugin.path.rfind("Plugins"):]]) , "EPG"))
+			ButtonSetupFunctions.append((plugin.name, plugin.path[plugin.path.rfind("Plugins"):] + "/" + str(twinPaths[plugin.path[plugin.path.rfind("Plugins"):]]), "EPG"))
 			twinPlugins.append(plugin.name)
 	pluginlist = plugins.getPlugins([PluginDescriptor.WHERE_PLUGINMENU, PluginDescriptor.WHERE_EXTENSIONSMENU, PluginDescriptor.WHERE_EVENTINFO])
 	pluginlist.sort(key=lambda p: p.name)
@@ -111,7 +111,7 @@ def getButtonSetupFunctions():
 				twinPaths[plugin.path[plugin.path.rfind("Plugins"):]] += 1
 			else:
 				twinPaths[plugin.path[plugin.path.rfind("Plugins"):]] = 1
-			ButtonSetupFunctions.append((plugin.name, plugin.path[plugin.path.rfind("Plugins"):] + "/" + str(twinPaths[plugin.path[plugin.path.rfind("Plugins"):]]) , "Plugins"))
+			ButtonSetupFunctions.append((plugin.name, plugin.path[plugin.path.rfind("Plugins"):] + "/" + str(twinPaths[plugin.path[plugin.path.rfind("Plugins"):]]), "Plugins"))
 			twinPlugins.append(plugin.name)
 	ButtonSetupFunctions.append((_("Show Grid EPG"), "Infobar/openGridEPG", "EPG"))
 	ButtonSetupFunctions.append((_("Main menu"), "Infobar/mainMenu", "InfoBar"))

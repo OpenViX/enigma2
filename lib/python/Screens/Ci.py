@@ -63,7 +63,7 @@ class MMIDialog(Screen):
 		self["subtitle"] = Label("")
 		self["bottom"] = Label("")
 		self["key_menu"] = StaticText(_("MENU"))
-		self["entries"] = ConfigList([ ])
+		self["entries"] = ConfigList([])
 
 		self["actions"] = NumberActionMap(["SetupActions", "MenuActions"],
 			{
@@ -103,7 +103,7 @@ class MMIDialog(Screen):
 
 	def addEntry(self, list, entry):
 		if entry[0] == "TEXT":		#handle every item (text / pin only?)
-			list.append( (entry[1], ConfigNothing(), entry[2]) )
+			list.append((entry[1], ConfigNothing(), entry[2]))
 		if entry[0] == "PIN":
 			pinlength = entry[1]
 			if entry[3] == 1:
@@ -114,7 +114,7 @@ class MMIDialog(Screen):
 				x = ConfigPIN(0, len=pinlength)
 			x.addEndNotifier(self.pinEntered)
 			self["subtitle"].setText(entry[2])
-			list.append( getConfigListEntry("", x) )
+			list.append(getConfigListEntry("", x))
 			self["bottom"].setText(_("Please press OK when ready"))
 
 	def pinEntered(self, value):
@@ -177,7 +177,7 @@ class MMIDialog(Screen):
 		elif self.tag == "WAIT":
 			self.handler.stopMMI(self.slotid)
 			self.closeMmi()
-		elif self.tag in ( "MENU", "LIST" ):
+		elif self.tag in ("MENU", "LIST"):
 			print "[CI] cancel list"
 			self.handler.answerMenu(self.slotid, 0)
 			self.showWait()
@@ -228,8 +228,8 @@ class MMIDialog(Screen):
 		self["title"].setText("")
 		self["subtitle"].setText("")
 		self["bottom"].setText("")
-		list = [ ]
-		list.append( (self.wait_text, ConfigNothing()) )
+		list = []
+		list.append((self.wait_text, ConfigNothing()))
 		self.updateList(list)
 
 	def showScreen(self):
@@ -239,7 +239,7 @@ class MMIDialog(Screen):
 		else:
 			screen = self.handler.getMMIScreen(self.slotid)
 
-		list = [ ]
+		list = []
 
 		self.timer.stop()
 		if len(screen) > 0 and screen[0][0] == "CLOSE":
@@ -303,8 +303,8 @@ class CiMessageHandler:
 	def __init__(self):
 		self.session = None
 		self.auto_close = False
-		self.ci = { }
-		self.dlgs = { }
+		self.ci = {}
+		self.dlgs = {}
 		eDVBCI_UI.getInstance().ciStateChanged.get().append(self.ciStateChanged)
 
 	def setSession(self, session):
@@ -372,8 +372,8 @@ class CiSelection(Screen):
 		self["key_red"] = StaticText(_("Cancel"))
 
 		self.dlg = None
-		self.state = { }
-		self.list = [ ]
+		self.state = {}
+		self.list = []
 		self.slot = 0
 		for slot in range(SystemInfo["CommonInterface"]):
 			state = eDVBCI_UI.getInstance().getState(slot)
@@ -507,8 +507,8 @@ class CiSelection(Screen):
 class PermanentPinEntry(ConfigListScreen, Screen):
 	def __init__(self, session, pin, pin_slot):
 		Screen.__init__(self, session)
-		self.skinName = ["ParentalControlChangePin", "Setup" ]
-		self.onChangedEntry = [ ]
+		self.skinName = ["ParentalControlChangePin", "Setup"]
+		self.onChangedEntry = []
 
 		self.slot = pin_slot
 		self.pin = pin
