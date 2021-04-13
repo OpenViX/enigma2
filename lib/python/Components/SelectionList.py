@@ -25,13 +25,13 @@ def SelectionEntryComponent(description, value, index, selected):
 	return res
 
 class SelectionList(MenuList):
-	def __init__(self, list = None, enableWrapAround = False):
-		MenuList.__init__(self, list or [], enableWrapAround, content = eListboxPythonMultiContent)
+	def __init__(self, list=None, enableWrapAround=False):
+		MenuList.__init__(self, list or [], enableWrapAround, content=eListboxPythonMultiContent)
 		font = skin.fonts.get("SelectionList", ("Regular", skin.applySkinFactor(20), skin.applySkinFactor(30)))
 		self.l.setFont(0, gFont(font[0], font[1]))
 		self.l.setItemHeight(font[2])
 
-	def addSelection(self, description, value, index, selected = True):
+	def addSelection(self, description, value, index, selected=True):
 		self.list.append(SelectionEntryComponent(description, value, index, selected))
 		self.setList(self.list)
 
@@ -72,7 +72,7 @@ class SelectionList(MenuList):
 		# 1 - value
 		# 2 - index
 		# 3 - selected
-		self.list.sort(key=lambda x: x[0][sortType], reverse = flag)
+		self.list.sort(key=lambda x: x[0][sortType], reverse=flag)
 		self.setList(self.list)
 
 	def len(self):

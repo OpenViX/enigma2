@@ -273,7 +273,7 @@ class readImageIdentifier():
 	# boxtype = reader.getBoxType()
 	#
 
-	def __init__(self, OsPath = None):
+	def __init__(self, OsPath=None):
 		if OsPath is None:
 			OsPath = ""
 

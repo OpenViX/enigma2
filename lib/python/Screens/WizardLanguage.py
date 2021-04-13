@@ -5,7 +5,7 @@ from Components.Language import language
 from Screens.Wizard import Wizard
 
 class WizardLanguage(Wizard):
-	def __init__(self, session, showSteps = True, showStepSlider = True, showList = True, showConfig = True):
+	def __init__(self, session, showSteps=True, showStepSlider=True, showList=True, showConfig=True):
 		Wizard.__init__(self, session, showSteps, showStepSlider, showList, showConfig)
 
 		self["languagetext"] = Label()
@@ -30,6 +30,6 @@ class WizardLanguage(Wizard):
 
 	def updateTexts(self):
 		print("[WizardLanguage] updateTexts")
-		self.updateText(firstset = True)
+		self.updateText(firstset=True)
 		self.updateValues()
 		self.updateLanguageDescription()

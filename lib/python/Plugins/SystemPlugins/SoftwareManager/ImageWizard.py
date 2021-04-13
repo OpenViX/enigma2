@@ -11,16 +11,16 @@ from Components.config import config, ConfigSubsection, ConfigText, ConfigLocati
 from Components.Harddisk import harddiskmanager
 
 
-config.misc.firstrun = ConfigBoolean(default = True)
+config.misc.firstrun = ConfigBoolean(default=True)
 config.plugins.configurationbackup = ConfigSubsection()
-config.plugins.configurationbackup.backuplocation = ConfigText(default = '/media/hdd/', visible_width = 50, fixed_size = False)
+config.plugins.configurationbackup.backuplocation = ConfigText(default='/media/hdd/', visible_width=50, fixed_size=False)
 config.plugins.configurationbackup.backupdirs = ConfigLocations(default=[eEnv.resolve('${sysconfdir}/enigma2/'), '/etc/network/interfaces', '/etc/wpa_supplicant.conf', '/etc/wpa_supplicant.ath0.conf', '/etc/wpa_supplicant.wlan0.conf', '/etc/resolv.conf', '/etc/default_gw', '/etc/hostname'])
 
 
 backupfile = "enigma2settingsbackup.tar.gz"
 
 def checkConfigBackup():
-	parts = [ (r.description, r.mountpoint) for r in harddiskmanager.getMountedPartitions(onlyhotplug = False)]
+	parts = [ (r.description, r.mountpoint) for r in harddiskmanager.getMountedPartitions(onlyhotplug=False)]
 	for x in parts:
 		if x[1] == '/':
 			parts.remove(x)
@@ -81,7 +81,7 @@ class ImageWizard(WizardLanguage, Rc):
 		</screen>"""
 	def __init__(self, session):
 		self.xmlfile = resolveFilename(SCOPE_PLUGINS, "SystemPlugins/SoftwareManager/imagewizard.xml")
-		WizardLanguage.__init__(self, session, showSteps = False, showStepSlider = False)
+		WizardLanguage.__init__(self, session, showSteps=False, showStepSlider=False)
 		Rc.__init__(self)
 		self.session = session
 		self["wizard"] = Pixmap()
@@ -91,7 +91,7 @@ class ImageWizard(WizardLanguage, Rc):
 		pass
 
 	def listDevices(self):
-		list = [ (r.description, r.mountpoint) for r in harddiskmanager.getMountedPartitions(onlyhotplug = False)]
+		list = [ (r.description, r.mountpoint) for r in harddiskmanager.getMountedPartitions(onlyhotplug=False)]
 		for x in list:
 			result = access(x[1], W_OK) and access(x[1], R_OK)
 			if result is False or x[1] == '/':
@@ -115,5 +115,5 @@ class ImageWizard(WizardLanguage, Rc):
 
 
 if config.misc.firstrun.value:
-	wizardManager.registerWizard(ImageWizard, backupAvailable, priority = 10)
+	wizardManager.registerWizard(ImageWizard, backupAvailable, priority=10)
 

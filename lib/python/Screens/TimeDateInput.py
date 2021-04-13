@@ -35,7 +35,7 @@ class TimeDateInput(Screen, ConfigListScreen):
 		if conf_time:
 			self.save_mask |= 1
 		else:
-			conf_time = ConfigClock(default = time.time()),
+			conf_time = ConfigClock(default=time.time()),
 		if conf_date:
 			self.save_mask |= 2
 		else:

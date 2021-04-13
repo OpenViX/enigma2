@@ -75,15 +75,15 @@ from Components.config import config, configfile, ConfigText, ConfigYesNo, Confi
 InitFallbackFiles()
 
 profile("config.misc")
-config.misc.blackradiopic = ConfigText(default = resolveFilename(SCOPE_ACTIVE_SKIN, "black.mvi"))
+config.misc.blackradiopic = ConfigText(default=resolveFilename(SCOPE_ACTIVE_SKIN, "black.mvi"))
 radiopic = resolveFilename(SCOPE_ACTIVE_SKIN, "radio.mvi")
 if os.path.exists(resolveFilename(SCOPE_CONFIG, "radio.mvi")):
 	radiopic = resolveFilename(SCOPE_CONFIG, "radio.mvi")
-config.misc.radiopic = ConfigText(default = radiopic)
+config.misc.radiopic = ConfigText(default=radiopic)
 config.misc.isNextRecordTimerAfterEventActionAuto = ConfigYesNo(default=False)
 config.misc.isNextPowerTimerAfterEventActionAuto = ConfigYesNo(default=False)
-config.misc.SyncTimeUsing = ConfigSelection(default = "0", choices = [("0", "Transponder Time"), ("1", _("NTP"))])
-config.misc.NTPserver = ConfigText(default = 'pool.ntp.org', fixed_size=False)
+config.misc.SyncTimeUsing = ConfigSelection(default="0", choices=[("0", "Transponder Time"), ("1", _("NTP"))])
+config.misc.NTPserver = ConfigText(default='pool.ntp.org', fixed_size=False)
 
 config.misc.startCounter = ConfigInteger(default=0) # number of e2 starts...
 config.misc.standbyCounter = NoSave(ConfigInteger(default=0)) # number of standby
@@ -121,7 +121,7 @@ def NTPserverChanged(configelement):
 	Console = Console()
 	Console.ePopen("/usr/bin/ntpdate-sync")
 
-config.misc.NTPserver.addNotifier(NTPserverChanged, immediate_feedback = False)
+config.misc.NTPserver.addNotifier(NTPserverChanged, immediate_feedback=False)
 
 profile("Twisted")
 print("[StartEnigma] Initialising Twisted.")
@@ -158,7 +158,7 @@ FlashInstallTime()
 profile("misc")
 had = dict()
 
-def dump(dir, p = ""):
+def dump(dir, p=""):
 	if isinstance(dir, dict):
 		for (entry, val) in list(dir.items()):
 			dump(val, "%s(dict)/%s" % (p, entry))
@@ -207,7 +207,7 @@ Screen.globalScreen = Globals()
 # * destroy screen
 
 class Session:
-	def __init__(self, desktop = None, summary_desktop = None, navigation = None):
+	def __init__(self, desktop=None, summary_desktop=None, navigation=None):
 		self.desktop = desktop
 		self.summary_desktop = summary_desktop
 		self.nav = navigation
@@ -239,7 +239,7 @@ class Session:
 		if callback is not None:
 			callback(*retval)
 
-	def execBegin(self, first=True, do_show = True):
+	def execBegin(self, first=True, do_show=True):
 		assert not self.in_exec
 		self.in_exec = True
 		c = self.current_dialog
@@ -430,7 +430,7 @@ class PowerKey:
 	def powerlong(self):
 		if Screens.Standby.inTryQuitMainloop or (self.session.current_dialog and not self.session.current_dialog.ALLOW_SUSPEND):
 			return
-		self.doAction(action = config.usage.on_long_powerpress.value)
+		self.doAction(action=config.usage.on_long_powerpress.value)
 
 	def doAction(self, action):
 		self.standbyblocked = 1
@@ -456,7 +456,7 @@ class PowerKey:
 
 	def powerup(self):
 		if self.standbyblocked == 0:
-			self.doAction(action = config.usage.on_short_powerpress.value)
+			self.doAction(action=config.usage.on_short_powerpress.value)
 
 	def standby(self):
 		if not Screens.Standby.inStandby and self.session.current_dialog and self.session.current_dialog.ALLOW_SUSPEND and self.session.in_exec:
@@ -508,7 +508,7 @@ def runScreenTest():
 
 	profile("Init:Session")
 	nav = Navigation(config.misc.isNextRecordTimerAfterEventActionAuto.value, config.misc.isNextPowerTimerAfterEventActionAuto.value)
-	session = Session(desktop = enigma.getDesktop(0), summary_desktop = enigma.getDesktop(1), navigation = nav)
+	session = Session(desktop=enigma.getDesktop(0), summary_desktop=enigma.getDesktop(1), navigation=nav)
 
 	CiHandler.setSession(session)
 	screensToRun = [p.__call__ for p in plugins.getPlugins(PluginDescriptor.WHERE_WIZARD)]

@@ -14,7 +14,7 @@ from Components.SystemInfo import SystemInfo
 from Tools.Directories import resolveFilename, SCOPE_SKIN, SCOPE_ACTIVE_SKIN
 from Tools.HardwareInfo import HardwareInfo
 
-config.misc.showtestcard = ConfigBoolean(default = False)
+config.misc.showtestcard = ConfigBoolean(default=False)
 
 class VideoWizardSummary(WizardSummary):
 	def __init__(self, session, parent):
@@ -54,7 +54,7 @@ class VideoWizard(WizardLanguage, Rc):
 		# FIXME anyone knows how to use relative paths from the plugin's directory?
 		self.xmlfile = resolveFilename(SCOPE_SKIN, "videowizard.xml")
 		self.hw = iAV		# needed by VideoWizard.xml do not change 
-		WizardLanguage.__init__(self, session, showSteps = False, showStepSlider = False)
+		WizardLanguage.__init__(self, session, showSteps=False, showStepSlider=False)
 		Rc.__init__(self)
 		self["wizard"] = Pixmap()
 		self["portpic"] = Pixmap()
@@ -84,7 +84,7 @@ class VideoWizard(WizardLanguage, Rc):
 					continue
 				if port != "DVI-PC":
 					list.append((descr, port))
-		list.sort(key = lambda x: x[0])
+		list.sort(key=lambda x: x[0])
 		print("[VideoWizard] listInputChannels:", list)
 		return list
 
@@ -138,9 +138,9 @@ class VideoWizard(WizardLanguage, Rc):
 		print("[VideoWizard] ratesList:", ratesList)
 		if self.port == "HDMI" and mode in ("720p", "1080i", "1080p", "2160p"):
 			self.rate = "multi"
-			iAV.setMode(port = self.port, mode = mode, rate = "multi")
+			iAV.setMode(port=self.port, mode=mode, rate="multi")
 		else:
-			iAV.setMode(port = self.port, mode = mode, rate = ratesList[0][0])
+			iAV.setMode(port=self.port, mode=mode, rate=ratesList[0][0])
 
 	def listRates(self, querymode=None):
 		if querymode is None:
@@ -169,9 +169,9 @@ class VideoWizard(WizardLanguage, Rc):
 		self.rateSelect(self.selection)
 
 	def rateSelect(self, rate):
-		iAV.setMode(port = self.port, mode = self.mode, rate = rate)
+		iAV.setMode(port=self.port, mode=self.mode, rate=rate)
 
-	def showTestCard(self, selection = None):
+	def showTestCard(self, selection=None):
 		if selection is None:
 			selection = self.selection
 		print("[VideoWizard] set config.misc.showtestcard to", {"yes": True, "no": False}[selection])

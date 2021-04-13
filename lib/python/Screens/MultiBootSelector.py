@@ -132,7 +132,7 @@ class MultiBootSelector(Screen, HelpableScreen):
 	def deleteImage(self):
 		self.currentSelected = self["config"].l.getCurrentSelection()
 		if GetCurrentImage() != self.currentSelected[0][1]:
-			self.session.openWithCallback(self.deleteImageCallback, MessageBox, "%s:\n%s" % (_("Are you sure you want to delete image:"), self.currentSelected[0][0]), simple = True)
+			self.session.openWithCallback(self.deleteImageCallback, MessageBox, "%s:\n%s" % (_("Are you sure you want to delete image:"), self.currentSelected[0][0]), simple=True)
 		else:
 			self.session.open(MessageBox, _("Cannot delete current image"), MessageBox.TYPE_ERROR, timeout=3)
 			self.getImagelist()

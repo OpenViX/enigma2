@@ -661,7 +661,7 @@ class SystemNetworkInfo(Screen):
 
 class AboutSummary(ScreenSummary):
 	def __init__(self, session, parent):
-		ScreenSummary.__init__(self, session, parent = parent)
+		ScreenSummary.__init__(self, session, parent=parent)
 		self.skinName = "AboutSummary"
 		aboutText = _("Model: %s %s\n") % (getMachineBrand(), getMachineName())
 		if path.exists("/proc/stb/info/chipset"):
