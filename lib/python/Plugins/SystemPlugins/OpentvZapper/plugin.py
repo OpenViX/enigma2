@@ -16,7 +16,7 @@ config.plugins.opentvzapper.update_interval = ConfigSelectionNumber(min=3, max=2
 config.plugins.opentvzapper.extensions = ConfigYesNo(default=True)
 config.plugins.opentvzapper.notifications = ConfigYesNo(default=False)
 
-# This import must be after "config" variables are set. 
+# This import must be after "config" variables are set.
 from .opentv_zapper import opentv_zapper, startSession
 
 description = _("Zaps to EPG download transponder for EPG fetch.")
@@ -38,7 +38,7 @@ class OpentvZapper_Setup(Setup):
 		if enabled_changed or provider_changed:
 			opentv_zapper.config_changed()
 		self.close()
-		
+
 
 def startdownload(session, **kwargs): # Called from extensions menu if this option is active
 	opentv_zapper.force_download()

@@ -1324,7 +1324,7 @@ class ChannelSelectionBase(Screen, HelpableScreen):
 		self["key_green"] = Button(_("Satellites"))
 		self["key_yellow"] = Button(_("Providers"))
 		self["key_blue"] = Button(_("Favourites"))
-		
+
 		self["key_menu"] = StaticText(_("MENU"))
 		self["key_info"] = StaticText(_("INFO"))
 
@@ -2090,7 +2090,7 @@ class ChannelSelection(ChannelSelectionEdit, ChannelSelectionBase, ChannelSelect
 
 	def toogleTvRadio(self):
 		if self.radioTV:
-			self.setModeTv() 
+			self.setModeTv()
 		else:
 			self.setModeRadio()
 		self.radioTV ^= 1
@@ -2923,7 +2923,7 @@ class SimpleChannelSelection(ChannelSelectionBase):
 
 	def toogleTvRadio(self):
 		if self.radioTV:
-			self.setModeTv() 
+			self.setModeTv()
 		else:
 			self.setModeRadio()
 		self.radioTV ^= 1

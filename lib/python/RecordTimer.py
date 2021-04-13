@@ -1328,7 +1328,7 @@ class RecordTimer(Timer):
 					return 1 if xend < end2 else 3
 		return None
 
-	# given a service and event, returns a timer matching the timespan or 
+	# given a service and event, returns a timer matching the timespan or
 	def getTimerForEvent(self, service, event):
 		timer, matchType = self.isInTimer(service, event.getBeginTime(), event.getDuration())
 		if matchType in (2, 3):
@@ -1372,7 +1372,7 @@ class RecordTimer(Timer):
 		returnValue = None
 		check_offset_time = not config.recording.margin_before.value and not config.recording.margin_after.value
 		end = begin + duration
-	
+
 		for timer in serviceTimerList:
 			matchType = RecordTimer.__checkTimer(timer, check_offset_time, begin, end, duration)
 			if matchType is not None:

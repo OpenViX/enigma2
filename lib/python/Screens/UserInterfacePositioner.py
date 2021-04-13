@@ -234,4 +234,3 @@ class OSD3DSetupScreen(ConfigListScreen, Screen):
 
 	def selectionChanged(self):
 		self["description"].setText(self["config"].getCurrent()[2])
-

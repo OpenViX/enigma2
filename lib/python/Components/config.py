@@ -140,7 +140,7 @@ class ConfigElement(object):
 			self.saved_value = None
 		else:
 			self.saved_value = self.tostring(self.value)
-		
+
 		if self.last_value != self.tostring(self.value):
 			self.last_value = self.tostring(self.value)
 			self.changedFinal()
@@ -174,15 +174,15 @@ class ConfigElement(object):
 					x(self)
 
 	def addNotifier(self, notifier, initial_call=True, immediate_feedback=True, extra_args=None):
-		# "initial_call=True" triggers the notifier as soon as "addNotifier" is encountered in the code. 
+		# "initial_call=True" triggers the notifier as soon as "addNotifier" is encountered in the code.
 		#
 		# "initial_call=False" skips the above activation of the notifier.
 		#
-		# "immediate_feedback=True" notifiers are called on every single change of the config item,  
+		# "immediate_feedback=True" notifiers are called on every single change of the config item,
 		# e.g. if going left/right through a ConfigSelection it will trigger on every step.
 		#
-		# "immediate_feedback=False" notifiers are called on ConfigElement.save() only. 
-		# 
+		# "immediate_feedback=False" notifiers are called on ConfigElement.save() only.
+		#
 		# Use of the "self.callNotifiersOnSaveAndCancel" flag serves no purpose in the current code.
 		#
 		assert callable(notifier), "notifiers must be callable"

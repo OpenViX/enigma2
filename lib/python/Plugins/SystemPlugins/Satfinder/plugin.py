@@ -596,15 +596,15 @@ class SatfinderExtra(Satfinder):
 	def __init__(self, session):
 		Satfinder.__init__(self, session)
 		self.skinName = ["Satfinder"]
-		
+
 		self["key_yellow"] = StaticText("")
-		
+
 		self["actions2"] = ActionMap(["ColorActions"],
 		{
 			"yellow": self.keyReadServices,
 		}, -3)
 		self["actions2"].setEnabled(False)
-		
+
 		# DVB stream info
 		self.serviceList = []
 		self["tsid"] = StaticText("")

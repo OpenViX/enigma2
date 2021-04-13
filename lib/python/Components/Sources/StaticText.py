@@ -28,4 +28,3 @@ class StaticText(Source):
 		return bool(self.__text)
 
 	boolean = property(getBoolean)
-	

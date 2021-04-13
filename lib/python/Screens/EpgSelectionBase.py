@@ -99,7 +99,7 @@ class EPGSelectionBase(Screen, HelpableScreen):
 		self["key_green"] = Button(_("Add Timer"))
 		self["key_yellow"] = Button(_("EPG Search"))
 		self["key_blue"] = Button(_("Add AutoTimer"))
-		
+
 		self["key_menu"] = StaticText(_("MENU"))
 		self["key_info"] = StaticText(_("INFO"))
 
@@ -176,7 +176,7 @@ class EPGSelectionBase(Screen, HelpableScreen):
 
 	def showMovies(self):
 		from Screens.InfoBar import InfoBar
-		InfoBar.instance.showMovies() 
+		InfoBar.instance.showMovies()
 
 	def openSingleEPG(self):
 		from Screens.EpgSelectionChannel import EPGSelectionChannel
@@ -501,7 +501,7 @@ class EPGServiceNumberSelectionPopup(Screen):
 
 		helpDescription = _("EPG Commands")
 		helpMsg = _("Enter a number to jump to a service/channel")
-		self["actions"] = HelpableNumberActionMap(self, "NumberActions", 
+		self["actions"] = HelpableNumberActionMap(self, "NumberActions",
 			dict([(str(i), (self.keyNumber, helpMsg)) for i in range(0, 10)]),
 			prio=-1, description=helpDescription)
 		self["cancelaction"] = HelpableActionMap(self, "OkCancelActions", {
@@ -549,7 +549,7 @@ class EPGServiceNumberSelectionPopup(Screen):
 class EPGServiceNumberSelection:
 	def __init__(self):
 		helpMsg = _("Enter a number to jump to a service/channel")
-		self["numberactions"] = HelpableNumberActionMap(self, "NumberActions", 
+		self["numberactions"] = HelpableNumberActionMap(self, "NumberActions",
 			dict([(str(i), (self.keyNumberGlobal, helpMsg)) for i in range(0, 10)]),
 			prio=-1, description=_("Service/Channel number zap commands"))
 

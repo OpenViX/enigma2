@@ -62,7 +62,7 @@ class NSCommon:
 
 	def removeComplete(self, result=None, retval=None, extra_args=None):
 		if self.reboot_at_end:
-			restartbox = self.session.openWithCallback(self.operationComplete, MessageBox, 
+			restartbox = self.session.openWithCallback(self.operationComplete, MessageBox,
 				_('Your %s %s needs to be restarted to complete the removal of %s\nDo you want to reboot now ?') % (getMachineBrand(), getMachineName(), self.getTitle()), MessageBox.TYPE_YESNO)
 			restartbox.setTitle(_("Reboot required"))
 		else:
@@ -70,12 +70,12 @@ class NSCommon:
 
 	def installComplete(self, result=None, retval=None, extra_args=None):
 		if self.reboot_at_end:
-			restartbox = self.session.openWithCallback(self.operationComplete, MessageBox, 
+			restartbox = self.session.openWithCallback(self.operationComplete, MessageBox,
 				_('Your %s %s needs to be restarted to complete the installation of %s\nDo you want to reboot now ?') % (getMachineBrand(), getMachineName(), self.getTitle()), MessageBox.TYPE_YESNO)
 			restartbox.setTitle(_("Reboot required"))
 		else:
 			self.updateService()
-	
+
 	def operationComplete(self, reboot=False):
 		if reboot:
 			self.session.open(TryQuitMainloop, 2)
@@ -451,7 +451,7 @@ class NetworkMacSetup(Screen, ConfigListScreen, HelpableScreen):
 
 	def getmac(self, iface):
 		nit = ni.ifaddresses(iface)
-		return nit[ni.AF_LINK][0]['addr'] 
+		return nit[ni.AF_LINK][0]['addr']
 
 	def createSetup(self):
 		self.list = []

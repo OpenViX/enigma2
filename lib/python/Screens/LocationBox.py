@@ -537,4 +537,3 @@ class TimeshiftLocationBox(LocationBox):
 			config.usage.timeshift_path.value = self.getPreferredFolder()
 			config.usage.timeshift_path.save()
 			LocationBox.selectConfirmed(self, ret)
-

@@ -54,7 +54,7 @@ class EPGSelectionInfobarGrid(EPGSelectionGrid):
 
 	def closeScreen(self):
 		EPGServiceZap.closeScreen(self)
-		# be nice and only close the PiP if we actually opened a preview PiP 
+		# be nice and only close the PiP if we actually opened a preview PiP
 		if self.__openedPip:
 			closePip()
 

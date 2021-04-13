@@ -478,4 +478,3 @@ class MultiFileSelectList(FileList):
 				if p == select:
 					self.moveToIndex(i)
 				i += 1
-

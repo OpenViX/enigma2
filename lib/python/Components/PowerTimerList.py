@@ -206,4 +206,3 @@ class PowerTimerList(GUIComponent, object):
 
 	def entryRemoved(self, idx):
 		self.l.entryRemoved(idx)
-
