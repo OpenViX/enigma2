@@ -132,7 +132,7 @@ class InputDeviceSetup(ConfigListScreen, Screen):
 	def layoutFinished(self):
 		listWidth = self["config"].l.getItemSize().width()
 		# use 20% of list width for sliders
-		self["config"].l.setSeperation(int(listWidth*.8))
+		self["config"].l.setSeperation(int(listWidth * .8))
 
 	def cleanup(self):
 		iInputDevices.currentDevice = ""

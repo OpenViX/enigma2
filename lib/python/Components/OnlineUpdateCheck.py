@@ -112,15 +112,15 @@ class FeedsStatusCheck:
 	# Declared here for consistency and co-location with choices.
 
 	feed_status_msgs = {
-		'stable':     _('Feeds status: Stable'),
-		'unstable':   _('Feeds status: Unstable'),
-		'updating':   _('Feeds status: Updating'),
-		'-2':	      _('ERROR: No internet found'),
-		'-3':	      _('ERROR: No network found'),
-		'403':	      _('ERROR: Response 403 Forbidden'),
-		'404':	      _('ERROR: Response 404 Not Found'),
+		'stable': _('Feeds status: Stable'),
+		'unstable': _('Feeds status: Unstable'),
+		'updating': _('Feeds status: Updating'),
+		'-2': _('ERROR: No internet found'),
+		'-3': _('ERROR: No network found'),
+		'403': _('ERROR: Response 403 Forbidden'),
+		'404': _('ERROR: Response 404 Not Found'),
 		'inprogress': _('ERROR: Check is already running in background, please wait a few minutes and try again'),
-		'unknown':    _('Feeds status: Unknown'),
+		'unknown': _('Feeds status: Unknown'),
 	}
 
 	def getFeedsBool(self):
@@ -203,7 +203,7 @@ class OnlineUpdateCheckPoller:
 			minimum_delay = 60 # 1 minute
 
 		last_run = config.softwareupdate.updatelastcheck.getValue()
-		gap = config.softwareupdate.checktimer.value*3600
+		gap = config.softwareupdate.checktimer.value * 3600
 		delay = last_run + gap - int(time())
 
 		# Set-up the minimum delay, which is greater on the first boot-time pass.
@@ -297,7 +297,7 @@ def kernelMismatch():
 		return False
 
 	try:
-		packages = zlib.decompress(gz_data, 16+zlib.MAX_WBITS)
+		packages = zlib.decompress(gz_data, 16 + zlib.MAX_WBITS)
 	except:
 		print '[OnlineUpdateCheck][kernelMismatch] failed to decompress gz_data'
 		return False

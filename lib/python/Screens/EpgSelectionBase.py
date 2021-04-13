@@ -528,7 +528,7 @@ class EPGServiceNumberSelectionPopup(Screen):
 
 	def keyNumber(self, number):
 		if config.misc.zapkey_delay.value > 0:
-			self.timer.start(1000*config.misc.zapkey_delay.value, True)
+			self.timer.start(1000 * config.misc.zapkey_delay.value, True)
 		self.number += str(number)
 		service, bouquet = self.getServiceByNumber(int(self.number))
 		self["number"].setText(self.number)

@@ -13,8 +13,8 @@ class HdmiCECSetupScreen(Setup):
 		self["actions"] = HelpableActionMap(self, ["ColorActions"],
 		{
 			"yellow": (self.setFixedAddress, _("Set HDMI-CEC fixed address")),
-			"blue": (self.clearFixedAddress,  _("Clear HDMI-CEC fixed address")),
-		},  prio=-2, description=_("HDMI-CEC address editing actions"))
+			"blue": (self.clearFixedAddress, _("Clear HDMI-CEC fixed address")),
+		}, prio=-2, description=_("HDMI-CEC address editing actions"))
 		
 		self.updateAddress()
 

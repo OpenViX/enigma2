@@ -152,7 +152,7 @@ class LamedbReader():
 			#print("[%s-LamedbReader] lamedb ver" % (debug_name), lamedb_ver)
 		if lamedb_ver == 4:
 			transponders = self.parseLamedbV4Content(content)
-		elif  lamedb_ver == 5:
+		elif lamedb_ver == 5:
 			transponders = self.parseLamedbV5Content(content)
 		return transponders
 
@@ -165,7 +165,7 @@ class LamedbReader():
 		tp_stop = content.find("end\n")
 
 		tp_blocks = content[tp_start + 13:tp_stop].strip().split("/")
-		content = content[tp_stop+4:]
+		content = content[tp_stop + 4:]
 
 		for block in tp_blocks:
 			rows = block.strip().split("\n")
@@ -184,7 +184,7 @@ class LamedbReader():
 
 			#print("%x:%x:%x" % (namespace, transport_stream_id, original_network_id))
 			second_row = rows[1].strip()
-			transponder["dvb_type"] = 'dvb'+second_row[0]
+			transponder["dvb_type"] = 'dvb' + second_row[0]
 			if transponder["dvb_type"] not in ["dvbs", "dvbt", "dvbc"]:
 				continue
 
@@ -256,10 +256,10 @@ class LamedbReader():
 
 		srv_blocks = content[srv_start + 9:srv_stop].strip().split("\n")
 
-		for i in list(range(0, len(srv_blocks)//3)):
-			service_reference = srv_blocks[i*3].strip()
-			service_name = srv_blocks[(i*3)+1].strip()
-			service_provider = srv_blocks[(i*3)+2].strip()
+		for i in list(range(0, len(srv_blocks) // 3)):
+			service_reference = srv_blocks[i * 3].strip()
+			service_name = srv_blocks[(i * 3) + 1].strip()
+			service_provider = srv_blocks[(i * 3) + 2].strip()
 			service_reference = service_reference.split(":")
 
 			if len(service_reference) not in (6, 7):
@@ -311,7 +311,7 @@ class LamedbReader():
 				transponder["original_network_id"] = int(first_part[2], 16)
 
 				second_part = line.strip().split(",")[1]
-				transponder["dvb_type"] = 'dvb'+second_part[0]
+				transponder["dvb_type"] = 'dvb' + second_part[0]
 				if transponder["dvb_type"] not in ["dvbs", "dvbt", "dvbc"]:
 					continue
 
@@ -536,7 +536,7 @@ class LamedbWriter():
 						service_name = control_char_re.sub('', service["service_name"]).decode('latin-1').encode("utf8")
 						provider_name = control_char_re.sub('', service["provider_name"]).decode('latin-1').encode("utf8")
 					else:
-						service_name =  control_char_re.sub('', six.ensure_text(six.ensure_str(service["service_name"],  encoding='latin-1'), encoding='utf-8', errors='ignore'))
+						service_name = control_char_re.sub('', six.ensure_text(six.ensure_str(service["service_name"], encoding='latin-1'), encoding='utf-8', errors='ignore'))
 						provider_name = control_char_re.sub('', six.ensure_text(six.ensure_str(service["provider_name"], encoding='latin-1'), encoding='utf-8', errors='ignore'))
 				else:
 					service_name = service["service_name"]
@@ -684,7 +684,7 @@ class LamedbWriter():
 						service_name = control_char_re.sub('', service["service_name"]).decode('latin-1').encode("utf8")
 						provider_name = control_char_re.sub('', service["provider_name"]).decode('latin-1').encode("utf8")
 					else:
-						service_name =  control_char_re.sub('', six.ensure_text(six.ensure_str(service["service_name"],  encoding='latin-1'), encoding='utf-8', errors='ignore'))
+						service_name = control_char_re.sub('', six.ensure_text(six.ensure_str(service["service_name"], encoding='latin-1'), encoding='utf-8', errors='ignore'))
 						provider_name = control_char_re.sub('', six.ensure_text(six.ensure_str(service["provider_name"], encoding='latin-1'), encoding='utf-8', errors='ignore'))
 				else:
 					service_name = service["service_name"]
@@ -758,7 +758,7 @@ class Opentv_Zapper():
 			transponders[transponder_key] = self.transponder
 		if service_key not in transponders[transponder_key]["services"]:
 			transponders[transponder_key]["services"][service_key] = self.service
-			print("[%s] download service missing from lamedb. Adding now."  % (debug_name))
+			print("[%s] download service missing from lamedb. Adding now." % (debug_name))
 			writer = LamedbWriter()
 			writer.writeLamedb(lamedb_path, transponders)
 			writer.writeLamedb5(lamedb_path, transponders)

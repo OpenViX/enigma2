@@ -57,7 +57,7 @@ def parseEvent(event, description=True, service=None):
 	if service is not None and config.recording.split_programme_minutes.value > 0:
 		# check for events split by, for example, silly 5 minute entertainment news
 		test = ['IX', (service.toString(), 0, event.getBeginTime(), 300)]
-		epgCache =  eEPGCache.getInstance()
+		epgCache = eEPGCache.getInstance()
 		query = epgCache.lookupEvent(test)
 		additionalEvents = [epgCache.lookupEventId(service, item[0]) for item in query[1:3]]
 		if (len(additionalEvents) == 2 and
@@ -354,7 +354,7 @@ class RecordTimerEntry(TimerEntry, object):
 			description = self.description
 			if self.repeated:
 				epgcache = eEPGCache.getInstance()
-				queryTime=self.begin+(self.end-self.begin)/2
+				queryTime = self.begin + (self.end - self.begin) / 2
 				evt = epgcache.lookupEventTime(rec_ref, queryTime)
 				if evt:
 					if self.rename_repeat:
@@ -378,7 +378,7 @@ class RecordTimerEntry(TimerEntry, object):
 				if event_id is None:
 					event_id = -1
 
-			prep_res=self.record_service.prepare(self.Filename + self.record_service.getFilenameExtension(), self.begin, self.end, event_id, name.replace("\n", ""), description.replace("\n", ""), ' '.join(self.tags), bool(self.descramble), bool(self.record_ecm))
+			prep_res = self.record_service.prepare(self.Filename + self.record_service.getFilenameExtension(), self.begin, self.end, event_id, name.replace("\n", ""), description.replace("\n", ""), ' '.join(self.tags), bool(self.descramble), bool(self.record_ecm))
 			if prep_res:
 				if prep_res == -255:
 					self.log(4, "failed to write meta information")
@@ -421,7 +421,7 @@ class RecordTimerEntry(TimerEntry, object):
 			if config.usage.multibouquet.value:
 				bqrootstr = '1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "bouquets.tv" ORDER BY bouquet'
 			else:
-				bqrootstr = '%s FROM BOUQUET "userbouquet.favourites.tv" ORDER BY bouquet'% self.service_types
+				bqrootstr = '%s FROM BOUQUET "userbouquet.favourites.tv" ORDER BY bouquet' % self.service_types
 			rootstr = ''
 			serviceHandler = eServiceCenter.getInstance()
 			rootbouquet = eServiceReference(bqrootstr)
@@ -650,7 +650,7 @@ class RecordTimerEntry(TimerEntry, object):
 			old_end = self.end
 			self.ts_dialog = None
 			if self.setAutoincreaseEnd():
-				self.log(12, "autoincrease recording %d minute(s)" % int((self.end - old_end)/60))
+				self.log(12, "autoincrease recording %d minute(s)" % int((self.end - old_end) / 60))
 				self.state -= 1
 				return True
 			self.log_tuner(12, "stop")
@@ -720,9 +720,9 @@ class RecordTimerEntry(TimerEntry, object):
 		if not self.autoincrease:
 			return False
 		if entry is None:
-			new_end =  int(time()) + self.autoincreasetime
+			new_end = int(time()) + self.autoincreasetime
 		else:
-			new_end = entry.begin -30
+			new_end = entry.begin - 30
 
 		dummyentry = RecordTimerEntry(self.service_ref, self.begin, new_end, self.name, self.description, self.eit, disabled=True, justplay=self.justplay, afterEvent=self.afterEvent, dirname=self.dirname, tags=self.tags)
 		dummyentry.disabled = self.disabled
@@ -1188,7 +1188,7 @@ class RecordTimer(Timer):
 
 	def getNextRecordingTime(self):
 		nextrectime = self.getNextRecordingTimeOld()
-		faketime = time()+300
+		faketime = time() + 300
 
 		if config.timeshift.isRecording.value:
 			if 0 < nextrectime < faketime:

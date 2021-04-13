@@ -77,7 +77,7 @@ l_moviesort = [
 	(str(MovieList.SORT_ALPHANUMERIC_FLAT), _("flat alphabetic"), 'A-Z Flat'),
 	(str(MovieList.SORT_RECORDED_REVERSE), _("reverse by date"), '01/02/03'),
 	(str(MovieList.SORT_ALPHANUMERIC_REVERSE), _("alphabetic reverse"), 'Z-A'),
-	(str(MovieList.SORT_ALPHAREV_DATE_NEWEST_FIRST), _("alpharev then newest"),  'Z1 A2 A1')]
+	(str(MovieList.SORT_ALPHAREV_DATE_NEWEST_FIRST), _("alpharev then newest"), 'Z1 A2 A1')]
 
 # 4th item is the textual value set in UsageConfig.py
 l_trashsort = [
@@ -165,14 +165,14 @@ def createMoveList(serviceref, dest):
 		# Real movie, add extra files...
 		srcBase = os.path.splitext(src)[0]
 		baseName = os.path.split(srcBase)[1]
-		eitName =  srcBase + '.eit'
+		eitName = srcBase + '.eit'
 		if os.path.exists(eitName):
-			moveList.append((eitName, os.path.join(dest, baseName+'.eit')))
+			moveList.append((eitName, os.path.join(dest, baseName + '.eit')))
 		baseName = os.path.split(src)[1]
 		for ext in ('.ap', '.cuts', '.meta', '.sc'):
 			candidate = src + ext
 			if os.path.exists(candidate):
-				moveList.append((candidate, os.path.join(dest, baseName+ext)))
+				moveList.append((candidate, os.path.join(dest, baseName + ext)))
 	return moveList
 
 def moveServiceFiles(serviceref, dest, name=None, allowCopy=True):
@@ -226,7 +226,7 @@ def renameServiceFiles(serviceref, newName):
 		return serviceref
 	# Now rename any data files associated with the media file. If there are any same
 	# named orphaned file types, this will either either overwrite them using rename, or remove them
-	cleanupList = [".eit", oldExt+".cuts"]
+	cleanupList = [".eit", oldExt + ".cuts"]
 	for ext in cleanupList[:]:
 		oldPath = os.path.join(oldDir, oldName + ext)
 		if os.path.exists(oldPath):
@@ -234,7 +234,7 @@ def renameServiceFiles(serviceref, newName):
 			os.rename(oldPath, newPath)
 			cleanupList.remove(ext)
 	try:
-		for item in cleanupList + [oldExt+".ap", oldExt+".meta", oldExt+".sc"]:
+		for item in cleanupList + [oldExt + ".ap", oldExt + ".meta", oldExt + ".sc"]:
 			newPath = os.path.join(oldDir, newName + ext)
 			if os.path.exists(newPath):
 				os.remove(newPath)
@@ -627,7 +627,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			}, description=_("Basic functions"))
 
 		numberActionHelp = _("Search by first letter of name")
-		self["NumberActions"] =  HelpableNumberActionMap(self, ["NumberActions", "InputAsciiActions"],
+		self["NumberActions"] = HelpableNumberActionMap(self, ["NumberActions", "InputAsciiActions"],
 			{
 				"gotAsciiCode": self.keyAsciiCode,
 				"1": (self.keyNumberGlobal, numberActionHelp),
@@ -686,8 +686,8 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			}, prio=-2, description=_("Navigation"))
 
 		tPreview = _("Preview")
-		tFwd = _("skip forward") + " (" + tPreview +")"
-		tBack= _("skip backward") + " (" + tPreview +")"
+		tFwd = _("skip forward") + " (" + tPreview + ")"
+		tBack = _("skip backward") + " (" + tPreview + ")"
 		sfwd = lambda: self.seekRelative(1, config.seek.selfdefined_46.value * 90000)
 		ssfwd = lambda: self.seekRelative(1, config.seek.selfdefined_79.value * 90000)
 		sback = lambda: self.seekRelative(-1, config.seek.selfdefined_46.value * 90000)
@@ -794,7 +794,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			config.movielist.btn_F1 = ConfigSelection(default='movieoff_menu', choices=choices)
 			config.movielist.btn_F2 = ConfigSelection(default='preview', choices=choices)
 			config.movielist.btn_F3 = ConfigSelection(default='/media', choices=choices)
-			userDefinedButtons ={
+			userDefinedButtons = {
 				'red': config.movielist.btn_red,
 				'green': config.movielist.btn_green,
 				'yellow': config.movielist.btn_yellow,
@@ -969,7 +969,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 	def updateDescription(self):
 		if self.settings["description"] == MovieList.SHOW_DESCRIPTION:
 			self["DescriptionBorder"].show()
-			self["list"].instance.resize(eSize(self.listWidth, self.listHeight-self["DescriptionBorder"].instance.size().height()))
+			self["list"].instance.resize(eSize(self.listWidth, self.listHeight - self["DescriptionBorder"].instance.size().height()))
 		else:
 			self["Service"].newService(None)
 			self["DescriptionBorder"].hide()
@@ -1181,7 +1181,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			if ext in AUDIO_EXTENSIONS:
 				self.nextInBackground = next
 				self.callLater(self.preview)
-				self["list"].moveToIndex(index+1)
+				self["list"].moveToIndex(index + 1)
 
 		if config.movielist.show_live_tv_in_movielist.value:
 			self.LivePlayTimer.start(100)
@@ -1269,7 +1269,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 
 	def toggleMark(self):
 		self.list.toggleMark()
-		if self.list.getCurrentIndex() < len(self.list)-1:
+		if self.list.getCurrentIndex() < len(self.list) - 1:
 			self.list.moveDown()
 		self.hideActionFeedback()
 
@@ -1593,7 +1593,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 # We set a text for "settings_per_directory" even though it will never
 # get here...just in case one day it does.
 #
-		title=_("Sort list:")
+		title = _("Sort list:")
 		if config.movielist.settings_per_directory.value:
 			title = title + "\n\n" + _("Set the sort method for this directory")
 		else:
@@ -1748,7 +1748,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 				else:
 					self.reloadList(home=True, sel=eServiceReference.fromDirectory(currentDir))
 			else:
-				mbox=self.session.open(
+				mbox = self.session.open(
 					MessageBox,
 					_("Directory %s does not exist.") % res,
 					type=MessageBox.TYPE_ERROR,
@@ -1815,7 +1815,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		self.session.openWithCallback(self.tagChosen, ChoiceBox, title=_("Please select the tag to filter..."), list=lst, skin_name="MovieListTags")
 
 	def showTagWarning(self):
-		mbox=self.session.open(MessageBox, _("No tags are set on these movies."), MessageBox.TYPE_ERROR)
+		mbox = self.session.open(MessageBox, _("No tags are set on these movies."), MessageBox.TYPE_ERROR)
 		mbox.setTitle(self.getTitle())
 
 	def selectMovieLocation(self, title, callback):
@@ -1912,7 +1912,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		if path in config.movielist.videodirs.value:
 			if len(path) > 40:
 				path = '...' + path[-40:]
-			mbox=self.session.openWithCallback(self.removeBookmark, MessageBox, _("Do you really want to remove your bookmark of %s?") % path)
+			mbox = self.session.openWithCallback(self.removeBookmark, MessageBox, _("Do you really want to remove your bookmark of %s?") % path)
 			mbox.setTitle(self.getTitle())
 		else:
 			config.movielist.videodirs.value += [path]
@@ -1960,7 +1960,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			print "[MovieSelection] Unexpected error:", e
 			msg = _("Error") + '\n' + str(e)
 		if msg:
-			mbox=self.session.open(MessageBox, msg, type=MessageBox.TYPE_ERROR, timeout=5)
+			mbox = self.session.open(MessageBox, msg, type=MessageBox.TYPE_ERROR, timeout=5)
 			mbox.setTitle(self.getTitle())
 
 	def can_rename(self, item):
@@ -2319,7 +2319,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			if failedCount == 1:
 				msg = _("Couldn't move '%s' to the trash can. Do you want to delete it instead?") % getItemDisplayName(*failedList[0][:2])
 			else:
-				msg= _("Couldn't move %d items to the trash can. Do you want to delete them instead?") % failedCount
+				msg = _("Couldn't move %d items to the trash can. Do you want to delete them instead?") % failedCount
 			mbox = self.session.openWithCallback(lambda confirmed: self.__permanentDeleteListConfirmed(failedList, confirmed), MessageBox, msg)
 			mbox.setTitle(self.getTitle())
 
@@ -2371,7 +2371,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			msg = "\n" + _("Recording(s) are in progress or coming up in few seconds!")
 		else:
 			msg = ""
-		mbox=self.session.openWithCallback(self.purgeConfirmed, MessageBox, _("Permanently delete all recordings in the trash can?") + msg)
+		mbox = self.session.openWithCallback(self.purgeConfirmed, MessageBox, _("Permanently delete all recordings in the trash can?") + msg)
 		mbox.setTitle(self.getTitle())
 
 	def purgeConfirmed(self, confirmed):

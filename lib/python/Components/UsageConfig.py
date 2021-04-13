@@ -18,7 +18,7 @@ from Tools.HardwareInfo import HardwareInfo
 
 def InitUsageConfig():
 	config.version = ConfigNumber(default=0)
-	config.misc.useNTPminutes = ConfigSelection(default="30", choices=[("30", "30" + " " +_("minutes")), ("60", _("Hour")), ("1440", _("Once per day"))])
+	config.misc.useNTPminutes = ConfigSelection(default="30", choices=[("30", "30" + " " + _("minutes")), ("60", _("Hour")), ("1440", _("Once per day"))])
 	if getBrandOEM() in ('vuplus', 'ini'):
 		config.misc.remotecontrol_text_support = ConfigYesNo(default=True)
 	else:
@@ -150,7 +150,7 @@ def InitUsageConfig():
 		("no", _("No")), ("popup", _("With popup")), ("without popup", _("Without popup"))])
 	choicelist = [("-1", _("Disabled")), ("0", _("No timeout"))]
 	for i in [60, 300, 600, 900, 1800, 2700, 3600]:
-		m = i/60
+		m = i / 60
 		choicelist.append((str(i), ngettext("%d minute", "%d minutes", m) % m))
 	config.usage.pip_last_service_timeout = ConfigSelection(default="0", choices=choicelist)
 
@@ -778,7 +778,7 @@ def InitUsageConfig():
 
 	config.epg.histminutes = ConfigSelectionNumber(min=0, max=720, stepwidth=15, default=0, wraparound=True)
 	def EpgHistorySecondsChanged(configElement):
-		eEPGCache.getInstance().setEpgHistorySeconds(config.epg.histminutes.value*60)
+		eEPGCache.getInstance().setEpgHistorySeconds(config.epg.histminutes.value * 60)
 	config.epg.histminutes.addNotifier(EpgHistorySecondsChanged)
 
 	config.epg.cacheloadsched = ConfigYesNo(default=False)
@@ -968,7 +968,7 @@ def InitUsageConfig():
 	config.subtitles.subtitle_rewrap = ConfigYesNo(default=False)
 	config.subtitles.colourise_dialogs = ConfigYesNo(default=False)
 	config.subtitles.subtitle_borderwidth = ConfigSelection(choices=["1", "2", "3", "4", "5"], default="3")
-	config.subtitles.subtitle_fontsize  = ConfigSelection(choices=["%d" % x for x in range(16,101) if not x % 2], default="40")
+	config.subtitles.subtitle_fontsize = ConfigSelection(choices=["%d" % x for x in range(16,101) if not x % 2], default="40")
 	config.subtitles.showbackground = ConfigYesNo(default=False)
 
 	subtitle_delay_choicelist = []
@@ -1012,7 +1012,7 @@ def InitUsageConfig():
 
 	config.autolanguage = ConfigSubsection()
 	default_autoselect = "eng Englisch" # for audio_autoselect1
-	audio_language_choices=[
+	audio_language_choices = [
 		("", _("None")),
 		("und", _("Undetermined")),
 		("orj dos ory org esl qaa und mis mul ORY ORJ Audio_ORJ oth", _("Original")),

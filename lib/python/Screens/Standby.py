@@ -98,7 +98,7 @@ class Standby2(Screen):
 				self.paused_action = hasattr(self.paused_service, "seekstate") and hasattr(self.paused_service, "SEEK_STATE_PLAY") and self.paused_service.seekstate == self.paused_service.SEEK_STATE_PLAY
 				self.paused_action and self.paused_service.pauseService()
 		if not self.paused_service:
-			self.timeHandler =  eDVBLocalTimeHandler.getInstance()
+			self.timeHandler = eDVBLocalTimeHandler.getInstance()
 			if self.timeHandler.ready():
 				if self.session.nav.getCurrentlyPlayingServiceOrGroup():
 					self.stopService()
@@ -242,7 +242,7 @@ class TryQuitMainloop(MessageBox):
 			reason = (ngettext("%d job is running in the background!", "%d jobs are running in the background!", len(jobs)) % len(jobs)) + '\n'
 			if len(jobs) == 1:
 				job = jobs[0]
-				reason += "%s: %s (%d%%)\n" % (job.getStatustext(), job.name, int(100*job.progress/float(job.end)))
+				reason += "%s: %s (%d%%)\n" % (job.getStatustext(), job.name, int(100 * job.progress / float(job.end)))
 			else:
 				reason += (_("%d jobs are running in the background!") % len(jobs)) + '\n'
 		if inTimeshift:
@@ -297,7 +297,7 @@ class TryQuitMainloop(MessageBox):
 
 	def close(self, value):
 		if self.connected:
-			self.connected=False
+			self.connected = False
 			self.session.nav.record_event.remove(self.getRecordEvent)
 		if value:
 			self.hide()

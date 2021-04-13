@@ -68,7 +68,7 @@ class VideoSetup(ConfigListScreen, Screen):
 		self.list = [
 			getConfigListEntry(_("Video output"), config.av.videoport, _("Configures which video output connector will be used."))
 		]
-		if config.av.videoport.value in ('HDMI', 'YPbPr', 'Scart-YPbPr') and not path.exists(resolveFilename(SCOPE_PLUGINS)+'SystemPlugins/AutoResolution'):
+		if config.av.videoport.value in ('HDMI', 'YPbPr', 'Scart-YPbPr') and not path.exists(resolveFilename(SCOPE_PLUGINS) + 'SystemPlugins/AutoResolution'):
 			self.list.append(getConfigListEntry(_("Automatic resolution"), config.av.autores,_("If enabled the output resolution of the box will try to match the resolution of the video content")))
 			if config.av.autores.value in ('all', 'hd'):
 				self.list.append(getConfigListEntry(_("Force de-interlace"), config.av.autores_deinterlace,_("If enabled the video will always be de-interlaced.")))
@@ -243,7 +243,7 @@ class AutoVideoModeLabel(Screen):
 		idx = config.av.autores_label_timeout.index
 		if idx:
 			idx += 4
-			self.hideTimer.start(idx*1000, True)
+			self.hideTimer.start(idx * 1000, True)
 
 previous = None
 isDedicated3D = False
@@ -431,8 +431,8 @@ class AutoVideoMode(Screen):
 			elif config.av.autores.value == 'all' or (config.av.autores.value == 'hd' and int(new_res) >= 720):
 				if (config.av.autores_deinterlace.value and HardwareInfo().is_nextgen()) or (config.av.autores_deinterlace.value and not HardwareInfo().is_nextgen() and int(new_res) <= 720):
 					new_pol = new_pol.replace('i','p')
-				if new_res+new_pol+new_rate in iAVSwitch.readAvailableModes():
-					new_mode = new_res+new_pol+new_rate
+				if new_res + new_pol + new_rate in iAVSwitch.readAvailableModes():
+					new_mode = new_res + new_pol + new_rate
 					if new_mode == '480p24' or new_mode == '576p24':
 						new_mode = config.av.autores_480p24.value
 					if new_mode == '720p24':
@@ -449,22 +449,22 @@ class AutoVideoMode(Screen):
 						new_mode = config.av.autores_2160p25.value
 					if new_mode == '2160p30' or new_mode == '2160p60' or new_mode == '2160p':
 						new_mode = config.av.autores_2160p30.value
-				elif new_res+new_pol in iAVSwitch.readAvailableModes():
-					new_mode = new_res+new_pol
+				elif new_res + new_pol in iAVSwitch.readAvailableModes():
+					new_mode = new_res + new_pol
 					if new_mode == '2160p30' or new_mode == '2160p60' or new_mode == '2160p':
 						new_mode = config.av.autores_2160p30.value
 				else:
-					new_mode = config_mode+new_rate
+					new_mode = config_mode + new_rate
 
 				write_mode = new_mode
 			elif config.av.autores.value == 'hd' and int(new_res) <= 576:
 				if (config.av.autores_deinterlace.value and HardwareInfo().is_nextgen()) or (config.av.autores_deinterlace.value and not HardwareInfo().is_nextgen() and not config.av.autores_sd.value == '1080i'):
-					new_mode = config.av.autores_sd.value.replace('i','p')+new_rate
+					new_mode = config.av.autores_sd.value.replace('i','p') + new_rate
 				else:
 					if new_pol in 'p':
-						new_mode = config.av.autores_sd.value.replace('i','p')+new_rate
+						new_mode = config.av.autores_sd.value.replace('i','p') + new_rate
 					else:
-						new_mode = config.av.autores_sd.value+new_rate
+						new_mode = config.av.autores_sd.value + new_rate
 
 				if new_mode == '720p24':
 					new_mode = config.av.autores_720p24.value
@@ -514,7 +514,7 @@ class AutoVideoMode(Screen):
 
 def autostart(session):
 	global resolutionlabel
-	if not path.exists(resolveFilename(SCOPE_PLUGINS)+'SystemPlugins/AutoResolution'):
+	if not path.exists(resolveFilename(SCOPE_PLUGINS) + 'SystemPlugins/AutoResolution'):
 		if resolutionlabel is None:
 			resolutionlabel = session.instantiateDialog(AutoVideoModeLabel)
 		AutoVideoMode(session)

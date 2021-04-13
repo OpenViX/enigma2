@@ -7,13 +7,13 @@ import skin
 
 def row_delta_y():
 	font = skin.fonts["ChoiceList"]
-	return (int(font[2]) - int(font[1]))/2
+	return (int(font[2]) - int(font[1])) / 2
 
 def ChoiceEntryComponent(key=None, text=["--"]):
 	res = [text]
 	if text[0] == "--":
 		x, y, w, h = skin.parameters.get("ChoicelistDash",(skin.applySkinFactor(0), skin.applySkinFactor(2), skin.applySkinFactor(800), skin.applySkinFactor(25)))
-		res.append((eListboxPythonMultiContent.TYPE_TEXT, x, y, w, h, 0, RT_HALIGN_LEFT, "-"*200))
+		res.append((eListboxPythonMultiContent.TYPE_TEXT, x, y, w, h, 0, RT_HALIGN_LEFT, "-" * 200))
 	else:
 		x, y, w, h = skin.parameters.get("ChoicelistName",(skin.applySkinFactor(45), skin.applySkinFactor(2), skin.applySkinFactor(800), skin.applySkinFactor(25)))
 		res.append((eListboxPythonMultiContent.TYPE_TEXT, x, y, w, h, 0, RT_HALIGN_LEFT, text[0]))

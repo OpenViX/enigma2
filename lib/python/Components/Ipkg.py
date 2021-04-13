@@ -85,7 +85,7 @@ class IpkgComponent:
 		if cmd == self.CMD_UPDATE:
 			for fn in os.listdir('/var/lib/opkg'):
 				if fn.startswith(getImageDistro()):
-					os.remove('/var/lib/opkg/'+fn)
+					os.remove('/var/lib/opkg/' + fn)
 			self.runCmdEx("update")
 		elif cmd == self.CMD_UPGRADE:
 			append = ""

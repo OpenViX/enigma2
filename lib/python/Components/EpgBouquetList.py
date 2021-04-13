@@ -195,7 +195,7 @@ class EPGBouquetList(GUIComponent):
 						flags=BT_SCALE))
 			if borderBottomPix is not None:
 				res.append(MultiContentEntryPixmapAlphaTest(
-						pos=(left, r1.height()-self.borderWidth),
+						pos =(left, r1.height() - self.borderWidth),
 						size=(r1.width(), self.borderWidth),
 						png=borderBottomPix,
 						flags=BT_SCALE))
@@ -207,7 +207,7 @@ class EPGBouquetList(GUIComponent):
 						flags=BT_SCALE))
 			if borderRightPix is not None:
 				res.append(MultiContentEntryPixmapAlphaTest(
-						pos=(r1.width()-self.borderWidth, left),
+						pos =(r1.width() - self.borderWidth, left),
 						size=(self.borderWidth, r1.height()),
 						png=borderRightPix,
 						flags=BT_SCALE))

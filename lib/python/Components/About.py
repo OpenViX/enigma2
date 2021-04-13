@@ -89,7 +89,7 @@ def getCPUSpeedMHzInt():
 				f = open('/sys/firmware/devicetree/base/cpus/cpu@0/clock-frequency', 'rb')
 				clockfrequency = f.read()
 				f.close()
-				cpu_speed = round(int(binascii.hexlify(clockfrequency), 16)/1000000,1)
+				cpu_speed = round(int(binascii.hexlify(clockfrequency), 16) / 1000000,1)
 			except IOError:
 				cpu_speed = 1700
 		else:
@@ -105,7 +105,7 @@ def getCPUSpeedString():
 	cpu_speed = float(getCPUSpeedMHzInt())
 	if cpu_speed > 0:
 		if cpu_speed >= 1000:
-			cpu_speed = "%s GHz" % str(round(cpu_speed/1000,1))
+			cpu_speed = "%s GHz" % str(round(cpu_speed / 1000,1))
 		else:
 			cpu_speed = "%s MHz" % str(int(cpu_speed))
 		return cpu_speed
@@ -166,7 +166,7 @@ def getCpuCoresString():
 
 def _ifinfo(sock, addr, ifname):
 	iface = struct.pack('256s', ifname[:15])
-	info  = fcntl.ioctl(sock.fileno(), addr, iface)
+	info = fcntl.ioctl(sock.fileno(), addr, iface)
 	if addr == 0x8927:
 		return ''.join(['%02x:' % ord(char) for char in info[18:24]])[:-1].upper()
 	else:
@@ -175,11 +175,11 @@ def _ifinfo(sock, addr, ifname):
 def getIfConfig(ifname):
 	ifreq = {'ifname': ifname}
 	infos = {}
-	sock  = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+	sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 	# offsets defined in /usr/include/linux/sockios.h on linux 2.6
-	infos['addr']    = 0x8915 # SIOCGIFADDR
+	infos['addr'] = 0x8915 # SIOCGIFADDR
 	infos['brdaddr'] = 0x8919 # SIOCGIFBRDADDR
-	infos['hwaddr']  = 0x8927 # SIOCSIFHWADDR
+	infos['hwaddr'] = 0x8927 # SIOCSIFHWADDR
 	infos['netmask'] = 0x891b # SIOCGIFNETMASK
 	try:
 		for k,v in infos.items():

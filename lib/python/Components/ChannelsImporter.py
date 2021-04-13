@@ -70,20 +70,20 @@ class AutoClientModeTimer:
 			if ClientModeTime < now + atLeast:
 				if config.clientmode.scheduleRepeatInterval.value.isdigit(): # contains wait time in minutes
 					ClientModeTime = now + (60 * int(config.clientmode.scheduleRepeatInterval.value))
-					while (int(ClientModeTime)-30) < now:
+					while (int(ClientModeTime) - 30) < now:
 						ClientModeTime += 60 * int(config.clientmode.scheduleRepeatInterval.value)
 				elif config.clientmode.scheduleRepeatInterval.value == "daily":
-					ClientModeTime += 24*3600
-					while (int(ClientModeTime)-30) < now:
-						ClientModeTime += 24*3600
+					ClientModeTime += 24 * 3600
+					while (int(ClientModeTime) - 30) < now:
+						ClientModeTime += 24 * 3600
 				elif config.clientmode.scheduleRepeatInterval.value == "weekly":
-					ClientModeTime += 7*24*3600
-					while (int(ClientModeTime)-30) < now:
-						ClientModeTime += 7*24*3600
+					ClientModeTime += 7 * 24 * 3600
+					while (int(ClientModeTime) - 30) < now:
+						ClientModeTime += 7 * 24 * 3600
 				elif config.clientmode.scheduleRepeatInterval.value == "monthly":
-					ClientModeTime += 30*24*3600
-					while (int(ClientModeTime)-30) < now:
-						ClientModeTime += 30*24*3600
+					ClientModeTime += 30 * 24 * 3600
+					while (int(ClientModeTime) - 30) < now:
+						ClientModeTime += 30 * 24 * 3600
 			next = ClientModeTime - now
 			self.clientmodetimer.startLongTimer(next)
 		else:

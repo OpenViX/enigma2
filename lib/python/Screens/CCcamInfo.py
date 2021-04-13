@@ -271,8 +271,8 @@ def CCcamListEntry(name, idx):
 def CCcamServerListEntry(name, color):
 	screenwidth = getDesktop(0).size().width()
 	res = [name]
-	if path.exists(resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/key_%s.png" %  color)):
-		png = resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/key_%s.png" %  color)
+	if path.exists(resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/key_%s.png" % color)):
+		png = resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/key_%s.png" % color)
 	else:
 		png = "/usr/share/enigma2/skin_default/buttons/key_%s.png" % color
 	if screenwidth and screenwidth == 1920:
@@ -579,14 +579,14 @@ class CCcamInfoMain(Screen):
 
 	def showEcmInfoFile(self, file=None):
 		if file is not None:
-			self.showFile("/tmp/"+file)
+			self.showFile("/tmp/" + file)
 		self.workingFinished()
 
 	def showCCcamGeneral(self, html):
 		if html.__contains__('<BR><BR>'):
 			idx = html.index('<BR><BR>')
 			idx2 = html.index('<BR></BODY>')
-			html = html[idx+8:idx2].replace("<BR>", "\n").replace("\n\n", "\n")
+			html = html[idx + 8:idx2].replace("<BR>", "\n").replace("\n\n", "\n")
 			self.infoToShow = html
 			getPage(self.url + "/shares").addCallback(self.showCCcamGeneral2).addErrback(self.getWebpageError)
 		else:
@@ -595,14 +595,14 @@ class CCcamInfoMain(Screen):
 	def showCCcamGeneral2(self, html):
 		if html.__contains__("Welcome to CCcam"):
 			idx = html.index("Welcome to CCcam")
-			html = html[idx+17:]
+			html = html[idx + 17:]
 			idx = html.index(" ")
 			version = html[:idx]
 			self.infoToShow = "%s%s\n%s" % (_("Version: "), version, self.infoToShow)
 
 		if html.__contains__("Available shares:"):
 			idx = html.index("Available shares:")
-			html = html[idx+18:]
+			html = html[idx + 18:]
 			idx = html.index("\n")
 			html = html[:idx]
 			self.showInfo(translateBlock("%s %s\n%s" % (_("Available shares:"), html, self.infoToShow)), _("General"))
@@ -700,7 +700,7 @@ class CCcamInfoMain(Screen):
 
 							idx = string.index(" ")
 							uphops = string[:idx]
-							string = string[idx+1:]
+							string = string[idx + 1:]
 
 							while string.startswith(" "):
 								string = string[1:]
@@ -744,7 +744,7 @@ class CCcamInfoMain(Screen):
 		if html.__contains__('<PRE>'):
 			idx = html.index('<PRE>')
 			idx2 = html.index('</PRE>')
-			html = html[idx+5:idx2].replace("\n\n", "\n")
+			html = html[idx + 5:idx2].replace("\n\n", "\n")
 			if html == "":
 				html = _("No card inserted!")
 			self.showInfo(translateBlock(html), _("Entitlements"))
@@ -764,7 +764,7 @@ class CCcamInfoMain(Screen):
 		if retval == 0:
 			if result.__contains__("Total:"):
 				idx = result.index("Total:")
-				result = result[idx+6:]
+				result = result[idx + 6:]
 
 				tmpList = result.split(" ")
 				list = []
@@ -914,7 +914,7 @@ class CCcamShareViewMenu(Screen, HelpableScreen):
 									string = string[:-1]
 
 								idx = string.index(" ")
-								maxdown = string[idx+1:]
+								maxdown = string[idx + 1:]
 
 								while maxdown.startswith(" "):
 									maxdown = maxdown[1:]
@@ -929,13 +929,13 @@ class CCcamShareViewMenu(Screen, HelpableScreen):
 									#if providername == 'Multiple Providers given':
 									#	print caidprovider
 									numberofreshare = 0
-									if int(down)>0:
+									if int(down) > 0:
 										resharecards += 1
 										numberofreshare = 1
 									reshareList.append(numberofreshare)
 
 									shareList.append(CCcamShareViewListEntry(caidprovider, providername, str(numberofcards), str(numberofreshare)))
-									self.list.append([caidprovider, providername, numberofcards,  numberofreshare])
+									self.list.append([caidprovider, providername, numberofcards, numberofreshare])
 
 									totalproviders += 1
 
@@ -946,14 +946,14 @@ class CCcamShareViewMenu(Screen, HelpableScreen):
 									countList[i] = count
 									numberofcards = count
 
-									if int(down)>0:
+									if int(down) > 0:
 										reshare = reshareList[i]
 										reshare += 1
 										reshareList[i] = reshare
 										numberofreshare = 0
 										numberofreshare = reshare
-										resharecards +=1
-									elif int(down)==0:
+										resharecards += 1
+									elif int(down) == 0:
 										numberofreshare = reshareList[i]
 
 									providername = self.providers.get(caidprovider, 'Multiple Providers given')
@@ -977,7 +977,7 @@ class CCcamShareViewMenu(Screen, HelpableScreen):
 								idx = updown.index(" ")
 								up = updown[:idx]
 
-								maxdown = updown[idx+1:]
+								maxdown = updown[idx + 1:]
 
 								while maxdown.startswith(" "):
 									maxdown = maxdown[1:]
@@ -999,7 +999,7 @@ class CCcamShareViewMenu(Screen, HelpableScreen):
 										#	print caidprovider
 
 										numberofreshare = 0
-										if int(down)>0:
+										if int(down) > 0:
 											resharecards += 1
 											numberofreshare = 1
 										reshareList.append(numberofreshare)
@@ -1015,7 +1015,7 @@ class CCcamShareViewMenu(Screen, HelpableScreen):
 										countList[i] = count
 										numberofcards = count
 
-										if int(down)>0:
+										if int(down) > 0:
 											reshare = reshareList[i]
 											reshare += 1
 											#if caidprovider == "05021700":
@@ -1023,8 +1023,8 @@ class CCcamShareViewMenu(Screen, HelpableScreen):
 											reshareList[i] = reshare
 											numberofreshare = 0
 											numberofreshare = reshare
-											resharecards +=1
-										elif int(down)==0:
+											resharecards += 1
+										elif int(down) == 0:
 											numberofreshare = reshareList[i]
 
 										providername = self.providers.get(caidprovider, 'Multiple Providers given')
@@ -1043,10 +1043,10 @@ class CCcamShareViewMenu(Screen, HelpableScreen):
 		self.instance.setTitle("%s (%s %d) %s %s" % (_("Share View"), _("Total cards:"), totalcards, _("Hops:"), ulevel))
 		self["title"].setText("%s (%s %d) %s %s" % (_("Share View"), _("Total cards:"), totalcards, _("Hops:"), ulevel))
 		self["list"].setList(shareList)
-		self["uphops"].setText("%s %s" %(_("Hops:"), ulevel))
-		self["cards"].setText("%s %s" %(_("Total cards:"), totalcards))
-		self["providers"].setText("%s %s" %(_("Providers:"), totalproviders))
-		self["reshare"].setText("%s %d" %(_("Reshare:"), resharecards))
+		self["uphops"].setText("%s %s" % (_("Hops:"), ulevel))
+		self["cards"].setText("%s %s" % (_("Total cards:"), totalcards))
+		self["providers"].setText("%s %s" % (_("Providers:"), totalproviders))
+		self["reshare"].setText("%s %d" % (_("Reshare:"), resharecards))
 		self.working = False
 
 	def readProvidersCallback(self, html):
@@ -1070,7 +1070,7 @@ class CCcamShareViewMenu(Screen, HelpableScreen):
 	def formatCaidProvider(self, caid, provider):
 		pos = provider.find(",")
 		if pos != -1:
-			provider = provider[pos+1:]
+			provider = provider[pos + 1:]
 			pos = provider.find(",")
 			if pos != -1:
 				provider = provider[0:pos]
@@ -1365,7 +1365,7 @@ class CCcamInfoRemoteBoxMenu(Screen):
 
 	def locationCallback(self, callback):
 		if callback:
-			config.cccaminfo.profiles.value = ("%s/CCcamInfo.profiles"%callback).replace("//", "/")
+			config.cccaminfo.profiles.value = ("%s/CCcamInfo.profiles" % callback).replace("//", "/")
 			config.cccaminfo.profiles.save()
 		del self.list
 		self.list = []
@@ -1457,7 +1457,7 @@ class CCcamInfoShareInfo(Screen):
 
 							idx = string.index(" ")
 							uphops = string[:idx]
-							string = string[idx+1:]
+							string = string[idx + 1:]
 
 							while string.startswith(" "):
 								string = string[1:]
@@ -1572,7 +1572,7 @@ class CCcamInfoConfigSwitcher(Screen):
 
 		for file in files:
 			if file.startswith("CCcam_") and file.endswith(".cfg"):
-				list.append(CCcamConfigListEntry("/var/etc/"+file))
+				list.append(CCcamConfigListEntry("/var/etc/" + file))
 
 		self["list"].setList(list)
 
@@ -1625,7 +1625,7 @@ class CCcamInfoConfigSwitcher(Screen):
 				content = content.replace("\r", "\n")
 				if content.startswith("#CONFIGFILE NAME=") and content.__contains__("\n"):
 					idx = content.index("\n")
-					content = content[:idx+2]
+					content = content[:idx + 2]
 
 				content = "#CONFIGFILE NAME=%s\n%s" % (callback, content)
 
@@ -1727,5 +1727,5 @@ class CCcamInfoMenuConfig(Screen):
 
 	def locationCallback(self, callback):
 		if callback:
-			config.cccaminfo.blacklist.value = ("%s/CCcamInfo.blacklisted"%callback).replace("//", "/")
+			config.cccaminfo.blacklist.value = ("%s/CCcamInfo.blacklisted" % callback).replace("//", "/")
 			config.cccaminfo.blacklist.save()

@@ -17,8 +17,8 @@ def PluginEntryComponent(plugin, width=440):
 	ix, iy, iw, ih = skin.parameters.get("PluginBrowserIcon",(skin.applySkinFactor(10), skin.applySkinFactor(5), skin.applySkinFactor(100), skin.applySkinFactor(40)))
 	return [
 		plugin,
-		MultiContentEntryText(pos=(nx, ny), size=(width-nx, nh), font=0, text=plugin.name),
-		MultiContentEntryText(pos=(nx, dy), size=(width-dx, dh), font=1, text=plugin.description),
+		MultiContentEntryText(pos=(nx, ny), size=(width - nx, nh), font=0, text=plugin.name),
+		MultiContentEntryText(pos=(nx, dy), size=(width - dx, dh), font=1, text=plugin.description),
 		MultiContentEntryPixmapAlphaBlend(pos=(ix, iy), size=(iw, ih), png=png, flags=BT_SCALE | BT_KEEP_ASPECT_RATIO | BT_HALIGN_CENTER | BT_VALIGN_CENTER)
 	]
 
@@ -27,7 +27,7 @@ def PluginCategoryComponent(name, png, width=440):
 	ix, iy, iw, ih = skin.parameters.get("PluginBrowserDownloadIcon",(skin.applySkinFactor(10), skin.applySkinFactor(0), skin.applySkinFactor(60), skin.applySkinFactor(50)))
 	return [
 		name,
-		MultiContentEntryText(pos=(x, y), size=(width-x, h), font=0, text=name),
+		MultiContentEntryText(pos=(x, y), size=(width - x, h), font=0, text=name),
 		MultiContentEntryPixmapAlphaBlend(pos=(ix, iy), size=(iw, ih), png=png)
 	]
 
@@ -48,8 +48,8 @@ def PluginDownloadComponent(plugin, name, version=None, width=440):
 	ix, iy, iw, ih = skin.parameters.get("PluginBrowserDownloadIcon",(skin.applySkinFactor(10), skin.applySkinFactor(0), skin.applySkinFactor(60), skin.applySkinFactor(50)))
 	return [
 		plugin,
-		MultiContentEntryText(pos=(x, y), size=(width-x, h), font=0, text=name),
-		MultiContentEntryText(pos=(dx, dy), size=(width-dx, dh), font=1, text=plugin.description),
+		MultiContentEntryText(pos=(x, y), size=(width - x, h), font=0, text=name),
+		MultiContentEntryText(pos=(dx, dy), size=(width - dx, dh), font=1, text=plugin.description),
 		MultiContentEntryPixmapAlphaBlend(pos=(ix, iy), size=(iw, ih), png=png)
 	]
 

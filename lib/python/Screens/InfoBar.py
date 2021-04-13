@@ -81,7 +81,7 @@ class InfoBar(InfoBarBase, InfoBarShowHide,
 				enigma.iPlayableService.evUpdatedEventInfo: self.__eventInfoChanged
 			})
 
-		self.current_begin_time=0
+		self.current_begin_time = 0
 		assert InfoBar.instance is None, "class InfoBar is a singleton class and just one instance of this class is allowed!"
 		InfoBar.instance = self
 
@@ -130,7 +130,7 @@ class InfoBar(InfoBarBase, InfoBarShowHide,
 		new = self.servicelist.newServicePlayed()
 		if self.execing:
 			InfoBarShowHide.serviceStarted(self)
-			self.current_begin_time=0
+			self.current_begin_time = 0
 		elif not self.__checkServiceStarted in self.onShown and new:
 			self.onShown.append(self.__checkServiceStarted)
 
@@ -580,10 +580,10 @@ class MoviePlayer(InfoBarBase, InfoBarShowHide, InfoBarLongKeyDetection, InfoBar
 		for i, item in enumerate(playlist):
 			if item == service:
 				if config.usage.on_movie_eof.value == "repeatcurrent":
-					return i+1, len(playlist)
+					return i + 1, len(playlist)
 				i += 1
 				if i < len(playlist):
-					return playlist[i], i+1, len(playlist)
+					return playlist[i], i + 1, len(playlist)
 				elif config.usage.on_movie_eof.value == "loop":
 					return playlist[0], 1, len(playlist)
 		return None, 0, 0
