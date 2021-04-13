@@ -24,7 +24,7 @@ config.plugins.configurationbackup = BackupRestore_InitConfig()
 backupfile = "enigma2settingsbackup.tar.gz"
 
 def checkConfigBackup():
-	parts = [ (r.description, r.mountpoint) for r in harddiskmanager.getMountedPartitions(onlyhotplug = False)]
+	parts = [ (r.description, r.mountpoint) for r in harddiskmanager.getMountedPartitions(onlyhotplug=False)]
 	for x in parts:
 		if x[1] == '/':
 			parts.remove(x)
@@ -105,7 +105,7 @@ class ImageWizard(WizardLanguage, Rc):
 		</screen>"""
 	def __init__(self, session):
 		self.xmlfile = resolveFilename(SCOPE_PLUGINS, "SystemPlugins/SoftwareManager/imagewizard.xml")
-		WizardLanguage.__init__(self, session, showSteps = False, showStepSlider = False)
+		WizardLanguage.__init__(self, session, showSteps=False, showStepSlider=False)
 		Rc.__init__(self)
 		self.session = session
 		self["wizard"] = Pixmap()
@@ -119,7 +119,7 @@ class ImageWizard(WizardLanguage, Rc):
 		pass
 
 	def listDevices(self):
-		list = [ (r.description, r.mountpoint) for r in harddiskmanager.getMountedPartitions(onlyhotplug = False)]
+		list = [ (r.description, r.mountpoint) for r in harddiskmanager.getMountedPartitions(onlyhotplug=False)]
 		for x in list:
 			result = access(x[1], W_OK) and access(x[1], R_OK)
 			if result is False or x[1] == '/':
@@ -143,5 +143,5 @@ class ImageWizard(WizardLanguage, Rc):
 
 
 if config.misc.firstrun.value:
-	wizardManager.registerWizard(ImageWizard, backupAvailable, priority = 10)
+	wizardManager.registerWizard(ImageWizard, backupAvailable, priority=10)
 

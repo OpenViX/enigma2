@@ -38,7 +38,7 @@ class SetupError(Exception):
 class SetupSummary(Screen):
 
 	def __init__(self, session, parent):
-		Screen.__init__(self, session, parent = parent)
+		Screen.__init__(self, session, parent=parent)
 		self["SetupTitle"] = StaticText(parent.getTitle())
 		self["SetupEntry"] = StaticText("")
 		self["SetupValue"] = StaticText("")
@@ -95,7 +95,7 @@ class Setup(ConfigListScreen, Screen):
 		list = []
 		self.onNotifiers = [ ]
 		self.refill(list)
-		ConfigListScreen.__init__(self, list, session = session, on_change = self.changedEntry)
+		ConfigListScreen.__init__(self, list, session=session, on_change=self.changedEntry)
 		self.createSetup()
 
 		#check for list.entries > 0 else self.close

@@ -112,7 +112,7 @@ class HddMount(Screen):
 		elif selected == 11:
 			self.setMountPoint("/media/usb5")
 		elif selected == 12:
-			self.session.openWithCallback(self.customPath, VirtualKeyBoard, title = (_("Insert mount point:")), text = _("/media/custom"))
+			self.session.openWithCallback(self.customPath, VirtualKeyBoard, title=(_("Insert mount point:")), text=_("/media/custom"))
 
 	def green(self):
 		self.fast = True
@@ -142,7 +142,7 @@ class HddMount(Screen):
 		elif selected == 11:
 			self.setMountPoint("/media/usb5")
 		elif selected == 12:
-			self.session.openWithCallback(self.customPath, VirtualKeyBoard, title = (_("Insert mount point:")), text = _("/media/custom"))
+			self.session.openWithCallback(self.customPath, VirtualKeyBoard, title=(_("Insert mount point:")), text=_("/media/custom"))
 
 	def customPath(self, result):
 		if result and len(result) > 0:
@@ -193,7 +193,7 @@ class HddMount(Screen):
 		self.close()
 
 def MountEntry(description, details):
-	picture = LoadPixmap(cached = True, path = resolveFilename(SCOPE_CURRENT_PLUGIN, "SystemPlugins/DeviceManager/icons/diskusb.png"))
+	picture = LoadPixmap(cached=True, path=resolveFilename(SCOPE_CURRENT_PLUGIN, "SystemPlugins/DeviceManager/icons/diskusb.png"))
 	return (picture, description, details)
 
 class HddFastRemove(Screen):
@@ -243,7 +243,7 @@ class HddFastRemove(Screen):
 			self.session.open(MessageBox, _("Fast mounted Media unmounted.\nYou can safely remove the Device now, if no further Partitions (displayed as P.x on Devicelist - where x >=2) are mounted on the same Device.\nPlease unmount Fixed Mounted Devices with Device Manager Panel!"), MessageBox.TYPE_INFO)
 			self.refreshMP(True)
 
-	def refreshMP(self, uirefresh = True):
+	def refreshMP(self, uirefresh=True):
 		self.mdisks = Disks()
 		self.mountpoints = MountPoints()
 		self.mountpoints.read()

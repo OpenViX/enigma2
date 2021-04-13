@@ -21,7 +21,7 @@ import os
 import sys
 
 def PartitionEntry(description, size):
-	picture = LoadPixmap(cached = True, path = resolveFilename(SCOPE_CURRENT_PLUGIN, "SystemPlugins/DeviceManager/icons/partitionmanager.png"))
+	picture = LoadPixmap(cached=True, path=resolveFilename(SCOPE_CURRENT_PLUGIN, "SystemPlugins/DeviceManager/icons/partitionmanager.png"))
 
 	return (picture, description, size)
 
@@ -176,7 +176,7 @@ class HddPartitions(Screen):
 												[ _("Cancel"), "cancel.png" ],
 												], 1, 1)
 
-	def refreshMP(self, uirefresh = True):
+	def refreshMP(self, uirefresh=True):
 		self.partitions = []
 		self.mountpoints = MountPoints()
 		self.mountpoints.read()

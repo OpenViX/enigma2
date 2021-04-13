@@ -143,7 +143,7 @@ class Language:
 	def addCallback(self, callback):
 		self.callbacks.append(callback)
 
-	def delLanguage(self, delLang = None):
+	def delLanguage(self, delLang=None):
 		from Components.config import config, configfile
 
 		LPATH = resolveFilename(SCOPE_LANGUAGE, "")

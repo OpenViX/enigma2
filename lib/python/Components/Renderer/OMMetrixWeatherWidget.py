@@ -39,7 +39,7 @@ def initWeatherConfig():
 	#MetrixWeather
 	config.plugins.MetrixWeather.enabled = ConfigYesNo(default=False)
 	config.plugins.MetrixWeather.weathercity = ConfigText(default='Hamburg, Germany')
-	config.plugins.MetrixWeather.tempUnit = ConfigSelection(default="Celsius", choices = [
+	config.plugins.MetrixWeather.tempUnit = ConfigSelection(default="Celsius", choices=[
 		("Celsius", _("Celsius")),
 		("Fahrenheit", _("Fahrenheit"))
 	])

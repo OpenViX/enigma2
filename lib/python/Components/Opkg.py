@@ -60,14 +60,14 @@ class OpkgComponent:
 	CMD_UPGRADE = 4
 	CMD_UPGRADE_LIST = 5
 
-	def __init__(self, opkg = 'opkg'):
+	def __init__(self, opkg='opkg'):
 		self.opkg = opkg
 		self.cmd = eConsoleAppContainer()
 		self.cache = None
 		self.callbackList = []
 		self.setCurrentCommand()
 
-	def setCurrentCommand(self, command = None):
+	def setCurrentCommand(self, command=None):
 		self.currentCommand = command
 
 	def runCmdEx(self, cmd):
@@ -80,7 +80,7 @@ class OpkgComponent:
 		if self.cmd.execute(self.opkg + " " + cmd):
 			self.cmdFinished(-1)
 
-	def startCmd(self, cmd, args = None):
+	def startCmd(self, cmd, args=None):
 		if cmd == self.CMD_UPDATE:
 			self.runCmdEx("update")
 		elif cmd == self.CMD_UPGRADE:
@@ -161,7 +161,7 @@ class OpkgComponent:
 			print "[Opkg] Failed to parse: '%s'" % data
 			print "[Opkg]", ex
 
-	def callCallbacks(self, event, param = None):
+	def callCallbacks(self, event, param=None):
 		for callback in self.callbackList:
 			callback(event, param)
 

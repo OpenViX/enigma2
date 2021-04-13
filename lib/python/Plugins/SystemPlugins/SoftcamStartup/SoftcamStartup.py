@@ -49,7 +49,7 @@ class SoftcamStartup(Screen, ConfigListScreen):
 			},-1)
 
 		self.list = [ ]
-		ConfigListScreen.__init__(self, self.list, session = session)
+		ConfigListScreen.__init__(self, self.list, session=session)
 
 		self.initd()
 
@@ -59,9 +59,9 @@ class SoftcamStartup(Screen, ConfigListScreen):
 		softcamlistprimary = self.softcam1.getList()
 		softcamlistsecondary = self.softcam2.getList()
 
-		self.softcamlistprimary = ConfigSelection(choices = softcamlistprimary)
+		self.softcamlistprimary = ConfigSelection(choices=softcamlistprimary)
 		self.softcamlistprimary.value = self.softcam1.current()
-		self.softcamlistsecondary = ConfigSelection(choices = softcamlistsecondary)
+		self.softcamlistsecondary = ConfigSelection(choices=softcamlistsecondary)
 		self.softcamlistsecondary.value = self.softcam2.current()
 
 		self.list.append(getConfigListEntry(_("Select primary softcam"), self.softcamlistprimary))

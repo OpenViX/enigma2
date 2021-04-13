@@ -240,7 +240,7 @@ class Standby(StandbyScreen):
 
 class StandbySummary(Screen):
 	if getBoxType() in ('gbquad4k', 'gbue4k', 'gbquadplus', 'gbquad', 'gbultraue', 'gbultraueh', 'gb800ueplus', 'gb800ue'):
-                def __init__(self, session, what = None):
+                def __init__(self, session, what=None):
 			Screen.__init__(self, session)
 	else:
 		skin = """

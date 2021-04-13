@@ -18,6 +18,6 @@ def deviceManagerFastRemove(session, **kwargs):
 
 
 def Plugins(**kwargs):
-	return [PluginDescriptor(name = _("Device Manager"), description = _("Format/Partition your Devices and manage Mountpoints"), where = PluginDescriptor.WHERE_MENU, fnc = deviceManagerSetup),
-			PluginDescriptor(name = _("Device Manager - Fast mounted remove"), description = _("Quick and safe remove for your mounted devices "), where = PluginDescriptor.WHERE_EXTENSIONSMENU, fnc = deviceManagerFastRemove)]
+	return [PluginDescriptor(name=_("Device Manager"), description=_("Format/Partition your Devices and manage Mountpoints"), where=PluginDescriptor.WHERE_MENU, fnc=deviceManagerSetup),
+			PluginDescriptor(name=_("Device Manager - Fast mounted remove"), description=_("Quick and safe remove for your mounted devices "), where=PluginDescriptor.WHERE_EXTENSIONSMENU, fnc=deviceManagerFastRemove)]
 

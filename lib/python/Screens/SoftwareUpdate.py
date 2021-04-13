@@ -108,7 +108,7 @@ class UpdatePlugin(Screen, ProtectedScreen):
 			self.showDisclaimer()
 		else:
 			message += "\n" + _("Do you want to update your receiver?")
-			self.session.openWithCallback(self.startActualUpdate, MessageBox, message, default = default, picon = picon)
+			self.session.openWithCallback(self.startActualUpdate, MessageBox, message, default=default, picon=picon)
 
 	def showDisclaimer(self, justShow=False):
 		if config.usage.show_update_disclaimer.value or justShow:
@@ -281,7 +281,7 @@ If you discover 'bugs' please keep them reported on www.teamblue.tech.\n\nDo you
 		elif answer[1] == "channels":
 			self.channellist_only = 1
 			self.slider.setValue(1)
-			self.opkg.startCmd(OpkgComponent.CMD_LIST, args = {'installed_only': True})
+			self.opkg.startCmd(OpkgComponent.CMD_LIST, args={'installed_only': True})
 		elif answer[1] == "commits":
 			self.session.openWithCallback(boundFunction(self.opkgCallback, OpkgComponent.EVENT_DONE, None), CommitInfo)
 		elif answer[1] == "disclaimer":
@@ -293,7 +293,7 @@ If you discover 'bugs' please keep them reported on www.teamblue.tech.\n\nDo you
 			text = open("/home/root/opkgupgrade.log", "r").read()
 			self.session.openWithCallback(boundFunction(self.opkgCallback, OpkgComponent.EVENT_DONE, None), TextBox, text, _("Latest update log"), True)
 		else:
-			self.opkg.startCmd(OpkgComponent.CMD_UPGRADE, args = {'test_only': False})
+			self.opkg.startCmd(OpkgComponent.CMD_UPGRADE, args={'test_only': False})
 
 	def modificationCallback(self, res):
 		self.opkg.write(res and "N" or "Y")
