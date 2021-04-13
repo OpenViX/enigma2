@@ -3,6 +3,7 @@ import six
 
 InfoBarCount = 0
 
+
 class InfoBarBase:
 
 	onInfoBarOpened = []
@@ -54,6 +55,7 @@ class InfoBarBase:
 		InfoBarBase.infoBarClosed(self)
 		global InfoBarCount
 		InfoBarCount -= 1
+
 
 class ServiceEventTracker:
 	"""Tracks service events into a screen"""

@@ -14,6 +14,7 @@ pip_config_initialized = False
 PipPigModeEnabled = False
 PipPigModeTimer = eTimer()
 
+
 def openPip(serviceRef=None):
 	pipOpened = False
 	from Screens.InfoBar import InfoBar
@@ -28,6 +29,7 @@ def openPip(serviceRef=None):
 			session.pip.playService(serviceRef)
 	return pipOpened
 
+
 def closePip():
 	from Screens.InfoBar import InfoBar
 	session = InfoBar.instance and InfoBar.instance.session
@@ -36,6 +38,7 @@ def closePip():
 		del session.pip
 		return True
 	return False
+
 
 def timedStopPipPigMode():
 	from Screens.InfoBar import InfoBar
@@ -47,7 +50,9 @@ def timedStopPipPigMode():
 	global PipPigModeEnabled
 	PipPigModeEnabled = False
 
+
 PipPigModeTimer.callback.append(timedStopPipPigMode)
+
 
 def PipPigMode(value):
 	from Screens.InfoBar import InfoBar
@@ -73,6 +78,7 @@ class PictureInPictureZapping(Screen):
 	skin = """<screen name="PictureInPictureZapping" flags="wfNoBorder" position="50,50" size="90,26" title="PiPZap" zPosition="-1">
 			<eLabel text="PiP-Zap" position="0,0" size="90,26" foregroundColor="#00ff66" font="Regular;26" />
 		</screen>"""
+
 
 class PictureInPicture(Screen):
 	def __init__(self, session):

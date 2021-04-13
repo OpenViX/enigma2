@@ -7,6 +7,7 @@ from Components.SystemInfo import SystemInfo
 from PowerTimer import AFTEREVENT, TIMERTYPE
 from time import localtime, time, strftime
 
+
 class TimerEntry(TimerEntryBase):
 	def __init__(self, session, timer):
 		TimerEntryBase.__init__(self, session, timer, "powertimerentry")
@@ -113,6 +114,7 @@ class TimerEntry(TimerEntryBase):
 
 	def saveTimer(self):
 		self.session.nav.PowerTimer.saveTimer()
+
 
 class TimerLog(TimerLogBase):
 	pass

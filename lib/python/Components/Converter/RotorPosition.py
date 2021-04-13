@@ -10,7 +10,6 @@ from Components.NimManager import nimmanager
 from Tools.Transponder import orbpos
 
 
-
 class RotorPosition(Converter, object):
 	DEFAULT = 0
 	WITH_TEXT = 1

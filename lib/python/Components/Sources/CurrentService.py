@@ -7,6 +7,7 @@ from Components.PerServiceDisplay import PerServiceBase
 from Components.Sources.Source import Source
 import NavigationInstance
 
+
 class CurrentService(PerServiceBase, Source):
 	def __init__(self, navcore):
 		Source.__init__(self)

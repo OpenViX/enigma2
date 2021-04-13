@@ -18,7 +18,6 @@ from Components.RcModel import rc_model
 from Components.SystemInfo import SystemInfo
 
 
-
 # include/uapi/asm-generic/ioctl.h
 IOC_NRBITS = 8
 IOC_TYPEBITS = 8
@@ -30,6 +29,7 @@ IOC_SIZESHIFT = IOC_TYPESHIFT + IOC_TYPEBITS
 IOC_DIRSHIFT = IOC_SIZESHIFT + IOC_SIZEBITS
 
 IOC_READ = 2
+
 
 def EVIOCGNAME(length):
 	return (IOC_READ << IOC_DIRSHIFT) | (length << IOC_SIZESHIFT) | (0x45 << IOC_TYPESHIFT) | (0x06 << IOC_NRSHIFT)
@@ -258,11 +258,13 @@ class InitInputDevices:
 			print("[RCRemap] Error: Unexpected error opening remote control file '%s'! (%s)" % (filename, err))
 		return domRemote
 
+
 iInputDevices = inputDevices()
 
 
 config.plugins.remotecontroltype = ConfigSubsection()
 config.plugins.remotecontroltype.rctype = ConfigInteger(default=0)
+
 
 class RcTypeControl():
 	def __init__(self):
@@ -293,5 +295,6 @@ class RcTypeControl():
 			with open("/proc/stb/ir/rc/type", "r") as fd:
 				rc = fd.read().strip()
 		return int(rc)
+
 
 iRcTypeControl = RcTypeControl()

@@ -4,6 +4,7 @@ import os
 opkgDestinations = ['/']
 opkgStatusPath = ''
 
+
 def findMountPoint(path):
 	"""Example: findMountPoint("/media/hdd/some/file") returns "/media/hdd\""""
 	path = os.path.abspath(path)
@@ -11,15 +12,18 @@ def findMountPoint(path):
 		path = os.path.dirname(path)
 	return path
 
+
 def opkgExtraDestinations():
 	global opkgDestinations
 	return ''.join([" --add-dest %s:%s" % (i, i) for i in opkgDestinations])
+
 
 def opkgAddDestination(mountpoint):
 	global opkgDestinations
 	if mountpoint not in opkgDestinations:
 		opkgDestinations.append(mountpoint)
 		print("[Ipkg] Added to OPKG destinations:", mountpoint)
+
 
 mounts = os.listdir('/media')
 for mount in mounts:

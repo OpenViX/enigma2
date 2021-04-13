@@ -14,6 +14,7 @@ from Tools.HardwareInfo import HardwareInfo
 
 config.av = ConfigSubsection()
 
+
 class AVSwitch:
 
 	rates = {}  # high-level, use selectable modes.
@@ -324,7 +325,9 @@ class AVSwitch:
 			val = 6
 		return val
 
+
 iAVSwitch = AVSwitch()
+
 
 def InitAVSwitch():
 	config.av.yuvenabled = ConfigBoolean(default=True)
@@ -908,6 +911,7 @@ def InitAVSwitch():
 	config.av.edid_override = ConfigYesNo(default=False)
 	iAVSwitch.setConfiguredMode()
 
+
 class VideomodeHotplug:
 	def __init__(self):
 		pass
@@ -935,16 +939,20 @@ class VideomodeHotplug:
 			print("[VideoHardware] setting %s/%s/%s" % (port, mode, rate))
 			iAVSwitch.setMode(port, mode, rate)
 
+
 hotplug = None
+
 
 def startHotplug():
 	global hotplug
 	hotplug = VideomodeHotplug()
 	hotplug.start()
 
+
 def stopHotplug():
 	global hotplug
 	hotplug.stop()
+
 
 def InitiVideomodeHotplug(**kwargs):
 	startHotplug()

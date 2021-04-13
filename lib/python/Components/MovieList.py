@@ -32,6 +32,8 @@ MOVIE_EXTENSIONS = frozenset((".mpg", ".vob", ".m4v", ".mkv", ".avi", ".divx", "
 KNOWN_EXTENSIONS = MOVIE_EXTENSIONS.union(IMAGE_EXTENSIONS, DVD_EXTENSIONS, AUDIO_EXTENSIONS)
 
 # Gets the name of a movielist item for display in the UI honouring the hide extensions setting
+
+
 def getItemDisplayName(itemRef, info, removeExtension=None):
 	if itemRef.flags & eServiceReference.isGroup:
 		name = itemRef.getName()
@@ -47,6 +49,7 @@ def getItemDisplayName(itemRef, info, removeExtension=None):
 				name = fileName
 	return name
 
+
 def expandCollections(items):
 	expanded = []
 	for item in items:
@@ -56,25 +59,33 @@ def expandCollections(items):
 			expanded.append(item)
 	return expanded
 
+
 cutsParser = struct.Struct('>QI') # big-endian, 64-bit PTS and 32-bit type
+
 
 class MovieListData:
 	def __init__(self):
 		self.dirty = True
 
 # iStaticServiceInformation
+
+
 class StubInfo:
 	def __init__(self):
 		pass
 
 	def getName(self, serviceref):
 		return os.path.split(serviceref.getPath())[1]
+
 	def getLength(self, serviceref):
 		return -1
+
 	def getEvent(self, serviceref, *args):
 		return None
+
 	def isPlayable(self):
 		return True
+
 	def getInfo(self, serviceref, w):
 		if w == iServiceInformation.sTimeCreate:
 			return os.stat(serviceref.getPath()).st_ctime
@@ -83,13 +94,18 @@ class StubInfo:
 		if w == iServiceInformation.sDescription:
 			return serviceref.getPath()
 		return 0
+
 	def getInfoString(self, serviceref, w):
 		return ''
+
+
 justStubInfo = StubInfo()
+
 
 def lastPlayPosFromCache(ref):
 	from Screens.InfoBarGenerics import resumePointCache
 	return resumePointCache.get(ref.toString(), None)
+
 
 def moviePlayState(cutsFileName, ref, length):
 	"""Returns None, 0..100 for percentage"""
@@ -139,6 +155,7 @@ def moviePlayState(cutsFileName, ref, length):
 					return 50
 		return None
 
+
 def resetMoviePlayState(cutsFileName, ref=None):
 	try:
 		if ref is not None:
@@ -159,6 +176,7 @@ def resetMoviePlayState(cutsFileName, ref=None):
 		f.close()
 	except:
 		pass
+
 
 class MovieList(GUIComponent):
 	SORT_ALPHANUMERIC = 1
@@ -310,34 +328,48 @@ class MovieList(GUIComponent):
 	def applySkin(self, desktop, parent):
 		def warningWrongSkinParameter(string):
 			print("[MovieList] wrong '%s' skin parameters" % string)
+
 		def font(value):
 			font = parseFont(value, ((1, 1), (1, 1)))
 			self.fontName = font.family
 			self.fontSize = font.pointSize
+
 		def itemHeight(value):
 			self.skinItemHeight = parseScale(value)
+
 		def pbarShift(value):
 			self.pbarShift = parseScale(value)
+
 		def pbarHeight(value):
 			self.pbarHeight = parseScale(value)
+
 		def pbarLargeWidth(value):
 			self.pbarLargeWidth = parseScale(value)
+
 		def pbarColour(value):
 			self.pbarColour = parseColor(value).argb()
+
 		def pbarColourSeen(value):
 			self.pbarColourSeen = parseColor(value).argb()
+
 		def pbarColourRec(value):
 			self.pbarColourRec = parseColor(value).argb()
+
 		def partIconeShift(value):
 			self.partIconeShift = parseScale(value)
+
 		def spaceIconeText(value):
 			self.spaceIconeText = parseScale(value)
+
 		def iconsWidth(value):
 			self.iconsWidth = parseScale(value)
+
 		def spaceRight(value):
 			self.spaceRight = parseScale(value)
+
 		def durationWidth(value):
 			self.durationWidth = parseScale(value)
+
 		def dateWidth(value):
 			self.dateWidth = parseScale(value)
 			if config.usage.time.wide.value:
@@ -1090,6 +1122,7 @@ class MovieList(GUIComponent):
 
 	def countMarked(self):
 		return len(self.markList)
+
 
 def getShortName(name, serviceref):
 	if serviceref.flags & eServiceReference.mustDescent: #Directory

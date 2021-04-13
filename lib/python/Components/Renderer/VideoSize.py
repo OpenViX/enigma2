@@ -8,6 +8,8 @@ from Components.VariableText import VariableText
 #
 # borrowed from vali, addapter for openpli
 #
+
+
 class VideoSize(Renderer, VariableText):
 	def __init__(self):
 		Renderer.__init__(self)

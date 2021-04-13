@@ -11,6 +11,7 @@ from Tools.Directories import SCOPE_LANGUAGE, resolveFilename
 LPATH = resolveFilename(SCOPE_LANGUAGE, "")
 Lpackagename = "enigma2-locale-"
 
+
 class Language:
 	def __init__(self):
 		gettext.install('enigma2', resolveFilename(SCOPE_LANGUAGE, ""), codeset="utf-8")
@@ -238,5 +239,6 @@ class Language:
 		f.close
 		catalog = None
 		lang = None
+
 
 language = Language()

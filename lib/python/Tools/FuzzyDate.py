@@ -4,6 +4,7 @@ from time import localtime, time, strftime
 
 from Components.config import config
 
+
 def FuzzyTime(t, inPast=False):
 	d = localtime(t)
 	nt = time()
@@ -31,6 +32,7 @@ def FuzzyTime(t, inPast=False):
 	timeres = strftime(config.usage.time.short.value, d)
 
 	return date, timeres
+
 
 if __name__ == "__main__":
 	def _(x): return x

@@ -25,6 +25,7 @@ from Tools.FuzzyDate import FuzzyTime
 from time import time
 from timer import TimerEntry as RealTimerEntry
 
+
 class TimerEditList(Screen, ProtectedScreen):
 	EMPTY = 0
 	ENABLE = 1
@@ -270,6 +271,7 @@ class TimerEditList(Screen, ProtectedScreen):
 		#helper function to move finished timers to end of list
 		def _cmp(a, b):
 			return (a > b) - (a < b)
+
 		def eol_compare(x, y):
 			if x[0].state != y[0].state and x[0].state == RealTimerEntry.StateEnded or y[0].state == RealTimerEntry.StateEnded:
 				return _cmp(x[0].state, y[0].state)
@@ -331,7 +333,6 @@ class TimerEditList(Screen, ProtectedScreen):
 			self.refill()
 			self.updateState()
 
-
 	def refill(self):
 		oldsize = len(self.list)
 		self.fillTimerList()
@@ -363,7 +364,6 @@ class TimerEditList(Screen, ProtectedScreen):
 
 	def addTimer(self, timer):
 		self.session.openWithCallback(self.finishedAdd, TimerEntry, timer)
-
 
 	def finishedEdit(self, answer):
 		if answer[0]:
@@ -415,6 +415,7 @@ class TimerEditList(Screen, ProtectedScreen):
 	def onStateChange(self, entry):
 		self.refill()
 		self.updateState()
+
 
 class TimerSanityConflict(Screen):
 	EMPTY = 0
@@ -540,6 +541,7 @@ class TimerSanityConflict(Screen):
 				self.removeAction("blue")
 				self["key_blue"].setText("")
 				self.key_blue_choice = self.EMPTY
+
 
 class TimerEditListSummary(Screen):
 	def __init__(self, session, parent):

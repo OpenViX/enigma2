@@ -10,6 +10,7 @@ from Tools.Profile import profile
 from Plugins.Plugin import PluginDescriptor
 import keymapparser
 
+
 class PluginComponent:
 	firstRun = True
 	restartRequired = False
@@ -165,5 +166,6 @@ class PluginComponent:
 			if current > -1 and (wakeup > current or wakeup == -1):
 				wakeup = current
 		return int(wakeup)
+
 
 plugins = PluginComponent()

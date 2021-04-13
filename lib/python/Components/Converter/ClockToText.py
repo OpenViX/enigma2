@@ -7,6 +7,7 @@ from Components.Converter.Converter import Converter
 from Components.Element import cached
 from Components.config import config
 
+
 class ClockToText(Converter, object):
 	TIME_OPTIONS = {
 		# 		TRANSLATORS: short time representation hour:minute (Same as "Default")

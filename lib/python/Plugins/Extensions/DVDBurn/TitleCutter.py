@@ -7,6 +7,7 @@ from Components.ServiceEventTracker import ServiceEventTracker
 from Plugins.Extensions.CutListEditor.ui import CutListEditor
 from Tools.Directories import fileExists
 
+
 class TitleCutter(CutListEditor):
 	def __init__(self, session, t):
 		CutListEditor.__init__(self, session, t.source)
@@ -60,6 +61,7 @@ class TitleCutter(CutListEditor):
 		self.checkAndGrabThumb()
 		self.session.nav.stopService()
 		self.close(self.cut_list[:])
+
 
 class CutlistReader(TitleCutter):
 	skin = """

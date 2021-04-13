@@ -73,6 +73,7 @@ opticalDisks = [
 	113  # IBM iSeries virtual CD-ROM
 ]
 
+
 def readFile(filename):
 	try:
 		with open(filename, "r") as fd:
@@ -83,6 +84,7 @@ def readFile(filename):
 		data = None
 	return data
 
+
 def runCommand(command):
 	print("[Harddisk] Command: '%s'." % command)
 	exitStatus = os.system(command)
@@ -90,6 +92,7 @@ def runCommand(command):
 	if exitStatus:
 		print("[Harddisk] Error: Command '%s' returned error code %d!" % (command, exitStatus))
 	return exitStatus
+
 
 def getProcMounts():
 	try:
@@ -103,6 +106,7 @@ def getProcMounts():
 		item[1] = item[1].replace("\\040", " ")  # Spaces are encoded as \040 in mounts.
 	return result
 
+
 def isFileSystemSupported(filesystem):
 	try:
 		with open("/proc/filesystems", "r") as fd:
@@ -113,6 +117,7 @@ def isFileSystemSupported(filesystem):
 		print("[Harddisk] Error: Failed to read '/proc/filesystems':", err)
 	return False
 
+
 def findMountPoint(path):
 	'Example: findMountPoint("/media/hdd/some/file") returns "/media/hdd"'
 	path = os.path.abspath(path)
@@ -120,12 +125,14 @@ def findMountPoint(path):
 		path = os.path.dirname(path)
 	return path
 
+
 def internalHDDNotSleeping():
 	if harddiskmanager.HDDCount():
 		for hdd in harddiskmanager.HDDList():
 			if ("sata" in hdd[1].phys_path or "pci" in hdd[1].phys_path or "ahci" in hdd[1].phys_path) and hdd[1].max_idle_time and not hdd[1].isSleeping():
 				return True
 	return False
+
 
 def addInstallTask(job, package):
 	task = Components.Task.LoggingTask(job, _("Update packages..."))
@@ -387,7 +394,6 @@ class Harddisk:
 					fd.write(zero)
 		except (IOError, OSError) as err:
 			print("[Harddisk] Error: Failed to wipe partition on '%s':" % partition, err)
-
 
 	def createInitializeJob(self):
 		print("[Harddisk] Initializing storage device...")
@@ -962,6 +968,7 @@ class HarddiskManager:
 		except (IOError, OSError) as err:
 			print("[Harddisk] Error: Failed to set '%s' speed to '%s':" % (device, speed), err)
 
+
 class UnmountTask(Components.Task.LoggingTask):
 	def __init__(self, job, hdd):
 		Components.Task.LoggingTask.__init__(self, job, _("Unmount."))
@@ -994,6 +1001,7 @@ class UnmountTask(Components.Task.LoggingTask):
 				os.rmdir(path)
 			except (IOError, OSError) as err:
 				print("[Harddisk] UnmountTask - Error: Failed to remove path '%s':" % path, err)
+
 
 class MountTask(Components.Task.LoggingTask):
 	def __init__(self, job, hdd):

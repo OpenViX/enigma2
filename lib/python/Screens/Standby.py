@@ -32,6 +32,7 @@ QUIT_MAINT = 16
 QUIT_UPGRADE_PROGRAM = 42
 QUIT_IMAGE_RESTORE = 43
 
+
 def setLCDMiniTVMode(value):
 	try:
 		f = open("/proc/stb/lcd/mode", "w")
@@ -39,6 +40,7 @@ def setLCDMiniTVMode(value):
 		f.close()
 	except:
 		pass
+
 
 class Standby2(Screen):
 	def Power(self):
@@ -164,6 +166,7 @@ class Standby2(Screen):
 			self.prev_running_service = eServiceReference(config.tv.lastservice.value)
 		self.session.nav.stopService()
 
+
 class Standby(Standby2):
 	def __init__(self, session):
 		if Screens.InfoBar.InfoBar and Screens.InfoBar.InfoBar.instance and Screens.InfoBar.InfoBar.ptsGetTimeshiftStatus(Screens.InfoBar.InfoBar.instance):
@@ -185,6 +188,7 @@ class Standby(Standby2):
 	def doStandby(self):
 		Tools.Notifications.AddNotification(Screens.Standby.Standby2)
 
+
 class StandbySummary(ScreenSummary):
 	skin = """
 	<screen position="0,0" size="132,64">
@@ -197,10 +201,12 @@ class StandbySummary(ScreenSummary):
 		</widget>
 	</screen>"""
 
+
 from enigma import quitMainloop, iRecordableService
 from Screens.MessageBox import MessageBox
 from time import time
 from Components.Task import job_manager
+
 
 class QuitMainloopScreen(Screen):
 	def __init__(self, session, retvalue=1):
@@ -223,7 +229,9 @@ class QuitMainloopScreen(Screen):
 		}.get(retvalue)
 		self["text"] = Label(text)
 
+
 inTryQuitMainloop = False
+
 
 class TryQuitMainloop(MessageBox):
 	def __init__(self, session, retvalue=1, timeout=-1, default_yes=True):

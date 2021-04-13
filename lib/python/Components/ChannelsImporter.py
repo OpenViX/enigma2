@@ -19,6 +19,8 @@ except ImportError: # Python 2
 	from urllib2 import Request, urlopen, HTTPError, URLError
 
 autoClientModeTimer = None
+
+
 def autostart():
 	global autoClientModeTimer
 	now = int(time())
@@ -26,8 +28,10 @@ def autostart():
 	if autoClientModeTimer is None:
 		autoClientModeTimer = AutoClientModeTimer()
 
+
 class AutoClientModeTimer:
 	instance = None
+
 	def __init__(self):
 		self.clientmodetimer = eTimer()
 		self.clientmodetimer.callback.append(self.ClientModeonTimer)
@@ -142,9 +146,11 @@ class AutoClientModeTimer:
 		else:
 			clientmodetext = ""
 
+
 class ChannelsImporter():
 	DIR_ENIGMA2 = "/etc/enigma2/"
 	DIR_TMP = "/tmp/"
+
 	def __init__(self):
 		self.fetchRemoteBouquets()
 

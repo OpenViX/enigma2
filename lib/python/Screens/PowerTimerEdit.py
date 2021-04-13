@@ -18,6 +18,7 @@ from time import time
 from timer import TimerEntry as RealTimerEntry
 from functools import cmp_to_key
 
+
 class PowerTimerEditList(Screen):
 	EMPTY = 0
 	ENABLE = 1
@@ -295,6 +296,7 @@ class PowerTimerEditList(Screen):
 	def onStateChange(self, entry):
 		self.refill()
 		self.updateState()
+
 
 class PowerTimerEditListSummary(Screen):
 	def __init__(self, session, parent):

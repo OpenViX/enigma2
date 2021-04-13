@@ -6,6 +6,7 @@ from Components.Element import cached
 from Components.config import config
 from Tools.GetEcmInfo import GetEcmInfo
 
+
 class CryptoInfo(Poll, Converter, object):
 	def __init__(self, type):
 		Converter.__init__(self, type)

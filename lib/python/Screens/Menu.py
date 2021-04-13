@@ -46,6 +46,7 @@ class MenuUpdater:
 	def getUpdatedMenu(self, id):
 		return self.updatedMenuItems[id]
 
+
 menuupdater = MenuUpdater()
 
 
@@ -219,7 +220,6 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 				return
 		destList.append((item_text, self.nothing, entryID, weight))
 
-
 	def __init__(self, session, parent):
 		Screen.__init__(self, session)
 		HelpableScreen.__init__(self)
@@ -344,6 +344,7 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 				return True
 			elif config.ParentalControl.config_sections.standby_menu.value and self.menuID == "shutdown":
 				return True
+
 
 class MainMenu(Menu):
 	#add file load functions for the xml-file

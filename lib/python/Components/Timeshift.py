@@ -56,6 +56,7 @@ from random import randint
 
 import os
 
+
 class InfoBarTimeshift:
 	def __init__(self):
 		self["TimeshiftActions"] = HelpableActionMap(self, "InfobarTimeshiftActions",
@@ -303,7 +304,6 @@ class InfoBarTimeshift:
 					self.recording.append(recording)
 				else:
 					self.SaveTimeshift()
-
 
 			# print 'self.timeshiftEnabled2',self.timeshiftEnabled()
 

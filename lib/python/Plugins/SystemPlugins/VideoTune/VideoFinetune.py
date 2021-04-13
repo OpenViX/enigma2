@@ -11,6 +11,7 @@ from Tools.Directories import fileExists
 def RGB(r, g, b):
 	return (r << 16) | (g << 8) | b
 
+
 class OverscanTestScreen(Screen):
 	skin = """
 		<screen position="fill">
@@ -52,6 +53,7 @@ class OverscanTestScreen(Screen):
 	def keyNumber(self, key):
 		self.close(key)
 
+
 class FullHDTestScreen(OverscanTestScreen):
 	skin = """
 		<screen position="fill">
@@ -72,6 +74,7 @@ class FullHDTestScreen(OverscanTestScreen):
 			"ok": self.ok,
 			"cancel": self.cancel
 		})
+
 
 class VideoFinetune(Screen):
 	skin = """

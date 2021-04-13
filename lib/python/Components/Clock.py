@@ -7,6 +7,7 @@ from Components.GUIComponent import GUIComponent
 from Components.VariableText import VariableText
 # now some "real" components:
 
+
 class Clock(VariableText, GUIComponent):
 	def __init__(self):
 		VariableText.__init__(self)
