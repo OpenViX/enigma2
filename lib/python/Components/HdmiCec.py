@@ -1,7 +1,9 @@
 from __future__ import print_function
 from __future__ import absolute_import
 
-import os, struct, time
+import os
+import struct
+import time
 from sys import maxsize
 
 from enigma import eActionMap, eHdmiCEC, eTimer

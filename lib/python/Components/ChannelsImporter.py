@@ -8,7 +8,8 @@ from time import mktime, strftime, time, localtime
 from enigma import eTimer
 
 #for downloader
-import os, re
+import os
+import re
 from enigma import eServiceReference, eDVBDB
 # required methods: Request, urlopen, HTTPError, URLError
 try: # python 3

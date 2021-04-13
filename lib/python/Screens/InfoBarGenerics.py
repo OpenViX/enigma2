@@ -65,7 +65,8 @@ from time import time, localtime, strftime
 from bisect import insort
 import os
 from sys import maxsize, version_info
-import itertools, datetime
+import itertools
+import datetime
 
 if version_info[0] >= 3:
 	import pickle as cPickle	# py3

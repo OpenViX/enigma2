@@ -12,7 +12,8 @@ from Components.Ipkg import IpkgComponent
 from Components.config import config
 from Components.About import about
 
-import socket, sys
+import socket
+import sys
 # required methods: Request, urlopen, HTTPError, URLError
 try: # python 3
 	from urllib.request import urlopen, Request # raises ImportError in Python 2

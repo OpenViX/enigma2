@@ -2,7 +2,9 @@ from __future__ import print_function
 from __future__ import absolute_import
 import six
 
-import os, re, unicodedata
+import os
+import re
+import unicodedata
 from Components.Renderer.Renderer import Renderer
 from enigma import ePixmap, eServiceReference
 from Tools.Alternatives import GetWithAlternative
