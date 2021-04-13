@@ -429,7 +429,7 @@ class SecondInfoBar(Screen, HelpableScreen):
 			self.setEvent(self.event)
 
 	def getNowNext(self):
-		epglist = [ ]
+		epglist = []
 		service = self.session.nav.getCurrentService()
 		info = service and service.info()
 		ptr = info and info.getEvent(0)
@@ -475,7 +475,7 @@ class SecondInfoBar(Screen, HelpableScreen):
 		refstr = serviceref.toString()
 		for timer in self.session.nav.RecordTimer.timer_list:
 			if timer.eit == eventid and timer.service_ref.toString() == refstr:
-				cb_func = lambda ret : not ret or self.removeTimer(timer)
+				cb_func = lambda ret: not ret or self.removeTimer(timer)
 				self.session.openWithCallback(cb_func, MessageBox, _("Do you really want to delete %s?") % event.getEventName(), simple=True)
 				break
 		else:
@@ -557,7 +557,7 @@ class InfoBarShowHide(InfoBarScreenSaver):
 	FLAG_CENTER_DVB_SUBS = 2048
 
 	def __init__(self):
-		self["ShowHideActions"] = HelpableActionMap(self, ["InfobarShowHideActions"] ,
+		self["ShowHideActions"] = HelpableActionMap(self, ["InfobarShowHideActions"],
 			{
 				"LongOKPressed": (self.toggleShowLong, self._helpToggleShowLong),
 				"toggleShow": (self.toggleShow, _("Cycle through infobar displays")),
@@ -964,7 +964,7 @@ class NumberZap(Screen):
 
 	def __init__(self, session, number, searchNumberFunction=None):
 		Screen.__init__(self, session)
-		self.onChangedEntry = [ ]
+		self.onChangedEntry = []
 		self.numberString = str(number)
 		self.searchNumber = searchNumberFunction
 		self.startBouquet = None
@@ -982,7 +982,7 @@ class NumberZap(Screen):
 		if config.misc.numzap_picon.value:
 			self.skinName = ["NumberZapPicon", "NumberZap"]
 
-		self["actions"] = NumberActionMap( [ "SetupActions", "ShortcutActions" ],
+		self["actions"] = NumberActionMap(["SetupActions", "ShortcutActions"],
 			{
 				"cancel": self.quit,
 				"ok": self.keyOK,
@@ -1007,7 +1007,7 @@ class NumberZap(Screen):
 class InfoBarNumberZap:
 	""" Handles an initial number for NumberZapping """
 	def __init__(self):
-		self["NumberActions"] = HelpableNumberActionMap(self, [ "NumberActions"],
+		self["NumberActions"] = HelpableNumberActionMap(self, ["NumberActions"],
 			{
 				"1": (self.keyNumberGlobal, _("Zap to channel number")),
 				"2": (self.keyNumberGlobal, _("Zap to channel number")),
@@ -1400,8 +1400,8 @@ class InfoBarMenu:
 		self.session.infobar = None
 
 	def toggleAspectRatio(self):
-		ASPECT = [ "auto", "16_9", "4_3" ]
-		ASPECT_MSG = { "auto":"Auto", "16_9":"16:9", "4_3":"4:3" }
+		ASPECT = ["auto", "16_9", "4_3"]
+		ASPECT_MSG = {"auto":"Auto", "16_9":"16:9", "4_3":"4:3"}
 		if config.av.aspect.value in ASPECT:
 			index = ASPECT.index(config.av.aspect.value)
 			config.av.aspect.value = ASPECT[(index+1)%3]
@@ -1739,7 +1739,7 @@ class InfoBarEPG:
 		self.session.open(EPGSelectionSimilar, refstr, eventId=eventId)
 
 	def getNowNext(self):
-		epglist = [ ]
+		epglist = []
 		service = self.session.nav.getCurrentService()
 		info = service and service.info()
 		ptr = info and info.getEvent(0)
@@ -2053,7 +2053,7 @@ class InfoBarSeek:
 		self.seekstate = self.SEEK_STATE_PLAY
 		self.lastseekstate = self.SEEK_STATE_PLAY
 
-		self.onPlayStateChanged = [ ]
+		self.onPlayStateChanged = []
 
 		self.lockedBecauseOfSkipping = False
 
@@ -2459,7 +2459,7 @@ class InfoBarSeek:
 
 class InfoBarPVRState:
 	def __init__(self, screen=PVRState, force_show=False):
-		self.onChangedEntry = [ ]
+		self.onChangedEntry = []
 		self.onPlayStateChanged.append(self.__playStateChanged)
 		self.pvrStateDialog = self.session.instantiateDialog(screen)
 		self.pvrStateDialog.setAnimationMode(0)
@@ -2694,7 +2694,7 @@ class InfoBarExtensions:
 
 	def updateExtensions(self):
 		self.extensionsList = []
-		self.availableKeys = [ "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "red", "green", "yellow", "blue" ]
+		self.availableKeys = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "red", "green", "yellow", "blue"]
 		self.extensionKeys = {}
 		for x in self.list:
 			if x[0] == self.EXTENSION_SINGLE:
@@ -2769,13 +2769,13 @@ class InfoBarExtensions:
 		if autotimerFunc is not None:
 			autotimerFunc(self.session)
 		else:
-			self.session.open(MessageBox, _("The AutoTimer plugin is not installed!\nPlease install it."), type=MessageBox.TYPE_INFO,timeout=10, simple=True )
+			self.session.open(MessageBox, _("The AutoTimer plugin is not installed!\nPlease install it."), type=MessageBox.TYPE_INFO,timeout=10, simple=True)
 
 	def showEPGSearch(self):
 		try:
 			from Plugins.Extensions.EPGSearch.EPGSearch import EPGSearch
 		except ImportError:
-			self.session.open(MessageBox, _("The EPGSearch plugin is not installed!\nPlease install it."), type=MessageBox.TYPE_INFO,timeout=10, simple=True )
+			self.session.open(MessageBox, _("The EPGSearch plugin is not installed!\nPlease install it."), type=MessageBox.TYPE_INFO,timeout=10, simple=True)
 			return
 		s = self.session.nav.getCurrentService()
 		if s:
@@ -2809,14 +2809,14 @@ class InfoBarExtensions:
 				name = event and event.getEventName() or ''
 				self.session.open(IMDB, name)
 		except ImportError:
-			self.session.open(MessageBox, _("The IMDb plugin is not installed!\nPlease install it."), type=MessageBox.TYPE_INFO,timeout=10, simple=True )
+			self.session.open(MessageBox, _("The IMDb plugin is not installed!\nPlease install it."), type=MessageBox.TYPE_INFO,timeout=10, simple=True)
 
 	def showDreamPlex(self):
 		try:
 			from Plugins.Extensions.DreamPlex.plugin import DPS_MainMenu
 			self.session.open(DPS_MainMenu)
 		except ImportError:
-			self.session.open(MessageBox, _("The DreamPlex plugin is not installed!\nPlease install it."), type=MessageBox.TYPE_INFO,timeout=10, simple=True )
+			self.session.open(MessageBox, _("The DreamPlex plugin is not installed!\nPlease install it."), type=MessageBox.TYPE_INFO,timeout=10, simple=True)
 
 from Tools.BoundFunction import boundFunction
 import inspect
@@ -2994,7 +2994,7 @@ class InfoBarPiP:
 						self.session.pipshown = False
 						del self.session.pip
 			else:
-				self.session.open(MessageBox, _("No active channel found."), type=MessageBox.TYPE_INFO, timeout=5, simple=True )
+				self.session.open(MessageBox, _("No active channel found."), type=MessageBox.TYPE_INFO, timeout=5, simple=True)
 		if self.session.pipshown and hasattr(self, "screenSaverTimer"):
 			self.screenSaverTimer.stop()
 
@@ -3140,7 +3140,7 @@ class InfoBarInstantRecord:
 		begin = int(time())
 		end = begin + 3600 # dummy
 		name = "instant record"
-		info = { }
+		info = {}
 
 		self.getProgramInfoAndEvent(info, name)
 		serviceref = info["serviceref"]
@@ -3243,7 +3243,7 @@ class InfoBarInstantRecord:
 		elif answer[1] == "stopdeleteall":
 			self.deleteRecording = True
 			self.stopAllCurrentRecordings(list)
-		elif answer[1] in ( "indefinitely" , "manualduration", "manualendtime", "event"):
+		elif answer[1] in ("indefinitely", "manualduration", "manualendtime", "event"):
 			self.startInstantRecording(limitEvent=answer[1] in ("event", "manualendtime") or False)
 			if answer[1] == "manualduration":
 				self.changeDuration(len(self.recording)-1)
@@ -3485,7 +3485,7 @@ class InfoBarSubserviceSelection:
 				selection = [x[1] for x in subservices].index(serviceRef.toString())
 				self.bouquets = self.servicelist and self.servicelist.getBouquetList()
 				if self.bouquets and len(self.bouquets):
-					keys = ["red", "blue", "", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" ] + [""] * (len(subservices) - 10)
+					keys = ["red", "blue", "", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"] + [""] * (len(subservices) - 10)
 					call_func_title = _("Add to favourites")
 					if config.usage.multibouquet.value:
 						call_func_title = _("Add to bouquet")
@@ -3493,7 +3493,7 @@ class InfoBarSubserviceSelection:
 					selection += 3
 				else:
 					tlist = [(_("Quick zap"), "quickzap", subservices), ("--", "")] + subservices
-					keys = ["red", "", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" ] + [""] * (len(subservices) - 10)
+					keys = ["red", "", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"] + [""] * (len(subservices) - 10)
 					selection += 2
 				self.session.openWithCallback(self.subserviceSelected, ChoiceBox, title=_("Please select a sub service..."), list=tlist, selection=selection, keys=keys, skin_name="SubserviceSelection")
 
@@ -3547,8 +3547,8 @@ class InfoBarRedButton:
 			{
 				"activateRedButton": (self.activateRedButton, _("Red button...")),
 			}, description=_("HbbTV"))
-		self.onHBBTVActivation = [ ]
-		self.onRedButtonActivation = [ ]
+		self.onHBBTVActivation = []
+		self.onRedButtonActivation = []
 
 	def activateRedButton(self):
 		service = self.session.nav.getCurrentService()
@@ -3586,7 +3586,7 @@ class VideoMode(Screen):
 		Screen.__init__(self, session)
 		self["videomode"] = Label()
 
-		self["actions"] = NumberActionMap( [ "InfobarVmodeButtonActions" ],
+		self["actions"] = NumberActionMap(["InfobarVmodeButtonActions"],
 			{
 				"vmodeSelection": self.selectVMode
 			})
@@ -3711,7 +3711,7 @@ class InfoBarCueSheetSupport:
 				"toggleMark": (self.toggleMark, _("Toggle a cut mark at the current position"))
 			}, prio=1, description=_("Bookmarks"))
 
-		self.cut_list = [ ]
+		self.cut_list = []
 		self.is_closing = False
 		self.resume_point = None
 		self.force_next_resume = False
@@ -3991,7 +3991,7 @@ class InfoBarCueSheetSupport:
 
 		if cue is None:
 #			print("[InfoBarGenerics]download failed, no cuesheet interface")
-			self.cut_list = [ ]
+			self.cut_list = []
 		else:
 			self.cut_list = cue.getCutList()
 		self.updateFromRecCuesheet()

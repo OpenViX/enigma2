@@ -142,13 +142,13 @@ class SecConfigure:
 		sec.clear() ## this do unlinking NIMs too !!
 		print("[NimManager][SecConfigure] sec config cleared")
 
-		self.linked = { }
-		self.satposdepends = { }
-		self.equal = { }
+		self.linked = {}
+		self.satposdepends = {}
+		self.equal = {}
 
 		nim_slots = self.NimManager.nim_slots
 
-		used_nim_slots = [ ]
+		used_nim_slots = []
 
 		for slot in nim_slots:
 			if slot.type is not None:
@@ -184,7 +184,7 @@ class SecConfigure:
 			nim = slot.config
 			if slot.isCompatible("DVB-S"):
 				print("[NimManager][SecConfigure] slot: " + str(x) + " configmode: " + str(nim.configMode.value))
-				if nim.configMode.value in ( "loopthrough", "satposdepends", "nothing" ):
+				if nim.configMode.value in ("loopthrough", "satposdepends", "nothing"):
 					pass
 				else:
 					sec.setSlotNotLinked(x)
@@ -234,7 +234,7 @@ class SecConfigure:
 							turning_speed=0
 							if nim.powerMeasurement.value:
 								useInputPower=True
-								turn_speed_dict = { "fast": rotorParam.FAST, "slow": rotorParam.SLOW }
+								turn_speed_dict = {"fast": rotorParam.FAST, "slow": rotorParam.SLOW}
 								if nim.turningSpeed.value in turn_speed_dict:
 									turning_speed = turn_speed_dict[nim.turningSpeed.value]
 								else:
@@ -396,11 +396,11 @@ class SecConfigure:
 					# Committed Diseqc Command
 					cdc = currLnb.commitedDiseqcCommand.value
 
-					c = { "none": diseqcParam.SENDNO,
+					c = {"none": diseqcParam.SENDNO,
 						"AA": diseqcParam.AA,
 						"AB": diseqcParam.AB,
 						"BA": diseqcParam.BA,
-						"BB": diseqcParam.BB }
+						"BB": diseqcParam.BB}
 
 					if cdc in c:
 						sec.setCommittedCommand(c[cdc])
@@ -453,7 +453,7 @@ class SecConfigure:
 					if currLnb.powerMeasurement.value:
 						sec.setUseInputpower(True)
 						sec.setInputpowerDelta(currLnb.powerThreshold.value)
-						turn_speed_dict = { "fast": rotorParam.FAST, "slow": rotorParam.SLOW }
+						turn_speed_dict = {"fast": rotorParam.FAST, "slow": rotorParam.SLOW}
 						if currLnb.turningSpeed.value in turn_speed_dict:
 							turning_speed = turn_speed_dict[currLnb.turningSpeed.value]
 						else:
@@ -674,7 +674,7 @@ class NIM(object):
 
 	def getFriendlyType(self):
 		if list(self.multi_type.values()):
-			returnValue = "/".join([x[1].replace("DVB-", "") for x in sorted([({ "DVB-S" :1, "DVB-C": 2, "DVB-T": 3, "ATSC": 4}[x[:5]], x) for x in list(self.multi_type.values())])])
+			returnValue = "/".join([x[1].replace("DVB-", "") for x in sorted([({"DVB-S":1, "DVB-C": 2, "DVB-T": 3, "ATSC": 4}[x[:5]], x) for x in list(self.multi_type.values())])])
 			return "%s %s" % (_("Combined") if self.combined else _("MultiType"), returnValue if returnValue == 'ATSC' else "DVB-%s" % returnValue)
 		return self.getType() or _("empty")
 
@@ -728,7 +728,7 @@ class NimManager:
 		nimConfig = config.Nims[nim]
 		if nimConfig.configMode.value != "nothing" and nimConfig.cable.scan_type.value == "provider":
 			return self.transponderscable[self.cablesList[nimConfig.cable.scan_provider.index][0]]
-		return [ ]
+		return []
 
 	def getTranspondersTerrestrial(self, region):
 		return self.transpondersterrestrial[region]
@@ -798,11 +798,11 @@ class NimManager:
 			return orbpos + 1800
 
 	def readTransponders(self):
-		self.satellites = { }
-		self.transponders = { }
-		self.transponderscable = { }
-		self.transpondersterrestrial = { }
-		self.transpondersatsc = { }
+		self.satellites = {}
+		self.transponders = {}
+		self.transponderscable = {}
+		self.transpondersterrestrial = {}
+		self.transpondersatsc = {}
 		db = eDVBDB.getInstance()
 
 		if self.hasNimType("DVB-S"):
@@ -840,7 +840,7 @@ class NimManager:
 		# Type will be either "DVB-S", "DVB-S2", "DVB-T", "DVB-C" or None.
 
 		# nim_slots is an array which has exactly one entry for each slot, even for empty ones.
-		self.nim_slots = [ ]
+		self.nim_slots = []
 
 		if config.clientmode.enabled.value:
 			print("[NimManager][enumerateNIMs] Receiver in client mode. Local NIMs will be ignored.")
@@ -952,7 +952,7 @@ class NimManager:
 		return [x.slot for x in self.nim_slots if x.slot != exception and enabled(x)]
 
 	def __init__(self):
-		self.satList = [ ]
+		self.satList = []
 		self.cablesList = []
 		self.terrestrialsList = []
 		self.atscList = []
@@ -1240,7 +1240,7 @@ def InitNimManager(nimmgr, update_slots=[]):
 
 	lnb_choices_default = "universal_lnb"
 
-	prio_list = [ ("-1", _("Auto")) ]
+	prio_list = [("-1", _("Auto"))]
 	for prio in list(range(65))+list(range(14000, 14065))+list(range(19000, 19065)):
 		description = ""
 		if prio == 0:
@@ -1648,7 +1648,7 @@ def InitNimManager(nimmgr, update_slots=[]):
 		else:
 			print("[InitNimManager] disable combined tuner")
 			eDVBResourceManager.getInstance().setFrontendType(nimmgr.nim_slots[slot_id].frontend_id, "UNDEFINED")
-			nim.configMode.choices.choices.update({ "nothing": _("Disabled")})
+			nim.configMode.choices.choices.update({"nothing": _("Disabled")})
 			nim.configMode.value = nim.configMode.default = "nothing"
 
 	def createConfig(nim, slot):

@@ -25,7 +25,7 @@ def mountpoint_choosen(option):
 	(description, mountpoint, session) = option
 	res = scanDevice(mountpoint)
 
-	list = [ (r.description, r, res[r], session) for r in res ]
+	list = [(r.description, r, res[r], session) for r in res]
 
 	if not list:
 		from Screens.MessageBox import MessageBox
@@ -41,8 +41,8 @@ def mountpoint_choosen(option):
 
 def scan(session):
 	from Screens.ChoiceBox import ChoiceBox
-	parts = [ (r.tabbedDescription(), r.mountpoint, session) for r in harddiskmanager.getMountedPartitions(onlyhotplug=False) if os.access(r.mountpoint, os.F_OK|os.R_OK) ]
-	parts.append( (_("Memory") + "\t/tmp", "/tmp", session) )
+	parts = [(r.tabbedDescription(), r.mountpoint, session) for r in harddiskmanager.getMountedPartitions(onlyhotplug=False) if os.access(r.mountpoint, os.F_OK|os.R_OK)]
+	parts.append((_("Memory") + "\t/tmp", "/tmp", session))
 	session.openWithCallback(mountpoint_choosen, ChoiceBox, title=_("Please select medium to be scanned"), list=parts)
 
 def main(session, **kwargs):
@@ -55,7 +55,7 @@ from Components.Harddisk import harddiskmanager
 
 def menuHook(menuid):
 	if menuid != "mainmenu":
-		return [ ]
+		return []
 	from Tools.BoundFunction import boundFunction
 	return [("%s (files)" % r.description, boundFunction(menuEntry, r.description, r.mountpoint), "hotplug_%s" % r.mountpoint, None) for r in harddiskmanager.getMountedPartitions(onlyhotplug=True)]
 

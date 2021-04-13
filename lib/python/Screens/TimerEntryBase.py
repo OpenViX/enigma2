@@ -258,7 +258,7 @@ class TimerLogBase(Screen, HelpableScreen):
 		self["loglist"].pageUp()
 
 	def right(self):
-		print( "[TimerLog] right() is deprecated, call pageDown() instead")
+		print("[TimerLog] right() is deprecated, call pageDown() instead")
 		self.pageDown()
 
 	def pageDown(self):

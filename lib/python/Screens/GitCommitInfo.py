@@ -26,8 +26,8 @@ else:
 	ImageVer = float(ImageVer)
 
 E2Branches = {
-	'developer' : 'Dev',
-	'release' : 'master'
+	'developer': 'Dev',
+	'release': 'master'
 	}
 
 project = 0
