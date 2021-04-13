@@ -1,8 +1,10 @@
 import os
 
+
 class CamControl:
 	'''CAM convention is that a softlink named /etc/init.c/softcam.* points
 	to the start/stop script.'''
+
 	def __init__(self, name):
 		self.name = name
 		self.link = '/etc/init.d/' + name
@@ -43,9 +45,8 @@ class CamControl:
 		except:
 			pass
 		try:
-			os.symlink(dst, self.link);
+			os.symlink(dst, self.link)
 		except:
 			print "[CamControl] Failed to create symlink for softcam:", dst
 			import sys
 			print sys.exc_info()[:2]
-

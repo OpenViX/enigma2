@@ -37,6 +37,7 @@ QUIT_UPGRADE_PROGRAM = 42
 QUIT_IMAGE_RESTORE = 43
 GB_ENTER_WOL = 44
 
+
 def setLCDModeMinitTV(value):
 	try:
 		f = open("/proc/stb/lcd/mode", "w")
@@ -45,6 +46,7 @@ def setLCDModeMinitTV(value):
 	except:
 		pass
 
+
 def isInfoBarInstance():
 	global infoBarInstance
 	if infoBarInstance is None:
@@ -52,6 +54,7 @@ def isInfoBarInstance():
 		if InfoBar.instance:
 			infoBarInstance = InfoBar.instance
 	return infoBarInstance
+
 
 def checkTimeshiftRunning():
 	infobar_instance = isInfoBarInstance()
@@ -66,7 +69,7 @@ class StandbyScreen(Screen):
 
 		print "[Standby] enter standby"
 
-		self["actions"] = ActionMap( [ "StandbyActions" ],
+		self["actions"] = ActionMap(["StandbyActions"],
 		{
 			"power": self.Power,
 			"discrete_on": self.Power
@@ -103,7 +106,7 @@ class StandbyScreen(Screen):
 				self.paused_action = hasattr(self.paused_service, "seekstate") and hasattr(self.paused_service, "SEEK_STATE_PLAY") and self.paused_service.seekstate == self.paused_service.SEEK_STATE_PLAY
 				self.paused_action and self.paused_service.pauseService()
 		if not self.paused_service:
-			self.timeHandler =  eDVBLocalTimeHandler.getInstance()
+			self.timeHandler = eDVBLocalTimeHandler.getInstance()
 			if self.timeHandler.ready():
 				if self.session.nav.getCurrentlyPlayingServiceOrGroup():
 					self.stopService()
@@ -199,10 +202,10 @@ class StandbyScreen(Screen):
 				begintime = tuple(config.usage.standby_to_shutdown_timer_blocktime_begin.value)
 				endtime = tuple(config.usage.standby_to_shutdown_timer_blocktime_end.value)
 				if begintime <= endtime and (curtime >= begintime and curtime < endtime) or begintime > endtime and (curtime >= begintime or curtime < endtime):
-					duration = (endtime[0]*3600 + endtime[1]*60) - (curtime[0]*3600 + curtime[1]*60 + curtime[2])
+					duration = (endtime[0] * 3600 + endtime[1] * 60) - (curtime[0] * 3600 + curtime[1] * 60 + curtime[2])
 					if duration:
 						if duration < 0:
-							duration += 24*3600
+							duration += 24 * 3600
 						self.standbyTimeoutTimer.startLongTimer(duration)
 						return
 		if self.session.screen["TunerInfo"].tuner_use_mask or mediafilesInUse(self.session):
@@ -215,6 +218,7 @@ class StandbyScreen(Screen):
 
 	def createSummary(self):
 		return StandbySummary
+
 
 class Standby(StandbyScreen):
 	def __init__(self, session, StandbyCounterIncrease=True):
@@ -238,9 +242,10 @@ class Standby(StandbyScreen):
 	def goStandby(self):
 		Notifications.AddNotification(StandbyScreen, self.StandbyCounterIncrease)
 
+
 class StandbySummary(Screen):
 	if getBoxType() in ('gbquad4k', 'gbue4k', 'gbquadplus', 'gbquad', 'gbultraue', 'gbultraueh', 'gb800ueplus', 'gb800ue'):
-                def __init__(self, session, what = None):
+                def __init__(self, session, what=None):
 			Screen.__init__(self, session)
 	else:
 		skin = """
@@ -253,6 +258,7 @@ class StandbySummary(Screen):
 				<convert type="ConditionalShowHide">Blink</convert>
 			</widget>
 		</screen>"""
+
 
 class QuitMainloopScreen(Screen):
 	def __init__(self, session, retvalue=QUIT_SHUTDOWN):
@@ -272,7 +278,9 @@ class QuitMainloopScreen(Screen):
 		}.get(retvalue)
 		self["text"] = Label(text)
 
+
 inTryQuitMainloop = False
+
 
 def getReasons(session, retvalue=QUIT_SHUTDOWN):
 	recordings = session.nav.getRecordings()
@@ -286,7 +294,7 @@ def getReasons(session, retvalue=QUIT_SHUTDOWN):
 	if jobs:
 		if jobs == 1:
 			job = job_manager.getPendingJobs()[0]
-			reasons.append("%s: %s (%d%%)" % (job.getStatustext(), job.name, int(100*job.progress/float(job.end))))
+			reasons.append("%s: %s (%d%%)" % (job.getStatustext(), job.name, int(100 * job.progress / float(job.end))))
 		else:
 			reasons.append((ngettext("%d job is running in the background!", "%d jobs are running in the background!", jobs) % jobs))
 	if checkTimeshiftRunning():
@@ -296,6 +304,7 @@ def getReasons(session, retvalue=QUIT_SHUTDOWN):
 	if not reasons and mediafilesInUse(session) and retvalue in (QUIT_SHUTDOWN, QUIT_REBOOT, QUIT_UPGRADE_FP, QUIT_UPGRADE_PROGRAM, GB_ENTER_WOL):
 		reasons.append(_("A file from media is in use!"))
 	return "\n".join(reasons)
+
 
 class TryQuitMainloop(MessageBox):
 	def __init__(self, session, retvalue=QUIT_SHUTDOWN, timeout=-1, default_yes=False, check_reasons=True):

@@ -34,14 +34,15 @@ PACKAGE_PATH = os.path.dirname(str((globals())["__file__"]))
 KEYMAPPINGS = {'aspect': os.path.join(PACKAGE_PATH, 'keymap-aspect.xml')}
 
 config.plugins.GBAspectRatioSwitch = ConfigSubsection()
-config.plugins.GBAspectRatioSwitch.enabled = ConfigEnableDisable(default = True)
+config.plugins.GBAspectRatioSwitch.enabled = ConfigEnableDisable(default=True)
 config.plugins.GBAspectRatioSwitch.keymap = ConfigSelection({'aspect': _('ASPECT key')})
-config.plugins.GBAspectRatioSwitch.showmsg = ConfigEnableDisable(default = True)
+config.plugins.GBAspectRatioSwitch.showmsg = ConfigEnableDisable(default=True)
 config.plugins.GBAspectRatioSwitch.modes = ConfigSubDict()
 for aspect in ASPECT:
-	config.plugins.GBAspectRatioSwitch.modes[aspect] = ConfigYesNo(default = True)
+	config.plugins.GBAspectRatioSwitch.modes[aspect] = ConfigYesNo(default=True)
 
 aspect_ratio_switch = None
+
 
 class GBAspectRatioSwitchSetup(ConfigListScreen, Screen):
 	skin = """
@@ -104,6 +105,7 @@ class GBAspectRatioSwitchSetup(ConfigListScreen, Screen):
 		for x in self["config"].list:
 			x[1].cancel()
 		self.close()
+
 
 class GBAspectRatioSwitch:
 
@@ -173,6 +175,7 @@ class GBAspectRatioSwitch:
 			Notifications.AddPopup(text=ASPECTMSG[ASPECT[newaspectnum]], type=MessageBox.TYPE_INFO, timeout=2, id='GBAspectRatioSwitch')
 		#print 'GBAspectRatioSwitch: Changed aspect ratio from %d - %s to %d - %s' % (aspectnum, ASPECT[aspectnum], newaspectnum, ASPECT[newaspectnum])
 
+
 def autostart(reason, **kwargs):
 	global aspect_ratio_switch
 	if reason == 0: # startup
@@ -185,22 +188,25 @@ def autostart(reason, **kwargs):
 		if aspect_ratio_switch is not None:
 			aspect_ratio_switch.disable()
 
+
 def main(session, **kwargs):
 	session.open(GBAspectRatioSwitchSetup)
+
 
 def startGBAspectRatioSwitch(menuid):
 	if menuid != "video_menu":
 		return []
-	return [( _("AspectRatio switch"), main, "aspectratio_switch", 99)]
+	return [(_("AspectRatio switch"), main, "aspectratio_switch", 99)]
+
 
 def Plugins(**kwargs):
 	return [
 		PluginDescriptor(
 			name="GBAspectRatioSwitch",
 			description=_("Quick switching of aspect ratio setting"),
-			where = PluginDescriptor.WHERE_MENU,
-			needsRestart = False,
+			where=PluginDescriptor.WHERE_MENU,
+			needsRestart=False,
 			fnc=startGBAspectRatioSwitch),
 		PluginDescriptor(
-			where = [PluginDescriptor.WHERE_SESSIONSTART,PluginDescriptor.WHERE_AUTOSTART],
-			fnc = autostart)]
+			where=[PluginDescriptor.WHERE_SESSIONSTART, PluginDescriptor.WHERE_AUTOSTART],
+			fnc=autostart)]

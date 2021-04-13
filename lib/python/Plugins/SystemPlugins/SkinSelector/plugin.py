@@ -18,12 +18,13 @@ import os
 SKINXML = "skin.xml"
 DEFAULTSKIN = _("<Default Skin>")
 
+
 class SkinSelector(Screen):
 
 	skinlist = []
-	root = os.path.join(eEnv.resolve("${datadir}"),"enigma2")
+	root = os.path.join(eEnv.resolve("${datadir}"), "enigma2")
 
-	def __init__(self, session, args = None):
+	def __init__(self, session, args=None):
 
 		Screen.__init__(self, session)
 
@@ -63,7 +64,7 @@ class SkinSelector(Screen):
 		self.onLayoutFinish.append(self.layoutFinished)
 
 	def layoutFinished(self):
-		tmp = config.skin.primary_skin.value.find("/"+SKINXML)
+		tmp = config.skin.primary_skin.value.find("/" + SKINXML)
 		if tmp != -1:
 			tmp = config.skin.primary_skin.value[:tmp]
 			idx = 0
@@ -92,7 +93,7 @@ class SkinSelector(Screen):
 		self.loadPreview()
 
 	def info(self):
-		aboutbox = self.session.open(MessageBox,_("STB-GUI Skinselector\n\nIf you experience any problems please contact\nstephan@reichholf.net\n\n\xA9 2006 - Stephan Reichholf"), MessageBox.TYPE_INFO)
+		aboutbox = self.session.open(MessageBox, _("STB-GUI Skinselector\n\nIf you experience any problems please contact\nstephan@reichholf.net\n\n\xA9 2006 - Stephan Reichholf"), MessageBox.TYPE_INFO)
 		aboutbox.setTitle(_("About..."))
 
 	def ok(self):
@@ -102,8 +103,8 @@ class SkinSelector(Screen):
 			self.skinfile = self["SkinList"].getCurrent()
 		self.skinfile = os.path.join(self.skinfile, SKINXML)
 
-		print "Skinselector: Selected Skin: "+self.root+self.skinfile
-		restartbox = self.session.openWithCallback(self.restartGUI,MessageBox,_("GUI needs a restart to apply a new skin\nDo you want to restart the GUI now?"), MessageBox.TYPE_YESNO)
+		print "Skinselector: Selected Skin: " + self.root + self.skinfile
+		restartbox = self.session.openWithCallback(self.restartGUI, MessageBox, _("GUI needs a restart to apply a new skin\nDo you want to restart the GUI now?"), MessageBox.TYPE_YESNO)
 		restartbox.setTitle(_("Restart GUI now?"))
 
 	def loadPreview(self):
@@ -127,8 +128,10 @@ class SkinSelector(Screen):
 			config.skin.primary_skin.save()
 			self.session.open(TryQuitMainloop, 3)
 
+
 def SkinSelMain(session, **kwargs):
 	session.open(SkinSelector)
+
 
 def SkinSelSetup(menuid, **kwargs):
 	if menuid == "ui_menu":
@@ -136,5 +139,6 @@ def SkinSelSetup(menuid, **kwargs):
 	else:
 		return []
 
+
 def Plugins(**kwargs):
-	return PluginDescriptor(name = _("Skin"), description= _("Select your Skin"), where = PluginDescriptor.WHERE_MENU, needsRestart = False, fnc=SkinSelSetup)
+	return PluginDescriptor(name=_("Skin"), description=_("Select your Skin"), where=PluginDescriptor.WHERE_MENU, needsRestart=False, fnc=SkinSelSetup)

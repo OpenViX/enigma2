@@ -13,6 +13,7 @@ pname = _("File Commander - unzip Addon")
 pdesc = _("unpack zip Files")
 pversion = "0.2-r1"
 
+
 class UnzipMenuScreen(ArchiverMenuScreen):
 
 	def __init__(self, session, sourcelist, targetlist):
@@ -42,6 +43,7 @@ class UnzipMenuScreen(ArchiverMenuScreen):
 				cmd.append(config.usage.default_path.value)
 			self.unpackEConsoleApp(cmd)
 
+
 class UnpackInfoScreen(ArchiverInfoScreen):
 
 	def __init__(self, session, list, sourceDir, filename):
@@ -52,4 +54,4 @@ class UnpackInfoScreen(ArchiverInfoScreen):
 		self.pversion = pversion
 
 		font = skin.fonts.get("FileList", ("Console", 20, 30))
-		self.chooseMenuList.l.setFont(0, gFont('Console', int(font[1]*0.85)))
+		self.chooseMenuList.l.setFont(0, gFont('Console', int(font[1] * 0.85)))

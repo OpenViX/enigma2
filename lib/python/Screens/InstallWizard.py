@@ -8,9 +8,9 @@ from Components.Opkg import OpkgComponent
 from enigma import eDVBDB
 
 config.misc.installwizard = ConfigSubsection()
-config.misc.installwizard.hasnetwork = ConfigBoolean(default = False)
-config.misc.installwizard.opkgloaded = ConfigBoolean(default = False)
-config.misc.installwizard.channellistdownloaded = ConfigBoolean(default = False)
+config.misc.installwizard.hasnetwork = ConfigBoolean(default=False)
+config.misc.installwizard.opkgloaded = ConfigBoolean(default=False)
+config.misc.installwizard.channellistdownloaded = ConfigBoolean(default=False)
 
 
 class InstallWizard(Screen, ConfigListScreen):
@@ -19,7 +19,7 @@ class InstallWizard(Screen, ConfigListScreen):
 	STATE_CHOICE_CHANNELLIST = 1
 	INSTALL_PLUGINS = 2
 
-	def __init__(self, session, args = None):
+	def __init__(self, session, args=None):
 		Screen.__init__(self, session)
 
 		self.index = args
@@ -30,11 +30,11 @@ class InstallWizard(Screen, ConfigListScreen):
 			config.misc.installwizard.hasnetwork.value = False
 			config.misc.installwizard.opkgloaded.value = False
 			modes = {0: " "}
-			self.enabled = ConfigSelection(choices = modes, default = 0)
+			self.enabled = ConfigSelection(choices=modes, default=0)
 			self.adapters = [adapter for adapter in iNetwork.getAdapterList() if adapter in ('eth0', 'eth1')]
 			self.checkNetwork()
 		elif self.index == self.STATE_CHOICE_CHANNELLIST:
-			self.enabled = ConfigYesNo(default = True, graphic = False)
+			self.enabled = ConfigYesNo(default=True, graphic=False)
 			modes = {
 								"19e": "Astra 19.2e",
 								"19e-13e": "Astra 19.2e Hotbird 13.0e",
@@ -42,13 +42,13 @@ class InstallWizard(Screen, ConfigListScreen):
 								"kabeldeutschland": " Kabel Deutschland",
 								"unity-media": "Kabel Unitymedia"
 							}
-			self.channellist_type = ConfigSelection(choices = modes, default = "19e-13e")
+			self.channellist_type = ConfigSelection(choices=modes, default="19e-13e")
 			self.createMenu()
 #		elif self.index == self.STATE_CHOICE_SOFTCAM:
 #			self.enabled = ConfigYesNo(default = False)
 #			self.createMenu()
 		elif self.index == self.INSTALL_PLUGINS:
-			self.enabled = ConfigYesNo(default = True)
+			self.enabled = ConfigYesNo(default=True)
 			self.createMenu()
 
 	def checkNetwork(self):
@@ -122,13 +122,14 @@ class InstallWizard(Screen, ConfigListScreen):
 			self.session.open(PluginDownloadBrowser, 0)
 		return
 
+
 class InstallWizardOpkgUpdater(Screen):
 	skin = """
 	<screen position="c-300,c-25" size="600,50" title=" ">
 		<widget source="statusbar" render="Label" position="10,5" zPosition="10" size="e-10,30" halign="center" valign="center" font="Regular;22" transparent="1" shadowColor="black" shadowOffset="-1,-1" />
 	</screen>"""
 
-	def __init__(self, session, index, info, cmd, pkg = None):
+	def __init__(self, session, index, info, cmd, pkg=None):
 		self.skin = InstallWizardOpkgUpdater.skin
 		Screen.__init__(self, session)
 

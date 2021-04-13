@@ -21,6 +21,7 @@ pname = _("File Commander - ipk Addon")
 pdesc = _("install/unpack ipk Files")
 pversion = "0.2-r1"
 
+
 class ipkMenuScreen(ArchiverMenuScreen):
 
 	def __init__(self, session, sourcelist, targetlist):

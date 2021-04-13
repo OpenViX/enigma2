@@ -23,13 +23,15 @@ from boxbranding import getMachineBrand, getMachineName
 import os
 import sys
 
+
 def DiskEntry(model, size, removable):
 	if removable:
-		picture = LoadPixmap(cached = True, path = resolveFilename(SCOPE_CURRENT_PLUGIN, "SystemPlugins/DeviceManager/icons/diskusb.png"));
+		picture = LoadPixmap(cached=True, path=resolveFilename(SCOPE_CURRENT_PLUGIN, "SystemPlugins/DeviceManager/icons/diskusb.png"))
 	else:
-		picture = LoadPixmap(cached = True, path = resolveFilename(SCOPE_CURRENT_PLUGIN, "SystemPlugins/DeviceManager/icons/disk.png"));
+		picture = LoadPixmap(cached=True, path=resolveFilename(SCOPE_CURRENT_PLUGIN, "SystemPlugins/DeviceManager/icons/disk.png"))
 
 	return (picture, model, size)
+
 
 class HddSetup(Screen):
 	skin = """
@@ -56,11 +58,11 @@ class HddSetup(Screen):
 		</widget>
 	</screen>"""
 
-	def __init__(self, session, args = 0):
+	def __init__(self, session, args=0):
 		self.session = session
 
 		Screen.__init__(self, session)
-		self.disks = list ()
+		self.disks = list()
 
 		self.mdisks = Disks()
 		for disk in self.mdisks.disks:
@@ -94,7 +96,7 @@ class HddSetup(Screen):
 		return self.mdisks.mkfs(self.mdisks.disks[self.sindex][0], self.formatted, self.fsresult)
 
 	def refresh(self):
-		self.disks = list ()
+		self.disks = list()
 
 		self.mdisks = Disks()
 		for disk in self.mdisks.disks:
@@ -175,26 +177,26 @@ class HddSetup(Screen):
 			self.result = result
 			if self.isExt4Supported():
 				self.session.openWithCallback(self.initialaze, ExtraMessageBox, _("Format as"), _("Partitioner"),
-											[ [ "Ext4", "partitionmanager.png" ],
-											[ "Ext3", "partitionmanager.png" ],
-											[ _("Cancel"), "cancel.png" ],
+											[["Ext4", "partitionmanager.png"],
+											["Ext3", "partitionmanager.png"],
+											[_("Cancel"), "cancel.png"],
 											], 1, 4)
 			else:
 				self.session.openWithCallback(self.initialaze, ExtraMessageBox, _("Format as"), _("Partitioner"),
-											[ [ "Ext3", "partitionmanager.png" ],
-											[ _("Cancel"), "cancel.png" ],
+											[["Ext3", "partitionmanager.png"],
+											[_("Cancel"), "cancel.png"],
 											], 1, 3)
 
 	def yellow(self):
 		if len(self.mdisks.disks) > 0:
 			self.sindex = self['menu'].getIndex()
 			self.session.openWithCallback(self.chooseFSType, ExtraMessageBox, _("Please select your preferred configuration."), _("Partitioner"),
-										[ [ _("One partition"), "partitionmanager.png" ],
-										[ _("Two partitions (50% - 50%)"), "partitionmanager.png" ],
-										[ _("Two partitions (75% - 25%)"), "partitionmanager.png" ],
-										[ _("Three partitions (33% - 33% - 33%)"), "partitionmanager.png" ],
-										[ _("Four partitions (25% - 25% - 25% - 25%)"), "partitionmanager.png" ],
-										[ _("Cancel"), "cancel.png" ],
+										[[_("One partition"), "partitionmanager.png"],
+										[_("Two partitions (50% - 50%)"), "partitionmanager.png"],
+										[_("Two partitions (75% - 25%)"), "partitionmanager.png"],
+										[_("Three partitions (33% - 33% - 33%)"), "partitionmanager.png"],
+										[_("Four partitions (25% - 25% - 25% - 25%)"), "partitionmanager.png"],
+										[_("Cancel"), "cancel.png"],
 										], 1, 5)
 
 	def green(self):

@@ -79,7 +79,8 @@ fallbackPaths = {
 		SCOPE_AUTORECORD: [("/media/hdd/movie", PATH_MOVE)]
 	}
 
-def resolveFilename(scope, base = "", path_prefix = None):
+
+def resolveFilename(scope, base="", path_prefix=None):
 	if base.startswith("~/"):
 		# you can only use the ~/ if we have a prefix directory
 		assert path_prefix is not None
@@ -100,9 +101,9 @@ def resolveFilename(scope, base = "", path_prefix = None):
 			pos = config.skin.primary_skin.value.rfind('/')
 			if pos != -1:
 				#if basefile is not available use default skin path as fallback
-				tmpfile = tmp+config.skin.primary_skin.value[:pos+1] + base
+				tmpfile = tmp + config.skin.primary_skin.value[:pos + 1] + base
 				if pathExists(tmpfile):
-					path = tmp+config.skin.primary_skin.value[:pos+1]
+					path = tmp + config.skin.primary_skin.value[:pos + 1]
 				else:
 					path = tmp
 			else:
@@ -120,9 +121,9 @@ def resolveFilename(scope, base = "", path_prefix = None):
 			tmp = defaultPaths[SCOPE_SKIN][0]
 			pos = config.skin.primary_skin.value.rfind('/')
 			if pos != -1:
-				tmpfile = tmp+config.skin.primary_skin.value[:pos+1] + base
+				tmpfile = tmp + config.skin.primary_skin.value[:pos + 1] + base
 				if pathExists(tmpfile) or (':' in tmpfile and pathExists(tmpfile.split(':')[0])):
-					path = tmp+config.skin.primary_skin.value[:pos+1]
+					path = tmp + config.skin.primary_skin.value[:pos + 1]
 				elif pathExists(tmp + base) or (':' in base and pathExists(tmp + base.split(':')[0])):
 					path = tmp
 				else:
@@ -150,9 +151,9 @@ def resolveFilename(scope, base = "", path_prefix = None):
 			tmp = defaultPaths[SCOPE_LCDSKIN][0]
 			pos = config.skin.display_skin.value.rfind('/')
 			if pos != -1:
-				tmpfile = tmp+config.skin.display_skin.value[:pos+1] + base
+				tmpfile = tmp + config.skin.display_skin.value[:pos + 1] + base
 				if pathExists(tmpfile):
-					path = tmp+config.skin.display_skin.value[:pos+1]
+					path = tmp + config.skin.display_skin.value[:pos + 1]
 				else:
 					if 'skin_default' not in tmp:
 						path = tmp + 'skin_default/'
@@ -171,9 +172,9 @@ def resolveFilename(scope, base = "", path_prefix = None):
 		pos = config.skin.primary_skin.value.rfind('/')
 		if pos != -1:
 			#if basefile is not available inside current skin path, use the original provided file as fallback
-			skintmpfile = skintmp[0]+config.skin.primary_skin.value[:pos+1] + base
+			skintmpfile = skintmp[0] + config.skin.primary_skin.value[:pos + 1] + base
 			if fileExists(skintmpfile):
-				path = skintmp[0]+config.skin.primary_skin.value[:pos+1]
+				path = skintmp[0] + config.skin.primary_skin.value[:pos + 1]
 			else:
 				path = tmp[0]
 		else:
@@ -219,14 +220,16 @@ def resolveFilename(scope, base = "", path_prefix = None):
 						os.rename(x[0], path + base)
 						break
 			except Exception, e:
-				print "[D] Failed to recover %s:" % (path+base), e
+				print "[D] Failed to recover %s:" % (path + base), e
 
 	# FIXME: we also have to handle DATADIR etc. here.
 	return path + base
 	# this is only the BASE - an extension must be added later.
 
+
 pathExists = os.path.exists
 isMount = os.path.ismount
+
 
 def defaultRecordingLocation(candidate=None):
 	if candidate and os.path.exists(candidate):
@@ -265,7 +268,7 @@ def defaultRecordingLocation(candidate=None):
 	return path
 
 
-def createDir(path, makeParents = False):
+def createDir(path, makeParents=False):
 	try:
 		if makeParents:
 			os.makedirs(path)
@@ -276,6 +279,7 @@ def createDir(path, makeParents = False):
 	else:
 		return 1
 
+
 def removeDir(path):
 	try:
 		os.rmdir(path)
@@ -283,6 +287,7 @@ def removeDir(path):
 		return 0
 	else:
 		return 1
+
 
 def fileExists(f, mode='r'):
 	if mode == 'r':
@@ -293,13 +298,16 @@ def fileExists(f, mode='r'):
 		acc_mode = os.F_OK
 	return os.access(f, acc_mode)
 
+
 def fileCheck(f, mode='r'):
 	return fileExists(f, mode) and f
+
 
 def fileHas(f, content, mode='r'):
 	return fileExists(f, mode) and content in open(f, mode).read()
 
-def getRecordingFilename(basename, dirname = None):
+
+def getRecordingFilename(basename, dirname=None):
 	# filter out non-allowed characters
 	non_allowed_characters = "/.\\:*?<>|\""
 	filename = ""
@@ -335,6 +343,8 @@ def getRecordingFilename(basename, dirname = None):
 			return path
 
 # this is clearly a hack:
+
+
 def InitFallbackFiles():
 	resolveFilename(SCOPE_CONFIG, "userbouquet.favourites.tv")
 	resolveFilename(SCOPE_CONFIG, "bouquets.tv")
@@ -343,6 +353,8 @@ def InitFallbackFiles():
 
 # returns a list of tuples containing pathname and filename matching the given pattern
 # example-pattern: match all txt-files: ".*\.txt$"
+
+
 def crawlDirectory(directory, pattern):
 	list = []
 	if directory:
@@ -353,6 +365,7 @@ def crawlDirectory(directory, pattern):
 					list.append((root, file))
 	return list
 
+
 def copyfile(src, dst):
 	try:
 		f1 = open(src, "rb")
@@ -360,7 +373,7 @@ def copyfile(src, dst):
 			dst = os.path.join(dst, os.path.basename(src))
 		f2 = open(dst, "w+b")
 		while True:
-			buf = f1.read(16*1024)
+			buf = f1.read(16 * 1024)
 			if not buf:
 				break
 			f2.write(buf)
@@ -374,6 +387,7 @@ def copyfile(src, dst):
 		print "copy", src, "to", dst, "failed!"
 		return -1
 	return 0
+
 
 def copytree(src, dst, symlinks=False):
 	names = os.listdir(src)
@@ -408,6 +422,8 @@ def copytree(src, dst, symlinks=False):
 
 # Renames files or if source and destination are on different devices moves them in background
 # input list of (source, destination)
+
+
 def moveFiles(fileList):
 	movedList = []
 	try:
@@ -432,6 +448,7 @@ def moveFiles(fileList):
 				print "[Directories] Failed to undo move:", item
 				raise
 
+
 def getSize(path, pattern=".*"):
 	path_size = 0
 	if os.path.isdir(path):
@@ -442,6 +459,7 @@ def getSize(path, pattern=".*"):
 	elif os.path.isfile(path):
 		path_size = os.path.getsize(path)
 	return path_size
+
 
 def shellquote(s):
     return "'" + s.replace("'", "'\\''") + "'"

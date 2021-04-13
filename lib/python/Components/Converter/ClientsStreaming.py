@@ -6,6 +6,7 @@ from enigma import eStreamServer
 from ServiceReference import ServiceReference
 import socket
 
+
 class ClientsStreaming(Converter, Poll, object):
 	UNKNOWN = -1
 	REF = 0
@@ -62,7 +63,7 @@ class ClientsStreaming(Converter, Poll, object):
 		ips = []
 		names = []
 		encoders = []
-		extrainfo = _("ClientIP") + "\t" + _("Transcode")  + "\t" + _("Channel")  + "\n"
+		extrainfo = _("ClientIP") + "\t" + _("Transcode") + "\t" + _("Channel") + "\n"
 		info = ""
 
 		for x in self.streamServer.getConnectedClients():
@@ -86,7 +87,7 @@ class ClientsStreaming(Converter, Poll, object):
 			if self.type == self.INFO_RESOLVE or self.type == self.INFO_RESOLVE_SHORT:
 				try:
 					raw = socket.gethostbyaddr(ip)
-					ip  = raw[0]
+					ip = raw[0]
 				except:
 					pass
 
@@ -97,9 +98,7 @@ class ClientsStreaming(Converter, Poll, object):
 
 			clients.append((ip, service_name, encoder))
 
-			extrainfo += ("%-8s\t%s\t%s") % (ip, encoder, service_name) +"\n"
-
-
+			extrainfo += ("%-8s\t%s\t%s") % (ip, encoder, service_name) + "\n"
 
 		if self.type == self.REF:
 			return ' '.join(refs)

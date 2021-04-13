@@ -34,12 +34,13 @@ std_headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_3) App
  'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
  'Accept-Language': 'ru,en-us;q=0.7,en;q=0.3'}
 
+
 def initWeatherConfig():
 	config.plugins.MetrixWeather = ConfigSubsection()
 	#MetrixWeather
 	config.plugins.MetrixWeather.enabled = ConfigYesNo(default=False)
 	config.plugins.MetrixWeather.weathercity = ConfigText(default='Hamburg, Germany')
-	config.plugins.MetrixWeather.tempUnit = ConfigSelection(default="Celsius", choices = [
+	config.plugins.MetrixWeather.tempUnit = ConfigSelection(default="Celsius", choices=[
 		("Celsius", _("Celsius")),
 		("Fahrenheit", _("Fahrenheit"))
 	])
@@ -63,7 +64,9 @@ def initWeatherConfig():
 	config.plugins.MetrixWeather.save()
 	configfile.save()
 
+
 initWeatherConfig()
+
 
 class OMMetrixWeatherWidget(Renderer):
 
@@ -82,7 +85,7 @@ class OMMetrixWeatherWidget(Renderer):
 
 	def getWeather(self):
 		# skip if weather-widget is already up to date
-		tdelta = datetime.now() - datetime.strptime(config.plugins.MetrixWeather.lastUpdated.value,"%Y-%m-%d %H:%M:%S")
+		tdelta = datetime.now() - datetime.strptime(config.plugins.MetrixWeather.lastUpdated.value, "%Y-%m-%d %H:%M:%S")
 		if int(tdelta.seconds) < (config.plugins.MetrixWeather.refreshInterval.value * 60): ##### 1=60 for testing purpose #####
 			return
 		id = ""
@@ -95,8 +98,8 @@ class OMMetrixWeatherWidget(Renderer):
 		language = config.osd.language.value.replace('_', '-')
 		if language == 'en-EN':
 			language = 'en-US'
-		city="%s" % cityname
-		feedurl = "http://weather.service.msn.com/data.aspx?weadegreetype=%s&culture=%s&weasearchstr=%s&src=outlook" % (self.getTemp(),language,urllib2_quote(city))
+		city = "%s" % cityname
+		feedurl = "http://weather.service.msn.com/data.aspx?weadegreetype=%s&culture=%s&weasearchstr=%s&src=outlook" % (self.getTemp(), language, urllib2_quote(city))
 		msnrequest = Request(feedurl, None, std_headers)
 		try:
 			msnpage = urlopen2(msnrequest)
@@ -126,7 +129,7 @@ class OMMetrixWeatherWidget(Renderer):
 		currentWeatherCode = currentWeather.getAttributeNode('skycodeday')
 		config.plugins.MetrixWeather.forecastTodayCode.value = self.ConvertCondition(currentWeatherCode.nodeValue)
 		currentWeatherTemp = currentWeather.getAttributeNode('high')
-		temp_max  = currentWeatherTemp.nodeValue
+		temp_max = currentWeatherTemp.nodeValue
 		config.plugins.MetrixWeather.forecastTodayTempMax.value = currentWeatherTemp.nodeValue
 		currentWeatherTemp = currentWeather.getAttributeNode('low')
 		temp_min = currentWeatherTemp.nodeValue
@@ -145,7 +148,7 @@ class OMMetrixWeatherWidget(Renderer):
 		config.plugins.MetrixWeather.save()
 		configfile.save()
 
-	def getText(self,nodelist):
+	def getText(self, nodelist):
 		rc = []
 		for node in nodelist:
 			if node.nodeType == node.TEXT_NODE:
@@ -162,7 +165,7 @@ class OMMetrixWeatherWidget(Renderer):
 			condition = "S"
 		elif c == 3 or c == 4:
 			condition = "Z"
-		elif c == 5  or c == 6 or c == 7 or c == 18:
+		elif c == 5 or c == 6 or c == 7 or c == 18:
 			condition = "U"
 		elif c == 8 or c == 10 or c == 25:
 			condition = "G"

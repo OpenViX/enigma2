@@ -10,12 +10,14 @@ from boxbranding import getBoxType
 
 POLLTIME = 5 # seconds
 
+
 def SymbolsCheck(session, **kwargs):
 		global symbolspoller, POLLTIME
 		if getBoxType() in ('dummy', ):
 			POLLTIME = 1
 		symbolspoller = SymbolsCheckPoller(session)
 		symbolspoller.start()
+
 
 class SymbolsCheckPoller:
 	def __init__(self, session):
@@ -24,8 +26,7 @@ class SymbolsCheckPoller:
 		self.led = "0"
 		self.timer = eTimer()
 		self.onClose = []
-		self.__event_tracker = ServiceEventTracker(screen=self,eventmap=
-			{
+		self.__event_tracker = ServiceEventTracker(screen=self, eventmap={
 				iPlayableService.evUpdatedInfo: self.__evUpdatedInfo,
 			})
 
@@ -114,7 +115,6 @@ class SymbolsCheckPoller:
 				open("/proc/stb/lcd/symbol_recording", "w").write("0")
 				open("/proc/stb/lcd/symbol_record_1", "w").write("0")
 				open("/proc/stb/lcd/symbol_record_2", "w").write("0")
-
 
 	def Subtitle(self):
 		if not fileExists("/proc/stb/lcd/symbol_smartcard"):

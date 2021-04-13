@@ -14,35 +14,37 @@ from enigma import RT_WRAP, RT_HALIGN_LEFT, RT_HALIGN_CENTER, RT_HALIGN_RIGHT, R
 from skin import parseColor, parseFont
 
 # scroll type:
-NONE     = 0
-RUNNING  = 1
+NONE = 0
+RUNNING = 1
 SWIMMING = 2
-AUTO     = 3
+AUTO = 3
 # direction:
-LEFT     = 0
-RIGHT    = 1
-TOP      = 2
-BOTTOM   = 3
+LEFT = 0
+RIGHT = 1
+TOP = 2
+BOTTOM = 3
 # halign:
 #LEFT     = 0
 #RIGHT    = 1
-CENTER   = 2
-BLOCK    = 3
+CENTER = 2
+BLOCK = 3
 
-def RGB(r,g,b):
-	return (r<<16)|(g<<8)|b
+
+def RGB(r, g, b):
+	return (r << 16) | (g << 8) | b
+
 
 class RunningText(Renderer):
 	def __init__(self):
 		Renderer.__init__(self)
-		self.type     = NONE
-		self.txfont   = gFont("Regular", 14)
-		self.fcolor   = gRGB(RGB(255,255,255))
-		self.bcolor   = gRGB(RGB(0,0,0))
-		self.scolor   = None
-		self.soffset  = (0,0)
+		self.type = NONE
+		self.txfont = gFont("Regular", 14)
+		self.fcolor = gRGB(RGB(255, 255, 255))
+		self.bcolor = gRGB(RGB(0, 0, 0))
+		self.scolor = None
+		self.soffset = (0, 0)
 		self.txtflags = 0 #RT_WRAP
-		self.txtext   = ""
+		self.txtext = ""
 		self.test_label = self.mTimer = self.mStartPoint = None
 		self.X = self.Y = self.W = self.H = self.mStartDelay = 0
 		self.mAlways = 1	# always move text
@@ -60,7 +62,7 @@ class RunningText(Renderer):
 				x, y = value.split(',')
 				self.W, self.H = int(x), int(y)
 
-		self.instance.setSize( eSize(self.W,self.H) )
+		self.instance.setSize(eSize(self.W, self.H))
 		self.test_label = eLabel(instance)
 		self.mTimer = eTimer()
 		self.mTimer.callback.append(self.movingLoop)
@@ -84,10 +86,10 @@ class RunningText(Renderer):
 
 		self.halign = valign = eLabel.alignLeft
 		if self.skinAttributes:
-			attribs = [ ]
+			attribs = []
 			for (attrib, value) in self.skinAttributes:
 				if attrib == "font":
-					self.txfont = parseFont(value, ((1,1),(1,1)))
+					self.txfont = parseFont(value, ((1, 1), (1, 1)))
 				elif attrib == "foregroundColor":
 					self.fcolor = parseColor(value)
 				elif attrib == "backgroundColor":
@@ -96,13 +98,13 @@ class RunningText(Renderer):
 					self.scolor = parseColor(value)
 				elif attrib == "shadowOffset":
 					x, y = value.split(',')
-					self.soffset = (int(x),int(y))
-				elif attrib == "valign" and value in ("top","center","bottom"):
-					valign = { "top": eLabel.alignTop, "center": eLabel.alignCenter, "bottom": eLabel.alignBottom }[value]
-					self.txtflags |= { "top": RT_VALIGN_TOP, "center": RT_VALIGN_CENTER, "bottom": RT_VALIGN_BOTTOM }[value]
-				elif attrib == "halign" and value in ("left","center","right","block"):
-					self.halign = { "left": eLabel.alignLeft, "center": eLabel.alignCenter, "right": eLabel.alignRight, "block": eLabel.alignBlock }[value]
-					self.txtflags |= { "left": RT_HALIGN_LEFT, "center": RT_HALIGN_CENTER, "right": RT_HALIGN_RIGHT, "block": RT_HALIGN_BLOCK }[value]
+					self.soffset = (int(x), int(y))
+				elif attrib == "valign" and value in ("top", "center", "bottom"):
+					valign = {"top": eLabel.alignTop, "center": eLabel.alignCenter, "bottom": eLabel.alignBottom}[value]
+					self.txtflags |= {"top": RT_VALIGN_TOP, "center": RT_VALIGN_CENTER, "bottom": RT_VALIGN_BOTTOM}[value]
+				elif attrib == "halign" and value in ("left", "center", "right", "block"):
+					self.halign = {"left": eLabel.alignLeft, "center": eLabel.alignCenter, "right": eLabel.alignRight, "block": eLabel.alignBlock}[value]
+					self.txtflags |= {"left": RT_HALIGN_LEFT, "center": RT_HALIGN_CENTER, "right": RT_HALIGN_RIGHT, "block": RT_HALIGN_BLOCK}[value]
 				elif attrib == "noWrap":
 					if value == "0":
 						self.txtflags |= RT_WRAP
@@ -114,7 +116,7 @@ class RunningText(Renderer):
 						val = ''
 						pos = opt.find('=')
 						if pos != -1:
-							val = opt[pos+1:].strip()
+							val = opt[pos + 1:].strip()
 							opt = opt[:pos].strip()
 						if opt == "wrap":
 							if val == "0":
@@ -126,10 +128,10 @@ class RunningText(Renderer):
 								self.txtflags |= RT_WRAP
 							else:
 								self.txtflags &= ~RT_WRAP
-						elif opt == "movetype" and val in ("none","running","swimming"):
+						elif opt == "movetype" and val in ("none", "running", "swimming"):
 							self.type = {"none": NONE, "running": RUNNING, "swimming": SWIMMING}[val]
-						elif opt =="direction" and val in ("left","right","top","bottom"):
-							self.direction = { "left": LEFT, "right": RIGHT, "top": TOP, "bottom": BOTTOM }[val]
+						elif opt == "direction" and val in ("left", "right", "top", "bottom"):
+							self.direction = {"left": LEFT, "right": RIGHT, "top": TOP, "bottom": BOTTOM}[val]
 						elif opt == "step" and val:
 							#retValue(val, limit, default, Min=False)
 							self.mStep = retValue(val, 1, self.mStep)
@@ -141,21 +143,23 @@ class RunningText(Renderer):
 							self.mLoopTimeout = retValue(val, 0, self.mLoopTimeout)
 						elif opt == "oneshot" and val:
 							self.mOneShot = retValue(val, 0, self.mOneShot)
-						elif opt =="repeat" and val:
+						elif opt == "repeat" and val:
 							self.mRepeat = retValue(val, 0, self.mRepeat)
-						elif opt =="always" and val:
+						elif opt == "always" and val:
 							self.mAlways = retValue(val, 0, self.mAlways)
-						elif opt =="startpoint" and val:
+						elif opt == "startpoint" and val:
 							self.mStartPoint = int(val)
 				else:
-					attribs.append((attrib,value))
+					attribs.append((attrib, value))
 			self.skinAttributes = attribs
 		ret = Renderer.applySkin(self, desktop, screen)
 		#if self.type == RUNNING and self.direction in (LEFT,RIGHT):
 		#	self.halign = eLabel.alignLeft
 		#	self.txtflags = RT_HALIGN_LEFT | (self.txtflags & RT_WRAP)
-		if self.mOneShot: self.mOneShot = max(self.mStepTimeout, self.mOneShot)
-		if self.mLoopTimeout: self.mLoopTimeout = max(self.mStepTimeout, self.mLoopTimeout)
+		if self.mOneShot:
+			self.mOneShot = max(self.mStepTimeout, self.mOneShot)
+		if self.mLoopTimeout:
+			self.mLoopTimeout = max(self.mStepTimeout, self.mLoopTimeout)
 
 		self.test_label.setFont(self.txfont)
 		#self.test_label.setForegroundColor(self.fcolor)
@@ -167,8 +171,8 @@ class RunningText(Renderer):
 			self.test_label.setNoWrap(1)
 		self.test_label.setVAlign(valign)
 		self.test_label.setHAlign(self.halign)
-		self.test_label.move( ePoint(self.W,self.H) )
-		self.test_label.resize( eSize(self.W,self.H) )
+		self.test_label.move(ePoint(self.W, self.H))
+		self.test_label.resize(eSize(self.W, self.H))
 		#self.test_label.hide()
 		#self.changed((self.CHANGED_DEFAULT,))
 		return ret
@@ -184,7 +188,8 @@ class RunningText(Renderer):
 		#self.changed((self.CHANGED_DEFAULT,))
 
 	def changed(self, what):
-		if not self.mTimer is None: self.mTimer.stop()
+		if not self.mTimer is None:
+			self.mTimer.stop()
 		if what[0] == self.CHANGED_CLEAR:
 			self.txtext = ""
 			if self.instance:
@@ -207,14 +212,17 @@ class RunningText(Renderer):
 			fcolor = self.scolor
 		else:
 			fcolor = self.fcolor
-		self.instance.writeText( eRect(X-self.soffset[0], Y-self.soffset[1], self.W, self.H), fcolor, self.bcolor, self.txfont, self.txtext, self.txtflags )
+		self.instance.writeText(eRect(X - self.soffset[0], Y - self.soffset[1], self.W, self.H), fcolor, self.bcolor, self.txfont, self.txtext, self.txtflags)
 		if not self.scolor is None:
-			self.instance.writeText( eRect(X, Y, self.W, self.H), self.fcolor, self.scolor, self.txfont, self.txtext, self.txtflags )
+			self.instance.writeText(eRect(X, Y, self.W, self.H), self.fcolor, self.scolor, self.txfont, self.txtext, self.txtflags)
 
 	def calcMoving(self):
-		if self.txtext == "": return False
-		if self.type == NONE: return False
-		if self.test_label is None: return False
+		if self.txtext == "":
+			return False
+		if self.type == NONE:
+			return False
+		if self.test_label is None:
+			return False
 		self.test_label.setText(self.txtext)
 		text_size = self.test_label.calculateSize()
 		text_width = text_size.width()
@@ -224,7 +232,7 @@ class RunningText(Renderer):
 #		self.direction =	0 - LEFT; 1 - RIGHT;   2 - TOP;      3 - BOTTOM
 #		self.halign =		0 - LEFT; 1 - RIGHT;   2 -CENTER;    3 - BLOCK
 
-		if self.direction in (LEFT,RIGHT):
+		if self.direction in (LEFT, RIGHT):
 			if self.type == RUNNING:		# scroll_type == RUNNING
 				if not self.mAlways and text_width <= self.W:
 					return False
@@ -248,7 +256,8 @@ class RunningText(Renderer):
 						self.mStop = self.P = max(self.A, min(self.B, self.mStartPoint - text_width + self.soffset[0]))
 
 			elif self.type == SWIMMING:	# scroll_type == SWIMMING
-				if not self.mAlways and text_width <= self.W: return False
+				if not self.mAlways and text_width <= self.W:
+					return False
 				if text_width < self.W:
 					if self.halign == LEFT:
 						self.A = self.X + 1
@@ -285,7 +294,7 @@ class RunningText(Renderer):
 					return False
 			else:					# scroll_type == NONE
 				return False
-		elif self.direction in (TOP,BOTTOM):
+		elif self.direction in (TOP, BOTTOM):
 			if self.type == RUNNING:		# scroll_type == RUNNING
 				if not self.mAlways and text_height <= self.H:
 					return False
@@ -308,7 +317,8 @@ class RunningText(Renderer):
 						self.mStop = self.P = max(self.A, min(self.B, self.mStartPoint - text_height + self.soffset[1] - 9))
 
 			elif self.type == SWIMMING:	# scroll_type == SWIMMING
-				if not self.mAlways and text_height <= self.H: return False
+				if not self.mAlways and text_height <= self.H:
+					return False
 				if text_height < self.H:
 					if self.direction == TOP:	# direction == TOP
 						self.A = self.Y
@@ -339,22 +349,23 @@ class RunningText(Renderer):
 			return False
 
 		if self.mStartDelay:
-			if self.direction in (LEFT,RIGHT):
+			if self.direction in (LEFT, RIGHT):
 				self.drawText(self.P, self.Y)
 			else: # if self.direction in (TOP,BOTTOM)
 				self.drawText(self.X, self.P)
 		self.mCount = self.mRepeat
-		self.mTimer.start(self.mStartDelay,True)
+		self.mTimer.start(self.mStartDelay, True)
 		return True
 
 	def movingLoop(self):
 		if self.A <= self.P <= self.B:
-			if self.direction in (LEFT,RIGHT):
+			if self.direction in (LEFT, RIGHT):
 				self.drawText(self.P, self.Y)
 			else: # if self.direction in (TOP,BOTTOM)
 				self.drawText(self.X, self.P)
-			if (self.type == RUNNING) and (self.mOneShot > 0) and (self.mStop+abs(self.mStep) > self.P >= self.mStop):
-				if (self.mRepeat > 0) and (self.mCount-1 == 0): return
+			if (self.type == RUNNING) and (self.mOneShot > 0) and (self.mStop + abs(self.mStep) > self.P >= self.mStop):
+				if (self.mRepeat > 0) and (self.mCount - 1 == 0):
+					return
 				timeout = self.mOneShot
 			else:
 				timeout = self.mStepTimeout
@@ -368,7 +379,7 @@ class RunningText(Renderer):
 					self.drawText(0, 0)
 					timeout = self.mLoopTimeout
 					self.P = 1
-					self.mTimer.start(self.mStartDelay,True)
+					self.mTimer.start(self.mStartDelay, True)
 					return
 			timeout = self.mLoopTimeout
 			if self.type == RUNNING:
@@ -380,6 +391,4 @@ class RunningText(Renderer):
 				self.mStep = -self.mStep
 
 		self.P += self.mStep
-		self.mTimer.start(timeout,True)
-
-
+		self.mTimer.start(timeout, True)

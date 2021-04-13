@@ -1,4 +1,6 @@
-import os, re, unicodedata
+import os
+import re
+import unicodedata
 from Renderer import Renderer
 from enigma import ePixmap
 from Tools.Alternatives import GetWithAlternative
@@ -10,6 +12,7 @@ from Components.config import config
 searchPaths = []
 lastPiconPath = None
 
+
 def initPiconPaths():
 	global searchPaths
 	searchPaths = []
@@ -17,6 +20,7 @@ def initPiconPaths():
 		onMountpointAdded(mp)
 	for part in harddiskmanager.getMountedPartitions():
 		onMountpointAdded(part.mountpoint)
+
 
 def onMountpointAdded(mountpoint):
 	global searchPaths
@@ -31,6 +35,7 @@ def onMountpointAdded(mountpoint):
 	except Exception, ex:
 		print "[Picon] Failed to investigate %s:" % mountpoint, ex
 
+
 def onMountpointRemoved(mountpoint):
 	global searchPaths
 	path = os.path.join(mountpoint, 'picon') + '/'
@@ -40,11 +45,13 @@ def onMountpointRemoved(mountpoint):
 	except:
 		pass
 
+
 def onPartitionChange(why, part):
 	if why == 'add':
 		onMountpointAdded(part.mountpoint)
 	elif why == 'remove':
 		onMountpointRemoved(part.mountpoint)
+
 
 def findPicon(serviceName):
 	global lastPiconPath
@@ -62,6 +69,7 @@ def findPicon(serviceName):
 					lastPiconPath = path
 					return pngname
 	return ""
+
 
 def getPiconName(serviceName):
 	#remove the path and name fields, and replace ':' by '_'
@@ -99,6 +107,7 @@ def getPiconName(serviceName):
 			pass
 	return pngname
 
+
 class Picon(Renderer):
 	def __init__(self):
 		Renderer.__init__(self)
@@ -129,10 +138,10 @@ class Picon(Renderer):
 		for (attrib, value) in self.skinAttributes:
 			if attrib == "path":
 				self.addPath(value)
-				attribs.remove((attrib,value))
+				attribs.remove((attrib, value))
 			elif attrib == "isFrontDisplayPicon":
 				self.showPicon = value == "0"
-				attribs.remove((attrib,value))
+				attribs.remove((attrib, value))
 		self.skinAttributes = attribs
 		return Renderer.applySkin(self, desktop, parent)
 
@@ -156,6 +165,7 @@ class Picon(Renderer):
 					self.pngname = pngname
 			elif self.visible:
 				self.instance.hide()
+
 
 harddiskmanager.on_partition_list_change.append(onPartitionChange)
 initPiconPaths()

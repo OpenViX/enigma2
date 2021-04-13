@@ -10,11 +10,12 @@ from enigma import iPlayableService, iServiceInformation, eServiceCenter, eServi
 modelist = {"off": _("Off"), "auto": _("Auto"), "sidebyside": _("Side by side"), "topandbottom": _("Top and bottom")}
 
 config.plugins.OSD3DSetup = ConfigSubsection()
-config.plugins.OSD3DSetup.mode = ConfigSelection(choices = modelist, default = "auto")
-config.plugins.OSD3DSetup.znorm = ConfigInteger(default = 0)
+config.plugins.OSD3DSetup.mode = ConfigSelection(choices=modelist, default="auto")
+config.plugins.OSD3DSetup.znorm = ConfigInteger(default=0)
 
 PROC_GB_3DMODE = "/proc/stb/fb/primary/3d"
 PROC_GB_ZNORM = "/proc/stb/fb/primary/zoffset"
+
 
 class OSD3DSetupScreen(Screen, ConfigListScreen):
 	def __init__(self, session):
@@ -39,13 +40,13 @@ class OSD3DSetupScreen(Screen, ConfigListScreen):
 		}, -2)
 
 		self.list = []
-		ConfigListScreen.__init__(self, self.list, session = self.session)
+		ConfigListScreen.__init__(self, self.list, session=self.session)
 
 		mode = config.plugins.OSD3DSetup.mode.value
 		znorm = config.plugins.OSD3DSetup.znorm.value
 
-		self.mode = ConfigSelection(choices = modelist, default = mode)
-		self.znorm = ConfigSlider(default = znorm + 50, increment = 1, limits = (0, 100))
+		self.mode = ConfigSelection(choices=modelist, default=mode)
+		self.znorm = ConfigSlider(default=znorm + 50, increment=1, limits=(0, 100))
 		self.list.append(getConfigListEntry(_("3d mode"), self.mode))
 		self.list.append(getConfigListEntry(_("Depth"), self.znorm))
 		self["config"].list = self.list
@@ -72,8 +73,10 @@ class OSD3DSetupScreen(Screen, ConfigListScreen):
 		applySettings()
 		self.close()
 
+
 previous = None
 isDedicated3D = False
+
 
 def applySettings(mode=config.plugins.OSD3DSetup.mode.value, znorm=int(config.plugins.OSD3DSetup.znorm.value)):
 	global previous, isDedicated3D
@@ -93,12 +96,12 @@ def applySettings(mode=config.plugins.OSD3DSetup.mode.value, znorm=int(config.pl
 		except:
 			return
 
+
 class auto3D(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.session = session
-		self.__event_tracker = ServiceEventTracker(screen = self, eventmap =
-			{
+		self.__event_tracker = ServiceEventTracker(screen=self, eventmap={
 				iPlayableService.evStart: self.__evStart
 			})
 		print "[OSD3D] auto3D started"
@@ -126,8 +129,10 @@ class auto3D(Screen):
 			else:
 				applySettings()
 
+
 def main(session, **kwargs):
 	session.open(OSD3DSetupScreen)
+
 
 def startSetup(menuid):
 	if menuid == "ui_menu":
@@ -135,13 +140,15 @@ def startSetup(menuid):
 	else:
 		return []
 
+
 def autostart(reason, **kwargs):
 	"session" in kwargs and kwargs["session"].open(auto3D)
 	print "[OSD3D] session autostart"
 
+
 def Plugins(**kwargs):
 	if SystemInfo["3DMode"]:
 		from Plugins.Plugin import PluginDescriptor
-		return [PluginDescriptor(where = [PluginDescriptor.WHERE_SESSIONSTART], fnc = autostart),
-			PluginDescriptor(name = _("OSD 3D setup"), description = _("Adjust 3D settings"), where = PluginDescriptor.WHERE_MENU, fnc = startSetup)]
+		return [PluginDescriptor(where=[PluginDescriptor.WHERE_SESSIONSTART], fnc=autostart),
+			PluginDescriptor(name=_("OSD 3D setup"), description=_("Adjust 3D settings"), where=PluginDescriptor.WHERE_MENU, fnc=startSetup)]
 	return []

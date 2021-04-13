@@ -18,7 +18,7 @@ from glob import glob
 import stat
 
 config.plugins.swapmanager = ConfigSubsection()
-config.plugins.swapmanager.swapautostart = ConfigYesNo(default = False)
+config.plugins.swapmanager.swapautostart = ConfigYesNo(default=False)
 
 startswap = None
 
@@ -29,6 +29,7 @@ try:
 except:
 	chipset = "unknown"
 
+
 def SwapAutostart(reason, session=None, **kwargs):
 	global startswap
 	if reason == 0:
@@ -37,6 +38,7 @@ def SwapAutostart(reason, session=None, **kwargs):
 			startswap = StartSwap()
 			startswap.start()
 
+
 class StartSwap:
 	def __init__(self):
 		self.Console = Console()
@@ -44,7 +46,7 @@ class StartSwap:
 	def start(self):
 	 	self.Console.ePopen("sfdisk -l /dev/sd? | grep swap", self.startSwap2)
 
-	def startSwap2(self, result = None, retval = None, extra_args = None):
+	def startSwap2(self, result=None, retval=None, extra_args=None):
 		swap_place = ""
 		if result and result.find('sd') != -1:
 			for line in result.split('\n'):
@@ -52,7 +54,7 @@ class StartSwap:
 					parts = line.strip().split()
 					swap_place = parts[0]
 					file('/etc/fstab.tmp', 'w').writelines([l for l in file('/etc/fstab').readlines() if swap_place not in l])
-					rename('/etc/fstab.tmp','/etc/fstab')
+					rename('/etc/fstab.tmp', '/etc/fstab')
 					print "[SwapManager] Found a swap partition:", swap_place
 		else:
 			devicelist = []
@@ -75,6 +77,8 @@ class StartSwap:
 			print "[SwapManager] Swapfile is already active on ", swap_place
 
 #######################################################################
+
+
 class SwapManager(Screen):
 	skin = """
 	<screen name="SwapManager" position="center,center" size="500,300" title="Swap File Manager" flags="wfBorder" >
@@ -97,6 +101,7 @@ class SwapManager(Screen):
 		<widget name="inactive" position="160,200" size="100,30" font="Regular;20" valign="center" halign="center" backgroundColor="red"/>
 		<widget name="active" position="160,200" size="100,30" font="Regular;20" valign="center" halign="center" backgroundColor="green"/>
 	</screen>"""
+
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		Screen.setTitle(self, _("Swap Manager"))
@@ -124,7 +129,7 @@ class SwapManager(Screen):
 		self.activityTimer.timeout.get().append(self.getSwapDevice)
 		self.updateSwap()
 
-	def updateSwap(self, result = None, retval = None, extra_args = None):
+	def updateSwap(self, result=None, retval=None, extra_args=None):
 		self["actions"].setEnabled(False)
 		self.swap_active = False
 		self['autostart_on'].hide()
@@ -148,7 +153,7 @@ class SwapManager(Screen):
 			remove('/tmp/swapdevices.tmp')
 		self.Console.ePopen("sfdisk -l /dev/sd? | grep swap", self.updateSwap2)
 
-	def updateSwap2(self, result = None, retval = None, extra_args = None):
+	def updateSwap2(self, result=None, retval=None, extra_args=None):
 		self.swapsize = 0
 		self.swap_place = ''
 		self.swap_active = False
@@ -183,7 +188,7 @@ class SwapManager(Screen):
 						self.swap_place = filename
 						self['key_green'].setText(_("Delete"))
 						info = mystat(self.swap_place)
-						self.swapsize = info[stat.ST_SIZE]/1024
+						self.swapsize = info[stat.ST_SIZE] / 1024
 						continue
 
 		if config.plugins.swapmanager.swapautostart.value and self.swap_place:
@@ -211,11 +216,11 @@ class SwapManager(Screen):
 
 		if self.swapsize > 0:
 			unit = ' MB'
-			self.swapsize = float(self.swapsize)/1024
+			self.swapsize = float(self.swapsize) / 1024
 			self.swapsize = "{:4.0f}".format(self.swapsize)
 			self.swapsize = str(self.swapsize) + unit
 		else:
-			self.swapsize =''
+			self.swapsize = ''
 
 		self['labsize'].setText(self.swapsize)
 		self['labsize'].show()
@@ -262,7 +267,7 @@ class SwapManager(Screen):
 			else:
 				self.doCreateSwap()
 
-	def createDel2(self, result, retval, extra_args = None):
+	def createDel2(self, result, retval, extra_args=None):
 		if retval == 0:
 			remove(self.swap_place)
 			if config.plugins.swapmanager.swapautostart.value:
@@ -280,21 +285,21 @@ class SwapManager(Screen):
 			if partition.filesystem(mounts) in supported_filesystems:
 				candidates.append((partition.description, partition.mountpoint))
 		if len(candidates):
-			self.session.openWithCallback(self.doCSplace, ChoiceBox, title = _("Please select device to use as swapfile location"), list = candidates)
+			self.session.openWithCallback(self.doCSplace, ChoiceBox, title=_("Please select device to use as swapfile location"), list=candidates)
 		else:
-			self.session.open(MessageBox, _("Sorry, no physical devices that supports SWAP attached. Can't create Swapfile on network or fat32 filesystems"), MessageBox.TYPE_INFO, timeout = 10)
+			self.session.open(MessageBox, _("Sorry, no physical devices that supports SWAP attached. Can't create Swapfile on network or fat32 filesystems"), MessageBox.TYPE_INFO, timeout=10)
 
 	def doCSplace(self, name):
 		if name:
 			self.new_place = name[1]
 			if chipset in ('bcm7325', ):
-				myoptions = [[_("16 MB"), '16384'],[_("32 MB"), '32768'],[_("64 MB"), '65536'],[_("128 MB (recommended for this chipset)"), '131072'],[_("256 MB"), '262144'],[_("512 MB"), '524288'],[_("1024 MB"), '1048576'],[_("2048 MB (maximum)"), '2097152']]
+				myoptions = [[_("16 MB"), '16384'], [_("32 MB"), '32768'], [_("64 MB"), '65536'], [_("128 MB (recommended for this chipset)"), '131072'], [_("256 MB"), '262144'], [_("512 MB"), '524288'], [_("1024 MB"), '1048576'], [_("2048 MB (maximum)"), '2097152']]
 			if chipset in ('bcm7358', ):
-				myoptions = [[_("16 MB"), '16384'],[_("32 MB"), '32768'],[_("64 MB"), '65536'],[_("128 MB"), '131072'],[_("256 MB (recommended for this chipset)"), '262144'],[_("512 MB"), '524288'],[_("1024 MB"), '1048576'],[_("2048 MB (maximum)"), '2097152']]
+				myoptions = [[_("16 MB"), '16384'], [_("32 MB"), '32768'], [_("64 MB"), '65536'], [_("128 MB"), '131072'], [_("256 MB (recommended for this chipset)"), '262144'], [_("512 MB"), '524288'], [_("1024 MB"), '1048576'], [_("2048 MB (maximum)"), '2097152']]
 			if chipset in ('bcm7356', 'bcm7362'):
-				myoptions = [[_("16 MB"), '16384'],[_("32 MB"), '32768'],[_("64 MB"), '65536'],[_("128 MB"), '131072'],[_("256 MB"), '262144'],[_("512 MB (recommended for this chipset)"), '524288'],[_("1024 MB"), '1048576'],[_("2048 MB (maximum)"), '2097152']]
+				myoptions = [[_("16 MB"), '16384'], [_("32 MB"), '32768'], [_("64 MB"), '65536'], [_("128 MB"), '131072'], [_("256 MB"), '262144'], [_("512 MB (recommended for this chipset)"), '524288'], [_("1024 MB"), '1048576'], [_("2048 MB (maximum)"), '2097152']]
 			else:
-				myoptions = [[_("16 MB"), '16384'],[_("32 MB"), '32768'],[_("64 MB"), '65536'],[_("128 MB"), '131072'],[_("256 MB"), '262144'],[_("512 MB"), '524288'],[_("1024 MB"), '1048576'],[_("2048 MB (maximum)"), '2097152']]
+				myoptions = [[_("16 MB"), '16384'], [_("32 MB"), '32768'], [_("64 MB"), '65536'], [_("128 MB"), '131072'], [_("256 MB"), '262144'], [_("512 MB"), '524288'], [_("1024 MB"), '1048576'], [_("2048 MB (maximum)"), '2097152']]
 			self.session.openWithCallback(self.doCSsize, ChoiceBox, title=_("Select the Swap File Size:"), list=myoptions)
 
 	def doCSsize(self, swapsize):
@@ -324,9 +329,11 @@ class SwapManager(Screen):
 			mybox.setTitle(_("Info"))
 		self.updateSwap()
 
+
 def main(session, **kwargs):
 	session.open(SwapManager)
 
+
 def Plugins(**kwargs):
-	return [PluginDescriptor(name = "Swap Manager", description = _("Manage your swapfile"), where = PluginDescriptor.WHERE_PLUGINMENU, fnc = main), \
-			PluginDescriptor(where = PluginDescriptor.WHERE_AUTOSTART, fnc = SwapAutostart)]
+	return [PluginDescriptor(name="Swap Manager", description=_("Manage your swapfile"), where=PluginDescriptor.WHERE_PLUGINMENU, fnc=main),
+			PluginDescriptor(where=PluginDescriptor.WHERE_AUTOSTART, fnc=SwapAutostart)]

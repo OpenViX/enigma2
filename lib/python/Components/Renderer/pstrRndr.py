@@ -6,6 +6,7 @@ from enigma import ePixmap, loadJPG
 import os
 import re
 
+
 class pstrRndr(Renderer):
 
 	def __init__(self):
@@ -32,7 +33,7 @@ class pstrRndr(Renderer):
 
 		try:
 			eventName = self.source.text
-			if eventName :
+			if eventName:
 				posterNm = re.sub('\s+', '+', eventName)
 				pstrNm = "/tmp/" + self.path + posterNm + ".jpg"
 
