@@ -13,6 +13,7 @@ from Tools.HardwareInfo import HardwareInfo
 
 config.misc.showtestcard = ConfigBoolean(default=False)
 
+
 class VideoWizardSummary(WizardSummary):
 	def __init__(self, session, parent):
 		WizardSummary.__init__(self, session, parent)
@@ -22,6 +23,7 @@ class VideoWizardSummary(WizardSummary):
 
 	def setLCDPic(self, file):
 		self["pic"].instance.setPixmapFromFile(file)
+
 
 class VideoWizard(WizardLanguage, Rc):
 	skin = """

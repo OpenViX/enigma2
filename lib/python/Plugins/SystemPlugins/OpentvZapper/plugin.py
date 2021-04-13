@@ -21,6 +21,7 @@ from .opentv_zapper import opentv_zapper, startSession
 
 description = _("Zaps to EPG download transponder for EPG fetch.")
 
+
 class OpentvZapper_Setup(Setup):
 	def __init__(self, session):
 		Setup.__init__(self, session, setup="opentvzapper", plugin="SystemPlugins/OpentvZapper")
@@ -42,16 +43,20 @@ class OpentvZapper_Setup(Setup):
 def startdownload(session, **kwargs): # Called from extensions menu if this option is active
 	opentv_zapper.force_download()
 
+
 def OpentvZapperStart(menuid, **kwargs): # Menu position of plugin setup screen
 	if menuid == "epg":
 		return [(_("OpenTV EPG downloader"), OpentvZapperMain, "OpentvZapper_Setup", None)]
 	return []
 
+
 def OpentvZapperMain(session, **kwargs): # calls setup screen
 	session.open(OpentvZapper_Setup)
 
+
 def OpentvZapperWakeupTime(): # Called on shutdown (going into deep standby) to tell the box when to wake from deep
 	return -1 # never
+
 
 def Plugins(**kwargs):
 	plist = []

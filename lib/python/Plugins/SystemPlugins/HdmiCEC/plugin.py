@@ -5,6 +5,7 @@ from Components.Sources.StaticText import StaticText
 
 import Components.HdmiCec
 
+
 class HdmiCECSetupScreen(Setup):
 	def __init__(self, session):
 		self["key_yellow"] = StaticText(_("Set fixed"))
@@ -61,6 +62,7 @@ class HdmiCECSetupScreen(Setup):
 				bookmarks=config.hdmicec.bookmarks, autoAdd=False, editDir=True,
 				inhibitDirs=inhibitDirs, minFree=1
 				)
+
 
 def Plugins(**kwargs):
 	# imported directly by menu.xml based on SystemInfo["HDMICEC"]

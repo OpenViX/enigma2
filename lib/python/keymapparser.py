@@ -6,12 +6,14 @@ from keyids import KEYIDS
 # these are only informational (for help)...
 from Tools.KeyBindings import addKeyBinding
 
+
 class KeymapError(Exception):
 	def __init__(self, message):
 		self.msg = message
 
 	def __str__(self):
 		return self.msg
+
 
 def parseKeys(context, filename, actionmap, device, keys):
 	for x in keys.findall("key"):
@@ -46,6 +48,7 @@ def parseKeys(context, filename, actionmap, device, keys):
 		actionmap.bindKey(filename, device, keyid, flags, context, mapto)
 		addKeyBinding(filename, keyid, context, mapto, flags)
 
+
 def readKeymap(filename):
 	p = enigma.eActionMap.getInstance()
 	assert p
@@ -68,6 +71,7 @@ def readKeymap(filename):
 
 		for device in cmap.findall("device"):
 			parseKeys(context, filename, p, device.attrib.get("name"), device)
+
 
 def removeKeymap(filename):
 	p = enigma.eActionMap.getInstance()

@@ -98,6 +98,7 @@ def defaultMoviePath():
 		return Directories.defaultRecordingLocation()
 	return result
 
+
 def setPreferredTagEditor(te):
 	global preferredTagEditor
 	if preferredTagEditor is None:
@@ -106,20 +107,24 @@ def setPreferredTagEditor(te):
 	else:
 		print "[MovieSelection] Preferred tag editor already set to", preferredTagEditor, "ignoring", te
 
+
 def getPreferredTagEditor():
 	global preferredTagEditor
 	return preferredTagEditor
+
 
 def isTrashFolder(ref):
 	if not config.usage.movielist_trashcan.value or not ref.flags & eServiceReference.mustDescent:
 		return False
 	return os.path.realpath(ref.getPath()).endswith('.Trash') or os.path.realpath(ref.getPath()).endswith('.Trash/')
 
+
 def isInTrashFolder(ref):
 	if not config.usage.movielist_trashcan.value:
 		return False
 	path = os.path.realpath(ref.getPath())
 	return path.startswith(Tools.Trashcan.getTrashFolder(path))
+
 
 def isSimpleFile(item):
 	if not item:
@@ -128,12 +133,14 @@ def isSimpleFile(item):
 		return False
 	return (item[0].flags & (eServiceReference.mustDescent | eServiceReference.isGroup)) == 0
 
+
 def isFolder(item):
 	if not item:
 		return False
 	if not item[0] or not item[1]:
 		return False
 	return (item[0].flags & eServiceReference.mustDescent) != 0
+
 
 def canMove(item):
 	if not item:
@@ -142,6 +149,7 @@ def canMove(item):
 		return False
 	return True
 
+
 def canDelete(item):
 	if not item:
 		return False
@@ -149,8 +157,10 @@ def canDelete(item):
 		return False
 	return True
 
+
 canCopy = canMove
 canRename = canMove
+
 
 def createMoveList(serviceref, dest):
 	#normpath is to remove the trailing '/' from directories
@@ -175,6 +185,7 @@ def createMoveList(serviceref, dest):
 				moveList.append((candidate, os.path.join(dest, baseName + ext)))
 	return moveList
 
+
 def moveServiceFiles(serviceref, dest, name=None, allowCopy=True):
 	moveList = createMoveList(serviceref, dest)
 	# Try to "atomically" move these files
@@ -190,6 +201,7 @@ def moveServiceFiles(serviceref, dest, name=None, allowCopy=True):
 		print "[MovieSelection] Failed move:", e
 		# rethrow exception
 		raise
+
 
 def copyServiceFiles(serviceref, dest, name=None):
 	# current should be 'ref' type, dest a simple path string
@@ -210,6 +222,8 @@ def copyServiceFiles(serviceref, dest, name=None):
 
 # Changes the title contained in a media file's .meta if it exists, otherwise, renames 
 # the media file and it's associated data files. Also renames a directory.
+
+
 def renameServiceFiles(serviceref, newName):
 	oldPath = serviceref.getPath().rstrip("/")
 	oldDir, oldBaseName = os.path.split(oldPath)
@@ -244,6 +258,8 @@ def renameServiceFiles(serviceref, newName):
 	return None
 
 # Appends possible destinations to the bookmarks dictionary
+
+
 def buildMovieLocationList(includeOther=False, path=None, includeSubdirs=False, includeParentDir=False):
 	inlist = []
 	bookmarks = []
@@ -292,6 +308,7 @@ def buildMovieLocationList(includeOther=False, path=None, includeSubdirs=False, 
 			inlist.append(d)
 	return bookmarks
 
+
 def countFiles(directory):
 	directories = files = 0
 	for filename in os.listdir(directory):
@@ -304,6 +321,7 @@ def countFiles(directory):
 				if extension not in (".eit", ".ap", ".cuts", ".meta", ".sc"):
 					files += 1
 	return directories, files
+
 
 class MovieBrowserConfiguration(Setup):
 	def __init__(self, session, args=0):
@@ -347,6 +365,7 @@ class MovieBrowserConfiguration(Setup):
 	def closeRecursive(self):
 		self.keyCancel()
 
+
 class MovieContextMenuSummary(Screen):
 	def __init__(self, session, parent):
 		Screen.__init__(self, session, parent=parent)
@@ -364,7 +383,9 @@ class MovieContextMenuSummary(Screen):
 	def selectionChanged(self):
 		self["selected"].text = self.parent["config"].getCurrent()[0][0]
 
+
 from Screens.ParentalControlSetup import ProtectedScreen
+
 
 class MovieContextMenu(Screen, ProtectedScreen):
 	# Contract: On OK returns a callable object (e.g. delete)
@@ -445,7 +466,6 @@ class MovieContextMenu(Screen, ProtectedScreen):
 
 		self["config"] = ChoiceList(menu)
 
-
 	def isProtected(self):
 		return self.csel.protectContextMenu and config.ParentalControl.setuppinactive.value and config.ParentalControl.config_sections.context_menus.value
 
@@ -463,6 +483,7 @@ class MovieContextMenu(Screen, ProtectedScreen):
 	def cancelClick(self):
 		self.close(None)
 
+
 class SelectionEventInfo:
 	def __init__(self):
 		self["Service"] = ServiceEvent()
@@ -478,6 +499,7 @@ class SelectionEventInfo:
 	def updateEventInfo(self):
 		serviceref = self.getCurrent()
 		self["Service"].newService(serviceref)
+
 
 class MovieSelectionSummary(Screen):
 	# Kludgy component to display current selection on LCD. Should use
@@ -521,6 +543,7 @@ class MovieSelectionSummary(Screen):
 			self["name"].text = name
 		else:
 			self["name"].text = ""
+
 
 class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, ProtectedScreen):
 	# SUSPEND_PAUSES actually means "please call my pauseService()"
@@ -834,30 +857,43 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 
 	def btn_red(self):
 		self._callButton(config.movielist.btn_red.value)
+
 	def btn_green(self):
 		self._callButton(config.movielist.btn_green.value)
+
 	def btn_yellow(self):
 		self._callButton(config.movielist.btn_yellow.value)
+
 	def btn_blue(self):
 		self._callButton(config.movielist.btn_blue.value)
+
 	def btn_redlong(self):
 		self._callButton(config.movielist.btn_redlong.value)
+
 	def btn_greenlong(self):
 		self._callButton(config.movielist.btn_greenlong.value)
+
 	def btn_yellowlong(self):
 		self._callButton(config.movielist.btn_yellowlong.value)
+
 	def btn_bluelong(self):
 		self._callButton(config.movielist.btn_bluelong.value)
+
 	def btn_radio(self):
 		self._callButton(config.movielist.btn_radio.value)
+
 	def btn_tv(self):
 		self._callButton(config.movielist.btn_tv.value)
+
 	def btn_text(self):
 		self._callButton(config.movielist.btn_text.value)
+
 	def btn_F1(self):
 		self._callButton(config.movielist.btn_F1.value)
+
 	def btn_F2(self):
 		self._callButton(config.movielist.btn_F2.value)
+
 	def btn_F3(self):
 		self._callButton(config.movielist.btn_F3.value)
 
@@ -1793,6 +1829,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 
 	def can_tags(self, item):
 		return self.tags
+
 	def do_tags(self):
 		self.showTagsN(None)
 
@@ -1893,6 +1930,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 
 	def can_bookmarks(self, item):
 		return True
+
 	def do_bookmarks(self):
 		self.selectMovieLocation(title=_("Please select the movie path..."), callback=self.gotFilename)
 
@@ -1917,6 +1955,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		else:
 			config.movielist.videodirs.value += [path]
 			config.movielist.videodirs.save()
+
 	def removeBookmark(self, yes):
 		if not yes:
 			return
@@ -1940,6 +1979,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		self.session.openWithCallback(self.createDirCallback, VirtualKeyBoard,
 			title=_("Please enter the name of the new directory"),
 			text=dirname)
+
 	def createDirCallback(self, name):
 		if not name:
 			return
@@ -2523,5 +2563,6 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 						continue
 					else:
 						items.append(item)
+
 
 playlist = []

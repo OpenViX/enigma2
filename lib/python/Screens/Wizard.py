@@ -27,6 +27,7 @@ class WizardSummary(Screen):
 	def setText(self, text):
 		self["text"].setText(text)
 
+
 class Wizard(Screen):
 	instance = None
 
@@ -612,7 +613,6 @@ class Wizard(Screen):
 					self["config"].list = []
 					self.handleInputHelpers()
 
-
 			else:
 				if "config" in self:
 					self["config"].hide()
@@ -682,5 +682,6 @@ class WizardManager:
 		if len(self.wizards) > 0:
 			self.wizards[-1][0].isLastWizard = True
 		return [(x[2], x[0]) for x in self.wizards if x[1] == 1]
+
 
 wizardManager = WizardManager()

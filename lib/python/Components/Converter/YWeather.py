@@ -10,6 +10,7 @@ import os
 from urllib2 import Request, urlopen
 import socket
 
+
 class YWeather(Poll, Converter, object):
 	weather_city = '711665'
 	time_update = 20

@@ -89,6 +89,7 @@ config.misc.ButtonSetup.additional_keys = ConfigYesNo(default=True)
 for x in ButtonSetupKeys:
 	exec "config.misc.ButtonSetup." + x[1] + " = ConfigText(default='" + x[2] + "')"
 
+
 def getButtonSetupFunctions():
 	ButtonSetupFunctions = []
 	twinPlugins = []
@@ -188,6 +189,7 @@ def getButtonSetupFunctions():
 	ButtonSetupFunctions.append((_("Subtitles settings"), "Setup/subtitlesetup", "Setup"))
 	return ButtonSetupFunctions
 
+
 class ButtonSetup(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
@@ -253,6 +255,7 @@ class ButtonSetup(Screen):
 				if function:
 					selected.append(ChoiceEntryComponent('', ((function[0]), function[1])))
 			self["choosen"].setList(selected)
+
 
 class ButtonSetupSelect(Screen):
 	def __init__(self, session, key):
@@ -403,6 +406,7 @@ class ButtonSetupSelect(Screen):
 	def cancelCallback(self, answer):
 		answer and self.close()
 
+
 class ButtonSetupActionMap(ActionMap):
 	def action(self, contexts, action):
 		if action in tuple(x[1] for x in ButtonSetupKeys) and action in self.actions:
@@ -413,6 +417,7 @@ class ButtonSetupActionMap(ActionMap):
 		else:
 			return ActionMap.action(self, contexts, action)
 
+
 class helpableButtonSetupActionMap(HelpableActionMap):
 	def action(self, contexts, action):
 		if action in tuple(x[1] for x in ButtonSetupKeys) and action in self.actions:
@@ -422,6 +427,7 @@ class helpableButtonSetupActionMap(HelpableActionMap):
 			return 1
 		else:
 			return ActionMap.action(self, contexts, action)
+
 
 class InfoBarButtonSetup():
 	def __init__(self):

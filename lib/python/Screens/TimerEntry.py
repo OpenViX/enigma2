@@ -276,14 +276,17 @@ class TimerEntry(TimerEntryBase):
 			self.timerentry_tagsset.setChoices([not ret and "None" or " ".join(ret)])
 			self.invalidateConfigEntry(self.timerentry_tagsset)
 
+
 class TimerLog(TimerLogBase):
 	pass
+
 
 def addTimerFromEvent(session, refreshCallback, event, service):
 	if event is None or event.getBeginTime() + event.getDuration() < time():
 		return
 	timer = RecordTimerEntry(service, checkOldTimers=True, dirname=preferredTimerPath(), *parseEvent(event, service=service))
 	session.openWithCallback(lambda answer: checkForConflicts(session, refreshCallback, answer[1]) if answer[0] else None, TimerEntry, timer)
+
 
 def addTimerFromEventSilent(session, refreshCallback, event, service, zap=0):
 	if event is None or event.getBeginTime() + event.getDuration() < time():
@@ -295,6 +298,7 @@ def addTimerFromEventSilent(session, refreshCallback, event, service, zap=0):
 	timer.resetRepeated()
 	checkForConflicts(session, refreshCallback, timer)
 
+
 def checkForConflicts(session, refreshCallback, timer):
 	simulTimerList = getTimerConflicts(session, timer)
 	if simulTimerList is not None:
@@ -304,6 +308,7 @@ def checkForConflicts(session, refreshCallback, timer):
 		if refreshCallback is not None:
 			refreshCallback(timer)
 		session.nav.RecordTimer.saveTimer()
+
 
 def getTimerConflicts(session, timer):
 	# every call must explicitly tell record to "dosave=False" to prevent regeneration of timer.xml

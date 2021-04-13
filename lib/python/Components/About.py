@@ -4,8 +4,10 @@ import socket
 import fcntl
 import struct
 
+
 def getVersionString():
 	return getImageVersion()
+
 
 def getFlashDateString():
 	try:
@@ -16,8 +18,10 @@ def getFlashDateString():
 	except:
 		return _("unknown")
 
+
 def getEnigmaVersionString():
 	return getImageVersion()
+
 
 def getGStreamerVersionString():
 	try:
@@ -27,6 +31,7 @@ def getGStreamerVersionString():
 	except:
 		return _("unknown")
 
+
 def getKernelVersionString():
 	try:
 		f = open("/proc/version", "r")
@@ -35,6 +40,7 @@ def getKernelVersionString():
 		return kernelversion
 	except:
 		return _("unknown")
+
 
 def getIsBroadcom():
 	try:
@@ -57,6 +63,7 @@ def getIsBroadcom():
 	except:
 		return False
 
+
 def getChipSetString():
 	try:
 		f = open('/proc/stb/info/chipset', 'r')
@@ -65,6 +72,7 @@ def getChipSetString():
 		return str(chipset.lower().replace('\n', '').replace('brcm', '').replace('bcm', ''))
 	except IOError:
 		return _("unavailable")
+
 
 def getCPUSpeedMHzInt():
 	cpu_speed = 0
@@ -101,6 +109,7 @@ def getCPUSpeedMHzInt():
 				print "[About] getCPUSpeedMHzInt, /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq not available"
 	return int(cpu_speed)
 
+
 def getCPUSpeedString():
 	cpu_speed = float(getCPUSpeedMHzInt())
 	if cpu_speed > 0:
@@ -111,12 +120,14 @@ def getCPUSpeedString():
 		return cpu_speed
 	return _("unavailable")
 
+
 def getCPUArch():
 	if getBoxType() in ('osmio4k',):
 		return "ARM V7"
 	if "ARM" in getCPUString():
 		return getCPUString()
 	return _("Mipsel")
+
 
 def getCPUString():
 	system = _("unavailable")
@@ -138,6 +149,7 @@ def getCPUString():
 	except IOError:
 		return _("unavailable")
 
+
 def getCpuCoresInt():
 	cores = 0
 	try:
@@ -154,6 +166,7 @@ def getCpuCoresInt():
 		pass
 	return cores
 
+
 def getCpuCoresString():
 	cores = getCpuCoresInt()
 	return {
@@ -164,6 +177,7 @@ def getCpuCoresString():
 			8: _("Octo core")
 			}.get(cores, _("%d cores") % cores)
 
+
 def _ifinfo(sock, addr, ifname):
 	iface = struct.pack('256s', ifname[:15])
 	info = fcntl.ioctl(sock.fileno(), addr, iface)
@@ -171,6 +185,7 @@ def _ifinfo(sock, addr, ifname):
 		return ''.join(['%02x:' % ord(char) for char in info[18:24]])[:-1].upper()
 	else:
 		return socket.inet_ntoa(info[20:24])
+
 
 def getIfConfig(ifname):
 	ifreq = {'ifname': ifname}
@@ -189,6 +204,7 @@ def getIfConfig(ifname):
 	sock.close()
 	return ifreq
 
+
 def getIfTransferredData(ifname):
 	f = open('/proc/net/dev', 'r')
 	for line in f:
@@ -198,9 +214,11 @@ def getIfTransferredData(ifname):
 			f.close()
 			return rx_bytes, tx_bytes
 
+
 def getPythonVersionString():
 	import sys
 	return "%s.%s.%s" % (sys.version_info.major, sys.version_info.minor, sys.version_info.micro)
+
 
 def getEnigmaUptime():
 	from time import time
@@ -212,6 +230,7 @@ def getEnigmaUptime():
 	except:
 		return ''
 
+
 def getBoxUptime():
 	try:
 		f = open("/proc/uptime", "rb")
@@ -221,6 +240,7 @@ def getBoxUptime():
 	except:
 		return ''
 		
+
 def formatUptime(seconds):
 	out = ''
 	if seconds > 86400:
@@ -235,6 +255,7 @@ def formatUptime(seconds):
 	else:
 		out += ("1 second" if seconds == 1 else "%d seconds" % seconds) + " "
 	return out
+
 
 # For modules that do "from About import about"
 about = modules[__name__]

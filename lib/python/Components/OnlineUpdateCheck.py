@@ -15,6 +15,7 @@ import sys
 
 error = 0
 
+
 def OnlineUpdateCheck(session=None, **kwargs):
 	global onlineupdatecheckpoller
 
@@ -22,6 +23,7 @@ def OnlineUpdateCheck(session=None, **kwargs):
 	# OnlineUpdateCheckPoller is set-up, which is will be before we can ever
 	# run.
 	onlineupdatecheckpoller.start()
+
 
 class FeedsStatusCheck:
 	def __init__(self):
@@ -175,7 +177,9 @@ class FeedsStatusCheck:
 					config.softwareupdate.updatefound.setValue(True)
 		pass
 
+
 feedsstatuscheck = FeedsStatusCheck()
+
 
 class OnlineUpdateCheckPoller:
 	def __init__(self):
@@ -246,8 +250,10 @@ class OnlineUpdateCheckPoller:
 		else:
 			print '[OnlineUpdateCheckPoller] No feeds found, skipping check.'
 
+
 # Create a callable instance...
 onlineupdatecheckpoller = OnlineUpdateCheckPoller()
+
 
 class VersionCheck:
 	def __init__(self):
@@ -275,7 +281,9 @@ class VersionCheck:
 		else:
 			return False
 
+
 versioncheck = VersionCheck()
+
 
 def kernelMismatch():
 	# returns True if a kernal mismatch is found. i.e. STB kernel does not match feeds kernel
@@ -312,6 +320,7 @@ def kernelMismatch():
 
 	print '[OnlineUpdateCheck][kernelMismatch] no kernel mismatch found'
 	return False
+
 
 def statusMessage():
 	# returns message if status message is found, else False.

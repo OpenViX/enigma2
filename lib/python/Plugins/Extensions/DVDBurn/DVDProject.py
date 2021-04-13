@@ -13,6 +13,7 @@ class ConfigColor(ConfigSequence):
 			default = [128, 128, 128]
 		ConfigSequence.__init__(self, seperator="#", limits=[(0, 255), (0, 255), (0, 255)], default=default)
 
+
 class ConfigFilename(ConfigText):
 	def __init__(self):
 		ConfigText.__init__(self, default="", fixed_size=True, visible_width=False)
@@ -28,9 +29,11 @@ class ConfigFilename(ConfigText):
 			mark = [filename]
 		return "mtext"[1 - selected:], filename, mark
 
+
 class DVDProject:
 	MAX_SL = 4480
 	MAX_DL = 8150
+
 	def __init__(self):
 		self.titles = []
 		self.target = None
@@ -199,6 +202,7 @@ class DVDProject:
 		return totalsize
 
 	size = property(getSize)
+
 
 class MenuTemplate(DVDProject):
 	def __init__(self):

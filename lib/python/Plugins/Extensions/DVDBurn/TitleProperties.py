@@ -143,7 +143,10 @@ class TitleProperties(Screen, ConfigListScreen):
 	def cancel(self):
 		self.close()
 
+
 from Tools.ISO639 import LanguageCodes
+
+
 class LanguageChoices():
 	def __init__(self):
 		from Components.Language import language as syslanguage
@@ -182,5 +185,6 @@ class LanguageChoices():
 			if val == DVB_lang:
 				return key
 		return "nolang"
+
 
 languageChoices = LanguageChoices()

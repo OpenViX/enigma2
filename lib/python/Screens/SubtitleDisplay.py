@@ -5,6 +5,7 @@ from Components.ActionMap import ActionMap
 from sys import maxint
 import skin
 
+
 class SubtitleDisplay(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)

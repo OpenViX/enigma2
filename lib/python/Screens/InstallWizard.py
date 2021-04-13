@@ -115,6 +115,7 @@ class InstallWizard(Screen, ConfigListScreen):
 			self.session.open(SkinSelector, skin_name="SkinSelectorWizard", reboot=False)
 		return
 
+
 class InstallWizardIpkgUpdater(Screen):
 	def __init__(self, session, index, info, cmd, pkg=None):
 		Screen.__init__(self, session)

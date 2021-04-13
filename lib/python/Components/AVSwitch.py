@@ -9,6 +9,7 @@ import os
 
 config.av = ConfigSubsection()
 
+
 class AVSwitch:
 	print("BoxBranding", "MachineBuild", getMachineBuild())
 	print("BoxBranding", "BoxType", getBoxType())
@@ -332,7 +333,9 @@ class AVSwitch:
 			val = 6
 		return val
 
+
 iAVSwitch = AVSwitch()
+
 
 def InitAVSwitch():
 	config.av.yuvenabled = ConfigBoolean(default=True)
@@ -490,7 +493,6 @@ def InitAVSwitch():
 		f.write(configElement.value)
 		f.close()
 
-
 	def setAACTranscode(configElement):
 		f = open("/proc/stb/audio/aac_transcode", "w")
 		f.write(configElement.value)
@@ -535,7 +537,6 @@ def InitAVSwitch():
 	def setAspectRatio(configElement):
 		map = {"4_3_letterbox": 0, "4_3_panscan": 1, "16_9": 2, "16_9_always": 3, "16_10_letterbox": 4, "16_10_panscan": 5, "16_9_letterbox": 6}
 		iAVSwitch.setAspectRatio(map[configElement.value])
-
 
 	def read_choices(procx, defchoice):
 		with open(procx, 'r') as myfile:
@@ -855,6 +856,7 @@ def InitAVSwitch():
 
 	iAVSwitch.setConfiguredMode()
 
+
 class VideomodeHotplug:
 	def __init__(self):
 		pass
@@ -882,16 +884,20 @@ class VideomodeHotplug:
 			print "[VideoHardware] setting %s/%s/%s" % (port, mode, rate)
 			iAVSwitch.setMode(port, mode, rate)
 
+
 hotplug = None
+
 
 def startHotplug():
 	global hotplug
 	hotplug = VideomodeHotplug()
 	hotplug.start()
 
+
 def stopHotplug():
 	global hotplug
 	hotplug.stop()
+
 
 def InitiVideomodeHotplug(**kwargs):
 	startHotplug()

@@ -4,6 +4,8 @@
 # some broadcaster do define other types so this list
 # may grow or be replaced..
 #
+
+
 class GenresETSI:
 	maintype = (
 		_("Reserved"),
@@ -136,6 +138,7 @@ class GenresETSI:
 		),
 	}
 
+
 class GenresAUS:
 	maintype = (
 		_("Undefined"),
@@ -214,6 +217,7 @@ class GenresAUS:
 		),
 	}
 
+
 def __getGenreStringMain(hn, ln, genres):
 	# if hn == 0:
 	# 	return _("Undefined content")
@@ -223,6 +227,7 @@ def __getGenreStringMain(hn, ln, genres):
 		return genres.maintype[hn]
 	# return _("Reserved") + " " + str(hn)
 	return ""
+
 
 def __getGenreStringSub(hn, ln, genres):
 	# if hn == 0:
@@ -237,6 +242,7 @@ def __getGenreStringSub(hn, ln, genres):
 	# 	return _("Reserved") " " + str(ln)
 	# return _("Reserved") + " " + str(hn) + "," + str(ln)
 	return ""
+
 
 countries = {
 	"AUS": (__getGenreStringMain, __getGenreStringMain, GenresAUS()),
@@ -255,9 +261,11 @@ def getGenreStringMain(hn, ln, country=None):
 	countryInfo = countries.get(country, defaultCountryInfo)
 	return countryInfo[0](hn, ln, countryInfo[2])
 
+
 def getGenreStringSub(hn, ln, country=None):
 	countryInfo = countries.get(country, defaultCountryInfo)
 	return countryInfo[1](hn, ln, countryInfo[2])
+
 
 def getGenreStringLong(hn, ln, country=None):
 	# if hn == 0:

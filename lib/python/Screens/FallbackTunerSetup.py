@@ -3,6 +3,7 @@ from Screens.Setup import Setup
 from enigma import getPeerStreamingBoxes
 import re
 
+
 class FallbackTunerSetup(Setup):
 	def __init__(self, session):
 		self.createConfig()

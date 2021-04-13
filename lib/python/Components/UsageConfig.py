@@ -34,6 +34,7 @@ def InitUsageConfig():
 	config.usage.maxchannelnumlen = ConfigSelection(default="4", choices=[("3", _("3")), ("4", _("4")), ("5", _("5")), ("6", _("6"))])
 
 	config.usage.alternative_number_mode = ConfigYesNo(default=False)
+
 	def alternativeNumberModeChange(configElement):
 		eDVBDB.getInstance().setNumberingMode(configElement.value)
 		refreshServiceList()
@@ -85,6 +86,7 @@ def InitUsageConfig():
 		[(str(i), ngettext("%d second", "%d seconds", i) % i) for i in [3, 5, 7, 10, 15, 20, 30, 60]] + \
 		[("EPG", _("EPG")), ("INFOBAREPG", _("InfoBar EPG"))]
 	config.usage.show_second_infobar = ConfigSelection(default="5", choices=choicelist)
+
 	def showsecondinfobarChanged(configElement):
 		if config.usage.show_second_infobar.value != "INFOBAREPG":
 			SystemInfo["InfoBarEpg"] = True
@@ -346,7 +348,6 @@ def InitUsageConfig():
 		config.usage.wakeOnLAN = ConfigYesNo(default=False)
 		config.usage.wakeOnLAN.addNotifier(wakeOnLANChanged)
 
-
 	#standby
 	if getDisplayType() in ('textlcd7segment'):
 		config.usage.blinking_display_clock_during_recording = ConfigSelection(default="Rec", choices=[
@@ -400,6 +401,7 @@ def InitUsageConfig():
 	config.usage.swap_media_time_display_on_vfd = ConfigSelection(default="0", choices=[("0", _("Skin Setting")), ("1", _("Mins")), ("2", _("Mins Secs")), ("3", _("Hours Mins")), ("4", _("Hours Mins Secs")), ("5", _("Percentage"))])
 	config.usage.swap_time_remaining_on_vfd = ConfigSelection(default="0", choices=[("0", _("Remaining")), ("1", _("Elapsed")), ("2", _("Elapsed & Remaining")), ("3", _("Remaining & Elapsed"))])
 	config.usage.elapsed_time_positive_vfd = ConfigYesNo(default=False)
+
 	def SpinnerOnOffChanged(configElement):
 		setSpinnerOnOff(int(configElement.value))
 	config.usage.show_spinner.addNotifier(SpinnerOnOffChanged)
@@ -777,15 +779,18 @@ def InitUsageConfig():
 	config.epg.opentv.addNotifier(EpgSettingsChanged)
 
 	config.epg.histminutes = ConfigSelectionNumber(min=0, max=720, stepwidth=15, default=0, wraparound=True)
+
 	def EpgHistorySecondsChanged(configElement):
 		eEPGCache.getInstance().setEpgHistorySeconds(config.epg.histminutes.value * 60)
 	config.epg.histminutes.addNotifier(EpgHistorySecondsChanged)
 
 	config.epg.cacheloadsched = ConfigYesNo(default=False)
 	config.epg.cachesavesched = ConfigYesNo(default=False)
+
 	def EpgCacheLoadSchedChanged(configElement):
 		import EpgLoadSave
 		EpgLoadSave.EpgCacheLoadCheck()
+
 	def EpgCacheSaveSchedChanged(configElement):
 		import EpgLoadSave
 		EpgLoadSave.EpgCacheSaveCheck()
@@ -803,6 +808,7 @@ def InitUsageConfig():
 	config.misc.epgcachepath = ConfigSelection(default='/etc/enigma2/', choices=hddchoises)
 	config.misc.epgcachefilename = ConfigText(default='epg', fixed_size=False)
 	config.misc.epgcache_filename = ConfigText(default=(config.misc.epgcachepath.value + config.misc.epgcachefilename.value.replace('.dat', '') + '.dat'))
+
 	def EpgCacheChanged(configElement):
 		config.misc.epgcache_filename.setValue(os.path.join(config.misc.epgcachepath.value, config.misc.epgcachefilename.value.replace('.dat', '') + '.dat'))
 		config.misc.epgcache_filename.save()
@@ -885,7 +891,6 @@ def InitUsageConfig():
 		("step", _("Single step (GOP)")),
 		("last", _("Last speed"))])
 
-
 	config.crash = ConfigSubsection()
 	config.crash.enabledebug = ConfigYesNo(default=False)
 	config.crash.debugloglimit = ConfigSelectionNumber(min=1, max=10, stepwidth=1, default=4, wraparound=True)
@@ -931,6 +936,7 @@ def InitUsageConfig():
 
 	def updateEraseSpeed(el):
 		eBackgroundFileEraser.getInstance().setEraseSpeed(int(el.value))
+
 	def updateEraseFlags(el):
 		eBackgroundFileEraser.getInstance().setEraseFlags(int(el.value))
 	config.misc.erase_speed = ConfigSelection(default="20", choices=[
@@ -1174,6 +1180,7 @@ def updateChoices(sel, choices):
 					break
 		sel.setChoices(map(str, choices), defval)
 
+
 def preferredPath(path):
 	if config.usage.setup_level.index < 2 or path == "<default>":
 		return None  # config.usage.default_path.value, but delay lookup until usage
@@ -1184,14 +1191,18 @@ def preferredPath(path):
 	else:
 		return path
 
+
 def preferredTimerPath():
 	return preferredPath(config.usage.timer_path.value)
+
 
 def preferredInstantRecordPath():
 	return preferredPath(config.usage.instantrec_path.value)
 
+
 def defaultMoviePath():
 	return defaultRecordingLocation(config.usage.default_path.value)
+
 
 def upgradeConfig():
 	if config.version.value < 53023:

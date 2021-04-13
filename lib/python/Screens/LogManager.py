@@ -27,6 +27,7 @@ from email.Utils import formatdate
 
 _session = None
 
+
 def get_size(start_path=None):
 	total_size = 0
 	if start_path:
@@ -37,13 +38,16 @@ def get_size(start_path=None):
 		return total_size
 	return 0
 
+
 def AutoLogManager(session=None, **kwargs):
 	global debuglogcheckpoller
 	debuglogcheckpoller = LogManagerPoller()
 	debuglogcheckpoller.start()
 
+
 class LogManagerPoller:
 	"""Automatically Poll LogManager"""
+
 	def __init__(self):
 		# Init Timer
 		self.TrimTimer = eTimer()
@@ -160,6 +164,7 @@ class LogManagerPoller:
 						bytesToRemove -= st_size
 						size -= st_size
 		self.TrashTimer.startLongTimer(43200) #twice a day
+
 
 class LogManager(Screen):
 	def __init__(self, session):
@@ -320,6 +325,7 @@ class LogManager(Screen):
 			self["list"].changeDir(self.defaultDir)
 			self["LogsSize"].update(config.crash.debug_path.value)
 
+
 class LogManagerViewLog(Screen):
 	def __init__(self, session, selected):
 		Screen.__init__(self, session)
@@ -342,6 +348,7 @@ class LogManagerViewLog(Screen):
 
 	def cancel(self):
 		self.close()
+
 
 class LogManagerFb(Screen):
 	def __init__(self, session, logpath=None):
@@ -411,6 +418,7 @@ class LogManagerFb(Screen):
 			config.logmanager.path.setValue(self["list"].getCurrentDirectory())
 			config.logmanager.path.save()
 		self.close()
+
 
 class LogInfo(VariableText, GUIComponent):
 	FREE = 0

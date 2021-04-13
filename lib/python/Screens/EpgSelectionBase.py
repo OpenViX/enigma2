@@ -70,6 +70,7 @@ channelDownActions = [
 	("nextPage", _("Page down"))
 ]
 
+
 class EPGSelectionBase(Screen, HelpableScreen):
 	lastEnteredTime = None
 	lastEnteredDate = None
@@ -490,6 +491,7 @@ class EPGServiceZap:
 			self.zapFunc(selectedService, bouquet=self.getCurrentBouquet(), preview=prev)
 			self.currch = self.session.nav.getCurrentlyPlayingServiceReference() and self.session.nav.getCurrentlyPlayingServiceReference().toString()
 
+
 class EPGServiceNumberSelectionPopup(Screen):
 	def __init__(self, session, getServiceByNumber, callback, number):
 		Screen.__init__(self, session)
@@ -713,6 +715,7 @@ class EPGBouquetSelection:
 					if service.getChannelNum() == number:
 						return service, bouquet[1]
 		return None, None
+
 
 class EPGServiceBrowse(EPGBouquetSelection):
 	def __init__(self):

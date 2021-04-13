@@ -7,6 +7,7 @@ from Tools.Alternatives import GetWithAlternative
 from Tools.Directories import pathExists, SCOPE_ACTIVE_SKIN, resolveFilename
 from Components.Harddisk import harddiskmanager
 
+
 class PiconLocator:
 	def __init__(self, piconDirectories=['picon']):
 		harddiskmanager.on_partition_list_change.append(self.__onPartitionChange)
@@ -100,15 +101,21 @@ class PiconLocator:
 					pngname = self.findPicon(series)
 		return pngname
 
+
 piconLocator = None
+
 
 def initPiconPaths():
 	global piconLocator
 	piconLocator = PiconLocator()
+
+
 initPiconPaths()
+
 
 def getPiconName(serviceName):
 	return piconLocator.getPiconName(serviceName)
+
 
 class Picon(Renderer):
 	def __init__(self):

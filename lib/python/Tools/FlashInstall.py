@@ -3,6 +3,7 @@ from Tools.Directories import fileExists
 from time import time
 from datetime import datetime
 
+
 def FlashInstallTime():
 	if config.misc.firstrun.value and not fileExists('/etc/install'):
 		f = open("/etc/install", "w")

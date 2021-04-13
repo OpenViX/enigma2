@@ -16,6 +16,7 @@ TYPE_BOUQUETSERVICE = "BOUQUETSERVICE"
 TYPE_BOUQUET = "BOUQUET"
 LIST_BLACKLIST = "blacklist"
 
+
 def InitParentalControl():
 	config.ParentalControl = ConfigSubsection()
 	config.ParentalControl.storeservicepin = ConfigSelection(default="never", choices=[("never", _("never")), ("5", _("%d minutes") % 5), ("30", _("%d minutes") % 30), ("60", _("%d minutes") % 60), ("standby", _("until standby/restart"))])
@@ -49,6 +50,7 @@ def InitParentalControl():
 
 	global parentalControl
 	parentalControl = ParentalControl()
+
 
 class ParentalControl:
 	def __init__(self):

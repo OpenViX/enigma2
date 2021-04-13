@@ -7,6 +7,7 @@ from enigma import eListboxPythonMultiContent, gFont, BT_SCALE, BT_KEEP_ASPECT_R
 from Tools.LoadPixmap import LoadPixmap
 import skin
 
+
 def PluginEntryComponent(plugin, width=440):
 	if plugin.icon is None:
 		png = LoadPixmap(resolveFilename(SCOPE_ACTIVE_SKIN, "icons/plugin.png"))
@@ -22,6 +23,7 @@ def PluginEntryComponent(plugin, width=440):
 		MultiContentEntryPixmapAlphaBlend(pos=(ix, iy), size=(iw, ih), png=png, flags=BT_SCALE | BT_KEEP_ASPECT_RATIO | BT_HALIGN_CENTER | BT_VALIGN_CENTER)
 	]
 
+
 def PluginCategoryComponent(name, png, width=440):
 	x, y, h = skin.parameters.get("PluginBrowserDownloadName", (skin.applySkinFactor(80), skin.applySkinFactor(5), skin.applySkinFactor(25)))
 	ix, iy, iw, ih = skin.parameters.get("PluginBrowserDownloadIcon", (skin.applySkinFactor(10), skin.applySkinFactor(0), skin.applySkinFactor(60), skin.applySkinFactor(50)))
@@ -30,6 +32,7 @@ def PluginCategoryComponent(name, png, width=440):
 		MultiContentEntryText(pos=(x, y), size=(width - x, h), font=0, text=name),
 		MultiContentEntryPixmapAlphaBlend(pos=(ix, iy), size=(iw, ih), png=png)
 	]
+
 
 def PluginDownloadComponent(plugin, name, version=None, width=440):
 	if plugin.icon is None:
