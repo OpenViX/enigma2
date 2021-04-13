@@ -19,7 +19,7 @@ config.misc.lastrotorposition = ConfigInteger(INVALID_POSITION)
 
 class Dish(Screen):
 	STATE_HIDDEN = 0
-	STATE_SHOWN  = 1
+	STATE_SHOWN = 1
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		self["Dishpixmap"] = BlinkingPixmapConditional()
@@ -85,7 +85,7 @@ class Dish(Screen):
 		if self.total_time:
 			self.turn_time -= 1
 			self["turnTime"].setText(self.FormatTurnTime(self.turn_time))
-			self.close_timeout -=1
+			self.close_timeout -= 1
 			if self.close_timeout < 0:
 				print("[Dish] timeout!")
 				self.__toHide()
@@ -133,7 +133,7 @@ class Dish(Screen):
 			cur_orbpos = data.get("orbital_position", INVALID_POSITION)
 			if cur_orbpos in self.available_sat:
 				self.cur_orbpos = cur_orbpos
-				self.cur_polar  = data.get("polarization", 0)
+				self.cur_polar = data.get("polarization", 0)
 				self.rotorTimer.start(500, False)
 
 	def __toHide(self):
@@ -242,7 +242,7 @@ class Dish(Screen):
 	def getTunerName(self):
 		nr = self.getCurrentTuner()
 		if nr is not None:
-			return _("Tuner") + " " + chr(nr+65)
+			return _("Tuner") + " " + chr(nr + 65)
 		return ""
 
 	def OrbToStr(self, orbpos):
@@ -250,16 +250,16 @@ class Dish(Screen):
 			return _("N/A")
 		if orbpos > 1800:
 			orbpos = 3600 - orbpos
-			return "%d.%d°W" % (orbpos//10, orbpos%10)
-		return "%d.%d°E" % (orbpos//10, orbpos%10)
+			return "%d.%d°W" % (orbpos // 10, orbpos % 10)
+		return "%d.%d°E" % (orbpos // 10, orbpos % 10)
 
 	def FormatTurnTime(self, time):
 		t = abs(time)
-		return "%s%02d:%02d" % (time < 0 and "- " or "", t//60%60, t%60)
+		return "%s%02d:%02d" % (time < 0 and "- " or "", t // 60 % 60, t % 60)
 
 class Dishpip(Dish, Screen):
 	STATE_HIDDEN = 0
-	STATE_SHOWN  = 1
+	STATE_SHOWN = 1
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		self["Dishpixmap"] = Boolean(fixed=True, poll=1500)
@@ -314,7 +314,7 @@ class Dishpip(Dish, Screen):
 		if self.total_time:
 			self.turn_time -= 1
 			self["turnTime"].setText(self.FormatTurnTime(self.turn_time))
-			self.close_timeout -=1
+			self.close_timeout -= 1
 			if self.close_timeout <= 3:
 				self.__toHide()
 			#elif not self.getRotorMovingState():
@@ -339,7 +339,7 @@ class Dishpip(Dish, Screen):
 			cur_orbpos = data.get("orbital_position", INVALID_POSITION)
 			if cur_orbpos in self.available_sat:
 				self.cur_orbpos = cur_orbpos
-				self.cur_polar  = data.get("polarization", 0)
+				self.cur_polar = data.get("polarization", 0)
 				self.moving_timeout = 3
 				if not self.rotorTimer.isActive():
 					self.rotorTimer.start(500, True)

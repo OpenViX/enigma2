@@ -208,7 +208,7 @@ class UpdatePlugin(Screen, ProtectedScreen):
 
 	def isProtected(self):
 		return config.ParentalControl.setuppinactive.value and\
-			(not config.ParentalControl.config_sections.main_menu.value and not config.ParentalControl.config_sections.configuration.value  or hasattr(self.session, 'infobar') and self.session.infobar is None) and\
+			(not config.ParentalControl.config_sections.main_menu.value and not config.ParentalControl.config_sections.configuration.value or hasattr(self.session, 'infobar') and self.session.infobar is None) and\
 			config.ParentalControl.config_sections.software_update.value
 
 	def doActivityTimer(self):
@@ -286,7 +286,7 @@ class UpdatePlugin(Screen, ProtectedScreen):
 						(_("Upgrade and reboot system"), "cold")]
 					if path.exists("/usr/lib/enigma2/python/Plugins/SystemPlugins/ViX/BackupManager.pyo"):
 						if not config.softwareupdate.autosettingsbackup.value and config.backupmanager.backuplocation.value:
-							choices.append((_("Perform a settings backup,") + '\n\t' + _("making a backup before updating") + '\n\t' +_("is strongly advised."), "backup"))
+							choices.append((_("Perform a settings backup,") + '\n\t' + _("making a backup before updating") + '\n\t' + _("is strongly advised."), "backup"))
 						if not config.softwareupdate.autoimagebackup.value and config.imagemanager.backuplocation.value:
 							choices.append((_("Perform a full image backup"), "imagebackup"))
 					choices.append((_("Update channel list only"), "channels"))
@@ -328,7 +328,7 @@ class UpdatePlugin(Screen, ProtectedScreen):
 						error = _("A background update check is in progress,\nplease wait a few minutes and try again.")
 				if self.updating:
 					error = _("Update failed. Your %s %s does not have a working internet connection.") % (getMachineBrand(), getMachineName())
-				self.status.setText(_("Error") +  " - " + error)
+				self.status.setText(_("Error") + " - " + error)
 				self["actions"].setEnabled(True)
 		elif event == IpkgComponent.EVENT_LISTITEM:
 			if 'enigma2-plugin-settings-' in param[0] and self.channellist_only > 0:
@@ -425,14 +425,14 @@ class UpdatePlugin(Screen, ProtectedScreen):
 		from Screens.TaskView import JobView
 		Components.Task.job_manager.in_background = False
 		if not self.autobackuprunning:
-			self.session.openWithCallback(self.startActualUpgrade(("menu", "menu")), JobView, job,  cancelable=False, backgroundable=False, afterEventChangeable=False, afterEvent="close")
+			self.session.openWithCallback(self.startActualUpgrade(("menu", "menu")), JobView, job, cancelable=False, backgroundable=False, afterEventChangeable=False, afterEvent="close")
 		else:
-			self.session.openWithCallback(self.doAutoBackup, JobView, job,  cancelable=False, backgroundable=False, afterEventChangeable=False, afterEvent="close")
+			self.session.openWithCallback(self.doAutoBackup, JobView, job, cancelable=False, backgroundable=False, afterEventChangeable=False, afterEvent="close")
 
 	def exit(self):
 		if not self.ipkg.isRunning():
 			if self.packages != 0 and self.error == 0 and self.channellist_only == 0:
-				self.session.openWithCallback(self.exitAnswer, MessageBox, _("Upgrade finished.") +" "+_("Do you want to reboot your %s %s") % (getMachineBrand(), getMachineName()))
+				self.session.openWithCallback(self.exitAnswer, MessageBox, _("Upgrade finished.") + " " + _("Do you want to reboot your %s %s") % (getMachineBrand(), getMachineName()))
 			else:
 				self.close()
 		else:

@@ -86,7 +86,7 @@ class ClientsStreaming(Converter, Poll, object):
 			if self.type == self.INFO_RESOLVE or self.type == self.INFO_RESOLVE_SHORT:
 				try:
 					raw = socket.gethostbyaddr(ip)
-					ip  = raw[0]
+					ip = raw[0]
 				except:
 					pass
 

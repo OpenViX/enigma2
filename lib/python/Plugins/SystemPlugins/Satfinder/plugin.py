@@ -271,7 +271,7 @@ class Satfinder(ScanSetup, ServiceScan):
 				else:
 					self.scan_input_as.value = self.scan_input_as.choices[0]
 				if self.ter_channel_input and self.scan_input_as.value == "channel":
-					channel = getChannelNumber(self.scan_ter.frequency.value*1000, self.ter_tnumber)
+					channel = getChannelNumber(self.scan_ter.frequency.value * 1000, self.ter_tnumber)
 					if channel:
 						self.scan_ter.channel.value = int(channel.replace("+","").replace("-",""))
 					self.list.append(getConfigListEntry(_("Channel"), self.scan_ter.channel))
@@ -346,7 +346,7 @@ class Satfinder(ScanSetup, ServiceScan):
 		for n in nimmanager.nim_slots:
 			if not any([n.isCompatible(x) for x in ("DVB-S", "DVB-T", "DVB-C", "ATSC")]):
 				continue
-			if n.config_mode  in ("loopthrough", "satposdepends", "nothing"):
+			if n.config_mode in ("loopthrough", "satposdepends", "nothing"):
 				continue
 			if n.isCompatible("DVB-S") and len(nimmanager.getSatListForNim(n.slot)) < 1:
 				continue
@@ -382,13 +382,13 @@ class Satfinder(ScanSetup, ServiceScan):
 				self.tuning_type.value = "single_transponder"
 
 	def getSelectedSatIndex(self, v):
-		index    = 0
+		index = 0
 		none_cnt = 0
 		for n in self.satList:
 			if self.satList[index] is None:
 				none_cnt += 1
 			if index == int(v):
-				return index-none_cnt
+				return index - none_cnt
 			index += 1
 		return -1
 
@@ -401,7 +401,7 @@ class Satfinder(ScanSetup, ServiceScan):
 		if self.tuning_type.value == "single_transponder":
 			transponder = (
 				self.scan_cab.frequency.value,
-				self.scan_cab.symbolrate.value*1000,
+				self.scan_cab.symbolrate.value * 1000,
 				self.scan_cab.modulation.value,
 				self.scan_cab.fec.value,
 				self.scan_cab.inversion.value
@@ -454,7 +454,7 @@ class Satfinder(ScanSetup, ServiceScan):
 			return
 		if self.tuning_type.value == "single_transponder":
 			transponder = (
-				self.scan_ats.frequency.value*1000,
+				self.scan_ats.frequency.value * 1000,
 				self.scan_ats.modulation.value,
 				self.scan_ats.inversion.value,
 				self.scan_ats.system.value,
@@ -816,7 +816,7 @@ class SatfinderExtra(Satfinder):
 		op = 0
 		bits = 4
 		for i in range(bits):
-			op += ((bcd >> 4*i) & 0x0F) * 10**i
+			op += ((bcd >> 4 * i) & 0x0F) * 10**i
 		if op > 1800:
 			op = (3600 - op) * -1
 		if w_e_flag == 0:
@@ -915,8 +915,8 @@ class ServicesFound(Screen):
 			"back": self.close,
 			"red": self.close,
 			"up": self.pageUp,
-			"down":	self.pageDown,
-			"left":	self.pageUp,
+			"down": self.pageDown,
+			"left": self.pageUp,
 			"right": self.pageDown,
 		}, -2)
 

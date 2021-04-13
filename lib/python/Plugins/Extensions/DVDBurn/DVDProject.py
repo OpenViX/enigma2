@@ -25,14 +25,14 @@ class ConfigFilename(ConfigText):
 
 	def getMulti(self, selected):
 		if self.text == "":
-			return ("mtext"[1-selected:], "", 0)
+			return ("mtext"[1 - selected:], "", 0)
 		cut_len = min(len(self.text), 40)
 		filename = six.ensure_str((self.text.rstrip("/").rsplit("/", 1))[1])[:cut_len] + " "
 		if self.allmarked:
 			mark = list(range(0, len(filename)))
 		else:
 			mark = [filename]
-		return "mtext"[1-selected:], filename, mark
+		return "mtext"[1 - selected:], filename, mark
 
 class DVDProject:
 	MAX_SL = 4480
@@ -137,9 +137,9 @@ class DVDProject:
 				if not fileExists(val):
 					if val[0] != "/":
 						if key.find("font") == 0:
-							val = resolveFilename(SCOPE_FONTS)+val
+							val = resolveFilename(SCOPE_FONTS) + val
 						else:
-							val = resolveFilename(SCOPE_PLUGINS)+"Extensions/DVDBurn/"+val
+							val = resolveFilename(SCOPE_PLUGINS) + "Extensions/DVDBurn/" + val
 						if fileExists(val):
 							self.settings.dict()[key].setValue(val)
 							continue
