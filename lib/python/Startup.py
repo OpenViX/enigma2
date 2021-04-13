@@ -611,7 +611,7 @@ def runScreenTest():
 		print "[mytest] set wakeup time to", strftime("%Y/%m/%d %H:%M", localtime(wptime))
 		setFPWakeuptime(wptime)
 		recordTimerWakeupAuto = startTime[1] == 0 and startTime[2]
-		print '[mytest] recordTimerWakeupAuto',recordTimerWakeupAuto
+		print '[mytest] recordTimerWakeupAuto', recordTimerWakeupAuto
 		config.misc.prev_wakeup_time.value = startTime[0]
 		config.misc.prev_wakeup_time_type.value = startTime[1]
 		config.misc.prev_wakeup_time_type.save()

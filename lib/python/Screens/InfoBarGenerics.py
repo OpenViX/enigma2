@@ -79,7 +79,7 @@ def setResumePoint(session):
 				resumePointCache[key] = [lru, pos[1], l]
 				if len(resumePointCache) > 50:
 					candidate = key
-					for k,v in resumePointCache.items():
+					for k, v in resumePointCache.items():
 						if v[0] < lru:
 							candidate = k
 					del resumePointCache[candidate]
@@ -144,7 +144,7 @@ def reload_subservice_groupslist(force=False):
 			groupedservices = "/etc/enigma2/groupedservices"
 			if not os.path.isfile(groupedservices):
 				groupedservices = "/usr/share/enigma2/groupedservices"
-			subservice.groupslist = [list(g) for k,g in itertools.groupby([line.split('#')[0].strip() for line in open(groupedservices).readlines()], lambda x:not x) if not k]
+			subservice.groupslist = [list(g) for k, g in itertools.groupby([line.split('#')[0].strip() for line in open(groupedservices).readlines()], lambda x:not x) if not k]
 		except:
 			subservice.groupslist = []
 reload_subservice_groupslist()
@@ -208,10 +208,10 @@ class InfoBarUnhandledKey:
 	def actionA(self, key, flag):
 		####key debug
 		try:
-			print 'KEY: %s %s %s' % (key,(key_name for key_name,value in KEYIDS.items() if value == key).next(),getKeyDescription(key)[0])
+			print 'KEY: %s %s %s' % (key, (key_name for key_name, value in KEYIDS.items() if value == key).next(), getKeyDescription(key)[0])
 		except:
 			try:
-				print 'KEY: %s %s' % (key,(key_name for key_name,value in KEYIDS.items() if value == key).next()) # inverse dictionary lookup in KEYIDS
+				print 'KEY: %s %s' % (key, (key_name for key_name, value in KEYIDS.items() if value == key).next()) # inverse dictionary lookup in KEYIDS
 			except:
 				print 'KEY: %s' % (key)
 		self.unhandledKeyDialog.hide()
@@ -327,7 +327,7 @@ class InfoBarShowHide(InfoBarScreenSaver):
 
 	def doWriteAlpha(self, value):
 		if fileExists("/proc/stb/video/alpha"):
-			f = open("/proc/stb/video/alpha","w")
+			f = open("/proc/stb/video/alpha", "w")
 			f.write("%i" % (value))
 			f.close()
 
@@ -762,7 +762,7 @@ class InfoBarChannelSelection:
 					self.runPlugin(plugin)
 					break
 		else:
-			self.session.open(MessageBox, _("The Zap-History Browser plugin is not installed!\nPlease install it."), type=MessageBox.TYPE_INFO,timeout=10)
+			self.session.open(MessageBox, _("The Zap-History Browser plugin is not installed!\nPlease install it."), type=MessageBox.TYPE_INFO, timeout=10)
 
 
 	def openDeviceManager(self):
@@ -772,7 +772,7 @@ class InfoBarChannelSelection:
 					self.runPlugin(plugin)
 					break
 		else:
-			self.session.open(MessageBox, _("The Device Manager plugin is not installed!\nPlease install it."), type=MessageBox.TYPE_INFO,timeout=10)
+			self.session.open(MessageBox, _("The Device Manager plugin is not installed!\nPlease install it."), type=MessageBox.TYPE_INFO, timeout=10)
 
 	def openAroraPlugins(self):
 		if fileExists("/usr/lib/enigma2/python/Plugins/Extensions/WebBrowser/plugin.pyo"):
@@ -781,7 +781,7 @@ class InfoBarChannelSelection:
 					self.runPlugin(plugin)
 					break
 		else:
-			self.session.open(MessageBox, _("The WebBrowser is not installed!\nPlease install it."), type=MessageBox.TYPE_INFO,timeout=10)
+			self.session.open(MessageBox, _("The WebBrowser is not installed!\nPlease install it."), type=MessageBox.TYPE_INFO, timeout=10)
 
 	def showPluginBrowser(self):
 		if self.secondInfoBarScreen and self.secondInfoBarScreen.shown:
@@ -1391,7 +1391,7 @@ class InfoBarRdsDecoder:
 		self["RdsActions"] = ActionMap(["InfobarRdsActions"],
 		{
 			"startRassInteractive": self.startRassInteractive
-		},-1)
+		}, -1)
 
 		self["RdsActions"].setEnabled(False)
 
@@ -1940,12 +1940,12 @@ class InfoBarTimeshift():
 				"timeshiftStop": (self.stopTimeshift, _("Stop timeshift")),      # currently undefined :), probably 'TV'
 				"seekFwdManual": (self.seekFwdManual, _("Seek forward (enter time)")),
 				"seekBackManual": (self.seekBackManual, _("Seek backward (enter time)")),
-				"seekdef:1": (boundFunction(self.seekdef,1), _("Seek")),
-				"seekdef:3": (boundFunction(self.seekdef,3), _("Seek")),
-				"seekdef:4": (boundFunction(self.seekdef,4), _("Seek")),
-				"seekdef:6": (boundFunction(self.seekdef,6), _("Seek")),
-				"seekdef:7": (boundFunction(self.seekdef,7), _("Seek")),
-				"seekdef:9": (boundFunction(self.seekdef,9), _("Seek")),
+				"seekdef:1": (boundFunction(self.seekdef, 1), _("Seek")),
+				"seekdef:3": (boundFunction(self.seekdef, 3), _("Seek")),
+				"seekdef:4": (boundFunction(self.seekdef, 4), _("Seek")),
+				"seekdef:6": (boundFunction(self.seekdef, 6), _("Seek")),
+				"seekdef:7": (boundFunction(self.seekdef, 7), _("Seek")),
+				"seekdef:9": (boundFunction(self.seekdef, 9), _("Seek")),
 			}, prio=0)
 		self["TimeshiftActivateActions"] = ActionMap(["InfobarTimeshiftActivateActions"],
 			{
@@ -2120,7 +2120,7 @@ class InfoBarTimeshift():
 
 		if config.recording.filename_composition.value == "event":
 			#filename = name + ' - ' + begin_date + "_" + service_name
-			filename = "%s - %s_%s" % (info["name"], strftime("%Y%m%d %H%M",localtime(time())), service_name)
+			filename = "%s - %s_%s" % (info["name"], strftime("%Y%m%d %H%M", localtime(time())), service_name)
 		elif config.recording.filename_composition.value == "veryshort":
 			filename = service_name + " - " + begin_date
 		elif config.recording.filename_composition.value == "short":
@@ -3083,7 +3083,7 @@ class InfoBarTimerButton:
 		self.session.open(TimerEditList)
 
 class VideoMode(Screen):
-	def __init__(self,session):
+	def __init__(self, session):
 		Screen.__init__(self, session)
 		self["videomode"] = Label()
 		self.timer = eTimer()

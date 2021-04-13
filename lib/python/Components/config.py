@@ -148,7 +148,7 @@ class ConfigElement(object):
 		#     the entry could just be new.)
 		if initial_call:
 			if extra_args:
-				notifier(self,extra_args)
+				notifier(self, extra_args)
 			else:
 				notifier(self)
 

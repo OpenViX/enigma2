@@ -75,7 +75,7 @@ class MountPoints():
 					self.entries.remove(entry)
 
 	def deleteDisk(self, device):
-		for i in range(1,4):
+		for i in range(1, 4):
 			res = self.get(device, i)
 			if len(res) > 0:
 				self.delete(res)

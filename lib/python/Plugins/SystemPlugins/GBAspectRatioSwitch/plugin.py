@@ -202,5 +202,5 @@ def Plugins(**kwargs):
 			needsRestart=False,
 			fnc=startGBAspectRatioSwitch),
 		PluginDescriptor(
-			where=[PluginDescriptor.WHERE_SESSIONSTART,PluginDescriptor.WHERE_AUTOSTART],
+			where=[PluginDescriptor.WHERE_SESSIONSTART, PluginDescriptor.WHERE_AUTOSTART],
 			fnc=autostart)]

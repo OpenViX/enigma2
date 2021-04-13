@@ -249,7 +249,7 @@ def ConvertToHumanReadable(tp, type=None):
 			eDVBFrontendParametersATSC.System_DVB_C_ANNEX_B: "DVB-C ANNEX B"}.get(tp.get("system"))
 	elif type != "None":
 		print "ConvertToHumanReadable: no or unknown type in tpdata dict for type:", type
-	for k,v in tp.items():
+	for k, v in tp.items():
 		if k not in ret:
 			ret[k] = v
 	return ret

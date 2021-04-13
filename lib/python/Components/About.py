@@ -46,13 +46,13 @@ def getGStreamerVersionString(cpu):
 	try:
 		from glob import glob
 		gst = [x.split("Version: ") for x in open(glob("/var/lib/opkg/info/gstreamer[0-9].[0-9].control")[0], "r") if x.startswith("Version:")][0]
-		return "%s" % gst[1].split("+")[0].replace("\n","")
+		return "%s" % gst[1].split("+")[0].replace("\n", "")
 	except:
 		return _("Not Required") if cpu.upper().startswith('HI') else _("Not Installed")
 
 def getKernelVersionString():
 	try:
-		return open("/proc/version","r").read().split(' ', 4)[2].split('-',2)[0]
+		return open("/proc/version", "r").read().split(' ', 4)[2].split('-', 2)[0]
 	except:
 		return _("unknown")
 
@@ -64,7 +64,7 @@ def getChipSetString():
 			f = open('/proc/stb/info/chipset', 'r')
 			chipset = f.read()
 			f.close()
-			return str(chipset.lower().replace('\n','').replace('bcm','BCM').replace('brcm','BRCM').replace('sti',''))
+			return str(chipset.lower().replace('\n', '').replace('bcm', 'BCM').replace('brcm', 'BRCM').replace('sti', ''))
 		except IOError:
 			return "unavailable"
 
@@ -83,7 +83,7 @@ def getCPUString():
 			for x in lines:
 				splitted = x.split(': ')
 				if len(splitted) > 1:
-					splitted[1] = splitted[1].replace('\n','')
+					splitted[1] = splitted[1].replace('\n', '')
 					if splitted[0].startswith("system type"):
 						system = splitted[1].split(' ')[0]
 					elif splitted[0].startswith("Processor"):
@@ -100,7 +100,7 @@ def getCpuCoresString():
 		for x in lines:
 			splitted = x.split(': ')
 			if len(splitted) > 1:
-				splitted[1] = splitted[1].replace('\n','')
+				splitted[1] = splitted[1].replace('\n', '')
 				if splitted[0].startswith("processor"):
 					if int(splitted[1]) > 0:
 						cores = 2
@@ -120,7 +120,7 @@ def getImageTypeString():
 	#       return image_type.capitalize()
 	#except:
 	#       return _("undefined")
-	return "%s %s" % (getImageVersion(),getImageType())
+	return "%s %s" % (getImageVersion(), getImageType())
 
 def getCPUInfoString():
 	if getMachineBuild() in ('gbmv200', ):
@@ -151,7 +151,7 @@ def getCPUInfoString():
 				except:
 					cpu_speed = "-"
 		if os.path.isfile('/proc/stb/fp/temp_sensor_avs'):
-			temperature = open("/proc/stb/fp/temp_sensor_avs").readline().replace('\n','')
+			temperature = open("/proc/stb/fp/temp_sensor_avs").readline().replace('\n', '')
 		if os.path.isfile("/sys/devices/virtual/thermal/thermal_zone0/temp"):
 			try:
 				temperature = int(open("/sys/devices/virtual/thermal/thermal_zone0/temp").read().strip()) / 1000
@@ -178,13 +178,13 @@ def getCPUSpeedString():
 		for x in lines:
 			splitted = x.split(': ')
 			if len(splitted) > 1:
-				splitted[1] = splitted[1].replace('\n','')
+				splitted[1] = splitted[1].replace('\n', '')
 				if splitted[0].startswith("cpu MHz"):
 					mhz = float(splitted[1].split(' ')[0])
 					if mhz and mhz >= 1000:
-						mhz = "%s GHz" % str(round(mhz / 1000,1))
+						mhz = "%s GHz" % str(round(mhz / 1000, 1))
 					else:
-						mhz = "%s MHz" % str(round(mhz,1))
+						mhz = "%s MHz" % str(round(mhz, 1))
 		file.close()
 		return mhz
 	except IOError:
@@ -208,7 +208,7 @@ def getIfConfig(ifname):
 	infos['hwaddr'] = 0x8927 # SIOCSIFHWADDR
 	infos['netmask'] = 0x891b # SIOCGIFNETMASK
 	try:
-		for k,v in infos.items():
+		for k, v in infos.items():
 			print infos.items()
 			ifreq[k] = _ifinfo(sock, v, ifname)
 	except:
@@ -233,7 +233,7 @@ def getDriverInstalledDate():
 			return "%s-%s-%s" % (driver[:4], driver[4:6], driver[6:])
 		except:
 			driver = [x.split("Version:") for x in open(glob("/var/lib/opkg/info/*-dvb-proxy-*.control")[0], "r") if x.startswith("Version:")][0]
-			return "%s" % driver[1].replace("\n","")
+			return "%s" % driver[1].replace("\n", "")
 	except:
 		return _("unknown")
 
@@ -287,7 +287,7 @@ def getBoxUptime():
 		if secs > 86400:
 			days = secs / 86400
 			secs = secs % 86400
-			time = ngettext("%d day","%d days", days) % days + " "
+			time = ngettext("%d day", "%d days", days) % days + " "
 		h = secs / 3600
 		m = (secs % 3600) / 60
 		time += ngettext("%d hour", "%d hours", h) % h + " "

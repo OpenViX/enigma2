@@ -37,7 +37,7 @@ def PipPigMode(value):
 					open(SystemInfo["hasPIPVisibleProc"], "w").write("0")
 				else:
 					import skin
-					x, y, w, h = skin.parameters.get("PipHidePosition",(0, 0, 8, 8))
+					x, y, w, h = skin.parameters.get("PipHidePosition", (0, 0, 8, 8))
 					pip = InfoBar.instance.session.pip
 					pip.instance.move(ePoint(x, y))
 					pip["video"].instance.move(ePoint(x, y))

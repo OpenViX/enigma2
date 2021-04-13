@@ -46,7 +46,7 @@ class SoftcamStartup(Screen, ConfigListScreen):
 				"cancel": self.cancel,
 				"red": self.cancel,
 				"green": self.save,
-			},-1)
+			}, -1)
 
 		self.list = []
 		ConfigListScreen.__init__(self, self.list, session=session)

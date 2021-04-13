@@ -84,7 +84,7 @@ class PaxWeather2(Poll, Converter, object):
 		global WEATHER_LOAD
 		if WEATHER_LOAD == True:
 			try:
-				r = ping.doOne("8.8.8.8",1.5)
+				r = ping.doOne("8.8.8.8", 1.5)
 				if r != None and r <= 1.5:
 					print "PaxWeather: download from URL"
 					res = requests.get('http://weather.service.msn.com/data.aspx?src=windows&weadegreetype=C&culture=de-DE&wealocations=wc:' + str(config.plugins.PaxWeather.gmcode.value), timeout=1.5)
@@ -93,7 +93,7 @@ class PaxWeather2(Poll, Converter, object):
 					WEATHER_LOAD = False
 			except:
 				pass
-			timeout = max(15,int(config.plugins.PaxWeather.refreshInterval.value)) * 1000.0 * 60.0
+			timeout = max(15, int(config.plugins.PaxWeather.refreshInterval.value)) * 1000.0 * 60.0
 			self.timer.start(int(timeout), True)
 		else:
 			self.data = WEATHER_DATA
@@ -138,37 +138,37 @@ class PaxWeather2(Poll, Converter, object):
 			except:
 				return ''
 
-			if value in ("0","1","2","23","24"):
+			if value in ("0", "1", "2", "23", "24"):
 				return "S"
-			elif value in ("3","4"):
+			elif value in ("3", "4"):
 				return "Z"
-			elif value in ("5","6","7","18"):
+			elif value in ("5", "6", "7", "18"):
 				return "U"
-			elif value in ("8","10","25"):
+			elif value in ("8", "10", "25"):
 				return "G"
 			elif value == "9":
 				return "Q"
-			elif value in ("11","12","40"):
+			elif value in ("11", "12", "40"):
 				return "R"
-			elif value in ("13","14","15","16","41","42","43","46"):
+			elif value in ("13", "14", "15", "16", "41", "42", "43", "46"):
 				return "W"
-			elif value in ("17","35"):
+			elif value in ("17", "35"):
 				return "X"
 			elif value == "19":
 				return "F"
-			elif value in ("20","21","22"):
+			elif value in ("20", "21", "22"):
 				return "L"
-			elif value in ("26","44"):
+			elif value in ("26", "44"):
 				return "N"
-			elif value in ("27","29"):
+			elif value in ("27", "29"):
 				return "I"
-			elif value in ("28","30"):
+			elif value in ("28", "30"):
 				return "H"
-			elif value in ("31","33"):
+			elif value in ("31", "33"):
 				return "C"
-			elif value in ("32","34","36"):
+			elif value in ("32", "34", "36"):
 				return "B"
-			elif value in ("37","38","39","45","47"):
+			elif value in ("37", "38", "39", "45", "47"):
 				return "0"
 			else:
 				return ")"

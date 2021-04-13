@@ -42,25 +42,25 @@ class SetupSummary(Screen):
 		self["SetupTitle"] = StaticText(parent.getTitle())
 		self["SetupEntry"] = StaticText("")
 		self["SetupValue"] = StaticText("")
-		if hasattr(self.parent,"onChangedEntry"):
+		if hasattr(self.parent, "onChangedEntry"):
 			self.onShow.append(self.addWatcher)
 			self.onHide.append(self.removeWatcher)
 
 	def addWatcher(self):
-		if hasattr(self.parent,"onChangedEntry"):
+		if hasattr(self.parent, "onChangedEntry"):
 			self.parent.onChangedEntry.append(self.selectionChanged)
 			self.parent["config"].onSelectionChanged.append(self.selectionChanged)
 			self.selectionChanged()
 
 	def removeWatcher(self):
-		if hasattr(self.parent,"onChangedEntry"):
+		if hasattr(self.parent, "onChangedEntry"):
 			self.parent.onChangedEntry.remove(self.selectionChanged)
 			self.parent["config"].onSelectionChanged.remove(self.selectionChanged)
 
 	def selectionChanged(self):
 		self["SetupEntry"].text = self.parent.getCurrentEntry()
 		self["SetupValue"].text = self.parent.getCurrentValue()
-		if hasattr(self.parent,"getCurrentDescription") and "description" in self.parent:
+		if hasattr(self.parent, "getCurrentDescription") and "description" in self.parent:
 			self.parent["description"].text = self.parent.getCurrentDescription()
 
 class Setup(ConfigListScreen, Screen):

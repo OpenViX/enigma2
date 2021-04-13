@@ -148,7 +148,7 @@ If you discover 'bugs' please keep them reported on www.teamblue.tech.\n\nDo you
 		print "[SoftwareUpdate] latestImageTimestamp:", latestImageTimestamp
 		return latestImageTimestamp
 
-	def startActualUpdate(self,answer):
+	def startActualUpdate(self, answer):
 		if answer:
 			self.updating = True
 			self.opkg.startCmd(OpkgComponent.CMD_UPDATE)
@@ -276,7 +276,7 @@ If you discover 'bugs' please keep them reported on www.teamblue.tech.\n\nDo you
 			self.close()
 			return
 		if answer[1] == "cold":
-			self.session.open(TryQuitMainloop,retvalue=42)
+			self.session.open(TryQuitMainloop, retvalue=42)
 			self.close()
 		elif answer[1] == "channels":
 			self.channellist_only = 1

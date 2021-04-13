@@ -21,7 +21,7 @@ DEFAULTSKIN = _("<Default Skin>")
 class SkinSelector(Screen):
 
 	skinlist = []
-	root = os.path.join(eEnv.resolve("${datadir}"),"enigma2")
+	root = os.path.join(eEnv.resolve("${datadir}"), "enigma2")
 
 	def __init__(self, session, args=None):
 
@@ -92,7 +92,7 @@ class SkinSelector(Screen):
 		self.loadPreview()
 
 	def info(self):
-		aboutbox = self.session.open(MessageBox,_("STB-GUI Skinselector\n\nIf you experience any problems please contact\nstephan@reichholf.net\n\n\xA9 2006 - Stephan Reichholf"), MessageBox.TYPE_INFO)
+		aboutbox = self.session.open(MessageBox, _("STB-GUI Skinselector\n\nIf you experience any problems please contact\nstephan@reichholf.net\n\n\xA9 2006 - Stephan Reichholf"), MessageBox.TYPE_INFO)
 		aboutbox.setTitle(_("About..."))
 
 	def ok(self):
@@ -103,7 +103,7 @@ class SkinSelector(Screen):
 		self.skinfile = os.path.join(self.skinfile, SKINXML)
 
 		print "Skinselector: Selected Skin: " + self.root + self.skinfile
-		restartbox = self.session.openWithCallback(self.restartGUI,MessageBox,_("GUI needs a restart to apply a new skin\nDo you want to restart the GUI now?"), MessageBox.TYPE_YESNO)
+		restartbox = self.session.openWithCallback(self.restartGUI, MessageBox, _("GUI needs a restart to apply a new skin\nDo you want to restart the GUI now?"), MessageBox.TYPE_YESNO)
 		restartbox.setTitle(_("Restart GUI now?"))
 
 	def loadPreview(self):

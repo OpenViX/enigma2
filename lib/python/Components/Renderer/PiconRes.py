@@ -101,7 +101,7 @@ def resizePicon(pngname):
 	try:
 		from PIL import Image
 		im = Image.open(pngname)
-		im.resize((220,132)).save("/tmp/picon.png")
+		im.resize((220, 132)).save("/tmp/picon.png")
 		pngname = "/tmp/picon.png"
 	except:
 		print"[PiconRes] error resizePicon"
@@ -138,7 +138,7 @@ class PiconRes(Renderer):
 		for (attrib, value) in self.skinAttributes:
 			if attrib == "path":
 				self.addPath(value)
-				attribs.remove((attrib,value))
+				attribs.remove((attrib, value))
 		self.skinAttributes = attribs
 		return Renderer.applySkin(self, desktop, parent)
 

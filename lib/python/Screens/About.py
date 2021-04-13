@@ -177,7 +177,7 @@ class About(Screen):
 		AboutText += _("Python version: ") + about.getPythonVersionString() + "\n"
 		AboutText += _("Enigma2 debug level:\t%d") % eGetEnigmaDebugLvl() + "\n"
 
-		GStreamerVersion = _("GStreamer: ") + about.getGStreamerVersionString(cpu).replace("GStreamer","")
+		GStreamerVersion = _("GStreamer: ") + about.getGStreamerVersionString(cpu).replace("GStreamer", "")
 		self["GStreamerVersion"] = StaticText(GStreamerVersion)
 		AboutText += GStreamerVersion + "\n"
 
@@ -287,7 +287,7 @@ class TranslationInfo(Screen):
 			(type, value) = l
 			infomap[type] = value
 		#print infomap
-		self["actions"] = ActionMap(["SetupActions"],{"cancel": self.close,"ok": self.close})
+		self["actions"] = ActionMap(["SetupActions"], {"cancel": self.close, "ok": self.close})
 
 		translator_name = infomap.get("Language-Team", "none")
 		if translator_name == "none":
@@ -425,7 +425,7 @@ class CommitInfo(Screen):
 class ContactInfo(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
-		self["actions"] = ActionMap(["SetupActions"],{"cancel": self.close,"ok": self.close})
+		self["actions"] = ActionMap(["SetupActions"], {"cancel": self.close, "ok": self.close})
 		self.setTitle(_("Contact info"))
 		self["manufacturerinfo"] = StaticText(self.getManufacturerinfo())
 
@@ -467,7 +467,7 @@ class MemoryInfo(Screen):
 			mem = 1
 			free = 0
 			rows_in_column = self["params"].rows_in_column
-			for i, line in enumerate(open('/proc/meminfo','r')):
+			for i, line in enumerate(open('/proc/meminfo', 'r')):
 				s = line.strip().split(None, 2)
 				if len(s) == 3:
 					name, size, units = s
@@ -481,18 +481,18 @@ class MemoryInfo(Screen):
 				if name.startswith("MemFree") or name.startswith("Buffers") or name.startswith("Cached"):
 					free += int(size)
 				if i < rows_in_column:
-					ltext += "".join((name,"\n"))
-					lvalue += "".join((size," ",units,"\n"))
+					ltext += "".join((name, "\n"))
+					lvalue += "".join((size, " ", units, "\n"))
 				else:
-					rtext += "".join((name,"\n"))
-					rvalue += "".join((size," ",units,"\n"))
+					rtext += "".join((name, "\n"))
+					rvalue += "".join((size, " ", units, "\n"))
 			self['lmemtext'].setText(ltext)
 			self['lmemvalue'].setText(lvalue)
 			self['rmemtext'].setText(rtext)
 			self['rmemvalue'].setText(rvalue)
 			self["slide"].setValue(int(100.0 * (mem - free) / mem + 0.25))
-			self['pfree'].setText("%.1f %s" % (100. * free / mem,'%'))
-			self['pused'].setText("%.1f %s" % (100. * (mem - free) / mem,'%'))
+			self['pfree'].setText("%.1f %s" % (100. * free / mem, '%'))
+			self['pused'].setText("%.1f %s" % (100. * (mem - free) / mem, '%'))
 		except Exception, e:
 			print "[About] getMemoryInfo FAIL:", e
 
@@ -585,26 +585,26 @@ class SystemNetworkInfo(Screen):
 			v6 = 0
 			ns4 = ""
 			ns6 = ""
-			datei = open("/etc/resolv.conf","r")
+			datei = open("/etc/resolv.conf", "r")
 			for line in datei.readlines():
 				line = line.strip()
 				if "nameserver" in line:
 					if line.count(".") == 3:
 						v4 = v4 + 1
-						ns4 += str(v4) + ".IPv4 Nameserver" + ":" + line.strip().replace("nameserver ","") + "\n"
+						ns4 += str(v4) + ".IPv4 Nameserver" + ":" + line.strip().replace("nameserver ", "") + "\n"
 					if line.count(":") > 1 and line.count(":") < 8:
 						v6 = v6 + 1
-						ns6 += str(v6) + ".IPv6 Nameserver" + ":" + line.strip().replace("nameserver ","") + "\n"
+						ns6 += str(v6) + ".IPv6 Nameserver" + ":" + line.strip().replace("nameserver ", "") + "\n"
 			nameserver = ns4 + ns6
 			datei.close()
 			return nameserver.strip()
 
 		def domain():
 			domain = ""
-			for line in open('/etc/resolv.conf','r'):
+			for line in open('/etc/resolv.conf', 'r'):
 				line = line.strip()
 				if "domain" in line:
-					domain += line.strip().replace("domain ","")
+					domain += line.strip().replace("domain ", "")
 					return domain
 				else:
 					domain = _("no domain name found")
@@ -624,17 +624,17 @@ class SystemNetworkInfo(Screen):
 
 		def netspeed():
 			netspeed = ""
-			for line in popen('ethtool eth0 |grep Speed','r'):
+			for line in popen('ethtool eth0 |grep Speed', 'r'):
 				line = line.strip().split(":")
-				line = line[1].replace(' ','')
+				line = line[1].replace(' ', '')
 				netspeed += line
 				return str(netspeed)
 
 		def netspeed_eth1():
 			netspeed = ""
-			for line in popen('ethtool eth1 |grep Speed','r'):
+			for line in popen('ethtool eth1 |grep Speed', 'r'):
 				line = line.strip().split(":")
-				line = line[1].replace(' ','')
+				line = line[1].replace(' ', '')
 				netspeed += line
 				return str(netspeed)
 

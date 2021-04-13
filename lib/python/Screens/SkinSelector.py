@@ -266,7 +266,7 @@ class LcdSkinSelector(SkinSelector):
 			skin = "lcd_skin/" + skinFile
 			skinPath = pathjoin(self.rootDir, skinFile)
 			if exists(skinPath):
-				resolution = skinFile.replace(".xml", "").replace("skin_lcd_", "").replace("_"," ").capitalize()
+				resolution = skinFile.replace(".xml", "").replace("skin_lcd_", "").replace("_", " ").capitalize()
 				preview = pathjoin(previewPath, skinFile.replace(".xml", "_prev.png") or "prev.png")
 				if skin == DEFAULT_DISPLAY_SKIN:
 					list = [default, default, dir, skin, resolution, preview]
@@ -280,7 +280,7 @@ class LcdSkinSelector(SkinSelector):
 				if list[1]:
 					list[1] = "<%s>" % list[1]
 				#0=SortKey, 1=Label, 2=Flag, 3=Directory, 4=Skin, 5=Resolution, 6=Preview, 7=Label + Flag
-				skinList.append(tuple([list[0].replace("_"," ").capitalize()] + list))
+				skinList.append(tuple([list[0].replace("_", " ").capitalize()] + list))
 		skinList.sort()
 		self["skins"].setList(skinList)
 		# Set the list pointer to the current skin...
@@ -325,7 +325,7 @@ class ClockSkinSelector(SkinSelector):
 			skin = dir + skinFile
 			skinPath = pathjoin(self.rootDir, skinFile)
 			if exists(skinPath):
-				resolution = skinFile.replace(".xml", "").replace("clock_lcd_", "").replace("_"," ").capitalize()
+				resolution = skinFile.replace(".xml", "").replace("clock_lcd_", "").replace("_", " ").capitalize()
 				preview = pathjoin(previewPath, skinFile.replace(".xml", "_prev.png") or "prev.png")
 				if skin == DEFAULT_DISPLAY_SKIN:
 					list = [default, default, dir, skin, resolution, preview]
@@ -339,7 +339,7 @@ class ClockSkinSelector(SkinSelector):
 				if list[1]:
 					list[1] = "<%s>" % list[1]
 				#0=SortKey, 1=Label, 2=Flag, 3=Directory, 4=Skin, 5=Resolution, 6=Preview, 7=Label + Flag
-				skinList.append(tuple([list[0].replace("_"," ").capitalize()] + list))
+				skinList.append(tuple([list[0].replace("_", " ").capitalize()] + list))
 		skinList.sort()
 		self["skins"].setList(skinList)
 		# Set the list pointer to the current skin...

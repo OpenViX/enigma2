@@ -21,18 +21,18 @@ class AVSwitch:
 	def getOutputAspect(self):
 		valstr = config.av.aspectratio.value
 		if valstr in ("4_3_letterbox", "4_3_panscan"): # 4:3
-			return (4,3)
+			return (4, 3)
 		elif valstr == "16_9": # auto ... 4:3 or 16:9
 			try:
 				if "1" in open("/proc/stb/vmpeg/0/aspect", "r").read(): # 4:3
-					return (4,3)
+					return (4, 3)
 			except IOError:
 				pass
 		elif valstr in ("16_9_always", "16_9_letterbox"): # 16:9
 			pass
 		elif valstr in ("16_10_letterbox", "16_10_panscan"): # 16:10
-			return (16,10)
-		return (16,9)
+			return (16, 10)
+		return (16, 9)
 
 	def getFramebufferScale(self):
 		aspect = self.getOutputAspect()
@@ -222,7 +222,7 @@ def InitAVSwitch():
 	if SystemInfo["CanDownmixWMApro"]:
 		def setWMAproDownmix(configElement):
 			open("/proc/stb/audio/wmapro", "w").write(configElement.value)
-		config.av.downmix_wmapro = ConfigSelection(default="downmix", choices=[("downmix",_("Downmix")), ("passthrough",_("Passthrough")), ("multichannel",_("convert to multi channel PCM")), ("hdmi_best",_("use best, controlled by HDMI"))])
+		config.av.downmix_wmapro = ConfigSelection(default="downmix", choices=[("downmix", _("Downmix")), ("passthrough", _("Passthrough")), ("multichannel", _("convert to multi channel PCM")), ("hdmi_best", _("use best, controlled by HDMI"))])
 		config.av.downmix_wmapro.addNotifier(setWMAproDownmix)
 
 	if SystemInfo["CanAACTranscode"]:
@@ -239,7 +239,7 @@ def InitAVSwitch():
 	if SystemInfo["CanChangeOsdAlpha"]:
 		def setAlpha(config):
 			open("/proc/stb/video/alpha", "w").write(str(config.value))
-		config.av.osd_alpha = ConfigSlider(default=255, increment=5, limits=(20,255))
+		config.av.osd_alpha = ConfigSlider(default=255, increment=5, limits=(20, 255))
 		config.av.osd_alpha.addNotifier(setAlpha)
 
 	if os.path.exists("/proc/stb/vmpeg/0/pep_scaler_sharpness"):
@@ -253,9 +253,9 @@ def InitAVSwitch():
 				print "couldn't write pep_scaler_sharpness"
 
 		if getBoxType() in ('gbquad', 'gbquadplus'):
-			config.av.scaler_sharpness = ConfigSlider(default=5, limits=(0,26))
+			config.av.scaler_sharpness = ConfigSlider(default=5, limits=(0, 26))
 		else:
-			config.av.scaler_sharpness = ConfigSlider(default=13, limits=(0,26))
+			config.av.scaler_sharpness = ConfigSlider(default=13, limits=(0, 26))
 		config.av.scaler_sharpness.addNotifier(setScaler_sharpness)
 	else:
 		config.av.scaler_sharpness = NoSave(ConfigNothing())

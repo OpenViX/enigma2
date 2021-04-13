@@ -8,7 +8,7 @@ class WOL:
 		pass
 
 	def setWolState(self, value):
-		print '[WakeOnLAN] set:',value
+		print '[WakeOnLAN] set:', value
 		if fileExists("/proc/stb/fp/wol"):
 			f = open("/proc/stb/fp/wol", "w")
 			f.write(value)

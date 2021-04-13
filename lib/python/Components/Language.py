@@ -47,11 +47,11 @@ class Language:
 		self.addLanguage("Latviešu", "lv", "LV", "ISO-8859-15")
 		self.addLanguage("Македонски", "mk", "MK", "ISO-8859-5")
 		self.addLanguage("Nederlands", "nl", "NL", "ISO-8859-15")
-		self.addLanguage("Norsk Bokmål","nb", "NO", "ISO-8859-15")
+		self.addLanguage("Norsk Bokmål", "nb", "NO", "ISO-8859-15")
 		self.addLanguage("Norsk Nynorsk", "nn", "NO", "ISO-8859-15")
 		self.addLanguage("Polski", "pl", "PL", "ISO-8859-15")
 		self.addLanguage("Português", "pt", "PT", "ISO-8859-15")
-		self.addLanguage("Português do Brasil","pt", "BR", "ISO-8859-15")
+		self.addLanguage("Português do Brasil", "pt", "BR", "ISO-8859-15")
 		self.addLanguage("Romanian", "ro", "RO", "ISO-8859-15")
 		self.addLanguage("Русский", "ru", "RU", "ISO-8859-15")
 		self.addLanguage("Slovensky", "sk", "SK", "ISO-8859-15")
@@ -157,7 +157,7 @@ class Language:
 				return
 			elif delLang == "en_GB" or delLang == "pt_BR":
 				delLang = delLang.lower()
-				delLang = delLang.replace('_','-')
+				delLang = delLang.replace('_', '-')
 				os.system("opkg remove --autoremove --force-depends " + Lpackagename + delLang)
 			else:
 				os.system("opkg remove --autoremove --force-depends " + Lpackagename + delLang[:2])
@@ -168,7 +168,7 @@ class Language:
 				if len(x) > 2:
 					if x != lang and x != "de":
 						x = x.lower()
-						x = x.replace('_','-')
+						x = x.replace('_', '-')
 						os.system("opkg remove --autoremove --force-depends " + Lpackagename + x)
 				else:
 					if x != lang[:2] and x != "en" and x != "de":

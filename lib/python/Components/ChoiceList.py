@@ -8,11 +8,11 @@ def ChoiceEntryComponent(key=None, text=None):
 	text = ["--"] if text is None else text
 	res = [text]
 	if text[0] == "--":
-		x, y, w, h = skin.parameters.get("ChoicelistDash",(0, 0, 800, 25))
+		x, y, w, h = skin.parameters.get("ChoicelistDash", (0, 0, 800, 25))
 		res.append((eListboxPythonMultiContent.TYPE_TEXT, x, y, w, h, 0, RT_HALIGN_LEFT, "-" * 200))
 	else:
 		if key:
-			x, y, w, h = skin.parameters.get("ChoicelistName",(45, 0, 800, 25))
+			x, y, w, h = skin.parameters.get("ChoicelistName", (45, 0, 800, 25))
 			res.append((eListboxPythonMultiContent.TYPE_TEXT, x, y, w, h, 0, RT_HALIGN_LEFT, text[0]))
 			if key == "dummy":
 				png = None
@@ -27,10 +27,10 @@ def ChoiceEntryComponent(key=None, text=None):
 			else:
 				png = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "buttons/key_%s.png" % key))
 			if png:
-				x, y, w, h = skin.parameters.get("ChoicelistIcon",(5, 0, 30, 30))
+				x, y, w, h = skin.parameters.get("ChoicelistIcon", (5, 0, 30, 30))
 				res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, x, y, w, h, png))
 		else:
-			x, y, w, h = skin.parameters.get("ChoicelistNameSingle",(5, 0, 800, 25))
+			x, y, w, h = skin.parameters.get("ChoicelistNameSingle", (5, 0, 800, 25))
 			res.append((eListboxPythonMultiContent.TYPE_TEXT, x, y, w, h, 0, RT_HALIGN_LEFT, text[0]))
 	return res
 

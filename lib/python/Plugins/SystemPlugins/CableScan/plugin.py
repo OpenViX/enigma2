@@ -97,7 +97,7 @@ class CableScanStatus(Screen):
 config.plugins.CableScan = ConfigSubsection()
 config.plugins.CableScan.keepnumbering = ConfigYesNo(default=True)
 config.plugins.CableScan.hdlist = ConfigYesNo(default=True)
-config.plugins.CableScan.frequency = ConfigFloat(default=[130, 0], limits=[(42, 870),(0, 999)])
+config.plugins.CableScan.frequency = ConfigFloat(default=[130, 0], limits=[(42, 870), (0, 999)])
 config.plugins.CableScan.symbolrate = ConfigInteger(default=6900, limits=(1000, 7200))
 config.plugins.CableScan.networkid = ConfigInteger(default=0, limits=(0, 99999))
 config.plugins.CableScan.modulation = ConfigSelection(

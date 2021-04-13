@@ -24,7 +24,7 @@ from Components.Element import cached
 from Poll import Poll
 import datetime
 
-def cardnames(caid,prov):
+def cardnames(caid, prov):
 		if caid == '098C' and prov == '000000':
 				cn = 'SKY NDS V14'		#19E
 		elif caid == '09C4' and prov == '000000':
@@ -128,14 +128,14 @@ class PaxCaidDisplay(Poll, Converter, object):
 				caids = info.getInfoObject(iServiceInformation.sCAIDs)
 				if caids:
 					for cs in self.systemCaids:
-						caidlist[cs] = (self.systemCaids.get(cs),0)
+						caidlist[cs] = (self.systemCaids.get(cs), 0)
 					for caid in caids:
 						c = "%x" % int(caid)
 						if len(c) == 3:
 							c = "0%s" % c
 						c = c[:2].upper()
 						if self.systemCaids.has_key(c):
-							caidlist[c] = (self.systemCaids.get(c),1)
+							caidlist[c] = (self.systemCaids.get(c), 1)
 					ecm_info = self.ecmfile()
 					if ecm_info:
 						emu_caid = ecm_info.get("caid", "")
@@ -144,7 +144,7 @@ class PaxCaidDisplay(Poll, Converter, object):
 							if len(c) == 3:
 								c = "0%s" % c
 							c = c[:2].upper()
-							caidlist[c] = (self.systemCaids.get(c),2)
+							caidlist[c] = (self.systemCaids.get(c), 2)
 		return caidlist
 
 	getCaidlist = property(get_caidlist)
@@ -228,7 +228,7 @@ class PaxCaidDisplay(Poll, Converter, object):
 						protocol = ecm_info.get("protocol", "")
 						protocol = "%s" % protocol
 						if using:
-							karte = cardnames(caid,provid)
+							karte = cardnames(caid, provid)
 							if karte == 'Card':
 									karte = provider
 							karte = karte[:15]
@@ -252,13 +252,13 @@ class PaxCaidDisplay(Poll, Converter, object):
 									emprov = ecm_info.get("prov", "")
 									emprov = emprov.split(",")
 									emprov = emprov[0]
-									karte = cardnames(caid,emprov)
+									karte = cardnames(caid, emprov)
 									emprov = ":%s" % emprov
 									textvalue = "%s%s %s (EMU)" % (caid, emprov, karte)
 								else:
-									karte = cardnames(caid,prov)
+									karte = cardnames(caid, prov)
 									share = ecm_info.get("source", "")
-									share = share.lstrip("net").replace('(cccamd at ','').replace(')','').replace(' ','')
+									share = share.lstrip("net").replace('(cccamd at ', '').replace(')', '').replace(' ', '')
 									share = share.split(":")
 									share = share[0]
 									if karte == 'Card':
@@ -276,9 +276,9 @@ class PaxCaidDisplay(Poll, Converter, object):
 										textvalue = "%s:%s - %s - %s %s" % (caid, prov, ecm_time, share, karte)
 							#- oscam---#
 							oscsource = ecm_info.get("reader", "")
-							oscsource = oscsource.replace('emulator','EMU')
+							oscsource = oscsource.replace('emulator', 'EMU')
 							if oscsource:
-								karte = cardnames(caid,prov)
+								karte = cardnames(caid, prov)
 								karte = karte[:15]
 								if karte == 'Card':
 									karte = ''
@@ -302,17 +302,17 @@ class PaxCaidDisplay(Poll, Converter, object):
 								elif oscsource == "Cache":
 										textvalue = "%s %s:%s - %s - %s" % (karte, caid, prov, ecm_time, fromsorg)
 								elif protocol == "cccam":
-										textvalue = textvalue.replace('cccam','OsCam')
+										textvalue = textvalue.replace('cccam', 'OsCam')
 								elif protocol == "cccam_ext":
-										textvalue = textvalue.replace('cccam_ext','OsCam')
+										textvalue = textvalue.replace('cccam_ext', 'OsCam')
 								elif protocol == "cs357x":
-										textvalue = textvalue.replace('cs357x','Cs357x')
+										textvalue = textvalue.replace('cs357x', 'Cs357x')
 								elif protocol == "cs378x":
-										textvalue = textvalue.replace('cs378x','Cs378x')
+										textvalue = textvalue.replace('cs378x', 'Cs378x')
 								elif protocol == "newcamd":
-										textvalue = textvalue.replace('newcamd','Newcamd')
+										textvalue = textvalue.replace('newcamd', 'Newcamd')
 								elif protocol == "mouse":
-										textvalue = textvalue.replace('mouse','Mouse')
+										textvalue = textvalue.replace('mouse', 'Mouse')
 								else:
 									textvalue = textvalue
 							#--oscam--#
