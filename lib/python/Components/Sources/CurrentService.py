@@ -49,4 +49,3 @@ class CurrentService(PerServiceBase, Source):
 	def destroy(self):
 		PerServiceBase.destroy(self)
 		Source.destroy(self)
-

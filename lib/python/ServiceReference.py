@@ -80,7 +80,7 @@ def __list(serviceref):
 
 eServiceReference.list = __list
 
-# ref is obsolete but kept for compatibility. 
+# ref is obsolete but kept for compatibility.
 # A ServiceReference *is* an eServiceReference now, so you no longer need to use .ref
 
 

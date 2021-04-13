@@ -1528,11 +1528,11 @@ class InfoBarEPG:
 				iPlayableService.evUpdatedEventInfo: self.__evEventInfoChanged,
 			})
 
-		# Note regarding INFO button on the RCU. Some RCUs do not have an INFO button, but to make matters 
-		# more complicated they have an EPG button that sends KEY_INFO instead of KEY_EPG. To deal with 
-		# this the INFO button methods check SystemInfo["mapKeyInfoToEpgFunctions"] to see if the RCU has an INFO button 
+		# Note regarding INFO button on the RCU. Some RCUs do not have an INFO button, but to make matters
+		# more complicated they have an EPG button that sends KEY_INFO instead of KEY_EPG. To deal with
+		# this the INFO button methods check SystemInfo["mapKeyInfoToEpgFunctions"] to see if the RCU has an INFO button
 		# and if not the event is rerouted to the corresponding EPG button method of the same name.
-		
+
 		self["EPGActions"] = HelpableActionMap(self, "InfobarEPGActions",
 			{
 				"RedPressed": (self.RedPressed, self._helpRedPressed),
@@ -1587,14 +1587,14 @@ class InfoBarEPG:
 		plugins = [(p[0], p[1]) for p in self.getEPGPluginList()]
 		value = config.usage.defaultEPGType.value
 		selection = [i for i, p in enumerate(plugins) if p[0] == value]
-		self.session.openWithCallback(self.defaultEpgPluginChosen, ChoiceBox, title=_("Please select the default action of the EPG button"), 
+		self.session.openWithCallback(self.defaultEpgPluginChosen, ChoiceBox, title=_("Please select the default action of the EPG button"),
 			list=plugins, skin_name="EPGExtensionsList", selection=selection and selection[0] or 0)
 
 	def selectDefaultInfoPlugin(self):
 		plugins = [(p[0], p[1]) for p in self.getEPGPluginList()]
 		value = config.usage.defaultINFOType.value
 		selection = [i for i, c in enumerate(plugins) if c[0] == value]
-		self.session.openWithCallback(self.defaultInfoPluginChosen, ChoiceBox, title=_("Please select the default action of the INFO button"), 
+		self.session.openWithCallback(self.defaultInfoPluginChosen, ChoiceBox, title=_("Please select the default action of the INFO button"),
 			list=plugins, skin_name="EPGExtensionsList", selection=selection and selection[0] or 0)
 
 	def defaultEpgPluginChosen(self, answer):
@@ -1761,7 +1761,7 @@ class InfoBarEPG:
 				print("[InfoBarGenerics][UserDefinedButtons] Missing action method %s" % actionName)
 		if len(args) == 6 and args[0] == "open":
 			# open another EPG screen
-			self.session.openWithCallback(self.epgClosed, args[1], self.zapToService, 
+			self.session.openWithCallback(self.epgClosed, args[1], self.zapToService,
 				args[2], args[3], args[4], args[5])
 		elif len(args) == 1:
 			if args[0] == 'reopengrid':
@@ -1935,9 +1935,9 @@ class Seekbar(Screen):
 
 		self["actions"] = ActionMap(["WizardActions", "DirectionActions"],
 		{
-			"back": self.exit, 
-			"ok": self.keyOK, 
-			"left": self.keyLeft, 
+			"back": self.exit,
+			"ok": self.keyOK,
+			"left": self.keyLeft,
 			"right": self.keyRight
 		}, prio=-1)
 

@@ -163,7 +163,7 @@ class InfoBar(InfoBarBase, InfoBarShowHide,
 
 	def toogleTvRadio(self):
 		if self.radioTV:
-			self.showTv() 
+			self.showTv()
 		else:
 			self.showRadio()
 		self.radioTV ^= 1
@@ -238,7 +238,7 @@ class MoviePlayer(InfoBarBase, InfoBarShowHide, InfoBarLongKeyDetection, InfoBar
 
 	instance = None
 
-	# Call this to ensure the movie player is closed and, if a movie is playing, 
+	# Call this to ensure the movie player is closed and, if a movie is playing,
 	# the resume point saved. If a returnService is specified, then the movieplayer
 	# will switch to that service when it closes
 	@staticmethod

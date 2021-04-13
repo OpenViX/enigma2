@@ -33,7 +33,7 @@ from twisted.web.client import HTTPClientFactory
 try: # python 3
 	from urllib.parse import urlparse, urlunparse # raises ImportError in Python 2
 except ImportError: # Python 2
-	from urlparse import urlparse, urlunparse	
+	from urlparse import urlparse, urlunparse
 
 
 #TOGGLE_SHOW = InfoBar.toggleShow

@@ -304,7 +304,7 @@ class EventViewEPGSelect(Screen, EventViewBase):
 		else:
 			self["key_yellow"] = Button("")
 			self["yellow"].hide()
-			
+
 		if multiEPGCB:
 			self["key_blue"] = Button(_("Multi EPG"))
 			self["epgactions3"] = ActionMap(["EventViewEPGActions"],
@@ -314,5 +314,5 @@ class EventViewEPGSelect(Screen, EventViewBase):
 		else:
 			self["key_blue"] = Button("")
 			self["blue"].hide()
-		
+
 		self.updateButtons()
