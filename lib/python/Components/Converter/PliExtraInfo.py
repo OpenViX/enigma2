@@ -139,7 +139,8 @@ class PliExtraInfo(Poll, Converter, object):
 					pass
 
 			if color != Hex2strColor(colors[2]) or caid_entry[4]:
-				if res: res += " "
+				if res:
+					res += " "
 				res += color + caid_entry[3]
 
 		res += Hex2strColor(colors[3]) # white (this acts like a color "reset" for following strings
@@ -414,12 +415,18 @@ class PliExtraInfo(Poll, Converter, object):
 		sidpid = info.getInfo(iServiceInformation.sSID)
 		tsid = info.getInfo(iServiceInformation.sTSID)
 		onid = info.getInfo(iServiceInformation.sONID)
-		if vpid < 0 : vpid = 0
-		if apid < 0 : apid = 0
-		if pcrpid < 0 : pcrpid = 0
-		if sidpid < 0 : sidpid = 0
-		if tsid < 0 : tsid = 0
-		if onid < 0 : onid = 0
+		if vpid < 0 :
+			vpid = 0
+		if apid < 0 :
+			apid = 0
+		if pcrpid < 0 :
+			pcrpid = 0
+		if sidpid < 0 :
+			sidpid = 0
+		if tsid < 0 :
+			tsid = 0
+		if onid < 0 :
+			onid = 0
 		return "%d-%d:%05d:%04d:%04d:%04d" % (onid, tsid, sidpid, vpid, apid, pcrpid)
 
 	def createTransponderInfo(self, fedata, feraw, info):

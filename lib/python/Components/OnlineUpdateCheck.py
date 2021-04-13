@@ -189,7 +189,7 @@ class OnlineUpdateCheckPoller:
 		self.timer = eTimer()
 
 	# Class variables
-	MIN_INITIAL_DELAY = 40 * 60; # Wait at least 40 mins
+	MIN_INITIAL_DELAY = 40 * 60 # Wait at least 40 mins
 	checktimer_Notifier_Added = False
 
 	# Add optional args to start(), as it is now a callback from addNotifier

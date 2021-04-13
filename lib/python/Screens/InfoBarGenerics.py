@@ -1085,7 +1085,8 @@ class InfoBarNumberZap:
 				if not bouquetlist is None:
 					while True:
 						bouquet = bouquetlist.getNext()
-						if not bouquet.valid(): break
+						if not bouquet.valid():
+							break
 						if bouquet.flags & eServiceReference.isDirectory:
 							self.servicelist.clearPath()
 							self.servicelist.setRoot(bouquet)
@@ -1094,9 +1095,11 @@ class InfoBarNumberZap:
 								serviceIterator = servicelist.getNext()
 								while serviceIterator.valid():
 									service, bouquet2 = self.searchNumber(1)
-									if service == serviceIterator: break
+									if service == serviceIterator:
+										break
 									serviceIterator = servicelist.getNext()
-								if serviceIterator.valid() and service == serviceIterator: break
+								if serviceIterator.valid() and service == serviceIterator:
+									break
 					self.servicelist.enterPath(rootbouquet)
 					self.servicelist.enterPath(bouquet)
 					self.servicelist.saveRoot()

@@ -7,7 +7,8 @@ from Components.VariableText import VariableText
 
 class Button(VariableText, GUIComponent):
 	def __init__(self, text="", onClick=None):
-		if not onClick: onClick = []
+		if not onClick:
+			onClick = []
 		GUIComponent.__init__(self)
 		VariableText.__init__(self)
 		self.setText(text)

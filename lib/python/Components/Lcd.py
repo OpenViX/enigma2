@@ -317,16 +317,16 @@ def InitLcd():
 			("noscrolling", _("off"))])
 
 		def setLCDbright(configElement):
-			ilcd.setBright(configElement.value);
+			ilcd.setBright(configElement.value)
 
 		def setLCDstandbybright(configElement):
-			ilcd.setStandbyBright(configElement.value);
+			ilcd.setStandbyBright(configElement.value)
 
 		def setLCDdimbright(configElement):
-			ilcd.setDimBright(configElement.value);
+			ilcd.setDimBright(configElement.value)
 
 		def setLCDdimdelay(configElement):
-			ilcd.setDimDelay(configElement.value);
+			ilcd.setDimDelay(configElement.value)
 
 		def setLCDcontrast(configElement):
 			ilcd.setContrast(configElement.value)
@@ -341,7 +341,7 @@ def InitLcd():
 			ilcd.setMode(configElement.value)
 
 		def setLCDpower(configElement):
-			ilcd.setPower(configElement.value);
+			ilcd.setPower(configElement.value)
 
 		def setLCDminitvmode(configElement):
 			ilcd.setLCDMiniTVMode(configElement.value)
@@ -369,7 +369,7 @@ def InitLcd():
 		config.lcd.bright.addNotifier(setLCDbright)
 		config.lcd.bright.apply = lambda : setLCDbright(config.lcd.bright)
 		config.lcd.dimbright = ConfigSlider(default=standby_default, limits=(0, 10))
-		config.lcd.dimbright.addNotifier(setLCDdimbright);
+		config.lcd.dimbright.addNotifier(setLCDdimbright)
 		config.lcd.dimbright.apply = lambda : setLCDdimbright(config.lcd.dimbright)
 		config.lcd.dimdelay = ConfigSelection(default = "0", choices = [
 			("5", "5 " + _("seconds")),
@@ -381,7 +381,7 @@ def InitLcd():
 			("120", "2 " + _("minutes")),
 			("300", "5 " + _("minutes")),
 			("0", _("off"))])
-		config.lcd.dimdelay.addNotifier(setLCDdimdelay);
+		config.lcd.dimdelay.addNotifier(setLCDdimdelay)
 
 		config.lcd.invert = ConfigYesNo(default=False)
 		config.lcd.invert.addNotifier(setLCDinverted)
@@ -396,7 +396,7 @@ def InitLcd():
 
 		if SystemInfo["LcdPowerOn"]:
 			config.lcd.power = ConfigSelection([("0", _("Off")), ("1", _("On"))], "1")
-			config.lcd.power.addNotifier(setLCDpower);
+			config.lcd.power.addNotifier(setLCDpower)
 		else:
 			config.lcd.power = ConfigNothing()
 
