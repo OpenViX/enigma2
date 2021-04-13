@@ -36,7 +36,7 @@ def existBcmWifi(iface):
 
 def getWlConfName(iface):
 	return "/etc/wl.conf.%s" % iface
- 
+
 
 def getWlanConfigName(iface):
 	driver = iNetwork.detectWlanModule(iface)
@@ -135,7 +135,7 @@ class Wlan:
 
 					try:
 						channel = frequencies.index(ifobj._formatFrequency(result.frequency.getFrequency())) + 1
-					except: 
+					except:
 						channel = "Unknown"
 
 					aps[bssid] = {
@@ -205,9 +205,9 @@ class brcmWLConfig:
 		encryption = config.plugins.wlan.encryption.value
 		wepkeytype = config.plugins.wlan.wepkeytype.value
 		psk = config.plugins.wlan.psk.value
-		
+
 		fp = open(getWlanConfigName(iface), 'w')
-		
+
 		fp.write('ssid=' + essid + '\n')
 		if encryption in ('WPA', 'WPA2', 'WPA/WPA2', 'WEP'):
 			if encryption == "WPA/WPA2":
@@ -225,7 +225,7 @@ class brcmWLConfig:
 		config.plugins.wlan.encryption.value = "WPA2"
 		config.plugins.wlan.psk.value = ""
 		configfile = getWlanConfigName(iface)
-		
+
 		if os_path.exists(configfile):
 			print("[Wlan.py] parsing configfile: ", configfile)
 			fd = open(configfile, "r")
@@ -324,7 +324,7 @@ class wpaSupplicant:
 		encryption = config.plugins.wlan.encryption.value
 		wepkeytype = config.plugins.wlan.wepkeytype.value
 		psk = config.plugins.wlan.psk.value
-		
+
 		if existBcmWifi(iface):
 			self.writeBcmWifiConfig(iface, essid, encryption, psk)
 			return

@@ -101,7 +101,7 @@ class MultiBootSelector(Screen, HelpableScreen):
 		else:
 			list.append(ChoiceEntryComponent("", ((_("No images found")), "Waiter")))
 		self["config"].setList(list)
-		print("[MultiBootSelector] list X = %s" % list) 
+		print("[MultiBootSelector] list X = %s" % list)
 
 	def reboot(self):
 		self.currentSelected = self["config"].l.getCurrentSelection()

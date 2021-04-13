@@ -21,4 +21,3 @@ class Pixmap(Renderer):
 					self.instance.setPixmap(self.source.pixmap)
 		elif self.instance:
 			self.instance.setPixmap(None)
-

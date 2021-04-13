@@ -155,7 +155,7 @@ class EPGBouquetList(GUIComponent):
 				borderBottomPix = self.borderBottomPix
 				borderRightPix = self.borderRightPix
 				bgpng = self.othPix
-			
+
 			if bgpng is not None:
 				backColor = None
 				backColorSel = None

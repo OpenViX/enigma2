@@ -959,7 +959,7 @@ class MediaPlayer(Screen, InfoBarBase, InfoBarScreenSaver, InfoBarSeek, InfoBarA
 					self.summaries.setText(text, 3)
 				else:
 					self.summaries.setText(" ", 3)
- 
+
 				idx += 1
 				if idx < len(self.playlist):
 					currref = self.playlist.getServiceRefList()[idx]

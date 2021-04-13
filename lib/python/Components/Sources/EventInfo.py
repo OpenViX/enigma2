@@ -43,4 +43,3 @@ class EventInfo(PerServiceBase, Source, object):
 	def destroy(self):
 		PerServiceBase.destroy(self)
 		Source.destroy(self)
-

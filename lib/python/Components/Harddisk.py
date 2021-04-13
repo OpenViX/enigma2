@@ -237,7 +237,7 @@ class Harddisk:
 		if dev:
 			try:
 				stat = os.statvfs(dev)
-				print("[Harddisk] [diskSize]: stat.f_blocks: %s stat.f_bsize: %s" % (stat.f_blocks, stat.f_bsize))					
+				print("[Harddisk] [diskSize]: stat.f_blocks: %s stat.f_bsize: %s" % (stat.f_blocks, stat.f_bsize))
 				cap = int((stat.f_blocks * stat.f_bsize) / 1000 / 1000)
 			except (IOError, OSError) as err:
 				print("[Harddisk] Error: Failed to get disk size for '%s':" % dev, err)

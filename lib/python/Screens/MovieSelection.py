@@ -228,7 +228,7 @@ def copyServiceFiles(serviceref, dest, name=None):
 		# rethrow exception
 		raise Exception("Failed to copy")
 
-# Changes the title contained in a media file's .meta if it exists, otherwise, renames 
+# Changes the title contained in a media file's .meta if it exists, otherwise, renames
 # the media file and it's associated data files. Also renames a directory.
 
 
@@ -636,7 +636,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		self["key_yellow"] = Button("")
 		self["key_blue"] = Button("")
 		self._updateButtonTexts()
-		
+
 		self["key_menu"] = StaticText(_("MENU"))
 		self["key_info"] = StaticText(_("INFO"))
 
@@ -1079,7 +1079,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		if evt:
 			if six.PY3:
 				self.session.open(EventViewSimple, evt, ServiceReference(self.getCurrent()))
-			else:	
+			else:
 				self.session.open(EventViewSimple, evt, self.getCurrent())
 
 	def saveListsize(self):
@@ -1330,7 +1330,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			return
 		markedFiles = self.list.getMarked(excludeDirs=True)
 		markedFilesCount = len(markedFiles)
-	
+
 		# Rules:
 		#  - if a directory (include parent .. and trash can) is selected, marks are completely ignored and the directory is opened
 		#  - if a recording is selected, it's played using the single selection code
@@ -1987,7 +1987,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 
 	def do_createdir(self):
 		dirname = ""
-		# use most recently marked item or the selection as a template 
+		# use most recently marked item or the selection as a template
 		# for the new directory name
 		items = self.getMarkedOrCurrentSelection()
 		item = items[-1] if len(items) > 0 else None
@@ -2118,7 +2118,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			return
 		if six.PY3:
 			serviceref = ServiceReference(None, reftype=eServiceReference.idDVB, path=filepath)
-		else:		
+		else:
 			serviceref = eServiceReference(eServiceReference.idDVB, 0, filepath)
 		name = info.getName(item[0]) + " - decoded"
 		description = info.getInfoString(item[0], iServiceInformation.sDescription)
@@ -2177,7 +2177,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 				movedList.append(itemRef)
 			except Exception as ex:
 				failedList.append((name, ex))
-		
+
 		if movedList:
 			self["list"].removeServices(movedList)
 			movedCount = len(movedList)
@@ -2218,7 +2218,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 				self.list.removeMark(itemRef)
 			except Exception as ex:
 				failedList.append((name, ex))
-		
+
 		if failedList:
 			failedCount = len(failedList)
 			if failedCount == 1:

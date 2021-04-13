@@ -29,4 +29,3 @@ class VideoSize(Renderer, VariableText):
 			self.text = str(xresol) + 'x' + str(yresol)
 		else:
 			self.text = ''
-

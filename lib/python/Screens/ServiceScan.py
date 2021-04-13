@@ -114,7 +114,7 @@ class ServiceScan(Screen):
 		self.setTitle(_("Service scan"))
 		self.onFirstExecBegin.append(self.doServiceScan)
 		self.onClose.append(self.doPluginCB)
-	
+
 	def doPluginCB(self):
 		for p in plugins.getPlugins(PluginDescriptor.WHERE_SERVICESCAN):
 			p()

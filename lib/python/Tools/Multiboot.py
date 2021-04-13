@@ -36,7 +36,7 @@ def getparam(line, param):
 
 def getMultibootslots():
 	bootslots = {}
-	slotname = ""	
+	slotname = ""
 	if SystemInfo["MBbootdevice"]:
 		for file in glob.glob(path.join(tmp.dir, "STARTUP_*")):
 			if "STARTUP_RECOVERY" in file:
@@ -45,7 +45,7 @@ def getMultibootslots():
 			slotnumber = file.rsplit("_", 3 if "BOXMODE" in file else 1)[1][0]
 			slotname = file.rsplit("_", 3 if "BOXMODE" in file else 1)[1]
 			if len(slotname) != "1" and "BOXMODE" not in file:
-				slotname = slotname[1:] 
+				slotname = slotname[1:]
 			print("[multiboot] [getMultibootslots] slot = %s file = %s" % (slotnumber, slotname))
 			if slotnumber.isdigit() and slotnumber not in bootslots:
 				slot = {}
@@ -126,7 +126,7 @@ def GetImagelist():
 				reader = boxbranding_reader(imagedir)
 				# print("[multiboot] [GetImagelist]1 slot = %s imagedir = %s" % (slot, imagedir))
 				if path.isfile(path.join(imagedir, "usr/lib/enigma2/python/ImageIdentifier.py")):
-					print("[multiboot] [GetImagelist]2 slot = %s imagedir = %s" % (slot, imagedir))				
+					print("[multiboot] [GetImagelist]2 slot = %s imagedir = %s" % (slot, imagedir))
 					reader = readImageIdentifier(imagedir)
 				BuildType = reader.getImageType()
 				Build = reader.getImageBuild()
@@ -298,7 +298,7 @@ class readImageIdentifier():
 		else:
 			self.filepath = "%s/usr/lib/enigma2/python/" % OsPath
 		self.filename = "ImageIdentifier.py"
-		
+
 		self.methods = {
 			"getBoxType": "",
 			"getImageDistro": "",
@@ -309,7 +309,7 @@ class readImageIdentifier():
 			"getMachineBrand": "",
 			"getImageBuildDate": "",
 		}
-		
+
 		self.__getfile()
 		self.__readfile()
 
