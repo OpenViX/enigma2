@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-import os, unicodedata
+import os
+import unicodedata
 from Tools.Profile import profile
 
 from Screen import Screen

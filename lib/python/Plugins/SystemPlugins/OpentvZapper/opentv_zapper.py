@@ -16,7 +16,9 @@ from enigma import eDVBDB, eServiceReference, eTimer, eDVBFrontendParametersSate
 
 from time import localtime, time, strftime
 
-import os, codecs, re
+import os
+import codecs
+import re
 import six
 
 #for pip
