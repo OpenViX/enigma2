@@ -2,6 +2,7 @@ from Converter import Converter
 from time import localtime
 from Components.Element import cached
 
+
 class OMaclock(Converter, object):
 	DEFAULT = 0
 	OMA_SEC = 1

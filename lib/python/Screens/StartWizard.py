@@ -29,6 +29,7 @@ else:
 	config.misc.do_overscanwizard = ConfigBoolean(default=False)
 config.misc.check_developimage = ConfigBoolean(default=True)
 
+
 class StartWizard(WizardLanguage, Rc):
 	def __init__(self, session, silent=True, showSteps=False, neededTag=None):
 		self.xmlfile = ["startwizard.xml"]
@@ -48,12 +49,14 @@ class StartWizard(WizardLanguage, Rc):
 		config.misc.firstrun.save()
 		configfile.save()
 
+
 def checkForDevelopImage():
 	if "DEV" in about.getImageTypeString() or "beta" in about.getImageTypeString():
 		return config.misc.check_developimage.value
 	elif not config.misc.check_developimage.value:
 		config.misc.check_developimage.value = True
 		config.misc.check_developimage.save()
+
 
 class DevelopWizard(MessageBox):
 	def __init__(self, session):
@@ -64,6 +67,7 @@ class DevelopWizard(MessageBox):
 			config.misc.check_developimage.value = False
 			config.misc.check_developimage.save()
 		MessageBox.close(self)
+
 
 class LanguageDeleteWizard(MessageBox):
 	def __init__(self, session):
@@ -78,6 +82,7 @@ class LanguageDeleteWizard(MessageBox):
                 config.misc.ask_languagedeletion.save()
 		configfile.save()
 		MessageBox.close(self)
+
 
 wizardManager.registerWizard(DevelopWizard, checkForDevelopImage(), priority=0)
 wizardManager.registerWizard(LanguageWizard, config.misc.languageselected.value, priority=10)

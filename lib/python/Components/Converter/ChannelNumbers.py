@@ -1,5 +1,6 @@
 from Components.NimManager import nimmanager
 
+
 class ChannelNumbers:
 
 	def getChannelNumber(self, frequency, nim):
@@ -57,5 +58,6 @@ class ChannelNumbers:
 			elif 21 <= channel <= 69:
 				return (474000 + 8000 * (channel - 21)) * 1000
 		return 474000000
+
 
 channelnumbers = ChannelNumbers()

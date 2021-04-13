@@ -3,6 +3,7 @@ from time import time, localtime, mktime
 from enigma import eTimer
 import datetime
 
+
 class TimerEntry:
 	StateWaiting = 0
 	StatePrepared = 1
@@ -131,6 +132,7 @@ class TimerEntry:
 
 	def enable(self):
 		self.disabled = False
+
 
 class Timer:
 	# the time between "polls". We do this because

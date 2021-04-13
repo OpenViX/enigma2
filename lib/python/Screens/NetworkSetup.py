@@ -23,6 +23,7 @@ from Plugins.Plugin import PluginDescriptor
 from enigma import eTimer, eConsoleAppContainer
 from boxbranding import getBoxType
 
+
 class NetworkAdapterSelection(Screen, HelpableScreen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
@@ -295,6 +296,7 @@ class NameserverSetup(Screen, ConfigListScreen, HelpableScreen):
 			self.createConfig()
 			self.createSetup()
 
+
 class NetworkMacSetup(Screen, ConfigListScreen, HelpableScreen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
@@ -360,6 +362,7 @@ class NetworkMacSetup(Screen, ConfigListScreen, HelpableScreen):
 
 	def cancel(self):
 		self.close()
+
 
 class IPv6Setup(Screen, ConfigListScreen, HelpableScreen):
 	def __init__(self, session):
@@ -490,6 +493,7 @@ class IPv6Setup(Screen, ConfigListScreen, HelpableScreen):
 
 	def cancel(self):
 		self.close()
+
 
 class AdapterSetup(Screen, ConfigListScreen, HelpableScreen):
 	def __init__(self, session, networkinfo, essid=None):
@@ -957,7 +961,6 @@ class AdapterSetupConfiguration(Screen, HelpableScreen):
 		self.updateStatusbar()
 		self.onLayoutFinish.append(self.layoutFinished)
 		self.onClose.append(self.cleanup)
-
 
 	def queryWirelessDevice(self, iface):
 		try:
@@ -1661,6 +1664,7 @@ class NetworkAdapterTest(Screen):
 		else:
 			iStatus.stopWlanConsole()
 
+
 class NetworkPassword(ConfigListScreen, Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
@@ -1760,7 +1764,6 @@ class NetworkPassword(ConfigListScreen, Screen):
 			self["config"].getCurrent()[1].setValue(callback)
 			self["config"].invalidate(self["config"].getCurrent())
 		self.showHelpWindow()
-
 
 	def dataAvail(self, data):
 		self.output_line += data

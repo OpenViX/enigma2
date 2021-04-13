@@ -23,6 +23,7 @@ config.plugins.configurationbackup = BackupRestore_InitConfig()
 
 backupfile = "enigma2settingsbackup.tar.gz"
 
+
 def checkConfigBackup():
 	parts = [(r.description, r.mountpoint) for r in harddiskmanager.getMountedPartitions(onlyhotplug=False)]
 	for x in parts:
@@ -58,6 +59,7 @@ def checkConfigBackup():
 					return x
 		return None
 
+
 def checkBackupFile():
 	backuplocation = config.plugins.configurationbackup.backuplocation.value
 	if backuplocation.endswith('/'):
@@ -81,10 +83,12 @@ def checkBackupFile():
 			else:
 				return False
 
+
 if checkConfigBackup() is None:
 	backupAvailable = 0
 else:
 	backupAvailable = 1
+
 
 class ImageWizard(WizardLanguage, Rc):
 	skin = """
@@ -103,6 +107,7 @@ class ImageWizard(WizardLanguage, Rc):
 			<widget name="arrowup" pixmap="arrowup.png" position="-100,-100" zPosition="11" size="37,70" alphatest="on" />
 			<widget name="arrowup2" pixmap="arrowup.png" position="-100,-100" zPosition="11" size="37,70" alphatest="on" />
 		</screen>"""
+
 	def __init__(self, session):
 		self.xmlfile = resolveFilename(SCOPE_PLUGINS, "SystemPlugins/SoftwareManager/imagewizard.xml")
 		WizardLanguage.__init__(self, session, showSteps=False, showStepSlider=False)

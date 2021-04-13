@@ -16,6 +16,7 @@ else:
 
 #print "LCDSIZE400: ", LCDSIZE400
 
+
 class OMaClockLcd(Renderer):
 	def __init__(self):
 		Renderer.__init__(self)

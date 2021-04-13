@@ -6,6 +6,7 @@ from enigma import ePixmap, loadJPG
 import os
 import re
 
+
 class pstrRndr(Renderer):
 
 	def __init__(self):

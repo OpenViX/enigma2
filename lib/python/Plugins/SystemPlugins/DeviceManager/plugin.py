@@ -5,13 +5,16 @@ from HddSetup import HddSetup
 from HddMount import HddFastRemove
 from Plugins.Plugin import PluginDescriptor
 
+
 def deviceManagerMain(session, **kwargs):
 	session.open(HddSetup)
+
 
 def deviceManagerSetup(menuid, **kwargs):
 	if menuid != "harddisk_menu":
 		return []
 	return [(_("Device Manager"), deviceManagerMain, "deviceManager", 1)]
+
 
 def deviceManagerFastRemove(session, **kwargs):
 	session.open(HddFastRemove)

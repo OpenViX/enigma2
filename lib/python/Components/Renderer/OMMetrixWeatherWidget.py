@@ -34,6 +34,7 @@ std_headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_3) App
  'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
  'Accept-Language': 'ru,en-us;q=0.7,en;q=0.3'}
 
+
 def initWeatherConfig():
 	config.plugins.MetrixWeather = ConfigSubsection()
 	#MetrixWeather
@@ -63,7 +64,9 @@ def initWeatherConfig():
 	config.plugins.MetrixWeather.save()
 	configfile.save()
 
+
 initWeatherConfig()
+
 
 class OMMetrixWeatherWidget(Renderer):
 

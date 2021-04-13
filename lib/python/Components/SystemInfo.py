@@ -8,17 +8,20 @@ SystemInfo["HasRootSubdir"] = False	# This needs to be here so it can be reset b
 SystemInfo["RecoveryMode"] = False or fileCheck("/proc/stb/fp/boot_mode")	# This needs to be here so it can be reset by getMultibootslots!
 from Tools.Multiboot import getMBbootdevice, getMultibootslots  # This import needs to be here to avoid a SystemInfo load loop!
 
+
 def getNumVideoDecoders():
 	number_of_video_decoders = 0
 	while fileExists("/dev/dvb/adapter0/video%d" % (number_of_video_decoders), 'f'):
 		number_of_video_decoders += 1
 	return number_of_video_decoders
 
+
 def countFrontpanelLEDs():
 	number_of_leds = fileExists("/proc/stb/fp/led_set_pattern") and 1 or 0
 	while fileExists("/proc/stb/fp/led%d_pattern" % number_of_leds):
 		number_of_leds += 1
 	return number_of_leds
+
 
 def getHasTuners():
 	if fileExists("/proc/bus/nim_sockets"):
@@ -27,6 +30,7 @@ def getHasTuners():
 		nimfile.close()
 		return len(data) > 0
 	return False
+
 
 SystemInfo["CommonInterface"] = eDVBCIInterfaces.getInstance().getNumOfSlots()
 SystemInfo["CommonInterfaceCIDelay"] = fileCheck("/proc/stb/tsmux/rmx_delay")

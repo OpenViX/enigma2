@@ -43,6 +43,7 @@ for aspect in ASPECT:
 
 aspect_ratio_switch = None
 
+
 class GBAspectRatioSwitchSetup(ConfigListScreen, Screen):
 	skin = """
 		<screen position="100,100" size="550,400" title="AspectRatioSwitch Setup">
@@ -104,6 +105,7 @@ class GBAspectRatioSwitchSetup(ConfigListScreen, Screen):
 		for x in self["config"].list:
 			x[1].cancel()
 		self.close()
+
 
 class GBAspectRatioSwitch:
 
@@ -173,6 +175,7 @@ class GBAspectRatioSwitch:
 			Notifications.AddPopup(text=ASPECTMSG[ASPECT[newaspectnum]], type=MessageBox.TYPE_INFO, timeout=2, id='GBAspectRatioSwitch')
 		#print 'GBAspectRatioSwitch: Changed aspect ratio from %d - %s to %d - %s' % (aspectnum, ASPECT[aspectnum], newaspectnum, ASPECT[newaspectnum])
 
+
 def autostart(reason, **kwargs):
 	global aspect_ratio_switch
 	if reason == 0: # startup
@@ -185,13 +188,16 @@ def autostart(reason, **kwargs):
 		if aspect_ratio_switch is not None:
 			aspect_ratio_switch.disable()
 
+
 def main(session, **kwargs):
 	session.open(GBAspectRatioSwitchSetup)
+
 
 def startGBAspectRatioSwitch(menuid):
 	if menuid != "video_menu":
 		return []
 	return [(_("AspectRatio switch"), main, "aspectratio_switch", 99)]
+
 
 def Plugins(**kwargs):
 	return [

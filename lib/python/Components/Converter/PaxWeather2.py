@@ -28,6 +28,7 @@ from xml.etree.cElementTree import fromstring
 WEATHER_DATA = None
 WEATHER_LOAD = True
 
+
 class PaxWeather2(Poll, Converter, object):
 	TempNow = 1
 	MeteoNow = 2

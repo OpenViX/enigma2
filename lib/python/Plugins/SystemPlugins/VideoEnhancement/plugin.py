@@ -12,6 +12,7 @@ from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
 import VideoEnhancement
 
+
 class VideoEnhancementSetup(Screen, ConfigListScreen):
 
 	skin = """
@@ -414,13 +415,16 @@ class VideoEnhancementPreview(Screen, ConfigListScreen):
 		from Screens.Setup import SetupSummary
 		return SetupSummary
 
+
 def videoEnhancementSetupMain(session, **kwargs):
 	session.open(VideoEnhancementSetup)
+
 
 def startSetup(menuid):
 	if menuid != "video_menu":
 		return []
 	return [(_("Extended settings"), videoEnhancementSetupMain, "videoenhancement_setup", 41)]
+
 
 def Plugins(**kwargs):
 	list = []

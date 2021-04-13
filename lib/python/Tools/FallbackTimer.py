@@ -7,6 +7,7 @@ from urllib import quote
 import xml
 from base64 import encodestring
 
+
 class FallbackTimerList():
 
 	def __init__(self, parent, fallbackFunction, fallbackFunctionNOK=None):
@@ -151,6 +152,7 @@ class FallbackTimerList():
 	def fallbackNOK(self, answer=None):
 		self.fallbackFunctionNOK()
 
+
 class FallbackTimerDirs(FallbackTimerList):
 
 	def getFallbackTimerList(self):
@@ -175,6 +177,7 @@ class FallbackTimerDirs(FallbackTimerList):
 			self.fallbackFunction(currlocation[0], self.locations)
 		else:
 			self.fallbackFunction()
+
 
 class FallbackTimerClass(TimerObject):
 	def __init__(self, service_ref="", name="", disabled=0,

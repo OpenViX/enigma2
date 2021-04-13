@@ -2,6 +2,7 @@ from boxbranding import *
 
 hw_info = None
 
+
 class HardwareInfo:
 	device_name = _("unavailable")
 	device_model = None
@@ -51,7 +52,6 @@ class HardwareInfo:
 			self.device_hdmi = False
 
 		print "Detected: " + self.get_device_string()
-
 
 	def get_device_name(self):
 		return hw_info.device_name

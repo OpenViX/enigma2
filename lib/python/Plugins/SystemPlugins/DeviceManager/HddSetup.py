@@ -23,6 +23,7 @@ from boxbranding import getMachineBrand, getMachineName
 import os
 import sys
 
+
 def DiskEntry(model, size, removable):
 	if removable:
 		picture = LoadPixmap(cached=True, path=resolveFilename(SCOPE_CURRENT_PLUGIN, "SystemPlugins/DeviceManager/icons/diskusb.png"))
@@ -30,6 +31,7 @@ def DiskEntry(model, size, removable):
 		picture = LoadPixmap(cached=True, path=resolveFilename(SCOPE_CURRENT_PLUGIN, "SystemPlugins/DeviceManager/icons/disk.png"))
 
 	return (picture, model, size)
+
 
 class HddSetup(Screen):
 	skin = """

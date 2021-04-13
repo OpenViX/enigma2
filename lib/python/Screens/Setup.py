@@ -22,11 +22,13 @@ except:
 setupdom = xml.etree.cElementTree.parse(setupfile)
 setupfile.close()
 
+
 def getConfigMenuItem(configElement):
 	for item in setupdom.getroot().findall('./setup/item/.'):
 		if item.text == configElement:
 			return _(item.attrib["text"]), eval(configElement)
 	return "", None
+
 
 class SetupError(Exception):
 	def __init__(self, message):
@@ -34,6 +36,7 @@ class SetupError(Exception):
 
 	def __str__(self):
 		return self.msg
+
 
 class SetupSummary(Screen):
 
@@ -62,6 +65,7 @@ class SetupSummary(Screen):
 		self["SetupValue"].text = self.parent.getCurrentValue()
 		if hasattr(self.parent, "getCurrentDescription") and "description" in self.parent:
 			self.parent["description"].text = self.parent.getCurrentDescription()
+
 
 class Setup(ConfigListScreen, Screen):
 
@@ -186,12 +190,14 @@ class Setup(ConfigListScreen, Screen):
 	def run(self):
 		self.keySave()
 
+
 def getSetupTitle(id):
 	xmldata = setupdom.getroot()
 	for x in xmldata.findall("setup"):
 		if x.get("key") == id:
 			return x.get("title", "").encode("UTF-8")
 	raise SetupError("unknown setup id '%s'!" % repr(id))
+
 
 def getSetupTitleLevel(id):
 	try:

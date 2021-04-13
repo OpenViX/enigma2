@@ -6,6 +6,7 @@ import gettext
 #def localeInit():
 #	gettext.bindtextdomain("DeviceManager", resolveFilename(SCOPE_PLUGINS, "SystemPlugins/DeviceManager/locale"))
 
+
 def _(txt):
 	t = gettext.dgettext("DeviceManager", txt)
 	if t == txt:

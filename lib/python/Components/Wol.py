@@ -3,6 +3,7 @@ from Components.SystemInfo import SystemInfo
 from Tools.Directories import fileExists
 from boxbranding import getBoxType
 
+
 class WOL:
 	def __init__(self):
 		pass
@@ -13,6 +14,7 @@ class WOL:
 			f = open("/proc/stb/fp/wol", "w")
 			f.write(value)
 			f.close()
+
 
 def Init():
 	if SystemInfo["WakeOnLAN"] and getBoxType() in ('gbquadplus', 'quadbox2400'):

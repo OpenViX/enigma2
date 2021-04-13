@@ -65,6 +65,7 @@ pname = _("File Commander - Addon Movieplayer")
 pdesc = _("play Files")
 last_service = None
 
+
 class stat_info:
 	def __init__(self):
 		pass
@@ -132,8 +133,11 @@ class stat_info:
 		# commented out
 		#return time.strftime(config.usage.date.daylong.value + " " + config.usage.time.long.value, time.localtime(t))
 		return time_strftime("%d.%m.%Y - %H:%M:%S", time_localtime(t))
+
+
 task_Stout = []
 task_Sterr = []
+
 
 class task_postconditions(Condition):
 	def check(self, task):
@@ -180,6 +184,7 @@ class task_postconditions(Condition):
 		#else:
 		Notifications.AddNotification(MessageBox, message, type=messageboxtyp, timeout=timeout)
 
+
 def task_processStdout(data):
 	global task_Stout
 	for line in data.split('\n'):
@@ -188,6 +193,7 @@ def task_processStdout(data):
 	while len(task_Stout) > 10:
 		task_Stout.pop(0)
 
+
 def task_processSterr(data):
 	global task_Sterr
 	for line in data.split('\n'):
@@ -195,6 +201,7 @@ def task_processSterr(data):
 			task_Sterr.append(line)
 	while len(task_Sterr) > 10:
 		task_Sterr.pop(0)
+
 
 class key_actions(stat_info):
 	hashes = {

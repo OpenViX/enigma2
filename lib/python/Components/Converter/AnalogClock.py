@@ -2,6 +2,7 @@ from Components.Converter.Converter import Converter
 from Components.Element import cached
 from time import localtime
 
+
 class AnalogClock(Converter, object):
 
 	def __init__(self, type):
@@ -29,6 +30,5 @@ class AnalogClock(Converter, object):
 			return int((t.tm_min * 100) / 60)
 		elif self.type == 3:
 			return int(((t.tm_hour * 100) / 12) + (t.tm_min / 8))
-
 
 	value = property(getValue)

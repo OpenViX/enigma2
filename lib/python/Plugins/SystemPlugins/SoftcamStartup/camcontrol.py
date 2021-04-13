@@ -1,8 +1,10 @@
 import os
 
+
 class CamControl:
 	'''CAM convention is that a softlink named /etc/init.c/softcam.* points
 	to the start/stop script.'''
+
 	def __init__(self, name):
 		self.name = name
 		self.link = '/etc/init.d/' + name

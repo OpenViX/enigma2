@@ -16,6 +16,7 @@ from boxbranding import getBoxType, getImageVersion, getMachineBuild, getImageTy
 from Tools.Directories import fileExists
 from urllib2 import urlopen
 
+
 class UpdatePlugin(Screen, ProtectedScreen):
 	skin = """
 		<screen name="UpdatePlugin" position="center,center" size="550,300">

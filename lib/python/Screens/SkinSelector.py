@@ -231,6 +231,7 @@ class SkinSelector(Screen, HelpableScreen):
 			current = current.replace("_", " ")
 		return current
 
+
 class LcdSkinSelector(SkinSelector):
 	def __init__(self, session, screenTitle=_("Display Skin")):
 		SkinSelector.__init__(self, session, screenTitle=screenTitle)
@@ -289,6 +290,7 @@ class LcdSkinSelector(SkinSelector):
 				self["skins"].setIndex(index)
 				break
 		self.loadPreview()
+
 
 class ClockSkinSelector(SkinSelector):
 	def __init__(self, session, screenTitle=_("Clock Skin")):
@@ -356,6 +358,7 @@ class ClockSkinSelector(SkinSelector):
 		self.config.save()
 		loadSkin(skin, scope=SCOPE_CURRENT_LCDSKIN, desktop=getDesktop(DISPLAY_SKIN_ID), screenID=DISPLAY_SKIN_ID)
 		self.cancel()
+
 
 class SkinSelectorSummary(Screen):
 	def __init__(self, session, parent):

@@ -26,6 +26,7 @@ SIZE_UNITS = ['B',
  'PB',
  'EB']
 
+
 class STBInfo(Poll, Converter):
     HDDTEMP = 0
     LOADAVG = 1

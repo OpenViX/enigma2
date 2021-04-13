@@ -4,6 +4,7 @@ from Components.Converter.ClientsStreaming import ClientsStreaming
 import skin
 from Components.Sources.StaticText import StaticText
 
+
 class StreamingClientsInfo(Screen):
 		skin = """<screen name="StreamingClientsInfo" position="center,center" size="600,500">
 		<eLabel position="center,117" zPosition="-2" size="600,500" backgroundColor="#25062748" />
@@ -11,6 +12,7 @@ class StreamingClientsInfo(Screen):
 		<widget source="total" render="Label" position="center,174" size="580,50" zPosition="1" font="Regular; 22" halign="left" backgroundColor="#25062748" valign="center" />
 		<widget source="liste" render="Label" position="center,234" size="580,370" zPosition="1" noWrap="1" font="Regular; 20" valign="top" />
 	</screen>"""
+
 		def __init__(self, session):
 			Screen.__init__(self, session)
 			self.setTitle(_("Streaming clients info"))

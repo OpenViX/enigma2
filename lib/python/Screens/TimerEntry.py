@@ -24,6 +24,7 @@ from enigma import eEPGCache, iRecordableServicePtr
 from time import localtime, mktime, time, strftime
 from datetime import datetime
 
+
 class TimerEntry(Screen, ConfigListScreen):
 	def __init__(self, session, timer, edit=False):
 		Screen.__init__(self, session)
@@ -325,6 +326,7 @@ class TimerEntry(Screen, ConfigListScreen):
 				self.openMovieLocationBox()
 			elif len(menu) == 2:
 				text = _("Select action")
+
 				def selectAction(choice):
 					if choice:
 						if choice[1] == "timername":
@@ -553,6 +555,7 @@ class TimerEntry(Screen, ConfigListScreen):
 			self.timerentry_tags = ret
 			self.timerentry_tagsset.setChoices([not ret and _("None") or " ".join(ret)])
 			self["config"].invalidate(self.tagsSet)
+
 
 class TimerLog(Screen):
 	def __init__(self, session, timer):

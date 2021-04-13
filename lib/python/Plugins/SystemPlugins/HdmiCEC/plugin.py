@@ -3,6 +3,7 @@ from Components.ConfigList import ConfigListScreen
 from Components.config import config, getConfigListEntry
 from Components.Sources.StaticText import StaticText
 
+
 class HdmiCECSetupScreen(Screen, ConfigListScreen):
 	skin = """
 	<screen position="c-300,c-250" size="600,500" title="HDMI-CEC setup">
@@ -139,14 +140,17 @@ class HdmiCECSetupScreen(Screen, ConfigListScreen):
 				inhibitDirs=inhibitDirs, minFree=1
 				)
 
+
 def main(session, **kwargs):
 	session.open(HdmiCECSetupScreen)
+
 
 def startSetup(menuid):
 	# only show in the menu when set to intermediate or higher
 	if menuid == "devices_menu" and config.av.videoport.value == "DVI" and config.usage.setup_level.index >= 1:
 		return [(_("HDMI-CEC"), main, "hdmi_cec_setup", 0)]
 	return []
+
 
 def Plugins(**kwargs):
 	from os import path

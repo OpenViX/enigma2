@@ -27,6 +27,7 @@ from Components.ConfigList import ConfigListScreen
 from Components.ActionMap import ActionMap
 from Components.Sources.StaticText import StaticText
 
+
 class OMMetrixWeatherSetup(Screen, ConfigListScreen):
 	skin = """
 		<screen name="MetrixWeatherSetup" position="160,150" size="450,200" title="Weather Setup">

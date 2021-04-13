@@ -9,6 +9,7 @@ from SystemInfo import SystemInfo
 import os
 import time
 
+
 def InitUsageConfig():
 	try:
 		file = open('/etc/image-version', 'r')
@@ -35,6 +36,7 @@ def InitUsageConfig():
 	config.usage.multibouquet = ConfigYesNo(default=True)
 
 	config.usage.alternative_number_mode = ConfigYesNo(default=False)
+
 	def alternativeNumberModeChange(configElement):
 		eDVBDB.getInstance().setNumberingMode(configElement.value)
 		refreshServiceList()
@@ -380,6 +382,7 @@ def InitUsageConfig():
 		if os.path.exists("/proc/stb/fp/fan_choices"):
 			choicelist = [x for x in choicelist if x[0] in open("/proc/stb/fp/fan_choices", "r").read().strip().split(" ")]
 		config.usage.fan = ConfigSelection(choicelist)
+
 		def fanChanged(configElement):
 			open(SystemInfo["Fan"], "w").write(configElement.value)
 		config.usage.fan.addNotifier(fanChanged)
@@ -457,6 +460,7 @@ def InitUsageConfig():
 	config.epg.saveepg = ConfigYesNo(default=True)
 	config.epg.opentv = ConfigYesNo(default=False)
 	config.misc.showradiopic = ConfigYesNo(default=True)
+
 	def EpgSettingsChanged(configElement):
 		from enigma import eEPGCache
 		mask = 0xffffffff
@@ -484,6 +488,7 @@ def InitUsageConfig():
 	config.epg.opentv.addNotifier(EpgSettingsChanged)
 
 	config.epg.histminutes = ConfigSelectionNumber(min=0, max=120, stepwidth=15, default=0, wraparound=True)
+
 	def EpgHistorySecondsChanged(configElement):
 		from enigma import eEPGCache
 		eEPGCache.getInstance().setEpgHistorySeconds(config.epg.histminutes.getValue() * 60)
@@ -491,9 +496,11 @@ def InitUsageConfig():
 
 	config.epg.cacheloadsched = ConfigYesNo(default=False)
 	config.epg.cachesavesched = ConfigYesNo(default=False)
+
 	def EpgCacheLoadSchedChanged(configElement):
 		import EpgLoadSave
 		EpgLoadSave.EpgCacheLoadCheck()
+
 	def EpgCacheSaveSchedChanged(configElement):
 		import EpgLoadSave
 		EpgLoadSave.EpgCacheSaveCheck()
@@ -542,6 +549,7 @@ def InitUsageConfig():
 			if p.mountpoint != '/':
 				debugpath.append((d + '/logs/', p.mountpoint))
 	config.crash.debug_path = ConfigSelection(default="/home/root/logs/", choices=debugpath)
+
 	def updatedebug_path(configElement):
 		if not os.path.exists(config.crash.debug_path.getValue()):
 			os.mkdir(config.crash.debug_path.getValue(), 0755)
@@ -569,6 +577,7 @@ def InitUsageConfig():
 
 	def updateEraseSpeed(el):
 		eBackgroundFileEraser.getInstance().setEraseSpeed(int(el.value))
+
 	def updateEraseFlags(el):
 		eBackgroundFileEraser.getInstance().setEraseFlags(int(el.value))
 	config.misc.erase_speed = ConfigSelection(default="20", choices=[
@@ -786,10 +795,13 @@ def InitUsageConfig():
 		("NAR", _("Visual impaired commentary"))]
 
 	epg_language_choices = audio_language_choices[:1] + audio_language_choices[2:]
+
 	def setEpgLanguage(configElement):
 		eServiceEvent.setEPGLanguage(configElement.value)
+
 	def setEpgLanguageAlternative(configElement):
 		eServiceEvent.setEPGLanguageAlternative(configElement.value)
+
 	def epglanguage(configElement):
 		config.autolanguage.audio_epglanguage.setChoices([x for x in epg_language_choices if x[0] and x[0] != config.autolanguage.audio_epglanguage_alternative.value or not x[0] and not config.autolanguage.audio_epglanguage_alternative.value])
 		config.autolanguage.audio_epglanguage_alternative.setChoices([x for x in epg_language_choices if x[0] and x[0] != config.autolanguage.audio_epglanguage.value or not x[0]])
@@ -802,6 +814,7 @@ def InitUsageConfig():
 
 	def getselectedlanguages(range):
 		return [eval("config.autolanguage.audio_autoselect%x.value" % x) for x in range]
+
 	def autolanguage(configElement):
 		config.autolanguage.audio_autoselect1.setChoices([x for x in audio_language_choices if x[0] and x[0] not in getselectedlanguages((2, 3, 4)) or not x[0] and not config.autolanguage.audio_autoselect2.value])
 		config.autolanguage.audio_autoselect2.setChoices([x for x in audio_language_choices if x[0] and x[0] not in getselectedlanguages((1, 3, 4)) or not x[0] and not config.autolanguage.audio_autoselect3.value])
@@ -820,8 +833,10 @@ def InitUsageConfig():
 	config.autolanguage.audio_usecache = ConfigYesNo(default=True)
 
 	subtitle_language_choices = audio_language_choices[:1] + audio_language_choices[2:]
+
 	def getselectedsublanguages(range):
 		return [eval("config.autolanguage.subtitle_autoselect%x.value" % x) for x in range]
+
 	def autolanguagesub(configElement):
 		config.autolanguage.subtitle_autoselect1.setChoices([x for x in subtitle_language_choices if x[0] and x[0] not in getselectedsublanguages((2, 3, 4)) or not x[0] and not config.autolanguage.subtitle_autoselect2.value])
 		config.autolanguage.subtitle_autoselect2.setChoices([x for x in subtitle_language_choices if x[0] and x[0] not in getselectedsublanguages((1, 3, 4)) or not x[0] and not config.autolanguage.subtitle_autoselect3.value])
@@ -859,6 +874,7 @@ def InitUsageConfig():
 	config.mediaplayer.useAlternateUserAgent = ConfigYesNo(default=False)
 	config.mediaplayer.alternateUserAgent = ConfigText(default="")
 
+
 def updateChoices(sel, choices):
 	if choices:
 		defval = None
@@ -872,6 +888,7 @@ def updateChoices(sel, choices):
 					break
 		sel.setChoices(map(str, choices), defval)
 
+
 def preferredPath(path):
 	if config.usage.setup_level.index < 2 or path == "<default>" or not path:
 		return None  # config.usage.default_path.value, but delay lookup until usage
@@ -882,11 +899,14 @@ def preferredPath(path):
 	else:
 		return path
 
+
 def preferredTimerPath():
 	return preferredPath(config.usage.timer_path.value)
 
+
 def preferredInstantRecordPath():
 	return preferredPath(config.usage.instantrec_path.value)
+
 
 def defaultMoviePath():
 	return defaultRecordingLocation(config.usage.default_path.value)

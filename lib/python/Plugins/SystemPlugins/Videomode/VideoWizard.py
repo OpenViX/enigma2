@@ -24,6 +24,7 @@ has_rca = False
 if getBoxType() in ('mutant51', 'ax51', 'gb800seplus', 'gb800ueplus', 'gbquad', 'gbquadplus', 'gbipbox', 'gbultra', 'gbultraue', 'gbultraueh', 'gbultrase', 'spycat', 'quadbox2400', 'gbx1', 'gbx2', 'gbx3', 'gbx3h', 'gbx34k'):
 	has_rca = True
 
+
 class VideoWizardSummary(WizardSummary):
 	def __init__(self, session, parent):
 		WizardSummary.__init__(self, session, parent)
@@ -33,6 +34,7 @@ class VideoWizardSummary(WizardSummary):
 
 	def setLCDPic(self, file):
 		self["pic"].instance.setPixmapFromFile(file)
+
 
 class VideoWizard(WizardLanguage, Rc):
 	skin = """

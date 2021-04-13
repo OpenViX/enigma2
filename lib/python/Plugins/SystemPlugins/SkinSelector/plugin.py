@@ -18,6 +18,7 @@ import os
 SKINXML = "skin.xml"
 DEFAULTSKIN = _("<Default Skin>")
 
+
 class SkinSelector(Screen):
 
 	skinlist = []
@@ -127,14 +128,17 @@ class SkinSelector(Screen):
 			config.skin.primary_skin.save()
 			self.session.open(TryQuitMainloop, 3)
 
+
 def SkinSelMain(session, **kwargs):
 	session.open(SkinSelector)
+
 
 def SkinSelSetup(menuid, **kwargs):
 	if menuid == "ui_menu":
 		return [(_("Skin"), SkinSelMain, "skin_selector", None)]
 	else:
 		return []
+
 
 def Plugins(**kwargs):
 	return PluginDescriptor(name=_("Skin"), description=_("Select your Skin"), where=PluginDescriptor.WHERE_MENU, needsRestart=False, fnc=SkinSelSetup)

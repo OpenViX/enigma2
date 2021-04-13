@@ -8,11 +8,13 @@ from boxbranding import getMachineBuild
 import Task
 import re
 
+
 def readFile(filename):
 	file = open(filename)
 	data = file.read().strip()
 	file.close()
 	return data
+
 
 def getextdevices(ext):
 	cmd = 'blkid -t TYPE=%s -o device' % ext
@@ -22,6 +24,7 @@ def getextdevices(ext):
 	else:
 		extdevices = [x.strip() for x in extdevices.split(",")]
 		return extdevices
+
 
 def getProcMounts():
 	try:
@@ -38,11 +41,14 @@ def getProcMounts():
 		print "[Harddisk] Failed to open /proc/mounts", ex
 		return []
 
+
 def getNetworkMediaMounts():
 	return [x[1] for x in getProcMounts() if x[0].startswith("//")]
 
+
 def getNonNetworkMediaMounts():
 	return [x[1] for x in getProcMounts() if x[1].startswith("/media/") and not x[0].startswith("//")]
+
 
 def isFileSystemSupported(filesystem):
 	try:
@@ -56,12 +62,14 @@ def isFileSystemSupported(filesystem):
 	except Exception, ex:
 		print "[Harddisk] Failed to read /proc/filesystems:", ex
 
+
 def findMountPoint(path):
 	'Example: findMountPoint("/media/hdd/some/file") returns "/media/hdd"'
 	path = os.path.abspath(path)
 	while not os.path.ismount(path):
 		path = os.path.dirname(path)
 	return path
+
 
 def getFolderSize(path):
 	if os.path.islink(path):
@@ -86,6 +94,7 @@ def getFolderSize(path):
 			dp = os.path.join(dirpath, d)
 	return total_bytes
 
+
 def Freespace(dev):
 	try:
 		statdev = os.statvfs(dev)
@@ -97,6 +106,7 @@ def Freespace(dev):
 
 DEVTYPE_UDEV = 0
 DEVTYPE_DEVFS = 1
+
 
 class Harddisk:
 	def __init__(self, device, removable=False):
@@ -583,6 +593,7 @@ class Harddisk:
 	def isSleeping(self):
 		return self.is_sleeping
 
+
 class Partition:
 	# for backward compatibility, force_mounted actually means "hotplug"
 	def __init__(self, mountpoint, device=None, description="", force_mounted=False):
@@ -591,6 +602,7 @@ class Partition:
 		self.force_mounted = mountpoint and force_mounted
 		self.is_hotplug = force_mounted # so far; this might change.
 		self.device = device
+
 	def __str__(self):
 		return "Partition(mountpoint=%s,description=%s,device=%s)" % (self.mountpoint, self.description, self.device)
 
@@ -646,6 +658,7 @@ class Partition:
 						return fields[2]
 		return ''
 
+
 def addInstallTask(job, package):
 	task = Task.LoggingTask(job, "update packages")
 	task.setTool('opkg')
@@ -654,6 +667,7 @@ def addInstallTask(job, package):
 	task.setTool('opkg')
 	task.args.append('install')
 	task.args.append(package)
+
 
 class HarddiskManager:
 	def __init__(self):
@@ -943,11 +957,13 @@ class HarddiskManager:
 		except Exception, ex:
 			print "[Harddisk] Failed to set %s speed to %s" % (device, speed), ex
 
+
 class UnmountTask(Task.LoggingTask):
 	def __init__(self, job, hdd):
 		Task.LoggingTask.__init__(self, job, _("Unmount"))
 		self.hdd = hdd
 		self.mountpoints = []
+
 	def prepare(self):
 		try:
 			dev = self.hdd.disk_path.split('/')[-1]
@@ -964,6 +980,7 @@ class UnmountTask(Task.LoggingTask):
 			print "[Harddisk] UnmountTask: No mountpoints found?"
 			self.cmd = 'true'
 			self.args = [self.cmd]
+
 	def afterRun(self):
 		for path in self.mountpoints:
 			try:
@@ -971,10 +988,12 @@ class UnmountTask(Task.LoggingTask):
 			except Exception, ex:
 				print "[Harddisk] Failed to remove path '%s':" % path, ex
 
+
 class MountTask(Task.LoggingTask):
 	def __init__(self, job, hdd):
 		Task.LoggingTask.__init__(self, job, _("Mount"))
 		self.hdd = hdd
+
 	def prepare(self):
 		try:
 			dev = self.hdd.disk_path.split('/')[-1]
@@ -1008,6 +1027,7 @@ class MountTask(Task.LoggingTask):
 class MkfsTask(Task.LoggingTask):
 	def prepare(self):
 		self.fsck_state = None
+
 	def processOutput(self, data):
 		print "[Mkfs]", data
 		if 'Writing inode tables:' in data:
@@ -1032,6 +1052,7 @@ class MkfsTask(Task.LoggingTask):
 
 harddiskmanager = HarddiskManager()
 
+
 def isSleepStateDevice(device):
 	ret = os.popen("hdparm -C %s" % device).read()
 	if 'SG_IO' in ret or 'HDIO_DRIVE_CMD' in ret:
@@ -1042,6 +1063,7 @@ def isSleepStateDevice(device):
 		return False
 	return None
 
+
 def internalHDDNotSleeping(external=False):
 	state = False
 	if harddiskmanager.HDDCount():
@@ -1050,5 +1072,6 @@ def internalHDDNotSleeping(external=False):
 				if hdd[1].idle_running and hdd[1].max_idle_time and not hdd[1].isSleeping():
 					state = True
 	return state
+
 
 SystemInfo["ext4"] = isFileSystemSupported("ext4")

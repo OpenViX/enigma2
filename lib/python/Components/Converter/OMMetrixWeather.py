@@ -23,6 +23,7 @@ from Components.Converter.Converter import Converter
 from Components.config import config, ConfigText, ConfigNumber, ConfigDateTime
 from Components.Element import cached
 
+
 class OMMetrixWeather(Converter, object):
 
 	def __init__(self, type):
@@ -30,7 +31,6 @@ class OMMetrixWeather(Converter, object):
 		self.type = type
 
 	@cached
-
 	def getText(self):
 		try:
 			if config.plugins.MetrixWeather.enabled.saved_value:

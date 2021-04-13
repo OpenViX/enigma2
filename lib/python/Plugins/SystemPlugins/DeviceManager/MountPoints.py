@@ -1,6 +1,7 @@
 import os
 import re
 
+
 class MountPoints():
 	def __init__(self):
 		self.entries = []

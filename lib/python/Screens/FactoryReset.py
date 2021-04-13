@@ -2,6 +2,7 @@ from Screens.MessageBox import MessageBox
 from Screens.ParentalControlSetup import ProtectedScreen
 from Components.config import config
 
+
 class FactoryReset(MessageBox, ProtectedScreen):
 	def __init__(self, session):
 		MessageBox.__init__(self, session, _("Factory reset will restore your receiver to its default configuration. "

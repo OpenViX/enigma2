@@ -15,14 +15,17 @@ for cam in os.listdir("/etc/init.d"):
 	else:
 		pass
 
+
 def main(session, showExtentionMenuOption=False, **kwargs):
 	import SoftcamStartup
 	session.open(SoftcamStartup.SoftcamStartup, showExtentionMenuOption)
+
 
 def menu(menuid, **kwargs):
 	if menuid == "cam" and CamInstalled:
 		return [(_("Softcam startup..."), boundFunction(main, showExtentionMenuOption=True), "softcam_startup", -1)]
 	return []
+
 
 def Plugins(**kwargs):
 	name = _("Softcam startup")

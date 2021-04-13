@@ -24,6 +24,7 @@ from Components.Element import cached
 from Poll import Poll
 import datetime
 
+
 def cardnames(caid, prov):
 		if caid == '098C' and prov == '000000':
 				cn = 'SKY NDS V14'		#19E
@@ -98,6 +99,7 @@ def cardnames(caid, prov):
 		else:
 				cn = 'Card'
 		return cn
+
 
 class PaxCaidDisplay(Poll, Converter, object):
 	def __init__(self, type):
@@ -328,7 +330,6 @@ class PaxCaidDisplay(Poll, Converter, object):
 		return textvalue
 
 	text = property(getText)
-
 
 	def ecmfile(self):
 		ecm = None

@@ -24,6 +24,7 @@ from datetime import date
 from boxbranding import getBoxType, getImageDistro, getMachineBrand, getMachineName
 import ShellCompatibleFunctions
 
+
 def eEnv_resolve_multi(path):
 	resolve = eEnv.resolve(path)
 	if resolve == path:
@@ -31,11 +32,13 @@ def eEnv_resolve_multi(path):
 	else:
 		return resolve.split()
 
+
 # MANDATORY_RIGHTS contains commands to ensure correct rights for certain files, shared with ShellCompatibleFunctions for FastRestore
 MANDATORY_RIGHTS = ShellCompatibleFunctions.MANDATORY_RIGHTS
 
 # BLACKLISTED lists all files/folders that MUST NOT be backed up or restored in order for the image to work properly, shared with ShellCompatibleFunctions for FastRestore
 BLACKLISTED = ShellCompatibleFunctions.BLACKLISTED
+
 
 def InitConfig():
 	# BACKUPFILES contains all files and folders to back up, for wildcard entries ALWAYS use eEnv_resolve_multi!
@@ -81,7 +84,9 @@ def InitConfig():
 	config.plugins.configurationbackup.backupdirs_exclude = ConfigLocations(default=[])
 	return config.plugins.configurationbackup
 
+
 config.plugins.configurationbackup = InitConfig()
+
 
 def getBackupPath():
 	backuppath = config.plugins.configurationbackup.backuplocation.getValue()
@@ -92,6 +97,7 @@ def getBackupPath():
 	else:
 		return backuppath + '/backup_' + distro + '_' + box
 
+
 def getOldBackupPath():
 	backuppath = config.plugins.configurationbackup.backuplocation.getValue()
 	if backuppath.endswith('/'):
@@ -99,8 +105,10 @@ def getOldBackupPath():
 	else:
 		return backuppath + '/backup'
 
+
 def getBackupFilename():
 	return "enigma2settingsbackup.tar.gz"
+
 
 def SettingsEntry(name, checked):
 	if checked:
@@ -109,6 +117,7 @@ def SettingsEntry(name, checked):
 		picture = LoadPixmap(cached=True, path=resolveFilename(SCOPE_CURRENT_SKIN, "icons/lock_off.png"))
 
 	return (name, picture, checked)
+
 
 class BackupScreen(Screen, ConfigListScreen):
 	skin = """
@@ -358,7 +367,6 @@ class RestoreMenu(Screen):
 	def setWindowTitle(self):
 		self.setTitle(_("Restore backups"))
 
-
 	def fill_list(self):
 		self.flist = []
 		self.path = getBackupPath()
@@ -424,6 +432,7 @@ class RestoreMenu(Screen):
 	def checkSummary(self):
 		cur = self["filelist"].getCurrent()
 		self["summary_description"].text = cur
+
 
 class RestoreScreen(Screen, ConfigListScreen):
 	skin = """
@@ -515,6 +524,8 @@ class RestoreScreen(Screen, ConfigListScreen):
 
 	def runAsync(self, finished_cb):
 		self.doRestore()
+
+
 class RestartNetwork(Screen):
 
 	def __init__(self, session):
@@ -542,6 +553,7 @@ class RestartNetwork(Screen):
 
 	def getInterfacesDataAvail(self, data):
 		self.close()
+
 
 class installedPlugins(Screen):
 	UPDATE = 0
@@ -624,6 +636,7 @@ class installedPlugins(Screen):
 
 	def restoreCB(self, ret=None):
 		self.close()
+
 
 class RestorePlugins(Screen):
 

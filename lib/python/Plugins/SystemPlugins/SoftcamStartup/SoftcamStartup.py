@@ -15,17 +15,21 @@ import os
 from camcontrol import CamControl
 from enigma import eTimer, eDVBCI_UI, eListboxPythonStringContent, eListboxPythonConfigContent
 
+
 class ConfigAction(ConfigElement):
 	def __init__(self, action, *args):
 		ConfigElement.__init__(self)
 		self.value = "(OK)"
 		self.action = action
 		self.actionargs = args
+
 	def handleKey(self, key):
 		if (key == KEY_OK):
 			self.action(*self.actionargs)
+
 	def getMulti(self, dummy):
 		pass
+
 
 class SoftcamStartup(Screen, ConfigListScreen):
 	skin = """
@@ -36,6 +40,7 @@ class SoftcamStartup(Screen, ConfigListScreen):
 		<widget name="key_red" position="45,310" zPosition="2" size="140,40" valign="center" halign="left" font="Regular;21" transparent="1"/>
 		<widget name="key_green" position="225,310" zPosition="2" size="140,40" valign="center" halign="left" font="Regular;21" transparent="1"/>
 	</screen>"""
+
 	def __init__(self, session, showExtentionMenuOption):
 		Screen.__init__(self, session)
 

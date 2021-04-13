@@ -3,8 +3,10 @@ import enigma
 with open(enigma.eEnv.resolve("${datadir}/enigma2/iso-639-3.pck"), 'rb') as f:
 	LanguageCodes = cPickle.load(f)
 
+
 class ISO639Language:
 	[PRIMARY, SECONDARY, TERTIARY] = [1, 2, 3]
+
 	def __init__(self, depth=PRIMARY):
 		self.depth = depth
 

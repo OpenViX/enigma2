@@ -30,6 +30,7 @@ from threading import Event as Event
 import log
 import rotor_calc
 
+
 class PositionerSetup(Screen):
 
 	@staticmethod
@@ -619,6 +620,7 @@ class PositionerSetup(Screen):
 						menu.append((_("Yes (save index in setup tuner)"), "save"))
 				index = int(self.positioner_storage.value)
 				text = _("Really store at index %2d for current position?") % index
+
 				def saveAction(choice):
 					if choice:
 						if choice[1] in ("yes", "save"):
@@ -778,6 +780,7 @@ class PositionerSetup(Screen):
 		text = _("Select action")
 		description = _("Open setup tuner ") + "%s" % chr(0x41 + self.feid)
 		menu.append((description, self.openTunerSetup))
+
 		def openAction(choice):
 			if choice:
 				choice[1]()
@@ -890,7 +893,6 @@ class PositionerSetup(Screen):
 				fec_text = str(fec_inner)
 		self["fec_value"].setText(fec_text)
 
-
 	@staticmethod
 	def rotorCmd2Step(rotorCmd, stepsize):
 		return round(float(rotorCmd & 0xFFF) / 0x10 / stepsize) * (1 - ((rotorCmd & 0x1000) >> 11))
@@ -961,6 +963,7 @@ class PositionerSetup(Screen):
 		return True
 
 	randomGenerator = None
+
 	def randomBool(self):
 		if self.randomGenerator is None:
 			self.randomGenerator = SystemRandom()
@@ -1195,6 +1198,7 @@ class PositionerSetup(Screen):
 		self.logMsg((_("Final position at index") + " %2d (%5.1f" + chr(176) + ")") % (x0, x0 * self.tuningstepsize), timeout=6)
 		move(x0 - x)
 
+
 class Diseqc:
 	def __init__(self, frontend):
 		self.frontend = frontend
@@ -1234,6 +1238,7 @@ class Diseqc:
 			if string == 'E03160': #positioner stop
 				sleep(0.050)
 				self.frontend.sendDiseqc(cmd) # send 2nd time
+
 
 class PositionerSetupLog(Screen):
 	skin = """
@@ -1294,6 +1299,7 @@ class PositionerSetupLog(Screen):
 		log.logfile.reset()
 		log.logfile.truncate()
 		self.close(False)
+
 
 class TunerScreen(ConfigListScreen, Screen):
 	skin = """
@@ -1552,6 +1558,7 @@ class TunerScreen(ConfigListScreen, Screen):
 	def keyCancel(self):
 		self.close(None)
 
+
 class RotorNimSelection(Screen):
 	skin = """
 		<screen position="center,center" size="400,130" title="Select slot">
@@ -1579,6 +1586,7 @@ class RotorNimSelection(Screen):
 		selection = self["nimlist"].getCurrent()
 		self.session.open(PositionerSetup, selection[1])
 
+
 def PositionerMain(session, **kwargs):
 	nimList = nimmanager.getNimListOfType("DVB-S")
 	if len(nimList) == 0:
@@ -1596,11 +1604,13 @@ def PositionerMain(session, **kwargs):
 		else:
 			session.open(MessageBox, _("No tuner is configured for use with a diseqc positioner!"), MessageBox.TYPE_ERROR)
 
+
 def PositionerSetupStart(menuid, **kwargs):
 	if menuid == "scan" and nimmanager.somethingConnected():
 		return [(_("Positioner"), PositionerMain, "positioner_setup", None)]
 	else:
 		return []
+
 
 def Plugins(**kwargs):
 	if nimmanager.hasNimType("DVB-S"):

@@ -4,6 +4,7 @@ from struct import pack, unpack
 from boxbranding import getBoxType
 from time import time, localtime, gmtime
 
+
 def getFPVersion():
 	ret = None
 	try:
@@ -19,6 +20,7 @@ def getFPVersion():
 				print "getFPVersion failed!"
 	return ret
 
+
 def setFPWakeuptime(wutime):
 	try:
 		open("/proc/stb/fp/wakeup_time", "w").write(str(wutime))
@@ -29,6 +31,7 @@ def setFPWakeuptime(wutime):
 		except IOError:
 			print "setFPWakeupTime failed!"
 
+
 def setRTCoffset(forsleep=None):
 	if forsleep is None:
 		forsleep = (localtime(time()).tm_hour - gmtime(time()).tm_hour) * 3600
@@ -37,6 +40,7 @@ def setRTCoffset(forsleep=None):
 		print "[RTC] set RTC offset to %s sec." % (forsleep)
 	except IOError:
 		print "setRTCoffset failed!"
+
 
 def setRTCtime(wutime):
 	if path.exists("/proc/stb/fp/rtc_offset"):
@@ -50,6 +54,7 @@ def setRTCtime(wutime):
 		except IOError:
 			print "setRTCtime failed!"
 
+
 def getFPWakeuptime():
 	ret = 0
 	try:
@@ -62,7 +67,9 @@ def getFPWakeuptime():
 			print "getFPWakeupTime failed!"
 	return ret
 
+
 wasTimerWakeup = None
+
 
 def getFPWasTimerWakeup():
 	global wasTimerWakeup
@@ -81,6 +88,7 @@ def getFPWasTimerWakeup():
 		# clear hardware status
 		clearFPWasTimerWakeup()
 	return wasTimerWakeup
+
 
 def clearFPWasTimerWakeup():
 	try:

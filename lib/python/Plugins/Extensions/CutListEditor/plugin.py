@@ -15,6 +15,7 @@ from Components.Sources.List import List
 
 import bisect
 
+
 def CutListEntry(where, what):
 	w = where / 90
 	ms = w % 1000
@@ -34,6 +35,7 @@ def CutListEntry(where, what):
 		type = "LAST"
 		type_col = 0x000000
 	return ((where, what), "%dh:%02dm:%02ds:%03d" % (h, m, s, ms), type, type_col)
+
 
 class CutListContextMenu(FixedMenu):
 	RET_STARTCUT = 0
@@ -105,6 +107,7 @@ class CutListContextMenu(FixedMenu):
 
 	def grabFrame(self):
 		self.close(self.RET_GRABFRAME)
+
 
 class CutListEditor(Screen, InfoBarBase, InfoBarSeek, InfoBarCueSheetSupport, HelpableScreen):
 	skin = """
@@ -399,8 +402,10 @@ class CutListEditor(Screen, InfoBarBase, InfoBarSeek, InfoBarCueSheetSupport, He
 		grabConsole.ePopen(cmd)
 		self.playpauseService()
 
+
 def main(session, service, **kwargs):
 	session.open(CutListEditor, service)
+
 
 def Plugins(**kwargs):
 	return PluginDescriptor(name=_("Cutlist editor"), description=_("Cutlist editor..."),

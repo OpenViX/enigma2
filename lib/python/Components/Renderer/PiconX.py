@@ -2,6 +2,7 @@ from Renderer import Renderer
 from enigma import ePixmap, eEnv
 from Tools.Directories import fileExists, SCOPE_SKIN_IMAGE, SCOPE_CURRENT_SKIN, resolveFilename
 
+
 class PiconX(Renderer):
     searchPaths = (eEnv.resolve('${datadir}/enigma2/%s/'),
      '/media/cf/%s/',

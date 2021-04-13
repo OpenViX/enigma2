@@ -122,6 +122,7 @@ class InstallWizard(Screen, ConfigListScreen):
 			self.session.open(PluginDownloadBrowser, 0)
 		return
 
+
 class InstallWizardOpkgUpdater(Screen):
 	skin = """
 	<screen position="c-300,c-25" size="600,50" title=" ">
