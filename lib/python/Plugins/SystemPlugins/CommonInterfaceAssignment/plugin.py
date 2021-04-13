@@ -43,7 +43,7 @@ class CIselectMainMenu(Screen):
 		Screen.__init__(self, session)
 		self["key_red"] = StaticText(_("Close"))
 		self["key_green"] = StaticText(_("Edit"))
-		self["actions"] = ActionMap(["ColorActions","SetupActions"],
+		self["actions"] = ActionMap(["ColorActions", "SetupActions"],
 			{
 				"green": self.greenPressed,
 				"red": self.close,
@@ -129,7 +129,7 @@ class CIconfigMenu(Screen):
 		self["ServiceList_desc"] = StaticText(_("Assigned services/provider:"))
 		self["ServiceList_info"] = StaticText()
 
-		self["actions"] = ActionMap(["ColorActions","SetupActions", "MenuActions"],
+		self["actions"] = ActionMap(["ColorActions", "SetupActions", "MenuActions"],
 			{
 				"green": self.greenPressed,
 				"red": self.redPressed,
@@ -145,7 +145,7 @@ class CIconfigMenu(Screen):
 		self.caidlist = []
 		for caid in eDVBCIInterfaces.getInstance().readCICaIds(self.ci_slot):
 			i += 1
-			self.caidlist.append((str(hex(int(caid))),str(caid),i))
+			self.caidlist.append((str(hex(int(caid))), str(caid), i))
 
 		print("[CI_Wizzard_Config_CI%d] read following CAIds from CI: %s" % (self.ci_slot, self.caidlist))
 
@@ -328,8 +328,8 @@ class CIconfigMenu(Screen):
 				i = 0
 				for caid in slot.findall("caid"):
 					read_caid = caid.get("id").encode("UTF-8")
-					self.selectedcaid.append((str(read_caid),str(read_caid),i))
-					self.usingcaid.append(int(read_caid,16))
+					self.selectedcaid.append((str(read_caid), str(read_caid), i))
+					self.usingcaid.append(int(read_caid, 16))
 					i += 1
 
 				for service in slot.findall("service"):
@@ -355,7 +355,7 @@ class CIconfigMenu(Screen):
 
 		for item in self.read_providers:
 			if len(item):
-				self.finishedProviderSelection(item[0],item[1])
+				self.finishedProviderSelection(item[0], item[1])
 
 		self.finishedCAidSelection(self.selectedcaid)
 		self["ServiceList"].l.setList(self.servicelist)
@@ -377,7 +377,7 @@ class easyCIconfigMenu(CIconfigMenu):
 
 	def __init__(self, session, ci_slot="9"):
 		CIconfigMenu.__init__(self, session, ci_slot)
-		self["actions"] = ActionMap(["ColorActions","SetupActions", "MenuActions"],
+		self["actions"] = ActionMap(["ColorActions", "SetupActions", "MenuActions"],
 			{
 				"green": self.greenPressed,
 				"red": self.redPressed,
@@ -415,7 +415,7 @@ class CAidSelect(Screen):
 		self["key_green"] = StaticText(_("Save"))
 		self["introduction"] = StaticText(_("Press OK to select/deselect a CAId."))
 
-		self["actions"] = ActionMap(["ColorActions","SetupActions"],
+		self["actions"] = ActionMap(["ColorActions", "SetupActions"],
 		{
 			"ok": self.list.toggleSelection,
 			"cancel": self.cancel,

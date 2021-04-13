@@ -529,7 +529,7 @@ class LamedbWriter():
 					service["flags"],
 					":%x" % service["ATSC_source_id"] if "ATSC_source_id" in service else ""))
 
-				control_chars = ''.join(list(map(six.unichr, list(range(0,32)) + list(range(127,160)))))
+				control_chars = ''.join(list(map(six.unichr, list(range(0, 32)) + list(range(127, 160)))))
 				control_char_re = re.compile('[%s]' % re.escape(control_chars))
 				if 'provider_name' in list(service.keys()):
 					if six.PY2:
@@ -677,7 +677,7 @@ class LamedbWriter():
 					service["flags"],
 					":%x" % service["ATSC_source_id"] if "ATSC_source_id" in service else ":0"))
 
-				control_chars = ''.join(list(map(six.unichr, list(range(0,32)) + list(range(127,160)))))
+				control_chars = ''.join(list(map(six.unichr, list(range(0, 32)) + list(range(127, 160)))))
 				control_char_re = re.compile('[%s]' % re.escape(control_chars))
 				if 'provider_name' in list(service.keys()):
 					if six.PY2:
@@ -718,7 +718,7 @@ class LamedbWriter():
 	def utf8_convert(self, text):
 		if six.PY3:
 			return text
-		for encoding in ["utf8","latin-1"]:
+		for encoding in ["utf8", "latin-1"]:
 			try:
 				text.decode(encoding=encoding)
 			except UnicodeDecodeError:

@@ -107,7 +107,7 @@ class DVDToolbox(Screen):
 		for line in mediuminfo.splitlines():
 			if line.find("Free Blocks:") > -1:
 				try:
-					size = eval(line[14:].replace("KB","*1024"))
+					size = eval(line[14:].replace("KB", "*1024"))
 				except:
 					size = 0
 				if size > 0:
@@ -212,7 +212,7 @@ class DVDformatTask(Task):
 	def processOutput(self, data):
 		print("[DVDformatTask processOutput]  ", data)
 		if data.endswith('%'):
-			data = data.replace('\x08','')
+			data = data.replace('\x08', '')
 			self.progress = int(float(data[:-1]) * 10)
 		else:
 			Task.processOutput(self, data)

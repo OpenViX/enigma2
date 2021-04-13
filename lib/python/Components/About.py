@@ -34,7 +34,7 @@ def getGStreamerVersionString():
 def getKernelVersionString():
 	try:
 		with open("/proc/version", "r") as f:
-			kernelversion = f.read().split(" ", 4)[2].split("-",2)[0]
+			kernelversion = f.read().split(" ", 4)[2].split("-", 2)[0]
 			return kernelversion
 	except:
 		return _("unknown")
@@ -102,7 +102,7 @@ def getCPUSpeedString():
 	cpu_speed = float(getCPUSpeedMHzInt())
 	if cpu_speed > 0:
 		if cpu_speed >= 1000:
-			cpu_speed = "%s GHz" % str(round(cpu_speed // 1000,1))
+			cpu_speed = "%s GHz" % str(round(cpu_speed // 1000, 1))
 		else:
 			cpu_speed = "%s MHz" % str(int(cpu_speed))
 		return cpu_speed
@@ -177,7 +177,7 @@ def getIfConfig(ifname):
 	infos["hwaddr"] = 0x8927 # SIOCSIFHWADDR
 	infos["netmask"] = 0x891b # SIOCGIFNETMASK
 	try:
-		for k,v in list(infos.items()):
+		for k, v in list(infos.items()):
 			ifreq[k] = _ifinfo(sock, v, ifname)
 	except:
 		pass

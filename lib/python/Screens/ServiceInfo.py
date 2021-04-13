@@ -50,9 +50,9 @@ def ServiceInfoListEntry(a, b="", valueType=TYPE_TEXT, param=4):
 		else:
 			b = str(b)
 
-	x, y, w, h = skin.parameters.get("ServiceInfo",(0, 0, skin.applySkinFactor(300), skin.applySkinFactor(30)))
-	xa, ya, wa, ha = skin.parameters.get("ServiceInfoLeft",(0, 0, skin.applySkinFactor(300), skin.applySkinFactor(25)))
-	xb, yb, wb, hb = skin.parameters.get("ServiceInfoRight",(skin.applySkinFactor(300), 0, skin.applySkinFactor(600), skin.applySkinFactor(25)))
+	x, y, w, h = skin.parameters.get("ServiceInfo", (0, 0, skin.applySkinFactor(300), skin.applySkinFactor(30)))
+	xa, ya, wa, ha = skin.parameters.get("ServiceInfoLeft", (0, 0, skin.applySkinFactor(300), skin.applySkinFactor(25)))
+	xb, yb, wb, hb = skin.parameters.get("ServiceInfoRight", (skin.applySkinFactor(300), 0, skin.applySkinFactor(600), skin.applySkinFactor(25)))
 
 	if b:
 		return [
@@ -83,7 +83,7 @@ class ServiceInfoList(GUIComponent):
 			attribs = []
 			for (attrib, value) in self.skinAttributes:
 				if attrib == "font":
-					font = skin.parseFont(value, ((1,1), (1,1)))
+					font = skin.parseFont(value, ((1, 1), (1, 1)))
 					self.fontName = font.family
 					self.fontSize = font.pointSize
 				elif attrib == "itemHeight":
@@ -194,7 +194,7 @@ class ServiceInfo(Screen):
 				gamma = ("SDR", "HDR", "HDR10", "HLG", "")[self.info.getInfo(iServiceInformation.sGamma)]
 				if gamma:
 					resolution += " - " + gamma
-			if "%3a//" in refstr and reftype not in (1,257,4098,4114):
+			if "%3a//" in refstr and reftype not in (1, 257, 4098, 4114):
 				fillList = [(_("Service name"), name, TYPE_TEXT),
 					(_("Videocodec, size & format"), resolution, TYPE_TEXT),
 					(_("Service reference"), ":".join(refstr.split(":")[:9]), TYPE_TEXT),
@@ -275,7 +275,7 @@ class ServiceInfo(Screen):
 						(_("Inversion, Pilot & Roll-off"), "%s - %s - %s" % (frontendData["inversion"], frontendData.get("pilot", None), str(frontendData.get("rolloff", None))), TYPE_TEXT))
 			elif frontendDataOrg["tuner_type"] == "DVB-C":
 				return (tuner,
-					(_("Modulation"),"%s" % frontendData["modulation"], TYPE_TEXT),
+					(_("Modulation"), "%s" % frontendData["modulation"], TYPE_TEXT),
 					(_("Frequency"), "%s" % frontendData.get("frequency", 0), TYPE_TEXT),
 					(_("Symbol rate & FEC"), "%s - %s" % (frontendData.get("symbol_rate", 0), frontendData["fec_inner"]), TYPE_TEXT),
 					(_("Inversion"), "%s" % frontendData["inversion"], TYPE_TEXT))

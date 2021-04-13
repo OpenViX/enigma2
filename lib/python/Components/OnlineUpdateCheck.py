@@ -91,10 +91,10 @@ class FeedsStatusCheck:
 						d = urlopen(req)
 						trafficLight = d.read()
 					except HTTPError as err:
-						print(("[OnlineUpdateCheck][getFeedStatus] ERROR:",err))
+						print(("[OnlineUpdateCheck][getFeedStatus] ERROR:", err))
 						trafficLight = err.code
 					except URLError as err:
-						print(("[OnlineUpdateCheck][getFeedStatus] ERROR:",err.reason[0]))
+						print(("[OnlineUpdateCheck][getFeedStatus] ERROR:", err.reason[0]))
 						trafficLight = err.reason[0]
 					except:
 						print(("[OnlineUpdateCheck][getFeedStatus] ERROR:", sys.exc_info()[0]))
@@ -104,7 +104,7 @@ class FeedsStatusCheck:
 				if trafficLight == "stable":
 					status = "0"
 				config.softwareupdate.updateisunstable.setValue(status)
-				print("[OnlineUpdateCheck][getFeedStatus] PASSED:",trafficLight)
+				print("[OnlineUpdateCheck][getFeedStatus] PASSED:", trafficLight)
 				return trafficLight
 			else:
 				print("[OnlineUpdateCheck][getFeedStatus] ERROR: -2")
@@ -314,7 +314,7 @@ def kernelMismatch():
 		packages = packages.decode()
 	matches = re.findall(pattern, packages)
 	if matches:
-		match = sorted(matches,key=lambda s: list(map(int, s.split("."))))[-1]
+		match = sorted(matches, key=lambda s: list(map(int, s.split("."))))[-1]
 		if match != kernelversion:
 			print("[OnlineUpdateCheck][kernelMismatch] kernel mismatch found. STB kernel=%s, feeds kernel=%s" % (kernelversion, match))
 			return True

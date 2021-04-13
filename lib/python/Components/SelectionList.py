@@ -11,16 +11,16 @@ selectiononpng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN,
 selectionoffpng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, "icons/lock_off.png"))
 
 def SelectionEntryComponent(description, value, index, selected):
-	dx, dy, dw, dh = skin.parameters.get("SelectionListDescr",(skin.applySkinFactor(25), skin.applySkinFactor(5), skin.applySkinFactor(650), skin.applySkinFactor(30)))
+	dx, dy, dw, dh = skin.parameters.get("SelectionListDescr", (skin.applySkinFactor(25), skin.applySkinFactor(5), skin.applySkinFactor(650), skin.applySkinFactor(30)))
 	res = [
 		(description, value, index, selected),
 		(eListboxPythonMultiContent.TYPE_TEXT, dx, dy, dw, dh, 0, RT_HALIGN_LEFT, description)
 	]
 	if selected:
-		ix, iy, iw, ih = skin.parameters.get("SelectionListLock",(0, skin.applySkinFactor(2), skin.applySkinFactor(25), skin.applySkinFactor(24)))
+		ix, iy, iw, ih = skin.parameters.get("SelectionListLock", (0, skin.applySkinFactor(2), skin.applySkinFactor(25), skin.applySkinFactor(24)))
 		res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, ix, iy, iw, ih, selectiononpng))
 	else:
-		ix, iy, iw, ih = skin.parameters.get("SelectionListLockOff",(0, skin.applySkinFactor(2), skin.applySkinFactor(25), skin.applySkinFactor(24)))
+		ix, iy, iw, ih = skin.parameters.get("SelectionListLockOff", (0, skin.applySkinFactor(2), skin.applySkinFactor(25), skin.applySkinFactor(24)))
 		res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, ix, iy, iw, ih, selectionoffpng))
 	return res
 

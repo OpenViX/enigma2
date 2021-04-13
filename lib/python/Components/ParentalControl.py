@@ -74,7 +74,7 @@ class ParentalControl:
 		#That way all other functions do not need to distinguish between service and bouquet.
 		if "FROM BOUQUET" in service:
 			method(service, TYPE_BOUQUET, *args)
-			servicelist = self.readServicesFromBouquet(service,"C")
+			servicelist = self.readServicesFromBouquet(service, "C")
 			for ref in servicelist:
 				sRef = str(ref[0])
 				method(sRef, TYPE_BOUQUETSERVICE, *args)

@@ -118,7 +118,7 @@ class Wlan:
 						encryption = None
 
 					signal = str(result.quality.siglevel - 0x100) + " dBm"
-					quality = "%s/%s" % (result.quality.quality,ifobj.getQualityMax().quality)
+					quality = "%s/%s" % (result.quality.quality, ifobj.getQualityMax().quality)
 
 					extra = []
 					for element in result.custom:
