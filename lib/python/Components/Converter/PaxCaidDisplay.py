@@ -105,16 +105,16 @@ class PaxCaidDisplay(Poll, Converter, object):
 		Converter.__init__(self, type)
 		self.type = type
 		self.systemCaids = {
-			"26" : "BiSS",
-			"01" : "SEC",
-			"06" : "IRD",
-			"17" : "BET",
-			"05" : "VIA",
-			"18" : "NAG",
-			"09" : "NDS",
-			"0B" : "CON",
-			"0D" : "CRW",
-			"4A" : "DRE" }
+			"26": "BiSS",
+			"01": "SEC",
+			"06": "IRD",
+			"17": "BET",
+			"05": "VIA",
+			"18": "NAG",
+			"09": "NDS",
+			"0B": "CON",
+			"0D": "CRW",
+			"4A": "DRE"}
 		self.poll_interval = 3000
 		self.poll_enabled = True
 
@@ -254,7 +254,7 @@ class PaxCaidDisplay(Poll, Converter, object):
 									emprov = emprov[0]
 									karte = cardnames(caid,emprov)
 									emprov = ":%s" % emprov
-									textvalue = "%s%s %s (EMU)" % (caid, emprov , karte)
+									textvalue = "%s%s %s (EMU)" % (caid, emprov, karte)
 								else:
 									karte = cardnames(caid,prov)
 									share = ecm_info.get("source", "")

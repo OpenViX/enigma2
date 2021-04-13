@@ -14,17 +14,17 @@ class VideoSetup(Screen, ConfigListScreen):
 	def __init__(self, session, hw):
 		Screen.__init__(self, session)
 		# for the skin: first try VideoSetup, then Setup, this allows individual skinning
-		self.skinName = ["VideoSetup", "Setup" ]
+		self.skinName = ["VideoSetup", "Setup"]
 		self.setup_title = _("Video settings")
 		self.setTitle(self.setup_title)
 		self.hw = hw
-		self.onChangedEntry = [ ]
+		self.onChangedEntry = []
 
 		# handle hotplug by re-creating setup
 		self.onShow.append(self.startHotplug)
 		self.onHide.append(self.stopHotplug)
 
-		self.list = [ ]
+		self.list = []
 		ConfigListScreen.__init__(self, self.list, session=session, on_change=self.changedEntry)
 
 		from Components.ActionMap import ActionMap
@@ -182,17 +182,17 @@ class AudioSetup(Screen, ConfigListScreen):
 	def __init__(self, session, hw):
 		Screen.__init__(self, session)
 		# for the skin: first try VideoSetup, then Setup, this allows individual skinning
-		self.skinName = ["AudioSetup", "Setup" ]
+		self.skinName = ["AudioSetup", "Setup"]
 		self.setup_title = _("Audio settings")
 		self.setTitle(self.setup_title)
 		self.hw = hw
-		self.onChangedEntry = [ ]
+		self.onChangedEntry = []
 
 		# handle hotplug by re-creating setup
 		self.onShow.append(self.startHotplug)
 		self.onHide.append(self.stopHotplug)
 
-		self.list = [ ]
+		self.list = []
 		ConfigListScreen.__init__(self, self.list, session=session, on_change=self.changedEntry)
 
 		from Components.ActionMap import ActionMap
@@ -222,7 +222,7 @@ class AudioSetup(Screen, ConfigListScreen):
 	def createSetup(self):
 		level = config.usage.setup_level.index
 
-		self.list = [ ]
+		self.list = []
 		if SystemInfo["CanDownmixAC3"]:
 			self.list.append(getConfigListEntry(_("AC3 downmix"), config.av.downmix_ac3, _("Configure whether multi channel sound tracks should be downmixed to stereo.")))
 		if SystemInfo["CanDownmixDTS"]:
@@ -356,7 +356,7 @@ def startSetup(menuid):
 	if menuid == "audio_menu":
 		return [(_("Basic settings"), audioSetupMain, "audio_setup", 40)]
 
-	return [ ]
+	return []
 
 def VideoWizard(*args, **kwargs):
 	from VideoWizard import VideoWizard

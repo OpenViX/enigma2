@@ -30,13 +30,13 @@ from time import localtime, strftime
 #
 class ConfigElement(object):
 	def __init__(self):
-		self.extra_args = { }
+		self.extra_args = {}
 		self.saved_value = None
 		self.save_forced = False
 		self.last_value = None
 		self.save_disabled = False
-		self.__notifiers = { }
-		self.__notifiers_final = { }
+		self.__notifiers = {}
+		self.__notifiers_final = {}
 		self.enabled = True
 		self.callNotifiersOnSaveAndCancel = False
 
@@ -162,8 +162,8 @@ class ConfigElement(object):
 				pass
 
 	def clearNotifiers(self):
-		self.__notifiers = { }
-		self.__notifiers_final = { }
+		self.__notifiers = {}
+		self.__notifiers_final = {}
 
 	#def removeNotifier(self, notifier):
 	#	notifier in self.notifiers and self.notifiers.remove(notifier)

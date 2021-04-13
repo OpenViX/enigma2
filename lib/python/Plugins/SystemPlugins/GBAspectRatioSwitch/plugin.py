@@ -191,7 +191,7 @@ def main(session, **kwargs):
 def startGBAspectRatioSwitch(menuid):
 	if menuid != "video_menu":
 		return []
-	return [( _("AspectRatio switch"), main, "aspectratio_switch", 99)]
+	return [(_("AspectRatio switch"), main, "aspectratio_switch", 99)]
 
 def Plugins(**kwargs):
 	return [

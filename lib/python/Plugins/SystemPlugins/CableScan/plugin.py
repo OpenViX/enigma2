@@ -44,7 +44,7 @@ class CableScan:
 	def scanCompleted(self, result):
 		self.done = True
 		if result < 0:
-			self.text.setText( _('Scan failed!') + "\n" + _("Please press OK to continue.")  )
+			self.text.setText(_('Scan failed!') + "\n" + _("Please press OK to continue."))
 		else:
 			self.text.setText(ngettext("Scan completed, %d channel found.", "Scan completed, %d channels found.", result) % result)
 
@@ -197,7 +197,7 @@ class CableScanAutoScreen(CableScanScreen):
 		print "[AutoCableScan] start"
 		Screen.__init__(self, session)
 		self.skinName="Standby"
-		self["actions"] = ActionMap( [ "StandbyActions" ],
+		self["actions"] = ActionMap(["StandbyActions"],
 		{
 			"power": self.Power,
 			"discrete_on": self.Power

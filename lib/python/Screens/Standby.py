@@ -66,7 +66,7 @@ class StandbyScreen(Screen):
 
 		print "[Standby] enter standby"
 
-		self["actions"] = ActionMap( [ "StandbyActions" ],
+		self["actions"] = ActionMap(["StandbyActions"],
 		{
 			"power": self.Power,
 			"discrete_on": self.Power

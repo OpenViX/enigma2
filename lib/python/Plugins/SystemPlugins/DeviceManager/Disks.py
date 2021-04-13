@@ -3,31 +3,31 @@ import re
 
 class Disks():
 	ptypes = {
-	 "0": "Empty"             , "24":  "NEC DOS"        , "81":  "Minix / old Lin"     , "bf":  "Solaris",
-	 "1": "FAT12"             , "39":  "Plan 9"         , "82":  "Linux swap / Solaris", "c1":  "DRDOS/sec (FAT)",
-	 "2": "XENIX root"        , "3c":  "PartitionMagic" , "83":  "Linux"               , "c4":  "DRDOS/sec (FAT)",
-	 "3": "XENIX usr"         , "40":  "Venix 80286"    , "84":  "OS/2 hidden C:"      , "c6":  "DRDOS/sec (FAT)",
-	 "4": "FAT16 <32M"        , "41":  "PPC PReP Boot"  , "85":  "Linux extended"      , "c7":  "Syrinx",
-	 "5": "Extended"          , "42":  "SFS"            , "86":  "NTFS volume set"     , "da":  "Non-FS data",
-	 "6": "FAT16"             , "4d":  "QNX4.x"         , "87":  "NTFS volume set"     , "db":  "CP/M / CTOS",
-	 "7": "HPFS/NTFS"         , "4e":  "QNX4.x 2nd part", "88":  "Linux plaintext"     , "de":  "Dell Utility",
-	 "8": "AIX"               , "4f":  "QNX4.x 3rd part", "8e":  "Linux LVM"           , "df":  "BootIt",
-	 "9": "AIX bootable"      , "50":  "OnTrack DM"     , "93":  "Amoeba"              , "e1":  "DOS access",
-	 "a": "OS/2 Boot Manager" , "51":  "OnTrack DM6 Aux", "94":  "Amoeba BBT"          , "e3":  "DOS R/O",
-	 "b": "W95 FAT32"         , "52":  "CP/M"           , "9f":  "BSD/OS"              , "e4":  "SpeedStor",
-	 "c": "W95 FAT32 (LBA)"   , "53":  "OnTrack DM6 Aux", "a0":  "IBM Thinkpad hi"     , "eb":  "BeOS fs",
-	 "e": "W95 FAT16 (LBA)"   , "54":  "OnTrackDM6"     , "a5":  "FreeBSD"             , "ee":  "GPT",
-	 "f": "W95 Ext'd (LBA)"   , "55":  "EZ-Drive"       , "a6":  "OpenBSD"             , "ef":  "EFI",
-	"10": "OPUS"              , "56":  "Golden Bow"     , "a7":  "NeXTSTEP"            , "f0":  "Linux/PA-RISC",
-	"11": "Hidden FAT12"      , "5c":  "Priam Edisk"    , "a8":  "Darwin UFS"          , "f1":  "SpeedStor",
-	"12": "Compaq diagnostic" , "61":  "SpeedStor"      , "a9":  "NetBSD"              , "f4":  "SpeedStor",
-	"14": "Hidden FAT16"      , "63":  "GNU HURD"       , "ab":  "Darwin boot"         , "f2":  "DOS secondary",
-	"16": "Hidden FAT16"      , "64":  "Novell Netware" , "af":  "HFS / HFS+"          , "fb":  "VMware VMFS",
-	"17": "Hidden HPFS/NTFS"  , "65":  "Novell Netware" , "b7":  "BSDI fs"             , "fc":  "VMware VMKCORE",
-	"18": "AST SmartSleep"    , "70":  "DiskSecure Mult", "b8":  "BSDI swap"           , "fd":  "Linux raid auto",
-	"1b": "Hidden W95 FAT32"  , "75":  "PC/IX"          , "bb":  "Boot Wizard hidden"  , "fe":  "LANstep",
-	"1c": "Hidden W95 FAT32"  , "80":  "Old Minix"      , "be":  "Solaris boot"        , "ff":  "BBT",
-	"1e": "Hidden W95 FAT16" }
+	 "0": "Empty", "24":  "NEC DOS", "81":  "Minix / old Lin", "bf":  "Solaris",
+	 "1": "FAT12", "39":  "Plan 9", "82":  "Linux swap / Solaris", "c1":  "DRDOS/sec (FAT)",
+	 "2": "XENIX root", "3c":  "PartitionMagic", "83":  "Linux", "c4":  "DRDOS/sec (FAT)",
+	 "3": "XENIX usr", "40":  "Venix 80286", "84":  "OS/2 hidden C:", "c6":  "DRDOS/sec (FAT)",
+	 "4": "FAT16 <32M", "41":  "PPC PReP Boot", "85":  "Linux extended", "c7":  "Syrinx",
+	 "5": "Extended", "42":  "SFS", "86":  "NTFS volume set", "da":  "Non-FS data",
+	 "6": "FAT16", "4d":  "QNX4.x", "87":  "NTFS volume set", "db":  "CP/M / CTOS",
+	 "7": "HPFS/NTFS", "4e":  "QNX4.x 2nd part", "88":  "Linux plaintext", "de":  "Dell Utility",
+	 "8": "AIX", "4f":  "QNX4.x 3rd part", "8e":  "Linux LVM", "df":  "BootIt",
+	 "9": "AIX bootable", "50":  "OnTrack DM", "93":  "Amoeba", "e1":  "DOS access",
+	 "a": "OS/2 Boot Manager", "51":  "OnTrack DM6 Aux", "94":  "Amoeba BBT", "e3":  "DOS R/O",
+	 "b": "W95 FAT32", "52":  "CP/M", "9f":  "BSD/OS", "e4":  "SpeedStor",
+	 "c": "W95 FAT32 (LBA)", "53":  "OnTrack DM6 Aux", "a0":  "IBM Thinkpad hi", "eb":  "BeOS fs",
+	 "e": "W95 FAT16 (LBA)", "54":  "OnTrackDM6", "a5":  "FreeBSD", "ee":  "GPT",
+	 "f": "W95 Ext'd (LBA)", "55":  "EZ-Drive", "a6":  "OpenBSD", "ef":  "EFI",
+	"10": "OPUS", "56":  "Golden Bow", "a7":  "NeXTSTEP", "f0":  "Linux/PA-RISC",
+	"11": "Hidden FAT12", "5c":  "Priam Edisk", "a8":  "Darwin UFS", "f1":  "SpeedStor",
+	"12": "Compaq diagnostic", "61":  "SpeedStor", "a9":  "NetBSD", "f4":  "SpeedStor",
+	"14": "Hidden FAT16", "63":  "GNU HURD", "ab":  "Darwin boot", "f2":  "DOS secondary",
+	"16": "Hidden FAT16", "64":  "Novell Netware", "af":  "HFS / HFS+", "fb":  "VMware VMFS",
+	"17": "Hidden HPFS/NTFS", "65":  "Novell Netware", "b7":  "BSDI fs", "fc":  "VMware VMKCORE",
+	"18": "AST SmartSleep", "70":  "DiskSecure Mult", "b8":  "BSDI swap", "fd":  "Linux raid auto",
+	"1b": "Hidden W95 FAT32", "75":  "PC/IX", "bb":  "Boot Wizard hidden", "fe":  "LANstep",
+	"1c": "Hidden W95 FAT32", "80":  "Old Minix", "be":  "Solaris boot", "ff":  "BBT",
+	"1e": "Hidden W95 FAT16"}
 
 	def __init__(self):
 		self.disks = []
@@ -40,12 +40,12 @@ class Disks():
 			res = re.sub("\s+", " ", part).strip().split(" ")
 			if res and len(res) == 4:
 				if len(res[3]) == 3 and res[3][:2] == "sd":
-					self.disks.append([ res[3],
+					self.disks.append([res[3],
 										int(res[2]) * 1024,
 										self.isRemovable(res[3]),
 										self.getModel(res[3]),
 										self.getVendor(res[3]),
-										[ ] ])
+										[]])
 
 	def readPartitions(self):
 		partitions = open("/proc/partitions")
@@ -55,7 +55,7 @@ class Disks():
 				if len(res[3]) > 3 and res[3][:2] == "sd":
 					for i in self.disks:
 						if i[0] == res[3][:3]:
-							i[5].append([ res[3], int(res[2]) * 1024, self.getTypeName(res[3]), self.getType(res[3]) ])
+							i[5].append([res[3], int(res[2]) * 1024, self.getTypeName(res[3]), self.getType(res[3])])
 							break
 
 	def isRemovable(self, device):

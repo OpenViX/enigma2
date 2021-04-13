@@ -15,10 +15,10 @@ class StreamingClientsInfo(Screen):
 			Screen.__init__(self, session)
 			self.setTitle(_("Streaming clients info"))
 			if ClientsStreaming("NUMBER").getText() == "0":
-				self["total"] = StaticText( _("No streaming Channel from this STB at this moment") )
+				self["total"] = StaticText(_("No streaming Channel from this STB at this moment"))
 				text = ""
 			else:
-				self["total"] = StaticText( _("Total Clients streaming: ") + ClientsStreaming("NUMBER").getText())
+				self["total"] = StaticText(_("Total Clients streaming: ") + ClientsStreaming("NUMBER").getText())
 				text =  ClientsStreaming("EXTRA_INFO").getText()
 
 			self["liste"] = StaticText(text)

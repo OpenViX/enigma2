@@ -39,7 +39,7 @@ def getEnigmaVersionString():
 	from boxbranding import getImageVersion
 	enigma_version = getImageVersion()
 	if '-(no branch)' in enigma_version:
-		enigma_version = enigma_version [:-12]
+		enigma_version = enigma_version[:-12]
 	return enigma_version
 
 def getGStreamerVersionString(cpu):

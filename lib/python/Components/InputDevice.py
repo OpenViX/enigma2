@@ -45,7 +45,7 @@ class inputDevices:
 				self.name = None
 
 			if self.name:
-				self.Devices[evdev] = {'name': self.name, 'type': self.getInputDeviceType(self.name),'enabled': False, 'configuredName': None }
+				self.Devices[evdev] = {'name': self.name, 'type': self.getInputDeviceType(self.name),'enabled': False, 'configuredName': None}
 
 
 	def getInputDeviceType(self,name):

@@ -48,7 +48,7 @@ class SoftcamStartup(Screen, ConfigListScreen):
 				"green": self.save,
 			},-1)
 
-		self.list = [ ]
+		self.list = []
 		ConfigListScreen.__init__(self, self.list, session=session)
 
 		self.initd()
@@ -164,7 +164,7 @@ class SoftcamStartup(Screen, ConfigListScreen):
 		if not fileExists('/etc/init.d/cardserver'):
 			os.system('ln -s /etc/init.d/cardserver.None /etc/init.d/cardserver')
 
-		if fileExists ('/etc/rc0.d/K20softcam'):
+		if fileExists('/etc/rc0.d/K20softcam'):
 			os.system('update-rc.d -f softcam remove && update-rc.d -f cardserver remove')
 		if not fileExists('/etc/rc0.d/K09softcam'):
 			os.system('update-rc.d softcam stop 09 0 1 6 . start  60 2 3 4 5 .')

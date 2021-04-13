@@ -10,7 +10,7 @@ class ISO639Language:
 
 		wanted_languages = []
 		if depth == self.PRIMARY:
-			wanted_languages = [ "Undetermined", "English", "German", "Arabic", "Catalan", "Croatian", "Czech", "Danish", "Dutch", "Estonian", "Finnish", "French", "Greek", "Hungarian", "Lithuanian", "Latvian", "Icelandic", "Italian", "Norwegian", "Polish", "Portuguese", "Russian", "Serbian", "Slovakian", "Slovenian", "Spanish", "Swedish", "Turkish", "Ukrainian" ]
+			wanted_languages = ["Undetermined", "English", "German", "Arabic", "Catalan", "Croatian", "Czech", "Danish", "Dutch", "Estonian", "Finnish", "French", "Greek", "Hungarian", "Lithuanian", "Latvian", "Icelandic", "Italian", "Norwegian", "Polish", "Portuguese", "Russian", "Serbian", "Slovakian", "Slovenian", "Spanish", "Swedish", "Turkish", "Ukrainian"]
 		elif depth == self.SECONDARY:
 			for key, val in LanguageCodes.iteritems():
 				if len(key) == 2:

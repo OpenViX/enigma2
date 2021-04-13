@@ -51,7 +51,7 @@ def InitCiConfig():
 			config.cimisc.dvbCiDelay.addNotifier(setdvbCiDelay)
 
 class MMIDialog(Screen):
-	def __init__(self, session, slotid, action, handler=eDVBCI_UI.getInstance(), wait_text="wait for ci...", screen_data=None ):
+	def __init__(self, session, slotid, action, handler=eDVBCI_UI.getInstance(), wait_text="wait for ci...", screen_data=None):
 		Screen.__init__(self, session)
 
 		print "MMIDialog with action" + str(action)
@@ -67,7 +67,7 @@ class MMIDialog(Screen):
 		self["title"] = Label("")
 		self["subtitle"] = Label("")
 		self["bottom"] = Label("")
-		self["entries"] = ConfigList([ ])
+		self["entries"] = ConfigList([])
 
 		self["actions"] = NumberActionMap(["SetupActions", "MenuActions"],
 			{
@@ -105,7 +105,7 @@ class MMIDialog(Screen):
 
 	def addEntry(self, list, entry):
 		if entry[0] == "TEXT":		#handle every item (text / pin only?)
-			list.append( (entry[1], ConfigNothing(), entry[2]) )
+			list.append((entry[1], ConfigNothing(), entry[2]))
 		if entry[0] == "PIN":
 			pinlength = entry[1]
 			if entry[3] == 1:
@@ -115,7 +115,7 @@ class MMIDialog(Screen):
 				# unmasked pins:
 				x = ConfigPIN(0, len=pinlength)
 			self["subtitle"].setText(entry[2])
-			list.append( getConfigListEntry("", x) )
+			list.append(getConfigListEntry("", x))
 			self["bottom"].setText(_("please press OK when ready"))
 
 	def okbuttonClick(self):
@@ -175,7 +175,7 @@ class MMIDialog(Screen):
 		elif self.tag == "WAIT":
 			self.handler.stopMMI(self.slotid)
 			self.closeMmi()
-		elif self.tag in ( "MENU", "LIST" ):
+		elif self.tag in ("MENU", "LIST"):
 			print "cancel list"
 			self.handler.answerMenu(self.slotid, 0)
 			self.showWait()
@@ -226,8 +226,8 @@ class MMIDialog(Screen):
 		self["title"].setText("")
 		self["subtitle"].setText("")
 		self["bottom"].setText("")
-		list = [ ]
-		list.append( (self.wait_text, ConfigNothing()) )
+		list = []
+		list.append((self.wait_text, ConfigNothing()))
 		self.updateList(list)
 
 	def showScreen(self):
@@ -237,7 +237,7 @@ class MMIDialog(Screen):
 		else:
 			screen = self.handler.getMMIScreen(self.slotid)
 
-		list = [ ]
+		list = []
 
 		self.timer.stop()
 		if len(screen) > 0 and screen[0][0] == "CLOSE":
@@ -300,8 +300,8 @@ class MMIDialog(Screen):
 class CiMessageHandler:
 	def __init__(self):
 		self.session = None
-		self.ci = { }
-		self.dlgs = { }
+		self.ci = {}
+		self.dlgs = {}
 		self.auto_close = False
 		eDVBCI_UI.getInstance().ciStateChanged.get().append(self.ciStateChanged)
 
@@ -369,8 +369,8 @@ class CiSelection(Screen):
 			},-1)
 
 		self.dlg = None
-		self.state = { }
-		self.list = [ ]
+		self.state = {}
+		self.list = []
 		self.slot = 0
 		for slot in range(SystemInfo["CommonInterface"]):
 			state = eDVBCI_UI.getInstance().getState(slot)
@@ -507,9 +507,9 @@ class CiSelection(Screen):
 class PermanentPinEntry(Screen, ConfigListScreen):
 	def __init__(self, session, pin, pin_slot):
 		Screen.__init__(self, session)
-		self.skinName = ["ParentalControlChangePin", "Setup" ]
+		self.skinName = ["ParentalControlChangePin", "Setup"]
 		self.setup_title = _("Enter pin code")
-		self.onChangedEntry = [ ]
+		self.onChangedEntry = []
 
 		self.slot = pin_slot
 		self.pin = pin

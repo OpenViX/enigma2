@@ -28,7 +28,7 @@ class NetworkNfs(Screen):
 		Screen.__init__(self, session)
 		Screen.setTitle(self, _("NFS Setup"))
 		self.skinName = "NetworkNfs"
-		self.onChangedEntry = [ ]
+		self.onChangedEntry = []
 		self['lab1'] = Label(_("Autostart:"))
 		self['labactive'] = Label(_(_("Disabled")))
 		self['lab2'] = Label(_("Current Status:"))
@@ -38,8 +38,8 @@ class NetworkNfs(Screen):
 		self['key_red'] = Label(_("Remove Service"))
 		self['key_yellow'] = Label(_("Autostart"))
 		self['lab4'] = Label(_("active NFS Shares:"))
-		self['key_blue'] = Label( (" ") )
-		self['lab3'] = Label( (" "))
+		self['key_blue'] = Label((" "))
+		self['lab3'] = Label((" "))
 		self.Console = Console()
 		self.my_nfs_active = False
 		self.my_nfs_run = False
@@ -129,7 +129,7 @@ class NetworkNfs(Screen):
 		if fileExists('/etc/exports'):
 			exports = popen('/usr/sbin/exportfs').read()
 			if exports == "":
-				self['lab3'].setText (_("no valid entrys in /etc/exports found\nPress blue button to activate default Enigma2\nHDD and USB as NFS exports,\nif valid mounted hardware is available."))
+				self['lab3'].setText(_("no valid entrys in /etc/exports found\nPress blue button to activate default Enigma2\nHDD and USB as NFS exports,\nif valid mounted hardware is available."))
 				self['key_blue'].setText(_("NFS Shares ON"))
 			else:
 				self['lab3'].setText(exports)
@@ -156,7 +156,7 @@ class NetworkNfs(Screen):
 			h = open("/etc/exports","w")
 			while i < len(z):
 				if z[i] !="autofs" and z[i] !="net":
-					h.write( "/media/" + str(z[i]) + " " + netz + opt + "\n" )
+					h.write("/media/" + str(z[i]) + " " + netz + opt + "\n")
 				i = i + 1
 			h.close()
 			self.Console.ePopen('/usr/sbin/exportfs -ra')
@@ -208,7 +208,7 @@ class NetworkSamba(Screen):
 		Screen.__init__(self, session)
 		Screen.setTitle(self, _("Samba Setup"))
 		self.skinName = "NetworkSamba"
-		self.onChangedEntry = [ ]
+		self.onChangedEntry = []
 		self['lab1'] = Label(_("Autostart:"))
 		self['labactive'] = Label(_(_("Disabled")))
 		self['lab2'] = Label(_("Current Status:"))
@@ -402,7 +402,7 @@ class NetworkAfp(Screen):
 		Screen.__init__(self, session)
 		Screen.setTitle(self, _("AFP Setup"))
 		self.skinName = "NetworkAfp"
-		self.onChangedEntry = [ ]
+		self.onChangedEntry = []
 		self['lab1'] = Label(_("Autostart:"))
 		self['labactive'] = Label(_(_("Disabled")))
 		self['lab2'] = Label(_("Current Status:"))
@@ -545,7 +545,7 @@ class NetworkSABnzbd(Screen):
 		Screen.__init__(self, session)
 		Screen.setTitle(self, _("SABnzbd Setup"))
 		self.skinName = "NetworkSABnzbd"
-		self.onChangedEntry = [ ]
+		self.onChangedEntry = []
 		self['lab1'] = Label(_("Autostart:"))
 		self['labactive'] = Label(_(_("Disabled")))
 		self['lab2'] = Label(_("Current Status:"))
@@ -694,7 +694,7 @@ class NetworkFtp(Screen):
 		Screen.__init__(self, session)
 		Screen.setTitle(self, _("FTP Setup"))
 		self.skinName = "NetworkFTP"
-		self.onChangedEntry = [ ]
+		self.onChangedEntry = []
 		self['lab1'] = Label(_("Autostart:"))
 		self['labactive'] = Label(_(_("Disabled")))
 		self['lab2'] = Label(_("Current Status:"))
@@ -773,7 +773,7 @@ class NetworkOpenvpn(Screen):
 		Screen.__init__(self, session)
 		Screen.setTitle(self, _("OpenVpn Setup"))
 		self.skinName = "NetworkOpenvpn"
-		self.onChangedEntry = [ ]
+		self.onChangedEntry = []
 		self['lab1'] = Label(_("Autostart:"))
 		self['labactive'] = Label(_(_("Disabled")))
 		self['lab2'] = Label(_("Current Status:"))
@@ -971,7 +971,7 @@ class NetworkTelnet(Screen):
 		Screen.__init__(self, session)
 		Screen.setTitle(self, _("Telnet Setup"))
 		self.skinName = "NetworkTelnet"
-		self.onChangedEntry = [ ]
+		self.onChangedEntry = []
 		self['lab1'] = Label(_("Autostart:"))
 		self['labactive'] = Label(_(_("Disabled")))
 		self['lab2'] = Label(_("Current Status:"))
@@ -1048,7 +1048,7 @@ class NetworkInadyn(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		Screen.setTitle(self, _("Inadyn Setup"))
-		self.onChangedEntry = [ ]
+		self.onChangedEntry = []
 		self['autostart'] = Label(_("Autostart:"))
 		self['labactive'] = Label(_(_("Active")))
 		self['labdisabled'] = Label(_(_("Disabled")))
@@ -1239,7 +1239,7 @@ class NetworkInadyn(Screen):
 class NetworkInadynSetup(Screen, ConfigListScreen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
-		self.onChangedEntry = [ ]
+		self.onChangedEntry = []
 		self.list = []
 		ConfigListScreen.__init__(self, self.list, session=self.session, on_change=self.selectionChanged)
 		Screen.setTitle(self, _("Inadyn Setup"))
@@ -1389,7 +1389,7 @@ class NetworkuShare(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		Screen.setTitle(self, _("uShare Setup"))
-		self.onChangedEntry = [ ]
+		self.onChangedEntry = []
 		self['autostart'] = Label(_("Autostart:"))
 		self['labactive'] = Label(_(_("Active")))
 		self['labdisabled'] = Label(_(_("Disabled")))
@@ -1617,7 +1617,7 @@ class NetworkuShareSetup(Screen, ConfigListScreen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		Screen.setTitle(self, _("uShare Setup"))
-		self.onChangedEntry = [ ]
+		self.onChangedEntry = []
 		self.list = []
 		ConfigListScreen.__init__(self, self.list, session=self.session, on_change=self.selectionChanged)
 		Screen.setTitle(self, _("uShare Setup"))
@@ -1744,7 +1744,7 @@ class NetworkuShareSetup(Screen, ConfigListScreen):
 				elif line.startswith('USHARE_TELNET_PORT='):
 					line = ('USHARE_TELNET_PORT=' + str(self.ushare_telnetport.value))
 				elif line.startswith('USHARE_DIR='):
-					line = ('USHARE_DIR=' + ', '.join( config.networkushare.mediafolders.value ))
+					line = ('USHARE_DIR=' + ', '.join(config.networkushare.mediafolders.value))
 				elif line.startswith('ENABLE_WEB='):
 					if not self.ushare_web.value:
 						line = 'ENABLE_WEB=no'
@@ -1803,7 +1803,7 @@ class uShareSelection(Screen):
 					self.mediafolders = line
 		self.selectedFiles = [str(n) for n in self.mediafolders.split(', ')]
 		defaultDir = '/media/'
-		self.filelist = MultiFileSelectList(self.selectedFiles, defaultDir, showFiles=False )
+		self.filelist = MultiFileSelectList(self.selectedFiles, defaultDir, showFiles=False)
 		self["checkList"] = self.filelist
 
 		self["actions"] = ActionMap(["DirectionActions", "OkCancelActions", "ShortcutActions"],
@@ -1890,7 +1890,7 @@ class NetworkMiniDLNA(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		Screen.setTitle(self, _("MiniDLNA Setup"))
-		self.onChangedEntry = [ ]
+		self.onChangedEntry = []
 		self['autostart'] = Label(_("Autostart:"))
 		self['labactive'] = Label(_(_("Active")))
 		self['labdisabled'] = Label(_(_("Disabled")))
@@ -2103,7 +2103,7 @@ class NetworkMiniDLNASetup(Screen, ConfigListScreen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		Screen.setTitle(self, _("MiniDLNA Setup"))
-		self.onChangedEntry = [ ]
+		self.onChangedEntry = []
 		self.list = []
 		ConfigListScreen.__init__(self, self.list, session=self.session, on_change=self.selectionChanged)
 		Screen.setTitle(self, _("MiniDLNA Setup"))
@@ -2223,7 +2223,7 @@ class NetworkMiniDLNASetup(Screen, ConfigListScreen):
 				elif line.startswith('serial='):
 					line = ('serial=' + str(self.minidlna_serialno.value))
 				elif line.startswith('media_dir='):
-					line = ('media_dir=' + ', '.join( config.networkminidlna.mediafolders.value ))
+					line = ('media_dir=' + ', '.join(config.networkminidlna.mediafolders.value))
 				elif line.startswith('inotify='):
 					if not self.minidlna_inotify.value:
 						line = 'inotify=no'
@@ -2277,7 +2277,7 @@ class MiniDLNASelection(Screen):
 					self.mediafolders = line
 		self.selectedFiles = [str(n) for n in self.mediafolders.split(', ')]
 		defaultDir = '/media/'
-		self.filelist = MultiFileSelectList(self.selectedFiles, defaultDir, showFiles=False )
+		self.filelist = MultiFileSelectList(self.selectedFiles, defaultDir, showFiles=False)
 		self["checkList"] = self.filelist
 
 		self["actions"] = ActionMap(["DirectionActions", "OkCancelActions", "ShortcutActions"],
@@ -2363,7 +2363,7 @@ class NetworkSATPI(Screen):
 		Screen.__init__(self, session)
 		Screen.setTitle(self, _("SATPI Setup"))
 		self.skinName = "NetworkSATPI"
-		self.onChangedEntry = [ ]
+		self.onChangedEntry = []
 		self['lab1'] = Label(_("Autostart:"))
 		self['labactive'] = Label(_(_("Disabled")))
 		self['lab2'] = Label(_("Current Status:"))

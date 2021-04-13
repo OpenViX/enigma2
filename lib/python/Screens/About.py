@@ -345,7 +345,7 @@ class CommitInfo(Screen):
 		self.project = 0
 		self.projects = [
 			#("organisation",  "repository",           "readable name",                "branch", "github/gitlab"),
-                        ("teamblue-e2",      "enigma2",               "teamBlue Enigma2",             ("master" if (getImageType() in "DEV" "beta") else getImageVersion())  , "github"),
+                        ("teamblue-e2",      "enigma2",               "teamBlue Enigma2",             ("master" if (getImageType() in "DEV" "beta") else getImageVersion()), "github"),
 			("teamblue-e2",      "skin",             "teamBlue Skin GigaBlue Pax",   ("master" if (getImageType() == "release") else "DEV"), "github"),
 			("oe-alliance",   "oe-alliance-core",     "OE Alliance Core",             "4.4", "github"),
 			("oe-alliance",   "oe-alliance-plugins",  "OE Alliance Plugins",          "master", "github"),
@@ -379,7 +379,7 @@ class CommitInfo(Screen):
 					creator = c['commit']['author']['name']
 					title = c['commit']['message']
 					date = datetime.strptime(c['commit']['committer']['date'], '%Y-%m-%dT%H:%M:%SZ').strftime('%x %X')
-					if title.startswith ("Merge "):
+					if title.startswith("Merge "):
 						pass
 					else:
 						commitlog += date + ' ' + creator + '\n' + title + 2 * '\n'
@@ -397,7 +397,7 @@ class CommitInfo(Screen):
 					creator = c['author_name']
 					title = c['message']
 					date = datetime.strptime(c['committed_date'], '%Y-%m-%dT%H:%M:%S.000+02:00').strftime('%x %X')
-					if title.startswith ("Merge "):
+					if title.startswith("Merge "):
 						pass
 					else:
 						commitlog += date + ' ' + creator + '\n' + title + '\n'
@@ -508,7 +508,7 @@ class MemoryInfoSkinParams(GUIComponent):
 
 	def applySkin(self, desktop, screen):
 		if self.skinAttributes is not None:
-			attribs = [ ]
+			attribs = []
 			for (attrib, value) in self.skinAttributes:
 				if attrib == "rowsincolumn":
 					self.rows_in_column = int(value)
@@ -577,7 +577,7 @@ class SystemNetworkInfo(Screen):
 		wlan0 = about.getIfConfig('wlan0')
 		if wlan0.has_key('addr'):
 			self.iface = 'wlan0'
-		self.AboutText += iNetwork.getFriendlyAdapterName (self.iface) + ":" + iNetwork.getFriendlyAdapterDescription(self.iface) +"\n"
+		self.AboutText += iNetwork.getFriendlyAdapterName(self.iface) + ":" + iNetwork.getFriendlyAdapterDescription(self.iface) +"\n"
 
 		def nameserver():
 			nameserver = ""
@@ -782,7 +782,7 @@ class SystemNetworkInfo(Screen):
 
 	def updateStatusbar(self):
 		self["IFtext"].setText(_("Network:"))
-		self["IF"].setText(iNetwork.getFriendlyAdapterDescription(self.iface)  + " - " +iNetwork.getFriendlyAdapterName(self.iface) )
+		self["IF"].setText(iNetwork.getFriendlyAdapterDescription(self.iface)  + " - " +iNetwork.getFriendlyAdapterName(self.iface))
 		#self["IF"].setText(iNetwork.getFriendlyAdapterName(self.iface))
 		if iNetwork.isWirelessInterface(self.iface):
 			try:

@@ -154,8 +154,8 @@ class HddMount(Screen):
 		self.cpath = path
 		if self.mountpoints.exist(path):
 			self.session.openWithCallback(self.setMountPointCb, ExtraMessageBox, _("Selected mount point is already used by another drive."), _("Mount point exist!"),
-																[ [ _("Change old drive with this new drive"), "ok.png" ],
-																[ _("Keep old drive"), "cancel.png" ],
+																[[_("Change old drive with this new drive"), "ok.png"],
+																[_("Keep old drive"), "cancel.png"],
 																])
 		else:
 			self.setMountPointCb(0)
@@ -247,8 +247,8 @@ class HddFastRemove(Screen):
 		self.mdisks = Disks()
 		self.mountpoints = MountPoints()
 		self.mountpoints.read()
-		self.disks = list ()
-		self.mounts = list ()
+		self.disks = list()
+		self.mounts = list()
 		for disk in self.mdisks.disks:
 			if disk[2] == True:
 				diskname = disk[3]

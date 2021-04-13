@@ -166,14 +166,14 @@ class HddPartitions(Screen):
 			if self.disk[5][self.index][3] == "83":
 				if self.isExt4Supported():
 					self.session.openWithCallback(self.domkfs, ExtraMessageBox, _("Format as"), _("Partitioner"),
-												[ [ "Ext4", "partitionmanager.png" ],
-												[ "Ext3", "partitionmanager.png" ],
-												[ _("Cancel"), "cancel.png" ],
+												[["Ext4", "partitionmanager.png"],
+												["Ext3", "partitionmanager.png"],
+												[_("Cancel"), "cancel.png"],
 												], 1, 2)
 				else:
 					self.session.openWithCallback(self.domkfs, ExtraMessageBox, _("Format as"), _("Partitioner"),
-												[ [ "Ext3", "partitionmanager.png" ],
-												[ _("Cancel"), "cancel.png" ],
+												[["Ext3", "partitionmanager.png"],
+												[_("Cancel"), "cancel.png"],
 												], 1, 1)
 
 	def refreshMP(self, uirefresh=True):
