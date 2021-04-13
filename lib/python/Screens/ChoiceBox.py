@@ -96,7 +96,7 @@ class ChoiceBox(Screen):
 				self.list.append(ChoiceEntryComponent(key=strpos, text=x))
 				if self.__keys[pos] != "":
 					self.keymap[self.__keys[pos]] = list[pos]
-				self.summarylist.append((self.__keys[pos],x[0]))
+				self.summarylist.append((self.__keys[pos], x[0]))
 				pos += 1
 
 		self["list"] = ChoiceList(list=self.list, selection=selection)

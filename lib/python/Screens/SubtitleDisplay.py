@@ -40,7 +40,7 @@ class SubtitleDisplay(Screen):
 				return 1
 
 	def showMessage(self, message, hideScreen):
-		padding = (40,10)
+		padding = (40, 10)
 		label = self['message']
 		label.setText(message)
 		size = label.getSize()

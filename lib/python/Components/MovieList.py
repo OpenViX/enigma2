@@ -302,7 +302,7 @@ class MovieList(GUIComponent):
 		def warningWrongSkinParameter(string):
 			print "[MovieList] wrong '%s' skin parameters" % string
 		def font(value):
-			font = parseFont(value, ((1,1),(1,1)))
+			font = parseFont(value, ((1, 1), (1, 1)))
 			self.fontName = font.family
 			self.fontSize = font.pointSize
 		def itemHeight(value):
@@ -479,18 +479,18 @@ class MovieList(GUIComponent):
 			if data:
 				if switch == 'i' and hasattr(data, 'icon') and data.icon is not None:
 					if self.partIconeShift is None:
-						res.append(MultiContentEntryPixmapAlphaBlend(pos=(colX,0), size=(iconSize,ih), png=data.icon, flags=BT_ALIGN_CENTER))
+						res.append(MultiContentEntryPixmapAlphaBlend(pos=(colX, 0), size=(iconSize, ih), png=data.icon, flags=BT_ALIGN_CENTER))
 					else:
-						res.append(MultiContentEntryPixmapAlphaBlend(pos=(colX,self.partIconeShift), size=(iconSize,data.icon.size().height()), png=data.icon))
+						res.append(MultiContentEntryPixmapAlphaBlend(pos=(colX, self.partIconeShift), size=(iconSize, data.icon.size().height()), png=data.icon))
 				elif switch in ('p', 's'):
 					if hasattr(data, 'part') and data.part > 0:
 						pbarY = (self.itemHeight - self.pbarHeight) // 2 if self.pbarShift is None else self.pbarShift
-						res.append(MultiContentEntryProgress(pos=(colX,pbarY), size=(iconSize, self.pbarHeight), percent=data.part, borderWidth=2, foreColor=data.partcol, foreColorSelected=None, backColor=None, backColorSelected=None))
+						res.append(MultiContentEntryProgress(pos=(colX, pbarY), size=(iconSize, self.pbarHeight), percent=data.part, borderWidth=2, foreColor=data.partcol, foreColorSelected=None, backColor=None, backColorSelected=None))
 					elif hasattr(data, 'icon') and data.icon is not None:
 						if self.pbarShift is None:
-							res.append(MultiContentEntryPixmapAlphaBlend(pos=(colX,0), size=(iconSize, ih), png=data.icon, flags=BT_ALIGN_CENTER))
+							res.append(MultiContentEntryPixmapAlphaBlend(pos=(colX, 0), size=(iconSize, ih), png=data.icon, flags=BT_ALIGN_CENTER))
 						else:
-							res.append(MultiContentEntryPixmapAlphaBlend(pos=(colX,self.pbarShift), size=(iconSize, self.pbarHeight), png=data.icon))
+							res.append(MultiContentEntryPixmapAlphaBlend(pos=(colX, self.pbarShift), size=(iconSize, self.pbarHeight), png=data.icon))
 			return iconSize
 
 		if piconWidth > 0:
@@ -730,7 +730,7 @@ class MovieList(GUIComponent):
 			this_tags = info.getInfoString(serviceref, iServiceInformation.sTags).split(' ')
 			if this_tags == ['']:
 				# No tags? Auto tag!
-				this_tags = name.replace(',',' ').replace('.',' ').replace('_',' ').replace(':',' ').split()
+				this_tags = name.replace(',', ' ').replace('.', ' ').replace('_', ' ').replace(':', ' ').split()
 				# For auto tags, we are keeping a (tag, movies) dictionary.
 				#It will be used later to check if movies have a complete sentence in common.
 				for tag in this_tags:

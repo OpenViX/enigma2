@@ -765,7 +765,7 @@ class ChannelSelectionEPG(InfoBarButtonSetup, HelpableScreen):
 		menu = [(menu1, 'CALLFUNC', self.ChoiceBoxCB, self.doRecordCurrentTimer), (menu2, 'CALLFUNC', self.ChoiceBoxCB, self.doRecordNextTimer)]
 		self.ChoiceBoxDialog = self.session.instantiateDialog(ChoiceBox, list=menu, keys=['red', 'green'], skin_name="RecordTimerQuestion")
 		selx, sely = self.servicelist.getSelectionPosition()
-		self.ChoiceBoxDialog.instance.move(ePoint(selx - self.ChoiceBoxDialog.instance.size().width(),self.instance.position().y() + sely))
+		self.ChoiceBoxDialog.instance.move(ePoint(selx - self.ChoiceBoxDialog.instance.size().width(), self.instance.position().y() + sely))
 		self.showChoiceBoxDialog()
 
 	def ChoiceBoxCB(self, choice):
@@ -837,7 +837,7 @@ class ChannelSelectionEPG(InfoBarButtonSetup, HelpableScreen):
 					menu = [(_("Delete Timer"), 'CALLFUNC', self.RemoveTimerDialogCB, cb_func1), (_("Edit Timer"), 'CALLFUNC', self.RemoveTimerDialogCB, cb_func2)]
 					self.ChoiceBoxDialog = self.session.instantiateDialog(ChoiceBox, title=_("Select action for timer %s:") % eventname, list=menu, keys=['green', 'blue'], skin_name="RecordTimerQuestion")
 					selx, sely = self.serviceList.getSelectionPosition()
-					self.ChoiceBoxDialog.instance.move(ePoint(selx - self.ChoiceBoxDialog.instance.size().width(),self.instance.position().y() + sely))
+					self.ChoiceBoxDialog.instance.move(ePoint(selx - self.ChoiceBoxDialog.instance.size().width(), self.instance.position().y() + sely))
 				self.showChoiceBoxDialog()
 				break
 		else:
@@ -1654,7 +1654,7 @@ class ChannelSelectionBase(Screen, HelpableScreen):
 							refstr = cur_ref.toString()
 							op = "".join(refstr.split(':', 10)[6:7])
 							if len(op) >= 4:
-								hop = int(op[:-4],16)
+								hop = int(op[:-4], 16)
 								if len(op) >= 7 and not op.endswith('0000'):
 									op = op[:-4] + '0000'
 								refstr = '1:7:0:0:0:0:%s:0:0:0:(satellitePosition == %s) && %s ORDER BY name' % (op, hop, self.service_types[self.service_types.rfind(':') + 1:])
@@ -1678,7 +1678,7 @@ class ChannelSelectionBase(Screen, HelpableScreen):
 							info = service.info()
 							if info:
 								provider = info.getInfoString(iServiceInformation.sProvider)
-								refstr = '1:7:0:0:0:0:0:0:0:0:(provider == \"%s\") && %s ORDER BY name:%s' % (provider, self.service_types[self.service_types.rfind(':') + 1:],provider)
+								refstr = '1:7:0:0:0:0:0:0:0:0:(provider == \"%s\") && %s ORDER BY name:%s' % (provider, self.service_types[self.service_types.rfind(':') + 1:], provider)
 								self.setCurrentSelectionAlternative(eServiceReference(refstr))
 
 	@staticmethod
@@ -1961,8 +1961,8 @@ class ChannelSelectionBase(Screen, HelpableScreen):
 				info = service.info()
 				if info:
 					provider = info.getInfoString(iServiceInformation.sProvider)
-					op = int(self.session.nav.getCurrentlyPlayingServiceOrGroup().toString().split(':')[6][:-4] or "0",16)
-					refstr = '1:7:0:0:0:0:0:0:0:0:(provider == \"%s\") && (satellitePosition == %s) && %s ORDER BY name:%s' % (provider, op, self.service_types[self.service_types.rfind(':') + 1:],provider)
+					op = int(self.session.nav.getCurrentlyPlayingServiceOrGroup().toString().split(':')[6][:-4] or "0", 16)
+					refstr = '1:7:0:0:0:0:0:0:0:0:(provider == \"%s\") && (satellitePosition == %s) && %s ORDER BY name:%s' % (provider, op, self.service_types[self.service_types.rfind(':') + 1:], provider)
 					self.servicelist.setCurrent(eServiceReference(refstr))
 		elif not self.isBasePathEqual(self.bouquet_root) or self.bouquet_mark_edit == EDIT_ALTERNATIVES:
 			playingref = self.session.nav.getCurrentlyPlayingServiceOrGroup()
@@ -1994,7 +1994,7 @@ class ChannelSelection(ChannelSelectionEdit, ChannelSelectionBase, ChannelSelect
 		ChannelSelectionEPG.__init__(self)
 		SelectionEventInfo.__init__(self)
 		if config.usage.servicelist_mode.value == 'simple':
-			self.skinName = ["SlimChannelSelection","SimpleChannelSelection","ChannelSelection"]
+			self.skinName = ["SlimChannelSelection", "SimpleChannelSelection", "ChannelSelection"]
 		else:
 			self.skinName = "ChannelSelection"
 
@@ -2600,7 +2600,7 @@ class ChannelSelection(ChannelSelectionEdit, ChannelSelectionBase, ChannelSelect
 class PiPZapSelection(ChannelSelection):
 	def __init__(self, session):
 		ChannelSelection.__init__(self, session)
-		self.skinName = ["SlimChannelSelection","SimpleChannelSelection","ChannelSelection"]
+		self.skinName = ["SlimChannelSelection", "SimpleChannelSelection", "ChannelSelection"]
 
 		self.startservice = None
 		self.pipzapfailed = None
@@ -3037,10 +3037,10 @@ class HistoryZapSelector(Screen, HelpableScreen):
 		else:
 			refstr = str(ref)
 		refstr = refstr and GetWithAlternative(refstr)
-		print 'refstr:',refstr
+		print 'refstr:', refstr
 		if '%3a//' in refstr:
 			return "%s" % _("Stream")
-		op = int(refstr.split(':', 10)[6][:-4] or "0",16)
+		op = int(refstr.split(':', 10)[6][:-4] or "0", 16)
 		if op == 0xeeee:
 			return "%s" % _("DVB-T")
 		if op == 0xffff:

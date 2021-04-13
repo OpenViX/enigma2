@@ -164,7 +164,7 @@ class EventViewBase:
 			else:
 				self["channel"].setText(_("unknown service"))
 
-	def sort_func(self,x,y):
+	def sort_func(self, x, y):
 		if x[1] < y[1]:
 			return -1
 		elif x[1] == y[1]:
@@ -264,7 +264,7 @@ class EventViewSimple(Screen, EventViewBase):
 	def __init__(self, session, event, ref, callback=None, singleEPGCB=None, multiEPGCB=None, similarEPGCB=None, skin='EventViewSimple'):
 		Screen.__init__(self, session)
 		self.setTitle(_('Event view'))
-		self.skinName = [skin,"EventView"]
+		self.skinName = [skin, "EventView"]
 		EventViewBase.__init__(self, event, ref, callback, similarEPGCB)
 
 

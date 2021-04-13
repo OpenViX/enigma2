@@ -11,7 +11,7 @@ def InitClientMode():
 
 	config.clientmode.enabled.addNotifier(clientModeChanged)
 	config.clientmode.serverAddressType = ConfigSelection(default="ip", choices=[("ip", _("IP")), ("domain", _("Domain"))])
-	config.clientmode.serverIP = ConfigIP(default=[0,0,0,0], auto_jump=True)
+	config.clientmode.serverIP = ConfigIP(default=[0, 0, 0, 0], auto_jump=True)
 	config.clientmode.serverDomain = ConfigText(default="", fixed_size=False)
 	config.clientmode.serverStreamingPort = ConfigInteger(default=8001, limits=(1, 65535))
 	config.clientmode.serverFTPusername = ConfigText(default="root", fixed_size=False)

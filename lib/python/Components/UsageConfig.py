@@ -31,7 +31,7 @@ def InitUsageConfig():
 	config.usage.showdish = ConfigSelection(default="flashing", choices=[("flashing", _("Flashing")), ("normal", _("Not Flashing")), ("off", _("Off"))])
 	config.misc.showrotorposition = ConfigSelection(default="no", choices=[("no", _("no")), ("yes", _("yes")), ("withtext", _("with text")), ("tunername", _("with tuner name"))])
 	config.usage.multibouquet = ConfigYesNo(default=True)
-	config.usage.maxchannelnumlen = ConfigSelection(default="4", choices=[("3", _("3")),("4", _("4")), ("5", _("5")), ("6", _("6"))])
+	config.usage.maxchannelnumlen = ConfigSelection(default="4", choices=[("3", _("3")), ("4", _("4")), ("5", _("5")), ("6", _("6"))])
 
 	config.usage.alternative_number_mode = ConfigYesNo(default=False)
 	def alternativeNumberModeChange(configElement):
@@ -83,7 +83,7 @@ def InitUsageConfig():
 	config.usage.show_infobar_channel_number = ConfigYesNo(default=False)
 	choicelist = [("none", _("None")), ("0", _("No timeout"))] + \
 		[(str(i), ngettext("%d second", "%d seconds", i) % i) for i in [3, 5, 7, 10, 15, 20, 30, 60]] + \
-		[("EPG",_("EPG")),("INFOBAREPG",_("InfoBar EPG"))]
+		[("EPG", _("EPG")), ("INFOBAREPG", _("InfoBar EPG"))]
 	config.usage.show_second_infobar = ConfigSelection(default="5", choices=choicelist)
 	def showsecondinfobarChanged(configElement):
 		if config.usage.show_second_infobar.value != "INFOBAREPG":
@@ -289,17 +289,17 @@ def InitUsageConfig():
 	config.misc.disable_background_scan = ConfigYesNo(default=False)
 	config.misc.use_ci_assignment = ConfigYesNo(default=False)
 	config.usage.frontend_priority_dvbs = ConfigSelection(default="-2", choices=list(dvbs_nims))
-	dvbs_nims.insert(1,("-1", _("auto")))
+	dvbs_nims.insert(1, ("-1", _("auto")))
 	config.usage.jobtaskextensions = ConfigYesNo(default=True)
 	config.usage.recording_frontend_priority_dvbs = ConfigSelection(default="-2", choices=dvbs_nims)
 	config.usage.frontend_priority_dvbt = ConfigSelection(default="-2", choices=list(dvbt_nims))
-	dvbt_nims.insert(1,("-1", _("auto")))
+	dvbt_nims.insert(1, ("-1", _("auto")))
 	config.usage.recording_frontend_priority_dvbt = ConfigSelection(default="-2", choices=dvbt_nims)
 	config.usage.frontend_priority_dvbc = ConfigSelection(default="-2", choices=list(dvbc_nims))
-	dvbc_nims.insert(1,("-1", _("auto")))
+	dvbc_nims.insert(1, ("-1", _("auto")))
 	config.usage.recording_frontend_priority_dvbc = ConfigSelection(default="-2", choices=dvbc_nims)
 	config.usage.frontend_priority_atsc = ConfigSelection(default="-2", choices=list(atsc_nims))
-	atsc_nims.insert(1,("-1", _("auto")))
+	atsc_nims.insert(1, ("-1", _("auto")))
 	config.usage.recording_frontend_priority_atsc = ConfigSelection(default="-2", choices=atsc_nims)
 
 	SystemInfo["DVB-S_priority_tuner_available"] = len(dvbs_nims) > 3 and any(len(i) > 2 for i in (dvbt_nims, dvbc_nims, atsc_nims))
@@ -418,10 +418,10 @@ def InitUsageConfig():
 
 	config.usage.hide_zap_errors = ConfigYesNo(default=False)
 	config.usage.hide_ci_messages = ConfigYesNo(default=False)
-	config.usage.show_cryptoinfo = ConfigSelection([("0", _("Off")),("1", _("One line")),("2", _("Two lines"))], "2")
+	config.usage.show_cryptoinfo = ConfigSelection([("0", _("Off")), ("1", _("One line")), ("2", _("Two lines"))], "2")
 	config.usage.show_eit_nownext = ConfigYesNo(default=True)
 	config.usage.show_vcr_scart = ConfigYesNo(default=False)
-	config.usage.pic_resolution = ConfigSelection(default=None, choices=[(None, _("Same resolution as skin")), ("(720, 576)","720x576"), ("(1280, 720)", "1280x720"), ("(1920, 1080)", "1920x1080")])
+	config.usage.pic_resolution = ConfigSelection(default=None, choices=[(None, _("Same resolution as skin")), ("(720, 576)", "720x576"), ("(1280, 720)", "1280x720"), ("(1920, 1080)", "1920x1080")])
 
 	config.usage.date = ConfigSubsection()
 	config.usage.date.enabled = NoSave(ConfigBoolean(default=False))
@@ -802,16 +802,16 @@ def InitUsageConfig():
 				hddchoises.append((p.mountpoint, d))
 	config.misc.epgcachepath = ConfigSelection(default='/etc/enigma2/', choices=hddchoises)
 	config.misc.epgcachefilename = ConfigText(default='epg', fixed_size=False)
-	config.misc.epgcache_filename = ConfigText(default=(config.misc.epgcachepath.value + config.misc.epgcachefilename.value.replace('.dat','') + '.dat'))
+	config.misc.epgcache_filename = ConfigText(default=(config.misc.epgcachepath.value + config.misc.epgcachefilename.value.replace('.dat', '') + '.dat'))
 	def EpgCacheChanged(configElement):
-		config.misc.epgcache_filename.setValue(os.path.join(config.misc.epgcachepath.value, config.misc.epgcachefilename.value.replace('.dat','') + '.dat'))
+		config.misc.epgcache_filename.setValue(os.path.join(config.misc.epgcachepath.value, config.misc.epgcachefilename.value.replace('.dat', '') + '.dat'))
 		config.misc.epgcache_filename.save()
 		eEPGCache.getInstance().setCacheFile(config.misc.epgcache_filename.value)
 		epgcache = eEPGCache.getInstance()
 		epgcache.save()
 		if not config.misc.epgcache_filename.value.startswith("/etc/enigma2/"):
-			if os.path.exists('/etc/enigma2/' + config.misc.epgcachefilename.value.replace('.dat','') + '.dat'):
-				os.remove('/etc/enigma2/' + config.misc.epgcachefilename.value.replace('.dat','') + '.dat')
+			if os.path.exists('/etc/enigma2/' + config.misc.epgcachefilename.value.replace('.dat', '') + '.dat'):
+				os.remove('/etc/enigma2/' + config.misc.epgcachefilename.value.replace('.dat', '') + '.dat')
 	config.misc.epgcachepath.addNotifier(EpgCacheChanged, immediate_feedback=False)
 	config.misc.epgcachefilename.addNotifier(EpgCacheChanged, immediate_feedback=False)
 
@@ -861,13 +861,13 @@ def InitUsageConfig():
 	config.timeshift.startdelay = ConfigSelection(default="0", choices=choicelist)
 	config.timeshift.showinfobar = ConfigYesNo(default=True)
 	config.timeshift.stopwhilerecording = ConfigYesNo(default=False)
-	config.timeshift.favoriteSaveAction = ConfigSelection([("askuser", _("Ask user")),("savetimeshift", _("Save and stop")),("savetimeshiftandrecord", _("Save and record")),("noSave", _("Don't save"))], "askuser")
+	config.timeshift.favoriteSaveAction = ConfigSelection([("askuser", _("Ask user")), ("savetimeshift", _("Save and stop")), ("savetimeshiftandrecord", _("Save and record")), ("noSave", _("Don't save"))], "askuser")
 	config.timeshift.permanentrecording = ConfigYesNo(default=False)
 	config.timeshift.isRecording = NoSave(ConfigYesNo(default=False))
 	config.timeshift.stream_warning = ConfigYesNo(default=True)
 
 	config.seek = ConfigSubsection()
-	config.seek.baractivation = ConfigSelection([("leftright", _("Long Left/Right")),("ffrw", _("Long << / >>"))], "leftright")
+	config.seek.baractivation = ConfigSelection([("leftright", _("Long Left/Right")), ("ffrw", _("Long << / >>"))], "leftright")
 	config.seek.sensibility = ConfigSelectionNumber(min=1, max=10, stepwidth=1, default=10, wraparound=True)
 	config.seek.selfdefined_13 = ConfigSelectionNumber(min=1, max=120, stepwidth=1, default=15, wraparound=True)
 	config.seek.selfdefined_46 = ConfigSelectionNumber(min=1, max=240, stepwidth=1, default=60, wraparound=True)
@@ -909,7 +909,7 @@ def InitUsageConfig():
 
 	def updatedebug_path(configElement):
 		if not os.path.exists(config.crash.debug_path.value):
-			os.mkdir(config.crash.debug_path.value,0755)
+			os.mkdir(config.crash.debug_path.value, 0755)
 	config.crash.debug_path.addNotifier(updatedebug_path, immediate_feedback=False)
 
 	config.usage.timerlist_showpicons = ConfigYesNo(default=True)
@@ -968,7 +968,7 @@ def InitUsageConfig():
 	config.subtitles.subtitle_rewrap = ConfigYesNo(default=False)
 	config.subtitles.colourise_dialogs = ConfigYesNo(default=False)
 	config.subtitles.subtitle_borderwidth = ConfigSelection(choices=["1", "2", "3", "4", "5"], default="3")
-	config.subtitles.subtitle_fontsize = ConfigSelection(choices=["%d" % x for x in range(16,101) if not x % 2], default="40")
+	config.subtitles.subtitle_fontsize = ConfigSelection(choices=["%d" % x for x in range(16, 101) if not x % 2], default="40")
 	config.subtitles.showbackground = ConfigYesNo(default=False)
 
 	subtitle_delay_choicelist = []
@@ -1079,10 +1079,10 @@ def InitUsageConfig():
 	config.autolanguage.subtitle_defaultdvb = ConfigYesNo(default=False)
 	config.autolanguage.subtitle_usecache = ConfigYesNo(default=True)
 	config.autolanguage.equal_languages = ConfigSelection(default="15", choices=[
-		("0", _("None")),("1", "1"),("2", "2"),("3", "1,2"),
-		("4", "3"),("5", "1,3"),("6", "2,3"),("7", "1,2,3"),
-		("8", "4"),("9", "1,4"),("10", "2,4"),("11", "1,2,4"),
-		("12", "3,4"),("13", "1,3,4"),("14", "2,3,4"),("15", _("All"))])
+		("0", _("None")), ("1", "1"), ("2", "2"), ("3", "1,2"),
+		("4", "3"), ("5", "1,3"), ("6", "2,3"), ("7", "1,2,3"),
+		("8", "4"), ("9", "1,4"), ("10", "2,4"), ("11", "1,2,4"),
+		("12", "3,4"), ("13", "1,3,4"), ("14", "2,3,4"), ("15", _("All"))])
 
 	config.logmanager = ConfigSubsection()
 	config.logmanager.showinextensions = ConfigYesNo(default=False)
@@ -1099,7 +1099,7 @@ def InitUsageConfig():
 					("3", _("with left/right buttons"))])
 
 	if not os.path.exists('/usr/softcams/'):
-		os.mkdir('/usr/softcams/',0755)
+		os.mkdir('/usr/softcams/', 0755)
 	softcams = os.listdir('/usr/softcams/')
 	config.oscaminfo = ConfigSubsection()
 	config.oscaminfo.showInExtensions = ConfigYesNo(default=False)
@@ -1107,8 +1107,8 @@ def InitUsageConfig():
 	config.oscaminfo.autoupdate = ConfigYesNo(default=False)
 	config.oscaminfo.username = ConfigText(default="username", fixed_size=False, visible_width=12)
 	config.oscaminfo.password = ConfigPassword(default="password", fixed_size=False)
-	config.oscaminfo.ip = ConfigIP(default=[127,0,0,1], auto_jump=True)
-	config.oscaminfo.port = ConfigInteger(default=16002, limits=(0,65536))
+	config.oscaminfo.ip = ConfigIP(default=[127, 0, 0, 1], auto_jump=True)
+	config.oscaminfo.port = ConfigInteger(default=16002, limits=(0, 65536))
 	config.oscaminfo.intervall = ConfigSelectionNumber(min=1, max=600, stepwidth=1, default=10, wraparound=True)
 	SystemInfo["OScamInstalled"] = False
 
@@ -1238,7 +1238,7 @@ def upgradeConfig():
 		upgrade(config.epgselection.infobar.roundto, "epgselection.infobar_roundto")
 		upgrade(config.epgselection.infobar.prevtimeperiod, "epgselection.infobar_prevtimeperiod")
 		upgrade(config.epgselection.infobar.primetime, "epgselection.infobar_primetimehour", mapper=lambda v: v + ":00")
-		upgrade(config.epgselection.infobar.servicetitle_mode, "epgselection.infobar_servicetitle_mode", {"servicenumber+picon":"picon+servicenumber", "servicenumber+picon+servicename": "picon+servicenumber+servicename"})
+		upgrade(config.epgselection.infobar.servicetitle_mode, "epgselection.infobar_servicetitle_mode", {"servicenumber+picon": "picon+servicenumber", "servicenumber+picon+servicename": "picon+servicenumber+servicename"})
 		upgrade(config.epgselection.infobar.servfs, "epgselection.infobar_servfs")
 		upgrade(config.epgselection.infobar.eventfs, "epgselection.infobar_eventfs")
 		upgrade(config.epgselection.infobar.timelinefs, "epgselection.infobar_timelinefs")
@@ -1261,7 +1261,7 @@ def upgradeConfig():
 		upgrade(config.epgselection.multi.itemsperpage, "epgselection.multi_itemsperpage")
 
 		upgrade(config.epgselection.grid.showbouquet, "epgselection.graph_showbouquet")
-		upgrade(config.epgselection.grid.browse_mode, "epgselection.graph_channel1", {"True":"firstservice", "False":"currentservice"})
+		upgrade(config.epgselection.grid.browse_mode, "epgselection.graph_channel1", {"True": "firstservice", "False": "currentservice"})
 		upgrade(config.epgselection.grid.preview_mode, "epgselection.graph_preview_mode")
 		upgrade(config.epgselection.grid.type_mode, "epgselection.graph_type_mode")
 		upgrade(config.epgselection.grid.highlight_current_events, "epgselection.graph_highlight_current_events")
@@ -1272,7 +1272,7 @@ def upgradeConfig():
 		upgrade(config.epgselection.grid.roundto, "epgselection.graph_roundto")
 		upgrade(config.epgselection.grid.prevtimeperiod, "epgselection.graph_prevtimeperiod")
 		upgrade(config.epgselection.grid.primetime, "epgselection.graph_primetimehour", mapper=lambda v: v + ":00")
-		upgrade(config.epgselection.grid.servicetitle_mode, "epgselection.graph_servicetitle_mode", {"servicenumber+picon":"picon+servicenumber", "servicenumber+picon+servicename": "picon+servicenumber+servicename"})
+		upgrade(config.epgselection.grid.servicetitle_mode, "epgselection.graph_servicetitle_mode", {"servicenumber+picon": "picon+servicenumber", "servicenumber+picon+servicename": "picon+servicenumber+servicename"})
 		upgrade(config.epgselection.grid.servicename_alignment, "epgselection.graph_servicename_alignment")
 		upgrade(config.epgselection.grid.servicenumber_alignment, "epgselection.graph_servicenumber_alignment")
 		upgrade(config.epgselection.grid.event_alignment, "epgselection.graph_event_alignment")

@@ -23,8 +23,8 @@ class InputDeviceSelection(Screen, HelpableScreen):
 		self["key_green"] = StaticText(_("Select"))
 		self["introduction"] = StaticText(self.edittext)
 
-		self.devices = [(iInputDevices.getDeviceName(x),x) for x in iInputDevices.getDeviceList()]
-		print("[InputDeviceSetup] found devices :->", len(self.devices),self.devices)
+		self.devices = [(iInputDevices.getDeviceName(x), x) for x in iInputDevices.getDeviceList()]
+		print("[InputDeviceSetup] found devices :->", len(self.devices), self.devices)
 
 		self["OkCancelActions"] = HelpableActionMap(self, "OkCancelActions",
 			{
@@ -87,7 +87,7 @@ class InputDeviceSelection(Screen, HelpableScreen):
 
 		for x in self.devices:
 			dev_type = iInputDevices.getDeviceAttribute(x[1], 'type')
-			self.list.append(self.buildInterfaceList(x[1],_(x[0]), dev_type))
+			self.list.append(self.buildInterfaceList(x[1], _(x[0]), dev_type))
 		self["list"].setList(self.list)
 		self["list"].setIndex(self.currentIndex)
 
@@ -123,7 +123,7 @@ class InputDeviceSetup(ConfigListScreen, Screen):
 		self["introduction"] = StaticText()
 
 		# for generating strings into .po only
-		devicenames = [_("%s %s front panel") % (getMachineBrand(), getMachineName()),_("%s %s front panel") % (getMachineBrand(), getMachineName()),_("%s %s remote control (native)") % (getMachineBrand(), getMachineName()),_("%s %s advanced remote control (native)") % (getMachineBrand(), getMachineName()),_("%s %s ir keyboard") % (getMachineBrand(), getMachineName()),_("%s %s ir mouse") % (getMachineBrand(), getMachineName())]
+		devicenames = [_("%s %s front panel") % (getMachineBrand(), getMachineName()), _("%s %s front panel") % (getMachineBrand(), getMachineName()), _("%s %s remote control (native)") % (getMachineBrand(), getMachineName()), _("%s %s advanced remote control (native)") % (getMachineBrand(), getMachineName()), _("%s %s ir keyboard") % (getMachineBrand(), getMachineName()), _("%s %s ir mouse") % (getMachineBrand(), getMachineName())]
 
 		self.createSetup()
 		self.onLayoutFinish.append(self.layoutFinished)
@@ -245,7 +245,7 @@ class RemoteControlType(Screen, ConfigListScreen):
 			("et5000", 7),
 			("et6000", 7),
 			("et6500", 11),
-			("et7x00",16),
+			("et7x00", 16),
 			("et8000", 9),
 			("et8500", 16),
 			("et9000", 5),
@@ -255,14 +255,14 @@ class RemoteControlType(Screen, ConfigListScreen):
 			("et10000", 9),
 			("formuler1", 18),
 			("formuler3", 18),
-			("hd11",16),
-			("hd51",16),
-			("hd52",16),
-			("hd1100",16),
-			("hd1200",16),
-			("hd1265",16),
-			("hd500c",16),
-			("hd530c",16),
+			("hd11", 16),
+			("hd51", 16),
+			("hd52", 16),
+			("hd1100", 16),
+			("hd1200", 16),
+			("hd1265", 16),
+			("hd500c", 16),
+			("hd530c", 16),
 			("hd2400", 19),
 			("h3", 21),
 			("h5", 21),

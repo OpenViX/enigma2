@@ -25,7 +25,7 @@ class SkinSelector(Screen, HelpableScreen):
 		HelpableScreen.__init__(self)
 		self.setTitle(screenTitle)
 		self.reboot = reboot
-		self.skinName = ["SkinSelector","__SkinSelector__"]
+		self.skinName = ["SkinSelector", "__SkinSelector__"]
 		if isinstance(skin_name, str):
 			self.skinName = [skin_name] + self.skinName
 		self.rootDir = resolveFilename(SCOPE_SKIN)

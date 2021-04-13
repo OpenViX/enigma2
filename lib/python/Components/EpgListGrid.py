@@ -530,7 +530,7 @@ class EPGListGrid(EPGListBase):
 				if serviceTimers is not None:
 					timer, matchType = RecordTimer.isInTimerOnService(serviceTimers, stime, duration)
 					timerIcon, autoTimerIcon = self.getPixmapsForTimer(timer, matchType, selected)
-					if matchType not in (2,3):
+					if matchType not in (2, 3):
 						timer = None
 				else:
 					timer = matchType = timerIcon = None
@@ -659,7 +659,7 @@ class EPGListGrid(EPGListBase):
 							png=timerIcon))
 						if autoTimerIcon:
 							res.append(MultiContentEntryPixmapAlphaBlend(
-								pos=(pos[0] - clockSize,pos[1]), size=(clockSize, clockSize),
+								pos=(pos[0] - clockSize, pos[1]), size=(clockSize, clockSize),
 								png=autoTimerIcon))
 		return res
 

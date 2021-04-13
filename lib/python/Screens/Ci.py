@@ -368,7 +368,7 @@ class CiSelection(Screen):
 				"right": self.keyLeft,
 				"ok": self.okbuttonClick,
 				"cancel": self.cancel
-			},-1)
+			}, -1)
 		self["key_red"] = StaticText(_("Cancel"))
 
 		self.dlg = None

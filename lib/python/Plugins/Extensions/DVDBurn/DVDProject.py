@@ -11,7 +11,7 @@ class ConfigColor(ConfigSequence):
 	def __init__(self, default=None):
 		if not default:
 			default = [128, 128, 128]
-		ConfigSequence.__init__(self, seperator="#", limits=[(0,255),(0,255),(0,255)], default=default)
+		ConfigSequence.__init__(self, seperator="#", limits=[(0, 255), (0, 255), (0, 255)], default=default)
 
 class ConfigFilename(ConfigText):
 	def __init__(self):
@@ -20,8 +20,8 @@ class ConfigFilename(ConfigText):
 	def getMulti(self, selected):
 		if self.text == "":
 			return "mtext"[1 - selected:], "", 0
-		cut_len = min(len(self.text),40)
-		filename = (self.text.rstrip("/").rsplit("/",1))[1].encode("utf-8")[:cut_len] + " "
+		cut_len = min(len(self.text), 40)
+		filename = (self.text.rstrip("/").rsplit("/", 1))[1].encode("utf-8")[:cut_len] + " "
 		if self.allmarked:
 			mark = range(0, len(filename))
 		else:
@@ -116,7 +116,7 @@ class DVDProject:
 				self.error = "xml file not found!"
 				#raise AttributeError
 			file = open(filename, "r")
-			data = file.read().decode("utf-8").replace('&',"&amp;").encode("ascii",'xmlcharrefreplace')
+			data = file.read().decode("utf-8").replace('&', "&amp;").encode("ascii", 'xmlcharrefreplace')
 			file.close()
 			projectfiledom = xml.dom.minidom.parseString(data)
 			for node in projectfiledom.childNodes[0].childNodes:
@@ -207,7 +207,7 @@ class MenuTemplate(DVDProject):
 		self.settings.subtitleformat = ConfigText(fixed_size=False, visible_width=40)
 		self.settings.menubg = ConfigFilename()
 		self.settings.menuaudio = ConfigFilename()
-		self.settings.dimensions = ConfigSequence(seperator=',', default=[576,720], limits=[(352,720),(480,576)])
+		self.settings.dimensions = ConfigSequence(seperator=',', default=[576, 720], limits=[(352, 720), (480, 576)])
 		self.settings.rows = ConfigInteger(default=4, limits=(1, 10))
 		self.settings.cols = ConfigInteger(default=1, limits=(1, 4))
 		self.settings.color_headline = ConfigColor()
@@ -228,11 +228,11 @@ class MenuTemplate(DVDProject):
 		self.settings.space_cols = ConfigInteger(default=24, limits=(0, 500))
 		self.settings.prev_page_text = ConfigText(default="<<<", fixed_size=False)
 		self.settings.next_page_text = ConfigText(default=">>>", fixed_size=False)
-		self.settings.offset_headline = ConfigSequence(seperator=',', default=[0,0], limits=[(-1,500),(-1,500)])
-		self.settings.offset_title = ConfigSequence(seperator=',', default=[0,0], limits=[(-1,500),(-1,500)])
-		self.settings.offset_subtitle = ConfigSequence(seperator=',', default=[20,0], limits=[(-1,500),(-1,500)])
-		self.settings.offset_thumb = ConfigSequence(seperator=',', default=[40,0], limits=[(-1,500),(-1,500)])
-		self.settings.thumb_size = ConfigSequence(seperator=',', default=[200,158], limits=[(0,576),(-1,720)])
+		self.settings.offset_headline = ConfigSequence(seperator=',', default=[0, 0], limits=[(-1, 500), (-1, 500)])
+		self.settings.offset_title = ConfigSequence(seperator=',', default=[0, 0], limits=[(-1, 500), (-1, 500)])
+		self.settings.offset_subtitle = ConfigSequence(seperator=',', default=[20, 0], limits=[(-1, 500), (-1, 500)])
+		self.settings.offset_thumb = ConfigSequence(seperator=',', default=[40, 0], limits=[(-1, 500), (-1, 500)])
+		self.settings.thumb_size = ConfigSequence(seperator=',', default=[200, 158], limits=[(0, 576), (-1, 720)])
 		self.settings.thumb_border = ConfigInteger(default=2, limits=(0, 20))
 		self.filekeys = ["menubg", "menuaudio", "fontface_headline", "fontface_title", "fontface_subtitle"]
 		from TitleProperties import languageChoices

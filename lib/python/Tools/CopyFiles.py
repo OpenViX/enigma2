@@ -21,13 +21,13 @@ class DeleteFolderTask(PythonTask):
 class CopyFileJob(Job):
 	def __init__(self, srcfile, destfile, name):
 		Job.__init__(self, _("Copying files"))
-		cmdline = 'cp -Rf "%s" "%s"' % (srcfile,destfile)
+		cmdline = 'cp -Rf "%s" "%s"' % (srcfile, destfile)
 		AddFileProcessTask(self, cmdline, srcfile, destfile, name)
 
 class MoveFileJob(Job):
 	def __init__(self, srcfile, destfile, name):
 		Job.__init__(self, _("Moving files"))
-		cmdline = 'mv -f "%s" "%s"' % (srcfile,destfile)
+		cmdline = 'mv -f "%s" "%s"' % (srcfile, destfile)
 		AddFileProcessTask(self, cmdline, srcfile, destfile, name)
 
 class AddFileProcessTask(Task):
@@ -101,9 +101,9 @@ class DownloadTask(Task):
 		if (recvbytes - self.last_recvbytes) > 100000: # anti-flicker
 			self.progress = int(100 * (float(recvbytes) / float(totalbytes)))
 			if (((float(totalbytes) / 1024) / 1024) / 1024) >= 1:
-				self.name = _("Downloading") + ' ' + _("%s of %s GB") % (str(round((((float(recvbytes) / 1024) / 1024) / 1024),2)), str(round((((float(totalbytes) / 1024) / 1024) / 1024),2)))
+				self.name = _("Downloading") + ' ' + _("%s of %s GB") % (str(round((((float(recvbytes) / 1024) / 1024) / 1024), 2)), str(round((((float(totalbytes) / 1024) / 1024) / 1024), 2)))
 			elif ((float(totalbytes) / 1024) / 1024) >= 1:
-				self.name = _("Downloading") + ' ' + _("%s of %s MB") % (str(round(((float(recvbytes) / 1024) / 1024),2)), str(round(((float(totalbytes) / 1024) / 1024),2)))
+				self.name = _("Downloading") + ' ' + _("%s of %s MB") % (str(round(((float(recvbytes) / 1024) / 1024), 2)), str(round(((float(totalbytes) / 1024) / 1024), 2)))
 			elif (totalbytes / 1024) >= 1:
 				self.name = _("Downloading") + ' ' + _("%d of %d KB") % (recvbytes / 1024, totalbytes / 1024)
 			else:

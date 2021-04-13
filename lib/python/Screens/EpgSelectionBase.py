@@ -38,7 +38,7 @@ epgActions = [
 ]
 
 okActions = [
-	("zap",_("Zap")),
+	("zap", _("Zap")),
 	("zapExit", _("Zap + Exit")),
 	("openEventView", _("Event Info"), _("Show detailed event info"))
 ]
@@ -500,7 +500,7 @@ class EPGServiceNumberSelectionPopup(Screen):
 		helpDescription = _("EPG Commands")
 		helpMsg = _("Enter a number to jump to a service/channel")
 		self["actions"] = HelpableNumberActionMap(self, "NumberActions", 
-			dict([(str(i), (self.keyNumber, helpMsg)) for i in range(0,10)]),
+			dict([(str(i), (self.keyNumber, helpMsg)) for i in range(0, 10)]),
 			prio=-1, description=helpDescription)
 		self["cancelaction"] = HelpableActionMap(self, "OkCancelActions", {
 			"cancel": (self.__cancel, _("Exit channel selection")),
@@ -548,7 +548,7 @@ class EPGServiceNumberSelection:
 	def __init__(self):
 		helpMsg = _("Enter a number to jump to a service/channel")
 		self["numberactions"] = HelpableNumberActionMap(self, "NumberActions", 
-			dict([(str(i), (self.keyNumberGlobal, helpMsg)) for i in range(0,10)]),
+			dict([(str(i), (self.keyNumberGlobal, helpMsg)) for i in range(0, 10)]),
 			prio=-1, description=_("Service/Channel number zap commands"))
 
 	def keyNumberGlobal(self, number):

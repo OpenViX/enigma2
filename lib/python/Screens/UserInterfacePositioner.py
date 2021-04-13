@@ -34,13 +34,13 @@ def InitOsd():
 	config.osd.dst_height = ConfigSelectionNumber(default=576, stepwidth=1, min=0, max=576, wraparound=False)
 	config.osd.alpha = ConfigSelectionNumber(default=255, stepwidth=1, min=0, max=255, wraparound=False)
 	config.av.osd_alpha = NoSave(ConfigNumber(default=255))
-	config.osd.threeDmode = ConfigSelection([("off", _("Off")), ("auto", _("Auto")), ("sidebyside", _("Side by Side")),("topandbottom", _("Top and Bottom"))], "auto")
+	config.osd.threeDmode = ConfigSelection([("off", _("Off")), ("auto", _("Auto")), ("sidebyside", _("Side by Side")), ("topandbottom", _("Top and Bottom"))], "auto")
 	config.osd.threeDznorm = ConfigSlider(default=50, increment=1, limits=(0, 100))
 	config.osd.show3dextensions = ConfigYesNo(default=False)
 
 	def set3DMode(configElement):
 		if SystemInfo["CanChange3DOsd"] and getBoxType() not in ('spycat'):
-			print '[UserInterfacePositioner] Setting 3D mode:',configElement.value
+			print '[UserInterfacePositioner] Setting 3D mode:', configElement.value
 			file3d = fileCheck('/proc/stb/fb/3dmode') or fileCheck('/proc/stb/fb/primary/3d')
 			f = open(file3d, "w")
 			f.write(configElement.value)
@@ -49,7 +49,7 @@ def InitOsd():
 
 	def set3DZnorm(configElement):
 		if SystemInfo["CanChange3DOsd"] and getBoxType() not in ('spycat'):
-			print '[UserInterfacePositioner] Setting 3D depth:',configElement.value
+			print '[UserInterfacePositioner] Setting 3D depth:', configElement.value
 			f = open("/proc/stb/fb/znorm", "w")
 			f.write('%d' % int(configElement.value))
 			f.close()

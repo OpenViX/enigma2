@@ -282,7 +282,7 @@ class AVSwitch:
 			f.close()
 
 	def getOutputAspect(self):
-		ret = (16,9)
+		ret = (16, 9)
 		port = config.av.videoport.value
 		if port not in config.av.videomode:
 			print "[VideoHardware] current port not available in getOutputAspect!!! force 16:9"
@@ -297,16 +297,16 @@ class AVSwitch:
 				else:
 					aspect = {"16:9": "16:9", "16:10": "16:10"}[config.av.aspect.value]
 					if aspect == "16:10":
-						ret = (16,10)
+						ret = (16, 10)
 			elif is_auto:
 				try:
 					aspect_str = open("/proc/stb/vmpeg/0/aspect", "r").read()
 					if aspect_str == "1": # 4:3
-						ret = (4,3)
+						ret = (4, 3)
 				except IOError:
 					pass
 			else:  # 4:3
-				ret = (4,3)
+				ret = (4, 3)
 		return ret
 
 	def getFramebufferScale(self):
@@ -844,9 +844,9 @@ def InitAVSwitch():
 
 	if SystemInfo["HasScaler_sharpness"]:
 		if getBoxType() in ('gbquad', 'gbquadplus'):
-			config.av.scaler_sharpness = ConfigSlider(default=5, limits=(0,26))
+			config.av.scaler_sharpness = ConfigSlider(default=5, limits=(0, 26))
 		else:
-			config.av.scaler_sharpness = ConfigSlider(default=13, limits=(0,26))
+			config.av.scaler_sharpness = ConfigSlider(default=13, limits=(0, 26))
 		config.av.scaler_sharpness.addNotifier(setScaler_sharpness)
 	else:
 		config.av.scaler_sharpness = NoSave(ConfigNothing())

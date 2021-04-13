@@ -7,7 +7,7 @@ from Screens.EpgSelectionBase import channelDownActions, channelUpActions, epgAc
 
 def InitEPGConfig():
 	config.epgselection = ConfigSubsection()
-	config.epgselection.sort = ConfigSelection(default="0", choices=[("0", _("Time")),("1", _("Alphanumeric"))])
+	config.epgselection.sort = ConfigSelection(default="0", choices=[("0", _("Time")), ("1", _("Alphanumeric"))])
 	config.epgselection.overjump = ConfigYesNo(default=False)
 
 	serviceTitleChoices = [
@@ -33,9 +33,9 @@ def InitEPGConfig():
 	config.epgselection.infobar.browse_mode = ConfigSelection(default="currentservice", choices=singleBrowseModeChoices)
 	config.epgselection.infobar.type_mode = ConfigSelection(default="graphics", choices=[("text", _("Text Grid EPG")), ("graphics", _("Graphics Grid EPG")), ("single", _("Single EPG"))])
 	if SystemInfo.get("NumVideoDecoders", 1) > 1:
-		config.epgselection.infobar.preview_mode = ConfigSelection(choices=[("0",_("Disabled")), ("1", _("Full screen")), ("2", _("PiP"))], default="1")
+		config.epgselection.infobar.preview_mode = ConfigSelection(choices=[("0", _("Disabled")), ("1", _("Full screen")), ("2", _("PiP"))], default="1")
 	else:
-		config.epgselection.infobar.preview_mode = ConfigSelection(choices=[("0",_("Disabled")), ("1", _("Full screen"))], default="1")
+		config.epgselection.infobar.preview_mode = ConfigSelection(choices=[("0", _("Disabled")), ("1", _("Full screen"))], default="1")
 	choices = [(0, _("Use skin default"))] + [(i, _("%d") % i) for i in range(1, 5)]
 	config.epgselection.infobar.itemsperpage = ConfigSelection(default=0, choices=choices)
 	config.epgselection.infobar.roundto = ConfigSelection(default="15", choices=[("15", _("%d minutes") % 15), ("30", _("%d minutes") % 30), ("60", _("%d minutes") % 60)])
@@ -118,7 +118,7 @@ def InitEPGConfig():
 	config.epgselection.grid.showbouquet = ConfigYesNo(default=False)
 	config.epgselection.grid.browse_mode = ConfigSelection(default="currentservice", choices=multiBrowseModeChoices)
 	config.epgselection.grid.preview_mode = ConfigYesNo(default=True)
-	config.epgselection.grid.type_mode = ConfigSelection(choices=[("graphics",_("Graphics")), ("text", _("Text"))], default="graphics")
+	config.epgselection.grid.type_mode = ConfigSelection(choices=[("graphics", _("Graphics")), ("text", _("Text"))], default="graphics")
 	config.epgselection.grid.highlight_current_events = ConfigYesNo(default=True)
 	config.epgselection.grid.roundto = ConfigSelection(default="15", choices=[("15", _("%d minutes") % 15), ("30", _("%d minutes") % 30), ("60", _("%d minutes") % 60)])
 	config.epgselection.grid.prevtimeperiod = ConfigSelection(default="180", choices=[("60", _("%d minutes") % 60), ("90", _("%d minutes") % 90), ("120", _("%d minutes") % 120), ("150", _("%d minutes") % 150), ("180", _("%d minutes") % 180), ("210", _("%d minutes") % 210), ("240", _("%d minutes") % 240), ("270", _("%d minutes") % 270), ("300", _("%d minutes") % 300)])
@@ -146,7 +146,7 @@ def InitEPGConfig():
 	config.epgselection.grid.servicewidth = ConfigSelectionNumber(default=250, stepwidth=1, min=70, max=500, wraparound=True)
 	config.epgselection.grid.piconwidth = ConfigSelectionNumber(default=100, stepwidth=1, min=50, max=500, wraparound=True)
 	config.epgselection.grid.infowidth = ConfigSelectionNumber(default=50, stepwidth=25, min=0, max=150, wraparound=True)
-	config.epgselection.grid.rec_icon_height = ConfigSelection(choices=[("bottom",_("bottom")),("top", _("top")), ("middle", _("middle")), ("hide", _("hide"))], default="bottom")
+	config.epgselection.grid.rec_icon_height = ConfigSelection(choices=[("bottom", _("bottom")), ("top", _("top")), ("middle", _("middle")), ("hide", _("hide"))], default="bottom")
 	config.epgselection.grid.number_buttons_mode = ConfigSelection(choices=[("paging", _("Standard")), ("service", _("Enter service number"))], default="paging")
 	config.epgselection.grid.btn_ok = ConfigSelection(choices=okActions, default="zap")
 	config.epgselection.grid.btn_oklong = ConfigSelection(choices=okActions, default="zapExit")

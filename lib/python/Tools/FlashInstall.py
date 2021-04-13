@@ -12,7 +12,7 @@ def FlashInstallTime():
 		f.write(flashdate)
 		f.close()
 	elif fileExists('/etc/install'):
-		f = open("/etc/install","r")
+		f = open("/etc/install", "r")
 		flashdate = f.read()
 		f.close()
 		print '[Image Flashed]', flashdate

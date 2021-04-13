@@ -154,14 +154,14 @@ class YWeather(Poll, Converter, object):
 
 	@cached
 	def getText(self):
-		xweather = {'ycity':"N/A", 'ycountry':"N/A", 'ydirection':"N/A", 'yspeed':"N/A", 'yhumidity':"N/A",
-				'yvisibility':"N/A", 'ypressure':"N/A", 'ytext':"N/A", 'ytemp':"N/A", 'ypicon':"3200",
-				'yday2':"N/A", 'yday3':"N/A", 'yday4':"N/A", 'yday5':"N/A",
-				'ypiconday2':"3200", 'ypiconday3':"3200", 'ypiconday4':"3200", 'ypiconday5':"3200",
-				'ydate2':"N/A", 'ydate3':"N/A", 'ydate4':"N/A", 'ydate5':"N/A",
-				'ytextday2':"N/A", 'ytextday3':"N/A", 'ytextday4':"N/A", 'ytextday5':"N/A",
-				'ytemphighday2':"N/A", 'ytemphighday3':"N/A", 'ytemphighday4':"N/A", 'ytemphighday5':"N/A",
-				'ytemplowday2':"N/A", 'ytemplowday3':"N/A", 'ytemplowday4':"N/A", 'ytemplowday5':"N/A"}
+		xweather = {'ycity': "N/A", 'ycountry': "N/A", 'ydirection': "N/A", 'yspeed': "N/A", 'yhumidity': "N/A",
+				'yvisibility': "N/A", 'ypressure': "N/A", 'ytext': "N/A", 'ytemp': "N/A", 'ypicon': "3200",
+				'yday2': "N/A", 'yday3': "N/A", 'yday4': "N/A", 'yday5': "N/A",
+				'ypiconday2': "3200", 'ypiconday3': "3200", 'ypiconday4': "3200", 'ypiconday5': "3200",
+				'ydate2': "N/A", 'ydate3': "N/A", 'ydate4': "N/A", 'ydate5': "N/A",
+				'ytextday2': "N/A", 'ytextday3': "N/A", 'ytextday4': "N/A", 'ytextday5': "N/A",
+				'ytemphighday2': "N/A", 'ytemphighday3': "N/A", 'ytemphighday4': "N/A", 'ytemphighday5': "N/A",
+				'ytemplowday2': "N/A", 'ytemplowday3': "N/A", 'ytemplowday4': "N/A", 'ytemplowday5': "N/A"}
 		direct = 0
 		info = ""
 		XML_location = "/tmp/yweather.xml"
