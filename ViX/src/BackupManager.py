@@ -586,14 +586,14 @@ class VIXBackupManager(Screen):
 			if config.backupmanager.xtraplugindir.value:
 				self.thirdpartyPluginsLocation = config.backupmanager.xtraplugindir.value
 				self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace(" ", "%20")
-				self.plugfiles = self.thirdpartyPluginsLocation.split("/",3)
+				self.plugfiles = self.thirdpartyPluginsLocation.split("/", 3)
 			elif path.exists("/tmp/3rdPartyPluginsLocation"):
 				with open("/tmp/3rdPartyPluginsLocation", "r") as fd:
 					self.thirdpartyPluginsLocation = fd.readlines()
 				self.thirdpartyPluginsLocation = "".join(self.thirdpartyPluginsLocation)
 				self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace("\n", "")
 				self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace(" ", "%20")
-				self.plugfiles = self.thirdpartyPluginsLocation.split("/",3)
+				self.plugfiles = self.thirdpartyPluginsLocation.split("/", 3)
 			print("[BackupManager] thirdpartyPluginsLocation split = %s" % self.plugfiles)
 			with open("/tmp/3rdPartyPlugins", "r") as fd:
 				tmppluginslist2 = fd.readlines()
