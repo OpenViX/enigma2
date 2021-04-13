@@ -237,11 +237,11 @@ class VIXBackupManager(Screen):
 				del self.emlist[:]
 				mtimes = []
 				for fil in images:
-					if fil.endswith(".tar.gz") and "vix" in fil.lower() or fil.startswith("%s" %defaultprefix):
+					if fil.endswith(".tar.gz") and "vix" in fil.lower() or fil.startswith("%s" % defaultprefix):
 						if fil.startswith(defaultprefix):   # Ensure the current image backup are sorted to the top
-							prefix="B"
+							prefix = "B"
 						else:
-							prefix="A"
+							prefix = "A"
 						key = "%s-%012u" % (prefix, stat(self.BackupDirectory + fil).st_mtime)
 						mtimes.append((fil, key)) # (filname, prefix-mtime)
 				for fil in [x[0] for x in sorted(mtimes, key=lambda x: x[1], reverse=True)]: # sort by mtime
@@ -594,7 +594,7 @@ class VIXBackupManager(Screen):
 				self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace("\n", "")
 				self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace(" ", "%20")
 				self.plugfiles = self.thirdpartyPluginsLocation.split("/",3)
-			print("[BackupManager] thirdpartyPluginsLocation split = %s" %self.plugfiles)
+			print("[BackupManager] thirdpartyPluginsLocation split = %s" % self.plugfiles)
 			with open("/tmp/3rdPartyPlugins", "r") as fd:
 				tmppluginslist2 = fd.readlines()
 			available = None
@@ -609,12 +609,12 @@ class VIXBackupManager(Screen):
 							devmounts = []
 							files = []
 							self.plugfile = self.plugfiles[3]
-							for dir in ["/media/%s/%s" %(media, self.plugfile)  for media in listdir("/media/") if path.isdir(path.join("/media/", media))]:
+							for dir in ["/media/%s/%s" % (media, self.plugfile) for media in listdir("/media/") if path.isdir(path.join("/media/", media))]:
 								if media != "autofs" or "net":
 									devmounts.append(dir)
 							if len(devmounts):
 								for x in devmounts:
-									print("[BackupManager] search dir = %s" %devmounts)
+									print("[BackupManager] search dir = %s" % devmounts)
 									if path.exists(x):
 										self.thirdpartyPluginsLocation = x
 										try:
@@ -634,7 +634,7 @@ class VIXBackupManager(Screen):
 										if path.exists(ipk):
 											# 											print "IPK", ipk
 											self.pluginslist2.append(ipk)
-						print("[BackupManager] pluginslist = %s" %self.pluginslist2)
+						print("[BackupManager] pluginslist = %s" % self.pluginslist2)
 
 		print("[BackupManager] Restoring Stage 3: Complete")
 		self.Stage3Completed = True
@@ -998,11 +998,11 @@ class AutoBackupManagerTimer:
 #
 		lastbkup_t = int(config.backupmanager.lastbackup.value)
 		if config.backupmanager.repeattype.value == "daily":
-			nextbkup_t = lastbkup_t + 24*3600
+			nextbkup_t = lastbkup_t + 24 * 3600
 		elif config.backupmanager.repeattype.value == "weekly":
-			nextbkup_t = lastbkup_t + 7*24*3600
+			nextbkup_t = lastbkup_t + 7 * 24 * 3600
 		elif config.backupmanager.repeattype.value == "monthly":
-			nextbkup_t = lastbkup_t + 30*24*3600
+			nextbkup_t = lastbkup_t + 30 * 24 * 3600
 		nextbkup = localtime(nextbkup_t)
 		return int(mktime((nextbkup.tm_year, nextbkup.tm_mon, nextbkup.tm_mday, backupclock[0], backupclock[1], 0, nextbkup.tm_wday, nextbkup.tm_yday, nextbkup.tm_isdst)))
 
@@ -1348,7 +1348,7 @@ class BackupFiles(Screen):
 # ...then, if we have too many, remove the <n> newest from the end
 # and delete what is left
 				if len(emlist) > config.backupmanager.number_to_keep.value:
-					emlist = emlist[0:len(emlist)-config.backupmanager.number_to_keep.value]
+					emlist = emlist[0:len(emlist) - config.backupmanager.number_to_keep.value]
 					for fil in emlist:
 						remove(self.BackupDirectory + fil)
 		except:

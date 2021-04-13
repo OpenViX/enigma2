@@ -447,7 +447,7 @@ class VIXImageManager(Screen):
 					CMD = "/usr/bin/ofgwrite -r%s -k%s '%s'" % (self.MTDROOTFS, self.MTDKERNEL, MAINDEST)
 				elif SystemInfo["HasHiSi"] and SystemInfo["canMultiBoot"][self.multibootslot]["rootsubdir"] is None:	# sf8008 type receiver using SD card in multiboot
 					CMD = "/usr/bin/ofgwrite -r%s -k%s -m0 '%s'" % (self.MTDROOTFS, self.MTDKERNEL, MAINDEST)
-					print("[ImageManager] running commnd:%s slot = %s" %(CMD, self.multibootslot))
+					print("[ImageManager] running commnd:%s slot = %s" % (CMD, self.multibootslot))
 					if fileExists("/boot/STARTUP") and fileExists("/boot/STARTUP_6"):
 						copyfile("/boot/STARTUP_%s" % self.multibootslot, "/boot/STARTUP")
 				else:
@@ -1466,7 +1466,7 @@ class ImageManagerDownload(Screen):
 		username = parsed.username if parsed.username else ""
 		password = parsed.password if parsed.password else ""
 		hostname = parsed.hostname
-		path  = parsed.path
+		path = parsed.path
 		if username or password:
 			import base64
 			base64string = base64.b64encode('%s:%s' % (username, password))

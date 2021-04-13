@@ -58,7 +58,7 @@ class RestoreWizard(WizardLanguage, Rc):
 					files = []
 				if len(files):
 					for file in files:
-						if file.endswith(".tar.gz") and "vix" in file.lower() or file.startswith("%s" %defaultprefix):
+						if file.endswith(".tar.gz") and "vix" in file.lower() or file.startswith("%s" % defaultprefix):
 							mtimes.append((path.join(devpath, file), stat(path.join(devpath, file)).st_mtime)) # (filname, mtime)
 		for file in [x[0] for x in sorted(mtimes, key=lambda x: x[1], reverse=True)]: # sort by mtime
 			list.append((file, file))
@@ -323,12 +323,12 @@ class RestoreWizard(WizardLanguage, Rc):
 							devmounts = []
 							files = []
 							self.plugfile = self.plugfiles[3]
-							for dir in ["/media/%s/%s" %(media, self.plugfile)  for media in listdir("/media/") if path.isdir(path.join("/media/", media))]:
+							for dir in ["/media/%s/%s" % (media, self.plugfile) for media in listdir("/media/") if path.isdir(path.join("/media/", media))]:
 								if media != "autofs" or "net":
 									devmounts.append(dir)
 							if len(devmounts):
 								for x in devmounts:
-									print("[BackupManager] search dir = %s" %devmounts)
+									print("[BackupManager] search dir = %s" % devmounts)
 									if path.exists(x):
 										self.thirdpartyPluginsLocation = x
 										try:
