@@ -252,7 +252,7 @@ class ServiceName2(Converter, object):
 				else:
 					result += type
 			elif f == 'F':	# %F - frequency (dvb-s/s2/c/t) in KHz
-				if type in ('DVB-S') and self.tpdata.get('frequency', 0) >0 :
+				if type in ('DVB-S') and self.tpdata.get('frequency', 0) >0:
 					result += '%d MHz'%(self.tpdata.get('frequency', 0) // 1000)
 				if type in ('DVB-C', 'DVB-T'):
 					result += '%.3f MHz'%(((self.tpdata.get('frequency', 0) +500) // 1000) // 1000.0)
@@ -263,7 +263,7 @@ class ServiceName2(Converter, object):
 					result += x in list(range(10))+[15] and {0:'Auto', 1:'1/2', 2:'2/3', 3:'3/4', 4:'5/6', 5:'7/8', 6:'8/9', 7:'3/5', 8:'4/5', 9:'9/10', 15:'None'}[x] or ''
 				elif type == 'DVB-T':
 					x = self.tpdata.get('code_rate_lp', 5)
-					result += x in list(range(6)) and {0:'1/2', 1:'2/3',2 :'3/4', 3:'5/6', 4:'7/8', 5:'Auto'}[x] or ''
+					result += x in list(range(6)) and {0:'1/2', 1:'2/3',2:'3/4', 3:'5/6', 4:'7/8', 5:'Auto'}[x] or ''
 			elif f == 'i':	# %i - inversion (dvb-s/s2/c/t)
 				if type in ('DVB-S', 'DVB-C', 'DVB-T'):
 					x = self.tpdata.get('inversion', 2)

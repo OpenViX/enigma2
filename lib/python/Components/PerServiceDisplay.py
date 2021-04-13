@@ -8,7 +8,7 @@ from Components.VariableValue import VariableValue
 
 
 class PerServiceBase(object):
-	EventMap = { }
+	EventMap = {}
 
 	@staticmethod
 	def event(ev):

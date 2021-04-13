@@ -249,7 +249,7 @@ class Devices(Screen):
 		self["nims"].setText(niminfo)
 
 		nims = nimmanager.nimList()
-		if len(nims) <= 4 :
+		if len(nims) <= 4:
 			for count in (0, 1, 2, 3):
 				if count < len(nims):
 					self["Tuner" + str(count)].setText(nims[count])
@@ -266,7 +266,7 @@ class Devices(Screen):
 				if desc_list and desc_list[cur_idx]["desc"] == desc:
 					desc_list[cur_idx]["end"] = idx
 				else:
-					desc_list.append({"desc" : desc, "start" : idx, "end" : idx})
+					desc_list.append({"desc": desc, "start": idx, "end": idx})
 					cur_idx += 1
 				count += 1
 

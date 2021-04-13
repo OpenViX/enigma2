@@ -868,7 +868,7 @@ def InitAVSwitch():
 			f = "/proc/stb/audio/aac_transcode_choices"
 			(choices, default) = read_choices(f, default)
 
-		config.av.transcodeaac = ConfigSelection( choices=choices, default=default)
+		config.av.transcodeaac = ConfigSelection(choices=choices, default=default)
 		config.av.transcodeaac.addNotifier(setAACTranscode)
 	else:
 		config.av.transcodeaac = ConfigNothing()

@@ -56,9 +56,9 @@ config.plugins.softwaremanager.epgcache = ConfigYesNo(default=False)
 
 def write_cache(cache_file, cache_data):
 	#Does a cPickle dump
-	if not os_path.isdir( os_path.dirname(cache_file) ):
+	if not os_path.isdir(os_path.dirname(cache_file)):
 		try:
-			mkdir( os_path.dirname(cache_file) )
+			mkdir(os_path.dirname(cache_file))
 		except OSError:
 				print os_path.dirname(cache_file), 'is a file'
 	fd = open(cache_file, 'w')
@@ -124,7 +124,7 @@ class UpdatePluginMenu(Screen):
 		self.menutext = _("Press MENU on your remote control for additional options.")
 		self.infotext = _("Press INFO on your remote control for additional information.")
 		self.text = ""
-		self.backupdirs = ' '.join( config.plugins.configurationbackup.backupdirs.value )
+		self.backupdirs = ' '.join(config.plugins.configurationbackup.backupdirs.value)
 		if self.menu == 0:
 			print "building menu entries"
 			self.list.append(("install-extensions", _("Manage extensions"), _("\nManage extensions or plugins for your %s %s") % (getMachineBrand(), getMachineName()) + self.oktext, None))
@@ -147,14 +147,14 @@ class UpdatePluginMenu(Screen):
 							menuEntryDescription = _('Extended Software Plugin')
 						self.list.append(('default-plugin', menuEntryName, menuEntryDescription + self.oktext, callFnc))
 			if config.usage.setup_level.index >= 2: # expert+
-				self.list.append(("advanced", _("Advanced options"), _("\nAdvanced options and settings." ) + self.oktext, None))
+				self.list.append(("advanced", _("Advanced options"), _("\nAdvanced options and settings.") + self.oktext, None))
 		elif self.menu == 1:
-			self.list.append(("advancedrestore", _("Advanced restore"), _("\nRestore your backups by date." ) + self.oktext, None))
-			self.list.append(("backuplocation", _("Select backup location"),  _("\nSelect your backup device.\nCurrent device: " ) + config.plugins.configurationbackup.backuplocation.value + self.oktext, None))
+			self.list.append(("advancedrestore", _("Advanced restore"), _("\nRestore your backups by date.") + self.oktext, None))
+			self.list.append(("backuplocation", _("Select backup location"),  _("\nSelect your backup device.\nCurrent device: ") + config.plugins.configurationbackup.backuplocation.value + self.oktext, None))
 			self.list.append(("backupfiles", _("Select backup files"),  _("Select files for backup.") + self.oktext + "\n\n" + self.infotext, None))
 			if config.usage.setup_level.index >= 2: # expert+
-				self.list.append(("ipkg-manager", _("Packet management"),  _("\nView, install and remove available or installed packages." ) + self.oktext, None))
-			self.list.append(("ipkg-source",_("Select upgrade source"), _("\nEdit the upgrade source address." ) + self.oktext, None))
+				self.list.append(("ipkg-manager", _("Packet management"),  _("\nView, install and remove available or installed packages.") + self.oktext, None))
+			self.list.append(("ipkg-source",_("Select upgrade source"), _("\nEdit the upgrade source address.") + self.oktext, None))
 			for p in plugins.getPlugins(PluginDescriptor.WHERE_SOFTWAREMANAGER):
 				if "AdvancedSoftwareSupported" in p.__call__:
 					callFnc = p.__call__["AdvancedSoftwareSupported"](None)
@@ -284,7 +284,7 @@ class UpdatePluginMenu(Screen):
 				if currentEntry == "ipkg-manager":
 					self.session.open(PacketManager, self.skin_path)
 				elif currentEntry == "backuplocation":
-					parts = [ (r.description, r.mountpoint, self.session) for r in harddiskmanager.getMountedPartitions(onlyhotplug=False)]
+					parts = [(r.description, r.mountpoint, self.session) for r in harddiskmanager.getMountedPartitions(onlyhotplug=False)]
 					for x in parts:
 						if not access(x[1], F_OK|R_OK|W_OK) or x[1] == '/':
 							parts.remove(x)
@@ -301,7 +301,7 @@ class UpdatePluginMenu(Screen):
 					self.extended(self.session, None)
 
 	def backupfiles_choosen(self, ret):
-		self.backupdirs = ' '.join( config.plugins.configurationbackup.backupdirs.value )
+		self.backupdirs = ' '.join(config.plugins.configurationbackup.backupdirs.value)
 		config.plugins.configurationbackup.backupdirs.save()
 		config.plugins.configurationbackup.save()
 		config.save()
@@ -361,11 +361,11 @@ class SoftwareManagerSetup(Screen, ConfigListScreen):
 		if self.skin_path is None:
 			self.skin_path = resolveFilename(SCOPE_CURRENT_PLUGIN, "SystemPlugins/SoftwareManager")
 
-		self.onChangedEntry = [ ]
+		self.onChangedEntry = []
 		self.setup_title = _("Software manager setup")
 		self.overwriteConfigfilesEntry = None
 
-		self.list = [ ]
+		self.list = []
 		ConfigListScreen.__init__(self, self.list, session=session, on_change=self.changedEntry)
 
 		self["actions"] = ActionMap(["SetupActions", "MenuActions"],
@@ -388,7 +388,7 @@ class SoftwareManagerSetup(Screen, ConfigListScreen):
 		self.setTitle(self.setup_title)
 
 	def createSetup(self):
-		self.list = [ ]
+		self.list = []
 		self.overwriteConfigfilesEntry = getConfigListEntry(_("Overwrite configuration files?"), config.plugins.softwaremanager.overwriteConfigFiles)
 		self.list.append(self.overwriteConfigfilesEntry)
 		self.list.append(getConfigListEntry(_("show softwaremanager in plugin menu"), config.plugins.softwaremanager.onSetupMenu))
@@ -566,7 +566,7 @@ class PluginManager(Screen, PackageInfoHandler):
 		if self.skin_path is None:
 			self.skin_path = resolveFilename(SCOPE_CURRENT_PLUGIN, "SystemPlugins/SoftwareManager")
 
-		self["shortcuts"] = ActionMap(["ShortcutActions", "WizardActions", "InfobarEPGActions", "HelpActions" ],
+		self["shortcuts"] = ActionMap(["ShortcutActions", "WizardActions", "InfobarEPGActions", "HelpActions"],
 		{
 			"ok": self.handleCurrent,
 			"back": self.exit,
@@ -641,20 +641,20 @@ class PluginManager(Screen, PackageInfoHandler):
 					statuspng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, "icons/upgrade.png"))
 				else:
 					statuspng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_CURRENT_PLUGIN, "SystemPlugins/SoftwareManager/upgrade.png"))
-				self.statuslist.append(( _("Updating software catalog"), '', _("Searching for available updates. Please wait..." ),'', '', statuspng, divpng, None, '' ))
+				self.statuslist.append((_("Updating software catalog"), '', _("Searching for available updates. Please wait..."),'', '', statuspng, divpng, None, ''))
 			elif status == 'sync':
 				if os_path.exists(resolveFilename(SCOPE_ACTIVE_SKIN, "icons/upgrade.png")):
 					statuspng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, "icons/upgrade.png"))
 				else:
 					statuspng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_CURRENT_PLUGIN, "SystemPlugins/SoftwareManager/upgrade.png"))
-				self.statuslist.append(( _("Package list update"), '', _("Searching for new installed or removed packages. Please wait..." ),'', '', statuspng, divpng, None, '' ))
+				self.statuslist.append((_("Package list update"), '', _("Searching for new installed or removed packages. Please wait..."),'', '', statuspng, divpng, None, ''))
 			elif status == 'error':
 				self["key_green"].setText(_("Continue"))
 				if os_path.exists(resolveFilename(SCOPE_ACTIVE_SKIN, "icons/remove.png")):
 					statuspng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, "icons/remove.png"))
 				else:
 					statuspng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_CURRENT_PLUGIN, "SystemPlugins/SoftwareManager/remove.png"))
-				self.statuslist.append(( _("Error"), '', _("An error occurred while downloading the packetlist. Please try again." ),'', '', statuspng, divpng, None, '' ))
+				self.statuslist.append((_("Error"), '', _("An error occurred while downloading the packetlist. Please try again."),'', '', statuspng, divpng, None, ''))
 			self["list"].style = "default"
 			self['list'].setList(self.statuslist)
 
@@ -906,36 +906,36 @@ class PluginManager(Screen, PackageInfoHandler):
 		divpng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, "div-h.png"))
 		if tag is not None:
 			if tag == 'System':
-				return _("System"), _("View list of available system extensions" ), tag, divpng
+				return _("System"), _("View list of available system extensions"), tag, divpng
 			elif tag == 'Skin':
-				return _("Skins"), _("View list of available skins" ), tag, divpng
+				return _("Skins"), _("View list of available skins"), tag, divpng
 			elif tag == 'Recording':
-				return _("Recordings"), _("View list of available recording extensions" ), tag, divpng
+				return _("Recordings"), _("View list of available recording extensions"), tag, divpng
 			elif tag == 'Network':
-				return _("Network"), _("View list of available networking extensions" ), tag, divpng
+				return _("Network"), _("View list of available networking extensions"), tag, divpng
 			elif tag == 'CI':
-				return _("Common Interface"), _("View list of available CommonInterface extensions" ), tag, divpng
+				return _("Common Interface"), _("View list of available CommonInterface extensions"), tag, divpng
 			elif tag == 'Default':
-				return _("Default settings"), _("View list of available default settings" ), tag, divpng
+				return _("Default settings"), _("View list of available default settings"), tag, divpng
 			elif tag == 'SAT':
-				return _("Satellite equipment"), _("View list of available Satellite equipment extensions." ), tag, divpng
+				return _("Satellite equipment"), _("View list of available Satellite equipment extensions."), tag, divpng
 			elif tag == 'Software':
-				return _("Software"), _("View list of available software extensions" ), tag, divpng
+				return _("Software"), _("View list of available software extensions"), tag, divpng
 			elif tag == 'Multimedia':
-				return _("Multimedia"), _("View list of available multimedia extensions." ), tag, divpng
+				return _("Multimedia"), _("View list of available multimedia extensions."), tag, divpng
 			elif tag == 'Display':
-				return _("Display and user interface"), _("View list of available display and userinterface extensions." ), tag, divpng
+				return _("Display and user interface"), _("View list of available display and userinterface extensions."), tag, divpng
 			elif tag == 'EPG':
-				return _("Electronic Program Guide"), _("View list of available EPG extensions." ), tag, divpng
+				return _("Electronic Program Guide"), _("View list of available EPG extensions."), tag, divpng
 			elif tag == 'Communication':
-				return _("Communication"), _("View list of available communication extensions." ), tag, divpng
+				return _("Communication"), _("View list of available communication extensions."), tag, divpng
 			else: # dynamically generate non existent tags
-				return str(tag), _("View list of available ") + str(tag) + ' ' + _("extensions." ), tag, divpng
+				return str(tag), _("View list of available ") + str(tag) + ' ' + _("extensions."), tag, divpng
 
 	def prepareInstall(self):
 		self.cmdList = []
 		if iSoftwareTools.available_updates > 0:
-			self.cmdList.append((IpkgComponent.CMD_UPGRADE, { "test_only": False }))
+			self.cmdList.append((IpkgComponent.CMD_UPGRADE, {"test_only": False}))
 		if self.selectedFiles and len(self.selectedFiles):
 			for plugin in self.selectedFiles:
 				detailsfile = iSoftwareTools.directory[0] + "/" + plugin[0]
@@ -951,20 +951,20 @@ class PluginManager(Screen, PackageInfoHandler):
 					if plugin[1] == 'installed':
 						if self.packagefiles:
 							for package in self.packagefiles[:]:
-								self.cmdList.append((IpkgComponent.CMD_REMOVE, { "package": package["name"] }))
+								self.cmdList.append((IpkgComponent.CMD_REMOVE, {"package": package["name"]}))
 						else:
-							self.cmdList.append((IpkgComponent.CMD_REMOVE, { "package": plugin[2] }))
+							self.cmdList.append((IpkgComponent.CMD_REMOVE, {"package": plugin[2]}))
 					else:
 						if self.packagefiles:
 							for package in self.packagefiles[:]:
-								self.cmdList.append((IpkgComponent.CMD_INSTALL, { "package": package["name"] }))
+								self.cmdList.append((IpkgComponent.CMD_INSTALL, {"package": package["name"]}))
 						else:
-							self.cmdList.append((IpkgComponent.CMD_INSTALL, { "package": plugin[2] }))
+							self.cmdList.append((IpkgComponent.CMD_INSTALL, {"package": plugin[2]}))
 				else:
 					if plugin[1] == 'installed':
-						self.cmdList.append((IpkgComponent.CMD_REMOVE, { "package": plugin[2] }))
+						self.cmdList.append((IpkgComponent.CMD_REMOVE, {"package": plugin[2]}))
 					else:
-						self.cmdList.append((IpkgComponent.CMD_INSTALL, { "package": plugin[2] }))
+						self.cmdList.append((IpkgComponent.CMD_INSTALL, {"package": plugin[2]}))
 
 	def runExecute(self, result=None):
 		if result is not None:
@@ -1262,7 +1262,7 @@ class PluginDetails(Screen, PackageInfoHandler):
 		self.onLayoutFinish.append(self.setInfos)
 
 	def setWindowTitle(self):
-		self.setTitle(_("Details for plugin: ") + self.pluginname )
+		self.setTitle(_("Details for plugin: ") + self.pluginname)
 
 	def exit(self):
 		self.close(False)
@@ -1357,14 +1357,14 @@ class PluginDetails(Screen, PackageInfoHandler):
 		if self.pluginstate in ('installed', 'remove'):
 			if self.packagefiles:
 				for package in self.packagefiles[:]:
-					self.cmdList.append((IpkgComponent.CMD_REMOVE, { "package": package["name"] }))
+					self.cmdList.append((IpkgComponent.CMD_REMOVE, {"package": package["name"]}))
 					if len(self.cmdList):
 						self.session.openWithCallback(self.runRemove, MessageBox, _("Do you want to remove the package:\n") + self.pluginname + "\n" + self.oktext)
 		else:
 			if iSoftwareTools.NetworkConnectionAvailable:
 				if self.packagefiles:
 					for package in self.packagefiles[:]:
-						self.cmdList.append((IpkgComponent.CMD_INSTALL, { "package": package["name"] }))
+						self.cmdList.append((IpkgComponent.CMD_INSTALL, {"package": package["name"]}))
 						if len(self.cmdList):
 							self.session.openWithCallback(self.runUpgrade, MessageBox, _("Do you want to install the package:\n") + self.pluginname + "\n" + self.oktext)
 
@@ -1603,7 +1603,7 @@ class PacketManager(Screen, NumericalTextInput):
 		else:
 			self.setUseableChars(u'1234567890abcdefghijklmnopqrstuvwxyz')
 
-		self["shortcuts"] = NumberActionMap(["ShortcutActions", "WizardActions", "NumberActions", "InputActions", "InputAsciiActions", "KeyboardInputActions" ],
+		self["shortcuts"] = NumberActionMap(["ShortcutActions", "WizardActions", "NumberActions", "InputActions", "InputAsciiActions", "KeyboardInputActions"],
 		{
 			"ok": self.go,
 			"back": self.exit,
@@ -1699,14 +1699,14 @@ class PacketManager(Screen, NumericalTextInput):
 					statuspng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, "icons/upgrade.png"))
 				else:
 					statuspng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_CURRENT_PLUGIN, "SystemPlugins/SoftwareManager/upgrade.png"))
-				self.statuslist.append(( _("Package list update"), '', _("Trying to download a new packetlist. Please wait..." ),'',statuspng, divpng ))
+				self.statuslist.append((_("Package list update"), '', _("Trying to download a new packetlist. Please wait..."),'',statuspng, divpng))
 				self['list'].setList(self.statuslist)
 			elif status == 'error':
 				if os_path.exists(resolveFilename(SCOPE_ACTIVE_SKIN, "icons/remove.png")):
 					statuspng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, "icons/remove.png"))
 				else:
 					statuspng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_CURRENT_PLUGIN, "SystemPlugins/SoftwareManager/remove.png"))
-				self.statuslist.append(( _("Error"), '', _("An error occurred while downloading the packetlist. Please try again." ),'',statuspng, divpng ))
+				self.statuslist.append((_("Error"), '', _("An error occurred while downloading the packetlist. Please try again."),'',statuspng, divpng))
 				self['list'].setList(self.statuslist)
 
 	def rebuildList(self):
@@ -1729,15 +1729,15 @@ class PacketManager(Screen, NumericalTextInput):
 			package = cur[0]
 			self.cmdList = []
 			if status == 'installed':
-				self.cmdList.append((IpkgComponent.CMD_REMOVE, { "package": package }))
+				self.cmdList.append((IpkgComponent.CMD_REMOVE, {"package": package}))
 				if len(self.cmdList):
 					self.session.openWithCallback(self.runRemove, MessageBox, _("Do you want to remove the package:\n") + package + "\n" + self.oktext)
 			elif status == 'upgradeable':
-				self.cmdList.append((IpkgComponent.CMD_INSTALL, { "package": package }))
+				self.cmdList.append((IpkgComponent.CMD_INSTALL, {"package": package}))
 				if len(self.cmdList):
 					self.session.openWithCallback(self.runUpgrade, MessageBox, _("Do you want to upgrade the package:\n") + package + "\n" + self.oktext)
 			elif status == "installable":
-				self.cmdList.append((IpkgComponent.CMD_INSTALL, { "package": package }))
+				self.cmdList.append((IpkgComponent.CMD_INSTALL, {"package": package}))
 				if len(self.cmdList):
 					self.session.openWithCallback(self.runUpgrade, MessageBox, _("Do you want to install the package:\n") + package + "\n" + self.oktext)
 
@@ -1962,7 +1962,7 @@ class IpkgInstaller(Screen):
 		list = self.list.getSelectionsList()
 		cmdList = []
 		for item in list:
-			cmdList.append((IpkgComponent.CMD_INSTALL, { "package": item[1] }))
+			cmdList.append((IpkgComponent.CMD_INSTALL, {"package": item[1]}))
 		self.session.open(Ipkg, cmdList=cmdList)
 
 
@@ -1988,7 +1988,7 @@ def UpgradeMain(session, **kwargs):
 def startSetup(menuid):
 	if menuid == "setup" and config.plugins.softwaremanager.onSetupMenu.value:
 		return [(_("Software management"), UpgradeMain, "software_manager", 50)]
-	return [ ]
+	return []
 
 def Plugins(path, **kwargs):
 	global plugin_path
