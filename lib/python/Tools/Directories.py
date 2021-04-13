@@ -145,7 +145,7 @@ def resolveFilename(scope, base="", path_prefix=None):
 		]
 		if not "skin_default" in skin:
 			resolveList.append(os.path.join(defaultPaths[SCOPE_SKIN][0], skin))
-		resolveList += [	
+		resolveList += [
 			os.path.join(defaultPaths[SCOPE_SKIN][0], "skin_fallback_%d" % getDesktop(0).size().height()),
 			os.path.join(defaultPaths[SCOPE_SKIN][0], "skin_default"),
 			defaultPaths[SCOPE_SKIN][0]

@@ -116,7 +116,7 @@ def GetImagelist():
 				reader = boxbranding_reader(imagedir)
 				# print("[multiboot] [GetImagelist]1 slot = %s imagedir = %s" % (slot, imagedir))
 				if path.isfile(path.join(imagedir, "usr/lib/enigma2/python/ImageIdentifier.py")):
-					print("[multiboot] [GetImagelist]2 slot = %s imagedir = %s" % (slot, imagedir))				
+					print("[multiboot] [GetImagelist]2 slot = %s imagedir = %s" % (slot, imagedir))
 					reader = readImageIdentifier(imagedir)
 				BuildType = reader.getImageType()
 				Build = reader.getImageBuild()
@@ -287,7 +287,7 @@ class readImageIdentifier():
 		else:
 			self.filepath = "%s/usr/lib/enigma2/python/" % OsPath
 		self.filename = "ImageIdentifier.py"
-		
+
 		self.methods = {
 			"getBoxType": "",
 			"getImageDistro": "",
@@ -298,7 +298,7 @@ class readImageIdentifier():
 			"getMachineBrand": "",
 			"getImageBuildDate": "",
 		}
-		
+
 		self.__getfile()
 		self.__readfile()
 
@@ -348,7 +348,7 @@ class readImageIdentifier():
 	def getImageBuildDate(self):
 		return self.methods["getImageBuildDate"]
 
-	
+
 # just for testing
 #if __name__ == "__main__":
 #	filepath = "" # path to image folder

@@ -125,7 +125,7 @@ class AudioSelection(Screen, ConfigListScreen):
 
 			if SystemInfo["CanDownmixAACPlus"]:
 				self.choices = [("downmix", _("Downmix")), ("passthrough", _("Passthrough")), ("multichannel", _("convert to multi-channel PCM")), ("force_ac3", _("convert to AC3")), ("force_dts", _("convert to DTS")), ("use_hdmi_cacenter", _("use_hdmi_cacenter")), ("wide", _("wide")), ("extrawide", _("extrawide"))]
-				
+
 				if SystemInfo["CanProc"]:
 					self.f = "/proc/stb/audio/aacplus_choices"
 					self.choices = self.read_choices(self.f)

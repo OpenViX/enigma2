@@ -671,7 +671,7 @@ class EPGListGrid(EPGListBase):
 		events = self.selectedService and self.selectedService[2]  # (service, serviceName, events, picon)
 		if events and self.selectedEventIndex is not None and self.selectedEventIndex < len(events):
 			event = events[self.selectedEventIndex]  # (eventId, eventTitle, beginTime, duration)
-			xpos, width = self.calcEventPosAndWidthHelper(event[2], event[3], 
+			xpos, width = self.calcEventPosAndWidthHelper(event[2], event[3],
 				self.timeBase, self.timeBase + self.timeEpochSecs, self.eventRect.width())
 			self.selectionRect = eRect(xpos + self.eventRect.left(), 0, width, self.eventRect.height())
 		else:
@@ -912,7 +912,7 @@ class TimelineText(GUIComponent):
 		eventLeft = eventRect.left()
 
 		res = [None]
-		
+
 		# Note: eventRect and serviceRect are relative to the timeline text position
 		# while the time lines are relative to the GraphEPG screen position!
 		if self.timeBase != timeBase or self.timeEpoch != timeEpoch or force:

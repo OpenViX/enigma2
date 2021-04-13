@@ -14,7 +14,7 @@ config.misc.pluginlist.extension_order = ConfigText(default="")
 
 
 class ChoiceBox(Screen):
-	def __init__(self, session, title="", list=None, keys=None, selection=0, skin_name=None, text="", reorderConfig="", 
+	def __init__(self, session, title="", list=None, keys=None, selection=0, skin_name=None, text="", reorderConfig="",
 				 windowTitle=None, var="", callbackList=None):
 		# list is in the format (<display text>, [<parameters to pass to close callback>,])
 		# callbackList is in the format (<display text>, <callback func>, [<parameters>,])

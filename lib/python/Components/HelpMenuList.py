@@ -17,7 +17,7 @@ class HelpMenuList(GUIComponent):
 		self.extendedHelp = False
 
 		l = []
-		
+
 		sortlist = []
 		for (actionmap, context, actions) in helplist:
 			for (action, help) in actions:
@@ -28,7 +28,7 @@ class HelpMenuList(GUIComponent):
 				sortlist.append((actionmap, context, action, help))
 		# Sort by description text (main and extended), then by action (this puts numeric actions in ascending order).
 		sortlist.sort(key=lambda helpItem: (map(str.lower, helpItem[3] if isinstance(helpItem[3], (tuple, list)) else [helpItem[3]]), helpItem[2]))
-		
+
 		for (actionmap, context, action, help) in sortlist:
 				buttons = queryKeyBinding(context, action)
 

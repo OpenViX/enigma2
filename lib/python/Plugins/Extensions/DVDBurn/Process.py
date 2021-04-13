@@ -716,7 +716,7 @@ class Menus:
 
 		ImagePrepareTask(job)
 		nr_titles = len(job.project.titles)
-		
+
 		job.titles_per_menu = s.cols.getValue() * s.rows.getValue()
 
 		job.nr_menus = ((nr_titles + job.titles_per_menu - 1) / job.titles_per_menu)

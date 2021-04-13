@@ -83,7 +83,7 @@ class Trashcan:
 		if n_recordings > 0:
 			print "[Trashcan] Recording(s) in progress:", n_recordings
 			return
-# If movielist_trashcan_days is 0 it means don't timeout anything - 
+# If movielist_trashcan_days is 0 it means don't timeout anything -
 # just use the "leave nGB settting"
 #
 		if (config.usage.movielist_trashcan_days.value > 0):

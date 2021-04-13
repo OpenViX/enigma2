@@ -36,7 +36,7 @@ wait_time_on_fail = 15 * 60 # 15 minutes
 
 def getNimListForSat(orb_pos):
 	return [nim.slot for nim in nimmanager.nim_slots if nim.isCompatible("DVB-S") and orb_pos in [sat[0] for sat in nimmanager.getSatListForNim(nim.slot)]]
-	
+
 
 def make_sref(service):
 	return eServiceReference("1:0:%X:%X:%X:%X:%X:0:0:0:" % (
@@ -93,7 +93,7 @@ class RecordAdapter:
 			self.navcore.stopRecordService(self.__service)
 			self.__service = None
 
-			
+
 class PipAdapter:
 	def __init__(self, session, hide=True):
 		self.hide = hide
@@ -126,9 +126,9 @@ class PipAdapter:
 		return False
 
 	def stop(self):
-		try: 
+		try:
 			del self.session.pip
-		except Exception: 
+		except Exception:
 			pass
 		self.session.pipshown = False
 
@@ -284,7 +284,7 @@ class LamedbReader():
 
 			# The original (correct) code
 			# transponders[key]["services"][service["service_id"]] = service
-			
+
 			# Dirty hack to work around the (well known) service type bug in lamedb/enigma2
 			transponders[key]["services"]["%x:%x" % (service["service_type"], service["service_id"])] = service
 
@@ -407,10 +407,10 @@ class LamedbReader():
 
 				# The original (correct) code
 				# transponders[key]["services"][service["service_id"]] = service
-				
+
 				# Dirty hack to work around the (well known) service type bug in lamedb/enigma2
 				transponders[key]["services"]["%x:%x" % (service["service_type"], service["service_id"])] = service
-	
+
 				services_count += 1
 
 		#print("[%s-LamedbReader] Read %d transponders and %d services" % (debug_name, transponders_count, services_count))
@@ -747,7 +747,7 @@ class Opentv_Zapper():
 		if config.plugins.opentvzapper.enabled.value:
 			print("[%s] first download scheduled for %s" % (debug_name, strftime("%c", localtime(int(time()) + start_first_download))))
 			self.downloadtimer.startLongTimer(start_first_download)
-		
+
 	def initialize(self, provider):
 		self.transponder = providers[provider]["transponder"]
 		self.service = providers[provider]["service"]
@@ -769,7 +769,7 @@ class Opentv_Zapper():
 		print("[%s] config_changed." % (debug_name))
 		if config.plugins.opentvzapper.enabled.value:
 			self.start_download()
-	
+
 	def set_session(self, session):
 		self.session = session
 
@@ -838,8 +838,8 @@ class Opentv_Zapper():
 		if frontendData is not None:
 			currentlyPlayingNIM = frontendData.get("tuner_number", None)
 		return currentlyPlayingNIM
-		
-		
+
+
 opentv_zapper = Opentv_Zapper()
 
 

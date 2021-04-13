@@ -28,7 +28,7 @@ def existBcmWifi(iface):
 
 def getWlConfName(iface):
 	return "/etc/wl.conf.%s" % iface
- 
+
 
 def getWlanConfigName(iface):
 	return '/etc/wpa_supplicant.' + iface + '.conf'
@@ -212,7 +212,7 @@ class wpaSupplicant:
 		encryption = config.plugins.wlan.encryption.value
 		wepkeytype = config.plugins.wlan.wepkeytype.value
 		psk = config.plugins.wlan.psk.value
-		
+
 		if existBcmWifi(iface):
 			self.writeBcmWifiConfig(iface, essid, encryption, psk)
 			return

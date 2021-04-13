@@ -16,12 +16,12 @@ class HdmiCECSetupScreen(Setup):
 			"yellow": (self.setFixedAddress, _("Set HDMI-CEC fixed address")),
 			"blue": (self.clearFixedAddress, _("Clear HDMI-CEC fixed address")),
 		}, prio=-2, description=_("HDMI-CEC address editing actions"))
-		
+
 		self.updateAddress()
 
 	def selectionChanged(self): # This is needed because the description is not standard. i.e. a concatenation.
 		self.updateDescription()
-	
+
 	def updateDescription(self): # Called by selectionChanged() or updateAddress()
 		self["description"].setText("%s\n%s\n\n%s" % (self.current_address, self.fixed_address, self.getCurrentDescription()))
 

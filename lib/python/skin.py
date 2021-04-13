@@ -749,7 +749,7 @@ def loadSingleSkinData(desktop, screenID, domSkin, pathSkin, scope=SCOPE_CURRENT
 				# print("[Skin] DEBUG: Resolution xres=%d, yres=%d, bpp=%d." % (xres, yres, bpp))
 				if bpp != 32:
 					pass  # Load palette (Not yet implemented!)
-				
+
 				fonts["Body"] = (bodyFont[0], applySkinFactor(bodyFont[1]), applySkinFactor(bodyFont[2]), applySkinFactor(bodyFont[3]))
 
 				# Only add font aliases here for lists that are not part of enigma2 repo.
@@ -1345,7 +1345,7 @@ def getSkinFactor():
 	# 	print("[Skin] Warning: Unexpected result for getSkinFactor '%0.4f'!" % skinfactor)
 	return skinfactor
 
-# Multiply the numeric input by the skin factor 
+# Multiply the numeric input by the skin factor
 # and return the result as an integer.
 
 

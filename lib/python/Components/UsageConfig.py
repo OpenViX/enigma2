@@ -100,7 +100,7 @@ def InitUsageConfig():
 		print("[UsageConfig] Error loading 'SecondInfoBarSimple' skin parameter! (%s)" % err)
 		SystemInfo["SecondInfoBarSimple"] = False
 	config.usage.second_infobar_simple = ConfigBoolean(descriptions={False: _("Standard"), True: _("Simple")}, graphic=False)
-	
+
 	config.usage.infobar_frontend_source = ConfigSelection(default="tuner", choices=[("settings", _("Settings")), ("tuner", _("Tuner"))])
 
 	config.usage.show_picon_bkgrn = ConfigSelection(default="transparent", choices=[("none", _("Disabled")), ("transparent", _("Transparent")), ("blue", _("Blue")), ("red", _("Red")), ("black", _("Black")), ("white", _("White")), ("lightgrey", _("Light Grey")), ("grey", _("Grey"))])
@@ -125,7 +125,7 @@ def InitUsageConfig():
 	config.usage.sort_menus = ConfigYesNo(default=False)
 	config.usage.sort_pluginlist = ConfigYesNo(default=True)
 	config.usage.movieplayer_pvrstate = ConfigYesNo(default=True)
-	
+
 	config.usage.setupShowDefault = ConfigSelection(default="spaces", choices=[
 		("", _("Don't show default")),
 		("spaces", _("Show default after description")),

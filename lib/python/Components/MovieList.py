@@ -787,7 +787,7 @@ class MovieList(GUIComponent):
 				self.list.append((serviceref, info, begin, MovieListData()))
 
 		if not collectionName and collectionMode and self.allowCollections:
-			# not displaying the contents of a collection, group similar named 
+			# not displaying the contents of a collection, group similar named
 			# recordings into collections ignoring case
 			groupedFiles = {}
 			items = []
