@@ -546,10 +546,10 @@ def InitUsageConfig():
 		if not os.path.exists(config.crash.debug_path.getValue()):
 			os.mkdir(config.crash.debug_path.getValue(),0755)
 	config.crash.debug_path.addNotifier(updatedebug_path, immediate_feedback = False)
-	crashlogheader = _("We are really sorry. Your receiver encountered " \
-					 "a software problem, and needs to be restarted.\n" \
-					 "Please send the logfile %senigma2_crash_xxxxxx.log to www.teamblue.tech.\n" \
-					 "Your receiver restarts in 10 seconds!\n" \
+	crashlogheader = _("We are really sorry. Your receiver encountered "
+					 "a software problem, and needs to be restarted.\n"
+					 "Please send the logfile %senigma2_crash_xxxxxx.log to www.teamblue.tech.\n"
+					 "Your receiver restarts in 10 seconds!\n"
 					 "Component: enigma2") % config.crash.debug_path.value
 	config.crash.debug_text = ConfigText(default=crashlogheader, fixed_size=False)
 

@@ -587,7 +587,7 @@ class MediaPlayer(Screen, InfoBarBase, InfoBarScreenSaver, InfoBarSeek, InfoBarA
 			if config.usage.setup_level.index >= 1: # intermediate+
 				menu.append((_("Shuffle playlist"), "shuffle"))
 		menu.append((_("Hide player"), "hide"))
-		menu.append((_("Load playlist"), "loadplaylist"));
+		menu.append((_("Load playlist"), "loadplaylist"))
 		if config.usage.setup_level.index >= 1: # intermediate+
 			menu.append((_("Save playlist"), "saveplaylist"))
 			menu.append((_("Delete saved playlist"), "deleteplaylist"))

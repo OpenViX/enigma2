@@ -581,7 +581,10 @@ class SystemNetworkInfo(Screen):
 
 		def nameserver():
 			nameserver = ""
-			v4=0 ; v6=0; ns4 =""; ns6 = ""
+			v4=0
+			v6=0
+			ns4 =""
+			ns6 = ""
 			datei = open("/etc/resolv.conf","r")
 			for line in datei.readlines():
 				line = line.strip()

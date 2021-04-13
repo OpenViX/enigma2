@@ -225,7 +225,7 @@ class Disks():
 
 		if ret == 0:
 			return 0
-		return -2;
+		return -2
 
 	def mkfs(self, device, partition, fstype=0):
 		dev = "%s%d" % (device, partition)
@@ -280,4 +280,4 @@ class Disks():
 
 		if ret == 0:
 			return 0
-		return -3;
+		return -3

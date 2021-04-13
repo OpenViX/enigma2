@@ -328,5 +328,5 @@ def main(session, **kwargs):
 	session.open(SwapManager)
 
 def Plugins(**kwargs):
-	return [PluginDescriptor(name = "Swap Manager", description = _("Manage your swapfile"), where = PluginDescriptor.WHERE_PLUGINMENU, fnc = main), \
+	return [PluginDescriptor(name = "Swap Manager", description = _("Manage your swapfile"), where = PluginDescriptor.WHERE_PLUGINMENU, fnc = main),
 			PluginDescriptor(where = PluginDescriptor.WHERE_AUTOSTART, fnc = SwapAutostart)]

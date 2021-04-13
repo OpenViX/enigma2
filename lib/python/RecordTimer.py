@@ -84,10 +84,10 @@ def checkForRecordings():
 wasRecTimerWakeup = False
 
 def createRecordTimerEntry(timer):
-	return RecordTimerEntry(timer.service_ref, timer.begin, timer.end, timer.name, timer.description,\
-		timer.eit, timer.disabled, timer.justplay, timer.afterEvent, dirname = timer.dirname,\
-		tags = timer.tags, descramble = timer.descramble, record_ecm = timer.record_ecm, always_zap = timer.always_zap,\
-		zap_wakeup = timer.zap_wakeup, rename_repeat = timer.rename_repeat, conflict_detection = timer.conflict_detection,\
+	return RecordTimerEntry(timer.service_ref, timer.begin, timer.end, timer.name, timer.description,
+		timer.eit, timer.disabled, timer.justplay, timer.afterEvent, dirname = timer.dirname,
+		tags = timer.tags, descramble = timer.descramble, record_ecm = timer.record_ecm, always_zap = timer.always_zap,
+		zap_wakeup = timer.zap_wakeup, rename_repeat = timer.rename_repeat, conflict_detection = timer.conflict_detection,
 		pipzap = timer.pipzap)
 
 # please do not translate log messages
@@ -804,7 +804,7 @@ def createTimer(xml):
 		}[afterevent]
 	eit = xml.get("eit")
 	if eit and eit != "None":
-		eit = long(eit);
+		eit = long(eit)
 	else:
 		eit = None
 	location = xml.get("location")
@@ -1151,7 +1151,8 @@ class RecordTimer(timer.Timer):
 		checking_time = timer.begin < begin or begin <= timer.begin <= end
 		if xbt.tm_yday != xet.tm_yday:
 			oday = bday - 1
-			if oday == -1: oday = 6
+			if oday == -1:
+				oday = 6
 			offset_day = timer.repeated & (1 << oday)
 		xbegin = 1440 + xbt.tm_hour * 60 + xbt.tm_min
 		xend = xbegin + ((timer_end - timer.begin) / 60)
@@ -1285,7 +1286,8 @@ class RecordTimer(timer.Timer):
 					checking_time = x.begin < begin or begin <= x.begin <= end
 					if xbt.tm_yday != xet.tm_yday:
 						oday = bday - 1
-						if oday == -1: oday = 6
+						if oday == -1:
+							oday = 6
 						offset_day = x.repeated & (1 << oday)
 					xbegin = 1440 + xbt.tm_hour * 60 + xbt.tm_min
 					xend = xbegin + ((timer_end - x.begin) / 60)

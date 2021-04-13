@@ -62,7 +62,7 @@ def InitLcd():
 		detected = eDBoxLCD.getInstance() and eDBoxLCD.getInstance().detected()
 
 	SystemInfo["Display"] = detected
-	config.lcd = ConfigSubsection();
+	config.lcd = ConfigSubsection()
 
 	if fileExists("/proc/stb/lcd/mode"):
 		f = open("/proc/stb/lcd/mode", "r")
@@ -93,7 +93,7 @@ def InitLcd():
 			def setLCDModePiP(configElement):
 				pass
 			def setLCDScreenshot(configElement):
-				ilcd.setScreenShot(configElement.value);
+				ilcd.setScreenShot(configElement.value)
 
 			config.lcd.modepip = ConfigSelection(default = "0", choices=[
 					("0", _("off")),
@@ -123,37 +123,37 @@ def InitLcd():
 			config.lcd.fpsminitv = ConfigNothing()
 
 		def setLCDbright(configElement):
-			ilcd.setBright(configElement.value);
+			ilcd.setBright(configElement.value)
 
 		def setLCDcontrast(configElement):
-			ilcd.setContrast(configElement.value);
+			ilcd.setContrast(configElement.value)
 
 		def setLCDinverted(configElement):
-			ilcd.setInverted(configElement.value);
+			ilcd.setInverted(configElement.value)
 
 		def setLCDflipped(configElement):
-			ilcd.setFlipped(configElement.value);
+			ilcd.setFlipped(configElement.value)
 
 		standby_default = 0
 
 		if not ilcd.isOled():
 			config.lcd.contrast = ConfigSlider(default=5, limits=(0, 20))
-			config.lcd.contrast.addNotifier(setLCDcontrast);
+			config.lcd.contrast.addNotifier(setLCDcontrast)
 		else:
 			config.lcd.contrast = ConfigNothing()
 			standby_default = 1
 
 		config.lcd.standby = ConfigSlider(default=standby_default, limits=(0, 10))
-		config.lcd.standby.addNotifier(setLCDbright);
+		config.lcd.standby.addNotifier(setLCDbright)
 		config.lcd.standby.apply = lambda : setLCDbright(config.lcd.standby)
 		config.lcd.bright = ConfigSlider(default=5, limits=(0, 10))
-		config.lcd.bright.addNotifier(setLCDbright);
+		config.lcd.bright.addNotifier(setLCDbright)
 		config.lcd.bright.apply = lambda : setLCDbright(config.lcd.bright)
 		config.lcd.bright.callNotifiersOnSaveAndCancel = True
 		config.lcd.invert = ConfigYesNo(default=False)
-		config.lcd.invert.addNotifier(setLCDinverted);
+		config.lcd.invert.addNotifier(setLCDinverted)
 		config.lcd.flip = ConfigYesNo(default=False)
-		config.lcd.flip.addNotifier(setLCDflipped);
+		config.lcd.flip.addNotifier(setLCDflipped)
 
 		if SystemInfo["LedPowerColor"]:
 			def setLedPowerColor(configElement):
