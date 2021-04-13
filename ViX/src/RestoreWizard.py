@@ -14,6 +14,7 @@ from Screens.Rc import Rc
 from Screens.WizardLanguage import WizardLanguage
 from Tools.Directories import fileExists, resolveFilename, SCOPE_PLUGINS
 
+
 class RestoreWizard(WizardLanguage, Rc):
 	def __init__(self, session):
 		self.xmlfile = resolveFilename(SCOPE_PLUGINS, "SystemPlugins/ViX/restorewizard.xml")

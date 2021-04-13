@@ -19,6 +19,7 @@ from .IPKInstaller import IpkgInstaller
 
 config.misc.restorewizardrun = ConfigBoolean(default=False)
 
+
 def setLanguageFromBackup(backupfile):
 	try:
 		print(backupfile)
@@ -38,6 +39,7 @@ def setLanguageFromBackup(backupfile):
 		tar.close()
 	except:
 		pass
+
 
 def checkConfigBackup():
 	try:
@@ -71,6 +73,7 @@ def checkConfigBackup():
 		print("[ViX] unable to use device (%s)..." % str(e))
 		return None
 
+
 if config.misc.firstrun.value and not config.misc.restorewizardrun.value:
 	if checkConfigBackup() is None:
 		backupAvailable = 0
@@ -82,75 +85,95 @@ def VIXMenu(session):
 	from .import ui
 	return ui.VIXMenu(session)
 
+
 def UpgradeMain(session, **kwargs):
 	session.open(VIXMenu)
+
 
 def startSetup(menuid):
 	if menuid != "setup":
 		return []
 	return [(_("ViX"), UpgradeMain, "vix_menu", 1010)]
 
+
 def RestoreWizard(*args, **kwargs):
 	from .RestoreWizard import RestoreWizard
 	return RestoreWizard(*args, **kwargs)
+
 
 def SoftcamManager(session):
 	from .SoftcamManager import VIXSoftcamManager
 	return VIXSoftcamManager(session)
 
+
 def SoftcamMenu(session, **kwargs):
 	session.open(SoftcamManager)
+
 
 def SoftcamSetup(menuid):
 	if menuid == "cam":
 		return [(_("Softcam manager"), SoftcamMenu, "softcamsetup", 1005)]
 	return []
 
+
 def BackupManager(session):
 	from .BackupManager import VIXBackupManager
 	return VIXBackupManager(session)
 
+
 def BackupManagerMenu(session, **kwargs):
 	session.open(BackupManager)
+
 
 def ImageManager(session):
 	from ImageManager import VIXImageManager
 	return VIXImageManager(session)
 
+
 def ImageMangerMenu(session, **kwargs):
 	session.open(ImageManager)
+
 
 def H9SDmanager(session):
 	from .H9SDmanager import H9SDmanager
 	return H9SDmanager(session)
 
+
 def H9SDmanagerMenu(session, **kwargs):
 	session.open(H9SDmanager)
+
 
 def MountManager(session):
 	from .MountManager import VIXDevicesPanel
 	return VIXDevicesPanel(session)
 
+
 def MountManagerMenu(session, **kwargs):
 	session.open(MountManager)
+
 
 def ScriptRunner(session):
 	from .ScriptRunner import VIXScriptRunner
 	return VIXScriptRunner(session)
 
+
 def ScriptRunnerMenu(session, **kwargs):
 	session.open(ScriptRunner)
+
 
 def SwapManager(session):
 	from .SwapManager import VIXSwap
 	return VIXSwap(session)
 
+
 def SwapManagerMenu(session, **kwargs):
 	session.open(SwapManager)
+
 
 def filescan_open(list, session, **kwargs):
 	filelist = [x.path for x in list]
 	session.open(IpkgInstaller, filelist)  # list
+
 
 def filescan(**kwargs):
 	from Components.Scanner import Scanner, ScanPath

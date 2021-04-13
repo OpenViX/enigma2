@@ -37,6 +37,8 @@ softcamautopoller = None
 def updateExtensions(configElement):
 	plugins.clearPluginList()
 	plugins.readPluginList(resolveFilename(SCOPE_PLUGINS))
+
+
 config.softcammanager.showinextensions.addNotifier(updateExtensions, initial_call=False)
 
 
@@ -54,6 +56,7 @@ def SoftcamAutostart(reason, session=None, **kwargs):
 		if softcamautopoller is not None:
 			softcamautopoller.stop()
 			softcamautopoller = None
+
 
 class VIXSoftcamManager(Screen):
 	skin = """
@@ -313,6 +316,7 @@ class VIXSoftcamManager(Screen):
 	def myclose(self):
 		self.close()
 
+
 class VIXStartCam(Screen):
 	skin = """
 	<screen name="VIXStartCam" position="center,center" size="484, 150" title="Starting Softcam">
@@ -428,6 +432,7 @@ class VIXStartCam(Screen):
 	def delTimer(self):
 		del self.activityTimer
 
+
 class VIXStopCam(Screen):
 	skin = """
 	<screen name="VIXStopCam" position="center,center" size="484, 150">
@@ -526,6 +531,7 @@ class VIXStopCam(Screen):
 	def delTimer(self):
 		del self.activityTimer
 
+
 class VIXSoftcamLog(Screen):
 	skin = """
 <screen name="VIXSoftcamLog" position="center,center" size="560,400">
@@ -554,6 +560,7 @@ class VIXSoftcamLog(Screen):
 
 	def cancel(self):
 		self.close()
+
 
 class SoftcamAutoPoller:
 	"""Automatically Poll SoftCam"""

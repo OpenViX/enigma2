@@ -18,6 +18,7 @@ from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
 from Screens.Standby import TryQuitMainloop
 
+
 class VIXIPKInstaller(Screen):
 	skin = """
 	<screen name="VIXIPKInstaller" position="center,center" size="560,400">
@@ -147,6 +148,7 @@ class VIXIPKInstaller(Screen):
 
 	def myclose(self):
 		self.close()
+
 
 class IpkgInstaller(Screen):
 	skin = """

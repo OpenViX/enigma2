@@ -36,6 +36,7 @@ blacklistedDisks = [
 	259  	# MMC block devices (/dev/mmcblk0=0, /dev/mmcblk0p1=1, /dev/mmcblk1=8)
 ]
 
+
 def readFile(filename):
 	try:
 		with open(filename, "r") as fd:
@@ -45,6 +46,7 @@ def readFile(filename):
 			print("[MountManager] Error: Failed to read file! ", err)
 		data = None
 	return data
+
 
 def getProcPartitions(bplist):
 	partitions = []
@@ -79,6 +81,7 @@ def getProcPartitions(bplist):
 				continue
 			buildPartitionInfo(device, bplist)
 			partitions.append(device)
+
 
 def buildPartitionInfo(partition, bplist):
 	if re.search("mmcblk[0-1]p[0-3]", partition):
@@ -279,7 +282,6 @@ class VIXDevicesPanel(Screen):
 	def setupMounts(self):
 		self.session.openWithCallback(self.setTimer, VIXDevicePanelConf)
 
-
 	def unmount(self):
 		sel = self["list"].getCurrent()
 		if sel:
@@ -340,6 +342,7 @@ class VIXDevicesPanel(Screen):
 			line = self.device_uuid + "\t/media/hdd\tauto\tdefaults\t0 0\n"
 			fd.write(line)
 		self.Console.ePopen("mount -a", self.setTimer)
+
 
 class VIXDevicePanelConf(Screen, ConfigListScreen):
 	skin = """
@@ -429,6 +432,7 @@ class VIXDevicePanelConf(Screen, ConfigListScreen):
 			self.session.open(TryQuitMainloop, QUIT_REBOOT)
 		else:
 			self.close()
+
 
 class VIXDevicesPanelSummary(Screen):
 	def __init__(self, session, parent):

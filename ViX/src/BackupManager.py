@@ -78,6 +78,7 @@ def isRestorableSettings(imageversion):
 		return False
 	return imageversion >= minimum_version
 
+
 def isRestorablePlugins(imageversion):
 	minimum_version = 4.2
 	try:
@@ -86,11 +87,13 @@ def isRestorablePlugins(imageversion):
 		return False
 	return imageversion >= minimum_version
 
+
 def isRestorableKernel(kernelversion):
 	# This check should no longer be necessary since auto-installed packages are no longer listed in the plugins backup.
 	# For more information please consult commit https://github.com/OpenViX/vix-core/commit/53a95067677651a3f2579a1b0d1f70172ccc493b
 	return True
 	#return kernelversion == about.getKernelVersionString()
+
 
 def BackupManagerautostart(reason, session=None, **kwargs):
 	"""called with reason=1 to during /sbin/shutdown.sysvinit, with reason=0 at startup?"""
@@ -704,6 +707,7 @@ class VIXBackupManager(Screen):
 			print("[BackupManager] Restoring failed or canceled")
 			self.close()
 
+
 class BackupSelection(Screen):
 	skin = """
 		<screen name="BackupSelection" position="center,center" size="560,400">
@@ -877,6 +881,7 @@ class XtraPluginsSelection(Screen):
 	def closeRecursive(self):
 		self.close(True)
 
+
 class VIXBackupManagerMenu(Setup):
 	skin = """
 	<screen name="VIXBackupManagerMenu" position="center,center" size="560,550">
@@ -924,6 +929,7 @@ class VIXBackupManagerMenu(Setup):
 		config.backupmanager.save()
 		config.save()
 
+
 class VIXBackupManagerLogView(Screen):
 	skin = """
 <screen name="VIXBackupManagerLogView" position="center,center" size="560,400">
@@ -961,6 +967,7 @@ class VIXBackupManagerLogView(Screen):
 
 	def closeRecursive(self):
 		self.close(True)
+
 
 class AutoBackupManagerTimer:
 	def __init__(self, session):
@@ -1082,6 +1089,7 @@ class AutoBackupManagerTimer:
 			sched_t = int(mktime((sched.tm_year, sched.tm_mon, sched.tm_mday, 12, 0, 0, sched.tm_wday, sched.tm_yday, sched.tm_isdst)))
 			config.backupmanager.lastbackup.value = sched_t
 			config.backupmanager.lastbackup.save()
+
 
 class BackupFiles(Screen):
 	def __init__(self, session, updatebackup=False, imagebackup=False):
@@ -1273,6 +1281,7 @@ class BackupFiles(Screen):
 
 # Filename for backup list
 	tar_flist = "/tmp/_backup-files.list"
+
 	def Stage5(self):
 		tmplist = config.backupmanager.backupdirs.value
 		tmplist.append("/tmp/ExtraInstalledPlugins")

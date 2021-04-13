@@ -17,14 +17,18 @@ config.scriptrunner = ConfigSubsection()
 config.scriptrunner.close = ConfigYesNo(default=False)
 config.scriptrunner.showinextensions = ConfigYesNo(default=False)
 
+
 def updateExtensions(configElement):
 	plugins.clearPluginList()
 	plugins.readPluginList(resolveFilename(SCOPE_PLUGINS))
+
+
 config.scriptrunner.showinextensions.addNotifier(updateExtensions, initial_call=False)
 
 
 def ScriptRunnerAutostart(reason, session=None, **kwargs):
 	pass
+
 
 class VIXScriptRunner(IpkgInstaller):
 	def __init__(self, session, list=None):

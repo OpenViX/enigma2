@@ -9,11 +9,14 @@ from Tools.Directories import resolveFilename, SCOPE_PLUGINS
 PluginLanguageDomain = "vix"
 PluginLanguagePath = "SystemPlugins/ViX/locale"
 
+
 def pluginlanguagedomain():
 	return PluginLanguageDomain
 
+
 def localeInit():
 	gettext.bindtextdomain(PluginLanguageDomain, resolveFilename(SCOPE_PLUGINS, PluginLanguagePath))
+
 
 def _(txt):
 	if gettext.dgettext(PluginLanguageDomain, txt):

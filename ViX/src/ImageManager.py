@@ -88,6 +88,7 @@ if path.exists(TMPDIR + "/root") and path.ismount(TMPDIR + "/root"):
 	except Exception:
 		pass				
 
+
 def ImageManagerautostart(reason, session=None, **kwargs):
 	"""called with reason=1 to during /sbin/shutdown.sysvinit, with reason=0 at startup?"""
 	global autoImageManagerTimer
@@ -347,7 +348,6 @@ class VIXImageManager(Screen):
 			if job.name.startswith(_("Backup manager")):
 				break
 		self.session.openWithCallback(self.keyRestore3, JobView, job, cancelable=False, backgroundable=False, afterEventChangeable=False, afterEvent="close")
-
 
 	def keyRestore(self):
 		self.sel = self["list"].getCurrent()

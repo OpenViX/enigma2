@@ -32,6 +32,7 @@ def SwapAutostart(reason, session=None, **kwargs):
 			startswap = StartSwap()
 			startswap.start()
 
+
 class StartSwap:
 	def __init__(self):
 		self.Console = Console()
@@ -78,6 +79,7 @@ class StartSwap:
 		else:
 			print("[SwapManager] SWAP file is already active on ", swap_place)
 		f.close()
+
 
 class VIXSwap(Screen):
 	skin = """
