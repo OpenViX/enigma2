@@ -665,12 +665,12 @@ def InitAVSwitch():
 
 		def setDisable12Bit(configElement):
 			open("/proc/stb/video/disable_12bit", "w").write(configElement.value)
-		config.av.allow_12bit = ConfigSelection(default = "0", choices = [ ("0", _("yes")), ("1", _("no")) ]);
+		config.av.allow_12bit = ConfigSelection(default = "0", choices = [ ("0", _("yes")), ("1", _("no")) ])
 		config.av.allow_12bit.addNotifier(setDisable12Bit)
 
 		def setDisable10Bit(configElement):
 			open("/proc/stb/video/disable_10bit", "w").write(configElement.value)
-		config.av.allow_10bit = ConfigSelection(default = "0", choices = [ ("0", _("yes")), ("1", _("no")) ]);
+		config.av.allow_10bit = ConfigSelection(default = "0", choices = [ ("0", _("yes")), ("1", _("no")) ])
 		config.av.allow_10bit.addNotifier(setDisable10Bit)
 
 	if SystemInfo["Canaudiosource"]:

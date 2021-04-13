@@ -163,8 +163,10 @@ class MediaPlayer(Screen, InfoBarBase, InfoBarScreenSaver, InfoBarSeek, InfoBarA
 
 		class MoviePlayerActionMap(NumberActionMap):
 			def __init__(self, player, contexts=None, actions=None, prio=0):
-				if not contexts: contexts = []
-				if not actions: actions = {}
+				if not contexts:
+					contexts = []
+				if not actions:
+					actions = {}
 				NumberActionMap.__init__(self, contexts, actions, prio)
 				self.player = player
 
@@ -587,7 +589,7 @@ class MediaPlayer(Screen, InfoBarBase, InfoBarScreenSaver, InfoBarSeek, InfoBarA
 			if config.usage.setup_level.index >= 1: # intermediate+
 				menulist.append((_("Shuffle playlist"), "shuffle"))
 		menulist.append((_("Hide player"), "hide"))
-		menulist.append((_("Load playlist"), "loadplaylist"));
+		menulist.append((_("Load playlist"), "loadplaylist"))
 		if config.usage.setup_level.index >= 1: # intermediate+
 			menulist.append((_("Save playlist"), "saveplaylist"))
 			menulist.append((_("Delete saved playlist"), "deleteplaylist"))

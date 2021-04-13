@@ -35,7 +35,8 @@ class CpuUsage(Converter, object):
                 pos = 0
                 while True:
                     pos = self.sfmt.find("$", pos)
-                    if pos == -1: break
+                    if pos == -1:
+                        break
                     if pos < len(self.sfmt)-1 and \
                        self.sfmt[pos+1].isdigit() and \
                        int(self.sfmt[pos+1]) > cpus:

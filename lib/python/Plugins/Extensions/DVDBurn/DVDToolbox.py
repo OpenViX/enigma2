@@ -183,7 +183,8 @@ class DVDformatTaskPostcondition(Condition):
 class DVDformatTask(Task):
 	ERROR_ALREADYFORMATTED, ERROR_NOTWRITEABLE, ERROR_UNKNOWN = range(3)
 	def __init__(self, job, extra_args=None):
-		if not extra_args: extra_args = []
+		if not extra_args:
+			extra_args = []
 		Task.__init__(self, job, "RW medium format")
 		self.toolbox = job.toolbox
 		self.postconditions.append(DVDformatTaskPostcondition())
