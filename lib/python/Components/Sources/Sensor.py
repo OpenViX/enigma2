@@ -6,7 +6,7 @@ from Components.Sensors import sensors
 from enigma import eTimer
 
 class SensorSource(Source):
-	def __init__(self, update_interval = 500, sensorid = None):
+	def __init__(self, update_interval=500, sensorid=None):
 		self.update_interval = update_interval
 		self.sensorid = sensorid
 		Source.__init__(self)

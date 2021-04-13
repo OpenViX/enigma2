@@ -5,7 +5,7 @@ from Components.GUIComponent import GUIComponent
 
 
 class ConditionalWidget(GUIComponent):
-	def __init__(self, withTimer = True):
+	def __init__(self, withTimer=True):
 		GUIComponent.__init__(self)
 
 		self.setConnect(None)

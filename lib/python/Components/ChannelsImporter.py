@@ -69,7 +69,7 @@ class AutoClientModeTimer:
 			return int(mktime((now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min + repeatIntervalMinutes, 0, now.tm_wday, now.tm_yday, now.tm_isdst)))
 		return int(mktime((now.tm_year, now.tm_mon, now.tm_mday, backupclock[0], backupclock[1], 0, now.tm_wday, now.tm_yday, now.tm_isdst)))
 
-	def clientmodedate(self, atLeast = 0):
+	def clientmodedate(self, atLeast=0):
 		self.clientmodetimer.stop()
 		global ClientModeTime
 		ClientModeTime = self.getClientModeTime()

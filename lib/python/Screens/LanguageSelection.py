@@ -127,7 +127,7 @@ class LanguageSelection(Screen):
 			if curlang == t[0]:
 				lang = t[1]
 				break
-		self.session.openWithCallback(self.delLangCB, MessageBox, _("Select 'Yes' to delete all languages except English and current language:\n\nSelect 'No' to delete only the chosen language:\n\n") + _("%s") %(lang), default = True)
+		self.session.openWithCallback(self.delLangCB, MessageBox, _("Select 'Yes' to delete all languages except English and current language:\n\nSelect 'No' to delete only the chosen language:\n\n") + _("%s") %(lang), default=True)
 
 	def delLangCB(self, answer):
 		if answer:
@@ -144,7 +144,7 @@ class LanguageSelection(Screen):
 				if curlang == t[0]:
 					lang = t[1]
 					break
-			self.session.openWithCallback(self.deletelanguagesCB, MessageBox, _("Do you really want to delete selected language:\n\n") + _("%s") %(lang), default = False)
+			self.session.openWithCallback(self.deletelanguagesCB, MessageBox, _("Do you really want to delete selected language:\n\n") + _("%s") %(lang), default=False)
 
 	def deletelanguagesCB(self, answer):
 		if answer:
@@ -156,7 +156,7 @@ class LanguageSelection(Screen):
 			self.selectActiveLanguage()
 #		self.close()
 
-	def run(self, justlocal = False):
+	def run(self, justlocal=False):
 #		print("[LanguageSelection] updating language...")
 		lang = self["languages"].getCurrent()[0]
 
@@ -187,7 +187,7 @@ class LanguageSelection(Screen):
 		if not languageList: # no language available => display only english
 			list = [ LanguageEntryComponent("en", "English (UK)", "en_GB") ]
 		else:
-			list = [ LanguageEntryComponent(file = x[1][2].lower(), name = x[1][0], index = x[0]) for x in languageList]
+			list = [ LanguageEntryComponent(file=x[1][2].lower(), name=x[1][0], index=x[0]) for x in languageList]
 		self.list = list
 		self["languages"].list = list
 
@@ -202,7 +202,7 @@ class LanguageSelection(Screen):
 		self.updateCache()
 
 	def changed(self):
-		self.run(justlocal = True)
+		self.run(justlocal=True)
 
 class LanguageWizard(LanguageSelection, Rc):
 	def __init__(self, session):
@@ -223,7 +223,7 @@ class LanguageWizard(LanguageSelection, Rc):
 		self.selectKey("DOWN")
 
 	def changed(self):
-		self.run(justlocal = True)
+		self.run(justlocal=True)
 		self.setText()
 
 	def setText(self):

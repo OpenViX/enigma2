@@ -610,7 +610,7 @@ class Harddisk:
 
 class Partition:
 	# For backward compatibility, force_mounted actually means "hotplug".
-	def __init__(self, mountpoint, device = None, description = "", force_mounted = False):
+	def __init__(self, mountpoint, device=None, description="", force_mounted=False):
 		self.mountpoint = mountpoint
 		self.device = device
 		self.description = description
@@ -683,7 +683,7 @@ class HarddiskManager:
 
 	def enumerateBlockDevices(self):
 		print("[Harddisk] Enumerating block devices...")
-		self.partitions.append(Partition(mountpoint = "/", description = ("Internal flash")))  # Add the root device.
+		self.partitions.append(Partition(mountpoint="/", description=("Internal flash")))  # Add the root device.
 		# print "[Harddisk] DEBUG: Partition(mountpoint=%s, description=%s)" % ("/", _("Internal flash"))
 		try:
 			rootDev = os.stat("/").st_dev
@@ -721,7 +721,7 @@ class HarddiskManager:
 			isCdrom = devMajor in opticalDisks or device.startswith("sr")
 			if isCdrom:
 				self.cd = devicePath
-				self.partitions.append(Partition(mountpoint = self.getMountpoint(device), description = description, force_mounted = True, device = device))
+				self.partitions.append(Partition(mountpoint=self.getMountpoint(device), description=description, force_mounted=True, device=device))
 				# print "[Harddisk] DEBUG: Partition(mountpoint=%s, description=%s, force_mounted=True, device=%s)" % (self.getMountpoint(device), description, device)
 				print("[Harddisk] Found optical disk '%s' (%s)." % (device, physicalDevice))
 			data = readFile(os.path.join(devicePath, "removable"))
@@ -759,7 +759,7 @@ class HarddiskManager:
 						for partition in partitions:
 							description = self.getUserfriendlyDeviceName(partition, physicalDevice)
 							print("[Harddisk] Found partition '%s', description='%s', device='%s'." % (partition, description, physicalDevice))
-							part = Partition(mountpoint = self.getMountpoint(partition), description = description, force_mounted = True, device = partition)
+							part = Partition(mountpoint=self.getMountpoint(partition), description=description, force_mounted=True, device=partition)
 							self.partitions.append(part)
 							# print "[Harddisk] DEBUG: Partition(mountpoint = %s, description = %s, force_mounted = True, device = %s)" % (self.getMountpoint(partition), description, partition)
 							self.on_partition_list_change("add", part)
@@ -778,14 +778,14 @@ class HarddiskManager:
 					# print "[Harddisk] enumerateNetworkMountsNew DEBUG: mountDir = '%s', isMount = '%s'" % (mountDir, os.path.ismount(mountDir))
 					if os.path.ismount(mountDir) and mountDir not in [partition.mountpoint for partition in self.partitions]:
 						print("[Harddisk] Found network mount (%s) '%s' -> '%s'." % (entry, mount, mountDir))
-						self.partitions.append(Partition(mountpoint = mountDir, description = mount))
+						self.partitions.append(Partition(mountpoint=mountDir, description=mount))
 						# print "[Harddisk] DEBUG: Partition(mountpoint = %s, description = %s)" % (mountDir, mount)
 					elif "/media/net" in mountEntry and os.path.exists(mountDir) and mountDir not in [partition.mountpoint for partition in self.partitions]:
 						print("[Harddisk] Found network mount (%s) '%s' -> '%s'." % (entry, mount, mountDir))
-						self.partitions.append(Partition(mountpoint = mountDir, description = mount))
+						self.partitions.append(Partition(mountpoint=mountDir, description=mount))
 		if os.path.ismount("/media/hdd") and "/media/hdd/" not in [partition.mountpoint for partition in self.partitions]:
 			print("[Harddisk] new Network Mount being used as HDD replacement -> /media/hdd/")
-			self.partitions.append(Partition(mountpoint = "/media/hdd/", description = "/media/hdd"))
+			self.partitions.append(Partition(mountpoint="/media/hdd/", description="/media/hdd"))
 		print("[Harddisk] Enumerating network mounts complete.")
 
 	def getUserfriendlyDeviceName(self, device, physicalDevice):
@@ -835,7 +835,7 @@ class HarddiskManager:
 	# devicePath in def is e.g. /sys/block/mmcblk1.
 	# hddDev is the hdd device name e.g. mmcblk1.
 	#
-	def addHotplugPartition(self, device, physDevice = None):
+	def addHotplugPartition(self, device, physDevice=None):
 		print("[Harddisk] Evaluating hotplug connected device...")
 		print("[Harddisk] DEBUG: device = '%s', physDevice = '%s'" % (device, physDevice))
 		HDDin = error = removable = isCdrom = blacklisted = False
@@ -856,7 +856,7 @@ class HarddiskManager:
 			if isCdrom:
 				print("[Harddisk] Found optical disk '%s' (%s)." % (device, physicalDevice))
 				self.cd = devicePath
-				self.partitions.append(Partition(mountpoint = self.getMountpoint(hddDev), description = description, force_mounted = True, device = hddDev))
+				self.partitions.append(Partition(mountpoint=self.getMountpoint(hddDev), description=description, force_mounted=True, device=hddDev))
 			else:  # Lets get to work on real HDD.
 				data = readFile(os.path.join(devicePath, "removable"))
 				removable = False if data is None else bool(int(data))
@@ -879,7 +879,7 @@ class HarddiskManager:
 				for partition in partitions:
 					description = self.getUserfriendlyDeviceName(partition, physicalDevice)
 					print("[Harddisk] Found partition '%s', description = '%s', device = '%s'." % (partition, description, physicalDevice))
-					part = Partition(mountpoint = self.getMountpoint(partition), description = description, force_mounted = True, device = partition)  # add in partition
+					part = Partition(mountpoint=self.getMountpoint(partition), description=description, force_mounted=True, device=partition)  # add in partition
 					# print "[Harddisk] DEBUG add partition: Part(mountpoint = %s, description = %s, force_mounted =  True, device = %s)" % (self.getMountpoint(partition), description, partition)
 					self.partitions.append(part)
 					if part.mountpoint:  # Plugins won't expect unmounted devices.
@@ -953,7 +953,7 @@ class HarddiskManager:
 				self.partitions.remove(partition)
 				self.on_partition_list_change("remove", partition)
 
-	def setDVDSpeed(self, device, speed = 0):
+	def setDVDSpeed(self, device, speed=0):
 		if not device.startswith(os.sep):
 			device = os.path.join("/dev", device)
 		try:

@@ -232,7 +232,7 @@ class ChannelContextMenu(Screen):
 							_append_when_current_valid(current, menu, actions, (_("Add service to bouquet"), self.addServiceToBouquetSelected), level=0, key="7")
 							self.addFunction = self.addServiceToBouquetSelected
 						if not self.inBouquet:
-							_append_when_current_valid(current, menu, actions, (_("Remove entry"), self.removeEntry), level = 0, key="9")
+							_append_when_current_valid(current, menu, actions, (_("Remove entry"), self.removeEntry), level=0, key="9")
 							self.removeFunction = self.removeSatelliteService
 					else:
 						if not self.inBouquet:
@@ -242,11 +242,11 @@ class ChannelContextMenu(Screen):
 					if 'FROM SATELLITES' in current_root.getPath() and current and _("Services") in eServiceCenter.getInstance().info(current).getName(current):
 						unsigned_orbpos = current.getUnsignedData(4) >> 16
 						if unsigned_orbpos == 0xFFFF:
-							_append_when_current_valid(current, menu, actions, (_("Remove cable services"), self.removeSatelliteServices), level = 0, key="bullet")
+							_append_when_current_valid(current, menu, actions, (_("Remove cable services"), self.removeSatelliteServices), level=0, key="bullet")
 						elif unsigned_orbpos == 0xEEEE:
-							_append_when_current_valid(current, menu, actions, (_("Remove terrestrial services"), self.removeSatelliteServices), level = 0, key="bullet")
+							_append_when_current_valid(current, menu, actions, (_("Remove terrestrial services"), self.removeSatelliteServices), level=0, key="bullet")
 						else:
-							_append_when_current_valid(current, menu, actions, (_("Remove selected satellite"), self.removeSatelliteServices), level = 0, key="bullet")
+							_append_when_current_valid(current, menu, actions, (_("Remove selected satellite"), self.removeSatelliteServices), level=0, key="bullet")
 					if haveBouquets:
 						if not self.inBouquet and not "PROVIDERS" in current_sel_path:
 							_append_when_current_valid(current, menu, actions, (_("Copy to bouquets"), self.copyCurrentToBouquetList), level=0, key="bullet")
@@ -462,7 +462,7 @@ class ChannelContextMenu(Screen):
 		self.session.open(ServiceInfo, serviceref=self.csel.getCurrentSelection())
 
 	def setStartupService(self):
-		self.session.openWithCallback(self.setStartupServiceCallback, MessageBox, _("Set startup service"), list = [(_("Only on startup"), "startup"), (_("Also on standby"), "standby")])
+		self.session.openWithCallback(self.setStartupServiceCallback, MessageBox, _("Set startup service"), list=[(_("Only on startup"), "startup"), (_("Also on standby"), "standby")])
 
 	def setStartupServiceCallback(self, answer):
 		if answer:
@@ -858,10 +858,10 @@ class ChannelSelectionEPG(InfoBarButtonSetup, HelpableScreen):
 		self.closeChoiceBoxDialog()
 
 	def showEPGList(self):
-		def zapToService(service, bouquet = None, preview = False, zapback = False):
+		def zapToService(service, bouquet=None, preview=False, zapback=False):
 			pass
 
-		def epgClosed(ret = False):
+		def epgClosed(ret=False):
 			pass
 
 		startRef = self.getCurrentSelection()
@@ -964,9 +964,9 @@ class ChannelSelectionEdit:
 		if mutableBouquet:
 			servicename = cur_service.getServiceName()
 			if six.PY3:
-				name = unicodedata.normalize("NFKD", str(servicename, "utf_8", errors = "ignore")).encode("ASCII", "ignore").translate(None, '<>:"/\\|?*() ')
+				name = unicodedata.normalize("NFKD", str(servicename, "utf_8", errors="ignore")).encode("ASCII", "ignore").translate(None, '<>:"/\\|?*() ')
 			else:
-				name = unicodedata.normalize("NFKD", unicode(servicename, "utf_8", errors = "ignore")).encode("ASCII", "ignore").translate(None, '<>:"/\\|?*() ')
+				name = unicodedata.normalize("NFKD", unicode(servicename, "utf_8", errors="ignore")).encode("ASCII", "ignore").translate(None, '<>:"/\\|?*() ')
 			while os.path.isfile((self.mode == MODE_TV and '/etc/enigma2/alternatives.%s.tv' or '/etc/enigma2/alternatives.%s.radio') % name):
 				name = name.rsplit('_', 1)
 				name = ('_').join((name[0], len(name) == 2 and name[1].isdigit() and str(int(name[1]) + 1) or '1'))
@@ -1002,9 +1002,9 @@ class ChannelSelectionEdit:
 		if mutableBouquetList:
 			bName += ' ' + (_("(TV)") if self.mode == MODE_TV else _("(Radio)"))
 			if six.PY3:
-				name = unicodedata.normalize("NFKD", str(servicename, "utf_8", errors = "ignore")).encode("ASCII", "ignore").translate(None, '<>:"/\\|?*() ')
+				name = unicodedata.normalize("NFKD", str(servicename, "utf_8", errors="ignore")).encode("ASCII", "ignore").translate(None, '<>:"/\\|?*() ')
 			else:
-				name = unicodedata.normalize("NFKD", unicode(servicename, "utf_8", errors = "ignore")).encode("ASCII", "ignore").translate(None, '<>:"/\\|?*() ')
+				name = unicodedata.normalize("NFKD", unicode(servicename, "utf_8", errors="ignore")).encode("ASCII", "ignore").translate(None, '<>:"/\\|?*() ')
 			while os.path.isfile((self.mode == MODE_TV and '/etc/enigma2/userbouquet.%s.tv' or '/etc/enigma2/userbouquet.%s.radio') % name):
 				name = name.rsplit('_', 1)
 				name = ('_').join((name[0], len(name) == 2 and name[1].isdigit() and str(int(name[1]) + 1) or '1'))
@@ -1282,7 +1282,7 @@ class ChannelSelectionEdit:
 	def doContext(self):
 		self.session.openWithCallback(self.exitContext, ChannelContextMenu, self)
 
-	def exitContext(self, close = False):
+	def exitContext(self, close=False):
 		l = self["list"]
 		l.setFontsize()
 		l.setItemsPerPage()
@@ -1995,7 +1995,7 @@ config.radio.lastroot = ConfigText()
 config.servicelist = ConfigSubsection()
 config.servicelist.lastmode = ConfigText(default='tv')
 config.servicelist.startupservice = ConfigText()
-config.servicelist.startupservice_onstandby = ConfigYesNo(default = False)
+config.servicelist.startupservice_onstandby = ConfigYesNo(default=False)
 config.servicelist.startuproot = ConfigText()
 config.servicelist.startupmode = ConfigText(default='tv')
 
@@ -2020,8 +2020,7 @@ class ChannelSelection(ChannelSelectionEdit, ChannelSelectionBase, ChannelSelect
 				"keyTV": self.keyTV,
 			})
 
-		self.__event_tracker = ServiceEventTracker(screen=self, eventmap=
-			{
+		self.__event_tracker = ServiceEventTracker(screen=self, eventmap={
 				iPlayableService.evStart: self.__evServiceStart,
 				iPlayableService.evEnd: self.__evServiceEnd
 			})
@@ -2743,8 +2742,7 @@ class ChannelSelectionRadio(ChannelSelectionEdit, ChannelSelectionBase, ChannelS
 				"audio": self.audioSelection,
 			})
 
-		self.__event_tracker = ServiceEventTracker(screen=self, eventmap=
-			{
+		self.__event_tracker = ServiceEventTracker(screen=self, eventmap={
 				iPlayableService.evStart: self.__evServiceStart,
 				iPlayableService.evEnd: self.__evServiceEnd
 			})

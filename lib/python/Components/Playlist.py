@@ -17,7 +17,7 @@ class PlaylistIO:
 
 	REMOTE_PROTOS = ["http", "https", "udp", "rtsp", "rtp", "mmp"]
 
-	def save(self, filename = None):
+	def save(self, filename=None):
 		return self.ERROR
 
 	def clear(self):
@@ -55,7 +55,7 @@ class PlaylistIOInternal(PlaylistIO):
 		file.close()
 		return self.list
 
-	def save(self, filename = None):
+	def save(self, filename=None):
 		print("Writing playlist into file", filename)
 		file = open(filename, "w")
 		for x in self.list:
@@ -93,7 +93,7 @@ class PlaylistIOM3U(PlaylistIO):
 		file.close()
 		return self.list
 
-	def save(self, filename = None):
+	def save(self, filename=None):
 		return self.ERROR
 
 class PlaylistIOPLS(PlaylistIO):
@@ -123,5 +123,5 @@ class PlaylistIOPLS(PlaylistIO):
 		file.close()
 		return self.list
 
-	def save(self, filename = None):
+	def save(self, filename=None):
 		return self.ERROR

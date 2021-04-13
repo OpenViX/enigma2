@@ -23,11 +23,11 @@ liste = ["Unencrypted", "WEP", "WPA", "WPA/WPA2", "WPA2"]
 weplist = ["ASCII", "HEX"]
 
 config.plugins.wlan = ConfigSubsection()
-config.plugins.wlan.essid = NoSave(ConfigText(default = "", fixed_size = False))
-config.plugins.wlan.hiddenessid = NoSave(ConfigYesNo(default = False))
-config.plugins.wlan.encryption = NoSave(ConfigSelection(liste, default = "WPA2"))
-config.plugins.wlan.wepkeytype = NoSave(ConfigSelection(weplist, default = "ASCII"))
-config.plugins.wlan.psk = NoSave(ConfigPassword(default = "", fixed_size = False))
+config.plugins.wlan.essid = NoSave(ConfigText(default="", fixed_size=False))
+config.plugins.wlan.hiddenessid = NoSave(ConfigYesNo(default=False))
+config.plugins.wlan.encryption = NoSave(ConfigSelection(liste, default="WPA2"))
+config.plugins.wlan.wepkeytype = NoSave(ConfigSelection(weplist, default="ASCII"))
+config.plugins.wlan.psk = NoSave(ConfigPassword(default="", fixed_size=False))
 
 def existBcmWifi(iface):
 	return os_path.exists("/tmp/bcm/" + iface)
@@ -42,7 +42,7 @@ def getWlanConfigName(iface):
 	return '/etc/wpa_supplicant.' + iface + '.conf'
 
 class Wlan:
-	def __init__(self, iface = None):
+	def __init__(self, iface=None):
 		self.iface = iface
 		self.oldInterfaceState = None
 
@@ -76,7 +76,7 @@ class Wlan:
 		return ifnames
 
 
-	def setInterface(self, iface = None):
+	def setInterface(self, iface=None):
 		self.iface = iface
 
 	def getInterface(self):
@@ -461,7 +461,7 @@ class Status:
 			self.WlanConsole.killAll()
 			self.WlanConsole = None
 
-	def getDataForInterface(self, iface, callback = None):
+	def getDataForInterface(self, iface, callback=None):
 		self.WlanConsole = Console()
 		cmd = "iwconfig " + iface
 		if callback is not None:
