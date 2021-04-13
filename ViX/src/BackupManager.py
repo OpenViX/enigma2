@@ -274,7 +274,7 @@ class VIXBackupManager(Screen):
 			config.backupmanager.folderprefix.value = defaultprefix
 			config.backupmanager.folderprefix.save()
 # If the prefix doesn't start with the defaultprefix it is a tag...
-# 
+#
 		if not config.backupmanager.folderprefix.value.startswith(defaultprefix):
 			config.backupmanager.folderprefix.value = defaultprefix + "-" + config.backupmanager.folderprefix.value
 			config.backupmanager.folderprefix.save()
@@ -344,7 +344,7 @@ class VIXBackupManager(Screen):
 			self.session.open(MessageBox, _("Backup in progress,\nPlease wait for it to finish, before trying again."), MessageBox.TYPE_INFO, timeout=10)
 
 	def settingsRestoreCheck(self, result, retval, extra_args=None):
-		if path.exists("/tmp/backupimageversion"):		
+		if path.exists("/tmp/backupimageversion"):
 			with open("/tmp/backupimageversion", "r") as fd:
 				imageversion = fd.read()
 			print("[BackupManager] Backup Image:", imageversion)
@@ -487,10 +487,10 @@ class VIXBackupManager(Screen):
 		self.Console.ePopen("opkg update", self.Stage2Complete)
 
 	def Stage2Complete(self, result, retval, extra_args):
-		result2 = result.decode("utf8") 
+		result2 = result.decode("utf8")
 		print("[BackupManager] Restoring Stage 2: Result ", result2)
 		if result2.find("wget returned 4") != -1: # probably no network adaptor connected
-			self.feeds = "NONETWORK" 
+			self.feeds = "NONETWORK"
 			self.Stage2Completed = True
 		if result2.find("wget returned 8") != -1 or result2.find("wget returned 1") != -1 or result2.find("wget returned 255") != -1 or result2.find("404 Not Found") != -1: # Server issued an error response, or there was a wget generic error code.
 			self.feeds = "DOWN"

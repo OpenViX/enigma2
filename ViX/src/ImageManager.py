@@ -81,12 +81,12 @@ if path.exists(config.imagemanager.backuplocation.value + "imagebackups/imageres
 		rmtree(config.imagemanager.backuplocation.value + "imagebackups/imagerestore")
 	except Exception:
 		pass
-TMPDIR = config.imagemanager.backuplocation.value + "imagebackups/" + config.imagemanager.folderprefix.value + "-" + getImageType() + "-mount"		
+TMPDIR = config.imagemanager.backuplocation.value + "imagebackups/" + config.imagemanager.folderprefix.value + "-" + getImageType() + "-mount"
 if path.exists(TMPDIR + "/root") and path.ismount(TMPDIR + "/root"):
 	try:
 		system("umount " + TMPDIR + "/root")
 	except Exception:
-		pass				
+		pass
 
 
 def ImageManagerautostart(reason, session=None, **kwargs):

@@ -196,4 +196,3 @@ class IpkgInstaller(Screen):
 		for item in list:
 			cmdList.append((IpkgComponent.CMD_INSTALL, {"package": item[1]}))
 		self.session.open(Ipkg, cmdList=cmdList)
-

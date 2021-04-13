@@ -200,7 +200,7 @@ class VIXSoftcamManager(Screen):
 			if six.PY3:
 				self.currentactivecamtemp = result.decode
 			else:
-				self.currentactivecamtemp = result				
+				self.currentactivecamtemp = result
 				self.currentactivecam = "".join([s for s in self.currentactivecamtemp.splitlines(True) if s.strip("\r\n")])
 			self.currentactivecam = self.currentactivecam.replace("\n", ", ")
 			print("[SoftcamManager] Active:%s " % self.currentactivecam)
