@@ -68,7 +68,7 @@ class UpdatePlugin(Screen, ProtectedScreen):
 
 	def isProtected(self):
 		return config.ParentalControl.setuppinactive.value and\
-			(not config.ParentalControl.config_sections.main_menu.value and not config.ParentalControl.config_sections.configuration.value  or hasattr(self.session, 'infobar') and self.session.infobar is None) and\
+			(not config.ParentalControl.config_sections.main_menu.value and not config.ParentalControl.config_sections.configuration.value or hasattr(self.session, 'infobar') and self.session.infobar is None) and\
 			config.ParentalControl.config_sections.software_update.value
 
 	def checkTraficLight(self):
@@ -116,7 +116,7 @@ class UpdatePlugin(Screen, ProtectedScreen):
 is not anymore working as expected. Therefore it is recommended to create backups. If something went wrong you can easily and quickly restore. \
 If you discover 'bugs' please keep them reported on www.teamblue.tech.\n\nDo you understand this?")
 			list = not justShow and [(_("no"), False), (_("yes"), True), (_("yes") + " " + _("and never show this message again"), "never")] or []
-			self.session.openWithCallback(boundFunction(self.disclaimerCallback, justShow), MessageBox, message, list=list,  title=_("Disclaimer"))
+			self.session.openWithCallback(boundFunction(self.disclaimerCallback, justShow), MessageBox, message, list=list, title=_("Disclaimer"))
 		else:
 			self.startActualUpdate(True)
 
@@ -256,7 +256,7 @@ If you discover 'bugs' please keep them reported on www.teamblue.tech.\n\nDo you
 					error = _("No updates available. Please try again later.")
 				if self.updating:
 					error = _("Update failed. Your receiver does not have a working internet connection.")
-				self.status.setText(_("Error") +  " - " + error)
+				self.status.setText(_("Error") + " - " + error)
 		elif event == OpkgComponent.EVENT_LISTITEM:
 			if 'enigma2-plugin-settings-' in param[0] and self.channellist_only > 0:
 				self.channellist_name = param[0]

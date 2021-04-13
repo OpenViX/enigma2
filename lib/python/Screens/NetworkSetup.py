@@ -412,7 +412,7 @@ class IPv6Setup(Screen, ConfigListScreen, HelpableScreen):
 		self["config"].l.setList(self.list)
 
 	def restoreinetdData(self):
-		inetdData  = "# /etc/inetd.conf:  see inetd(music) for further informations.\n"
+		inetdData = "# /etc/inetd.conf:  see inetd(music) for further informations.\n"
 		inetdData += "#\n"
 		inetdData += "# Internet server configuration database\n"
 		inetdData += "#\n"
@@ -480,7 +480,7 @@ class IPv6Setup(Screen, ConfigListScreen, HelpableScreen):
 			f.close()
 		else:
 			fp.write("0")
-			system("rm -R "+ipv6)
+			system("rm -R " + ipv6)
 		fp.close()
 		self.restoreinetdData()
 		self.close()
@@ -633,9 +633,9 @@ class AdapterSetup(Screen, ConfigListScreen, HelpableScreen):
 		self.ipConfigEntry = NoSave(ConfigIP(default=iNetwork.getAdapterAttribute(self.iface, "ip")) or [0,0,0,0])
 		self.netmaskConfigEntry = NoSave(ConfigIP(default=iNetwork.getAdapterAttribute(self.iface, "netmask") or [255,0,0,0]))
 		if iNetwork.getAdapterAttribute(self.iface, "gateway"):
-			self.dhcpdefault=True
+			self.dhcpdefault = True
 		else:
-			self.dhcpdefault=False
+			self.dhcpdefault = False
 		self.hasGatewayConfigEntry = NoSave(ConfigYesNo(default=self.dhcpdefault or False))
 		self.gatewayConfigEntry = NoSave(ConfigIP(default=iNetwork.getAdapterAttribute(self.iface, "gateway") or [0,0,0,0]))
 		nameserver = (iNetwork.getNameserverList() + [[0,0,0,0]] * 2)[0:2]
@@ -737,24 +737,24 @@ class AdapterSetup(Screen, ConfigListScreen, HelpableScreen):
 			dhcpinfo = ""
 		else:
 			cardonoff = _("enabled")
-			dhcpinfo = "DHCP: \t" +  dhcpstat
+			dhcpinfo = "DHCP: \t" + dhcpstat
 		gwinfo = ""
 		if self.dhcpConfigEntry.value == True:
-			gwinfo = _("Gateway") + ":\t" + _("enabled") + " ("  + _("automatic from DHCP") +")"
+			gwinfo = _("Gateway") + ":\t" + _("enabled") + " (" + _("automatic from DHCP") + ")"
 		if self.hasGatewayConfigEntry.value == True:
 			if self.dhcpConfigEntry.value == False:
-				gwinfo = _("Gateway") + ":\t" + '%s.%s.%s.%s'% tuple(self.gatewayConfigEntry.value)
+				gwinfo = _("Gateway") + ":\t" + '%s.%s.%s.%s' % tuple(self.gatewayConfigEntry.value)
 		if self.hasGatewayConfigEntry.value == False:
 			if self.dhcpConfigEntry.value == False:
 				gwinfo = _("Gateway") + ":\t" + _("disabled")
 		if self.activateInterfaceEntry.value == False:
 			gwinfo = ""
 
-		netinfo =  _("Device")  + ":\t" + str(self.iface) + "\n"
-		netinfo += _("Adapter") + ":\t" + self.longdesc  + "\n" + _("Network") + ": \t" + cardonoff
+		netinfo = _("Device") + ":\t" + str(self.iface) + "\n"
+		netinfo += _("Adapter") + ":\t" + self.longdesc + "\n" + _("Network") + ": \t" + cardonoff
 		netinfo += "\n" + dhcpinfo
 		netinfo += "\n" + gwinfo
-		keySavego = self.session.openWithCallback(self.keySavego, MessageBox, (_("Are you sure you want to activate this network configuration?\n\n")  + netinfo))
+		keySavego = self.session.openWithCallback(self.keySavego, MessageBox, (_("Are you sure you want to activate this network configuration?\n\n") + netinfo))
 		keySavego.setTitle(self.longdesc)
 
 	def keySavego(self, answer):
@@ -1318,13 +1318,13 @@ class NetworkAdapterTest(Screen):
 
 	def updownhandler(self,direction):
 		if direction == 'up':
-			if self.activebutton >=2:
+			if self.activebutton >= 2:
 				self.activebutton -= 1
 			else:
 				self.activebutton = 6
 			self.setActiveButton(self.activebutton)
 		if direction == 'down':
-			if self.activebutton <=5:
+			if self.activebutton <= 5:
 				self.activebutton += 1
 			else:
 				self.activebutton = 1
@@ -1690,7 +1690,7 @@ class NetworkPassword(ConfigListScreen, Screen):
 		self["HelpWindow"] = Pixmap()
 		self["HelpWindow"].hide()
 
-		self.user="root"
+		self.user = "root"
 		self.output_line = ""
 
 		self.updateList()
@@ -1729,12 +1729,12 @@ class NetworkPassword(ConfigListScreen, Screen):
 		self.container = eConsoleAppContainer()
 		self.container.appClosed.append(self.runFinished)
 		self.container.dataAvail.append(self.dataAvail)
-		retval = self.container.execute("echo -e '%s\n%s' | (passwd %s)"  % (password, password, self.user))
+		retval = self.container.execute("echo -e '%s\n%s' | (passwd %s)" % (password, password, self.user))
 		if retval:
-			message=_("Unable to change password")
+			message = _("Unable to change password")
 			self.session.openWithCallback(self.showHelpWindow, MessageBox, message, MessageBox.TYPE_ERROR)
 		else:
-			message=_("Password changed")
+			message = _("Password changed")
 			self.session.open(MessageBox, message, MessageBox.TYPE_INFO, timeout=5)
 			self.close()
 
@@ -1768,8 +1768,8 @@ class NetworkPassword(ConfigListScreen, Screen):
 			i = self.output_line.find('\n')
 			if i == -1:
 				break
-			self.processOutputLine(self.output_line[:i+1])
-			self.output_line = self.output_line[i+1:]
+			self.processOutputLine(self.output_line[:i + 1])
+			self.output_line = self.output_line[i + 1:]
 
 	def processOutputLine(self,line):
 		if line.find('password: '):

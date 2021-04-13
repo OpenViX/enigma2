@@ -826,8 +826,8 @@ class ConfigMacText(ConfigElement, NumericalTextInput):
 
 	def validateMarker(self):
 		textlen = len(self.text)
-		if self.marked_pos > textlen-1:
-			self.marked_pos = textlen-1
+		if self.marked_pos > textlen - 1:
+			self.marked_pos = textlen - 1
 		elif self.marked_pos < 0:
 			self.marked_pos = 0
 
@@ -848,7 +848,7 @@ class ConfigMacText(ConfigElement, NumericalTextInput):
 				self.marked_pos = len(self.text)
 				self.allmarked = False
 			else:
-				if self.text[self.marked_pos-1] == ':':
+				if self.text[self.marked_pos - 1] == ':':
 					self.marked_pos -= 2
 				else:
 					self.marked_pos -= 1
@@ -858,8 +858,8 @@ class ConfigMacText(ConfigElement, NumericalTextInput):
 				self.marked_pos = 0
 				self.allmarked = False
 			else:
-				if self.marked_pos < (len(self.text)-1):
-					if self.text[self.marked_pos+1] == ':':
+				if self.marked_pos < (len(self.text) - 1):
+					if self.text[self.marked_pos + 1] == ':':
 						self.marked_pos += 2
 					else:
 						self.marked_pos += 1
@@ -910,14 +910,14 @@ class ConfigMacText(ConfigElement, NumericalTextInput):
 			if self.allmarked:
 				mark = range(0, min(self.visible_width, len(self.text)))
 			else:
-				mark = [self.marked_pos-self.offset]
-			return "mtext"[1-selected:], self.text[self.offset:self.offset+self.visible_width].encode("utf-8")+" ", mark
+				mark = [self.marked_pos - self.offset]
+			return "mtext"[1 - selected:], self.text[self.offset:self.offset + self.visible_width].encode("utf-8") + " ", mark
 		else:
 			if self.allmarked:
 				mark = range(0, len(self.text))
 			else:
 				mark = [self.marked_pos]
-			return "mtext"[1-selected:], self.text.encode("utf-8")+" ", mark
+			return "mtext"[1 - selected:], self.text.encode("utf-8") + " ", mark
 
 	def onSelect(self, session):
 		self.allmarked = (self.value != "")

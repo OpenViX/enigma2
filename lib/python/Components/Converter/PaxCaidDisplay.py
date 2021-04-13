@@ -25,75 +25,75 @@ from Poll import Poll
 import datetime
 
 def cardnames(caid,prov):
-		if caid   == '098C' and prov =='000000':
+		if caid == '098C' and prov == '000000':
 				cn = 'SKY NDS V14'		#19E
-		elif caid == '09C4' and prov =='000000':
+		elif caid == '09C4' and prov == '000000':
 				cn = 'SKY NDS V13'		#19E
-		elif caid == '09C7' and prov =='000000':
+		elif caid == '09C7' and prov == '000000':
 				cn = 'KD G02/G09'
-		elif caid == '09AF' and prov =='000000':
+		elif caid == '09AF' and prov == '000000':
 				cn = 'KabelKiosk'
-		elif caid == '1702' and prov =='000000':
+		elif caid == '1702' and prov == '000000':
 				cn = 'SKY BC S02'		#19E
-		elif caid == '1833' and prov =='000000':
+		elif caid == '1833' and prov == '000000':
 				cn = 'SKY(BTun)S02'		#19E
-		elif caid == '1722' and prov =='000000':
+		elif caid == '1722' and prov == '000000':
 				cn = 'KD D01/D02'
-		elif caid == '1810' and prov =='000000':
+		elif caid == '1810' and prov == '000000':
 				cn = 'Digital+ Esp'		#19E
-		elif caid == '1815' and prov =='000000':
+		elif caid == '1815' and prov == '000000':
 				cn = 'UPC Direct'		#0.8W
-		elif caid == '1830' and prov =='000000':
+		elif caid == '1830' and prov == '000000':
 				cn = 'HD+ HD01'			#19E
-		elif caid == '1843' and prov =='000000':
+		elif caid == '1843' and prov == '000000':
 				cn = 'HD+ HD02'			#19E
-		elif caid == '1834' and prov =='000000':
+		elif caid == '1834' and prov == '000000':
 				cn = 'KD D02/D09'		#Cable DE
-		elif caid == '098E' and prov =='000000':
+		elif caid == '098E' and prov == '000000':
 				cn = 'UMKBW V23'		#Cable DE
-		elif caid == '1831' and prov =='000000':
+		elif caid == '1831' and prov == '000000':
 				cn = 'UMKBW UM1/3'		#Cable DE
-		elif caid == '1838' and prov =='000000':
+		elif caid == '1838' and prov == '000000':
 				cn = 'UMKBW UM02'		#Cable DE
-		elif caid == '183D' and prov =='000000':
+		elif caid == '183D' and prov == '000000':
 				cn = 'Mediaset Premium'
-		elif caid == '183E' and prov =='000000':
+		elif caid == '183E' and prov == '000000':
 				cn = 'Mediaset Premium'
-		elif caid == '0D95' and prov =='000004':
+		elif caid == '0D95' and prov == '000004':
 				cn = 'ORF-CW'			#19E
-		elif caid == '0648' and prov =='000000':
+		elif caid == '0648' and prov == '000000':
 				cn = 'ORF-Irdeto'		#19E
-		elif caid == '0D96' and prov =='000004':
+		elif caid == '0D96' and prov == '000004':
 				cn = 'SkyLink CZ'		#23E
-		elif caid == '0500' and prov =='023800':
+		elif caid == '0500' and prov == '023800':
 				cn = 'SRGv2'			#13E
-		elif caid == '0500' and prov =='040810':
+		elif caid == '0500' and prov == '040810':
 				cn = 'SRGv4'			#13E
-		elif caid == '0500' and prov =='032500':
+		elif caid == '0500' and prov == '032500':
 				cn = 'BRAZZERS TV'		#19E
-		elif caid == '0500' and prov =='042700':
+		elif caid == '0500' and prov == '042700':
 				cn = 'MCT/SCT'
-		elif caid == '0500' and prov =='042800':
+		elif caid == '0500' and prov == '042800':
 				cn = 'BisTV'
-		elif caid == '0500' and prov =='043800':
+		elif caid == '0500' and prov == '043800':
 				cn = 'RedlightHD'		#13E
-		elif caid == '0500' and prov =='050800':
+		elif caid == '0500' and prov == '050800':
 				cn = 'SRGv5'			#13E
-		elif caid == '0500' and prov =='050F00':
+		elif caid == '0500' and prov == '050F00':
 				cn = 'Dorcel TV'		#19E
-		elif caid == '0500' and prov =='030B00':
+		elif caid == '0500' and prov == '030B00':
 				cn = 'TNTSAT'
-		elif caid == '0500' and prov =='032940':
+		elif caid == '0500' and prov == '032940':
 				cn = 'CSAT'
-		elif caid == '0B00' and prov =='000000':
+		elif caid == '0B00' and prov == '000000':
 				cn = 'Conax Card'
-		elif caid == '0BAA' and prov =='000000':
+		elif caid == '0BAA' and prov == '000000':
 				cn = 'Conax Card'
-		elif caid == '0B01' and prov =='000000':
+		elif caid == '0B01' and prov == '000000':
 				cn = 'UPC Direct'
-		elif caid == '0100' and prov =='00006A':
+		elif caid == '0100' and prov == '00006A':
 				cn = 'C+ Nederland'		#19E
-		elif caid == '0100' and prov =='00006C':
+		elif caid == '0100' and prov == '00006C':
 				cn = 'TV Vlaanderen'		#19E
 		else:
 				cn = 'Card'
@@ -196,9 +196,9 @@ class PaxCaidDisplay(Poll, Converter, object):
 						# from
 						froms = ecm_info.get("from", "")
 						fromsorg = froms
-						if froms.count("192.168.")>0 or froms.count("172.16.")>0 or froms.count("10.")>0:
+						if froms.count("192.168.") > 0 or froms.count("172.16.") > 0 or froms.count("10.") > 0:
 								froms = 'HomeNet'
-						if froms.count(".")==0:
+						if froms.count(".") == 0:
 							froms = 'HomeNet'
 						else:
 							froms = 'Internet'
@@ -217,7 +217,7 @@ class PaxCaidDisplay(Poll, Converter, object):
 						address = ecm_info.get("address", "")
 						address = address.split(":")
 						address = address[0]
-						if address.count("192.168.")>0 or  address.count("172.16.")>0 or address.count("10.")>0:
+						if address.count("192.168.") > 0 or address.count("172.16.") > 0 or address.count("10.") > 0:
 							address = address
 						else:
 							address = address.split(".")
@@ -229,10 +229,10 @@ class PaxCaidDisplay(Poll, Converter, object):
 						protocol = "%s" % protocol
 						if using:
 							karte = cardnames(caid,provid)
-							if karte =='Card':
+							if karte == 'Card':
 									karte = provider
 							karte = karte[:15]
-							karte = '(' + karte +')'
+							karte = '(' + karte + ')'
 							if using == "emu":
 									textvalue = "%s - %s %s (EMU)" % (caid, ecm_time, karte)
 							elif using == "CCcam-s2s":
@@ -250,7 +250,7 @@ class PaxCaidDisplay(Poll, Converter, object):
 							if source:
 								if source == "emu":
 									emprov = ecm_info.get("prov", "")
-									emprov= emprov.split(",")
+									emprov = emprov.split(",")
 									emprov = emprov[0]
 									karte = cardnames(caid,emprov)
 									emprov = ":%s" % emprov
@@ -261,11 +261,11 @@ class PaxCaidDisplay(Poll, Converter, object):
 									share = share.lstrip("net").replace('(cccamd at ','').replace(')','').replace(' ','')
 									share = share.split(":")
 									share = share[0]
-									if karte =='Card':
-											karte=''
+									if karte == 'Card':
+											karte = ''
 									else:
-											karte =' (' + karte + ')'
-									if share.count("192.168.")>0 or  share.count("172.16.")>0 or share.count("10.")>0:
+											karte = ' (' + karte + ')'
+									if share.count("192.168.") > 0 or share.count("172.16.") > 0 or share.count("10.") > 0:
 											share = share
 									else:
 											share = share.split(".")
@@ -280,21 +280,21 @@ class PaxCaidDisplay(Poll, Converter, object):
 							if oscsource:
 								karte = cardnames(caid,prov)
 								karte = karte[:15]
-								if karte =='Card':
-									karte=''
+								if karte == 'Card':
+									karte = ''
 								else:
 									karte = '(' + karte + ') '
 								oscsource = str(oscsource[:12])
-								first =("%s %s:%s - Hop:%s - %s" % (karte, caid, prov, hops, ecm_time))
+								first = ("%s %s:%s - Hop:%s - %s" % (karte, caid, prov, hops, ecm_time))
 								#last = ("%s - %s - %s: %s" % (protocol, oscsource, froms, fromsorg))
 								froms = ""
 								last = ("%s - %s@%s" % (protocol, oscsource, fromsorg))
-								ax ='{:%S}'.format(datetime.datetime.now())
+								ax = '{:%S}'.format(datetime.datetime.now())
 								ax = float(ax)
-								if ax >0 and ax <4 or ax> 6 and ax<10 or ax>12 and ax<16 or ax>18 and ax<22 or ax>24 and ax<28 or ax>27 and ax<31 or ax>33 and ax<37 or ax>39 and ax<43 or ax>45 and ax<49 or ax>51 and ax<55 or ax>57 and ax<60:
-									textvalue=first
+								if ax > 0 and ax < 4 or ax > 6 and ax < 10 or ax > 12 and ax < 16 or ax > 18 and ax < 22 or ax > 24 and ax < 28 or ax > 27 and ax < 31 or ax > 33 and ax < 37 or ax > 39 and ax < 43 or ax > 45 and ax < 49 or ax > 51 and ax < 55 or ax > 57 and ax < 60:
+									textvalue = first
 								else:
-									textvalue=last
+									textvalue = last
 								if protocol == "internal":
 										textvalue = "%s %s:%s - %s - local - %s" % (karte, caid, prov, ecm_time, oscsource)
 								elif protocol == "emu":
@@ -349,7 +349,7 @@ class PaxCaidDisplay(Poll, Converter, object):
 				for line in ecm:
 					x = line.lower().find("msec")
 					if x != -1:
-						info["ecm time"] = line[0:x+4]
+						info["ecm time"] = line[0:x + 4]
 					else:
 						item = line.split(":", 1)
 						if len(item) > 1:
@@ -360,7 +360,7 @@ class PaxCaidDisplay(Poll, Converter, object):
 								if x != -1:
 									y = line.find(",")
 									if y != -1:
-										info["caid"] = line[x+5:y]
+										info["caid"] = line[x + 5:y]
 
 		return info
 

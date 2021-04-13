@@ -87,7 +87,7 @@ class SoftcamStartup(Screen, ConfigListScreen):
 			if "c" in what:
 				msg = _("Please wait, restarting primary and secondary softcam.")
 			else:
-				msg  = _("Please wait, restarting primary softcam.")
+				msg = _("Please wait, restarting primary softcam.")
 		elif "c" in what:
 			msg = _("Please wait, restarting secondary softcam.")
 		self.mbox = self.session.open(MessageBox, msg, MessageBox.TYPE_INFO)

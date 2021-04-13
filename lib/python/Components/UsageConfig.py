@@ -20,8 +20,8 @@ def InitUsageConfig():
 				folderprefix = splitted[1].replace('\n','') # 0 = release, 1 = experimental
 				boxtype = splitted[1].replace('\n','') # 0 = release, 1 = experimental
 	except:
-		folderprefix=""
-		boxtype="not detected"
+		folderprefix = ""
+		boxtype = "not detected"
 	config.misc.boxtype = ConfigText(default=boxtype)
 
 	config.usage = ConfigSubsection()
@@ -124,7 +124,7 @@ def InitUsageConfig():
 		("no", _("no")), ("popup", _("With popup")), ("without popup", _("Without popup"))])
 	choicelist = [("-1", _("Disabled")), ("0", _("No timeout"))]
 	for i in [60, 300, 600, 900, 1800, 2700, 3600]:
-		m = i/60
+		m = i / 60
 		choicelist.append((str(i), ngettext("%d minute", "%d minutes", m) % m))
 	config.usage.pip_last_service_timeout = ConfigSelection(default="-1", choices=choicelist)
 
@@ -486,7 +486,7 @@ def InitUsageConfig():
 	config.epg.histminutes = ConfigSelectionNumber(min=0, max=120, stepwidth=15, default=0, wraparound=True)
 	def EpgHistorySecondsChanged(configElement):
 		from enigma import eEPGCache
-		eEPGCache.getInstance().setEpgHistorySeconds(config.epg.histminutes.getValue()*60)
+		eEPGCache.getInstance().setEpgHistorySeconds(config.epg.histminutes.getValue() * 60)
 	config.epg.histminutes.addNotifier(EpgHistorySecondsChanged)
 
 	config.epg.cacheloadsched = ConfigYesNo(default=False)
@@ -701,7 +701,7 @@ def InitUsageConfig():
 	config.subtitles.subtitle_rewrap = ConfigYesNo(default=False)
 	config.subtitles.colourise_dialogs = ConfigYesNo(default=False)
 	config.subtitles.subtitle_borderwidth = ConfigSelection(choices=["1", "2", "3", "4", "5"], default="3")
-	config.subtitles.subtitle_fontsize  = ConfigSelection(choices=["%d" % x for x in range(16,101) if not x % 2], default="40")
+	config.subtitles.subtitle_fontsize = ConfigSelection(choices=["%d" % x for x in range(16,101) if not x % 2], default="40")
 	config.subtitles.showbackground = ConfigYesNo(default=False)
 
 	subtitle_delay_choicelist = []
@@ -745,7 +745,7 @@ def InitUsageConfig():
 	config.subtitles.pango_autoturnon = ConfigYesNo(default=True)
 
 	config.autolanguage = ConfigSubsection()
-	audio_language_choices=[
+	audio_language_choices = [
 		("", _("None")),
 		("orj dos ory org esl qaa und mis mul ORY ORJ Audio_ORJ", _("Original")),
 		("ara", _("Arabic")),
@@ -831,7 +831,7 @@ def InitUsageConfig():
 		for y in range(1, 15 if config.autolanguage.subtitle_autoselect4.value else (7 if config.autolanguage.subtitle_autoselect3.value else(4 if config.autolanguage.subtitle_autoselect2.value else (2 if config.autolanguage.subtitle_autoselect1.value else 0)))):
 			choicelist.append((str(y), ", ".join([eval("config.autolanguage.subtitle_autoselect%x.getText()" % x) for x in (y & 1, y & 2, y & 4 and 3, y & 8 and 4) if x])))
 		if config.autolanguage.subtitle_autoselect3.value:
-			choicelist.append((str(y+1), "All"))
+			choicelist.append((str(y + 1), "All"))
 		config.autolanguage.equal_languages.setChoices(choicelist, default="0")
 	config.autolanguage.equal_languages = ConfigSelection(default="0", choices=[str(x) for x in range(0, 16)])
 	config.autolanguage.subtitle_autoselect1 = ConfigSelection(choices=subtitle_language_choices, default="")

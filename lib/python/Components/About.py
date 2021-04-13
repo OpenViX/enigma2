@@ -77,7 +77,7 @@ def getCPUString():
 	#	return "BCM73625"
 	else:
 		try:
-			system="unknown"
+			system = "unknown"
 			file = open('/proc/cpuinfo', 'r')
 			lines = file.readlines()
 			for x in lines:
@@ -154,7 +154,7 @@ def getCPUInfoString():
 			temperature = open("/proc/stb/fp/temp_sensor_avs").readline().replace('\n','')
 		if os.path.isfile("/sys/devices/virtual/thermal/thermal_zone0/temp"):
 			try:
-				temperature = int(open("/sys/devices/virtual/thermal/thermal_zone0/temp").read().strip())/1000
+				temperature = int(open("/sys/devices/virtual/thermal/thermal_zone0/temp").read().strip()) / 1000
 			except:
 				pass
 		elif os.path.isfile("/proc/hisi/msp/pm_cpu"):
@@ -182,7 +182,7 @@ def getCPUSpeedString():
 				if splitted[0].startswith("cpu MHz"):
 					mhz = float(splitted[1].split(' ')[0])
 					if mhz and mhz >= 1000:
-						mhz = "%s GHz" % str(round(mhz/1000,1))
+						mhz = "%s GHz" % str(round(mhz / 1000,1))
 					else:
 						mhz = "%s MHz" % str(round(mhz,1))
 		file.close()
@@ -192,7 +192,7 @@ def getCPUSpeedString():
 
 def _ifinfo(sock, addr, ifname):
 	iface = struct.pack('256s', ifname[:15])
-	info  = fcntl.ioctl(sock.fileno(), addr, iface)
+	info = fcntl.ioctl(sock.fileno(), addr, iface)
 	if addr == 0x8927:
 		return ''.join(['%02x:' % ord(char) for char in info[18:24]])[:-1].upper()
 	else:
@@ -201,11 +201,11 @@ def _ifinfo(sock, addr, ifname):
 def getIfConfig(ifname):
 	ifreq = {'ifname': ifname}
 	infos = {}
-	sock  = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+	sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 	# offsets defined in /usr/include/linux/sockios.h on linux 2.6
-	infos['addr']    = 0x8915 # SIOCGIFADDR
+	infos['addr'] = 0x8915 # SIOCGIFADDR
 	infos['brdaddr'] = 0x8919 # SIOCGIFBRDADDR
-	infos['hwaddr']  = 0x8927 # SIOCSIFHWADDR
+	infos['hwaddr'] = 0x8927 # SIOCSIFHWADDR
 	infos['netmask'] = 0x891b # SIOCGIFNETMASK
 	try:
 		for k,v in infos.items():
@@ -230,10 +230,10 @@ def getDriverInstalledDate():
 		from glob import glob
 		try:
 			driver = [x.split("-")[-2:-1][0][-8:] for x in open(glob("/var/lib/opkg/info/*-dvb-modules-*.control")[0], "r") if x.startswith("Version:")][0]
-			return  "%s-%s-%s" % (driver[:4], driver[4:6], driver[6:])
+			return "%s-%s-%s" % (driver[:4], driver[4:6], driver[6:])
 		except:
 			driver = [x.split("Version:") for x in open(glob("/var/lib/opkg/info/*-dvb-proxy-*.control")[0], "r") if x.startswith("Version:")][0]
-			return  "%s" % driver[1].replace("\n","")
+			return "%s" % driver[1].replace("\n","")
 	except:
 		return _("unknown")
 
@@ -272,9 +272,9 @@ def GetIPsFromNetworkInterfaces():
 	namestr = names.tostring()
 	ifaces = []
 	for i in range(0, outbytes, struct_size):
-		iface_name = bytes.decode(namestr[i:i+16]).split('\0', 1)[0].encode('ascii')
+		iface_name = bytes.decode(namestr[i:i + 16]).split('\0', 1)[0].encode('ascii')
 		if iface_name != 'lo':
-			iface_addr = socket.inet_ntoa(namestr[i+20:i+24])
+			iface_addr = socket.inet_ntoa(namestr[i + 20:i + 24])
 			ifaces.append((iface_name, iface_addr))
 	return ifaces
 
@@ -292,7 +292,7 @@ def getBoxUptime():
 		m = (secs % 3600) / 60
 		time += ngettext("%d hour", "%d hours", h) % h + " "
 		time += ngettext("%d minute", "%d minutes", m) % m
-		return  "%s" % time
+		return "%s" % time
 	except:
 		return '-'
 

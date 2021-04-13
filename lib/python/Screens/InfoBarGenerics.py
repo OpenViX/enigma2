@@ -199,26 +199,26 @@ class InfoBarUnhandledKey:
 		self.checkUnusedTimer = eTimer()
 		self.checkUnusedTimer.callback.append(self.checkUnused)
 		self.onLayoutFinish.append(self.unhandledKeyDialog.hide)
-		eActionMap.getInstance().bindAction('', -maxint -1, self.actionA) #highest prio
+		eActionMap.getInstance().bindAction('', -maxint - 1, self.actionA) #highest prio
 		eActionMap.getInstance().bindAction('', maxint, self.actionB) #lowest prio
-		self.flags = (1<<1)
+		self.flags = (1 << 1)
 		self.uflags = 0
 
 	#this function is called on every keypress!
 	def actionA(self, key, flag):
 		####key debug
 		try:
-			print 'KEY: %s %s %s' % (key,(key_name for key_name,value in KEYIDS.items() if value==key).next(),getKeyDescription(key)[0])
+			print 'KEY: %s %s %s' % (key,(key_name for key_name,value in KEYIDS.items() if value == key).next(),getKeyDescription(key)[0])
 		except:
 			try:
-				print 'KEY: %s %s' % (key,(key_name for key_name,value in KEYIDS.items() if value==key).next()) # inverse dictionary lookup in KEYIDS
+				print 'KEY: %s %s' % (key,(key_name for key_name,value in KEYIDS.items() if value == key).next()) # inverse dictionary lookup in KEYIDS
 			except:
 				print 'KEY: %s' % (key)
 		self.unhandledKeyDialog.hide()
 		if flag != 4:
-			if self.flags & (1<<1):
+			if self.flags & (1 << 1):
 				self.flags = self.uflags = 0
-			self.flags |= (1<<flag)
+			self.flags |= (1 << flag)
 			if flag == 1: # break
 				self.checkUnusedTimer.start(0, True)
 		return 0
@@ -226,7 +226,7 @@ class InfoBarUnhandledKey:
 	#this function is only called when no other action has handled this key
 	def actionB(self, key, flag):
 		if flag != 4:
-			self.uflags |= (1<<flag)
+			self.uflags |= (1 << flag)
 
 	def checkUnused(self):
 		if self.flags == self.uflags:
@@ -315,7 +315,7 @@ class InfoBarShowHide(InfoBarScreenSaver):
 
 	def doDimming(self):
 		if config.usage.show_infobar_do_dimming.value:
-			self.dimmed = self.dimmed-1
+			self.dimmed = self.dimmed - 1
 		else:
 			self.dimmed = 0
 		self.DimmingTimer.stop()
@@ -327,7 +327,7 @@ class InfoBarShowHide(InfoBarScreenSaver):
 
 	def doWriteAlpha(self, value):
 		if fileExists("/proc/stb/video/alpha"):
-			f=open("/proc/stb/video/alpha","w")
+			f = open("/proc/stb/video/alpha","w")
 			f.write("%i" % (value))
 			f.close()
 
@@ -411,7 +411,7 @@ class InfoBarShowHide(InfoBarScreenSaver):
 
 	def doHide(self):
 		if self.__state != self.STATE_HIDDEN:
-			self.doWriteAlpha((config.av.osd_alpha.value*self.dimmed/config.usage.show_infobar_dimming_speed.value))
+			self.doWriteAlpha((config.av.osd_alpha.value * self.dimmed / config.usage.show_infobar_dimming_speed.value))
 
 			if self.dimmed > 0:
 				self.DimmingTimer.start(70, True)
@@ -538,7 +538,7 @@ class BufferIndicator(Screen):
 		self.mayShowTimer.stop()
 		self.hide()
 
-	def	mayShowEndTimer(self):
+	def mayShowEndTimer(self):
 		self.mayShow = True
 		if self.getBufferValue() == 0:
 			self["status"].setText(_("No data received yet"))
@@ -700,7 +700,7 @@ class InfoBarNumberZap:
 					if bouquet.flags & eServiceReference.isDirectory and not bouquet.flags & eServiceReference.isInvisible:
 						service = self.searchNumberHelper(serviceHandler, number, bouquet)
 						if service:
-							playable = not (service.flags & (eServiceReference.isMarker|eServiceReference.isDirectory)) or (service.flags & eServiceReference.isNumberedMarker)
+							playable = not (service.flags & (eServiceReference.isMarker | eServiceReference.isDirectory)) or (service.flags & eServiceReference.isNumberedMarker)
 							if not playable:
 								service = None
 							break
@@ -1047,10 +1047,10 @@ class InfoBarSimpleEventView:
 		service = self.session.nav.getCurrentService()
 		ref = self.session.nav.getCurrentlyPlayingServiceOrGroup()
 		info = service.info()
-		ptr=info.getEvent(0)
+		ptr = info.getEvent(0)
 		if ptr:
 			epglist.append(ptr)
-		ptr=info.getEvent(1)
+		ptr = info.getEvent(1)
 		if ptr:
 			epglist.append(ptr)
 		if epglist:
@@ -1088,7 +1088,7 @@ class SimpleServicelist:
 	def nextService(self):
 		if not self.length:
 			return
-		if self.current+1 < self.length:
+		if self.current + 1 < self.length:
 			self.current += 1
 		else:
 			self.current = 0
@@ -1096,7 +1096,7 @@ class SimpleServicelist:
 	def prevService(self):
 		if not self.length:
 			return
-		if self.current-1 > -1:
+		if self.current - 1 > -1:
 			self.current -= 1
 		else:
 			self.current = self.length - 1
@@ -1218,9 +1218,9 @@ class InfoBarEPG:
 		elif self.eventView and closedScreen == self.eventView:
 			self.eventView = None
 		if ret:
-			dlgs=len(self.dlg_stack)
+			dlgs = len(self.dlg_stack)
 			if dlgs > 0:
-				self.dlg_stack[dlgs-1].close(dlgs > 1)
+				self.dlg_stack[dlgs - 1].close(dlgs > 1)
 
 	def openMultiServiceEPG(self, withCallback=True):
 		bouquets = self.servicelist.getBouquetList()
@@ -1336,10 +1336,10 @@ class InfoBarEPG:
 			service = self.session.nav.getCurrentService()
 			ref = self.session.nav.getCurrentlyPlayingServiceOrGroup()
 			info = service.info()
-			ptr=info.getEvent(0)
+			ptr = info.getEvent(0)
 			if ptr:
 				epglist.append(ptr)
-			ptr=info.getEvent(1)
+			ptr = info.getEvent(1)
 			if ptr:
 				epglist.append(ptr)
 			if epglist:
@@ -1370,8 +1370,8 @@ class InfoBarEPG:
 		epglist = self.epglist
 		if len(epglist) > 1:
 			tmp = epglist[0]
-			epglist[0]=epglist[1]
-			epglist[1]=tmp
+			epglist[0] = epglist[1]
+			epglist[1] = tmp
 			setEvent(epglist[0])
 
 class InfoBarRdsDecoder:
@@ -1455,7 +1455,7 @@ class InfoBarSeek:
 					key = int(action[8:])
 					time = (-config.seek.selfdefined_13.value, False, config.seek.selfdefined_13.value,
 						-config.seek.selfdefined_46.value, False, config.seek.selfdefined_46.value,
-						-config.seek.selfdefined_79.value, False, config.seek.selfdefined_79.value)[key-1]
+						-config.seek.selfdefined_79.value, False, config.seek.selfdefined_79.value)[key - 1]
 					self.screen.doSeekRelative(time * 90000)
 					return 1
 				else:
@@ -1665,7 +1665,7 @@ class InfoBarSeek:
 				self.setSeekState(self.SEEK_STATE_PAUSE)
 			else:
 				self.setSeekState(self.SEEK_STATE_PLAY)
-		seekable.seekRelative(pts<0 and -1 or 1, abs(pts))
+		seekable.seekRelative(pts < 0 and -1 or 1, abs(pts))
 		if abs(pts) > 100 and config.usage.show_infobar_on_skip.value:
 			self.showAfterSeek()
 
@@ -1785,7 +1785,7 @@ class InfoBarSeek:
 			if not len[0] and not pos[0]:
 				if len[1] <= pos[1]:
 					return 0
-				time = (len[1] - pos[1])*speedden/(90*speednom)
+				time = (len[1] - pos[1]) * speedden / (90 * speednom)
 				return time
 		return False
 
@@ -1976,7 +1976,7 @@ class InfoBarTimeshift():
 			return 0 # trade as unhandled action
 		time = (-config.seek.selfdefined_13.value, False, config.seek.selfdefined_13.value,
 			-config.seek.selfdefined_46.value, False, config.seek.selfdefined_46.value,
-			-config.seek.selfdefined_79.value, False, config.seek.selfdefined_79.value)[key-1]
+			-config.seek.selfdefined_79.value, False, config.seek.selfdefined_79.value)[key - 1]
 		self.doSeekRelative(time * 90000)
 		self.pvrStateDialog.show()
 		return 1
@@ -2374,7 +2374,7 @@ class InfoBarJobman:
 
 	def getJobName(self, job):
 		if job.status == job.IN_PROGRESS:
-			return "%s: (%d%%), %s" % (job.getStatustext(), int(100*job.progress/float(job.end)), job.name)
+			return "%s: (%d%%), %s" % (job.getStatustext(), int(100 * job.progress / float(job.end)), job.name)
 		return "%s: %s" % (job.getStatustext(), job.name)
 
 	def showJobView(self, job):
@@ -2587,7 +2587,7 @@ class InfoBarInstantRecord:
 					self.moveToTrash(self.recording[entry])
 				self.recording.remove(self.recording[entry])
 		if entry is not None and entry != -1:
-			msg =  _("Stop recording:")
+			msg = _("Stop recording:")
 			if self.deleteRecording:
 				msg = _("Stop and delete recording:")
 			msg += "\n"
@@ -2602,7 +2602,7 @@ class InfoBarInstantRecord:
 					self.recording.remove(entry[0])
 					if self.deleteRecording:
 						self.moveToTrash(entry[0])
-		msg =  _("Stop recordings:")
+		msg = _("Stop recordings:")
 		if self.deleteRecording:
 			msg = _("Stop and delete recordings:")
 		msg += "\n"
@@ -2629,7 +2629,7 @@ class InfoBarInstantRecord:
 			pass
 
 		info["event"] = event
-		info["name"]  = name
+		info["name"] = name
 		info["description"] = ""
 		info["eventid"] = None
 
@@ -2748,9 +2748,9 @@ class InfoBarInstantRecord:
 		elif answer[1] in ("indefinitely", "manualduration", "manualendtime", "event"):
 			self.startInstantRecording(limitEvent=answer[1] in ("event", "manualendtime") or False)
 			if answer[1] == "manualduration":
-				self.changeDuration(len(self.recording)-1)
+				self.changeDuration(len(self.recording) - 1)
 			elif answer[1] == "manualendtime":
-				self.setEndtime(len(self.recording)-1)
+				self.setEndtime(len(self.recording) - 1)
 		elif "timeshift" in answer[1]:
 			ts = self.getTimeshift()
 			if ts:
@@ -2761,13 +2761,13 @@ class InfoBarInstantRecord:
 				if "event" in answer[1]:
 					remaining = self.currentEventTime()
 					if remaining > 0:
-						self.setCurrentEventTimer(remaining-15)
+						self.setCurrentEventTimer(remaining - 15)
 		print "after:\n", self.recording
 
 	def setEndtime(self, entry):
 		if entry is not None and entry >= 0:
 			self.selectedEntry = entry
-			self.endtime=ConfigClock(default=self.recording[self.selectedEntry].end)
+			self.endtime = ConfigClock(default=self.recording[self.selectedEntry].end)
 			dlg = self.session.openWithCallback(self.TimeDateInputClosed, TimeDateInput, self.endtime)
 			dlg.setTitle(_("Please change recording endtime"))
 
@@ -2839,7 +2839,7 @@ class InfoBarInstantRecord:
 			common = ()
 
 		if self.isInstantRecordRunning():
-			title =_("A recording is currently running.\nWhat do you want to do?")
+			title = _("A recording is currently running.\nWhat do you want to do?")
 			if not SystemInfo["hasGBIpboxClient"]:
 				list = common + \
 					((_("Change recording (duration)"), "changeduration"),
@@ -2859,7 +2859,7 @@ class InfoBarInstantRecord:
 				list += ((_("Stop timer recording"), "timer"),)
 			list += ((_("Do nothing"), "no"),)
 		else:
-			title=_("Start recording?")
+			title = _("Start recording?")
 			list = common
 			if self.isTimerRecordRunning():
 				list += ((_("Stop timer recording"), "timer"),)
@@ -3260,7 +3260,7 @@ class InfoBarCueSheetSupport:
 				self.resume_point = last
 				l = last / 90000
 				if "ask" in config.usage.on_movie_start.value:
-					Notifications.AddNotificationWithCallback(self.playLastCB, MessageBox, _("Do you want to resume this playback?") + "\n" + (_("Resume position at %s") % ("%d:%02d:%02d" % (l/3600, l%3600/60, l%60))), timeout=10, default="yes" in config.usage.on_movie_start.value)
+					Notifications.AddNotificationWithCallback(self.playLastCB, MessageBox, _("Do you want to resume this playback?") + "\n" + (_("Resume position at %s") % ("%d:%02d:%02d" % (l / 3600, l % 3600 / 60, l % 60))), timeout=10, default="yes" in config.usage.on_movie_start.value)
 				elif config.usage.on_movie_start.value == "resume":
 # TRANSLATORS: The string "Resuming playback" flashes for a moment
 # TRANSLATORS: at the start of a movie, when the user has selected
@@ -3323,10 +3323,10 @@ class InfoBarCueSheetSupport:
 	def jumpPreviousMark(self):
 		# we add 5 seconds, so if the play position is <5s after
 		# the mark, the mark before will be used
-		self.jumpPreviousNextMark(lambda x: -x-5*90000, start=True)
+		self.jumpPreviousNextMark(lambda x: -x - 5 * 90000, start=True)
 
 	def jumpNextMark(self):
-		if not self.jumpPreviousNextMark(lambda x: x-90000):
+		if not self.jumpPreviousNextMark(lambda x: x - 90000):
 			self.doSeek(-1)
 
 	def getNearestCutPoint(self, pts, cmp=abs, start=False):
@@ -3361,7 +3361,7 @@ class InfoBarCueSheetSupport:
 					bestdiff = diff
 		return nearest
 
-	def toggleMark(self, onlyremove=False, onlyadd=False, tolerance=5*90000, onlyreturn=False):
+	def toggleMark(self, onlyremove=False, onlyadd=False, tolerance=5 * 90000, onlyreturn=False):
 		current_pos = self.cueGetCurrentPosition()
 		if current_pos is None:
 			print "not seekable"
@@ -3523,7 +3523,7 @@ class InfoBarSubtitleSupport(object):
 	def subtitleSelection(self):
 		subtitle = self.getCurrentServiceSubtitle()
 		subtitlelist = subtitle and subtitle.getSubtitleList()
-		if self.selected_subtitle or subtitlelist and len(subtitlelist)>0:
+		if self.selected_subtitle or subtitlelist and len(subtitlelist) > 0:
 			from Screens.AudioSelection import SubtitleSelection
 			self.session.open(SubtitleSelection, self)
 		else:
@@ -3673,12 +3673,12 @@ class InfoBarPowersaver:
 					endtime_extra = tuple(config.usage.inactivity_timer_blocktime_extra_end.value)
 				curtime = (curtime.tm_hour, curtime.tm_min, curtime.tm_sec)
 				if blocktime and (begintime <= endtime and (curtime >= begintime and curtime < endtime) or begintime > endtime and (curtime >= begintime or curtime < endtime)):
-					duration = (endtime[0]*3600 + endtime[1]*60) - (curtime[0]*3600 + curtime[1]*60 + curtime[2])
+					duration = (endtime[0] * 3600 + endtime[1] * 60) - (curtime[0] * 3600 + curtime[1] * 60 + curtime[2])
 				elif extra_time and (begintime_extra <= endtime_extra and (curtime >= begintime_extra and curtime < endtime_extra) or begintime_extra > endtime_extra and (curtime >= begintime_extra or curtime < endtime_extra)):
-					duration = (endtime_extra[0]*3600 + endtime_extra[1]*60) - (curtime[0]*3600 + curtime[1]*60 + curtime[2])
+					duration = (endtime_extra[0] * 3600 + endtime_extra[1] * 60) - (curtime[0] * 3600 + curtime[1] * 60 + curtime[2])
 				if duration:
 					if duration < 0:
-						duration += 24*3600
+						duration += 24 * 3600
 					self.inactivityTimer.startLongTimer(duration)
 					return
 		if Screens.Standby.inStandby:

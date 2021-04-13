@@ -104,8 +104,8 @@ class HddPartitions(Screen):
 				self["key_green"].setText(_("Check"))
 				self["key_yellow"].setText(_("Format"))
 
-				mp = self.mountpoints.get(self.disk[0], index+1)
-				rmp = self.mountpoints.getRealMount(self.disk[0], index+1)
+				mp = self.mountpoints.get(self.disk[0], index + 1)
+				rmp = self.mountpoints.getRealMount(self.disk[0], index + 1)
 				if len(mp) > 0 or len(rmp) > 0:
 					self.mounted = True
 					self["key_red"].setText(_("Unmount"))
@@ -115,7 +115,7 @@ class HddPartitions(Screen):
 
 	def chkfs(self):
 		disks = Disks()
-		ret = disks.chkfs(self.disk[5][self.index][0][:3], self.index+1, self.fstype)
+		ret = disks.chkfs(self.disk[5][self.index][0][:3], self.index + 1, self.fstype)
 		if ret == 0:
 			self.session.open(MessageBox, _("Check disk finished with success"), MessageBox.TYPE_INFO)
 		elif ret == -1:
@@ -125,7 +125,7 @@ class HddPartitions(Screen):
 
 	def mkfs(self):
 		disks = Disks()
-		ret = disks.mkfs(self.disk[5][self.index][0][:3], self.index+1, self.fstype)
+		ret = disks.mkfs(self.disk[5][self.index][0][:3], self.index + 1, self.fstype)
 		if ret == 0:
 			self.session.open(MessageBox, _("Format finished with success"), MessageBox.TYPE_INFO)
 		elif ret == -2:
@@ -206,8 +206,8 @@ class HddPartitions(Screen):
 		if len(self.partitions) > 0:
 			self.sindex = self['menu'].getIndex()
 			if self.mounted:
-				mp = self.mountpoints.get(self.disk[0], self.sindex+1)
-				rmp = self.mountpoints.getRealMount(self.disk[0], self.sindex+1)
+				mp = self.mountpoints.get(self.disk[0], self.sindex + 1)
+				rmp = self.mountpoints.getRealMount(self.disk[0], self.sindex + 1)
 				if len(mp) > 0:
 					if self.mountpoints.isMounted(mp):
 						if self.mountpoints.umount(mp):
@@ -222,7 +222,7 @@ class HddPartitions(Screen):
 					self.mountpoints.umount(rmp)
 				self.refreshMP()
 			else:
-				self.session.openWithCallback(self.refreshMP, HddMount, self.disk[0], self.sindex+1)
+				self.session.openWithCallback(self.refreshMP, HddMount, self.disk[0], self.sindex + 1)
 
 	def quit(self):
 		self.close()

@@ -100,9 +100,9 @@ def resolveFilename(scope, base="", path_prefix=None):
 			pos = config.skin.primary_skin.value.rfind('/')
 			if pos != -1:
 				#if basefile is not available use default skin path as fallback
-				tmpfile = tmp+config.skin.primary_skin.value[:pos+1] + base
+				tmpfile = tmp + config.skin.primary_skin.value[:pos + 1] + base
 				if pathExists(tmpfile):
-					path = tmp+config.skin.primary_skin.value[:pos+1]
+					path = tmp + config.skin.primary_skin.value[:pos + 1]
 				else:
 					path = tmp
 			else:
@@ -120,9 +120,9 @@ def resolveFilename(scope, base="", path_prefix=None):
 			tmp = defaultPaths[SCOPE_SKIN][0]
 			pos = config.skin.primary_skin.value.rfind('/')
 			if pos != -1:
-				tmpfile = tmp+config.skin.primary_skin.value[:pos+1] + base
+				tmpfile = tmp + config.skin.primary_skin.value[:pos + 1] + base
 				if pathExists(tmpfile) or (':' in tmpfile and pathExists(tmpfile.split(':')[0])):
-					path = tmp+config.skin.primary_skin.value[:pos+1]
+					path = tmp + config.skin.primary_skin.value[:pos + 1]
 				elif pathExists(tmp + base) or (':' in base and pathExists(tmp + base.split(':')[0])):
 					path = tmp
 				else:
@@ -150,9 +150,9 @@ def resolveFilename(scope, base="", path_prefix=None):
 			tmp = defaultPaths[SCOPE_LCDSKIN][0]
 			pos = config.skin.display_skin.value.rfind('/')
 			if pos != -1:
-				tmpfile = tmp+config.skin.display_skin.value[:pos+1] + base
+				tmpfile = tmp + config.skin.display_skin.value[:pos + 1] + base
 				if pathExists(tmpfile):
-					path = tmp+config.skin.display_skin.value[:pos+1]
+					path = tmp + config.skin.display_skin.value[:pos + 1]
 				else:
 					if 'skin_default' not in tmp:
 						path = tmp + 'skin_default/'
@@ -171,9 +171,9 @@ def resolveFilename(scope, base="", path_prefix=None):
 		pos = config.skin.primary_skin.value.rfind('/')
 		if pos != -1:
 			#if basefile is not available inside current skin path, use the original provided file as fallback
-			skintmpfile = skintmp[0]+config.skin.primary_skin.value[:pos+1] + base
+			skintmpfile = skintmp[0] + config.skin.primary_skin.value[:pos + 1] + base
 			if fileExists(skintmpfile):
-				path = skintmp[0]+config.skin.primary_skin.value[:pos+1]
+				path = skintmp[0] + config.skin.primary_skin.value[:pos + 1]
 			else:
 				path = tmp[0]
 		else:
@@ -219,7 +219,7 @@ def resolveFilename(scope, base="", path_prefix=None):
 						os.rename(x[0], path + base)
 						break
 			except Exception, e:
-				print "[D] Failed to recover %s:" % (path+base), e
+				print "[D] Failed to recover %s:" % (path + base), e
 
 	# FIXME: we also have to handle DATADIR etc. here.
 	return path + base
@@ -360,7 +360,7 @@ def copyfile(src, dst):
 			dst = os.path.join(dst, os.path.basename(src))
 		f2 = open(dst, "w+b")
 		while True:
-			buf = f1.read(16*1024)
+			buf = f1.read(16 * 1024)
 			if not buf:
 				break
 			f2.write(buf)

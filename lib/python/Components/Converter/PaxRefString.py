@@ -35,13 +35,13 @@ class PaxRefString(Converter, object):
 			antw = str(self.source.service.toString())
 			if antw[:6] == "1:7:0:":
 				teilantw = antw.split("ORDER BY name:")
-				if len(teilantw)>1:
+				if len(teilantw) > 1:
 					teil2antw = teilantw[1].split()
-					if len(teil2antw)>0:
+					if len(teil2antw) > 0:
 						return teil2antw[0]
 			elif antw[:6] == "1:7:1:":
 				teilantw = antw.split(".")
-				if len(teilantw)>1:
+				if len(teilantw) > 1:
 					return teilantw[1]
 			return antw
 		elif (self.type == self.CURRENT):

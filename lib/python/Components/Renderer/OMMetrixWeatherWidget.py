@@ -95,7 +95,7 @@ class OMMetrixWeatherWidget(Renderer):
 		language = config.osd.language.value.replace('_', '-')
 		if language == 'en-EN':
 			language = 'en-US'
-		city="%s" % cityname
+		city = "%s" % cityname
 		feedurl = "http://weather.service.msn.com/data.aspx?weadegreetype=%s&culture=%s&weasearchstr=%s&src=outlook" % (self.getTemp(),language,urllib2_quote(city))
 		msnrequest = Request(feedurl, None, std_headers)
 		try:
@@ -126,7 +126,7 @@ class OMMetrixWeatherWidget(Renderer):
 		currentWeatherCode = currentWeather.getAttributeNode('skycodeday')
 		config.plugins.MetrixWeather.forecastTodayCode.value = self.ConvertCondition(currentWeatherCode.nodeValue)
 		currentWeatherTemp = currentWeather.getAttributeNode('high')
-		temp_max  = currentWeatherTemp.nodeValue
+		temp_max = currentWeatherTemp.nodeValue
 		config.plugins.MetrixWeather.forecastTodayTempMax.value = currentWeatherTemp.nodeValue
 		currentWeatherTemp = currentWeather.getAttributeNode('low')
 		temp_min = currentWeatherTemp.nodeValue
@@ -162,7 +162,7 @@ class OMMetrixWeatherWidget(Renderer):
 			condition = "S"
 		elif c == 3 or c == 4:
 			condition = "Z"
-		elif c == 5  or c == 6 or c == 7 or c == 18:
+		elif c == 5 or c == 6 or c == 7 or c == 18:
 			condition = "U"
 		elif c == 8 or c == 10 or c == 25:
 			condition = "G"

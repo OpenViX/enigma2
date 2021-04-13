@@ -150,7 +150,7 @@ class About(Screen):
 
 		if getMachineBuild() in ('gb7252', 'gb72604'):
 			b = popen('cat /proc/stb/info/version').read().strip()
-			driverdate=str(b[0:4] + '-' + b[4:6] + '-' + b[6:8] + ' ' + b[8:10]  + ':' + b[10:12] + ':' + b[12:14])
+			driverdate = str(b[0:4] + '-' + b[4:6] + '-' + b[6:8] + ' ' + b[8:10] + ':' + b[10:12] + ':' + b[12:14])
 			AboutText += _("DVB drivers: ") + driverdate + "\n"
 		else:
 			AboutText += _("DVB drivers: ") + self.realDriverDate() + "\n"
@@ -209,7 +209,7 @@ class About(Screen):
 					hddinfo += "\n"
 				hdd = hddlist[count][1]
 				if int(hdd.free()) > 1024:
-					hddinfo += formatstring % (hdd.model(), hdd.capacity(), hdd.free()/1024.0, "G", _("free"))
+					hddinfo += formatstring % (hdd.model(), hdd.capacity(), hdd.free() / 1024.0, "G", _("free"))
 				else:
 					hddinfo += formatstring % (hdd.model(), hdd.capacity(), hdd.free(), "M", _("free"))
 		else:
@@ -258,9 +258,9 @@ class About(Screen):
 		try:
 			y = popen('lsmod').read().strip()
 			if 'dvb' in y:
-				drivername='dvb'
-				b = popen('modinfo '+ drivername +' |grep -i version').read().strip().split()[1][:14]
-				realdate=str(b[0:4] + '-' + b[4:6] + '-' + b[6:8] + ' ' + b[8:10]  + ':' + b[10:12] + ':' + b[12:14])
+				drivername = 'dvb'
+				b = popen('modinfo ' + drivername + ' |grep -i version').read().strip().split()[1][:14]
+				realdate = str(b[0:4] + '-' + b[4:6] + '-' + b[6:8] + ' ' + b[8:10] + ':' + b[10:12] + ':' + b[12:14])
 		except:
 			realdate = about.getDriverInstalledDate()
 		return realdate
@@ -294,31 +294,31 @@ class TranslationInfo(Screen):
 			translator_name = infomap.get("Last-Translator", "")
 		self["TranslatorName"] = StaticText(translator_name)
 
-		linfo= ""
-		linfo += _("Translations Info")		+ ":" + "\n\n"
-		linfo += _("Project")				+ ":" + infomap.get("Project-Id-Version", "") + "\n"
-		linfo += _("Language")				+ ":" + infomap.get("Language", "") + "\n"
+		linfo = ""
+		linfo += _("Translations Info") + ":" + "\n\n"
+		linfo += _("Project") + ":" + infomap.get("Project-Id-Version", "") + "\n"
+		linfo += _("Language") + ":" + infomap.get("Language", "") + "\n"
 		print infomap.get("Language-Team", "")
 		if infomap.get("Language-Team", "") == "" or infomap.get("Language-Team", "") == "none":
-			linfo += _("Language Team") 	+ ":" + "n/a"  + "\n"
+			linfo += _("Language Team") + ":" + "n/a" + "\n"
 		else:
-			linfo += _("Language Team") 	+ ":" + infomap.get("Language-Team", "")  + "\n"
-		linfo += _("Last Translator") 		+ ":" + translator_name + "\n"
+			linfo += _("Language Team") + ":" + infomap.get("Language-Team", "") + "\n"
+		linfo += _("Last Translator") + ":" + translator_name + "\n"
 		linfo += "\n"
-		linfo += _("Source Charset")		+ ":" + infomap.get("X-Poedit-SourceCharset", "") + "\n"
-		linfo += _("Content Type")			+ ":" + infomap.get("Content-Type", "") + "\n"
-		linfo += _("Content Encoding")		+ ":" + infomap.get("Content-Transfer-Encoding", "") + "\n"
-		linfo += _("MIME Version")			+ ":" + infomap.get("MIME-Version", "") + "\n"
+		linfo += _("Source Charset") + ":" + infomap.get("X-Poedit-SourceCharset", "") + "\n"
+		linfo += _("Content Type") + ":" + infomap.get("Content-Type", "") + "\n"
+		linfo += _("Content Encoding") + ":" + infomap.get("Content-Transfer-Encoding", "") + "\n"
+		linfo += _("MIME Version") + ":" + infomap.get("MIME-Version", "") + "\n"
 		linfo += "\n"
-		linfo += _("POT-Creation Date")		+ ":" + infomap.get("POT-Creation-Date", "") + "\n"
-		linfo += _("Revision Date")			+ ":" + infomap.get("PO-Revision-Date", "") + "\n"
+		linfo += _("POT-Creation Date") + ":" + infomap.get("POT-Creation-Date", "") + "\n"
+		linfo += _("Revision Date") + ":" + infomap.get("PO-Revision-Date", "") + "\n"
 		linfo += "\n"
-		linfo += _("Generator")				+ ":" + infomap.get("X-Generator", "") + "\n"
+		linfo += _("Generator") + ":" + infomap.get("X-Generator", "") + "\n"
 
 		if infomap.get("Report-Msgid-Bugs-To", "") != "":
-			linfo += _("Report Msgid Bugs To")	+ ":" + infomap.get("Report-Msgid-Bugs-To", "") + "\n"
+			linfo += _("Report Msgid Bugs To") + ":" + infomap.get("Report-Msgid-Bugs-To", "") + "\n"
 		else:
-			linfo += _("Report Msgid Bugs To")	+ ":" + "teamblue@online.de" + "\n"
+			linfo += _("Report Msgid Bugs To") + ":" + "teamblue@online.de" + "\n"
 		self["AboutScrollLabel"] = ScrollLabel(linfo)
 
 
@@ -345,11 +345,11 @@ class CommitInfo(Screen):
 		self.project = 0
 		self.projects = [
 			#("organisation",  "repository",           "readable name",                "branch", "github/gitlab"),
-                        ("teamblue-e2",      "enigma2",               "teamBlue Enigma2",             ("master" if (getImageType() in "DEV" "beta") else getImageVersion()), "github"),
-			("teamblue-e2",      "skin",             "teamBlue Skin GigaBlue Pax",   ("master" if (getImageType() == "release") else "DEV"), "github"),
-			("oe-alliance",   "oe-alliance-core",     "OE Alliance Core",             "4.4", "github"),
-			("oe-alliance",   "oe-alliance-plugins",  "OE Alliance Plugins",          "master", "github"),
-			("oe-alliance",   "enigma2-plugins",      "OE Alliance Enigma2 Plugins",  "master", "github")
+                        ("teamblue-e2", "enigma2", "teamBlue Enigma2", ("master" if (getImageType() in "DEV" "beta") else getImageVersion()), "github"),
+			("teamblue-e2", "skin", "teamBlue Skin GigaBlue Pax", ("master" if (getImageType() == "release") else "DEV"), "github"),
+			("oe-alliance", "oe-alliance-core", "OE Alliance Core", "4.4", "github"),
+			("oe-alliance", "oe-alliance-plugins", "OE Alliance Plugins", "master", "github"),
+			("oe-alliance", "enigma2-plugins", "OE Alliance Enigma2 Plugins", "master", "github")
 		]
 		self.cachedProjects = {}
 		self.Timer = eTimer()
@@ -490,9 +490,9 @@ class MemoryInfo(Screen):
 			self['lmemvalue'].setText(lvalue)
 			self['rmemtext'].setText(rtext)
 			self['rmemvalue'].setText(rvalue)
-			self["slide"].setValue(int(100.0*(mem-free)/mem+0.25))
-			self['pfree'].setText("%.1f %s" % (100.*free/mem,'%'))
-			self['pused'].setText("%.1f %s" % (100.*(mem-free)/mem,'%'))
+			self["slide"].setValue(int(100.0 * (mem - free) / mem + 0.25))
+			self['pfree'].setText("%.1f %s" % (100. * free / mem,'%'))
+			self['pused'].setText("%.1f %s" % (100. * (mem - free) / mem,'%'))
 		except Exception, e:
 			print "[About] getMemoryInfo FAIL:", e
 
@@ -577,64 +577,64 @@ class SystemNetworkInfo(Screen):
 		wlan0 = about.getIfConfig('wlan0')
 		if wlan0.has_key('addr'):
 			self.iface = 'wlan0'
-		self.AboutText += iNetwork.getFriendlyAdapterName(self.iface) + ":" + iNetwork.getFriendlyAdapterDescription(self.iface) +"\n"
+		self.AboutText += iNetwork.getFriendlyAdapterName(self.iface) + ":" + iNetwork.getFriendlyAdapterDescription(self.iface) + "\n"
 
 		def nameserver():
 			nameserver = ""
-			v4=0
-			v6=0
-			ns4 =""
+			v4 = 0
+			v6 = 0
+			ns4 = ""
 			ns6 = ""
 			datei = open("/etc/resolv.conf","r")
 			for line in datei.readlines():
 				line = line.strip()
 				if "nameserver" in line:
 					if line.count(".") == 3:
-						v4=v4+1
-						ns4 += str(v4) + ".IPv4 Nameserver" + ":"  + line.strip().replace("nameserver ","") + "\n"
-					if line.count(":") > 1  and line.count(":") < 8:
-						v6=v6+1
-						ns6 += str(v6) + ".IPv6 Nameserver" + ":"  + line.strip().replace("nameserver ","") + "\n"
+						v4 = v4 + 1
+						ns4 += str(v4) + ".IPv4 Nameserver" + ":" + line.strip().replace("nameserver ","") + "\n"
+					if line.count(":") > 1 and line.count(":") < 8:
+						v6 = v6 + 1
+						ns6 += str(v6) + ".IPv6 Nameserver" + ":" + line.strip().replace("nameserver ","") + "\n"
 			nameserver = ns4 + ns6
 			datei.close()
 			return nameserver.strip()
 
 		def domain():
-			domain=""
+			domain = ""
 			for line in open('/etc/resolv.conf','r'):
 				line = line.strip()
 				if "domain" in line:
-					domain +=line.strip().replace("domain ","")
+					domain += line.strip().replace("domain ","")
 					return domain
 				else:
 					domain = _("no domain name found")
 					return domain
 
 		def gateway():
-			gateway=""
+			gateway = ""
 			for line in popen('ip route show'):
 				line = line.strip()
 				if "default via " in line:
 					line = line.split(' ')
-					line =line[2]
+					line = line[2]
 					return line
 				else:
 					line = _("no gateway found")
 					return line
 
 		def netspeed():
-			netspeed=""
+			netspeed = ""
 			for line in popen('ethtool eth0 |grep Speed','r'):
 				line = line.strip().split(":")
-				line =line[1].replace(' ','')
+				line = line[1].replace(' ','')
 				netspeed += line
 				return str(netspeed)
 
 		def netspeed_eth1():
-			netspeed=""
+			netspeed = ""
 			for line in popen('ethtool eth1 |grep Speed','r'):
 				line = line.strip().split(":")
-				line =line[1].replace(' ','')
+				line = line[1].replace(' ','')
 				netspeed += line
 				return str(netspeed)
 
@@ -650,7 +650,7 @@ class SystemNetworkInfo(Screen):
 			if eth0.has_key('netmask'):
 				self.AboutText += _("Netmask:") + eth0['netmask'] + "\n"
 			if eth0.has_key('brdaddr'):
-				if eth0['brdaddr']=="0.0.0.0":
+				if eth0['brdaddr'] == "0.0.0.0":
 					self.AboutText += _('Broadcast:') + _("DHCP is off") + "\n"
 				else:
 					self.AboutText += _('Broadcast:' + eth0['brdaddr'] + "\n")
@@ -670,7 +670,7 @@ class SystemNetworkInfo(Screen):
 			if eth1.has_key('netmask'):
 				self.AboutText += _("Netmask:") + eth1['netmask'] + "\n"
 			if eth1.has_key('brdaddr'):
-				if eth1['brdaddr']=="0.0.0.0":
+				if eth1['brdaddr'] == "0.0.0.0":
 					self.AboutText += _('Broadcast:') + _("DHCP is off") + "\n"
 				else:
 					self.AboutText += _('Broadcast:' + eth1['brdaddr'] + "\n")
@@ -681,7 +681,7 @@ class SystemNetworkInfo(Screen):
 		if ra0.has_key('addr'):
 			if ra0.has_key('ifname'):
 				self.AboutText += _('Interface:/dev/') + ra0['ifname'] + "\n"
-			self.AboutText += "\n" +  _("IP:") + ra0['addr'] + "\n"
+			self.AboutText += "\n" + _("IP:") + ra0['addr'] + "\n"
 			if ra0.has_key('netmask'):
 				self.AboutText += _("Netmask:") + ra0['netmask'] + "\n"
 			if ra0.has_key('brdaddr'):
@@ -702,11 +702,11 @@ class SystemNetworkInfo(Screen):
 			if wlan0.has_key('netmask'):
 				self.AboutText += _("Netmask:") + wlan0['netmask'] + "\n"
 			if wlan0.has_key('brdaddr'):
-				if wlan0['brdaddr']=="0.0.0.0":
+				if wlan0['brdaddr'] == "0.0.0.0":
 					self.AboutText += _('Broadcast:') + _("DHCP is off") + "\n"
 				else:
 					self.AboutText += _('Broadcast:') + wlan0['brdaddr'] + "\n"
-			self.AboutText += _("Domain:") +  domain() + "\n"
+			self.AboutText += _("Domain:") + domain() + "\n"
 			self.iface = 'wlan0'
 
 		#not use this , adapter make reset after  4GB (32bit restriction)
@@ -782,7 +782,7 @@ class SystemNetworkInfo(Screen):
 
 	def updateStatusbar(self):
 		self["IFtext"].setText(_("Network:"))
-		self["IF"].setText(iNetwork.getFriendlyAdapterDescription(self.iface)  + " - " +iNetwork.getFriendlyAdapterName(self.iface))
+		self["IF"].setText(iNetwork.getFriendlyAdapterDescription(self.iface) + " - " + iNetwork.getFriendlyAdapterName(self.iface))
 		#self["IF"].setText(iNetwork.getFriendlyAdapterName(self.iface))
 		if iNetwork.isWirelessInterface(self.iface):
 			try:

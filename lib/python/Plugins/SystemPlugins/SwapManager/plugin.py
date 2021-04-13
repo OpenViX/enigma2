@@ -183,7 +183,7 @@ class SwapManager(Screen):
 						self.swap_place = filename
 						self['key_green'].setText(_("Delete"))
 						info = mystat(self.swap_place)
-						self.swapsize = info[stat.ST_SIZE]/1024
+						self.swapsize = info[stat.ST_SIZE] / 1024
 						continue
 
 		if config.plugins.swapmanager.swapautostart.value and self.swap_place:
@@ -211,11 +211,11 @@ class SwapManager(Screen):
 
 		if self.swapsize > 0:
 			unit = ' MB'
-			self.swapsize = float(self.swapsize)/1024
+			self.swapsize = float(self.swapsize) / 1024
 			self.swapsize = "{:4.0f}".format(self.swapsize)
 			self.swapsize = str(self.swapsize) + unit
 		else:
-			self.swapsize =''
+			self.swapsize = ''
 
 		self['labsize'].setText(self.swapsize)
 		self['labsize'].show()

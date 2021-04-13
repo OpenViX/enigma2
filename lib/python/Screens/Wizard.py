@@ -404,7 +404,7 @@ class Wizard(Screen):
 
 	def up(self):
 		self.resetCounter()
-		if self.showConfig and self.wizard[self.currStep]["config"]["screen"] is not None  or self.wizard[self.currStep]["config"]["type"] == "dynamic":
+		if self.showConfig and self.wizard[self.currStep]["config"]["screen"] is not None or self.wizard[self.currStep]["config"]["type"] == "dynamic":
 			self["config"].instance.moveSelection(self["config"].instance.moveUp)
 			self.handleInputHelpers()
 		elif self.showList and len(self.wizard[self.currStep]["evaluatedlist"]) > 0:
@@ -418,7 +418,7 @@ class Wizard(Screen):
 
 	def down(self):
 		self.resetCounter()
-		if self.showConfig and self.wizard[self.currStep]["config"]["screen"] is not None  or self.wizard[self.currStep]["config"]["type"] == "dynamic":
+		if self.showConfig and self.wizard[self.currStep]["config"]["screen"] is not None or self.wizard[self.currStep]["config"]["type"] == "dynamic":
 			self["config"].instance.moveSelection(self["config"].instance.moveDown)
 			self.handleInputHelpers()
 		elif self.showList and len(self.wizard[self.currStep]["evaluatedlist"]) > 0:
@@ -522,7 +522,7 @@ class Wizard(Screen):
 				for x in self.lcdCallbacks:
 					x(displaytext)
 
-			self.codeafter=False
+			self.codeafter = False
 			self.runCode(self.wizard[self.currStep]["code"])
 			if self.runCode(self.wizard[self.currStep]["code_async"]):
 				if self.updateValues in self.onShown:
@@ -557,7 +557,7 @@ class Wizard(Screen):
 				#self["list"].instance.setZPosition(1)
 				self.list = []
 				if "dynamiclist" in self.wizard[self.currStep]:
-					print "dynamic list, calling",  self.wizard[self.currStep]["dynamiclist"]
+					print "dynamic list, calling", self.wizard[self.currStep]["dynamiclist"]
 					newlist = eval("self." + self.wizard[self.currStep]["dynamiclist"] + "()")
 					#self.wizard[self.currStep]["evaluatedlist"] = []
 					for entry in newlist:

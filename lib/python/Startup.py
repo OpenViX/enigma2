@@ -68,7 +68,7 @@ config.misc.epgcache_filename = ConfigText(default='/etc/enigma2/epg.dat', fixed
 config.misc.isNextRecordTimerAfterEventActionAuto = ConfigYesNo(default=False)
 config.misc.SyncTimeUsing = ConfigSelection(default="0", choices=[("0", "Transponder Time"), ("1", _("NTP"))])
 config.misc.NTPserver = ConfigText(default='pool.ntp.org', fixed_size=False)
-config.misc.useNTPminutes = ConfigSelection(default="30", choices=[("30", "30" + " " +_("minutes")), ("60", _("Hour")), ("1440", _("Once per day"))])
+config.misc.useNTPminutes = ConfigSelection(default="30", choices=[("30", "30" + " " + _("minutes")), ("60", _("Hour")), ("1440", _("Once per day"))])
 
 def setEPGCachePath(configElement):
 	enigma.eEPGCache.getInstance().setCacheFile(configElement.value)
@@ -719,7 +719,7 @@ try:
 	Components.ParentalControl.parentalControl.save()
 except:
 	print '[mytest] EXCEPTION IN PYTHON STARTUP CODE:'
-	print '-'*60
+	print '-' * 60
 	print_exc(file=stdout)
 	enigma.quitMainloop(5)
-	print '-'*60
+	print '-' * 60

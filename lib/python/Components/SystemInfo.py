@@ -31,8 +31,8 @@ def getHasTuners():
 SystemInfo["CommonInterface"] = eDVBCIInterfaces.getInstance().getNumOfSlots()
 SystemInfo["CommonInterfaceCIDelay"] = fileCheck("/proc/stb/tsmux/rmx_delay")
 for cislot in range(0, SystemInfo["CommonInterface"]):
-	SystemInfo["CI%dSupportsHighBitrates" % cislot] = fileCheck("/proc/stb/tsmux/ci%d_tsclk"  % cislot)
-	SystemInfo["CI%dRelevantPidsRoutingSupport" % cislot] = fileCheck("/proc/stb/tsmux/ci%d_relevant_pids_routing"  % cislot)
+	SystemInfo["CI%dSupportsHighBitrates" % cislot] = fileCheck("/proc/stb/tsmux/ci%d_tsclk" % cislot)
+	SystemInfo["CI%dRelevantPidsRoutingSupport" % cislot] = fileCheck("/proc/stb/tsmux/ci%d_relevant_pids_routing" % cislot)
 
 SystemInfo["NumVideoDecoders"] = getNumVideoDecoders()
 SystemInfo["PIPAvailable"] = SystemInfo["NumVideoDecoders"] > 1
@@ -43,7 +43,7 @@ SystemInfo["NumFrontpanelLEDs"] = countFrontpanelLEDs()
 SystemInfo["FrontpanelDisplay"] = fileExists("/dev/dbox/oled0") or fileExists("/dev/dbox/lcd0")
 SystemInfo["LCDsymbol_circle_recording"] = fileCheck("/proc/stb/lcd/symbol_circle") or getBoxType() in ("hd51", "vs1500") and fileCheck("/proc/stb/lcd/symbol_recording")
 SystemInfo["LCDsymbol_timeshift"] = fileCheck("/proc/stb/lcd/symbol_timeshift")
-SystemInfo["LCDshow_symbols"] = (getBoxType().startswith("et9") or getBoxType() in  ("hd51", "vs1500")) and fileCheck("/proc/stb/lcd/show_symbols")
+SystemInfo["LCDshow_symbols"] = (getBoxType().startswith("et9") or getBoxType() in ("hd51", "vs1500")) and fileCheck("/proc/stb/lcd/show_symbols")
 SystemInfo["LCDsymbol_hdd"] = getBoxType() in ("hd51", "vs1500") and fileCheck("/proc/stb/lcd/symbol_hdd")
 SystemInfo["DeepstandbySupport"] = getBoxType() != "dm800"
 SystemInfo["OledDisplay"] = fileExists(resolveFilename(SCOPE_SKIN, 'display/lcd_skin/skin_lcd_default.xml'))

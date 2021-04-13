@@ -141,8 +141,8 @@ class MMIDialog(Screen):
 			answer = str(cur[1].value)
 			length = len(answer)
 			while length < cur[1].getLength():
-				answer = '0'+answer
-				length+=1
+				answer = '0' + answer
+				length += 1
 			self.answer = answer
 			if config.ci[self.slotid].use_static_pin.value:
 				self.session.openWithCallback(self.save_PIN_CB, MessageBox, _("Would you save the entered PIN %s persistent?") % self.answer, MessageBox.TYPE_YESNO)
@@ -244,7 +244,7 @@ class MMIDialog(Screen):
 			timeout = screen[0][1]
 			self.mmiclosed = True
 			if timeout > 0:
-				self.timer.start(timeout*1000, True)
+				self.timer.start(timeout * 1000, True)
 			else:
 				self.keyCancel()
 		else:
@@ -257,7 +257,7 @@ class MMIDialog(Screen):
 						length = len(answer)
 						while length < config.ci[self.slotid].static_pin.getLength():
 							answer = '0' + answer
-							length+=1
+							length += 1
 						self.handler.answerEnq(self.slotid, answer)
 						self.showWait()
 						break
@@ -332,7 +332,7 @@ class CiMessageHandler:
 									length = len(answer)
 									while length < config.ci[slot].static_pin.getLength():
 										answer = '0' + answer
-										length+=1
+										length += 1
 									handler.answerEnq(slot, answer)
 									show_ui = False
 									self.auto_close = True
