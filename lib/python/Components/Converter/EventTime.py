@@ -32,11 +32,11 @@ class EventTime(Poll, Converter, object):
 			self.type = self.ENDTIME
 		elif type == "Remaining":
 			self.type = self.REMAINING
-			self.poll_interval = 60*1000
+			self.poll_interval = 60 * 1000
 			self.poll_enabled = True
 		elif type == "VFDRemaining":
 			self.type = self.REMAINING_VFD
-			self.poll_interval = 60*1000
+			self.poll_interval = 60 * 1000
 			self.poll_enabled = True
 		elif type == "StartTime":
 			self.type = self.STARTTIME
@@ -44,15 +44,15 @@ class EventTime(Poll, Converter, object):
 			self.type = self.DURATION
 		elif type == "Progress":
 			self.type = self.PROGRESS
-			self.poll_interval = 30*1000
+			self.poll_interval = 30 * 1000
 			self.poll_enabled = True
 		elif type == "Elapsed":
 			self.type = self.ELAPSED
-			self.poll_interval = 60*1000
+			self.poll_interval = 60 * 1000
 			self.poll_enabled = True
 		elif type == "VFDElapsed":
 			self.type = self.ELAPSED_VFD
-			self.poll_interval = 60*1000
+			self.poll_interval = 60 * 1000
 			self.poll_enabled = True
 		elif type == "NextStartTime":
 			self.type = self.NEXT_START_TIME

@@ -53,8 +53,8 @@ class TimerList(GUIComponent, object):
 		if config.usage.timerlist_showpicons.value:
 			colX += addPicon()
 
-		res.append((eListboxPythonMultiContent.TYPE_TEXT, colX + self.iconWidth + self.iconMargin, 0, nameWidth, self.rowSplit, 2, RT_HALIGN_LEFT|RT_VALIGN_BOTTOM, timer.name))
-		res.append((eListboxPythonMultiContent.TYPE_TEXT, width - serviceNameWidth, 0, serviceNameWidth, self.rowSplit, 0, RT_HALIGN_RIGHT|RT_VALIGN_BOTTOM, serviceName))
+		res.append((eListboxPythonMultiContent.TYPE_TEXT, colX + self.iconWidth + self.iconMargin, 0, nameWidth, self.rowSplit, 2, RT_HALIGN_LEFT | RT_VALIGN_BOTTOM, timer.name))
+		res.append((eListboxPythonMultiContent.TYPE_TEXT, width - serviceNameWidth, 0, serviceNameWidth, self.rowSplit, 0, RT_HALIGN_RIGHT | RT_VALIGN_BOTTOM, serviceName))
 
 		begin = FuzzyTime(timer.begin)
 		if timer.repeated:
@@ -81,7 +81,7 @@ class TimerList(GUIComponent, object):
 			extra_text = _("(ZAP)")
 			if timer.pipzap:
 				extra_text = _("(ZAP as PiP)")
-			text = repeatedtext + ((" %s "+ extra_text) % (begin[1]))
+			text = repeatedtext + ((" %s " + extra_text) % (begin[1]))
 		else:
 			text = repeatedtext + ((" %s ... %s (%d " + _("mins") + ")") % (begin[1], FuzzyTime(timer.end)[1], (timer.end - timer.begin) / 60))
 		icon = None
@@ -122,12 +122,12 @@ class TimerList(GUIComponent, object):
 
 		orbpos = self.getOrbitalPos(timer.service_ref)
 		orbposWidth = getTextBoundarySize(self.instance, self.font, self.l.getItemSize(), orbpos).width()
-		res.append((eListboxPythonMultiContent.TYPE_TEXT, colX + self.satPosLeft, self.rowSplit, orbposWidth, self.itemHeight - self.rowSplit, 1, RT_HALIGN_LEFT|RT_VALIGN_TOP, orbpos))
-		res.append((eListboxPythonMultiContent.TYPE_TEXT, colX + self.iconWidth + self.iconMargin, self.rowSplit, self.satPosLeft - self.iconWidth - self.iconMargin, self.itemHeight - self.rowSplit, 1, RT_HALIGN_LEFT|RT_VALIGN_TOP, state))
-		res.append((eListboxPythonMultiContent.TYPE_TEXT, colX + self.satPosLeft + orbposWidth, self.rowSplit, width - self.satPosLeft - orbposWidth - colX, self.itemHeight - self.rowSplit, 1, RT_HALIGN_RIGHT|RT_VALIGN_TOP, text))
+		res.append((eListboxPythonMultiContent.TYPE_TEXT, colX + self.satPosLeft, self.rowSplit, orbposWidth, self.itemHeight - self.rowSplit, 1, RT_HALIGN_LEFT | RT_VALIGN_TOP, orbpos))
+		res.append((eListboxPythonMultiContent.TYPE_TEXT, colX + self.iconWidth + self.iconMargin, self.rowSplit, self.satPosLeft - self.iconWidth - self.iconMargin, self.itemHeight - self.rowSplit, 1, RT_HALIGN_LEFT | RT_VALIGN_TOP, state))
+		res.append((eListboxPythonMultiContent.TYPE_TEXT, colX + self.satPosLeft + orbposWidth, self.rowSplit, width - self.satPosLeft - orbposWidth - colX, self.itemHeight - self.rowSplit, 1, RT_HALIGN_RIGHT | RT_VALIGN_TOP, text))
 
 		line = LoadPixmap(resolveFilename(SCOPE_ACTIVE_SKIN, "div-h.png"))
-		res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, 0, height-2, width, 2, line))
+		res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, 0, height - 2, width, 2, line))
 
 		return res
 

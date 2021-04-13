@@ -134,7 +134,7 @@ class EventViewBase:
 			cb_func2 = lambda ret: self.editTimer(timer)
 			menu = [(_("Delete Timer"), 'CALLFUNC', callback, cb_func1), (_("Edit Timer"), 'CALLFUNC', callback, cb_func2)]
 			self.ChoiceBoxDialog = self.session.instantiateDialog(ChoiceBox, title=_("Select action for timer %s:") % event.getEventName(), list=menu, keys=['green', 'blue'], skin_name="RecordTimerQuestion")
-			self.ChoiceBoxDialog.instance.move(ePoint(self.instance.position().x()+self["key_green"].getPosition()[0], self.instance.position().y()+self["key_green"].getPosition()[1]-self["key_green"].instance.size().height()))
+			self.ChoiceBoxDialog.instance.move(ePoint(self.instance.position().x() + self["key_green"].getPosition()[0], self.instance.position().y() + self["key_green"].getPosition()[1] - self["key_green"].instance.size().height()))
 			self.showChoiceBoxDialog()
 		else:
 			addTimerFromEvent(self.session, lambda _: self.updateButtons(), event, self.currentService)
@@ -205,7 +205,7 @@ class EventViewBase:
 		begintime = localtime(begint)
 		endtime = localtime(begint + event.getDuration())
 		self["datetime"].setText("%s - %s" % (strftime("%s, %s" % (config.usage.date.short.value, config.usage.time.short.value), begintime), strftime(config.usage.time.short.value, endtime)))
-		self["duration"].setText(_("%d min")%(event.getDuration()/60))
+		self["duration"].setText(_("%d min") % (event.getDuration() / 60))
 		if self.SimilarBroadcastTimer is not None:
 			self.SimilarBroadcastTimer.start(400, True)
 		self.updateButtons()
@@ -234,9 +234,9 @@ class EventViewBase:
 			for x in ret:
 				text += "\n%s  -  %s" % (strftime(config.usage.date.long.value + ", " + config.usage.time.short.value, localtime(x[1])), x[0])
 			descr = self["epg_description"]
-			descr.setText(descr.getText()+text)
+			descr.setText(descr.getText() + text)
 			descr = self["FullDescription"]
-			descr.setText(descr.getText()+text)
+			descr.setText(descr.getText() + text)
 			self["key_red"].setText(_("Similar"))
 
 	def openSimilarList(self):

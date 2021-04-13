@@ -225,19 +225,19 @@ class SecConfigure:
 								loValue = rotorParam.EAST
 							else:
 								loValue = rotorParam.WEST
-							inputPowerDelta=nim.powerThreshold.value
-							useInputPower=False
-							turning_speed=0
+							inputPowerDelta = nim.powerThreshold.value
+							useInputPower = False
+							turning_speed = 0
 							if nim.powerMeasurement.value:
-								useInputPower=True
+								useInputPower = True
 								turn_speed_dict = {"fast": rotorParam.FAST, "slow": rotorParam.SLOW}
 								if nim.turningSpeed.value in turn_speed_dict:
 									turning_speed = turn_speed_dict[nim.turningSpeed.value]
 								else:
 									beg_time = localtime(nim.fastTurningBegin.value)
 									end_time = localtime(nim.fastTurningEnd.value)
-									turning_speed = ((beg_time.tm_hour+1) * 60 + beg_time.tm_min + 1) << 16
-									turning_speed |= (end_time.tm_hour+1) * 60 + end_time.tm_min + 1
+									turning_speed = ((beg_time.tm_hour + 1) * 60 + beg_time.tm_min + 1) << 16
+									turning_speed |= (end_time.tm_hour + 1) * 60 + end_time.tm_min + 1
 							self.addLNBSimple(sec, slotid=x, diseqcmode=current_mode,
 								orbpos=sat,
 								longitude=nim.longitude.float,
@@ -415,7 +415,7 @@ class SecConfigure:
 
 						udc = int(currLnb.uncommittedDiseqcCommand.value)
 						if udc > 0:
-							sec.setUncommittedCommand(0xF0|(udc-1))
+							sec.setUncommittedCommand(0xF0 | (udc - 1))
 						else:
 							sec.setUncommittedCommand(0) # SENDNO
 
@@ -469,7 +469,7 @@ class SecConfigure:
 				for y in lnbSat[x]:
 					self.addSatellite(sec, y)
 					if x > 64:
-						satpos = x > 64 and (3606-(70 - x)) or y
+						satpos = x > 64 and (3606 - (70 - x)) or y
 					else:
 						satpos = y
 					currSat = config.Nims[slotid].advanced.sat[satpos]
@@ -657,7 +657,7 @@ class NIM(object):
 		return self.multi_type
 
 	def isFBCTuner(self):
-		return self.frontend_id is not None and (self.frontend_id/8 + 1) * 8 <= self.number_of_slots and os.access("/proc/stb/frontend/%d/fbc_id" % self.frontend_id, os.F_OK)
+		return self.frontend_id is not None and (self.frontend_id / 8 + 1) * 8 <= self.number_of_slots and os.access("/proc/stb/frontend/%d/fbc_id" % self.frontend_id, os.F_OK)
 
 	def isFBCRoot(self):
 		return self.isFBCTuner() and (self.slot % 8 < (self.getType() == "DVB-C" and 1 or 2))
@@ -877,7 +877,7 @@ class NimManager:
 			elif line.startswith("Frontend_Device:"):
 				input = int(line[len("Frontend_Device:") + 1:])
 				entries[current_slot]["frontend_device"] = input
-			elif  line.startswith("Mode"):
+			elif line.startswith("Mode"):
 				# "Mode 0: DVB-T" -> ["Mode 0", "DVB-T"]
 				split = line.split(": ")
 				if len(split) > 1 and split[1]:
@@ -897,7 +897,7 @@ class NimManager:
 		self.number_of_slots = len(entries.keys())
 		for id, entry in entries.items():
 			if not ("name" in entry and "type" in entry):
-				entry["name"] =  _("N/A")
+				entry["name"] = _("N/A")
 				entry["type"] = None
 			if "i2c" not in entry:
 				entry["i2c"] = None
@@ -1010,7 +1010,7 @@ class NimManager:
 		positionerList = []
 		for nim in nimList[:]:
 			mode = self.getNimConfig(nim)
-			nimHaveRotor = mode.configMode.value == "simple" and mode.diseqcMode.value  in ("positioner", "positioner_select")
+			nimHaveRotor = mode.configMode.value == "simple" and mode.diseqcMode.value in ("positioner", "positioner_select")
 			if not nimHaveRotor and mode.configMode.value == "advanced":
 				for x in range(3601, 3607):
 					lnb = int(mode.advanced.sat[x].lnb.value)
@@ -1240,7 +1240,7 @@ def InitNimManager(nimmgr, update_slots=[]):
 	lnb_choices_default = "universal_lnb"
 
 	prio_list = [("-1", _("Auto"))]
-	for prio in range(65)+range(14000,14065)+range(19000,19065):
+	for prio in range(65) + range(14000,14065) + range(19000,19065):
 		description = ""
 		if prio == 0:
 			description = _(" (disabled)")
@@ -1300,7 +1300,7 @@ def InitNimManager(nimmgr, update_slots=[]):
 				def getformat(value, index):
 					return ("jess" if index >= int(value.split(",")[1] if "," in value else 4) else "unicable") if value.startswith("dSCR") else value
 				def positionsChanged(configEntry):
-					section.positionNumber = ConfigSelection(["%d" % (x+1) for x in range(configEntry.value)], default="%d" % min(lnb, configEntry.value))
+					section.positionNumber = ConfigSelection(["%d" % (x + 1) for x in range(configEntry.value)], default="%d" % min(lnb, configEntry.value))
 				def scrListChanged(productparameters, srcfrequencylist, configEntry):
 					section.format = ConfigSelection([("unicable", _("SCR Unicable")), ("jess", _("SCR JESS"))], default=getformat(productparameters.get("format", "unicable"), configEntry.index))
 					section.scrfrequency = ConfigInteger(default=int(srcfrequencylist[configEntry.index]))
@@ -1344,7 +1344,7 @@ def InitNimManager(nimmgr, update_slots=[]):
 					section.positionsOffset = ConfigInteger(default=0)
 					section.scrList = ConfigSelection([("%d" % (x + 1), "User Band %d" % (x + 1)) for x in range(configEntry.value == "jess" and 32 or 8)])
 					section.scrList.save_forced = True
-					srcfrequencyList = configEntry.value=="jess" and (1210, 1420, 1680, 2040, 984, 1020, 1056, 1092, 1128, 1164, 1256, 1292, 1328, 1364, 1458, 1494, 1530, 1566, 1602,
+					srcfrequencyList = configEntry.value == "jess" and (1210, 1420, 1680, 2040, 984, 1020, 1056, 1092, 1128, 1164, 1256, 1292, 1328, 1364, 1458, 1494, 1530, 1566, 1602,
 						1638, 1716, 1752, 1788, 1824, 1860, 1896, 1932, 1968, 2004, 2076, 2112, 2148) or (1284, 1400, 1516, 1632, 1748, 1864, 1980, 2096)
 					section.scrList.addNotifier(boundFunction(userScrListChanged, srcfrequencyList))
 					section.bootuptime = ConfigInteger(default=1000, limits=(0, 9999))
@@ -1529,7 +1529,7 @@ def InitNimManager(nimmgr, update_slots=[]):
 			tmp.userSatellitesList = ConfigText('[]')
 			tmp.rotorposition = ConfigInteger(default=1, limits=(1, 255))
 			lnbnum = 65 + x - 3601
-			lnb = ConfigSelection([("0", _("not configured")), (str(lnbnum), "LNB %d"%(lnbnum))], "0")
+			lnb = ConfigSelection([("0", _("not configured")), (str(lnbnum), "LNB %d" % (lnbnum))], "0")
 			lnb.slot_id = slot_id
 			lnb.addNotifier(configLNBChanged)
 			tmp.lnb = lnb
@@ -1593,7 +1593,7 @@ def InitNimManager(nimmgr, update_slots=[]):
 						NavigationInstance.instance.stopService()
 						raw_channel = eDVBResourceManager.getInstance().allocateRawChannel(fe_id)
 					if raw_channel is None:
-						print "[InitNimManager] %d: tunerTypeChanged to '%s' failed (BUSY)" %(fe_id, configElement.getText())
+						print "[InitNimManager] %d: tunerTypeChanged to '%s' failed (BUSY)" % (fe_id, configElement.getText())
 						return
 				frontend = raw_channel.getFrontend()
 				is_changed_mode = os.path.exists("/proc/stb/frontend/%d/mode" % fe_id)

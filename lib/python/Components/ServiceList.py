@@ -412,14 +412,14 @@ class ServiceList(GUIComponent):
 			progressWidth = self.progressPercentWidth or self.progressBarWidth
 
 		if "left" in config.usage.show_event_progress_in_servicelist.value:
-			self.l.setElementPosition(self.l.celServiceEventProgressbar, eRect(channelNumberWidth+channelNumberSpace, 0, progressWidth, self.ItemHeight))
-			self.l.setElementPosition(self.l.celServiceName, eRect(channelNumberWidth+channelNumberSpace + progressWidth + self.fieldMargins, 0, rowWidth - (channelNumberWidth+channelNumberSpace + progressWidth + self.fieldMargins), self.ItemHeight))
+			self.l.setElementPosition(self.l.celServiceEventProgressbar, eRect(channelNumberWidth + channelNumberSpace, 0, progressWidth, self.ItemHeight))
+			self.l.setElementPosition(self.l.celServiceName, eRect(channelNumberWidth + channelNumberSpace + progressWidth + self.fieldMargins, 0, rowWidth - (channelNumberWidth + channelNumberSpace + progressWidth + self.fieldMargins), self.ItemHeight))
 		elif "right" in config.usage.show_event_progress_in_servicelist.value:
 			self.l.setElementPosition(self.l.celServiceEventProgressbar, eRect(rowWidth - progressWidth, 0, progressWidth, self.ItemHeight))
-			self.l.setElementPosition(self.l.celServiceName, eRect(channelNumberWidth+channelNumberSpace, 0, rowWidth - (channelNumberWidth+channelNumberSpace + progressWidth + self.fieldMargins), self.ItemHeight))
+			self.l.setElementPosition(self.l.celServiceName, eRect(channelNumberWidth + channelNumberSpace, 0, rowWidth - (channelNumberWidth + channelNumberSpace + progressWidth + self.fieldMargins), self.ItemHeight))
 		else:
 			self.l.setElementPosition(self.l.celServiceEventProgressbar, eRect(0, 0, 0, 0))
-			self.l.setElementPosition(self.l.celServiceName, eRect(channelNumberWidth+channelNumberSpace, 0, rowWidth - (channelNumberWidth+channelNumberSpace), self.ItemHeight))
+			self.l.setElementPosition(self.l.celServiceName, eRect(channelNumberWidth + channelNumberSpace, 0, rowWidth - (channelNumberWidth + channelNumberSpace), self.ItemHeight))
 		self.l.setElementFont(self.l.celServiceName, self.ServiceNameFont)
 		self.l.setElementFont(self.l.celServiceNumber, self.ServiceNumberFont)
 		self.l.setElementFont(self.l.celServiceInfo, self.ServiceInfoFont)

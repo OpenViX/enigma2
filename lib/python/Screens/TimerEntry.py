@@ -46,7 +46,7 @@ class TimerEntry(TimerEntryBase):
 
 		self.timerentry_justplay = ConfigSelection(choices=[
 			("zap", _("zap")), ("record", _("record")), ("zap+record", _("zap and record"))],
-			default={0: "record", 1: "zap", 2: "zap+record"}[justplay + 2*always_zap])
+			default={0: "record", 1: "zap", 2: "zap+record"}[justplay + 2 * always_zap])
 		if SystemInfo["DeepstandbySupport"]:
 			shutdownString = _("go to deep standby")
 		else:
@@ -154,7 +154,7 @@ class TimerEntry(TimerEntryBase):
 		# if the timer type is a Zap and no end is set, set duration to 1 second so time is shown in EPG's.
 		if self.timerentry_justplay.value == "zap":
 			if not self.timerentry_showendtime.value:
-				end = begin + (config.recording.margin_before.value*60) + 1
+				end = begin + (config.recording.margin_before.value * 60) + 1
 
 		return begin, end
 

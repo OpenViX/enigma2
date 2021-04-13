@@ -84,7 +84,7 @@ def InitOsdPosition():
 		if SystemInfo["CanChangeOsdPosition"]:
 			setPositionParameter("height", configElement)
 	config.osd.dst_height.addNotifier(setOSDHeight)
-	print '[UserInterfacePositioner] Setting OSD position: %s %s %s %s' %  (config.osd.dst_left.value, config.osd.dst_width.value, config.osd.dst_top.value, config.osd.dst_height.value)
+	print '[UserInterfacePositioner] Setting OSD position: %s %s %s %s' % (config.osd.dst_left.value, config.osd.dst_width.value, config.osd.dst_top.value, config.osd.dst_height.value)
 
 	def setOSDAlpha(configElement):
 		if SystemInfo["CanChangeOsdAlpha"]:
@@ -174,7 +174,7 @@ class UserInterfacePositioner(ConfigListScreen, Screen):
 		config.osd.dst_height.setValue(576)
 		for item in self["config"].list:
 			self["config"].invalidate(item)
-		print '[UserInterfacePositioner] Setting default OSD position: %s %s %s %s' %  (config.osd.dst_left.value, config.osd.dst_width.value, config.osd.dst_top.value, config.osd.dst_height.value)
+		print '[UserInterfacePositioner] Setting default OSD position: %s %s %s %s' % (config.osd.dst_left.value, config.osd.dst_width.value, config.osd.dst_top.value, config.osd.dst_height.value)
 
 	def setPreviewPosition(self):
 		size_w = getDesktop(0).size().width()
@@ -195,7 +195,7 @@ class UserInterfacePositioner(ConfigListScreen, Screen):
 		config.osd.dst_height.setValue(dst_height)
 		for item in self["config"].list:
 			self["config"].invalidate(item)
-		print '[UserInterfacePositioner] Setting OSD position: %s %s %s %s' %  (config.osd.dst_left.value, config.osd.dst_width.value, config.osd.dst_top.value, config.osd.dst_height.value)
+		print '[UserInterfacePositioner] Setting OSD position: %s %s %s %s' % (config.osd.dst_left.value, config.osd.dst_width.value, config.osd.dst_top.value, config.osd.dst_height.value)
 
 # This is called by the Wizard...
 

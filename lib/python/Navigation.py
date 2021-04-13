@@ -47,7 +47,7 @@ class Navigation:
 
 	def _processTimerWakeup(self):
 		now = time()
-		timeHandlerCallbacks =  eDVBLocalTimeHandler.getInstance().m_timeUpdated.get()
+		timeHandlerCallbacks = eDVBLocalTimeHandler.getInstance().m_timeUpdated.get()
 		if self.__nextRecordTimerAfterEventActionAuto and now < eDVBLocalTimeHandler.timeOK:  # 01.01.2004
 			print '[Navigation] RECTIMER: wakeup to standby but system time not set.'
 			if self._processTimerWakeup not in timeHandlerCallbacks:

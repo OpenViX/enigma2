@@ -262,7 +262,7 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 			list.sort(key=lambda x: int(x[3]))
 
 		if config.usage.menu_show_numbers.value:
-			list = [(str(x[0] + 1) + "  " +x[1][0], x[1][1], x[1][2], x[1][3]) for x in enumerate(list)]
+			list = [(str(x[0] + 1) + "  " + x[1][0], x[1][1], x[1][2], x[1][3]) for x in enumerate(list)]
 
 		self["menu"] = List(list)
 

@@ -126,7 +126,7 @@ class ServiceInfo(Screen):
 		if serviceref and not play_service and play_service != serviceref:
 			self.setTitle(_("Transponder Information"))
 			self.type = TYPE_TRANSPONDER_INFO
-			self.skinName="ServiceInfoSimple"
+			self.skinName = "ServiceInfoSimple"
 			self.transponder_info = eServiceCenter.getInstance().info(serviceref).getInfoObject(serviceref, iServiceInformation.sTransponderData)
 			# info is a iStaticServiceInformation, not a iServiceInformation
 		else:
@@ -150,7 +150,7 @@ class ServiceInfo(Screen):
 				self["key_yellow"] = self["yellow"] = Label(_("Service & PIDs"))
 				self["key_blue"] = self["blue"] = Label(_("Tuner settings values"))
 			else:
-				self.skinName="ServiceInfoSimple"
+				self.skinName = "ServiceInfoSimple"
 
 		tlist = []
 		self.onShown.append(self.ShowServiceInformation)
@@ -184,7 +184,7 @@ class ServiceInfo(Screen):
 					resolution += ("i", "p", "")[self.info.getInfo(iServiceInformation.sProgressive)]
 					aspect = self.getServiceInfoValue(iServiceInformation.sAspect)
 					aspect = aspect in (1, 2, 5, 6, 9, 0xA, 0xD, 0xE) and "4:3" or "16:9"
-					resolution += " - "+aspect+""
+					resolution += " - " + aspect + ""
 				gamma = ("SDR", "HDR", "HDR10", "HLG", "")[self.info.getInfo(iServiceInformation.sGamma)]
 				if gamma:
 					resolution += " - " + gamma
@@ -293,9 +293,9 @@ class ServiceInfo(Screen):
 			if item[1]:
 				value = item[1]
 				if len(item) < 4:
-					tlist.append(ServiceInfoListEntry(item[0]+":", value, item[2]))
+					tlist.append(ServiceInfoListEntry(item[0] + ":", value, item[2]))
 				else:
-					tlist.append(ServiceInfoListEntry(item[0]+":", value, item[2], item[3]))
+					tlist.append(ServiceInfoListEntry(item[0] + ":", value, item[2], item[3]))
 		self["infolist"].l.setList(tlist)
 
 	def getServiceInfoValue(self, what):

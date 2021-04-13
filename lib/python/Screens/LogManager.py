@@ -106,7 +106,7 @@ class LogManagerPoller:
 
 	def JobTrash(self):
 		ctimeLimit = time() - (config.crash.daysloglimit.value * 3600 * 24)
-		allowedBytes = 1024*1024 * int(config.crash.sizeloglimit.value)
+		allowedBytes = 1024 * 1024 * int(config.crash.sizeloglimit.value)
 
 		mounts = []
 		matches = []
@@ -143,7 +143,7 @@ class LogManagerPoller:
 								candidates.append((st.st_ctime, fn, st.st_size))
 								size += st.st_size
 						except Exception, e:
-							print "[LogManager] Failed to stat %s:"% name, e
+							print "[LogManager] Failed to stat %s:" % name, e
 					# Remove empty directories if possible
 					for name in dirs:
 						try:

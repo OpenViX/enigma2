@@ -152,7 +152,7 @@ def emptySlot(slot):
 	Console().ePopen("umount %s" % tmp.dir)
 	if not path.ismount(tmp.dir):
 		rmdir(tmp.dir)
-	return	ret
+	return ret
 
 def restoreSlots():
 	for slot in SystemInfo["canMultiBoot"]:

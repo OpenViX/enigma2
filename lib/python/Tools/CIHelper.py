@@ -18,7 +18,7 @@ class CIHelper:
 			self.CI_ASSIGNMENT_LIST = []
 			def getValue(definitions, default):
 				Len = len(definitions)
-				return Len > 0 and definitions[Len-1].text or default
+				return Len > 0 and definitions[Len - 1].text or default
 
 			for ci in range(NUM_CI):
 				filename = eEnv.resolve("${sysconfdir}/enigma2/ci") + str(ci) + ".xml"
@@ -62,7 +62,7 @@ class CIHelper:
 				try:
 					eDVBCIInterfaces.getInstance().setDescrambleRules(item[0],item[1])
 				except:
-					print "[CI_Activate_Config_CI%d] error setting DescrambleRules..." %item[0]
+					print "[CI_Activate_Config_CI%d] error setting DescrambleRules..." % item[0]
 				for x in item[1][0]:
 					services.append(x)
 				for x in item[1][1]:
