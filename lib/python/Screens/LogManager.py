@@ -17,7 +17,8 @@ from glob import glob
 import Components.Task
 
 # Import smtplib for the actual sending function
-import smtplib, base64
+import smtplib
+import base64
 
 # Here are the email package modules we'll need
 from email.mime.multipart import MIMEMultipart

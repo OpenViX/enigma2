@@ -9,7 +9,9 @@ from Components.Ipkg import IpkgComponent
 from Components.config import config
 from Components.About import about
 
-import urllib2, socket, sys
+import urllib2
+import socket
+import sys
 
 error = 0
 

@@ -1,6 +1,8 @@
 from boxbranding import getImageVersion, getMachineBuild, getBoxType
 from sys import modules
-import socket, fcntl, struct
+import socket
+import fcntl
+import struct
 
 def getVersionString():
 	return getImageVersion()

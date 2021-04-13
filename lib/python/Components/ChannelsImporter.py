@@ -5,7 +5,9 @@ from time import mktime, strftime, time, localtime
 from enigma import eTimer
 
 #for downloader
-import os, re, urllib2
+import os
+import re
+import urllib2
 from enigma import eServiceReference, eDVBDB
 
 autoClientModeTimer = None
