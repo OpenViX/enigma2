@@ -3,6 +3,7 @@ from __future__ import absolute_import
 from Components.Converter.Converter import Converter
 from Components.Element import cached
 
+
 class MenuEntryCompare(Converter, object):
 	def __init__(self, type):
 		Converter.__init__(self, type)

@@ -18,6 +18,7 @@ from Screens.InfoBar import InfoBar
 from Screens.MessageBox import MessageBox
 from enigma import eTimer, eDVBFrontendParametersSatellite, eComponentScan, eDVBFrontendParametersTerrestrial, eDVBFrontendParametersCable, eConsoleAppContainer, eDVBResourceManager, eDVBFrontendParametersATSC
 
+
 def buildTerTransponder(frequency,
 		inversion=2, bandwidth=7000000, fechigh=6, feclow=6,
 		modulation=2, transmission=2, guard=4,
@@ -36,6 +37,7 @@ def buildTerTransponder(frequency,
 	parm.system = system
 	parm.plp_id = plp_id
 	return parm
+
 
 def getInitialTransponderList(tlist, pos, feid=None):
 	list = nimmanager.getTransponders(pos, feid)
@@ -59,6 +61,7 @@ def getInitialTransponderList(tlist, pos, feid=None):
 			parm.t2mi_pid = x[14]
 			tlist.append(parm)
 
+
 def getInitialCableTransponderList(tlist, nim):
 	list = nimmanager.getTranspondersCable(nim)
 	for x in list:
@@ -72,6 +75,7 @@ def getInitialCableTransponderList(tlist, nim):
 			parm.system = x[6]
 			tlist.append(parm)
 
+
 def getInitialTerrestrialTransponderList(tlist, region, tsystem=eDVBFrontendParametersTerrestrial.System_DVB_T_T2):
 	list = nimmanager.getTranspondersTerrestrial(region)
 	for x in list:
@@ -84,6 +88,7 @@ def getInitialTerrestrialTransponderList(tlist, region, tsystem=eDVBFrontendPara
 				continue
 			tlist.append(parm)
 
+
 def getInitialATSCTransponderList(tlist, nim):
 	list = nimmanager.getTranspondersATSC(nim)
 	for x in list:
@@ -94,6 +99,7 @@ def getInitialATSCTransponderList(tlist, nim):
 			parm.inversion = x[3]
 			parm.system = x[4]
 			tlist.append(parm)
+
 
 cable_bands = {
 	"DVBC_BAND_EU_VHF_I": 1 << 0,
@@ -132,6 +138,7 @@ terrestrial_autoscan_nimtype = {
 dual_tuner_list = ('TT3L10', 'BCM3466')
 vtuner_need_idx_list = ('TURBO2',)
 
+
 def GetDeviceId(filter, nim_idx):
 	socket_id = device_id = 0
 	for nim in nimmanager.nim_slots:
@@ -149,6 +156,7 @@ def GetDeviceId(filter, nim_idx):
 		socket_id += 1
 	return device_id
 
+
 def getVtunerId(filter, nim_idx):
 	idx_count = 1
 	for slot in nimmanager.nim_slots:
@@ -158,6 +166,7 @@ def getVtunerId(filter, nim_idx):
 			else:
 				idx_count += 1
 	return ""
+
 
 class CableTransponderSearchSupport:
 	def tryGetRawFrontend(self, feid):
@@ -366,6 +375,7 @@ class CableTransponderSearchSupport:
 		tmpstr = _("Try to find used transponders in cable network.. please wait...")
 		tmpstr += "\n\n..."
 		self.cable_search_session = self.session.openWithCallback(self.cableTransponderSearchSessionClosed, MessageBox, tmpstr, MessageBox.TYPE_INFO)
+
 
 class TerrestrialTransponderSearchSupport:
 	def terrestrialTransponderSearchSessionClosed(self, *val):
@@ -586,6 +596,7 @@ class TerrestrialTransponderSearchSupport:
 			cmd += " --feid %d --5v %d" % (self.terrestrial_search_feid, int(self.terrestrial_search_enable_5v))
 		print("[ScanSetup] SCAN CMD : ", cmd)
 		self.terrestrial_search_container.execute(cmd)
+
 
 class ScanSetup(ConfigListScreen, Screen, CableTransponderSearchSupport, TerrestrialTransponderSearchSupport):
 	def __init__(self, session):
@@ -1674,6 +1685,7 @@ class ScanSetup(ConfigListScreen, Screen, CableTransponderSearchSupport, Terrest
 	def doCloseRecursive(self):
 		self.session.nav.playService(self.session.postScanService)
 		self.closeRecursive()
+
 
 class ScanSimple(ConfigListScreen, Screen, CableTransponderSearchSupport, TerrestrialTransponderSearchSupport):
 	def __init__(self, session):

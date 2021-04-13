@@ -4,6 +4,7 @@ from __future__ import absolute_import
 from enigma import eListboxPythonStringContent, eListbox
 from Components.GUIComponent import GUIComponent
 
+
 class MenuList(GUIComponent):
 	def __init__(self, list, enableWrapAround=True, content=eListboxPythonStringContent):
 		GUIComponent.__init__(self)

@@ -7,6 +7,7 @@ from Components.config import config
 from Components.Renderer.Renderer import Renderer
 from Components.VariableText import VariableText
 
+
 class RollerCharLCD(VariableText, Renderer):
 
 	def __init__(self):

@@ -211,6 +211,7 @@ class VideoSetup(ConfigListScreen, Screen):
 		else:
 			self.keySave()
 
+
 class AutoVideoModeLabel(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
@@ -226,6 +227,7 @@ class AutoVideoModeLabel(Screen):
 			idx += 4
 			self.hideTimer.start(idx * 1000, True)
 
+
 def applySettings(mode=config.osd.threeDmode.value, znorm=int(config.osd.threeDznorm.value)):
 	global previous, isDedicated3D
 	mode = isDedicated3D and mode == "auto" and "sidebyside" or mode
@@ -237,6 +239,7 @@ def applySettings(mode=config.osd.threeDmode.value, znorm=int(config.osd.threeDz
 			previous = (mode, znorm)
 		except Exception:
 			return
+
 
 class AutoVideoMode(Screen):
 	def __init__(self, session):
@@ -467,6 +470,7 @@ class AutoVideoMode(Screen):
 		iAV.setPolicy169(config.av.policy_169)
 		self.delay = False
 		self.detecttimer.stop()
+
 
 def autostart(session):
 	global resolutionlabel

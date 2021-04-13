@@ -9,6 +9,7 @@ from enigma import eVideoWidget, getDesktop
 from Components.Renderer.Renderer import Renderer
 from Screens.PictureInPicture import PipPigMode
 
+
 class Pig(Renderer):
 	def __init__(self):
 		Renderer.__init__(self)

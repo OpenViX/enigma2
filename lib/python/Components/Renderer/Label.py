@@ -6,6 +6,7 @@ from Components.Renderer.Renderer import Renderer
 
 from enigma import eLabel
 
+
 class Label(VariableText, Renderer):
 	def __init__(self):
 		Renderer.__init__(self)

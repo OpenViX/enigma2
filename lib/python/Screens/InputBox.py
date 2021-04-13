@@ -12,6 +12,7 @@ from Tools.BoundFunction import boundFunction
 from Tools.Notifications import AddPopup
 from time import time
 
+
 class InputBox(Screen):
 	def __init__(self, session, title="", windowTitle=None, useableChars=None, **kwargs):
 		Screen.__init__(self, session)
@@ -90,6 +91,7 @@ class InputBox(Screen):
 
 	def keyInsert(self):
 		self["input"].toggleOverwrite()
+
 
 class PinInput(InputBox):
 	def __init__(self, session, service="", triesEntry=None, pinList=None, popup=False, simple=True, *args, **kwargs):

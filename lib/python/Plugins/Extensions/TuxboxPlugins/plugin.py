@@ -10,8 +10,8 @@ from Tools.BoundFunction import boundFunction
 from Tools.Directories import pathExists, resolveFilename, SCOPE_LIBDIR
 
 
-
 TUXBOX_PLUGINS_PATH = resolveFilename(SCOPE_LIBDIR, "tuxbox/plugins/")
+
 
 def getPlugins():
 	pluginlist = []
@@ -26,6 +26,7 @@ def getPlugins():
 
 	return pluginlist
 
+
 def getPluginParams(file):
 	params = {}
 	try:
@@ -39,10 +40,12 @@ def getPluginParams(file):
 
 	return params
 
+
 def main(session, plugin, **kwargs):
 	print("[Tuxbox] Running plugin " + plugin[:-4] + ".so with config file", plugin)
 	print(getPluginParams(plugin))
 	session.open(PluginRunner, plugin[:-4].split(".so")[0])
+
 
 def Plugins(**kwargs):
 	return getPlugins()

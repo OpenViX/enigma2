@@ -4,6 +4,7 @@ import os
 from Components.Console import Console
 swapdevice = None
 
+
 def bigStorage(minFree):
 		mounts = open('/proc/mounts', 'rb').readlines()
 		mountpoints = [x.split(' ', 2)[1] for x in mounts]
@@ -19,6 +20,7 @@ def bigStorage(minFree):
 			except:
 				pass
 		return None
+
 
 class SwapCheck:
 	def __init__(self, callback=None, extra_args=None):

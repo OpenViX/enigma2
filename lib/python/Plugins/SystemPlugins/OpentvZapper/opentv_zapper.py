@@ -33,9 +33,11 @@ download_duration = 180 # stay tuned for 3 minutes
 start_first_download = 5 * 60 # 5 minutes after booting
 wait_time_on_fail = 15 * 60 # 15 minutes
 
+
 def getNimListForSat(orb_pos):
 	return [nim.slot for nim in nimmanager.nim_slots if nim.isCompatible("DVB-S") and orb_pos in [sat[0] for sat in nimmanager.getSatListForNim(nim.slot)]]
 	
+
 def make_sref(service):
 	return eServiceReference("1:0:%X:%X:%X:%X:%X:0:0:0:" % (
 		service["service_type"],
@@ -249,7 +251,6 @@ class LamedbReader():
 			key = "%x:%x:%x" % (transponder["namespace"], transponder["transport_stream_id"], transponder["original_network_id"])
 			transponders[key] = transponder
 			transponders_count += 1
-
 
 		srv_start = content.find("services\n")
 		srv_stop = content.rfind("end\n")
@@ -842,6 +843,7 @@ class Opentv_Zapper():
 		
 		
 opentv_zapper = Opentv_Zapper()
+
 
 def startSession(reason, session=None, **kwargs):
 	print("[%s][startSession] reason(%d), session" % (debug_name, reason), session)

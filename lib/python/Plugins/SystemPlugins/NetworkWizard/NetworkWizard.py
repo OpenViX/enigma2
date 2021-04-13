@@ -35,6 +35,7 @@ class NetworkWizard(WizardLanguage, Rc):
 			</widget>
 			<widget name="HelpWindow" pixmap="buttons/key_text.png" position="125,170" zPosition="1" size="1,1" transparent="1" alphatest="on" />
 		</screen>"""
+
 	def __init__(self, session, interface=None):
 		self.xmlfile = resolveFilename(SCOPE_PLUGINS, "SystemPlugins/NetworkWizard/networkwizard.xml")
 		WizardLanguage.__init__(self, session, showSteps=False, showStepSlider=False)
@@ -342,7 +343,6 @@ class NetworkWizard(WizardLanguage, Rc):
 
 		self.rescanTimer.start(4000)
 		return self.APList
-
 
 	def AccessPointsSelectionMoved(self):
 		self.ap = self.selection

@@ -35,6 +35,7 @@ class ConditionalWidget(GUIComponent):
 				self.conditionalFunction = None
 				self.activateCondition(False)
 
+
 class BlinkingWidget(GUIComponent):
 	def __init__(self):
 		GUIComponent.__init__(self)
@@ -59,6 +60,7 @@ class BlinkingWidget(GUIComponent):
 		if self.visible:
 			self.hide()
 		self.timer.stop()
+
 
 class BlinkingWidgetConditional(BlinkingWidget, ConditionalWidget):
 	def __init__(self):

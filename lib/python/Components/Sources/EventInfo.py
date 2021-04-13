@@ -6,6 +6,7 @@ from Components.Sources.Source import Source
 from Components.Element import cached
 from Components.PerServiceDisplay import PerServiceBase
 
+
 class EventInfo(PerServiceBase, Source, object):
 	NOW = 0
 	NEXT = 1

@@ -3,6 +3,7 @@ from __future__ import absolute_import
 from Components.Renderer.Renderer import Renderer
 from enigma import ePositionGauge
 
+
 class PositionGauge(Renderer):
 	def __init__(self):
 		Renderer.__init__(self)

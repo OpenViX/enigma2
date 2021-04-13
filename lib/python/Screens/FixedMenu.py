@@ -5,6 +5,7 @@ from Components.Sources.List import List
 from Components.Sources.StaticText import StaticText
 from Screens.Screen import Screen
 
+
 class FixedMenu(Screen):
 	def okbuttonClick(self):
 		selection = self["menu"].getCurrent()

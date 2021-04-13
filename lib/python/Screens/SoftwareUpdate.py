@@ -29,6 +29,7 @@ from Components.Slider import Slider
 
 ocram = ''
 
+
 class SoftwareUpdateChanges(CommitInfo):
 	def __init__(self, session):
 		CommitInfo.__init__(self, session)
@@ -97,6 +98,7 @@ class UpdateChoices(ChoiceBox):
 
 	def cancelClick(self, dummy=False):
 		self.close()
+
 
 class UpdatePlugin(Screen, ProtectedScreen):
 	def __init__(self, session, parent=None):

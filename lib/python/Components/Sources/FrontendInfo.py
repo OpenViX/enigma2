@@ -5,6 +5,7 @@ from enigma import eDVBResourceManager, iPlayableService
 from Components.PerServiceDisplay import PerServiceBase
 from Components.Sources.Source import Source
 
+
 class FrontendInfo(Source, PerServiceBase):
 	def __init__(self, service_source=None, frontend_source=None, navcore=None):
 		self.navcore = None

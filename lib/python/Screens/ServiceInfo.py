@@ -25,8 +25,10 @@ TYPE_VALUE_FREQ = 6
 TYPE_VALUE_FREQ_FLOAT = 7
 TYPE_VALUE_BITRATE = 8
 
+
 def to_unsigned(x):
 	return x & 0xFFFFFFFF
+
 
 def ServiceInfoListEntry(a, b="", valueType=TYPE_TEXT, param=4):
 	print("b:", b)
@@ -68,6 +70,7 @@ def ServiceInfoListEntry(a, b="", valueType=TYPE_TEXT, param=4):
 			(eListboxPythonMultiContent.TYPE_TEXT, xa, ya, wa + wb, ha + hb, 0, RT_HALIGN_LEFT, a)
 		]
 
+
 class ServiceInfoList(GUIComponent):
 	def __init__(self, source):
 		GUIComponent.__init__(self)
@@ -106,8 +109,10 @@ class ServiceInfoList(GUIComponent):
 		self.instance.setContent(self.l)
 		self.setFontsize()
 
+
 TYPE_SERVICE_INFO = 1
 TYPE_TRANSPONDER_INFO = 2
+
 
 class ServiceInfo(Screen):
 	def __init__(self, session, serviceref=None):

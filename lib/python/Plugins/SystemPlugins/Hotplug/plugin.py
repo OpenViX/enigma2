@@ -11,9 +11,11 @@ from Plugins.Plugin import PluginDescriptor
 hotplugNotifier = []
 audioCd = False
 
+
 def AudiocdAdded():
 	global audioCd
 	return True if audioCd else False
+
 
 def processHotplugData(self, eventData):
 	print("[Hotplug] DEBUG:", eventData)
@@ -64,6 +66,7 @@ def processHotplugData(self, eventData):
 		except AttributeError:
 			hotplugNotifier.remove(callback)
 
+
 class Hotplug(Protocol):
 	def connectionMade(self):
 		print("[Hotplug] Connection made.")
@@ -84,6 +87,7 @@ class Hotplug(Protocol):
 		print("[Hotplug] Calling processHotplugData, reason = %s eventData = %s." % (reason, eventData))
 		processHotplugData(self, eventData)
 
+
 def autostart(reason, **kwargs):
 	if reason == 0:
 		try:
@@ -93,6 +97,7 @@ def autostart(reason, **kwargs):
 		factory = Factory()
 		factory.protocol = Hotplug
 		reactor.listenUNIX("/tmp/hotplug.socket", factory)
+
 
 def Plugins(**kwargs):
 	return PluginDescriptor(name=_("Hotplug"), description=_("Listener for hotplug events."), where=[PluginDescriptor.WHERE_AUTOSTART], needsRestart=True, fnc=autostart)

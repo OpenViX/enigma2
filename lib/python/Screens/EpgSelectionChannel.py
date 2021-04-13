@@ -7,6 +7,7 @@ from Components.EpgListSingle import EPGListSingle
 from Screens.EpgSelectionBase import EPGSelectionBase, EPGStandardButtons
 from Screens.Setup import Setup
 
+
 class EPGSelectionChannel(EPGSelectionBase, EPGStandardButtons):
 	def __init__(self, session, service, timeFocus=None):
 		EPGSelectionBase.__init__(self, session, config.epgselection.single, startRef=service)

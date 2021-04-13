@@ -12,6 +12,8 @@ indent = 0
 # @trace
 # def myFunction()
 #
+
+
 def trace(func):
 	funcName = func.__name__
 

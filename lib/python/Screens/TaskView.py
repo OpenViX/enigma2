@@ -16,6 +16,7 @@ import Screens.Standby
 
 from boxbranding import getMachineBrand, getMachineName
 
+
 class JobView(InfoBarNotifications, Screen, ConfigListScreen):
 	def __init__(self, session, job, parent=None, cancelable=True, backgroundable=True, afterEventChangeable=True, afterEvent="nothing"):
 		Screen.__init__(self, session, parent)

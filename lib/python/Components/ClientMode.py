@@ -3,6 +3,7 @@ from __future__ import absolute_import
 from Components.config import ConfigClock, ConfigInteger, ConfigIP, ConfigSelection, ConfigSubList, ConfigSubsection, ConfigText, ConfigYesNo, config
 from Components.SystemInfo import SystemInfo
 
+
 def InitClientMode():
 	config.clientmode = ConfigSubsection()
 	config.clientmode.enabled = ConfigYesNo(default=False)

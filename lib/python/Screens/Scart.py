@@ -6,6 +6,7 @@ from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
 import Tools.Notifications
 
+
 class Scart(Screen):
 	def __init__(self, session, start_visible=True):
 		Screen.__init__(self, session)
