@@ -196,7 +196,7 @@ class OnlineUpdateCheckPoller:
 		# so the next-timer will be suitably updated...
 		# ...but only add one of them!!!
 		if not self.checktimer_Notifier_Added:
-			config.softwareupdate.checktimer.addNotifier(self.start, initial_call = False, immediate_feedback = False)
+			config.softwareupdate.checktimer.addNotifier(self.start, initial_call=False, immediate_feedback=False)
 			self.checktimer_Notifier_Added = True
 			minimum_delay = self.MIN_INITIAL_DELAY
 		else: # we been here before, so this is *not* start-up

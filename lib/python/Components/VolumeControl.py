@@ -25,7 +25,7 @@ class VolumeControl:
 		skin.addOnLoadCallback(self.skinChanged)
 
 		config.audio = ConfigSubsection()
-		config.audio.volume = ConfigInteger(default = 100, limits = (0, 100))
+		config.audio.volume = ConfigInteger(default=100, limits=(0, 100))
 
 		vol = config.audio.volume.value
 		self.volctrl = eDVBVolumecontrol.getInstance()

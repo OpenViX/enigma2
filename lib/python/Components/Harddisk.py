@@ -766,7 +766,7 @@ class HarddiskManager:
 						self.partitions.append(Partition(mountpoint=mountDir, description=mount))
 		if os.path.ismount("/media/hdd") and "/media/hdd/" not in [partition.mountpoint for partition in self.partitions]:
 			print "[Harddisk] new Network Mount being used as HDD replacement -> /media/hdd/"
-			self.partitions.append(Partition(mountpoint = "/media/hdd/", description = "/media/hdd"))
+			self.partitions.append(Partition(mountpoint="/media/hdd/", description="/media/hdd"))
 		print "[Harddisk] Enumerating network mounts complete."
 
 	def getUserfriendlyDeviceName(self, device, physicalDevice):

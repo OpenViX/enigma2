@@ -161,17 +161,17 @@ class EPGBouquetList(GUIComponent):
 		# box background
 		if self.graphic and bgpng is not None:
 			res.append(MultiContentEntryPixmapAlphaTest(
-				pos = (left + self.borderWidth, top + self.borderWidth),
-				size = (width - 2 * self.borderWidth, height - 2 * self.borderWidth),
-				png = bgpng,
-				flags = BT_SCALE))
+				pos=(left + self.borderWidth, top + self.borderWidth),
+				size=(width - 2 * self.borderWidth, height - 2 * self.borderWidth),
+				png=bgpng,
+				flags=BT_SCALE))
 		else:
 			res.append(MultiContentEntryText(
-				pos = (left , top), size = (width, height),
-				font = 0, flags = RT_HALIGN_LEFT | RT_VALIGN_CENTER,
-				text = "", color = None, color_sel = None,
-				backcolor = backColor, backcolor_sel = backColorSel,
-				border_width = self.borderWidth, border_color = self.borderColor))
+				pos=(left , top), size=(width, height),
+				font=0, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER,
+				text="", color=None, color_sel=None,
+				backcolor=backColor, backcolor_sel=backColorSel,
+				border_width=self.borderWidth, border_color=self.borderColor))
 
 		evX = left + self.borderWidth + self.bouquetNamePadding
 		evY = top + self.borderWidth
@@ -179,38 +179,38 @@ class EPGBouquetList(GUIComponent):
 		evH = height - 2 * self.borderWidth
 
 		res.append(MultiContentEntryText(
-			pos = (evX, evY), size = (evW, evH),
-			font = 0, flags = alignment,
-			text = name,
-			color = foreColor, color_sel = foreColorSel,
-			backcolor = backColor, backcolor_sel = backColorSel))
+			pos=(evX, evY), size=(evW, evH),
+			font=0, flags=alignment,
+			text=name,
+			color=foreColor, color_sel=foreColorSel,
+			backcolor=backColor, backcolor_sel=backColorSel))
 
 		# Borders
 		if self.graphic:
 			if borderTopPix is not None:
 				res.append(MultiContentEntryPixmapAlphaTest(
-						pos = (left, r1.top()),
-						size = (r1.width(), self.borderWidth),
-						png = borderTopPix,
-						flags = BT_SCALE))
+						pos=(left, r1.top()),
+						size=(r1.width(), self.borderWidth),
+						png=borderTopPix,
+						flags=BT_SCALE))
 			if borderBottomPix is not None:
 				res.append(MultiContentEntryPixmapAlphaTest(
-						pos = (left, r1.height()-self.borderWidth),
-						size = (r1.width(), self.borderWidth),
-						png = borderBottomPix,
-						flags = BT_SCALE))
+						pos=(left, r1.height()-self.borderWidth),
+						size=(r1.width(), self.borderWidth),
+						png=borderBottomPix,
+						flags=BT_SCALE))
 			if borderLeftPix is not None:
 				res.append(MultiContentEntryPixmapAlphaTest(
-						pos = (left, r1.top()),
-						size = (self.borderWidth, r1.height()),
-						png = borderLeftPix,
-						flags = BT_SCALE))
+						pos=(left, r1.top()),
+						size=(self.borderWidth, r1.height()),
+						png=borderLeftPix,
+						flags=BT_SCALE))
 			if borderRightPix is not None:
 				res.append(MultiContentEntryPixmapAlphaTest(
-						pos = (r1.width()-self.borderWidth, left),
-						size = (self.borderWidth, r1.height()),
-						png = borderRightPix,
-						flags = BT_SCALE))
+						pos=(r1.width()-self.borderWidth, left),
+						size=(self.borderWidth, r1.height()),
+						png=borderRightPix,
+						flags=BT_SCALE))
 
 		return res
 

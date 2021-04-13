@@ -44,9 +44,9 @@ class TimerList(GUIComponent, object):
 				displayPicon = LoadPixmap(picon)
 			if displayPicon is not None:
 				res.append(MultiContentEntryPixmapAlphaBlend(
-					pos = (colX, 0), size = (piconWidth, self.itemHeight),
-					png = displayPicon,
-					backcolor = None, backcolor_sel = None, flags = BT_SCALE | BT_KEEP_ASPECT_RATIO | BT_ALIGN_CENTER))
+					pos=(colX, 0), size=(piconWidth, self.itemHeight),
+					png=displayPicon,
+					backcolor=None, backcolor_sel=None, flags=BT_SCALE | BT_KEEP_ASPECT_RATIO | BT_ALIGN_CENTER))
 			return piconWidth
 
 		colX = 0

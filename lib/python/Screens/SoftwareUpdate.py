@@ -289,13 +289,13 @@ class UpdatePlugin(Screen, ProtectedScreen):
 					choices.append((_("Update channel list only"), "channels"))
 					choices.append((_("Cancel"), ""))
 					self["actions"].setEnabled(True)
-					upgrademessage = self.session.openWithCallback(self.startActualUpgrade, UpdateChoices, text=message, list=choices, skin_name = "SoftwareUpdateChoices", var=self.trafficLight)
+					upgrademessage = self.session.openWithCallback(self.startActualUpgrade, UpdateChoices, text=message, list=choices, skin_name="SoftwareUpdateChoices", var=self.trafficLight)
 					upgrademessage.setTitle(self.getTitle())
 				else:
 					message = _("No updates found, Press OK to exit this screen.")
 					choices = [(_("Nothing to upgrade"), "")]
 					self["actions"].setEnabled(True)
-					upgrademessage = self.session.openWithCallback(self.startActualUpgrade, UpdateChoices, text=message, list=choices, skin_name = "SoftwareUpdateChoices", var=self.trafficLight)
+					upgrademessage = self.session.openWithCallback(self.startActualUpgrade, UpdateChoices, text=message, list=choices, skin_name="SoftwareUpdateChoices", var=self.trafficLight)
 					upgrademessage.setTitle(self.getTitle())
 			elif self.channellist_only > 0:
 				if self.channellist_only == 1:
@@ -371,7 +371,7 @@ class UpdatePlugin(Screen, ProtectedScreen):
 		elif answer[1] == "channels":
 			self.channellist_only = 1
 			self.slider.setValue(1)
-			self.ipkg.startCmd(IpkgComponent.CMD_LIST, args = {'installed_only': True})
+			self.ipkg.startCmd(IpkgComponent.CMD_LIST, args={'installed_only': True})
 		elif answer[1] == "cold":
 			if (config.softwareupdate.autosettingsbackup.value and config.backupmanager.backuplocation.value) or (config.softwareupdate.autoimagebackup.value and config.imagemanager.backuplocation.value):
 				self.doAutoBackup()
@@ -404,7 +404,7 @@ class UpdatePlugin(Screen, ProtectedScreen):
 				break
 		self.showJobView(job)
 
-	def doAutoBackup(self, val = False):
+	def doAutoBackup(self, val=False):
 		self.autobackuprunning = True
 		if config.softwareupdate.autosettingsbackup.value and config.backupmanager.backuplocation.value and not self.SettingsBackupDone:
 			self.doSettingsBackup()
@@ -422,9 +422,9 @@ class UpdatePlugin(Screen, ProtectedScreen):
 		from Screens.TaskView import JobView
 		Components.Task.job_manager.in_background = False
 		if not self.autobackuprunning:
-			self.session.openWithCallback(self.startActualUpgrade(("menu", "menu")), JobView, job,  cancelable = False, backgroundable = False, afterEventChangeable = False, afterEvent="close")
+			self.session.openWithCallback(self.startActualUpgrade(("menu", "menu")), JobView, job,  cancelable=False, backgroundable=False, afterEventChangeable=False, afterEvent="close")
 		else:
-			self.session.openWithCallback(self.doAutoBackup, JobView, job,  cancelable = False, backgroundable = False, afterEventChangeable = False, afterEvent="close")
+			self.session.openWithCallback(self.doAutoBackup, JobView, job,  cancelable=False, backgroundable=False, afterEventChangeable=False, afterEvent="close")
 
 	def exit(self):
 		if not self.ipkg.isRunning():

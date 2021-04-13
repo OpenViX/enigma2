@@ -71,21 +71,21 @@ class TimerEntryBase(Setup):
 			weekday = int(strftime("%u", localtime(self.timer.begin))) - 1
 			day[weekday] = 1
 
-		self.timerentry_type = ConfigSelection(choices = [("once",_("once")), ("repeated", _("repeated"))], default = type)
-		self.timerentry_repeated = ConfigSelection(default = repeated, choices = [("weekly", _("weekly")), ("daily", _("daily")), ("weekdays", _("Mon-Fri")), ("user", _("user defined"))])
+		self.timerentry_type = ConfigSelection(choices=[("once",_("once")), ("repeated", _("repeated"))], default=type)
+		self.timerentry_repeated = ConfigSelection(default=repeated, choices=[("weekly", _("weekly")), ("daily", _("daily")), ("weekdays", _("Mon-Fri")), ("user", _("user defined"))])
 
-		self.timerentry_date = ConfigDateTime(default = self.timer.begin, formatstring = config.usage.date.full.value, increment = 86400)
-		self.timerentry_starttime = ConfigClock(default = self.timer.begin)
-		self.timerentry_endtime = ConfigClock(default = self.timer.end)
+		self.timerentry_date = ConfigDateTime(default=self.timer.begin, formatstring=config.usage.date.full.value, increment=86400)
+		self.timerentry_starttime = ConfigClock(default=self.timer.begin)
+		self.timerentry_endtime = ConfigClock(default=self.timer.end)
 
-		self.timerentry_repeatedbegindate = ConfigDateTime(default = self.timer.repeatedbegindate, formatstring = config.usage.date.full.value, increment = 86400)
+		self.timerentry_repeatedbegindate = ConfigDateTime(default=self.timer.repeatedbegindate, formatstring=config.usage.date.full.value, increment=86400)
 
 		choices = [("mon",_("Monday")), ("tue", _("Tuesday")), ("wed",_("Wednesday")), ("thu", _("Thursday")), ("fri", _("Friday")), ("sat", _("Saturday")), ("sun", _("Sunday"))]
-		self.timerentry_weekday = ConfigSelection(default = choices[weekday][0], choices = choices)
+		self.timerentry_weekday = ConfigSelection(default=choices[weekday][0], choices=choices)
 
 		self.timerentry_day = ConfigSubList()
 		for x in (0, 1, 2, 3, 4, 5, 6):
-			self.timerentry_day.append(ConfigYesNo(default = day[x]))
+			self.timerentry_day.append(ConfigYesNo(default=day[x]))
 
 	def getTimestamp(self, date, mytime):
 		d = localtime(date)
@@ -131,14 +131,14 @@ class TimerEntryBase(Setup):
 	def saveTimer(self):  # Placeholder
 		pass
 
-	def keyGo(self, result = None):
+	def keyGo(self, result=None):
 		print "[TimerEntryBase] keyGo() is deprecated, call keySave() instead"
 		self.keySave(result)
 
 	def keyCancel(self):
 		self.closeConfigList(((False,),))
 
-	def keySave(self, result = None):
+	def keySave(self, result=None):
 		self.timer.resetRepeated()
 
 		if self.timerentry_type.value == "repeated":

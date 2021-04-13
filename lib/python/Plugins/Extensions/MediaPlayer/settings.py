@@ -73,7 +73,7 @@ class MediaPlayerSettings(Screen,ConfigListScreen):
 		self["key_red"] = StaticText(_("Cancel"))
 		self["key_green"] = StaticText(_("Save"))
 
-		ConfigListScreen.__init__(self, [], session = session, on_change = self.changedEntry)
+		ConfigListScreen.__init__(self, [], session=session, on_change=self.changedEntry)
 		self.parent = parent
 		self.initConfigList()
 		config.mediaplayer.saveDirOnExit.addNotifier(self.initConfigList)

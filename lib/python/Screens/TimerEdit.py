@@ -87,7 +87,7 @@ class TimerEditList(Screen, ProtectedScreen):
 		self.updateState()
 
 	def createSetup(self):
-		def onSetupClose(test = None):
+		def onSetupClose(test=None):
 			self.refill()
 			pass
 
@@ -148,7 +148,7 @@ class TimerEditList(Screen, ProtectedScreen):
 							(_("Stop current event and disable future events"), "stopall"),
 							(_("Don't stop current event but disable future events"), "stoponlycoming")
 						)
-						self.session.openWithCallback(boundFunction(self.runningEventCallback, t), ChoiceBox, title=_("Repeating event currently recording... What do you want to do?"), list = list)
+						self.session.openWithCallback(boundFunction(self.runningEventCallback, t), ChoiceBox, title=_("Repeating event currently recording... What do you want to do?"), list=list)
 				else:
 					t.disable()
 			self.session.nav.RecordTimer.timeChanged(t)
@@ -159,7 +159,7 @@ class TimerEditList(Screen, ProtectedScreen):
 		if result is not None:
 			if result[1] == "stoponlycurrent" or result[1] == "stopall":
 				t.enable()
-				t.processRepeated(findRunningEvent = False)
+				t.processRepeated(findRunningEvent=False)
 				self.session.nav.RecordTimer.doActivate(t)
 			if result[1] == "stoponlycoming" or result[1] == "stopall":
 				t.disable()
@@ -279,9 +279,9 @@ class TimerEditList(Screen, ProtectedScreen):
 		else:
 			list.extend([(timer, True) for timer in self.session.nav.RecordTimer.processed_timers])
 		if config.usage.timerlist_finished_timer_position.index == 1: #end of list
-			list.sort(cmp = eol_compare)
+			list.sort(cmp=eol_compare)
 		else:
-			list.sort(key = lambda x: x[0].begin)
+			list.sort(key=lambda x: x[0].begin)
 
 	def showLog(self):
 		cur = self["timerlist"].getCurrent()
@@ -305,12 +305,12 @@ class TimerEditList(Screen, ProtectedScreen):
 	def stopTimerQuestion(self):
 		cur = self["timerlist"].getCurrent()
 		if cur:
-			self.session.openWithCallback(self.removeTimer, MessageBox, _("Do you really want to stop the current recording and delete timer %s?") % cur.name, default = False)
+			self.session.openWithCallback(self.removeTimer, MessageBox, _("Do you really want to stop the current recording and delete timer %s?") % cur.name, default=False)
 
 	def removeTimerQuestion(self):
 		cur = self["timerlist"].getCurrent()
 		if cur:
-			self.session.openWithCallback(self.removeTimer, MessageBox, _("Do you really want to delete %s?") % cur.name, default = False)
+			self.session.openWithCallback(self.removeTimer, MessageBox, _("Do you really want to delete %s?") % cur.name, default=False)
 
 	def removeTimer(self, result):
 		if not result:
@@ -350,9 +350,9 @@ class TimerEditList(Screen, ProtectedScreen):
 		if event is None:
 			data = (int(time()), int(time() + 60), "", "", None)
 		else:
-			data = parseEvent(event, description = True)
+			data = parseEvent(event, description=True)
 
-		self.addTimer(RecordTimerEntry(serviceref, checkOldTimers = True, dirname = preferredTimerPath(), *data))
+		self.addTimer(RecordTimerEntry(serviceref, checkOldTimers=True, dirname=preferredTimerPath(), *data))
 
 	def addTimer(self, timer):
 		self.session.openWithCallback(self.finishedAdd, TimerEntry, timer)
@@ -536,7 +536,7 @@ class TimerSanityConflict(Screen):
 
 class TimerEditListSummary(Screen):
 	def __init__(self, session, parent):
-		Screen.__init__(self, session, parent = parent)
+		Screen.__init__(self, session, parent=parent)
 		self["name"] = StaticText("")
 		self["service"] = StaticText("")
 		self["time"] = StaticText("")
