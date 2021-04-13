@@ -131,18 +131,18 @@ class ServiceList(GUIComponent):
 		def serviceItemHeight(value):
 			self.skinItemHeight = parseScale(value)
 		def serviceNameFont(value):
-			font = parseFont(value, ((1,1),(1,1)))
+			font = parseFont(value, ((1, 1), (1, 1)))
 			self.ServiceNameFontName = font.family
 			self.ServiceNameFontSize = font.pointSize
 		def serviceInfoFont(value):
-			font = parseFont(value, ((1,1),(1,1)))
+			font = parseFont(value, ((1, 1), (1, 1)))
 			self.ServiceInfoFontName = font.family
 			self.ServiceInfoFontSize = font.pointSize
-			font = parseFont(value, ((5,6),(1,1)))
+			font = parseFont(value, ((5, 6), (1, 1)))
 			self.ServiceNextInfoFontName = font.family
 			self.ServiceNextInfoFontSize = font.pointSize
 		def serviceNumberFont(value):
-			font = parseFont(value, ((1,1),(1,1)))
+			font = parseFont(value, ((1, 1), (1, 1)))
 			self.ServiceNumberFontName = font.family
 			self.ServiceNumberFontSize = font.pointSize
 		def progressbarHeight(value):

@@ -118,8 +118,8 @@ class LogManagerPoller:
 		f.close()
 
 		for mount in mounts:
-			if path.isdir(path.join(mount,'logs')):
-				matches.append(path.join(mount,'logs'))
+			if path.isdir(path.join(mount, 'logs')):
+				matches.append(path.join(mount, 'logs'))
 		matches.append('/home/root/logs')
 
 		print "[LogManager] found following log's:", matches
@@ -360,7 +360,7 @@ class LogManagerFb(Screen):
 		self["yellow"] = Label(_("copy"))
 		self["blue"] = Label(_("rename"))
 
-		self["actions"] = ActionMap(["ChannelSelectBaseActions","WizardActions", "DirectionActions", "MenuActions", "NumberActions", "ColorActions"],
+		self["actions"] = ActionMap(["ChannelSelectBaseActions", "WizardActions", "DirectionActions", "MenuActions", "NumberActions", "ColorActions"],
 			{
 			 "ok": self.ok,
 			 "back": self.exit,

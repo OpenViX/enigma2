@@ -62,7 +62,7 @@ class FileBrowser(Screen, HelpableScreen):
 
 	def getDir(self, currentVal=None, defaultDir=None):
 		if currentVal:
-			return (currentVal.rstrip("/").rsplit("/",1))[0]
+			return (currentVal.rstrip("/").rsplit("/", 1))[0]
 		return defaultDir or (resolveFilename(SCOPE_PLUGINS) + "Extensions/DVDBurn/")
 
 	def ok(self):
@@ -71,17 +71,17 @@ class FileBrowser(Screen, HelpableScreen):
 			if self.scope == "image":
 				path = self["filelist"].getCurrentDirectory() or ""
 				if fileExists(path + "VIDEO_TS"):
-					self.close(path,self.scope,self.configRef)
+					self.close(path, self.scope, self.configRef)
 		else:
 			ret = self["filelist"].getCurrentDirectory() + '/' + self["filelist"].getFilename()
-			self.close(ret,self.scope,self.configRef)
+			self.close(ret, self.scope, self.configRef)
 
 	def exit(self):
 		if self.scope == "isopath":
-			self.close(self["filelist"].getCurrentDirectory(),self.scope,self.configRef)
-		self.close(None,False,None)
+			self.close(self["filelist"].getCurrentDirectory(), self.scope, self.configRef)
+		self.close(None, False, None)
 
-class ProjectSettings(Screen,ConfigListScreen):
+class ProjectSettings(Screen, ConfigListScreen):
 	skin = """
 		<screen name="ProjectSettings" position="center,center" size="560,440" title="Collection settings" >
 			<ePixmap pixmap="buttons/red.png" position="0,0" size="140,40" alphatest="on" />
@@ -215,10 +215,10 @@ class ProjectSettings(Screen,ConfigListScreen):
 			ret = self.project.saveProject(resolveFilename(SCOPE_PLUGINS) + "Extensions/DVDBurn/")
 			if ret.startswith:
 				text = _("Save") + ' ' + _('OK') + ':\n' + ret
-				self.session.open(MessageBox,text,type=MessageBox.TYPE_INFO)
+				self.session.open(MessageBox, text, type=MessageBox.TYPE_INFO)
 			else:
 				text = _("Save") + ' ' + _('Error')
-				self.session.open(MessageBox,text,type=MessageBox.TYPE_ERROR)
+				self.session.open(MessageBox, text, type=MessageBox.TYPE_ERROR)
 
 	def FileBrowserClosed(self, path, scope, configRef):
 		if scope == "menutemplate":
@@ -227,12 +227,12 @@ class ProjectSettings(Screen,ConfigListScreen):
 				configRef.setValue(path)
 				self.initConfigList()
 			else:
-				self.session.open(MessageBox,self.project.error,MessageBox.TYPE_ERROR)
+				self.session.open(MessageBox, self.project.error, MessageBox.TYPE_ERROR)
 		elif scope == "project":
 			self.path = path
 			print "len(self.titles)", len(self.project.titles)
 			if len(self.project.titles):
-				self.session.openWithCallback(self.askLoadCB, MessageBox,text=_("Your current collection will get lost!") + "\n" + _("Do you want to restore your settings?"), type=MessageBox.TYPE_YESNO)
+				self.session.openWithCallback(self.askLoadCB, MessageBox, text=_("Your current collection will get lost!") + "\n" + _("Do you want to restore your settings?"), type=MessageBox.TYPE_YESNO)
 			else:
 				self.askLoadCB(True)
 		elif scope:
@@ -244,4 +244,4 @@ class ProjectSettings(Screen,ConfigListScreen):
 			if self.project.loadProject(self.path):
 				self.initConfigList()
 			else:
-				self.session.open(MessageBox,self.project.error,MessageBox.TYPE_ERROR)
+				self.session.open(MessageBox, self.project.error, MessageBox.TYPE_ERROR)

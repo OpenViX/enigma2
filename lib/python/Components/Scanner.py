@@ -180,7 +180,7 @@ def scanDevice(mountpoint):
 			for f in files:
 				path = os.path.join(root, f)
 				if f.endswith(".wav") and f.startswith("track"):
-					sfile = ScanFile(path,"audio/x-cda")
+					sfile = ScanFile(path, "audio/x-cda")
 				else:
 					sfile = ScanFile(path)
 				for s in scanner:

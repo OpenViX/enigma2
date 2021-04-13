@@ -39,7 +39,7 @@ class MultiBootSelector(Screen, HelpableScreen):
 		Screen.__init__(self, session, mandatoryWidgets=["key_yellow", "key_blue"])
 		HelpableScreen.__init__(self)
 		Screen.setTitle(self, _("MultiBoot Image Selector"))
-		self.skinName = ["MultiBootSelector","Setup"]
+		self.skinName = ["MultiBootSelector", "Setup"]
 		self.tmp_dir = None
 		self["config"] = ChoiceList(list=[ChoiceEntryComponent("", ((_("Retrieving image slots - Please wait...")), "Queued"))])
 		self["description"] = StaticText(_("Press GREEN (Reboot) to switch images, YELLOW (Delete) to erase an image or BLUE (Restore) to restore all deleted images."))

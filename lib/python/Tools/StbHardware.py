@@ -9,7 +9,7 @@ def getFPVersion():
 	except IOError:
 		try:
 			fp = open("/dev/dbox/fp0")
-			ret = ioctl(fp.fileno(),0)
+			ret = ioctl(fp.fileno(), 0)
 			fp.close()
 		except IOError:
 			print "[StbHardware] Error: getFPVersion failed!"

@@ -598,7 +598,7 @@ class PowerTimer(Timer):
 
 	def record(self, entry, ignoreTSC=False, dosave=True):		#wird von loadTimer mit dosave=False aufgerufen
 		entry.timeChanged()
-		print "[PowerTimer]",str(entry)
+		print "[PowerTimer]", str(entry)
 		entry.Timer = self
 		self.addTimerEntry(entry)
 		if dosave:
@@ -606,7 +606,7 @@ class PowerTimer(Timer):
 		return None
 
 	def removeEntry(self, entry):
-		print "[PowerTimer] Remove",str(entry)
+		print "[PowerTimer] Remove", str(entry)
 
 		# avoid re-enqueuing
 		entry.repeated = False

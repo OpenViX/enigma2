@@ -592,7 +592,7 @@ def runScreenTest():
 		print "[StartEnigma] set wakeup time to", strftime("%Y/%m/%d %H:%M", localtime(wptime))
 		setFPWakeuptime(wptime)
 		recordTimerWakeupAuto = startTime[1] == 0 and startTime[2]
-		print '[StartEnigma] recordTimerWakeupAuto',recordTimerWakeupAuto
+		print '[StartEnigma] recordTimerWakeupAuto', recordTimerWakeupAuto
 	config.misc.isNextRecordTimerAfterEventActionAuto.value = recordTimerWakeupAuto
 	config.misc.isNextRecordTimerAfterEventActionAuto.save()
 
@@ -610,7 +610,7 @@ def runScreenTest():
 		print "[StartEnigma] set wakeup time to", strftime("%Y/%m/%d %H:%M", localtime(wptime + 60))
 		setFPWakeuptime(wptime)
 		PowerTimerWakeupAuto = startTime[1] == 3 and startTime[2]
-		print '[StartEnigma] PowerTimerWakeupAuto',PowerTimerWakeupAuto
+		print '[StartEnigma] PowerTimerWakeupAuto', PowerTimerWakeupAuto
 	config.misc.isNextPowerTimerAfterEventActionAuto.value = PowerTimerWakeupAuto
 	config.misc.isNextPowerTimerAfterEventActionAuto.save()
 

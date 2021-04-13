@@ -306,7 +306,7 @@ class TryQuitMainloop(MessageBox):
 				if path.exists("/usr/scripts/standby_enter.sh"):
 					Console().ePopen("/usr/scripts/standby_enter.sh")
 			self.session.nav.stopService()
-			self.quitScreen = self.session.instantiateDialog(QuitMainloopScreen,retvalue=self.retval)
+			self.quitScreen = self.session.instantiateDialog(QuitMainloopScreen, retvalue=self.retval)
 			self.quitScreen.show()
 			print "[Standby] quitMainloop #1"
 			quitMainloopCode = self.retval

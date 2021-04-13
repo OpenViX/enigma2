@@ -3,7 +3,7 @@ import os
 import time
 
 ECM_INFO = '/tmp/ecm.info'
-EMPTY_ECM_INFO = ' ','0','0','0'
+EMPTY_ECM_INFO = ' ', '0', '0', '0'
 
 old_ecm_time = time.time()
 info = {}
@@ -27,8 +27,8 @@ class GetEcmInfo:
 			info = {}
 			ecm = ''
 		if ecm_time != old_ecm_time:
-			oecmi1 = info.get('ecminterval1','')
-			oecmi0 = info.get('ecminterval0','')
+			oecmi1 = info.get('ecminterval1', '')
+			oecmi0 = info.get('ecminterval0', '')
 			info = {'ecminterval2': oecmi1, 'ecminterval1': oecmi0}
 			old_ecm_time = ecm_time
 			try:
@@ -170,7 +170,7 @@ class GetEcmInfo:
 				source = info.get('source', None)
 				if source:
 					# MGcam
-					self.textvalue = "%s %s %.3f @ %s" % (info['eEnc'],info['eCaid'],(float(info['eTime']) / 1000),info['eSrc'])
+					self.textvalue = "%s %s %.3f @ %s" % (info['eEnc'], info['eCaid'], (float(info['eTime']) / 1000), info['eSrc'])
 				else:
 					reader = info.get('reader', '')
 					if reader:
@@ -191,4 +191,4 @@ class GetEcmInfo:
 		decCI = info.get('caid', info.get('CAID', '0'))
 		provid = info.get('provid', info.get('prov', info.get('Provider', '0')))
 		ecmpid = info.get('pid', info.get('ECM PID', '0'))
-		return self.textvalue,decCI,provid,ecmpid
+		return self.textvalue, decCI, provid, ecmpid
