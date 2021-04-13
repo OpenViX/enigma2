@@ -63,7 +63,7 @@ class Satfinder(ScanSetup, ServiceScan):
 		ScanSetup.__init__(self, session)
 		self.entryChanged = self.newConfig
 		self.setTitle(_("Signal finder"))
-		self["Frontend"] = FrontendStatus(frontend_source = lambda : self.frontend, update_interval = 100)
+		self["Frontend"] = FrontendStatus(frontend_source=lambda : self.frontend, update_interval=100)
 
 		self["actions"] = ActionMap(["CancelSaveActions"],
 		{
@@ -313,7 +313,7 @@ class Satfinder(ScanSetup, ServiceScan):
 		self["config"].l.setList(self.list)
 
 	def createConfig(self, foo):
-		self.tuning_type = ConfigSelection(default = "predefined_transponder", choices = [("single_transponder", _("User defined transponder")), ("predefined_transponder", _("Predefined transponder"))])
+		self.tuning_type = ConfigSelection(default="predefined_transponder", choices=[("single_transponder", _("User defined transponder")), ("predefined_transponder", _("Predefined transponder"))])
 		self.orbital_position = 192
 		if self.frontendData and 'orbital_position' in self.frontendData:
 			self.orbital_position = self.frontendData['orbital_position']
@@ -335,7 +335,7 @@ class Satfinder(ScanSetup, ServiceScan):
 			self.scan_cab.frequency, self.scan_cab.inversion, self.scan_cab.symbolrate,
 			self.scan_cab.modulation, self.scan_cab.fec,
 			self.scan_ats.frequency, self.scan_ats.modulation, self.scan_ats.inversion):
-			x.addNotifier(self.retune, initial_call = False)
+			x.addNotifier(self.retune, initial_call=False)
 
 		satfinder_nim_list = []
 		for n in nimmanager.nim_slots:
@@ -348,7 +348,7 @@ class Satfinder(ScanSetup, ServiceScan):
 			if n.isCompatible("DVB-S") and n.isFBCTuner() and not n.isFBCRoot():
 				continue
 			satfinder_nim_list.append((str(n.slot), n.friendly_full_description))
-		self.satfinder_scan_nims = ConfigSelection(choices = satfinder_nim_list)
+		self.satfinder_scan_nims = ConfigSelection(choices=satfinder_nim_list)
 		if self.frontendData is not None and len(satfinder_nim_list) > 0: # open the plugin with the currently active NIM as default
 			active_nim = self.frontendData.get("tuner_number", int(satfinder_nim_list[0][0]))
 			if not nimmanager.nim_slots[active_nim].isFBCLink():
@@ -627,7 +627,7 @@ class SatfinderExtra(Satfinder):
 		print "[satfinder][dvb_read_stream] starting"
 		thread.start_new_thread(self.getCurrentTsidOnid, (True,))
 
-	def getCurrentTsidOnid(self, from_retune = False):
+	def getCurrentTsidOnid(self, from_retune=False):
 		self.currentProcess = currentProcess = datetime.datetime.now()
 		self["tsid"].setText("")
 		self["onid"].setText("")
@@ -805,7 +805,7 @@ class SatfinderExtra(Satfinder):
 		else:
 			print "[satfinder][getOrbPosFromNit] no orbital position found"
 
-	def getOrbitalPosition(self, bcd, w_e_flag = 1):
+	def getOrbitalPosition(self, bcd, w_e_flag=1):
 		# 4 bit BCD (binary coded decimal)
 		# w_e_flag, 0 == west, 1 == east
 		op = 0
@@ -953,6 +953,6 @@ def SatfinderStart(menuid, **kwargs):
 
 def Plugins(**kwargs):
 	if any([nimmanager.hasNimType(x) for x in "DVB-S", "DVB-T", "DVB-C", "ATSC"]):
-		return PluginDescriptor(name=_("Signal finder"), description=_("Helps setting up your antenna"), where = PluginDescriptor.WHERE_MENU, needsRestart = False, fnc=SatfinderStart)
+		return PluginDescriptor(name=_("Signal finder"), description=_("Helps setting up your antenna"), where=PluginDescriptor.WHERE_MENU, needsRestart=False, fnc=SatfinderStart)
 	else:
 		return []

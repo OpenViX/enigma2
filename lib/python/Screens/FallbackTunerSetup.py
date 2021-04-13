@@ -10,8 +10,8 @@ class FallbackTunerSetup(Setup):
 		self.title = _("Fallback Tuner Setup")
 
 	def createConfig(self):
-		self.enabled = ConfigYesNo(default = config.usage.remote_fallback_enabled.value)
-		self.domain = ConfigText(default = config.usage.remote_fallback.value, fixed_size = False)
+		self.enabled = ConfigYesNo(default=config.usage.remote_fallback_enabled.value)
+		self.domain = ConfigText(default=config.usage.remote_fallback.value, fixed_size=False)
 		peerStreamingBoxes = getPeerStreamingBoxes()
 		self.peerExist = len(peerStreamingBoxes) != 0
 		peerDefault = None
@@ -19,7 +19,7 @@ class FallbackTunerSetup(Setup):
 		if self.peerExist:
 			if config.usage.remote_fallback.value in peerStreamingBoxes:
 				peerDefault = config.usage.remote_fallback.value
-			self.peer = ConfigSelection(default = peerDefault, choices = [(x,x) for x in peerStreamingBoxes])
+			self.peer = ConfigSelection(default=peerDefault, choices=[(x,x) for x in peerStreamingBoxes])
 
 		ipDefault = [0,0,0,0]
 		self.portDefault = portDefault = 8001
@@ -30,9 +30,9 @@ class FallbackTunerSetup(Setup):
 			result = re.search("[:](\d+)$", config.usage.remote_fallback.value)
 			if result is not None:
 				portDefault = int(result.group(1))
-		self.ip = ConfigIP( default = ipDefault, auto_jump=True)
+		self.ip = ConfigIP( default=ipDefault, auto_jump=True)
 
-		self.port = ConfigInteger(default = portDefault, limits=(1,65535))
+		self.port = ConfigInteger(default=portDefault, limits=(1,65535))
 
 		fallbackAddressChoices = [("ip", _("IP")), ("domain", _("URL"))]
 		if self.peerExist:
@@ -42,7 +42,7 @@ class FallbackTunerSetup(Setup):
 			fallbackAddressTypeDefault = "peer"
 		if ipDefault != [0,0,0,0]:
 			fallbackAddressTypeDefault = "ip"
-		self.fallbackAddressType = ConfigSelection(default = fallbackAddressTypeDefault, choices = fallbackAddressChoices)
+		self.fallbackAddressType = ConfigSelection(default=fallbackAddressTypeDefault, choices=fallbackAddressChoices)
 
 	def createSetup(self):
 		self.list = [(_("Enable fallback remote receiver"), self.enabled, _('Enable usage of tuners from another Enigma2 receiver on the local network. Remote tuners will be used when tuners are not available on this receiver. (No free tuner or service type is not available.)'))]

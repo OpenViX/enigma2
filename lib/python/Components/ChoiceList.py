@@ -9,7 +9,7 @@ def row_delta_y():
 	font = skin.fonts["ChoiceList"]
 	return (int(font[2]) - int(font[1]))/2
 
-def ChoiceEntryComponent(key = None, text = ["--"]):
+def ChoiceEntryComponent(key=None, text=["--"]):
 	res = [ text ]
 	if text[0] == "--":
 		x, y, w, h = skin.parameters.get("ChoicelistDash",(skin.applySkinFactor(0), skin.applySkinFactor(2), skin.applySkinFactor(800), skin.applySkinFactor(25)))
@@ -35,7 +35,7 @@ def ChoiceEntryComponent(key = None, text = ["--"]):
 	return res
 
 class ChoiceList(MenuList):
-	def __init__(self, list, selection = 0, enableWrapAround=False):
+	def __init__(self, list, selection=0, enableWrapAround=False):
 		MenuList.__init__(self, list, enableWrapAround, eListboxPythonMultiContent)
 		font = skin.fonts.get("ChoiceList", ("Regular", skin.applySkinFactor(20), skin.applySkinFactor(25)))
 		self.l.setFont(0, gFont(font[0], font[1]))

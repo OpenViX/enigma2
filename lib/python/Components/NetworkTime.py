@@ -35,7 +35,7 @@ class NTPSyncPoller:
 		else:
 			self.update_schedule()
 
-	def update_schedule(self, result = None, retval = None, extra_args = None):
+	def update_schedule(self, result=None, retval=None, extra_args=None):
 		nowTime = time()
 		if nowTime > 10000:
 			print '[NetworkTime] setting E2 time:',nowTime

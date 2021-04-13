@@ -37,7 +37,7 @@ class ParentalControlSetup(ConfigListScreen, Screen, ProtectedScreen):
 		self.onChangedEntry = [ ]
 
 		self.list = []
-		ConfigListScreen.__init__(self, self.list, session = self.session, on_change = self.changedEntry, fullUI = True)
+		ConfigListScreen.__init__(self, self.list, session=self.session, on_change=self.changedEntry, fullUI=True)
 		self.createSetup(initial=True)
 
 	def isProtected(self):
