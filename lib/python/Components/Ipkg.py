@@ -7,15 +7,18 @@ from boxbranding import getImageDistro
 opkgDestinations = []
 opkgStatusPath = ''
 
+
 def opkgExtraDestinations():
 	global opkgDestinations
 	return ''.join([" --add-dest %s:%s" % (i, i) for i in opkgDestinations])
+
 
 def opkgAddDestination(mountpoint):
 	global opkgDestinations
 	if mountpoint not in opkgDestinations:
 		opkgDestinations.append(mountpoint)
 		print "[Ipkg] Added to OPKG destinations:", mountpoint
+
 
 def onPartitionChange(why, part):
 	global opkgDestinations
@@ -38,9 +41,11 @@ def onPartitionChange(why, part):
 			except:
 				pass
 
+
 harddiskmanager.on_partition_list_change.append(onPartitionChange)
 for part in harddiskmanager.getMountedPartitions():
 	onPartitionChange('add', part)
+
 
 class IpkgComponent:
 	EVENT_INSTALL = 0

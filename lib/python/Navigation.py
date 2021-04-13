@@ -17,6 +17,8 @@ from Screens.InfoBar import InfoBar, MoviePlayer
 from Components.Sources.StreamService import StreamServiceList
 
 # TODO: remove pNavgation, eNavigation and rewrite this stuff in python.
+
+
 class Navigation:
 	def __init__(self, nextRecordTimerAfterEventActionAuto=False, nextPowerManagerAfterEventActionAuto=False):
 		if NavigationInstance.instance is not None:

@@ -2,6 +2,7 @@ from enigma import eComponentScan, iDVBFrontend
 from Components.NimManager import nimmanager as nimmgr
 from Tools.Transponder import getChannelNumber
 
+
 class ServiceScan:
 
 	Idle = 1

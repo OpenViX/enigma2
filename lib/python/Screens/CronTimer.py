@@ -15,6 +15,7 @@ from os import system, listdir, rename, path, mkdir
 from time import sleep
 from boxbranding import getMachineBrand, getMachineName, getImageType
 
+
 class CronTimers(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
@@ -296,6 +297,7 @@ class CronTimers(Screen):
 			myline = mysel[1]
 			self.session.open(MessageBox, _(myline), MessageBox.TYPE_INFO)
 
+
 config.crontimers = ConfigSubsection()
 config.crontimers.commandtype = NoSave(ConfigSelection(choices=[('custom', _("Custom")), ('predefined', _("Predefined"))]))
 config.crontimers.cmdtime = NoSave(ConfigClock(default=0))
@@ -304,6 +306,7 @@ config.crontimers.user_command = NoSave(ConfigText(fixed_size=False))
 config.crontimers.runwhen = NoSave(ConfigSelection(default='Daily', choices=[('Hourly', _("Hourly")), ('Daily', _("Daily")), ('Weekly', _("Weekly")), ('Monthly', _("Monthly"))]))
 config.crontimers.dayofweek = NoSave(ConfigSelection(default='Monday', choices=[('Monday', _("Monday")), ('Tuesday', _("Tuesday")), ('Wednesday', _("Wednesday")), ('Thursday', _("Thursday")), ('Friday', _("Friday")), ('Saturday', _("Saturday")), ('Sunday', _("Sunday"))]))
 config.crontimers.dayofmonth = NoSave(ConfigInteger(default=1, limits=(1, 31)))
+
 
 class CronTimersConfig(Screen, ConfigListScreen):
 	def __init__(self, session):

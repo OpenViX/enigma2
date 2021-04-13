@@ -6,6 +6,7 @@ from ServiceReference import resolveAlternate
 from Components.Element import cached
 from Tools.Directories import fileExists
 
+
 class ServiceName(Converter, object):
 	NAME = 0
 	NAME_ONLY = 1

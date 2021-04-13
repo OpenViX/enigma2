@@ -31,6 +31,7 @@ if dvbreader_available:
 	import datetime
 	import thread
 
+
 class Satfinder(ScanSetup, ServiceScan):
 	"""Inherits StaticText [key_red] and [key_green] properties from ScanSetup"""
 
@@ -589,6 +590,7 @@ class Satfinder(ScanSetup, ServiceScan):
 			del self.raw_channel
 		self.close(True)
 
+
 class SatfinderExtra(Satfinder):
 	# This class requires AutoBouquetsMaker to be installed.
 	def __init__(self, session):
@@ -888,6 +890,7 @@ class SatfinderExtra(Satfinder):
 
 		self.session.open(ServicesFound, "\n".join(out), legend)
 
+
 class ServicesFound(Screen):
 	skin = """
 		<screen name="ServicesFound" position="center,center" size="600,570">
@@ -921,9 +924,11 @@ class ServicesFound(Screen):
 	def pageDown(self):
 		self["servicesfound"].pageDown()
 
+
 def SatfinderCallback(close, answer):
 	if close and answer:
 		close(True)
+
 
 def SatfinderMain(session, close=None, **kwargs):
 	nims = nimmanager.nim_slots
@@ -945,11 +950,13 @@ def SatfinderMain(session, close=None, **kwargs):
 		else:
 			session.openWithCallback(boundFunction(SatfinderCallback, close), Satfinder)
 
+
 def SatfinderStart(menuid, **kwargs):
 	if menuid == "scan" and nimmanager.somethingConnected():
 		return [(_("Signal finder"), SatfinderMain, "satfinder", 35, True)]
 	else:
 		return []
+
 
 def Plugins(**kwargs):
 	if any([nimmanager.hasNimType(x) for x in "DVB-S", "DVB-T", "DVB-C", "ATSC"]):

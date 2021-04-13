@@ -14,6 +14,7 @@ config.misc.firstrun = ConfigBoolean(default=True)
 config.misc.languageselected = ConfigBoolean(default=True)
 config.misc.videowizardenabled = ConfigBoolean(default=True)
 
+
 class StartWizard(WizardLanguage, Rc):
 	def __init__(self, session, silent=True, showSteps=False, neededTag=None):
 		self.xmlfile = ["startwizard.xml"]
@@ -32,6 +33,7 @@ class StartWizard(WizardLanguage, Rc):
 		config.misc.firstrun.value = 0
 		config.misc.firstrun.save()
 		configfile.save()
+
 
 wizardManager.registerWizard(VideoWizard, config.misc.videowizardenabled.value, priority=5)
 wizardManager.registerWizard(LanguageWizard, config.misc.languageselected.value, priority=10)

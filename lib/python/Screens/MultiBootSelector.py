@@ -69,7 +69,6 @@ class MultiBootSelector(Screen, HelpableScreen):
 		Console().ePopen("mount %s %s" % (SystemInfo["MBbootdevice"], self.tmp_dir))
 		self.callLater(self.getImagelist)
 
-
 	def getImagelist(self):
 		self.imagedict = GetImagelist()
 		list = []

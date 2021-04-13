@@ -3,6 +3,7 @@ from Screens.Screen import Screen
 from Components.ActionMap import ActionMap
 from Components.ScrollLabel import ScrollLabel
 
+
 class Console(Screen):
 	def __init__(self, session, title="Console", cmdlist=None, finishedCallback=None, closeOnSuccess=False):
 		Screen.__init__(self, session)

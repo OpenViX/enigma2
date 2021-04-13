@@ -399,13 +399,16 @@ class VideoEnhancementPreview(Screen, ConfigListScreen):
 		from Screens.Setup import SetupSummary
 		return SetupSummary
 
+
 def videoEnhancementSetupMain(session, **kwargs):
 	session.open(VideoEnhancementSetup)
+
 
 def startSetup(menuid):
 	if menuid != "av":
 		return []
 	return [(_("Video enhancement"), videoEnhancementSetupMain, "videoenhancement_setup", None)]
+
 
 def Plugins(**kwargs):
 	list = []

@@ -94,6 +94,7 @@ class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceNumberSe
 	def createSetup(self):
 		oldPIG = config.epgselection.grid.pig.value
 		oldNumberButtonsMode = config.epgselection.grid.number_buttons_mode.value
+
 		def onClose(test=None):
 			if oldPIG != config.epgselection.grid.pig.value or oldNumberButtonsMode != config.epgselection.grid.number_buttons_mode.value:
 				# skin needs changing - we have to reopen

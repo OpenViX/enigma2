@@ -18,6 +18,7 @@ from Components.AVSwitch import iAVSwitch
 
 resolutionlabel = None
 
+
 class VideoSetup(ConfigListScreen, Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
@@ -227,6 +228,7 @@ class VideoSetup(ConfigListScreen, Screen):
 		else:
 			self.keySave()
 
+
 class AutoVideoModeLabel(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
@@ -245,8 +247,10 @@ class AutoVideoModeLabel(Screen):
 			idx += 4
 			self.hideTimer.start(idx * 1000, True)
 
+
 previous = None
 isDedicated3D = False
+
 
 def applySettings(mode=config.osd.threeDmode.value, znorm=int(config.osd.threeDznorm.value)):
 	global previous, isDedicated3D
@@ -259,6 +263,7 @@ def applySettings(mode=config.osd.threeDmode.value, znorm=int(config.osd.threeDz
 			previous = (mode, znorm)
 		except:
 			return
+
 
 class AutoVideoMode(Screen):
 	def __init__(self, session):
@@ -511,6 +516,7 @@ class AutoVideoMode(Screen):
 
 		self.delay = False
 		self.detecttimer.stop()
+
 
 def autostart(session):
 	global resolutionlabel

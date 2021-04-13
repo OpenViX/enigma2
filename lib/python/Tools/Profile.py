@@ -31,6 +31,7 @@ try:
 except IOError:
 	print "[Profile] WARNING: couldn't open profile file!"
 
+
 def profile(id):
 	now = time.time() - profile_start
 
@@ -68,6 +69,7 @@ def profile(id):
 				f.close()
 			except IOError:
 				pass
+
 
 def profile_final():
 	global profile_file

@@ -24,6 +24,7 @@ IOC_DIRSHIFT = IOC_SIZESHIFT + IOC_SIZEBITS
 
 IOC_READ = 2L
 
+
 def EVIOCGNAME(length):
 	return (IOC_READ << IOC_DIRSHIFT) | (length << IOC_SIZESHIFT) | (0x45 << IOC_TYPESHIFT) | (0x06 << IOC_NRSHIFT)
 
@@ -53,7 +54,6 @@ class inputDevices:
 				devtype = self.getInputDeviceType(self.name)
 				print("[InputDevice] Found: evdev='%s', name='%s', type='%s'" % (evdev, self.name, devtype))
 				self.Devices[evdev] = {'name': self.name, 'type': devtype, 'enabled': False, 'configuredName': None}
-
 
 	def getInputDeviceType(self, name):
 		if "remote control" in str(name).lower():
@@ -251,11 +251,13 @@ class InitInputDevices:
 			print("[RCRemap] Error: Unexpected error opening remote control file '%s'! (%s)" % (filename, err))
 		return domRemote
 
+
 iInputDevices = inputDevices()
 
 
 config.plugins.remotecontroltype = ConfigSubsection()
 config.plugins.remotecontroltype.rctype = ConfigInteger(default=0)
+
 
 class RcTypeControl():
 	def __init__(self):
@@ -286,5 +288,6 @@ class RcTypeControl():
 			with open("/proc/stb/ir/rc/type", "r") as fd:
 				rc = fd.read().strip()
 		return int(rc)
+
 
 iRcTypeControl = RcTypeControl()

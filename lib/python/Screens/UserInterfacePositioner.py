@@ -13,8 +13,10 @@ from os import access, R_OK
 
 from boxbranding import getBoxType
 
+
 def getFilePath(setting):
 	return "/proc/stb/fb/dst_%s" % (setting)
+
 
 def setPositionParameter(parameter, configElement):
 	f = open(getFilePath(parameter), "w")
@@ -24,6 +26,7 @@ def setPositionParameter(parameter, configElement):
 		f = open(getFilePath("apply"), "w")
 		f.write('1')
 		f.close()
+
 
 def InitOsd():
 	SystemInfo["CanChange3DOsd"] = (access('/proc/stb/fb/3dmode', R_OK) or access('/proc/stb/fb/primary/3d', R_OK)) and True or False
@@ -54,6 +57,7 @@ def InitOsd():
 			f.write('%d' % int(configElement.value))
 			f.close()
 	config.osd.threeDznorm.addNotifier(set3DZnorm)
+
 
 def InitOsdPosition():
 	SystemInfo["CanChangeOsdAlpha"] = access('/proc/stb/video/alpha', R_OK) and True or False

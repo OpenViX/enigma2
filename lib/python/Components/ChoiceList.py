@@ -5,9 +5,11 @@ from Tools.LoadPixmap import LoadPixmap
 from Tools.Directories import fileExists
 import skin
 
+
 def row_delta_y():
 	font = skin.fonts["ChoiceList"]
 	return (int(font[2]) - int(font[1])) / 2
+
 
 def ChoiceEntryComponent(key=None, text=["--"]):
 	res = [text]
@@ -33,6 +35,7 @@ def ChoiceEntryComponent(key=None, text=["--"]):
 				x, y, w, h = skin.parameters.get("ChoicelistIcon", (skin.applySkinFactor(5), skin.applySkinFactor(0), png.size().width(), png.size().height()))
 				res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, x, y, w, h, png))
 	return res
+
 
 class ChoiceList(MenuList):
 	def __init__(self, list, selection=0, enableWrapAround=False):

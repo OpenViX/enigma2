@@ -37,6 +37,7 @@ projects = [
 ]
 cachedProjects = {}
 
+
 def readGithubCommitLogsSoftwareUpdate():
 	global ImageVer
 	gitstart = True
@@ -94,6 +95,7 @@ def readGithubCommitLogsSoftwareUpdate():
 		print '[GitCommitLog] The commit log cannot be retrieved at the moment - please try again later.', err
 		commitlog += _("The commit log cannot be retrieved at the moment - please try again later.")
 	return commitlog
+
 
 def readGithubCommitLogs():
 	global ImageVer
@@ -160,18 +162,23 @@ def readGithubCommitLogs():
 		commitlog += _("The commit log cannot be retrieved at the moment - please try again later.")
 	return commitlog
 
+
 def getScreenTitle():
 	return projects[project][1]
+
 
 def left():
 	global project
 	project = project == 0 and len(projects) - 1 or project - 1
 
+
 def right():
 	global project
 	project = project != len(projects) - 1 and project + 1 or 0
 
+
 gitcommitinfo = modules[__name__]
+
 
 class CommitInfo(Screen):
 	def __init__(self, session):

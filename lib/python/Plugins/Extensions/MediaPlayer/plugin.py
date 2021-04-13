@@ -42,6 +42,7 @@ class MyPlayList(PlayList):
 		self.currPlaying = -1
 		self.oldCurrPlaying = -1
 
+
 class MediaPixmap(Pixmap):
 	def __init__(self):
 		Pixmap.__init__(self)
@@ -96,11 +97,13 @@ class MediaPixmap(Pixmap):
 		self.coverArtFileName = "/tmp/.id3coverart"
 		self.picload.startDecode(self.coverArtFileName)
 
+
 class MediaPlayerInfoBar(Screen):
 
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.skinName = "MoviePlayer"
+
 
 class MediaPlayer(Screen, InfoBarBase, InfoBarScreenSaver, InfoBarSeek, InfoBarAudioSelection, InfoBarCueSheetSupport, InfoBarNotifications, InfoBarSubtitleSupport, HelpableScreen):
 	ALLOW_SUSPEND = True
@@ -1130,6 +1133,7 @@ class MediaPlayer(Screen, InfoBarBase, InfoBarScreenSaver, InfoBarSeek, InfoBarA
 			else:
 				self.switchToFileList()
 
+
 class MediaPlayerLCDScreen(Screen):
 	skin = (
 	"""<screen name="MediaPlayerLCDScreen" position="0,0" size="132,64" id="1">
@@ -1162,17 +1166,21 @@ class MediaPlayerLCDScreen(Screen):
 		elif line == 4:
 			self["text4"].setText(text)
 
+
 def mainCheckTimeshiftCallback(session, answer):
 	if answer:
 		session.open(MediaPlayer)
 
+
 def main(session, **kwargs):
 	InfoBar.instance.checkTimeshiftRunning(boundFunction(mainCheckTimeshiftCallback, session))
+
 
 def menu(menuid, **kwargs):
 	if menuid == "mainmenu" and config.mediaplayer.onMainMenu.value:
 		return [(_("Media player"), main, "media_player", 45)]
 	return []
+
 
 def filescan_open(list, session, **kwargs):
 	from enigma import eServiceReference
@@ -1192,10 +1200,12 @@ def filescan_open(list, session, **kwargs):
 	mp.changeEntry(0)
 	mp.switchToPlayList()
 
+
 def audioCD_open(list, session, **kwargs):
 	mp = session.open(MediaPlayer)
 	mp.cdAudioTrackFiles = [f.path for f in list]
 	mp.playAudioCD()
+
 
 def movielist_open(list, session, **kwargs):
 	if not list:
@@ -1214,6 +1224,7 @@ def movielist_open(list, session, **kwargs):
 			path += '/'
 		config.movielist.last_videodir.value = path
 		InfoBar.instance.showMovies(eServiceReference(stype, 0, f.path))
+
 
 def filescan(**kwargs):
 	from Components.Scanner import Scanner, ScanPath
@@ -1254,7 +1265,10 @@ def filescan(**kwargs):
 		),
 		]
 
+
 from Plugins.Plugin import PluginDescriptor
+
+
 def Plugins(**kwargs):
 	return [
 		PluginDescriptor(name=_("Media player"), description=_("Play back media files"), where=PluginDescriptor.WHERE_PLUGINMENU, needsRestart=False, fnc=main),

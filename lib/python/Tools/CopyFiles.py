@@ -4,6 +4,7 @@ from enigma import eTimer
 from os import path
 from shutil import rmtree, copy2, move
 
+
 class DeleteFolderTask(PythonTask):
 	def openFiles(self, fileList):
 		self.fileList = fileList
@@ -18,17 +19,20 @@ class DeleteFolderTask(PythonTask):
 		if errors:
 			raise errors[0]
 
+
 class CopyFileJob(Job):
 	def __init__(self, srcfile, destfile, name):
 		Job.__init__(self, _("Copying files"))
 		cmdline = 'cp -Rf "%s" "%s"' % (srcfile, destfile)
 		AddFileProcessTask(self, cmdline, srcfile, destfile, name)
 
+
 class MoveFileJob(Job):
 	def __init__(self, srcfile, destfile, name):
 		Job.__init__(self, _("Moving files"))
 		cmdline = 'mv -f "%s" "%s"' % (srcfile, destfile)
 		AddFileProcessTask(self, cmdline, srcfile, destfile, name)
+
 
 class AddFileProcessTask(Task):
 	def __init__(self, job, cmdline, srcfile, destfile, name):
@@ -62,12 +66,14 @@ class DownloadProcessTask(Job):
 		Job.__init__(self, _("%s") % file)
 		DownloadTask(self, url, filename, **kwargs)
 
+
 class DownloaderPostcondition(Condition):
 	def check(self, task):
 		return task.returncode == 0
 
 	def getErrorMessage(self, task):
 		return self.error_message
+
 
 class DownloadTask(Task):
 	def __init__(self, job, url, path, **kwargs):
@@ -122,12 +128,14 @@ class DownloadTask(Task):
 		else:
 			Task.processFinished(self, 0)
 
+
 def copyFiles(fileList, name):
 	for src, dst in fileList:
 		if path.isdir(src) or int(path.getsize(src)) / 1000 / 1000 > 100:
 			JobManager.AddJob(CopyFileJob(src, dst, name))
 		else:
 			copy2(src, dst)
+
 
 def moveFiles(fileList, name):
 	for src, dst in fileList:
@@ -136,11 +144,13 @@ def moveFiles(fileList, name):
 		else:
 			move(src, dst)
 
+
 def deleteFiles(fileList, name):
 	job = Job(_("Deleting files"))
 	task = DeleteFolderTask(job, name)
 	task.openFiles(fileList)
 	JobManager.AddJob(job)
+
 
 def downloadFile(url, file_name, sel, **kwargs):
 	JobManager.AddJob(DownloadProcessTask(url, file_name, sel, **kwargs))

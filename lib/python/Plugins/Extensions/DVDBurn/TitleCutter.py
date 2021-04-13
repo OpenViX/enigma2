@@ -59,6 +59,7 @@ class TitleCutter(CutListEditor):
 		self.session.nav.stopService()
 		self.close(self.cut_list[:])
 
+
 class CutlistReader(TitleCutter):
 	skin = """
 		<screen position="0,0" size="720,576">

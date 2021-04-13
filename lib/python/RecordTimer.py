@@ -40,6 +40,8 @@ wasrec_lock = threading.Lock()
 # Parses an event, and returns a (begin, end, name, duration, eit)-tuple.
 # begin and end include padding (if set in config)
 # If service is supplied, end will also include any split program spanning adjustment (if set in config)
+
+
 def parseEvent(event, description=True, service=None):
 	if description:
 		name = event.getEventName()
@@ -69,6 +71,7 @@ def parseEvent(event, description=True, service=None):
 	end += config.recording.margin_after.value * 60
 	return (begin, end, name, description, eit)
 
+
 class AFTEREVENT:
 	def __init__(self):
 		pass
@@ -77,6 +80,7 @@ class AFTEREVENT:
 	STANDBY = 1
 	DEEPSTANDBY = 2
 	AUTO = 3
+
 
 def findSafeRecordPath(dirname):
 	if not dirname:
@@ -94,6 +98,7 @@ def findSafeRecordPath(dirname):
 			print '[RecordTimer] Failed to create dir "%s":' % dirname, ex
 			return None
 	return dirname
+
 
 # This code is for use by hardware with a stb device file which, when
 # non-zero, can display a visual indication on the front-panel that
@@ -113,6 +118,8 @@ from boxbranding import getBoxType
 SID_code_states = SID_symbol_states.setdefault(getBoxType(), (None, 0))
 
 n_recordings = 0  # Must be when we start running...
+
+
 def SetIconDisplay(nrec):
 	if SID_code_states[0] == None:  # Not the code for us
 		return
@@ -158,6 +165,7 @@ def RecordingsState(alter):
 	SetIconDisplay(n_recordings)
 	return
 
+
 RecordingsState(0)       # Initialize
 
 # type 1 = digital television service
@@ -174,6 +182,8 @@ service_types_tv = '1:7:1:0:0:0:0:0:0:0:(type == 1) || (type == 17) || (type == 
 wasRecTimerWakeup = False
 
 # please do not translate log messages
+
+
 class RecordTimerEntry(TimerEntry, object):
 	def __init__(self, serviceref, begin, end, name, description, eit, disabled=False, justplay=False, afterEvent=AFTEREVENT.AUTO, checkOldTimers=False, dirname=None, tags=None, descramble='notset', record_ecm='notset', isAutoTimer=False, always_zap=False, rename_repeat=True, conflict_detection=True, pipzap=False, autoTimerId=None):
 		TimerEntry.__init__(self, int(begin), int(end))
@@ -772,6 +782,7 @@ class RecordTimerEntry(TimerEntry, object):
 			#if self.justplay or self.always_zap:
 			#	choice.insert(2, (_("Don't zap"), "continue"))
 			choice.insert(2, (_("Don't zap"), "continue"))
+
 			def zapAction(choice):
 				start_zap = True
 				if choice:
@@ -897,6 +908,7 @@ class RecordTimerEntry(TimerEntry, object):
 
 	record_service = property(lambda self: self.__record_service, setRecordService)
 
+
 def createTimer(xml):
 	begin = int(xml.get("begin"))
 	end = int(xml.get("end"))
@@ -953,6 +965,7 @@ def createTimer(xml):
 		entry.log_entries.append((time, code, msg))
 
 	return entry
+
 
 class RecordTimer(Timer):
 	def __init__(self):

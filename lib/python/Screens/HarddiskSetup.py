@@ -109,6 +109,8 @@ class HarddiskSelection(Screen):
 			self.close(True)
 
 # This is actually just HarddiskSelection but with correct type
+
+
 class HarddiskFsckSelection(HarddiskSelection):
 	def __init__(self, session):
 		HarddiskSelection.__init__(self, session)

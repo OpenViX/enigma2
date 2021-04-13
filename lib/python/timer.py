@@ -151,6 +151,7 @@ class TimerEntry:
 	def enable(self):
 		self.disabled = False
 
+
 class Timer:
 	# the time between "polls". We do this because
 	# we want to account for time jumps etc.

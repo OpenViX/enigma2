@@ -11,6 +11,7 @@ from Screens.HelpMenu import HelpableScreen
 from time import localtime, mktime, strftime
 from datetime import datetime
 
+
 class TimerEntryBase(Setup):
 	def __init__(self, session, timer, setup):
 		# Need to create some variables before Setup reads setup.xml
@@ -176,6 +177,7 @@ class TimerEntryBase(Setup):
 		for ent in self.list:
 			if ent[1] is conf:
 				self["config"].invalidate(ent)
+
 
 class TimerLogBase(Screen, HelpableScreen):
 	def __init__(self, session, timer):

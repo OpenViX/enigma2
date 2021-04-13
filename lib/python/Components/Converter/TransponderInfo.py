@@ -7,6 +7,7 @@ from Tools.Transponder import ConvertToHumanReadable, getChannelNumber
 from Components.NimManager import nimmanager
 import Screens.InfoBar
 
+
 class TransponderInfo(Converter, object):
 	def __init__(self, type):
 		Converter.__init__(self, type)
