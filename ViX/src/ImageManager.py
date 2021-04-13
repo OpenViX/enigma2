@@ -381,7 +381,7 @@ class VIXImageManager(Screen):
 		print("ImageManager", currentimageslot, self.imagelist)
 		for x in range(1, HIslot):
 			choices.append(((_("slot%s - %s (current image)") if x == currentimageslot else _("slot%s - %s")) % (x, imagedict[x]["imagename"]), (x)))
-		self.session.openWithCallback(self.keyRestore2, MessageBox, self.message, list = choices, default = currentimageslot, simple = True)
+		self.session.openWithCallback(self.keyRestore2, MessageBox, self.message, list=choices, default=currentimageslot, simple=True)
 
 	def keyRestore2(self, retval):
 		if retval:
@@ -1450,7 +1450,7 @@ class ImageManagerDownload(Screen):
 
 	def showJobView(self, job):
 		Components.Task.job_manager.in_background = False
-		self.session.openWithCallback(self.JobViewCB, JobView, job, cancelable = False, backgroundable = True, afterEventChangeable = False, afterEvent = "close")
+		self.session.openWithCallback(self.JobViewCB, JobView, job, cancelable=False, backgroundable=True, afterEventChangeable=False, afterEvent="close")
 
 	def JobViewCB(self, in_background):
 		Components.Task.job_manager.in_background = in_background

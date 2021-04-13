@@ -155,8 +155,7 @@ def filescan_open(list, session, **kwargs):
 def filescan(**kwargs):
 	from Components.Scanner import Scanner, ScanPath
 	return Scanner(mimetypes=["application/x-debian-package"],
-				paths_to_scan=
-				[
+				paths_to_scan=[
 					ScanPath(path="ipk", with_subdirs=True),
 					ScanPath(path="", with_subdirs=False),
 				],

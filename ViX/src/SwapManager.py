@@ -296,7 +296,7 @@ class VIXSwap(Screen):
 		if len(candidates):
 			self.session.openWithCallback(self.doCSplace, ChoiceBox, title=_("Please select device to use as SWAP file location."), list=candidates)
 		else:
-			self.session.open(MessageBox, _("Sorry, no physical devices that supports SWAP attached. Can't create SWAP file on network or fat32 file-systems."), MessageBox.TYPE_INFO, timeout = 10)
+			self.session.open(MessageBox, _("Sorry, no physical devices that supports SWAP attached. Can't create SWAP file on network or fat32 file-systems."), MessageBox.TYPE_INFO, timeout=10)
 
 	def doCSplace(self, name):
 		if name:
