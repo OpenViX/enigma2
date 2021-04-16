@@ -1,4 +1,4 @@
-﻿from Screens.Screen import Screen
+from Screens.Screen import Screen
 from Components.GUIComponent import GUIComponent
 from Components.VariableText import VariableText
 from Components.ActionMap import ActionMap
