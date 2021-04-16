@@ -39,7 +39,7 @@ class FeedsStatusCheck:
 
 	def adapterAvailable(self): # Box has an adapter configured and active
 		for adapter in ('eth0', 'eth1', 'wlan0', 'wlan1', 'wlan2', 'wlan3', 'ra0'):
-			if about.getIfConfig(adapter).has_key('addr'):
+			if 'addr' in about.getIfConfig(adapter):
 				print "[OnlineUpdateCheck][adapterAvailable] PASSED"
 				return True
 		print "[OnlineUpdateCheck][adapterAvailable] FAILED"

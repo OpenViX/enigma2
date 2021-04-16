@@ -106,7 +106,7 @@ class Wizard(Screen):
 					if 'evaluation' in attrs:
 						self.wizard[self.lastStep]["config"]["evaluation"] = str(attrs.get('evaluation'))
 			elif name == "code":
-				self.async_code = attrs.has_key('async') and str(attrs.get('async')) == "yes"
+				self.async_code = 'async' in attrs and str(attrs.get('async')) == "yes"
 				if 'pos' in attrs and str(attrs.get('pos')) == "after":
 					self.codeafter = True
 				else:

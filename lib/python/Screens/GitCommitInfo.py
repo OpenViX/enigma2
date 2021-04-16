@@ -208,7 +208,7 @@ class CommitInfo(Screen):
 		self["AboutScrollLabel"].setText(gitcommitinfo.readGithubCommitLogs().encode("utf8", errors="ignore"))
 
 	def updateCommitLogs(self):
-		if gitcommitinfo.cachedProjects.has_key(gitcommitinfo.getScreenTitle()):
+		if gitcommitinfo.getScreenTitle() in gitcommitinfo.cachedProjects:
 			self.setTitle(gitcommitinfo.getScreenTitle())
 			self["AboutScrollLabel"].setText(gitcommitinfo.cachedProjects[gitcommitinfo.getScreenTitle()])
 		else:
