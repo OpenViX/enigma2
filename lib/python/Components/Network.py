@@ -313,8 +313,8 @@ class Network:
 		return self.ifaces.keys()
 
 	def getAdapterAttribute(self, iface, attribute):
-		if self.ifaces.has_key(iface):
-			if self.ifaces[iface].has_key(attribute):
+		if iface in self.ifaces:
+			if attribute in self.ifaces[iface]:
 				return self.ifaces[iface][attribute]
 		return None
 
