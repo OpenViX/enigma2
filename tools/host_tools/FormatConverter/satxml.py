@@ -12,7 +12,7 @@ class satxml(datasource):
 		datasource.__init__(self)
 
 		if not os.path.isfile(filename):
-			print "File %s doesn't exist. Creating it." % filename
+			print("File %s doesn't exist. Creating it." % filename)
 
 	def getStatus(self):
 		text = datasource.getStatus(self)
