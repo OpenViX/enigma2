@@ -155,7 +155,7 @@ class AVSwitch:
 			except IOError:
 				print("[AVSwitch] GigaBlue writing initial videomode to /etc/videomode failed.")
 		try:
-			set_mode = modes.get(int(rate[:2]))
+			set_mode = modes.get(int(rate))
 		except Exception:  # Don't support 50Hz, 60Hz for 1080p.
 			set_mode = mode_50
 		print("[AVSwitch] set mode is %s" % set_mode)
