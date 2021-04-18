@@ -119,7 +119,6 @@
 		<font filename="andale.ttf" name="Fixed" scale="100"/>
 		<font filename="tuxtxt.ttf" name="Console" scale="100"/>
 		<font name="DejaVuSans" filename="DejaVuSans.ttf" scale="100" />
-		<alias name="VirtualKeyBoard" font="DejaVuSans" size="28" height="45" />
 		<!-- Arabic and Thai char set replacement -->
 		<font filename="ae_AlMateen.ttf" name="Replacement" scale="100" replacement="1"/>
 		<!-- Aliases that should be present -->
