@@ -571,16 +571,16 @@ class SystemNetworkInfo(Screen):
 		self.AboutText = ""
 		self.iface = "eth0"
 		eth0 = about.getIfConfig('eth0')
-		if eth0.has_key('addr'):
+		if 'addr' in eth0:
 			self.iface = 'eth0'
 		eth1 = about.getIfConfig('eth1')
-		if eth1.has_key('addr'):
+		if 'addr' in eth1:
 			self.iface = 'eth1'
 		ra0 = about.getIfConfig('ra0')
-		if ra0.has_key('addr'):
+		if 'addr' in ra0:
 			self.iface = 'ra0'
 		wlan0 = about.getIfConfig('wlan0')
-		if wlan0.has_key('addr'):
+		if 'addr' in wlan0:
 			self.iface = 'wlan0'
 		self.AboutText += iNetwork.getFriendlyAdapterName(self.iface) + ":" + iNetwork.getFriendlyAdapterDescription(self.iface) + "\n"
 
@@ -643,18 +643,18 @@ class SystemNetworkInfo(Screen):
 				netspeed += line
 				return str(netspeed)
 
-		if eth0.has_key('addr'):
-			if eth0.has_key('ifname'):
+		if 'addr' in eth0:
+			if 'ifname' in eth0:
 				self.AboutText += _('Interface: /dev/' + eth0['ifname'] + "\n")
 			self.AboutText += _("Network Speed:") + netspeed() + "\n"
-			if eth0.has_key('hwaddr'):
+			if 'hwaddr' in eth0:
 				self.AboutText += _("MAC:") + eth0['hwaddr'] + "\n"
 			self.AboutText += "\n" + _("IP:") + eth0['addr'] + "\n"
 			self.AboutText += _("Gateway:") + gateway() + "\n"
 			self.AboutText += nameserver() + "\n"
-			if eth0.has_key('netmask'):
+			if 'netmask' in eth0:
 				self.AboutText += _("Netmask:") + eth0['netmask'] + "\n"
-			if eth0.has_key('brdaddr'):
+			if 'brdaddr' in eth0:
 				if eth0['brdaddr'] == "0.0.0.0":
 					self.AboutText += _('Broadcast:') + _("DHCP is off") + "\n"
 				else:
@@ -663,18 +663,18 @@ class SystemNetworkInfo(Screen):
 			self.iface = 'eth0'
 
 		eth1 = about.getIfConfig('eth1')
-		if eth1.has_key('addr'):
-			if eth1.has_key('ifname'):
+		if 'addr' in eth1:
+			if 'ifname' in eth1:
 				self.AboutText += _('Interface:/dev/' + eth1['ifname'] + "\n")
 			self.AboutText += _("NetSpeed:") + netspeed_eth1() + "\n"
-			if eth1.has_key('hwaddr'):
+			if 'hwaddr' in eth1:
 				self.AboutText += _("MAC:") + eth1['hwaddr'] + "\n"
 			self.AboutText += "\n" + _("IP:") + eth1['addr'] + "\n"
 			self.AboutText += _("Gateway:") + gateway() + "\n"
 			self.AboutText += nameserver() + "\n"
-			if eth1.has_key('netmask'):
+			if 'netmask' in eth1:
 				self.AboutText += _("Netmask:") + eth1['netmask'] + "\n"
-			if eth1.has_key('brdaddr'):
+			if 'brdaddr' in eth1:
 				if eth1['brdaddr'] == "0.0.0.0":
 					self.AboutText += _('Broadcast:') + _("DHCP is off") + "\n"
 				else:
@@ -683,30 +683,30 @@ class SystemNetworkInfo(Screen):
 			self.iface = 'eth1'
 
 		ra0 = about.getIfConfig('ra0')
-		if ra0.has_key('addr'):
-			if ra0.has_key('ifname'):
+		if 'addr' in ra0:
+			if 'ifname' in ra0:
 				self.AboutText += _('Interface:/dev/') + ra0['ifname'] + "\n"
 			self.AboutText += "\n" + _("IP:") + ra0['addr'] + "\n"
-			if ra0.has_key('netmask'):
+			if 'netmask' in ra0:
 				self.AboutText += _("Netmask:") + ra0['netmask'] + "\n"
-			if ra0.has_key('brdaddr'):
+			if 'brdaddr' in ra0:
 				self.AboutText += _("Broadcast:") + ra0['brdaddr'] + "\n"
-			if ra0.has_key('hwaddr'):
+			if 'hwaddr' in ra0:
 				self.AboutText += _("MAC:") + ra0['hwaddr'] + "\n"
 			self.iface = 'ra0'
 
 		wlan0 = about.getIfConfig('wlan0')
-		if wlan0.has_key('addr'):
-			if wlan0.has_key('ifname'):
+		if 'addr' in wlan0:
+			if 'ifname' in wlan0:
 				self.AboutText += _('Interface:/dev/') + wlan0['ifname'] + "\n"
-			if wlan0.has_key('hwaddr'):
+			if 'hwaddr' in wlan0:
 				self.AboutText += _("MAC:") + wlan0['hwaddr'] + "\n"
 			self.AboutText += "\n" + _("IP:") + wlan0['addr'] + "\n"
 			self.AboutText += _("Gateway:") + gateway() + "\n"
 			self.AboutText += nameserver() + "\n"
-			if wlan0.has_key('netmask'):
+			if 'netmask' in wlan0:
 				self.AboutText += _("Netmask:") + wlan0['netmask'] + "\n"
-			if wlan0.has_key('brdaddr'):
+			if 'brdaddr' in wlan0:
 				if wlan0['brdaddr'] == "0.0.0.0":
 					self.AboutText += _('Broadcast:') + _("DHCP is off") + "\n"
 				else:
@@ -746,24 +746,24 @@ class SystemNetworkInfo(Screen):
 							essid = _("No Connection")
 						else:
 							accesspoint = status[self.iface]["accesspoint"]
-						if self.has_key("BSSID"):
+						if "BSSID" in self:
 							self.AboutText += _('Accesspoint:') + accesspoint + '\n'
-						if self.has_key("ESSID"):
+						if "ESSID" in self:
 							self.AboutText += _('SSID:') + essid + '\n'
 
 						quality = status[self.iface]["quality"]
-						if self.has_key("quality"):
+						if "quality" in self:
 							self.AboutText += _('Link Quality:') + quality + '\n'
 
 						if status[self.iface]["bitrate"] == '0':
 							bitrate = _("Unsupported")
 						else:
 							bitrate = str(status[self.iface]["bitrate"]) + " Mb/s"
-						if self.has_key("bitrate"):
+						if "bitrate" in self:
 							self.AboutText += _('Bitrate:') + bitrate + '\n'
 
 						signal = status[self.iface]["signal"]
-						if self.has_key("signal"):
+						if "signal" in self:
 							self.AboutText += _('Signal Strength:') + signal + '\n'
 
 						if status[self.iface]["encryption"] == "off":
@@ -773,7 +773,7 @@ class SystemNetworkInfo(Screen):
 								encryption = _("Unsupported")
 						else:
 							encryption = _("Enabled")
-						if self.has_key("enc"):
+						if "enc" in self:
 							self.AboutText += _('Encryption:') + encryption + '\n'
 
 						if status[self.iface]["essid"] == "off" or status[self.iface]["accesspoint"] == "Not-Associated" or status[self.iface]["accesspoint"] is False:
