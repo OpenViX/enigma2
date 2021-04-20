@@ -878,7 +878,7 @@ class TimelineText(GUIComponent):
 				elif attrib == "backgroundColor":
 					self.backColor = parseColor(value).argb()
 				elif attrib == "borderWidth":
-					self.borderWidth = int(value)
+					self.borderWidth = parseScale(value)
 				elif attrib == "TimelineFont":
 					font = parseFont(value, ((1, 1), (1, 1)))
 					self.timelineFontName = font.family

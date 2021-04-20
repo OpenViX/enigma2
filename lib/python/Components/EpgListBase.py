@@ -7,6 +7,7 @@ from enigma import eEPGCache, eListbox, eListboxPythonMultiContent, eServiceRefe
 from Components.GUIComponent import GUIComponent
 from Tools.Alternatives import CompareWithAlternatives
 from Tools.Directories import SCOPE_CURRENT_SKIN, resolveFilename
+from skin import parseScale
 
 
 class EPGListBase(GUIComponent):
@@ -51,7 +52,7 @@ class EPGListBase(GUIComponent):
 			attribs = []
 			for (attrib, value) in self.skinAttributes:
 				if attrib == "itemHeight":
-					self.skinItemHeight = int(value)
+					self.skinItemHeight = parseScale(value)
 				elif attrib == "NumberOfRows": # for compatibility with ATV skins
 					self.numberOfRows = int(value)
 				else:

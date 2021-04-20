@@ -61,7 +61,7 @@ class EPGBouquetList(GUIComponent):
 				elif attrib == "borderColor":
 					self.borderColor = parseColor(value).argb()
 				elif attrib == "borderWidth":
-					self.borderWidth = int(value)
+					self.borderWidth = parseScale(value)
 				elif attrib == "itemHeight":
 					self.itemHeight = parseScale(value)
 				else:
