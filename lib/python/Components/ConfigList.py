@@ -19,7 +19,7 @@ class ConfigList(GUIComponent, object):
 		self.l = eListboxPythonConfigContent()
 		seperation = parameters.get("ConfigListSeperator", applySkinFactor(200))
 		self.l.setSeperation(seperation)
-		height, space = parameters.get("ConfigListSlider", (applySkinFactor(17), applySkinFactor(0)))
+		height, space = parameters.get("ConfigListSlider", applySkinFactor(17, 0))
 		self.l.setSlider(height, space)
 		self.timer = eTimer()
 		self.list = list
