@@ -20,7 +20,6 @@ from Screens.SoftwareUpdate import UpdatePlugin
 from Tools.Directories import fileExists, fileCheck, pathExists
 from Tools.Multiboot import GetCurrentImage, GetCurrentImageMode
 from Tools.StbHardware import getFPVersion
-import skin
 
 
 class About(Screen):
