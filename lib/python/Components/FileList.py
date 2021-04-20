@@ -6,7 +6,7 @@ from Tools.Directories import SCOPE_ACTIVE_SKIN, resolveFilename, fileExists, pa
 from enigma import RT_HALIGN_LEFT, eListboxPythonMultiContent, \
 	eServiceReference, eServiceCenter, gFont
 from Tools.LoadPixmap import LoadPixmap
-rom skin import applySkinFactor, fonts, parameters
+from skin import applySkinFactor, fonts, parameters
 
 EXTENSIONS = {
 		"dts": "music",
