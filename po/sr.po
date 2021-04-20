@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-21 07:33+0000\n"
+"POT-Creation-Date: 2021-04-18 09:59+0430\n"
 "PO-Revision-Date: 2014-01-22 23:31+0100\n"
 "Last-Translator: Andy Blackburn <andyblac@icloud.com>\n"
 "Language-Team: veselin & majevica CRNABERZA <jovanovic@gmx.ch>\n"
@@ -58,6 +58,11 @@ msgstr ""
 "\n"
 "Uredi poboljšanu izvornu adresu"
 
+msgid ""
+"\n"
+"It contains other items."
+msgstr ""
+
 #
 #, fuzzy, python-format
 msgid ""
@@ -66,6 +71,16 @@ msgid ""
 msgstr ""
 "\n"
 "Izvrši proširenja i dodatke za vaš drimboks"
+
+msgid ""
+"\n"
+"One is a directory that isn't empty."
+msgid_plural ""
+"\n"
+"There are directories that aren't empty."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 #
 #, fuzzy, python-format
@@ -923,6 +938,10 @@ msgstr ""
 msgid "%b=%d "
 msgstr ""
 
+#, python-format
+msgid "%d"
+msgstr ""
+
 #
 #, fuzzy
 msgid "%d %B %Y"
@@ -979,6 +998,14 @@ msgstr[1] ""
 msgstr[2] ""
 
 #
+#, fuzzy, python-format
+msgid "%d Recording"
+msgid_plural "%d Recordings"
+msgstr[0] "Snimanje"
+msgstr[1] "Snimanje"
+msgstr[2] "Snimanje"
+
+#
 #. TRANSLATORS: Intermediate scanning result, '%d' channel(s) have been found so far
 #, fuzzy, python-format
 msgid "%d channel found"
@@ -999,6 +1026,10 @@ msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
+#, python-format
+msgid "%d items"
+msgstr ""
+
 #
 #, fuzzy, python-format
 msgid "%d job is running in the background!"
@@ -1014,6 +1045,14 @@ msgstr "%d radnje se obavljaju u pozadini"
 
 #, python-format
 msgid "%d kB"
+msgstr ""
+
+#, python-format
+msgid "%d marked item"
+msgstr ""
+
+#, python-format
+msgid "%d marked items"
 msgstr ""
 
 #
@@ -1051,6 +1090,10 @@ msgid_plural "%d pixels wide"
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+
+#, python-format
+msgid "%d sec"
+msgstr ""
 
 #, python-format
 msgid "%d second"
@@ -1204,6 +1247,10 @@ msgstr "%s (%s)\n"
 msgid "%s - %s (%s%d min)"
 msgstr "%d min"
 
+#, python-format
+msgid "%s files cannot be bulk renamed"
+msgstr ""
+
 #. TRANSLATORS: The satellite with name '%s' is no longer used after a configuration change. The user is asked whether or not the satellite should be deleted.
 #, python-format
 msgid "%s is no longer used. Should it be deleted?"
@@ -1230,6 +1277,10 @@ msgid "%s%d Min"
 msgstr "%d min"
 
 #, python-format
+msgid "%s%s(Default: %s)"
+msgstr ""
+
+#, python-format
 msgid "%s/%s: %s"
 msgstr ""
 
@@ -1241,9 +1292,10 @@ msgstr ""
 msgid "%s?"
 msgstr ""
 
-#, python-format
-msgid "'%s' contains %d file(s) and %d sub-directories.\n"
-msgstr ""
+#
+#, fuzzy, python-format
+msgid "'%s' already exists"
+msgstr "Putanja %s već postoji."
 
 msgid "'Network peer' automatically detects other Enigma2 receivers on the local network. You can also manually enter the URL or IP address."
 msgstr ""
@@ -1312,12 +1364,10 @@ msgstr "* Dostupan samo ako je više interfejsa aktivno."
 msgid "* current animation"
 msgstr "Aktivirajte aktuelnu konfiguraciju"
 
-#, python-format
-msgid "** Setup error: '%s' section not found! **"
+msgid "+24 hours"
 msgstr ""
 
-#, python-format
-msgid "** Setup error: '%s' title is missing or blank!"
+msgid "-24 hours"
 msgstr ""
 
 msgid "-NO SERVICE\n"
@@ -1336,6 +1386,16 @@ msgstr ""
 
 msgid "/s"
 msgstr ""
+
+#
+#, fuzzy
+msgid "0"
+msgstr "0"
+
+#
+#, fuzzy
+msgid "1,1"
+msgstr "1.1"
 
 #
 msgid "1.0"
@@ -1460,6 +1520,9 @@ msgstr "2"
 msgid "25"
 msgstr "2"
 
+msgid "2678400000"
+msgstr ""
+
 msgid "29.97"
 msgstr ""
 
@@ -1481,6 +1544,11 @@ msgstr ""
 
 msgid "3D Mode"
 msgstr ""
+
+#
+#, fuzzy
+msgid "3D Setup"
+msgstr "Podešavanje"
 
 #
 #, fuzzy
@@ -1595,10 +1663,6 @@ msgstr "<nepoznato>"
 
 msgid "=NO STREAM\n"
 msgstr ""
-
-#
-msgid "??"
-msgstr "??"
 
 #
 msgid "A"
@@ -1843,6 +1907,11 @@ msgid "Accept the current selection"
 msgstr "Aktivirajte aktuelnu konfiguraciju"
 
 #
+#, fuzzy
+msgid "Access extensions"
+msgstr "Rukuj proširenjima"
+
+#
 msgid "Accesspoint:"
 msgstr "Pristupna tačka:"
 
@@ -1938,6 +2007,11 @@ msgstr "Dodaj Tajmer"
 msgid "Add a record timer for current event"
 msgstr ""
 
+#
+#, fuzzy
+msgid "Add a record timer or an autotimer for current event"
+msgstr "Pomeri dole na naredni unos"
+
 msgid "Add a zap timer for current event"
 msgstr ""
 
@@ -1954,6 +2028,11 @@ msgstr "dodaj alternative"
 #
 #, fuzzy
 msgid "Add an autotimer for current event"
+msgstr "Pomeri dole na naredni unos"
+
+#
+#, fuzzy
+msgid "Add and edit a record timer for current event"
 msgstr "Pomeri dole na naredni unos"
 
 #
@@ -2033,6 +2112,11 @@ msgid "Add timer"
 msgstr "Dodaj Tajmer"
 
 #
+#, fuzzy
+msgid "Add timers"
+msgstr "Dodaj Tajmer"
+
+#
 msgid "Add title"
 msgstr "Dodaj naslov"
 
@@ -2049,14 +2133,21 @@ msgstr "Dodaj u favorite"
 msgid "Add to parental protection"
 msgstr "dodaj u roditeljsku zaštitu"
 
+#
+#, fuzzy
+msgid "Add/Edit an autotimer for current event"
+msgstr "Pomeri dole na naredni unos"
+
 msgid "Add/Remove timer for current event"
 msgstr ""
 
 msgid "Adding schedule..."
 msgstr ""
 
-msgid "Additional Info"
-msgstr ""
+#
+#, fuzzy
+msgid "Additional cable of motorized LNB"
+msgstr "drugi kabal od motorizovanog LNB-a"
 
 msgid "Additional motor options allow you to enter details from your motor's spec sheet so enigma can work out how long it will take to move the dish from one satellite to another satellite."
 msgstr ""
@@ -2072,6 +2163,9 @@ msgid "Adjust the color settings so that all the color shades are distinguishabl
 msgstr "Podesi postavke boje,tako da su sve senke boja raspoznatljive,ali izgledaju maksimalno zasićene.Ako ste zadovoljni rezultatom,pritisnite OK da zatvorite fino video-podešavanje,ili koristite numeričke tipke da izaberete druge test ekrane. "
 
 msgid "Adult Audience, Strong Violence 15+"
+msgstr ""
+
+msgid "Advance EPG to the following date and time"
 msgstr ""
 
 #
@@ -2196,6 +2290,9 @@ msgstr ""
 msgid "Allow 12bit"
 msgstr ""
 
+msgid "Allow fast skin reload"
+msgstr ""
+
 msgid "Allow subtitle language to equal audio language"
 msgstr ""
 
@@ -2205,10 +2302,13 @@ msgstr ""
 msgid "Allow unstable (experimental) updates"
 msgstr ""
 
-msgid "Allows the %s %s to read the stored EPG data regularly."
+msgid "Allows the %s %s to load the saved EPG data regularly."
 msgstr ""
 
-msgid "Allows the %s %s to store the EPG data regularly."
+msgid "Allows the %s %s to save the EPG data regularly."
+msgstr ""
+
+msgid "Allows the TV remote to be used to control the receiver."
 msgstr ""
 
 msgid "Allows you to adjust the amount of time the resolution infomation display on screen."
@@ -2221,9 +2321,6 @@ msgid "Allows you to enable/disable displaying icons on the front panel."
 msgstr ""
 
 msgid "Allows you to hide the extensions of known file types."
-msgstr ""
-
-msgid "Allows you to send a copy of the log to yourself."
 msgstr ""
 
 msgid "Allows you to set a schedule to import the EPG and channels list. The EPG and channels list will always be imported on reboot or GUI restart."
@@ -2259,16 +2356,6 @@ msgstr "pođi u pripravnost"
 #
 #, fuzzy
 msgid "Alternative"
-msgstr "dodaj alternative"
-
-#
-#, fuzzy
-msgid "Alternative 1"
-msgstr "dodaj alternative"
-
-#
-#, fuzzy
-msgid "Alternative 2"
 msgstr "dodaj alternative"
 
 msgid "Alternative numbering mode"
@@ -2314,7 +2401,7 @@ msgstr ""
 
 #
 #, fuzzy
-msgid "Android mode"
+msgid "Android Mode"
 msgstr "Autorski način"
 
 msgid "Angola"
@@ -2347,13 +2434,14 @@ msgstr "Arapski"
 msgid "Are You Sure ?"
 msgstr ""
 
-#, python-format
-msgid "Are you ready to install \"%s\" ?"
-msgstr ""
+#
+#, fuzzy, python-format
+msgid "Are you ready to install %s ?"
+msgstr "Da li ste sigurni da želite izaći iz ovog čarobnjaka?"
 
 #
 #, fuzzy, python-format
-msgid "Are you ready to remove \"%s\" ?"
+msgid "Are you ready to remove %s ?"
 msgstr "Da li ste sigurni da želite izaći iz ovog čarobnjaka?"
 
 #
@@ -2457,9 +2545,6 @@ msgstr ""
 msgid "Are you sure you want to save the EPG Cache to:\n"
 msgstr ""
 
-msgid "Are you sure you want to send this log:\n"
-msgstr ""
-
 #
 #, fuzzy, python-format
 msgid "Are you sure you want to update your %s %s ?"
@@ -2491,6 +2576,11 @@ msgstr ""
 msgid "Ask user (with default as 'yes')"
 msgstr ""
 
+#
+#, fuzzy
+msgid "Ask whether to stop movie"
+msgstr "Ponovite test"
+
 msgid "Aspect ratio"
 msgstr ""
 
@@ -2507,9 +2597,6 @@ msgstr "Dodeljeni kanali/Provajder:"
 msgid "At End:"
 msgstr ""
 
-msgid "Attach a file"
-msgstr ""
-
 msgid "Attention, this is repeated timer!\n"
 msgstr ""
 
@@ -2517,7 +2604,7 @@ msgstr ""
 msgid "Audio"
 msgstr "Zvučni PID"
 
-msgid "Audio & video"
+msgid "Audio & Video"
 msgstr ""
 
 msgid "Audio PID"
@@ -2552,6 +2639,9 @@ msgstr "Audio zapis(%s) format"
 #, fuzzy, python-format
 msgid "Audio track (%s) language"
 msgstr "Audio zapis (%s) jezik"
+
+msgid "Audio track selection, downmix and other audio options"
+msgstr ""
 
 #
 #, fuzzy
@@ -2637,8 +2727,18 @@ msgid "Auto volume level"
 msgstr ""
 
 #
+#, fuzzy
+msgid "AutoTimer List"
+msgstr "Auto fleš"
+
+#
 msgid "Automatic"
 msgstr "Automatski"
+
+#
+#, fuzzy
+msgid "Automatic Language"
+msgstr "Automatsko skeniranje "
 
 #
 msgid "Automatic Scan"
@@ -2652,8 +2752,10 @@ msgstr ""
 msgid "Automatic language"
 msgstr "Automatsko skeniranje "
 
-msgid "Automatic refresh"
-msgstr ""
+#
+#, fuzzy
+msgid "Automatic reload"
+msgstr "Automatsko skeniranje "
 
 #
 #, fuzzy
@@ -2672,6 +2774,9 @@ msgid "Automatic scan"
 msgstr ""
 
 msgid "Automatic settings backup"
+msgstr ""
+
+msgid "Automatically put the TV in standby whenever the receiver goes into standby or deep standby."
 msgstr ""
 
 msgid "Automatically start timeshift after"
@@ -2802,7 +2907,13 @@ msgstr ""
 msgid "Base time"
 msgstr "Početno vreme"
 
+msgid "Basic functions"
+msgstr ""
+
 msgid "Basque"
+msgstr ""
+
+msgid "Before sending the command to switch the TV to standby, the receiver tests if all the other devices plugged into TV are in standby. If they are not, the 'sourceactive' command will be sent to the TV instead of the 'standby' command."
 msgstr ""
 
 #
@@ -2868,6 +2979,12 @@ msgstr ""
 msgid "Black screen till locked"
 msgstr ""
 
+msgid "Blindscan"
+msgstr ""
+
+msgid "Blindscan terrestrial (if possible)"
+msgstr ""
+
 msgid "Blinking REC"
 msgstr ""
 
@@ -2879,6 +2996,12 @@ msgid "Block noise reduction"
 msgstr "Blokiraj smanjenje šuma"
 
 msgid "Blue"
+msgstr ""
+
+msgid "Blue button (long)"
+msgstr ""
+
+msgid "Blue button (short)"
 msgstr ""
 
 msgid "Blue long"
@@ -2991,9 +3114,6 @@ msgstr ""
 msgid "Bus: "
 msgstr "Bus:"
 
-msgid "Button"
-msgstr ""
-
 #
 #, fuzzy
 msgid "Button Setup"
@@ -3020,6 +3140,9 @@ msgid "Bytes received:"
 msgstr ""
 
 msgid "Bytes sent:"
+msgstr ""
+
+msgid "C"
 msgstr ""
 
 msgid "C-Band"
@@ -3070,9 +3193,6 @@ msgid "CCcam Share Info"
 msgstr ""
 
 msgid "CCcam Shares Info"
-msgstr ""
-
-msgid "CCcam info"
 msgstr ""
 
 msgid "CH"
@@ -3185,6 +3305,11 @@ msgstr "Izbor kanala"
 msgid "Cancel the selection"
 msgstr "Izbor kanala"
 
+#
+#, fuzzy
+msgid "Cancel timer creation / changes"
+msgstr "Izbor kanala"
+
 msgid "Cancelled upon user request"
 msgstr ""
 
@@ -3192,9 +3317,6 @@ msgstr ""
 #, fuzzy
 msgid "Cannot delete current image"
 msgstr "ovo snimanje"
-
-msgid "Cannot delete file"
-msgstr ""
 
 msgid "Cannot determine"
 msgstr ""
@@ -3249,6 +3371,12 @@ msgstr ""
 msgid "Central African Republic"
 msgstr ""
 
+msgid "Ch+ button"
+msgstr ""
+
+msgid "Ch- button"
+msgstr ""
+
 msgid "Chad"
 msgstr ""
 
@@ -3299,10 +3427,6 @@ msgstr ""
 msgid "Change the Colorspace from Auto to RGB"
 msgstr ""
 
-#, fuzzy
-msgid "Change to service"
-msgstr "Promeni servisni PIN"
-
 #
 msgid "Channel"
 msgstr "Kanal"
@@ -3317,6 +3441,11 @@ msgstr ""
 
 msgid "Channel List Context Menu"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Channel Selection"
+msgstr "Izbor kanala"
 
 #
 #, fuzzy
@@ -3452,9 +3581,10 @@ msgstr ""
 msgid "Chipset:\tHiSilicon %s\n"
 msgstr ""
 
-#, python-format
-msgid "Chipset: BCM%s"
-msgstr ""
+#
+#, fuzzy, python-format
+msgid "Chipset: %s"
+msgstr "Model:"
 
 msgid "Choose Bouquet"
 msgstr ""
@@ -3492,16 +3622,25 @@ msgstr ""
 msgid "Choose the location for crash and debug logs folder."
 msgstr ""
 
-msgid "Choose the location where the EPG data will be stored when the %s %s is shut down. The location must be available at boot time."
+msgid "Choose the location where the EPG data will be saved when the %s %s is shut down. The location must be available at boot time."
 msgstr ""
 
 msgid "Choose the name of the file that holds the EPG data when the %s %s is shut down. This can be handy to differentiate between several boxes."
+msgstr ""
+
+msgid "Choose the style of the second infobar. The 'Standard' view normally includes technical data. The 'Simple' view shows minimal technical data."
 msgstr ""
 
 msgid "Choose time interval to which the graphics will be rounded off."
 msgstr ""
 
 msgid "Choose what channel to select when the EPG opens."
+msgstr ""
+
+msgid "Choose what will be displayed when the 'EPG' button is pressed."
+msgstr ""
+
+msgid "Choose what will be displayed when the 'INFO' button is pressed."
 msgstr ""
 
 msgid "Choose what you want the '0' button to do when PIP is active."
@@ -3573,6 +3712,9 @@ msgstr "Čišćenje"
 msgid "Clear"
 msgstr "Obriši log"
 
+msgid "Clear HDMI-CEC fixed address"
+msgstr ""
+
 #
 msgid "Clear before scan"
 msgstr "Obriši pre skeniranja"
@@ -3586,6 +3728,11 @@ msgstr "Obriši log"
 
 #
 #, fuzzy
+msgid "Clear marks"
+msgstr "očisti Plejlistu"
+
+#
+#, fuzzy
 msgid "Clear playlist"
 msgstr "očisti Plejlistu"
 
@@ -3595,16 +3742,13 @@ msgstr ""
 
 #
 #, fuzzy
-msgid "Client Mode"
+msgid "Client Mode setup"
 msgstr "Iniciraj blok"
 
 #
 #, fuzzy
 msgid "Client mode"
 msgstr "Iniciraj blok"
-
-msgid "Client mode sets up this receiver to stream from another receiver. In this mode no local tuners will be available and channel lists, EPG, etc, will come from the remote receiver. All tuner settings will be cleared."
-msgstr ""
 
 msgid "Clients"
 msgstr ""
@@ -3623,13 +3767,8 @@ msgstr "Sačuvajte listu za reprodukciju kod izlaska "
 
 #
 #, fuzzy
-msgid "Close dialog box"
-msgstr "Sačuvajte listu za reprodukciju kod izlaska "
-
-#
-#, fuzzy
-msgid "Close number zap."
-msgstr "Telefonski broj"
+msgid "Close screen"
+msgstr "Zaštiti kanale"
 
 #
 msgid "Close title selection"
@@ -3646,6 +3785,11 @@ msgstr "Kod rata HP"
 
 msgid "Code rate LP"
 msgstr "Kod rata LP"
+
+#
+#, fuzzy
+msgid "Collection"
+msgstr "Ime kolekcije"
 
 #
 msgid "Collection name"
@@ -3679,6 +3823,9 @@ msgstr ""
 msgid "Command order"
 msgstr "Redosled komandi"
 
+msgid "Command the TV to switch to the correct HDMI input when zap timers activate."
+msgstr ""
+
 #
 #, fuzzy
 msgid "Command to run"
@@ -3695,11 +3842,13 @@ msgstr "Opšti interfejs"
 
 #
 #, fuzzy
-msgid "Common Setup Functions"
+msgid "Common Menu Actions"
 msgstr "Komunikacija"
 
-msgid "Common interface"
-msgstr ""
+#
+#, fuzzy
+msgid "Common Setup Actions"
+msgstr "Komunikacija"
 
 #
 #, fuzzy
@@ -3950,6 +4099,9 @@ msgid ""
 msgstr ""
 
 msgid "Configure the number of days old timers are kept before they are automatically removed from the timer list."
+msgstr ""
+
+msgid "Configure the number of days old timers' log details are kept before they're automatically removed."
 msgstr ""
 
 msgid "Configure the number of rows shown."
@@ -4230,6 +4382,46 @@ msgstr ""
 msgid "Could not save configfile %s!"
 msgstr ""
 
+#, python-format
+msgid ""
+"Couldn't copy %d items.\n"
+"%s"
+msgstr ""
+
+#, python-format
+msgid ""
+"Couldn't copy '%s'.\n"
+"%s"
+msgstr ""
+
+#, python-format
+msgid "Couldn't delete %d items."
+msgstr ""
+
+#, python-format
+msgid "Couldn't delete '%s'."
+msgstr ""
+
+#, python-format
+msgid "Couldn't move %d items to the trash can. Do you want to delete them instead?"
+msgstr ""
+
+#, python-format
+msgid ""
+"Couldn't move %d items.\n"
+"%s"
+msgstr ""
+
+#, python-format
+msgid "Couldn't move '%s' to the trash can. Do you want to delete it instead?"
+msgstr ""
+
+#, fuzzy, python-format
+msgid ""
+"Couldn't move '%s'.\n"
+"%s"
+msgstr "Aktuelni uređaj:"
+
 msgid "Country"
 msgstr ""
 
@@ -4249,6 +4441,16 @@ msgstr ""
 #
 msgid "Create DVD-ISO"
 msgstr "Napravi DVD-ISO"
+
+#
+#, fuzzy
+msgid "Create Timer"
+msgstr "Obriši datoteku"
+
+#
+#, fuzzy
+msgid "Create Zap Timer"
+msgstr "Promeni veličinu koraka"
 
 #
 #, fuzzy
@@ -4293,7 +4495,7 @@ msgstr ""
 
 #
 #, fuzzy
-msgid "Cron timers"
+msgid "Cron Timers"
 msgstr "Promeni veličinu koraka"
 
 msgid "Cuba"
@@ -4374,6 +4576,10 @@ msgid "Custom skip time for '7'/'9' buttons"
 msgstr "Podesivo vreme preskoka za '7'/'9'-tipke"
 
 #
+msgid "Customize"
+msgstr "Prilagodi"
+
+#
 #, fuzzy
 msgid "Customize settings"
 msgstr "Izbor subtitlova"
@@ -4389,6 +4595,9 @@ msgstr ""
 msgid "Cutlist editor..."
 msgstr "Uređivač liste..."
 
+msgid "Cycle through infobar displays"
+msgstr ""
+
 msgid "Cyprus"
 msgstr ""
 
@@ -4400,6 +4609,9 @@ msgstr "Češki"
 #, fuzzy
 msgid "Czechia"
 msgstr "Češki"
+
+msgid "D"
+msgstr ""
 
 msgid "DAC"
 msgstr ""
@@ -4668,6 +4880,21 @@ msgid "Debug log time format *"
 msgstr ""
 
 #
+#, fuzzy
+msgid "Debug to file"
+msgstr "Obriši datoteku"
+
+#
+#, fuzzy
+msgid "Decrement end time"
+msgstr "Podesi završno vreme"
+
+#
+#, fuzzy
+msgid "Decrement start time"
+msgstr "Početno vreme "
+
+#
 msgid "Deep Standby"
 msgstr "Isključi Drimbox"
 
@@ -4699,6 +4926,10 @@ msgstr "ovo snimanje"
 #, fuzzy
 msgid "Default settings"
 msgstr "Standardne postavke"
+
+#, fuzzy, python-format
+msgid "Default: '%s'."
+msgstr "Standardno"
 
 msgid "Defaults"
 msgstr ""
@@ -4750,6 +4981,9 @@ msgstr ""
 msgid "Delay before sequence repeat"
 msgstr "Ponovi redosled"
 
+msgid "Delay between CEC commands when sending a series of commands. Some devices require this delay for correct functioning, usually between 50-150ms."
+msgstr ""
+
 msgid "Delay between diseqc commands"
 msgstr ""
 
@@ -4786,7 +5020,7 @@ msgstr ""
 
 #
 #, fuzzy
-msgid "Delete EPG"
+msgid "Delete EPG Cache"
 msgstr "Obriši"
 
 #
@@ -4801,8 +5035,19 @@ msgstr "Obriši datoteku"
 
 #
 #, fuzzy
+msgid "Delete all log entries"
+msgstr "obriši unos plejliste"
+
+#
+#, fuzzy
 msgid "Delete all the text"
 msgstr "obriši unos plejliste"
+
+msgid "Delete character to left of cursor or select AM times"
+msgstr ""
+
+msgid "Delete character under cursor or select PM times"
+msgstr ""
 
 #
 msgid "Delete entry"
@@ -4819,6 +5064,11 @@ msgstr "Obriši datoteku"
 
 #
 #, fuzzy
+msgid "Delete log entry"
+msgstr "Obriši unos"
+
+#
+#, fuzzy
 msgid "Delete playlist entry"
 msgstr "obriši unos plejliste"
 
@@ -4827,24 +5077,25 @@ msgstr "obriši unos plejliste"
 msgid "Delete saved playlist"
 msgstr "obriši sačuvanu plejlistu"
 
-msgid "Delete the character to the left of cursor"
-msgstr ""
-
 msgid "Delete the character to the left of text cursor"
-msgstr ""
-
-msgid "Delete the character under the cursor"
 msgstr ""
 
 msgid "Delete the character under the text cursor"
 msgstr ""
 
-msgid "Deleted"
-msgstr ""
+#
+#, fuzzy, python-format
+msgid "Deleted %d items"
+msgstr "Obriši datoteku"
 
 #, python-format
 msgid "Deleted %s!"
 msgstr ""
+
+#
+#, fuzzy, python-format
+msgid "Deleted '%s'"
+msgstr "Obriši"
 
 #
 #, fuzzy
@@ -4884,6 +5135,9 @@ msgstr "Deselektuj"
 
 msgid "Details for plugin: "
 msgstr "Detalji dodatka:"
+
+msgid "Detect next boxes before standby"
+msgstr ""
 
 msgid "Detect programs split by news bulletins. Choose the maximum duration in minutes to consider as a bulletin, or 0 to disable."
 msgstr ""
@@ -4969,9 +5223,16 @@ msgstr "Tajmer spavanja"
 msgid "Dim the LCD after specified time."
 msgstr ""
 
+#, fuzzy
+msgid "Direct menu item selection"
+msgstr "Napusti izbor ulaznog uređaja."
+
 #
 msgid "Direct playback of linked titles without menu"
 msgstr "Direktna reprodukcija vezanih naslova bez menia"
+
+msgid "Directories cannot be bulk renamed"
+msgstr ""
 
 msgid "Directory"
 msgstr ""
@@ -4979,6 +5240,25 @@ msgstr ""
 #
 #, fuzzy, python-format
 msgid "Directory %s does not exist."
+msgstr "Direktorijum %s ne postoji"
+
+#, python-format
+msgid "Directory '%s' can't be linked to recordings!"
+msgstr ""
+
+#
+#, fuzzy, python-format
+msgid "Directory '%s' does not exist!"
+msgstr "Direktorijum %s ne postoji"
+
+#
+#, fuzzy, python-format
+msgid "Directory '%s' not writable!"
+msgstr "Direktorijum %s ne postoji"
+
+#
+#, fuzzy, python-format
+msgid "Directory '%s' not writeable!"
 msgstr "Direktorijum %s ne postoji"
 
 #
@@ -5044,7 +5324,7 @@ msgstr ""
 msgid "Display selection list as a selection menu"
 msgstr ""
 
-msgid "Display the EIT now/next eventdata in infobar."
+msgid "Display the EIT now/next event data in infobar."
 msgstr ""
 
 msgid "Display the virtual keyboard for data entry"
@@ -5081,17 +5361,10 @@ msgstr ""
 "Da li stvarno želite da proverite sistem datoteka?\n"
 "To može potrajati dosta vremena!"
 
-#, python-format
-msgid "Do you really want to delete %s ?"
-msgstr ""
-
 #
 #, python-format
 msgid "Do you really want to delete %s?"
 msgstr "Jeste li sigurni da želite obrisati %s?"
-
-msgid "Do you really want to delete ?"
-msgstr ""
 
 #
 #, fuzzy
@@ -5120,18 +5393,33 @@ msgid ""
 msgstr ""
 
 #
-#, fuzzy
-msgid "Do you really want to move to the trash can ?"
+#, fuzzy, python-format
+msgid "Do you really want to move '%s' to the trash can?"
 msgstr "Da lstvarno želite da UKLONITE dodatak \"%s \"?"
 
 #
 #, fuzzy, python-format
-msgid "Do you really want to permamently remove '%s' from the trash can ?"
+msgid "Do you really want to move these %d items to the trash can?"
+msgstr "Da lstvarno želite da UKLONITE dodatak \"%s \"?"
+
+#
+#, fuzzy, python-format
+msgid "Do you really want to permanently delete '%s' from the trash can?"
 msgstr "Da li stvarno želite da uklonite direktorijum %s sa diska?"
 
 #
-#, fuzzy
-msgid "Do you really want to permanently remove from the trash can ?"
+#, fuzzy, python-format
+msgid "Do you really want to permanently delete '%s'?"
+msgstr "Jeste li sigurni da želite obrisati %s?"
+
+#
+#, fuzzy, python-format
+msgid "Do you really want to permanently delete these %d items from the trash can?"
+msgstr "Da lstvarno želite da UKLONITE dodatak \"%s \"?"
+
+#
+#, fuzzy, python-format
+msgid "Do you really want to permanently delete these %d items?"
 msgstr "Da lstvarno želite da UKLONITE dodatak \"%s \"?"
 
 #
@@ -5158,14 +5446,6 @@ msgstr "Da li stvarno želite da uklonite vaše oznake sa %s?"
 #, fuzzy, python-format
 msgid "Do you really want to stop the current recording and delete timer %s?"
 msgstr "Da lstvarno želite da UKLONITE dodatak \"%s \"?"
-
-msgid "Do you want to add any additional information ?"
-msgstr ""
-
-msgid ""
-"Do you want to attach a text file to explain the log ?\n"
-"(choose 'No' to type message using virtual keyboard.)"
-msgstr ""
 
 #
 msgid "Do you want to burn this collection to DVD medium?"
@@ -5232,11 +5512,6 @@ msgstr "Želite li vratiti vaše postavke iz sigurnosne kopije?"
 msgid "Do you want to resume playback?"
 msgstr "Želite li nastaviti snimak?"
 
-msgid ""
-"Do you want to send all the selected files:\n"
-"(choose 'No' to only send the currently selected file.)"
-msgstr ""
-
 #
 #, fuzzy, python-format
 msgid "Do you want to update your %s %s ?"
@@ -5263,6 +5538,10 @@ msgstr ""
 
 msgid "Don't save"
 msgstr ""
+
+#, fuzzy
+msgid "Don't show default"
+msgstr "Standardno"
 
 #
 #, fuzzy
@@ -5387,6 +5666,19 @@ msgstr ""
 msgid "EPG Search"
 msgstr "Rangiranje info"
 
+#, fuzzy
+msgid "EPG access"
+msgstr "Rangiranje info"
+
+msgid "EPG button (long)"
+msgstr ""
+
+msgid "EPG button (short)"
+msgstr ""
+
+msgid "EPG button action"
+msgstr ""
+
 msgid "EPG filename"
 msgstr ""
 
@@ -5449,6 +5741,11 @@ msgstr ""
 #
 msgid "Edit"
 msgstr "Urediti"
+
+#
+#, fuzzy
+msgid "Edit AutoTimer"
+msgstr "Urediti naslov"
 
 #
 msgid "Edit DNS"
@@ -5522,6 +5819,9 @@ msgstr "Elektronski Programski Vodič"
 msgid "Empty slot"
 msgstr ""
 
+msgid "Empty trash can"
+msgstr ""
+
 #
 msgid "Enable"
 msgstr "Omogući"
@@ -5545,6 +5845,11 @@ msgstr ""
 msgid "Enable OpenTV EPG"
 msgstr ""
 
+#
+#, fuzzy
+msgid "Enable OpenTV download"
+msgstr "uključi mod za premeštanje"
+
 msgid "Enable ViaSat EPG"
 msgstr ""
 
@@ -5556,12 +5861,22 @@ msgstr ""
 msgid "Enable auto cable scan"
 msgstr "Uključi roditeljsku zaštitu"
 
-msgid "Enable auto fast scan"
-msgstr ""
+#
+#, fuzzy
+msgid "Enable auto fastscan"
+msgstr "Uključi roditeljsku zaštitu"
 
 #
 #, fuzzy, python-format
-msgid "Enable auto fast scan for %s"
+msgid "Enable auto fastscan for %s"
+msgstr "Uključi roditeljsku zaštitu"
+
+msgid "Enable automated downloading of OpenTV EPG data. If only one tuner is available the download will be done when the reciever is in standby."
+msgstr ""
+
+#
+#, fuzzy
+msgid "Enable automatic collections"
 msgstr "Uključi roditeljsku zaštitu"
 
 msgid "Enable blinking rec symbol on the LCD Display"
@@ -5613,6 +5928,9 @@ msgid "Enable or disable to force HDR10 Modes for UHD"
 msgstr ""
 
 msgid "Enable or disable to force HLG Modes for UHD"
+msgstr ""
+
+msgid "Enable or disable using HDMI-CEC."
 msgstr ""
 
 msgid "Enable panic button"
@@ -5701,6 +6019,11 @@ msgid "English"
 msgstr "Engleski"
 
 #
+#, fuzzy, python-format
+msgid "Enigma2 uptime:\t%s\n"
+msgstr "Nadogradnja liste paketa"
+
+#
 #, fuzzy
 msgid "Enter"
 msgstr "Interni fleš"
@@ -5735,7 +6058,12 @@ msgstr "Unesi PIN kod"
 msgid "Enter pin code"
 msgstr "Unesi PIN kod"
 
-msgid "Enter the FTP password of the host receiver (normally just leave empty)."
+#
+#, fuzzy
+msgid "Enter service number"
+msgstr "Unesite pin kanala"
+
+msgid "Enter the FTP password of the host receiver (required for any server running OpenViX 5.4 or greater)."
 msgstr ""
 
 msgid "Enter the FTP port of the host receiver (normally '21')."
@@ -5776,12 +6104,6 @@ msgid "Enter your current latitude. This is the number of degrees you are from t
 msgstr ""
 
 msgid "Enter your current longitude. This is the number of degrees you are from zero meridian as a decimal."
-msgstr ""
-
-msgid "Enter your e-mail address to send a copy of the log to."
-msgstr ""
-
-msgid "Enter your forum user name, to make it easier to trace logs."
 msgstr ""
 
 msgid "Enter your high band local oscillator frequency. For more information consult the spec sheet of your LNB."
@@ -5830,9 +6152,7 @@ msgid "Error reading webpage!"
 msgstr ""
 
 #, python-format
-msgid ""
-"Error:\n"
-"%s"
+msgid "Error renaming '%s'"
 msgstr ""
 
 #
@@ -5852,6 +6172,11 @@ msgstr "Estonski"
 #
 msgid "Estonian"
 msgstr "Estonski"
+
+#
+#, fuzzy
+msgid "EtPortal"
+msgstr "Portugalski"
 
 msgid "Ethernet network interface"
 msgstr ""
@@ -5926,6 +6251,14 @@ msgstr ""
 msgid "Exit MAC address configuration"
 msgstr "Napustite konfiguraciju nejmservera"
 
+msgid "Exit all menus"
+msgstr ""
+
+#
+#, fuzzy
+msgid "Exit channel selection"
+msgstr "Izbor kanala"
+
 #
 msgid "Exit editor"
 msgstr "Izađi iz editora"
@@ -5942,6 +6275,11 @@ msgstr "Izađi iz medija plejera"
 #, fuzzy
 msgid "Exit mediaplayer"
 msgstr "Izađi iz medija plejera"
+
+#
+#, fuzzy
+msgid "Exit menu"
+msgstr "Glavni meni"
 
 #
 #, fuzzy
@@ -6070,6 +6408,9 @@ msgstr ""
 msgid "Extrude from left"
 msgstr ""
 
+msgid "F"
+msgstr ""
+
 msgid "F1"
 msgstr ""
 
@@ -6168,7 +6509,8 @@ msgid "Factory Reset"
 msgstr "Fabrički reset"
 
 #
-msgid "Factory reset"
+#, fuzzy
+msgid "Factory Reset: Clearing data"
 msgstr "Fabrički reset"
 
 msgid "Fade the infobar when hiding"
@@ -6186,16 +6528,16 @@ msgstr ""
 
 #
 #, fuzzy
+msgid "Fallback Configuration"
+msgstr "Konfiguracija tjunera"
+
+#
+#, fuzzy
 msgid "Fallback Tuner Setup"
 msgstr "Status tjunera"
 
 msgid "Fallback address type"
 msgstr ""
-
-#
-#, fuzzy
-msgid "Fallback configuration"
-msgstr "Konfiguracija tjunera"
 
 msgid "Fallback receiver IP address"
 msgstr ""
@@ -6225,9 +6567,6 @@ msgstr "Brzo"
 msgid "Fast DiSEqC"
 msgstr "Brzi DiSEqC"
 
-msgid "Fast Scan"
-msgstr ""
-
 #
 msgid "Fast epoch"
 msgstr "Brza epoha"
@@ -6237,8 +6576,18 @@ msgstr ""
 
 #
 #, fuzzy
+msgid "FastScan"
+msgstr "Brzo"
+
+#
+#, fuzzy
 msgid "Fastforward"
 msgstr "preskoči unapred"
+
+#
+#, fuzzy
+msgid "Fastscan"
+msgstr "Brzo"
 
 #
 msgid "Favourites"
@@ -6262,9 +6611,6 @@ msgstr ""
 msgid "Fiji"
 msgstr ""
 
-msgid "File appears to be busy.\n"
-msgstr ""
-
 msgid ""
 "File oscam.conf not found.\n"
 "Please enter username/password manually."
@@ -6278,9 +6624,6 @@ msgstr "Ime datoteke"
 #
 msgid "Filesystem Check"
 msgstr "Provera sistema datoteka"
-
-msgid "Filesystem check"
-msgstr ""
 
 #, fuzzy
 msgid "Final position at"
@@ -6319,6 +6662,11 @@ msgstr "Finski"
 
 msgid "Fixed"
 msgstr ""
+
+#
+#, fuzzy, python-format
+msgid "Flash directory '%s' not allowed!"
+msgstr "Pravljenje direktorijuma %s nije uspelo"
 
 msgid "Flashing"
 msgstr ""
@@ -6435,8 +6783,10 @@ msgstr "Petak"
 msgid "From :"
 msgstr ""
 
-msgid "Front panel display"
-msgstr ""
+#
+#, fuzzy
+msgid "Front Panel Display"
+msgstr "Nadogradnja softvera"
 
 #
 #, fuzzy
@@ -6458,6 +6808,9 @@ msgstr ""
 #, fuzzy
 msgid "Full view resolution"
 msgstr "Lokacija filmova"
+
+msgid "G"
+msgstr ""
 
 msgid "GB"
 msgstr ""
@@ -6520,6 +6873,17 @@ msgstr ""
 msgid "Genre"
 msgstr "Žanrovi"
 
+msgid "Geolocation does not contain time zone information."
+msgstr ""
+
+msgid "Geolocation has been used to set the time zone."
+msgstr ""
+
+#
+#, fuzzy
+msgid "Geolocation is not available."
+msgstr "Fid ažuriranja nije dostupan."
+
 msgid "Georgia"
 msgstr ""
 
@@ -6545,7 +6909,19 @@ msgstr ""
 msgid "Gibraltar"
 msgstr ""
 
+msgid "Go back 24 hours"
+msgstr ""
+
 msgid "Go down the list"
+msgstr ""
+
+msgid "Go forward 24 hours"
+msgstr ""
+
+msgid "Go to current time, then the start service"
+msgstr ""
+
+msgid "Go to current time, then the start service, then home of list"
 msgstr ""
 
 msgid "Go to first movie or last item"
@@ -6625,9 +7001,6 @@ msgstr "Idi na poziciju"
 msgid "GotoX calibration"
 msgstr "Idi na poziciju"
 
-msgid "Graphical EPG"
-msgstr ""
-
 msgid "Graphics"
 msgstr ""
 
@@ -6649,6 +7022,12 @@ msgstr "Grčki"
 #, fuzzy
 msgid "Green"
 msgstr "Grčki"
+
+msgid "Green button (long)"
+msgstr ""
+
+msgid "Green button (short)"
+msgstr ""
 
 msgid "Green long"
 msgstr ""
@@ -6695,6 +7074,9 @@ msgid "Guinea-Bissau"
 msgstr ""
 
 msgid "Guyana"
+msgstr ""
+
+msgid "H"
 msgstr ""
 
 msgid "H7/H9/H9COMBO/H10 new Model"
@@ -6756,9 +7138,6 @@ msgstr ""
 msgid "HDMI CEC"
 msgstr ""
 
-msgid "HDMI CEC Setup"
-msgstr ""
-
 #
 #, fuzzy
 msgid "HDMI Colordepth"
@@ -6776,6 +7155,16 @@ msgstr "Kolor format"
 
 msgid "HDMI HDR Type"
 msgstr ""
+
+#
+#, fuzzy
+msgid "HDMI input"
+msgstr "Ulaz "
+
+#
+#, fuzzy
+msgid "HDMI-CEC address editing actions"
+msgstr "Postavke adaptera"
 
 msgid "HDMIin"
 msgstr ""
@@ -6819,6 +7208,14 @@ msgstr "Isključi hard disk posle"
 msgid "Harddisk setup"
 msgstr "Postavke hard diska"
 
+msgid "HbbTV"
+msgstr ""
+
+#
+#, fuzzy
+msgid "Hdmi-CEC setup"
+msgstr "Postavke hard diska"
+
 msgid "Heard Island and McDonald Islands"
 msgstr ""
 
@@ -6850,6 +7247,17 @@ msgid "Hide any zap error messages."
 msgstr ""
 
 msgid "Hide error messages from the Common Interface module."
+msgstr ""
+
+#
+#, fuzzy
+msgid "Hide infobar display"
+msgstr "Fino podesite vaš displej"
+
+msgid "Hide infobar display and ask whether to close PiP"
+msgstr ""
+
+msgid "Hide infobar display and close PiP"
 msgstr ""
 
 #
@@ -6886,6 +7294,11 @@ msgstr ""
 #
 #, fuzzy
 msgid "History Zap"
+msgstr "Vrati bekape"
+
+#
+#, fuzzy
+msgid "History Zap Actions"
 msgstr "Vrati bekape"
 
 #
@@ -6998,8 +7411,18 @@ msgstr "Mađarski"
 msgid "Hungary"
 msgstr "Mađarski"
 
+msgid "I"
+msgstr ""
+
 msgid "IDLE"
 msgstr ""
+
+msgid "IGNORE"
+msgstr ""
+
+#, fuzzy
+msgid "IMDB Search"
+msgstr "Rangiranje info"
 
 msgid "IMDB search for current event"
 msgstr ""
@@ -7009,6 +7432,9 @@ msgid "IMDb Search"
 msgstr "Rangiranje info"
 
 msgid "INFO"
+msgstr ""
+
+msgid "INFO button action"
 msgstr ""
 
 msgid "INS"
@@ -7064,7 +7490,13 @@ msgstr ""
 msgid "If enabled the video will always be de-interlaced."
 msgstr ""
 
+msgid "If enabled, a log will be kept of CEC protocol traffic ('hdmicec.log')."
+msgstr ""
+
 msgid "If enabled, display shows 12 chars instead 8, but in latin-1/translit only."
+msgstr ""
+
+msgid "If set to 'Standard' number buttons page up/down/left/right."
 msgstr ""
 
 msgid "If set to 'yes' channels without EPG will not be shown."
@@ -7076,7 +7508,7 @@ msgstr ""
 msgid "If set to 'yes' it will show the 'SRC' packages in browser."
 msgstr ""
 
-msgid "If set to 'yes' shows a small TV-screen in the EPG."
+msgid "If set to 'yes' shows a small TV screen in the EPG."
 msgstr ""
 
 msgid "If set to 'yes' signal values (SNR, etc) will be calculated from API V3. This is an old API version that has now been superseded."
@@ -7095,6 +7527,9 @@ msgid "If set to 'yes' the infobar will be displayed when a new event starts."
 msgstr ""
 
 msgid "If set to 'yes' the infobar will be displayed when changing channels."
+msgstr ""
+
+msgid "If set to 'yes' the same commands will be sent to the TV for deep standby events, as are sent during regular standby events."
 msgstr ""
 
 msgid "If set to 'yes' you can preview channels in the EPG list."
@@ -7158,6 +7593,9 @@ msgstr ""
 msgid "Image Slot:\t%s"
 msgstr ""
 
+msgid "Image View On"
+msgstr ""
+
 #
 #, fuzzy
 msgid "Image manager"
@@ -7171,6 +7609,9 @@ msgstr ""
 #, fuzzy
 msgid "Immediate shutdown"
 msgstr "odmah isključi"
+
+msgid "In Setup screens choose whether to show the default value of the selected item in the description field."
+msgstr ""
 
 msgid "In live view wait this many seconds after a numeric key press before assuming the required channel number has been entered. Default: 5 seconds. Setting zero will require confirmation with 'OK'. "
 msgstr ""
@@ -7222,6 +7663,16 @@ msgstr ""
 #
 msgid "Increased voltage"
 msgstr "Povećani napon"
+
+#
+#, fuzzy
+msgid "Increment end time"
+msgstr "Podesi završno vreme"
+
+#
+#, fuzzy
+msgid "Increment start time"
+msgstr "Početno vreme "
 
 msgid "Index allocated:"
 msgstr ""
@@ -7335,11 +7786,6 @@ msgstr "Inicijaliziraj"
 msgid "Initialize Devices"
 msgstr "Inicijaliziraj"
 
-#
-#, fuzzy
-msgid "Initialize devices"
-msgstr "Inicijaliziraj"
-
 msgid "Initializing storage device..."
 msgstr ""
 
@@ -7367,9 +7813,6 @@ msgid "Input Devices"
 msgstr "Podešavanje ulaznog uređaja "
 
 msgid "Input Stream ID"
-msgstr ""
-
-msgid "Input devices"
 msgstr ""
 
 #
@@ -7447,8 +7890,9 @@ msgid "Instant record"
 msgstr "Trenutno snimanje..."
 
 #
-msgid "Instant record location"
-msgstr "Lokacija instant snimanja"
+#, fuzzy
+msgid "Instant recording"
+msgstr "Trenutno snimanje..."
 
 #
 #, fuzzy
@@ -7459,9 +7903,6 @@ msgstr "Lokacija instant snimanja"
 #, fuzzy
 msgid "Instant recording..."
 msgstr "Trenutno snimanje..."
-
-msgid "Instant recordings location"
-msgstr ""
 
 msgid "Interface"
 msgstr ""
@@ -7573,6 +8014,9 @@ msgstr "Italijanski"
 msgid "Italy"
 msgstr "Italijanski"
 
+msgid "J"
+msgstr ""
+
 msgid "JUMP 24 HOURS"
 msgstr ""
 
@@ -7592,16 +8036,10 @@ msgstr "Pregled poslova"
 msgid "Jordan"
 msgstr ""
 
-msgid "Jump back 24 hours"
-msgstr ""
-
 #
 #, fuzzy
 msgid "Jump first press in channel selection"
 msgstr "Pokaži napredak događaja u izboru kanala"
-
-msgid "Jump forward 24 hours"
-msgstr ""
 
 msgid "Jump to beginning of list"
 msgstr ""
@@ -7620,6 +8058,16 @@ msgstr ""
 msgid "Jump to last item in list or the end of text"
 msgstr ""
 
+#
+#, fuzzy
+msgid "Jump to next bookmark"
+msgstr "uklonite oznaku"
+
+#
+#, fuzzy
+msgid "Jump to previous bookmark"
+msgstr "Skoči nazad na prethodni naslov"
+
 msgid "Jump to prime time"
 msgstr ""
 
@@ -7630,9 +8078,6 @@ msgstr ""
 #, fuzzy
 msgid "Jump to the previous marked position"
 msgstr "Skoči nazad na prethodni naslov"
-
-msgid "Just change channels"
-msgstr ""
 
 #
 #. TRANSLATORS: (aspect ratio policy: display as fullscreen, even if this breaks the aspect)
@@ -7652,6 +8097,9 @@ msgid "KA-SAT"
 msgstr "KA-SAT (9°E)"
 
 msgid "Kazakhstan"
+msgstr ""
+
+msgid "Keep logs"
 msgstr ""
 
 #
@@ -7675,6 +8123,9 @@ msgid "Kernel: %s"
 msgstr ""
 
 msgid "Key"
+msgstr ""
+
+msgid "Key Events"
 msgstr ""
 
 #
@@ -7732,6 +8183,9 @@ msgstr "LAN veza"
 msgid "LED Deep Standby"
 msgstr ""
 
+msgid "LED Display Panel"
+msgstr ""
+
 msgid "LED Normal"
 msgstr ""
 
@@ -7745,9 +8199,6 @@ msgid "LED brightness during normal operations."
 msgstr ""
 
 msgid "LED brightness during standby."
-msgstr ""
-
-msgid "LED display panel"
 msgstr ""
 
 #
@@ -7961,7 +8412,7 @@ msgstr "Litvanski"
 msgid "Load"
 msgstr "Ubaciti"
 
-msgid "Load EPG"
+msgid "Load EPG Cache"
 msgstr ""
 
 #
@@ -7974,7 +8425,10 @@ msgstr "učitaj plejlistu"
 msgid "Load unlinked userbouquets"
 msgstr "Uključi višestruke bukete"
 
-msgid "Load-save-delete"
+msgid "Load, Save & Delete EPG Cache"
+msgstr ""
+
+msgid "Loading skin"
 msgstr ""
 
 msgid "Local box"
@@ -8023,11 +8477,6 @@ msgstr ""
 
 msgid "Log Manager"
 msgstr ""
-
-#
-#, fuzzy
-msgid "Log manager"
-msgstr "Menadžer paketa"
 
 #
 msgid "Log results to harddisk"
@@ -8114,11 +8563,12 @@ msgid "Madagascar"
 msgstr ""
 
 #
-msgid "Main menu"
+#, fuzzy
+msgid "Main Menu"
 msgstr "Glavni meni"
 
 #
-msgid "Mainmenu"
+msgid "Main menu"
 msgstr "Glavni meni"
 
 msgid "Maintain old EPG data for"
@@ -8299,6 +8749,9 @@ msgstr ""
 msgid "MessageBox Functions"
 msgstr ""
 
+msgid "Messages"
+msgstr ""
+
 msgid "Mexico"
 msgstr ""
 
@@ -8333,6 +8786,11 @@ msgstr ""
 
 msgid "Mipsel"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Miscellaneous"
+msgstr "Status tjunera"
 
 msgid "Missing "
 msgstr ""
@@ -8471,6 +8929,11 @@ msgstr "Pomeri dole na poslednji unos"
 
 #
 #, fuzzy
+msgid "Move down in bouquet list"
+msgstr "završi uređivanje buketa"
+
+#
+#, fuzzy
 msgid "Move down to last entry"
 msgstr "Pomeri dole na poslednji unos"
 
@@ -8509,7 +8972,7 @@ msgstr ""
 
 #
 #, fuzzy
-msgid "Move to first line"
+msgid "Move to first line / screen"
 msgstr "Pomeri gore na prvi unos"
 
 msgid "Move to home of list"
@@ -8517,8 +8980,13 @@ msgstr ""
 
 #
 #, fuzzy
-msgid "Move to last line"
+msgid "Move to last line / screen"
 msgstr "Pomeri dole na poslednji unos"
+
+#
+#, fuzzy
+msgid "Move to next channel"
+msgstr "ne menjaj"
 
 #
 #, fuzzy
@@ -8527,23 +8995,8 @@ msgstr "Idi na poziciju"
 
 #
 #, fuzzy
-msgid "Move to the next page"
-msgstr "Prebaci na sledeći ugao"
-
-#
-#, fuzzy
-msgid "Move to the next skin"
-msgstr "Pomeri dole na naredni unos"
-
-#
-#, fuzzy
-msgid "Move to the previous page"
+msgid "Move to previous channel"
 msgstr "Premotaj na prethodno poglavlje"
-
-#
-#, fuzzy
-msgid "Move to the previous skin"
-msgstr "Pomeri gore na prethodni unos"
 
 #
 #, fuzzy
@@ -8560,6 +9013,11 @@ msgstr "Pomeri gore na prvi unos"
 
 #
 #, fuzzy
+msgid "Move up in bouquet list"
+msgstr "završi uređivanje buketa"
+
+#
+#, fuzzy
 msgid "Move up to first entry"
 msgstr "Pomeri gore na prvi unos"
 
@@ -8571,6 +9029,16 @@ msgstr "Pomeri gore na prethodni unos"
 #
 msgid "Move west"
 msgstr "Pokreći na zapad"
+
+#
+#, fuzzy, python-format
+msgid "Moved %d items"
+msgstr "Pokreći na istok"
+
+#
+#, fuzzy, python-format
+msgid "Moved '%s'"
+msgstr "Pokreći na istok"
 
 #
 #, fuzzy
@@ -8599,8 +9067,9 @@ msgid "Movie List Setup"
 msgstr ""
 
 #
-msgid "Movie location"
-msgstr "Lokacija filmova"
+#, fuzzy
+msgid "Movie player"
+msgstr "sakrij plejer"
 
 #
 #, fuzzy
@@ -8661,11 +9130,6 @@ msgid "MultiType"
 msgstr "Multipleks"
 
 #
-#, fuzzy
-msgid "Multiboot Image Selector"
-msgstr "Izbor subtitlova"
-
-#
 msgid "Multimedia"
 msgstr "Multimedija"
 
@@ -8704,6 +9168,9 @@ msgstr "Ne"
 #
 msgid "N/A"
 msgstr "N/A"
+
+msgid "NEXT"
+msgstr ""
 
 msgid "NFS"
 msgstr ""
@@ -8786,6 +9253,11 @@ msgstr ""
 
 msgid "Nauru"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Navigation"
+msgstr "Polarizacija"
 
 msgid "Nepal"
 msgstr ""
@@ -8889,9 +9361,6 @@ msgstr "Lozinka"
 msgid "New profile: "
 msgstr ""
 
-msgid "New timers location"
-msgstr ""
-
 #
 msgid "New version:"
 msgstr "Nova verzija:"
@@ -8933,6 +9402,9 @@ msgstr "Nije pronađen (podržan) DVDROM!"
 msgid "No Connection"
 msgstr "Nema veze"
 
+msgid "No ECM info is currently available. This is only available while decrypting."
+msgstr ""
+
 msgid "No ECMPids available (FTA Service)"
 msgstr ""
 
@@ -8965,6 +9437,11 @@ msgstr ""
 #, fuzzy
 msgid "No connection"
 msgstr "Nema veze"
+
+#
+#, fuzzy
+msgid "No current function"
+msgstr "Aktivirajte aktuelnu konfiguraciju"
 
 #
 msgid ""
@@ -9027,10 +9504,6 @@ msgid "No of items switch (increase or reduced)"
 msgstr ""
 
 #
-msgid "No positioner capable frontend found."
-msgstr "Nijedan sposoban čeoni pozicioner nije pronađen."
-
-#
 #, fuzzy
 msgid "No priority"
 msgstr "Prioritet"
@@ -9073,10 +9546,6 @@ msgstr "Ne za sve"
 
 msgid "No transparency"
 msgstr ""
-
-#
-msgid "No tuner is configured for use with a diseqc positioner!"
-msgstr "Niedan tjuner nije konfigurisan za rad s DiSEqC pozicionerom!"
 
 #
 msgid ""
@@ -9244,6 +9713,9 @@ msgstr "Sada koristite postavke kontrasta,da pojačate pozadinsko svetlo najviš
 msgid "Number"
 msgstr ""
 
+msgid "Number buttons mode"
+msgstr ""
+
 msgid "Number of digits in channel number"
 msgstr ""
 
@@ -9280,6 +9752,11 @@ msgstr "SID"
 msgid "OSD 3D Setup"
 msgstr ""
 
+#
+#, fuzzy
+msgid "OSD Position"
+msgstr "Snimi poziciju"
+
 msgid "OSD name request"
 msgstr ""
 
@@ -9289,9 +9766,6 @@ msgid "OSD position"
 msgstr "Snimi poziciju"
 
 msgid "OScam Info"
-msgstr ""
-
-msgid "OScam info"
 msgstr ""
 
 msgid "OVR"
@@ -9318,6 +9792,9 @@ msgid "On end of movie"
 msgstr ""
 
 msgid "On end of movie (as menu)"
+msgstr ""
+
+msgid "On except in same named directory"
 msgstr ""
 
 msgid "On shutdown/restart warn about any pending jobs being carried out in the background."
@@ -9369,6 +9846,9 @@ msgstr ""
 msgid "Only select 'yes' if you are using a multiswich that requires a DiSEqC Port-A command signal. For all other setups select 'no'."
 msgstr ""
 
+msgid "Open RDS/RASS screen..."
+msgstr ""
+
 #
 #, fuzzy
 msgid "Open bouquet list"
@@ -9376,8 +9856,28 @@ msgstr "završi uređivanje buketa"
 
 #
 #, fuzzy
+msgid "Open infobar EPG"
+msgstr "Info traka"
+
+#
+#, fuzzy
+msgid "Open infobar EPG..."
+msgstr "Info traka"
+
+#
+#, fuzzy
+msgid "Open menu"
+msgstr "Glavni meni"
+
+#
+#, fuzzy
 msgid "Open nameserver configuration"
 msgstr "Otvori konfiguraciju nejmservera "
+
+#
+#, fuzzy
+msgid "Open seekbar"
+msgstr "Traži"
 
 #
 #, fuzzy
@@ -9421,10 +9921,31 @@ msgstr "Jedan satelit"
 msgid "Open the service list"
 msgstr "Urediti listu kanala"
 
+#, python-format
+msgid ""
+"OpenTV EPG download completed.\n"
+"Next download: %s"
+msgstr ""
+
+msgid "OpenTV EPG download starting."
+msgstr ""
+
+msgid "OpenTV EPG downloader"
+msgstr ""
+
+msgid "OpenTV EPG forced download"
+msgstr ""
+
+msgid "OpenTV download setup"
+msgstr ""
+
 msgid "OpenVPN"
 msgstr ""
 
 msgid "OpenVpn Setup"
+msgstr ""
+
+msgid "OpentvZapper"
 msgstr ""
 
 msgid "Orbital position"
@@ -9516,6 +10037,9 @@ msgstr ""
 msgid "PMT PID"
 msgstr "PMT PID"
 
+msgid "PREVIOUS"
+msgstr ""
+
 msgid "PRIMETIME"
 msgstr ""
 
@@ -9537,11 +10061,21 @@ msgstr "Menadžer paketa"
 msgid "Page down"
 msgstr ""
 
+#
+#, fuzzy
+msgid "Page down in description"
+msgstr "Molim unesite novo ime datoteke"
+
 msgid "Page right"
 msgstr ""
 
 msgid "Page up"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Page up in description"
+msgstr "Molim unesite novo ime datoteke"
 
 msgid "Pakistan"
 msgstr ""
@@ -9622,6 +10156,9 @@ msgstr "Pauziraj film na kraju"
 msgid "Pause playback"
 msgstr ""
 
+msgid "Pause, rewind and fast forward"
+msgstr ""
+
 #
 #, fuzzy
 msgid "Pause/Continue playback"
@@ -9670,9 +10207,6 @@ msgstr ""
 msgid "Permanently delete all recordings in the trash can?"
 msgstr ""
 
-msgid "Permanently remove all deleted items"
-msgstr ""
-
 msgid "Persian"
 msgstr "Persijski"
 
@@ -9710,7 +10244,12 @@ msgstr ""
 
 #
 #, fuzzy
-msgid "Picture in graphics"
+msgid "Picture in Picture (PIP)"
+msgstr "Pomerite sliku u slici"
+
+#
+#, fuzzy
+msgid "Picture in graphic"
 msgstr "Pomerite sliku u slici"
 
 #
@@ -9797,6 +10336,20 @@ msgstr ""
 #
 msgid "Play recorded movies..."
 msgstr "Pokreni snimljene filmove..."
+
+#, python-format
+msgid "Play the %d marked recordings"
+msgstr ""
+
+#
+#, fuzzy
+msgid "Play the marked recording"
+msgstr "ovo snimanje"
+
+#
+#, fuzzy
+msgid "Play the selected recording"
+msgstr "ovo snimanje"
 
 msgid ""
 "Playback information missing\n"
@@ -9954,12 +10507,27 @@ msgstr "Molim odaberite podkanal..."
 
 #
 #, fuzzy
+msgid "Please select an acceptable directory."
+msgstr "Molim odaberite plejlistu..."
+
+#
+#, fuzzy
 msgid "Please select medium to be scanned"
 msgstr "Molim izaberite medij za traženje"
 
 #
 msgid "Please select medium to use as backup location"
 msgstr "Molim izaberite medij da se koristi kao lokacija za sigurnosnu kopiju"
+
+#
+#, fuzzy
+msgid "Please select the default action of the EPG button"
+msgstr "Molim izaberite oznaku za filter"
+
+#
+#, fuzzy
+msgid "Please select the default action of the INFO button"
+msgstr "Molim izaberite oznaku za filter"
 
 #
 msgid "Please select the movie path..."
@@ -10057,6 +10625,12 @@ msgstr "Molim podesite tuner B"
 #, fuzzy
 msgid "Please set your time options"
 msgstr "Molim podesite tuner B"
+
+msgid ""
+"Please set your time options.\n"
+"\n"
+"Press YELLOW to set the time zone via geolocation."
+msgstr ""
 
 #
 #, fuzzy
@@ -10291,6 +10865,11 @@ msgstr "Uređivanje tajmera"
 
 #
 #, fuzzy
+msgid "Power Timers"
+msgstr "Uređivanje tajmera"
+
+#
+#, fuzzy
 msgid "Power long"
 msgstr "Tajmer log"
 
@@ -10308,11 +10887,6 @@ msgstr "Granica snage u mA"
 
 msgid "Power threshold. Consult your receiver's manual for more information."
 msgstr ""
-
-#
-#, fuzzy
-msgid "Power timers"
-msgstr "Uređivanje tajmera"
 
 msgid "PowerControl FrontDisplay Normal Mode"
 msgstr ""
@@ -10429,8 +11003,9 @@ msgid "Press OK to keep the currently selected%s skin."
 msgstr "Pritisnite OK za aktiviranje izabrane maske."
 
 #
-msgid "Press OK to scan"
-msgstr "Pritisnite OK za skeniranje"
+#, fuzzy
+msgid "Press OK to save and exit."
+msgstr "Pritisnite OK da izaberete provajdera."
 
 #
 #, fuzzy
@@ -10453,6 +11028,11 @@ msgid "Press OK to select satellites"
 msgstr "Pritisnite OK da izaberete provajdera."
 
 #
+#, fuzzy
+msgid "Press OK to select the save location of the log file."
+msgstr "Pritisnite OK da prebacite izbor."
+
+#
 msgid "Press OK to select/deselect a CAId."
 msgstr "Pritisni OK da izabereš/odbaciš CAId"
 
@@ -10463,15 +11043,17 @@ msgstr "Pritisnite OK da uredite postavke."
 
 #
 #, fuzzy
+msgid "Press OK to show details"
+msgstr "Pritisnite OK za skeniranje"
+
+#
+#, fuzzy
 msgid "Press OK to toggle the selection"
 msgstr "Pritisnite OK da prebacite izbor."
 
 #
 msgid "Press OK to toggle the selection."
 msgstr "Pritisnite OK da prebacite izbor."
-
-msgid "Press OK, save and exit..."
-msgstr ""
 
 msgid ""
 "Press up/down to scroll through the selected log\n"
@@ -10637,11 +11219,13 @@ msgstr ""
 msgid "Purge deleted user bouquets"
 msgstr ""
 
-msgid "Put TV in standby"
+msgid "Put A/V receiver in standby"
 msgstr ""
 
-#, python-format
-msgid "Put your %s %s in standby"
+msgid "Put A/V receiver in standby."
+msgstr ""
+
+msgid "Put TV in standby"
 msgstr ""
 
 #
@@ -10683,10 +11267,16 @@ msgstr ""
 msgid "RAM"
 msgstr ""
 
+msgid "RDS/RASS display"
+msgstr ""
+
 #
 #, fuzzy
 msgid "REC"
 msgstr "FEC"
+
+msgid "REC "
+msgstr ""
 
 msgid "REC Symbol"
 msgstr ""
@@ -10807,9 +11397,21 @@ msgstr "Stvarno ponovo podići sada?"
 msgid "Reboot"
 msgstr "Podići"
 
+msgid "Reboot required"
+msgstr ""
+
 #, fuzzy
 msgid "Rec"
 msgstr "Snimanje "
+
+msgid "Rec button (long)"
+msgstr ""
+
+msgid "Rec button (short)"
+msgstr ""
+
+msgid "Recall channel, panic button & number zap"
+msgstr ""
 
 msgid "Record"
 msgstr "Snimanje "
@@ -10836,7 +11438,7 @@ msgstr "Snimanje"
 
 #
 #, fuzzy
-msgid "Recording & playback"
+msgid "Recording & Playback"
 msgstr "Nastavite reprodukciju"
 
 #
@@ -10847,15 +11449,17 @@ msgstr "Nastavite reprodukciju"
 msgid "Recording and playback settings"
 msgstr ""
 
-msgid "Recording in progress"
-msgstr ""
-
 msgid "Recording type"
 msgstr ""
 
 #
 msgid "Recording(s) are in progress or coming up in few seconds!"
 msgstr "Snimanje u toku ili počinje za nekoliko sekundi!"
+
+#
+#, fuzzy
+msgid "Recording/media selection"
+msgstr "Lokacija filmova"
 
 #
 msgid "Recordings"
@@ -10867,15 +11471,21 @@ msgstr "Snimanje uvek ima prioritet"
 
 #
 #, fuzzy
-msgid "Recordings, playback & timeshift"
+msgid "Recordings, Playback & Timeshift"
 msgstr "Snimanje uvek ima prioritet"
 
 #
 #, fuzzy
-msgid "Recovery mode"
+msgid "Recovery Mode"
 msgstr "[mod premeštanja]"
 
 msgid "Red"
+msgstr ""
+
+msgid "Red button (long)"
+msgstr ""
+
+msgid "Red button (short)"
 msgstr ""
 
 msgid "Red button..."
@@ -10900,9 +11510,6 @@ msgid ""
 msgstr ""
 
 msgid "Reflash recommended!"
-msgstr ""
-
-msgid "Refresh every (in hours)"
 msgstr ""
 
 msgid "Refresh rate"
@@ -10935,6 +11542,14 @@ msgstr "Ponovo ubaciti"
 #, fuzzy
 msgid "Reload blacklists"
 msgstr "Ponovo učitaj Black-/Whitelists"
+
+msgid "Reload every (in hours)"
+msgstr ""
+
+#
+#, fuzzy
+msgid "Reload skin"
+msgstr "Ponovo ubaciti"
 
 msgid "Reloading EPG Cache..."
 msgstr ""
@@ -11026,6 +11641,11 @@ msgstr "obriši sve novo nađene zastave"
 
 #
 #, fuzzy
+msgid "Remove all selection marks"
+msgstr "obriši sve alternative"
+
+#
+#, fuzzy
 msgid "Remove all settings data"
 msgstr "obriši sve alternative"
 
@@ -11054,6 +11674,11 @@ msgid "Remove cable services"
 msgstr "Zapamti PIN kanala"
 
 #
+#, fuzzy
+msgid "Remove current channel from list"
+msgstr "Ukloni trenutno odabrani titl"
+
+#
 msgid "Remove currently selected title"
 msgstr "Ukloni trenutno odabrani titl"
 
@@ -11061,6 +11686,9 @@ msgstr "Ukloni trenutno odabrani titl"
 #, fuzzy
 msgid "Remove entry"
 msgstr "obriši unos"
+
+msgid "Remove finished timer logs after (days)"
+msgstr ""
 
 msgid "Remove finished timers after (days)"
 msgstr ""
@@ -11132,6 +11760,11 @@ msgstr "Preimenovati"
 
 #
 #, fuzzy
+msgid "Rename channel"
+msgstr "ne menjaj"
+
+#
+#, fuzzy
 msgid "Rename entry"
 msgstr "obriši unos"
 
@@ -11161,6 +11794,9 @@ msgstr ""
 msgid "Repeat how often"
 msgstr "Tip ponavljanja"
 
+msgid "Repeat leave standby messages"
+msgstr ""
+
 #
 #, fuzzy
 msgid "Repeat type"
@@ -11180,6 +11816,12 @@ msgid "Repeats"
 msgstr "Ponavljanja"
 
 msgid "Replace `- ` in dialogs with colored text per speaker (like teletext subtitles for the hearing impaired)"
+msgstr ""
+
+msgid "Request for physical address report"
+msgstr ""
+
+msgid "Request for vendor report"
 msgstr ""
 
 msgid "Require authentication for http streams"
@@ -11537,7 +12179,7 @@ msgstr "Sačuvajte"
 msgid "Save / Enter text and exit"
 msgstr ""
 
-msgid "Save EPG"
+msgid "Save EPG Cache"
 msgstr ""
 
 msgid "Save all changed settings and exit"
@@ -11561,6 +12203,11 @@ msgstr ""
 #, fuzzy
 msgid "Save playlist"
 msgstr "sačuvaj plejlistu"
+
+#
+#, fuzzy
+msgid "Save timer"
+msgstr "Početno vreme"
 
 msgid "Save timeshift and zap"
 msgstr ""
@@ -11663,6 +12310,11 @@ msgstr "Pretražuje osnovne lamedbs razvrstane po satelitima sa povezanim antens
 msgid "Schedule EPG and channel list import"
 msgstr ""
 
+#
+#, fuzzy
+msgid "Screen proportions"
+msgstr "Napredne opcije"
+
 msgid "Scrolling Speed"
 msgstr ""
 
@@ -11676,6 +12328,18 @@ msgid "Search"
 msgstr ""
 
 msgid "Search IMDb for information about the current event."
+msgstr ""
+
+msgid "Search by first letter of name"
+msgstr ""
+
+msgid "Search by name (SMS-style entry on remote)"
+msgstr ""
+
+msgid "Search channel list, SMS style 2ABC"
+msgstr ""
+
+msgid "Search channel list, SMS style ABC2"
 msgstr ""
 
 #
@@ -11722,6 +12386,16 @@ msgstr "Pretraži zapad"
 #, fuzzy
 msgid "Second cable of motorized LNB"
 msgstr "drugi kabal od motorizovanog LNB-a"
+
+#
+#, fuzzy
+msgid "Second infobar"
+msgstr "prikaži info transpondera"
+
+#
+#, fuzzy
+msgid "Second infobar style*"
+msgstr "prikaži info transpondera"
 
 #
 msgid "Secondary DNS"
@@ -11854,6 +12528,11 @@ msgstr ""
 msgid "Select CAId"
 msgstr "Izaberite CAId"
 
+#
+#, fuzzy
+msgid "Select EPG channel"
+msgstr "Izaberi"
+
 msgid "Select Fast DiSEqC if your aerial system supports this. If you are unsure select 'no'."
 msgstr ""
 
@@ -11908,6 +12587,11 @@ msgid "Select between entering an IP address or a domain."
 msgstr ""
 
 #
+#, fuzzy
+msgid "Select channel from history"
+msgstr "Odaberite kanal za snimanje od"
+
+#
 msgid "Select channel to record from"
 msgstr "Odaberite kanal za snimanje od"
 
@@ -11918,8 +12602,19 @@ msgstr ""
 msgid "Select current service"
 msgstr "Izaberi ulazni uređaj"
 
+msgid "Select default action of EPG button"
+msgstr ""
+
+msgid "Select default action of INFO button"
+msgstr ""
+
 msgid "Select destination for:"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Select directory for logfile"
+msgstr "Pravljenje direktorijuma %s nije uspelo"
 
 msgid "Select files for backup."
 msgstr "Izaberi datoteke za bekap."
@@ -11979,6 +12674,11 @@ msgid "Select movie"
 msgstr "Odaberi film"
 
 #
+#, fuzzy
+msgid "Select path for logfile"
+msgstr "Izaberite ciljnu fasciklu"
+
+#
 msgid "Select provider to add..."
 msgstr "Izaberi provajdera za dodavanje"
 
@@ -12019,6 +12719,10 @@ msgstr ""
 
 msgid "Select the character or action under the keyboard cursor"
 msgstr ""
+
+#, fuzzy
+msgid "Select the current menu item"
+msgstr "Izaberi ulazni uređaj"
 
 msgid "Select the desired function and click on \"OK\" to assign it. Use \"CH+/-\" to toggle between the lists. Select an assigned function and click on \"OK\" to de-assign it. Use \"Next/Previous\" to change the order of the assigned functions."
 msgstr ""
@@ -12170,13 +12874,12 @@ msgstr "Jedan satelit"
 msgid "Selecting this option allows you to configure a group of satellites in one block."
 msgstr ""
 
-msgid "Send"
-msgstr ""
+#
+#, fuzzy
+msgid "Selection and exit"
+msgstr "Sačuvajte listu za reprodukciju kod izlaska "
 
 msgid "Send 'sourceactive' before zap timers"
-msgstr ""
-
-msgid "Send Confirmation"
 msgstr ""
 
 #
@@ -12186,9 +12889,6 @@ msgstr "Poslati DISEqC"
 #
 msgid "Send DiSEqC only on satellite change"
 msgstr "Poslati DISEqC samo kod promene satelita"
-
-msgid "Send yourself a copy"
-msgstr ""
 
 msgid "Senegal"
 msgstr ""
@@ -12342,6 +13042,9 @@ msgstr ""
 msgid "Set Framerate for MiniTV"
 msgstr ""
 
+msgid "Set HDMI-CEC fixed address"
+msgstr ""
+
 msgid "Set LED Color or disable the LED."
 msgstr ""
 
@@ -12403,16 +13106,16 @@ msgstr ""
 msgid "Set the date the timer must start."
 msgstr ""
 
-msgid "Set the default location for your instant recordings. Press 'OK' to add new locations, select left/right to select an existing location."
+msgid "Set the default location for your instant recordings. Press OK to add new locations, LEFT/RIGHT to select from any existing locations."
 msgstr ""
 
-msgid "Set the default location for your recordings. Press 'OK' to add new locations, select left/right to select an existing location."
+msgid "Set the default location for your recordings. Press OK to add new locations, LEFT/RIGHT to select from any existing locations."
 msgstr ""
 
-msgid "Set the default location for your timers. Press 'OK' to add new locations, select left/right to select an existing location."
+msgid "Set the default location for your timers. Press OK to add new locations, LEFT/RIGHT to select from any existing locations."
 msgstr ""
 
-msgid "Set the default location for your timeshift-files. Press 'OK' to add new locations, select left/right to select an existing location."
+msgid "Set the default location for your timeshift files. Press OK to add new locations, LEFT/RIGHT to select any existing locations."
 msgstr ""
 
 msgid "Set the default sorting method."
@@ -12481,20 +13184,27 @@ msgstr ""
 msgid "Set to what you want the button to do."
 msgstr ""
 
+msgid "Set update interval (in hours)."
+msgstr ""
+
 msgid "Set voltage and 22KHz"
 msgstr ""
 
 msgid "Sets the root directory of movie list, to remove the '..' from being shown in that folder."
 msgstr ""
 
+#, python-format
 msgid ""
-"Setting a password is strongly advised if your STB is open to the internet.\n"
-"This is the case if you have in your router a port forwarded to the STB."
+"Setting a network password is mandatory in OpenViX %s if you wish to use network services. \n"
+"To set a password using the virtual keyboard press the 'text' button on your remote control."
 msgstr ""
 
 #
 msgid "Settings"
 msgstr "Postavke"
+
+msgid "Settings, information and more functions"
+msgstr ""
 
 #
 msgid "Setup"
@@ -12528,8 +13238,10 @@ msgstr "Satelitska oprema"
 msgid "Seychelles"
 msgstr ""
 
-msgid "Share Folder's"
-msgstr ""
+#
+#, fuzzy
+msgid "Share Folders"
+msgstr "Izaberite ciljnu fasciklu"
 
 msgid "Share View"
 msgstr ""
@@ -12549,6 +13261,11 @@ msgstr "Kratka imena datoteka"
 
 msgid "Should the FTP connection to the remote receiver be established in passive mode (normally 'no')?"
 msgstr ""
+
+#
+#, fuzzy, python-format
+msgid "Show %s"
+msgstr "Prikaži status WLAN-a"
 
 msgid "Show /tmp/ecm.info"
 msgstr ""
@@ -12594,9 +13311,6 @@ msgid "Show Display Icons"
 msgstr ""
 
 msgid "Show EIT now/next in infobar"
-msgstr ""
-
-msgid "Show EPG..."
 msgstr ""
 
 #
@@ -12657,6 +13371,11 @@ msgstr "Jedan EPG"
 
 msgid "Show Time Remaining/Elapsed"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Show Timer List"
+msgstr "Prikaži kanale koji počinju sa"
 
 msgid "Show Transponder Remaining/Elapsed as"
 msgstr ""
@@ -12727,13 +13446,30 @@ msgstr "Prikaži kanale koji počinju sa"
 msgid "Show crypto info in infobar"
 msgstr ""
 
+#
+#, fuzzy
+msgid "Show default after description"
+msgstr "prikaži proširene informacije"
+
+#
+#, fuzzy
+msgid "Show default on new line"
+msgstr "Pokaži Info liniju "
+
+#
+#, fuzzy
+msgid "Show description for next event)"
+msgstr "Pomeri dole na naredni unos"
+
+#
+#, fuzzy
+msgid "Show description for previous event)"
+msgstr "Pomeri gore na prethodni unos"
+
 msgid "Show detailed event info"
 msgstr ""
 
 msgid "Show encryption info in the infobar (when supported by the skin)."
-msgstr ""
-
-msgid "Show epg"
 msgstr ""
 
 #
@@ -12774,11 +13510,6 @@ msgstr "odustani od uređivanja favorita"
 
 #
 #, fuzzy
-msgid "Show full menu path"
-msgstr "prikaži citat menia"
-
-#
-#, fuzzy
 msgid "Show help"
 msgstr "prikaži citat menia"
 
@@ -12789,6 +13520,11 @@ msgstr ""
 #, fuzzy
 msgid "Show in Standby"
 msgstr "Spreman"
+
+#
+#, fuzzy
+msgid "Show in extensions"
+msgstr "gledaj ekstenzije..."
 
 msgid "Show in extensions list ?"
 msgstr ""
@@ -12804,6 +13540,11 @@ msgid "Show info line"
 msgstr "Pokaži Info liniju "
 
 #
+#, fuzzy
+msgid "Show infobar EPG"
+msgstr "Prikaži info"
+
+#
 msgid "Show infobar on channel change"
 msgstr "Prikaži info traku na promeni kanala"
 
@@ -12816,6 +13557,9 @@ msgid "Show infobar on skip forward/backward"
 msgstr "Prikaži info traku na preskakanju napred/nazad"
 
 msgid "Show job tasks in extensions"
+msgstr ""
+
+msgid "Show list of similar programs"
 msgstr ""
 
 msgid "Show live tv when movie stopped"
@@ -12845,6 +13589,14 @@ msgid "Show movies"
 msgstr "prikaži citat menia"
 
 msgid "Show network mounts ..."
+msgstr ""
+
+#
+#, fuzzy
+msgid "Show notifications"
+msgstr "Prikaži kanale koji počinju sa"
+
+msgid "Show on-screen notifications (pop up) to warn the OpenTV download is in progress."
 msgstr ""
 
 #
@@ -12895,6 +13647,16 @@ msgstr "Informacije upravljača softvera"
 msgid "Show record indicator"
 msgstr "prikaži info transpondera"
 
+#
+#, fuzzy
+msgid "Show recorded movies"
+msgstr "Pokreni snimljene filmove..."
+
+#
+#, fuzzy
+msgid "Show screen path"
+msgstr "prikaži citat menia"
+
 msgid "Show screensaver"
 msgstr ""
 
@@ -12918,9 +13680,6 @@ msgstr "Prikaži kanale koji počinju sa"
 msgid "Show service list or movies"
 msgstr "Prikaži kanale koji počinju sa"
 
-msgid "Show service name and event description above and below each other instead of side by side."
-msgstr ""
-
 #
 #, fuzzy
 msgid "Show service type icons"
@@ -12928,8 +13687,18 @@ msgstr "Prikaži kanale koji počinju sa"
 
 #
 #, fuzzy
+msgid "Show setup default values"
+msgstr "prikaži proširene infor. "
+
+#
+#, fuzzy
 msgid "Show shutdown menu"
 msgstr "prikaži meni isključivanja"
+
+#
+#, fuzzy
+msgid "Show single channel EPG..."
+msgstr "Jedan EPG"
 
 msgid "Show single epg for current channel"
 msgstr ""
@@ -12950,6 +13719,11 @@ msgstr "Prikaži kanale koji počinju sa"
 #
 #, fuzzy
 msgid "Show subservice selection"
+msgstr "Prikaži kanale koji počinju sa"
+
+#
+#, fuzzy
+msgid "Show subservice selection list..."
 msgstr "Prikaži kanale koji počinju sa"
 
 #
@@ -12976,6 +13750,9 @@ msgstr ""
 #
 msgid "Show the radio player..."
 msgstr "Prikaži radio plejer ..."
+
+msgid "Show the service information on two lines in the channel selection screen. You can choose between the current event description below the channel name, or the current event description next to the channel name, and the next event description on the second line."
+msgstr ""
 
 #
 msgid "Show the tv player..."
@@ -13017,6 +13794,11 @@ msgstr "Način rada kad je film zaustavljen"
 msgid "Show/Games show"
 msgstr ""
 
+#
+#, fuzzy
+msgid "Show/hide infobar"
+msgstr "prikaži info transpondera"
+
 msgid "Shows live tv or informations on LCD."
 msgstr ""
 
@@ -13037,7 +13819,7 @@ msgstr "sam biraj iz plejliste"
 
 #
 #, fuzzy
-msgid "Shut down"
+msgid "Shut Down"
 msgstr "Isključivanje"
 
 msgid "Side by Side"
@@ -13152,6 +13934,11 @@ msgstr ""
 
 #
 #, fuzzy
+msgid "Skin Setup"
+msgstr "Postavke motora"
+
+#
+#, fuzzy
 msgid "Skin install"
 msgstr "Deinstaliraj"
 
@@ -13176,6 +13963,15 @@ msgstr "Maska"
 msgid "Skip back"
 msgstr "preskoči unazad"
 
+#, fuzzy
+msgid "Skip back "
+msgstr "preskoči unazad"
+
+#
+#, fuzzy
+msgid "Skip back (enter time in minutes)"
+msgstr "preskoči unazad (unesi vreme)"
+
 #
 #, fuzzy
 msgid "Skip empty services"
@@ -13186,7 +13982,23 @@ msgstr "Zaštiti kanale"
 msgid "Skip forward"
 msgstr "preskoči unapred"
 
+#
+#, fuzzy
+msgid "Skip forward "
+msgstr "preskoči unapred"
+
+#
+#, fuzzy
+msgid "Skip forward (enter time in minutes)"
+msgstr "preskoči napred (unesi vreme)"
+
 msgid "Skip internet connection check (disables automatic package installation)"
+msgstr ""
+
+msgid "Skip, pause, rewind and fast forward"
+msgstr ""
+
+msgid "Skip, pause, rewind and fast forward timeshift"
 msgstr ""
 
 #
@@ -13300,6 +14112,11 @@ msgid "Software"
 msgstr "Softver"
 
 #
+#, fuzzy
+msgid "Software Update"
+msgstr "Nadogradnja softvera"
+
+#
 msgid "Software management"
 msgstr "Upravljač softvera "
 
@@ -13326,6 +14143,9 @@ msgid "Solomon Islands"
 msgstr ""
 
 msgid "Somalia"
+msgstr ""
+
+msgid "Some TVs do not wake from standby when they receive the 'Image View On' command. If this is the case try the 'Text View On' command instead."
 msgstr ""
 
 #
@@ -13498,6 +14318,11 @@ msgstr "Spreman"
 
 #
 #, fuzzy
+msgid "Standby & Restart"
+msgstr "Spreman / restart"
+
+#
+#, fuzzy
 msgid "Standby / restart"
 msgstr "Spreman / restart"
 
@@ -13505,11 +14330,6 @@ msgstr "Spreman / restart"
 #, fuzzy
 msgid "Standby LED"
 msgstr "Spreman"
-
-#
-#, fuzzy
-msgid "Standby and Restart"
-msgstr "Spreman / restart"
 
 msgid "Start"
 msgstr ""
@@ -13635,6 +14455,11 @@ msgstr "Zaustavi trenutni događaj ali ne i ostale dolazeće"
 msgid "Stop entry"
 msgstr "zaustavi unos"
 
+#
+#, fuzzy
+msgid "Stop movie"
+msgstr "prikaži citat menia"
+
 msgid "Stop play TV"
 msgstr ""
 
@@ -13646,9 +14471,6 @@ msgid "Stop previous broadcasted service on return to movie list."
 msgstr ""
 
 msgid "Stop recording"
-msgstr ""
-
-msgid "Stop recording and delete"
 msgstr ""
 
 #
@@ -13682,6 +14504,22 @@ msgstr "Zaustavite testiranje matrice posle # neuspešnih transpondera"
 #
 msgid "Stop testing plane after # successful transponders"
 msgstr "Zaustavite testiranje matrice posle#uspelih transpondera"
+
+#
+#, fuzzy
+msgid "Stop this recording"
+msgid_plural "Stop these recordings"
+msgstr[0] "ovo snimanje"
+msgstr[1] "ovo snimanje"
+msgstr[2] "ovo snimanje"
+
+#
+#, fuzzy
+msgid "Stop this recording and delete it"
+msgid_plural "Stop these recordings and delete them"
+msgstr[0] "ovo snimanje"
+msgstr[1] "ovo snimanje"
+msgstr[2] "ovo snimanje"
 
 #
 #, fuzzy
@@ -13735,11 +14573,13 @@ msgstr ""
 
 #
 #, fuzzy
-msgid "Streaming Clients Info"
+msgid "Streaming Clients"
 msgstr "Prikaži kanale koji počinju sa"
 
-msgid "Streaming clients"
-msgstr ""
+#
+#, fuzzy
+msgid "Streaming Clients Info"
+msgstr "Prikaži kanale koji počinju sa"
 
 msgid "Strict DLNA"
 msgstr ""
@@ -13754,6 +14594,11 @@ msgstr "Snimi poziciju"
 
 msgid "Subnet"
 msgstr ""
+
+#
+#, fuzzy
+msgid "Subservice selection"
+msgstr "Prikaži kanale koji počinju sa"
 
 #
 msgid "Subservices"
@@ -13841,6 +14686,11 @@ msgstr "Ned"
 msgid "Sunday"
 msgstr "Nedelja"
 
+msgid ""
+"Sundtek - hardware blind scan in progress.\n"
+"Please wait(3-20 min) for the scan to finish."
+msgstr ""
+
 msgid "Support at"
 msgstr ""
 
@@ -13898,13 +14748,43 @@ msgstr ""
 msgid "Switch between filelist/playlist"
 msgstr "prebaci u listu datoteka"
 
+#
+#, fuzzy
+msgid "Switch between last two channels watched"
+msgstr "prebaci u listu datoteka"
+
 msgid "Switch config"
 msgstr ""
 
 #
 #, fuzzy
+msgid "Switch the PiP to the next channel"
+msgstr "Prebaci na sledeći ugao"
+
+#
+#, fuzzy
+msgid "Switch the PiP to the previous channel"
+msgstr "Premotaj na prethodno poglavlje"
+
+#
+#, fuzzy
+msgid "Switch to Grid EPG"
+msgstr "Multi EPG"
+
+#
+#, fuzzy
 msgid "Switch to HDMI in mode"
 msgstr "prebaci u listu datoteka"
+
+#
+#, fuzzy
+msgid "Switch to Multi EPG"
+msgstr "Multi EPG"
+
+#
+#, fuzzy
+msgid "Switch to Single EPG"
+msgstr "Jedan EPG"
 
 #
 #, fuzzy
@@ -14036,6 +14916,9 @@ msgstr "TS datoteka je prevelika za ISO9660 nivo 1!"
 msgid "TSID"
 msgstr "TSID"
 
+msgid "TUNER:"
+msgstr ""
+
 msgid "TUNING"
 msgstr ""
 
@@ -14056,6 +14939,9 @@ msgstr "Tabela sadržaja za kolekciju"
 #
 msgid "Tags"
 msgstr "Oznake"
+
+msgid "Taiwan"
+msgstr ""
 
 msgid "Tajikistan"
 msgstr ""
@@ -14130,6 +15016,9 @@ msgstr ""
 msgid "Text Grid EPG"
 msgstr "Multi EPG"
 
+msgid "Text View On"
+msgstr ""
+
 #
 #, fuzzy
 msgid "Text color"
@@ -14154,10 +15043,10 @@ msgid ""
 "Please press OK to start using your %s %s."
 msgstr ""
 
-msgid "The %s %s reads the stored EPG data every (hours)."
+msgid "The %s %s loads the saved EPG data every (hours)."
 msgstr ""
 
-msgid "The %s %s stores the EPG data every (hours)."
+msgid "The %s %s saves the EPG data every (hours)."
 msgstr ""
 
 msgid ""
@@ -14218,6 +15107,9 @@ msgstr "PIN kodovi koji ste uneli su različiti. "
 msgid "The backup failed. Please choose a different backup location."
 msgstr "Neuspešna sigurnosna kopija. Molim odaberite drugu lokaciju."
 
+msgid "The command to wake from standby will be sent multiple times."
+msgstr ""
+
 msgid "The commit log cannot be retrieved at the moment - please try again later."
 msgstr ""
 
@@ -14226,21 +15118,6 @@ msgstr ""
 
 msgid "The current update may be unstable"
 msgstr ""
-
-#, python-format
-msgid ""
-"The directory %s is not a EXT2, EXT3, EXT4 or NFS partition.\n"
-"Make sure you select a valid partition type."
-msgstr ""
-
-#
-#, python-format
-msgid ""
-"The directory %s is not writable.\n"
-"Make sure you select a writable directory instead."
-msgstr ""
-"Direktorium %s nije za pisanje.\n"
-"Budi siguran da si umesto toga izabrao moguć direktorium."
 
 #
 msgid "The following files were found..."
@@ -14363,7 +15240,7 @@ msgstr "Trenutno nema izrazitih dešavanja."
 
 #
 #, fuzzy
-msgid "There are no items currently available for this menu."
+msgid "There are no items currently available for this screen."
 msgstr "Nema dostupnih ažuriranja."
 
 #
@@ -14470,28 +15347,28 @@ msgstr ""
 msgid "This option allows you to choose from the two channel lists that are available."
 msgstr ""
 
-msgid "This option allows you to choose how to display 1080p 24Hz on your TV. (as not all TV's support these resolutions)"
+msgid "This option allows you to choose how to display 1080p 24Hz on your TV. (as not all TVs support these resolutions)"
 msgstr ""
 
-msgid "This option allows you to choose how to display 1080p 25Hz on your TV. (as not all TV's support these resolutions)"
+msgid "This option allows you to choose how to display 1080p 25Hz on your TV. (as not all TVs support these resolutions)"
 msgstr ""
 
-msgid "This option allows you to choose how to display 1080p 30Hz on your TV. (as not all TV's support these resolutions)"
+msgid "This option allows you to choose how to display 1080p 30Hz on your TV. (as not all TVs support these resolutions)"
 msgstr ""
 
-msgid "This option allows you to choose how to display 2160p 24Hz on your TV. (as not all TV's support these resolutions)"
+msgid "This option allows you to choose how to display 2160p 24Hz on your TV. (as not all TVs support these resolutions)"
 msgstr ""
 
-msgid "This option allows you to choose how to display 2160p 25Hz on your TV. (as not all TV's support these resolutions)"
+msgid "This option allows you to choose how to display 2160p 25Hz on your TV. (as not all TVs support these resolutions)"
 msgstr ""
 
-msgid "This option allows you to choose how to display 2160p 30Hz on your TV. (as not all TV's support these resolutions)"
+msgid "This option allows you to choose how to display 2160p 30Hz on your TV. (as not all TVs support these resolutions)"
 msgstr ""
 
-msgid "This option allows you to choose how to display 720p 24Hz on your TV. (as not all TV's support these resolutions)"
+msgid "This option allows you to choose how to display 720p 24Hz on your TV. (as not all TVs support these resolutions)"
 msgstr ""
 
-msgid "This option allows you to choose how to display SD progressive 24Hz on your TV. (as not all TV's support these resolutions)"
+msgid "This option allows you to choose how to display SD progressive 24Hz on your TV. (as not all TVs support these resolutions)"
 msgstr ""
 
 msgid "This option allows you to choose how to display elapsed time. As + or -"
@@ -14539,7 +15416,7 @@ msgstr ""
 msgid "This option allows you to show the SNR as a percentage (not all receivers support this)."
 msgstr ""
 
-msgid "This option allows you to show the full menu path"
+msgid "This option allows you to show the full screen path leading to the current screen."
 msgstr ""
 
 msgid "This option allows you to view the old and new settings side by side."
@@ -14647,6 +15524,9 @@ msgid ""
 "Are you sure?"
 msgstr ""
 
+msgid "This will permanently delete the current configuration. It would be a good idea to make a backup before taking this drastic action. Are you certain you want to continue with a factory reset?"
+msgstr ""
+
 #
 msgid "Three"
 msgstr "Tri"
@@ -14673,6 +15553,11 @@ msgstr ""
 #
 msgid "Time"
 msgstr "Vreme"
+
+#
+#, fuzzy
+msgid "Time Setup Actions"
+msgstr "Komunikacija"
 
 msgid "Time Update in Minutes:"
 msgstr ""
@@ -14727,8 +15612,18 @@ msgstr ""
 
 #
 #, fuzzy
+msgid "Timer Menu"
+msgstr "Unos Tajmera"
+
+#
+#, fuzzy
 msgid "Timer Sanity Error"
 msgstr "Greška nerazumnog tajmera"
+
+#
+#, fuzzy
+msgid "Timer control"
+msgstr "Unos Tajmera"
 
 #
 #, fuzzy
@@ -14746,10 +15641,6 @@ msgid ""
 msgstr ""
 "Otkriveno preklapanje tajmera u timers.xml!\n"
 "Molimo ponovo proverite!"
-
-#
-msgid "Timer record location"
-msgstr "Lokacija snimanja po tajmeru"
 
 #
 #, fuzzy
@@ -14851,16 +15742,37 @@ msgstr ""
 msgid "Toggle a cut mark at the current position"
 msgstr ""
 
+#
+#, fuzzy
+msgid "Toggle a selection mark"
+msgstr "Izbor jezika"
+
 msgid "Toggle aspect ratio..."
 msgstr ""
 
 msgid "Toggle between bouquet/epg lists"
 msgstr ""
 
+msgid "Toggle between one & two-line channel list"
+msgstr ""
+
+#
+#, fuzzy
+msgid "Toggle channel move mode"
+msgstr "uključi mod za premeštanje"
+
 #
 #, fuzzy
 msgid "Toggle default subtitles"
 msgstr "Subtitlovi"
+
+#
+#, fuzzy
+msgid "Toggle infobar"
+msgstr "prikaži info transpondera"
+
+msgid "Toggle mark"
+msgstr ""
 
 msgid "Toggle new text inserts before or overwrites existing text"
 msgstr ""
@@ -14960,6 +15872,9 @@ msgstr "Informacije"
 msgid "Transport Stream Type"
 msgstr "Tip Transpondera"
 
+msgid "Trash"
+msgstr ""
+
 msgid "Trash can"
 msgstr ""
 
@@ -15021,11 +15936,6 @@ msgstr "Tjuner"
 
 #
 #, fuzzy
-msgid "Tuner Settings"
-msgstr "Status tjunera"
-
-#
-#, fuzzy
 msgid "Tuner Setup"
 msgstr "Status tjunera"
 
@@ -15053,11 +15963,6 @@ msgstr "Fid ažuriranja nije dostupan."
 msgid "Tuner settings values"
 msgstr "Status tjunera"
 
-#
-#, fuzzy
-msgid "Tuner setup"
-msgstr "Status tjunera"
-
 msgid "Tuner slot"
 msgstr ""
 
@@ -15070,8 +15975,10 @@ msgstr "Status tjunera"
 msgid "Tuner type"
 msgstr "Tip tjunera"
 
-msgid "Tuners & scanning"
-msgstr ""
+#
+#, fuzzy
+msgid "Tuners & Scanning"
+msgstr "Status tjunera"
 
 #
 #, fuzzy
@@ -15272,6 +16179,10 @@ msgstr ""
 msgid "Update"
 msgstr "Ažuriranje"
 
+#, fuzzy
+msgid "Update Interval"
+msgstr "Zaštitni interval"
+
 msgid "Update channel list only"
 msgstr ""
 
@@ -15351,6 +16262,11 @@ msgstr ""
 msgid "Uptime"
 msgstr ""
 
+#
+#, fuzzy, python-format
+msgid "Uptime:\t%s\n"
+msgstr "Model:"
+
 msgid "Uruguay"
 msgstr ""
 
@@ -15374,6 +16290,11 @@ msgstr ""
 
 msgid "Use FreeSat EPG information when it is available."
 msgstr ""
+
+#
+#, fuzzy
+msgid "Use Geolocation"
+msgstr "Lokacija filmova"
 
 msgid "Use MHW EPG information when it is available."
 msgstr ""
@@ -15420,6 +16341,9 @@ msgstr ""
 msgid "Use frequency or channel"
 msgstr ""
 
+msgid "Use geolocation to set the current time zone location"
+msgstr ""
+
 msgid "Use individual settings for each directory"
 msgstr ""
 
@@ -15446,6 +16370,10 @@ msgstr "Koristi merenje snage"
 
 msgid "Use separate Picon pack for Front Display"
 msgstr ""
+
+#, fuzzy
+msgid "Use skin default"
+msgstr "Standardno"
 
 msgid "Use slim screen"
 msgstr ""
@@ -15524,6 +16452,11 @@ msgid "User - bouquets"
 msgstr ""
 
 #
+#, fuzzy
+msgid "User Interface"
+msgstr "Koristi interfejs"
+
+#
 msgid "User defined"
 msgstr "Definisano od korisnika"
 
@@ -15531,9 +16464,6 @@ msgstr "Definisano od korisnika"
 #, fuzzy
 msgid "User defined transponder"
 msgstr "Predefinisani transponder"
-
-msgid "User interface"
-msgstr ""
 
 #
 #, fuzzy
@@ -15544,6 +16474,9 @@ msgstr "Koristi interfejs"
 #, fuzzy
 msgid "User interface visibility"
 msgstr "Koristi interfejs"
+
+msgid "User-selectable functions"
+msgstr ""
 
 #
 msgid "Username"
@@ -15581,7 +16514,8 @@ msgid "Uzbekistan"
 msgstr ""
 
 #
-msgid "VCR scart"
+#, fuzzy
+msgid "VCR Scart"
 msgstr "VCR skart"
 
 #, fuzzy
@@ -15615,19 +16549,16 @@ msgid "Version: "
 msgstr ""
 
 #
-#, fuzzy, python-format
-msgid "Version: %s"
-msgstr "Nova verzija:"
-
-#
 msgid "Vertical"
 msgstr "Vertikalno"
 
 msgid "Vertical turning speed"
 msgstr ""
 
-msgid "ViX EPG"
-msgstr ""
+#
+#, fuzzy, python-format
+msgid "ViX version: %s"
+msgstr "Nova verzija:"
 
 #
 #, fuzzy
@@ -15700,10 +16631,6 @@ msgstr ""
 #
 msgid "View Movies..."
 msgstr "Vidi filmove..."
-
-#
-msgid "View Rass interactive..."
-msgstr "Gledaj Rass interaktivno..."
 
 #
 msgid "View Video CD..."
@@ -15815,13 +16742,11 @@ msgid "Visual impaired commentary"
 msgstr ""
 
 #
-#, fuzzy
-msgid "Vix forum user name"
-msgstr "Skeniranje Kanala"
-
-#
 msgid "Voltage mode"
 msgstr "Mod Napona"
+
+msgid "Volume keys on the receiver remote will control the TV volume."
+msgstr ""
 
 #
 msgid "W"
@@ -15873,6 +16798,16 @@ msgstr "čekam mmi..."
 msgid "Waiting for partition."
 msgstr "Idi na poziciju"
 
+#
+#, fuzzy
+msgid "Wake A/V receiver from standby"
+msgstr "pođi u pripravnost"
+
+#
+#, fuzzy
+msgid "Wake A/V receiver from standby."
+msgstr "pođi u pripravnost"
+
 msgid "Wake On LAN"
 msgstr ""
 
@@ -15884,19 +16819,20 @@ msgstr ""
 msgid "Wake Up To Standby"
 msgstr "Isključi Drimbox"
 
+msgid "Wake the receiver from standby when the wake command is sent from the TV."
+msgstr ""
+
 msgid "Wakeup"
 msgstr ""
 
 msgid "Wakeup TV from standby"
 msgstr ""
 
-msgid "Wakeup signal from TV"
+msgid "Wakeup command for TV"
 msgstr ""
 
-#
-#, fuzzy, python-format
-msgid "Wakeup your %s %s from standby"
-msgstr "pođi u pripravnost"
+msgid "Wakeup signal from TV"
+msgstr ""
 
 msgid "Wallis and Futuna"
 msgstr ""
@@ -16033,10 +16969,22 @@ msgstr ""
 msgid "What do you want to scan?"
 msgstr "Šta želite skenirati?"
 
+msgid "When changing skins this allows the skin to load without requiring an enigma restart."
+msgstr ""
+
+msgid "When enabled a forced download will be possible from the extensions menu (blue button). Shows after next restart."
+msgstr ""
+
 msgid "When enabled enigma2 will load unlinked userbouquets. This means that userbouquets that are available, but not included in the bouquets.tv or bouquets.radio files, will still be loaded. This allows you for example to keep your own user bouquet while installed settings are upgraded"
 msgstr ""
 
 msgid "When enabled the online checker will also check for experimental versions"
+msgstr ""
+
+msgid "When enabled the receiver will automatically return to standby when the TV is turned off."
+msgstr ""
+
+msgid "When enabled the receiver will automatically wake from standby when the TV is turned on."
 msgstr ""
 
 msgid "When enabled the set top box is able to wakeup on LAN"
@@ -16108,6 +17056,9 @@ msgstr ""
 msgid "When enabled, pressing '0' will zap you to the first channel in your first bouquet and delete your zap-history."
 msgstr ""
 
+msgid "When enabled, recordings are grouped by name into collections automatically."
+msgstr ""
+
 msgid "When enabled, reformat subtitles to match the width of the screen."
 msgstr ""
 
@@ -16171,13 +17122,18 @@ msgstr ""
 msgid "When nonzero, a recording will stop later than the ending time indicated by the EPG."
 msgstr ""
 
+msgid "When receiver wakes from standby, it will command the TV to switch to the HDMI input the receiver is connected to."
+msgstr ""
+
 msgid "When set the PIG will return to live after a movie has stopped playing."
 msgstr ""
 
 msgid "When set, each directory will show the previous state used. When off, the default values will be shown."
 msgstr ""
 
-msgid "When set, sort changes via the sort key will be permanent."
+msgid ""
+"When set, sort changes via the sort key will be permanent.\n"
+"When unset, sort changes will be temporary - just for this view of a directory."
 msgstr ""
 
 msgid "When the content has an aspect ratio of 16:9, choose whether to scale/stretch the picture."
@@ -16186,10 +17142,10 @@ msgstr ""
 msgid "When the content has an aspect ratio of 4:3, choose whether to scale/stretch the picture."
 msgstr ""
 
-msgid "When tuned to a service the system will normally scan the transponder for any changes and save them. Only set to 'yes' if you're absolutely sure of what you're doing."
+msgid "When the receiver wakes from standby, it will send a command to the TV to bring it out of standby too."
 msgstr ""
 
-msgid "When unset, sort changes will be temporary - just for this view of a directory."
+msgid "When tuned to a service the system will normally scan the transponder for any changes and save them. Only set to 'yes' if you're absolutely sure of what you're doing."
 msgstr ""
 
 #
@@ -16306,6 +17262,12 @@ msgid "Yellow"
 msgstr "Žuto"
 
 msgid "Yellow DVB subtitles"
+msgstr ""
+
+msgid "Yellow button (long)"
+msgstr ""
+
+msgid "Yellow button (short)"
 msgstr ""
 
 msgid "Yellow long"
@@ -16446,8 +17408,11 @@ msgstr "Ne možete ovo obrisati!"
 msgid "You didn't select a channel to record from."
 msgstr "Niste odabrali kanal sa koga ćete snimati."
 
-msgid "You have already sent this log, are you sure you want to resend it?\n"
-msgstr ""
+msgid "You have a marked recording"
+msgid_plural "You have marked recordings"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 #
 msgid "You have chosen to backup your settings. Please press OK to start the backup now."
@@ -16466,14 +17431,6 @@ msgstr ""
 #, fuzzy
 msgid "You have not selected any logs to delete."
 msgstr "Molim odaberite plejlistu za brisanje..."
-
-msgid "You have not selected any logs to send"
-msgstr ""
-
-msgid ""
-"You have not setup your user info in the setup screen\n"
-"Press MENU, enter your info, and then try again"
-msgstr ""
 
 #
 #, python-format
@@ -16502,10 +17459,6 @@ msgid "You seem to be in timeshift, Do you want to leave timeshift ?"
 msgstr ""
 
 msgid "You seem to be in timeshift, Do you want to leave timeshift? Streams & IPTV not fully supported!"
-msgstr ""
-
-#, python-format
-msgid "Your %s %s does not support PiP HD"
 msgstr ""
 
 #, python-format
@@ -16561,6 +17514,24 @@ msgstr "Vaš drimbox se sada gasi .Molimo stand by..."
 msgid "Your %s %s might be unusable now. Please consult the manual for further assistance before rebooting your %s %s."
 msgstr ""
 
+#
+#, fuzzy, python-format
+msgid ""
+"Your %s %s needs to be restarted to complete the installation of %s\n"
+"Do you want to reboot now ?"
+msgstr ""
+"GUI se treba restartovati da se primeni nova maska\n"
+" Želite li restartovati GUI sada ?"
+
+#
+#, fuzzy, python-format
+msgid ""
+"Your %s %s needs to be restarted to complete the removal of %s\n"
+"Do you want to reboot now ?"
+msgstr ""
+"GUI se treba restartovati da se primeni nova maska\n"
+" Želite li restartovati GUI sada ?"
+
 #, python-format
 msgid ""
 "Your %s %s will be restarted after the installation of service.\n"
@@ -16570,20 +17541,8 @@ msgstr ""
 
 #, python-format
 msgid ""
-"Your %s %s will be restarted after the installation of the service\n"
-"Are you ready to install \"%s\" ?"
-msgstr ""
-
-#, python-format
-msgid ""
 "Your %s %s will be restarted after the removal of service\n"
 "Do you want to remove now ?"
-msgstr ""
-
-#, python-format
-msgid ""
-"Your %s %s will be restarted after the removal of the service\n"
-"Do you want to remove the service now ?"
 msgstr ""
 
 msgid "Your STB will restart after pressing OK on your remote control."
@@ -16722,10 +17681,18 @@ msgstr ""
 
 #
 #, fuzzy
+msgid "Zap to channel number"
+msgstr "Urediti listu kanala"
+
+#
+#, fuzzy
 msgid "Zap to channel/service"
 msgstr "Urediti listu kanala"
 
 msgid "Zap to channel/service and close"
+msgstr ""
+
+msgid "Zap to first channel & clear zap history"
 msgstr ""
 
 msgid "Zap up"
@@ -16740,6 +17707,9 @@ msgstr ""
 msgid "Zapped to timer service %s!"
 msgstr "Urediti listu kanala"
 
+msgid "Zaps to EPG download transponder for EPG fetch."
+msgstr ""
+
 msgid "Zgemma H.S/H.2S/H.2H/H5"
 msgstr ""
 
@@ -16753,6 +17723,9 @@ msgid "Zgemma i55"
 msgstr ""
 
 msgid "Zimbabwe"
+msgstr ""
+
+msgid "Zoom"
 msgstr ""
 
 msgid "Zoom In/Out TV..."
@@ -16771,9 +17744,6 @@ msgid "[TimeShift] Restarting Timeshift!"
 msgstr ""
 
 msgid "[Timeshift] Merging records failed!"
-msgstr ""
-
-msgid "[a]"
 msgstr ""
 
 #
@@ -16813,6 +17783,9 @@ msgstr ""
 #
 msgid "add bookmark"
 msgstr "Dodaj oznaku"
+
+msgid "additional cable of rotor"
+msgstr ""
 
 msgid "address:"
 msgstr ""
@@ -17109,11 +18082,6 @@ msgstr ""
 
 #
 #, fuzzy
-msgid "e-mail address"
-msgstr "IP Adresa"
-
-#
-#, fuzzy
 msgid "east"
 msgstr "Pokreći na istok"
 
@@ -17335,11 +18303,6 @@ msgid "handicraft"
 msgstr ""
 
 msgid "handled"
-msgstr ""
-
-msgid ""
-"has been sent to the ViX team.\n"
-"please quote"
 msgstr ""
 
 msgid "hdr10"
@@ -17731,6 +18694,9 @@ msgstr "Snimi"
 msgid "recording..."
 msgstr "snimanje..."
 
+msgid "recordings by date then other media by name"
+msgstr ""
+
 #
 msgid "red"
 msgstr "Crveno"
@@ -17784,9 +18750,6 @@ msgstr ""
 msgid "rewind to the previous chapter"
 msgstr "Premotaj na prethodno poglavlje"
 
-msgid "rgb"
-msgstr ""
-
 #
 msgid "right"
 msgstr "desno"
@@ -17799,6 +18762,11 @@ msgstr ""
 
 msgid "romance"
 msgstr ""
+
+#
+#, fuzzy
+msgid "rotor"
+msgstr "Autor"
 
 #
 #, fuzzy
@@ -17826,6 +18794,11 @@ msgstr ""
 #
 #, fuzzy
 msgid "se"
+msgstr "Koristi"
+
+#
+#, fuzzy
+msgid "sec"
 msgstr "Koristi"
 
 #
@@ -17925,16 +18898,8 @@ msgid "skip backward"
 msgstr "preskoči unazad"
 
 #
-msgid "skip backward (enter time)"
-msgstr "preskoči unazad (unesi vreme)"
-
-#
 msgid "skip forward"
 msgstr "preskoči unapred"
-
-#
-msgid "skip forward (enter time)"
-msgstr "preskoči napred (unesi vreme)"
 
 msgid "slow"
 msgstr ""
@@ -18059,6 +19024,16 @@ msgstr ""
 
 #
 #, fuzzy
+msgid "two lines"
+msgstr "Pokaži Info liniju "
+
+#
+#, fuzzy
+msgid "two lines and next event"
+msgstr "Pomeri dole na naredni unos"
+
+#
+#, fuzzy
 msgid "type"
 msgstr "Testiraj tip"
 
@@ -18168,15 +19143,6 @@ msgstr ""
 msgid "when PiPzap enabled zap channel up..."
 msgstr ""
 
-msgid "when asking questions about this log"
-msgstr ""
-
-msgid ""
-"when asking questions about this log\n"
-"\n"
-"A copy has been sent to yourself."
-msgstr ""
-
 msgid "white"
 msgstr ""
 
@@ -18253,560 +19219,3 @@ msgstr "Snimi"
 #
 msgid "zapped"
 msgstr "prebačen"
-
-#
-#, fuzzy
-#~ msgid ""
-#~ "A finished power timer wants to shut down\n"
-#~ "your %s %s. Shutdown now?"
-#~ msgstr ""
-#~ "Tajmer snimanja je završio i želi isključiti vaš\n"
-#~ "Drimbox sada. Isključiti sada?"
-
-#
-#~ msgid "AA"
-#~ msgstr "AA"
-
-#
-#~ msgid "AB"
-#~ msgstr "AB"
-
-#
-#~ msgid "About..."
-#~ msgstr "O programu..."
-
-#
-#, fuzzy
-#~ msgid "Add Autotimer"
-#~ msgstr "Dodaj Tajmer"
-
-#
-#, fuzzy
-#~ msgid "Animation Setup"
-#~ msgstr "Postavke motora"
-
-#
-#~ msgid "BA"
-#~ msgstr "BA"
-
-#
-#~ msgid "BB"
-#~ msgstr "BB"
-
-#
-#~ msgid "Change pin code"
-#~ msgstr "Promeni pin kod"
-
-#~ msgid "Change service PINs"
-#~ msgstr "Promeni servisne PINove"
-
-#
-#, fuzzy
-#~ msgid "Change to bouquet"
-#~ msgstr "Dodaj u buket"
-
-#~ msgid "Changelog"
-#~ msgstr "Zapis izmena"
-
-#
-#, fuzzy
-#~ msgid "Channel selection settings"
-#~ msgstr "Postavke kolekcije"
-
-#
-#, fuzzy
-#~ msgid "ChannelEPG settings"
-#~ msgstr "Izbor kanala"
-
-#
-#, fuzzy
-#~ msgid "Close bouquet list."
-#~ msgstr "Uredi listi buketa"
-
-#
-#~ msgid "Coderate HP"
-#~ msgstr "Kodrata HP"
-
-#
-#~ msgid "Coderate LP"
-#~ msgstr "Kodrata LP"
-
-#
-#~ msgid "Common Interface Assignment"
-#~ msgstr "Dodeljivanje opšteg interfejsa"
-
-#
-#, fuzzy
-#~ msgid "Could not connect to %s %s .NFI image feed server:"
-#~ msgstr "Ne može se povezati na drimbox.NFI Imidž Feed Server"
-
-#
-#, fuzzy
-#~ msgid "Cron manager"
-#~ msgstr "Menadžer paketa"
-
-#~ msgid "Currently installed image"
-#~ msgstr "Aktuelno instalirani imidž"
-
-#
-#~ msgid "Customize"
-#~ msgstr "Prilagodi"
-
-#
-#, fuzzy
-#~ msgid "Delete..."
-#~ msgstr "Obriši..."
-
-#
-#~ msgid "Dialing:"
-#~ msgstr "Zovem:"
-
-#
-#, fuzzy
-#~ msgid "Diction"
-#~ msgstr "Opis"
-
-#
-#~ msgid "Disconnect"
-#~ msgstr "Odspojiti"
-
-#~ msgid "Do you want to download the image to %s ?"
-#~ msgstr "Da li želite da skinete imidž u %s ?"
-
-#, fuzzy
-#~ msgid "Download %s from server"
-#~ msgstr "Skidanje %s sa servera"
-
-#
-#, fuzzy
-#~ msgid "Download .NFI-files for USB-flasher"
-#~ msgstr "Skidanje .NFI datoteka za USB-Flešer"
-
-#
-#~ msgid "Edit bouquets list"
-#~ msgstr "Uredi listi buketa"
-
-#
-#, fuzzy
-#~ msgid "Exit/OK"
-#~ msgstr "Izaći"
-
-#
-#~ msgid "Finished restarting your network"
-#~ msgstr "Završeno je restartovanje vaše mreže"
-
-#
-#~ msgid "Flash"
-#~ msgstr "Fleš"
-
-#
-#~ msgid "Flashing failed"
-#~ msgstr "Fleš nije uspeo"
-
-#
-#, fuzzy
-#~ msgid "Force ToneBurst"
-#~ msgstr "Toneburst"
-
-#
-#~ msgid "Frontprocessor version: %d"
-#~ msgstr "Verzija frontprocesora: %d"
-
-#
-#, fuzzy
-#~ msgid ""
-#~ "GUI needs a restart to apply a new skin\n"
-#~ "Do you want to restart the GUI now?"
-#~ msgstr ""
-#~ "GUI se treba restartovati da se primeni nova maska\n"
-#~ " Želite li restartovati GUI sada ?"
-
-#~ msgid "Get latest experimental image"
-#~ msgstr "Uzmi poslednji eksperimentalni imidž"
-
-#
-#, fuzzy
-#~ msgid "Graphical InfobarEPG"
-#~ msgstr "Grafički Multi EPG"
-
-#
-#, fuzzy
-#~ msgid "GraphicalEPG"
-#~ msgstr "Grafički Multi EPG"
-
-#
-#, fuzzy
-#~ msgid "Hard disk setup"
-#~ msgstr "Postavke hard diska"
-
-#
-#, fuzzy
-#~ msgid "Hierarchy information"
-#~ msgstr "Informacije hijerarhije"
-
-#
-#, fuzzy
-#~ msgid "InfoBar EPG mode"
-#~ msgstr "Info traka"
-
-#
-#~ msgid "Initialization"
-#~ msgstr "Inicijalizacija"
-
-#
-#~ msgid "Link Quality:"
-#~ msgstr "Kvalitet linka:"
-
-#
-#, fuzzy
-#~ msgid "MultiEPG"
-#~ msgstr "Multi EPG"
-
-#
-#, fuzzy
-#~ msgid "MultiEPG settings"
-#~ msgstr "Postavke kolekcije"
-
-#
-#, fuzzy
-#~ msgid "Multiboot"
-#~ msgstr "Multisat"
-
-#
-#, fuzzy
-#~ msgid "NFI image flashing"
-#~ msgstr "NFI imidž flešovanje"
-
-#
-#~ msgid "NFI image flashing completed. Press Yellow to Reboot!"
-#~ msgstr "Flešovanje NFI imidža završeno.Pritisni žuto za novo podizanje"
-
-#~ msgid "NIM"
-#~ msgstr "NIM"
-
-#
-#~ msgid "Network setup"
-#~ msgstr "Mrežne postavke "
-
-#~ msgid "New PIN"
-#~ msgstr "Novi PIN"
-
-#
-#~ msgid "No details for this image file"
-#~ msgstr "Nema detalja za ovu imidž datoteku"
-
-#
-#, fuzzy
-#~ msgid "No free tuner available!"
-#~ msgstr "Opis nije dostupan."
-
-#
-#, fuzzy
-#~ msgid "No new plugins found"
-#~ msgstr "Nijedna mreža nije nađena"
-
-#
-#~ msgid ""
-#~ "No valid service PIN found!\n"
-#~ "Do you like to change the service PIN now?\n"
-#~ "When you say 'No' here the service protection stay disabled!"
-#~ msgstr ""
-#~ "Ispravan PIN za kanal nije pronađen!\n"
-#~ "Želite li sada promeniti PIN kanala?\n"
-#~ "Ukoliko kažete 'Ne' ovde,kanali ostaju nezaštićeni."
-
-#
-#~ msgid ""
-#~ "No valid setup PIN found!\n"
-#~ "Do you like to change the setup PIN now?\n"
-#~ "When you say 'No' here the setup protection stay disabled!"
-#~ msgstr ""
-#~ "Ispravan PIN za 'Postavke' nije pronađen!\n"
-#~ "Želite li promeniti PIN sada?\n"
-#~ "Ukoliko kažete 'Ne' ovde, postavke uređaja ostaju nezaštićene!"
-
-#
-#, fuzzy
-#~ msgid "Not configured"
-#~ msgstr "nije konfigurisano"
-
-#
-#, fuzzy
-#~ msgid "Nothing connected"
-#~ msgstr "ništa nije spojeno"
-
-#
-#~ msgid "Parental control setup"
-#~ msgstr "Postavke roditeljske zaštite"
-
-#
-#~ msgid "Parental control type"
-#~ msgstr "Tip roditeljske zaštite"
-
-#
-#~ msgid "Please check your network settings!"
-#~ msgstr "Molim proverite vaše mrežne postavke"
-
-#~ msgid "Please select an NFI file and press green key to flash!"
-#~ msgstr "Molim izaberite NFI datoteku i pritisnite zeleno dugme da flešujete!"
-
-#
-#~ msgid "Please wait for activation of your network configuration..."
-#~ msgstr "Molim sačekajte za aktiviranje vaše mrežne konfiguracije..."
-
-#
-#, fuzzy
-#~ msgid "Position Setup"
-#~ msgstr "Postavke motora"
-
-#
-#, fuzzy
-#~ msgid "PowerManager entry"
-#~ msgstr "Uklonite unos nejmservera"
-
-#~ msgid "Prepare another USB stick for image flashing"
-#~ msgstr "Pripremi drugi USB stik za flešovanje imidža"
-
-#
-#~ msgid "Press OK to start the scan"
-#~ msgstr "Pritisnite OK za početak skeniranja"
-
-#
-#~ msgid "Provider to scan"
-#~ msgstr "Provajderi za skeniranje"
-
-#
-#, fuzzy
-#~ msgid "Reception Settings"
-#~ msgstr "Postavke kolekcije"
-
-#
-#~ msgid "Restore is running..."
-#~ msgstr "Vraćanje u toku..."
-
-#~ msgid "SID"
-#~ msgstr "SID"
-
-#
-#, fuzzy
-#~ msgid "Satellite equipment control"
-#~ msgstr "Satelitska oprema"
-
-#
-#, fuzzy
-#~ msgid "Save and exit"
-#~ msgstr "Sačuvajte listu za reprodukciju kod izlaska "
-
-#, fuzzy
-#~ msgid "Select an image to be downloaded"
-#~ msgstr "Izaberi imidž za skidanje"
-
-#~ msgid "Select desired image from feed list"
-#~ msgstr "Izaberi željeni imidž sa fid liste"
-
-#
-#~ msgid "Shall the USB stick wizard proceed and program the image file %s into flash memory?"
-#~ msgstr "Da li da USB stik čarobnjak nastavi i programira imidž datoteku %s u fleš memoriju?"
-
-#
-#~ msgid "Show services beginning with"
-#~ msgstr "Prikaži kanale koji počinju sa"
-
-#
-#, fuzzy
-#~ msgid "Show tag menu"
-#~ msgstr "prikaži citat menia"
-
-#
-#, fuzzy
-#~ msgid "Show warning when in a stream"
-#~ msgstr "Način rada kad je film zaustavljen"
-
-#
-#, fuzzy
-#~ msgid "Signal Finder"
-#~ msgstr "Signal: "
-
-#
-#~ msgid "Signal Strength:"
-#~ msgstr "Jačina signala:"
-
-#
-#~ msgid "Single transponder"
-#~ msgstr "Jedan Transponder"
-
-#
-#, fuzzy
-#~ msgid "SingleEPG"
-#~ msgstr "Jedan EPG"
-
-#
-#, fuzzy
-#~ msgid "SingleEPG settings"
-#~ msgstr "Urediti postavke"
-
-#
-#~ msgid "Switchable tuner types:"
-#~ msgstr "Zamenljivi tipovi tjunera:"
-
-#
-#~ msgid "Terrestrial provider"
-#~ msgstr "Zemaljski provajder"
-
-#
-#, fuzzy
-#~ msgid ""
-#~ "The Autotimer plugin is not installed!\n"
-#~ "Please install it."
-#~ msgstr ""
-#~ "Bežični LAN dodatak nije instaliran!\n"
-#~ "Molimo instalirajte ga."
-
-#~ msgid ""
-#~ "The USB stick was prepared to be bootable.\n"
-#~ "Now you can download an NFI image file!"
-#~ msgstr ""
-#~ "USB stik je bio pripremljen da bude butabiloan.\n"
-#~ "Sada možete skinuti NFI imidž datoteku!"
-
-#
-#~ msgid ""
-#~ "The following device was found:\n"
-#~ "\n"
-#~ "%s\n"
-#~ "\n"
-#~ "Do you want to write the USB flasher to this stick?"
-#~ msgstr ""
-#~ "Sledeći uređaj nije pronađen:\n"
-#~ "\n"
-#~ "%s\n"
-#~ "\n"
-#~ "Da li želite da upišete USB flešer na stik?"
-
-#~ msgid "The md5sum validation failed, the file may be corrupted!"
-#~ msgstr "md5sum provera validnosti neuspela,datoteka može biti oštećena!"
-
-#~ msgid "The wizard found a configuration backup. Do you want to restore your old settings from %s?"
-#~ msgstr "Čarobnjak je pronašao bekap konfiguracije.Da li želite da vratite vaše stare postavke sa %s?"
-
-#, fuzzy
-#~ msgid ""
-#~ "This plugin creates a USB stick which can be used to update the firmware of your %s %s without the need for a network or WLAN connection.\n"
-#~ "First, a USB stick needs to be prepared so that it becomes bootable.\n"
-#~ "In the next step, an NFI image file can be downloaded from the update server and saved on the USB stick.\n"
-#~ "If you already have a prepared bootable USB stick, please insert it now. Otherwise plug in a USB stick with a minimum size of 64 MB!"
-#~ msgstr ""
-#~ "dodatak kreira USB stik koji se može koristiti za ažuriranje fiemvera vašeg drimboksa bez potrebe za mrežom ili WLAN vezom.\n"
-#~ "Prvo,USB stik treba biti pripremljen da bi postao butabilan.\n"
-#~ "U sledećem koraku,neki NFI imidž može biti skinut sa servera za ažuriranje i sačuvan na USB stiku.\n"
-#~ "Ako ste već ranije pripremili butabilni USB stik,molimo da ga sad ubacite. U svakom slučaju uključite USB stik minimalne veličine 64MB!"
-
-#
-#~ msgid "Timer entry"
-#~ msgstr "Unos Tajmera"
-
-#, fuzzy
-#~ msgid "Timeshift on a stream is not supported!"
-#~ msgstr "tjuner nije podržan"
-
-#
-#~ msgid "Tuner configuration"
-#~ msgstr "Konfiguracija tjunera"
-
-#
-#~ msgid "USB stick wizard"
-#~ msgstr "Čarobnjak za USB stik"
-
-#
-#~ msgid "Uncommitted DiSEqC command"
-#~ msgstr "Nedodeljena DiSEqC komanda"
-
-#
-#~ msgid "Unicable LNB"
-#~ msgstr "Unikabl LNB"
-
-#
-#, fuzzy
-#~ msgid ""
-#~ "When you perform a factory reset, you will lose ALL of your configuration data\n"
-#~ "(including bouquets, services, satellite data ...)\n"
-#~ "After completion of the factory reset, your %s %s will restart automatically!\n"
-#~ "\n"
-#~ "Do you really want to do a factory reset?"
-#~ msgstr ""
-#~ "Kad radite resetovanje na fabričke vrednosti,izgubićete sve konfiguracijske podatke\n"
-#~ "(uključujući bukete,kanale,podatke o satelitima...)\n"
-#~ "Posle kompletnog resetovanja,vaš risiver će automatski restartovati!\n"
-#~ "\n"
-#~ "Stvarno uraditi reset na fabričke vrednosti?"
-
-#
-#~ msgid "You have chosen to create a new .NFI flasher bootable USB stick. This will repartition the USB stick and therefore all data on it will be erased."
-#~ msgstr "Izabrali ste da kreirate novi .NFI flešer butabilni USB stik.Ovo će ponovo particirati USB stik i svi podaci će biti izbrisani.i "
-
-#
-#, fuzzy
-#~ msgid "Your timezone in the area."
-#~ msgstr "Možete otkazati uklanjanje."
-
-#
-#~ msgid "Zap back to service before tuner setup?"
-#~ msgstr "Vratiti se nazad na kanal pre podešavanja tjunera?"
-
-#
-#~ msgid "complex"
-#~ msgstr "kompleksno"
-
-#
-#~ msgid "continue"
-#~ msgstr "nastavi"
-
-#~ msgid "currently installed image: %s"
-#~ msgstr "Trenutno instalisani imidž: %s"
-
-#
-#~ msgid "equal to"
-#~ msgstr "jednako"
-
-#
-#~ msgid "fine-tune your display"
-#~ msgstr "Fino podesite vaš displej"
-
-#
-#~ msgid "leave movie player..."
-#~ msgstr "napusti video plejer"
-
-#
-#~ msgid "loopthrough to"
-#~ msgstr "Prolaz do"
-
-#
-#~ msgid "not used"
-#~ msgstr "nije u upotrebi"
-
-#
-#, fuzzy
-#~ msgid "reliable"
-#~ msgstr "omogući"
-
-#
-#~ msgid "second cable of motorized LNB"
-#~ msgstr "drugi kabal od motorizovanog LNB-a"
-
-#~ msgid "service PIN"
-#~ msgstr "PIN kanala"
-
-#~ msgid "setup PIN"
-#~ msgstr "podesi PIN"
-
-#
-#~ msgid "special characters"
-#~ msgstr "posebni karakteri"
-
-#
-#~ msgid "standard"
-#~ msgstr "standardno"
-
-#
-#~ msgid "whitelist"
-#~ msgstr "bela lista"

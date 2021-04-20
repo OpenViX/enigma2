@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX-Enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-21 07:33+0000\n"
+"POT-Creation-Date: 2021-04-18 09:59+0430\n"
 "PO-Revision-Date: 2020-03-22 14:16+0200\n"
 "Last-Translator: rimas <rimas@domeen.ee>\n"
 "Language-Team: Digi-tv.ee\n"
@@ -55,6 +55,11 @@ msgstr ""
 "\n"
 "Muuda uuenduste lähteaadressi."
 
+msgid ""
+"\n"
+"It contains other items."
+msgstr ""
+
 #, python-format
 msgid ""
 "\n"
@@ -62,6 +67,15 @@ msgid ""
 msgstr ""
 "\n"
 "Halda %s %s pluginaid ja laiendusi"
+
+msgid ""
+"\n"
+"One is a directory that isn't empty."
+msgid_plural ""
+"\n"
+"There are directories that aren't empty."
+msgstr[0] ""
+msgstr[1] ""
 
 #, python-format
 msgid ""
@@ -824,6 +838,10 @@ msgstr "%b=%-d "
 msgid "%b=%d "
 msgstr "%b=%d "
 
+#, fuzzy, python-format
+msgid "%d"
+msgstr "%d B"
+
 msgid "%d %B %Y"
 msgstr "%d %B %Y"
 
@@ -872,6 +890,12 @@ msgid_plural "%d Mins"
 msgstr[0] "%d min"
 msgstr[1] "%d min"
 
+#, fuzzy, python-format
+msgid "%d Recording"
+msgid_plural "%d Recordings"
+msgstr[0] "Salvestus"
+msgstr[1] "Salvestus"
+
 #. TRANSLATORS: Intermediate scanning result, '%d' channel(s) have been found so far
 #, python-format
 msgid "%d channel found"
@@ -889,6 +913,10 @@ msgid_plural "%d hours"
 msgstr[0] "%d tund"
 msgstr[1] "%d tundi"
 
+#, fuzzy, python-format
+msgid "%d items"
+msgstr "Prügikast"
+
 #, python-format
 msgid "%d job is running in the background!"
 msgid_plural "%d jobs are running in the background!"
@@ -902,6 +930,14 @@ msgstr "%d ülesannet töötab taustal!"
 #, python-format
 msgid "%d kB"
 msgstr "%d kB"
+
+#, fuzzy, python-format
+msgid "%d marked item"
+msgstr "%d minut"
+
+#, fuzzy, python-format
+msgid "%d marked items"
+msgstr "%d minutit"
 
 #, python-format
 msgid "%d min"
@@ -934,6 +970,10 @@ msgid "%d pixel wide"
 msgid_plural "%d pixels wide"
 msgstr[0] "laius %d piksel"
 msgstr[1] "laius %d pikslit"
+
+#, fuzzy, python-format
+msgid "%d sec"
+msgstr "%d sekund"
 
 #, python-format
 msgid "%d second"
@@ -1069,6 +1109,10 @@ msgstr "%s (%s)\n"
 msgid "%s - %s (%s%d min)"
 msgstr "%s - %s (%s%d min)"
 
+#, python-format
+msgid "%s files cannot be bulk renamed"
+msgstr ""
+
 #. TRANSLATORS: The satellite with name '%s' is no longer used after a configuration change. The user is asked whether or not the satellite should be deleted.
 #, python-format
 msgid "%s is no longer used. Should it be deleted?"
@@ -1092,6 +1136,10 @@ msgstr[1] "%s uuendatud paketti saadaval"
 msgid "%s%d Min"
 msgstr "%s%d min"
 
+#, fuzzy, python-format
+msgid "%s%s(Default: %s)"
+msgstr "Vaikeväärtused"
+
 #, python-format
 msgid "%s/%s: %s"
 msgstr "%s/%s: %s"
@@ -1104,9 +1152,9 @@ msgstr "%s:%s"
 msgid "%s?"
 msgstr "%s?"
 
-#, python-format
-msgid "'%s' contains %d file(s) and %d sub-directories.\n"
-msgstr "'%s' sisaldab %d faili ja %d alamkataloogi.\n"
+#, fuzzy, python-format
+msgid "'%s' already exists"
+msgstr "Rada %s on juba olemas."
 
 msgid "'Network peer' automatically detects other Enigma2 receivers on the local network. You can also manually enter the URL or IP address."
 msgstr "'Võrguserver' tuvastab automaatselt teised Enigma2 vastuvõtjad kohtvõrgus. Valides 'URL' või 'IP', tuleb need sisestada käsitsi."
@@ -1170,13 +1218,13 @@ msgstr "* Võimalik vaid mitme aktiivse võrgukaardi puhul."
 msgid "* current animation"
 msgstr "* aktiivne animatsioon"
 
-#, python-format
-msgid "** Setup error: '%s' section not found! **"
-msgstr ""
+#, fuzzy
+msgid "+24 hours"
+msgstr "2 tunni tagant"
 
-#, python-format
-msgid "** Setup error: '%s' title is missing or blank!"
-msgstr ""
+#, fuzzy
+msgid "-24 hours"
+msgstr "2 tunni tagant"
 
 msgid "-NO SERVICE\n"
 msgstr "-SAATEID EI EDASTATA \n"
@@ -1194,6 +1242,14 @@ msgstr "/"
 
 msgid "/s"
 msgstr "/s"
+
+#, fuzzy
+msgid "0"
+msgstr "30"
+
+#, fuzzy
+msgid "1,1"
+msgstr "1.1"
 
 msgid "1.0"
 msgstr "1.0"
@@ -1300,6 +1356,9 @@ msgstr "24"
 msgid "25"
 msgstr "25"
 
+msgid "2678400000"
+msgstr ""
+
 msgid "29.97"
 msgstr "29.97"
 
@@ -1318,6 +1377,10 @@ msgstr "3D"
 
 msgid "3D Mode"
 msgstr "3D režiim"
+
+#, fuzzy
+msgid "3D Setup"
+msgstr "3D seaded"
 
 msgid "3D Surround"
 msgstr "3D ruumheli"
@@ -1422,9 +1485,6 @@ msgstr "<tundmatu>"
 
 msgid "=NO STREAM\n"
 msgstr "=VOOGU EI OLE\n"
-
-msgid "??"
-msgstr "??"
 
 msgid "A"
 msgstr "A"
@@ -1639,6 +1699,10 @@ msgstr "Süsteemist"
 msgid "Accept the current selection"
 msgstr "Nõustu praeguse valikuga"
 
+#, fuzzy
+msgid "Access extensions"
+msgstr "laiendust."
+
 msgid "Accesspoint:"
 msgstr "Tugijaam:"
 
@@ -1715,6 +1779,10 @@ msgstr "Lisa salvestustaimer"
 msgid "Add a record timer for current event"
 msgstr "Lisa sellele saatele salvestustaimer"
 
+#, fuzzy
+msgid "Add a record timer or an autotimer for current event"
+msgstr "Lisa sellele saatele salvestustaimer"
+
 msgid "Add a zap timer for current event"
 msgstr "Lisa sellele saatele kanalivahetustaimer"
 
@@ -1726,6 +1794,10 @@ msgstr "Lisa asenduskanaleid"
 
 msgid "Add an autotimer for current event"
 msgstr "Lisa sellele saatele autotaimer"
+
+#, fuzzy
+msgid "Add and edit a record timer for current event"
+msgstr "Lisa sellele saatele salvestustaimer"
 
 msgid "Add bookmark"
 msgstr "Lisa järjehoidja"
@@ -1778,6 +1850,10 @@ msgstr "Kas lisada kanalid sellesse lemmiknimekirja?"
 msgid "Add timer"
 msgstr "Lisa taimer"
 
+#, fuzzy
+msgid "Add timers"
+msgstr "Lisa taimer"
+
 msgid "Add title"
 msgstr "Lisa pealkiri"
 
@@ -1790,14 +1866,19 @@ msgstr "Lisa lemmiknimekirja"
 msgid "Add to parental protection"
 msgstr "Lisa lapselukk"
 
+#, fuzzy
+msgid "Add/Edit an autotimer for current event"
+msgstr "Lisa sellele saatele autotaimer"
+
 msgid "Add/Remove timer for current event"
 msgstr "Lisa/eemalda taimer sellele saatele"
 
 msgid "Adding schedule..."
 msgstr "Ajakava lisamine..."
 
-msgid "Additional Info"
-msgstr "Lisainfo"
+#, fuzzy
+msgid "Additional cable of motorized LNB"
+msgstr "Ajamiga LNB teine kaabel"
 
 msgid "Additional motor options allow you to enter details from your motor's spec sheet so enigma can work out how long it will take to move the dish from one satellite to another satellite."
 msgstr "Ajami lisavalikud lubavad sisestada andmeid mootori spetsifikatsioonilehelt, et enigma saaks arvutada antenni ühelt satelliidilt teisele liigutamise aja."
@@ -1813,6 +1894,9 @@ msgstr "Seadista värve nii, et kõik värvivarjundid oleks eristatavad ja paist
 
 msgid "Adult Audience, Strong Violence 15+"
 msgstr "Täiskasvanuile, tugev vägivald 15+"
+
+msgid "Advance EPG to the following date and time"
+msgstr ""
 
 msgid "Advanced"
 msgstr "Täpsem"
@@ -1910,6 +1994,9 @@ msgstr "Luba 10bit"
 msgid "Allow 12bit"
 msgstr "Luba 12bit"
 
+msgid "Allow fast skin reload"
+msgstr ""
+
 msgid "Allow subtitle language to equal audio language"
 msgstr "Luba subtiitrid heli keelevaliku järgi"
 
@@ -1919,11 +2006,16 @@ msgstr "Luba vaegkuuljate subtiitrid"
 msgid "Allow unstable (experimental) updates"
 msgstr "Testimata uuendused lubatud"
 
-msgid "Allows the %s %s to read the stored EPG data regularly."
+#, fuzzy
+msgid "Allows the %s %s to load the saved EPG data regularly."
 msgstr "Võimaldab vastuvõtjal regulaarselt lugeda talletatud EPG andmeid."
 
-msgid "Allows the %s %s to store the EPG data regularly."
+#, fuzzy
+msgid "Allows the %s %s to save the EPG data regularly."
 msgstr "Võimaldab vastuvõtjal regulaarselt talletada EPG andmeid."
+
+msgid "Allows the TV remote to be used to control the receiver."
+msgstr ""
 
 msgid "Allows you to adjust the amount of time the resolution infomation display on screen."
 msgstr "Võimaldab muuta lahutuse andmete kuvamise aega."
@@ -1936,9 +2028,6 @@ msgstr "Võimaldab lubada/keelata ikoonide kuvamise esipaneelil."
 
 msgid "Allows you to hide the extensions of known file types."
 msgstr "Võimaldab peita tuntud failitüüpide laiendid."
-
-msgid "Allows you to send a copy of the log to yourself."
-msgstr "Võimaldab saata logi koopia iseendale."
 
 msgid "Allows you to set a schedule to import the EPG and channels list. The EPG and channels list will always be imported on reboot or GUI restart."
 msgstr "Võimaldab EPG ja kanalinimekirjade impordi ajastamise. EPG ja kanalinimekirjad imporditakse alati pärast vastuvõtja või kasutajaliidese taaskäivitust."
@@ -1970,12 +2059,6 @@ msgstr "Ka ooteseisundis"
 
 msgid "Alternative"
 msgstr "Alternatiivne"
-
-msgid "Alternative 1"
-msgstr "Valik 1"
-
-msgid "Alternative 2"
-msgstr "Valik 2"
 
 msgid "Alternative numbering mode"
 msgstr "Alternatiivne numeratsioon"
@@ -2013,7 +2096,8 @@ msgstr "Tundmatu viga!"
 msgid "Andorra"
 msgstr "Andorra"
 
-msgid "Android mode"
+#, fuzzy
+msgid "Android Mode"
 msgstr "Android"
 
 msgid "Angola"
@@ -2043,12 +2127,12 @@ msgstr "Araabia"
 msgid "Are You Sure ?"
 msgstr "Kas oled kindel?"
 
-#, python-format
-msgid "Are you ready to install \"%s\" ?"
+#, fuzzy, python-format
+msgid "Are you ready to install %s ?"
 msgstr "Kas paigaldada \"%s\"?"
 
-#, python-format
-msgid "Are you ready to remove \"%s\" ?"
+#, fuzzy, python-format
+msgid "Are you ready to remove %s ?"
 msgstr "Kas eemaldada \"%s\"?"
 
 msgid "Are you sure to remove this entry?"
@@ -2141,9 +2225,6 @@ msgstr ""
 msgid "Are you sure you want to save the EPG Cache to:\n"
 msgstr "Kas talletada EPG andmed asukohta:\n"
 
-msgid "Are you sure you want to send this log:\n"
-msgstr "Kas saata logi:\n"
-
 #, python-format
 msgid "Are you sure you want to update your %s %s ?"
 msgstr "Kas uuendada %s %s tarkvara?"
@@ -2172,6 +2253,10 @@ msgstr "Küsitakse (vaikimisi 'ei')"
 msgid "Ask user (with default as 'yes')"
 msgstr "Küsitakse (vaikimisi 'jah')"
 
+#, fuzzy
+msgid "Ask whether to stop movie"
+msgstr "Taaskäivita test"
+
 msgid "Aspect ratio"
 msgstr "Kuvasuhe"
 
@@ -2184,16 +2269,14 @@ msgstr "Määratud kanalid/levitajad:"
 msgid "At End:"
 msgstr "Lõpus:"
 
-msgid "Attach a file"
-msgstr "Lisa fail"
-
 msgid "Attention, this is repeated timer!\n"
 msgstr "Tähelepanu, see on korduvtaimer!\n"
 
 msgid "Audio"
 msgstr "Heli"
 
-msgid "Audio & video"
+#, fuzzy
+msgid "Audio & Video"
 msgstr "Heli ja pilt"
 
 msgid "Audio PID"
@@ -2224,6 +2307,9 @@ msgstr "Heliriba (%s) vorming"
 #, python-format
 msgid "Audio track (%s) language"
 msgstr "Heliriba (%s) keel"
+
+msgid "Audio track selection, downmix and other audio options"
+msgstr ""
 
 msgid "Australia"
 msgstr "Austraalia"
@@ -2286,8 +2372,16 @@ msgstr "Autom. SCART ümberlülitus"
 msgid "Auto volume level"
 msgstr "Automaatne helitase"
 
+#, fuzzy
+msgid "AutoTimer List"
+msgstr "Taimerid"
+
 msgid "Automatic"
 msgstr "Automaatne"
+
+#, fuzzy
+msgid "Automatic Language"
+msgstr "Automaatsed keelevalikud"
 
 msgid "Automatic Scan"
 msgstr "Automaatotsing"
@@ -2298,8 +2392,9 @@ msgstr "Püsivaratõmmise automaatne loomine"
 msgid "Automatic language"
 msgstr "Automaatsed keelevalikud"
 
-msgid "Automatic refresh"
-msgstr "Automaatne värskendamine"
+#, fuzzy
+msgid "Automatic reload"
+msgstr "Automaatne lahutus"
 
 msgid "Automatic resolution"
 msgstr "Automaatne lahutus"
@@ -2315,6 +2410,9 @@ msgstr "Automaatotsing"
 
 msgid "Automatic settings backup"
 msgstr "Seadistuste automaatne varundamine"
+
+msgid "Automatically put the TV in standby whenever the receiver goes into standby or deep standby."
+msgstr ""
 
 msgid "Automatically start timeshift after"
 msgstr "Ajanihke automaatne käivitus pärast"
@@ -2425,8 +2523,15 @@ msgstr "Barbados"
 msgid "Base time"
 msgstr "Alusaeg"
 
+#, fuzzy
+msgid "Basic functions"
+msgstr "Kiirtegevused"
+
 msgid "Basque"
 msgstr "Baski"
+
+msgid "Before sending the command to switch the TV to standby, the receiver tests if all the other devices plugged into TV are in standby. If they are not, the 'sourceactive' command will be sent to the TV instead of the 'standby' command."
+msgstr ""
 
 msgid "Begin time"
 msgstr "Algusaeg"
@@ -2482,6 +2587,12 @@ msgstr "Must ekraan"
 msgid "Black screen till locked"
 msgstr "Must ekraan lukustumiseni"
 
+msgid "Blindscan"
+msgstr ""
+
+msgid "Blindscan terrestrial (if possible)"
+msgstr ""
+
 msgid "Blinking REC"
 msgstr "Vilkuv REC"
 
@@ -2493,6 +2604,14 @@ msgstr "Plokkmüra vähendamine"
 
 msgid "Blue"
 msgstr "Sinine"
+
+#, fuzzy
+msgid "Blue button (long)"
+msgstr "OK - pikk"
+
+#, fuzzy
+msgid "Blue button (short)"
+msgstr "OK - lühike"
 
 msgid "Blue long"
 msgstr "Sinine - pikk"
@@ -2593,9 +2712,6 @@ msgstr "Burundi"
 msgid "Bus: "
 msgstr "Siin: "
 
-msgid "Button"
-msgstr "Nupp"
-
 #, fuzzy
 msgid "Button Setup"
 msgstr "Nuppude seadistus"
@@ -2620,6 +2736,10 @@ msgstr "Saadud baidid:"
 
 msgid "Bytes sent:"
 msgstr "Väljunud baidid:"
+
+#, fuzzy
+msgid "C"
+msgstr "CH"
 
 msgid "C-Band"
 msgstr "C-sagedusala"
@@ -2674,9 +2794,6 @@ msgstr "CCcam jao info"
 
 msgid "CCcam Shares Info"
 msgstr "CCcam jagude info"
-
-msgid "CCcam info"
-msgstr "CCcam info"
 
 msgid "CH"
 msgstr "CH"
@@ -2775,14 +2892,15 @@ msgstr "Tühista püsivara valik ja sulge kõik menüüd"
 msgid "Cancel the selection"
 msgstr "Tühista valik"
 
+#, fuzzy
+msgid "Cancel timer creation / changes"
+msgstr "Tühista püsivara valik ja välju"
+
 msgid "Cancelled upon user request"
 msgstr "Tühistatud kasutaja nõudmisel"
 
 #, fuzzy
 msgid "Cannot delete current image"
-msgstr "Faili ei saa kustutada"
-
-msgid "Cannot delete file"
 msgstr "Faili ei saa kustutada"
 
 msgid "Cannot determine"
@@ -2834,6 +2952,14 @@ msgstr "DVB subtiitrid ekraani keskel"
 msgid "Central African Republic"
 msgstr "Kesk Aafrika Vabariik"
 
+#, fuzzy
+msgid "Ch+ button"
+msgstr "Nupp"
+
+#, fuzzy
+msgid "Ch- button"
+msgstr "Nupp"
+
 msgid "Chad"
 msgstr "Tšaad"
 
@@ -2874,10 +3000,6 @@ msgstr "Muuda HDR kolorimeetriat"
 msgid "Change the Colorspace from Auto to RGB"
 msgstr "Muuda värviruum automaatne > RGB"
 
-#, fuzzy
-msgid "Change to service"
-msgstr "Muuda sammu suurust"
-
 msgid "Channel"
 msgstr "Kanal"
 
@@ -2891,6 +3013,10 @@ msgstr "Kanalinimekiri"
 #, fuzzy
 msgid "Channel List Context Menu"
 msgstr "Kanalinimekirja menüü"
+
+#, fuzzy
+msgid "Channel Selection"
+msgstr "Kanalivalik"
 
 msgid "Channel down"
 msgstr "CH -"
@@ -3010,8 +3136,8 @@ msgstr ""
 "Kiibistik:\tHiSilicon %s\n"
 "\n"
 
-#, python-format
-msgid "Chipset: BCM%s"
+#, fuzzy, python-format
+msgid "Chipset: %s"
 msgstr "Kiibistik: BCM%s"
 
 msgid "Choose Bouquet"
@@ -3051,16 +3177,26 @@ msgstr "Vali EPG vaade (teksti/graafiline multiEPG või ühe kanali EPG)."
 msgid "Choose the location for crash and debug logs folder."
 msgstr "Määra vea- ja silumislogide asukoht."
 
-msgid "Choose the location where the EPG data will be stored when the %s %s is shut down. The location must be available at boot time."
+#, fuzzy
+msgid "Choose the location where the EPG data will be saved when the %s %s is shut down. The location must be available at boot time."
 msgstr "Vali asukoht, kuhu %s %s seiskamisel EPG andmed salvestatakse. Asukoht peab olema kättesaadav alglaadimisel."
 
 msgid "Choose the name of the file that holds the EPG data when the %s %s is shut down. This can be handy to differentiate between several boxes."
 msgstr "Määra, mis nimega EPG fail %s %s välja lülitamisel salvestatakse. Nii on mugav eristada mitme eri vastuvõtja faile."
 
+msgid "Choose the style of the second infobar. The 'Standard' view normally includes technical data. The 'Simple' view shows minimal technical data."
+msgstr ""
+
 msgid "Choose time interval to which the graphics will be rounded off."
 msgstr "Vali graafika jaoks ümardatav ajavahemik."
 
 msgid "Choose what channel to select when the EPG opens."
+msgstr ""
+
+msgid "Choose what will be displayed when the 'EPG' button is pressed."
+msgstr ""
+
+msgid "Choose what will be displayed when the 'INFO' button is pressed."
 msgstr ""
 
 msgid "Choose what you want the '0' button to do when PIP is active."
@@ -3123,6 +3259,9 @@ msgstr "Puhastus"
 msgid "Clear"
 msgstr "Tühjenda"
 
+msgid "Clear HDMI-CEC fixed address"
+msgstr ""
+
 msgid "Clear before scan"
 msgstr "Kustuta kanalid enne otsingut"
 
@@ -3132,6 +3271,10 @@ msgstr "Eemalda püsiaadress"
 msgid "Clear log"
 msgstr "Kustuta logi"
 
+#, fuzzy
+msgid "Clear marks"
+msgstr "Tühjenda pleilist"
+
 msgid "Clear playlist"
 msgstr "Tühjenda pleilist"
 
@@ -3140,14 +3283,11 @@ msgid "Client Info ( Oscam-Version: %s )"
 msgstr "Kliendi info (Oscam: %s )"
 
 #, fuzzy
-msgid "Client Mode"
+msgid "Client Mode setup"
 msgstr "Kliendirežiim"
 
 msgid "Client mode"
 msgstr "Kliendirežiim"
-
-msgid "Client mode sets up this receiver to stream from another receiver. In this mode no local tuners will be available and channel lists, EPG, etc, will come from the remote receiver. All tuner settings will be cleared."
-msgstr "Kliendirežiim seadistab selle vastuvõtja striimima teisest vastuvõtjast. Selles režiimis kohalikud tuunerid ei tööta ja kanalinimekirjad, EPG jne. tulevad kaugvastuvõtjast. Kõik tuuneri seaded tühistatakse."
 
 msgid "Clients"
 msgstr "Kliendid"
@@ -3162,11 +3302,8 @@ msgid "Close PiP on exit"
 msgstr "Sulge PiP 'EXIT' nupuga"
 
 #, fuzzy
-msgid "Close dialog box"
-msgstr "Sulge aken"
-
-msgid "Close number zap."
-msgstr ""
+msgid "Close screen"
+msgstr "Täisekraan"
 
 msgid "Close title selection"
 msgstr "Sulge pealkirja valik"
@@ -3182,6 +3319,10 @@ msgstr "Veaparandustegur HP"
 
 msgid "Code rate LP"
 msgstr "Veaparandustegur LP"
+
+#, fuzzy
+msgid "Collection"
+msgstr "Valimiku nimi"
 
 msgid "Collection name"
 msgstr "Valimiku nimi"
@@ -3210,6 +3351,9 @@ msgstr "Komöödia"
 msgid "Command order"
 msgstr "Käskude järjekord"
 
+msgid "Command the TV to switch to the correct HDMI input when zap timers activate."
+msgstr ""
+
 msgid "Command to run"
 msgstr "Täidetav käsklus"
 
@@ -3220,11 +3364,12 @@ msgid "Common Interface"
 msgstr "CI liides"
 
 #, fuzzy
-msgid "Common Setup Functions"
+msgid "Common Menu Actions"
 msgstr "Üldvalikud"
 
-msgid "Common interface"
-msgstr "CI liides"
+#, fuzzy
+msgid "Common Setup Actions"
+msgstr "Üldvalikud"
 
 msgid "Common interface assignment"
 msgstr "CI määrangud"
@@ -3450,6 +3595,10 @@ msgstr ""
 "Määrates '0', seda võimalust ei kasutata."
 
 msgid "Configure the number of days old timers are kept before they are automatically removed from the timer list."
+msgstr "Määra päevade arv, pärast mida vana taimer kustutatakse automaatselt nimekirjast."
+
+#, fuzzy
+msgid "Configure the number of days old timers' log details are kept before they're automatically removed."
 msgstr "Määra päevade arv, pärast mida vana taimer kustutatakse automaatselt nimekirjast."
 
 msgid "Configure the number of rows shown."
@@ -3695,6 +3844,46 @@ msgstr "Kehtetu kanal %s. Salvestamine nurjus"
 msgid "Could not save configfile %s!"
 msgstr "Seadistusfaili %s talletamine nurjus!"
 
+#, fuzzy, python-format
+msgid ""
+"Couldn't copy %d items.\n"
+"%s"
+msgstr "Faili %s avamine nurjus!"
+
+#, python-format
+msgid ""
+"Couldn't copy '%s'.\n"
+"%s"
+msgstr ""
+
+#, fuzzy, python-format
+msgid "Couldn't delete %d items."
+msgstr "Prügikast"
+
+#, python-format
+msgid "Couldn't delete '%s'."
+msgstr ""
+
+#, python-format
+msgid "Couldn't move %d items to the trash can. Do you want to delete them instead?"
+msgstr ""
+
+#, fuzzy, python-format
+msgid ""
+"Couldn't move %d items.\n"
+"%s"
+msgstr "Faili %s avamine nurjus!"
+
+#, python-format
+msgid "Couldn't move '%s' to the trash can. Do you want to delete it instead?"
+msgstr ""
+
+#, fuzzy, python-format
+msgid ""
+"Couldn't move '%s'.\n"
+"%s"
+msgstr "Hetke olek: %s \n"
+
 msgid "Country"
 msgstr "Riik"
 
@@ -3712,6 +3901,14 @@ msgstr "Vealogid"
 
 msgid "Create DVD-ISO"
 msgstr "Loo DVD-ISO"
+
+#, fuzzy
+msgid "Create Timer"
+msgstr "Kustuta taimer"
+
+#, fuzzy
+msgid "Create Zap Timer"
+msgstr "Muuda taimerit"
 
 msgid "Create directory"
 msgstr "Loo kataloog"
@@ -3746,7 +3943,8 @@ msgstr "Horvaadi"
 msgid "Cron Manager"
 msgstr "Cron haldur"
 
-msgid "Cron timers"
+#, fuzzy
+msgid "Cron Timers"
 msgstr "Cron taimerid"
 
 msgid "Cuba"
@@ -3808,6 +4006,9 @@ msgstr "'4'/'6'-nuppude hüppe kohandatud pikkus"
 msgid "Custom skip time for '7'/'9' buttons"
 msgstr "'7'/'9'-nuppude hüppe kohandatud pikkus"
 
+msgid "Customize"
+msgstr "Kasutaja eelistused"
+
 msgid "Customize settings"
 msgstr "Kasutaja valikud"
 
@@ -3820,6 +4021,9 @@ msgstr "Salvestiste lõikamine"
 msgid "Cutlist editor..."
 msgstr "Määra lõikekohad"
 
+msgid "Cycle through infobar displays"
+msgstr ""
+
 msgid "Cyprus"
 msgstr "Küpros"
 
@@ -3828,6 +4032,10 @@ msgstr "Tšehhi"
 
 msgid "Czechia"
 msgstr "Tšehhi"
+
+#, fuzzy
+msgid "D"
+msgstr "3D"
 
 msgid "DAC"
 msgstr "DAC"
@@ -4092,6 +4300,18 @@ msgstr "Silumislogid"
 msgid "Debug log time format *"
 msgstr ""
 
+#, fuzzy
+msgid "Debug to file"
+msgstr "Kustuta fail"
+
+#, fuzzy
+msgid "Decrement end time"
+msgstr "Määra lõpuaeg"
+
+#, fuzzy
+msgid "Decrement start time"
+msgstr "Algusaeg"
+
 msgid "Deep Standby"
 msgstr "Puhkeseisund"
 
@@ -4115,6 +4335,10 @@ msgid "Default recording type"
 msgstr "Vaikimisi salvestuse tüüp"
 
 msgid "Default settings"
+msgstr "Vaikeväärtused"
+
+#, fuzzy, python-format
+msgid "Default: '%s'."
 msgstr "Vaikeväärtused"
 
 msgid "Defaults"
@@ -4165,6 +4389,9 @@ msgstr "Viiteaeg enne võtme kordamist:"
 msgid "Delay before sequence repeat"
 msgstr "Viiteaeg enne jada kordust"
 
+msgid "Delay between CEC commands when sending a series of commands. Some devices require this delay for correct functioning, usually between 50-150ms."
+msgstr ""
+
 msgid "Delay between diseqc commands"
 msgstr "Viiteaeg diseqc käskude vahel"
 
@@ -4196,7 +4423,8 @@ msgstr "Kustuta %s?"
 msgid "Delete Confirmation"
 msgstr "Kustutamise kinnitus"
 
-msgid "Delete EPG"
+#, fuzzy
+msgid "Delete EPG Cache"
 msgstr "Kustuta EPG"
 
 msgid "Delete Language(s)"
@@ -4207,8 +4435,20 @@ msgid "Delete Timer"
 msgstr "Kustuta taimer"
 
 #, fuzzy
+msgid "Delete all log entries"
+msgstr "Kustuta kirje pleilistist"
+
+#, fuzzy
 msgid "Delete all the text"
 msgstr "Kustuta kirje pleilistist"
+
+#, fuzzy
+msgid "Delete character to left of cursor or select AM times"
+msgstr "Kustuta teksti puhvri kursorist vasakule jääv tähemärk"
+
+#, fuzzy
+msgid "Delete character under cursor or select PM times"
+msgstr "Kustuta teksti puhvri kursori alla jääv tähemärk"
 
 msgid "Delete entry"
 msgstr "Kustuta valik"
@@ -4219,6 +4459,10 @@ msgstr "Kustutamine nurjus!"
 msgid "Delete file"
 msgstr "Kustuta fail"
 
+#, fuzzy
+msgid "Delete log entry"
+msgstr "Kustuta valik"
+
 msgid "Delete playlist entry"
 msgstr "Kustuta kirje pleilistist"
 
@@ -4226,26 +4470,23 @@ msgid "Delete saved playlist"
 msgstr "Kustuta talletud pleilist"
 
 #, fuzzy
-msgid "Delete the character to the left of cursor"
-msgstr "Kustuta teksti puhvri kursorist vasakule jääv tähemärk"
-
-#, fuzzy
 msgid "Delete the character to the left of text cursor"
 msgstr "Kustuta teksti puhvri kursorist vasakule jääv tähemärk"
-
-#, fuzzy
-msgid "Delete the character under the cursor"
-msgstr "Kustuta teksti puhvri kursori alla jääv tähemärk"
 
 #, fuzzy
 msgid "Delete the character under the text cursor"
 msgstr "Kustuta teksti puhvri kursori alla jääv tähemärk"
 
-msgid "Deleted"
-msgstr "Kustutati"
+#, fuzzy, python-format
+msgid "Deleted %d items"
+msgstr "Prügikast"
 
 #, python-format
 msgid "Deleted %s!"
+msgstr "Kustutati %s!"
+
+#, fuzzy, python-format
+msgid "Deleted '%s'"
 msgstr "Kustutati %s!"
 
 #, fuzzy
@@ -4281,6 +4522,9 @@ msgstr "Tühista valik"
 
 msgid "Details for plugin: "
 msgstr "Plugina üksikasjad: "
+
+msgid "Detect next boxes before standby"
+msgstr ""
 
 msgid "Detect programs split by news bulletins. Choose the maximum duration in minutes to consider as a bulletin, or 0 to disable."
 msgstr ""
@@ -4344,14 +4588,37 @@ msgstr "Tuhmistamise viiteaeg"
 msgid "Dim the LCD after specified time."
 msgstr "LCD tuhmistamine pärast määratud aega."
 
+#, fuzzy
+msgid "Direct menu item selection"
+msgstr "Välju sisendseadmete valikust."
+
 msgid "Direct playback of linked titles without menu"
 msgstr "Lingitud salvestuste esitus ilma menüüta"
+
+msgid "Directories cannot be bulk renamed"
+msgstr ""
 
 msgid "Directory"
 msgstr "Kataloog"
 
 #, python-format
 msgid "Directory %s does not exist."
+msgstr "Kataloogi %s ei eksisteeri."
+
+#, python-format
+msgid "Directory '%s' can't be linked to recordings!"
+msgstr ""
+
+#, fuzzy, python-format
+msgid "Directory '%s' does not exist!"
+msgstr "Kataloogi %s ei eksisteeri."
+
+#, fuzzy, python-format
+msgid "Directory '%s' not writable!"
+msgstr "Kataloogi %s ei eksisteeri."
+
+#, fuzzy, python-format
+msgid "Directory '%s' not writeable!"
 msgstr "Kataloogi %s ei eksisteeri."
 
 msgid "Directory browser"
@@ -4403,7 +4670,8 @@ msgstr "Teavitus enne järgmise filmi alustamist"
 msgid "Display selection list as a selection menu"
 msgstr ""
 
-msgid "Display the EIT now/next eventdata in infobar."
+#, fuzzy
+msgid "Display the EIT now/next event data in infobar."
 msgstr "EIT nüüd/järgmine saateinfo inforibal."
 
 #, fuzzy
@@ -4433,15 +4701,8 @@ msgstr ""
 "Selleks kulub palju aega!"
 
 #, python-format
-msgid "Do you really want to delete %s ?"
-msgstr "Kas kustutada %s?"
-
-#, python-format
 msgid "Do you really want to delete %s?"
 msgstr "Kas kustutada %s?"
-
-msgid "Do you really want to delete ?"
-msgstr "Kas kustutada?"
 
 msgid ""
 "Do you really want to delete selected language:\n"
@@ -4467,14 +4728,28 @@ msgstr ""
 "Kas vormindada andmekandja?\n"
 "Kogu ketta sisu läheb kaduma!"
 
-msgid "Do you really want to move to the trash can ?"
+#, fuzzy, python-format
+msgid "Do you really want to move '%s' to the trash can?"
 msgstr "Kas liigutada prügikasti?"
 
-#, python-format
-msgid "Do you really want to permamently remove '%s' from the trash can ?"
+#, fuzzy, python-format
+msgid "Do you really want to move these %d items to the trash can?"
+msgstr "Kas liigutada prügikasti?"
+
+#, fuzzy, python-format
+msgid "Do you really want to permanently delete '%s' from the trash can?"
 msgstr "Kas eemaldada %s lõplikult prügikastist?"
 
-msgid "Do you really want to permanently remove from the trash can ?"
+#, fuzzy, python-format
+msgid "Do you really want to permanently delete '%s'?"
+msgstr "Kas kustutada %s?"
+
+#, fuzzy, python-format
+msgid "Do you really want to permanently delete these %d items from the trash can?"
+msgstr "Kas kustutada lõplikult prügikastist?"
+
+#, fuzzy, python-format
+msgid "Do you really want to permanently delete these %d items?"
 msgstr "Kas kustutada lõplikult prügikastist?"
 
 #, python-format
@@ -4496,16 +4771,6 @@ msgstr "Kas kustutada %s järjehoidja?"
 #, python-format
 msgid "Do you really want to stop the current recording and delete timer %s?"
 msgstr "Kas peatada salvestus ja eemaldada \"%s\" taimer?"
-
-msgid "Do you want to add any additional information ?"
-msgstr "Kas lisada veel andmeid?"
-
-msgid ""
-"Do you want to attach a text file to explain the log ?\n"
-"(choose 'No' to type message using virtual keyboard.)"
-msgstr ""
-"Kas lisada logi selgituseks tekstifail?\n"
-"(vali 'Ei', kui lisad sõnumi virtuaalklahvistiku abil.)"
 
 msgid "Do you want to burn this collection to DVD medium?"
 msgstr "Kas kirjutada see valik DVD plaadile?"
@@ -4557,13 +4822,6 @@ msgstr "Kas taastada seaded?"
 msgid "Do you want to resume playback?"
 msgstr "Kas jätkata vaatamist katkestatud kohalt?"
 
-msgid ""
-"Do you want to send all the selected files:\n"
-"(choose 'No' to only send the currently selected file.)"
-msgstr ""
-"Kas saata kõik valitud failid:\n"
-"(vali 'Ei', kui saadad ainult hetkel valitud faili.)"
-
 #, python-format
 msgid "Do you want to update your %s %s ?"
 msgstr "Kas uuendada %s %s tarkvara?"
@@ -4588,6 +4846,10 @@ msgstr "Dominikaani Vabariik"
 
 msgid "Don't save"
 msgstr "Ära talleta"
+
+#, fuzzy
+msgid "Don't show default"
+msgstr "Vaikejärjestus"
 
 msgid "Don't stop current event but disable future events"
 msgstr "Ära peata toimuvat salvestust, aga keela tulevad"
@@ -4689,6 +4951,22 @@ msgstr ""
 msgid "EPG Search"
 msgstr "EPG otsing"
 
+#, fuzzy
+msgid "EPG access"
+msgstr "EPG otsing"
+
+#, fuzzy
+msgid "EPG button (long)"
+msgstr "OK - pikk"
+
+#, fuzzy
+msgid "EPG button (short)"
+msgstr "OK - lühike"
+
+#, fuzzy
+msgid "EPG button action"
+msgstr "EPG faili asukoht"
+
 msgid "EPG filename"
 msgstr "EPG faili nimi"
 
@@ -4740,6 +5018,10 @@ msgstr "Ecuador"
 
 msgid "Edit"
 msgstr "Muuda"
+
+#, fuzzy
+msgid "Edit AutoTimer"
+msgstr "Muuda taimer"
 
 msgid "Edit DNS"
 msgstr "Muuda DNS"
@@ -4798,6 +5080,10 @@ msgstr "Saatekava (EPG)"
 msgid "Empty slot"
 msgstr "Tühi pesa"
 
+#, fuzzy
+msgid "Empty trash can"
+msgstr "Prügikast"
+
 msgid "Enable"
 msgstr "Luba"
 
@@ -4819,6 +5105,10 @@ msgstr "Netmed EPG lubatud"
 msgid "Enable OpenTV EPG"
 msgstr "OpenTV EPG lubatud"
 
+#, fuzzy
+msgid "Enable OpenTV download"
+msgstr "OpenTV EPG lubatud"
+
 msgid "Enable ViaSat EPG"
 msgstr "Viasat EPG lubatud"
 
@@ -4828,12 +5118,20 @@ msgstr "Virgin EPG lubatud"
 msgid "Enable auto cable scan"
 msgstr "Luba kaabelvõrgu automaatotsing"
 
-msgid "Enable auto fast scan"
+#, fuzzy
+msgid "Enable auto fastscan"
 msgstr "Automaatne kiirotsing lubatud"
 
-#, python-format
-msgid "Enable auto fast scan for %s"
+#, fuzzy, python-format
+msgid "Enable auto fastscan for %s"
 msgstr "Automaatne kiirotsing lubatud %s"
+
+msgid "Enable automated downloading of OpenTV EPG data. If only one tuner is available the download will be done when the reciever is in standby."
+msgstr ""
+
+#, fuzzy
+msgid "Enable automatic collections"
+msgstr "Luba kaabelvõrgu automaatotsing"
 
 msgid "Enable blinking rec symbol on the LCD Display"
 msgstr "Luba vilkuv REC märk esipaneeli näidikul"
@@ -4876,6 +5174,9 @@ msgstr "Luba või keela sunnitud HDR10 režiimi kasutus UHD tarbeks"
 
 msgid "Enable or disable to force HLG Modes for UHD"
 msgstr "Luba või keela sunnitud HLG režiimi kasutus UHD tarbeks"
+
+msgid "Enable or disable using HDMI-CEC."
+msgstr ""
 
 msgid "Enable panic button"
 msgstr "Paanikanupp lubatud"
@@ -4940,6 +5241,10 @@ msgstr "Lõpuaeg"
 msgid "English"
 msgstr "Inglise"
 
+#, fuzzy, python-format
+msgid "Enigma2 uptime:\t%s\n"
+msgstr "Uuendatud:\t%s\n"
+
 msgid "Enter"
 msgstr "Enter"
 
@@ -4969,7 +5274,12 @@ msgstr "Sisesta püsiv PIN kood"
 msgid "Enter pin code"
 msgstr "Sisesta PIN"
 
-msgid "Enter the FTP password of the host receiver (normally just leave empty)."
+#, fuzzy
+msgid "Enter service number"
+msgstr "Sisesta kanali PIN"
+
+#, fuzzy
+msgid "Enter the FTP password of the host receiver (required for any server running OpenViX 5.4 or greater)."
 msgstr "Sisesta servervastuvõtja FTP kasutajanimi (tavaliselt jäta tühjaks)."
 
 msgid "Enter the FTP port of the host receiver (normally '21')."
@@ -5011,12 +5321,6 @@ msgstr "Sisesta asukoha laiuskraad. See on kraadide arv ekvaatorist kümnendvä�
 msgid "Enter your current longitude. This is the number of degrees you are from zero meridian as a decimal."
 msgstr "Sisesta asukoha pikkuskraad. See on kraadide arv 0-meridiaanist kümnendväärtusena."
 
-msgid "Enter your e-mail address to send a copy of the log to."
-msgstr "Sisesta endale logi koopia saatmiseks oma e-posti aadress."
-
-msgid "Enter your forum user name, to make it easier to trace logs."
-msgstr "Sisesta foorumi kasutajanimi logide jälgimise hõlbustamiseks."
-
 msgid "Enter your high band local oscillator frequency. For more information consult the spec sheet of your LNB."
 msgstr "Sisesta kõrgsagedusriba ostsillaatori sagedus. Enamat infot vaata LNB spetsifikatsioonist."
 
@@ -5056,13 +5360,9 @@ msgstr "Viga plugina käivitamisel"
 msgid "Error reading webpage!"
 msgstr "Viga veebilehe lugemisel!"
 
-#, python-format
-msgid ""
-"Error:\n"
-"%s"
-msgstr ""
-"Viga:\n"
-"%s"
+#, fuzzy, python-format
+msgid "Error renaming '%s'"
+msgstr "Viga veebilehe lugemisel!"
 
 #, python-format
 msgid ""
@@ -5077,6 +5377,10 @@ msgstr "Eesti"
 
 msgid "Estonian"
 msgstr "Eesti"
+
+#, fuzzy
+msgid "EtPortal"
+msgstr "Portugal"
 
 msgid "Ethernet network interface"
 msgstr "Etherneti võrguliides"
@@ -5141,6 +5445,13 @@ msgstr "Sulge saatekava"
 msgid "Exit MAC address configuration"
 msgstr "Lõpeta MAC-aadressi seadistamine"
 
+msgid "Exit all menus"
+msgstr ""
+
+#, fuzzy
+msgid "Exit channel selection"
+msgstr "Kanalivalik"
+
 msgid "Exit editor"
 msgstr "Sulge redaktor"
 
@@ -5152,6 +5463,10 @@ msgstr "Kas sulgeda meediapleier?"
 
 msgid "Exit mediaplayer"
 msgstr "Sulge meediapleier"
+
+#, fuzzy
+msgid "Exit menu"
+msgstr "Peamenüü"
 
 msgid "Exit mounts setup menu"
 msgstr "Välju haakimise menüüst"
@@ -5243,6 +5558,10 @@ msgstr "Ajami lisavalikud"
 msgid "Extrude from left"
 msgstr "Surumine vasakult"
 
+#, fuzzy
+msgid "F"
+msgstr "F1"
+
 msgid "F1"
 msgstr "F1"
 
@@ -5333,7 +5652,8 @@ msgstr "FTP passiivne režiim"
 msgid "Factory Reset"
 msgstr "Algseadistus"
 
-msgid "Factory reset"
+#, fuzzy
+msgid "Factory Reset: Clearing data"
 msgstr "Algseadistus"
 
 msgid "Fade the infobar when hiding"
@@ -5349,14 +5669,15 @@ msgid "Falkland Islands (Malvinas)"
 msgstr "Falklandi saared (Malviinid)"
 
 #, fuzzy
+msgid "Fallback Configuration"
+msgstr "Kaugvastuvõtja seaded"
+
+#, fuzzy
 msgid "Fallback Tuner Setup"
 msgstr "Kaugvastuvõtja tuuneri seaded"
 
 msgid "Fallback address type"
 msgstr "Kaugvastuvõtja aadressi tüüp"
-
-msgid "Fallback configuration"
-msgstr "Kaugvastuvõtja seaded"
 
 msgid "Fallback receiver IP address"
 msgstr "Kaugvastuvõtja IP aadress"
@@ -5383,17 +5704,22 @@ msgstr "Kiire"
 msgid "Fast DiSEqC"
 msgstr "Kiire DiSEqC"
 
-msgid "Fast Scan"
-msgstr "Kiirotsing"
-
 msgid "Fast epoch"
 msgstr "Kiire kerimine"
 
 msgid "Fast forward speeds"
 msgstr "Edasikerimise kiirused"
 
+#, fuzzy
+msgid "FastScan"
+msgstr "Kiirotsing"
+
 msgid "Fastforward"
 msgstr "Edasikerimine"
+
+#, fuzzy
+msgid "Fastscan"
+msgstr "Kiirotsing"
 
 msgid "Favourites"
 msgstr "Lemmikud"
@@ -5416,9 +5742,6 @@ msgstr "Hoidlate olek: Värskendamisel"
 msgid "Fiji"
 msgstr "Fidži"
 
-msgid "File appears to be busy.\n"
-msgstr "Fail on hõivatud.\n"
-
 msgid ""
 "File oscam.conf not found.\n"
 "Please enter username/password manually."
@@ -5430,9 +5753,6 @@ msgid "Filename"
 msgstr "Failinimi"
 
 msgid "Filesystem Check"
-msgstr "Failisüsteemi kontroll"
-
-msgid "Filesystem check"
 msgstr "Failisüsteemi kontroll"
 
 msgid "Final position at"
@@ -5464,6 +5784,10 @@ msgstr "Soome"
 
 msgid "Fixed"
 msgstr "Määratud"
+
+#, fuzzy, python-format
+msgid "Flash directory '%s' not allowed!"
+msgstr "Kataloogi %s loomine nurjus."
 
 msgid "Flashing"
 msgstr "Vilkuv"
@@ -5555,7 +5879,8 @@ msgstr "Reede"
 msgid "From :"
 msgstr "Asukohast :"
 
-msgid "Front panel display"
+#, fuzzy
+msgid "Front Panel Display"
 msgstr "Esipaneeli näidik"
 
 msgid "Front panel settings"
@@ -5573,6 +5898,10 @@ msgstr "Täiesti läbipaistev"
 
 msgid "Full view resolution"
 msgstr "Eraldusvõime täisekraanil"
+
+#, fuzzy
+msgid "G"
+msgstr "GB"
 
 msgid "GB"
 msgstr "GB"
@@ -5625,6 +5954,16 @@ msgstr "Üldine"
 msgid "Genre"
 msgstr "Žanr"
 
+msgid "Geolocation does not contain time zone information."
+msgstr ""
+
+msgid "Geolocation has been used to set the time zone."
+msgstr ""
+
+#, fuzzy
+msgid "Geolocation is not available."
+msgstr "Tuuner ei ole kättesaadav."
+
 msgid "Georgia"
 msgstr "Gruusia"
 
@@ -5646,8 +5985,22 @@ msgstr "Ghana"
 msgid "Gibraltar"
 msgstr "Gibraltar"
 
+#, fuzzy
+msgid "Go back 24 hours"
+msgstr "Hüpe 24 tundi tagasi"
+
 msgid "Go down the list"
 msgstr "Liigu nimekirjas alla"
+
+#, fuzzy
+msgid "Go forward 24 hours"
+msgstr "Hüpe 24 tundi edasi"
+
+msgid "Go to current time, then the start service"
+msgstr ""
+
+msgid "Go to current time, then the start service, then home of list"
+msgstr ""
 
 msgid "Go to first movie or last item"
 msgstr "Liigu esimesele või uusimale nimetusele"
@@ -5707,9 +6060,6 @@ msgstr "Liigu kohale"
 msgid "GotoX calibration"
 msgstr "Mine X kalibreerimine"
 
-msgid "Graphical EPG"
-msgstr "Graafiline saatekava"
-
 msgid "Graphics"
 msgstr "Graafiline"
 
@@ -5725,6 +6075,14 @@ msgstr "Kreeka"
 
 msgid "Green"
 msgstr "Roheline"
+
+#, fuzzy
+msgid "Green button (long)"
+msgstr "Info - pikk"
+
+#, fuzzy
+msgid "Green button (short)"
+msgstr "Info - lühike"
 
 msgid "Green long"
 msgstr "Roheline - pikk"
@@ -5771,6 +6129,10 @@ msgstr "Guinea-Bissau"
 
 msgid "Guyana"
 msgstr "Guyana"
+
+#, fuzzy
+msgid "H"
+msgstr "CH"
 
 msgid "H7/H9/H9COMBO/H10 new Model"
 msgstr ""
@@ -5829,9 +6191,6 @@ msgstr "HDMI"
 msgid "HDMI CEC"
 msgstr "HDMI CEC"
 
-msgid "HDMI CEC Setup"
-msgstr "HDMI CEC seaded"
-
 msgid "HDMI Colordepth"
 msgstr "HDMI värvisügavus"
 
@@ -5843,6 +6202,14 @@ msgstr "HDMI värviruum"
 
 msgid "HDMI HDR Type"
 msgstr "HDMI HDR tüüp"
+
+#, fuzzy
+msgid "HDMI input"
+msgstr "HDMIin"
+
+#, fuzzy
+msgid "HDMI-CEC address editing actions"
+msgstr "MAC-aadressi seaded"
 
 msgid "HDMIin"
 msgstr "HDMIin"
@@ -5880,6 +6247,13 @@ msgstr "Kõvaketta seiskamisaeg"
 msgid "Harddisk setup"
 msgstr "Kõvaketta seadistamine"
 
+msgid "HbbTV"
+msgstr ""
+
+#, fuzzy
+msgid "Hdmi-CEC setup"
+msgstr "Kõvaketta seadistamine"
+
 msgid "Heard Island and McDonald Islands"
 msgstr "Heard ja McDonald saared"
 
@@ -5913,6 +6287,15 @@ msgstr "Peida kanalivahetuse veateated."
 msgid "Hide error messages from the Common Interface module."
 msgstr "Peida CI mooduli veateated."
 
+msgid "Hide infobar display"
+msgstr ""
+
+msgid "Hide infobar display and ask whether to close PiP"
+msgstr ""
+
+msgid "Hide infobar display and close PiP"
+msgstr ""
+
 msgid "Hide known extensions"
 msgstr "Peida tuntud laiendid"
 
@@ -5939,6 +6322,10 @@ msgstr "Eetris olevate saadete esiletõst"
 
 #, fuzzy
 msgid "History Zap"
+msgstr "Kanaliajalugu"
+
+#, fuzzy
+msgid "History Zap Actions"
 msgstr "Kanaliajalugu"
 
 msgid "History back"
@@ -6037,8 +6424,19 @@ msgstr "Ungari"
 msgid "Hungary"
 msgstr "Ungari"
 
+#, fuzzy
+msgid "I"
+msgstr "IP"
+
 msgid "IDLE"
 msgstr ""
+
+msgid "IGNORE"
+msgstr ""
+
+#, fuzzy
+msgid "IMDB Search"
+msgstr "IMDB otsing"
 
 msgid "IMDB search for current event"
 msgstr "IMDB otsing käesolevale saatele"
@@ -6049,6 +6447,10 @@ msgstr "IMDB otsing"
 
 msgid "INFO"
 msgstr "INFO"
+
+#, fuzzy
+msgid "INFO button action"
+msgstr "OK - pikk"
 
 msgid "INS"
 msgstr "INS"
@@ -6100,8 +6502,14 @@ msgstr "Kui lubatud, üritab vastuvõtja valida lahutuse vastavalt video sisu om
 msgid "If enabled the video will always be de-interlaced."
 msgstr "Kui lubatud, toimub alati video ülerealaotuse eemaldamine."
 
+msgid "If enabled, a log will be kept of CEC protocol traffic ('hdmicec.log')."
+msgstr ""
+
 msgid "If enabled, display shows 12 chars instead 8, but in latin-1/translit only."
 msgstr "Kui lubatud, kuvatakse näidikul 8 asemel 12 kohta, aga ainult latin-1/translit vormingus."
+
+msgid "If set to 'Standard' number buttons page up/down/left/right."
+msgstr ""
 
 msgid "If set to 'yes' channels without EPG will not be shown."
 msgstr "Kui lubatud, ei kuvata kanaleid, millel puudub saatekava."
@@ -6112,7 +6520,8 @@ msgstr "Kui lubatud, kuvatakse nimekirjas 'PO' paketid."
 msgid "If set to 'yes' it will show the 'SRC' packages in browser."
 msgstr "Kui lubatud, kuvatakse nimekirjas 'SRC' paketid."
 
-msgid "If set to 'yes' shows a small TV-screen in the EPG."
+#, fuzzy
+msgid "If set to 'yes' shows a small TV screen in the EPG."
 msgstr "Kui lubatud, kuvatakse saatekavas väike teleekraan."
 
 msgid "If set to 'yes' signal values (SNR, etc) will be calculated from API V3. This is an old API version that has now been superseded."
@@ -6132,6 +6541,9 @@ msgstr "Kui lubatud, kuvatakse uue saate algamisel inforiba."
 
 msgid "If set to 'yes' the infobar will be displayed when changing channels."
 msgstr "Kui lubatud, kuvatakse kanalivahetusel inforiba."
+
+msgid "If set to 'yes' the same commands will be sent to the TV for deep standby events, as are sent during regular standby events."
+msgstr ""
 
 msgid "If set to 'yes' you can preview channels in the EPG list."
 msgstr "Kui lubatud, saab saatekavas kanaleid eelvaadelda."
@@ -6191,6 +6603,10 @@ msgstr "Eira DVB-T nimeruumi alamvõrku"
 msgid "Image Slot:\t%s"
 msgstr "Püsivara pesa:\t%s"
 
+#, fuzzy
+msgid "Image View On"
+msgstr "Jao vaade"
+
 msgid "Image manager"
 msgstr "Püsivara haldur"
 
@@ -6200,6 +6616,9 @@ msgstr "Püsivara:\t%s.%s%s (%s)\n"
 
 msgid "Immediate shutdown"
 msgstr "Kohene seiskamine"
+
+msgid "In Setup screens choose whether to show the default value of the selected item in the description field."
+msgstr ""
 
 msgid "In live view wait this many seconds after a numeric key press before assuming the required channel number has been entered. Default: 5 seconds. Setting zero will require confirmation with 'OK'. "
 msgstr "Ooteaeg sekundites, mille jooksul võib veel numbrinuppudega kanalivahetusel vajutada järgmist nuppu. Vaikeväärtus on 5 sekundit. Valides 0 tuleb see kinnitada vajutades 'OK' nuppu"
@@ -6247,6 +6666,14 @@ msgstr "Suurenda ajavahemikku"
 
 msgid "Increased voltage"
 msgstr "Suurendatud pinge"
+
+#, fuzzy
+msgid "Increment end time"
+msgstr "Määra lõpuaeg"
+
+#, fuzzy
+msgid "Increment start time"
+msgstr "Algusaeg"
 
 msgid "Index allocated:"
 msgstr "Indeks jaotatud:"
@@ -6335,9 +6762,6 @@ msgstr "Vorminda"
 msgid "Initialize Devices"
 msgstr "Vorminda andmekandjad"
 
-msgid "Initialize devices"
-msgstr "Vorminda andmekandjad"
-
 msgid "Initializing storage device..."
 msgstr "Andmekandja vormindamine..."
 
@@ -6363,9 +6787,6 @@ msgstr "Sisendseadmed"
 
 msgid "Input Stream ID"
 msgstr "Sisendvoo ID"
-
-msgid "Input devices"
-msgstr "Sisendseadmed"
 
 msgid "Install"
 msgstr "Paigalda"
@@ -6424,17 +6845,15 @@ msgstr "Teenuse paigaldamine"
 msgid "Instant record"
 msgstr "Kohese salvestuse valikud"
 
-msgid "Instant record location"
-msgstr "Kohese salvestuse asukoht"
+#, fuzzy
+msgid "Instant recording"
+msgstr "Kohene salvestus"
 
 msgid "Instant recording location"
 msgstr "Kohese salvestuse asukoht"
 
 msgid "Instant recording..."
 msgstr "Kohene salvestus"
-
-msgid "Instant recordings location"
-msgstr "Kohese salvestuse asukoht"
 
 msgid "Interface"
 msgstr "Liides"
@@ -6521,6 +6940,9 @@ msgstr "Itaalia"
 msgid "Italy"
 msgstr "Itaalia"
 
+msgid "J"
+msgstr ""
+
 msgid "JUMP 24 HOURS"
 msgstr "HÜPPA 24 TUNDI"
 
@@ -6539,14 +6961,8 @@ msgstr "Töövaade"
 msgid "Jordan"
 msgstr "Jordaania"
 
-msgid "Jump back 24 hours"
-msgstr "Hüpe 24 tundi tagasi"
-
 msgid "Jump first press in channel selection"
 msgstr "Valik esimesel nupuvajutusel"
-
-msgid "Jump forward 24 hours"
-msgstr "Hüpe 24 tundi edasi"
 
 msgid "Jump to beginning of list"
 msgstr "Hüpe nimekirja algusse"
@@ -6563,6 +6979,14 @@ msgstr ""
 msgid "Jump to last item in list or the end of text"
 msgstr ""
 
+#, fuzzy
+msgid "Jump to next bookmark"
+msgstr "Eemalda järjehoidja"
+
+#, fuzzy
+msgid "Jump to previous bookmark"
+msgstr "Hüpe eelmise märgini"
+
 msgid "Jump to prime time"
 msgstr "Hüpe tippajale"
 
@@ -6571,9 +6995,6 @@ msgstr "Hüpe järgmise märgini"
 
 msgid "Jump to the previous marked position"
 msgstr "Hüpe eelmise märgini"
-
-msgid "Just change channels"
-msgstr "Kanalivahetus"
 
 #. TRANSLATORS: (aspect ratio policy: display as fullscreen, even if this breaks the aspect)
 #. TRANSLATORS: (aspect ratio policy: display as fullscreen, with stretching the left/right)
@@ -6590,6 +7011,10 @@ msgstr "KA-SAT (9°E)"
 
 msgid "Kazakhstan"
 msgstr "Kasashtan"
+
+#, fuzzy
+msgid "Keep logs"
+msgstr "Help - pikk"
 
 msgid "Keep service"
 msgstr "Püsi kanalil"
@@ -6610,6 +7035,9 @@ msgstr "Kernel: %s"
 
 msgid "Key"
 msgstr "Nupp"
+
+msgid "Key Events"
+msgstr ""
 
 msgid "Keyboard"
 msgstr "Klaviatuur"
@@ -6656,6 +7084,10 @@ msgstr "LAN ühendus"
 msgid "LED Deep Standby"
 msgstr "LED puhkeseisund"
 
+#, fuzzy
+msgid "LED Display Panel"
+msgstr "LED esipaneel"
+
 msgid "LED Normal"
 msgstr "LED tavapärane"
 
@@ -6670,9 +7102,6 @@ msgstr "LED heledus tavakasutusel."
 
 msgid "LED brightness during standby."
 msgstr "LED heledus ooteseisundis."
-
-msgid "LED display panel"
-msgstr "LED esipaneel"
 
 msgid "LNB"
 msgstr "LNB"
@@ -6844,7 +7273,8 @@ msgstr "Leedu"
 msgid "Load"
 msgstr "Laadi"
 
-msgid "Load EPG"
+#, fuzzy
+msgid "Load EPG Cache"
 msgstr "Laadi EPG"
 
 msgid "Load playlist"
@@ -6853,8 +7283,11 @@ msgstr "Pleilisti laadimine"
 msgid "Load unlinked userbouquets"
 msgstr "Sidumata lemmiknimekirjade kuvamine"
 
-msgid "Load-save-delete"
-msgstr "Laadi-talleta-kustuta"
+msgid "Load, Save & Delete EPG Cache"
+msgstr ""
+
+msgid "Loading skin"
+msgstr ""
 
 msgid "Local box"
 msgstr "Kohalik vastuvõtja"
@@ -6895,9 +7328,6 @@ msgid "Log"
 msgstr "Logi"
 
 msgid "Log Manager"
-msgstr "Logihaldur"
-
-msgid "Log manager"
 msgstr "Logihaldur"
 
 msgid "Log results to harddisk"
@@ -6973,10 +7403,11 @@ msgstr "Makedoonia Vabariik"
 msgid "Madagascar"
 msgstr "Madagaskar"
 
-msgid "Main menu"
+#, fuzzy
+msgid "Main Menu"
 msgstr "Peamenüü"
 
-msgid "Mainmenu"
+msgid "Main menu"
 msgstr "Peamenüü"
 
 msgid "Maintain old EPG data for"
@@ -7127,6 +7558,10 @@ msgstr "Teade"
 msgid "MessageBox Functions"
 msgstr "Teabeakna toimingud"
 
+#, fuzzy
+msgid "Messages"
+msgstr "Teade"
+
 msgid "Mexico"
 msgstr "Mehhiko"
 
@@ -7160,6 +7595,9 @@ msgstr "Minutit sekundit"
 
 msgid "Mipsel"
 msgstr "Mipsel"
+
+msgid "Miscellaneous"
+msgstr "Mitmesugust"
 
 msgid "Missing "
 msgstr "Puudub "
@@ -7272,6 +7710,10 @@ msgstr "Liigu lehe lõppu"
 msgid "Move down a screen"
 msgstr "Valik üks rida alla"
 
+#, fuzzy
+msgid "Move down in bouquet list"
+msgstr "Lemmiknimekirjad"
+
 msgid "Move down to last entry"
 msgstr "Liigu viimasele reale"
 
@@ -7314,30 +7756,26 @@ msgid "Move the text cursor to the last character"
 msgstr "Liiguta teksti puhvri kursor viimasele tähemärgile"
 
 #, fuzzy
-msgid "Move to first line"
+msgid "Move to first line / screen"
 msgstr "Liigu esimesele reale"
 
 msgid "Move to home of list"
 msgstr "Liigu nimekirja kodukataloogi"
 
 #, fuzzy
-msgid "Move to last line"
+msgid "Move to last line / screen"
 msgstr "Valik üks rida alla"
+
+#, fuzzy
+msgid "Move to next channel"
+msgstr "Mine järgmisele kanalile"
 
 msgid "Move to position X"
 msgstr "Liigu positsioonile X"
 
-msgid "Move to the next page"
-msgstr "Järgmine leht"
-
-msgid "Move to the next skin"
-msgstr "Järgmine kujundus"
-
-msgid "Move to the previous page"
-msgstr "Eelmine lehekülg"
-
-msgid "Move to the previous skin"
-msgstr "Eelmine kujundus"
+#, fuzzy
+msgid "Move to previous channel"
+msgstr "Mine eelmisele kanalile"
 
 msgid "Move up a line"
 msgstr "Valik üks rida üles"
@@ -7349,6 +7787,10 @@ msgstr "Liigu lehe algusse"
 msgid "Move up a screen"
 msgstr "Valik üks rida üles"
 
+#, fuzzy
+msgid "Move up in bouquet list"
+msgstr "Lemmiknimekirjad"
+
 msgid "Move up to first entry"
 msgstr "Liigu esimesele reale"
 
@@ -7357,6 +7799,14 @@ msgstr "Liigu eelmisele reale"
 
 msgid "Move west"
 msgstr "Liiguta läände"
+
+#, fuzzy, python-format
+msgid "Moved %d items"
+msgstr "Liiguta itta"
+
+#, fuzzy, python-format
+msgid "Moved '%s'"
+msgstr "Liiguta itta"
 
 msgid "Moved to position 0"
 msgstr "Liiguti kohale 0"
@@ -7376,8 +7826,9 @@ msgstr "Filmilist"
 msgid "Movie List Setup"
 msgstr "Filmilisti seaded"
 
-msgid "Movie location"
-msgstr "Salvestuskataloog"
+#, fuzzy
+msgid "Movie player"
+msgstr "Peida mängija"
 
 msgid "Movie selection"
 msgstr "Salvestised"
@@ -7418,9 +7869,6 @@ msgstr "Multibuudi valiku tegevused"
 msgid "MultiType"
 msgstr "Mitmetüübiline"
 
-msgid "Multiboot Image Selector"
-msgstr "Multibuut püsivara valik"
-
 msgid "Multimedia"
 msgstr "Multimeedia"
 
@@ -7450,6 +7898,9 @@ msgstr "N"
 
 msgid "N/A"
 msgstr "Pole"
+
+msgid "NEXT"
+msgstr ""
 
 msgid "NFS"
 msgstr "NFS"
@@ -7530,6 +7981,10 @@ msgstr "Namibia"
 msgid "Nauru"
 msgstr "Nauru"
 
+#, fuzzy
+msgid "Navigation"
+msgstr "Polarisatsioon"
+
 msgid "Nepal"
 msgstr "Nepaal"
 
@@ -7609,9 +8064,6 @@ msgstr "Uus parool"
 msgid "New profile: "
 msgstr "Uus profiil: "
 
-msgid "New timers location"
-msgstr "Uue taimeri asukoht"
-
 msgid "New version:"
 msgstr "Uus versioon:"
 
@@ -7649,6 +8101,9 @@ msgstr "DVD-ROM puudub!"
 msgid "No Connection"
 msgstr "Ühendus puudub"
 
+msgid "No ECM info is currently available. This is only available while decrypting."
+msgstr ""
+
 msgid "No ECMPids available (FTA Service)"
 msgstr "ECMPid pole saadaval (vabalevi kanal)"
 
@@ -7675,6 +8130,10 @@ msgstr "IPTV kliente ei ole"
 
 msgid "No connection"
 msgstr "Ühendus puudub"
+
+#, fuzzy
+msgid "No current function"
+msgstr "* aktiivne animatsioon"
 
 msgid ""
 "No data on transponder!\n"
@@ -7722,9 +8181,6 @@ msgstr "Võrke ei leitud"
 msgid "No of items switch (increase or reduced)"
 msgstr "Vahetuste arv (suurendada või vähendada)"
 
-msgid "No positioner capable frontend found."
-msgstr "Ajamit toetavat tuunerit ei leitud."
-
 msgid "No priority"
 msgstr "Eelistus puudub"
 
@@ -7754,9 +8210,6 @@ msgstr "Kõigile EI"
 
 msgid "No transparency"
 msgstr "Läbipaistmatu"
-
-msgid "No tuner is configured for use with a diseqc positioner!"
-msgstr "Ükski tuuner pole seadistatud DISEqC-ajamit kasutama!"
 
 msgid ""
 "No tuner is enabled!\n"
@@ -7900,6 +8353,10 @@ msgid "Number"
 msgstr "Number"
 
 #, fuzzy
+msgid "Number buttons mode"
+msgstr "Ajaloonuppude toiming"
+
+#, fuzzy
 msgid "Number of digits in channel number"
 msgstr "Kasuta kiirotsingu kanalinumeratsiooni"
 
@@ -7933,6 +8390,10 @@ msgstr "OSD"
 msgid "OSD 3D Setup"
 msgstr "OSD 3D seadistamine"
 
+#, fuzzy
+msgid "OSD Position"
+msgstr "OSD asukoht"
+
 msgid "OSD name request"
 msgstr "OSD nime päring"
 
@@ -7940,9 +8401,6 @@ msgid "OSD position"
 msgstr "OSD asukoht"
 
 msgid "OScam Info"
-msgstr "OScam info"
-
-msgid "OScam info"
 msgstr "OScam info"
 
 msgid "OVR"
@@ -7968,6 +8426,9 @@ msgstr "Filmi lõpus"
 
 msgid "On end of movie (as menu)"
 msgstr "Filmi lõpus (menüüna)"
+
+msgid "On except in same named directory"
+msgstr ""
 
 msgid "On shutdown/restart warn about any pending jobs being carried out in the background."
 msgstr "Hoiatus seiskamisel/taaskäivitusel, kui käsil on mõni taustal toimuv töö."
@@ -8014,11 +8475,30 @@ msgstr "Ainult alglaadimisel"
 msgid "Only select 'yes' if you are using a multiswich that requires a DiSEqC Port-A command signal. For all other setups select 'no'."
 msgstr "Vali 'jah' ainult juhul, kui kasutatav multiswich lüliti nõuab DiSEqC Port-A käsu signaali. Kõigil teistel juhtudel vali 'ei'."
 
+msgid "Open RDS/RASS screen..."
+msgstr ""
+
 msgid "Open bouquet list"
 msgstr "Lemmiknimekirjad"
 
+#, fuzzy
+msgid "Open infobar EPG"
+msgstr "Inforiba EPG"
+
+#, fuzzy
+msgid "Open infobar EPG..."
+msgstr "Inforiba EPG"
+
+#, fuzzy
+msgid "Open menu"
+msgstr "Peamenüü"
+
 msgid "Open nameserver configuration"
 msgstr "Ava nimeserveri seaded"
+
+#, fuzzy
+msgid "Open seekbar"
+msgstr "Otsiriba"
 
 msgid "Open service list"
 msgstr "Ava kanalinimekiri"
@@ -8050,11 +8530,33 @@ msgstr "Ava satelliidinimekiri"
 msgid "Open the service list"
 msgstr "Ava kanalinimekiri"
 
+#, python-format
+msgid ""
+"OpenTV EPG download completed.\n"
+"Next download: %s"
+msgstr ""
+
+msgid "OpenTV EPG download starting."
+msgstr ""
+
+msgid "OpenTV EPG downloader"
+msgstr ""
+
+msgid "OpenTV EPG forced download"
+msgstr ""
+
+#, fuzzy
+msgid "OpenTV download setup"
+msgstr "OpenVpn seaded"
+
 msgid "OpenVPN"
 msgstr "OpenVPN"
 
 msgid "OpenVpn Setup"
 msgstr "OpenVpn seaded"
+
+msgid "OpentvZapper"
+msgstr ""
 
 msgid "Orbital position"
 msgstr "Orbitaalpositsioon"
@@ -8138,6 +8640,9 @@ msgstr "PLS režiim ja PLS kood"
 msgid "PMT PID"
 msgstr "PMT PID"
 
+msgid "PREVIOUS"
+msgstr ""
+
 msgid "PRIMETIME"
 msgstr "TIPPAEG"
 
@@ -8156,11 +8661,19 @@ msgstr "Pakihaldur"
 msgid "Page down"
 msgstr "Leht alla"
 
+#, fuzzy
+msgid "Page down in description"
+msgstr "Sisesta uus kirjeldus:"
+
 msgid "Page right"
 msgstr "Leht paremale"
 
 msgid "Page up"
 msgstr "Leht üles"
+
+#, fuzzy
+msgid "Page up in description"
+msgstr "Sisesta uus kirjeldus:"
 
 msgid "Pakistan"
 msgstr "Pakistan"
@@ -8228,6 +8741,9 @@ msgstr "Filmi lõppedes pausile"
 msgid "Pause playback"
 msgstr "Peata taasesitus"
 
+msgid "Pause, rewind and fast forward"
+msgstr ""
+
 msgid "Pause/Continue playback"
 msgstr "Paus/taasesitus"
 
@@ -8270,9 +8786,6 @@ msgstr "Järjestusnupu püsivad muutused"
 msgid "Permanently delete all recordings in the trash can?"
 msgstr "Kas kustutada lõplikult kõik failid prügikastist?"
 
-msgid "Permanently remove all deleted items"
-msgstr "Kustuta lõplikult kõik failid"
-
 msgid "Persian"
 msgstr "Pärsia"
 
@@ -8308,7 +8821,12 @@ msgstr "Kanali number ja kanali nimi"
 msgid "Picons: Show in channel list"
 msgstr "Pikonid: Kuva kanalinimekirjas"
 
-msgid "Picture in graphics"
+#, fuzzy
+msgid "Picture in Picture (PIP)"
+msgstr "Liiguta PiP-akent"
+
+#, fuzzy
+msgid "Picture in graphic"
 msgstr "Pilt ekraanigaafikas (PiG)"
 
 msgid "Picture player"
@@ -8374,6 +8892,18 @@ msgstr "Esita eelmine"
 
 msgid "Play recorded movies..."
 msgstr "Salvestiste taasesitus"
+
+#, python-format
+msgid "Play the %d marked recordings"
+msgstr ""
+
+#, fuzzy
+msgid "Play the marked recording"
+msgstr "Kas käivitada salvestamine?"
+
+#, fuzzy
+msgid "Play the selected recording"
+msgstr "Peata ja kustuta salvestus"
 
 msgid ""
 "Playback information missing\n"
@@ -8491,11 +9021,23 @@ msgstr "Vali salvestatav alamkanal"
 msgid "Please select a subservice..."
 msgstr "Vali alamkanal"
 
+#, fuzzy
+msgid "Please select an acceptable directory."
+msgstr "Vali pleilist"
+
 msgid "Please select medium to be scanned"
 msgstr "Vali andmekandja, millelt otsida"
 
 msgid "Please select medium to use as backup location"
 msgstr "Vali asukoht varukoopiale"
+
+#, fuzzy
+msgid "Please select the default action of the EPG button"
+msgstr "Vali saatekava laad"
+
+#, fuzzy
+msgid "Please select the default action of the INFO button"
+msgstr "Vali filtrile pealdis"
 
 msgid "Please select the movie path..."
 msgstr "Vali salvestuskataloog"
@@ -8565,6 +9107,12 @@ msgstr "Seadista tuuner R"
 
 msgid "Please set your time options"
 msgstr "Seadista aja valikud"
+
+msgid ""
+"Please set your time options.\n"
+"\n"
+"Press YELLOW to set the time zone via geolocation."
+msgstr ""
 
 msgid ""
 "Please setup your user interface by adjusting the values till the edges of the user interface box are covering the test pattern and touching the edges of your TV.\n"
@@ -8747,6 +9295,10 @@ msgstr "Toitetaimerid"
 msgid "Power Timer List"
 msgstr "Toitetaimerid"
 
+#, fuzzy
+msgid "Power Timers"
+msgstr "Toitetaimerid"
+
 msgid "Power long"
 msgstr "Toitenupp - pikk"
 
@@ -8761,9 +9313,6 @@ msgstr "Tuvastusvool mA"
 
 msgid "Power threshold. Consult your receiver's manual for more information."
 msgstr "Võimsuselävi. Uuri lähemalt vastuvõtja käsiraamatust."
-
-msgid "Power timers"
-msgstr "Toitetaimerid"
 
 msgid "PowerControl FrontDisplay Normal Mode"
 msgstr "Toitenäidik tavakasutuses"
@@ -8867,8 +9416,9 @@ msgstr "%s üksikasjade nägemiseks vajuta OK"
 msgid "Press OK to keep the currently selected%s skin."
 msgstr "Praeguse kujunduse%s säilitamiseks vajuta OK"
 
-msgid "Press OK to scan"
-msgstr "Otsingu alustamiseks vajuta OK"
+#, fuzzy
+msgid "Press OK to save and exit."
+msgstr "Vajuta OK, salvesta ja välju"
 
 msgid "Press OK to select a group of satellites to configure in one block."
 msgstr "Vajuta OK, valimaks satelliitide grupp, mida seadistada ühes plokis."
@@ -8882,20 +9432,25 @@ msgstr "Kanali valimiseks vajuta OK."
 msgid "Press OK to select satellites"
 msgstr "Satelliitide valimiseks vajuta OK"
 
+#, fuzzy
+msgid "Press OK to select the save location of the log file."
+msgstr "Valiku muutmiseks vajuta OK."
+
 msgid "Press OK to select/deselect a CAId."
 msgstr "CAId valiku muutmiseks vajuta OK."
 
 msgid "Press OK to set the MAC address."
 msgstr "MAC-aadressi määramiseks vajuta OK."
 
+#, fuzzy
+msgid "Press OK to show details"
+msgstr "Otsingu alustamiseks vajuta OK"
+
 msgid "Press OK to toggle the selection"
 msgstr "Valiku muutmiseks vajuta OK"
 
 msgid "Press OK to toggle the selection."
 msgstr "Valiku muutmiseks vajuta OK."
-
-msgid "Press OK, save and exit..."
-msgstr "Vajuta OK, salvesta ja välju"
 
 msgid ""
 "Press up/down to scroll through the selected log\n"
@@ -9032,12 +9587,16 @@ msgstr "Puerto Rico"
 msgid "Purge deleted user bouquets"
 msgstr "Tühjenda kustutatud lemmiknimekirjad"
 
-msgid "Put TV in standby"
+#, fuzzy
+msgid "Put A/V receiver in standby"
 msgstr "Lülita teler välja"
 
-#, python-format
-msgid "Put your %s %s in standby"
-msgstr "Pane %s %s ooteseisundisse"
+#, fuzzy
+msgid "Put A/V receiver in standby."
+msgstr "Lülita teler välja"
+
+msgid "Put TV in standby"
+msgstr "Lülita teler välja"
 
 msgid "Python frontend for /tmp/mmi.socket"
 msgstr "Python programm /tmp/mmi.socket jaoks"
@@ -9070,8 +9629,14 @@ msgstr "'EXIT' nupp lõpetab taasesituse"
 msgid "RAM"
 msgstr "RAM"
 
+msgid "RDS/RASS display"
+msgstr ""
+
 msgid "REC"
 msgstr "REC"
+
+msgid "REC "
+msgstr ""
 
 msgid "REC Symbol"
 msgstr "REC märk"
@@ -9169,8 +9734,23 @@ msgstr "Kas uuendada ja taaskäivitada %s %s?"
 msgid "Reboot"
 msgstr "Taaskäivitus"
 
+#, fuzzy
+msgid "Reboot required"
+msgstr "* = Vajalik taaskäivitus"
+
 msgid "Rec"
 msgstr "Rec"
+
+#, fuzzy
+msgid "Rec button (long)"
+msgstr "OK - pikk"
+
+#, fuzzy
+msgid "Rec button (short)"
+msgstr "OK - lühike"
+
+msgid "Recall channel, panic button & number zap"
+msgstr ""
 
 msgid "Record"
 msgstr "Salvestus"
@@ -9191,7 +9771,8 @@ msgstr "Salvestusaeg on piiratud teise taimeri %s tõttu"
 msgid "Recording"
 msgstr "Salvestus"
 
-msgid "Recording & playback"
+#, fuzzy
+msgid "Recording & Playback"
 msgstr "Salvestamine ja taasesitus"
 
 msgid "Recording and playback"
@@ -9200,14 +9781,15 @@ msgstr "Salvestamine ja taasesitus"
 msgid "Recording and playback settings"
 msgstr "Salvestamine ja taasesitus"
 
-msgid "Recording in progress"
-msgstr "Toimub salvestamine"
-
 msgid "Recording type"
 msgstr "Salvestuse tüüp"
 
 msgid "Recording(s) are in progress or coming up in few seconds!"
 msgstr "Salvestamine on käimas või peatselt algamas!"
+
+#, fuzzy
+msgid "Recording/media selection"
+msgstr "Salvestised"
 
 msgid "Recordings"
 msgstr "Salvestused"
@@ -9215,14 +9797,24 @@ msgstr "Salvestused"
 msgid "Recordings always have priority"
 msgstr "Salvestustel on alati eesõigus"
 
-msgid "Recordings, playback & timeshift"
+#, fuzzy
+msgid "Recordings, Playback & Timeshift"
 msgstr "Salvestus, taasesitus, ajanihe"
 
-msgid "Recovery mode"
+#, fuzzy
+msgid "Recovery Mode"
 msgstr "Taasterežiim"
 
 msgid "Red"
 msgstr "Punane"
+
+#, fuzzy
+msgid "Red button (long)"
+msgstr "OK - pikk"
+
+#, fuzzy
+msgid "Red button (short)"
+msgstr "OK - lühike"
 
 msgid "Red button..."
 msgstr "Punane nupp"
@@ -9248,9 +9840,6 @@ msgstr ""
 
 msgid "Reflash recommended!"
 msgstr "Soovitatav on süsteem uuesti paigaldada!"
-
-msgid "Refresh every (in hours)"
-msgstr "Värskenda iga (tund)"
 
 msgid "Refresh rate"
 msgstr "Värskendussagedus"
@@ -9278,6 +9867,14 @@ msgstr "Värskenda"
 
 msgid "Reload blacklists"
 msgstr "Värskenda mustad nimekirjad"
+
+#, fuzzy
+msgid "Reload every (in hours)"
+msgstr "Talleta iga (tundides)"
+
+#, fuzzy
+msgid "Reload skin"
+msgstr "Värskenda"
 
 msgid "Reloading EPG Cache..."
 msgstr "EPG vahemälu värskendamine..."
@@ -9352,6 +9949,10 @@ msgid "Remove all resume point data"
 msgstr "Eemalda kõik 'uus kanal' tunnused"
 
 #, fuzzy
+msgid "Remove all selection marks"
+msgstr "Eemalda kõik asenduskanalid"
+
+#, fuzzy
 msgid "Remove all settings data"
 msgstr "Eemalda kõik asenduskanalid"
 
@@ -9372,11 +9973,19 @@ msgstr "Eemalda lemmiknimekirja lukustus"
 msgid "Remove cable services"
 msgstr "Eemalda kaabelvõrgu kanalid"
 
+#, fuzzy
+msgid "Remove current channel from list"
+msgstr "Eemalda valitud nimetus"
+
 msgid "Remove currently selected title"
 msgstr "Eemalda valitud nimetus"
 
 msgid "Remove entry"
 msgstr "Eemalda"
+
+#, fuzzy
+msgid "Remove finished timer logs after (days)"
+msgstr "Aegunud taimerite eemaldamine pärast (päeva)"
 
 #, fuzzy
 msgid "Remove finished timers after (days)"
@@ -9429,6 +10038,10 @@ msgstr "Teenuse eemaldamine"
 msgid "Rename"
 msgstr "Nimeta ümber"
 
+#, fuzzy
+msgid "Rename channel"
+msgstr "Ümbernimetamine nurjus!"
+
 msgid "Rename entry"
 msgstr "Nimeta ümber"
 
@@ -9454,6 +10067,10 @@ msgstr "Korda teadet ekraanil"
 msgid "Repeat how often"
 msgstr "Kordamise sagedus"
 
+#, fuzzy
+msgid "Repeat leave standby messages"
+msgstr "Korda teadet ekraanil"
+
 msgid "Repeat type"
 msgstr "Kordamise liik"
 
@@ -9468,6 +10085,13 @@ msgstr "Kordused"
 
 msgid "Replace `- ` in dialogs with colored text per speaker (like teletext subtitles for the hearing impaired)"
 msgstr "Asenda dialoogides kasutatav `- ` igale kõnelejale oma värvilise tekstiga (sarnaselt teleteksti subtiitritega vaegkuuljatele)"
+
+#, fuzzy
+msgid "Request for physical address report"
+msgstr "TV füüsilise aadressi raport"
+
+msgid "Request for vendor report"
+msgstr ""
 
 msgid "Require authentication for http streams"
 msgstr "Http voogude autentimine"
@@ -9760,8 +10384,9 @@ msgstr "Salvesta"
 msgid "Save / Enter text and exit"
 msgstr "Salvesta/sisesta tekst ja välju"
 
-msgid "Save EPG"
-msgstr "Talleta EPG"
+#, fuzzy
+msgid "Save EPG Cache"
+msgstr "EPG talletamine..."
 
 #, fuzzy
 msgid "Save all changed settings and exit"
@@ -9781,6 +10406,10 @@ msgstr "Talleta iga (tundides)"
 
 msgid "Save playlist"
 msgstr "Talleta pleilist"
+
+#, fuzzy
+msgid "Save timer"
+msgstr "Alusaeg"
 
 msgid "Save timeshift and zap"
 msgstr "Talleta ajanihe ja vaheta kanalit"
@@ -9869,6 +10498,10 @@ msgstr "Skännitakse ajamiga ühendatud antenni poolt järjestatud algsed kanali
 msgid "Schedule EPG and channel list import"
 msgstr "EPG ja kanalinimekirjade impordi ajastamine"
 
+#, fuzzy
+msgid "Screen proportions"
+msgstr "Otsingu valikud"
+
 msgid "Scrolling Speed"
 msgstr "Kerimise kiirus"
 
@@ -9883,6 +10516,18 @@ msgstr "Otsing"
 
 msgid "Search IMDb for information about the current event."
 msgstr "IMDb otsing käesoleva saate kohta."
+
+msgid "Search by first letter of name"
+msgstr ""
+
+msgid "Search by name (SMS-style entry on remote)"
+msgstr ""
+
+msgid "Search channel list, SMS style 2ABC"
+msgstr ""
+
+msgid "Search channel list, SMS style ABC2"
+msgstr ""
 
 msgid "Search east"
 msgstr "Otsi idast"
@@ -9916,6 +10561,14 @@ msgstr "Otsing läänest..."
 
 msgid "Second cable of motorized LNB"
 msgstr "Ajamiga LNB teine kaabel"
+
+#, fuzzy
+msgid "Second infobar"
+msgstr "Teise inforiba kestus"
+
+#, fuzzy
+msgid "Second infobar style*"
+msgstr "Teise inforiba kestus"
 
 msgid "Secondary DNS"
 msgstr "Teine nimeserver"
@@ -10045,6 +10698,10 @@ msgstr "Valides 'jah', saadetakse DiSEqC käsk vahetades ühelt satelliidilt tei
 msgid "Select CAId"
 msgstr "Vali CAId"
 
+#, fuzzy
+msgid "Select EPG channel"
+msgstr "Vali keel"
+
 msgid "Select Fast DiSEqC if your aerial system supports this. If you are unsure select 'no'."
 msgstr "Vali kiire DiSEqC, kui antennisüsteem seda toetab. Kui pole kindel, vali 'ei'."
 
@@ -10084,6 +10741,10 @@ msgstr "Varukoopia asukoht"
 msgid "Select between entering an IP address or a domain."
 msgstr "Vali IP aadress või domeen."
 
+#, fuzzy
+msgid "Select channel from history"
+msgstr "Määra sellele taimerile kanal."
+
 msgid "Select channel to record from"
 msgstr "Vali kanal, millelt salvestada"
 
@@ -10094,8 +10755,20 @@ msgstr "Vali kopeerimise asukoht:"
 msgid "Select current service"
 msgstr "Vali sisendseade"
 
+#, fuzzy
+msgid "Select default action of EPG button"
+msgstr "Vali asukoht:"
+
+#, fuzzy
+msgid "Select default action of INFO button"
+msgstr "Vali asukoht:"
+
 msgid "Select destination for:"
 msgstr "Vali asukoht:"
+
+#, fuzzy
+msgid "Select directory for logfile"
+msgstr "Kataloogi %s loomine nurjus."
 
 msgid "Select files for backup."
 msgstr "Vali varundatavad failid."
@@ -10144,6 +10817,10 @@ msgstr "Vali menüüpunkt"
 msgid "Select movie"
 msgstr "Vali film"
 
+#, fuzzy
+msgid "Select path for logfile"
+msgstr "Vali sihtkataloog"
+
 msgid "Select provider to add..."
 msgstr "Vali lisatav levitaja"
 
@@ -10177,6 +10854,10 @@ msgstr ""
 #, fuzzy
 msgid "Select the character or action under the keyboard cursor"
 msgstr "Vali kursori alla jääv tähemärk või tegevus"
+
+#, fuzzy
+msgid "Select the current menu item"
+msgstr "Vali sisendseade"
 
 msgid "Select the desired function and click on \"OK\" to assign it. Use \"CH+/-\" to toggle between the lists. Select an assigned function and click on \"OK\" to de-assign it. Use \"Next/Previous\" to change the order of the assigned functions."
 msgstr "Nupule soovitud toimingu määramiseks vajuta puldil seda nuppu. Nimekirjade vahetamiseks kasuta 'CH+/-' nuppe. Toimingu eemaldamiseks vali määratud toiming ja vajuta 'OK'. Toimingute järjekorra muutmiseks kasuta 'Eelmine/Järgmine' nuppe."
@@ -10314,23 +10995,18 @@ msgstr "Satelliitide valimine 2 (USALS)"
 msgid "Selecting this option allows you to configure a group of satellites in one block."
 msgstr "Siin saab seadistada satelliitide gruppi ühe plokina."
 
-msgid "Send"
-msgstr "Saada"
+#, fuzzy
+msgid "Selection and exit"
+msgstr "Salvesta ja välju"
 
 msgid "Send 'sourceactive' before zap timers"
 msgstr "Saada 'allikas-aktiivne' enne kanalivahetustaimerit"
-
-msgid "Send Confirmation"
-msgstr "Saada kinnitus"
 
 msgid "Send DiSEqC"
 msgstr "Saada DiSEqC"
 
 msgid "Send DiSEqC only on satellite change"
 msgstr "Saada DiSEqC ainult satelliidi vahetamisel"
-
-msgid "Send yourself a copy"
-msgstr "Saada endale koopia"
 
 msgid "Senegal"
 msgstr "Senegal"
@@ -10464,6 +11140,10 @@ msgstr "Seadista saadaolevate kanalite tuvastamiseks CI määrangud."
 msgid "Set Framerate for MiniTV"
 msgstr "Määra MiniTV kaadrisagedus"
 
+#, fuzzy
+msgid "Set HDMI-CEC fixed address"
+msgstr "Püsiaadress kasutuses"
+
 msgid "Set LED Color or disable the LED."
 msgstr "Määra näidiku värv või keela LED."
 
@@ -10513,16 +11193,20 @@ msgstr "Määra sellele taimerile kanal."
 msgid "Set the date the timer must start."
 msgstr "Määra taimeri alguskuupäev."
 
-msgid "Set the default location for your instant recordings. Press 'OK' to add new locations, select left/right to select an existing location."
+#, fuzzy
+msgid "Set the default location for your instant recordings. Press OK to add new locations, LEFT/RIGHT to select from any existing locations."
 msgstr "Määra kohese salvestamise tavaasukoht. Uue asukoha lisamiseks vajuta 'OK', olemasoleva asukoha valimiseks kasuta vasak/parem nuppe."
 
-msgid "Set the default location for your recordings. Press 'OK' to add new locations, select left/right to select an existing location."
+#, fuzzy
+msgid "Set the default location for your recordings. Press OK to add new locations, LEFT/RIGHT to select from any existing locations."
 msgstr "Määra salvestuste tavaasukoht. Uue asukoha lisamiseks vajuta 'OK', olemasoleva asukoha valimiseks kasuta vasak/parem nuppe."
 
-msgid "Set the default location for your timers. Press 'OK' to add new locations, select left/right to select an existing location."
+#, fuzzy
+msgid "Set the default location for your timers. Press OK to add new locations, LEFT/RIGHT to select from any existing locations."
 msgstr "Määra taimerite tavaasukoht. Uue asukoha lisamiseks vajuta 'OK', olemasoleva asukoha valimiseks kasuta vasak/parem nuppe."
 
-msgid "Set the default location for your timeshift-files. Press 'OK' to add new locations, select left/right to select an existing location."
+#, fuzzy
+msgid "Set the default location for your timeshift files. Press OK to add new locations, LEFT/RIGHT to select any existing locations."
 msgstr "Määra ajanihke failide tavaasukoht. Uue asukoha lisamiseks vajuta 'OK', olemasoleva asukoha valimiseks kasuta vasak/parem nuppe."
 
 msgid "Set the default sorting method."
@@ -10587,21 +11271,27 @@ msgstr "Määra tippajaks (tunnid)."
 msgid "Set to what you want the button to do."
 msgstr "Määra nupu toiming."
 
+#, fuzzy
+msgid "Set update interval (in hours)."
+msgstr "Uuendamise vahemik (sekundites)"
+
 msgid "Set voltage and 22KHz"
 msgstr "Määra pinge ja 22KHz"
 
 msgid "Sets the root directory of movie list, to remove the '..' from being shown in that folder."
 msgstr "Määrab filmilistile tüvikataloogi, et eemaldada '..' kataloogi nimest."
 
+#, python-format
 msgid ""
-"Setting a password is strongly advised if your STB is open to the internet.\n"
-"This is the case if you have in your router a port forwarded to the STB."
+"Setting a network password is mandatory in OpenViX %s if you wish to use network services. \n"
+"To set a password using the virtual keyboard press the 'text' button on your remote control."
 msgstr ""
-"Kui vastuvõtja on ühendatud inernetti, on parooli kasutamine tungivalt soovitatav.\n"
-"See kehtib juhul, kui ruuteris on pordisiire vastuvõtjale."
 
 msgid "Settings"
 msgstr "Seaded"
+
+msgid "Settings, information and more functions"
+msgstr ""
 
 msgid "Setup"
 msgstr "Seadistamine"
@@ -10630,7 +11320,8 @@ msgstr "Satelliidiseadmed"
 msgid "Seychelles"
 msgstr "Seišellid"
 
-msgid "Share Folder's"
+#, fuzzy
+msgid "Share Folders"
 msgstr "Jagatud kataloogid"
 
 msgid "Share View"
@@ -10650,6 +11341,10 @@ msgstr "Lühikesed failinimed"
 
 msgid "Should the FTP connection to the remote receiver be established in passive mode (normally 'no')?"
 msgstr "Kas FTP ühendus kaugvastuvõtjaga tuleks luua passiivses režiimis (tavaliselt 'ei')?"
+
+#, fuzzy, python-format
+msgid "Show %s"
+msgstr "SD kuvamine"
 
 msgid "Show /tmp/ecm.info"
 msgstr "Kuva /tmp/ecm.info"
@@ -10692,9 +11387,6 @@ msgstr "Kuva ikoonid"
 
 msgid "Show EIT now/next in infobar"
 msgstr "Kuva EIT nüüd/järgmine inforibal"
-
-msgid "Show EPG..."
-msgstr "Kuva EPG"
 
 #, fuzzy
 msgid "Show Grid EPG"
@@ -10743,6 +11435,10 @@ msgstr "Kanali EPG"
 
 msgid "Show Time Remaining/Elapsed"
 msgstr "Jäänud/kulunud aja näit"
+
+#, fuzzy
+msgid "Show Timer List"
+msgstr "Taimerite nimekiri"
 
 msgid "Show Transponder Remaining/Elapsed as"
 msgstr "Jäänud/kulunud transponderi näit"
@@ -10796,14 +11492,27 @@ msgstr "Salastatud kanalite tähistamine"
 msgid "Show crypto info in infobar"
 msgstr "Salastamise kuvamine inforibal"
 
+#, fuzzy
+msgid "Show default after description"
+msgstr "Kuva täpsem sisututvus"
+
+#, fuzzy
+msgid "Show default on new line"
+msgstr "Kuva inforida"
+
+#, fuzzy
+msgid "Show description for next event)"
+msgstr "Nimeta uued saated ja kirjeldused ümber"
+
+#, fuzzy
+msgid "Show description for previous event)"
+msgstr "Mine eelmisele saatele"
+
 msgid "Show detailed event info"
 msgstr "Kuva põhjalik saatetutvustus"
 
 msgid "Show encryption info in the infobar (when supported by the skin)."
 msgstr "Salastuse näitamine inforibal (kui kujundus seda toetab)."
-
-msgid "Show epg"
-msgstr "Kuva saatekava"
 
 msgid "Show event details"
 msgstr "Saateinfo"
@@ -10829,9 +11538,6 @@ msgstr "Laiendused"
 msgid "Show favourites list"
 msgstr "Lemmiknimekirjad"
 
-msgid "Show full menu path"
-msgstr "Menüü asukoha kuvamine"
-
 msgid "Show help"
 msgstr "Abiekraan"
 
@@ -10841,6 +11547,10 @@ msgstr "Uue/vaatamata salvestise tähistamine"
 msgid "Show in Standby"
 msgstr "Kuva ooteseisundis"
 
+#, fuzzy
+msgid "Show in extensions"
+msgstr "Kuva laienduste menüüs"
+
 msgid "Show in extensions list ?"
 msgstr "Kuva laienduste menüüs"
 
@@ -10849,6 +11559,10 @@ msgstr "Näita andmeid"
 
 msgid "Show info line"
 msgstr "Kuva inforida"
+
+#, fuzzy
+msgid "Show infobar EPG"
+msgstr "Inforiba EPG"
 
 msgid "Show infobar on channel change"
 msgstr "Inforiba kanalivahetusel"
@@ -10861,6 +11575,10 @@ msgstr "Inforiba kerimisel"
 
 msgid "Show job tasks in extensions"
 msgstr "Kuva tööülesanded laienduste menüüs"
+
+#, fuzzy
+msgid "Show list of similar programs"
+msgstr "Taimerid"
 
 msgid "Show live tv when movie stopped"
 msgstr "Filmi lõppedes tagasi telekanalile"
@@ -10882,6 +11600,13 @@ msgstr "Filmilist"
 
 msgid "Show network mounts ..."
 msgstr "Kuva võrgu haakepunktid"
+
+#, fuzzy
+msgid "Show notifications"
+msgstr "Salastatud kanalite tähistamine"
+
+msgid "Show on-screen notifications (pop up) to warn the OpenTV download is in progress."
+msgstr ""
 
 msgid "Show or hide the extended description, (skin dependant)."
 msgstr "Kuva või varja täpsem saatetutvustus (sõltub kujundusest)."
@@ -10914,6 +11639,14 @@ msgstr "Saateinfo"
 msgid "Show record indicator"
 msgstr "Salvestava kanali tähistamine"
 
+#, fuzzy
+msgid "Show recorded movies"
+msgstr "Salvestiste taasesitus"
+
+#, fuzzy
+msgid "Show screen path"
+msgstr "Ekraanisäästja"
+
 msgid "Show screensaver"
 msgstr "Ekraanisäästja"
 
@@ -10929,14 +11662,19 @@ msgstr "Kanalinimekiri"
 msgid "Show service list or movies"
 msgstr "Kanalinimekiri või filmilist"
 
-msgid "Show service name and event description above and below each other instead of side by side."
-msgstr ""
-
 msgid "Show service type icons"
 msgstr "Edastusmooduse tähistamine"
 
+#, fuzzy
+msgid "Show setup default values"
+msgstr "Saateinfo"
+
 msgid "Show shutdown menu"
 msgstr "Seiskamismenüü"
+
+#, fuzzy
+msgid "Show single channel EPG..."
+msgstr "Kanali EPG"
 
 msgid "Show single epg for current channel"
 msgstr "Käesoleva kanali saatekava"
@@ -10951,6 +11689,10 @@ msgid "Show stream clients"
 msgstr "IPTV kliendid"
 
 msgid "Show subservice selection"
+msgstr "Alamkanalite valik"
+
+#, fuzzy
+msgid "Show subservice selection list..."
 msgstr "Alamkanalite valik"
 
 msgid "Show subtitle selection"
@@ -10970,6 +11712,9 @@ msgstr "Pluginad"
 
 msgid "Show the radio player..."
 msgstr "Raadiokanal"
+
+msgid "Show the service information on two lines in the channel selection screen. You can choose between the current event description below the channel name, or the current event description next to the channel name, and the next event description on the second line."
+msgstr ""
 
 msgid "Show the tv player..."
 msgstr "Telekanal"
@@ -11004,6 +11749,10 @@ msgstr "Teavitus ajanihke lõppemisel"
 msgid "Show/Games show"
 msgstr "Viktoriin/telemäng"
 
+#, fuzzy
+msgid "Show/hide infobar"
+msgstr "Inforiba alati varjatud"
+
 msgid "Shows live tv or informations on LCD."
 msgstr "Kuvab telepilti või infot esipaneelil."
 
@@ -11019,7 +11768,8 @@ msgstr "Tähista vaadatud salvestised."
 msgid "Shuffle playlist"
 msgstr "Segatud pleilist"
 
-msgid "Shut down"
+#, fuzzy
+msgid "Shut Down"
 msgstr "Lülita välja"
 
 msgid "Side by Side"
@@ -11100,6 +11850,10 @@ msgstr "Kujunduse valiku tegevused"
 msgid "Skin Setting"
 msgstr "Kujunduse seaded"
 
+#, fuzzy
+msgid "Skin Setup"
+msgstr "Kujunduse valik"
+
 msgid "Skin install"
 msgstr "Kujunduse paigaldamine"
 
@@ -11119,14 +11873,36 @@ msgstr "Kujundused"
 msgid "Skip back"
 msgstr "Tagasihüpe"
 
+#, fuzzy
+msgid "Skip back "
+msgstr "Tagasihüpe"
+
+#, fuzzy
+msgid "Skip back (enter time in minutes)"
+msgstr "Hüpe tagasi (sisesta aeg)"
+
 msgid "Skip empty services"
 msgstr "Tühje kanaleid ei kuvata"
 
 msgid "Skip forward"
 msgstr "Edasihüpe"
 
+#, fuzzy
+msgid "Skip forward "
+msgstr "Edasihüpe"
+
+#, fuzzy
+msgid "Skip forward (enter time in minutes)"
+msgstr "Hüpe edasi (sisesta aeg)"
+
 msgid "Skip internet connection check (disables automatic package installation)"
 msgstr "Jäta netiühenduse kontroll vahele (automaatne pakettide paigaldamine keelatakse)"
+
+msgid "Skip, pause, rewind and fast forward"
+msgstr ""
+
+msgid "Skip, pause, rewind and fast forward timeshift"
+msgstr ""
 
 msgid "Sleep"
 msgstr "Unetaimer"
@@ -11215,6 +11991,9 @@ msgstr "EMU kontroll"
 msgid "Software"
 msgstr "Tarkvara"
 
+msgid "Software Update"
+msgstr "Tarkvara uuendused"
+
 msgid "Software management"
 msgstr "Tarkvara haldamine"
 
@@ -11238,6 +12017,9 @@ msgstr "Saalomonisaared"
 
 msgid "Somalia"
 msgstr "Somaalia"
+
+msgid "Some TVs do not wake from standby when they receive the 'Image View On' command. If this is the case try the 'Text View On' command instead."
+msgstr ""
 
 msgid "Some plugins are not available:\n"
 msgstr "Mõned pluginad pole saadaval:\n"
@@ -11393,14 +12175,15 @@ msgstr "Tavanimekiri"
 msgid "Standby"
 msgstr "Ooteseisund"
 
+#, fuzzy
+msgid "Standby & Restart"
+msgstr "Seiskamine"
+
 msgid "Standby / restart"
 msgstr "Seiskamine"
 
 msgid "Standby LED"
 msgstr "Toitenäidik ooteseisundis"
-
-msgid "Standby and Restart"
-msgstr "Seiskamine"
 
 msgid "Start"
 msgstr "Käivita"
@@ -11486,6 +12269,10 @@ msgstr "Peata aktiivne salvestus, aga ära keela tulevaid"
 msgid "Stop entry"
 msgstr "Peata"
 
+#, fuzzy
+msgid "Stop movie"
+msgstr "Filmilist"
+
 msgid "Stop play TV"
 msgstr "Peata telekanali esitus"
 
@@ -11497,9 +12284,6 @@ msgstr "Lõpeta kanali edastus filmilisti naasmisel."
 
 msgid "Stop recording"
 msgstr "Peata salvestamine"
-
-msgid "Stop recording and delete"
-msgstr "Peata salvestamine ja kustuta"
 
 msgid "Stop recording now"
 msgstr "Peata salvestamine kohe"
@@ -11521,6 +12305,18 @@ msgstr "Peata testimine pärast # ebaõnnestunud transponderit"
 
 msgid "Stop testing plane after # successful transponders"
 msgstr "Peata testimine pärast # leitud transponderit"
+
+#, fuzzy
+msgid "Stop this recording"
+msgid_plural "Stop these recordings"
+msgstr[0] "Peata taimeriga salvestamine"
+msgstr[1] "Peata taimeriga salvestamine"
+
+#, fuzzy
+msgid "Stop this recording and delete it"
+msgid_plural "Stop these recordings and delete them"
+msgstr[0] "Peata salvestamine ja kustuta"
+msgstr[1] "Peata salvestamine ja kustuta"
 
 msgid "Stop timer recording"
 msgstr "Peata taimeriga salvestamine"
@@ -11565,10 +12361,11 @@ msgid "Streaming"
 msgstr "Voogesitus"
 
 #, fuzzy
-msgid "Streaming Clients Info"
+msgid "Streaming Clients"
 msgstr "IPTV kliendid"
 
-msgid "Streaming clients"
+#, fuzzy
+msgid "Streaming Clients Info"
 msgstr "IPTV kliendid"
 
 msgid "Strict DLNA"
@@ -11582,6 +12379,10 @@ msgstr "Tugevaim positsioon"
 
 msgid "Subnet"
 msgstr "Alamvõrk"
+
+#, fuzzy
+msgid "Subservice selection"
+msgstr "Alamkanalite valik"
 
 msgid "Subservices"
 msgstr "Alamkanalid"
@@ -11652,6 +12453,11 @@ msgstr "P"
 msgid "Sunday"
 msgstr "Pühapäev"
 
+msgid ""
+"Sundtek - hardware blind scan in progress.\n"
+"Please wait(3-20 min) for the scan to finish."
+msgstr ""
+
 msgid "Support at"
 msgstr "Tugi aadressil"
 
@@ -11701,11 +12507,35 @@ msgstr "Lülita teler õigele sisendile"
 msgid "Switch between filelist/playlist"
 msgstr "Faililoendi/pleilisti vahetus"
 
+#, fuzzy
+msgid "Switch between last two channels watched"
+msgstr "Faililoendi/pleilisti vahetus"
+
 msgid "Switch config"
 msgstr "Seadistuse vahetus"
 
+#, fuzzy
+msgid "Switch the PiP to the next channel"
+msgstr "Järgmisele kanalile"
+
+#, fuzzy
+msgid "Switch the PiP to the previous channel"
+msgstr "Eelmisele kanalile"
+
+#, fuzzy
+msgid "Switch to Grid EPG"
+msgstr "MultiEPG"
+
 msgid "Switch to HDMI in mode"
 msgstr "Lülitus 'HDMI in' režiimi"
+
+#, fuzzy
+msgid "Switch to Multi EPG"
+msgstr "MultiEPG"
+
+#, fuzzy
+msgid "Switch to Single EPG"
+msgstr "Kanali EPG"
 
 msgid "Switch to TV mode"
 msgstr "Lülitus telerežiimi"
@@ -11809,6 +12639,9 @@ msgstr "TS fail on liiga suur ISO9660/1 jaoks!"
 msgid "TSID"
 msgstr "TSID"
 
+msgid "TUNER:"
+msgstr ""
+
 msgid "TUNING"
 msgstr "HÄÄLESTAMINE"
 
@@ -11826,6 +12659,9 @@ msgstr "Valimiku sisu"
 
 msgid "Tags"
 msgstr "Sildid"
+
+msgid "Taiwan"
+msgstr ""
 
 msgid "Tajikistan"
 msgstr "Tadžikistan"
@@ -11889,6 +12725,9 @@ msgstr "Tekst"
 msgid "Text Grid EPG"
 msgstr "Teksti Multi EPG"
 
+msgid "Text View On"
+msgstr ""
+
 msgid "Text color"
 msgstr "Teksti värv"
 
@@ -11912,10 +12751,12 @@ msgstr ""
 "Täname, et kasutasid abilist. %s %s on nüüd kasutamiseks valmis.\n"
 "%s %s kasutusse võtmiseks vajuta OK."
 
-msgid "The %s %s reads the stored EPG data every (hours)."
+#, fuzzy
+msgid "The %s %s loads the saved EPG data every (hours)."
 msgstr "%s %s loeb salvestatud EPG andmeid iga (tund)."
 
-msgid "The %s %s stores the EPG data every (hours)."
+#, fuzzy
+msgid "The %s %s saves the EPG data every (hours)."
 msgstr "%s %s salvestab EPG andmed iga (tund)."
 
 msgid ""
@@ -11983,6 +12824,9 @@ msgstr "Sisestatud PIN koodid on erinevad."
 msgid "The backup failed. Please choose a different backup location."
 msgstr "Varundamine nurjus. Vali varukoopiale uus asukoht."
 
+msgid "The command to wake from standby will be sent multiple times."
+msgstr ""
+
 msgid "The commit log cannot be retrieved at the moment - please try again later."
 msgstr "Uuenduste logi ei saa hetkel kätte - proovi hiljem uuesti."
 
@@ -11991,22 +12835,6 @@ msgstr "Uuenduste logi ei saa hetkel kätte - proovi hiljem uuesti.\n"
 
 msgid "The current update may be unstable"
 msgstr "See uuendus ei pruugi olla stabiilne"
-
-#, python-format
-msgid ""
-"The directory %s is not a EXT2, EXT3, EXT4 or NFS partition.\n"
-"Make sure you select a valid partition type."
-msgstr ""
-"Kataloog %s ei ole EXT2, EXT3, EXT4 või NTFS partitsioon.\n"
-"Veendu, et valisid kehtiva partitsiooni tüübi."
-
-#, python-format
-msgid ""
-"The directory %s is not writable.\n"
-"Make sure you select a writable directory instead."
-msgstr ""
-"Kataloog %s ei ole salvestatav.\n"
-"Vali kindlasti selle asemel salvestatav kataloog."
 
 msgid "The following files were found..."
 msgstr "Leiti järgmised failid..."
@@ -12103,7 +12931,7 @@ msgid "There are currently no outstanding actions."
 msgstr "Täitmata tegevusi ei ole."
 
 #, fuzzy
-msgid "There are no items currently available for this menu."
+msgid "There are no items currently available for this screen."
 msgstr "Uuendusi ei ole saadaval."
 
 msgid "There are no saved playlists to delete!"
@@ -12202,28 +13030,36 @@ msgstr "Siin saab muuta virtuaalse kõlari asukohta."
 msgid "This option allows you to choose from the two channel lists that are available."
 msgstr "Siin saab valida kahe võimaliku kanalinimekirja vahel."
 
-msgid "This option allows you to choose how to display 1080p 24Hz on your TV. (as not all TV's support these resolutions)"
+#, fuzzy
+msgid "This option allows you to choose how to display 1080p 24Hz on your TV. (as not all TVs support these resolutions)"
 msgstr "See valik määrab, kuidas kuvada 1080p 24Hz sisu teleekraanil. (Kõik telerid seda ei toeta.)"
 
-msgid "This option allows you to choose how to display 1080p 25Hz on your TV. (as not all TV's support these resolutions)"
+#, fuzzy
+msgid "This option allows you to choose how to display 1080p 25Hz on your TV. (as not all TVs support these resolutions)"
 msgstr "See valik määrab, kuidas kuvada 1080p 25Hz sisu teleekraanil. (Kõik telerid seda ei toeta.)"
 
-msgid "This option allows you to choose how to display 1080p 30Hz on your TV. (as not all TV's support these resolutions)"
+#, fuzzy
+msgid "This option allows you to choose how to display 1080p 30Hz on your TV. (as not all TVs support these resolutions)"
 msgstr "See valik määrab, kuidas kuvada 1080p 30Hz sisu teleekraanil. (Kõik telerid seda ei toeta.)"
 
-msgid "This option allows you to choose how to display 2160p 24Hz on your TV. (as not all TV's support these resolutions)"
+#, fuzzy
+msgid "This option allows you to choose how to display 2160p 24Hz on your TV. (as not all TVs support these resolutions)"
 msgstr "See valik määrab, kuidas kuvada 2160p 24Hz sisu teleekraanil. (Kõik telerid seda ei toeta.)"
 
-msgid "This option allows you to choose how to display 2160p 25Hz on your TV. (as not all TV's support these resolutions)"
+#, fuzzy
+msgid "This option allows you to choose how to display 2160p 25Hz on your TV. (as not all TVs support these resolutions)"
 msgstr "See valik määrab, kuidas kuvada 2160p 25Hz sisu teleekraanil. (Kõik telerid seda ei toeta.)"
 
-msgid "This option allows you to choose how to display 2160p 30Hz on your TV. (as not all TV's support these resolutions)"
+#, fuzzy
+msgid "This option allows you to choose how to display 2160p 30Hz on your TV. (as not all TVs support these resolutions)"
 msgstr "See valik määrab, kuidas kuvada 2160p 30Hz sisu teleekraanil. (Kõik telerid seda ei toeta.)"
 
-msgid "This option allows you to choose how to display 720p 24Hz on your TV. (as not all TV's support these resolutions)"
+#, fuzzy
+msgid "This option allows you to choose how to display 720p 24Hz on your TV. (as not all TVs support these resolutions)"
 msgstr "See valik määrab, kuidas kuvada 720p 24Hz sisu teleekraanil. (Kõik telerid seda ei toeta)"
 
-msgid "This option allows you to choose how to display SD progressive 24Hz on your TV. (as not all TV's support these resolutions)"
+#, fuzzy
+msgid "This option allows you to choose how to display SD progressive 24Hz on your TV. (as not all TVs support these resolutions)"
 msgstr "See valik määrab, kuidas kuvada täiskaadrilaotusega 24Hz SD sisu teleekraanil. (Kõik telerid seda ei toeta.)"
 
 msgid "This option allows you to choose how to display elapsed time. As + or -"
@@ -12271,7 +13107,8 @@ msgstr "See valik võimaldab kuvada numbreid menüüdes kiirvalikuks."
 msgid "This option allows you to show the SNR as a percentage (not all receivers support this)."
 msgstr "See valik võimaldab näidata SNR protsentides (kõik vastuvõtjad seda ei toeta)."
 
-msgid "This option allows you to show the full menu path"
+#, fuzzy
+msgid "This option allows you to show the full screen path leading to the current screen."
 msgstr "See valik võimaldab menüüde täieliku asukoha kuvamise"
 
 msgid "This option allows you to view the old and new settings side by side."
@@ -12372,6 +13209,9 @@ msgstr ""
 "See arvutab kõik ajami positsioonid uuesti ning võib kustutada varem salvestatud positsioonid ja peenhäälestuse!\n"
 "Kas oled kindel?"
 
+msgid "This will permanently delete the current configuration. It would be a good idea to make a backup before taking this drastic action. Are you certain you want to continue with a factory reset?"
+msgstr ""
+
 msgid "Three"
 msgstr "Kolm"
 
@@ -12392,6 +13232,10 @@ msgstr "TiVo toetus"
 
 msgid "Time"
 msgstr "Aeg"
+
+#, fuzzy
+msgid "Time Setup Actions"
+msgstr "Aja seaded"
 
 msgid "Time Update in Minutes:"
 msgstr "Kellaaja uuendamine (min):"
@@ -12436,8 +13280,16 @@ msgid "Timer List"
 msgstr "Taimerid"
 
 #, fuzzy
+msgid "Timer Menu"
+msgstr "Taimer"
+
+#, fuzzy
 msgid "Timer Sanity Error"
 msgstr "Taimeri viga"
+
+#, fuzzy
+msgid "Timer control"
+msgstr "Taimer"
 
 msgid ""
 "Timer overlap in pm_timers.xml detected!\n"
@@ -12452,9 +13304,6 @@ msgid ""
 msgstr ""
 "Taimerite ajad kattuvad!\n"
 "Kontrolli ajad üle!"
-
-msgid "Timer record location"
-msgstr "Taimeriga salvestuse asukoht"
 
 msgid "Timer recording location"
 msgstr "Taimeriga salvestuse asukoht"
@@ -12542,14 +13391,33 @@ msgstr "PiP-kanalivahetuse lüliti"
 msgid "Toggle a cut mark at the current position"
 msgstr "Pane lõikemärk praegusele kohale"
 
+#, fuzzy
+msgid "Toggle a selection mark"
+msgstr "Keele valik"
+
 msgid "Toggle aspect ratio..."
 msgstr "Muuda kuvasuhet"
 
 msgid "Toggle between bouquet/epg lists"
 msgstr "Lemmiknimekirja ja epg vahel vahetamine"
 
+#, fuzzy
+msgid "Toggle between one & two-line channel list"
+msgstr "Lemmiknimekirja ja epg vahel vahetamine"
+
+#, fuzzy
+msgid "Toggle channel move mode"
+msgstr "Kanali eelvaatlus"
+
 msgid "Toggle default subtitles"
 msgstr "Vaikimisi subtiitrite lülitamine"
+
+#, fuzzy
+msgid "Toggle infobar"
+msgstr "Inforiba alati varjatud"
+
+msgid "Toggle mark"
+msgstr ""
 
 msgid "Toggle new text inserts before or overwrites existing text"
 msgstr "Vaheta uue teksti sisestamine või olemasoleva teksti ülekirjutamine"
@@ -12633,6 +13501,10 @@ msgstr "Transponderi info"
 msgid "Transport Stream Type"
 msgstr "Transportvoo (TS) tüüp"
 
+#, fuzzy
+msgid "Trash"
+msgstr "Prügikast"
+
 msgid "Trash can"
 msgstr "Prügikast"
 
@@ -12679,10 +13551,6 @@ msgid "Tuner :"
 msgstr "Tuuner:"
 
 #, fuzzy
-msgid "Tuner Settings"
-msgstr "Tuuneri seaded"
-
-#, fuzzy
 msgid "Tuner Setup"
 msgstr "Tuuneri seaded"
 
@@ -12701,9 +13569,6 @@ msgstr "Tuuner ei ole kättesaadav."
 msgid "Tuner settings values"
 msgstr "Tuuneri seadeväärtused"
 
-msgid "Tuner setup"
-msgstr "Tuuneri seaded"
-
 msgid "Tuner slot"
 msgstr "Tuuneri pesa"
 
@@ -12713,7 +13578,8 @@ msgstr "Tuuneri olek:"
 msgid "Tuner type"
 msgstr "Tuuneri tüüp"
 
-msgid "Tuners & scanning"
+#, fuzzy
+msgid "Tuners & Scanning"
 msgstr "Tuunerid ja kanaliotsing"
 
 #, fuzzy
@@ -12888,6 +13754,10 @@ msgstr "Üles"
 msgid "Update"
 msgstr "Uuendus"
 
+#, fuzzy
+msgid "Update Interval"
+msgstr "Uuendamise vahemik (sekundites)"
+
 msgid "Update channel list only"
 msgstr "Uuenda ainult kanalinimekiri"
 
@@ -12957,6 +13827,10 @@ msgstr "Suurtähed"
 msgid "Uptime"
 msgstr "Ülalolekuaeg"
 
+#, fuzzy, python-format
+msgid "Uptime:\t%s\n"
+msgstr "Ülalolekuaeg"
+
 msgid "Uruguay"
 msgstr "Uruguai"
 
@@ -12977,6 +13851,10 @@ msgstr "Kasuta saadavusel EIT EPG andmeid."
 
 msgid "Use FreeSat EPG information when it is available."
 msgstr "Kasuta saadavusel FreeSat EPG andmeid."
+
+#, fuzzy
+msgid "Use Geolocation"
+msgstr "Salvestuskataloog"
 
 msgid "Use MHW EPG information when it is available."
 msgstr "Kasuta saadavusel MHW EPG andmeid."
@@ -13020,6 +13898,9 @@ msgstr "Kasuta kiirotsingu kanalinumeratsiooni"
 msgid "Use frequency or channel"
 msgstr "Kasuta sagedust või kanalit"
 
+msgid "Use geolocation to set the current time zone location"
+msgstr ""
+
 msgid "Use individual settings for each directory"
 msgstr "Igal kataloogil võivad olla oma seadistused"
 
@@ -13045,6 +13926,10 @@ msgstr "Kasuta voolutarbe mõõtmist"
 #, fuzzy
 msgid "Use separate Picon pack for Front Display"
 msgstr "Esipaneeli jaoks omad pikonid *"
+
+#, fuzzy
+msgid "Use skin default"
+msgstr "Taasta vaikeväärtus"
 
 msgid "Use slim screen"
 msgstr "Kasuta kitsast vaadet"
@@ -13113,20 +13998,24 @@ msgstr "Kasutusel:"
 msgid "User - bouquets"
 msgstr "Lemmiknimekirjad"
 
+#, fuzzy
+msgid "User Interface"
+msgstr "Kasutajaliides"
+
 msgid "User defined"
 msgstr "Kasutaja määratud"
 
 msgid "User defined transponder"
 msgstr "Kasutaja määratud transponder"
 
-msgid "User interface"
-msgstr "Kasutajaliides"
-
 msgid "User interface settings"
 msgstr "Kasutajaliidese seaded"
 
 msgid "User interface visibility"
 msgstr "Ekraanigraafika nähtavus"
+
+msgid "User-selectable functions"
+msgstr ""
 
 msgid "Username"
 msgstr "Kasutajanimi"
@@ -13160,7 +14049,8 @@ msgstr "Võrguteenused"
 msgid "Uzbekistan"
 msgstr "Usbekistan"
 
-msgid "VCR scart"
+#, fuzzy
+msgid "VCR Scart"
 msgstr "VCR scart"
 
 msgid "VLAN connection"
@@ -13187,18 +14077,15 @@ msgstr "Venezuela"
 msgid "Version: "
 msgstr "Versioon: "
 
-#, python-format
-msgid "Version: %s"
-msgstr "Versioon: %s"
-
 msgid "Vertical"
 msgstr "Vertikaalne"
 
 msgid "Vertical turning speed"
 msgstr "Vertikaalse pööramise kiirus"
 
-msgid "ViX EPG"
-msgstr "ViX EPG"
+#, fuzzy, python-format
+msgid "ViX version: %s"
+msgstr "Versioon: %s"
 
 #, fuzzy
 msgid "Video & Audio Settings"
@@ -13264,9 +14151,6 @@ msgstr "Vaata"
 
 msgid "View Movies..."
 msgstr "Vaata filme"
-
-msgid "View Rass interactive..."
-msgstr "Rass interactive"
 
 msgid "View Video CD..."
 msgstr "Video CD vaatamine"
@@ -13352,11 +14236,11 @@ msgstr "Virtuosso Image Xtreme"
 msgid "Visual impaired commentary"
 msgstr "Kommentaar vaegnägijaile"
 
-msgid "Vix forum user name"
-msgstr "Vix foorumi kasutajanimi"
-
 msgid "Voltage mode"
 msgstr "Pinge tüüp"
+
+msgid "Volume keys on the receiver remote will control the TV volume."
+msgstr ""
 
 msgid "W"
 msgstr "W"
@@ -13399,6 +14283,14 @@ msgstr "Haakimise ootel"
 msgid "Waiting for partition."
 msgstr "Partitsiooni ootel"
 
+#, fuzzy
+msgid "Wake A/V receiver from standby"
+msgstr "Käivita teler ooteseisundist"
+
+#, fuzzy
+msgid "Wake A/V receiver from standby."
+msgstr "Käivita teler ooteseisundist"
+
 msgid "Wake On LAN"
 msgstr "Kohtvõrgus äratamine WOL"
 
@@ -13408,18 +14300,21 @@ msgstr "Käivitus"
 msgid "Wake Up To Standby"
 msgstr "Käivitus ooteseisundisse"
 
+msgid "Wake the receiver from standby when the wake command is sent from the TV."
+msgstr ""
+
 msgid "Wakeup"
 msgstr "Käivitus"
 
 msgid "Wakeup TV from standby"
 msgstr "Käivita teler ooteseisundist"
 
-msgid "Wakeup signal from TV"
+#, fuzzy
+msgid "Wakeup command for TV"
 msgstr "Äratussignaal telerist"
 
-#, python-format
-msgid "Wakeup your %s %s from standby"
-msgstr "Käivita %s %s ooteseisundist"
+msgid "Wakeup signal from TV"
+msgstr "Äratussignaal telerist"
 
 msgid "Wallis and Futuna"
 msgstr "Wallis ja Futuna"
@@ -13538,11 +14433,25 @@ msgstr "Mis nädalapäev?"
 msgid "What do you want to scan?"
 msgstr "Mida soovid otsida?"
 
+msgid "When changing skins this allows the skin to load without requiring an enigma restart."
+msgstr ""
+
+msgid "When enabled a forced download will be possible from the extensions menu (blue button). Shows after next restart."
+msgstr ""
+
 msgid "When enabled enigma2 will load unlinked userbouquets. This means that userbouquets that are available, but not included in the bouquets.tv or bouquets.radio files, will still be loaded. This allows you for example to keep your own user bouquet while installed settings are upgraded"
 msgstr "Kui lubatud, laadib enigma2 ka sidumata lemmiknimekirjad. See tähendab, et lemmiknimekirjad, mis on olemas, aga puuduvad bouquets.tv või bouquets.radio failides, laaditakse ikkagi. Nii saab oma lemmiknimekirjad säilitada ka paigaldatud kanalinimekirjade uuendamisel"
 
 msgid "When enabled the online checker will also check for experimental versions"
 msgstr "Kui lubatud, otsitakse ka eksperimentaalseid uuendusi"
+
+#, fuzzy
+msgid "When enabled the receiver will automatically return to standby when the TV is turned off."
+msgstr "Kui lubatud, kasutab vastuvõtja automaatselt varem valitud heliriba."
+
+#, fuzzy
+msgid "When enabled the receiver will automatically wake from standby when the TV is turned on."
+msgstr "Kui lubatud, kasutab vastuvõtja automaatselt varem valitud heliriba."
 
 msgid "When enabled the set top box is able to wakeup on LAN"
 msgstr "Määrates 'jah', on vastuvõtja võimeline aktiveeruma võrgust LAN abil"
@@ -13613,6 +14522,9 @@ msgstr "Kui lubatud, nummerdatud märgised peidetakse."
 msgid "When enabled, pressing '0' will zap you to the first channel in your first bouquet and delete your zap-history."
 msgstr "Kui lubatud, viib '0' vajutus alati kanalile 1 ja kustutab kanalivahetuse ajaloo."
 
+msgid "When enabled, recordings are grouped by name into collections automatically."
+msgstr ""
+
 msgid "When enabled, reformat subtitles to match the width of the screen."
 msgstr "Kui lubatud, seatakse subtiitrid vastavusse ekraani laiusega."
 
@@ -13676,14 +14588,20 @@ msgstr "Salvestamist alustatakse enne saatekavas näidatud aega."
 msgid "When nonzero, a recording will stop later than the ending time indicated by the EPG."
 msgstr "Salvestamine lõpetatakse pärast saatekavas näidatud aega."
 
+msgid "When receiver wakes from standby, it will command the TV to switch to the HDMI input the receiver is connected to."
+msgstr ""
+
 msgid "When set the PIG will return to live after a movie has stopped playing."
 msgstr "Kui lubatud, aktiveerub PIG taasesituse lõppedes."
 
 msgid "When set, each directory will show the previous state used. When off, the default values will be shown."
 msgstr "Kui lubatud, peetakse iga kausta seadistused meeles, määrates 'ei', kasutatakse vaikeväärtusi."
 
-msgid "When set, sort changes via the sort key will be permanent."
-msgstr "Märgituna on järjestusnupuga tehtud muudatused jäävad."
+#, fuzzy
+msgid ""
+"When set, sort changes via the sort key will be permanent.\n"
+"When unset, sort changes will be temporary - just for this view of a directory."
+msgstr "Märkimata on järjestuse muutus ajutine, ainult selleks korraks."
 
 msgid "When the content has an aspect ratio of 16:9, choose whether to scale/stretch the picture."
 msgstr "Määra, kas 16:9 kuvasuhtega sisu tuleb skaleerida/venitada."
@@ -13691,11 +14609,11 @@ msgstr "Määra, kas 16:9 kuvasuhtega sisu tuleb skaleerida/venitada."
 msgid "When the content has an aspect ratio of 4:3, choose whether to scale/stretch the picture."
 msgstr "Määra, kas 4:3 kuvasuhtega sisu tuleb skaleerida/venitada."
 
+msgid "When the receiver wakes from standby, it will send a command to the TV to bring it out of standby too."
+msgstr ""
+
 msgid "When tuned to a service the system will normally scan the transponder for any changes and save them. Only set to 'yes' if you're absolutely sure of what you're doing."
 msgstr "Olles häälestatud kanalile, uurib süsteem tavaliselt transponderi muudatusi ja salvestab need. Määra 'ei' ainult juhul, kui oled täiesti kindel, et tead, mida teed."
-
-msgid "When unset, sort changes will be temporary - just for this view of a directory."
-msgstr "Märkimata on järjestuse muutus ajutine, ainult selleks korraks."
 
 msgid "Where do you want to backup your settings?"
 msgstr "Kuhu teha varukoopia seadistustest?"
@@ -13801,6 +14719,14 @@ msgstr "Kollane"
 
 msgid "Yellow DVB subtitles"
 msgstr "Kollased DVB subtiitrid"
+
+#, fuzzy
+msgid "Yellow button (long)"
+msgstr "Info - pikk"
+
+#, fuzzy
+msgid "Yellow button (short)"
+msgstr "Info - lühike"
 
 msgid "Yellow long"
 msgstr "Kollane - pikk"
@@ -13919,8 +14845,11 @@ msgstr "Seda ei või kustutada!"
 msgid "You didn't select a channel to record from."
 msgstr "Salvestatavat kanalit pole valitud."
 
-msgid "You have already sent this log, are you sure you want to resend it?\n"
-msgstr "Oled selle logi juba saatnud, kas tõesti saadad uuesti?\n"
+#, fuzzy
+msgid "You have a marked recording"
+msgid_plural "You have marked recordings"
+msgstr[0] "Talleta ja salvesta"
+msgstr[1] "Talleta ja salvesta"
 
 msgid "You have chosen to backup your settings. Please press OK to start the backup now."
 msgstr "Otsustasid luua seadistustest varukoopia. Varundamiseks vajuta OK."
@@ -13937,16 +14866,6 @@ msgstr ""
 
 msgid "You have not selected any logs to delete."
 msgstr "Kustutamiseks ei ole logifaile valitud."
-
-msgid "You have not selected any logs to send"
-msgstr "Saatmiseks ei ole logifaile valitud"
-
-msgid ""
-"You have not setup your user info in the setup screen\n"
-"Press MENU, enter your info, and then try again"
-msgstr ""
-"Seadistusmenüüs on kasutaja andmed sisestamata\n"
-"Vajuta MENU, sisesta oma andmed ja proovi uuesti"
 
 #, python-format
 msgid "You have to wait %s!"
@@ -13974,10 +14893,6 @@ msgstr "Ajanihe on kasutusel. Kas see tuleks peatada?"
 
 msgid "You seem to be in timeshift, Do you want to leave timeshift? Streams & IPTV not fully supported!"
 msgstr "Ajanihe on kasutusel. Kas see tuleks peatada? Voogesitus ja IPTV pole täielikult toetatud!"
-
-#, python-format
-msgid "Your %s %s does not support PiP HD"
-msgstr "PiP HD ei ole %s %s poolt toetatud"
 
 #, python-format
 msgid "Your %s %s has no %s access, please check your network settings and make sure you have network cable connected and try again."
@@ -14030,6 +14945,23 @@ msgstr "%s %s lülitub välja. Oota..."
 msgid "Your %s %s might be unusable now. Please consult the manual for further assistance before rebooting your %s %s."
 msgstr "%s %s võib olla nüüd kasutuskõlbmatu. Uuri juhendit täiendava abi leidmiseks enne %s %s taaskäivitamist."
 
+#, fuzzy, python-format
+msgid ""
+"Your %s %s needs to be restarted to complete the installation of %s\n"
+"Do you want to reboot now ?"
+msgstr ""
+"Pärast teenuse paigaldamist %s %s taaskäivitub.\n"
+"\n"
+"Kas paigaldada kohe?"
+
+#, fuzzy, python-format
+msgid ""
+"Your %s %s needs to be restarted to complete the removal of %s\n"
+"Do you want to reboot now ?"
+msgstr ""
+"%s %s taaskäivitub pärast teenuse eemaldamist\n"
+"Kas eemaldada kohe?"
+
 #, python-format
 msgid ""
 "Your %s %s will be restarted after the installation of service.\n"
@@ -14042,24 +14974,8 @@ msgstr ""
 
 #, python-format
 msgid ""
-"Your %s %s will be restarted after the installation of the service\n"
-"Are you ready to install \"%s\" ?"
-msgstr ""
-"Pärast teenuse paigaldamist %s %s taaskäivitub\n"
-"Kas paigaldada \"%s\"?"
-
-#, python-format
-msgid ""
 "Your %s %s will be restarted after the removal of service\n"
 "Do you want to remove now ?"
-msgstr ""
-"%s %s taaskäivitub pärast teenuse eemaldamist\n"
-"Kas eemaldada kohe?"
-
-#, python-format
-msgid ""
-"Your %s %s will be restarted after the removal of the service\n"
-"Do you want to remove the service now ?"
 msgstr ""
 "%s %s taaskäivitub pärast teenuse eemaldamist\n"
 "Kas eemaldada kohe?"
@@ -14187,12 +15103,19 @@ msgid "Zap to"
 msgstr "Kanalile"
 
 #, fuzzy
+msgid "Zap to channel number"
+msgstr "Mine kanalile (seadistamine menüüs)"
+
+#, fuzzy
 msgid "Zap to channel/service"
 msgstr "Mine kanalile (seadistamine menüüs)"
 
 #, fuzzy
 msgid "Zap to channel/service and close"
 msgstr "Mine kanalile ja sulge (seadistamine menüüs)"
+
+msgid "Zap to first channel & clear zap history"
+msgstr ""
 
 msgid "Zap up"
 msgstr "Eelmine kanal"
@@ -14204,6 +15127,9 @@ msgstr "Kanalivahetus taimeri kanalile %s PiP-aknas!"
 #, python-format
 msgid "Zapped to timer service %s!"
 msgstr "Kanalivahetus taimeri kanalile %s!"
+
+msgid "Zaps to EPG download transponder for EPG fetch."
+msgstr ""
 
 msgid "Zgemma H.S/H.2S/H.2H/H5"
 msgstr ""
@@ -14219,6 +15145,9 @@ msgstr ""
 
 msgid "Zimbabwe"
 msgstr "Zimbabwe"
+
+msgid "Zoom"
+msgstr ""
 
 msgid "Zoom In/Out TV..."
 msgstr "TV suurendus +/-"
@@ -14237,9 +15166,6 @@ msgstr "[Ajanihe] Ajanihe käivitatakse uuesti!"
 
 msgid "[Timeshift] Merging records failed!"
 msgstr "[Ajanihe] Salvestiste liitmine nurjus!"
-
-msgid "[a]"
-msgstr "[a]"
 
 msgid "[alternative edit]"
 msgstr "[asenduskanalite muutmine]"
@@ -14270,6 +15196,10 @@ msgstr ""
 
 msgid "add bookmark"
 msgstr "lisa järjehoidja"
+
+#, fuzzy
+msgid "additional cable of rotor"
+msgstr "Lisainfo"
 
 msgid "address:"
 msgstr "aadress:"
@@ -14528,9 +15458,6 @@ msgstr "valmis!"
 msgid "drama (general)"
 msgstr "draama"
 
-msgid "e-mail address"
-msgstr "e-posti aadress"
-
 msgid "east"
 msgstr "ida"
 
@@ -14731,13 +15658,6 @@ msgstr "käsitöö"
 
 msgid "handled"
 msgstr "töödeldud"
-
-msgid ""
-"has been sent to the ViX team.\n"
-"please quote"
-msgstr ""
-"saadeti ViX tiimile.\n"
-"palun osunda"
 
 msgid "hdr10"
 msgstr "hdr10"
@@ -15076,6 +15996,9 @@ msgstr "salvestus"
 msgid "recording..."
 msgstr "salvestamine..."
 
+msgid "recordings by date then other media by name"
+msgstr ""
+
 msgid "red"
 msgstr "Punane"
 
@@ -15118,9 +16041,6 @@ msgstr "Vanemad ees"
 msgid "rewind to the previous chapter"
 msgstr "Tagasi eelmisele peatükile"
 
-msgid "rgb"
-msgstr "RGB"
-
 msgid "right"
 msgstr "Parem"
 
@@ -15132,6 +16052,10 @@ msgstr "rock/pop"
 
 msgid "romance"
 msgstr "romantika"
+
+#, fuzzy
+msgid "rotor"
+msgstr "Ajam: "
 
 msgid "running..."
 msgstr "töös..."
@@ -15152,6 +16076,10 @@ msgid "sdr"
 msgstr "sdr"
 
 msgid "se"
+msgstr "kagu"
+
+#, fuzzy
+msgid "sec"
 msgstr "kagu"
 
 msgid "seconds"
@@ -15241,14 +16169,8 @@ msgstr "Lihtne"
 msgid "skip backward"
 msgstr "Hüpe tagasi"
 
-msgid "skip backward (enter time)"
-msgstr "Hüpe tagasi (sisesta aeg)"
-
 msgid "skip forward"
 msgstr "Hüpe edasi"
-
-msgid "skip forward (enter time)"
-msgstr "Hüpe edasi (sisesta aeg)"
 
 msgid "slow"
 msgstr "Aeglane"
@@ -15355,6 +16277,14 @@ msgstr "turism/reisimine"
 msgid "true"
 msgstr "jah"
 
+#, fuzzy
+msgid "two lines"
+msgstr "Kaks rida"
+
+#, fuzzy
+msgid "two lines and next event"
+msgstr "Mine järgmisele saatele"
+
 msgid "type"
 msgstr "tüüp"
 
@@ -15448,18 +16378,6 @@ msgstr "järgmisele kanalile, kui PiP-kanalivahetus on lubatud"
 msgid "when PiPzap enabled zap channel up..."
 msgstr "eelmisele kanalile, kui PiP-kanalivahetus on lubatud"
 
-msgid "when asking questions about this log"
-msgstr "küsides selle logi kohta"
-
-msgid ""
-"when asking questions about this log\n"
-"\n"
-"A copy has been sent to yourself."
-msgstr ""
-"küsides selle logi kohta\n"
-"\n"
-"Sulle saadeti koopia."
-
 msgid "white"
 msgstr "Valge"
 
@@ -15525,620 +16443,3 @@ msgstr "Kanalivahetus ja salvestamine"
 
 msgid "zapped"
 msgstr "vahetatud"
-
-#~ msgid " "
-#~ msgstr " "
-
-#~ msgid " Stream %s"
-#~ msgstr " %s voogesitus"
-
-#~ msgid "128"
-#~ msgstr "128"
-
-#~ msgid "256"
-#~ msgstr "256"
-
-#~ msgid "32"
-#~ msgstr "32"
-
-#~ msgid "3D setup"
-#~ msgstr "3D seaded"
-
-#~ msgid "AFP setup"
-#~ msgstr "AFP seaded"
-
-#~ msgid "About..."
-#~ msgstr "Süsteemist..."
-
-#~ msgid "Add Autotimer"
-#~ msgstr "Lisa autotaimer"
-
-#~ msgid "Add to selection (starts with...)"
-#~ msgstr "Lisa valikusse (algab ...)"
-
-#~ msgid "Animation Setup"
-#~ msgstr "Animatsiooni seaded"
-
-#~ msgid "Auto language settings"
-#~ msgstr "Automaatsed keelevalikud"
-
-#~ msgid "Change to bouquet"
-#~ msgstr "Vaheta lemmiknimekirja"
-
-#~ msgid "Channel 1 at start"
-#~ msgstr "Käivitus kanalil 1"
-
-#~ msgid "Channel Info"
-#~ msgstr "Kanaliinfo"
-
-#~ msgid "Channel selection settings"
-#~ msgstr "Kanalivaliku seaded"
-
-#~ msgid "ChannelEPG settings"
-#~ msgstr "Kanali EPG seaded"
-
-#~ msgid "Chatham Islands"
-#~ msgstr "Chathami saared"
-
-#~ msgid "Chipset:\tBCM%s\n"
-#~ msgstr "Kiibistik:\tBCM%s\n"
-
-#~ msgid "Choose the layout view mode (Text or Graphics)."
-#~ msgstr "Vali saatekava vaade (tekst või graafiline)."
-
-#~ msgid "Close bouquet list."
-#~ msgstr "Sulge lemmiknimekirjad."
-
-#~ msgid "Common Interface Assignment"
-#~ msgstr "CI määrangud"
-
-#~ msgid "Compare case sensitive"
-#~ msgstr "Tõusutundlik võrdlus"
-
-#~ msgid "Configure the type of status indication icons shown in the movie list."
-#~ msgstr "Määra, kuidas tähistatakse salvestuste olek filmilistis."
-
-#~ msgid "Convert ext3 filesystem to ext4"
-#~ msgstr "Teisenda ext3 > ext4"
-
-#~ msgid "Convert ext3 to ext4"
-#~ msgstr "Teisenda ext3 > ext4"
-
-#~ msgid "Convert filesystem ext3 to ext4"
-#~ msgstr "Teisenda ext3 > ext4"
-
-#~ msgid "Cool TV Guide"
-#~ msgstr "Cool TV Guide"
-
-#~ msgid "Copy to..."
-#~ msgstr "Kopeeri asukohta"
-
-#~ msgid "Cron manager"
-#~ msgstr "Cron haldur"
-
-#~ msgid "Customize"
-#~ msgstr "Kasutaja eelistused"
-
-#~ msgid "Delete Password"
-#~ msgstr "Kustuta parool"
-
-#~ msgid "Device setup"
-#~ msgstr "Võrgukaardi seaded"
-
-#~ msgid "Do"
-#~ msgstr "Teosta"
-
-#~ msgid ""
-#~ "Do you really want to convert the filesystem?\n"
-#~ "You cannot go back!"
-#~ msgstr ""
-#~ "Kas teisendad failisüsteemi?\n"
-#~ "Seda ei saa tagasi pöörata!"
-
-#~ msgid "EPG Settings"
-#~ msgstr "EPG seaded"
-
-#~ msgid "Easter Island"
-#~ msgstr "Lihavõttesaar"
-
-#~ msgid "Enigma2 skin selector"
-#~ msgstr "Enigma2 kujunduse valik"
-
-#~ msgid "Enter your password here:"
-#~ msgstr "Sisesta uus parool:"
-
-#~ msgid "Execute"
-#~ msgstr "Teosta"
-
-#~ msgid "Exit/OK"
-#~ msgstr "Exit/OK"
-
-#~ msgid "External Storage %s"
-#~ msgstr "Väline andmekandja %s"
-
-#~ msgid "F1/F3"
-#~ msgstr "F1/F3"
-
-#~ msgid "FTP setup"
-#~ msgstr "FTP seaded"
-
-#~ msgid "Fernando de Noronha"
-#~ msgstr "Fernando de Noronha"
-
-#~ msgid "File manager"
-#~ msgstr "Failihaldur"
-
-#~ msgid "Force LNB Power"
-#~ msgstr "Sunnitud LNB toide"
-
-#~ msgid "Force ToneBurst"
-#~ msgstr "Sunnitud toonimpulss"
-
-#~ msgid "Front Display Panel"
-#~ msgstr "Esipaneeli näidik"
-
-#~ msgid ""
-#~ "GUI needs a restart to apply a new skin\n"
-#~ "Do you want to restart the GUI now?"
-#~ msgstr ""
-#~ "Kujunduse jõustamiseks tuleb kasutajaliides taaskäivitada\n"
-#~ "Kas teha seda kohe?"
-
-#~ msgid "Galapagos Islands"
-#~ msgstr "Galapagose saared"
-
-#~ msgid "Gambier Islands"
-#~ msgstr "Gambieri saared"
-
-#~ msgid "Graphical InfobarEPG"
-#~ msgstr "Graafiline inforiba EPG"
-
-#~ msgid "GraphicalEPG"
-#~ msgstr "Graafiline EPG"
-
-#~ msgid "GraphicalEPG settings"
-#~ msgstr "Graafilise EPG seaded"
-
-#~ msgid "Greek (Modern)"
-#~ msgstr "Kreeka (Tänapäev)"
-
-#~ msgid "HD1100/et7x00/et8500"
-#~ msgstr "HD1100/et7x00/et8500"
-
-#~ msgid "Hard disk settings"
-#~ msgstr "Kõvaketta seaded"
-
-#~ msgid "Ho Chi Minh City"
-#~ msgstr "Hô` Chí Minh"
-
-#~ msgid "IP-Address"
-#~ msgstr "IP aadress"
-
-#~ msgid "If set to 'yes' the EPG will always open at the first channel of bouquet. If set to 'no' the EPG will open on the current channel."
-#~ msgstr "Kui lubatud, avatakse saatekava alati esimesel kanalil. Määrates 'ei', avatakse saatekava aktiivsel kanalil."
-
-#~ msgid "Inadyn setup"
-#~ msgstr "Inadyn seaded"
-
-#~ msgid "InfoBar EPG mode"
-#~ msgstr "Inforiba EPG kuvamine"
-
-#~ msgid "InfobarEPG"
-#~ msgstr "Inforiba EPG"
-
-#~ msgid "Initialization"
-#~ msgstr "Vormindamine"
-
-#~ msgid "Johnston Atoll"
-#~ msgstr "Johnstoni atoll"
-
-#~ msgid "Link Quality:"
-#~ msgstr "Lingi kvaliteet:"
-
-#~ msgid "Logs Settings"
-#~ msgstr "Logimise seaded"
-
-#~ msgid "Lord Howe Island"
-#~ msgstr "Lord Howe saar"
-
-#~ msgid "Marquesas Islands"
-#~ msgstr "Markiisaared"
-
-#~ msgid "Midway Islands"
-#~ msgstr "Midway saared"
-
-#~ msgid "MiniDLNA setup"
-#~ msgstr "MiniDLNA seaded"
-
-#~ msgid "Miscellaneous"
-#~ msgstr "Mitmesugust"
-
-#~ msgid ""
-#~ "Mode 1 suppports Kodi, PiP may not work.\n"
-#~ "Mode 12 supports PiP, Kodi may not work."
-#~ msgstr ""
-#~ "Mood 1: Kodi töötab, PiP ei pruugi.\n"
-#~ "Mood 12: PiP töötab, Kodi ei pruugi."
-
-#~ msgid "Mounts Setup"
-#~ msgstr "Haakepunktid"
-
-#~ msgid "Mounts setup"
-#~ msgstr "Haakepunktid"
-
-#~ msgid "Move to..."
-#~ msgstr "Liiguta asukohta"
-
-#~ msgid "MultiEPG"
-#~ msgstr "Multi EPG"
-
-#~ msgid "MultiEPG settings"
-#~ msgstr "MultiEPG seaded"
-
-#~ msgid "Multiboot"
-#~ msgstr "Multibuut"
-
-#~ msgid "Multiboot ERROR! - invalid STARTUP in boot partition."
-#~ msgstr "Multibuudi VIGA! - vigane STARTUP alglaadimispartitsioonil."
-
-#~ msgid "Multiboot ERROR! - no STARTUP in boot partition."
-#~ msgstr "Multibuudi VIGA! - STARTUP puudub alglaadimispartitsioonilt."
-
-#~ msgid "NFS setup"
-#~ msgstr "NFS seaded"
-
-#~ msgid "Network test: "
-#~ msgstr "Võrgu test: "
-
-#~ msgid "No cable tuner found!"
-#~ msgstr "Kaabel-tv tuunerit ei leitud!"
-
-#~ msgid "No free tuner available!"
-#~ msgstr "Vaba tuuner puudub!"
-
-#~ msgid "No httpport defined in oscam.conf. This value is required!"
-#~ msgstr "Oscam.conf failis on 'httpport' määramata. See väärtus on kohustuslik!"
-
-#~ msgid "No httppwd defined in oscam.conf"
-#~ msgstr "Oscam.conf failis on 'httppwd' määramata"
-
-#~ msgid "No httpuser defined in oscam.conf"
-#~ msgstr "Oscam.conf failis on 'httpuser' määramata"
-
-#~ msgid "No new plugins found"
-#~ msgstr "Uusi pluginaid ei leitud"
-
-#~ msgid "No suitable sat tuner found!"
-#~ msgstr "Sat-tv tuunerit ei leitud!"
-
-#~ msgid "Northern Territory"
-#~ msgstr "Põhjaterritoorium"
-
-#~ msgid "Not configured"
-#~ msgstr "Seadistamata"
-
-#~ msgid "Not mounted"
-#~ msgstr "Haakimata"
-
-#~ msgid "Nothing connected"
-#~ msgstr "Midagi pole ühendatud"
-
-#~ msgid "OEM:\t%s\n"
-#~ msgstr "OEM:\t%s\n"
-
-#~ msgid "OSD settings"
-#~ msgstr "Ekraanigraafika seaded"
-
-#~ msgid "On destination '%s' is %s free space only!"
-#~ msgstr "Sihtkohas %s on ainult %s vaba kettaruumi!"
-
-#~ msgid "On reaching the end of a file during playback, you can choose the box's behavior."
-#~ msgstr "Saad määrata vastuvõtja käitumise taasesituse lõppemisel."
-
-#~ msgid "OpenVpn"
-#~ msgstr "OpenVPN"
-
-#~ msgid "Options..."
-#~ msgstr "Valikud..."
-
-#~ msgid "Oscam ECM-info"
-#~ msgstr "OScam ecm info"
-
-#~ msgid "Password deleted sucessfully for the root user"
-#~ msgstr "Juurkasutaja parool kustutati"
-
-#~ msgid "Pitcairn Islands"
-#~ msgstr "Pitcairn saared"
-
-#~ msgid "Please select a default EPG type..."
-#~ msgstr "Vali saatekava laad"
-
-#~ msgid "Position Setup"
-#~ msgstr "Asukoha määramine"
-
-#~ msgid "Position setup"
-#~ msgstr "Ekraanigraafika asukoht"
-
-#~ msgid "Power down"
-#~ msgstr "Puhkeseisund"
-
-#~ msgid "PowerManager entry"
-#~ msgstr "Toitetaimer"
-
-#~ msgid "Press 'Add Language' or MENU to add additional language(s). English language can not be deleted"
-#~ msgstr "Keele lisamiseks vajuta 'Keele lisamine' või MENU. Inglise keelt kustutada ei saa"
-
-#~ msgid "Press OK to start the scan"
-#~ msgstr "Otsingu alustamiseks vajuta OK"
-
-#~ msgid "Primetime minute"
-#~ msgstr "Tippaja minut"
-
-#~ msgid "Provider to scan"
-#~ msgstr "Otsitav levitaja"
-
-#~ msgid "Remove 'hide dotted line on the top for this service'"
-#~ msgstr "Lõpeta punktiirjoone peitmine sellel kanalil"
-
-#~ msgid "Remove from selection (starts with...)"
-#~ msgstr "Eemalda valikust (algab ...)"
-
-#~ msgid "SABnzbd setup"
-#~ msgstr "SABnzbd seaded"
-
-#~ msgid "SDcard is not initialised for MultiBootSelector. Exit and use ViX MultiBoot Manager to initialise."
-#~ msgstr "SD kaart tuleb multibuudi jaoks vormindada. Välju ja kasuta vormindamiseks Vixi multibuudi haldurit"
-
-#~ msgid "Samba setup"
-#~ msgstr "Samba seaded"
-
-#~ msgid "Satellite equipment control"
-#~ msgstr "Satelliidiseadmed"
-
-#~ msgid "Save and exit"
-#~ msgstr "Salvesta ja välju"
-
-#~ msgid "Save timeshift in movie dir and zap"
-#~ msgstr "Talleta ajanihe salvestuskataloogi ja vaheta kanalit"
-
-#~ msgid "Select destination for copy selected files..."
-#~ msgstr "Vali sihtkoht valitud failide kopeerimiseks..."
-
-#~ msgid "Select destination for move selected files..."
-#~ msgstr "Vali sihtkoht valitud failide liigutamiseks..."
-
-#~ msgid ""
-#~ "Select files with 'OK' and then use 'Green' to choose desired operation.\n"
-#~ "Use 'CH+/-' select/unselect files via the keyboard.\n"
-#~ "Use 'Menu' for settings."
-#~ msgstr ""
-#~ "Vali failid 'OK' nupu abil, siis vali rohelise nupuga soovitud tegevus.\n"
-#~ "Klaviatuuril kasuta 'CH+/-' failide valikuks või valiku tühistamiseks.\n"
-#~ "Seadete kuvamiseks kasuta 'Menu' nuppu."
-
-#~ msgid "Select how to activate the Quick EPG mode:"
-#~ msgstr "Vali, kuidas käivitada Inforiba EPG:"
-
-#~ msgid "Select locale"
-#~ msgstr "Vali keel"
-
-#~ msgid "Select operation:"
-#~ msgstr "Vali tegevus:"
-
-#~ msgid "Select the Unicable channel to be assigned to this tuner. This is a unique value. Be certain that no other device connected to this same Unicable system is allocated to the same Unicable channel."
-#~ msgstr "Vali sellele tuunerile määratud   kanal. See väärtus on ainukordne. Veendu, et teisi seadmeid ei ole ühendatud samasse unicable süsteemi sama unicable kanali kaudu."
-
-#~ msgid "Selected: %s"
-#~ msgstr "Valitud: %s"
-
-#~ msgid "Service searching"
-#~ msgstr "Kanaliotsing"
-
-#~ msgid "Set the desired primetime (minutes)."
-#~ msgstr "Määra tippajaks (minutid)."
-
-#~ msgid "Set to the desired primetime (minutes)."
-#~ msgstr "Määra tippajaks (minutid)."
-
-#~ msgid "Settings..."
-#~ msgstr "Seaded"
-
-#~ msgid "Show EPG for current channel..."
-#~ msgstr "Kanali EPG"
-
-#~ msgid "Show EPG for current service"
-#~ msgstr "Kanali EPG"
-
-#~ msgid "Show graphical multi EPG"
-#~ msgstr "Graafiline MultiEPG"
-
-#~ msgid "Show picons in quickzap"
-#~ msgstr "Pikonid kanalivahetusel"
-
-#~ msgid "Show warning when in a stream"
-#~ msgstr "Hoiatus IPTV kanalil"
-
-#~ msgid "Signal Finder"
-#~ msgstr "Signaalimõõdik"
-
-#~ msgid "Signal Strength:"
-#~ msgstr "Signaali tugevus:"
-
-#~ msgid "SingleEPG"
-#~ msgstr "Kanali EPG"
-
-#~ msgid "SingleEPG settings"
-#~ msgstr "Kanali EPG seaded"
-
-#~ msgid "Size: "
-#~ msgstr "Maht: "
-
-#~ msgid "SoftCam and CI"
-#~ msgstr "EMU / CI"
-
-#~ msgid "Softcam Settings"
-#~ msgstr "EMU seaded"
-
-#~ msgid "Softcam setings"
-#~ msgstr "EMU seaded"
-
-#~ msgid "Software Update"
-#~ msgstr "Tarkvara uuendused"
-
-#~ msgid "South Australia"
-#~ msgstr "Austraalia"
-
-#~ msgid "Specify the complete URL of the fallback remote receiver including the port number (:8001 by default), e.g. 'http://IP_second_box:8001'."
-#~ msgstr "Määra kaugvastuvõtja täielik URL koos pordi numbriga (vaikimisi :8001). Näiteks '192.168.x.x:8001'."
-
-#~ msgid "Subtitle settings"
-#~ msgstr "Subtiitrite seaded"
-
-#~ msgid "Sucessfully changed the password for the root user to "
-#~ msgstr "Uus juurkasutaja parool on "
-
-#~ msgid "Switchable tuner types:"
-#~ msgstr "Hübriidtuuneri tüübid:"
-
-#~ msgid "Terrestrial provider"
-#~ msgstr "DVB-T levitaja"
-
-#~ msgid ""
-#~ "The Autotimer plugin is not installed!\n"
-#~ "Please install it."
-#~ msgstr ""
-#~ "Autotaimer ei ole paigaldatud!\n"
-#~ "Paigalda see."
-
-#~ msgid ""
-#~ "The Cool TV Guide plugin is not installed!\n"
-#~ "Dont bother with it and use the default ViX EPG guide instead."
-#~ msgstr ""
-#~ "Cool TV Guide ei ole paigaldatud!\n"
-#~ "Ära vaeva ennast sellega, kasuta hoopis ViX EPG saatekava."
-
-#~ msgid ""
-#~ "The commit log cannot be retrieved at the moment - please try again later.\n"
-#~ "%s"
-#~ msgstr ""
-#~ "Uuenduste logi ei saa hetkel kätte - proovi hiljem uuesti.\n"
-#~ "%s"
-
-#~ msgid "There is no [webif] section in oscam.conf"
-#~ msgstr "[webif] osa puudub 'oscam.conf' failis"
-
-#~ msgid "This is a multitype tuner. Available options depend on the hardware. Cable and terrestrial cannot be configured at the same time. If you want to use as cable + satellite or terrestrial + satellite, configure cable/terrestrial first and then save. Re-open and configure again as satellite."
-#~ msgstr "See on mitmetüübiline tuuner. Võimalikud valikud sõltuvad vastuvõtjast. Kaabel ja maapealne ei saa olla kasutuses korraga. Kui tahad vastuvõtjat kasutada 'kaabel + satelliit' või 'maapealne + satelliit', seadista esmalt kaabel/maapealne ja salvesta. Ava uuesti ja seadista satelliit."
-
-#~ msgid "This option allows you to Power Off the display."
-#~ msgstr "See valik lubab näidiku välja lülitada."
-
-#~ msgid "Time settings"
-#~ msgstr "Aja seaded"
-
-#~ msgid "Timer conflict detection when fallback is enabled"
-#~ msgstr "Taimerikonflikti tuvastus, kui kaugvastuvõtja on lubatud"
-
-#~ msgid "Timer entry"
-#~ msgstr "Taimer"
-
-#~ msgid "Timeshift on a stream is not supported!"
-#~ msgstr "Voogesitusel ei ole ajanihe võimalik!"
-
-#~ msgid "Timeshift settings"
-#~ msgstr "Ajanihke seaded"
-
-#~ msgid "Total size: %s"
-#~ msgstr "Kogusuurus: %s"
-
-#~ msgid "Unable to change/reset the password for the root user"
-#~ msgstr "Juurkasutaja parooli muutmine/lähtestamine nurjus"
-
-#~ msgid "Unable to delete the password for the root user"
-#~ msgstr "Juurkasutaja parooli kustutamine nurjus"
-
-#~ msgid "Use first 'x' filename's chars for virtual keyboard"
-#~ msgstr "Kasuta virtuaalklaviatuuri jaoks esimese 'x' failinime tähemärke"
-
-#~ msgid "Use the cursor keys to select an installed image and then Reboot button."
-#~ msgstr "Kasuta paigaldatud püsivara valikuks noolenuppe ja siis nuppu 'Taaskäivitus'."
-
-#~ msgid "Wake Island"
-#~ msgstr "Wake'i saar"
-
-#~ msgid "Western Australia"
-#~ msgstr "Lääne-Austraalia"
-
-#~ msgid "When enabled the LNB power will not be switched off in standby"
-#~ msgstr "Kui lubatud, ei lülitata ooteseisundis LNB toidet välja"
-
-#~ msgid "When enabled, a warning will be displayed that timeshift is not supported in an IP stream.."
-#~ msgstr "Kui lubatud, teavitatakse sellest, et IPTV ei toeta ajanihet."
-
-#~ msgid "When enabled, graphical DVB subtitles will be centered horizontally."
-#~ msgstr "Kui lubatud, tsentreeritakse DVB subtiitrid horisontaalselt."
-
-#~ msgid "When using the remote fallback tuner for recordings, it is impossible to correctly detect timer conflicts. This option allows you to skip timer confict detection when remote fallback is enabled, but can lead to timer conflicts. This setting is only for advanced users; the default is 'yes'."
-#~ msgstr "Kasutades salvestamiseks kaugvastuvõtjat, ei tööta taimerikonflikti tuvastus korralikult. See valik võimaldab taimerikonflikti tuvastuse välja lülitada. See säte on ainult kogenud kasutajatele. Vaikeväärtus on 'jah'."
-
-#~ msgid ""
-#~ "When you perform a factory reset, you will lose ALL of your configuration data\n"
-#~ "(including bouquets, services, satellite data ...)\n"
-#~ "After completion of the factory reset, your %s %s will restart automatically!\n"
-#~ "\n"
-#~ "Do you really want to do a factory reset?"
-#~ msgstr ""
-#~ "Algseadistuse taastamisel kaovad kõik isiklikud seaded\n"
-#~ "(lemmiknimekirjad, kanalid, satelliidid, seadistusfailid jne...)\n"
-#~ "Pärast algseadistuse taastamist taaskäivitub %s %s automaatselt!\n"
-#~ "\n"
-#~ "Kas taastada algseadistus?"
-
-#~ msgid "You system does not support ext4"
-#~ msgstr "See süsteem ei toeta ext4"
-
-#~ msgid "Your %s %s is not connected to the internet, please check your network settings and try again."
-#~ msgstr "%s %s ei ole ühendatud internetti. Kontrolli võrgu seadeid ja ürita uuesti."
-
-#~ msgid "Your timezone in the area."
-#~ msgstr "Asukoha ajavöönd"
-
-#~ msgid "equal to"
-#~ msgstr "on võrdne"
-
-#~ msgid "loopthrough to"
-#~ msgstr "läbiviik kuni"
-
-#~ msgid "oscam.conf could not be found"
-#~ msgstr "oscam.conf faili ei leitud"
-
-#~ msgid ""
-#~ "oscam.conf not found.\n"
-#~ "Please enter username/password manually."
-#~ msgstr ""
-#~ "oscam.conf ei leitud.\n"
-#~ "Sisesta kasutajanimi/parool käsitsi."
-
-#~ msgid "second cable of motorized LNB"
-#~ msgstr "Ajamiga LNB teine kaabel"
-
-#~ msgid "slot%s - %s mode 1 (current image)"
-#~ msgstr "pesa%s - %s mood 1 (aktiivne püsivara)"
-
-#~ msgid "slot%s - %s mode 12"
-#~ msgstr "pesa%s - %s mood 12"
-
-#~ msgid "slot%s - %s mode 12 (current image)"
-#~ msgstr "pesa%s - %s mood 12 (aktiivne püsivara)"
-
-#~ msgid "slot%s -%s - %s (current image)"
-#~ msgstr "pesa%s -%s - %s (aktiivne püsivara)"
-
-#~ msgid "slot%s -%s- %s "
-#~ msgstr "pesa%s -%s- %s "
-
-#~ msgid "standard"
-#~ msgstr "tavaline"
-
-#~ msgid "uShare setup"
-#~ msgstr "uShare seaded"
