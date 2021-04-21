@@ -30,6 +30,7 @@ def InitUsageConfig():
 	config.usage.subnetwork_terrestrial = ConfigYesNo(default=True)
 	config.usage.showdish = ConfigSelection(default="flashing", choices=[("flashing", _("Flashing")), ("normal", _("Not Flashing")), ("off", _("Off"))])
 	config.misc.showrotorposition = ConfigSelection(default="no", choices=[("no", _("no")), ("yes", _("yes")), ("withtext", _("with text")), ("tunername", _("with tuner name"))])
+	showrotorpositionChoicesUpdate()
 	config.usage.multibouquet = ConfigYesNo(default=True)
 	config.usage.maxchannelnumlen = ConfigSelection(default="4", choices=[("3", _("3")), ("4", _("4")), ("5", _("5")), ("6", _("6"))])
 
@@ -1202,6 +1203,23 @@ def preferredInstantRecordPath():
 
 def defaultMoviePath():
 	return defaultRecordingLocation(config.usage.default_path.value)
+
+
+def showrotorpositionChoicesUpdate(update=False):
+	choiceslist = [("no", _("no")), ("yes", _("yes")), ("withtext", _("with text")), ("tunername", _("with tuner name"))]
+	count = 0
+	for x in nimmanager.nim_slots:
+		if nimmanager.getRotorSatListForNim(x.slot, only_first=True):
+			choiceslist.append((str(x.slot), x.getSlotName() + _(" (auto detection)")))
+			count += 1
+	if count > 1:
+		choiceslist.append(("all", _("all tuners") + _(" (auto detection)")))
+		choiceslist.remove(("tunername", _("with tuner name")))
+	if not update:
+		config.misc.showrotorposition = ConfigSelection(default="no", choices=choiceslist)
+	else:
+		config.misc.showrotorposition.setChoices(choiceslist, "no")
+	SystemInfo["isRotorTuner"] = count > 0
 
 
 def upgradeConfig():
