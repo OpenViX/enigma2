@@ -152,17 +152,17 @@ class EPGListGrid(EPGListBase):
 				elif attrib == "ServiceBorderColor":
 					self.borderColorService = parseColor(value).argb()
 				elif attrib == "ServiceBorderWidth":
-					self.serviceBorderWidth = int(value)
+					self.serviceBorderWidth = parseScale(value)
 				elif attrib == "ServiceNamePadding":
-					self.serviceNamePadding = int(value)
+					self.serviceNamePadding = parseScale(value)
 				elif attrib == "ServiceNumberPadding":
-					self.serviceNumberPadding = int(value)
+					self.serviceNumberPadding = parseScale(value)
 				elif attrib == "EntryBorderColor":
 					self.borderColor = parseColor(value).argb()
 				elif attrib == "EventBorderWidth":
-					self.eventBorderWidth = int(value)
+					self.eventBorderWidth = parseScale(value)
 				elif attrib == "EventNamePadding":
-					self.eventNamePadding = int(value)
+					self.eventNamePadding = parseScale(value)
 
 				elif attrib == "RecordForegroundColor":
 					self.foreColorRecord = parseColor(value).argb()
