@@ -2,7 +2,7 @@ from __future__ import absolute_import
 from __future__ import division
 from time import localtime, time, strftime
 
-from enigma import eEPGCache, eListbox, eListboxPythonMultiContent, eServiceReference, eSize, loadPNG, getDesktop
+from enigma import eEPGCache, eListbox, eListboxPythonMultiContent, eServiceReference, eSize, loadPNG
 
 from Components.GUIComponent import GUIComponent
 from Tools.Alternatives import CompareWithAlternatives
@@ -41,7 +41,6 @@ class EPGListBase(GUIComponent):
 
 		self.autotimericon = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock_autotimer.png"))
 
-		self.isFullHd = getDesktop(0).size().width() == 1920
 		self.listHeight = 0
 		self.listWidth = 0
 		self.skinItemHeight = 0

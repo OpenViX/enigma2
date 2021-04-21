@@ -6,7 +6,7 @@ from time import localtime, time, strftime
 
 from enigma import eListbox, eListboxPythonMultiContent, eServiceReference, loadPNG, gFont, eRect, eSize, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_HALIGN_CENTER, RT_VALIGN_CENTER, RT_VALIGN_TOP, RT_WRAP, BT_SCALE, BT_KEEP_ASPECT_RATIO, BT_ALIGN_CENTER
 
-from skin import parseColor, parseFont, parseScale
+from skin import parseColor, parseFont, parseScale, applySkinFactor
 from Components.EpgListBase import EPGListBase
 from Components.GUIComponent import GUIComponent
 from Components.MultiContent import MultiContentEntryText, MultiContentEntryPixmapAlphaBlend, MultiContentEntryPixmapAlphaTest
@@ -86,7 +86,7 @@ class EPGListGrid(EPGListBase):
 
 		self.serviceFontName = "Regular"
 		self.eventFontName = "Regular"
-		self.eventFontSize = self.serviceFontSize = 28 if self.isFullHd else 20
+		self.eventFontSize = self.serviceFontSize = applySkinFactor(19)
 
 		self.serviceBorderWidth = 1
 		self.serviceNamePadding = 3
@@ -647,7 +647,7 @@ class EPGListGrid(EPGListBase):
 				# Recording icons.
 				if timerIcon is not None and ewidth > 23:
 					if config.epgselection.grid.rec_icon_height.value != "hide":
-						clockSize = 26 if self.isFullHd else 21
+						clockSize = applySkinFactor(17)
 						if config.epgselection.grid.rec_icon_height.value == "middle":
 							recIconHeight = top + (height - clockSize) // 2
 						elif config.epgselection.grid.rec_icon_height.value == "top":
@@ -655,7 +655,7 @@ class EPGListGrid(EPGListBase):
 						else:
 							recIconHeight = top + height - clockSize
 						if matchType == 0:
-							pos = (left + xpos + ewidth - (15 if self.isFullHd else 13), recIconHeight)
+							pos = (left + xpos + ewidth - applySkinFactor(10), recIconHeight)
 						else:
 							pos = (left + xpos + ewidth - clockSize, recIconHeight)
 						res.append(MultiContentEntryPixmapAlphaBlend(
