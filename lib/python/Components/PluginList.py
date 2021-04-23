@@ -4,14 +4,14 @@ from enigma import eListboxPythonMultiContent, gFont, BT_SCALE, BT_KEEP_ASPECT_R
 
 from Components.MenuList import MenuList
 from Components.MultiContent import MultiContentEntryText, MultiContentEntryPixmapAlphaBlend
-from Tools.Directories import resolveFilename, SCOPE_ACTIVE_SKIN
+from Tools.Directories import resolveFilename, SCOPE_CURRENT_SKIN
 from Tools.LoadPixmap import LoadPixmap
 from skin import applySkinFactor, fonts, parameters
 
 
 def PluginEntryComponent(plugin, width=440):
 	if plugin.icon is None:
-		png = LoadPixmap(resolveFilename(SCOPE_ACTIVE_SKIN, "icons/plugin.png"))
+		png = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/plugin.png"))
 	else:
 		png = plugin.icon
 	nx, ny, nh = parameters.get("PluginBrowserName", applySkinFactor(120, 5, 25))
@@ -37,7 +37,7 @@ def PluginCategoryComponent(name, png, width=440):
 
 def PluginDownloadComponent(plugin, name, version=None, width=440):
 	if plugin.icon is None:
-		png = LoadPixmap(resolveFilename(SCOPE_ACTIVE_SKIN, "icons/plugin.png"))
+		png = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/plugin.png"))
 	else:
 		png = plugin.icon
 	if version:
