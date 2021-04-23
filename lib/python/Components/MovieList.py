@@ -9,7 +9,7 @@ from Components.MultiContent import MultiContentEntryText, MultiContentEntryPixm
 from Components.config import config
 from Components.Renderer.Picon import getPiconName
 from Screens.LocationBox import defaultInhibitDirs
-from Tools.Directories import SCOPE_ACTIVE_SKIN, resolveFilename
+from Tools.Directories import SCOPE_CURRENT_SKIN, resolveFilename
 from Tools.Trashcan import getTrashFolder, isTrashFolder
 import NavigationInstance
 from skin import parseColor, parseFont, parseScale
@@ -240,15 +240,15 @@ class MovieList(GUIComponent):
 		self.onSelectionChanged = []
 		self.iconPart = []
 		for part in range(5):
-			self.iconPart.append(loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, "icons/part_%d_4.png" % part)))
-		self.iconMovieRec = loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, "icons/part_new.png"))
-		self.iconMoviePlay = loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, "icons/movie_play.png"))
-		self.iconMoviePlayRec = loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, "icons/movie_play_rec.png"))
-		self.iconUnwatched = loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, "icons/part_unwatched.png"))
-		self.iconFolder = loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, "icons/folder.png"))
-		self.iconMarked = loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, "icons/mark_on.png"))
-		self.iconCollection = loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, "icons/collection.png")) or self.iconFolder
-		self.iconTrash = loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, "icons/trashcan.png"))
+			self.iconPart.append(loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/part_%d_4.png" % part)))
+		self.iconMovieRec = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/part_new.png"))
+		self.iconMoviePlay = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/movie_play.png"))
+		self.iconMoviePlayRec = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/movie_play_rec.png"))
+		self.iconUnwatched = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/part_unwatched.png"))
+		self.iconFolder = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/folder.png"))
+		self.iconMarked = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/mark_on.png"))
+		self.iconCollection = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/collection.png")) or self.iconFolder
+		self.iconTrash = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/trashcan.png"))
 		self.runningTimers = {}
 		self.updateRecordings()
 		self.updatePlayPosCache()

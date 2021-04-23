@@ -10,7 +10,7 @@ from Components.Sources.List import List
 from Components.config import config, ConfigYesNo, NoSave, ConfigSubsection, ConfigText, ConfigSelection, ConfigPassword
 from Components.Network import iNetwork
 from Plugins.Plugin import PluginDescriptor
-from Tools.Directories import resolveFilename, SCOPE_ACTIVE_SKIN
+from Tools.Directories import resolveFilename, SCOPE_CURRENT_SKIN
 from Tools.LoadPixmap import LoadPixmap
 from Wlan import iWlan, iStatus, getWlanConfigName, existBcmWifi
 
@@ -215,7 +215,7 @@ class WlanScan(Screen):
 		self.cleanList = None
 		self.oldlist = {}
 		self.listLength = None
-		self.divpng = LoadPixmap(path=resolveFilename(SCOPE_ACTIVE_SKIN, "div-h.png"))
+		self.divpng = LoadPixmap(path=resolveFilename(SCOPE_CURRENT_SKIN, "div-h.png"))
 
 		self.rescanTimer = eTimer()
 		self.rescanTimer.callback.append(self.rescanTimerFired)
