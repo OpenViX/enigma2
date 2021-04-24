@@ -10,11 +10,12 @@ from Components.config import config
 from Components.Renderer.Picon import getPiconName
 from Screens.LocationBox import defaultInhibitDirs
 from Tools.Directories import SCOPE_CURRENT_SKIN, resolveFilename
+from Tools.LoadPixmap import LoadPixmap
 from Tools.Trashcan import getTrashFolder, isTrashFolder
 import NavigationInstance
 from skin import parseColor, parseFont, parseScale
 
-from enigma import eListboxPythonMultiContent, eListbox, gFont, iServiceInformation, eSize, loadPNG, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_VALIGN_CENTER, BT_SCALE, BT_KEEP_ASPECT_RATIO, BT_HALIGN_CENTER, BT_ALIGN_CENTER, BT_VALIGN_CENTER, eServiceReference, eServiceCenter, eTimer
+from enigma import eListboxPythonMultiContent, eListbox, gFont, iServiceInformation, eSize, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_VALIGN_CENTER, BT_SCALE, BT_KEEP_ASPECT_RATIO, BT_HALIGN_CENTER, BT_ALIGN_CENTER, BT_VALIGN_CENTER, eServiceReference, eServiceCenter, eTimer
 
 AUDIO_EXTENSIONS = frozenset((".dts", ".mp3", ".wav", ".wave", ".wv", ".oga", ".ogg", ".flac", ".m4a", ".mp2", ".m2a", ".wma", ".ac3", ".mka", ".aac", ".ape", ".alac", ".amr", ".au", ".mid"))
 DVD_EXTENSIONS = frozenset((".iso", ".img", ".nrg"))
@@ -240,15 +241,15 @@ class MovieList(GUIComponent):
 		self.onSelectionChanged = []
 		self.iconPart = []
 		for part in range(5):
-			self.iconPart.append(loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/part_%d_4.png" % part)))
-		self.iconMovieRec = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/part_new.png"))
-		self.iconMoviePlay = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/movie_play.png"))
-		self.iconMoviePlayRec = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/movie_play_rec.png"))
-		self.iconUnwatched = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/part_unwatched.png"))
-		self.iconFolder = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/folder.png"))
-		self.iconMarked = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/mark_on.png"))
-		self.iconCollection = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/collection.png")) or self.iconFolder
-		self.iconTrash = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/trashcan.png"))
+			self.iconPart.append(LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/part_%d_4.png" % part)))
+		self.iconMovieRec = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/part_new.png"))
+		self.iconMoviePlay = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/movie_play.png"))
+		self.iconMoviePlayRec = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/movie_play_rec.png"))
+		self.iconUnwatched = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/part_unwatched.png"))
+		self.iconFolder = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/folder.png"))
+		self.iconMarked = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/mark_on.png"))
+		self.iconCollection = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/collection.png")) or self.iconFolder
+		self.iconTrash = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/trashcan.png"))
 		self.runningTimers = {}
 		self.updateRecordings()
 		self.updatePlayPosCache()
@@ -467,7 +468,7 @@ class MovieList(GUIComponent):
 				refs = info.getInfoString(x[0], iServiceInformation.sServiceref)
 				picon = getPiconName(refs)
 				if picon != "":
-					data.picon = loadPNG(picon)
+					data.picon = LoadPixmap(picon)
 			data.txt = getItemDisplayName(serviceref, info)
 			data.icon = None
 			data.part = None
