@@ -4,7 +4,7 @@ import six
 
 from timer import TimerEntry
 
-from enigma import eListboxPythonMultiContent, eListbox, gFont, loadPNG, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_VALIGN_TOP, RT_VALIGN_BOTTOM, BT_SCALE, BT_KEEP_ASPECT_RATIO, BT_ALIGN_CENTER
+from enigma import eListboxPythonMultiContent, eListbox, gFont, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_VALIGN_TOP, RT_VALIGN_BOTTOM, BT_SCALE, BT_KEEP_ASPECT_RATIO, BT_ALIGN_CENTER
 
 from Components.config import config
 from Components.GUIComponent import GUIComponent

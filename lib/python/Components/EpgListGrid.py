@@ -4,7 +4,7 @@ from __future__ import division
 
 from time import localtime, time, strftime
 
-from enigma import eListbox, eListboxPythonMultiContent, eServiceReference, loadPNG, gFont, eRect, eSize, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_HALIGN_CENTER, RT_VALIGN_CENTER, RT_VALIGN_TOP, RT_WRAP, BT_SCALE, BT_KEEP_ASPECT_RATIO, BT_ALIGN_CENTER
+from enigma import eListbox, eListboxPythonMultiContent, eServiceReference, gFont, eRect, eSize, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_HALIGN_CENTER, RT_VALIGN_CENTER, RT_VALIGN_TOP, RT_WRAP, BT_SCALE, BT_KEEP_ASPECT_RATIO, BT_ALIGN_CENTER
 
 from skin import parseColor, parseFont, parseScale, applySkinFactor
 from Components.EpgListBase import EPGListBase
@@ -15,6 +15,7 @@ from Components.config import config
 from RecordTimer import RecordTimer
 from Tools.Alternatives import CompareWithAlternatives
 from Tools.Directories import resolveFilename, SCOPE_CURRENT_SKIN
+from Tools.LoadPixmap import LoadPixmap
 from Tools.TextBoundary import getTextBoundarySize
 
 MAX_TIMELINES = 6
@@ -404,7 +405,7 @@ class EPGListGrid(EPGListBase):
 				piconHeight = self.piconSize.height()
 				displayPicon = None
 				if picon != "":
-					displayPicon = loadPNG(picon)
+					displayPicon = LoadPixmap(picon)
 				if displayPicon is not None:
 					res.append(MultiContentEntryPixmapAlphaBlend(
 						pos=(colX, r1.top() + self.serviceBorderWidth),
@@ -750,26 +751,26 @@ class EPGListGrid(EPGListBase):
 	def fillEPGNoRefresh(self, services=None):
 		if not self.graphicsloaded:
 			if self.graphic:
-				self.nowEvPix = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "epg/CurrentEvent.png"))
-				self.nowSelEvPix = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "epg/SelectedCurrentEvent.png"))
-				self.othEvPix = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "epg/OtherEvent.png"))
-				self.selEvPix = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "epg/SelectedEvent.png"))
-				self.othServPix = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "epg/OtherService.png"))
-				self.nowServPix = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "epg/CurrentService.png"))
-				self.recEvPix = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "epg/RecordEvent.png"))
-				self.recSelEvPix = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "epg/SelectedRecordEvent.png"))
-				self.zapEvPix = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "epg/ZapEvent.png"))
-				self.zapSelEvPix = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "epg/SelectedZapEvent.png"))
-				self.borderTopPix = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "epg/BorderTop.png"))
-				self.borderBottomPix = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "epg/BorderBottom.png"))
-				self.borderLeftPix = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "epg/BorderLeft.png"))
-				self.borderRightPix = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "epg/BorderRight.png"))
-				self.borderSelectedTopPix = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "epg/SelectedBorderTop.png"))
-				self.borderSelectedBottomPix = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "epg/SelectedBorderBottom.png"))
-				self.borderSelectedLeftPix = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "epg/SelectedBorderLeft.png"))
-				self.borderSelectedRightPix = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "epg/SelectedBorderRight.png"))
-			self.infoPix = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "epg/information.png"))
-			self.selInfoPix = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "epg/SelectedInformation.png"))
+				self.nowEvPix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/CurrentEvent.png"))
+				self.nowSelEvPix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/SelectedCurrentEvent.png"))
+				self.othEvPix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/OtherEvent.png"))
+				self.selEvPix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/SelectedEvent.png"))
+				self.othServPix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/OtherService.png"))
+				self.nowServPix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/CurrentService.png"))
+				self.recEvPix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/RecordEvent.png"))
+				self.recSelEvPix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/SelectedRecordEvent.png"))
+				self.zapEvPix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/ZapEvent.png"))
+				self.zapSelEvPix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/SelectedZapEvent.png"))
+				self.borderTopPix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/BorderTop.png"))
+				self.borderBottomPix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/BorderBottom.png"))
+				self.borderLeftPix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/BorderLeft.png"))
+				self.borderRightPix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/BorderRight.png"))
+				self.borderSelectedTopPix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/SelectedBorderTop.png"))
+				self.borderSelectedBottomPix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/SelectedBorderBottom.png"))
+				self.borderSelectedLeftPix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/SelectedBorderLeft.png"))
+				self.borderSelectedRightPix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/SelectedBorderRight.png"))
+			self.infoPix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/information.png"))
+			self.selInfoPix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/SelectedInformation.png"))
 
 			self.graphicsloaded = True
 
@@ -895,8 +896,8 @@ class TimelineText(GUIComponent):
 #		print("[EpgListGrid1] itemHeight %s" % (self.itemHeight))
 		self.l.setItemHeight(self.itemHeight)
 		if self.graphic:
-			self.timelineDate = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "epg/TimeLineDate.png"))
-			self.timelineTime = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "epg/TimeLineTime.png"))
+			self.timelineDate = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/TimeLineDate.png"))
+			self.timelineTime = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/TimeLineTime.png"))
 		return rc
 
 	def setFontsize(self):

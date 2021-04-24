@@ -2,13 +2,14 @@ from __future__ import absolute_import
 
 from time import localtime, time, strftime
 
-from enigma import eEPGCache, eListbox, eListboxPythonMultiContent, loadPNG, gFont, getDesktop, eRect, eSize, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_HALIGN_CENTER, RT_VALIGN_CENTER, RT_VALIGN_TOP, RT_WRAP, BT_SCALE, BT_KEEP_ASPECT_RATIO, BT_ALIGN_CENTER
+from enigma import eEPGCache, eListbox, eListboxPythonMultiContent, gFont, eRect, eSize, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_HALIGN_CENTER, RT_VALIGN_CENTER, RT_VALIGN_TOP, RT_WRAP, BT_SCALE, BT_KEEP_ASPECT_RATIO, BT_ALIGN_CENTER
 
 from skin import parseColor, parseFont, parseScale
 from Components.GUIComponent import GUIComponent
 from Components.MultiContent import MultiContentEntryText, MultiContentEntryPixmapAlphaBlend, MultiContentEntryPixmapAlphaTest
 from Tools.Alternatives import CompareWithAlternatives
 from Tools.Directories import SCOPE_CURRENT_SKIN, resolveFilename
+from Tools.LoadPixmap import LoadPixmap
 
 
 class EPGBouquetList(GUIComponent):
@@ -218,16 +219,16 @@ class EPGBouquetList(GUIComponent):
 
 	def fillBouquetList(self, bouquets):
 		if self.graphic and not self.graphicsloaded:
-			self.othPix = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "epg/OtherEvent.png"))
-			self.selPix = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "epg/SelectedCurrentEvent.png"))
-			self.borderTopPix = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "epg/BorderTop.png"))
-			self.borderBottomPix = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "epg/BorderLeft.png"))
-			self.borderLeftPix = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "epg/BorderBottom.png"))
-			self.borderRightPix = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "epg/BorderRight.png"))
-			self.borderSelectedTopPix = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "epg/SelectedBorderTop.png"))
-			self.borderSelectedLeftPix = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "epg/SelectedBorderLeft.png"))
-			self.borderSelectedBottomPix = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "epg/SelectedBorderBottom.png"))
-			self.borderSelectedRightPix = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "epg/SelectedBorderRight.png"))
+			self.othPix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/OtherEvent.png"))
+			self.selPix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/SelectedCurrentEvent.png"))
+			self.borderTopPix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/BorderTop.png"))
+			self.borderBottomPix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/BorderLeft.png"))
+			self.borderLeftPix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/BorderBottom.png"))
+			self.borderRightPix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/BorderRight.png"))
+			self.borderSelectedTopPix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/SelectedBorderTop.png"))
+			self.borderSelectedLeftPix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/SelectedBorderLeft.png"))
+			self.borderSelectedBottomPix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/SelectedBorderBottom.png"))
+			self.borderSelectedRightPix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/SelectedBorderRight.png"))
 			self.graphicsloaded = True
 		self.bouquetslist = bouquets
 		self.l.setList(self.bouquetslist)
