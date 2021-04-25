@@ -115,7 +115,7 @@ class Dish(Screen):
 	def __serviceStarted(self):
 		if self.__state == self.STATE_SHOWN:
 			self.hide()
-		if SystemInfo["isRotorTuner"] and self.showdish !== "off":
+		if SystemInfo["isRotorTuner"] and self.showdish != "off":
 			service = self.session.nav.getCurrentService()
 			info = service and service.info()
 			data = info and info.getInfoObject(iServiceInformation.sTransponderData)
