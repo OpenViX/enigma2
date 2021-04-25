@@ -5,7 +5,7 @@ from boxbranding import getMachineBrand
 from enigma import ePicLoad, eTimer, getDesktop, gMainDC, eSize
 
 from Screens.Screen import Screen
-from Tools.Directories import resolveFilename, pathExists, SCOPE_MEDIA, SCOPE_ACTIVE_SKIN
+from Tools.Directories import resolveFilename, pathExists, SCOPE_MEDIA, SCOPE_CURRENT_SKIN
 
 from Components.Pixmap import Pixmap, MovingPixmap
 from Components.ActionMap import ActionMap, NumberActionMap
@@ -15,7 +15,7 @@ from Components.AVSwitch import AVSwitch
 from Components.Sources.List import List
 from Components.ConfigList import ConfigListScreen
 from Components.config import config, ConfigSubsection, ConfigInteger, ConfigSelection, ConfigText, ConfigYesNo, getConfigListEntry
-import skin
+from skin import applySkinFactor, parameters
 
 
 def getScale():
@@ -273,9 +273,9 @@ class Pic_Thumb(Screen):
 
 		self.textcolor = config.pic.textcolor.value
 		self.color = config.pic.bgcolor.value
-		self.spaceX, self.picX, self.spaceY, self.picY, textsize, thumtxt = skin.parameters.get("PicturePlayerThumb", (35, 190, 30, 200, 20, 14))
+		self.spaceX, self.picX, self.spaceY, self.picY, textsize, thumtxt = parameters.get("PicturePlayerThumb", applySkinFactor(35, 190, 30, 200, 20, 14))
 
-		pic_frame = resolveFilename(SCOPE_ACTIVE_SKIN, "icons/pic_frame.png")
+		pic_frame = resolveFilename(SCOPE_CURRENT_SKIN, "icons/pic_frame.png")
 
 		self.size_w = getDesktop(0).size().width()
 		self.size_h = getDesktop(0).size().height()

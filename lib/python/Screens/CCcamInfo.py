@@ -7,7 +7,7 @@ import six
 from base64 import encodestring
 from os import listdir, remove, rename, system, path
 
-from enigma import eListboxPythonMultiContent, eTimer, gFont, loadPNG, RT_HALIGN_RIGHT, getDesktop
+from enigma import eListboxPythonMultiContent, eTimer, gFont, RT_HALIGN_RIGHT, getDesktop
 
 from Components.ActionMap import ActionMap, NumberActionMap
 from Components.config import config, getConfigListEntry
@@ -25,7 +25,8 @@ from Screens.LocationBox import LocationBox
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
 from Screens.VirtualKeyBoard import VirtualKeyBoard
-from Tools.Directories import fileExists, SCOPE_ACTIVE_SKIN, resolveFilename
+from Tools.Directories import fileExists, SCOPE_CURRENT_SKIN, resolveFilename
+from Tools.LoadPixmap import LoadPixmap
 from twisted.internet import reactor
 from twisted.web.client import HTTPClientFactory
 
@@ -199,15 +200,15 @@ menu_list = [
 
 #############################################################
 
-if path.exists(resolveFilename(SCOPE_ACTIVE_SKIN, "icons/lock_on.png")):
-	lock_on = loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, "icons/lock_on.png"))
+if path.exists(resolveFilename(SCOPE_CURRENT_SKIN, "icons/lock_on.png")):
+	lock_on = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/lock_on.png"))
 else:
-	lock_on = loadPNG("/usr/share/enigma2/skin_default/icons/lock_on.png")
+	lock_on = LoadPixmap("/usr/share/enigma2/skin_default/icons/lock_on.png")
 
-if path.exists(resolveFilename(SCOPE_ACTIVE_SKIN, "icons/lock_off.png")):
-	lock_off = loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, "icons/lock_off.png"))
+if path.exists(resolveFilename(SCOPE_CURRENT_SKIN, "icons/lock_off.png")):
+	lock_off = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/lock_off.png"))
 else:
-	lock_off = loadPNG("/usr/share/enigma2/skin_default/icons/lock_off.png")
+	lock_off = LoadPixmap("/usr/share/enigma2/skin_default/icons/lock_off.png")
 
 
 def getConfigNameAndContent(fileName):
@@ -278,17 +279,17 @@ def CCcamListEntry(name, idx):
 		idx = "menu"
 	elif idx == 15:
 		idx = "info"
-	if path.exists(resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/key_%s.png" % str(idx))):
-		png = resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/key_%s.png" % str(idx))
+	if path.exists(resolveFilename(SCOPE_CURRENT_SKIN, "buttons/key_%s.png" % str(idx))):
+		png = resolveFilename(SCOPE_CURRENT_SKIN, "buttons/key_%s.png" % str(idx))
 	else:
 		png = "/usr/share/enigma2/skin_default/buttons/key_%s.png" % str(idx)
 	if screenwidth and screenwidth == 1920:
 		if fileExists(png):
-			res.append(MultiContentEntryPixmapAlphaBlend(pos=(10, 3), size=(67, 48), png=loadPNG(png)))
+			res.append(MultiContentEntryPixmapAlphaBlend(pos=(10, 3), size=(67, 48), png=LoadPixmap(png)))
 		res.append(MultiContentEntryText(pos=(90, 7), size=(900, 50), font=1, text=name))
 	else:
 		if fileExists(png):
-			res.append(MultiContentEntryPixmapAlphaBlend(pos=(0, 0), size=(35, 25), png=loadPNG(png)))
+			res.append(MultiContentEntryPixmapAlphaBlend(pos=(0, 0), size=(35, 25), png=LoadPixmap(png)))
 		res.append(MultiContentEntryText(pos=(40, 3), size=(500, 25), font=0, text=name))
 	return res
 
@@ -296,17 +297,17 @@ def CCcamListEntry(name, idx):
 def CCcamServerListEntry(name, color):
 	screenwidth = getDesktop(0).size().width()
 	res = [name]
-	if path.exists(resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/key_%s.png" % color)):
-		png = resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/key_%s.png" % color)
+	if path.exists(resolveFilename(SCOPE_CURRENT_SKIN, "buttons/key_%s.png" % color)):
+		png = resolveFilename(SCOPE_CURRENT_SKIN, "buttons/key_%s.png" % color)
 	else:
 		png = "/usr/share/enigma2/skin_default/buttons/key_%s.png" % color
 	if screenwidth and screenwidth == 1920:
 		if fileExists(png):
-			res.append(MultiContentEntryPixmapAlphaBlend(pos=(10, 3), size=(67, 48), png=loadPNG(png)))
+			res.append(MultiContentEntryPixmapAlphaBlend(pos=(10, 3), size=(67, 48), png=LoadPixmap(png)))
 		res.append(MultiContentEntryText(pos=(90, 7), size=(900, 50), font=1, text=name))
 	else:
 		if fileExists(png):
-			res.append(MultiContentEntryPixmapAlphaBlend(pos=(0, 0), size=(35, 25), png=loadPNG(png)))
+			res.append(MultiContentEntryPixmapAlphaBlend(pos=(0, 0), size=(35, 25), png=LoadPixmap(png)))
 		res.append(MultiContentEntryText(pos=(40, 3), size=(500, 25), font=0, text=name))
 	return res
 
