@@ -224,7 +224,7 @@ class ServiceInfo(Poll, Converter):
 			elif self.type == self.IS_SD:
 				return video_height < 720
 			elif self.type == self.IS_HD:
-				return video_height >= 720 and video_height < 2160
+				return video_height >= 720 and video_height < 1500
 			elif self.type == self.IS_SD_AND_WIDESCREEN:
 				return video_height < 720 and video_aspect in WIDESCREEN
 			elif self.type == self.IS_SD_AND_NOT_WIDESCREEN:
@@ -238,7 +238,7 @@ class ServiceInfo(Poll, Converter):
 			elif self.type == self.IS_480:
 				return video_height > 0 and video_height <= 480
 			elif self.type == self.IS_4K:
-				return video_height >= 2100
+				return video_height >= 1500
 			elif self.type == self.PROGRESSIVE:
 				return bool(self._getProgressive(info))
 			elif self.type == self.IS_SDR:
