@@ -1262,6 +1262,8 @@ def readSkin(screen, skin, names, desktop):
 				p(w, context)
 			except SkinError as err:
 				print("[Skin] Error in screen '%s' widget '%s' %s!" % (name, w.tag, str(err)))
+				import traceback
+				traceback.print_exc()
 
 	def processPanel(widget, context):
 		n = widget.attrib.get("name")
