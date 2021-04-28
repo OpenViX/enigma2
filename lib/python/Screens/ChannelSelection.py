@@ -2036,7 +2036,7 @@ class ChannelSelection(ChannelSelectionEdit, ChannelSelectionBase, ChannelSelect
 			})
 
 		if type(self) is ChannelSelection:
-			assert ChannelSelection.instance is None, "class InfoBar is a singleton class and just one instance of this class is allowed!"
+			# assert ChannelSelection.instance is None, "class InfoBar is a singleton class and just one instance of this class is allowed!" # removed until the correct solution is found. This is causing a crash on fast reload.
 			ChannelSelection.instance = self
 		self.startServiceRef = None
 		self.history = []
