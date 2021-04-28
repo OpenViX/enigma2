@@ -637,7 +637,7 @@ class PliExtraInfo(Poll, Converter, object):
 		if pls_mode is not None and pls_code is not None and pls_code > 0:
 			tmp = addspace(tmp) + "%s %d" % (pls_mode, pls_code)
 		if t2mi_pid is not None and t2mi_plp_id is not None and t2mi_plp_id > -1:
-			tmp = addspace(tmp) + "T2MI %d PID %d" % (t2mi_plp_id, t2mi_pid))
+			tmp = addspace(tmp) + "T2MI %d PID %d" % (t2mi_plp_id, t2mi_pid)
 		return tmp
 
 	@cached
