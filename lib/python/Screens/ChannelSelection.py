@@ -2051,6 +2051,12 @@ class ChannelSelection(ChannelSelectionEdit, ChannelSelectionBase, ChannelSelect
 		self.lastChannelRootTimer.callback.append(self.__onCreate)
 		self.lastChannelRootTimer.start(100, True)
 		self.pipzaptimer = eTimer()
+		self.onClose.append(self.__onClose)
+
+	def __onClose(self):
+		# clear the instance value so the skin reloader works correctly
+		if type(self) is ChannelSelection:
+			ChannelSelection.instance = None
 
 	def asciiOn(self):
 		rcinput = eRCInput.getInstance()
