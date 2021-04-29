@@ -1,7 +1,7 @@
 from __future__ import absolute_import
 import six
 
-from Screen import Screen
+from Screens.Screen import Screen
 from Components.Label import Label
 import enigma
 
