@@ -2267,7 +2267,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 				name = item and info.getName(itemRef) or ""
 			else:
 				name = ""
-			title = "Recording in progress: %s" % name if recCount == 1 else "Recordings in progress: %d" % recCount
+			title = _("Recording in progress: %s") % name if recCount == 1 else _("Recordings in progress: %d") % recCount
 			choices = [
 				(_("Cancel"), None),
 				(ngettext("Stop this recording", "Stop these recordings", recCount), self.__onTimerChoiceStop, recList),
