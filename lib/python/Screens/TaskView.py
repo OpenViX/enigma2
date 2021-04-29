@@ -37,29 +37,39 @@ class JobView(InfoBarNotifications, Screen, ConfigListScreen):
 		self.cancelable = cancelable
 		self.backgroundable = backgroundable
 
+		self["okActions"] = ActionMap(["SetupActions"],
+		{
+			"save": self.ok,
+			"ok": self.ok,
+		}, -2)
+
+		self["abortActions"] = ActionMap(["SetupActions"],
+		{
+			"cancel": self.abort,
+		}, -2)
+
+		self["backgroundActions"] = ActionMap(["ColorActions"],
+		{
+			"blue": self.background,
+		}, -2)
+
 		self["key_green"] = StaticText("")
+		self["okActions"].setEnabled(False)
 
 		if self.cancelable:
 			self["key_red"] = StaticText(_("Cancel"))
 		else:
 			self["key_red"] = StaticText("")
+			self["abortActions"].setEnabled(False)
 
 		if self.backgroundable:
 			self["key_blue"] = StaticText(_("Background"))
 		else:
 			self["key_blue"] = StaticText("")
+			self["backgroundActions"].setEnabled(False)
 
 		self.onShow.append(self.windowShow)
 		self.onHide.append(self.windowHide)
-
-		self["setupActions"] = ActionMap(["ColorActions", "SetupActions"],
-		{
-			"green": self.ok,
-			"red": self.abort,
-			"blue": self.background,
-			"cancel": self.abort,
-			"ok": self.ok,
-		}, -2)
 
 		self.settings = ConfigSubsection()
 		if SystemInfo["DeepstandbySupport"]:
@@ -114,13 +124,17 @@ class JobView(InfoBarNotifications, Screen, ConfigListScreen):
 			self.performAfterEvent()
 			self.backgroundable = False
 			self["key_blue"].setText("")
+			self["backgroundActions"].setEnabled(False)
 			if j.status == j.FINISHED:
 				self["key_green"].setText(_("OK"))
+				self["okActions"].setEnabled(True)
 				self.cancelable = False
 				self["key_red"].setText("")
+				self["abortActions"].setEnabled(False)
 			elif j.status == j.FAILED:
 				self.cancelable = True
 				self["key_red"].setText(_("Cancel"))
+				self["abortActions"].setEnabled(True)
 
 	def background(self):
 		if self.backgroundable:
