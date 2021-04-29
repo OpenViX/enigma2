@@ -98,6 +98,7 @@ class NSCommon:
 		self.Console.ePopen("/usr/bin/opkg install " + pkgname, callback)
 
 	def checkNetworkState(self, str, retval, extra_args):
+		str = six.ensure_str(str)
 		if "Collected errors" in str:
 			self.session.openWithCallback(self.close, MessageBox, _("A background update check is in progress, please wait a few minutes and then try again."), type=MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 		elif not str:
