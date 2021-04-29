@@ -38,7 +38,7 @@ class Job(object):
 		if self.current_task == len(self.tasks):
 			return self.end
 		t = self.tasks[self.current_task]
-		jobprogress = t.weighting * t.progress // float(t.end) + sum([task.weighting for task in self.tasks[:self.current_task]])
+		jobprogress = t.weighting * t.progress / float(t.end) + sum([task.weighting for task in self.tasks[:self.current_task]])
 		return int(jobprogress * self.weightScale)
 
 	progress = property(getProgress)
@@ -64,7 +64,7 @@ class Job(object):
 		self.state_changed()
 		self.runNext()
 		sumTaskWeightings = sum([t.weighting for t in self.tasks]) or 1
-		self.weightScale = self.end // float(sumTaskWeightings)
+		self.weightScale = self.end / float(sumTaskWeightings)
 
 	def runNext(self):
 		if self.current_task == len(self.tasks):
