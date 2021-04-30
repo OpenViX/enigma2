@@ -27,6 +27,7 @@ class WizardSummary(Screen):
 	def setText(self, text):
 		self["text"].setText(text)
 
+
 class Wizard(Screen):
 	instance = None
 
@@ -68,7 +69,7 @@ class Wizard(Screen):
 					timeoutstep = str(attrs.get('timeoutstep'))
 				else:
 					timeoutstep = ''
-				self.wizard[self.lastStep] = {"id": id, "condition": "", "text": "", "timeout": timeout, "timeoutaction": timeoutaction, "timeoutstep": timeoutstep, "list": [], "config": {"screen": None, "args": None, "type": "" }, "code": "", "codeafter": "", "code_async": "", "codeafter_async": "", "nextstep": nextstep}
+				self.wizard[self.lastStep] = {"id": id, "condition": "", "text": "", "timeout": timeout, "timeoutaction": timeoutaction, "timeoutstep": timeoutstep, "list": [], "config": {"screen": None, "args": None, "type": ""}, "code": "", "codeafter": "", "code_async": "", "codeafter_async": "", "nextstep": nextstep}
 				if 'laststep' in attrs:
 					self.wizard[self.lastStep]["laststep"] = str(attrs.get('laststep'))
 			elif name == "text":
@@ -105,7 +106,7 @@ class Wizard(Screen):
 					if 'evaluation' in attrs:
 						self.wizard[self.lastStep]["config"]["evaluation"] = str(attrs.get('evaluation'))
 			elif name == "code":
-				self.async_code = attrs.has_key('async') and str(attrs.get('async')) == "yes"
+				self.async_code = 'async' in attrs and str(attrs.get('async')) == "yes"
 				if 'pos' in attrs and str(attrs.get('pos')) == "after":
 					self.codeafter = True
 				else:
@@ -147,7 +148,7 @@ class Wizard(Screen):
 			elif self.currContent == "condition":
 				self.wizard[self.lastStep]["condition"] = self.wizard[self.lastStep]["condition"] + ch
 
-	def __init__(self, session, showSteps = True, showStepSlider = True, showList = True, showConfig = True):
+	def __init__(self, session, showSteps=True, showStepSlider=True, showList=True, showConfig=True):
 		Screen.__init__(self, session)
 
 		self.isLastWizard = False # can be used to skip a "goodbye"-screen in a wizard
@@ -181,7 +182,7 @@ class Wizard(Screen):
 		self["text"] = Label()
 
 		if showConfig:
-			self["config"] = ConfigList([], session = session)
+			self["config"] = ConfigList([], session=session)
 
 		if self.showSteps:
 			self["step"] = Label()
@@ -191,7 +192,7 @@ class Wizard(Screen):
 
 		if self.showList:
 			self.list = []
-			self["list"] = List(self.list, enableWrapAround = True)
+			self["list"] = List(self.list, enableWrapAround=True)
 			self["list"].onSelectionChanged.append(self.selChanged)
 			#self["list"] = MenuList(self.list, enableWrapAround = True)
 
@@ -218,7 +219,7 @@ class Wizard(Screen):
 			"red": self.red,
 			"green": self.green,
 			"yellow": self.yellow,
-			"blue":self.blue,
+			"blue": self.blue,
 			"deleteBackward": self.deleteBackward,
 			"deleteForward": self.deleteForward,
 			"1": self.keyNumberGlobal,
@@ -288,7 +289,7 @@ class Wizard(Screen):
 			self.currStep = self.stepHistory[-2]
 			self.stepHistory = self.stepHistory[:-2]
 		else:
-			self.session.openWithCallback(self.exitWizardQuestion, MessageBox, (_("Are you sure you want to exit this wizard?") ) )
+			self.session.openWithCallback(self.exitWizardQuestion, MessageBox, (_("Are you sure you want to exit this wizard?")))
 		if self.currStep < 1:
 			self.currStep = 1
 # 		print "currStep:", self.currStep
@@ -296,7 +297,7 @@ class Wizard(Screen):
 		self.updateValues()
 # 		print "after updateValues stepHistory:", self.stepHistory
 
-	def exitWizardQuestion(self, ret = False):
+	def exitWizardQuestion(self, ret=False):
 		if ret:
 			self.markDone()
 			self.exit()
@@ -319,7 +320,7 @@ class Wizard(Screen):
 # 		print "result: nothing"
 		return 0
 
-	def finished(self, gotoStep = None, *args, **kwargs):
+	def finished(self, gotoStep=None, *args, **kwargs):
 # 		print "finished"
 		currStep = self.currStep
 
@@ -460,9 +461,9 @@ class Wizard(Screen):
 		return False
 
 	def getTranslation(self, text):
-		return _(text).replace("%s %s","%s %s" % (getMachineBrand(), getMachineName()))
+		return _(text).replace("%s %s", "%s %s" % (getMachineBrand(), getMachineName()))
 
-	def updateText(self, firstset = False):
+	def updateText(self, firstset=False):
 		text = self.getTranslation(self.wizard[self.currStep]["text"])
 		if "[timeout]" in text:
 			text = text.replace("[timeout]", str(self.timeoutCounter))
@@ -490,7 +491,7 @@ class Wizard(Screen):
 			self.configInstance = None
 
 		self.condition = True
-		exec (self.wizard[self.currStep]["condition"])
+		exec(self.wizard[self.currStep]["condition"])
 		if not self.condition:
 # 			print "keys*******************:", self.wizard[self.currStep].keys()
 			if "laststep" in self.wizard[self.currStep]: # exit wizard, if condition of laststep doesn't hold
@@ -520,14 +521,14 @@ class Wizard(Screen):
 				self.timeoutTimer.start(1000)
 
 # 			print "wizard text", self.getTranslation(self.wizard[self.currStep]["text"])
-			self.updateText(firstset = True)
+			self.updateText(firstset=True)
 			if "displaytext" in self.wizard[self.currStep]:
 				displaytext = self.getTranslation(self.wizard[self.currStep]["displaytext"])
 # 				print "set LCD text"
 				for x in self.lcdCallbacks:
 					x(displaytext)
 
-			self.codeafter=False
+			self.codeafter = False
 			self.runCode(self.wizard[self.currStep]["code"])
 			if self.runCode(self.wizard[self.currStep]["code_async"]):
 				if self.updateValues in self.onShown:
@@ -612,7 +613,6 @@ class Wizard(Screen):
 					self["config"].list = []
 					self.handleInputHelpers()
 
-
 			else:
 				if "config" in self:
 					self["config"].hide()
@@ -626,7 +626,7 @@ class Wizard(Screen):
 				self.down()
 			else:
 				if self.wizard[self.currStep]["timeoutaction"] == "changestep":
-					self.finished(gotoStep = self.wizard[self.currStep]["timeoutstep"])
+					self.finished(gotoStep=self.wizard[self.currStep]["timeoutstep"])
 		self.updateText()
 
 	def handleInputHelpers(self):
@@ -639,7 +639,7 @@ class Wizard(Screen):
 					if self["config"].getCurrent()[1].help_window.instance is not None:
 						helpwindowpos = self["HelpWindow"].getPosition()
 						from enigma import ePoint
-						self["config"].getCurrent()[1].help_window.instance.move(ePoint(helpwindowpos[0],helpwindowpos[1]))
+						self["config"].getCurrent()[1].help_window.instance.move(ePoint(helpwindowpos[0], helpwindowpos[1]))
 			else:
 				if "VKeyIcon" in self:
 					self["VirtualKB"].setEnabled(False)
@@ -652,16 +652,16 @@ class Wizard(Screen):
 	def KeyText(self):
 		from Screens.VirtualKeyBoard import VirtualKeyBoard
 		self.currentConfigIndex = self["config"].getCurrentIndex()
-		self.session.openWithCallback(self.VirtualKeyBoardCallback, VirtualKeyBoard, title = self["config"].getCurrent()[0], text = self["config"].getCurrent()[1].value)
+		self.session.openWithCallback(self.VirtualKeyBoardCallback, VirtualKeyBoard, title=self["config"].getCurrent()[0], text=self["config"].getCurrent()[1].value)
 
-	def VirtualKeyBoardCallback(self, callback = None):
+	def VirtualKeyBoardCallback(self, callback=None):
 		if callback is not None and len(callback):
 			if isinstance(self["config"].getCurrent()[1], ConfigText) or isinstance(self["config"].getCurrent()[1], ConfigPassword):
 				if "HelpWindow" in self:
 					if self["config"].getCurrent()[1].help_window.instance is not None:
 						helpwindowpos = self["HelpWindow"].getPosition()
 						from enigma import ePoint
-						self["config"].getCurrent()[1].help_window.instance.move(ePoint(helpwindowpos[0],helpwindowpos[1]))
+						self["config"].getCurrent()[1].help_window.instance.move(ePoint(helpwindowpos[0], helpwindowpos[1]))
 			self["config"].instance.moveSelectionTo(self.currentConfigIndex)
 			self["config"].setCurrentIndex(self.currentConfigIndex)
 			self["config"].getCurrent()[1].setValue(callback)
@@ -672,7 +672,7 @@ class WizardManager:
 	def __init__(self):
 		self.wizards = []
 
-	def registerWizard(self, wizard, precondition, priority = 0):
+	def registerWizard(self, wizard, precondition, priority=0):
 		self.wizards.append((wizard, precondition, priority))
 
 	def getWizards(self):
@@ -682,5 +682,6 @@ class WizardManager:
 		if len(self.wizards) > 0:
 			self.wizards[-1][0].isLastWizard = True
 		return [(x[2], x[0]) for x in self.wizards if x[1] == 1]
+
 
 wizardManager = WizardManager()

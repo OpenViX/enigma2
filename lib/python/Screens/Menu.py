@@ -42,6 +42,7 @@ class MenuUpdater:
 	def getUpdatedMenu(self, id):
 		return self.updatedMenuItems[id]
 
+
 menuupdater = MenuUpdater()
 
 
@@ -203,7 +204,6 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 				return
 		destList.append((item_text, self.nothing, entryID, weight))
 
-
 	def __init__(self, session, parent):
 		Screen.__init__(self, session)
 		HelpableScreen.__init__(self)
@@ -248,7 +248,7 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 					list.append((l[0], boundFunction(l[1], self.session), l[2], l[3] or 50))
 
 		# for the skin: first try a menu_<menuID>, then Menu
-		self.skinName = [ ]
+		self.skinName = []
 		if menuID is not None:
 			self.skinName.append("menu_" + menuID)
 		self.skinName.append("Menu")
@@ -262,7 +262,7 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 			list.sort(key=lambda x: int(x[3]))
 
 		if config.usage.menu_show_numbers.value:
-			list = [(str(x[0] + 1) + "  " +x[1][0], x[1][1], x[1][2], x[1][3]) for x in enumerate(list)]
+			list = [(str(x[0] + 1) + "  " + x[1][0], x[1][1], x[1][2], x[1][3]) for x in enumerate(list)]
 
 		self["menu"] = List(list)
 
@@ -325,6 +325,7 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 				return True
 			elif config.ParentalControl.config_sections.standby_menu.value and self.menuID == "shutdown":
 				return True
+
 
 class MainMenu(Menu):
 	#add file load functions for the xml-file

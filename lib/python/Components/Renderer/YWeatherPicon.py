@@ -1,14 +1,15 @@
 #(c) 2boom mod 2012
-from Renderer import Renderer 
-from enigma import ePixmap, eTimer 
-from Tools.Directories import fileExists, SCOPE_SKIN_IMAGE, SCOPE_CURRENT_SKIN, resolveFilename 
-from Tools.LoadPixmap import LoadPixmap 
-from Components.Pixmap import Pixmap 
-from Components.config import * 
+from Renderer import Renderer
+from enigma import ePixmap, eTimer
+from Tools.Directories import fileExists, SCOPE_SKIN_IMAGE, SCOPE_CURRENT_SKIN, resolveFilename
+from Tools.LoadPixmap import LoadPixmap
+from Components.Pixmap import Pixmap
+from Components.config import *
+
 
 class YWeatherPicon(Renderer):
 	__module__ = __name__
-	searchPaths = ('/usr/lib/enigma2/python/Plugins/Extensions/iSkin/Weather/%s/', '/usr/lib/enigma2/python/Plugins/Extensions/YahooWeather/%s/','/usr/share/enigma2/%s/', '/media/cf/%s/', '/media/sda1/%s/', '/media/usb/%s/', '/media/hdd/%s/')
+	searchPaths = ('/usr/lib/enigma2/python/Plugins/Extensions/iSkin/Weather/%s/', '/usr/lib/enigma2/python/Plugins/Extensions/YahooWeather/%s/', '/usr/share/enigma2/%s/', '/media/cf/%s/', '/media/sda1/%s/', '/media/usb/%s/', '/media/hdd/%s/')
 
 	def __init__(self):
 		Renderer.__init__(self)

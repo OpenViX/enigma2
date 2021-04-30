@@ -14,8 +14,9 @@ import Screens.Standby
 from Tools import Notifications
 from boxbranding import getMachineBrand, getMachineName
 
+
 class JobView(InfoBarNotifications, Screen, ConfigListScreen):
-	def __init__(self, session, job, parent=None, cancelable = True, backgroundable = True, afterEventChangeable = True , afterEvent="nothing"):
+	def __init__(self, session, job, parent=None, cancelable=True, backgroundable=True, afterEventChangeable=True, afterEvent="nothing"):
 		Screen.__init__(self, session, parent)
 		Screen.setTitle(self, _("Job View"))
 		InfoBarNotifications.__init__(self)
@@ -36,36 +37,46 @@ class JobView(InfoBarNotifications, Screen, ConfigListScreen):
 		self.cancelable = cancelable
 		self.backgroundable = backgroundable
 
+		self["okActions"] = ActionMap(["SetupActions"],
+		{
+			"save": self.ok,
+			"ok": self.ok,
+		}, -2)
+
+		self["abortActions"] = ActionMap(["SetupActions"],
+		{
+			"cancel": self.abort,
+		}, -2)
+
+		self["backgroundActions"] = ActionMap(["ColorActions"],
+		{
+			"blue": self.background,
+		}, -2)
+
 		self["key_green"] = StaticText("")
+		self["okActions"].setEnabled(False)
 
 		if self.cancelable:
 			self["key_red"] = StaticText(_("Cancel"))
 		else:
 			self["key_red"] = StaticText("")
+			self["abortActions"].setEnabled(False)
 
 		if self.backgroundable:
 			self["key_blue"] = StaticText(_("Background"))
 		else:
 			self["key_blue"] = StaticText("")
+			self["backgroundActions"].setEnabled(False)
 
 		self.onShow.append(self.windowShow)
 		self.onHide.append(self.windowHide)
-
-		self["setupActions"] = ActionMap(["ColorActions", "SetupActions"],
-		{
-			"green": self.ok,
-			"red": self.abort,
-			"blue": self.background,
-			"cancel": self.abort,
-			"ok": self.ok,
-		}, -2)
 
 		self.settings = ConfigSubsection()
 		if SystemInfo["DeepstandbySupport"]:
 			shutdownString = _("go to deep standby")
 		else:
 			shutdownString = _("shut down")
-		self.settings.afterEvent = ConfigSelection(choices = [("nothing", _("do nothing")), ("close", _("Close")), ("standby", _("go to standby")), ("deepstandby", shutdownString)], default = self.job.afterEvent or "nothing")
+		self.settings.afterEvent = ConfigSelection(choices=[("nothing", _("do nothing")), ("close", _("Close")), ("standby", _("go to standby")), ("deepstandby", shutdownString)], default=self.job.afterEvent or "nothing")
 		self.job.afterEvent = self.settings.afterEvent.value
 		self.afterEventChangeable = afterEventChangeable
 		self.setupList()
@@ -73,7 +84,7 @@ class JobView(InfoBarNotifications, Screen, ConfigListScreen):
 
 	def setupList(self):
 		if self.afterEventChangeable:
-			self["config"].setList( [ getConfigListEntry(_("After event"), self.settings.afterEvent) ])
+			self["config"].setList([getConfigListEntry(_("After event"), self.settings.afterEvent)])
 		else:
 			self["config"].hide()
 		self.job.afterEvent = self.settings.afterEvent.value
@@ -113,13 +124,17 @@ class JobView(InfoBarNotifications, Screen, ConfigListScreen):
 			self.performAfterEvent()
 			self.backgroundable = False
 			self["key_blue"].setText("")
+			self["backgroundActions"].setEnabled(False)
 			if j.status == j.FINISHED:
 				self["key_green"].setText(_("OK"))
+				self["okActions"].setEnabled(True)
 				self.cancelable = False
 				self["key_red"].setText("")
+				self["abortActions"].setEnabled(False)
 			elif j.status == j.FAILED:
 				self.cancelable = True
 				self["key_red"].setText(_("Cancel"))
+				self["abortActions"].setEnabled(True)
 
 	def background(self):
 		if self.backgroundable:
@@ -148,10 +163,10 @@ class JobView(InfoBarNotifications, Screen, ConfigListScreen):
 			self.close(False)
 		if self.settings.afterEvent.value == "deepstandby":
 			if not Screens.Standby.inTryQuitMainloop:
-				Notifications.AddNotificationWithCallback(self.sendTryQuitMainloopNotification, MessageBox, _("A sleep timer wants to shut down\nyour %s %s. Proceed?") % (getMachineBrand(), getMachineName()), timeout = 20)
+				Notifications.AddNotificationWithCallback(self.sendTryQuitMainloopNotification, MessageBox, _("A sleep timer wants to shut down\nyour %s %s. Proceed?") % (getMachineBrand(), getMachineName()), timeout=20)
 		elif self.settings.afterEvent.value == "standby":
 			if not Screens.Standby.inStandby:
-				Notifications.AddNotificationWithCallback(self.sendStandbyNotification, MessageBox, _("A sleep timer wants to set your\n%s %s to standby. Proceed?") % (getMachineBrand(), getMachineName()), timeout = 20)
+				Notifications.AddNotificationWithCallback(self.sendStandbyNotification, MessageBox, _("A sleep timer wants to set your\n%s %s to standby. Proceed?") % (getMachineBrand(), getMachineName()), timeout=20)
 
 	def checkNotifications(self):
 		InfoBarNotifications.checkNotifications(self)

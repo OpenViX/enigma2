@@ -1,12 +1,13 @@
 from time import localtime, time, strftime
 
-from enigma import eEPGCache, eListbox, eListboxPythonMultiContent, loadPNG, gFont, getDesktop, eRect, eSize, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_HALIGN_CENTER, RT_VALIGN_CENTER, RT_VALIGN_TOP, RT_WRAP, BT_SCALE, BT_KEEP_ASPECT_RATIO, BT_ALIGN_CENTER
+from enigma import eEPGCache, eListbox, eListboxPythonMultiContent, gFont, eRect, eSize, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_HALIGN_CENTER, RT_VALIGN_CENTER, RT_VALIGN_TOP, RT_WRAP, BT_SCALE, BT_KEEP_ASPECT_RATIO, BT_ALIGN_CENTER
 
 from skin import parseColor, parseFont, parseScale
 from Components.GUIComponent import GUIComponent
 from Components.MultiContent import MultiContentEntryText, MultiContentEntryPixmapAlphaBlend, MultiContentEntryPixmapAlphaTest
 from Tools.Alternatives import CompareWithAlternatives
 from Tools.Directories import SCOPE_CURRENT_SKIN, resolveFilename
+from Tools.LoadPixmap import LoadPixmap
 
 
 class EPGBouquetList(GUIComponent):
@@ -59,7 +60,7 @@ class EPGBouquetList(GUIComponent):
 				elif attrib == "borderColor":
 					self.borderColor = parseColor(value).argb()
 				elif attrib == "borderWidth":
-					self.borderWidth = int(value)
+					self.borderWidth = parseScale(value)
 				elif attrib == "itemHeight":
 					self.itemHeight = parseScale(value)
 				else:
@@ -153,7 +154,7 @@ class EPGBouquetList(GUIComponent):
 				borderBottomPix = self.borderBottomPix
 				borderRightPix = self.borderRightPix
 				bgpng = self.othPix
-			
+
 			if bgpng is not None:
 				backColor = None
 				backColorSel = None
@@ -161,17 +162,17 @@ class EPGBouquetList(GUIComponent):
 		# box background
 		if self.graphic and bgpng is not None:
 			res.append(MultiContentEntryPixmapAlphaTest(
-				pos = (left + self.borderWidth, top + self.borderWidth),
-				size = (width - 2 * self.borderWidth, height - 2 * self.borderWidth),
-				png = bgpng,
-				flags = BT_SCALE))
+				pos=(left + self.borderWidth, top + self.borderWidth),
+				size=(width - 2 * self.borderWidth, height - 2 * self.borderWidth),
+				png=bgpng,
+				flags=BT_SCALE))
 		else:
 			res.append(MultiContentEntryText(
-				pos = (left , top), size = (width, height),
-				font = 0, flags = RT_HALIGN_LEFT | RT_VALIGN_CENTER,
-				text = "", color = None, color_sel = None,
-				backcolor = backColor, backcolor_sel = backColorSel,
-				border_width = self.borderWidth, border_color = self.borderColor))
+				pos=(left, top), size=(width, height),
+				font=0, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER,
+				text="", color=None, color_sel=None,
+				backcolor=backColor, backcolor_sel=backColorSel,
+				border_width=self.borderWidth, border_color=self.borderColor))
 
 		evX = left + self.borderWidth + self.bouquetNamePadding
 		evY = top + self.borderWidth
@@ -179,53 +180,53 @@ class EPGBouquetList(GUIComponent):
 		evH = height - 2 * self.borderWidth
 
 		res.append(MultiContentEntryText(
-			pos = (evX, evY), size = (evW, evH),
-			font = 0, flags = alignment,
-			text = name,
-			color = foreColor, color_sel = foreColorSel,
-			backcolor = backColor, backcolor_sel = backColorSel))
+			pos=(evX, evY), size=(evW, evH),
+			font=0, flags=alignment,
+			text=name,
+			color=foreColor, color_sel=foreColorSel,
+			backcolor=backColor, backcolor_sel=backColorSel))
 
 		# Borders
 		if self.graphic:
 			if borderTopPix is not None:
 				res.append(MultiContentEntryPixmapAlphaTest(
-						pos = (left, r1.top()),
-						size = (r1.width(), self.borderWidth),
-						png = borderTopPix,
-						flags = BT_SCALE))
+						pos=(left, r1.top()),
+						size=(r1.width(), self.borderWidth),
+						png=borderTopPix,
+						flags=BT_SCALE))
 			if borderBottomPix is not None:
 				res.append(MultiContentEntryPixmapAlphaTest(
-						pos = (left, r1.height()-self.borderWidth),
-						size = (r1.width(), self.borderWidth),
-						png = borderBottomPix,
-						flags = BT_SCALE))
+						pos =(left, r1.height() - self.borderWidth),
+						size=(r1.width(), self.borderWidth),
+						png=borderBottomPix,
+						flags=BT_SCALE))
 			if borderLeftPix is not None:
 				res.append(MultiContentEntryPixmapAlphaTest(
-						pos = (left, r1.top()),
-						size = (self.borderWidth, r1.height()),
-						png = borderLeftPix,
-						flags = BT_SCALE))
+						pos=(left, r1.top()),
+						size=(self.borderWidth, r1.height()),
+						png=borderLeftPix,
+						flags=BT_SCALE))
 			if borderRightPix is not None:
 				res.append(MultiContentEntryPixmapAlphaTest(
-						pos = (r1.width()-self.borderWidth, left),
-						size = (self.borderWidth, r1.height()),
-						png = borderRightPix,
-						flags = BT_SCALE))
+						pos =(r1.width() - self.borderWidth, left),
+						size=(self.borderWidth, r1.height()),
+						png=borderRightPix,
+						flags=BT_SCALE))
 
 		return res
 
 	def fillBouquetList(self, bouquets):
 		if self.graphic and not self.graphicsloaded:
-			self.othPix = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "epg/OtherEvent.png"))
-			self.selPix = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "epg/SelectedCurrentEvent.png"))
-			self.borderTopPix = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "epg/BorderTop.png"))
-			self.borderBottomPix = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "epg/BorderLeft.png"))
-			self.borderLeftPix = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "epg/BorderBottom.png"))
-			self.borderRightPix = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "epg/BorderRight.png"))
-			self.borderSelectedTopPix = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "epg/SelectedBorderTop.png"))
-			self.borderSelectedLeftPix = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "epg/SelectedBorderLeft.png"))
-			self.borderSelectedBottomPix = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "epg/SelectedBorderBottom.png"))
-			self.borderSelectedRightPix = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "epg/SelectedBorderRight.png"))
+			self.othPix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/OtherEvent.png"))
+			self.selPix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/SelectedCurrentEvent.png"))
+			self.borderTopPix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/BorderTop.png"))
+			self.borderBottomPix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/BorderLeft.png"))
+			self.borderLeftPix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/BorderBottom.png"))
+			self.borderRightPix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/BorderRight.png"))
+			self.borderSelectedTopPix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/SelectedBorderTop.png"))
+			self.borderSelectedLeftPix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/SelectedBorderLeft.png"))
+			self.borderSelectedBottomPix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/SelectedBorderBottom.png"))
+			self.borderSelectedRightPix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/SelectedBorderRight.png"))
 			self.graphicsloaded = True
 		self.bouquetslist = bouquets
 		self.l.setList(self.bouquetslist)

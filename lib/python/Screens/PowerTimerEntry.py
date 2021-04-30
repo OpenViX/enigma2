@@ -9,6 +9,7 @@ from Components.Sources.StaticText import StaticText
 from PowerTimer import AFTEREVENT, TIMERTYPE
 from time import localtime, time, strftime
 
+
 class TimerEntry(TimerEntryBase):
 	def __init__(self, session, timer):
 		TimerEntryBase.__init__(self, session, timer, "powertimerentry")
@@ -41,14 +42,14 @@ class TimerEntry(TimerEntryBase):
 			shutdownString = _("go to deep standby")
 		else:
 			shutdownString = _("shut down")
-		self.timerentry_timertype = ConfigSelection(choices = [("wakeup", _("wakeup")),("wakeuptostandby", _("wakeup to standby")), ("autostandby", _("auto standby")), ("autodeepstandby", _("auto deepstandby")), ("standby", _("go to standby")), ("deepstandby", shutdownString), ("reboot", _("reboot system")), ("restart", _("restart GUI"))], default = timertype)
-		self.timerentry_afterevent = ConfigSelection(choices = [("nothing", _("do nothing")), ("wakeuptostandby", _("wakeup to standby")), ("standby", _("go to standby")), ("deepstandby", shutdownString), ("nothing", _("do nothing"))], default = afterevent)
+		self.timerentry_timertype = ConfigSelection(choices=[("wakeup", _("wakeup")), ("wakeuptostandby", _("wakeup to standby")), ("autostandby", _("auto standby")), ("autodeepstandby", _("auto deepstandby")), ("standby", _("go to standby")), ("deepstandby", shutdownString), ("reboot", _("reboot system")), ("restart", _("restart GUI"))], default=timertype)
+		self.timerentry_afterevent = ConfigSelection(choices=[("nothing", _("do nothing")), ("wakeuptostandby", _("wakeup to standby")), ("standby", _("go to standby")), ("deepstandby", shutdownString), ("nothing", _("do nothing"))], default=afterevent)
 
-		self.timerentry_autosleepdelay = ConfigInteger(default=autosleepdelay, limits = (10, 300))
-		self.timerentry_autosleeprepeat = ConfigSelection(choices = [("once",_("once")), ("repeated", _("repeated"))], default = autosleeprepeat)
-		self.timerentry_autosleepinstandbyonly = ConfigSelection(choices = [("yes",_("Yes")), ("no", _("No"))],default=autosleepinstandbyonly)
+		self.timerentry_autosleepdelay = ConfigInteger(default=autosleepdelay, limits=(10, 300))
+		self.timerentry_autosleeprepeat = ConfigSelection(choices=[("once", _("once")), ("repeated", _("repeated"))], default=autosleeprepeat)
+		self.timerentry_autosleepinstandbyonly = ConfigSelection(choices=[("yes", _("Yes")), ("no", _("No"))], default=autosleepinstandbyonly)
 
-		self.timerentry_showendtime = ConfigYesNo(default = (((self.timer.end - self.timer.begin) /60 ) > 1))
+		self.timerentry_showendtime = ConfigYesNo(default=(((self.timer.end - self.timer.begin) / 60) > 1))
 
 	def keySelect(self, result=None):
 		self.keySave()
@@ -115,6 +116,7 @@ class TimerEntry(TimerEntryBase):
 
 	def saveTimer(self):
 		self.session.nav.PowerTimer.saveTimer()
+
 
 class TimerLog(TimerLogBase):
 	pass

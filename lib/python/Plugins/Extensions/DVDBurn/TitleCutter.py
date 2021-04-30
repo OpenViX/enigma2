@@ -11,8 +11,7 @@ class TitleCutter(CutListEditor):
 		self.skin = CutListEditor.skin
 		self.session = session
 		self.t = t
-		self.__event_tracker = ServiceEventTracker(screen=self, eventmap=
-			{
+		self.__event_tracker = ServiceEventTracker(screen=self, eventmap={
 				iPlayableService.evUpdatedInfo: self.getPMTInfo,
 				iPlayableService.evCuesheetChanged: self.refillList
 			})
@@ -36,13 +35,13 @@ class TitleCutter(CutListEditor):
 					description = "MP2"
 				print "[audiotrack] pid:", pid, "description:", description, "language:", DVB_lang, "count:", x, "active:", (x < 8)
 				self.t.properties.audiotracks.append(ConfigSubsection())
-				self.t.properties.audiotracks[-1].active = ConfigYesNo(default = (x < 8))
+				self.t.properties.audiotracks[-1].active = ConfigYesNo(default=(x < 8))
 				self.t.properties.audiotracks[-1].format = ConfigFixedText(description)
-				self.t.properties.audiotracks[-1].language = ConfigSelection(choices = languageChoices.choices, default=languageChoices.getLanguage(DVB_lang))
+				self.t.properties.audiotracks[-1].language = ConfigSelection(choices=languageChoices.choices, default=languageChoices.getLanguage(DVB_lang))
 				self.t.properties.audiotracks[-1].pid = ConfigFixedText(pid)
 				self.t.properties.audiotracks[-1].DVB_lang = ConfigFixedText(DVB_lang)
 		sAspect = service.info().getInfo(iServiceInformation.sAspect)
-		if sAspect in ( 1, 2, 5, 6, 9, 0xA, 0xD, 0xE ):
+		if sAspect in (1, 2, 5, 6, 9, 0xA, 0xD, 0xE):
 			aspect = "4:3"
 		else:
 			aspect = "16:9"
@@ -50,7 +49,7 @@ class TitleCutter(CutListEditor):
 		self.t.VideoType = service.info().getInfo(iServiceInformation.sVideoType)
 
 	def checkAndGrabThumb(self):
-		if not fileExists(self.t.inputfile.rsplit('.',1)[0] + ".png"):
+		if not fileExists(self.t.inputfile.rsplit('.', 1)[0] + ".png"):
 			CutListEditor.grabFrame(self)
 
 	def exit(self):
@@ -59,6 +58,7 @@ class TitleCutter(CutListEditor):
 		self.checkAndGrabThumb()
 		self.session.nav.stopService()
 		self.close(self.cut_list[:])
+
 
 class CutlistReader(TitleCutter):
 	skin = """

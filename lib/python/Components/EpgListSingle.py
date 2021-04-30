@@ -1,7 +1,7 @@
 from time import localtime, time, strftime
 
-from enigma import eEPGCache, eListbox, eListboxPythonMultiContent, loadPNG, gFont, getDesktop, eRect, eSize, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_HALIGN_CENTER, RT_VALIGN_CENTER, RT_VALIGN_TOP, RT_WRAP, BT_SCALE, BT_KEEP_ASPECT_RATIO, BT_ALIGN_CENTER
-from skin import parameters, parseFont
+from enigma import eEPGCache, eListboxPythonMultiContent, gFont, eRect, eSize, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_HALIGN_CENTER, RT_VALIGN_CENTER, RT_VALIGN_TOP, RT_WRAP, BT_SCALE, BT_KEEP_ASPECT_RATIO, BT_ALIGN_CENTER
+from skin import parameters, parseFont, applySkinFactor
 
 from Components.config import config
 from Components.EpgListBase import EPGListBase
@@ -19,7 +19,7 @@ class EPGListSingle(EPGListBase):
 
 		self.epgConfig = epgConfig
 		self.eventFontName = "Regular"
-		self.eventFontSize = 28 if self.isFullHd else 20
+		self.eventFontSize = applySkinFactor(19)
 		self.l.setBuildFunc(self.buildEntry)
 
 	def applySkin(self, desktop, screen):
@@ -85,12 +85,12 @@ class EPGListSingle(EPGListBase):
 		]
 		eventW = r3.width()
 		if timerIcon:
-			clockSize = 26 if self.isFullHd else 21
+			clockSize = applySkinFactor(17)
 			eventW -= clockSize
-			res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, r3.left()+r3.width()-clockSize, (r3.height()-clockSize)/2, clockSize, clockSize, timerIcon))
+			res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, r3.left() + r3.width() - clockSize, (r3.height() - clockSize) / 2, clockSize, clockSize, timerIcon))
 			if autoTimerIcon:
 				eventW -= clockSize
-				res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, r3.left()+r3.width()-clockSize*2, (r3.height()-clockSize)/2, clockSize, clockSize, autoTimerIcon))
+				res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, r3.left() + r3.width() - clockSize * 2, (r3.height() - clockSize) / 2, clockSize, clockSize, autoTimerIcon))
 		res.append((eListboxPythonMultiContent.TYPE_TEXT, r3.left(), r3.top(), eventW, r3.height(), 0, RT_HALIGN_LEFT | RT_VALIGN_CENTER, eventName))
 		return res
 

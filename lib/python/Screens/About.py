@@ -20,7 +20,7 @@ from Screens.SoftwareUpdate import UpdatePlugin
 from Tools.Directories import fileExists, fileCheck, pathExists
 from Tools.Multiboot import GetCurrentImage, GetCurrentImageMode
 from Tools.StbHardware import getFPVersion
-import skin
+
 
 class About(Screen):
 	def __init__(self, session):
@@ -76,18 +76,18 @@ class About(Screen):
 			AboutText += _("%s") % part
 
 		if SystemInfo["canMultiBoot"]:
-			slot = image= GetCurrentImage()
-			part = "eMMC slot %s" %slot
+			slot = image = GetCurrentImage()
+			part = "eMMC slot %s" % slot
 			bootmode = ""
 			if SystemInfo["canMode12"]:
-				bootmode = "bootmode = %s" %GetCurrentImageMode()
-			print "[About] HasHiSi = %s, slot = %s" %(SystemInfo["HasHiSi"], slot)
+				bootmode = "bootmode = %s" % GetCurrentImageMode()
+			print "[About] HasHiSi = %s, slot = %s" % (SystemInfo["HasHiSi"], slot)
 			if SystemInfo["HasHiSi"] and "sda" in SystemInfo["canMultiBoot"][slot]['root']:
 				if slot > 4:
-					image -=4
+					image -= 4
 				else:
-					image -=1
-				part = "SDcard slot %s (%s) " %(image, SystemInfo["canMultiBoot"][slot]['root'])
+					image -= 1
+				part = "SDcard slot %s (%s) " % (image, SystemInfo["canMultiBoot"][slot]['root'])
 			AboutText += _("Image Slot:\t%s") % "STARTUP_" + str(slot) + "  " + part + " " + bootmode + "\n"
 
 		if getMachineName() in ('ET8500') and path.exists('/proc/mtd'):
@@ -105,11 +105,17 @@ class About(Screen):
 		driversdate = '-'.join((year, month, day))
 		AboutText += _("Drivers:\t%s\n") % driversdate
 		AboutText += _("Kernel:\t%s\n") % about.getKernelVersionString()
-		AboutText += _("GStreamer:\t%s\n") % about.getGStreamerVersionString().replace("GStreamer ","")
+		AboutText += _("GStreamer:\t%s\n") % about.getGStreamerVersionString().replace("GStreamer ", "")
 		AboutText += _("Python:\t%s\n") % about.getPythonVersionString()
 		AboutText += _("Installed:\t%s\n") % about.getFlashDateString()
 		AboutText += _("Last update:\t%s\n") % getEnigmaVersionString()
 		AboutText += _("E2 (re)starts:\t%s\n") % config.misc.startCounter.value
+		uptime = about.getBoxUptime()
+		if uptime:
+			AboutText += _("Uptime:\t%s\n") % uptime
+		e2uptime = about.getEnigmaUptime()
+		if e2uptime:
+			AboutText += _("Enigma2 uptime:\t%s\n") % e2uptime
 		AboutText += _("Skin:\t%s") % config.skin.primary_skin.value[0:-9] + _("  (%s x %s)") % (skinWidth, skinHeight) + "\n"
 
 		tempinfo = ""
@@ -124,7 +130,7 @@ class About(Screen):
 				tempinfo = f.read()
 		if tempinfo and int(tempinfo.replace('\n', '')) > 0:
 			mark = str('\xc2\xb0')
-			AboutText += _("System temp:\t%s") % tempinfo.replace('\n', '').replace(' ','') + mark + "C\n"
+			AboutText += _("System temp:\t%s") % tempinfo.replace('\n', '').replace(' ', '') + mark + "C\n"
 
 		tempinfo = ""
 		if path.exists('/proc/stb/fp/temp_sensor_avs'):
@@ -144,7 +150,7 @@ class About(Screen):
 				tempinfo = ""
 		if tempinfo and int(tempinfo) > 0:
 			mark = str('\xc2\xb0')
-			AboutText += _("Processor temp:\t%s") % tempinfo.replace('\n', '').replace(' ','') + mark + "C\n"
+			AboutText += _("Processor temp:\t%s") % tempinfo.replace('\n', '').replace(' ', '') + mark + "C\n"
 		AboutLcdText = AboutText.replace('\t', ' ')
 
 		fp_version = getFPVersion()
@@ -189,6 +195,7 @@ class About(Screen):
 
 	def createSummary(self):
 		return AboutSummary
+
 
 class Devices(Screen):
 	def __init__(self, session):
@@ -237,7 +244,7 @@ class Devices(Screen):
 		self["nims"].setText(niminfo)
 
 		nims = nimmanager.nimList()
-		if len(nims) <= 4 :
+		if len(nims) <= 4:
 			for count in (0, 1, 2, 3):
 				if count < len(nims):
 					self["Tuner" + str(count)].setText(nims[count])
@@ -254,7 +261,7 @@ class Devices(Screen):
 				if desc_list and desc_list[cur_idx]['desc'] == desc:
 					desc_list[cur_idx]['end'] = idx
 				else:
-					desc_list.append({'desc' : desc, 'start' : idx, 'end' : idx})
+					desc_list.append({'desc': desc, 'start': idx, 'end': idx})
 					cur_idx += 1
 				count += 1
 
@@ -289,7 +296,7 @@ class Devices(Screen):
 					continue
 				else:
 					freeline = _("Free: ") + _("full")
-				line = "%s      %s" %(hddp, freeline)
+				line = "%s      %s" % (hddp, freeline)
 				self.list.append(line)
 		self.list = '\n'.join(self.list)
 		self["hdd"].setText(self.list)
@@ -444,47 +451,47 @@ class SystemNetworkInfo(Screen):
 		self.AboutText = ""
 		self.iface = "eth0"
 		eth0 = about.getIfConfig('eth0')
-		if eth0.has_key('addr'):
+		if 'addr' in eth0:
 			self.AboutText += _("IP:") + "\t" + eth0['addr'] + "\n"
-			if eth0.has_key('netmask'):
+			if 'netmask' in eth0:
 				self.AboutText += _("Netmask:") + "\t" + eth0['netmask'] + "\n"
-			if eth0.has_key('hwaddr'):
+			if 'hwaddr' in eth0:
 				self.AboutText += _("MAC:") + "\t" + eth0['hwaddr'] + "\n"
 			self.iface = 'eth0'
 
 		eth1 = about.getIfConfig('eth1')
-		if eth1.has_key('addr'):
+		if 'addr' in eth1:
 			self.AboutText += _("IP:") + "\t" + eth1['addr'] + "\n"
-			if eth1.has_key('netmask'):
+			if 'netmask' in eth1:
 				self.AboutText += _("Netmask:") + "\t" + eth1['netmask'] + "\n"
-			if eth1.has_key('hwaddr'):
+			if 'hwaddr' in eth1:
 				self.AboutText += _("MAC:") + "\t" + eth1['hwaddr'] + "\n"
 			self.iface = 'eth1'
 
 		ra0 = about.getIfConfig('ra0')
-		if ra0.has_key('addr'):
+		if 'addr' in ra0:
 			self.AboutText += _("IP:") + "\t" + ra0['addr'] + "\n"
-			if ra0.has_key('netmask'):
+			if 'netmask' in ra0:
 				self.AboutText += _("Netmask:") + "\t" + ra0['netmask'] + "\n"
-			if ra0.has_key('hwaddr'):
+			if 'hwaddr' in ra0:
 				self.AboutText += _("MAC:") + "\t" + ra0['hwaddr'] + "\n"
 			self.iface = 'ra0'
 
 		wlan0 = about.getIfConfig('wlan0')
-		if wlan0.has_key('addr'):
+		if 'addr' in wlan0:
 			self.AboutText += _("IP:") + "\t" + wlan0['addr'] + "\n"
-			if wlan0.has_key('netmask'):
+			if 'netmask' in wlan0:
 				self.AboutText += _("Netmask:") + "\t" + wlan0['netmask'] + "\n"
-			if wlan0.has_key('hwaddr'):
+			if 'hwaddr' in wlan0:
 				self.AboutText += _("MAC:") + "\t" + wlan0['hwaddr'] + "\n"
 			self.iface = 'wlan0'
 
 		wlan3 = about.getIfConfig('wlan3')
-		if wlan3.has_key('addr'):
+		if 'addr' in wlan3:
 			self.AboutText += _("IP:") + "\t" + wlan3['addr'] + "\n"
-			if wlan3.has_key('netmask'):
+			if 'netmask' in wlan3:
 				self.AboutText += _("Netmask:") + "\t" + wlan3['netmask'] + "\n"
-			if wlan3.has_key('hwaddr'):
+			if 'hwaddr' in wlan3:
 				self.AboutText += _("MAC:") + "\t" + wlan3['hwaddr'] + "\n"
 			self.iface = 'wlan3'
 
@@ -534,10 +541,10 @@ class SystemNetworkInfo(Screen):
 							essid = _("No connection")
 						else:
 							accesspoint = status[self.iface]["accesspoint"]
-					if self.has_key("BSSID"):
+					if "BSSID" in self:
 						self.AboutText += _('Accesspoint:') + '\t' + accesspoint + '\n'
 
-					if self.has_key("ESSID"):
+					if "ESSID" in self:
 						if not status[self.iface]["essid"]:
 							essid = _("Unknown")
 						else:
@@ -547,14 +554,14 @@ class SystemNetworkInfo(Screen):
 								essid = status[self.iface]["essid"]
 						self.AboutText += _('SSID:') + '\t' + essid + '\n'
 
-					if self.has_key("quality"):
+					if "quality" in self:
 						if not status[self.iface]["quality"]:
 							quality = _("Unknown")
 						else:
 							quality = status[self.iface]["quality"]
 						self.AboutText += _('Link quality:') + '\t' + quality + '\n'
 
-					if self.has_key("bitrate"):
+					if "bitrate" in self:
 						if not status[self.iface]["bitrate"]:
 							bitrate = _("Unknown")
 						else:
@@ -564,14 +571,14 @@ class SystemNetworkInfo(Screen):
 								bitrate = str(status[self.iface]["bitrate"]) + " Mb/s"
 						self.AboutText += _('Bitrate:') + '\t' + bitrate + '\n'
 
-					if self.has_key("signal"):
+					if "signal" in self:
 						if not status[self.iface]["signal"]:
 							signal = _("Unknown")
 						else:
 							signal = status[self.iface]["signal"]
 						self.AboutText += _('Signal strength:') + '\t' + signal + '\n'
 
-					if self.has_key("enc"):
+					if "enc" in self:
 						if not status[self.iface]["encryption"]:
 							encryption = _("Unknown")
 						else:

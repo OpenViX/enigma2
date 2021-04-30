@@ -1,27 +1,35 @@
-import os, re, unicodedata
+import os
+import re
+import unicodedata
 from Renderer import Renderer
 from enigma import ePixmap, ePicLoad
-from Tools.Directories import pathExists, SCOPE_ACTIVE_SKIN, resolveFilename
+from Tools.Directories import pathExists, SCOPE_CURRENT_SKIN, resolveFilename
 from boxbranding import getDisplayType
 from Components.config import config
 from Picon import PiconLocator
 
+
 def useLcdPicons():
 	return getDisplayType() in ('bwlcd255', 'bwlcd140', 'bwlcd128') or config.lcd.picon_pack.value
 
+
 lcdPiconLocator = None
 
-def initPiconPaths(_ = None):
+
+def initPiconPaths(_=None):
 	global lcdPiconLocator
 	lcdPiconLocator = PiconLocator(['lcd_picon', 'piconlcd']) if useLcdPicons() else PiconLocator()
+
+
 config.lcd.picon_pack.addNotifier(initPiconPaths)
+
 
 class LcdPicon(Renderer):
 	def __init__(self):
 		Renderer.__init__(self)
 		self.PicLoad = ePicLoad()
 		self.PicLoad.PictureData.get().append(self.updatePicon)
-		self.piconsize = (0,0)
+		self.piconsize = (0, 0)
 		config.lcd.picon_pack.addNotifier(self.configChanged)
 
 	def configChanged(self, _):
@@ -29,7 +37,7 @@ class LcdPicon(Renderer):
 		serviceName = "lcd_picon_default" if useLcdPicons() else "picon_default"
 		pngname = lcdPiconLocator.findPicon(serviceName)
 		if not pngname:
-			pngname = resolveFilename(SCOPE_ACTIVE_SKIN, serviceName + ".png")
+			pngname = resolveFilename(SCOPE_CURRENT_SKIN, serviceName + ".png")
 		self.defaultpngname = pngname if os.path.getsize(pngname) else None
 		self.changed((self.CHANGED_DEFAULT,))
 
@@ -43,7 +51,7 @@ class LcdPicon(Renderer):
 		for (attrib, value) in self.skinAttributes:
 			if attrib == "path":
 				lcdPiconLocator.addSearchPath(value)
-				attribs.remove((attrib,value))
+				attribs.remove((attrib, value))
 			elif attrib == "size":
 				self.piconsize = value
 		self.skinAttributes = attribs

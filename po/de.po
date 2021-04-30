@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-14 12:23+0000\n"
+"POT-Creation-Date: 2021-04-18 09:59+0430\n"
 "PO-Revision-Date: 2021-02-16 09:58+0100\n"
 "Last-Translator: Ralf Biedermann <ralf.biedermann@rbsoft.de>\n"
 "Language-Team: AndyBlacburn, j-ot&Trial\n"
@@ -819,6 +819,10 @@ msgstr "%b=%-d "
 msgid "%b=%d "
 msgstr "%b=%d "
 
+#, fuzzy, python-format
+msgid "%d"
+msgstr "%d B"
+
 msgid "%d %B %Y"
 msgstr "%d %B %Y"
 
@@ -866,6 +870,12 @@ msgid "%d Min"
 msgid_plural "%d Mins"
 msgstr[0] "%d Min"
 msgstr[1] "%d Mins"
+
+#, fuzzy, python-format
+msgid "%d Recording"
+msgid_plural "%d Recordings"
+msgstr[0] "Aufnahme"
+msgstr[1] "Aufnahme"
 
 #. TRANSLATORS: Intermediate scanning result, '%d' channel(s) have been found so far
 #, python-format
@@ -1039,10 +1049,6 @@ msgid "%s"
 msgstr "%s"
 
 #, python-format
-msgid "%s  (Default: %s)"
-msgstr "%s  (Standard: %s)"
-
-#, python-format
 msgid "%s %s advanced remote control (native)"
 msgstr "%s %s erweiterte Fernbedienung (native)"
 
@@ -1108,6 +1114,10 @@ msgstr[1] "%s neue Pakete verfügbar"
 #, python-format
 msgid "%s%d Min"
 msgstr "%s%d Min"
+
+#, fuzzy, python-format
+msgid "%s%s(Default: %s)"
+msgstr "%s  (Standard: %s)"
 
 #, python-format
 msgid "%s/%s: %s"
@@ -1208,6 +1218,14 @@ msgstr ""
 
 msgid "/s"
 msgstr "/s"
+
+#, fuzzy
+msgid "0"
+msgstr "30"
+
+#, fuzzy
+msgid "1,1"
+msgstr "1.1"
 
 msgid "1.0"
 msgstr "1.0"
@@ -1313,6 +1331,9 @@ msgstr "24"
 
 msgid "25"
 msgstr "25"
+
+msgid "2678400000"
+msgstr ""
 
 msgid "29.97"
 msgstr "29.97"
@@ -1994,12 +2015,6 @@ msgstr "Auch in Bereitschaft"
 msgid "Alternative"
 msgstr "Alternative"
 
-msgid "Alternative 1"
-msgstr "Alternative 1"
-
-msgid "Alternative 2"
-msgstr "Alternative 2"
-
 msgid "Alternative numbering mode"
 msgstr "Alternative Zählmethode"
 
@@ -2517,6 +2532,12 @@ msgstr "Schwarzes Bild"
 msgid "Black screen till locked"
 msgstr "Schwarzes Bild bis Abschluss"
 
+msgid "Blindscan"
+msgstr ""
+
+msgid "Blindscan terrestrial (if possible)"
+msgstr ""
+
 msgid "Blinking REC"
 msgstr "Blinkendes Aufnahme Symbol"
 
@@ -2655,6 +2676,9 @@ msgstr "Byte empfangen:"
 
 msgid "Bytes sent:"
 msgstr "Byte gesendet:"
+
+msgid "C"
+msgstr ""
 
 msgid "C-Band"
 msgstr "C-Band"
@@ -3217,6 +3241,10 @@ msgstr "Empfangsrate HP"
 
 msgid "Code rate LP"
 msgstr "Empfangsrate LP"
+
+#, fuzzy
+msgid "Collection"
+msgstr "Zusammenstellungsname"
 
 msgid "Collection name"
 msgstr "Zusammenstellungsname"
@@ -3922,6 +3950,9 @@ msgstr "Tchechisch"
 
 msgid "Czechia"
 msgstr "Tchechien"
+
+msgid "D"
+msgstr ""
 
 msgid "DAC"
 msgstr ""
@@ -4710,6 +4741,10 @@ msgstr "Dominican Republic"
 msgid "Don't save"
 msgstr "Nicht speichern"
 
+#, fuzzy
+msgid "Don't show default"
+msgstr "Standardsortierung"
+
 msgid "Don't stop current event but disable future events"
 msgstr "Aktuelle Aufnahme nicht beenden aber zukünftige deaktivieren"
 
@@ -4978,6 +5013,10 @@ msgstr "Automatische Schnellsuche für %s aktivieren"
 msgid "Enable automated downloading of OpenTV EPG data. If only one tuner is available the download will be done when the reciever is in standby."
 msgstr "Aktiviere automatisches herunter laden der OpenTV EPG Daten. Wenn nur ein Tuner zur Verfügung steht geschieht das herunter laden wenn der Receiver im Bereitschaft ist."
 
+#, fuzzy
+msgid "Enable automatic collections"
+msgstr "Automatische Schnellsuche aktivieren"
+
 msgid "Enable blinking rec symbol on the LCD Display"
 msgstr "Aktiviere blinkendes Aufnahme Symbol auf LCD Anzeige"
 
@@ -5085,6 +5124,10 @@ msgstr "Endzeit"
 
 msgid "English"
 msgstr "Englisch"
+
+#, fuzzy, python-format
+msgid "Enigma2 uptime:\t%s\n"
+msgstr "Letztes Update:\t%s\n"
 
 msgid "Enter"
 msgstr "Eingabe"
@@ -5214,6 +5257,10 @@ msgstr "Estland"
 
 msgid "Estonian"
 msgstr "Estnisch"
+
+#, fuzzy
+msgid "EtPortal"
+msgstr "Portugal"
 
 msgid "Ethernet network interface"
 msgstr "Ethernet Netzwerkadapter"
@@ -5388,6 +5435,10 @@ msgstr "Extra Rotoroptionen"
 
 msgid "Extrude from left"
 msgstr "Pressen von links"
+
+#, fuzzy
+msgid "F"
+msgstr "F2"
 
 msgid "F1"
 msgstr ""
@@ -5718,6 +5769,10 @@ msgstr "Volle Transparenz"
 msgid "Full view resolution"
 msgstr "Vollbild Auflösung"
 
+#, fuzzy
+msgid "G"
+msgstr "GB"
+
 msgid "GB"
 msgstr "GB"
 
@@ -5937,6 +5992,9 @@ msgstr "Guinea-Bissau"
 
 msgid "Guyana"
 msgstr "Guyana"
+
+msgid "H"
+msgstr ""
 
 msgid "H7/H9/H9COMBO/H10 new Model"
 msgstr "H7/H9/H9COMBO/H10 neues Modell"
@@ -6223,8 +6281,19 @@ msgstr "Ungarisch"
 msgid "Hungary"
 msgstr "Ungarn"
 
+#, fuzzy
+msgid "I"
+msgstr "IP"
+
 msgid "IDLE"
 msgstr ""
+
+msgid "IGNORE"
+msgstr ""
+
+#, fuzzy
+msgid "IMDB Search"
+msgstr "IMDb Suche"
 
 msgid "IMDB search for current event"
 msgstr "IMDB Suche nach laufenden Programm"
@@ -6400,6 +6469,9 @@ msgstr ""
 
 msgid "Immediate shutdown"
 msgstr "Direkt ausschalten"
+
+msgid "In Setup screens choose whether to show the default value of the selected item in the description field."
+msgstr ""
 
 msgid "In live view wait this many seconds after a numeric key press before assuming the required channel number has been entered. Default: 5 seconds. Setting zero will require confirmation with 'OK'. "
 msgstr "Beim Fernsehen warte die eingestellte Zeit in Sekunden bevor die eingegebene Kanalnummer akzeptiert wird. Standard sind 5 Sekunden. Bei 0 wird ein 'OK' zur Bestätigung erwartet. "
@@ -6711,6 +6783,9 @@ msgstr "Italienisch"
 
 msgid "Italy"
 msgstr "Italien"
+
+msgid "J"
+msgstr ""
 
 msgid "JUMP 24 HOURS"
 msgstr "Springe 24 Stunden"
@@ -7048,6 +7123,10 @@ msgstr "Lade nicht verbundene Favoritenlisten"
 
 msgid "Load, Save & Delete EPG Cache"
 msgstr "EPG Cache laden, sichern und löschen"
+
+#, fuzzy
+msgid "Loading skin"
+msgstr "Skin neu laden"
 
 msgid "Local box"
 msgstr "Lokale Box"
@@ -8158,6 +8237,9 @@ msgstr "Am Ende eines Films"
 msgid "On end of movie (as menu)"
 msgstr "Am Ende eines Films (als Menü)"
 
+msgid "On except in same named directory"
+msgstr ""
+
 msgid "On shutdown/restart warn about any pending jobs being carried out in the background."
 msgstr "Bei Neustart/Ausschalten warne wenn noch aktive Tasks im Hintergrund laufen."
 
@@ -8362,6 +8444,9 @@ msgstr ""
 
 msgid "PMT PID"
 msgstr "PMT PID"
+
+msgid "PREVIOUS"
+msgstr ""
 
 msgid "PRIMETIME"
 msgstr "PrimeTime"
@@ -9122,9 +9207,6 @@ msgstr "Drücke OK um den gewählten Skin %s zu aktivieren."
 msgid "Press OK to save and exit."
 msgstr "Dürcke OK für Speichern und Verlassen."
 
-msgid "Press OK to scan"
-msgstr "Zum Starten der Suche OK drücken"
-
 msgid "Press OK to select a group of satellites to configure in one block."
 msgstr "Drücke OK um eine Gruppe von Satelliten zum Konfigurieren auszuwählen."
 
@@ -9333,6 +9415,9 @@ msgid "RDS/RASS display"
 msgstr ""
 
 msgid "REC"
+msgstr ""
+
+msgid "REC "
 msgstr ""
 
 msgid "REC Symbol"
@@ -11117,6 +11202,14 @@ msgstr "Zeige Verschlüsselungs Icon"
 msgid "Show crypto info in infobar"
 msgstr "Zeige Verschlüsselung in Infobar an"
 
+#, fuzzy
+msgid "Show default after description"
+msgstr "Zeige erweiterte Beschreibung"
+
+#, fuzzy
+msgid "Show default on new line"
+msgstr "Zeige Infozeile"
+
 msgid "Show description for next event)"
 msgstr "Zeige Beschreibung von nächster Sendung"
 
@@ -11272,6 +11365,10 @@ msgstr "Zeige Sender- oder Filmliste"
 
 msgid "Show service type icons"
 msgstr "Zeige Sendertype Icon"
+
+#, fuzzy
+msgid "Show setup default values"
+msgstr "Zeige Sendungs-Details"
 
 msgid "Show shutdown menu"
 msgstr "Zeige Ausschaltmenü"
@@ -12219,6 +12316,9 @@ msgstr "TS-Datei ist zu groß für ISO9660 level 1!"
 msgid "TSID"
 msgstr "TSID"
 
+msgid "TUNER:"
+msgstr ""
+
 msgid "TUNING"
 msgstr ""
 
@@ -13103,9 +13203,6 @@ msgstr "Tuner"
 msgid "Tuner :"
 msgstr "Tuner:"
 
-msgid "Tuner Settings"
-msgstr "Tuner Einstellungen"
-
 msgid "Tuner Setup"
 msgstr "Tuner Konfiguration"
 
@@ -13375,6 +13472,10 @@ msgstr "Großschreibung"
 msgid "Uptime"
 msgstr "Laufzeit"
 
+#, fuzzy, python-format
+msgid "Uptime:\t%s\n"
+msgstr "Laufzeit"
+
 msgid "Uruguay"
 msgstr "Uruguay"
 
@@ -13467,6 +13568,10 @@ msgstr "Stromaufnahme messen"
 
 msgid "Use separate Picon pack for Front Display"
 msgstr "Benutze separate PIcon für Front-Display*"
+
+#, fuzzy
+msgid "Use skin default"
+msgstr "Setze Standard"
 
 msgid "Use slim screen"
 msgstr "Benutze minimale Darstellung"
@@ -14048,6 +14153,9 @@ msgstr "Wenn aktiviert werden Nummer-Markierung versteckt."
 
 msgid "When enabled, pressing '0' will zap you to the first channel in your first bouquet and delete your zap-history."
 msgstr "Wenn aktiviert springt man mit '0' zum ersten Sender der ersten Favoritenliste und die Sendervergangenheit wird gelöscht."
+
+msgid "When enabled, recordings are grouped by name into collections automatically."
+msgstr ""
 
 msgid "When enabled, reformat subtitles to match the width of the screen."
 msgstr "Wenn aktiviert werden Untertitel umformatiert um an Bildschirmbreite angepasst zu werden."
@@ -15557,9 +15665,6 @@ msgstr "umgekehrt nach Datum"
 msgid "rewind to the previous chapter"
 msgstr "Zum vorherigen Kapitel zurück"
 
-msgid "rgb"
-msgstr ""
-
 msgid "right"
 msgstr "rechts"
 
@@ -15958,265 +16063,3 @@ msgstr "umschalten und aufnehmen"
 
 msgid "zapped"
 msgstr "umgeschaltet"
-
-#~ msgid "'%s' contains %d file(s) and %d sub-directories.\n"
-#~ msgstr "'%s' enthält %d Datei(en) und %d Verzeichnis(se).\n"
-
-#~ msgid "** Setup error: '%s' section not found! **"
-#~ msgstr "** Setup Fehler: '%s' Sektion nicht gefunden! **"
-
-#~ msgid "??"
-#~ msgstr "??"
-
-#~ msgid "Additional Info"
-#~ msgstr "Zusätzliche Informationen"
-
-#~ msgid "Allows you to send a copy of the log to yourself."
-#~ msgstr "Erlaubt es dir eine Kopie an dich selbst zu schicken."
-
-#~ msgid "Are you sure you want to send this log:\n"
-#~ msgstr "Bist Du sicher das diese Log Datei gesendet werden soll:\n"
-
-#~ msgid "Attach a file"
-#~ msgstr "Eine Datei anhängen"
-
-#~ msgid "Automatic refresh"
-#~ msgstr "Automatisch aktualisieren"
-
-#~ msgid "CCcam info"
-#~ msgstr "CCcam Informationen"
-
-#~ msgid "Cannot delete file"
-#~ msgstr "Kann Datei nicht löschen"
-
-#~ msgid "Client mode sets up this receiver to stream from another receiver. In this mode no local tuners will be available and channel lists, EPG, etc, will come from the remote receiver. All tuner settings will be cleared."
-#~ msgstr "Client Modus richtet den Receiver so ein das von einem anderen Receiver gestreamt wird. In diesem Modus gibt es keine lokalen Tuner und Kanalliste, EPG usw. werden vom Server-Receiver geholt. Alle Tunereinstellungen werden gelöscht."
-
-#~ msgid "Common interface"
-#~ msgstr "Common Interface"
-
-#~ msgid "Deleted"
-#~ msgstr "Gelöscht"
-
-#~ msgid "Do you really want to delete %s ?"
-#~ msgstr "Wollen Sie %s wirklich löschen?"
-
-#~ msgid "Do you really want to delete ?"
-#~ msgstr "Wirklich löschen?"
-
-#~ msgid "Do you want to add any additional information ?"
-#~ msgstr "Willst Du weitere Informationen hinzufügen?"
-
-#~ msgid ""
-#~ "Do you want to attach a text file to explain the log ?\n"
-#~ "(choose 'No' to type message using virtual keyboard.)"
-#~ msgstr ""
-#~ "Willst Du eine Textdatei anhängen in der das Log erklärt wird?\n"
-#~ "(Wähle 'nein' um eine Nachricht mit der virtuellen Tastatur einzugeben.)"
-
-#~ msgid ""
-#~ "Do you want to send all the selected files:\n"
-#~ "(choose 'No' to only send the currently selected file.)"
-#~ msgstr ""
-#~ "Willst Du alle gewählten Dateien senden:\n"
-#~ "(Wähle 'Nein' um nur die gerade gewählte Datei zu senden.)"
-
-#~ msgid "Enter your e-mail address to send a copy of the log to."
-#~ msgstr "Gebe deine E-Mail-Adresse an zu der eine Kopie des Logs geschickt werden soll."
-
-#~ msgid "Enter your forum user name, to make it easier to trace logs."
-#~ msgstr "Gebe deinen Foren-Nick ein damit die Logs einfacher zugeordnet werden können."
-
-#~ msgid ""
-#~ "Error:\n"
-#~ "%s"
-#~ msgstr ""
-#~ "Fehler:\n"
-#~ "%s"
-
-#~ msgid "Factory reset"
-#~ msgstr "Werkseinstellungen"
-
-#~ msgid "File appears to be busy.\n"
-#~ msgstr "Die Datei ist gerade in Verwendung.\n"
-
-#~ msgid "Filesystem check"
-#~ msgstr "Dateisystemprüfung"
-
-#~ msgid "HDMI CEC Setup"
-#~ msgstr "HDMI CEC Einstellungen"
-
-#~ msgid "Initialize devices"
-#~ msgstr "Initialisieren"
-
-#~ msgid "Input devices"
-#~ msgstr "Eingabegeräte"
-
-#~ msgid "Instant record location"
-#~ msgstr "Sofortaufnahme Verzeichnis"
-
-#~ msgid "Instant recordings location"
-#~ msgstr "Pfad für Sofortaufnahmen"
-
-#~ msgid "Just change channels"
-#~ msgstr "Nur Umschalten"
-
-#~ msgid "Load-save-delete"
-#~ msgstr "Laden/Speichern/Löschen"
-
-#~ msgid "Log manager"
-#~ msgstr "Log Verwaltung"
-
-#~ msgid "Mainmenu"
-#~ msgstr "Hauptmenü"
-
-#~ msgid "Move down in channel list"
-#~ msgstr "In Senderliste runter gehen"
-
-#~ msgid "Move up in channel list"
-#~ msgstr "Gehe Senderliste hoch"
-
-#~ msgid "Movie location"
-#~ msgstr "Film Verzeichnis"
-
-#~ msgid "Multiboot Image Selector"
-#~ msgstr "Multiboot Image Auswahl"
-
-#~ msgid "New timers location"
-#~ msgstr "Neuer Speicherort für Timer"
-
-#~ msgid "No positioner capable frontend found."
-#~ msgstr "Keinen rotortauglichen Tuner gefunden."
-
-#~ msgid "No tuner is configured for use with a diseqc positioner!"
-#~ msgstr "Es wurde kein Tuner für die Benutzung eines DiSEqC-Rotors konfiguriert!"
-
-#~ msgid "OScam info"
-#~ msgstr "OScam Info"
-
-#~ msgid "Permanently remove all deleted items"
-#~ msgstr "Gelöschte Filme endgültig löschen"
-
-#~ msgid "Put your %s %s in standby"
-#~ msgstr "%s %s in Bereitschaft versetzen"
-
-#~ msgid "Refresh every (in hours)"
-#~ msgstr "Alle x Stunden erneuern"
-
-#~ msgid "Save EPG"
-#~ msgstr "EPG speichern"
-
-#~ msgid "Send"
-#~ msgstr "Senden"
-
-#~ msgid "Send Confirmation"
-#~ msgstr "Sendebestätigung"
-
-#~ msgid "Send yourself a copy"
-#~ msgstr "Möchtest Du eine Kopie gesendet bekommen"
-
-#~ msgid ""
-#~ "Setting a password is strongly advised if your STB is open to the internet.\n"
-#~ "This is the case if you have in your router a port forwarded to the STB."
-#~ msgstr ""
-#~ "Ein Passwort wird dringend empfohlen wenn die Box für das Internet geöffnet wurde.\n"
-#~ "Das ist der Fall wenn im Router Powerforwarding zur Box eingerichtet wurde."
-
-#~ msgid "Show EPG..."
-#~ msgstr "Zeige EPG..."
-
-#~ msgid "Show bouquet list"
-#~ msgstr "Zeige Favoritenliste"
-
-#~ msgid "Show channel list"
-#~ msgstr "Zeige Senderliste"
-
-#~ msgid "Show epg"
-#~ msgstr "Zeige EPG"
-
-#~ msgid "Show service name and event description above and below each other instead of side by side."
-#~ msgstr "Zeige Sendernamen und Beschreibung über und unter anstatt links und rechts."
-
-#~ msgid ""
-#~ "The directory %s is not a EXT2, EXT3, EXT4 or NFS partition.\n"
-#~ "Make sure you select a valid partition type."
-#~ msgstr ""
-#~ "Das Verzeichnis %s ist nicht EXT2/3/4 oder NTFS formatiert.\n"
-#~ "Wähle eine passende Formatierung."
-
-#~ msgid ""
-#~ "The directory %s is not writable.\n"
-#~ "Make sure you select a writable directory instead."
-#~ msgstr ""
-#~ "Das Verzeichnis %s ist nicht beschreibbar.\n"
-#~ "Stelle sicher, dass ein beschreibbares Verzeichnis angegeben wurde."
-
-#~ msgid "Timer record location"
-#~ msgstr "Timeraufnahme Verzeichnis"
-
-#~ msgid "Tuner setup"
-#~ msgstr "Tuner Einstellungen"
-
-#~ msgid "ViX EPG"
-#~ msgstr "ViX EPG"
-
-#~ msgid "View Rass interactive..."
-#~ msgstr "Zeige RaSS Interaktiv..."
-
-#~ msgid "Vix forum user name"
-#~ msgstr "Username im ViX Forum"
-
-#~ msgid "Wakeup your %s %s from standby"
-#~ msgstr "%s %s aus Bereitschaft einschalten"
-
-#~ msgid "You have already sent this log, are you sure you want to resend it?\n"
-#~ msgstr "Du hast dieses Log schon geschickt. Bist Du sicher das Du dies erneut schicken willst?\n"
-
-#~ msgid "You have not selected any logs to send"
-#~ msgstr "Du hast keine Logs zum Verschicken gewählt"
-
-#~ msgid ""
-#~ "You have not setup your user info in the setup screen\n"
-#~ "Press MENU, enter your info, and then try again"
-#~ msgstr ""
-#~ "Du hast deine Benutzerinformationen nicht eingegeben\n"
-#~ "Drücke MENU und gebe die Informationen ein und dann versuche es erneut"
-
-#~ msgid "Your %s %s does not support PiP HD"
-#~ msgstr "Dein %s %s unterstützt kein HD PiP"
-
-#~ msgid ""
-#~ "Your %s %s will be restarted after the installation of the service\n"
-#~ "Are you ready to install \"%s\" ?"
-#~ msgstr ""
-#~ "Die %s %s wird neu gestartet wenn der Service installiert ist.\n"
-#~ "Bereit \"%s\" zu installieren?"
-
-#~ msgid ""
-#~ "Your %s %s will be restarted after the removal of the service\n"
-#~ "Do you want to remove the service now ?"
-#~ msgstr ""
-#~ "Deine %s %s wird nach entfernen des Services neu gestartet\n"
-#~ "Service jetzt entfernen?"
-
-#~ msgid "e-mail address"
-#~ msgstr "E-Mail-Adresse"
-
-#~ msgid ""
-#~ "has been sent to the ViX team.\n"
-#~ "please quote"
-#~ msgstr ""
-#~ "ist zum ViX Beta Team geschickt worden.\n"
-#~ "Bitte zitieren"
-
-#~ msgid "when asking questions about this log"
-#~ msgstr "wenn Fragen zu diesem Log gestellt werden"
-
-#~ msgid ""
-#~ "when asking questions about this log\n"
-#~ "\n"
-#~ "A copy has been sent to yourself."
-#~ msgstr ""
-#~ "wenn Fragen zu diesem Log gestellt werden\n"
-#~ "\n"
-#~ "Eine Kopie wurde zu dir selbst geschickt."

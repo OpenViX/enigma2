@@ -16,7 +16,9 @@ from enigma import eDVBDB, eServiceReference, eTimer, eDVBFrontendParametersSate
 
 from time import localtime, time, strftime
 
-import os, codecs, re
+import os
+import codecs
+import re
 import six
 
 #for pip
@@ -31,9 +33,11 @@ download_duration = 180 # stay tuned for 3 minutes
 start_first_download = 5 * 60 # 5 minutes after booting
 wait_time_on_fail = 15 * 60 # 15 minutes
 
+
 def getNimListForSat(orb_pos):
 	return [nim.slot for nim in nimmanager.nim_slots if nim.isCompatible("DVB-S") and orb_pos in [sat[0] for sat in nimmanager.getSatListForNim(nim.slot)]]
-	
+
+
 def make_sref(service):
 	return eServiceReference("1:0:%X:%X:%X:%X:%X:0:0:0:" % (
 		service["service_type"],
@@ -89,7 +93,7 @@ class RecordAdapter:
 			self.navcore.stopRecordService(self.__service)
 			self.__service = None
 
-			
+
 class PipAdapter:
 	def __init__(self, session, hide=True):
 		self.hide = hide
@@ -122,9 +126,9 @@ class PipAdapter:
 		return False
 
 	def stop(self):
-		try: 
+		try:
 			del self.session.pip
-		except Exception: 
+		except Exception:
 			pass
 		self.session.pipshown = False
 
@@ -150,7 +154,7 @@ class LamedbReader():
 			#print("[%s-LamedbReader] lamedb ver" % (debug_name), lamedb_ver)
 		if lamedb_ver == 4:
 			transponders = self.parseLamedbV4Content(content)
-		elif  lamedb_ver == 5:
+		elif lamedb_ver == 5:
 			transponders = self.parseLamedbV5Content(content)
 		return transponders
 
@@ -163,7 +167,7 @@ class LamedbReader():
 		tp_stop = content.find("end\n")
 
 		tp_blocks = content[tp_start + 13:tp_stop].strip().split("/")
-		content = content[tp_stop+4:]
+		content = content[tp_stop + 4:]
 
 		for block in tp_blocks:
 			rows = block.strip().split("\n")
@@ -182,7 +186,7 @@ class LamedbReader():
 
 			#print("%x:%x:%x" % (namespace, transport_stream_id, original_network_id))
 			second_row = rows[1].strip()
-			transponder["dvb_type"] = 'dvb'+second_row[0]
+			transponder["dvb_type"] = 'dvb' + second_row[0]
 			if transponder["dvb_type"] not in ["dvbs", "dvbt", "dvbc"]:
 				continue
 
@@ -248,16 +252,15 @@ class LamedbReader():
 			transponders[key] = transponder
 			transponders_count += 1
 
-
 		srv_start = content.find("services\n")
 		srv_stop = content.rfind("end\n")
 
 		srv_blocks = content[srv_start + 9:srv_stop].strip().split("\n")
 
-		for i in list(range(0, len(srv_blocks)//3)):
-			service_reference = srv_blocks[i*3].strip()
-			service_name = srv_blocks[(i*3)+1].strip()
-			service_provider = srv_blocks[(i*3)+2].strip()
+		for i in list(range(0, len(srv_blocks) // 3)):
+			service_reference = srv_blocks[i * 3].strip()
+			service_name = srv_blocks[(i * 3) + 1].strip()
+			service_provider = srv_blocks[(i * 3) + 2].strip()
 			service_reference = service_reference.split(":")
 
 			if len(service_reference) not in (6, 7):
@@ -281,7 +284,7 @@ class LamedbReader():
 
 			# The original (correct) code
 			# transponders[key]["services"][service["service_id"]] = service
-			
+
 			# Dirty hack to work around the (well known) service type bug in lamedb/enigma2
 			transponders[key]["services"]["%x:%x" % (service["service_type"], service["service_id"])] = service
 
@@ -309,7 +312,7 @@ class LamedbReader():
 				transponder["original_network_id"] = int(first_part[2], 16)
 
 				second_part = line.strip().split(",")[1]
-				transponder["dvb_type"] = 'dvb'+second_part[0]
+				transponder["dvb_type"] = 'dvb' + second_part[0]
 				if transponder["dvb_type"] not in ["dvbs", "dvbt", "dvbc"]:
 					continue
 
@@ -404,10 +407,10 @@ class LamedbReader():
 
 				# The original (correct) code
 				# transponders[key]["services"][service["service_id"]] = service
-				
+
 				# Dirty hack to work around the (well known) service type bug in lamedb/enigma2
 				transponders[key]["services"]["%x:%x" % (service["service_type"], service["service_id"])] = service
-	
+
 				services_count += 1
 
 		#print("[%s-LamedbReader] Read %d transponders and %d services" % (debug_name, transponders_count, services_count))
@@ -527,14 +530,14 @@ class LamedbWriter():
 					service["flags"],
 					":%x" % service["ATSC_source_id"] if "ATSC_source_id" in service else ""))
 
-				control_chars = ''.join(list(map(six.unichr, list(range(0,32)) + list(range(127,160)))))
+				control_chars = ''.join(list(map(six.unichr, list(range(0, 32)) + list(range(127, 160)))))
 				control_char_re = re.compile('[%s]' % re.escape(control_chars))
 				if 'provider_name' in list(service.keys()):
 					if six.PY2:
 						service_name = control_char_re.sub('', service["service_name"]).decode('latin-1').encode("utf8")
 						provider_name = control_char_re.sub('', service["provider_name"]).decode('latin-1').encode("utf8")
 					else:
-						service_name =  control_char_re.sub('', six.ensure_text(six.ensure_str(service["service_name"],  encoding='latin-1'), encoding='utf-8', errors='ignore'))
+						service_name = control_char_re.sub('', six.ensure_text(six.ensure_str(service["service_name"], encoding='latin-1'), encoding='utf-8', errors='ignore'))
 						provider_name = control_char_re.sub('', six.ensure_text(six.ensure_str(service["provider_name"], encoding='latin-1'), encoding='utf-8', errors='ignore'))
 				else:
 					service_name = service["service_name"]
@@ -675,14 +678,14 @@ class LamedbWriter():
 					service["flags"],
 					":%x" % service["ATSC_source_id"] if "ATSC_source_id" in service else ":0"))
 
-				control_chars = ''.join(list(map(six.unichr, list(range(0,32)) + list(range(127,160)))))
+				control_chars = ''.join(list(map(six.unichr, list(range(0, 32)) + list(range(127, 160)))))
 				control_char_re = re.compile('[%s]' % re.escape(control_chars))
 				if 'provider_name' in list(service.keys()):
 					if six.PY2:
 						service_name = control_char_re.sub('', service["service_name"]).decode('latin-1').encode("utf8")
 						provider_name = control_char_re.sub('', service["provider_name"]).decode('latin-1').encode("utf8")
 					else:
-						service_name =  control_char_re.sub('', six.ensure_text(six.ensure_str(service["service_name"],  encoding='latin-1'), encoding='utf-8', errors='ignore'))
+						service_name = control_char_re.sub('', six.ensure_text(six.ensure_str(service["service_name"], encoding='latin-1'), encoding='utf-8', errors='ignore'))
 						provider_name = control_char_re.sub('', six.ensure_text(six.ensure_str(service["provider_name"], encoding='latin-1'), encoding='utf-8', errors='ignore'))
 				else:
 					service_name = service["service_name"]
@@ -714,7 +717,7 @@ class LamedbWriter():
 		#print("[%s-LamedbWriter] Wrote %d transponders and %d services" % (debug_name, transponders_count, services_count))
 
 	def utf8_convert(self, text):
-		for encoding in ["utf8","latin-1"]:
+		for encoding in ["utf8", "latin-1"]:
 			try:
 				text.decode(encoding=encoding)
 			except UnicodeDecodeError:
@@ -744,7 +747,7 @@ class Opentv_Zapper():
 		if config.plugins.opentvzapper.enabled.value:
 			print("[%s] first download scheduled for %s" % (debug_name, strftime("%c", localtime(int(time()) + start_first_download))))
 			self.downloadtimer.startLongTimer(start_first_download)
-		
+
 	def initialize(self, provider):
 		self.transponder = providers[provider]["transponder"]
 		self.service = providers[provider]["service"]
@@ -756,7 +759,7 @@ class Opentv_Zapper():
 			transponders[transponder_key] = self.transponder
 		if service_key not in transponders[transponder_key]["services"]:
 			transponders[transponder_key]["services"][service_key] = self.service
-			print("[%s] download service missing from lamedb. Adding now."  % (debug_name))
+			print("[%s] download service missing from lamedb. Adding now." % (debug_name))
 			writer = LamedbWriter()
 			writer.writeLamedb(lamedb_path, transponders)
 			writer.writeLamedb5(lamedb_path, transponders)
@@ -766,7 +769,7 @@ class Opentv_Zapper():
 		print("[%s] config_changed." % (debug_name))
 		if config.plugins.opentvzapper.enabled.value:
 			self.start_download()
-	
+
 	def set_session(self, session):
 		self.session = session
 
@@ -783,6 +786,7 @@ class Opentv_Zapper():
 		# this is here so tuner setup is fresh for every download
 		tuners = getNimListForSat(self.transponder["orbital_position"])
 		num_tuners = len(tuners)
+		self.adaptername = ""
 		if self.session and num_tuners and not self.downloading and not self.session.nav.RecordTimer.isRecording():
 			self.adapter = None
 			self.downloading = False
@@ -793,20 +797,20 @@ class Opentv_Zapper():
 				if SystemInfo.get("NumVideoDecoders", 1) > 1 and not (hasattr(self.session, 'pipshown') and self.session.pipshown):
 					self.adapter = PipAdapter(self.session)
 					self.downloading = self.adapter.play(self.sref)
-					adapter = "Pip"
+					self.adaptername = "Pip"
 				else:
 					self.adapter = RecordAdapter(self.session)
 					self.downloading = self.adapter.play(self.sref)
-					adapter = "Record"
+					self.adaptername = "Record"
 			if not self.downloading and (inStandby or self.force):
 				self.adapter = DefaultAdapter(self.session)
 				self.downloading = self.adapter.play(self.sref)
-				adapter = "Default"
+				self.adaptername = "Default"
 		self.force = False
 		if self.downloading:
 			self.enddownloadtimer.startLongTimer(download_duration)
 			print("[%s]download running..." % (debug_name))
-			print("[%s]using '%s' adapter" % (debug_name, adapter))
+			print("[%s] %s" % (debug_name, "using '%s' adapter" % self.adaptername if self.adaptername else "a download is already in progress"))
 			if not inStandby and config.plugins.opentvzapper.notifications.value:
 				Notifications.AddPopup(text=_("OpenTV EPG download starting."), type=MessageBox.TYPE_INFO, timeout=5, id=debug_name)
 		else:
@@ -834,9 +838,10 @@ class Opentv_Zapper():
 		if frontendData is not None:
 			currentlyPlayingNIM = frontendData.get("tuner_number", None)
 		return currentlyPlayingNIM
-		
-		
+
+
 opentv_zapper = Opentv_Zapper()
+
 
 def startSession(reason, session=None, **kwargs):
 	print("[%s][startSession] reason(%d), session" % (debug_name, reason), session)

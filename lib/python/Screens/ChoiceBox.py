@@ -12,15 +12,18 @@ config.misc.pluginlist = ConfigSubsection()
 config.misc.pluginlist.eventinfo_order = ConfigText(default="")
 config.misc.pluginlist.extension_order = ConfigText(default="")
 
+
 class ChoiceBox(Screen):
-	def __init__(self, session, title="", list=None, keys=None, selection=0, skin_name=None, text="", reorderConfig="", 
+	def __init__(self, session, title="", list=None, keys=None, selection=0, skin_name=None, text="", reorderConfig="",
 				 windowTitle=None, var="", callbackList=None):
 		# list is in the format (<display text>, [<parameters to pass to close callback>,])
 		# callbackList is in the format (<display text>, <callback func>, [<parameters>,])
 		self.isCallbackList = bool(callbackList)
 		list = list or callbackList
-		if not list: list = []
-		if not skin_name: skin_name = []
+		if not list:
+			list = []
+		if not skin_name:
+			skin_name = []
 		Screen.__init__(self, session)
 
 		if isinstance(skin_name, str):
@@ -48,7 +51,7 @@ class ChoiceBox(Screen):
 					while len(temptext) >= count:
 						if labeltext:
 							labeltext += '\n'
-						labeltext = labeltext + temptext[count-1]
+						labeltext = labeltext + temptext[count - 1]
 						count += 1
 					self["text"].setText(labeltext)
 				else:
@@ -84,20 +87,20 @@ class ChoiceBox(Screen):
 				for x in self.__keys:
 					if (not x or x.isdigit()) and number <= 10:
 						new_keys.append(str(number % 10))
-						number+=1
+						number += 1
 					else:
 						new_keys.append(not x.isdigit() and x or "")
 				self.__keys = new_keys
 		for x in list:
 			if x:
 				strpos = str(self.__keys[pos])
-				self.list.append(ChoiceEntryComponent(key = strpos, text = x))
+				self.list.append(ChoiceEntryComponent(key=strpos, text=x))
 				if self.__keys[pos] != "":
 					self.keymap[self.__keys[pos]] = list[pos]
-				self.summarylist.append((self.__keys[pos],x[0]))
+				self.summarylist.append((self.__keys[pos], x[0]))
 				pos += 1
 
-		self["list"] = ChoiceList(list = self.list, selection = selection)
+		self["list"] = ChoiceList(list=self.list, selection=selection)
 		self["summary_list"] = StaticText()
 		self["summary_selection"] = StaticText()
 		self.updateSummary(selection)
@@ -162,12 +165,12 @@ class ChoiceBox(Screen):
 			self["list"].instance.resize(enigma.eSize(*listsize))
 
 		wsizex = textsize[0]
-		wsizey = textsize[1]+listsize[1]
+		wsizey = textsize[1] + listsize[1]
 		wsize = (wsizex, wsizey)
 		self.instance.resize(enigma.eSize(*wsize))
 
 		# center window
-		self.instance.move(enigma.ePoint((desktop_w-wsizex)/2, (desktop_h-wsizey)/2))
+		self.instance.move(enigma.ePoint((desktop_w - wsizex) / 2, (desktop_h - wsizey) / 2))
 
 	def left(self):
 		if len(self["list"].list) > 0:
@@ -255,7 +258,7 @@ class ChoiceBox(Screen):
 		pos = 0
 		summarytext = ""
 		for entry in self.summarylist:
-			if curpos-2 < pos < curpos+5:
+			if curpos - 2 < pos < curpos + 5:
 				if pos == curpos:
 					summarytext += ">"
 					self["summary_selection"].setText(entry[1])

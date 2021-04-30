@@ -25,6 +25,7 @@ from Components.Slider import Slider
 
 ocram = ''
 
+
 class SoftwareUpdateChanges(CommitInfo):
 	def __init__(self, session):
 		CommitInfo.__init__(self, session)
@@ -37,7 +38,7 @@ class SoftwareUpdateChanges(CommitInfo):
 			"down": self["AboutScrollLabel"].pageDown,
 			"left": self.left,
 			"right": self.right
-		},-1)
+		}, -1)
 
 		self["key_red"] = Button(_("Close"))
 
@@ -48,9 +49,9 @@ class SoftwareUpdateChanges(CommitInfo):
 
 class UpdateChoices(ChoiceBox):
 	def __init__(self, session, title="", list=None, keys=None, selection=0, skin_name=None, text="", reorderConfig="", var=""):
-		print 'title:',title
+		print 'title:', title
 		ChoiceBox.__init__(self, session, title, list, keys, selection, skin_name, text, reorderConfig, var)
-		print 'title:',title
+		print 'title:', title
 
 		if var and var in ('unstable', 'updating', 'stable', 'unknown'):
 			self.var = var
@@ -94,6 +95,7 @@ class UpdateChoices(ChoiceBox):
 	def cancelClick(self, dummy=False):
 		self.close()
 
+
 class UpdatePlugin(Screen, ProtectedScreen):
 	def __init__(self, session, parent=None):
 		Screen.__init__(self, session, parent=parent)
@@ -108,7 +110,7 @@ class UpdatePlugin(Screen, ProtectedScreen):
 		self['actions'].csel = self
 		self["actions"].setEnabled(False)
 
-		self.sliderPackages = { "dreambox-dvb-modules": 1, "enigma2": 2, "tuxbox-image-info": 3 }
+		self.sliderPackages = {"dreambox-dvb-modules": 1, "enigma2": 2, "tuxbox-image-info": 3}
 		self.slider = Slider(0, 4)
 		self["slider"] = self.slider
 		self.activityslider = Slider(0, 100)
@@ -205,7 +207,7 @@ class UpdatePlugin(Screen, ProtectedScreen):
 
 	def isProtected(self):
 		return config.ParentalControl.setuppinactive.value and\
-			(not config.ParentalControl.config_sections.main_menu.value and not config.ParentalControl.config_sections.configuration.value  or hasattr(self.session, 'infobar') and self.session.infobar is None) and\
+			(not config.ParentalControl.config_sections.main_menu.value and not config.ParentalControl.config_sections.configuration.value or hasattr(self.session, 'infobar') and self.session.infobar is None) and\
 			config.ParentalControl.config_sections.software_update.value
 
 	def doActivityTimer(self):
@@ -275,27 +277,27 @@ class UpdatePlugin(Screen, ProtectedScreen):
 					ocram = ''
 					for package_tmp in self.ipkg.getFetchedList():
 						if package_tmp[0].startswith('enigma2-plugin-picons-snp'):
-							ocram = ocram + '[ocram-picons] ' + package_tmp[0].split('enigma2-plugin-picons-snp-')[1].replace('.',' ') + ' updated ' + package_tmp[2].replace('--',' ') + '\n'
+							ocram = ocram + '[ocram-picons] ' + package_tmp[0].split('enigma2-plugin-picons-snp-')[1].replace('.', ' ') + ' updated ' + package_tmp[2].replace('--', ' ') + '\n'
 						elif package_tmp[0].startswith('enigma2-plugin-picons-srp'):
-							ocram = ocram + '[ocram-picons] ' + package_tmp[0].split('enigma2-plugin-picons-srp-')[1].replace('.',' ') + ' updated ' + package_tmp[2].replace('--',' ') + '\n'
+							ocram = ocram + '[ocram-picons] ' + package_tmp[0].split('enigma2-plugin-picons-srp-')[1].replace('.', ' ') + ' updated ' + package_tmp[2].replace('--', ' ') + '\n'
 					config.softwareupdate.updatefound.setValue(True)
 					choices = [(_("View the changes"), "changes"),
 						(_("Upgrade and reboot system"), "cold")]
 					if path.exists("/usr/lib/enigma2/python/Plugins/SystemPlugins/ViX/BackupManager.pyo"):
 						if not config.softwareupdate.autosettingsbackup.value and config.backupmanager.backuplocation.value:
-							choices.append((_("Perform a settings backup,") + '\n\t' + _("making a backup before updating") + '\n\t' +_("is strongly advised."), "backup"))
+							choices.append((_("Perform a settings backup,") + '\n\t' + _("making a backup before updating") + '\n\t' + _("is strongly advised."), "backup"))
 						if not config.softwareupdate.autoimagebackup.value and config.imagemanager.backuplocation.value:
 							choices.append((_("Perform a full image backup"), "imagebackup"))
 					choices.append((_("Update channel list only"), "channels"))
 					choices.append((_("Cancel"), ""))
 					self["actions"].setEnabled(True)
-					upgrademessage = self.session.openWithCallback(self.startActualUpgrade, UpdateChoices, text=message, list=choices, skin_name = "SoftwareUpdateChoices", var=self.trafficLight)
+					upgrademessage = self.session.openWithCallback(self.startActualUpgrade, UpdateChoices, text=message, list=choices, skin_name="SoftwareUpdateChoices", var=self.trafficLight)
 					upgrademessage.setTitle(self.getTitle())
 				else:
 					message = _("No updates found, Press OK to exit this screen.")
 					choices = [(_("Nothing to upgrade"), "")]
 					self["actions"].setEnabled(True)
-					upgrademessage = self.session.openWithCallback(self.startActualUpgrade, UpdateChoices, text=message, list=choices, skin_name = "SoftwareUpdateChoices", var=self.trafficLight)
+					upgrademessage = self.session.openWithCallback(self.startActualUpgrade, UpdateChoices, text=message, list=choices, skin_name="SoftwareUpdateChoices", var=self.trafficLight)
 					upgrademessage.setTitle(self.getTitle())
 			elif self.channellist_only > 0:
 				if self.channellist_only == 1:
@@ -325,7 +327,7 @@ class UpdatePlugin(Screen, ProtectedScreen):
 						error = _("A background update check is in progress,\nplease wait a few minutes and try again.")
 				if self.updating:
 					error = _("Update failed. Your %s %s does not have a working internet connection.") % (getMachineBrand(), getMachineName())
-				self.status.setText(_("Error") +  " - " + error)
+				self.status.setText(_("Error") + " - " + error)
 				self["actions"].setEnabled(True)
 		elif event == IpkgComponent.EVENT_LISTITEM:
 			if 'enigma2-plugin-settings-' in param[0] and self.channellist_only > 0:
@@ -363,7 +365,7 @@ class UpdatePlugin(Screen, ProtectedScreen):
 			upgrademessage = self.session.openWithCallback(self.startActualUpgrade, UpdateChoices, text=message, list=choices, skin_name="SoftwareUpdateChoices", var=self.trafficLight)
 			upgrademessage.setTitle(self.getTitle())
 		elif answer[1] == "changes":
-			self.session.openWithCallback(self.startActualUpgrade,SoftwareUpdateChanges)
+			self.session.openWithCallback(self.startActualUpgrade, SoftwareUpdateChanges)
 		elif answer[1] == "backup":
 			self.doSettingsBackup()
 		elif answer[1] == "imagebackup":
@@ -371,12 +373,12 @@ class UpdatePlugin(Screen, ProtectedScreen):
 		elif answer[1] == "channels":
 			self.channellist_only = 1
 			self.slider.setValue(1)
-			self.ipkg.startCmd(IpkgComponent.CMD_LIST, args = {'installed_only': True})
+			self.ipkg.startCmd(IpkgComponent.CMD_LIST, args={'installed_only': True})
 		elif answer[1] == "cold":
 			if (config.softwareupdate.autosettingsbackup.value and config.backupmanager.backuplocation.value) or (config.softwareupdate.autoimagebackup.value and config.imagemanager.backuplocation.value):
 				self.doAutoBackup()
 			else:
-				self.session.open(TryQuitMainloop,retvalue=42)
+				self.session.open(TryQuitMainloop, retvalue=42)
 				self.close()
 
 	def modificationCallback(self, res):
@@ -404,14 +406,14 @@ class UpdatePlugin(Screen, ProtectedScreen):
 				break
 		self.showJobView(job)
 
-	def doAutoBackup(self, val = False):
+	def doAutoBackup(self, val=False):
 		self.autobackuprunning = True
 		if config.softwareupdate.autosettingsbackup.value and config.backupmanager.backuplocation.value and not self.SettingsBackupDone:
 			self.doSettingsBackup()
 		elif config.softwareupdate.autoimagebackup.value and config.imagemanager.backuplocation.value and not self.ImageBackupDone:
 			self.doImageBackup()
 		else:
-			self.session.open(TryQuitMainloop,retvalue=42)
+			self.session.open(TryQuitMainloop, retvalue=42)
 			self.close()
 
 	def showJobView(self, job):
@@ -422,14 +424,14 @@ class UpdatePlugin(Screen, ProtectedScreen):
 		from Screens.TaskView import JobView
 		Components.Task.job_manager.in_background = False
 		if not self.autobackuprunning:
-			self.session.openWithCallback(self.startActualUpgrade(("menu", "menu")), JobView, job,  cancelable = False, backgroundable = False, afterEventChangeable = False, afterEvent="close")
+			self.session.openWithCallback(self.startActualUpgrade(("menu", "menu")), JobView, job, cancelable=False, backgroundable=False, afterEventChangeable=False, afterEvent="close")
 		else:
-			self.session.openWithCallback(self.doAutoBackup, JobView, job,  cancelable = False, backgroundable = False, afterEventChangeable = False, afterEvent="close")
+			self.session.openWithCallback(self.doAutoBackup, JobView, job, cancelable=False, backgroundable=False, afterEventChangeable=False, afterEvent="close")
 
 	def exit(self):
 		if not self.ipkg.isRunning():
 			if self.packages != 0 and self.error == 0 and self.channellist_only == 0:
-				self.session.openWithCallback(self.exitAnswer, MessageBox, _("Upgrade finished.") +" "+_("Do you want to reboot your %s %s") % (getMachineBrand(), getMachineName()))
+				self.session.openWithCallback(self.exitAnswer, MessageBox, _("Upgrade finished.") + " " + _("Do you want to reboot your %s %s") % (getMachineBrand(), getMachineName()))
 			else:
 				self.close()
 		else:

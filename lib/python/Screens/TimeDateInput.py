@@ -7,6 +7,7 @@ from Components.Pixmap import Pixmap
 import time
 import datetime
 
+
 class TimeDateInput(Screen, ConfigListScreen):
 	def __init__(self, session, config_time=None, config_date=None):
 		Screen.__init__(self, session)
@@ -33,7 +34,7 @@ class TimeDateInput(Screen, ConfigListScreen):
 		if conf_time:
 			self.save_mask |= 1
 		else:
-			conf_time = ConfigClock(default = time.time()),
+			conf_time = ConfigClock(default=time.time()),
 		if conf_date:
 			self.save_mask |= 2
 		else:

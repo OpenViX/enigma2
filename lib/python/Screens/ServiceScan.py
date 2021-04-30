@@ -21,7 +21,7 @@ class ServiceScanSummary(Screen):
 		<widget name="Service" position="6,22" size="120,26" font="Regular;12" transparent="1" />
 	</screen>"""
 
-	def __init__(self, session, parent, showStepSlider = True):
+	def __init__(self, session, parent, showStepSlider=True):
 		Screen.__init__(self, session, parent)
 
 		self["Title"] = Label(parent.title or _("Service scan"))
@@ -33,6 +33,7 @@ class ServiceScanSummary(Screen):
 
 	def updateService(self, name):
 		self["Service"].setText(name)
+
 
 class ServiceScan(Screen):
 
@@ -109,7 +110,7 @@ class ServiceScan(Screen):
 		self.setTitle(_("Service scan"))
 		self.onFirstExecBegin.append(self.doServiceScan)
 		self.onClose.append(self.doPluginCB)
-	
+
 	def doPluginCB(self):
 		for p in plugins.getPlugins(PluginDescriptor.WHERE_SERVICESCAN):
 			p()

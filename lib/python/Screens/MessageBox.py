@@ -169,7 +169,7 @@ class MessageBox(Screen, HelpableScreen):
 					itemHeight = parseScale(value) # if value does not parse (due to bad syntax in skin), itemHeight will be 0
 					return itemHeight if itemHeight else defaultItemHeight
 		return defaultItemHeight # if itemHeight not in skinAttributes
-	
+
 	def getPixmapWidth(self):
 		defaultPixmapWidth = 53
 		try: # protect from skin errors
@@ -177,10 +177,10 @@ class MessageBox(Screen, HelpableScreen):
 				self["QuestionPixmap"].visible and hasattr(self["QuestionPixmap"], 'getSize') and isinstance(self["QuestionPixmap"].getSize(), tuple) and len(self["QuestionPixmap"].getSize()) and self["QuestionPixmap"].getSize()[0] or \
 				self["InfoPixmap"].visible and hasattr(self["InfoPixmap"], 'getSize') and isinstance(self["InfoPixmap"].getSize(), tuple) and len(self["InfoPixmap"].getSize()) and self["InfoPixmap"].getSize()[0] or \
 				defaultPixmapWidth
-		except Exception as err: 
+		except Exception as err:
 			print("[MessageBox] defaultPixmapWidth, %s: '%s'" % (type(err).__name__, err))
 		return defaultPixmapWidth
-	
+
 	def autoResize(self):
 		# Get the real pixmap width from the skin so this can be used in the formula below.
 		# Historically the default pixmap width has been 53 + 12 pixels of right margin.
@@ -203,7 +203,7 @@ class MessageBox(Screen, HelpableScreen):
 			if textsize[0] < textsize[1]:
 				textsize = (textsize[1], textsize[0] + 10)
 			if textsize[0] > 520:
-				textBottomMargin = int(1.0*textsize[0]/520*30) # previously always 25
+				textBottomMargin = int(1.0 * textsize[0] / 520 * 30) # previously always 25
 				textsize = (textsize[0], textsize[1] + textBottomMargin)
 			else:
 				textsize = (520, textsize[1] + 25)

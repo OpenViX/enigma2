@@ -24,7 +24,7 @@ DISPLAY_SKIN_ID = 1  # Front panel / display / LCD.
 
 domScreens = {}  # Dictionary of skin based screens.
 colors = {}  # Dictionary of skin color names.
-bodyFont = ("Regular", 20, 25, 18) # font which is used when a font alias definition is missing from the "fonts" dict.
+BodyFont = ("Regular", 20, 25, 18) # font which is used when a font alias definition is missing from the "fonts" dict.
 fonts = {}  # Dictionary of predefined and skin defined font aliases.
 menus = {}  # Dictionary of images associated with menu entries.
 parameters = {}  # Dictionary of skin parameters used to modify code behavior.
@@ -60,16 +60,18 @@ onLoadCallbacks = []
 # SCOPE_CURRENT_LCDSKIN.  The full path is NOT saved.
 # E.g. "MySkin/skin_display.xml"
 #
+
+
 def InitSkins(booting=True):
 	global currentPrimarySkin, currentDisplaySkin
-	global domScreens, colors, bodyFont, fonts, menus, parameters, setups, switchPixmap, scrollbarStyle, windowStyles, xres, yres
+	global domScreens, colors, BodyFont, fonts, menus, parameters, setups, switchPixmap, scrollbarStyle, windowStyles, xres, yres
 	# Reset skin dictionaries. We can reload skins without a restart
 	# Make sure we keep the original dictionaries as many modules now import skin globals explicitly
 	domScreens.clear()
 	colors.clear()
 	fonts.clear()
 	fonts.update({
-		"Body": bodyFont[:]
+		"Body": BodyFont
 	})
 	menus.clear()
 	parameters.clear()
@@ -125,13 +127,17 @@ def InitSkins(booting=True):
 			if method:
 				method()
 
-# Temporary entry point for older versions of mytest.py.
+# Temporary entry point for older versions of StartEnigma.py.
 #
+
+
 def loadSkinData(desktop):
 	InitSkins()
 
 # Method to load a skin XML file into the skin data structures.
 #
+
+
 def loadSkin(filename, scope=SCOPE_SKIN, desktop=getDesktop(GUI_SKIN_ID), screenID=GUI_SKIN_ID):
 	global windowStyles
 	filename = resolveFilename(scope, filename)
@@ -185,9 +191,11 @@ def loadSkin(filename, scope=SCOPE_SKIN, desktop=getDesktop(GUI_SKIN_ID), screen
 		print("[Skin] Error: Unexpected error opening skin file '%s'! (%s)" % (filename, err))
 	return False
 
+
 def addOnLoadCallback(callback):
 	if callback not in onLoadCallbacks:
 		onLoadCallbacks.append(callback)
+
 
 def removeOnLoadCallback(callback):
 	if callback in onLoadCallbacks:
@@ -223,6 +231,8 @@ class SkinError(Exception):
 #         h      : Multiply by current font height. (Only to be used in elements where the font attribute is available, i.e. not "None")
 #         f      : Replace with getSkinFactor().
 #
+
+
 def parseCoordinate(s, e, size=0, font=None):
 	orig = s = s.strip()
 	if s == "center":  # For speed as this can be common case.
@@ -261,6 +271,7 @@ def parseCoordinate(s, e, size=0, font=None):
 	# print("[Skin] DEBUG: parseCoordinate s='%s', e='%s', size=%s, font='%s', val='%s'." % (s, e, size, font, val))
 	return val
 
+
 def getParentSize(object, desktop):
 	if object:
 		parent = object.getParent()
@@ -279,6 +290,7 @@ def getParentSize(object, desktop):
 			return desktop.size()  # Widget has no parent, use desktop size instead for relative coordinates.
 	return eSize()
 
+
 def parseValuePair(s, scale, object=None, desktop=None, size=None):
 	x, y = s.split(",")
 	parentsize = eSize()
@@ -288,11 +300,14 @@ def parseValuePair(s, scale, object=None, desktop=None, size=None):
 	yval = parseCoordinate(y, parentsize.height(), size and size.height() or 0)
 	return (xval * scale[0][0] / scale[0][1], yval * scale[1][0] / scale[1][1])
 
+
 def parsePosition(s, scale, object=None, desktop=None, size=None):
 	return ePoint(*parseValuePair(s, scale, object, desktop, size))
 
+
 def parseSize(s, scale, object=None, desktop=None):
-	return eSize(*[max(0,x) for x in parseValuePair(s, scale, object, desktop)])
+	return eSize(*[max(0, x) for x in parseValuePair(s, scale, object, desktop)])
+
 
 def parseFont(s, scale=((1, 1), (1, 1))):
 	if ";" in s:
@@ -322,6 +337,7 @@ def parseFont(s, scale=((1, 1), (1, 1))):
 			size = f[1] if size is None else size
 	return gFont(name, int(size) * scale[0][0] / scale[0][1])
 
+
 def parseColor(s):
 	if s[0] != "#":
 		try:
@@ -329,6 +345,7 @@ def parseColor(s):
 		except KeyError:
 			raise SkinError("Color '%s' must be #aarrggbb or valid named color" % s)
 	return gRGB(int(s[1:], 0x10))
+
 
 def parseParameter(s):
 	"""This function is responsible for parsing parameters in the skin, it can parse integers, floats, hex colors, hex integers, named colors, fonts and strings."""
@@ -348,6 +365,7 @@ def parseParameter(s):
 	else:  # Integer.
 		return int(s)
 
+
 def parseScale(s):
 	# Replaces "f" with skin factor in non-coordinte fields and evaluates the formula
 	orig = s
@@ -362,6 +380,7 @@ def parseScale(s):
 			val = 0
 	return val
 
+
 def parseScrollbarMode(s):
 	from enigma import eListbox
 	try:
@@ -374,6 +393,7 @@ def parseScrollbarMode(s):
 	except KeyError:
 		print("[Skin] Error: Invalid scrollbarMode '%s'!  Must be one of 'showOnDemand', 'showAlways', 'showNever' or 'showLeft'." % s)
 
+
 def loadPixmap(path, desktop, width=0, height=0):
 	option = path.find("#")
 	if option != -1:
@@ -384,6 +404,7 @@ def loadPixmap(path, desktop, width=0, height=0):
 	if pixmap is None:
 		raise SkinError("Pixmap file '%s' not found" % path)
 	return pixmap
+
 
 def collectAttributes(skinAttributes, node, context, skinPath=None, ignore=(), filenames=frozenset(("pixmap", "pointer", "seek_pointer", "backgroundPixmap", "selectionPixmap", "sliderPixmap", "scrollbarSliderPicture", "scrollbarbackgroundPixmap", "scrollbarBackgroundPicture"))):
 	size = None
@@ -663,8 +684,10 @@ class AttributeParser:
 	def dividechar(self, value):
 		pass
 
+
 def ifHasValue(value, function):
 	return function(value) if value is not None else None
+
 
 def applyScrollbar(guiObject):
 	global scrollbarStyle
@@ -679,6 +702,7 @@ def applyScrollbar(guiObject):
 	ifHasValue(scrollbarStyle.get("backgroundPixmap"), guiObject.setScrollbarBackgroundPixmap)
 	guiObject.setScrollbarMode(scrollbarStyle["mode"])
 
+
 def applySlider(guiObject, defaultWidth, defaultBorderWidth):
 	global scrollbarStyle
 	if scrollbarStyle:
@@ -692,17 +716,21 @@ def applySlider(guiObject, defaultWidth, defaultBorderWidth):
 	guiObject.setBorderWidth(defaultBorderWidth)
 	return defaultWidth
 
+
 def applySingleAttribute(guiObject, desktop, attrib, value, scale=((1, 1), (1, 1))):
 	# Is anyone still using applySingleAttribute?
 	AttributeParser(guiObject, desktop, scale).applyOne(attrib, value)
 
+
 def applyAllAttributes(guiObject, desktop, attributes, scale):
 	AttributeParser(guiObject, desktop, scale).applyAll(attributes)
+
 
 def reloadWindowStyles():
 	for screenID in windowStyles:
 		desktop, screenID, domSkin, pathSkin, scope = windowStyles[screenID]
 		loadSingleSkinData(desktop, screenID, domSkin, pathSkin, scope)
+
 
 def loadSingleSkinData(desktop, screenID, domSkin, pathSkin, scope=SCOPE_CURRENT_SKIN):
 	"""Loads skin data like colors, windowstyle etc."""
@@ -721,49 +749,56 @@ def loadSingleSkinData(desktop, screenID, domSkin, pathSkin, scope=SCOPE_CURRENT
 				# print("[Skin] DEBUG: Resolution xres=%d, yres=%d, bpp=%d." % (xres, yres, bpp))
 				if bpp != 32:
 					pass  # Load palette (Not yet implemented!)
-				
-				fonts["Body"] = (bodyFont[0], applySkinFactor(bodyFont[1]), applySkinFactor(bodyFont[2]), applySkinFactor(bodyFont[3]))
+
+				fonts["Body"] = applySkinFactor(*BodyFont)
 
 				# Only add font aliases here for lists that are not part of enigma2 repo.
 				# Font aliases for modules in this repository should be dealt with directly in the corresponding py, not here.
 				fonts["Dreamexplorer"] = fonts["Body"]
 				fonts["ExpandableList"] = fonts["Body"]
-				fonts["ImsSelectionList"] = ("Regular", applySkinFactor(22), applySkinFactor(30))
-				fonts["PartnerBoxBouquetList0"] = ("Regular", applySkinFactor(20), applySkinFactor(30))
-				fonts["PartnerBoxBouquetList1"] = ("Regular", applySkinFactor(18))
-				fonts["PartnerBoxChannelList0"] = ("Regular", applySkinFactor(20), applySkinFactor(70))
-				fonts["PartnerBoxChannelList1"] = ("Regular", applySkinFactor(18))
-				fonts["PartnerBoxChannelEPGList0"] = ("Regular", applySkinFactor(22), applySkinFactor(30))
-				fonts["PartnerBoxE2TimerMenu0"] = ("Regular", applySkinFactor(20), applySkinFactor(70))
-				fonts["PartnerBoxE2TimerMenu1"] = ("Regular", applySkinFactor(18))
-				fonts["PartnerBoxEntryList0"] = ("Regular", applySkinFactor(20), applySkinFactor(30))
-				fonts["PartnerBoxEntryList1"] = ("Regular", applySkinFactor(18))
+				fonts["ImsSelectionList"] = applySkinFactor("Regular", 22, 30)
+				fonts["PartnerBoxBouquetList0"] = applySkinFactor("Regular", 20, 30)
+				fonts["PartnerBoxBouquetList1"] = applySkinFactor("Regular", 18)
+				fonts["PartnerBoxChannelList0"] = applySkinFactor("Regular", 20, 70)
+				fonts["PartnerBoxChannelList1"] = applySkinFactor("Regular", 18)
+				fonts["PartnerBoxChannelEPGList0"] = applySkinFactor("Regular", 22, 30)
+				fonts["PartnerBoxE2TimerMenu0"] = applySkinFactor("Regular", 20, 70)
+				fonts["PartnerBoxE2TimerMenu1"] = applySkinFactor("Regular", 18)
+				fonts["PartnerBoxEntryList0"] = applySkinFactor("Regular", 20, 30)
+				fonts["PartnerBoxEntryList1"] = applySkinFactor("Regular", 18)
 
 				# Only add parameters here for lists that are not part of enigma2 repo.
 				# Parameters for modules in this repository should be dealt with directly in the corresponding py, not here.
-				parameters["DreamexplorerIcon"] = (applySkinFactor(12), applySkinFactor(3), applySkinFactor(20), applySkinFactor(20))
-				parameters["DreamexplorerName"] = (applySkinFactor(40), applySkinFactor(2), applySkinFactor(1000), applySkinFactor(22))
-				parameters["ExpandableListCategory"] = (applySkinFactor(45), applySkinFactor(0), applySkinFactor(655), applySkinFactor(25))
-				parameters["ExpandableListIcon"] = (applySkinFactor(5), applySkinFactor(0), applySkinFactor(30), applySkinFactor(25))
-				parameters["ExpandableListItem"] = (applySkinFactor(80), applySkinFactor(3), applySkinFactor(620), applySkinFactor(25))
-				parameters["ExpandableListLock"] = (applySkinFactor(45), applySkinFactor(1), applySkinFactor(25), applySkinFactor(24))
-				parameters["PartnerBoxBouquetListName"] = (0, 0, applySkinFactor(30))
-				parameters["PartnerBoxChannelListName"] = (0, 0, applySkinFactor(30))
-				parameters["PartnerBoxChannelListTime"] = (0, applySkinFactor(50), applySkinFactor(150), applySkinFactor(20))
-				parameters["PartnerBoxChannelListTitle"] = (0, applySkinFactor(30), applySkinFactor(20))
-				parameters["PartnerBoxE1TimerState"] = (applySkinFactor(170), applySkinFactor(50), applySkinFactor(170), applySkinFactor(20))
-				parameters["PartnerBoxE1TimerTime"] = (0, applySkinFactor(50), applySkinFactor(170), applySkinFactor(20))
-				parameters["PartnerBoxE2TimerIcon"] = (applySkinFactor(510), applySkinFactor(5), applySkinFactor(20), applySkinFactor(20))
-				parameters["PartnerBoxE2TimerIconRepeat"] = (applySkinFactor(510), applySkinFactor(30), applySkinFactor(20), applySkinFactor(20))
-				parameters["PartnerBoxE2TimerState"] = (applySkinFactor(150), applySkinFactor(50), applySkinFactor(150), applySkinFactor(20))
-				parameters["PartnerBoxE2TimerTime"] = (0, applySkinFactor(50), applySkinFactor(150), applySkinFactor(20))
-				parameters["PartnerBoxEntryListName"] = (applySkinFactor(5), 0, applySkinFactor(150), applySkinFactor(20))
-				parameters["PartnerBoxEntryListIP"] = (applySkinFactor(120), 0, applySkinFactor(150), applySkinFactor(20))
-				parameters["PartnerBoxEntryListPort"] = (applySkinFactor(270), 0, applySkinFactor(100), applySkinFactor(20))
-				parameters["PartnerBoxEntryListType"] = (applySkinFactor(410), 0, applySkinFactor(100), applySkinFactor(20))
-				parameters["PartnerBoxTimerName"] = (0, applySkinFactor(30), applySkinFactor(20))
-				parameters["PartnerBoxTimerServicename"] = (0, 0, applySkinFactor(30))
-				parameters["SHOUTcastListItem"] = (applySkinFactor(20), applySkinFactor(18), applySkinFactor(22), applySkinFactor(69), applySkinFactor(20), applySkinFactor(23), applySkinFactor(43), applySkinFactor(22))
+				parameters["AutotimerListChannels"] = applySkinFactor(2, 40, 3, 21)
+				parameters["AutotimerListDays"] = applySkinFactor(1, 26, 3, 17)
+				parameters["AutotimerListHasTimespan"] = applySkinFactor(103, 3, 100, 17)
+				parameters["AutotimerListIcon"] = applySkinFactor(2, -1, 24, 24)
+				parameters["AutotimerListRectypeicon"] = applySkinFactor(26, 3, 20, 20)
+				parameters["AutotimerListTimerName"] = applySkinFactor(50, 3, 18, 21)
+				parameters["AutotimerListTimespan"] = applySkinFactor(2, 26, 3, 17)
+				parameters["DreamexplorerIcon"] = applySkinFactor(12, 3, 20, 20)
+				parameters["DreamexplorerName"] = applySkinFactor(40, 2, 1000, 22)
+				parameters["ExpandableListCategory"] = applySkinFactor(45, 0, 655, 25)
+				parameters["ExpandableListIcon"] = applySkinFactor(5, 0, 30, 25)
+				parameters["ExpandableListItem"] = applySkinFactor(80, 3, 620, 25)
+				parameters["ExpandableListLock"] = applySkinFactor(45, 1, 25, 24)
+				parameters["PartnerBoxBouquetListName"] = applySkinFactor(0, 0, 30)
+				parameters["PartnerBoxChannelListName"] = applySkinFactor(0, 0, 30)
+				parameters["PartnerBoxChannelListTime"] = applySkinFactor(0, 50, 150, 20)
+				parameters["PartnerBoxChannelListTitle"] = applySkinFactor(0, 30, 20)
+				parameters["PartnerBoxE1TimerState"] = applySkinFactor(170, 50, 170, 20)
+				parameters["PartnerBoxE1TimerTime"] = applySkinFactor(0, 50, 170, 20)
+				parameters["PartnerBoxE2TimerIcon"] = applySkinFactor(510, 5, 20, 20)
+				parameters["PartnerBoxE2TimerIconRepeat"] = applySkinFactor(510, 30, 20, 20)
+				parameters["PartnerBoxE2TimerState"] = applySkinFactor(150, 50, 150, 20)
+				parameters["PartnerBoxE2TimerTime"] = applySkinFactor(0, 50, 150, 20)
+				parameters["PartnerBoxEntryListName"] = applySkinFactor(5, 0, 150, 20)
+				parameters["PartnerBoxEntryListIP"] = applySkinFactor(120, 0, 150, 20)
+				parameters["PartnerBoxEntryListPort"] = applySkinFactor(270, 0, 100, 20)
+				parameters["PartnerBoxEntryListType"] = applySkinFactor(410, 0, 100, 20)
+				parameters["PartnerBoxTimerName"] = applySkinFactor(0, 30, 20)
+				parameters["PartnerBoxTimerServicename"] = applySkinFactor(0, 0, 30)
+				parameters["SHOUTcastListItem"] = applySkinFactor(20, 18, 22, 69, 20, 23, 43, 22)
 
 	for tag in domSkin.findall("include"):
 		filename = tag.attrib.get("filename")
@@ -1045,6 +1080,7 @@ class SkinContextStack(SkinContext):
 				pos = (self.x + parseCoordinate(pos[0], self.w, size[0], font), self.y + parseCoordinate(pos[1], self.h, size[1], font))
 		return (SizeTuple(pos), SizeTuple(size))
 
+
 def readSkin(screen, skin, names, desktop):
 	if not isinstance(names, list):
 		names = [names]
@@ -1222,6 +1258,8 @@ def readSkin(screen, skin, names, desktop):
 				p(w, context)
 			except SkinError as err:
 				print("[Skin] Error in screen '%s' widget '%s' %s!" % (name, w.tag, str(err)))
+				import traceback
+				traceback.print_exc()
 
 	def processPanel(widget, context):
 		n = widget.attrib.get("name")
@@ -1276,11 +1314,12 @@ def readSkin(screen, skin, names, desktop):
 	screen = None
 	usedComponents = None
 
-# Return a set of all the widgets found in a screen. Panels will be expanded
-# recursively until all referenced widgets are captured. This code only performs
-# a simple scan of the XML and no skin processing is performed.
-#
 def findWidgets(name):
+	"""
+	Return a set of all the widgets found in a screen. Panels will be expanded
+	recursively until all referenced widgets are captured. This code only performs
+	a simple scan of the XML and no skin processing is performed.
+	"""
 	widgetSet = set()
 	element, path = domScreens.get(name, (None, None))
 	if element is not None:
@@ -1301,28 +1340,37 @@ def findWidgets(name):
 					widgetSet.update(findWidgets(name))
 	return widgetSet
 
-# Return a scaling factor (float) that can be used to rescale screen displays
-# to suit the current resolution of the screen.  The scales are based on a
-# default screen resolution of HD (720p).  That is the scale factor for a HD
-# screen will be 1.
-#
+
 def getSkinFactor():
-	skinfactor = yres / 720.0
+	"""
+	Return a scaling factor (float) that can be used to rescale screen displays
+	to suit the current resolution of the screen.  The scales are based on a
+	default screen resolution of HD (720p).  That is the scale factor for a HD
+	screen will be 1.
+	"""
+	skinfactor = getDesktop(GUI_SKIN_ID).size().height() / 720.0
 	# if skinfactor not in [0.8, 1, 1.5, 3, 6]:
 	# 	print("[Skin] Warning: Unexpected result for getSkinFactor '%0.4f'!" % skinfactor)
 	return skinfactor
 
-# Multiply the numeric input by the skin factor 
-# and return the result as an integer.
-def applySkinFactor(d):
-	return int(d * getSkinFactor())
 
-# Search the domScreens dictionary to see if any of the screen names provided
-# have a skin based screen.  This will allow coders to know if the named
-# screen will be skinned by the skin code.  A return of None implies that the
-# code must provide its own skin for the screen to be displayed to the user.
-#
+def applySkinFactor(*d):
+	"""
+	Multiply the numeric input by the skin factor
+	and return the result as an integer.
+	"""
+	if len(d) == 1:
+		return int(d[0] * getSkinFactor())
+	return tuple([int(value * getSkinFactor()) if isinstance(value, (int, float)) else value for value in d])
+
+
 def findSkinScreen(names):
+	"""
+	Search the domScreens dictionary to see if any of the screen names provided
+	have a skin based screen.  This will allow coders to know if the named
+	screen will be skinned by the skin code.  A return of None implies that the
+	code must provide its own skin for the screen to be displayed to the user.
+	"""
 	if not isinstance(names, list):
 		names = [names]
 	for name in names:  # Try all names given, the first one found is the one that will be used by the skin engine.
@@ -1330,6 +1378,7 @@ def findSkinScreen(names):
 		if screen is not None:
 			return name
 	return None
+
 
 def dump(x, i=0):
 	print(" " * i + str(x))

@@ -7,6 +7,7 @@ import NavigationInstance
 from enigma import iRecordableService
 from boxbranding import getBoxType
 
+
 class FanControl:
 	# ATM there's only support for one fan
 	def __init__(self):
@@ -15,7 +16,7 @@ class FanControl:
 		else:
 			self.fancount = 0
 		self.createConfig()
-		config.misc.standbyCounter.addNotifier(self.standbyCounterChanged, initial_call = False)
+		config.misc.standbyCounter.addNotifier(self.standbyCounterChanged, initial_call=False)
 
 	def setVoltage_PWM(self):
 		for fanid in range(self.getFanCount()):
@@ -57,21 +58,22 @@ class FanControl:
 	def createConfig(self):
 		def setVlt(fancontrol, fanid, configElement):
 			fancontrol.setVoltage(fanid, configElement.value)
+
 		def setPWM(fancontrol, fanid, configElement):
 			fancontrol.setPWM(fanid, configElement.value)
 
 		config.fans = ConfigSubList()
 		for fanid in range(self.getFanCount()):
 			fan = ConfigSubsection()
-			fan.vlt = ConfigSlider(default = 15, increment = 5, limits = (0, 255))
+			fan.vlt = ConfigSlider(default=15, increment=5, limits=(0, 255))
 			if getBoxType() == 'tm2t':
-				fan.pwm = ConfigSlider(default = 150, increment = 5, limits = (0, 255))
+				fan.pwm = ConfigSlider(default=150, increment=5, limits=(0, 255))
 			if getBoxType() == 'tmsingle':
-				fan.pwm = ConfigSlider(default = 100, increment = 5, limits = (0, 255))
+				fan.pwm = ConfigSlider(default=100, increment=5, limits=(0, 255))
 			else:
-				fan.pwm = ConfigSlider(default = 50, increment = 5, limits = (0, 255))
-			fan.vlt_standby = ConfigSlider(default = 5, increment = 5, limits = (0, 255))
-			fan.pwm_standby = ConfigSlider(default = 0, increment = 5, limits = (0, 255))
+				fan.pwm = ConfigSlider(default=50, increment=5, limits=(0, 255))
+			fan.vlt_standby = ConfigSlider(default=5, increment=5, limits=(0, 255))
+			fan.pwm_standby = ConfigSlider(default=0, increment=5, limits=(0, 255))
 			fan.vlt.addNotifier(boundFunction(setVlt, self, fanid))
 			fan.pwm.addNotifier(boundFunction(setPWM, self, fanid))
 			config.fans.append(fan)
@@ -106,5 +108,6 @@ class FanControl:
 		if value > 255:
 			return
 		open("/proc/stb/fp/fan_pwm", "w").write("%x" % value)
+
 
 fancontrol = FanControl()

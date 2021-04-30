@@ -9,8 +9,10 @@ from boxbranding import getMachineBuild, getMachineMtdRoot
 from Components.Console import Console
 from Components.SystemInfo import SystemInfo
 
+
 class tmp:
 	dir = None
+
 
 def getMBbootdevice():
 	tmp.dir = tempfile.mkdtemp(prefix="Multiboot")
@@ -24,8 +26,10 @@ def getMBbootdevice():
 	if not path.ismount(tmp.dir):
 		rmdir(tmp.dir)
 
+
 def getparam(line, param):
 	return line.replace("userdataroot", "rootuserdata").rsplit("%s=" % param, 1)[1].split(" ", 1)[0]
+
 
 def getMultibootslots():
 	bootslots = {}
@@ -65,6 +69,7 @@ def getMultibootslots():
 	# print("[Multiboot] Bootslots found:", bootslots)
 	return bootslots
 
+
 def GetCurrentImage():
 	if SystemInfo["canMultiBoot"]:
 		slot = [x[-1] for x in open("/sys/firmware/devicetree/base/chosen/bootargs", "r").read().split() if x.startswith("rootsubdir")]
@@ -75,16 +80,21 @@ def GetCurrentImage():
 			for slot in list(SystemInfo["canMultiBoot"].keys()):
 				if SystemInfo["canMultiBoot"][slot]["root"] == root:
 					return slot
+
+
 def GetCurrentKern():
 	if SystemInfo["HasRootSubdir"]:
 		return SystemInfo["HasRootSubdir"] and (int(open("/sys/firmware/devicetree/base/chosen/bootargs", "r").read()[:-1].split("kernel=/dev/mmcblk0p")[1].split(" ")[0]))
+
 
 def GetCurrentRoot():
 	if SystemInfo["HasRootSubdir"]:
 		return SystemInfo["HasRootSubdir"] and (int(open("/sys/firmware/devicetree/base/chosen/bootargs", "r").read()[:-1].split("root=/dev/mmcblk0p")[1].split(" ")[0]))
 
+
 def GetCurrentImageMode():
 	return bool(SystemInfo["canMultiBoot"]) and SystemInfo["canMode12"] and int(open("/sys/firmware/devicetree/base/chosen/bootargs", "r").read().replace("\0", "").split("=")[-1])
+
 
 def GetImagelist():
 	Imagelist = {}
@@ -106,7 +116,7 @@ def GetImagelist():
 				reader = boxbranding_reader(imagedir)
 				# print("[multiboot] [GetImagelist]1 slot = %s imagedir = %s" % (slot, imagedir))
 				if path.isfile(path.join(imagedir, "usr/lib/enigma2/python/ImageIdentifier.py")):
-					print("[multiboot] [GetImagelist]2 slot = %s imagedir = %s" % (slot, imagedir))				
+					print("[multiboot] [GetImagelist]2 slot = %s imagedir = %s" % (slot, imagedir))
 					reader = readImageIdentifier(imagedir)
 				BuildType = reader.getImageType()
 				Build = reader.getImageBuild()
@@ -121,11 +131,12 @@ def GetImagelist():
 				BuildVersion = "%s Image Date: %s" % (Creator, date)
 			Imagelist[slot] = {"imagename": "%s" % BuildVersion}
 		elif path.isfile(path.join(imagedir, "usr/bin/enigmax")):
-			Imagelist[slot] = { "imagename": _("Deleted image") }
+			Imagelist[slot] = {"imagename": _("Deleted image")}
 		Console().ePopen("umount %s" % tmp.dir)
 	if not path.ismount(tmp.dir):
 		rmdir(tmp.dir)
 	return Imagelist
+
 
 def VerDate(imagedir):
 	try:
@@ -138,6 +149,7 @@ def VerDate(imagedir):
 	except Exception:
 		date = _("Unknown")
 	return date
+
 
 def emptySlot(slot):
 	tmp.dir = tempfile.mkdtemp(prefix="Multiboot")
@@ -152,7 +164,8 @@ def emptySlot(slot):
 	Console().ePopen("umount %s" % tmp.dir)
 	if not path.ismount(tmp.dir):
 		rmdir(tmp.dir)
-	return	ret
+	return ret
+
 
 def restoreSlots():
 	for slot in SystemInfo["canMultiBoot"]:
@@ -164,6 +177,7 @@ def restoreSlots():
 		Console().ePopen("umount %s" % tmp.dir)
 	if not path.ismount(tmp.dir):
 		rmdir(tmp.dir)
+
 
 class boxbranding_reader:  # Many thanks to Huevos for creating this reader - well beyond my skill levels!
 	def __init__(self, OsPath):
@@ -253,6 +267,7 @@ class boxbranding_reader:  # Many thanks to Huevos for creating this reader - we
 		out.append("")
 		return "\n".join(out)
 
+
 class readImageIdentifier():
 
 	#
@@ -263,7 +278,7 @@ class readImageIdentifier():
 	# boxtype = reader.getBoxType()
 	#
 
-	def __init__(self, OsPath = None):
+	def __init__(self, OsPath=None):
 		if OsPath is None:
 			OsPath = ""
 
@@ -272,7 +287,7 @@ class readImageIdentifier():
 		else:
 			self.filepath = "%s/usr/lib/enigma2/python/" % OsPath
 		self.filename = "ImageIdentifier.py"
-		
+
 		self.methods = {
 			"getBoxType": "",
 			"getImageDistro": "",
@@ -283,7 +298,7 @@ class readImageIdentifier():
 			"getMachineBrand": "",
 			"getImageBuildDate": "",
 		}
-		
+
 		self.__getfile()
 		self.__readfile()
 
@@ -333,7 +348,6 @@ class readImageIdentifier():
 	def getImageBuildDate(self):
 		return self.methods["getImageBuildDate"]
 
-	
 
 # just for testing
 #if __name__ == "__main__":

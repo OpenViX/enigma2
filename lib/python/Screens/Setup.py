@@ -343,11 +343,15 @@ def setupDom(setup=None, plugin=None):
 # Temporary legacy interface.
 # Not used any OpenViX enigma2 module. Known to be used by the Heinz plugin.
 #
+
+
 def setupdom(setup=None, plugin=None):
 	return setupDom(setup, plugin)
 
 # Only used in AudioSelection screen...
 #
+
+
 def getConfigMenuItem(configElement):
 	for item in setupDom().findall("./setup/item/."):
 		if item.text == configElement:

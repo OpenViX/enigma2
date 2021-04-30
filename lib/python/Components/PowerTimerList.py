@@ -6,7 +6,7 @@ from skin import parseFont, parseScale
 from Tools.FuzzyDate import FuzzyTime
 from Tools.LoadPixmap import LoadPixmap
 from timer import TimerEntry
-from Tools.Directories import resolveFilename, SCOPE_ACTIVE_SKIN
+from Tools.Directories import resolveFilename, SCOPE_CURRENT_SKIN
 from PowerTimer import AFTEREVENT, TIMERTYPE
 
 
@@ -37,9 +37,9 @@ class PowerTimerList(GUIComponent, object):
 
 		height = self.l.getItemSize().height()
 		width = self.l.getItemSize().width()
-		res = [ None ]
+		res = [None]
 		x = width / 2
-		res.append((eListboxPythonMultiContent.TYPE_TEXT, self.iconWidth + self.iconMargin, 2, width, self.rowSplit, 0, RT_HALIGN_LEFT|RT_VALIGN_BOTTOM, timertype))
+		res.append((eListboxPythonMultiContent.TYPE_TEXT, self.iconWidth + self.iconMargin, 2, width, self.rowSplit, 0, RT_HALIGN_LEFT | RT_VALIGN_BOTTOM, timertype))
 		if timer.timerType == TIMERTYPE.AUTOSTANDBY or timer.timerType == TIMERTYPE.AUTODEEPSTANDBY:
 			if self.iconRepeat and timer.autosleeprepeat != "once":
 				res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, self.iconMargin / 2, self.rowSplit + (self.itemHeight - self.rowSplit - self.iconHeight) / 2, self.iconWidth, self.iconHeight, self.iconRepeat))
@@ -60,10 +60,10 @@ class PowerTimerList(GUIComponent, object):
 			else:
 				state = _("done!")
 				icon = self.iconDone
-			res.append((eListboxPythonMultiContent.TYPE_TEXT, 148, 26, width-150, self.itemHeight - self.rowSplit, 2, RT_HALIGN_RIGHT|RT_VALIGN_BOTTOM, _("Delay:") + " " + str(timer.autosleepdelay) + "(" + _("mins") + ")"))
+			res.append((eListboxPythonMultiContent.TYPE_TEXT, 148, 26, width - 150, self.itemHeight - self.rowSplit, 2, RT_HALIGN_RIGHT | RT_VALIGN_BOTTOM, _("Delay:") + " " + str(timer.autosleepdelay) + "(" + _("mins") + ")"))
 		else:
-			res.append((eListboxPythonMultiContent.TYPE_TEXT, x+24, 2, x-2-24, self.itemHeight - self.rowSplit, 2, RT_HALIGN_RIGHT|RT_VALIGN_BOTTOM, _('At End:') + ' ' + afterevent))
-			days = ( _("Mon"), _("Tue"), _("Wed"), _("Thu"), _("Fri"), _("Sat"), _("Sun") )
+			res.append((eListboxPythonMultiContent.TYPE_TEXT, x + 24, 2, x - 2 - 24, self.itemHeight - self.rowSplit, 2, RT_HALIGN_RIGHT | RT_VALIGN_BOTTOM, _('At End:') + ' ' + afterevent))
+			days = (_("Mon"), _("Tue"), _("Wed"), _("Thu"), _("Fri"), _("Sat"), _("Sun"))
 			begin = FuzzyTime(timer.begin)
 			if timer.repeated:
 				repeatedtext = []
@@ -85,7 +85,7 @@ class PowerTimerList(GUIComponent, object):
 			else:
 				repeatedtext = begin[0] # date
 			text = repeatedtext + ((" %s ... %s (%d " + _("mins") + ")") % (begin[1], FuzzyTime(timer.end)[1], (timer.end - timer.begin) / 60))
-			res.append((eListboxPythonMultiContent.TYPE_TEXT, 148, self.itemHeight - self.rowSplit, width-150, self.rowSplit, 2, RT_HALIGN_RIGHT|RT_VALIGN_BOTTOM, text))
+			res.append((eListboxPythonMultiContent.TYPE_TEXT, 148, self.itemHeight - self.rowSplit, width - 150, self.rowSplit, 2, RT_HALIGN_RIGHT | RT_VALIGN_BOTTOM, text))
 			icon = None
 			if not processed:
 				if timer.state == TimerEntry.StateWaiting:
@@ -116,11 +116,10 @@ class PowerTimerList(GUIComponent, object):
 			icon = self.iconFailed
 		icon and res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, self.iconMargin / 2, (self.rowSplit - self.iconHeight) / 2, self.iconWidth, self.iconHeight, icon))
 
-		res.append((eListboxPythonMultiContent.TYPE_TEXT, self.iconMargin + self.iconWidth, self.rowSplit, 126, height - self.rowSplit, 2, RT_HALIGN_LEFT|RT_VALIGN_BOTTOM, state))
+		res.append((eListboxPythonMultiContent.TYPE_TEXT, self.iconMargin + self.iconWidth, self.rowSplit, 126, height - self.rowSplit, 2, RT_HALIGN_LEFT | RT_VALIGN_BOTTOM, state))
 
-
-		line = LoadPixmap(resolveFilename(SCOPE_ACTIVE_SKIN, "div-h.png"))
-		res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, 0, height-2, width, 2, line))
+		line = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "div-h.png"))
+		res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, 0, height - 2, width, 2, line))
 
 		return res
 
@@ -136,30 +135,36 @@ class PowerTimerList(GUIComponent, object):
 		self.rowSplit = 25
 		self.iconMargin = 4
 		self.satPosLeft = 160
-		self.iconWait = LoadPixmap(resolveFilename(SCOPE_ACTIVE_SKIN, "icons/timer_wait.png"))
+		self.iconWait = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/timer_wait.png"))
 		self.iconWidth = self.iconWait.size().width()
 		self.iconHeight = self.iconWait.size().height()
-		self.iconRecording = LoadPixmap(resolveFilename(SCOPE_ACTIVE_SKIN, "icons/timer_rec.png"))
-		self.iconPrepared = LoadPixmap(resolveFilename(SCOPE_ACTIVE_SKIN, "icons/timer_prep.png"))
-		self.iconDone = LoadPixmap(resolveFilename(SCOPE_ACTIVE_SKIN, "icons/timer_done.png"))
-		self.iconRepeat = LoadPixmap(resolveFilename(SCOPE_ACTIVE_SKIN, "icons/timer_rep.png"))
-		self.iconZapped = LoadPixmap(resolveFilename(SCOPE_ACTIVE_SKIN, "icons/timer_zap.png"))
-		self.iconDisabled = LoadPixmap(resolveFilename(SCOPE_ACTIVE_SKIN, "icons/timer_off.png"))
-		self.iconFailed = LoadPixmap(resolveFilename(SCOPE_ACTIVE_SKIN, "icons/timer_failed.png"))
+		self.iconRecording = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/timer_rec.png"))
+		self.iconPrepared = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/timer_prep.png"))
+		self.iconDone = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/timer_done.png"))
+		self.iconRepeat = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/timer_rep.png"))
+		self.iconZapped = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/timer_zap.png"))
+		self.iconDisabled = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/timer_off.png"))
+		self.iconFailed = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/timer_failed.png"))
 
 	def applySkin(self, desktop, parent):
 		def itemHeight(value):
 			self.itemHeight = parseScale(value)
+
 		def setServiceNameFont(value):
-			self.serviceNameFont = parseFont(value, ((1,1),(1,1)))
+			self.serviceNameFont = parseFont(value, ((1, 1), (1, 1)))
+
 		def setEventNameFont(value):
-			self.eventNameFont = parseFont(value, ((1,1),(1,1)))
+			self.eventNameFont = parseFont(value, ((1, 1), (1, 1)))
+
 		def setFont(value):
-			self.font = parseFont(value, ((1,1),(1,1)))
+			self.font = parseFont(value, ((1, 1), (1, 1)))
+
 		def rowSplit(value):
 			self.rowSplit = parseScale(value)
+
 		def iconMargin(value):
 			self.iconMargin = parseScale(value)
+
 		def satPosLeft(value):
 			self.satPosLeft = parseScale(value)
 		for (attrib, value) in list(self.skinAttributes):
@@ -201,4 +206,3 @@ class PowerTimerList(GUIComponent, object):
 
 	def entryRemoved(self, idx):
 		self.l.entryRemoved(idx)
-

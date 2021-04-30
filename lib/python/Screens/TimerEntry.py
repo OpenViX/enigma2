@@ -44,17 +44,17 @@ class TimerEntry(TimerEntryBase):
 		elif self.timer.descramble:
 			recordingtype = "normal"
 
-		self.timerentry_justplay = ConfigSelection(choices = [
+		self.timerentry_justplay = ConfigSelection(choices=[
 			("zap", _("zap")), ("record", _("record")), ("zap+record", _("zap and record"))],
-			default = {0: "record", 1: "zap", 2: "zap+record"}[justplay + 2*always_zap])
+			default={0: "record", 1: "zap", 2: "zap+record"}[justplay + 2 * always_zap])
 		if SystemInfo["DeepstandbySupport"]:
 			shutdownString = _("go to deep standby")
 		else:
 			shutdownString = _("shut down")
-		self.timerentry_afterevent = ConfigSelection(choices = [("nothing", _("do nothing")), ("standby", _("go to standby")), ("deepstandby", shutdownString), ("auto", _("auto"))], default = afterevent)
-		self.timerentry_recordingtype = ConfigSelection(choices = [("normal", _("normal")), ("descrambled+ecm", _("descramble and record ecm")), ("scrambled+ecm", _("don't descramble, record ecm"))], default = recordingtype)
-		self.timerentry_name = ConfigText(default = self.timer.name.replace('\xc2\x86', '').replace('\xc2\x87', '').encode("utf-8"), visible_width = 50, fixed_size = False)
-		self.timerentry_description = ConfigText(default = self.timer.description, visible_width = 50, fixed_size = False)
+		self.timerentry_afterevent = ConfigSelection(choices=[("nothing", _("do nothing")), ("standby", _("go to standby")), ("deepstandby", shutdownString), ("auto", _("auto"))], default=afterevent)
+		self.timerentry_recordingtype = ConfigSelection(choices=[("normal", _("normal")), ("descrambled+ecm", _("descramble and record ecm")), ("scrambled+ecm", _("don't descramble, record ecm"))], default=recordingtype)
+		self.timerentry_name = ConfigText(default=self.timer.name.replace('\xc2\x86', '').replace('\xc2\x87', '').encode("utf-8"), visible_width=50, fixed_size=False)
+		self.timerentry_description = ConfigText(default=self.timer.description, visible_width=50, fixed_size=False)
 		self.timerentry_tags = self.timer.tags[:]
 		# if no tags found, make name of event default tag set.
 		if not self.timerentry_tags:
@@ -63,20 +63,20 @@ class TimerEntry(TimerEntryBase):
 					tagname = tagname[0].upper() + tagname[1:].replace(" ", "_")
 					self.timerentry_tags.append(tagname)
 
-		self.timerentry_tagsset = ConfigSelection(choices = [not self.timerentry_tags and "None" or " ".join(self.timerentry_tags)])
+		self.timerentry_tagsset = ConfigSelection(choices=[not self.timerentry_tags and "None" or " ".join(self.timerentry_tags)])
 
-		self.timerentry_renamerepeat = ConfigYesNo(default = rename_repeat)
+		self.timerentry_renamerepeat = ConfigYesNo(default=rename_repeat)
 
-		self.timerentry_pipzap = ConfigYesNo(default = pipzap)
-		self.timerentry_conflictdetection = ConfigYesNo(default = conflict_detection)
+		self.timerentry_pipzap = ConfigYesNo(default=pipzap)
+		self.timerentry_conflictdetection = ConfigYesNo(default=conflict_detection)
 
-		self.timerentry_showendtime = ConfigSelection(default = False, choices = [(True, _("yes")), (False, _("no"))])
+		self.timerentry_showendtime = ConfigSelection(default=False, choices=[(True, _("yes")), (False, _("no"))])
 
 		default = self.timer.dirname or defaultMoviePath()
 		tmp = config.movielist.videodirs.value
 		if default not in tmp:
 			tmp.append(default)
-		self.timerentry_dirname = ConfigSelection(default = default, choices = tmp)
+		self.timerentry_dirname = ConfigSelection(default=default, choices=tmp)
 
 		# FIXME some service-chooser needed here
 		servicename = "N/A"
@@ -129,7 +129,7 @@ class TimerEntry(TimerEntryBase):
 				MovieLocationBox,
 				_("Select target folder"),
 				self.timerentry_dirname.value,
-				minFree = 100 # We require at least 100MB free space
+				minFree=100 # We require at least 100MB free space
 			)
 		elif cur and cur[1] == self.timerentry_tagsset:
 			self.session.openWithCallback(
@@ -154,7 +154,7 @@ class TimerEntry(TimerEntryBase):
 		# if the timer type is a Zap and no end is set, set duration to 1 second so time is shown in EPG's.
 		if self.timerentry_justplay.value == "zap":
 			if not self.timerentry_showendtime.value:
-				end = begin + (config.recording.margin_before.value*60) + 1
+				end = begin + (config.recording.margin_before.value * 60) + 1
 
 		return begin, end
 
@@ -170,7 +170,7 @@ class TimerEntry(TimerEntryBase):
 			self.finishedChannelSelection(*args)
 			self.keySave()
 
-	def keySave(self, result = None):
+	def keySave(self, result=None):
 		if not self.timerentry_service_ref.isRecordable():
 			self.session.openWithCallback(self.selectChannelSelector, MessageBox, _("You didn't select a channel to record from."), MessageBox.TYPE_ERROR)
 			return
@@ -234,7 +234,7 @@ class TimerEntry(TimerEntryBase):
 						if i.toString() == ref.toString():
 							selection = x
 						tlist.append((i.getName(), i))
-					self.session.openWithCallback(self.subserviceSelected, ChoiceBox, title=_("Please select a subservice to record..."), list = tlist, selection = selection)
+					self.session.openWithCallback(self.subserviceSelected, ChoiceBox, title=_("Please select a subservice to record..."), list=tlist, selection=selection)
 					return
 				elif n > 0:
 					parent = self.timer.service_ref.ref
@@ -276,14 +276,17 @@ class TimerEntry(TimerEntryBase):
 			self.timerentry_tagsset.setChoices([not ret and "None" or " ".join(ret)])
 			self.invalidateConfigEntry(self.timerentry_tagsset)
 
+
 class TimerLog(TimerLogBase):
 	pass
+
 
 def addTimerFromEvent(session, refreshCallback, event, service):
 	if event is None or event.getBeginTime() + event.getDuration() < time():
 		return
 	timer = RecordTimerEntry(service, checkOldTimers=True, dirname=preferredTimerPath(), *parseEvent(event, service=service))
 	session.openWithCallback(lambda answer: checkForConflicts(session, refreshCallback, answer[1]) if answer[0] else None, TimerEntry, timer)
+
 
 def addTimerFromEventSilent(session, refreshCallback, event, service, zap=0):
 	if event is None or event.getBeginTime() + event.getDuration() < time():
@@ -295,6 +298,7 @@ def addTimerFromEventSilent(session, refreshCallback, event, service, zap=0):
 	timer.resetRepeated()
 	checkForConflicts(session, refreshCallback, timer)
 
+
 def checkForConflicts(session, refreshCallback, timer):
 	simulTimerList = getTimerConflicts(session, timer)
 	if simulTimerList is not None:
@@ -304,6 +308,7 @@ def checkForConflicts(session, refreshCallback, timer):
 		if refreshCallback is not None:
 			refreshCallback(timer)
 		session.nav.RecordTimer.saveTimer()
+
 
 def getTimerConflicts(session, timer):
 	# every call must explicitly tell record to "dosave=False" to prevent regeneration of timer.xml

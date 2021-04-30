@@ -2,10 +2,11 @@
 from Components.Converter.Converter import Converter
 from enigma import iServiceInformation, iPlayableService, iPlayableServicePtr, eServiceCenter
 from Components.Element import cached
-from ServiceReference import resolveAlternate,  ServiceReference
+from ServiceReference import resolveAlternate, ServiceReference
 from Tools.Transponder import ConvertToHumanReadable, getChannelNumber
 from Components.NimManager import nimmanager
 import Screens.InfoBar
+
 
 class TransponderInfo(Converter, object):
 	def __init__(self, type):
@@ -29,7 +30,7 @@ class TransponderInfo(Converter, object):
 				ref = nref
 				info = eServiceCenter.getInstance().info(ref)
 			transponderraw = info.getInfoObject(ref, iServiceInformation.sTransponderData)
-			ref = ref.toString().replace("%3a",":")
+			ref = ref.toString().replace("%3a", ":")
 		else:
 			transponderraw = info.getInfoObject(iServiceInformation.sTransponderData)
 			ref = info.getInfoString(iServiceInformation.sServiceref)
@@ -43,11 +44,11 @@ class TransponderInfo(Converter, object):
 				if "DVB-T" in transponderdata["system"]:
 					return "%s %s %s %s %s-%s" % (transponderdata["system"], transponderdata["channel"], transponderdata["frequency"], transponderdata["bandwidth"], tsid, onid)
 				elif "DVB-C" in transponderdata["system"]:
-					return "%s %s %s %s %s %s-%s" % (transponderdata["system"], transponderdata["frequency"], transponderdata["symbol_rate"], transponderdata["fec_inner"], tsid, onid, \
+					return "%s %s %s %s %s %s-%s" % (transponderdata["system"], transponderdata["frequency"], transponderdata["symbol_rate"], transponderdata["fec_inner"], tsid, onid,
 						transponderdata["modulation"])
 				elif "ATSC" in transponderdata["system"]:
 					return "%s %s %s %s-%s" % (transponderdata["system"], transponderdata["frequency"], transponderdata["modulation"], tsid, onid)
-				return "%s %s %s %s %s %s %s-%s %s" % (transponderdata["system"], transponderdata["frequency"], transponderdata["polarization_abbreviation"], transponderdata["symbol_rate"], \
+				return "%s %s %s %s %s %s %s-%s %s" % (transponderdata["system"], transponderdata["frequency"], transponderdata["polarization_abbreviation"], transponderdata["symbol_rate"],
  					transponderdata["fec_inner"], transponderdata["modulation"], tsid, onid, transponderdata["detailed_satpos" in self.type and "orbital_position" or "orb_pos"])
 			except:
 				return ""
@@ -69,7 +70,7 @@ class TransponderInfo(Converter, object):
 		# only populated entries, and, convert to lower case
 		t = self.type and [x.lower() for x in self.type if x]
 		return bool(s and t and s in t)
-	
+
 	boolean = property(getBoolean)
 
 	def rootBouquet(self):

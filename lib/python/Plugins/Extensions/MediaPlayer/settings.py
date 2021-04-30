@@ -16,12 +16,13 @@ config.mediaplayer.sortPlaylists = ConfigYesNo(default=False)
 config.mediaplayer.alwaysHideInfoBar = ConfigYesNo(default=True)
 config.mediaplayer.onMainMenu = ConfigYesNo(default=False)
 
+
 class DirectoryBrowser(Screen, HelpableScreen):
 
 	def __init__(self, session, currDir):
 		Screen.__init__(self, session)
 		# for the skin: first try MediaPlayerDirectoryBrowser, then FileBrowser, this allows individual skinning
-		self.skinName = ["MediaPlayerDirectoryBrowser", "FileBrowser" ]
+		self.skinName = ["MediaPlayerDirectoryBrowser", "FileBrowser"]
 
 		HelpableScreen.__init__(self)
 
@@ -58,14 +59,15 @@ class DirectoryBrowser(Screen, HelpableScreen):
 	def exit(self):
 		self.close(False)
 
-class MediaPlayerSettings(Screen,ConfigListScreen):
+
+class MediaPlayerSettings(Screen, ConfigListScreen):
 
 	def __init__(self, session, parent):
 		Screen.__init__(self, session)
 		# for the skin: first try MediaPlayerSettings, then Setup, this allows individual skinning
-		self.skinName = ["MediaPlayerSettings", "Setup" ]
+		self.skinName = ["MediaPlayerSettings", "Setup"]
 		self.setup_title = _("Edit settings")
-		self.onChangedEntry = [ ]
+		self.onChangedEntry = []
 		self["HelpWindow"] = Pixmap()
 		self["HelpWindow"].hide()
 		self["VKeyIcon"] = Boolean(False)
@@ -73,7 +75,7 @@ class MediaPlayerSettings(Screen,ConfigListScreen):
 		self["key_red"] = StaticText(_("Cancel"))
 		self["key_green"] = StaticText(_("Save"))
 
-		ConfigListScreen.__init__(self, [], session = session, on_change = self.changedEntry)
+		ConfigListScreen.__init__(self, [], session=session, on_change=self.changedEntry)
 		self.parent = parent
 		self.initConfigList()
 		config.mediaplayer.saveDirOnExit.addNotifier(self.initConfigList)

@@ -17,12 +17,12 @@ import urllib2
 if getImageType() == 'release':
 	ImageVer = "%03d" % int(getImageBuild())
 else:
-	ImageVer = "%s.%s" % (getImageBuild(),getImageDevBuild())
+	ImageVer = "%s.%s" % (getImageBuild(), getImageDevBuild())
 	ImageVer = float(ImageVer)
 
 E2Branches = {
-	'developer' : 'Dev',
-	'release' : 'master'
+	'developer': 'Dev',
+	'release': 'master'
 	}
 
 project = 0
@@ -36,6 +36,7 @@ projects = [
 	("https://api.github.com/repos/oe-alliance/branding-module/commits", "Branding Module"),
 ]
 cachedProjects = {}
+
 
 def readGithubCommitLogsSoftwareUpdate():
 	global ImageVer
@@ -90,10 +91,11 @@ def readGithubCommitLogsSoftwareUpdate():
 	except urllib2, err:
 		print '[GitCommitLog] The commit log cannot be retrieved at the moment - please try again later.', err
 		commitlog += _("The commit log cannot be retrieved at the moment - please try again later.\n")
-	except Exception , err:
+	except Exception, err:
 		print '[GitCommitLog] The commit log cannot be retrieved at the moment - please try again later.', err
 		commitlog += _("The commit log cannot be retrieved at the moment - please try again later.")
 	return commitlog
+
 
 def readGithubCommitLogs():
 	global ImageVer
@@ -155,23 +157,28 @@ def readGithubCommitLogs():
 	except urllib2, err:
 		print '[GitCommitLog] The commit log cannot be retrieved at the moment - please try again later.', err
 		commitlog += _("The commit log cannot be retrieved at the moment - please try again later.\n")
-	except Exception , err:
+	except Exception, err:
 		print '[GitCommitLog] The commit log cannot be retrieved at the moment - please try again later.', err
 		commitlog += _("The commit log cannot be retrieved at the moment - please try again later.")
 	return commitlog
 
+
 def getScreenTitle():
 	return projects[project][1]
+
 
 def left():
 	global project
 	project = project == 0 and len(projects) - 1 or project - 1
 
+
 def right():
 	global project
 	project = project != len(projects) - 1 and project + 1 or 0
 
+
 gitcommitinfo = modules[__name__]
+
 
 class CommitInfo(Screen):
 	def __init__(self, session):
@@ -201,7 +208,7 @@ class CommitInfo(Screen):
 		self["AboutScrollLabel"].setText(gitcommitinfo.readGithubCommitLogs().encode("utf8", errors="ignore"))
 
 	def updateCommitLogs(self):
-		if gitcommitinfo.cachedProjects.has_key(gitcommitinfo.getScreenTitle()):
+		if gitcommitinfo.getScreenTitle() in gitcommitinfo.cachedProjects:
 			self.setTitle(gitcommitinfo.getScreenTitle())
 			self["AboutScrollLabel"].setText(gitcommitinfo.cachedProjects[gitcommitinfo.getScreenTitle()])
 		else:

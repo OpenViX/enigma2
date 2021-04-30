@@ -9,9 +9,12 @@ from Components.Ipkg import IpkgComponent
 from Components.config import config
 from Components.About import about
 
-import urllib2, socket, sys
+import urllib2
+import socket
+import sys
 
 error = 0
+
 
 def OnlineUpdateCheck(session=None, **kwargs):
 	global onlineupdatecheckpoller
@@ -20,6 +23,7 @@ def OnlineUpdateCheck(session=None, **kwargs):
 	# OnlineUpdateCheckPoller is set-up, which is will be before we can ever
 	# run.
 	onlineupdatecheckpoller.start()
+
 
 class FeedsStatusCheck:
 	def __init__(self):
@@ -35,7 +39,7 @@ class FeedsStatusCheck:
 
 	def adapterAvailable(self): # Box has an adapter configured and active
 		for adapter in ('eth0', 'eth1', 'wlan0', 'wlan1', 'wlan2', 'wlan3', 'ra0'):
-			if about.getIfConfig(adapter).has_key('addr'):
+			if 'addr' in about.getIfConfig(adapter):
 				print "[OnlineUpdateCheck][adapterAvailable] PASSED"
 				return True
 		print "[OnlineUpdateCheck][adapterAvailable] FAILED"
@@ -80,13 +84,13 @@ class FeedsStatusCheck:
 						d = urllib2.urlopen(req)
 						trafficLight = d.read()
 					except urllib2.HTTPError, err:
-						print '[OnlineUpdateCheck][getFeedStatus] ERROR:',err
+						print '[OnlineUpdateCheck][getFeedStatus] ERROR:', err
 						trafficLight = err.code
 					except urllib2.URLError, err:
-						print '[OnlineUpdateCheck][getFeedStatus] ERROR:',err.reason[0]
+						print '[OnlineUpdateCheck][getFeedStatus] ERROR:', err.reason[0]
 						trafficLight = err.reason[0]
 					except urllib2, err:
-						print '[OnlineUpdateCheck][getFeedStatus] ERROR:',err
+						print '[OnlineUpdateCheck][getFeedStatus] ERROR:', err
 						trafficLight = err
 					except:
 						print '[OnlineUpdateCheck][getFeedStatus] ERROR:', sys.exc_info()[0]
@@ -96,7 +100,7 @@ class FeedsStatusCheck:
 				if trafficLight == 'stable':
 					status = '0'
 				config.softwareupdate.updateisunstable.setValue(status)
-				print '[OnlineUpdateCheck][getFeedStatus] PASSED:',trafficLight
+				print '[OnlineUpdateCheck][getFeedStatus] PASSED:', trafficLight
 				return trafficLight
 			else:
 				print '[OnlineUpdateCheck][getFeedStatus] ERROR: -2'
@@ -110,15 +114,15 @@ class FeedsStatusCheck:
 	# Declared here for consistency and co-location with choices.
 
 	feed_status_msgs = {
-		'stable':     _('Feeds status: Stable'),
-		'unstable':   _('Feeds status: Unstable'),
-		'updating':   _('Feeds status: Updating'),
-		'-2':	      _('ERROR: No internet found'),
-		'-3':	      _('ERROR: No network found'),
-		'403':	      _('ERROR: Response 403 Forbidden'),
-		'404':	      _('ERROR: Response 404 Not Found'),
+		'stable': _('Feeds status: Stable'),
+		'unstable': _('Feeds status: Unstable'),
+		'updating': _('Feeds status: Updating'),
+		'-2': _('ERROR: No internet found'),
+		'-3': _('ERROR: No network found'),
+		'403': _('ERROR: Response 403 Forbidden'),
+		'404': _('ERROR: Response 404 Not Found'),
 		'inprogress': _('ERROR: Check is already running in background, please wait a few minutes and try again'),
-		'unknown':    _('Feeds status: Unknown'),
+		'unknown': _('Feeds status: Unknown'),
 	}
 
 	def getFeedsBool(self):
@@ -169,11 +173,13 @@ class FeedsStatusCheck:
 			elif self.ipkg.currentCommand == IpkgComponent.CMD_UPGRADE_LIST:
 				self.total_packages = len(self.ipkg.getFetchedList())
 				if self.total_packages and (getImageType() != 'release' or (config.softwareupdate.updateisunstable.value == '1' and config.softwareupdate.updatebeta.value) or config.softwareupdate.updateisunstable.value == '0'):
-					print ('[OnlineUpdateCheck][ipkgCallback] %s Updates available' % self.total_packages)
+					print('[OnlineUpdateCheck][ipkgCallback] %s Updates available' % self.total_packages)
 					config.softwareupdate.updatefound.setValue(True)
 		pass
 
+
 feedsstatuscheck = FeedsStatusCheck()
+
 
 class OnlineUpdateCheckPoller:
 	def __init__(self):
@@ -181,7 +187,7 @@ class OnlineUpdateCheckPoller:
 		self.timer = eTimer()
 
 	# Class variables
-	MIN_INITIAL_DELAY = 40 * 60; # Wait at least 40 mins
+	MIN_INITIAL_DELAY = 40 * 60 # Wait at least 40 mins
 	checktimer_Notifier_Added = False
 
 	# Add optional args to start(), as it is now a callback from addNotifier
@@ -194,14 +200,14 @@ class OnlineUpdateCheckPoller:
 		# so the next-timer will be suitably updated...
 		# ...but only add one of them!!!
 		if not self.checktimer_Notifier_Added:
-			config.softwareupdate.checktimer.addNotifier(self.start, initial_call = False, immediate_feedback = False)
+			config.softwareupdate.checktimer.addNotifier(self.start, initial_call=False, immediate_feedback=False)
 			self.checktimer_Notifier_Added = True
 			minimum_delay = self.MIN_INITIAL_DELAY
 		else: # we been here before, so this is *not* start-up
 			minimum_delay = 60 # 1 minute
 
 		last_run = config.softwareupdate.updatelastcheck.getValue()
-		gap = config.softwareupdate.checktimer.value*3600
+		gap = config.softwareupdate.checktimer.value * 3600
 		delay = last_run + gap - int(time())
 
 		# Set-up the minimum delay, which is greater on the first boot-time pass.
@@ -244,8 +250,10 @@ class OnlineUpdateCheckPoller:
 		else:
 			print '[OnlineUpdateCheckPoller] No feeds found, skipping check.'
 
+
 # Create a callable instance...
 onlineupdatecheckpoller = OnlineUpdateCheckPoller()
+
 
 class VersionCheck:
 	def __init__(self):
@@ -273,7 +281,9 @@ class VersionCheck:
 		else:
 			return False
 
+
 versioncheck = VersionCheck()
+
 
 def kernelMismatch():
 	# returns True if a kernal mismatch is found. i.e. STB kernel does not match feeds kernel
@@ -295,7 +305,7 @@ def kernelMismatch():
 		return False
 
 	try:
-		packages = zlib.decompress(gz_data, 16+zlib.MAX_WBITS)
+		packages = zlib.decompress(gz_data, 16 + zlib.MAX_WBITS)
 	except:
 		print '[OnlineUpdateCheck][kernelMismatch] failed to decompress gz_data'
 		return False
@@ -303,13 +313,14 @@ def kernelMismatch():
 	pattern = "kernel-([0-9]+[.][0-9]+[.][0-9]+)"
 	matches = re.findall(pattern, packages)
 	if matches:
-		match = sorted(matches,key=lambda s: list(map(int, s.split('.'))))[-1]
+		match = sorted(matches, key=lambda s: list(map(int, s.split('.'))))[-1]
 		if match != kernelversion:
 			print '[OnlineUpdateCheck][kernelMismatch] kernel mismatch found. STB kernel=%s, feeds kernel=%s' % (kernelversion, match)
 			return True
 
 	print '[OnlineUpdateCheck][kernelMismatch] no kernel mismatch found'
 	return False
+
 
 def statusMessage():
 	# returns message if status message is found, else False.

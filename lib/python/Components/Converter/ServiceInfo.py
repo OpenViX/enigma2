@@ -7,6 +7,7 @@ from Tools.Transponder import ConvertToHumanReadable
 
 WIDESCREEN = [3, 4, 7, 8, 0xB, 0xC, 0xF, 0x10]
 
+
 class ServiceInfo(Poll, Converter):
 	HAS_TELETEXT = 1
 	IS_MULTICHANNEL = 2
@@ -79,7 +80,7 @@ class ServiceInfo(Poll, Converter):
 			"Progressive": (self.PROGRESSIVE, (iPlayableService.evVideoProgressiveChanged, iPlayableService.evUpdatedInfo,)),
 			"VideoInfo": (self.VIDEO_INFO, (iPlayableService.evVideoSizeChanged, iPlayableService.evVideoFramerateChanged, iPlayableService.evVideoProgressiveChanged, iPlayableService.evUpdatedInfo,)),
 			"TransferBPS": (self.TRANSFERBPS, (iPlayableService.evUpdatedInfo,)),
-			"HasHBBTV": (self.HAS_HBBTV, (iPlayableService.evUpdatedInfo,iPlayableService.evHBBTVInfo, iPlayableService.evStart)),
+			"HasHBBTV": (self.HAS_HBBTV, (iPlayableService.evUpdatedInfo, iPlayableService.evHBBTVInfo, iPlayableService.evStart)),
 			"AudioTracksAvailable": (self.AUDIOTRACKS_AVAILABLE, (iPlayableService.evUpdatedInfo, iPlayableService.evStart)),
 			"SubtitlesAvailable": (self.SUBTITLES_AVAILABLE, (iPlayableService.evUpdatedInfo, iPlayableService.evStart)),
 			"Freq_Info": (self.FREQ_INFO, (iPlayableService.evUpdatedInfo,)),
@@ -100,7 +101,7 @@ class ServiceInfo(Poll, Converter):
 			"IsHLG": (self.IS_HLG, (iPlayableService.evVideoGammaChanged, iPlayableService.evUpdatedInfo, iPlayableService.evStart)),
 			"IsVideoMPEG2": (self.IS_VIDEO_MPEG2, (iPlayableService.evUpdatedInfo, iPlayableService.evStart)),
 			"IsVideoAVC": (self.IS_VIDEO_AVC, (iPlayableService.evUpdatedInfo, iPlayableService.evStart)),
-			"IsVideoHEVC": (self.IS_VIDEO_HEVC,(iPlayableService.evUpdatedInfo, iPlayableService.evStart)),
+			"IsVideoHEVC": (self.IS_VIDEO_HEVC, (iPlayableService.evUpdatedInfo, iPlayableService.evStart)),
 		}[type]
 
 	def isVideoService(self, info):
@@ -223,7 +224,7 @@ class ServiceInfo(Poll, Converter):
 			elif self.type == self.IS_SD:
 				return video_height < 720
 			elif self.type == self.IS_HD:
-				return video_height >= 720 and video_height < 2160
+				return video_height >= 720 and video_height < 1500
 			elif self.type == self.IS_SD_AND_WIDESCREEN:
 				return video_height < 720 and video_aspect in WIDESCREEN
 			elif self.type == self.IS_SD_AND_NOT_WIDESCREEN:
@@ -237,7 +238,7 @@ class ServiceInfo(Poll, Converter):
 			elif self.type == self.IS_480:
 				return video_height > 0 and video_height <= 480
 			elif self.type == self.IS_4K:
-				return video_height >= 2100
+				return video_height >= 1500
 			elif self.type == self.PROGRESSIVE:
 				return bool(self._getProgressive(info))
 			elif self.type == self.IS_SDR:

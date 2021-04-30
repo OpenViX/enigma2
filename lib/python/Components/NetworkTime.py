@@ -6,13 +6,17 @@ from time import time
 
 # _session = None
 #
+
+
 def AutoNTPSync(session=None, **kwargs):
 	global ntpsyncpoller
 	ntpsyncpoller = NTPSyncPoller()
 	ntpsyncpoller.start()
 
+
 class NTPSyncPoller:
 	"""Automatically Poll NTP"""
+
 	def __init__(self):
 		# Init Timer
 		self.timer = eTimer()
@@ -35,10 +39,10 @@ class NTPSyncPoller:
 		else:
 			self.update_schedule()
 
-	def update_schedule(self, result = None, retval = None, extra_args = None):
+	def update_schedule(self, result=None, retval=None, extra_args=None):
 		nowTime = time()
 		if nowTime > 10000:
-			print '[NetworkTime] setting E2 time:',nowTime
+			print '[NetworkTime] setting E2 time:', nowTime
 			setRTCtime(nowTime)
 			if config.misc.SyncTimeUsing.value == "1":
 				eDVBLocalTimeHandler.getInstance().setUseDVBTime(False)

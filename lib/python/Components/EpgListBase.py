@@ -1,8 +1,10 @@
-from enigma import eEPGCache, eListbox, eListboxPythonMultiContent, eServiceReference, eSize, loadPNG, getDesktop
+from enigma import eEPGCache, eListbox, eListboxPythonMultiContent, eServiceReference, eSize
 
 from Components.GUIComponent import GUIComponent
 from Tools.Alternatives import CompareWithAlternatives
 from Tools.Directories import SCOPE_CURRENT_SKIN, resolveFilename
+from Tools.LoadPixmap import LoadPixmap
+from skin import parseScale
 
 
 class EPGListBase(GUIComponent):
@@ -18,25 +20,24 @@ class EPGListBase(GUIComponent):
 
 		# Load the common clock icons.
 		self.clocks = [
-			loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock_pre.png")),
-			loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock_post.png")),
-			loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock_prepost.png")),
-			loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock.png")),
-			loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock_zap.png")),
-			loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock_zaprec.png"))
+			LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock_pre.png")),
+			LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock_post.png")),
+			LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock_prepost.png")),
+			LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock.png")),
+			LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock_zap.png")),
+			LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock_zaprec.png"))
 		]
 		self.selclocks = [
-			loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock_selpre.png")) or self.clocks[0],
-			loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock_selpost.png")) or self.clocks[1],
-			loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock_selprepost.png")) or self.clocks[2],
+			LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock_selpre.png")) or self.clocks[0],
+			LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock_selpost.png")) or self.clocks[1],
+			LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock_selprepost.png")) or self.clocks[2],
 			self.clocks[3],
 			self.clocks[4],
 			self.clocks[5]
 		]
 
-		self.autotimericon = loadPNG(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock_autotimer.png"))
+		self.autotimericon = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock_autotimer.png"))
 
-		self.isFullHd = getDesktop(0).size().width() == 1920
 		self.listHeight = None
 		self.listWidth = None
 		self.skinItemHeight = None
@@ -47,8 +48,8 @@ class EPGListBase(GUIComponent):
 			attribs = []
 			for (attrib, value) in self.skinAttributes:
 				if attrib == "itemHeight":
-					self.skinItemHeight = int(value)
-				if attrib == "NumberOfRows": # for compatibility with ATV skins
+					self.skinItemHeight = parseScale(value)
+				elif attrib == "NumberOfRows": # for compatibility with ATV skins
 					self.numberOfRows = int(value)
 				else:
 					attribs.append((attrib, value))

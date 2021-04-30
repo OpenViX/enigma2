@@ -7,16 +7,17 @@ import skin
 
 # [ ( actionmap, context, [(action, help), (action, help), ...] ), (actionmap, ... ), ... ]
 
+
 class HelpMenuList(GUIComponent):
 	def __init__(self, helplist, callback):
 		GUIComponent.__init__(self)
-		self.onSelChanged = [ ]
+		self.onSelChanged = []
 		self.l = eListboxPythonMultiContent()
 		self.callback = callback
 		self.extendedHelp = False
 
-		l = [ ]
-		
+		l = []
+
 		sortlist = []
 		for (actionmap, context, actions) in helplist:
 			for (action, help) in actions:
@@ -27,7 +28,7 @@ class HelpMenuList(GUIComponent):
 				sortlist.append((actionmap, context, action, help))
 		# Sort by description text (main and extended), then by action (this puts numeric actions in ascending order).
 		sortlist.sort(key=lambda helpItem: (map(str.lower, helpItem[3] if isinstance(helpItem[3], (tuple, list)) else [helpItem[3]]), helpItem[2]))
-		
+
 		for (actionmap, context, action, help) in sortlist:
 				buttons = queryKeyBinding(context, action)
 
@@ -50,20 +51,20 @@ class HelpMenuList(GUIComponent):
 				if flags & 8: # for long keypresses, prepend l_ into the key name.
 					name = (name[0], "long")
 
-				entry = [ (actionmap, context, action, name ) ]
+				entry = [(actionmap, context, action, name)]
 
 				if isinstance(help, list):
 					self.extendedHelp = True
 					print "extendedHelpEntry found"
-					x, y, w, h = skin.parameters.get("HelpMenuListExtHlp0",(skin.applySkinFactor(5), 0, skin.applySkinFactor(595), skin.applySkinFactor(28)))
-					x1, y1, w1, h1 = skin.parameters.get("HelpMenuListExtHlp1",(skin.applySkinFactor(5), skin.applySkinFactor(34), skin.applySkinFactor(595), skin.applySkinFactor(22)))
+					x, y, w, h = skin.parameters.get("HelpMenuListExtHlp0", (skin.applySkinFactor(5), 0, skin.applySkinFactor(595), skin.applySkinFactor(28)))
+					x1, y1, w1, h1 = skin.parameters.get("HelpMenuListExtHlp1", (skin.applySkinFactor(5), skin.applySkinFactor(34), skin.applySkinFactor(595), skin.applySkinFactor(22)))
 					entry.extend((
 						(eListboxPythonMultiContent.TYPE_TEXT, x, y, w, h, 0, 0, help[0]),
 						(eListboxPythonMultiContent.TYPE_TEXT, x1, y1, w1, h1, 1, 0, help[1])
 					))
 				else:
-					x, y, w, h = skin.parameters.get("HelpMenuListHlp",(skin.applySkinFactor(5), 0, skin.applySkinFactor(595), skin.applySkinFactor(28)))
-					entry.append( (eListboxPythonMultiContent.TYPE_TEXT, x, y, w, h, 0, 0, help) )
+					x, y, w, h = skin.parameters.get("HelpMenuListHlp", (skin.applySkinFactor(5), 0, skin.applySkinFactor(595), skin.applySkinFactor(28)))
+					entry.append((eListboxPythonMultiContent.TYPE_TEXT, x, y, w, h, 0, 0, help))
 
 				l.append(entry)
 

@@ -32,14 +32,18 @@ from enigma import eTimer
 
 defaultInhibitDirs = ["/bin", "/boot", "/dev", "/etc", "/lib", "/proc", "/sbin", "/sys", "/var"]
 
+
 class LocationBox(Screen, NumericalTextInput, HelpableScreen):
 	"""Simple Class similar to MessageBox / ChoiceBox but used to choose a folder/pathname combination"""
-	def __init__(self, session, text="", filename="", currDir=None, bookmarks=None, userMode=False, windowTitle = None, minFree=None, autoAdd=False, editDir=False, inhibitDirs=None, inhibitMounts=None):
+
+	def __init__(self, session, text="", filename="", currDir=None, bookmarks=None, userMode=False, windowTitle=None, minFree=None, autoAdd=False, editDir=False, inhibitDirs=None, inhibitMounts=None):
 		# Init parents
-		if not inhibitDirs: inhibitDirs = []
-		if not inhibitMounts: inhibitMounts = []
+		if not inhibitDirs:
+			inhibitDirs = []
+		if not inhibitMounts:
+			inhibitMounts = []
 		Screen.__init__(self, session)
-		NumericalTextInput.__init__(self, handleTimeout = False)
+		NumericalTextInput.__init__(self, handleTimeout=False)
 		HelpableScreen.__init__(self)
 
 		# Set useable chars
@@ -70,7 +74,7 @@ class LocationBox(Screen, NumericalTextInput, HelpableScreen):
 		self.inhibitDirs = inhibitDirs
 
 		# Initialize FileList
-		self["filelist"] = FileList(currDir, showDirectories = True, showFiles = False, inhibitMounts = inhibitMounts, inhibitDirs = inhibitDirs)
+		self["filelist"] = FileList(currDir, showDirectories=True, showFiles=False, inhibitMounts=inhibitMounts, inhibitDirs=inhibitDirs)
 
 		# Initialize BookList
 		self["booklist"] = MenuList(self.bookmarks)
@@ -97,13 +101,14 @@ class LocationBox(Screen, NumericalTextInput, HelpableScreen):
 		# Custom Action Handler
 		class LocationBoxActionMap(HelpableActionMap):
 			def __init__(self, parent, context, actions=None, prio=0):
-				if not actions: actions = {}
+				if not actions:
+					actions = {}
 				HelpableActionMap.__init__(self, parent, context, actions, prio)
 				self.box = parent
 
 			def action(self, contexts, action):
 				# Reset Quickselect
-				self.box.timeout(force = True)
+				self.box.timeout(force=True)
 
 				return HelpableActionMap.action(self, contexts, action)
 
@@ -232,8 +237,8 @@ class LocationBox(Screen, NumericalTextInput, HelpableScreen):
 			self.session.openWithCallback(
 				self.createDirCallback,
 				InputBox,
-				title = _("Please enter the name of the new directory"),
-				text = ""
+				title=_("Please enter the name of the new directory"),
+				text=""
 			)
 
 	def createDirCallback(self, res):
@@ -244,16 +249,16 @@ class LocationBox(Screen, NumericalTextInput, HelpableScreen):
 					self.session.open(
 						MessageBox,
 						_("Creating directory %s failed.") % path,
-						type = MessageBox.TYPE_ERROR,
-						timeout = 5
+						type=MessageBox.TYPE_ERROR,
+						timeout=5
 					)
 				self["filelist"].refresh()
 			else:
 				self.session.open(
 					MessageBox,
 					_("The path %s already exists.") % path,
-					type = MessageBox.TYPE_ERROR,
-					timeout = 5
+					type=MessageBox.TYPE_ERROR,
+					timeout=5
 				)
 
 	def removeDir(self):
@@ -263,14 +268,14 @@ class LocationBox(Screen, NumericalTextInput, HelpableScreen):
 				boundFunction(self.removeDirCallback, sel[0]),
 				MessageBox,
 				_("Do you really want to remove directory %s from the disk?") % (sel[0]),
-				type = MessageBox.TYPE_YESNO
+				type=MessageBox.TYPE_YESNO
 			)
 		else:
 			self.session.open(
 				MessageBox,
 				_("Invalid directory selected: %s") % (sel[0]),
-				type = MessageBox.TYPE_ERROR,
-				timeout = 5
+				type=MessageBox.TYPE_ERROR,
+				timeout=5
 			)
 
 	def removeDirCallback(self, name, res):
@@ -279,8 +284,8 @@ class LocationBox(Screen, NumericalTextInput, HelpableScreen):
 				self.session.open(
 					MessageBox,
 					_("Removing directory %s failed. (Maybe not empty.)") % name,
-					type = MessageBox.TYPE_ERROR,
-					timeout = 5
+					type=MessageBox.TYPE_ERROR,
+					timeout=5
 				)
 			else:
 				self["filelist"].refresh()
@@ -358,7 +363,7 @@ class LocationBox(Screen, NumericalTextInput, HelpableScreen):
 					self.selectConfirmed,
 					MessageBox,
 					_("There might not be enough space on the selected partition..\nDo you really want to continue?"),
-					type = MessageBox.TYPE_YESNO
+					type=MessageBox.TYPE_YESNO
 				)
 			# No minimum free Space means we can safely close
 			else:
@@ -370,8 +375,8 @@ class LocationBox(Screen, NumericalTextInput, HelpableScreen):
 			self.session.openWithCallback(
 				self.nameChanged,
 				InputBox,
-				title = _("Please enter a new filename"),
-				text = self.filename
+				title=_("Please enter a new filename"),
+				text=self.filename
 			)
 
 	def nameChanged(self, res):
@@ -383,8 +388,8 @@ class LocationBox(Screen, NumericalTextInput, HelpableScreen):
 				self.session.open(
 					MessageBox,
 					_("An empty filename is illegal."),
-					type = MessageBox.TYPE_ERROR,
-					timeout = 5
+					type=MessageBox.TYPE_ERROR,
+					timeout=5
 				)
 
 	def updateTarget(self):
@@ -417,8 +422,8 @@ class LocationBox(Screen, NumericalTextInput, HelpableScreen):
 			self.session.openWithCallback(
 				self.menuCallback,
 				ChoiceBox,
-				title = "",
-				list = menu
+				title="",
+				list=menu
 			)
 
 	def menuCallback(self, choice):
@@ -476,7 +481,7 @@ class LocationBox(Screen, NumericalTextInput, HelpableScreen):
 					break
 				idx += 1
 
-	def timeout(self, force = False):
+	def timeout(self, force=False):
 		# Timeout Key
 		if not force and self.qs_timer_type == 0:
 			# Try to select what was typed
@@ -503,21 +508,23 @@ class LocationBox(Screen, NumericalTextInput, HelpableScreen):
 	def __repr__(self):
 		return str(type(self)) + "(" + self.text + ")"
 
-def MovieLocationBox(session, text, dir, minFree = None):
-	return LocationBox(session, text = text, currDir = dir, bookmarks = config.movielist.videodirs, autoAdd = True, editDir = True, inhibitDirs = defaultInhibitDirs, minFree = minFree)
+
+def MovieLocationBox(session, text, dir, minFree=None):
+	return LocationBox(session, text=text, currDir=dir, bookmarks=config.movielist.videodirs, autoAdd=True, editDir=True, inhibitDirs=defaultInhibitDirs, minFree=minFree)
+
 
 class TimeshiftLocationBox(LocationBox):
 	def __init__(self, session):
 		LocationBox.__init__(
 				self,
 				session,
-				text = _("Where to save temporary timeshift recordings?"),
-				currDir = config.usage.timeshift_path.value,
-				bookmarks = config.usage.allowed_timeshift_paths,
-				autoAdd = True,
-				editDir = True,
-				inhibitDirs = defaultInhibitDirs,
-				minFree = 1024 # the same requirement is hardcoded in servicedvb.cpp
+				text=_("Where to save temporary timeshift recordings?"),
+				currDir=config.usage.timeshift_path.value,
+				bookmarks=config.usage.allowed_timeshift_paths,
+				autoAdd=True,
+				editDir=True,
+				inhibitDirs=defaultInhibitDirs,
+				minFree=1024 # the same requirement is hardcoded in servicedvb.cpp
 		)
 		self.skinName = "LocationBox"
 
@@ -530,4 +537,3 @@ class TimeshiftLocationBox(LocationBox):
 			config.usage.timeshift_path.value = self.getPreferredFolder()
 			config.usage.timeshift_path.save()
 			LocationBox.selectConfirmed(self, ret)
-

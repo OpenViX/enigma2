@@ -6,10 +6,11 @@ from Components.Sources.Boolean import Boolean
 from Tools.Directories import resolveFilename, SCOPE_SKIN
 from Components.Console import Console
 
+
 class UserInterfacePositionerWizard(WizardLanguage, Rc):
-	def __init__(self, session, interface = None):
+	def __init__(self, session, interface=None):
 		self.xmlfile = resolveFilename(SCOPE_SKIN, "userinterfacepositionerwizard.xml")
-		WizardLanguage.__init__(self, session, showSteps = False, showStepSlider = False)
+		WizardLanguage.__init__(self, session, showSteps=False, showStepSlider=False)
 		Rc.__init__(self)
 		self.skinName = "StartWizard"
 		self.session = session
@@ -43,7 +44,7 @@ class UserInterfacePositionerWizard(WizardLanguage, Rc):
 		else:
 			self.close()
 
-	def exitWizardQuestion(self, ret = False):
+	def exitWizardQuestion(self, ret=False):
 		if ret:
 			self.markDone()
 			self.close()

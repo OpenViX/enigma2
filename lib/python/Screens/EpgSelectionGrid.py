@@ -17,7 +17,7 @@ from Screens.UserDefinedButtons import UserDefinedButtons
 
 class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceNumberSelection, EPGServiceZap, UserDefinedButtons):
 	def __init__(self, session, zapFunc, startBouquet, startRef, bouquets, timeFocus=None, isInfobar=False):
-		self.epgConfig = config.epgselection.infobar if isInfobar else config.epgselection.grid 
+		self.epgConfig = config.epgselection.infobar if isInfobar else config.epgselection.grid
 		UserDefinedButtons.__init__(self, self.epgConfig, epgActions, okActions, infoActions)
 		EPGSelectionBase.__init__(self, session, self.epgConfig, startBouquet, startRef, bouquets)
 		EPGServiceNumberSelection.__init__(self)
@@ -48,7 +48,7 @@ class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceNumberSe
 		self.updateTimelineTimer = eTimer()
 		self.updateTimelineTimer.callback.append(self.moveTimeLines)
 		self.updateTimelineTimer.start(60000)
-		
+
 		helpDescription = _("EPG Commands")
 		self["epgcursoractions"] = HelpableActionMap(self, "DirectionActions", {
 			"left": (self.leftPressed, _("Go to previous event")),
@@ -56,7 +56,7 @@ class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceNumberSe
 			"up": (self.moveUp, _("Go to previous channel")),
 			"down": (self.moveDown, _("Go to next channel"))
 		}, prio=-1, description=helpDescription)
-		
+
 		self["epgactions"] = HelpableActionMap(self, "EPGSelectActions", {
 			"nextService": self.helpKeyAction("channelup"),
 			"prevService": self.helpKeyAction("channeldown"),
@@ -94,6 +94,7 @@ class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceNumberSe
 	def createSetup(self):
 		oldPIG = config.epgselection.grid.pig.value
 		oldNumberButtonsMode = config.epgselection.grid.number_buttons_mode.value
+
 		def onClose(test=None):
 			if oldPIG != config.epgselection.grid.pig.value or oldNumberButtonsMode != config.epgselection.grid.number_buttons_mode.value:
 				# skin needs changing - we have to reopen
