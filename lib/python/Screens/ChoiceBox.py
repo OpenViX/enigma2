@@ -70,7 +70,7 @@ class ChoiceBox(Screen):
 		if keys is None:
 			self.__keys = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "red", "green", "yellow", "blue"] + (len(list) - 14) * [""]
 		else:
-			self.__keys = keys + (len(choices) - len(keys)) * [""]
+			self.__keys = keys + (len(list) - len(keys)) * [""]
 
 		self.keymap = {}
 		pos = 0
@@ -100,7 +100,7 @@ class ChoiceBox(Screen):
 				strpos = str(self.__keys[pos])
 				self.list.append(ChoiceEntryComponent(key=strpos, text=x))
 				if self.__keys[pos] != "":
-					self.keymap[self.__keys[pos]] = choices[pos]
+					self.keymap[self.__keys[pos]] = list[pos]
 				self.summarylist.append((self.__keys[pos], x[0]))
 				pos += 1
 
