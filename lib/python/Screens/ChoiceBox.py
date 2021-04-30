@@ -23,9 +23,9 @@ class ChoiceBox(Screen):
 		# list is in the format (<display text>, [<parameters to pass to close callback>,])
 		# callbackList is in the format (<display text>, <callback func>, [<parameters>,])
 		self.isCallbackList = bool(callbackList)
-		choices = list or callbackList
-		if not choices:
-			choices = []
+		list = list or callbackList
+		if not list:
+			list = []
 		if not skin_name:
 			skin_name = []
 		Screen.__init__(self, session)
@@ -77,8 +77,25 @@ class ChoiceBox(Screen):
 		if self.reorderConfig:
 			self.config_type = getattr(config.misc.pluginlist, self.reorderConfig)
 			if self.config_type.value:
-				choices = self.makeList(choices)
-		for x in choices:
+				prev_list = list(zip(list, self.__keys))
+				new_list = []
+				for x in self.config_type.value.split(","):
+					for entry in prev_list:
+						if entry[0][0] == x:
+							new_list.append(entry)
+							prev_list.remove(entry)
+				list = list(zip(*(new_list + prev_list)))
+				list, self.__keys = list[0], list[1]
+				number = 1
+				new_keys = []
+				for x in self.__keys:
+					if (not x or x.isdigit()) and number <= 10:
+						new_keys.append(str(number % 10))
+						number += 1
+					else:
+						new_keys.append(not x.isdigit() and x or "")
+				self.__keys = new_keys
+		for x in list:
 			if x:
 				strpos = str(self.__keys[pos])
 				self.list.append(ChoiceEntryComponent(key=strpos, text=x))
@@ -118,29 +135,6 @@ class ChoiceBox(Screen):
 			"menu": self.setDefaultChoiceList,
 			"back": self.cancel
 		}, prio=-2)
-
-
-	def makeList(self, items):
-		prev_list = list(zip(items, self.__keys))
-		new_list = []
-		for x in self.config_type.value.split(","):
-			for entry in prev_list:
-				if entry[0][0] == x:
-					new_list.append(entry)
-					prev_list.remove(entry)
-		items = list(zip(*(new_list + prev_list)))
-		items, self.__keys = items[0], items[1]
-		number = 1
-		new_keys = []
-		for x in self.__keys:
-			if (not x or x.isdigit()) and number <= 10:
-				new_keys.append(str(number % 10))
-				number += 1
-			else:
-				new_keys.append(not x.isdigit() and x or "")
-		self.__keys = new_keys
-		return items
-
 
 	def autoResize(self):
 		desktop_w = enigma.getDesktop(0).size().width()
