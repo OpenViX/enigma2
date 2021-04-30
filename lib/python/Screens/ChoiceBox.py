@@ -77,14 +77,14 @@ class ChoiceBox(Screen):
 		if self.reorderConfig:
 			self.config_type = getattr(config.misc.pluginlist, self.reorderConfig)
 			if self.config_type.value:
-				prev_list = list(zip(list, self.__keys))
+				prev_list = self.wrapWithList(zip(list, self.__keys))
 				new_list = []
 				for x in self.config_type.value.split(","):
 					for entry in prev_list:
 						if entry[0][0] == x:
 							new_list.append(entry)
 							prev_list.remove(entry)
-				list = list(zip(*(new_list + prev_list)))
+				list = self.wrapWithList(zip(*(new_list + prev_list)))
 				list, self.__keys = list[0], list[1]
 				number = 1
 				new_keys = []
@@ -135,6 +135,9 @@ class ChoiceBox(Screen):
 			"menu": self.setDefaultChoiceList,
 			"back": self.cancel
 		}, prio=-2)
+
+	def wrapWithList(iterable):
+		return list(iterable)
 
 	def autoResize(self):
 		desktop_w = enigma.getDesktop(0).size().width()
