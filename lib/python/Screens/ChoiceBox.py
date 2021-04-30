@@ -136,7 +136,7 @@ class ChoiceBox(Screen):
 			"back": self.cancel
 		}, prio=-2)
 
-	def wrapWithList(iterable):
+	def wrapWithList(self, iterable):
 		return list(iterable)
 
 	def autoResize(self):
