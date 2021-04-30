@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 teamBlue\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-04 21:24+0100\n"
+"POT-Creation-Date: 2021-05-02 22:25+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Frenske <voorzitter@openpli.org>\n"
 "Language-Team: PLiteam <translators@openpli.org>\n"
@@ -130,7 +130,10 @@ msgid " (Radio)"
 msgstr "(Radio)"
 
 msgid " (TV)"
-msgstr "(TV)"
+msgstr " (TV)"
+
+msgid " (auto detection)"
+msgstr " (auto detectie)"
 
 msgid " (disabled)"
 msgstr "(uitgeschakeld)"
@@ -466,10 +469,6 @@ msgstr "%s/%s: %s"
 #, fuzzy, python-format
 msgid "%s: %s"
 msgstr "%s/%s: %s"
-
-#, python-format
-msgid "%s:%s"
-msgstr ""
 
 #, python-format
 msgid "'%s' not installed and no known package"
@@ -1060,6 +1059,10 @@ msgstr ""
 msgid "Active"
 msgstr ""
 
+#, fuzzy
+msgid "Adapter"
+msgstr "LANadapter"
+
 msgid "Adapter settings"
 msgstr "Adapterinstellingen"
 
@@ -1330,14 +1333,6 @@ msgid "Also on standby"
 msgstr "standby"
 
 msgid "Alternative"
-msgstr "Alternatieven"
-
-#, fuzzy
-msgid "Alternative 1"
-msgstr "Alternatieven"
-
-#, fuzzy
-msgid "Alternative 2"
 msgstr "Alternatieven"
 
 msgid "Alternative URLs for DVB-T/C or ATSC"
@@ -1892,6 +1887,12 @@ msgstr "Zwart beeld"
 
 msgid "Black screen till locked"
 msgstr "Zwart beeld totdat de zender 'gelockt' is"
+
+msgid "Blindscan"
+msgstr "Blindscan"
+
+msgid "Blindscan terrestrial (if possible)"
+msgstr "Voer een DVB-T blindscan uit (indien mogelijk)"
 
 #, fuzzy
 msgid "Block device"
@@ -3122,6 +3123,9 @@ msgstr ""
 msgid "Configuring"
 msgstr "Configureren"
 
+msgid "Confirm closure of media player"
+msgstr ""
+
 msgid "Conflict not resolved!"
 msgstr ""
 
@@ -3796,6 +3800,10 @@ msgid "Detected NIMs:"
 msgstr "Gedetecteerde tuners:"
 
 #, fuzzy
+msgid "Device"
+msgstr "Kanalen"
+
+#, fuzzy
 msgid "Device Details"
 msgstr "Bekijk details"
 
@@ -4424,7 +4432,10 @@ msgid "Embedded"
 msgstr ""
 
 msgid "Emergency"
-msgstr ""
+msgstr "Noodgeval"
+
+msgid "Empty Trash"
+msgstr "Leeg de prullenmand"
 
 msgid "Empty slot"
 msgstr ""
@@ -5149,7 +5160,6 @@ msgstr ""
 msgid "FastScan"
 msgstr "FastScan"
 
-#, fuzzy
 msgid "Fastscan"
 msgstr "FastScan"
 
@@ -11329,9 +11339,8 @@ msgstr "Toon icoon indien gecodeerd"
 msgid "Show record indicator"
 msgstr "Toon opname indicatie"
 
-#, fuzzy
 msgid "Show satellites list"
-msgstr "Toon de zenderlijst"
+msgstr "Toon de lijst van satellieten"
 
 #, fuzzy
 msgid "Show screen path"
@@ -11399,8 +11408,16 @@ msgstr "Radio weergave modus..."
 msgid "Show the plugin browser.."
 msgstr "Plugin browser"
 
+#, fuzzy
+msgid "Show the radio player..."
+msgstr "Radio weergave modus..."
+
 msgid "Show the service information on two lines in the channel selection screen. You can choose between the current event description below the channel name, or the current event description next to the channel name, and the next event description on the second line."
 msgstr ""
+
+#, fuzzy
+msgid "Show the tv player..."
+msgstr "Radio weergave modus..."
 
 #, fuzzy
 msgid "Show transponder info"
@@ -12361,8 +12378,8 @@ msgstr ""
 #. TRANSLATORS: Add here whatever should be shown in the "translator" about screen, up to 6 lines (use \n for newline)
 msgid "TRANSLATOR_INFO"
 msgstr ""
-"Deze vertaling wordt u aangeboden door het OpenPLi team.\n"
-"De laatste aanpassingen in de vertaling zijn gedaan op 13 mei 2020.\n"
+"Deze Nederlandse vertaling wordt u aangeboden door het OpenPLi team.\n"
+"De laatste aanpassing in deze vertaling is gedaan op 30 April 2021.\n"
 "Voor aanvullingen of opmerkingen stuurt u een mail naar translators@openpli.org."
 
 msgid "TS file is too large for ISO9660 level 1!"
@@ -13587,7 +13604,7 @@ msgstr ""
 
 #, fuzzy
 msgid "Uptime"
-msgstr "Sleeptimer"
+msgstr "Actief sinds"
 
 msgid "Uruguay"
 msgstr ""
@@ -14079,6 +14096,9 @@ msgstr ""
 
 msgid "Warning: no LNB; using factory defaults."
 msgstr "Waarschuwing: geen LNB; standaardwaardes worden gebruikt."
+
+msgid "Warning: the second input of this dual tuner may not support SCR LNBs. "
+msgstr "Waarschuwing: De tweede ingang van deze Dual tuner ondersteunt mogelijk geen SRC LNB's."
 
 msgid "Watch movies..."
 msgstr "Films bekijken....."
@@ -15035,9 +15055,11 @@ msgstr "reclame / shopping"
 msgid "after "
 msgstr "na "
 
-#, fuzzy
 msgid "all"
-msgstr "Alles"
+msgstr "alles"
+
+msgid "all tuners"
+msgstr "alle tuners"
 
 msgid "alphabetic"
 msgstr "alfabetisch"
@@ -15105,6 +15127,10 @@ msgid "auto"
 msgstr "auto"
 
 msgid "automatic"
+msgstr "automatisch"
+
+#, fuzzy
+msgid "automatic from DHCP"
 msgstr "automatisch"
 
 #, fuzzy
@@ -15738,9 +15764,11 @@ msgstr "Rotor draaisnelheid"
 msgid "not supported"
 msgstr "niet ondersteund"
 
-#, fuzzy
 msgid "not tested"
-msgstr "niet gebruikt"
+msgstr "niet getest"
+
+msgid "not valid frontend"
+msgstr "geen juiste frontend"
 
 msgid "not_tested"
 msgstr ""
@@ -15910,7 +15938,9 @@ msgstr "romantiek"
 msgid "rotor"
 msgstr "Auteur:"
 
-#, fuzzy
+msgid "rotor is not used"
+msgstr "de rotor wordt niet gebruikt"
+
 msgid "running"
 msgstr "tuinieren"
 
