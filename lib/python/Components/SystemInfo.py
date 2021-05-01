@@ -4,7 +4,7 @@ from enigma import Misc_Options, eDVBCIInterfaces, eDVBResourceManager
 from Components.About import getChipSetString
 from Components.RcModel import rc_model
 
-from Tools.Directories import fileCheck, fileExists, fileHas, pathExists
+from Tools.Directories import fileCheck, fileExists, fileHas, pathExists, isSystemPluginInstalled
 from Tools.HardwareInfo import HardwareInfo
 
 SystemInfo = {}
@@ -64,7 +64,8 @@ SystemInfo["Power24x7On"] = fileExists("/proc/stb/fp/power4x7on")
 SystemInfo["Power24x7Standby"] = fileExists("/proc/stb/fp/power4x7standby")
 SystemInfo["Power24x7Suspend"] = fileExists("/proc/stb/fp/power4x7suspend")
 SystemInfo["WakeOnLAN"] = getBoxType() not in ("et8000", "et10000") and fileCheck("/proc/stb/power/wol") or fileCheck("/proc/stb/fp/wol")
-SystemInfo["HDMICEC"] = (fileExists("/dev/hdmi_cec") or fileExists("/dev/misc/hdmi_cec0")) and fileExists("/usr/lib/enigma2/python/Plugins/SystemPlugins/HdmiCEC/plugin.pyo")
+SystemInfo["HDMICEC"] = (fileExists("/dev/hdmi_cec") or fileExists("/dev/misc/hdmi_cec0")) and isSystemPluginInstalled("HdmiCEC")
+SystemInfo["HasHDMI-CEC"] = isSystemPluginInstalled("HdmiCEC")
 SystemInfo["HasExternalPIP"] = getMachineBuild() not in ("et9x00", "et6x00", "et5x00") and fileCheck("/proc/stb/vmpeg/1/external")
 SystemInfo["VideoDestinationConfigurable"] = fileExists("/proc/stb/vmpeg/0/dst_left")
 SystemInfo["hasPIPVisibleProc"] = fileCheck("/proc/stb/vmpeg/1/visible")
@@ -85,7 +86,6 @@ SystemInfo["HasH265Encoder"] = fileHas("/proc/stb/encoder/0/vcodec_choices", "h2
 SystemInfo["CanNotDoSimultaneousTranscodeAndPIP"] = getBoxType() in ("vusolo4k", "gbquad4k")
 SystemInfo["hasXcoreVFD"] = getBoxType() in ("osmega", "spycat4k", "spycat4kmini", "spycat4kcomb") and fileCheck("/sys/module/brcmstb_%s/parameters/pt6302_cgram" % getBoxType())
 SystemInfo["HasHDMIin"] = getHaveHDMIinHD() in ("True",) or getHaveHDMIinFHD() in ("True",)
-SystemInfo["HasHDMI-CEC"] = fileExists("/usr/lib/enigma2/python/Plugins/SystemPlugins/HdmiCEC/plugin.pyo")
 SystemInfo["Has24hz"] = fileCheck("/proc/stb/video/videomode_24hz")
 SystemInfo["AndroidMode"] = SystemInfo["RecoveryMode"] and getMachineBuild() in ("multibox",)
 SystemInfo["MBbootdevice"] = getMBbootdevice()
