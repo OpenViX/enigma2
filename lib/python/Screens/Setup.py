@@ -81,6 +81,7 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 					self.skinName.insert(0, skin)
 				title = setup.get("title", None).encode("UTF-8", errors="ignore") if six.PY2 else setup.get("title", None)
 				title = six.ensure_str(title)
+				# print("[Setup] [createSetup] %s" % title)
 				# If this break is executed then there can only be one setup tag with this key.
 				# This may not be appropriate if conditional setup blocks become available.
 				break
@@ -114,9 +115,18 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 				including = True
 
 	def addItem(self, element):
-		itemText = _(element.get("text", "??").encode("UTF-8", errors="ignore")) if six.PY2 else _(element.get("text", "??"))
-		itemDescription = _(element.get("description", " ").encode("UTF-8", errors="ignore")) if six.PY2 else _(element.get("description", " "))
+		if self.pluginLanguageDomain:
+			if six.py2:		# split on PY2 as throws error if use "if six.PY2 else" 
+				itemText = dgettext(self.pluginLanguageDomain, element.get("text", "??").encode("UTF-8", errors="ignore"))
+				itemDescription = dgettext(self.pluginLanguageDomain, element.get("description", " ").encode("UTF-8", errors="ignore"))
+			else:
+				itemText = dgettext(self.pluginLanguageDomain, element.get("text", "??"))
+				itemDescription = dgettext(self.pluginLanguageDomain, element.get("description", " "))
+		else:
+			itemText = _(element.get("text", "??").encode("UTF-8", errors="ignore")) if six.PY2 else _(element.get("text", "??"))
+			itemDescription = _(element.get("description", " ").encode("UTF-8", errors="ignore")) if six.PY2 else _(element.get("description", " "))
 		item = eval(element.text or "")
+		# print("[Setup] [self.pluginLanguageDomain]itemText = %s itemDescription = %s item = %s" % (itemText, itemDescription, item))
 		if item != "" and not isinstance(item, ConfigNothing):
 			self.list.append((self.formatItemText(itemText), item, self.formatItemDescription(item, itemDescription)))  # Add the item to the config list.
 		if item is config.usage.setupShowDefault:
@@ -322,7 +332,7 @@ def setupDom(setup=None, plugin=None):
 							print("[Setup] Error: Setup key '%s' title is missing or blank!" % key)
 							title = "** Setup error: '%s' title is missing or blank!" % key
 					title = six.ensure_str(title)
-					# print("[Setup] DEBUG: XML setup load: key='%s', title='%s', menuTitle='%s', translated title='%s'" % (key, setup.get("title", "").encode("UTF-8", errors="ignore"), setup.get("menuTitle", "").encode("UTF-8", errors="ignore"), setupTitles[key]))
+					# print("[Setup] [setupDOM]title = %s key = %s" % (title, key))
 			except xml.etree.cElementTree.ParseError as err:
 				fd.seek(0)
 				content = fd.readlines()
