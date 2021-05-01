@@ -103,8 +103,8 @@ class SkinSelector(Screen, HelpableScreen):
 						try:
 							with open(skinPath, "r") as fd:
 								mm = fd.read(65535)
-								skinWidth = re.search("\<?resolution.*?\sxres\s*=\s*\"(\d+)\"", mm)
-								skinHeight = re.search("\<?resolution.*?\syres\s*=\s*\"(\d+)\"", mm)
+								skinWidth = re.search(r"<?resolution.*?\sxres\s*=\s*\"(\d+)\"", mm)
+								skinHeight = re.search(r"<?resolution.*?\syres\s*=\s*\"(\d+)\"", mm)
 								if skinWidth and skinHeight:
 									skinSize = "%sx%s" % (skinWidth.group(1), skinHeight.group(1))
 								resolution = skinHeight and resolutions.get(skinHeight.group(1), None)
