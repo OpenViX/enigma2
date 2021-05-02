@@ -2,6 +2,8 @@ from __future__ import print_function
 
 from boxbranding import getMachineBrand, getMachineName
 
+import six
+
 from twisted.web import client
 from twisted.internet import reactor, defer
 # required methods: Request, urlopen, HTTPError, URLError, urlparse
@@ -51,6 +53,8 @@ class HTTPProgressDownloader(client.HTTPDownloader):
 
 class downloadWithProgress:
 	def __init__(self, url, outputfile, contextFactory=None, *args, **kwargs):
+		if six.PY3:
+			url = six.ensure_binary(url)
 
 		parsed = urlparse(url)
 		scheme = parsed.scheme
