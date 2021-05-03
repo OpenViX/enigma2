@@ -5,6 +5,7 @@ from __future__ import division
 from Components.config import config
 from Components.NimManager import nimmanager
 
+from Screens.ChannelSelection import ChannelSelection
 from Screens.MessageBox import MessageBox
 
 from Tools import Notifications
@@ -29,7 +30,7 @@ from enigma import ePoint, eSize
 debug_name = "opentv_zapper"
 lamedb_path = "/etc/enigma2"
 download_interval = config.plugins.opentvzapper.update_interval.value * 60 * 60 #  6 hours
-download_duration = 180 # stay tuned for 3 minutes
+download_duration = 3 * 60 # stay tuned for 3 minutes
 start_first_download = 5 * 60 # 5 minutes after booting
 wait_time_on_fail = 15 * 60 # 15 minutes
 
@@ -52,26 +53,20 @@ class DefaultAdapter:
 		self.navcore = session.nav
 		self.previousService = None
 		self.currentService = ""
-		self.config_tv_lastroot = ""
-		self.config_tv_lastservice = ""
+		self.currentBouquet = None
 
 	def play(self, service):
+		self.currentBouquet = ChannelSelection.instance is not None and ChannelSelection.instance.getRoot()
 		self.previousService = self.navcore.getCurrentlyPlayingServiceReference()
-		self.config_tv_lastroot = config.tv.lastroot.value
-		self.config_tv_lastservice = config.tv.lastservice.value
 		self.navcore.playService(service)
 		self.currentService = self.navcore.getCurrentlyPlayingServiceReference()
 		return True
 
 	def stop(self):
-		if self.currentService == self.navcore.getCurrentlyPlayingServiceReference(): # check the user hasn't zapped in the mean time
-			if self.config_tv_lastroot:
-				config.tv.lastroot.value = self.config_tv_lastroot
-				config.tv.lastroot.save()
+		if self.currentService == (self.navcore and self.navcore.getCurrentlyPlayingServiceReference()): # check the user hasn't zapped in the mean time
+			if self.currentBouquet is not None:
+				ChannelSelection.instance.setRoot(self.currentBouquet)
 			self.navcore.playService(self.previousService)
-			if self.config_tv_lastservice:
-				config.tv.lastservice.value = self.config_tv_lastservice
-				config.tv.lastservice.save()
 
 
 class RecordAdapter:
