@@ -3,7 +3,6 @@ from __future__ import absolute_import
 import six
 
 from boxbranding import getImageVersion, getImageBuild, getImageDevBuild, getImageType, getImageDistro, getMachineBrand, getMachineName, getMachineBuild
-from os import path
 from gettext import dgettext
 
 from enigma import eTimer, eDVBDB
@@ -26,6 +25,7 @@ from Components.Label import Label
 from Components.ScrollLabel import ScrollLabel
 from Components.Sources.StaticText import StaticText
 from Components.Slider import Slider
+from Tools.Directories import isPluginInstalled
 
 ocram = ''
 
@@ -286,7 +286,7 @@ class UpdatePlugin(Screen, ProtectedScreen):
 					config.softwareupdate.updatefound.setValue(True)
 					choices = [(_("View the changes"), "changes"),
 						(_("Upgrade and reboot system"), "cold")]
-					if path.exists("/usr/lib/enigma2/python/Plugins/SystemPlugins/ViX/BackupManager.pyo"):
+					if isPluginInstalled("ViX"):
 						if not config.softwareupdate.autosettingsbackup.value and config.backupmanager.backuplocation.value:
 							choices.append((_("Perform a settings backup,") + '\n\t' + _("making a backup before updating") + '\n\t' + _("is strongly advised."), "backup"))
 						if not config.softwareupdate.autoimagebackup.value and config.imagemanager.backuplocation.value:
