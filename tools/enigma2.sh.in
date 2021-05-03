@@ -10,8 +10,8 @@ datarootdir=@datarootdir@
 #fi
 
 # hook to execute user startup script before enigma2 start
-if [ -x /etc/enigma2/startup.sh ]; then
-	/etc/enigma2/startup.sh
+if [ -x @sysconfdir@/enigma2/startup.sh ]; then
+	@sysconfdir@/enigma2/startup.sh
 fi
 
 if [ -e /proc/stb/info/boxtype ]; then
