@@ -116,12 +116,8 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 
 	def addItem(self, element):
 		if self.pluginLanguageDomain:
-			if six.py2:		# split on PY2 as throws error if use "if six.PY2 else" 
-				itemText = dgettext(self.pluginLanguageDomain, element.get("text", "??").encode("UTF-8", errors="ignore"))
-				itemDescription = dgettext(self.pluginLanguageDomain, element.get("description", " ").encode("UTF-8", errors="ignore"))
-			else:
-				itemText = dgettext(self.pluginLanguageDomain, element.get("text", "??"))
-				itemDescription = dgettext(self.pluginLanguageDomain, element.get("description", " "))
+			itemText = dgettext(self.pluginLanguageDomain, element.get("text", "??").encode("UTF-8", errors="ignore")) if six.PY2 else dgettext(self.pluginLanguageDomain, element.get("text", "??"))
+			itemDescription = dgettext(self.pluginLanguageDomain, element.get("description", " ").encode("UTF-8", errors="ignore")) if six.PY2 else dgettext(self.pluginLanguageDomain, element.get("description", " "))
 		else:
 			itemText = _(element.get("text", "??").encode("UTF-8", errors="ignore")) if six.PY2 else _(element.get("text", "??"))
 			itemDescription = _(element.get("description", " ").encode("UTF-8", errors="ignore")) if six.PY2 else _(element.get("description", " "))
