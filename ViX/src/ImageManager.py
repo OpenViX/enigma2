@@ -1330,7 +1330,6 @@ class ImageManagerDownload(Screen):
 		self.setIndex = 0
 		self.expanded = []
 		self["list"] = ChoiceList(list=[ChoiceEntryComponent("", ((_("No images found on the selected download server...if password check validity")), "Waiter"))])
-		self.imagesList = {}
 		self.getImageDistro()
 
 	def getImageDistro(self):
