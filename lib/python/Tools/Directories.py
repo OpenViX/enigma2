@@ -549,10 +549,10 @@ def shellquote(s):
 
 def isPluginInstalled(pluginname, pluginfile="plugin", pluginType=None):
 	path = resolveFilename(SCOPE_PLUGINS)
-	pluginfolders = [name for name in os.listdir(path) if os.path.isdir(os.path.join(path, name))]
+	pluginfolders = [name for name in os.listdir(path) if os.path.isdir(os.path.join(path, name)) and name not in ["__pycache__"]]
 	if pluginType is None or pluginType in pluginfolders:
 		plugintypes = pluginType and [pluginType] or pluginfolders
-		for fileext in [".pyo", ".py", ".pyc"]:
+		for fileext in [".py", ".pyc", ".pyo"]:
 			for plugintype in plugintypes:
 				if os.path.isfile(os.path.join(path, plugintype, pluginname, pluginfile + fileext)):
 					return True
