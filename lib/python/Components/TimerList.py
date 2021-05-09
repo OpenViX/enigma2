@@ -8,7 +8,7 @@ from enigma import eListboxPythonMultiContent, eListbox, gFont, RT_HALIGN_LEFT, 
 
 from Components.config import config
 from Components.GUIComponent import GUIComponent
-from Components.MultiContent import MultiContentEntryText, MultiContentEntryPixmapAlphaBlend, MultiContentEntryPixmapAlphaTest
+from Components.MultiContent import MultiContentEntryText, MultiContentEntryPixmapAlphaBlend
 from Components.Renderer.Picon import getPiconName
 from skin import parseFont, parseScale
 from Tools.Alternatives import GetWithAlternative
