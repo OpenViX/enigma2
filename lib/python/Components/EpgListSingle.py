@@ -5,7 +5,6 @@ from skin import parameters, parseFont, applySkinFactor
 
 from Components.config import config
 from Components.EpgListBase import EPGListBase
-from Components.MultiContent import MultiContentEntryText, MultiContentEntryPixmapAlphaBlend, MultiContentEntryPixmapAlphaTest
 import NavigationInstance
 
 # Various value are in minutes, while others are in seconds.
