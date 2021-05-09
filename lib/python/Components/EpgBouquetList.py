@@ -4,7 +4,7 @@ from enigma import eEPGCache, eListbox, eListboxPythonMultiContent, gFont, eRect
 
 from skin import parseColor, parseFont, parseScale
 from Components.GUIComponent import GUIComponent
-from Components.MultiContent import MultiContentEntryText, MultiContentEntryPixmapAlphaBlend, MultiContentEntryPixmapAlphaTest
+from Components.MultiContent import MultiContentEntryText, MultiContentEntryPixmapAlphaBlend
 from Tools.Alternatives import CompareWithAlternatives
 from Tools.Directories import SCOPE_CURRENT_SKIN, resolveFilename
 from Tools.LoadPixmap import LoadPixmap
@@ -161,7 +161,7 @@ class EPGBouquetList(GUIComponent):
 
 		# box background
 		if self.graphic and bgpng is not None:
-			res.append(MultiContentEntryPixmapAlphaTest(
+			res.append(MultiContentEntryPixmapAlphaBlend(
 				pos=(left + self.borderWidth, top + self.borderWidth),
 				size=(width - 2 * self.borderWidth, height - 2 * self.borderWidth),
 				png=bgpng,
@@ -189,25 +189,25 @@ class EPGBouquetList(GUIComponent):
 		# Borders
 		if self.graphic:
 			if borderTopPix is not None:
-				res.append(MultiContentEntryPixmapAlphaTest(
+				res.append(MultiContentEntryPixmapAlphaBlend(
 						pos=(left, r1.top()),
 						size=(r1.width(), self.borderWidth),
 						png=borderTopPix,
 						flags=BT_SCALE))
 			if borderBottomPix is not None:
-				res.append(MultiContentEntryPixmapAlphaTest(
+				res.append(MultiContentEntryPixmapAlphaBlend(
 						pos =(left, r1.height() - self.borderWidth),
 						size=(r1.width(), self.borderWidth),
 						png=borderBottomPix,
 						flags=BT_SCALE))
 			if borderLeftPix is not None:
-				res.append(MultiContentEntryPixmapAlphaTest(
+				res.append(MultiContentEntryPixmapAlphaBlend(
 						pos=(left, r1.top()),
 						size=(self.borderWidth, r1.height()),
 						png=borderLeftPix,
 						flags=BT_SCALE))
 			if borderRightPix is not None:
-				res.append(MultiContentEntryPixmapAlphaTest(
+				res.append(MultiContentEntryPixmapAlphaBlend(
 						pos =(r1.width() - self.borderWidth, left),
 						size=(self.borderWidth, r1.height()),
 						png=borderRightPix,
