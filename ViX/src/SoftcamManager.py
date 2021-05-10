@@ -198,10 +198,10 @@ class VIXSoftcamManager(Screen):
 	def showActivecam2(self, result, retval, extra_args):
 		if retval == 0:
 			if six.PY3:
-				self.currentactivecamtemp = result.decode
+				self.currentactivecamtemp = six.ensure_str(result)
 			else:
 				self.currentactivecamtemp = result
-				self.currentactivecam = "".join([s for s in self.currentactivecamtemp.splitlines(True) if s.strip("\r\n")])
+			self.currentactivecam = "".join([s for s in self.currentactivecamtemp.splitlines(True) if s.strip("\r\n")])
 			self.currentactivecam = self.currentactivecam.replace("\n", ", ")
 			print("[SoftcamManager] Active:%s " % self.currentactivecam)
 			if path.exists("/tmp/SoftcamsScriptsRunning"):
