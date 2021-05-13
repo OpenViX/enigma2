@@ -5,7 +5,7 @@ from skin import parseFont, parseScale
 from Tools.FuzzyDate import FuzzyTime
 
 from enigma import eListboxPythonMultiContent, eListbox, gFont, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_VALIGN_TOP, RT_VALIGN_BOTTOM, BT_SCALE, BT_KEEP_ASPECT_RATIO, BT_ALIGN_CENTER
-from Components.MultiContent import MultiContentEntryText, MultiContentEntryPixmapAlphaBlend, MultiContentEntryPixmapAlphaTest
+from Components.MultiContent import MultiContentEntryText, MultiContentEntryPixmapAlphaBlend
 from Components.Renderer.Picon import getPiconName
 from Tools.Alternatives import GetWithAlternative
 from Tools.LoadPixmap import LoadPixmap

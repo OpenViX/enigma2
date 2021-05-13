@@ -5,7 +5,7 @@ from enigma import eListbox, eListboxPythonMultiContent, eServiceReference, gFon
 from skin import parseColor, parseFont, parseScale, applySkinFactor
 from Components.EpgListBase import EPGListBase
 from Components.GUIComponent import GUIComponent
-from Components.MultiContent import MultiContentEntryText, MultiContentEntryPixmapAlphaBlend, MultiContentEntryPixmapAlphaTest
+from Components.MultiContent import MultiContentEntryText, MultiContentEntryPixmapAlphaBlend
 from Components.Renderer.Picon import getPiconName
 from Components.config import config
 from RecordTimer import RecordTimer
@@ -455,45 +455,45 @@ class EPGListGrid(EPGListBase):
 		if self.graphic:
 			# Service Borders
 			if self.borderTopPix is not None:
-				res.append(MultiContentEntryPixmapAlphaTest(
+				res.append(MultiContentEntryPixmapAlphaBlend(
 						pos=(r1.left(), r1.top()),
 						size=(r1.width(), self.serviceBorderWidth),
 						png=self.borderTopPix,
 						flags=BT_SCALE))
-				res.append(MultiContentEntryPixmapAlphaTest(
+				res.append(MultiContentEntryPixmapAlphaBlend(
 						pos=(left, top),
 						size=(width, self.eventBorderWidth),
 						png=self.borderTopPix,
 						flags=BT_SCALE))
 			if self.borderBottomPix is not None:
-				res.append(MultiContentEntryPixmapAlphaTest(
+				res.append(MultiContentEntryPixmapAlphaBlend(
 						pos =(r1.left(), r1.height() - self.serviceBorderWidth),
 						size=(r1.width(), self.serviceBorderWidth),
 						png=self.borderBottomPix,
 						flags=BT_SCALE))
-				res.append(MultiContentEntryPixmapAlphaTest(
+				res.append(MultiContentEntryPixmapAlphaBlend(
 						pos =(left, height - self.eventBorderWidth),
 						size=(width, self.eventBorderWidth),
 						png=self.borderBottomPix,
 						flags=BT_SCALE))
 			if self.borderLeftPix is not None:
-				res.append(MultiContentEntryPixmapAlphaTest(
+				res.append(MultiContentEntryPixmapAlphaBlend(
 						pos=(r1.left(), r1.top()),
 						size=(self.serviceBorderWidth, r1.height()),
 						png=self.borderLeftPix,
 						flags=BT_SCALE))
-				res.append(MultiContentEntryPixmapAlphaTest(
+				res.append(MultiContentEntryPixmapAlphaBlend(
 						pos=(left, top),
 						size=(self.eventBorderWidth, height),
 						png=self.borderLeftPix,
 						flags=BT_SCALE))
 			if self.borderRightPix is not None:
-				res.append(MultiContentEntryPixmapAlphaTest(
+				res.append(MultiContentEntryPixmapAlphaBlend(
 						pos =(r1.width() - self.serviceBorderWidth, r1.left()),
 						size=(self.serviceBorderWidth, r1.height()),
 						png=self.borderRightPix,
 						flags=BT_SCALE))
-				res.append(MultiContentEntryPixmapAlphaTest(
+				res.append(MultiContentEntryPixmapAlphaBlend(
 						pos =(left + width - self.eventBorderWidth, top),
 						size=(self.eventBorderWidth, height),
 						png=self.borderRightPix,
@@ -503,7 +503,7 @@ class EPGListGrid(EPGListBase):
 			# the prevents issues with lingering selection highlights.
 			png = (selected and events is None and self.selEvPix) or self.othEvPix
 			if png:
-				res.append(MultiContentEntryPixmapAlphaTest(
+				res.append(MultiContentEntryPixmapAlphaBlend(
 					pos=(left + self.eventBorderWidth, top + self.eventBorderWidth),
 					size=(width - 2 * self.eventBorderWidth, height - 2 * self.eventBorderWidth),
 					png=png,
@@ -583,7 +583,7 @@ class EPGListGrid(EPGListBase):
 				if bgpng is not None and self.graphic:
 					backColor = None
 					backColorSel = None
-					res.append(MultiContentEntryPixmapAlphaTest(
+					res.append(MultiContentEntryPixmapAlphaBlend(
 						pos=(left + xpos + self.eventBorderWidth, top + self.eventBorderWidth),
 						size=(ewidth - 2 * self.eventBorderWidth, height - 2 * self.eventBorderWidth),
 						png=bgpng,
@@ -617,25 +617,25 @@ class EPGListGrid(EPGListBase):
 				# Event box borders.
 				if self.graphic:
 					if borderTopPix is not None:
-						res.append(MultiContentEntryPixmapAlphaTest(
+						res.append(MultiContentEntryPixmapAlphaBlend(
 								pos=(left + xpos, top),
 								size=(ewidth, self.eventBorderWidth),
 								png=borderTopPix,
 								flags=BT_SCALE))
 					if borderBottomPix is not None:
-						res.append(MultiContentEntryPixmapAlphaTest(
+						res.append(MultiContentEntryPixmapAlphaBlend(
 								pos =(left + xpos, height - self.eventBorderWidth),
 								size=(ewidth, self.eventBorderWidth),
 								png=borderBottomPix,
 								flags=BT_SCALE))
 					if borderLeftPix is not None:
-						res.append(MultiContentEntryPixmapAlphaTest(
+						res.append(MultiContentEntryPixmapAlphaBlend(
 								pos=(left + xpos, top),
 								size=(self.eventBorderWidth, height),
 								png=borderLeftPix,
 								flags=BT_SCALE))
 					if borderRightPix is not None:
-						res.append(MultiContentEntryPixmapAlphaTest(
+						res.append(MultiContentEntryPixmapAlphaBlend(
 								pos =(left + xpos + ewidth - self.eventBorderWidth, top),
 								size=(self.eventBorderWidth, height),
 								png=borderRightPix,
@@ -951,7 +951,7 @@ class TimelineText(GUIComponent):
 			if bgpng is not None and self.graphic:
 				backColor = None
 				backColorSel = None
-				res.append(MultiContentEntryPixmapAlphaTest(
+				res.append(MultiContentEntryPixmapAlphaBlend(
 					pos=(0, 0),
 					size=(serviceRect.width(), self.listHeight),
 					png=bgpng,
@@ -977,7 +977,7 @@ class TimelineText(GUIComponent):
 			if bgpng is not None and self.graphic:
 				backColor = None
 				backColorSel = None
-				res.append(MultiContentEntryPixmapAlphaTest(
+				res.append(MultiContentEntryPixmapAlphaBlend(
 					pos=(serviceRect.width(), 0),
 					size=(eventRect.width(), self.listHeight),
 					png=bgpng,
