@@ -937,13 +937,13 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 
 	def keyNumberGlobal(self, number):
 		unichar = self.numericalTextInput.getKey(number)
-		charstr = unichar.encode("utf-8")
+		charstr = six.ensure_str(unichar)
 		if len(charstr) == 1:
 			self.list.moveToChar(charstr[0], self["chosenletter"])
 
 	def keyAsciiCode(self):
 		unichar = six.unichr(getPrevAsciiCode())
-		charstr = unichar.encode("utf-8")
+		charstr = six.ensure_str(unichar)
 		if len(charstr) == 1:
 			self.list.moveToString(charstr[0], self["chosenletter"])
 
