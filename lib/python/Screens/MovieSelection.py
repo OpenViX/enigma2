@@ -1077,10 +1077,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		from Screens.EventView import EventViewSimple
 		evt = self["list"].getCurrentEvent()
 		if evt:
-			if six.PY3:
-				self.session.open(EventViewSimple, evt, ServiceReference(self.getCurrent()))
-			else:
-				self.session.open(EventViewSimple, evt, self.getCurrent())
+			self.session.open(EventViewSimple, evt, self.getCurrent())
 
 	def saveListsize(self):
 		listsize = self["list"].instance.size()
