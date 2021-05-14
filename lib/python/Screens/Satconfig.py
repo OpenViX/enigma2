@@ -11,7 +11,7 @@ from Components.Button import Button
 from Components.Label import Label
 from Components.UsageConfig import showrotorpositionChoicesUpdate
 from Components.SelectionList import SelectionList, SelectionEntryComponent
-from Components.config import getConfigListEntry, config, ConfigNothing, ConfigYesNo, configfile, NoSave, ConfigSelection
+from Components.config import getConfigListEntry, config, ConfigNothing, ConfigBoolean, configfile, NoSave, ConfigSelection
 from Components.Sources.List import List
 from Components.Sources.StaticText import StaticText
 from Screens.MessageBox import MessageBox
@@ -74,8 +74,8 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 				nim.powerMeasurement.value = False
 				nim.powerMeasurement.save()
 		if not hasattr(self, 'additionalMotorOptions'):
-			self.additionalMotorOptions = ConfigYesNo(False)
-		self.showAdditionalMotorOptions = getConfigListEntry(self.indent % _("Extra motor options"), self.additionalMotorOptions, _("Additional motor options allow you to enter details from your motor's spec sheet so enigma can work out how long it will take to move the dish from one satellite to another satellite."))
+			self.additionalMotorOptions = ConfigBoolean(descriptions={False: _("Show sub-menu"), True: _("Hide sub-menu")})
+		self.showAdditionalMotorOptions = getConfigListEntry(self.indent % _("Extra motor options"), self.additionalMotorOptions, _("Additional motor options opens a sub-menu where you can enter details from your motor's spec sheet so enigma can work out how long it will take to move the dish from one satellite to another satellite."))
 		self.list.append(self.showAdditionalMotorOptions)
 		if self.additionalMotorOptions.value:
 			self.list.append(getConfigListEntry(self.indent % ("   %s [%s/sec]" % (_("Horizontal turning speed"), chr(176))), nim.turningspeedH, _("Consult your motor's spec sheet for this information, or leave the default setting.")))
@@ -513,8 +513,8 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 					else:
 						self.list.append(getConfigListEntry(self.indent % _("Stored position"), Sat.rotorposition, _("Enter the number stored in the positioner that corresponds to this satellite.")))
 					if not hasattr(self, 'additionalMotorOptions'):
-						self.additionalMotorOptions = ConfigYesNo(False)
-					self.showAdditionalMotorOptions = getConfigListEntry(self.indent % _("Extra motor options"), self.additionalMotorOptions, _("Additional motor options allow you to enter details from your motor's spec sheet so enigma can work out how long it will take to move to another satellite."))
+						self.additionalMotorOptions = ConfigBoolean(descriptions={False: _("Show sub-menu"), True: _("Hide sub-menu")})
+					self.showAdditionalMotorOptions = getConfigListEntry(self.indent % _("Extra motor options"), self.additionalMotorOptions, _("Additional motor options opens a sub-menu where you can enter details from your motor's spec sheet so enigma can work out how long it will take to move the dish from one satellite to another satellite."))
 					self.list.append(self.showAdditionalMotorOptions)
 					if self.additionalMotorOptions.value:
 						self.list.append(getConfigListEntry(self.indent % ("  %s" % _("Horizontal turning speed")) + " [" + chr(176) + "/sec]", currLnb.turningspeedH, _("Consult your motor's spec sheet for this information, or leave the default setting.")))
