@@ -135,7 +135,7 @@ def moviePlayState(cutsFileName, ref, length):
 					return 50
 		if lastPosition is None:
 			# Unseen movie
-			return None
+			return 0
 		if lastPosition >= length:
 			return 100
 		return (100 * lastPosition) // length
@@ -152,7 +152,7 @@ def moviePlayState(cutsFileName, ref, length):
 			else:
 				if lastPosition:
 					return 50
-		return None
+		return 0
 
 
 def resetMoviePlayState(cutsFileName, ref=None):
@@ -407,7 +407,6 @@ class MovieList(GUIComponent):
 		self.invalidateItem(self.getCurrentIndex())
 
 	def buildMovieListEntry(self, serviceref, info, begin, data):
-
 		showPicons = "picon" in config.usage.movielist_servicename_mode.value
 		switch = config.usage.show_icons_in_movielist.value
 		piconWidth = config.usage.movielist_piconwidth.value if showPicons else 0
@@ -476,7 +475,7 @@ class MovieList(GUIComponent):
 					data.picon = LoadPixmap(picon)
 			data.txt = getItemDisplayName(serviceref, info)
 			data.icon = None
-			data.part = None
+			data.part = 0
 			if os.path.split(pathName)[1] in self.runningTimers:
 				if switch == 'i':
 					if (self.playInBackground or self.playInForeground) and serviceref == (self.playInBackground or self.playInForeground):
@@ -494,18 +493,16 @@ class MovieList(GUIComponent):
 			else:
 				data.part = moviePlayState(pathName + '.cuts', serviceref, data.len)
 				if switch == 'i':
-					if data.part is not None and data.part > 0:
+					if data.part > 0:
 						data.icon = self.iconPart[data.part // 25]
-					else:
-						if config.usage.movielist_unseen.value:
-							data.icon = self.iconUnwatched
+					elif config.usage.movielist_unseen.value:
+						data.icon = self.iconUnwatched
 				elif switch in ('p', 's'):
-					if data.part is not None and data.part > 0:
+					if data.part > 0:
 						data.partcol = self.pbarColourSeen
-					else:
-						if config.usage.movielist_unseen.value:
-							data.part = 100
-							data.partcol = self.pbarColour
+					elif config.usage.movielist_unseen.value:
+						data.part = 100
+						data.partcol = self.pbarColour
 
 		colX = 0
 		if switch == 'p':
@@ -515,16 +512,16 @@ class MovieList(GUIComponent):
 		def addProgress():
 			# icon/progress
 			if data:
-				if switch == 'i' and hasattr(data, 'icon') and data.icon is not None:
+				if switch == 'i' and data.icon is not None:
 					if self.partIconeShift is None:
 						res.append(MultiContentEntryPixmapAlphaBlend(pos=(colX, 0), size=(iconSize, ih), png=data.icon, flags=BT_ALIGN_CENTER))
 					else:
 						res.append(MultiContentEntryPixmapAlphaBlend(pos=(colX, self.partIconeShift), size=(iconSize, data.icon.size().height()), png=data.icon))
 				elif switch in ('p', 's'):
-					if hasattr(data, 'part') and data.part > 0:
+					if data.part > 0:
 						pbarY = (self.itemHeight - self.pbarHeight) // 2 if self.pbarShift is None else self.pbarShift
 						res.append(MultiContentEntryProgress(pos=(colX, pbarY), size=(iconSize, self.pbarHeight), percent=data.part, borderWidth=2, foreColor=data.partcol, foreColorSelected=None, backColor=None, backColorSelected=None))
-					elif hasattr(data, 'icon') and data.icon is not None:
+					elif data.icon is not None:
 						if self.pbarShift is None:
 							res.append(MultiContentEntryPixmapAlphaBlend(pos=(colX, 0), size=(iconSize, ih), png=data.icon, flags=BT_ALIGN_CENTER))
 						else:
