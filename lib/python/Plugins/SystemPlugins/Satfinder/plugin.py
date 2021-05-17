@@ -866,7 +866,7 @@ class SatfinderExtra(Satfinder):
 	def keyReadServices(self):
 		if not self.serviceList:
 			return
-		tv = [1, 17, 22, 25]
+		tv = [1, 17, 22, 25, 31]
 		radio = [2, 10]
 		green = "\c0088??88" # FTA tv
 		red = "\c00??8888" # encrypted tv
