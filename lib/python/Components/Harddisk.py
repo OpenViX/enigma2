@@ -759,6 +759,8 @@ class HarddiskManager:
 		print "[Harddisk] Enumerating network mounts..."
 		for entry in sorted(os.listdir("/media")):
 			mountEntry = os.path.join("/media", entry)
+			if not os.path.isdir(mountEntry):
+				continue
 			mounts = os.listdir(mountEntry)
 			if len(mounts) > 0:
 				for mount in mounts:
