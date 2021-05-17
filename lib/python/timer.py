@@ -5,11 +5,19 @@ import datetime
 
 
 class TimerEntry:
-	StateWaiting = 0
-	StatePrepared = 1
-	StateRunning = 2
-	StateEnded = 3
-	StateFailed = 4
+	StateWaiting = 0	# Waiting for the recording start time
+	StatePrepared = 1	# Pre recording preparation has been completed, about to start recording
+	StateRunning = 2 	# Currently recording
+	StateEnded = 3		# Recording was completed successfully
+	StateFailed = 4		# Something went wrong
+
+	States = {
+		0: "Waiting",
+		1: "Prepared",
+		2: "Running",
+		3: "Ended",
+		4: "Failed"
+	}
 
 	def __init__(self, begin, end):
 		self.begin = begin
@@ -19,8 +27,6 @@ class TimerEntry:
 		self.findRunningEvent = True
 		self.findNextEvent = False
 		self.resetRepeated()
-		#begindate = localtime(self.begin)
-		#newdate = datetime.datetime(begindate.tm_year, begindate.tm_mon, begindate.tm_mday 0, 0, 0);
 		self.repeatedbegindate = begin
 		self.backoff = 0
 
