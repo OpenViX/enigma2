@@ -2700,14 +2700,14 @@ class InfoBarExtensions:
 			return []
 
 	def getOSname(self):
-		return _("OScam Info")
+		return _("OScam/Ncam  Info")
 
 	def getOScamInfo(self):
 		softcams = []
 		if pathExists('/usr/softcams/'):
 			softcams = os.listdir('/usr/softcams/')
 		for softcam in softcams:
-			if softcam.lower().startswith('oscam') and config.oscaminfo.showInExtensions.value:
+			if (softcam.lower().startswith('oscam') or softcam.lower().startswith('ncam')) and config.oscaminfo.showInExtensions.value:
 				return [((boundFunction(self.getOSname), boundFunction(self.openOScamInfo), lambda: True), None)] or []
 		else:
 			return []
