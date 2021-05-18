@@ -534,6 +534,7 @@ class NIM(object):
 		self.i2c = i2c
 		self.frontend_id = frontend_id
 		self.__is_empty = is_empty
+		self.is_fbc = is_fbc
 
 		self.compatible = {
 				None: (None,),
