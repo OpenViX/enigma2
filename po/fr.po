@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-18 09:59+0430\n"
+"POT-Creation-Date: 2021-05-18 14:44+0200\n"
 "PO-Revision-Date: 2018-07-30 14:24+0200\n"
 "Last-Translator: Pr2 <dummy@dummy.com>\n"
 "Language-Team: french\n"
@@ -165,6 +165,10 @@ msgstr " (0 - tous les réseaux)"
 msgid " (Channel %s)"
 msgstr " (Chaîne %s)"
 
+#, fuzzy
+msgid " (auto detection)"
+msgstr "Détection automatique"
+
 msgid " (disabled)"
 msgstr " (désactivé)"
 
@@ -185,6 +189,9 @@ msgstr " - video0+video1"
 
 msgid " - video1"
 msgstr " - video1"
+
+msgid " Warning: the selected tuner should not use SCR Unicable type for LNBs because each tuner need a own SCR number."
+msgstr ""
 
 msgid " and"
 msgstr " et"
@@ -1110,6 +1117,18 @@ msgstr "%s (%s)\n"
 msgid "%s - %s (%s%d min)"
 msgstr "%s - %s (%s%d min)"
 
+#, fuzzy, python-format
+msgid "%s Info - Configuration"
+msgstr "Configuration Oscam Info"
+
+#, fuzzy, python-format
+msgid "%s Info - Main Menu"
+msgstr "Menu principal d’Oscam Info"
+
+#, python-format
+msgid "%s Log ( %s-Version: %s )"
+msgstr ""
+
 #, python-format
 msgid "%s files cannot be bulk renamed"
 msgstr ""
@@ -1133,6 +1152,10 @@ msgid_plural "%s updated packages available"
 msgstr[0] "%s paquet mis à jour disponible"
 msgstr[1] "%s paquets mis à jour disponibles"
 
+#, fuzzy, python-format
+msgid "%s webif disabled"
+msgstr "Désactivé"
+
 #, python-format
 msgid "%s%d Min"
 msgstr "%s%d Min"
@@ -1144,10 +1167,6 @@ msgstr "Défauts"
 #, python-format
 msgid "%s/%s: %s"
 msgstr "%s/%s: %s"
-
-#, python-format
-msgid "%s:%s"
-msgstr "%s:%s"
 
 #, python-format
 msgid "%s?"
@@ -1883,11 +1902,9 @@ msgstr "Ajout des programmations…"
 msgid "Additional cable of motorized LNB"
 msgstr "Deuxième câble d'un LNB motorisé"
 
-msgid "Additional motor options allow you to enter details from your motor's spec sheet so enigma can work out how long it will take to move the dish from one satellite to another satellite."
+#, fuzzy
+msgid "Additional motor options opens a sub-menu where you can enter details from your motor's spec sheet so enigma can work out how long it will take to move the dish from one satellite to another satellite."
 msgstr "Les options additionnelles du moteur vous permettent d’entrer les détails des spécification de votre moteur afin qu’enigma puisse calculer la durée du déplacement d’un satellite à l’autre."
-
-msgid "Additional motor options allow you to enter details from your motor's spec sheet so enigma can work out how long it will take to move to another satellite."
-msgstr "Les options additionnelles du moteur vous permettent d’entrer les détails des spécification de votre moteur afin qu’enigma puisse calculer la durée du déplacement vers un autre satellite."
 
 msgid "Address"
 msgstr "Adresse"
@@ -2028,7 +2045,7 @@ msgid "Allows you to adjust the amount of time the resolution infomation display
 msgstr "Vous permez d’ajuster la durée d’affichage de la résolution sur l’écran."
 
 msgid "Allows you to enable the debug logs. They contain very detailed information about everything the system does. Reboot required to enable this!"
-msgstr "Permet d’activer les journaux de débogage. Ils contiennent des informations très détaillées sur tout ce que fait le systΦme. Redémarrage requis pour permettre ceci!"
+msgstr "Permet d’activer les journaux de débogage. Ils contiennent des informations très détaillées sur tout ce que fait le systFme. Redémarrage requis pour permettre ceci!"
 
 msgid "Allows you to enable/disable displaying icons on the front panel."
 msgstr "Vous permet d’activer/désactiver l’affichage des icônes sur la face avant."
@@ -2052,7 +2069,8 @@ msgstr "Permet d’afficher/masquer CCcam dans les extensions (bouton bleu)."
 msgid "Allows you to show/hide Log Manager in extensions (blue button)."
 msgstr "Permet d’afficher/masquer le gestionnaire de log dans les extensions (bouton bleu)."
 
-msgid "Allows you to show/hide OScam Info in extensions (blue button)."
+#, fuzzy
+msgid "Allows you to show/hide OScam/Ncam Info in extensions (blue button)."
 msgstr "Vous permets d’afficher/cacher OScam dans les extensions (bouton bleu)."
 
 msgid "Alpha"
@@ -3292,7 +3310,7 @@ msgid "Clear playlist"
 msgstr "Effacer liste de lecture"
 
 #, python-format
-msgid "Client Info ( Oscam-Version: %s )"
+msgid "Client Info ( %s-Version: %s )"
 msgstr ""
 
 #, fuzzy
@@ -5769,8 +5787,9 @@ msgstr "Statut du feed: Mise à jour"
 msgid "Fiji"
 msgstr "Fidji"
 
+#, fuzzy, python-format
 msgid ""
-"File oscam.conf not found.\n"
+"File %s.conf not found.\n"
 "Please enter username/password manually."
 msgstr ""
 "Fichier oscam.conf pas trouvé.\n"
@@ -5903,7 +5922,8 @@ msgstr "Ven"
 msgid "Friday"
 msgstr "Vendredi"
 
-msgid "From :"
+#, fuzzy
+msgid "From:"
 msgstr "De :"
 
 #, fuzzy
@@ -6074,9 +6094,6 @@ msgstr "Aller vers"
 msgid "Goto 0"
 msgstr "Aller à 0"
 
-msgid "Goto :"
-msgstr "Aller à :"
-
 msgid "Goto X"
 msgstr "Aller à A"
 
@@ -6085,6 +6102,10 @@ msgstr "Aller à la position d’index"
 
 msgid "Goto position"
 msgstr "Aller à la position"
+
+#, fuzzy
+msgid "Goto:"
+msgstr "Aller à :"
 
 msgid "GotoX calibration"
 msgstr "Calibration de Aller à X"
@@ -6340,6 +6361,9 @@ msgstr "Cacher les services avec contrôle parental"
 
 msgid "Hide player"
 msgstr "Cacher le lecteur"
+
+msgid "Hide sub-menu"
+msgstr ""
 
 msgid "Hide zap errors"
 msgstr "Masquer les erreurs de zap"
@@ -8433,7 +8457,12 @@ msgstr "Demande de nom de l'OSD"
 msgid "OSD position"
 msgstr "Position OSD"
 
-msgid "OScam Info"
+#, fuzzy
+msgid "OScam/Ncam  Info"
+msgstr "Info OScam"
+
+#, fuzzy
+msgid "OScam/Ncam Info"
 msgstr "Info OScam"
 
 msgid "OVR"
@@ -8600,16 +8629,6 @@ msgstr "Ordinaire"
 
 msgid "Original"
 msgstr "Original"
-
-msgid "Oscam Info - Configuration"
-msgstr "Configuration Oscam Info"
-
-msgid "Oscam Info - Main Menu"
-msgstr "Menu principal d’Oscam Info"
-
-#, python-format
-msgid "Oscam Log ( Oscam-Version: %s )"
-msgstr ""
 
 msgid "Other"
 msgstr "Autre"
@@ -9716,8 +9735,8 @@ msgstr "Maturité non définie"
 msgid "Re-enter PIN"
 msgstr "Répéter le code PIN"
 
-#, fuzzy
-msgid "Read Userdata from oscam.conf"
+#, fuzzy, python-format
+msgid "Read Userdata from %s.conf"
 msgstr "Lecteur des données utilisateur depuis oscam.conf"
 
 msgid "Reader"
@@ -9825,6 +9844,12 @@ msgstr "Enregistrement et lecture"
 msgid "Recording and playback settings"
 msgstr "Paramètres d’enregistrement et de lecture"
 
+#, fuzzy, python-format
+msgid "Recording in progress: %s"
+msgstr ""
+"\n"
+"Enregistrement en cours."
+
 msgid "Recording type"
 msgstr "Type d’enregistrement"
 
@@ -9840,6 +9865,12 @@ msgstr "Enregistrements"
 
 msgid "Recordings always have priority"
 msgstr "Enregistrements toujours prioritaires"
+
+#, fuzzy, python-format
+msgid "Recordings in progress: %d"
+msgstr ""
+"\n"
+"Enregistrement en cours."
 
 #, fuzzy
 msgid "Recordings, Playback & Timeshift"
@@ -11080,7 +11111,7 @@ msgid "Serv.Name"
 msgstr "Nom Serv."
 
 #, python-format
-msgid "Server Info ( Oscam-Version: %s )"
+msgid "Server Info ( %s-Version: %s )"
 msgstr ""
 
 msgid "Server:"
@@ -11458,7 +11489,8 @@ msgstr "Afficher MiniTV dans l’affichage avant"
 msgid "Show Multi EPG"
 msgstr "Afficher Multi EPG"
 
-msgid "Show OScam Info in extensions?"
+#, fuzzy
+msgid "Show OScam/Ncam Info in extensions?"
 msgstr "Afficher OScam dans les extensions?"
 
 msgid "Show PIP"
@@ -11741,6 +11773,10 @@ msgstr "Afficher icônes d'état dans liste des films"
 
 msgid "Show stream clients"
 msgstr "Afficher les clients du streaming"
+
+#, fuzzy
+msgid "Show sub-menu"
+msgstr "Afficher menu"
 
 msgid "Show subservice selection"
 msgstr "Afficher sélection sous-service"
@@ -12964,10 +13000,10 @@ msgstr "Le fichier programmation (timers.xml) est corrompu et ne peut-être char
 msgid "The user interface of your %s %s is restarting"
 msgstr "L’interface de votre %s %s redémarre."
 
-#, python-format
+#, fuzzy, python-format
 msgid ""
 "The user interface of your %s %s is restarting\n"
-"due to an error in mytest.py"
+"due to an error in StartEnigma.py"
 msgstr ""
 "L’interface de votre %s %s redémarre\n"
 "du à une erreur dans mytest.py"
@@ -14416,6 +14452,9 @@ msgstr "Avertissement"
 msgid "Warning: no LNB; using factory defaults."
 msgstr "Avertissement: pas de LNB; utilisation des paramètres par défaut."
 
+msgid "Warning: the second input of this dual tuner may not support SCR LNBs. "
+msgstr ""
+
 msgid "Watch movies..."
 msgstr "Lire les films…"
 
@@ -15304,6 +15343,9 @@ msgstr "aventure/western/guerre"
 msgid "advertisement/shopping"
 msgstr "publicité/téléachat"
 
+msgid "all tuners"
+msgstr ""
+
 msgid "alpha then oldest"
 msgstr "alpha et puis plus vieux"
 
@@ -16005,6 +16047,10 @@ msgstr "pas verrouillé"
 msgid "not supported"
 msgstr "pas supporté"
 
+#, fuzzy
+msgid "not valid frontend"
+msgstr "type non valide"
+
 msgid "nothing connected"
 msgstr "rien n'est connecté"
 
@@ -16043,9 +16089,6 @@ msgstr "original"
 
 msgid "original language"
 msgstr "langue originale"
-
-msgid "oscam webif disabled"
-msgstr ""
 
 msgid "packages selected."
 msgstr "paquets sélectionnés."
@@ -16152,6 +16195,10 @@ msgstr "romantique"
 #, fuzzy
 msgid "rotor"
 msgstr "Rotor: "
+
+#, fuzzy
+msgid "rotor is not used"
+msgstr "le tuner n’est pas supporté"
 
 msgid "running..."
 msgstr "Analyse en cours…"
@@ -16408,6 +16455,10 @@ msgstr "pas disponible"
 
 msgid "unconfirmed"
 msgstr "non-confirmé"
+
+#, fuzzy
+msgid "undefined"
+msgstr "Indéfini"
 
 msgid "unknown"
 msgstr "inconnu"

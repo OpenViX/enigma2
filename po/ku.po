@@ -2,12 +2,12 @@
 # Copyright (C) 2012 THE enigma2'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the enigma2 package.
 # Automatically generated, 2012.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 Kurdish translation\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-18 09:59+0430\n"
+"POT-Creation-Date: 2021-05-18 14:44+0200\n"
 "PO-Revision-Date: 2014-01-22 23:31+0100\n"
 "Last-Translator: Andy Blackburn <andyblac@icloud.com>\n"
 "Language-Team: \n"
@@ -168,6 +168,10 @@ msgid " (Channel %s)"
 msgstr "Qanal Liste "
 
 #, fuzzy
+msgid " (auto detection)"
+msgstr "Deep standby"
+
+#, fuzzy
 msgid " (disabled)"
 msgstr "disabled"
 
@@ -190,6 +194,9 @@ msgstr ""
 #, fuzzy
 msgid " - video1"
 msgstr "S-Video"
+
+msgid " Warning: the selected tuner should not use SCR Unicable type for LNBs because each tuner need a own SCR number."
+msgstr ""
 
 msgid " and"
 msgstr ""
@@ -1206,6 +1213,18 @@ msgstr "%s (%s)\n"
 msgid "%s - %s (%s%d min)"
 msgstr "%d deqa"
 
+#, fuzzy, python-format
+msgid "%s Info - Configuration"
+msgstr "Manual configuration"
+
+#, fuzzy, python-format
+msgid "%s Info - Main Menu"
+msgstr "Main menu"
+
+#, python-format
+msgid "%s Log ( %s-Version: %s )"
+msgstr ""
+
 #, python-format
 msgid "%s files cannot be bulk renamed"
 msgstr ""
@@ -1230,6 +1249,10 @@ msgstr[0] "%s updated package available"
 msgstr[1] "%s updated packages available"
 
 #, fuzzy, python-format
+msgid "%s webif disabled"
+msgstr "disabled"
+
+#, fuzzy, python-format
 msgid "%s%d Min"
 msgstr "%d deqa"
 
@@ -1240,10 +1263,6 @@ msgstr "Default"
 #, python-format
 msgid "%s/%s: %s"
 msgstr "%s/%s: %s"
-
-#, python-format
-msgid "%s:%s"
-msgstr ""
 
 #, python-format
 msgid "%s?"
@@ -1893,7 +1912,7 @@ msgid "Add Timer"
 msgstr "Add timer"
 
 msgid "Add a mark"
-msgstr "İşareté léki"
+msgstr "Isareté léki"
 
 msgid "Add a nameserver entry"
 msgstr "Yek Navé nu léke"
@@ -2022,10 +2041,7 @@ msgstr ""
 msgid "Additional cable of motorized LNB"
 msgstr "second cable of motorized LNB"
 
-msgid "Additional motor options allow you to enter details from your motor's spec sheet so enigma can work out how long it will take to move the dish from one satellite to another satellite."
-msgstr ""
-
-msgid "Additional motor options allow you to enter details from your motor's spec sheet so enigma can work out how long it will take to move to another satellite."
+msgid "Additional motor options opens a sub-menu where you can enter details from your motor's spec sheet so enigma can work out how long it will take to move the dish from one satellite to another satellite."
 msgstr ""
 
 #, fuzzy
@@ -2196,7 +2212,7 @@ msgstr ""
 msgid "Allows you to show/hide Log Manager in extensions (blue button)."
 msgstr ""
 
-msgid "Allows you to show/hide OScam Info in extensions (blue button)."
+msgid "Allows you to show/hide OScam/Ncam Info in extensions (blue button)."
 msgstr ""
 
 msgid "Alpha"
@@ -2268,7 +2284,7 @@ msgstr "Slow motion speeds"
 
 #, fuzzy
 msgid "Animations"
-msgstr "Hakké İmagéda"
+msgstr "Hakké Imagéda"
 
 msgid "Antarctica"
 msgstr ""
@@ -2668,26 +2684,26 @@ msgid "BT 709"
 msgstr ""
 
 msgid "Back"
-msgstr "Paş"
+msgstr "Pas"
 
 msgid "Back/Recall"
 msgstr ""
 
 msgid "Background"
-msgstr "Paş Reng"
+msgstr "Pas Reng"
 
 #, fuzzy
 msgid "Background check"
-msgstr "Paş Reng"
+msgstr "Pas Reng"
 
 msgid "Background color"
-msgstr "Rengé Paşi"
+msgstr "Rengé Pasi"
 
 msgid "Background delete option"
-msgstr "Rengé paşi paqişki"
+msgstr "Rengé pasi paqiski"
 
 msgid "Background delete speed"
-msgstr "Zu paqişki"
+msgstr "Zu paqiski"
 
 msgid "Backup completed."
 msgstr "Temami Backup "
@@ -2788,10 +2804,10 @@ msgid "Black"
 msgstr "black"
 
 msgid "Black screen"
-msgstr "Ekrana Reş"
+msgstr "Ekrana Res"
 
 msgid "Black screen till locked"
-msgstr "Ekrana reş kilitke"
+msgstr "Ekrana res kilitke"
 
 msgid "Blindscan"
 msgstr ""
@@ -2903,11 +2919,11 @@ msgid "Burkina Faso"
 msgstr ""
 
 msgid "Burn DVD"
-msgstr "Bişewiti DVD"
+msgstr "Bisewiti DVD"
 
 #, python-format
 msgid "Burn audio track (%s)"
-msgstr "bişewiti deng temaşe (%s)"
+msgstr "bisewiti deng temase (%s)"
 
 msgid "Burn existing image to DVD"
 msgstr "Burn existing image to DVD"
@@ -3111,10 +3127,10 @@ msgstr ""
 
 #, fuzzy
 msgid "Cannot delete current image"
-msgstr "Tişt çé nebu"
+msgstr "Tist çé nebu"
 
 msgid "Cannot determine"
-msgstr "Tişt çé nebu"
+msgstr "Tist çé nebu"
 
 msgid "Cannot find any signal ..., aborting !"
 msgstr "Heta Neha min Sinyal Nedi... Bettal ki!"
@@ -3125,7 +3141,7 @@ msgstr "Cannot move to trash can"
 
 #, fuzzy
 msgid "Cannot reboot to deleted image"
-msgstr "Tişt çé nebu"
+msgstr "Tist çé nebu"
 
 #, fuzzy
 msgid "Capabilities: "
@@ -3308,10 +3324,10 @@ msgid "Check every (hours)"
 msgstr ""
 
 msgid "Check the internet connection"
-msgstr "Girédayiya İnterneté Qonrol Bike"
+msgstr "Girédayiya Interneté Qonrol Bike"
 
 msgid "Check the internet connection again"
-msgstr "Disa Qontrola İnternet Bikin"
+msgstr "Disa Qontrola Internet Bikin"
 
 #, fuzzy
 msgid "Checking Logs..."
@@ -3329,7 +3345,7 @@ msgid "Checking for Updates..."
 msgstr "Sistema dosya binéri"
 
 msgid "Checking the internet connection"
-msgstr "Qontrola İnternet"
+msgstr "Qontrola Internet"
 
 #, fuzzy, python-format
 msgid ""
@@ -3486,7 +3502,7 @@ msgid "Circular left"
 msgstr "Çepa daira"
 
 msgid "Circular right"
-msgstr "Raştiya daira"
+msgstr "Rastiya daira"
 
 #, fuzzy
 msgid "Clean network trash cans"
@@ -3496,16 +3512,16 @@ msgid "Cleaning Trashes"
 msgstr ""
 
 msgid "Cleanup"
-msgstr "Paqişi"
+msgstr "Paqisi"
 
 msgid "Clear"
-msgstr "Paqiş"
+msgstr "Paqis"
 
 msgid "Clear HDMI-CEC fixed address"
 msgstr ""
 
 msgid "Clear before scan"
-msgstr "Paqişi paş légerin"
+msgstr "Paqisi pas légerin"
 
 msgid "Clear fixed"
 msgstr "Clear fixed"
@@ -3521,7 +3537,7 @@ msgid "Clear playlist"
 msgstr "Clear playlist"
 
 #, python-format
-msgid "Client Info ( Oscam-Version: %s )"
+msgid "Client Info ( %s-Version: %s )"
 msgstr ""
 
 #, fuzzy
@@ -4728,11 +4744,11 @@ msgid "Delay:"
 msgstr ""
 
 msgid "Delete"
-msgstr "Paqiş"
+msgstr "Paqis"
 
 #, fuzzy, python-format
 msgid "Delete %s?"
-msgstr "Paqiş"
+msgstr "Paqis"
 
 #, fuzzy
 msgid "Delete Confirmation"
@@ -4740,7 +4756,7 @@ msgstr "Movie list configuration"
 
 #, fuzzy
 msgid "Delete EPG Cache"
-msgstr "Paqiş"
+msgstr "Paqis"
 
 #, fuzzy
 msgid "Delete Language(s)"
@@ -4795,11 +4811,11 @@ msgstr "Deleted items"
 
 #, fuzzy, python-format
 msgid "Deleted %s!"
-msgstr "Paqişi"
+msgstr "Paqisi"
 
 #, fuzzy, python-format
 msgid "Deleted '%s'"
-msgstr "Paqişi"
+msgstr "Paqisi"
 
 #, fuzzy
 msgid "Deleted image"
@@ -5419,7 +5435,7 @@ msgstr "Edit upgrade source url."
 
 #, fuzzy
 msgid "Education/Information"
-msgstr "Hakké İmagéda"
+msgstr "Hakké Imagéda"
 
 #, fuzzy
 msgid "Education/Science/Factual"
@@ -6155,8 +6171,9 @@ msgstr ""
 msgid "Fiji"
 msgstr ""
 
+#, python-format
 msgid ""
-"File oscam.conf not found.\n"
+"File %s.conf not found.\n"
 "Please enter username/password manually."
 msgstr ""
 
@@ -6296,18 +6313,19 @@ msgid "Fri"
 msgstr "Fri"
 
 msgid "Friday"
-msgstr "İn"
+msgstr "In"
 
-msgid "From :"
+#, fuzzy
+msgid "From:"
 msgstr "From :"
 
 #, fuzzy
 msgid "Front Panel Display"
-msgstr "Nisisiya İmage Bine"
+msgstr "Nisisiya Image Bine"
 
 #, fuzzy
 msgid "Front panel settings"
-msgstr "Nisisiya İmage Bine"
+msgstr "Nisisiya Image Bine"
 
 #, fuzzy
 msgid "Full factory reset"
@@ -6481,9 +6499,6 @@ msgstr "Goto"
 msgid "Goto 0"
 msgstr "Goto 0"
 
-msgid "Goto :"
-msgstr "Goto :"
-
 msgid "Goto X"
 msgstr "Goto X"
 
@@ -6492,6 +6507,10 @@ msgstr "Goto index position"
 
 msgid "Goto position"
 msgstr "Goto position"
+
+#, fuzzy
+msgid "Goto:"
+msgstr "Goto :"
 
 msgid "GotoX calibration"
 msgstr "GotoX calibration"
@@ -6759,6 +6778,9 @@ msgstr ""
 
 msgid "Hide player"
 msgstr "Hide player"
+
+msgid "Hide sub-menu"
+msgstr ""
 
 msgid "Hide zap errors"
 msgstr "Hide zap errors"
@@ -7194,7 +7216,7 @@ msgid "Infobar frontend data source"
 msgstr ""
 
 msgid "Information"
-msgstr "Hakké İmagéda"
+msgstr "Hakké Imagéda"
 
 #, fuzzy
 msgid "Infotainment"
@@ -8173,7 +8195,7 @@ msgid "Monaco"
 msgstr ""
 
 msgid "Monday"
-msgstr "Yekşem"
+msgstr "Yeksem"
 
 msgid "Mongolia"
 msgstr ""
@@ -8967,7 +8989,10 @@ msgstr "OSD name request"
 msgid "OSD position"
 msgstr "Store position"
 
-msgid "OScam Info"
+msgid "OScam/Ncam  Info"
+msgstr ""
+
+msgid "OScam/Ncam Info"
 msgstr ""
 
 msgid "OVR"
@@ -9146,17 +9171,6 @@ msgstr ""
 
 msgid "Original"
 msgstr "Original"
-
-#, fuzzy
-msgid "Oscam Info - Configuration"
-msgstr "Manual configuration"
-
-msgid "Oscam Info - Main Menu"
-msgstr ""
-
-#, python-format
-msgid "Oscam Log ( Oscam-Version: %s )"
-msgstr ""
 
 msgid "Other"
 msgstr "Other"
@@ -10208,7 +10222,7 @@ msgstr "Protect services"
 
 #, fuzzy
 msgid "Protect software update screen"
-msgstr "Nisisiya İmage Bine"
+msgstr "Nisisiya Image Bine"
 
 #, fuzzy
 msgid "Protect standby menu"
@@ -10355,7 +10369,8 @@ msgstr "Rating undefined"
 msgid "Re-enter PIN"
 msgstr "Reenter new PIN"
 
-msgid "Read Userdata from oscam.conf"
+#, python-format
+msgid "Read Userdata from %s.conf"
 msgstr ""
 
 msgid "Reader"
@@ -10467,6 +10482,10 @@ msgstr "Reception settings"
 msgid "Recording and playback settings"
 msgstr "Reception settings"
 
+#, fuzzy, python-format
+msgid "Recording in progress: %s"
+msgstr "Recording in progress"
+
 msgid "Recording type"
 msgstr "Recording type"
 
@@ -10482,6 +10501,10 @@ msgstr "Recordings"
 
 msgid "Recordings always have priority"
 msgstr "Recordings always have priority"
+
+#, fuzzy, python-format
+msgid "Recordings in progress: %d"
+msgstr "Recording in progress"
 
 #, fuzzy
 msgid "Recordings, Playback & Timeshift"
@@ -11779,7 +11802,7 @@ msgid "Serv.Name"
 msgstr "Service name"
 
 #, python-format
-msgid "Server Info ( Oscam-Version: %s )"
+msgid "Server Info ( %s-Version: %s )"
 msgstr ""
 
 #, fuzzy
@@ -12191,7 +12214,7 @@ msgid "Show Multi EPG"
 msgstr "Multi EPG"
 
 #, fuzzy
-msgid "Show OScam Info in extensions?"
+msgid "Show OScam/Ncam Info in extensions?"
 msgstr "Show extensions..."
 
 #, fuzzy
@@ -12426,7 +12449,7 @@ msgstr "Show extended description"
 
 #, fuzzy
 msgid "Show picon background color"
-msgstr "Rengé Paşi"
+msgstr "Rengé Pasi"
 
 #, fuzzy
 msgid "Show picons during channel number input"
@@ -12514,6 +12537,10 @@ msgstr "Show status icons in movielist"
 #, fuzzy
 msgid "Show stream clients"
 msgstr "Girédi "
+
+#, fuzzy
+msgid "Show sub-menu"
+msgstr "Show tag menu"
 
 #, fuzzy
 msgid "Show subservice selection"
@@ -12855,7 +12882,7 @@ msgstr "Software"
 
 #, fuzzy
 msgid "Software Update"
-msgstr "Nisisiya İmage Bine"
+msgstr "Nisisiya Image Bine"
 
 msgid "Software management"
 msgstr "Software management"
@@ -12867,11 +12894,11 @@ msgid "Software restore"
 msgstr "Software restore"
 
 msgid "Software update"
-msgstr "Nisisiya İmage Bine"
+msgstr "Nisisiya Image Bine"
 
 #, fuzzy
 msgid "Software update settings"
-msgstr "Nisisiya İmage Bine"
+msgstr "Nisisiya Image Bine"
 
 msgid "Softwaremanager information"
 msgstr "Softwaremanager information"
@@ -13598,7 +13625,7 @@ msgstr ""
 
 #, fuzzy
 msgid "Teletext"
-msgstr "Paqiş"
+msgstr "Paqis"
 
 msgid "Teletext subtitle color"
 msgstr "Teletext subtitle color"
@@ -13828,7 +13855,7 @@ msgstr "The user interface of your receiver is restarting"
 #, fuzzy, python-format
 msgid ""
 "The user interface of your %s %s is restarting\n"
-"due to an error in mytest.py"
+"due to an error in StartEnigma.py"
 msgstr ""
 "The user interface of your receiver is restarting\n"
 "due to an error in mytest.py"
@@ -14159,7 +14186,7 @@ msgid "Thumbnails"
 msgstr "Thumbnails"
 
 msgid "Thursday"
-msgstr "Péncşem"
+msgstr "Péncsem"
 
 #, fuzzy
 msgid "TiVo support"
@@ -14453,7 +14480,7 @@ msgstr "Transponder"
 
 #, fuzzy
 msgid "Transponder Information"
-msgstr "Hakké İmagéda"
+msgstr "Hakké Imagéda"
 
 #, fuzzy
 msgid "Transport Stream Type"
@@ -14494,7 +14521,7 @@ msgid "Tue"
 msgstr "Tue"
 
 msgid "Tuesday"
-msgstr "Duşem"
+msgstr "Dusem"
 
 msgid "Tune"
 msgstr "Tune"
@@ -14664,7 +14691,7 @@ msgstr "User defined"
 
 #, fuzzy
 msgid "Undetermined"
-msgstr "Tişt çé nebu"
+msgstr "Tist çé nebu"
 
 msgid "Undo install"
 msgstr "Undo install"
@@ -15337,6 +15364,9 @@ msgstr "gardening"
 msgid "Warning: no LNB; using factory defaults."
 msgstr "Warning: no LNB; using factory defaults."
 
+msgid "Warning: the second input of this dual tuner may not support SCR LNBs. "
+msgstr ""
+
 msgid "Watch movies..."
 msgstr "Watch movies..."
 
@@ -15355,7 +15385,7 @@ msgid "Wed"
 msgstr "Wed"
 
 msgid "Wednesday"
-msgstr "Çarşem"
+msgstr "Çarsem"
 
 msgid "Weekday"
 msgstr "Weekday"
@@ -16251,6 +16281,9 @@ msgstr "adventure/western/war"
 msgid "advertisement/shopping"
 msgstr "advertisement/shopping"
 
+msgid "all tuners"
+msgstr ""
+
 msgid "alpha then oldest"
 msgstr ""
 
@@ -16460,7 +16493,7 @@ msgstr ""
 
 #, fuzzy
 msgid "delete"
-msgstr "Paqiş"
+msgstr "Paqis"
 
 msgid "delete cut"
 msgstr "delete cut"
@@ -16991,6 +17024,10 @@ msgstr "not locked"
 msgid "not supported"
 msgstr "not supported"
 
+#, fuzzy
+msgid "not valid frontend"
+msgstr "invalid type"
+
 msgid "nothing connected"
 msgstr "nothing connected"
 
@@ -17029,9 +17066,6 @@ msgstr "original"
 
 msgid "original language"
 msgstr "original language"
-
-msgid "oscam webif disabled"
-msgstr ""
 
 #, fuzzy
 msgid "packages selected."
@@ -17146,6 +17180,10 @@ msgstr "romance"
 #, fuzzy
 msgid "rotor"
 msgstr "Niviskar: "
+
+#, fuzzy
+msgid "rotor is not used"
+msgstr "tuner is not supported"
 
 #, fuzzy
 msgid "running..."
@@ -17416,6 +17454,10 @@ msgstr "unavailable"
 
 msgid "unconfirmed"
 msgstr "unconfirmed"
+
+#, fuzzy
+msgid "undefined"
+msgstr "User defined"
 
 msgid "unknown"
 msgstr "unknown"

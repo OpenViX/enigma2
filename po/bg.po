@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tuxbox-enigma 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-18 09:59+0430\n"
+"POT-Creation-Date: 2021-05-18 14:44+0200\n"
 "PO-Revision-Date: 2014-01-22 23:31+0100\n"
 "Last-Translator: Andy Blackburn <andyblac@icloud.com>\n"
 "Language-Team: Bulgarian\n"
@@ -154,6 +154,10 @@ msgid " (Channel %s)"
 msgstr "Канал"
 
 #, fuzzy
+msgid " (auto detection)"
+msgstr "Изключване"
+
+#, fuzzy
 msgid " (disabled)"
 msgstr "спрян"
 
@@ -173,6 +177,9 @@ msgid " - video0+video1"
 msgstr ""
 
 msgid " - video1"
+msgstr ""
+
+msgid " Warning: the selected tuner should not use SCR Unicable type for LNBs because each tuner need a own SCR number."
 msgstr ""
 
 msgid " and"
@@ -1071,6 +1078,18 @@ msgstr ""
 msgid "%s - %s (%s%d min)"
 msgstr "%d мин"
 
+#, fuzzy, python-format
+msgid "%s Info - Configuration"
+msgstr "Конфигуриране"
+
+#, fuzzy, python-format
+msgid "%s Info - Main Menu"
+msgstr "Основно Меню"
+
+#, python-format
+msgid "%s Log ( %s-Version: %s )"
+msgstr ""
+
 #, python-format
 msgid "%s files cannot be bulk renamed"
 msgstr ""
@@ -1095,6 +1114,10 @@ msgstr[0] ""
 msgstr[1] ""
 
 #, fuzzy, python-format
+msgid "%s webif disabled"
+msgstr "спрян"
+
+#, fuzzy, python-format
 msgid "%s%d Min"
 msgstr "%d мин"
 
@@ -1104,10 +1127,6 @@ msgstr ""
 
 #, python-format
 msgid "%s/%s: %s"
-msgstr ""
-
-#, python-format
-msgid "%s:%s"
 msgstr ""
 
 #, python-format
@@ -1851,10 +1870,7 @@ msgstr ""
 msgid "Additional cable of motorized LNB"
 msgstr "втори кабелен или моторизиран LNB"
 
-msgid "Additional motor options allow you to enter details from your motor's spec sheet so enigma can work out how long it will take to move the dish from one satellite to another satellite."
-msgstr ""
-
-msgid "Additional motor options allow you to enter details from your motor's spec sheet so enigma can work out how long it will take to move to another satellite."
+msgid "Additional motor options opens a sub-menu where you can enter details from your motor's spec sheet so enigma can work out how long it will take to move the dish from one satellite to another satellite."
 msgstr ""
 
 msgid "Address"
@@ -2023,7 +2039,7 @@ msgstr ""
 msgid "Allows you to show/hide Log Manager in extensions (blue button)."
 msgstr ""
 
-msgid "Allows you to show/hide OScam Info in extensions (blue button)."
+msgid "Allows you to show/hide OScam/Ncam Info in extensions (blue button)."
 msgstr ""
 
 msgid "Alpha"
@@ -3274,7 +3290,7 @@ msgid "Clear playlist"
 msgstr "изчисти плейлист"
 
 #, python-format
-msgid "Client Info ( Oscam-Version: %s )"
+msgid "Client Info ( %s-Version: %s )"
 msgstr ""
 
 #, fuzzy
@@ -5811,8 +5827,9 @@ msgstr ""
 msgid "Fiji"
 msgstr ""
 
+#, python-format
 msgid ""
-"File oscam.conf not found.\n"
+"File %s.conf not found.\n"
 "Please enter username/password manually."
 msgstr ""
 
@@ -5954,7 +5971,7 @@ msgstr "Пет"
 msgid "Friday"
 msgstr "Петък"
 
-msgid "From :"
+msgid "From:"
 msgstr ""
 
 #, fuzzy
@@ -6132,9 +6149,6 @@ msgstr ""
 msgid "Goto 0"
 msgstr "Към 0"
 
-msgid "Goto :"
-msgstr ""
-
 #, fuzzy
 msgid "Goto X"
 msgstr "Към 0"
@@ -6145,6 +6159,10 @@ msgstr "Към позиция"
 
 msgid "Goto position"
 msgstr "Към позиция"
+
+#, fuzzy
+msgid "Goto:"
+msgstr "Към 0"
 
 #, fuzzy
 msgid "GotoX calibration"
@@ -6407,6 +6425,9 @@ msgstr ""
 #, fuzzy
 msgid "Hide player"
 msgstr "скрий плеъра"
+
+msgid "Hide sub-menu"
+msgstr ""
 
 msgid "Hide zap errors"
 msgstr ""
@@ -8584,7 +8605,10 @@ msgstr ""
 msgid "OSD position"
 msgstr "Запази позиция"
 
-msgid "OScam Info"
+msgid "OScam/Ncam  Info"
+msgstr ""
+
+msgid "OScam/Ncam Info"
 msgstr ""
 
 msgid "OVR"
@@ -8757,16 +8781,6 @@ msgid "Ordinary"
 msgstr ""
 
 msgid "Original"
-msgstr ""
-
-msgid "Oscam Info - Configuration"
-msgstr ""
-
-msgid "Oscam Info - Main Menu"
-msgstr ""
-
-#, python-format
-msgid "Oscam Log ( Oscam-Version: %s )"
 msgstr ""
 
 msgid "Other"
@@ -9934,7 +9948,8 @@ msgstr ""
 msgid "Re-enter PIN"
 msgstr ""
 
-msgid "Read Userdata from oscam.conf"
+#, python-format
+msgid "Read Userdata from %s.conf"
 msgstr ""
 
 msgid "Reader"
@@ -10044,6 +10059,10 @@ msgstr "Възобновяване на възпроизвеждането"
 msgid "Recording and playback settings"
 msgstr ""
 
+#, fuzzy, python-format
+msgid "Recording in progress: %s"
+msgstr "Се Изпълнява"
+
 msgid "Recording type"
 msgstr ""
 
@@ -10059,6 +10078,10 @@ msgstr "Записи"
 
 msgid "Recordings always have priority"
 msgstr "Записите винаги са с приоритет"
+
+#, fuzzy, python-format
+msgid "Recordings in progress: %d"
+msgstr "Се Изпълнява"
 
 #, fuzzy
 msgid "Recordings, Playback & Timeshift"
@@ -11335,7 +11358,7 @@ msgid "Serv.Name"
 msgstr ""
 
 #, python-format
-msgid "Server Info ( Oscam-Version: %s )"
+msgid "Server Info ( %s-Version: %s )"
 msgstr ""
 
 msgid "Server:"
@@ -11719,7 +11742,7 @@ msgid "Show Multi EPG"
 msgstr "Мулти ЕПГ"
 
 #, fuzzy
-msgid "Show OScam Info in extensions?"
+msgid "Show OScam/Ncam Info in extensions?"
 msgstr "виж разширенията..."
 
 msgid "Show PIP"
@@ -12036,6 +12059,10 @@ msgstr "Каналът не е в списъка"
 #, fuzzy
 msgid "Show stream clients"
 msgstr "Показвай канали започващи с"
+
+#, fuzzy
+msgid "Show sub-menu"
+msgstr "покажи tag меню"
 
 #, fuzzy
 msgid "Show subservice selection"
@@ -13325,7 +13352,7 @@ msgstr ""
 #, fuzzy, python-format
 msgid ""
 "The user interface of your %s %s is restarting\n"
-"due to an error in mytest.py"
+"due to an error in StartEnigma.py"
 msgstr ""
 "\n"
 "Възстановяване на вашите Clarke-Tech настройки."
@@ -14771,6 +14798,9 @@ msgstr ""
 msgid "Warning: no LNB; using factory defaults."
 msgstr ""
 
+msgid "Warning: the second input of this dual tuner may not support SCR LNBs. "
+msgstr ""
+
 #, fuzzy
 msgid "Watch movies..."
 msgstr "Пусни записаните филми..."
@@ -15625,6 +15655,9 @@ msgstr ""
 msgid "advertisement/shopping"
 msgstr ""
 
+msgid "all tuners"
+msgstr ""
+
 msgid "alpha then oldest"
 msgstr ""
 
@@ -16337,6 +16370,9 @@ msgstr "не е заключен"
 msgid "not supported"
 msgstr ""
 
+msgid "not valid frontend"
+msgstr ""
+
 msgid "nothing connected"
 msgstr "нищо не е свързано"
 
@@ -16374,9 +16410,6 @@ msgid "original"
 msgstr ""
 
 msgid "original language"
-msgstr ""
-
-msgid "oscam webif disabled"
 msgstr ""
 
 msgid "packages selected."
@@ -16485,6 +16518,10 @@ msgstr ""
 #, fuzzy
 msgid "rotor"
 msgstr "Автор: "
+
+#, fuzzy
+msgid "rotor is not used"
+msgstr "Не се поддържа"
 
 #, fuzzy
 msgid "running..."
@@ -16748,6 +16785,10 @@ msgstr ""
 
 msgid "unconfirmed"
 msgstr ""
+
+#, fuzzy
+msgid "undefined"
+msgstr "Потребителска"
 
 msgid "unknown"
 msgstr "непознат"

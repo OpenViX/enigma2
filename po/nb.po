@@ -2,12 +2,12 @@
 # Copyright (C) 2012 THE enigma2'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the enigma2 package.
 # Automatically generated, 2012.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 3.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-18 09:59+0430\n"
+"POT-Creation-Date: 2021-05-18 14:44+0200\n"
 "PO-Revision-Date: 2014-01-22 23:31+0100\n"
 "Last-Translator: Andy Blackburn <andyblac@icloud.com>\n"
 "Language-Team: none\n"
@@ -137,6 +137,9 @@ msgstr ""
 msgid " (Channel %s)"
 msgstr ""
 
+msgid " (auto detection)"
+msgstr ""
+
 msgid " (disabled)"
 msgstr ""
 
@@ -156,6 +159,9 @@ msgid " - video0+video1"
 msgstr ""
 
 msgid " - video1"
+msgstr ""
+
+msgid " Warning: the selected tuner should not use SCR Unicable type for LNBs because each tuner need a own SCR number."
 msgstr ""
 
 msgid " and"
@@ -1053,6 +1059,18 @@ msgid "%s - %s (%s%d min)"
 msgstr ""
 
 #, python-format
+msgid "%s Info - Configuration"
+msgstr ""
+
+#, python-format
+msgid "%s Info - Main Menu"
+msgstr ""
+
+#, python-format
+msgid "%s Log ( %s-Version: %s )"
+msgstr ""
+
+#, python-format
 msgid "%s files cannot be bulk renamed"
 msgstr ""
 
@@ -1076,6 +1094,10 @@ msgstr[0] ""
 msgstr[1] ""
 
 #, python-format
+msgid "%s webif disabled"
+msgstr ""
+
+#, python-format
 msgid "%s%d Min"
 msgstr ""
 
@@ -1085,10 +1107,6 @@ msgstr ""
 
 #, python-format
 msgid "%s/%s: %s"
-msgstr ""
-
-#, python-format
-msgid "%s:%s"
 msgstr ""
 
 #, python-format
@@ -1766,10 +1784,7 @@ msgstr ""
 msgid "Additional cable of motorized LNB"
 msgstr ""
 
-msgid "Additional motor options allow you to enter details from your motor's spec sheet so enigma can work out how long it will take to move the dish from one satellite to another satellite."
-msgstr ""
-
-msgid "Additional motor options allow you to enter details from your motor's spec sheet so enigma can work out how long it will take to move to another satellite."
+msgid "Additional motor options opens a sub-menu where you can enter details from your motor's spec sheet so enigma can work out how long it will take to move the dish from one satellite to another satellite."
 msgstr ""
 
 msgid "Address"
@@ -1928,7 +1943,7 @@ msgstr ""
 msgid "Allows you to show/hide Log Manager in extensions (blue button)."
 msgstr ""
 
-msgid "Allows you to show/hide OScam Info in extensions (blue button)."
+msgid "Allows you to show/hide OScam/Ncam Info in extensions (blue button)."
 msgstr ""
 
 msgid "Alpha"
@@ -3107,7 +3122,7 @@ msgid "Clear playlist"
 msgstr ""
 
 #, python-format
-msgid "Client Info ( Oscam-Version: %s )"
+msgid "Client Info ( %s-Version: %s )"
 msgstr ""
 
 msgid "Client Mode setup"
@@ -5477,8 +5492,9 @@ msgstr ""
 msgid "Fiji"
 msgstr ""
 
+#, python-format
 msgid ""
-"File oscam.conf not found.\n"
+"File %s.conf not found.\n"
 "Please enter username/password manually."
 msgstr ""
 
@@ -5609,7 +5625,7 @@ msgstr ""
 msgid "Friday"
 msgstr ""
 
-msgid "From :"
+msgid "From:"
 msgstr ""
 
 msgid "Front Panel Display"
@@ -5767,9 +5783,6 @@ msgstr ""
 msgid "Goto 0"
 msgstr ""
 
-msgid "Goto :"
-msgstr ""
-
 msgid "Goto X"
 msgstr ""
 
@@ -5777,6 +5790,9 @@ msgid "Goto index position"
 msgstr ""
 
 msgid "Goto position"
+msgstr ""
+
+msgid "Goto:"
 msgstr ""
 
 msgid "GotoX calibration"
@@ -6020,6 +6036,9 @@ msgid "Hide parental locked services"
 msgstr ""
 
 msgid "Hide player"
+msgstr ""
+
+msgid "Hide sub-menu"
 msgstr ""
 
 msgid "Hide zap errors"
@@ -8010,7 +8029,10 @@ msgstr ""
 msgid "OSD position"
 msgstr ""
 
-msgid "OScam Info"
+msgid "OScam/Ncam  Info"
+msgstr ""
+
+msgid "OScam/Ncam Info"
 msgstr ""
 
 msgid "OVR"
@@ -8170,16 +8192,6 @@ msgid "Ordinary"
 msgstr ""
 
 msgid "Original"
-msgstr ""
-
-msgid "Oscam Info - Configuration"
-msgstr ""
-
-msgid "Oscam Info - Main Menu"
-msgstr ""
-
-#, python-format
-msgid "Oscam Log ( Oscam-Version: %s )"
 msgstr ""
 
 msgid "Other"
@@ -9231,7 +9243,8 @@ msgstr ""
 msgid "Re-enter PIN"
 msgstr ""
 
-msgid "Read Userdata from oscam.conf"
+#, python-format
+msgid "Read Userdata from %s.conf"
 msgstr ""
 
 msgid "Reader"
@@ -9333,6 +9346,10 @@ msgstr ""
 msgid "Recording and playback settings"
 msgstr ""
 
+#, python-format
+msgid "Recording in progress: %s"
+msgstr ""
+
 msgid "Recording type"
 msgstr ""
 
@@ -9346,6 +9363,10 @@ msgid "Recordings"
 msgstr ""
 
 msgid "Recordings always have priority"
+msgstr ""
+
+#, python-format
+msgid "Recordings in progress: %d"
 msgstr ""
 
 msgid "Recordings, Playback & Timeshift"
@@ -10522,7 +10543,7 @@ msgid "Serv.Name"
 msgstr ""
 
 #, python-format
-msgid "Server Info ( Oscam-Version: %s )"
+msgid "Server Info ( %s-Version: %s )"
 msgstr ""
 
 msgid "Server:"
@@ -10878,7 +10899,7 @@ msgstr ""
 msgid "Show Multi EPG"
 msgstr ""
 
-msgid "Show OScam Info in extensions?"
+msgid "Show OScam/Ncam Info in extensions?"
 msgstr ""
 
 msgid "Show PIP"
@@ -11140,6 +11161,9 @@ msgid "Show status icons in movie list"
 msgstr ""
 
 msgid "Show stream clients"
+msgstr ""
+
+msgid "Show sub-menu"
 msgstr ""
 
 msgid "Show subservice selection"
@@ -12299,7 +12323,7 @@ msgstr ""
 #, python-format
 msgid ""
 "The user interface of your %s %s is restarting\n"
-"due to an error in mytest.py"
+"due to an error in StartEnigma.py"
 msgstr ""
 
 msgid ""
@@ -13661,6 +13685,9 @@ msgstr ""
 msgid "Warning: no LNB; using factory defaults."
 msgstr ""
 
+msgid "Warning: the second input of this dual tuner may not support SCR LNBs. "
+msgstr ""
+
 msgid "Watch movies..."
 msgstr ""
 
@@ -14479,6 +14506,9 @@ msgstr ""
 msgid "advertisement/shopping"
 msgstr ""
 
+msgid "all tuners"
+msgstr ""
+
 msgid "alpha then oldest"
 msgstr ""
 
@@ -15170,6 +15200,9 @@ msgstr ""
 msgid "not supported"
 msgstr ""
 
+msgid "not valid frontend"
+msgstr ""
+
 msgid "nothing connected"
 msgstr ""
 
@@ -15207,9 +15240,6 @@ msgid "original"
 msgstr ""
 
 msgid "original language"
-msgstr ""
-
-msgid "oscam webif disabled"
 msgstr ""
 
 msgid "packages selected."
@@ -15315,6 +15345,9 @@ msgid "romance"
 msgstr ""
 
 msgid "rotor"
+msgstr ""
+
+msgid "rotor is not used"
 msgstr ""
 
 msgid "running..."
@@ -15567,6 +15600,9 @@ msgid "unavailable"
 msgstr ""
 
 msgid "unconfirmed"
+msgstr ""
+
+msgid "undefined"
 msgstr ""
 
 msgid "unknown"

@@ -1,9 +1,9 @@
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-18 09:59+0430\n"
+"POT-Creation-Date: 2021-05-18 14:44+0200\n"
 "PO-Revision-Date: 2021-03-30 10:19+0200\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
@@ -174,6 +174,10 @@ msgstr " (0 - alle netwerken)"
 msgid " (Channel %s)"
 msgstr " (Kanaal %s)"
 
+#, fuzzy
+msgid " (auto detection)"
+msgstr "Automatisch detecteren"
+
 msgid " (disabled)"
 msgstr " (gedeactiveerd)"
 
@@ -194,6 +198,9 @@ msgstr " - video0+video1"
 
 msgid " - video1"
 msgstr " - video1"
+
+msgid " Warning: the selected tuner should not use SCR Unicable type for LNBs because each tuner need a own SCR number."
+msgstr ""
 
 msgid " and"
 msgstr " en"
@@ -1089,6 +1096,18 @@ msgstr "%s (%s)\n"
 msgid "%s - %s (%s%d min)"
 msgstr "%s - %s (%s%d min)"
 
+#, fuzzy, python-format
+msgid "%s Info - Configuration"
+msgstr "Oscam info - configuratie"
+
+#, fuzzy, python-format
+msgid "%s Info - Main Menu"
+msgstr "Oscam info - hoofd Menu"
+
+#, fuzzy, python-format
+msgid "%s Log ( %s-Version: %s )"
+msgstr "Oscam log ( Oscam-Versie: %s )"
+
 #, python-format
 msgid "%s files cannot be bulk renamed"
 msgstr "%s bestanden kunnen niet en masse hernoemd worden"
@@ -1112,6 +1131,10 @@ msgid_plural "%s updated packages available"
 msgstr[0] "%s geupdate pakket beschikbaar"
 msgstr[1] "%s geupdate pakketten beschikbaar"
 
+#, fuzzy, python-format
+msgid "%s webif disabled"
+msgstr "Oscam web-if gedeactiveerd"
+
 #, python-format
 msgid "%s%d Min"
 msgstr "%s%d Min"
@@ -1123,10 +1146,6 @@ msgstr "%s%s(Default: %s)"
 #, python-format
 msgid "%s/%s: %s"
 msgstr "%s/%s: %s"
-
-#, python-format
-msgid "%s:%s"
-msgstr "%s:%s"
 
 #, python-format
 msgid "%s?"
@@ -1839,11 +1858,9 @@ msgstr "Voegt schema toe..."
 msgid "Additional cable of motorized LNB"
 msgstr "Extra kabel van gemotoriseerde LNB"
 
-msgid "Additional motor options allow you to enter details from your motor's spec sheet so enigma can work out how long it will take to move the dish from one satellite to another satellite."
+#, fuzzy
+msgid "Additional motor options opens a sub-menu where you can enter details from your motor's spec sheet so enigma can work out how long it will take to move the dish from one satellite to another satellite."
 msgstr "Aanvullende motoropties geven de mogelijkheid de specifieke eigenschappen van uw motor in te stellen."
-
-msgid "Additional motor options allow you to enter details from your motor's spec sheet so enigma can work out how long it will take to move to another satellite."
-msgstr "Aanvullende motoropties geven de mogelijkheid de specifieke eigenschappen van uw motor in te stellen. Daardoor weet Enigma2 hoe lang het duurt naar een andere satelliet te draaien."
 
 msgid "Address"
 msgstr "Adres"
@@ -2001,7 +2018,8 @@ msgstr "Hier kiest u ervoor CCcam in de lijst met extensies wel of niet te tonen
 msgid "Allows you to show/hide Log Manager in extensions (blue button)."
 msgstr "Maakt het mogelijk de logmanager in extensies te tonen/verbergen."
 
-msgid "Allows you to show/hide OScam Info in extensions (blue button)."
+#, fuzzy
+msgid "Allows you to show/hide OScam/Ncam Info in extensions (blue button)."
 msgstr "Hier kiest u ervoor OScam in de lijst met extensies wel of niet te tonen."
 
 msgid "Alpha"
@@ -3200,8 +3218,8 @@ msgstr "Verwijder markeringen"
 msgid "Clear playlist"
 msgstr "Afspeellijst leegmaken"
 
-#, python-format
-msgid "Client Info ( Oscam-Version: %s )"
+#, fuzzy, python-format
+msgid "Client Info ( %s-Version: %s )"
 msgstr "KlantInfo ( Oscam-Versie: %s )"
 
 msgid "Client Mode setup"
@@ -3999,7 +4017,7 @@ msgstr "DTS downmix"
 msgid "DTS-HD HR/DTS-HD MA/DTS"
 msgstr "DTS-HD HR/DTS-HD MA/DTS"
 
-#
+# 
 msgid "DUAL LAYER DVD"
 msgstr "Dubbellaags DVD"
 
@@ -4213,7 +4231,7 @@ msgstr "Debuglog tijdformaat *"
 msgid "Debug to file"
 msgstr "Debug naar bestand"
 
-#
+# 
 msgid "Decrement end time"
 msgstr "Verminder eindtijd"
 
@@ -4612,7 +4630,7 @@ msgstr "Wilt u echt deze timer echt verwijderen?"
 msgid "Do you really want to download the plugin \"%s\"?"
 msgstr "Wilt u echt deze applicatie \"%s\" downloaden?"
 
-#
+# 
 msgid "Do you really want to exit?"
 msgstr "Wilt u echt afsluiten?"
 
@@ -5393,11 +5411,11 @@ msgstr "Uitgebreide instellingen..."
 msgid "Extended Shares"
 msgstr "Extended Shares"
 
-#
+# 
 msgid "Extended Software"
 msgstr "Uitgebreide software"
 
-#
+# 
 msgid "Extended Software Plugin"
 msgstr "Uitgebreide software plugin"
 
@@ -5566,7 +5584,7 @@ msgstr "Fallback remote-ontvanger URL"
 msgid "False"
 msgstr "Niet waar"
 
-#
+# 
 #, python-format
 msgid "Fan %d"
 msgstr "Ventilator %d"
@@ -5616,8 +5634,9 @@ msgstr "Feeds status: bezig met updaten"
 msgid "Fiji"
 msgstr "Fiji"
 
+#, fuzzy, python-format
 msgid ""
-"File oscam.conf not found.\n"
+"File %s.conf not found.\n"
 "Please enter username/password manually."
 msgstr ""
 "Bestand oscam.conf niet gevonden.\n"
@@ -5750,7 +5769,8 @@ msgstr "Vr"
 msgid "Friday"
 msgstr "vrijdag"
 
-msgid "From :"
+#, fuzzy
+msgid "From:"
 msgstr "Van:"
 
 msgid "Front Panel Display"
@@ -5913,9 +5933,6 @@ msgstr "Ga naar"
 msgid "Goto 0"
 msgstr "Naar 0 positie"
 
-msgid "Goto :"
-msgstr "Ga naar :"
-
 msgid "Goto X"
 msgstr "Ga naar X"
 
@@ -5924,6 +5941,10 @@ msgstr "Naar indexpositie draaien"
 
 msgid "Goto position"
 msgstr "Naar positie draaien"
+
+#, fuzzy
+msgid "Goto:"
+msgstr "Ga naar :"
 
 msgid "GotoX calibration"
 msgstr "GotoX calibratie"
@@ -6169,6 +6190,9 @@ msgstr "Verberg kanalen die achter kinderslot zitten"
 msgid "Hide player"
 msgstr "Verberg speler"
 
+msgid "Hide sub-menu"
+msgstr ""
+
 msgid "Hide zap errors"
 msgstr "Verberg zapfouten"
 
@@ -6283,7 +6307,7 @@ msgstr "Hongaars"
 msgid "Hungary"
 msgstr "Hungary"
 
-#
+# 
 #, fuzzy
 msgid "I"
 msgstr "IP"
@@ -6313,7 +6337,7 @@ msgstr "INFO-toets actie"
 msgid "INS"
 msgstr "INS"
 
-#
+# 
 msgid "IP"
 msgstr "IP"
 
@@ -6337,7 +6361,7 @@ msgstr ""
 "- Is er geen geldig IP-adres gevonden.\n"
 "- Controleer uw DHCP server, bekabeling en adapter instellingen."
 
-#
+# 
 msgid "IP:"
 msgstr "IP:"
 
@@ -6526,7 +6550,7 @@ msgstr "Vergroot tijdschaal"
 msgid "Increased voltage"
 msgstr "Verhoogd voltage"
 
-#
+# 
 msgid "Increment end time"
 msgstr "Vergroot eindtijd"
 
@@ -6709,7 +6733,7 @@ msgstr "Directe opname..."
 msgid "Interface"
 msgstr "Interface"
 
-#
+# 
 msgid "Interface: "
 msgstr "Interface: "
 
@@ -8109,7 +8133,7 @@ msgstr "Noors"
 msgid "Not Classified"
 msgstr "Niet geclassificeerd"
 
-#
+# 
 msgid "Not Defined"
 msgstr "Niet gedefinieerd"
 
@@ -8222,7 +8246,12 @@ msgstr "OSD naamverzoek"
 msgid "OSD position"
 msgstr "OSD positie"
 
-msgid "OScam Info"
+#, fuzzy
+msgid "OScam/Ncam  Info"
+msgstr "OScam Info"
+
+#, fuzzy
+msgid "OScam/Ncam Info"
 msgstr "OScam Info"
 
 msgid "OVR"
@@ -8386,16 +8415,6 @@ msgstr "Gewoon"
 msgid "Original"
 msgstr "Origineel"
 
-msgid "Oscam Info - Configuration"
-msgstr "Oscam info - configuratie"
-
-msgid "Oscam Info - Main Menu"
-msgstr "Oscam info - hoofd Menu"
-
-#, python-format
-msgid "Oscam Log ( Oscam-Version: %s )"
-msgstr "Oscam log ( Oscam-Versie: %s )"
-
 msgid "Other"
 msgstr "Anders"
 
@@ -8435,7 +8454,7 @@ msgstr "PGS-bestand"
 msgid "PID"
 msgstr "PID"
 
-#
+# 
 msgid "PIP"
 msgstr "PIP"
 
@@ -8730,7 +8749,7 @@ msgstr "Playlist"
 msgid "Playpause"
 msgstr "Speel/pauze"
 
-#
+# 
 msgid "Please add titles to the compilation."
 msgstr "Gelieve titels aan de compilatie toe te voegen."
 
@@ -9473,7 +9492,8 @@ msgstr "Waardering niet bepaald"
 msgid "Re-enter PIN"
 msgstr "Voer PIN nogmaals in"
 
-msgid "Read Userdata from oscam.conf"
+#, fuzzy, python-format
+msgid "Read Userdata from %s.conf"
 msgstr "Lees gebruikersgegevens van oscam.conf"
 
 msgid "Reader"
@@ -9575,6 +9595,12 @@ msgstr "Opname en afspelen"
 msgid "Recording and playback settings"
 msgstr "Opname-en afspeelinstellingen"
 
+#, fuzzy, python-format
+msgid "Recording in progress: %s"
+msgstr ""
+"\n"
+"Opname is bezig."
+
 msgid "Recording type"
 msgstr "Type opname"
 
@@ -9589,6 +9615,12 @@ msgstr "Opnames"
 
 msgid "Recordings always have priority"
 msgstr "Een opname heeft altijd voorrang"
+
+#, fuzzy, python-format
+msgid "Recordings in progress: %d"
+msgstr ""
+"\n"
+"Opname is bezig."
 
 msgid "Recordings, Playback & Timeshift"
 msgstr "Opname, afspelen & timeshift"
@@ -9866,7 +9898,7 @@ msgstr "Verzoekt de fabrikant te melden"
 msgid "Require authentication for http streams"
 msgstr "Vereist authenticatie voor http streams"
 
-#
+# 
 msgid "Required medium type:"
 msgstr "Benodigd mediumtype:"
 
@@ -9951,7 +9983,7 @@ msgstr "18+"
 msgid "Resume from last position"
 msgstr "Ga door op laatste positie"
 
-#
+# 
 #, python-format
 msgid "Resume position at %s"
 msgstr "Hervat positie op %s"
@@ -9959,7 +9991,7 @@ msgstr "Hervat positie op %s"
 msgid "Resuming playback"
 msgstr "Afspelen wordt hervat"
 
-#
+# 
 msgid "Retrieving image slots - Please wait..."
 msgstr "Zoekt naar  image slots. Even wachten..."
 
@@ -10059,7 +10091,7 @@ msgstr "SCR JESS"
 msgid "SCR Unicable"
 msgstr "SCR Unicable"
 
-#
+# 
 msgid "SINGLE LAYER DVD"
 msgstr "ENKEL LAYER DVD"
 
@@ -10318,7 +10350,7 @@ msgstr "Zoekt"
 msgid "Searching east ..."
 msgstr "Zoekt oost..."
 
-#
+# 
 msgid "Searching for available updates. Please wait..."
 msgstr "Zoekt naar beschikbare updates. Even wachten..."
 
@@ -10774,8 +10806,8 @@ msgstr "Serienummer"
 msgid "Serv.Name"
 msgstr "Serv.Naam"
 
-#, python-format
-msgid "Server Info ( Oscam-Version: %s )"
+#, fuzzy, python-format
+msgid "Server Info ( %s-Version: %s )"
 msgstr "Serverinfo ( Oscam-Versie: %s )"
 
 msgid "Server:"
@@ -10895,7 +10927,7 @@ msgstr "Kies kanaal na opstarten"
 msgid "Set default"
 msgstr "Standaard waarde"
 
-#
+# 
 msgid "Set end time"
 msgstr "Stel eindtijd in"
 
@@ -11140,7 +11172,8 @@ msgstr "Toon MiniTV op LCD"
 msgid "Show Multi EPG"
 msgstr "Toon Multi-EPG"
 
-msgid "Show OScam Info in extensions?"
+#, fuzzy
+msgid "Show OScam/Ncam Info in extensions?"
 msgstr "Toon Oscam in extensiemenu?"
 
 msgid "Show PIP"
@@ -11248,7 +11281,7 @@ msgstr "Toon EPG genre informatie"
 msgid "Show event info plugins"
 msgstr "Toon programma info plugins"
 
-#
+# 
 msgid "Show event-progress in channel selection"
 msgstr "Toon programma-voortgang in zenderkeuze"
 
@@ -11404,6 +11437,10 @@ msgstr "Laat status-iconen zien in opnamelijst"
 
 msgid "Show stream clients"
 msgstr "Toon stream-klanten"
+
+#, fuzzy
+msgid "Show sub-menu"
+msgstr "Menu weergeven"
 
 msgid "Show subservice selection"
 msgstr "Toon subservice selectie"
@@ -11703,7 +11740,7 @@ msgstr "Software"
 msgid "Software Update"
 msgstr "Software-update"
 
-#
+# 
 msgid "Software management"
 msgstr "Softwarebeheer"
 
@@ -12586,10 +12623,10 @@ msgstr "Het timer-bestand (timer.xml) is beschadigd en kan niet worden geladen."
 msgid "The user interface of your %s %s is restarting"
 msgstr "De gebruikersinterface van uw %s %s wordt herstart"
 
-#, python-format
+#, fuzzy, python-format
 msgid ""
 "The user interface of your %s %s is restarting\n"
-"due to an error in mytest.py"
+"due to an error in StartEnigma.py"
 msgstr ""
 "De gebruikersinterface van uw %s %s wordt herstart\n"
 "vanwege een fout in mytest.py"
@@ -13208,7 +13245,7 @@ msgstr "dinsdag"
 msgid "Tune"
 msgstr "Afstemmen"
 
-#
+# 
 msgid "Tune and focus"
 msgstr "Tune en focus"
 
@@ -13227,11 +13264,11 @@ msgstr "Tunerinstellingen"
 msgid "Tuner is not supported"
 msgstr "Tuner wordt niet ondersteund"
 
-#
+# 
 msgid "Tuner live values"
 msgstr "Tuner terugmeldingen"
 
-#
+# 
 msgid "Tuner miscellaneous"
 msgstr "Tuner diverse"
 
@@ -13244,18 +13281,18 @@ msgstr "Tunerinstellingen"
 msgid "Tuner slot"
 msgstr "Tunerslot"
 
-#
+# 
 msgid "Tuner status:"
 msgstr "Tunerstatus:"
 
-#
+# 
 msgid "Tuner type"
 msgstr "Tunertype"
 
 msgid "Tuners & Scanning"
 msgstr "Tuners & scannen"
 
-#
+# 
 msgid "Tuning Info: Live Values"
 msgstr "Tunerinfo: terugmeldingen"
 
@@ -13364,7 +13401,7 @@ msgstr "Onbepaald"
 msgid "Undo install"
 msgstr "Installatie ongedaan maken"
 
-#
+# 
 msgid "Undo uninstall"
 msgstr "Ongedaan"
 
@@ -13383,7 +13420,7 @@ msgstr "Unicable-vertraging na aanpassen voltage vóór de schakelopdracht"
 msgid "Unicable delay after last diseqc command"
 msgstr "Unicable-vertraging na laatste DiSEqC opdracht"
 
-#
+# 
 msgid "Uninstall"
 msgstr "De-installeer"
 
@@ -13448,7 +13485,7 @@ msgstr "Updateinterval (in secondes)"
 msgid "Update packages..."
 msgstr "Bezig met update pakketten..."
 
-#
+# 
 msgid "Updatefeed not available."
 msgstr "Updatefeed niet beschikbaar."
 
@@ -13834,7 +13871,7 @@ msgstr "Bekijk de lijst met beschikbare commonInterface extensies"
 msgid "View list of available EPG extensions."
 msgstr "Bekijk de lijst met beschikbare EPG-extensies."
 
-#
+# 
 msgid "View list of available Satellite equipment extensions."
 msgstr "Bekijk de lijst met beschikbare satellietapparatuur extensies."
 
@@ -13984,6 +14021,9 @@ msgstr "Waarschuwing"
 
 msgid "Warning: no LNB; using factory defaults."
 msgstr "Waarschuwing: geen LNB; gebruikt fabrieksinstellingen."
+
+msgid "Warning: the second input of this dual tuner may not support SCR LNBs. "
+msgstr ""
 
 msgid "Watch movies..."
 msgstr "Films afspelen..."
@@ -14487,7 +14527,7 @@ msgstr "U kunt de lijst op tijd of alfanumeriek sorteren."
 msgid "You can install this plugin."
 msgstr "Deze plugin kunt u installeren."
 
-#
+# 
 #, python-format
 msgid "You can only burn %s %s recordings!"
 msgstr "U kunt alleen %s %s opnames schrijven!"
@@ -14651,7 +14691,7 @@ msgstr ""
 "Uw configuratiebestand is niet correct:\n"
 "%s"
 
-#
+# 
 msgid "Your current collection will get lost!"
 msgstr "Uw huidige collectie zal verloren gaan!"
 
@@ -14866,6 +14906,9 @@ msgstr "avontuur/western/oorlog"
 
 msgid "advertisement/shopping"
 msgstr "reclame/boodschappen"
+
+msgid "all tuners"
+msgstr ""
 
 msgid "alpha then oldest"
 msgstr "alfa dan oudste"
@@ -15549,7 +15592,7 @@ msgstr "geen"
 msgid "normal"
 msgstr "normaal"
 
-#
+# 
 msgid "not configured"
 msgstr "niet geconfigureerd"
 
@@ -15558,6 +15601,10 @@ msgstr "niet locked"
 
 msgid "not supported"
 msgstr "niet ondersteund"
+
+#, fuzzy
+msgid "not valid frontend"
+msgstr "ongeldig type"
 
 msgid "nothing connected"
 msgstr "niets aangesloten"
@@ -15597,9 +15644,6 @@ msgstr "origineel"
 
 msgid "original language"
 msgstr "originele taal"
-
-msgid "oscam webif disabled"
-msgstr "Oscam web-if gedeactiveerd"
 
 msgid "packages selected."
 msgstr "pakketten geselecteerd."
@@ -15705,6 +15749,10 @@ msgstr "romantiek"
 
 msgid "rotor"
 msgstr "rotor"
+
+#, fuzzy
+msgid "rotor is not used"
+msgstr "Tuner wordt niet ondersteund"
 
 msgid "running..."
 msgstr "actief..."
@@ -15958,6 +16006,10 @@ msgstr "niet beschikbaar"
 msgid "unconfirmed"
 msgstr "onbevestigd"
 
+#, fuzzy
+msgid "undefined"
+msgstr "Niet gedefinieerd"
+
 msgid "unknown"
 msgstr "onbekend"
 
@@ -16057,7 +16109,7 @@ msgstr "met lange OK-druk"
 msgid "with text"
 msgstr "met tekst"
 
-#
+# 
 msgid "with tuner name"
 msgstr "met tunernaam"
 

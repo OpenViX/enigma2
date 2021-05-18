@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-18 09:59+0430\n"
+"POT-Creation-Date: 2021-05-18 14:44+0200\n"
 "PO-Revision-Date: 2020-03-07 10:34+0300\n"
 "Last-Translator: mosad - مساعد الجعيد <abo-mishal@hotmail.com>\n"
 "Language-Team: mosad - مساعد الجعيد\n"
@@ -165,6 +165,10 @@ msgstr " (0-جميع الشبكات)"
 msgid " (Channel %s)"
 msgstr " (قناة %s)"
 
+#, fuzzy
+msgid " (auto detection)"
+msgstr "الكشف التلقائي"
+
 msgid " (disabled)"
 msgstr " (معطل)"
 
@@ -185,6 +189,9 @@ msgstr " -فديو0+فديو1"
 
 msgid " - video1"
 msgstr " - فديو 1"
+
+msgid " Warning: the selected tuner should not use SCR Unicable type for LNBs because each tuner need a own SCR number."
+msgstr ""
 
 msgid " and"
 msgstr " و"
@@ -1146,6 +1153,18 @@ msgstr "%s (%s)\n"
 msgid "%s - %s (%s%d min)"
 msgstr "%s - %s (%s%d دقيقة)"
 
+#, fuzzy, python-format
+msgid "%s Info - Configuration"
+msgstr "تشكيل - معلومات إيمو الاوسكام"
+
+#, fuzzy, python-format
+msgid "%s Info - Main Menu"
+msgstr "القائمة الرئيسية - معلومات الاوسكام"
+
+#, python-format
+msgid "%s Log ( %s-Version: %s )"
+msgstr ""
+
 #, python-format
 msgid "%s files cannot be bulk renamed"
 msgstr ""
@@ -1173,6 +1192,10 @@ msgstr[3] "التحديثات المتوفرة."
 msgstr[4] "التحديثات المتوفرة."
 msgstr[5] "التحديثات المتوفرة."
 
+#, fuzzy, python-format
+msgid "%s webif disabled"
+msgstr "تم التعطيل"
+
 #, python-format
 msgid "%s%d Min"
 msgstr "%s%d دقيقة"
@@ -1184,10 +1207,6 @@ msgstr "الإفتراضيات"
 #, python-format
 msgid "%s/%s: %s"
 msgstr "%s/%s: %s"
-
-#, python-format
-msgid "%s:%s"
-msgstr "%s:%s"
 
 #, python-format
 msgid "%s?"
@@ -1924,11 +1943,9 @@ msgstr "إضافة جدول ..."
 msgid "Additional cable of motorized LNB"
 msgstr "الكيبل الثاني من اللاقط المتحرك"
 
-msgid "Additional motor options allow you to enter details from your motor's spec sheet so enigma can work out how long it will take to move the dish from one satellite to another satellite."
+#, fuzzy
+msgid "Additional motor options opens a sub-menu where you can enter details from your motor's spec sheet so enigma can work out how long it will take to move the dish from one satellite to another satellite."
 msgstr "يتيح لك خيارات النظام المتحرك الإضافي إمكانية إدخال تفاصيل من المقاييس والمواصفات الخاصة بالنظام المتحرك الخاص بك ، لذلك يمكن أن يحدد المدة التي سيستغرقها نقل الطبق من قمر صناعي إلى قمر صناعي آخر."
-
-msgid "Additional motor options allow you to enter details from your motor's spec sheet so enigma can work out how long it will take to move to another satellite."
-msgstr "تتيح لك خيارات النظام المتحرك الإضافي إمكانية إدخال تفاصيل من مقايس ومواصفات النظام المتحرك ، حتى يمكن أن يحدد المدة التي سيستغرقها الانتقال من قمر إلى قمر صناعي آخر."
 
 msgid "Address"
 msgstr "العنوان"
@@ -2093,7 +2110,8 @@ msgstr "يسمح لك عرض/إخفاء معلومات السسي كام في ا
 msgid "Allows you to show/hide Log Manager in extensions (blue button)."
 msgstr "يسمح لك عرض/ إخفاء إدارة الدخول على الملحقات (الزر الازرق)."
 
-msgid "Allows you to show/hide OScam Info in extensions (blue button)."
+#, fuzzy
+msgid "Allows you to show/hide OScam/Ncam Info in extensions (blue button)."
 msgstr "يسمح لك عرض/إخفاء معلومات الاوسكام في الملحقات (الزر الأزرق)."
 
 msgid "Alpha"
@@ -3332,7 +3350,7 @@ msgid "Clear playlist"
 msgstr "مسح قائمة التشغيل"
 
 #, python-format
-msgid "Client Info ( Oscam-Version: %s )"
+msgid "Client Info ( %s-Version: %s )"
 msgstr ""
 
 #, fuzzy
@@ -5801,8 +5819,9 @@ msgstr "حاله الفييدات: جاري التحديث"
 msgid "Fiji"
 msgstr "فيجي"
 
+#, fuzzy, python-format
 msgid ""
-"File oscam.conf not found.\n"
+"File %s.conf not found.\n"
 "Please enter username/password manually."
 msgstr ""
 "ملف تكوين الاوسكام غير موجود.\n"
@@ -5935,7 +5954,8 @@ msgstr "الجمعه"
 msgid "Friday"
 msgstr "الجمعه"
 
-msgid "From :"
+#, fuzzy
+msgid "From:"
 msgstr "من:"
 
 #, fuzzy
@@ -6107,9 +6127,6 @@ msgstr "الذهاب الى"
 msgid "Goto 0"
 msgstr "الذهاب الى 0"
 
-msgid "Goto :"
-msgstr "الإنتقال الى :"
-
 msgid "Goto X"
 msgstr "الإنتقال الى أكس"
 
@@ -6118,6 +6135,10 @@ msgstr "الانتقال إلى مكان الفهرس"
 
 msgid "Goto position"
 msgstr "الذهاب إلى الوضع"
+
+#, fuzzy
+msgid "Goto:"
+msgstr "الإنتقال الى :"
 
 msgid "GotoX calibration"
 msgstr "الانتقال إلى معايرة أكس"
@@ -6373,6 +6394,9 @@ msgstr "إخفاء الخدمات الأبوية المقفلة"
 
 msgid "Hide player"
 msgstr "إخفاء المشغل"
+
+msgid "Hide sub-menu"
+msgstr ""
 
 msgid "Hide zap errors"
 msgstr "إخفاء أخطاء التنقل"
@@ -8481,7 +8505,12 @@ msgstr "طلب الاسم في شاشة العرض"
 msgid "OSD position"
 msgstr "وضع شاشة العرض المصغرة"
 
-msgid "OScam Info"
+#, fuzzy
+msgid "OScam/Ncam  Info"
+msgstr "معلومات الاوسكام"
+
+#, fuzzy
+msgid "OScam/Ncam Info"
 msgstr "معلومات الاوسكام"
 
 msgid "OVR"
@@ -8647,16 +8676,6 @@ msgstr "العادي"
 
 msgid "Original"
 msgstr "أصلي"
-
-msgid "Oscam Info - Configuration"
-msgstr "تشكيل - معلومات إيمو الاوسكام"
-
-msgid "Oscam Info - Main Menu"
-msgstr "القائمة الرئيسية - معلومات الاوسكام"
-
-#, python-format
-msgid "Oscam Log ( Oscam-Version: %s )"
-msgstr ""
 
 msgid "Other"
 msgstr "أخرى"
@@ -9760,7 +9779,8 @@ msgstr "تصنيف غير معروف"
 msgid "Re-enter PIN"
 msgstr "أعاده إدخال الرقم السري"
 
-msgid "Read Userdata from oscam.conf"
+#, python-format
+msgid "Read Userdata from %s.conf"
 msgstr ""
 
 msgid "Reader"
@@ -9868,6 +9888,12 @@ msgstr "إعدادات التسجيل والتشغيل"
 msgid "Recording and playback settings"
 msgstr "إعدادات التسجيل وتشغيل الوسائط"
 
+#, fuzzy, python-format
+msgid "Recording in progress: %s"
+msgstr ""
+"\n"
+"التسجيل قيد التشغيل."
+
 msgid "Recording type"
 msgstr "نوع التسجيل"
 
@@ -9883,6 +9909,12 @@ msgstr "تسجيلات"
 
 msgid "Recordings always have priority"
 msgstr "التسجيلات لها الأولوية دائمآ"
+
+#, fuzzy, python-format
+msgid "Recordings in progress: %d"
+msgstr ""
+"\n"
+"التسجيل قيد التشغيل."
 
 #, fuzzy
 msgid "Recordings, Playback & Timeshift"
@@ -11125,7 +11157,7 @@ msgid "Serv.Name"
 msgstr "أسم القناة"
 
 #, python-format
-msgid "Server Info ( Oscam-Version: %s )"
+msgid "Server Info ( %s-Version: %s )"
 msgstr ""
 
 msgid "Server:"
@@ -11506,7 +11538,8 @@ msgstr "عرض الشاشة الصغيرة في الشاشة الأمامية"
 msgid "Show Multi EPG"
 msgstr "عرض دليل البرامج الإلكترونية المتعدد"
 
-msgid "Show OScam Info in extensions?"
+#, fuzzy
+msgid "Show OScam/Ncam Info in extensions?"
 msgstr "عرض معلومات الاوسكام في الملحقات؟"
 
 msgid "Show PIP"
@@ -11787,6 +11820,10 @@ msgstr "عرض الإيقونات في قائمة الأفلام"
 
 msgid "Show stream clients"
 msgstr "عرض أسطر التدفق"
+
+#, fuzzy
+msgid "Show sub-menu"
+msgstr "عرض القائمة"
 
 msgid "Show subservice selection"
 msgstr "عرض تحديد الخدمة الفرعية"
@@ -13014,10 +13051,10 @@ msgstr "ملف المؤقت (المؤقتات.xml) غير صالح ولا يمك
 msgid "The user interface of your %s %s is restarting"
 msgstr "جاري إعادة تشغيل واجهة المستخدم على %s %s الخاص بك"
 
-#, python-format
+#, fuzzy, python-format
 msgid ""
 "The user interface of your %s %s is restarting\n"
-"due to an error in mytest.py"
+"due to an error in StartEnigma.py"
 msgstr ""
 "جاري %s %s إعادة تشغيل واجهة المستخدم الخاصة\n"
 "هناك خطاء في ملف الاختبار.البايثون"
@@ -14464,6 +14501,9 @@ msgstr "تحذير"
 msgid "Warning: no LNB; using factory defaults."
 msgstr "تحذير: لايوجد لاقط; قم باستخدام إعدادات ضبط المصنع الافتراضية."
 
+msgid "Warning: the second input of this dual tuner may not support SCR LNBs. "
+msgstr ""
+
 msgid "Watch movies..."
 msgstr "شاهد الأفلام..."
 
@@ -15356,6 +15396,9 @@ msgstr "مغامرة/المصارعة/الحرب"
 msgid "advertisement/shopping"
 msgstr "الإعلان/التسوق"
 
+msgid "all tuners"
+msgstr ""
+
 msgid "alpha then oldest"
 msgstr "السلسلة بالأقدم"
 
@@ -16057,6 +16100,10 @@ msgstr "غير مغلقه"
 msgid "not supported"
 msgstr "غير معتمد"
 
+#, fuzzy
+msgid "not valid frontend"
+msgstr "نوع غير صالح"
+
 msgid "nothing connected"
 msgstr "لا شيئ متصل"
 
@@ -16095,9 +16142,6 @@ msgstr "الأصلي"
 
 msgid "original language"
 msgstr "اللغة الاصلية"
-
-msgid "oscam webif disabled"
-msgstr ""
 
 msgid "packages selected."
 msgstr "الحزم المختارة."
@@ -16204,6 +16248,10 @@ msgstr "رومانسي"
 #, fuzzy
 msgid "rotor"
 msgstr "الدوران: "
+
+#, fuzzy
+msgid "rotor is not used"
+msgstr "مؤالف غير معتمد"
 
 msgid "running..."
 msgstr "تشغيل..."
@@ -16460,6 +16508,10 @@ msgstr "غير متوفر"
 
 msgid "unconfirmed"
 msgstr "غير مؤكد"
+
+#, fuzzy
+msgid "undefined"
+msgstr "غير معروف"
 
 msgid "unknown"
 msgstr "غير معروف"
