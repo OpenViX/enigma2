@@ -273,15 +273,15 @@ def formatUptime(seconds):
 	out = ''
 	if seconds > 86400:
 		days = int(seconds / 86400)
-		out += ("1 day" if days == 1 else "%d days" % days) + ", "
+		out += (_("1 day") if days == 1 else _("%d days") % days) + ", "
 	if seconds > 3600:
 		hours = int((seconds % 86400) / 3600)
-		out += ("1 hour" if hours == 1 else "%d hours" % hours) + ", "
+		out += (_("1 hour") if hours == 1 else _("%d hours") % hours) + ", "
 	if seconds > 60:
 		minutes = int((seconds % 3600) / 60)
-		out += ("1 minute" if minutes == 1 else "%d minutes" % minutes) + " "
+		out += (_("1 minute") if minutes == 1 else _("%d minutes") % minutes) + " "
 	else:
-		out += ("1 second" if seconds == 1 else "%d seconds" % seconds) + " "
+		out += (_("1 second") if seconds == 1 else _("%d seconds") % seconds) + " "
 	return out
 
 # For modules that do "from About import about"
