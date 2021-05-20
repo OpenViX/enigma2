@@ -1113,7 +1113,7 @@ class oscReaderStats(Screen, OscamInfo):
 
 				ecmstat = rdr.find("ecmstats")
 				totalecm = ecmstat.attrib["totalecm"]
-				ecmcount = int(ecmstat.attrib["count"])
+				ecmcount = ecmstat.attrib["count"] and int(ecmstat.attrib["count"]) or 0
 				lastacc = ecmstat.attrib["lastaccess"]
 				ecm = ecmstat.findall("ecm")
 				if ecmcount > 0:
