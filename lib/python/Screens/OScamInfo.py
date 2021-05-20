@@ -22,14 +22,12 @@ from xml.etree import ElementTree
 from operator import itemgetter
 import os
 import time
-# required methods: Request, urlopen, HTTPError, URLError
+# required methods: Request, urlopen, HTTPError, URLError, HTTPHandler, HTTPPasswordMgrWithDefaultRealm, HTTPDigestAuthHandler, build_opener, install_opener
 try: # python 3
-	from urllib.request import urlopen, Request # raises ImportError in Python 2
+	from urllib.request import urlopen, Request, HTTPHandler, HTTPPasswordMgrWithDefaultRealm, HTTPDigestAuthHandler, build_opener, install_opener # raises ImportError in Python 2
 	from urllib.error import HTTPError, URLError # raises ImportError in Python 2
-	from urllib.parse import urlparse, urlunparse # raises ImportError in Python 2
 except ImportError: # Python 2
-	from urllib2 import Request, urlopen, HTTPError, URLError
-	from urlparse import urlparse, urlunparse
+	from urllib2 import Request, urlopen, HTTPError, URLError, HTTPHandler, HTTPPasswordMgrWithDefaultRealm, HTTPDigestAuthHandler, build_opener, install_opener
 import skin
 
 ###global
@@ -182,13 +180,13 @@ class OscamInfo:
 		if part is not None and reader is not None:
 			self.url = "%s://%s:%s/%sapi.html?part=%s&label=%s" % (self.proto, self.ip, self.port, NAMEBIN, part, reader)
 
-		opener = request.build_opener(urllib.request.HTTPHandler)
+		opener = build_opener(HTTPHandler)
 		if not self.username == "":
-			pwman = request.HTTPPasswordMgrWithDefaultRealm()
+			pwman = HTTPPasswordMgrWithDefaultRealm()
 			pwman.add_password(None, self.url, self.username, self.password)
-			handlers = request.HTTPDigestAuthHandler(pwman)
-			opener = request.build_opener(urllib.request.HTTPHandler, handlers)
-			request.install_opener(opener)
+			handlers = HTTPDigestAuthHandler(pwman)
+			opener = build_opener(HTTPHandler, handlers)
+			install_opener(opener)
 		request = Request(self.url)
 		err = False
 		try:
