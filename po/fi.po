@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-19 16:44+0200\n"
-"PO-Revision-Date: 2021-05-20 19:16+0200\n"
+"PO-Revision-Date: 2021-05-21 20:05+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -819,11 +819,23 @@ msgstr[1] "%d kanavaa löydetty!"
 msgid "%d cores"
 msgstr "%d ydintä"
 
-#, python-format
 msgid "%d hour"
-msgid_plural "%d hours"
-msgstr[0] "%d tunti"
-msgstr[1] "%d tuntia"
+msgstr "%d tunti"
+
+msgid "%d hours"
+msgstr "%d tuntia"
+
+msgid "1 hour"
+msgstr "1 tunti"
+
+msgid "hour"
+msgstr "tunti"
+
+msgid "hours"
+msgstr "tuntia"
+
+msgid "Hour"
+msgstr "Tunti"
 
 #, python-format
 msgid "%d items"
@@ -855,11 +867,11 @@ msgstr "%d merkattua kohdetta"
 msgid "%d min"
 msgstr "%d min"
 
-#, python-format
 msgid "%d minute"
-msgid_plural "%d minutes"
-msgstr[0] "%d minuutti"
-msgstr[1] "%d minuuttia"
+msgstr "%d minuutti"
+
+msgid "%d minutes"
+msgstr "%d minuuttia"
 
 #, python-format
 msgid "%d ms"
@@ -883,11 +895,20 @@ msgstr[1] "%d pixelien leveys"
 msgid "%d sec"
 msgstr "%d sekunti"
 
-#, python-format
+msgid "second"
+msgstr "sekunti"
+
+msgid "1 second"
+msgstr "1 sekunti"
+
+msgid "seconds"
+msgstr "sekuntia"
+
 msgid "%d second"
-msgid_plural "%d seconds"
-msgstr[0] "%d sekunti"
-msgstr[1] "%d sekuntia"
+msgstr "%d sekunti"
+
+msgid "%d seconds"
+msgstr "%d sekuntia"
 
 #, python-format
 msgid "%d wireless network found!"
@@ -4895,7 +4916,7 @@ msgstr "Haluatko poistaa kirjanmerkin %s?"
 
 #, python-format
 msgid "Do you really want to stop the current recording and delete timer %s?"
-msgstr "Haluatko varmasti pysäyttää äänityksen ja poistaa ajastuksen %s?"
+msgstr "Haluatko varmasti pysäyttää tallennuksen ja poistaa ajastuksen %s?"
 
 msgid "Do you want to burn this collection to DVD medium?"
 msgstr "Haluatko polttaa tämän kokoelman DVD:lle?"
@@ -6539,11 +6560,6 @@ msgstr "Isäntänimi: "
 
 msgid "Hotplug"
 msgstr "Hotplug"
-
-msgid "%d Hour"
-msgid_plural "%d Hours"
-msgstr[0] "%d Tunti"
-msgstr[1] "%d Tuntia"
 
 msgid "Hourly"
 msgstr "Tunneittain"
@@ -16286,9 +16302,6 @@ msgstr "Ajankohtaisohjelmat (yleinen)"
 msgid "daily"
 msgstr "Päivittäin"
 
-msgid "day"
-msgstr "päivä"
-
 msgid "decrease uphop by 1"
 msgstr "Vähennä ylöshyppyä yhdellä"
 
@@ -16676,6 +16689,9 @@ msgstr "minuuttia"
 msgid "minute"
 msgstr "minuutti"
 
+msgid "1 minute"
+msgstr "1 minuutti"
+
 msgid "minutes"
 msgstr "minuuttia"
 
@@ -16966,9 +16982,6 @@ msgstr "se"
 
 msgid "sec"
 msgstr "sek"
-
-msgid "seconds"
-msgstr "sekuntia"
 
 msgid "select"
 msgstr "Valitse"
@@ -17355,7 +17368,7 @@ msgid "Query before backup starts"
 msgstr "Kysy ennen varmuuskopioinnin aloittamista"
 
 msgid "Max backups to keep (0==all)"
-msgstr "Varmuuskopioita säilytetää enintää (0==kaikki)"
+msgstr "Varmuuskopioita säilytetään enintään (0==kaikki)"
 
 msgid "Image manager settings"
 msgstr "Imagen varmuuskopiointi asetukset"
@@ -17364,10 +17377,25 @@ msgid "Query before image backup starts"
 msgstr "Kysy ennen imagen varmuuskopioinnin aloittamista"
 
 msgid "Max image backups to keep (0==all)"
-msgstr "Imagen varmuuskopioita säilytetää enintää (0==kaikki)"
+msgstr "Imagen varmuuskopioita säilytetään enintään (0==kaikki)"
 
 msgid "Login as an OpenViX developer"
 msgstr "Kirjaudu sisään OpenViX kehittäjänä"
 
 msgid "Choose IPK folder"
 msgstr "Valitse IPK-kansio"
+
+msgid "day"
+msgstr "päivä"
+
+msgid "1 day"
+msgstr "1 päivä"
+
+msgid "days"
+msgstr "päivää"
+
+msgid "%d day"
+msgstr "%d päivä"
+
+msgid "%d days"
+msgstr "%d päivää"
