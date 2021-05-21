@@ -74,7 +74,7 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 				nim.powerMeasurement.value = False
 				nim.powerMeasurement.save()
 		if not hasattr(self, 'additionalMotorOptions'):
-			self.additionalMotorOptions = ConfigBoolean(descriptions={False: _("Show sub-menu"), True: _("Hide sub-menu")})
+			self.additionalMotorOptions = ConfigBoolean(default=any([x.value != x.default for x in (nim.turningspeedH, nim.turningspeedV, nim.tuningstepsize, nim.rotorPositions)]), descriptions={False: _("Show sub-menu"), True: _("Hide sub-menu")})
 		self.showAdditionalMotorOptions = getConfigListEntry(self.indent % _("Extra motor options"), self.additionalMotorOptions, _("Additional motor options opens a sub-menu where you can enter details from your motor's spec sheet so enigma can work out how long it will take to move the dish from one satellite to another satellite."))
 		self.list.append(self.showAdditionalMotorOptions)
 		if self.additionalMotorOptions.value:
@@ -513,7 +513,7 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 					else:
 						self.list.append(getConfigListEntry(self.indent % _("Stored position"), Sat.rotorposition, _("Enter the number stored in the positioner that corresponds to this satellite.")))
 					if not hasattr(self, 'additionalMotorOptions'):
-						self.additionalMotorOptions = ConfigBoolean(descriptions={False: _("Show sub-menu"), True: _("Hide sub-menu")})
+						self.additionalMotorOptions = ConfigBoolean(default=any([x.value != x.default for x in (currLnb.turningspeedH, currLnb.turningspeedV, currLnb.tuningstepsize, currLnb.rotorPositions)]), descriptions={False: _("Show sub-menu"), True: _("Hide sub-menu")})
 					self.showAdditionalMotorOptions = getConfigListEntry(self.indent % _("Extra motor options"), self.additionalMotorOptions, _("Additional motor options opens a sub-menu where you can enter details from your motor's spec sheet so enigma can work out how long it will take to move the dish from one satellite to another satellite."))
 					self.list.append(self.showAdditionalMotorOptions)
 					if self.additionalMotorOptions.value:
@@ -693,6 +693,8 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 	def isChanged(self):
 		is_changed = False
 		for x in self["config"].list:
+			if x == self.showAdditionalMotorOptions:
+				continue
 			is_changed |= x[1].isChanged()
 		return is_changed
 
