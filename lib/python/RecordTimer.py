@@ -476,7 +476,7 @@ class RecordTimerEntry(TimerEntry, object):
 
 	def activate(self):
 		next_state = self.state + 1
-		self.log(5, "activating state %d" % next_state)
+		self.log(5, "activating state %d (%s)" % (next_state, TimerEntry.States.get(next_state, "?")))
 
 		if next_state == self.StatePrepared:
 			if not self.justplay and not self.freespace():
