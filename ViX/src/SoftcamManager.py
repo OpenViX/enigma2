@@ -352,7 +352,6 @@ class VIXStartCam(Screen):
 		self.onClose.append(self.delTimer)
 
 	def startShow(self):
-		self.curpix = 0
 		self.count = 0
 		self["connect"].setPixmapNum(0)
 		if startselectedcam.endswith(".sh"):
@@ -422,30 +421,14 @@ class VIXStartCam(Screen):
 
 	def updatepix(self):
 		self.activityTimer.stop()
-		if startselectedcam.lower().startswith("cccam"):
-			if self.curpix > 23:
-				self.curpix = 0
-			if self.count > 120:
-				self.curpix = 23
-			self["connect"].setPixmapNum(self.curpix)
-			if self.count == 120:  # timer on screen
-				self.hide()
-				self.close()
+		maxcount = 120 if startselectedcam.lower().startswith("cccam") else 25
+		if self.count < maxcount:  # timer on screen
+			self["connect"].setPixmapNum(self.count % 24)
 			self.activityTimer.start(120)  # cycle speed
-			self.curpix += 1
 			self.count += 1
 		else:
-			if self.curpix > 23:
-				self.curpix = 0
-			if self.count > 23:
-				self.curpix = 0
-			self["connect"].setPixmapNum(self.curpix)
-			if self.count == 25:  # timer on screen
-				self.hide()
-				self.close()
-			self.activityTimer.start(120)  # cycle speed
-			self.curpix += 1
-			self.count += 1
+			self.hide()
+			self.close()
 
 	def delTimer(self):
 		del self.activityTimer
@@ -505,7 +488,6 @@ class VIXStopCam(Screen):
 
 	def startShow(self, result, retval, extra_args):
 		if retval == 0:
-			self.curpix = 0
 			self.count = 0
 			self["connect"].setPixmapNum(0)
 			stopcam = str(result)
@@ -534,17 +516,13 @@ class VIXStopCam(Screen):
 
 	def updatepix(self):
 		self.activityTimer.stop()
-		if self.curpix > 23:
-			self.curpix = 0
-		if self.count > 23:
-			self.curpix = 0
-		self["connect"].setPixmapNum(self.curpix)
-		if self.count == 25:  # timer on screen
+		if self.count < 25:  # timer on screen
+			self["connect"].setPixmapNum(self.count % 24)
+			self.activityTimer.start(120)  # cycle speed
+			self.count += 1
+		else:
 			self.hide()
 			self.close()
-		self.activityTimer.start(120)  # cycle speed
-		self.curpix += 1
-		self.count += 1
 
 	def delTimer(self):
 		del self.activityTimer
