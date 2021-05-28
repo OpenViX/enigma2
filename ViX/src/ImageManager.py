@@ -1470,8 +1470,8 @@ class ImageManagerDownload(Screen):
 		path = parsed.path
 		if username or password:
 			import base64
-			base64string = base64.b64encode('%s:%s' % (username, password))
-			headers = {"Authorization": "Basic %s" % base64string}
+			base64string = base64.b64encode(six.ensure_binary('%s:%s' % (username, password)))
+			headers = {six.ensure_binary("Authorization"): six.ensure_binary("Basic %s" % six.ensure_str(base64string))}
 		return headers, scheme + "://" + hostname + path
 
 
