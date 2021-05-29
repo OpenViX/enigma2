@@ -209,6 +209,7 @@ eventData::eventData(const eit_event_struct* e, int size, int _type, int tsidoni
 					//save text with UTF-8 encoding
 					if( eventTextUTF8len > 0 ) //only store the data if there is something to store
 					{
+						eventTextUTF8len = truncateUTF8(eventTextUTF8, 255 - 6);
 						int text_len = 6 + eventTextUTF8len;
 						uint8_t *text_data = new uint8_t[text_len + 2];
 						text_data[0] = SHORT_EVENT_DESCRIPTOR;
