@@ -1311,7 +1311,7 @@ class ImageManagerDownload(Screen):
 		self.setTitle(_("%s downloads") % {config.imagemanager.imagefeed_ATV: "OpenATV", config.imagemanager.imagefeed_Pli: "OpenPLi", config.imagemanager.imagefeed_ViX: "OpenViX"}.get(ConfigObj, ''))
 		self.ConfigObj = ConfigObj
 		self.BackupDirectory = BackupDirectory
-		self["lab1"] = Label(_("Select an image to download for %s:" % getMachineMake()))
+		self["lab1"] = Label(_("Select an image to download for %s:") % getMachineMake())
 		self["key_red"] = Button(_("Close"))
 		self["key_green"] = Button(_("Download"))
 		self["ImageDown"] = ActionMap(["OkCancelActions", "ColorActions", "DirectionActions", "KeyboardInputActions", "MenuActions"], {
