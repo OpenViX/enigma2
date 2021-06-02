@@ -48,7 +48,7 @@ def readFile(filename):
 	return data
 
 
-def getProcPartitions(bplist):
+def getProcPartitions(partitionList):
 	partitions = []
 	with open("/proc/partitions", "r") as fd:
 		for line in fd.readlines():
@@ -58,7 +58,7 @@ def getProcPartitions(bplist):
 			(devmajor, devminor, blocks, device) = line.split()
 			if devmajor == "major":  # Skip label line.
 				continue
-			# print "[MountManager] device='%s', devmajor='%s', devminor='%s'." % (device, devmajor, devminor)
+			# print("[MountManager] device='%s', devmajor='%s', devminor='%s'." % (device, devmajor, devminor))
 			devMajor = int(devmajor)
 			if devMajor in blacklistedDisks:  # Ignore all blacklisted devices.
 				continue
@@ -79,22 +79,22 @@ def getProcPartitions(bplist):
 					continue
 			if device in partitions:  # If device is already in partition list ignore it.
 				continue
-			buildPartitionInfo(device, bplist)
+			buildPartitionInfo(device, partitionList)
 			partitions.append(device)
 
 
-def buildPartitionInfo(partition, bplist):
+def buildPartitionInfo(partition, partitionList):
 	if re.search("mmcblk[0-1]p[0-3]", partition):
 		device = re.sub("p[0-9]", "", partition)
 	else:
 		device = re.sub("[0-9]", "", partition)
 	physicalDevice = path.realpath(path.join("/sys/block", device, "device"))
 
-	# print "[MountManager] MachineBuild: %s" % getMachineBuild()
-	# print "[MountManager] partition: %s" % partition
-	# print "[MountManager] device: %s" % device
-	# print "[MountManager] physicalDevice: %s" % physicalDevice
-	# print "[MountManager] Type: %s" % SystemInfo["MountManager"]
+	# print("[MountManager] MachineBuild: %s" % getMachineBuild())
+	# print("[MountManager] partition: %s" % partition)
+	# print("[MountManager] device: %s" % device)
+	# print("[MountManager] physicalDevice: %s" % physicalDevice)
+	# print("[MountManager] Type: %s" % SystemInfo["MountManager"])
 
 	description = readFile(path.join(physicalDevice, "model"))
 	if description is None:
@@ -110,7 +110,7 @@ def buildPartitionInfo(partition, bplist):
 		count += 1
 		if "/%s" % bus in physicalDevice:
 			break
-	# print "[MountManager1]bus: %s count : %s" % (bus, count)
+	# print("[MountManager1]bus: %s count : %s" % (bus, count))
 	pngType = busTranslate[count]
 	name = _("%s: " % pngType.upper())
 	name += description
@@ -138,6 +138,7 @@ def buildPartitionInfo(partition, bplist):
 		description = _("Size: ") + _("unavailable")
 	else:
 		stat = statvfs(mediamount)
+		# print("[MountManager1]mediamount: %s" % mediamount)
 		size = (stat.f_blocks * stat.f_bsize) / (1000 * 1000) # get size in MB
 		if size < 1: # is condition ever fulfilled?
 			description = _("Size: unavailable")
@@ -148,7 +149,7 @@ def buildPartitionInfo(partition, bplist):
 		else:
 			description = _("Size: %sTB") % format(size / (1000 * 1000), '.2f')
 	if description != "": # how will this ever return false?
-		if SystemInfo["MountManager"]:
+		if SystemInfo["MountManager"]:	# called by VIXDevicesPanel else DeviceMountSetup
 			if rw.startswith("rw"):
 				rw = " R/W"
 			elif rw.startswith("ro"):
@@ -177,7 +178,7 @@ def buildPartitionInfo(partition, bplist):
 			item.value = mediamount.strip()
 			text = name + " " + description + " /dev/" + partition
 			partitionInfo = getConfigListEntry(text, item, partition, _format)
-		bplist.append(partitionInfo)
+		partitionList.append(partitionInfo)
 
 
 class VIXDevicesPanel(Screen):
@@ -226,8 +227,8 @@ class VIXDevicesPanel(Screen):
 		self["key_blue"] = Label(_("Mount"))
 		self["lab1"] = Label(_("Please wait while scanning for devices..."))
 		self.onChangedEntry = []
-		self.list = []
-		self["list"] = List(self.list)
+		self.partitionlist = []
+		self["list"] = List(self.partitionlist)
 		self["list"].onSelectionChanged.append(self.selectionChanged)
 		self["actions"] = ActionMap(["WizardActions", "ColorActions", "MenuActions"], {
 			"back": self.close,
@@ -243,20 +244,18 @@ class VIXDevicesPanel(Screen):
 		self.setTimer()
 
 	def selectionChanged(self):
-		if len(self.list) == 0:
+		# print("[MountManager][selectionChanged] self.partitionList=%s" % self.partitionList)
+		if len(self.partitionList) == 0:
 			return
-		sel = self["list"].getCurrent()
-		seldev = sel
-		for line in sel:
-			try:
-				line = line.strip()
-				if line.find("Mount") >= 0:
-					if line.find("/media/hdd") < 0:
-						self["key_red"].setText(_("Use as HDD"))
-				else:
-					self["key_red"].setText("")
-			except Exception:
-				pass
+		sel = self["list"].getCurrent()	# partitionInfo = (name, description, png)
+		# print("[MountManager][selectionChanged] sel1=%s sel2=%s" % (sel[0], sel[1]))
+		line = sel[1]		
+		# print("[MountManager1][selectionChanged] line=%s" % line)
+		if line.find("Mount") >= 0:
+			if line.find("/media/hdd") < 0:
+				self["key_red"].setText(_("Use as HDD"))
+		else:
+			self["key_red"].setText("")
 		name = description = ""
 		if sel:
 			try:
@@ -273,23 +272,25 @@ class VIXDevicesPanel(Screen):
 
 	def findPartitions(self):
 		self.activityTimer.stop()
-		self.bplist = []
+		self.partitionList = []
 		SystemInfo["MountManager"] = True
-		getProcPartitions(self.bplist)
-		self["list"].list = self.bplist
+		getProcPartitions(self.partitionList)
+		self["list"].list = self.partitionList
 		self["lab1"].hide()
 
 	def setupMounts(self):
-		self.session.openWithCallback(self.setTimer, VIXDevicePanelConf)
+		self.session.openWithCallback(self.setTimer, DeviceMountSetup)	#	print("[MountManager][setupMounts")
 
 	def unmount(self):
 		sel = self["list"].getCurrent()
+		# print("[MountManager][unmount] sel1=%s sel2=%s" % (sel[0], sel[1]))
 		if sel:
 			des = sel[1]
 			des = des.replace("\n", "\t")
 			parts = des.strip().split("\t")
 			mountp = parts[1].replace(_("Mount: "), "")
 			device = parts[2].replace(_("Device: "), "")
+			# print("[MountManager][unmount] mountp=%s device=%s" % (mountp, device))	
 			exitStatus = system("umount %s" % mountp)
 			if exitStatus == 0:
 				self.session.open(MessageBox, _("Partition: %s  Mount: %s unmounted successfully; if all partitions now unmounted you can remove device.") % (device, mountp), MessageBox.TYPE_INFO)
@@ -300,12 +301,14 @@ class VIXDevicesPanel(Screen):
 
 	def mount(self):
 		sel = self["list"].getCurrent()
+		# print("[MountManager][mount] sel1=%s sel2=%s" % (sel[0], sel[1]))
 		if sel:
 			des = sel[1]
 			des = des.replace("\n", "\t")
 			parts = des.strip().split("\t")
 			mountp = parts[1].replace(_("Mount: "), "")
 			device = parts[2].replace(_("Device: "), "")
+			# print("[MountManager][mount] mountp=%s device=%s" % (mountp, device))			
 			exitStatus = system("mount %s" % device)
 			if exitStatus != 0:
 				self.session.open(MessageBox, _("Mount failed for '%s', error code = '%s'.") % (sel, exitStatus), MessageBox.TYPE_INFO, timeout=10)
@@ -313,11 +316,12 @@ class VIXDevicesPanel(Screen):
 
 	def saveMounts(self):
 		sel = self["list"].getCurrent()
+		# print("[MountManager][saveMounts] selection=%s" % sel)
 		if sel:
 			parts = sel[1].split()
 			self.device = parts[5]
 			self.mountp = parts[3]
-			# print "[MountManager1]saveMounts: device = %s, mountp = %s" %(self.device, self.mountp)
+			# print("[MountManager1]saveMounts: device = %s, mountp = %s" %(self.device, self.mountp))
 			self.Console.ePopen("umount " + self.device)
 			if self.mountp.find("/media/hdd") < 0:
 				self.Console.ePopen("umount /media/hdd")
@@ -329,7 +333,7 @@ class VIXDevicesPanel(Screen):
 		self.device = extra_args[0]
 		self.mountp = extra_args[1]
 		self.device_uuid = "UUID=" + six.ensure_str(result).split("UUID=")[1].split(" ")[0].replace('"', '')
-		# print "[MountManager1]addFstab: device = %s, mountp=%s, UUID=%s" %(self.device, self.mountp, self.device_uuid)
+		# print("[MountManager1][addFstab1]: device = %s, mountp=%s, UUID=%s" %(self.device, self.mountp, self.device_uuid))
 		if not path.exists(self.mountp):
 			mkdir(self.mountp, 0o755)
 		open("/etc/fstab.tmp", "w").writelines([l for l in open("/etc/fstab").readlines() if "/media/hdd" not in l])
@@ -344,7 +348,7 @@ class VIXDevicesPanel(Screen):
 		self.Console.ePopen("mount -a", self.setTimer)
 
 
-class VIXDevicePanelConf(Screen, ConfigListScreen):
+class DeviceMountSetup(Screen, ConfigListScreen):
 	skin = """
 	<screen position = "center, center" size = "640, 460">
 		<ePixmap pixmap = "skin_default/buttons/red.png" position = "25, 0" size = "140, 40" alphatest = "on"/>
@@ -357,8 +361,8 @@ class VIXDevicePanelConf(Screen, ConfigListScreen):
 
 	def __init__(self, session):
 		Screen.__init__(self, session)
-		self.list = []
-		ConfigListScreen.__init__(self, self.list)
+		self.partitionList = []
+		ConfigListScreen.__init__(self, self.partitionList)
 		self.setTitle(_("Choose where to mount your devices to:"))
 		self["key_green"] = Label(_("Save"))
 		self["key_red"] = Label(_("Cancel"))
@@ -380,18 +384,19 @@ class VIXDevicePanelConf(Screen, ConfigListScreen):
 
 	def findconfPartitions(self):
 		self.activityTimer.stop()
-		self.bplist = []
+		self.partitionList = []
 		SystemInfo["MountManager"] = False
-		getProcPartitions(self.bplist)
-		self["config"].list = self.bplist
-		self["config"].l.setList(self.bplist)
+		getProcPartitions(self.partitionList)
+		self["config"].list = self.partitionList
+		self["config"].l.setList(self.partitionList)
 		self["lab1"].hide()
 
 	def saveconfMounts(self):
-		for x in self["config"].list:
+		for x in self["config"].list:	# partitionInfo = getConfigListEntry(text, item, partition, _format)
 			self.device = x[2]
 			self.mountp = x[1].value
 			self.type = x[3]
+			# print("[MountManager][saveconfMount] mountp=%s device=%s type=%s" % (self.mountp, self.device, self.type))				
 			self.Console.ePopen("umount %s" % self.device)
 			self.Console.ePopen("/sbin/blkid | grep " + self.device + " && opkg list-installed ntfs-3g", self.addconfFstab, [self.device, self.mountp])
 		message = _("Updating mount locations...")
@@ -404,13 +409,13 @@ class VIXDevicePanelConf(Screen, ConfigListScreen):
 		ybox.setTitle(_("Restart %s %s.") % (getMachineBrand(), getMachineName()))
 
 	def addconfFstab(self, result=None, retval=None, extra_args=None):
-		# print "[MountManager] RESULT:", result
+		# print("[MountManager] RESULT:", result)
 		if result:
 			self.device = extra_args[0]
 			self.mountp = extra_args[1]
-			self.device_uuid = "UUID=" + result.split("UUID=")[1].split(" ")[0].replace('"', '')
-			self.device_type = result.split("TYPE=")[1].split(" ")[0].replace('"', '')
-
+			self.device_uuid = "UUID=" + six.ensure_str(result).split("UUID=")[1].split(" ")[0].replace('"', '')
+			self.device_type = six.ensure_str(result).split("TYPE=")[1].split(" ")[0].replace('"', '')
+			# print("[MountManager][addFstab2] device_uuid:%s device_type:%s" % (self.device_uuid, self.device_type))
 			if self.device_type.startswith("ext"):
 				self.device_type = "auto"
 			elif self.device_type.startswith("ntfs") and result.find("ntfs-3g") != -1:
@@ -432,23 +437,3 @@ class VIXDevicePanelConf(Screen, ConfigListScreen):
 			self.session.open(TryQuitMainloop, QUIT_REBOOT)
 		else:
 			self.close()
-
-
-class VIXDevicesPanelSummary(Screen):
-	def __init__(self, session, parent):
-		Screen.__init__(self, session, parent=parent)
-		self["entry"] = StaticText("")
-		self["desc"] = StaticText("")
-		self.onShow.append(self.addWatcher)
-		self.onHide.append(self.removeWatcher)
-
-	def addWatcher(self):
-		self.parent.onChangedEntry.append(self.selectionChanged)
-		self.parent.selectionChanged()
-
-	def removeWatcher(self):
-		self.parent.onChangedEntry.remove(self.selectionChanged)
-
-	def selectionChanged(self, name, desc):
-		self["entry"].text = name
-		self["desc"].text = desc
