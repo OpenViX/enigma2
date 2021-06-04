@@ -88,7 +88,7 @@ def getPage(url, contextFactory=None, *args, **kwargs):
 		else:
 			kwargs["headers"] = AuthHeaders
 
-	factory = HTTPClientFactory(url, *args, **kwargs)
+	factory = HTTPClientFactory(six.ensure_binary(url), *args, **kwargs)
 	reactor.connectTCP(host, port, factory)
 
 	return factory.deferred
