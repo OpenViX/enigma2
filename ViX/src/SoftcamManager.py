@@ -490,7 +490,8 @@ class VIXStopCam(Screen):
 		if retval == 0:
 			self.count = 0
 			self["connect"].setPixmapNum(0)
-			stopcam = str(result)
+			stopcam = six.ensure_str(result)
+			print("[SoftcamManager][startShow] stopcam=%s" % stopcam)
 			if path.exists("/etc/SoftcamsAutostart"):
 				file = open("/etc/SoftcamsAutostart")
 				data = file.read()
