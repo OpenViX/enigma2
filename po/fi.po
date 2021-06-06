@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-19 16:44+0200\n"
-"PO-Revision-Date: 2021-05-21 20:05+0200\n"
+"PO-Revision-Date: 2021-06-06 10:58+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -868,10 +868,9 @@ msgid "%d min"
 msgstr "%d min"
 
 msgid "%d minute"
-msgstr "%d minuutti"
-
-msgid "%d minutes"
-msgstr "%d minuuttia"
+msgid_plural "%d minutes"
+msgstr[0] "%d minuutti"
+msgstr[1] "%d minuuttia"
 
 #, python-format
 msgid "%d ms"
@@ -893,7 +892,7 @@ msgstr[1] "%d pixelien leveys"
 
 #, python-format
 msgid "%d sec"
-msgstr "%d sekunti"
+msgstr "%d sek"
 
 msgid "second"
 msgstr "sekunti"
@@ -905,7 +904,9 @@ msgid "seconds"
 msgstr "sekuntia"
 
 msgid "%d second"
-msgstr "%d sekunti"
+msgid_plural "%d seconds"
+msgstr[0] "%d sekunti"
+msgstr[1] "%d sekuntia"
 
 msgid "%d seconds"
 msgstr "%d sekuntia"
@@ -6101,7 +6102,7 @@ msgstr ""
 "Haluatko käynnistää käyttöliittymän uudelleen nyt?"
 
 msgid "GUI settings"
-msgstr "Ohjelmaoppaan asetukset"
+msgstr "Käyttöliittymän asetukset"
 
 msgid "Gabon"
 msgstr "Gabon"
@@ -9418,7 +9419,7 @@ msgid "Plugin browser"
 msgstr "Lisäosien valinta"
 
 msgid "Plugin browser settings"
-msgstr "Plugin-selaimen asetikset"
+msgstr "Plugin-selaimen asetukset"
 
 msgid "Plugin details"
 msgstr "Lisäosan lisätietoja"
@@ -13700,7 +13701,7 @@ msgstr "Tämä asetus määrittää automaattisen äänenvoimakkuuden tason"
 
 msgid ""
 "This option configures the general audio delay of Dolby Digital sound tracks."
-msgstr "Tämä asetus määrittää Doly Digital -ääniraitojen äänen perusviiveen."
+msgstr "Tämä asetus määrittää Dolby Digital -ääniraitojen äänen perusviiveen."
 
 msgid "This option configures the general audio delay of stereo sound tracks."
 msgstr "Tämä asetus määrittää stereo-ääniraitojen äänen perusviiveen."
