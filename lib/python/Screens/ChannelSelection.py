@@ -1306,9 +1306,10 @@ MODE_RADIO = 1
 # type 27 = advanced codec HD NVOD reference service (NYI)
 # type 2 = digital radio sound service
 # type 10 = advanced codec digital radio sound service
-# type 31 = High Efficiency Video Coing digital television
+# type 31 = HEVC (High Efficiency Video Coding) digital television
+# type 32 = HEVC UHD digital television service with HDR and/or a frame rate of 100 Hz, 120 000/1 001 Hz, or 120 Hz, or any combination of HDR and these frame rates
 
-service_types_tv = '1:7:1:0:0:0:0:0:0:0:(type == 1) || (type == 17) || (type == 22) || (type == 25) || (type == 31) || (type == 134) || (type == 195)'
+service_types_tv = '1:7:1:0:0:0:0:0:0:0:(type == 1) || (type == 17) || (type == 22) || (type == 25) || (type == 31) || (type == 32) || (type == 134) || (type == 195)'
 service_types_radio = '1:7:2:0:0:0:0:0:0:0:(type == 2) || (type == 10)'
 
 
