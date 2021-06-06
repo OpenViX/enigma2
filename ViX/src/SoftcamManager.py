@@ -585,7 +585,7 @@ class SoftcamAutoPoller:
 	def start(self):
 		if self.softcam_check not in self.timer.callback:
 			self.timer.callback.append(self.softcam_check)
-		self.timer.startLongTimer(10)
+		self.timer.startLongTimer(1)
 
 	def stop(self):
 		if self.softcam_check in self.timer.callback:
