@@ -16,14 +16,14 @@ from enigma import eTimer, eDVBSatelliteEquipmentControl, eDVBResourceManager, e
 
 from Components.ActionMap import NumberActionMap, ActionMap
 from Components.Button import Button
-from Components.config import config, ConfigSatlist, ConfigNothing, ConfigSelection, \
-	 ConfigSubsection, ConfigInteger, ConfigFloat, KEY_LEFT, KEY_RIGHT, KEY_0, getConfigListEntry
+from Components.config import config, ConfigSatlist, ConfigNothing, ConfigSelection, ConfigSubsection, ConfigInteger, ConfigFloat, KEY_LEFT, KEY_RIGHT, KEY_0, getConfigListEntry, NoSave
 from Components.ConfigList import ConfigList
 from Components.ConfigList import ConfigListScreen
 from Components.Label import Label
 from Components.MenuList import MenuList
 from Components.NimManager import nimmanager
 from Components.ScrollLabel import ScrollLabel
+from Components.Pixmap import Pixmap
 from Components.Sources.StaticText import StaticText
 from Components.TunerInfo import TunerInfo
 from Components.TuneTest import Tuner
@@ -39,15 +39,6 @@ from Tools.Transponder import ConvertToHumanReadable
 from . import log
 from . import rotor_calc
 
-frequency_label = _('Frequency:')
-polarisation_label = _('Polarisation:')
-symbolrate_label = _('Symbolrate:')
-fec_label = _('FEC:')
-snr_label = _('SNR:')
-ber_label = _('BER:')
-lock_label = _('Lock:')
-agc_label = _("AGC:")
-
 
 class PositionerSetup(Screen):
 
@@ -58,7 +49,7 @@ class PositionerSetup(Screen):
 			orientation = "west"
 		else:
 			orientation = "east"
-		return position, orientation
+		return (position, orientation)
 
 	@staticmethod
 	def orbital2metric(position, orientation):
@@ -97,7 +88,8 @@ class PositionerSetup(Screen):
 		self.rotor_diseqc = True
 		self.frontend = None
 		self.rotor_pos = config.usage.showdish.value and config.misc.lastrotorposition.value != 9999
-		self.orb_pos = 0
+		self.tsid = self.onid = self.orb_pos = 0
+		self.checkingTsidOnid = False
 		getCurrentTuner = None
 		getCurrentSat = None
 		self.availablesats = []
@@ -106,16 +98,10 @@ class PositionerSetup(Screen):
 			self.advanced = True
 			self.advancedconfig = config.Nims[self.feid].advanced
 			self.advancedsats = self.advancedconfig.sat
-			if six.PY3:
-				self.availablesats = [x[0] for x in nimmanager.getRotorSatListForNim(self.feid)]
-			else:
-				self.availablesats = map(lambda x: x[0], nimmanager.getRotorSatListForNim(self.feid))
+			self.availablesats = [x[0] for x in nimmanager.getRotorSatListForNim(self.feid)] if six.PY3 else self.availablesats = map(lambda x: x[0], nimmanager.getRotorSatListForNim(self.feid))
 		else:
 			self.advanced = False
-			if six.PY3:
-				self.availablesats = [x[0] for x in nimmanager.getRotorSatListForNim(self.feid)]
-			else:
-				self.availablesats = map(lambda x: x[0], nimmanager.getRotorSatListForNim(self.feid))
+			self.availablesats = [x[0] for x in nimmanager.getRotorSatListForNim(self.feid)] if six.PY3 else self.availablesats = map(lambda x: x[0], nimmanager.getRotorSatListForNim(self.feid))
 		cur = {}
 		if not self.openFrontend():
 			service = self.session.nav.getCurrentService()
@@ -209,9 +195,6 @@ class PositionerSetup(Screen):
 		self.blue = Button("")
 		self["key_blue"] = self.blue
 
-		self["key_menu"] = StaticText(_("MENU"))
-		self["key_info"] = StaticText(_("INFO"))
-
 		self.list = []
 		self["list"] = ConfigList(self.list)
 
@@ -228,14 +211,32 @@ class PositionerSetup(Screen):
 		self["frequency_value"] = Label("")
 		self["symbolrate_value"] = Label("")
 		self["fec_value"] = Label("")
-		self["polarisation"] = Label("")
 		self["status_bar"] = Label("")
+		self["SNR"] = Label(_("SNR:"))
+		self["BER"] = Label(_("BER:"))
+		self["AGC"] = Label(_("AGC:"))
+		self["Frequency"] = Label(_("Frequency:"))
+		self["Symbolrate"] = Label(_("Symbol rate:"))
+		self["FEC"] = Label(_("FEC:"))
+		self["Lock"] = Label(_("Lock:"))
+		self["lock_off"] = Pixmap()
+		self["lock_on"] = Pixmap()
+		self["lock_on"].hide()
 		if self.rotor_pos:
 			if hasattr(eDVBSatelliteEquipmentControl.getInstance(), "getTargetOrbitalPosition"):
 				current_pos = eDVBSatelliteEquipmentControl.getInstance().getTargetOrbitalPosition()
 				if current_pos in self.availablesats and current_pos != config.misc.lastrotorposition.value:
 					config.misc.lastrotorposition.value = current_pos
 					config.misc.lastrotorposition.save()
+				for x in nimmanager.nim_slots:
+					if x.slot == self.feid:
+						rotorposition = hasattr(x.config, 'lastsatrotorposition') and x.config.lastsatrotorposition.value or ""
+						if rotorposition.isdigit():
+							current_pos = int(rotorposition)
+							if current_pos != config.misc.lastrotorposition.value:
+								config.misc.lastrotorposition.value = current_pos
+								config.misc.lastrotorposition.save()
+						break
 			text = _("Current rotor position: ") + self.OrbToStr(config.misc.lastrotorposition.value)
 			self["rotorstatus"].setText(text)
 		self.statusMsgTimeoutTicks = 0
@@ -256,7 +257,7 @@ class PositionerSetup(Screen):
 			"green": self.greenKey,
 			"yellow": self.yellowKey,
 			"blue": self.blueKey,
-			"log": self.showLog, # KEY_INFO
+			"log": self.showLog,
 			"mainMenu": self.furtherOptions,
 			"1": self.keyNumberGlobal,
 			"2": self.keyNumberGlobal,
@@ -285,6 +286,10 @@ class PositionerSetup(Screen):
 	def __onClose(self):
 		self.statusTimer.stop()
 		log.close()
+		if self.frontend:
+			self.frontend = None
+		if hasattr(self, 'raw_channel'):
+			del self.raw_channel
 		self.session.nav.playService(self.oldref)
 
 	def OrbToStr(self, orbpos):
@@ -318,12 +323,7 @@ class PositionerSetup(Screen):
 		self.session.open(MessageBox, text, MessageBox.TYPE_ERROR)
 
 	def restartPrevService(self, yesno):
-		if yesno:
-			if self.frontend:
-				self.frontend = None
-				if hasattr(self, 'raw_channel'):
-					del self.raw_channel
-		else:
+		if not yesno:
 			self.oldref = None
 		self.close(None)
 
@@ -623,7 +623,7 @@ class PositionerSetup(Screen):
 			self.statusMsg(_("Stepped west"), timeout=self.STATUS_MSG_TIMEOUT)
 		elif entry == "storage":
 			if self.getUsals() is False:
-				menu = [(_("Yes"), "yes"), (_("No"), "no")]
+				menu = [(_("yes"), "yes"), (_("no"), "no")]
 				available_orbos = False
 				orbos = None
 				if self.advanced:
@@ -688,16 +688,16 @@ class PositionerSetup(Screen):
 		elif entry == "goto":
 			self.printMsg(_("Move to position X"))
 			satlon = self.orbitalposition.float
-			position = "%5.1f %s" % (satlon, self.orientation.value)
-			print((_("Satellite longitude:") + " %s") % position, file=log)
+			position = ("%5.1f %s") % (satlon, self.orientation.value)
+			print>>log, ((_("Satellite longitude:") + " %s") % position)
 			satlon = PositionerSetup.orbital2metric(satlon, self.orientation.value)
 			self.statusMsg((_("Moving to position") + " %s") % position, timeout=self.STATUS_MSG_TIMEOUT)
 			self.gotoX(satlon)
 		elif entry == "tune":
 			# Start USALS calibration
-			self.printMsg(_("USALS Calibration"))
-			print((_("Site latitude") + "      : %5.1f %s") % PositionerSetup.latitude2orbital(self.sitelat), file=log)
-			print((_("Site longitude") + "     : %5.1f %s") % PositionerSetup.longitude2orbital(self.sitelon), file=log)
+			self.printMsg(_("USALS calibration"))
+			print>>log, (_("Site latitude") + "      : %5.1f %s") % PositionerSetup.latitude2orbital(self.sitelat)
+			print>>log, ((_("Site longitude") + "     : %5.1f %s") % PositionerSetup.longitude2orbital(self.sitelon))
 			Thread(target=self.gotoXcalibration).start()
 
 	def blueKey(self):
@@ -795,16 +795,47 @@ class PositionerSetup(Screen):
 	def furtherOptions(self):
 		menu = []
 		text = _("Select action")
+		if self.session.nav.getCurrentlyPlayingServiceOrGroup() and not self.oldref_stop:
+			menu.append((_("Stop live TV service"), self.stopService))
 		description = _("Open setup tuner ") + "%s" % chr(0x41 + self.feid)
 		menu.append((description, self.openTunerSetup))
-
+		if not self.checkingTsidOnid and self.frontend and self.isLocked() and not self.isMoving:
+			menu.append((_("Checking ONID/TSID"), self.openONIDTSIDScreen))
 		def openAction(choice):
 			if choice:
 				choice[1]()
 		self.session.openWithCallback(openAction, ChoiceBox, title=text, list=menu)
 
+	def stopService(self):
+		self.oldref = self.session.nav.getCurrentlyPlayingServiceOrGroup()
+		self.session.nav.stopService()
+		self.oldref_stop = True
+
 	def openTunerSetup(self):
 		self.session.openWithCallback(self.closeTunerSetup, NimSetup, self.feid)
+
+	def openONIDTSIDScreen(self):
+		self.tsid = self.onid = 0
+		self.session.openWithCallback(self.startChecktsidonid, ONIDTSIDScreen)
+
+	def startChecktsidonid(self, tsidonid=None):
+		if tsidonid is not None:
+			self.onid = tsidonid[0]
+			self.tsid = tsidonid[1]
+			if self.frontend and self.isLocked() and not self.isMoving and hasattr(self, "raw_channel") and self.raw_channel:
+				self.checkingTsidOnid = True
+				self.raw_channel.receivedTsidOnid.get().append(self.gotTsidOnid)
+				self.raw_channel.requestTsidOnid()
+
+	def gotTsidOnid(self, tsid, onid):
+		if tsid == self.tsid and onid == self.onid:
+			msg = _("This valid ONID/TSID")
+		else:
+			msg =  _("This not valid ONID/TSID")
+		self.statusMsg(msg, blinking=True, timeout=10)
+		if self.raw_channel:
+			self.raw_channel.receivedTsidOnid.get().remove(self.gotTsidOnid)
+		self.checkingTsidOnid = False
 
 	def closeTunerSetup(self):
 		self.restartPrevService(True)
@@ -832,6 +863,10 @@ class PositionerSetup(Screen):
 			self["agc_bar"].update()
 			self["ber_bar"].update()
 			self["lock_state"].update()
+			if self["lock_state"].getValue(TunerInfo.LOCK):
+				self["lock_on"].show()
+			else:
+				self["lock_on"].hide()
 		if self.statusMsgBlinking:
 			self.statusMsgBlinkCount += 1
 			if self.statusMsgBlinkCount == self.statusMsgBlinkRate:
@@ -873,12 +908,38 @@ class PositionerSetup(Screen):
 		self.symbolrate = tp[1]
 		self.polarisation = tp[2]
 		self.MAX_LOW_RATE_ADAPTER_COUNT = setLowRateAdapterCount(self.symbolrate)
-
-		transponderdata = ConvertToHumanReadable(self.tuner.getTransponderData(), "DVB-S")
-		self["frequency_value"].setText(str(transponderdata.get("frequency")))
-		self["symbolrate_value"].setText(str(transponderdata.get("symbol_rate")))
-		self["fec_value"].setText(str(transponderdata.get("fec_inner")))
-		self["polarisation"].setText(str(transponderdata.get("polarization")))
+		if len(self.tuner.getTransponderData()):
+			transponderdata = ConvertToHumanReadable(self.tuner.getTransponderData(), "DVB-S")
+		else:
+			transponderdata = {}
+		polarization_text = ""
+		polarization = transponderdata.get("polarization")
+		if polarization:
+			polarization_text = str(polarization)
+			if polarization_text == _("Horizontal"):
+				polarization_text = " H"
+			elif polarization_text == _("Vertical"):
+				polarization_text = " V"
+			elif polarization_text == _("Circular right"):
+				polarization_text = " R"
+			elif polarization_text == _("Circular left"):
+				polarization_text = " L"
+		frequency_text = ""
+		frequency = transponderdata.get("frequency")
+		if frequency:
+			frequency_text = str(frequency / 1000) + polarization_text
+		self["frequency_value"].setText(frequency_text)
+		symbolrate_text = ""
+		symbolrate = transponderdata.get("symbol_rate")
+		if symbolrate:
+			symbolrate_text = str(symbolrate / 1000)
+		self["symbolrate_value"].setText(symbolrate_text)
+		fec_text = ""
+		fec_inner = transponderdata.get("fec_inner")
+		if fec_inner:
+			if frequency and symbolrate:
+				fec_text = str(fec_inner)
+		self["fec_value"].setText(fec_text)
 
 	@staticmethod
 	def rotorCmd2Step(rotorCmd, stepsize):
@@ -977,7 +1038,7 @@ class PositionerSetup(Screen):
 			#		yi = map(lambda (x, y) : x, readings.values())
 			x0 = sum(map(mul, xi, yi)) // sum(yi)
 			xm = xi[yi.index(max(yi))]
-			return x0, xm
+			return (x0, xm)
 
 		def toGeopos(x):
 			if x < 0:
@@ -1116,7 +1177,7 @@ class PositionerSetup(Screen):
 			#		yi = map(lambda (x, y) : x, readings.values())
 			x0 = int(round(sum(map(mul, xi, yi)) // sum(yi)))
 			xm = xi[yi.index(max(yi))]
-			return x0, xm
+			return (x0, xm)
 
 		def toGeoposEx(x):
 			if x < 0:
@@ -1237,23 +1298,21 @@ class Diseqc:
 
 class PositionerSetupLog(Screen):
 	skin = """
-<screen position="center,center" size="560,400" title="Positioner Setup Log" >
-	<ePixmap name="red"    position="0,0"   zPosition="2" size="140,40" pixmap="buttons/red.png" transparent="1" alphatest="on" />
-	<ePixmap name="green"  position="140,0" zPosition="2" size="140,40" pixmap="buttons/green.png" transparent="1" alphatest="on" />
-	<ePixmap name="yellow" position="280,0" zPosition="2" size="140,40" pixmap="buttons/yellow.png" transparent="1" alphatest="on" />
-	<ePixmap name="blue"   position="420,0" zPosition="2" size="140,40" pixmap="buttons/blue.png" transparent="1" alphatest="on" />
+		<screen position="center,center" size="560,400" title="Positioner setup log" >
+			<ePixmap name="red"    position="0,0"   zPosition="2" size="140,40" pixmap="buttons/red.png" transparent="1" alphatest="on" />
+			<ePixmap name="green"  position="230,0" zPosition="2" size="140,40" pixmap="buttons/green.png" transparent="1" alphatest="on" />
+			<ePixmap name="blue"   position="420,0" zPosition="2" size="140,40" pixmap="buttons/blue.png" transparent="1" alphatest="on" />
 
-	<widget name="key_red" position="0,0" size="140,40" valign="center" halign="center" zPosition="4"  foregroundColor="white" font="Regular;20" transparent="1" shadowColor="background" shadowOffset="-2,-2" />
-	<widget name="key_green" position="140,0" size="140,40" valign="center" halign="center" zPosition="4"  foregroundColor="white" font="Regular;20" transparent="1" shadowColor="background" shadowOffset="-2,-2" />
-	<widget name="key_yellow" position="280,0" size="140,40" valign="center" halign="center" zPosition="4"  foregroundColor="white" font="Regular;20" transparent="1" shadowColor="background" shadowOffset="-2,-2" />
-	<widget name="key_blue" position="420,0" size="140,40" valign="center" halign="center" zPosition="4"  foregroundColor="white" font="Regular;20" transparent="1" shadowColor="background" shadowOffset="-2,-2" />
+			<widget name="key_red" position="0,0" size="140,40" valign="center" halign="center" zPosition="4"  foregroundColor="white" font="Regular;20" transparent="1" shadowColor="background" shadowOffset="-2,-2" />
+			<widget name="key_green" position="230,0" size="140,40" halign="center" valign="center"  zPosition="4"  foregroundColor="white" font="Regular;20" transparent="1" shadowColor="background" shadowOffset="-2,-2" />
+			<widget name="key_blue" position="420,0" size="140,40" valign="center" halign="center" zPosition="4"  foregroundColor="white" font="Regular;20" transparent="1" shadowColor="background" shadowOffset="-2,-2" />
 
-	<ePixmap alphatest="on" pixmap="icons/clock.png" position="480,383" size="14,14" zPosition="3"/>
-	<widget font="Regular;18" halign="left" position="505,380" render="Label" size="55,20" source="global.CurrentTime" transparent="1" valign="center" zPosition="3">
-		<convert type="ClockToText">Default</convert>
-	</widget>
-	<widget name="list" font="Console;16" position="10,40" size="540,340" />
-</screen>"""
+			<ePixmap alphatest="on" pixmap="icons/clock.png" position="480,383" size="14,14" zPosition="3"/>
+			<widget font="Regular;18" halign="left" position="505,380" render="Label" size="55,20" source="global.CurrentTime" transparent="1" valign="center" zPosition="3">
+				<convert type="ClockToText">Default</convert>
+			</widget>
+			<widget name="list" font="Regular;16" position="10,40" size="540,340" />
+		</screen>"""
 
 	def __init__(self, session):
 		self.session = session
@@ -1298,6 +1357,56 @@ class PositionerSetupLog(Screen):
 		self.close(False)
 
 
+class ONIDTSIDScreen(ConfigListScreen, Screen):
+	skin = """
+		<screen position="center,center" size="520,250" title="Tune">
+			<ePixmap pixmap="buttons/red.png" position="0,0" size="140,40" alphatest="on"/>
+			<ePixmap pixmap="buttons/green.png" position="140,0" size="140,40" alphatest="on"/>
+			<widget source="key_red" render="Label" position="0,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
+			<widget source="key_green" render="Label" position="140,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1"/>
+			<widget name="config" position="10,50" size="500,150" scrollbarMode="showOnDemand" />
+			<widget name="introduction" position="60,220" size="450,23" halign="left" font="Regular;20" />
+		</screen>"""
+
+	def __init__(self, session):
+		Screen.__init__(self, session)
+		self.setTitle(_("Enter valid ONID/TSID"))
+		ConfigListScreen.__init__(self, None)
+		self.transponderTsid = NoSave(ConfigInteger(default=0, limits=(0, 65535)))
+		self.transponderOnid = NoSave(ConfigInteger(default=0, limits=(0, 65535)))
+		self.createSetup()
+		self["actions"] = NumberActionMap(["SetupActions", "ColorActions"],
+		{
+			"ok": self.keyGo,
+			"cancel": self.keyCancel,
+			"red": self.keyCancel,
+			"green": self.keyGo,
+		}, -2)
+
+		self["key_red"] = StaticText(_("Cancel"))
+		self["key_green"] = StaticText(_("OK"))
+		self["introduction"] = Label(_("Valid ONID/TSID look at www.lyngsat.com..."))
+
+	def createSetup(self):
+		self.list = []
+		self.list.append(getConfigListEntry(_("ONID"), self.transponderOnid))
+		self.list.append(getConfigListEntry(_("TSID"), self.transponderTsid))
+		self["config"].list = self.list
+		self["config"].l.setList(self.list)
+
+	def keyGo(self):
+		onid = int(self.transponderOnid.value)
+		tsid = int(self.transponderTsid.value)
+		if onid == 0 and tsid == 0:
+			self.close(None)
+		else:
+			returnvalue = (onid, tsid)
+			self.close(returnvalue)
+
+	def keyCancel(self):
+		self.close(None)
+
+
 class TunerScreen(ConfigListScreen, Screen):
 	skin = """
 		<screen position="center,center" size="520,450" title="Tune">
@@ -1314,7 +1423,6 @@ class TunerScreen(ConfigListScreen, Screen):
 		self.fe_data = fe_data
 		Screen.__init__(self, session)
 		self.setTitle(_("Tune"))
-		self.skinName = ["TunerScreen", "Setup"]
 		ConfigListScreen.__init__(self, None)
 		self.createConfig(fe_data)
 		self.initialSetup()
@@ -1332,8 +1440,8 @@ class TunerScreen(ConfigListScreen, Screen):
 		}, -2)
 
 		self["key_red"] = StaticText(_("Cancel"))
-		self["key_green"] = StaticText(_("Save"))
-		self["introduction"] = Label(_("Press OK to save and exit."))
+		self["key_green"] = StaticText(_("OK"))
+		self["introduction"] = Label(_("Press OK, save and exit..."))
 
 	def createConfig(self, frontendData):
 		satlist = nimmanager.getRotorSatListForNim(self.feid)
@@ -1476,8 +1584,9 @@ class TunerScreen(ConfigListScreen, Screen):
 					self.list.append(getConfigListEntry(_('Input Stream ID'), self.scan_sat.is_id))
 					self.list.append(getConfigListEntry(_('PLS Mode'), self.scan_sat.pls_mode))
 					self.list.append(getConfigListEntry(_('PLS Code'), self.scan_sat.pls_code))
-				self.list.append(getConfigListEntry(_('T2MI PLP ID'), self.scan_sat.t2mi_plp_id))
-				self.list.append(getConfigListEntry(_('T2MI PID'), self.scan_sat.t2mi_pid))
+				if nim.isT2MI():
+					self.list.append(getConfigListEntry(_('T2MI PLP ID'), self.scan_sat.t2mi_plp_id))
+					self.list.append(getConfigListEntry(_('T2MI PID'), self.scan_sat.t2mi_pid))
 		else: # "predefined_transponder"
 			self.list.append(getConfigListEntry(_("Transponder"), self.tuning.transponder))
 			currtp = self.transponderToString([None, self.scan_sat.frequency.value, self.scan_sat.symbolrate.value, self.scan_sat.polarization.value])
@@ -1523,7 +1632,7 @@ class TunerScreen(ConfigListScreen, Screen):
 		ConfigListScreen.keyRight(self)
 
 	def keyGo(self):
-		returnvalue = (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1)
+		returnvalue = (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 1, -1)
 		satpos = int(self.tuning.sat.value)
 		if self.tuning.type.value == "manual_transponder":
 			if self.scan_sat.system.value == eDVBFrontendParametersSatellite.System_DVB_S2:
@@ -1585,7 +1694,7 @@ def getUsableRotorNims(only_first=False):
 	usableRotorNims = []
 	nimList = nimmanager.getNimListOfType("DVB-S")
 	for nim in nimList:
-		if nimmanager.getRotorSatListForNim(nim):
+		if nimmanager.getRotorSatListForNim(nim, only_first=only_first):
 			usableRotorNims.append(nim)
 			if only_first:
 				break
