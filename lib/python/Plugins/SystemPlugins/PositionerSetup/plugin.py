@@ -34,6 +34,8 @@ from Screens.MessageBox import MessageBox
 from Screens.Satconfig import NimSetup
 from Screens.Screen import Screen
 from Tools.Transponder import ConvertToHumanReadable
+from Tools.Hex2strColor import Hex2strColor
+from skin import parameters
 
 
 from . import log
@@ -828,10 +830,11 @@ class PositionerSetup(Screen):
 				self.raw_channel.requestTsidOnid()
 
 	def gotTsidOnid(self, tsid, onid):
+		colors = parameters.get("PositionerOnidTsidcolors", (0x0000FF00, 0x00FF0000)) # "valid", "not valid"
 		if tsid == self.tsid and onid == self.onid:
-			msg = _("This valid ONID/TSID")
+			msg = Hex2strColor(colors[0]) + _("This valid ONID/TSID")
 		else:
-			msg =  _("This not valid ONID/TSID")
+			msg = Hex2strColor(colors[1]) + _("This not valid ONID/TSID")
 		self.statusMsg(msg, blinking=True, timeout=10)
 		if self.raw_channel:
 			self.raw_channel.receivedTsidOnid.get().remove(self.gotTsidOnid)
