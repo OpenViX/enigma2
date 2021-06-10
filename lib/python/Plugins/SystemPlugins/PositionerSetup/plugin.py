@@ -100,10 +100,9 @@ class PositionerSetup(Screen):
 			self.advanced = True
 			self.advancedconfig = config.Nims[self.feid].advanced
 			self.advancedsats = self.advancedconfig.sat
-			self.availablesats = [x[0] for x in nimmanager.getRotorSatListForNim(self.feid)] if six.PY3 else self.availablesats = map(lambda x: x[0], nimmanager.getRotorSatListForNim(self.feid))
 		else:
 			self.advanced = False
-			self.availablesats = [x[0] for x in nimmanager.getRotorSatListForNim(self.feid)] if six.PY3 else self.availablesats = map(lambda x: x[0], nimmanager.getRotorSatListForNim(self.feid))
+		self.availablesats = [x[0] for x in nimmanager.getRotorSatListForNim(self.feid)] if six.PY3 else self.availablesats = map(lambda x: x[0], nimmanager.getRotorSatListForNim(self.feid))
 		cur = {}
 		if not self.openFrontend():
 			service = self.session.nav.getCurrentService()
