@@ -102,7 +102,10 @@ class PositionerSetup(Screen):
 			self.advancedsats = self.advancedconfig.sat
 		else:
 			self.advanced = False
-		self.availablesats = [x[0] for x in nimmanager.getRotorSatListForNim(self.feid)] if six.PY3 else self.availablesats = map(lambda x: x[0], nimmanager.getRotorSatListForNim(self.feid))
+		if six.PY3:	# do not combine into single conditional, py3 gives  SyntaxError: cannot assign to conditional expression	
+			self.availablesats = [x[0] for x in nimmanager.getRotorSatListForNim(self.feid)]
+		else:
+			self.availablesats = map(lambda x: x[0], nimmanager.getRotorSatListForNim(self.feid))
 		cur = {}
 		if not self.openFrontend():
 			service = self.session.nav.getCurrentService()
