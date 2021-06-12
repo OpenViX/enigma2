@@ -1252,7 +1252,7 @@ def readSkin(screen, skin, names, desktop):
 		screen.additionalWidgets.append(w)
 
 	def processScreen(widget, context):
-		for w in widget.getchildren():
+		for w in list(widget):
 			conditional = w.attrib.get("conditional")
 			if conditional and not [i for i in conditional.split(",") if i in list(screen.keys())]:
 				continue
