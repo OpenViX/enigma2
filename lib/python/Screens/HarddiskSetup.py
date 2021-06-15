@@ -1,5 +1,6 @@
 from __future__ import absolute_import
 
+from Screens.Screen import Screen
 from Components.ActionMap import ActionMap
 from Components.Harddisk import harddiskmanager
 from Components.MenuList import MenuList
