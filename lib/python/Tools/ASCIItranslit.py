@@ -269,7 +269,11 @@ def legacyEncode(string):
 			string2 += ASCIItranslit[i]
 		else:
 			try:
-				string2 += char.encode('ascii', 'strict')
+				_s = char.encode('ascii', 'strict')
+				if six.PY3:
+					string2 += _s.decode("utf-8")
+				else:
+					string2 += _s
 			except:
 				string2 += "_"
 	return string2.upper()
