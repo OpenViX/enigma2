@@ -597,7 +597,7 @@ class Harddisk:
 	def deviceState(self, device):
 		hotplugBuses = ("usb", "mmc", "pcmcia", "ieee1394", "firewire")
 		if not self.phys_path.startswith("/sys/devices/"):
-			return (False, "ERROR")
+			return (False, _("ERROR"))
 		match = None
 		for bus in hotplugBuses:
 			if "/%s" % bus in self.phys_path:
