@@ -432,6 +432,7 @@ class Harddisk:
 		task = Task.ConditionTask(job, _("Waiting for partition."))
 		task.check = lambda: os.path.exists(self.partitionPath("1"))
 		task.weighting = 1
+		task = UnmountTask(job, self)
 		print "[Harddisk] Creating filesystem."
 		task = MkfsTask(job, _("Creating filesystem."))
 		big_o_options = ["dir_index"]
