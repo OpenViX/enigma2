@@ -596,7 +596,7 @@ class Harddisk:
 
 	def deviceState(self, device):
 		hotplugBuses = ("usb", "mmc", "pcmcia", "ieee1394", "firewire")
-		if not self.phys_path.startswith("/sys/devices/platform/"):
+		if not self.phys_path.startswith("/sys/devices/"):
 			return (False, "ERROR")
 		match = None
 		for bus in hotplugBuses:
@@ -609,7 +609,7 @@ class Harddisk:
 
 		if match:
 			# print "[Harddisk] DEBUG: Device is removable.  (device='%s', match='%s')" % (device, match)
-			return (False, match)
+			return (False, match.upper())
 		else:
 			# print "[Harddisk] DEBUG: Device is not removable.  (device='%s', No bus)" % (device)
 			return (True, "ATA")
