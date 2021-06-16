@@ -608,10 +608,10 @@ class Harddisk:
 			match = None
 
 		if match:
-			# print "[Harddisk] DEBUG: Device is removable.  (device='%s', match='%s')" % (device, match)
+			# print("[Harddisk] DEBUG: Device is removable.  (device='%s', match='%s')" % (device, match))
 			return (False, match.upper())
 		else:
-			# print "[Harddisk] DEBUG: Device is not removable.  (device='%s', No bus)" % (device)
+			# print("[Harddisk] DEBUG: Device is not removable.  (device='%s', No bus)" % (device))
 			return (True, "ATA")
 
 
@@ -691,7 +691,7 @@ class HarddiskManager:
 	def enumerateBlockDevices(self):
 		print("[Harddisk] Enumerating block devices...")
 		self.partitions.append(Partition(mountpoint="/", description=("Internal flash")))  # Add the root device.
-		# print "[Harddisk] DEBUG: Partition(mountpoint=%s, description=%s)" % ("/", _("Internal flash"))
+		# print("[Harddisk] DEBUG: Partition(mountpoint=%s, description=%s)" % ("/", _("Internal flash")))
 		try:
 			rootDev = os.stat("/").st_dev
 			rootMajor = os.major(rootDev)
@@ -699,7 +699,7 @@ class HarddiskManager:
 		except (IOError, OSError):
 			rootMajor = None
 			rootMinor = None
-		# print "[Harddisk] DEBUG: rootMajor = '%s', rootMinor = '%s'" % (rootMajor, rootMinor)
+		# print("[Harddisk] DEBUG: rootMajor = '%s', rootMinor = '%s'" % (rootMajor, rootMinor))
 		for device in sorted(os.listdir("/sys/block")):
 			try:
 				physicalDevice = os.path.realpath(os.path.join("/sys/block", device, "device"))
@@ -713,28 +713,28 @@ class HarddiskManager:
 				continue
 			devMajor = int(data.split(":")[0])
 			if devMajor in blacklistedDisks:
-				# print "[Harddisk] DEBUG: Major device number '%s' for device '%s' (%s) is blacklisted." % (devMajor, device, physicalDevice)
+				# print("[Harddisk] DEBUG: Major device number '%s' for device '%s' (%s) is blacklisted." % (devMajor, device, physicalDevice))
 				continue
-			if devMajor == 179 and not SystemInfo["HasSDnomount"]:
-				# print "[Harddisk] DEBUG: Major device number '%s' for device '%s' (%s) doesn't have 'HasSDnomount' set." % (devMajor, device, physicalDevice)
+			if devMajor == 179 and not SystemInfo["HasSDnomount"]:		# Lets handle Zgemma SD card mounts - uses SystemInfo to determine SDcard status
+				# print("[Harddisk] DEBUG: Major device number '%s' for device '%s' (%s) doesn't have 'HasSDnomount' set." % (devMajor, device, physicalDevice))
 				continue
 			if devMajor == 179 and devMajor == rootMajor and not SystemInfo["HasSDnomount"][0]:
-				# print "[Harddisk] DEBUG: Major device number '%s' for device '%s' (%s) is the root disk." % (devMajor, device, physicalDevice)
+				# print("[Harddisk] DEBUG: Major device number '%s' for device '%s' (%s) is the root disk." % (devMajor, device, physicalDevice))
 				continue
 			if SystemInfo["HasSDnomount"] and device.startswith("%s" % (SystemInfo["HasSDnomount"][1])) and SystemInfo["HasSDnomount"][0]:
-				# print "[Harddisk] DEBUG: Major device number '%s' for device '%s' (%s) starts with 'mmcblk0' and has 'HasSDnomount' set." % (devMajor, device, physicalDevice)
+				# print("[Harddisk] DEBUG: Major device number '%s' for device '%s' (%s) starts with 'mmcblk0' and has 'HasSDnomount' set." % (devMajor, device, physicalDevice))
 				continue
 			description = self.getUserfriendlyDeviceName(device, physicalDevice)
 			isCdrom = devMajor in opticalDisks or device.startswith("sr")
 			if isCdrom:
 				self.cd = devicePath
 				self.partitions.append(Partition(mountpoint=self.getMountpoint(device), description=description, force_mounted=True, device=device))
-				# print "[Harddisk] DEBUG: Partition(mountpoint=%s, description=%s, force_mounted=True, device=%s)" % (self.getMountpoint(device), description, device)
-				print("[Harddisk] Found optical disk '%s' (%s)." % (device, physicalDevice))
+				# print("[Harddisk] DEBUG: Partition(mountpoint=%s, description=%s, force_mounted=True, device=%s)" % (self.getMountpoint(device), description, device))
+				# print("[Harddisk] Found optical disk '%s' (%s)." % (device, physicalDevice))
 			data = readFile(os.path.join(devicePath, "removable"))
 			removable = False if data is None else bool(int(data))
 			# if removable:
-			# 	print "[Harddisk] DEBUG: Device '%s' (%s) has removable media." % (device, physicalDevice)
+			# 	# print("[Harddisk] DEBUG: Device '%s' (%s) has removable media." % (device, physicalDevice))
 			try:
 				open(os.path.join("/dev", device), "r").close()
 				mediumFound = True  # Check for medium.
@@ -745,8 +745,8 @@ class HarddiskManager:
 					print("[Harddisk] Error: Device '%s' (%s) media availability test failed:" % (device, physicalDevice), err)
 					continue
 			# if mediumFound:
-			# 	print "[Harddisk] DEBUG: Device '%s' (%s) has media." % (device, physicalDevice)
-			# print "[Harddisk] DEBUG: device = '%s', physicalDevice = '%s', devMajor = '%s', description = '%s'" % (device, physicalDevice, devMajor, description)
+			# 	print("[Harddisk] DEBUG: Device '%s' (%s) has media." % (device, physicalDevice))
+			# print("[Harddisk] DEBUG: device = '%s', physicalDevice = '%s', devMajor = '%s', description = '%s'" % (device, physicalDevice, devMajor, description))
 			if not isCdrom and os.path.exists(devicePath):
 				partitions = [partition for partition in sorted(os.listdir(devicePath)) if partition.startswith(device)]  # Add HDD check for partitions.
 				if len(partitions) == 0:  # Add HDD check for HDD with no partitions (unformatted).
@@ -762,15 +762,15 @@ class HarddiskManager:
 						self.hdd.append(Harddisk(device, removable))
 						SystemInfo["Harddisk"] = True
 						# self.partitions.append(Partition(mountpoint = self.getMountpoint(device), description = description, force_mounted, device = device))
-						# print "[Harddisk] DEBUG: Partition(mountpoint=%s, description=%s, force_mounted=True, device=%s)" % (self.getMountpoint(device), description, device)
+						# print("[Harddisk] DEBUG: Partition(mountpoint=%s, description=%s, force_mounted=True, device=%s)" % (self.getMountpoint(device), description, device))
 						for partition in partitions:
 							description = self.getUserfriendlyDeviceName(partition, physicalDevice)
 							print("[Harddisk] Found partition '%s', description='%s', device='%s'." % (partition, description, physicalDevice))
 							part = Partition(mountpoint=self.getMountpoint(partition), description=description, force_mounted=True, device=partition)
 							self.partitions.append(part)
-							# print "[Harddisk] DEBUG: Partition(mountpoint = %s, description = %s, force_mounted = True, device = %s)" % (self.getMountpoint(partition), description, partition)
+							# print("[Harddisk] DEBUG: Partition(mountpoint = %s, description = %s, force_mounted = True, device = %s)" % (self.getMountpoint(partition), description, partition))
 							self.on_partition_list_change("add", part)
-							# print "[Harddisk] DEBUG: on_partition_list_change('add', Partition(mountpoint = %s, description = %s, force_mounted = True, device = %s))" % (self.getMountpoint(partition), description, partition)
+							# print("[Harddisk] DEBUG: on_partition_list_change('add', Partition(mountpoint = %s, description = %s, force_mounted = True, device = %s))" % (self.getMountpoint(partition), description, partition))
 		self.hdd.sort()
 		print("[Harddisk] Enumerating block devices complete.")
 
@@ -784,11 +784,11 @@ class HarddiskManager:
 			if len(mounts) > 0:
 				for mount in mounts:
 					mountDir = os.path.join(mountEntry, mount, "")
-					# print "[Harddisk] enumerateNetworkMountsNew DEBUG: mountDir = '%s', isMount = '%s'" % (mountDir, os.path.ismount(mountDir))
+					# print("[Harddisk] enumerateNetworkMountsNew DEBUG: mountDir = '%s', isMount = '%s'" % (mountDir, os.path.ismount(mountDir)))
 					if os.path.ismount(mountDir) and mountDir not in [partition.mountpoint for partition in self.partitions]:
 						print("[Harddisk] Found network mount (%s) '%s' -> '%s'." % (entry, mount, mountDir))
 						self.partitions.append(Partition(mountpoint=mountDir, description=mount))
-						# print "[Harddisk] DEBUG: Partition(mountpoint = %s, description = %s)" % (mountDir, mount)
+						# print("[Harddisk] DEBUG: Partition(mountpoint = %s, description = %s)" % (mountDir, mount))
 					elif "/media/net" in mountEntry and os.path.exists(mountDir) and mountDir not in [partition.mountpoint for partition in self.partitions]:
 						print("[Harddisk] Found network mount (%s) '%s' -> '%s'." % (entry, mount, mountDir))
 						self.partitions.append(Partition(mountpoint=mountDir, description=mount))
@@ -803,7 +803,7 @@ class HarddiskManager:
 		if description is None:
 			description = readFile(os.path.join(physicalDevice, "name"))
 			if description is None:
-				# print "[Harddisk] Error: Couldn't read harddisk model on '%s' ('%s')!" % (device, physicalDevice)
+				# print("[Harddisk] Error: Couldn't read harddisk model on '%s' ('%s')!" % (device, physicalDevice))
 				description = _("Device %s") % dev
 		if part:  # and part != 1:  # Not wholedisk and not partition 1.
 			description = "%s %s" % (description, _("(Partition %d)") % part)
@@ -822,7 +822,7 @@ class HarddiskManager:
 				partition = 0
 		else:  # This works for devices in the form: sdaX, hdaX, srX or any device that has a numeric suffix.
 			partition = int(devName[deviceLen:]) if deviceLen < devNameLen else 0
-		# print "[Harddisk] splitDeviceName DEBUG: devName = '%s', device = '%s', partition = '%d'" % (devName, device, partition)
+		# print("[Harddisk] splitDeviceName DEBUG: devName = '%s', device = '%s', partition = '%d'" % (devName, device, partition))
 		return device, partition
 
 	def getAutofsMountpoint(self, device):
@@ -857,7 +857,7 @@ class HarddiskManager:
 			print("[Harddisk] Error: Couldn't determine physical device for device '%s'!" % hddDev)
 			physicalDevice = hddDev
 		description = self.getUserfriendlyDeviceName(device, physicalDevice)
-		# print "[Harddisk] DEBUG: Hotplug description = '%s', devicePath = '%s', hddDev = '%s'." % (description, devicePath, hddDev)
+		# print("[Harddisk] DEBUG: Hotplug description = '%s', devicePath = '%s', hddDev = '%s'." % (description, devicePath, hddDev))
 		data = readFile(os.path.join(devicePath, "dev"))  # This is the device's major and minor device numbers.
 		if data is not None:
 			devMajor = int(data.split(":")[0])
@@ -870,7 +870,7 @@ class HarddiskManager:
 				data = readFile(os.path.join(devicePath, "removable"))
 				removable = False if data is None else bool(int(data))
 				for hdd in self.hdd:  # Perhaps the disk has not been removed, so don't add it again.
-					# print "[Harddisk] DEBUG hddDev in hddlist. (hdd = '%s', hdd.device = '%s', hddDev = '%s')" % (hdd, hdd.device, hddDev)
+					# print("[Harddisk] DEBUG hddDev in hddlist. (hdd = '%s', hdd.device = '%s', hddDev = '%s')" % (hdd, hdd.device, hddDev))
 					if hdd.device == hddDev:
 						HDDin = True
 						break
@@ -880,21 +880,21 @@ class HarddiskManager:
 				if HDDin is False and len(partitions) != 0:
 					print("[Harddisk] Found storage device '%s' (Removable = %s)." % (device, removable))
 					self.hdd.append(Harddisk(hddDev, removable))
-					# print "[Harddisk] DEBUG: Add hotplug HDD device in hddlist. (device = '%s', hdd.device = '%s', hddDev = '%s')" % (device, hdd.device, hddDev)
+					# print("[Harddisk] DEBUG: Add hotplug HDD device in hddlist. (device = '%s', hdd.device = '%s', hddDev = '%s')" % (device, hdd.device, hddDev))
 					self.hdd.sort()
 					SystemInfo["Harddisk"] = True
 				# self.partitions.append(Partition(mountpoint = self.getMountpoint(hddDev), description = description, force_mounted = True, device = hddDev))
-				# print "[Harddisk] DEBUG add hddDev: Partition(mountpoint=%s, description=%s, force_mounted=True, hddDev=%s)" % (self.getMountpoint(device), description, hddDev)
+				# print("[Harddisk] DEBUG add hddDev: Partition(mountpoint=%s, description=%s, force_mounted=True, hddDev=%s)" % (self.getMountpoint(device), description, hddDev))
 				for partition in partitions:
 					description = self.getUserfriendlyDeviceName(partition, physicalDevice)
 					print("[Harddisk] Found partition '%s', description = '%s', device = '%s'." % (partition, description, physicalDevice))
 					part = Partition(mountpoint=self.getMountpoint(partition), description=description, force_mounted=True, device=partition)  # add in partition
-					# print "[Harddisk] DEBUG add partition: Part(mountpoint = %s, description = %s, force_mounted =  True, device = %s)" % (self.getMountpoint(partition), description, partition)
+					# print("[Harddisk] DEBUG add partition: Part(mountpoint = %s, description = %s, force_mounted =  True, device = %s)" % (self.getMountpoint(partition), description, partition))
 					self.partitions.append(part)
 					if part.mountpoint:  # Plugins won't expect unmounted devices.
 						self.on_partition_list_change("add", part)
-						# print "[Harddisk] DEBUG: on_partition_list_change('add', Partition(mountpoint = %s, description = %s, force_mounted = True, device = %s))" % (self.getMountpoint(partition), description, partition)
-		print("[Harddisk] Hotplug connection complete.")
+						# print("[Harddisk] DEBUG: on_partition_list_change('add', Partition(mountpoint = %s, description = %s, force_mounted = True, device = %s))" % (self.getMountpoint(partition), description, partition))
+		# print("[Harddisk] Hotplug connection complete.")
 		return error, blacklisted, removable, isCdrom, self.partitions, mediumFound  # Return for hotplug legacy code.
 
 	def removeHotplugPartition(self, device):
@@ -904,7 +904,7 @@ class HarddiskManager:
 			if partition.device is None:
 				continue
 			pDevice = partition.device
-			# print "[Harddisk] DEBUG: Partition is in self.partitions.  (partition.device = '%s', device = '%s')" % (pDevice, device)
+			# print("[Harddisk] DEBUG: Partition is in self.partitions.  (partition.device = '%s', device = '%s')" % (pDevice, device))
 			if pDevice.startswith(hddDev):  # This is the disk's partition for which we are looking.
 				print("[Harddisk] Unmounting partition '%s'." % device)
 				self.partitions.remove(partition)  # Remove partition.
@@ -913,7 +913,7 @@ class HarddiskManager:
 		for hdd in self.hdd:
 			if hdd.device == hddDev:  # This is the storage device for which we are looking.
 				print("[Harddisk] Removing storage device '%s'." % hddDev)
-				# print "[Harddisk] DEBUG: Storage device is in self.hdd.  (hdd.device = '%s', device = '%s', hddDev = '%s')" % (hdd.device, device, hddDev)
+				# print("[Harddisk] DEBUG: Storage device is in self.hdd.  (hdd.device = '%s', device = '%s', hddDev = '%s')" % (hdd.device, device, hddDev))
 				hdd.stop()  # Stop the disk.
 				self.hdd.remove(hdd)  # Remove the disk.
 				break
@@ -931,6 +931,7 @@ class HarddiskManager:
 			if cap != "":
 				hdd += " (%s)" % cap
 			list.append((hdd, hd))
+		# print("[Harddisk] HDDlist = %s." % list)
 		return list
 
 	def getCD(self):
