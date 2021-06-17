@@ -276,6 +276,7 @@ class LoggingTask(Task):
 		self.log = []
 
 	def processOutput(self, data):
+		data = six.ensure_str(data)
 		print("[Task] [%s  %s]" % (self.name, data))
 		self.log.append(data)
 
