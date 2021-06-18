@@ -64,7 +64,7 @@ class FrontendInfo(Converter):
 			percent = self.source.snr
 		elif self.type == self.SNR or self.type == self.SNRdB:
 			if self.source.snr_db is not None:
-				return _("%3.01f dB") % (self.source.snr_db // 100.0)
+				return _("%3.01f dB") % (self.source.snr_db / 100.0)
 			elif self.source.snr is not None: #fallback to normal SNR...
 				percent = self.source.snr
 		elif self.type == self.TUNER_TYPE:
