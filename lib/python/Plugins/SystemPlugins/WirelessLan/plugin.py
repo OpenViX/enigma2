@@ -115,7 +115,7 @@ class WlanStatus(Screen):
 		}, -1)
 		self.timer = eTimer()
 		self.timer.timeout.get().append(self.resetList)
-		self.onShown.append(lambda: self.timer.start(8000))
+		self.onShown.append(lambda: self.timer.start(16000))
 		self.onLayoutFinish.append(self.layoutFinished)
 		self.onClose.append(self.cleanup)
 
@@ -157,7 +157,7 @@ class WlanStatus(Screen):
 					if "bitrate" in self:
 						self["bitrate"].setText(bitrate)
 
-					signal = str(status[self.iface]["signal"])
+					signal = str(status[self.iface]["signal"]) + " dBm"
 					if "signal" in self:
 						self["signal"].setText(signal)
 
