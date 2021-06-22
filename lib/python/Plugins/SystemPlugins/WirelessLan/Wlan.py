@@ -18,7 +18,7 @@ from Components.Console import Console
 from Components.Network import iNetwork
 
 
-liste = ["Unencrypted", "WEP", "WPA", "WPA/WPA2", "WPA2"]
+liste = ["WPA/WPA2", "WPA2", "WPA", "WEP", "Unencrypted"]
 
 weplist = ["ASCII", "HEX"]
 
