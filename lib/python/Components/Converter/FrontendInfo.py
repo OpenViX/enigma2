@@ -73,7 +73,7 @@ class FrontendInfo(Converter):
 						color = Hex2strColor(colors[0])
 					elif self.source.tuner_mask & 1 << n.slot:
 						color = Hex2strColor(colors[1])
-					elif len(nimmanager.nim_slots) <= self.space_for_tuners or n.isFBCRoot() or self.show_all_non_link_tuners and not(n.isFBCLink() or n.internally_connectable):
+					elif len(nimmanager.nim_slots) <= self.space_for_tuners or n.isFBCRoot() or self.show_all_non_link_tuners and not (n.isFBCLink() or n.config_mode == "loopthrough"):
 						color = Hex2strColor(colors[2])
 					else:
 						continue
@@ -102,6 +102,7 @@ class FrontendInfo(Converter):
 	@cached
 	def getBool(self):
 		assert self.type in (self.LOCK, self.BER, self.SNR, self.SNRdB, self.AGC, self.STRING, self.USE_TUNERS_STRING), "the boolean output of FrontendInfo can only be used for lock, BER, SNR, SNRdB, AGC, STRING, or  USE_TUNERS_STRING"
+		swapsnr = config.usage.swap_snr_on_osd.value
 		if self.type == self.LOCK:
 			lock = self.source.lock
 			if lock is None:
@@ -109,10 +110,10 @@ class FrontendInfo(Converter):
 			return lock
 		elif self.type == self.BER:
 			return self.source.ber is not None
-		elif self.type == self.SNR:
+		elif (self.type == self.SNR and not swapsnr) or (self.type == self.SNRdB and swapsnr):
 			return self.source.snr is not None
-		elif self.type == self.SNRdB:
-			return self.source.snr_db is not None
+		elif self.type == self.SNR or self.type == self.SNRdB:
+			return (self.source.snr_db is not None or self.source.snr is not None)
 		elif self.type == self.AGC:
 			return self.source.agc is not None
 		elif self.type in (self.STRING, self.USE_TUNERS_STRING):

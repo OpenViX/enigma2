@@ -166,6 +166,12 @@ class SecConfigure:
 			if slot.isCompatible("DVB-S"):
 				# save what nim we link to/are equal to/satposdepends to.
 				# this is stored in the *value* (not index!) of the config list
+				if nim.configMode.value in ("equal", "loopthrough", "satposdepends"):
+					nim2 = nim.connectedTo.value
+					if not nim2.isdigit() or (self.NimManager.getNimConfig(int(nim2)).configMode.value == "nothing" or nim.configMode.value == "satposdepends" and not self.NimManager.getRotorSatListForNim(int(nim2), only_first=True)):
+						nim.configMode.value = "nothing"
+						nim.configMode.save()
+						continue
 				if nim.configMode.value == "equal":
 					connto = self.getRoot(x, int(nim.connectedTo.value))
 					if connto not in self.equal:
@@ -190,10 +196,13 @@ class SecConfigure:
 			if slot.isCompatible("DVB-S"):
 				clear_lastsatrotorposition = True
 				print "[SecConfigure] slot: " + str(x) + " configmode: " + str(nim.configMode.value)
-				if nim.configMode.value in ("loopthrough", "satposdepends", "nothing"):
-					pass
-				else:
-					sec.setSlotNotLinked(x)
+				if nim.configMode.value not in ("loopthrough", "satposdepends", "nothing"):
+					try:
+						advancedSlotLinked = nim.configMode.value == "advanced" and hasattr(nim.advanced, 'unicableconnected') and nim.advanced.unicableconnected.value and nim.advanced.unicableconnectedTo.value.isdigit()
+					except:
+						advancedSlotLinked = False
+					if not advancedSlotLinked:
+						sec.setSlotNotLinked(x)
 					if nim.configMode.value == "equal":
 						clear_lastsatrotorposition = False
 					elif nim.configMode.value == "simple":		#simple config
@@ -268,20 +277,6 @@ class SecConfigure:
 		print "[SecConfigure] sec config completed"
 
 	def updateAdvanced(self, sec, slotid):
-		try:
-			if config.Nims[slotid].advanced.unicableconnected is not None:
-				if config.Nims[slotid].advanced.unicableconnected.value:
-					config.Nims[slotid].advanced.unicableconnectedTo.save_forced = True
-					self.linkNIMs(sec, slotid, int(config.Nims[slotid].advanced.unicableconnectedTo.value))
-					connto = self.getRoot(slotid, int(config.Nims[slotid].advanced.unicableconnectedTo.value))
-					if connto not in self.linked:
-						self.linked[connto] = []
-					self.linked[connto].append(slotid)
-				else:
-					config.Nims[slotid].advanced.unicableconnectedTo.save_forced = False
-		except:
-			pass
-
 		lnbSat = {}
 		for x in range(1, 72):
 			lnbSat[x] = []
@@ -314,8 +309,8 @@ class SecConfigure:
 
 		lnb = int(config.Nims[slotid].advanced.sat[3607].lnb.value)
 		if lnb != 0:
-			root_id = int(config.Nims[slotid].connectedTo.value)
-			rotor_sat_list = self.NimManager.getRotorSatListForNim(root_id)
+			root_id = config.Nims[slotid].connectedTo.value
+			rotor_sat_list = root_id.isdigit() and self.NimManager.getRotorSatListForNim(int(root_id))
 			if rotor_sat_list:
 				for x in rotor_sat_list:
 					print "[SecConfigure] add", x[0], "to", lnb
@@ -326,6 +321,37 @@ class SecConfigure:
 				if len(self.NimManager.getSatListForNim(slotid)) < 1:
 					config.Nims[slotid].configMode.value = "nothing"
 					config.Nims[slotid].configMode.save()
+					try:
+						if hasattr(config.Nims[slotid].advanced, 'unicableconnected') and config.Nims[slotid].advanced.unicableconnected.value:
+							config.Nims[slotid].advanced.unicableconnected.value = False
+							config.Nims[slotid].advanced.unicableconnected.save()
+							config.Nims[slotid].advanced.unicableconnectedTo.save_forced = False
+							return
+					except:
+						pass
+
+		try:
+			if hasattr(config.Nims[slotid].advanced, 'unicableconnected'):
+				if config.Nims[slotid].advanced.unicableconnected.value:
+					nim2 = config.Nims[slotid].advanced.unicableconnectedTo.value
+					if not nim2.isdigit() or (self.NimManager.getNimConfig(int(nim2)).configMode.value == "nothing" or not self.NimManager.isUnicableLNBmode(int(nim2))):
+						self.NimManager.getNimConfig(slotid).configMode.value = "nothing"
+						config.Nims[slotid].configMode.save()
+						config.Nims[slotid].advanced.unicableconnected.value = False
+						config.Nims[slotid].advanced.unicableconnected.save()
+						config.Nims[slotid].advanced.unicableconnectedTo.save_forced = False
+						return
+					else:
+						config.Nims[slotid].advanced.unicableconnectedTo.save_forced = True
+						self.linkNIMs(sec, slotid, int(nim2))
+						connto = self.getRoot(slotid, int(nim2))
+						if connto not in self.linked:
+							self.linked[connto] = []
+						self.linked[connto].append(slotid)
+				else:
+					config.Nims[slotid].advanced.unicableconnectedTo.save_forced = False
+		except:
+			pass
 
 		for x in range(1, 72):
 			if len(lnbSat[x]) > 0:
@@ -511,7 +537,7 @@ class SecConfigure:
 
 
 class NIM(object):
-	def __init__(self, slot, type, description, has_outputs=True, internally_connectable=None, multi_type={}, frontend_id=None, i2c=None, is_empty=False, supports_blind_scan=False, number_of_slots=0):
+	def __init__(self, slot, type, description, has_outputs=True, internally_connectable=None, multi_type={}, frontend_id=None, i2c=None, is_empty=False, supports_blind_scan=False, is_fbc=[0, 0, 0], number_of_slots=0):
 		nim_types = ["DVB-S", "DVB-S2", "DVB-S2X", "DVB-C", "DVB-T", "DVB-T2", "ATSC"]
 
 		if type and type not in nim_types:
@@ -529,6 +555,7 @@ class NIM(object):
 		self.i2c = i2c
 		self.frontend_id = frontend_id
 		self.__is_empty = is_empty
+		self.is_fbc = is_fbc
 
 		self.compatible = {
 				None: (None,),
@@ -668,16 +695,16 @@ class NIM(object):
 		return self.multi_type
 
 	def isFBCTuner(self):
-		return self.frontend_id is not None and (self.frontend_id / 8 + 1) * 8 <= self.number_of_slots and os.access("/proc/stb/frontend/%d/fbc_id" % self.frontend_id, os.F_OK)
+		return self.is_fbc[0] != 0
 
 	def isFBCRoot(self):
-		return self.isFBCTuner() and (self.slot % 8 < (self.getType() == "DVB-C" and 1 or 2))
+		return self.is_fbc[0] == 1
 
 	def isFBCLink(self):
-		return self.isFBCTuner() and not (self.slot % 8 < (self.getType() == "DVB-C" and 1 or 2))
+		return self.is_fbc[0] == 2
 
 	def isNotFirstFBCTuner(self):
-		return self.isFBCTuner() and self.slot % 8 and True
+		return self.isFBCTuner() and self.is_fbc[1] != 1
 
 	def getFriendlyType(self):
 		if self.multi_type.values():
@@ -693,17 +720,21 @@ class NIM(object):
 
 	def getFriendlyFullDescriptionCompressed(self):
 		if self.isFBCTuner():
-			return "%s-%s: %s" % (self.getSlotName(self.slot & ~7), self.getSlotID((self.slot & ~7) + 7), self.getFullDescription())
+			return "%s-%s: %s" % (self.getSlotName(self.slot), self.getSlotID(self.slot + 7), self.getFullDescription())
 		#compress by combining dual tuners by checking if the next tuner has a rf switch
 		elif self.frontend_id is not None and self.number_of_slots > self.frontend_id + 1 and os.access("/proc/stb/frontend/%d/rf_switch" % (self.frontend_id + 1), os.F_OK):
 			return "%s-%s: %s" % (self.slot_name, self.getSlotID(self.slot + 1), self.getFullDescription())
 		return self.getFriendlyFullDescription()
 
 	def isFBCLinkEnabled(self):
-		return self.isFBCLink() and (config.Nims[(self.slot >> 3 << 3)].configMode.value != "nothing" or self.getType() != "DVB-C" and config.Nims[(self.slot >> 3 << 3) + 1].configMode.value != "nothing")
+		if self.isFBCLink():
+			for slot in nimmanager.nim_slots:
+				if slot.isFBCRoot() and slot.is_fbc[2] == self.is_fbc[2] and config.Nims[slot.slot].configMode.value != "nothing":
+					return True
+		return False
 
 	def isEnabled(self):
-		return self.config_mode != "nothing" or self.isFBCLinkEnabled() or self.internally_connectable is not None and config.Nims[self.internally_connectable].configMode.value != "nothing"
+		return self.config_mode != "nothing" or self.isFBCLinkEnabled()
 
 	slot_id = property(getSlotID)
 	slot_name = property(getSlotName)
@@ -916,6 +947,8 @@ class NimManager:
 				entries[current_slot]["isempty"] = True
 		nimfile.close()
 		self.number_of_slots = len(entries.keys())
+		fbc_number = 0
+		fbc_tuner = 1
 		for id, entry in entries.items():
 			if not ("name" in entry and "type" in entry):
 				entry["name"] = _("N/A")
@@ -935,7 +968,19 @@ class NimManager:
 				entry["multi_type"] = {}
 			if "supports_blind_scan" not in entry:
 				entry["supports_blind_scan"] = False
-			self.nim_slots.append(NIM(slot=id, description=entry["name"], type=entry["type"], has_outputs=entry["has_outputs"], internally_connectable=entry["internally_connectable"], multi_type=entry["multi_type"], frontend_id=entry["frontend_device"], i2c=entry["i2c"], is_empty=entry["isempty"], supports_blind_scan=entry["supports_blind_scan"], number_of_slots=self.number_of_slots))
+			
+			entry["fbc"] = [0, 0, 0] # not fbc
+			if entry["name"] and ("fbc" in entry["name"].lower() or entry["name"] in SystemInfo["HasFBCtuner"]) and entry["frontend_device"] is not None and os.access("/proc/stb/frontend/%d/fbc_id" % entry["frontend_device"], os.F_OK):
+				fbc_number += 1
+				if fbc_number <= (entry["type"] and "DVB-C" in entry["type"] and 1 or 2):
+					entry["fbc"] = [1, fbc_number, fbc_tuner] # fbc root
+				elif fbc_number <= 8:
+					entry["fbc"] = [2, fbc_number, fbc_tuner] # fbc link
+				if fbc_number == 8:
+					fbc_number = 0
+					fbc_tuner += 1
+
+			self.nim_slots.append(NIM(slot=id, description=entry["name"], type=entry["type"], has_outputs=entry["has_outputs"], internally_connectable=entry["internally_connectable"], multi_type=entry["multi_type"], frontend_id=entry["frontend_device"], i2c=entry["i2c"], is_empty=entry["isempty"], supports_blind_scan=entry["supports_blind_scan"], is_fbc=entry["fbc"], number_of_slots=self.number_of_slots))
 
 	def hasNimType(self, chktype):
 		return any(slot.canBeCompatible(chktype) for slot in self.nim_slots)
@@ -974,7 +1019,7 @@ class NimManager:
 		return [slot.friendly_full_description for slot in self.nim_slots]
 
 	def nimListCompressed(self):
-		return [slot.friendly_full_description_compressed for slot in self.nim_slots if not(slot.isNotFirstFBCTuner() or slot.internally_connectable >= 0)]
+		return [slot.friendly_full_description_compressed for slot in self.nim_slots if not (slot.isNotFirstFBCTuner() or slot.internally_connectable is not None)]
 
 	def getSlotCount(self):
 		return len(self.nim_slots)
@@ -999,9 +1044,7 @@ class NimManager:
 					slots.append(slot)
 		for testnim in slots[:]:
 			nimConfig = self.getNimConfig(testnim)
-			if "configMode" in nimConfig.content.items and ((nimConfig.configMode.value == "loopthrough" and int(nimConfig.connectedTo.value) == slotid) or nimConfig.configMode.value == "nothing"):
-				slots.remove(testnim)
-			elif self.nim_slots[testnim].isFBCTuner() and ("configMode" in nimConfig.content.items and nimConfig.configMode.value == "loopthrough" or not (self.nim_slots[testnim].isFBCRoot() and slotid >> 3 == testnim >> 3)):
+			if "configMode" in nimConfig.content.items and ((nimConfig.configMode.value == "loopthrough" and ((isFBCTuner and self.nim_slots[testnim].isFBCTuner()) or int(nimConfig.connectedTo.value) == slotid)) or nimConfig.configMode.value == "nothing" or (isFBCTuner and self.nim_slots[slot].isFBCRoot() and self.nim_slots[slot].is_fbc[2] == self.nim_slots[slotid].is_fbc[2])):
 				slots.remove(testnim)
 		return slots
 
@@ -1050,6 +1093,22 @@ class NimManager:
 					if not alreadyConnected:
 						positionerList.append(nim)
 		return positionerList
+
+	def isUnicableLNBmode(self, slotid):
+		is_unicable = False
+		if self.nim_slots[slotid].isCompatible("DVB-S"):
+			nim = config.Nims[slotid]
+			if nim.configMode.value == "advanced":
+				for x in range(3601, 3607):
+					lnb_num = int(nim.advanced.sat[x].lnb.value)
+					if lnb_num != 0 and nim.advanced.lnb[lnb_num].lof.value == "unicable":
+						return True
+				if not is_unicable:
+					for sat in nim.advanced.sat.values():
+						lnb_num = int(sat.lnb.value)
+						if lnb_num != 0 and nim.advanced.lnb[lnb_num].lof.value == "unicable":
+							return True
+		return is_unicable
 
 	def getNimConfig(self, slotid):
 		return config.Nims[slotid]

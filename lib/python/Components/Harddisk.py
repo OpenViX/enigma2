@@ -432,6 +432,7 @@ class Harddisk:
 		task = Task.ConditionTask(job, _("Waiting for partition."))
 		task.check = lambda: os.path.exists(self.partitionPath("1"))
 		task.weighting = 1
+		task = UnmountTask(job, self)
 		print "[Harddisk] Creating filesystem."
 		task = MkfsTask(job, _("Creating filesystem."))
 		big_o_options = ["dir_index"]
@@ -581,7 +582,7 @@ class Harddisk:
 
 	def deviceState(self, device):
 		hotplugBuses = ("usb", "mmc", "pcmcia", "ieee1394", "firewire")
-		if not self.phys_path.startswith("/sys/devices/platform/"):
+		if not self.phys_path.startswith("/sys/devices/"):
 			return (False, "ERROR")
 		match = None
 		for bus in hotplugBuses:
@@ -590,7 +591,7 @@ class Harddisk:
 				break
 		if match:
 			# print "[Harddisk] DEBUG: Device is removable.  (device='%s', match='%s')" % (device, match)
-			return (False, match)
+			return (False, match.upper())
 		else:
 			# print "[Harddisk] DEBUG: Device is not removable.  (device='%s', No bus)" % (device)
 			return (True, "ATA")
@@ -759,6 +760,8 @@ class HarddiskManager:
 		print "[Harddisk] Enumerating network mounts..."
 		for entry in sorted(os.listdir("/media")):
 			mountEntry = os.path.join("/media", entry)
+			if not os.path.isdir(mountEntry):
+				continue
 			mounts = os.listdir(mountEntry)
 			if len(mounts) > 0:
 				for mount in mounts:

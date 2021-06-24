@@ -1,10 +1,10 @@
 # English translations for Enigma2.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 3.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-18 09:59+0430\n"
+"POT-Creation-Date: 2021-05-18 14:44+0200\n"
 "PO-Revision-Date: 2014-01-31 00:07+0100\n"
 "Last-Translator: Andy Blackburn <andyblac@icloud.com>\n"
 "Language-Team: none\n"
@@ -165,6 +165,10 @@ msgid " (Channel %s)"
 msgstr "Channel List"
 
 #, fuzzy
+msgid " (auto detection)"
+msgstr "Auto Deep Standby"
+
+#, fuzzy
 msgid " (disabled)"
 msgstr "disabled"
 
@@ -187,6 +191,9 @@ msgstr ""
 #, fuzzy
 msgid " - video1"
 msgstr "S-Video"
+
+msgid " Warning: the selected tuner should not use SCR Unicable type for LNBs because each tuner need a own SCR number."
+msgstr ""
 
 msgid " and"
 msgstr " and"
@@ -1202,6 +1209,18 @@ msgstr "%s (%s)\n"
 msgid "%s - %s (%s%d min)"
 msgstr "%02d.%02d - %02d.%02d (%s%d min)"
 
+#, fuzzy, python-format
+msgid "%s Info - Configuration"
+msgstr "Oscam Info - Configuration"
+
+#, fuzzy, python-format
+msgid "%s Info - Main Menu"
+msgstr "Oscam Info - Main Menu"
+
+#, python-format
+msgid "%s Log ( %s-Version: %s )"
+msgstr ""
+
 #, python-format
 msgid "%s files cannot be bulk renamed"
 msgstr ""
@@ -1226,6 +1245,10 @@ msgstr[0] "%s updated package available"
 msgstr[1] "%s updated packages available"
 
 #, fuzzy, python-format
+msgid "%s webif disabled"
+msgstr "disabled"
+
+#, fuzzy, python-format
 msgid "%s%d Min"
 msgstr "%s%d min"
 
@@ -1236,10 +1259,6 @@ msgstr "Defaults"
 #, python-format
 msgid "%s/%s: %s"
 msgstr "%s/%s: %s"
-
-#, python-format
-msgid "%s:%s"
-msgstr ""
 
 #, python-format
 msgid "%s?"
@@ -2003,10 +2022,7 @@ msgstr "Adding schedule..."
 msgid "Additional cable of motorized LNB"
 msgstr "second cable of motorized LNB"
 
-msgid "Additional motor options allow you to enter details from your motor's spec sheet so enigma can work out how long it will take to move the dish from one satellite to another satellite."
-msgstr ""
-
-msgid "Additional motor options allow you to enter details from your motor's spec sheet so enigma can work out how long it will take to move to another satellite."
+msgid "Additional motor options opens a sub-menu where you can enter details from your motor's spec sheet so enigma can work out how long it will take to move the dish from one satellite to another satellite."
 msgstr ""
 
 msgid "Address"
@@ -2179,7 +2195,8 @@ msgstr "Allows you to show/hide CCcam Info in extensions (blue button)."
 msgid "Allows you to show/hide Log Manager in extensions (blue button)."
 msgstr "Allows you to show/hide Log Manager in extensions (blue button)."
 
-msgid "Allows you to show/hide OScam Info in extensions (blue button)."
+#, fuzzy
+msgid "Allows you to show/hide OScam/Ncam Info in extensions (blue button)."
 msgstr "Allows you to show/hide OScam Info in extensions (blue button)."
 
 msgid "Alpha"
@@ -3460,7 +3477,7 @@ msgid "Clear playlist"
 msgstr "Clear playlist"
 
 #, python-format
-msgid "Client Info ( Oscam-Version: %s )"
+msgid "Client Info ( %s-Version: %s )"
 msgstr ""
 
 #, fuzzy
@@ -4321,7 +4338,7 @@ msgstr "DVB-C ANNEX C"
 msgid "DVB-C ANNEX C"
 msgstr "DVB-C ANNEX C"
 
-#
+# 
 msgid "DVB-S"
 msgstr "DVB-S"
 
@@ -6033,8 +6050,9 @@ msgstr ""
 msgid "Fiji"
 msgstr ""
 
+#, fuzzy, python-format
 msgid ""
-"File oscam.conf not found.\n"
+"File %s.conf not found.\n"
 "Please enter username/password manually."
 msgstr ""
 "File oscam.conf not found.\n"
@@ -6176,7 +6194,8 @@ msgstr "Fri"
 msgid "Friday"
 msgstr "Friday"
 
-msgid "From :"
+#, fuzzy
+msgid "From:"
 msgstr "From :"
 
 #, fuzzy
@@ -6360,9 +6379,6 @@ msgstr "Goto"
 msgid "Goto 0"
 msgstr "Goto 0"
 
-msgid "Goto :"
-msgstr "Goto :"
-
 msgid "Goto X"
 msgstr "Goto X"
 
@@ -6371,6 +6387,10 @@ msgstr "Goto index position"
 
 msgid "Goto position"
 msgstr "Goto position"
+
+#, fuzzy
+msgid "Goto:"
+msgstr "Goto :"
 
 msgid "GotoX calibration"
 msgstr "GotoX calibration"
@@ -6640,6 +6660,9 @@ msgstr ""
 
 msgid "Hide player"
 msgstr "Hide player"
+
+msgid "Hide sub-menu"
+msgstr ""
 
 msgid "Hide zap errors"
 msgstr "Hide zap errors"
@@ -8560,7 +8583,7 @@ msgstr "No fast winding possible yet.. but you can use the number buttons to ski
 msgid "No free index available"
 msgstr "No free index available"
 
-#
+# 
 msgid "No free tuner!"
 msgstr "No free tuner!"
 
@@ -8814,7 +8837,12 @@ msgstr "OSD name request"
 msgid "OSD position"
 msgstr "Store position"
 
-msgid "OScam Info"
+#, fuzzy
+msgid "OScam/Ncam  Info"
+msgstr "OScam Info"
+
+#, fuzzy
+msgid "OScam/Ncam Info"
 msgstr "OScam Info"
 
 msgid "OVR"
@@ -8993,16 +9021,6 @@ msgstr ""
 
 msgid "Original"
 msgstr "Original"
-
-msgid "Oscam Info - Configuration"
-msgstr "Oscam Info - Configuration"
-
-msgid "Oscam Info - Main Menu"
-msgstr "Oscam Info - Main Menu"
-
-#, python-format
-msgid "Oscam Log ( Oscam-Version: %s )"
-msgstr ""
 
 msgid "Other"
 msgstr "Other"
@@ -10182,8 +10200,8 @@ msgstr "Rating undefined"
 msgid "Re-enter PIN"
 msgstr "Reenter new PIN"
 
-#, fuzzy
-msgid "Read Userdata from oscam.conf"
+#, fuzzy, python-format
+msgid "Read Userdata from %s.conf"
 msgstr "Read Userdata from oscam.conf"
 
 msgid "Reader"
@@ -10295,6 +10313,10 @@ msgstr "Recording settings"
 msgid "Recording and playback settings"
 msgstr "Recording settings"
 
+#, fuzzy, python-format
+msgid "Recording in progress: %s"
+msgstr "Recording in progress"
+
 msgid "Recording type"
 msgstr "Recording type"
 
@@ -10310,6 +10332,10 @@ msgstr "Recordings"
 
 msgid "Recordings always have priority"
 msgstr "Recordings always have priority"
+
+#, fuzzy, python-format
+msgid "Recordings in progress: %d"
+msgstr "Recording in progress"
 
 #, fuzzy
 msgid "Recordings, Playback & Timeshift"
@@ -11588,7 +11614,7 @@ msgid "Serv.Name"
 msgstr "Serv.Name"
 
 #, python-format
-msgid "Server Info ( Oscam-Version: %s )"
+msgid "Server Info ( %s-Version: %s )"
 msgstr ""
 
 msgid "Server:"
@@ -11988,7 +12014,8 @@ msgstr ""
 msgid "Show Multi EPG"
 msgstr "Multi EPG"
 
-msgid "Show OScam Info in extensions?"
+#, fuzzy
+msgid "Show OScam/Ncam Info in extensions?"
 msgstr "Show OScam Info in extensions?"
 
 #, fuzzy
@@ -12293,6 +12320,10 @@ msgstr "Show status icons in movie list"
 #, fuzzy
 msgid "Show stream clients"
 msgstr "Connected clients"
+
+#, fuzzy
+msgid "Show sub-menu"
+msgstr "Show menu"
 
 #, fuzzy
 msgid "Show subservice selection"
@@ -13585,10 +13616,10 @@ msgstr "The timer file (timers.xml) is corrupt and could not be loaded."
 msgid "The user interface of your %s %s is restarting"
 msgstr "The user interface of your %s %s is restarting"
 
-#, python-format
+#, fuzzy, python-format
 msgid ""
 "The user interface of your %s %s is restarting\n"
-"due to an error in mytest.py"
+"due to an error in StartEnigma.py"
 msgstr ""
 "The user interface of your %s %s is restarting\n"
 "due to an error in mytest.py"
@@ -15085,6 +15116,9 @@ msgstr "gardening"
 msgid "Warning: no LNB; using factory defaults."
 msgstr "Warning: no LNB; using factory defaults."
 
+msgid "Warning: the second input of this dual tuner may not support SCR LNBs. "
+msgstr ""
+
 msgid "Watch movies..."
 msgstr "Watch movies..."
 
@@ -15994,6 +16028,9 @@ msgstr "adventure/western/war"
 msgid "advertisement/shopping"
 msgstr "advertisement/shopping"
 
+msgid "all tuners"
+msgstr ""
+
 msgid "alpha then oldest"
 msgstr ""
 
@@ -16716,6 +16753,10 @@ msgstr "not locked"
 msgid "not supported"
 msgstr "not supported"
 
+#, fuzzy
+msgid "not valid frontend"
+msgstr "invalid type"
+
 msgid "nothing connected"
 msgstr "nothing connected"
 
@@ -16754,9 +16795,6 @@ msgstr "original"
 
 msgid "original language"
 msgstr "original language"
-
-msgid "oscam webif disabled"
-msgstr ""
 
 msgid "packages selected."
 msgstr "packages selected."
@@ -16863,6 +16901,10 @@ msgstr "romance"
 #, fuzzy
 msgid "rotor"
 msgstr "Author: "
+
+#, fuzzy
+msgid "rotor is not used"
+msgstr "tuner is not supported"
 
 msgid "running..."
 msgstr "running..."
@@ -17128,9 +17170,13 @@ msgstr "uShare Port"
 msgid "unavailable"
 msgstr "unavailable"
 
-#
+# 
 msgid "unconfirmed"
 msgstr "unconfirmed"
+
+#, fuzzy
+msgid "undefined"
+msgstr "User defined"
 
 msgid "unknown"
 msgstr "unknown"

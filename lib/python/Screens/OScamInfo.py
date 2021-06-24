@@ -22,6 +22,12 @@ import urllib2
 import skin
 
 ###global
+NAMEBIN = " "
+if fileExists("/tmp/.oscam/oscam.version"):
+	NAMEBIN = "oscam"
+elif fileExists("/tmp/.ncam/ncam.version"):
+	NAMEBIN = "ncam"
+
 f = 1
 sizeH = 700
 HDSKIN = False
@@ -61,10 +67,11 @@ class OscamInfo:
 		oport = None
 		opath = None
 		ipcompiled = False
+		global NAMEBIN
 
-		# Find and parse running oscam
-		if fileExists("/tmp/.oscam/oscam.version"):
-			with open('/tmp/.oscam/oscam.version', 'r') as data:
+		# Find and parse running oscam/ncam		
+		if fileExists("/tmp/.%s/%s.version" % (NAMEBIN, NAMEBIN)):
+			with open('/tmp/.%s/%s.version' % (NAMEBIN, NAMEBIN), 'r') as data:
 				for i in data:
 					if "web interface support:" in i.lower():
 						owebif = i.split(":")[1].strip()
@@ -89,10 +96,11 @@ class OscamInfo:
 		return owebif, oport, opath, ipcompiled
 
 	def getUserData(self):
+		global NAMEBIN
 		[webif, port, conf, ipcompiled] = self.confPath()
 		if conf == None:
 			conf = ""
-		conf += "/oscam.conf"
+		conf += "/%s.conf" % NAMEBIN
 
 		# Assume that oscam webif is NOT blocking localhost, IPv6 is also configured if it is compiled in,
 		# and no user and password are required
@@ -100,10 +108,10 @@ class OscamInfo:
 		ipconfigured = ipcompiled
 		user = pwd = None
 
-		ret = _("oscam webif disabled")
+		ret = _("%s webif disabled" % NAMEBIN)
 
 		if webif and port is not None:
-		# oscam reports it got webif support and webif is running (Port != 0)
+		# oscam/ncam reports it got webif support and webif is running (Port != 0)
 			if conf is not None and os.path.exists(conf):
 				# If we have a config file, we need to investigate it further
 				with open(conf, 'r') as data:
@@ -115,7 +123,7 @@ class OscamInfo:
 						elif "httpport" in i.lower():
 							port = i.split("=")[1].strip()
 						elif "httpallowed" in i.lower():
-							# Once we encounter a httpallowed statement, we have to assume oscam webif is blocking us ...
+							# Once we encounter a httpallowed statement, we have to assume oscam/ncam webif is blocking us ...
 							blocked = True
 							allowed = i.split("=")[1].strip()
 							if "::1" in allowed or "127.0.0.1" in allowed or "0.0.0.0-255.255.255.255" in allowed:
@@ -130,6 +138,7 @@ class OscamInfo:
 		return ret
 
 	def openWebIF(self, part=None, reader=None):
+		global NAMEBIN
 		self.proto = "http"
 		if config.oscaminfo.userdatafromconf.value:
 			udata = self.getUserData()
@@ -156,11 +165,11 @@ class OscamInfo:
 			self.port.replace("+", "")
 
 		if part is None:
-			self.url = "%s://%s:%s/oscamapi.html?part=status" % (self.proto, self.ip, self.port)
+			self.url = "%s://%s:%s/%sapi.html?part=status" % (self.proto, self.ip, self.port, NAMEBIN)
 		else:
-			self.url = "%s://%s:%s/oscamapi.html?part=%s" % (self.proto, self.ip, self.port, part)
+			self.url = "%s://%s:%s/%sapi.html?part=%s" % (self.proto, self.ip, self.port, NAMEBIN, part)
 		if part is not None and reader is not None:
-			self.url = "%s://%s:%s/oscamapi.html?part=%s&label=%s" % (self.proto, self.ip, self.port, part, reader)
+			self.url = "%s://%s:%s/%sapi.html?part=%s&label=%s" % (self.proto, self.ip, self.port, NAMEBIN, part, reader)
 
 		opener = urllib2.build_opener(urllib2.HTTPHandler)
 		if not self.username == "":
@@ -384,7 +393,8 @@ class oscMenuList(MenuList):
 class OscamInfoMenu(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
-		self.setTitle(_("Oscam Info - Main Menu"))
+		global NAMEBIN
+		self.setTitle(_("%s Info - Main Menu" % NAMEBIN))
 		self.menu = [_("Show /tmp/ecm.info"), _("Show Clients"), _("Show Readers/Proxies"), _("Show Log"), _("Card infos (CCcam-Reader)"), _("ECM Statistics"), _("Setup")]
 		self.osc = OscamInfo()
 		self["mainmenu"] = oscMenuList([])
@@ -453,10 +463,11 @@ class OscamInfoMenu(Screen):
 		pass
 
 	def goEntry(self, entry):
+		global NAMEBIN
 		if entry in (1, 2, 3) and config.oscaminfo.userdatafromconf.value and self.osc.confPath()[0] is None:
 			config.oscaminfo.userdatafromconf.setValue(False)
 			config.oscaminfo.userdatafromconf.save()
-			self.session.openWithCallback(self.ErrMsgCallback, MessageBox, _("File oscam.conf not found.\nPlease enter username/password manually."), MessageBox.TYPE_ERROR)
+			self.session.openWithCallback(self.ErrMsgCallback, MessageBox, _("File %s.conf not found.\nPlease enter username/password manually." % NAMEBIN), MessageBox.TYPE_ERROR)
 		elif entry == 0:
 			if os.path.exists("/tmp/ecm.info"):
 				self.session.open(oscECMInfo)
@@ -539,8 +550,9 @@ class OscamInfoMenu(Screen):
 		return menuentries
 
 	def showMenu(self):
+		global NAMEBIN
 		entr = self.buildMenu(self.menu)
-		# self.setTitle(_("Oscam Info - Main Menu"))
+		# self.setTitle(_("%s Info - Main Menu" % NAMEBIN))
 		self["mainmenu"].l.setList(entr)
 		self["mainmenu"].moveToIndex(0)
 
@@ -765,6 +777,7 @@ class oscInfo(Screen, OscamInfo):
 		return res
 
 	def showData(self):
+		global NAMEBIN
 		if self.firstrun:
 			data = self.webif_data
 			self.firstrun = False
@@ -784,17 +797,17 @@ class oscInfo(Screen, OscamInfo):
 					if i != "":
 						self.out.append(self.buildLogListEntry((i,)))
 			if self.what == "c":
-				self.setTitle(_("Client Info ( Oscam-Version: %s )") % self.getVersion())
+				self.setTitle(_("Client Info ( %s-Version: %s )") % (NAMEBIN, self.getVersion()))
 				self["key_green"].setText("")
 				self["key_yellow"].setText(_("Servers"))
 				self["key_blue"].setText(_("Log"))
 			elif self.what == "s":
-				self.setTitle(_("Server Info ( Oscam-Version: %s )") % self.getVersion())
+				self.setTitle(_("Server Info ( %s-Version: %s )") % (NAMEBIN, self.getVersion()))
 				self["key_green"].setText(_("Clients"))
 				self["key_yellow"].setText("")
 				self["key_blue"].setText(_("Log"))
 			elif self.what == "l":
-				self.setTitle(_("Oscam Log ( Oscam-Version: %s )") % self.getVersion())
+				self.setTitle(_("%s Log ( %s-Version: %s )") % (NAMEBIN, NAMEBIN, self.getVersion()))
 				self["key_green"].setText(_("Clients"))
 				self["key_yellow"].setText(_("Servers"))
 				self["key_blue"].setText("")
@@ -1091,7 +1104,7 @@ class oscReaderStats(Screen, OscamInfo):
 
 				ecmstat = rdr.find("ecmstats")
 				totalecm = ecmstat.attrib["totalecm"]
-				ecmcount = ecmstat.attrib["count"]
+				ecmcount = ecmstat.attrib["count"] and int(ecmstat.attrib["count"]) or 0
 				lastacc = ecmstat.attrib["lastaccess"]
 				ecm = ecmstat.findall("ecm")
 				if ecmcount > 0:
@@ -1175,12 +1188,14 @@ class OscamInfoConfigScreen(Screen, ConfigListScreen):
 			pass
 
 	def layoutFinished(self):
-		self.setTitle(_("Oscam Info - Configuration"))
+		global NAMEBIN
+		self.setTitle(_("%s Info - Configuration" % NAMEBIN))
 		self["config"].l.setList(self.oscamconfig)
 
 	def createSetup(self):
+		global NAMEBIN
 		self.oscamconfig = []
-		self.oscamconfig.append(getConfigListEntry(_("Read Userdata from oscam.conf"), config.oscaminfo.userdatafromconf))
+		self.oscamconfig.append(getConfigListEntry(_("Read Userdata from %s.conf" % NAMEBIN), config.oscaminfo.userdatafromconf))
 		if not config.oscaminfo.userdatafromconf.value:
 			self.oscamconfig.append(getConfigListEntry(_("Username (httpuser)"), config.oscaminfo.username))
 			self.oscamconfig.append(getConfigListEntry(_("Password (httpwd)"), config.oscaminfo.password))

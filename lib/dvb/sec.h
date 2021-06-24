@@ -412,6 +412,8 @@ public:
 	RESULT resetAdvancedsatposdependsRoot(int link);
 	int getRotorAdvancedsatposdependsPosition(int advanced_satposdepends);
 	bool setAdvancedsatposdependsRoot(int advanced_satposdepends);
+	bool tunerAdvancedsatposdependsInUse(int root);
+	bool tunerLinkedInUse(int root);
 	void setSlotNotLinked(int tuner_no);
 	void setRotorMoving(int, bool); // called from the frontend's
 	bool isRotorMoving();

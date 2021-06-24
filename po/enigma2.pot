@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-18 09:59+0430\n"
+"POT-Creation-Date: 2021-05-18 14:44+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -136,6 +136,9 @@ msgstr ""
 msgid " (Channel %s)"
 msgstr ""
 
+msgid " (auto detection)"
+msgstr ""
+
 msgid " (disabled)"
 msgstr ""
 
@@ -155,6 +158,9 @@ msgid " - video0+video1"
 msgstr ""
 
 msgid " - video1"
+msgstr ""
+
+msgid " Warning: the selected tuner should not use SCR Unicable type for LNBs because each tuner need a own SCR number."
 msgstr ""
 
 msgid " and"
@@ -1052,6 +1058,18 @@ msgid "%s - %s (%s%d min)"
 msgstr ""
 
 #, python-format
+msgid "%s Info - Configuration"
+msgstr ""
+
+#, python-format
+msgid "%s Info - Main Menu"
+msgstr ""
+
+#, python-format
+msgid "%s Log ( %s-Version: %s )"
+msgstr ""
+
+#, python-format
 msgid "%s files cannot be bulk renamed"
 msgstr ""
 
@@ -1075,6 +1093,10 @@ msgstr[0] ""
 msgstr[1] ""
 
 #, python-format
+msgid "%s webif disabled"
+msgstr ""
+
+#, python-format
 msgid "%s%d Min"
 msgstr ""
 
@@ -1084,10 +1106,6 @@ msgstr ""
 
 #, python-format
 msgid "%s/%s: %s"
-msgstr ""
-
-#, python-format
-msgid "%s:%s"
 msgstr ""
 
 #, python-format
@@ -1726,10 +1744,7 @@ msgstr ""
 msgid "Additional cable of motorized LNB"
 msgstr ""
 
-msgid "Additional motor options allow you to enter details from your motor's spec sheet so enigma can work out how long it will take to move the dish from one satellite to another satellite."
-msgstr ""
-
-msgid "Additional motor options allow you to enter details from your motor's spec sheet so enigma can work out how long it will take to move to another satellite."
+msgid "Additional motor options opens a sub-menu where you can enter details from your motor's spec sheet so enigma can work out how long it will take to move the dish from one satellite to another satellite."
 msgstr ""
 
 msgid "Address"
@@ -2788,7 +2803,7 @@ msgid "Clear playlist"
 msgstr ""
 
 #, python-format
-msgid "Client Info ( Oscam-Version: %s )"
+msgid "Client Info ( %s-Version: %s )"
 msgstr ""
 
 msgid "Client mode"
@@ -4616,8 +4631,9 @@ msgstr ""
 msgid "Fiji"
 msgstr ""
 
+#, python-format
 msgid ""
-"File oscam.conf not found.\n"
+"File %s.conf not found.\n"
 "Please enter username/password manually."
 msgstr ""
 
@@ -4736,7 +4752,7 @@ msgstr ""
 msgid "Friday"
 msgstr ""
 
-msgid "From :"
+msgid "From:"
 msgstr ""
 
 msgid "Full factory reset"
@@ -4882,9 +4898,6 @@ msgstr ""
 msgid "Goto 0"
 msgstr ""
 
-msgid "Goto :"
-msgstr ""
-
 msgid "Goto X"
 msgstr ""
 
@@ -4892,6 +4905,9 @@ msgid "Goto index position"
 msgstr ""
 
 msgid "Goto position"
+msgstr ""
+
+msgid "Goto:"
 msgstr ""
 
 msgid "GotoX calibration"
@@ -5090,6 +5106,9 @@ msgid "Hide parental locked services"
 msgstr ""
 
 msgid "Hide player"
+msgstr ""
+
+msgid "Hide sub-menu"
 msgstr ""
 
 msgid "Hierarchy info"
@@ -6762,7 +6781,7 @@ msgstr ""
 msgid "OSD position"
 msgstr ""
 
-msgid "OScam Info"
+msgid "OScam/Ncam  Info"
 msgstr ""
 
 msgid "OVR"
@@ -6907,16 +6926,6 @@ msgid "Ordinary"
 msgstr ""
 
 msgid "Original"
-msgstr ""
-
-msgid "Oscam Info - Configuration"
-msgstr ""
-
-msgid "Oscam Info - Main Menu"
-msgstr ""
-
-#, python-format
-msgid "Oscam Log ( Oscam-Version: %s )"
 msgstr ""
 
 msgid "Other"
@@ -7725,7 +7734,8 @@ msgstr ""
 msgid "Re-enter PIN"
 msgstr ""
 
-msgid "Read Userdata from oscam.conf"
+#, python-format
+msgid "Read Userdata from %s.conf"
 msgstr ""
 
 msgid "Reader"
@@ -7815,6 +7825,10 @@ msgstr ""
 msgid "Recording and playback settings"
 msgstr ""
 
+#, python-format
+msgid "Recording in progress: %s"
+msgstr ""
+
 msgid "Recording(s) are in progress or coming up in few seconds!"
 msgstr ""
 
@@ -7822,6 +7836,10 @@ msgid "Recording/media selection"
 msgstr ""
 
 msgid "Recordings"
+msgstr ""
+
+#, python-format
+msgid "Recordings in progress: %d"
 msgstr ""
 
 msgid "Red"
@@ -8860,7 +8878,7 @@ msgid "Serv.Name"
 msgstr ""
 
 #, python-format
-msgid "Server Info ( Oscam-Version: %s )"
+msgid "Server Info ( %s-Version: %s )"
 msgstr ""
 
 msgid "Server:"
@@ -9181,6 +9199,9 @@ msgid "Show single epg for current channel"
 msgstr ""
 
 msgid "Show stream clients"
+msgstr ""
+
+msgid "Show sub-menu"
 msgstr ""
 
 msgid "Show subservice selection"
@@ -10138,7 +10159,7 @@ msgstr ""
 #, python-format
 msgid ""
 "The user interface of your %s %s is restarting\n"
-"due to an error in mytest.py"
+"due to an error in StartEnigma.py"
 msgstr ""
 
 msgid ""
@@ -11222,6 +11243,9 @@ msgstr ""
 msgid "Warning: no LNB; using factory defaults."
 msgstr ""
 
+msgid "Warning: the second input of this dual tuner may not support SCR LNBs. "
+msgstr ""
+
 msgid "Watch movies..."
 msgstr ""
 
@@ -11749,6 +11773,9 @@ msgid "adventure/western/war"
 msgstr ""
 
 msgid "advertisement/shopping"
+msgstr ""
+
+msgid "all tuners"
 msgstr ""
 
 msgid "alpha then oldest"
@@ -12442,6 +12469,9 @@ msgstr ""
 msgid "not supported"
 msgstr ""
 
+msgid "not valid frontend"
+msgstr ""
+
 msgid "nothing connected"
 msgstr ""
 
@@ -12479,9 +12509,6 @@ msgid "original"
 msgstr ""
 
 msgid "original language"
-msgstr ""
-
-msgid "oscam webif disabled"
 msgstr ""
 
 msgid "packages selected."
@@ -12587,6 +12614,9 @@ msgid "romance"
 msgstr ""
 
 msgid "rotor"
+msgstr ""
+
+msgid "rotor is not used"
 msgstr ""
 
 msgid "running..."
@@ -12841,6 +12871,9 @@ msgstr ""
 msgid "unconfirmed"
 msgstr ""
 
+msgid "undefined"
+msgstr ""
+
 msgid "unknown"
 msgstr ""
 
@@ -12982,292 +13015,166 @@ msgstr ""
 msgid "IGNORE"
 msgstr ""
 
-msgid "Exit the wizard"
+msgid "REC "
 msgstr ""
 
-msgid "Install a new image with a USB stick"
+msgid "C"
 msgstr ""
 
-msgid "Install a new image with your web browser"
+msgid "D"
 msgstr ""
 
-msgid "No backup needed"
+msgid "F"
 msgstr ""
 
-msgid "No, do nothing."
+msgid "G"
 msgstr ""
 
-msgid "No, just start my %s %s"
+msgid "H"
 msgstr ""
 
-msgid "OK, guide me through the upgrade process"
+msgid "I"
 msgstr ""
 
-msgid "The backup failed. Please choose a different backup location."
+msgid "J"
 msgstr ""
 
-msgid "The wizard can backup your current settings. Do you want to do a backup now?"
+msgid "TUNER:"
 msgstr ""
 
-msgid "The wizard is finished now."
+msgid "EtPortal"
 msgstr ""
 
-msgid "Welcome to the image upgrade wizard. The wizard will assist you in upgrading the firmware of your %s %s by providing a backup facility for your current settings and a short explanation of how to upgrade your firmware."
+msgid "IMDB Search"
 msgstr ""
 
-msgid "Where do you want to backup your settings?"
+msgid "1,1"
 msgstr ""
 
-msgid "Yes, backup my settings!"
+msgid "3D Setup"
 msgstr ""
 
-msgid "Yes, restore the settings now"
+msgid "Android Mode"
 msgstr ""
 
-msgid "Yes, shut down now."
+msgid "Audio & Video"
 msgstr ""
 
-msgid "You have chosen to backup your settings. Please press OK to start the backup now."
+msgid "Automatic Language"
 msgstr ""
 
-msgid "You have chosen to restore your settings. Enigma2 will restart after restore. Please press OK to start the restore now."
+msgid "Channel Selection"
 msgstr ""
 
-msgid ""
-"You need a PC connected to your %s %s. If you need further instructions, please visit the website http://www.dm7025.de.\n"
-"Your %s %s will now be halted. After you have performed the update instructions from the website, your new firmware will ask you to restore your settings."
+msgid "Cron Timers"
 msgstr ""
 
-msgid "Your %s %s is shutting down. Please wait..."
+msgid "Customize"
 msgstr ""
 
-msgid "Your backup succeeded. We will now continue to explain the further upgrade process."
+msgid "Delete EPG Cache"
 msgstr ""
 
-msgid "Enable OpenTV download"
+msgid "Fallback Configuration"
 msgstr ""
 
-msgid "Enable automated downloading of OpenTV EPG data. If only one tuner is available the download will be done when the reciever is in standby."
+msgid "Front Panel Display"
 msgstr ""
 
-msgid "OpenTV download setup"
+msgid "H9SDroot"
 msgstr ""
 
-msgid "Set update interval (in hours)."
+msgid "HDMI CEC"
 msgstr ""
 
-msgid "Show in extensions"
+msgid "Infobar Grid EPG"
 msgstr ""
 
-msgid "Show notifications"
+msgid "Infobar Single EPG"
 msgstr ""
 
-msgid "Show on-screen notifications (pop up) to warn the OpenTV download is in progress."
+msgid "Keyboard"
 msgstr ""
 
-msgid "Update Interval"
+msgid "LED Display Panel"
 msgstr ""
 
-msgid "When enabled a forced download will be possible from the extensions menu (blue button). Shows after next restart."
+msgid "Load EPG Cache"
 msgstr ""
 
-msgid "Allows the TV remote to be used to control the receiver."
+msgid "Load, Save & Delete EPG Cache"
 msgstr ""
 
-msgid "Automatically put the TV in standby whenever the receiver goes into standby or deep standby."
+msgid "Logs"
 msgstr ""
 
-msgid "Before sending the command to switch the TV to standby, the receiver tests if all the other devices plugged into TV are in standby. If they are not, the 'sourceactive' command will be sent to the TV instead of the 'standby' command."
+msgid "Main Menu"
 msgstr ""
 
-msgid "Command the TV to switch to the correct HDMI input when zap timers activate."
+msgid "Miscellaneous"
 msgstr ""
 
-msgid "Debug to file"
+msgid "OSD Position"
 msgstr ""
 
-msgid "Delay between CEC commands when sending a series of commands. Some devices require this delay for correct functioning, usually between 50-150ms."
+msgid "OScam/Ncam Info"
 msgstr ""
 
-msgid "Detect next boxes before standby"
+msgid "Plugins"
 msgstr ""
 
-msgid "Enable or disable using HDMI-CEC."
+msgid "Power Timers"
 msgstr ""
 
-msgid "Forward volume keys"
+msgid "Recording & Playback"
 msgstr ""
 
-msgid "Handle standby from TV"
+msgid "Recordings, Playback & Timeshift"
 msgstr ""
 
-msgid "Handle wakeup from TV"
+msgid "Recovery Mode"
 msgstr ""
 
-msgid "Hdmi-CEC setup"
+msgid "SABnzbd"
 msgstr ""
 
-msgid "If enabled, a log will be kept of CEC protocol traffic ('hdmicec.log')."
+msgid "Save EPG Cache"
 msgstr ""
 
-msgid "If set to 'yes' the same commands will be sent to the TV for deep standby events, as are sent during regular standby events."
+msgid "Shut Down"
 msgstr ""
 
-msgid "Minimum send interval"
+msgid "Skin"
 msgstr ""
 
-msgid "Press OK to select the save location of the log file."
+msgid "Skin Setup"
 msgstr ""
 
-msgid "Put A/V receiver in standby"
+msgid "Softcam"
 msgstr ""
 
-msgid "Put A/V receiver in standby."
+msgid "Software Update"
 msgstr ""
 
-msgid "Put TV in standby"
+msgid "Standby & Restart"
 msgstr ""
 
-msgid "Regard deep standby as standby"
+msgid "Storage"
 msgstr ""
 
-msgid "Repeat leave standby messages"
+msgid "Streaming Clients"
 msgstr ""
 
-msgid "Select path for logfile"
+msgid "Tuners & Scanning"
 msgstr ""
 
-msgid "Send 'sourceactive' before zap timers"
+msgid "User Interface"
 msgstr ""
 
-msgid "Some TVs do not wake from standby when they receive the 'Image View On' command. If this is the case try the 'Text View On' command instead."
+msgid "Utilities"
 msgstr ""
 
-msgid "Switch TV to correct input"
-msgstr ""
-
-msgid "The command to wake from standby will be sent multiple times."
-msgstr ""
-
-msgid "Use TV remote control"
-msgstr ""
-
-msgid "Volume keys on the receiver remote will control the TV volume."
-msgstr ""
-
-msgid "Wake A/V receiver from standby"
-msgstr ""
-
-msgid "Wake A/V receiver from standby."
-msgstr ""
-
-msgid "Wake the receiver from standby when the wake command is sent from the TV."
-msgstr ""
-
-msgid "Wakeup TV from standby"
-msgstr ""
-
-msgid "Wakeup command for TV"
-msgstr ""
-
-msgid "Wakeup signal from TV"
-msgstr ""
-
-msgid "When enabled the receiver will automatically return to standby when the TV is turned off."
-msgstr ""
-
-msgid "When enabled the receiver will automatically wake from standby when the TV is turned on."
-msgstr ""
-
-msgid "When receiver wakes from standby, it will command the TV to switch to the HDMI input the receiver is connected to."
-msgstr ""
-
-msgid "When the receiver wakes from standby, it will send a command to the TV to bring it out of standby too."
-msgstr ""
-
-msgid "Configure interface"
-msgstr ""
-
-msgid "Configure nameservers"
-msgstr ""
-
-msgid "Configure your network again"
-msgstr ""
-
-msgid "List available networks"
-msgstr ""
-
-msgid "Manual configuration"
-msgstr ""
-
-msgid ""
-"Please configure or verify your Nameservers by filling out the required values.\n"
-"When you are ready press OK to continue."
-msgstr ""
-
-msgid ""
-"Please configure your internet connection by filling out the required values.\n"
-"When you are ready press OK to continue."
-msgstr ""
-
-msgid "Please follow the instructions on the TV"
-msgstr ""
-
-msgid ""
-"Please select the network interface that you want to use for your internet connection.\n"
-"\n"
-"Please press OK to continue."
-msgstr ""
-
-msgid ""
-"Please select the wireless network that you want to connect to.\n"
-"\n"
-"Please press OK to continue."
-msgstr ""
-
-msgid "Select wireless network"
-msgstr ""
-
-msgid ""
-"Thank you for using the wizard.\n"
-"Please press OK to continue."
-msgstr ""
-
-msgid ""
-"The wireless LAN plugin is not installed!\n"
-"Please install it and choose what you want to do next."
-msgstr ""
-
-msgid ""
-"Welcome.\n"
-"\n"
-"If you want to connect your %s %s to the Internet, this wizard will guide you through the basic network setup of your %s %s.\n"
-"\n"
-"Press OK to start configuring your network"
-msgstr ""
-
-msgid "Wireless network connection setup"
-msgstr ""
-
-msgid "Wireless network connection setup."
-msgstr ""
-
-msgid ""
-"Your internet connection is not working!\n"
-"Please choose what you want to do next."
-msgstr ""
-
-msgid ""
-"Your internet connection is working now.\n"
-"\n"
-"Please press OK to continue."
-msgstr ""
-
-msgid ""
-"Your wireless LAN internet connection could not be started!\n"
-"Have you attached your USB WLAN Stick?\n"
-"\n"
-"Please choose what you want to do next."
+msgid "VCR Scart"
 msgstr ""
 
 msgid "."
@@ -13351,7 +13258,7 @@ msgstr ""
 msgid "Allows you to show/hide Log Manager in extensions (blue button)."
 msgstr ""
 
-msgid "Allows you to show/hide OScam Info in extensions (blue button)."
+msgid "Allows you to show/hide OScam/Ncam Info in extensions (blue button)."
 msgstr ""
 
 msgid "Alternative numbering mode"
@@ -13968,6 +13875,9 @@ msgstr ""
 msgid "Enable multiple bouquets"
 msgstr ""
 
+msgid "Enable or disable using HDMI-CEC."
+msgstr ""
+
 msgid "Enable panic button"
 msgstr ""
 
@@ -14188,12 +14098,6 @@ msgid "Info icon width"
 msgstr ""
 
 msgid "Infobar EPG activation"
-msgstr ""
-
-msgid "Infobar Grid EPG"
-msgstr ""
-
-msgid "Infobar Single EPG"
 msgstr ""
 
 msgid "Infobar fade-out speed"
@@ -14715,7 +14619,7 @@ msgstr ""
 msgid "Show MiniTV in the Front Display"
 msgstr ""
 
-msgid "Show OScam Info in extensions?"
+msgid "Show OScam/Ncam Info in extensions?"
 msgstr ""
 
 msgid "Show PIP in the Front Display"
@@ -15400,9 +15304,6 @@ msgstr ""
 msgid "Zap mode"
 msgstr ""
 
-msgid "1,1"
-msgstr ""
-
 msgid "Check the internet connection"
 msgstr ""
 
@@ -15416,6 +15317,9 @@ msgid "Do you want to do a service scan?"
 msgstr ""
 
 msgid "Do you want to do another manual service scan?"
+msgstr ""
+
+msgid "Exit the wizard"
 msgstr ""
 
 msgid "No, scan later manually"
@@ -15522,22 +15426,12 @@ msgstr ""
 msgid "Your receiver is not connected to the internet"
 msgstr ""
 
-msgid "REC "
+msgid "Configure interface"
 msgstr ""
 
-msgid "C"
-msgstr ""
-
-msgid "D"
-msgstr ""
-
-msgid "EtPortal"
-msgstr ""
-
-msgid "F"
-msgstr ""
-
-msgid "IMDB Search"
+msgid ""
+"Please setup your user interface by adjusting the values till the edges of the user interface box are covering the test pattern and touching the edges of your TV.\n"
+"When you are ready press OK to continue."
 msgstr ""
 
 msgid "Refresh rate selection."
@@ -15563,139 +15457,281 @@ msgstr ""
 msgid "Video mode selection."
 msgstr ""
 
-msgid "3D Setup"
+msgid "Allows the TV remote to be used to control the receiver."
 msgstr ""
 
-msgid "Android Mode"
+msgid "Automatically put the TV in standby whenever the receiver goes into standby or deep standby."
 msgstr ""
 
-msgid "Audio & Video"
+msgid "Before sending the command to switch the TV to standby, the receiver tests if all the other devices plugged into TV are in standby. If they are not, the 'sourceactive' command will be sent to the TV instead of the 'standby' command."
 msgstr ""
 
-msgid "Automatic Language"
+msgid "Command the TV to switch to the correct HDMI input when zap timers activate."
 msgstr ""
 
-msgid "Channel Selection"
+msgid "Debug to file"
 msgstr ""
 
-msgid "Cron Timers"
+msgid "Delay between CEC commands when sending a series of commands. Some devices require this delay for correct functioning, usually between 50-150ms."
 msgstr ""
 
-msgid "Customize"
+msgid "Detect next boxes before standby"
 msgstr ""
 
-msgid "Delete EPG Cache"
+msgid "Forward volume keys"
 msgstr ""
 
-msgid "Fallback Configuration"
+msgid "Handle standby from TV"
 msgstr ""
 
-msgid "Front Panel Display"
+msgid "Handle wakeup from TV"
 msgstr ""
 
-msgid "H9SDroot"
+msgid "Hdmi-CEC setup"
 msgstr ""
 
-msgid "HDMI CEC"
+msgid "If enabled, a log will be kept of CEC protocol traffic ('hdmicec.log')."
 msgstr ""
 
-msgid "Keyboard"
+msgid "If set to 'yes' the same commands will be sent to the TV for deep standby events, as are sent during regular standby events."
 msgstr ""
 
-msgid "LED Display Panel"
+msgid "Minimum send interval"
 msgstr ""
 
-msgid "Load EPG Cache"
+msgid "Press OK to select the save location of the log file."
 msgstr ""
 
-msgid "Load, Save & Delete EPG Cache"
+msgid "Put A/V receiver in standby"
 msgstr ""
 
-msgid "Logs"
+msgid "Put A/V receiver in standby."
 msgstr ""
 
-msgid "Main Menu"
+msgid "Put TV in standby"
 msgstr ""
 
-msgid "Miscellaneous"
+msgid "Regard deep standby as standby"
 msgstr ""
 
-msgid "OSD Position"
+msgid "Repeat leave standby messages"
 msgstr ""
 
-msgid "Plugins"
+msgid "Select path for logfile"
 msgstr ""
 
-msgid "Power Timers"
+msgid "Send 'sourceactive' before zap timers"
 msgstr ""
 
-msgid "Recording & Playback"
+msgid "Some TVs do not wake from standby when they receive the 'Image View On' command. If this is the case try the 'Text View On' command instead."
 msgstr ""
 
-msgid "Recordings, Playback & Timeshift"
+msgid "Switch TV to correct input"
 msgstr ""
 
-msgid "Recovery Mode"
+msgid "The command to wake from standby will be sent multiple times."
 msgstr ""
 
-msgid "SABnzbd"
+msgid "Use TV remote control"
 msgstr ""
 
-msgid "Save EPG Cache"
+msgid "Volume keys on the receiver remote will control the TV volume."
 msgstr ""
 
-msgid "Shut Down"
+msgid "Wake A/V receiver from standby"
 msgstr ""
 
-msgid "Skin"
+msgid "Wake A/V receiver from standby."
 msgstr ""
 
-msgid "Skin Setup"
+msgid "Wake the receiver from standby when the wake command is sent from the TV."
 msgstr ""
 
-msgid "Softcam"
+msgid "Wakeup TV from standby"
 msgstr ""
 
-msgid "Software Update"
+msgid "Wakeup command for TV"
 msgstr ""
 
-msgid "Standby & Restart"
+msgid "Wakeup signal from TV"
 msgstr ""
 
-msgid "Storage"
+msgid "When enabled the receiver will automatically return to standby when the TV is turned off."
 msgstr ""
 
-msgid "Streaming Clients"
+msgid "When enabled the receiver will automatically wake from standby when the TV is turned on."
 msgstr ""
 
-msgid "Tuners & Scanning"
+msgid "When receiver wakes from standby, it will command the TV to switch to the HDMI input the receiver is connected to."
 msgstr ""
 
-msgid "User Interface"
+msgid "When the receiver wakes from standby, it will send a command to the TV to bring it out of standby too."
 msgstr ""
 
-msgid "Utilities"
+msgid "Configure nameservers"
 msgstr ""
 
-msgid "VCR Scart"
+msgid "Configure your network again"
+msgstr ""
+
+msgid "List available networks"
+msgstr ""
+
+msgid "Manual configuration"
 msgstr ""
 
 msgid ""
-"Please setup your user interface by adjusting the values till the edges of the user interface box are covering the test pattern and touching the edges of your TV.\n"
+"Please configure or verify your Nameservers by filling out the required values.\n"
 "When you are ready press OK to continue."
 msgstr ""
 
-msgid "G"
+msgid ""
+"Please configure your internet connection by filling out the required values.\n"
+"When you are ready press OK to continue."
 msgstr ""
 
-msgid "H"
+msgid "Please follow the instructions on the TV"
 msgstr ""
 
-msgid "I"
+msgid ""
+"Please select the network interface that you want to use for your internet connection.\n"
+"\n"
+"Please press OK to continue."
 msgstr ""
 
-msgid "J"
+msgid ""
+"Please select the wireless network that you want to connect to.\n"
+"\n"
+"Please press OK to continue."
 msgstr ""
 
-msgid "TUNER:"
+msgid "Select wireless network"
+msgstr ""
+
+msgid ""
+"Thank you for using the wizard.\n"
+"Please press OK to continue."
+msgstr ""
+
+msgid ""
+"The wireless LAN plugin is not installed!\n"
+"Please install it and choose what you want to do next."
+msgstr ""
+
+msgid ""
+"Welcome.\n"
+"\n"
+"If you want to connect your %s %s to the Internet, this wizard will guide you through the basic network setup of your %s %s.\n"
+"\n"
+"Press OK to start configuring your network"
+msgstr ""
+
+msgid "Wireless network connection setup"
+msgstr ""
+
+msgid "Wireless network connection setup."
+msgstr ""
+
+msgid ""
+"Your internet connection is not working!\n"
+"Please choose what you want to do next."
+msgstr ""
+
+msgid ""
+"Your internet connection is working now.\n"
+"\n"
+"Please press OK to continue."
+msgstr ""
+
+msgid ""
+"Your wireless LAN internet connection could not be started!\n"
+"Have you attached your USB WLAN Stick?\n"
+"\n"
+"Please choose what you want to do next."
+msgstr ""
+
+msgid "Enable OpenTV download"
+msgstr ""
+
+msgid "Enable automated downloading of OpenTV EPG data. If only one tuner is available the download will be done when the reciever is in standby."
+msgstr ""
+
+msgid "OpenTV download setup"
+msgstr ""
+
+msgid "Set update interval (in hours)."
+msgstr ""
+
+msgid "Show in extensions"
+msgstr ""
+
+msgid "Show notifications"
+msgstr ""
+
+msgid "Show on-screen notifications (pop up) to warn the OpenTV download is in progress."
+msgstr ""
+
+msgid "Update Interval"
+msgstr ""
+
+msgid "When enabled a forced download will be possible from the extensions menu (blue button). Shows after next restart."
+msgstr ""
+
+msgid "Install a new image with a USB stick"
+msgstr ""
+
+msgid "Install a new image with your web browser"
+msgstr ""
+
+msgid "No backup needed"
+msgstr ""
+
+msgid "No, do nothing."
+msgstr ""
+
+msgid "No, just start my %s %s"
+msgstr ""
+
+msgid "OK, guide me through the upgrade process"
+msgstr ""
+
+msgid "The backup failed. Please choose a different backup location."
+msgstr ""
+
+msgid "The wizard can backup your current settings. Do you want to do a backup now?"
+msgstr ""
+
+msgid "The wizard is finished now."
+msgstr ""
+
+msgid "Welcome to the image upgrade wizard. The wizard will assist you in upgrading the firmware of your %s %s by providing a backup facility for your current settings and a short explanation of how to upgrade your firmware."
+msgstr ""
+
+msgid "Where do you want to backup your settings?"
+msgstr ""
+
+msgid "Yes, backup my settings!"
+msgstr ""
+
+msgid "Yes, restore the settings now"
+msgstr ""
+
+msgid "Yes, shut down now."
+msgstr ""
+
+msgid "You have chosen to backup your settings. Please press OK to start the backup now."
+msgstr ""
+
+msgid "You have chosen to restore your settings. Enigma2 will restart after restore. Please press OK to start the restore now."
+msgstr ""
+
+msgid ""
+"You need a PC connected to your %s %s. If you need further instructions, please visit the website http://www.dm7025.de.\n"
+"Your %s %s will now be halted. After you have performed the update instructions from the website, your new firmware will ask you to restore your settings."
+msgstr ""
+
+msgid "Your %s %s is shutting down. Please wait..."
+msgstr ""
+
+msgid "Your backup succeeded. We will now continue to explain the further upgrade process."
 msgstr ""

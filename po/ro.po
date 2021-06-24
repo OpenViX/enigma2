@@ -2,12 +2,12 @@
 # Copyright (C) 2005 THE tuxbox-enigma'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the tuxbox-enigma package.
 # Automatically generated, 2005.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: tuxbox-enigma 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-18 09:59+0430\n"
+"POT-Creation-Date: 2021-05-18 14:44+0200\n"
 "PO-Revision-Date: 2019-02-07 18:52+0200\n"
 "Last-Translator: Suporter <gabydinu@yahoo.com>\n"
 "Language-Team: Suporter\n"
@@ -166,6 +166,10 @@ msgstr "Retea locala"
 msgid " (Channel %s)"
 msgstr " (Canal %s)"
 
+#, fuzzy
+msgid " (auto detection)"
+msgstr "Oprire Completa Auto"
+
 msgid " (disabled)"
 msgstr " (dezactivat)"
 
@@ -188,6 +192,9 @@ msgstr ""
 #, fuzzy
 msgid " - video1"
 msgstr "S-Video"
+
+msgid " Warning: the selected tuner should not use SCR Unicable type for LNBs because each tuner need a own SCR number."
+msgstr ""
 
 msgid " and"
 msgstr " si"
@@ -1202,6 +1209,18 @@ msgstr "%s (%s)\n"
 msgid "%s - %s (%s%d min)"
 msgstr "%02d.%02d - %02d.%02d (%s%d min)"
 
+#, fuzzy, python-format
+msgid "%s Info - Configuration"
+msgstr "Informatii Oscam - Configuratie"
+
+#, fuzzy, python-format
+msgid "%s Info - Main Menu"
+msgstr "Info Oscam - Meniu principal"
+
+#, python-format
+msgid "%s Log ( %s-Version: %s )"
+msgstr ""
+
 #, python-format
 msgid "%s files cannot be bulk renamed"
 msgstr ""
@@ -1226,6 +1245,10 @@ msgstr[0] "%s pachet actualizat este disponibil"
 msgstr[1] "%s pachete actializate sunt disponibile"
 
 #, fuzzy, python-format
+msgid "%s webif disabled"
+msgstr "dezactivat"
+
+#, fuzzy, python-format
 msgid "%s%d Min"
 msgstr "%s%d min"
 
@@ -1236,10 +1259,6 @@ msgstr "Implicite"
 #, python-format
 msgid "%s/%s: %s"
 msgstr "%s/%s: %s"
-
-#, python-format
-msgid "%s:%s"
-msgstr "%s:%s"
 
 #, python-format
 msgid "%s?"
@@ -1984,10 +2003,7 @@ msgstr "Adaugare programare..."
 msgid "Additional cable of motorized LNB"
 msgstr "Al 2-lea cablu al LNB motorizat"
 
-msgid "Additional motor options allow you to enter details from your motor's spec sheet so enigma can work out how long it will take to move the dish from one satellite to another satellite."
-msgstr ""
-
-msgid "Additional motor options allow you to enter details from your motor's spec sheet so enigma can work out how long it will take to move to another satellite."
+msgid "Additional motor options opens a sub-menu where you can enter details from your motor's spec sheet so enigma can work out how long it will take to move the dish from one satellite to another satellite."
 msgstr ""
 
 msgid "Address"
@@ -2153,7 +2169,8 @@ msgstr "Permite afisarea/ascunderea CCcam Info in extensii (buton albastru)."
 msgid "Allows you to show/hide Log Manager in extensions (blue button)."
 msgstr "Va permite sa afisati/ascundeti Log Manager in extensii (buton albastru)."
 
-msgid "Allows you to show/hide OScam Info in extensions (blue button)."
+#, fuzzy
+msgid "Allows you to show/hide OScam/Ncam Info in extensions (blue button)."
 msgstr "Permite afiaarea/ascunderea OScam Info in extensii (buton albastru)."
 
 msgid "Alpha"
@@ -3408,7 +3425,7 @@ msgid "Clear playlist"
 msgstr "Goleste playlist"
 
 #, python-format
-msgid "Client Info ( Oscam-Version: %s )"
+msgid "Client Info ( %s-Version: %s )"
 msgstr ""
 
 #, fuzzy
@@ -5940,8 +5957,9 @@ msgstr "Stare Feeduri:   Actualizare"
 msgid "Fiji"
 msgstr ""
 
+#, fuzzy, python-format
 msgid ""
-"File oscam.conf not found.\n"
+"File %s.conf not found.\n"
 "Please enter username/password manually."
 msgstr ""
 "Fisierul oscam.conf nu a fost gasit.\n"
@@ -6080,7 +6098,8 @@ msgstr "Vin"
 msgid "Friday"
 msgstr "Vineri"
 
-msgid "From :"
+#, fuzzy
+msgid "From:"
 msgstr "Din :"
 
 #, fuzzy
@@ -6257,9 +6276,6 @@ msgstr "Du-te la"
 msgid "Goto 0"
 msgstr "Du-te 0"
 
-msgid "Goto :"
-msgstr "Du-te la:"
-
 msgid "Goto X"
 msgstr "Goto X"
 
@@ -6268,6 +6284,10 @@ msgstr "Du-te la pozitia index"
 
 msgid "Goto position"
 msgstr "Goto pozition"
+
+#, fuzzy
+msgid "Goto:"
+msgstr "Du-te la:"
 
 msgid "GotoX calibration"
 msgstr "GotoX calibration"
@@ -6532,6 +6552,9 @@ msgstr "Ascunde serviciile blocate de parinti"
 
 msgid "Hide player"
 msgstr "Ascunde player"
+
+msgid "Hide sub-menu"
+msgstr ""
 
 msgid "Hide zap errors"
 msgstr "Ascunde erorile zap"
@@ -8662,7 +8685,12 @@ msgstr "Cerere nume OSD"
 msgid "OSD position"
 msgstr "Memoreaza pozitia"
 
-msgid "OScam Info"
+#, fuzzy
+msgid "OScam/Ncam  Info"
+msgstr "OScam Info"
+
+#, fuzzy
+msgid "OScam/Ncam Info"
 msgstr "OScam Info"
 
 msgid "OVR"
@@ -8830,16 +8858,6 @@ msgstr ""
 
 msgid "Original"
 msgstr "Original"
-
-msgid "Oscam Info - Configuration"
-msgstr "Informatii Oscam - Configuratie"
-
-msgid "Oscam Info - Main Menu"
-msgstr "Info Oscam - Meniu principal"
-
-#, python-format
-msgid "Oscam Log ( Oscam-Version: %s )"
-msgstr ""
 
 msgid "Other"
 msgstr "Altul"
@@ -9965,8 +9983,8 @@ msgstr "Rating nedefinita"
 msgid "Re-enter PIN"
 msgstr ""
 
-#, fuzzy
-msgid "Read Userdata from oscam.conf"
+#, fuzzy, python-format
+msgid "Read Userdata from %s.conf"
 msgstr "Citeste datele de utilizator din oscam.conf"
 
 msgid "Reader"
@@ -10075,6 +10093,12 @@ msgstr "Setari de inregistrare si redare"
 msgid "Recording and playback settings"
 msgstr "Setari de inregistrare si redare"
 
+#, fuzzy, python-format
+msgid "Recording in progress: %s"
+msgstr ""
+"\n"
+"Inregistrare in progres."
+
 msgid "Recording type"
 msgstr "Tip de inregistrare"
 
@@ -10090,6 +10114,12 @@ msgstr "Inregistrari"
 
 msgid "Recordings always have priority"
 msgstr "Inregistrarile au intotdeauna prioritate"
+
+#, fuzzy, python-format
+msgid "Recordings in progress: %d"
+msgstr ""
+"\n"
+"Inregistrare in progres."
 
 #, fuzzy
 msgid "Recordings, Playback & Timeshift"
@@ -11335,7 +11365,7 @@ msgid "Serv.Name"
 msgstr "Serv.Name"
 
 #, python-format
-msgid "Server Info ( Oscam-Version: %s )"
+msgid "Server Info ( %s-Version: %s )"
 msgstr ""
 
 msgid "Server:"
@@ -11727,7 +11757,8 @@ msgstr "Afisati MiniTV pe Afisajul Frontal"
 msgid "Show Multi EPG"
 msgstr "Arata multi EPG"
 
-msgid "Show OScam Info in extensions?"
+#, fuzzy
+msgid "Show OScam/Ncam Info in extensions?"
 msgstr "Se afiseaza Oscam Info in extensii?"
 
 msgid "Show PIP"
@@ -12013,6 +12044,10 @@ msgstr "Arata inconurile de stare in lista de filme"
 #, fuzzy
 msgid "Show stream clients"
 msgstr "Nu exista clienti stream"
+
+#, fuzzy
+msgid "Show sub-menu"
+msgstr "Arata meniul"
 
 msgid "Show subservice selection"
 msgstr "Arata selectia subserviciilor"
@@ -13249,10 +13284,10 @@ msgstr "Fisierul timer (timers.xml) este corupt si nu a putut fi incarcat."
 msgid "The user interface of your %s %s is restarting"
 msgstr "Interfata de utilizator a %s %s se restarteaza"
 
-#, python-format
+#, fuzzy, python-format
 msgid ""
 "The user interface of your %s %s is restarting\n"
-"due to an error in mytest.py"
+"due to an error in StartEnigma.py"
 msgstr ""
 "Interfata de utilizator a %s %s se restarteaza\n"
 "din cauza unei erori in mytest.py"
@@ -14730,6 +14765,9 @@ msgstr "Atentie"
 msgid "Warning: no LNB; using factory defaults."
 msgstr "Atentie: niciun LNB; se folosesc valorile implicite din fabrica."
 
+msgid "Warning: the second input of this dual tuner may not support SCR LNBs. "
+msgstr ""
+
 msgid "Watch movies..."
 msgstr "Vizionare filme..."
 
@@ -15622,6 +15660,9 @@ msgstr "aventura/western /razboi"
 msgid "advertisement/shopping"
 msgstr "publicitate/cumparaturi"
 
+msgid "all tuners"
+msgstr ""
+
 msgid "alpha then oldest"
 msgstr "alpha then oldest"
 
@@ -16336,6 +16377,10 @@ msgstr "neblocat"
 msgid "not supported"
 msgstr "nu este suportat"
 
+#, fuzzy
+msgid "not valid frontend"
+msgstr "tip invalid"
+
 msgid "nothing connected"
 msgstr "nimic conectat"
 
@@ -16374,9 +16419,6 @@ msgstr "original"
 
 msgid "original language"
 msgstr "limba originala"
-
-msgid "oscam webif disabled"
-msgstr ""
 
 msgid "packages selected."
 msgstr "pachetele selectate."
@@ -16483,6 +16525,10 @@ msgstr "romantic"
 #, fuzzy
 msgid "rotor"
 msgstr "Rotor: "
+
+#, fuzzy
+msgid "rotor is not used"
+msgstr "Tunerul nu este suportat"
 
 msgid "running..."
 msgstr "in functiune..."
@@ -16744,6 +16790,10 @@ msgstr "indisponibil"
 
 msgid "unconfirmed"
 msgstr "neconfirmat"
+
+#, fuzzy
+msgid "undefined"
+msgstr "Ales de utilizator"
 
 msgid "unknown"
 msgstr "necunoscut"
