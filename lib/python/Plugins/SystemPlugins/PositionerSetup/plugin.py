@@ -417,7 +417,7 @@ class PositionerSetup(Screen):
 		self.positioner_storage = ConfigInteger(default=rotorposition, limits=(1, self.rotorPositions))
 		self.allocatedIndices = []
 		m = PositionerSetup.satposition2metric(orb_pos)
-		self.orbitalposition = ConfigFloat(default=[int(m[0] // 10), m[0] % 10], limits=[(0, 180), (0, 9)])
+		self.orbitalposition = ConfigFloat(default=[int(m[0] / 10), m[0] % 10], limits=[(0, 180), (0, 9)])
 		self.orientation = ConfigSelection([("east", _("East")), ("west", _("West"))], default=m[1])
 		for x in (self.positioner_tune, self.positioner_storage, self.orbitalposition):
 			x.addNotifier(self.retune, initial_call=False)
@@ -787,7 +787,7 @@ class PositionerSetup(Screen):
 		feparm = self.tuner.lastparm.getDVBS()
 		orb_pos = feparm.orbital_position
 		m = PositionerSetup.satposition2metric(orb_pos)
-		self.orbitalposition.value = [int(m[0] // 10), m[0] % 10]
+		self.orbitalposition.value = [int(m[0] / 10), m[0] % 10]
 		self.orientation.value = m[1]
 		if self.advanced:
 			if orb_pos in self.availablesats:
@@ -897,7 +897,7 @@ class PositionerSetup(Screen):
 					self.collectingStatistics = False
 					count = float(self.stat_count)
 					self.lock_count /= count
-					self.snr_percentage *= 100.0 // 0x10000 // count
+					self.snr_percentage *= 100.0 / 0x10000 / count
 					self.dataAvailable.set()
 
 	def tuningChangedTo(self, tp):
@@ -950,7 +950,7 @@ class PositionerSetup(Screen):
 
 	@staticmethod
 	def rotorCmd2Step(rotorCmd, stepsize):
-		return round(float(rotorCmd & 0xFFF) // 0x10 // stepsize) * (1 - ((rotorCmd & 0x1000) >> 11))
+		return round(float(rotorCmd & 0xFFF) / 0x10 / stepsize) * (1 - ((rotorCmd & 0x1000) >> 11))
 
 	@staticmethod
 	def gotoXcalc(satlon, sitelat, sitelon):
