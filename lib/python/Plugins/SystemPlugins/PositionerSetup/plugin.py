@@ -693,15 +693,15 @@ class PositionerSetup(Screen):
 			self.printMsg(_("Move to position X"))
 			satlon = self.orbitalposition.float
 			position = ("%5.1f %s") % (satlon, self.orientation.value)
-			print>>log, ((_("Satellite longitude:") + " %s") % position)
+			print((_("Satellite longitude:") + " %s") % position, file=log)
 			satlon = PositionerSetup.orbital2metric(satlon, self.orientation.value)
 			self.statusMsg((_("Moving to position") + " %s") % position, timeout=self.STATUS_MSG_TIMEOUT)
 			self.gotoX(satlon)
 		elif entry == "tune":
 			# Start USALS calibration
 			self.printMsg(_("USALS calibration"))
-			print>>log, (_("Site latitude") + "      : %5.1f %s") % PositionerSetup.latitude2orbital(self.sitelat)
-			print>>log, ((_("Site longitude") + "     : %5.1f %s") % PositionerSetup.longitude2orbital(self.sitelon))
+			print((_("Site latitude") + "      : %5.1f %s") % PositionerSetup.latitude2orbital(self.sitelat), file=log)
+			print((_("Site longitude") + "     : %5.1f %s") % PositionerSetup.longitude2orbital(self.sitelon), file=log)
 			Thread(target=self.gotoXcalibration).start()
 
 	def blueKey(self):
