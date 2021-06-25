@@ -283,7 +283,7 @@ class Harddisk:
 		if dev:
 			try:
 				stat = os.statvfs(dev)
-				return (stat.f_bfree // 1000) * (stat.f_bsize // 1000)
+				return (stat.f_bfree / 1000) * (stat.f_bsize / 1000)
 			except (IOError, OSError):
 				print("[Harddisk] Error: Failed to get free space for '%s':" % dev, err)
 		return -1
