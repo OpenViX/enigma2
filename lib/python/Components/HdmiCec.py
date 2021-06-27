@@ -1,5 +1,6 @@
 from __future__ import print_function
 from __future__ import absolute_import
+import six
 
 import os
 import struct
@@ -168,10 +169,10 @@ class HdmiCec:
 			data = self.setData()
 		elif message == "menuactive":
 			cmd = 0x8e
-			data = str(struct.pack("B", 0x00))
+			data = six.ensure_str(struct.pack("B", 0x00))
 		elif message == "menuinactive":
 			cmd = 0x8e
-			data = str(struct.pack("B", 0x01))
+			data = six.ensure_str(struct.pack("B", 0x01))
 		elif message == "givesystemaudiostatus":
 			cmd = 0x7d
 			address = 0x05
@@ -185,10 +186,10 @@ class HdmiCec:
 			data = data[:14]
 		elif message == "poweractive":
 			cmd = 0x90
-			data = str(struct.pack("B", 0x00))
+			data = six.ensure_str(struct.pack("B", 0x00))
 		elif message == "powerinactive":
 			cmd = 0x90
-			data = str(struct.pack("B", 0x01))
+			data = six.ensure_str(struct.pack("B", 0x01))
 		elif message == "reportaddress":
 			address = 0x0f # use broadcast address
 			cmd = 0x84
@@ -198,13 +199,13 @@ class HdmiCec:
 			data = "\x00\x00\x00"
 		elif message == "keypoweron":
 			cmd = 0x44
-			data = str(struct.pack("B", 0x6d))
+			data = six.ensure_str(struct.pack("B", 0x6d))
 		elif message == "keypoweroff":
 			cmd = 0x44
-			data = str(struct.pack("B", 0x6c))
+			data = six.ensure_str(struct.pack("B", 0x6c))
 		elif message == "sendcecversion":
 			cmd = 0x9E
-			data = str(struct.pack("B", 0x04)) # v1.3a
+			data = six.ensure_str(struct.pack("B", 0x04)) # v1.3a
 		elif message == "requestactivesource":
 			address = 0x0f # use broadcast address
 			cmd = 0x85
@@ -219,13 +220,15 @@ class HdmiCec:
 				if not self.wait.isActive():
 					self.wait.start(int(config.hdmicec.minimum_send_interval.value), True)
 			else:
+				print("[eHdmiCec][sendmessage4]: address=%s, cmd=%s,data=%s" % (address, cmd, data))			
 				eHdmiCEC.getInstance().sendMessage(address, cmd, data, len(data))
-			if config.hdmicec.debug.value in["1", "3"]:
+			if config.hdmicec.debug.value in ["1", "3"]:
 				self.debugTx(address, cmd, data)
 
 	def sendCmd(self):
 		if len(self.queue):
 			(address, cmd, data) = self.queue.pop(0)
+			print("[eHdmiCec][sendmessage3]: address=%s, cmd=%s,data=%s" % (address, cmd, data))			
 			eHdmiCEC.getInstance().sendMessage(address, cmd, data, len(data))
 			self.wait.start(int(config.hdmicec.minimum_send_interval.value), True)
 
@@ -237,8 +240,8 @@ class HdmiCec:
 		physicaladdress = eHdmiCEC.getInstance().getPhysicalAddress()
 		if devicetypeSend:
 			devicetype = eHdmiCEC.getInstance().getDeviceType()
-			return str(struct.pack("BBB", int(physicaladdress / 256), int(physicaladdress % 256), devicetype))
-		return str(struct.pack("BB", int(physicaladdress / 256), int(physicaladdress % 256)))
+			return six.ensure_str(struct.pack("BBB", int(physicaladdress / 256), int(physicaladdress % 256), devicetype))
+		return six.ensure_str(struct.pack("BB", int(physicaladdress / 256), int(physicaladdress % 256)))
 
 	def wakeupMessages(self):
 		if config.hdmicec.enabled.value:
@@ -427,23 +430,23 @@ class HdmiCec:
 		if keyEvent == 0:
 			if keyCode == 115:
 				cmd = 0x44
-				data = str(struct.pack("B", 0x41))
+				data = six.ensure_str(struct.pack("B", 0x41))
 			if keyCode == 114:
 				cmd = 0x44
-				data = str(struct.pack("B", 0x42))
+				data = six.ensure_str(struct.pack("B", 0x42))
 			if keyCode == 113:
 				cmd = 0x44
-				data = str(struct.pack("B", 0x43))
+				data = six.ensure_str(struct.pack("B", 0x43))
 		if keyEvent == 2:
 			if keyCode == 115:
 				cmd = 0x44
-				data = str(struct.pack("B", 0x41))
+				data = six.ensure_str(struct.pack("B", 0x41))
 			if keyCode == 114:
 				cmd = 0x44
-				data = str(struct.pack("B", 0x42))
+				data = six.ensure_str(struct.pack("B", 0x42))
 			if keyCode == 113:
 				cmd = 0x44
-				data = str(struct.pack("B", 0x43))
+				data = six.ensure_str(struct.pack("B", 0x43))
 		if keyEvent == 1:
 			if keyCode == 115 or keyCode == 114 or keyCode == 113:
 				cmd = 0x45
@@ -453,8 +456,9 @@ class HdmiCec:
 				if not self.waitKeyEvent.isActive():
 					self.waitKeyEvent.start(int(config.hdmicec.minimum_send_interval.value), True)
 			else:
+				print("[eHdmiCec][sendmessage1]: forwarding dest=%s, cmd=%s,data=%s" % (self.volumeForwardingDestination, cmd, data))			
 				eHdmiCEC.getInstance().sendMessage(self.volumeForwardingDestination, cmd, data, len(data))
-			if config.hdmicec.debug.value in["2", "3"]:
+			if config.hdmicec.debug.value in ["2", "3"]:
 				self.debugTx(self.volumeForwardingDestination, cmd, data)
 			return 1
 		else:
@@ -463,6 +467,7 @@ class HdmiCec:
 	def sendKeyEvent(self):
 		if len(self.queueKeyEvent):
 			(address, cmd, data) = self.queueKeyEvent.pop(0)
+			print("[eHdmiCec][sendmessage2]: address=%s, cmd=%s,data=%s" % (address, cmd, data))
 			eHdmiCEC.getInstance().sendMessage(address, cmd, data, len(data))
 			self.waitKeyEvent.start(int(config.hdmicec.minimum_send_interval.value), True)
 
@@ -470,7 +475,7 @@ class HdmiCec:
 		txt = self.now(True) + self.opCode(cmd, True) + " " + "%02X" % (cmd) + " "
 		tmp = ""
 		if len(data):
-			if cmd in[0x32, 0x47]:
+			if cmd in [0x32, 0x47]:
 				for i in range(len(data)):
 					tmp += "%s" % data[i]
 			else:
@@ -489,7 +494,7 @@ class HdmiCec:
 			else:
 				txt += self.opCode(cmd) + " " + "%02X" % (cmd) + " "
 			for i in range(length - 1):
-				if cmd in[0x32, 0x47]:
+				if cmd in [0x32, 0x47]:
 					txt += "%s" % data[i]
 				elif cmd == 0x9e:
 					txt += "%02X" % ord(data[i]) + 3 * " " + "[version: %s]" % CEC[ord(data[i])]
