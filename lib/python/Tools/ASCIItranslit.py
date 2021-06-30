@@ -264,7 +264,7 @@ def legacyEncode(string):
 	for z, char in enumerate(string):
 		i = ord(char)
 		if i < 33:
-			string2 += "_"
+			string2 += " "
 		elif i in ASCIItranslit:
 			string2 += ASCIItranslit[i]
 		else:
