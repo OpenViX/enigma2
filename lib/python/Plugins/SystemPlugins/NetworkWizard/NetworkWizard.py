@@ -4,6 +4,7 @@ from os import system
 
 from enigma import eTimer
 from boxbranding import getMachineBrand, getMachineName
+from Components.config import config
 from Components.Label import Label
 from Components.Network import iNetwork
 from Components.Pixmap import Pixmap
@@ -72,6 +73,7 @@ class NetworkWizard(WizardLanguage, Rc):
 		self.rescanTimer.callback.append(self.rescanTimerFired)
 		self.getInstalledInterfaceCount()
 		self.isWlanPluginInstalled()
+
 
 	def exitWizardQuestion(self, ret=False):
 		if ret:
@@ -172,8 +174,11 @@ class NetworkWizard(WizardLanguage, Rc):
 				if iface in iNetwork.configuredNetworkAdapters and len(iNetwork.configuredNetworkAdapters) == 1:
 					if iNetwork.getAdapterAttribute(iface, 'up') is True:
 						self.isInterfaceUp = True
+						config.misc.networkenabled.value = True						
 					else:
 						self.isInterfaceUp = False
+						config.misc.networkenabled.value = False
+					print("[NetworkWizard] networkenabled value = %s" % config.misc.networkenabled.value )						
 					self.currStep = self.getStepWithID(self.NextStep)
 					self.afterAsyncCode()
 				else:
@@ -200,8 +205,11 @@ class NetworkWizard(WizardLanguage, Rc):
 		if data is True:
 			if iNetwork.getAdapterAttribute(self.selectedInterface, 'up') is True:
 				self.isInterfaceUp = True
+				config.misc.networkenabled.value = True
 			else:
 				self.isInterfaceUp = False
+				config.misc.networkenabled.value = False
+			print("[NetworkWizard] networkenabled value = %s" % config.misc.networkenabled.value )				
 			self.resetRef.close(True)
 		else:
 			print("we should never come here!")

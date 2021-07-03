@@ -17,7 +17,7 @@ from Components.config import config, ConfigYesNo, NoSave, ConfigSubsection, Con
 from Components.Console import Console
 from Components.Network import iNetwork
 
-
+config.misc.networkenabled.value = False
 liste = ["WPA/WPA2", "WPA2", "WPA", "WEP", "Unencrypted"]
 
 weplist = ["ASCII", "HEX"]
@@ -563,6 +563,8 @@ class Status:
 					print("[Wlan.py] No wireless networks could be found")	
 				aps = {}
 				if scanresults is not None:
+					config.misc.networkenabled.value = True
+					print("[NetworkWizard] networkenabled value = %s" % config.misc.networkenabled.value )				
 					for i in range(len(scanresults)):
 						bssid = scanresults[i].ssid
 						aps[bssid] = {
