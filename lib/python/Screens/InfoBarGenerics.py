@@ -3279,8 +3279,7 @@ class InfoBarInstantRecord:
 			else:
 				self.session.openWithCallback(self.setEndtime, TimerSelection, list)
 		elif answer[1] == "timer":
-			import Screens.TimerEdit
-			self.session.open(TimerEdit.TimerEditList)
+			self.session.open(TimerEditList)
 		elif answer[1] == "stop":
 			if len(self.recording) == 1:
 				self.stopCurrentRecording(0)
@@ -3624,7 +3623,6 @@ class InfoBarTimerButton:
 			}, description=_("Timer control"))
 
 	def timerSelection(self):
-		from Screens.TimerEdit import TimerEditList
 		self.session.open(TimerEditList)
 
 
