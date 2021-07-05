@@ -258,22 +258,11 @@ ASCIItranslit = {
 
 def legacyEncode(string):
 	import six
-	if six.PY2:
-		string.decode("utf-8")
 	string2 = ""
-	for z, char in enumerate(string):
+	for z, char in enumerate(string.decode("utf-8") if six.PY2 else string):
 		i = ord(char)
-		if i < 33:
-			string2 += " "
-		elif i in ASCIItranslit:
+		if i in ASCIItranslit:
 			string2 += ASCIItranslit[i]
-		else:
-			try:
-				_s = char.encode('ascii', 'strict')
-				if six.PY3:
-					string2 += _s.decode("utf-8")
-				else:
-					string2 += _s
-			except:
-				string2 += "_"
+		elif i > 31:
+			string2 += six.ensure_str(char.encode('ascii', 'ignore'))
 	return string2.upper()
