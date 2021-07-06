@@ -4,7 +4,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 import six
 
-from base64 import encodestring
+from base64 import b64encode
 from os import listdir, remove, rename, system, path
 
 from enigma import eListboxPythonMultiContent, eTimer, gFont, RT_HALIGN_RIGHT, getDesktop
@@ -79,9 +79,8 @@ def getPage(url, contextFactory=None, *args, **kwargs):
 
 	if username and password:
 		url = scheme + '://' + host + ':' + str(port) + path
-		basicAuth = encodestring("%s:%s" % (username, password))
-		authHeader = "Basic " + basicAuth.strip()
-		AuthHeaders = {"Authorization": authHeader}
+		base64string = b64encode(six.ensure_binary('%s:%s' % (username, password)))
+		AuthHeaders = {six.ensure_binary("Authorization"): six.ensure_binary("Basic %s" % six.ensure_str(base64string))}
 
 		if "headers" in kwargs:
 			kwargs["headers"].update(AuthHeaders)
