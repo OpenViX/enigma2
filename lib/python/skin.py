@@ -1316,6 +1316,7 @@ def readSkin(screen, skin, names, desktop):
 	screen = None
 	usedComponents = None
 
+
 def findWidgets(name):
 	"""
 	Return a set of all the widgets found in a screen. Panels will be expanded
