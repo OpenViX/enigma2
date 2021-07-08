@@ -282,7 +282,7 @@ class VIXSoftcamManager(Screen):
 			return
 		else:
 			if retval == 0:
-				stopcam = str(result)
+				stopcam = six.ensure_str(result)
 				print("[SoftcamManager] Stopping " + selectedcam + " PID " + stopcam.replace("\n", ""))
 				output = open("/tmp/cam.check.log", "a")
 				now = datetime.now()
