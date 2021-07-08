@@ -57,7 +57,7 @@ class downloadWithProgress:
 			url = six.ensure_binary(url)
 
 		parsed = urlparse(url)
-		scheme = parsed.scheme
+		scheme = six.ensure_str(parsed.scheme)
 		host = parsed.hostname
 		port = parsed.port or (443 if scheme == 'https' else 80)
 
