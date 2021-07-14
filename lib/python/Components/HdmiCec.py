@@ -2,6 +2,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 import six
 
+import datetime
 import os
 import struct
 import time
@@ -11,47 +12,13 @@ from enigma import eActionMap, eHdmiCEC, eTimer
 import NavigationInstance
 
 from Components.config import config, ConfigSelection, ConfigYesNo, ConfigSubsection, ConfigText, ConfigCECAddress, ConfigLocations, ConfigDirectory
+
+from Tools.Directories import pathExists
+from Tools import Notifications
 from Tools.StbHardware import getFPWasTimerWakeup
 
 LOGPATH = "/hdd/"
 LOGFILE = "hdmicec.log"
-
-# CEC Version's table
-CEC = ["1.1", "1.2", "1.2a", "1.3", "1.3a", "1.4", "2.0?", "unknown"]
-cmdList = {
-	0x00: "<Polling Message>",
-	0x04: "<Image View On>",
-	0x0d: "<Text View On>",
-	0x32: "<Set Menu Language>",
-	0x36: "<Standby>",
-	0x46: "<Give OSD Name>",
-	0x47: "<Set OSD Name>",
-	0x70: "<System Mode Audio Request>",
-	0x71: "<Give Audio Status>",
-	0x72: "<Set System Audio Mode>",
-	0x7a: "<Report Audio Status>",
-	0x7d: "<Give System Audio Mode Status>",
-	0x7e: "<System Audio Mode Status>",
-	0x80: "<Routing Change>",
-	0x81: "<Routing Information>",
-	0x82: "<Active Source>",
-	0x83: "<Give Physical Address>",
-	0x84: "<Report Physical Address>",
-	0x85: "<Request Active Source>",
-	0x86: "<Set Stream Path>",
-	0x87: "<Device Vendor ID>",
-	0x89: "<Vendor Command>",
-	0x8c: "<Give Device Vendor ID>",
-	0x8d: "<Menu Request>",
-	0x8e: "<Menu Status>",
-	0x8f: "<Give Device Power Status>",
-	0x90: "<Report Power Status>",
-	0x91: "<Get menu language>",
-	0x9e: "<CEC Version>",
-	0x9d: "<Inactive Source>",
-	0x9e: "<CEC Version>",
-	0x9f: "<Get CEC Version>",
-	}
 
 config.hdmicec = ConfigSubsection()
 config.hdmicec.enabled = ConfigYesNo(default=False)
@@ -97,6 +64,72 @@ config.hdmicec.bookmarks = ConfigLocations(default=[LOGPATH])
 config.hdmicec.log_path = ConfigDirectory(LOGPATH)
 config.hdmicec.next_boxes_detect = ConfigYesNo(default=False)
 config.hdmicec.sourceactive_zaptimers = ConfigYesNo(default=False)
+
+CEC = ["1.1", "1.2", "1.2a", "1.3", "1.3a", "1.4", "2.0?", "unknown"]	# CEC Version's table,  cmdList from http://www.cec-o-matic.com
+cmdList = {
+	0x00: "<Feature Abort>",
+	0x04: "<Image View On>",
+	0x05: "<Tuner Step Increment>",
+	0x06: "<Tuner Step Decrement>",
+	0x07: "<Tuner Device Status>",
+	0x08: "<Give Tuner Device Status>",
+	0x09: "<Record On>",
+	0x0A: "<Record Status>",
+	0x0B: "<Record Off>",
+	0x0D: "<Text View On>",
+	0x0F: "<Record TV Screen>",
+	0x1A: "<Give Deck Status>",
+	0x1B: "<Deck Status>",
+	0x32: "<Set Menu Language>",
+	0x33: "<Clear Analogue Timer>",
+	0x34: "<Set Analogue Timer>",
+	0x35: "<Timer Status>",
+	0x36: "<Standby>",
+	0x41: "<Play>",
+	0x42: "<Deck Control>",
+	0x43: "<Timer Cleared Status>",
+	0x44: "<User Control Pressed>",
+	0x45: "<User Control Released>",
+	0x46: "<Give OSD Name>",
+	0x47: "<Set OSD Name>",
+	0x64: "<Set OSD String>",
+	0x67: "<Set Timer Program Title>",
+	0x70: "<System Audio Mode Request>",
+	0x71: "<Give Audio Status>",
+	0x72: "<Set System Audio Mode>",
+	0x7A: "<Report Audio Status>",
+	0x7D: "<Give System Audio Mode Status>",
+	0x7E: "<System Audio Mode Status>",
+	0x80: "<Routing Change>",
+	0x81: "<Routing Information>",
+	0x82: "<Active Source>",
+	0x83: "<Give Physical Address>",
+	0x84: "<Report Physical Address>",
+	0x85: "<Request Active Source>",
+	0x86: "<Set Stream Path>",
+	0x87: "<Device Vendor ID>",
+	0x89: "<Vendor Command><Vendor Specific Data>",
+	0x8A: "<Vendor Remote Button Down><Vendor Specific RC Code>",
+	0x8B: "<Vendor Remote Button Up>",
+	0x8C: "<Give Device Vendor ID>",
+	0x8D: "<Menu Request>",
+	0x8E: "<Menu Status>",
+	0x8F: "<Give Device Power Status>",
+	0x90: "<Report Power Status>",
+	0x91: "<Get Menu Language>",
+	0x92: "<Select Analogue Service>",
+	0x93: "<Select Digital Service>",
+	0x97: "<Set Digital Timer>",
+	0x99: "<Clear Digital Timer>",
+	0x9A: "<Set Audio Rate>",
+	0x9D: "<Inactive Source>",
+	0x9E: "<CEC Version>",
+	0x9F: "<Get CEC Version>",
+	0xA0: "<Vendor Command With ID>",
+	0xA1: "<Clear External Timer>",
+	0xA2: "<Set External Timer>",
+	0xFF: "<Abort>",
+	}
 
 
 class HdmiCec:
@@ -313,7 +346,6 @@ class HdmiCec:
 	def standby(self):
 		from Screens.Standby import Standby, inStandby
 		if not inStandby:
-			from Tools import Notifications
 			Notifications.AddNotification(Standby)
 
 	def wakeup(self):
@@ -517,14 +549,12 @@ class HdmiCec:
 		send = "Rx: "
 		if out:
 			send = "Tx: "
-		import datetime
 		now = datetime.datetime.now()
 		if fulldate:
 			return send + now.strftime("%d-%m-%Y %H:%M:%S") + 2 * " "
 		return send + now.strftime("%H:%M:%S") + 2 * " "
 
 	def fdebug(self, output):
-		from Tools.Directories import pathExists
 		log_path = config.hdmicec.log_path.value
 		path = os.path.join(log_path, LOGFILE)
 		if pathExists(log_path):
