@@ -12,7 +12,7 @@ from enigma import eActionMap, eHdmiCEC, eTimer
 import NavigationInstance
 
 from Components.config import config, ConfigSelection, ConfigYesNo, ConfigSubsection, ConfigText, ConfigCECAddress, ConfigLocations, ConfigDirectory
-
+import Screens.Standby
 from Tools.Directories import pathExists
 from Tools import Notifications
 from Tools.StbHardware import getFPWasTimerWakeup
@@ -331,8 +331,7 @@ class HdmiCec:
 			self.repeat.startLongTimer(int(config.hdmicec.repeat_wakeup_timer.value))
 
 	def onEnterStandby(self, configElement):
-		from Screens.Standby import inStandby
-		inStandby.onClose.append(self.onLeaveStandby)
+		Screens.Standby.inStandby.onClose.append(self.onLeaveStandby)
 		self.repeat.stop()
 		self.standbyMessages()
 
@@ -344,15 +343,13 @@ class HdmiCec:
 				self.sendStandbyMessages()
 
 	def standby(self):
-		from Screens.Standby import Standby, inStandby
-		if not inStandby:
+		if not Screens.Standby.inStandby:
 			Notifications.AddNotification(Standby)
 
 	def wakeup(self):
 		self.wakeup_from_tv = True
-		from Screens.Standby import inStandby
-		if inStandby:
-			inStandby.Power()
+		if Screens.Standby.inStandby:
+			Screens.Standby.inStandby.Power()
 
 	def messageReceived(self, message):
 		if config.hdmicec.enabled.value:
