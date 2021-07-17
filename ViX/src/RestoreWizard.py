@@ -130,12 +130,12 @@ class RestoreWizard(WizardLanguage, Rc):
 		elif self.NextStep == "settingsquestion" or self.NextStep == "settingsrestore" or self.NextStep == "pluginsquestion" or self.NextStep == "pluginsrestoredevice" or self.NextStep == "end" or self.NextStep == "noplugins":
 			self.buildListfinishedCB(False)
 		elif self.NextStep == "settingrestorestarted":
-			self.Console.ePopen("tar -xzvf " + self.fullbackupfilename + " tmp/ExtraInstalledPlugins tmp/backupkernelversion tmp/backupimageversion -C /", self.settingsRestore_Started)
+			self.Console.ePopen("tar -xzvf " + self.fullbackupfilename + " -C / tmp/ExtraInstalledPlugins tmp/backupkernelversion tmp/backupimageversion", self.settingsRestore_Started)
 			self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Please wait while the system gathers information..."), type=MessageBox.TYPE_INFO, enable_input=False, wizard=True)
 			self.buildListRef.setTitle(_("Restore wizard"))
 		elif self.NextStep == "plugindetection":
 			print("[RestoreWizard] Stage 2: Restoring plugins")
-			self.Console.ePopen("tar -xzvf " + self.fullbackupfilename + " tmp/ExtraInstalledPlugins tmp/backupkernelversion tmp/backupimageversion -C /", self.pluginsRestore_Started)
+			self.Console.ePopen("tar -xzvf " + self.fullbackupfilename + "  -C / tmp/ExtraInstalledPlugins tmp/backupkernelversion tmp/backupimageversion", self.pluginsRestore_Started)
 			self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Please wait while the system gathers information..."), type=MessageBox.TYPE_INFO, enable_input=False, wizard=True)
 			self.buildListRef.setTitle(_("Restore wizard"))
 		elif self.NextStep == "pluginrestore":
