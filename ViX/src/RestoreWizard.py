@@ -125,20 +125,20 @@ class RestoreWizard(WizardLanguage, Rc):
 		self.ActionSelect(self.selection)
 
 	def buildList(self, action):
-		if self.NextStep =="reboot":
+		if self.NextStep == "reboot":
 			self.Console.ePopen("killall -9 enigma2 && init 6")
-		elif self.NextStep =="settingsquestion" or self.NextStep =="settingsrestore" or self.NextStep =="pluginsquestion" or self.NextStep =="pluginsrestoredevice" or self.NextStep =="end" or self.NextStep =="noplugins":
+		elif self.NextStep == "settingsquestion" or self.NextStep == "settingsrestore" or self.NextStep == "pluginsquestion" or self.NextStep == "pluginsrestoredevice" or self.NextStep == "end" or self.NextStep == "noplugins":
 			self.buildListfinishedCB(False)
-		elif self.NextStep =="settingrestorestarted":
+		elif self.NextStep == "settingrestorestarted":
 			self.Console.ePopen("tar -xzvf " + self.fullbackupfilename + " tmp/ExtraInstalledPlugins tmp/backupkernelversion tmp/backupimageversion -C /", self.settingsRestore_Started)
 			self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Please wait while the system gathers information..."), type=MessageBox.TYPE_INFO, enable_input=False, wizard=True)
 			self.buildListRef.setTitle(_("Restore wizard"))
-		elif self.NextStep =="plugindetection":
+		elif self.NextStep == "plugindetection":
 			print("[RestoreWizard] Stage 2: Restoring plugins")
 			self.Console.ePopen("tar -xzvf " + self.fullbackupfilename + " tmp/ExtraInstalledPlugins tmp/backupkernelversion tmp/backupimageversion -C /", self.pluginsRestore_Started)
 			self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Please wait while the system gathers information..."), type=MessageBox.TYPE_INFO, enable_input=False, wizard=True)
 			self.buildListRef.setTitle(_("Restore wizard"))
-		elif self.NextStep =="pluginrestore":
+		elif self.NextStep == "pluginrestore":
 			if self.feeds == "OK":
 				print("[RestoreWizard] Stage 6: Feeds OK, Restoring Plugins")
 				print("[RestoreWizard] Console command: ", "opkg install " + self.pluginslist + " " + self.pluginslist2)
@@ -230,7 +230,7 @@ class RestoreWizard(WizardLanguage, Rc):
 				print("[RestoreWizard] Stage 3: Kernel and image ver OK")
 				self.doRestorePluginsTest()
 			else:
-				print("[RestoreWizard] Stage 3: Kernel or image ver Differant")
+				print("[RestoreWizard] Stage 3: Kernel or image ver Different")
 				if self.didSettingsRestore:
 					self.NextStep = "reboot"
 				else:
