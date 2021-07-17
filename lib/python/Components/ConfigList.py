@@ -2,7 +2,7 @@ from enigma import eListbox, eListboxPythonConfigContent, ePoint, eRCInput, eTim
 from skin import parameters, applySkinFactor
 
 from Components.ActionMap import HelpableActionMap, HelpableNumberActionMap
-from Components.config import ConfigBoolean, ConfigElement, ConfigInteger, ConfigMacText, ConfigNothing, ConfigSelection, ConfigSequence, ConfigText, KEYA_0, KEYA_ASCII, KEYA_BACKSPACE, KEYA_DELETE, KEYA_ERASE, KEYA_FIRST, KEYA_LAST, KEYA_LEFT, KEYA_NUMBERS, KEYA_RIGHT, KEYA_SELECT, KEYA_TIMEOUT, KEYA_TOGGLE, config, configfile
+from Components.config import ConfigBoolean, ConfigElement, ConfigInteger, ConfigMacText, ConfigNothing, ConfigSelection, ConfigSequence, ConfigText, ACTIONKEY_0, ACTIONKEY_ASCII, ACTIONKEY_BACKSPACE, ACTIONKEY_DELETE, ACTIONKEY_ERASE, ACTIONKEY_FIRST, ACTIONKEY_LAST, ACTIONKEY_LEFT, ACTIONKEY_NUMBERS, ACTIONKEY_RIGHT, ACTIONKEY_SELECT, ACTIONKEY_TIMEOUT, ACTIONKEY_TOGGLE, config, configfile
 from Components.GUIComponent import GUIComponent
 from Components.Pixmap import Pixmap
 from Components.Sources.Boolean import Boolean
@@ -39,14 +39,14 @@ class ConfigList(GUIComponent, object):
 		self.timer.callback.remove(self.timeout)
 
 	def timeout(self):
-		self.handleKey(KEYA_TIMEOUT)
+		self.handleKey(ACTIONKEY_TIMEOUT)
 
 	def handleKey(self, key):
 		selection = self.getCurrent()
 		if selection and selection[1].enabled:
 			selection[1].handleKey(key)
 			self.invalidateCurrent()
-			if key in KEYA_NUMBERS:
+			if key in ACTIONKEY_NUMBERS:
 				self.timer.start(1000, 1)
 
 	def toggle(self):
@@ -291,7 +291,7 @@ class ConfigListScreen:
 		elif isinstance(self.getCurrentItem(), ConfigText):
 			self.keyText()
 		else:
-			self["config"].handleKey(KEYA_SELECT)
+			self["config"].handleKey(ACTIONKEY_SELECT)
 
 	def keyOK(self):  # This is the deprecated version of keySelect!
 		self.keySelect()
@@ -333,19 +333,19 @@ class ConfigListScreen:
 		self["config"].moveUp()
 
 	def keyFirst(self):
-		self["config"].handleKey(KEYA_FIRST)
+		self["config"].handleKey(ACTIONKEY_FIRST)
 		self.entryChanged()
 
 	def keyLeft(self):
-		self["config"].handleKey(KEYA_LEFT)
+		self["config"].handleKey(ACTIONKEY_LEFT)
 		self.entryChanged()
 
 	def keyRight(self):
-		self["config"].handleKey(KEYA_RIGHT)
+		self["config"].handleKey(ACTIONKEY_RIGHT)
 		self.entryChanged()
 
 	def keyLast(self):
-		self["config"].handleKey(KEYA_LAST)
+		self["config"].handleKey(ACTIONKEY_LAST)
 		self.entryChanged()
 
 	def keyDown(self):
@@ -358,27 +358,27 @@ class ConfigListScreen:
 		self["config"].moveBottom()
 
 	def keyBackspace(self):
-		self["config"].handleKey(KEYA_BACKSPACE)
+		self["config"].handleKey(ACTIONKEY_BACKSPACE)
 		self.entryChanged()
 
 	def keyDelete(self):
-		self["config"].handleKey(KEYA_DELETE)
+		self["config"].handleKey(ACTIONKEY_DELETE)
 		self.entryChanged()
 
 	def keyErase(self):
-		self["config"].handleKey(KEYA_ERASE)
+		self["config"].handleKey(ACTIONKEY_ERASE)
 		self.entryChanged()
 
 	def keyToggle(self):
-		self["config"].handleKey(KEYA_TOGGLE)
+		self["config"].handleKey(ACTIONKEY_TOGGLE)
 		self.entryChanged()
 
 	def keyGotAscii(self):
-		self["config"].handleKey(KEYA_ASCII)
+		self["config"].handleKey(ACTIONKEY_ASCII)
 		self.entryChanged()
 
 	def keyNumberGlobal(self, number):
-		self["config"].handleKey(KEYA_0 + number)
+		self["config"].handleKey(ACTIONKEY_0 + number)
 		self.entryChanged()
 
 	def keySave(self):
