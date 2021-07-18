@@ -634,9 +634,9 @@ class PliExtraInfo(Poll, Converter, object):
 		orbpos = feraw.get("orbital_position")
 		if orbpos is not None:
 			if orbpos > 1800:
-				return str((float(3600 - orbpos)) // 10.0) + SIGN + "W"
+				return str((float(3600 - orbpos)) / 10.0) + SIGN + "W"
 			elif orbpos > 0:
-				return str((float(orbpos)) // 10.0) + SIGN + "E"
+				return str((float(orbpos)) / 10.0) + SIGN + "E"
 		return ""
 
 	def createOrbPosOrTunerSystem(self, fedata, feraw):
@@ -751,9 +751,9 @@ class PliExtraInfo(Poll, Converter, object):
 		if orbpos in sat_names:
 			return sat_names[orbpos]
 		elif orbpos > 1800:
-			return str((float(3600 - orbpos)) // 10.0) + "W"
+			return str((float(3600 - orbpos)) / 10.0) + "W"
 		else:
-			return str((float(orbpos)) // 10.0) + "E"
+			return str((float(orbpos)) / 10.0) + "E"
 
 	def createProviderName(self, info):
 		return info.getInfoString(iServiceInformation.sProvider)
