@@ -2,17 +2,27 @@ name: Enigma2 CI
 
 on:
   push:
-    branches: [ Dev ]
+    branches: [ Dev-python3-compatible ]
   pull_request:
-    branches: [ Dev ]
+    branches: [ Dev-python3-compatible ]
 
 jobs:
   build:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     strategy:
       matrix:
-        gcc: [8, 10]
+        gcc: [10, 11]
+        python-version: [3.9]
     steps:
+    - uses: actions/checkout@v2
+    - name: Setup Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'
+    - name: install dep packages
+      run: |
+        python -m pip install --upgrade pip
+        pip install six
     - uses: actions/checkout@v2
     - name: install gcc ${{ matrix.gcc }}
       run: |
