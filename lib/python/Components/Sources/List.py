@@ -101,7 +101,12 @@ to generate HTML."""
 
 	def updateList(self, list):
 		"""Changes the list without changing the selection or emitting changed Events"""
-		assert len(list) == len(self.__list)
+		try:
+			assert len(list) == len(self.__list)
+		except Exception as err:
+			print("[Components/Sources/List.updateList] Error: '%s: '%s'" % (type(err).__name__, err))
+			import traceback
+			traceback.print_exc()
 		old_index = self.index
 		self.disable_callbacks = True
 		self.list = list
