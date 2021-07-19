@@ -444,7 +444,7 @@ class HdmiCec:
 
 	def standby(self):
 		if not Screens.Standby.inStandby:
-			Notifications.AddNotification(Standby)
+			Notifications.AddNotification(Screens.Standby.Standby)
 
 	def wakeup(self):
 		self.wakeup_from_tv = True
