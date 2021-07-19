@@ -101,7 +101,7 @@ class FrontendInfo(Converter):
 			return string
 		if percent is None:
 			return _("N/A")
-		return "%d %%" % (percent * 100 // 65535)
+		return "%d %%" % (percent * 100 / 65535)
 
 	@cached
 	def getBool(self):
