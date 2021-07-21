@@ -248,7 +248,7 @@ class CableTransponderSearchSupport:
 					self.__tlist.append(parm)
 				tmpstr = _("Try to find used transponders in cable network.. please wait...")
 				tmpstr += "\n\n"
-				tmpstr += data[1].isdigit() and "%s MHz " % (int(data[1]) // 1000.) or data[1]
+				tmpstr += data[1].isdigit() and "%s MHz " % (int(data[1]) / 1000.) or data[1]
 				tmpstr += data[0]
 				self.cable_search_session["text"].setText(tmpstr)
 
@@ -1414,7 +1414,7 @@ class ScanSetup(ConfigListScreen, Screen, CableTransponderSearchSupport, Terrest
 					getInitialCableTransponderList(tlist, index_to_scan)
 				elif nimmanager.nim_slots[index_to_scan].supportsBlindScan():
 					flags |= eComponentScan.scanBlindSearch
-					self.addCabTransponder(tlist, 73000, (866000 - 73000) / 1000,
+					self.addCabTransponder(tlist, 73000, (866000 - 73000) // 1000,
 								eDVBFrontendParametersCable.Modulation_Auto,
 								eDVBFrontendParametersCable.FEC_Auto,
 								eDVBFrontendParametersCable.Inversion_Unknown)
@@ -1639,8 +1639,8 @@ class ScanSetup(ConfigListScreen, Screen, CableTransponderSearchSupport, Terrest
 		if tp[3] in list(range(6)) and (tp[4] in list(range(10) or tp[4] == 15)):
 			mod_list = ['Auto', '16-QAM', '32-QAM', '64-QAM', '128-QAM', '256-QAM']
 			fec_list = {0: "Auto", 1: '1/2', 2: '2/3', 3: '3/4', 4: '5/6', 5: '7/8', 6: '8/9', 7: '3/5', 8: '4/5', 9: '9/10', 15: 'None'}
-			print(str(tp[1] // 1000.) + " MHz " + fec_list[tp[4]] + " " + str(tp[2] // 1000) + " " + mod_list[tp[3]])
-			return str(tp[1] // 1000.) + " MHz " + fec_list[tp[4]] + " " + str(tp[2] // 1000) + " " + mod_list[tp[3]]
+			print(str(tp[1] / 1000.) + " MHz " + fec_list[tp[4]] + " " + str(tp[2] // 1000) + " " + mod_list[tp[3]])
+			return str(tp[1] / 1000.) + " MHz " + fec_list[tp[4]] + " " + str(tp[2] // 1000) + " " + mod_list[tp[3]]
 		return _("Invalid transponder data")
 
 	def compareCabTransponders(self, tp, compare):
