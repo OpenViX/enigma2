@@ -125,37 +125,34 @@ class AVSwitch:
 		self.current_mode = mode
 		self.current_port = port
 		modes = self.rates[mode][rate]
-
-		mode_24 = modes.get(24)
 		mode_50 = modes.get(50)
 		mode_60 = modes.get(60)
-		if mode_24 is None or force == 50:
-			mode_24 = mode_50
-		if mode_24 is None or force == 60:
-			mode_24 = mode_60
+		mode_24 = modes.get(24)
 		if mode_50 is None or force == 60:
 			mode_50 = mode_60
 		if mode_60 is None or force == 50:
 			mode_60 = mode_50
+		if mode_24 is None or force:
+			mode_24 = mode_60
+			if force == 50:
+				mode_24 = mode_50
+		try:
+			with open("/proc/stb/video/videomode_50hz", "w") as fd:
+				fd.write(mode_50)
+		except (IOError, OSError):
+			print("[AVSwitch] cannot open /proc/stb/video/videomode_50hz")
+		try:
+			with open("/proc/stb/video/videomode_60hz", "w") as fd:
+				fd.write(mode_60)
+		except (IOError, OSError):
+			print("[AVSwitch] cannot open /proc/stb/video/videomode_60hz")
 
-		try:
-			f = open("/proc/stb/video/videomode_50hz", "w")
-			f.write(mode_50)
-			f.close()
-		except IOError:
-			print "[AVSwitch] cannot open /proc/stb/video/videomode_50hz"
-		try:
-			f = open("/proc/stb/video/videomode_60hz", "w")
-			f.write(mode_60)
-			f.close()
-		except IOError:
-			print "[AVSwitch] cannot open /proc/stb/video/videomode_60hz"
-		try:
-			f = open("/proc/stb/video/videomode_24hz", "w")
-			f.write(mode_24)
-			f.close()
-		except IOError:
-			print "[VideoHardware] cannot open /proc/stb/video/videomode_24hz"
+		if SystemInfo["Has24hz"]:
+			try:
+				with open("/proc/stb/video/videomode_24hz", "w") as fd:
+					fd.write(mode_24)
+			except (IOError, OSError):
+				print("[AVSwitch] cannot open /proc/stb/video/videomode_24hz")
 
 		if getBrandOEM() in ('gigablue'):
 			try:
