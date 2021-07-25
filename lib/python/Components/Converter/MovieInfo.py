@@ -1,5 +1,7 @@
 from __future__ import print_function
 from __future__ import absolute_import
+from os import lstat, scandir
+from threading import Lock, Thread
 from enigma import iServiceInformation, eServiceReference
 
 from Components.Converter.Converter import Converter
@@ -8,6 +10,11 @@ from ServiceReference import ServiceReference
 
 
 class MovieInfo(Converter, object):
+	scanDirectoryLock = Lock()
+	scanPath = None
+	isScanning = False
+	startNewScan = False
+
 	MOVIE_SHORT_DESCRIPTION = 0  # meta description when available.. when not .eit short description
 	MOVIE_META_DESCRIPTION = 1  # just meta description when available
 	MOVIE_REC_SERVICE_NAME = 2  # name of recording service
@@ -31,6 +38,7 @@ class MovieInfo(Converter, object):
 	}
 
 	def __init__(self, type):
+		self.textEvent = None
 		self.type = None
 		self.separator = "\n"
 		self.trim = False
@@ -49,6 +57,12 @@ class MovieInfo(Converter, object):
 			print("[MovieInfo] Valid options for descriptions are: Separated|NotSeparated|Trimmed|NotTrimmed.")
 		Converter.__init__(self, type)
 
+	def destroy(self):
+		Converter.destroy(self)
+		# cancel any running directory scans
+		MovieInfo.startNewScan = True
+		MovieInfo.scanPath = None
+
 	def trimText(self, text):
 		if self.trim:
 			return str(text).strip()
@@ -63,6 +77,17 @@ class MovieInfo(Converter, object):
 		if description and extended:
 			description += self.separator
 		return description + extended
+
+	def getFriendlyFilesize(self, filesize):
+		if filesize >= 104857600000: #100000 * 1024 * 1024
+			return _("%.0f GB") % (filesize / 1073741824.0)
+		elif filesize >= 1073741824: #1024*1024 * 1024
+			return _("%.2f GB") % (filesize / 1073741824.0)
+		elif filesize >= 1048576:
+			return _("%.0f MB") % (filesize / 1048576.0)
+		elif filesize >= 1024:
+			return _("%.0f kB") % (filesize / 1024.0)
+		return _("%d B") % filesize
 
 	@cached
 	def getText(self):
@@ -98,21 +123,61 @@ class MovieInfo(Converter, object):
 				rec_ref_str = info.getInfoString(service, iServiceInformation.sServiceref)
 				return str(ServiceReference(rec_ref_str))
 			elif self.type == self.MOVIE_REC_FILESIZE:
-				if (service.flags & eServiceReference.flagDirectory) == eServiceReference.flagDirectory:
-					return _("Directory")
-				if (service.flags & eServiceReference.isGroup) == eServiceReference.isGroup:
-					return _("Collection")
-				filesize = info.getInfoObject(service, iServiceInformation.sFileSize)
-				if filesize is not None:
-					if filesize >= 104857600000: #100000 * 1024 * 1024
-						return _("%.0f GB") % (filesize / 1073741824.0)
-					elif filesize >= 1073741824: #1024*1024 * 1024
-						return _("%.2f GB") % (filesize / 1073741824.0)
-					elif filesize >= 1048576:
-						return _("%.0f MB") % (filesize / 1048576.0)
-					elif filesize >= 1024:
-						return _("%.0f kB") % (filesize / 1024.0)
-					return _("%d B") % filesize
+				return self.getFileSize(service, info)
 		return ""
+
+	def getFileSize(self, service, info):
+		with MovieInfo.scanDirectoryLock:
+			# signal the scanner thread to exit
+			MovieInfo.startNewScan = True
+			MovieInfo.scanPath = None
+			if (self.source.service.flags & eServiceReference.flagDirectory) == eServiceReference.flagDirectory:
+				# we might have a cached value that we can use
+				fileSize = getattr(self.source.additionalInfo, "directorySize", None)
+				if fileSize is not None:
+					return self.getFriendlyFilesize(fileSize)
+				# tell the scanner thread to start walking the directory tree
+				MovieInfo.scanPath = self.source.service.getPath()
+				if not MovieInfo.isScanning:
+					# if the scanner thread isn't in the scanning loop, start another thread
+					MovieInfo.isScanning = True
+					Thread(target=self.__directoryScanWorker).start()
+				return _("Directory")
+		if (service.flags & eServiceReference.isGroup) == eServiceReference.isGroup:
+			return _("Collection")
+		filesize = info.getInfoObject(service, iServiceInformation.sFileSize)
+		return "" if filesize is None else self.getFriendlyFilesize(filesize)
+
+	def __directoryScanWorker(self):
+		size = 0
+		def scanDirectory(path):
+			nonlocal size
+			for entry in scandir(path):
+				if MovieInfo.startNewScan:
+					return
+				if entry.is_dir():
+					scanDirectory(entry.path)
+				elif entry.is_file():
+					stat = lstat(entry.path)
+					if stat:
+						size += stat.st_size
+
+		while True:
+			with MovieInfo.scanDirectoryLock:
+				path = MovieInfo.scanPath
+				if path is None:
+					MovieInfo.isScanning = False
+					break
+				MovieInfo.scanPath = None
+				MovieInfo.startNewScan = False
+			size = 0
+			scanDirectory(path)
+
+		if not MovieInfo.startNewScan:
+			# cache the value if the scan hasn't been cancelled
+			with MovieInfo.scanDirectoryLock:
+				if self.source and self.source.additionalInfo:
+					self.source.additionalInfo.directorySize = size
+			self.changed((self.CHANGED_SPECIFIC, self.getFriendlyFilesize(size)))
 
 	text = property(getText)

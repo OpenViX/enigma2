@@ -9,6 +9,7 @@ class ServiceEvent(Source, object):
 	def __init__(self):
 		Source.__init__(self)
 		self.service = None
+		self.additionalInfo = None
 
 	@cached
 	def getCurrentService(self):
@@ -25,8 +26,9 @@ class ServiceEvent(Source, object):
 	event = property(getCurrentEvent)
 	info = property(getInfo)
 
-	def newService(self, ref):
+	def newService(self, ref, additionalInfo=None):
 		self.service = ref
+		self.additionalInfo = additionalInfo
 		if not ref:
 			self.changed((self.CHANGED_CLEAR,))
 		else:
