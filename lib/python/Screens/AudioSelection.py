@@ -437,7 +437,7 @@ class AudioSelection(Screen, ConfigListScreen):
 		config.av.transcodeac3plus.save()
 
 	def setAACTranscode(self, transcode):
-		config.av.transcodeaac.setValue(transcode)
+		config.av.transcodeaac.setValue(transcode.value)
 		config.av.transcodeaac.save()
 
 	def changeEDIDChecking(self, edidchecking):
