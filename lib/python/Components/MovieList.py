@@ -716,6 +716,7 @@ class MovieList(GUIComponent):
 				data = MovieListData()
 				data.directorySize = None
 				self.list.append((ref, None, 0, data))
+
 				numberOfDirs += 1
 		firstDir = numberOfDirs
 
@@ -819,6 +820,12 @@ class MovieList(GUIComponent):
 					firstItem = groupedItems[0]
 					data = MovieListData()
 					data.collectionCount = len(groupedItems)
+					collectionSize = 0
+					for item in groupedItems:
+						fileSize = item[1].getInfoObject(item[0], iServiceInformation.sFileSize)
+						if fileSize is not None:
+							collectionSize += fileSize
+					data.collectionSize = collectionSize
 					data.collectionItems = groupedItems
 					data.txt = firstItem[1].getName(firstItem[0]).strip()
 					serviceref = eServiceReference(eServiceReference.idFile, eServiceReference.isGroup, data.txt)

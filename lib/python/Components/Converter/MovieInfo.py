@@ -144,7 +144,8 @@ class MovieInfo(Converter, object):
 					Thread(target=self.__directoryScanWorker).start()
 				return _("Directory")
 		if (service.flags & eServiceReference.isGroup) == eServiceReference.isGroup:
-			return _("Collection")
+			fileSize = getattr(self.source.additionalInfo, "collectionSize", None)
+			return _("Collection") if fileSize is None else self.getFriendlyFilesize(fileSize)
 		filesize = info.getInfoObject(service, iServiceInformation.sFileSize)
 		return "" if filesize is None else self.getFriendlyFilesize(filesize)
 
