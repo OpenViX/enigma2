@@ -33,7 +33,7 @@ class ClockToText(Converter, object):
 		# 		TRANSLATORS: full date representations short dayname daynum monthname long year in strftime() format! See 'man strftime'
 		"FullDate": lambda t: strftime(config.usage.date.shortdayfull.value, localtime(t)),  # _("%a %e %B %Y")
 		#
-		"InMinutes": lambda t: ngettext("%d Min", "%d Mins", (t // 60)) % (t // 60),
+		"InMinutes": lambda t: "" if t < 0 else ngettext("%d Min", "%d Mins", (t // 60)) % (t // 60),
 		# 		TRANSLATORS: long date representations dayname daynum monthname in strftime() format! See 'man strftime'
 		"LongDate": lambda t: strftime(config.usage.date.dayshortfull.value, localtime(t)),  # _("%A %e %B")
 		# 		TRANSLATORS: long date representation short dayname daynum short monthname year hour:minute in strftime() format! See 'man strftime'
