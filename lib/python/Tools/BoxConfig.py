@@ -11,13 +11,13 @@ class BoxConfig:  # To maintain data integrity class variables should not be acc
 		self.boxInfo = {}
 		path = "%s/usr/lib/enigma.info" % root
 		# print("[BoxConfig] BoxConfig Info path = %s." % path)	
+		lines = None		
 		try:
 			with open(path, "r") as fd:
 				lines = fd.read().splitlines()
 		except (IOError, OSError) as err:
 			if err.errno != errno.ENOENT:  # ENOENT - No such file or directory.
 				print("[BoxConfig] Error %d: Unable to read lines from file '%s'! (%s)" % (err.errno, path, err.strerror))
-				lines = None
 		if lines:
 			for line in lines:
 				if line.startswith("#") or line.strip() == "":
