@@ -119,26 +119,40 @@ def GetImagelist():
 		Imagelist[slot] = {"imagename": _("Empty slot")}
 		imagedir = sep.join([_f for _f in [tmp.dir, SystemInfo["canMultiBoot"][slot].get("rootsubdir", "")] if _f])
 		if path.isfile(path.join(imagedir, "usr/bin/enigma2")):
-			#	print("[multiboot] [GetImagelist] 2 slot = %s imagedir = %s" % (slot, imagedir))
-			Creator = open("%s/etc/issue" % imagedir).readlines()[-2].capitalize().strip()[:-6]
-			#	print("[multiboot] [GetImagelist] Creator = %s imagedir = %s" % (Creator, imagedir))
-			if Creator.startswith("Openvix"):
-				reader = boxbranding_reader(imagedir)
-				# print("[multiboot] [GetImagelist]1 slot = %s imagedir = %s" % (slot, imagedir))
-				if path.isfile(path.join(imagedir, "usr/lib/enigma2/python/ImageIdentifier.py")):
-					print("[multiboot] [GetImagelist]2 slot = %s imagedir = %s" % (slot, imagedir))
-					reader = readImageIdentifier(imagedir)
-				BuildType = reader.getImageType()
-				Build = reader.getImageBuild()
-				Creator = Creator.replace("-release", " rel")
-				# print("[multiboot] [GetImagelist] Slot = %s Creator = %s BuildType = %s Build = %s" % (slot, Creator, BuildType, Build))
-				Dev = BuildType != "release" and " %s" % reader.getImageDevBuild() or ""
-				date = VerDate(imagedir)
-				BuildVersion = "%s %s %s %s %s" % (Creator, BuildType[0:3], Build, Dev, date)
-			else:
-				date = VerDate(imagedir)
-				Creator = Creator.replace("-release", " ")
-				BuildVersion = "%s Image Date: %s" % (Creator, date)
+			# print("[multiboot] [GetImagelist] Slot = %s imagedir = %s" % (slot, imagedir))		
+			if path.isfile(path.join(imagedir, "usr/lib/enigma.info")):
+				BoxInfo = BoxConfig(root=imagedir) if SystemInfo["MultiBootSlot"] != slot else SystemInfo["BoxInfo"]
+				Creator = BoxInfo.getItem("distro").title()
+				BuildImgVersion = BoxInfo.getItem("imgversion")
+				BuildType = BoxInfo.getItem("imagetype")[0:3]
+				BuildVer = BoxInfo.getItem("imagebuild")												
+				BuildDate = str(BoxInfo.getItem("compiledate"))
+				BuildDate = datetime.strptime(BuildDate, '%Y%m%d').strftime("%Y-%m-%d")
+				BuildDev = str(BoxInfo.getItem("imagedevbuild")).zfill(3) if BuildType != "rel" else ""
+				BuildVersion = "%s %s %s %s %s %s" % (Creator, BuildImgVersion, BuildType, BuildVer, BuildDev, BuildDate)
+				print("[multiboot] [BoxInfo]  slot=%s, Creator=%s, BuildType=%s, BuildImgVersion=%s, BuildDate=%s, BuildDev=%s" % (slot, Creator, BuildType, BuildImgVersion, BuildDate, BuildDev))
+			else:				
+				#	print("[multiboot] [GetImagelist] 2 slot = %s imagedir = %s" % (slot, imagedir))
+				Creator = open("%s/etc/issue" % imagedir).readlines()[-2].capitalize().strip()[:-6]
+				#	print("[multiboot] [GetImagelist] Creator = %s imagedir = %s" % (Creator, imagedir))
+				if Creator.startswith("Openvix"):
+					reader = boxbranding_reader(imagedir)
+					# print("[multiboot] [GetImagelist]1 slot = %s imagedir = %s" % (slot, imagedir))
+					if path.isfile(path.join(imagedir, "usr/lib/enigma2/python/ImageIdentifier.py")):
+						print("[multiboot] [GetImagelist]2 slot = %s imagedir = %s" % (slot, imagedir))
+						reader = readImageIdentifier(imagedir)
+					BuildType = reader.getImageType()
+					Build = reader.getImageBuild()
+					Creator = Creator.replace("-release", " rel")
+					# print("[multiboot] [GetImagelist] Slot = %s Creator = %s BuildType = %s Build = %s" % (slot, Creator, BuildType, Build))
+					Dev = BuildType != "release" and " %s" % reader.getImageDevBuild() or ""
+					date = VerDate(imagedir)
+					BuildVersion = "%s %s %s %s %s" % (Creator, BuildType[0:3], Build, Dev, date)
+					print("[BootInfo] slot = %s BuildVersion = %s" % (slot, BuildVersion))
+				else:
+					date = VerDate(imagedir)
+					Creator = Creator.replace("-release", " ")
+					BuildVersion = "%s Image Date: %s" % (Creator, date)
 			Imagelist[slot] = {"imagename": "%s" % BuildVersion}
 		elif path.isfile(path.join(imagedir, "usr/bin/enigmax")):
 			Imagelist[slot] = {"imagename": _("Deleted image")}
