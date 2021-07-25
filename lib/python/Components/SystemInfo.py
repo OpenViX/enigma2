@@ -11,7 +11,10 @@ SystemInfo = {}
 SystemInfo["BoxInfo"] = BoxConfig()
 SystemInfo["HasRootSubdir"] = False	# This needs to be here so it can be reset by getMultibootslots!
 SystemInfo["RecoveryMode"] = False	# This needs to be here so it can be reset by getMultibootslots!
-from Tools.Multiboot import getMBbootdevice, getMultibootslots  # This import needs to be here to avoid a SystemInfo load loop!
+from Tools.Multiboot import GetCurrentImage, getMultibootslots  # This import needs to be here to avoid a SystemInfo load loop!
+SystemInfo["HasHiSi"] = pathExists("/proc/hisi") and getBoxType() not in ("viper4kv20",)	# This needs to be for later checks
+SystemInfo["canMultiBoot"] = getMultibootslots()	# SystemInfo["MBbootdevice"] set on call 
+SystemInfo["MultiBootSlot"] = GetCurrentImage() if SystemInfo["canMultiBoot"] else False
 
 
 def getNumVideoDecoders():
@@ -90,9 +93,6 @@ SystemInfo["hasXcoreVFD"] = getBoxType() in ("osmega", "spycat4k", "spycat4kmini
 SystemInfo["HasHDMIin"] = getHaveHDMIinHD() in ("True",) or getHaveHDMIinFHD() in ("True",)
 SystemInfo["Has24hz"] = fileCheck("/proc/stb/video/videomode_24hz")
 SystemInfo["AndroidMode"] = SystemInfo["RecoveryMode"] and getMachineBuild() in ("multibox",)
-SystemInfo["MBbootdevice"] = getMBbootdevice()
-SystemInfo["canMultiBoot"] = getMultibootslots()
-SystemInfo["HasHiSi"] = pathExists("/proc/hisi") and getBoxType() not in ("viper4kv20",)
 SystemInfo["canBackupEMC"] = getMachineBuild() in ("hd51", "h7") and ("disk.img", "%s" % SystemInfo["MBbootdevice"]) or getMachineBuild() in ("osmio4k", "osmio4kplus", "osmini4k") and ("emmc.img", "%s" % SystemInfo["MBbootdevice"]) or SystemInfo["HasHiSi"] and ("usb_update.bin", "none")
 SystemInfo["canMode12"] = getMachineBuild() in ("hd51", "h7") and ("brcm_cma=440M@328M brcm_cma=192M@768M", "brcm_cma=520M@248M brcm_cma=200M@768M")
 SystemInfo["HasMMC"] = fileHas("/proc/cmdline", "root=/dev/mmcblk") or "mmcblk" in getMachineMtdRoot()
