@@ -25,7 +25,9 @@ class Label(VariableText, Renderer):
 		if what[0] == self.CHANGED_CLEAR:
 			self.text = ""
 		elif self.source:
-			if hasattr(self.source, "text"):
+			if what[0] == self.CHANGED_SPECIFIC:
+				self.text = what[1]
+			elif hasattr(self.source, "text"):
 				self.text = self.source.text
 		else:
 			self.text = "<No Source>"

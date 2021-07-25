@@ -505,8 +505,8 @@ class SelectionEventInfo:
 			self.timer.start(100, True)
 
 	def updateEventInfo(self):
-		serviceref = self.getCurrent()
-		self["Service"].newService(serviceref)
+		item = self.getCurrentSelection()
+		self["Service"].newService(item[0], item[3])
 
 
 class MovieSelectionSummary(Screen):
