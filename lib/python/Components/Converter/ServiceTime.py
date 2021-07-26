@@ -1,6 +1,6 @@
 from __future__ import absolute_import
 
-from enigma import iServiceInformation
+from enigma import iServiceInformation, eServiceReference
 
 from Components.Converter.Converter import Converter
 from Components.Element import cached, ElementError
@@ -30,12 +30,16 @@ class ServiceTime(Converter, object):
 		if not info or not service:
 			return None
 
+		# directories and collections don't have a begin or end time
+		if service.flags & (eServiceReference.isDirectory | eServiceReference.isGroup):
+			return None
+
 		if self.type == self.STARTTIME:
 			return info.getInfo(service, iServiceInformation.sTimeCreate)
 		elif self.type == self.ENDTIME:
 			begin = info.getInfo(service, iServiceInformation.sTimeCreate)
-			len = info.getLength(service)
-			return begin + len
+			length = info.getLength(service)
+			return begin + length
 		elif self.type == self.DURATION:
 			return info.getLength(service)
 
