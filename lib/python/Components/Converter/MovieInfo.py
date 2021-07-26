@@ -5,8 +5,7 @@ from threading import Lock, Thread
 from enigma import iServiceInformation, eServiceReference
 
 from Components.Converter.Converter import Converter
-from Components.Element import cached, ElementError
-from ServiceReference import ServiceReference
+from Components.Element import cached
 
 
 class MovieInfo(Converter, object):
@@ -123,10 +122,9 @@ class MovieInfo(Converter, object):
 				)
 			elif self.type == self.MOVIE_REC_SERVICE_NAME:
 				rec_ref_str = info.getInfoString(service, iServiceInformation.sServiceref)
-				return ServiceReference(rec_ref_str).getServiceName()
+				return eServiceReference(rec_ref_str).getServiceName()
 			elif self.type == self.MOVIE_REC_SERVICE_REF:
-				rec_ref_str = info.getInfoString(service, iServiceInformation.sServiceref)
-				return str(ServiceReference(rec_ref_str))
+				return info.getInfoString(service, iServiceInformation.sServiceref)
 			elif self.type == self.MOVIE_REC_FILESIZE:
 				return self.getFileSize(service, info)
 		return ""
