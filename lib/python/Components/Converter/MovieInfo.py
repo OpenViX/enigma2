@@ -102,19 +102,22 @@ class MovieInfo(Converter, object):
 					# Short description for Directory is the full path
 					return service.getPath()
 				return (
-					info.getInfoString(service, iServiceInformation.sDescription)
+					self.__getCollectionDescription(service)
+					or info.getInfoString(service, iServiceInformation.sDescription)
 					or (event and self.trimText(event.getShortDescription()))
 					or service.getPath()
 				)
 			elif self.type == self.MOVIE_META_DESCRIPTION:
 				return (
-					(event and (self.trimText(event.getExtendedDescription()) or self.trimText(event.getShortDescription())))
+					self.__getCollectionDescription(service)
+					or (event and (self.trimText(event.getExtendedDescription()) or self.trimText(event.getShortDescription())))
 					or info.getInfoString(service, iServiceInformation.sDescription)
 					or service.getPath()
 				)
 			elif self.type == self.MOVIE_FULL_DESCRIPTION:
 				return (
-					(event and self.formatDescription(event.getShortDescription(), event.getExtendedDescription()))
+					self.__getCollectionDescription(service)
+					or (event and self.formatDescription(event.getShortDescription(), event.getExtendedDescription()))
 					or info.getInfoString(service, iServiceInformation.sDescription)
 					or service.getPath()
 				)
@@ -127,6 +130,13 @@ class MovieInfo(Converter, object):
 			elif self.type == self.MOVIE_REC_FILESIZE:
 				return self.getFileSize(service, info)
 		return ""
+
+	def __getCollectionDescription(self, service):
+		if service.flags & eServiceReference.isGroup:
+			items = getattr(self.source.additionalInfo, "collectionItems", None)
+			if items and len(items) > 0:
+				return items[0][1].getInfoString(items[0][0], iServiceInformation.sDescription)
+		return None
 
 	def getFileSize(self, service, info):
 		with MovieInfo.scanDirectoryLock:
@@ -147,7 +157,7 @@ class MovieInfo(Converter, object):
 				return _("Directory")
 		if (service.flags & eServiceReference.isGroup) == eServiceReference.isGroup:
 			fileSize = getattr(self.source.additionalInfo, "collectionSize", None)
-			return _("Collection") if fileSize is None else self.getFriendlyFilesize(fileSize)
+			return self.getFriendlyFilesize(fileSize)
 		filesize = info.getInfoObject(service, iServiceInformation.sFileSize)
 		return "" if filesize is None else self.getFriendlyFilesize(filesize)
 
