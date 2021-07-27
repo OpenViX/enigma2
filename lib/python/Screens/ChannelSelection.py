@@ -971,7 +971,7 @@ class ChannelSelectionEdit:
 		if mutableBouquet:
 			servicename = cur_service.getServiceName()
 			if six.PY3:
-				name = unicodedata.normalize("NFKD", str(servicename, "utf_8", errors="ignore")).encode("ASCII", "ignore").translate(None, '<>:"/\\|?*() ')
+				name = unicodedata.normalize(u"NFKD", servicename).encode("ascii", "ignore").decode('utf8').translate(str.maketrans('', '', '<>:"/\\|?*() '))
 			else:
 				name = unicodedata.normalize("NFKD", unicode(servicename, "utf_8", errors="ignore")).encode("ASCII", "ignore").translate(None, '<>:"/\\|?*() ')
 			while os.path.isfile((self.mode == MODE_TV and '/etc/enigma2/alternatives.%s.tv' or '/etc/enigma2/alternatives.%s.radio') % name):
@@ -1009,9 +1009,9 @@ class ChannelSelectionEdit:
 		if mutableBouquetList:
 			bName += ' ' + (_("(TV)") if self.mode == MODE_TV else _("(Radio)"))
 			if six.PY3:
-				name = unicodedata.normalize("NFKD", str(servicename, "utf_8", errors="ignore")).encode("ASCII", "ignore").translate(None, '<>:"/\\|?*() ')
+				name = unicodedata.normalize(u"NFKD", bName).encode("ASCII", "ignore").decode('utf8').translate(str.maketrans('', '', '<>:"/\\|?*() '))
 			else:
-				name = unicodedata.normalize("NFKD", unicode(servicename, "utf_8", errors="ignore")).encode("ASCII", "ignore").translate(None, '<>:"/\\|?*() ')
+				name = unicodedata.normalize("NFKD", unicode(bName, "utf_8", errors="ignore")).encode("ASCII", "ignore").translate(None, '<>:"/\\|?*() ')
 			while os.path.isfile((self.mode == MODE_TV and '/etc/enigma2/userbouquet.%s.tv' or '/etc/enigma2/userbouquet.%s.radio') % name):
 				name = name.rsplit('_', 1)
 				name = ('_').join((name[0], len(name) == 2 and name[1].isdigit() and str(int(name[1]) + 1) or '1'))
