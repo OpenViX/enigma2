@@ -79,6 +79,8 @@ class MovieInfo(Converter, object):
 		return description + extended
 
 	def getFriendlyFilesize(self, filesize):
+		if filesize is None:
+			return ""
 		if filesize >= 104857600000: #100000 * 1024 * 1024
 			return _("%.0f GB") % (filesize / 1073741824.0)
 		elif filesize >= 1073741824: #1024*1024 * 1024
@@ -133,8 +135,8 @@ class MovieInfo(Converter, object):
 			MovieInfo.scanPath = None
 			if (self.source.service.flags & eServiceReference.flagDirectory) == eServiceReference.flagDirectory:
 				# we might have a cached value that we can use
-				fileSize = getattr(self.source.additionalInfo, "directorySize", None)
-				if fileSize is not None:
+				fileSize = getattr(self.source.additionalInfo, "directorySize", -1)
+				if fileSize != -1:
 					return self.getFriendlyFilesize(fileSize)
 				# tell the scanner thread to start walking the directory tree
 				MovieInfo.scanPath = self.source.service.getPath()
